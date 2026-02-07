@@ -1,0 +1,75 @@
+\section{信息守恒：无损提升、可逆回放与信息账本}
+
+\subsection{折叠的多对一结构与纤维计数}
+固定 $m$，折叠 $\Fold_m:\Omega_m\twoheadrightarrow X_m$ 为多对一。对 $x\in X_m$ 定义纤维大小
+$$
+d_m(x):=\card{\Fold_m^{-1}(x)}.
+$$
+折叠的“不可逆性”由 $d_m(x)$ 的非平凡性刻画，其对数可被视为不可见容量预算。
+
+\subsection{推前与纤维均匀提升}
+定义推前（宏观化）算子
+$$
+P_m := (\Fold_m)_*:\Delta(\Omega_m)\to \Delta(X_m).
+$$
+对任意 $\pi\in\Delta(X_m)$，定义纤维均匀提升
+$$
+Q_m\pi := \mu^e\in\Delta(\Omega_m),
+$$
+其在每条纤维 $\Fold_m^{-1}(x)$ 上条件均匀，并满足 $P_m\circ Q_m=\mathrm{id}$。该对偶关系是“宏观直方图与微观最大熵提升”的严格对应。
+
+\subsection{信息账本恒等式}
+\begin{theorem}[信息账本恒等式]\label{thm:ledger-identity}
+取任意 $\mu\in\Delta(\Omega_m)$，记其稳定推前 $\pi:=P_m\mu \in \Delta(X_m)$，令 $\mu^e:=Q_m\pi$ 为纤维均匀提升。定义 Shannon 熵
+$$
+H(\nu):=-\sum_{s} \nu(s)\log \nu(s),
+$$
+以及 KL 散度
+$$
+D_{\mathrm{KL}}(\mu\|\nu):=\sum_{s} \mu(s)\log\frac{\mu(s)}{\nu(s)}.
+$$
+则有严格恒等式
+$$
+H(\mu)=H(\pi)+\EE_{\pi}[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e).
+$$
+\end{theorem}
+
+\begin{proof}
+对 $D_{\mathrm{KL}}(\mu\|\mu^e)$ 展开，并利用
+$$
+\mu^e(a)=\frac{\pi(x)}{d_m(x)},\qquad x=\Fold_m(a),
+$$
+按纤维分组，识别 $H(\pi)$ 与 $\EE_\pi[\log d_m(X)]$ 两项即可得到等式。
+\end{proof}
+
+该恒等式给出“微观信息”三项分解：宏观熵 $H(\pi)$ 是稳定可见部分；纤维体积项 $\EE_\pi[\log d_m]$ 是不可见容量预算；KL 残差项刻画偏离最大熵提升的“纤维内非均匀”信息。
+上述熵与散度的记号与基本性质可参见信息论标准参考 \cite{CoverThomas2006}。
+
+\begin{corollary}[最大熵提升与“不丢信息”的严格含义]\label{cor:maxent}
+对任意 $\mu\in\Delta(\Omega_m)$ 与 $\pi=P_m\mu$，有
+$$
+H(\mu)\le H(\pi)+\EE_\pi[\log d_m(X)],
+$$
+且等号当且仅当 $\mu=\mu^e$（即在每条纤维上条件均匀）。
+\end{corollary}
+
+\subsection{素数寄存器外置残差与无损提升}
+折叠作为多对一投影必然丢失“纤维内标签”。POM 的策略不是否认该丢失，而是将其外置到可寻址残差空间，使整体演化在扩展空间上可逆。
+
+\begin{definition}[素数承载残差]\label{def:prime-residual}
+任意有限集合可嵌入有限支撑素数幂坐标；因此素数寄存器纤维 $P$ 可作为通用承载轴，将折叠纤维差异转移为可寻址的本体坐标，从而把“信息丢失”改写为“跨纤维存储”。
+\end{definition}
+
+\begin{proposition}[无损折叠提升的存在]\label{prop:lossless-uplift}
+存在单射
+$$
+\widehat{\Fold}_m:\Omega_m\hookrightarrow X_m\times P
+$$
+满足
+$$
+\mathrm{pr}_{X_m}\circ\widehat{\Fold}_m = \Fold_m.
+$$
+\end{proposition}
+
+该命题对应 POMmin 的 (A7)。其一类可审计构造是将折叠归一化的局部操作轨迹编码为素数指数向量，并在回放时按逆轨迹恢复微态（见附录 \ref{app:prime-uplift}）。在均匀随机输入基线下，残差需要激活的素数轴数目一般具有线性下界，因而“信息守恒”的可审计代价不可压缩到次线性规模；该下界可作为审计预算指标。
+

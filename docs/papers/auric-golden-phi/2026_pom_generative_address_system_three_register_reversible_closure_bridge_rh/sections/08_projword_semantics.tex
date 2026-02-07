@@ -1,0 +1,53 @@
+\section{投影词（PW）证明语义：证书化重写与判等}
+
+\subsection{PW 的生成与 2-态射证书}
+设 $\mathcal{G}$ 为投影门集合（例如规范投影、条件期望门等），投影词 $W$ 为 $\mathcal{G}$ 上的自由幺半群元素（以复合作为乘法）。PW 的证明语义由 2-态射证书给出：
+\begin{itemize}
+  \item exact 证书：$W\Rightarrow W'$ 表示可重写等式闭包内的等价；
+  \item $\varepsilon$-sound 证书：允许在失败概率 $\varepsilon$ 下的近似等价。
+\end{itemize}
+
+\begin{definition}[$\varepsilon$-sound 证书]\label{def:eps-sound}
+若存在坏事件 $E$ 使 $\PP[E]\le \varepsilon$，且在 $E^c$ 上读出一致，则称存在 $\varepsilon$-sound 近似重写证书，记为
+$$
+W \Rightarrow_\varepsilon W'.
+$$
+\end{definition}
+
+\begin{proposition}[误差预算可加复合]\label{prop:eps-add}
+若 $W\Rightarrow_\varepsilon W'$ 且 $W'\Rightarrow_\delta W''$，则
+$$
+W\Rightarrow_{\varepsilon+\delta} W''.
+$$
+\end{proposition}
+
+\subsection{局部片段的终止、合流与正规形唯一}
+在局部片段
+$$
+\mathrm{PW}_{Z,E}:=\langle P_Z,\{E_m\}_{m\ge 1}\rangle
+$$
+上，定义重写规则：
+\begin{enumerate}
+  \item[(RZ)] $P_Z\circ P_Z\Rightarrow P_Z$；
+  \item[(RE)] 若 $m_2\ge m_1$，则 $E_{m_1}\circ E_{m_2}\Rightarrow E_{m_1}$。
+\end{enumerate}
+
+\begin{theorem}[读出塔重写的终止性与合流性]\label{thm:pw-ze-termination-confluence}
+在上述重写系统下，任意 $\mathrm{PW}_{Z,E}$ 投影词均满足：
+\begin{enumerate}
+  \item 终止：不存在无限重写链；
+  \item（局部）合流：任意两条重写序列可汇合到同一不可约词；
+  \item 正规形唯一：正规形由最小分辨率指标的 $E_{m^\star}$（及至多一个 $P_Z$ 因子）唯一确定。
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}[判等可判定]\label{cor:pw-word-problem-decidable}
+给定 $W_1,W_2\in \mathrm{PW}_{Z,E}$，计算其正规形 $N(W_1),N(W_2)$，则
+$$
+W_1\sim W_2 \iff N(W_1)=N(W_2),
+$$
+从而该片段的词问题可判定。
+\end{corollary}
+
+上述结果为“证明即证书化编译”的最小原型：等价性被归约为可执行的正规化过程，且该过程可审计。更细化的语法、检查器与三生成元接口片段见附录 \ref{app:pw-fragment}。
+

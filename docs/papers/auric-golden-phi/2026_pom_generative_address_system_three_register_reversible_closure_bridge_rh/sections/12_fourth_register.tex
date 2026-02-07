@@ -1,0 +1,28 @@
+\section{“第四寄存器”反证模板：径向模式的不可类型化}\label{sec:fourth-register}
+
+\subsection{径向模式与额外自由度}
+由命题 \ref{prop:critical-line-unitary-slice}，临界线对应 $\abs{u_L(s)}=1$。若考虑偏移点 $\Re(s)\neq\tfrac12$，则 $\abs{u_L(s)}\neq 1$，从而必须在参数域引入
+$$
+u=re^{i\theta},\qquad r\neq 1,
+$$
+即额外的径向自由度 $\rho:=\log r$。然而在第 \ref{prop:critical-line-unitary-slice} 节的正规化闭包中，可见连续参数轴仅为 $\theta$；径向参数不在可见轴内，除非显式扩张状态空间并引入新增寄存器以承载 $\rho$（称为“第四寄存器”）。
+
+\subsection{双检查器拒绝：根区间与 strictification}
+在 unitary slice 机制下，体系内部可实现两类拒绝接口：
+\begin{enumerate}
+  \item 根区间检查器：将完成化对象编译为代数对象并输出可机核验的根区间证书；其核心是把“零点在临界线”转写为某多项式的根满足区间或单位圆判据。
+  \item 常数层 strictification 检查器：允许的 counterterm 仅能在常数层吸收有限部异常而不改变主尺度/极点结构；若径向依赖改变主尺度，则无法被 strictification 吸收，必须新增寄存器承载。
+\end{enumerate}
+两类检查器共同固定“不可类型化 $\Rightarrow \NULL$”的拒绝链。更具体地，可将“临界线零点”编译为多项式根判据：存在完成化多项式 $P_L$ 使得“零点在临界线”等价于“所有根位于 $[-2,2]$”或“位于单位圆”，从而给出可复核的代数证书接口；而 strictification 的允许类被限定为对异常签名的常数层平移，不改变指数主尺度。
+
+\subsection{第四寄存器命题}
+\begin{proposition}[第四寄存器需求]\label{prop:fourth-register-need}
+在三寄存器闭包（尺度 $S_\varphi$、相位 $T$、素数 $P$）下，任一可核对的离线零点证书若要求 $\abs{u_L(s)}\neq 1$ 的径向模式，则必须扩张可见参数域并引入额外寄存器承载径向自由度；该扩张在双检查器下不可通过，从而该证书在闭包内不可类型化并读出为 $\NULL$。
+\end{proposition}
+
+\begin{proof}
+若证书要求 $\abs{u_L(s)}\neq 1$，则其核验需要同时依赖 $\theta$ 与 $\rho=\log\abs{u}$ 两参。由第 \ref{prop:critical-line-unitary-slice} 节“可见轴仅为 $\theta$”的闭包约束，$\rho$ 无法在现有接口中表达，除非扩张状态并添加寄存器。对该扩张：根区间检查器将其判定为违反单位圆/区间根条件；strictification 检查器将其判定为无法通过常数层吸收径向依赖。两者任一失败均导致不可类型化；按存在性语义读出为空值。
+\end{proof}
+
+该命题提供可复用的反证模板：若某对象试图在保持自对偶 completion 外形的同时引入 $\abs{u}\neq 1$ 模式，则其必然触发额外自由度需求，并在三寄存器审计闭包下崩塌为 $\NULL$。
+

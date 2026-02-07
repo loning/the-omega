@@ -1,0 +1,102 @@
+\section{算术的涌现：在稳定地址空间构造 $(\oplus,\otimes)$}
+
+本节给出“从无到有”的算术生成：自然数对象、加法与乘法并非作为原语预置，而由稳定语法与规范形归一化在 POMmin 下定义，并证明与经典半环同构。为避免不必要的拓扑复杂性，本节将稳定地址空间取为 Zeckendorf 合法数字的有限支撑部分，即第 \ref{def:Z-fiber} 节的 $Z$；记号上亦可将其视为 $X_\infty$ 的有限支撑子对象。
+
+\subsection{自然数对象的商幺半群构造}
+定义有限支撑数字配置空间
+$$
+D:=\Bigl\{a=(a_k)_{k\ge 1}: a_k\in\NN,\ \#\{k:a_k\neq 0\}<\infty\Bigr\}.
+$$
+令 Fibonacci 数列 $(F_k)_{k\ge 1}$ 满足 $F_1=F_2=1$，$F_{k+2}=F_{k+1}+F_k$，定义加权值
+$$
+\mathrm{Val}(a):=\sum_{k\ge 1} a_k F_{k+1}.
+$$
+在 $D$ 上引入同余关系 $\equiv$，由基准关系与递推关系生成，使得基向量满足
+$$
+[e_2]=2[e_1],\qquad [e_{k+2}]=[e_{k+1}]+[e_k]\ \ (k\ge 1),
+$$
+其中 $e_k$ 表示第 $k$ 位单位向量。
+
+\begin{theorem}[自然数的涌现：商幺半群同构]\label{thm:emergent-N}
+映射 $\mathrm{Val}:D/\!\equiv\ \to \NN$ 为交换幺半群同构；并且 Zeckendorf 合法数字空间 $Z$ 为每个同余类提供唯一规范代表：对任意 $a\in D$，存在唯一 $c\in Z$ 使得 $a\equiv c$ 且 $\mathrm{Val}(a)=\mathrm{Val}(c)$。
+\end{theorem}
+
+\begin{proof}
+由 Zeckendorf 表示定理 \cite{Zeckendorf1972}，每个 $N\in\NN$ 存在唯一合法数字 $Z(N)\in Z$ 使得 $\mathrm{Val}(Z(N))=N$，从而 $\mathrm{Val}$ 满射。进一步，在商幺半群 $D/\!\equiv$ 中，递推关系给出 $[e_k]=F_{k+1}[e_1]$，于是任意 $[a]$ 由 $\mathrm{Val}(a)$ 唯一刻画，从而得到同构；规范代表的存在性与唯一性由 Zeckendorf 唯一性给出。
+\end{proof}
+
+\subsection{折叠与规范形：加法的涌现}
+对 $c,d\in Z$ 定义逐位叠加：令
+$$
+(c+d)_k:=c_k+d_k\in\{0,1,2\}.
+$$
+由于叠加通常破坏合法语法，需要通过折叠归一化投影回 $Z$。
+
+\begin{definition}[稳定加法]\label{def:stable-add}
+定义
+$$
+c\oplus d := \Fold_\infty(c+d).
+$$
+等价地，亦可通过值映射定义 $c\oplus d := \mathrm{Val}^{-1}(\mathrm{Val}(c)+\mathrm{Val}(d))$。
+\end{definition}
+
+\begin{corollary}[折叠公式]\label{cor:fold-add}
+对任意 $c,d\in Z$，有 $c\oplus d=\Fold_\infty(c+d)$，并且 $\mathrm{Val}(c\oplus d)=\mathrm{Val}(c)+\mathrm{Val}(d)$。
+\end{corollary}
+
+\begin{theorem}[加法的定义性同构]\label{thm:add-isom}
+$(Z,\oplus)$ 为交换幺半群，且
+$$
+\mathrm{Val}:(Z,\oplus)\to(\NN,+)
+$$
+为同构。
+\end{theorem}
+
+\begin{proof}
+由定义 $\mathrm{Val}(c\oplus d)=\mathrm{Val}(c)+\mathrm{Val}(d)$，并由 $\mathrm{Val}$ 的双射性将 $(\NN,+)$ 的交换律、结合律与单位元结构传递到 $(Z,\oplus)$。
+\end{proof}
+
+\subsection{乘法的涌现与半环同构}
+\begin{definition}[稳定乘法]\label{def:stable-mul}
+对 $c,d\in Z$，定义
+$$
+c\otimes d := \mathrm{Val}^{-1}\bigl(\mathrm{Val}(c)\cdot \mathrm{Val}(d)\bigr)\in Z.
+$$
+\end{definition}
+
+\begin{theorem}[乘法的定义性同构]\label{thm:mul-isom}
+$(Z,\oplus,\otimes)$ 为交换半环，且
+$$
+\mathrm{Val}:(Z,\oplus,\otimes)\to (\NN,+,\times)
+$$
+为半环同构。
+\end{theorem}
+
+\begin{proof}
+由定义 $\mathrm{Val}$ 同时保持加法与乘法，且 $\mathrm{Val}$ 为双射；因此交换律、结合律与分配律从 $(\NN,+,\times)$ 传递。
+\end{proof}
+
+\subsection{乘法与加法的内生化：极简原语集}
+\begin{theorem}[乘法可由加法与迭代内生]\label{thm:mul-from-add}
+定义
+$$
+c\,\underline{\oplus}\, d := \underbrace{c\oplus c\oplus\cdots\oplus c}_{\mathrm{Val}(d)\text{ 次}},
+\qquad
+\mathrm{Val}(d)=0 \text{ 时取 } 0_Z,
+$$
+其中 $0_Z$ 为全零序列。则对任意 $c,d\in Z$，有
+$$
+c\,\underline{\oplus}\, d = c\otimes d.
+$$
+\end{theorem}
+
+\begin{proof}
+由 $\mathrm{Val}$ 保持 $\oplus$ 且双射，得
+$$
+\mathrm{Val}(c\,\underline{\oplus}\, d)=\mathrm{Val}(c)\mathrm{Val}(d)=\mathrm{Val}(c\otimes d),
+$$
+再由双射性推出相等。
+\end{proof}
+
+同理，可通过后继算子 $S(c)=\Fold_\infty(c+e_1)$ 将 $\oplus$ 内生为后继迭代，从而得到更极简的原语集（以“后继 + 折叠”生成算术）。
+

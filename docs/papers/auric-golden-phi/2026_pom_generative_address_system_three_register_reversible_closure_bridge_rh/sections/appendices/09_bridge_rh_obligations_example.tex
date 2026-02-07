@@ -1,0 +1,74 @@
+\subsection{附录 I：BridgeRH 的最小化义务清单与自对偶矩阵桥示例}\label{app:bridge-rh-obligations}
+
+\subsubsection{I.1 BridgeRH 的可验证义务（Proof Obligations）}
+BridgeRH 的作用是把“经典完成化对象”的零点事件编译/注入到 PW 可审计闭包中，使得类型安全（unitary slice 约束）可以作用于经典零点集合。其可验证义务可分解为四组：
+\begin{enumerate}
+  \item \textbf{义务组 B1（经典目标桥接）：}存在 $L>1$ 与一族核对象，使其二变量行列式
+  $$
+  \Delta(z,u)=\det(I-zB(u))
+  $$
+  满足自对偶关系 $\Delta(z,u)=\Delta(uz,1/u)$，并且其完成化截面
+  $$
+  \Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})
+  $$
+  在整个复平面上与经典 $\Xi_\zeta(s)$ 一致（或至少具有相同零点集与重数）。
+
+  \item \textbf{义务组 B2（零点可寻址桥接）：}对任意满足 $\Xi_\zeta(s_0)=0$ 且 $0<\Re(s_0)<1$ 的零点 $s_0$，存在投影词地址 $W(s_0)\in\mathrm{PW}$，使其在可审计片段内可规约到接口正规形并给出非 $\NULL$ 的可核对读出，且读出验证 $\Xi_{\Delta,L}(s_0)=0$。
+
+  \item \textbf{义务组 B3（unitary slice 类型锁定）：}任意“零点事件”的可核对读出必须走 unitary slice 的审计接口（$\theta$-扫描），从而零点地址参数必须满足 $\abs{u_L(s_0)}=1$。
+
+  \item \textbf{义务组 B4（规格与重数证书）：}桥接对象需满足正性 Fredholm-HTF 规格：闭层全纯性、正性/整数重数证书以及 Abel-first/有限部接口兼容性，使得零点/极点实体携带可审计的重数/留数证书并可回归到桥包指纹。
+\end{enumerate}
+
+\subsubsection{I.2 可控 $\Delta(z,u)$ 的最小示例：有限维矩阵自对偶桥}
+以下给出一个“最小可控实现”，用于演示义务组 B1/B3 的代数核验与 B2 的地址样式；该例不宣称与 $\Xi_\zeta$ 一致，而是提供一个可完全核对的 $\Delta(z,u)$ 原型。
+
+\paragraph{构造：交换对称的线性 $u$-矩阵族}
+取整数矩阵 $B_0\in\ZZ^{n\times n}$ 与置换矩阵 $\Pi$（满足 $\Pi^{-1}=\Pi^\top$），令
+$$
+B_1=\Pi^{-1}B_0\Pi,\qquad B(u)=B_0+uB_1.
+$$
+则自动有
+$$
+\Pi^{-1}B(u)\Pi=B_1+uB_0=u\bigl(B_0+(1/u)B_1\bigr)=uB(1/u).
+$$
+由行列式在相似变换下不变，$\Delta(z,u)=\det(I-zB(u))$ 满足
+$$
+\Delta(z,u)=\Delta(uz,1/u).
+$$
+
+\paragraph{代数核验清单（矩阵级、可一键审计）}
+给定 $(B_0,B_1,\Pi)$，可逐条核验：
+\begin{enumerate}
+  \item 交换：$\Pi^{-1}B_0\Pi=B_1$ 且 $\Pi^{-1}B_1\Pi=B_0$；
+  \item 偶/奇分量：
+  $$
+  2B_{\mathrm{sym}}=B_0+B_1,\qquad 2B_{\mathrm{asym}}=B_1-B_0,
+  $$
+  并验证 $\Pi^{-1}B_{\mathrm{sym}}\Pi=B_{\mathrm{sym}}$、$\Pi^{-1}B_{\mathrm{asym}}\Pi=-B_{\mathrm{asym}}$；
+  \item $u$-依赖重构：
+  $$
+  B(u)=(1+u)B_{\mathrm{sym}}+(u-1)B_{\mathrm{asym}}.
+  $$
+\end{enumerate}
+
+\paragraph{完成化与 unitary slice：$\theta$-参数化的相似关系}
+令 $u=e^\theta$（$\theta\in\CC$），定义完成化矩阵
+$$
+\widetilde{B}(\theta)=e^{-\theta/2}B(e^\theta).
+$$
+由自对偶关系可推出
+$$
+\Pi^{-1}\widetilde{B}(\theta)\Pi=\widetilde{B}(-\theta),
+$$
+从而 $\det(\lambda I-\widetilde{B}(\theta))$ 作为 $\theta$ 的解析函数为偶函数。这一性质给出 unitary slice 的结构护栏：在 $\theta=i\vartheta$（$\vartheta\in\RR$）上，$u=e^{i\vartheta}$ 落在单位圆，连续可见自由度仅为相位 $\vartheta$。
+
+\subsubsection{I.3 在可控模型中实现 B2（“零点地址”的最小样式）}
+对固定 $L>1$，完成化截面为 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$。在三生成元接口正规形语法下，可取最小地址样式为
+$$
+W(s)=\mathrm{LIFT}_G\circ\mathrm{PROJ}_{u_L(s)}\circ E_m,\qquad u_L(s)=L^{2s-1}.
+$$
+该地址已经处于接口正规形，且其核验应通过 unitary slice 审计接口（$\theta$-扫描）实现，从而要求 $\abs{u_L(s)}=1$（义务组 B3）。
+
+在该可控模型下，“可核对零点证书”的最小实现可以取为：给定 $\theta$（即 $u=e^{i\theta}$）计算 $\Delta(z,u)$ 并验证 $\Delta(z,u)=0$。由于 $\Delta$ 为有限维行列式，其零点核验可完全归约为线性代数的可审计输出（精确行列式或带误差界的数值证书）。
+

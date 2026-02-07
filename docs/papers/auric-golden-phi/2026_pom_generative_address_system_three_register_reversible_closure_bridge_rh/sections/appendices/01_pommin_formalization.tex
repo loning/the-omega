@@ -1,0 +1,41 @@
+\subsection{附录 A：POMmin 公理的形式化表述}\label{app:pommin-formal}
+
+本附录对第 3 节 POMmin 的公理组给出可复核的形式化版本。为保持依赖链可审计性，以下条目仅陈述接口层必须显式输入的对象与性质。
+
+\subsubsection{A.1 集合论承载与概率层}
+\begin{itemize}
+  \item 对每个 $m\in\NN_{\ge 1}$，微态集合 $\Omega_m:=\{0,1\}^m$ 作为标准有限集合给定。
+  \item $\Delta(\Omega_m)$ 表示 $\Omega_m$ 上的概率单纯形：$\Delta(\Omega_m)=\{\mu:\Omega_m\to[0,1]\mid \sum_{\omega\in\Omega_m}\mu(\omega)=1\}$。
+\end{itemize}
+
+\subsubsection{A.2 空值语义}
+\begin{itemize}
+  \item 地址集合 $\Addr$ 为可数集合，读出映射为偏函数 $\Read:\Addr\rightharpoonup \mathsf{ValDom}$。
+  \item 约定未定义读出返回符号 $\NULL$，并将其视为与数值域互异：$\NULL\notin\NN$，且语义上 $\NULL\neq 0$。
+\end{itemize}
+
+\subsubsection{A.3 稳定语法与折叠归一化}
+\begin{itemize}
+  \item 对每个 $m$，稳定语法集合 $X_m\subseteq\Omega_m$ 给定（本文取黄金均值语法：禁相邻 $11$）。
+  \item 折叠算子 $\Fold_m:\Omega_m\twoheadrightarrow X_m$ 满足：满射；幂等（将 $X_m$ 视为 $\Omega_m$ 的子集时对 $x\in X_m$ 有 $\Fold_m(x)=x$）；并由局部可执行重写系统实现，且该重写系统强终止并合流，从而正规形存在且唯一（见附录 \ref{app:fold-rewriting}）。
+\end{itemize}
+
+\subsubsection{A.4 跨分辨率相容与逆系统}
+\begin{itemize}
+  \item 对 $m\ge n$，存在限制映射 $\rho_{m\to n}:X_m\to X_n$（取前 $n$ 位或等价限制），满足逆系统一致性：$\rho_{n\to \ell}\circ\rho_{m\to n}=\rho_{m\to \ell}$。
+  \item 折叠与限制交换：对 $m\ge n$，$\rho_{m\to n}\circ \Fold_m = \Fold_n\circ \pi_{m\to n}$，其中 $\pi_{m\to n}:\Omega_m\to\Omega_n$ 为取前 $n$ 位。
+  \item 由此得到逆极限 $X_\infty=\varprojlim_m X_m$，并可定义极限折叠 $\Fold_\infty$ 与有限层一致。
+\end{itemize}
+
+\subsubsection{A.5 可寻址性作为存在性判据}
+对象域的存在性谓词以可寻址读出定义：对象 $O$ 被称为“存在”当且仅当存在 $a\in\Addr$ 使 $\Read(a)=O\neq\NULL$。
+
+\subsubsection{A.6 PW 证书系统与可判定片段}
+\begin{itemize}
+  \item 投影词语言 $\mathrm{PW}$ 由有限门集生成，2-态射证书由局部重写规则与其闭包构成。
+  \item 存在一个可计算子片段（如 $\mathrm{PW}_{Z,E}$），其重写系统终止且（局部）合流，从而正规形唯一，并据此给出判等可判定的检查器实现（见附录 \ref{app:pw-fragment}）。
+\end{itemize}
+
+\subsubsection{A.7 无损提升与回放}
+存在单射提升 $\widehat{\Fold}_m:\Omega_m\hookrightarrow X_m\times P$ 使 $\mathrm{pr}_{X_m}\circ\widehat{\Fold}_m=\Fold_m$，且存在可构造的回放算法 $\mathrm{UNLIFT}_m$ 使其在像上为逆（见附录 \ref{app:prime-uplift}）。
+

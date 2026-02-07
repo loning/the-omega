@@ -1,0 +1,105 @@
+\subsection{附录 L：四则、商余、布尔表达式与 ZFC 运算族的涌现（可审计定义链）}\label{app:ops-zfc}
+
+本附录给出一条可机械化核验的“运算涌现”路径：以最小生成接口为起点，将四则运算、商与余、布尔表达式，以及 ZFC 语境中常用的集合—函数—逻辑运算，统一归约为少数可审计的生成元与规范化过程。核心观点为：
+\begin{enumerate}
+  \item 运算不被当作先验原语，而被当作“配置层自由结构 + 局部可逆重写 + 规范截面”的读出；
+  \item 同一真值语义允许多条可审计编译路径，差异仅体现在门调用计数、深度预算与残差账本；
+  \item 在集合论（ZFC）层面，运算是可定义函数/关系；在 POM 层面，运算是可编译投影词的可审计读出并经规范投影落回稳定地址。
+\end{enumerate}
+
+\subsubsection{L.1 生成元与“运算消去”：从最小结构到稳定算术层}
+设二元窗口空间为 $\Omega_m := \{0,1\}^m$，稳定类型集合为 $X_m\subseteq \Omega_m$，并给定折叠算子 $\Fold_m:\Omega_m\to X_m$（附录 \ref{app:fold-rewriting}）。在 POMmin 中，地址优先与 $\NULL$ 语义作为公理入口：未给定地址则读出不定义并记为 $\NULL$，且 $\NULL\neq 0$。
+
+在配置层，将“尺度计数”视为自由交换幺半群
+$$
+D:=\Bigl\{a=(a_1,a_2,\dots):a_k\in\NN,\ \#\{k:a_k\neq 0\}<\infty\Bigr\},
+$$
+并以 Fibonacci 关系诱导的局部可逆重写（附录 \ref{app:fold-rewriting}）给出规范截面 $\Fold_\infty$。由此得到稳定地址层 $Z$ 及其值映射 $\mathrm{Val}:Z\to\NN$ 的可计算实现，从而在过程层“消去”先验的 $(+,\times)$：加乘成为“读出层运算”，而非本体原语。
+
+\subsubsection{L.2 四则与商余：两类路径与不可约门}
+\paragraph{加法与乘法} 加法与乘法已在第 6 节给出定义性同构：对 $c,d\in Z$，
+$$
+c\oplus d=\mathrm{Val}^{-1}(\mathrm{Val}(c)+\mathrm{Val}(d)),\qquad
+c\otimes d=\mathrm{Val}^{-1}(\mathrm{Val}(c)\mathrm{Val}(d)).
+$$
+
+\paragraph{减法} 在稳定自然数层上，减法需要处理“序信息”。可采取两种等价的可审计路径：
+\begin{enumerate}
+  \item 显式序判定：先核验大小关系（记为 $P_{\le}$ 门），再输出截断差
+  $$
+  m\ominus n:=\max(m-n,0),
+  $$
+  并取 $Z(m\ominus n)$ 为稳定地址输出；
+  \item 符号内化：在更强归一化中吸收符号/序信息，避免显式 $P_{\le}$，但规范化代价上升。
+\end{enumerate}
+两条路径的真值语义一致，差异仅体现为“序信息”在编译链中的放置位置。
+
+\paragraph{除法（商与余）} 商余满足
+$$
+a=bq+r,\qquad 0\le r<b,
+$$
+因此大小比较门 $P_{\le}$ 不可约。可审计实现可分为两类路线：
+\begin{enumerate}
+  \item 长除式路线：逐位决策，$P_{\le}$ 调用次数随商的位数线性增长；
+  \item 倒数迭代路线：将大量乘法吸收到数值迭代预算中，并以常数次 $P_{\le}$ 做末端校正，将增长从 $k_{\le}$ 转移到深度预算（例如迭代次数/精度层级）。
+\end{enumerate}
+在 POM 语义中，两类路线同属“投影词实现差异”，可由证书系统输出可审计成本分解，并通过残差账本闭合其可逆性义务。
+
+\subsubsection{L.3 布尔对象与布尔表达式：事件层与数值层的统一}
+POM 的读出本体直接给出二值输出，因此布尔对象可在两种等价层面给出：
+\begin{enumerate}
+  \item \textbf{事件层（集合运算口径）：}命题值为事件指示函数 $\ind_A$。定义
+  $$
+  \neg A := X\setminus A,\quad
+  A\wedge B := A\cap B,\quad
+  A\vee B := A\cup B,
+  $$
+  并以对称差定义异或。
+  \item \textbf{数值层（算术化口径）：}取布尔域 $\mathbb{B}=\{0,1\}\subset\NN$，定义
+  $$
+  x\wedge y := xy,\quad
+  x\vee y := x+y-xy,\quad
+  \neg x := 1-x,\quad
+  x\oplus y := (x+y)\bmod 2.
+  $$
+  其中加乘与模运算由稳定算术层与商余接口提供。
+\end{enumerate}
+布尔表达式可被编译为投影词的门复合结构，并在读出层返回 $\{0,1\}$ 值；其可审计性由正规形判等与证书系统继承。
+
+\subsubsection{L.4 ZFC 中的“可定义运算生成引理”（模式级陈述）}
+“ZFC 的全部运算”并非有限枚举的原语集合；更合适的表述是：ZFC 仅以 $\in$ 与一阶公式为基础，通常数学中使用的运算都可被表达为某个可定义（带参数）的函数/关系 \cite{Jech2003SetTheory,Kunen1980SetTheory}。其生成模板为：
+
+\begin{proposition}[可定义运算生成引理]\label{prop:zfc-definable-operation}
+设 $A$ 为集合，$\varphi(x,y,\vec{p})$ 为一阶公式（参数 $\vec{p}$ 固定）。若 ZFC 证明
+$$
+\forall x\in A,\ \exists !y\ \varphi(x,y,\vec{p}),
+$$
+则由替换公理存在像集
+$$
+B:=\{y:\exists x\in A,\ \varphi(x,y,\vec{p})\},
+$$
+并由分离公理在 $A\times B$ 中分离出函数图
+$$
+f:=\{\langle x,y\rangle\in A\times B:\varphi(x,y,\vec{p})\},
+$$
+从而 $f$ 为集合意义下的函数且其值满足 $\varphi$。
+\end{proposition}
+
+该命题给出“运算涌现”的集合论模板：\emph{唯一性可证的可定义关系 $\Rightarrow$ 对应函数集合存在}。
+
+\subsubsection{L.5 从 $\in$ 到算术与逻辑：常用构造链}
+下列标准编码链覆盖大多数常用运算对象：
+\begin{enumerate}
+  \item \textbf{有序对与笛卡尔积：}采用 Kuratowski 定义 $\langle a,b\rangle := \{\{a\},\{a,b\}\}$，从而关系与函数可作为 $A\times B$ 的子集定义。
+  \item \textbf{函数/关系运算：}对函数 $f,g$ 定义 $\mathrm{dom}(f)$、$\mathrm{ran}(f)$ 与复合 $g\circ f$，均为一阶可定义对象，因而由分离获得其集合实现。
+  \item \textbf{自然数与递归：}以 von Neumann 序数构造 $0=\varnothing$、$S(n)=n\cup\{n\}$，并由集合论递归在 $\omega$ 上定义加法、乘法等原始递归函数。
+  \item \textbf{整数与除法：}构造整数 $\ZZ=(\omega\times\omega)/\sim$，其中 $(a,b)\sim(c,d)\iff a+d=b+c$；在等价类上定义运算。欧几里得除法在 $\omega$ 上可由良序性与最小元原理给出存在唯一性，从而由命题 \ref{prop:zfc-definable-operation} 生成函数集合。
+\end{enumerate}
+
+\subsubsection{L.6 POM 语境下的“ZFC 运算族可编译性”解释}
+将 ZFC 语境中的可定义运算落实为可审计工程对象，需要明确两层接口：
+\begin{enumerate}
+  \item \textbf{算术层完备接口：}由 $Z$、$\mathrm{Val}$、$\Fold_\infty$ 以及门集（规范投影、序判定、角色/素数纤维接口等）给出四则、商余、同余层读出与成本分解；
+  \item \textbf{集合层编译接口：}利用命题 \ref{prop:zfc-definable-operation}，将集合论术语/公式编译为“可寻址事件 + 证书”：以稳定算术层实现配对/编码与有限序列的 Gödel 化，再以 PW 可判定片段的正规形检查器作为验证后端。空值语义 $\NULL$ 用于区分“无地址/不可核对”与“值为 0”的逻辑差异，从而把可审计性内化为对象域属性。
+\end{enumerate}
+

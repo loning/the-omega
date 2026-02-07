@@ -1,0 +1,61 @@
+\section{三寄存器（纤维）结构：尺度、相位与素数}
+
+本文将“三寄存器”严格化为三条先验纤维：尺度（外表）纤维、相位纤维与素数寄存器纤维。其共同作用是：在保证局域归一化、可逆回放与审计闭环的同时，给出足以表达算术与谱接口的最小可见参数集合。
+
+\subsection{外表纤维与尺度纤维}
+\begin{definition}[外表纤维 $Z$]\label{def:Z-fiber}
+外表纤维取 Zeckendorf 稳定地址空间
+$$
+Z := \Bigl\{(c_k)_{k\ge 1}\in\{0,1\}^{\NN}:\ \forall k,\ c_kc_{k+1}=0,\ \text{且仅有限个 }1\Bigr\}.
+$$
+令 Fibonacci 数列满足 $F_1=F_2=1$，$F_{k+2}=F_{k+1}+F_k$。定义值映射
+$$
+\mathrm{Val}(c) := \sum_{k\ge 1} c_k F_{k+1}.
+$$
+则 $\mathrm{Val}$ 将 $Z$ 与 $\NN$ 同构，并为每个值类选取唯一规范代表。
+\end{definition}
+
+\begin{definition}[尺度纤维 $S_\varphi$]\label{def:scale-fiber}
+对无理数 $\alpha\in(0,1)$ 的连分数展开 $\alpha=[0;a_1,a_2,\dots]$，Ostrowski 表示 \cite{Ostrowski1922} 给出唯一数字序列 $(d_n)_{n\ge 1}$ 满足合法约束并表示
+$$
+N=\sum_{n\ge 1} d_n q_{n-1},
+$$
+其中 $q_n$ 为收敛分母。取 $\alpha=\varphi^{-1}$（$\varphi=(1+\sqrt{5})/2$）时，合法约束退化为 Zeckendorf 语法（禁止相邻 $11$）：有限分辨率空间为 $X_m$，逆极限为 $X_\infty$。尺度纤维定义为该稳定语法及其折叠归一化 $\Fold_m,\Fold_\infty$ 所构成的地址层。
+\end{definition}
+
+尺度纤维的意义在于：它把“局域归一化”固定为可终止、可合流、正规形唯一的重写系统，从而为算术涌现与可见寄存器语义提供可计算的规范代表（见附录 \ref{app:fold-rewriting}）。
+
+\subsection{相位纤维}
+\begin{definition}[相位纤维 $T$]\label{def:phase-fiber}
+设相空间为紧阿贝尔群（例如 $\TT^n$），其角色基为
+$$
+\chi_k(x)=e^{2\pi i\langle k,x\rangle},\qquad k\in\ZZ^n.
+$$
+相位纤维 $T$ 指由角色结构诱导的谱坐标层，用于将可加观测量提升为可乘权重并实现卷积对角化；其在后续的 unitary slice 接口中表现为可复核的相位参数轴 $\theta$。
+\end{definition}
+相位纤维提供“连续可见参数”的最小化：在本文闭包中，可核对的连续参数被锁定为 $u=e^{i\theta}$ 的相位，而不包含径向自由度。
+
+\subsection{素数寄存器纤维}
+\begin{definition}[素数寄存器纤维 $P$]\label{def:prime-register-fiber}
+令 $\mathcal{P}$ 为素数集合，定义有限支撑指数向量空间
+$$
+P := \NN^{(\mathcal{P})}=\Bigl\{r:\mathcal{P}\to\NN\ \Bigm|\ r(p)=0\ \text{除有限多个 }p\Bigr\}.
+$$
+定义值映射
+$$
+N(r)=\prod_{p\in\mathcal{P}} p^{r(p)}.
+$$
+由算术基本定理，$N(\cdot)$ 给出 $P$ 与 $\NN_{\ge 1}$ 的同构，从而把乘法线性化为坐标加法。由于每个状态仅激活有限多素数轴，该纤维满足“无限坐标系 + 局部触发”的可实现约束。
+\end{definition}
+
+此外，素数寄存器纤维同时承担“残差承载”角色：折叠的纤维差异可嵌入有限支撑素数幂坐标，使不可逆压缩被改写为跨纤维存储，从而实现无损提升（见附录 \ref{app:prime-uplift}）。
+
+\subsection{三寄存器闭包与最小性问题}
+三纤维的组合解释了 $(\varphi,e,\pi)$ 等常数在不同层级的出现：$\varphi$ 绑定于尺度纤维的计数斜率与稳定语法；$e$ 与 $2\pi$ 绑定于相位纤维的角色归一化；素数结构绑定于素数寄存器纤维的坐标化与完备化轴。更一般地，三寄存器闭包的最小性可表述为：若要求同时满足
+\begin{enumerate}
+  \item[(i)] 局域归一化可执行（有限窗口/有限状态）；
+  \item[(ii)] 归一化可逆回放（信息不湮灭）；
+  \item[(iii)] 连续参数可审计（可见轴可被证书核验），
+\end{enumerate}
+则可见自由度必须受限于尺度的离散规范代表、相位的紧致参数与素数残差的离散承载；任何额外非紧致连续自由度将表现为新增寄存器需求并破坏类型闭包（见第 \ref{sec:fourth-register} 节）。
+

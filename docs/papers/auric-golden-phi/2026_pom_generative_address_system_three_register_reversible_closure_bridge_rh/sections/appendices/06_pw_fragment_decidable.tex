@@ -1,0 +1,59 @@
+\subsection{附录 F：投影词片段的正规化与判等}\label{app:pw-fragment}
+
+\subsubsection{F.1 最小可判定片段 $\mathrm{PW}_{Z,E}$ 的语法}
+取仅由“规范投影门” $P_Z$ 与条件期望门 $\{E_m\}_{m\ge 1}$ 生成的局部子片段
+$$
+\mathrm{PW}_{Z,E}=\langle P_Z,\{E_m\}_{m\ge 1}\rangle.
+$$
+其 1-态射为有限复合词（投影词）
+$$
+W ::= \epsilon \mid P_Z \mid E_m \mid W\circ W.
+$$
+
+\subsubsection{F.2 重写规则族与正规形}
+在 $\mathrm{PW}_{Z,E}$ 上定义重写规则：
+\begin{itemize}
+  \item[(RZ)] 幂等缩并：$P_Z\circ P_Z \Rightarrow P_Z$；
+  \item[(RE)] 条件期望塔缩并：若 $m_2\ge m_1$，则
+  $$
+  E_{m_1}\circ E_{m_2}\Rightarrow E_{m_1}.
+  $$
+\end{itemize}
+在该重写系统下：
+\begin{enumerate}
+  \item 不存在无限重写链（终止性）；
+  \item 任意两条重写序列可汇合（局部合流）；
+  \item 不可约正规形唯一：仅含 $\{E_m\}$ 的复合词归约为单个 $E_{m_\star}$，其中 $m_\star$ 为出现过的最小分辨率指标；含 $P_Z$ 的情形正规形中 $P_Z$ 至多出现一次。
+\end{enumerate}
+终止性可用简单字典序度量实现：令
+$$
+\mu(W)=\bigl(\#P_Z(W)+\#E(W),\ \min\{m:E_m\text{ 出现在 }W\}\bigr),
+$$
+验证规则 (RZ),(RE) 均严格减少第一坐标；而塔性质保证不同缩并顺序语义一致，结合终止性导出正规形唯一。
+
+\subsubsection{F.3 词问题判定与检查器实现}
+\begin{theorem}[词问题可判定]\label{thm:pw-ze-decidable}
+在片段 $\mathrm{PW}_{Z,E}$ 上，等价关系（由 2-态射的可重写等式闭包定义）可判定。给定 $W_1,W_2$，计算其正规形 $N(W_1),N(W_2)$，则
+$$
+W_1\simeq W_2 \Longleftrightarrow N(W_1)=N(W_2).
+$$
+\end{theorem}
+
+\paragraph{检查器（最小版本）} 可分为三层：
+\begin{enumerate}
+  \item 语法检查：解析 $W$ 并验证每个 $E_m$ 的 $m\ge 1$；验证复合为有限词。
+  \item 重写合法性检查：对证书形式的“单步重写” $(W\Rightarrow W')$，验证其局部模式匹配 (RZ) 或 (RE) 及其侧条件（$m_2\ge m_1$）。
+  \item 判等检查：对输入两词，调用正规化器 $\mathrm{Normalize}_{Z,E}$ 得到 $N(W)$，比较 token 序列完全相等即通过。
+\end{enumerate}
+
+\subsubsection{F.4 三生成元接口片段：用于 $\Xi$-审计与 BridgeRH 编译}
+为了支持“接口正规形 $\mathrm{LIFT}\circ\mathrm{PROJ}\circ E$”与 unitary slice 审计，可取由 $\mathrm{PROJ}_u$、$\mathrm{LIFT}_G$、$E_m$ 生成的片段，并引入如下重写规则（作为可核对 2-态射证书）：
+\begin{enumerate}
+  \item[(RPROJ)] 温度门合并：$\mathrm{PROJ}_u\circ\mathrm{PROJ}_v\Rightarrow \mathrm{PROJ}_{uv}$；
+  \item[(RLIFT)] lift 合并：$\mathrm{LIFT}_G\circ\mathrm{LIFT}_H\Rightarrow \mathrm{LIFT}_{G\times H}$；
+  \item[(RE)] 条件期望塔缩并：$E_{m_1}\circ E_{m_2}\Rightarrow E_{\min(m_1,m_2)}$；
+  \item[(RPL)] $\mathrm{PROJ}$ 与 $\mathrm{LIFT}$ 交换：$\mathrm{PROJ}_u\circ \mathrm{LIFT}_G\Rightarrow \mathrm{LIFT}_G\circ\mathrm{PROJ}_u$；
+  \item[(RELIFT)] 带残差的 $E_m$–$\mathrm{LIFT}$ 交换：将 $E_m\circ\mathrm{LIFT}_G$ 归约为 $\mathrm{LIFT}_G\circ E_m$，并输出异常签名 $\mathrm{Anom}_G(K;\theta)$ 作为可核对残差标签。
+\end{enumerate}
+该片段的终止性可用“逆序对计数”机械化：取生成元正规序 $\mathrm{LIFT}\prec\mathrm{PROJ}\prec E$，定义逆序对计数 $\mu(W)$ 与词长 $\ell(W)$ 的字典序度量 $(\ell(W),\mu(W))$。每次重写严格降低该度量，因此重写终止；进而任意词可规约为接口正规形 $\mathrm{LIFT}_G\circ\mathrm{PROJ}_u\circ E_m$ 并伴随异常签名输出。
+

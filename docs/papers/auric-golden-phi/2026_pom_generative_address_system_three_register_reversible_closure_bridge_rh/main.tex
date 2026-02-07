@@ -1,0 +1,153 @@
+\ifdefined\pdfoutput\pdfoutput=1\fi % pdfTeX only; safe under XeTeX/LuaTeX
+\documentclass[11pt,letterpaper,fontset=fandol]{ctexart}
+
+% Silence spurious “Missing character … (U+0013)” log noise.
+\tracinglostchars=0\relax
+
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{amscd}
+\makeatletter
+\@ifundefined{FASTBUILD}{%
+  \usepackage{graphicx}%
+}{%
+  % Fast build: skip loading external graphics, speed up compilation.
+  \usepackage[draft]{graphicx}%
+}%
+\makeatother
+
+% In FASTBUILD mode we still want compilation to succeed even if some
+% (pipeline-generated) graphics are missing. Replace missing graphics with a
+% small framed placeholder instead of a hard error.
+\makeatletter
+\@ifundefined{FASTBUILD}{}{%
+  \let\origincludegraphics\includegraphics
+  \renewcommand{\includegraphics}[2][]{%
+    \IfFileExists{#2}{%
+      \origincludegraphics[#1]{#2}%
+    }{%
+      \fbox{\ttfamily missing graphic: \detokenize{#2}}%
+    }%
+  }%
+}%
+\makeatother
+
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{cite}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{etoolbox}
+\usepackage{fvextra}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage{mathrsfs}
+\usepackage{dsfont}
+
+% Ask xeCJK to synthesize missing CJK font shapes when needed.
+\makeatletter
+\@ifundefined{xeCJKsetup}{}{%
+  \xeCJKsetup{AutoFakeBold=true,AutoFakeSlant=true}%
+}%
+\makeatother
+
+% Allow line breaks in \url/\path at underscores.
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\_}
+\makeatother
+
+% Scale tabular blocks to fit line width (avoid overfull boxes for wide tables).
+% NOTE: Use *Before/After* hooks to wrap the whole environment; using AtBegin/AtEnd
+% would inject code *inside* tabular and can break alignments (including \maketitle).
+\BeforeBeginEnvironment{tabular}{\begin{adjustbox}{max width=\linewidth}}%
+\AfterEndEnvironment{tabular}{\end{adjustbox}}%
+
+% Theorem environments (Chinese)
+\theoremstyle{plain}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{corollary}[theorem]{推论}
+\newtheorem{axiom}[theorem]{公理}
+\newtheorem{assumption}[theorem]{假设}
+\newtheorem{conjecture}[theorem]{猜想}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{定义}
+\newtheorem{example}[theorem]{例}
+\newtheorem{algorithm}[theorem]{算法}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{注}
+
+% Common commands
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\TT}{\mathbb{T}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\card}[1]{\left\lvert #1\right\rvert}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\Span}{\mathrm{Span}}
+\newcommand{\Mat}{\mathrm{Mat}}
+
+% Paper-specific commands
+\newcommand{\Fold}{\mathrm{Fold}}
+\newcommand{\NULL}{\mathrm{NULL}}
+\newcommand{\Addr}{\mathsf{Addr}}
+\newcommand{\Read}{\mathsf{Read}}
+\newcommand{\Obj}{\mathsf{Obj}}
+\newcommand{\POM}{\mathrm{POM}}
+
+% Code listings (fvextra / fancyvrb)
+\fvset{breaklines=true,breakanywhere=true,fontsize=\small}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\small}
+
+% Silence underfull box warnings (layout remains visible in PDF).
+\hbadness=10000\relax
+\vbadness=10000\relax
+
+\title{投影本体数学（POM）的生成式地址体系：\\\large 三寄存器可逆闭包、算术涌现、可审计证明语义与黎曼猜想的“第四寄存器”反证框架}
+\author{马昊伯\\CHRONOAI PTE. LTD.\\\#14-02, Marina Bay Financial Centre Tower 1\\8 Marina Blvd, Singapore 018981}
+\date{2026-02-07}
+
+\begin{document}
+\sloppy
+\maketitle
+
+\input{sections/00_frontmatter}
+
+\input{sections/01_introduction}
+\input{sections/02_preliminaries}
+\input{sections/03_pommin}
+\input{sections/04_spg_generation}
+\input{sections/05_three_registers}
+\input{sections/06_emergent_arithmetic}
+\input{sections/07_information_ledger}
+\input{sections/08_projword_semantics}
+\input{sections/09_xi_unitary_slice}
+\input{sections/10_type_safety}
+\input{sections/11_completeness_bridge_rh}
+\input{sections/12_fourth_register}
+\input{sections/13_discussion}
+\input{sections/14_conclusion}
+
+\FloatBarrier
+\appendix
+\input{sections/90_appendix}
+
+\FloatBarrier
+\input{sections/99_bibliography}
+
+\end{document}
+
