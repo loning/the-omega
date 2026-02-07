@@ -103,3 +103,97 @@ $$
   \item \textbf{集合层编译接口：}利用命题 \ref{prop:zfc-definable-operation}，将集合论术语/公式编译为“可寻址事件 + 证书”：以稳定算术层实现配对/编码与有限序列的 Gödel 化，再以 PW 可判定片段的正规形检查器作为验证后端。空值语义 $\NULL$ 用于区分“无地址/不可核对”与“值为 0”的逻辑差异，从而把可审计性内化为对象域属性。
 \end{enumerate}
 
+\subsection{整数与有理数：群完成/局部化与唯一正规形}\label{subsec:ops-zq}
+
+\paragraph{从稳定自然数到整数：Grothendieck 群完成}
+令 $\NN_{\POM}:=(Z,\oplus,\otimes)$ 为正文第 \ref{sec:emergent-arithmetic} 节的稳定自然数半环（与 $(\NN,+,\times)$ 同构）。定义等价关系
+$$
+(a,b)\sim(c,d)\quad\Longleftrightarrow\quad a\oplus d=b\oplus c,
+$$
+并令
+$$
+\ZZ_{\POM}:=(\NN_{\POM}\times\NN_{\POM})/\sim .
+$$
+
+\begin{theorem}[整数环的涌现（群完成口径）]\label{thm:ops-z-ring}
+在 $\ZZ_{\POM}$ 上按正文第 \ref{sec:conclusion-cluster} 节定义加法、负元与乘法，则 $(\ZZ_{\POM},+,\cdot)$ 为交换环，且与经典 $(\ZZ,+,\cdot)$ 同构。
+\end{theorem}
+
+\begin{proof}
+这是交换半环的标准群完成/环完成构造。运算良定义与环公理可由 $\oplus,\otimes$ 的交换半环性质逐项验证；同构可由 $[(a,b)]\mapsto \mathrm{Val}(a)-\mathrm{Val}(b)$（借助 $\mathrm{Val}$ 的半环同构性）给出。证毕。
+\end{proof}
+
+\paragraph{商余接口与 Euclid 递归}
+在“可审计实现”层，除法/商余需要显式的序信息门（如 $P_{\le}$），其工程实现路径与成本分解已在本附录前文给出。此处仅记录：一旦可在 $\NN_{\POM}$ 上实现欧几里得除法（商余读出）
+$$
+a=bq+r,\qquad 0\le r<b,
+$$
+则 $\gcd$ 可由 Euclid 递归实现：
+$$
+\gcd(a,0)=a,\qquad \gcd(a,b)=\gcd\bigl(b,\,a\bmod b\bigr).
+$$
+
+\begin{lemma}[Euclid 递归的终止性]\label{lem:ops-euclid-terminates}
+在商余读出正确的前提下，上述 $\gcd$ 递归对任意输入 $(a,b)$ 以有限步终止。
+\end{lemma}
+
+\begin{proof}
+每一步将 $(a,b)$ 变为 $(b,a\bmod b)$，其中 $0\le a\bmod b<b$，余数严格下降，故不可能无限下降。证毕。
+\end{proof}
+
+\paragraph{从整数到有理数：局部化与正规化}
+令 $S:=\NN_{\POM}\setminus\{0\}$，定义
+$$
+\QQ_{\POM}:=\ZZ_{\POM}\times S\ /\approx,\qquad
+(p,q)\approx(p',q')\Longleftrightarrow p\cdot q'=p'\cdot q .
+$$
+为使表示唯一，需要一个可判定正规化：将 $(p,q)$ 化为 $(p/g,q/g)$，其中 $g=\gcd(|p|,q)$，并约定分母为正（$|p|$ 可在整数编码下按符号翻转实现）。
+
+\begin{theorem}[有理域涌现与唯一正规形]\label{thm:ops-q-field}
+在商余读出可用的前提下，$\QQ_{\POM}$ 构成域并与经典 $(\QQ,+,\cdot)$ 同构；并存在可判定正规化过程把任意表示归约到唯一既约形式（以 $\gcd$ 约分并规范分母符号），从而“对象层等价类”与“实现层表示”一致。
+\end{theorem}
+
+\begin{proof}
+局部化构成域及其与 $\QQ$ 的同构为经典代数事实。正规化的可判定性来自引理 \ref{lem:ops-euclid-terminates}：Euclid 递归给出可判定 $\gcd$，而约分与符号规范为有限整数运算；唯一性由互素约分的标准性质给出。证毕。
+\end{proof}
+
+\subsection{布尔表达式：规范形、可判定判等与 Gödel 证书}\label{subsec:ops-bool-cert}
+
+布尔运算在本附录前文已给出两种等价口径（事件层/数值层）。为把“布尔等价”从直觉语义提升为\textbf{可验证证书关系}，需要固定一种可判定的规范形，并将其作为可编码的证书对象输出。
+
+\begin{proposition}[布尔规范形的存在性与可判定性]\label{prop:ops-bool-normal-form}
+对任意有限原子集 $\mathcal{A}_0\subset\mathcal{A}$ 与任意 $\varphi\in\mathsf{Bool}(\mathcal{A}_0)$，存在一个可判定过程把 $\varphi$ 归约到唯一规范形；例如：\textbf{(i)} 真值表诱导的规范析取范式，或 \textbf{(ii)} 固定变量序的 reduced ordered BDD。并且给定两公式 $\varphi,\psi$，其等价性（作为真值函数在所有赋值下取值相同）可判定。
+\end{proposition}
+
+\begin{proof}
+对 $\card{\mathcal{A}_0}=k$，真值表有 $2^k$ 行，可穷举计算 $\varphi$ 的取值并按固定规则输出规范对象；BDD 口径下，在固定变量序与归约规则下 reduced BDD 唯一，构造与判等均为有限算法。证毕。
+\end{proof}
+
+\begin{remark}[证书化与统一编码]
+将规范形（真值表/BDD）视为有限数据对象，可用附录 \ref{app:godel-wsos-rouche} 的统一 Gödel 编码层（定理 \ref{thm:arc-godel-invertible}）压缩为单一自然数证书；验证者只需解码并复算即可核验等价性。
+\end{remark}
+
+\subsection{HF（遗传有限）宇宙：ZFC 风格集合运算的可计算闭包}\label{subsec:ops-hf}
+
+若把“存在”限定为“可寻址”，则外延集合论的全部对象不可在同一地址闭包中无条件覆盖；但由可判定编码层，至少可得到一个对常用集合运算封闭的经典语义子宇宙：遗传有限集合 $\mathrm{HF}$。在 POM 语境中，我们把集合对象落实为\textbf{代码}并把集合运算落实为对代码的可计算变换。
+
+\begin{definition}[HF 的代码语义域]\label{def:ops-hf-code}
+固定一个可判定互逆的编码/解码对
+$$
+\mathrm{hf}:\mathrm{HF}\hookrightarrow \NN,\qquad \mathrm{unhf}:\mathrm{Im}(\mathrm{hf})\to\mathrm{HF},
+$$
+其实现可由有限树结构的递归编码、配对函数与自描述序列编码构造（见附录 \ref{app:inject-code-audit} 与正文第 \ref{subsec:cc-godel} 节）。称 $\mathrm{Im}(\mathrm{hf})$ 为 $\mathrm{HF}_{\POM}$ 的代码对象域。
+\end{definition}
+
+\begin{theorem}[$\mathrm{HF}$ 上的 ZFC 风格运算闭包（代码口径）]\label{thm:ops-hf-closure}
+在 $\mathrm{HF}_{\POM}$ 上，配对、并集、交集、差集、集合并、幂集等运算均可被实现为可判定的“代码变换”，且输出仍落在 $\mathrm{HF}_{\POM}$ 内；验证者可在有限整数时间内解码并复算以核验运算正确性。
+\end{theorem}
+
+\begin{proof}
+$\mathrm{HF}$ 的对象是有限良基树；上述运算均可化为有限树的组合与有限枚举。以代码方式实现时：先解码为有限结构，执行有限枚举运算，再编码回 $\NN$；由于每一步皆为有限过程且编码/解码可判定，故整体可判定并闭合。证毕。
+\end{proof}
+
+\begin{remark}[与统一编译定理的对接]
+将 HF 运算严格限制在“构造性语义域”（如 $\mathrm{HF}_{\POM}$ 代码域）后，集合运算就回到 $\NN$ 上的可计算函数，因此可直接接入附录 \ref{app:godel-wsos-rouche} 的统一编译定理（定理 \ref{thm:unified-compilation}）：输出不仅包含值对象，还可携带可离线核验的证书包，并允许用单码残差回放求值轨迹。
+\end{remark}
+

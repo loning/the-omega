@@ -1,6 +1,6 @@
-\section[统一编码与证明携带审计]{地址—残差—证书的统一 Gödel 化编码与证明携带审计：WSOS 证书、Rouché 模板、见证提取与统一编译}\label{app:godel-wsos-rouche}
+\section[统一编码与证明携带审计]{地址—残差—证书的统一 Gödel 化编码与证明携带审计：单码残差压缩、WSOS 证书、Rouché 模板、见证提取与统一编译}\label{app:godel-wsos-rouche}
 
-本附录补齐并推进两类此前缺口：\textbf{(i)} 地址/残差/证书材料的统一自然数编码层（Gödel 化、可判定互逆）；\textbf{(ii)} unitary slice 审计接口的\textbf{证明携带化}与\textbf{可复现}数值证书协议，并在此基础上给出一个可执行的 BridgeRH \textbf{有限区域零点计数证书模板}以及“第四寄存器需求”的\textbf{可判定见证提取机制}。最后给出统一的“运算涌现编译定理”，覆盖四则、商余、布尔运算与（在可计算语义域内的）ZFC 构造性运算族。
+本附录补齐并推进两类此前缺口：\textbf{(i)} 地址/残差/证书材料的统一自然数编码层（Gödel 化、可判定互逆），并由此给出“残差账本可压缩为单一自然数”的\textbf{单码残差}终局口径（正文第 \ref{sec:conclusion-cluster} 节）；\textbf{(ii)} unitary slice 审计接口的\textbf{证明携带化}与\textbf{可复现}数值证书协议，并在此基础上给出一个可执行的 BridgeRH \textbf{有限区域零点计数证书模板}以及“第四寄存器需求”的\textbf{可判定见证提取机制}。最后给出统一的“运算涌现编译定理”，覆盖四则、商余、布尔运算与（在可计算语义域内的）ZFC 构造性运算族。
 
 \subsection{统一 Gödel 编码层：\texorpdfstring{$\Addr$}{Addr} 的可判定注入与可判定反解}\label{app:godel-addr-enc}
 
@@ -74,7 +74,7 @@ $$
 \begin{itemize}
   \item $m$ 为分辨率/尺度索引；
   \item $x$ 为稳定对象（规范形）在某固定有限字母表上的编码（因此 $x\in\NN$）；
-  \item $r$ 为 prime-register 残差的编码（例如：事件序列经 $\mathrm{code}$ 后用 $\mathrm{gcode}$ 编码，或等价的有限支撑指数向量编码）；
+  \item $r$ 为\textbf{残差账本的单码表示}：例如把事件序列经 $\mathrm{code}$ 写为自然数序列，再用 $\mathrm{gcode}$（或附录 \ref{app:inject-code-audit} 的 $\mathrm{Seq}/\mathrm{Unseq}$）压缩为单一自然数；该表示可判定反解并保持可逆回放（见下文定理 \ref{thm:singlecode-ledger-replay}）；
   \item $c$ 为证书包（PW 证书、审计协议头、区间/有理证书材料等）的统一有限数据编码。
 \end{itemize}
 为叙述简洁，本附录将 $\Addr_{\mathrm{ARC}}$ 与其记录形表示等同视之。
@@ -109,6 +109,30 @@ $$
 
 \begin{proof}
 由引理 \ref{lem:eo-pair-invertible} 的互逆性，迭代配对/反配对给出四元组 $\NN^4\simeq\NN$ 的可判定互逆。故对每个 $A=(m,x,r,c)$ 有 $\mathrm{Dec}(\mathrm{Enc}(A))=A$，并且 $\mathrm{Dec}$ 仅在像上有定义且返回值必为 ARC 记录。证毕。
+\end{proof}
+
+\begin{theorem}[残差账本的单码压缩与回放等价]\label{thm:singlecode-ledger-replay}
+设某一可审计求值语义在输入 $\omega$ 上产生输出值 $x(\omega)$ 与事件序列 $e_{1:T}(\omega)$，并且存在确定性回放器 $\mathrm{Replay}_0$ 使
+$$
+\mathrm{Replay}_0\bigl(x(\omega),e_{1:T}(\omega)\bigr)=\omega.
+$$
+令 $n_t:=\mathrm{code}(e_t(\omega))\in\NN_{\ge 1}$（附录 \ref{app:inject-code-audit}），并定义单码残差
+$$
+R(\omega):=\mathrm{gcode}(n_1,\dots,n_T)\in\NN_{\ge 1}.
+$$
+则存在可判定回放器 $\mathrm{Replay}$ 使得
+$$
+\mathrm{Replay}\bigl(x(\omega),R(\omega)\bigr)=\omega.
+$$
+因此，prime-register 的多素数支撑残差并非逻辑必需：在可逆性层面，残差账本可等价压缩为单一自然数（单码残差）。
+\end{theorem}
+
+\begin{proof}
+由 $\mathrm{gcode}$ 的可判定反解（对固定输入 $R$ 依次剥离各素数指数，见 \S\ref{app:godel-addr-enc} 中 $\mathrm{gcode}$ 的解码描述）可恢复序列 $(n_1,\dots,n_T)$；再逐项用 $\mathrm{decode}$ 恢复事件序列 $(e_1,\dots,e_T)$（命题 \ref{prop:code-decode-invertible}，附录 \ref{app:inject-code-audit}）。于是可定义
+$$
+\mathrm{Replay}(x,R):=\mathrm{Replay}_0\bigl(x,(e_1,\dots,e_T)\bigr),
+$$
+并得到所示恒等式。证毕。
 \end{proof}
 
 \begin{remark}[从抽象 $\Addr$ 到可审计编码层]

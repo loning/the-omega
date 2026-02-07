@@ -45,6 +45,35 @@ $$
 \pi_k(a_1,\dots,a_k)=\pi\bigl(a_1,\pi_{k-1}(a_2,\dots,a_k)\bigr).
 $$
 
+\paragraph{自描述有限序列编码（\texorpdfstring{$\mathrm{Seq}/\mathrm{Unseq}$}{Seq/Unseq}）}
+除 Gödel（素数幂）编码外，我们还需要一种\textbf{不依赖外部长度参数}的序列编码，以便把“事件—轨迹—证书材料”直接压缩为单一自然数并可判定反解（正文第 \ref{sec:conclusion-cluster} 节）。下文也记
+$
+\langle a,b\rangle:=\pi(a,b)
+$。
+定义
+$$
+\mathrm{Seq}():=0,\qquad
+\mathrm{Seq}(x_1,\dots,x_T):=\langle x_1,\mathrm{Seq}(x_2,\dots,x_T)\rangle+1,
+$$
+并定义
+$$
+\mathrm{Unseq}(0):=(),\qquad
+\mathrm{Unseq}(n):=(x_1,\dots,x_T)
+$$
+当且仅当 $\pi^{-1}(n-1)=(x_1,r)$ 且 $\mathrm{Unseq}(r)=(x_2,\dots,x_T)$。
+
+\begin{proposition}[自描述序列的可判定互逆]\label{prop:seq-unseq-invertible}
+$\mathrm{Seq}:\NN^{<\omega}\to\NN$ 与 $\mathrm{Unseq}:\NN\to\NN^{<\omega}$ 为可判定互逆双射：
+$$
+\mathrm{Unseq}(\mathrm{Seq}(s))=s,\qquad
+\mathrm{Seq}(\mathrm{Unseq}(n))=n.
+$$
+\end{proposition}
+
+\begin{proof}
+对序列长度归纳。$T=0$ 显然。$T>0$ 时由 $\pi,\pi^{-1}$ 的互逆性与递归定义得到唯一性与互逆性；可判定性来自每一步仅调用一次 $\pi^{-1}$ 与有限次整数运算。证毕。
+\end{proof}
+
 \paragraph{Gödel（素数幂）编码与可判定互逆}
 记素数序列 $p_1<p_2<\cdots$。对有限序列 $\mathbf n=(n_1,\dots,n_T)\in\NN^T$ 定义 Gödel 编码
 $$
@@ -277,8 +306,14 @@ $$
   $$
   J(\theta)=\mathrm{Eval}^{\mathrm{int}}_{p}\!\left(\Xi_{\Delta,L}\!\left(\frac12+i\frac{\theta}{2\log L}\right)\right).
   $$
-  若 $0\notin J(\theta)$，则得到“非零”证书（并给出符号）。\\
-  若存在 $\theta_-<\theta_+$ 使得区间 $J(\theta_-)$、$J(\theta_+)$ 均不含 $0$ 且符号相反，则由连续性可构造“根夹逼”证书，并可用区间二分法输出包含零点的相位区间 $[\theta_-,\theta_+]$。该证书对外仅需披露：端点 dyadic 值、端点评估区间及其符号、迭代深度与精度 $p$。
+  若 $0\notin J(\theta)$，则输出 \textbf{NonZero} 证书（并给出符号）；可记为
+  $
+  \mathsf{NonZero}(L,\theta,p;J(\theta))
+  $。\\
+  若存在 $\theta_-<\theta_+$ 使得区间 $J(\theta_-)$、$J(\theta_+)$ 均不含 $0$ 且符号相反，则由连续性可构造 \textbf{RootInterval} 证书，并可用区间二分法输出包含零点的相位区间 $[\theta_-,\theta_+]$；可记为
+  $
+  \mathsf{RootInterval}(L,[\theta_-,\theta_+],p;J(\theta_-),J(\theta_+))
+  $。该证书对外仅需披露：端点 dyadic 值、端点评估区间及其符号、迭代深度与精度 $p$。上述两类证书与正文第 \ref{subsec:cc-us-cert} 节的 NonZero/RootInterval 口径一致。
 \end{enumerate}
 
 \paragraph{\texorpdfstring{$\NULL$}{NULL} 判定规则与可重复性定理（协议层）}
@@ -295,8 +330,20 @@ $$
 \end{itemize}
 该 $\NULL$ 规则与“闭包内只允许 $\theta$-口径零点审计”一致，并与类型安全陈述的“偏移点不可寻址 $\Leftrightarrow$ 读出为 $\NULL$”相协调。
 
+\paragraph{\texorpdfstring{$\Read$}{Read}：证书存在性读出（与正文一致）}
+在协议层，可将 $\mathsf{Audit}_{\mathrm{US}}$ 的输出投影为一个三值读出（仅表示“断言已被证书化/证书缺失”，而不与数值混同）：
+$$
+\Read_{\mathrm{US}}(L,\theta,p)=
+\begin{cases}
+1, & \mathsf{Audit}_{\mathrm{US}}(L,\theta,p)\ \text{输出 NonZero 证书},\\
+0, & \mathsf{Audit}_{\mathrm{US}}(L,\theta,p)\ \text{输出 RootInterval 证书},\\
+\NULL, & \mathsf{Audit}_{\mathrm{US}}(L,\theta,p)=\NULL.
+\end{cases}
+$$
+该定义与正文定义 \ref{def:cc-read-null} 的“$\NULL$ 作为证书缺失”的语义一致。
+
 \begin{theorem}[协议层可重复性]\label{thm:audit-us-reproducibility}
-在固定算法版本、固定精度参数 $p$ 与固定外向舍入规则下，$\mathsf{Audit}_{\mathrm{US}}$ 对任一规范化输入地址给出确定输出；特别地，输出为 $\NULL$ 的判定在同一输入与同一参数下可重复（运行间无差异）。
+在固定算法版本、固定精度参数 $p$ 与固定外向舍入规则下，$\mathsf{Audit}_{\mathrm{US}}$ 对任一规范化输入地址给出确定输出；因此由其诱导的 $\Read_{\mathrm{US}}$ 亦为确定性的三值读出。特别地，输出为 $\NULL$ 的判定在同一输入与同一参数下可重复（运行间无差异）。
 \end{theorem}
 
 \begin{proof}
@@ -309,8 +356,8 @@ $$
 
 \subsection{小结：与正文结构的对接点}
 \begin{enumerate}
-  \item \textbf{事件编码层：}通过 Cantor 配对与有限枚举，给出满足“可审计注入编码”接口合同的显式注入 $\mathrm{code}:\mathcal E_m\hookrightarrow\NN_{\ge 1}$，并给出可判定互逆的 $\mathrm{decode}$（命题 \ref{prop:code-decode-invertible}）。
+  \item \textbf{事件编码层：}通过 Cantor 配对与有限枚举，给出满足“可审计注入编码”接口合同的显式注入 $\mathrm{code}:\mathcal E_m\hookrightarrow\NN_{\ge 1}$，并给出可判定互逆的 $\mathrm{decode}$（命题 \ref{prop:code-decode-invertible}）。此外给出自描述序列编码 $\mathrm{Seq}/\mathrm{Unseq}$（命题 \ref{prop:seq-unseq-invertible}），用于把有限轨迹/证书材料压缩为单一自然数并可判定反解。
   \item \textbf{残差回放层：}prime-register 残差向量 $r^S(\omega)$ 实现对原子事件序列的可回放承载，从而使无损折叠提升可逆并给出单射性（命题 \ref{prop:unlift-correctness}；亦与正文命题 \ref{prop:lossless-uplift} 及命题 \ref{prop:uplift-injective}（附录 \ref{app:prime-uplift}）一致）。
-  \item \textbf{unitary slice 数值审计层：}把“可见参数轴仅为 $\theta$”落实为类型化地址域 $\Addr_{\mathrm{US}}$，并以外向舍入区间证书协议保证零点审计与 $\NULL$ 判定的可重复性；与类型安全陈述一致。
+  \item \textbf{unitary slice 数值审计层：}把“可见参数轴仅为 $\theta$”落实为类型化地址域 $\Addr_{\mathrm{US}}$，并以外向舍入区间证书协议输出 NonZero/RootInterval 两类证书；$\NULL$ 作为“证书缺失”的逻辑结果可重复（定理 \ref{thm:audit-us-reproducibility}），与类型安全陈述一致。
 \end{enumerate}
 

@@ -279,6 +279,20 @@ $$
 \subsection{BridgeRH 的可验证义务（Proof Obligations）：从合同到可审计规格}\label{subsec:bridge-rh-obligations}
 BridgeRH 的目标是把“经典完成化对象”的零点事件编译/注入到 PW 可审计闭包中，使得类型安全（unitary slice 约束）可以作用于经典零点集合。为降低不可审计强假设，本节把 BridgeRH 的四条合同条件拆解为可核验的子义务（构造、协议路径、解析刚性与证书接口）。
 
+\paragraph{义务清单（新版命名；与正文一致）}
+为便于将 BridgeRH 从“口号”降维为“proof obligations 清单 + 可运行验证”，我们先给出一个更贴近审计接口的新版命名（正文第 \ref{subsubsec:cc-bridge-obligations} 节）：
+\begin{enumerate}
+  \item[(O1)] \textbf{解析义务：}完成化切片 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$ 在目标域内解析（可控模型中可由有限维行列式/有理函数直接保证）。
+  \item[(O2)] \textbf{自对偶义务：}存在可验证恒等式使 $\Delta(z,u)=\Delta(uz,1/u)$，等价推出函数方程 $\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s)$。
+  \item[(O3)] \textbf{unitary slice 实值义务：}对 $s=\frac12+it$，$\Xi_{\Delta,L}(s)\in\RR$，使 unitary slice 的区间证书协议可用（附录 \ref{app:inject-code-audit}）。
+  \item[(O4)] \textbf{地址化义务：}存在可判定编译器把候选零点索引/描述映射到证书搜索任务，使“零点存在/非零”可被证书对象化。
+  \item[(O5)] \textbf{一致性义务：}证书对象可被 Gödel 编码并在可判定片段内核验（附录 \ref{app:godel-wsos-rouche}），与 PW 证书系统兼容。
+\end{enumerate}
+
+\begin{remark}[O-义务与 B-义务的对应]
+本文主文使用四组合同义务 (B1)--(B4)（见正文假设 \ref{ass:bridge-rh}）。上面的 (O1)--(O5) 可视为其“面向审计接口”的重述：\textbf{(O1)(O2)} 主要对应 (B1) 的解析刚性与自对偶完成化口径；\textbf{(O3)} 对应 (B3) 的 unitary slice 类型锁定与证书层；\textbf{(O4)} 对应 (B2) 的零点可寻址编译器义务；\textbf{(O5)} 与 (B4) 的规格/重数/证书携带接口同向。
+\end{remark}
+
 \paragraph{义务组 (B1)（经典目标桥接，降格后的可审计规格）}
 \begin{itemize}
   \item[(B1.a)] \textbf{核与行列式对象：}由 SPG/PW 管线诱导一个可审计核族（有限矩阵或迹类算子族）$B(u)$，并定义
@@ -510,7 +524,7 @@ $，
 以下给出一个“最小可控实现”，用于演示 (B1.a) 的代数核验、(B3) 的 unitary slice 结构护栏以及 (B2) 的地址样式；该例不宣称与 $\Xi_\zeta$ 一致，而是提供一个可完全核对的 $\Delta(z,u)$ 原型。
 
 \paragraph{构造：交换对称的线性 $u$-矩阵族}
-取整数矩阵 $B_0\in\ZZ^{n\times n}$ 与置换矩阵 $\Pi$（满足 $\Pi^{-1}=\Pi^\top$），令
+取整数矩阵 $B_0\in\ZZ^{n\times n}$ 与整数可逆矩阵 $\Pi$（满足 $\Pi^{-1}=\Pi^\top$；置换矩阵与对角符号矩阵均为特例），令
 $$
 B_1=\Pi^{-1}B_0\Pi,\qquad B(u)=B_0+uB_1.
 $$
@@ -522,6 +536,21 @@ $$
 $$
 \Delta(z,u)=\Delta(uz,1/u).
 $$
+
+\paragraph{$2\times 2$ 显式实例（最小自对偶桥接核）}
+下面给出一个可完全手算核验的二维实例，它与正文命题 \ref{prop:cc-bridge-2x2} 的“最小可控模型”一致。
+\begin{proposition}[$2\times 2$ 最小自对偶模型]\label{prop:bridge-2x2-explicit}
+取 $a,b\in\ZZ$，令
+$$
+B_0:=\begin{pmatrix} a & -b\\ -b & a\end{pmatrix},\qquad
+\Pi:=\begin{pmatrix} 1 & 0\\ 0 & -1\end{pmatrix},\qquad
+B_1:=\Pi^{-1}B_0\Pi=\begin{pmatrix} a & b\\ b & a\end{pmatrix},
+$$
+并定义 $B(u)=B_0+uB_1$ 与 $\Delta(z,u)=\det(I-zB(u))$。则 $\Delta$ 满足自对偶恒等式 $\Delta(z,u)=\Delta(uz,1/u)$；并且对任意 $L>1$，切片 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$ 在 unitary slice $s=\frac12+it$ 上为实值函数，从而可直接接入附录 \ref{app:inject-code-audit} 的区间证书协议。
+\end{proposition}
+\begin{proof}
+自对偶性由 $\Pi^{-1}B(u)\Pi=uB(1/u)$ 推出，与上文一般构造相同。实值性可按 $u=e^{i\theta}$、$z=L^{-1/2}e^{-i\theta/2}$ 直接代入：此时 $z(1+u)\in\RR$ 且 $(z(u-1))^2\in\RR$，而 $2\times 2$ 行列式仅含对角项与非对角项平方，故 $\Xi_{\Delta,L}(\frac12+it)\in\RR$。证毕。
+\end{proof}
 
 \paragraph{代数核验清单（矩阵级、可一键审计）}
 给定 $(B_0,B_1,\Pi)$，可逐条核验：
