@@ -1,0 +1,70 @@
+\section{纤维反射子压缩与迹保持：把账本接口嵌入 Witt/Euler 严格交换桥包}\label{app:reflector-witt-bridge}
+
+本附录迁移参考体系中的一个关键“硬接口”：由推前 $P_m$ 与纤维均匀提升 $Q_m$ 生成的纤维反射子
+$$
+K_m:=Q_m\circ P_m
+$$
+允许把任意微观线性算子压缩到稳定可见层，并在不改变迹序列（从而不改变 primitive/Witt/Euler 读出）的意义下插入到 $\zeta$–行列式桥包中。该机制为 BridgeRH 的 (B1.a)(B1.b)(B4) 提供一个统一的“可审计压缩”入口：先反射到纤维均匀子空间，再做迹/primitive/Euler 与谱证书层审计。
+
+\subsection{线性化扩展与反射压缩}\label{subsec:reflector-setup}
+正文 \S\ref{sec:ledger} 定义了
+推前算子 $P_m=(\Fold_m)_*$ 与纤维均匀提升 $Q_m$ 作用于概率单纯形。
+在本附录中，将其按基向量线性延拓为有限维向量空间上的线性算子：
+$$
+P_m:\CC^{\Omega_m}\to \CC^{X_m},\qquad
+Q_m:\CC^{X_m}\to \CC^{\Omega_m},
+$$
+并沿用 $P_m\circ Q_m=\mathrm{id}$。
+定义纤维反射子
+$$
+K_m:=Q_m\circ P_m:\CC^{\Omega_m}\to \CC^{\Omega_m}.
+$$
+显然 $K_m$ 幂等：$K_m^2=K_m$，且其像空间 $\mathrm{Im}(K_m)$ 恰为“每条纤维上常数”的可见子空间。
+
+\begin{definition}[可审计压缩与反射后可见部分]\label{def:reflector-compression}
+对任意线性算子 $T:\CC^{\Omega_m}\to\CC^{\Omega_m}$，定义其分辨率 $m$ 的可审计压缩为
+$$
+\overline T_m:=P_m\circ T\circ Q_m:\CC^{X_m}\to\CC^{X_m},
+$$
+并定义反射后可见部分
+$$
+T_m^{\mathrm{aud}}:=K_m\circ T\circ K_m:\CC^{\Omega_m}\to\CC^{\Omega_m}.
+$$
+\end{definition}
+
+\subsection{迹保持与桥包嵌入}\label{subsec:trace-preservation}
+
+\begin{proposition}[压缩的迹保持：\texorpdfstring{$\Tr(T^n)$}{Tr(T^n)} 在可见层不变]\label{prop:reflector-trace-preservation}
+在定义 \ref{def:reflector-compression} 的设定下，对任意 $n\ge 1$ 有严格恒等式
+$$
+\boxed{\ \Tr\!\bigl((\overline T_m)^n\bigr)=\Tr\!\bigl((T_m^{\mathrm{aud}})^n\bigr)\ }.
+$$
+因此，把 Witt/Möbius 反演与 Euler 组装（附录 \ref{app:bridge-rh-obligations} 的命题 \ref{prop:zeta-euler-mobius}）施加在 $\overline T_m$ 或 $T_m^{\mathrm{aud}}$ 上得到的 primitive 分层谱与 $\zeta$–行列式对象完全一致。
+\end{proposition}
+\begin{proof}
+首先注意 $P_mQ_m=\mathrm{id}$ 与 $K_m=Q_mP_m$ 蕴含
+$$
+P_m\circ T_m^{\mathrm{aud}}\circ Q_m
+=P_m\circ K_m\circ T\circ K_m\circ Q_m
+=P_m\circ T\circ Q_m
+=\overline T_m,
+$$
+其中用到 $K_mQ_m=Q_m$ 与 $P_mK_m=P_m$。
+另一方面，$Q_m:\CC^{X_m}\to \mathrm{Im}(K_m)$ 为同构，逆为 $P_m|_{\mathrm{Im}(K_m)}$。
+因此 $\overline T_m$ 与 $T_m^{\mathrm{aud}}|_{\mathrm{Im}(K_m)}$ 共轭，从而对任意 $n$ 有
+$
+\Tr((\overline T_m)^n)=\Tr((T_m^{\mathrm{aud}}|_{\mathrm{Im}(K_m)})^n)
+$。
+又因 $T_m^{\mathrm{aud}}$ 的像包含于 $\mathrm{Im}(K_m)$，其在 $\CC^{\Omega_m}$ 上的迹与在 $\mathrm{Im}(K_m)$ 上的迹相同，故得结论。证毕。
+\end{proof}
+
+\begin{remark}[与 BridgeRH 义务的接口]\label{rem:reflector-to-bridge}
+命题 \ref{prop:reflector-trace-preservation} 提供一个通用压缩口径：
+\begin{itemize}
+  \item \textbf{对 (B1.a)：}可将任意候选核 $B(u)$ 先压缩为 $\overline B_m(u)=P_mB(u)Q_m$，再在 $X_m$ 的有限维空间上计算迹序列与行列式对象；
+  \item \textbf{对 (B1.b)：}对 $\overline B_m(u)$ 的迹序列施加 Witt/Möbius 整除护栏与 Euler 组装即可完成 primitive/Euler 一致性自审计；
+  \item \textbf{对 (B4)：}若规格需要验证谱半径界，可直接对 $\overline B_m(u)$ 输出 Lyapunov--LMI 证书（附录 \ref{app:xi-certificate-layer}），并把证书矩阵作为可复算审计物随结果输出。
+\end{itemize}
+因此，“账本接口（$P_m,Q_m,K_m$）”与“$\zeta$–行列式桥包（迹 $\to$ primitive $\to$ Euler）”并非两套不相干结构，而可在同一条可审计管线内严格拼接。
+\end{remark}
+

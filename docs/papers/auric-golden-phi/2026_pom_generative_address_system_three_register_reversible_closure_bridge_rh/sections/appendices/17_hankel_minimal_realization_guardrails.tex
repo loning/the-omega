@@ -1,0 +1,87 @@
+\section{Hankel 最小实现与复杂度护栏：迹/primitive 序列的可审计维数证书}\label{app:hankel-minreal-guardrails}
+
+本附录补充一条与 BridgeRH 的 (B1)(B4) 兼容、且在有限数据上即可输出的“复杂度护栏”：
+对任何由核侧读出得到的序列对象（例如迹序列、primitive 分层谱、或其派生的可观测序列），Hankel 秩等于其最小线性 realization 维数；因此它既是\textbf{去骨架/残差}的回归指纹，也是“有限维模型无法承载经典尺度密度”的可审计否证通道。
+
+\subsection{Hankel 秩定理：序列的最小线性 realization}\label{subsec:hankel-rank-minimal}
+设 $k$ 为域（例如 $\QQ$ 或 $\RR$）。给定序列 $a=(a_n)_{n\ge 0}\subset k$，定义 Hankel 矩阵
+$$
+H(a):=(a_{i+j})_{i,j\ge 0}.
+$$
+
+\begin{definition}[线性表示/realization]\label{def:hankel-linear-representation}
+称三元组 $(u,A,v)$ 为 $a$ 的一个\textbf{线性表示}（linear representation），若存在维数 $d\ge 1$ 使
+$$
+u,v\in k^{d},\qquad A\in k^{d\times d},
+$$
+并且对任意 $n\ge 0$ 有
+$$
+a_n=u^{\mathsf T}A^n v.
+$$
+称该表示的维数为 $d$。
+\end{definition}
+
+\begin{theorem}[Hankel 秩定理：秩 $=$ 最小 realization 维数]\label{thm:hankel-rank-minimal}
+对任意序列 $a=(a_n)_{n\ge 0}\subset k$，有
+$$
+\mathrm{rank}\bigl(H(a)\bigr)
+=
+\min\{\,d:\exists\ (u,A,v)\ \text{给出维数为 }d\text{ 的线性表示}\,\}.
+$$
+\end{theorem}
+
+\begin{proof}
+记 $d:=\mathrm{rank}(H(a))$。
+\par
+\textbf{(下界)} 若 $a_n=u^{\mathsf T}A^n v$ 给出一个 $d'$ 维线性表示，则对任意 $i,j\ge 0$，
+$$
+H(a)_{ij}=a_{i+j}=u^{\mathsf T}A^i(A^j v).
+$$
+因此第 $j$ 列向量 $H(a)_{\bullet j}$ 全部落在 $\mathrm{span}\{u^{\mathsf T}A^i\}_{i\ge 0}$ 所张成的至多 $d'$ 维子空间之内，故 $\mathrm{rank}(H(a))\le d'$，从而 $\mathrm{rank}(H(a))$ 不大于任何 realization 的维数。
+\par
+\textbf{(上界)} 取一个 $d\times d$ 的 Hankel 主子块 $H_0=(a_{i+j})_{0\le i,j\le d-1}$ 可逆（存在性由 $\mathrm{rank}(H(a))=d$ 保证）。
+再令 $H_1=(a_{i+j+1})_{0\le i,j\le d-1}$。
+定义
+$$
+A:=H_0^{-1}H_1\in k^{d\times d},\qquad
+u^{\mathsf T}:=(a_0,a_1,\dots,a_{d-1}),\qquad
+v:=e_1\in k^{d}.
+$$
+则对所有 $n\ge 0$ 有 $a_n=u^{\mathsf T}A^n v$，从而存在 $d$ 维线性表示。
+（验证可由“移位列空间封闭”得到：$H_1=H_0A$ 等价于 $A$ 在 $H_0$ 的列空间上实现一次右移，进而归纳得 $u^{\mathsf T}A^n v=a_n$。）
+\par
+上下界合并得结论。证毕。
+\end{proof}
+
+\subsection{从有限样本恢复最小 realization（可复算协议）}\label{subsec:hankel-realization-protocol}
+定理 \ref{thm:hankel-rank-minimal} 的构造性部分可被组织为一个完全可复算的协议：给出有限段样本，即可恢复一个最小 realization 矩阵 $A$ 并作为审计物输出。
+
+\begin{algorithm}[Hankel 最小 realization 提取（最小模板）]\label{alg:hankel-minreal-extract}
+\textbf{输入：}序列样本 $(a_0,a_1,\dots,a_{M})\subset k$。\\
+\textbf{输出：}候选维数 $d$ 与线性表示 $(u,A,v)$，或输出 $\NULL$。
+\begin{enumerate}
+  \item 递增搜索最小 $d$ 使得存在 $d\times d$ Hankel 子块
+  $H_0=(a_{i+j})_{0\le i,j\le d-1}$
+  可逆；若不存在则输出 $\NULL$。
+  \item 取对应的
+  $H_1=(a_{i+j+1})_{0\le i,j\le d-1}$，
+  并置 $A:=H_0^{-1}H_1$。
+  \item 取 $u^{\mathsf T}:=(a_0,\dots,a_{d-1})$ 与 $v:=e_1$，输出 $(u,A,v)$。
+  \item \textbf{核验（可选）：}用输出的 $(u,A,v)$ 回算 $a_n^\sharp=u^{\mathsf T}A^n v$（$0\le n\le M$），并逐项比较 $a_n^\sharp=a_n$；若失败则输出 $\NULL$。
+\end{enumerate}
+\end{algorithm}
+
+\begin{remark}[证书对象与并行性]
+算法 \ref{alg:hankel-minreal-extract} 的输出可被视为一份有限数据证书：$(d,u,A,v)$ 全部为域元素的有限列表。
+当 $a_n$ 来自多个互不干扰的局部流并行装配时（例如附录 \ref{app:bridge-rh-obligations} 的张量积装配），各局部流的 Hankel 提取可并行执行，并用“全局指纹由局部指纹装配”的方式作一致性核验。
+\end{remark}
+
+\subsection{在 BridgeRH 中的用途：去骨架/残差与维数增长必要性}\label{subsec:hankel-bridge-use}
+\begin{remark}[有限维骨架假象的否证通道]\label{rem:hankel-skeleton-filter}
+对有限维核 $T$，其迹序列 $a_n=\Tr(T^n)$ 是有限个指数项的线性组合，因此 $a$ 的 Hankel 秩被 $\dim(T)$ 上界控制。
+因此，若某条“桥接实现”在提升分辨率/高度/通道复杂度时仍输出\textbf{有界}的 Hankel 最小维数，则其可承载的谱自由度被结构性限制，无法在极限规格中复现经典 $\Xi_\zeta$ 所需的尺度密度与细结构。
+\par
+在 BridgeRH 义务组 (B1.c) 的识别口径中，可将 Hankel 最小实现作为一个与“Rouch{\'e} 有限高度证书/Abel--Weil 刚性”正交的回归指纹：
+先用有限区域证书锁定零点计数一致性（附录 \ref{app:godel-wsos-rouche}），再用 Hankel 维数增长排除“有限骨架强迫的伪一致”，从而把“逼近经典对象”从数值拟合提升为可审计的结构性约束链。
+\end{remark}
+

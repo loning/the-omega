@@ -125,18 +125,48 @@ POMmin（附录 \ref{app:pommin-formal}）仅要求 $\Addr$ 可数；本文的�
 $$
 \Phi(z;x)\in\QQ[x][z].
 $$
-记 $\Phi(\cdot;x)$ 的“Schur 稳定性”（全部根满足 $\abs{z}<1$）为 $\mathsf{SchurStable}(\Phi(\cdot;x))$。经典 Schur--Cohn 判据给出如下接口化归约（对具体矩阵形式不作展开）：
+记 $\Phi(\cdot;x)$ 的“Schur 稳定性”（全部根满足 $\abs{z}\le 1$）为 $\mathsf{SchurStable}(\Phi(\cdot;x))$。经典 Schur--Cohn 判据给出如下接口化归约：
 
-\begin{assumption}[Schur--Cohn 归约接口]\label{ass:schur-cohn-reduction}
-存在一个由 $\Phi$ 的系数以有理运算构造的\textbf{对称矩阵多项式}
+\begin{proposition}[Schur--Cohn Hermitian 形式：稳定性 \texorpdfstring{$\Leftrightarrow$}{<->} 半正定证书]\label{prop:schur-cohn-reduction}
+对每个固定的 $x$，记
 $$
-H(x)\in\QQ[x]^{n\times n},\qquad H(x)^\top=H(x),
+\Phi(z;x)=a_0(x)+a_1(x)z+\cdots+a_n(x)z^n,\qquad a_j(x)\in\QQ[x],\ a_0(x)\neq 0.
 $$
-使得对每个 $x\in[-2,2]$，
+定义下三角 Toeplitz 矩阵
+\[
+X(x):=\begin{pmatrix}
+a_0(x) & 0 & \cdots & 0\\
+a_1(x) & a_0(x) & \ddots & \vdots\\
+\vdots & \ddots & \ddots & 0\\
+a_{n-1}(x) & \cdots & a_1(x) & a_0(x)
+\end{pmatrix},
+\qquad
+Y(x):=\begin{pmatrix}
+a_n(x) & 0 & \cdots & 0\\
+a_{n-1}(x) & a_n(x) & \ddots & \vdots\\
+\vdots & \ddots & \ddots & 0\\
+a_1(x) & \cdots & a_{n-1}(x) & a_n(x)
+\end{pmatrix},
+\]
+并令 Schur--Cohn Hermitian 形式矩阵
+\[
+H(x):=X(x)X(x)^{\mathsf T}-Y(x)Y(x)^{\mathsf T}\in\Mat_n(\QQ[x])_{\mathrm{Sym}}.
+\]
+则对任意实数 $x\in[-2,2]$，若 $\Phi(\cdot;x)$ 在单位圆 $\abs{z}=1$ 上无零点，则有
 $$
-\mathsf{SchurStable}(\Phi(\cdot;x))\quad\Longleftrightarrow\quad H(x)\succeq 0.
+\Phi(\cdot;x)\text{ 的全部零点满足 }\abs{z}<1
+\quad\Longleftrightarrow\quad
+H(x)\succ 0.
 $$
-\end{assumption}
+更一般地，$H(x)$ 的惯性指数给出单位圆内/外零点计数；特别地，
+$$
+H(x)\succeq 0\quad\Longrightarrow\quad
+\Phi(\cdot;x)\text{ 的全部零点满足 }\abs{z}\le 1.
+$$
+\end{proposition}
+\begin{proof}
+Schur--Cohn 理论的标准结论；对标量多项式的矩阵形式综述见 \cite{DymYoung1990SchurCohnMatrixPolynomials}。证毕。
+\end{proof}
 
 该接口把“单位圆内根”转写为\textbf{一维紧区间上的半正定性}，从而可引入 WSOS 证书实现证明携带核验。
 
@@ -186,7 +216,9 @@ $。
 \end{proof}
 
 \begin{theorem}[unitary slice 审计的证明携带化（WSOS 版本）]\label{thm:unitary-slice-wsos}
-在假设 \ref{ass:schur-cohn-reduction} 下，若存在 $\mathcal{C}_{\mathrm{WSOS}}$ 使得 $\mathrm{CheckWSOS}(H,\mathcal{C}_{\mathrm{WSOS}})=\mathrm{true}$，则对所有 $x\in[-2,2]$ 有 $\mathsf{SchurStable}(\Phi(\cdot;x))$ 成立；因此 unitary slice 上的稳定性成为一个\textbf{完全离线可核对}的结论。并且核验器 $\mathrm{CheckWSOS}$ 仅用到整数多项式加乘与相等判定，故可被编译为本文可判定核验层的一部分（例如在附录 \ref{app:pw-fragment} 的检查器框架上添加整数/多项式编码运算）。
+沿用命题 \ref{prop:schur-cohn-reduction} 的记号。若存在 $\mathcal{C}_{\mathrm{WSOS}}$ 使得 $\mathrm{CheckWSOS}(H,\mathcal{C}_{\mathrm{WSOS}})=\mathrm{true}$，则对所有 $x\in[-2,2]$ 有 $H(x)\succeq 0$ 成立；从而对所有 $x\in[-2,2]$，多项式 $\Phi(\cdot;x)$ 的全部零点满足 $\abs{z}\le 1$。因此 unitary slice 上的稳定性可被组织为一个\textbf{完全离线可核对}的结论。
+进一步地，若另能以独立的边界审计排除 $\abs{z}=1$ 上的零点（例如在单位圆上做区间算术网格核验，或通过结果式/判别式给出有限证书），则由命题 \ref{prop:schur-cohn-reduction} 还可推出严格稳定性 $\abs{z}<1$。
+并且核验器 $\mathrm{CheckWSOS}$ 仅用到整数多项式加乘与相等判定，故可被编译为本文可判定核验层的一部分（例如在附录 \ref{app:pw-fragment} 的检查器框架上添加整数/多项式编码运算）。
 \end{theorem}
 
 \begin{remark}[证书生成与有理恢复]
