@@ -133,6 +133,29 @@ $$
 该分配律把压力 Hessian/协方差密度 \(\Sigma\)（见附录 \ref{app:auditable-profinite-chebotarev} 的扭曲小角二次律口径）直接耦合进 prime-register 的离散选模问题：把更大的模数分配给“更硬”（方差密度更大）的方向，以压低最坏轴带来的扩散时间上界。
 \end{remark}
 
+\begin{remark}[near-coboundary 二次选择律：最坏扭曲索引 \texorpdfstring{$\approx$}{~} 带度量角格的最短向量]\label{rem:tax-near-coboundary-svp}
+在多轴扭曲口径中，角色/同余标签可视为离散角格上的点。设
+$$
+G=\prod_{i=1}^k\ZZ/p_i\ZZ,\qquad
+\widehat G\cong \prod_{i=1}^k\ZZ/p_i\ZZ,
+$$
+并以索引 \(j=(j_1,\dots,j_k)\) 参数化角色。定义角向量
+$$
+\vartheta(j):=\bigl(\mathrm{wrap}(2\pi j_1/p_1),\dots,\mathrm{wrap}(2\pi j_k/p_k)\bigr)\in[-\pi,\pi]^k,
+$$
+其中 \(\mathrm{wrap}\) 取主值代表元。若在平凡角色附近存在二次展开
+$$
+\log\frac{\rho(M_{i\vartheta}(u))}{\lambda(u)}
+=-\frac12\,\vartheta^{\mathsf T}\Sigma(u)\,\vartheta+O(\|\vartheta\|^4),
+$$
+则“最坏慢模”（使 \(\rho(M_{i\vartheta})/\lambda\) 最大者）在小角 regime 下满足选择律
+$$
+j_\star\ \approx\ \arg\min_{j\neq 0}\ \vartheta(j)^{\mathsf T}\Sigma(u)\,\vartheta(j),
+$$
+即由带度量 \(\Sigma(u)\) 的离散角格上的\textbf{最短向量问题（SVP）}决定。
+因此除“单轴慢模选择律”外，还存在一个更一般、同样可审计的多维选择接口：先抽取 \(\Sigma(u)\)（压力 Hessian/Poisson 方程接口），再解一个低维 SVP 以定位应优先核验的最坏扭曲通道；若实际最坏通道偏离该预测，则表明当前规格尚不在小角二次律支配的扩散 regime 内，可作为可否证信号。
+\end{remark}
+
 \subsection{硬 no-go：固定有限核不可能 uniform-\texorpdfstring{$\sqrt{\lambda}$}{sqrt(lambda)}}\label{subsec:uniform-sqrt-no-go}
 
 \begin{corollary}[Abelian 模塔的 no-go：统一平方根界不成立]\label{cor:abelian-tower-no-go-bridge}
@@ -158,5 +181,29 @@ $。
 推论 \ref{cor:abelian-tower-no-go-bridge} 说明：在 profinite/Dirichlet 模轴上，若试图把“固定有限核”的谱隙证书直接提升到全部模数层的统一平方根界，则必被 \(m^2\) 扩散障碍击穿。
 因此在 BridgeRH 的审计语义中，更自然的推进方式是：把模数层 \(m\) 与长度/高度 \(n\) 绑定为一个可审计的双极限可见域（例如要求 \(m\) 不超过 \(n^{1/2}\) 的某个幂次量级），或者显式引入随 \(m\) 增长的核重整化/状态增殖族，使得最坏小角机制被结构性改写。
 若仅需在固定层 \(m\) 上输出扭曲谱半径比/谱隙税率的\textbf{代数证书}，可用 completion \(\to\) cyclotomic resultant 的消元接口把 root-of-unity 扭曲压缩为一元整系数多项式 \(R_m(w)\)，再对其根半径作离线审计（附录 \ref{app:cyclotomic-resultant-certificate}）。
+\end{remark}
+
+\subsection{双极限扩散口径的可见域：尺度化核版 Chebotarev（可选规格）}\label{subsec:scaled-chebotarev-diffusive-visible}
+
+扩散障碍否定的是“对所有 \(m\) 的统一平方根谱隙”；但它同时指向一个更自然的可见域：把长度/高度 \(n\) 与模数层 \(m\) 绑定为双极限尺度，并用扩散指数 \(n/m^2\) 作为主控制量。
+
+\begin{assumption}[尺度化核版 Chebotarev：误差按 \texorpdfstring{$\exp(-c\,n/m^2)$}{exp(-c n/m^2)} 衰减]\label{ass:scaled-chebotarev-diffusive}
+存在常数 \(c>0\) 使得对任意模数层 \(m\ge 2\)、任意长度 \(n\ge 1\) 与任意 cylinder 事件 \(C\subseteq G_m\)，在协议可达的 \(u\) 上有等分布误差界
+$$
+\boxed{\;
+\left|\Pi_{n,m}(C;u)-\frac{|C|}{|G_m|}\right|
+\ \le\
+C(m,u)\,\exp\!\Bigl(-c\,\frac{n}{m^2}\Bigr)\; },
+$$
+其中 \(C(m,u)\) 至多多项式增长（例如 \(C(m,u)\le (1+m)^A\)）。
+\end{assumption}
+
+\begin{remark}[可见域：\texorpdfstring{$m\le n^{1/2-\varepsilon}$}{m<=n^{1/2-eps}} 内的一致主项]\label{rem:scaled-visible-triangle}
+在假设 \ref{ass:scaled-chebotarev-diffusive} 下，对任意固定 \(\varepsilon>0\)，在区域 \(m\le n^{1/2-\varepsilon}\) 中有
+$$
+\exp\!\Bigl(-c\,\frac{n}{m^2}\Bigr)\ \le\ \exp(-c\,n^{2\varepsilon})\ \xrightarrow[n\to\infty]{}\ 0,
+$$
+因此对该双极限可见域内的所有模数层，cylinder 主项 \(|C|/|G_m|\) 在误差意义下是一致可见的。
+这与本附录的谱隙税/扩散障碍并不矛盾：它把“可见性”从“对所有 \(m\) 的统一平方根界”降格为“随 \(m\) 增长而扩散变慢的双极限可见域”。
 \end{remark}
 

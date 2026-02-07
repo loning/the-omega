@@ -16,7 +16,7 @@ $$
 $$
 s_{\mu,k}
 =\frac{\log|\mu|}{\log\lambda}
-\ i\,\frac{\arg(\mu)+2\pi k}{\log\lambda},
++\ i\,\frac{\arg(\mu)+2\pi k}{\log\lambda},
 \qquad k\in\ZZ,
 $$
 其中 \(\arg(\mu)\in(-\pi,\pi]\) 取主值。
@@ -40,6 +40,15 @@ $$
 
 \subsection{可迭代细化：从粗 Markov 分割到 Fredholm 行列式}\label{subsec:transfer-operator-refinement-bridge}
 
+\begin{definition}[Fredholm 行列式（迹类算子口径）]\label{def:fredholm-determinant-bridge}
+设 \(\mathcal{L}\) 为 Hilbert 空间上的迹类算子。定义其 Fredholm 行列式为
+$$
+\det(I-z\mathcal{L})
+:=\exp\!\left(-\sum_{n\ge 1}\frac{z^n}{n}\Tr(\mathcal{L}^n)\right),
+$$
+其在 \(z\) 的某邻域内收敛并给出全纯函数；在有限维情形该定义与通常的矩阵行列式一致。
+\end{definition}
+
 \begin{remark}[转移算子细化的最小可执行接口]\label{rem:transfer-operator-refinement-interface}
 许多来自“余量/取整”的同步动力学可被视为区间 \(X=[0,1)\) 上的多分支扩张系统：给定有限个允许分支 \(\{\tau_a\}_{a\in\mathcal{A}}\)（仿射收缩的逆支），及其权函数 \(w_a(\cdot;s)\)（例如长度势、carry/delay 势或 completion 诱导的解析权），可定义转移算子族
 $$
@@ -54,6 +63,21 @@ $$
 关键的“升级接口”是：\textbf{粗分割时它退化为有限核}。
 具体地，取一个 Markov 分割 \(\Pi_0=\{J_q\}_{q\in Q}\) 并考虑分段常值子空间 \(\mathcal{C}_{Q}:=\mathrm{span}\{\mathbf{1}_{J_q}\}\)，则 \(\mathcal{L}_s|_{\mathcal{C}_{Q}}\) 由一个有限矩阵刻画；在更细分割 \(\Pi_m\)（由分支不连续点及其原像递推生成）上取 \(\mathcal{C}_m\) 即得到一串可审计的有限秩逼近 \(\mathcal{L}_s|_{\mathcal{C}_m}\)。
 因此可在保留“有限矩阵层可证书化”的同时，引入 \(m\to\infty\) 的极限以摆脱小节 \ref{subsec:finite-pole-lattice-barrier-bridge} 的有限相位梳齿屏障。
+\end{remark}
+
+\begin{remark}[正性 Fredholm-HTF：把有限核模板升级为可承载无限谱的可执行规格（构造目标）]\label{rem:positive-fredholm-htf-bridge}
+小节 \ref{subsec:finite-pole-lattice-barrier-bridge} 的极点格点屏障表明：若要让临界线几何摆脱“有限相位梳齿”，必须进入无穷维转移算子/核算子与 Fredholm 行列式范式。
+在此基础上，可把 BridgeRH 所需的 HTF（prime-like/几何侧 \(\leftrightarrow\) 谱/迹侧）进一步规格化为一个同时继承全纯性、NonCancel 与 Abel-first 正则化的构造目标：
+\begin{enumerate}
+  \item \textbf{（闭层全纯性）} 构造一族迹类核算子 \((\mathcal{L}_u)\)（可视为扫描协议下的转移/读出算子），使得
+  $$
+  G(r):=\Tr\!\bigl((I-r\mathcal{L}_1)^{-1}\bigr)
+  $$
+  在 \(|r|<1\) 内全纯，并可在闭层上给出一致上界，从而允许用离散留数估计与显式误差界实施可执行审计（参见附录 \ref{app:bridge-rh-obligations} 的算法 \ref{alg:residue-ring-test} 与命题 \ref{prop:residue-ring-explicit-error-bound}）。
+  \item \textbf{（正性/整数重数证书，NonCancel 自动）} 要求 \(\mathcal{L}_u\) 的离散谱点具有有限代数重数 \(m_\lambda=\Tr(P_\lambda)\in\NN\)，并使得所关心通道的主部系数可由 \(\Tr(P_\lambda)\) 或更一般的 \(\Tr(WP_\lambda)\ge 0\)（某个正算子 \(W\)）给出；于是任意内部极点都携带不可为零的留数证书，同点消去被结构性排除（附录 \ref{app:bridge-rh-obligations} 的命题 \ref{prop:resolvent-trace-integer-residue}）。
+  \item \textbf{（Abel-first 与有限部兼容）} 要求 Fredholm 行列式（定义 \ref{def:fredholm-determinant-bridge}）的 Abel 正则化与本文“先用 \(\zeta/\det\) 组织误差项，再做 primitive/有限部规约”的接口兼容：先在 \(|r|<1\) 的全纯域内完成组织与证书化，再沿 \(r\uparrow 1\) 取有限部/常数项读出（附录 \ref{app:bridge-rh-obligations} 的 (B4) 与注 \ref{rem:primitive-analytic-nonclosure}）。
+\end{enumerate}
+该三条把“全纯（闭层）+ 正性（NonCancel 自动）+ Fredholm 行列式（无限谱承载）”锁死成同一个可执行规格，从而把“去做 Hilbert--P{\'o}lya”落成一份可审计的算子构造清单。
 \end{remark}
 
 \begin{remark}[sofic 因子下 \texorpdfstring{$\zeta$}{zeta} 的非不变性与 Fischer cover 口径]\label{rem:sofic-zeta-noninvariance}
