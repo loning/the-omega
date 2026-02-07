@@ -13,6 +13,9 @@ and compute the two-channel fingerprint components:
   rho_cross(m,2) := max_{1<=j<=m-1} rho(M(omega_m^j, -1))
   rho_{m,2} := max(rho_in, rho_bd, rho_cross)
 
+We also report the channel anisotropy log-ratio:
+  A_m := log(rho_in(m,2) / rho_bd(m,2))
+
 We also report a spectral-tax rate and a workload proxy:
   Delta_m := -log(rho_{m,2}/lambda)
   W(m) := log(2m)/Delta_m, using |G|=2m classes for ((m,2)).
@@ -52,6 +55,7 @@ class Row:
     rho_bd_over_lambda: float
     rho_cross_over_lambda: float
     rho_m2_over_lambda: float
+    anisotropy_A_m: float
     dominant: str
     competition_holds: bool
     delta_minus_log_rho_over_lambda: float
@@ -97,16 +101,18 @@ def _write_tex(path: Path, rows: Sequence[Row]) -> None:
         "\\caption{$((m,2))$ slow-mode fingerprint for the real-input 40-state kernel. "
         "We report $\\rho^{\\mathrm{in}}_{m,2}/\\lambda$ and $\\rho^{\\mathrm{bd}}_{m,2}/\\lambda$, "
         "the cross-twist maximum $\\max_j\\rho(M(\\omega_m^j,-1))/\\lambda$, "
-        "and $\\rho_{m,2}/\\lambda$. We also include "
+        "and $\\rho_{m,2}/\\lambda$. We also include the anisotropy index "
+        "$A_m:=\\log(\\rho^{\\mathrm{in}}_{m,2}/\\rho^{\\mathrm{bd}}_{m,2})$, "
+        "and "
         "$\\Delta_m=-\\log(\\rho_{m,2}/\\lambda)$ and the workload proxy "
         "$W(m)=\\log(2m)/\\Delta_m$ (since $|G|=2m$ for $((m,2))$).}"
     )
     lines.append("\\label{tab:real-input-40-rho-m2-fingerprint}")
-    lines.append("\\begin{tabular}{r r r r r l c r r}")
+    lines.append("\\begin{tabular}{r r r r r r l c r r}")
     lines.append("\\toprule")
     lines.append(
         "$m$ & $\\rho^{\\mathrm{in}}/\\lambda$ & $\\rho^{\\mathrm{bd}}/\\lambda$ & $\\rho^{\\times}/\\lambda$"
-        " & $\\rho_{m,2}/\\lambda$ & dom & comp & $\\Delta_m$ & $W(m)$\\\\"
+        " & $\\rho_{m,2}/\\lambda$ & $A_m$ & dom & comp & $\\Delta_m$ & $W(m)$\\\\"
     )
     lines.append("\\midrule")
     for r in rows:
@@ -114,7 +120,8 @@ def _write_tex(path: Path, rows: Sequence[Row]) -> None:
         lines.append(
             f"{r.m} & {_fmt(r.rho_in_over_lambda)} & {_fmt(r.rho_bd_over_lambda)}"
             f" & {_fmt(r.rho_cross_over_lambda)} & {_fmt(r.rho_m2_over_lambda)}"
-            f" & {r.dominant} & {comp} & {_fmt(r.delta_minus_log_rho_over_lambda)} & {_fmt(r.workload_W)}\\\\"
+            f" & {_fmt(r.anisotropy_A_m)} & {r.dominant} & {comp} & {_fmt(r.delta_minus_log_rho_over_lambda)}"
+            f" & {_fmt(r.workload_W)}\\\\"
         )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
@@ -195,6 +202,10 @@ def main() -> None:
         rho_cross = max(get(j, 1) for j in range(1, m))
         rho_m2 = max(rho_in, rho_bd, rho_cross)
 
+        A_m = float("inf")
+        if rho_in > 0.0 and rho_bd > 0.0:
+            A_m = math.log(rho_in / rho_bd)
+
         rin = rho_in / lam
         rbd = rho_bd / lam
         rcx = rho_cross / lam
@@ -218,6 +229,7 @@ def main() -> None:
                 rho_bd_over_lambda=rbd,
                 rho_cross_over_lambda=rcx,
                 rho_m2_over_lambda=rm2,
+                anisotropy_A_m=A_m,
                 dominant=dominant,
                 competition_holds=bool(competition_holds),
                 delta_minus_log_rho_over_lambda=delta,

@@ -6,7 +6,13 @@ We scan window lengths m and check exact equalities between the stable-type
 dimension |X_m|=F_{m+2} and a few classical compact Lie algebra dimensions:
   dim su(N) = N^2 - 1,
   dim so(N) = N(N-1)/2,
-  dim sp(n) = n(2n+1).
+  dim sp(2n) = n(2n+1).
+
+Note on conventions:
+  - In this paper, we write sp(2n) for the symplectic Lie algebra on a 2n-dimensional
+    real symplectic space (so sp(6) has dim 21, sp(10) has dim 55, etc.).
+  - Many tables in the literature write the same family as sp(n); here we output
+    sp(2n) to remain consistent with the paper's Sp(6)/Sp(10) notation.
 
 Outputs:
 - artifacts/export/fibonacci_lie_resonance_ladder.json
@@ -79,7 +85,7 @@ def _tex_resonance_desc(r: Resonance) -> str:
     if r.so_N is not None:
         parts.append(f"\\dim\\mathfrak{{so}}({r.so_N})={r.F}")
     if r.sp_n is not None:
-        parts.append(f"\\dim\\mathfrak{{sp}}({r.sp_n})={r.F}")
+        parts.append(f"\\dim\\mathfrak{{sp}}({2 * r.sp_n})={r.F}")
     return ";\\ ".join(parts) if parts else "-"
 
 
@@ -187,11 +193,18 @@ def main() -> None:
             "dimensions": {
                 "su": "dim su(N) = N^2 - 1",
                 "so": "dim so(N) = N(N-1)/2",
-                "sp": "dim sp(n) = n(2n+1)",
+                "sp": "dim sp(2n) = n(2n+1)",
             },
         },
         "resonances": [
-            {"m": r.m, "F_m_plus_2": r.F, "su_N": r.su_N, "so_N": r.so_N, "sp_n": r.sp_n}
+            {
+                "m": r.m,
+                "F_m_plus_2": r.F,
+                "su_N": r.su_N,
+                "so_N": r.so_N,
+                "sp_n": r.sp_n,
+                "sp_2n": (2 * r.sp_n) if r.sp_n is not None else None,
+            }
             for r in resonances
         ],
         "solutions": {"so": sol_so, "su": sol_su},

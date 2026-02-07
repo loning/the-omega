@@ -62,6 +62,23 @@
 对固定的 \(L>1\)，\(\Xi_{\Delta,L}\) 的每一个零点 \(s\in\CC\) 都在本文的 \(\mathbf{PW}\) 闭包下可寻址并可核对；等价地，不存在零点在该闭包下读出为 \(\mathsf{NULL}\)。
 \end{assumption}
 
+\begin{remark}[可审计替代：Hankel-秩稳定性给出的地址完备性充分判据（ACC-Rank）]\label{rem:xi-acc-rank}
+假设 \ref{assump:xi-address-completeness} 将“内部 \(\Xi\)-RH \(\Rightarrow\) 经典 \(\Xi\)-RH”的 completeness 缺口显式化。
+在本文的桥包实现口径中，该缺口可被编译为一个\emph{可回归测试}的后端稳定性判据：沿 unitary slice 的 \(\theta\)-扫描，若极限核族在最小 realization 意义下不需要引入新的可见自由度，则任何零点事件都必须具有 \(\mathbf{PW}\) 地址，从而不会读出为 \(\mathsf{NULL}\)。
+\par
+更具体地，对每个有限层级 \(\ell\) 与每个相位采样点 \(\theta\)，取命题 \ref{prop:xi-unitary-slice-spectral-crossing} 所用的归一化核族 \(U_{L,\ell}(\theta)\) 的迹序列
+\(
+a^{(\ell)}_n(\theta):=\Tr(U_{L,\ell}(\theta)^n)
+\)（或等价的 resolvent-trace 片段），并以 Hankel 秩/最小实现维数
+\[
+d^{(\ell)}_{\min}(\theta):=\mathrm{rank}\,H\!\bigl(a^{(\ell)}_\bullet(\theta)\bigr)
+\]
+（定理 \ref{thm:hankel-rank-minimal}）度量其“可见自由度”。
+若存在常数 \(d_\ast\) 使得对所有足够大层级 \(\ell\) 与所有相位采样 \(\theta\) 都有 \(d^{(\ell)}_{\min}(\theta)\le d_\ast\)，并且该界在加密 \(\theta\) 网格与提升层级时保持稳定，则可将“零点 \(\neq\mathsf{NULL}\)”的地址完备性视为被证书化满足。
+\par
+该路线把 completeness 从纯存在性陈述替换为一条可审计的“维数稳定性”检查；Hankel-rank 的实现口径与脚本组织方式见注 \ref{rem:two_layer_bridge_package_completed_minH}，并可参考表 \ref{tab:fold_collision_moment_hankel_rank}（脚本 \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py}）作为后端维数证书的基准模板。
+\end{remark}
+
 \begin{corollary}[地址完备性 \(\Rightarrow\) 经典 \(\Xi\)-RH]\label{cor:xi-classical-rh-from-address-completeness}
 在假设 \ref{assump:xi-address-completeness} 下，\(\Xi_{\Delta,L}\) 的全部零点都满足 \(\Re(s)=\tfrac12\)。
 \end{corollary}
