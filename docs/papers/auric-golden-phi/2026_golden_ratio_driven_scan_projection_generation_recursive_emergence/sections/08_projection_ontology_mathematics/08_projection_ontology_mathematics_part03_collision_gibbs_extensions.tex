@@ -132,6 +132,27 @@ Z_m:=\sum_{x\in X_m}e^{-E_m(x)}=\sum_{x\in X_m}d_m(x)=|\Omega_m|=2^m.
 \end{remark}
 \input{sections/generated/tab_fold_output_gibbs_markov_fit}
 
+\begin{remark}[熵率/KL 证书：内生 Gibbs 权重与 Parry 最大熵基线的微比特级差异]\label{rem:pom-gibbs-parry-entropy-gap}
+在 golden-mean SFT 的两状态邻接
+\(
+A=\begin{psmallmatrix}1&1\\[2pt]1&0\end{psmallmatrix}
+\)
+下，Parry（PF）基线 \(P_{\mathrm{Parry}}\) 具有最大熵率
+\(
+h(P_{\mathrm{Parry}})=\log\varphi
+\)
+（其中 \(\varphi\) 为 Perron 根）。
+对任意与之同支撑的两状态 Markov 规格 \(P\)，其相对 Parry 的 KL 散度率满足
+\[
+D_{\mathrm{KL}}^{\mathrm{rate}}(P\|P_{\mathrm{Parry}})=\log\varphi-h(P),
+\]
+从而“最大熵缺口”可等价输出为一份 KL-率证书。
+\par
+对表 \ref{tab:fold_output_gibbs_markov_fit} 的拟合输出（\(m=18,\ell=4\)），该缺口已降至微比特级；脚本 \texttt{scripts/exp\_fold\_output\_gibbs\_markov\_fit.py} 同步输出如下可复算数值证书：
+\input{sections/generated/eq_fold_output_gibbs_entropy_gap}
+该量级支持“折叠诱导的内生势函数偏离最大熵基线主要体现为常数级指纹，而非熵率层面的结构崩塌”的解释框架。
+\end{remark}
+
 \begin{remark}[接口闭环：碰撞谱 \texorpdfstring{$\leftrightarrow$}{<->} 典型空间损失的三条可审计推论]\label{rem:pom-interface-loop-collision-loss}
 本节把两条接口（Hankel 最小实现与内生 Gibbs 权重）并排写出后，可得到如下三条闭环推论（均由文内机制直接推出，并可用现有脚本核验）：
 \begin{itemize}

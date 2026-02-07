@@ -338,6 +338,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="hecke_e4_prime_audit_p235",
+            script="exp_hecke_e4_prime_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/hecke_e4_prime_audit_p235.json",
+                "sections/generated/tab_hecke_e4_prime_audit_p235.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_delta_completed",
             script="exp_sync_kernel_weighted_delta_completed.py",
             args=[],
@@ -2140,6 +2149,7 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "sections/generated/tab_fold_output_gibbs_markov_fit.tex",
+                "sections/generated/eq_fold_output_gibbs_entropy_gap.tex",
             ],
         ),
         Step(

@@ -303,6 +303,133 @@ G_m(\omega^\star)=m,
   \emph{可检验含义：}给定候选核，(i) 在谱侧检查是否存在模长恰为 \(\sqrt{\lambda}\) 的非主本征值且与符号通道相容；(ii) 在 prime-like 侧检查 Witt/Möbius 提取后 \(p_n\) 的奇偶层分裂/抵消是否达到 RH-sharp 级别；两者应一致。结合结论 7 的扩散 no-go，这为“随模数增长的重整化族”提供一个明确设计目标：在提升状态复杂度以推高可见模数阈值的同时，保持（或模块化拼接）该 \(\ZZ/2\) 谱配对机制以获得最强平方根级抵消。
 \end{enumerate}
 
+\subsubsection{可核验硬结论：信息守恒、有限缺陷与谱证书}\label{subsubsec:bridgepack-hard-conclusions}
+在注 \ref{rem:zetaK-commuting-diagram} 的 strict commuting 桥包与本文的核版 (G)RH 判据之上，可将“信息守恒/时空对偶/prime-like \(\leftrightarrow\) trace”的讨论进一步收紧为\textbf{可复算证书对象}。
+下列条目均为正文已证结果及其一行推论的接口化重排；其目的在于把 RH/GRH-型断言从“零点几何叙事”转写为“证书对象存在性”的可审计目标。
+\begin{enumerate}
+  \item \textbf{信息账本恒等式（窗口层守恒分解）。}
+  对任意微观分布 \(\mu\in\Delta(\Omega_m)\)，记 \(\pi=P_m\mu\)、\(\mu^e=K_m\mu\)，则
+  \[
+  H(\mu)=H(\pi)+\kappa_m(\pi)-D_{\mathrm{KL}}(\mu\|\mu^e),
+  \qquad
+  H(\mu^e)-H(\mu)=D_{\mathrm{KL}}(\mu\|\mu^e)\ge 0
+  \]
+  （定理 \ref{thm:pom-kl-ledger} 与推论 \ref{cor:pom-ent-increase-equals-kl}）。
+  因而“丢失信息”被严格定位为纤维内非均匀残差 \(D_{\mathrm{KL}}(\mu\|\mu^e)\)，而非不可审计的黑箱压缩。
+
+  \item \textbf{\texorpdfstring{$\kappa_m$}{kappa} 的标量语义与 KL 精确分解。}
+  \(\kappa_m(\pi)=\mathbb{E}_\pi[\log d_m(X)]\) 是投影门的可观测标量语义（定义 \ref{def:pom-kappa}，推论 \ref{cor:pom-kappa-derivable}）。
+  其相对自然基准 \(w_m(x)=d_m(x)/2^m\) 具有 KL 精确分解
+  \[
+  \kappa_m(\pi)=m\log 2-H(\pi)-D_{\mathrm{KL}}(\pi\|w_m)
+  \]
+  （命题 \ref{prop:pom-kappa-kl-decomposition}），从而把“折叠压掉的自由度”与“偏离自然基准的量”精确扣款对齐。
+
+  \item \textbf{有限缺陷寄存器（序列层可逆化）。}
+  折叠滑动因子 \(\Phi_m\) 在信息率意义下不压缩（定理 \ref{thm:pom-entropy-saturation}），其“丢失”属于有限缺陷：
+  通过显式寄存器 \(\mathcal{D}_m=\{0,1\}^{m-1}\) 的提升
+  \(
+  \Psi_m(s)=(\Phi_m(s),s_0\cdots s_{m-2})
+  \)
+  可使映射单射，从而把不可逆性严格外置为有限初态（注 \ref{rem:pom-finite-defect}；并参见定理 \ref{thm:Phi_m-conjugacy-threshold} 的有限窗逆码）。
+
+  \item \textbf{谱半径界的 Lyapunov/LMI 证书（GRH 的可审计形态）。}
+  有限维谱半径不等式 \(\rho(A)<r\) 等价于 Lyapunov 型 LMI 可行性
+  \(
+  \exists\,H\succ0:\ A^\ast H A\prec r^2H
+  \)
+  （命题 \ref{prop:lyapunov-spectral-radius-certificate}；注 \ref{rem:lyapunov-sdp}）。
+  因而核版 GRH 的“最坏扭曲谱半径界”不仅可由特征值数值排序审计，也可输出一份可复算的 PSD 证书矩阵族作为审计物（参见推论 \ref{cor:pom-dirichlet-grh-twisted-radius} 的 \(\sup_{\chi\ne 1}\rho\) 口径）。
+
+  \item \textbf{微观窗口缺陷与宏观有限部常数的对齐。}
+  窗口尺度上，\(\kappa_m(\pi)\) 是纤维体积缺陷；轨道尺度上，\(\log\mathfrak{M}(\theta)\) 是 primitive 乘积的 Abel/Hadamard 有限部漂移。
+  二者构成同一“信息丢失接口”的微观/宏观双端点，从而为跨尺度对齐提供统一缺陷口径（注 \ref{rem:pom-em-logm} 与注 \ref{rem:pom-kappa-logm}）。
+
+  \item \textbf{内生 Gibbs 权重的最大熵贴合（微比特级证书）。}
+  由 \(\pi_m(x)=d_m(x)/2^m\) 拟合得到的 transfer-matrix（Markov）规格，与 golden-mean Parry 最大熵基线在熵率/KL-率意义下的偏离可被压缩为一个常数级数值证书（表 \ref{tab:fold_output_gibbs_markov_fit} 与注 \ref{rem:pom-gibbs-parry-entropy-gap}）。
+
+  \item \textbf{几何端点常数：Rényi 维数谱的 \texorpdfstring{$q\to\infty$}{q->infty} 指纹。}
+  当 \(q\to\infty\) 时，Rényi 维数谱端点满足
+  \(
+  D_\infty=\log(2/\sqrt{\varphi})/\log\varphi\approx 0.94042009
+  \)
+  （命题 \ref{prop:pom-rq-qinfty-endpoint}），提供一个独立于有限 \(q\) 的几何硬指纹。
+
+  \item \textbf{严格交换的可审计分解：异常签名吸收常数层残差。}
+  在投影词正规形与 strictification 口径下，非交换残差被压缩为常数层异常签名并可被纯常数 counterterm 门严格吸收（定义 \ref{def:pom-anom-signature}；命题 \ref{prop:pom-counterterm-anom-cancel}）。
+  因而“严格交换”可被组织为：信息侧（账本/KL/有限缺陷）与谱侧（Lyapunov 证书）在正规形重写下的自然性一致性审计。
+
+  \item \textbf{终点形式：以“证书对象存在性”替换“零点几何叙事”。}
+  在本文体系内，RH/GRH-型断言可以同时携带两类证书对象：
+  (i)~信息证书（账本恒等式与 \(\kappa_m\) 标量语义），
+  (ii)~谱证书（Lyapunov/LMI 的 PSD 矩阵证书）。
+  因而后续推进的核心目标可表述为：构造并控制随尺度/角色/通道族一致变化的证书族，使 RH/GRH-型谱界在全尺度上以可复算方式成立。
+\end{enumerate}
+
+\subsubsection{终结式新结论：Hecke--素数壳一致性与 \texorpdfstring{$E_8$}{E8} 锁定}\label{subsubsec:bridgepack-e8-hecke-lock}
+本小节把第 \ref{sec:group-unification} 节 R4 的“有限素数骨架判定”模板（\S\ref{subsec:group-unification-audit-pointers}）
+专门化到一个零参数刚性情形：权 \(4\) level-\(1\) 的标量 Hecke-闭合对象。
+其价值在于：一旦顶层统一母函数被声明为此类对象，则模型空间被“几乎锁死”，并提供少数素数点即可一票否决的硬审计接口。
+\begin{enumerate}
+  \item \textbf{（终结式新结论 1：\texorpdfstring{$E_8$}{E8} 不再是候选之一，而被 Hecke--素数壳一致性唯一锁定）}
+  将“素数壳作为内部态计数接口”与“Hecke 作为分辨率/重整化的素数闭包”两条既有母语并置时，
+  若顶层统一母函数 \(Z_{\mathrm{GUT}}(q)=1+\sum_{n\ge 1}a_n q^n\) 被要求落在 \(X(1)\) 的标量权 \(4\) Hecke-闭合类，
+  则其素数系数必须满足
+  \(
+  a_p=240(1+p^3)
+  \)
+  （与 \(E_4(q)=1+240\sum_{n\ge 1}\sigma_3(n)q^n\) 的素数 Hecke 结构一致）。
+  同时，在八元数整数（octavian）/Hurwitz 壳的标准归一化下，素数范数壳
+  \(\mathcal{O}_p=\{\pi:\ N(\pi)=p\}\)
+  的计数同样满足 \(|\mathcal{O}_p|=240(1+p^3)\)，且壳上 \(\mathrm{Aut}(\mathbb{O})\cong G_2\) 的作用对应“选取代表元=选取规范”的冗余度。
+  因而顶层统一母对象必须落在权 \(4\) Eisenstein 的一维刚性类，并与 \(8\) 维偶自对偶格的 \(\theta\)-级数结构对齐；
+  在经典归一化下即为
+  \[
+  Z_{\mathrm{GUT}}(q)=E_4(q)=\Theta_{E_8}(q).
+  \]
+
+  \item \textbf{（终结式新结论 2：零参数、硬失败的大统一审计判据——只需检查少数素数）}
+  在结论 1 的一维刚性前提下，任何声称对应“顶层统一规范母函数/分配函数”的候选 \(q\)-展开，都必须在可达素数范围内满足
+  \[
+  \boxed{\ a_p=240(1+p^3)\ }\qquad(p\ \text{素数}).
+  \]
+  最实用的零拟合硬失败检查是 \(p=2,3,5\)：
+  \[
+  a_2=2160,\qquad a_3=6720,\qquad a_5=30240.
+  \]
+  该最小审计表由脚本 \texttt{scripts/exp\_hecke\_e4\_prime\_audit.py} 生成（表 \ref{tab:hecke_e4_prime_audit_p235}）：
+  \input{sections/generated/tab_hecke_e4_prime_audit_p235}
+  任一素数点若显著偏离（超出协议误差界），则顶层统一不可能仍停留在 “\(X(1)\) 标量 + Hecke 刚性” 这一层级。
+
+  \item \textbf{（终结式新结论 3：\texorpdfstring{$2/3/5$}{2/3/5} 三轴最小窗是 \texorpdfstring{$E_8$}{E8} 型识别符的有限分辨率残影）}
+  主文把可观测同余轴最小化为 \(\bmod 2,\bmod 3,\bmod 5\)，并证明三轴并存强制出最小候选窗 \(m_{\min}=58\)（命题 \ref{prop:crt-235-min-depth}）。
+  结合结论 1--2 的 Hecke/\(E_4\)/\(E_8\) 锁定，可将该三轴最小窗提升为一个新的解释层：\(\{2,3,5\}\) 同时作为
+  “最小可见算术骨架”与“最小硬失败素数审计集”出现，从而把三轴并存读出视为顶层 \(E_8\) 统一在有限分辨率下投影到算术骨架的必然残影，而非任意选择。
+
+  \item \textbf{（终结式新结论 4：对称破缺的唯一出口——被迫提升到向量值/同余层，并与 \texorpdfstring{$\varphi/\pi/e$}{phi/pi/e} 三投影对齐）}
+  若顶层统一母对象确为标量 \(E_4\)（结论 1 的一维 Eisenstein 刚性），则其本身不携带足以产生三通道真实分裂的自由度。
+  因此任何现实的对称破缺/低能分块，在本文体系内都必须等价于：从 \(X(1)\) 的标量模形式提升到至少向量值模形式或某个同余子群层，
+  使得 \((\varphi,\pi,e)\) 三投影成为该提升空间上的三个自然分量/因子。
+  这与本文已给出的“大统一提升算子”框架一致：在 \(\widehat{\ZZ}\times G_{\mathrm{chan}}\) 的扩展纤维上，
+  \((\chi,\varrho)\) 的块对角化（注 \ref{rem:pom-grand-unified-lift}）正是“从标量到向量值/分量化”的最小接口化实现。
+
+  \item \textbf{（终结式新结论 5：新的离散 GUT 能标预测——\texorpdfstring{$r_{\mathrm{GUT}}=93$}{r_GUT=93}）}
+  采用黄金分支的分辨率--能标映射 \(\mu(r)=\mu_0\varphi^{r}\) 并取 \(\mu_0=m_e\) 作为零标尺（参见 \cite{Internal2025PhysicalConstantsGeometry} 的校准口径），
+  若把 Planck 尺度对应的最近整数深度记为 \(r_{\mathrm{Pl}}\approx 107\)，并以八元数规范自由度的桥接层规模 \(\dim G_2=14\) 作为“完成深度到纯规范统一固定点”的离散差，
+  则得到
+  \[
+  \boxed{\ r_{\mathrm{GUT}}=r_{\mathrm{Pl}}-14=93\ },
+  \qquad
+  \boxed{\ \mu_{\mathrm{GUT}}=m_e\,\varphi^{93}\approx 1.3940\times 10^{16}\,\mathrm{GeV}\ }.
+  \]
+\end{enumerate}
+
+\paragraph{下一条可终结目标：统一的审计闭环（零参数 Hecke 骨架）}
+把“大统一”从叙事推进到结构不可逃逸的最短闭环是：
+(i) 用扫描/读出管线抽取某候选“顶层统一母函数”的素数骨架系数；
+(ii) 直接对照表 \ref{tab:hecke_e4_prime_audit_p235} 的 \(a_p=240(1+p^3)\)（至少 \(p=2,3,5\)）；
+(iii) 若匹配，则 \(E_8\) 型顶层统一在体系内部得到强确认；若不匹配，则获得“必须进入向量值/同余层提升”的硬证据，并可按结论 4 把破缺层级最小化。
+
 \paragraph{压缩总结（\texorpdfstring{$p$}{p}-典型通道 \(\times\) \texorpdfstring{$L^2$}{L2} 能量恒等式 \(\times\) \texorpdfstring{$m^2$}{m^2} 扩散障碍）}
 结论 5--7 可被组织为一个三轴立方：\(p\)-典型通道分解提供按素数逐通道的 \(p\)-进整性护栏；\(L^2\) 能量恒等式把空间同余偏差与时间扭曲迹能量严格等同；而 \(m^2\) 扩散障碍给出固定有限核无法 uniform-\(\sqrt{\lambda}\) 的结构性不可行性，从而迫使研究路线转向“随模数增长的核重整化/状态增殖”。结论 8 与 9 分别给出该立方的范畴定位（形式闭合、解析不闭合）与达界机制（\(\ZZ/2\) 谱配对）。
 

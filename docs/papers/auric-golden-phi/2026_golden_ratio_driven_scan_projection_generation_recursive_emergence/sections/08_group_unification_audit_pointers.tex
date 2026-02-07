@@ -156,3 +156,21 @@ g_i^{-2}(x)=a_i+b_i\,u(x)+\cdots,
 \par
 在审计实现上，该模板可作为一致性检验的约束族：先声明权重/层级等离散参数，再以 Sturm 界给出有限截断，比较对应素数骨架数据是否满足同构条件。
 
+\paragraph{R4a（零参数硬失败）：权 \texorpdfstring{$4$}{4} Eisenstein/\texorpdfstring{$E_8$}{E8} \texorpdfstring{$\theta$}{theta}-模的素数骨架审计}
+在 R4 的“有限素数骨架判定”模板之上，一个特别刚性的基准情形是：若顶层统一对象被声明为
+\emph{level-1（\(X(1)\)）标量权 \(4\) Hecke-闭合}的模形式，则其空间为一维并由 Eisenstein 级数 \(E_4\) 张成；
+因此素数系数必须满足
+\(
+a_p=240(1+p^3)
+\)
+（\(p\) 为素数）。
+\par
+我们将最小硬失败点 \(p\in\{2,3,5\}\) 的数值表与 JSON 封装为可复现输出（可作为“零拟合”的一票否决护栏）：
+\begin{itemize}
+  \item \textbf{生成脚本：}\texttt{\detokenize{scripts/exp_hecke_e4_prime_audit.py}}。
+  \item \textbf{LaTeX 生成物：}\texttt{\detokenize{sections/generated/tab_hecke_e4_prime_audit_p235.tex}}。
+  \item \textbf{审计 JSON：}\texttt{\detokenize{artifacts/export/hecke_e4_prime_audit_p235.json}}。
+\end{itemize}
+若扫描/读出得到的候选素数骨架 \(a_p\) 在这些素数点显著偏离，则说明顶层统一不可能仍停留在 “\(X(1)\) 标量 + Hecke 刚性” 这一层级，
+必须进入向量值/同余层提升分支（见结论小节 \ref{subsubsec:bridgepack-e8-hecke-lock} 的结构性出口描述）。
+
