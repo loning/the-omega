@@ -38,6 +38,50 @@ $$
 因此若某个有限核出现 toy-RH 现象（例如把若干非平凡模态压到 \(\Re(s)=\tfrac12\)），它首先是对“骨架因子/对称结构未被破坏”的 sanity check；要把该现象提升为经典 RH 的桥接证据，必须同时给出：随规格增长的状态复杂度增长机制（或进入 Fredholm 口径）与相应的 (B4) 规格证书。
 \end{remark}
 
+\paragraph{相位平均自由能：Jensen/Mahler 平均仅依赖谱模长}
+有限维“相位梳齿”并不意味着缺乏可审计的宏观量：对 \(\log|\det|\) 的相位平均可完全消去特征值相位，仅保留模长数据；它在 toy-RH 的阈值 \(\Re(s)=\tfrac12\) 处产生不可导折点，可作为可复算的谱模长指纹。
+
+\begin{proposition}[Jensen 平均恒等式：相位平均的 \texorpdfstring{$\log|\det|$}{log|det|} 只依赖谱模长]\label{prop:finite-jensen-free-energy}
+设 \(M\) 为 \(d\times d\) 复矩阵，\(\lambda=\rho(M)>0\)。记其非零特征值（按代数重数计）为 \(\{\mu_j\}_{j=1}^{J}\)。
+对任意 \(\sigma\in\RR\) 定义
+$$
+G_M(\sigma):=\int_0^{2\pi}\log\Big|\det\bigl(I-\lambda^{-\sigma}e^{\mathrm{i}\theta}M\bigr)\Big|\frac{\dd\theta}{2\pi}.
+$$
+则有闭式
+$$
+\boxed{\;
+G_M(\sigma)=\sum_{j=1}^{J}\max\bigl(0,\ \log|\mu_j|-\sigma\log\lambda\bigr)\; }.
+$$
+特别地，\(G_M(\sigma)=0\) 当且仅当对所有 \(j\) 有 \(|\mu_j|\le \lambda^{\sigma}\)；并且 \(G_M\) 作为 \(\sigma\) 的函数为凸的分段线性函数，其折点集合包含全部阈值 \(\sigma=\log|\mu_j|/\log\lambda\)。
+\end{proposition}
+
+\begin{proof}
+对特征值分解按代数重数计有
+$$
+\det\bigl(I-\lambda^{-\sigma}e^{\mathrm{i}\theta}M\bigr)
+  =\prod_{j=1}^{J}\bigl(1-\lambda^{-\sigma}e^{\mathrm{i}\theta}\mu_j\bigr),
+$$
+故
+$$
+G_M(\sigma)=\sum_{j=1}^{J}\int_0^{2\pi}\log\bigl|1-a_j e^{\mathrm{i}\theta}\bigr|\frac{\dd\theta}{2\pi},
+\qquad a_j:=\lambda^{-\sigma}\mu_j.
+$$
+对每一因子应用 Jensen 平均恒等式（参见 \cite{Duren1970TheoryHp}）：
+$$
+\int_0^{2\pi}\log|1-ae^{\mathrm{i}\theta}|\frac{\dd\theta}{2\pi}
+  =
+\begin{cases}
+0,&|a|\le 1,\\
+\log|a|,&|a|>1,
+\end{cases}
+$$
+即 \(\int \log|1-ae^{\mathrm{i}\theta}|=\max(0,\log|a|)\)。代入 \(a=a_j\) 并求和即得所示闭式；其余结论由 \(\max(0,\cdot)\) 的凸性与分段线性结构直接推出。证毕。
+\end{proof}
+
+\begin{remark}[toy-RH 折点与“平方根模态”]\label{rem:finite-jensen-kink-half}
+若存在特征值满足 \(|\mu|=\sqrt{\lambda}\)，则命题 \ref{prop:finite-jensen-free-energy} 给出：\(G_M(\sigma)\) 在 \(\sigma=\tfrac12\) 处出现不可导折点（斜率发生跳变）。在 toy-RH 语义中，这一折点等价于“模长达界模态穿越平方根圆”的宏观读出；它仅依赖谱模长，因此不受有限维相位梳齿的影响。
+\end{remark}
+
 \subsection{可迭代细化：从粗 Markov 分割到 Fredholm 行列式}\label{subsec:transfer-operator-refinement-bridge}
 
 \begin{definition}[Fredholm 行列式（迹类算子口径）]\label{def:fredholm-determinant-bridge}

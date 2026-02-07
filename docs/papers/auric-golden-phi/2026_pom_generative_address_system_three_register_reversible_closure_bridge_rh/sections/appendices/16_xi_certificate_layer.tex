@@ -167,6 +167,53 @@ $$
 该区间化证书层与附录 \ref{app:godel-wsos-rouche} 的 WSOS/证明携带协议可直接拼接：在需要时可进一步把 $[-2,2]$ 上的非负性/半正定性压缩为离线可核对的有理证书。
 \end{remark}
 
+\subsection{Cayley 超双曲化：单位圆根判据的实轴等价}\label{subsec:xi-cayley-hyperbolicity}
+区间根判据把“单位圆根”压缩到 \(S=y+y^{-1}\in[-2,2]\) 的实轴区间上；另一条等价压缩路径是 Cayley 变换，它把扩展实轴 \(\overline{\RR}=\RR\cup\{\infty\}\) 双全纯地双射到单位圆 \(\TT\)。
+
+\begin{proposition}[Cayley 超双曲化：单位圆根判据的实轴等价]\label{prop:xi-cayley-hyperbolicity}
+设 \(\Phi(y)\in\RR[y]\) 为次数 \(D\ge 1\) 的多项式，且 \(\Phi(0)\neq 0\)。
+定义 Cayley 变换
+$$
+y=\mathcal{C}_{\mathrm U}(x):=\frac{x-\mathrm{i}}{x+\mathrm{i}},
+\qquad
+x=\mathcal{C}_{\mathrm U}^{-1}(y):=\mathrm{i}\,\frac{1+y}{1-y},
+$$
+并定义一元多项式
+$$
+\Psi(x):=(x+\mathrm{i})^{D}\,\Phi\!\left(\frac{x-\mathrm{i}}{x+\mathrm{i}}\right)\in\CC[x].
+$$
+则下列条件等价：
+\begin{enumerate}
+  \item \(\Phi\) 的全部复根都满足 \(|y|=1\)；
+  \item \(\Psi\) 的全部复根都落在 \(\RR\cup\{\infty\}\)（按射影意义计入 \(x=\infty\) 的根）。
+\end{enumerate}
+进一步地，若 \(\Phi\) 还是自倒数（例如 \(\Phi=\Phi_{\Delta,L}\) 且满足命题 \ref{prop:xi-reciprocal-polynomial} 的 \(y^{D}\Phi(1/y)=\Phi(y)\)），则 \(\Psi\)（经整体常数归一化）可取为实系数多项式；从而上述条件可表述为 \(\Psi\) 的一元实\textbf{超双曲性}（全实根）。
+\end{proposition}
+
+\begin{proof}
+由定义可直接验证：对 \(x\in\RR\) 有 \(|\mathcal{C}_{\mathrm U}(x)|=1\)，并且 \(x\to\infty\) 时 \(\mathcal{C}_{\mathrm U}(x)\to 1\)。
+反之，对任意 \(|y|=1\) 且 \(y\neq 1\)，有 \(x=\mathcal{C}_{\mathrm U}^{-1}(y)=\mathrm{i}(1+y)/(1-y)\in\RR\)；而 \(y=1\) 对应 \(x=\infty\)。
+因此 Cayley 变换在根集合层面给出双射
+$$
+\mathrm{Roots}(\Phi)\subseteq\TT
+\quad\Longleftrightarrow\quad
+\mathrm{Roots}(\Psi)\subseteq\overline{\RR}.
+$$
+更具体地，若 \(\Phi(y_0)=0\) 且 \(y_0=\mathcal{C}_{\mathrm U}(x_0)\)（\(x_0\in\RR\) 或 \(x_0=\infty\)），则清分母得 \(\Psi(x_0)=0\)（对 \(x_0=\infty\) 以射影根计入）；反之若 \(\Psi(x_0)=0\)，令 \(y_0=\mathcal{C}_{\mathrm U}(x_0)\) 即得 \(\Phi(y_0)=0\) 且 \(|y_0|=1\)。
+\par
+若 \(\Phi\in\RR[y]\) 且满足自倒数 \(y^{D}\Phi(1/y)=\Phi(y)\)，写 \(\Phi(y)=\sum_{k=0}^{D}a_k y^k\) 则 \(a_k=a_{D-k}\in\RR\)。
+由 \(\Psi\) 的定义展开得
+$$
+\Psi(x)=\sum_{k=0}^{D} a_k\,(x+\mathrm{i})^{D-k}(x-\mathrm{i})^{k}.
+$$
+利用系数对称性 \(a_k=a_{D-k}\) 将 \(k\) 与 \(D-k\) 项成对合并，可将右端写成 \(\sum_k 2a_k\,\Re\bigl((x+\mathrm{i})^{D-k}(x-\mathrm{i})^{k}\bigr)\)，从而 \(\Psi\)（经整体常数归一化）具有实系数。证毕。
+\end{proof}
+
+\begin{remark}[证书接口：实轴全实根的可审计判据]\label{rem:xi-cayley-hyperbolicity-audit}
+命题 \ref{prop:xi-cayley-hyperbolicity} 允许将“单位圆根条件”完全转译为“实轴全实根条件”。因此在有限维/可控口径下，可把 unitary slice 的零点几何压缩为一份标准的超双曲性证书：
+例如用 Sturm 链对 \(\Psi\) 的实根计数、或用 Hermite/Hankel 型 PSD 判据对全实根性给出半正定证书；这些证书与注 \ref{rem:interval-root-audit} 的区间根证书同属“实化后的离线可核对”口径，可按需要与 WSOS/Rouch{\'e} 证明携带协议拼接。
+\end{remark}
+
 \subsection{有限维 Hilbert--P{\'o}lya 口径：CMV/Schur 参数接口（可选）}\label{subsec:xi-cmv-interface}
 命题 \ref{prop:reciprocal-to-interval-polynomial} 给出的 $\Phi_{\Delta,L}$ 是 unitary slice 上的“特征多项式化读出”。若进一步希望把“单位圆根”升格为一个显式的酉谱实现，可使用 OPUC/CMV 规范型的伴随矩阵接口：在适当的首一化下，存在五对角 CMV-like 伴随矩阵 $U$ 使
 $$
