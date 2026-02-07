@@ -172,6 +172,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_spectral_fingerprint",
+            script="exp_fold_gauge_anomaly_spectral_fingerprint.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_spectral_fingerprint.json",
+                "sections/generated/eq_fold_gauge_anomaly_spectral_fingerprint.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_rate_curve_elimination",
             script="exp_fold_gauge_anomaly_rate_curve_elimination.py",
             args=[],

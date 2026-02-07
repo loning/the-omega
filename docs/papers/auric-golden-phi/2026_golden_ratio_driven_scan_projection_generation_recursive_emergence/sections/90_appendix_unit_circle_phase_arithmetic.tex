@@ -1021,6 +1021,174 @@ D_{\zeta}(\varrho)\ge \log\!\Bigl(\frac{\varrho}{|w_{\rho}|}\Bigr),
 由定理 \ref{thm:app-rh-iff-disk-zero-free} 或推论 \ref{cor:app-rh-iff-jensen-defect-zero} 即得 RH 成立。证毕。
 \end{proof}
 
+\subsubsection{新增结论簇：导数律、可数化与端点局部化}\label{subsubsec:app-jensen-defect-new-cluster}
+
+\paragraph{记号与接口（最小复述）}
+为便于直接引用，本小节仅列出与后续结论相关的最小接口：
+\begin{enumerate}
+  \item \textbf{面积相位紧化与相位盒算术：}相位盒 \(\mathbb{U}:=(-\tfrac12,\tfrac12)\) 与紧化门 \(\upsilon(x)=\frac{1}{\pi}\arctan(x)\) 见 \eqref{eq:unit-circle-phase-upsilon}--\eqref{eq:unit-circle-phase-inverse}；
+  沿 \(\upsilon\) 的结构搬运在 \(\mathbb{U}\) 上定义与 \((\RR,+,\cdot)\) 严格同构的运算 \((\boxplus,\boxtimes)\)（定义 \ref{def:unit-circle-phase-transport-arith}）。
+  \item \textbf{圆盘化完成化：}Cayley 变换 \(\mathcal{C}:\mathbb{H}\to\mathbb{D}\) 及其逆映射见 \eqref{eq:app-cayley-disk}；
+  圆盘化完成化函数 \(F_{\zeta}(w)=\Xi_{\zeta}(s(w))\) 由 \eqref{eq:app-s-of-w}--\eqref{eq:app-Fzeta-disk} 定义。
+  \item \textbf{Jensen 缺陷：}对 \(\varrho\in(0,1)\)，缺陷 \(D_{\zeta}(\varrho)\) 由定义 \ref{def:app-jensen-defect} 给出，并满足 Jensen 求和式 \eqref{eq:app-jensen-sum}。
+\end{enumerate}
+
+\begin{proposition}[对数半径导数律：缺陷的导数即盘内零点计数]\label{prop:app-jensen-defect-log-derivative}
+令
+\[
+N_{F_{\zeta}}(\varrho)
+:=\#\bigl\{a:\ F_{\zeta}(a)=0,\ |a|<\varrho\bigr\}
+\]
+为 \(F_{\zeta}\) 在 \(|w|<\varrho\) 内的零点计数（按重数计）。
+则对几乎处处的 \(\varrho\in(0,1)\) 有
+\[
+\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)=N_{F_{\zeta}}(\varrho),
+\qquad
+D_{\zeta}'(\varrho)=\frac{1}{\varrho}\,N_{F_{\zeta}}(\varrho).
+\]
+并且 \(D_{\zeta}\) 在 \((0,1)\) 上连续、非减，且若对某 \(\varrho_0\in(0,1)\) 有 \(D_{\zeta}(\varrho_0)=0\)，则对所有 \(0<\varrho\le \varrho_0\) 有 \(D_{\zeta}(\varrho)=0\)。
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:app-jensen-sum}，对每个固定 \(\varrho\in(0,1)\) 盘内零点数有限，故求和为有限和。
+当 \(\varrho\) 不取任何 \(|a|\)（其中 \(a\) 遍历 \(F_{\zeta}\) 的盘内零点）时，集合 \(\{a:\ |a|<\varrho\}\) 在某个邻域内恒定，从而
+\(
+D_{\zeta}(\varrho)=\sum_{|a|<\varrho}\log(\varrho/|a|)
+\)
+在该邻域内对 \(\log\varrho\) 求导得到 \(\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)=N_{F_{\zeta}}(\varrho)\)。
+当 \(\varrho\) 穿过某个 \(|a|\) 时，新增项 \(\log(\varrho/|a|)\) 在 \(\varrho\downarrow |a|\) 下趋于 \(0\)，从而 \(D_{\zeta}\) 连续。
+非负性与单调性由 \eqref{eq:app-jensen-sum} 立得。
+最后若 \(D_{\zeta}(\varrho_0)=0\)，则对 \(\varrho\le \varrho_0\) 有 \(0\le D_{\zeta}(\varrho)\le D_{\zeta}(\varrho_0)=0\)。证毕。
+\end{proof}
+
+\begin{theorem}[任意趋近列的可数化判据]\label{thm:app-jensen-countable-criterion}
+设 \((\varrho_n)_{n\ge 1}\subset(0,1)\) 单调递增且 \(\varrho_n\uparrow 1\)。
+则下列命题等价：
+\begin{enumerate}
+  \item[(a)] 经典 RH 成立；
+  \item[(b)] 对所有 \(n\ge 1\)，有 \(D_{\zeta}(\varrho_n)=0\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a)\(\Rightarrow\)(b) 由推论 \ref{cor:app-rh-iff-jensen-defect-zero} 立得。
+\par
+(b)\(\Rightarrow\)(a) 取任意 \(\varrho\in(0,1)\)。
+由 \(\varrho_n\uparrow 1\) 可取 \(n\) 使 \(\varrho\le \varrho_n\)。
+由命题 \ref{prop:app-jensen-defect-log-derivative} 的单调性，\(0\le D_{\zeta}(\varrho)\le D_{\zeta}(\varrho_n)=0\)，故 \(D_{\zeta}(\varrho)=0\)。
+再由推论 \ref{cor:app-rh-iff-jensen-defect-zero} 得 RH。证毕。
+\end{proof}
+
+\begin{proposition}[由缺陷导出的零点排斥子盘]\label{prop:app-jensen-zero-repulsion-subdisk}
+对任意 \(0<\varrho<1\) 定义
+\[
+r_{\ast}(\varrho):=\varrho\,\exp\!\bigl(-D_{\zeta}(\varrho)\bigr)\in(0,\varrho].
+\]
+则 \(F_{\zeta}\) 在 \(|w|<r_{\ast}(\varrho)\) 内无零点。
+特别地，若 \(D_{\zeta}(\varrho)\le \varepsilon\)，则排斥半径满足 \(r_{\ast}(\varrho)\ge \varrho e^{-\varepsilon}\)。
+\end{proposition}
+\begin{proof}
+反设存在零点 \(a\) 满足 \(|a|<r_{\ast}(\varrho)\le \varrho\)。
+则
+\[
+\log\!\Bigl(\frac{\varrho}{|a|}\Bigr)\ >\ \log\!\Bigl(\frac{\varrho}{r_{\ast}(\varrho)}\Bigr)\ =\ D_{\zeta}(\varrho).
+\]
+但 \eqref{eq:app-jensen-sum} 表明 \(D_{\zeta}(\varrho)\) 是若干非负项之和，且其中包含项 \(\log(\varrho/|a|)\)，矛盾。证毕。
+\end{proof}
+
+\begin{corollary}[排斥半径趋近 \(1\) 的充分条件]\label{cor:app-jensen-repulsion-radius-to-one}
+若存在序列 \(\varrho_n\uparrow 1\) 使得 \(r_{\ast}(\varrho_n)\uparrow 1\)，则 \(F_{\zeta}\) 在 \(|w|<1\) 内无零点，从而 RH 成立。
+\end{corollary}
+\begin{proof}
+若存在盘内零点 \(a\) 满足 \(|a|<1\)，则可取 \(n\) 使 \(|a|<r_{\ast}(\varrho_n)\)，这与命题 \ref{prop:app-jensen-zero-repulsion-subdisk} 矛盾。
+故 \(F_{\zeta}\) 在 \(\mathbb{D}\) 内无零点；由定理 \ref{thm:app-rh-iff-disk-zero-free} 得 RH。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$|w|=\varrho$}{|w|=varrho} 的 Cayley 逆像为一条显式圆]\label{prop:app-cayley-preimage-modulus-circle}
+设 \(0<\varrho<1\)。
+令 \(t=x+\mathrm{i}y\in\mathbb{H}\) 且 \(w=\mathcal{C}(t)\)。
+则 \(|w|=\varrho\) 等价于
+\[
+x^2+\Bigl(y-\frac{1+\varrho^2}{1-\varrho^2}\Bigr)^2=\Bigl(\frac{2\varrho}{1-\varrho^2}\Bigr)^2.
+\]
+该圆与虚轴交于两点
+\[
+y_{\pm}(\varrho)=\frac{1\pm\varrho}{1\mp\varrho}.
+\]
+并且当 \(\varrho\uparrow 1\) 时，\(y_{-}(\varrho)\downarrow 0\)、\(y_{+}(\varrho)\uparrow\infty\)。
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:app-cayley-disk} 及 \(|\mathcal{C}(t)|^2=\frac{|1+\mathrm{i}t|^2}{|1-\mathrm{i}t|^2}\)，对 \(t=x+\mathrm{i}y\) 计算
+\[
+|1+\mathrm{i}t|^2=x^2+(1-y)^2,
+\qquad
+|1-\mathrm{i}t|^2=x^2+(1+y)^2.
+\]
+令其比值等于 \(\varrho^2\) 并配方即得圆方程。
+取 \(x=0\) 得交点公式；极限由显式表达直接推出。证毕。
+\end{proof}
+
+\begin{proposition}[缺陷的上半平面圆平均表示与显式参数化]\label{prop:app-jensen-defect-upperhalf-circle-average}
+设 \(0<\varrho<1\)。
+记
+\[
+t(\varrho,\theta):=\mathcal{C}^{-1}(\varrho e^{\mathrm{i}\theta})\in\mathbb{H}.
+\]
+则
+\[
+D_{\zeta}(\varrho)
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log\Bigl|\Xi_{\zeta}\!\Bigl(\tfrac12+\mathrm{i}\,t(\varrho,\theta)\Bigr)\Bigr|\,\dd\theta
+-\log\bigl|\Xi_{\zeta}(-\tfrac12)\bigr|.
+\]
+并且 \(t(\varrho,\theta)\) 具有显式分解
+\begin{equation}\label{eq:app-t-rho-theta-explicit}
+\boxed{\;
+t(\varrho,\theta)
+=\frac{2\varrho\sin\theta}{1+\varrho^2+2\varrho\cos\theta}
+\;+\;
+\mathrm{i}\,\frac{1-\varrho^2}{1+\varrho^2+2\varrho\cos\theta}\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:app-jensen-defect}、\eqref{eq:app-Fzeta-disk} 与 \eqref{eq:app-s-of-w}，对 \(w=\varrho e^{\mathrm{i}\theta}\) 有
+\(
+\log|F_{\zeta}(w)|=\log|\Xi_{\zeta}(\tfrac12+\mathrm{i}\mathcal{C}^{-1}(w))|
+\)，且 \(F_{\zeta}(0)=\Xi_{\zeta}(-\tfrac12)\)，故得到第一式。
+\par
+显式分解由 \eqref{eq:app-cayley-disk} 的 \(t=-\mathrm{i}\frac{w-1}{w+1}\) 在 \(w=\varrho e^{\mathrm{i}\theta}\) 上作代数化简得到。证毕。
+\end{proof}
+
+\begin{corollary}[端点局部化：\texorpdfstring{$\varrho\uparrow 1$}{varrho->1} 的高虚部贡献集中于 \texorpdfstring{$\theta\approx\pi$}{theta~pi}]\label{cor:app-jensen-endpoint-localization}
+由 \eqref{eq:app-t-rho-theta-explicit} 得
+\[
+\Im\,t(\varrho,\theta)=\frac{1-\varrho^2}{1+\varrho^2+2\varrho\cos\theta},
+\]
+其在 \(\theta=\pi\) 处取最大值
+\[
+\Im\,t(\varrho,\pi)=\frac{1+\varrho}{1-\varrho}=y_{+}(\varrho)
+\]
+（命题 \ref{prop:app-cayley-preimage-modulus-circle}）。
+因此当 \(\varrho\uparrow 1\) 时，圆周平均的高虚部采样被迫集中于端点 \(w=\varrho e^{\mathrm{i}\pi}\approx-1\) 的窄角邻域；该端点邻域成为控制 \(D_{\zeta}(\varrho)\) 的主要刚性来源。
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:app-t-rho-theta-explicit} 直接计算。
+当 \(\theta=\pi\) 时分母为 \((1-\varrho)^2\)，得最大值并随 \(\varrho\uparrow 1\) 发散。证毕。
+\end{proof}
+
+\begin{remark}[端点分解的优先奇通道原则（与 Chebyshev--Adams 桥对齐）]\label{rem:app-jensen-odd-channel-priority}
+推论 \ref{cor:app-jensen-endpoint-localization} 表明：\(\varrho\uparrow 1\) 的主要困难局部化于端点 \(w\approx-1\)。
+在完成化坐标 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\) 下，幂半群 \(w\mapsto w^m\) 对应 \(s\mapsto C_m(s)\)（\S\ref{subsec:unit-disk-witt-chebyshev}）。
+由端点导数律（命题 \ref{prop:chebyshev-endpoint-derivative-splitting}）可知：奇 \(m\) 通道在 \(s=0\) 附近保留线性主尺度，而偶 \(m\) 通道的一阶喷射退化，贡献仅进入高阶残差。
+因此任何针对端点邻域的多尺度剥离在结构上必然以奇通道为主项、偶通道为高阶修正。
+\end{remark}
+
+\paragraph{研究落点（与 RH 的严格契约对齐）}\label{par:app-jensen-research-target-chain}
+综合以上接口与结论，单位圆面积相位算术--圆盘化--Jensen 缺陷路线可被组织为如下闭合契约链：
+\begin{enumerate}
+  \item \textbf{可数化：}任选 \(\varrho_n\uparrow 1\)，由定理 \ref{thm:app-jensen-countable-criterion} 把 RH 等价压缩为可数族约束 \(D_{\zeta}(\varrho_n)=0\)。
+  \item \textbf{几何显式化：}对每个 \(\varrho\)，由命题 \ref{prop:app-jensen-defect-upperhalf-circle-average} 将 \(D_{\zeta}(\varrho)\) 解释为 \(\Xi_{\zeta}\) 在上半平面一条显式圆周上的对数模长平均；该圆的几何由命题 \ref{prop:app-cayley-preimage-modulus-circle} 给出。
+  \item \textbf{端点局部化与奇偶轴：}由推论 \ref{cor:app-jensen-endpoint-localization}，当 \(\varrho\uparrow 1\) 时主要困难局部化于端点 \(w\approx-1\) 的窄角邻域；端点喷射的奇偶分裂（命题 \ref{prop:chebyshev-endpoint-derivative-splitting}）为端点多尺度剥离提供结构轴（注 \ref{rem:app-jensen-odd-channel-priority}）。
+  \item \textbf{证书化充分条件：}若能在某一具体 \(\varrho_n\uparrow 1\) 上构造可审计上界链，使零点排斥半径 \(r_{\ast}(\varrho_n)=\varrho_n e^{-D_{\zeta}(\varrho_n)}\uparrow 1\)，则由推论 \ref{cor:app-jensen-repulsion-radius-to-one} 推出盘内无零点，从而得到 RH。
+\end{enumerate}
+
 \subsection{Blaschke 数据与正交轴：边界模长与盘内零点的因子分解（条件口径）}\label{subsec:unit-disk-inner-outer}
 上小节的 Jensen 缺陷把“盘内零点”压缩为一族有限积分；在 Hardy/Smirnov 类中，零点信息还可被提升为一个更结构化的对象：\textbf{内因子}。
 
