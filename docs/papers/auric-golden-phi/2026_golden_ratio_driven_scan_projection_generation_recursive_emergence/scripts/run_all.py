@@ -1211,6 +1211,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_output_potential_puiseux_asymptotics",
+            script="exp_real_input_40_output_potential_puiseux_asymptotics.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_puiseux_asymptotics.json",
+                "sections/generated/eq_real_input_40_output_potential_puiseux_asymptotics.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_rotation_polytope",
             script="exp_real_input_40_rotation_polytope.py",
             args=[],
