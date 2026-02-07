@@ -960,6 +960,39 @@ I(\gamma,\mathcal{E})
 该式把“空间损失谱”从单参数 \(q\) 升级为同时含温度轴 \(u\) 的联合谱前沿，并且所有输入量都可由有限核的 Perron 根计算；因此即便只在离散 \(q\) 与采样 \(u\) 网格上可计算，仍可输出一条可审计的二维上包络/下包络作为编译器与审计链的前沿证书。
 \end{remark}
 
+\begin{corollary}[压力前沿驱动的硬化时间下界（原型）]\label{cor:pom-pressure-delay-lower-bound}
+在序门读出采用扭曲谱隙刻度的口径下（推论 \ref{cor:pom-order-mixing}；注 \ref{rem:pom-order-mixing-scale}），记
+\[
+\Gamma(u)
+:=
+\log\!\Bigl(\frac{\lambda_1(u)}{\Lambda(u)}\Bigr)
+=\frac{1}{\tau_{\mathrm{mix}}(u)},
+\qquad
+\lambda_1(u):=\rho(M_1(u)),\quad
+\Lambda(u):=\sup_{\chi\neq 1}\rho(M_\chi(u)).
+\]
+令 \(\varepsilon_m\) 为在分辨率 \(m\) 的参考抽样口径下允许的总失败概率预算（定义 \ref{def:pom-eps-sound-rewrite}）。
+若某一“软序门 \(\Rightarrow\) 硬序门”的硬化/比较读出需要达到
+\(
+\varepsilon_m\le \exp(-\alpha m)
+\)
+的指数可靠性（\(\alpha>0\)），则其最小迭代深度 \(n_{\min}(m)\) 满足
+\[
+\boxed{\;
+n_{\min}(m)\ \gtrsim\ \frac{\log(1/\varepsilon_m)}{\Gamma(u)}\ \ge\ \frac{\alpha}{\Gamma(u)}\,m\;}
+\]
+（常数因子吸收到 \(\gtrsim\)）。
+特别地，当可靠性指数 \(\alpha\) 由压力前沿的速率函数给出（例如取 \(\alpha=I(\gamma,\mathcal{E})\)，见注 \ref{rem:pom-psi-2d-legendre-front}），则“序投影硬化”的最小时间增长被空间--能量联合谱前沿刚性约束：谱前沿越陡（\(I\) 越大），在固定 \(\Gamma(u)\) 下所需的最小时间步数越大。
+\end{corollary}
+\begin{proof}
+推论 \ref{cor:pom-order-mixing} 给出混合时间尺度
+\(
+n\gtrsim \tau_{\mathrm{mix}}(u)\log(1/\varepsilon_m)
+\)；
+以 \(\Gamma(u)=1/\tau_{\mathrm{mix}}(u)\) 改写即得第一项不等式。
+第二项由 \(\varepsilon_m\le e^{-\alpha m}\) 取对数立得。证毕。
+\end{proof}
+
 \begin{definition}[硬化--端点交换异常 \texorpdfstring{$\Delta_{\mathrm{swap}}$}{Delta_swap}（不可规约证书原语）]\label{def:pom-hard-tail-swap-anomaly}
 在混合压力 \(\Psi(q,u)\) 的口径下，定义双极限交换子
 \[

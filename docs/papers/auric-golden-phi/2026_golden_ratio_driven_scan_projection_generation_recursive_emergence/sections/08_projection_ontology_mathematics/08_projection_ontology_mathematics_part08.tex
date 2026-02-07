@@ -99,6 +99,21 @@ G^{\mathrm{BC}}_m(w),\
 则“判等”与“优化”可统一理解为：在满足 \(\Sigma_m\) 一致的候选实现中，借助代价函子在 \(\mathbb{T}^{(2)}\) 中取帕累托极小元（见命题 \ref{prop:pom-cost-optimization-decidable}）。
 \end{remark}
 
+\begin{remark}[可计算闭环：重写系统 \texorpdfstring{$+$}{+} 语义核对系统]\label{rem:pom-rewrite-semantic-check-loop}
+本节的组织可被压缩为一条可执行的“演算学闭环”：
+\begin{enumerate}
+  \item \textbf{语法层（证书化重写）：}
+  在 \(\mathbf{PW}\) 中进行正规化与重写，输出接口正规形 \(\mathrm{NF}(w)\) 及其 \(2\)-态射证书（定义 \ref{def:pom-alg-equivalence-2morphism}）。
+  若允许近似编译，则以 \(\varepsilon\)-sound 证书携带风险预算（定义 \ref{def:pom-eps-sound-rewrite}），并由最小预算距离 \(d_{\mathcal I}\) 将预算内化为同态类上的内禀量（定义 \ref{def:pom-eps-distance}；命题 \ref{prop:pom-eps-distance-lawvere}）。
+  \item \textbf{语义层（有限签名/谱指纹）：}
+  以保守语义函子 \(\mathsf{Sem}\) 将词送入“签名 \(\times\) 谱”的可计算输出域（定义 \ref{def:pom-sem-functor}），并在有界切片上用有限签名 \(\Sigma_m(w)\) 做核对（注 \ref{rem:pom-finite-signature-sigmam}）。
+  \item \textbf{核对层（判等/一致性）：}
+  在切片口径下，\(\mathsf{Sem}\) 的一致性反射自然同构（定理 \ref{thm:pom-sem-conservative}），从而“词法正规形一致 + 残差类一致 + 有限谱指纹一致”给出可终止的判等流程；
+  对近似编译，则以 \(d_{\mathcal I}(w_1,w_2)\le\varepsilon\) 作为“允许误差”口径的内禀判据。
+  此外，同余/角色轴的“无限寄存器”并不妨碍终止性：任何有限投影词只触及有限模支持，核验可归约到某个有限层 \(\widehat{G_{m_\ast}}\) 的穷举（命题 \ref{prop:pom-finite-modulus-stability}）。
+\end{enumerate}
+\end{remark}
+
 \subsubsection{代价半环与代价函子：从 \texorpdfstring{$\mathbf{PW}$}{PW} 到资源预序}\label{subsec:pom-cost-functor}
 \paragraph{代价半环}
 令 \(\overline{\RR}_{\ge 0}:=\RR_{\ge 0}\cup\{+\infty\}\)，并令

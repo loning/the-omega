@@ -378,6 +378,48 @@ $$
 在 \(E_1^c\cap E_2^c\) 上有 \(Y_w=Y_{w'}=Y_{w''}\)，故坏事件可取 \(E_1\cup E_2\)，其概率不超过 \(\varepsilon+\delta\)。证毕。
 \end{proof}
 
+\begin{definition}[最小预算距离（Lawvere 距离）]\label{def:pom-eps-distance}
+固定对象 \(\mathcal{I}(m;K;\kappa)\) 与其参考抽样分布 \(\mathbb{P}_{\mathcal I}\)（定义 \ref{def:pom-eps-sound-rewrite}）。
+对任意同型的投影词 \(w_1,w_2\)（同源同靶），定义其\textbf{最小预算距离}为
+\[
+\boxed{\;
+d_{\mathcal I}(w_1,w_2)
+:=
+\inf\{\varepsilon\ge 0:\ w_1\Longrightarrow_{\varepsilon} w_2\}\;}
+\]
+并约定当集合为空时 \(d_{\mathcal I}(w_1,w_2)=+\infty\)。
+\end{definition}
+
+\begin{proposition}[预算范畴化：最小预算给出内禀距离]\label{prop:pom-eps-distance-lawvere}
+在定义 \ref{def:pom-eps-distance} 的记号下，对任意同源同靶的投影词 \(w_1,w_2,w_3\) 有
+\[
+\boxed{\;
+d_{\mathcal I}(w,w)=0,\qquad
+d_{\mathcal I}(w_1,w_3)\ \le\ d_{\mathcal I}(w_1,w_2)+d_{\mathcal I}(w_2,w_3)\; }.
+\]
+因此每个同态类 \(\mathbf{PW}(A,B)\) 在 \(d_{\mathcal I}\) 下带有一个（一般非对称的）Lawvere 距离结构：预算的可加复合律被内化为距离的三角不等式。
+\end{proposition}
+\begin{proof}
+取 \(E=\varnothing\) 得 \(w\Longrightarrow_0 w\)，故 \(d_{\mathcal I}(w,w)=0\)。
+\par
+对三角不等式，任取 \(\eta_1>d_{\mathcal I}(w_1,w_2)\)、\(\eta_2>d_{\mathcal I}(w_2,w_3)\)。
+按下确界的定义，存在证书 \(w_1\Longrightarrow_{\eta_1} w_2\) 与 \(w_2\Longrightarrow_{\eta_2} w_3\)；
+由命题 \ref{prop:pom-eps-sound-compose} 得 \(w_1\Longrightarrow_{\eta_1+\eta_2} w_3\)，从而
+\(
+d_{\mathcal I}(w_1,w_3)\le \eta_1+\eta_2
+\)。
+令 \(\eta_1,\eta_2\downarrow\) 即得结论。证毕。
+\end{proof}
+
+\begin{remark}[Lawvere 富化口径：\texorpdfstring{$\mathbf{PW}_\varepsilon$}{PW\_eps}]\label{rem:pom-pw-eps-lawvere}
+将 \(\varepsilon\)-sound 证书 \(w\Longrightarrow_\varepsilon w'\) 视为带预算的 \(2\)-态射，并以最小预算距离 \(d_{\mathcal I}\)（定义 \ref{def:pom-eps-distance}）作为同态类上的内禀结构，则对固定接口 \(\mathcal I\)：
+\begin{itemize}
+  \item \textbf{预算合成律}（命题 \ref{prop:pom-eps-sound-compose}）等价于 \(d_{\mathcal I}\) 的三角不等式（命题 \ref{prop:pom-eps-distance-lawvere}）；
+  \item \textbf{非对称性}允许把“可实现的近似编译”组织为有向距离（Lawvere 距离），无需强加对称性假设。
+\end{itemize}
+在该意义下，投影词演算可被视为一个以 \((\overline{\RR}_{\ge 0},\ge,+,0)\) 为基底的 Lawvere 富化 \(2\)-范畴（记作 \(\mathbf{PW}_\varepsilon\)）：证书与预算不再作为外部叙述附加于输出，而被内化为范畴结构数据。
+\end{remark}
+
 \begin{remark}[编译输出作为 \texorpdfstring{$(w',\varepsilon)$}{(w',eps)}]\label{rem:pom-compile-output-word-eps}
 在工程口径下，一个“带证书”的编译过程往往输出一条正规化后的词 \(w'\) 以及其相对于原词 \(w\) 的总误差预算 \(\varepsilon\)：
 这正对应于在 \(\mathbf{PW}\) 中构造一条 \(2\)-态射证书 \(w\Longrightarrow_{\varepsilon} w'\)。
