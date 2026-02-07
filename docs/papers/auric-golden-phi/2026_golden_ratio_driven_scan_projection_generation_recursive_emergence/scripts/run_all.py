@@ -329,6 +329,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="foldbin_fold_complement_identity_m6_m12",
+            script="exp_foldbin_fold_complement_identity_m6_m12.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin_fold_complement_identity_m6_m12.json",
+                "sections/generated/eq_foldbin_fold_complement_identity_m6_m12.tex",
+            ],
+        ),
+        Step(
             name="fibonacci_lie_resonance_ladder",
             script="exp_fibonacci_lie_resonance_ladder.py",
             args=["--m-min", "1", "--m-max", "500"],
