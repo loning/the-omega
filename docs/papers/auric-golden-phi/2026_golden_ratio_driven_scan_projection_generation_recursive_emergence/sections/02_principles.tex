@@ -2,57 +2,33 @@
 
 \subsection{自指比例与重整化不动点}
 
-设黄金比例
+本文固定黄金比例
 \[
 \varphi=\frac{1+\sqrt5}{2}.
 \]
-其满足 $\varphi=1+\varphi^{-1}$，等价地，$\varphi^{-1}$ 为自映射 $x\mapsto (1+x)^{-1}$ 的不动点。本文将该关系视为一个\textbf{尺度自相似的最小代数原型}：它在斐波那契递推、增长率与 Zeckendorf/Ostrowski 语法的重整化实现中反复出现。解释性叙述仅用于动机，不作为后续推导前提（见小节 \ref{subsec:reading-guide}）。
+并以黄金分支 $\varphi^{-1}\in(0,1)$ 作为后续构造中的规范参数。它满足固定点关系
+\[
+\varphi^{-1}=(1+\varphi^{-1})^{-1}\quad(\Leftrightarrow\ \varphi=1+\varphi^{-1}),
+\]
+该关系仅作为“尺度自相似/重整化”的最小代数原型；与 Fibonacci/Zeckendorf/Ostrowski 的经典联系在本文中只作为引用点使用，不在此展开。
 
 \subsection{反共振最优性原则}
 
-在从连续（或高维）生成结构导出离散读出序列时，有理近似诱导的低分母周期性可放大有限样本偏差。本文在\emph{Hurwitz/Markov}（最坏有理逼近）尺度下引入一个外部可审计的基线，并将其作为后续稳定性证书的参照标准：黄金分支对应的常数为该尺度下的最强反共振代表（\cite{Cassels1957,KuipersNiederreiter1974}）。
-
-\begin{definition}[共振强度]\label{def:resonance-strength}
-对 $\alpha\in\RR\setminus\QQ$，定义其有理近似共振强度为
-\[
-R(\alpha):=\sup_{(p,q)\in\ZZ\times\NN}\frac{1}{q^2\abs{\alpha-p/q}} \in (0,\infty].
-\]
-该量越小，表示在最坏情形口径下越难出现低分母的强共振近似。
-\end{definition}
-
-量 $R(\alpha)$ 是连分数理论中的 \emph{Lagrange 常数}（亦即 Markov/Lagrange 谱的基本不变量）。并且 $R(\alpha)<\infty$ 当且仅当 $\alpha$ \emph{badly approximable}（等价于其连分数部分商有界）；此时
-\[
-R(\alpha)=\limsup_{n\to\infty}\frac{1}{q_n^2\abs{\alpha-p_n/q_n}},
-\]
-其中 $p_n/q_n$ 为 $\alpha$ 的连分数收敛分数（参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
+在从连续（或高维）生成结构导出离散读出序列时，有理近似诱导的低分母周期性会放大有限样本偏差。本文以 Hurwitz/Markov 的最坏有理逼近尺度给出一个外部可审计的反共振基线（\cite{Cassels1957,KuipersNiederreiter1974}），并将其作为后续稳定性证书的参照标准。
 
 \begin{definition}[Markov 常数（最坏逼近下界）]\label{def:markov-constant}
 对 $\alpha\in\RR\setminus\QQ$，定义
 \[
 c(\alpha):=\inf_{(p,q)\in\ZZ\times\NN} q^2\left|\alpha-\frac{p}{q}\right|\in[0,\infty).
 \]
-若 $c(\alpha)>0$（等价于 $\alpha$ badly approximable），则 $R(\alpha)=1/c(\alpha)$；若 $c(\alpha)=0$，则必有 $R(\alpha)=\infty$。
+若 $c(\alpha)>0$，称 $\alpha$ 为 badly approximable（等价于其连分数部分商有界；参见 \cite{Cassels1957,KuipersNiederreiter1974}）。
 \end{definition}
 
-\begin{theorem}[Hurwitz 定理与最优常数]\label{thm:hurwitz-optimal}
-对任意无理数 $\alpha\in\RR\setminus\QQ$，其最坏有理逼近常数满足 $c(\alpha) \le 1/\sqrt5$，即存在无穷多个 $(p,q)\in\ZZ\times\NN$ 使得
-\[
-\left|\alpha-\frac{p}{q}\right|<\frac{1}{\sqrt5\,q^2}.
-\]
-等价地，其共振强度满足 $R(\alpha) \ge \sqrt5$。该常数 $\sqrt5$ 在全体无理数集合上具有最优性，且由黄金分支（即 $\alpha=\varphi, \varphi^{-1}$ 及其 $\mathrm{SL}_2(\ZZ)$ 等价类）达到（见 \cite{Cassels1957,KuipersNiederreiter1974}）。
-\end{theorem}
-
-\begin{corollary}[反共振基线的规范化]\label{cor:anti-resonant-baseline}
-根据定理 \ref{thm:hurwitz-optimal}，黄金分支在最坏有理逼近口径下实现了共振强度的全局下界 $\inf R(\alpha)=\sqrt5$。本文后续所有涉及扫描参数的“反共振选择”均以此作为可审计的规范化基线与参照标准。
-\end{corollary}
-
-\begin{remark}[边界与对照：工程采样文献中的黄金增量]\label{rem:boundary-comparison}
-需要说明的是，黄金角（golden angle）或黄金比增量在工程采样文献中具有广泛应用，例如在径向采样次序（如 Golden-angle radial MRI）与多维 golden means 构造中，常利用其在 Steinhaus 三间隙定理（three-gap theorem）下的准均匀分布特性。然而，本文的逻辑起点并非追求“任意截断下的严格均匀性”，而是严格限定在 Hurwitz/Markov 的最坏有理逼近口径下，将黄金分支作为一类可审计的反共振基线使用。这种区分确保了本文的证明链条仅依赖于数论上的最坏逼近界，而不将其等同于工程意义上的通用最优采样。
-\end{remark}
+经典 Hurwitz 定理给出对任意无理 $\alpha$ 有 $c(\alpha)\le 1/\sqrt5$，且该上界由黄金分支（$\alpha=\varphi$ 或 $\varphi^{-1}$ 及其 $\mathrm{SL}_2(\ZZ)$ 等价类）达到（\cite{Cassels1957,KuipersNiederreiter1974}）。因此本文后续所有涉及扫描参数的“反共振选择”均以 $\alpha=\varphi^{-1}$ 作为可审计的规范化基线与对照参照。
 
 \subsection{从反共振到有限样本稳定性：一个可审计的优化问题}
 
-定理 \ref{thm:hurwitz-optimal} 与推论 \ref{cor:anti-resonant-baseline} 属于经典数论结论。为了将其转译为扫描—投影读出中的可审计稳定性证书，本文在最基本的一维 Kronecker 扫描模型上引入一类与第 \ref{sec:statistical-stability} 节一致的量化指标，并明确本文所使用的优化口径。
+Hurwitz/Markov 的最坏逼近界属于经典数论结论。为了将其转译为扫描—投影读出中的可审计稳定性证书，本文在最基本的一维 Kronecker 扫描模型上引入一类与第 \ref{sec:statistical-stability} 节一致的量化指标，并明确本文所使用的优化口径。
 
 \begin{definition}[共振诱导不稳定性（Kronecker 扫描的可审计证书）]\label{def:instability-envelope}
 对无理 $\alpha\in\RR\setminus\QQ$ 与初相位 $x_0\in[0,1)$，考虑 Kronecker 序列
