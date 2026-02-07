@@ -151,15 +151,21 @@ P(z,u)=P_{\mathrm{core}}(z,u)+m u^{E}z^{\ell}
 
 \begin{proposition}[镜像 Perron 分支与次谱近简并]\label{prop:real-input-40-output-mirror-branch}
 沿命题 \ref{prop:real-input-40-pressure-freezing} 的记号，令 \(G(\lambda,u)=\lambda^8F(\lambda^{-1},u)\)。
-则当 \(u\to+\infty\) 时，除 Perron 分支 \(\lambda_1(u)=c\sqrt u+d+O(u^{-1/2})\) 外，方程 \(G(\lambda,u)=0\) 还存在一条负实分支 \(\lambda_{\mathrm{mir}}(u)<0\) 满足
+则当 \(u\to+\infty\) 时，除 Perron 分支外，方程 \(G(\lambda,u)=0\) 还存在一条负实分支 \(\lambda_{\mathrm{mir}}(u)<0\)，并且两支组成一对严格的 Puiseux jet：
 \[
-\boxed{\ \lambda_{\mathrm{mir}}(u)=-c\sqrt u+O(1)\ }.
+\boxed{\ \lambda_1(u)=c\sqrt u+d+\frac{e}{\sqrt u}+\frac{f}{u}+O\!\left(u^{-3/2}\right)\ },
+\qquad
+\boxed{\ \lambda_{\mathrm{mir}}(u)=-c\sqrt u+d-\frac{e}{\sqrt u}+\frac{f}{u}+O\!\left(u^{-3/2}\right)\ }.
 \]
 因此最大非主模特征值满足
 \[
 \boxed{\ \Lambda_2(u)=|\lambda_{\mathrm{mir}}(u)|\sim c\sqrt u\ },
 \qquad\text{从而}\qquad
 \boxed{\ \lim_{u\to+\infty}\frac{\Lambda_2(u)}{\lambda_1(u)}=1\ }.
+\]
+并且相对谱隙具有显式主阶
+\[
+\boxed{\ 1-\frac{\Lambda_2(u)}{\lambda_1(u)}=\frac{2d}{c}\,u^{-1/2}+O(u^{-1})\ }.
 \]
 另一方面，显式分支满足严格次级尺度
 \[
@@ -176,15 +182,20 @@ y^4-6y^3+9y^2-y-1=0
 \lambda\approx \pm\sqrt{y_{\max}}\,\sqrt u=\pm c\sqrt u
 \)。
 其中正分支为 Perron 根（由非负性与 Perron--Frobenius 唯一性），负分支即为 \(\lambda_{\mathrm{mir}}(u)\)，并给出所示近简并结论。
-最后一式由 \(\lambda_1(u)\sim c\sqrt u\) 直接推出。证毕。
+对更高阶项，令 \(t:=u^{-1/2}\to 0^+\)，并作 Laurent/Puiseux 形式
+\(\lambda_1(t)=c\,t^{-1}+d+e\,t+f\,t^2+\cdots\)、\(\lambda_{\mathrm{mir}}(t)=-c\,t^{-1}+d-e\,t+f\,t^2+\cdots\)，代回 \(G(\lambda,t^{-2})=0\) 逐阶比较系数即可解出 \(d,e,f\)（见脚本 \texttt{scripts/exp\_real\_input\_40\_output\_potential\_puiseux\_asymptotics.py}）。证毕。
 \end{proof}
 
 \begin{remark}[含义：混合时间的饱和端点发散由镜像分支驱动]\label{rem:real-input-40-output-mirror-mixing}
-命题 \ref{prop:real-input-40-output-mirror-branch} 表明：当 \(u\) 向饱和端点推至无穷大时，次谱比 \(\Lambda_2(u)/\lambda_1(u)\to 1\)，因此任何由谱隙比控制的混合尺度
+命题 \ref{prop:real-input-40-output-mirror-branch} 表明：当 \(u\to+\infty\) 时，次谱比 \(\Lambda_2(u)/\lambda_1(u)\to 1\)，并且
+\(
+1-\Lambda_2(u)/\lambda_1(u)=\Theta(u^{-1/2})
+\)。
+因此任何由谱隙比控制的混合尺度
 \(
 \tau_{\mathrm{mix}}(u)\asymp 1/\bigl(-\log(\Lambda_2(u)/\lambda_1(u))\bigr)
 \)
-都会随 \(u\) 发散；其主导机制来自 \(F\)-块的镜像分支，而非显式 \(\sqrt u\) 分支。
+都会随 \(u\) 以 \(\sqrt u\) 量级发散；其主导机制来自 \(F\)-块的镜像分支，而非显式 \(\sqrt u\) 分支。
 后者仍提供一个独立的、可追踪的第三尺度候选 \(\sqrt u/\lambda_1(u)\to 1/c\)，可用于分离“近简并慢模”之外的剩余谱层。
 \end{remark}
 
@@ -234,9 +245,9 @@ G(\lambda,u)
   \(
   P(\theta)=4e^{\theta}+O(e^{2\theta})
   \)。
-  \item \textbf{$u\to\infty$（$\theta\to+\infty$）饱和：}存在常数 $c>0,d\in\RR$ 使得
+  \item \textbf{$u\to\infty$（$\theta\to+\infty$）饱和：}存在常数 $c>0$ 与代数常数 $d,e,f\in\RR$ 使得
   \[
-  \lambda(u)=c\sqrt u+d+O(u^{-1/2}),
+  \lambda(u)=c\sqrt u+d+\frac{e}{\sqrt u}+\frac{f}{u}+O\!\left(u^{-3/2}\right),
   \]
   其中 $y:=c^2$ 为四次方程
   \[
@@ -246,9 +257,12 @@ G(\lambda,u)
   \[
   d=\frac{y^3-2y^2+3y-4}{8y^3-36y^2+36y-2}\Bigg|_{y=c^2}.
   \]
-  数值上 $c\approx 1.89635299351377,\ d\approx 0.807943317323508$，从而
+  数值上 $c\approx 1.89635299351377,\ d\approx 0.807943317323508$，
+  并且 $e\approx -0.245317935748073,\ f\approx 0.511186364773580$
+  （由脚本 \texttt{scripts/exp\_real\_input\_40\_output\_potential\_puiseux\_asymptotics.py} 逐阶比较系数导出），从而
   \[
-  P(\theta)=\frac{\theta}{2}+\log c+\frac{d}{c}e^{-\theta/2}+O(e^{-\theta}).
+  P(\theta)=\frac{\theta}{2}+\log c+\frac{d}{c}e^{-\theta/2}
+  +\Bigl(\frac{e}{c}-\frac{d^2}{2c^2}\Bigr)e^{-\theta}+O(e^{-3\theta/2}).
   \]
 \end{enumerate}
 因此
