@@ -46,6 +46,15 @@ u=e^{i\theta}\in\mathrm{Phase}
 $$
 作为唯一可核验的连续参数通道；一般分解 $u=re^{i\theta}$ 中的径向参数 $r$ 不属于该协议的可见输入类型。与此相容的三生成元正规化片段与证书化重写规则见附录 \ref{app:pw-fragment}；类型安全拒绝链的形式化压缩见附录 \ref{app:type-safety-details}。
 \end{definition}
+
+\begin{definition}[类型化地址域与 \texorpdfstring{$\NULL$}{NULL} 语义]\label{def:us-typed-address-null}
+在 unitary slice 核验协议下，类型化地址域取为
+$$
+\Addr_{\mathrm{US}}:=\{(L,\theta,p):\ L>1,\ \theta\in\RR,\ p\in\NN\}.
+$$
+固定一族确定性验证规则 $\mathsf{Verify}_{\mathrm{US}}$：其输入为 $(\Delta,L,\theta,p,c)$（其中 $c$ 为有限数据证书），输出为通过/拒绝，且“通过”蕴含相应数学断言成立。相应的证书对象格式（例如 NonZero 与 RootInterval 的区间证书、覆盖式 $\NULL$ 证书等）见第 \ref{sec:conclusion-cluster} 节 \S\ref{subsec:cc-us-cert} 与附录 \ref{app:inject-code-audit}。\par
+据此，可将 unitary slice 的读出理解为“证书存在性”驱动的偏函数：对给定 $(L,\theta,p)$，若存在某个证书 $c$ 使 $\mathsf{Verify}_{\mathrm{US}}(\Delta,L,\theta,p,c)$ 通过，则读出返回相应的标签输出（例如“非零/含零区间”等）；若不存在任何通过核验的证书，则读出不定义并按约定返回 $\NULL$。
+\end{definition}
 在三生成元片段 $(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$ 上，任意投影词可规约到规范形
 $$
 \mathrm{LIFT}_G\circ \mathrm{PROJ}_u\circ E_m,

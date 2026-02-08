@@ -1,6 +1,6 @@
-\section{结论簇：自描述编码、统一构造与 unitary slice 数值证书的可重复性}\label{sec:conclusion-cluster}
+\section{证书与统一编码层：自描述编码、单码残差与 unitary slice 的可重复核验}\label{sec:conclusion-cluster}
 
-本章在既定的“对象存在 $\Leftrightarrow$ 可寻址 $\Leftrightarrow$ 读出非 $\NULL$”语义与三寄存器闭包（尺度/素数/相位）之上，汇集三类结构性结果（定义—定理—证明），并统一表述为“有限数据证书 $+$ 确定性验证程序”下的可核验命题族：
+本章在既定的“对象存在 $\Leftrightarrow$ 可寻址 $\Leftrightarrow$ 读出非 $\NULL$”语义与三寄存器闭包（尺度/素数/相位）之上，给出与可核验性直接相关的证书与编码层构造，并统一表述为“有限数据证书 $+$ 确定性验证程序”下的可核验命题族：
 \begin{enumerate}
   \item \textbf{注入/编码的完全形式化：}给出具体的 $\mathrm{code}/\mathrm{decode}$（配对函数与自描述序列 Gödel 化），并证明其可判定互逆性；由此得到“有限结构 $\Leftrightarrow$ 单一自然数”的严格地址化。
   \item \textbf{运算族的统一构造：}在同一构造框架下同时覆盖四则、商余、布尔表达式与（在可寻址语义域内的）ZFC 风格集合运算，并证明其在三寄存器闭包内的\textbf{可核验的可逆求值}（残差信息允许回放重构）。
@@ -174,132 +174,36 @@ $$
 由 prime-register 的值映射 $N:P\to\NN_{\ge 1}$（唯一分解），可将任意 $R\in\NN$ 嵌入为“单质因子”残差：选定素数 $p_\star$，令 $r_\star(p_\star)=R+1$ 且其余坐标为 $0$，则 $N(r_\star)=p_\star^{R+1}$。由 $p_\star$-进赋值可判定恢复 $R$，再由定理 \ref{thm:cc-singlecode-replay} 回放。该嵌入说明：多素数支撑是并行与局域性的代价优化，而非可逆性的逻辑前提。
 \end{remark}
 
-\subsection{运算族的统一构造：四则、商余、布尔与集合运算}\label{subsec:cc-unified-ops}
+\subsection{（可选）运算族的统一构造：四则、商余、布尔与 HF 集合运算}\label{subsec:cc-unified-ops}
 
-以下以正文第 \ref{sec:emergent-arithmetic} 节得到的自然数半环结构作为出发点：令
-$$
-\NN_{\POM}:=(Z,\oplus,\otimes)
-$$
-为稳定自然数对象域（同构于 $(\NN,+,\times)$）。
+本节将第 \ref{sec:emergent-arithmetic} 节得到的稳定自然数半环 $\NN_{\POM}:=(Z,\oplus,\otimes)$ 作为基底，说明常用运算族可以在“可寻址读出 $+$ 正规化 $+$ 残差回放”的框架下统一实现，并在需要处以 $\NULL$ 显式截断不可预算/不可判定的自由度。为避免主文冗长，完整的可核验定义链、正规化与实现细节置于附录 \ref{app:ops-zfc} 与附录 \ref{app:godel-wsos-rouche}。
 
-\subsubsection{整数的群完成与减法涌现（不引入新原语）}\label{subsubsec:cc-z}
-\begin{definition}[Grothendieck 群完成]\label{def:cc-z-pom}
-定义整数对象为群完成
-$$
-\ZZ_{\POM}:=\bigl(\NN_{\POM}\times\NN_{\POM}\bigr)/\sim,
-$$
-其中
-$$
-(a,b)\sim(c,d)\quad\Longleftrightarrow\quad a\oplus d=b\oplus c.
-$$
-记等价类为 $[(a,b)]$。定义嵌入 $\eta:\NN_{\POM}\hookrightarrow\ZZ_{\POM}$ 为 $\eta(n):=[(n,0)]$。
-\end{definition}
-
-\begin{definition}[环运算]\label{def:cc-z-ops}
-在 $\ZZ_{\POM}$ 上定义
-$$
-[(a,b)]+[(c,d)]:=[(a\oplus c,\,b\oplus d)],\qquad
--[(a,b)]:=[(b,a)],
-$$
-以及乘法
-$$
-[(a,b)]\cdot[(c,d)]
-:=[(a\otimes c\oplus b\otimes d,\ a\otimes d\oplus b\otimes c)].
-$$
-并定义减法为 $x-y:=x+(-y)$。
-\end{definition}
-
-\begin{theorem}[整数环涌现]\label{thm:cc-z-ring}
-$(\ZZ_{\POM},+,\cdot)$ 构成交换环，并与经典整数环 $(\ZZ,+,\cdot)$ 同构；减法由 $x-y=x+(-y)$ 内生给出。
-\end{theorem}
+\begin{proposition}[整数/有理对象的标准扩展（群完成与局部化）]\label{prop:cc-zq-summary}
+在 $\NN_{\POM}$ 上作 Grothendieck 群完成与局部化，可得对象域 $\ZZ_{\POM}$ 与 $\QQ_{\POM}$，并分别与经典 $(\ZZ,+,\cdot)$ 与 $(\QQ,+,\cdot)$ 同构；在商余读出可判定的前提下，存在可判定的正规化过程（例如以 $\gcd$ 约分并规范分母符号），从而对象层等价类与实现层表示一致。
+\end{proposition}
 
 \begin{proof}
-这是对交换半环的标准群完成/环完成构造。等价关系与运算良定义由 $\oplus,\otimes$ 的交换半环公理逐项验证；环公理由分配律与交换律传递。与经典 $\ZZ$ 的同构可由映射 $[(a,b)]\mapsto \mathrm{Val}(a)-\mathrm{Val}(b)$（或与之等价的半环同构）给出。证毕。
+这是交换半环的标准代数构造；证明与可核验实现路径见附录 \ref{app:ops-zfc}（特别是 \S\ref{subsec:ops-zq}）。
 \end{proof}
 
-\subsubsection{有理数的局部化与除法涌现（含正规化）}\label{subsubsec:cc-q}
-\begin{definition}[局部化与有理对象]\label{def:cc-q-pom}
-令 $S:=\NN_{\POM}\setminus\{0\}$。定义有理对象为
-$$
-\QQ_{\POM}:=\ZZ_{\POM}\times S\ /\approx,
-$$
-其中
-$$
-(p,q)\approx(p',q')\quad \Longleftrightarrow\quad p\cdot q'=p'\cdot q.
-$$
-将等价类记为 $\frac{p}{q}$。
-\end{definition}
-
-\begin{theorem}[有理域与除法的涌现（正规形一致）]\label{thm:cc-q-field}
-在商余（除法算法）可判定实现的前提下，$\QQ_{\POM}$ 构成域并与经典有理数域 $(\QQ,+,\cdot)$ 同构；并存在可判定的正规化过程，把任意表示归约到唯一正规形（例如以 $\gcd$ 约分并约定分母为正），从而对象层除法与实现层一致。
-\end{theorem}
-
-\begin{proof}
-局部化构成域及其与 $\QQ$ 的同构为代数的经典结论。正规化的关键是：Euclid 递归
-$
-\gcd(a,0)=a,\ \gcd(a,b)=\gcd(b,a\bmod b)
-$
-在商余可用时为可判定过程，且余数严格下降保证终止；约分保持等价类不变并给出唯一既约形式。证毕（细节与实现路径见附录 \ref{app:ops-zfc} 与附录 \ref{app:unified-compiler}）。
-\end{proof}
-
-\subsubsection{布尔表达式：可寻址闭包与可判定规范化}\label{subsubsec:cc-bool}
-\begin{definition}[布尔闭包]\label{def:cc-bool}
-设 $\mathcal{A}$ 为可寻址原子事件族（每个 $A\in\mathcal{A}$ 对应可寻址谓词值 $\chi_A\in\{0,1\}$）。由 $\mathcal{A}$ 生成的布尔代数 $\mathsf{Bool}(\mathcal{A})$ 为有限布尔组合闭包，并定义语义解释：
-$$
-\mathrm{BVal}(\neg\varphi) := 1-\mathrm{BVal}(\varphi),\quad
-\mathrm{BVal}(\varphi\wedge\psi) := \mathrm{BVal}(\varphi)\cdot \mathrm{BVal}(\psi),\quad
-\mathrm{BVal}(\varphi\vee\psi) := \mathrm{BVal}(\varphi)+\mathrm{BVal}(\psi)-\mathrm{BVal}(\varphi)\cdot\mathrm{BVal}(\psi),
-$$
-其中 $\mathrm{BVal}:\mathsf{Bool}(\mathcal{A})\to\{0,1\}$ 表示在给定原子读出赋值下的布尔求值算子。
-\end{definition}
-
-\begin{theorem}[布尔闭包的可寻址性与可判定归约]\label{thm:cc-bool-normal-form}
-对任意 $\varphi\in\mathsf{Bool}(\mathcal{A})$，其布尔值 $\mathrm{BVal}(\varphi)\in\{0,1\}$ 在三寄存器闭包内可寻址；并存在一个以 Gödel 编码为证书的可判定归约过程，将 $\varphi$ 化为唯一规范形（例如基于真值表的最小析取范式，或固定变量序的 BDD 规范表示）。
-\end{theorem}
-
-\begin{proof}
-$\varphi$ 的语法树有限，每一步仅调用有限次原子读出与 $\{0,1\}$ 上的算术闭包，故可寻址。对有限原子集，可用真值表/BDD 得到规范对象，且等价判定为有限枚举过程；将规范对象按第 \ref{subsec:cc-godel} 节编码压缩为自然数即可得到可核对证书。证毕。
-\end{proof}
-
-\subsubsection{ZFC 风格集合运算：以可寻址 HF 宇宙为语义模型}\label{subsubsec:cc-hf}
-若“存在”被定义为“可寻址”，则对象宇宙必然受可数地址空间约束；但由第 \ref{subsec:cc-godel} 节任意有限结构均可编码为自然数，因而可寻址对象宇宙至少包含一个对集合运算封闭的经典子宇宙：遗传有限集合宇宙 $\mathrm{HF}$。
-\begin{theorem}[$\mathrm{HF}$ 上的集合运算闭包]\label{thm:cc-hf-closure}
-在 $\mathrm{HF}_{\POM}$（以某固定可判定编码将 $\mathrm{HF}$ 对象化为可寻址自然数）上，配对、并集、交集、差集、集合并、幂集等运算均可在三寄存器闭包内可寻址并可判定；并且所有运算输出仍在 $\mathrm{HF}_{\POM}$ 内。
-\end{theorem}
-
-\begin{proof}
-$\mathrm{HF}$ 的每个对象皆为有限良基树结构；上述运算均可化为有限树的组合与有限枚举，故为可判定过程。由于编码/解码可由第 \ref{subsec:cc-godel} 节的配对与序列 Gödel 化实现，故输出可寻址且仍落在同一编码域。证毕。
-\end{proof}
-
-\subsubsection{可逆构造的统一定理}\label{subsubsec:cc-compiler}
-\begin{theorem}[全语言可逆求值的统一实现]\label{thm:cc-unified-reversible-compiler}
-令 $\mathcal{L}_{\mathrm{arith+bool+HF}}$ 为由算术项（$\NN_{\POM},\ZZ_{\POM},\QQ_{\POM}$）、布尔项与 $\mathrm{HF}_{\POM}$ 集合项组成的多排序语言（允许互相嵌套）。则存在统一构造映射 $\mathcal{C}$，把任意封闭项 $t\in\mathcal{L}_{\mathrm{arith+bool+HF}}$ 归约为三寄存器闭包内的可核验求值过程，输出
+\begin{theorem}[全语言可逆求值的统一实现（概要）]\label{thm:cc-unified-reversible-compiler}
+令 $\mathcal{L}_{\mathrm{arith+bool+HF}}$ 为由算术项（$\NN_{\POM},\ZZ_{\POM},\QQ_{\POM}$）、布尔项与遗传有限集合代码域 $\mathrm{HF}_{\POM}$ 上的集合项组成的多排序语言（允许嵌套；$\mathrm{HF}_{\POM}$ 的代码语义见附录 \ref{app:ops-zfc}）。则存在统一构造映射 $\mathcal{C}$，把任意封闭项 $t$ 归约为三寄存器闭包内的可核验求值过程，输出
 $$
 \mathcal{C}(t)\Downarrow \bigl(\mathrm{Val}(t),\,R(t)\bigr),
 $$
-其中 $\mathrm{Val}(t)$ 为值对象、$R(t)\in\NN$ 为单码残差（定义 \ref{def:cc-singlecode-residual}）。并且存在可判定回放器 $\mathrm{Replay}$，使得在给定输入编码时可回放整个求值轨迹与所有分支选择，满足“信息不丢失”的强可逆性。\par
-在证明携带（proof-carrying）表述下，上述构造映射可进一步输出可离线核验的证书包，并与“地址—残差—证书统一 Gödel 化”的编码层相容（见附录 \ref{app:godel-wsos-rouche} 的定理 \ref{thm:unified-compilation} 与定理 \ref{thm:arc-godel-invertible}）。
+其中 $R(t)\in\NN$ 为单码残差，并存在可判定回放器从 $(\mathrm{Val}(t),R(t))$ 回放恢复求值轨迹与分支选择，从而满足强意义下的“信息不丢失”。
 \end{theorem}
 
 \begin{proof}
-对语法树作结构递归。每个构造子（算术/布尔/集合运算）均为有限可判定步骤组合；分支选择与归约路径通过事件序列记录，并由第 \ref{subsec:cc-godel} 节编码为单码残差；回放按解码后的事件序列逐步逆执行（定理 \ref{thm:cc-singlecode-replay}）。证毕。
+证明为对语法树的结构递归：每个构造子均归约为有限可判定步骤组合；分支与规约路径以事件序列记录并编码为单码残差；回放由解码后的事件序列逐步逆执行。证明携带化的完整表述见附录 \ref{app:godel-wsos-rouche}。
 \end{proof}
 
-\begin{theorem}[ZFC 术语的可判定构造闭包（\texorpdfstring{$\NULL$}{NULL} 截断）]\label{thm:cc-zfc-term-null-closure}
-设 $\mathsf{Term}_{\mathrm{HF}}$ 为在遗传有限集合宇宙 $\mathrm{HF}_{\POM}$（定理 \ref{thm:cc-hf-closure}）中生成的集合\textbf{术语}类：其构造仅使用空集、配对、并/交/差、集合并、幂集以及有限枚举/有限递归等可判定算子；并约定任何落在 PW 不可判定片段之外的判定子句一律回落为 $\NULL$。
-则存在构造映射
-$$
-\mathcal{C}:\mathsf{Term}_{\mathrm{HF}}\to \mathrm{PW}_{\mathrm{dec}}
-$$
-使得对任意输入地址参数：
-\begin{enumerate}
-  \item 若术语在 $\mathrm{HF}_{\POM}$ 中可证书化定义，则 $\mathcal{C}(t)$ 输出一个非 $\NULL$ 的地址，并附带可离线核验的证书材料，验证其与语义值一致；
-  \item 若术语触及不可判定/不可预算的自由度，则 $\mathcal{C}(t)$ 输出 $\NULL$，且该 $\NULL$ 判定在固定验证规则与参数下可重复（定理 \ref{thm:cc-null-repro}）。
-\end{enumerate}
+\begin{theorem}[ZFC 术语的可判定构造闭包（\texorpdfstring{$\NULL$}{NULL} 截断；概要）]\label{thm:cc-zfc-term-null-closure}
+设 $\mathsf{Term}_{\mathrm{HF}}$ 为在遗传有限集合代码域 $\mathrm{HF}_{\POM}$（附录 \ref{app:ops-zfc}）中生成的集合术语类：其构造仅使用 HF 上的可判定算子（空集、配对、并/交/差、集合并、幂集与有限枚举/有限递归等），并约定任何落在 PW 不可判定片段之外的判定子句一律回落为 $\NULL$。则存在构造映射 $\mathcal{C}:\mathsf{Term}_{\mathrm{HF}}\to \mathrm{PW}_{\mathrm{dec}}$，使得：若术语可证书化定义，则输出非 $\NULL$ 的地址并携带可离线核验的证书材料；否则输出 $\NULL$，且该 $\NULL$ 判定在固定验证规则与参数下可重复。
 \end{theorem}
 
 \begin{proof}
-在 $\mathrm{HF}_{\POM}$ 内，上述术语构造均可归约为有限树结构的组合与有限枚举，因而可归约到可判定片段并输出证书（定理 \ref{thm:cc-hf-closure} 与定理 \ref{thm:cc-unified-reversible-compiler}）。对不可判定子句的回落规则，由定义 \ref{def:cc-read-null} 的证书语义与定理 \ref{thm:cc-null-repro} 直接给出可重复性。证毕。
+详见附录 \ref{app:ops-zfc} 与附录 \ref{app:godel-wsos-rouche}：其中把 HF 术语归约为有限结构的可判定编码/解码与证书核验，并以 $\NULL$ 作为证书缺失的逻辑输出。
 \end{proof}
 
 \subsection{unitary slice 核验下的数值证书：误差界、舍入模型与 \texorpdfstring{$\NULL$}{NULL} 可重复性}\label{subsec:cc-us-cert}
@@ -651,14 +555,5 @@ $$
 （见附录 \ref{app:xi-certificate-layer} 的命题 \ref{prop:unit-circle-root-iff-interval-root}），得 $\abs{w}=1$，从而 $\abs{u_L(s)}=\abs{w}^2=1$。而 $u_L(s)=L^{2s-1}$ 满足 $\abs{u_L(s)}=L^{2\Re(s)-1}$，故 $\abs{u_L(s)}=1\Longleftrightarrow \Re(s)=\tfrac12$。证毕。
 \end{proof}
 
-\subsection{小结：本章结果汇总}\label{subsec:cc-summary}
-\begin{enumerate}
-  \item 给出了可判定互逆的 $\mathrm{code}/\mathrm{decode}$ 体系（Cantor 配对与自描述序列 Gödel 编码），并由此得到“有限结构 $\Leftrightarrow$ 单一自然数”的严格地址化（定理 \ref{thm:cc-seq-bijection}、命题 \ref{prop:cc-event-trace-invertible}）。
-  \item 证明了残差账本可在不损失可逆回放性的前提下压缩为单一自然数残差，并给出一步一素数的轨迹 Gödel 化，从而把“信息守恒 $+$ 局域更新”同时提升为编码层结构定理（定理 \ref{thm:cc-singlecode-replay}、推论 \ref{cor:cc-register-min}、定理 \ref{thm:cc-stepwise-prime-godel}）。
-  \item 给出了运算族的统一构造：四则/商余/布尔/（HF 上的）集合术语可在同一可逆求值机制下同时涌现，并给出 $\NULL$ 截断版的 ZFC 术语构造闭包，从而把不可判定部分显式落在可重复核验的空值边界（定理 \ref{thm:cc-unified-reversible-compiler}、定理 \ref{thm:cc-zfc-term-null-closure}）。
-  \item 给出了 unitary slice 数值证书构造，并给出可传输的规范化证书对象格式，使 $\NULL$ 判定成为可重复事实（定理 \ref{thm:cc-null-repro}、定理 \ref{thm:cc-null-repro-protocol}）；并证明“连续自由度扩张 $\Rightarrow$ 证书类型外延 $\Rightarrow$ 第四寄存器”的形式化定理（定理 \ref{thm:cc-fourth-register-certs}）。
-  \item 给出了双相位紧化与精度势，从而把径向自由度的证书容量写成可度量的比特下界，并将“径向依赖 $\Rightarrow$ $\NULL$ 退化”形式化为可核验结论（定理 \ref{thm:cc-radial-bit-lowerbound}、命题 \ref{prop:cc-self-dual-ws-invariants}、定理 \ref{thm:cc-radial-null}）。
-  \item 给出了 BridgeRH 的可验证条件清单与最小化条件集 $\mathsf{Obl}_{\min}$，并给出其充分性结论以及两个维数 $2$ 的自对偶模型族（定义 \ref{def:cc-oblmin}、定理 \ref{thm:cc-oblmin-sufficient}、命题 \ref{prop:cc-bridge-2x2}、命题 \ref{prop:cc-bridge-2x2-swap}）。
-  \item 给出了可验证的 RH 充分条件模板（unitary-root 判据，定理 \ref{thm:cc-unitary-root}）。
-\end{enumerate}
+本章给出的统一编码与证书对象格式，为后续关于 BridgeRH 条件的逐项核验、以及第四寄存器障碍的形式化表述提供共同的“有限数据 $+$ 可复算验证器”基底；讨论部分将据此明确主张边界、可证伪点与复现条件。
 
