@@ -58,3 +58,21 @@ $$
 异常签名的可组合律、上同调取商与 ASC 核验程序见附录 \ref{app:anom-cohomology-asc}。
 该片段的终止性可用“逆序对计数”机械化：取生成元正规序 $\mathrm{LIFT}\prec\mathrm{PROJ}\prec E$，定义逆序对计数 $\mu(W)$ 与词长 $\ell(W)$ 的字典序度量 $(\ell(W),\mu(W))$。每次重写严格降低该度量，因此重写终止；进而任意词可规约为规范形 $\mathrm{LIFT}_G\circ\mathrm{PROJ}_u\circ E_m$ 并伴随异常签名输出。
 
+\paragraph{审计优先的三值检查器（\texorpdfstring{$\mathrm{PW}_{\mathrm{aud}}$}{PW\_aud}）}
+将上述三生成元片段（含异常签名残差）记为 $\mathrm{PW}_{\mathrm{aud}}$。其检查器应区分三类结果：\textbf{拒绝}（语法/类型或证书不一致）、\textbf{通过}（在给定证书规则下可核验成立）、以及\textbf{空值}（在既定预算/证书通道下不可判定或无证书）。
+
+\begin{algorithm}[PW$_{\mathrm{aud}}$ 检查器（类型--规范化--残差核验）]\label{alg:pw-aud-checker}
+\textbf{输入：}投影词 $W$ 及可选证书包 $c$（异常签名声明、数值证书与预算参数等）。\\
+\textbf{输出：}状态 $s\in\{\mathrm{ACCEPT},\mathrm{REJECT},\NULL\}$ 与正规形 $N=\mathrm{NF}(W)$。
+\begin{enumerate}[label=(\arabic*), ref=\arabic*]
+  \item \textbf{类型检查：}自左向右验证每一步复合的源靶匹配与参数一致性；失败则输出 $(\mathrm{REJECT},\epsilon)$。
+  \item \textbf{规范化：}按规则 $(\mathrm{RPROJ}),(\mathrm{RLIFT}),(\mathrm{RE}),(\mathrm{RPL}),(\mathrm{RELIFT})$ 归约至不可再用，得到正规形 $N$，并输出沿规约轨迹累积的异常签名列表 $\mathcal{A}(W)$。
+  \item \textbf{残差一致性核验：}若 $c$ 中携带外部声明的异常签名 $\mathcal{A}_{\mathrm{ext}}$，则核对 $\mathcal{A}_{\mathrm{ext}}=\mathcal{A}(W)$；不一致则输出 $(\mathrm{REJECT},N)$。
+  \item \textbf{外部证书核验：}若 $N$ 的读出或等价性判断依赖额外的数值/谱证书（例如 unitary slice 的区间证书或 $\varepsilon$-sound 证书），则对 $c$ 中提供的证书逐项验证：\par
+  \quad 若存在可核验反例（证书不通过、或与声明矛盾），输出 $(\mathrm{REJECT},N)$；\par
+  \quad 若仅因预算不足/证书缺失而无法完成核验，输出 $(\NULL,N)$；\par
+  \quad 若全部核验通过，输出 $(\mathrm{ACCEPT},N)$。
+\end{enumerate}
+\end{algorithm}
+
+\paragraph{注} 在纯 exact 的可判定子片段（例如 $\mathrm{PW}_{Z,E}$）中，检查器不需要任何外部数值证书，因此不会输出 $\NULL$；$\NULL$ 仅在“审计协议显式允许的外部证书通道”存在且预算不足时出现，与正文“无地址则读出为 $\NULL$”的存在性语义兼容。

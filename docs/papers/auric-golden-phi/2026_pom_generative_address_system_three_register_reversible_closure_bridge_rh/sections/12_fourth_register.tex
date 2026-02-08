@@ -14,6 +14,45 @@ $
 $
 （附录 \ref{app:inject-code-audit}），因此任何需要显式依赖 $\rho$ 的断言都无法在现有证书类型系统中表达；要使其可证书化，必须外延证书类型以携带 $\rho$，这在寄存器语义中等价于引入额外连续寄存器（见正文第 \ref{sec:conclusion-cluster} 节定理 \ref{thm:cc-fourth-register-certs}）。
 
+\subsection{代数阻碍：可除群与自由阿贝尔结构不相容}\label{subsec:fourth-register-divisible}
+上述“证书类型外延”给出了第四寄存器的机制层拒绝链。以下给出一条独立的代数阻碍：即便允许把径向信息写入 prime-register 的任意坐标，只要 prime-register 的群完成仍是自由阿贝尔结构，就不可能无损承载非平凡可除自由度。
+
+\paragraph{径向模式的群论本体}
+复乘法群分解为
+$$
+\CC^\times\cong \RR_{>0}\times \TT,
+$$
+其中 $\TT$ 为相位（unitary slice），$\RR_{>0}$ 为径向（radial mode）。在三寄存器闭包中，相位寄存器承载 $\TT$ 的可见连续参数；素数寄存器的群完成为
+$$
+P^\times:=\ZZ^{(\mathcal{P})},
+$$
+这是以素数为基的自由阿贝尔群（有限支撑整指数向量）。
+另一方面，径向群 $\RR_{>0}$ 由对数同构于 $(\RR,+)$，因此具有可除性。
+
+\begin{definition}[可除阿贝尔群]\label{def:divisible-group}
+称阿贝尔群 $D$ 为\textbf{可除的}，若对任意 $d\in D$ 与任意正整数 $n\ge 1$，方程 $nx=d$ 在 $D$ 中总有解 $x\in D$。
+\end{definition}
+
+\begin{theorem}[自由阿贝尔群无非零可除子群]\label{thm:free-abelian-no-divisible}
+设 $F\cong \ZZ^{(I)}$ 为自由阿贝尔群（有限支撑整数向量）。则 $F$ 的任意可除子群必为零群；等价地，若 $D$ 为非零可除阿贝尔群，则不存在单射同态 $D\hookrightarrow F$。
+\end{theorem}
+
+\begin{proof}
+取 $0\neq f\in F$。由于 $f$ 仅有有限支撑，可把其非零坐标视为一组整数并取其最大公因子为 $g\ge 1$。选择任意 $n\ge 2$ 且 $n\nmid g$（例如取 $n=g+1$）。若 $nx=f$ 有解 $x\in F$，则 $x$ 的每个坐标必须为对应坐标除以 $n$ 的整数，从而 $n$ 必整除所有坐标并整除其最大公因子 $g$，矛盾。故 $f$ 不是可除元素。由于 $f\neq 0$ 任意，$F$ 的可除元素只能为 $0$，从而任何可除子群只能是零群。证毕。
+\end{proof}
+
+\begin{corollary}[第四寄存器的代数必然性]\label{cor:fourth-register-divisible}
+若语义要求承载一个非平凡径向可除自由度（例如 $\RR_{>0}$ 或其可除子群 $\exp(\QQ)$），并要求保持其（乘法）群结构，则该自由度不可能在素数寄存器群完成 $P^\times$ 内被无损内化。因而离开 unitary slice 的径向模式要么触发额外寄存器扩张（第四寄存器），要么在三寄存器闭包内被类型拒绝并读出为 $\NULL$。
+\end{corollary}
+
+\begin{remark}[与预算下界的对应]\label{rem:fourth-register-budget-link}
+若允许以紧化坐标的有限比特近似承载径向自由度，则第四寄存器的“必要性”可被定量化为 prime-register 预算下界：紧化坐标的误差 $\epsilon$ 与径向参数 $x$ 将强制至少
+$
+\log_2(1/\epsilon)+\log_2(1+x^2)
+$
+量级的附加证书位数（定理 \ref{thm:cc-radial-bit-lowerbound}），并在由 prime-register 承载该通道时转写为 $\mathrm{Bud}_P(r)$ 的线性下界（推论 \ref{cor:cc-radial-prime-budget}）。因此，“第四寄存器”既可由结构保持的群论阻碍推出，也可由可证书化精度负载的预算下界推出。
+\end{remark}
+
 \subsection{双检查器拒绝：根区间与 strictification}
 在 unitary slice 机制下，体系内部可实现两类拒绝机制：
 \begin{enumerate}

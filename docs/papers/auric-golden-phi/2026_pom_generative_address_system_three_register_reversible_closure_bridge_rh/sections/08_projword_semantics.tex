@@ -51,3 +51,12 @@ $$
 
 上述结果给出“证明语义的证书化归约”的一个最小原型：等价性被归约为可判定的正规化过程，且验证仅依赖有限步骤的确定性检查。更细化的语法、检查器与三生成元片段见附录 \ref{app:pw-fragment}。
 
+\paragraph{审计检查器与三值输出}
+在与 unitary slice 核验机制对接的审计优先片段中，检查器输出三值
+$
+\{\mathrm{ACCEPT},\mathrm{REJECT},\NULL\}
+$：
+\textbf{REJECT} 表示语法/类型或残差声明不一致；
+\textbf{ACCEPT} 表示在给定的证书验证规则下核验通过；
+\textbf{$\NULL$} 表示仅因预算不足或证书缺失而不可判定（而非“数值不稳定”）。
+该三值机制把“可核验性”落实为确定性的验证程序，并与本文“无地址则读出为 $\NULL$”的存在性语义一致（见附录 \ref{app:pw-fragment} 的算法 \ref{alg:pw-aud-checker}）。

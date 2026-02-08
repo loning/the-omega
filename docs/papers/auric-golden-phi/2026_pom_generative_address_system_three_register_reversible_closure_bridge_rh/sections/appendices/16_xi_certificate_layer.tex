@@ -167,6 +167,44 @@ $$
 该区间化证书层与附录 \ref{app:godel-wsos-rouche} 的 WSOS/证明携带机制可直接对接：在需要时可进一步把 $[-2,2]$ 上的非负性/半正定性压缩为离线可核对的有理证书。
 \end{remark}
 
+\subsubsection{Cayley 四分之一角参数：unitary slice 的有理化输入与零浮点核验}\label{subsec:xi-cayley-rational}
+上文将 unitary slice 的零点核验压缩为区间多项式 $P_{\Delta,L}(S)$ 在 $[-2,2]$ 上的根结构。若进一步要求将相位输入从 $\exp(i\theta)$ 等超越函数中剥离，则可对半角变量 $y$ 使用 Cayley 参数化。
+
+\begin{definition}[Cayley 参数与有理坐标]\label{def:xi-cayley}
+令扩张实线 $\mathbb{R}_b:=\RR\cup\{\infty\}$。对 $x\in\mathbb{R}_b$ 定义
+$$
+y(x):=\frac{1+ix}{1-ix}\in\TT,\qquad u(x):=y(x)^2\in\TT,
+$$
+并定义完成化迹坐标
+$$
+S(x):=y(x)+y(x)^{-1}=2\frac{1-x^2}{1+x^2}.
+$$
+则对任意 $x\in\RR$ 有 $1+x^2\neq 0$，从而 $S(x)$ 为 $x$ 的有理函数；当 $x\in\QQ$ 时，$y(x),u(x)\in\QQ(i)$ 且 $S(x)\in\QQ$。
+\end{definition}
+
+\begin{theorem}[区间多项式的有理化清分母]\label{thm:xi-cayley-denom-clear}
+设 $R$ 为任意交换整环，$P(S)\in R[S]$ 为一元多项式，令 $d:=\deg P$。按定义 \ref{def:xi-cayley} 置
+$$
+P^\sharp(x):=(1+x^2)^d\,P\!\left(2\frac{1-x^2}{1+x^2}\right)\in R[x].
+$$
+则对任意 $x\in\RR$ 有等价关系
+$$
+P\bigl(S(x)\bigr)=0\quad\Longleftrightarrow\quad P^\sharp(x)=0.
+$$
+\end{theorem}
+
+\begin{proof}
+由 $P(S)=\sum_{j=0}^{d}c_j S^j$，代入 $S=S(x)$ 得
+$$
+P\bigl(S(x)\bigr)=\sum_{j=0}^{d}c_j\,2^j(1-x^2)^j(1+x^2)^{-j}.
+$$
+两边同乘 $(1+x^2)^d$ 得到 $P^\sharp(x)\in R[x]$。对 $x\in\RR$，$1+x^2\neq 0$，故乘法不引入或消去零点，从而零点等价成立。证毕。
+\end{proof}
+
+\begin{remark}[零浮点核验：从 $P_{\Delta,L}$ 到实根隔离证书]\label{rem:xi-zero-float-audit}
+若 $P_{\Delta,L}\in R[S]$ 的系数属于可精确运算的环（例如 $R=\ZZ,\ZZ[i]$ 或某个可表示的代数整数环），则定理 \ref{thm:xi-cayley-denom-clear} 将 unitary slice 上的零点核验转写为 $P_{\Delta,L}^\sharp(x)\in R[x]$ 的实根结构核验。特别地，结合 Sturm 序列或子结果式链，可输出完全离线可复算的根隔离盒，从而在该子语言中将 unitary slice 审计提升为“纯代数证书核对”，无需调用任何浮点舍入模型。
+\end{remark}
+
 \subsection{谱半径界的 Lyapunov--LMI 证书（可复算 PSD 输出）}\label{subsec:lyapunov-lmi-certificate}
 在核版 (G)RH/平方根界与扭曲通道核验中，最常见的可核验对象是谱半径不等式。下述命题把它严格转写为一个凸的半正定可行性问题，并提供可复算的证书输出格式。
 

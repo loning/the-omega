@@ -389,6 +389,53 @@ $$
 定理 \ref{thm:cc-radial-bit-lowerbound} 表明：即便将径向自由度紧化为有界坐标，其可验证表达仍要求额外的、随 $\log(1+x^2)$ 增长的证书位数。故“第四寄存器”不仅是“多一条连续轴”，更体现为既有三寄存器预算无法吸收的精度负载。
 \end{remark}
 
+\begin{definition}[prime-register 预算（比特度量）]\label{def:cc-prime-budget}
+对素数寄存器残差 $r\in P=\NN^{(\mathcal{P})}$，记其值映射为 $N(r)=\prod_{p\in\mathcal{P}}p^{r(p)}$（附录 \ref{app:prime-uplift}）。定义 prime-register 的比特预算为
+$$
+\mathrm{Bud}_P(r):=\log_2 N(r)=\sum_{p\in\mathcal{P}} r(p)\log_2 p.
+$$
+该预算对残差的乘法合成是严格可加的：$N(r+r')=N(r)N(r')$，从而 $\mathrm{Bud}_P(r+r')=\mathrm{Bud}_P(r)+\mathrm{Bud}_P(r')$。
+\end{definition}
+
+\begin{proposition}[注入编码的容量下界]\label{prop:cc-prime-budget-lowerbound}
+设 $E:\{0,1\}^n\hookrightarrow P$ 为任意注入。则必存在某个 $\sigma\in\{0,1\}^n$ 使
+$$
+\mathrm{Bud}_P\bigl(E(\sigma)\bigr)\ge n.
+$$
+\end{proposition}
+
+\begin{proof}
+由算术基本定理，$N:P\hookrightarrow\NN_{\ge 1}$ 为单射。若对所有 $\sigma$ 都有 $\mathrm{Bud}_P(E(\sigma))<n$，则 $N(E(\sigma))<2^n$，从而 $N(E(\{0,1\}^n))\subseteq\{1,2,\dots,2^n-1\}$，其元素个数至多为 $2^n-1$，与 $\card{\{0,1\}^n}=2^n$ 及单射性矛盾。证毕。
+\end{proof}
+
+\begin{corollary}[径向可见性迫使 prime-register 预算下界]\label{cor:cc-radial-prime-budget}
+若径向证书通道由 prime-register 承载，并要求将径向参数 $x\in\RR$（例如 $x=\varrho=\log|u|$）以绝对误差不超过 $\epsilon\in(0,1]$ 的方式证书化，则 prime-register 的最小预算满足
+$$
+\mathrm{Bud}_P(r)\ \ge\ \log_2\Bigl(\frac{1}{\epsilon}\Bigr)+\log_2(1+x^2)-O(1),
+$$
+其中 $O(1)$ 只依赖于所选紧化坐标与编码常数。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:cc-radial-bit-lowerbound}，任何满足误差要求的紧化证书必须包含至少 $n$ 比特信息，其中 $n\ge \log_2(1/\epsilon)+\log_2(1+x^2)+\log_2(4\pi)$。将该 $n$ 比特负载作为一段有限二进制 payload 由 prime-register 残差承载，应用命题 \ref{prop:cc-prime-budget-lowerbound} 得 $\mathrm{Bud}_P(r)\ge n$，从而得到所示下界（把常数项吸收到 $O(1)$ 中）。证毕。
+\end{proof}
+
+\begin{proposition}[折叠纤维账本的残差预算下界]\label{prop:cc-fold-fiber-budget}
+设 $\widehat{\Fold}_m:\Omega_m\hookrightarrow X_m\times P$ 为任一无损提升（命题 \ref{prop:lossless-uplift}）。对任意 $x\in X_m$，记折叠纤维大小 $d_m(x)=\card{\Fold_m^{-1}(x)}$（第 \ref{sec:ledger} 节）。则有
+$$
+\max_{\omega\in\Fold_m^{-1}(x)}\ \mathrm{Bud}_P\!\bigl(r(\omega)\bigr)\ \ge\ \log_2 d_m(x),
+$$
+其中 $r(\omega)$ 表示提升输出的 prime-register 残差分量。
+\end{proposition}
+
+\begin{proof}
+固定 $x$。提升的单射性意味着映射 $\omega\mapsto r(\omega)$ 在纤维 $\Fold_m^{-1}(x)$ 上仍为单射，故 $\{r(\omega):\omega\in\Fold_m^{-1}(x)\}$ 至少含 $d_m(x)$ 个不同元素。由 $N:P\hookrightarrow\NN_{\ge 1}$ 的单射性，集合 $\{N(r(\omega))\}$ 亦含 $d_m(x)$ 个不同正整数，因此其最大值至少为 $d_m(x)$，从而存在某个 $\omega$ 使 $N(r(\omega))\ge d_m(x)$，即 $\mathrm{Bud}_P(r(\omega))\ge \log_2 d_m(x)$。证毕。
+\end{proof}
+
+\begin{remark}[三账本下界的组合读法]\label{rem:cc-three-ledger}
+命题 \ref{prop:cc-fold-fiber-budget} 给出折叠纤维压缩的最低残差预算，推论 \ref{cor:cc-radial-prime-budget} 给出径向精度通道的最低残差预算。二者共同刻画：在“可回放可逆 + 可重复核验”的约束下，若试图同时扩大可见参数维数并保持折叠可逆化，则 prime-register 的预算必须同时覆盖纤维账本与精度账本的下界；任何绕开该下界的实现都将表现为 $\NULL$ 发生率上升或证书不可复现。
+\end{remark}
+
 \begin{proposition}[自对偶完成化下的 \texorpdfstring{$(w,s)$}{(w,s)} 不变量表达]\label{prop:cc-self-dual-ws-invariants}
 设 $\Delta(z,u)\in\ZZ[z,u]$ 满足自对偶恒等式 $\Delta(z,u)=\Delta(uz,1/u)$。引入形式变量 $r$ 并置 $u=r^2$，再令
 $$

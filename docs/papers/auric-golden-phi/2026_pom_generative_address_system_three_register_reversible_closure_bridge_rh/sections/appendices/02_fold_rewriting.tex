@@ -89,11 +89,21 @@ $$
 \subsection{合流性证明：局部合流 \texorpdfstring{$\Rightarrow$}{->} 合流（Newman 引理）}
 局部合流可采用“值保持 + Zeckendorf 唯一性”路径：若 $a$ 有两条一步归约 $a\to a_1$ 与 $a\to a_2$，则继续归约二者至不可约形后均落入 $X_\infty$，且由于每步保持 $\mathrm{Val}$，两不可约形同值；由 Zeckendorf 表示的唯一性，两不可约形必相同，故两支可汇合。在强终止前提下，由 Newman 引理 \cite{Newman1942} 推出系统合流，从而正规形存在且唯一。
 
-\paragraph{机械化要点}
+\paragraph{机械化要点（两条可替代闭合方式）}
 \begin{enumerate}
-  \item 证明不变式：每条规则保持 $\mathrm{Val}$；
-  \item 将“不可约 $\Leftrightarrow X_\infty$”形式化为可判定谓词；
-  \item 将 Zeckendorf 唯一性作为外部引理（可另行机械化）输入；
-  \item 由“不可约同值 $\Rightarrow$ 相等”建立局部合流；结合强终止，引用 Newman 引理完成合流。
+  \item \textbf{值不变量 + Zeckendorf 唯一性闭合：}
+  \begin{enumerate}
+    \item 证明不变式：每条规则保持 $\mathrm{Val}$；
+    \item 将“不可约 $\Leftrightarrow X_\infty$”形式化为可判定谓词；
+    \item 将 Zeckendorf 唯一性作为外部引理（可另行机械化）输入；
+    \item 由“不可约同值 $\Rightarrow$ 相等”建立局部合流；结合强终止，引用 Newman 引理完成合流。
+  \end{enumerate}
+  \item \textbf{纯重写闭环（有限临界对）闭合：}
+  \begin{enumerate}
+    \item 已有：值不变义务与强终止义务（由下降量 $\mu$ 完成）；
+    \item 由于每条规则仅触及一个有限窗口（至多三处坐标且为线性邻域），任意两步并发的重叠类型仅由相对位移决定，从而局部合流可归约为\textbf{有限个}重叠模式的枚举验证；边界仅需额外处理有限个小指标情形（例如 $k\in\{1,2,3,4\}$）；
+    \item 对每个重叠模式，给出一条显式有限归约序列，使两分支归约到同一配置（可用符号执行逐条检查侧条件与结果）；
+    \item 由“强终止 + 局部合流”应用 Newman 引理，得到合流性与正规形唯一性。
+  \end{enumerate}
 \end{enumerate}
 
