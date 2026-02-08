@@ -9,7 +9,7 @@
 及其单位圆等价嵌入
 \(\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\in\TT\)
 在射影紧化 \(\widehat{\RR}:=\RR\cup\{\infty\}\) 上可延拓为同胚 \(\iota:\widehat{\RR}\to\TT\)（\S\ref{subsec:unit-circle-phase-lift}）。
-因此，\emph{仅在坐标门层面}并不必然出现空值：紧化门本身为全定义可逆映射，任何不可逆性均来自其后的“部分观测/投影读出”（附录 \S\ref{subsec:unit-circle-phase-information}）及地址语义的\(\mathsf{NULL}\) 约定（公理 \ref{ax:pommin-address-null}）。
+因此，\emph{仅在坐标门层面}并不必然出现空值：紧化门本身为全定义可逆映射，任何不可逆性均来自其后的“部分观测/投影读出”（附录 \S\ref{subsec:unit-circle-phase-information}）及地址语义的 \(\mathsf{NULL}\) 约定（见第 \ref{sec:spg} 节）。
 \par
 本节的关键在于：当把 \(\Xi\) 的核验接口固定为 unitary slice 时，可核对的连续参数轴被进一步压缩为一个\emph{可见切片}；
 偏离该切片的对象即便在解析层面可形式化写出，也在本文闭包下无地址，其读出按空值语义退化为 \(\mathsf{NULL}\)。
@@ -41,7 +41,7 @@
 其中 \(\mathrm{read}(\omega)=\mathsf{NULL}\) 表示读出不定义（不可寻址）。
 该“否则”可分解为三类结构性来源（均发生在\emph{指称/类型层}而非数值层）：
 \begin{enumerate}
-  \item \textbf{语义空值（地址缺失）：}地址先于取值；若地址未给定，则相应概念值不定义，记为 \(\mathsf{NULL}\)，且不等同于数值 \(0\)（公理 \ref{ax:pommin-address-null}；亦见第 \ref{sec:recursive-addressing} 节）。
+  \item \textbf{语义空值（地址缺失）：}地址先于取值；若地址未给定，则相应概念值不定义，记为 \(\mathsf{NULL}\)，且不等同于数值 \(0\)（见第 \ref{sec:spg} 节；亦见第 \ref{sec:recursive-addressing} 节）。
   \item \textbf{协议空值（类型系统禁止）：}对象的解释需要超出 \(X_{\mathrm{vis}}\) 的自由度，或需要被接口协议明确禁止的坐标轴（典型地：需要 \(|u|\neq 1\) 的径向模式，而可见域仅允许 unitary slice），因而在既定闭包/检查器下不可类型化并被拒绝。
   \item \textbf{碰撞空值（侧信息不足）：}当 \(\operatorname{obs}\) 为多对一压缩且希望以给定置信口径把读出提升为（近似）可逆时，必须外置使扩展读出成为单射的记录轴；若记录轴预算不足，则不同前像在协议允许的误差/置信意义下不可唯一重建，从而读出仍等价退化为 \(\mathsf{NULL}\)（见命题 \ref{prop:xi-null-three-way}）。
 \end{enumerate}
@@ -50,7 +50,7 @@
 \end{definition}
 
 \begin{proposition}[结论 A：\texorpdfstring{$\mathsf{NULL}$}{NULL} 的三分解与单射化原则]\label{prop:xi-null-three-way}
-设 \(\pi:\Omega\to Y\) 为一个读出（允许为多对一压缩），并按“地址先于取值”的约定将“可核对的单值读出”作为类型层的定义性前提（公理 \ref{ax:pommin-address-null}）。
+设 \(\pi:\Omega\to Y\) 为一个读出（允许为多对一压缩），并按“地址先于取值”的约定将“可核对的单值读出”作为类型层的定义性前提（见第 \ref{sec:spg} 节）。
 若未提供使扩展读出
 \(
 \pi^{\mathrm e}=(\pi,r):\Omega\to Y\times R
@@ -137,7 +137,7 @@
 \end{remark}
 
 \begin{remark}[completeness 缺口的可审计拆解：跨分辨率补丁与时间层右解码]\label{rem:xi-completeness-auditable-decomposition}
-假设 \ref{assump:xi-address-completeness} 将 completeness 表述为“零点事件不触发 \(\mathsf{NULL}\)”的全局断言。
+completeness 可表述为“零点事件不触发 \(\mathsf{NULL}\)”的全局断言。
 在本文的投影门语义中，该断言可进一步拆解为若干可审计的子条件，使 \(\mathsf{NULL}\) 的来源被逐层隔离。
 \begin{enumerate}
   \item \textbf{跨分辨率：有限尾补丁不完备（不可局部消除）。}
@@ -302,10 +302,6 @@ D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
 最后对 \(D_{\mathrm{KL}}(\mu\|\pi^{\mathrm{e}})\) 应用推论 \ref{cor:xi-null-statistical-radius} 的界即可。证毕。
 \end{proof}
 
-\begin{assumption}[\(\Xi\)-接口的地址完备性（桥接假设）]\label{assump:xi-address-completeness}
-对固定的 \(L>1\)，\(\Xi_{\Delta,L}\) 的每一个零点 \(s\in\CC\) 都在本文的 \(\mathbf{PW}\) 闭包下可寻址并可核对；等价地，不存在零点在该闭包下读出为 \(\mathsf{NULL}\)。
-\end{assumption}
-
 \begin{remark}[端点压缩、有限精度与第二类 \texorpdfstring{$\mathsf{NULL}$}{NULL}]\label{rem:xi-null-finite-precision}
 单位圆面积相位门把非紧尺度压缩到边界层：例如高度参数 \(t\in\RR\) 在 Cayley 轴上被压到 \(u_{\mathrm C}(t)=\frac{1+\mathrm{i}t}{1-\mathrm{i}t}\in\TT\setminus\{-1\}\)，且 \(t\to\pm\infty\) 合并为端点 \(u_{\mathrm C}\to-1\)（附录 \ref{app:unit-circle-phase-gate}）。
 在严格数学层面，该门可逆且不产生空值；但在有限精度实现中，端点邻域的反投影存在强误差放大：
@@ -338,7 +334,7 @@ a_{p^k}(u)\equiv a_{p^{k-1}}(1)\pmod{p^k}.
 \Delta_{p,k}(u)\in p^k\ZZ[u]
 \)。
 \par
-上述离散锚点给出一条"无 \(\mathsf{NULL}\) 校准格"：一旦在这些根单位点上出现与整除/同余护栏不相容的偏离，则应优先判定为实现或数据管线失败（而非谱穿越、几何型 \(\mathsf{NULL}\) 或统计型残差的物理含义）；其作为加速律亦见注 \ref{rem:witt-root-of-unity-acceleration}。
+上述离散锚点给出一条"无 \(\mathsf{NULL}\) 校准格"：一旦在这些根单位点上出现与整除/同余护栏不相容的偏离，则应优先判定为实现或数据管线失败（而非谱穿越、几何型 \(\mathsf{NULL}\) 或统计型残差的解释性含义）；其作为加速律亦见注 \ref{rem:witt-root-of-unity-acceleration}。
 \end{remark}
 
 \begin{corollary}[径向通道的"二阶性"与 \texorpdfstring{\(\mathsf{NULL}\)}{NULL} 的结构来源]\label{cor:xi-null-second-order-radial-channel}
@@ -354,7 +350,7 @@ a_{p^k}(u)\equiv a_{p^{k-1}}(1)\pmod{p^k}.
 
 
 \begin{remark}[可审计替代：Hankel-秩稳定性给出的地址完备性充分判据（ACC-Rank）]\label{rem:xi-acc-rank}
-假设 \ref{assump:xi-address-completeness} 将“内部 \(\Xi\)-RH \(\Rightarrow\) \(\Xi\)-RH”的 completeness 缺口显式化。
+所谓“地址完备性”（completeness）缺口可表述为：存在零点事件在本文的 \(\mathbf{PW}\) 闭包下不可寻址（读出不定义，即 \(\mathsf{NULL}\)），从而仅有 soundness 还不足以推出“全部零点在可见域内被捕获”的结论。
 在本文的桥包实现口径中，该缺口可被编译为一个\emph{可回归测试}的后端稳定性判据：沿 unitary slice 的 \(\theta\)-扫描，若极限核族在最小 realization 意义下不需要引入新的可见自由度，则任何零点事件都必须具有 \(\mathbf{PW}\) 地址，从而不会读出为 \(\mathsf{NULL}\)。
 \par
 更具体地，对每个有限层级 \(\ell\) 与每个相位采样点 \(\theta\)，取命题 \ref{prop:xi-unitary-slice-spectral-crossing} 所用的归一化核族 \(U_{L,\ell}(\theta)\) 的迹序列
@@ -384,17 +380,8 @@ d^{(\ell)}_{\min}(\theta):=\mathrm{rank}\,H\!\bigl(a^{(\ell)}_\bullet(\theta)\bi
   \)
   （定义 \ref{def:pom-gamma-quantile}），从而“标签超界导致不可唯一重建”的失败概率可压到 \(\le\varepsilon\)（推论 \ref{cor:pom-prime-register-quantile-budget}）；
 \end{enumerate}
-则在该置信口径下，零点事件读出为 \(\mathsf{NULL}\) 的两类唯一来源（自由度失稳或标签碰撞）均被排除，从而假设 \ref{assump:xi-address-completeness} 的地址完备性可被上述两类证书在体系内替代性满足；与定理 \ref{thm:xi-offset-null-type-safety}（soundness）合并，即把 \(\Xi\)-RH 所需的 completeness 缺口压缩为\emph{两类后端证书的核验任务}：维数稳定证书（ACC-Rank）与 prime-register 配额证书（分位阈值）。
+则在该置信口径下，零点事件读出为 \(\mathsf{NULL}\) 的两类唯一来源（自由度失稳或标签碰撞）均被排除，从而“地址完备性”可被上述两类证书在体系内替代性保证；与定理 \ref{thm:xi-offset-null-type-safety}（soundness）合并，即把 \(\Xi\)-RH 所需的 completeness 缺口压缩为\emph{两类后端证书的核验任务}：维数稳定证书（ACC-Rank）与 prime-register 配额证书（分位阈值）。
 \end{proposition}
-
-\begin{corollary}[地址完备性 \(\Rightarrow\) \(\Xi\)-RH]\label{cor:xi-classical-rh-from-address-completeness}
-在假设 \ref{assump:xi-address-completeness} 下，\(\Xi_{\Delta,L}\) 的全部零点都满足 \(\Re(s)=\tfrac12\)。
-\end{corollary}
-
-\begin{proof}
-由假设 \ref{assump:xi-address-completeness}，任意零点均可在本文闭包内寻址；再由定理 \ref{thm:xi-offset-null-type-safety}，任意可寻址零点必满足 \(\Re(s)=\tfrac12\)。
-故全部零点均在临界线上。证毕。
-\end{proof}
 
 \begin{remark}[反例崩塌模板：径向模式的双检查器拒绝]\label{rem:xi-radial-collapse-template}
 小节 \ref{subsec:xi-radial-counterexample-collapse} 给出一个“仍呈自对偶 completion 形态但强制需要 \(|u|\neq 1\) 径向模式”的伪对象，并展示其在根区间检查器（命题 \ref{prop:xi-rh-interval-criterion}）与常数层 strictification 检查器（定义 \ref{def:pom-finite-part-counterterm-gate}；命题 \ref{prop:pom-counterterm-anom-cancel}）上同时失败，从而把“不可类型化 \(\Rightarrow\ \mathsf{NULL}\)”的拒绝链显式化为可复核的审计流程。

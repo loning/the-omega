@@ -107,7 +107,7 @@ def _tex_structure_block(R: sp.Poly, alpha: sp.Symbol, u: sp.Symbol) -> str:
     deg_u = int(R.degree(u))
     deg_a = int(R.degree(alpha))
 
-    # Specialization at u=1 factors with the physical root alpha=4/9.
+    # Specialization at u=1 factors with the feasible root alpha=4/9.
     fac_u1 = sp.factor(R.as_expr().subs(u, 1))
 
     # Show the raw F polynomial for audit.
@@ -123,7 +123,7 @@ def _tex_structure_block(R: sp.Poly, alpha: sp.Symbol, u: sp.Symbol) -> str:
     lines.append("R(\\alpha,1)&=%s,\\qquad \\Rightarrow\\ \\alpha(1)=\\tfrac49." % sp.latex(fac_u1))
     lines.append("\\end{align}")
     lines.append("")
-    lines.append(r"\begin{proposition}[规范差速率曲线的代数参数化与物理分支选择]\label{prop:fold-gauge-anomaly-rate-curve-param}")
+    lines.append(r"\begin{proposition}[规范差速率曲线的代数参数化与可行分支选择]\label{prop:fold-gauge-anomaly-rate-curve-param}")
     lines.append(
         r"在命题 \ref{prop:fold-gauge-anomaly-pressure} 的记号下，令 $u=e^\theta$，并令 $\mu(u)$ 表示代数方程 $F(\mu,u)=0$ 的 Perron 实根分支（即 $\mu(u)=2\rho(A_\theta)>0$）。"
     )
@@ -145,15 +145,15 @@ def _tex_structure_block(R: sp.Poly, alpha: sp.Symbol, u: sp.Symbol) -> str:
     lines.append(r"\]")
     lines.append(
         r"此外，消元证书 $R(\alpha,u)=0$ 作为平面代数曲线包含多个代数分支；"
-        r"在 $u=1$ 处出现的另一个根 $\alpha=-\tfrac14$ 是\emph{非物理分支}，"
+        r"在 $u=1$ 处出现的另一个根 $\alpha=-\tfrac14$ 是\emph{不可行分支}，"
         r"因为失配密度必须属于区间 $[0,1]$。"
-        r"因此可用以下规则选出物理分支："
+        r"因此可用以下规则选出可行分支："
     )
     lines.append(r"\[")
     lines.append(r"\mu(u)>0,\qquad \alpha(u)\in[0,1],\qquad (\mu(1),\alpha(1))=(2,4/9).")
     lines.append(r"\]")
     lines.append(
-        r"该规则给出一个可审计的代数相图参数化 $(u,\alpha(u),I(\alpha(u)))$，并显式排除非物理根支。"
+        r"该规则给出一个可审计的代数相图参数化 $(u,\alpha(u),I(\alpha(u)))$，并显式排除不可行根支。"
     )
     lines.append(r"\end{proposition}")
     return "\n".join(lines) + "\n"
