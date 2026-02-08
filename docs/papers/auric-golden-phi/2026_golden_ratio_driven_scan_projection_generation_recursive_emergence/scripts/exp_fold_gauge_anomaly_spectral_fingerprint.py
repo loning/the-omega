@@ -407,7 +407,7 @@ def main() -> None:
     tex.append(r"\end{enumerate}")
     tex.append(
         r"因此，“是否确已把不可逆性外置为正交记录轴”的断言在该最小模型上具备了可复算、可证伪的统计硬接口，"
-        r"并与公理 \ref{axiom:unit-circle-phase-extension-preserving} 的扩展保存口径一致。"
+        r"并与命题 \ref{prop:unit-circle-phase-extension-preserving} 的扩展保存口径一致。"
     )
     tex.append(r"\end{proposition}")
     tex.append("")
