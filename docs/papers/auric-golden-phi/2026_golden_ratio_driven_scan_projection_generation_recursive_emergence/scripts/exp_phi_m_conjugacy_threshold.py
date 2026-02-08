@@ -183,7 +183,7 @@ def write_table_tex(path: Path, rows: List[Row]) -> None:
         "If all states in $R_m$ are singletons, then each length-$m$ output word has a unique "
         "length-$(2m-1)$ preimage block, yielding a finite-window inverse (memory $m-1$). "
         "The non-singleton count in $R_{m-1}$ provides a sharpness witness for the sync delay. "
-        "We also sanity-check periodic-point counts up to a small $n$.}"
+        "We also cross-check periodic-point counts up to a small $n$.}"
     )
     lines.append("\\label{tab:phi_m_conjugacy_threshold}")
     lines.append("\\begin{tabular}{r r r r r r r l r}")
@@ -205,7 +205,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Certificate: local conjugacy threshold for Phi_m.")
     parser.add_argument("--m-min", type=int, default=2, help="Minimum m (>=2).")
     parser.add_argument("--m-max", type=int, default=12, help="Maximum m.")
-    parser.add_argument("--periodic-n-max", type=int, default=8, help="Sanity-check periodic points up to n.")
+    parser.add_argument("--periodic-n-max", type=int, default=8, help="Cross-check periodic points up to n.")
     parser.add_argument(
         "--json-out",
         type=str,

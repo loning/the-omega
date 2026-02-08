@@ -51,7 +51,7 @@ def main() -> None:
         "\\begin{table}[H]\n"
         "\\centering\n"
         "\\scriptsize\n"
-        "\\caption{零参数审计：权 $4$ Eisenstein 级数 $E_4(q)=1+240\\sum_{n\\ge 1}\\sigma_3(n)q^n$ 的素数系数预测。若某候选顶层统一母函数被声明为 $X(1)$ 上的标量 Hecke-闭合对象，则其素数骨架系数 $a_p$ 必须满足 $a_p=240(1+p^3)$；下表列出最小硬失败点 $p\\in\\{2,3,5\\}$.}\n"
+        "\\caption{零参数审计：权 $4$ Eisenstein 级数 $E_4(q)=1+240\\sum_{n\\ge 1}\\sigma_3(n)q^n$ 的素数系数预测。若某候选顶层统一母函数被声明为 $X(1)$ 上的标量 Hecke-闭合对象，则其素数骨架系数 $a_p$ 必须满足 $a_p=240(1+p^3)$；下表列出最小否定判据素数点 $p\\in\\{2,3,5\\}$.}\n"
         "\\label{tab:hecke_e4_prime_audit_p235}\n"
         "\\begin{tabular}{r r}\n"
         "\\toprule\n"
