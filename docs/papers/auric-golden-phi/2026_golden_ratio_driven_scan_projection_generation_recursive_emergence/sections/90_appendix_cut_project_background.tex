@@ -1,0 +1,55 @@
+\section{切投影背景：模型集、环面参数与符号因子}
+
+本附录补充切投影（cut-and-project）框架的最小背景，以便将正文中的“旋转扫描/窗口读出/稳定语法”放入一个标准可审计的几何语境中。这里的内容仅作\emph{定义与约定}，不作为正文任何证明的前提。
+
+\subsection{切投影方案与模型集}
+
+给定欧氏空间的直和分解
+\[
+\RR^{d}=\RR^{d_{\mathrm{phys}}}\oplus \RR^{d_{\mathrm{int}}},
+\]
+并给定满秩格点 \(\mathcal{L}\subset \RR^{d}\)。记两投影为
+\[
+\pi_{\mathrm{phys}}:\RR^{d}\to \RR^{d_{\mathrm{phys}}},\qquad
+\pi_{\mathrm{int}}:\RR^{d}\to \RR^{d_{\mathrm{int}}}.
+\]
+典型的切投影假设是：\(\pi_{\mathrm{phys}}|_{\mathcal{L}}\) 单射，且 \(\pi_{\mathrm{int}}(\mathcal{L})\) 在 \(\RR^{d_{\mathrm{int}}}\) 中稠密。
+令 \(W\subset \RR^{d_{\mathrm{int}}}\) 为一个有界、可测且边界测度为零的窗集（acceptance window）。
+则对应的\emph{模型集}定义为
+\[
+\Lambda(W):=\{\pi_{\mathrm{phys}}(\ell):\ \ell\in\mathcal{L},\ \pi_{\mathrm{int}}(\ell)\in W\}\ \subset\ \RR^{d_{\mathrm{phys}}}.
+\]
+窗集 \(W\) 的几何与对称性决定了 \(\Lambda(W)\) 的局部贴片结构；\(\pi_{\mathrm{int}}(\mathcal{L})\) 的稠密性确保了模型集在内部坐标方向上具有“连续参数”的可调性。
+
+\subsection{环面参数化与平移动力学}
+
+令紧致阿贝尔群（环面）
+\[
+\mathbb{T}:=\RR^{d}/\mathcal{L},
+\]
+并把 \(\RR^{d}\) 的平移 \(x\mapsto x+t\) 投影到 \(\mathbb{T}\) 上得到环面平移动力学。
+对每个相位 \(\theta\in\mathbb{T}\)（可理解为“截取超平面的相对平移”），可定义相位化模型集
+\[
+\Lambda_\theta(W):=\{\pi_{\mathrm{phys}}(\ell):\ \ell\in\mathcal{L},\ \pi_{\mathrm{int}}(\ell)+\theta_{\mathrm{int}}\in W\},
+\]
+其中 \(\theta_{\mathrm{int}}\) 为 \(\theta\) 在内部方向的代表（在 \(\mathbb{T}\) 上仅以同余类定义）。
+在上述单射/稠密假设与窗边界测度为零的条件下，环面平移通常给出唯一遍历的统计基准：对“局部贴片出现频率”等量，典型相位下可由环面 Haar 测度给出其极限。
+
+\subsection{一维情形与旋转扫描（Sturmian 原型）}
+
+在 \(d_{\mathrm{phys}}=d_{\mathrm{int}}=1\) 的最简情形，切投影可与圆周旋转编码等价：取 \(\mathbb{T}^1=\RR/\ZZ\) 上的旋转
+\(
+T(x)=x+\alpha\ (\mathrm{mod}\ 1)
+\)，
+并取窗 \(W=[0,\beta)\) 给出二元读出
+\(
+s_t(x)=\ind_W(T^t x)
+\)。
+该“旋转+\(\)区间窗”的符号序列提供切投影模型集的一个可计算可视化原型：窗端点对应内部坐标的切割位置，旋转的无理性对应内部投影的稠密性，而有限窗口 \(m\) 的局部块统计对应于模型集的有限贴片计数。
+
+正文中关于“窗口微态 \(\Omega_m\)\(\to\) 稳定类型 \(X_m\)\(\to\) 直方图/证书”的组织可视为：先在几何相位参数 \(\theta\)（或旋转初相 \(x_0\)）上生成可观测的有限贴片，再通过折叠/规范形把贴片类压到一个可审计的有限类型空间，以便跨分辨率、跨相位进行一致性检查。
+
+\begin{remark}[与正文接口的对应关系（仅作定位）]
+在切投影语境下，“相位”与“窗”是外部可控参数，“贴片统计”是可观测对象，而折叠 \(\Fold_m\) 与其诱导的稳定类型直方图提供一种统一的离散压缩坐标系。本文只在该接口层面使用切投影直觉：任何严格推理仍以正文中已编号的定义/定理为锚点。
+\end{remark}
+

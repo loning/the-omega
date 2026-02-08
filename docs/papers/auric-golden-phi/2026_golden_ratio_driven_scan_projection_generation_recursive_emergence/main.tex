@@ -19,18 +19,15 @@
 }%
 \makeatother
 
-% In FASTBUILD mode we still want compilation to succeed even if some
-% (pipeline-generated) graphics are missing. Replace missing graphics with a
-% small framed placeholder instead of a hard error.
+% Keep compilation robust even if some (pipeline-generated) graphics are missing.
+% Replace missing graphics with a small framed placeholder instead of a hard error.
 \makeatletter
-\@ifundefined{FASTBUILD}{}{%
-  \let\origincludegraphics\includegraphics
-  \renewcommand{\includegraphics}[2][]{%
-    \IfFileExists{#2}{%
-      \origincludegraphics[#1]{#2}%
-    }{%
-      \fbox{\ttfamily missing graphic: \detokenize{#2}}%
-    }%
+\let\origincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \origincludegraphics[#1]{#2}%
+  }{%
+    \fbox{\ttfamily missing graphic: \detokenize{#2}}%
   }%
 }%
 \makeatother
@@ -122,18 +119,16 @@
 \input{sections/00_frontmatter}
 
 \input{sections/01_introduction}
-\input{sections/02_principles}
-\input{sections/03_generator}
+\input{sections/02_preliminaries}
 \input{sections/04_statistical_stability}
 \input{sections/05_recursive_addressing}
 \input{sections/06_golden_branch_folding}
 \input{sections/07_emergent_arithmetic}
 \input{sections/08_projection_ontology_mathematics}
-\input{sections/08_group_unification}
 \input{sections/09_zeta_finite_part}
-\input{sections/10_high_dimensional_cut_project}
-\input{sections/12_experiments}
-\input{sections/11_conclusion}
+\input{sections/10_group_unification}
+\input{sections/11_experiments}
+\input{sections/12_conclusion}
 
 \FloatBarrier
 \appendix

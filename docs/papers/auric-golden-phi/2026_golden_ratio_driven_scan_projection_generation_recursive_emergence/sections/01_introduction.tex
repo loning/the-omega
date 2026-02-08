@@ -1,18 +1,14 @@
 \section{引言}
 
-本文目标是构造一条可审计的生成链：从群作用迭代与二元投影读出出发，经统计稳定性与递归地址化，得到稳定语法、归一化规则与算术结构。核心设置如下：
-\begin{enumerate}
-  \item 基础数据为迭代作用与 $0/1$ 投影读出；在频率与稳定性讨论中使用 $T$-不变测度与遍历工具（\cite{WaltersErgodicTheory}）。
-  \item 地址由旧概念读出的有限序列给出，概念定义为可寻址事件。
-  \item 黄金分支 $\varphi^{-1}$ 作为 Hurwitz/Markov 最坏逼近口径下的反共振规范代表。
-  \item 自然数、加法与乘法在稳定地址上通过可终止规范化过程实现。
-\end{enumerate}
+有限窗口观测在动力系统、符号动力学与自动机/编码理论中提供了一个统一接口：给定单生成作用 \(T^t\) 与二元投影读出 \(s_t=\ind_W(T^t x)\)，观测数据天然以长度 \(m\) 的滑动窗口微态 \(\Omega_m=\{0,1\}^m\) 组织。该视角的困难在于：当 \(m\) 增大时微态空间指数膨胀，直接以微态作为“概念/类型”将导致稀疏性与不稳定，进而阻断跨分辨率的可审计推理链条。
+\par
+本文的目标是构造一条可审计的生成链：从扫描—投影读出出发，经统计稳定性与递归地址化得到稳定语法、折叠规范形与可实现的算术结构。为保证可核对性，本文将证明链与解释性叙述严格分离：所有结论以前文编号的定义/定理/命题为锚点，解释性术语不作为证明前提。全文固定黄金分支 \(\alpha=\varphi^{-1}\) 作为 Hurwitz/Markov 最坏有理逼近口径下的反共振规范代表（\cite{Cassels1957,KuipersNiederreiter1974}），并在频率/稳定性语句中采用标准的 \(T\)-不变测度与遍历工具（\cite{WaltersErgodicTheory}）。
 
 \subsection{贡献清单（可审计接口）}\label{subsec:contrib-scope}
 \textbf{本文的数学贡献}集中在一组可独立审计的结构性结论上，可概括为以下几条“可审计接口”：
 \begin{itemize}
   \item \textbf{递归地址化的极简性：}证明递归地址化仅对应于可测柱事件族的 $\sigma$-代数细化，不引入外加结构（命题 \ref{prop:recursive-addressing-refinement}）。
-  \item \textbf{分辨率折叠与跨尺度相容：}构造有限窗口折叠 $\Fold_m$ 及其可计算实现，并证明合流性、逆系统相容与 sofic 因子接口的统一结论（定理 \ref{thm:fold-suite}；并见定义 \ref{def:fold-word} 与命题 \ref{prop:fold-basic}）。
+  \item \textbf{分辨率折叠与跨尺度相容：}构造有限窗口折叠 \(\Fold_m\) 及其可计算实现，并证明合流性、逆系统相容与 sofic 因子接口的统一结论（定理 \ref{thm:fold-suite}；并见定义 \ref{def:fold-word} 与命题 \ref{prop:fold-basic}）。
   \item \textbf{投影本体数学与信息账本：}定义扫描—投影生成器与投影词演算（定义 \ref{def:pom-spg}、\ref{def:pom-projection-word}、\ref{def:pom-projword-2cat}），并给出相对熵缺陷的闭式信息账本恒等式与其推论（定理 \ref{thm:pom-kl-ledger}、推论 \ref{cor:pom-ent-increase-equals-kl}）。
   \item \textbf{读出塔重写与可判定闭环：}在局部读出塔片段上证明终止性与合流性并给出正规形（定理 \ref{thm:pom-rewrite-termination-confluence}），并由此得到词问题的可判定性与审计闭环（命题 \ref{prop:pom-projword-decidable}、\ref{prop:pom-rewrite-audit-loop}）。
   \item \textbf{共振机制与 Hankel 秩坍缩：}对任意阶碰撞矩给出有限状态的 moment-kernel 编译与 Perron 主谱刻画（定理 \ref{thm:pom-collision-kernel-ak}），并给出模态约束导致 Hankel 秩下降的充分判别，从而把共振定位为可检验的机制（定理 \ref{thm:pom-moment-resonance}）。
@@ -29,6 +25,9 @@
 本文的主要输出均可在纯数学意义下被审计：
 \begin{itemize}
   \item \textbf{折叠直方图的可审计证书：}给出跨分辨率一致性残差与折叠边界扰动事件的显式上界，并据此构造可复现的结构性审计量（第 \ref{subsec:multiscale-residual} 节）。
-  \item \textbf{共振判别：}对高阶碰撞矩给出递推阶数与 Hankel 秩下降的充分判别，从而把共振定位为模态约束的可检验机制（第 8 节，定理 \ref{thm:pom-moment-resonance}）。
+  \item \textbf{共振判别：}对高阶碰撞矩给出递推阶数与 Hankel 秩下降的充分判别，从而把共振定位为模态约束的可检验机制（定理 \ref{thm:pom-moment-resonance}）。
   \item \textbf{谱级投影熵率指纹：}给出 \(q=2,\dots,23\) 的 \(r_q\) 与 \(h_q=\log(2^q/r_q)\)（其中 \(q=2,3,4\) 来自有限状态碰撞核，\(q\ge 5\) 来自已核验整系数递推），见表 \ref{tab:fold_collision_renyi_spectrum}、\ref{tab:fold_collision_moment_spectrum_k9_17} 与 \ref{tab:fold_collision_moment_spectrum_k18_23}。
 \end{itemize}
+
+\subsection{结构概览}
+第 \ref{sec:preliminaries} 节统一固定记号与最小前提，并给出反共振基线与扫描—投影生成器的标准化输入口径；第 \ref{sec:statistical-stability} 节建立稳定性与偏差指标的判别框架；第 \ref{sec:recursive-addressing} 节给出递归地址化的 \(\sigma\)-代数细化结论；第 \ref{sec:folding} 节构造并分析折叠算子 \(\Fold_m\) 及其跨分辨率相容；第 \ref{sec:pom} 节提出 POM 并给出信息账本、重写闭环与共振判别等主要结果；第 \ref{sec:zeta-finite-part} 节给出与谱/有限部相关的桥接接口；第 \ref{sec:experiments} 节给出可复现的数值对照与证书；附录汇集算子代数、相位塔与同步核等支撑材料。
