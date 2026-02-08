@@ -960,7 +960,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     )
     lines.append("$$")
 
-    lines.append("\\paragraph{共振胞元的傅里叶范数近极值：相位构造性对齐（定量）}")
+    lines.append("\\paragraph{共振胞元的傅里叶范数近极值：相位构造性对齐}")
     lines.append(
         "在共振胞元 $(a,b,c)=(1,0,0)$ 处，定义振荡抬升 "
         "$\\Delta_{b,a}(0):=C^{(3,3,5)}_{a,b,0}-\\overline C_{b,a}$。"

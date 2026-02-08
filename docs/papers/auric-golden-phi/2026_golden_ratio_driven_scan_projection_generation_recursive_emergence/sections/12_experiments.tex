@@ -73,7 +73,7 @@ D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m)
 \)
 作为“拟合优度”的无量纲量。
 
-\subsection{有限样本证书（可审计）}
+\subsection{有限样本证书：可审计}
 
 对旋转扫描模型，一维星差异度 $D_N^*$ 给出区间窗频率误差的上界证书（参见 \cite{KuipersNiederreiter1974}）。对黄金分支 $\alpha=\varphi^{-1}$ 可取显式的 $O((\log N)/N)$ 上界，从而为“共振诱导不稳定性”的有限样本衰减提供统一证书。
 
@@ -376,7 +376,7 @@ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ \le\ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi
 总变差证书是对任意有限分割都成立的“无模型”界，因此在本文设置下最稳健。相对熵 $D_{\mathrm{KL}}(\hat{\pi}_{m,N}\|\pi_m)$ 额外依赖基线 $\pi_m$ 在支撑上的下界：若希望得到显式上界，需要对 $\min_{u\in X_m}\pi_m(u)$ 作下界估计（该量随 $m$ 指数衰减，因而得到的纯上界往往较松）。因此本文把 $D_{\mathrm{KL}}$ 主要作为经验判别量，并用 $D_{\mathrm{TV}}$ 与差异度证书给出可审计的收敛控制。
 \end{remark}
 
-\subsection{复现性声明（一键再生成）}
+\subsection{复现性声明：一键再生成}
 
 本节全部数值输出由脚本生成。复现方式：
 \begin{itemize}
@@ -425,7 +425,7 @@ h_b(P_e)\ \ge\ H(Y)-I(Y;X),
 若观测到远超此量级的区分度提升，则其信息来源必然包含超出固定低位窗口的全局通道（例如更高分辨率、寄存器侧信息或逆极限轴束的补充坐标）。
 \end{remark}
 
-\subsection{谱指纹实验协议：并行加法三核的统一对比（不爆内存）}\label{sec:exp-kernel-fingerprint}
+\subsection{谱指纹实验协议：并行加法三核的统一对比}\label{sec:exp-kernel-fingerprint}
 本小节给出一条可复现的“核对比”实验协议：把黄金比例基 $\beta=\varphi$ 上的三类并行加法核（$9/13/21$-local；AAMP VIII 总结为 Algorithm I/II/III，细节规则为 Algorithm S/W/G 与 A/B 触发条件，见 \cite{SvobodovaAAMPVIIIParallelAddition,FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}）统一压到同一组对象
 \[
 \bigl(M_K(u),\ \zeta_K(z,u),\ \lambda_K(u),\ B_{K,n}(u)\bigr),
@@ -528,12 +528,12 @@ B_n^{\mathrm{glob}}(u)=\frac1n\sum_{d\mid n}\mu(d)\Tr(M_{\mathrm{flow}}(u^d)^{n/
 \)
 （推论 \ref{cor:par-add-global-lift-endpoints}），因此所有昂贵计算均可在单流上完成。
 
-\subsubsection{复现方式与输出（表格模板）}
+\subsubsection{复现方式与输出：表格模板}
 该协议的可复现实现由脚本固化：
 \begin{itemize}
   \item 单流 BFS 编译 + 端点基准 + 压力曲线采样：\path{scripts/exp_parallel_addition_kernels_bfs.py}；
   \item 端点 primitive 谱表（闭式零误差）：\path{scripts/exp_parallel_addition_kernels_endpoints_primitive.py}；
-  \item 中间 $u$ 的随机迹估计 + Möbius 反演（不爆内存）：\path{scripts/exp_parallel_addition_kernels_trace_hutchinson.py}。
+  \item 中间 $u$ 的随机迹估计 + Möbius 反演：\path{scripts/exp_parallel_addition_kernels_trace_hutchinson.py}。
 \end{itemize}
 表 \ref{tab:parallel-addition-kernels-fingerprint-u-samples} 给出一个最小可用的对比表模板：每行一个核，列包含端点 $\zeta_K(z,0)$、压力曲线 $\lambda_K(u)$ 的采样值、以及若干 $n$ 与 $u$ 下的 $\widehat B_{K,n}(u)$。
 \input{sections/generated/tab_parallel_addition_kernels_fingerprint_u_samples}
