@@ -1,6 +1,6 @@
-\section{异常签名的上同调化与 ASC 核验协议：合流模残差的最小形式化}\label{app:anom-cohomology-asc}
+\section{异常签名的上同调化与 ASC 核验程序：合流模残差的最小形式化}\label{app:anom-cohomology-asc}
 
-本附录把正文与附录 \ref{app:pw-fragment} 中出现的异常签名 $\mathrm{Anom}_G(K;\theta)$ 升格为一个可组合、可取商、且“是否为零”不依赖规约路径选择的\textbf{上同调类}；并据此给出一个用于 BridgeRH 义务组 (B1)(B4) 的最小核验模板：ASC（Amplify--Split--Cancel；放大--分裂--抵消）协议。
+本附录把正文与附录 \ref{app:pw-fragment} 中出现的异常签名 $\mathrm{Anom}_G(K;\theta)$ 升格为一个可组合、可取商、且“是否为零”不依赖规约路径选择的\textbf{上同调类}；并据此给出一个用于 BridgeRH 条件组 (B1)(B4) 的最小核验模板：ASC（Amplify--Split--Cancel；放大--分裂--抵消）程序。
 
 \subsection{设置：三生成元片段的带残差交换}\label{subsec:anom-setup}
 在附录 \ref{app:pw-fragment} 的三生成元片段中，投影词由
@@ -8,12 +8,12 @@ $$
 \mathrm{PROJ}_u,\qquad E_m,\qquad \mathrm{LIFT}_G
 $$
 生成，并允许带残差交换规则 \textbf{(RELIFT)}：将 $E_m\circ\mathrm{LIFT}_G$ 规约为 $\mathrm{LIFT}_G\circ E_m$，同时输出异常签名 $\mathrm{Anom}_G(K;\theta)$ 作为可核对残差标签。
-直观上，异常签名是“本应严格交换但在有限审计片段内只能交换\emph{模某个常数层残差}”的最小承载物。
+直观上，异常签名是“本应严格交换但在有限核验片段内只能交换\emph{模某个常数层残差}”的最小承载物。
 
 为把该残差内化为可组合对象，固定一个阿贝尔群（或向量空间）$\mathcal{A}$ 作为标签值域，并约定：
 \begin{itemize}
   \item 规则 (RPROJ),(RLIFT),(RE),(RPL) 的标签取 $0\in\mathcal{A}$；
-  \item 每一次 (RELIFT) 交换步的标签取某个 $\mathcal{A}$-值常数 $\mathrm{Anom}_G(K;\theta)\in\mathcal{A}$（按协议采样 $\theta$）。
+  \item 每一次 (RELIFT) 交换步的标签取某个 $\mathcal{A}$-值常数 $\mathrm{Anom}_G(K;\theta)\in\mathcal{A}$（按核验采样约定选取 $\theta$）。
 \end{itemize}
 
 \subsection{异常的累积、规范化异常与上同调类}\label{subsec:anom-cohomology}
@@ -70,7 +70,7 @@ $$
 对 $w_2\circ w_1$ 的规范化，与“分别规范化再合并”的比较给出一个边界项；由命题 \ref{prop:anom-coboundary}，取上同调类后边界项消失。证毕。
 \end{proof}
 
-\subsection{放大律与 ASC（放大--分裂--抵消）协议}\label{subsec:asc}
+\subsection{放大律与 ASC（放大--分裂--抵消）程序}\label{subsec:asc}
 
 \begin{proposition}[并置放大律：\texorpdfstring{$q$}{q} 倍 gap amplification]\label{prop:anom-amplification}
 令 $w$ 为任意投影词，并令 $w^{\boxtimes q}$ 表示把 $w$ 在 $q$ 个互不干扰的线程上并置执行所得的并行词（等价地：把底层核与寄存器作 $q$ 份独立复制并取张量积装配）。
@@ -83,22 +83,22 @@ $$
 并置执行的规约证书轨迹可取为对每一线程的规约证书的纵向/水平组合；由命题 \ref{prop:anom-vertical-additive} 与推论 \ref{cor:anom-class-additive}，异常类对并置份数线性增长。证毕。
 \end{proof}
 
-\begin{algorithm}[ASC 核验协议（最小模板）]\label{alg:asc-protocol}
-\textbf{目标：}在可审计片段内核验某个桥接实现的“交换失败残差”是否可被消去（即 $[\mathrm{Anom}]=0$）。\\
+\begin{algorithm}[ASC 核验程序（最小模板）]\label{alg:asc-protocol}
+\textbf{目标：}在可核验片段内核验某个桥接实现的“交换失败残差”是否可被消去（即 $[\mathrm{Anom}]=0$）。\\
 \textbf{输入：}投影词 $w$（或两条候选实现 $w,w'$）、并置倍数 $q\ge 1$、以及 prime-register 的 residue 细分参数族（如需）。\\
 \textbf{输出：}通过/拒绝，以及可回放的反例证书（若拒绝）。
 \begin{enumerate}
   \item \textbf{Amplify（放大）}：构造 $w^{\boxtimes q}$（或 $(w')^{\boxtimes q}$），并在固定证书规范下计算（或输出）其异常代表元 $\mathrm{Anom}(w^{\boxtimes q})$ 的有限采样读出。
   \item \textbf{Split（分裂；可选）}：若异常信号被统计噪声/碰撞压力掩蔽，则用 prime-register 的 residue 轴把样本分桶并在桶内重复步骤 1，以降低碰撞并提高信噪比。
-  \item \textbf{Cancel（抵消/取商）}：把不同规约路径/不同桶的异常读出按 coboundary 取商（命题 \ref{prop:anom-coboundary}），得到上同调类代表；若代表元为零（在选定精度与协议阈值下）则通过，否则输出拒绝证书（包含：反例词、两条规约轨迹、以及异常差异）。
+  \item \textbf{Cancel（抵消/取商）}：把不同规约路径/不同桶的异常读出按 coboundary 取商（命题 \ref{prop:anom-coboundary}），得到上同调类代表；若代表元为零（在选定精度与核验阈值下）则通过，否则输出拒绝证书（包含：反例词、两条规约轨迹、以及异常差异）。
 \end{enumerate}
 \end{algorithm}
 
-\begin{remark}[与 BridgeRH 义务的接口]\label{rem:asc-to-bridge}
-ASC 协议为 BridgeRH 提供两类用途：
+\begin{remark}[与 BridgeRH 条件的对接]\label{rem:asc-to-bridge}
+ASC 程序为 BridgeRH 提供两类用途：
 \begin{itemize}
-  \item \textbf{(B1.b) 的可否证护栏：}若轨道侧桥包（Witt/Möbius/Euler）在有限层上看似通过，但 $[\mathrm{Anom}]\neq 0$，则说明“交换失败残差”并未被真正消去；此时应拒绝把该实现上升为可审计的极限规格。
-  \item \textbf{(B4) 的稳定审计：}当 (B4) 的 NonCancel/全纯性核验依赖数值协议时，先用放大律把常数层残差放大，再用 residue 细分降低噪声，可把“不稳定证据”转写为可控的资源调度问题。
+  \item \textbf{(B1.b) 的可否证护栏：}若轨道侧桥包（Witt/Möbius/Euler）在有限层上看似通过，但 $[\mathrm{Anom}]\neq 0$，则说明“交换失败残差”并未被真正消去；此时应拒绝把该实现上升为可核验的极限规格。
+  \item \textbf{(B4) 的稳定核验：}当 (B4) 的 NonCancel/全纯性核验依赖数值核验程序时，先用放大律把常数层残差放大，再用 residue 细分降低噪声，可把“不稳定证据”转写为可控的资源调度问题。
 \end{itemize}
 \end{remark}
 

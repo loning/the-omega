@@ -319,7 +319,7 @@ $$
 \paragraph{\texorpdfstring{$\NULL$}{NULL} 判定规则与可重复性定理（验证程序层）}
 定义核验输出为部分函数
 $$
-\mathsf{Audit}_{\mathrm{US}}:\Addr\rightharpoonup \mathsf{Cert}\ \cup\ \{\NULL\}.
+\mathsf{Check}_{\mathrm{US}}:\Addr\rightharpoonup \mathsf{Cert}\ \cup\ \{\NULL\}.
 $$
 
 \paragraph{规则（强类型版，推荐）}
@@ -331,19 +331,19 @@ $$
 该 $\NULL$ 规则与“闭包内只允许 $\theta$ 的单参表述进行零点核验”一致，并与类型安全陈述的“偏移点不可寻址 $\Leftrightarrow$ 读出为 $\NULL$”相协调。
 
 \paragraph{\texorpdfstring{$\Read$}{Read}：证书存在性读出（与正文一致）}
-在验证程序层，可将 $\mathsf{Audit}_{\mathrm{US}}$ 的输出投影为一个三值读出（仅表示“断言已被证书化/证书缺失”，而不与数值混同）：
+在验证程序层，可将 $\mathsf{Check}_{\mathrm{US}}$ 的输出投影为一个三值读出（仅表示“断言已被证书化/证书缺失”，而不与数值混同）：
 $$
 \Read_{\mathrm{US}}(L,\theta,p)=
 \begin{cases}
-1, & \mathsf{Audit}_{\mathrm{US}}(L,\theta,p)\ \text{输出 NonZero 证书},\\
-0, & \mathsf{Audit}_{\mathrm{US}}(L,\theta,p)\ \text{输出 RootInterval 证书},\\
-\NULL, & \mathsf{Audit}_{\mathrm{US}}(L,\theta,p)=\NULL.
+1, & \mathsf{Check}_{\mathrm{US}}(L,\theta,p)\ \text{输出 NonZero 证书},\\
+0, & \mathsf{Check}_{\mathrm{US}}(L,\theta,p)\ \text{输出 RootInterval 证书},\\
+\NULL, & \mathsf{Check}_{\mathrm{US}}(L,\theta,p)=\NULL.
 \end{cases}
 $$
 该定义与正文定义 \ref{def:cc-read-null} 的“$\NULL$ 作为证书缺失”的语义一致。
 
 \begin{theorem}[验证程序层可重复性]\label{thm:audit-us-reproducibility}
-在固定算法标识、固定精度参数 $p$ 与固定外向舍入规则下，$\mathsf{Audit}_{\mathrm{US}}$ 对任一规范化输入地址给出确定输出；因此由其诱导的 $\Read_{\mathrm{US}}$ 亦为确定性的三值读出。特别地，输出为 $\NULL$ 的判定在同一输入与同一参数下可重复（运行间无差异）。
+在固定算法标识、固定精度参数 $p$ 与固定外向舍入规则下，$\mathsf{Check}_{\mathrm{US}}$ 对任一规范化输入地址给出确定输出；因此由其诱导的 $\Read_{\mathrm{US}}$ 亦为确定性的三值读出。特别地，输出为 $\NULL$ 的判定在同一输入与同一参数下可重复（运行间无差异）。
 \end{theorem}
 
 \begin{proof}
