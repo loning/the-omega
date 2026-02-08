@@ -1,0 +1,298 @@
+\section{单位圆相位紧化与三寄存器闭包的代数—信息—审计统一}\label{app:phase-compactification-register-unification}
+
+本附录在正文既定的三寄存器闭包（尺度/素数/相位）与 unitary slice 强类型核验协议之内，给出一组可直接复用的结构性推导：\textbf{(i)} 将无界实轴的加法共轭为单位圆上的显式 Möbius 动作；\textbf{(ii)} 在有理子域上给出完全可判定的相位编码与高度预算；\textbf{(iii)} 将连续精度势与离散高度势统一为同一账本接口；\textbf{(iv)} 以共形分类与双曲不变量形式化“第四寄存器”的不可消去性；\textbf{(v)} 给出 unitary slice 的可重复证书核验器与一个可控的 BridgeRH 最小示例。
+
+\subsection{相位紧化的 Cayley--Weierstrass 嵌入与实轴平移的 Möbius 共轭}\label{subsec:app29-cayley-mobius}
+
+\paragraph{射影紧化与单位圆}
+记一维射影紧化
+$$
+\RR_b:=\RR\cup\{\infty\},
+$$
+以及单位圆
+$$
+\TT:=\{e^{i\theta}:\ \theta\in\RR\}.
+$$
+考虑 Cayley--Weierstrass 型嵌入（亦即半角替换/立体投影的等价形式）
+$$
+\iota:\RR_b\to\TT,\qquad
+\iota(x):=\frac{1+ix}{1-ix},\quad x\in\RR,
+\qquad
+\iota(\infty):=-1,
+$$
+其在 $w\neq -1$ 处的反变换为
+$$
+\iota^{-1}(w)=-i\frac{w-1}{w+1}.
+$$
+该构造的经典背景可参见 \cite{CayleyTransformWiki,TangentHalfAngleWiki}。
+
+\begin{theorem}[实轴平移在单位圆上的显式 Möbius 共轭]\label{thm:app29-translation-mobius}
+对任意 $x,y\in\RR$，令 $a:=\iota(x)\in\TT$、$b:=\iota(y)\in\TT\setminus\{-1\}$。则
+$$
+\iota(x+y)=\mathcal{T}_b(a):=\frac{(3b+1)a+(b-1)}{(1-b)a+(b+3)}
+=\frac{3ab+a+b-1}{-ab+a+b+3}.
+$$
+\end{theorem}
+
+\begin{proof}
+由反变换可写
+$$
+x=-i\frac{a-1}{a+1},\qquad
+y=-i\frac{b-1}{b+1}.
+$$
+于是
+$$
+x+y=-i\left(\frac{a-1}{a+1}+\frac{b-1}{b+1}\right)
+=-2i\frac{ab-1}{(a+1)(b+1)}.
+$$
+代入 $\iota(x+y)=\frac{1+i(x+y)}{1-i(x+y)}$，并乘以公共分母化简：
+$$
+\iota(x+y)=\frac{(a+1)(b+1)+2(ab-1)}{(a+1)(b+1)-2(ab-1)}
+=\frac{3ab+a+b-1}{-ab+a+b+3}.
+$$
+证毕。
+\end{proof}
+
+\begin{corollary}[可见参数轴的内在化与抛物型分类]\label{cor:app29-visible-axis-parabolic}
+固定 $y$（等价地固定 $b=\iota(y)$），则 $\mathcal{T}_b$ 为保持单位圆的 Möbius 变换，并且在 $a=-1$ 处具有唯一不动点；因此 $\mathcal{T}_b$ 为抛物型（parabolic）边界自同构。
+\end{corollary}
+
+\begin{proof}
+由构造 $\mathcal{T}_b=\iota\circ \tau_y\circ\iota^{-1}$，其中 $\tau_y(x)=x+y$ 为 $\RR_b$ 上的平移。平移在 $\RR_b$ 上唯一不动点为 $\infty$，故共轭后的唯一不动点为 $\iota(\infty)=-1$。另一方面，$\iota$ 为把 $\RR_b$ 同胚到 $\TT$ 的共形边界参数化，因此 $\mathcal{T}_b$ 将 $\TT$ 保到自身。抛物/椭圆/双曲型分类的形式化陈述见 \cite{SeriesHyperbolicNotes}。
+\end{proof}
+
+\paragraph{与三寄存器闭包的接口}
+上述共轭把“无界实轴尺度”转写为“紧相位上的 Möbius 动作”：当审计接口仅允许 $u\in\TT$ 作为连续可见参数（正文定义 \ref{def:unitary-slice-audit-axis}），则连续自由度可被约束到单一角变量；任何额外的径向自由度对应从边界自同构扩张到盘内自同构，从而触发第四寄存器需求（参见第 \ref{subsec:app29-radial} 小节并对照正文第 \ref{sec:fourth-register} 节）。
+
+\subsection{有理相位模型：精确编码与 Pythagorean 高度}\label{subsec:app29-rational-phase-height}
+
+为获得\textbf{完全可判定}且可重复审计的算术载体，取有理子域
+$$
+\QQ_b:=\QQ\cup\{\infty\}\subset\RR_b,
+$$
+以及单位圆上的有理点集合
+$$
+\TT_{\QQ(i)}:=\TT\cap\QQ(i).
+$$
+
+\begin{theorem}[有理点的精确相位编码与反编码]\label{thm:app29-rational-encoding}
+令 $x=\frac{p}{q}\in\QQ$ 为既约分数（$q>0,\gcd(p,q)=1$）。则
+$$
+\iota\!\left(\frac{p}{q}\right)=\frac{q+ip}{q-ip}
+=\frac{(q^2-p^2)+i(2pq)}{q^2+p^2}\in \TT_{\QQ(i)}.
+$$
+反之，若
+$$
+w=\frac{A+iB}{C}\in \TT_{\QQ(i)},\quad
+A,B,C\in\ZZ,\ C>0,\ \gcd(A,B,C)=1,\ A^2+B^2=C^2,
+$$
+则
+$$
+\iota^{-1}(w)=\frac{B}{C+A}\in\QQ_b,
+$$
+并约定 $w=-1$ 时 $\iota^{-1}(w)=\infty$。
+\end{theorem}
+
+\begin{proof}
+第一部分为代数恒等式：
+$$
+\frac{q+ip}{q-ip}=\frac{(q+ip)^2}{q^2+p^2}
+=\frac{q^2-p^2+i(2pq)}{q^2+p^2},
+$$
+并且其模长为 $1$。
+\par
+第二部分由反变换
+$$
+\iota^{-1}(w)=-i\frac{w-1}{w+1}
+=-i\frac{(A-C)+iB}{(A+C)+iB}
+=\frac{B}{C+A},
+$$
+其中最后一步可将分子分母乘以 $(A+C)-iB$ 并用 $A^2+B^2=C^2$ 消去实部。证毕。
+\end{proof}
+
+\begin{definition}[相位高度与离散精度势]\label{def:app29-height}
+对既约 $x=\frac{p}{q}\in\QQ$ 定义
+$$
+H(x):=p^2+q^2.
+$$
+称 $\log H(x)$ 为\textbf{相位高度势}。
+\end{definition}
+
+\begin{theorem}[相位高度在四则闭包下的乘性上界]\label{thm:app29-height-budget}
+对任意 $x,y\in\QQ$，有
+$$
+H(x+y)\le 2H(x)H(y),\qquad
+H(xy)\le 2H(x)H(y).
+$$
+\end{theorem}
+
+\begin{proof}
+取既约表示 $x=\frac{p}{q}$、$y=\frac{r}{s}$（$q,s>0$）。记未约分的和与积为
+$$
+x+y=\frac{ps+qr}{qs},\qquad xy=\frac{pr}{qs}.
+$$
+于是
+$$
+H(x+y)\le (qs)^2+(ps+qr)^2,\qquad
+H(xy)\le (qs)^2+(pr)^2.
+$$
+由
+$$
+(qs)^2\le (p^2+q^2)(r^2+s^2),
+$$
+以及 Cauchy--Schwarz 不等式
+$$
+(ps+qr)^2\le (p^2+q^2)(s^2+r^2),\qquad
+(pr)^2\le (p^2+q^2)(r^2+s^2),
+$$
+得
+$$
+(qs)^2+(ps+qr)^2\le 2(p^2+q^2)(r^2+s^2)=2H(x)H(y),
+$$
+$$
+(qs)^2+(pr)^2\le 2(p^2+q^2)(r^2+s^2)=2H(x)H(y).
+$$
+约分只会减小 $H$，故结论成立。证毕。
+\end{proof}
+
+\subsection{连续精度势与离散高度势的同一接口}\label{subsec:app29-continuous-discrete}
+
+考虑与紧化一致的相位坐标门
+$$
+\upsilon(x):=\frac{1}{\pi}\arctan(x)\in\left(-\frac12,\frac12\right),
+\qquad
+\iota(x)=e^{2\pi i\upsilon(x)}.
+$$
+其 Jacobian 为
+$$
+\frac{\dd\upsilon}{\dd x}=\frac{1}{\pi(1+x^2)}.
+$$
+并定义连续精度势
+$$
+P(x):=-\log\left|\frac{\dd\upsilon}{\dd x}\right|
+=\log\pi+\log(1+x^2),
+$$
+该式与正文第 \ref{sec:conclusion-cluster} 节的精度势定义一致（参见 \ref{subsubsec:cc-dual-phase-compactification}）。其测度解释可参见 \cite{TangentHalfAngleWiki}。
+
+\begin{theorem}[整数层面的严格同构]\label{thm:app29-integer-potential}
+对任意整数 $n\in\ZZ$，有
+$$
+\log H(n)=\log(1+n^2)=P(n)-\log\pi.
+$$
+\end{theorem}
+
+\begin{proof}
+整数 $n$ 的既约表示为 $n/1$，故 $H(n)=n^2+1$。代入定义即得。证毕。
+\end{proof}
+
+\begin{theorem}[一般有理数的精度势分解：尺度与相位的可分离账本]\label{thm:app29-rational-potential-split}
+对既约 $x=\frac{p}{q}$，有恒等式
+$$
+\log H(x)=2\log q+\log(1+x^2)
+=2\log q+P(x)-\log\pi.
+$$
+\end{theorem}
+
+\begin{proof}
+由 $p^2+q^2=q^2(1+x^2)$，取对数即得。证毕。
+\end{proof}
+
+\paragraph{账本含义}
+在“相位紧化 $+$ 精确有理算术”的模型中，$\log(1+x^2)$ 对应端点压缩诱导的\textbf{端点精度负载}（连续可观测部分），而 $2\log q$ 为离散尺度（分母）引入的\textbf{尺度寄存器负载}；定理 \ref{thm:app29-height-budget} 给出运算闭包下 $\log H$ 的可加预算上界，从而可作为可逆审计中残差信息预算的统一估计接口（与正文信息账本与预算下界的讨论相容，参见 \ref{rem:cc-three-ledger}）。
+
+\subsection{径向自由度的结构性障碍：第四寄存器的共形分类刻画}\label{subsec:app29-radial}
+
+在 unitary slice 强类型协议下，连续可见参数仅为相位 $\theta$（正文定义 \ref{def:unitary-slice-audit-axis}）。若扩张到一般点 $u=re^{i\theta}$（$r\neq 1$），则出现第二连续参量
+$$
+\rho:=\log r,
+$$
+该参量在正文中被识别为“第四寄存器”（见第 \ref{sec:fourth-register} 节与定理 \ref{thm:cc-fourth-register-certs}）。
+
+\begin{theorem}[径向参数的不可消去性：双曲位移长度不变量]\label{thm:app29-hyperbolic-invariant}
+设审计接口仅允许连续参数 $u\in\TT$（相位轴），并要求所有可核对对象必须在该接口下给出可重复的非 $\NULL$ 证书。若试图在保持 Möbius 闭包（盘自同构）下引入径向自由度 $u=re^{i\theta}$（$r\neq 1$），则不可避免地引入一个额外的实参数不变量：双曲位移长度（translation length）。该不变量在共轭类中保持，因而不能由仅含角变量的共轭或常数层 strictification 吸收；因此其可证书化表达必然要求额外连续寄存器维度（第四寄存器）。
+\end{theorem}
+
+\begin{proof}
+盘自同构群 $\mathrm{Aut}(\mathbb{D})$ 同构于 $\mathrm{PSU}(1,1)$。对任意 $f\in\mathrm{Aut}(\mathbb{D})$，其双曲位移长度定义为
+$$
+\ell(f):=\inf_{z\in\mathbb{D}} d_{\mathbb{D}}(z,f(z)),
+$$
+其中 $d_{\mathbb{D}}$ 为 Poincar\'e 双曲度量；$\ell(f)$ 为共轭不变量：$\ell(gfg^{-1})=\ell(f)$。此外，$f$ 的椭圆/抛物/双曲型分类与 $\ell(f)$（或等价的矩阵迹不变量）一一对应：双曲型当且仅当 $\ell(f)>0$，抛物/椭圆型则 $\ell(f)=0$（形式化陈述见 \cite{SeriesHyperbolicNotes}）。
+\par
+当参数离开 unitary slice（即 $r\neq 1$）时，对应的变换在盘内必产生非零的双曲位移长度（等价地需要额外实参数描述其共轭类）；由于审计接口仅允许相位输入 $\theta$，任何仅依赖 $\theta$ 的证书无法区分同一 $\theta$ 下不同的 $\rho$，从而无法保证可验证正确性。故若要证书化径向依赖，必须外延证书类型以携带该额外连续参数，这在寄存器语义中等价于引入第四寄存器（与正文定理 \ref{thm:cc-fourth-register-certs} 的机制层论证一致）。证毕。
+\end{proof}
+
+\subsection{unitary slice 审计接口：可重复证书与 $\NULL$ 判定}\label{subsec:app29-unitary-cert}
+
+本小节给出一个可直接用于实现与复审的最小证书核验器，使“是否在 unitary slice 上”成为可重复、可核对、带误差界的确定性判定（与正文第 \ref{sec:conclusion-cluster} 节的区间证书协议相容）。
+
+\begin{definition}[区间证书对象]\label{def:app29-cert-interval}
+采用确定性的有理端点区间外包。对复数 $u$ 的数值表示，证书对象取为二元组
+$$
+\mathsf{Cert}(u):=(I_{\Re},I_{\Im}),
+$$
+其中 $I_{\Re}=[\underline a,\overline a]$、$I_{\Im}=[\underline b,\overline b]$ 为有理端点区间，满足真实值 $\Re(u)\in I_{\Re}$、$\Im(u)\in I_{\Im}$。
+\end{definition}
+
+\begin{algorithm}[unitary slice 证书核验器]\label{alg:app29-unitary-slice-verifier}
+\textbf{输入：}$\mathsf{Cert}(u)=(I_{\Re},I_{\Im})$，以及误差门限 $\varepsilon\in(0,1)$。\\
+\textbf{计算：}以区间算术外包
+$$
+I_{|u|^2}:=I_{\Re}^2+I_{\Im}^2.
+$$
+\textbf{输出：}
+\begin{enumerate}
+  \item 若 $I_{|u|^2}\subseteq [1-\varepsilon,1+\varepsilon]$，输出 $\mathsf{ACCEPT}$；
+  \item 否则输出 $\NULL$。
+\end{enumerate}
+\end{algorithm}
+
+\begin{theorem}[可重复性与一侧可靠性]\label{thm:app29-unitary-slice-sound}
+在确定的有理端点证书输入下，算法 \ref{alg:app29-unitary-slice-verifier} 的输出确定且可重复；并且若输出 $\mathsf{ACCEPT}$，则必有
+$$
+\bigl||u|^2-1\bigr|\le \varepsilon.
+$$
+\end{theorem}
+
+\begin{proof}
+区间四则运算在有理端点上为确定映射，因此输出可重复。若 $\mathsf{ACCEPT}$，则真实值 $|u|^2\in I_{|u|^2}\subseteq[1-\varepsilon,1+\varepsilon]$，从而结论成立。证毕。
+\end{proof}
+
+\subsection{BridgeRH 的可验证义务与可控最小示例}\label{subsec:app29-bridge-min}
+
+本小节给出一个不依赖外部黑箱的最小示例，用以演示“unitary slice 锁定 $\Rightarrow$ 临界线约束”的证书化路径（与正文 BridgeRH 义务清单的表述兼容，参见第 \ref{subsubsec:cc-bridge-obligations} 小节与附录 \ref{app:bridge-rh-obligations}）。
+
+\begin{definition}[最小相位桥接核]\label{def:app29-delta-min}
+取固定角 $\theta_0\in(0,\pi)$，定义
+$$
+\Delta_{\min}(z,u):=u+u^{-1}-2\cos\theta_0,
+$$
+并令 $L>1$ 固定，定义切片
+$$
+\Xi_{\min}(s):=\Delta_{\min}(L^{-s},L^{2s-1})
+=L^{2s-1}+L^{1-2s}-2\cos\theta_0.
+$$
+\end{definition}
+
+\begin{theorem}[最小示例的临界线零点性]\label{thm:app29-min-critical}
+$\Xi_{\min}(s)=0$ 当且仅当 $L^{2s-1}=e^{\pm i\theta_0}$；因此所有零点满足 $\Re(s)=\tfrac12$。
+\end{theorem}
+
+\begin{proof}
+令 $u:=L^{2s-1}$。则 $\Xi_{\min}(s)=0$ 等价于
+$$
+u+u^{-1}=2\cos\theta_0.
+$$
+该方程的解为 $u=e^{\pm i\theta_0}$，从而 $|u|=1$。又由正文命题 \ref{prop:critical-line-unitary-slice}，
+$$
+|u|=|L^{2s-1}|=L^{2\Re(s)-1}=1
+\quad\Longleftrightarrow\quad
+\Re(s)=\tfrac12.
+$$
+证毕。
+\end{proof}
+
+\begin{remark}[义务逐项可核验性（示范）]
+对 $\Delta_{\min}$，解析性与自对偶性在代数层显然成立；unitary slice 锁定由命题 \ref{prop:critical-line-unitary-slice} 给出；零点事件可由区间证书核验（正文 \ref{subsec:cc-us-cert}）或由显式解 $u=e^{\pm i\theta_0}$ 给出可寻址注入；径向拒绝由 $|u|\neq 1$ 时 $|u+u^{-1}|>2$ 与 $|2\cos\theta_0|<2$ 的不可相交性给出，从而与第四寄存器拒绝链一致。
+\end{remark}
+
