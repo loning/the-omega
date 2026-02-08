@@ -228,6 +228,46 @@ D_{\mathrm{KL}}(\mu^\star\|\pi^{\mathrm{e}})
 证毕。
 \end{proof}
 
+\begin{theorem}[地址—缺陷定律：单射化所需侧信息预算]\label{thm:address-defect-law}
+固定分辨率 \(m\ge 1\) 与折叠读出 \(\Fold_m:\Omega_m\to X_m\)，并令记录轴 \(r:\Omega_m\to R\)。
+\begin{enumerate}
+  \item \textbf{（最坏情形：纤维逐点下界）}
+  若扩展读出 \((\Fold_m,r):\Omega_m\to X_m\times R\) 为单射，则对每个 \(x\in X_m\) 都有
+  \[
+  \card{r(\Fold_m^{-1}(x))}\ \ge\ d_m(x),
+  \]
+  从而 \(\card{R}\ge \max_{x\in X_m} d_m(x)\)。
+  特别地，只要存在 \(x\) 使 \(d_m(x)>1\)，则仅凭稳定类型 \(x\) 无法形成单值可核验的“完备地址”；若拒绝外置记录轴，则该碰撞在本文语义下对应碰撞型 \(\mathsf{NULL}\)（定义 \ref{def:xi-visible-read-null} 与命题 \ref{prop:xi-null-three-way}）。
+
+  \item \textbf{（热力学：平均比特预算下界）}
+  给定任意宏观边缘 \(\pi\in\Delta(X_m)\)，令 \(A\sim\pi^{\mathrm{e}}\in\Delta(\Omega_m)\) 为其纤维均匀提升 \eqref{eq:xi-null-maxent-lift}，
+  并令 \(X:=\Fold_m(A)\sim\pi\)。
+  若 \((\Fold_m,r)\) 为单射，则
+  \[
+  H\bigl(r(A)\mid X\bigr)\ \ge\ H(A\mid X)\ =\ \kappa_m(\pi),
+  \]
+  因而记录轴在平均意义下至少需承载 \(\kappa_m(\pi)/\log 2\) 比特的侧信息。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(1)} 固定 \(x\in X_m\)。若 \(a\neq a'\) 且 \(\Fold_m(a)=\Fold_m(a')=x\)，由 \((\Fold_m,r)\) 的单射性必有 \(r(a)\neq r(a')\)，故 \(r\) 在纤维 \(\Fold_m^{-1}(x)\) 上为单射，进而 \(\card{r(\Fold_m^{-1}(x))}\ge \card{\Fold_m^{-1}(x)}=d_m(x)\)。取最大值即得 \(\card{R}\ge \max_x d_m(x)\)。
+\par
+\textbf{(2)} 由于 \(\pi^{\mathrm{e}}\) 在每条纤维上均匀，故对每个 \(x\) 有
+\(
+H(A\mid X=x)=\log d_m(x)
+\)，从而
+\(
+H(A\mid X)=\mathbb{E}_\pi[\log d_m(X)]=\kappa_m(\pi)
+\)。
+另一方面，\((\Fold_m,r)\) 单射意味着存在确定性解码器 \(D\) 使 \(A=D(X,r(A))\)，故 \(H(A\mid X,r(A))=0\)。
+于是
+\[
+H(A\mid X)=I(A;r(A)\mid X)\le H(r(A)\mid X),
+\]
+得到所示下界；比特单位换算除以 \(\log 2\)。证毕。
+\end{proof}
+
 \begin{remark}[语义解释：unitary slice 下 \texorpdfstring{$\mathsf{NULL}$}{NULL} 的三类来源]\label{rem:xi-null-three-kinds}
 在 unitary slice 审计语义中，若拒绝外置正交记录轴，则“不可寻址/空值”可分解为三类互相正交的结构来源：
 \begin{itemize}
@@ -398,3 +438,18 @@ d^{(\ell)}_{\min}(\theta):=\mathrm{rank}\,H\!\bigl(a^{(\ell)}_\bullet(\theta)\bi
   \item \textbf{整数层校准格的优先护栏.} 根单位点上的 Frobenius 缺陷整除深度提供离散锚点，使大量由有限精度引起的伪 \(\mathsf{NULL}\) 可在整数层被优先定位为实现失败（注 \ref{rem:xi-null-frobenius-calibration}）。
 \end{enumerate}
 \end{remark}
+
+\begin{definition}[完备地址作为多轴前缀]\label{def:multi_axis_address}
+在本文的可见读出约定（定义 \ref{def:xi-visible-read-null}）与“地址先于取值”语义下，一个可核对、可指称的地址应理解为带类型的\textbf{多轴前缀}
+\[
+a=\bigl(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}}\bigr).
+\]
+其中三轴分别承担如下角色：
+\begin{enumerate}
+  \item \textbf{可见轴（\(a_{\mathrm{vis}}\)）}：在给定可见域 \(X_{\mathrm{vis}}\) 与检查器 \(\mathrm{Chk}\) 的过滤中，选择一个可见的柱前缀/证书前缀（例如 unitary slice 上的相位参数 \(\theta\) 及其诱导的可审计事件），从而把“概念”落实为一个可验的投影读出。
+  \item \textbf{残差轴（\(a_{\mathrm{res}}\)）}：用于把可能的多对一压缩读出单射化的记录轴/标签轴（命题 \ref{prop:xi-null-three-way}）。在折叠读出 \(\Fold_m\) 场景下，该轴的最坏情形容量与平均信息预算分别由纤维多重度 \(d_m\) 与缺陷标量 \(\kappa_m(\pi)\) 给出硬下界（定理 \ref{thm:address-defect-law}）。
+  \item \textbf{模式轴（\(a_{\mathrm{mode}}\)）}：由协议契约所要求的其它正交自由度（若未外置则在类型层被禁止并读出为 \(\mathsf{NULL}\)），典型例子包括：径向寄存器/幅度通道（推论 \ref{cor:xi-null-second-order-radial-channel}）与最小实现维数/可见自由度稳定轴（注 \ref{rem:xi-acc-rank}）。
+\end{enumerate}
+\par
+在该打包下，“地址是否合法（非 \(\mathsf{NULL}\)）”就是三轴同时满足：\(a_{\mathrm{vis}}\) 落在可见域过滤内、\(a_{\mathrm{res}}\) 的预算足以避免同像碰撞、且 \(a_{\mathrm{mode}}\) 不被协议禁止；任一轴缺失或被禁止都会触发相应来源的 \(\mathsf{NULL}\)，从而把“完备性缺口”具体化为可审计的轴预算/轴稳定性条件（命题 \ref{prop:xi-completeness-auditable-decomposition}）。
+\end{definition}
