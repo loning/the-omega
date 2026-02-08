@@ -16,7 +16,7 @@ N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}\ \in\ \NN.
 \end{definition}
 
 \subsubsection{折叠的局部重写实现：终止、合流与顺序无关}\label{subsec:fold-local-rewrite}
-定义 \ref{def:fold-word} 以“先取值、再取 Zeckendorf 规范形”给出 $\Fold_m$。为将其落实为\textbf{局部、可执行}的归一化过程，并澄清“归约顺序不影响结果”，我们把输入窗口嵌入到允许中间态出现冗余数字的配置空间上实施值保持重写。
+定义 \ref{def:fold-word} 以“先取值、再取 Zeckendorf 规范形”给出 $\Fold_m$。为将其落实为\textbf{局部、可执行}的归一化过程，并澄清“归约顺序不影响正规形”，我们把输入窗口嵌入到允许中间态出现冗余数字的配置空间上实施值保持重写。
 
 \paragraph{配置空间与值函数}
 令
@@ -35,24 +35,26 @@ N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}\ \in\ \NN.
 
 \paragraph{局部重写规则（值保持）}
 对 $a\in\mathcal{D}$，允许在满足条件时对局部模式做如下替换（其中 $e_k$ 为第 $k$ 位单位向量）：
-\begin{itemize}
-  \item \textbf{(R\_adj) 相邻合并：}若 $a_k\ge 1$ 且 $a_{k+1}\ge 1$，则
+\begin{enumerate}
+  \renewcommand{\theenumi}{R\arabic{enumi}}
+  \renewcommand{\labelenumi}{(\theenumi)}
+  \item \label{rule:fold:adj}\textbf{相邻合并：}若 $a_k\ge 1$ 且 $a_{k+1}\ge 1$，则
   \[
   a\ \to\ a-e_k-e_{k+1}+e_{k+2}.
   \]
-  \item \textbf{(R\_1) 底位去重：}若 $a_1\ge 2$，则
+  \item \label{rule:fold:dedup1}\textbf{底位去重：}若 $a_1\ge 2$，则
   \[
   a\ \to\ a-2e_1+e_2.
   \]
-  \item \textbf{(R\_2) 第二位去重：}若 $a_2\ge 2$，则
+  \item \label{rule:fold:dedup2}\textbf{第二位去重：}若 $a_2\ge 2$，则
   \[
   a\ \to\ a-2e_2+e_1+e_3.
   \]
-  \item \textbf{(R\_k) 一般位去重（$k\ge 3$）：}若 $a_k\ge 2$，则
+  \item \label{rule:fold:dedupk}\textbf{一般位去重（$k\ge 3$）：}若 $a_k\ge 2$，则
   \[
   a\ \to\ a-2e_k+e_{k-2}+e_{k+1}.
   \]
-\end{itemize}
+\end{enumerate}
 每条规则都只改动有限个坐标，因此是严格的\textbf{局部}重写；并且它们分别对应恒等式
 \(
 F_{k+1}+F_{k+2}=F_{k+3},
@@ -72,7 +74,7 @@ F_{k+1}+F_{k+2}=F_{k+3},
 \end{proposition}
 
 \begin{proof}
-\textbf{（终止性）}令 $A(a)=\sum_{k\ge 1} a_k$、$B(a)=\sum_{k\ge 1} k\,a_k$、$C(a)=a_2$，并设 $\mu(a)=(A(a),B(a),C(a))$ 按字典序比较。则 (R\_adj),(R\_1) 使 $A$ 减少；$(R_k,\,k\ge 3)$ 使 $B$ 减少；(R\_2) 保持 $A,B$ 不变但使 $C$ 减少。故每步重写都严格降低 $\mu$，系统强终止。
+\textbf{（终止性）}令 $A(a)=\sum_{k\ge 1} a_k$、$B(a)=\sum_{k\ge 1} k\,a_k$、$C(a)=a_2$，并设 $\mu(a)=(A(a),B(a),C(a))$ 按字典序比较。则规则 (\ref{rule:fold:adj}) 与 (\ref{rule:fold:dedup1}) 使 $A$ 减少；规则 (\ref{rule:fold:dedupk})（$k\ge 3$）使 $B$ 减少；规则 (\ref{rule:fold:dedup2}) 保持 $A,B$ 不变但使 $C$ 减少。故每步重写都严格降低 $\mu$，系统强终止。
 
 \textbf{（局部合流）}若 $a$ 有两条一步归约 $a\to a_1,a_2$，则两侧继续归约到不可约形后都落在 $X_\infty$，且由于每步保持 $\mathrm{Val}$，两不可约形同值；由 Zeckendorf 唯一性它们相同，于是两支可汇合。
 

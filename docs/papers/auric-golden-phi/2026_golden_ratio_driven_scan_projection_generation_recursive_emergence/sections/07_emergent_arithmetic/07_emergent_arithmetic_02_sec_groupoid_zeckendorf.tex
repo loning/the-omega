@@ -59,19 +59,19 @@
 \subsubsection{定向化归一化重写（\texorpdfstring{$\Fold_\infty$}{Fold\_infty} 的编译表述）}\label{subsec:directed-rewrite}
 定理 \ref{thm:zeckendorf-transversal} 已经把折叠解释为“沿值保持轨道投影到唯一稳定代表”。为获得直接可执行的归一化过程，可将群胚生成元定向为一套\textbf{值保持重写}：
 \begin{itemize}
-  \item \textbf{(R\_adj) 相邻合并：}若 $a_k\ge 1$ 且 $a_{k+1}\ge 1$，则
+  \item \textbf{相邻合并规则 (\ref{rule:fold:adj})：}若 $a_k\ge 1$ 且 $a_{k+1}\ge 1$，则
   \[
   a\ \to\ a-e_k-e_{k+1}+e_{k+2}.
   \]
-  \item \textbf{(R\_1) 底位去重：}若 $a_1\ge 2$，则
+  \item \textbf{底位去重规则 (\ref{rule:fold:dedup1})：}若 $a_1\ge 2$，则
   \[
   a\ \to\ a-2e_1+e_2.
   \]
-  \item \textbf{(R\_2) 第二位去重：}若 $a_2\ge 2$，则
+  \item \textbf{第二位去重规则 (\ref{rule:fold:dedup2})：}若 $a_2\ge 2$，则
   \[
   a\ \to\ a-2e_2+e_1+e_3.
   \]
-  \item \textbf{(R\_k) 一般位去重（$k\ge 3$）：}若 $a_k\ge 2$，则
+  \item \textbf{一般位去重规则 (\ref{rule:fold:dedupk})（$k\ge 3$）：}若 $a_k\ge 2$，则
   \[
   a\ \to\ a-2e_k+e_{k-2}+e_{k+1}.
   \]
@@ -98,7 +98,7 @@ C(a)=a_2,
 \qquad
 \mu(a)=(A(a),B(a),C(a))
 \]
-按字典序比较。则 (R\_adj) 与 (R\_1) 使 $A$ 减少 1；$(R_k,\,k\ge 3)$ 使 $B$ 减少 1；(R\_2) 保持 $A,B$ 不变但使 $C$ 减少 2。故每步重写都严格降低 $\mu$，系统终止。不可约项必满足 $a_k\le 1$ 且无相邻 $11$，即属于 $X_\infty$；反之，当 $a\in X_\infty$ 时，所有重写规则 $(R_{adj}),(R_1),(R_2),(R_k)$ 的触发条件均不满足，因此不可约。又因每步重写保持 $\mathrm{Val}$，终止形与初态同值；由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性知正规形唯一且为 $\Fold_\infty(a)$。证毕。
+按字典序比较。则规则 (\ref{rule:fold:adj}) 与 (\ref{rule:fold:dedup1}) 使 $A$ 减少 1；规则 (\ref{rule:fold:dedupk})（$k\ge 3$）使 $B$ 减少 1；规则 (\ref{rule:fold:dedup2}) 保持 $A,B$ 不变但使 $C$ 减少 2。故每步重写都严格降低 $\mu$，系统终止。不可约项必满足 $a_k\le 1$ 且无相邻 $11$，即属于 $X_\infty$；反之，当 $a\in X_\infty$ 时，四条规则 (\ref{rule:fold:adj})--(\ref{rule:fold:dedupk}) 的触发条件均不满足，因此不可约。又因每步重写保持 $\mathrm{Val}$，终止形与初态同值；由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性知正规形唯一且为 $\Fold_\infty(a)$。证毕。
 
 \begin{remark}[残差的两种自然落点]\label{rem:residual}
 折叠 $\Fold_\infty$ 是值纤维到横截面的投影；因此“残差”可视为从 $a$ 到 $\Fold_\infty(a)$ 的群胚态射（重写路径/轨道坐标）。在有限分辨率 $m$ 下，则对应附录 D 中的折叠多重度 $d_m$：大量微态压缩到同一稳定类型，丢失的信息即是这些预像的区分标签。

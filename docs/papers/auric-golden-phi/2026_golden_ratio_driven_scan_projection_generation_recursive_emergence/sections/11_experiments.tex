@@ -7,7 +7,7 @@
 \end{itemize}
 
 \subsection{实验清单与输出规范（复现入口）}\label{subsec:experiments-manifest}
-为避免“只给概述而不可核对”，本节所有实验均以脚本固化参数、输出字段与生成物路径。\textbf{每一类实验}均按同一模板组织：\emph{模型/数据流}（对象与采样方式）—\emph{指标}（TV/KL 等）—\emph{证书}（确定性或概率型上界）—\emph{结果切片}（表/图）—\emph{复现性声明}（脚本与导出文件）。
+为避免“只给概述而不可核对”，本节所有实验均以脚本固化参数、输出字段与生成物路径。\textbf{每一类实验}均按同一模板组织：\emph{模型/数据流}（对象与采样方式）—\emph{指标}（TV/KL 等）—\emph{证书}（确定性或概率型上界）—\emph{输出切片}（表/图）—\emph{复现性声明}（脚本与导出文件）。
 代表性复现入口包括：
 \begin{itemize}
   \item 旋转扫描 vs.\ Parry 基线：\path{scripts/exp_rotation_fold_vs_parry.py}（导出 \texttt{artifacts/export/rotation\_fold\_vs\_parry.csv}）。
@@ -377,7 +377,7 @@ D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)\ \ge\ 1-(m+1)\,\pi(0)\,\varphi^{-(m
 \[
 D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ \le\ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{true}})\ +\ D_{\mathrm{TV}}(\pi_m^{\mathrm{true}},\pi_m).
 \]
-其中 $\pi_m^{\mathrm{true}}$ 为基线过程（例如 Parry 源或伯努利源）经折叠后的真实 $m$-块分布。Parry 源下第二项为 $0$（因为输出本身满足黄金均值约束，折叠为恒等），因此可以得到“随 $N$ 增大 TV 逼近 0”的直接数值验证；伯努利源下第二项一般非零，从而数值结果会稳定在该 gap 附近，这与推论 \ref{cor:tv-decomposition-parry} 的结构性误差分解保持一致。
+其中 $\pi_m^{\mathrm{true}}$ 为基线过程（例如 Parry 源或伯努利源）经折叠后的真实 $m$-块分布。Parry 源下第二项为 $0$（因为输出本身满足黄金均值约束，折叠为恒等），因此可以得到“随 $N$ 增大 TV 逼近 0”的直接数值验证；伯努利源下第二项一般非零，从而数值偏差会稳定在该 gap 附近，这与推论 \ref{cor:tv-decomposition-parry} 的结构性误差分解保持一致。
 
 \input{sections/generated/tab_iid_sources_fold_vs_parry_ci}
 \input{sections/generated/fig_iid_tv_vs_n}
@@ -388,14 +388,14 @@ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ \le\ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi
 
 \subsection{复现性声明（一键再生成）}
 
-本节全部数值结果由脚本生成。复现方式：
+本节全部数值输出由脚本生成。复现方式：
 \begin{itemize}
   \item 在论文目录下安装依赖：\verb|python3 -m pip install -r requirements.txt|；
   \item 运行一键流水线：\verb|python3 scripts/run_all.py|；
   \item 生成物：\verb|artifacts/export/*|（CSV/PNG 导出）与 \verb|sections/generated/*.tex|（可直接 \verb|\input| 的图表片段）。
 \end{itemize}
 
-\subsection{结果：折叠直方图与 Parry 基准的系统对照}
+\subsection{折叠直方图与 Parry 基准的系统对照}
 
 下表给出在旋转扫描模型中，折叠后稳定类型直方图与 Parry(PF) 柱分布的偏差；图中展示偏差随分辨率 $m$ 的变化趋势，以及在固定 $m$ 下随样本量 $N$ 的收敛趋势（对 $(\beta,x_0)$ 取平均；误差线为样本标准差，用以量化对相位/窗参数的敏感性）。
 
@@ -410,7 +410,7 @@ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ \le\ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi
 \(
 I(\mathbf{1}_{\mathrm{prime}};W_m)
 \)。
-结果见表 \ref{tab:prime_shadow_window_mi}：当 $m=6$（$|X_m|=21$）时互信息仅约 $8\times 10^{-3}$ bit；随着 $m$ 增大互信息上升，但这对应窗口逐渐接近全局表示。该实验提供了“固定有限核无法等价恢复整数素数集合”的可审计数值证据，并与正文关于 prime-like/primitive 轨道的层级区分一致。脚本 \texttt{scripts/exp\_prime\_shadow\_window\_mi.py} 导出 \texttt{artifacts/export/prime\_shadow\_window\_mi.json} 并生成表格片段。
+见表 \ref{tab:prime_shadow_window_mi}：当 $m=6$（$|X_m|=21$）时互信息仅约 $8\times 10^{-3}$ bit；随着 $m$ 增大互信息上升，但这对应窗口逐渐接近全局表示。该实验提供了“固定有限核无法等价恢复整数素数集合”的可审计数值证据，并与正文关于 prime-like/primitive 轨道的层级区分一致。脚本 \texttt{scripts/exp\_prime\_shadow\_window\_mi.py} 导出 \texttt{artifacts/export/prime\_shadow\_window\_mi.json} 并生成表格片段。
 
 \input{sections/generated/tab_prime_shadow_window_mi}
 

@@ -22,7 +22,7 @@
   \item 值纤维横截面投影 $\Fold_\infty$（规范投影）；
   \item 平移群胚横截面投影 $\Pi_b$（序/区间投影）。
 \end{enumerate}
-在过程层，等价表述为：仅以复合 $\circ$ 作为底层原语，再配合值投影 $\Fold_\infty$ 与序投影 $\Pi_b$ 把结果落回外表；原子投影 $P_{\mathrm{prim}}$ 作为谱读出接口独立施加。
+在过程层，等价表述为：仅以复合 $\circ$ 作为底层原语，再配合值投影 $\Fold_\infty$ 与序投影 $\Pi_b$ 把输出落回外表；原子投影 $P_{\mathrm{prim}}$ 作为谱读出接口独立施加。
 \end{theorem}
 \begin{proof}
 加法与乘法由定理 \ref{thm:composition-two-layer} 与 \ref{thm:arith-composition} 的过程层读出实现，并由 $\Fold_\infty$ 落回稳定地址。商余由定理 \ref{thm:pom-division-section} 作为平移群胚横截面投影给出。其余运算由上述原语的组合闭包得到。证毕。
@@ -51,7 +51,7 @@ q=\frac{\mathrm{Val}(a)-r}{b},
 设 \(t\) 为任意由配置层运算 \(\oplus,\otimes,\mathrm{div},\mathrm{quo},\mathrm{rem}\) 复合得到的表达式（深度任意），并假设其\emph{外部可见输出}仅为一次稳定地址读出（落在 \(X_\infty\)）以及可选的一次商余读出（落在 \(\mathbb Z\times\mathcal F_b\)）。
 则存在一个等价的过程层实现，使得整条求值链中
 \begin{itemize}
-  \item 值横截面投影 \(\Fold_\infty\) 至多调用一次（仅在末端把结果落回 \(X_\infty\)）；
+  \item 值横截面投影 \(\Fold_\infty\) 至多调用一次（仅在末端把输出落回 \(X_\infty\)）；
   \item 序横截面投影 \(\Pi_b\) 至多调用一次（仅当需要输出唯一余数代表时，于末端对 \(\mathrm{Val}\) 应用）。
 \end{itemize}
 并且：若输出类型要求唯一稳定地址（或要求唯一余数代表），则对应末端投影在该意义下不可省略。
@@ -59,7 +59,7 @@ q=\frac{\mathrm{Val}(a)-r}{b},
 \begin{proof}
 由定理 \ref{thm:pom-extended-primitives}，过程层求值可改写为群胚内的可逆演化与末端横截面投影的复合。
 而 \(\Fold_\infty\) 是 \(\mathrm{Val}\) 的规范截面：\(\mathrm{Val}(\Fold_\infty(a))=\mathrm{Val}(a)\)，且 \(\Fold_\infty(a)\) 仅依赖于 \(\mathrm{Val}(a)\)。
-因此任何中间步骤对同一值纤维反复“先落回再继续演化”的正规化，都不会改变末端按最终值落回 \(X_\infty\) 的结果，可统一推迟为末端一次。
+因此任何中间步骤对同一值纤维反复“先落回再继续演化”的正规化，都不会改变末端按最终值落回 \(X_\infty\) 的输出，可统一推迟为末端一次。
 同理，\(\Pi_b\) 仅依赖于整数值 \(\mathrm{Val}(\cdot)\)，且 \(\mathrm{Val}\) 可在末端一次性读出，故若只需一次商余读出，则 \(\Pi_b\) 亦可推迟到末端一次。
 最后，“不可省略性”来自轨道代表的非唯一性：不施加对应横截面投影，则输出仍停留在轨道上而非唯一点。证毕。
 \end{proof}
