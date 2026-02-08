@@ -198,11 +198,11 @@ T\;=\;k_Z\delta_Z\;+\;k_{\le}T_{\le}\;+\;k_\chi\,\tau_{\mathrm{mix}}\;+\;D_U\;+\
 隐纤维包含尺度纤维 $\mathcal{S}_\varphi$、相位纤维 $\mathcal{T}$、素数纤维 $\mathcal{P}$，以及同步核状态与余量（例如 $|\Sigma|=40$ 的真实输入核，见附录关于真实输入核的构造）。
 其中实现规范投影 \(P_Z\) 的单趟在线归一化核携带一个有限状态同步变量（定理 \ref{thm:online-delay-fold}），可抽象为程序不可见的同步寄存器 \(Q\)；其最小在线延迟刚性为 \(\delta_{\min}(\Fold_\infty)=3\)（命题 \ref{prop:pom-delay-min}）。
 \par
-\medskip\noindent\textbf{结论 3（时间缺陷二分：同步延迟与可空间化序深度）}
+\medskip\noindent\textbf{结论：时间缺陷二分——同步延迟与可空间化序深度}
 在本文体系中，“时间复杂度”至少分裂为两类互不等价来源：
 \begin{enumerate}
   \item \textbf{同步延迟类（不可空间化时间）：}以 \(\delta_{\min}(\Fold_\infty)=3\) 为代表，它由局部依赖（余量守恒/同步状态）强制产生，并与 prime-register / 模轴束的扩展正交；因此单纯增加模轴不能消去该类延迟，只能改变并行展开的\emph{空间}分配。
-  \item \textbf{序投影类（可空间化时间）：}比较、符号与区间约束等全序聚合所带来的串行瓶颈，可按定理 \ref{thm:pom-order-spatialization} 与重写模式 (RCRT)（定义 \ref{def:pom-order-elimination-rewrite}；命题 \ref{prop:pom-rcrt-epsilon}）编译为空间化的 residue 并行读出与 CRT 重建；其代价被转移为 prime-register 的容量预算 \(\log P_m\)，并由分位配额律（推论 \ref{cor:pom-prime-register-quantile-budget} 与结论 1--2）定标。
+  \item \textbf{序投影类（可空间化时间）：}比较、符号与区间约束等全序聚合所带来的串行瓶颈，可按定理 \ref{thm:pom-order-spatialization} 与重写模式 (RCRT)（定义 \ref{def:pom-order-elimination-rewrite}；命题 \ref{prop:pom-rcrt-epsilon}）编译为空间化的 residue 并行读出与 CRT 重建；其代价被转移为 prime-register 的容量预算 \(\log P_m\)，并由分位配额律（推论 \ref{cor:pom-prime-register-quantile-budget}）定标。
 \end{enumerate}
 因此，“空间/时间对偶”并非全域成立：成立的仅是序投影类时间的空间化转移；同步延迟则构成一个独立且不可空间化的时间不变量。
 在抽象 ISA 层，亦可把先验纤维的“坐标账本”显式化为两组可选寄存器文件：素数指数寄存器 \texttt{P[i]}（\(\mathcal{P}\) 上的有限支撑指数向量，用于把乘除线性化为逐坐标加减），以及相位/角色寄存器 \texttt{T[i]}（\(\mathcal{T}\) 上的相位/字符坐标，用于对角化线性部分与相位/角色读出）。在本文口径下，它们仅改变空间预算 \(S(n)\) 与线性化深度 \(D_U(n)\) 的分配，而不引入新的不可并行读出门：不可并行开销仍由 \(P_Z,P_{\le}\) 与 \(\mathrm{RESCALE}\downarrow\) 的三指纹完全锁定。

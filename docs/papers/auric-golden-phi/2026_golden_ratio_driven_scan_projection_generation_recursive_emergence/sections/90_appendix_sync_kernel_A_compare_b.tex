@@ -196,8 +196,8 @@ $$
 \input{sections/generated/tab_parallel_addition_kernels_tunneling_action}
 \end{remark}
 
-\paragraph{大规模素数谱推进：Hutch++ 的 PSD 化轨道}
-当需要把 primitive 分层谱 $B_{K,n}(u)$ 推进到更大 $n$ 时，瓶颈在于 $a_n(u)=\Tr(M_K(u)^n)$ 的高次迹估计。对非对称 $M_K(u)$，可采用 PSD 化的轨道（例如估计 $\Tr((M_K(u)^n)^{\mathsf T}M_K(u)^n)$ 以控制谱半径与能量尺度，或在对称情形直接估计 $\Tr(M_K(u)^n)$），从而使用 Hutch++ 将样本复杂度从 $O(\varepsilon^{-2})$ 改进为 $O(\varepsilon^{-1})$（仅需 matvec；见 \cite{MeyerMuscoMuscoWoodruff2021Hutchpp}）。该路径与后文随机迹估计管线一致，可作为“可算闭环”的规模推进接口。
+\paragraph{大规模素数谱扩展：Hutch++ 的 PSD 化轨道}
+当需要把 primitive 分层谱 $B_{K,n}(u)$ 扩展到更大 $n$ 时，瓶颈在于 $a_n(u)=\Tr(M_K(u)^n)$ 的高次迹估计。对非对称 $M_K(u)$，可采用 PSD 化的轨道（例如估计 $\Tr((M_K(u)^n)^{\mathsf T}M_K(u)^n)$ 以控制谱半径与能量尺度，或在对称情形直接估计 $\Tr(M_K(u)^n)$），从而使用 Hutch++ 将样本复杂度从 $O(\varepsilon^{-2})$ 改进为 $O(\varepsilon^{-1})$（仅需 matvec；见 \cite{MeyerMuscoMuscoWoodruff2021Hutchpp}）。该路径与后文随机迹估计管线一致，可作为“可算闭环”的规模扩展接口。
 
 \paragraph{无回溯素数谱闭环（可证明/可算/可实验）}
 综上，可把“素数影子”的硬化流程压缩为一条可审计闭环：
@@ -207,7 +207,7 @@ $$
   \item \textbf{核版 RH/Ramanujan：}用 $R_K(u)$ 给出平方根级误差判据；
   \item \textbf{核版 Chebotarev/Artin-$L$：}用 $\theta_K(u)$ 控制同余类偏差的指数衰减；
   \item \textbf{零温能隙：}用 $\Delta_K$ 量化基态与第一激发态的分离；
-  \item \textbf{可扩展计算：}用 Hutch++/随机迹估计把谱指纹推进到大 $n$。
+  \item \textbf{可扩展计算：}用 Hutch++/随机迹估计把谱指纹扩展到大 $n$。
 \end{enumerate}
 
 \paragraph{素数影子对比的规范接口}
@@ -378,7 +378,7 @@ U:=\{0,0.25,0.5,0.75,1\},\quad N_{\mathrm{end}}:=20,\quad \mathcal{N}_{\mathrm{m
 端点谱表已在正文中给出（表 \ref{tab:parallel-addition-kernels-endpoint-primitive}）。为避免重复插入导致标签冲突，此处不再重复 \verb|\input|。
 
 \subsubsection{中间权重 u in (0,1) 的可控近似：随机迹估计 + Möbius 反演（协议）}\label{app:kernel-fingerprint-hutchinson}
-上一小节给出了端点 $u\in\{0,1\}$ 的闭式“零误差”谱表与指纹；但在 $u\in(0,1)$ 时，$M_K(u)^n$ 的非零结构会迅速变得致密，因而“显式形成 $M^n$ 再取迹/系数”的精确计算不可扩展。为把核指纹推进到连续谱对比（压力曲线 $\lambda_K(u)$ 与分层 prime spectrum $\{B_{K,n}(u)\}$），本文采用一个只依赖\textbf{稀疏矩阵乘向量}的可控近似协议。
+上一小节给出了端点 $u\in\{0,1\}$ 的闭式“零误差”谱表与指纹；但在 $u\in(0,1)$ 时，$M_K(u)^n$ 的非零结构会迅速变得致密，因而“显式形成 $M^n$ 再取迹/系数”的精确计算不可扩展。为把核指纹扩展到连续谱对比（压力曲线 $\lambda_K(u)$ 与分层 prime spectrum $\{B_{K,n}(u)\}$），本文采用一个只依赖\textbf{稀疏矩阵乘向量}的可控近似协议。
 
 \begin{definition}[Hutchinson 随机迹估计]\label{def:hutchinson-trace}
 令 $A\in\RR^{N\times N}$ 为任意矩阵。取随机向量 $\mathbf r\in\{\pm 1\}^N$，其坐标独立同分布且 $\mathbb{P}(r_i=1)=\mathbb{P}(r_i=-1)=1/2$。定义单样本估计量

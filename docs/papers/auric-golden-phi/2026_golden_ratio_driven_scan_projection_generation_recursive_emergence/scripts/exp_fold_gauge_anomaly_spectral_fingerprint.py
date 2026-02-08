@@ -276,7 +276,7 @@ def main() -> None:
         r"在命题 \ref{prop:fold-gauge-anomaly-pressure} 的矩阵接口上，"
         r"进一步可推出一组原文未显式列出的、但完全可复算的“谱指纹—相关闭式—Hankel 秩证书”结论："
         r"其中 $(-1/2)$ 的 Jordan 缺陷在二点相关中严格显影为交错相位残差。"
-        r"它们把规范差的统计涨落从叙事性表述推进为“有限统计量即可核验”的硬约束。"
+        r"它们把规范差的统计涨落从叙事性表述转写为“有限统计量即可核验”的硬约束。"
         r"下述所有闭式均可由脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_spectral\_fingerprint.py} 一键复算。"
     )
     tex.append(r"\end{remark}")
