@@ -33,6 +33,65 @@ POMmin 的最小公理可组织为以下条目（其形式化版本见附录 \re
 \end{enumerate}
 该公理组构成后续推理的基础假设集合。
 
+\subsection{分辨率塔与“缩略图”律：逆极限一致性与前缀超度量}\label{subsec:thumbnail-inverselimit}
+跨分辨率相容（公理 \ref{ax:pommin-a4}）把“扫描更久得到更长前缀”从比喻固定为逆系统结构：有限分辨率读出必须在限制映射下自洽，从而对应于某个逆极限元素的有限截断。\par
+
+\begin{theorem}[扫描前缀一致性 $\Rightarrow$ 逆极限缩略图的一致性]\label{thm:thumbnail-inverselimit}
+设对每个 $m\ge 1$ 有微态 $\omega^{(m)}\in\Omega_m$，并满足前缀一致性：对任意 $m\ge n$，
+$$
+\pi_{m\to n}\!\left(\omega^{(m)}\right)=\omega^{(n)},
+$$
+其中 $\pi_{m\to n}:\Omega_m\to\Omega_n$ 为取前 $n$ 位截断。令
+$$
+x_m:=\Fold_m\!\left(\omega^{(m)}\right)\in X_m.
+$$
+则读出族 $\{x_m\}_{m\ge 1}$ 在限制映射下投影一致：对任意 $m\ge n$，
+$$
+\rho_{m\to n}(x_m)=x_n.
+$$
+因此存在唯一的逆极限元素 $x_\infty\in X_\infty=\varprojlim_m X_m$ 使得对所有 $m$，
+$$
+\pi_m(x_\infty)=x_m,
+$$
+其中 $\pi_m:X_\infty\to X_m$ 为逆极限的第 $m$ 层投影（等价于取前 $m$ 位）。
+\end{theorem}
+
+\begin{proof}
+由公理 \ref{ax:pommin-a4} 的“折叠与限制交换”，对 $m\ge n$ 有
+$$
+\rho_{m\to n}\circ \Fold_m=\Fold_n\circ \pi_{m\to n}.
+$$
+因此
+$$
+\rho_{m\to n}(x_m)
+=\rho_{m\to n}\!\left(\Fold_m(\omega^{(m)})\right)
+=\Fold_n\!\left(\pi_{m\to n}(\omega^{(m)})\right)
+=\Fold_n(\omega^{(n)})
+=x_n,
+$$
+即投影一致性成立。由逆极限 $X_\infty$ 的定义，任一满足 $\rho_{m\to n}(x_m)=x_n$ 的一致族 $\{x_m\}$ 唯一对应于一个 $x_\infty$，并满足 $\pi_m(x_\infty)=x_m$。证毕。
+\end{proof}
+
+\begin{corollary}[前缀超度量下的圆柱直径律]\label{cor:ultrametric-cylinder-diameter}
+在 $X_\infty$ 上定义前缀超度量：对 $x\neq y$，令
+$$
+k(x,y):=\max\bigl\{k\ge 0:\ \pi_k(x)=\pi_k(y)\bigr\}\in\NN,
+$$
+其中约定 $\pi_0(x)$ 为空前缀（对一切 $x$ 相同）。并置 $d(x,x)=0$、$d(x,y)=2^{-k(x,y)}$（$x\neq y$）。对任意 $m$ 与任意 $x_m\in X_m$，定义圆柱集
+$$
+U_m(x_m):=\{x\in X_\infty:\ \pi_m(x)=x_m\}.
+$$
+则
+$$
+\mathrm{diam}\bigl(U_m(x_m)\bigr)\le 2^{-m}.
+$$
+特别地，若 $x_\infty$ 为定理 \ref{thm:thumbnail-inverselimit} 中与 $\{x_m\}$ 对应的唯一逆极限元素，则 $x_\infty\in U_m(x_m)$，并且对任意 $x\in U_m(x_m)$ 有 $d(x,x_\infty)\le 2^{-m}$。
+\end{corollary}
+
+\begin{proof}
+任取 $x,y\in U_m(x_m)$，则 $\pi_m(x)=\pi_m(y)=x_m$，从而 $k(x,y)\ge m$，故 $d(x,y)\le 2^{-m}$，即 $\mathrm{diam}(U_m(x_m))\le 2^{-m}$。若 $\pi_m(x_\infty)=x_m$，则 $x_\infty\in U_m(x_m)$，同理由 $k(x,x_\infty)\ge m$ 得 $d(x,x_\infty)\le 2^{-m}$。证毕。
+\end{proof}
+
 \subsection{一个可审查的一致性模型（canonical model）}\label{subsec:canonical-model}
 为表明上述公理集合在通常集合论背景下相容，本小节给出一个最小、完全显式的模型。该模型仅用于“可审查一致性”，不引入额外主张；后续定理并不依赖该模型的特化细节。\par
 
@@ -46,6 +105,37 @@ $$
 \mathrm{Dec}:\Addr\rightharpoonup \bigsqcup_{m\ge 1}\Omega_m
 $$
 如下：对 $a\in\Addr$，若 $a$ 可唯一写作 $a=1^m 0\,\omega$ 且 $\omega\in\{0,1\}^m$，则令 $\mathrm{Dec}(a)=\omega$；否则 $\mathrm{Dec}(a)$ 未定义。该解码过程可机械检查，并显式区分“未定义”与值域元素。\par
+
+\begin{theorem}[可解码地址的前缀自由与 Kraft 松弛]\label{thm:canonical-prefixfree-kraft}
+令
+$$
+\mathcal{L}:=\bigl\{\,1^m0\omega:\ m\ge 1,\ \omega\in\{0,1\}^m\,\bigr\}\subset \{0,1\}^{<\omega}=\Addr
+$$
+为上述 $\mathrm{Dec}$ 的可解码语言，则：
+\begin{enumerate}
+  \item $\mathcal{L}$ 为前缀自由语言；
+  \item 其 Kraft 和满足
+  $$
+  \sum_{a\in\mathcal{L}}2^{-|a|}=\frac12.
+  $$
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(1)} 设 $a=1^{m}0\omega$ 与 $b=1^{m'}0\omega'$，其中 $m,m'\ge 1$ 且 $\omega\in\{0,1\}^{m}$、$\omega'\in\{0,1\}^{m'}$。若 $m<m'$，则 $a$ 的第 $(m+1)$ 位为 $0$，而 $b$ 的第 $(m+1)$ 位为 $1$，故 $a$ 不可能为 $b$ 的前缀。互换 $m,m'$ 同理；若 $m=m'$，则 $|a|=|b|$，严格前缀关系亦不可能成立。故 $\mathcal{L}$ 前缀自由。\par
+\textbf{(2)} 对固定 $m$，共有 $2^{m}$ 个词 $1^{m}0\omega$，且其长度 $|a|=2m+1$。因此
+$$
+\sum_{a\in\mathcal{L}}2^{-|a|}
+=\sum_{m\ge 1}2^{m}\cdot 2^{-(2m+1)}
+=\sum_{m\ge 1}2^{-(m+1)}
+=\frac12.
+$$
+证毕。
+\end{proof}
+
+\begin{remark}[结构解释：可扩展的编码余量]
+定理 \ref{thm:canonical-prefixfree-kraft} 的 Kraft 和严格小于 $1$，给出一个显式的“可扩展余量”：在不破坏即时解码（前缀自由）的前提下，允许向地址空间并入额外的互不相交前缀码区域，用于承载记录轴与证书等自描述打包信息。这一余量属于编码层的结构事实，而非实现细节。
+\end{remark}
 
 \paragraph{读出与折叠}
 对满足 $\mathrm{Dec}(a)=\omega\in\Omega_m$ 的地址，定义读出为

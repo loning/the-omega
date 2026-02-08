@@ -39,17 +39,31 @@ $$
 \par
 在本文的核验机制下，碰撞空值与端点空值分别具有可核验的硬阈值结构：
 \begin{itemize}
-  \item \textbf{碰撞空值阈值（prime-register 配额）：}在区间读出/CRT 外置方案下，为把多对一压缩以失败概率 $\le\varepsilon$ 提升为近似可逆，prime-register 的模积预算 $P_m$ 必须超过一个显式阈值；等价地，可写为
-  $$
-  \log P_m\ \ge\ m\,\gamma_m(\varepsilon)+\log 2,
-  $$
-  其中 $\gamma_m(\varepsilon)$ 表示在分辨率 $m$ 与容许失败 $\varepsilon$ 下的可核验误差指数（由所选碰撞指标与证书验证程序确定）。
+  \item \textbf{碰撞空值阈值（prime-register 配额）：}见命题 \ref{prop:collision-null-threshold} 与推论 \ref{cor:max-effective-scan-depth}。
   \item \textbf{端点空值阈值（面积相位精度配额）：}面积相位门在有限精度下具有强误差放大律，端点邻域若精度不足以区分不同前像，则读出退化为不可核对的多值/$\NULL$；其最大可分辨动态范围与紧化步长满足
   $$
   \Delta u\ \le\ \frac{1}{\pi X_{\max}},
   $$
   其中 $\Delta u$ 为紧化坐标的量化步长，而 $X_{\max}$ 为希望在实轴上保持单值可核对读出的最大动态范围。
 \end{itemize}
+\begin{proposition}[碰撞空值阈值（prime-register 模积配额）]\label{prop:collision-null-threshold}
+在区间读出/CRT 外置方案下，为把多对一压缩在失败概率 $\le\varepsilon$ 的意义下提升为近似可逆（从而避免“碰撞空值”型 $\NULL$），prime-register 的模积预算 $P_m$ 必须满足
+$$
+\log P_m\ \ge\ m\,\gamma_m(\varepsilon)+\log 2,
+$$
+其中 $\gamma_m(\varepsilon)$ 表示在分辨率 $m$ 与容许失败 $\varepsilon$ 下由所选碰撞指标与证书验证程序确定的可核验误差指数。
+\end{proposition}
+
+\begin{corollary}[固定预算下的最大有效扫描深度]\label{cor:max-effective-scan-depth}
+在命题 \ref{prop:collision-null-threshold} 的条件下，固定模积预算 $P_m$ 与目标失败水平 $\varepsilon$。若希望在分辨率 $m$ 上进入 $\varepsilon$-sound 的非 $\NULL$ 工作区，则必有
+$$
+m\ \le\ \frac{\log P_m-\log 2}{\gamma_m(\varepsilon)}.
+$$
+\end{corollary}
+
+\begin{proof}
+由命题 \ref{prop:collision-null-threshold} 的阈值不等式在 $\gamma_m(\varepsilon)>0$ 下作代数变形即得。
+\end{proof}
 由此得到一个可核验的二维资源相图：离散维度由 residue/同余轴的模积配额控制，连续维度由端点精度势的量化配额控制；两者分别对应记录轴四因子分解（\S\ref{subsubsec:app28-record-axis-four-factor}）中的 $r_{\widehat{\ZZ}}$ 与 $r_{\mathrm{end}}$。
 
 \begin{table}[H]
