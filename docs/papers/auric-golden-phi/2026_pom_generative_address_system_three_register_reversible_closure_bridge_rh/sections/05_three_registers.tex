@@ -1,6 +1,6 @@
-\section{三寄存器（纤维）结构：尺度、相位与素数}
+\section{三纤维结构：尺度、相位与素数（亦称三寄存器）}
 
-本文将“三寄存器”严格化为三条先验纤维：尺度（外表）纤维、相位纤维与素数寄存器纤维。其共同作用是：在保证局域归一化、可逆回放与核验闭环的同时，给出足以表达算术与谱读出的最小可见参数集合。
+本文将“三纤维”（亦称“三寄存器”）严格化为三条先验纤维：尺度（外表）纤维、相位纤维与素数纤维（prime-register）。其共同作用是：在保证局域归一化、可逆回放与核验闭环的同时，给出足以表达算术与谱读出的最小可见参数集合。
 
 \subsection{外表纤维与尺度纤维}
 \begin{definition}[外表纤维 $Z$]\label{def:Z-fiber}
@@ -35,8 +35,8 @@ $$
 \end{definition}
 相位纤维提供“连续可见参数”的最小化：在本文闭包中，可核对的连续参数被锁定为 $u=e^{i\theta}$ 的相位，而不包含径向自由度。
 
-\subsection{素数寄存器纤维}
-\begin{definition}[素数寄存器纤维 $P$]\label{def:prime-register-fiber}
+\subsection{素数纤维（prime-register）}
+\begin{definition}[素数纤维 $P$（prime-register）]\label{def:prime-register-fiber}
 令 $\mathcal{P}$ 为素数集合，定义有限支撑指数向量空间
 $$
 P := \NN^{(\mathcal{P})}=\Bigl\{r:\mathcal{P}\to\NN\ \Bigm|\ r(p)=0\ \text{除有限多个 }p\Bigr\}.
@@ -59,4 +59,34 @@ $$
   \item 连续参数可核验（可见轴可由证书验证），
 \end{enumerate}
 则可见自由度必须受限于尺度的离散规范代表、相位的紧致参数与素数残差的离散承载；任何额外非紧致连续自由度将表现为额外寄存器需求并破坏类型闭包（见第 \ref{sec:fourth-register} 节）。
+
+\subsection{类型化纤维演算：排序、索引与资源上下文}\label{subsec:typed-fiber-calculus}
+本文不把“类型”理解为编程语言语法，而把它作为\textbf{可核验可读出性（partial readout）}的数学约束：在既定闭包与核验协议下，\emph{可构造}与\emph{可运算}本身就是一个可判定的语义层。\par
+核心原则是：\textbf{类型不相容}并非数值误差，而是\textbf{偏函数未定义}；实现层可用显式标记承载未定义，但论文语义以偏函数为准。
+基础值域与未定义约定见定义 \ref{def:valdom-undefined}。
+
+\begin{definition}[索引化排序与资源上下文]\label{def:indexed-sorts-resctx}
+为将“分辨率/精度/预算”提升为类型索引，引入三类索引化排序：\par
+\noindent\textbf{(1) 尺度排序 $\mathsf{Scale}[m]$：}其中 $m\in\NN$ 为离散窗口；其居住项是分辨率 $m$ 下的稳定规范代表（例如 $X_m$、或其等价的折叠正规形）。\par
+\noindent\textbf{(2) 相位排序 $\mathsf{Phase}[p]$：}其中 $p\in\NN$ 为可重复核验的精度索引；本文默认以 dyadic 网格 $D_p=\{k/2^p\}$（或等价的有理区间端点体系）作为可复算载体，使 unitary slice 的连续输入可被强类型化为 $(L,\theta,p)\in\Addr_{\mathrm{US}}$（定义 \ref{def:us-typed-address-null}）。\par
+\noindent\textbf{(3) 残差排序 $\mathsf{Resid}[\beta]$：}其中 $\beta$ 表示记录轴预算（例如 prime-register 的模积/位数预算，或端点精度载荷预算）；其居住项承载单射化所需的侧信息（见第 \ref{sec:ledger} 节与附录 \ref{app:prime-uplift}）。\par
+以资源上下文 $\Gamma:=\mathsf{ResCtx}(m,p,\beta,\dots)$ 记录当前可用的索引与预算，并用类型判定式 $\Gamma\vdash t:\tau$ 表示“在给定资源下 $t$ 为可核验可构造的 $\tau$ 型项”。
+\end{definition}
+
+\begin{definition}[共同细化、显式提升与类型失败]\label{def:common-refinement-type-failure}
+任何二元运算只在输入被\emph{显式提升}到共同索引且预算覆盖记录成本时定义。更具体地，对同一排序族 $\tau[-]$：若
+$$
+\Gamma\vdash x:\tau[i],\qquad \Gamma\vdash y:\tau[j],
+$$
+则 $x\circ y$ 仅在存在可核验提升证书使二者落入共同索引 $k\succeq i,j$（例如 $k=\max(i,j)$）时才被允许；否则该项在语义上未定义并归入 $\NULL$ 机制。\par
+因此，“精度不同则不能直接运算”在本文语义中被解释为：\textbf{索引不一致导致项不可构造（偏函数未定义）}，除非提供提升算子（例如外向舍入的区间提升）及其证书化实现。
+\end{definition}
+
+\begin{remark}[unitary slice 的类型封闭与第四纤维]\label{rem:unitary-slice-type-closure}
+unitary slice 核验协议把连续可见参数轴强类型化为相位 $u=e^{i\theta}$（定义 \ref{def:unitary-slice-audit-axis}）。当论证不可避免地要求一般分解 $u=re^{i\theta}$ 且 $r\neq 1$ 时，类型必须外延为
+$$
+\mathsf{Phase}\leadsto \mathsf{Phase}\times \mathsf{Radial},
+$$
+其中 $\mathsf{Radial}$ 作为额外连续自由度的承载即对应“第四纤维（寄存器）”；其结构与定量障碍在第 \ref{sec:fourth-register} 节给出。
+\end{remark}
 

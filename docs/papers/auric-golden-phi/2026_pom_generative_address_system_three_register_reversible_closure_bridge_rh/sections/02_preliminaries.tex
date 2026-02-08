@@ -32,8 +32,20 @@ $$
 当 $a=\iota_m(\omega)$ 来自 $\omega\in\Omega_m$ 的标准嵌入时，$\Fold_m(\omega)$ 可等价表述为取 $\Fold_\infty(\iota_m(\omega))$ 的前 $m$ 位截断（附录 \ref{app:fold-rewriting}）。
 \end{definition}
 
-\subsection{地址、读出与空值语义}
-令 $\Addr$ 为可数地址集合（例如有限二元串、带参数的投影词等）。对 $a\in\Addr$，记其触发的读出过程为 $\Read(a)$。若地址未给定，则读出过程不定义，记为 $\NULL$，并约定 $\NULL$ 不属于数值域且 $\NULL\neq 0$。本文以“地址先于值”的语义组织对象存在性与后续推理。
+\subsection{地址、读出与未定义语义}
+\begin{definition}[多排序值域与未定义]\label{def:valdom-undefined}
+取排序集合 $\mathrm{Sort}$，并将值域写成多排序不交并
+$$
+\mathrm{ValDom}:=\bigsqcup_{\tau\in\mathrm{Sort}}\mathrm{Val}_\tau.
+$$
+约定 $\NULL\notin \mathrm{ValDom}$。对偏函数读出 $\Read:\Addr\rightharpoonup \mathrm{ValDom}$，若 $\Read(a)$ 未定义，则以 $\Read(a)=\NULL$ 作为未定义的记号；$\NULL$ 不携带数值意义，并与任何数值（含 $0$）严格分离。
+\end{definition}
+
+令 $\Addr$ 为可数地址集合（例如有限二元串、带参数的投影词等）。本文将读出写成偏函数
+$$
+\Read:\Addr\rightharpoonup \mathrm{ValDom},
+$$
+其中 $\mathrm{ValDom}$ 与未定义约定见定义 \ref{def:valdom-undefined}。本文以“地址先于值”的语义组织对象存在性与后续推理。
 
 \subsection{可核验性与证书}
 本文中若干关键术语按如下方式使用：
@@ -41,7 +53,7 @@ $$
   \item \textbf{健全性与完备性：}健全性（soundness）指“在既定语义与验证规则下，凡可寻址且可核验的断言必满足相应类型约束”；完备性（completeness）指“目标断言在既定闭包内均可寻址且读出非 $\NULL$”。本文关于经典 RH 的推论均显式区分二者的依赖链。
   \item \textbf{可核验（或可复核）：}称某一断言可核验，若其正确性可由固定的、确定性的验证规则在有限步骤内完成判定，并且“验证通过”蕴含相应数学断言成立。
   \item \textbf{可核验证书：}称有限数据 $c$ 为断言 $S$ 的可核验证书，若存在上述验证规则使得对输入 $c$ 验证通过，并且由此可推出 $S$ 成立。本文所称“证书”均指此意义下的可核验证书。
-  \item \textbf{空值：}$\NULL$ 表示读出不定义，不属于数值域，且按约定 $\NULL\neq 0$。
+  \item \textbf{未定义（$\NULL$）：}$\NULL$ 仅表示偏函数读出未定义（$\NULL\notin\mathrm{ValDom}$），并按约定与任何数值（含 $0$）严格分离。
 \end{enumerate}
 
 \subsection{后文常用记号}

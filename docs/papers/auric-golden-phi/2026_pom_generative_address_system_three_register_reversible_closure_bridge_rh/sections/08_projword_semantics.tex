@@ -1,4 +1,4 @@
-\section{投影词（PW）证明语义：证书化重写与判等}
+\section{投影词（PW）证明语义：证书化重写与判等}\label{sec:projword}
 
 \subsection{PW 的生成与 2-态射证书}
 设 $\mathcal{G}$ 为投影门集合（例如规范投影、条件期望门等），投影词 $W$ 为 $\mathcal{G}$ 上的自由幺半群元素（以复合作为乘法）。PW 的证明语义由 2-态射证书给出：
@@ -21,6 +21,19 @@ W\Rightarrow_{\varepsilon+\delta} W''.
 $$
 \end{proposition}
 
+\subsection{验证器接口：证书对象与健全性}\label{subsec:pw-verifier-interface}
+本文将“可核验性”固定为一个确定性的验证接口，并把“无证书”视为偏函数未定义（$\NULL$）而非数值不稳定。\par
+
+\begin{definition}[证书对象与验证器]\label{def:cert-verify}
+对任意数学断言 $\varphi$，记 $\mathsf{Cert}(\varphi)$ 为其\textbf{有限数据证书}的集合（例如有限重写链、区间根隔离数据、WSOS/LMI 证书包等）。\par
+称确定性过程
+$$
+\mathsf{Verify}:\mathsf{Cert}(\varphi)\to\{0,1\}
+$$
+为断言 $\varphi$ 的一个验证器，若其满足健全性：$\mathsf{Verify}(c)=1$ 蕴含 $\varphi$ 成立。本文的各种“证书核验器”（例如 unitary slice 的 $\mathsf{Verify}_{\mathrm{US}}$，定义 \ref{def:us-typed-address-null}）均处于该接口框架之下。\par
+若某断言的语义按“证书存在性”驱动（见定义 \ref{def:us-typed-address-null}），则“无任何可通过核验的证书”对应读出未定义，并按约定记为 $\NULL$；完备性若未证明，只能作为条件假设出现。
+\end{definition}
+
 \subsection{局部片段的终止、合流与正规形唯一}
 在局部片段
 $$
@@ -39,15 +52,34 @@ $$
   \item（局部）合流：任意两条重写序列可汇合到同一不可约词；
   \item 正规形唯一：正规形由最小分辨率指标的 $E_{m^\star}$（及至多一个 $P_Z$ 因子）唯一确定。
 \end{enumerate}
+\par\noindent\textnormal{\textbf{依赖：}规则 (RZ),(RE) 的局部重写系统与终止/（局部）合流证明；细节与更一般片段见附录 \ref{app:pw-fragment}。}
 \end{theorem}
 
 \begin{corollary}[判等可判定]\label{cor:pw-word-problem-decidable}
-给定 $W_1,W_2\in \mathrm{PW}_{Z,E}$，计算其正规形 $N(W_1),N(W_2)$，则
+记可判定片段
+$$
+\mathsf{PW}_{\mathrm{dec}}:=\mathrm{PW}_{Z,E}.
+$$
+给定 $W_1,W_2\in \mathsf{PW}_{\mathrm{dec}}$，计算其正规形 $N(W_1),N(W_2)$，则
 $$
 W_1\sim W_2 \iff N(W_1)=N(W_2),
 $$
 从而该片段的词问题可判定。
+\par\noindent\textnormal{\textbf{依赖：}定理 \ref{thm:pw-ze-termination-confluence} 与正规形比较算法（算法 \ref{alg:pw-dec-normalize}）。}
 \end{corollary}
+
+\begin{algorithm}[\texorpdfstring{$\mathsf{PW}_{\mathrm{dec}}$}{PWdec} 正规化器与判等器（最小版本）]\label{alg:pw-dec-normalize}
+\textbf{输入：}投影词 $W\in\mathsf{PW}_{\mathrm{dec}}$（或 $W_1,W_2$）。\\
+\textbf{输出：}正规形 $N(W)$（或判等结果）。\\
+\textbf{步骤：}
+\begin{enumerate}
+  \item 解析 $W$ 的生成元序列；若语法不合法则 $\mathrm{REJECT}$。
+  \item 将所有 $E_m$ 因子合并为单个 $E_{m^\star}$，其中 $m^\star$ 为出现过的最小指标（规则 (RE)）。
+  \item 将 $P_Z$ 因子缩并为至多一个（规则 (RZ)）。
+  \item 输出规范代表 $N(W)$；对判等，比较 $N(W_1)$ 与 $N(W_2)$ 是否完全相同。
+\end{enumerate}
+该算法对应推论 \ref{cor:pw-word-problem-decidable} 的可执行化版本；其正确性由终止性与（局部）合流性保证（定理 \ref{thm:pw-ze-termination-confluence}）。
+\end{algorithm}
 
 上述结果给出“证明语义的证书化归约”的一个最小原型：等价性被归约为可判定的正规化过程，且验证仅依赖有限步骤的确定性检查。更细化的语法、检查器与三生成元片段见附录 \ref{app:pw-fragment}。
 

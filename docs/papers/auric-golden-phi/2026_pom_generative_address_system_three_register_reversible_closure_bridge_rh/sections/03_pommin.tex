@@ -7,7 +7,7 @@ POMmin 的最小公理可组织为以下条目（其形式化版本见附录 \re
   以标准集合论对象定义微态空间 $\Omega_m$ 与其概率单纯形 $\Delta(\Omega_m)$；POM 不替代集合论，而将其作为语法与语义承载。
 
   \item \label{ax:pommin-a2}
-  地址优先与空值语义：无地址则读出不定义并返回 $\NULL$，且 $\NULL\neq 0$。
+  地址优先与未定义语义：读出为偏函数 $\Read:\Addr\rightharpoonup \mathrm{ValDom}$；当读出未定义时以 $\NULL$ 记之（$\NULL\notin\mathrm{ValDom}$，且 $\NULL\neq 0$）。
 
   \item \label{ax:pommin-a3}
   稳定语法 $X_m$ 与折叠算子 $\Fold_m:\Omega_m\twoheadrightarrow X_m$，满足规范性、幂等性与满射性，并具有可核验的终止与合流实现（正规形唯一）。
@@ -33,9 +33,35 @@ POMmin 的最小公理可组织为以下条目（其形式化版本见附录 \re
 \end{enumerate}
 该公理组构成后续推理的基础假设集合。
 
+\subsection{一个可审查的一致性模型（canonical model）}\label{subsec:canonical-model}
+为表明上述公理集合在通常集合论背景下相容，本小节给出一个最小、完全显式的模型。该模型仅用于“可审查一致性”，不引入额外主张；后续定理并不依赖该模型的特化细节。\par
+
+\paragraph{地址域与机械解码}
+取地址域为所有有限二元串
+$$
+\Addr:=\{0,1\}^{<\omega}.
+$$
+定义部分解码算子
+$$
+\mathrm{Dec}:\Addr\rightharpoonup \bigsqcup_{m\ge 1}\Omega_m
+$$
+如下：对 $a\in\Addr$，若 $a$ 可唯一写作 $a=1^m 0\,\omega$ 且 $\omega\in\{0,1\}^m$，则令 $\mathrm{Dec}(a)=\omega$；否则 $\mathrm{Dec}(a)$ 未定义。该解码过程可机械检查，并显式区分“未定义”与值域元素。\par
+
+\paragraph{读出与折叠}
+对满足 $\mathrm{Dec}(a)=\omega\in\Omega_m$ 的地址，定义读出为
+$$
+\Read(a):=\Fold_m(\omega)\in X_m;
+$$
+对其余地址令 $\Read(a)$ 未定义并按约定记为 $\NULL$。其中 $\Fold_m$ 的具体实现取附录 \ref{app:fold-rewriting} 的局部重写系统：其终止/合流保证正规形唯一，从而 $\Fold_m$ 可被确定性算法计算并满足公理 \ref{ax:pommin-a3}（幂等与满射由“对 $x\in X_m$ 有 $\Fold_m(x)=x$”与“任取 $x\in X_m$，取 $\omega=x$ 即为前像”直接得到）。\par
+
+\paragraph{跨分辨率与提升}
+限制映射 $\rho_{m\to n}:X_m\to X_n$ 取前 $n$ 位截断；由折叠重写规则的局域性可核验地得到“折叠与降分辨率可交换”的跨分辨率相容性（细节见附录 \ref{app:pommin-formal} 与 \ref{app:fold-rewriting}）。prime-register 无损提升 $\widehat{\Fold}_m$ 取附录 \ref{app:prime-uplift} 的轨迹编码构造，满足公理 \ref{ax:pommin-a7}。\par
+
+综上，POMmin 至少具有一个显式可审查的模型，从而“地址先于值—折叠归一化—记录轴单射化—证书核验”的组合在通常数学背景下是相容的。
+
 \subsection{语义定理：存在性与可寻址性}
 \begin{proposition}[存在性语义]\label{prop:existence-semantics}
-在 POMmin 下，若对象 $O$ 在对象域中被声明“存在”，则存在地址 $a\in\Addr$ 使得 $\Read(a)=O$ 且 $\Read(a)\neq \NULL$。
+在 POMmin 下，若对象 $O$ 在对象域中被声明“存在”，则存在地址 $a\in\Addr$ 使得偏函数读出 $\Read(a)$ \emph{定义}且 $\Read(a)=O$（等价地：$\Read(a)\neq \NULL$）。
 \end{proposition}
 
 \begin{proof}

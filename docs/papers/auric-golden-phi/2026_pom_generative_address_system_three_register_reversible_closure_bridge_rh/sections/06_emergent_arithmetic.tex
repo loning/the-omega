@@ -19,6 +19,7 @@ $$
 
 \begin{theorem}[自然数的涌现：商幺半群同构]\label{thm:emergent-N}
 映射 $\mathrm{Val}:D/\!\equiv\ \to \NN$ 为交换幺半群同构；并且 Zeckendorf 合法数字空间 $Z$ 为每个同余类提供唯一规范代表：对任意 $a\in D$，存在唯一 $c\in Z$ 使得 $a\equiv c$ 且 $\mathrm{Val}(a)=\mathrm{Val}(c)$。
+\par\noindent\textnormal{\textbf{依赖：}定义 \ref{def:Z-fiber}，Zeckendorf 唯一表示定理 \cite{Zeckendorf1972}，以及同余关系 $\equiv$ 的递推生成关系。}
 \end{theorem}
 
 \begin{proof}
@@ -39,6 +40,10 @@ c\oplus d := \Fold_\infty(c+d).
 $$
 其中 $\Fold_\infty$ 取为定义 \ref{def:fold-extension-domain} 给出的配置空间 $D$ 上的扩展折叠算子（其实现与性质见附录 \ref{app:fold-rewriting}）。等价地，亦可通过值映射定义 $c\oplus d := \mathrm{Val}^{-1}(\mathrm{Val}(c)+\mathrm{Val}(d))$。
 \end{definition}
+
+\begin{proposition}[折叠归一化的算法命题]\label{prop:fold-normalize-alg}
+对任意 $m\ge 1$ 与任意 $\omega\in\Omega_m$，存在确定性算法在有限步骤内输出唯一正规形 $x=\Fold_m(\omega)\in X_m$，并可附带一条由单步局部重写组成的可核验证书链，供验证器逐步检查（附录 \ref{app:fold-rewriting}）。因此，折叠归一化恢复的是\emph{稳定规范代表}，而非纤维内微态差异。
+\end{proposition}
 
 \begin{corollary}[折叠公式]\label{cor:fold-add}
 对任意 $c,d\in Z$，有 $c\oplus d=\Fold_\infty(c+d)$，并且 $\mathrm{Val}(c\oplus d)=\mathrm{Val}(c)+\mathrm{Val}(d)$。
@@ -77,28 +82,35 @@ $$
 \end{proof}
 
 \subsection{乘法与加法的内生化：极简原语集}
+\begin{proposition}[定义链最小化与可消去性（definitional economy）]\label{prop:definitional-economy-arith}
+在本节构造中，可将算术结构的原语集压缩为“折叠正规化 $\Fold_\infty$（及其可核验实现）$+$ 零元 $0_Z$ $+$ 后继 $S(c)=\Fold_\infty(c+e_1)$”。在该原语集上：\par
+\noindent\textbf{(i)} 稳定加法 $\oplus$ 可由后继迭代内生（见注 \ref{rem:succ-smaller-primitives}）；\par
+\noindent\textbf{(ii)} 稳定乘法 $\otimes$ 不必作为原语：其可由“加法迭代”定义的派生运算 $\odot$ 完全消去（定理 \ref{thm:mul-from-add}）。\par
+因此，本节中用 $\mathrm{Val}^{-1}$ 给出的乘法定义（定义 \ref{def:stable-mul}）仅是便于陈述的缩写：半环同构结论的内容在于\emph{内部可定义}的算术运算与经典 $(\NN,+,\times)$ 等价，而非预置经典运算作为原语。
+\end{proposition}
+
 \begin{theorem}[乘法可由加法与迭代内生]\label{thm:mul-from-add}
 定义
 $$
-c\,\underline{\oplus}\, d := \underbrace{c\oplus c\oplus\cdots\oplus c}_{\mathrm{Val}(d)\text{ 次}},
+c\odot d := \underbrace{c\oplus c\oplus\cdots\oplus c}_{\mathrm{Val}(d)\text{ 次}},
 \qquad
 \mathrm{Val}(d)=0 \text{ 时取 } 0_Z,
 $$
 其中 $0_Z$ 为全零序列。则对任意 $c,d\in Z$，有
 $$
-c\,\underline{\oplus}\, d = c\otimes d.
+c\odot d = c\otimes d.
 $$
 \end{theorem}
 
 \begin{proof}
 由 $\mathrm{Val}$ 保持 $\oplus$ 且双射，得
 $$
-\mathrm{Val}(c\,\underline{\oplus}\, d)=\mathrm{Val}(c)\mathrm{Val}(d)=\mathrm{Val}(c\otimes d),
+\mathrm{Val}(c\odot d)=\mathrm{Val}(c)\mathrm{Val}(d)=\mathrm{Val}(c\otimes d),
 $$
 再由双射性推出相等。
 \end{proof}
 
-\begin{remark}[后继算子与更小原语集]
+\begin{remark}[后继算子与更小原语集]\label{rem:succ-smaller-primitives}
 同理，可通过后继算子 $S(c)=\Fold_\infty(c+e_1)$ 将 $\oplus$ 内生为后继迭代，从而得到更小的原语集（以“后继 $+$ 折叠”生成算术）。
 \end{remark}
 

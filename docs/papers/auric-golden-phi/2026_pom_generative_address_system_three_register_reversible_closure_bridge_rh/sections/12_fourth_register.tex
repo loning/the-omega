@@ -55,6 +55,79 @@ $
 量级的附加证书位数（定理 \ref{thm:cc-radial-bit-lowerbound}），并在由 prime-register 承载该通道时转写为 $\mathrm{Bud}_P(r)$ 的线性下界（推论 \ref{cor:cc-radial-prime-budget}）。因此，“第四寄存器”既可由结构保持的群论阻碍推出，也可由可证书化精度负载的预算下界推出。
 \end{remark}
 
+\subsection{定量障碍：精度势、误差放大与固定精度有界性}\label{subsec:fourth-register-quantitative}
+本节把“径向自由度不可类型化”从结构性拒绝推进到\textbf{可核验的定量下界}：即便将径向自由度紧化为有界坐标，若精度索引被要求全局有界，则径向的可寻址域必为有界集。\par
+
+\begin{definition}[紧化坐标与精度势（precision potential）]\label{def:radial-compactification-potential}
+取紧化坐标
+$$
+\upsilon(x):=\frac{1}{\pi}\arctan(x)\in\Bigl(-\frac12,\frac12\Bigr),
+\qquad
+\vartheta(x):=2\arctan(x)\in(-\pi,\pi),
+$$
+并记 Cayley 嵌入
+$$
+\iota(x):=e^{i\vartheta(x)}=\frac{1+ix}{1-ix}\in\TT.
+$$
+则
+$$
+\frac{\dd\upsilon}{\dd x}=\frac{1}{\pi(1+x^2)}.
+$$
+定义精度势（信息账本项）
+$$
+P(x):=-\log\Bigl|\frac{\dd\upsilon}{\dd x}\Bigr|=\log\pi+\log(1+x^2).
+$$
+该势函数刻画：当 $|x|$ 增大时，紧化坐标的末位精度必须按 $\log(1+x^2)$ 量级增长，才能保持可重复核验的单值读出（细节见第 \ref{sec:conclusion-cluster} 节 \S\ref{subsubsec:cc-dual-phase-compactification} 与附录 \ref{app:phase-compactification-register-unification}）。
+\end{definition}
+
+\begin{proposition}[误差放大律（Jacobian）]\label{prop:radial-error-amplification}
+设 $x\in\RR$，并以紧化坐标 $u=\upsilon(x)$ 承载径向信息。若 $u$ 的证书近似误差满足 $|\tilde u-u|\le\delta$，则所有与该证书兼容的候选 $x'$ 构成区间
+$
+I_\delta(x)=[\upsilon^{-1}(u-\delta),\upsilon^{-1}(u+\delta)].
+$
+并且在 $|x|,|x'|\le X$ 的有界域上，紧化误差在实轴上最多按 Jacobian 放大：若 $x'=\upsilon^{-1}(u')$ 且 $|u'-u|\le\delta$，则
+$$
+|x'-x|\ \le\ \pi(1+X^2)\,\delta.
+$$
+\end{proposition}
+
+\begin{proof}
+由 $\upsilon(x)=\pi^{-1}\arctan(x)$ 与介值定理，存在 $\xi$ 介于 $x$ 与 $x'$ 之间使
+$$
+|u'-u|=|\upsilon(x')-\upsilon(x)|=\frac{1}{\pi(1+\xi^2)}|x'-x|.
+$$
+当 $|x|,|x'|\le X$ 时有 $1+\xi^2\le 1+X^2$，从而得到所示不等式。证毕。
+\end{proof}
+
+\begin{theorem}[固定精度下的径向可寻址域有界]\label{thm:radial-addressability-bounded}
+设径向参数 $x\in\RR$ 仅通过紧化值 $\upsilon(x)$ 的 $n$ 比特二进制近似被证书化（即 $|\tilde u-\upsilon(x)|\le 2^{-n}$），并要求在绝对误差不超过 $\epsilon\in(0,1]$ 的意义下实现可核验单值读出。则必要条件为（见定理 \ref{thm:cc-radial-bit-lowerbound}）
+$$
+n\ \ge\ \log_2\Bigl(\frac{1}{\epsilon}\Bigr)+\log_2(1+x^2)+\log_2(4\pi),
+$$
+从而在给定 $(n,\epsilon)$ 下的可寻址径向域必为有界集：任何可被该精度证书覆盖的 $x$ 都满足
+$$
+|x|\ \le\ \sqrt{\frac{2^{n}\epsilon}{4\pi}-1}.
+$$
+特别地，不存在统一有限精度索引 $n$ 能在固定误差范畴内证书化全部 $x\in\RR$；越界必退化为多值/不可核验并触发 $\NULL$。
+\par\noindent\textnormal{\textbf{依赖：}紧化坐标与精度势（定义 \ref{def:radial-compactification-potential}），以及径向证书容量下界（定理 \ref{thm:cc-radial-bit-lowerbound}）。}
+\end{theorem}
+
+\begin{proof}
+第一式为定理 \ref{thm:cc-radial-bit-lowerbound} 的直接引用。对其改写得
+$
+2^n \ge (1/\epsilon)(1+x^2)(4\pi)
+$
+，即
+$
+1+x^2\le 2^n\epsilon/(4\pi)
+$
+，从而得到所示上界。
+\end{proof}
+
+\begin{remark}[第四寄存器的定量含义]
+定理 \ref{thm:radial-addressability-bounded} 给出“第四寄存器”的定量刻画：若要把离开 unitary slice 的径向自由度纳入可核验对象域，就必须要么允许精度索引随推理增长（支付精度势账本），要么引入额外记录轴因子承载端点精度载荷（定理 \ref{thm:record-axis-four-factor} 中的 $r_{\mathrm{end}}$），否则在统一有限精度下不可实现全域可寻址。
+\end{remark}
+
 \subsection{双检查器拒绝：根区间与 strictification}
 在 unitary slice 机制下，体系内部可实现两类拒绝机制：
 \begin{enumerate}

@@ -1,32 +1,43 @@
 \section{引言}
 
-经典公理化数学中，“对象存在”通常由元理论或集合论承诺给出；在强调可计算与可核验的语义中，能够被引用、被验证并可重复复核的对象与“被宣称存在”的对象之间并不必然一致。投影本体数学（Projection Ontological Mathematics, POM）以内化的读出语义回应这一张力：以地址触发读出作为存在性判据，若无地址则读出不定义，记为 $\NULL$，并约定 $\NULL\neq 0$。
+经典公理化数学中，“对象存在”通常由元理论或集合论承诺给出；在强调可计算与可核验的语义中，能够被引用、被验证并可重复复核的对象与“被宣称存在”的对象之间并不必然一致。投影本体数学（Projection Ontological Mathematics, POM）以内化的读出语义回应这一张力：以地址触发读出作为存在性判据。形式上，本文将读出视为偏函数 $\Read:\Addr\rightharpoonup \mathrm{ValDom}$；当读出未定义时，以 $\NULL$ 作为未定义的记号（$\NULL\notin\mathrm{ValDom}$，且 $\NULL\neq 0$）。\par
+本文全篇以“\textbf{纤维}”作为主术语（与“寄存器/轴”同义；后两者仅在首次出现或固定复合词如 prime-register 中作一次性说明）。
 
 \subsection{主要结果}
-在最小公理体系 POMmin（第 \ref{sec:pommin} 节）与本文的可核验闭包设定下，本文的结论分为两类：一类为在闭包内无条件成立的结构性定理（已证）；另一类为在显式桥接前提下成立的条件性推论链。
+在最小公理体系 POMmin（第 \ref{sec:pommin} 节）与本文的可核验闭包设定下，本文的主张严格分为两层：\textbf{无条件层}（正文可证明、不可含桥接假设）与\textbf{条件层}（必须以 conditional 定理/推论链呈现，并给出可证伪的失败见证规格）。
 
-\paragraph{已证结果（POMmin + 三寄存器闭包）}
+\paragraph{无条件层（POMmin + 三纤维闭包；正文可证）}
 \begin{enumerate}
-  \item \textbf{自然数半环的涌现：}稳定地址空间上的运算 $(\oplus,\otimes)$ 与经典半环 $(\NN,+,\times)$ 同构（定理 \ref{thm:emergent-N}）。
-  \item \textbf{无损提升与信息账本：}素数寄存器外置残差实现无损提升与可逆回放，并给出信息账本恒等式以分解可见熵与残差信息（定理 \ref{thm:ledger-identity}；无损提升见命题 \ref{prop:lossless-uplift}）。
-  \item \textbf{PW 证书片段的可判定性：}读出塔重写终止且（局部）合流，从而正规形唯一；并且判等问题可判定（定理 \ref{thm:pw-ze-termination-confluence} 与推论 \ref{cor:pw-word-problem-decidable}）。
-  \item \textbf{临界线约束的健全性（type safety）：}在 unitary slice 核验机制下，任何可寻址且可核验的零点证书必满足 $\Re(s)=\tfrac12$；偏移点在该闭包内不可证书化并读出为 $\NULL$（定理 \ref{thm:type-safety-offcritical}）。
-  \item \textbf{第四寄存器障碍：}离开 unitary slice 的径向自由度需要证书类型外延；在三寄存器闭包内该需求表现为第四寄存器必要性（命题 \ref{prop:fourth-register-need}）。
+  \item \textbf{偏函数读出与未定义语义：}对象存在性由“可寻址读出”内化：存在当且仅当存在地址使读出定义且可核验；否则读出未定义并以 $\NULL$ 记之（命题 \ref{prop:existence-semantics}）。
+  \item \textbf{稳定语法与折叠归一化：}构造 $\Omega_m=\{0,1\}^m$、合法子集 $X_m$ 与折叠归一化 $\Fold_m:\Omega_m\twoheadrightarrow X_m$，并给出可机械核验的正规形唯一/可判等片段（公理 \ref{ax:pommin-a3} 与附录 \ref{app:fold-rewriting}）。
+  \item \textbf{自然数半环的涌现：}在稳定地址空间上内生定义运算 $(\oplus,\otimes)$ 并证明其与 $(\NN,+,\times)$ 半环同构（定理 \ref{thm:emergent-N}）。
+  \item \textbf{记录轴单射化与信息账本：}以素数纤维（prime-register）外置折叠残差，实现提升/回放并给出信息账本恒等式以分解可见熵与残差信息（命题 \ref{prop:lossless-uplift} 与定理 \ref{thm:ledger-identity}）。
+  \item \textbf{$\mathsf{PW}_{\mathrm{dec}}$ 证书片段的可判定性：}在投影词（PW）证书系统的可判定片段内，重写终止且（局部）合流，从而正规形唯一；并且判等问题可判定（定理 \ref{thm:pw-ze-termination-confluence} 与推论 \ref{cor:pw-word-problem-decidable}）。
+  \item \textbf{unitary slice 下的健全性（soundness / typed rejection）：}在 unitary slice 强类型核验协议下，任何可寻址且可核验的零点证书必满足 $\Re(s)=\tfrac12$；偏移点在该闭包内不可证书化并读出未定义（$\NULL$）（定理 \ref{thm:type-safety-offcritical}）。
+  \item \textbf{第四纤维（寄存器）障碍：}离开 unitary slice 的径向自由度需要证书类型外延；在三纤维闭包内该需求表现为第四纤维的结构必需性（命题 \ref{prop:fourth-register-need}）。
 \end{enumerate}
 
-\paragraph{条件性推论（显式桥接前提）}
+\paragraph{条件层（conditional；显式桥接前提）}
 \begin{enumerate}
   \item \textbf{地址完备性 $\Rightarrow$ 内部 $\Xi$-RH：}若对固定 $L>1$ 采用地址完备性假设（假设 \ref{ass:xi-address-completeness}），则 $\Xi_{\Delta,L}$ 的全部零点满足 $\Re(s)=\tfrac12$（推论 \ref{cor:xi-rh}）。
-  \item \textbf{BridgeRH $\Rightarrow$ 经典 RH：}若桥接条件 BridgeRH（假设 \ref{ass:bridge-rh}）成立，则经典 RH 成立（定理 \ref{thm:bridge-rh-implies-rh}）。该条件的意义在于把经典零点事件分解为一组可逐项核验、可否证的义务清单（见附录 \ref{app:bridge-rh-obligations}）。
+  \item \textbf{BridgeRH $\Rightarrow$ 经典 RH（条件性归约）：}若桥接条件 BridgeRH（假设 \ref{ass:bridge-rh}）成立，则经典 RH 成立（定理 \ref{thm:bridge-rh-implies-rh}）。BridgeRH 被组织为一组可逐项核验、可否证的义务清单：每条义务均应给出有限证书或失败见证（见附录 \ref{app:bridge-rh-obligations}）。
 \end{enumerate}
 
 \subsection{相关工作与本文定位}
-本文的三个技术支柱分别对应既有文献中的三个方向。\par
+本文的三条主线分别对应既有文献中的三个方向，并在本文中被统一为“可核验读出—记录轴单射化—精度账本—typed rejection”的类型化数学层。\par
 \textbf{（1）稳定语法与折叠归一化：}黄金均值语法与其逆极限结构可视为符号动力系统中的 SFT（shift of finite type），其计数与编码性质可在符号动力系统与编码理论框架下理解 \cite{LindMarcus1995}。折叠归一化采用终止/（局部）合流的重写系统以保证正规形唯一，其与组合重写理论一致，并可用 Newman 引理等标准工具组织可核验的判等链条 \cite{Newman1942}。\par
-\textbf{（2）信息账本与无损提升：}信息账本恒等式使用 Shannon 熵与 KL 散度的标准分解 \cite{CoverThomas2006}，把多对一折叠造成的不可逆性分解为“纤维体积项”与“偏离最大熵提升的残差项”；prime-register 的残差承载与 Gödel 化编码则把回放所需的离散轨迹信息组织为可检验的有限数据。\par
-\textbf{（3）unitary slice 的核验与证明携带：}unitary slice 将临界线几何转写为单位圆参数域（命题 \ref{prop:critical-line-unitary-slice}），并可进一步代数化为自倒数多项式与区间根判据；相关的单位圆谱结构与数值算法工具在 OPUC/CMV 与谱理论中已有成熟框架 \cite{CanteroMoralVelazquez2003CMV,Simon2005OPUC1,BevilacquaDelCorsoGemignani2015CMVCompanion}。本文强调其“证明携带化”版本：以外向舍入的区间算术与有理证书（例如 Schur--Cohn/LMI 与 WSOS）作为离线可复算的核验后端 \cite{DaumasLesterMunoz2007,DymYoung1990SchurCohnMatrixPolynomials,DavisPapp2023}。\par
+\textbf{（2）记录轴单射化与信息账本：}信息账本恒等式使用 Shannon 熵与 KL 散度的标准分解 \cite{CoverThomas2006}，把多对一折叠造成的不可逆性分解为“纤维体积项”与“偏离最大熵提升的残差项”；prime-register 的残差承载与 Gödel 化编码则把回放所需的离散轨迹信息组织为可检验的有限数据。\par
+\textbf{（3）unitary slice 的核验、证明携带与连续精度账本：}unitary slice 将临界线几何转写为单位圆参数域（命题 \ref{prop:critical-line-unitary-slice}），并可进一步代数化为自倒数多项式与区间根判据；相关的单位圆谱结构与数值算法工具在 OPUC/CMV 与谱理论中已有成熟框架 \cite{CanteroMoralVelazquez2003CMV,Simon2005OPUC1,BevilacquaDelCorsoGemignani2015CMVCompanion}。本文强调其“证明携带化”版本：以外向舍入的区间算术与有理证书（例如 Schur--Cohn/LMI 与 WSOS）作为离线可复算的核验后端 \cite{DaumasLesterMunoz2007,DymYoung1990SchurCohnMatrixPolynomials,DavisPapp2023}。另一方面，单位圆面积相位紧化把无界尺度压缩到边界相位，并以 Jacobian 诱导的精度势（precision potential）将“尾部压缩代价”转写为可审计的精度账本（参见附录 \ref{app:phase-compactification-register-unification} 与 \ref{app:structural-synthesis-phase-diagram}）。\par
 BridgeRH 的角色在于把经典完成化函数的零点事件组织为可核验对象域中的地址化读出；其形式与动力系统 $\zeta$ 函数的迹—primitive—Euler 严格交换桥包结构相容 \cite{Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}。本文不试图在主文同一层面给出经典解析数论证明（参见标准参考 \cite{Apostol1976}），而是把困难显式分解为可逐项核验的桥接义务，并以 $\NULL$ 语义与第四寄存器障碍标注其最小失败点。
 
+\subsection{Novelty audit：贡献盘点与边界声明}
+为便于审稿与复核，本文将材料分为三类并逐条标注其逻辑地位。\par
+\begin{itemize}
+  \item \textbf{标准工具（降级为背景/引理）：}Zeckendorf/Ostrowski 表示与逆极限、Newman 引理与组合重写、Shannon 熵与 $D_{\mathrm{KL}}$ 分解、区间算术与外向舍入等；本文仅将其作为可机械核验链条的组织工具。
+  \item \textbf{重新组织但可独立发表的结构：}偏函数读出（证书存在性语义）与 $\NULL$ 的未定义纪律；折叠—残差—回放的守恒式表达与审计接口；unitary slice 的 typed rejection 机制与健全性定理（soundness）。
+  \item \textbf{必须突出并强化的贡献点：}记录型结构的完备性（最小记录轴的规范四因子生成元；细节在附录 \ref{app:structural-synthesis-phase-diagram}）；第四纤维障碍的结构与定量双刻画（类型外延与精度载荷下界；见第 \ref{sec:fourth-register} 节与相关附录）；BridgeRH 体系的可证伪规格化（每条假设必须配备失败见证并可终止推论链；见第 \ref{sec:bridge-rh} 节与附录 \ref{app:bridge-rh-obligations}）。
+\end{itemize}
+
 \subsection{文章结构}
-第 \ref{sec:pommin} 节给出 POMmin 的最小公理与存在性语义。随后给出扫描—投影生成器与三寄存器纤维结构，并在稳定地址空间上建立算术涌现（第 \ref{sec:emergent-arithmetic} 节）与信息账本恒等式（第 \ref{sec:ledger} 节）。之后讨论投影词证书语义、unitary slice 约束与类型安全，并在桥接假设下给出从内部 $\Xi$-陈述到经典 RH 的条件推论（第 \ref{sec:bridge-rh} 节）；第四寄存器障碍见第 \ref{sec:fourth-register} 节。第 \ref{sec:conclusion-cluster} 节给出证书与统一编码层（自描述编码、单码残差与 unitary slice 的可重复核验），并为 BridgeRH 的可验证条件提供支撑；讨论与结论分别见后两节，附录汇集证明携带构造与相关技术材料。
+第 \ref{sec:pommin} 节给出 POMmin 的最小公理与存在性语义。随后给出扫描—投影生成器与三纤维结构（亦称三寄存器：尺度/相位/素数纤维），并在稳定地址空间上建立算术涌现（第 \ref{sec:emergent-arithmetic} 节）与信息账本恒等式（第 \ref{sec:ledger} 节）。之后讨论投影词证书语义、unitary slice 约束与类型安全，并在桥接假设下给出从内部 $\Xi$-陈述到经典 RH 的条件推论（第 \ref{sec:bridge-rh} 节）；第四纤维（寄存器）障碍见第 \ref{sec:fourth-register} 节。第 \ref{sec:conclusion-cluster} 节给出证书与统一编码层（自描述编码、单码残差与 unitary slice 的可重复核验），并为 BridgeRH 的可验证条件提供支撑；讨论与结论分别见后两节，附录汇集证明携带构造与相关技术材料。
 

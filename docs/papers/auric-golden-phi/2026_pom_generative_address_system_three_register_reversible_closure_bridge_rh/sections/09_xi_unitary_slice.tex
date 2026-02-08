@@ -1,4 +1,4 @@
-\section{\texorpdfstring{$(\Xi)$}{(Xi)}-判别与 unitary slice：临界线几何的参数侧内化}
+\section{\texorpdfstring{$(\Xi)$}{(Xi)}-判别与 unitary slice：临界线几何的参数侧内化}\label{sec:xi-unitary-slice}
 
 \subsection{二变量行列式对象与切片}
 设 $\Delta(z,u)$ 为二变量行列式对象，可取有限维 $\det(I-zB(u))$ 或 Fredholm 行列式情形，并满足自对偶条件
@@ -45,6 +45,8 @@ $$
 u=e^{i\theta}\in\mathrm{Phase}
 $$
 作为唯一可核验的连续参数通道；一般分解 $u=re^{i\theta}$ 中的径向参数 $r$ 不属于该协议的可见输入类型。与此相容的三生成元正规化片段与证书化重写规则见附录 \ref{app:pw-fragment}；类型安全拒绝链的形式化压缩见附录 \ref{app:type-safety-details}。
+\par
+在第 \ref{subsec:typed-fiber-calculus} 节的类型化纤维语言中，这一协议约束等价于：连续输入被强类型化为索引化相位排序 $\mathsf{Phase}[p]$，其中精度索引 $p$ 由地址携带并决定可重复核验的证书层；径向自由度则必须通过额外类型/纤维外延承载。
 \end{definition}
 
 \begin{remark}[有理化输入与零浮点证书（代数子语言）]\label{rem:us-rational-audit}
@@ -61,7 +63,7 @@ $$
 \Addr_{\mathrm{US}}:=\{(L,\theta,p):\ L>1,\ \theta\in\RR,\ p\in\NN\}.
 $$
 固定一族确定性验证规则 $\mathsf{Verify}_{\mathrm{US}}$：其输入为 $(\Delta,L,\theta,p,c)$（其中 $c$ 为有限数据证书），输出为通过/拒绝，且“通过”蕴含相应数学断言成立。相应的证书对象格式（例如 NonZero 与 RootInterval 的区间证书、覆盖式 $\NULL$ 证书等）见第 \ref{sec:conclusion-cluster} 节 \S\ref{subsec:cc-us-cert} 与附录 \ref{app:inject-code-audit}。\par
-据此，可将 unitary slice 的读出理解为“证书存在性”驱动的偏函数：对给定 $(L,\theta,p)$，若存在某个证书 $c$ 使 $\mathsf{Verify}_{\mathrm{US}}(\Delta,L,\theta,p,c)$ 通过，则读出返回相应的标签输出（例如“非零/含零区间”等）；若不存在任何通过核验的证书，则读出不定义并按约定返回 $\NULL$。
+据此，可将 unitary slice 的读出理解为“证书存在性”驱动的偏函数：存在一个偏函数读出 $\Read_{\mathrm{US}}:\Addr_{\mathrm{US}}\rightharpoonup \mathrm{ValDom}$，对给定 $(L,\theta,p)$，若存在某个证书 $c$ 使 $\mathsf{Verify}_{\mathrm{US}}(\Delta,L,\theta,p,c)$ 通过，则读出返回相应的标签输出（例如“非零/含零区间”等）；若不存在任何通过核验的证书，则读出未定义并按约定记为 $\NULL$。
 \end{definition}
 在三生成元片段 $(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$ 上，任意投影词可规约到规范形
 $$
