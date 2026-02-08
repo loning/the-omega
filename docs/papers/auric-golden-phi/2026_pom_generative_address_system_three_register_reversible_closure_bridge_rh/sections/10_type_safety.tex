@@ -1,15 +1,16 @@
-\section{PW 类型安全（健全性，soundness）：偏移点的不可寻址性}
+\section{PW 类型安全（健全性，soundness）：unitary slice 核验下的偏移拒绝}
 
-\begin{theorem}[PW 类型安全：偏移点不可寻址]\label{thm:type-safety-offcritical}
+\begin{theorem}[PW 类型安全（健全性）：unitary slice 核验下的偏移拒绝]\label{thm:type-safety-offcritical}
 固定 $L>1$，考虑
 $$
 \Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1}).
 $$
-在“三生成元正规化器 $+$ 异常签名机制 $+$ unitary slice 零点核验”的闭包内，若 $s_0\in\CC$ 满足 $\Re(s_0)\neq \tfrac12$，则 $s_0$ 在该闭包下不可寻址；等价地，其读出为空值 $\NULL$。特别地，任何在该闭包内可寻址且可核验的零点 $s$ 必满足 $\Re(s)=\tfrac12$。
+在“三生成元正规化器 $+$ 异常签名机制 $+$ unitary slice 零点核验”的闭包内（定义 \ref{def:unitary-slice-audit-axis}），任何\emph{通过核验的零点证书事件}必满足 $\abs{u_L(s)}=1$，从而 $\Re(s)=\tfrac12$。特别地，若 $s_0\in\CC$ 满足 $\Re(s_0)\neq \tfrac12$，则不存在在该闭包内通过核验的证书将“$\Xi_{\Delta,L}(s_0)=0$”对象化为非空值读出；按空值语义，相应读出为 $\NULL$。
 \end{theorem}
 
 \begin{proof}
-在该闭包中，零点核验必须经由 unitary slice 核验机制，因此可核验的连续参数仅允许 $u=e^{i\theta}$，即 $\abs{u}=1$。由 $u_L(s)=L^{2s-1}$，若 $\Re(s_0)\neq\tfrac12$ 则 $\abs{u_L(s_0)}\neq 1$，与可见参数轴约束矛盾。故不存在对应地址使读出可核验，读出为 $\NULL$。
+由定义 \ref{def:unitary-slice-audit-axis}，闭包内的零点核验协议仅允许在 unitary slice 上以 $u=e^{i\theta}\in\mathrm{Phase}$（即 $\abs{u}=1$）作为连续输入；因此任何通过核验的零点证书事件都必须满足 $\abs{u_L(s)}=1$。由命题 \ref{prop:critical-line-unitary-slice} 得 $\abs{u_L(s)}=1\iff \Re(s)=\tfrac12$，从而所有通过核验的零点证书都被类型锁定在临界线上。\par
+若 $\Re(s_0)\neq\tfrac12$，则由命题 \ref{prop:critical-line-unitary-slice} 有 $\abs{u_L(s_0)}\neq 1$，因此 $u_L(s_0)\notin\mathrm{Phase}$，无法作为该核验协议的可见连续输入；故不存在在闭包内通过核验的证书把“$\Xi_{\Delta,L}(s_0)=0$”输出为非空值读出，按空值语义读出为 $\NULL$。
 \end{proof}
 
 该定理属于健全性（soundness）：它约束“已可寻址且可核验”的零点证书必在临界线上，而不自动推出“所有零点皆可寻址”。完备性（completeness）必须作为桥接假设或由具体构造证明（见第 \ref{sec:bridge-rh} 节）。
