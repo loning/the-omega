@@ -367,9 +367,9 @@ G(r)=S(r)+A_\infty(r),
 \begin{proposition}[resolvent-trace 的整数留数证书：正性重数 \texorpdfstring{$\Rightarrow$}{=>} NonCancel]\label{prop:resolvent-trace-integer-residue-noncancel}
 令 \(F\) 为有限秩（或更一般为迹类）算子，并令
 \[
-S(r):=\Tr\bigl((I-rF)^{-1}\bigr)
+S(r):=\Tr\bigl((I-rF)^{-1}-I\bigr)
 \]
-在 \(|r|\) 充分小时由幂级数定义，并按解析延拓视为其在 \(|r|<1\) 内的亚纯延拓（若存在）。
+在 \(|r|\) 充分小时由幂级数 \(S(r)=\sum_{n\ge 1}r^n\Tr(F^n)\) 定义，并按解析延拓视为其在 \(|r|<1\) 内的亚纯延拓（若存在）。
 则对每个非零特征值 \(\lambda\in\mathrm{spec}(F)\setminus\{0\}\)，在 \(r_0:=1/\lambda\) 处 \(S(r)\) 至多有一阶极点，并且其主部系数为对应 Riesz 投影 \(P_\lambda\) 的迹：
 \[
 S(r)=\frac{\Tr(P_\lambda)}{1-r\lambda}+(\text{在 }r_0\text{ 处解析的项}),
@@ -390,7 +390,8 @@ P_\lambda=\frac{1}{2\pi i}\oint_\Gamma (zI-F)^{-1}\,\dd z
 \frac{1}{1-r\lambda}P_\lambda
 \)
 （更高阶的 \((1-r\lambda)^{-k}\) 项均来自 nilpotent 部分，但其迹为 \(0\)）。
-对其取迹即得所示展开与留数公式。
+因此 \((I-rF)^{-1}-I\) 在 \(r_0\) 附近的主部同样由 \(\frac{1}{1-r\lambda}P_\lambda\) 给出（减去 \(I\) 只改变解析项）。
+对 \((I-rF)^{-1}-I\) 取迹即得所示展开与留数公式。
 \end{proof}
 
 \begin{algorithm}[留数环审计协议（Residue-ring test；可执行 falsification 通道）]\label{alg:residue-ring-test}
@@ -473,9 +474,9 @@ P_\lambda=\frac{1}{2\pi i}\oint_\Gamma (zI-F)^{-1}\,\dd z
 \begin{enumerate}
   \item \textbf{闭层全纯性：}构造一族迹类核算子 \((\mathcal{L}_u)\)（可视为扫描协议下的转移/读出算子），使得
   \[
-  G(r):=\Tr\bigl((I-r\mathcal{L}_1)^{-1}\bigr)
+  G_W(r):=\Tr\Bigl(W\bigl((I-r\mathcal{L}_1)^{-1}-I\bigr)\Bigr)
   \]
-  在 \(|r|<1\) 内可定义并满足类似命题 \ref{prop:residue-ring-explicit-error-bound} 的一致上界（从而在闭层给出单位圆盘全纯性与可审计控制）。
+  在 \(|r|<1\) 内可定义且全纯，其中 \(W\in\mathcal{S}_1\) 为任意给定的迹类通道算子（例如 \(W\succeq 0\)）。并要求 \(G_W\) 满足类似命题 \ref{prop:residue-ring-explicit-error-bound} 的一致上界（从而在闭层给出单位圆盘全纯性与可审计控制）。
   \item \textbf{正性/整数重数证书与 NonCancel 自动：}要求 \(\mathcal{L}_u\) 的离散谱点具有有限代数重数 \(m_\lambda=\Tr(P_\lambda)\in\NN\)，并使得所关心通道的主部系数由 \(\Tr(P_\lambda)\) 或更一般的 \(\Tr(WP_\lambda)\ge 0\)（某个正算子 \(W\)）给出；于是任意极点都携带不可为零的留数证书（命题 \ref{prop:resolvent-trace-integer-residue-noncancel}），同点消去被结构性排除。
   \item \textbf{Abel-first 与有限部兼容：}要求 Fredholm 行列式（定义 \ref{def:fredholm-determinant}）
   \[
@@ -485,6 +486,178 @@ P_\lambda=\frac{1}{2\pi i}\oint_\Gamma (zI-F)^{-1}\,\dd z
 \end{enumerate}
 该三条把“全纯（闭层）+ 正性（NonCancel 自动）+ Fredholm 行列式（无限谱承载）”锁死成同一个可执行规格，从而把“去做 Hilbert--P{\'o}lya”落成一份可审计的算子构造清单。
 \end{remark}
+
+\subsubsection{从 Euler 乘积回升到迹类算子：循环块迹类提升（Fredholm--Witt 截面）}\label{subsec:cyclic-traceclass-lift}
+
+本段在迹类口径下给出一个可直接执行的闭合实现：对一类可检验的 Euler 型乘积，构造一个显式迹类算子 \(L_{\mathcal D}\)，使其 Fredholm 行列式在单位圆盘内严格复原该乘积，并自动携带整数谱重数（NonCancel 证书）与 Abel-first 展开；同时，有限维截断误差具有闭式尾和上界，从而对齐注 \ref{rem:positive-fredholm-htf} 的三条规格，并在注 \ref{rem:zetaK-commuting-diagram} 的“迹 \(\Rightarrow\) primitive \(\Rightarrow\) Euler”交换链之外给出一个可检验子类上的反向截面。
+
+\begin{definition}[循环块]\label{def:cyclic-block}
+对 \(n\in\NN_{\ge 1}\)，令 \(\Pi_n\in U(n)\) 为标准 \(n\)-循环置换矩阵（\(\Pi_n e_j=e_{j+1}\)、\(\Pi_n e_n=e_1\)）。
+给定标量 \(\alpha\in\CC\)，定义循环块
+\[
+C(n,\alpha):=\alpha\,\Pi_n\in \mathrm{End}(\CC^n).
+\]
+\end{definition}
+
+\begin{definition}[可审计 primitive 数据与迹类可执行性]\label{def:traceclass-primitive-data}
+设 \(\mathcal D=\{(n_j,\beta_j,m_j)\}_{j\in J}\) 为可数指标族，其中
+\[
+n_j\in\NN_{\ge 1},\qquad \beta_j\in(0,1),\qquad m_j\in\NN.
+\]
+称其满足\emph{迹类可执行性}，若
+\begin{equation}\label{eq:tc-executability}
+\sum_{j\in J} m_j\,n_j\,\beta_j^{1/n_j}<\infty.
+\end{equation}
+在 \eqref{eq:tc-executability} 下，令 \(\alpha_j:=\beta_j^{1/n_j}\in(0,1)\)，并定义 Hilbert 直和空间
+\[
+H_{\mathcal D}:=\bigoplus_{j\in J}\bigl(\CC^{n_j}\otimes \CC^{m_j}\bigr),
+\]
+以及迹类算子
+\[
+L_{\mathcal D}:=\bigoplus_{j\in J}\bigl(C(n_j,\alpha_j)\otimes I_{m_j}\bigr)\in\mathcal{S}_1(H_{\mathcal D}).
+\]
+\end{definition}
+
+\begin{theorem}[循环块的 Fredholm--Witt 闭合实现]\label{thm:cyclic-fredholm-witt}
+沿用定义 \ref{def:traceclass-primitive-data} 的记号，并假设 \eqref{eq:tc-executability} 成立。则：
+\begin{enumerate}
+  \item \textbf{闭层全纯性与一致上界（对齐注 \ref{rem:positive-fredholm-htf}(i)）。}
+  \(L_{\mathcal D}\) 为迹类算子，且其迹范数与算子范数满足
+  \[
+  \norm{L_{\mathcal D}}_1=\sum_{j\in J} m_j\,n_j\,\alpha_j<\infty,
+  \qquad
+  \norm{L_{\mathcal D}}=\sup_{j\in J}\alpha_j<1.
+  \]
+  因而对任意 \(|r|<1\)，算子 \((I-rL_{\mathcal D})\) 可逆。
+  对任意迹类通道 \(W\in\mathcal{S}_1(H_{\mathcal D})\)（例如 \(W\succeq 0\)），定义
+  \[
+  G_W(r):=\Tr\Bigl(W\bigl((I-rL_{\mathcal D})^{-1}-I\bigr)\Bigr),\qquad |r|<1.
+  \]
+  则 \(G_W\) 在 \(|r|<1\) 内全纯，并满足一致上界
+  \[
+  \abs{G_W(r)}
+  \le
+  \norm{W}_1\cdot\frac{|r|\,\norm{L_{\mathcal D}}}{1-|r|\,\norm{L_{\mathcal D}}}
+  \le
+  \norm{W}_1\cdot\frac{|r|}{1-|r|}.
+  \]
+
+  \item \textbf{整数谱重数与 NonCancel 证书（对齐注 \ref{rem:positive-fredholm-htf}(ii)）。}
+  每个直和块 \(C(n_j,\alpha_j)\otimes I_{m_j}\) 的谱为
+  \(
+  \{\alpha_j\omega:\ \omega^{n_j}=1\}
+  \)，且这些谱点在该块上的代数重数均为 \(m_j\)。
+  因此 \(L_{\mathcal D}\) 的任意非零离散谱点 \(\lambda\) 都具有有限代数重数
+  \[
+  m_\lambda:=\Tr(P_\lambda)
+  =
+  \sum_{j\in J}\ \sum_{\substack{\omega^{n_j}=1\\ \alpha_j\omega=\lambda}} m_j
+  \in\NN,
+  \]
+  其中 \(P_\lambda\) 为对应的 Riesz 投影。
+  特别地，对任意 \(W\succeq 0\)，主部系数可由 \(\Tr(WP_\lambda)\ge 0\) 给出，
+  从而同点消去被结构性排除（NonCancel 自动）。
+
+  \item \textbf{Abel-first 与有限部兼容（对齐注 \ref{rem:positive-fredholm-htf}(iii)）。}
+  定义 Fredholm \(\zeta\)-接口函数
+  \[
+  \zeta_{\mathcal D}(r):=\det(I-rL_{\mathcal D})^{-1}.
+  \]
+  则由定义 \ref{def:fredholm-determinant} 有严格的 Abel-first 展开
+  \[
+  \log \zeta_{\mathcal D}(r)=\sum_{n\ge 1}\frac{\Tr(L_{\mathcal D}^n)}{n}\,r^n,\qquad |r|<1,
+  \]
+  与迹类行列式口径完全一致。
+  若进一步满足
+  \begin{equation}\label{eq:fp-summability}
+  \sum_{j\in J} m_j\,\abs{\log(1-\beta_j)}<\infty,
+  \end{equation}
+  则 \(\log \zeta_{\mathcal D}(r)\) 在 \(r\uparrow 1\) 存在有限极限，且有限维截断误差可由尾和闭式控制（见推论 \ref{cor:cyclic-truncation-bounds}）。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由构造，\(L_{\mathcal D}\) 是有限维块的 Hilbert 直和。
+每个块 \(C(n_j,\alpha_j)\otimes I_{m_j}\) 的全部奇异值都等于 \(\alpha_j\)，其重数为 \(n_jm_j\)，故该块的迹范数为 \(m_jn_j\alpha_j\)。
+由 \eqref{eq:tc-executability} 可加性得 \(\norm{L_{\mathcal D}}_1<\infty\)，从而 \(L_{\mathcal D}\in\mathcal{S}_1(H_{\mathcal D})\)；并且 \(\norm{L_{\mathcal D}}=\sup_j\alpha_j<1\)（因 \(\sum_j\alpha_j\le\sum_j m_jn_j\alpha_j<\infty\) 蕴含 \(\alpha_j\to 0\)，从而上确界在有限子集上取得且严格小于 \(1\)）。
+
+对 \(|r|<1\)，由 Neumann 级数得 \((I-rL_{\mathcal D})^{-1}\) 存在且
+\(
+\norm{(I-rL_{\mathcal D})^{-1}}\le (1-|r|\norm{L_{\mathcal D}})^{-1}
+\)。
+又 \((I-rL_{\mathcal D})^{-1}-I=rL_{\mathcal D}(I-rL_{\mathcal D})^{-1}\) 为有界算子与迹类算子的乘积，故仍为迹类；从而 \(W((I-rL_{\mathcal D})^{-1}-I)\in\mathcal{S}_1\)，且由 \(\abs{\Tr(X)}\le \norm{X}_1\) 与 \(\norm{AB}_1\le \norm{A}_1\norm{B}\) 得到所述上界。
+全纯性由 resolvent 在 \(|r|<1\) 内解析、以及迹在 \(\mathcal{S}_1\) 上的连续线性性推出。
+
+谱与重数结论来自有限维块 \(C(n,\alpha)=\alpha\Pi_n\) 的谱结构：\(\Pi_n\) 的特征值为全部 \(n\)-次单位根且各为单重；张量 \(I_{m}\) 使该块上每个谱点的代数重数变为 \(m\)；直和保持谱点的离散性与代数重数的可加性。
+因此对任意 \(\lambda\ne 0\) 的离散谱点，其 Riesz 投影 \(P_\lambda\) 为有限秩投影，且 \(\Tr(P_\lambda)=m_\lambda\in\NN\)。
+并且对 \(W\succeq 0\) 有 \(\Tr(WP_\lambda)\ge 0\)。
+
+Abel-first 展开直接由迹类 Fredholm 行列式定义 \ref{def:fredholm-determinant} 给出。
+在 \eqref{eq:fp-summability} 下，由无穷乘积（或对数级数）的绝对可和性与一致收敛性可知 \(r\uparrow 1\) 的极限存在，且误差的闭式尾和控制见推论 \ref{cor:cyclic-truncation-bounds}。
+\end{proof}
+
+\begin{proposition}[循环置换块的行列式恒等式]\label{prop:cycle-permutation-determinant}
+对任意 \(n\ge 1\) 与任意复数 \(t\)，都有
+\[
+\det(I-t\Pi_n)=1-t^n.
+\]
+因而对 \(C(n,\alpha)=\alpha\Pi_n\) 有
+\[
+\det(I-rC(n,\alpha))=1-(\alpha r)^n.
+\]
+\end{proposition}
+
+\begin{proof}
+\(\Pi_n\) 的特征值为全部 \(n\)-次单位根 \(\{\omega:\omega^n=1\}\)，故
+\(
+\det(I-t\Pi_n)=\prod_{\omega^n=1}(1-t\omega)=1-t^n
+\)。
+第二式由代入 \(t=\alpha r\) 得到。证毕。
+\end{proof}
+
+\begin{corollary}[Euler 乘积的显式恢复（迹类算子端的反向截面）]\label{cor:cyclic-euler-product}
+在定理 \ref{thm:cyclic-fredholm-witt} 的设定下，\(\zeta_{\mathcal D}\) 在 \(|r|<1\) 满足严格恒等式
+\[
+\zeta_{\mathcal D}(r)
+=\prod_{j\in J}\bigl(1-\beta_j r^{n_j}\bigr)^{-m_j}.
+\]
+因此，任意满足 \eqref{eq:tc-executability} 的 Euler 型乘积都落在迹类 Fredholm \(\zeta\)-接口的像中，并由显式的 \(L_{\mathcal D}\) 给出一个构造性实现。
+\end{corollary}
+
+\begin{proof}
+由直和与张量的行列式乘法性，以及命题 \ref{prop:cycle-permutation-determinant}，得
+\[
+\det(I-rL_{\mathcal D})
+=\prod_{j\in J}\det\bigl(I-r(C(n_j,\alpha_j)\otimes I_{m_j})\bigr)
+=\prod_{j\in J}\det\bigl(I-rC(n_j,\alpha_j)\bigr)^{m_j}
+=\prod_{j\in J}\bigl(1-\beta_j r^{n_j}\bigr)^{m_j}.
+\]
+两边取倒数即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[有限维截断与尾和误差账本]\label{cor:cyclic-truncation-bounds}
+取任意有限子集 \(J_N\subset J\)，并定义截断
+\[
+L_{\mathcal D}^{(N)}:=\bigoplus_{j\in J_N}\bigl(C(n_j,\alpha_j)\otimes I_{m_j}\bigr),
+\qquad
+\zeta_{\mathcal D}^{(N)}(r):=\det(I-rL_{\mathcal D}^{(N)})^{-1}
+=\prod_{j\in J_N}\bigl(1-\beta_j r^{n_j}\bigr)^{-m_j}.
+\]
+则对任意 \(0\le r<1\) 有
+\[
+0\le \log \zeta_{\mathcal D}(r)-\log \zeta_{\mathcal D}^{(N)}(r)
+=\sum_{j\in J\setminus J_N} m_j\,\bigl(-\log(1-\beta_j r^{n_j})\bigr)
+\le
+\sum_{j\in J\setminus J_N} m_j\,\frac{\beta_j r^{n_j}}{1-\beta_j r^{n_j}}.
+\]
+若进一步满足 \eqref{eq:fp-summability}，则令 \(r\uparrow 1\) 得
+\[
+0\le \log \zeta_{\mathcal D}(1^-)-\log \zeta_{\mathcal D}^{(N)}(1)
+\le
+\sum_{j\in J\setminus J_N} m_j\,\frac{\beta_j}{1-\beta_j},
+\]
+从而 Abel 极限的有限部与有限维近似之间存在闭式尾和控制。
+\end{corollary}
 
 \subsubsection{柱投影与最大熵态：C*-代数口径}
 
