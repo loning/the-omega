@@ -1,0 +1,70 @@
+\subsubsection{去物理化的三定理链：Jensen 缺陷排斥半径、时间纤维端点压缩与 \texorpdfstring{$\mathbf{PW}$}{PW} 无连续毛发}\label{subsec:dephysicalized-horizon-timefiber-nohair}
+本段将“零点—视界—毛发”的解释性叙述严格压缩为三条体系内的数学命题。
+其输入仅来自两条已闭合的接口：其一是附录 \ref{app:unit-circle-phase-gate} 的圆盘化完成化
+\(F_{\zeta}\) 与 Jensen 缺陷 \(D_{\zeta}(\varrho)\)（\S\ref{subsec:unit-disk-jensen-defect}），并在端点 \(w\to-1\) 处给出显式的上半平面圆轨道表示；
+其二是本节的 unitary slice 审计口径与 \(\mathbf{PW}\) 类型闭包（\S\ref{subsec:xi-pw-type-safety-null}），它将可核对的连续参数轴压缩为相位 \(\theta\)，并以 \(\mathsf{NULL}\) 维护可寻址性。
+
+\begin{theorem}[缺陷诱导的排斥半径（视界审查的禁入律）]\label{thm:dephys-defect-repulsion-radius}
+令 \(F_{\zeta}\) 为附录 \ref{app:unit-circle-phase-gate} 的圆盘化完成化函数，\(D_{\zeta}(\varrho)\) 为 Jensen 缺陷（定义 \ref{def:app-jensen-defect}）。
+对任意 \(0<\varrho<1\) 定义排斥半径
+\[
+r_{\ast}(\varrho):=\varrho\exp\!\bigl(-D_{\zeta}(\varrho)\bigr)\in(0,\varrho].
+\]
+则 \(F_{\zeta}\) 在子盘 \(|w|<r_{\ast}(\varrho)\) 内无零点。
+更定量地，若 \(D_{\zeta}(\varrho)\le \varepsilon\)，则 \(r_{\ast}(\varrho)\ge \varrho e^{-\varepsilon}\)。
+此外，若存在 \(\varrho_n\uparrow 1\) 使 \(r_{\ast}(\varrho_n)\uparrow 1\)，则 \(F_{\zeta}\) 在 \(|w|<1\) 内无零点，从而 RH 成立。
+\end{theorem}
+
+\begin{proof}
+前两条断言由命题 \ref{prop:app-jensen-zero-repulsion-subdisk} 直接给出。
+最后的 RH 证书由推论 \ref{cor:app-jensen-repulsion-radius-to-one} 推出。证毕。
+\end{proof}
+
+\begin{theorem}[时间纤维双端触及与端点压缩]\label{thm:dephys-timefiber-two-ended}
+对 \(0<\varrho<1\)，令 \(t(\varrho,\theta):=\mathcal{C}^{-1}(\varrho e^{i\theta})\in\mathbb{H}\)（命题 \ref{prop:app-jensen-defect-upperhalf-circle-average}），则 Jensen 缺陷可写为上半平面圆轨道平均
+\[
+D_{\zeta}(\varrho)=\frac{1}{2\pi}\int_{0}^{2\pi}\log\Bigl|\Xi_{\zeta}\!\Bigl(\tfrac12+\mathrm{i}\,t(\varrho,\theta)\Bigr)\Bigr|\,\dd\theta
+-\log\bigl|\Xi_{\zeta}(-\tfrac12)\bigr|,
+\]
+其中 \(t(\varrho,\theta)\) 具有显式分解（式 \eqref{eq:app-t-rho-theta-explicit}）
+\[
+t(\varrho,\theta)
+=\frac{2\varrho\sin\theta}{1+\varrho^2+2\varrho\cos\theta}
+\;+\;
+\mathrm{i}\,\frac{1-\varrho^2}{1+\varrho^2+2\varrho\cos\theta}.
+\]
+并且等半径层 \(|w|=\varrho\) 在上半平面中的逆像是一条显式圆（命题 \ref{prop:app-cayley-preimage-modulus-circle}），其与虚轴交点为
+\[
+y_{\pm}(\varrho)=\frac{1\pm\varrho}{1\mp\varrho},
+\qquad
+\varrho\uparrow 1\ \Longrightarrow\ y_{-}(\varrho)\downarrow 0,\ \ y_{+}(\varrho)\uparrow\infty.
+\]
+因此，当 \(\varrho\uparrow 1\) 时，同一条“等半径观测纤维”（本文称为时间纤维）在上半平面中必然同时触及
+\(y\downarrow 0\) 的近边界层与 \(y\uparrow\infty\) 的高高度层；高高度信息不是通过引入额外连续坐标进入接口，而被强制压缩到端点邻域（\(\theta\approx\pi\)，即 \(w\approx-1\)）的边界层贡献中。
+其可测的端点窗口版本见命题 \ref{prop:app-jensen-endpoint-angle-window}。
+\end{theorem}
+
+\begin{proof}
+圆轨道平均表示与显式参数化由命题 \ref{prop:app-jensen-defect-upperhalf-circle-average} 给出；
+圆方程、虚轴交点及其极限由命题 \ref{prop:app-cayley-preimage-modulus-circle} 给出；
+端点局部化与“\(\theta\approx\pi\)”的集中性由推论 \ref{cor:app-jensen-endpoint-localization} 与命题 \ref{prop:app-jensen-endpoint-angle-window} 给出。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\mathbf{PW}$}{PW} 闭包的无连续毛发原理（径向自由度的类型拒绝与非局部外置）]\label{thm:dephys-pw-nohair}
+在本文采用的“unitary slice 可见域 + \(\mathbf{PW}\) 正规化闭包 + \(\mathsf{NULL}\) 语义”的审计口径下：
+\begin{enumerate}
+  \item 任何本质上需要 \(|u|\neq 1\) 的径向自由度（或等价的径向—相位双参结构）才能表达的对象，都不能在保持 pole/主尺度不变的前提下被常数层 strictification 吸收；若拒绝显式引入承载该径向数据的记录轴，则其读出按协议退化为 \(\mathsf{NULL}\)。
+  \item 若以减少 \(\mathsf{NULL}\) 为目标而允许外置侧信息，则该外置轴在结构上必然是全局非局部的 residue/逆极限轴（prime-register 及其一致性约束），而不可能表现为与相位 \(\theta\) 解耦的额外连续坐标寄存器。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+见定理 \ref{thm:xi-pw-no-continuous-hair}。证毕。
+\end{proof}
+
+\paragraph{闭合链：缺陷证书—端点压缩—类型拒绝}
+定理 \ref{thm:dephys-defect-repulsion-radius} 把“盘内零点是否存在”压缩为单参数标量缺陷 \(D_{\zeta}(\varrho)\) 的可审计半径证书；
+定理 \ref{thm:dephys-timefiber-two-ended} 表明 \(\varrho\uparrow 1\) 的边界层必然把高高度信息压缩到端点邻域的窗口贡献；
+定理 \ref{thm:dephys-pw-nohair} 则在 \(\mathbf{PW}\) 闭包与 unitary slice 可见域下排除了与相位并列的额外连续自由度。
+三者共同给出一个体系内闭合的结论：任何需要径向通道解释的偏离，若不经由 residue/逆极限轴的非局部外置，就必在可见审计中触发 \(\mathsf{NULL}\) 并被协议拒绝；因此，零点审计的可见证书只能沿“缺陷—端点—相位”链路出现，而不会被额外连续坐标寄存器所稀释。
+\endinput

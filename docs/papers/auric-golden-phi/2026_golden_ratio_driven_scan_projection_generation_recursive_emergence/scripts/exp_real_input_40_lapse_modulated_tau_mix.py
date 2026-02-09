@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Lapse-modulated mixing-time prediction from twisted spectral gaps.
+Overhead-modulated mixing-time rescaling from twisted spectral gaps.
 
 We take a precomputed twisted spectral gap (per internal step / proper-time tick):
   Delta := -log(rho/lambda),
   tau_mix := 1/Delta,
-and apply a lapse proxy N = kappa0/kappa to convert to an external (coordinate-time)
-rate in the simplest time-rescaling model:
+and apply an external-time rescaling proxy N = kappa0/kappa to convert to an external-time
+rate in the simplest deterministic rescaling model:
   Delta_eff(x) = N(x) * Delta,
   tau_mix_eff(x) = tau_mix / N(x).
 
@@ -180,7 +180,7 @@ def main() -> None:
     jout = Path(str(args.json_out))
     jout.parent.mkdir(parents=True, exist_ok=True)
     jout.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"[lapse-tau-mix] wrote {jout}", flush=True)
+    print(f"[tau-mix-rescale] wrote {jout}", flush=True)
 
     # LaTeX table.
     tout = Path(str(args.tex_out))
@@ -193,8 +193,8 @@ def main() -> None:
     lines.append("\\setlength{\\tabcolsep}{6pt}")
     lines.append("\\renewcommand{\\arraystretch}{1.15}")
     lines.append(
-        "\\caption{Lapse-modulated mixing-time rescaling: given $\\Delta=-\\log(\\rho/\\lambda)$ and $\\tau_{\\mathrm{mix}}=1/\\Delta$ (internal steps), "
-        "a lapse proxy $N=\\kappa_0/\\kappa$ yields $\\Delta_{\\mathrm{eff}}=N\\Delta$ and $\\tau_{\\mathrm{mix,eff}}=\\tau_{\\mathrm{mix}}/N$ (external time).}"
+        "\\caption{Overhead-modulated mixing-time rescaling: given $\\Delta=-\\log(\\rho/\\lambda)$ and $\\tau_{\\mathrm{mix}}=1/\\Delta$ (internal steps), "
+        "an external-time rescaling proxy $N=\\kappa_0/\\kappa$ yields $\\Delta_{\\mathrm{eff}}=N\\Delta$ and $\\tau_{\\mathrm{mix,eff}}=\\tau_{\\mathrm{mix}}/N$ (external time).}"
     )
     lines.append("\\label{tab:real-input-40-lapse-modulated-tau-mix}")
     lines.append("\\begin{tabular}{r r r r r r}")
@@ -209,7 +209,7 @@ def main() -> None:
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
     tout.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    print(f"[lapse-tau-mix] wrote {tout}", flush=True)
+    print(f"[tau-mix-rescale] wrote {tout}", flush=True)
 
 
 if __name__ == "__main__":

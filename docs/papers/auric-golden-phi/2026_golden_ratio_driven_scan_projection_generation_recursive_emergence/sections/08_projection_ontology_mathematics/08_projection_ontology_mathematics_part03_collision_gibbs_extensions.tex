@@ -13,17 +13,28 @@ S_q(m):=\sum_{x\in X_m}d_m(x)^q
 
 \begin{proposition}[从递推到最小线性实现：Hankel realization]\label{prop:pom-hankel-realization-protocol}
 固定 \(q\ge 2\)，设序列 \(S_q(m)\) 满足某个最小阶的常系数线性递推（等价于其 Hankel 秩有限）。
-令 \(a_n:=S_q(n+2)\)（\(n\ge 0\)）。
-则存在一个维数等于 Hankel 秩的最小线性实现
+令 \(a_n:=S_q(n+2)\)（\(n\ge 0\)），并令 \(d:=\mathrm{rank}(H)\) 为其 Hankel 秩。
+则存在一个维数等于 \(d\) 的最小线性实现
 \[
 a_n=\alpha^{\mathsf T}A^n\beta\qquad(n\ge 0),
 \]
-其中 \(A\in M_d(\ZZ)\) 可由 Hankel 矩阵 \(H_0=(a_{i+j})_{0\le i,j\le d-1}\) 与 \(H_1=(a_{i+j+1})_{0\le i,j\le d-1}\) 的闭式
-\(
-A=H_0^{-1}H_1
-\)
+其中 \(A\in M_d(\QQ)\) 可由 Hankel 矩阵 \(H_0=(a_{i+j})_{0\le i,j\le d-1}\) 与 \(H_1=(a_{i+j+1})_{0\le i,j\le d-1}\) 的闭式
+\[
+A=H_0^{-1}H_1=\frac{\mathrm{adj}(H_0)\,H_1}{\det(H_0)}
+\]
 直接构造。
+当 \(a_n\in\ZZ\) 时 \(H_0,H_1\in M_d(\ZZ)\)，从而 \(A\) 的所有分母均整除 \(\det(H_0)\)。
 \end{proposition}
+
+\begin{remark}[分母下界与 \texorpdfstring{$p$}{p}-进刚性指数：Hankel 证书的算术刚性]\label{rem:pom-hankel-denominator-stiffness}
+在 \(a_n\in\ZZ\) 的情形，上式表明 \(\det(H_0)\) 控制最小 realization 的有理分母。
+对素数 \(p\) 可定义刚性指数
+\[
+\mathsf{Stiff}_p:=v_p\!\bigl(\det(H_0)\bigr),
+\]
+它给出在 \(\ZZ_p\) 中无歧义恢复 \(A\) 条目所需的最小 \(p\)-进精度门槛。
+在本文的具体数据上，相应的 \(p\)-进刚性信号可由 Hankel 见证块行列式的赋值直接读出（注 \ref{rem:pom-hankel-stiffness-p5}）。
+\end{remark}
 
 \begin{remark}[非负整数碰撞核的搜索口径（建议作为新实验协议）]\label{rem:pom-nonneg-kernel-search-protocol}
 命题 \ref{prop:pom-hankel-realization-protocol} 给出的 \(A\) 一般带有符号（或出现负条目），但它携带“最小线性实现”的确定结构。
@@ -32,6 +43,7 @@ A=H_0^{-1}H_1
 A_q=P^{-1}AP,\qquad P\in\mathrm{GL}_d(\ZZ),
 \]
 目标是使 \(A_q\) 具有非负整数条目（从而可视为某个有限图/SFT 的邻接矩阵），并同步变换读出向量 \((\alpha,\beta)\) 得到同型的计数公式。
+由于 \(P\) 为 unimodular，\(P^{-1}\in M_d(\ZZ)\)，该相似变换不会引入新的分母；若能找到使 \(A_q\in M_d(\ZZ_{\ge 0})\) 的 \(P\)，则该纯整基变换在保持最小维数的同时把分母完全消去（对比注 \ref{rem:pom-hankel-denominator-stiffness}）。
 这一路径在 \(q=4\) 的五态核上已被脚本 \texttt{scripts/exp\_fold\_collision\_hankel\_realization\_q4.py} 以完全可复现方式实现；对更高阶 \(q\) 可按同一范式推广，并以“最小维数、最小最大条目、最小拓扑熵”等作为搜索准则，形成一个可无限上推的碰撞核谱系实验线路。
 \end{remark}
 

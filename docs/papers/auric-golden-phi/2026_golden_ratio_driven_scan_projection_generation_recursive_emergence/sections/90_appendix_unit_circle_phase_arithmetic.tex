@@ -1041,6 +1041,8 @@ e^{-\mathcal{P}(\gamma)}=\bigl(\pi(1+\gamma^{2})\bigr)^{-1}
 该等价式将“离临界线偏移的圆盘可见性压缩”精确归因于精度势的指数因子 \(e^{-\mathcal{P}(\gamma)}\)。
 \end{remark}
 
+\input{sections/90_appendix_unit_circle_phase_arithmetic_horocycle_busemann}
+
 \begin{remark}[端点层的普适常数：\texorpdfstring{$T\log T$}{T log T} 密度在相位紧化下的对数弱发散]\label{rem:app-rvm-endpoint-constant}
 令 \(N(T)\) 为 \(\zeta\) 非平凡零点在高度窗 \(0<\Im(\rho)\le T\) 内的计数函数。
 黎曼--冯\,曼戈尔特公式给出主项
@@ -1250,6 +1252,35 @@ D_{\zeta}(\varrho)=\sum_{|a|<\varrho}\log(\varrho/|a|)
 最后若 \(D_{\zeta}(\varrho_0)=0\)，则对 \(\varrho\le \varrho_0\) 有 \(0\le D_{\zeta}(\varrho)\le D_{\zeta}(\varrho_0)=0\)。证毕。
 \end{proof}
 
+\begin{corollary}[折角结构：盘内零点在缺陷上生成可定位跳变原子]\label{cor:app-jensen-defect-kink-structure}
+令 \(r\in(0,1)\) 并记
+\[
+m(r):=\sum_{a:\ F_{\zeta}(a)=0,\ |a|=r}\mathrm{mult}(a)\in\ZZ_{\ge 0}
+\]
+为模长恰等于 \(r\) 的盘内零点的总重数（有限和）。
+则 \(D_{\zeta}(\varrho)\) 作为 \(\log\varrho\) 的函数在 \(\varrho=r\) 处存在左、右导数，并满足斜率跳变律
+\[
+\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)\Big|_{\varrho=r+0}
+-\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)\Big|_{\varrho=r-0}
+=m(r).
+\]
+等价地，零点计数函数在 \(\varrho=r\) 处发生跳变
+\[
+N_{F_{\zeta}}(r+0)-N_{F_{\zeta}}(r-0)=m(r).
+\]
+因此 \(D_{\zeta}\) 可视为“零点半径分布”的累计函数：每一组模长为 \(r\) 的盘内零点在 \(\varrho=r\) 处强制生成一个不可消去的折角（kink）。
+\end{corollary}
+\begin{proof}
+由 Jensen 求和式 \eqref{eq:app-jensen-sum}，对任意固定 \(r\in(0,1)\)，在 \(r\) 的某个去心邻域内除去有限多个阈值半径 \(|a|\) 外，
+零点集合 \(\{a:\ |a|<\varrho\}\) 恒定，从而
+\(
+\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)=N_{F_{\zeta}}(\varrho)
+\)
+（命题 \ref{prop:app-jensen-defect-log-derivative}）。
+当 \(\varrho\) 从 \(r-0\) 增至 \(r+0\) 时，恰有模长为 \(r\) 的零点项从“未计入”变为“计入”，并各贡献一个单位斜率，因此斜率跳变等于其总重数 \(m(r)\)。
+证毕。
+\end{proof}
+
 \begin{theorem}[任意趋近列的可数化判据]\label{thm:app-jensen-countable-criterion}
 设 \((\varrho_n)_{n\ge 1}\subset(0,1)\) 单调递增且 \(\varrho_n\uparrow 1\)。
 则下列命题等价：
@@ -1265,6 +1296,59 @@ D_{\zeta}(\varrho)=\sum_{|a|<\varrho}\log(\varrho/|a|)
 由 \(\varrho_n\uparrow 1\) 可取 \(n\) 使 \(\varrho\le \varrho_n\)。
 由命题 \ref{prop:app-jensen-defect-log-derivative} 的单调性，\(0\le D_{\zeta}(\varrho)\le D_{\zeta}(\varrho_n)=0\)，故 \(D_{\zeta}(\varrho)=0\)。
 再由推论 \ref{cor:app-rh-iff-jensen-defect-zero} 得 RH。证毕。
+\end{proof}
+
+\begin{theorem}[离临界线信息的折角定位与视界深度]\label{thm:app-jensen-offcritical-kink-localization}
+假设存在 \(\Xi_{\zeta}\) 的零点 \(\rho=\beta+\mathrm{i}\gamma\) 满足 \(0<\beta<\tfrac12\)，并记 \(\delta:=\tfrac12-\beta>0\)，
+以及 \(w_{\rho}:=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}\)（命题 \ref{prop:app-offcritical-radius-compression}）。
+令 \(r_{\rho}:=|w_{\rho}|\) 且 \(m_{\rho}:=\mathrm{mult}(w_{\rho})\) 为对应圆盘零点的重数。
+则：
+\begin{enumerate}
+  \item \(F_{\zeta}(w_{\rho})=0\)，从而 \(r_{\rho}\) 是 \(D_{\zeta}\) 的折角阈值半径；
+  \item 存在 \(\varepsilon_0>0\) 使得对所有 \(0<\varepsilon<\varepsilon_0\) 有
+  \[
+  N_{F_{\zeta}}(r_{\rho}+\varepsilon)=N_{F_{\zeta}}(r_{\rho}-\varepsilon)+m_{\rho},
+  \]
+  等价地，\(D_{\zeta}(\varrho)\) 作为 \(\log\varrho\) 的函数在 \(\varrho=r_{\rho}\) 处出现折角，其斜率跳变为 \(m_{\rho}\)（推论 \ref{cor:app-jensen-defect-kink-structure}）。
+  \item 定义视界深度（近边界缺口）
+  \[
+  h(\rho):=1-|w_{\rho}|^{2},
+  \]
+  则由 \eqref{eq:app-offcritical-radius-closed} 有完全闭式
+  \[
+  \boxed{\ h(\rho)=\frac{4\delta}{\gamma^{2}+(\delta+1)^{2}}\ }.
+  \]
+  特别地，当 \(|\gamma|\to\infty\) 且 \(\delta\) 有界时，\(h(\rho)\sim 4\delta/\gamma^{2}\)，从而离临界线信息在圆盘接口中被压入边界层。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(1)} 由命题 \ref{prop:app-offcritical-radius-compression}。
+\par
+\textbf{(2)} 由 \(\varrho<1\) 时盘内零点有限，可取 \(\varepsilon_0>0\) 使得在环域
+\(
+r_{\rho}-\varepsilon_0<|w|<r_{\rho}+\varepsilon_0
+\)
+内不存在除模长 \(r_{\rho}\) 之外的其它零点模长。
+于是当 \(\varrho\) 穿过 \(r_{\rho}\) 时，零点计数函数的跳变恰为该模长层的总重数 \(m_{\rho}\)，从而得到所示等式；折角结论由推论 \ref{cor:app-jensen-defect-kink-structure} 等价推出。
+\par
+\textbf{(3)} 由 \eqref{eq:app-offcritical-radius-closed} 直接化简得
+\(
+1-|w_{\rho}|^{2}=\frac{4\delta}{\gamma^{2}+(\delta+1)^{2}}
+\)。
+当 \(|\gamma|\to\infty\) 且 \(\delta\) 有界时分母主项为 \(\gamma^{2}\)，得渐近 \(h(\rho)\sim 4\delta/\gamma^{2}\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[采样半径截断下的不可检出边界层]\label{cor:app-jensen-kink-undetectable-threshold}
+给定有限采样半径集合 \(\{\varrho_1,\dots,\varrho_M\}\subset(0,1)\)，并记
+\(
+\varrho_{\max}:=\max_{1\le j\le M}\varrho_j
+\)
+与 \(\eta:=1-\varrho_{\max}>0\)。
+若存在离临界线零点 \(\rho\) 使得 \(1-|w_{\rho}|<\eta\)（例如 \(h(\rho)\ll \eta\)），则其折角阈值半径满足 \(r_{\rho}=|w_{\rho}|>\varrho_j\) 对所有 \(j\)，从而仅凭该有限网格上的缺陷采样 \(\{D_{\zeta}(\varrho_j)\}_{j=1}^{M}\) 无法排除该折角原子。
+\end{corollary}
+\begin{proof}
+由 \(r_{\rho}>\varrho_j\)（对所有 \(j\)）可知零点 \(w_{\rho}\) 从未进入任一采样圆盘 \(|w|<\varrho_j\)，因此 Jensen 求和式 \eqref{eq:app-jensen-sum} 在这些采样点上不含该零点项；折角位置不可由该网格定位，故无法据此排除。证毕。
 \end{proof}
 
 \begin{proposition}[由缺陷导出的零点排斥子盘]\label{prop:app-jensen-zero-repulsion-subdisk}
@@ -1363,6 +1447,8 @@ t(\varrho,\theta)
 当 \(\theta=\pi\) 时分母为 \((1-\varrho)^2\)，得最大值并随 \(\varrho\uparrow 1\) 发散。证毕。
 \end{proof}
 
+\input{sections/90_appendix_unit_circle_phase_arithmetic_jensen_endpoint_window_and_offcritical_shift}
+
 \begin{remark}[端点分解的优先奇通道原则（与 Chebyshev--Adams 桥对齐）]\label{rem:app-jensen-odd-channel-priority}
 推论 \ref{cor:app-jensen-endpoint-localization} 表明：\(\varrho\uparrow 1\) 的主要困难局部化于端点 \(w\approx-1\)。
 在完成化坐标 \(S=\mathfrak{r}+\mathfrak{r}^{-1}\) 下，幂半群 \(w\mapsto w^m\) 对应 \(S\mapsto C_m(S)\)（\S\ref{subsec:unit-disk-witt-chebyshev}）。
@@ -1377,6 +1463,19 @@ t(\varrho,\theta)
   \item \textbf{几何显式化：}对每个 \(\varrho\)，由命题 \ref{prop:app-jensen-defect-upperhalf-circle-average} 将 \(D_{\zeta}(\varrho)\) 解释为 \(\Xi_{\zeta}\) 在上半平面一条显式圆周上的对数模长平均；该圆的几何由命题 \ref{prop:app-cayley-preimage-modulus-circle} 给出。
   \item \textbf{端点局部化与奇偶轴：}由推论 \ref{cor:app-jensen-endpoint-localization}，当 \(\varrho\uparrow 1\) 时主要困难局部化于端点 \(w\approx-1\) 的窄角邻域；端点喷射的奇偶分裂（命题 \ref{prop:chebyshev-endpoint-derivative-splitting}）为端点多尺度剥离提供结构轴（注 \ref{rem:app-jensen-odd-channel-priority}）。
   \item \textbf{证书化充分条件：}若能在某一具体 \(\varrho_n\uparrow 1\) 上构造可审计上界链，使零点排斥半径 \(r_{\ast}(\varrho_n)=\varrho_n e^{-D_{\zeta}(\varrho_n)}\uparrow 1\)，则由推论 \ref{cor:app-jensen-repulsion-radius-to-one} 推出盘内无零点，从而得到 RH。
+\end{enumerate}
+
+\paragraph{视界/毛发同构语义的纯数学闭合链（可发表表述）}\label{par:app-jensen-horizon-hair-closed-chain}
+在“圆盘化完成化 \(F_{\zeta}\)—Jensen 缺陷 \(D_{\zeta}\)—端点紧化 \(w\to-1\)”的闭合接口内，上述结果可进一步组织为一条以\emph{可数审计、折角定位与离散证书}为核心的四段链：
+\begin{enumerate}
+  \item \textbf{可数审计：}RH 等价于对任意趋近列 \(\varrho_n\uparrow 1\) 的可数约束 \(D_{\zeta}(\varrho_n)=0\)（定理 \ref{thm:app-jensen-countable-criterion}）。
+  \item \textbf{折角定位：}盘内零点在缺陷函数上生成可定位折角原子（推论 \ref{cor:app-jensen-defect-kink-structure}）；
+  若存在离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\)（\(\beta<\tfrac12\)），则其圆盘像 \(w_{\rho}\) 给出一条近边界折角阈值半径 \(r_{\rho}=|w_{\rho}|\)，并以视界深度
+  \(h(\rho)=1-|w_{\rho}|^{2}=\frac{4\delta}{\gamma^{2}+(\delta+1)^{2}}\)（定理 \ref{thm:app-jensen-offcritical-kink-localization}）
+  定量刻画其在边界层中的压缩尺度；缺陷上界进一步给出离线偏移的显式上界（定理 \ref{thm:app-jensen-defect-controls-offcritical-shift}）。
+  \item \textbf{离散证书（实现层）：}当对象被提升为有限样本可复核的 realization/transfer 表达时，Hankel-正规形提供最小实现维数与分母/赋值的离散证书（定义 \ref{def:pom-hankel-normal-form}、注 \ref{rem:pom-hankel-denominator-stiffness} 及注 \ref{rem:pom-hankel-stiffness-p5}）；
+  该证书在 \(p\)-进侧表现为刚性指数门槛，从而把“可逆性所需信息”外置为可审计的不变量。
+  \item \textbf{对数深度同余链：}在二幂塔上，Dwork 型同余在不变量坐标 \(t=u+u^{-1}\) 下闭合为 Chebyshev--Dwork 同余链，并给出对数深度的逐级可复现审计（定理 \ref{thm:chebyshev-dwork-congruence-chain} 与推论 \ref{cor:chebyshev-dwork-matrixfree}）。
 \end{enumerate}
 
 \subsection{Blaschke 数据与正交轴：边界模长与盘内零点的因子分解（条件口径）}\label{subsec:unit-disk-inner-outer}
@@ -1395,6 +1494,13 @@ F_{\zeta}(w)=B(w)\,S(w)\,O(w),
   \item \textbf{盘内隐藏量：} 由 \(B\)（以及可能的 \(S\)）携带的内因子数据；其中 \(B\) 的零点集合 \(\{a_k\}\) 恰为“偏离临界线”的等价编码。
 \end{itemize}
 在该意义下，RH 等价于“内因子在盘内无零点数据”（\(B\equiv 1\)，且在更强的无奇异内因子条件下 \(S\equiv 1\)）。
+进一步，若存在离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\)（\(\beta<\tfrac12\)），则其圆盘像 \(w_{\rho}\) 以端点 \(-1\) 为基点的 Busemann 坐标
+\(
+\delta=\tfrac12-\beta
+=\mathcal{B}_{-1}(w_{\rho})=\frac{1-|w_{\rho}|^{2}}{|1+w_{\rho}|^{2}}
+\)
+（命题 \ref{prop:app-busemann-poisson-minus1} 与推论 \ref{cor:app-offcritical-horocycle-busemann}）完全属于 Blaschke 零点数据；
+因此“偏移”在结构上必为内因子（隐藏轴）而非外因子（可见模长轴）的自由度。
 \end{remark}
 
 \subsection{与 Witt--Chebyshev--Adams 桥包的对齐：幂半群 \texorpdfstring{$w\mapsto w^m$}{w->w^m} 与对数主尺度}\label{subsec:unit-disk-witt-chebyshev}

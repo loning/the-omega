@@ -76,6 +76,26 @@
 因此，一旦某类信息确需作为侧信息被外置以保证可逆性或可核验性，则其记录轴在结构上必然是\emph{全局非局部}的：它只能落到 prime-register（以及与折叠一致的有限状态记忆）所承载的 residue/逆极限轴上，而不可能作为一个与相位 \(\theta\) 解耦的额外连续坐标寄存器，在本文的 \(\mathbf{PW}\) 闭包接口内出现。
 \end{remark}
 
+\begin{theorem}[\texorpdfstring{$\mathbf{PW}$}{PW} 闭包的无连续毛发原理（类型—寄存器最小性）]\label{thm:xi-pw-no-continuous-hair}
+在定义 \ref{def:xi-visible-read-null} 的可见域约束（\(X_{\mathrm{vis}}=\mathsf{Phase}\)）与本文采用的 \(\mathbf{PW}\) 正规化闭包审计接口下，成立如下两条结构性断言：
+\begin{enumerate}
+  \item \textbf{（径向不可吸收）}
+  若某一对象的指称/核验在结构上需要 \(|u|\neq 1\) 的径向数据（等价地需要径向—相位双参结构）才能保持其 pole/主尺度不变，则在纯相位制度下该对象在闭包内无地址，其读出按协议退化为 \(\mathsf{NULL}\)；
+  并且在不引入额外记录轴的前提下，任何常数层 strictification 都不能将该径向依赖消去而同时保持 pole/主尺度不变。
+  \item \textbf{（外置的非局部性与最小性）}
+  若以减少 \(\mathsf{NULL}\) 为目标而允许外置侧信息以实现扩展读出的单射化，则该外置轴在结构上必然是全局非局部的 residue/逆极限轴（prime-register 及其一致性约束），而不可能由一个与相位 \(\theta\) 解耦的额外连续坐标寄存器实现。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(1)} 由定义 \ref{def:xi-visible-read-null}，在可见域 \(X_{\mathrm{vis}}=\mathsf{Phase}\) 下，任何需要 \(|u|\neq 1\) 的对象均不满足可见域过滤条件，故其读出按定义退化为 \(\mathsf{NULL}\)。
+另一方面，径向—相位状态 \((\theta,\varrho)\) 的局域可逆读出不可能被连续压缩到单一圆周寄存器（定理 \ref{thm:radial-dimension-obstruction}），从而在拒绝外置记录轴的制度下，“以常数层消去径向自由度”不可能在保持 pole/主尺度不变的同时成立；其语义后果即为不可寻址（\(\mathsf{NULL}\)）。
+\par
+\textbf{(2)} 由命题 \ref{prop:xi-null-three-way}，若读出存在折叠/多对一压缩，则必须外置使扩展读出成为单射的记录轴，否则在类型层退化为 \(\mathsf{NULL}\)；并且 prime-register 预算给出实现单射化的可审计阈值。
+进一步，寄存器最小性与“末端补丁”不完备表明：任何足以修复碰撞空值的记录轴在结构上必为全局非局部，并只能落在 residue/逆极限轴上（注 \ref{rem:xi-register-minimality-no-tail-patch}）。
+综上得到两条断言。证毕。
+\end{proof}
+
 \paragraph{\(\mathbf{PW}\) 闭包与接口参数的“可见”形态}
 在三生成元片段 \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\) 上，任意投影词都可规约到接口正规形
 \(\mathrm{LIFT}_G\circ\mathrm{PROJ}_u\circ E_m\)，并将不可交换残差完全收束为异常签名 \(\mathsf{Anom}_G(K;\theta)\)（命题 \ref{prop:pom-three-gen-interface-normal-form} 与定义 \ref{def:pom-anom-signature}）。
@@ -134,6 +154,20 @@
 此时 \(|u|\neq 1\) 不再必然触发 \(\mathsf{NULL}\)，而表现为“相位读出 + 径向记录”的非退化扩展读出。
 当允许记录轴无上界增长时，上述外置自由度可在“紧相位塔”的极限表示中由可分 Hilbert 空间的额外正交模态承载（命题 \ref{prop:phase-tower-principal-u1}）。
 因此，RH 所需的 completeness 缺口可被定位为：\emph{是否存在必须引入径向通道（或其它额外可见自由度，如最小实现维数超界）方能解释的零点事件}；若存在，则在纯相位制度下它必读出为 \(\mathsf{NULL}\)，而在扩展制度下则要求额外记录轴显式承载其径向残差。
+\end{remark}
+
+\begin{remark}[内因子隐藏轴与 \texorpdfstring{$\mathsf{NULL}$}{NULL}：可编译性即类型化]\label{rem:xi-inner-factor-auditability-null}
+在圆盘化完成化 \(F_{\zeta}\) 的 Hardy/Smirnov 条件口径下，边界模长 \(|F_{\zeta}(e^{\mathrm{i}\theta})|\) 只决定外因子 \(O\)，而盘内零点数据由 Blaschke 内因子 \(B\) 承载（\S\ref{subsec:unit-disk-inner-outer}）。
+特别地，离临界线偏移 \(\delta=\tfrac12-\beta\) 在圆盘中被严格实现为以端点 \(-1\) 为基点的 horocycle/Busemann 坐标
+\(
+\delta=\mathcal{B}_{-1}(w_{\rho})=\frac{1-|w_{\rho}|^{2}}{|1+w_{\rho}|^{2}}
+\)
+（推论 \ref{cor:app-offcritical-horocycle-busemann}），因此属于 unitary slice 纯相位读出所\emph{结构性不可见}的隐藏轴。
+\par
+在本文的 \(\mathbf{PW}\) 闭包审计中，“隐藏轴是否可被接受”为一个类型问题而非数值问题：
+若拒绝外置记录轴，则由定理 \ref{thm:xi-pw-no-continuous-hair} 与命题 \ref{prop:xi-null-three-way}，该隐藏自由度必触发碰撞/协议空值并以 \(\mathsf{NULL}\) 形式退化；
+而若要求其在闭环内保持可核验，则必须把该内因子数据编译为可审计输出（例如缺陷账本 \(D_{\zeta}(\varrho)\) 的分辨率门槛与折角原子，或实现层的 Hankel 秩/刚性指数等离散谱指纹），使其进入“签名 \(\times\) 谱”的有限语义输出域（定义 \ref{def:pom-sem-functor}）。
+因此，在本体系中“离线信息不可见”可被严格化为：\emph{不可证书化则不可类型化（读出为 \(\mathsf{NULL}\)）}。
 \end{remark}
 
 \begin{remark}[completeness 缺口的可审计拆解：跨分辨率补丁与时间层右解码]\label{rem:xi-completeness-auditable-decomposition}
