@@ -458,4 +458,271 @@ p_i\ \propto\ \sigma_i.
 该分配律把压力 Hessian/协方差密度 \(\Sigma\) 直接耦合进 prime-register 的离散选模问题：把更大的模数分配给“更硬”（方差密度更大）的方向，以压低最坏轴带来的扩散时间上界。
 \end{remark}
 
+\subsubsection{多轴预算障碍：最短向量机制的几何数论下界}\label{subsubsec:pom-multi-axis-budget-barrier}
+注 \ref{rem:pom-variance-matched-moduli} 给出一种阻抗匹配式的设计律：若慢模确由某一“最坏轴”主导，则可通过令各轴缺口同阶来压低上界。
+然而，若允许 \(d\ge 1\) 条独立扭曲轴同时存在，则更基本的限制来自角格本身的几何数论结构：在 near-coboundary 小角二次律有效的 regime 中，最坏扭曲缺口近似等价于一个带度量的最短向量问题；
+由 Minkowski 凸体定理可得对任意选模策略都不可避免的预算指数障碍（指数为 \(2/d\)），并且该障碍可沿 Dirichlet 归一化翻译为 near-\(1\) 主极点的贴边律；再结合空间--时间换算律，可把贴边与有限部漂移在二阶精度上线性锁定。
+最后，若允许在 residue 轴上作 unimodular 重参数化（\(GL_d(\ZZ)\) 变换）并在同一共体积类内优化角格形状，则极限常数由 Hermite 常数控制；同时可得到贴边极点的主阶计数律。
+
+\paragraph{设定：多轴扭曲与 near-coboundary 二次律}
+令 \(d\ge 1\)。
+考虑一族单位圆扭曲矩阵 \(M_{i\vartheta}\)（\(\vartheta\in\RR^d\)），记
+\[
+P(\vartheta):=\log\rho(M_{i\vartheta}),\qquad \lambda:=\rho(M_{0}),\qquad \Sigma:=\nabla^2P(0)\succ 0.
+\]
+在真实输入 \(40\) 状态核的三维观测中，上述 \(\Sigma\) 与小角二次律由附录定理 \ref{thm:real-input-40-near-coboundary-svp} 以“盒装式”给出；在一般有限维原始核上，其同型形式可由 Perron 分支的解析微扰与取实部得到（同一证明框架见 \ref{thm:real-input-40-near-coboundary-svp} 的证明）。
+本文在该小角 regime 内工作：假设存在 \(\delta_0>0\) 使得当 \(\|\vartheta\|\le \delta_0\) 时成立
+\begin{equation}\label{eq:pom-multi-axis-near-coboundary}
+\log\frac{\rho(M_{i\vartheta})}{\lambda}
+\;=\;
+-\frac12\,\vartheta^{\mathsf T}\Sigma\,\vartheta\ +\ O(\|\vartheta\|^4).
+\end{equation}
+
+\paragraph{角格与预算}
+给定模数组 \(m=(m_1,\dots,m_d)\in(\ZZ_{\ge 2})^d\)，引入未包裹角格
+\[
+L(m):=\frac{2\pi}{m_1}\ZZ\times\cdots\times\frac{2\pi}{m_d}\ZZ\subset\RR^d,
+\qquad
+\det L(m)=\frac{(2\pi)^d}{B},
+\qquad
+B:=\prod_{k=1}^d m_k.
+\]
+其中 \(\det L(m)\) 表示格的共体积，而 \(B\) 即 prime-register 的乘法预算（模积）。
+将角格按 \(2\pi\) 取主值代表元（逐坐标 \(\mathrm{wrap}(\cdot)\) 到 \([-\pi,\pi]\)），得到有限的包裹角格
+\[
+\Lambda(m):=\Bigl\{\vartheta(j)
+=\bigl(\mathrm{wrap}(2\pi j_1/m_1),\dots,\mathrm{wrap}(2\pi j_d/m_d)\bigr)\in[-\pi,\pi]^d:\ j\in(\ZZ/m_1)\times\cdots\times(\ZZ/m_d)\Bigr\}.
+\]
+（下文将 \(\ZZ/m_k\ZZ\) 简记为 \(\ZZ/m_k\)）。
+于是 \(\Lambda(m)\setminus\{0\}\) 恰对应全部非平凡角色通道的可达小角扭曲（\(\vartheta=0\) 对应平凡角色）。
+在二次近似下，最坏扭曲对应于在 \(\Lambda(m)\setminus\{0\}\) 上最小化二次型 \(\vartheta^{\mathsf T}\Sigma\vartheta\)。
+记
+\begin{equation}\label{eq:pom-multi-axis-qm}
+q(m):=\min_{\vartheta\in\Lambda(m)\setminus\{0\}}\ \vartheta^{\mathsf T}\Sigma\,\vartheta.
+\end{equation}
+当 \(B\) 足够大使得实现最小值的最短向量落入 \(\|\vartheta\|\le\delta_0\) 的有效域时，\eqref{eq:pom-multi-axis-near-coboundary} 可对该最短向量直接适用。
+
+\begin{theorem}[Minkowski 预算障碍：最短能量的普适上界]\label{thm:pom-minkowski-budget-barrier}
+令 \(V_d:=\mathrm{vol}\{x\in\RR^d:\ |x|\le 1\}=\pi^{d/2}/\Gamma(d/2+1)\)，并令
+\[
+C_d:=\Bigl(\frac{2^{d}}{V_d}\Bigr)^{2/d}.
+\]
+则对任意 \(m\in(\ZZ_{\ge 2})^d\)，当 \(B=\prod_k m_k\) 足够大以保证 \(q(m)\) 的最短向量落在小角有效域内时，有
+\begin{equation}\label{eq:pom-minkowski-qm-upper}
+q(m)\ \le\ (2\pi)^2\,C_d\,(\det\Sigma)^{1/d}\,B^{-2/d}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+令 \(E_r:=\{x\in\RR^d:\ x^{\mathsf T}\Sigma x\le r^2\}\)。
+该集合中心对称且凸，并满足体积公式
+\[
+\mathrm{vol}(E_r)=\frac{V_d\,r^d}{\sqrt{\det\Sigma}}.
+\]
+由 Minkowski 凸体定理（见例如 \cite{Cassels1957}），当 \(\mathrm{vol}(E_r)>2^d\det L(m)\) 时，存在非零向量 \(x\in L(m)\cap E_r\)，从而 \(x^{\mathsf T}\Sigma x\le r^2\)。
+当 \(B\) 足够大时，上述 \(r=r(B)\to 0\)，因此可取到的 \(x\) 落入包裹角域并代表某个非平凡角色通道，即 \(x\in\Lambda(m)\setminus\{0\}\)；
+于是 \(q(m)\le x^{\mathsf T}\Sigma x\le r^2\)。
+取 \(r\) 使得
+\(
+V_d r^d/\sqrt{\det\Sigma}=2^d\det L(m)
+\)
+并取严格大于即可推出
+\[
+q(m)
+\le r^2
+=\Bigl(\frac{2^d\,\det L(m)\,\sqrt{\det\Sigma}}{V_d}\Bigr)^{2/d}
+=(2\pi)^2\Bigl(\frac{2^d}{V_d}\Bigr)^{2/d}(\det\Sigma)^{1/d}B^{-2/d},
+\]
+即得到 \eqref{eq:pom-minkowski-qm-upper}。
+\end{proof}
+
+\begin{corollary}[谱缺口与混合时间的预算指数障碍]\label{cor:pom-multi-axis-mixing-budget-barrier}
+在定理 \ref{thm:pom-minkowski-budget-barrier} 的设定下，定义最坏扭曲谱比与缺口
+\[
+r_{\max}(m):=\max_{\vartheta\in \Lambda(m)\setminus\{0\}}\frac{\rho(M_{i\vartheta})}{\lambda},
+\qquad
+\Delta_{\mathrm{spec}}(m):=-\log r_{\max}(m),
+\qquad
+\tau_{\mathrm{mix}}(m):=\frac{1}{\Delta_{\mathrm{spec}}(m)}
+\]
+（\(\tau_{\mathrm{mix}}\) 的口径与 \S\ref{subsec:xi-near1-diffusive} 一致）。
+则当 \(B\to\infty\) 且处于小角有效域时，有
+\begin{equation}\label{eq:pom-multi-axis-gap-qm}
+\Delta_{\mathrm{spec}}(m)=\frac12\,q(m)\ +\ O\!\bigl(q(m)^2\bigr),
+\end{equation}
+并且
+\begin{equation}\label{eq:pom-multi-axis-taumix-lb}
+\tau_{\mathrm{mix}}(m)\ \ge\ \frac{B^{2/d}}{2\pi^2\,C_d\,(\det\Sigma)^{1/d}}\,(1+o(1)).
+\end{equation}
+从而：\emph{在任意选模策略下，时间成本的最优预算指数必为 \(2/d\)}；若希望把 \(\tau_{\mathrm{mix}}\) 压低到常数阶，则必须使预算 \(B\) 至少满足 \(B=\Omega(\tau_{\mathrm{mix}}^{d/2})\)。
+\end{corollary}
+
+\begin{proof}
+在小角域内，由 \eqref{eq:pom-multi-axis-near-coboundary} 得
+\(
+-\log(\rho(M_{i\vartheta})/\lambda)=\frac12\vartheta^{\mathsf T}\Sigma\vartheta+O(\|\vartheta\|^4)
+\)。
+对使 \(\vartheta^{\mathsf T}\Sigma\vartheta=q(m)\) 的最短向量取最大谱比（等价取最小缺口）即可得到 \eqref{eq:pom-multi-axis-gap-qm}，并将定理 \ref{thm:pom-minkowski-budget-barrier} 的 \eqref{eq:pom-minkowski-qm-upper} 代入得到 \eqref{eq:pom-multi-axis-taumix-lb}。
+\end{proof}
+
+\begin{corollary}[多维 Siegel-like 障碍：near-\texorpdfstring{$1$}{1} 主极点贴边律]\label{cor:pom-multi-axis-near1-pole-barrier}
+在 Dirichlet 归一化 \(z=\lambda^{-s}\) 下，定义
+\[
+s(\vartheta):=\frac{P(\vartheta)}{\log\lambda}
+=\frac{\log\rho(M_{i\vartheta})}{\log\lambda},
+\qquad
+\Delta(\vartheta):=-\log\frac{\rho(M_{i\vartheta})}{\lambda}.
+\]
+则在小角域内有
+\begin{equation}\label{eq:pom-multi-axis-near1-pole-translate}
+1-\Re s(\vartheta)=\frac{\Delta(\vartheta)}{\log\lambda}
+=\frac{1}{2\log\lambda}\,\vartheta^{\mathsf T}\Sigma\vartheta+O(\|\vartheta\|^4).
+\end{equation}
+并且对任意模数组 \(m\)（\(B\) 足够大），必存在某个非平凡扭曲 \(\vartheta_\star\in \Lambda(m)\setminus\{0\}\) 使得
+\begin{equation}\label{eq:pom-multi-axis-near1-pole-budget}
+1-\Re s(\vartheta_\star)
+\ \le\
+\frac{(2\pi)^2\,C_d}{2\log\lambda}\,(\det\Sigma)^{1/d}\,B^{-2/d}\ +\ o(B^{-2/d}).
+\end{equation}
+亦即：当可独立扭曲轴数为 \(d\) 时，near-\(1\) pole 的最优贴边速率由 \(B^{-2/d}\) 刻画，且不可被任何选模策略超越。
+\end{corollary}
+
+\begin{proof}
+式 \eqref{eq:pom-multi-axis-near1-pole-translate} 为 \eqref{eq:pom-multi-axis-near-coboundary} 的直接改写。
+取 \(\vartheta_\star\) 为实现 \(q(m)\) 的最短向量并用 \eqref{eq:pom-minkowski-qm-upper} 控制其二次型，即得 \eqref{eq:pom-multi-axis-near1-pole-budget}。
+\end{proof}
+
+\begin{corollary}[pole--drift 的预算绑定：贴边极点携带同阶有限部漂移]\label{cor:pom-multi-axis-pole-drift-binding}
+在推论 \ref{cor:pom-multi-axis-near1-pole-barrier} 的设定下，进一步假设 Abel 有限部常数 \(\log\mathfrak{M}(\theta)\) 在 \(\theta=0\) 的邻域内实解析（注 \ref{prop:logM-analytic}），并令
+\(
+H:=\nabla^2\log\mathfrak{M}(0)
+\)。
+对任意方向 \(v\neq 0\) 定义方向耦合比
+\[
+\mathcal{W}(v):=\frac{v^{\mathsf T}Hv}{v^{\mathsf T}\Sigma v},
+\]
+并对 \(\vartheta\neq 0\) 记 \(v(\vartheta):=\vartheta/\|\vartheta\|\)、\(\Delta_{\mathfrak{M}}(\vartheta):=\log\mathfrak{M}(0)-\Re\log\mathfrak{M}(i\vartheta)\)。
+则由空间--时间换算律（附录命题 \ref{prop:real-input-40-space-time-conversion-law} 的同型读法）得在 \(\|\vartheta\|\to 0\) 时
+\begin{equation}\label{eq:pom-multi-axis-pole-drift-conversion}
+\Delta_{\mathfrak{M}}(\vartheta)
+=(\log\lambda)\,\mathcal{W}\bigl(v(\vartheta)\bigr)\,\bigl(1-\Re s(\vartheta)\bigr)\ +\ O(\|\vartheta\|^4).
+\end{equation}
+特别地，对推论 \ref{cor:pom-multi-axis-near1-pole-barrier} 中不可避免的 \(\vartheta_\star\) 有
+\[
+|\Delta_{\mathfrak{M}}(\vartheta_\star)|=O(B^{-2/d}),
+\]
+即 near-\(1\) pole 的预算贴边在常数层必同时伴随同阶的有限部漂移。
+\end{corollary}
+
+\begin{proof}
+式 \eqref{eq:pom-multi-axis-pole-drift-conversion} 是命题 \ref{prop:real-input-40-space-time-conversion-law} 的记号替换：在二阶近似下，
+\(
+\Delta_{\mathfrak{M}}(\vartheta)=\frac12\vartheta^{\mathsf T}H\vartheta+O(\|\vartheta\|^4)
+\)
+与
+\(
+1-\Re s(\vartheta)=\frac{1}{2\log\lambda}\vartheta^{\mathsf T}\Sigma\vartheta+O(\|\vartheta\|^4)
+\)
+相除即可得到所示换算律。
+将 \eqref{eq:pom-multi-axis-near1-pole-budget} 代入并注意 \(\mathcal{W}(v)\) 在单位球面上的有界性（例如由 \(\mu_{\max}:=\|\Sigma^{-1/2}H\Sigma^{-1/2}\|_{\mathrm{op}}\) 控制）即可得到 \(|\Delta_{\mathfrak{M}}(\vartheta_\star)|=O(B^{-2/d})\)。
+\end{proof}
+
+\paragraph{极限常数：Hermite 常数刻画最优格致密度}
+上述三条推论给出了预算指数 \(2/d\) 的不可突破性。
+进一步地，若允许在 residue 轴上作可逆整系数重参数化（\(GL_d(\ZZ)\) 变换），并把角格在同一共体积类内视为可实现的一般格，则“最坏扭曲能量的最大化”（从而使混合最快）可提升为几何数论中的格致密度极值问题。
+
+\begin{theorem}[Hermite 常数刻画：同共体积类内的最优常数]\label{thm:pom-hermite-constant-characterization}
+令 \(\mathcal{L}(V)\) 表示 \(\RR^d\) 中共体积为 \(V\) 的全体格。
+对 \(\Sigma\succ 0\) 与 \(\Lambda\in\mathcal{L}(V)\) 定义第一最小值
+\[
+\lambda_1(\Lambda,\Sigma):=\min_{0\neq x\in\Lambda}x^{\mathsf T}\Sigma x.
+\]
+记欧氏 Hermite 常数
+\[
+\gamma_d:=\sup_{\Lambda}\ \frac{\min_{0\neq x\in\Lambda}|x|^{2}}{(\det\Lambda)^{2/d}}\quad(<\infty).
+\]
+则对任意 \(\Sigma\succ 0\) 与 \(V>0\) 成立
+\begin{equation}\label{eq:pom-hermite-sup}
+\sup_{\Lambda\in\mathcal{L}(V)}\ \lambda_1(\Lambda,\Sigma)
+\ =\ \gamma_d\,(\det\Sigma)^{1/d}\,V^{2/d}.
+\end{equation}
+特别地，当 \(\det L(m)=(2\pi)^d/B\) 时，若允许在同一共体积类内优化格形状，则最优谱缺口常数满足
+\[
+\Delta_{\mathrm{spec}}^{\mathrm{opt}}(B)\ \sim\ \frac12(2\pi)^2\gamma_d(\det\Sigma)^{1/d}B^{-2/d},
+\qquad
+\tau_{\mathrm{mix}}^{\mathrm{opt}}(B)\ \sim\ \frac{B^{2/d}}{2\pi^2\gamma_d(\det\Sigma)^{1/d}}.
+\]
+\end{theorem}
+
+\begin{proof}
+作线性变换 \(y=\Sigma^{1/2}x\)，则 \(x^{\mathsf T}\Sigma x=|y|^2\)，而格的共体积满足
+\(
+\det(\Sigma^{1/2}\Lambda)=(\det\Sigma)^{1/2}\det\Lambda
+\)。
+因此
+\[
+\lambda_1(\Lambda,\Sigma)
+=\min_{0\neq y\in\Sigma^{1/2}\Lambda}|y|^2.
+\]
+对欧氏情形应用 Hermite 常数的定义与尺度不变性，得到对任意共体积 \(W\) 有
+\(
+\sup_{\Omega:\det\Omega=W}\min_{0\neq y\in\Omega}|y|^2=\gamma_d\,W^{2/d}
+\)。
+取 \(W=(\det\Sigma)^{1/2}V\) 即得 \eqref{eq:pom-hermite-sup}。
+将 \(V=(2\pi)^d/B\) 代入并结合 \eqref{eq:pom-multi-axis-gap-qm} 即得最后两式。
+\end{proof}
+
+\begin{remark}[Minkowski 常数与 Hermite 常数]\label{rem:pom-minkowski-vs-hermite}
+定理 \ref{thm:pom-minkowski-budget-barrier} 中的常数 \(C_d\) 给出 Hermite 常数的一个无条件上界：\(\gamma_d\le C_d\)。
+因此 \eqref{eq:pom-multi-axis-taumix-lb} 提供了不依赖格最优化假设的通用预算下界；而定理 \ref{thm:pom-hermite-constant-characterization} 则在允许优化格形状时刻画其最优常数。
+\end{remark}
+
+\paragraph{贴边极点的密度律：体积比主项}
+定理 \ref{thm:pom-minkowski-budget-barrier} 与推论 \ref{cor:pom-multi-axis-near1-pole-barrier} 给出“至少存在一个”贴边极点通道。
+在小角有效域内还可得到贴边极点数的主阶计数律：对 \(\varepsilon>0\) 定义
+\[
+N_\varepsilon(m):=\#\Bigl\{\vartheta\in \Lambda(m)\setminus\{0\}:\ 1-\Re s(\vartheta)\le \varepsilon\Bigr\}.
+\]
+
+\begin{proposition}[贴边极点计数主项]\label{prop:pom-multi-axis-near1-density}
+在小角有效域内，若 \(\varepsilon\downarrow 0\)、\(B\to\infty\) 且满足 \(B\,\varepsilon^{d/2}\to\infty\)（以保证体积比近似稳定），则有渐近
+\begin{equation}\label{eq:pom-multi-axis-near1-density}
+N_{\varepsilon}(m)
+\ =\
+\frac{B}{(2\pi)^{d}}\cdot\frac{V_{d}}{\sqrt{\det\Sigma}}\cdot(2\log\lambda\cdot\varepsilon)^{d/2}
+\ +\ o\!\bigl(B\varepsilon^{d/2}\bigr).
+\end{equation}
+特别地，在自然贴边尺度 \(\varepsilon\asymp B^{-2/d}\) 上，\(N_\varepsilon(m)=O(1)\)：最靠近 \(1\) 的 pole 族在预算放大下保持稀疏，而不会出现宏观级别的多重贴边。
+\end{proposition}
+
+\begin{proof}
+由 \eqref{eq:pom-multi-axis-near1-pole-translate}，在忽略高阶项的意义下，
+\(
+1-\Re s(\vartheta)\le \varepsilon
+\)
+等价于
+\(
+\vartheta^{\mathsf T}\Sigma\vartheta\le 2\log\lambda\cdot\varepsilon
+\)。
+令 \(R:=\sqrt{2\log\lambda\cdot\varepsilon}\) 并记椭球 \(E_R=\{x:\ x^{\mathsf T}\Sigma x\le R^2\}\)。
+当角格足够细（由 \(B\,\varepsilon^{d/2}\to\infty\) 保证）时，格点计数以体积比近似：
+\[
+N_\varepsilon(m)
+\sim
+\frac{\mathrm{vol}(E_R)}{\det L(m)}
+=\frac{V_d R^d}{\sqrt{\det\Sigma}}\cdot\frac{B}{(2\pi)^d},
+\]
+代入 \(R^d=(2\log\lambda\cdot\varepsilon)^{d/2}\) 即得 \eqref{eq:pom-multi-axis-near1-density}。
+最后一句由把 \(\varepsilon\asymp B^{-2/d}\) 代回主项得到。
+\end{proof}
+
+\paragraph{闭合推论链（资源--谱--pole--有限部）}
+在 near-coboundary 二次律 \eqref{eq:pom-multi-axis-near-coboundary} 与空间--时间换算律（命题 \ref{prop:real-input-40-space-time-conversion-law}）的底座上，可得到一个闭合的可审计推论链条：
+\begin{itemize}
+  \item \textbf{预算 \(\Rightarrow\) 谱：}Minkowski 预算障碍给出 \(q(m)=O(B^{-2/d})\)（定理 \ref{thm:pom-minkowski-budget-barrier}），从而最坏谱缺口满足 \(\Delta_{\mathrm{spec}}(m)=O(B^{-2/d})\) 并强制 \(\tau_{\mathrm{mix}}(m)=\Omega(B^{2/d})\)（推论 \ref{cor:pom-multi-axis-mixing-budget-barrier}）。
+  \item \textbf{谱 \(\Rightarrow\) pole：}Dirichlet 归一化把同一缺口译码为 near-\(1\) 主极点贴边律 \(1-\Re s=O(B^{-2/d})\)（推论 \ref{cor:pom-multi-axis-near1-pole-barrier}）。
+  \item \textbf{pole \(\Rightarrow\) 有限部：}空间--时间换算把贴边与有限部漂移在二阶精度上线性锁定，从而不可避免的贴边通道必携带同阶的有限部漂移量级（推论 \ref{cor:pom-multi-axis-pole-drift-binding}）。
+  \item \textbf{常数优化与密度：}允许在同一共体积类内优化格形状时，极限常数由 Hermite 常数控制（定理 \ref{thm:pom-hermite-constant-characterization}）；同时贴边极点数满足 \(N_\varepsilon\sim B\varepsilon^{d/2}\) 的体积比主项（命题 \ref{prop:pom-multi-axis-near1-density}）。
+\end{itemize}
+
 \input{sections/08_projection_ontology_mathematics/08_projection_ontology_mathematics_part07b.tex}
