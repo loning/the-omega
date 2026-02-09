@@ -12,6 +12,143 @@
 在推论 \ref{cor:pom-fiber-lower-bound-cascade} 与命题 \ref{prop:pom-ind-matrix-grammar} 的表达下，$\#\mathsf{Ind}(G(x_{1..m}))$ 可被视为“块乘积 + 块内二字母矩阵词”的复合对象。
 因此，在任何给定的平稳遍历来源下，块序列与块内缺陷模式诱导一个平稳的矩阵乘积过程；其顶 Lyapunov 指数（再按“块顶点密度/原始长度密度”重标度）提供了典型下界指数 $\Lambda_{\mathsf{Ind}}$ 的一个可审计解释与数值估计路线。
 \end{remark}
+
+\subsubsection{纤维的分量分解与独立集多项式：从计数到全分布}\label{subsec:pom-fiber-indset}
+在合流终止的局部重写口径下，固定稳定类型 \(x\in X_m\) 后，任一前像 \(\omega\in\Fold_m^{-1}(x)\) 都可由对 \(x\) 施加若干次逆代换 \(100\mapsto 011\) 生成（对应正向的 Fibonacci 进位 \(011\mapsto 100\)）。
+当两次逆代换占用的长度-\(3\) 局部区间发生重叠时，会在中间态产生非二元位（数字 \(2\)），因此合法选择必须满足“不可相邻选择”的冲突约束。
+下面把该机制收束为一个完全离散、可审计的对象：一条诱导路径图上的独立集系统。
+
+\begin{definition}[候选位点、诱导路径图与纤维生成函数]\label{def:pom-fiber-adm-path}
+固定分辨率 \(m\ge 2\)。记
+\[
+k:=\lfloor m/2\rfloor,
+\qquad
+k_{+}:=k+\mathbf{1}_{\{m\ \mathrm{odd}\}}=\lceil m/2\rceil .
+\]
+当 \(m\) 为奇数时，引理 \ref{lem:pom-one-bit} 的隐藏位分裂在逆代换链上表现为一个额外的端点自由度；记号 \(k_{+}\) 用于统一容纳这一端点。
+对 \(x\in X_m\)，令 \(\mathsf{Adm}(x)\subseteq\{1,\dots,k_{+}\}\) 为在“高位到低位”的逆代换执行口径下，\emph{可实施}逆代换 \(100\mapsto 011\) 的候选位点集合。
+候选位点的合法选择需满足不可相邻约束（否则区间重叠产生非二元位），这自然诱导一条路径图约束。
+令 \(P_{k_{+}}\) 为顶点 \(1,\dots,k_{+}\) 的路径图，并定义诱导子图
+\[
+\Gamma_x:=P_{k_{+}}[\mathsf{Adm}(x)].
+\]
+\par
+对 \(\omega\in\Fold_m^{-1}(x)\)，记 \(r(\omega)\) 为从 \(x\) 生成 \(\omega\) 所用逆代换次数（在定理 \ref{thm:pom-fiber-indset-factorization} 给出的规范双射下等于所选独立集的大小）。
+定义纤维的逆代换生成函数
+\[
+Z_x(t):=\sum_{\omega\in \Fold_m^{-1}(x)} t^{r(\omega)}.
+\]
+并对任意 \(\ell\ge 0\) 定义路径图 \(P_\ell\) 的独立集多项式
+\[
+I_\ell(t):=\sum_{S\in\mathsf{Ind}(P_\ell)} t^{|S|}.
+\]
+\end{definition}
+
+\begin{theorem}[纤维的精确分量分解：独立集系统与乘法因子化]\label{thm:pom-fiber-indset-factorization}
+对任意 \(x\in X_m\)，存在一个由 \(x\) 唯一确定的候选位点集合 \(\mathsf{Adm}(x)\) 使得
+\[
+\Fold_m^{-1}(x)\ \cong\ \mathsf{Ind}(\Gamma_x),
+\qquad
+\Gamma_x=P_{k_{+}}[\mathsf{Adm}(x)],
+\]
+其中 \(\mathsf{Ind}(\Gamma_x)\) 为 \(\Gamma_x\) 的独立集族。
+在该规范同构下，指数 \(r(\omega)\) 等于对应独立集的大小，因此
+\[
+Z_x(t)=\sum_{S\in\mathsf{Ind}(\Gamma_x)} t^{|S|}.
+\]
+进一步，若 \(\Gamma_x\) 的连通分量依次同构于若干条路径 \(P_{\ell_1},\dots,P_{\ell_r}\)，则生成函数与计数严格分解为
+\[
+Z_x(t)=\prod_{i=1}^r I_{\ell_i}(t),
+\qquad
+d_m(x):=|\Fold_m^{-1}(x)|=Z_x(1)=\prod_{i=1}^r F_{\ell_i+2}.
+\]
+\end{theorem}
+
+\begin{proof}
+固定本文在定义 \ref{def:pom-fold-prime-lift} 中采用的确定性正规化策略 \(\mathsf S\)，并用其诱导的逆向回放口径对纤维作规范枚举。
+由于正向重写系统合流终止（命题 \ref{prop:fold-rewrite-newman}），对任意 \(\omega\in\Omega_m\) 都存在有限轨迹把 \(\iota_m(\omega)\) 归约到唯一正规形；从而逆向回放给出“从 \(x=\Fold_m(\omega)\) 到 \(\omega\)”的一个确定性生成过程。
+\par
+在二元输入的口径下，该逆向生成过程中唯一需要记录的离散自由度来自逆代换 \(100\mapsto 011\) 的触发选择：若两次触发的局部区间重叠，则在回放中间态出现数字 \(2\)，从而失去二元性；因此可行选择必须满足不可相邻约束，等价于在路径图 \(P_{k_{+}}\) 上取独立集。
+记 \(\mathsf{Adm}(x)\) 为在该规范回放口径下\emph{确实可被触发}的候选位点集合，则每个前像 \(\omega\in\Fold_m^{-1}(x)\) 与一组独立集选择 \(S\in\mathsf{Ind}(\Gamma_x)\) 一一对应，且对应的逆代换次数恰为 \(|S|\)。
+于是 \(Z_x(t)=\sum_{S\in\mathsf{Ind}(\Gamma_x)}t^{|S|}\)。
+\par
+最后，\(\Gamma_x\) 的连通分量互不相连，独立集在各分量上独立选择，从而生成函数乘法分解成立；
+而路径 \(P_\ell\) 的独立集数为 \(F_{\ell+2}\)，故 \(d_m(x)=Z_x(1)=\prod_i F_{\ell_i+2}\)。证毕。
+\end{proof}
+
+\begin{theorem}[路径独立集多项式的闭式系数]\label{thm:pom-path-indset-poly-closed}
+对任意 \(\ell\ge 0\)，有
+\[
+I_{\ell}(t)=\sum_{j=0}^{\lceil \ell/2\rceil}\binom{\ell+1-j}{j}\,t^j.
+\]
+因此在定理 \ref{thm:pom-fiber-indset-factorization} 的分解下，纤维中“恰用 \(j\) 次逆代换”的前像个数由各分量系数作卷积乘积给出，从而 \(r(\omega)\) 的全分布可被完全闭式重建。
+\end{theorem}
+
+\begin{proof}
+大小为 \(j\) 的独立集等价于选取 \(1\le s_1<\cdots<s_j\le \ell\) 且满足 \(s_{a+1}-s_a\ge 2\)。
+令 \(u_a:=s_a-(a-1)\)，则得到严格递增序列 \(1\le u_1<\cdots<u_j\le \ell+1-j\)；反之亦然。
+故大小为 \(j\) 的独立集数为 \(\binom{\ell+1-j}{j}\)，对 \(j\) 求和得结论。证毕。
+\end{proof}
+
+\subsubsection{纤维的带符号指数与 \texorpdfstring{$\bmod 3$}{mod 3} 阻碍}\label{subsec:pom-fiber-signed-index}
+在定理 \ref{thm:pom-fiber-indset-factorization} 的独立集模型下，纤维内部的“逆代换次数谱”不仅可计数，还自然诱导一个取值极刚性的带符号指数（独立集多项式在 \(t=-1\) 处的取值）。
+
+\begin{definition}[纤维的带符号指数]\label{def:pom-fiber-signed-index}
+对任意 \(x\in X_m\)，定义其纤维带符号指数为
+\[
+\mathfrak{s}_m(x):=Z_x(-1)=\sum_{\omega\in\Fold_m^{-1}(x)}(-1)^{r(\omega)}.
+\]
+在定理 \ref{thm:pom-fiber-indset-factorization} 的同构下，\(\mathfrak{s}_m(x)\) 等价于诱导图 \(\Gamma_x\) 的独立集多项式在 \(t=-1\) 的取值。
+\end{definition}
+
+\begin{theorem}[分量级周期律与消失判别]\label{thm:pom-fiber-signed-index-periodicity}
+令 \(J_\ell:=I_\ell(-1)\)（\(\ell\ge 0\)）。则 \((J_\ell)_{\ell\ge 0}\) 为 \(6\) 周期序列，并且
+\[
+(J_\ell)_{\ell=0}^{\infty}=(1,0,-1,-1,0,1,1,0,-1,-1,0,1,\dots),
+\qquad
+J_\ell=0\ \Longleftrightarrow\ \ell\equiv 1\ (\mathrm{mod}\ 3).
+\]
+因此，若 \(\Gamma_x\) 的连通分量依次同构于路径 \(P_{\ell_1},\dots,P_{\ell_r}\)，则
+\[
+\mathfrak{s}_m(x)=Z_x(-1)=\prod_{i=1}^r J_{\ell_i}\ \in\ \{0,\pm 1\},
+\]
+并且
+\[
+\mathfrak{s}_m(x)=0
+\quad\Longleftrightarrow\quad
+\exists\,i,\ \ell_i\equiv 1\ (\mathrm{mod}\ 3).
+\]
+\end{theorem}
+
+\begin{proof}
+路径独立集多项式满足递推
+\(
+I_\ell(t)=I_{\ell-1}(t)+t\,I_{\ell-2}(t)
+\)
+（按是否选择末端顶点分类），并具有初值 \(I_0(t)=1\)、\(I_1(t)=1+t\)。
+代入 \(t=-1\) 得
+\[
+J_0=1,\qquad J_1=0,\qquad J_\ell=J_{\ell-1}-J_{\ell-2}\quad(\ell\ge 2).
+\]
+由该线性递推直接计算前六项
+\(
+J_0=1,J_1=0,J_2=-1,J_3=-1,J_4=0,J_5=1
+\)，再由递推可得 \(J_{\ell+6}=J_\ell\)（对任意 \(\ell\) 归纳即得），从而序列 \(6\) 周期。
+同理可见零点恰发生在 \(\ell\equiv 1\pmod 3\)。
+\par
+最后，由定理 \ref{thm:pom-fiber-indset-factorization} 的乘法分解
+\(
+Z_x(t)=\prod_i I_{\ell_i}(t)
+\)，
+取 \(t=-1\) 即得 \(\mathfrak{s}_m(x)=\prod_i J_{\ell_i}\)，并给出取值集合与消失判别。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\bmod 3$}{mod 3} 相位阻碍：由分量长度决定]\label{cor:pom-fiber-signed-index-mod3}
+\(\Gamma_x\) 的分量长度 \((\ell_i)\) 诱导一个可审计的阻碍类：是否出现 \(\ell_i\equiv 1\pmod 3\) 决定 \(\mathfrak{s}_m(x)\) 的消失与否。
+当 \(\mathfrak{s}_m(x)\neq 0\) 时，其符号由 \(\ell_i\) 在上述 \(6\) 周期表中的落点完全决定，从而 \(\mathfrak{s}_m(x)\) 只依赖于候选位点图 \(\Gamma_x\) 的分量结构而不依赖外部解释层。
+\end{corollary}
+
+\subsubsection{最大纤维闭式与顶端谱缺口}\label{subsec:pom-top-fiber}
 \begin{theorem}[最大纤维闭式]\label{thm:pom-max-fiber}
 取 Fibonacci 延拓到 $F_0=0,F_1=1$。对 $m\ge 2$，有精确闭式
 \[
