@@ -392,6 +392,81 @@ n\ \gtrsim\ \frac{\log(|G_m|/\delta)}{(1/2+\varepsilon)\log \lambda_m}\; }
 证毕。
 \end{proof}
 
+\begin{theorem}[同步扣除的 Chebotarev 容量律]\label{thm:pom-sync-subtracted-chebotarev-capacity}
+固定层级 \(m\) 与两类置信参数 \(\delta_{\mathrm{NULL}},\delta_{\mathrm{Cheb}}\in(0,1)\)。
+沿用同步核的右解析确定化表示与同步时间 \(T_m\)（定义 \ref{def:Ym-sync-time}），并按“地址先于概念值/未同步即无地址”的语义约定把 \(T_m\) 解释为统计型 \(\mathsf{NULL}\) 的消失时刻（备注 \ref{rem:Ym-stat-null-unsync}）。
+\par
+定义同步扣除项
+\[
+n_{\mathrm{sync}}(m,\delta_{\mathrm{NULL}})
+:=
+\begin{cases}
+D_{\mathrm{sync}}(m), & \text{若 }Y_m^{\mathrm{amb}}=\varnothing,\\[6pt]
+\left\lceil \dfrac{1}{\varepsilon_m}\log\dfrac{C_m}{\delta_{\mathrm{NULL}}}\right\rceil,
+& \text{若 }Y_m^{\mathrm{amb}}\neq\varnothing,
+\end{cases}
+\]
+其中 \(D_{\mathrm{sync}}(m)\) 由推论 \ref{cor:Ym-sync-delay}（或更一般由备注 \ref{rem:Ym-amb-empty} 的 DAG 最长路审计口径）给出；
+而第二行的常数 \(C_m,\varepsilon_m\) 来自定理 \ref{thm:Ym-sync-tail} 的指数尾预算。
+并令可用深度
+\[
+n_{\mathrm{eff}}:=\bigl(n-n_{\mathrm{sync}}(m,\delta_{\mathrm{NULL}})\bigr)_+,
+\qquad (x)_+:=\max\{x,0\}.
+\]
+\par
+若该层满足统一谱隙假设
+\(
+\Lambda_m\le \lambda_m^{1/2-\varepsilon_{\mathrm{gap}}}
+\)
+（对某个 \(\varepsilon_{\mathrm{gap}}>0\)），则任何企图在总扫描预算 \(n\) 内同时满足
+\begin{enumerate}
+  \item \textbf{读出定义性：}\(\nu_m(T_m>n_{\mathrm{sync}})\le \delta_{\mathrm{NULL}}\)（从而地址以概率 \(\ge 1-\delta_{\mathrm{NULL}}\) 被前缀唯一化），以及
+  \item \textbf{读出统计清晰度：}对任意非空 cylinder \(U=\pi_m^{-1}(A)\) 把 Chebotarev 相对误差压到 \(\le O(\delta_{\mathrm{Cheb}})\)，
+\end{enumerate}
+都必须把 \(n_{\mathrm{eff}}\) 作为进入 Chebotarev 预算的“可用深度”。等价地，推论 \ref{cor:pom-profinite-cylinder-capacity} 的容量条件发生同步扣除修正：
+\[
+\boxed{\;
+\log |G_m|
+\ \lesssim\
+(1/2+\varepsilon_{\mathrm{gap}})\,n_{\mathrm{eff}}\log\lambda_m
+\ -\
+\log(1/\delta_{\mathrm{Cheb}})
+\;}
+\]
+（隐含常数口径与推论 \ref{cor:pom-profinite-cylinder-capacity} 一致）。
+\par
+\noindent\textbf{可审计性说明（作为结论的一部分）.}
+\begin{enumerate}
+  \item 同步扣除项 \(n_{\mathrm{sync}}\) 在有限确定化图上可直接审计：歧义子图含有向环当且仅当 \(Y_m^{\mathrm{amb}}\neq\varnothing\)，无环则 \(D_{\mathrm{sync}}\) 由最长路 DP 得到（备注 \ref{rem:Ym-amb-empty} 与表 \ref{tab:phi_m_sync_theory}）。
+  \item 同步延迟属于不可空间化时间不变量：它与 residue/prime-register 等正交记录轴的扩展正交，不能通过单纯增加模轴容量消去；因此必须以显式时间扣除项进入任何容量预算（见备注 \ref{rem:pom-time-defect-dichotomy}）。
+\end{enumerate}
+\end{theorem}
+
+\begin{corollary}[Zeckendorf 折叠下的尖锐线性扣除]\label{cor:pom-sync-subtracted-chebotarev-zeckendorf}
+在本文的 Zeckendorf 折叠模型中，当 \(m\ge 3\) 时有 \(Y_m^{\mathrm{amb}}=\varnothing\) 且 \(D_{\mathrm{sync}}(m)=m-1\)（推论 \ref{cor:Ym-sync-delay} 与备注 \ref{rem:Ym-amb-empty}）。
+因此对任意 \(\delta_{\mathrm{NULL}},\delta_{\mathrm{Cheb}}\in(0,1)\)，有
+\[
+n_{\mathrm{eff}}=(n-m+1)_+,
+\]
+从而定理 \ref{thm:pom-sync-subtracted-chebotarev-capacity} 的容量条件退化为尖锐的线性扣除形式
+\[
+\log |G_m|
+\ \lesssim\
+(1/2+\varepsilon_{\mathrm{gap}})\,(n-m+1)_+\log\lambda_m
+\ -\
+\log(1/\delta_{\mathrm{Cheb}}).
+\]
+\end{corollary}
+
+\begin{corollary}[弱可逆情形的两参数预算]\label{cor:pom-sync-subtracted-chebotarev-weak}
+若 \(Y_m^{\mathrm{amb}}\neq\varnothing\)，则为使统计型 \(\mathsf{NULL}\) 在最大熵测度下以概率 \(\le \delta_{\mathrm{NULL}}\) 消失，必须先支付同步预算
+\[
+n_{\mathrm{sync}}(m,\delta_{\mathrm{NULL}})
+=\left\lceil \dfrac{1}{\varepsilon_m}\log\dfrac{C_m}{\delta_{\mathrm{NULL}}}\right\rceil,
+\]
+之后才存在统一的 Chebotarev 统计预算可谈；并且时间侧容量条件以 \(n_{\mathrm{eff}}=(n-n_{\mathrm{sync}})_+\) 的扣除方式耦合两类指数率：\(\varepsilon_m\) 控制定义性清晰度的同步尾速率，而 \(\lambda_m\) 与 \(\varepsilon_{\mathrm{gap}}\) 控制统计清晰度的谱速率（定理 \ref{thm:pom-sync-subtracted-chebotarev-capacity}）。
+\end{corollary}
+
 \subsubsection{\texorpdfstring{$L^2(\widehat{\ZZ})$}{L2(Zhat)} 上的寄存器提升算子：角色直和分解与“统一全部模数”的算子框架}\label{subsec:profinite-operator-l2}
 定理 \ref{thm:pom-profinite-axis} 以“每个有限层 \(G_m\)”为单位给出 Chebotarev 计数与误差口径。
 本小节给出一个更接近 Hilbert--P{\'o}lya 语义的压缩：把所有模数的扭曲通道统一为一个作用在 \(L^2(G_\infty)\) 上的提升算子，并在 Pontryagin 对偶侧把它严格对角化为一族 twist 矩阵。
