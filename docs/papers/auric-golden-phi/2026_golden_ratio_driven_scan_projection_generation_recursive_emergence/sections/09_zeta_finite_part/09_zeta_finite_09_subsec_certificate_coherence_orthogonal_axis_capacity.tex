@@ -105,6 +105,29 @@ unitary slice 的“正交性”在本文并非欧氏几何命题，而是由可
 合并三点即得所述“正交切片”的结构结论。证毕。
 \end{proof}
 
+\begin{corollary}[内因子数据的正交寄存器必要性]\label{cor:xi-inner-factor-orthogonal-register}
+在定理 \ref{thm:xi-orthogonal-slice-structure} 的设定下，进一步假设附录 \ref{subsec:unit-disk-inner-outer} 的 Hardy/Smirnov 条件口径成立，使得圆盘完成化对象具有标准因子分解
+\(
+F_\zeta(w)=B(w)\,S(w)\,O(w)
+\)。
+则：
+\begin{enumerate}
+  \item \textbf{（离临界线信息即内因子数据）}
+  任意离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\)（\(0<\beta<\tfrac12\)）的圆盘像 \(w_\rho\in\mathbb{D}\) 及其偏移坐标
+  \(
+  \delta:=\tfrac12-\beta=\mathcal{B}_{-1}(w_\rho)
+  \)
+  属于 Blaschke 内因子 \(B\) 的零点数据；因此它在 unitary slice 的\emph{边界模长}审计口径下不由外因子决定。
+  \item \textbf{（无正交载体则不可严格化）}
+  若验证协议保持 \(X_{\mathrm{vis}}=\mathsf{Phase}\) 且拒绝在模式轴 \(a_{\mathrm{mode}}\) 上显式外置径向记录，则任何试图把上述内因子数据严格化为 unitary slice 的常数层可核验对象的策略，都将不可避免地触发协议层面的类型拒绝：其读出要么稳定退化为 \(\mathsf{NULL}\)，要么必须引入额外的正交记录轴以承载该内因子数据（并与命题 \ref{prop:xi-offcritical-falsifiable-restatement} 的可证伪接口一致）。
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+第 (1) 条为附录 \ref{subsec:unit-disk-inner-outer} 中“盘内零点 \(\Leftrightarrow\) Blaschke 数据”的直接对应，并与定理 \ref{thm:xi-orthogonal-slice-structure} 的第 (2) 条一致。
+第 (2) 条由定理 \ref{thm:xi-orthogonal-slice-structure} 的第 (1) 条（径向模式在纯相位接口中不可类型化）与“地址先于取值”的可见域过滤（定义 \ref{def:xi-visible-read-null}）推出；当要求可核验完备性时，唯一的非退化路径即为外置相应正交记录轴。证毕。
+\end{proof}
+
 \paragraph{离临界线偏移的二次径向压缩与证书容量下界}
 附录的圆盘化完成化把“离开临界线”严格实现为盘内零点；并且该离线信息在端点坐标中以二阶径向通道进入（推论 \ref{cor:xi-null-second-order-radial-channel}）。
 下面将其抽取为一个定理式的“压缩律 + 容量下界”。
@@ -146,6 +169,89 @@ unitary slice 的“正交性”在本文并非欧氏几何命题，而是由可
 \begin{proof}
 三条断言分别为推论 \ref{cor:app-offcritical-horocycle-busemann}、推论 \ref{cor:app-offcritical-radius-second-order-radial-channel} 与注 \ref{rem:app-offcritical-radius-precision-potential} 的直接重述。证毕。
 \end{proof}
+
+\begin{corollary}[端点层深度的精度势--偏移对数分解]\label{cor:xi-offcritical-endpoint-depth-log-decomposition}
+在定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 的设定下，记端点层余量
+\(
+h(\rho):=1-|w_\rho|^2
+\)。
+则当 \(|\gamma|\to\infty\) 且 \(\delta\) 有界时，有乘积型渐近
+\begin{equation}\label{eq:xi-offcritical-endpoint-product-law}
+\boxed{\;
+\frac{h(\rho)}{\delta}\,e^{\mathcal{P}(\gamma)}\to 4\pi\;}
+\end{equation}
+以及等价的对数深度分解
+\begin{equation}\label{eq:xi-offcritical-endpoint-depth-load-decomposition}
+\boxed{\;
+-\log h(\rho)=\mathcal{P}(\gamma)+\log\frac{1}{\delta}-\log(4\pi)+o(1)\qquad(|\gamma|\to\infty)\; }.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 第 (3) 条的渐近式
+\(
+h(\rho)\sim 4\pi\,\delta\,e^{-\mathcal{P}(\gamma)}
+\)
+立得 \eqref{eq:xi-offcritical-endpoint-product-law}。
+两侧取负对数并整理即得 \eqref{eq:xi-offcritical-endpoint-depth-load-decomposition}。证毕。
+\end{proof}
+
+\begin{remark}[端点深度的可加负载]\label{rem:xi-offcritical-endpoint-depth-additive-load}
+式 \eqref{eq:xi-offcritical-endpoint-depth-load-decomposition} 表明：在端点压缩尺度下，端点层深度 \(-\log(1-|w_\rho|^2)\) 在渐近上分解为两项可加负载：由无参紧化 Jacobian 诱导的高度精度负载 \(\mathcal{P}(\gamma)\)，以及由离临界线偏移贡献的偏移负载 \(\log(1/\delta)\)。
+在本文的可核验语义中，这一分解与“正交切片”结论相容：偏离切片的径向信息并非作为可自由调节的额外连续坐标进入，而是以端点层的可审计账本负载形式出现。
+\end{remark}
+
+\begin{theorem}[端点层分辨率下界与位复杂度屏障（显式最坏情形）]\label{thm:xi-offcritical-endpoint-resolution-lower-bound}
+固定 \(\delta_0\in(0,\tfrac12)\) 与 \(T>0\)。
+若存在离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\) 满足
+\[
+|\gamma|\le T,\qquad \beta\le \tfrac12-\delta_0,
+\]
+并仍记其圆盘像为 \(w_\rho=\mathcal{C}(\gamma+\mathrm{i}(\tfrac12-\beta))\)，则端点层余量满足显式下界
+\begin{equation}\label{eq:xi-offcritical-endpoint-margin-min}
+\boxed{\;
+1-|w_\rho|^2\ \ge\ \frac{4\delta_0}{T^2+(1+\delta_0)^2}\; }.
+\end{equation}
+因此，任何试图仅以端点层分辨率阈值控制来排除上述高度窗内全部离线零点的核验策略，若其对余量 \(1-|w|^2\) 的最小可分辨尺度为 \(2^{-p}\)，则必须满足
+\begin{equation}\label{eq:xi-offcritical-endpoint-bit-lower-bound}
+\boxed{\;
+p\ \ge\ \log_2\!\Bigl(\frac{T^2+(1+\delta_0)^2}{4\delta_0}\Bigr)\; }.
+\end{equation}
+并且当 \(T\to\infty\) 时有渐近下界
+\begin{equation}\label{eq:xi-offcritical-endpoint-bit-asymptotic}
+\boxed{\;
+p\ \ge\ 2\log_2 T+\log_2\!\frac{1}{\delta_0}+O(1)\; }.
+\end{equation}
+利用精度势 \(\mathcal{P}(x)=\log\pi+\log(1+x^2)\)，该渐近亦可写为
+\begin{equation}\label{eq:xi-offcritical-endpoint-bit-precision-potential-form}
+\boxed{\;
+p\ \ge\ \frac{\mathcal{P}(T)+\log(1/\delta_0)-\log(4\pi)}{\log 2}+o(1)\qquad(T\to\infty)\; }.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 第 (1) 条的闭式恒等式，
+\[
+1-|w_\rho|^2=\frac{4\delta}{\gamma^2+(1+\delta)^2},
+\qquad \delta=\tfrac12-\beta\in[\delta_0,\tfrac12).
+\]
+在 \(\delta\in(0,1)\) 上，函数 \(\delta\mapsto \frac{4\delta}{\gamma^2+(1+\delta)^2}\) 单调递增；并且对 \(|\gamma|\le T\) 其右端随 \(|\gamma|\) 增大而减小。
+因此在约束 \(\delta\ge\delta_0,|\gamma|\le T\) 下，余量的最小值由 \(\delta=\delta_0\) 与 \(|\gamma|=T\) 取得，从而得到 \eqref{eq:xi-offcritical-endpoint-margin-min}。
+\par
+若核验机制对端点余量的最小可分辨尺度为 \(2^{-p}\)，则要在该高度窗内实现对全部可能离线零点的端点层可分辨排除，必须满足 \(2^{-p}<\inf(1-|w_\rho|^2)\)，结合 \eqref{eq:xi-offcritical-endpoint-margin-min} 即得 \eqref{eq:xi-offcritical-endpoint-bit-lower-bound}。
+\eqref{eq:xi-offcritical-endpoint-bit-asymptotic} 由 \(\log_2(T^2+(1+\delta_0)^2)=2\log_2 T+O(1)\) 得到。
+最后，由 \(\mathcal{P}(T)=\log\pi+\log(1+T^2)\) 可将主项写成精度势形式，得到 \eqref{eq:xi-offcritical-endpoint-bit-precision-potential-form}。证毕。
+\end{proof}
+
+\begin{remark}[unitary slice 与离线方向的二次压缩缺口]\label{rem:xi-unitary-vs-offcritical-bit-gap}
+在 unitary slice 上，高度参数 \(x\in\RR\) 与相位盒坐标 \(u=\upsilon(x)=\frac{1}{\pi}\arctan(x)\) 的关系满足
+\(
+\frac{\dd u}{\dd x}=\frac{1}{\pi(1+x^2)}
+\)
+（式 \eqref{eq:unit-circle-phase-derivative}），因此当 \(|x|\asymp T\) 时，为区分“高度尺度 \(\asymp T\)”只需相位分辨率 \(\Delta u\asymp 1/T\)，对应比特预算为 \(\Theta(\log T)\)。
+与之相对，定理 \ref{thm:xi-offcritical-endpoint-resolution-lower-bound} 给出：若要在同一高度窗内排除固定偏移下界 \(\delta\ge\delta_0\) 的离线零点，则必须支付 \(p=\Theta(2\log T)\) 的端点层位预算。
+该跃迁把“离开切片”的信息投影具体化为一个不可跨越的分辨率--位复杂度屏障。
+\end{remark}
 
 \begin{corollary}[固定分辨率预算下的不可见阈值（比特/账本口径）]\label{cor:xi-offcritical-visibility-threshold-bit-budget}
 在定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 的设定下，
@@ -195,5 +301,17 @@ b\log 2\gtrsim 2\log|\gamma|+\log(1/\delta)+O(1)
 若外延模式轴，则由注 \ref{rem:xi-soundness-vs-completeness} 的扩展保存构造得到非退化扩展读出；其在高高度下的必要预算由推论 \ref{cor:xi-offcritical-visibility-threshold-bit-budget} 给出。
 最后，“外置必须是 residue/逆极限轴而非额外连续寄存器”即定理 \ref{thm:xi-pw-no-continuous-hair} 的第 (2) 条。证毕。
 \end{proof}
+
+\paragraph{\texorpdfstring{$\Re(s)=\tfrac12$}{Re(s)=1/2} 作为正交轴的严格含义（协议口径）}
+综合定理 \ref{thm:xi-orthogonal-slice-structure}、定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 及其推论链条，可将“\(\Re(s)=\tfrac12\) 为正交轴”的含义压缩为三条可核验结论：
+\begin{enumerate}
+  \item \textbf{（端点载荷分解）}
+  离线偏移 \(\delta\) 与高度 \(\gamma\) 在端点层深度中以可加负载出现（推论 \ref{cor:xi-offcritical-endpoint-depth-log-decomposition}），并由精度势 \(\mathcal{P}\) 给出统一账本坐标。
+  \item \textbf{（复杂度屏障）}
+  从 unitary slice 的相位轴进入离线方向，端点层位预算从 \(\Theta(\log T)\) 跃迁为 \(\Theta(2\log T)\)，并受到显式下界约束（定理 \ref{thm:xi-offcritical-endpoint-resolution-lower-bound} 及注 \ref{rem:xi-unitary-vs-offcritical-bit-gap}）。
+  \item \textbf{（内因子可见性）}
+  在 Hardy/Smirnov 条件口径下，离线零点等价于 Blaschke 内因子数据；该数据在纯相位可见接口内不可由边界模长生成，故其核验语义必强制占用正交寄存器（推论 \ref{cor:xi-inner-factor-orthogonal-register}）。
+\end{enumerate}
+因此在本文体系中，unitary slice 是连续可见参数的极小截面；偏离该截面的径向信息在端点层以二次压缩律进入，并在证书语义上只能通过模式轴外置或以 \(\mathsf{NULL}\) 失败见证体现。
 
 \endinput
