@@ -170,6 +170,72 @@ N_m(\partial\mathsf P)
 该“同步门”对 Chebotarev 容量条件造成的扣除修正见定理 \ref{thm:pom-sync-subtracted-chebotarev-capacity}。
 \end{remark}
 
+\begin{theorem}[双预算寻址容量：统计型 \texorpdfstring{$\mathsf{NULL}$}{NULL} 与去碰撞的合成清晰度律]\label{thm:spg-double-budget-address-capacity}
+固定分辨率 \(m\) 并考虑“地址先于取值”的语义约定：未同步即无地址（时间层统计型 \(\mathsf{NULL}\)，见备注 \ref{rem:Ym-stat-null-unsync}）。
+令 \(T_m\) 为确定化右解析表示下的同步时间（定义 \ref{def:Ym-sync-time}），并令 \(\nu_m\) 为相应最大熵测度。
+另一方面，令 \(\nu_{u,m}\) 为温度门 \(\mathrm{PROJ}_u\) 在长度-\(m\) 地址空间 \(A_{\mathrm{out}}^m\) 上的推前分布（命题 \ref{prop:pom-proj-mom-psi-law}），并记二阶碰撞概率
+\[
+\mathrm{Col}_u(m):=\sum_{x\in A_{\mathrm{out}}^m}\nu_{u,m}(x)^2
+\]
+（定义 \ref{def:pom-col-u-h2}）。
+\par
+对 \(N\) 个独立对象，采用“时间预算 \(n\)”以消除统计型 \(\mathsf{NULL}\) 并采用“分辨率预算 \(m\)”产生地址；记失败事件 \(\mathsf{Fail}_{m,n,N}\) 为“存在 \(\mathsf{NULL}\) 或存在地址碰撞”。
+则有严格上界
+\begin{equation}\label{eq:spg-double-budget-fail-bound}
+\boxed{\;
+\mathbb{P}(\mathsf{Fail}_{m,n,N})
+\ \le\
+N\,\nu_m(T_m>n)\ +\ \binom{N}{2}\,\mathrm{Col}_u(m)\; }.
+\end{equation}
+\par
+进一步，若 \(Y_m^{\mathrm{amb}}\neq\varnothing\) 且 \(\varepsilon_m=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\)（定理 \ref{thm:Ym-sync-tail}），则存在常数 \(C_m>0\) 使 \(\nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}\)；
+并且由 \(h_2(u):=-\Psi(2,u)\)（定义 \ref{def:pom-col-u-h2}）有
+\(
+\mathrm{Col}_u(m)=\exp(-h_2(u)\,m+o(m))
+\)。
+因此对任意目标失败概率 \(\delta\in(0,1)\)，当 \(n\) 与 \(m\) 满足
+\[
+n\ \ge\ \frac{1}{\varepsilon_m}\Bigl(\log(NC_m)+\log\frac{2}{\delta}\Bigr),
+\qquad
+\binom{N}{2}\,\mathrm{Col}_u(m)\ \le\ \frac{\delta}{2},
+\]
+即可保证 \(\mathbb{P}(\mathsf{Fail}_{m,n,N})\le\delta\)。
+并且在 \(m\to\infty\) 的指数标度下，由 \(\mathrm{Col}_u(m)=\exp(-h_2(u)m+o(m))\) 可知：对充分大的 \(m\)，后一不等式可由显式预算
+\[
+m\ \ge\ \frac{2}{h_2(u)}\Bigl(\log N+\log\frac{2}{\delta}\Bigr)
+\]
+保证（把 \(o(m)\) 吸收进“充分大”的门槛）。
+在指数标度上，上述双预算律等价给出可寻址规模的清晰度上限
+\[
+\log N\ \lesssim\ \min\Bigl\{\varepsilon_m\,n,\ \tfrac12 h_2(u)\,m\Bigr\}.
+\]
+\end{theorem}
+
+\begin{proof}
+对第 \(i\) 个对象记“未同步”事件为 \(\mathsf{Null}_i:=\{T_m^{(i)}>n\}\)，并记“发生碰撞”事件为
+\(
+\mathsf{Col}:=\bigcup_{1\le i<j\le N}\{X_i=X_j\}
+\)，其中 \(X_i\sim\nu_{u,m}\) 独立同分布。
+则
+\(
+\mathsf{Fail}_{m,n,N}\subseteq \bigcup_{i=1}^N \mathsf{Null}_i\ \cup\ \mathsf{Col}
+\)。
+由并合界（union bound）得
+\[
+\mathbb{P}(\mathsf{Fail}_{m,n,N})
+\le
+\sum_{i=1}^N \mathbb{P}(\mathsf{Null}_i)
+\ +\
+\sum_{1\le i<j\le N}\mathbb{P}(X_i=X_j).
+\]
+在独立同分布假设下，\(\mathbb{P}(\mathsf{Null}_i)=\nu_m(T_m>n)\)，且
+\(
+\mathbb{P}(X_i=X_j)=\sum_x\nu_{u,m}(x)^2=\mathrm{Col}_u(m)
+\)，代回即得 \eqref{eq:spg-double-budget-fail-bound}。
+\par
+后续预算条件由 \(\nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}\)（定理 \ref{thm:Ym-sync-tail}）与对碰撞项的显式不等式 \(\binom{N}{2}\mathrm{Col}_u(m)\le \delta/2\) 直接推出；指数标度的 \(\min\{\varepsilon_m n,\tfrac12 h_2(u)m\}\) 由取对数并忽略常数项得到。证毕。
+\end{proof}
+
 \begin{remark}[与折叠可见度的接口]\label{rem:spg-visibility-interface}
 若将信息层从 $\mathcal{F}_m$ 替换为 $\sigma(\Fold_m)$（稳定类型可见域），则同样可定义相应的判错剖面；
 其与 $L^2$ 口径的“折叠可见度” $\mathcal{R}_{m,\mu}(f)$（定义 \ref{def:pom-fold-visibility}）之间存在无参数的二侧估计，见定理 \ref{thm:pom-visibility-to-error-two-sided}。

@@ -1055,6 +1055,112 @@ P(q,\beta):=P\!\bigl(q,e^{-\beta}\bigr)=\log r_q(e^{-\beta})-q\log|A_{\mathrm{ou
 取 \(\frac1m\log\) 并令 \(m\to\infty\) 即得结论。证毕。
 \end{proof}
 
+\begin{definition}[二阶碰撞概率与去碰撞指数]\label{def:pom-col-u-h2}
+沿用命题 \ref{prop:pom-proj-mom-psi-law} 的记号。定义二阶碰撞概率（collision probability）
+\[
+\mathrm{Col}_u(m)
+:=
+\sum_{x\in A_{\mathrm{out}}^m}\nu_{u,m}(x)^2.
+\]
+并定义去碰撞指数
+\[
+\boxed{\;
+h_2(u):=-\Psi(2,u)=2\log r_1(u)-\log r_2(u)\;\ge\;0\; }.
+\]
+\end{definition}
+
+\begin{theorem}[碰撞阈值与寻址容量：由 \texorpdfstring{$h_2(u)$}{h2(u)} 控制的 \texorpdfstring{$1/2$}{1/2} 规律]\label{thm:pom-collision-threshold-capacity}
+固定 \(u\in(0,1]\)。
+沿定义 \ref{def:pom-col-u-h2}，有
+\[
+\mathrm{Col}_u(m)=\exp\!\bigl(-h_2(u)\,m+o(m)\bigr),\qquad m\to\infty.
+\]
+令 \(X_1,\dots,X_{N(m)}\) 为独立同分布的 \(A_{\mathrm{out}}^m\)-值随机变量，分布均为 \(\nu_{u,m}\)，并记事件
+\[
+\mathsf{Inj}_m:=\{\,X_1,\dots,X_{N(m)}\ \text{两两不同}\,\}.
+\]
+则存在相变阈值：
+\begin{enumerate}
+  \item 若 \(\displaystyle \limsup_{m\to\infty}\frac{2\log N(m)}{m}<h_2(u)\)，则 \(\mathbb{P}(\mathsf{Inj}_m)\to 1\)；
+  \item 若 \(\displaystyle \liminf_{m\to\infty}\frac{2\log N(m)}{m}>h_2(u)\)，则 \(\mathbb{P}(\mathsf{Inj}_m)\to 0\)。
+\end{enumerate}
+因此 \(h_2(u)/2\) 是“在分辨率预算 \(m\) 下可实现无碰撞寻址”的指数容量；并且 \(h_2(u)\) 由有限核的 Perron 根 \((r_1(u),r_2(u))\) 可计算（定义 \ref{def:pom-psi-mixed-pressure}）。
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:pom-proj-mom-psi-law} 取 \(q=2\) 得
+\[
+\lim_{m\to\infty}\frac{1}{m}\log \mathrm{Col}_u(m)
+=\Psi(2,u)
+=-h_2(u),
+\]
+从而 \(\mathrm{Col}_u(m)=\exp(-h_2(u)m+o(m))\)。
+\par
+令
+\(
+I_{ij}:=\mathbf{1}\{X_i=X_j\}
+\)
+并记碰撞对数
+\[
+Y:=\sum_{1\le i<j\le N} I_{ij},\qquad (N:=N(m)).
+\]
+则 \(\mathsf{Inj}_m=\{Y=0\}\)。
+\par
+\textbf{(1) 亚阈值：无碰撞趋于必然。}
+由 Markov 不等式，
+\[
+\mathbb{P}(Y\ge 1)\le \mathbb{E}Y=\binom{N}{2}\mathrm{Col}_u(m).
+\]
+当 \(\frac{2\log N}{m}<h_2(u)\) 在极限上严格成立时，有
+\(
+\binom{N}{2}\mathrm{Col}_u(m)\to 0
+\)，从而 \(\mathbb{P}(\mathsf{Inj}_m)=1-\mathbb{P}(Y\ge 1)\to 1\)。
+\par
+\textbf{(2) 超阈值：无碰撞趋于不可能。}
+用 Chebyshev 不等式
+\[
+\mathbb{P}(Y=0)
+\le
+\mathbb{P}\bigl(|Y-\mathbb{E}Y|\ge \mathbb{E}Y\bigr)
+\le
+\frac{\mathrm{Var}(Y)}{(\mathbb{E}Y)^2}.
+\]
+注意到 \(\mathbb{E}I_{ij}=\mathrm{Col}_u(m)\) 且对互不相交指标对 \((i,j)\cap(k,\ell)=\varnothing\) 有 \(I_{ij}\) 与 \(I_{k\ell}\) 独立，故
+\[
+\mathrm{Var}(Y)
+\le
+\sum_{i<j}\mathbb{E}I_{ij}
+ + 6\!\!\sum_{1\le i<j<k\le N}\!\!\mathbb{E}\bigl[I_{ij}I_{ik}\bigr].
+\]
+其中
+\(
+\mathbb{E}[I_{ij}I_{ik}]
+=\mathbb{P}(X_i=X_j=X_k)
+=\sum_x \nu_{u,m}(x)^3
+\)。
+由 \(\ell^p\)-范数单调性（或 Hölder 不等式）有
+\[
+\sum_x \nu_{u,m}(x)^3
+\le
+\left(\sum_x \nu_{u,m}(x)^2\right)^{3/2}
+=\mathrm{Col}_u(m)^{3/2}.
+\]
+因此
+\[
+\mathrm{Var}(Y)\ \le\ \binom{N}{2}\mathrm{Col}_u(m)\ +\ 6\binom{N}{3}\mathrm{Col}_u(m)^{3/2}.
+\]
+而 \(\mathbb{E}Y=\binom{N}{2}\mathrm{Col}_u(m)\)，从而
+\[
+\frac{\mathrm{Var}(Y)}{(\mathbb{E}Y)^2}
+\ \lesssim\
+\frac{1}{\mathbb{E}Y}
+\ +\
+\frac{1}{N\sqrt{\mathrm{Col}_u(m)}}.
+\]
+当 \(\frac{2\log N}{m}>h_2(u)\) 在极限上严格成立时，有 \(N^2\mathrm{Col}_u(m)\to\infty\)，从而 \(\mathbb{E}Y\to\infty\) 且 \(N\sqrt{\mathrm{Col}_u(m)}\to\infty\)。于是右端 \(\to 0\)，故 \(\mathbb{P}(\mathsf{Inj}_m)=\mathbb{P}(Y=0)\to 0\)。
+证毕。
+\end{proof}
+
 \begin{remark}[二维 Legendre--Fenchel 前沿：从 \texorpdfstring{$\Psi(q,u)$}{Psi} 反演空间--能量联合谱（条件性公式）]\label{rem:pom-psi-2d-legendre-front}
 令 \(\gamma_m(x)=\frac{1}{m}\log d_m(x)\) 为纤维对数多重度密度（定义 \ref{def:pom-fiber-spectrum}），并令
 \[

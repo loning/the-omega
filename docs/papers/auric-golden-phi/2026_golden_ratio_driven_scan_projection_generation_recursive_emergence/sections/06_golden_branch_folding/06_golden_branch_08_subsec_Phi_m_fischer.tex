@@ -523,6 +523,83 @@ C_m^{\mathrm{lang}}\exp\!\bigl(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\,n\bigr)
 与指数尾收敛得到；同步预算由解不等式 \(C_m e^{-\varepsilon_m n}\le\delta\) 得到。证毕。
 \end{proof}
 
+\begin{theorem}[同步尾的 Perron--Frobenius 尖锐渐近]\label{thm:Ym-sync-tail-pf-sharp}
+沿用定义 \ref{def:Ym-sync-time}--定理 \ref{thm:Ym-sync-tail} 的记号，并假设歧义壳子系统 \(Y_m^{\mathrm{amb}}\neq\varnothing\)。
+令 \(H_m^{\mathrm{amb}}\) 为定理 \ref{thm:Ym-ambiguity-shell-dag} 定义的非单点态诱导子图，记其（按边条数计数的）邻接矩阵为
+\[
+(A_m^{\mathrm{amb}})_{S,S'}:=\#\{\,a\in X_m:\ \delta_m(S,a)=S'\,\},\qquad
+S,S'\in\mathcal{S}_m^{\mathrm{amb}}.
+\]
+设 \(H_m^{\mathrm{amb}}\) 的最大本质不可约分量的 Perron--Frobenius 主特征值为 \(\rho_{\mathrm{amb}}(m)>1\)，从而
+\[
+h_{\mathrm{top}}(Y_m^{\mathrm{amb}})=\log\rho_{\mathrm{amb}}(m),
+\qquad
+\varepsilon_m=\log 2-\log\rho_{\mathrm{amb}}(m).
+\]
+若该本质分量的周期为 \(p\ge 1\)（原始情形即 \(p=1\)），则存在常数族
+\(\{c_r(m)\}_{r=0}^{p-1}\subset(0,\infty)\)
+使得在最大熵测度 \(\nu_m\) 下
+\[
+\nu_m(T_m>n)=c_{n\bmod p}(m)\,e^{-\varepsilon_m n}\,(1+o(1)),
+\qquad n\to\infty.
+\]
+从而极限指数存在且为
+\[
+\lim_{n\to\infty}\frac{1}{n}\log \nu_m(T_m>n)=-\varepsilon_m.
+\]
+\end{theorem}
+
+\begin{proof}
+仍记 \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) 如定理 \ref{thm:Ym-sync-tail} 的证明中所定义。
+由确定性右解析性（定义 \ref{def:Phi_m-right-resolving}），当起点固定为 \(S_0=V_m\) 时，每个标记词决定唯一确定化滤波轨道，故 \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) 与 \(H_m^{\mathrm{amb}}\) 中从 \(V_m\) 出发的长度 \(n\) 标记路径集合一一对应。
+因此 \(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})=\log\rho_{\mathrm{amb}}(m)\) 且 \(\varepsilon_m=\log 2-\log\rho_{\mathrm{amb}}(m)\)。
+\par
+下面把同步尾写成一个有限矩阵幂的加权读出。
+取一个右解析且 follower-separated 的表示
+\(
+H_m=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m)
+\)
+（例如右 Fischer cover），令 \(X_{A_m}\) 为其边移位、\(\mu_{A_m}^{\mathrm{Parry}}\) 为命题 \ref{prop:Phi_m-parry} 的 Parry 测度，并记 \(\nu_m=(\pi_m)_*\mu_{A_m}^{\mathrm{Parry}}\)（命题 \ref{prop:Phi_m-parry-pushforward}）。
+由命题 \ref{prop:Phi_m-entropy} 及 \(h_{\mathrm{top}}(Y_m)=\log 2\)，可取 \(\rho(A_m)=2\)。
+于是对任意长度-\(n\) 的 lift 边柱集 \([e_0\cdots e_{n-1}]\subset X_{A_m}\) 有 Parry 公式
+\[
+\mu_{A_m}^{\mathrm{Parry}}([e_0\cdots e_{n-1}])=\frac{l_{e_0}r_{e_{n-1}}}{2^{n-1}}.
+\]
+\par
+构造同步积图 \(\widetilde H_m^{\mathrm{amb}}\)：其状态集为
+\(
+\widetilde{\mathcal{S}}_m^{\mathrm{amb}}:=\mathcal{E}_m\times\mathcal{S}_m^{\mathrm{amb}}
+\)，并规定从 \((e,S)\) 到 \((e',S')\) 有边当且仅当
+\[
+t(e)=s(e'),\qquad S'=\delta_m(S,\lambda_m(e')).
+\]
+记其邻接矩阵为 \(\widetilde A_m^{\mathrm{amb}}\)。
+取初始/末端向量 \(\alpha,\beta\) 为
+\[
+\alpha_{(e,S)}:=l_e\,\mathbf{1}\{S=\delta_m(V_m,\lambda_m(e))\},
+\qquad
+\beta_{(e,S)}:=r_e.
+\]
+由“推前 = 对 lift 求和”及上式的 Parry 公式，可将同步尾写为
+\[
+\nu_m(T_m>n)=2^{-(n-1)}\,\alpha^{\mathsf T}(\widetilde A_m^{\mathrm{amb}})^{n-1}\beta.
+\]
+\par
+由于投影 \((e,S)\mapsto S\) 把 \(\widetilde H_m^{\mathrm{amb}}\) 有限对一下降到 \(H_m^{\mathrm{amb}}\)，两者的路径计数在指数标度上一致，故 \(\rho(\widetilde A_m^{\mathrm{amb}})=\rho_{\mathrm{amb}}(m)\)，且最大本质分量的周期仍为 \(p\)。
+对不可约周期 \(p\) 的 Perron--Frobenius 渐近，存在常数族 \(\{d_r(m)\}_{r=0}^{p-1}\subset(0,\infty)\) 使得
+\[
+\alpha^{\mathsf T}(\widetilde A_m^{\mathrm{amb}})^{n-1}\beta
+=d_{n\bmod p}(m)\,\rho_{\mathrm{amb}}(m)^{n-1}(1+o(1)).
+\]
+代回并把与 \(2^{-(n-1)}\) 的常数因子吸收进 \(c_r(m)\) 即得
+\[
+\nu_m(T_m>n)
+=c_{n\bmod p}(m)\left(\frac{\rho_{\mathrm{amb}}(m)}{2}\right)^{\!n}(1+o(1))
+=c_{n\bmod p}(m)e^{-\varepsilon_m n}(1+o(1)).
+\]
+最后取 \(\frac1n\log\) 并令 \(n\to\infty\) 得极限指数。证毕。
+\end{proof}
+
 \begin{corollary}[时间层右可逆性的二分律：有限延迟或指数稀薄壳]\label{cor:Ym-time-layer-dichotomy}
 在推论 \ref{cor:Ym-singleton-essential-finite-delay} 的“单点本质态”假设下，窗口层的多对一（即 \(\Fold_m\) 在单窗上的非单射）在时间层的右可逆性上只可能表现为以下二者之一：
 \begin{enumerate}
