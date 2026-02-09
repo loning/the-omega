@@ -23,6 +23,163 @@ a=(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}})
 因此，文中出现的“正交分解/通道”均指该自同构作用下的不变子表示、直和分解或符号分解：例如端点载荷的模 \(4\) 分组与精度势账本的解耦（命题 \ref{prop:endpoint-orthogonal-decomposition-z4-Rplus}），以及端点反变观测的一维本征子表示及其 \(L(1+\sigma,\chi_4)\) 符号（定理 \ref{thm:endpoint-zeta-Lchi4-symbol-pair}）。
 \end{remark}
 
+\paragraph{闭环接口的三组发表级结论：端点二符号、二次分辨率壁垒与三重审计}
+沿“圆盘化完成化 \(F_\zeta\) — Jensen 缺陷 \(D_\zeta\) — 端点 \(w\approx-1\) — Chebyshev--Adams 幂链 — \((p)\)-进护栏 — Hankel 最小实现 — 语义保守”这一闭环接口，
+下述三条结论把“连续无穷被压入时间纤维、离切片信息只能以离散正交轴外置”的叙述提升为可直接引用的算子符号、分辨率壁垒与一致性审计定理。
+其证明均已在文内闭合：端点喷射与符号分解见命题 \ref{prop:endpoint-orthogonal-decomposition-z4-Rplus}、命题 \ref{prop:chebyshev-endpoint-derivative-splitting}、推论 \ref{cor:chebyshev-endpoint-jet-regularization} 及附录定理 \ref{thm:endpoint-zeta-Lchi4-symbol-pair}；
+离切片的二次径向压缩与 Jensen 证书门槛见定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 与定理 \ref{thm:xi-jensen-single-radius-band-exclusion}；
+三重审计的实现中立闭包见定理 \ref{thm:dephys-rh-certificate-audit-loop}、命题 \ref{prop:dephys-padic-guardrails-endpoint-rigidity}、定理 \ref{thm:dephys-hankel-finite-audit} 与定理 \ref{thm:pom-sem-conservative}。
+
+\begin{theorem}[端点正则化幂链的二符号喷射：\texorpdfstring{$\zeta$}{zeta} 型三态常数层与 \texorpdfstring{$\chi_4$}{chi4} 型线性毛发层]\label{thm:xi-endpoint-two-symbol-jet}
+设 \(g\) 在包含区间 \([-2,2]\) 的某开邻域上解析。
+取完成化迹坐标 \(S\) 与 Chebyshev--Adams 多项式 \(C_m(S)\)（命题 \ref{prop:half-angle-z4-residue}），并取 \(\sigma>1\)。
+沿用附录中端点正则化幂链算子 \(\mathcal W_\sigma\)（式 \eqref{eq:endpoint-Wsigma-even}），并将其自然扩张到局部解析测试函数 \(g\)：
+\[
+(\mathcal W_\sigma g)(S):=\sum_{m\ge 1}\frac{1}{m^{1+\sigma}}\,g\!\bigl(C_m(S)\bigr).
+\]
+则当 \(S\to 0\) 时成立端点喷射展开
+\begin{equation}\label{eq:xi-endpoint-two-symbol-jet}
+\boxed{\;
+(\mathcal W_\sigma g)(S)
+=A_\sigma(g)\;+\;L(\sigma,\chi_4)\,g'(0)\,S\;+\;O(S^2)\;}
+\end{equation}
+其中常数层仅依赖端点三态值 \(g(0),g(2),g(-2)\)：
+\[
+A_\sigma(g):=\mathsf H_{\mathrm{odd}}(\sigma)\,g(0)+\mathsf H_{0}(\sigma)\,g(2)+\mathsf H_{2}(\sigma)\,g(-2),
+\]
+且三通道权核为
+\[
+\mathsf H_{\mathrm{odd}}(\sigma):=\sum_{\substack{m\ge 1\\ m\ \text{为奇数}}}\frac{1}{m^{1+\sigma}},\qquad
+\mathsf H_{0}(\sigma):=\sum_{m\equiv 0(4)}\frac{1}{m^{1+\sigma}},\qquad
+\mathsf H_{2}(\sigma):=\sum_{m\equiv 2(4)}\frac{1}{m^{1+\sigma}}
+\]
+（其闭式 \(\zeta\)-符号表示见命题 \ref{prop:endpoint-dirichlet-symbol-weights}）。
+一阶喷射系数由模 \(4\) 角色 \(\chi_4\) 控制：令
+\[
+\chi_4(m):=\sin(m\pi/2)\in\{-1,0,1\},
+\qquad
+L(\sigma,\chi_4):=\sum_{m\ge 1}\frac{\chi_4(m)}{m^\sigma},
+\]
+则 \(\chi_4\) 等价于模 \(4\) 的非平凡 Dirichlet 角色（定理 \ref{thm:endpoint-four-channel-chi4}），并且线性项完全由奇通道的一阶喷射 \(C_m'(0)=m\sin(m\pi/2)\) 诱导。
+该一阶喷射引入额外因子 \(m\)，从而把 \(\mathcal W_\sigma\) 的权指数 \(1+\sigma\) 在符号层面平移为 \(L(\sigma,\chi_4)\)。
+\end{theorem}
+
+\begin{proof}
+由端点三态压缩 \(C_m(0)\in\{0,\pm 2\}\)（命题 \ref{prop:half-angle-z4-residue} 与推论 \ref{cor:endpoint-tristate-compression}），并由推论 \ref{cor:chebyshev-endpoint-jet-regularization} 的奇偶喷射展开，
+当 \(S\to 0\) 时
+\[
+g(C_m(S))=
+\begin{cases}
+g(C_m(0))+O(S^2), & m\ \text{为偶数},\\
+g(0)+g'(0)\,C_m'(0)\,S+O(S^2), & m\ \text{为奇数}.
+\end{cases}
+\]
+对偶通道按 \(m\bmod 4\) 分组，常数层即为三态权核的线性组合；由命题 \ref{prop:endpoint-dirichlet-symbol-weights} 得其闭式 \(\zeta\)-符号表示。
+对线性项，偶 \(m\) 无一阶贡献，而奇 \(m\) 由命题 \ref{prop:chebyshev-endpoint-derivative-splitting} 给出
+\(
+C_m'(0)=m\sin(m\pi/2)=m\chi_4(m)
+\)，
+故线性系数为
+\[
+\sum_{m\ge 1}\frac{1}{m^{1+\sigma}}\,C_m'(0)
+=\sum_{m\ge 1}\frac{\chi_4(m)}{m^\sigma}
+=L(\sigma,\chi_4).
+\]
+综上得到 \eqref{eq:xi-endpoint-two-symbol-jet}。证毕。
+\end{proof}
+
+\begin{corollary}[端点正交解耦（喷射层面）：对数主尺度常数层 \(\perp\) \texorpdfstring{$\chi_4$}{chi4} 线性记忆]\label{cor:xi-endpoint-jet-orthogonal-decoupling}
+在定理 \ref{thm:xi-endpoint-two-symbol-jet} 的设定下，端点喷射的两类信息严格分离：
+\begin{enumerate}
+  \item 常数层 \(A_\sigma(g)\) 仅由端点三态 \(C_m(0)\in\{0,\pm 2\}\) 的模 \(4\) 分组权核决定，因而属于 \(\zeta\)-型主尺度通道（命题 \ref{prop:endpoint-dirichlet-symbol-weights}）。
+  \item 一阶喷射完全由 \(\chi_4\) 通道 \(L(\sigma,\chi_4)\) 控制，且不与端点精度势账本 \(y\) 的加性平移律耦合（命题 \ref{prop:endpoint-orthogonal-decomposition-z4-Rplus}）。
+\end{enumerate}
+因此，在端点喷射层面，“连续无穷的对数账本”与“离散分支毛发的线性记忆”呈严格正交解耦：前者只进入三态常数层的 \(\zeta\)-符号权核，后者以一维 \(\chi_4\) 本征通道的形式占据唯一的一阶可见分支。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-endpoint-two-symbol-jet}，常数层仅依赖端点三态值且其权核由 \(\zeta(1+\sigma)\) 型 Dirichlet 正则化给出；而线性层仅由 \(\chi_4\) 通道给出。
+命题 \ref{prop:endpoint-orthogonal-decomposition-z4-Rplus} 指出端点处“模 \(4\) 离散载荷 \(\oplus\) 精度势账本”的正交分解，因此两类喷射分量不发生耦合。证毕。
+\end{proof}
+
+\begin{theorem}[Jensen 缺陷证书的二次分辨率壁垒：有限高度带的不可绕过半径门槛]\label{thm:xi-jensen-quadratic-resolution-barrier}
+固定 \(T\ge 1\) 与 \(\delta_0\in(0,\tfrac12]\)，并记
+\[
+R(T,\delta_0)^2:=\frac{T^2+(\delta_0-1)^2}{T^2+(\delta_0+1)^2}\in(0,1)
+\]
+（定理 \ref{thm:xi-jensen-single-radius-band-exclusion}）。
+若某一 RH 证书链仅以缺陷上界链 \(D_\zeta(\varrho_n)\le \varepsilon_n\to 0\)（等价地 \(r_\ast(\varrho_n)=\varrho_n e^{-D_\zeta(\varrho_n)}\uparrow 1\)，见定理 \ref{thm:dephys-defect-repulsion-radius}）作为全部输入，
+并要求在高度带 \(|\gamma|\le T\) 上排除所有满足偏移下界 \(\tfrac12-\beta\ge\delta_0\) 的离切片零点，
+则在渐近意义下其半径序列必须进入不可绕过的二次分辨率层：
+\begin{equation}\label{eq:xi-jensen-quadratic-resolution-barrier}
+\boxed{\;
+1-\varrho_n\ \lesssim\ \frac{\delta_0}{T^2}\;}
+\end{equation}
+（常数仅依赖 \(\delta_0\) 的有界性约束）。
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:xi-offcritical-quadratic-radial-compression}，
+任意满足 \(|\gamma|\le T\) 且 \(\delta=\tfrac12-\beta\ge\delta_0\) 的离切片零点 \(\rho=\beta+\mathrm{i}\gamma\) 的圆盘像 \(w_\rho\) 满足
+\(|w_\rho|\le R(T,\delta_0)\)；
+因此若 \(\varrho\le R(T,\delta_0)\)，则该类离线零点未必进入 Jensen 求和式的“盘内贡献”项（命题 \ref{prop:app-jensen-formula-defect}），从而单凭 \(D_\zeta(\varrho)\) 的上界无法形成带状排除结论。
+要在该高度带内实现结构性排除，证书链必须在某一层级达到 \(\varrho_n>R(T,\delta_0)\)（定理 \ref{thm:xi-jensen-single-radius-band-exclusion} 的证书形式）。
+\par
+另一方面，直接计算得
+\[
+1-R(T,\delta_0)^2
+=\frac{4\delta_0}{T^2+(\delta_0+1)^2}
+\asymp \frac{\delta_0}{T^2},
+\]
+从而一旦 \(\varrho_n>R(T,\delta_0)\) 便必有
+\(
+1-\varrho_n\le 1-R(T,\delta_0)\lesssim 1-R(T,\delta_0)^2\lesssim \delta_0/T^2
+\)，
+得到 \eqref{eq:xi-jensen-quadratic-resolution-barrier}。证毕。
+\end{proof}
+
+\begin{corollary}[端点角窗的不可替代性：高高度贡献强制局部化于 \texorpdfstring{$\theta\approx\pi$}{theta≈pi}]\label{cor:xi-jensen-endpoint-angle-window-rigidity}
+在定理 \ref{thm:xi-jensen-quadratic-resolution-barrier} 的分辨率层 \(1-\varrho\asymp \delta_0/T^2\) 上，
+Jensen 圆平均的高虚部贡献被强制集中于端点角窗 \(\theta\approx \pi\)（即 \(w=\varrho e^{\mathrm{i}\theta}\approx -1\)）：
+等半径纤维在上半平面中的逆像同时触及 \(y\downarrow 0\) 与 \(y\uparrow \infty\)，且最大高度 \(y_+(\varrho)=\frac{1+\varrho}{1-\varrho}\) 仅在 \(\theta=\pi\) 处取得（定理 \ref{thm:dephys-timefiber-two-ended}）。
+因此，任何基于缺陷圆平均/证书上界链的有效带状信息，必然通过端点角窗与端点喷射（定理 \ref{thm:xi-endpoint-two-symbol-jet}）进入闭环接口，而不能被远离端点的均匀角采样所等价替代。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:dephys-timefiber-two-ended}，Cayley 逆像的虚部为
+\(
+\Im t(\varrho,\theta)=\frac{1-\varrho^2}{1+\varrho^2+2\varrho\cos\theta}
+\)，
+并在 \(\theta=\pi\) 处取得最大值 \(y_+(\varrho)=\frac{1+\varrho}{1-\varrho}\to\infty\)（\(\varrho\uparrow 1\)）。
+因此，当 \(\varrho\) 进入端点分辨率层时，任何涉及高度窗的主贡献必须来自 \(\theta\approx\pi\) 的邻域；将该端点局部化与端点喷射符号分解合并即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[三重一致性审计原理：\texorpdfstring{$p$}{p}-进闭合 \(\times\) Hankel 刚性 \(\times\) 语义保守]\label{thm:xi-triple-consistency-audit}
+在有界切片 \(\mathbf{PW}^{\ast}_{\le}\) 的可审计语义口径下（定义 \ref{def:pom-sem-functor}），
+任何声称输出“谱指纹（如 \(r_q(u)\) 或 Hankel-正规形）—\(\zeta\)-闭环—缺陷证书链（如 \(r_\ast(\varrho_n)\uparrow 1\)）”的实现，
+若要在体系内被视为可核验，则必须同时满足三类互相正交的核验约束：
+\begin{enumerate}
+  \item \textbf{\((p)\)-进闭合护栏：}Dwork 同余/稀疏化/端点消隐与 \(p=2\) 的 Chebyshev--Dwork 单变量闭合递推等整数层约束（命题 \ref{prop:dephys-padic-guardrails-endpoint-rigidity}）。
+  \item \textbf{Hankel 最小实现刚性：}最小偏移证书与 \(2d\) 点锁定的 Hankel-正规形，从而把最小 realization 维数与谱半径指纹固定为有限可复算对象（定理 \ref{thm:dephys-hankel-finite-audit}；并见注 \ref{rem:xi-acc-rank} 的维数型 \(\mathsf{NULL}\) 解释）。
+  \item \textbf{语义保守与有限签名压缩：}保守语义函子 \(\mathsf{Sem}\) 将实现差异约束为可逆 \(2\)-态射，从而上述指纹与护栏在签名/谱域中具有实现无关性（定理 \ref{thm:pom-sem-conservative}）。
+\end{enumerate}
+从而，“信息不泄漏”在该口径下不再是经验性断言，而是由三条互证护栏共同强制的可复算、可证伪约束体系（参见定理 \ref{thm:dephys-rh-certificate-audit-loop} 的解析—演算—算术/谱三重证书闭环）。
+\end{theorem}
+
+\begin{proof}
+第 (1) 条与第 (2) 条分别由命题 \ref{prop:dephys-padic-guardrails-endpoint-rigidity} 与定理 \ref{thm:dephys-hankel-finite-audit} 给出；
+第 (3) 条由定理 \ref{thm:pom-sem-conservative}（切片保守性）给出。
+三类约束的正交性来自其支撑输出域互不混淆：\((p)\)-进护栏发生在整数同余层，Hankel 刚性发生在有限窗口/最小实现层，而语义保守性发生在切片的自然同构类层；三者合并即得可核验的闭环审计原理。证毕。
+\end{proof}
+
+\begin{remark}[发表级归约（闭环版）]\label{rem:xi-publishable-reduction-closed-loop}
+定理 \ref{thm:xi-endpoint-two-symbol-jet}--\ref{thm:xi-triple-consistency-audit} 给出一条闭环式归约：
+端点幂链在喷射层面分裂为 \(\zeta\)-型三态常数层与 \(\chi_4\)-型线性毛发层（推论 \ref{cor:xi-endpoint-jet-orthogonal-decoupling}），
+缺陷证书链存在不可绕过的二次分辨率壁垒并强制端点角窗主刚性（定理 \ref{thm:xi-jensen-quadratic-resolution-barrier} 与推论 \ref{cor:xi-jensen-endpoint-angle-window-rigidity}），
+而任何实现若要承载“RH 证书化”则必须通过 \((p)\)-进闭合、Hankel 刚性与语义保守的三重一致性审计（定理 \ref{thm:xi-triple-consistency-audit}）。
+这三点共同把“离切片信息只能正交外置”的主张提升为可复算、可证伪的结构性约束，并与本节开头的“地址先于取值/递归可见域不扩张”语义前提严格相容（\S\ref{sec:recursive-addressing}）。
+\end{remark}
+
 \paragraph{扩展保存范畴：规范记录轴与唯一连续横截方向}
 本节所用的“扩展保存”语言，旨在将“不可逆读出”视为\emph{记录轴不足}的结构性现象，并以外置记录轴把信息守恒严格化为扩展空间上的单射性（命题 \ref{prop:unit-circle-phase-extension-preserving}；并见附录 \ref{subsec:unit-circle-phase-information}）。
 在可核验语义下，这一思想可被组织为一个因子范畴：对象为可使扩展读出单射化的记录轴，态射为保持证书可核验等价的压缩/投影。
