@@ -334,6 +334,133 @@ y:=\mu/\sqrt{\lambda}
 该端点分解的统一表述见附录 \ref{app:unit-circle-phase-gate} 的命题 \ref{prop:endpoint-decomposition-paradigm}。
 \end{remark}
 
+\subsubsection{拉马努金型对称的结构本质：从“坐标对称”到“相位化对称”}\label{subsubsec:ramanujan-phase-lift-symmetry}
+本节已将 completion/自对偶诱导的对称性压缩为参数侧的固定几何：unitary slice \(|u|=1\) 及其 Dirichlet 像 \(\Re(s)=\tfrac12\)（注 \ref{rem:xi-critical-line-unit-circle}）。
+需要强调的是：此处所谓“对称性”并非若干读出轴之间的坐标置换，而是投影系统自身的自同构（例如 \((z,u)\mapsto(uz,1/u)\) 或 \(u\mapsto 1/u\)）及其固定切片。
+在该口径下，\(\Re(s)=\tfrac12\) 的出现并不依赖“对称轴”隐喻，而是相位化闭包在完成化坐标中的唯一自洽切片。
+
+\begin{theorem}[相位化提升：\texorpdfstring{$[-2,2]$}{[-2,2]} 谱界 \(\Leftrightarrow\) 纯相位]\label{thm:phase-lift-spectral-bound}
+设 \(\mathcal H\) 为复 Hilbert 空间，\(A\) 为 \(\mathcal H\) 上的有界自伴算子。
+则下列条件等价：
+\begin{enumerate}
+  \item \(\mathrm{Spec}(A)\subseteq[-2,2]\)；
+  \item 存在酉算子 \(U\) 使得 \(A=U+U^{-1}\)。
+\end{enumerate}
+并且在 (1) 成立时，可由连续函数演算取
+\[
+\boxed{\ U:=\exp\!\bigl(\mathrm{i}\,\arccos(A/2)\bigr)\ }
+\]
+从而 \(A=U+U^{-1}\)。
+\end{theorem}
+\begin{proof}
+\textbf{(2)\(\Rightarrow\)(1).}
+若 \(A=U+U^{-1}\) 且 \(U\) 酉，则 \(\mathrm{Spec}(U)\subseteq\TT\)。
+由谱映射定理，\(\mathrm{Spec}(A)=f(\mathrm{Spec}(U))\)，其中 \(f(z)=z+z^{-1}\)。
+而对 \(z=e^{i\theta}\in\TT\) 有 \(f(z)=2\cos\theta\in[-2,2]\)，故 \(\mathrm{Spec}(A)\subseteq[-2,2]\)。
+\par
+\textbf{(1)\(\Rightarrow\)(2).}
+在 \([-2,2]\) 上定义连续函数 \(g(x):=\exp(\mathrm{i}\arccos(x/2))\)，则 \(|g(x)|=1\)。
+令 \(U:=g(A)\) 为由连续函数演算给出的算子，则 \(U\) 为酉算子。
+又因 \(g(x)+g(x)^{-1}=2\cos(\arccos(x/2))=x\) 在 \([-2,2]\) 上恒等成立，
+故同一恒等式在函数演算下给出
+\(
+U+U^{-1}=A
+\)。
+证毕。
+\end{proof}
+
+\begin{remark}[Joukowski 压缩的算子论版本]\label{rem:phase-lift-joukowski-operator}
+定理 \ref{thm:phase-lift-spectral-bound} 给出命题 \ref{prop:xi-rh-interval-criterion} 的 \((y,S)\)-压缩在算子层面的对应：若 \(Uv=e^{i\theta}v\)，则 \((U+U^{-1})v=2\cos\theta\,v\)。
+因此 \(\mathrm{Spec}(U)\subseteq\TT\) 经 Joukowski 映射压缩到 \([-2,2]\)；反向则把 \([-2,2]\) 上的谱提升为单位圆相位。
+这一“压缩 \(\Leftrightarrow\) 提升”的同型性，在本节的完成化变量 \(S=y+y^{-1}\) 与附录的半角完成化变量 \(s=\mathfrak{r}+\mathfrak{r}^{-1}\) 中同步出现（注 \ref{rem:xi-joukowski-toy-rh-alignment} 与注 \ref{rem:xi-half-angle-endpoint-paradigm}）。
+\end{remark}
+
+\begin{definition}[幅度缺陷：极分解中的幅度负担]\label{def:amp-defect}
+设 \(T\) 为复 Hilbert 空间 \(\mathcal H\) 上的可逆有界算子，作极分解
+\[
+T=V|T|,\qquad |T|:=(T^\ast T)^{1/2}\succ 0,
+\]
+其中 \(V\) 为酉算子。
+定义 \(T\) 的\textbf{幅度缺陷}为
+\[
+\boxed{\ \mathfrak{d}_{\mathrm{amp}}(T):=\bigl\|\log|T|\bigr\|_{\mathrm{op}}\ \in[0,\infty)\ },
+\]
+其中 \(\log|T|\) 由连续函数演算定义。
+\end{definition}
+
+\begin{proposition}[纯相位演化 \(\Leftrightarrow\) 幅度缺陷为零]\label{prop:amp-defect-unitary}
+在定义 \ref{def:amp-defect} 的记号下，有
+\[
+\boxed{\ \mathfrak{d}_{\mathrm{amp}}(T)=0\quad\Longleftrightarrow\quad |T|=I\quad\Longleftrightarrow\quad T\ \text{为酉算子}\ }.
+\]
+\end{proposition}
+\begin{proof}
+\(\mathfrak{d}_{\mathrm{amp}}(T)=0\) 等价于 \(\log|T|=0\)，从而 \(|T|=I\)。
+此时 \(T=V|T|=V\) 且 \(V\) 为酉算子，故 \(T\) 酉。
+反向蕴含显然：若 \(T\) 酉，则 \(|T|=(T^\ast T)^{1/2}=I\)，从而 \(\mathfrak{d}_{\mathrm{amp}}(T)=0\)。
+证毕。
+\end{proof}
+
+\begin{remark}[与三轴地址语义的对齐]\label{rem:amp-defect-address-axis}
+在本文“地址先于取值”的三轴地址打包 \(a=(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}})\) 中（定义 \ref{def:multi_axis_address}），径向/幅度通道属于模式轴 \(a_{\mathrm{mode}}\)。
+因此，若读出制度将可见域固定为相位闭包并拒绝外置该模式轴，则任意 \(\mathfrak{d}_{\mathrm{amp}}(T)>0\) 的演化都不可能在闭环内维持可逆核验：幅度信息必须作为正交证书外置，否则只能退化为 \(\mathsf{NULL}\)（见定理 \ref{thm:xi-orthogonal-slice-structure} 的协议正交条目）。
+\end{remark}
+
+\begin{theorem}[拉马努金型相位化原则（制度内充分条件）]\label{thm:ramanujan-phase-lift-principle}
+设 \(\{\widetilde T_\alpha\}\) 为一族在复 Hilbert 空间 \(\mathcal H\) 上实现的有界自伴算子，并满足谱界
+\[
+\mathrm{Spec}(\widetilde T_\alpha)\subseteq[-2,2]\qquad(\forall \alpha).
+\]
+则对每个 \(\alpha\) 存在酉算子 \(U_\alpha\) 使得
+\[
+\boxed{\ \widetilde T_\alpha=U_\alpha+U_\alpha^{-1}\ }.
+\]
+因此，上述谱界把可能携带幅度信息的自由度压缩为纯相位：在拒绝引入连续幅度寄存器的纯相位核验制度中，\(\widetilde T_\alpha\) 可被视为相位算子族 \(\{U_\alpha\}\) 的可见像（命题 \ref{prop:amp-defect-unitary}）。
+\end{theorem}
+\begin{proof}
+对每个 \(\alpha\) 直接应用定理 \ref{thm:phase-lift-spectral-bound} 即得 \(U_\alpha\) 的存在与显式构造；而 \(U_\alpha\) 酉蕴含其幅度缺陷为零（命题 \ref{prop:amp-defect-unitary}）。证毕。
+\end{proof}
+
+\begin{remark}[与核版 RH/GRH 的同型性：半径界 \texorpdfstring{$\Leftrightarrow$}{<->} 相位化]\label{rem:ramanujan-phase-lift-kernel}
+在有限维核口径中，“Ramanujan/RH-sharp 半径界”以 \(|\mu|\le\sqrt{\lambda}\) 的形式出现（例如定理 \ref{thm:pom-rh-sharp}；并见注 \ref{rem:pom-profinite-ihara-ramanujan} 的 Ihara--Ramanujan 同型解释）。
+将其写成归一化相位 \(y=\mu/\sqrt{\lambda}\) 后，\(|y|=1\) 的达界模态经 Joukowski 压缩 \(S=y+y^{-1}\) 落入 \([-2,2]\)（注 \ref{rem:xi-joukowski-toy-rh-alignment}），从而在完成化坐标中体现为“可相位化”的结构性约束。
+因此，拉马努金语境中的对称性并不对应“坐标轴可互换”，而对应于对称算子族被强制推入相位化闭包所诱导的纯相位可核验性。
+\end{remark}
+
+\begin{proposition}[酉行列式的零点定位：\texorpdfstring{$|u|=1$}{|u|=1}]\label{prop:unitary-determinant-zero-unit-circle}
+设 \(U\in\CC^{n\times n}\) 为酉矩阵，并令
+\[
+D(u):=\det(I-uU)\qquad(u\in\CC).
+\]
+若 \(D(u)=0\)，则 \(|u|=1\)。
+进一步，对任意 \(L>1\) 令 \(u_L(s)=L^{2s-1}\)，则
+\[
+D(u_L(s))=0\quad\Longrightarrow\quad \Re(s)=\tfrac12.
+\]
+\end{proposition}
+\begin{proof}
+\(D(u)=0\) 当且仅当 \(\det(I-uU)=0\)，等价于 \(1/u\in\mathrm{Spec}(U)\)。
+而酉矩阵的全部谱点满足模长为 \(1\)，故 \(|1/u|=1\)，即 \(|u|=1\)。
+对 \(u=u_L(s)=L^{2s-1}\)，有 \(|u|=L^{2\Re(s)-1}\)，故 \(|u|=1\) 等价于 \(\Re(s)=\tfrac12\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[相位化闭包的固定切片性：可核验零点的制度性约束]\label{thm:phase-lift-fixed-slice}
+在 unitary-slice 读出制度中，若某个核验对象可在有限维可审计口径下表示为
+\[
+\mathcal{D}(s):=\det\!\bigl(I-u_L(s)U\bigr),
+\qquad
+u_L(s)=L^{2s-1},\ L>1,
+\]
+其中 \(U\) 为酉矩阵，且读出制度不在模式轴外置径向/幅度寄存器，
+则 \(\mathcal{D}\) 的全部零点事件都满足 \(\Re(s)=\tfrac12\)。
+等价地，\(\Re(s)=\tfrac12\) 是相位化闭包在完成化坐标中的唯一固定切片。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:unitary-determinant-zero-unit-circle}，\(\mathcal{D}(s)=0\Rightarrow |u_L(s)|=1\Rightarrow \Re(s)=\tfrac12\)。
+而“拒绝外置径向/幅度寄存器”的制度假设确保该零点事件无需额外模式轴证书即可在相位闭包内被核验，从而上述定位即为制度内的零点切片约束。证毕。
+\end{proof}
+
 \begin{proposition}[有限型 Hilbert--P{\'o}lya：\texorpdfstring{$\Phi_L$}{PhiL} 的酉谱实现与 CMV 规范型]\label{prop:xi-hilbert-polya-cmv}
 在推论 \ref{cor:xi-rh-unit-circle-reciprocal} 的记号下，令 \(d:=\deg P_L\) 并记
 \[
