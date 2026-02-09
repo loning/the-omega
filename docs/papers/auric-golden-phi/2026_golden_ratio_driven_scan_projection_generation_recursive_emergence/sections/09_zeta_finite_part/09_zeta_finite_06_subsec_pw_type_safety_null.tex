@@ -49,6 +49,31 @@
 从而 \(\Re(s)\neq\tfrac12\Rightarrow \operatorname{obs}(s)\notin X_{\mathrm{vis}}\)，其读出按定义直接退化为 \(\mathsf{NULL}\)。
 \end{definition}
 
+\begin{definition}[可见对称（读出自同构）]\label{def:xi-read-visible-symmetry}
+沿用定义 \ref{def:xi-visible-read-null} 的记号。
+称双射 \(g:\Omega\to\Omega\) 为一个\textbf{可见对称}，若对任意 \(\omega\in\Omega\) 都有
+\[
+\mathrm{read}(g\omega)=\mathrm{read}(\omega).
+\]
+记所有可见对称组成的集合为 \(\mathrm{Aut}_{\mathrm{read}}(\Omega)\)。
+\end{definition}
+
+\begin{proposition}[可见对称的轨道与读出纤维]\label{prop:xi-read-fiber-orbits}
+沿用定义 \ref{def:xi-read-visible-symmetry} 的记号。
+则 \(\mathrm{Aut}_{\mathrm{read}}(\Omega)\) 对 \(\Omega\) 的作用轨道恰为 \(\mathrm{read}\) 的纤维：对任意 \(\omega\in\Omega\) 有
+\[
+\mathrm{Aut}_{\mathrm{read}}(\Omega)\cdot\omega
+=\{\omega'\in\Omega:\ \mathrm{read}(\omega')=\mathrm{read}(\omega)\}.
+\]
+特别地，在投影本体语义下，“对称”可被理解为读出纤维内的自同构自由度；这与 \S\ref{subsec:pom-gauge-groupoid} 的规范群胚口径一致。
+\end{proposition}
+
+\begin{proof}
+由定义 \ref{def:xi-read-visible-symmetry}，对任意 \(g\in\mathrm{Aut}_{\mathrm{read}}(\Omega)\) 与任意 \(\omega\in\Omega\)，都有 \(\mathrm{read}(g\omega)=\mathrm{read}(\omega)\)，故轨道 \(\mathrm{Aut}_{\mathrm{read}}(\Omega)\cdot\omega\subseteq \mathrm{read}^{-1}(\mathrm{read}(\omega))\)。
+反之，若 \(\omega'\) 满足 \(\mathrm{read}(\omega')=\mathrm{read}(\omega)\)，定义交换 \(\omega\) 与 \(\omega'\) 的双射 \(g\)（其余点取恒等），则 \(g\in\mathrm{Aut}_{\mathrm{read}}(\Omega)\) 且 \(g\omega=\omega'\)。
+证毕。
+\end{proof}
+
 \begin{proposition}[\texorpdfstring{$\mathsf{NULL}$}{NULL} 的三分解与单射化原则]\label{prop:xi-null-three-way}
 设 \(\pi:\Omega\to Y\) 为一个读出（允许为多对一压缩），并按“地址先于取值”的约定将“可核对的单值读出”作为类型层的定义性前提（见第 \ref{sec:spg} 节）。
 若未提供使扩展读出
@@ -528,3 +553,12 @@ a=\bigl(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}}\bigr).
 \par
 在该打包下，“地址是否合法（非 \(\mathsf{NULL}\)）”就是三轴同时满足：\(a_{\mathrm{vis}}\) 落在可见域过滤内、\(a_{\mathrm{res}}\) 的预算足以避免同像碰撞、且 \(a_{\mathrm{mode}}\) 不被协议禁止；任一轴缺失或被禁止都会触发相应来源的 \(\mathsf{NULL}\)，从而把“完备性缺口”具体化为可审计的轴预算/轴稳定性条件（命题 \ref{prop:xi-completeness-auditable-decomposition}）。
 \end{definition}
+
+\begin{remark}[对偶互换对称与残差预算障碍]\label{rem:xi-dual-swap-symmetry-defect}
+定义 \ref{def:multi_axis_address} 的“三轴前缀”刻画的是接口直和：\(a_{\mathrm{vis}}\) 作为可见域内的商坐标，\(a_{\mathrm{res}}\) 作为纤维碰撞的外置标签，二者的“正交”是结构分解而非几何相似。
+因此，“两个正交轴等价”的叙述在本文语义中只能被理解为一个更强的\textbf{对偶互换对称}事件：存在协议允许的自同构把“可见商坐标”与“纤维标签”互换，并保持可核对语义不变。
+\par
+该互换一般并不成立，其失败由残差预算给出严格障碍。
+以折叠读出 \(\Fold_m\) 为例：若存在 \(x\in X_m\) 使纤维多重度 \(d_m(x)=\card{\Fold_m^{-1}(x)}>1\)，则任何使扩展读出 \((\Fold_m,r)\) 成为单射的残差轴都必须在该纤维上提供至少 \(d_m(x)\) 个可区分标签（定理 \ref{thm:address-defect-law} 第 (1) 条）；在宏观口径下，更必须支付平均信息预算下界 \(H(r(A)\mid X)\ge \kappa_m(\pi)\)（同定理第 (2) 条）。
+从而，除非在所关心的子类上纤维缺陷消失（例如 \(d_m(x)=1\) 或相应的 \(\kappa_m(\pi)=0\)），否则“把纤维坐标压回可见坐标”的互换不可能在不外置残差轴的前提下发生。
+\end{remark}
