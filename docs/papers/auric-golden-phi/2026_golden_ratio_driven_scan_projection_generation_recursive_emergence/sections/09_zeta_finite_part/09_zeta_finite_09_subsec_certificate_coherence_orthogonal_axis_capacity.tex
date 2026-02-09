@@ -1,0 +1,199 @@
+\subsubsection{证书一致性、正交切片与端点容量：从 \texorpdfstring{$\mathsf{NULL}$}{NULL} 到可证伪接口}\label{subsec:xi-certificate-coherence-orthogonal-axis-capacity}
+小节 \ref{subsec:dephysicalized-horizon-timefiber-nohair} 已将“零点—视界—毛发”的解释性语言压缩为三条体系内定理链（缺陷排斥半径、时间纤维端点压缩与 \(\mathbf{PW}\) 无连续毛发）。
+本小节在不引入额外几何假设的前提下，进一步抽取一组与“可核验语义”直接对齐的命题：将 unitary slice 上的零点事件严格化为\emph{有限证书对象}的逆系统，并把“离开切片”的信息投影压缩为端点二阶径向通道与由精度势诱导的容量下界。
+
+\paragraph{设定：三轴地址与可核验语义}
+本文的读出遵循“地址先于取值”的约定，并以可见域约束与检查器把不可核对对象编译为 \(\mathsf{NULL}\)（定义 \ref{def:xi-visible-read-null}）。
+同时，一个可核对地址可被理解为多轴前缀
+\(
+a=(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}})
+\)
+（定义 \ref{def:multi_axis_address}）：
+其中 \(a_{\mathrm{vis}}\) 对齐 unitary slice 的单参相位接口（命题 \ref{prop:xi-unitary-slice-spectral-crossing}），
+\(a_{\mathrm{res}}\) 承载为避免同像碰撞所需的 residue/逆极限轴外置（命题 \ref{prop:xi-null-three-way} 与定理 \ref{thm:address-defect-law}），
+而 \(a_{\mathrm{mode}}\) 则记录协议所允许的正交模式轴（典型地包括径向寄存器与最小实现维数轴；参见推论 \ref{cor:xi-null-second-order-radial-channel} 与注 \ref{rem:xi-acc-rank}）。
+下文的结论依次对应于：证书在 \(a_{\mathrm{vis}}\) 轴上的一致性归并、unitary slice 作为正交切片的类型后果、离切片信息的端点容量门槛，以及由此导出的可证伪接口重述。
+
+\paragraph{精度一致性与实现中立性：证书对象的逆极限同一性}
+在 unitary slice 上，零点审计可被压缩为一个实值函数在相位轴上的事件读出：例如
+\[
+F(\theta):=\det\!\bigl(I-U_L(\theta)\bigr)
+\]
+（命题 \ref{prop:xi-unitary-slice-spectral-crossing}）。
+对这类读出，本文采用的“可审计”含义是：断言必须由有限数据证书给出，并能被确定性离线规则复核（参见注 \ref{rem:xi-hard-zero-certificate} 对一元根区间证书接口的说明；亦可参考命题 \ref{prop:xi-rh-interval-criterion} 及其 Sturm/区间口径的实现注记）。
+
+\begin{definition}[证书对象、细化与可核验等价]\label{def:xi-cert-refinement-equivalence}
+固定一个 unitary slice 上的可核验实值函数 \(F:\RR\to\RR\)，并固定一个确定性验证器 \(\mathrm{Ver}\)；
+验证器的输入是一个有限对象 \(C\)（由有限整数/有理数据编码），输出为 \(\mathsf{pass}/\mathsf{fail}\)。
+\par
+对每个 dyadic 深度 \(b\in\NN\)，令 \(\mathsf{Cert}_b(F)\) 表示所有满足下述条件的证书对象集合：
+\[
+C=(I,\sigma),\qquad I=[\theta_{-},\theta_{+}]\subset\RR,\ \ \theta_{-},\theta_{+}\in 2^{-b}\ZZ,
+\]
+其中 \(I\) 为区间括号，\(\sigma\) 为辅助数据（例如根区间证书、单根性证书或其它与协议一致的唯一性/收缩证书），并要求
+\(
+\mathrm{Ver}(F;C)=\mathsf{pass}
+\)。
+\par
+定义\textbf{细化}关系 \(C'\preceq C\)（允许 \(b'\ge b\)）当且仅当：
+\begin{enumerate}
+  \item \(I(C')\subseteq I(C)\)；
+  \item \(C'\) 在同一验证器下通过，即 \(\mathrm{Ver}(F;C')=\mathsf{pass}\)。
+\end{enumerate}
+并定义\textbf{可核验等价} \(C\sim C'\) 当且仅当存在一个共同细化 \(D\) 使 \(D\preceq C\) 且 \(D\preceq C'\)。
+\end{definition}
+
+\begin{theorem}[精度一致性的逆极限归并与实现中立性]\label{thm:xi-cert-inverse-limit-coherence}
+沿用定义 \ref{def:xi-cert-refinement-equivalence} 的记号。
+设存在某个 \(\theta_\star\in\RR\) 与一条证书链 \((C_b)_{b\ge b_0}\) 满足：
+\[
+C_{b}\in\mathsf{Cert}_b(F),\qquad C_{b+1}\preceq C_{b},\qquad \bigl|I(C_b)\bigr|\xrightarrow[b\to\infty]{}0,
+\]
+并且每个 \(C_b\) 的断言都以“至多一根”的意义在 \(I(C_b)\) 内隔离出同一零点（例如 Sturm 根隔离或等价的唯一性证书口径，见注 \ref{rem:xi-hard-zero-certificate}）。
+则：
+\begin{enumerate}
+  \item \textbf{（证书同一性）}任何指称 \(\theta_\star\) 的有效证书对象在 \(\sim\) 下归并为单一等价类；
+  该等价类可由逆系统 \((\mathsf{Cert}_b(F),\preceq)\) 上的一条嵌套链的\emph{逆极限}表示，其区间交为单点 \(\bigcap_{b\ge b_0} I(C_b)=\{\theta_\star\}\)。
+  \item \textbf{（实现中立性/无侧信息通道）}
+  若验证器 \(\mathrm{Ver}\) 仅依赖证书对象的有限编码（并按固定规则在整数/有理运算层面运行），
+  则对任意两种实现环境，只要输入同一证书对象 \(C\)，验证输出严格一致；
+  并且对固定 \(F\)，\(\theta_\star\) 的寻址仅取决于其 \(\sim\)-等价类，而与证书生成时可能出现的浮点轨迹、采样路径等非证书数据无关。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+  \item
+  由假设，“至多一根”的证书语义保证：若 \(C,C'\) 都指称同一零点 \(\theta_\star\)，则对足够大的 \(b\) 可选取细化到 \(I(C)\cap I(C')\) 内的更小证书括号，从而存在共同细化 \(D\)；
+  因此任意两份有效证书在 \(\sim\) 下等价，归并为单一等价类。
+  嵌套区间长度趋于 \(0\) 推出交集为单点，并与逆极限的标准表示一致。
+  \item
+  若 \(\mathrm{Ver}\) 是对有限编码的确定性计算，则其输出是输入证书对象的函数值；
+  因此对同一 \(C\) 的输出在不同实现环境下不变。
+  同时，由定义 \ref{def:xi-cert-refinement-equivalence}，等价类只依赖可核验的“可共同细化”关系，
+  任何不进入证书编码的生成细节在语义层面被主动丢弃，因而不影响寻址。
+\end{enumerate}
+证毕。
+\end{proof}
+
+\paragraph{unitary slice 的正交切片性：隐藏轴只能以正交不变量与外置预算出现}
+unitary slice 的“正交性”在本文并非欧氏几何命题，而是由可见域过滤、因子分解与端点载荷分解共同刻画的结构直和。
+
+\begin{theorem}[临界线/单位圆切片的正交结构：可见模长轴 \(\oplus\) 盘内零点轴 \(\oplus\) 端点载荷轴]\label{thm:xi-orthogonal-slice-structure}
+在本文的 unitary slice 审计口径（定义 \ref{def:xi-visible-read-null}，取 \(X_{\mathrm{vis}}=\mathsf{Phase}\)）与 \(\mathbf{PW}\) 闭包类型检查下：
+\begin{enumerate}
+  \item \textbf{（协议正交：径向模式的类型拒绝）}
+  任意本质上需要 \(|u|\neq 1\) 的径向自由度才能表达的对象，在纯相位接口中不可类型化，其读出按协议退化为 \(\mathsf{NULL}\)（定理 \ref{thm:xi-offset-null-type-safety} 与定理 \ref{thm:xi-pw-no-continuous-hair}）。
+  \item \textbf{（因子论正交：边界模长 \(\perp\) 盘内零点）}
+  在圆盘完成化 \(F_\zeta\) 的 Hardy/Smirnov 条件口径下，边界模长决定外因子，而盘内零点数据由 Blaschke 内因子承载；
+  因而“偏离临界线”的信息属于内因子隐藏轴，对边界模长审计结构性不可见（\S\ref{subsec:unit-disk-inner-outer}）。
+  \item \textbf{（端点载荷正交：模 \(4\) 有限状态 \(\perp\) 精度势账本）}
+  在端点 \(w=-1\) 邻域，伸缩半群的作用分解为模 \(4\) 的离散端点态与精度势 \(y\) 的加性账本，两者互不耦合（命题 \ref{prop:endpoint-orthogonal-decomposition-z4-Rplus}）。
+\end{enumerate}
+因此，“离开 \(\Re(s)=\tfrac12\)”若要在闭环内保持可核验，只能沿正交不变量（缺陷账本、端点载荷）与外置预算轴出现；若拒绝外置相应记录轴，则必触发 \(\mathsf{NULL}\)。
+\end{theorem}
+
+\begin{proof}
+\begin{enumerate}
+  \item
+  定理 \ref{thm:xi-offset-null-type-safety} 与定理 \ref{thm:xi-pw-no-continuous-hair} 给出协议层的类型拒绝：需要 \(|u|\neq 1\) 的径向自由度在纯相位接口中读出为 \(\mathsf{NULL}\)。
+  \item
+  由 \S\ref{subsec:unit-disk-inner-outer} 的内外因子分解可知：\(|F_\zeta(e^{i\theta})|\) 只决定外因子，盘内零点由内因子编码，故二者在可观测意义下结构分离。
+  \item
+  命题 \ref{prop:endpoint-orthogonal-decomposition-z4-Rplus} 给出端点处“模 \(4\) 有限状态 \(\oplus\) 精度势账本”的正交分解。
+\end{enumerate}
+合并三点即得所述“正交切片”的结构结论。证毕。
+\end{proof}
+
+\paragraph{离临界线偏移的二次径向压缩与证书容量下界}
+附录的圆盘化完成化把“离开临界线”严格实现为盘内零点；并且该离线信息在端点坐标中以二阶径向通道进入（推论 \ref{cor:xi-null-second-order-radial-channel}）。
+下面将其抽取为一个定理式的“压缩律 + 容量下界”。
+
+\begin{theorem}[离临界线偏移的二次径向压缩律与精度势归因]\label{thm:xi-offcritical-quadratic-radial-compression}
+假设存在离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\) 满足 \(0<\beta<\tfrac12\)。
+令
+\(
+\delta:=\tfrac12-\beta>0
+\)
+且令 \(w_\rho=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}\) 为其圆盘像。
+则：
+\begin{enumerate}
+  \item \textbf{（闭式恒等式/horocycle 实现）}
+  \[
+  \delta=\mathcal{B}_{-1}(w_\rho)=\frac{1-|w_\rho|^2}{|1+w_\rho|^2},
+  \qquad
+  1-|w_\rho|^2=\frac{4\delta}{\gamma^2+(1+\delta)^2}=\delta\,|1+w_\rho|^2
+  \]
+  （推论 \ref{cor:app-offcritical-horocycle-busemann}）。
+  \item \textbf{（端点二阶径向通道）}
+  记端点深度 \(\delta_\gamma:=\tfrac12-\pi^{-1}\arctan|\gamma|\downarrow 0\)，则
+  \[
+  1-|w_\rho|^2
+  =4\pi^2\delta\,\delta_\gamma^2\bigl(1+o(1)\bigr)\qquad(\delta_\gamma\downarrow 0)
+  \]
+  （推论 \ref{cor:app-offcritical-radius-second-order-radial-channel}）。
+  因而在端点邻域的自然尺度 \(|1+w|\ll 1\) 下，\(\delta\) 以 chordal 距离 \(|1+w|^2\) 的\emph{二次}项进入。
+  \item \textbf{（精度势归因）}
+  令精度势 \(\mathcal{P}(x)=\log\pi+\log(1+x^2)\)（定义 \ref{def:unit-circle-phase-precision-potential}），则
+  \[
+  1-|w_\rho|^2\sim 4\pi\,\delta\,e^{-\mathcal{P}(\gamma)}\qquad(|\gamma|\to\infty,\ \delta\ \text{有界})
+  \]
+  （注 \ref{rem:app-offcritical-radius-precision-potential}）。
+  这将“离临界线偏移的圆盘可见性压缩”精确归因于精度势的指数因子 \(e^{-\mathcal{P}(\gamma)}\)。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+三条断言分别为推论 \ref{cor:app-offcritical-horocycle-busemann}、推论 \ref{cor:app-offcritical-radius-second-order-radial-channel} 与注 \ref{rem:app-offcritical-radius-precision-potential} 的直接重述。证毕。
+\end{proof}
+
+\begin{corollary}[固定分辨率预算下的不可见阈值（比特/账本口径）]\label{cor:xi-offcritical-visibility-threshold-bit-budget}
+在定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 的设定下，
+若希望在某个半径审计点 \(\varrho\in(0,1)\) 处\emph{强制}出现由该离线零点贡献导致的正缺陷（即要求 \(\varrho>|w_\rho|\)，从而 \(D_\zeta(\varrho)\ge \log(\varrho/|w_\rho|)>0\)），
+则必须满足端点分辨率门槛
+\[
+1-\varrho\ \lesssim\ \frac{\delta}{\gamma^2}
+\]
+（推论 \ref{cor:app-horocycle-visible-resolution} 的高高度尺度律）。
+特别地，若把分辨率预算以 dyadic 比特深度 \(b\) 参数化，使得
+\(
+1-\varrho\asymp 2^{-b}
+\),
+则必要条件可等价写为
+\begin{equation}\label{eq:xi-offcritical-bit-budget}
+\boxed{\;
+b\log 2\ \gtrsim\ 2\log|\gamma|+\log\frac{1}{\delta}+O(1)\; }.
+\end{equation}
+换言之：在固定预算 \(b\) 下存在高度阈值，使得当 \(|\gamma|\) 足够大时，离临界线偏移的二阶径向信号必落入不可分辨尺度；
+在纯相位制度（unitary slice）中，其语义后果稳定表现为“不可寻址”（\(\mathsf{NULL}\)，推论 \ref{cor:xi-null-second-order-radial-channel}）。
+\end{corollary}
+
+\begin{proof}
+由推论 \ref{cor:app-horocycle-visible-resolution}，必要条件为 \(1-\varrho\lesssim \delta/\gamma^2\)。
+代入 \(1-\varrho\asymp 2^{-b}\) 并取对数得
+\(
+b\log 2\gtrsim 2\log|\gamma|+\log(1/\delta)+O(1)
+\)。
+最后一句由推论 \ref{cor:xi-null-second-order-radial-channel} 的“二阶径向通道被纯相位制度抹除”给出。证毕。
+\end{proof}
+
+\paragraph{对“构造离线零点”的可证伪重述：第四寄存器或失败见证}
+在本文闭包语义中，“构造一个不在 \(\Re(s)=\tfrac12\) 上的零点”并不等价于给出一个数值点；
+它等价于给出一个能通过闭包检查器的\emph{可核验地址对象}（定义 \ref{def:multi_axis_address}），或给出该地址在协议内不可能存在的失败见证。
+
+\begin{proposition}[离线零点断言的唯一可发表接口：扩展模式轴或输出 \texorpdfstring{$\mathsf{NULL}$}{NULL} 失败见证]\label{prop:xi-offcritical-falsifiable-restatement}
+在 unitary slice 可见域约束与 \(\mathbf{PW}\) 类型闭包下，任何声称“存在离线零点（\(|u|\neq 1\) 等价地 \(|w|<1\)）”的断言在体系内只能呈现为以下二者之一：
+\begin{enumerate}
+  \item \textbf{模式轴外延（显式径向记录）}：外延读出/证书类型，使地址三轴前缀中的模式轴 \(a_{\mathrm{mode}}\) 显式携带径向数据（注 \ref{rem:xi-soundness-vs-completeness} 的 \(\operatorname{proj}^{\mathrm e}\) 口径）；并且在高高度下，该外延必须支付由推论 \ref{cor:xi-offcritical-visibility-threshold-bit-budget} 给出的端点容量下界。
+  \item \textbf{失败见证（协议锁定）}：输出一份离线可核验的失败见证，证明该断言在既定可见域/闭包协议下不可类型化，从而其读出必退化为 \(\mathsf{NULL}\)（定理 \ref{thm:xi-offset-null-type-safety}；并见命题 \ref{prop:xi-null-three-way} 对 \(\mathsf{NULL}\) 的三分解）。
+\end{enumerate}
+并且：若以“减少 \(\mathsf{NULL}\)”为目标而允许外置侧信息以实现单射化，则该外置轴在结构上必然是 residue/逆极限轴（prime-register）而非与相位解耦的额外连续坐标寄存器（定理 \ref{thm:xi-pw-no-continuous-hair}）。
+\end{proposition}
+
+\begin{proof}
+若不外延模式轴，则 \(|u|\neq 1\)（或 \(|w|<1\)）落在可见域之外，按定义 \ref{def:xi-visible-read-null} 的过滤直接读出为 \(\mathsf{NULL}\)，并由定理 \ref{thm:xi-offset-null-type-safety} 得到类型安全拒绝。
+若外延模式轴，则由注 \ref{rem:xi-soundness-vs-completeness} 的扩展保存构造得到非退化扩展读出；其在高高度下的必要预算由推论 \ref{cor:xi-offcritical-visibility-threshold-bit-budget} 给出。
+最后，“外置必须是 residue/逆极限轴而非额外连续寄存器”即定理 \ref{thm:xi-pw-no-continuous-hair} 的第 (2) 条。证毕。
+\end{proof}
+
+\endinput
