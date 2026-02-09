@@ -130,6 +130,27 @@ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\le (m+1)D_N^*(\alpha;x_0)
 代入即得结论。证毕。
 \end{proof}
 
+\begin{remark}[传输型审计量（\texorpdfstring{$W_1$}{W1}）与坐标协变稳定性]\label{rem:auditable-profinite-chebotarev-w1-transport}
+推论 \ref{cor:auditable-profinite-chebotarev-three-budget-deterministic} 以星差异 \(D_N^*\) 控制 TV，从而天然适配柱事件（指示函数）读出。
+当读出核在相位变量上为 Lipschitz 时，可改用传输差异
+\(
+\mathsf{T}_N(\alpha)=W_1(\mu_N,\lambda)
+\)
+直接审计经验均值误差：
+\[
+\left|\frac1N\sum_{t=0}^{N-1}f(x_t)-\int_0^1 f(x)\,dx\right|
+\le
+\mathrm{Lip}(f)\,\mathsf{T}_N(\alpha)
+\]
+（定理 \ref{thm:kronecker-w1-lipschitz-readout}）。
+该审计量在 Lipschitz 坐标变换下满足显式协变放缩
+\(
+W_1(\Phi_\#\mu,\Phi_\#\nu)\le \mathrm{Lip}(\Phi)\,W_1(\mu,\nu)
+\)
+（命题 \ref{prop:w1-lipschitz-pushforward}），并在连分分母 tick 上具有闭式常数（定理 \ref{thm:kronecker-w1-denominator-closed-form}）。
+因此它可作为与星差异链条正交的一条传输型误差支柱（见附录 \ref{app:kronecker-w1-transport}）。
+\end{remark}
+
 \begin{corollary}[\texorpdfstring{$(n,N)$}{(n,N)} 平衡律与三角可见域]\label{cor:auditable-profinite-chebotarev-balance-triangle}
 在推论 \ref{cor:auditable-profinite-chebotarev-three-budget-deterministic} 的设定下，给定目标误差 \(\tau>0\)。若选取 \((n,N)\) 使得
 \[
@@ -194,4 +215,83 @@ D_{\mathrm{KL}}(\mu\|\widetilde\pi)
 逐纤维应用该上界并取 \(\pi\) 期望即得 \(D_{\mathrm{KL}}(\mu\|\widetilde\pi)\le \mathbb{E}_\pi[\log d_m(X)]=\kappa_m(\pi)\)。
 Pinsker 与期望差界是标准不等式推论。证毕。
 \end{proof}
+
+\paragraph{前缀—清晰度：四项正交误差预算（终态可引用形式）}
+将“继续加深扫描”（时间轴 \(n\)）与“提高分辨率/可见域”（空间轴 \(m\)）在逻辑上分离，需要把读出误差按资源轴分解为相互正交的预算项。
+下述定理把动力学尾项、有限数据校准、纤维歧义与 \(\mathsf{NULL}\) 的完备性缺口并联为一个可审计的终态断言：它刻意避免中间推导，只给出可直接进入主结果的最终形式。
+
+\begin{theorem}[前缀读出的四项正交误差分解（可审计版）]\label{thm:prefix-readout-orthogonal-error-decomposition}
+固定层级 \(m\) 与同余/角色柱事件 \(C\subseteq G_m\)。
+记 \(\Pi_{n,m}(C):=\frac{\sum_{g\in C}p_{n,g}}{p_n}\) 为长度 \(n\) 的 primitive 轨道在 \(C\) 上的经验比例。
+并在统一扭曲谱隙口径下记 \(\lambda=\rho(M)\)，取 \(\varepsilon>0\) 使得对所有非平凡扭曲通道满足 \(\rho(M_\chi)\le \lambda^{1/2-\varepsilon}\)（即定理 \ref{thm:auditable-profinite-chebotarev-finite} 的统一谱隙假设）。
+则存在常数 \(K_1=K_1(m)\) 使得对任意 \(n\ge 1\) 有确定性尾项界
+\begin{equation}\label{eq:prefix-tail-term}
+\boxed{\;
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}\;}
+\end{equation}
+（动力学尾项；参见定理 \ref{thm:auditable-profinite-chebotarev-finite}）。
+\par
+若以折叠输出直方图 \(\hat{\pi}_{m,N}\) 对同一柱读出作经验校准，则对指示读出（cylinder 指示函数）有
+\begin{equation}\label{eq:prefix-tail-plus-data}
+\boxed{\;
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\;}
+\end{equation}
+（有限数据项；仍见定理 \ref{thm:auditable-profinite-chebotarev-finite}，并取 \(K_2=1\)）。
+进一步地，若折叠输出过程为不可约非周期有限状态马尔可夫链，其非可逆混合由伪谱隙 \(\gamma_{\mathrm{ps}}^{(m)}\in(0,1]\) 控制，则对任意 \(\delta_{\mathrm{conf}}\in(0,1)\)，以概率至少 \(1-\delta_{\mathrm{conf}}\) 有显式置信包络
+\begin{equation}\label{eq:prefix-data-envelope}
+\boxed{\;
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})
+\ \le\
+\frac12|X_m|\sqrt{\frac{2}{\gamma_{\mathrm{ps}}^{(m)}N}\log\frac{2|X_m|}{\delta_{\mathrm{conf}}}}\;}
+\end{equation}
+（定理 \ref{thm:tv-envelope-markov}）。
+\par
+与上述“时间—数据”两轴误差正交的是“纤维歧义”误差：对任意边缘分布 \(\pi\in\Delta(X_m)\)，令 \(\widetilde\pi\) 为其纤维均匀最大熵提升，并记
+\(
+\kappa_m(\pi):=\mathbb{E}_\pi[\log d_m(X)]
+\)。
+则对任意满足 \((\Fold_m)_*\mu=\pi\) 的 lift \(\mu\in\Delta(\Omega_m)\)，都有
+\begin{equation}\label{eq:prefix-fiber-term}
+\boxed{\;
+D_{\mathrm{TV}}(\mu,\widetilde\pi)\ \le\ \sqrt{\frac{\kappa_m(\pi)}{2}},
+\qquad
+\bigl|\mathbb{E}_\mu[f]-\mathbb{E}_{\widetilde\pi}[f]\bigr|
+\ \le\
+2\|f\|_\infty\sqrt{\frac{\kappa_m(\pi)}{2}}\;}
+\end{equation}
+（定理 \ref{thm:defect-limited-audit}）。
+\par
+最后，“\(\mathsf{NULL}\)”体现的是完备性缺口而非数值误差：在地址先于取值的语义下，它等价于证书对象在该地址处的结构性缺失（命题 \ref{prop:null-as-local-section-obstruction}）。
+在 unitary-slice 零点审计口径下，该缺口可被两类后端证书可审计地排除：可见自由度稳定（ACC-Rank/Hankel-rank 稳定）与 prime-register 分位配额充分；二者同时满足时可在给定置信口径内排除 \(\mathsf{NULL}\) 的来源，从而将 completeness 缺口压缩为这两类证书的核验任务（命题 \ref{prop:xi-completeness-auditable-decomposition}）。
+\par
+综上，给定目标误差阈值 \(\tau>0\)。若选择 \((m,n,N)\) 使得
+\begin{equation}\label{eq:prefix-audit-budget-sufficient}
+\boxed{\;
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}\le \frac{\tau}{3},
+\qquad
+\frac12|X_m|\sqrt{\frac{2}{\gamma_{\mathrm{ps}}^{(m)}N}\log\frac{2|X_m|}{\delta_{\mathrm{conf}}}}\le \frac{\tau}{3},
+\qquad
+\sqrt{2\,\kappa_m(\pi_m^{\mathrm{fold}})}\le \frac{\tau}{3}\;}
+\end{equation}
+并在同一置信口径下通过 ACC-Rank 与 prime-register 两类完备性证书，则“前缀读出”在审计意义下同时获得：时间尾项、有限数据、纤维歧义与完备性（\(\mathsf{NULL}\)）四项误差的可核对上界。
+以上四项在资源轴上两两正交：增大 \(n\) 仅影响 \eqref{eq:prefix-tail-term}；增大 \(N\) 仅影响 \eqref{eq:prefix-data-envelope}；纤维歧义由 \(\kappa_m\) 单独控制；而 \(\mathsf{NULL}\) 仅由后端证书控制。
+\end{theorem}
+
+\begin{corollary}[可审计的安全分辨率与停止律]\label{cor:prefix-audit-safe-resolution-stopping}
+给定目标阈值 \(\tau>0\) 与边缘分布 \(\pi\in\Delta(X_m)\)。
+称层级 \(m\) 在阈值 \(\tau\) 下为\textbf{纤维安全}，若
+\begin{equation}\label{eq:prefix-fiber-safe-condition}
+\boxed{\;\kappa_m(\pi)\le \frac{\tau^2}{18}\;}
+\end{equation}
+（等价于对所有 \(\|f\|_\infty\le 1\) 与所有 compatible lifts \(\mu\) 都有 \(|\mathbb{E}_\mu f-\mathbb{E}_{\widetilde\pi}f|\le \tau/3\)，见 \eqref{eq:prefix-fiber-term}）。
+\par
+因此，当 \eqref{eq:prefix-fiber-safe-condition} 成立时，纤维歧义项必被压入总误差预算的 \(\tau/3\) 之内；此时进一步增大扫描深度 \(n\) 或样本量 \(N\) 的收益不会受纤维项阻断。
+相反，当 \(\kappa_m(\pi)>\tau^2/18\) 时，定理 \ref{thm:defect-limited-audit} 所给的统一纤维上界本身已超过 \(\tau/3\)，从而任何仅通过增大 \(n\) 或 \(N\) 的策略都无法在审计意义上把该项压入预算；若希望继续降低总预算，必须改变可见域以降低 \(\kappa_m\)，或引入额外正交记录轴并通过后端证书排除 \(\mathsf{NULL}\) 的结构性来源（命题 \ref{prop:xi-completeness-auditable-decomposition}）。
+\end{corollary}
 
