@@ -2288,6 +2288,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="horizon_mu_endpoint_window_asymptotic",
+            script="exp_horizon_mu_endpoint_window_asymptotic.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/horizon_mu_endpoint_window_asymptotic.json",
+                "sections/generated/tab_horizon_mu_endpoint_window_asymptotic.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],

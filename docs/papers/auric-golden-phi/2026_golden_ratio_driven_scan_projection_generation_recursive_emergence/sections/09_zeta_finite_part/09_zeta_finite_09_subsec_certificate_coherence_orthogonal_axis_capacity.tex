@@ -386,6 +386,18 @@ d_{\mathrm{addr}}(\theta,\theta'):=2^{-m(\theta,\theta')}.
 因此，在本文的地址语义下，“零点之间的分辨关系”应被理解为共享前缀深度（或等价的超度量距离），而非把某个点对象误识为另一个点对象的地址。
 \end{remark}
 
+\begin{remark}[分辨率标度与有限态密度屏障]\label{rem:xi-resolution-height-finite-state-barrier}
+在本文的端点紧化/前缀语义下，“清晰度”首先表现为高度 \(T\) 与 dyadic 深度预算 \(b\) 的定量关系：在相位紧化坐标 \(u=\upsilon(T)\) 中，相邻零点的平均可分辨尺度为 \(|u_{n+1}-u_n|\asymp (T^{2}\log T)^{-1}\)，因而区分相邻零点所需位深度满足
+\[
+b=2\log_{2}T+\log_{2}\log T+O(1)
+\qquad(T\to\infty)
+\]
+（附录命题 \ref{prop:app-adjacent-zero-dyadic-resolution}）。
+\par
+另一方面，“零点互为地址”的任何固定有限态/有限语法版本都遭遇密度阶屏障：有限维行列式模板的极点几何被锁定为有限条竖直直线与有限相位梳齿（注 \ref{rem:finite-pole-lattice-barrier}），且在有限频带/有限尺度窗的尺度叠加制度中临界线零点计数至多为 \(N(T)=O(T)\)（命题 \ref{prop:xi-scale-mellin-zero-density-upper}）。
+因此，要在密度阶上接近 \(T\log T\) 行为，协议必须在某一方向释放随 \(T\) 增长的外生自由度预算（最小机制下为 \(\Theta(\log T)\)，见注 \ref{rem:xi-scale-mellin-logT-budget}），而不可能由零点之间的自指寻址在固定规则下内生地产生。
+\end{remark}
+
 \begin{theorem}[验证程序层的可重复性与精度一致性：证书存在性偏函数]\label{thm:xi-us-deterministic-tristate}
 在 unitary slice 审计口径下，固定：
 \begin{enumerate}
@@ -517,7 +529,42 @@ F_\zeta(w)=B(w)\,S(w)\,O(w)
 \paragraph{对称性在圆盘接口中的可见化极限：离切片偏移的二次径向压缩律}
 在附录的圆盘化完成化接口中，“离开临界切片 \(\Re(s)=\tfrac12\)”被严格搬运为单位圆盘 \(\mathbb{D}\) 内的点状 Blaschke 数据。
 在固定可见接口（对合固定切片与无参紧化门）下，该离切片信息在端点邻域只能通过二阶径向通道进入（推论 \ref{cor:xi-null-second-order-radial-channel}）。
-下述定理给出圆盘像 \(w_\rho\) 的完全闭式与高高度渐近，并把“可见化分辨率”精确归因于精度势 \(\mathcal{P}\) 所诱导的二次压缩。
+
+\subparagraph{端点压缩的结构来源与“尺度搬运”问题的精确定式}
+沿用 \S\ref{subsubsec:xi-ramanujan-horizon-ledger-framework} 与附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz} 的视界记号，令
+\[
+E_{\zeta}(z):=\Xi_{\zeta}\!\left(\tfrac12+\mathrm{i}z\right),\qquad
+m_{\zeta}(z):=-\frac{E_{\zeta}'(z)}{E_{\zeta}(z)}\qquad(z\in\mathbb{H}),
+\]
+并令 \(w=\mathcal{C}(z)\) 为 Cayley 紧化、\(s(w)=\tfrac12+\mathrm{i}\,\mathcal{C}^{-1}(w)\) 为圆盘截面，从而圆盘视界对数导数
+\[
+\mathscr{C}_{\zeta}(w):=-\frac{\Xi_{\zeta}'(s(w))}{\Xi_{\zeta}(s(w))}\qquad(w\in\mathbb{D})
+\]
+满足严格恒等式 \(\mathscr{C}_{\zeta}(w)=-\mathrm{i}\,m_{\zeta}(\mathcal{C}^{-1}(w))\)（式 \eqref{eq:app-horizon-m-c-relation}）。
+在本文的去物理化语义中，可将 \(m_{\zeta}\)（等价地 \(\mathscr{C}_{\zeta}\)）视为视界阻抗/Weyl 函数，并把其在 \(\mathbb{H}\)（等价地 \(\mathbb{D}\)）内的亚纯极点定义为\textbf{视界共振极点}。
+
+\begin{proposition}[极端共振的正性判别与有限维失败见证]\label{prop:xi-extreme-resonance-positivity}
+将共振定义为 \(m_{\zeta}\)（或等价地 \(\mathscr{C}_{\zeta}\)）在 \(\mathbb{H}\)（或 \(\mathbb{D}\)）内的亚纯极点，则：
+\begin{enumerate}
+  \item \textbf{（离切片 \texorpdfstring{$\Longleftrightarrow$}{<->} 上半平面/圆盘内极点）}
+  若 \(\Xi_{\zeta}\) 存在离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\)（\(\beta<\tfrac12\)），则
+  \(z=\gamma+\mathrm{i}(\tfrac12-\beta)\in\mathbb{H}\) 满足 \(E_{\zeta}(z)=0\)，从而 \(m_{\zeta}\) 在 \(\mathbb{H}\) 内出现极点；等价地，\(\mathscr{C}_{\zeta}\) 在圆盘像 \(w=\mathcal{C}(z)\in\mathbb{D}\) 处出现极点（不稳定共振）。
+  \item \textbf{（RH \texorpdfstring{$\Longleftrightarrow$}{<->} 正性 \texorpdfstring{$\Longleftrightarrow$}{<->} 极点被推至边界）}
+  RH 成立当且仅当 \(m_{\zeta}\) 为 Herglotz 函数（定理 \ref{thm:app-horizon-weyl-herglotz}），亦当且仅当 \(\mathscr{C}_{\zeta}\) 属于 Carath\'eodory 类（推论 \ref{cor:app-horizon-carath-rh}）。
+  因而在 RH 下，上半平面/圆盘内共振极点被结构性排除：允许的奇异只能以边界谱测度的方式承载（Herglotz/Carath\'eodory 表示；参见注 \ref{rem:app-horizon-multipole-positivity-hair}）。
+  \item \textbf{（Toeplitz--PSD 证书化）}
+  Carath\'eodory 正性进一步等价于 Toeplitz--PSD 层级 \(\{\mathbf{T}_N\succeq 0\}_{N\ge 0}\)（定理 \ref{thm:app-horizon-toeplitz-lmi}）。
+  因此一旦出现盘内极点（等价于离切片零点），必存在某一有限级 \(N\) 使 \(\mathbf{T}_N\) 出现负特征值，从而给出可离线复核的有限维失败见证。
+  进一步地，Toeplitz 层级的系数数据具有互补的可审计来源：在 \(|w|<1/3\) 的绝对收敛补丁内，\(\mathscr{C}_{\zeta}\) 可由欧拉积/Dirichlet 级数逐项审计（定理 \ref{thm:app-horizon-euler-patch}）；而在局部口径下，\(\mathscr{C}_{\zeta}\) 的系数亦可由 \(s=-\tfrac12\) 处有限阶对数导数局部封装显式生成（命题 \ref{prop:app-horizon-coeff-local}）。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+三条断言由定理 \ref{thm:app-horizon-weyl-herglotz}、推论 \ref{cor:app-horizon-carath-rh}、定理 \ref{thm:app-horizon-toeplitz-lmi} 与恒等式 \eqref{eq:app-horizon-m-c-relation} 直接推出。证毕。
+\end{proof}
+
+在上述正性—稳定性语义下，端点 \(-1\) 的 Poisson/Busemann 坐标 \(\mathcal{B}_{-1}\) 给出离切片偏移在圆盘接口中的内禀读出尺度；下述定理给出圆盘像 \(w_\rho\) 的完全闭式与高高度渐近，并把“可见化分辨率”精确归因于精度势 \(\mathcal{P}\) 所诱导的二次压缩。
+该压缩同时提出一个内禀的尺度搬运问题：若保持接口半径与证书语义不变，则高高度离切片数据在端点边界层的可分辨尺度随 \(|\gamma|\) 二次收缩；要把该信息搬运到固定半径处以形成高度无关的 Jensen/PSD 证书，必须引入外置尺度门，其严格实现见 \S\ref{subsubsec:xi-adams-norm-scale-transport}。
 
 \begin{theorem}[离临界线偏移的二次径向压缩律与精度势归因]\label{thm:xi-offcritical-quadratic-radial-compression}
 假设存在离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\) 满足 \(0<\beta<\tfrac12\)。
@@ -1125,6 +1172,102 @@ B^{(m)}(w):=B(w^m).
 在 Hardy/Smirnov 因子分解与“偏移仅由 Blaschke 数据承载”的口径下，离切片偏移可被压缩为端点一维指数 \(\Phi_{-1}(B)\)：
 其一方面等于单点径向衰减率的极限 \(\lim_{r\uparrow 1}\frac{-\log|B(-r)|}{1-r}\)（推论 \ref{cor:xi-endpoint-absorption-additive-tomography}），另一方面满足 \(\Phi_{-1}(B)=0\iff B\equiv 1\)（命题 \ref{prop:xi-endpoint-absorption-coefficient}），从而为“无离切片偏移”给出一个独立于径向缺口分辨率的端点判别接口。
 此外，在奇数 Adams 幂拉回 \(B^{(m)}(w)=B(w^m)\) 下端点指数线性放大（定理 \ref{thm:xi-endpoint-absorption-adams-rescaling}），故族 \(\{\Phi_{-1}(B^{(m)})\}_{m\ \mathrm{odd}}\) 形成一条无损的多尺度审计链：它以整系数尺度参数把“偏移总量”作为可加守恒量进行确定性放大，而不引入新的连续自由度。
+\end{remark}
+
+\paragraph{视界重整化：端点通量的严格缩放律}
+端点吸收系数 \(\Phi_{-1}(B)\) 是盘内点状缺陷的单点压缩；与之配套的尺度语义由“伸缩半群”给出。
+附录 \eqref{eq:scale-psi-m} 引入保持 \(\{\pm 1\}\) 不动点的 Möbius 半群 \(\{\psi_m\}_{m>0}\subset\mathrm{Aut}(\mathbb{D})\)，其端点乘子满足 \(\psi_m'(-1)=m^{-1}\)（命题 \ref{prop:scale-linearization-identity-multipliers}）。
+下述定理表明：端点 Poisson 权重（亦即通量的单原子贡献）在该尺度链下严格按因子 \(m\) 放大。
+
+\begin{theorem}[端点 Poisson 权重的尺度共变性]\label{thm:xi-endpoint-poisson-weight-scaling}
+令 \(m>1\) 且 \(\psi_m\) 如 \eqref{eq:scale-psi-m}。
+对任意 \(a\in\mathbb{D}\) 的端点 Poisson 权重
+\(
+P_a(-1):=\frac{1-|a|^2}{|1+a|^2}
+\)
+有严格恒等式
+\[
+\boxed{\;P_{\psi_m(a)}(-1)=m\,P_a(-1)\;}
+\]
+因此若 \(B\) 为有限 Blaschke 乘积、其零点集合为 \(\{a_k\}_{k=1}^{N}\subset\mathbb{D}\)（按重数计），并令
+\[
+a_k^{(n)}:=\psi_{m^n}(a_k),
+\]
+再令 \(B^{(n)}\) 为以 \(\{a_k^{(n)}\}\) 为零点集合的 Blaschke 乘积（重数保持），则端点毛发通量满足
+\[
+\boxed{\;\Phi_{-1}(B^{(n)})=m^n\,\Phi_{-1}(B)\;}
+\]
+其中 \(\Phi_{-1}\) 由命题 \ref{prop:xi-endpoint-absorption-coefficient} 定义。
+\end{theorem}
+
+\begin{proof}
+由 \eqref{eq:scale-psi-m} 直接计算（亦见命题 \ref{prop:scale-linearization-identity-multipliers} 的证明）得到恒等式
+\[
+\frac{1-\psi_m(a)}{1+\psi_m(a)}=m\,\frac{1-a}{1+a}.
+\]
+另一方面，对任意 \(z\in\mathbb{D}\) 有
+\[
+\Re\!\left(\frac{1-z}{1+z}\right)=\frac{1-|z|^2}{|1+z|^2}=P_z(-1),
+\]
+故取实部立得 \(P_{\psi_m(a)}(-1)=m\,P_a(-1)\)。
+最后一式由逐项求和与 \(\psi_{m^n}=\psi_m^{\circ n}\) 的半群性质推出。证毕。
+\end{proof}
+
+\begin{corollary}[跨尺度闭合 \texorpdfstring{$\Longrightarrow$}{=>} 无毛发固定点]\label{cor:xi-nohair-fixedpoint-flux-closure}
+令 \(m>1\) 并取上定理的尺度推送族 \(\{B^{(n)}\}_{n\ge 0}\)。
+若存在常数 \(M<\infty\) 使
+\[
+\sup_{n\ge 0}\Phi_{-1}(B^{(n)})\le M,
+\]
+则 \(\Phi_{-1}(B)=0\)，从而 \(B\equiv 1\)。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-endpoint-poisson-weight-scaling}，\(\Phi_{-1}(B^{(n)})=m^n\Phi_{-1}(B)\)。
+当 \(m>1\) 时，若左端对 \(n\) 一致有界，则必有 \(\Phi_{-1}(B)=0\)。
+由命题 \ref{prop:xi-endpoint-absorption-coefficient} 的最后一句得 \(B\equiv 1\)。证毕。
+\end{proof}
+
+\begin{corollary}[端点通量的极端共振判据（无奇异内因子口径）]\label{cor:xi-extreme-resonance-criterion}
+在 Hardy/Smirnov 条件口径下，写圆盘化完成化对象为因子分解 \(F_{\zeta}=B\,S\,O\)（附录 \S\ref{subsec:unit-disk-inner-outer}）。
+进一步假设无奇异内因子 \(S\equiv 1\)，并且 \(B\) 为有限 Blaschke 乘积（零点集合按重数计为 \(\{a_k\}\)）。
+则以下命题等价：
+\begin{enumerate}
+  \item \(B\equiv 1\)（盘内无点状零点数据）；
+  \item \(\Phi_{-1}(B)=0\)；
+  \item 端点相位电流密度 \(j_{\mathrm{in}}(\pi)=0\)，其中 \(j_{\mathrm{in}}(\pi):=\sum_k P_{a_k}(-1)\)（定理 \ref{thm:app-inner-phase-current-poisson}）。
+\end{enumerate}
+并且若存在可审计上界 \(j_{\mathrm{in}}(\pi)\le M<\infty\)，则离临界线偏移总量满足线性约束
+\[
+\sum_k\delta_k\le M.
+\]
+\end{corollary}
+
+\begin{proof}
+在 \(S\equiv 1\) 且 \(B\) 为有限 Blaschke 乘积时，由定理 \ref{thm:app-inner-phase-current-poisson} 有
+\(
+j_{\mathrm{in}}(\pi)=\sum_k P_{a_k}(-1)=\Phi_{-1}(B)
+\)。
+每一项 \(P_{a_k}(-1)\) 严格为正，故
+\(
+j_{\mathrm{in}}(\pi)=0
+\iff
+\Phi_{-1}(B)=0
+\iff
+\{a_k\}=\varnothing
+\iff
+B\equiv 1
+\)，得到等价性。
+最后一式由推论 \ref{cor:app-endpoint-phase-current-offcritical}（或推论 \ref{cor:app-endpoint-phase-certificate} 的上界段落）直接推出：\(j_{\mathrm{in}}(\pi)\ge \sum_k\delta_k\)，故若 \(j_{\mathrm{in}}(\pi)\le M\) 则 \(\sum_k\delta_k\le M\)。证毕。
+\end{proof}
+
+\begin{remark}[阈值承载（极端共振）的数学化表述]\label{rem:xi-threshold-carrying-extreme-resonance}
+在本文的圆盘化—固定切片语义中，有限 Blaschke 数据 \(B\) 的存在等价于最小 realization 的点谱残差轴：其最小残差维数为 \(\deg B\)（定理 \ref{thm:blaschke-point-spectrum-correspondence}）。
+因此一旦 \(B\equiv 1\)（亦即端点通量为零），盘内离散点谱共振被排除；
+若仍允许奇异，则它只能以边界方式承载在固定切片 \(|w|=1\) 上（例如通过边界奇异内因子 \(S\) 与边界测度，见定理 \ref{thm:blaschke-defect-zero-fixed-slice-support} 与附录 \S\ref{subsec:unit-disk-inner-outer}）。
+\par
+在这一意义下，“极端共振”可被严格理解为：奇异不再以盘内离散模态出现，而仅允许以阈值边界承载出现；
+该表述与 unitary slice 的闭包语义（拒绝额外正交残差轴）以及严格 Beck--Chevalley/strictification 的零异常口径相容（参见定理 \ref{thm:dephys-offline-hair-curvature-reduction} 的归约链）。
 \end{remark}
 
 最后需要强调的是：“零漏泄”应被理解为可核验制度而非单点偶然。
