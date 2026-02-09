@@ -74,6 +74,60 @@ P_{00}=\varphi^{-1},\quad P_{01}=\varphi^{-2},\quad P_{10}=1.
 \]
 注 \ref{prop:parry-measure-golden} 因而为第 \ref{sec:quant-fit} 节的“拟合准则”提供一个封闭基线；其推导与一般有限型子移位完全一致，见 \cite{LindMarcus1995}。
 
+\subsection{时间的协议刻度：熵率时间与对象层等距因子的可审计拆解}\label{subsec:time-protocol-entropy-vs-rotation}
+\paragraph{问题的两层拆分（对象层 \texorpdfstring{$\neq$}{≠} 协议层）}
+在本文的扫描—投影读出与可审计证书口径下，“时间是否本质上为黄金切面旋转”并非单一命题，而可精确拆解为两个互相独立、且可分别审计的断言：
+\begin{enumerate}
+  \item \textbf{对象层（等距因子）：}给定可观测系统 \((X,\mathcal{B},\mu,T)\)，其最大等距因子（若存在）是否可取为紧交换群上的 Kronecker 平移；在一维圆周情形下，该平移即 \(S^1\) 上的无理旋转，并可用第 \ref{sec:principles} 节固定的反共振规范代表 \(\alpha=\varphi^{-1}\) 作为一条可审计基线分支（并见附录 \ref{app:kronecker-discrepancy}）。
+  \item \textbf{协议层（内生时间计量）：}在固定读出与稳定语法后，“时间单位”应由信息精化/不确定性收缩的指数刻度给出，其不可约刻度由熵率（等价地由谱半径的对数尺度）锁定；该刻度与对象层是否采用圆周旋转坐标化无关。
+\end{enumerate}
+上述拆分把“黄金旋转”严格定位为对象层的一种\emph{表示选择}，并把 \(\log\varphi\) 严格定位为协议层的\emph{可审计刻度不变量}（与内部审计口径 \cite{Internal2025ResolutionFoldingPhiPiE} 兼容）。
+\par
+
+\begin{definition}[熵率时间（information-time）]\label{def:entropy-rate-time}
+在频率语句的设定（小节 \ref{subsec:freq-setting}）下，令 \(\mathcal{P}\) 为由读出 \(s_t(x)=\ind_W(T^t x)\in\{0,1\}\) 所诱导的可观测划分。
+对任意有限观测串 \(a_0^{t-1}:=a_0a_1\cdots a_{t-1}\in\{0,1\}^t\)，记其柱集
+\[
+C(a_0^{t-1})
+:=\bigl\{x\in X:\ s_0(x)=a_0,\ s_1(x)=a_1,\ \dots,\ s_{t-1}(x)=a_{t-1}\bigr\}\in\sigma(\mathcal{P},T^{-1}\mathcal{P},\dots,T^{-(t-1)}\mathcal{P}).
+\]
+定义 \textbf{熵率时间}（或信息时间）
+\[
+\tau_{\mathrm{info}}(t)
+:=-\log \mu\bigl(C(a_0^{t-1})\bigr).
+\]
+在 \(\mathcal{P}\) 可生成且 \(T\) 遍历等标准假设下，Shannon--McMillan--Breiman 定理（亦可视为 AEP 的遍历形式）给出
+\[
+\frac{1}{t}\tau_{\mathrm{info}}(t)\ \longrightarrow\ h_\mu(T,\mathcal{P})
+\qquad\text{几乎处处},
+\]
+其中 \(h_\mu(T,\mathcal{P})\) 为 Kolmogorov--Sinai 熵（参见 \cite{WaltersErgodicTheory,CoverThomas2006}）。
+\end{definition}
+
+\begin{proposition}[\texorpdfstring{$\log\varphi$}{log phi} 刻度锁定：时间单位来自熵率而非旋转]\label{prop:time-unit-logphi-protocol}
+在稳定语法选取为黄金均值约束 \(X_\infty\) 且协议层以其最大熵平衡态（Parry 测度；注 \ref{prop:parry-measure-golden}）作为标定基线时，
+取对象层为该 SFT 的左移 \(T=\sigma\)、取 \(\mathcal{P}\) 为单步划分，则 Kolmogorov--Sinai 熵满足
+\[
+h_\mu(\sigma,\mathcal{P})=\log\varphi.
+\]
+由定义 \ref{def:entropy-rate-time} 与 Shannon--McMillan--Breiman 定理，对几乎处处样本串 \(a_0^{t-1}\) 有
+\[
+\tau_{\mathrm{info}}(t)=t\log\varphi+o(t),
+\qquad
+\mu\bigl(C(a_0^{t-1})\bigr)=\exp\!\bigl(-(\log\varphi+o(1))t\bigr)=\varphi^{-t+o(t)}.
+\]
+因此，“时间单位”的协议刻度由 \(\log\varphi\) 锁定：把 \(\tau_{\mathrm{info}}\) 归一化为步数刻度的自然单位为 \((\log\varphi)^{-1}\)，该刻度不依赖对象层是否采用 Kronecker 旋转作为扫描相位的坐标化。\par
+作为与上述熵率刻度相互独立的谱学锚点，真实输入 \(40\) 状态核在 \(t=0\) 的相关时间满足闭式
+\(\tau_{\mathrm{corr}}(0)=1/\log\varphi\)（注 \ref{cor:chi-slice-t0-golden-tau}），从而在本文的可审计管线中，\(\log\varphi\) 同时以熵率刻度与谱隙刻度两种方式出现并相互核对。
+\end{proposition}
+
+\begin{remark}[对象层的 Kronecker 相位与协议层时间的不可约性]\label{rem:isometric-factor-vs-time-metric}
+对象层若存在最大等距因子，则可将“扫描相位”理解为紧交换群上的 Kronecker 平移；在一维圆周情形下，其规范实现即无理旋转（经典 Sturmian/rotation 图像可参见 \cite{MorseHedlund1940}）。
+本文在第 \ref{sec:principles} 节以 Hurwitz/Markov 最坏逼近口径选取黄金分支 \(\alpha=\varphi^{-1}\) 作为反共振基线，其作用是为\emph{对象层相位}提供一个可审计的 minimax 代表。\par
+然而，协议层“时间”的不可约表达是由柱集质量（定义 \ref{def:entropy-rate-time}）或谱隙衰减（注 \ref{prop:chi-slice-time-correlation}）所导出的对数刻度：在黄金语法选择下，该刻度被 \(\log\varphi\) 锁定并可在不同审计通道中交叉核对。
+因此，“黄金切面旋转”在本文口径下应被理解为对象层的一个可替换表示，而非协议层时间计量的必要前提。
+\end{remark}
+
 \input{sections/08_group_unification_parry_endpoint_bridge.tex}
 
 \input{sections/08_group_unification_boundary_tower_gut_signature.tex}\input{sections/08_group_unification_fibonacci_lie_resonance_ladder.tex}\input{sections/08_group_unification_spectral_alignment.tex}\input{sections/08_group_unification_gut_forward_conclusions.tex}\input{sections/08_group_unification_audit_pointers.tex}

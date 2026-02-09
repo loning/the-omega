@@ -457,6 +457,25 @@ d_{\min}(m)=F_{m/2},
 最后由稳定类型计数律 \(|X_n|=F_{n+2}\) 得 \(|X_{m-2}|=F_m\)。证毕。
 \end{proof}
 
+\begin{remark}[最小退化扇区的正则子覆盖候选（可证伪）]\label{rem:fold-bin-min-sector-cover-candidate}
+命题 \ref{prop:fold-bin-fiber-tail} 表明 \(d^{\mathrm{bin}}_m(w)\) 仅依赖于 \((V_m(w),w_m)\)。
+在审计窗 \(m\in\{6,8,10,12\}\) 上，定理 \ref{thm:fold-bin-min-degeneracy-fib-audited} 给出
+\(
+|\mathcal{S}_{m,d_{\min}(m)}|=|X_{m-2}|
+\)。
+该同基数刚性提示：最小退化扇区可望被描述为一个由短后缀约束刻画的正则像；等价地，存在规范单射
+\(\iota_{m-2}:X_{m-2}\hookrightarrow X_m\) 使
+\(
+\mathcal{S}_{m,d_{\min}(m)}=\iota_{m-2}(X_{m-2})
+\)。
+例如候选映射
+\[
+\iota_{m-2}(v):=(v,0,1)\qquad (v\in X_{m-2})
+\]
+把任意长度 \(m-2\) 的合法词提升为尾部固定为 \(01\) 的长度 \(m\) 词。
+该候选并非解释性选择：其真伪可由 digit DP/退化谱枚举在同一协议下直接否定或确认。
+\end{remark}
+
 \begin{definition}[二进制区间折叠的 fold-gauge 群]\label{def:fold-bin-gauge-group}
 固定 \(m\ge 1\)。定义二进制区间折叠的纤维自同构群
 \[
@@ -482,6 +501,40 @@ d_{\min}(m)=F_{m/2},
 \(\mathrm{Fold}^{\mathrm{bin}}_m(\sigma(n))=\mathrm{Fold}^{\mathrm{bin}}_m(n)=w\)，故 \(\sigma\) 必在每条纤维内部置换。
 反过来，若对每个 \(w\in X_m\) 任取一个纤维内置换 \(\sigma_w\in S_{d^{\mathrm{bin}}_m(w)}\)，把它们拼成对全体 \(\{0,\dots,2^m-1\}\) 的置换 \(\sigma=\prod_w\sigma_w\)，则由构造对任意 \(n\) 有 \(\mathrm{Fold}^{\mathrm{bin}}_m(\sigma(n))=\mathrm{Fold}^{\mathrm{bin}}_m(n)\)，从而 \(\mathrm{Fold}^{\mathrm{bin}}_m\circ\sigma=\mathrm{Fold}^{\mathrm{bin}}_m\)。
 由此得到所示直积分解同构。
+\end{proof}
+
+\begin{definition}[bin-fold 的纤维等价关系群胚]\label{def:fold-bin-fiber-groupoid}
+定义群胚 \(\mathcal{R}^{\mathrm{bin}}_m\rightrightarrows \{0,\dots,2^m-1\}\) 为：对象为整数点集 \(\{0,\dots,2^m-1\}\)；
+当且仅当 \(\mathrm{Fold}^{\mathrm{bin}}_m(n)=\mathrm{Fold}^{\mathrm{bin}}_m(n')\) 时，存在唯一态射 \(n\to n'\)；
+复合由同一纤维内的可达性传递性给出。
+等价地，
+\[
+\mathcal{R}^{\mathrm{bin}}_m
+=\bigsqcup_{w\in X_m}\Bigl(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\times \mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\Bigr)
+\]
+为纤维对群胚的直并。
+\end{definition}
+
+\begin{proposition}[纤维群胚代数的 Wedderburn 分解]\label{prop:fold-bin-groupoid-algebra-wedderburn}
+设 \(\CC[\mathcal{R}^{\mathrm{bin}}_m]\) 为 \(\mathcal{R}^{\mathrm{bin}}_m\) 的复群胚代数（以箭头集上的有限支持函数为基、卷积为乘法）。
+则存在自然代数同构
+\[
+\CC[\mathcal{R}^{\mathrm{bin}}_m]\ \cong\ \bigoplus_{w\in X_m} M_{d^{\mathrm{bin}}_m(w)}(\CC).
+\]
+因此 \(\CC[\mathcal{R}^{\mathrm{bin}}_m]\) 是有限维半单代数，且其 Wedderburn 块分解完全由退化谱直方图 \(\{d:\#\mathcal{S}_{m,d}\}\) 确定。
+\end{proposition}
+\begin{proof}
+对每个 \(w\in X_m\)，令 \(F_w:=\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\)。
+在 \(\CC[F_w\times F_w]\) 中取基
+\(
+E_{ab}:=\mathbf{1}_{(a\to b)}
+\)（\(a,b\in F_w\)）。
+由卷积定义直接算得
+\(
+E_{ab}*E_{cd}=\delta_{bc}\,E_{ad}
+\)，
+故 \(\CC[F_w\times F_w]\cong M_{|F_w|}(\CC)=M_{d^{\mathrm{bin}}_m(w)}(\CC)\)。
+不同 \(w\) 的箭头集不相交，卷积无交叉项，从而全代数为直和。证毕。
 \end{proof}
 
 \begin{corollary}[\texorpdfstring{$m=6$}{m=6} 的 gauge 群与 \texorpdfstring{$(\ZZ_2)^{21}$}{(Z2)^21} 电荷格]\label{cor:fold-bin-gauge-m6}
@@ -561,6 +614,7 @@ S_n^{\mathrm{ab}}\cong \ZZ_2
 \[
 X^{\mathrm{bdry}}_6=\{\texttt{100001},\ \texttt{100101},\ \texttt{101001}\}.
 \]
+其 dyadic 二层预像对由表 \ref{tab:fold6_boundary_sheet_pairs} 给出，并满足固定差值 \(34=F_9\)（从而每个 boundary 词携带规范 sheet parity）。
 由表 \ref{tab:fold_bin_gauge_m6_fibers}（第 \(15,18,20\) 行）可见对每个 \(w\in X^{\mathrm{bdry}}_6\) 均有 \(d^{\mathrm{bin}}_6(w)=2\)；
 因此在命题 \ref{prop:fold-bin-gauge-decomposition} 的直积分解
 \(
@@ -568,6 +622,7 @@ X^{\mathrm{bdry}}_6=\{\texttt{100001},\ \texttt{100101},\ \texttt{101001}\}.
 \)
 下，对每个 \(w\in X^{\mathrm{bdry}}_6\) 存在一个规范 involution \(\tau_w\in \mathcal{G}^{\mathrm{bin}}_6\)，
 其在对应因子 \(S_{d^{\mathrm{bin}}_6(w)}=S_2\) 上为非平凡元、在其余因子上恒等。
+注意：当 \(d\ge 3\) 时 \(S_d\) 的中心平凡，因此“单纤维交换”不能产生中心元；本推论的中心 \((\ZZ_2)^3\) 恰由三条 \(d^{\mathrm{bin}}_6(w)=2\) 的 boundary 纤维独立贡献。
 则 \(\{\tau_w:w\in X^{\mathrm{bdry}}_6\}\) 两两可交换并位于中心，从而生成一个规范嵌入
 \[
 (\ZZ_2)^{X^{\mathrm{bdry}}_6}\cong (\ZZ_2)^3\hookrightarrow Z(\mathcal{G}^{\mathrm{bin}}_6)\subset \mathcal{G}^{\mathrm{bin}}_6.
@@ -581,6 +636,7 @@ X^{\mathrm{bdry}}_6=\{\texttt{100001},\ \texttt{100101},\ \texttt{101001}\}.
 \begin{proof}
 由于 \(S_2\) 交换，\(\tau_w\) 在其所属因子内与任意元可交换；而直积结构保证其与其余因子也可交换，故 \(\tau_w\in Z(\mathcal{G}^{\mathrm{bin}}_6)\)。
 对不同 \(w\) 的 \(\tau_w\) 作用在不交因子上，因此两两可交换并生成 \((\ZZ_2)^3\)。
+在实现上，可取 \(\tau_w\) 为交换表 \ref{tab:fold6_boundary_sheet_pairs} 中 \((\mathrm{Fold}^{\mathrm{bin}}_6)^{-1}(w)\) 的两点换位。
 最后由定义 \ref{def:fold-bin-gauge-sign}，\(\mathrm{sgn}_6(\tau_w)\) 恰在坐标 \(w\) 处取 \(1\)，从而该子群在 \((\ZZ_2)^{21}\) 中给出规范坐标嵌入。证毕。
 \end{proof}
 
@@ -611,6 +667,17 @@ d\log d-d\le \log(d!)\le d\log d
 \)
 与 \(\sum_w d^{\mathrm{bin}}_m(w)=2^m\)。
 \end{proposition}
+
+\begin{remark}[退化谱直方图的审计不变量（bin-fold）]\label{rem:fold-bin-auditable-invariants}
+在审计窗口 \(m\in\{6,8,10,12\}\) 上，退化谱直方图（表 \ref{tab:fold_bin_degeneracy_spectrum_m6_m12}）不仅确定碰撞概率
+\(\mathsf{Col}^{\mathrm{bin}}_m\) 与 \(\chi^2\) 散度（命题 \ref{prop:fold-bin-chi2-col}），也确定 gauge 群体积
+\(
+|\mathcal{G}^{\mathrm{bin}}_m|
+=\prod_{w\in X_m}\bigl(d^{\mathrm{bin}}_m(w)!\bigr)
+\)。
+脚本 \texttt{\detokenize{scripts/exp_fold_bin_auditable_invariants_m6_m12.py}} 输出相应精确分数与 \(\log_{10}|\mathcal{G}^{\mathrm{bin}}_m|\)（以避免天文整数），并生成表 \ref{tab:fold_bin_auditable_invariants_m6_m12}：
+\input{sections/generated/tab_fold_bin_auditable_invariants_m6_m12}
+\end{remark}
 
 \begin{theorem}[Stirling 首项的指数精度：\texorpdfstring{$g_m$}{gm} 与 \texorpdfstring{$\kappa_m$}{kappa} 的线性差]\label{thm:fold-bin-gauge-volume-stirling}
 在命题 \ref{prop:fold-bin-gauge-volume} 的设定下，
@@ -669,68 +736,3 @@ g_m
 都必须引入跨纤维关系，从而破坏直积结构；
 因此 \((\ZZ_2)^{21}\) 是该口径下异常签名空间的最小完备维数。
 \end{remark}
-
-\begin{corollary}[最大纤维、组合上界与饱和判别]\label{cor:fold-bin-saturation}
-对任意 \(m\ge 1\)，最大纤维由 \(w=0^m\) 取得，并满足组合上界
-\begin{equation}\label{eq:fold-bin-upper}
-d^{\mathrm{bin}}_{\max}(m):=d^{\mathrm{bin}}_m(0^m)\le |X_{K(m)-m}|=F_{K(m)-m+2}.
-\end{equation}
-记 \(K=K(m)\)、\(L=K-m\)，并定义在相邻约束下的\emph{最大尾和}
-\[
-S_{\max}(m):=\max\Bigl\{\sum_{k=m+1}^{K} c_k F_{k+1}:\ (c_{m+1},\dots,c_K)\in\{0,1\}^{L},\ c_k c_{k+1}=0\Bigr\}.
-\]
-则对 \(w=0^m\)，上界 \eqref{eq:fold-bin-upper} 饱和当且仅当阈值约束对所有合法尾部都是冗余的，即
-\begin{equation}\label{eq:fold-bin-sat-iff}
-d^{\mathrm{bin}}_{\max}(m)=F_{K(m)-m+2}\quad\Longleftrightarrow\quad 2^m-1\ge S_{\max}(m).
-\end{equation}
-并且 \(S_{\max}(m)\) 具有完全显式的闭式（由“1010\(\cdots\)”极大尾部取得）：
-\begin{equation}\label{eq:fold-bin-Smax-closed}
-S_{\max}(m)=
-\begin{cases}
-F_{K(m)+2}-F_{m+1}, & L=K(m)-m\ \text{为奇数},\\
-F_{K(m)+2}-F_{m+2}, & L=K(m)-m\ \text{为偶数}.
-\end{cases}
-\end{equation}
-等价地，饱和判别可改写为
-\[
-F_{K(m)+2}-2^m\le
-\begin{cases}
-F_{m+1}-1,& L\ \text{奇},\\
-F_{m+2}-1,& L\ \text{偶}.
-\end{cases}
-\]
-\end{corollary}
-
-\begin{remark}[指数级 Diophantine 近似与“仅有限次饱和”]\label{rem:fold-bin-finite}
-由 \eqref{eq:fold-bin-Smax-closed} 可见，饱和条件强迫 \(2^m\) 与某个 Fibonacci 数 \(F_{K(m)+2}\) \emph{异常接近}。
-用 Binet 公式 \(F_n=\varphi^n/\sqrt5+O(\varphi^{-n})\) 将其改写，可导出一个指数级小的线性对数形式约束：
-\[
-\Bigl|(K(m)+2)\log\varphi - m\log 2 - \log\sqrt5\Bigr|
-\ \lesssim\ \Bigl(\frac{\varphi}{2}\Bigr)^m.
-\]
-由于 \(\varphi\) 为代数数而 \(2\) 为有理数，上式左侧是非零的对数线性形式；而 Baker 型下界（例如 Matveev 的显式形式）给出其\emph{至多多项式级}的小下界（见 \cite{Matveev2000LinearFormsLogs,BakerWustholz2007LogarithmicForms}），从而与右侧的指数级小量矛盾，推出：
-\[
-\text{上界饱和只能发生有限次。}
-\]
-本结论在本文的可复现管线中可直接数值审计（见表 \ref{tab:fold_binary_saturation_points}）。
-\end{remark}
-
-\begin{proposition}[计算 \(\boldsymbol{d^{\mathrm{bin}}_m(w)}\) 的 \(O(m)\) Fibonacci-digit DP]\label{prop:fold-bin-digit-dp}
-给定 \(m\ge 1\) 与 \(w\in X_m\)。令 \(K=K(m)\) 并记 \(V=V_m(w)\)，再令 \(\mathrm{slack}:=2^m-1-V\)。
-将 \(\mathrm{slack}\) 写为 Zeckendorf 位串 \(Z(\mathrm{slack})=(b_1,\dots,b_K)\)（合法，无相邻 \(11\)）。
-则 \(d^{\mathrm{bin}}_m(w)\) 可由如下 digit DP 在 \(O(K-m)=O(m)\) 时间内精确计算：
-\[
-\mathrm{DP}(k,\mathrm{prev},\mathrm{tight})
-\quad(k=K,K-1,\dots,m+1),
-\]
-其中 \(\mathrm{prev}\in\{0,1\}\) 记录上一个（更高位）是否取 \(1\)，\(\mathrm{tight}\in\{0,1\}\) 表示当前前缀是否仍与 \((b_k,\dots,b_K)\) 相同；
-转移时允许选择 \(c_k\in\{0,1\}\)，满足
-\[
-c_k c_{k+1}=0,\qquad
-\mathrm{tight}=1\Rightarrow c_k\le b_k,\qquad
-w_m=1\Rightarrow c_{m+1}=0,
-\]
-并按是否保持等号更新 \(\mathrm{tight}\)。该 DP 的输出即为满足 \(\sum_{k=m+1}^K c_k F_{k+1}\le \mathrm{slack}\) 的尾部数目，从而等于 \(d^{\mathrm{bin}}_m(w)\)。
-\end{proposition}
-
-\input{sections/generated/tab_fold_binary_saturation_points}

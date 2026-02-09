@@ -178,6 +178,85 @@ Jensen 圆平均的高虚部贡献被强制集中于端点角窗 \(\theta\approx
 这三点共同把“离切片信息只能正交外置”的主张提升为可复算、可证伪的结构性约束，并与本节开头的“地址先于取值/递归可见域不扩张”语义前提严格相容（\S\ref{sec:recursive-addressing}）。
 \end{remark}
 
+\paragraph{Fibonacci 视界层级：端点边界层的黄金离散化}
+记黄金比例 \(\varphi=(1+\sqrt5)/2\)。对 \(m\in\NN\) 定义半径层级
+\[
+\varrho_m:=\sqrt{1-\varphi^{-2m}}\in(0,1),
+\qquad
+1-\varrho_m^2=\varphi^{-2m}.
+\]
+该离散层级把端点边界层余量 \(1-\varrho^2\) 离散化为 \(\varphi^{-2m}\)，从而可将“高高度需进入 \(T^{-2}\) 分辨率层”的端点壁垒（定理 \ref{thm:xi-jensen-quadratic-resolution-barrier}）转写为一个以 \(\varphi\) 为底的可审计对数层级。
+
+\begin{theorem}[Fibonacci 视界层级的离切片零点排除律]\label{thm:xi-fibonacci-horizon-exclusion}
+取 \(m\in\NN\) 并令 \(\varrho_m\) 如上。若
+\[
+D_\zeta(\varrho_m)=0,
+\]
+则对任意离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\)（\(\beta<\tfrac12\)）的圆盘像 \(w_\rho\in\mathbb{D}\) 均有
+\[
+1-|w_\rho|^2\ \le\ 1-\varrho_m^2=\varphi^{-2m}.
+\]
+进一步，固定 \(\delta_0\in(0,\tfrac12]\)。若该零点还满足 \(\tfrac12-\beta\ge\delta_0\)，则其高度满足显式下界
+\[
+|\gamma|^2\ \ge\ 4\delta_0\,\varphi^{2m}-(1+\delta_0)^2.
+\]
+\end{theorem}
+
+\begin{proof}
+由 Jensen 公式（命题 \ref{prop:app-jensen-formula-defect}），\(D_\zeta(\varrho_m)=0\) 等价于圆盘 \(|w|<\varrho_m\) 内无零点。对任意离切片零点 \(\rho\) 的圆盘像 \(w_\rho\) 有 \(F_\zeta(w_\rho)=0\)，故必有 \(|w_\rho|\ge \varrho_m\)，从而
+\(
+1-|w_\rho|^2\le 1-\varrho_m^2=\varphi^{-2m}
+\)。
+\par
+令 \(\delta:=\tfrac12-\beta\in(0,\tfrac12]\)。由端点 Busemann/horocycle 恒等式（推论 \ref{cor:app-offcritical-horocycle-busemann}）有
+\[
+1-|w_\rho|^2=\frac{4\delta}{\gamma^2+(1+\delta)^2}.
+\]
+结合 \(1-|w_\rho|^2\le \varphi^{-2m}\) 得
+\[
+\gamma^2\ \ge\ 4\delta\,\varphi^{2m}-(1+\delta)^2.
+\]
+由于对 \(\delta\in(0,\tfrac12]\) 有
+\(
+\frac{\mathrm{d}}{\mathrm{d}\delta}\bigl(4\delta\,\varphi^{2m}-(1+\delta)^2\bigr)
+=4\varphi^{2m}-2(1+\delta)\ge 4-3>0
+\)，该右端在区间上严格递增；因此当 \(\delta\ge\delta_0\) 时
+\(
+\gamma^2\ge 4\delta_0\,\varphi^{2m}-(1+\delta_0)^2
+\)，证毕。
+\end{proof}
+
+\begin{corollary}[对数层级的可审计离散化：\texorpdfstring{$m\sim\log_\varphi T$}{m~log_phi T}]\label{cor:xi-fibonacci-horizon-logphiT}
+固定 \(T\ge 1\) 与 \(\delta_0\in(0,\tfrac12]\)，并记 \(\log_\varphi x:=(\log x)/(\log\varphi)\)。
+若存在 \(m\in\NN\) 使 \(D_\zeta(\varrho_m)=0\) 且
+\[
+\varphi^{2m}\ \ge\ \frac{T^2+(1+\delta_0)^2}{4\delta_0},
+\]
+则不存在满足 \(|\gamma|\le T\) 且 \(\tfrac12-\beta\ge\delta_0\) 的离临界线零点。
+特别地，要排除高度带 \(|\gamma|\le T\) 上全部满足 \(\tfrac12-\beta\ge\delta_0\) 的离切片零点，只需取
+\[
+m\ \ge\ \frac12\log_\varphi\!\left(\frac{T^2+(1+\delta_0)^2}{4\delta_0}\right),
+\]
+其主阶为 \(m=\log_\varphi T+O(1)\)。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-fibonacci-horizon-exclusion}，若 \(\tfrac12-\beta\ge\delta_0\)，则
+\(
+|\gamma|^2\ge 4\delta_0\varphi^{2m}-(1+\delta_0)^2
+\)。
+当 \(\varphi^{2m}\ge \frac{T^2+(1+\delta_0)^2}{4\delta_0}\) 时右端不小于 \(T^2\)，故不可能有 \(|\gamma|\le T\) 的零点；后两式为同一不等式的重写及其主阶展开。证毕。
+\end{proof}
+
+\begin{remark}[同一对数自由度：尺度窗层数 \(\asymp\) 视界层数]\label{rem:xi-scale-horizon-same-logphi}
+在尺度叠加完成化 \(\mathcal X_{\Delta,w}\) 的 \(\log T\) 预算门槛下（注 \ref{rem:xi-scale-mellin-logT-budget}），若将对数尺度离散为 Fibonacci 网格 \(x_k=k\log\varphi\) 并仅使用 \(0\le k\le M\) 层，则有效尺度窗宽为 \(X=M\log\varphi\)，从而 \(X(T)\asymp\log T\) 等价于
+\[
+M(T)\asymp \log_\varphi T.
+\]
+另一方面，Fibonacci 视界半径层 \(\varrho_M=\sqrt{1-\varphi^{-2M}}\) 满足 \(1-\varrho_M^2=\varphi^{-2M}\)，与端点二次分辨率层 \(1-\varrho^2\asymp T^{-2}\)（定理 \ref{thm:xi-jensen-quadratic-resolution-barrier} 的主阶）对齐同样给出 \(M\asymp\log_\varphi T\)。
+因此，在以 \(\varphi\) 为重标定基的离散化口径下，“产生 \(T\log T\) 密度所需的尺度自由度”与“端点视界审计所需的半径自由度”在主阶上落入同一对数层级。
+\end{remark}
+
 \paragraph{扩展保存范畴：规范记录轴与唯一连续横截方向}
 本节所用的“扩展保存”语言，旨在将“不可逆读出”视为\emph{记录轴不足}的结构性现象，并以外置记录轴把信息守恒严格化为扩展空间上的单射性（命题 \ref{prop:unit-circle-phase-extension-preserving}；并见附录 \ref{subsec:unit-circle-phase-information}）。
 在可核验语义下，这一思想可被组织为一个因子范畴：对象为可使扩展读出单射化的记录轴，态射为保持证书可核验等价的压缩/投影。
