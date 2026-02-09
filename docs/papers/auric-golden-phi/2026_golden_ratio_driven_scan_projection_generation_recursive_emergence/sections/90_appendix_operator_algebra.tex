@@ -76,6 +76,134 @@ A_P:=C(\TT^d)\rtimes_{T_\alpha}\ZZ,
 对函子性部分：由 \(\Phi_\rtimes\) 在 \(C(\TT^d)\) 上的作用、以及 \(\Phi\) 对归一化 Haar 测度的保持性知 \(\tau_{P'}\circ \Phi_\rtimes=\tau_P\)，并且 \(\Phi_\rtimes(\iota_P(f_R))=\iota_{P'}(f_R')\)。故结论成立。
 \end{proof}
 
+\subsubsection{lapse-加权的 Wish/HSP 读出：测度变换与显式误差证书}\label{app:op-algebra-wish-lapse}
+定理 \ref{thm:hsp-period-trace} 给出“周期值 \(=\) 迹值”的极限实现；而在可审计协议语义中，读出不仅要收敛，还必须在有限样本与实现层截断下附带\emph{显式}误差证书。
+本小节将两类结构同时纳入同一口径：其一是以正密度实施的测度变换（computational lapse），其二是由实现层输出的表格误差/正则化误差预算。
+
+\paragraph{lapse 作为测度变换：加权周期与加权读出}
+固定 \(d\ge 1\)，令 \(D:=\TT^d\)，并以 \(dx\) 表示归一化 Haar 测度。
+给定正函数 \(N:D\to(0,\infty)\)，将其视为 lapse（可取为外部开销比 \(N=\kappa_0/\kappa\)，见注 \ref{rem:lapse-modulated-tau-mix}）。
+对任意可积观测 \(g\in L^1(D)\)，定义 \(N\)-加权目标周期为
+\begin{equation}\label{eq:op-algebra-perN-def}
+\operatorname{per}_{N}(g)
+~:=~
+\frac{\int_{D} g(x)\,N(x)\,dx}{\int_{D} N(x)\,dx}.
+\end{equation}
+对协议对象 \(P=(D,T_\alpha,x_0,g)\in\mathrm{Scanalg}\) 与样本长度 \(N_{\mathrm{samp}}\ge 1\)，记轨道点 \(x_t:=T_\alpha^t x_0\) 并定义加权有限样本读出
+\begin{equation}\label{eq:op-algebra-weighted-readout-def}
+A^{(N)}_{N_{\mathrm{samp}}}(P)
+~:=~
+\frac{\sum_{t=0}^{N_{\mathrm{samp}}-1} N(x_t)\,g(x_t)}{\sum_{t=0}^{N_{\mathrm{samp}}-1} N(x_t)}.
+\end{equation}
+
+\begin{definition}[protocol-stable period datum（Wish）]\label{def:op-algebra-wish}
+固定目标观测 \(f\in L^1(D)\) 并记 \(W_0:=(D,f,\mathrm{Id})\)。
+称 \(W_0\) 为一个 \textbf{Wish}，若存在一族实现协议
+\[
+P_\lambda=(D,T_\alpha,x_0,f_{R_\lambda})\in\mathrm{Scanalg}\qquad(\lambda\to\infty),
+\]
+并且在给定 lapse 密度 \(N\) 后，存在两类可审计预算项
+\[
+\varepsilon_{\mathrm{reg}}(\lambda;N)
+~:=~
+\bigl|\operatorname{per}_{N}(f_{R_\lambda})-\operatorname{per}_{N}(f)\bigr|,
+\qquad
+\varepsilon_{\mathrm{tab}}(N_{\mathrm{samp}},\lambda)\ge 0,
+\]
+其中 \(\varepsilon_{\mathrm{reg}}\) 刻画实现层观测 \(f_{R_\lambda}\) 对目标 \(f\) 的有限部/正则化偏差，而 \(\varepsilon_{\mathrm{tab}}\) 允许覆盖有限样本求值中的表格截断/舍入等实现误差。
+记合并预算
+\begin{equation}\label{eq:op-algebra-wish-eps-def}
+\varepsilon(N_{\mathrm{samp}},\lambda)
+~:=~
+\varepsilon_{\mathrm{tab}}(N_{\mathrm{samp}},\lambda)+\varepsilon_{\mathrm{reg}}(\lambda;N).
+\end{equation}
+\end{definition}
+
+\paragraph{加权 Koksma 闭包：显式有限样本误差证书}
+记 \(\{x_t\}_{t=0}^{N_{\mathrm{samp}}-1}\subset [0,1)^d\) 的星差异度为
+\begin{equation}\label{eq:op-algebra-star-discrepancy}
+D_{N_{\mathrm{samp}}}^{\ast}(P)
+:=\sup_{a\in[0,1)^d}\left|
+\frac{1}{N_{\mathrm{samp}}}\sum_{t=0}^{N_{\mathrm{samp}}-1}\ind_{[0,a)}(x_t)-\prod_{j=1}^{d} a_j
+\right|.
+\end{equation}
+对 Hardy--Krause 有界变差类（Koksma--Hlawka 不等式所用的标准 BV 类，见 \cite{KuipersNiederreiter1974}），记其变差为 \(V_{\mathrm{HK}}(\cdot)\)。
+
+\begin{theorem}[lapse-加权 Wish 的可审计收敛与显式误差证书]\label{thm:op-algebra-lapse-weighted-wish-koksma}
+设 \(W_0=(D,f,\mathrm{Id})\) 为定义 \ref{def:op-algebra-wish} 的 Wish，且 \(P_\lambda=(D,T_\alpha,x_0,f_{R_\lambda})\) 为其实现族。
+固定 lapse 密度 \(N:D\to(0,\infty)\) 与样本长度 \(N_{\mathrm{samp}}\ge 1\)。
+假设 \(N\) 与 \(N\cdot f_{R_\lambda}\) 属于 Hardy--Krause 有界变差类（从而 Koksma--Hlawka 适用），并且满足分母正性条件
+\begin{equation}\label{eq:op-algebra-denominator-positivity}
+\int_D N(x)\,dx\;>\;V_{\mathrm{HK}}(N)\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda).
+\end{equation}
+则加权读出 \eqref{eq:op-algebra-weighted-readout-def} 具有如下显式误差上界：
+\begin{equation}\label{eq:op-algebra-weighted-koksma-bound}
+\boxed{\;
+\left|
+A^{(N)}_{N_{\mathrm{samp}}}(P_\lambda)-\operatorname{per}_{N}(f)
+\right|
+\ \le\
+\frac{\Bigl(V_{\mathrm{HK}}(N f_{R_\lambda})+|\operatorname{per}_{N}(f)|\,V_{\mathrm{HK}}(N)\Bigr)\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda)}
+{\int_D N\,dx- V_{\mathrm{HK}}(N)\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda)}
+\;+\;\varepsilon(N_{\mathrm{samp}},\lambda)\;}
+\end{equation}
+其中 \(\varepsilon(N_{\mathrm{samp}},\lambda)\) 可取为定义 \ref{def:op-algebra-wish} 的合并预算 \eqref{eq:op-algebra-wish-eps-def}（表格误差 + 正则化误差）。
+\end{theorem}
+
+\begin{proof}
+设
+\[
+\widehat I_{N}:=\frac{1}{N_{\mathrm{samp}}}\sum_{t=0}^{N_{\mathrm{samp}}-1}N(x_t),\qquad
+I_{N}:=\int_D N(x)\,dx,
+\]
+\[
+\widehat I_{Nf}:=\frac{1}{N_{\mathrm{samp}}}\sum_{t=0}^{N_{\mathrm{samp}}-1}N(x_t)\,f_{R_\lambda}(x_t),\qquad
+I_{Nf}:=\int_D N(x)\,f_{R_\lambda}(x)\,dx.
+\]
+由 Koksma--Hlawka 不等式（\cite{KuipersNiederreiter1974}）及 \eqref{eq:op-algebra-star-discrepancy}，有
+\[
+|\widehat I_{N}-I_{N}|\le V_{\mathrm{HK}}(N)\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda),
+\qquad
+|\widehat I_{Nf}-I_{Nf}|\le V_{\mathrm{HK}}(N f_{R_\lambda})\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda).
+\]
+由 \eqref{eq:op-algebra-denominator-positivity} 得 \(\widehat I_N\ge I_N- V_{\mathrm{HK}}(N)D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda)>0\)。
+于是
+\[
+\left|\frac{\widehat I_{Nf}}{\widehat I_{N}}-\frac{I_{Nf}}{I_{N}}\right|
+\le
+\frac{|\widehat I_{Nf}-I_{Nf}|}{\widehat I_N}
+\;+\;
+\frac{|I_{Nf}|}{I_N}\cdot\frac{|\widehat I_N-I_N|}{\widehat I_N}.
+\]
+注意到 \(|I_{Nf}|/I_N=|\operatorname{per}_N(f_{R_\lambda})|\)，并用
+\(
+|\operatorname{per}_N(f_{R_\lambda})-\operatorname{per}_N(f)|\le \varepsilon_{\mathrm{reg}}(\lambda;N)
+\)
+（定义 \ref{def:op-algebra-wish}）将其替换为 \(|\operatorname{per}_N(f)|\) 并吸收进 \(\varepsilon(N_{\mathrm{samp}},\lambda)\)，即可得到 \eqref{eq:op-algebra-weighted-koksma-bound}。
+最后将可能的有限样本求值误差以 \(\varepsilon_{\mathrm{tab}}(N_{\mathrm{samp}},\lambda)\) 一并并入 \(\varepsilon(N_{\mathrm{samp}},\lambda)\)（式 \eqref{eq:op-algebra-wish-eps-def}），结论成立。
+\end{proof}
+
+\begin{corollary}[lapse 测度变换下的协议时间口径不变性]\label{cor:op-algebra-lapse-time-gauge-invariance}
+令 \(\mu\) 为 \(D\) 上的参考测度（此处可取 Haar 测度），并令
+\(
+\mu_N(A):=\frac{\int_A N\,d\mu}{\int_D N\,d\mu}
+\)
+为由正密度 \(N\) 诱导的绝对连续测度变换。
+若 \(N\) 有界且有界离零：存在常数 \(0<c\le C<\infty\) 使得 \(c\le N\le C\) \(\mu\)-几乎处处成立，则对任意可测集 \(A\)（\(\mu(A)>0\)）有
+\[
+-\log\mu_N(A)
+~=~
+-\log\mu(A)\;+\;O(1),
+\qquad
+\text{且 }|O(1)|\le \log(C/c).
+\]
+因此在协议时间口径
+\(
+\tau(t):=-\log\mu\bigl(C(a_0{:}a_{t-1})\bigr)
+\)
+下，用 \(\mu_N\) 替换 \(\mu\) 仅引入 \(O(1)\) 的加性改动；从而不改变以 \(\tau\to\infty\) 定义的渐近优先序与任何 \(o(\tau)\) 误差口径的判别。
+\end{corollary}
+
 \subsubsection{折叠诱导的稳定子代数（可审计的 coarse-graining）}\label{app:op-algebra-fold-subalgebra}
 
 对固定分辨率 $m$，$\{P_a\}_{a\in\Omega_m}$ 在可交换情形下给出一个有限分割（互斥且和为单位）：$P_aP_b=0$（$a\neq b$）且 $\sum_{a\in\Omega_m}P_a=I$。因此它们生成一个有限维交换 C*-代数

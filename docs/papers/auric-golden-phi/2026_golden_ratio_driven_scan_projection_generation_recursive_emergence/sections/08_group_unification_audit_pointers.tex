@@ -160,11 +160,22 @@ g_i^{-2}(x)=a_i+b_i\,u(x)+\cdots,
 本稿在此仅记录其在本章变量上的最小同构关系与可证伪相关性形式。
 
 \paragraph{有限检验模板：Hecke 刚性与 Sturm 界的有限素数骨架判定}
-若把三通道 \((\varphi,\pi,e)\) 的指纹组织为一组可比的系数数据（例如某种 \(q\)-级数/Hecke 本征值 \(a_p\) 或等价的素数局部因子），
-则 Hecke 刚性与 Sturm 定理提供一个有限确定性模板：比较有限个系数即可判定是否为同一对象。
-从而可将统一命题表述为有限计算的二值判定问题（而非依赖无限条件）。
-\par
-在审计实现上，该模板可作为一致性检验的约束族：先声明权重/层级等离散参数，再以 Sturm 界给出有限截断，比较对应素数骨架数据是否满足同构条件。
+\begin{theorem}[审计化 Langlands 型识别的有限可判定性：Sturm 有界性 \(\times\) finite-layer closure \(\times\) counterterm strictification]\label{thm:audit-finite-decidability-sturm-finite-layer}
+设某一候选“统一对象”的读出被组织为一组可比的系数/局部因子数据（例如模形式的 \(q\)-展开系数、Hecke 本征值 \(a_p\)，或等价的素数局部因子/特征多项式），并且其实现链允许同时输出 Dirichlet 扭曲通道与有限部漂移预算。
+则在本文的可审计口径下，Langlands 型“识别/匹配”（是否属于给定的 Hecke 本征包/等价类）可归约为\textbf{有限}核验问题，其有限性来源可明确分解为三条：
+\begin{enumerate}
+  \item \textbf{（模形式端：Sturm 有界性）}在给定权 \(k\) 与水平 \(N\) 后，Sturm 界 \(B_{k,N}\) 给出有限截断判定：只需核验至 \(B_{k,N}\) 的有限个 Fourier/Hecke 数据即可判定等同性（从而把“无限条件”替换为有限素数骨架的检查）。
+  \item \textbf{（Dirichlet 端：有限层闭包）}任何有限投影词/有限实现对 Dirichlet 轴束的依赖必在某个有限层 \(m_\ast\) 上闭合；因而“全角色扫描/最坏通道”可归约为对有限集合 \(\widehat{G_{m_\ast}}\) 的穷举核验（命题 \ref{prop:pom-finite-modulus-stability}，亦见推论 \ref{cor:pom-local-finite-dirichlet-action}）。
+  \item \textbf{（接口严格化端：counterterm 消去有限部漂移）}中心扩张口径下的交换失败完全落在有限部/常数层，并可由纯常数 counterterm 门严格消去，从而把残差交换提升为严格相容性条件（命题 \ref{prop:pom-counterterm-anom-cancel}，亦见定理 \ref{thm:pom-strictification-splitting}）。
+\end{enumerate}
+因此，在既定的误差预算结构（有限样本/截断/strictification）下，上述识别问题不再是开放式的无穷验证，而是一个由 \((B_{k,N},m_\ast)\) 与有限部 counterterm 预算共同控制规模的有限判定问题。
+\end{theorem}
+
+\begin{remark}[总结性结论：lapse--Dirichlet--Adams--counterterm--Sturm 的闭合主线]\label{rem:audit-summary-lapse-dirichlet-adams-sturm}
+本稿把“可审计计算”系统性地压缩为有限证书链：lapse（测度变换/外部时间缩放）可内化为加权周期读出并给出显式有限样本上界（定理 \ref{thm:op-algebra-lapse-weighted-wish-koksma}）；Dirichlet 扭曲通道在有限层闭包下局部有限并可穷举核验（命题 \ref{prop:pom-finite-modulus-stability} 与推论 \ref{cor:pom-local-finite-dirichlet-action}）；Adams--Dirichlet 的算术伸缩门把 \((\chi,u)\) 的幂半群作用统一为重整化单子（定义 \ref{def:witt-adams-dirichlet-renorm-gate} 与命题 \ref{prop:witt-renorm-monoid}）；异常通过中心扩张分裂与 counterterm strictification 被严格化为常数层可控漂移（定理 \ref{thm:pom-strictification-splitting}）。
+在此基础上，Sturm 有界性把 Hecke 刚性落实为有限素数骨架判定（定理 \ref{thm:audit-finite-decidability-sturm-finite-layer}），从而形成一条无需手工编号、可逐条引用的闭合结构主线。
+现有脚本 \texttt{\detokenize{scripts/exp_hecke_e4_prime_audit.py}} 即提供该模板的最小可复核实例：在零参数基准情形下，以有限素数点的 Hecke 系数表/JSON 输出作为快速否定护栏。
+\end{remark}
 
 \paragraph{零参数快速否定判据：权 \texorpdfstring{$4$}{4} Eisenstein/\texorpdfstring{$E_8$}{E8} \texorpdfstring{$\theta$}{theta}-模的素数骨架审计}
 在上文“有限素数骨架判定”模板之上，一个特别刚性的基准情形是：若顶层统一对象被声明为
