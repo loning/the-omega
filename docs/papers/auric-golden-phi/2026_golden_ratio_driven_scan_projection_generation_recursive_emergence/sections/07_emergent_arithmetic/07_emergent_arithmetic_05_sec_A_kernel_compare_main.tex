@@ -520,6 +520,69 @@ r^{(1)}_{n}(c_1;u)
 证毕。
 \end{proof}
 
+\begin{proposition}[非阿贝尔 Chebotarev--Plancherel 能量恒等式与商单调性（类函数/不可约特征标通道）]\label{prop:kernel-chebotarev-plancherel-nonabelian}
+设 \(G\) 为有限群，记 \(\mathrm{Cl}(G)\) 为 \(G\) 上的类函数（共轭类不变复值函数）Hilbert 空间，并赋予内积
+\[
+\langle f_1,f_2\rangle_{\mathrm{Cl}(G)}
+:=\frac{1}{|G|}\sum_{g\in G} f_1(g)\,\overline{f_2(g)}.
+\]
+令 \(\{\chi_\rho\}_{\rho\in\widehat G}\) 为 \(G\) 的不可约特征标系，则其在 \(\mathrm{Cl}(G)\) 中构成一组正交规范基。
+对任意 \(\varepsilon\in \mathrm{Cl}(G)\) 满足零均值条件 \(\sum_{g\in G}\varepsilon(g)=0\)（等价于 \(\langle \varepsilon,\chi_{\mathbf{1}}\rangle=0\)），定义特征标通道幅度
+\[
+B(\rho):=\sum_{g\in G}\varepsilon(g)\,\overline{\chi_\rho(g)}
+\qquad(\rho\in\widehat G).
+\]
+则有 Parseval/Plancherel 型精确恒等式
+\[
+\boxed{\;
+\sum_{g\in G}\bigl|\varepsilon(g)\bigr|^2
+=\frac{1}{|G|}\sum_{\rho\in\widehat G\setminus\{\mathbf{1}\}}\bigl|B(\rho)\bigr|^2\; }.
+\]
+此外，若 \(\varphi:G\twoheadrightarrow H\) 为有限群满同态，并定义纤维平均推前（条件期望）
+\[
+(\varphi_\ast\varepsilon)(h):=\frac{1}{|\ker\varphi|}\sum_{g\in \varphi^{-1}(h)}\varepsilon(g),
+\qquad h\in H,
+\]
+则在归一化 \(L^2\) 意义下有收缩
+\[
+\bigl\|\varphi_\ast\varepsilon\bigr\|_{L^2(H)}
+\le
+\bigl\|\varepsilon\bigr\|_{L^2(G)}.
+\]
+\end{proposition}
+
+\begin{proof}
+不可约特征标的正交关系给出 Fourier 展开
+\(
+\varepsilon=\sum_{\rho\in\widehat G}\langle \varepsilon,\chi_\rho\rangle\,\chi_\rho
+\)
+以及 Parseval 恒等式
+\(
+\|\varepsilon\|_{L^2(G)}^2=\sum_{\rho\in\widehat G}|\langle \varepsilon,\chi_\rho\rangle|^2
+\)。
+由定义 \(B(\rho)=|G|\langle \varepsilon,\chi_\rho\rangle\)，而零均值条件使得 \(\langle \varepsilon,\chi_{\mathbf{1}}\rangle=0\)，故立得所示能量恒等式。
+
+对商单调性：对每个 \(h\in H\) 由 Cauchy--Schwarz 有
+\[
+\bigl|(\varphi_\ast\varepsilon)(h)\bigr|^2
+=\left|\frac{1}{|\ker\varphi|}\sum_{g\in\varphi^{-1}(h)}\varepsilon(g)\right|^2
+\le
+\frac{1}{|\ker\varphi|}\sum_{g\in\varphi^{-1}(h)}|\varepsilon(g)|^2.
+\]
+对 \(h\) 求和并用 \(|G|=|H|\cdot|\ker\varphi|\) 得
+\[
+\frac{1}{|H|}\sum_{h\in H}\bigl|(\varphi_\ast\varepsilon)(h)\bigr|^2
+\le
+\frac{1}{|G|}\sum_{g\in G}|\varepsilon(g)|^2,
+\]
+即 \(\|\varphi_\ast\varepsilon\|_{L^2(H)}\le \|\varepsilon\|_{L^2(G)}\)。证毕。
+\end{proof}
+
+\begin{remark}[对照：阿贝尔情形即角色基能量分解]\label{rem:kernel-chebotarev-plancherel-nonabelian-abelian}
+当 \(G\) 为阿贝尔群时，\(\mathrm{Cl}(G)=\CC^{G}\) 且不可约特征标即一维角色；上式退化为推论 \ref{cor:kernel-chebotarev-plancherel-energy}。
+同时，\(\varphi_\ast\) 为纤维平均条件期望，\(L^2\) 收缩即推论 \ref{cor:kernel-chebotarev-L2-monotone} 证明中的抽象算子事实。
+\end{remark}
+
 \begin{theorem}[核的 Chebotarev 型主项与指数误差（完全可计算）]\label{thm:kernel-chebotarev-exp}
 设 $u\in(0,1]$ 且 $M_K(u)$ 原始，记 $\lambda_1(u)=\rho(M_K(u))$，并令
 \[
@@ -577,6 +640,73 @@ B_{n,c}(u)=\frac{1}{|G|}\cdot\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\lambda_1(u
 把定义 \ref{def:kernel-rh} 代入定理 \ref{thm:kernel-weighted-prime-orbit} 与定理 \ref{thm:kernel-chebotarev-exp} 即得。
 \end{proof}
 
+\begin{proposition}[非阿贝尔通道化：群代数核的 Peter--Weyl 块对角化与行列式因子化]\label{prop:kernel-peter-weyl-block-diagonalization}
+设 \(G\) 为有限群，\(V\) 为有限集合，并令
+\[
+K=(K_{ij})_{i,j\in V}\in \CC[G]^{V\times V}
+\]
+为一个以群代数为系数的矩阵。将每个矩阵元写作
+\(
+K_{ij}=\sum_{g\in G}a_{ij}(g)\,g
+\)
+（其中 \(a_{ij}(g)\in\CC\)）。
+定义算子 \(\mathcal{K}\in\mathrm{End}(\CC^{V}\otimes\CC[G])\) 为“右卷积实现”：
+对基向量 \(e_j\otimes \delta_h\)（\(j\in V,\ h\in G\)）规定
+\[
+\mathcal{K}(e_j\otimes \delta_h)
+:=
+\sum_{i\in V}\sum_{g\in G}a_{ij}(g)\,(e_i\otimes\delta_{hg}).
+\]
+对任意不可约复表示类 \(\rho\in\widehat G\)，取其代表 \(\rho:G\to\mathrm{GL}(V_\rho)\)（\(d_\rho:=\dim V_\rho\)），并定义通道矩阵
+\[
+K_\rho\in \mathrm{End}(\CC^{V}\otimes V_\rho),
+\qquad
+(K_\rho)_{ij}:=\sum_{g\in G}a_{ij}(g)\,\rho(g)\in\mathrm{End}(V_\rho).
+\]
+则存在分解（取决于表示的实现与基的选择，但通道集合 \(\widehat G\) 与重数 \(d_\rho\) 由正则表示唯一决定）
+\[
+\CC^{V}\otimes\CC[G]
+\ \cong\
+\bigoplus_{\rho\in\widehat G}\bigl(\CC^{V}\otimes V_\rho\bigr)\otimes \CC^{d_\rho},
+\]
+使得在该分解下 \(\mathcal{K}\) 块对角化为
+\[
+\mathcal{K}\ \cong\ \bigoplus_{\rho\in\widehat G}\bigl(K_\rho\otimes I_{d_\rho}\bigr).
+\]
+从而得到严格的行列式因子化
+\[
+\boxed{\;
+\det\!\bigl(I-z\mathcal{K}\bigr)
+=\prod_{\rho\in\widehat G}\det\!\bigl(I-zK_\rho\bigr)^{d_\rho}\; }.
+\]
+\end{proposition}
+
+\begin{proof}
+由 Wedderburn 分解（等价于有限群的 Peter--Weyl 理论），存在 \(\CC\)-代数同构
+\[
+\CC[G]\ \cong\ \bigoplus_{\rho\in\widehat G}\mathrm{End}(V_\rho),
+\qquad
+g\longmapsto (\rho(g))_{\rho\in\widehat G}.
+\]
+在该同构下，右卷积算子 \(R_x:y\mapsto yx\)（\(x\in\CC[G]\)）分量化为每个 \(\rho\)-块上的“右乘”算子
+\[
+R_{\rho(x)}:\mathrm{End}(V_\rho)\to\mathrm{End}(V_\rho),\qquad X\longmapsto X\,\rho(x).
+\]
+取任意基并用向量化同构 \(\mathrm{End}(V_\rho)\cong \CC^{d_\rho}\otimes\CC^{d_\rho}\)，右乘算子 \(R_{\rho(x)}\) 可识别为 \(I_{d_\rho}\otimes \rho(x)^{\mathsf T}\)（等价地亦可取 \(I_{d_\rho}\otimes\rho(x)\)，二者仅差转置）；因此
+\[
+\det\!\bigl(I-z\,R_{\rho(x)}\bigr)
+=\det\!\bigl(I-z\,\rho(x)^{\mathsf T}\bigr)^{d_\rho}
+=\det\!\bigl(I-z\,\rho(x)\bigr)^{d_\rho}.
+\]
+对矩阵 \(K=(K_{ij})\) 作同样分解：在 \(\rho\)-块上，\(\mathcal{K}\) 等价于由右乘算子 \(R_{(K_\rho)_{ij}}\) 组装而成的块算子；再一次用向量化（并按需交换张量因子顺序）可将其识别为 \(K_\rho\otimes I_{d_\rho}\)（等价地亦可取 \(K_\rho^{\mathsf T}\otimes I_{d_\rho}\)），从而
+\[
+\det\!\bigl(I-z\,\mathcal{K}\bigr)
+=\prod_{\rho\in\widehat G}\det\!\bigl(I-z(K_\rho\otimes I_{d_\rho})\bigr)
+=\prod_{\rho\in\widehat G}\det\!\bigl(I-zK_\rho\bigr)^{d_\rho}.
+\]
+证毕。
+\end{proof}
+
 \begin{proposition}[Artin 分解的有限维版本（正规覆盖的行列式因子化）]\label{prop:kernel-artin-factorization}
 在定义 \ref{def:kernel-group-twist} 的框架下，令 $M_{K,G}(u)$ 为作用在 $\CC^{V}\otimes\CC[G]$ 上的“群扩张邻接算子”：
 对基向量 $e_{i}\otimes\delta_g$，令
@@ -596,11 +726,16 @@ M_{K,G}(u):(e_i\otimes\delta_g)\mapsto \sum_{e:i\to j}u^{\kappa(e)}\,(e_j\otimes
 \end{proposition}
 
 \begin{proof}
-正则表示分解给出同构
+将 $M_{K,G}(u)$ 视为命题 \ref{prop:kernel-peter-weyl-block-diagonalization} 的右卷积实现：其群代数系数矩阵 \(K(u)\in\CC[G]^{V\times V}\) 的 \((i,j)\)-元由从 \(i\to j\) 的边集合给出
+\[
+K(u)_{ij}:=\sum_{e:i\to j}u^{\kappa(e)}\,g(e)\in\CC[G],
+\]
+从而 \(\mathcal{K}=M_{K,G}(u)\)。
+对任意 \(\rho\in\widehat G\)，由定义 \ref{def:kernel-group-twist} 得到通道矩阵
 \(
-\CC[G]\cong\bigoplus_{\rho\in\widehat G}\rho^{\oplus \dim\rho}.
-\)
-该同构把 $M_{K,G}(u)$ 约化为在各个不可约分量上的直和；而在 $\rho$-分量上的约化恰为定义 \ref{def:kernel-group-twist} 的 $M_{K,\rho}(u)$。取行列式得到因子化并出现幂次 $\dim\rho$。
+K(u)_\rho=M_{K,\rho}(u)
+\)。
+因此对 \(\mathcal{K}\) 应用命题 \ref{prop:kernel-peter-weyl-block-diagonalization} 的行列式因子化结论即得所述 Artin 分解。
 \end{proof}
 
 \begin{remark}[对照：Ihara-\texorpdfstring{$\zeta$}{zeta} 的“图版 RH”与 Ramanujan]\label{rem:kernel-graph-rh}

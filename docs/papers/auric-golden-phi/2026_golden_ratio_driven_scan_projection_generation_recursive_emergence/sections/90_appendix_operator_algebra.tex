@@ -13,6 +13,69 @@ Q_{j}(1)=P_j,\quad Q_{j}(0)=I-P_j,
 在可交换情形下 $P_a$ 即柱集指示投影；对给定态 $\rho$（密度算子），其读出概率为 $\Tr(\rho P_a)$。
 在该表述中，“概念由地址确定”即为投影 $P_a$ 的定义依赖于地址；而“概念值为 $0/1$”对应在纯态 $\lvert\psi\rangle$ 的精确测量极限下，取值为投影谱 $\{0,1\}$。
 
+\subsubsection{\texorpdfstring{$\mathrm{HSP}$}{HSP} 的非交换迹实现：Kronecker 扫描的交叉积表述}\label{app:op-algebra-hsp-trace}
+
+本节将“扫描协议 \(\Rightarrow\) 周期值”的读出，提升为一条严格的“交叉积代数上的规范迹”公式：时间平均（周期值）等于规范迹值；并将其组织为协议范畴到周期数据范畴的函子。
+
+\begin{definition}[协议范畴 \texorpdfstring{$\mathrm{Scanalg}$}{Scanalg}：Kronecker 扫描对象与态射]\label{def:scanalg}
+令 \(\mathrm{Scanalg}\) 为如下范畴：
+\begin{itemize}
+  \item \textbf{对象}为四元组
+  \[
+  P=(\TT^d,T_\alpha,x_0,f_R),
+  \qquad
+  T_\alpha(x):=x+\alpha\ (\mathrm{mod}\ 1),
+  \]
+  其中 \(d\ge 1\)、\(x_0\in\TT^d\)、\(\alpha\in\TT^d\)（假设 \(T_\alpha\) 唯一遍历，从而 Birkhoff 平均对任意连续 \(f_R\) 收敛到 Haar 平均），且 \(f_R\in C(\TT^d)\) 为（可能带正则化参数 \(R\) 的）读出可观测量。
+  \item \textbf{态射} \(P\to P'\) 由一个仿射 torus 同构 \(\Phi:\TT^d\overset{\sim}{\to}\TT^{d'}\) 给出（因此 \(d=d'\) 且 \(\Phi\) 保持归一化 Haar 测度），满足共轭条件
+  \[
+  \Phi\circ T_\alpha = T_{\alpha'}\circ \Phi,\qquad \Phi(x_0)=x_0',\qquad f_R'=f_R\circ \Phi^{-1}.
+  \]
+\end{itemize}
+\end{definition}
+
+\begin{definition}[周期数据范畴 \texorpdfstring{$\mathrm{PerDatum}$}{PerDatum}：带迹的代数与观测量]\label{def:perdatum}
+令 \(\mathrm{PerDatum}\) 为如下范畴：对象为三元组 \((A,\tau,a)\)，其中 \(A\) 为含单位元的 \(C^\ast\)-代数，\(\tau\) 为 \(A\) 上的迹态（tracial state），且 \(a\in A\) 为指定观测元；态射为保持单位元与迹的 \(\ast\)-同态 \(\phi:(A,\tau,a)\to(A',\tau',a')\) 满足 \(\tau' \circ \phi=\tau\) 且 \(\phi(a)=a'\)。
+\end{definition}
+
+\begin{definition}[\texorpdfstring{$\mathrm{HSP}$}{HSP} 函子：交叉积与规范迹]\label{def:hsp-functor}
+对对象 \(P=(\TT^d,T_\alpha,x_0,f_R)\in\mathrm{Scanalg}\)，定义
+\[
+A_P:=C(\TT^d)\rtimes_{T_\alpha}\ZZ,
+\]
+并记 \(\iota_P:C(\TT^d)\hookrightarrow A_P\) 为自然包含。
+定义 \(A_P\) 上的\textbf{规范迹} \(\tau_P\) 为：对任意有限 Fourier 展开元
+\(
+\sum_{n\in\ZZ} f_n U^n
+\)（其中 \(U\) 为实现 \(T_\alpha\) 的幺正元）取
+\[
+\tau_P\!\left(\sum_{n\in\ZZ} f_n U^n\right):=\int_{\TT^d} f_0(x)\,dx,
+\]
+其中 \(dx\) 为归一化 Haar 测度。于是定义
+\[
+\mathrm{HSP}(P):=\bigl(A_P,\tau_P,\iota_P(f_R)\bigr)\in\mathrm{PerDatum}.
+\]
+对态射 \(\Phi:P\to P'\)（定义 \ref{def:scanalg}），由共轭诱导交叉积同构 \(\Phi_\rtimes:A_P\to A_{P'}\)（在 \(C(\TT^d)\) 上由 \(f\mapsto f\circ\Phi^{-1}\) 给出，并把实现元 \(U\) 送至 \(U'\)），从而令 \(\mathrm{HSP}(\Phi):=\Phi_\rtimes\)。
+\end{definition}
+
+\begin{theorem}[“周期值 \(=\) 迹值”：唯一遍历 Birkhoff 平均的非交换表述]\label{thm:hsp-period-trace}
+在定义 \ref{def:scanalg}--\ref{def:hsp-functor} 下，对任意 \(P=(\TT^d,T_\alpha,x_0,f_R)\in\mathrm{Scanalg}\) 有
+\[
+\lim_{N\to\infty}\frac{1}{N}\sum_{t=0}^{N-1} f_R\!\bigl(T_\alpha^t x_0\bigr)
+=\int_{\TT^d} f_R(x)\,dx
+=\tau_P\!\bigl(\iota_P(f_R)\bigr).
+\]
+并且对任意态射 \(\Phi:P\to P'\)，有严格的迹保持与周期值不变性：
+\[
+\tau_{P'}\!\bigl(\mathrm{HSP}(\Phi)(\iota_P(f_R))\bigr)=\tau_P\!\bigl(\iota_P(f_R)\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+唯一遍历给出 Birkhoff 平均对任意连续 \(f_R\) 收敛到 Haar 平均，得到第一条等式；第二条等式由 \(\tau_P\) 的定义立即给出。
+对函子性部分：由 \(\Phi_\rtimes\) 在 \(C(\TT^d)\) 上的作用、以及 \(\Phi\) 对归一化 Haar 测度的保持性知 \(\tau_{P'}\circ \Phi_\rtimes=\tau_P\)，并且 \(\Phi_\rtimes(\iota_P(f_R))=\iota_{P'}(f_R')\)。故结论成立。
+\end{proof}
+
 \subsubsection{折叠诱导的稳定子代数（可审计的 coarse-graining）}\label{app:op-algebra-fold-subalgebra}
 
 对固定分辨率 $m$，$\{P_a\}_{a\in\Omega_m}$ 在可交换情形下给出一个有限分割（互斥且和为单位）：$P_aP_b=0$（$a\neq b$）且 $\sum_{a\in\Omega_m}P_a=I$。因此它们生成一个有限维交换 C*-代数
