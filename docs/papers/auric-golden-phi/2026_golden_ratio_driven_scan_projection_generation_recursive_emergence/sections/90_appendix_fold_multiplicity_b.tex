@@ -378,6 +378,85 @@ g_{\mathrm{col}}^{2,\mathrm{bin}}(6)=\frac{53}{1024}-\frac{1}{21}
 \]
 \end{remark}
 
+\begin{proposition}[\texorpdfstring{$\chi^2$}{chi2} 散度与碰撞缺口的同一性（bin-fold）]\label{prop:fold-bin-chi2-col}
+令
+\[
+p^{\mathrm{bin}}_m(w):=\frac{d^{\mathrm{bin}}_m(w)}{2^m}\qquad (w\in X_m),
+\qquad
+u_m(w):=\frac{1}{|X_m|}.
+\]
+则有恒等式
+\[
+\mathsf{Col}^{\mathrm{bin}}_m=\sum_{w\in X_m}\bigl(p^{\mathrm{bin}}_m(w)\bigr)^2,
+\qquad
+g_{\mathrm{col}}^{2,\mathrm{bin}}(m)=\sum_{w\in X_m}\bigl(p^{\mathrm{bin}}_m(w)-u_m(w)\bigr)^2,
+\]
+并且 \(\chi^2\) 散度满足
+\[
+\chi^2\!\bigl(p^{\mathrm{bin}}_m\|u_m\bigr)
+:=\sum_{w\in X_m}\frac{\bigl(p^{\mathrm{bin}}_m(w)-u_m(w)\bigr)^2}{u_m(w)}
+=|X_m|\,g_{\mathrm{col}}^{2,\mathrm{bin}}(m)
+=|X_m|\,\mathsf{Col}^{\mathrm{bin}}_m-1.
+\]
+因此 \(g_{\mathrm{col}}^{2,\mathrm{bin}}(m)\) 是“均匀分布在二阶信息几何下的标准偏离量”，而非经验性指标。
+\end{proposition}
+\begin{proof}
+由定义 \(p^{\mathrm{bin}}_m(w)=d^{\mathrm{bin}}_m(w)/2^m\) 与
+\(
+\mathsf{Col}^{\mathrm{bin}}_m
+=2^{-2m}\sum_{w}(d^{\mathrm{bin}}_m(w))^2
+\)
+得到第一条恒等式。
+\par
+注意 \(\sum_w p^{\mathrm{bin}}_m(w)=1\) 且 \(\sum_w u_m(w)=1\)。展开得
+\[
+\sum_w\bigl(p^{\mathrm{bin}}_m(w)-u_m(w)\bigr)^2
+=\sum_w \bigl(p^{\mathrm{bin}}_m(w)\bigr)^2-\frac{1}{|X_m|}
+=\mathsf{Col}^{\mathrm{bin}}_m-\frac{1}{|X_m|}
+=g_{\mathrm{col}}^{2,\mathrm{bin}}(m).
+\]
+最后用 \(u_m(w)=1/|X_m|\) 即得
+\(
+\chi^2(p^{\mathrm{bin}}_m\|u_m)=|X_m|\sum_w(p^{\mathrm{bin}}_m(w)-u_m(w))^2
+\)，
+从而给出所示等式链。证毕。
+\end{proof}
+
+\begin{definition}[bin-fold 退化谱扇区与最小退化度]\label{def:fold-bin-degeneracy-sectors}
+对二进制区间折叠 \(\mathrm{Fold}^{\mathrm{bin}}_m:\{0,\dots,2^m-1\}\to X_m\)，
+定义最小退化度
+\[
+d_{\min}(m):=\min_{w\in X_m} d^{\mathrm{bin}}_m(w),
+\]
+并对每个整数 \(d\ge 1\) 定义退化谱扇区
+\[
+\mathcal{S}_{m,d}:=\{w\in X_m:\ d^{\mathrm{bin}}_m(w)=d\}.
+\]
+\end{definition}
+
+\begin{theorem}[已审计偶数窗的最小退化 Fibonacci 律]\label{thm:fold-bin-min-degeneracy-fib-audited}
+在审计窗口 \(m\in\{6,8,10,12\}\) 上，bin-fold 退化谱满足
+\[
+d_{\min}(m)=F_{m/2},
+\qquad
+\bigl|\mathcal{S}_{m,d_{\min}(m)}\bigr|=F_m=|X_{m-2}|.
+\]
+该结论完全由表 \ref{tab:fold_bin_degeneracy_spectrum_m6_m12} 的 \((d_{\min},\#\{d=d_{\min}\})\) 列给出并可逐项复核。
+\end{theorem}
+\begin{proof}
+由表 \ref{tab:fold_bin_degeneracy_spectrum_m6_m12} 逐行读出
+\[
+(d_{\min}(6),|\mathcal{S}_{6,d_{\min}}|)=(2,8),\quad
+(d_{\min}(8),|\mathcal{S}_{8,d_{\min}}|)=(3,21),
+\]
+\[
+(d_{\min}(10),|\mathcal{S}_{10,d_{\min}}|)=(5,55),\quad
+(d_{\min}(12),|\mathcal{S}_{12,d_{\min}}|)=(8,144),
+\]
+而 \((F_{3},F_{6})=(2,8)\)、\((F_{4},F_{8})=(3,21)\)、\((F_{5},F_{10})=(5,55)\)、\((F_{6},F_{12})=(8,144)\)，故得 \(d_{\min}(m)=F_{m/2}\) 与 \(|\mathcal{S}_{m,d_{\min}(m)}|=F_m\)。
+最后由稳定类型计数律 \(|X_n|=F_{n+2}\) 得 \(|X_{m-2}|=F_m\)。证毕。
+\end{proof}
+
 \begin{definition}[二进制区间折叠的 fold-gauge 群]\label{def:fold-bin-gauge-group}
 固定 \(m\ge 1\)。定义二进制区间折叠的纤维自同构群
 \[

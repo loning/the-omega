@@ -2069,6 +2069,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zero_coset_union_count",
+            script="exp_fold_zero_coset_union_count.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zero_coset_union_count.json",
+            ],
+        ),
+        Step(
             name="fold_conditional_expectation_singular_spectrum",
             script="exp_fold_conditional_expectation_singular_spectrum.py",
             args=[],
