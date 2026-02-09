@@ -88,21 +88,28 @@ f_{\mathrm{long}}:=f(u)\ (u\in X_6^{\mathrm{long}}),
 Weyl-不变性即意味着 \(f\) 在每条轨道上取常值，故求和可按两块分拆，得到所示平均公式。证毕。
 \end{proof}
 
-\paragraph{四步平移的规范 uplift 同构}
-对任意 \(n\ge 2\)，定义映射
+\begin{theorem}[四步平移 uplift 同构]\label{thm:boundary-shift4-uplift-isomorphism}
+对任意 \(n\ge 2\)，映射
 \[
-\iota_n: X_n\to X^{\mathrm{bdry}}_{n+4},\qquad \iota_n(v)=10\,v\,01.
+\iota_n:X_n\to X_{n+4}^{\mathrm{bdry}},\qquad \iota_n(v)=10\,v\,01
 \]
-则 \(\iota_n\) 是一个规范的双射，其逆映射为“删去首两位与末两位”。证明要点完全构造性：边界词满足首尾为 \(1\)，而在“无相邻 \(11\)”约束下首尾的相邻位必须为 \(0\)，故任意边界词必形如 \(1,0,(\cdots),0,1\)；中间那段自然落在 \(X_n\)。因此计数恒等式
-\(|X_{n+4}^{\mathrm{bdry}}|=|X_n|\) 被提升为可计算的结构同构。
-\par
-在 \(n=6\) 的实例上，这给出
+为规范双射，其逆映射为删去首两位与末两位。特别地，当 \(n=6\) 时有
 \input{sections/generated/eq_boundary_uplift_m10_isomorphism}
-并把 \(m=10\) 的 \(21\) 个边界模态逐一标号为 “\(18\) 个 \(B_3/C_3\) 根方向 + \(3\) 个 Cartan 方向”：对 \(b\in X^{\mathrm{bdry}}_{10}\)，取 \(v=\iota_6^{-1}(b)\in X_6\)，若 \(v\in X_6^{\mathrm{cyc}}\) 则用表 \ref{tab:fold6_b3c3_root_dictionary_b3} 赋根向量，若 \(v\in X_6^{\mathrm{bdry}}\) 则记为 Cartan 方向。该字典由脚本 \texttt{\detokenize{scripts/exp_boundary_uplift_m10_b3c3_dictionary.py}} 自动生成，完整 \(21\) 词清单见表 \ref{tab:boundary_uplift_m10_dictionary}。
-\input{sections/generated/tab_boundary_uplift_m10_dictionary}
+\end{theorem}
+\begin{proof}
+在黄金均值语法（禁止相邻 \(11\)）下，任意边界词 \(b\in X_{n+4}^{\mathrm{bdry}}\) 满足 \(b_1=b_{n+4}=1\)，故必有 \(b_2=b_{n+3}=0\)，从而 \(b\) 唯一写作 \(b=10\,v\,01\) 且 \(v\in X_n\)。
+由此 \(\iota_n\) 为双射，逆映射即为删去首两位与末两位。证毕。
+\end{proof}
 
-\paragraph{\texorpdfstring{$B_3/C_3$}{B3/C3} 根方向的 \texorpdfstring{$6+6+6$}{6+6+6} 刚性分裂}
-表 \ref{tab:fold6_b3c3_root_dictionary_b3} 给出的 \(B_3\) 根向量不仅呈现粗分裂 \(6+12\)（短根/长根），其 \(12\) 个长根还进一步刚性分解为两套互不相交的 \(A_2\) 根系：
+\begin{theorem}[\texorpdfstring{$(B_3/C_3)$}{(B3/C3)} 根方向的刚性四块分裂]\label{thm:boundary-m10-b3c3-rigid-four-block-split}
+取 \(m=6\) 的 cyclic 扇区 \(X_6^{\mathrm{cyc}}\) 与表 \ref{tab:fold6_b3c3_root_dictionary_b3} 给出的 \(B_3\) 规范化根字典
+\(\psi_B:X_6^{\mathrm{cyc}}\to\Phi(B_3)\)。
+则 \(m=10\) 的边界层 \(X_{10}^{\mathrm{bdry}}\) 可被规范标号为 “\(18\) 个根方向 \(\,+\,3\) 个 Cartan 方向”：对任意 \(b\in X_{10}^{\mathrm{bdry}}\)，令 \(v=\iota_6^{-1}(b)\in X_6\)，若 \(v\in X_6^{\mathrm{cyc}}\) 则以 \(\psi_B(v)\) 赋根向量，若 \(v\in X_6^{\mathrm{bdry}}\) 则记为 Cartan 方向。
+其中 Cartan 方向恰对应 \(X_6^{\mathrm{bdry}}\) 的三词；并且 \(18\) 个根方向刚性分裂为
+\[
+18=6\ (\mathrm{short})\ +\ 6\ (A_2(+))\ +\ 6\ (A_2(-)).
+\]
+更具体地，长根集合分裂为两套互不相交的 \(A_2\) 根系
 \[
 \Phi_{\mathrm{long}}=\Phi_{A_2(+)}\sqcup\Phi_{A_2(-)},\qquad
 \Phi_{A_2(+)}=\{\pm(e_1+e_2),\pm(e_1+e_3),\pm(e_2+e_3)\},
@@ -110,21 +117,24 @@ Weyl-不变性即意味着 \(f\) 在每条轨道上取常值，故求和可按�
 \[
 \Phi_{A_2(-)}=\{\pm(e_1-e_2),\pm(e_1-e_3),\pm(e_2-e_3)\}.
 \]
-其中 \(A_2(+)\) 与 \(A_2(-)\) 的区分仅依赖“两个非零分量同号/异号”的符号结构，因而不依赖额外选择；这把 \(X_6^{\mathrm{cyc}}\) 进一步刚性分裂为
+其判别仅依赖“两个非零分量同号/异号”的符号结构，因而不引入附加选择；由此 \(X_6^{\mathrm{cyc}}\) 进一步刚性分裂为
 \[
 X_6^{\mathrm{cyc}}=X_6^{\mathrm{short}}\ \sqcup\ X_6^{A_2(+)}\ \sqcup\ X_6^{A_2(-)},
 \qquad 18=6+6+6,
 \]
-其显式词表与根向量对应已经并入表 \ref{tab:boundary_uplift_m10_dictionary} 的 uplift 字典中（由上述脚本自动生成）。
-结合上一段的“四步平移的规范 uplift 同构”，这一分裂把 \(m=10\) 的边界接口固定为
+并通过定理 \ref{thm:boundary-shift4-uplift-isomorphism} 的 uplift 同构将该分块推送到 \(X_{10}^{\mathrm{bdry}}\)。
+其显式词表、类别与根向量由脚本 \texttt{\detokenize{scripts/exp_boundary_uplift_m10_b3c3_dictionary.py}} 生成并汇总于表 \ref{tab:boundary_uplift_m10_dictionary}，从而给出一个有限、可逐项核验的标号证书。
+因此 \(m=10\) 的边界接口被固定为
 \(
 6\ (\text{short})\ +\ 6\ (A_2(+))\ +\ 6\ (A_2(-))\ +\ 3\ (\text{Cartan})
 \)
 的四块结构，为后续谱隙对齐或分块耦合分析提供硬指标。
+\end{theorem}
+\input{sections/generated/tab_boundary_uplift_m10_dictionary}
 
 \paragraph{各向同性点的统一判据与 CAP-II 常数组合标定}
 注 \ref{rem:sp6-minimal-continuous-envelope} 已将 \(\Sigma(\theta)=\nabla^2P(\theta)\) 的各向同性扫描作为 \(C_3=\mathrm{Sp}(6)\) 连续包络的可审计入口。
-将“四步平移的规范 uplift 同构”给出的 uplift 字典与“根方向的 \(6+6+6\) 刚性分裂”给出的根字典同该扫描联立，可给出一个更强的统一判据：在某个“统一点” \(\theta^*\) 上，根向量的有效长度应只依赖根型（短/长），而不依赖具体方向；因此在 \(\theta^*\) 附近，\(m=10\) 的 \(21\) 个边界模态应呈现最简分裂
+将定理 \ref{thm:boundary-shift4-uplift-isomorphism} 给出的 uplift 同构与定理 \ref{thm:boundary-m10-b3c3-rigid-four-block-split} 给出的根方向分块同该扫描联立，可给出一个更强的统一判据：在某个“统一点” \(\theta^*\) 上，根向量的有效长度应只依赖根型（短/长），而不依赖具体方向；因此在 \(\theta^*\) 附近，\(m=10\) 的 \(21\) 个边界模态应呈现最简分裂
 \[
 12\ (\text{长根，含 }A_2(+)\oplus A_2(-))\ \oplus\ 6\ (\text{短根})\ \oplus\ 3\ (\text{Cartan}),
 \]
@@ -266,6 +276,66 @@ window-6 的 uplift 偏移集合是一个硬算术对象，并且末位为 \(1\)
 作为跨分辨率稳健性检验，在同一 dyadic 折叠口径下，boundary 扇区的 uplift 结构从 \(m=6\) 的二层提升为 \(m=7,8\) 的三层（对应的 \(\delta\) 组合见表 \ref{tab:foldbin_boundary_lift_m6_m8}）。
 因此，window-6 的 \(\ZZ_2\) sheet parity 在该读出下是一个\emph{最小窗特有}的硬结构事实；若要把它推广为跨 \(m\) 的残余选择律，需要额外的协议门/投影约束在更高分辨率上重新锁定二层覆盖（该要求本身是可审计、可反驳的）。
 \input{sections/generated/tab_foldbin_boundary_lift_m6_m8}
+
+\paragraph{window-6 的几何稳定子：\texorpdfstring{$\mathrm{Aut}(Q_6)$}{Aut(Q6)} 下唯一残存的 \texorpdfstring{$\ZZ_2$}{Z2}}
+上段的 \(\delta=34\) 双层覆盖与 sheet parity 首先是一个由 dyadic uplift 强迫出的\emph{算术}事实。
+为把该事实与底层微态的几何对称性对接，我们将 \(\mathrm{Fold}^{\mathrm{bin}}_6\) 视为 \(6\) 维超立方体顶点集上的标签函数，并在超立方体图自同构下引入如下“几何稳定子”。\par
+令 \(\Omega_6=\{0,1\}^6\) 为 \(6\) 维超立方体顶点集，并令 \(Q_6\) 为其 Hamming 距离 \(1\) 的图结构。
+其图自同构群为
+\(
+\mathrm{Aut}(Q_6)\cong (\ZZ_2)^6\rtimes S_6
+\)。
+定义二进制编号
+\[
+\mathrm{int}_6(\omega_1\cdots\omega_6):=\sum_{k=1}^6 \omega_k\,2^{6-k}\in\{0,\dots,63\},
+\]
+并将二进制区间折叠（定义 \ref{def:fold-bin}）限制到顶点集上：
+\[
+F_6:\Omega_6\to X_6,\qquad F_6(\omega):=\mathrm{Fold}^{\mathrm{bin}}_6\bigl(\mathrm{int}_6(\omega)\bigr).
+\]
+定义其\textbf{几何稳定子}
+\[
+\mathrm{Stab}_{\mathrm{geo}}(F_6)
+:=\bigl\{\sigma\in \mathrm{Aut}(Q_6):\ F_6\circ\sigma=F_6\bigr\}.
+\]
+注意：该群是 \(\mathrm{Aut}(Q_6)\) 的子群，\emph{不同于}纤维内任意置换所生成的 fold-gauge 群
+\(\mathcal{G}^{\mathrm{bin}}_6=\mathrm{Aut}(\mathrm{Fold}^{\mathrm{bin}}_6)\)（定义 \ref{def:fold-bin-gauge-group}）。\par
+
+\begin{theorem}[window-6 的几何刚性与唯一非平凡对称]\label{thm:foldbin6-geo-stabilizer-z2}
+几何稳定子 \(\mathrm{Stab}_{\mathrm{geo}}(F_6)\) 为阶 \(2\) 群。
+除恒等元外，唯一的非平凡元可取为对合
+\(\sigma_{\mathrm{geo}}\in\mathrm{Aut}(Q_6)\)，其在坐标上由“交换第 \(1\) 与第 \(5\) 位并同时取补”给出：
+\input{sections/generated/eq_foldbin6_geo_stabilizer}
+亦即
+\(
+\mathrm{Stab}_{\mathrm{geo}}(F_6)=\{\mathrm{id},\sigma_{\mathrm{geo}}\}\cong\ZZ_2
+\)。
+\end{theorem}
+\begin{proof}
+\(\mathrm{Aut}(Q_6)\) 为有限群且 \(|\mathrm{Aut}(Q_6)|=2^6\cdot 6!=46080\)，因此 \(\mathrm{Stab}_{\mathrm{geo}}(F_6)\) 可通过有限穷举得到完全核验。
+脚本 \texttt{\detokenize{scripts/exp_foldbin6_geo_stabilizer.py}} 枚举 \(\mathrm{Aut}(Q_6)\) 并筛选满足 \(F_6\circ\sigma=F_6\) 的元素，输出审计证书
+\texttt{\detokenize{artifacts/export/foldbin6_geo_stabilizer.json}} 与用于正文插入的生成片段
+\texttt{\detokenize{sections/generated/eq_foldbin6_geo_stabilizer.tex}}。
+由该穷举证书可知稳定子大小为 \(2\)，且非平凡元唯一并为所示对合。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$34=100010_2$}{34=100010_2} 的几何来源：半立方体支撑与 \texorpdfstring{$\pm 34$}{+-34} 偏移]\label{cor:foldbin6-geo-mask-34}
+令 \(\sigma_{\mathrm{geo}}\) 如定理 \ref{thm:foldbin6-geo-stabilizer-z2}。
+则对任意 \(\omega=(\omega_1,\dots,\omega_6)\in\Omega_6\)，有
+\[
+\omega_1\neq \omega_5\ \Longrightarrow\ \sigma_{\mathrm{geo}}(\omega)=\omega,
+\qquad
+\omega_1=\omega_5\ \Longrightarrow\ \mathrm{int}_6\!\bigl(\sigma_{\mathrm{geo}}(\omega)\bigr)-\mathrm{int}_6(\omega)\in\{\pm 34\}.
+\]
+换言之，\(\sigma_{\mathrm{geo}}\) 的非平凡作用支撑恰为半立方体 \(\{\omega:\omega_1=\omega_5\}\)，并在二进制编号上携带掩码整数 \(34=2^5+2^1=100010_2\)。
+因此，window-6 中 \(\delta=34\) 的 uplift/双层覆盖（上段）不仅是算术尾部偏移，也是 \(\mathrm{Aut}(Q_6)\) 中唯一残存的非平凡几何对称所携带的整数指纹。
+\end{corollary}
+\begin{proof}
+对 \(\sigma_{\mathrm{geo}}(\omega_1,\omega_2,\omega_3,\omega_4,\omega_5,\omega_6)=(1-\omega_5,\omega_2,\omega_3,\omega_4,1-\omega_1,\omega_6)\) 逐坐标讨论。
+若 \(\omega_1\neq\omega_5\)，则 \((\omega_1,\omega_5)\in\{(0,1),(1,0)\}\)，代入可得 \((1-\omega_5,1-\omega_1)=(\omega_1,\omega_5)\)，故整点不变。
+若 \(\omega_1=\omega_5\)，则两位同时翻转，且二进制权重为 \(2^5\) 与 \(2^1\)，从而编号差必为 \(\pm(2^5+2^1)=\pm 34\)。
+证毕。
+\end{proof}
 
 \paragraph{\texorpdfstring{$F_9$}{F9} 门户锁定：\texorpdfstring{$34$}{34} 同时是 window-6 的 uplift 偏移与 \texorpdfstring{$m=6\to 8$}{m=6->8} 共振缺口}
 表 \ref{tab:fibonacci_lie_resonance_ladder} 给出下一个稳定类型维数共振点为 \(m=8\)，且
@@ -739,16 +809,15 @@ I(\gamma,\mathcal{E})
 \boxed{\ 55\ =\ 12\ \oplus\ 9\ \oplus\ 24\ \oplus\ 10\ },
 \]
 其中 \(12\) 对应于由低退化刚性读出的可见扇区规模，其余 \(43\) 为三块可归因的隐藏容量。
-\par
-\emph{可检验预测（统一点谱简并签名）}：
-在自对偶统一点 \(u=1\)（注 \ref{rem:selfdual-u1-six-branch-lock}）处，
-任何以线性化转移/响应算子读出统一槽位的实现（例如通道谱隙耦合族的分块组织，或统一提升算子在通道分解下的块谱组织）
-都应呈现与 \(12\oplus 9\oplus 24\oplus 10\) 相容的四块谱结构；
-其块多重度在可观测层面应稳定为 \(\{12,9,24,10\}\)，并对核/门的可审计微扰保持鲁棒。
-\par
-作为通道侧的具体闭合，这一结构把 \(G_{\mathrm{chan}}\) 的连通紧核指向 \(U(3)\)（行列式约束下可取 \(SU(3)\)），
-并将“统一”从数值相交提升为结构判据：在统一点处，通道响应张量应恢复 \(U(3)\)-各向同性（与单位阵成比例），
-其可审计入口由上文的各向同性点判据与相应扫描表提供。
+
+\begin{proposition}[自对偶统一点的四块谱简并签名与 \texorpdfstring{$U(3)$}{U(3)} 各向同性恢复]\label{prop:gut-u1-four-block-spectrum-signature}
+在上述四块分解
+\(
+55=12\oplus 9\oplus 24\oplus 10
+\)
+所确定的维数骨架下，于自对偶统一点 \(u=1\)（注 \ref{rem:selfdual-u1-six-branch-lock}），任何以线性化转移算子或响应算子读出统一槽位的实现，其谱应呈现与该四块分解相容的不变块结构；其块多重度在可观测层面稳定为 \(\{12,9,24,10\}\)，并对核/门的可审计微扰保持鲁棒。\par
+此外，在该点通道响应张量应恢复 \(U(3)\)-各向同性，即与单位阵成比例；其可审计入口由上文的各向同性点判据与相应扫描表提供。
+\end{proposition}
 
 \paragraph{NAP 选择器：在“非阿贝尔层保留”约束下 \texorpdfstring{$SO(10)$}{SO(10)} 被离散地唯一挑出}
 把 \(\{6,8\}\) 视为“非阿贝尔共振层”（对应 \(3\) 与 \(8\) 的可见计数接口），并施加\textbf{非阿贝尔层保留}约束：

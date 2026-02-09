@@ -225,6 +225,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="jensen_endpoint_window_hinfty_match",
+            script="exp_jensen_endpoint_window_hinfty_match.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/jensen_endpoint_window_hinfty_match.csv",
+                "sections/generated/tab_jensen_endpoint_window_hinfty_match.tex",
+            ],
+        ),
+        Step(
             name="boundary_tower_gut_signatures",
             script="exp_boundary_tower_gut_signatures.py",
             args=[],
@@ -300,6 +309,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="foldbin6_geo_stabilizer",
+            script="exp_foldbin6_geo_stabilizer.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_geo_stabilizer.json",
+                "sections/generated/eq_foldbin6_geo_stabilizer.tex",
+            ],
+        ),
+        Step(
             name="window6_family_uplift_lock",
             script="exp_window6_family_uplift_lock.py",
             args=[],
@@ -326,6 +344,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_bin_degeneracy_spectrum_m6_m12.json",
                 "sections/generated/tab_fold_bin_degeneracy_spectrum_m6_m12.tex",
+            ],
+        ),
+        Step(
+            name="fold_bin_auditable_invariants_m6_m12",
+            script="exp_fold_bin_auditable_invariants_m6_m12.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bin_auditable_invariants_m6_m12.json",
+                "sections/generated/tab_fold_bin_auditable_invariants_m6_m12.tex",
             ],
         ),
         Step(
@@ -2066,6 +2093,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_multiplicity_histogram.json",
                 "sections/generated/tab_fold_multiplicity_histogram.tex",
+            ],
+        ),
+        Step(
+            name="fold_zero_coset_union_count",
+            script="exp_fold_zero_coset_union_count.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zero_coset_union_count.json",
             ],
         ),
         Step(
