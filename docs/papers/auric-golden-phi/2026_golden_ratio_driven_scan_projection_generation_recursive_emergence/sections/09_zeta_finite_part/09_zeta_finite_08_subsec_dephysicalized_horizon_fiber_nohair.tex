@@ -184,6 +184,39 @@ A_n^{(r)}:=\left.\frac{\dd^r}{\dd\theta^r}a_n(e^\theta)\right|_{\theta=0}\in\ZZ\
 分别由推论 \ref{cor:witt-theta-stable-residue} 与 \ref{cor:witt-theta-binary-fingerprint} 直接给出。证毕。
 \end{proof}
 
+\begin{proposition}[\texorpdfstring{$p$}{p}-进护栏与端点刚性：可复算算术指纹]\label{prop:dephys-padic-guardrails-endpoint-rigidity}
+在 Big-Witt/necklace 的桥包口径下，下述算术约束构成一组完全内部、逐层可复算的护栏：
+\begin{enumerate}
+  \item \textbf{（同余与稀疏化）}
+  对任意素数 \(p\) 与 \(k\ge 1\)，Dwork 型同余
+  \(
+  a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)
+  \)
+  蕴含模 \(p^k\) 的 \(u^p\)-子环稀疏化
+  \(
+  a_{p^k}(u)\bmod p^k\in(\ZZ/p^k\ZZ)[u^p]
+  \)；
+  并且差分商
+  \(
+  p_{p^k}(u)=\frac{a_{p^k}(u)-a_{p^{k-1}}(u^p)}{p^k}
+  \)
+  在 \(\ZZ[u]\) 内良定义。
+  \item \textbf{（端点刚性指纹）}
+  在端点 \(u=-1\) 处，任意奇素数 \(p\) 满足 \(p\)-进超同余
+  \(
+  a_{p^k}(-1)\equiv 0\ (\mathrm{mod}\ p^k)
+  \)；
+  且在 primitive 扇区中，奇长度 \(n\ge 3\) 满足严格消隐 \(p_n(-1)=0\)。
+\end{enumerate}
+因此，任何声称给出 \(a_{p^k}(u)\)、\(p_{p^k}(u)\)（及其端点特化）的实现若违反上述任一约束，均可在整数层立即被离线复核地判定为偏离 Big-Witt 兼容结构；
+该护栏可作为可审计语义输出中的算术核验坐标，并与“签名 \(\times\) 谱”的有限化接口相容（定义 \ref{def:pom-sem-functor}）。
+\end{proposition}
+
+\begin{proof}
+同余与稀疏化分别由推论 \ref{cor:witt-dwork-congruence}、命题 \ref{prop:witt-pk-sparsification} 与命题 \ref{prop:witt-ppower-primitive-coordinate} 给出；
+端点超同余与奇长 primitive 消隐分别由推论 \ref{cor:witt-dwork-supercongruence-minus1} 与推论 \ref{cor:primitive-odd-vanish-u-minus1} 给出。证毕。
+\end{proof}
+
 \paragraph{有限可逆审计：Hankel-正规形与最小偏移证书}
 当对象被提升为有限样本可复核的 realization/transfer 口径时，“新增自由度必须外置”为一个纯代数的下界：最小实现维数由 Hankel 秩锁定，而窗口偏移 \(\ell_q\) 是不可省略的整数证书。
 
@@ -213,6 +246,33 @@ A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}
 在此基础上，定理 \ref{thm:dephys-endpoint-koenigs-rigidity} 给出“时间”作为端点吸引半群的唯一 Koenigs 深度（不可外加与相位并列的连续坐标寄存器），定理 \ref{thm:dephys-dirichlet-winding-minimal} 进一步表明虚向折叠的可逆化必然强迫外置可数离散证书；而定理 \ref{thm:dephys-ptypical-primitive-tower}--\ref{thm:dephys-hankel-finite-audit} 则把该离散外置具体化为可审计毛发族：绕数证书 \(\kappa_{\lambda}\)、\((p)\)-典型 primitive 差分塔 \(\{p_{p^k}\}\)、稳定残差谱 \(\{\alpha_{p,r}\}\)（以及 \(p=2\) 的 \(\{\varepsilon_r\}\)）、与 Hankel 偏移证书 \(\ell_q\)（及其正规形 \(\mathrm{HANKELNF}_q\)）。
 此外，幂半群 \(w\mapsto w^m\) 在圆盘化接口上对 Jensen 缺陷满足严格共变 \(D_{F^{(m)}}(\varrho)=D_F(\varrho^m)\)（命题 \ref{prop:app-jensen-defect-power-covariance}），并在端点邻域分解为离散残差与精度势账本（命题 \ref{prop:endpoint-orthogonal-decomposition-z4-Rplus} 及命题 \ref{prop:chebyshev-endpoint-derivative-splitting}）；在 \(p\)-典型方向，Dwork 同余的模 \(p^\ell\) 迭代下降进一步表明高层对象的低精度投影仅依赖低层的迭代 Frobenius 推前（命题 \ref{prop:witt-frobenius-iterated-descent}）。
 
+\begin{theorem}[可审计闭环的 RH 证书工程：解析—演算—算术/谱三重证书]\label{thm:dephys-rh-certificate-audit-loop}
+在本文固定的“圆盘完成化 \(F_\zeta\) + unitary slice 类型化核验 + 有界切片语义 \(\mathsf{Sem}\)”协议下，RH 的核验任务可被分解为三类互相正交、且可独立离线复核的证书：
+\begin{enumerate}
+  \item \textbf{解析证书（缺陷/排斥半径链）}：
+  构造一列 \(\varrho_n\uparrow 1\) 并给出可核验上界 \(D_\zeta(\varrho_n)\le \delta_n\)（\(\delta_n\downarrow 0\)），或等价地证书化
+  \(
+  r_{\ast}(\varrho_n)=\varrho_n e^{-D_\zeta(\varrho_n)}\uparrow 1
+  \)。
+  由定理 \ref{thm:dephys-defect-repulsion-radius} 即推出 RH。
+  \item \textbf{演算证书（实现中立性）}：
+  在有界切片 \(\mathbf{PW}^{\ast}_{\le}\) 上，以保守语义函子 \(\mathsf{Sem}\)（定义 \ref{def:pom-sem-functor}）固化实现等价。
+  当缺陷上界链以 \(\mathsf{Sem}\) 的签名/谱输出为公共接口给出时，定理 \ref{thm:pom-sem-conservative} 保证该链仅依赖自然同构类，从而与实现选择无关（详见定理 \ref{thm:dephys-impl-independent-defect-certificate}）。
+  \item \textbf{算术/谱证书（有限指纹与整数护栏）}：
+  Hankel-正规形的 \(2d\) 点锁定（定理 \ref{thm:dephys-hankel-finite-audit}）把谱侧核心指纹降为有限窗口复算；
+  而 \(p\)-进同余链与端点刚性指纹（命题 \ref{prop:dephys-padic-guardrails-endpoint-rigidity}）提供独立的整数层一致性护栏。
+\end{enumerate}
+其结果是：在该协议口径下，任何“信息泄漏/实现漂移/端点异常”若要与可见核验结论共存，必须表现为至少一类证书的失败；
+从而 RH 的困难被严格集中为“如何构造可审计的缺陷上界链”这一单一数学任务，而非实现或数据管线选择问题。
+\end{theorem}
+
+\begin{proof}
+解析证书的 soundness 为定理 \ref{thm:dephys-defect-repulsion-radius} 的直接推论；
+演算证书由定义 \ref{def:pom-sem-functor} 与定理 \ref{thm:pom-sem-conservative} 给出，并在定理 \ref{thm:dephys-impl-independent-defect-certificate} 中形式化；
+算术/谱证书分别由定理 \ref{thm:dephys-hankel-finite-audit} 与命题 \ref{prop:dephys-padic-guardrails-endpoint-rigidity} 给出。
+三类证书的正交性来自其约束对象分别落在缺陷标量、语义自然同构类与整数/有限窗口指纹三个互不混淆的输出域上（参见 \S\ref{subsec:xi-certificate-coherence-orthogonal-axis-capacity} 的地址三轴口径）。证毕。
+\end{proof}
+
 \begin{remark}[端点阻碍的二元正交分解：\texorpdfstring{$\zeta$}{zeta} 型对数主尺度与 \texorpdfstring{$L(\chi_4)$}{L(chi4)} 型反变本征通道]\label{rem:endpoint-obstruction-dichotomy}
 在端点 \(w\to-1\) 的符号分解口径下，端点载荷在偶/反变两类观测上呈现为一对严格正交的分量，其来源可归因于投影系统自同构在端点邻域所诱导的有限维不变子表示。
 其一为 \(\zeta\)-型对数主尺度：端点三通道权核的 Dirichlet 正则化系数具有闭式 \(\zeta(1+\sigma)\) 符号表示，且其发散结构由 \(\zeta\) 在 \(1\) 处的极点完全控制（命题 \ref{prop:endpoint-dirichlet-symbol-weights}）。
@@ -221,6 +281,28 @@ A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}
 此外，在 primitive 奇长扇区中，端点分支差分证书满足选择律消失，从而端点主刚性退化为纯 \(\zeta\)-型对数账本（注 \ref{rem:endpoint-logscale-parity-decouple}）。
 \end{remark}
 与有界切片上的语义保守性（定理 \ref{thm:pom-sem-conservative}）合并后，上述共变/下降律把“隐藏分量”约束为可审计的不变量输出域，从而将判等与实现自审计收束为有限可复核指纹。
+
+\begin{theorem}[实现无关的缺陷证书链：由 Jensen 缺陷到 RH]\label{thm:dephys-impl-independent-defect-certificate}
+固定一列半径 \(\varrho_n\uparrow 1\)。
+在有界切片 \(\mathbf{PW}^{\ast}_{\le}\) 上，设存在一列投影词 \(w_n\) 及一列可离线复核的有限证书对象 \(C_n\)，使得证书输出一个上界 \(\widehat D_n\in\RR_{\ge 0}\) 与误差预算 \(\varepsilon_n\ge 0\) 并满足
+\begin{equation}\label{eq:dephys-defect-certificate-soundness}
+D_{\zeta}(\varrho_n)\le \widehat D_n+\varepsilon_n\qquad(\forall n).
+\end{equation}
+若 \(\widehat D_n+\varepsilon_n\to 0\)，则 RH 成立。
+此外，若每个 \((\widehat D_n,\varepsilon_n)\) 仅依赖于 \(\mathsf{Sem}(w_n)\) 的有限输出（定义 \ref{def:pom-sem-functor}），则该缺陷证书链在切片内与实现选择无关：对任意 \(w_n'\in\mathbf{PW}^{\ast}_{\le}\) 若 \(\mathsf{Sem}(w_n')=\mathsf{Sem}(w_n)\)，则存在自然同构 \(w_n'\simeq w_n\)（定理 \ref{thm:pom-sem-conservative}），并且 \((\widehat D_n,\varepsilon_n)\) 在该语义意义下保持不变。
+\end{theorem}
+
+\begin{proof}
+由 \eqref{eq:dephys-defect-certificate-soundness} 与排斥半径定义 \(r_{\ast}(\varrho)=\varrho e^{-D_{\zeta}(\varrho)}\) 得
+\[
+r_{\ast}(\varrho_n)\ge \varrho_n\exp\!\bigl(-(\widehat D_n+\varepsilon_n)\bigr)\xrightarrow[n\to\infty]{}1,
+\]
+故由定理 \ref{thm:dephys-defect-repulsion-radius} 推出 RH。
+实现中立性部分：若 \((\widehat D_n,\varepsilon_n)\) 仅依赖 \(\mathsf{Sem}(w_n)\)，则 \(\mathsf{Sem}(w_n')=\mathsf{Sem}(w_n)\) 蕴含两者输出一致；并由定理 \ref{thm:pom-sem-conservative} 得 \(w_n'\simeq w_n\)。
+在“地址先于取值”的约定下（\S\ref{sec:recursive-addressing}），证书对象的存在性即其可寻址性；从而该上界链不携带实现侧的隐式自由度，
+亦不可能通过递归地址化引入新的可见事件（命题 \ref{prop:recursive-addressing-refinement} 与推论 \ref{cor:recursive-addressing-visible-sigma-nonexpansion}）。证毕。
+\end{proof}
+
 由此得到一个体系内闭合的可证伪重述：任何需要径向通道解释的偏离，若不经由 residue/逆极限轴或上述离散证书的非局部外置，就必在可见审计中触发 \(\mathsf{NULL}\) 并被协议拒绝；因而，零点审计的可见证书只能沿“缺陷—端点—相位”链路出现，而不会被额外连续坐标寄存器所稀释。相反，一切可逆化的新增自由度只能以离散毛发进入证书域，而不可能表现为与相位解耦的额外连续坐标寄存器。
 
 在此基础上，\S\ref{subsec:xi-certificate-coherence-orthogonal-axis-capacity} 进一步把“可见证书”的一致性提升为证书对象的逆极限同一性，并将离临界线信息的端点投影严格化为二次径向通道与由精度势诱导的容量下界，从而给出“构造离线零点”的可证伪接口表述。
