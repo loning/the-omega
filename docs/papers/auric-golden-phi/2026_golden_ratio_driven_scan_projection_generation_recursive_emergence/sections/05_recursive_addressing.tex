@@ -57,13 +57,13 @@ C^{(L+1)}_{a,t}:=\{x\in X:\mathbf{b}^{(L)}_t(x)=a_0,\dots,\mathbf{b}^{(L)}_{t+\e
 
 \subsection{空值到投影的递归语义}
 
-与推论 \ref{cor:recursive-addressing-visible-sigma-nonexpansion} 的“可见 \texorpdfstring{$\sigma$}{sigma}-代数不扩张”结论相一致，递归地址化在语义上可表述为“地址先于取值”的可读出前缀机制。对任意候选地址 \(a\in A^{(L+1)}\)，若地址对象未给定，则不对其派生概念赋值，读出偏函数在该输入处不定义，并以内禀空值 \(\mathsf{NULL}\) 表示其不可寻址性。若地址 \(a\) 被选定，则概念值即为二元投影 \(\ind_{C_a^{(L+1)}}(x)\)。从而层级递归满足：
+与推论 \ref{cor:recursive-addressing-visible-sigma-nonexpansion} 的“可见 \texorpdfstring{$\sigma$}{sigma}-代数不扩张”结论相一致，递归地址化在语义上可表述为“地址先于取值”的\emph{可读出前缀}机制。对任意候选地址 \(a\in A^{(L+1)}\)，在地址对象未给定之前不对其派生概念赋值：读出为偏函数，在该输入处不定义，其失败不得被误读为数值 \(0\)，并按本文约定以内禀空值 \(\mathsf{NULL}\) 表示“不可寻址/不定义”。一旦地址 \(a\) 被选定，则概念值由二元投影 \(x\mapsto \ind_{C_a^{(L+1)}}(x)\) 给出。于是层级递归满足：
 \begin{itemize}
   \item “无地址 $\Rightarrow$ 空值（不定义）”；
   \item “有地址 $\Rightarrow$ 二元投影（$0/1$）”；
   \item “地址 $\Rightarrow$ 由旧层读出生成”。
 \end{itemize}
-在类型语义上，这意味着：若地址对象未给定（或不属于协议允许的 \(\mathcal{A}_{\mathrm{adm}}\)），则不存在可在对象层引用的评价函数 \(\ind_{C_a}\)；
+在类型语义上，这意味着：若地址对象未给定（或不属于协议允许的 \(\mathcal{A}_{\mathrm{adm}}\)），则不存在可在对象层引用的评价函数 \(\ind_{C_a}\)（等价地，\(1_{C_a}\) 不能在协议的可见域中被构造成一个总定义读出）；
 此时读出偏函数在该输入处不定义，其语义后果以内禀空值 \(\mathsf{NULL}\) 表示（并将在 \S\ref{subsec:prefix-site-null} 中被等价内生化为 \(\mathscr{F}(a)=\varnothing\) 的局部截面障碍）。
 本节所述空值属于\emph{语义空值}（地址缺失，读出不定义）；与之正交的\emph{协议空值}（类型系统锁定 unitary slice）与\emph{碰撞空值}（侧信息预算不足导致不可唯一重建）见 \S\ref{subsec:xi-pw-type-safety-null} 及命题 \ref{prop:xi-null-three-way}。在更统一的口径下，可把“完备地址”打包为多轴前缀（定义 \ref{def:multi_axis_address}），其中碰撞空值对应残差轴不足，其最小侧信息预算由定理 \ref{thm:address-defect-law} 给出。
 该语义可与布尔代数闭包兼容，也可在算子代数层面以投影算子及其乘积实现（见附录 \ref{app:op-algebra}）。
