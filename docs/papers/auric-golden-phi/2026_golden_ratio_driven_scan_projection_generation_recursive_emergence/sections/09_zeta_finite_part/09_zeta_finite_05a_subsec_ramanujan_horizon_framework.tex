@@ -1,0 +1,77 @@
+\subsubsection{拉马努金对称与视界紧化：黎曼猜想零点的正性证书、谱界与信息账本框架}\label{subsubsec:xi-ramanujan-horizon-ledger-framework}
+本小节以“可审计证书链”的口径，为本节 \(\Xi\)/unitary slice 审计内容提供一条总览式归约：其目标不是引入新的假设或新的证明支点，而是把文内已闭合的编号结论按接口关系重排为一条无缝闭环，使“正性—谱界—信息预算”的三层约束在同一完成化—视界—证书语义中对齐。
+在该口径下，递归地址化应被理解为一种\emph{可读出前缀}的内生化机制：地址对象未给定时，评价函数 \(\ind_{C_a}\) 在对象/类型层不成立，读出偏函数不定义并以 \(\mathsf{NULL}\) 表示不可寻址；一旦地址给定，递归生成的柱事件族不扩张既有可见 \(\sigma\)-代数，而仅在旧层可见域内重选并组织可见事件，从而 \(\mathcal{G}^{(L+1)}\subseteq\mathcal{G}^{(L)}\)（命题 \ref{prop:null-as-local-section-obstruction}、\ref{prop:recursive-addressing-refinement} 与推论 \ref{cor:recursive-addressing-visible-sigma-nonexpansion}）。
+因此，下述“证书/否证器/下界”均应被理解为：在给定地址（前缀）与给定可见域约束的前提下，输出必须以有限对象编码并可被第三方离线复核；任何未被显式寻址并进入证书对象的数据通道，在语义上均不得影响核验结论。
+
+\paragraph{七个接口块：从视界正性到统计门槛的闭环组织}
+在文稿既有定义与定理链内，关于“拉马努金对称—视界紧化—信息账本”的 RH 归约可按七个接口块组织如下。
+\begin{enumerate}
+  \item \textbf{视界紧化与正性证书：Weyl/Herglotz \(\Leftrightarrow\) Carath\'eodory \(\Leftrightarrow\) Toeplitz--PSD.}
+  令
+  \[
+    E_{\zeta}(z):=\Xi_{\zeta}\!\left(\tfrac12+\mathrm{i}z\right),\qquad
+    m_{\zeta}(z):=-\frac{E_{\zeta}'(z)}{E_{\zeta}(z)}\qquad(z\in\mathbb{H}).
+  \]
+  则 RH 等价于 \(m_{\zeta}\) 为 Herglotz 函数（定理 \ref{thm:app-horizon-weyl-herglotz}）。
+  在 Cayley 紧化 \(w=\mathcal{C}(z)\) 下，上述条件等价于视界 Carath\'eodory 对数导数函数 \(\mathscr{C}_{\zeta}\) 的正实部性（推论 \ref{cor:app-horizon-carath-rh}），并进一步等价于其幂级数矩所生成的 Toeplitz--PSD 层级（定理 \ref{thm:app-horizon-toeplitz-lmi}）：
+  \[
+    \mathscr{C}_{\zeta}(w)=c_0+2\sum_{n\ge 1}c_n w^n,
+    \qquad
+    \mathbf{T}_N:=(c_{j-k})_{0\le j,k\le N}\succeq 0\quad(\forall N\ge 0).
+  \]
+  因而任一有限 \(N\) 上的负特征值即构成可复算的有限否证器；在实结构锁定时，失败模式可进一步定位到 \(\ZZ/2\) 扇区（命题 \ref{prop:app-horizon-toeplitz-z2-splitting} 与推论 \ref{cor:app-horizon-toeplitz-z2-cert-split}）。
+  此外，系数 \(\{c_n\}\) 可由 \(\log\Xi_{\zeta}\) 在 \(s=-\tfrac12\) 的导数数据局部封装得到（命题 \ref{prop:app-horizon-coeff-local}），从而将正性层级的输入压缩为一列可审计的“视界多极矩”。
+
+  \item \textbf{端点二次压缩与位复杂度屏障：离切片信息的视界红移律.}
+  若存在离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\)（\(0<\beta<\tfrac12\)），令 \(\delta:=\tfrac12-\beta>0\)，并令 \(w_{\rho}=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}\) 为其圆盘像。
+  则端点层余量满足闭式恒等式（定理 \ref{thm:xi-offcritical-quadratic-radial-compression}）
+  \[
+    h(\rho):=1-|w_{\rho}|^2
+    =\frac{4\delta}{\gamma^2+(1+\delta)^2}
+    \sim \frac{4\delta}{\gamma^2}\qquad(|\gamma|\to\infty,\ \delta\ \text{有界}).
+  \]
+  该二次尺度律把“高高度离切片偏移”的可见性强制压入端点邻域的极薄边界层，并诱导不可绕过的分辨率/位预算下界：若要在高度窗 \(|\gamma|\le T\) 内排除固定偏移下界 \(\delta\ge\delta_0\) 的离切片零点，则对端点余量的最小可分辨尺度 \(2^{-p}\) 必满足
+  \[
+    p\ \ge\ 2\log_2 T+\log_2\!\frac{1}{\delta_0}+O(1)
+  \]
+  （定理 \ref{thm:xi-offcritical-endpoint-resolution-lower-bound}；亦见推论 \ref{cor:xi-offcritical-visibility-threshold-bit-budget} 的半径/比特阈值形式）。
+  在“地址先于取值”的语义中，共动局部化虽可解除 \(\gamma^{-2}\) 压缩，但其平移参数属于需被显式给定的可寻址前缀；地址缺失时相应读出按协议退化为 \(\mathsf{NULL}\)（注 \ref{rem:xi-comoving-horizon-localization-address-null}）。
+
+  \item \textbf{单参数缺陷证书：Jensen 缺陷 \(\Rightarrow\) 排斥半径 \(\Rightarrow\) 带状禁入.}
+  令 \(F_{\zeta}\) 为圆盘化完成化对象并令 \(D_{\zeta}(\varrho)\) 为 Jensen 缺陷（定义 \ref{def:app-jensen-defect}）。
+  则“视界纯度”给出 RH 的单标量判据：RH 等价于 \(\lim_{\varrho\uparrow 1}D_{\zeta}(\varrho)=0\)（定理 \ref{thm:xi-horizon-purity-criterion}）。
+  更强地，缺陷上界可被编译为排斥半径证书：对任意 \(0<\varrho<1\) 定义
+  \[
+    r_{\ast}(\varrho):=\varrho \exp\!\bigl(-D_{\zeta}(\varrho)\bigr),
+  \]
+  则 \(F_{\zeta}\) 在 \(|w|<r_{\ast}(\varrho)\) 内无零点（定理 \ref{thm:dephys-defect-repulsion-radius}）。
+  在有限高度带内，单半径缺陷还给出可离线复核的带状禁入不等式证书（定理 \ref{thm:xi-jensen-single-radius-band-exclusion}）。
+  因而“盘内零点存在性/尺度”可被压缩为一列可审计标量 \(D_{\zeta}(\varrho)\) 的上界链；其困难集中于如何在端点分辨率层级上构造一致的上界链，而非实现或数据管线选择问题（定理 \ref{thm:dephys-rh-certificate-audit-loop}）。
+
+  \item \textbf{拉马努金对称的制度化译码：谱界 \(\Leftrightarrow\) 相位化闭包 \(\Leftrightarrow\) 有限维 PSD/酉实现.}
+  在算子层面，谱界 \(\mathrm{Spec}(A)\subseteq[-2,2]\) 与纯相位实现 \(A=U+U^{-1}\) 严格等价（定理 \ref{thm:phase-lift-spectral-bound}），从而把“幅度自由度”压缩为“相位谱”。
+  在完成化多项式口径下，\(\Xi\)-RH 可等价转写为根区间/单位圆根判据（命题 \ref{prop:xi-rh-interval-criterion} 与推论 \ref{cor:xi-rh-unit-circle-reciprocal}），并可通过 Schur--Cohn 机制导出显式 Hermitian 形式矩阵的 PSD 证书接口（注 \ref{rem:xi-schur-cohn-sdp-interface}）。
+  同时，单位圆根条件等价于有限维酉谱实现（CMV-like 伴随矩阵）之存在，从而给出可审计的有限维 Hilbert--P{\'o}lya 化路径（命题 \ref{prop:xi-hilbert-polya-cmv}）。
+  在 Hardy/Smirnov 因子分解与固定切片承载口径下，点状离切片缺陷等价于 Blaschke 缺陷维数；自对偶/反线性对称将其指标强制为零并推出 \(B_F\equiv 1\) 的固定切片承载结论（推论 \ref{cor:selfdual-index-vanish-implies-dbl0} 与定理 \ref{thm:blaschke-defect-zero-fixed-slice-support}）。
+
+  \item \textbf{信息账本与平方根误差：熵缺陷 \(\leftrightarrow\) 纤维容量 \(\leftrightarrow\) Chebotarev 预算.}
+  在投影本体数学的读出—提升结构中，信息账本恒等式把“可见熵 + 纤维容量 \(-\) 残差信息”严格对齐（定理 \ref{thm:pom-kl-ledger}）：
+  \[
+    H(\mu)=H(\pi)+\mathbb{E}_{\pi}\!\bigl[\log d_m(X)\bigr]-D_{\mathrm{KL}}(\mu\|\mu^{e}).
+  \]
+  谱侧的 profinite Chebotarev 计数在有限层上由 \((\lambda_m,\Lambda_m)\) 控制，并在核版 GRH/Ramanujan 型平方根谱界 \(\Lambda_m\le \lambda_m^{1/2}\) 下获得平方根误差（定理 \ref{thm:pom-profinite-axis}）。
+  在更强统一谱隙口径下，寄存器容量 \(\log|G_m|\) 与时间深度 \(n\) 满足显式对数预算上界（推论 \ref{cor:pom-profinite-cylinder-capacity}），并在 \(\Xi\) 子节中被编译为“有限 \((m,n,N)\)”的可审计 Chebotarev 证书包（定理 \ref{thm:auditable-profinite-chebotarev-finite}）。
+
+  \item \textbf{零点统计的硬门槛：逼近 \(T\log T\) 必须支付 \(\Theta(\log T)\) 自由度.}
+  在 completion/\(\Xi\) 的可审计框架内，有限频带与有限尺度窗将把临界线零点计数强制限制在线性级 \(O(T)\)（命题 \ref{prop:xi-scale-mellin-zero-density-upper}），从而与 \(T\log T\) 密度阶不相容。
+  因此要逼近 \(\Xi_{\zeta}\) 型密度，必须在某一正交方向释放 \(\Theta(\log T)\) 的增长自由度（例如尺度尾窗或相位模态数），并且“Hankel 秩不增长”可作为独立的可复算否证器排除密度同型主张（定理 \ref{thm:xi-zero-statistics-log-budget-lower-bound}）。
+
+  \item \textbf{综合归约命题：把 RH 的困难集中到端点层的正性/缺陷控制.}
+  以上各接口块共同给出一条闭环式归约：一方面，视界正性层级（Toeplitz--PSD）为 RH 提供了完全代数化的有限否证器接口（定理 \ref{thm:app-horizon-toeplitz-lmi}）；
+  另一方面，离切片信息在端点层以二次径向通道进入并诱导 \(2\log T\) 级的分辨率屏障（定理 \ref{thm:xi-offcritical-endpoint-resolution-lower-bound}）。
+  在证书语义与实现中立性约束下，RH 的核验工程可被组织为“缺陷证书—端点压缩—类型拒绝/外置预算”的闭环审计（定理 \ref{thm:dephys-rh-certificate-audit-loop} 与定理 \ref{thm:xi-triple-consistency-audit}），从而把困难严格集中到端点层的可审计正性/缺陷控制，而非实现细节或数值轨迹选择（参见注 \ref{rem:xi-publishable-reduction-closed-loop} 的发表级归约表述）。
+\end{enumerate}
+
+\paragraph{与后续子节的对齐}
+上述七块在后续子节中分别由如下编号链条具体化：\(\Xi\) 的自对偶压缩、相位化闭包与 PSD/酉实现接口见 \S\ref{subsec:xi-from-self-dual} 及其后续结论；\(\mathsf{NULL}\) 的类型化与可证伪接口见 \S\ref{subsec:xi-pw-type-safety-null} 与 \S\ref{subsec:xi-certificate-coherence-orthogonal-axis-capacity}；缺陷证书、端点时间纤维与无连续毛发原则见 \S\ref{subsec:dephysicalized-horizon-timefiber-nohair}；固定切片承载与 Blaschke 缺陷指标化见 \S\ref{subsubsec:selfdual-blaschke-defect-fixed-slice}；视界纯度与 Hurwitz 零点定理的归约见 \S\ref{subsubsec:xi-ramanujan-horizon-purity-spectral-reduction}；而“有限前沿—缺陷账本—端点退化”的证书链闭合见 \S\ref{subsubsec:xi-fixed-slice-audit-chain}。
+
