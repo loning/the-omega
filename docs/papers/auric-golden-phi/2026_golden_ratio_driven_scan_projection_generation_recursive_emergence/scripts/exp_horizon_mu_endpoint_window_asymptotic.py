@@ -22,19 +22,28 @@ and the first-order asymptotic prediction is
 
 We approximate the sum using mpmath.zetazero(k) up to a cutoff γ_cut, and add a
 small tail correction based on the Riemann–von Mangoldt main term.
+
+Performance:
+- Cache computed Im(ρ_k) values under artifacts/cache/zetazeros/ to avoid repeated
+  zetazero() calls on reruns.
+- Disable caching with OMEGA_ZETAZERO_NO_CACHE=1.
 """
 
 from __future__ import annotations
 
 import argparse
+from bisect import bisect_right
+import os
 import json
 import time
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Dict, List, Sequence
 
 import mpmath as mp
+import numpy as np
 
-from common_paths import export_dir, generated_dir
+from common_paths import artifacts_dir, export_dir, generated_dir
 
 
 @dataclass(frozen=True)
@@ -59,24 +68,164 @@ def _tail_estimate(gamma_cut: mp.mpf) -> mp.mpf:
     return (1 / mp.pi) * (mp.log(gamma_cut / (2 * mp.pi)) + 1) / gamma_cut
 
 
+def _zetazero_cache_paths() -> tuple[Path, Path]:
+    d = artifacts_dir() / "cache" / "zetazeros"
+    return d / "zetazero_gammas.npy", d / "zetazero_gammas_meta.json"
+
+
+def _load_zetazero_cache() -> tuple[np.ndarray, Dict[str, object]] | None:
+    cache_path, meta_path = _zetazero_cache_paths()
+    if (not cache_path.is_file()) or (not meta_path.is_file()):
+        return None
+    try:
+        arr = np.load(cache_path)
+        if getattr(arr, "ndim", 0) != 1:
+            return None
+        meta_raw = json.loads(meta_path.read_text(encoding="utf-8"))
+        meta: Dict[str, object] = meta_raw if isinstance(meta_raw, dict) else {}
+        return arr.astype(np.float64, copy=False), meta
+    except Exception:
+        return None
+
+
+def _write_zetazero_cache(gammas: np.ndarray, meta: Dict[str, object]) -> None:
+    cache_path, meta_path = _zetazero_cache_paths()
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+
+    tmp_path = cache_path.with_suffix(".tmp.npy")
+    tmp_meta = meta_path.with_suffix(".tmp.json")
+    try:
+        np.save(tmp_path, gammas.astype(np.float64, copy=False))
+        tmp_path.replace(cache_path)
+    finally:
+        try:
+            if tmp_path.exists():
+                tmp_path.unlink()
+        except Exception:
+            pass
+
+    try:
+        tmp_meta.write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        tmp_meta.replace(meta_path)
+    finally:
+        try:
+            if tmp_meta.exists():
+                tmp_meta.unlink()
+        except Exception:
+            pass
+
+
 def _compute_zeros_upto(gamma_max: mp.mpf, *, max_zeros: int) -> List[mp.mpf]:
-    gammas: List[mp.mpf] = []
+    # Computing zeta zeros is expensive; cache the imaginary parts on disk.
+    no_cache = os.environ.get("OMEGA_ZETAZERO_NO_CACHE", "").strip() in {
+        "1",
+        "true",
+        "TRUE",
+        "yes",
+        "YES",
+    }
+
+    gamma_max_f = float(gamma_max)
+    cache_hit = False
+
+    gammas_all: List[float] = []
+    if not no_cache:
+        loaded = _load_zetazero_cache()
+        if loaded is not None:
+            arr, _meta = loaded
+            if int(arr.size) > 0 and float(arr[0]) > 0:
+                # Assume cache stores consecutive zeros starting from k=1.
+                gammas_all = arr.tolist()
+                cache_hit = True
+
+    # Extend cache if needed.
     t0 = time.time()
-    for k in range(1, max_zeros + 1):
-        z = mp.zetazero(k)
-        gamma = abs(mp.im(z))
-        if gamma > gamma_max:
-            break
-        gammas.append(gamma)
-        if k % 200 == 0:
-            dt = time.time() - t0
-            print(
-                f"[exp_horizon_mu_endpoint_window_asymptotic] zeros={k} gamma~{float(gamma):.3f} elapsed_s={dt:.2f}",
-                flush=True,
-            )
-    if not gammas:
+    last_print = t0
+    if gammas_all and (gammas_all[-1] < gamma_max_f):
+        k0 = len(gammas_all) + 1
+        print(
+            f"[exp_horizon_mu_endpoint_window_asymptotic] cache_extend start_k={k0} cached_gamma_max~{gammas_all[-1]:.6g} target_gamma_max~{gamma_max_f:.6g}",
+            flush=True,
+        )
+        for k in range(k0, max_zeros + 1):
+            z = mp.zetazero(k)
+            gamma = abs(mp.im(z))
+            gf = float(gamma)
+            gammas_all.append(gf)
+            if gamma > gamma_max:
+                # Cache one extra sentinel zero beyond gamma_max so that future runs
+                # with the same cutoff do not need an additional zetazero() call.
+                break
+            now = time.time()
+            if now - last_print >= 20.0:
+                last_print = now
+                dt = now - t0
+                print(
+                    f"[exp_horizon_mu_endpoint_window_asymptotic] zeros={k} gamma~{gf:.3f} elapsed_s={dt:.2f}",
+                    flush=True,
+                )
+        else:
+            # Reached max_zeros without crossing gamma_max.
+            if gammas_all and (gammas_all[-1] <= gamma_max_f):
+                raise RuntimeError(
+                    "max_zeros reached before exceeding gamma_max; increase --max-zeros or lower --gamma-max"
+                )
+
+        if not no_cache:
+            meta_out: Dict[str, object] = {
+                "mp_dps": int(mp.mp.dps),
+                "n_zeros": int(len(gammas_all)),
+                "gamma_max_cached": float(gammas_all[-1]) if gammas_all else 0.0,
+                "updated_at_unix": float(time.time()),
+            }
+            _write_zetazero_cache(np.asarray(gammas_all, dtype=np.float64), meta_out)
+
+    # Compute from scratch if cache was empty/unavailable.
+    if not gammas_all:
+        gammas_all = []
+        for k in range(1, max_zeros + 1):
+            z = mp.zetazero(k)
+            gamma = abs(mp.im(z))
+            gf = float(gamma)
+            gammas_all.append(gf)
+            if gamma > gamma_max:
+                # Cache one extra sentinel zero beyond gamma_max so that future runs
+                # with the same cutoff do not need an additional zetazero() call.
+                break
+            now = time.time()
+            if now - last_print >= 20.0:
+                last_print = now
+                dt = now - t0
+                print(
+                    f"[exp_horizon_mu_endpoint_window_asymptotic] zeros={k} gamma~{gf:.3f} elapsed_s={dt:.2f}",
+                    flush=True,
+                )
+        else:
+            if gammas_all and (gammas_all[-1] <= gamma_max_f):
+                raise RuntimeError(
+                    "max_zeros reached before exceeding gamma_max; increase --max-zeros or lower --gamma-max"
+                )
+
+        if not no_cache:
+            meta_out = {
+                "mp_dps": int(mp.mp.dps),
+                "n_zeros": int(len(gammas_all)),
+                "gamma_max_cached": float(gammas_all[-1]) if gammas_all else 0.0,
+                "updated_at_unix": float(time.time()),
+            }
+            _write_zetazero_cache(np.asarray(gammas_all, dtype=np.float64), meta_out)
+
+    if cache_hit and gammas_all and (gammas_all[-1] >= gamma_max_f):
+        # Silent fast path: cache hit, no extension needed.
+        pass
+
+    # Return only the zeros up to the requested cutoff.
+    # Use Python float cutoff for speed; convert to mp for downstream computations.
+    j = bisect_right(gammas_all, gamma_max_f)
+    out_f = gammas_all[:j]
+    if not out_f:
         raise RuntimeError("no zeros collected (gamma_max too small?)")
-    return gammas
+    return [mp.mpf(str(g)) for g in out_f]
 
 
 def _suffix_sums(weights: Sequence[mp.mpf]) -> List[mp.mpf]:
