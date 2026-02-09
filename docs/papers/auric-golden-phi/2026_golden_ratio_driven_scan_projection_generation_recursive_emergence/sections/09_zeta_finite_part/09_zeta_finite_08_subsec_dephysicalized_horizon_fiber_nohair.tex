@@ -76,6 +76,60 @@ y_{\pm}(\varrho)=\frac{1\pm\varrho}{1\mp\varrho},
 见定理 \ref{thm:xi-pw-no-continuous-hair}。证毕。
 \end{proof}
 
+\paragraph{离散联络与曲率：交换失败的最小可见残余}
+定理 \ref{thm:dephys-pw-nohair} 排除了与相位并列的额外连续寄存器；因此在拒绝外置径向/prime-register 记录轴的制度下，任何“离线方向”的可见影响若仍需在闭环接口中保持可审计一致性，必须退化为离散残余。
+本文的投影词演算为该离散残余提供一个实现无关的表述：在分辨率/折叠轴 \(E_m\) 与标签轴 \(\mathrm{LIFT}_G\) 之间，交换失败被中心标签 \(\mathsf{Anom}\) 及其异常上同调类 \([\mathrm{Anom}]\) 完全承载（\S\ref{subsec:pom-three-generator-residual-closure}，尤其是 \S\ref{subsec:pom-anom-cohomology}；并见注 \ref{rem:pom-anom-as-curvature} 的离散联络观点）。
+下述定理将“离线毛发是否可被时间纤维吸收”的问题，严格归约为该离散曲率是否可在普适 strictification 下消去。
+
+\begin{theorem}[离散曲率归约：正规形—异常类—普适 strictification]\label{thm:dephys-offline-hair-curvature-reduction}
+在定义 \ref{def:pom-projword-2cat} 的投影词 \(2\)-范畴 \(\mathbf{PW}\) 中，取有界复杂度切片 \(\mathbf{PW}^{\ast}_{\le}\)（定义 \ref{def:pom-bounded-slice}），并把“严格交换/可见残余”的观测固定为本文的闭环接口
+\[
+\text{有限核/矩阵族}\Rightarrow \zeta \Rightarrow \log\mathfrak{M}
+\]
+（见 \S\ref{subsec:pom-three-generator-residual-closure} 与定义 \ref{def:abel-finite-part}）。
+则对任意 \(w\in\mathbf{PW}^{\ast}_{\le}\)：
+\begin{enumerate}
+  \item \textbf{（路径不变量：正规形 + 异常上同调类）}
+  在固定复杂度上界内，把投影词的判等取为
+  \(
+  \mathrm{NF}(w)\ \text{一致且}\ [\mathrm{Anom}(w)]\ \text{一致}
+  \)
+  是自然且与规约优先级无关的；异常是否为零亦为路径不变量
+  （命题 \ref{prop:pom-confluence-mod-anom-audited}，定义 \ref{def:pom-algorithmic-equivalence-nf-anom}，推论 \ref{cor:pom-three-gen-normal-form-decidable}）。
+  \item \textbf{（严格 Beck--Chevalley \texorpdfstring{$\Longleftrightarrow$}{<->} 零异常）}
+  对固定势参数与扭曲通道族，异常签名为零当且仅当
+  \(E_m\) 与 \(\mathrm{LIFT}_G\) 在闭环接口意义下严格交换（推论 \ref{cor:pom-zero-anom-pullback-exactness}）。
+  \item \textbf{（普适可交换化商：最大可见群寄存器与毛发方向核）}
+  对每个分辨率 \(m\)，存在普适群商 \(G\twoheadrightarrow G^{\mathrm{BC}}_m\) 使得在 \(G^{\mathrm{BC}}_m\) 上异常严格为零，
+  且任意使交换严格化的群商必唯一因子化通过 \(G^{\mathrm{BC}}_m\)；异常的支撑仅可能落在核 \(N^{\mathrm{BC}}_m\) 的对偶方向上
+  （定义 \ref{def:pom-bc-quotient}，命题 \ref{prop:pom-bc-quotient-strictify}、\ref{prop:pom-bc-quotient-universal}，推论 \ref{cor:pom-anom-supported-on-bc-kernel}）。
+  \item \textbf{（MOM 放大：线性 gap amplification）}
+  若 \([\mathrm{Anom}(w)]\neq 0\)，则对任意 \(q\ge 2\) 的 \(q\)-重 fiber-product/moment 化复制 \(w^{\boxtimes q}\)（命题 \ref{prop:pom-anom-gap-amplification} 的记号）有
+  \(
+  [\mathrm{Anom}(w^{\boxtimes q})]=q\cdot[\mathrm{Anom}(w)]
+  \)，从而可把微弱残差线性放大到任意预设的可审计阈值（命题 \ref{prop:pom-anom-gap-amplification}）。
+  \item \textbf{（有限帕累托前沿：strictification 的有限搜索完备性）}
+  在每个固定分辨率层级的有界切片内，“把曲率严格化为零（或最小化其支撑）”的证书化重写/实现选择问题退化为有限帕累托优化，
+  因而可由有限枚举与有限核对收束（定理 \ref{thm:xi-finite-frontier-certificate}）。
+  \item \textbf{（\texorpdfstring{$\varepsilon$}{eps}-sound 与 Lawvere 距离：风险预算的几何内化）}
+  近似重写证书 \(w\Longrightarrow_{\varepsilon} w'\) 的预算在复合下可加，并诱导最小预算距离 \(d_{\mathcal I}\) 的三角不等式；
+  因此任一有限证书链的总失败概率可被内化为可审计的路径长度上界（定义 \ref{def:pom-eps-sound-rewrite}、\ref{def:pom-eps-distance}，命题 \ref{prop:pom-eps-sound-compose}、\ref{prop:pom-eps-distance-lawvere}）。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+各条为既有结果在 no-hair 语境下的汇总重述：第 (1) 点由命题 \ref{prop:pom-confluence-mod-anom-audited}、定义 \ref{def:pom-algorithmic-equivalence-nf-anom} 与推论 \ref{cor:pom-three-gen-normal-form-decidable} 给出；第 (2) 点即推论 \ref{cor:pom-zero-anom-pullback-exactness}；第 (3) 点由定义 \ref{def:pom-bc-quotient}、命题 \ref{prop:pom-bc-quotient-strictify}、\ref{prop:pom-bc-quotient-universal} 与推论 \ref{cor:pom-anom-supported-on-bc-kernel} 给出；第 (4) 点为命题 \ref{prop:pom-anom-gap-amplification}；第 (5) 点为定理 \ref{thm:xi-finite-frontier-certificate}；第 (6) 点由定义 \ref{def:pom-eps-sound-rewrite}、\ref{def:pom-eps-distance} 与命题 \ref{prop:pom-eps-sound-compose}、\ref{prop:pom-eps-distance-lawvere} 给出。证毕。
+\end{proof}
+
+\begin{corollary}[结论性归约：离线毛发 \texorpdfstring{$\Longleftrightarrow$}{<->} 非零曲率；无毛发 \texorpdfstring{$\Longleftrightarrow$}{<->} 普适 strictification]\label{cor:dephys-offline-hair-iff-curvature}
+在本文固定的 unitary slice 可见域与 \(\mathbf{PW}\) 闭包审计口径下，若拒绝引入与相位并列的额外连续寄存器（定理 \ref{thm:dephys-pw-nohair}），则任何在闭环接口中仍可观测的“离线”残余自由度必等价表现为某一分辨率层级上的非零异常上同调类 \([\mathrm{Anom}]\)（离散曲率）；反之，沿普适可交换化商 \(G^{\mathrm{BC}}_m\) 做逐层 strictification 可在所有可见扭曲通道上使异常严格为零，从而在可见语义中实现“无毛发”的严格闭合。
+进一步地，\(q\)-重 moment 化的线性放大（命题 \ref{prop:pom-anom-gap-amplification}）与有界切片帕累托前沿有限性（定理 \ref{thm:xi-finite-frontier-certificate}），使上述判别与 strictification 推进均可被收束为有限核对与有限搜索，并可在 \(\varepsilon\)-sound 预算几何下稳定组织为可审计证书链。
+\end{corollary}
+
+\begin{proof}
+在拒绝额外连续寄存器的制度下（定理 \ref{thm:dephys-pw-nohair}），闭环接口中“严格交换/交换失败”的全部可观测残余被压缩为异常签名与异常上同调类（定理 \ref{thm:dephys-offline-hair-curvature-reduction} 的第 (1)–(2) 点）。因此“存在可观测离线残余”与某层 \([\mathrm{Anom}]\neq 0\) 在该口径下等价。反向方向由普适可交换化商 \(G^{\mathrm{BC}}_m\) 的 strictification（定理 \ref{thm:dephys-offline-hair-curvature-reduction} 的第 (3) 点）给出：在所有可见扭曲通道上异常严格为零，从而闭环接口上的曲率残余消失。最后两句分别由线性放大律（第 (4) 点）与有限前沿/预算几何（第 (5)–(6) 点）合成即得。证毕。
+\end{proof}
+
 \paragraph{端点吸引半群与“时间”定义：唯一 Koenigs 深度}
 时间纤维在本文中并非外加坐标，而是端点紧化后由伸缩半群强迫出现的一维深度账本。
 下述定理把这一点严格化为端点线性化的刚性与唯一性：任何与尺度伸缩兼容的可逆审计，其连续累积只能沿这一维 Koenigs 深度发生。
