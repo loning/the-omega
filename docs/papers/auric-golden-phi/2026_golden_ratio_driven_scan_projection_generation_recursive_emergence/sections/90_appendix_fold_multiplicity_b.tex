@@ -477,6 +477,34 @@ S_n^{\mathrm{ab}}\cong \ZZ_2
 \input{sections/generated/tab_fold_bin_gauge_m6_fibers}
 \end{remark}
 
+\begin{corollary}[boundary sheet-flip 在 \texorpdfstring{$\mathcal{G}^{\mathrm{bin}}_6$}{G6bin} 中诱导规范中心 \texorpdfstring{$(\ZZ_2)^3$}{(Z2)^3}]\label{cor:fold-bin-boundary-center-z2}
+主文 \S\ref{subsec:bdry-tower-zeck-gut} 的 window-\(6\) boundary 扇区为
+\[
+X^{\mathrm{bdry}}_6=\{\texttt{100001},\ \texttt{100101},\ \texttt{101001}\}.
+\]
+由表 \ref{tab:fold_bin_gauge_m6_fibers}（第 \(15,18,20\) 行）可见对每个 \(w\in X^{\mathrm{bdry}}_6\) 均有 \(d^{\mathrm{bin}}_6(w)=2\)；
+因此在命题 \ref{prop:fold-bin-gauge-decomposition} 的直积分解
+\(
+\mathcal{G}^{\mathrm{bin}}_6\cong \prod_{w\in X_6}S_{d^{\mathrm{bin}}_6(w)}
+\)
+下，对每个 \(w\in X^{\mathrm{bdry}}_6\) 存在一个规范 involution \(\tau_w\in \mathcal{G}^{\mathrm{bin}}_6\)，
+其在对应因子 \(S_{d^{\mathrm{bin}}_6(w)}=S_2\) 上为非平凡元、在其余因子上恒等。
+则 \(\{\tau_w:w\in X^{\mathrm{bdry}}_6\}\) 两两可交换并位于中心，从而生成一个规范嵌入
+\[
+(\ZZ_2)^{X^{\mathrm{bdry}}_6}\cong (\ZZ_2)^3\hookrightarrow Z(\mathcal{G}^{\mathrm{bin}}_6)\subset \mathcal{G}^{\mathrm{bin}}_6.
+\]
+并且经由符号映射 \(\mathrm{sgn}_6\)（定义 \ref{def:fold-bin-gauge-sign}），上述中心子群在阿贝尔化电荷格
+\(
+(\mathcal{G}^{\mathrm{bin}}_6)^{\mathrm{ab}}\cong (\ZZ_2)^{21}
+\)
+中确定一条规范的三维坐标子格，可视为 boundary sheet parity 的“flip 基元”。
+\end{corollary}
+\begin{proof}
+由于 \(S_2\) 交换，\(\tau_w\) 在其所属因子内与任意元可交换；而直积结构保证其与其余因子也可交换，故 \(\tau_w\in Z(\mathcal{G}^{\mathrm{bin}}_6)\)。
+对不同 \(w\) 的 \(\tau_w\) 作用在不交因子上，因此两两可交换并生成 \((\ZZ_2)^3\)。
+最后由定义 \ref{def:fold-bin-gauge-sign}，\(\mathrm{sgn}_6(\tau_w)\) 恰在坐标 \(w\) 处取 \(1\)，从而该子群在 \((\ZZ_2)^{21}\) 中给出规范坐标嵌入。证毕。
+\end{proof}
+
 \begin{proposition}[规范体积密度与 \texorpdfstring{$\kappa_m$}{kappa} 夹逼]\label{prop:fold-bin-gauge-volume}
 由命题 \ref{prop:fold-bin-gauge-decomposition}，
 \[
@@ -504,6 +532,45 @@ d\log d-d\le \log(d!)\le d\log d
 \)
 与 \(\sum_w d^{\mathrm{bin}}_m(w)=2^m\)。
 \end{proposition}
+
+\begin{theorem}[Stirling 首项的指数精度：\texorpdfstring{$g_m$}{gm} 与 \texorpdfstring{$\kappa_m$}{kappa} 的线性差]\label{thm:fold-bin-gauge-volume-stirling}
+在命题 \ref{prop:fold-bin-gauge-volume} 的设定下，
+\[
+g_m=\kappa_m-1+O\!\left(\frac{|X_m|\,m}{2^m}\right)\qquad(m\to\infty).
+\]
+特别地，
+\[
+\kappa_m-g_m
+=1+O\!\left(\frac{|X_m|\,m}{2^m}\right)
+=1+O\!\left(m\left(\frac{\varphi}{2}\right)^m\right),
+\]
+从而 \(\kappa_m-g_m=1+o(1)\)。
+\end{theorem}
+\begin{proof}
+对整数 \(d\ge 1\) 有 Stirling 型余项界
+\(
+\log(d!)=d\log d-d+O(\log d)
+\)。
+代入
+\(
+\log|\mathcal{G}^{\mathrm{bin}}_m|
+=\sum_{w\in X_m}\log(d^{\mathrm{bin}}_m(w)!)
+\)
+并除以 \(2^m\)，得
+\[
+g_m
+=\frac{1}{2^m}\sum_{w\in X_m}d^{\mathrm{bin}}_m(w)\log d^{\mathrm{bin}}_m(w)
+-\frac{1}{2^m}\sum_{w\in X_m}d^{\mathrm{bin}}_m(w)
+ +O\!\left(\frac{1}{2^m}\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)\right).
+\]
+第一项即 \(\kappa_m\)，第二项由 \(\sum_w d^{\mathrm{bin}}_m(w)=2^m\) 给出 \(-1\)。
+对误差项，用 \(d^{\mathrm{bin}}_m(w)\le 2^m\Rightarrow \log d^{\mathrm{bin}}_m(w)\le m\log 2\)，于是
+\(
+\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)\le |X_m|\,m\log 2
+\)，
+从而得到 \(O(|X_m|m/2^m)\)。
+最后 \(|X_m|=F_{m+2}=\Theta(\varphi^m)\)，故 \(|X_m|/2^m=\Theta((\varphi/2)^m)\)，代回即得第二行。证毕。
+\end{proof}
 
 \begin{remark}[\texorpdfstring{$m=6$}{m=6} 的 gauge 体积数值锚点]\label{rem:fold-bin-gauge-volume-m6}
 对 \(m=6\) 的直方图 \(2:8,3:4,4:9\)，有

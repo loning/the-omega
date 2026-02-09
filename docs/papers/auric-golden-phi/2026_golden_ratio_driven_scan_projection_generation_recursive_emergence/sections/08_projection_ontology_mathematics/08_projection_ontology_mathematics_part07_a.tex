@@ -499,6 +499,116 @@ $$
 因此可把任意词排序为 \(\mathrm{LIFT}\to \mathrm{PROJ}\to E\) 的形式；再用合并律压缩多次出现的同类门，即得所示正规形与伴随异常签名。证毕。
 \end{proof}
 
+\subsubsection{高阶交叉异常与轴可分解严格化：Möbius 完备分解}\label{subsec:pom-rlift-higher-cross-anom}
+
+注 \ref{rem:pom-rlift-cross-anom-test} 给出了两体交叉异常 \(\Delta^{\mathrm{sep}}\) 作为 \((\mathrm{RLIFT})\) 独立性的必要审计条件。
+当 lift 的并置轴数 \(k\ge 3\) 时，为得到\emph{充分且必要}的可计算判别，需要引入布尔子格上的全阶异常族 \(\{\Delta_S\}_{|S|\ge 2}\)，并将“Euler/直积可分解性”严格化为一条 Möbius 反演恒等式。
+
+\begin{definition}[高阶交叉异常族 \texorpdfstring{$\Delta_S$}{DeltaS}]\label{def:pom-higher-cross-anomaly}
+取 \(k\ge 2\)，令 \(G_1,\dots,G_k\) 为有限阿贝尔群，记
+\[
+G:=\prod_{i=1}^k G_i,
+\qquad
+\widehat G\cong \prod_{i=1}^k \widehat{G_i}.
+\]
+对每个取样参数 \(\theta\) 与每个 \(\chi\in\widehat G\)，设已给定 Abel/Hadamard 有限部常数 \(\log\mathfrak{M}_{\chi}(\theta)\in\RR\)，并约定归一化
+\[
+\log\mathfrak{M}_{\chi^0}(\theta)=0,
+\qquad
+\chi^0:=(\chi_{1,0},\dots,\chi_{k,0})
+\]
+（各坐标的平凡角色）。
+令 \([k]:=\{1,\dots,k\}\)。
+对任意非空子集 \(S\subseteq[k]\) 与任意子元组 \(\chi_S=(\chi_i)_{i\in S}\in\prod_{i\in S}\widehat{G_i}\)，定义 \(S\)-阶交叉异常为
+\[
+\Delta_S(\chi_S;\theta)
+:=\sum_{T\subseteq S}(-1)^{|S|-|T|}\,\log\mathfrak{M}_{\chi^{(T)}}(\theta),
+\]
+其中 \(\chi^{(T)}\in\widehat G\) 表示：当 \(i\in T\) 时第 \(i\) 坐标取 \(\chi_i\)，当 \(i\notin T\) 时第 \(i\) 坐标取平凡角色 \(\chi_{i,0}\)。
+当 \(|S|=2\) 时，该定义与注 \ref{rem:pom-rlift-cross-anom-test} 的 \(\Delta^{\mathrm{sep}}\) 一致（在 \(\log\mathfrak{M}_{\chi^0}=0\) 的归一化下）。
+\end{definition}
+
+\begin{theorem}[Möbius 完备分解]\label{thm:pom-mobius-complete-decomposition}
+在定义 \ref{def:pom-higher-cross-anomaly} 的设定下，对任意 \(\chi=(\chi_1,\dots,\chi_k)\in\widehat G\) 与任意 \(\theta\)，成立恒等式
+\[
+\boxed{\;
+\log\mathfrak{M}_\chi(\theta)
+=\sum_{\varnothing\neq S\subseteq[k]}\Delta_S(\chi_S;\theta)\; }.
+\]
+\end{theorem}
+\begin{proof}
+该恒等式等价于布尔格点上的 Möbius 反演。
+令 \(f(\chi):=\log\mathfrak{M}_\chi(\theta)\)（固定 \(\theta\)）。
+对每个坐标 \(i\in[k]\) 定义差分算子
+\[
+(\delta_i f)(\chi):=f(\chi)-f(\chi^{(i\mapsto 0)}),
+\]
+并对任意非空 \(S\subseteq[k]\) 令 \(\delta_S:=\prod_{i\in S}\delta_i\)（算子可交换）。
+展开可得
+\(
+(\delta_S f)(\chi^{(S)})=\sum_{T\subseteq S}(-1)^{|S|-|T|}f(\chi^{(T)})
+\)，
+故 \(\Delta_S(\chi_S;\theta)=(\delta_S f)(\chi^{(S)})\)。
+另一方面，
+\[
+\mathrm{Id}=\prod_{i=1}^k\bigl((\mathrm{Id}-\delta_i)+\delta_i\bigr)
+=\sum_{S\subseteq[k]}\delta_S\prod_{i\notin S}(\mathrm{Id}-\delta_i).
+\]
+将其作用于 \(f\) 并在 \(\chi\) 处取值；利用 \(f(\chi^0)=0\) 及 \(\prod_{i\notin S}(\mathrm{Id}-\delta_i)\) 的逐坐标归零效应，得到
+\(
+f(\chi)=\sum_{\varnothing\neq S\subseteq[k]}(\delta_S f)(\chi^{(S)})
+\)，
+即所示分解。证毕。
+\end{proof}
+
+\begin{theorem}[轴可分解严格化的充要条件]\label{thm:pom-axis-decomposability-iff}
+在上述设定下，以下两条件等价：
+\begin{enumerate}
+  \item \textbf{（轴可分解性）}存在函数族 \(L_i:\widehat{G_i}\to\RR\)（满足 \(L_i(\chi_{i,0})=0\)），使得对一切 \(\chi\in\widehat G\) 有
+  \[
+  \log\mathfrak{M}_{\chi}(\theta)=\sum_{i=1}^k L_i(\chi_i).
+  \]
+  \item \textbf{（高阶交叉异常全消失）}对一切 \(|S|\ge 2\) 与一切 \(\chi_S\)，有
+  \[
+  \Delta_S(\chi_S;\theta)=0.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\((1)\Rightarrow(2)\)：若 \(\log\mathfrak{M}_\chi(\theta)=\sum_i L_i(\chi_i)\)，则当 \(|S|\ge 2\) 时，
+\(\Delta_S\) 是对至少两个坐标的差分，必为零。
+\par
+\((2)\Rightarrow(1)\)：由定理 \ref{thm:pom-mobius-complete-decomposition}，
+\[
+\log\mathfrak{M}_\chi(\theta)=\sum_{i=1}^k\Delta_{\{i\}}(\chi_i;\theta)+\sum_{|S|\ge 2}\Delta_S(\chi_S;\theta).
+\]
+在 (2) 下第二项消失，令 \(L_i(\chi_i):=\Delta_{\{i\}}(\chi_i;\theta)\) 即得 (1)。证毕。
+\end{proof}
+
+\begin{proposition}[两体核验不充分：存在纯三体耦合]\label{prop:pom-pairwise-cross-anom-insufficient}
+当 \(k\ge 3\) 时，仅检验所有两体交叉异常 \(\Delta_{\{i,j\}}\equiv 0\) 不能推出轴可分解性。
+\end{proposition}
+\begin{proof}
+取每个 \(\widehat{G_i}\) 含有一个非平凡元素 \(a_i\)，并在固定 \(\theta\) 下定义函数
+\[
+\log\mathfrak{M}_{\chi}(\theta):=
+\begin{cases}
+1, & \chi=(a_1,a_2,a_3,\chi_{4,0},\dots,\chi_{k,0}),\\
+0, & \text{其他情形}.
+\end{cases}
+\]
+则任意两体截面（其余坐标取平凡）上函数恒为 \(0\)，从而 \(\Delta_{\{i,j\}}\equiv 0\)；
+但 \(\Delta_{\{1,2,3\}}(a_1,a_2,a_3;\theta)=1\neq 0\)，故由定理 \ref{thm:pom-axis-decomposability-iff} 不可分解。证毕。
+\end{proof}
+
+\begin{remark}[与素数寄存器极限的对齐：Euler 可分解性的可审计判别]\label{rem:pom-higher-cross-anom-euler}
+在 prime-register 的极限口径 \(\widehat{\ZZ}\cong\prod_p\ZZ_p\)（定义 \ref{def:pom-profinite}）下，
+若把 \(\log\mathfrak{M}\) 视为多轴（多素数或多直积分量）并置 lift 的常数层载荷，
+则定理 \ref{thm:pom-axis-decomposability-iff} 给出的“全阶交叉异常全消失”
+正是将合并律严格化为直积（Euler 型限制积因子化）而\emph{不引入} cocycle/半直积等扩张数据的充要条件；
+命题 \ref{prop:pom-pairwise-cross-anom-insufficient} 则说明两体审计 \(\Delta^{\mathrm{sep}}\) 在多轴情形下仅为必要条件。
+\end{remark}
+
 \subsubsection{加入 \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} 的重写闭包：指数律与外提正规形}\label{subsec:pom-mom-rewrite-normal}
 
 在定义 \ref{def:pom-projword-2cat} 中，\(\mathrm{MOM}_q\)（\(q\ge 2\)）已被固定为 \(\mathbf{PW}\) 的一个 \(1\)-态射生成元：它把底层折叠/读出核编译为 \(q\)-重碰撞的 fiber-product moment-kernel，从而读出 \(S_q(m)=\sum_x d_m(x)^q\) 的递推与 Perron 主尺度 \(r_q\)（定理 \ref{thm:pom-collision-kernel-ak}）。
