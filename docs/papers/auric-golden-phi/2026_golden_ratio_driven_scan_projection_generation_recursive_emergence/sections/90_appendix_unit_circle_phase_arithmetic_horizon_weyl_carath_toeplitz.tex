@@ -118,6 +118,75 @@ f(w)=c_0+2\sum_{n\ge 1}c_n w^n,\qquad c_{-n}:=\overline{c_n},
 \((3)\Rightarrow(2)\) 属于 Carath\'eodory--Fej\'er/截断矩问题的标准完备性：若所有 Toeplitz 主子矩阵半正定，则存在正测度 \(\mu\) 使得矩序列 \(\{c_n\}\) 实现为 \(\mu\) 的 Fourier 矩，从而由 \eqref{eq:app-horizon-herglotz-disk} 得到 \(\Re f\ge 0\)（参见 \cite{Duren1970TheoryHp,Simon2005OPUC1}）。证毕。
 \end{proof}
 
+\begin{proposition}[Toeplitz--PSD 的 \texorpdfstring{$\ZZ/2$}{Z/2} 扇区分解（反转对合下的偶/奇块）]\label{prop:app-horizon-toeplitz-z2-splitting}
+在 \eqref{eq:app-horizon-carath-series} 的共轭对称口径下，进一步假设系数满足实结构
+\[
+c_n\in\RR\qquad(n\in\ZZ),
+\]
+从而 \(c_{-n}=c_n\) 且每个 \(\mathbf{T}_N\) 为实对称 Toeplitz 矩阵。
+令 \(\mathbf{J}_N\in\RR^{(N+1)\times(N+1)}\) 为反转矩阵（\( \mathbf{J}_N e_k=e_{N-k} \)），并令
+\[
+E_N^{\pm}:=\ker(\mathbf{J}_N\mp I).
+\]
+则 \( \RR^{N+1}=E_N^{+}\oplus E_N^{-} \) 为正交直和，并且 \(\mathbf{T}_N\) 与 \(\mathbf{J}_N\) 对易，从而 \(E_N^{\pm}\) 均为 \(\mathbf{T}_N\) 的不变子空间。
+取一组适配分解 \(E_N^{+}\oplus E_N^{-}\) 的正交基，则存在正交矩阵 \(Q_N\) 使
+\[
+Q_N^{\mathsf T}\mathbf{T}_N Q_N
+=
+\begin{pmatrix}
+\mathbf{T}_N^{+} & 0\\
+0 & \mathbf{T}_N^{-}
+\end{pmatrix},
+\]
+其中 \(\mathbf{T}_N^{\pm}\) 为 \(\mathbf{T}_N\) 在 \(E_N^{\pm}\) 上的限制矩阵（在不同正交基下相互正交共轭）。
+因此
+\[
+\mathbf{T}_N\succeq 0
+\quad\Longleftrightarrow\quad
+\mathbf{T}_N^{+}\succeq 0\ \text{且}\ \mathbf{T}_N^{-}\succeq 0.
+\]
+\end{proposition}
+
+\begin{proof}
+对任意 \(0\le j,k\le N\)，由 \(\mathbf{T}_N=(c_{j-k})\) 与 \(\mathbf{J}_N e_k=e_{N-k}\) 得
+\[
+(\mathbf{J}_N\mathbf{T}_N)_{jk}=(\mathbf{T}_N)_{N-j,k}=c_{(N-j)-k},
+\qquad
+(\mathbf{T}_N\mathbf{J}_N)_{jk}=(\mathbf{T}_N)_{j,N-k}=c_{j-(N-k)}.
+\]
+注意到 \(j-(N-k)=-( (N-j)-k)\)，并由 \(c_{-n}=c_n\) 得 \((\mathbf{J}_N\mathbf{T}_N)_{jk}=(\mathbf{T}_N\mathbf{J}_N)_{jk}\)，故 \(\mathbf{J}_N\mathbf{T}_N=\mathbf{T}_N\mathbf{J}_N\)。
+由于 \(\mathbf{J}_N\) 为对称正交对合（\(\mathbf{J}_N^{\mathsf T}=\mathbf{J}_N\)、\(\mathbf{J}_N^2=I\)），其 \(\pm 1\) 特征子空间 \(E_N^{\pm}\) 构成 \(\RR^{N+1}\) 的正交直和；又因对易性，\(\mathbf{T}_N\) 保持 \(E_N^{\pm}\) 不变，故取 \(Q_N\) 的列向量为 \(E_N^{+}\) 与 \(E_N^{-}\) 的一组适配正交基即可得到块对角形式。
+\par
+最后设 \(x=x_{+}+x_{-}\) 为相应分解（\(x_{\pm}\in E_N^{\pm}\)）。由 \(\mathbf{T}_N\) 的对称性与对易性有
+\[
+x_{+}^{\mathsf T}\mathbf{T}_N x_{-}
+=
+x_{+}^{\mathsf T}\mathbf{J}_N\mathbf{T}_N\mathbf{J}_N x_{-}
+=
+x_{+}^{\mathsf T}\mathbf{T}_N(-x_{-})
+=
+-\,x_{+}^{\mathsf T}\mathbf{T}_N x_{-},
+\]
+从而交叉项为零并得到二次型分裂
+\(
+x^{\mathsf T}\mathbf{T}_N x=x_{+}^{\mathsf T}\mathbf{T}_N x_{+}+x_{-}^{\mathsf T}\mathbf{T}_N x_{-}
+\)。
+于是 \(\mathbf{T}_N\succeq 0\) 当且仅当其在 \(E_N^{+}\) 与 \(E_N^{-}\) 上的限制二次型分别半正定；等价地，\(\mathbf{T}_N^{\pm}\succeq 0\)。证毕。
+\end{proof}
+
+\begin{corollary}[Toeplitz--PSD 层级的偶/奇证书分裂与失败扇区定位]\label{cor:app-horizon-toeplitz-z2-cert-split}
+在命题 \ref{prop:app-horizon-toeplitz-z2-splitting} 的实结构假设下，Toeplitz--PSD 层级
+\(\{\mathbf{T}_N\succeq 0\}_{N\ge 0}\)
+可分裂为两条相互独立的 PSD 子层级：
+\[
+\forall N\ge 0,\qquad
+\mathbf{T}_N\succeq 0
+\quad\Longleftrightarrow\quad
+\mathbf{T}_N^{+}\succeq 0\ \text{且}\ \mathbf{T}_N^{-}\succeq 0.
+\]
+因此，若某一级 \(N\) 上出现 PSD 失败，则存在最小 \(N_\star\) 与扇区符号 \(\epsilon\in\{+,-\}\)，使得 \(\mathbf{T}_{N_\star}^{\epsilon}\) 出现负特征值；该 \((N_\star,\epsilon)\) 给出 Toeplitz 证书在有限级别上的可审计失败定位。
+\end{corollary}
+
 \paragraph{系数的局部封装：仅用 \texorpdfstring{$\Xi_{\zeta}$}{Xi_zeta} 在 \texorpdfstring{$s=-\tfrac12$}{s=-1/2} 的导数}
 由于 \(s(0)=-\tfrac12\) 且 \(\Xi_{\zeta}(-\tfrac12)\neq 0\)，可在该点定义对数导数的泰勒系数。
 为书写简明，令
