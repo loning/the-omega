@@ -15,6 +15,14 @@ When H_amb has a recurrent cycle, we also compute the entropy gap exponent
   eps_m = log 2 - h_top(Y_m^{amb}),
 by taking the maximum spectral radius among SCCs inside H_amb.
 
+In addition, when the maximal ambiguity SCC is primitive, the same finite-state
+mechanism yields a sharp Perron--Frobenius asymptotic for the *count* of
+non-resolving prefixes. We therefore also export:
+  - rho_amb = spectral radius of the maximal ambiguity SCC,
+  - rho_amb2 = second spectral radius (max |lambda| < rho_amb; 0 if none),
+  - Delta_amb = log(rho_amb / rho_amb2) when rho_amb2 > 0,
+  - c_amb = PF leading constant for prefix counts when start lies in that SCC.
+
 Outputs:
   - artifacts/export/phi_m_sync_theory.json
   - sections/generated/tab_phi_m_sync_theory.tex
@@ -242,6 +250,10 @@ class Row:
     L_sync: Optional[int]
     h_amb: Optional[float]
     epsilon: Optional[float]
+    rho_amb: Optional[float]
+    rho_amb2: Optional[float]
+    Delta_amb: Optional[float]
+    c_amb: Optional[float]
 
 
 def write_table_tex(path: Path, rows: List[Row]) -> None:
@@ -370,6 +382,10 @@ def main() -> None:
             L_sync = 0
             h_amb = None
             eps = None
+            rho_amb = None
+            rho_amb2 = None
+            Delta_amb = None
+            c_amb = None
         elif not has_cycle:
             # Finite worst-case sync delay: longest path length in DAG.
             start_local = amb_index.get(0, 0)
@@ -377,20 +393,88 @@ def main() -> None:
             L_sync = D_sync + 1
             h_amb = None
             eps = None
+            rho_amb = None
+            rho_amb2 = None
+            Delta_amb = None
+            c_amb = None
         else:
             # Infinite worst-case sync delay; compute h_top on the ambiguous recurrent part.
             D_sync = None
             L_sync = None
             rho_best = 0.0
+            comp_best: Optional[List[int]] = None
             for comp in comps:
                 if len(comp) == 1:
                     u = comp[0]
                     if u not in adj_mult[u]:
                         continue
                 rho = _spectral_radius_dense(comp, adj_mult)
-                rho_best = max(rho_best, rho)
+                if rho > rho_best + 1e-12:
+                    rho_best = rho
+                    comp_best = comp
+                elif abs(rho - rho_best) <= 1e-12 and comp_best is not None:
+                    # Prefer a component containing the start state (if possible), otherwise larger.
+                    start_local = amb_index.get(0, -1)
+                    if (start_local in comp) and (start_local not in comp_best):
+                        comp_best = comp
+                    elif (len(comp) > len(comp_best)) and (start_local not in comp_best):
+                        comp_best = comp
+
+            rho_amb = float(rho_best) if rho_best > 0.0 else None
             h_amb = float(math.log(rho_best)) if rho_best > 0.0 else None
             eps = float(math.log(2.0) - h_amb) if h_amb is not None else None
+
+            # Second spectral radius + PF constant on the maximal SCC, when feasible.
+            rho_amb2 = None
+            Delta_amb = None
+            c_amb = None
+            if rho_amb is not None and comp_best is not None:
+                k = len(comp_best)
+                # Dense eigen-decomposition is only reasonable for modest SCC sizes.
+                if k <= 512:
+                    pos = {comp_best[i]: i for i in range(k)}
+                    M = np.zeros((k, k), dtype=np.float64)
+                    comp_set = set(comp_best)
+                    for u in comp_best:
+                        iu = pos[u]
+                        for v, c in adj_mult[u].items():
+                            if v in comp_set:
+                                M[iu, pos[v]] += float(c)
+
+                    vals, vecs = np.linalg.eig(M)
+                    # PF eigenvalue is the one with maximal real part for nonnegative matrices.
+                    i_pf = int(np.argmax(np.real(vals)))
+                    rho_pf = float(np.real(vals[i_pf]))
+
+                    abs_vals = np.abs(vals)
+                    tol = 1e-10 * max(1.0, rho_pf)
+                    mask = abs_vals < (abs(rho_pf) - tol)
+                    rho2 = float(np.max(abs_vals[mask])) if np.any(mask) else 0.0
+                    rho_amb2 = rho2
+                    if rho2 > 0.0:
+                        Delta_amb = float(math.log(rho_pf / rho2))
+
+                    # Right/left PF eigenvectors (use transpose for left).
+                    v = np.real_if_close(vecs[:, i_pf]).astype(np.float64)
+                    valsL, vecsL = np.linalg.eig(M.T)
+                    i_pf_L = int(np.argmax(np.real(valsL)))
+                    w = np.real_if_close(vecsL[:, i_pf_L]).astype(np.float64)
+
+                    if float(np.sum(v)) < 0.0:
+                        v = -v
+                    if float(np.sum(w)) < 0.0:
+                        w = -w
+
+                    dot = float(np.dot(w, v))
+                    if dot < 0.0:
+                        w = -w
+                        dot = -dot
+                    if abs(dot) > 0.0:
+                        v = v / dot  # normalize so w^T v == 1
+
+                        start_local = amb_index.get(0, -1)
+                        if start_local in pos:
+                            c_amb = float(v[pos[start_local]] * float(np.sum(w)))
 
         rows.append(
             Row(
@@ -404,6 +488,10 @@ def main() -> None:
                 L_sync=L_sync,
                 h_amb=h_amb,
                 epsilon=eps,
+                rho_amb=rho_amb,
+                rho_amb2=rho_amb2,
+                Delta_amb=Delta_amb,
+                c_amb=c_amb,
             )
         )
 

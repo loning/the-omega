@@ -600,6 +600,214 @@ t(e)=s(e'),\qquad S'=\delta_m(S,\lambda_m(e')).
 最后取 \(\frac1n\log\) 并令 \(n\to\infty\) 得极限指数。证毕。
 \end{proof}
 
+\paragraph{从熵缺口到锐化曲线：未同步前缀的确定性计数律}
+定理 \ref{thm:Ym-sync-tail}--\ref{thm:Ym-sync-tail-pf-sharp} 把“未同步即统计型 \(\mathsf{NULL}\)”的时间层语义转化为可审计的指数尺度与 Perron--Frobenius 主项。
+然而，在同一确定化机制下，一个更为刚性的对象并非测度尾概率，而是\emph{未同步前缀集合本身}：
+它构成一个有限状态正则语言，因此其块计数不仅具有熵缺口，还满足带可计算主常数与二阶谱隙的尖锐渐近。
+该结果把“扫描更久 \(\Rightarrow\) 更清晰”的定性规律升级为一条有效可计算的“扫描--清晰度”锐化曲线。
+
+\begin{definition}[未同步前缀集合与计数]\label{def:Ym-unsync-prefix-count}
+沿用定理 \ref{thm:Ym-sync-tail} 的记号。
+对任意 \(n\in\NN\)，定义未同步长度-\(n\) 前缀集合
+\[
+\mathcal{W}_{m}^{\mathrm{unsync}}(n)
+:=\{\,w\in X_m^n:\ \text{从 }S_0=V_m\text{ 出发读入 }w\text{ 后满足 }|S_n|>1\,\},
+\]
+并记其计数为
+\[
+N_m^{\mathrm{unsync}}(n):=\#\mathcal{W}_{m}^{\mathrm{unsync}}(n).
+\]
+当 \(Y_m^{\mathrm{amb}}\neq\varnothing\) 时，\(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) 与 \(H_m^{\mathrm{amb}}\) 中从初始状态 \(V_m\) 出发、长度为 \(n\) 且始终停留在非单点态的标记路径一一对应。
+\end{definition}
+
+\begin{theorem}[歧义前缀计数的 Perron--Frobenius 锐化律：主项常数与二阶谱隙]\label{thm:Ym-unsync-prefix-pf-sharp}
+假设 \(Y_m^{\mathrm{amb}}\neq\varnothing\)。
+进一步假设非单点态诱导子图 \(H_m^{\mathrm{amb}}\) 存在唯一的最大谱半径强连通分量 \(C_m\)，且该分量是原始的（aperiodic/primitive）。
+记 \(A_m^{\mathrm{amb}}\) 为定理 \ref{thm:Ym-sync-tail-pf-sharp} 中定义的按边条数计数的邻接矩阵，并令
+\[
+\rho_{\mathrm{amb}}(m):=\rho(A_m^{\mathrm{amb}}),\qquad
+\rho_{\mathrm{amb},2}(m):=\max\bigl(\{\,|\lambda|:\ \lambda\in\sigma(A_m^{\mathrm{amb}}),\ |\lambda|<\rho_{\mathrm{amb}}(m)\,\}\cup\{0\}\bigr),
+\]
+则 \(\rho_{\mathrm{amb},2}(m)<\rho_{\mathrm{amb}}(m)\)，并存在显式常数 \(c_m>0\) 使得
+\[
+\boxed{\;
+N_m^{\mathrm{unsync}}(n)
+=c_m\,\rho_{\mathrm{amb}}(m)^{n}\ +\ O\!\bigl(\rho_{\mathrm{amb},2}(m)^{n}\bigr),
+\qquad n\to\infty.\;}
+\]
+令 \(\varepsilon_m=\log 2-\log\rho_{\mathrm{amb}}(m)\)（见定理 \ref{thm:Ym-sync-tail-pf-sharp}）。
+则有“锐化曲线”
+\[
+\boxed{\;
+\frac{N_m^{\mathrm{unsync}}(n)}{2^n}
+=c_m\,e^{-\varepsilon_m n}\ +\ O\!\Bigl(\bigl(\tfrac{\rho_{\mathrm{amb},2}(m)}{2}\bigr)^{n}\Bigr),
+\qquad n\to\infty.\;}
+\]
+当 \(\rho_{\mathrm{amb},2}(m)>0\) 时，定义二阶谱隙指数
+\[
+\Delta_{\mathrm{amb}}(m):=\log\!\Bigl(\frac{\rho_{\mathrm{amb}}(m)}{\rho_{\mathrm{amb},2}(m)}\Bigr)>0,
+\]
+则上述误差项亦可写成 \(O\!\bigl(e^{-(\varepsilon_m+\Delta_{\mathrm{amb}}(m))n}\bigr)\)。
+其中常数 \(c_m\) 具有可审计闭式：取 \(A_m^{\mathrm{amb}}\) 的 Perron--Frobenius 右/左特征向量对 \((v_m,w_m)\) 满足
+\[
+A_m^{\mathrm{amb}}v_m=\rho_{\mathrm{amb}}(m)v_m,\qquad
+w_m^{\mathsf T}A_m^{\mathrm{amb}}=\rho_{\mathrm{amb}}(m)w_m^{\mathsf T},\qquad
+w_m^{\mathsf T}v_m=1,
+\]
+并令 \(e_{V_m}\) 为初始状态 \(V_m\) 的坐标向量、\(\mathbf 1\) 为 \(\mathcal{S}_m^{\mathrm{amb}}\) 上的全 \(1\) 向量，则
+\[
+\boxed{\;
+c_m=(e_{V_m}^{\mathsf T}v_m)\,(w_m^{\mathsf T}\mathbf 1).\;}
+\]
+\end{theorem}
+
+\begin{proof}
+由定义 \ref{def:Ym-unsync-prefix-count} 与确定性右解析性可知：长度-\(n\) 标记词 \(w\) 使滤波状态仍为非单点，当且仅当从 \(V_m\) 出发沿 \(H_m^{\mathrm{amb}}\) 读入 \(w\) 得到一条长度-\(n\) 的标记路径。
+按定理 \ref{thm:Ym-sync-tail-pf-sharp} 的邻接矩阵定义，\(A_m^{\mathrm{amb}}\) 的条目正是一步标记选择的多重度；因此块计数满足矩阵幂公式
+\[
+N_m^{\mathrm{unsync}}(n)=e_{V_m}^{\mathsf T}(A_m^{\mathrm{amb}})^n\mathbf 1.
+\]
+\par
+在“唯一最大谱半径强连通分量且原始”的假设下，\(\rho_{\mathrm{amb}}(m)\) 是 \(A_m^{\mathrm{amb}}\) 的简单特征值且为谱圆上的唯一点谱；
+从而存在 \(0\le \rho_{\mathrm{amb},2}(m)<\rho_{\mathrm{amb}}(m)\) 使得矩阵幂满足 Perron--Frobenius 尖锐分解
+\[
+(A_m^{\mathrm{amb}})^n=\rho_{\mathrm{amb}}(m)^n\,v_m w_m^{\mathsf T}\ +\ O\!\bigl(\rho_{\mathrm{amb},2}(m)^n\bigr),
+\qquad n\to\infty,
+\]
+其中 \((v_m,w_m)\) 为归一化的 Perron 左/右特征向量对。
+左右乘以 \(e_{V_m}^{\mathsf T}\) 与 \(\mathbf 1\) 即得
+\[
+N_m^{\mathrm{unsync}}(n)
+=(e_{V_m}^{\mathsf T}v_m)(w_m^{\mathsf T}\mathbf 1)\,\rho_{\mathrm{amb}}(m)^n\ +\ O\!\bigl(\rho_{\mathrm{amb},2}(m)^n\bigr),
+\]
+从而主项常数闭式与第一条渐近成立。
+将 \(\rho_{\mathrm{amb}}(m)^n/2^n=e^{-(\log 2-\log\rho_{\mathrm{amb}}(m))n}=e^{-\varepsilon_m n}\) 与同样的误差缩放代入，即得“锐化曲线”形式；归一化误差由 \((\rho_{\mathrm{amb},2}(m)/2)^n\) 控制，而当 \(\rho_{\mathrm{amb},2}(m)>0\) 时其指数差为 \(\Delta_{\mathrm{amb}}(m)\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[给定清晰度阈值的渐近最优扫描长度]\label{cor:Ym-scan-length-asymptotic}
+在定理 \ref{thm:Ym-unsync-prefix-pf-sharp} 的假设下，给定 \(\eta\in(0,1)\)，定义最小扫描长度
+\[
+n_{\eta}:=\min\Bigl\{\,n\in\NN:\ \frac{N_m^{\mathrm{unsync}}(n)}{2^n}\le \eta\,\Bigr\}.
+\]
+则当 \(\eta\downarrow 0\) 时有渐近律
+\[
+n_{\eta}
+=\frac{1}{\varepsilon_m}\log\!\Bigl(\frac{c_m}{\eta}\Bigr)\ +\ O(1).
+\]
+特别地，\(\varepsilon_m^{-1}\) 给出分辨率 \(m\) 下内禀的“扫描--清晰度”尺度。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:Ym-unsync-prefix-pf-sharp}，
+\(
+\frac{N_m^{\mathrm{unsync}}(n)}{2^n}
+=c_m e^{-\varepsilon_m n}\Bigl(1+O\!\bigl((\rho_{\mathrm{amb},2}(m)/\rho_{\mathrm{amb}}(m))^{n}\bigr)\Bigr)
+\)。
+令 \(\eta\downarrow 0\) 并解不等式 \(c_m e^{-\varepsilon_m n}\lesssim \eta\)，即可得到
+\(
+n_{\eta}=\varepsilon_m^{-1}\log(c_m/\eta)+O(1)
+\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[有限延迟与谱尾的严格二分]\label{cor:Ym-finite-delay-spectral-tail}
+在定理 \ref{thm:Ym-sync-tail} 的记号下，非单点态诱导子图 \(H_m^{\mathrm{amb}}\) 无有向环当且仅当
+\[
+\rho_{\mathrm{amb}}(m)=0.
+\]
+在此情形下，存在 \(n_0<\infty\) 使得对所有 \(n\ge n_0\) 有 \(N_m^{\mathrm{unsync}}(n)=0\)（有限延迟同步）。
+反之，若 \(H_m^{\mathrm{amb}}\) 含有向环（从而 \(Y_m^{\mathrm{amb}}\neq\varnothing\)），则 \(1\le \rho_{\mathrm{amb}}(m)<2\) 并给出非平凡的指数型谱尾。
+\end{corollary}
+
+\begin{proof}
+若 \(H_m^{\mathrm{amb}}\) 无环，则在有限图上其邻接矩阵 \(A_m^{\mathrm{amb}}\) 为幂零矩阵（某次幂为零），从而谱半径 \(\rho(A_m^{\mathrm{amb}})=0\)，即 \(\rho_{\mathrm{amb}}(m)=0\)；并且 \((A_m^{\mathrm{amb}})^n=0\) 对充分大 \(n\) 成立，于是由
+\(
+N_m^{\mathrm{unsync}}(n)=e_{V_m}^{\mathsf T}(A_m^{\mathrm{amb}})^n\mathbf 1
+\)
+得 \(N_m^{\mathrm{unsync}}(n)=0\) 终止于有限处。
+\par
+反向蕴含同理：若 \(\rho_{\mathrm{amb}}(m)=0\)，则 \(A_m^{\mathrm{amb}}\) 为幂零，故 \(H_m^{\mathrm{amb}}\) 不含有向环。
+若 \(H_m^{\mathrm{amb}}\) 含有向环，则其最大强连通分量的谱半径至少为 \(1\)，故 \(\rho_{\mathrm{amb}}(m)\ge 1\)；另一方面由 \(h_{\mathrm{top}}(Y_m)=\log 2\) 及 \(\rho_{\mathrm{amb}}(m)=e^{h_{\mathrm{top}}(Y_m^{\mathrm{amb}})}\le e^{h_{\mathrm{top}}(Y_m)}=2\) 得 \(\rho_{\mathrm{amb}}(m)\le 2\)，并在“严格低熵壳”情形下有 \(\rho_{\mathrm{amb}}(m)<2\)。
+证毕。
+\end{proof}
+
+\paragraph{分层清晰度指数：残余歧义等级的谱级分解}
+上文以 \(|S_t|>1\) 作为统计型 \(\mathsf{NULL}\) 的判据，从而把“是否同步”视为最粗粒度的清晰度刻画。
+由于候选集合在读入下单调不增（命题 \ref{prop:det-candidate-set-monotone}），可以进一步按残余候选规模分层，从而得到一族严格可计算的清晰度指数（而非单一的同步指数）。
+
+\begin{definition}[残余歧义等级与诱导计数图]\label{def:Ym-ambiguity-level-k}
+对整数 \(k\ge 2\)，定义阈值态集合
+\[
+\mathcal{S}_{m,\ge k}:=\{\,S\in\mathcal{S}_m^{\mathrm{det}}:\ |S|\ge k\,\},
+\]
+并令 \(H_{m,\ge k}\) 为确定化表示 \(H_m^{\mathrm{det}}\) 在 \(\mathcal{S}_{m,\ge k}\) 上的诱导子图。
+记其按边条数计数的邻接矩阵为
+\[
+(A_{m,\ge k})_{S,S'}:=\#\{\,a\in X_m:\ \delta_m(S,a)=S'\,\},\qquad S,S'\in\mathcal{S}_{m,\ge k}.
+\]
+对任意 \(n\in\NN\)，定义长度-\(n\) 的 \(k\)-歧义前缀集合
+\[
+\mathcal{W}_{m,\ge k}(n)
+:=\{\,w\in X_m^n:\ \text{从 }S_0=V_m\text{ 出发读入 }w\text{ 后满足 }|S_n|\ge k\,\},
+\]
+并记其计数为 \(N_{m,\ge k}(n):=\#\mathcal{W}_{m,\ge k}(n)\)。
+显然 \(k=2\) 时有 \(N_{m,\ge 2}(n)=N_m^{\mathrm{unsync}}(n)\)。
+\end{definition}
+
+\begin{theorem}[歧义谱定理：残余歧义等级的 Perron--Frobenius 锐化律]\label{thm:Ym-ambiguity-spectrum-law}
+固定整数 \(k\ge 2\) 并假设诱导子图 \(H_{m,\ge k}\) 存在唯一的最大谱半径强连通分量且该分量为原始的。
+令
+\[
+\rho_{m,\ge k}:=\rho(A_{m,\ge k}),\qquad
+\rho_{m,\ge k,2}:=\max\bigl(\{\,|\lambda|:\ \lambda\in\sigma(A_{m,\ge k}),\ |\lambda|<\rho_{m,\ge k}\,\}\cup\{0\}\bigr),
+\]
+则存在显式常数 \(c_{m,\ge k}>0\) 使得
+\[
+N_{m,\ge k}(n)=c_{m,\ge k}\,\rho_{m,\ge k}^{\,n}\ +\ O\!\bigl(\rho_{m,\ge k,2}^{\,n}\bigr),
+\qquad n\to\infty.
+\]
+令 \(\varepsilon_{m,\ge k}:=\log 2-\log\rho_{m,\ge k}\)。
+则有分层锐化曲线
+\[
+\frac{N_{m,\ge k}(n)}{2^n}
+=c_{m,\ge k}\,e^{-\varepsilon_{m,\ge k} n}\ +\ O\!\Bigl(\bigl(\tfrac{\rho_{m,\ge k,2}}{2}\bigr)^{n}\Bigr),
+\qquad n\to\infty.
+\]
+当 \(\rho_{m,\ge k,2}>0\) 时，定义二阶谱隙指数
+\[
+\Delta_{m,\ge k}:=\log\!\Bigl(\frac{\rho_{m,\ge k}}{\rho_{m,\ge k,2}}\Bigr)>0,
+\]
+则上述误差项亦可写成 \(O\!\bigl(e^{-(\varepsilon_{m,\ge k}+\Delta_{m,\ge k})n}\bigr)\)。
+并且指数满足单调链
+\[
+\boxed{\ \varepsilon_{m,\ge 2}\ \le\ \varepsilon_{m,\ge 3}\ \le\ \varepsilon_{m,\ge 4}\ \le\ \cdots\ }.
+\]
+此外，若 \((v_{m,\ge k},w_{m,\ge k})\) 为 \(A_{m,\ge k}\) 的 Perron--Frobenius 右/左特征向量并归一化为 \(w_{m,\ge k}^{\mathsf T}v_{m,\ge k}=1\)，则主项常数可取闭式
+\[
+c_{m,\ge k}=(e_{V_m}^{\mathsf T}v_{m,\ge k})\,(w_{m,\ge k}^{\mathsf T}\mathbf 1),
+\]
+其中 \(e_{V_m}\) 为初始态坐标向量、\(\mathbf 1\) 为 \(\mathcal{S}_{m,\ge k}\) 上的全 \(1\) 向量。
+\end{theorem}
+
+\begin{proof}
+由确定性右解析性与定义 \ref{def:Ym-ambiguity-level-k} 可知：长度-\(n\) 标记词 \(w\) 使得 \(|S_n|\ge k\)，当且仅当从 \(V_m\) 出发沿诱导子图 \(H_{m,\ge k}\) 读入 \(w\) 得到一条长度-\(n\) 的标记路径。
+按邻接矩阵 \(A_{m,\ge k}\) 的多重度定义，块计数满足
+\[
+N_{m,\ge k}(n)=e_{V_m}^{\mathsf T}(A_{m,\ge k})^n\mathbf 1.
+\]
+在“唯一最大谱半径强连通分量且原始”的假设下，对 \(A_{m,\ge k}\) 应用 Perron--Frobenius 尖锐分解即可得到
+\(
+N_{m,\ge k}(n)=c_{m,\ge k}\rho_{m,\ge k}^{\,n}+O(\rho_{m,\ge k,2}^{\,n})
+\)
+及相应的归一化锐化曲线；主项常数闭式由左右乘 \(e_{V_m}^{\mathsf T}\) 与 \(\mathbf 1\) 立即得到。
+\par
+对单调链：由集合嵌套 \(\mathcal{S}_{m,\ge k+1}\subseteq\mathcal{S}_{m,\ge k}\)，图 \(H_{m,\ge k+1}\) 由 \(H_{m,\ge k}\) 诱导得到；
+因此（将缺失顶点按零行零列补齐到同一维数后）有逐项不等式 \(0\le A_{m,\ge k+1}\le A_{m,\ge k}\)。
+由非负矩阵谱半径的单调性得 \(\rho_{m,\ge k+1}\le \rho_{m,\ge k}\)，从而 \(\varepsilon_{m,\ge k}=\log 2-\log\rho_{m,\ge k}\) 随 \(k\) 单调不减，得到所示链式不等式。
+证毕。
+\end{proof}
+
 \begin{corollary}[时间层右可逆性的二分律：有限延迟或指数稀薄壳]\label{cor:Ym-time-layer-dichotomy}
 在推论 \ref{cor:Ym-singleton-essential-finite-delay} 的“单点本质态”假设下，窗口层的多对一（即 \(\Fold_m\) 在单窗上的非单射）在时间层的右可逆性上只可能表现为以下二者之一：
 \begin{enumerate}
