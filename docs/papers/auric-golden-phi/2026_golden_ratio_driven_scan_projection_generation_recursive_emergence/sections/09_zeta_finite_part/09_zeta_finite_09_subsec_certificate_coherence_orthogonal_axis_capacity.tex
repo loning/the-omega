@@ -1039,6 +1039,94 @@ G(u)=u^{m}\,\overline{G(1/\overline{u})}.
 见附录命题 \ref{prop:app-endpoint-blaschke-radial-absorption}。证毕。
 \end{proof}
 
+\begin{corollary}[端点吸收系数的可加守恒与单点层析]\label{cor:xi-endpoint-absorption-additive-tomography}
+在命题 \ref{prop:xi-endpoint-absorption-coefficient} 的设定下，成立如下恒等式与可核验读出：
+\begin{enumerate}
+  \item \textbf{（端点 Poisson--Busemann 质量的可加守恒）}
+  \[
+  \Phi_{-1}(B)=\sum_{k=1}^{N}\mathcal{B}_{-1}(a_k)
+  \qquad(\text{按重数计}),
+  \]
+  其中 \(\mathcal{B}_{-1}(w)=\frac{1-|w|^2}{|1+w|^2}\) 为端点 \(-1\) 的指数化 Busemann 坐标（命题 \ref{prop:app-busemann-poisson-minus1}）。
+  \item \textbf{（单点层析：沿一条径向读出偏移总量）}
+  \[
+  \Phi_{-1}(B)=\lim_{r\uparrow 1}\frac{-\log|B(-r)|}{1-r}.
+  \]
+  \item \textbf{（离切片偏移总量的证书化）}
+  若进一步假设 \(a_k=w_{\rho_k}\) 由离切片零点 \(\rho_k\) 的圆盘像给出，
+  并令 \(\delta_k:=\tfrac12-\Re(\rho_k)=\mathcal{B}_{-1}(w_{\rho_k})\)（定理 \ref{thm:xi-offcritical-quadratic-radial-compression}），
+  则
+  \[
+  \Phi_{-1}(B)=\sum_{k=1}^{N}\delta_k.
+  \]
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+第 (1) 条由 \(P_{a}(-1)=\frac{1-|a|^2}{|1+a|^2}=\mathcal{B}_{-1}(a)\)（命题 \ref{prop:app-busemann-poisson-minus1}）与 \(\Phi_{-1}(B)=\sum_k P_{a_k}(-1)\) 的定义直接得到。
+第 (2) 条由命题 \ref{prop:xi-endpoint-absorption-coefficient} 的渐近式两侧同除以 \(1-r\) 并令 \(r\uparrow 1\) 得到。
+第 (3) 条由第 (1) 条与 \(\delta_k=\mathcal{B}_{-1}(w_{\rho_k})\)（定理 \ref{thm:xi-offcritical-quadratic-radial-compression}）合并即得。证毕。
+\end{proof}
+
+\paragraph{高度压缩与端点解耦：两条证书通道的可见尺度分裂}
+定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 表明：对离切片零点 \(\rho=\beta+\mathrm{i}\gamma\) 的圆盘像 \(w_\rho\)，径向缺口满足
+\(
+1-|w_\rho|^2=\frac{4\delta}{\gamma^2+(1+\delta)^2}
+\)
+并随 \(|\gamma|\) 呈二次压缩；
+因此若试图仅以径向缺口通道（Jensen 圆平均）在固定半径处读出该零点的贡献，则必须进入端点边界层分辨率 \(1-\varrho\lesssim \delta/\gamma^2\)，从而触发不可绕过的分辨率/位预算门槛（推论 \ref{cor:xi-offcritical-visibility-threshold-bit-budget}；并见定理 \ref{thm:xi-jensen-quadratic-resolution-barrier} 的壁垒形式）。
+\par
+与之相对，同一零点的偏移坐标 \(\delta=\mathcal{B}_{-1}(w_\rho)\) 是端点 \(-1\) 的 horocycle 层标签（命题 \ref{prop:app-busemann-poisson-minus1} 与定理 \ref{thm:xi-offcritical-quadratic-radial-compression}），其并不随 \(|\gamma|\) 衰减；
+在“偏移仅由 Blaschke 数据承载”的口径下，它直接进入端点吸收系数的可加守恒量 \(\Phi_{-1}(B)=\sum_k \delta_k\) 并可由单点径向衰减率读出（推论 \ref{cor:xi-endpoint-absorption-additive-tomography}）。
+因此，“离切片偏移”的可核验信息在闭环接口中自然分裂为两条正交证书通道：一条随高度发生二次径向压缩的径向缺口通道，另一条高度解耦、由端点 Poisson--Busemann 质量与单点通量承载的端点通道。
+
+\begin{theorem}[Adams--Chebyshev 多尺度放大：端点吸收系数的线性重标定律]\label{thm:xi-endpoint-absorption-adams-rescaling}
+令 \(B\) 为有限 Blaschke 乘积，并对整数 \(m\ge 1\) 定义幂拉回
+\[
+B^{(m)}(w):=B(w^m).
+\]
+若 \(m\) 为奇数，则 \(B^{(m)}\) 仍为有限 Blaschke 乘积，且其端点吸收系数满足线性重标定
+\[
+\boxed{\;
+\Phi_{-1}\bigl(B^{(m)}\bigr)=m\,\Phi_{-1}(B).\;}
+\]
+\end{theorem}
+
+\begin{proof}
+由于 \(B\) 为有限 Blaschke 乘积，\(B^{(m)}(w)=B(w^m)\) 的零点仍有限，故 \(B^{(m)}\) 亦为有限 Blaschke 乘积并可适用命题 \ref{prop:xi-endpoint-absorption-coefficient}。
+当 \(m\) 为奇数且 \(r\uparrow 1\) 时，\((-r)^m=-r^m\)，从而
+\[
+\log|B^{(m)}(-r)|
+=\log|B((-r)^m)|
+=\log|B(-r^m)|.
+\]
+由命题 \ref{prop:xi-endpoint-absorption-coefficient}（对 \(r^m\uparrow 1\) 应用）得
+\[
+\log|B(-r^m)|=-(1-r^m)\,\Phi_{-1}(B)+o(1-r^m).
+\]
+又因 \(1-r^m=m(1-r)+o(1-r)\)（\(r\uparrow 1\)），故
+\[
+\log|B^{(m)}(-r)|=-(1-r)\,m\,\Phi_{-1}(B)+o(1-r).
+\]
+另一方面，再次由命题 \ref{prop:xi-endpoint-absorption-coefficient} 应用于 \(B^{(m)}\) 得
+\(
+\log|B^{(m)}(-r)|=-(1-r)\,\Phi_{-1}(B^{(m)})+o(1-r)
+\)。
+比较两式的一阶系数即得 \(\Phi_{-1}(B^{(m)})=m\Phi_{-1}(B)\)。证毕。
+\end{proof}
+
+\begin{remark}[奇偶性与端点基点的保持]\label{rem:xi-endpoint-absorption-adams-parity}
+上述重标定律要求 \(m\) 为奇数，其原因在于端点径向 \(w=-r\uparrow-1\) 在幂映射下的像为 \((-r)^m\)：
+若 \(m\) 为奇数则 \((-r)^m=-r^m\uparrow-1\) 保持端点基点不变；
+若 \(m\) 为偶数则 \((-r)^m=+r^m\uparrow+1\) 改变端点基点，从而应对应于另一端点的吸收系数而非 \(\Phi_{-1}\)。
+\end{remark}
+
+\begin{remark}[可审计的终端判别形式：端点一维指数与多尺度审计链]\label{rem:xi-endpoint-absorption-terminal-index}
+在 Hardy/Smirnov 因子分解与“偏移仅由 Blaschke 数据承载”的口径下，离切片偏移可被压缩为端点一维指数 \(\Phi_{-1}(B)\)：
+其一方面等于单点径向衰减率的极限 \(\lim_{r\uparrow 1}\frac{-\log|B(-r)|}{1-r}\)（推论 \ref{cor:xi-endpoint-absorption-additive-tomography}），另一方面满足 \(\Phi_{-1}(B)=0\iff B\equiv 1\)（命题 \ref{prop:xi-endpoint-absorption-coefficient}），从而为“无离切片偏移”给出一个独立于径向缺口分辨率的端点判别接口。
+此外，在奇数 Adams 幂拉回 \(B^{(m)}(w)=B(w^m)\) 下端点指数线性放大（定理 \ref{thm:xi-endpoint-absorption-adams-rescaling}），故族 \(\{\Phi_{-1}(B^{(m)})\}_{m\ \mathrm{odd}}\) 形成一条无损的多尺度审计链：它以整系数尺度参数把“偏移总量”作为可加守恒量进行确定性放大，而不引入新的连续自由度。
+\end{remark}
+
 最后需要强调的是：“零漏泄”应被理解为可核验制度而非单点偶然。
 在圆盘化完成化 \(F_\zeta\) 上，RH 等价于缺陷恒零 \(D_{\zeta}(\varrho)\equiv 0\)（推论 \ref{cor:app-rh-iff-jensen-defect-zero}），亦等价于对任意趋近列 \(\varrho_n\uparrow 1\) 的可数约束 \(D_{\zeta}(\varrho_n)=0\)（定理 \ref{thm:app-jensen-countable-criterion}）。
 在该“零漏泄制度”下，Jensen--Blaschke 机制排除一切盘内点状零点；结合完成化自对偶参数 \(u=u(s)\) 的固定切片 \(|u|=1\iff \Re(s)=\tfrac12\)，得到：点状零点只能承载于固定切片，从而只能承载于 \(\Re(s)=\tfrac12\)。
