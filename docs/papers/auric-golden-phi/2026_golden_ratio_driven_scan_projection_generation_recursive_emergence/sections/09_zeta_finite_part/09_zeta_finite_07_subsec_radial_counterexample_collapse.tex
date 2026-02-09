@@ -113,8 +113,107 @@ d\cdot(\theta,\varrho):=(d\theta,d\varrho)\qquad(d\ge 1).
 因此 (1) 已不可能成立，从而 (1)--(2) 不可同时满足。证毕。
 \end{proof}
 
-\paragraph{可选加码：最小实现接口将“径向模式”显化为维数超界}
+\paragraph{最小实现接口将“径向模式”显化为维数超界}
 若进一步把该伪对象编译为序列/核对象并接入“最小实现”接口，则径向模式的引入可被视为额外可见自由度。
 在本文框架中，这类“额外自由度是否必须以附加状态/寄存器承载”可由 Hankel 秩与最小 realization 维数给出硬证书（定理 \ref{thm:hankel-rank-minimal}、\ref{thm:pom-moment-hankel}；并参见注 \ref{rem:two_layer_bridge_package_completed_minH} 的二层桥包组织方式）。
 该路径为上述两类类型拒绝提供一个额外的、完全数值可审计的后端诊断端口。
 
+\paragraph{最小 \texorpdfstring{$(2\times2)$}{(2x2)} 自对偶桥接核的显式轴外零点与完全分类}
+前述反例通过“在完成化端追加越界根”展示了径向模式的强制性；
+作为互补，下面给出一个不依赖伪因子拼接、而是在\emph{最小可控自对偶核}上直接导出轴外零点的显式原型。
+该模型是附录 \S\ref{app:kernel-self-dual} 的自对偶正常形（命题 \ref{prop:self-dual-normal-form-1pmu}）在 \(\dim V_+=\dim V_-=1\) 的最小实例。
+
+\begin{theorem}[最小自对偶桥接核的零点全分类：显式非临界线零点塔]\label{thm:xi-2x2-selfdual-offcritical-template}
+取整数 \(a,b\in\ZZ\)，并令
+\[
+  B_0=\begin{pmatrix}a&-b\\-b&a\end{pmatrix},\qquad
+  \Pi=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad
+  B_1=\Pi^{-1}B_0\Pi=\begin{pmatrix}a&b\\b&a\end{pmatrix},
+\]
+定义
+\(
+B(u):=B_0+uB_1
+\)
+与
+\(
+\Delta(z,u):=\det(I-zB(u))
+\)。
+对任意 \(L>1\)，令完成化切片
+\[
+  \Xi_{\Delta,L}(s):=\Delta\!\bigl(L^{-s},\,L^{2s-1}\bigr).
+\]
+则：
+\begin{enumerate}
+  \item \textbf{（两通道因子分解）}
+  \[
+  \Delta(z,u)
+  =\Bigl(1-z\bigl((a-b)+(a+b)u\bigr)\Bigr)\,
+   \Bigl(1-z\bigl((a+b)+(a-b)u\bigr)\Bigr).
+  \]
+  \item \textbf{（二次方程化与对数晶格）}
+  令 \(r:=L^{s-\tfrac12}\)（从而 \(u=L^{2s-1}=r^{2}\)、\(L^{-s}=L^{-1/2}r^{-1}\)）。
+  则零点条件 \(\Xi_{\Delta,L}(s)=0\) 等价于以下两条二次方程之一成立：
+  \[
+  (a+b)r^2-\sqrt L\,r+(a-b)=0,
+  \qquad
+  (a-b)r^2-\sqrt L\,r+(a+b)=0.
+  \]
+  每个二次方程给出两个代数根 \(r\)，从而得到四族零点塔
+  \[
+  s=\frac12+\frac{\log r}{\log L},
+  \qquad
+  \log r=\log|r|+\mathrm{i}\bigl(\arg r+2\pi k\bigr),\quad k\in\ZZ,
+  \]
+  即虚部以周期 \(2\pi/\log L\) 作等差平移。
+  \item \textbf{（显式轴外零点判别）}
+  若 \(b\neq 0\)，则上述四族中至少存在一族满足 \(|r|\neq 1\)，从而对应零点满足 \(\Re(s)\neq\tfrac12\)。
+  更进一步，除去可能的对齐情形 \(L=4a^2\)（此时仅可能出现 \(r=\pm 1\) 的 slice 零点）外，所有代数根均满足 \(|r|\neq 1\)，故全部零点塔都离开临界线。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+直接计算得
+\[
+B(u)=\begin{pmatrix}a(1+u)&b(u-1)\\ b(u-1)&a(1+u)\end{pmatrix},
+\qquad
+I-zB(u)=
+\begin{pmatrix}1-za(1+u)&-zb(u-1)\\ -zb(u-1)&1-za(1+u)\end{pmatrix}.
+\]
+故
+\[
+\Delta(z,u)
+=\bigl(1-za(1+u)\bigr)^2-\bigl(zb(u-1)\bigr)^2
+=\Bigl(1-z\bigl((a-b)+(a+b)u\bigr)\Bigr)\Bigl(1-z\bigl((a+b)+(a-b)u\bigr)\Bigr),
+\]
+得到 (1)。
+对 (2)，代入 \(u=r^2\)、\(L^{-s}=L^{-1/2}r^{-1}\)，并分别令每个线性因子为零即可得到两条二次方程；
+零点塔的“对数晶格”表达来自 \(\log r\) 的多值性。
+\par
+对 (3)，先注意两条二次方程互为倒数变量变换：若 \(r\) 满足第一式，则 \(r^{-1}\) 满足第二式。
+若某个代数根满足 \(|r|=1\)，则 \(r^{-1}=\overline r\)，并由实系数性可知 \(r\) 同时满足两条二次方程。
+两式相减得 \(2b(r^2-1)=0\)，在 \(b\neq 0\) 下推出 \(r=\pm 1\)。
+将 \(r=\pm 1\) 代回任一二次方程得到 \(2a\mp\sqrt L=0\)，从而 \(L=4a^2\)；
+因此若 \(L\neq 4a^2\) 则不可能出现 \(|r|=1\) 的根，所有根均满足 \(|r|\neq 1\)。
+即便在对齐情形 \(L=4a^2\) 下出现 \(r=\pm 1\) 的 slice 根，另一同方程的伴随根满足
+\(
+|r|=\bigl|\frac{a-b}{a+b}\bigr|
+\)
+或其倒数（由根乘积公式 \(r_1r_2=(a-b)/(a+b)\) 等），在 \(b\neq 0\) 下不为 \(1\)，因而仍给出轴外零点塔。
+证毕。
+\end{proof}
+
+表 \ref{tab:xi-2x2-selfdual-offcritical-template} 给出一组固定参数的代数根与零点样本（由可复现流水线生成）。
+\input{sections/generated/tab_xi_2x2_selfdual_offcritical_template.tex}
+
+\begin{corollary}[\texorpdfstring{$(\rho,\theta)$}{(rho,theta)} 分裂与 unitary slice 投影遗忘]\label{cor:xi-2x2-selfdual-orthogonal-axis-projection-forget}
+在定理 \ref{thm:xi-2x2-selfdual-offcritical-template} 的显式模型中，参数
+\(
+u=L^{2s-1}
+\)
+的极分解 \(u=e^{\rho+\mathrm{i}\theta}\) 满足
+\[
+\rho=(2\Re(s)-1)\log L,\qquad \theta=2\Im(s)\log L\ (\mathrm{mod}\ 2\pi).
+\]
+因此 \(\Re(s)=\tfrac12\) 等价于 \(\rho=0\)（unitary slice）。
+对任意一条由 \(|r|\neq 1\) 生成的零点塔，\(\rho\) 是其不可消去的法向参数；将读出限制为纯相位轴（只保留 \(\theta\)）必然遗忘 \(\rho\)，从而在可核验寻址意义下需要模式轴外延或退化为 \(\mathsf{NULL}\)（与定理 \ref{thm:xi-offset-null-type-safety}、定理 \ref{thm:radial-dimension-obstruction} 的一般结论一致）。
+\end{corollary}

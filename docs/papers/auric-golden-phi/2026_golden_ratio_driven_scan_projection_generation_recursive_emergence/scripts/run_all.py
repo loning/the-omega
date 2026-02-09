@@ -2279,6 +2279,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_2x2_selfdual_offcritical_template",
+            script="exp_xi_2x2_selfdual_offcritical_template.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_2x2_selfdual_offcritical_template.json",
+                "sections/generated/tab_xi_2x2_selfdual_offcritical_template.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],
