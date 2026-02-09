@@ -185,6 +185,111 @@ m_{\zeta}(z):=-\frac{E_{\zeta}'(z)}{E_{\zeta}(z)}
 即谱点以 \((\xi,\xi^{-1})\) 成对出现且权重相等；因此 \(\{c_n\}_{n\ge 0}\) 为实序列且满足 \(c_{-n}=c_n\)。
 \end{corollary}
 
+\paragraph{共动平移族的谱测度（正文层析定理的证明）}\label{par:app-horizon-comoving-spectral-measure}
+正文小节 \ref{subsubsec:xi-horizon-spectral-measure-tomography} 引入共动平移族
+\(
+\mathscr{C}_{\zeta,x_0}(w):=-\mathrm{i}\,m_{\zeta}\!\bigl(x_0+\mathcal{C}^{-1}(w)\bigr)
+\)
+以实现对视界矩序列的层析扫描。
+这里给出其谱测度的闭式原子化与“加权显式公式”接口的技术性推导。
+
+\begin{proof}[定理 \ref{thm:xi-horizon-comoving-spectral-measure} 的证明]
+令 \(x_0\in\RR\) 固定，并定义上半平面中的平移族
+\(
+m_{\zeta,x_0}(z):=m_{\zeta}(z+x_0)
+\)。
+由定理 \ref{thm:app-horizon-weyl-herglotz}，在 RH 前提下 \(m_{\zeta}\) 为 Herglotz 函数（\(\Im m_{\zeta}\ge 0\) 于 \(\mathbb{H}\)），而平移 \(z\mapsto z+x_0\) 为 \(\mathbb{H}\) 的共形自同构，故 \(m_{\zeta,x_0}\) 仍为 Herglotz。
+将其经 Cayley 紧化推回圆盘并乘以 \(-\mathrm{i}\) 得
+\[
+\mathscr{C}_{\zeta,x_0}(w):=-\mathrm{i}\,m_{\zeta}\!\bigl(x_0+\mathcal{C}^{-1}(w)\bigr),
+\qquad w\in\mathbb{D},
+\]
+从而 \(\Re \mathscr{C}_{\zeta,x_0}(w)\ge 0\) 于 \(\mathbb{D}\)，即 \(\mathscr{C}_{\zeta,x_0}\) 为 Carath\'eodory 函数。
+\par
+在 RH 成立时，\(E_{\zeta}\) 的全部零点为实数且关于原点成对出现。
+沿用 \eqref{eq:app-horizon-Elog-odd-pf}（按重数计）的部分分式展开并将 \(z\) 替换为 \(z+x_0\)，得对 \(z\in\mathbb{H}\)
+\[
+m_{\zeta,x_0}(z)
+=
+\sum_{\gamma\in\Gamma_+}\mathrm{mult}(\gamma)\!\left(\frac{1}{\gamma-(z+x_0)}+\frac{1}{-\gamma-(z+x_0)}\right).
+\]
+将两项分别写成 Cauchy 核 \(\frac{1}{t-z}\) 的形式：令
+\(
+t_{\pm}:=\pm\gamma-x_0\in\RR
+\)，则上式为
+\[
+m_{\zeta,x_0}(z)
+=
+\sum_{\gamma\in\Gamma_+}\mathrm{mult}(\gamma)\!\left(\frac{1}{t_+-z}+\frac{1}{t_--z}\right).
+\]
+对每个实参数 \(t\in\RR\)，令 \(\xi:=\mathcal{C}(t)\in\TT\) 且 \(w:=\mathcal{C}(z)\in\mathbb{D}\)。
+由核恒等式 \eqref{eq:app-horizon-cayley-kernel-solve}，
+\[
+\frac{1}{t-z}
+=\frac{\mathrm{i}}{1+t^{2}}\frac{\xi+w}{\xi-w}+\frac{t}{1+t^{2}}.
+\]
+将该恒等式逐项代入并乘以 \(-\mathrm{i}\)，得到
+\[
+\mathscr{C}_{\zeta,x_0}(w)
+=\mathrm{i}\beta(x_0)
++\sum_{\gamma\in\Gamma_+}\mathrm{mult}(\gamma)
+\left(
+\frac{1}{1+t_+^2}\frac{\xi_{t_+}+w}{\xi_{t_+}-w}
+\;+\;
+\frac{1}{1+t_-^2}\frac{\xi_{t_-}+w}{\xi_{t_-}-w}
+\right).
+\]
+其中 \(\xi_{t_\pm}:=\mathcal{C}(t_\pm)\in\TT\)，而 \(\beta(x_0)\in\RR\) 为 Carath\'eodory/Herglotz 表示中的实常数项（可吸收全部 \(t/(1+t^2)\) 型常数贡献）；其具体值不影响矩与 PSD 证书。
+将求和指标从 \(\Gamma_+\) 改写为全零点多重集 \(\Gamma:=\Gamma_+\cup(-\Gamma_+)\subset\RR\)（按重数计），并记
+\(
+\xi_{\gamma,x_0}:=\mathcal{C}(\gamma-x_0)
+\)，即可识别出 Carath\'eodory 表示的纯原子测度
+\[
+\mu_{\zeta,x_0}
+=
+\sum_{\gamma\in\Gamma}\frac{\mathrm{mult}(\gamma)}{1+(\gamma-x_0)^2}\,\delta_{\xi_{\gamma,x_0}},
+\]
+从而得到正文式 \eqref{eq:xi-horizon-mu-comoving} 与矩恒等式 \eqref{eq:xi-horizon-moment-comoving}（由 \(c_n(x_0)=\int_{\TT}\xi^{-n}\dd\mu_{\zeta,x_0}(\xi)\) 直接推出）。
+\par
+最后证明 \eqref{eq:xi-horizon-c0-im-m}。
+由 \(\mathcal{C}^{-1}(0)=\mathrm{i}\)（式 \eqref{eq:app-cayley-disk}），有
+\(
+\mathscr{C}_{\zeta,x_0}(0)=-\mathrm{i}\,m_{\zeta}(x_0+\mathrm{i})
+\)。
+另一方面，对任意 Carath\'eodory 表示 \(f(w)=\mathrm{i}\beta+\int_{\TT}\frac{\xi+w}{\xi-w}\dd\mu(\xi)\) 有
+\(
+\Re f(0)=\mu(\TT)
+\)。
+取 \(f=\mathscr{C}_{\zeta,x_0}\) 与 \(\mu=\mu_{\zeta,x_0}\) 即得
+\[
+c_0(x_0)=\mu_{\zeta,x_0}(\TT)=\Re \mathscr{C}_{\zeta,x_0}(0)=\Im m_{\zeta}(x_0+\mathrm{i}).
+\]
+证毕。
+\end{proof}
+
+\begin{remark}[\texorpdfstring{$|w|<1/3$}{|w|<1/3} 的共动欧拉积补丁与相位因子]\label{rem:app-horizon-euler-patch-comoving}
+沿用 \eqref{eq:app-horizon-fe-rewrite} 与 \eqref{eq:app-horizon-sigma-def}。
+注意
+\(
+1-(s(w)+\mathrm{i}x_0)=\sigma(w)-\mathrm{i}x_0
+\)，
+从而
+\[
+\mathscr{C}_{\zeta,x_0}(w)
+=-\frac{\Xi_{\zeta}'(s(w)+\mathrm{i}x_0)}{\Xi_{\zeta}(s(w)+\mathrm{i}x_0)}
+=\frac{\Xi_{\zeta}'(\sigma(w)-\mathrm{i}x_0)}{\Xi_{\zeta}(\sigma(w)-\mathrm{i}x_0)}.
+\]
+当 \(|w|<1/3\) 时仍有 \(\Re\sigma(w)>1\)（定理 \ref{thm:app-horizon-euler-patch}），故在该子圆盘内可得到与 \eqref{eq:app-horizon-euler-patch} 同型的一致绝对收敛展开，只需将 \(s\) 替换为 \(\sigma(w)-\mathrm{i}x_0\)：
+\[
+\mathscr{C}_{\zeta,x_0}(w)
+=\frac{1}{\sigma(w)-\mathrm{i}x_0}+\frac{1}{\sigma(w)-1-\mathrm{i}x_0}
+-\frac12\log\pi+\frac12\,\psi\!\left(\frac{\sigma(w)-\mathrm{i}x_0}{2}\right)
+-\sum_{n\ge2}\frac{\Lambda(n)}{n^{\sigma(w)-\mathrm{i}x_0}}.
+\]
+其中 Dirichlet 项等于 \(-\sum_{n\ge2}\Lambda(n)\,n^{\mathrm{i}x_0}n^{-\sigma(w)}\)，即相位因子 \(n^{\mathrm{i}x_0}\) 被结构性引入，而绝对收敛性与逐项求导/系数提取的合法性不受 \(x_0\) 影响（因为 \(\Re(\sigma(w)-\mathrm{i}x_0)=\Re\sigma(w)\)）。
+这给出正文推论 \ref{cor:xi-horizon-weighted-explicit-formula} 所述的“加权显式公式族”的可审计算术接口。
+\end{remark}
+
 \begin{theorem}[端点 \texorpdfstring{$\xi=-1$}{xi=-1} 角窗质量的一阶渐近]\label{thm:app-horizon-endpoint-window-mass}
 假设 RH 成立并令 \(\mu_{\zeta}\) 为定理 \ref{thm:app-horizon-spectral-measure-atomic} 给出的视界谱测度。
 对 \(0<\varepsilon<\pi\) 定义端点角窗
