@@ -88,21 +88,28 @@ f_{\mathrm{long}}:=f(u)\ (u\in X_6^{\mathrm{long}}),
 Weyl-不变性即意味着 \(f\) 在每条轨道上取常值，故求和可按两块分拆，得到所示平均公式。证毕。
 \end{proof}
 
-\paragraph{四步平移的规范 uplift 同构}
-对任意 \(n\ge 2\)，定义映射
+\begin{theorem}[四步平移 uplift 同构]\label{thm:boundary-shift4-uplift-isomorphism}
+对任意 \(n\ge 2\)，映射
 \[
-\iota_n: X_n\to X^{\mathrm{bdry}}_{n+4},\qquad \iota_n(v)=10\,v\,01.
+\iota_n:X_n\to X_{n+4}^{\mathrm{bdry}},\qquad \iota_n(v)=10\,v\,01
 \]
-则 \(\iota_n\) 是一个规范的双射，其逆映射为“删去首两位与末两位”。证明要点完全构造性：边界词满足首尾为 \(1\)，而在“无相邻 \(11\)”约束下首尾的相邻位必须为 \(0\)，故任意边界词必形如 \(1,0,(\cdots),0,1\)；中间那段自然落在 \(X_n\)。因此计数恒等式
-\(|X_{n+4}^{\mathrm{bdry}}|=|X_n|\) 被提升为可计算的结构同构。
-\par
-在 \(n=6\) 的实例上，这给出
+为规范双射，其逆映射为删去首两位与末两位。特别地，当 \(n=6\) 时有
 \input{sections/generated/eq_boundary_uplift_m10_isomorphism}
-并把 \(m=10\) 的 \(21\) 个边界模态逐一标号为 “\(18\) 个 \(B_3/C_3\) 根方向 + \(3\) 个 Cartan 方向”：对 \(b\in X^{\mathrm{bdry}}_{10}\)，取 \(v=\iota_6^{-1}(b)\in X_6\)，若 \(v\in X_6^{\mathrm{cyc}}\) 则用表 \ref{tab:fold6_b3c3_root_dictionary_b3} 赋根向量，若 \(v\in X_6^{\mathrm{bdry}}\) 则记为 Cartan 方向。该字典由脚本 \texttt{\detokenize{scripts/exp_boundary_uplift_m10_b3c3_dictionary.py}} 自动生成，完整 \(21\) 词清单见表 \ref{tab:boundary_uplift_m10_dictionary}。
-\input{sections/generated/tab_boundary_uplift_m10_dictionary}
+\end{theorem}
+\begin{proof}
+在黄金均值语法（禁止相邻 \(11\)）下，任意边界词 \(b\in X_{n+4}^{\mathrm{bdry}}\) 满足 \(b_1=b_{n+4}=1\)，故必有 \(b_2=b_{n+3}=0\)，从而 \(b\) 唯一写作 \(b=10\,v\,01\) 且 \(v\in X_n\)。
+由此 \(\iota_n\) 为双射，逆映射即为删去首两位与末两位。证毕。
+\end{proof}
 
-\paragraph{\texorpdfstring{$B_3/C_3$}{B3/C3} 根方向的 \texorpdfstring{$6+6+6$}{6+6+6} 刚性分裂}
-表 \ref{tab:fold6_b3c3_root_dictionary_b3} 给出的 \(B_3\) 根向量不仅呈现粗分裂 \(6+12\)（短根/长根），其 \(12\) 个长根还进一步刚性分解为两套互不相交的 \(A_2\) 根系：
+\begin{theorem}[\texorpdfstring{$(B_3/C_3)$}{(B3/C3)} 根方向的刚性四块分裂]\label{thm:boundary-m10-b3c3-rigid-four-block-split}
+取 \(m=6\) 的 cyclic 扇区 \(X_6^{\mathrm{cyc}}\) 与表 \ref{tab:fold6_b3c3_root_dictionary_b3} 给出的 \(B_3\) 规范化根字典
+\(\psi_B:X_6^{\mathrm{cyc}}\to\Phi(B_3)\)。
+则 \(m=10\) 的边界层 \(X_{10}^{\mathrm{bdry}}\) 可被规范标号为 “\(18\) 个根方向 \(\,+\,3\) 个 Cartan 方向”：对任意 \(b\in X_{10}^{\mathrm{bdry}}\)，令 \(v=\iota_6^{-1}(b)\in X_6\)，若 \(v\in X_6^{\mathrm{cyc}}\) 则以 \(\psi_B(v)\) 赋根向量，若 \(v\in X_6^{\mathrm{bdry}}\) 则记为 Cartan 方向。
+其中 Cartan 方向恰对应 \(X_6^{\mathrm{bdry}}\) 的三词；并且 \(18\) 个根方向刚性分裂为
+\[
+18=6\ (\mathrm{short})\ +\ 6\ (A_2(+))\ +\ 6\ (A_2(-)).
+\]
+更具体地，长根集合分裂为两套互不相交的 \(A_2\) 根系
 \[
 \Phi_{\mathrm{long}}=\Phi_{A_2(+)}\sqcup\Phi_{A_2(-)},\qquad
 \Phi_{A_2(+)}=\{\pm(e_1+e_2),\pm(e_1+e_3),\pm(e_2+e_3)\},
@@ -110,21 +117,24 @@ Weyl-不变性即意味着 \(f\) 在每条轨道上取常值，故求和可按�
 \[
 \Phi_{A_2(-)}=\{\pm(e_1-e_2),\pm(e_1-e_3),\pm(e_2-e_3)\}.
 \]
-其中 \(A_2(+)\) 与 \(A_2(-)\) 的区分仅依赖“两个非零分量同号/异号”的符号结构，因而不依赖额外选择；这把 \(X_6^{\mathrm{cyc}}\) 进一步刚性分裂为
+其判别仅依赖“两个非零分量同号/异号”的符号结构，因而不引入附加选择；由此 \(X_6^{\mathrm{cyc}}\) 进一步刚性分裂为
 \[
 X_6^{\mathrm{cyc}}=X_6^{\mathrm{short}}\ \sqcup\ X_6^{A_2(+)}\ \sqcup\ X_6^{A_2(-)},
 \qquad 18=6+6+6,
 \]
-其显式词表与根向量对应已经并入表 \ref{tab:boundary_uplift_m10_dictionary} 的 uplift 字典中（由上述脚本自动生成）。
-结合上一段的“四步平移的规范 uplift 同构”，这一分裂把 \(m=10\) 的边界接口固定为
+并通过定理 \ref{thm:boundary-shift4-uplift-isomorphism} 的 uplift 同构将该分块推送到 \(X_{10}^{\mathrm{bdry}}\)。
+其显式词表、类别与根向量由脚本 \texttt{\detokenize{scripts/exp_boundary_uplift_m10_b3c3_dictionary.py}} 生成并汇总于表 \ref{tab:boundary_uplift_m10_dictionary}，从而给出一个有限、可逐项核验的标号证书。
+因此 \(m=10\) 的边界接口被固定为
 \(
 6\ (\text{short})\ +\ 6\ (A_2(+))\ +\ 6\ (A_2(-))\ +\ 3\ (\text{Cartan})
 \)
 的四块结构，为后续谱隙对齐或分块耦合分析提供硬指标。
+\end{theorem}
+\input{sections/generated/tab_boundary_uplift_m10_dictionary}
 
 \paragraph{各向同性点的统一判据与 CAP-II 常数组合标定}
 注 \ref{rem:sp6-minimal-continuous-envelope} 已将 \(\Sigma(\theta)=\nabla^2P(\theta)\) 的各向同性扫描作为 \(C_3=\mathrm{Sp}(6)\) 连续包络的可审计入口。
-将“四步平移的规范 uplift 同构”给出的 uplift 字典与“根方向的 \(6+6+6\) 刚性分裂”给出的根字典同该扫描联立，可给出一个更强的统一判据：在某个“统一点” \(\theta^*\) 上，根向量的有效长度应只依赖根型（短/长），而不依赖具体方向；因此在 \(\theta^*\) 附近，\(m=10\) 的 \(21\) 个边界模态应呈现最简分裂
+将定理 \ref{thm:boundary-shift4-uplift-isomorphism} 给出的 uplift 同构与定理 \ref{thm:boundary-m10-b3c3-rigid-four-block-split} 给出的根方向分块同该扫描联立，可给出一个更强的统一判据：在某个“统一点” \(\theta^*\) 上，根向量的有效长度应只依赖根型（短/长），而不依赖具体方向；因此在 \(\theta^*\) 附近，\(m=10\) 的 \(21\) 个边界模态应呈现最简分裂
 \[
 12\ (\text{长根，含 }A_2(+)\oplus A_2(-))\ \oplus\ 6\ (\text{短根})\ \oplus\ 3\ (\text{Cartan}),
 \]
@@ -799,16 +809,15 @@ I(\gamma,\mathcal{E})
 \boxed{\ 55\ =\ 12\ \oplus\ 9\ \oplus\ 24\ \oplus\ 10\ },
 \]
 其中 \(12\) 对应于由低退化刚性读出的可见扇区规模，其余 \(43\) 为三块可归因的隐藏容量。
-\par
-\emph{可检验预测（统一点谱简并签名）}：
-在自对偶统一点 \(u=1\)（注 \ref{rem:selfdual-u1-six-branch-lock}）处，
-任何以线性化转移/响应算子读出统一槽位的实现（例如通道谱隙耦合族的分块组织，或统一提升算子在通道分解下的块谱组织）
-都应呈现与 \(12\oplus 9\oplus 24\oplus 10\) 相容的四块谱结构；
-其块多重度在可观测层面应稳定为 \(\{12,9,24,10\}\)，并对核/门的可审计微扰保持鲁棒。
-\par
-作为通道侧的具体闭合，这一结构把 \(G_{\mathrm{chan}}\) 的连通紧核指向 \(U(3)\)（行列式约束下可取 \(SU(3)\)），
-并将“统一”从数值相交提升为结构判据：在统一点处，通道响应张量应恢复 \(U(3)\)-各向同性（与单位阵成比例），
-其可审计入口由上文的各向同性点判据与相应扫描表提供。
+
+\begin{proposition}[自对偶统一点的四块谱简并签名与 \texorpdfstring{$U(3)$}{U(3)} 各向同性恢复]\label{prop:gut-u1-four-block-spectrum-signature}
+在上述四块分解
+\(
+55=12\oplus 9\oplus 24\oplus 10
+\)
+所确定的维数骨架下，于自对偶统一点 \(u=1\)（注 \ref{rem:selfdual-u1-six-branch-lock}），任何以线性化转移算子或响应算子读出统一槽位的实现，其谱应呈现与该四块分解相容的不变块结构；其块多重度在可观测层面稳定为 \(\{12,9,24,10\}\)，并对核/门的可审计微扰保持鲁棒。\par
+此外，在该点通道响应张量应恢复 \(U(3)\)-各向同性，即与单位阵成比例；其可审计入口由上文的各向同性点判据与相应扫描表提供。
+\end{proposition}
 
 \paragraph{NAP 选择器：在“非阿贝尔层保留”约束下 \texorpdfstring{$SO(10)$}{SO(10)} 被离散地唯一挑出}
 把 \(\{6,8\}\) 视为“非阿贝尔共振层”（对应 \(3\) 与 \(8\) 的可见计数接口），并施加\textbf{非阿贝尔层保留}约束：
