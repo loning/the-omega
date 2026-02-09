@@ -82,7 +82,49 @@ C_{b}\in\mathsf{Cert}_b(F),\qquad C_{b+1}\preceq C_{b},\qquad \bigl|I(C_b)\bigr|
 证毕。
 \end{proof}
 
-\paragraph{unitary slice 的正交切片性：隐藏分量只能以正交不变量与外置预算出现}
+\begin{theorem}[验证程序层的可重复性与精度一致性：证书存在性偏函数]\label{thm:xi-us-deterministic-tristate}
+在 unitary slice 审计口径下，固定：
+\begin{enumerate}
+  \item 一个可见域约束与检查器（定义 \ref{def:xi-visible-read-null}），取 \(X_{\mathrm{vis}}=\mathsf{Phase}\)；
+  \item 一个确定性验证器 \(\mathrm{Ver}\) 与其证书后端（定义 \ref{def:xi-cert-refinement-equivalence}），并约定证书分辨率/精度索引由 dyadic 深度 \(b\in\NN\) 类型化（即证书端点落在 \(2^{-b}\ZZ\)）；
+  \item 一套固定的实现约定（算法标识、外向舍入与规范化输入约定），使得任何“候选证书对象”皆可被第三方离线确定性复核其 \(\mathsf{pass}/\mathsf{fail}\)。
+\end{enumerate}
+则存在一个确定性的三值偏函数（按类型化地址的读出）
+\[
+\mathrm{Read}_{\mathrm{US}}:\ \mathrm{Addr}_{\mathrm{US}}\ \rightharpoonup\ \{\mathsf{NonZero},\mathsf{RootInterval},\mathsf{NULL}\},
+\qquad
+\mathrm{Addr}_{\mathrm{US}}:=\{(L,\theta,b):\ L>1,\ \theta\in\RR,\ b\in\NN\},
+\]
+其语义为：对每个输入地址 \((L,\theta,b)\)，要么输出一份在深度 \(b\) 上通过核验的有限区间证书（例如“非零证书/根区间证书”两类之一；参见注 \ref{rem:xi-hard-zero-certificate} 与命题 \ref{prop:xi-rh-interval-criterion}），要么输出空值 \(\mathsf{NULL}\)。
+并且：
+\begin{enumerate}
+  \item \textbf{（跨实现可复现）}在固定实现约定下，\(\mathrm{Read}_{\mathrm{US}}\) 为确定性偏函数；同一输入地址在不同平台/实现环境中给出同一输出。
+  \item \textbf{（\(\mathsf{NULL}\) 的对象语义）}\(\mathsf{NULL}\) 不表达数值不稳定，而表达证书对象的结构性缺失：在站点/（预）层口径下它等价于“该地址处不存在协议允许的局部截面/证书纤维为空”（命题 \ref{prop:null-as-local-section-obstruction}）；在具体 unitary 证书后端中，它等价于“输入位串与证书后端不相容从而无可接受证书”（命题 \ref{prop:unitary-two-integer-reproducible}）。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由于 \(\mathrm{Ver}\) 对有限编码对象的运行是确定性的，任何“读出为非 \(\mathsf{NULL}\)”的断言都必须由某个有限证书对象 \(C\) 见证，且其可核验性完全由 \(\mathrm{Ver}(F;C)\) 的真值决定（定义 \ref{def:xi-cert-refinement-equivalence}）。
+因此在固定实现约定下，读出输出仅依赖输入地址与证书对象的有限编码，从而跨实现一致；这正是定理 \ref{thm:xi-cert-inverse-limit-coherence} 的“实现中立性/无侧信息通道”在读出层的直接推论。
+\par
+另一方面，命题 \ref{prop:null-as-local-section-obstruction} 将 \(\mathsf{NULL}\) 内禀化为证书纤维 \(\mathscr F(a)\) 的空性；而命题 \ref{prop:unitary-two-integer-reproducible} 给出在一个具体、可执行的 unitary 证书后端中“同一位串 \(\Rightarrow\) 唯一证书或唯一空值”的可回放性。
+二者共同保证：\(\mathsf{NULL}\) 的来源是对象层的“不可指称/不可构造”（证书不存在），而非浮点轨迹或数值噪声。证毕。
+\end{proof}
+
+\begin{corollary}[信息不泄漏的形式化：精度索引的类型化与显式提升]\label{cor:xi-precision-type-no-leakage}
+在定理 \ref{thm:xi-us-deterministic-tristate} 的设定下，dyadic 深度 \(b\) 被提升为证书类型索引，且细化关系 \(C'\preceq C\) 要求 \emph{显式}进入更深精度（定义 \ref{def:xi-cert-refinement-equivalence}）。
+因此，任何试图在未显式提升到共同深度并支付相应记录成本的情况下“混合精度”地组合/比较证书对象的操作，在类型语义中均不被定义；其读出按协议等价退化为 \(\mathsf{NULL}\)。
+特别地，这排除了通过隐式混合精度把额外侧信息偷渡进证书的通道：所有可影响核验结论的信息，必须以显式的精度索引提升与可复核的有限证书对象形式出现。
+\end{corollary}
+
+\begin{proof}
+证书对象在定义上被分层组织为 \(\mathsf{Cert}_b(F)\)，并且任何“同一断言”的一致性只允许通过细化（\(b\) 递增）与可共同细化的等价关系 \(\sim\) 来表达（定义 \ref{def:xi-cert-refinement-equivalence}；定理 \ref{thm:xi-cert-inverse-limit-coherence}）。
+因此，若某个过程未显式进入共同深度就试图输出一个“混合精度”的候选对象，则它在任一固定 \(b\) 的证书范畴中都不构成可核验对象：要么无法通过 \(\mathrm{Ver}\)，要么根本不属于协议允许的证书纤维。
+按命题 \ref{prop:null-as-local-section-obstruction}，此时读出在对象层即表现为 \(\mathscr F(a)=\varnothing\)，从而在协议语义下等价为 \(\mathsf{NULL}\)。
+故结论成立。证毕。
+\end{proof}
+
+\paragraph{unitary slice 的正交切片性：隐藏轴只能以正交不变量与外置预算出现}
 unitary slice 的“正交性”在本文并非欧氏几何命题，而是由可见域过滤、因子分解与端点载荷分解共同刻画的结构直和。
 
 \begin{theorem}[临界线/单位圆切片的正交结构：可见模长分量 \(\oplus\) 盘内零点分量 \(\oplus\) 端点载荷分量]\label{thm:xi-orthogonal-slice-structure}
@@ -258,6 +300,72 @@ p\ \ge\ \frac{\mathcal{P}(T)+\log(1/\delta_0)-\log(4\pi)}{\log 2}+o(1)\qquad(T\t
 与之相对，定理 \ref{thm:xi-offcritical-endpoint-resolution-lower-bound} 给出：若要在同一高度窗内排除固定偏移下界 \(\delta\ge\delta_0\) 的离线零点，则必须支付 \(p=\Theta(2\log T)\) 的端点层位预算。
 该跃迁把“离开切片”的信息投影具体化为一个不可跨越的分辨率--位复杂度屏障。
 \end{remark}
+
+\begin{theorem}[径向偏移的信息投影下界：紧化读出的可证书化位复杂度]\label{thm:xi-radial-information-projection-lower-bound}
+设 \(x\in\RR\)，并以无参紧化
+\[
+u=\upsilon(x):=\frac{1}{\pi}\arctan(x)
+\]
+把非紧实轴坐标压到相位盒坐标（式 \eqref{eq:unit-circle-phase-derivative}）。
+假设某一协议试图仅通过 \(u\) 的 \(n\)-比特 dyadic 近似来证书化 \(x\)：
+即读出/证书在对象层只允许给出一个 dyadic 括号 \(J=[u_-,u_+]\) 满足
+\(
+u\in J,\ |J|\lesssim 2^{-n}
+\)；
+并要求存在一个确定性离线复核规则，把该 \(J\) 还原为一个关于 \(x\) 的单值可核验读出，其绝对误差不超过 \(\varepsilon\in(0,1]\)。
+则必有位复杂度下界
+\begin{equation}\label{eq:xi-radial-info-projection-lb}
+\boxed{\;
+n\ \ge\ \log_2\!\Bigl(\frac{1}{\varepsilon}\Bigr)\ +\ \log_2(1+x^2)\ +\ \log_2\pi\ +\ O(1)\; }.
+\end{equation}
+\par
+将其应用到完成化接口的径向参数
+\[
+u_L(s)=L^{2s-1}=e^{x+\mathrm{i}\theta},
+\qquad
+x=\log|u_L(s)|=(2\Re(s)-1)\log L,
+\]
+得到：任意声称能在固定精度 \(\varepsilon\) 下对 \(x\) 给出可核验单值读出的制度，若允许 \(L\to\infty\)，则当 \(\Re(s)\neq\tfrac12\) 时其证书位数 \(n\) 不可一致有界，而必须至少按 \(\log_2(1+x^2)\asymp 2\log_2\log L\) 增长。
+\end{theorem}
+
+\begin{proof}
+由附录的精度放大律 \eqref{eq:app-precision-amplification}，
+\(
+\frac{\dd x}{\dd u}=\pi(1+x^2)
+\)
+并且 \(x=\tan(\pi u)\) 在 \(u\)-盒上严格单调。
+因此若 \(J=[u_-,u_+]\) 的宽度为 \(|J|\)，则其逆像区间的宽度满足
+\[
+|\,\upsilon^{-1}(J)\,|
+=|\,\tan(\pi u_+)-\tan(\pi u_-)\,|
+\gtrsim \pi(1+x^2)\,|J|
+\]
+（常数仅依赖于 \(J\) 的括号约定与 \(\varepsilon\le 1\) 的局部范围；其来源是 \(\tan\) 在紧化盒上的局部 Jacobian 下界）。
+若要求从 \(J\) 得到对 \(x\) 的单值可核验读出且绝对误差 \(\le\varepsilon\)，则必须有
+\(
+|\,\upsilon^{-1}(J)\,|\lesssim \varepsilon
+\)，从而推出
+\(
+|J|\lesssim \varepsilon/(\pi(1+x^2))
+\)。
+再代入 \(|J|\lesssim 2^{-n}\) 并取二进制对数，即得 \eqref{eq:xi-radial-info-projection-lb}。证毕。
+\end{proof}
+
+\begin{corollary}[规模一致性刚性：\texorpdfstring{$\Re(s)=\tfrac12$}{Re(s)=1/2} 为唯一低复杂度切片]\label{cor:xi-critical-line-unique-low-complexity-slice}
+在本文的 unitary slice 核验语义（定义 \ref{def:xi-visible-read-null}，取 \(X_{\mathrm{vis}}=\mathsf{Phase}\)）与三寄存器闭包下，
+若某一“零点可核验协议”要求：当尺度 \(L\) 可任意放大时，证书长度对 \(L\) 保持一致有界（仅允许随所要求误差 \(\varepsilon\) 增长），
+则任何可寻址的连续零点事件必满足
+\[
+\Re(s)=\tfrac12.
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-radial-information-projection-lower-bound}，
+若试图在可核验语义中单值读出径向参数 \(x=\log|u_L(s)|=(2\Re(s)-1)\log L\) 并保持绝对误差 \(\varepsilon\)（固定），则所需位数 \(n\) 至少包含一项 \(\log_2(1+x^2)\)。
+当 \(\Re(s)\neq\tfrac12\) 时有 \(|x|\sim |\Re(s)-\tfrac12|\,\log L\to\infty\)（\(L\to\infty\)），从而 \(\log_2(1+x^2)\to\infty\)，与“对 \(L\) 一致有界”的复杂度要求矛盾。
+故必须有 \(x\equiv 0\)，即 \(|u_L(s)|=1\)，等价于 \(\Re(s)=\tfrac12\)。证毕。
+\end{proof}
 
 \begin{corollary}[固定分辨率预算下的不可见阈值（比特/账本口径）]\label{cor:xi-offcritical-visibility-threshold-bit-budget}
 在定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 的设定下，

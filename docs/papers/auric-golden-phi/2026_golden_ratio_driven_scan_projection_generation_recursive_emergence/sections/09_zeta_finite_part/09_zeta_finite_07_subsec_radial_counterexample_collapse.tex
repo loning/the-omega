@@ -48,6 +48,32 @@ S_L(s)=S_0>2
 \]
 从而强制进入非单位圆半径（径向）通道。
 
+\begin{proposition}[自对偶不排除离线零点；可寻址性才排除]\label{prop:xi-offcritical-constructible-but-null-or-extra-register}
+沿用上文记号，并取任意 \(S_0>2\) 构造
+\(
+\Xi^{\mathrm{fake}}_{\Delta,L}(s)=\Xi_{\Delta,L}(s)\bigl(S_L(s)-S_0\bigr)
+\)。
+则：
+\begin{enumerate}
+  \item \textbf{（自对偶外形保持）}
+  \(\Xi^{\mathrm{fake}}_{\Delta,L}\) 仍满足严格函数方程 \(\Xi^{\mathrm{fake}}_{\Delta,L}(s)=\Xi^{\mathrm{fake}}_{\Delta,L}(1-s)\)，因此“函数方程型结构”本身并不排除离线零点的出现。
+  \item \textbf{（离线零点机制显式可构造）}
+  因子 \((S_L(s)-S_0)\) 所诱导的零点必满足 \(|u_L(s)|\neq 1\)，即必落在 unitary slice 之外的径向通道。
+  \item \textbf{（unitary slice 语义下的结构性退化）}
+  在可见域约束 \(X_{\mathrm{vis}}=\mathsf{Phase}\) 与 \(\mathbf{PW}\) 闭包类型检查下，任何本质依赖 \(|u|\neq 1\) 的径向自由度对象均不可类型化，其读出按协议稳定退化为 \(\mathsf{NULL}\)（定理 \ref{thm:xi-offset-null-type-safety}；亦见定理 \ref{thm:xi-pw-no-continuous-hair}）。
+  \item \textbf{（第四寄存器/模式轴外延的强制性）}
+  若希望使上述离线零点事件在体系内变为可证书化的单值可核验读出，则必须外延地址/证书类型以显式携带径向参数 \(\varrho=\log|u|\)，即把单一相位寄存器扩张为 \((\theta,\varrho)\) 的双参模式轴；在寄存器语义中这等价于引入一个额外的连续寄存器（“第四寄存器”）。
+  该扩张不能由常数层 strictification 吸收（见下文对 \(\mathrm{CT}_\eta\) 的边界分析），并且在连续与局域可逆读出的审计口径下也不可能被压缩回单一圆周寄存器（定理 \ref{thm:radial-dimension-obstruction}）。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+第 (1) 条由 \(S_L(1-s)=S_L(s)\) 的不变性直接推出（见上文函数方程的推导）。
+第 (2) 条即本段对方程 \(S_L(s)=S_0>2\) 的分析所给出的 \(|u_L(s)|\neq 1\)。
+第 (3) 条是 unitary slice 可见域过滤与类型安全拒绝的直接应用（定理 \ref{thm:xi-offset-null-type-safety} 与定理 \ref{thm:xi-pw-no-continuous-hair}）。
+第 (4) 条由“径向依赖不可被纯常数门消去”的 strictification 约束与定理 \ref{thm:radial-dimension-obstruction}（径向自由度不可压缩为单一相位）合并得到。证毕。
+\end{proof}
+
 \paragraph{编译/归约：为何该伪对象“语法上可写”}
 上述构造仅在完成化端追加一个一次因子；在行列式接口中，这对应于对核对象追加一个与原核解耦的有限维块，使得整体行列式乘上该因子（命题 \ref{prop:xi-unitary-slice-spectral-crossing} 的 \(\det(I-zB(u))\) 口径）。
 在投影词侧，这一“解耦追加”属于独立轴并置的情形：一旦将该一次因子以某个独立块实现并纳入同一编译目标，则其词法仍落在既有生成元闭包中，并可由三生成元正规化器归约到接口正规形

@@ -95,3 +95,37 @@ C^{(L+1)}_{a,t}:=\{x\in X:\mathbf{b}^{(L)}_t(x)=a_0,\dots,\mathbf{b}^{(L)}_{t+\e
 \end{enumerate}
 因此，“\(\mathsf{NULL}\)”并非字符串的数值性质，而是站点对象与（预）层纤维在协议意义下的结构性空缺：合法性由 \(\mathscr{F}(a)\) 的非空性判定。
 \end{corollary}
+
+\paragraph{粘合障碍的上同调口径：\texorpdfstring{$H^2$}{H2} 见证}
+命题 \ref{prop:null-as-local-section-obstruction} 将 \(\mathsf{NULL}\) 内禀化为“局部截面不存在”的对象论断言。
+在本文后续的多轴前缀语义（定义 \ref{def:multi_axis_address}）与协议闭包中，局部证书对象往往还携带一组\emph{可调但必须可审计}的相容性标签（例如纤维自同构/gauge 选择的等价类；可取其阿贝尔化作为系数，见定义 \ref{def:fold-gauge-group}）。
+此时，“在重叠处相容”不仅是集合意义的相等，还可能包含一个可复核的二阶一致性约束；其失败可用 Čech 上同调的二阶障碍类作证书化刻画。
+
+\begin{definition}[粘合障碍类（Čech \texorpdfstring{$H^2$}{H2} 口径）]\label{def:prefix-site-h2-gluing-obstruction}
+设 \(A\) 为一个系数阿贝尔群。
+考虑上述前缀站点 \(\mathcal{A}_{\mathrm{adm}}\) 及其柱覆盖。
+假设在某一协议口径下，局部证书对象的相容性可被组织为一个带 \(A\)-纤维的“相容层”（例如 \(A\)-torsor/带 gauge 的局部对象），使得对任意覆盖 \(\{b_i\succeq a\}\) 与任意局部对象族 \((s_i\in\mathscr{F}(b_i))\)，其在二重重叠上的差异可由一族 \(A\)-值转移数据 \(g_{ij}\) 记录，并在三重重叠上诱导一个 Čech \(2\)-余圈
+\[
+\alpha_{ijk}:=g_{ij}+g_{jk}+g_{ki}\in A,
+\qquad
+\alpha\in Z^2(\{b_i\},A).
+\]
+称其同调类 \([\alpha]\in H^2(\{b_i\},A)\)（并在加细覆盖下取极限）为地址 \(a\) 处的\textbf{粘合障碍类}：\([\alpha]=0\) 表示可通过允许的局部 gauge 调整把 \((s_i)\) 改写为在重叠处严格相容的家族，从而满足可粘接性；\([\alpha]\neq 0\) 则表示存在结构性扭结阻止其全球化。
+\end{definition}
+
+\begin{proposition}[\texorpdfstring{$H^2$}{H2} 粘合障碍 \(\Rightarrow\) \texorpdfstring{$\mathsf{NULL}$}{NULL}]\label{prop:null-as-h2-obstruction}
+在定义 \ref{def:prefix-site-h2-gluing-obstruction} 的设定下，
+若某一可核对地址 \(a\in\mathcal{A}_{\mathrm{adm}}\) 的粘合障碍类 \([\alpha]\neq 0\)，
+则该地址处不存在协议允许的全局局部截面（证书对象），从而
+\(
+\mathscr{F}(a)=\varnothing
+\)
+并且读出在类型层必为 \(\mathsf{NULL}\)（命题 \ref{prop:null-as-local-section-obstruction}）。
+\end{proposition}
+
+\begin{proof}
+反设 \(\mathscr{F}(a)\neq\varnothing\)，取任一全局对象 \(s\in\mathscr{F}(a)\) 并限制到覆盖 \(\{b_i\}\) 上得 \(s_i:=s|_{C_{b_i}}\in\mathscr{F}(b_i)\)。
+则在任意重叠处这些限制严格相容；按定义 \ref{def:prefix-site-h2-gluing-obstruction}，其诱导的转移数据可取为平凡（从而 \(\alpha\) 为零余圈、\([\alpha]=0\)），与 \([\alpha]\neq 0\) 矛盾。
+故 \(\mathscr{F}(a)=\varnothing\)，进而读出为 \(\mathsf{NULL}\)。
+证毕。
+\end{proof}

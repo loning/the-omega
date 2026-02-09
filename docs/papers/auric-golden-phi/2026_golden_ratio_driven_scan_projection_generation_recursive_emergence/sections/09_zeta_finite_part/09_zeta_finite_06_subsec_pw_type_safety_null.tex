@@ -217,6 +217,35 @@ completeness 可表述为“零点事件不触发 \(\mathsf{NULL}\)”的全局�
 一旦时间层满足有限延迟同步（或同步尾预算达标）且常数级合并被控制（例如 \(\eta_m^{\mathrm{obs}}\approx 1\) 且 \(\eta_m\approx 1\)），则系统性 \(\mathsf{NULL}\) 若仍出现，其来源应优先被定位到几何域外（\(|u|\neq 1\) 的径向自由度）或维数门槛（最小 realization 超界）等更高层机制，而非时间层歧义或跨分辨率有限尾补丁不足。
 \end{remark}
 
+\begin{theorem}[NULL 的正交三分律与资源阈值不可替代性]\label{thm:xi-null-orthogonal-trichotomy-resource-nonsubstitutable}
+在本文的 unitary slice 可见域约束（定义 \ref{def:xi-visible-read-null}，取 \(X_{\mathrm{vis}}=\mathsf{Phase}\)）、\(\mathbf{PW}\) 闭包类型安全（定理 \ref{thm:xi-offset-null-type-safety}）与单射化原则（命题 \ref{prop:xi-null-three-way}）下，
+全局读出失败（\(\mathsf{NULL}\)）的结构性来源可被组织为三类互不等价、且在可审计意义下\emph{正交}的见证：
+\begin{enumerate}
+  \item \textbf{（闭包/域外缺陷：指称或类型层拒绝）}
+  地址未给定，或对象的解释需要超出 \(X_{\mathrm{vis}}\) 的自由度（典型地：\(|u|\neq 1\) 的径向模式），从而在闭包内无地址并按协议读出为 \(\mathsf{NULL}\)（定义 \ref{def:xi-visible-read-null}；定理 \ref{thm:xi-pw-no-continuous-hair}）。
+  \item \textbf{（粘合扭结：二阶相容性障碍）}
+  即便局部证书在覆盖上逐片存在，也可能因二阶一致性约束失败而无法全球化；其失败可由一个可核验的 Čech \(2\)-余圈障碍类 \([\alpha]\in H^2(\mathrm{Addr},A)\) 见证（定义 \ref{def:prefix-site-h2-gluing-obstruction}），并由此推出该地址纤维为空、读出为 \(\mathsf{NULL}\)（命题 \ref{prop:null-as-h2-obstruction}）。
+  \item \textbf{（硬资源不足：阈值型预算违背）}
+  为把多对一压缩读出提升为单值可核验读出，必须同时满足两类不可替代的硬阈值资源：
+  \begin{itemize}
+    \item \emph{碰撞阈值（prime-register 预算）：}若模积预算 \(P_m\) 不足以超过分位门槛 \(2B_m(\varepsilon)\)，则碰撞空值在给定置信口径下不可消除（命题 \ref{prop:xi-null-three-way}；并见定理 \ref{thm:address-defect-law} 的最坏情形下界）。  
+    \item \emph{端点阈值（精度/分辨率预算）：}若端点层分辨率不足以承载离切片信号的二次压缩缺口，则离线信息在核验语义中不可被单值证书化，必以 \(\mathsf{NULL}\) 或“必须扩展模式轴”的形式出现（定理 \ref{thm:xi-offcritical-endpoint-resolution-lower-bound}；并见定理 \ref{thm:xi-radial-information-projection-lower-bound} 的紧化读出位复杂度下界）。
+  \end{itemize}
+\end{enumerate}
+并且上述三类见证在体系内不可相互替代：\emph{增加某一轴的预算}不能替代\emph{修复另一轴的缺陷}（例如 prime-register 的模积增长不能抵消端点分辨率门槛，反之亦然；同理，任何预算提升都不能消去 \([\alpha]\neq 0\) 的粘合障碍）。
+该不可替代性即为本文“信息守恒/不泄漏”的可审计含义：失败来源在正交分解下各自闭合，并分别携带独立的阈值或不变量证书。
+\end{theorem}
+
+\begin{proof}
+第 (1) 类是可见域过滤与 \(\mathbf{PW}\) 类型安全的直接后果（定义 \ref{def:xi-visible-read-null}；定理 \ref{thm:xi-offset-null-type-safety} 与定理 \ref{thm:xi-pw-no-continuous-hair}）。
+第 (2) 类由前缀站点的 \(H^2\) 粘合障碍口径给出：若 \([\alpha]\neq 0\)，则不存在可全球化的局部截面，从而纤维为空并读出为 \(\mathsf{NULL}\)（命题 \ref{prop:null-as-h2-obstruction}）。
+第 (3) 类分别由单射化原则的碰撞阈值（命题 \ref{prop:xi-null-three-way}）与端点二次压缩/分辨率屏障（定理 \ref{thm:xi-offcritical-endpoint-resolution-lower-bound}；定理 \ref{thm:xi-radial-information-projection-lower-bound}）给出。
+\par
+不可替代性来自这些证书的“支撑轴”互不重叠：碰撞阈值只约束 residue/逆极限轴的模积预算，而端点阈值只约束端点精度势所诱导的分辨率门槛；二者在类型语义中对应不同的正交记录轴，因此不存在用一类预算覆盖另一类缺口的合法编译路径。
+同理，\([\alpha]\neq 0\) 是二阶一致性的不变量证书，不能通过任何单纯的比特预算提升被消去。
+证毕。
+\end{proof}
+
 \paragraph{记号与语义门：折叠纤维、最大熵提升与不可见容量}\label{par:xi-null-notation-semantic-gate}
 以下记号用于把 unitary slice 上的“可寻址/空值”与窗口折叠的纤维信息缺口统一到同一账本语言中（参见小节 \ref{subsec:pom-information-ledger} 与定义 \ref{def:pom-kappa}）。
 固定分辨率 \(m\ge 1\)，取微观相空间 \(\Omega_m:=\{0,1\}^m\) 与稳定类型集合 \(X_m\)。
