@@ -1120,6 +1120,38 @@ D_{\zeta}(\varrho)
 结论 \eqref{eq:app-jensen-sum} 以及非负性是标准推论（参见 \cite{Duren1970TheoryHp}）。证毕。
 \end{proof}
 
+\begin{proposition}[幂替换的缺陷共变性：幂半群仅重参数化半径]\label{prop:app-jensen-defect-power-covariance}
+令 \(F\) 在单位圆盘 \(\mathbb{D}\) 内解析且 \(F(0)\neq 0\)，并对 \(0<\varrho<1\) 定义 Jensen 缺陷
+\[
+D_F(\varrho):=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F(\varrho e^{\mathrm{i}\theta})\bigr|\,\dd\theta-\log|F(0)|.
+\]
+对整数 \(m\ge 1\) 定义幂拉回 \(F^{(m)}(w):=F(w^m)\)。
+则对任意 \(0<\varrho<1\) 有严格恒等式
+\begin{equation}\label{eq:app-jensen-defect-power-covariance}
+\boxed{\ D_{F^{(m)}}(\varrho)=D_F(\varrho^m)\ }.
+\end{equation}
+特别地，将 \(F\) 取为本附录的圆盘化完成化 \(F_{\zeta}\)（定义 \ref{def:app-jensen-defect}）时，上式表明：幂半群 \(w\mapsto w^m\) 在 Jensen 缺陷层面不引入新的连续自由度，而仅对半径变量施加确定性重参数化 \(\varrho\mapsto \varrho^m\)。
+\end{proposition}
+\begin{proof}
+由定义，
+\[
+D_{F^{(m)}}(\varrho)
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F\!\bigl((\varrho e^{\mathrm{i}\theta})^m\bigr)\bigr|\,\dd\theta-\log|F(0)|
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F(\varrho^m e^{\mathrm{i}m\theta})\bigr|\,\dd\theta-\log|F(0)|.
+\]
+令 \(\phi:=m\theta\)，则 \(\dd\phi=m\,\dd\theta\)，从而
+\[
+D_{F^{(m)}}(\varrho)
+=\frac{1}{2\pi m}\int_{0}^{2\pi m}\log\bigl|F(\varrho^m e^{\mathrm{i}\phi})\bigr|\,\dd\phi-\log|F(0)|.
+\]
+注意被积函数关于 \(\phi\) 具有 \(2\pi\)-周期性，故
+\(
+\int_{0}^{2\pi m}\log|F(\varrho^m e^{\mathrm{i}\phi})|\,\dd\phi
+=m\int_{0}^{2\pi}\log|F(\varrho^m e^{\mathrm{i}\phi})|\,\dd\phi
+\)。
+代回即得 \(D_{F^{(m)}}(\varrho)=D_F(\varrho^m)\)，证毕。
+\end{proof}
+
 \begin{proposition}[单点盘内零点诱导的 Jensen 缺陷刚性下界]\label{prop:app-jensen-single-zero-lower-bound}
 若 \(F_{\zeta}\) 在开单位圆盘内存在零点 \(a\) 满足 \(|a|<1\)，则对任意 \(\varrho\in(|a|,1)\) 有
 \begin{equation}\label{eq:app-jensen-single-zero-lower-bound}
@@ -1250,6 +1282,30 @@ D_{\zeta}(\varrho)=\sum_{|a|<\varrho}\log(\varrho/|a|)
 当 \(\varrho\) 穿过某个 \(|a|\) 时，额外项 \(\log(\varrho/|a|)\) 在 \(\varrho\downarrow |a|\) 下趋于 \(0\)，从而 \(D_{\zeta}\) 连续。
 非负性与单调性由 \eqref{eq:app-jensen-sum} 立得。
 最后若 \(D_{\zeta}(\varrho_0)=0\)，则对 \(\varrho\le \varrho_0\) 有 \(0\le D_{\zeta}(\varrho)\le D_{\zeta}(\varrho_0)=0\)。证毕。
+\end{proof}
+
+\begin{corollary}[幂拉回的零点计数尺度律（径向测度公式）]\label{cor:app-jensen-zero-count-power-law}
+沿用命题 \ref{prop:app-jensen-defect-power-covariance} 的记号。
+令 \(N_F(\varrho)\) 表示 \(F\) 在 \(|w|<\varrho\) 内的零点计数（按重数计），并令 \(N_{F^{(m)}}\) 为 \(F^{(m)}\) 的相应计数函数。
+则对任意整数 \(m\ge 1\) 与任意 \(0<\varrho<1\) 有
+\begin{equation}\label{eq:app-zero-count-power-law}
+\boxed{\ N_{F^{(m)}}(\varrho)=m\,N_F(\varrho^m)\ }.
+\end{equation}
+等价地，若以零点模长计数测度
+\[
+\mu_F:=\sum_{a:\,F(a)=0}\mathrm{mult}(a)\,\delta_{|a|}
+\]
+表示盘内零点的径向分布，则
+\[
+\mu_{F^{(m)}}=m\,(\varrho\mapsto \varrho^{1/m})_{\ast}\mu_F.
+\]
+\end{corollary}
+\begin{proof}
+由假设 \(F(0)\neq 0\)，\(F\) 在 \(w=0\) 处无零点。
+若 \(a\neq 0\) 为 \(F\) 的零点且重数为 \(r\)，则 \(F^{(m)}(w)=F(w^m)\) 在方程 \(w^m=a\) 的每个根处同样有重数 \(r\) 的零点。
+这些根共有 \(m\) 个，且模长均为 \(|a|^{1/m}\)。
+因此，对给定 \(0<\varrho<1\)，盘内条件 \(|w|<\varrho\) 对应于 \(|a|<\varrho^m\)，并且每个满足 \(|a|<\varrho^m\) 的零点贡献 \(m\) 个盘内零点（按重数计），从而得到 \eqref{eq:app-zero-count-power-law}。
+测度表述由同一“模长取 \(m\) 次根且权重乘 \(m\)”的对应关系直接推出。证毕。
 \end{proof}
 
 \begin{corollary}[折角结构：盘内零点在缺陷上生成可定位跳变原子]\label{cor:app-jensen-defect-kink-structure}
