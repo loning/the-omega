@@ -16,5 +16,27 @@
 \paragraph{桥接接口与验证}
 在谱侧，动力学 \(\zeta\) 与有限部接口把周期计数、迹与主谱半径组织为可审计指纹，并为后续的完成化与扭曲通道提供统一输入（第 \ref{sec:zeta-finite-part} 节）。在统计侧，折叠直方图的偏差指标、跨分辨率一致性残差与到 Parry(PF) 基线的误差分解式将有限样本误差与模型差异项显式分离（第 \ref{sec:statistical-stability}、\ref{sec:experiments} 节；推论 \ref{cor:tv-decomposition-parry}），并以脚本化协议给出可复现实证书输出（第 \ref{sec:experiments} 节）。
 
+\paragraph{四条可核验结论簇：从地址语义到证书化预算与秩稳定性}
+为便于把正文中分散出现的结论直接复用到协议设计与审计流程中，可将若干核心断言压缩为四条互补的“证书接口”（均严格依赖既有编号结论而非解释性表述）：
+\begin{enumerate}
+  \item \textbf{地址语义的对象化：\(\mathsf{NULL}\) 作为局部截面障碍。}
+  在前缀站点上把协议可接受且单值可核验的读出/证书组织为（预）层 \(\mathscr F\) 后，“地址先于取值”的 \(\mathsf{NULL}\) 语义可被严格等价为 \(\mathscr F(a)=\varnothing\) 的存在性障碍，并与递归地址化的 \(\sigma\)-代数细化口径相容（\S\ref{subsec:prefix-site-null}，命题 \ref{prop:null-as-local-section-obstruction}）。
+  由此，语义/协议/碰撞三类空值在同一站点语言下被统一为三类互不混淆的局部截面缺失机制（推论 \ref{cor:null-trichotomy-local-section}）。
+
+  \item \textbf{折叠“清晰度”的二阶证书：碰撞膨胀 \(\Rightarrow\) 熵缺口上界。}
+  在均匀微态基线下，折叠推前分布 \(w_m(x)=d_m(x)/2^m\) 相对类型均匀分布的熵缺口 \(\mathrm{gap}\) 可被二阶碰撞指纹
+  \(C_{\mathrm{col}}(m)=|X_m|\sum_x w_m(x)^2\)
+  的对数上界证书化（定理 \ref{thm:pom-spectral-information-sandwich} 与定义 \ref{def:pom-collision-inflation}），并可由表 \ref{tab:fold_multiplicity_histogram} 在有限分辨率上直接审计。
+  该结论将“缩略图的清晰度”从解释性说法压缩为一个仅依赖二阶统计量的可计算证书。
+
+  \item \textbf{单射化预算的最优对偶包络：分位配额律的 \(\inf_{q\ge 2}\) 规范化。}
+  prime-register 的配额阈值可由纤维指数尾部分位 \(B_m(\varepsilon)=\exp(m\gamma_m(\varepsilon))\) 给出，并在区间读出/重建口径下具有锐性（\S\ref{subsec:pom-quantile-budget-law}，推论 \ref{cor:pom-prime-register-quantile-budget}）。
+  进一步，整数矩阶 \(q\) 所导出的全部 Chernoff/配额不等式族可被压缩为对 \(q\ge 2\) 的单一最优下包络，从而得到一条参数自由的寄存器指数预算律；并可用有限 \(q\)-窗口的“最强可计算尾界”实现可执行证书（推论 \ref{cor:pom-prime-register-q-quota-family} 及 \S\ref{subsec:pom-quantile-budget-law} 的对偶设计式）。
+
+  \item \textbf{模式轴完备性的充要判据：Hankel 秩一致有界 \(\Longleftrightarrow\) ACC-Rank。}
+  在统一最小性与协议闭包假设下，一旦残差轴预算已排除碰撞空值，则“不会因需要新增可见自由度而触发 \(\mathsf{NULL}\)”的模式轴完备性与 Hankel 秩的一致有界性严格等价（定理 \ref{thm:xi-completeness-iff-hankel-bounded}），从而把 completeness 的关键缺口转换为可回归测试的秩稳定性扫描（注 \ref{rem:xi-acc-rank}）。
+  与分位配额证书合并后，completeness 的审计任务可被压缩为“秩稳定证书 \(\times\) 配额证书”的二元后端核验（命题 \ref{prop:xi-completeness-auditable-decomposition}）。
+\end{enumerate}
+
 \subsection{复现与审计指引}\label{subsec:repro-audit-pointer}
 解释性综合、边界与可证伪点集中于第 \ref{sec:discussion} 节。附录汇集算子代数、相位塔、同步核与多尺度接口等支撑材料，以支撑正文的可审计推理链条与复核需求。

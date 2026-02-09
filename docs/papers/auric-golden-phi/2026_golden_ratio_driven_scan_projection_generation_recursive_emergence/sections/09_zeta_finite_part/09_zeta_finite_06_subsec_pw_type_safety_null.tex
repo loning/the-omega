@@ -441,13 +441,54 @@ d^{(\ell)}_{\min}(\theta):=\mathrm{rank}\,H\!\bigl(a^{(\ell)}_\bullet(\theta)\bi
 \par
 从 \(\mathsf{NULL}\) 语义看，上述检查对应一条与“几何型/分支型/统计型”正交的缺口：若将可见审计限制在固定有限维状态空间中实现 trace/primitive 的交换图，则 Hankel 秩（定理 \ref{thm:hankel-rank-minimal}）给出\emph{最小记录轴维数}的硬下界；任何试图将实现维数压到 \(<\mathrm{rank}(H)\) 的策略都会在某些可见观测上出现不可消去的歧义，其语义后果即为“维数型 \(\mathsf{NULL}\)”（地址必须外置到更高维轴）。
 该缺口可由 Hankel 正规形 \(A=(H_0^{(\ell)})^{-1}H_1^{(\ell)}\)（注 \ref{rem:pom-s2-hankel}）在多项式时间内证书化，并与 \(\theta\)-扫描的稳定性测试对齐。
+在进一步假设“统一最小性 + 协议闭包（无未记录轴回流）”时，上述 ACC-Rank 稳定性检查可从充分判据升级为充要刻画，见定理 \ref{thm:xi-completeness-iff-hankel-bounded}。
 \end{remark}
+
+\begin{theorem}[模式轴完备性 \texorpdfstring{$\Longleftrightarrow$}{<->} Hankel 秩一致有界（统一最小性与协议闭包下）]\label{thm:xi-completeness-iff-hankel-bounded}
+沿用注 \ref{rem:xi-acc-rank} 的设定与记号，并考虑多轴前缀中的模式轴 \(a_{\mathrm{mode}}\)（定义 \ref{def:multi_axis_address}）。
+固定一个置信口径，使得残差轴 \(a_{\mathrm{res}}\) 的预算已足以排除“同像碰撞/标签超界”所致的碰撞空值（例如满足命题 \ref{prop:xi-null-three-way} 的 prime-register 分位阈值条件，或等价地满足命题 \ref{prop:xi-completeness-auditable-decomposition} 的第 (2) 条）。
+\par
+再假设：
+\begin{enumerate}
+  \item \textbf{统一最小性：}对所有足够大层级 \(\ell\) 与所有相位参数 \(\theta\)，迹序列 \(a^{(\ell)}_\bullet(\theta)\) 的“所需可见自由度”由其 Hankel 秩唯一刻画，即
+  \[
+  d^{(\ell)}_{\min}(\theta)=\mathrm{rank}\,H\!\bigl(a^{(\ell)}_\bullet(\theta)\bigr)
+  \]
+  并且该最小维数在协议闭包内被视为必须显式外置的模式轴容量下界（定理 \ref{thm:hankel-rank-minimal}）。
+  \item \textbf{协议闭包（无未记录轴回流）：}任何影响可见读出/证书的新增自由度，若未被显式记录为模式轴/寄存器，则在类型层被拒绝并读出为 \(\mathsf{NULL}\)（定义 \ref{def:xi-visible-read-null}；亦见定理 \ref{thm:xi-pw-no-continuous-hair} 的“无未记录轴”原则）。
+\end{enumerate}
+则下列陈述等价：
+\begin{enumerate}
+  \item[(i)] \textbf{模式轴完备性：}存在常数 \(d_\ast\) 与层级阈值 \(\ell_0\)，使得对所有 \(\ell\ge \ell_0\) 与所有相位采样 \(\theta\)，unitary-slice 审计所需的可见自由度均可在同一有限维模式类型内闭合；等价地，零点事件不会仅因“需要引入新的可见自由度/模式轴”而在 \(\mathbf{PW}\) 闭包下退化为 \(\mathsf{NULL}\)。
+  \item[(ii)] \textbf{Hankel 秩一致有界：}存在常数 \(d_\ast\) 与 \(\ell_0\) 使得对所有 \(\ell\ge \ell_0\) 与所有 \(\theta\) 都有
+  \[
+  d^{(\ell)}_{\min}(\theta)\le d_\ast.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(ii)\(\Rightarrow\)(i).}
+若存在 \(d_\ast,\ell_0\) 使 \(d^{(\ell)}_{\min}(\theta)\le d_\ast\) 对一切 \(\ell\ge\ell_0\) 与 \(\theta\) 成立，则对每个 \((\ell,\theta)\) 都存在维数不超过 \(d_\ast\) 的线性 realization，实现迹序列 \(a^{(\ell)}_\bullet(\theta)\) 的全部可见信息（定理 \ref{thm:hankel-rank-minimal}）。
+把该 realization（或其在维数 \(d_\ast\) 上的零填充扩展）作为统一的模式轴类型，即可在不引入新的可见自由度的前提下完成相应证书读出；由协议闭包假设，任何需要额外自由度的对象必须显式外置，否则将触发 \(\mathsf{NULL}\)，从而在当前“统一有限维”制度下不会出现新的维数型 \(\mathsf{NULL}\)。
+因此模式轴完备性成立。
+\par
+\textbf{(i)\(\Rightarrow\)(ii).}
+反设 Hankel 秩不一致有界，则对任意候选常数 \(d\) 与阈值 \(\ell_0\) 都可找到 \(\ell\ge\ell_0\) 与某个 \(\theta\) 使
+\(
+d^{(\ell)}_{\min}(\theta)>\!d
+\)。
+由统一最小性与定理 \ref{thm:hankel-rank-minimal}，任何实现该迹序列的线性表示维数都至少为 \(d^{(\ell)}_{\min}(\theta)\)，从而在任意固定的 \(d\)-维模式类型内必发生不可消去的模态塌缩。
+按协议闭包，“未记录轴回流”被禁止：该塌缩所诱发的不可核验歧义不能在闭包内被暗中吸收，只能以模式轴不足的方式触发 \(\mathsf{NULL}\)。
+这与 (i) 所要求的“存在统一有限维模式类型使事件不因缺轴而退化为 \(\mathsf{NULL}\)”矛盾。
+故 Hankel 秩必须一致有界，得到 (ii)。
+\end{proof}
 
 \begin{proposition}[completeness 的可审计分解：维数稳定证书 \(\times\) 配额证书]\label{prop:xi-completeness-auditable-decomposition}
 在本文的 unitary-slice 零点审计口径下，“零点事件读出为 \(\mathsf{NULL}\)”的结构性来源可归并为两类：\emph{额外可见自由度}（协议空值）与\emph{同像碰撞/标签超界}（碰撞空值，命题 \ref{prop:xi-null-three-way}）。
 因此，若同时满足下述两条可审计约束：
 \begin{enumerate}
-  \item \textbf{可见自由度稳定（ACC-Rank）：}存在常数 \(d_\ast\) 使得对所有足够大层级 \(\ell\) 与所有相位采样 \(\theta\) 都有 \(d^{(\ell)}_{\min}(\theta)\le d_\ast\)，并且该界在加密 \(\theta\) 网格与提升层级时保持稳定（注 \ref{rem:xi-acc-rank}）；
+  \item \textbf{可见自由度稳定（ACC-Rank）：}存在常数 \(d_\ast\) 使得对所有足够大层级 \(\ell\) 与所有相位采样 \(\theta\) 都有 \(d^{(\ell)}_{\min}(\theta)\le d_\ast\)，并且该界在加密 \(\theta\) 网格与提升层级时保持稳定（注 \ref{rem:xi-acc-rank}；并在统一最小性与协议闭包下见定理 \ref{thm:xi-completeness-iff-hankel-bounded}）；
   \item \textbf{侧信息预算充足（分位配额）：}对任意给定的 \(\varepsilon\in(0,1)\)，存在一组 prime-register 模积预算 \(P_m\) 使得
   \(
   P_m>2B_m(\varepsilon)=2\exp(m\gamma_m(\varepsilon))

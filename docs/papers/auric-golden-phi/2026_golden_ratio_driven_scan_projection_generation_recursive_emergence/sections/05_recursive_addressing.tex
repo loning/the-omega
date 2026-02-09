@@ -45,3 +45,53 @@ C^{(L+1)}_{a,t}:=\{x\in X:\mathbf{b}^{(L)}_t(x)=a_0,\dots,\mathbf{b}^{(L)}_{t+\e
 \end{itemize}
 本节所述空值属于\emph{语义空值}（地址缺失，读出不定义）；与之正交的\emph{协议空值}（类型系统锁定 unitary slice）与\emph{碰撞空值}（侧信息预算不足导致不可唯一重建）见 \S\ref{subsec:xi-pw-type-safety-null} 及命题 \ref{prop:xi-null-three-way}。在更统一的口径下，可把“完备地址”打包为多轴前缀（定义 \ref{def:multi_axis_address}），其中碰撞空值对应残差轴不足，其最小侧信息预算由定理 \ref{thm:address-defect-law} 给出。
 该语义可与布尔代数闭包兼容，也可在算子代数层面以投影算子及其乘积实现（见附录 \ref{app:op-algebra}）。
+
+\subsection{前缀站点与局部截面：\texorpdfstring{$\mathsf{NULL}$}{NULL} 的内禀刻画}\label{subsec:prefix-site-null}
+本小节给出一个与“地址先于取值”严格兼容的形式化：把地址空间视为由前缀偏序生成的站点（cylinder site），并把“协议可接受且单值可核验的读出/证书”组织为其上的（预）层对象。其用途不在于引入新的测度论结构，而在于把空值（\(\mathsf{NULL}\)）提升为一个清晰的存在性障碍：\emph{在给定地址处不存在协议允许的局部截面}，从而避免把 “不定义” 误读为数值 \(0\) 的歧义。
+
+\begin{definition}[前缀站点与柱覆盖]\label{def:prefix-site}
+为简明起见仅以二元字母表 \(\Sigma=\{0,1\}\) 书写（对一般有限字母表 \(\Sigma\) 完全同型）。令 \(\mathcal{A}:=\Sigma^{<\infty}\) 为全体有限地址，并以前缀关系 \(a\preceq b\) 赋偏序。
+令 \(\mathcal{A}_{\mathrm{adm}}\subseteq\mathcal{A}\) 为协议所允许的地址集合（在本节的递归构造中，其原型可取为各层选定的有限地址族 \(A^{(L)}\) 及其在 refinement 下的闭包）。
+对任意 \(a\in\mathcal{A}_{\mathrm{adm}}\)，令柱事件 \(C_a\subseteq X\) 如第 \ref{sec:spg} 节定义（亦即 \(C_a=\omega_\infty^{-1}([a])\)，其中 \([a]\subseteq\Omega_\infty\) 为符号柱集）。
+\par
+称有限族 \(\{b_i\succeq a\}_{i=1}^n\subseteq\mathcal{A}_{\mathrm{adm}}\) 为 \(a\) 的一个\textbf{柱覆盖}，若 \(C_a=\bigcup_{i=1}^{n} C_{b_i}\)。
+该覆盖关系与段落 \ref{par:spg-prefix-ultrametric} 的前缀拓扑一致：\(\Omega_\infty=\varprojlim \Omega_k\) 的 clopen 基由柱集 \([a]\) 给出，因而“前缀细化”与“覆盖分解”为同一对象的两种等价描述。
+\end{definition}
+
+\begin{definition}[协议可接受读出的（预）层]\label{def:prefix-sheaf-readout}
+固定一套“可见域 + 检查器”的读出协议，其抽象口径见定义 \ref{def:xi-visible-read-null}（在此仅使用其“读出可为部分映射、并以 \(\mathsf{NULL}\) 表示不定义”的结构）。
+对每个 \(a\in\mathcal{A}_{\mathrm{adm}}\) 定义集合
+\[
+\mathscr{F}(a):=\{\text{在柱事件 }C_a\text{ 上协议允许、且在类型意义下为单值可核验的读出/证书对象}\},
+\]
+并对 refinement \(b\succeq a\) 定义限制映射
+\(\rho_{a\leftarrow b}:\mathscr{F}(a)\to\mathscr{F}(b)\)
+为把读出/证书限制到子柱 \(C_b\)（等价地：在事件层面对更深前缀条件化）。
+\end{definition}
+
+\begin{proposition}[局部截面存在性与 \texorpdfstring{$\mathsf{NULL}$}{NULL}]\label{prop:null-as-local-section-obstruction}
+在定义 \ref{def:prefix-site}--\ref{def:prefix-sheaf-readout} 的口径下，“地址先于取值”的语义可等价表述为：
+\[
+\text{地址 }a\text{ 的读出在类型层非 }\mathsf{NULL}
+\quad\Longleftrightarrow\quad
+\mathscr{F}(a)\neq\varnothing.
+\]
+并且在递归地址化的闭包口径下（命题 \ref{prop:recursive-addressing-refinement}），\(\mathscr{F}\) 对任意有限柱覆盖满足粘接唯一性：若 \(\{b_i\succeq a\}\) 覆盖 \(a\)，且一族局部对象 \(s_i\in\mathscr{F}(b_i)\) 在重叠处相容（即在任意交 \(C_{b_i}\cap C_{b_j}\) 上的限制一致），则存在唯一 \(s\in\mathscr{F}(a)\) 使得 \(s|_{C_{b_i}}=s_i\)。
+\end{proposition}
+
+\begin{proof}
+第一条等价仅是将 “不定义（\(\mathsf{NULL}\)）” 从数值层改写为对象层的存在性断言：读出/证书之所以可核验，要求其在给定地址处确有协议允许的局部对象可供引用；当且仅当该局部对象存在时，读出在类型层被视为非 \(\mathsf{NULL}\)。
+\par
+对粘接唯一性：柱覆盖是有限并集分解，且柱事件在 refinement 下封闭（由定义）；递归地址化又保证所有派生对象仍落在既有可观测柱事件所生成的 \(\sigma\)-代数内（命题 \ref{prop:recursive-addressing-refinement}）。
+因此若局部对象在重叠处一致，则它们在集合层的拼接由并集给出且唯一；协议可接受性在限制映射下保持，故粘接得到的对象仍属于 \(\mathscr{F}(a)\) 并满足唯一性。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\mathsf{NULL}$}{NULL} 的三分解（局部截面障碍版）]\label{cor:null-trichotomy-local-section}
+在上述站点/（预）层表述下，\(\mathsf{NULL}\) 的三类来源（定义 \ref{def:xi-visible-read-null} 与命题 \ref{prop:xi-null-three-way}）可被统一为三类互不混淆的局部截面障碍：
+\begin{enumerate}
+  \item \textbf{语义空值：} \(a\notin\mathcal{A}_{\mathrm{adm}}\)，即协议未提供该地址对象；此时在站点上无对象可供取截面，空值由“缺乏指称”直接给出。
+  \item \textbf{协议空值：} \(a\in\mathcal{A}_{\mathrm{adm}}\) 但可见域/类型系统拒绝在 \(C_a\) 上建立读出（典型地：可见域被锁定为某一切片而拒绝额外坐标轴），从而 \(\mathscr{F}(a)=\varnothing\)。
+  \item \textbf{碰撞空值：} \(a\in\mathcal{A}_{\mathrm{adm}}\) 且通过检查器，但在“单值可核验读出”的类型约定下，若底层读出存在多对一压缩而未外置使扩展读出单射化的残差轴，则在该类型中仍等价表现为 \(\mathscr{F}(a)=\varnothing\)；其最小侧信息预算由命题 \ref{prop:xi-null-three-way} 与定理 \ref{thm:address-defect-law} 给出。
+\end{enumerate}
+因此，“\(\mathsf{NULL}\)”并非字符串的数值性质，而是站点对象与（预）层纤维在协议意义下的结构性空缺：合法性由 \(\mathscr{F}(a)\) 的非空性判定。
+\end{corollary}
