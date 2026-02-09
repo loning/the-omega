@@ -14,6 +14,12 @@ a=(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}})
 而 \(a_{\mathrm{mode}}\) 则记录协议所允许的正交模式轴（典型地包括径向寄存器与最小实现维数轴；参见推论 \ref{cor:xi-null-second-order-radial-channel} 与注 \ref{rem:xi-acc-rank}）。
 下文的结论依次对应于：证书在 \(a_{\mathrm{vis}}\) 轴上的一致性归并、unitary slice 作为正交切片的类型后果、离切片信息的端点容量门槛，以及由此导出的可证伪接口重述。
 
+\begin{remark}[递归地址化的“可读出前缀”语义]\label{rem:xi-readable-prefix-recursive-addressing}
+递归地址化在语义上被视为一种\emph{可读出前缀}的内生化机制（\S\ref{sec:recursive-addressing}）：地址未给定时，评价 \(x\mapsto \ind_{C_a}(x)\)（亦记 \(\mathbf 1_{C_a}(x)\)）不定义并以 \(\mathsf{NULL}\) 表示不可寻址；地址一旦给定，读出退化为 \(0/1\) 的投影值。
+另一方面，递归生成的柱事件族不扩张既有可见 \(\sigma\)-代数：派生柱事件 \(C^{(L+1)}_{a,t}\) 全部落在旧层 \(\mathcal{G}^{(L)}\) 内（命题 \ref{prop:recursive-addressing-refinement}），并且在同一口径下有 \(\mathcal{G}^{(L+1)}\subseteq\mathcal{G}^{(L)}\)（推论 \ref{cor:recursive-addressing-visible-sigma-nonexpansion}）。
+因此，unitary slice 锁定时任何需要额外径向自由度的结构既不可能由递归细化“无痕生成”，也不可能通过隐式混合精度进入证书域：其唯一语义归宿是模式轴外置或 \(\mathsf{NULL}\)/失败见证（见命题 \ref{prop:xi-offcritical-falsifiable-restatement}）。
+\end{remark}
+
 \begin{remark}[术语约定：轴/通道与投影系统自同构]\label{rem:axis-vs-automorphism-terminology}
 本文中“轴”一词仅作为协议语义中的\emph{可寻址坐标/寄存器}（及其预算方向）的简称，用以指代地址前缀中的不同记录分量（例如 \(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}}\)），而非对称性的对象。
 本文所讨论的对称性对象是投影读出系统的\emph{自同构}及其在可见截面上的下降作用；在规范群胚口径下，可将其理解为保持投影门与核验接口的可组合态射所生成的作用。
@@ -152,6 +158,11 @@ unitary slice 的“正交性”在本文并非欧氏几何命题，而是由可
 \end{enumerate}
 合并三点即得所述“正交切片”的结构结论。证毕。
 \end{proof}
+
+\begin{remark}[双边界正规形中的守恒轴]\label{rem:xi-orthogonal-axis-dual-boundary-invariant}
+附录 \ref{subsec:riemann-infinity-dual-boundary} 给出双边界深度坐标 \((Y_r,Y_t)\) 并证明 Witt 伸缩使其同漂移，从而差值 \(\mathcal{I}:=Y_r-Y_t\) 为严格共轭不变量（定理 \ref{thm:dual-boundary-normal-form}）。
+在本文的协议口径中，“\(\Re(s)=\tfrac12\) 为正交轴”指的并非 \(s\)-平面上的欧氏正交，而是：可见连续参数被锁定为 unitary slice 的相位轴，而与之正交的偏离自由度只能沿该类守恒坐标及其端点/精度势账本投影出现；若拒绝外置相应记录轴，则在可见读出中必触发 \(\mathsf{NULL}\)。
+\end{remark}
 
 \begin{corollary}[内因子数据的正交寄存器必要性]\label{cor:xi-inner-factor-orthogonal-register}
 在定理 \ref{thm:xi-orthogonal-slice-structure} 的设定下，进一步假设附录 \ref{subsec:unit-disk-inner-outer} 的 Hardy/Smirnov 条件口径成立，使得圆盘完成化对象具有标准因子分解
@@ -478,8 +489,25 @@ D_\zeta(\varrho)\ge \log(\varrho/|w_\rho|)
 最后，“外置必须是 residue/逆极限轴而非额外连续寄存器”即定理 \ref{thm:xi-pw-no-continuous-hair} 的第 (2) 条。证毕。
 \end{proof}
 
-\paragraph{\texorpdfstring{$\Re(s)=\tfrac12$}{Re(s)=1/2} 作为自对偶投影的固定切片的严格含义（协议口径）}
-综合定理 \ref{thm:xi-orthogonal-slice-structure}、定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 及其推论链条，可将“\(\Re(s)=\tfrac12\) 所确定的 unitary slice（自对偶投影的固定可见切片）”的含义压缩为三条可核验结论：
+\begin{theorem}[离开 unitary slice 的零点事件之无泄漏投影二分律]\label{thm:xi-offcritical-no-leakage-projection-dichotomy}
+在 unitary slice 锁定（定义 \ref{def:xi-visible-read-null}，取 \(X_{\mathrm{vis}}=\mathsf{Phase}\)）、圆盘完成化 \(F_\zeta\) 与证书语义（定理 \ref{thm:xi-us-deterministic-tristate}）的共同框架下，若存在离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\)（\(0<\beta<\tfrac12\)）使其圆盘像 \(w_\rho=\mathcal{C}(\gamma+\mathrm{i}(\tfrac12-\beta))\in\mathbb{D}\) 满足 \(F_\zeta(w_\rho)=0\)，则该事件在可审计语义中满足如下二分：
+\begin{enumerate}
+  \item \textbf{端点层投影（连续通道）}：
+  该事件必诱导端点余量与 Jensen 缺陷的正投影，并在高高度下遵循二次压缩律
+  \(1-|w_\rho|^2=4\pi^2(\tfrac12-\beta)\delta_\gamma^2(1+o(1))\)
+  （定理 \ref{thm:xi-offcritical-quadratic-radial-compression}）。
+  因此，任何试图在高度窗内“看见”固定偏移 \(\tfrac12-\beta\) 的核验都必须支付端点分辨率/位预算下界（定理 \ref{thm:xi-offcritical-endpoint-resolution-lower-bound}，推论 \ref{cor:xi-offcritical-visibility-threshold-bit-budget}），并可被单半径 Jensen 证书化为带状禁入判据（定理 \ref{thm:xi-jensen-single-radius-band-exclusion}）。
+  \item \textbf{证书层守恒（离散通道）}：
+  在不外延模式轴 \(a_{\mathrm{mode}}\) 的情况下，该事件不能在纯相位地址上被证书化为“可见零点”；其读出在协议语义中稳定退化为 \(\mathsf{NULL}\)。
+  任意试图以隐式混合精度或侧信息通道规避该退化的行为在类型层不被定义（推论 \ref{cor:xi-precision-type-no-leakage}）。
+  若坚持以可证伪接口陈述该事件，则唯一非退化表述为：显式外延模式轴以承载径向记录，或输出离线可核验的失败见证（命题 \ref{prop:xi-offcritical-falsifiable-restatement}）。
+\end{enumerate}
+因此，“离开 \(\Re(s)=\tfrac12\)”的自由度无法在 unitary slice 的纯相位接口中被无痕吸收：其存在性必然表现为端点层的连续投影（并伴随可量化的容量门槛），或在证书层以 \(\mathsf{NULL}\)/失败见证的形式被外置，而不可能以不可审计的方式泄漏为错误断言。
+\end{theorem}
+
+\paragraph{\texorpdfstring{$\Re(s)=\tfrac12$}{Re(s)=1/2} 作为正交轴的严格含义（协议口径）}
+此处“轴/正交”指协议层的结构直和与可见截面（定义 \ref{def:multi_axis_address} 与定义 \ref{def:xi-visible-read-null}），并非几何轴对称意义下的“轴互换”；相应地，“对称性”应理解为保持读出不变的自同构（定义 \ref{def:xi-read-visible-symmetry}）。
+综合定理 \ref{thm:xi-orthogonal-slice-structure}、定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 及其推论链条，可将“\(\Re(s)=\tfrac12\) 所确定的 unitary slice（自对偶投影的固定可见切片）”的含义压缩为四条可核验结论：
 \begin{enumerate}
   \item \textbf{（端点载荷分解）}
   离线偏移 \(\delta\) 与高度 \(\gamma\) 在端点层深度中以可加负载出现（推论 \ref{cor:xi-offcritical-endpoint-depth-log-decomposition}），并由精度势 \(\mathcal{P}\) 给出统一账本坐标。
@@ -489,6 +517,7 @@ D_\zeta(\varrho)\ge \log(\varrho/|w_\rho|)
   在 Hardy/Smirnov 条件口径下，离线零点等价于 Blaschke 内因子数据；该数据在纯相位可见接口内不可由边界模长生成，故其核验语义必强制占用正交寄存器（推论 \ref{cor:xi-inner-factor-orthogonal-register}）。
   \item \textbf{（端点相位证书）}
   在 Hardy/Smirnov 条件口径下，内因子还可定义相位电流测度 \(\mu_{\mathrm{in}}\)，其端点密度 \(j_{\mathrm{in}}(\pi)\) 对盘内零点给出不可抵消的正下界；并且对离临界线偏移总量满足 \(j_{\mathrm{in}}(\pi)\ge \sum_k\delta_k\)（定理 \ref{thm:app-inner-phase-current-poisson} 与推论 \ref{cor:app-endpoint-phase-current-offcritical}）。
+  其中 \(j_{\mathrm{in}}(\pi)\) 亦可被解释为端点 \(-1\) 处的毛发通量/吸收系数：它把 Blaschke 零点数据压缩为单一非负标量，并在径向端点逼近下以模长衰减率读出（注 \ref{rem:app-endpoint-hair-flux-absorption}，命题 \ref{prop:app-endpoint-blaschke-radial-absorption}）。
   在无奇异内因子 \(S\equiv 1\) 的条件下，端点相位电流的零证书 \(j_{\mathrm{in}}(\pi)=0\) 强制 \(B\equiv 1\)，从而推出盘内零点禁入并回到 RH（推论 \ref{cor:app-endpoint-phase-certificate}）。
 \end{enumerate}
 因此在本文体系中，unitary slice 是连续可见参数的极小截面；偏离该截面的径向信息在端点层以二次压缩律进入，并在证书语义上只能通过模式轴外置或以 \(\mathsf{NULL}\) 失败见证体现。

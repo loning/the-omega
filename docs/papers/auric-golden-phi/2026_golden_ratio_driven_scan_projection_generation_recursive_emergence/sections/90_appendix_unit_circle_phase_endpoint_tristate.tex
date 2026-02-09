@@ -328,6 +328,125 @@ G(0,2\mathrm{i}\varepsilon(m))-G(0,-2\mathrm{i}\varepsilon(m))
 其中第二个等号由定理 \ref{thm:endpoint-four-channel-chi4}（\(\varepsilon=\chi_4\)）给出。证毕。
 \end{proof}
 
+\begin{proposition}[端点偶三态的不变子表示与显式矩阵化]\label{prop:endpoint-even-tristate-matrix}
+沿用 \eqref{eq:endpoint-Wsigma-even}--\eqref{eq:endpoint-odd-symbol-eigen} 的记号，并令
+\[
+v(F):=\bigl(\mathcal E_{0}(F),\mathcal E_{+}(F),\mathcal E_{-}(F)\bigr)^{\mathsf T}\in\CC^{3}.
+\]
+则对任意 \(\sigma>0\) 与任意 \(F\in\CC[S]\)，端点偶三态在 \(\mathcal W_\sigma\) 下封闭，并满足
+\begin{equation}\label{eq:endpoint-even-tristate-matrix-action}
+\boxed{\;
+v(\mathcal W_{\sigma}F)=M_{\mathrm{even}}(\sigma)\,v(F)\;}
+\end{equation}
+其中表示矩阵可写成闭式
+\begin{equation}\label{eq:endpoint-even-tristate-matrix-closed}
+\boxed{\;
+M_{\mathrm{even}}(\sigma)
+=\zeta(1+\sigma)
+\begin{pmatrix}
+1-2^{-(1+\sigma)} & 4^{-(1+\sigma)} & 2^{-(1+\sigma)}-4^{-(1+\sigma)}\\
+0&1&0\\
+0&2^{-(1+\sigma)}&1-2^{-(1+\sigma)}
+\end{pmatrix}. \;}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+第一行由定理 \ref{thm:endpoint-zeta-Lchi4-symbol-pair} 的端点偶观测分解 \eqref{eq:endpoint-even-symbol-decomposition-alpha} 与 \(\alpha\)-权核的闭式表达给出。
+\par
+对 \(\mathcal E_{+}\) 与 \(\mathcal E_{-}\)，由完成化迹坐标的倍角恒等式 \(C_m(2)=2\) 与 \(C_m(-2)=2(-1)^m\) 得
+\[
+\mathcal E_{+}(\mathcal W_\sigma F)
+=\sum_{m\ge 1}\frac{1}{m^{1+\sigma}}\,F\!\bigl(C_m(2)\bigr)
+=\zeta(1+\sigma)\,\mathcal E_{+}(F),
+\]
+\[
+\mathcal E_{-}(\mathcal W_\sigma F)
+=\sum_{\substack{m\ge 1\\ m\ \mathrm{even}}}\frac{1}{m^{1+\sigma}}\,F(2)
+\;+\;
+\sum_{\substack{m\ge 1\\ m\ \mathrm{odd}}}\frac{1}{m^{1+\sigma}}\,F(-2)
+=2^{-(1+\sigma)}\zeta(1+\sigma)\,\mathcal E_{+}(F)
+\;+\;\bigl(1-2^{-(1+\sigma)}\bigr)\zeta(1+\sigma)\,\mathcal E_{-}(F).
+\]
+将上述三式写成矩阵形式即得 \eqref{eq:endpoint-even-tristate-matrix-action}--\eqref{eq:endpoint-even-tristate-matrix-closed}。证毕。
+\end{proof}
+
+\begin{theorem}[端点偶通道的普适极与有限部（\texorpdfstring{$\sigma\downarrow 0$}{sigma->0}）]\label{thm:endpoint-even-finite-part-renormalization}
+令
+\[
+\mu:=\left(\frac12,\frac14,\frac14\right),\qquad
+\langle \mu,(v_0,v_+,v_-)\rangle:=\frac12 v_0+\frac14 v_++\frac14 v_-.
+\]
+对任意 \(F\in\CC[S]\)，定义端点偶通道的重整化有限部泛函
+\begin{equation}\label{eq:endpoint-even-renormalized-finite-part-def}
+\boxed{\;
+\mathcal R_{\mathrm{even}}(F)
+:=\lim_{\sigma\downarrow 0}\left(
+\mathcal E_{0}(\mathcal W_\sigma F)
+-\frac{1}{\sigma}\,\langle \mu,v(F)\rangle
+\right)\;}
+\end{equation}
+（若极限存在）。
+则该极限存在，并给出显式有限部
+\begin{equation}\label{eq:endpoint-even-renormalized-finite-part-closed}
+\boxed{\;
+\mathcal R_{\mathrm{even}}(F)
+=\left(\frac{\gamma}{2}+\frac{\log 2}{2}\right)\mathcal E_{0}(F)
+\;+\;\left(\frac{\gamma}{4}-\frac{\log 2}{2}\right)\mathcal E_{+}(F)
+\;+\;\frac{\gamma}{4}\mathcal E_{-}(F)\; }.
+\end{equation}
+其中 \(\gamma\) 为 Euler 常数。
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:endpoint-zeta-Lchi4-symbol-pair} 与 \eqref{eq:endpoint-even-symbol-decomposition-alpha}，
+\[
+\mathcal E_0(\mathcal W_\sigma F)
+=\alpha_0(\sigma)\mathcal E_0(F)+\alpha_+(\sigma)\mathcal E_+(F)+\alpha_-(\sigma)\mathcal E_-(F),
+\]
+并且（命题 \ref{prop:endpoint-dirichlet-symbol-weights}）
+\[
+\alpha_0(\sigma)=\bigl(1-2^{-(1+\sigma)}\bigr)\zeta(1+\sigma),\quad
+\alpha_+(\sigma)=4^{-(1+\sigma)}\zeta(1+\sigma),\quad
+\alpha_-(\sigma)=\bigl(2^{-(1+\sigma)}-4^{-(1+\sigma)}\bigr)\zeta(1+\sigma).
+\]
+利用 Laurent 展开 \(\zeta(1+\sigma)=\sigma^{-1}+\gamma+O(\sigma)\)（\(\sigma\downarrow 0\)）以及
+\[
+2^{-(1+\sigma)}=\frac12\bigl(1-\sigma\log 2+O(\sigma^2)\bigr),\qquad
+4^{-(1+\sigma)}=\frac14\bigl(1-2\sigma\log 2+O(\sigma^2)\bigr),
+\]
+可得
+\[
+\alpha_0(\sigma)=\frac{1}{2\sigma}+\left(\frac{\gamma}{2}+\frac{\log 2}{2}\right)+O(\sigma),\quad
+\alpha_+(\sigma)=\frac{1}{4\sigma}+\left(\frac{\gamma}{4}-\frac{\log 2}{2}\right)+O(\sigma),\quad
+\alpha_-(\sigma)=\frac{1}{4\sigma}+\frac{\gamma}{4}+O(\sigma).
+\]
+将其代回并按 \(\sigma^{-1}\) 极点项与常数项分离，即得到 \eqref{eq:endpoint-even-renormalized-finite-part-def} 的极限存在并等于 \eqref{eq:endpoint-even-renormalized-finite-part-closed}。证毕。
+\end{proof}
+
+\begin{corollary}[反变端点通道的解析性与 \texorpdfstring{$\chi_4$}{chi4} 常数输出]\label{cor:endpoint-odd-analytic-at-zero}
+对任意 \(G\in\CC[S,\delta]\)，有
+\begin{equation}\label{eq:endpoint-odd-limit-L1-chi4}
+\boxed{\;
+\lim_{\sigma\downarrow 0}\mathcal O(\mathcal W_{\sigma}^{\delta}G)
+=L(1,\chi_{4})\cdot \mathcal O(G)
+=\frac{\pi}{4}\,\mathcal O(G)\; }.
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:endpoint-zeta-Lchi4-symbol-pair} 的本征分解 \eqref{eq:endpoint-odd-symbol-eigen}，\(\mathcal O(\mathcal W_{\sigma}^{\delta}G)=L(1+\sigma,\chi_4)\mathcal O(G)\)。
+由于 \(L(1+\sigma,\chi_4)\) 在 \(\sigma=0\) 处解析，取极限得第一等号；经典恒等式 \(L(1,\chi_4)=\pi/4\) 给出第二等号。证毕。
+\end{proof}
+
+\begin{remark}[端点重整化的二元残余：普适极 \(\oplus\) 离散本征通道]\label{rem:endpoint-renormalization-universal-pole-discrete-hair}
+定理 \ref{thm:endpoint-even-finite-part-renormalization} 表明：端点偶通道的全部发散仅沿
+\(\langle\mu,v(F)\rangle\) 的 rank-one 方向出现，并由 \(\zeta(1+\sigma)\) 在 \(1\) 处的极点完全控制；
+其有限部由 Euler 常数与 \(\log 2\) 的显式组合给出。
+与之正交地，推论 \ref{cor:endpoint-odd-analytic-at-zero} 表明反变端点观测在 \(\sigma\downarrow 0\) 处无极点，且其残余压缩为纯离散的 \(\chi_4\) 常数通道 \(L(1,\chi_4)=\pi/4\)。
+因此，在端点符号口径下，重整化后的非紧性可被压缩为“普适 \(\zeta\)-极 + 离散 \(\chi_4\) 本征残余”的二元正交分解。
+\end{remark}
+
 \begin{remark}[端点对数主尺度与相位精度解耦：\texorpdfstring{$u=-1$}{u=-1} 下偶幂通道的计数控制]\label{rem:endpoint-logscale-parity-decouple}
 在 twist 层 \(u=-1\) 上，偶幂满足 \(u^{2k}=1\)，故任何 Witt 型伸缩叠加
 \(
