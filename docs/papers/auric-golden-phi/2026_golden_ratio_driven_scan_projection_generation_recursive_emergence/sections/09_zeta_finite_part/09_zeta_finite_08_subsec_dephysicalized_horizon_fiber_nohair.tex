@@ -1,8 +1,7 @@
-\subsubsection{去物理化的三定理链：Jensen 缺陷排斥半径、时间纤维端点压缩与 \texorpdfstring{$\mathbf{PW}$}{PW} 无连续毛发}\label{subsec:dephysicalized-horizon-timefiber-nohair}
-本段将“零点—视界—毛发”的解释性叙述严格压缩为三条体系内的数学命题。
-其输入仅来自两条已闭合的接口：其一是附录 \ref{app:unit-circle-phase-gate} 的圆盘化完成化
-\(F_{\zeta}\) 与 Jensen 缺陷 \(D_{\zeta}(\varrho)\)（\S\ref{subsec:unit-disk-jensen-defect}），并在端点 \(w\to-1\) 处给出显式的上半平面圆轨道表示；
-其二是本节的 unitary slice 审计口径与 \(\mathbf{PW}\) 类型闭包（\S\ref{subsec:xi-pw-type-safety-null}），它将可核对的连续参数轴压缩为相位 \(\theta\)，并以 \(\mathsf{NULL}\) 维护可寻址性。
+\subsubsection{去物理化的结构定理链：缺陷排斥、端点时间纤维与离散毛发的最小外置}\label{subsec:dephysicalized-horizon-timefiber-nohair}
+本段在本文既定的最小闭包（尺度/素数/相位三寄存器）与 unitary slice 类型化核验设定下，将“零点—视界—毛发”的解释性叙述压缩为一组可发表的纯数学命题。
+其语义核心是“有限数据证书 + 确定性离线验证器”，并以固定的 dyadic/有理网格与区间算术口径保证跨平台可重复性（参见 \S\ref{subsec:xi-completion-audit} 与 \S\ref{subsec:xi-pw-type-safety-null} 的可机核验约定）。
+本段所调用的接口均已在文内闭合：其一是附录 \ref{app:unit-circle-phase-gate} 的圆盘化完成化 \(F_{\zeta}\) 与 Jensen 缺陷 \(D_{\zeta}(\varrho)\)（\S\ref{subsec:unit-disk-jensen-defect}），并在端点 \(w\to-1\) 处给出显式的上半平面圆轨道表示；其二是 unitary slice 审计口径与 \(\mathbf{PW}\) 类型闭包（\S\ref{subsec:xi-pw-type-safety-null}），它将可核对的连续参数轴压缩为相位 \(\theta\) 并以 \(\mathsf{NULL}\) 维护可寻址性；其三是端点紧化与 Big-Witt/Dwork/Hankel 的离散证书接口（附录 \ref{app:unit-circle-phase-gate}、\ref{app:witt-bridge-package} 及 \S\ref{subsubsec:pom-collision-kernel-family}）。
 
 \begin{theorem}[缺陷诱导的排斥半径（视界审查的禁入律）]\label{thm:dephys-defect-repulsion-radius}
 令 \(F_{\zeta}\) 为附录 \ref{app:unit-circle-phase-gate} 的圆盘化完成化函数，\(D_{\zeta}(\varrho)\) 为 Jensen 缺陷（定义 \ref{def:app-jensen-defect}）。
@@ -62,9 +61,140 @@ y_{\pm}(\varrho)=\frac{1\pm\varrho}{1\mp\varrho},
 见定理 \ref{thm:xi-pw-no-continuous-hair}。证毕。
 \end{proof}
 
+\paragraph{端点吸引半群与“时间”定义：唯一 Koenigs 深度}
+时间纤维在本文中并非外加坐标，而是端点紧化后由伸缩半群强迫出现的一维深度账本。
+下述定理把这一点严格化为端点线性化的刚性与唯一性：任何与尺度伸缩兼容的可逆审计，其连续累积只能沿这一维 Koenigs 深度发生。
+
+\begin{theorem}[端点线性化的刚性：Koenigs 深度的唯一性]\label{thm:dephys-endpoint-koenigs-rigidity}
+令 \(\Phi=\{\phi_m\}_{m>0}\subset \mathrm{Aut}(\mathbb{D})\) 为一族 Möbius 自同构，满足 \(\phi_{mn}=\phi_m\circ\phi_n\) 且对所有 \(m>0\) 有 \(\phi_m(\pm 1)=\pm 1\)。
+设存在在 \(u=-1\) 的某个邻域内解析的坐标 \(h\) 满足 \(h(-1)=0\)、\(h'(-1)\neq 0\) 且
+\begin{equation}\label{eq:dephys-koenigs-functional-equation}
+h\bigl(\phi_m(u)\bigr)=\frac{1}{m}\,h(u)\qquad(\forall\,m>0).
+\end{equation}
+则在该邻域内存在常数 \(c\neq 0\) 使 \(h(u)=c\,\mathfrak{w}(u)\)，其中 \(\mathfrak{w}(u)=\frac{1+u}{1-u}\) 为端点半平面坐标（式 \eqref{eq:scale-linearization-halfplane-coordinate}）；并且对所有 \(m>0\) 与所有 \(u\in\mathbb{D}\) 有 \(\phi_m=\psi_m\)，其中 \(\psi_m\) 由式 \eqref{eq:scale-psi-m} 给出。
+因此端点深度（Busemann/Koenigs 深度）
+\[
+Y(u):=-\log\bigl|\mathfrak{w}(u)\bigr|
+\]
+满足严格平移律
+\[
+Y\!\bigl(\psi_m(u)\bigr)=Y(u)+\log m
+\]
+（即式 \eqref{eq:endpoint-busemann-addition-law}）。
+\end{theorem}
+
+\begin{proof}
+由 \eqref{eq:dephys-koenigs-functional-equation} 在 \(u=-1\) 处求导并用 \(h'(-1)\neq 0\) 得 \(\phi_m'(-1)=1/m\)。
+另一方面，端点坐标 \(\mathfrak{w}\) 将 \(\mathbb{D}\) 共轭到右半平面 \(\mathbb{H}_{\mathrm{R}}\)（式 \eqref{eq:scale-linearization-halfplane-coordinate}），并把 \(\phi_m\) 共轭为 \(\mathbb{H}_{\mathrm{R}}\) 的自同构且保持 \(0\) 与 \(\infty\) 不动；故存在 \(a_m>0\) 使
+\(
+\mathfrak{w}(\phi_m(u))=a_m\,\mathfrak{w}(u)
+\)，并由链式法则得 \(a_m=\phi_m'(-1)=1/m\)。
+于是 \(\mathfrak{w}(\phi_m(u))=\mathfrak{w}(u)/m\)，与命题 \ref{prop:scale-linearization-identity-multipliers} 的 \(\mathfrak{w}(\psi_m(u))=\mathfrak{w}(u)/m\) 一致；因 \(\mathfrak{w}\) 单射，得 \(\phi_m=\psi_m\)。
+再令 \(g(u):=\frac{h(u)}{\mathfrak{w}(u)}\)（在 \(u=-1\) 邻域内解析），由 \eqref{eq:dephys-koenigs-functional-equation} 与 \(\mathfrak{w}(\psi_m(u))=\mathfrak{w}(u)/m\) 得 \(g(\psi_m(u))=g(u)\)；
+取任意 \(m>1\)，迭代 \(\psi_m^{\circ n}(u)\to-1\)（端点吸引），由连续性得 \(g(u)=g(-1)\) 在邻域内恒定，从而 \(h=c\,\mathfrak{w}\)。
+最后的平移律即为式 \eqref{eq:endpoint-busemann-addition-law}。证毕。
+\end{proof}
+
+\paragraph{周期折叠的最小离散外置：绕数证书（winding certificate）}
+在 Dirichlet 参数化 \(z=\lambda^{-s}\) 中，虚向角变量天然折叠；若坚持用主值辐角 \(\mathrm{Arg}\) 作为可见角信息，则可逆化必然强迫外置一个至少可数的离散纤维。
+
+\begin{theorem}[Dirichlet 虚向折叠的最小可逆化：绕数证书的不可省略性]\label{thm:dephys-dirichlet-winding-minimal}
+固定 \(\lambda>1\)，令 \(s=\sigma+\mathrm{i}t\) 且 \(z=\lambda^{-s}\)（式 \eqref{eq:dirichlet-z-polar-decomposition}），并记 \(T_{\lambda}:=2\pi/\log\lambda\)。
+则对任意整数 \(k\in\ZZ\) 有
+\[
+z(\sigma,t+kT_{\lambda})=z(\sigma,t),
+\qquad\Longrightarrow\qquad
+\bigl(|z|,\mathrm{Arg}(z)\bigr)(\sigma,t+kT_{\lambda})=\bigl(|z|,\mathrm{Arg}(z)\bigr)(\sigma,t).
+\]
+因此对任意集合 \(S\)，若存在映射
+\[
+(\sigma,t)\longmapsto \bigl(|z|,\mathrm{Arg}(z),\eta(\sigma,t)\bigr)\in (0,1)\times(-\pi,\pi]\times S
+\]
+为单射，则存在单射 \(\iota:\ZZ\hookrightarrow S\)（即外置轴至少可数无穷）。
+此外，绕数证书 \(\kappa_{\lambda}(s)\in\ZZ\)（式 \eqref{eq:dirichlet-winding-certificate}）满足一致性约束
+\(
+t\log\lambda+\mathrm{Arg}(z)=2\pi\kappa_{\lambda}(s)\in 2\pi\ZZ
+\)
+（式 \eqref{eq:dirichlet-arg-consistency}），从而给出一条标准的可审计离散外置；与非周期相位轴 \(u_{\mathrm C}(t)\)（式 \eqref{eq:dirichlet-cayley-phase-axis}）合并即得到三纤维注入坐标 \(\mathcal{E}_{\lambda}\)（定义 \ref{def:dirichlet-trifiber-injection}，命题 \ref{prop:dirichlet-trifiber-injection-audit}）。
+\end{theorem}
+
+\begin{proof}
+固定任意 \(\sigma>0\) 与 \(t_0\in\RR\)。对每个 \(k\in\ZZ\)，点 \((\sigma,t_0+kT_{\lambda})\) 在 \((|z|,\mathrm{Arg}(z))\) 下具有相同像。
+若扩展映射为单射，则 \(k\mapsto \eta(\sigma,t_0+kT_{\lambda})\) 必为单射，故 \(S\) 含有一份可数无穷子集，等价于存在 \(\ZZ\hookrightarrow S\) 的单射。
+后半部分由定义 \eqref{eq:dirichlet-winding-certificate} 与命题 \ref{prop:dirichlet-trifiber-injection-audit} 直接给出。证毕。
+\end{proof}
+
+\paragraph{\texorpdfstring{$p$}{p}-典型差分塔与稳定残差谱：把“尺度塔”编译为可审计离散毛发}
+在 Big-Witt/necklace 口径下，Dwork 型同余把 \(p\)-幂 ghost 子序列的 Frobenius 兼容性严格对象化为一个逐级可审计的 primitive 差分塔；进一步对 \(\theta\)-导数施加 \(p\)-进滤波可读出稳定首位残差，从而得到一族无限离散指纹。
+
+\begin{theorem}[\texorpdfstring{$p$}{p}-典型可逆化：Dwork 同余 \texorpdfstring{$\Leftrightarrow$}{<->} primitive 差分塔]\label{thm:dephys-ptypical-primitive-tower}
+令 \(a_n(u)\in\ZZ[u]\) 为迹 ghost 序列，固定素数 \(p\) 并考虑 \(p\)-幂子序列 \(\{a_{p^k}(u)\}_{k\ge 0}\)。
+则下列条件等价：
+\begin{enumerate}
+  \item 对所有 \(k\ge 1\)，有 Dwork 型同余
+  \[
+  a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\pmod{p^k}\qquad\text{于}\ \ZZ[u]
+  \]
+  （推论 \ref{cor:witt-dwork-congruence}）；
+  \item 存在（且由公式唯一确定的）primitive 差分坐标
+  \[
+  p_{p^k}(u):=\frac{a_{p^k}(u)-a_{p^{k-1}}(u^p)}{p^k}\in\ZZ[u]\qquad(k\ge 1)
+  \]
+  （命题 \ref{prop:witt-ppower-primitive-coordinate}），并满足逐级分解
+  \(a_{p^k}(u)=a_{p^{k-1}}(u^p)+p^k p_{p^k}(u)\)；
+  \item \(\{a_{p^k}(u)\}\) 作为 Big-Witt ghost 的 \(p\)-幂子序列在 Adams/Frobenius 操作 \(u\mapsto u^p\) 下满足 \(p\)-进兼容性（注 \ref{rem:witt-ptypical-ghost}）。
+\end{enumerate}
+因此，\(\{p_{p^k}(u)\}_{k\ge 1}\) 给出一条完全内部、可逐级复核的“尺度塔差分指纹”：伸缩信息不以新的连续轴泄漏，而以 \(p^k\)-精度逐层外置为 primitive 坐标。
+\end{theorem}
+
+\begin{proof}
+\((1)\Leftrightarrow(2)\) 由推论 \ref{cor:witt-dwork-congruence} 与命题 \ref{prop:witt-ppower-primitive-coordinate} 直接等价改写得到；\((3)\) 为同一事实在 ghost/Witt 口径下的解释性重述（注 \ref{rem:witt-ptypical-ghost}）。证毕。
+\end{proof}
+
+\begin{theorem}[稳定导数残差谱：无限可审计离散指纹族]\label{thm:dephys-stable-residue-spectrum}
+在定理 \ref{thm:dephys-ptypical-primitive-tower} 的等价条件下，令 \(u=e^{\theta}\) 并定义 \(\theta\)-导数矩
+\[
+A_n^{(r)}:=\left.\frac{\dd^r}{\dd\theta^r}a_n(e^\theta)\right|_{\theta=0}\in\ZZ\qquad(r\ge 0).
+\]
+则对每个素数 \(p\) 与每个阶 \(r\ge 1\)，存在稳定不变量 \(\alpha_{p,r}\in\mathbb{F}_p\)，其由任意层级 \(k>r\) 的归一化残差
+\[
+\alpha_{p,r}:=\bigl[p^{-(k-r)}A_{p^k}^{(r)}\bigr]\bmod p
+\]
+唯一确定且与 \(k\) 无关（推论 \ref{cor:witt-theta-stable-residue}）。
+特别地，当 \(p=2\) 时得到一族稳定奇偶指纹 \(\varepsilon_r\in\{0,1\}\)（推论 \ref{cor:witt-theta-binary-fingerprint}）。
+该可数无穷不变量族提供一条与连续相位轴正交的“相位毛发”模型：它们可被逐阶滤波稳定读出，并可作为实现层的可审计离散指纹输入。
+\end{theorem}
+
+\begin{proof}
+分别由推论 \ref{cor:witt-theta-stable-residue} 与 \ref{cor:witt-theta-binary-fingerprint} 直接给出。证毕。
+\end{proof}
+
+\paragraph{有限可逆审计：Hankel-正规形与最小偏移证书}
+当对象被提升为有限样本可复核的 realization/transfer 口径时，“新增自由度必须外置”为一个纯代数的下界：最小实现维数由 Hankel 秩锁定，而窗口偏移 \(\ell_q\) 是不可省略的整数证书。
+
+\begin{theorem}[Hankel-正规形的有限判等：\texorpdfstring{$2d$}{2d} 点锁定全序列与全部谱指纹]\label{thm:dephys-hankel-finite-audit}
+固定 \(q\ge 2\)，令 \(a_n:=S_q(n+2)\) 并记其 Hankel 秩为 \(d\)。
+令 \(\ell_q\) 为使 Hankel 块 \(H_0^{(\ell)}=(a_{\ell+i+j})_{0\le i,j\le d-1}\) 可逆的最小偏移（定义 \ref{def:pom-hankel-normal-form}），并定义
+\(
+A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}
+\)
+及相应 Hankel-正规形 \(\mathrm{HANKELNF}_q\)。
+则：
+\begin{enumerate}
+  \item \(\mathrm{HANKELNF}_q\) 仅由 \(2d\) 个采样点 \(S_q(\ell_q+2),\dots,S_q(\ell_q+2d+1)\) 确定，并由此唯一确定递推、特征多项式、Perron 根等全部谱指纹；
+  \item 任意两条实现若在上述 \(2d\) 点一致，则共享同一 \(\mathrm{HANKELNF}_q\)，从而对所有 \(m\ge 2\) 完全一致（命题 \ref{prop:pom-moment-finite-sampling-decidable}）。
+\end{enumerate}
+因此窗口偏移 \(\ell_q\) 与相应 Hankel 块即构成“信息不泄漏”的最强有限证书：在固定类型（固定 \(q\)）下，动态指纹被一个有限窗口完全锁定。
+\end{theorem}
+
+\begin{proof}
+由定义 \ref{def:pom-hankel-normal-form} 与命题 \ref{prop:pom-moment-finite-sampling-decidable} 直接推出。证毕。
+\end{proof}
+
 \paragraph{闭合链：缺陷证书—端点压缩—类型拒绝}
 定理 \ref{thm:dephys-defect-repulsion-radius} 把“盘内零点是否存在”压缩为单参数标量缺陷 \(D_{\zeta}(\varrho)\) 的可审计半径证书；
 定理 \ref{thm:dephys-timefiber-two-ended} 表明 \(\varrho\uparrow 1\) 的边界层必然把高高度信息压缩到端点邻域的窗口贡献；
 定理 \ref{thm:dephys-pw-nohair} 则在 \(\mathbf{PW}\) 闭包与 unitary slice 可见域下排除了与相位并列的额外连续自由度。
-三者共同给出一个体系内闭合的结论：任何需要径向通道解释的偏离，若不经由 residue/逆极限轴的非局部外置，就必在可见审计中触发 \(\mathsf{NULL}\) 并被协议拒绝；因此，零点审计的可见证书只能沿“缺陷—端点—相位”链路出现，而不会被额外连续坐标寄存器所稀释。
+在此基础上，定理 \ref{thm:dephys-endpoint-koenigs-rigidity} 给出“时间”作为端点吸引半群的唯一 Koenigs 深度（不可外加连续正交轴），定理 \ref{thm:dephys-dirichlet-winding-minimal} 进一步表明虚向折叠的可逆化必然强迫外置可数离散证书；而定理 \ref{thm:dephys-ptypical-primitive-tower}--\ref{thm:dephys-hankel-finite-audit} 则把该离散外置具体化为可审计毛发族：绕数证书 \(\kappa_{\lambda}\)、\((p)\)-典型 primitive 差分塔 \(\{p_{p^k}\}\)、稳定残差谱 \(\{\alpha_{p,r}\}\)（以及 \(p=2\) 的 \(\{\varepsilon_r\}\)）、与 Hankel 偏移证书 \(\ell_q\)（及其正规形 \(\mathrm{HANKELNF}_q\)）。
+因此得到一个体系内闭合的可证伪重述：任何需要径向通道解释的偏离，若不经由 residue/逆极限轴或上述离散证书的非局部外置，就必在可见审计中触发 \(\mathsf{NULL}\) 并被协议拒绝；相反，一切可逆化的新增自由度只能以离散毛发进入证书域，而不可能表现为与相位解耦的额外连续坐标寄存器。
 \endinput
