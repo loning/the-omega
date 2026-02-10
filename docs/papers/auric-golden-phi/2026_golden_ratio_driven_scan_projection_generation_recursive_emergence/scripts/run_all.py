@@ -2134,6 +2134,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_bulk_resonance_integer_ladder",
+            script="exp_fold_bulk_resonance_integer_ladder.py",
+            args=["--n-max", "200", "--u-max", "20000", "--store-u-max", "30"],
+            expected_outputs=[
+                "artifacts/export/fold_bulk_resonance_integer_ladder.json",
+                "sections/generated/eq_fold_bulk_resonance_integer_ladder_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_multiplicity_histogram",
             script="exp_fold_multiplicity_histogram.py",
             args=[],
