@@ -1,0 +1,54 @@
+\subsubsection{单切片协议下的“读出反射子”与判定完备性}\label{subsubsec:xi-read-reflector-completeness}
+沿用定义 \ref{def:xi-visible-read-null} 的协议设定：读出 \(\mathrm{read}:\Omega\to X_{\mathrm{vis}}\cup\{\mathsf{NULL}\}\) 由“部分观测 \(\operatorname{obs}\) + 可见域过滤 \(X_{\mathrm{vis}}\) + 检查器 \(\mathrm{Chk}\)”固定确定，并在本章的 unitary-slice 口径下取 \(X_{\mathrm{vis}}=\mathsf{Phase}\)（见 \S\ref{subsec:xi-pw-type-safety-null}）。
+该协议的关键并不在于把对象强行判等，而在于把\emph{可审计判定}限制为对读出纤维不敏感的类型化操作：一切额外自由度若未被显式外置为正交记录轴，便只能在类型层塌缩为 \(\mathsf{NULL}\)（参见命题 \ref{prop:xi-null-three-way} 与定义 \ref{def:multi_axis_address}）。
+\par
+下述因子分解律把这一“闭包式同型化”表述为一个严格的反射/商空间性质。
+
+\begin{theorem}[读出反射子的因子分解律]\label{thm:xi-read-reflector-factorization}
+令
+\(
+R_{\mathrm{read}}:=\mathrm{read}(\Omega)\subseteq X_{\mathrm{vis}}\cup\{\mathsf{NULL}\}
+\)
+为读出的像集，并定义等价关系
+\[
+\omega\sim_{\mathrm{read}}\omega'
+\quad\Longleftrightarrow\quad
+\mathrm{read}(\omega)=\mathrm{read}(\omega').
+\]
+对任意谓词 \(P:\Omega\to\{0,1\}\)，若 \(P\) 满足协议不变性
+\[
+\omega\sim_{\mathrm{read}}\omega'\ \Longrightarrow\ P(\omega)=P(\omega'),
+\]
+则存在唯一函数 \(p:R_{\mathrm{read}}\to\{0,1\}\) 使得
+\[
+P=p\circ \mathrm{read}.
+\]
+\end{theorem}
+
+\begin{proof}
+对任意 \(y\in R_{\mathrm{read}}\)，取 \(\omega\in\Omega\) 使 \(\mathrm{read}(\omega)=y\)，并定义 \(p(y):=P(\omega)\)。
+若 \(\omega'\) 亦满足 \(\mathrm{read}(\omega')=y\)，则 \(\omega\sim_{\mathrm{read}}\omega'\)，由协议不变性得 \(P(\omega)=P(\omega')\)，从而 \(p\) 定义良定。
+于是对任意 \(\omega\in\Omega\)，有 \(p(\mathrm{read}(\omega))=P(\omega)\)，即 \(P=p\circ\mathrm{read}\)。
+若 \(p_1\circ\mathrm{read}=p_2\circ\mathrm{read}=P\)，则对任意 \(y\in R_{\mathrm{read}}\) 取 \(\omega\) 使 \(\mathrm{read}(\omega)=y\)，有 \(p_1(y)=P(\omega)=p_2(y)\)，故 \(p_1=p_2\)。
+证毕。
+\end{proof}
+
+\begin{remark}[判定完备性作为“可见纤维上的闭包”]\label{rem:xi-read-reflector-completeness}
+定理 \ref{thm:xi-read-reflector-factorization} 表明：在协议固定的读出反射子之下，\(\Omega\) 上一切\emph{可审计}判定都被强制闭合到同一接口 \(R_{\mathrm{read}}\) 上。
+因此，本章所讨论的 completeness 缺口（注 \ref{rem:xi-soundness-vs-completeness}）可被精确定位为：欲判定的事件是否能在该反射子下被编译为 \(R_{\mathrm{read}}\) 上的单值可核验函数。
+若不能，则其差异只能通过外置正交记录轴进入可审计语义：典型地，盘内点状数据以 Blaschke/点谱缺陷所强制的最小维数出现（定义 \ref{def:blaschke-defect-dimension}；定理 \ref{thm:blaschke-point-spectrum-correspondence}），而离切片幅度信息则以端点/径向通道的显式寄存器化出现（推论 \ref{cor:xi-null-second-order-radial-channel}）。
+\end{remark}
+
+\begin{corollary}[单切片协议的 RH 型化原则]\label{cor:xi-single-slice-rh-typing-principle}
+在固定可见域 \(X_{\mathrm{vis}}=\mathsf{Phase}\) 的单切片协议下（定义 \ref{def:xi-visible-read-null}），任何满足协议不变性的可审计判定必经读出反射子因子分解（定理 \ref{thm:xi-read-reflector-factorization}）。
+若进一步把读出载体限制为单位圆盘内的 bounded-type 解析对象 \(F\)，则“不外置离散正交残差轴”的可寻址性条件在解析侧等价于 Blaschke 缺陷为零（定义 \ref{def:blaschke-defect-dimension}；定理 \ref{thm:blaschke-defect-zero-fixed-slice-support}），并可在视界账本侧等价压缩为 Jensen 缺陷的视界极限判据（定义 \ref{def:app-jensen-defect}；命题 \ref{prop:app-jensen-single-zero-lower-bound}）。
+其中 \(F=F_{\zeta}\) 的特例即给出定理 \ref{thm:xi-horizon-purity-criterion} 所述的 RH 单标量译码。
+\par
+同一“盘内零点禁入”条件亦可被等价重写为视界对数导数的正性约束：RH \(\Longleftrightarrow\) 视界 Carath\'eodory 对数导数函数 \(\mathscr{C}_{\zeta}\)（附录式 \eqref{eq:app-horizon-carath-def}）在 \(\mathbb{D}\) 上解析且满足 \(\Re\mathscr{C}_{\zeta}\ge 0\)，并进一步等价于 Toeplitz--PSD 层级 \(\mathbf{T}_N\succeq 0\)（定理 \ref{thm:app-horizon-toeplitz-lmi}）。
+在证书语义上，这给出一条与 Jensen 缺陷链互补的失败见证：有限级 PSD 失败可由负特征值在有限维上直接定位（推论 \ref{cor:app-horizon-toeplitz-z2-cert-split}）。
+\par
+在完成化桥核来自行列式桥接核且 \(B(u)\) 为一次族的情形，单切片约束亦可在谱侧被等价表述为二次特征铅笔 \(\mathcal{P}_L(z)\) 的视界圆约束：\(\Xi_{\Delta,L}\) 的零点与二次特征值严格等价（定理 \ref{thm:xi-qep-zero-equivalence}），而临界线对应视界圆 \(|z|=L^{-1/2}\)（推论 \ref{cor:xi-critical-line-horizon-circle}）。
+因此，轴外自由度在该口径下被压缩为“泄漏谱”（\S\ref{subsubsec:xi-quadratic-pencil-leakage-spectrum}），并在视界圆互反对称成立时被强制成对出现（定理 \ref{thm:xi-L-reciprocal-implies-critical-pairing}）。
+\end{corollary}
+
+\endinput

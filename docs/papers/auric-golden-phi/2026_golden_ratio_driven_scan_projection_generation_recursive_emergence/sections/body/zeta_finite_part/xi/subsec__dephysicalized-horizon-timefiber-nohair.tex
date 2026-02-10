@@ -18,6 +18,42 @@ r_{\ast}(\varrho):=\varrho\exp\!\bigl(-D_{\zeta}(\varrho)\bigr)\in(0,\varrho].
 最后的 RH 证书由推论 \ref{cor:app-jensen-repulsion-radius-to-one} 推出。证毕。
 \end{proof}
 
+\begin{proposition}[对数半径导数律：缺陷的导数即盘内零点计数]\label{prop:dephys-jensen-defect-log-derivative}
+令 \(N_{F_{\zeta}}(\varrho)\) 为 \(F_{\zeta}\) 在 \(|w|<\varrho\) 内的零点计数（按重数计）：
+\[
+N_{F_{\zeta}}(\varrho)
+:=\#\bigl\{a:\ F_{\zeta}(a)=0,\ |a|<\varrho\bigr\}.
+\]
+则对几乎处处的 \(\varrho\in(0,1)\) 有
+\[
+\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)=N_{F_{\zeta}}(\varrho),
+\qquad
+D_{\zeta}'(\varrho)=\frac{1}{\varrho}\,N_{F_{\zeta}}(\varrho).
+\]
+并且 \(D_{\zeta}\) 在 \((0,1)\) 上连续、非减，且若对某 \(\varrho_0\in(0,1)\) 有 \(D_{\zeta}(\varrho_0)=0\)，则对所有 \(0<\varrho\le \varrho_0\) 皆有 \(D_{\zeta}(\varrho)=0\)。
+\end{proposition}
+
+\begin{proof}
+见附录命题 \ref{prop:app-jensen-defect-log-derivative}。
+\end{proof}
+
+\begin{corollary}[排斥半径的零点计数驱动律]\label{cor:dephys-repulsion-radius-zero-count-driving}
+在命题 \ref{prop:dephys-jensen-defect-log-derivative} 的记号下，令 \(r_{\ast}(\varrho)=\varrho e^{-D_{\zeta}(\varrho)}\) 如定理 \ref{thm:dephys-defect-repulsion-radius}。
+则对几乎处处的 \(\varrho\in(0,1)\) 有
+\[
+\frac{\dd}{\dd(\log\varrho)}\log r_{\ast}(\varrho)
+=1-\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)
+=1-N_{F_{\zeta}}(\varrho).
+\]
+因此，一旦盘内出现零点（即对某 \(\varrho\) 有 \(N_{F_{\zeta}}(\varrho)\ge 1\)），则在其后的任意半径层上 \(\log r_{\ast}\) 的增长率不再为正；
+特别地，若存在盘内零点 \(a\) 满足 \(|a|<1\)，则对所有 \(\varrho\in(|a|,1)\) 有 \(N_{F_{\zeta}}(\varrho)\ge 1\)，从而 \(r_{\ast}(\varrho)\) 不能随 \(\varrho\uparrow 1\) 严格增长到 \(1\)。
+\end{corollary}
+
+\begin{proof}
+由 \(r_{\ast}(\varrho)=\varrho e^{-D_{\zeta}(\varrho)}\) 得 \(\log r_{\ast}=\log\varrho-D_{\zeta}\)，对 \(\log\varrho\) 求导并代入命题 \ref{prop:dephys-jensen-defect-log-derivative} 即得。
+最后一条断言由零点计数函数的单调性 \(N_{F_{\zeta}}(\varrho)\ge 1\)（当 \(\varrho>|a|\)）与上述导数公式直接推出。证毕。
+\end{proof}
+
 \begin{theorem}[时间纤维双端触及与端点压缩]\label{thm:dephys-timefiber-two-ended}
 对 \(0<\varrho<1\)，令 \(t(\varrho,\theta):=\mathcal{C}^{-1}(\varrho e^{i\theta})\in\mathbb{H}\)（命题 \ref{prop:app-jensen-defect-upperhalf-circle-average}），则 Jensen 缺陷可写为上半平面圆轨道平均
 \[
@@ -301,12 +337,26 @@ A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}
 \begin{theorem}[可审计闭环的 RH 证书工程：解析—演算—算术/谱三重证书]\label{thm:dephys-rh-certificate-audit-loop}
 在本文固定的“圆盘完成化 \(F_\zeta\) + unitary slice 类型化核验 + 有界切片语义 \(\mathsf{Sem}\)”协议下，RH 的核验任务可被分解为三类互相正交、且可独立离线复核的证书：
 \begin{enumerate}
-  \item \textbf{解析证书（缺陷/排斥半径链）}：
-  构造一列 \(\varrho_n\uparrow 1\) 并给出可核验上界 \(D_\zeta(\varrho_n)\le \delta_n\)（\(\delta_n\downarrow 0\)），或等价地证书化
-  \(
-  r_{\ast}(\varrho_n)=\varrho_n e^{-D_\zeta(\varrho_n)}\uparrow 1
-  \)。
-  由定理 \ref{thm:dephys-defect-repulsion-radius} 即推出 RH。
+  \item \textbf{解析证书（缺陷链与正性—矩层级链）}：
+  在圆盘完成化接口下，“盘内零点禁入（RH）”可被压缩为两条等价但互补的可数证书链：
+  \begin{itemize}
+    \item \textbf{缺陷/排斥半径链：}
+    构造一列 \(\varrho_n\uparrow 1\) 并给出可核验上界 \(D_\zeta(\varrho_n)\le \delta_n\)（\(\delta_n\downarrow 0\)），或等价地证书化
+    \(
+    r_{\ast}(\varrho_n)=\varrho_n e^{-D_\zeta(\varrho_n)}\uparrow 1
+    \)；
+    其零点事件在半径方向的“折角/跳变”由对数半径导数律 \( \frac{\dd}{\dd(\log\varrho)}D_\zeta(\varrho)=N_{F_\zeta}(\varrho) \) 精确承载（命题 \ref{prop:dephys-jensen-defect-log-derivative}），并由排斥半径驱动律 \( \frac{\dd}{\dd(\log\varrho)}\log r_\ast(\varrho)=1-N_{F_\zeta}(\varrho) \) 给出可定位的停滞见证（推论 \ref{cor:dephys-repulsion-radius-zero-count-driving}）。
+    \item \textbf{正性—Toeplitz--PSD 层级链：}
+    令视界 Carath\'eodory 对数导数函数 \(\mathscr{C}_\zeta\) 如附录 \eqref{eq:app-horizon-carath-def} 定义。
+    则 RH 等价于 \(\mathscr{C}_\zeta\) 属于 Carath\'eodory 类，并等价于 Toeplitz--PSD 层级
+    \(
+    \mathbf{T}_N=(c_{j-k})_{0\le j,k\le N}\succeq 0
+    \)
+    对所有 \(N\ge 0\) 成立（定理 \ref{thm:app-horizon-toeplitz-lmi}）。
+    每一级失败都给出有限维否证器（负特征值），并在实结构下可进一步定位到最小 \(N_\star\) 与扇区符号 \(\epsilon\in\{+,-\}\)（推论 \ref{cor:app-horizon-toeplitz-z2-cert-split}）。
+    该层级在任一固定 \(N\) 上仅依赖 \(\Xi_\zeta\) 在 \(s=-\tfrac12\) 的有限阶局部导数数据（命题 \ref{prop:app-horizon-coeff-local}），并在 \(|w|<1/3\) 内可借欧拉积补丁把算术项置入一致绝对收敛域以逐项审计（定理 \ref{thm:app-horizon-euler-patch}）。
+  \end{itemize}
+  由此，两条链在数学上等价，但失败见证互补：前者以缺陷下界/排斥半径停滞为见证，后者以有限维负特征值为见证。
   \item \textbf{演算证书（实现中立性）}：
   在有界切片 \(\mathbf{PW}^{\ast}_{\le}\) 上，以保守语义函子 \(\mathsf{Sem}\)（定义 \ref{def:pom-sem-functor}）固化实现等价。
   当缺陷上界链以 \(\mathsf{Sem}\) 的签名/谱输出为公共接口给出时，定理 \ref{thm:pom-sem-conservative} 保证该链仅依赖自然同构类，从而与实现选择无关（详见定理 \ref{thm:dephys-impl-independent-defect-certificate}）。
@@ -315,11 +365,11 @@ A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}
   而 \(p\)-进同余链与端点刚性指纹（命题 \ref{prop:dephys-padic-guardrails-endpoint-rigidity}）提供独立的整数层一致性护栏。
 \end{enumerate}
 其结果是：在该协议口径下，任何“信息泄漏/实现漂移/端点异常”若要与可见核验结论共存，必须表现为至少一类证书的失败；
-从而 RH 的困难被严格集中为“如何构造可审计的缺陷上界链”这一单一数学任务，而非实现或数据管线选择问题。
+从而 RH 的困难可被等价集中为两类可数化的解析任务之一：构造可审计的缺陷上界链（或排斥半径趋一链），或证书化视界对数导数的正性（等价地：证明 Toeplitz--PSD 层级全体成立）；其余证书仅用于隔离实现自由度与整数层一致性护栏，使核验难点不被实现细节稀释。
 \end{theorem}
 
 \begin{proof}
-解析证书的 soundness 为定理 \ref{thm:dephys-defect-repulsion-radius} 的直接推论；
+解析证书的 soundness：缺陷/排斥半径链由定理 \ref{thm:dephys-defect-repulsion-radius} 给出；而正性—Toeplitz--PSD 层级链由定理 \ref{thm:app-horizon-toeplitz-lmi}（等价于推论 \ref{cor:app-horizon-carath-rh} 与定理 \ref{thm:app-horizon-weyl-herglotz}）给出。
 演算证书由定义 \ref{def:pom-sem-functor} 与定理 \ref{thm:pom-sem-conservative} 给出，并在定理 \ref{thm:dephys-impl-independent-defect-certificate} 中形式化；
 算术/谱证书分别由定理 \ref{thm:dephys-hankel-finite-audit} 与命题 \ref{prop:dephys-padic-guardrails-endpoint-rigidity} 给出。
 三类证书的正交性来自其约束对象分别落在缺陷标量、语义自然同构类与整数/有限窗口指纹三个互不混淆的输出域上（参见 \S\ref{subsec:xi-certificate-coherence-orthogonal-axis-capacity} 的地址三轴口径）。证毕。
