@@ -53,7 +53,7 @@ from common_phi_fold import Progress
 
 
 def poly_F(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
-    # From appendix: sections/90_appendix_sync_kernel_weighted.tex, Eq. F(λ,u)=0.
+    # From appendix: `sections/appendix/sync_kernel/weighted/cor__sync-kernel-weighted-unit-root-finite.tex`, Eq. F(λ,u)=0 (app:pressure-analytic).
     return (
         lam**6
         - (1 + u) * lam**5

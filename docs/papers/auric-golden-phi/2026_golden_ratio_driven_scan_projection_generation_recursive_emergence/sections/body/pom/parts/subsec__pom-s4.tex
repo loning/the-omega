@@ -1,0 +1,256 @@
+\subsubsection{四阶碰撞矩与 \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--4 投影熵率}\label{subsec:pom-s4}
+\begin{definition}[四阶折叠碰撞矩]\label{def:pom-s4}
+定义四阶碰撞和
+$$
+S_4(m):=\sum_{x\in X_m} d_m(x)^4.
+$$
+等价地，从 \(\Omega_m\) 上均匀独立抽取四条窗口 \(\omega_1,\omega_2,\omega_3,\omega_4\)，则
+$$
+\mathbb{P}\bigl[\Fold_m(\omega_1)=\Fold_m(\omega_2)=\Fold_m(\omega_3)=\Fold_m(\omega_4)\bigr]=\frac{S_4(m)}{16^m}.
+$$
+\end{definition}
+
+\begin{proposition}[四阶碰撞核的五态非负整数 realization]\label{prop:pom-s4-recurrence}
+存在一个五态的非负整数矩阵
+$$
+A_4:=
+\begin{pmatrix}
+0&1&0&0&0\\
+0&0&7&0&1\\
+0&1&2&0&0\\
+1&0&1&0&0\\
+0&0&0&1&0
+\end{pmatrix},
+$$
+以及读出向量
+$$
+u_4:=(9,404,1613,25,114)^{\mathsf T},\qquad
+v_4:=(1,0,0,0,0)^{\mathsf T},
+$$
+使得对一切 \(m\ge 2\),
+$$
+S_4(m)=2\,u_4^{\mathsf T}A_4^{\,m-2}v_4.
+$$
+从而 \(S_4(m)\) 满足精确五阶递推：对一切 \(m\ge 13\),
+$$
+S_4(m)=2S_4(m-1)+7S_4(m-2)+2S_4(m-4)-2S_4(m-5).
+$$
+\end{proposition}
+\begin{proof}
+由表 \ref{tab:fold_collision_moment_recursions} 可审计地核验 \(S_4(m)\) 满足阶数为 \(5\) 的整数递推（脚本 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}）。另一方面，上述 \(A_4\) 与 \((u_4,v_4)\) 给出一个完全显式的五态非负整数 realization；其与递推以及小 \(m\) 的枚举值一致性可由脚本 \texttt{scripts/exp\_fold\_collision\_kernel\_A4\_verify.py} 逐项核验。证毕。
+\end{proof}
+
+\begin{corollary}[四阶碰撞指数与 \texorpdfstring{$h_4$}{h4}]\label{cor:pom-s4-asymptotic}
+设 \(r_4:=\rho(A_4)\) 为多项式
+$$
+x^5-2x^4-7x^3-2x+2=0
+$$
+的最大实根（\(r_4\approx 3.846059041178\)）。则
+$$
+S_4(m)=\Theta(r_4^m),
+\qquad
+h_4:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}\pi_m(x)^4\Bigr)
+:=\log\!\left(\frac{16}{r_4}\right).
+$$
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-s4-recurrence}，生成函数分母为 \(\det(I-zA_4)\)，其最小模零点为 \(z_\star=1/\rho(A_4)\)，从而 \(S_4(m)=\Theta(r_4^m)\)。并且
+$$
+\sum_{x\in X_m}\pi_m(x)^4=\sum_x\frac{d_m(x)^4}{16^m}=\frac{S_4(m)}{16^m},
+$$
+代入渐近即得 \(h_4=\log(16/r_4)\)。证毕。
+\end{proof}
+
+
+\begin{remark}[四阶碰撞核的贴线 RH 破缺：谱分解数值证书（\texorpdfstring{$A_4$}{A4}）]\label{rem:pom-collision-rh-break-a4-spectrum}
+记 \(r_4=\rho(A_4)\approx 3.846059041178\)。
+直接求谱（等价地，对 \(\det(\lambda I-A_4)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2\) 求根）得到非 Perron 特征值近似为
+\[
+\mu_2\approx -1.963592213449,\qquad
+\mu_3\approx 0.503913309522,\qquad
+\mu_{4,5}\approx -0.193190068626\pm 0.698726683936\,\mathrm{i}.
+\]
+因此次谱半径
+\[
+\Lambda_4:=\max_{\mu\in\sigma(A_4)\setminus\{r_4\}}|\mu|
+:=|\mu_2|
+\approx 1.963592213449,
+\]
+而
+\(
+\sqrt{r_4}\approx 1.961137180612
+\)，从而核版 RH 的平方根界（定义 \ref{def:kernel-rh} 的同型条件）在四阶碰撞核上出现严格越线：
+\[
+\Lambda_4>\sqrt{r_4},\qquad
+R_4:=\frac{\Lambda_4}{\sqrt{r_4}}\approx 1.001251841463.
+\]
+用“极点实部指数”口径可写为
+\[
+\beta_4:=\frac{\log \Lambda_4}{\log r_4}\approx 0.500928740205=\frac12+9.2874\times 10^{-4},
+\]
+并可引入贴线偏移量
+\[
+\delta_4:=\log\!\left(\frac{\Lambda_4^2}{r_4}\right)=2\log R_4\approx 0.002502117125.
+\]
+ 该超出由一个稳定的负实模态主导（\(\mu_2<0\)），从而对应一条不可消去的反相振荡慢模。
+\end{remark}
+
+\begin{remark}[四阶碰撞核的单参数 RH 临界点：边权阈值 \texorpdfstring{$t_\star$}{t*}（resultant 消元，可审计）]\label{rem:pom-collision-rh-break-a4-threshold}
+把 \(A_4\) 中唯一的多重边权 \(7\) 视为连续参数 \(t>0\)，定义一参数族
+\[
+A_4(t):=
+\begin{pmatrix}
+0&1&0&0&0\\
+0&0&t&0&1\\
+0&1&2&0&0\\
+1&0&1&0&0\\
+0&0&0&1&0
+\end{pmatrix},
+\qquad
+p_t(x):=\det(xI-A_4(t))=x^5-2x^4-tx^3-2x+2.
+\]
+记 \(r(t)=\rho(A_4(t))\)、\(\Lambda(t)=\max_{\mu\in\mathrm{spec}(A_4(t))\setminus\{r(t)\}}|\mu|\)，并令 Newman 型偏移
+\(
+\delta(t):=\log(\Lambda(t)^2/r(t))
+\)
+（与注 \ref{rem:pom-collision-rh-break-a4} 的口径一致）。
+在该族上，\(\delta(t)\) 的达界点可由\textbf{负实根通道}刻画：临界点等价于存在 \(y<0\) 使得 \(p_t(y)=p_t(y^2)=0\)，从而（排除退化根 \(y=\pm 1\)）满足
+\[
+y^8-2y^6+2y^5-2y^4+2y^3-2=0.
+\]
+令 \(z:=-y>0\)，则等价地
+\(
+z^8-2z^6-2z^5-2z^4-2z^3-2=0
+\)，并且由 \(p_t(y)=0\) 可显式解出
+\[
+t=\frac{y^5-2y^4-2y+2}{y^3}
+:=z^2+2z-\frac{2}{z^2}-\frac{2}{z^3}.
+\]
+进一步对 \(y\) 作结式消元可得 \(t\) 的 8 次整系数证书 \(P_4(t)=0\)；其唯一正实根记为 \(t_\star\)。
+数值核验表明：当 \(t<t_\star\) 时 \(\Lambda(t)<\sqrt{r(t)}\)（严格 kernel RH），当 \(t=t_\star\) 时恰达界（RH-sharp，且 \(\mu_\star=-\sqrt{r_\star}\)），而当 \(t>t_\star\) 时出现 \(\Lambda(t)>\sqrt{r(t)}\) 的越线。
+ 因此原整数核 \(A_4=A_4(7)\) 位于临界右侧且仅有临界附近的超出 \(7-t_\star\ll 1\)，从而解释了 \(R_4-1\) 的 \(10^{-3}\) 量级。
+\end{remark}
+\input{sections/generated/eq_collision_kernel_A4_edge_weight_threshold}
+
+
+\begin{remark}[四阶碰撞核的 near-RH 破缺（\texorpdfstring{$A_4$}{A4}）]\label{rem:pom-collision-rh-break-a4}
+记 \(r_4=\rho(A_4)\)，并令次谱半径
+\[
+\Lambda_4:=\max_{\mu\in\mathrm{spec}(A_4)\setminus\{r_4\}}|\mu|.
+\]
+ 则四阶碰撞核已出现\textbf{仅有轻微}的核版 RH 超出：\(\Lambda_4>\sqrt{r_4}\)（见式 \ref{eq:collision_kernel_A4_rh_breaking}），其对应的 \(s\)-平面非平凡极点列实部指数
+\(
+\beta_4=\log\Lambda_4/\log r_4
+\)
+ 严格大于 \(1/2\)，但仅为临界附近的 \(10^{-3}\) 量级超出。
+\par
+为统一刻画这一“Newman 型偏移”，可对任意有限核 \(A\) 定义
+\[
+\delta(A):=\log\!\left(\frac{\Lambda(A)^2}{\rho(A)}\right),
+\qquad
+\Lambda(A):=\max_{\mu\in\mathrm{spec}(A)\setminus\{\rho(A)\}}|\mu|.
+\]
+则核版 RH 等价于 \(\delta(A)\le 0\)。在本例中 \(\delta(A_4)>0\) 但数值极小（式 \ref{eq:collision_kernel_A4_rh_breaking}）。
+\par
+结合注 \ref{rem:pom-collision-rh-margin} 与注 \ref{rem:pom-collision-rh-margin-a3}（\(q=2,3\) 的严格裕量），可见 \(q=4\) 是已构造范围内的最小破缺阶。
+更一般地，对已核验的高阶递推（表 \ref{tab:fold_collision_moment_recursions}），直接对特征多项式做根扫描即可得到
+\(\Lambda_q/\sqrt{r_q}\) 与 \(\beta_q\) 随 \(q\) 的快速劣化：从 \(q=4\) 起跨过临界线，且 \(q\ge 5\) 迅速增强（表 \ref{tab:fold_collision_kernel_rh_scan_q2_8}）。
+此外，在 \(q\le 8\) 的扫描中，达成 \(\Lambda_q\) 的最大非 Perron 根在数值上始终为负实根（反相模态），因此越线首先由实轴模态触发。
+\par
+\textbf{可检验预测。} 由于 \(q=4\) 已处于 near-RH 贴线且主导次模态为负实根，预期在更高阶 \(q\) 的 moment-kernel/递推中，
+（i）递推系数尾块更接近交替边界型（例如 \(\pm 2^k\) 量级的饱和模式）；
+（ii）Hankel 证书中的素因子指数（尤其 2-进与 5-进）更早出现高估值。
+该预测可直接通过 \(A_5\) 及以上的递推系数与 Hankel 证书扫描核验。
+\end{remark}
+
+\input{sections/generated/eq_collision_kernel_A4_rh_breaking}
+\input{sections/generated/tab_fold_collision_kernel_rh_scan_q2_8}
+
+
+\begin{definition}[四阶碰撞核的 \texorpdfstring{$\zeta$}{zeta} 与有限部常数]\label{def:pom-collision-zeta-a4}
+对五态核 \(A_4\) 定义
+$$
+\zeta_{A_4}(z):=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(A_4^n)}{n}z^n\right)
+::=\frac{1}{\det(I-zA_4)}.
+$$
+相应的 primitive 轨道数 \(p_n(A_4)\)、以及 Abel/Mertens 有限部常数 \(\log\mathfrak{M}(A_4)\) 与 \(\mathsf{M}(A_4)=\gamma+\log\mathfrak{M}(A_4)\) 可按第 \ref{sec:zeta-finite-part} 节的通用接口抽取；其可复现输出见表 \ref{tab:collision_kernel_A4_primitive} 与 \ref{tab:collision_kernel_A4_finite_part}（脚本 \texttt{scripts/exp\_collision\_kernel\_A4\_primitive.py} 与 \texttt{scripts/exp\_collision\_kernel\_A4\_finite\_part.py}）。
+\end{definition}
+
+\input{sections/generated/tab_collision_kernel_A4_primitive}
+\input{sections/generated/tab_collision_kernel_A4_finite_part}
+
+\par
+\medskip\noindent\textbf{审计结论（主极点留数常数 \(C\) 的导数公式与代数证书：\(A_2,A_3,A_4\)）}
+令 \(A\) 为有限状态碰撞核（SFT 邻接矩阵），其特征多项式取首项为 \(1\) 的
+\[
+\chi_A(\lambda):=\det(\lambda I-A),\qquad d:=\deg\chi_A,
+\]
+并设 Perron 根 \(r=\rho(A)\) 为单根。记
+\(
+\zeta_A(z)=\det(I-zA)^{-1}
+\)、\(z_\star=1/r\)，并按表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} 的口径定义主极点留数常数
+\[
+C(A):=\lim_{z\to z_\star}(1-rz)\,\zeta_A(z).
+\]
+则该常数仅由 \((\chi_A,r)\) 决定，并满足闭式恒等式
+\[
+\boxed{\;
+C(A)=\frac{r^{d-1}}{\chi_A'(r)}
+\;=\;
+\prod_{\lambda_j\in\sigma(A)\setminus\{r\}}\left(1-\frac{\lambda_j}{r}\right)^{-1}\; }.
+\]
+因此，一旦 \(\chi_A\) 与 \(r\) 已被独立审计（例如由递推分母/特征多项式与 Perron 根证书给出），则 \(C(A)\) 可在不做留数极限、亦无需显式求全谱的前提下被精确重建；并且任何保持同一 \(\chi_A\) 的非负整数 realization（见注 \ref{rem:pom-a3-alternative-realization}）都必须给出同一 \(C(A)\)。
+\par
+进一步地，对本文三枚已给出特征多项式的碰撞核
+\[
+\chi_{A_2}(\lambda)=\lambda^3-2\lambda^2-2\lambda+2,\qquad
+\chi_{A_3}(\lambda)=\lambda^3-2\lambda^2-4\lambda+2,\qquad
+\chi_{A_4}(\lambda)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2,
+\]
+由上式与消元可将表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} 中的三枚十进制常数 \(C(A_q)\) 升格为整系数方程级审计证书：它们分别满足如下最小多项式（且在 \((0,1)\) 上各有唯一实根）：
+\[
+\boxed{\;
+37C^3-37C^2+C+1=0\quad(C=C(A_2)),\qquad
+141C^3-141C^2+23C+1=0\quad(C=C(A_3)),}
+\]
+\[
+\boxed{\;
+3940876C^5-3940876C^4+920083C^3-33522C^2+168C+4=0\quad(C=C(A_4)).}
+\]
+由此得到一个无需小数对齐的强审计协议：对每个 \(A_q\)，只需公开（i）\(\chi_{A_q}\in\ZZ[\lambda]\)，（ii）\(C(A_q)\) 的最小多项式 \(P_{C_q}\in\ZZ[C]\)；并配合表中 \texttt{tail proxy} 作为 \(\log\mathfrak{M}\) 尾截断误差的数值证书，即可把“可复现性”提升为整系数方程级约束。
+
+\begin{remark}[常数层稀有性尺度：\texorpdfstring{$\mathsf{M}(A_4)/\mathsf{M}(A_3)$}{M(A4)/M(A3)} 的近减半]\label{rem:pom-collision-mertens-halving}
+表 \ref{tab:collision_kernel_A3_finite_part} 与表 \ref{tab:collision_kernel_A4_finite_part} 给出
+\(
+\mathsf{M}(A_3)\approx 0.1560083
+\)
+与
+\(
+\mathsf{M}(A_4)\approx 0.0730980
+\)。
+因此常数层收缩比
+\[
+\boxed{\;
+\frac{\mathsf{M}(A_4)}{\mathsf{M}(A_3)}\approx 0.4686\;}
+\]
+ 在数值上接近一半。
+该比值提供一个\textbf{独立于指数主尺度 \(r_q\)} 的细结构指纹：当把碰撞从三重提升到四重时，
+除了 Perron 根 \(r_q\) 的指数尺度改变之外，primitive 主项的常数级漂移（Mertens 常数）也显著收缩。
+并且表中 \texttt{tail proxy} 极小，说明该 finite-part 常数的抽取在数值上高度稳定、适合作为跨阶稀有性刻度。
+\end{remark}
+
+\begin{remark}[有限部常数的步长加速（\(A_2\to A_4\)）]\label{rem:pom-collision-mertens-accel}
+由表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part}，
+\(
+\mathsf{M}(A_2)\approx 0.2325880,\,
+\mathsf{M}(A_3)\approx 0.1560083,\,
+\mathsf{M}(A_4)\approx 0.0730980
+\)。
+因此
+\[
+\Delta_3:=\mathsf{M}(A_2)-\mathsf{M}(A_3)\approx 0.07658,\qquad
+\Delta_4:=\mathsf{M}(A_3)-\mathsf{M}(A_4)\approx 0.08291.
+\]
+可见在 \(q=2,3,4\) 处有限部常数的衰减步长呈增大趋势，提供一个与 near-RH 贴线并行出现的细结构指纹。
+\end{remark}
+

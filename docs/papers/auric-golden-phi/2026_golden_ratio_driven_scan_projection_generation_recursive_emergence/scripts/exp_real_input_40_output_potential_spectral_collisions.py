@@ -100,7 +100,7 @@ class _Progress:
 
 
 def _build_Q(z: sp.Symbol, u: sp.Symbol) -> sp.Expr:
-    # Must match `90_appendix_sync_12_app_real_input_40_zeta_u.tex`.
+    # Must match `sections/appendix/sync_kernel/real_input/app__real-input-40-zeta-u.tex`.
     return (
         sp.Integer(1)
         - z

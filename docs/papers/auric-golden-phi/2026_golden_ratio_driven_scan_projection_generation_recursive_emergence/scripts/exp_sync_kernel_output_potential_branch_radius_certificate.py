@@ -7,7 +7,8 @@ We use the explicit degree-6 algebraic curve for the Perron root lambda(u):
 
   F(lambda,u)=0,  with F in Z[u][lambda],
 
-as stated in `sections/90_appendix_sync_kernel_weighted.tex` (appendix pressure-analytic).
+as stated in `sections/appendix/sync_kernel/weighted/cor__sync-kernel-weighted-unit-root-finite.tex`
+(appendix pressure-analytic).
 Branch points in the u-plane occur exactly when lambda becomes a multiple root, i.e.
 F=0 and dF/dlambda=0, equivalently Disc_lambda(F)(u)=0.
 
@@ -18,7 +19,7 @@ We compute:
   - an auditable Cauchy remainder certificate for the 8th-order Taylor truncation of P(theta)=log lambda(e^theta)
     using a numerical bound M_r = max_{|theta|=r} |P(theta)| at r=0.99*R_theta.
   - a comparison radius for the phi_minus cubic example (negative-carry potential) from
-    `sections/90_appendix_sync_kernel_multi_dim.tex`.
+    `sections/appendix/sync_kernel/app__vector-potential.tex`.
 
 Outputs:
   - artifacts/export/sync_kernel_output_potential_branch_radius_certificate.json
@@ -81,7 +82,7 @@ class _Progress:
 
 
 def _F(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
-    # Must match `sections/90_appendix_sync_kernel_weighted.tex` (app:pressure-analytic).
+    # Must match `sections/appendix/sync_kernel/weighted/cor__sync-kernel-weighted-unit-root-finite.tex` (app:pressure-analytic).
     return sp.expand(
         lam**6
         - (1 + u) * lam**5
@@ -94,7 +95,7 @@ def _F(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
 
 
 def _phi_minus_cubic(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
-    # Must match `sections/90_appendix_sync_kernel_multi_dim.tex` (negative-carry example).
+    # Must match `sections/appendix/sync_kernel/app__vector-potential.tex` (negative-carry example).
     return sp.expand(lam**3 - (u + 2) * lam**2 + (u - 2) * lam + 3 * u)
 
 

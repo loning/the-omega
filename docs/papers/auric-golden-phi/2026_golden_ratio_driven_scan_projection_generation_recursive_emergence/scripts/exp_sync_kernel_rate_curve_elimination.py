@@ -50,7 +50,7 @@ class ResultantSummary:
 
 
 def _build_F(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
-    # Must match appendix `90_appendix_sync_kernel_weighted.tex` exactly.
+    # Must match appendix `sections/appendix/sync_kernel/weighted/cor__sync-kernel-weighted-unit-root-finite.tex` (app:pressure-analytic).
     return (
         lam**6
         - (1 + u) * lam**5

@@ -125,7 +125,7 @@ def traces_tensor_square(traces: List[int]) -> List[int]:
 def traces_real_input_40_from_lucas(traces_L: List[int]) -> List[int]:
     """Closed-form traces for real-input-40 kernel M in terms of Lucas traces L_n.
 
-    From 90_appendix_sync_02_app_abel_mertens_universal.tex:
+    From `sections/appendix/sync_kernel/real_input/app__abel-mertens-universal.tex`:
       a_n(M) = L_n^2 + (-1)^n (L_n + 1) + 2.
     """
     out: List[int] = []

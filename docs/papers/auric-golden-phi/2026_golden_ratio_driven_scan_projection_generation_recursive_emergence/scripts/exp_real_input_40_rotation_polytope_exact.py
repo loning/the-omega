@@ -3,7 +3,8 @@
 """
 Exact rotation polytope for the real-input 40-state kernel (essential 20 core).
 
-We work on the essential SCC (size 20; see Prop. 90_appendix_sync_01_prop_real_input_40_essential_20)
+We work on the essential SCC (size 20; see Prop. `prop:real-input-40-essential-20` in
+`sections/appendix/sync_kernel/real_input/app__real-input-40-kernel.tex`)
 and treat the system as an edge shift (SFT) with a locally constant Z^3 observable.
 
 This script:
