@@ -1,0 +1,116 @@
+\subsubsection{相位前缀过滤与二次分辨率门槛：端点压缩诱导的强制碰撞律}\label{subsubsec:xi-phase-prefix-resolution-law}
+本段把“unitary slice / legal address / scan-to-clarify”的一参数读出语义具体化为：在可见轴仅允许相位紧化坐标的前提下，读出精细化由一个离散的\emph{分辨率深度}（前缀长度）度量，而非由额外连续坐标轴提供；任何离切片信息若未被外置到正交寄存器，则在对象层被迫塌缩为不可唯一读出（在本文语义中表现为碰撞型 \(\mathsf{NULL}\)，见定义 \ref{def:xi-visible-read-null} 与命题 \ref{prop:xi-null-three-way}）。
+\par
+关键结构事实在于：相位紧化把高高度区间压入端点邻域并产生二次压缩；当零点密度随高度以 \(T\log T\) 增长时，该二次压缩强制产生一个不可绕过的“二次分辨率屏障”。本段给出该屏障的可核验形式，并说明所谓“一个零点是另一个零点的地址”只能被严格化为“共享前缀所诱导的柱事件聚类”，而非点对点寻址。
+
+\paragraph{设定：相位盒与 dyadic 柱前缀}
+取无参相位盒紧化门（附录 \ref{app:unit-circle-phase-gate}）
+\[
+u=\upsilon(t):=\frac{1}{\pi}\arctan(t)\in\Bigl(-\tfrac12,\tfrac12\Bigr),
+\qquad
+\widetilde u(t):=u+\tfrac12\in(0,1).
+\]
+对整数 \(m\ge 1\)，定义 \textbf{\(m\)-比特相位地址（合法读出前缀）}为 dyadic 柱单元
+\[
+I_m(t):=\Bigl[\frac{\lfloor 2^m\widetilde u(t)\rfloor}{2^m},\frac{\lfloor 2^m\widetilde u(t)\rfloor+1}{2^m}\Bigr)\subset(0,1),
+\]
+并记地址值
+\(
+A_m(t):=\lfloor 2^m\widetilde u(t)\rfloor\in\{0,1,\dots,2^m-1\}.
+\)
+在“地址先于取值”的语义下，\(m\) 即为\textbf{分辨率深度}：读出接口不引入新的连续自由度，只允许沿 \(m\uparrow\) 的柱过滤细化。
+
+\paragraph{主结论：端点压缩下的地址碰撞强制律}
+记 \(N_\zeta(T)\) 为 \(\zeta\) 在临界带 \(0<\Re(s)<1\) 内、满足 \(0<\Im(s)\le T\) 的非平凡零点计数（按重数计）。其经典主项满足
+\[
+N_\zeta(T)=\frac{T}{2\pi}\log\Bigl(\frac{T}{2\pi}\Bigr)-\frac{T}{2\pi}+O(\log T),
+\qquad(T\to\infty).
+\]
+
+\begin{theorem}[端点压缩的地址碰撞下界：二次分辨率门槛]\label{thm:xi-phase-prefix-collision-lower-bound}
+存在常数 \(T_0>0\) 与 \(c>0\)，使得对所有 \(T\ge T_0\) 与任意整数 \(m\ge 1\)，在高度带
+\[
+\Gamma(T):=\{\gamma>0:\ \exists\,\rho=\beta+\mathrm{i}\gamma\ \text{为非平凡零点}\ \text{且}\ T<\gamma\le 2T\}
+\]
+中，必存在某一相位地址值 \(a\in\{0,1,\dots,2^m-1\}\) 满足
+\[
+\#\{\gamma\in\Gamma(T):A_m(\gamma)=a\}\ \ge\ c\,\frac{T^2\log T}{2^m}.
+\]
+特别地，若希望高度带 \((T,2T]\) 上的相位地址映射 \(\gamma\mapsto A_m(\gamma)\) 不发生碰撞（单射），则必须满足
+\[
+2^m\ \gtrsim\ T^2\log T,
+\qquad\text{等价地}\qquad
+m\ \ge\ 2\log_2 T+\log_2\log T+O(1).
+\]
+\end{theorem}
+
+\begin{proof}
+首先，带 \([T,2T]\) 在 \(\upsilon\)-轴上的像长度满足
+\[
+\upsilon(2T)-\upsilon(T)=\frac{1}{\pi}\int_T^{2T}\frac{\dd t}{1+t^2}
+\le \frac{1}{\pi}\int_T^{2T}\frac{\dd t}{t^2}
+=\frac{1}{2\pi T}.
+\]
+因此深度为 \(m\) 的 dyadic 划分在该像带内能提供的不同地址单元个数至多为
+\[
+M_m(T)\le 2^m\bigl(\upsilon(2T)-\upsilon(T)\bigr)+2\ \le\ \frac{2^m}{2\pi T}+2.
+\]
+另一方面，由零点计数主项可得 \(N_\zeta(2T)-N_\zeta(T)\asymp T\log T\)（\(T\to\infty\)）。
+将 \(\#\Gamma(T)=N_\zeta(2T)-N_\zeta(T)\) 个零点高度投入至多 \(M_m(T)\) 个地址盒，鸽巢原理给出存在某一盒占用数至少为
+\[
+\frac{\#\Gamma(T)}{M_m(T)}\ \gtrsim\ \frac{T\log T}{2^m/T}\ =\ \frac{T^2\log T}{2^m},
+\]
+即得第一式。单射必要条件由“最大占用数 \(\le 1\)”立得。
+\end{proof}
+
+\begin{corollary}[清晰度视界：固定分辨率深度的可分辨高度尺度]\label{cor:xi-phase-prefix-clarity-horizon}
+固定 \(m\ge 1\)。若要求高度带 \((T,2T]\) 内相位地址无碰撞，则必有
+\[
+T^2\log T\ \lesssim\ 2^m.
+\]
+因此在忽略对数修正的主尺度下，可分辨高度视界满足 \(T\approx 2^{m/2}\)（并带 \(1/\sqrt{\log T}\) 级修正）。
+\end{corollary}
+
+\paragraph{“零点互为地址”的严格化：共享前缀而非点对点寻址}
+对 \(u,v\in(0,1)\) 定义 dyadic 前缀共享长度
+\[
+L(u,v):=\max\{m\ge 0:\ \lfloor 2^m u\rfloor=\lfloor 2^m v\rfloor\}.
+\]
+令 \((\gamma_n)_{n\ge 1}\) 为非平凡零点的正虚部按递增排列（按重数计），并写 \(u_n:=\widetilde u(\gamma_n)\in(0,1)\)。
+
+\begin{proposition}[共享前缀的二次阈值：相邻零点在端点层形成稳定簇]\label{prop:xi-phase-adjacent-prefix-sharing}
+存在常数 \(T_1>0\) 与 \(C>0\)，使得对所有 \(T\ge T_1\)，在满足 \(T<\gamma_n\le 2T\) 的相邻零点对 \((\gamma_n,\gamma_{n+1})\) 中，至少有一半满足
+\[
+L(u_n,u_{n+1})\ \ge\ 2\log_2 T+\log_2\log T - C.
+\]
+\end{proposition}
+
+\begin{proof}
+考虑相位窗 \([\upsilon(T),\upsilon(2T)]\)。
+其总长度由上证得 \(\upsilon(2T)-\upsilon(T)\ll 1/T\)。
+而窗内相邻对的相位间隔之和恰为该总长度，故平均相位间隔满足
+\[
+\overline{\Delta u}(T)\ :=\ \frac{\upsilon(2T)-\upsilon(T)}{N_\zeta(2T)-N_\zeta(T)}\ \ll\ \frac{1/T}{T\log T}\ =\ \frac{1}{T^2\log T}.
+\]
+若超过一半的相邻对满足 \(|u_{n+1}-u_n|>2\overline{\Delta u}(T)\)，则总和将超过相位窗长度，矛盾。
+因此至少一半相邻对满足 \(|u_{n+1}-u_n|\ll (T^2\log T)^{-1}\)。
+对这样的 \(u\neq v\)，由 dyadic 前缀定义有 \(L(u,v)\ge \lfloor \log_2(1/|u-v|)\rfloor -1\)，代入即得结论。
+\end{proof}
+
+\begin{remark}[共享前缀 \(\neq\) 互为寻址：地址对象是柱事件而非点指针]\label{rem:xi-phase-prefix-not-pointer}
+对固定深度 \(m\)，关系
+\[
+\gamma\sim_m\gamma'\quad:\Longleftrightarrow\quad A_m(\gamma)=A_m(\gamma')
+\]
+刻画的是“同一柱事件（同一 dyadic 地址盒）”，而非“点对点指针”。
+定理 \ref{thm:xi-phase-prefix-collision-lower-bound} 表明：当 \(m<2\log_2T+\log_2\log T-O(1)\) 时，高度带 \((T,2T]\) 内该等价类在结构上必为高重数；因此任何将“一个零点可作为另一个零点的地址”理解为\emph{有限前缀的确定性寻址}的命题都不良定。
+\par
+在本文多轴前缀打包 \(a=(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}})\)（定义 \ref{def:multi_axis_address}）中，上述结论可被解释为：当可见轴 \(a_{\mathrm{vis}}\) 仅取相位前缀且深度不足时，残差轴 \(a_{\mathrm{res}}\) 的最小预算被强制为 \(\Theta(2\log T)\) 级（否则必发生碰撞型 \(\mathsf{NULL}\)）；这与离线方向的端点二阶径向通道门槛同阶（推论 \ref{cor:xi-null-second-order-radial-channel}）。
+\end{remark}
+
+\begin{remark}[解释性叙述（非推理前提）：强混合极限下跨窗寻址的结构否定]\label{rem:xi-phase-mixing-no-addressing}
+若将归一化零点过程（以单位平均间距归一化）假设为在有限维分布意义下趋于某个平移不变且混合的极限点过程（例如 \(\operatorname{Sine}_2\) 或更一般的 \(\operatorname{Sine}_\beta\) 过程；参见 \cite{AriasDeReynaRodgers2024ConvergencePointsZetaZeros,ChhaibiNajnudel2018RigiditySineBeta} 的相关极限框架），则任意仅依赖有限局部窗口配置的“地址函数”对远距窗口配置的条件信息增益在距离 \(R\to\infty\) 时消失。
+该混合性语义上对应：跨尺度、跨窗口的确定性“零点互寻址”与强随机混合范式不相容；能稳定存在的仅是由有限分辨率前缀诱导的局部聚类（命题 \ref{prop:xi-phase-adjacent-prefix-sharing}）以及由端点通道门槛诱导的可见/不可见分层（定理 \ref{thm:app-jensen-offcritical-kink-localization} 与推论 \ref{cor:xi-null-second-order-radial-channel}）。
+\end{remark}
+
+\endinput
