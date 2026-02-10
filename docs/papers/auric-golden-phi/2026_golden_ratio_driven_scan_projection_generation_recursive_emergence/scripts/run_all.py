@@ -393,6 +393,53 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fibonacci_cube_fvector_audit",
+            script="exp_fibonacci_cube_fvector_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_cube_fvector_audit.json",
+                "sections/generated/eq_fibonacci_cube_bivariate_gf.tex",
+                "sections/generated/eq_fibonacci_cube_coeff_formula.tex",
+                "sections/generated/tab_fibonacci_cube_fvector_small_n.tex",
+            ],
+        ),
+        Step(
+            name="fibonacci_cube_gray_hamilton_audit",
+            script="exp_fibonacci_cube_gray_hamilton_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_cube_gray_hamilton_audit.json",
+                "sections/generated/tab_fibonacci_cube_gray_hamilton_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_fiber_homotopy_window6",
+            script="exp_fold_fiber_homotopy_window6.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_fiber_homotopy_window6.json",
+                "sections/generated/tab_fold_fiber_homotopy_m6.tex",
+            ],
+        ),
+        Step(
+            name="fold_fiber_reconstruction_window6",
+            script="exp_fold_fiber_reconstruction_window6.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_fiber_reconstruction_window6.json",
+                "sections/generated/tab_fold_fiber_reconstruction_invariants_m6.tex",
+            ],
+        ),
+        Step(
+            name="fold_factor_chain_hypercube_gap_m6_m12",
+            script="exp_fold_factor_chain_hypercube_gap_m6_m12.py",
+            args=["--m-list", "6,12"],
+            expected_outputs=[
+                "artifacts/export/fold_factor_chain_hypercube_gap_m6_m12.json",
+                "sections/generated/tab_fold_factor_chain_gap_m6_m12.tex",
+            ],
+        ),
+        Step(
             name="gut_crt_235_m58_collision_gap",
             script="exp_gut_crt_235_m58_collision_gap.py",
             args=[],
