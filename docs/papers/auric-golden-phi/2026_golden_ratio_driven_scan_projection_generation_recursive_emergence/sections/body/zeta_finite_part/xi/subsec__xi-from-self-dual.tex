@@ -323,6 +323,130 @@ H(x)\succeq 0\qquad(x\in[-2,2]).
 该区间半正定性进一步可通过 SOS/半定规划给出可审计证书。
 \end{remark}
 
+\begin{theorem}[视界 Carath\'eodory--Toeplitz 证书：\texorpdfstring{$\Xi$}{Xi}-切片区间根判据的统一正性框架]\label{thm:xi-slice-horizon-carath-toeplitz}
+沿用命题 \ref{prop:xi-rh-interval-criterion} 与推论 \ref{cor:xi-rh-unit-circle-reciprocal} 的记号：
+给定 \(L>1\)，令
+\(
+P_L(S)=\widehat\Delta(L^{-1/2},S)\in\RR[S]
+\),
+令 \(d=\deg P_L\)，并令
+\(
+\Phi_L(y)=y^{d}P_L(y+y^{-1})\in\RR[y]
+\)
+（于是 \(D:=\deg\Phi_L=2d\) 且 \(\Phi_L(0)\neq 0\)）。
+定义其\textbf{视界 Carath\'eodory 函数}（圆盘变量记为 \(\omega\in\mathbb{D}\)）
+\begin{equation}\label{eq:xi-slice-carath-def}
+\boxed{\;
+\mathscr{C}_{\Phi_L}(\omega)
+:=
+1-\frac{2}{D}\,\omega\,\frac{\Phi_L'(\omega)}{\Phi_L(\omega)},
+\qquad \omega\in\mathbb{D}.
+\;}
+\end{equation}
+将 \(\mathscr{C}_{\Phi_L}\) 在 \(\omega=0\) 处作归一化幂级数展开：
+\[
+\mathscr{C}_{\Phi_L}(\omega)=c_0+2\sum_{n\ge 1}c_n\omega^n,
+\qquad c_{-n}:=\overline{c_n},
+\]
+并对 \(N\ge 0\) 定义 Toeplitz 主子矩阵
+\[
+\mathbf{T}_N:=\bigl(c_{j-k}\bigr)_{0\le j,k\le N}.
+\]
+则下列命题等价：
+\begin{enumerate}
+  \item \(\Xi_{\Delta,L}\) 的全部零点满足 \(\Re(s)=\tfrac12\)（等价地：\(P_L\) 的全部根落在 \([-2,2]\) 内）；
+  \item \(\Phi_L\) 的全部复根满足 \(|y|=1\)；
+  \item \(\mathscr{C}_{\Phi_L}\) 在 \(\mathbb{D}\) 上解析且 \(\Re \mathscr{C}_{\Phi_L}(\omega)\ge 0\)（即 \(\mathscr{C}_{\Phi_L}\) 属于 Carath\'eodory 类）；
+  \item 对所有 \(N\ge 0\)，有 Toeplitz--PSD 层级 \(\mathbf{T}_N\succeq 0\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\((1)\Longleftrightarrow(2)\) 已由推论 \ref{cor:xi-rh-unit-circle-reciprocal} 给出。
+\par
+\((2)\Rightarrow(3)\) 设 \(\Phi_L\) 的根（按重数计）为 \(\{y_j\}_{j=1}^{D}\subset\TT\)，并令 \(\alpha_j:=1/y_j=\overline{y_j}\in\TT\)。
+则 \(\Phi_L(\omega)=\Phi_L(0)\prod_{j=1}^{D}(1-\alpha_j\omega)\)。
+由 \eqref{eq:xi-slice-carath-def} 直接计算得
+\[
+\mathscr{C}_{\Phi_L}(\omega)
+=1+\frac{2}{D}\sum_{j=1}^{D}\frac{\alpha_j\omega}{1-\alpha_j\omega}
+=\frac{1}{D}\sum_{j=1}^{D}\frac{1+\alpha_j\omega}{1-\alpha_j\omega}.
+\]
+对每个 \(\alpha\in\TT\)，函数 \(\omega\mapsto\frac{1+\alpha\omega}{1-\alpha\omega}\) 在 \(\mathbb{D}\) 上解析且具有正实部；
+故其平均亦在 \(\mathbb{D}\) 上解析且满足 \(\Re\mathscr{C}_{\Phi_L}\ge 0\)，即 \(\mathscr{C}_{\Phi_L}\) 属于 Carath\'eodory 类。
+\par
+\((3)\Rightarrow(2)\) 若 \(\mathscr{C}_{\Phi_L}\) 在 \(\mathbb{D}\) 上解析，则 \(\Phi_L\) 在 \(\mathbb{D}\) 内无零点（否则 \(\Phi_L'/\Phi_L\) 在盘内产生极点）。
+而 \(\Phi_L\) 为自倒数多项式（推论 \ref{cor:xi-rh-unit-circle-reciprocal}），故其零点按 \(y\leftrightarrow 1/\overline y\) 成对对应：若存在 \(|y_0|>1\) 的零点，则 \(1/\overline y_0\in\mathbb{D}\) 亦为零点，矛盾。
+因此 \(\Phi_L\) 亦无 \(|y|>1\) 的零点，从而所有零点都落在 \(\TT\) 上。
+\par
+\((3)\Longleftrightarrow(4)\) 沿用附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz} 的 Carath\'eodory/Herglotz 表示与截断矩完备性（Carath\'eodory--Fej\'er），
+\(\Re f\ge 0\)（\(f\) 在 \(\mathbb{D}\) 上解析）当且仅当其幂级数矩生成的 Toeplitz 主子矩阵族半正定；
+将该一般结论应用于 \(f=\mathscr{C}_{\Phi_L}\) 即得。证毕。
+\end{proof}
+
+\begin{corollary}[视界 Weyl/Herglotz 版本：\texorpdfstring{\(\Xi\)}{Xi}-切片的上半平面正性判据]\label{cor:xi-slice-weyl-herglotz}
+沿用定理 \ref{thm:xi-slice-horizon-carath-toeplitz} 的记号，并定义完成化临界截面
+\[
+E_{\Delta,L}(z):=\Xi_{\Delta,L}\!\left(\tfrac12+\mathrm{i}z\right),
+\qquad z\in\CC,
+\]
+以及其\textbf{视界 Weyl/Carath\'eodory 对数导数}
+\[
+m_{\Delta,L}(z):=-\frac{E'_{\Delta,L}(z)}{E_{\Delta,L}(z)},
+\qquad z\in\mathbb{H}.
+\]
+则定理 \ref{thm:xi-slice-horizon-carath-toeplitz} 中 (1)--(4) 亦等价于：
+\begin{enumerate}
+  \item[(5)] \(m_{\Delta,L}\) 在 \(\mathbb{H}\) 上解析且满足 \(\Im m_{\Delta,L}(z)\ge 0\)（即 \(m_{\Delta,L}\) 为 Herglotz/Nevanlinna 函数）。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+定理 \ref{thm:xi-slice-horizon-carath-toeplitz} 的 (1) 等价于 \(\Xi_{\Delta,L}\) 的全部零点满足 \(\Re(s)=\tfrac12\)，亦即 \(E_{\Delta,L}\) 的全部零点为实数（因为 \(E_{\Delta,L}(z)=0\iff \Xi_{\Delta,L}(\tfrac12+\mathrm{i}z)=0\)）。
+由命题 \ref{prop:xi-delta-L-critical-line-real} 可知 \(E_{\Delta,L}(t)\in\RR\) 对一切 \(t\in\RR\) 成立，从而 \(E_{\Delta,L}(\overline z)=\overline{E_{\Delta,L}(z)}\) 并使零点关于实轴成共轭对称。
+因此，“零点全实”当且仅当 \(E_{\Delta,L}\) 在 \(\mathbb{H}\) 内无零点，等价于 \(m_{\Delta,L}\) 在 \(\mathbb{H}\) 上解析。
+\par
+在该解析性前提下，\(m_{\Delta,L}=-E'_{\Delta,L}/E_{\Delta,L}\) 的 Herglotz 正性与“零点全实”之间的等价性可由附录定理 \ref{thm:app-horizon-weyl-herglotz} 的同型论证（把 \(E_{\zeta}\) 替换为 \(E_{\Delta,L}\)）得到；
+合并即得 (1)\(\Longleftrightarrow\)(5)，再与定理 \ref{thm:xi-slice-horizon-carath-toeplitz} 的 (1)\(\Longleftrightarrow\)(2)\(\Longleftrightarrow\)(3)\(\Longleftrightarrow\)(4) 合并即得结论。证毕。
+\end{proof}
+
+\begin{remark}[有限核的 Ramanujan--Herglotz 同型接口（完成化函数方程的作用）]\label{rem:xi-finite-kernel-ramanujan-herglotz-interface}
+对有限维核的 Dirichlet 化 \(\zeta\)-函数 \(Z_M(s)=\det(I-\lambda^{-s}M)^{-1}\)，Ramanujan 半径界（kernel RH）等价于右半开带 \(\tfrac12<\Re(s)<1\) 内无非平凡极点（推论 \ref{cor:finite-rh-halfstrip-nopoles}）。
+若进一步满足谱互反闭包 \(\mu\mapsto \lambda/\mu\)（命题 \ref{prop:reciprocal-spectrum-functional-equation}），则完成化函数方程把极点几何强制为关于 \(\Re(s)=\tfrac12\) 的对称结构；
+于是“半条带无极点”被提升为临界带 toy-RH 的临界线定位，并可等价转写为上半平面 Weyl/Herglotz 正性判据，从而与 \(\Xi_\zeta\) 的视界 Weyl 判别（附录定理 \ref{thm:app-horizon-weyl-herglotz}）在证书语言上同型。
+\end{remark}
+
+\begin{remark}[有限维情形的视界谱测度与反射正性]\label{rem:xi-slice-horizon-measure-reflection-positivity}
+在定理 \ref{thm:xi-slice-horizon-carath-toeplitz} 的等价条件成立时，
+\(\mathscr{C}_{\Phi_L}\) 为有理 Carath\'eodory 函数，故其 Herglotz 表示可取为有限原子测度（见附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz} 的表示式 \eqref{eq:app-horizon-herglotz-disk} 的有理情形，或参见 \cite{Simon2005OPUC1}）：
+若 \(\mathrm{Roots}(\Phi_L)=\{y_j\}_{j=1}^{D}\subset\TT\)，则存在概率测度
+\(
+\mu_{\Phi_L}:=\frac{1}{D}\sum_{j=1}^{D}\delta_{y_j}
+\)
+使
+\[
+\mathscr{C}_{\Phi_L}(\omega)=\int_{\TT}\frac{\xi+\omega}{\xi-\omega}\,d\mu_{\Phi_L}(\xi).
+\]
+其 Fourier 矩 \(c_n=\int_{\TT}\xi^{-n}\,d\mu_{\Phi_L}(\xi)\) 即为“视界多极矩/毛发系数”；
+而 Toeplitz--PSD 层级 \(\mathbf{T}_N\succeq 0\) 给出该矩序列来自正测度的\emph{反射正性}证书（与附录注 \ref{rem:app-horizon-multipole-positivity-hair} 的语义对齐）。
+\end{remark}
+
+\begin{corollary}[通道化版本：核版 (G)RH 的视界 Toeplitz--PSD 证书]\label{cor:xi-channel-horizon-toeplitz-certificate}
+在注 \ref{rem:xi-artin-channel-pipeline} 的通道化设定下，若对每个通道 \(\rho\) 的完成化截面 \(\Xi_{\rho,L}\) 定义相应的自倒数多项式 \(\Phi_{L,\rho}\)（推论 \ref{cor:xi-rh-unit-circle-reciprocal} 的逐通道版本），并定义 \(\mathscr{C}_{\Phi_{L,\rho}}\) 如 \eqref{eq:xi-slice-carath-def}，
+则“核版 (G)RH 在底 \(L\) 上成立”（逐通道临界线约束）等价于对所有通道 \(\rho\) 同时成立的视界正性/证书层级：
+\[
+\Re\mathscr{C}_{\Phi_{L,\rho}}(\omega)\ge 0\quad(\omega\in\mathbb{D})
+\qquad\Longleftrightarrow\qquad
+\mathbf{T}^{(\rho)}_N\succeq 0\quad(\forall N\ge 0),
+\]
+其中 \(\mathbf{T}^{(\rho)}_N\) 为 \(\mathscr{C}_{\Phi_{L,\rho}}\) 的 Toeplitz 主子矩阵。
+因此，正文的“区间根/单位圆根/Schur--Cohn LMI”型谱证书与附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz} 的视界 Carath\'eodory--Toeplitz PSD 层级在同一视界正性框架下合并为统一证书语言。
+\end{corollary}
+
+\begin{remark}[6D 参数几何中的 PSD 可行域（接口性陈述）]\label{rem:xi-6d-parameter-spectrahedral-feasible}
+当通道行列式的视界多极矩（或其有限模态粗粒化；参见命题 \ref{prop:xi-horizon-21mode-weyl-compression}）在某个 \(6\) 维参数立方体（例如由六个二值通道势的均值几何 \(\mathcal{R}_{\boldsymbol{\varphi}}\subset[0,1]^6\) 所组织，\S\ref{subsec:pom-potential-convex-geometry}）上实现为一组\emph{仿射}参数化时，
+每一级 Toeplitz--PSD 约束 \(\mathbf{T}_N\succeq 0\) 即成为关于该 \(6\) 维参数的线性矩阵不等式（LMI），从而把“核版 (G)RH/拉马努金可行性”解释为参数立方体内的一个 spectrahedral 可行域族。
+该几何接口为对称性筛选与优化（例如 Weyl-不变压缩下的低维参数化）提供了直接可审计的凸证书入口。
+\end{remark}
+
 \begin{remark}[Joukowski 压缩与有限维 toy-RH 字典的对齐]\label{rem:xi-joukowski-toy-rh-alignment}
 命题 \ref{prop:xi-rh-interval-criterion} 的变量替换
 \(
