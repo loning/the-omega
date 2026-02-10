@@ -1,0 +1,67 @@
+\begin{corollary}[median/partial-cube/CAT(0) 完备性与奇偶二分分级]\label{cor:pom-fiber-reconstruction-median-partialcube-cat0}
+在定理 \ref{thm:pom-fiber-reconstruction-cartesian-product} 的设定下，
+纤维重构图 \(\mathcal F_x\) 为 median graph，且在自然包含
+\(
+\mathcal F_x\subseteq Q_{\sum_i \ell_i}
+\)
+下为等距嵌入（partial cube）。
+因此 \(\mathcal F_x\) 为某个 CAT(0) 立方复形的 \(1\)-骨架（从而其图距离等于相应立方复形上的测地距离）。
+此外，\(\mathcal F_x\) 为二分图，其二分分解由逆代换次数（等价于独立集大小）的奇偶性给出：
+若把顶点 \(S\in\mathsf{Ind}(\Gamma_x)\) 识别为一次回放中被触发的逆代换位点集合，则每条边对应一次开关，
+从而 \(|S|\) 的奇偶性沿每条边翻转并给出规范的 \(\ZZ_2\) 分级。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-reconstruction-cartesian-product}，有 Cartesian 分解 \(\mathcal F_x\cong \prod_i \Gamma_{\ell_i}\)。
+Fibonacci cube \(\Gamma_n\) 是超立方体 \(Q_n\) 的标准 partial cube（等距子图），并且是 median graph（因而为 CAT(0) 立方复形的 \(1\)-骨架）；这些性质在 Cartesian 乘积下保持，从而得到 \(\mathcal F_x\) 的结论。
+最后，按定义 \(\mathcal F_x\) 的一条边即对某个独立集 \(S\) 施行一次“开关”使其对称差大小为 \(1\)，故 \(|S|\) 的奇偶性沿边翻转并诱导二分分解。证毕。
+\end{proof}
+
+\begin{corollary}[Fibonacci cube 的边数闭式与平均度渐近]\label{cor:pom-fibcube-edge-closed-form}
+令 \(F_n\) 为 Fibonacci 数列（约定 \(F_0=0,F_1=1\)）。
+则对任意 \(n\ge 0\)，Fibonacci cube \(\Gamma_n\) 的边数（即 \(C(n,1)\)）满足闭式
+\[
+|E(\Gamma_n)|=C(n,1)=\frac{nF_{n+1}+2(n+1)F_n}{5},
+\qquad
+|V(\Gamma_n)|=C(n,0)=F_{n+2}.
+\]
+从而平均度
+\[
+\overline{\deg}(\Gamma_n)
+=\frac{2|E(\Gamma_n)|}{|V(\Gamma_n)|}
+=\frac{2}{5}\left(
+n\frac{F_{n+1}}{F_{n+2}}+2(n+1)\frac{F_n}{F_{n+2}}
+\right),
+\]
+并在 \(n\to\infty\) 时满足线性渐近
+\[
+\overline{\deg}(\Gamma_n)
+\sim
+\frac{2}{5}\left(\frac{n}{\varphi}+\frac{2(n+1)}{\varphi^2}\right),
+\qquad
+\varphi=\frac{1+\sqrt5}{2}.
+\]
+与表 \ref{tab:fibonacci_cube_fvector_small_n} 的 \(n=6\) 行一致，
+\(
+(C(6,0),C(6,1),C(6,2),C(6,3))=(21,38,22,4)
+\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-fibcube-fvector-closed} 的二维递推，对 \(k=1\) 得
+\[
+C(n,1)=C(n-1,1)+C(n-2,1)+C(n-2,0)\qquad(n\ge 2).
+\]
+而 \(\Gamma_n\) 的顶点数为 \(C(n,0)=F_{n+2}\)，故 \(C(n-2,0)=F_n\)，从而令 \(e_n:=C(n,1)\) 得到
+\[
+e_n=e_{n-1}+e_{n-2}+F_n,\qquad e_0=0,\ e_1=1.
+\]
+直接核对可知
+\(
+e_n=\bigl(nF_{n+1}+2(n+1)F_n\bigr)/5
+\)
+满足同一递推与初值：将右端代入 \(e_n-e_{n-1}-e_{n-2}\) 并用 Fibonacci 递推 \(F_n=F_{n-1}+F_{n-2}\) 化简，
+可得差为 \(F_n\)；
+故闭式成立。
+平均度公式由定义直接推出；渐近式由 \(F_{n+1}/F_{n+2}\to 1/\varphi\) 与 \(F_n/F_{n+2}\to 1/\varphi^2\) 得到。
+最后，\(n=6\) 的数值由表 \ref{tab:fibonacci_cube_fvector_small_n} 读出。证毕。
+\end{proof}
+

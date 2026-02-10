@@ -1,0 +1,373 @@
+\subsubsection{纤维开关群的 Coxeter--monodromy--并行度框架}\label{subsubsec:pom-fiber-toggle-coxeter-monodromy-parallelism}
+在 \((011\leftrightarrow 100)\) 局部核下，稳定类型 \(x\in X_m\) 的预像纤维
+\(
+F_x:=\Fold_m^{-1}(x)
+\)
+与候选位点诱导图 \(\Gamma_x\) 的独立集系统严格等价（定理 \ref{thm:pom-fiber-indset-factorization}）。
+这一“独立集坐标化”不仅给出纤维计数与立方几何（\S\ref{subsubsec:pom-fiber-reconstruction-cubical}），还内禀地产生一套可审计的代数框架：
+局部可逆开关 \(\Rightarrow\) Coxeter 化的反射群商表示，扫描推进 \(\Rightarrow\) Coxeter 元素与 cyclotomic 单odromy 指纹，
+以及最短重写序列 \(\Rightarrow\) 由超平面偏序控制的并行复杂度。
+本小节所有结论的输入仅为 \(\Gamma_x=\bigsqcup_i P_{\ell_i}\) 的分量长度 \((\ell_i)\)。
+
+\paragraph{开关算子与 Coxeter 化}
+
+\begin{definition}[纤维开关算子与开关群]\label{def:pom-fiber-toggle-group}
+固定 \(x\in X_m\)，在同构 \(F_x\cong \mathsf{Ind}(\Gamma_x)\) 下把纤维元素识别为独立集 \(S\subseteq V(\Gamma_x)\)。
+对每个顶点 \(v\in V(\Gamma_x)\) 定义\textbf{开关算子}（toggle）
+\[
+\tau_v:\mathsf{Ind}(\Gamma_x)\to \mathsf{Ind}(\Gamma_x),
+\qquad
+\tau_v(S):=
+\begin{cases}
+S\triangle\{v\},& S\triangle\{v\}\in \mathsf{Ind}(\Gamma_x),\\
+S,& \text{否则},
+\end{cases}
+\]
+其中 \(\triangle\) 为对称差。
+令 \(\mathcal T_x:=\langle \tau_v:\ v\in V(\Gamma_x)\rangle\le \mathrm{Sym}(F_x)\) 为由全部开关算子生成的\textbf{纤维开关群}。
+\end{definition}
+
+\begin{theorem}[Coxeter 关系的局部刚性：路径分量的六角 Coxeter 化]\label{thm:pom-toggle-coxeter-relations-path}
+设 \(\Gamma_x\) 的某个连通分量同构于路径 \(P_{\ell}\)，并按路径顺序标记其顶点为 \(1,\dots,\ell\)。
+则对应生成元 \(\tau_1,\dots,\tau_{\ell}\) 满足关系
+\[
+\tau_j^2=1,\qquad
+\tau_i\tau_j=\tau_j\tau_i\ (|i-j|>1),\qquad
+(\tau_i\tau_{i+1})^{6}=1\quad(1\le i<\ell).
+\]
+令 \(W^{(6)}(P_\ell)\) 为由生成元 \(s_1,\dots,s_\ell\) 与上述关系给出的 Coxeter 群。
+则存在自然满同态
+\[
+W^{(6)}(P_\ell)\twoheadrightarrow \langle \tau_1,\dots,\tau_{\ell}\rangle\ \le\ \mathrm{Sym}(F_x),
+\]
+即路径分量上的纤维开关群为一条“边标 \(6\)”的路径型 Coxeter 群的商像。
+\end{theorem}
+\begin{proof}
+由定义 \ref{def:pom-fiber-toggle-group}，每个 \(\tau_j\) 为对称差翻转或恒等，故 \(\tau_j^2=1\)。
+当 \(|i-j|>1\) 时，两点不相邻，\(\tau_i\) 与 \(\tau_j\) 的合法性判别互不干扰，从而交换。
+对相邻对 \((i,i+1)\)，注意 \(\tau_i,\tau_{i+1}\) 的可开/可关判别仅依赖局部邻域
+\(\{i-1,i,i+1,i+2\}\)，且 \(\tau_i,\tau_{i+1}\) 不改变 \(i-1\) 与 \(i+2\) 的取值。
+因此固定边界状态 \(\mathbf b=(\mathbf 1_{i-1\in S},\mathbf 1_{i+2\in S})\in\{0,1\}^2\) 后，
+\((i,i+1)\) 的可行局部独立集状态至多为三种，且 \(\tau_i,\tau_{i+1}\) 的作用在该有限集合上闭合。
+逐一枚举 \(\mathbf b\) 的四种情形可得 \(\tau_i\tau_{i+1}\) 的阶整除 \(6\)，即 \((\tau_i\tau_{i+1})^6=1\)。
+由此 \(\tau_1,\dots,\tau_\ell\) 满足 \(W^{(6)}(P_\ell)\) 的定义关系，诱导满同态。证毕。
+\end{proof}
+
+\begin{proposition}[六角指数的最小性：相邻开关乘积的确切阶]\label{prop:pom-toggle-adjacent-order-exact}
+在路径 \(P_\ell\) 的独立集系统 \(\mathsf{Ind}(P_\ell)\) 上取相邻生成元 \(\tau_i,\tau_{i+1}\)。
+则当 \(\ell\ge 3\) 时，
+\[
+\mathrm{ord}(\tau_i\tau_{i+1})=6\qquad(1\le i<\ell),
+\]
+并且不存在 \(p<6\) 使得 \((\tau_i\tau_{i+1})^p=1\)。
+当 \(\ell=2\) 时唯一相邻对满足 \(\mathrm{ord}(\tau_1\tau_2)=3\)。
+\end{proposition}
+\begin{proof}
+固定 \(1\le i<\ell\) 并考察置换 \(\tau_i\tau_{i+1}\) 在 \(\mathsf{Ind}(P_\ell)\) 上的作用。
+注意 \(\tau_i,\tau_{i+1}\) 仅可能改变顶点 \(i,i+1\) 的占据状态，且独立性约束禁止二者同时取 \(1\)。
+故任意轨道至多包含 \(S\)、\(S\cup\{i\}\)、\(S\cup\{i+1\}\) 三种状态（某些情形会退化），从而轨道长度至多为 \(3\)。
+
+首先，空集轨道给出长度 \(3\)：
+\(
+\varnothing\mapsto \{i+1\}\mapsto \{i\}\mapsto \varnothing
+\)。
+其次，当 \(\ell\ge 3\) 时存在长度 \(2\) 的轨道：若 \(i\ge 2\)，取 \(S=\{i-1\}\)；
+若 \(i=1\)，取 \(S=\{3\}\)。
+直接计算得 \(\tau_i\tau_{i+1}(S)=S\cup\{i+1\}\) 且 \(\tau_i\tau_{i+1}(S\cup\{i+1\})=S\)，故为 \(2\)-循环。
+因此当 \(\ell\ge 3\) 时 \(\mathrm{ord}(\tau_i\tau_{i+1})=\mathrm{lcm}(2,3)=6\)，并推出六角指数的最小性。
+
+当 \(\ell=2\) 时，\(\mathsf{Ind}(P_2)=\{\varnothing,\{1\},\{2\}\}\) 且 \(\tau_1\tau_2\) 为 \(3\)-循环，故阶为 \(3\)。证毕。
+\end{proof}
+
+\begin{corollary}[分量分解：开关群的直积结构]\label{cor:pom-toggle-product-components}
+若 \(\Gamma_x=\bigsqcup_{i=1}^r P_{\ell_i}\)，则不同分量上的生成元彼此交换，且 \(\mathcal T_x\) 包含（并在自然表示下等于）分量子群的直积：
+\[
+\mathcal T_x\ \cong\ \prod_{i=1}^r \mathcal T_{\ell_i},
+\qquad
+\mathcal T_{\ell}:=\langle \tau_1,\dots,\tau_{\ell}\rangle.
+\]
+因此 \((\ell_i)\) 直接给出纤维内部“反射型规范自由度”的秩分解。
+\end{corollary}
+\begin{proof}
+对不交并图，独立集与对称差开关在分量上分离：\(\mathsf{Ind}(\bigsqcup_i G_i)\cong\prod_i\mathsf{Ind}(G_i)\)，且每个 \(\tau_v\) 仅作用于所在分量坐标。
+故整体群为分量群直积。证毕。
+\end{proof}
+
+\begin{remark}[有限窗审计]\label{rem:pom-toggle-coxeter-audit}
+在 \(\Gamma_n\)（Fibonacci 立方 \(\Gamma_n\) 的顶点集）上按定义 \ref{def:pom-fiber-toggle-group} 的“可开则开、不可开则不动”实现开关算子，
+可在 \(n\le 12\) 的范围内逐项核验定理 \ref{thm:pom-toggle-coxeter-relations-path} 的 Coxeter 关系，并对扫描元 \(c_n=\tau_1\cdots\tau_n\) 的置换阶 \(T(n)\)、极大时间圈长度 \(L_{\max}(n)\) 及循环分解给出离线可复核表格。
+相应审计表由脚本生成如下：
+\input{sections/generated/tab_fibonacci_cube_toggle_coxeter_audit}
+\end{remark}
+
+\paragraph{扫描推进与内禀周期}
+
+\begin{definition}[扫描元与内禀周期不变量]\label{def:pom-toggle-coxeter-element}
+在路径分量 \(P_{\ell}\) 上定义扫描（时间推进）元
+\[
+c_{\ell}:=\tau_1\tau_2\cdots\tau_{\ell}.
+\]
+对一般 \(x\) 定义分量乘积扫描元
+\(
+c_x:=\prod_{i=1}^r c_{\ell_i}
+\)
+（分量间可交换）。
+\noindent 记
+\[
+T(\ell):=\mathrm{ord}(c_\ell)\ \ \text{（作为置换 \(c_\ell\in\mathrm{Sym}(\mathsf{Ind}(P_\ell))\) 的阶）},
+\qquad
+T(x):=\mathrm{lcm}_{i} T(\ell_i).
+\]
+\end{definition}
+
+\begin{theorem}[内禀周期不变量：分量化与可计算上界]\label{thm:pom-toggle-coxeter-order-bound}
+沿用定义 \ref{def:pom-toggle-coxeter-element}。
+则扫描元在分量坐标下分离，且满足
+\[
+\mathrm{ord}(c_x)=\mathrm{lcm}_{i}\,\mathrm{ord}(c_{\ell_i})=T(x).
+\]
+\noindent 另外，由 \(|V(\Gamma_\ell)|=|\mathsf{Ind}(P_\ell)|=F_{\ell+2}\)，有粗上界
+\[
+T(\ell)\ \mid\ \mathrm{lcm}\{1,2,\dots,F_{\ell+2}\}.
+\]
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:pom-toggle-product-components}，在 \(F_x\cong \prod_i \mathsf{Ind}(P_{\ell_i})\) 的分量坐标化下，
+每个 \(c_{\ell_i}\) 仅作用于第 \(i\) 个分量且彼此交换，故其乘积 \(c_x\) 的阶为分量阶的最小公倍数。
+上界由一般事实给出：\(c_\ell\) 为 \(F_{\ell+2}\) 点集上的置换，其阶必整除 \(\mathrm{lcm}\{1,\dots,F_{\ell+2}\}\)。证毕。
+\end{proof}
+
+\begin{corollary}[时间反演的二面体核]\label{cor:pom-toggle-dihedral-time-reversal}
+设 \(\iota_{\ell}\) 为路径 \(P_{\ell}\) 的索引反转诱导的置换 \(j\mapsto \ell+1-j\) 在 \(\mathsf{Ind}(P_\ell)\) 上的作用。
+则 \(\iota_{\ell}\) 为一个对合，且满足共轭关系
+\[
+\iota_{\ell}\,c_{\ell}\,\iota_{\ell}=c_{\ell}^{-1}.
+\]
+因此由 \(c_\ell\) 与 \(\iota_\ell\) 生成的子群为二面体群的一个商像，其阶整除 \(2\,\mathrm{ord}(c_\ell)=2T(\ell)\)。
+\end{corollary}
+\begin{proof}
+\(\iota_\ell\) 作为路径自同构在独立集上诱导置换，显然为对合。
+并且 \(\iota_\ell\tau_j\iota_\ell=\tau_{\ell+1-j}\)，从而
+\(
+\iota_\ell c_\ell \iota_\ell
+=\tau_\ell\cdots\tau_1
+=c_\ell^{-1}
+\)
+（因 \(\tau_j^2=1\)）。
+由二面体群的标准表示可知 \(\langle c_\ell,\iota_\ell\rangle\) 为二面体群商像，其阶整除 \(2\,\mathrm{ord}(c_\ell)=2T(\ell)\)。证毕。
+\end{proof}
+
+\paragraph{顺序扫描动力学：极大轨道的线性律}
+
+\begin{definition}[极大时间圈长度]\label{def:pom-toggle-scan-max-orbit}
+把扫描元 \(c_\ell\in\mathrm{Sym}(\mathsf{Ind}(P_\ell))\) 视为离散时间动力学的“一步算子”。
+对任意状态 \(S\in\mathsf{Ind}(P_\ell)\) 记其周期（轨道长度）为
+\[
+\mathrm{per}_\ell(S):=|\mathrm{Orb}_{c_\ell}(S)|.
+\]
+定义扫描动力学的\textbf{极大时间圈长度}为
+\[
+L_{\max}(\ell):=\max_{S\in\mathsf{Ind}(P_\ell)} \mathrm{per}_\ell(S).
+\]
+\end{definition}
+
+\begin{theorem}[线性极大周期律：极大时间圈长度的闭式]\label{thm:pom-toggle-scan-linear-max-orbit}
+对所有 \(\ell\ge 4\)，扫描元 \(c_\ell\in\mathrm{Sym}(\mathsf{Ind}(P_\ell))\) 的极大时间圈长度满足
+\[
+L_{\max}(\ell)=3\ell-7.
+\]
+\end{theorem}
+\begin{proof}
+令 \(\varphi_\ell:=\tau_\ell\cdots\tau_1\) 为“左到右扫描”算子，则 \(c_\ell=\varphi_\ell^{-1}\)，故二者的轨道长度集合相同，特别地 \(L_{\max}(\ell)\) 相同。
+
+由 \cite[Def.~4.1 \& Prop.~4.3]{JosephRoby2018TogglingIndependentSetsPath}，任意 \(\varphi_\ell\)-轨道对应某个将 \(\ell-1\) 分拆为 \(1/2\) 的组合 \(c\)（snake composition），并满足轨道长度公式
+\[
+|\mathcal O|
+\ =\
+\frac{3N_1(c)+2N_2(c)}{\psi(c)},
+\qquad
+N_1(c)+2N_2(c)=\ell-1,
+\]
+其中 \(N_1,N_2\) 分别为 \(c\) 中 \(1\) 与 \(2\) 的出现次数，\(\psi(c)\ge 1\) 为最小重复段的重复次数（\(\psi(c)=1\) 当且仅当 \(c\) aperiodic）。
+
+若 \(N_2(c)=0\)，则 \(c=1^{\ell-1}\) 且 \(\psi(c)=\ell-1\)，从而 \(|\mathcal O|=3\)。
+因此对 \(\ell\ge 4\) 的任意轨道若想超过常数规模，必有 \(N_2(c)\ge 1\)，且
+\[
+|\mathcal O|
+\le\
+3(\ell-1)-4
+\ =\
+3\ell-7.
+\]
+另一方面，取 \(c=2\,1^{\ell-3}\)（恰含一个 \(2\) 的 aperiodic 组合）即有 \(\psi(c)=1\)，从而存在轨道满足
+\(
+|\mathcal O|=3(\ell-3)+2=3\ell-7
+\)。
+故 \(L_{\max}(\ell)=3\ell-7\)。证毕。
+\end{proof}
+
+\begin{remark}[显式主时间圈代表元（有限窗审计）]\label{rem:pom-toggle-scan-explicit-long-orbit}
+对 \(\ell\ge 4\) 定义
+\[
+a_\ell:=((\ell+1)\bmod 3)+1,
+\qquad
+S_\ell^\star:=\{\,a_\ell+3j:\ 0\le j,\ a_\ell+3j\le \ell-4\,\}\ \in\ \mathsf{Ind}(P_\ell).
+\]
+在有限窗 \(4\le \ell\le 12\) 的离线审计范围内，该代表元满足
+\(
+|\mathrm{Orb}_{c_\ell}(S_\ell^\star)|=3\ell-7
+\)
+并达到定理 \ref{thm:pom-toggle-scan-linear-max-orbit} 的极大值。
+对任意固定 \(\ell\)，\(|\mathrm{Orb}_{c_\ell}(S_\ell^\star)|\) 可由逐步迭代在有限步骤内直接核验。
+\end{remark}
+
+\begin{theorem}[一般纤维的时间谱：分量张量化与 \(\mathrm{lcm}\) 规律]\label{thm:pom-toggle-scan-lcm-tensorization}
+设稳定类型 \(x\in X_m\) 的可逆位点诱导图分解为 \(\Gamma_x=\bigsqcup_{i=1}^r P_{\ell_i}\)，从而
+\(
+F_x\cong \prod_{i=1}^r \mathsf{Ind}(P_{\ell_i})
+\)
+且 \(c_x=\prod_i c_{\ell_i}\)（定义 \ref{def:pom-toggle-coxeter-element}）。
+对任意 \(\omega=(\omega_1,\dots,\omega_r)\in F_x\) 有
+\[
+|\mathrm{Orb}_{c_x}(\omega)|
+\ =\
+\mathrm{lcm}_{i}\Bigl(|\mathrm{Orb}_{c_{\ell_i}}(\omega_i)|\Bigr).
+\]
+并且极大时间圈长度满足
+\[
+L_{\max}(x):=\max_{\omega\in F_x} |\mathrm{Orb}_{c_x}(\omega)|
+\ =\
+\mathrm{lcm}_{i}\bigl(L_{\max}(\ell_i)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:pom-toggle-product-components}，扫描元在分量坐标下为交换的直积置换。
+一般事实：若 \(f=\prod_i f_i\) 作用于直积集合 \(\prod_i S_i\) 且各 \(f_i\) 仅作用于第 \(i\) 坐标，则任意点的周期为分量周期的最小公倍数。
+取各坐标独立地达到其极大周期即可得到 \(L_{\max}(x)=\mathrm{lcm}_i(L_{\max}(\ell_i))\)。证毕。
+\end{proof}
+
+\begin{corollary}[极大时间圈的算术组合律]\label{cor:pom-toggle-scan-max-orbit-arithmetic}
+若所有分量满足 \(\ell_i\ge 4\)，则由定理 \ref{thm:pom-toggle-scan-linear-max-orbit} 得
+\[
+L_{\max}(x)=\mathrm{lcm}_{i}\bigl(3\ell_i-7\bigr).
+\]
+一般情形下，对 \(\ell_i\le 3\) 的分量以其实际极大值 \(L_{\max}(\ell_i)\) 代替即可。
+\end{corollary}
+
+\begin{remark}[Fold\(_6\) 的绝对上界：小分量时间圈的 \(\mathrm{lcm}\) 生成]\label{rem:pom-toggle-fold6-lmax}
+在 Fold\(_6\) 的最小窗中，路径分量长度满足 \(\ell_i\le 6\)。
+由表 \ref{tab:fibonacci_cube_toggle_coxeter_audit} 读出
+\(
+(L_{\max}(1),\dots,L_{\max}(6))=(2,3,3,5,8,11)
+\)。
+因此任意 \(m=6\) 纤维的时间圈长度集合（以及极大时间圈长度）均由上述小数的 \(\mathrm{lcm}\) 组合完全控制，独立于 uplift/边界覆盖等外部结构。
+\end{remark}
+
+\paragraph{整格 monodromy：cyclotomic 谱指纹}
+
+\begin{definition}[置换单odromy 矩阵]\label{def:pom-coxeter-monodromy}
+对每个 \(\ell\ge 0\)，把扫描元 \(c_\ell\) 视为对有限集合 \(\mathsf{Ind}(P_\ell)\cong V(\Gamma_\ell)\) 的置换。
+令 \(M_\ell\in GL_{F_{\ell+2}}(\ZZ)\) 为其在标准基下的置换矩阵。
+对一般 \(x\)，定义分量指纹的块对角矩阵
+\[
+M_x:=\bigoplus_{i=1}^r M_{\ell_i}.
+\]
+\end{definition}
+
+\begin{theorem}[cyclotomic 指纹与谱刚性]\label{thm:pom-coxeter-monodromy-cyclotomic}
+设 \(c_\ell\) 的循环分解由长度 \((d_1,\dots,d_s)\) 给出，则
+\[
+\chi_\ell(\lambda):=\det(\lambda I-M_\ell)=\prod_{j=1}^s (\lambda^{d_j}-1),
+\]
+从而 \(\chi_\ell\) 分解为 cyclotomic 多项式的乘积，其谱为单位根的有限多重集。
+并且
+\[
+\det M_\ell=\mathrm{sgn}(c_\ell)\in\{\pm 1\},\qquad
+\mathrm{tr}(M_\ell)=\#\{u\in \mathsf{Ind}(P_\ell): c_\ell(u)=u\}.
+\]
+对一般 \(x\)，有 \(\chi_x(\lambda)=\prod_{i=1}^r \chi_{\ell_i}(\lambda)\) 与 \(\det M_x=\prod_{i=1}^r \det M_{\ell_i}\)。
+\end{theorem}
+\begin{proof}
+置换矩阵按循环分解为若干循环置换块的块对角和；每个长度为 \(d\) 的循环块的特征多项式为 \(\lambda^d-1\)。
+故 \(\chi_\ell(\lambda)=\prod_j(\lambda^{d_j}-1)\)，并因 \(\lambda^d-1=\prod_{k\mid d}\Phi_k(\lambda)\) 得 cyclotomic 分解。
+\(\det M_\ell\) 为置换符号，\(\mathrm{tr}(M_\ell)\) 为不动点数。
+对 \(M_x\) 由块对角分解立得结论。证毕。
+\end{proof}
+
+\begin{corollary}[顶维符号不变量：置换线性化的 \(\pm 1\)]\label{cor:pom-coxeter-top-sign}
+在定义 \ref{def:pom-coxeter-monodromy} 的置换线性化下，扫描元在顶外幂上的作用为乘以
+\[
+\mathrm{sgn}(c_x)=\det M_x\in\{\pm 1\}.
+\]
+该二元指纹可由循环分解（等价于 \(\chi_x\) 的 cyclotomic 分解型）离线审计。
+\end{corollary}
+
+\begin{remark}[\(A\)-型 Coxeter 影子：显式 cyclotomic 单odromy 与 Coxeter-number 尺度]\label{rem:pom-Ashadow-coxeter-monodromy}
+上文 \(\{c_\ell\}\) 的置换单odromy 直接来自“可开则开”的实际扫描动力学，其周期 \(T(\ell)\) 一般不等于 \(\ell+1\)（见表 \ref{tab:fibonacci_cube_toggle_coxeter_audit}）。
+另一方面，路径分量 \(P_\ell\) 作为 \(A_\ell\) Dynkin 图可规范地附加抽象 Coxeter 群 \(W(A_\ell)\) 及其标准几何表示
+\(\rho_\ell:W(A_\ell)\to GL_\ell(\ZZ)\)；
+令 \(\mathbf c_\ell:=s_1\cdots s_\ell\) 为 \(W(A_\ell)\) 的 Coxeter 元素并定义
+\[
+\widetilde M_\ell:=\rho_\ell(\mathbf c_\ell),
+\qquad
+\widetilde M_x:=\bigoplus_{i=1}^r \widetilde M_{\ell_i}.
+\]
+则 \(\widetilde M_\ell\) 的特征多项式具有完全显式的 cyclotomic 形式
+\[
+\det(\lambda I-\widetilde M_\ell)=\frac{\lambda^{\ell+1}-1}{\lambda-1},
+\qquad
+\det(\widetilde M_\ell)=(-1)^\ell,\qquad \mathrm{tr}(\widetilde M_\ell)=-1,
+\]
+从而 \(\det(\widetilde M_x)=(-1)^{\sum_i \ell_i}\)。
+据此可定义纯由 \((\ell_i)\) 决定的 Coxeter-number 尺度
+\[
+T_{\mathrm A}(x):=\mathrm{lcm}_i(\ell_i+1),
+\]
+它刻画该 \(A\)-型 monodromy 影子中的单位根周期结构，并作为与实现细节解耦的线性化审计参照。
+\end{remark}
+
+\paragraph{并行度：最短重写序列与线性扩张}
+
+\begin{definition}[区间超平面偏序与线性扩张数]\label{def:pom-fiber-geodesic-poset}
+在纤维重构图 \(\mathcal F_x\) 上取两点 \(\omega\to \omega'\)（定义 \ref{def:pom-fiber-reconstruction-graph}）。
+令 \(\mathcal H(\omega,\omega')\) 为分离 \(\omega,\omega'\) 的全部超平面集合（等价于在 partial-cube 嵌入下两点坐标差异的 \(\Theta\)-类集合）。
+对任意两条不相交超平面 \(H,H'\in\mathcal H(\omega,\omega')\)，以半空间包含关系定义偏序
+\[
+H\preceq H'\quad:\Longleftrightarrow\quad
+\text{\(H\) 与 \(H'\) 不相交且 \(H\) 在 \(\omega\) 侧的半空间严格包含于 \(H'\) 在 \(\omega\) 侧的半空间}.
+\]
+记 \(\mathrm{LE}(\mathcal H(\omega,\omega'),\preceq)\) 为该偏序的线性扩张数。
+\end{definition}
+
+\begin{theorem}[最短重写序列计数：线性扩张刻画]\label{thm:pom-fiber-geodesic-linear-extension}
+沿用定义 \ref{def:pom-fiber-geodesic-poset}。
+则从 \(\omega\) 到 \(\omega'\) 的所有最短重写序列（等价于 \(\mathcal F_x\) 上的全部测地路径）与偏序 \((\mathcal H(\omega,\omega'),\preceq)\) 的线性扩张一一对应。
+因此
+\[
+\#\{\text{最短重写序列 } \omega\to \omega'\}
+\ =\
+\mathrm{LE}(\mathcal H(\omega,\omega'),\preceq).
+\]
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:pom-fiber-reconstruction-median-partialcube-cat0}，\(\mathcal F_x\) 为 CAT(0) 立方复形的 \(1\)-骨架。
+在该情形下，任意测地路径恰好穿越一次每条分离超平面，且对不相交超平面其穿越顺序必须尊重半空间的嵌套关系；
+相交超平面之间则可交换穿越顺序。
+因此测地路径等价于对 \(\mathcal H(\omega,\omega')\) 选择一个与嵌套偏序相容的全序，即线性扩张。
+反向地，任意线性扩张按序穿越对应超平面均给出一条测地路径。
+故得到双射与计数恒等式。证毕。
+\end{proof}
+
+\begin{corollary}[并行深度与并行宽度的可审计界]\label{cor:pom-fiber-parallelism-poset}
+记 \(N:=|\mathcal H(\omega,\omega')|\)，并记偏序的高度与宽度分别为 \(\mathrm{ht}\)、\(\mathrm{wd}\)。
+在“每层可同时执行一组两两相交（可交换）超平面穿越”的并行语义下，
+任意并行实现的最小层数（并行深度）满足下界
+\[
+\mathrm{depth}(\omega\to\omega')\ \ge\ \mathrm{ht}(\mathcal H(\omega,\omega'),\preceq),
+\qquad
+\mathrm{depth}(\omega\to\omega')\ \ge\ \left\lceil \frac{N}{\mathrm{wd}(\mathcal H(\omega,\omega'),\preceq)}\right\rceil.
+\]
+其中第一项为关键链（critical chain）下界，而第二项由每层最多并行处理 \(\mathrm{wd}\) 个不可比较事件得到。
+因此偏序结构同时提供“最短时间实现”的关键链证书与“最大并行度”的 antichain 证书。
+\end{corollary}
+

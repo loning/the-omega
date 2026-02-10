@@ -121,19 +121,87 @@ T_{\mathrm{GUT}}\simeq\bigoplus_{\chi}\bigoplus_{\varrho}M_{\chi,\varrho}
 
 \input{subsubsec__window6-terminal-propositions}
 
-其后，若进一步将分辨率层—边界层—同步核视为同一可审计对象族，则可将 window-\(6\) 的统一骨架压缩为下述总结定理（同样仅陈述结论与离线核验入口）：
+\subsubsection{单切片协议下的“读出反射子”与判定完备性}\label{subsubsec:single-slice-reflector-completeness}
+在单生成扫描与二元窗读出的制度下，折叠推前 \(P_m=(\Fold_m)_*\) 与纤维均匀提升 \(Q_m\) 诱导幂等读出反射子
+\(
+K_m:=Q_m\circ P_m
+\)
+（定理 \ref{thm:pom-fiber-reflector}），其像空间刻画“纤维条件均匀”的可读出子类。
+在该口径下，\(\Fold_m\) 的合流终止局部重写（唯一触发 \(011\mapsto 100\)）使分辨率层的纤维结构、指数不变量与热力学极限律获得完全的判定描述；并与 window-\(6\) 的边界 uplift 字典及同步核的代数热力学输出共同组成一个实现无关的可审计结论组。
 
 \begin{theorem}[window-\(6\) 锚点下“分辨率层—边界层—同步核”的可审计结论组]\label{thm:window6-unified-skeleton}
-在以 window-\(6\) 的折叠接口为最小锚点、并将分辨率层—边界层—同步核视为同一可审计对象族的口径下，可抽取如下五组结论。各结论均以有限对象（字典、行列式、端点常数、块多重度）封闭表述，并可由确定性离线脚本逐项复核：
+在以 window-\(6\) 的折叠接口（\(\Fold_6\) 与 \(\mathrm{Fold}^{\mathrm{bin}}_6\)）为最小锚点、并将分辨率层—边界层—同步核视为同一可审计对象族的口径下，可抽取如下八组结论。各结论均以有限对象（诱导图与独立集多项式、字典、行列式、端点常数、块多重度）封闭表述，并可由确定性离线脚本逐项复核：
 \begin{enumerate}
   \item \textbf{四步 uplift 同构与 \(m=10\) 边界层的 \texorpdfstring{$(6+6+6+3)$}{(6+6+6+3)} 根系分块：}
-  四步平移 uplift 在任意 \(n\ge 2\) 上给出规范同构 \(X_n\simeq X_{n+4}^{\mathrm{bdry}}\)，并在 \(n=6\) 时确定边界层 \(X_{10}^{\mathrm{bdry}}\) 的 \(21\) 词接口（定理 \ref{thm:boundary-shift4-uplift-isomorphism}）。
+  四步平移 uplift 在任意 \(n\ge 2\) 上给出规范同构 \(X_n\simeq X_{n+4}^{\mathrm{bdry}}\)；其双射可取为
+  \[
+  \iota_n:X_n\to X_{n+4}^{\mathrm{bdry}},
+  \qquad
+  \iota_n(v)=10\,v\,01,
+  \]
+  并以删去首两位与末两位为逆。特别地
+  \(
+  X_{10}^{\mathrm{bdry}}=\{\,10v01:\ v\in X_6\,\}
+  \)
+  且 \(|X_{10}^{\mathrm{bdry}}|=|X_6|=21\)（定理 \ref{thm:boundary-shift4-uplift-isomorphism}）。
   在 \(B_3/C_3\) 根字典口径下，该层可被规范标号为 \(18\) 个根方向与 \(3\) 个 Cartan 方向，并刚性分裂为
   \(
   6\ (\mathrm{short})+6\ (A_2(+))+6\ (A_2(-))+3\ (\mathrm{Cartan})
   \)
   （定理 \ref{thm:boundary-m10-b3c3-rigid-four-block-split}；表 \ref{tab:boundary_uplift_m10_dictionary}）。
   与之相容地，任意 Weyl-不变可观测量的 cyclic 平均严格坍缩为短/长两轨道平均（推论 \ref{cor:fold6-weyl-two-orbit-compression}）。
+
+  \item \textbf{折叠纤维的分量分解与独立集多项式：从上界提升为全分布闭式重建。}
+  对任意 \(m\ge 2\) 与任意稳定类型 \(x\in X_m\)，在 \(\Fold_m\) 的逆代换口径下存在候选位点诱导图 \(\Gamma_x=P_{k_+}[\mathsf{Adm}(x)]\)（定义 \ref{def:pom-fiber-adm-path}）使
+  \[
+  \Fold_m^{-1}(x)\ \cong\ \mathsf{Ind}(\Gamma_x),
+  \]
+  且若 \(\Gamma_x\) 的连通分量依次同构于路径 \(P_{\ell_1},\dots,P_{\ell_r}\)，则逆代换次数生成函数与纤维计数严格因子化为
+  \[
+  Z_x(t):=\sum_{\omega\in\Fold_m^{-1}(x)}t^{r(\omega)}
+  =\prod_{i=1}^r I_{\ell_i}(t),
+  \qquad
+  d_m(x)=Z_x(1)=\prod_{i=1}^r F_{\ell_i+2},
+  \]
+  其中 \(I_{\ell}(t)\) 为路径 \(P_\ell\) 的独立集多项式并具有闭式系数
+  \[
+  I_{\ell}(t)=\sum_{j=0}^{\lceil \ell/2\rceil}\binom{\ell+1-j}{j}\,t^j.
+  \]
+  因而纤维内部的 \(r(\omega)\) 全分布可由各分量系数作卷积乘积完全重建（定理 \ref{thm:pom-fiber-indset-factorization}--\ref{thm:pom-path-indset-poly-closed}）。
+
+  \item \textbf{纤维的带符号指数不变量：取值刚性与 \texorpdfstring{$\bmod 3$}{mod 3} 分量阻碍。}
+  令 \(\mathfrak{s}_m(x):=Z_x(-1)=\sum_{\omega\in\Fold_m^{-1}(x)}(-1)^{r(\omega)}\)（定义 \ref{def:pom-fiber-signed-index}）。
+  若 \(\Gamma_x\simeq\bigsqcup_i P_{\ell_i}\) 并记 \(J_\ell:=I_\ell(-1)\)，则 \((J_\ell)_{\ell\ge 0}\) 为 \(6\) 周期序列
+  \[
+  (J_\ell)_{\ell=0}^{\infty}=(1,0,-1,-1,0,1,1,0,-1,-1,0,1,\dots),
+  \qquad
+  J_\ell=0\ \Longleftrightarrow\ \ell\equiv 1\ (\mathrm{mod}\ 3),
+  \]
+  从而
+  \[
+  \mathfrak{s}_m(x)=\prod_i J_{\ell_i}\ \in\ \{0,\pm 1\},
+  \qquad
+  \mathfrak{s}_m(x)=0\ \Longleftrightarrow\ \exists i,\ \ell_i\equiv 1\ (\mathrm{mod}\ 3),
+  \]
+  并由分量长度 \((\ell_i)\) 给出完全判别（定理 \ref{thm:pom-fiber-signed-index-periodicity}；推论 \ref{cor:pom-fiber-signed-index-mod3}）。
+
+  \item \textbf{从整数矩谱到实参数压力的热力学完成：纤维指数的 LDP 与 CLT。}
+  设 \(X\sim\pi_m\)（其中 \(\pi_m(x)=d_m(x)/2^m\)）并记纤维指数 \(\gamma_m(X)=(1/m)\log d_m(X)\)。
+  若存在极限累积母函数
+  \[
+  \Lambda(t)=\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}_{\pi_m}\!\left[e^{t m\,\gamma_m(X)}\right]
+  \]
+  并满足 Gartner--Ellis 正则性，则 \((\gamma_m(X))_{m\ge 1}\) 满足大偏差原理，率函数为
+  \[
+  I(\gamma)=\sup_{t\ge 0}(t\gamma-\Lambda(t)),
+  \]
+  且 \(\gamma_\ast=\Lambda'(0)\) 为唯一零点（定理 \ref{thm:pom-fiber-index-ldp-thermo}）。
+  若进一步可交换“取极限/求导”，则有中心极限定理
+  \[
+  \frac{\log d_m(X)-m\gamma_\ast}{\sqrt m}\ \Longrightarrow\ \mathcal N(0,\sigma^2),
+  \qquad \sigma^2=\Lambda''(0),
+  \]
+  并可在整数矩谱锚点 \(r_q\) 上交叉审计 \(\Lambda\) 的凸性与二阶常数（定理 \ref{thm:pom-fiber-index-clt-thermo}；并见命题 \ref{prop:pom-fiber-index-cgf} 与注 \ref{rem:pom-fiber-index-ldp}）。
 
   \item \textbf{arity-charge 的代数热力学：两变量行列式闭式、度 \(7\) 代数压力与零温端点：}
   在真实输入 \(40\) 状态同步核的 essential core 上，arity-charge \(\chi\) 在同调意义下可规范为逐边 \(0/1\) 指示，从而闭轨上 \(\chi(\gamma)\ge 0\) 且 primitive 多项式不含 Laurent 负幂（定理 \ref{thm:real-input-40-arity-charge-coboundary}；推论 \ref{cor:real-input-40-arity-charge-no-laurent}）。
@@ -189,7 +257,7 @@ T_{\mathrm{GUT}}\simeq\bigoplus_{\chi}\bigoplus_{\varrho}M_{\chi,\varrho}
 相应的 bulk--horizon 字典、缺陷账本与可证伪接口已在 \S\ref{subsubsec:xi-ramanujan-horizon-ledger-framework} 与讨论节 \S\ref{subsubsec:discussion-bulk-horizon-dictionary} 中系统化展开；此处仅作接口定位，不额外引入新的推理前提。
 
 \paragraph{6D 分辨率折叠—同步核—可审计算术接口：凸几何骨架、剪切降维与算术刚性签名}
-在 window-\(6\) 锚点所给出的“分辨率层—边界层—同步核”骨架之上，结合真实输入同步核的 rotation polytope 计算与折叠碰撞矩的递推与 Hankel 证书，可将若干分散在正文不同位置的可审计输出压缩为一组相互补足的终局式断言：它们把可观测动力学的长期均值、扭曲轴的冗余方向、以及在特征 \(2\) 与 \(p\)-进层面的实现刚性，统一到同一套离散—凸几何—算术接口上。
+依 \cite{Internal2026POMGenerativeAddressThreeRegisterBridgeRH}（2026-02-09 版本）所固定的统一口径，在 window-\(6\) 锚点所给出的“分辨率层—边界层—同步核”骨架之上，可将可观测动力学、扭曲参数与高阶碰撞矩等信息压缩为三类互补证书：其一为 rotation polytope 的有理凸多面体与 facet 不等式（凸几何骨架）；其二为 \(\chi\)-扭曲的线性剪切冗余与零温相图（normal fan）的线性拉回（严格降一维）；其三为最小整系数递推与 Hankel 证书在特征 \(2\) 与 \(p\)-进层面的刚性签名（算术审计与重构稳定性）。因此，下述结论组可独立成文，并可由有限对象逐项核验。
 
 \begin{theorem}[离散—凸几何—算术三重接口（可审计收束）]\label{thm:tri-interface-discrete-convex-arithmetic}
 在本文既定的扫描—投影读出与 \(\Fold\) 核口径下，下述六条结论均可在不引入额外解释层的前提下，以有限对象给出闭式陈述，并可由离线脚本逐项复核：
@@ -280,7 +348,7 @@ T_{\mathrm{GUT}}\simeq\bigoplus_{\chi}\bigoplus_{\varrho}M_{\chi,\varrho}
 \widehat{\Delta}_{\varrho}(w,s)\in\ZZ[s][w],
 \]
 其中 \(s=r+r^{-1}\) 为 completion 的迹坐标、\(w=zr\) 为完成化频率变量（注 \ref{rem:completion-invariant-ring}）。
-对每个整数 \(m\ge 3\)，令 \(s_m:=2\cos(\pi/m)\) 并记 \(K_m:=\QQ(s_m)\)。
+对每个整数 \(m\ge 3\)，令 \(s_m:=2\cos(\pi/m)\) 并记 \(\mathbb{K}_m:=\QQ(s_m)\)。
 称 \(m\) 为一个 \textbf{cyclotomic 共同慢模层}，若存在 \(w_m\in\CC\) 使得对所有 \(\varrho\in\mathcal{R}_{\mathrm{obs}}\) 都有
 \[
 \widehat{\Delta}_{\varrho}(w_m,s_m)=0.
@@ -337,24 +405,24 @@ H(s,w):=\gcd_{\QQ[s,w]}\bigl(\widehat{\Delta}_{\varrho}(w,s):\varrho\in\mathcal{
 \(
 \gcd_{\QQ[s,w]}(Q_{\varrho}:\varrho\in\mathcal{R}_{\mathrm{obs}})=1
 \)。
-则存在有限集合 \(\mathcal{E}\subset\{m\ge 3\}\)，使得对一切 \(m\notin\mathcal{E}\)，在域 \(K_m=\QQ(s_m)\) 上有：
+则存在有限集合 \(\mathcal{E}\subset\{m\ge 3\}\)，使得对一切 \(m\notin\mathcal{E}\)，在域 \(\mathbb{K}_m=\QQ(s_m)\) 上有：
 \[
-\gcd_{K_m[w]}\bigl(\widehat{\Delta}_{\varrho}(w,s_m):\varrho\in\mathcal{R}_{\mathrm{obs}}\bigr)
-\ \text{与}\ H(s_m,w)\ \text{在}\ K_m[w]\ \text{中相差一个单位因子}.
+\gcd_{\mathbb{K}_m[w]}\bigl(\widehat{\Delta}_{\varrho}(w,s_m):\varrho\in\mathcal{R}_{\mathrm{obs}}\bigr)
+\ \text{与}\ H(s_m,w)\ \text{在}\ \mathbb{K}_m[w]\ \text{中相差一个单位因子}.
 \]
 因此除有限例外外，第 \(m\) 层的所有共同慢模均由 \(H(s_m,w)=0\) 完全刻画。
 \end{theorem}
 \begin{proof}
 若对无限多个 \(m\) 有
 \(
-\gcd_{K_m[w]}(Q_{\varrho}(w,s_m):\varrho\in\mathcal{R}_{\mathrm{obs}})
+\gcd_{\mathbb{K}_m[w]}(Q_{\varrho}(w,s_m):\varrho\in\mathcal{R}_{\mathrm{obs}})
 \)
 非平凡，则存在无限多层 \(m\) 使得 \(\{Q_{\varrho}(w,s_m)\}\) 共享某个共同 \(w\)-根。
 由定理 \ref{thm:cyclotomic-specialization-rigidity}（对族 \(\{Q_{\varrho}\}\) 适用）推出
 \(
 \gcd_{\QQ[s,w]}(Q_{\varrho}:\varrho\in\mathcal{R}_{\mathrm{obs}})\neq 1
 \)，与构造矛盾。
-因此额外 gcd 只能在有限多个 \(m\) 上出现；对其余 \(m\)，共同因子即为 \(H(s_m,w)\)（在 \(K_m[w]\) 中仅差一个单位）。证毕。
+因此额外 gcd 只能在有限多个 \(m\) 上出现；对其余 \(m\)，共同因子即为 \(H(s_m,w)\)（在 \(\mathbb{K}_m[w]\) 中仅差一个单位）。证毕。
 \end{proof}
 
 \begin{itemize}

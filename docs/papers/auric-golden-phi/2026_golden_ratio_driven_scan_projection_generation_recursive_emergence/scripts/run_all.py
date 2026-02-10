@@ -469,6 +469,33 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fibonacci_cube_toggle_coxeter_audit",
+            script="exp_fibonacci_cube_toggle_coxeter_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_cube_toggle_coxeter_audit.json",
+                "sections/generated/tab_fibonacci_cube_toggle_coxeter_audit.tex",
+            ],
+        ),
+        Step(
+            name="fence_order_poly_spectral_audit",
+            script="exp_fence_order_poly_spectral_audit.py",
+            args=["--k-max", "12", "--l-max", "18"],
+            expected_outputs=[
+                "artifacts/export/fence_order_poly_spectral_audit.json",
+                "sections/generated/tab_fence_order_poly_spectral_audit.tex",
+            ],
+        ),
+        Step(
+            name="fence_scheduling_euler_volume_audit",
+            script="exp_fence_scheduling_euler_volume_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fence_scheduling_euler_volume_audit.json",
+                "sections/generated/tab_fence_scheduling_euler_volume_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_fiber_homotopy_window6",
             script="exp_fold_fiber_homotopy_window6.py",
             args=[],
