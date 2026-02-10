@@ -309,12 +309,68 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_edge_flux_skeleton",
+            script="exp_window6_edge_flux_skeleton.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_edge_flux_skeleton.json",
+                "sections/generated/eq_window6_edge_flux_skeleton.tex",
+            ],
+        ),
+        Step(
             name="foldbin6_geo_stabilizer",
             script="exp_foldbin6_geo_stabilizer.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/foldbin6_geo_stabilizer.json",
                 "sections/generated/eq_foldbin6_geo_stabilizer.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_fiber_hamming_min_distance",
+            script="exp_foldbin6_fiber_hamming_min_distance.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_fiber_hamming_min_distance.json",
+                "sections/generated/tab_foldbin6_fiber_hamming_min_distance.tex",
+            ],
+        ),
+        Step(
+            name="window6_type_adjacency_graph_rigidity",
+            script="exp_window6_type_adjacency_graph_rigidity.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_type_adjacency_graph_rigidity.json",
+                "sections/generated/eq_window6_type_adjacency_graph_rigidity.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_information_loss_constants",
+            script="exp_foldbin6_information_loss_constants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_information_loss_constants.json",
+                "sections/generated/eq_foldbin6_information_loss_constants.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_fiber_affine_geometry",
+            script="exp_foldbin6_fiber_affine_geometry.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_fiber_affine_geometry.json",
+                "sections/generated/tab_foldbin6_fiber_affine_geometry.tex",
+            ],
+        ),
+        Step(
+            name="fold_zeck_time_factor_succ_reset_audit",
+            script="exp_fold_zeck_time_factor_succ_reset_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zeck_time_factor_succ_reset_audit.json",
+                "sections/generated/tab_fold_zeck_succ_unique_branch_audit_m2_m10.tex",
+                "sections/generated/tab_fold_zeck_reset_event_audit_m2_m10.tex",
+                "sections/generated/tab_fold_zeck_reset_event_gaps_m6.tex",
             ],
         ),
         Step(
