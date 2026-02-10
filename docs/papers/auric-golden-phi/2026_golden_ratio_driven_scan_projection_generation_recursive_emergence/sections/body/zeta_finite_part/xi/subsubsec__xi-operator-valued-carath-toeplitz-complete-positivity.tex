@@ -1,0 +1,190 @@
+\subsubsection{算子值视界正性与完全正可见实现：多通道 Carath\'eodory--Toeplitz 完备性、Fourier--Pontryagin 分解与普适 strictification}\label{subsubsec:xi-operator-valued-carath-toeplitz-complete-positivity}
+本节此前已在标量口径给出 RH 的视界正性判别：\(\mathscr{C}_{\zeta}\) 的 Carath\'eodory 正性严格等价于 Toeplitz--PSD 层级（附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz}）。
+同时，演算学侧的严格交换被压缩为异常签名为零，并由普适可交换化群商 \(G\twoheadrightarrow G^{\mathrm{BC}}_m\) 做 strictification（\S\ref{subsec:pom-three-generator-residual-closure}；定理 \ref{thm:dephys-offline-hair-curvature-reduction}）。
+\par
+本小节把上述两条链条在\emph{多通道/算子值}层面统一：将“逐通道正性”提升为一个取值于有限维 \(C^\ast\)-代数的\textbf{完全正}视界对象，并用 Fourier--Pontryagin（Peter--Weyl）分解把块 Toeplitz--PSD 与逐通道 PSD 严格对齐；由此把 strictification 解释为“完全正可见实现存在性”的最大商，并将离线毛发（真共振或不可 strictify 的残差）严格化为完全正性的有限维否证器。
+
+\paragraph{有限维 \(C^\ast\)-代数与算子值 Carath\'eodory 类}
+令 \(\mathcal{A}\) 为有限维 \(C^\ast\)-代数。
+在本文的 strictification 语境中，典型取法为
+\[
+\mathcal{A}_m:=\CC\bigl[G^{\mathrm{BC}}_m\bigr],
+\]
+其 \(C^\ast\)-结构由右正则表示诱导，等价于其 Peter--Weyl 分解为有限直和矩阵代数：
+\begin{equation}\label{eq:xi-A-peter-weyl}
+\boxed{\;
+\mathcal{A}
+\ \cong\
+\bigoplus_{\pi\in\widehat{\mathcal{A}}} M_{d_\pi}(\CC)\; },
+\end{equation}
+其中 \(\widehat{\mathcal{A}}\) 为不可约 \(\ast\)-表示集合（对群代数即为 \(\widehat{G^{\mathrm{BC}}_m}\)）。
+因此 \(a\in\mathcal{A}\) 为正元当且仅当对每个不可约分量 \(\pi\) 都有 \(a_\pi\succeq 0\)。
+\par
+称解析映射 \(F:\mathbb{D}\to\mathcal{A}\) 为\textbf{算子值 Carath\'eodory 函数}，若对所有 \(w\in\mathbb{D}\) 有
+\[
+\Re F(w):=\frac{F(w)+F(w)^\ast}{2}\succeq 0
+\qquad(\text{在 }\mathcal{A}\ \text{的自伴序下}).
+\]
+写其归一化幂级数为
+\begin{equation}\label{eq:xi-operator-carath-series}
+\boxed{\;
+F(w)=c_0+2\sum_{n\ge 1}c_n w^n,\qquad c_{-n}:=c_n^\ast\;}
+\end{equation}
+（其中 \(c_n\in\mathcal{A}\)）。
+对每个 \(N\ge 0\) 定义块 Toeplitz 截断
+\begin{equation}\label{eq:xi-block-toeplitz-def}
+\boxed{\;
+\mathbf{T}^{\mathcal{A}}_N(F):=(c_{j-k})_{0\le j,k\le N}\ \in\ M_{N+1}(\mathcal{A}).\;}
+\end{equation}
+
+\begin{theorem}[算子值 Herglotz 表示与块 Toeplitz 完备性]\label{thm:xi-operator-herglotz-toeplitz-completeness}
+令 \(F:\mathbb{D}\to\mathcal{A}\) 解析并写作 \eqref{eq:xi-operator-carath-series}。
+则下列陈述等价：
+\begin{enumerate}
+  \item \(\Re F(w)\succeq 0\) 对所有 \(w\in\mathbb{D}\) 成立（算子值 Carath\'eodory）；
+  \item 存在一个 \(\mathcal{A}\)-值正测度\footnote{在有限维情形可理解为：对每个 Borel 集 \(E\subseteq\TT\) 赋值 \(\boldsymbol\mu(E)\in\mathcal{A}_+\)，且对互不交并可数可加，并满足 \(\boldsymbol\mu(\TT)\) 有限。} \(\boldsymbol\mu\) 与一个自伴常数 \(\beta\in\mathcal{A}\)，使得
+  \begin{equation}\label{eq:xi-operator-herglotz}
+  \boxed{\;
+  F(w)=\mathrm{i}\beta+\int_{\TT}\frac{\xi+w}{\xi-w}\,d\boldsymbol\mu(\xi)\qquad(w\in\mathbb{D});\;}
+  \end{equation}
+  \item 对所有 \(N\ge 0\)，块 Toeplitz 截断半正定：
+  \begin{equation}\label{eq:xi-block-toeplitz-psd}
+  \boxed{\;\mathbf{T}^{\mathcal{A}}_N(F)\succeq 0\qquad(\forall N\ge 0).\;}
+  \end{equation}
+\end{enumerate}
+在 \(\mathcal{A}=\CC\) 的标量情形，\eqref{eq:xi-operator-herglotz}--\eqref{eq:xi-block-toeplitz-psd} 退化为附录 \eqref{eq:app-horizon-herglotz-disk} 与定理 \ref{thm:app-horizon-toeplitz-lmi} 的 Toeplitz--PSD 完备性。
+\end{theorem}
+
+\begin{proof}
+由于 \(\mathcal{A}\) 有限维，存在分解 \eqref{eq:xi-A-peter-weyl}。
+对每个不可约分量 \(\pi\)，令 \(F_\pi:=\pi(F):\mathbb{D}\to M_{d_\pi}(\CC)\)，则
+\(\Re F\succeq 0\) 当且仅当对所有 \(\pi\) 有 \(\Re F_\pi\succeq 0\)。
+而矩阵值 Carath\'eodory/Herglotz 表示给出：\(\Re F_\pi\succeq 0\) 当且仅当存在正的 \(M_{d_\pi}(\CC)\)-值测度 \(\mu_\pi\) 与自伴常数 \(\beta_\pi\) 使
+\(
+F_\pi(w)=\mathrm{i}\beta_\pi+\int_{\TT}\frac{\xi+w}{\xi-w}\,d\mu_\pi(\xi)
+\)；
+并且其矩序列的块 Toeplitz 截断在 \(M_{(N+1)d_\pi}(\CC)\) 上半正定当且仅当上述表示存在。
+将 \(\{\mu_\pi\}_{\pi}\) 与 \(\{\beta_\pi\}_{\pi}\) 逐块组装为 \(\boldsymbol\mu\) 与 \(\beta\) 即得 \((1)\Leftrightarrow(2)\)。
+同理，\(\mathbf{T}^{\mathcal{A}}_N(F)\succeq 0\) 当且仅当对所有 \(\pi\) 有 \(\pi(\mathbf{T}^{\mathcal{A}}_N(F))=\mathbf{T}_N(F_\pi)\succeq 0\)，从而得到 \((1)\Leftrightarrow(3)\)。证毕。
+\end{proof}
+
+\paragraph{Fourier--Pontryagin 分解：逐通道 PSD 与完全正块 PSD}
+在 \(\mathcal{A}=\CC[H]\)（有限群代数）情形，\eqref{eq:xi-A-peter-weyl} 可取为群代数的 Peter--Weyl 分解；
+若 \(H\) 为有限阿贝尔群，则进一步退化为 Fourier--Pontryagin 对偶分解 \(\CC[H]\cong \CC[\widehat H]\)（对角化）。
+
+\begin{theorem}[表示分解下的块 Toeplitz 判别]\label{thm:xi-fourier-pontryagin-block-toeplitz}
+令 \(\mathcal{A}\) 为有限维 \(C^\ast\)-代数并取分解 \eqref{eq:xi-A-peter-weyl}。
+对解析 \(F:\mathbb{D}\to\mathcal{A}\)，以下命题等价：
+\begin{enumerate}
+  \item \(\Re F(w)\succeq 0\)（算子值 Carath\'eodory）；
+  \item 对每个 \(\pi\in\widehat{\mathcal{A}}\)，分量 \(F_\pi\) 满足 \(\Re F_\pi(w)\succeq 0\)（逐通道 Carath\'eodory）；
+  \item 对每个 \(N\ge 0\)，块 Toeplitz \(\mathbf{T}^{\mathcal{A}}_N(F)\succeq 0\)；
+  \item 对每个 \(\pi\in\widehat{\mathcal{A}}\) 与每个 \(N\ge 0\)，矩阵截断
+  \[
+  \pi\!\bigl(\mathbf{T}^{\mathcal{A}}_N(F)\bigr)
+  \ =\
+  \mathbf{T}_N(F_\pi)\ \in\ M_{(N+1)d_\pi}(\CC)
+  \]
+  半正定。
+\end{enumerate}
+因此“逐通道 PSD”（对所有 \(\pi\) 的 Toeplitz--PSD）与“完全正块 PSD”（单一块 Toeplitz 可行域）严格等价。
+\end{theorem}
+
+\begin{proof}
+由有限维 \(C^\ast\)-代数的直和分解 \eqref{eq:xi-A-peter-weyl}，任一自伴元的正性由各不可约分量的正性逐块刻画；
+同理 \(M_{N+1}(\mathcal{A})\) 的正性也由每个放大表示 \(\pi^{(N+1)}:=\mathrm{id}_{N+1}\otimes \pi\) 的正性刻画。
+将该观察分别施加于 \(\Re F(w)\) 与 \(\mathbf{T}^{\mathcal{A}}_N(F)\) 并结合定理 \ref{thm:xi-operator-herglotz-toeplitz-completeness} 即得。证毕。
+\end{proof}
+
+\begin{corollary}[有限阿贝尔群的逐通道对角化：单一块 PSD \texorpdfstring{$\Longleftrightarrow$}{<->} 全通道 PSD]\label{cor:xi-abelian-block-toeplitz-directsum}
+设 \(H\) 为有限阿贝尔群并取 \(\mathcal{A}=\CC[H]\)。
+在 Fourier--Pontryagin 对偶分解 \(\CC[H]\cong \bigoplus_{\chi\in\widehat H}\CC\) 下，
+对解析 \(F:\mathbb{D}\to\CC[H]\) 记其角色通道分量为 \(F_\chi\)。
+则对每个 \(N\ge 0\)，块 Toeplitz 截断 \(\mathbf{T}^{\mathcal{A}}_N(F)\) 在正则表示下（视为 \(M_{(N+1)|H|}(\CC)\) 的 Hermitian 块矩阵）与直和矩阵
+\[
+\bigoplus_{\chi\in\widehat H}\mathbf{T}_N(F_\chi)
+\]
+酉等价。
+特别地，
+\[
+\boxed{\;
+\mathbf{T}^{\mathcal{A}}_N(F)\succeq 0
+\ \Longleftrightarrow\
+\forall\chi\in\widehat H,\ \mathbf{T}_N(F_\chi)\succeq 0\;}
+\]
+从而“逐通道 PSD 核验”在阿贝尔可见商口径下可被统一为一个单一块 Toeplitz--PSD 可行域（单一半正定证书）。
+\end{corollary}
+
+\begin{proof}
+这是定理 \ref{thm:xi-fourier-pontryagin-block-toeplitz} 在阿贝尔情形 \(d_\pi=1\) 的直接特例：不可约表示即角色 \(\chi\)，并且放大表示把块 Toeplitz 截断对角化为各通道 Toeplitz 截断的直和。证毕。
+\end{proof}
+
+\paragraph{strictification 的完全正解释：\texorpdfstring{$G^{\mathrm{BC}}_m$}{GBCm} 作为最大可见商}
+在投影词闭环接口中，严格交换等价于异常签名为零（推论 \ref{cor:pom-zero-anom-pullback-exactness}），并由普适商 \(G\twoheadrightarrow G^{\mathrm{BC}}_m\) strictify（命题 \ref{prop:pom-bc-quotient-strictify} 与命题 \ref{prop:pom-bc-quotient-universal}）。
+将该普适性与定理 \ref{thm:xi-operator-herglotz-toeplitz-completeness} 合并，可把 strictification 解释为“多通道完全正可见实现存在性”的最大商。
+
+\begin{theorem}[最大完全正可见实现：strictification 的算子值刻画]\label{thm:xi-gbc-maximal-cp-visible-realization}
+固定分辨率 \(m\) 并令 \(\mathcal{A}_m:=\CC[G^{\mathrm{BC}}_m]\)。
+设在可见扭曲通道集合 \(\widehat{G^{\mathrm{BC}}_m}\) 上给定一族视界函数（例如扭曲输出的视界对数导数/Carath\'eodory 族）
+\(\{F_{\overline\chi}\}_{\overline\chi\in\widehat{G^{\mathrm{BC}}_m}}\)，并假设它们可组装为一个 \(\mathcal{A}_m\)-值解析函数 \(F_m:\mathbb{D}\to\mathcal{A}_m\)，使得对每个 \(\overline\chi\) 有 \(\pi_{\overline\chi}(F_m)=F_{\overline\chi}\)（其中 \(\pi_{\overline\chi}\) 为对应通道的 \(\ast\)-表示）。
+若异常在可见通道上严格为零（命题 \ref{prop:pom-bc-quotient-strictify}），并且 \(F_m\) 满足块 Toeplitz--PSD 层级 \(\mathbf{T}^{\mathcal{A}_m}_N(F_m)\succeq 0\)（\(\forall N\)），则存在 \(\mathcal{A}_m\)-值正测度 \(\boldsymbol\mu_m\) 使 \(F_m\) 具有 Herglotz 表示 \eqref{eq:xi-operator-herglotz}。
+从而各通道 \(F_{\overline\chi}\) 同时由同一 \(\boldsymbol\mu_m\) 的 Fourier--Pontryagin 投影给出（完全正可见实现）。
+\par
+反之，若存在某个群商 \(G\twoheadrightarrow Q\) 使得在 \(Q\) 上上述完全正可见实现成立并使闭环接口严格交换，则该群商必唯一因子化通过 \(G^{\mathrm{BC}}_m\)（命题 \ref{prop:pom-bc-quotient-universal}）。
+\end{theorem}
+
+\begin{proof}
+第一段由“异常在可见通道上为零”保证 strictification 后的可见通道组装是闭环接口相容的；再由定理 \ref{thm:xi-operator-herglotz-toeplitz-completeness} 的 \((3)\Rightarrow(2)\) 得到 \(\mathcal{A}_m\)-值正测度表示。
+第二段为 \(G^{\mathrm{BC}}_m\) 的普适性（命题 \ref{prop:pom-bc-quotient-universal}）的直接应用。证毕。
+\end{proof}
+
+\begin{theorem}[端点原子（阈值承载）的中心性与通道强度分解]\label{thm:xi-endpoint-atom-central-channel-strength}
+在定理 \ref{thm:xi-gbc-maximal-cp-visible-realization} 的完全正实现下，端点 \(-1\) 的原子
+\[
+\mathbf{M}_{-1}:=\boldsymbol\mu_m(\{-1\})\in(\mathcal{A}_m)_+
+\]
+存在且为正元。
+\begin{enumerate}
+  \item 若 \(G^{\mathrm{BC}}_m\) 为阿贝尔群，则 \(\mathcal{A}_m=\CC[G^{\mathrm{BC}}_m]\) 交换，因而 \(\mathbf{M}_{-1}\in Z(\mathcal{A}_m)\)（中心）。
+  \item 更一般地，若 \(\boldsymbol\mu_m\) 取值于中心子代数（中心测度），则 \(\mathbf{M}_{-1}\in Z(\mathcal{A}_m)\)，并且对任意不可约分量 \(\pi\) 有
+  \begin{equation}\label{eq:xi-endpoint-atom-channel-strength}
+  \boxed{\;
+  (\mathbf{M}_{-1})_\pi=\lambda_\pi\,I_{d_\pi},\qquad \lambda_\pi\ge 0.\;}
+  \end{equation}
+\end{enumerate}
+族 \(\{\lambda_\pi\}\) 给出端点阈值承载的有限维“通道强度分解”；在阿贝尔情形下 \(d_\pi=1\) 且 \(\lambda_\pi\) 退化为角色通道上的端点载荷。
+\end{theorem}
+
+\begin{proof}
+第一条由 \(\mathcal{A}_m\) 交换立得。
+第二条中，由假设 \(\boldsymbol\mu_m(E)\in Z(\mathcal{A}_m)\) 对一切 Borel 集 \(E\) 成立，故 \(\mathbf{M}_{-1}=\boldsymbol\mu_m(\{-1\})\in Z(\mathcal{A}_m)\)。
+对中心元在每个不可约表示上的像，由 Schur 引理知必为标量矩阵，写作 \((\mathbf{M}_{-1})_\pi=\lambda_\pi I_{d_\pi}\)；
+又因 \(\mathbf{M}_{-1}\succeq 0\) 故 \(\lambda_\pi\ge 0\)。证毕。
+\end{proof}
+
+\paragraph{有限维否证器：完全正性破缺的可审计见证}
+由于每一级 \(\mathbf{T}^{\mathcal{A}}_N(F)\succeq 0\) 都是有限维半正定约束，完全正性（算子值 Carath\'eodory）的失败必在某一级给出有限维否证器。
+
+\begin{corollary}[完全正性破缺 \texorpdfstring{$\Rightarrow$}{=>} 有限阶块负惯性]\label{cor:xi-cp-breakdown-finite-witness}
+设 \(F:\mathbb{D}\to\mathcal{A}\) 解析，且不属于算子值 Carath\'eodory 类（即存在 \(w\in\mathbb{D}\) 使 \(\Re F(w)\nsucceq 0\)）。
+则存在有限 \(N\) 与某个不可约分量 \(\pi\in\widehat{\mathcal{A}}\)，使得矩阵截断
+\[
+\pi\!\bigl(\mathbf{T}^{\mathcal{A}}_N(F)\bigr)=\mathbf{T}_N(F_\pi)
+\]
+具有负特征值。
+特别地，任一通道出现稳定域内极点（真共振）都会迫使某一级块 Toeplitz--PSD 失败，从而产生实现无关、可离线复核的有限维否证器。
+\end{corollary}
+
+\begin{proof}
+若所有 \(N\) 与所有 \(\pi\) 的截断都半正定，则由定理 \ref{thm:xi-fourier-pontryagin-block-toeplitz} 得 \(\Re F\succeq 0\)，与假设矛盾；故必存在见证对 \((N,\pi)\)。证毕。
+\end{proof}
+
+\begin{remark}[异常与“完全正可见实现”的否证接口]\label{rem:xi-anom-as-cp-visible-obstruction}
+定理 \ref{thm:xi-gbc-maximal-cp-visible-realization} 中“异常在可见通道上严格为零”是完全正可见实现的结构性前提：
+当异常非零时，闭环接口的严格交换在既定分辨率上不成立（推论 \ref{cor:pom-zero-anom-pullback-exactness}），从而无法在所选可见商上把多通道输出组装为一个与接口相容的 \(\mathcal{A}_m\)-值对象。
+该失败本身即为有限维可审计否证器（异常签名/异常上同调类），并可由 MOM\((q)\) 门在线性意义下放大（命题 \ref{prop:pom-anom-moment-amplification}）。
+与之正交，真共振（稳定域内极点）则通过块 Toeplitz--PSD 的有限级失败显形（推论 \ref{cor:xi-cp-breakdown-finite-witness}）。
+\end{remark}
+
+\endinput
+
