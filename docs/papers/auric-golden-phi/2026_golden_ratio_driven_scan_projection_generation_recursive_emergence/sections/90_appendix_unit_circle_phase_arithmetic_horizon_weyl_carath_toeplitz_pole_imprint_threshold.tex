@@ -1,0 +1,132 @@
+% Auto-split to keep each TeX source < 600 lines.
+
+\paragraph{盘内极点的系数印迹与 Toeplitz--PSD 的检出门槛}
+本段把“盘内极点”对 \(\{c_n\}\) 的主阶贡献写成闭式，并据此给出一个与端点压缩相容的、可审计的 PSD 检出门槛：该门槛把“极端共振”（端点薄层中的离切片信息）转写为“需要多高阶矩/多极矩才能稳定触发有限维否证器”的尺度律。
+
+\begin{proposition}[盘内极点的系数印迹（主部与 Taylor 主项）]\label{prop:app-horizon-pole-imprint}
+设 \(\rho=\beta+\mathrm{i}\gamma\) 为 \(\Xi_{\zeta}\) 的简单零点且 \(\beta<\tfrac12\)。
+令 \(\delta:=\tfrac12-\beta>0\)、\(z_\rho:=\gamma+\mathrm{i}\delta\in\mathbb{H}\)，并令 \(w_\rho:=\mathcal{C}(z_\rho)\in\mathbb{D}\) 为其圆盘像（Cayley 变换 \(\mathcal{C}\) 见式 \eqref{eq:app-cayley-disk}）。
+则 \(\mathscr{C}_{\zeta}\) 在 \(w=w_\rho\) 处具有简单极点，并可写为
+\begin{equation}\label{eq:app-horizon-pole-principal-part}
+\boxed{\;
+\mathscr{C}_{\zeta}(w)
+=-\frac{(1+w_\rho)^2}{2}\cdot\frac{1}{w-w_\rho}+H_\rho(w),\;}
+\end{equation}
+其中 \(H_\rho\) 在 \(\mathbb{D}\) 内解析。
+将 \(H_\rho\) 在 \(w=0\) 处按同一归一化幂级数展开
+\[
+H_\rho(w)=h_0+2\sum_{n\ge 1}h_n w^n,
+\]
+并沿用 \(\mathscr{C}_{\zeta}(w)=c_0+2\sum_{n\ge 1}c_n w^n\)（式 \eqref{eq:app-horizon-carath-series}），则系数满足
+\[
+c_0=\frac{(1+w_\rho)^2}{2w_\rho}+h_0,
+\qquad
+c_n=\frac{(1+w_\rho)^2}{4w_\rho^{n+1}}+h_n\quad(n\ge 1).
+\]
+\end{proposition}
+
+\begin{proof}
+由定义 \eqref{eq:app-horizon-carath-def}，\(\mathscr{C}_{\zeta}(w)=-\bigl(\log\Xi_{\zeta}\bigr)'\!\bigl(s(w)\bigr)\)。
+若 \(\rho\) 为 \(\Xi_{\zeta}\) 的简单零点，则 \(\bigl(\log\Xi_{\zeta}\bigr)'(s)\) 在 \(s=\rho\) 处具有留数 \(1\) 的简单极点，从而 \(\mathscr{C}_{\zeta}\) 在 \(w=w_\rho\) 处具有留数 \(-1\) 的简单极点。
+用链式法则在 \(w_\rho\) 处线性化 \(s(w)=s(w_\rho)+s'(w_\rho)(w-w_\rho)+\cdots\)，得到主部
+\[
+\mathscr{C}_{\zeta}(w)
+=-\frac{1}{s'(w_\rho)}\cdot\frac{1}{w-w_\rho}+O(1).
+\]
+而由 \eqref{eq:app-horizon-s-of-w-shift} 有 \(s'(w)=\frac{2}{(1+w)^2}\)，故 \(-1/s'(w_\rho)=-(1+w_\rho)^2/2\)，从而得到 \eqref{eq:app-horizon-pole-principal-part}。
+\par
+将 \eqref{eq:app-horizon-pole-principal-part} 的极点项在 \(w=0\) 处作几何级数展开：
+\[
+-\frac{(1+w_\rho)^2}{2}\cdot\frac{1}{w-w_\rho}
+=\frac{(1+w_\rho)^2}{2}\sum_{n\ge 0}\frac{w^n}{w_\rho^{n+1}},
+\]
+再与 \(H_\rho(w)=h_0+2\sum_{n\ge 1}h_n w^n\) 合并，并对照 \(\mathscr{C}_{\zeta}(w)=c_0+2\sum_{n\ge 1}c_n w^n\) 的系数即可得到所示结论。证毕。
+\end{proof}
+
+\begin{theorem}[共振品质因数与 Toeplitz--PSD 的检出门槛]\label{thm:app-horizon-toeplitz-detection-threshold}
+在命题 \ref{prop:app-horizon-pole-imprint} 的设定下，定义共振品质因数
+\begin{equation}\label{eq:app-horizon-Qrho-def}
+\boxed{\;
+Q_\rho:=\frac{1}{1-|w_\rho|^2}
+=\frac{\gamma^2+(1+\delta)^2}{4\delta}\;}
+\end{equation}
+（后一等式见推论 \ref{cor:app-offcritical-horocycle-busemann}）。
+假设余项系数满足一份可审计上界 \(|h_n|\le H\)（对所有 \(n\ge 0\) 成立）。
+\par
+若希望仅通过有限级 Toeplitz--PSD 核验来\emph{排除}该盘内极点（等价地：要求 \(\mathbf{T}_N\succeq 0\) 在某个足够大的截断阶 \(N\) 上仍成立，从而拒绝“有限维失败见证”），则该核验阶数必须满足下界
+\begin{equation}\label{eq:app-horizon-toeplitz-detect-threshold}
+\boxed{\;
+N\ \ge\ C^{-1}\,Q_\rho\,\log\!\bigl(1+\delta Q_\rho\bigr)\;},
+\end{equation}
+其中常数 \(C>0\) 仅依赖于 \(c_0\) 与 \(H\)（不依赖于 \(\gamma,\delta\)）。
+特别地，当 \(|\gamma|\to\infty\) 且 \(\delta\) 有界时，\(\delta Q_\rho\asymp \gamma^2\)，故该下界等价于
+\[
+N\ \gtrsim\ \frac{\gamma^2}{\delta}\,\log(1+\gamma^2).
+\]
+\par
+反向表述：若对某个 \(N\) 已核验 \(\mathbf{T}_0,\dots,\mathbf{T}_N\succeq 0\)，则任何可能存在的离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\) 必满足
+\[
+\delta\ \le\ C\,\frac{\gamma^2\,\log(1+\gamma^2)}{N},
+\]
+从而在高高度区间 \(|\gamma|\gg 1\) 上，固定阶的 Toeplitz--PSD 核验只能排除“偏移不进入端点薄层”的离线零点。
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:app-horizon-toeplitz-lmi}，\(\mathbf{T}_N\succeq 0\) 蕴含对任意 \(1\le n\le N\) 其 \(\{0,n\}\) 主子矩阵
+\(
+\begin{psmallmatrix}
+c_0 & c_n\\
+c_{-n} & c_0
+\end{psmallmatrix}
+\)
+半正定。
+由于 \(c_{-n}=\overline{c_n}\)，该条件等价于
+\begin{equation}\label{eq:app-horizon-2x2-necessary}
+|c_n|\le c_0,\qquad 1\le n\le N.
+\end{equation}
+另一方面，由命题 \ref{prop:app-horizon-pole-imprint} 与 \(|h_n|\le H\) 得到对任意 \(n\ge 1\) 的下界
+\begin{equation}\label{eq:app-horizon-cn-lowerbound}
+|c_n|
+\ge
+\frac{|1+w_\rho|^2}{4\,|w_\rho|^{n+1}}-H.
+\end{equation}
+因此若 \(\mathbf{T}_N\succeq 0\) 成立，则对 \(n=N\) 合并 \eqref{eq:app-horizon-2x2-necessary}--\eqref{eq:app-horizon-cn-lowerbound} 得
+\[
+\frac{|1+w_\rho|^2}{4\,|w_\rho|^{N+1}}\le c_0+H.
+\]
+由推论 \ref{cor:app-offcritical-horocycle-busemann} 的恒等式
+\(
+|1+w_\rho|^2=(1-|w_\rho|^2)/\delta
+\)
+与定义 \(Q_\rho=(1-|w_\rho|^2)^{-1}\) 得 \(|1+w_\rho|^2=(\delta Q_\rho)^{-1}\)，从而
+\begin{equation}\label{eq:app-horizon-wrho-growth-bound}
+|w_\rho|^{-(N+1)}\le 4(c_0+H)\,\delta Q_\rho.
+\end{equation}
+令 \(r:=|w_\rho|^2=1-1/Q_\rho\in(0,1)\)。
+对 \(r\in(0,1)\) 有标准不等式
+\(
+1-r\le -\log r \le \frac{1-r}{r}
+\)，
+于是当 \(Q_\rho>1\) 时
+\begin{equation}\label{eq:app-horizon-logw-sandwich}
+\frac{1}{2Q_\rho}\ \le\ -\log|w_\rho|\ \le\ \frac{1}{2(Q_\rho-1)}.
+\end{equation}
+将 \eqref{eq:app-horizon-wrho-growth-bound} 取对数并用 \eqref{eq:app-horizon-logw-sandwich} 的右端估计（使左侧增长最慢，从而得到必要的“检出门槛”下界），得到存在常数 \(C>0\) 仅依赖于 \(c_0,H\) 使
+\[
+N+1
+\ge
+C^{-1}\,Q_\rho\,\log\!\bigl(1+\delta Q_\rho\bigr),
+\]
+即得到 \eqref{eq:app-horizon-toeplitz-detect-threshold}（把 \(\log(4(c_0+H)\delta Q_\rho)\) 吸收进 \(\log(1+\delta Q_\rho)\) 与常数即可）。
+\par
+最后由 \eqref{eq:app-horizon-Qrho-def} 的闭式与 \(\delta Q_\rho\asymp \gamma^2\)（\(|\gamma|\to\infty\)、\(\delta\) 有界）得到所示渐近形式；反向表述由 \(Q_\rho\asymp \gamma^2/\delta\) 代回 \eqref{eq:app-horizon-toeplitz-detect-threshold} 并整理即得。证毕。
+\end{proof}
+
+\begin{remark}[失败见证的端点聚焦（角分辨率口径）]\label{rem:app-horizon-toeplitz-witness-endpoint-focus}
+Toeplitz--PSD 的有限级否证器等价于在 \(\deg\le N\) 的三角多项式/OPUC 截断内找到一条使二次型为负的方向（推论 \ref{cor:app-horizon-toeplitz-z2-cert-split} 给出其偶/奇扇区定位）。
+在命题 \ref{prop:app-horizon-pole-imprint} 的几何语义中，盘内极点对应于端点 \(w=-1\) 邻域的薄层压缩：当 \(|\gamma|\) 大时有 \(\arg w_\rho\approx\pi\) 且 \(\delta Q_\rho=|1+w_\rho|^{-2}\asymp \gamma^2\)（推论 \ref{cor:app-offcritical-horocycle-busemann}）。
+因此，若否证器在阶 \(N\) 上首次出现，其“角分辨率”自然受 \(N^{-1}\) 量级约束，并倾向于在 \(\theta\approx\pi\) 的端点角窗内聚焦；这与定理 \ref{thm:app-horizon-endpoint-window-mass} 的端点窗质量渐近以及端点紧化的可见化机制相一致。
+\end{remark}
+
+\endinput
+

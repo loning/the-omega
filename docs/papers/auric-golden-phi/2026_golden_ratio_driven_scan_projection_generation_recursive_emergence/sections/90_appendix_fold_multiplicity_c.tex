@@ -1,5 +1,188 @@
 % Auto-split to keep each TeX source < 800 lines.
 
+\paragraph{纤维谱的两态一致渐近与分位阈值（bin-fold）}
+本段在命题 \ref{prop:fold-bin-fiber-tail} 的尾部表示之上，给出二进制区间折叠
+\(\mathrm{Fold}^{\mathrm{bin}}_m:\{0,\dots,2^m-1\}\to X_m\)
+的纤维多重度谱在 \(m\to\infty\) 下的一个闭式极限图景：在指数主阶上，纤维规模退化为仅由末位 \(w_m\) 决定的两态常数；由此导出与 prime-register 分位阈值同型的显式指数常数 \(\log(2/\varphi)\)。
+
+\begin{theorem}[纤维大小的两态一致渐近（bin-fold）]\label{thm:fold-bin-two-state-asymptotic}
+存在绝对常数 \(C>0\)，使得对所有充分大的 \(m\) 以及任意 \(w=(w_1,\dots,w_m)\in X_m\)，二进制区间折叠的纤维多重度满足
+\begin{equation}\label{eq:fold-bin-two-state-asymptotic}
+\boxed{\;
+\Bigl|\,d^{\mathrm{bin}}_m(w)\ -\ \varphi^{-w_m}\Bigl(\frac{2}{\varphi}\Bigr)^m\,\Bigr|\ \le\ C\;}
+\end{equation}
+其中 \(\varphi=\frac{1+\sqrt5}{2}\)。
+等价地，
+\[
+\Bigl(\frac{\varphi}{2}\Bigr)^m d^{\mathrm{bin}}_m(w)
+=\varphi^{-w_m}+O\!\Bigl(\Bigl(\frac{\varphi}{2}\Bigr)^m\Bigr),
+\qquad (m\to\infty),
+\]
+且误差在 \(w\in X_m\) 上一致。
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:fold-bin-fiber-tail}，
+\(
+d^{\mathrm{bin}}_m(w)
+\)
+等价于计数所有满足相邻约束与边界约束的尾部位串 \((c_{m+1},\dots,c_K)\)，并同时满足阈值约束
+\[
+V_m(w)+\sum_{k=m+1}^{K}c_k F_{k+1}\le 2^m-1,
+\]
+其中 \(K=K(m)\)（定义 \ref{def:K-of-m}）。
+记 \(L:=K-m\ge 0\)，并令
+\(
+d_i:=c_{m+i}\ (1\le i\le L)
+\)。
+定义两组尾部线性函数
+\[
+x(d):=\sum_{i=1}^{L} d_i F_{i+1},
+\qquad
+y(d):=\sum_{i=1}^{L} d_i F_i.
+\]
+\par
+\noindent\textbf{(1) 尾部和的 Fibonacci 分解。}
+由恒等式
+\(
+F_{m+i+1}=F_{m+1}F_{i+1}+F_m F_i
+\)
+（对 \(i\) 归纳即可），得到
+\begin{equation}\label{eq:fold-bin-tail-sum-split}
+\sum_{i=1}^{L} d_i F_{m+i+1}=F_{m+1}x(d)+F_m y(d).
+\end{equation}
+\par
+\noindent\textbf{(2) \(x(d)\) 与 \(y(d)\) 的有界偏差。}
+由 Binet 公式推出的精确恒等式
+\(
+F_{i+1}-\varphi F_i=(-1/\varphi)^i
+\)
+得
+\[
+x(d)-\varphi y(d)=\sum_{i=1}^{L} d_i\Bigl(-\frac{1}{\varphi}\Bigr)^i=:S(d).
+\]
+由于可容许性 \(d_id_{i+1}=0\) 禁止相邻指标同时取 \(1\)，故
+\[
+-1\ \le\ S(d)\ \le\ \sum_{k\ge 1}\varphi^{-2k}=\frac{1}{\varphi},
+\]
+从而
+\begin{equation}\label{eq:fold-bin-y-as-x-over-phi}
+y(d)=\frac{x(d)}{\varphi}+O(1),
+\end{equation}
+且 \(O(1)\) 绝对有界并与 \(m,w\) 无关。
+\par
+\noindent\textbf{(3) 阈值约束化归为对 \(x(d)\) 的截断计数。}
+将 \eqref{eq:fold-bin-y-as-x-over-phi} 代入 \eqref{eq:fold-bin-tail-sum-split}，并使用
+\(
+F_{m+1}=\varphi F_m+(-1/\varphi)^m
+\)
+得到
+\[
+\sum_{i=1}^{L} d_i F_{m+i+1}
+=F_m\Bigl(\Bigl(\varphi+\frac{1}{\varphi}\Bigr)x(d)+O(1)\Bigr)+O(1)
+=\sqrt5\,F_m\,x(d)+O(F_m)+O(1).
+\]
+记 \(B_w:=2^m-1-V_m(w)\)。
+由 \(0\le V_m(w)\le F_{m+2}-1\) 与 \(F_{m+2}=\Theta(\varphi^m)\) 得
+\begin{equation}\label{eq:fold-bin-Bw-as-2m}
+B_w=2^m+O(\varphi^m).
+\end{equation}
+因此存在绝对常数使
+\begin{equation}\label{eq:fold-bin-d-count-x-threshold}
+d^{\mathrm{bin}}_m(w)
+=\#\Bigl\{d:\ d\ \text{可容许},\ w_m d_1=0,\ x(d)\le \frac{B_w}{\sqrt5\,F_m}+O(1)\Bigr\}.
+\end{equation}
+\par
+\noindent\textbf{(4) 主尺度与末位两态因子。}
+由 Binet 渐近 \(F_m=\varphi^m/\sqrt5+O(\varphi^{-m})\) 与 \eqref{eq:fold-bin-Bw-as-2m} 得
+\begin{equation}\label{eq:fold-bin-x-threshold-main}
+\frac{B_w}{\sqrt5\,F_m}=\Bigl(\frac{2}{\varphi}\Bigr)^m+O(1).
+\end{equation}
+另一方面，长度 \(L\) 的可容许尾部字数为 \(F_{L+2}\)；
+而首位约束 \(d_1=0\) 的可容许字数为 \(F_{L+1}\)，故其比值趋于 \(1/\varphi\)。
+将该两态比值与 \eqref{eq:fold-bin-d-count-x-threshold}--\eqref{eq:fold-bin-x-threshold-main} 合并，得到
+\[
+d^{\mathrm{bin}}_m(w)
+=\Bigl(\frac{2}{\varphi}\Bigr)^m\times
+\begin{cases}
+1+O\bigl((\varphi/2)^m\bigr),& w_m=0,\\[2pt]
+\varphi^{-1}+O\bigl((\varphi/2)^m\bigr),& w_m=1,
+\end{cases}
+\]
+从而得到 \eqref{eq:fold-bin-two-state-asymptotic}。证毕。
+\end{proof}
+
+\begin{corollary}[两点极限律（bin-fold）]\label{cor:fold-bin-two-point-limit-law}
+令 \(U_m\sim\mathrm{Unif}\{0,\dots,2^m-1\}\)，并令 \(W_m:=\mathrm{Fold}^{\mathrm{bin}}_m(U_m)\in X_m\)。
+定义推前分布
+\[
+\mu_m(w):=\mathbb{P}(W_m=w)=\frac{d^{\mathrm{bin}}_m(w)}{2^m},\qquad w\in X_m,
+\]
+以及尺度化随机变量
+\(
+Z_m:=\bigl(\frac{\varphi}{2}\bigr)^m d^{\mathrm{bin}}_m(W_m)
+\)。
+则 \(Z_m\) 在分布上收敛到两点分布 \(Z\)：
+\[
+Z=
+\begin{cases}
+1,& \text{以概率 }\displaystyle \frac{\varphi}{\sqrt5},\\[6pt]
+\varphi^{-1},& \text{以概率 }\displaystyle \frac{1}{\varphi\sqrt5}.
+\end{cases}
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:fold-bin-two-state-asymptotic}，有 \(Z_m=\varphi^{-W_m(m)}+o(1)\)（在概率意义下），故只需计算末位 \(W_m(m)=w_m\) 的极限权重。
+注意 \(\card{\{w\in X_m:w_m=0\}}=F_{m+1}\)、\(\card{\{w\in X_m:w_m=1\}}=F_m\)。
+并由定理主项 \(d^{\mathrm{bin}}_m(w)\sim \varphi^{-w_m}(2/\varphi)^m\) 得
+\[
+\mathbb{P}(w_m=0)
+=\sum_{w_m=0}\mu_m(w)
+\sim
+F_{m+1}\cdot \frac{(2/\varphi)^m}{2^m}
+=\frac{F_{m+1}}{\varphi^m}\to \frac{\varphi}{\sqrt5},
+\]
+同理 \(\mathbb{P}(w_m=1)\to \frac{1}{\varphi\sqrt5}\)。证毕。
+\end{proof}
+
+\begin{corollary}[分位阈值的显式指数常数（bin-fold）]\label{cor:fold-bin-quantile-threshold-constant}
+在与定义 \ref{def:pom-gamma-quantile} 同型的分位口径下，对 bin-fold 定义纤维指数
+\[
+\gamma^{\mathrm{bin}}_m(w):=\frac{1}{m}\log d^{\mathrm{bin}}_m(w),\qquad w\in X_m,
+\]
+并令 \(\gamma^{\mathrm{bin}}_m(\varepsilon)\) 为其在输出分布 \(\mu_m(w)=d^{\mathrm{bin}}_m(w)/2^m\) 下的尾部分位，
+\[
+\gamma^{\mathrm{bin}}_{m}(\varepsilon):=\inf\Bigl\{\gamma:\ \mathbb{P}_{\mu_m}\bigl(\gamma^{\mathrm{bin}}_m(W_m)>\gamma\bigr)\le \varepsilon\Bigr\},
+\qquad
+B^{\mathrm{bin}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{bin}}_m(\varepsilon)\bigr).
+\]
+则当 \(m\to\infty\)，有分段常数极限
+\[
+\Bigl(\frac{\varphi}{2}\Bigr)^m B^{\mathrm{bin}}_m(\varepsilon)\ \longrightarrow\
+\begin{cases}
+1,& 0<\varepsilon<\displaystyle\frac{\varphi}{\sqrt5},\\[6pt]
+\varphi^{-1},& \displaystyle\frac{\varphi}{\sqrt5}<\varepsilon<1.
+\end{cases}
+\]
+特别地，对任意固定 \(\varepsilon\in(0,\varphi/\sqrt5)\)，有
+\[
+B^{\mathrm{bin}}_m(\varepsilon)
+=\Bigl(\frac{2}{\varphi}\Bigr)^m\,(1+o(1)),
+\qquad
+\frac{1}{m}\log B^{\mathrm{bin}}_m(\varepsilon)\to \log\frac{2}{\varphi}.
+\]
+\end{corollary}
+
+\begin{proof}
+由推论 \ref{cor:fold-bin-two-point-limit-law}，在概率意义下有
+\(
+(\varphi/2)^m d^{\mathrm{bin}}_m(W_m)\Rightarrow Z\in\{1,\varphi^{-1}\}
+\)；
+分位极限因此退化为两点分布的分位函数，得到所示分段极限。
+最后一式由两端同取 \(\log\) 并除以 \(m\) 得到。证毕。
+\end{proof}
+
 \begin{corollary}[最大纤维、组合上界与饱和判别]\label{cor:fold-bin-saturation}
 对任意 \(m\ge 1\)，最大纤维由 \(w=0^m\) 取得，并满足组合上界
 \begin{equation}\label{eq:fold-bin-upper}
