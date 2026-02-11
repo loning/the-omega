@@ -29,11 +29,13 @@ Outputs:
   - artifacts/export/window6_edge_flux_skeleton.json
   - sections/generated/eq_window6_pushforward_markov_kernel.tex
   - sections/generated/eq_window6_edge_flux_skeleton.tex
+  - sections/generated/eq_window6_edge_flux_skeleton_arithmetic.tex
 """
 
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 from fractions import Fraction
 from math import gcd
@@ -168,6 +170,112 @@ def _fmt_frac(fr: Fraction) -> str:
     return f"\\frac{{{fr.numerator}}}{{{fr.denominator}}}"
 
 
+def _det_bareiss_int(M: List[List[int]]) -> int:
+    """Exact determinant for small integer matrices (Bareiss algorithm)."""
+    n = len(M)
+    A = [row[:] for row in M]
+    sign = 1
+    prev = 1
+    for k in range(n - 1):
+        if A[k][k] == 0:
+            for i in range(k + 1, n):
+                if A[i][k] != 0:
+                    A[k], A[i] = A[i], A[k]
+                    sign *= -1
+                    break
+            else:
+                return 0
+        pivot = A[k][k]
+        for i in range(k + 1, n):
+            for j in range(k + 1, n):
+                A[i][j] = (A[i][j] * pivot - A[i][k] * A[k][j]) // prev
+            A[i][k] = 0
+        prev = pivot
+    return sign * A[n - 1][n - 1]
+
+
+def _gcd_k_minors(M: List[List[int]], k: int) -> int:
+    """gcd of all kxk minors (determinantal divisor)."""
+    n = len(M)
+    idx = list(range(n))
+    g = 0
+    for rows in itertools.combinations(idx, k):
+        for cols in itertools.combinations(idx, k):
+            sub = [[M[i][j] for j in cols] for i in rows]
+            g = gcd(g, abs(_det_bareiss_int(sub)))
+    return g
+
+
+def _snf_invariants_from_minors(M: List[List[int]]) -> List[int]:
+    """Smith invariants d1|...|dn from determinantal divisors."""
+    n = len(M)
+    if n == 0:
+        return []
+    if any(len(row) != n for row in M):
+        raise ValueError("Matrix must be square.")
+    delta = [_gcd_k_minors(M, k) for k in range(1, n)]
+    det = abs(_det_bareiss_int(M))
+    delta.append(det)
+    d: List[int] = []
+    prev = 1
+    for x in delta:
+        d.append(x // prev)
+        prev = x
+    return d
+
+
+def _det_bareiss_frac(M: List[List[Fraction]]) -> Fraction:
+    """Exact determinant for small Fraction matrices (Bareiss algorithm)."""
+    n = len(M)
+    A = [[x for x in row] for row in M]
+    det = Fraction(1, 1)
+    prev = Fraction(1, 1)
+    for k in range(n - 1):
+        if A[k][k] == 0:
+            for i in range(k + 1, n):
+                if A[i][k] != 0:
+                    A[k], A[i] = A[i], A[k]
+                    det *= -1
+                    break
+            else:
+                return Fraction(0, 1)
+        pivot = A[k][k]
+        for i in range(k + 1, n):
+            for j in range(k + 1, n):
+                A[i][j] = (A[i][j] * pivot - A[i][k] * A[k][j]) / prev
+            A[i][k] = Fraction(0, 1)
+        prev = pivot
+    det *= A[n - 1][n - 1]
+    return det
+
+
+def _disc_cubic(a: int, b: int, c: int, d: int) -> int:
+    """Discriminant of a*t^3+b*t^2+c*t+d."""
+    return b * b * c * c - 4 * a * c * c * c - 4 * b * b * b * d - 27 * a * a * d * d + 18 * a * b * c * d
+
+
+def _fmt_factorization_tex(n: int, primes: List[int]) -> str:
+    """Factor by a given prime list; append remaining cofactor if >1."""
+    if n == 0:
+        return "0"
+    nn = abs(n)
+    parts: List[str] = []
+    for p in primes:
+        if nn % p != 0:
+            continue
+        e = 0
+        while nn % p == 0:
+            nn //= p
+            e += 1
+        if e == 1:
+            parts.append(str(p))
+        else:
+            parts.append(f"{p}^{{{e}}}")
+    if nn != 1:
+        parts.append(str(nn))
+    return "\\cdot ".join(parts) if parts else "1"
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Audit the window-6 edge–flux skeleton under Fold^{bin}_6.")
     ap.add_argument("--m", type=int, default=6)
@@ -190,6 +298,11 @@ def main() -> None:
         "--tex-out",
         type=str,
         default=str(generated_dir() / "eq_window6_edge_flux_skeleton.tex"),
+    )
+    ap.add_argument(
+        "--tex-out-arithmetic",
+        type=str,
+        default=str(generated_dir() / "eq_window6_edge_flux_skeleton_arithmetic.tex"),
     )
     args = ap.parse_args()
 
@@ -356,6 +469,55 @@ def main() -> None:
         },
     }
 
+    # --- Arithmetic fingerprints of E, the coarse multigraph, and T ---
+    a3, a2, a1, a0 = ints
+    primes_23 = [2, 3, 5, 7, 11, 13, 17, 19, 23]
+
+    snf_E = _snf_invariants_from_minors(E)
+    det_E = abs(_det_bareiss_int(E))
+    tors_E = [d for d in snf_E if d != 1]
+    if snf_E != [1, 1, 3, 3450] or det_E != 10350 or tors_E != [3, 3450]:
+        raise RuntimeError(f"Unexpected SNF(E) / det(E): snf={snf_E}, det={det_E}, tors={tors_E}")
+
+    # Laplacian of the 4-vertex weighted multigraph with weights E_{alpha,beta} for alpha!=beta (ignore loops).
+    w = [[(0 if i == j else int(E[i][j])) for j in range(4)] for i in range(4)]
+    L = [[0 for _ in range(4)] for _ in range(4)]
+    for i in range(4):
+        deg = sum(w[i][j] for j in range(4) if j != i)
+        for j in range(4):
+            L[i][j] = deg if i == j else -w[i][j]
+    # Reduced Laplacian: delete the last row/column.
+    Lred = [row[:-1] for row in L[:-1]]
+    tau = abs(_det_bareiss_int(Lred))
+    snf_Lred = _snf_invariants_from_minors(Lred)
+    tors_K = [d for d in snf_Lred if d != 1]
+    if snf_Lred != [1, 1, 123336] or tau != 123336 or tors_K != [123336]:
+        raise RuntimeError(f"Unexpected SNF(Lred) / tau: snf={snf_Lred}, tau={tau}, tors={tors_K}")
+
+    det_T = _det_bareiss_frac(T)
+    if det_T != Fraction(5, 4374):
+        raise RuntimeError(f"Unexpected det(T): {det_T}")
+
+    disc = _disc_cubic(a3, a2, a1, a0)
+    if disc != 108709030613700:
+        raise RuntimeError(f"Unexpected discriminant: {disc}")
+
+    payload["arithmetic"] = {
+        "det_E": det_E,
+        "snf_E": snf_E,
+        "coker_E_torsion_invariants": tors_E,
+        "laplacian_L_ignore_loops": L,
+        "tau_kirchhoff": tau,
+        "snf_Lred": snf_Lred,
+        "critical_group_torsion_invariants": tors_K,
+        "det_T": str(det_T),
+        "disc_cubic": disc,
+        "fact_det_E_tex": _fmt_factorization_tex(det_E, primes_23),
+        "fact_tau_tex": _fmt_factorization_tex(tau, primes_23),
+        "fact_disc_tex": _fmt_factorization_tex(disc, primes_23),
+        "fact_det_T_den_tex": _fmt_factorization_tex(det_T.denominator, primes_23),
+    }
+
     # Pushforward Markov kernel payload.
     payload_pushforward = {
         "m": m,
@@ -438,10 +600,46 @@ def main() -> None:
     lines.append("")
     tex_out.write_text("\n".join(lines), encoding="utf-8")
 
+    # TeX snippet (arithmetic fingerprints).
+    tex_out_ar = Path(str(args.tex_out_arithmetic))
+    tex_out_ar.parent.mkdir(parents=True, exist_ok=True)
+    detE_fact = _fmt_factorization_tex(det_E, primes_23)
+    tau_fact = _fmt_factorization_tex(tau, primes_23)
+    disc_fact = _fmt_factorization_tex(disc, primes_23)
+    detT_den_fact = _fmt_factorization_tex(det_T.denominator, primes_23)
+
+    lines_ar: List[str] = []
+    lines_ar.append("% AUTO-GENERATED by scripts/exp_window6_edge_flux_skeleton.py")
+    lines_ar.append("\\begin{equation}\\label{eq:window6_edge_flux_skeleton_arithmetic}")
+    lines_ar.append("\\begin{aligned}")
+    lines_ar.append(
+        f"\\mathrm{{SNF}}(E)&=\\mathrm{{diag}}({snf_E[0]},{snf_E[1]},{snf_E[2]},{snf_E[3]}),\\\\"
+    )
+    lines_ar.append(
+        f"\\mathrm{{coker}}(E)&\\cong \\mathbb{{Z}}/{snf_E[2]}\\mathbb{{Z}}\\oplus \\mathbb{{Z}}/{snf_E[3]}\\mathbb{{Z}},\\qquad "
+        f"\\det(E)={det_E}={detE_fact},\\\\"
+    )
+    lines_ar.append(
+        f"\\mathrm{{SNF}}(L_E^{{\\mathrm{{red}}}})&=\\mathrm{{diag}}({snf_Lred[0]},{snf_Lred[1]},{snf_Lred[2]}),\\\\"
+    )
+    lines_ar.append(f"\\tau(\\mathcal{{G}}_E)&=\\det(L_E^{{\\mathrm{{red}}}})={tau}={tau_fact},\\\\")
+    lines_ar.append(
+        f"K(\\mathcal{{G}}_E)&:=\\mathrm{{coker}}(L_E^{{\\mathrm{{red}}}})\\cong \\mathbb{{Z}}/{tau}\\mathbb{{Z}},\\\\"
+    )
+    lines_ar.append(
+        f"\\Delta&:=\\mathrm{{Disc}}({a3}t^3+{a2}t^2{a1:+d}t{a0:+d})={disc}={disc_fact},\\\\"
+    )
+    lines_ar.append(f"\\det(T)&={_fmt_frac(det_T)}=\\frac{{{det_T.numerator}}}{{{detT_den_fact}}}.")
+    lines_ar.append("\\end{aligned}")
+    lines_ar.append("\\end{equation}")
+    lines_ar.append("")
+    tex_out_ar.write_text("\n".join(lines_ar), encoding="utf-8")
+
     print(f"File: {json_out_push.relative_to(export_dir().parent.parent)}")
     print(f"File: {json_out.relative_to(export_dir().parent.parent)}")
     print(f"File: {tex_out_push.relative_to(generated_dir().parent.parent)}")
     print(f"File: {tex_out.relative_to(generated_dir().parent.parent)}")
+    print(f"File: {tex_out_ar.relative_to(generated_dir().parent.parent)}")
 
 
 if __name__ == "__main__":
