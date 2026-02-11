@@ -69,6 +69,16 @@ g_1(2k+1)=F_{k-4},\qquad g_2(2k+1)=F_{k-8},
 \Psi(2k+1)=\frac{F_{k-8}}{F_{k-4}}
 \longrightarrow \varphi^{-4}\approx 0.145898.
 \]
+并且二阶隔离在相对尺度上同样具有稳定常数：
+\[
+\boxed{\;
+\frac{D_{2k}^{(2)}-D_{2k}^{(3)}}{D_{2k}}
+=\frac{F_{k-5}}{F_{k+2}}
+\xrightarrow[k\to\infty]{}\varphi^{-7},\qquad
+\frac{D_{2k+1}^{(2)}-D_{2k+1}^{(3)}}{D_{2k+1}}
+=\frac{F_{k-8}}{2F_{k+1}}
+\xrightarrow[k\to\infty]{}\frac{\varphi^{-9}}{2}\; }.
+\]
 因此顶端三层谱并非“均匀掉落”，而是出现稳定的奇偶簇化选择律：在奇数窗上 \((D_m^{(2)},D_m^{(3)})\) 形成紧簇（\(g_2\ll g_1\)），而在偶数窗上两层仍保持同阶分离（\(g_2\asymp g_1\)）。
 例如在窗口顶端，
 \[
@@ -154,6 +164,27 @@ R_{\mathrm{phase}}(m):=\left\lceil \log_2 \kappa_m^{\mathrm{max}}\right\rceil
 R_{\mathrm{defect}}(m):=-\log_2\!\left(1-\frac{D_m^{(2)}}{D_m}\right).
 \]
 由推论 \ref{cor:pom-second-max-gap-constant}，当 \(m\to\infty\) 时 \(R_{\mathrm{defect}}(m)\) 收敛到常数：偶数支极限为 \(-\log_2(\varphi^{-6})\)，奇数支极限为 \(-\log_2\!\bigl(\tfrac12\varphi^{-5}\bigr)\)（后者给出最坏情形）。
+\par
+同理，由第三层抑制因子 \(\gamma_m^{(3)}\)（注 \ref{rem:pom-third-max-gap-parity}）定义第三层缺陷分辨开销
+\[
+R_{\mathrm{defect}}^{(3)}(m)
+:=-\log_2\!\left(1-\gamma_m^{(3)}\right)
+:=-\log_2\!\left(1-\frac{D_m^{(3)}}{D_m}\right).
+\]
+则由
+\(
+1-\gamma_{2k}^{(3)}\to \varphi^{-5}
+\)
+与
+\(
+1-\gamma_{2k+1}^{(3)}\to \tfrac12(\varphi^{-5}+\varphi^{-9})=\tfrac12\varphi^{-5}(1+\varphi^{-4})
+\)
+得到严格极限常数
+\[
+\boxed{\;
+\lim_{k\to\infty}R_{\mathrm{defect}}^{(3)}(2k)=5\log_2\varphi,\qquad
+\lim_{k\to\infty}R_{\mathrm{defect}}^{(3)}(2k+1)=5\log_2\varphi+1-\log_2(1+\varphi^{-4})\; }.
+\]
 \end{remark}
 
 \begin{remark}[最大纤维达到者的隐藏位分裂：\texorpdfstring{$(d_{m,0},d_{m,1})$}{(d0,d1)} 的 Fibonacci 刚性（可复现观察）]\label{rem:pom-max-fiber-achievers-bsplit}
@@ -183,8 +214,21 @@ d_{m,1}(x)=\#\{\omega:\ N(\omega)=r+F_{m+2}\}.
   \]
   且总和恒为 \(2F_{k+1}=D_{2k+1}\)。
 \end{itemize}
+注意到
+\(
+F_{k+1}-F_{k-2}=2F_{k-1}
+\)、
+\(
+F_{k+1}+F_{k-2}=2F_{k}
+\)，
+故偏置交换轨道亦可等价写为 \((2F_{k-1},2F_k)\) 及其交换；从而偏置两相的 \(p_1\) 取值亦可写为
+\[
+\frac12\pm\frac{F_{k-2}}{2F_{k+1}}
+=\left\{\frac{F_k}{F_{k+1}},\ \frac{F_{k-1}}{F_{k+1}}\right\}.
+\]
 该分裂结构把“最大纤维计数 = 链上独立集计数”（注 \ref{rem:pom-overflow-rec}）进一步细分为“端点约束下的两类独立集计数”，从而在达到者层面强制出现相邻 Fibonacci 数的交换分裂。
 \end{remark}
+\input{parts/cor__pom-max-fiber-achievers-bsplit-gcd-trichotomy}
 
 \begin{corollary}[最大纤维达到者的隐藏位概率谱：三种普适极限]\label{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}
 对最大纤维达到者 \(x\in X_m\)（即 \(d_m(x)=D_m\)），定义隐藏位 \(1\) 的相对频率
@@ -232,6 +276,9 @@ F_{k-2}/F_{k+1}\to\varphi^{-3}
 \)。
 证毕。
 \end{proof}
+\input{parts/rem__pom-max-fiber-prob-spectrum-mobius-closure}
+
+\input{parts/prop__pom-fib-pell-unit-mobius}
 
 \begin{corollary}[最大达到者的隐藏位相对不平衡度：奇偶一致的普适极限常数]\label{cor:pom-max-fiber-achievers-hidden-bit-imbalance}
 定义最大达到者的隐藏位相对不平衡度
@@ -258,6 +305,7 @@ F_{k-2}/F_{k+1}\to\varphi^{-3}
 两式用 Binet 渐近即得极限为 \(\varphi^{-3}\)。
 恒等式 \(\varphi^{-3}=\sqrt5-2\) 由 \(\varphi=\frac{1+\sqrt5}{2}\) 直接化简得到。证毕。
 \end{proof}
+\input{parts/rem__pom-max-fiber-bias-amplitude-cf-acceleration}
 
 \begin{corollary}[最大达到者的隐藏位熵：两种极限常数（偶/奇相结构不同）]\label{cor:pom-max-fiber-achievers-hidden-bit-entropy}
 对最大纤维达到者 \(x\) 定义隐藏位二元熵（bits）

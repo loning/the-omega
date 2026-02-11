@@ -263,6 +263,119 @@ D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)-D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\|\sigm
 对 \(a\) 取上确界得到最大值 \(\log D_m=\log\mathrm{Ind}(E_m)\)，且等号当且仅当 \(a\) 属于最大纤维。证毕。
 \end{proof}
 
+\paragraph{最大相对熵版视界容量：\texorpdfstring{$\log\mathrm{Ind}(E)$}{log Ind(E)} 作为最坏零知识损失的精确封顶}
+命题 \ref{prop:op-algebra-index-extremal-entropy-loss-maxfiber} 给出了 KL（Shannon）相对熵口径下的“最大纤维 \(\Longleftrightarrow\) 最大损失”模板。
+下面将该接口提升到 max-相对熵与 Rényi 族：它们在制度意义下刻画“最坏情形”的可区分损失，并仍由同一指数常数完全封口。
+
+\begin{definition}[最大相对熵（max-relative entropy）]\label{def:op-algebra-max-relative-entropy}
+设 \(\mathcal{A}\) 为 von Neumann 代数，\(\rho,\sigma\) 为其上的正规态。
+定义最大相对熵
+\begin{equation}\label{eq:op-algebra-dmax-def}
+\boxed{\;
+D_{\max}(\rho\|\sigma)
+:=\log\inf\{\lambda>0:\ \rho\le \lambda\,\sigma\}\;}
+\end{equation}
+其中序关系按正锥理解：\(\rho\le \lambda\sigma\) 指 \(\rho(x)\le \lambda\sigma(x)\) 对一切 \(x\in\mathcal{A}_+\) 成立。
+\end{definition}
+
+\begin{proposition}[最大相对熵版视界容量：\texorpdfstring{$\log\mathrm{Ind}(E)$}{log Ind(E)} 等于最坏零知识损失]\label{prop:op-algebra-dmax-capacity-equals-log-index}
+设 \(\mathcal{B}\subseteq\mathcal{A}\) 为有限 von Neumann 代数包含，
+且 \(E:\mathcal{A}\to\mathcal{B}\) 为忠实正规条件期望并具有有限 Pimsner--Popa 指数 \(\mathrm{Ind}(E)\)。
+对任意正规态 \(\rho\) 定义 max-损失
+\[
+L_{\max}(\rho):=D_{\max}(\rho\|\rho\!\circ\!E).
+\]
+则恒有统一上界
+\begin{equation}\label{eq:op-algebra-dmax-bound-by-index}
+\boxed{\;
+L_{\max}(\rho)\le \log\mathrm{Ind}(E).\;}
+\end{equation}
+并且上确界满足精确极值公式
+\begin{equation}\label{eq:op-algebra-dmax-sup-equals-log-index}
+\boxed{\;
+\sup_{\rho\in\mathcal{S}(\mathcal{A})}L_{\max}(\rho)=\log\mathrm{Ind}(E),\;}
+\end{equation}
+其中 \(\mathcal{S}(\mathcal{A})\) 表示 \(\mathcal{A}\) 上全体正规态。
+\end{proposition}
+\begin{proof}
+由有限指数假设，Pimsner--Popa 不等式给出：对一切 \(x\in\mathcal{A}_+\) 有
+\(
+E(x)\ge \mathrm{Ind}(E)^{-1}x
+\)。
+对任意正规态 \(\rho\) 作用于该不等式得
+\[
+(\rho\!\circ\!E)(x)=\rho(E(x))\ \ge\ \mathrm{Ind}(E)^{-1}\rho(x),
+\]
+即 \(\rho(x)\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)(x)\) 对所有 \(x\ge0\) 成立，
+故 \(\rho\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)\)。
+由定义 \eqref{eq:op-algebra-dmax-def} 得 \eqref{eq:op-algebra-dmax-bound-by-index}。
+\par
+为证 \eqref{eq:op-algebra-dmax-sup-equals-log-index}，取任意 \(c<\mathrm{Ind}(E)\)。
+若对所有正规态 \(\rho\) 都有 \(L_{\max}(\rho)\le \log c\)，则由 \eqref{eq:op-algebra-dmax-def} 得 \(\rho\le c(\rho\!\circ\!E)\) 对所有 \(\rho\) 成立，
+等价于 \(\rho(x)\le c\,\rho(E(x))\) 对一切 \(x\in\mathcal{A}_+\) 与一切正规态 \(\rho\) 成立。
+由正规正泛函分离序（\(x\le y\) 当且仅当 \(\rho(x)\le \rho(y)\) 对所有正规态 \(\rho\) 成立），推出 \(x\le cE(x)\) 对所有 \(x\ge0\) 成立，
+即 \(E(x)\ge c^{-1}x\)，从而 \(\mathrm{Ind}(E)\le c\)，矛盾。
+因此对每个 \(c<\mathrm{Ind}(E)\) 必存在某 \(\rho\) 使 \(L_{\max}(\rho)>\log c\)，故
+\(\sup_{\rho}L_{\max}(\rho)\ge \log\mathrm{Ind}(E)\)。
+结合 \eqref{eq:op-algebra-dmax-bound-by-index} 即得等号。证毕。
+\end{proof}
+
+\begin{corollary}[Rényi 视界损失谱：从 Shannon 到 min-entropy 的单调插值并以指数封顶]\label{cor:op-algebra-renyi-loss-spectrum-capped-by-index}
+在命题 \ref{prop:op-algebra-dmax-capacity-equals-log-index} 的设定下，
+取 \(\alpha\in[1,\infty]\)，令 \(D_\alpha\) 为 sandwiched Rényi 相对熵（\(\alpha=1\) 取 Umegaki 相对熵，\(\alpha=\infty\) 取 \(D_{\max}\)），并定义视界损失谱
+\[
+L_\alpha(\rho):=D_\alpha(\rho\|\rho\!\circ\!E).
+\]
+则对每个固定 \(\rho\)，函数 \(\alpha\mapsto L_\alpha(\rho)\) 单调不减，且满足统一封顶
+\[
+\boxed{\;
+0\le L_\alpha(\rho)\le \log\mathrm{Ind}(E)\qquad(\forall \alpha\in[1,\infty]).\;}
+\]
+并且极限 \(\lim_{\alpha\to\infty}L_\alpha(\rho)=D_{\max}(\rho\|\rho\!\circ\!E)\) 存在。
+\end{corollary}
+\begin{proof}
+sandwiched Rényi 相对熵对参数 \(\alpha\) 的单调性与极限 \(\alpha\to\infty\) 收敛到 \(D_{\max}\) 是其标准性质，因此
+\(
+L_\alpha(\rho)\le L_\infty(\rho)=D_{\max}(\rho\|\rho\!\circ\!E)
+\)。
+再与命题 \ref{prop:op-algebra-dmax-capacity-equals-log-index} 的上界 \eqref{eq:op-algebra-dmax-bound-by-index} 合并即得。证毕。
+\end{proof}
+
+\begin{corollary}[有限交换折叠的极值模板：最大损失由“最大纤维上的单点微态”实现]\label{cor:op-algebra-commutative-dmax-extremizers-maxfiber}
+在附录 \ref{app:op-algebra-fold-subalgebra} 的有限交换口径中，令 \(\mathcal{A}=\CC^{\Omega}\)、\(\mathcal{B}=\CC^{X}\)，并令 \(E:\mathcal{A}\to\mathcal{B}\) 为折叠 \(\Fold:\Omega\twoheadrightarrow X\) 的纤维均匀平均条件期望。
+记纤维多重度 \(d(x)=|\Fold^{-1}(x)|\) 与 \(D:=\max_{x\in X}d(x)=\mathrm{Ind}(E)\)。
+则对任意正规态 \(\rho\) 有
+\[
+D_{\max}(\rho\|\rho\!\circ\!E)\ \le\ \log D.
+\]
+并且 \(D_{\max}(\rho\|\rho\!\circ\!E)=\log D\) 当且仅当存在某个最大纤维点 \(x^\star\)（\(d(x^\star)=D\)）与某个 \(\omega^\star\in\Fold^{-1}(x^\star)\) 使得
+\[
+\rho(\omega)=0\qquad\bigl(\forall \omega\in\Fold^{-1}(x^\star)\setminus\{\omega^\star\}\bigr).
+\]
+在此情形下，粗粒化态 \(\rho\!\circ\!E\) 在纤维 \(\Fold^{-1}(x^\star)\) 上必为均匀分布（质量为 \(\rho(\Fold^{-1}(x^\star))\) 的均匀分摊），从而“最大纤维 + 纤维均匀化（粗粒化后）”成为最大损失实现的结构模板。
+\end{corollary}
+\begin{proof}
+将 \(\rho\) 识别为 \(\Omega\) 上概率向量 \(p\)。
+对任意 \(\omega\in\Omega\) 令 \(x=\Fold(\omega)\)，并记纤维总质量 \(P_x:=\sum_{\omega'\in\Fold^{-1}(x)}p(\omega')\)。
+则 \((\rho\!\circ\!E)\) 对应的概率向量 \(q\) 在纤维上常值：
+\(
+q(\omega)=P_x/d(x)
+\)。
+因此逐点比值满足
+\[
+\frac{p(\omega)}{q(\omega)}=\frac{d(x)\,p(\omega)}{P_x}\ \le\ d(x)\ \le\ D,
+\]
+其中不等式用到 \(p(\omega)\le P_x\)。
+从而 \(p\le Dq\) 点态成立，等价于 \(\rho\le D(\rho\!\circ\!E)\)，故
+\(
+D_{\max}(\rho\|\rho\!\circ\!E)\le \log D
+\)。
+\par
+并且 \(D_{\max}(\rho\|\rho\!\circ\!E)=\log D\) 等价于存在某点 \(\omega^\star\) 使得 \(\frac{p(\omega^\star)}{q(\omega^\star)}=D\)。
+由上式知这要求 \(d(\Fold(\omega^\star))=D\) 且 \(p(\omega^\star)=P_{x^\star}\)，即该最大纤维上的全部质量集中在单点 \(\omega^\star\)。
+最后，\(q\) 在该纤维上的均匀性由条件期望的纤维平均结构给出。证毕。
+\end{proof}
+
 \paragraph{Fuglede--Kadison 行列式与“视界 \texorpdfstring{$\zeta$}{zeta}”的非交换定义}
 下述行列式为正文以 Fredholm 行列式 \(\det(I-\mathcal{K}_s)\) 定义“协议 \(\zeta\)”的非交换推广。
 

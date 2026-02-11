@@ -156,6 +156,28 @@ S_{\mathrm{def}}
 最后，\eqref{eq:xi-defect-entropy-harmonic-mean-bound} 由上界取倒数并整理得到。证毕。
 \end{proof}
 
+\begin{proposition}[Schur--凹性：缺陷熵对深度向量的主序最优化原则]\label{prop:xi-defect-entropy-schur-concavity}
+固定 \(\kappa_{\mathrm{ind}}\ge 2\) 并把深度按重数展开为向量
+\(\boldsymbol{\delta}=(\delta_1,\dots,\delta_{\kappa_{\mathrm{ind}}})\in(0,\infty)^{\kappa_{\mathrm{ind}}}\)。
+定义
+\[
+\mathcal{S}(\boldsymbol{\delta})
+:=\sum_{i=1}^{\kappa_{\mathrm{ind}}}\frac{\delta_i}{1+\delta_i}.
+\]
+则 \(\mathcal{S}\) 为严格 Schur--凹函数：若 \(\boldsymbol{\delta}\) 在主序意义上\textbf{更集中}（即 \(\boldsymbol{\delta}\succ \boldsymbol{\delta}'\) 且二者不同于排列），则
+\[
+\mathcal{S}(\boldsymbol{\delta})\ <\ \mathcal{S}(\boldsymbol{\delta}').
+\]
+因此在任意线性约束 \(\sum_{i=1}^{\kappa_{\mathrm{ind}}}\delta_i=\Phi\) 下，
+\(\mathcal{S}\) 的最大值由等深度配置 \(\delta_i\equiv \Phi/\kappa_{\mathrm{ind}}\) 达到，而其下确界由极端集中配置（一个分量趋于 \(\Phi\) 其余分量趋于 \(0\)）逼近。
+该主序原则与命题 \ref{prop:xi-defect-entropy-feasible-interval-flux-index} 的“上界在均匀深度取等号、下界在极端集中取下确界”完全一致，并将其提升为结构性最优化律。
+\end{proposition}
+\begin{proof}
+函数 \(f(\delta)=\delta/(1+\delta)\) 在 \((0,\infty)\) 上严格凹（见命题 \ref{prop:xi-defect-entropy-feasible-interval-flux-index} 的计算），
+故由 Karamata 不等式（严格情形）知 \(\sum_i f(\delta_i)\) 为严格 Schur--凹。
+在固定总和约束下，等深度配置为主序最小元，从而给出最大值；极端集中为主序最大端点，从而给出下确界。证毕。
+\end{proof}
+
 \begin{corollary}[证书复杂度的双曲指数律：有限阶矩证书只覆盖对数半径]\label{cor:xi-certificate-complexity-hyperbolic-exponential-law}
 设 \(a\in\mathbb{D}\) 为盘内点状缺陷（等价视界对数导数在 \(a\) 处出现极点；定理 \ref{thm:xi-disk-zero-pole-index-reduction}），并记其欧氏边界深度
 \(
@@ -241,6 +263,40 @@ S_{\mathrm{def}}=\kappa_{\mathrm{ind}}-L_{\mathrm{top}}
 逐项推出；微分式由对 \(s_j\) 逐项求导得到。证毕。
 \end{proof}
 
+\begin{corollary}[双曲高度预算的指数律：固定 \texorpdfstring{$\sum m_j\log(1+\delta_j)$}{sum m log(1+delta)} 时缺陷熵的最优上界]\label{cor:xi-defect-entropy-height-budget-exponential-law}
+在命题 \ref{prop:xi-defect-entropy-hyperbolic-height-semigroup} 的设定下，令
+\[
+S_{\mathrm{ht}}:=\sum_{j=1}^{\kappa}m_j\log(1+\delta_j)=\sum_{j=1}^{\kappa}m_j s_j,
+\qquad
+\kappa_{\mathrm{ind}}:=\sum_{j=1}^{\kappa}m_j.
+\]
+则缺陷熵在固定高度预算 \(S_{\mathrm{ht}}\) 下满足锐上界
+\begin{equation}\label{eq:xi-defect-entropy-height-budget-exp-law}
+\boxed{\;
+S_{\mathrm{def}}
+\ \le\
+\kappa_{\mathrm{ind}}\Bigl(1-e^{-S_{\mathrm{ht}}/\kappa_{\mathrm{ind}}}\Bigr).\;}
+\end{equation}
+并且当且仅当所有 \(s_j\)（按重数计）相等（等价于所有 \(\delta_j\) 相等）时取等号。
+该不等式给出“面积/高度预算”约束下缺陷熵的指数型饱和律，并将最优态唯一化为均匀深度配置。
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:xi-defect-entropy-hyperbolic-height-linearization}，
+\(
+S_{\mathrm{def}}=\sum_j m_j g(s_j)
+\)
+其中 \(g(s)=1-e^{-s}\) 在 \([0,\infty)\) 上严格凹。
+以权重 \(w_j:=m_j/\kappa_{\mathrm{ind}}\)（\(\sum_j w_j=1\)）作 Jensen 不等式，得
+\[
+\frac{S_{\mathrm{def}}}{\kappa_{\mathrm{ind}}}
+=\sum_j w_j g(s_j)
+\le g\!\Bigl(\sum_j w_j s_j\Bigr)
+=1-\exp\!\Bigl(-\frac{S_{\mathrm{ht}}}{\kappa_{\mathrm{ind}}}\Bigr),
+\]
+即得 \eqref{eq:xi-defect-entropy-height-budget-exp-law}。
+严格凹性给出等号条件：当且仅当 \(s_j\)（按重数计）全相等。证毕。
+\end{proof}
+
 \begin{corollary}[可检测度函数：归一化峰值幅度是熵贡献的严格二次像]\label{cor:xi-detectability-amplitude-is-quadratic-image}
 对单原子剖面核
 \(
@@ -305,6 +361,92 @@ S_{\mathrm{def}}(t):=\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{t+1+\delta_j}\;}
 其极点位于 \(t=-1-\delta_j\)，留数为 \(m_j\delta_j\)。
 因此由极点位置恢复 \(\{\delta_j\}\)，再由留数除以 \(\delta_j\) 恢复 \(\{m_j\}\)（合并同 \(\delta\) 情形下得到总重数）。
 高度参数 \(\gamma_j\) 在 \eqref{eq:xi-defect-entropy-scale-curve} 中不出现，故不可能由该标量轨道辨识。证毕。
+\end{proof}
+
+\begin{proposition}[尺度熵流的 Riccati 夹逼：粗粒化导致的必然回收速率由 \texorpdfstring{$(\kappa_{\mathrm{ind}},\delta_{\min},\delta_{\max})$}{(kappa,delta_min,delta_max)} 封口]\label{prop:xi-defect-entropy-riccati-sandwich}
+在命题 \ref{prop:xi-defect-entropy-scale-fingerprint-stieltjes} 的设定下，记
+\[
+\kappa_{\mathrm{ind}}:=\sum_{j=1}^{\kappa}m_j,
+\qquad
+\delta_{\min}:=\min_{1\le j\le\kappa}\delta_j,
+\qquad
+\delta_{\max}:=\max_{1\le j\le\kappa}\delta_j.
+\]
+则 \(S_{\mathrm{def}}(t)\) 可微且满足精确导数式
+\[
+S_{\mathrm{def}}'(t)=-\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{(t+1+\delta_j)^2}.
+\]
+并且对一切 \(t\ge 0\) 成立双侧 Riccati 型夹逼
+\begin{equation}\label{eq:xi-defect-entropy-riccati-sandwich}
+\boxed{\;
+-\frac{1}{\kappa_{\mathrm{ind}}\delta_{\min}}\,S_{\mathrm{def}}(t)^2
+\ \le\
+S_{\mathrm{def}}'(t)
+\ \le\
+-\frac{1}{\kappa_{\mathrm{ind}}\delta_{\max}}\,S_{\mathrm{def}}(t)^2.\;}
+\end{equation}
+等价地，
+\begin{equation}\label{eq:xi-defect-entropy-inv-linear-bracket}
+\boxed{\;
+\frac{1}{S_{\mathrm{def}}(t)}-\frac{1}{S_{\mathrm{def}}(0)}
+\ \in\
+\Bigl[\frac{t}{\kappa_{\mathrm{ind}}\delta_{\max}},\ \frac{t}{\kappa_{\mathrm{ind}}\delta_{\min}}\Bigr].\;}
+\end{equation}
+因此尺度 \(t\) 的增长强制 \(S_{\mathrm{def}}(t)\) 以可证书的 \(t^{-1}\) 级衰减进入回收态；该衰减速率在制度层面仅依赖缺陷指数与深度区间，而与高度参数 \(\{\gamma_j\}\) 解耦。
+\end{proposition}
+\begin{proof}
+令
+\(
+B_j(t):=m_j\frac{\delta_j}{(t+1+\delta_j)^2}>0
+\)。
+则
+\[
+-S_{\mathrm{def}}'(t)=\sum_{j=1}^{\kappa}B_j(t),
+\qquad
+S_{\mathrm{def}}(t)=\sum_{j=1}^{\kappa}(t+1+\delta_j)\,B_j(t),
+\]
+从而比值
+\[
+\frac{S_{\mathrm{def}}(t)}{-S_{\mathrm{def}}'(t)}
+=\frac{\sum_j (t+1+\delta_j)B_j(t)}{\sum_j B_j(t)}
+\]
+是 \(\{t+1+\delta_j\}\) 的加权平均，故
+\begin{equation}\label{eq:xi-defect-entropy-weighted-average-bracket}
+t+1+\delta_{\min}
+\ \le\
+\frac{S_{\mathrm{def}}(t)}{-S_{\mathrm{def}}'(t)}
+\ \le\
+t+1+\delta_{\max}.
+\end{equation}
+另一方面，由单调性 \(\delta_{\min}\le \delta_j\le \delta_{\max}\) 与函数 \(\delta\mapsto \delta/(t+1+\delta)\) 递增，得
+\[
+\kappa_{\mathrm{ind}}\frac{\delta_{\min}}{t+1+\delta_{\min}}
+\ \le\
+S_{\mathrm{def}}(t)
+\ \le\
+\kappa_{\mathrm{ind}}\frac{\delta_{\max}}{t+1+\delta_{\max}}.
+\]
+将其分别与 \eqref{eq:xi-defect-entropy-weighted-average-bracket} 的左右端相乘得到
+\[
+\kappa_{\mathrm{ind}}\delta_{\min}
+\ \le\
+\frac{S_{\mathrm{def}}(t)^2}{-S_{\mathrm{def}}'(t)}
+\ \le\
+\kappa_{\mathrm{ind}}\delta_{\max},
+\]
+即
+\(
+\frac{1}{\kappa_{\mathrm{ind}}\delta_{\max}}
+\le
+(-S_{\mathrm{def}}'(t))/S_{\mathrm{def}}(t)^2
+\le
+\frac{1}{\kappa_{\mathrm{ind}}\delta_{\min}}
+\)，等价于 \eqref{eq:xi-defect-entropy-riccati-sandwich}。
+对恒等式
+\(
+\frac{d}{dt}\frac{1}{S_{\mathrm{def}}(t)}=-\frac{S_{\mathrm{def}}'(t)}{S_{\mathrm{def}}(t)^2}
+\)
+积分即得 \eqref{eq:xi-defect-entropy-inv-linear-bracket}。证毕。
 \end{proof}
 
 \endinput
