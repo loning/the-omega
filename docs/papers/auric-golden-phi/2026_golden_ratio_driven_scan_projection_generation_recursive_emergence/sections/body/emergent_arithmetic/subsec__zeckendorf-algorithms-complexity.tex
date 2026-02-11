@@ -245,3 +245,34 @@ p_\ell^{\mathrm{glob}}(u)=\frac{1}{\ell}\left(\bigl(a_\ell^{\mathrm{flow}}(u)\bi
 \]
 该等式把“时间侧的幂次/乘法”精确翻译为“空间侧 primitive 谱的非平凡 Witt 多项式律”（见推论 \ref{cor:par-add-global-lift-endpoints} 的同型口径），从而给出“不可并行活动”的一个可审计 prime-like 读出接口。
 \end{remark}
+
+\subsubsection{线性约束计数的可编译有理性：同步转导器与特征多项式消去}\label{subsec:compiled-linear-constraint-counting}
+
+\begin{proposition}[线性约束计数的生成函数有理性（矩阵消去形式）]\label{prop:conclusion61-rational-gf-linear-constraints}
+在 sofic--Zeckendorf 框架下，固定整数矩阵 \(Q\in\ZZ^{r\times k}\) 与向量 \(b\in\ZZ^r\)（维数 \(r,k\) 固定）。
+对每个 \(m\ge 0\)，令
+\[
+\Omega_m(Q,b):=\Bigl\{(c^{(1)},\dots,c^{(k)})\in X_m^k:\ Q\bigl(\mathrm{Val}(c^{(1)}),\dots,\mathrm{Val}(c^{(k)})\bigr)=b\Bigr\}.
+\]
+则长度生成函数
+\[
+F_{Q,b}(z):=\sum_{m\ge 0} \#\Omega_m(Q,b)\,z^m
+\]
+为有理函数，并可写为
+\[
+\boxed{\;
+F_{Q,b}(z)=u^\top(I-zB_{Q,b})^{-1}v\;}
+\]
+其中 \(B_{Q,b}\) 为由同步转导器显式构造的非负整数矩阵，\(u,v\ge 0\) 为端点向量。
+特别地，\(F_{Q,b}\) 的全部极点包含于 \(\det(I-zB_{Q,b})=0\) 的根集合；从而 \(m\mapsto \#\Omega_m(Q,b)\) 满足有限阶线性递推，并可表示为有限个特征根的指数多项式和（Jordan 分解给出多项式因子）。
+\end{proposition}
+
+\begin{proof}
+将 \(k\) 路输入 \(c^{(1)},\dots,c^{(k)}\) 以同一时间步并行读入，取“合法性约束自动机 \(\times\) 在线归一化核 \(\times\) 线性约束 carry/余量寄存器”的同步直积即可得到一个有限状态转导器：其状态空间只依赖于固定的 \(Q,b\) 与底核，而与 \(m\) 无关。
+接受长度为 \(m\) 的路径条数即为 \(\#\Omega_m(Q,b)\)，故存在 \(u,v\) 使 \(\#\Omega_m(Q,b)=u^\top B_{Q,b}^m v\)。
+对任意有限矩阵 \(B\)，有
+\(
+\sum_{m\ge 0}u^\top B^m v\,z^m=u^\top(I-zB)^{-1}v
+\)，
+并且分母由 \(\det(I-zB)\) 给出，极点与递推结构随之得到。证毕。
+\end{proof}

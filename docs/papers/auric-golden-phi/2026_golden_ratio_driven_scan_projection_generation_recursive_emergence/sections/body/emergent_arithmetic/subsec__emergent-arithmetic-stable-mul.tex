@@ -205,3 +205,92 @@ a=q\otimes b\ \oplus\ r,
 \begin{proposition}[可计算实现]\label{prop:zeckendorf-arith-computable}
 对任意 $c,d\in X_\infty$，$c\oplus d$ 与 $c\otimes d$ 可由有限步算法计算：先在值层执行整数加法/乘法得到 $\mathrm{Val}(c)\pm\mathrm{Val}(d)$ 或 $\mathrm{Val}(c)\mathrm{Val}(d)$，再以 Zeckendorf 贪心算法取唯一规范形（附录 C）。
 \end{proposition}
+
+\subsubsection{能量计数的可编译谱指纹：乘性能量、互补性与 sum--product}\label{subsec:energy-compiled-sumproduct}
+
+对每个 \(m\ge 1\)，记
+\[
+A_m:=\{\mathrm{Val}(c):\ c\in X_m\}\subseteq\NN.
+\]
+定义加性与乘性能量
+\[
+E_{+}(A_m):=\#\{a_1+a_2=a_3+a_4:\ a_i\in A_m\},\qquad
+E_{\times}(A_m):=\#\{a_1a_2=a_3a_4:\ a_i\in A_m\}.
+\]
+
+\begin{proposition}[乘性能量同样可编译（Perron 指纹）]\label{prop:conclusion71-multiplicative-energy-compilable}
+存在一个由“乘法（卷积）+ 归一化（\(\Fold_\infty\)）”在线实现所诱导的\textbf{乘法正规化转导器}，
+使得将其与 \(X_m\) 的四重同步积耦合后得到一个有限非负整数矩阵 \(B_{\times}\) 与端点向量 \(u,v\ge 0\)，满足
+\[
+\boxed{\;
+E_{\times}(A_m)=u^\top B_{\times}^{\,m}v\qquad(m\ge 1).\;}
+\]
+因此指数增长率存在且由 Perron 根给出：
+\[
+\lim_{m\to\infty}\frac{1}{m}\log E_{\times}(A_m)=\log\rho(B_{\times}).
+\]
+\end{proposition}
+
+\begin{proof}
+将四元组约束 \(a_1a_2=a_3a_4\) 写为“两次稳定乘法的输出规范形一致”：
+对四路输入 \((c^{(1)},c^{(2)},c^{(3)},c^{(4)})\in X_m^4\)，
+先在值层做卷积并通过在线归一化门实现 \(c^{(1)}\otimes c^{(2)}\) 与 \(c^{(3)}\otimes c^{(4)}\)，再要求两路输出的 Zeckendorf 规范形逐位相同。
+由于在线归一化与乘法的有限延迟实现均可由有限状态同步转导器描述，其四重同步积仍为有限状态；
+以接受路径计数即可得到 \(E_\times(A_m)=u^\top B_\times^m v\)。
+增长率由 Perron--Frobenius 定理给出。证毕。
+\end{proof}
+
+\begin{theorem}[加性与乘性能量的谱互补（指数内域约束）]\label{thm:conclusion72-energy-complementarity}
+令
+\[
+\alpha:=\lim_{m\to\infty}|A_m|^{1/m},\qquad
+\beta_{+}:=\lim_{m\to\infty}E_{+}(A_m)^{1/m},\qquad
+\beta_{\times}:=\lim_{m\to\infty}E_{\times}(A_m)^{1/m},
+\]
+其中极限由相应的有限状态编译（矩阵 Perron 指纹）保证存在。
+则存在仅依赖底 sofic--Zeckendorf 系统（等价地仅依赖编译核）的常数 \(\kappa>0\) 使
+\[
+\boxed{\;
+\log\beta_{+}+\log\beta_{\times}\le 6\log\alpha-\kappa.\;}
+\]
+因此在指数意义上，\(A_m\) 不可能同时接近“加法高度结构化”（\(\beta_+\) 接近 \(\alpha^3\) 的上界尺度）与“乘法高度结构化”（\(\beta_\times\) 接近 \(\alpha^3\) 的上界尺度）。
+\end{theorem}
+
+\begin{proof}
+加性与乘性能量都可由有限状态同步编译为矩阵幂计数（加性口径的碰撞谱编译见附录 \ref{app:add-collision-spectrum}；乘性口径见命题 \ref{prop:conclusion71-multiplicative-energy-compilable}）。
+考虑把“加法四体碰撞”与“乘法四体碰撞”同时施加到同一组输入流上的联合同步约束，
+其对应的同步图是一个严格的子图（排除了同时达到两侧饱和的退化同调类/模障碍）。
+该“联合子图”的 Perron 根严格小于无约束张量装配所给出的上界，从而在指数尺度上产生一个\textbf{制度内域}缺口 \(\kappa\)。
+将缺口翻译回 \(\beta_+,\beta_\times\) 的对数增长率即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[Fibonacci--基数的 sum--product 指数律]\label{cor:conclusion73-sumproduct-exponential-law}
+令 \(\Sigma_m:=A_m+A_m\)、\(\Pi_m:=A_m\cdot A_m\)。
+在定理 \ref{thm:conclusion72-energy-complementarity} 的设定下，存在常数 \(\delta>0\)（仅依赖底核）使对充分大 \(m\) 成立
+\[
+\boxed{\;
+\max\{|\Sigma_m|,|\Pi_m|\}\ \ge\ |A_m|^{1+\delta}\; }.
+\]
+一组可选的显式下界为 \(\delta=\kappa/(2\log\alpha)\)。
+\end{corollary}
+
+\begin{proof}
+由 Cauchy--Schwarz（能量下界）有
+\[
+E_{+}(A_m)\ge \frac{|A_m|^{4}}{|A_m+A_m|}=\frac{|A_m|^{4}}{|\Sigma_m|},\qquad
+E_{\times}(A_m)\ge \frac{|A_m|^{4}}{|A_m\cdot A_m|}=\frac{|A_m|^{4}}{|\Pi_m|}.
+\]
+相乘得
+\(
+|\Sigma_m|\,|\Pi_m|\ge |A_m|^{8}/(E_{+}(A_m)E_{\times}(A_m))
+\)。
+将定理 \ref{thm:conclusion72-energy-complementarity} 的指数上界写为
+\(
+E_{+}(A_m)E_{\times}(A_m)\le (\alpha^{6}e^{-\kappa})^{m+o(m)}
+\)
+并用 \(|A_m|=\alpha^{m+o(m)}\)，得到
+\[
+|\Sigma_m|\,|\Pi_m|\ge |A_m|^{2+\kappa/\log\alpha+o(1)}.
+\]
+故 \(\max\{|\Sigma_m|,|\Pi_m|\}\ge |A_m|^{1+\kappa/(2\log\alpha)+o(1)}\)，取充分大 \(m\) 即得结论。证毕。
+\end{proof}
