@@ -1,64 +1,34 @@
 \section{记号与预备知识}\label{sec:preliminaries}
 
-本节统一固定全文所用的基本记号、对象层级与最小可审计前提；其内容不承载新的结论，仅作为后续定理的输入。
+本节仅固定全文通用记号、对象层级与频率语句的最小输入口径；除明确标注外，不引入新的数学主张。
 
 \subsection{体例约定（证明链与解释性文字的分离）}\label{subsec:writing-conventions}
-\begin{itemize}
-  \item \textbf{证明链对象：}定义/引理/定理/命题/推论及其证明构成本文的可审计证明链；凡引用外部标准结论者，均以文献为依据。
-  \item \textbf{注/Remark：}用于补充技术性澄清、口径边界或可审计的实现细节；其中显式标注为“讨论/解释性”的段落不作为任何证明前提，其作用仅在于帮助读者定位语义接口与动机。
-  \item \textbf{范围控制：}当某一性质仅在特定证书口径下成立（例如 Hurwitz/Markov 最坏逼近口径），正文将明确标注其适用范围而不作更强外推。
-\end{itemize}
+本文的可审计证明链仅由编号的定义/引理/定理/命题/推论及其证明构成；解释性段落只用于定位语义接口与动机，不得作为任何后续推理前提。凡调用外部结论，均以文献为依据并在使用处写明其适用条件与所用形式。
 
 \subsection{基本记号与对象层级}
 \begin{itemize}
-  \item \textbf{数域与集合：}自然数/整数/有理数/实数/复数分别记为
-  \(\NN,\ZZ,\QQ,\RR,\CC\)。
-  \item \textbf{时间与迭代：}迭代计数记为 \(t\in\ZZ\) 或 \(t\in\NN\)，并以 \(T^t\) 表示单生成作用的第 \(t\) 次迭代。
-  \item \textbf{读出与窗口：}给定相空间 \(X\) 与可测窗集 \(W\subseteq X\)，二元读出为
-  \(s_t(x)=\ind_W(T^t x)\in\{0,1\}\)。
-  \item \textbf{微态窗口：}长度 \(m\) 的窗口微态空间为 \(\Omega_m=\{0,1\}^m\)。
-  \item \textbf{稳定语法：}在黄金均值约束下的稳定词空间记为 \(X_m\subseteq\Omega_m\)（禁止相邻 \(11\)），并在后文由 Fibonacci/Zeckendorf 结构给出可审计实现（第 \ref{sec:folding} 节）。
+  \item \textbf{数域与集合：}\(\NN,\ZZ,\QQ,\RR,\CC\) 分别记自然数、整数、有理数、实数、复数。
+  \item \textbf{时间与迭代：}时间为迭代计数 \(t\in\ZZ\)（或 \(t\in\NN\)），并以 \(T^t\) 表示单生成作用的第 \(t\) 次迭代。
+  \item \textbf{读出与窗口：}给定相空间 \(X\) 与可测窗 \(W\subseteq X\)，二元读出为 \(s_t(x)=\ind_W(T^t x)\in\{0,1\}\)。
+  \item \textbf{窗口微态：}长度 \(m\) 的窗口微态空间为 \(\Omega_m=\{0,1\}^m\)。
+  \item \textbf{稳定语法与折叠：}稳定词空间记为 \(X_m\subseteq\Omega_m\)，折叠 \(\Fold_m:\Omega_m\to X_m\) 由第 \ref{sec:folding} 节构造并给出可审计实现。
 \end{itemize}
 
-\subsection{记号表（快速索引）}
-\begin{table}[t]
-\centering
-\begin{tabular}{>{\raggedright\arraybackslash}p{0.28\linewidth} >{\raggedright\arraybackslash}p{0.68\linewidth}}
-\toprule
-\textbf{记号} & \textbf{含义}\\
-\midrule
-\(T^t\) & 单生成作用的第 \(t\) 次迭代（时间为迭代计数）。\\
-\(W\subseteq X\) & 读出窗口（可测集）。\\
-\(s_t(x)=\ind_W(T^t x)\) & 二元投影读出序列。\\
-\(\Omega_m=\{0,1\}^m\) & 分辨率 \(m\) 下的窗口微态空间。\\
-\(X_m\subseteq\Omega_m\) & 稳定语法（黄金均值约束：禁止相邻 \(11\)）。\\
-\(\Fold_m:\Omega_m\to X_m\) & 分辨率折叠（把微态归约到稳定类型）。\\
-\(\Phi_m\) & 由 \(\Fold_m\) 诱导的序列级滑动块码。\\
-\(\mathrm{freq}_N(A;x)\) & 轨道频率：\(\frac1N\sum_{t=0}^{N-1}\ind_A(T^t x)\)。\\
-\(D_N^{\ast}\) & 星差异度（用于区间窗读出的有限样本证书）。\\
-\bottomrule
-\end{tabular}
-\caption{主要记号（快速索引）。}
-\label{tab:notation-index}
-\end{table}
-
 \subsection{术语约定：稳定概念与稳定类型}
-本文区分两类对象。\textbf{稳定概念}指在有限分辨率的事件 \(\sigma\)-代数中具有极限频率（或状态期望）的可测事件，形式化定义见定义 \ref{def:stable-concept}。
-\textbf{稳定类型}指折叠后符号空间 \(X_m\) 的元素，即在语法约束下可作为“规范代表”的有限词；其与折叠算子 \(\Fold_m\) 的构造与多尺度相容性见第 \ref{sec:folding} 节。
+稳定概念与稳定类型分别用于事件层与类型层：稳定概念是有限窗口事件 \(\sigma\)-代数中的可测事件（定义 \ref{def:stable-concept}）；稳定类型是折叠后符号空间 \(X_m\) 的元素（与 \(\Fold_m\) 的构造见第 \ref{sec:folding} 节）。
 
 \subsection{频率语句的设定}\label{subsec:freq-setting}
-本文在涉及“极限频率/不变状态”时固定如下标准设定，即存在概率空间 \((X,\mathcal{B},\mu)\) 与保测变换 \(T\)，并以可测窗集 \(W\in\mathcal{B}\) 生成读出 \(s_t(x)=\ind_W(T^t x)\)。
-若需初值无关的结论，则进一步要求系统唯一遍历并施加边界零测条件 \(\mu(\partial W)=0\)（见注 \ref{rem:unique-ergodic-indicator}）。
+涉及“极限频率/不变状态”时，固定存在概率空间 \((X,\mathcal{B},\mu)\) 与保测变换 \(T\)，并以可测窗 \(W\in\mathcal{B}\) 生成读出 \(s_t(x)=\ind_W(T^t x)\)。若需结论与初值无关，则采用唯一遍历并在指示窗上施加边界零测条件 \(\mu(\partial W)=0\)（见注 \ref{rem:unique-ergodic-indicator}）。
 
 \subsection{遍历、频率与稳定概念}\label{subsec:prelim-ergodic-frequency}
-设 \((X,\mathcal{B},\mu)\) 为概率空间，且 \(T\) 保测（\(\mu(T^{-1}A)=\mu(A)\)）。对任意事件 \(A\in\mathcal{B}\) 与初值 \(x\in X\)，定义轨道频率
+对任意事件 \(A\in\mathcal{B}\) 与初值 \(x\in X\)，轨道频率定义为
 \[
 \mathrm{freq}_N(A;x)=\frac1N\sum_{t=0}^{N-1}\ind_A(T^t x).
 \]
-当 \(T\) 遍历时，Birkhoff 遍历定理给出 \(\mathrm{freq}_N(A;x)\to\mu(A)\)（见 \cite{WaltersErgodicTheory}）。
+当 \(T\) 遍历时，Birkhoff 遍历定理给出 \(\mathrm{freq}_N(A;x)\to\mu(A)\) 于 \(\mu\)-几乎处处 \(x\)（\cite{WaltersErgodicTheory}）。
 
 \begin{remark}[唯一遍历下的指示函数]\label{rem:unique-ergodic-indicator}
-唯一遍历先保证对连续观测的均匀收敛；对 \(f=\ind_W\) 这类指示函数，要得到与初值无关的频率结论，可检验的标准正则性条件之一是 \(\mu(\partial W)=0\)（参见 \cite{WaltersErgodicTheory}）。
+在唯一遍历口径下，若 \(\mu(\partial W)=0\)，则对指示读出 \(f=\ind_W\) 亦可得到与初值无关的频率结论；参见 \cite{WaltersErgodicTheory}。
 \end{remark}
 
 令 \(\mathcal{F}_m\) 为由长度不超过 \(m\) 的窗口事件生成的 \(\sigma\)-代数（等价地，由 \(\Omega_m\) 的柱集生成）。
@@ -71,7 +41,5 @@
 \end{definition}
 
 \subsection{两类外部输入的定位（仅作目录性说明）}\label{subsec:prelim-input-map}
-后续两节分别固定本文所依赖的两类“可审计输入口径”，并在全文保持不变。\par
-\textbf{数论侧输入：}反共振基线与有限样本差异度证书见第 \ref{sec:principles} 节。\par
-\textbf{动力学侧输入：}扫描—投影生成器（群作用与二元读出）见第 \ref{sec:spg} 节。
+后续两节分别固定本文所依赖的两类可审计输入口径：数论侧输入见第 \ref{sec:principles} 节，动力学侧输入见第 \ref{sec:spg} 节。
 
