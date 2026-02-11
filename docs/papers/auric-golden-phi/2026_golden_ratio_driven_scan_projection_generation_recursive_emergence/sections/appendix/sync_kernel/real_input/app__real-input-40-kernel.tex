@@ -537,6 +537,30 @@ I(S;C)\approx 0.282063\ \text{bits}.
 这与同步核的在线延迟 $3$（本质核）与同步复位词长度 $5$（命题 \ref{prop:real-input-40-reset-word}）相呼应。
 \end{proposition}
 
+\begin{corollary}[幂零指数的可观测后果：瞬态记忆深度的严格上界]\label{cor:real-input-40-nilpotent-memory-depth}
+令 \(V_0(M)\) 为全矩阵 \(M\) 在特征值 \(0\) 处的广义特征子空间（即 \(0\)-谱的瞬态子空间），并记其幂零指数为
+\(
+r_{\mathrm{full}}:=\max\{\text{$0$ 处 Jordan 块大小}\}
+\)
+（命题 \ref{prop:real-input-40-nilpotent-index} 给出 \(r_{\mathrm{full}}=5\)）。
+则对任意固定向量 \(v,w\)，计数序列
+\[
+f_m:=v^\ast M^m w
+\]
+满足：当 \(m\ge r_{\mathrm{full}}\) 时，\(f_m\) 与 \(w\) 在 \(V_0(M)\) 上的分量无关（等价地：所有来自 \(0\)-谱的瞬态贡献在 \(m\ge r_{\mathrm{full}}\) 后被幂零部分彻底湮灭）。
+同理，对 essential 核 \(A=M_{\mathrm{ess}}\) 的对应结论以 \(r_{\mathrm{ess}}=3\) 成立。
+\end{corollary}
+
+\begin{proof}
+在广义特征分解下，限制到 \(V_0(M)\) 上的算子 \(M|_{V_0(M)}\) 幂零，且幂零指数即为 \(r_{\mathrm{full}}\)；
+因此 \((M|_{V_0(M)})^{r_{\mathrm{full}}}=0\)。
+把 \(w=w_0+w_\perp\) 分解为 \(w_0\in V_0(M)\) 与 \(w_\perp\perp V_0(M)\)（取任意补空间即可），则当 \(m\ge r_{\mathrm{full}}\) 时有 \(M^m w_0=0\)，从而
+\(
+f_m=v^\ast M^m w=v^\ast M^m w_\perp
+\)
+与 \(w_0\) 无关。essential 情形同理。证毕。
+\end{proof}
+
 \begin{remark}[可复现输出：核维数链与 Jordan 块计数]\label{rem:real-input-40-nilpotent-index-repro}
 表 \ref{tab:real_input_40_nilpotent_jordan} 汇总了 $(\dim\ker A^k)$ 链，并据此给出 $0$ 处 Jordan 块大小的计数摘要。
 复现脚本：\texttt{scripts/exp\_real\_input\_40\_operator\_algebra\_invariants.py}。

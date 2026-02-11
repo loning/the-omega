@@ -1,0 +1,237 @@
+% Spectral / recurrence / index certificates for the fold gauge anomaly.
+% This file is intentionally hand-written (not auto-generated) to keep the
+% main text coherent while reusing generated algebraic fragments.
+
+\paragraph{谱—递推—指数闭合：规范差机制的可核验三角}\label{par:fold-gauge-anomaly-spectral-recurrence-triangle}
+上一段输入的生成片段已给出规范差逐位过程的压力函数（命题 \ref{prop:fold-gauge-anomaly-pressure}）、Jordan 相关闭式（定理 \ref{thm:fold-gauge-anomaly-autocov-closed}）、
+谱指纹与 Hankel 证书（定理 \ref{thm:fold-gauge-anomaly-hankel-rank3}），以及大偏差端点与代数速率曲线（命题 \ref{prop:fold-gauge-anomaly-ldp} 与命题 \ref{prop:fold-gauge-anomaly-rate-curve-param}）。
+本段把这些结果进一步压缩为三类\emph{有限数据即可核验}的接口：频域功率谱的有理指纹、有限长度矩生成函数的四阶封闭递推，以及折叠条件期望的有限指数（最大纤维多重度）。
+
+\begin{theorem}[Jordan 频谱指纹：逐位规范差指示过程的功率谱为有理函数]\label{thm:fold-gauge-anomaly-psd-rational}
+在命题 \ref{prop:fold-gauge-anomaly-pressure} 的均匀基线与平稳口径下，
+令 \(g_t=\mathbf 1\{X_t\neq Y_t\}\in\{0,1\}\)，并记
+\(
+C_k:=\mathrm{Cov}(g_t,g_{t+k})
+\)（\(k\in\ZZ\)）。
+定义其离散功率谱（Fourier--Stieltjes 变换）
+\[
+\mathcal S_g(\omega):=\sum_{k\in\ZZ} C_k e^{-ik\omega}\qquad(\omega\in\RR).
+\]
+则 \(\mathcal S_g\) 为严格有理函数；写 \(s:=e^{i\omega}\) 时有完全闭式
+\begin{equation}\label{eq:fold-gauge-anomaly-psd-rational}
+\boxed{\;
+\mathcal S_g(\omega)=\frac{2}{9}\cdot
+\frac{4s^{6}+3s^{5}-46s^{4}-99s^{3}-46s^{2}+3s+4}{8s^{6}+20s^{5}-26s^{4}-85s^{3}-26s^{2}+20s+8}\; }.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[证明要点（由相关生成函数直接求和）]
+由推论 \ref{cor:fold-gauge-anomaly-cov-genfun}，滞后协方差在 \(k\ge 1\) 的生成函数
+\(
+C(z)=\sum_{k\ge 1}C_k z^k
+\)
+为有理函数。
+又因 \(C_{-k}=C_k\) 且 \(C_0=\mathrm{Var}(g_t)=20/81\)（定理 \ref{thm:fold-gauge-anomaly-autocov-closed}），
+故
+\(
+\mathcal S_g(\omega)=C_0+C(e^{i\omega})+C(e^{-i\omega})
+\)。
+将 \(z=s\) 与 \(z=s^{-1}\) 代入并作代数化简，即得 \eqref{eq:fold-gauge-anomaly-psd-rational}。证毕。
+\end{proof}
+
+\begin{proposition}[总规范差的四阶递推：概率生成函数由固定特征多项式封闭]\label{prop:fold-gauge-anomaly-mgf-order4-recurrence}
+令 \(G_m:=\sum_{t=1}^{m} g_t\)，并对 \(u>0\) 定义概率生成函数
+\[
+M_m(u):=\mathbb E\!\left[u^{G_m}\right]
+=\mathbb E\exp\!\bigl((\log u)\,G_m\bigr).
+\]
+引入清分母的计数型生成函数 \(\widetilde M_m(u):=2^{m}M_m(u)\)。
+则对所有 \(m\ge 0\)，序列 \(\bigl(\widetilde M_m(u)\bigr)_{m\ge 0}\) 满足四阶线性递推
+\begin{equation}\label{eq:fold-gauge-anomaly-Mm-order4}
+\boxed{\;
+\widetilde M_{m+4}(u)=\widetilde M_{m+3}(u)+(2u+1)\widetilde M_{m+2}(u)+(u^{3}-2u)\widetilde M_{m+1}(u)-2u\,\widetilde M_m(u)\; }.
+\end{equation}
+等价地，\(\bigl(M_m(u)\bigr)\) 同样满足四阶递推，但系数整体按 \(2^{-j}\) 比例缩放（对应于 \(A_\theta=\tfrac12(2A_\theta)\) 的尺度差）。
+在 \(u=1\) 处，该递推的特征因子为
+\(
+(\mu-2)(\mu-1)(\mu+1)^2
+\)，
+其中 \((\mu+1)^2\) 的 Jordan 二重根对应于定理 \ref{thm:fold-gauge-anomaly-A0-jordan} 的交错相位残差，
+从而解释有限长统计量中出现的 \(m2^{-m}\) 级振荡修正项（定理 \ref{thm:fold-gauge-anomaly-var-finite-closed}）。
+\end{proposition}
+
+\begin{proof}[证明要点（Cayley--Hamilton）]
+令 \(\theta=\log u\)，并取命题 \ref{prop:fold-gauge-anomaly-pressure} 的矩阵 \(A_\theta\)。
+记 \(B_u:=2A_\theta\)，则其特征多项式正是
+\(
+F(\mu,u)=\det(\mu I-B_u)
+\)，
+其显式四次多项式写法已在命题 \ref{prop:fold-gauge-anomaly-pressure} 中给出。
+由 Cayley--Hamilton 定理得 \(F(B_u,u)=0\)。
+而对固定 \(u\)，计数型生成函数 \(\widetilde M_m(u)\) 可写为有限状态换能器的路径权重和，等价地为某个线性泛函作用在 \(B_u^m\) 上；
+将 \(F(B_u,u)=0\) 左右乘以相应向量并取该线性泛函，得到 \eqref{eq:fold-gauge-anomaly-Mm-order4}。证毕。
+\end{proof}
+
+\begin{proposition}[非渐近 Chernoff 轮廓：尾概率指数由代数压力函数唯一决定]\label{prop:fold-gauge-anomaly-chernoff-nonasymptotic}
+令压力函数 \(P_G(\theta)=\log\rho(A_\theta)\) 如命题 \ref{prop:fold-gauge-anomaly-pressure}，并令
+\[
+I(a)=\sup_{\theta\in\RR}\bigl(a\theta-P_G(\theta)\bigr)\qquad(a\in[0,1])
+\]
+为其 Legendre--Fenchel 变换（命题 \ref{prop:fold-gauge-anomaly-ldp}）。
+则对任意 \(a\in(0,1)\) 存在常数 \(C(a)>0\) 与整数 \(r(a)\ge 0\)，使得对所有 \(m\ge 1\) 有统一上界
+\begin{equation}\label{eq:fold-gauge-anomaly-chernoff-two-sided}
+\boxed{\;
+\mathbb P\!\left(\frac{G_m}{m}\ge a\right)\le C(a)\,m^{r(a)}e^{-m I(a)},\qquad
+\mathbb P\!\left(\frac{G_m}{m}\le a\right)\le C(a)\,m^{r(a)}e^{-m I(a)}.\;}
+\end{equation}
+其中鞍点参数 \(u(a)=e^{\theta(a)}\) 可由消元证书 \(R(a,u)=0\) 的可行分支唯一确定（命题 \ref{prop:fold-gauge-anomaly-rate-curve-param}），故指数轮廓 \(I(a)\) 为可审计的“代数—对数型”对象；
+而多项式前因子 \(m^{r(a)}\) 的出现仅由有限维转移算子的 Jordan 缺陷决定（在本 \(4\) 态接口下可取 \(r(a)\le 3\)）。
+\end{proposition}
+
+\begin{proof}[证明要点（矩阵 Chernoff + 有限维谱分解）]
+对任意 \(\theta\in\RR\)，Chernoff 不等式给出
+\(
+\mathbb P(G_m\ge am)\le e^{-am\theta}\,\mathbb E e^{\theta G_m}
+\)；
+而 \(\mathbb E e^{\theta G_m}\) 是有限维加权邻接矩阵 \(A_\theta\) 的某个矩阵元（或其线性组合），故可由有限维谱/Jordan 分解界为
+\(
+\mathbb E e^{\theta G_m}\le C(\theta)\,m^{r(\theta)}\rho(A_\theta)^m
+\)。
+优化 \(\theta\) 得指数项 \(I(a)\)，并将剩余常数与多项式因子吸收为 \(C(a),r(a)\)。证毕。
+\end{proof}
+
+\begin{theorem}[Gallavotti--Cohen 缺陷的严格符号律与远场饱和]\label{thm:fold-gauge-anomaly-gc-defect-sign}
+定义 GC 缺陷函数
+\[
+\Delta(\theta):=P_G(\theta)-\theta-P_G(-\theta).
+\]
+则：
+\begin{enumerate}
+  \item \(\Delta\) 为奇函数，\(\Delta(0)=0\)；
+  \item 其线性化偏置满足
+  \begin{equation}\label{eq:fold-gauge-anomaly-gc-defect-slope}
+  \boxed{\;
+  \Delta'(0)=2P_G'(0)-1=2\cdot\frac49-1=-\frac19\;};
+  \end{equation}
+  \item 其远场极限满足
+  \begin{equation}\label{eq:fold-gauge-anomaly-gc-defect-saturation}
+  \boxed{\;
+  \lim_{\theta\to+\infty}\Delta(\theta)=-\log\varphi\;};
+  \end{equation}
+  \item 严格符号律成立：
+  \begin{equation}\label{eq:fold-gauge-anomaly-gc-defect-sign}
+  \boxed{\;
+  \Delta(\theta)<0\ (\theta>0),\qquad \Delta(\theta)>0\ (\theta<0)\;}.
+  \end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[证明要点（可审计）]
+（1）由定义直接计算得 \(\Delta(-\theta)=-\Delta(\theta)\)。
+（2）由 \(\Delta'(\theta)=P_G'(\theta)-1+P_G'(-\theta)\) 取 \(\theta=0\)，并用命题 \ref{prop:fold-gauge-anomaly-pressure} 的闭式 \(P_G'(0)=4/9\)。
+（3）由命题 \ref{prop:fold-gauge-anomaly-ldp} 的端点闭式：当 \(\theta\to+\infty\) 时 \(P_G(\theta)=\theta-\log 2+o(1)\)，而 \(P_G(-\theta)\to \log(\varphi/2)\)，故 \(\Delta(\theta)\to -\log\varphi\)。
+（4）对该最小 \(4\) 态接口，\(\Delta\) 在 \(\theta>0\) 上严格递减（等价于 \(\Delta'(\theta)<0\)），可由命题 \ref{prop:fold-gauge-anomaly-rate-curve-param} 的代数参数化把 \(\Delta'(\theta)\) 化为代数分支上的显式表达并作符号审计；于是由 \(\Delta(0)=0\) 得 \(\theta>0\) 时 \(\Delta(\theta)<0\)。\(\theta<0\) 的符号由奇性得到。证毕。
+\end{proof}
+
+\begin{corollary}[两常数闭合：\texorpdfstring{$\frac49$}{4/9} 与 \texorpdfstring{$\log\varphi$}{log phi} 锁定同一缺陷曲线的局部与远场]\label{cor:fold-gauge-anomaly-two-constants-closure}
+在定理 \ref{thm:fold-gauge-anomaly-gc-defect-sign} 的记号下，\(\Delta'(0)=-\frac19\) 与
+\(\lim_{\theta\to+\infty}\Delta(\theta)=-\log\varphi\) 构成一对局部—远场规范条件：
+它们分别由 \(P_G'(0)=4/9\) 的均值常数与端点指数 \(I(0)=\log(2/\varphi)\)（命题 \ref{prop:fold-gauge-anomaly-ldp}）诱导。
+并且在原点处存在严格的三阶校正（偶次项完全相消）：
+\begin{equation}\label{eq:fold-gauge-anomaly-delta-taylor3}
+\boxed{\;
+\Delta(\theta)= -\frac{\theta}{9}\;-\;\frac{1174}{6561}\,\theta^{3}\;+\;O(\theta^{5})\qquad(\theta\to 0).}
+\end{equation}
+因此 \(\Delta\) 的“非自对偶”指纹不止于三阶累积量非零，而是以单参数缺陷曲线的局部斜率与远场饱和值同时封口。
+\end{corollary}
+
+\begin{proof}
+由命题 \ref{prop:fold-gauge-anomaly-pressure}，\(P_G\) 在 \(\theta=0\) 处的前三阶导数均有闭式，
+并且 \(P_G\) 为光滑函数。
+将 \(P_G(\theta)\) 与 \(P_G(-\theta)\) 作 Taylor 展开，代入 \(\Delta(\theta)=P_G(\theta)-\theta-P_G(-\theta)\)；
+注意偶次项相消、奇次项加倍，即得 \eqref{eq:fold-gauge-anomaly-delta-taylor3}。证毕。
+\end{proof}
+
+\begin{proposition}[折叠条件期望的有限指数：最大纤维多重度给出最坏信息损失的对数尺度]\label{prop:fold-condexp-index-maxfiber}
+固定分辨率 \(m\)。
+沿用小节 \ref{subsec:pom-max-fiber} 的记号，记纤维多重度
+\(
+d_m(x)=|\Fold_m^{-1}(x)|
+\)
+与最大多重度
+\(
+D_m=\max_{x\in X_m} d_m(x)
+\)。
+取有限维交换代数 \(A_m=\CC^{\Omega_m}\) 及其子代数 \(B_m\subset A_m\)（由 \(X_m\) 上函数拉回得到的纤维常值函数），
+并令 \(E_m:A_m\to B_m\) 为按纤维均匀平均的条件期望。
+则其 Pimsner--Popa 指数满足严格等式
+\begin{equation}\label{eq:fold-condexp-index-maxfiber}
+\boxed{\;
+\mathrm{Ind}(E_m)=D_m\; }.
+\end{equation}
+并且由定理 \ref{thm:dephys-index-max-relative-entropy-loss}（有限指数的相对熵损失极值公式）得到有限维离散原型：
+\begin{equation}\label{eq:fold-condexp-index-entropy-loss}
+\boxed{\;
+\sup_{\rho,\sigma}\Bigl[D(\rho\|\sigma)-D(\rho\circ E_m\ \|\ \sigma\circ E_m)\Bigr]
+=\log \mathrm{Ind}(E_m)=\log D_m.\;}
+\end{equation}
+\end{proposition}
+
+\begin{proof}[证明要点]
+对任意非负函数 \(f\in A_m\) 与任意 \(a\in\Omega_m\)，若 \(x=\Fold_m(a)\) 且 \(d=d_m(x)\)，则
+\(
+(E_m f)(a)=\frac1d\sum_{b\in\Fold_m^{-1}(x)} f(b)\ge \frac1d f(a)
+\)。
+因此 \(E_m(f)\ge D_m^{-1}f\)，即 \(\mathrm{Ind}(E_m)\le D_m\)。
+反过来，取某个达到最大多重度的 \(x_\star\) 及其纤维中的一点 \(a_\star\)，令 \(f=\mathbf 1_{\{a_\star\}}\)。
+则在该纤维上 \(E_m f \equiv 1/D_m\)，从而若 \(E_m(f)\ge \Lambda^{-1}f\) 成立必有 \(\Lambda\ge D_m\)，故 \(\mathrm{Ind}(E_m)\ge D_m\)。
+合并得 \(\mathrm{Ind}(E_m)=D_m\)。
+式 \eqref{eq:fold-condexp-index-entropy-loss} 由定理 \ref{thm:dephys-index-max-relative-entropy-loss} 直接推出。证毕。
+\end{proof}
+
+\begin{corollary}[纤维熵势的饱和判据：平均对数多重度与平均多重度之间的严格缺口]\label{cor:fold-fiber-entropy-saturation}
+对任意 \(\pi\in\Delta(X_m)\)，定义纤维熵势
+\[
+S_{\mathrm{fib}}(\pi):=\mathbb E_{\pi}[\log d_m(X)].
+\]
+则恒有 Jensen 上界
+\begin{equation}\label{eq:fold-fiber-entropy-jensen-gap}
+\boxed{\;
+S_{\mathrm{fib}}(\pi)\le \log\mathbb E_{\pi}[d_m(X)]\;}
+\end{equation}
+且等号成立当且仅当 \(d_m(X)\) 在 \(\pi\)-几乎处处为常数（即所有可见类型承载相同的纤维多重度）。
+特别地，对均匀可见基线 \(\pi=\mathrm{Unif}(X_m)\) 有 \(\mathbb E_{\pi}[d_m(X)]=|\Omega_m|/|X_m|=I_m\)（定义 \ref{def:pom-fold-index}），从而
+\[
+\boxed{\;
+\mathbb E_{\pi}[\log d_m(X)]\le \log\frac{|\Omega_m|}{|X_m|}=S_Z(m)\; }.
+\]
+\end{corollary}
+
+\begin{proof}
+由对数的凹性（Jensen 不等式）得 \eqref{eq:fold-fiber-entropy-jensen-gap}。
+等号条件为 \(d_m(X)\) 在 \(\pi\)-支撑上为常数。
+最后一段由
+\(
+\mathbb E_{\mathrm{Unif}(X_m)}[d_m(X)]=\frac{1}{|X_m|}\sum_{x\in X_m} d_m(x)=\frac{|\Omega_m|}{|X_m|}
+\)
+得出。证毕。
+\end{proof}
+
+\begin{proposition}[可审计的“谱—层析—证书”三角：功率谱与四阶递推共同锁定最小识别复杂度]\label{prop:fold-gauge-anomaly-spectrum-tomography-certificate-triangle}
+设观测者仅能访问两类有限数据：
+\begin{enumerate}
+  \item[(i)] 功率谱在有限频点网格上的采样 \(\{\mathcal S_g(\omega_\ell)\}_{\ell=1}^{L}\)；
+  \item[(ii)] 对某个固定 \(u\neq 1\)，有限长度生成函数值 \(\{M_m(u)\}_{m=0}^{N}\)（其中 \(N\ge 3\)）。
+\end{enumerate}
+则：
+\begin{enumerate}
+  \item 由命题 \ref{prop:fold-gauge-anomaly-mgf-order4-recurrence}，数据 \(\{M_m(u)\}_{m=0}^{N}\) 在代数上必须落在四阶递推生成的四维线性空间中；
+  任意声称“同机制”的实现都必须满足该递推的有限数据一致性约束。
+  \item 由定理 \ref{thm:fold-gauge-anomaly-psd-rational}，\(\mathcal S_g\) 具有固定的有理极点结构；
+  任意机制替换若改变 \( (-1/2)\) 交错模态或其 Jordan 残差（定理 \ref{thm:fold-gauge-anomaly-A0-jordan}），则必在有限个频点上产生可检测偏差。
+  \item 两类数据联合后，最小识别复杂度被“阶数 \(4\)”强制：
+  任意试图用阶数 \(<4\) 的线性状态模型同时拟合 (i)--(ii) 两类数据，将在严格代数意义下失败（无法同时满足四阶递推与谱有理式的极点/Jordan 约束）。
+\end{enumerate}
+因此，规范差机制的最低阶可核验承载维数被严格锁定为 \(4\)，并可由“递推一致性 + 频域极点结构”双通道证书同时审计。
+\end{proposition}
+
