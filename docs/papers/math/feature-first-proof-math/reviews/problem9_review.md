@@ -1,26 +1,27 @@
-﻿# Problem 9 Review
+# Problem 9 Review
 
 - Problem: `Q9`
-- Submission Version: `Q9-V2`
-- Review Version: `Q9-R2`
+- Submission Version: `Q9-V3`
+- Review Version: `Q9-R3`
 - Verdict: `FAIL`
 
-## Blocking Issues
+## Blocking Issue
 
-1. `Lemma 3.1` is not fully justified for all nonconstant triples `(beta,gamma,delta)`.
-   The explicit witness assignment chooses three different camera matrices
-   `A^(beta), A^(gamma), A^(delta)` independently.
-   This does not cover cases with repeated indices (e.g. `beta=gamma!=delta`),
-   where those matrices are not independent objects.
-   Since later steps require rank-4 for every nonconstant triple, this gap is blocking.
+1. The only-if proof does not fully close coverage of all non-identical quadruples.
+   After Step 1/2/3, the derived formula
+   `lambda_{alpha,beta,gamma,delta} = u_alpha v_beta w_gamma x_delta`
+   is justified on domains constrained by nonconstant triples used in those steps.
+   The argument does not explicitly and rigorously extend to the case
+   `(beta,gamma,delta)=(b,b,b)` with `alpha != b`.
+   That regime is part of the required off-diagonal domain and must be proved separately
+   (or handled by an additional mode-combination step).
 
-## Fixed Relative to Q9-R1
+## Fixed Relative to Q9-R2
 
-1. Diagonal-block issue is repaired by proving `Q^(aaaa) == 0`.
-2. Rigidity lemma is now block-consistent (`diag(d_alpha I_3)` with 3D row-space argument).
-3. The minor-based construction of `F` has uniform degree `5` and is independent of `A`.
+1. The repeated-index part of the rank-4 lemma is now addressed with an explicit case split and valid witness columns.
+2. Diagonal-block vanishing and block-rigidity components remain correct.
 
 ## Required Fix
 
-1. Complete `Lemma 3.1` with a valid argument for repeated-index nonconstant triples,
-   e.g. explicit case split (`all distinct`, `exactly two equal`) or a uniform algebraic proof.
+1. Add a final extension lemma that covers all non-identical quadruples, especially the constant-triple tail case.
+2. Alternatively, include one more explicit mode-coupling step proving that values with `(beta,gamma,delta)=(b,b,b), alpha!=b` inherit the same product factors.

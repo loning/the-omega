@@ -9,10 +9,10 @@ This file tracks the latest reviewed version for each problem.
 | Q3 | Q3-R7 | FAIL (conditional only; nontriviality not unconditional) |
 | Q4 | Q4-R4 | FAIL (all-n open) |
 | Q5 | Q5-R3 | PASS |
-| Q6 | Q6-R1 | FAIL (main existence not closed) |
+| Q6 | Q6-R2 | FAIL (partial results verified; main existence still open) |
 | Q7 | Q7-R2 | PASS (odd-torsion no-go + pure 2-torsion open) |
 | Q8 | Q8-R1 | FAIL |
-| Q9 | Q9-R2 | FAIL (Lemma 3.1 repeated-index case not closed) |
+| Q9 | Q9-R3 | FAIL (final all-off-diagonal extension step incomplete) |
 | Q10 | Q10-R1 | PASS |
 
 Process rule:
