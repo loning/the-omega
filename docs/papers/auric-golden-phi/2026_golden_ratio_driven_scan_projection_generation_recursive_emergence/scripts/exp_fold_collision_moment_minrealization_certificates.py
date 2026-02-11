@@ -12,6 +12,9 @@ For each k we:
 3) Exhibit a nonzero dxd Hankel minor for a_n := S_k(n+2) (Hankel rank >= d).
 4) Conclude Hankel rank = d (since linear recurrence of order d implies rank <= d),
    hence minimal linear realization dimension is exactly d.
+5) Emit a canonical Hankel-normal-form witness (paper: HANKELNF_q) from a finite
+   2d-sample window: (d, ell; H0^(ell), H1^(ell); A, alpha, beta), with
+     A := (H0^(ell))^{-1} H1^(ell), alpha^T := (a_ell,...,a_{ell+d-1}), beta := e0.
 
 Output:
   - artifacts/export/fold_collision_moment_minrealization_certificates.json
@@ -146,6 +149,26 @@ def find_min_recurrence(seq_by_m: Dict[int, int], order_max: int, m_min: int, m_
 
 
 @dataclass(frozen=True)
+class HankelNF:
+    """
+    Canonical Hankel-normal-form witness built from a finite 2d window.
+
+    We store A entries as strings (exact SymPy rationals) to keep the certificate
+    JSON round-trip stable.
+    """
+
+    d: int
+    ell: int
+    H0: List[List[int]]
+    H1: List[List[int]]
+    A: List[List[str]]
+    alpha: List[int]
+    beta: List[int]
+    sample_m: List[int]
+    sample_S: List[int]
+
+
+@dataclass(frozen=True)
 class Certificate:
     k: int
     m_min: int
@@ -156,6 +179,7 @@ class Certificate:
     hankel_d: int
     hankel_offset: int
     hankel_det: int
+    hankel_nf: HankelNF
 
 
 def main() -> None:
@@ -222,15 +246,18 @@ def main() -> None:
         print(f"[minreal-certs] k={k} recurrence: order={d} starts_at_m={m0}", flush=True)
 
         hankel_d = d
-        # For a dxd Hankel block at offset r we need a_{r..r+2d-2}, i.e. S_k(m) up to
-        # m = (r + 2d - 2) + 2 = r + 2d. Hence r <= m_max - 2d.
-        off_cap = min(int(args.offset_max), m_max - 2 * hankel_d)
+        # For a dxd Hankel block at offset r we need:
+        #   H0^(r) uses a_{r..r+2d-2}  -> S_k(m) up to m = r + 2d
+        #   H1^(r) uses a_{r+1..r+2d-1} -> S_k(m) up to m = r + 2d + 1
+        # Hence we require r <= m_max - (2d+1) to form both H0^(r), H1^(r).
+        off_cap = min(int(args.offset_max), m_max - (2 * hankel_d + 1))
         if off_cap < 0:
             raise SystemExit(
-                f"Need m_max >= {2*hankel_d} to form a {hankel_d}x{hankel_d} Hankel block even at offset 0 "
+                f"Need m_max >= {2*hankel_d + 1} to form both H0/H1 for a {hankel_d}x{hankel_d} Hankel witness at offset 0 "
                 f"(got m_max={m_max})."
             )
-        n_need = off_cap + (2 * hankel_d - 2)
+        # Need a up to index (off_cap + 2d - 1) to build H1 at off_cap.
+        n_need = off_cap + (2 * hankel_d - 1)
         a = [seq[n + 2] for n in range(n_need + 1)]
 
         found_off = None
@@ -246,6 +273,25 @@ def main() -> None:
             raise SystemExit(f"Failed to find nonzero {hankel_d}x{hankel_d} Hankel minor for k={k}.")
 
         print(f"[minreal-certs] k={k} Hankel witness: d={hankel_d} off={found_off} det!=0", flush=True)
+        ell = int(found_off)
+        H0 = hankel_block(a, d=hankel_d, offset=ell)
+        H1 = hankel_block(a, d=hankel_d, offset=ell + 1)
+        A = sp.Matrix(H0).LUsolve(sp.Matrix(H1))
+        alpha = [int(a[ell + i]) for i in range(hankel_d)]
+        beta = [1] + [0] * (hankel_d - 1)
+        sample_m = [ell + 2 + i for i in range(2 * hankel_d)]
+        sample_S = [int(seq[m]) for m in sample_m]
+        hankel_nf = HankelNF(
+            d=int(hankel_d),
+            ell=int(ell),
+            H0=[[int(x) for x in row] for row in H0],
+            H1=[[int(x) for x in row] for row in H1],
+            A=[[str(A[i, j]) for j in range(A.cols)] for i in range(A.rows)],
+            alpha=[int(x) for x in alpha],
+            beta=[int(x) for x in beta],
+            sample_m=[int(x) for x in sample_m],
+            sample_S=[int(x) for x in sample_S],
+        )
         certs.append(
             Certificate(
                 k=int(k),
@@ -257,6 +303,7 @@ def main() -> None:
                 hankel_d=int(hankel_d),
                 hankel_offset=int(found_off),
                 hankel_det=int(found_det),
+                hankel_nf=hankel_nf,
             )
         )
 

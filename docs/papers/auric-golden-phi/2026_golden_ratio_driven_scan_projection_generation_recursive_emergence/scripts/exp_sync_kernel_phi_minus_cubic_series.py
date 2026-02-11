@@ -3,7 +3,7 @@
 """
 Symbolic Taylor expansion for the neg-carry potential (phi_-).
 
-In appendix `sections/90_appendix_sync_kernel_multi_dim.tex`, the pressure P(theta)
+In appendix `sections/appendix/sync_kernel/app__vector-potential.tex`, the pressure P(theta)
 for the potential phi_-(s->t)=1_{t in Q_-} is determined by the Perron root
 lambda(u) (u = e^theta) of the cubic:
 

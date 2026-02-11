@@ -108,11 +108,50 @@ def main() -> None:
     tex_path = Path(args.tex_out)
     tex_path.parent.mkdir(parents=True, exist_ok=True)
     Delta_latex = sp.latex(Delta)
+
+    def _latex_multiline(tex: str, *, max_line_len: int = 95) -> List[str]:
+        """Greedy split of a TeX polynomial string into multiple lines."""
+        s = tex.strip()
+        s = s.replace(" - ", " + - ")
+        raw = [p.strip() for p in s.split(" + ") if p.strip()]
+        if not raw:
+            return ["0"]
+
+        terms: List[str] = []
+        for i, p in enumerate(raw):
+            if i == 0:
+                terms.append(p)
+                continue
+            if p.startswith("-"):
+                terms.append("- " + p[1:].lstrip())
+            else:
+                terms.append("+ " + p)
+
+        out_lines: List[str] = []
+        cur = terms[0]
+        for t in terms[1:]:
+            if len(cur) + 1 + len(t) > max_line_len:
+                out_lines.append(cur)
+                cur = t
+            else:
+                cur = cur + " " + t
+        out_lines.append(cur)
+        return out_lines
+
+    poly_lines = _latex_multiline(Delta_latex, max_line_len=85)
     lines: List[str] = []
     lines.append("% Auto-generated; do not edit by hand.")
     lines.append("\\begin{equation}\\label{eq:sync-kernel-weighted-delta-explicit}")
     lines.append("\\boxed{")
-    lines.append("\\Delta(z,u)=" + Delta_latex)
+    lines.append("\\begin{aligned}")
+    if len(poly_lines) == 1:
+        lines.append("\\Delta(z,u)&=" + poly_lines[0])
+    else:
+        lines.append("\\Delta(z,u)&=" + poly_lines[0] + "\\\\")
+        for ln in poly_lines[1:-1]:
+            lines.append("&" + ln + "\\\\")
+        lines.append("&" + poly_lines[-1])
+    lines.append("\\end{aligned}")
     lines.append("}")
     lines.append("\\end{equation}")
     tex_path.write_text("\n".join(lines) + "\n", encoding="utf-8")

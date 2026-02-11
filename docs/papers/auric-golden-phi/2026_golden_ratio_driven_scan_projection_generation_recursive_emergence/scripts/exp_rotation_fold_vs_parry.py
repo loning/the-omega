@@ -41,7 +41,9 @@ def build_fold_map(m: int, prog: Progress) -> List[int]:
         bits = _int_to_bits(w, m)
         folded = fold_m(bits)
         out[w] = _pack_bits_to_int(folded, m)
-        prog.tick(f"build_fold_map m={m} w={w}/{size}")
+        # Avoid per-iteration f-string overhead; Progress already rate-limits prints.
+        if (w & 0x3FFF) == 0:
+            prog.tick(f"build_fold_map m={m} w={w}/{size}")
     return out
 
 
@@ -103,11 +105,9 @@ def star_discrepancy(xs: np.ndarray) -> float:
         return 1.0
     ys = np.sort(xs.astype(np.float64, copy=False))
     invn = 1.0 / float(n)
-    m1 = 0.0
-    m2 = 0.0
-    for i, y in enumerate(ys, start=1):
-        m1 = max(m1, float(i) * invn - float(y))
-        m2 = max(m2, float(y) - float(i - 1) * invn)
+    i = np.arange(1, n + 1, dtype=np.float64)
+    m1 = float(np.max(i * invn - ys))
+    m2 = float(np.max(ys - (i - 1.0) * invn))
     return float(max(m1, m2))
 
 
@@ -182,20 +182,45 @@ class Config:
     x0: float
 
 
-def count_folded_hist(s: np.ndarray, m: int, N: int, fold_map: List[int], prog: Progress) -> Dict[int, int]:
-    """Count histogram of Fold_m over the first N windows of length m from s."""
-    if N + m - 1 > len(s):
-        raise ValueError("s too short for requested N,m")
-    mask = (1 << m) - 1
-    w = _pack_bits_to_int(s[:m], m)
-    counts: Dict[int, int] = {}
-    for t in range(N):
-        if t > 0:
-            w = ((w << 1) & mask) | int(s[t + m - 1])
-        folded = fold_map[w]
-        counts[folded] = counts.get(folded, 0) + 1
-        prog.tick(f"count m={m} t={t}/{N}")
-    return counts
+def _packed_windows_by_m(
+    s_bits: np.ndarray,
+    *,
+    N: int,
+    m_max: int,
+    needed_ms: Iterable[int],
+) -> Dict[int, np.ndarray]:
+    """Pack all length-m windows (MSB-first) for selected m, using vectorized shift-append.
+
+    For each requested m, returns an array `w_m` of length N where:
+        w_m[t] = pack(s_bits[t:t+m])  in [0,2^m).
+    """
+    if N <= 0:
+        raise ValueError("N must be positive")
+    if m_max <= 0:
+        raise ValueError("m_max must be positive")
+    need = sorted(set(int(x) for x in needed_ms))
+    if not need:
+        return {}
+    if min(need) < 1 or max(need) > m_max:
+        raise ValueError("needed_ms must satisfy 1 <= m <= m_max")
+    if len(s_bits) < N + m_max - 1:
+        raise ValueError("s_bits too short for requested N and m_max")
+    if s_bits.dtype != np.uint8:
+        s_bits = s_bits.astype(np.uint8, copy=False)
+    # Cast once (avoid per-step uint8->uint32 conversions on large slices).
+    s32 = s_bits.astype(np.uint32, copy=False)
+
+    out: Dict[int, np.ndarray] = {}
+    w = s32[:N]
+    if 1 in need:
+        out[1] = w.copy()
+
+    for m in range(2, m_max + 1):
+        nxt = s32[m - 1 : m - 1 + N]
+        w = (w << 1) | nxt
+        if m in need:
+            out[m] = w.copy()
+    return out
 
 
 def pushforward_truncate_last_bit(counts_m1: Dict[int, int]) -> Dict[int, int]:
@@ -252,8 +277,9 @@ def main() -> None:
                 )
 
     # Precompute fold maps and Parry baselines per m.
-    fold_maps: Dict[int, List[int]] = {}
-    parry_qs: Dict[int, Dict[int, float]] = {}
+    fold_maps: Dict[int, np.ndarray] = {}
+    parry_qs: Dict[int, np.ndarray] = {}
+    legal_idxs: Dict[int, np.ndarray] = {}
 
     prog = Progress("exp_rotation_fold_vs_parry", every_seconds=20.0)
 
@@ -262,8 +288,15 @@ def main() -> None:
     m_em_max = 14
     ms_all = set(ms) | {m + 1 for m in ms if m + 1 <= m_em_max}
     for m in sorted(ms_all):
-        fold_maps[m] = build_fold_map(m, prog)
-        parry_qs[m] = build_parry_q(m)
+        fold_maps[m] = np.asarray(build_fold_map(m, prog), dtype=np.uint32)
+        q_dict = build_parry_q(m)
+        q_arr = np.zeros(1 << m, dtype=np.float64)
+        for k, v in q_dict.items():
+            q_arr[int(k)] = float(v)
+        parry_qs[m] = q_arr
+        # Legal word indices (no adjacent 1s) for fast TV/KL on the support.
+        ws = np.arange(1 << m, dtype=np.uint32)
+        legal_idxs[m] = np.nonzero((ws & (ws >> 1)) == 0)[0].astype(np.int64, copy=False)
 
     with out_csv.open("w", encoding="utf-8", newline="") as f:
         wr = csv.DictWriter(
@@ -283,60 +316,102 @@ def main() -> None:
                 "DN_star_upper_bound",
                 "DN_star_exact",
                 "tv_multiscale_residual",
-                "elapsed_s",
             ],
         )
         wr.writeheader()
 
+        Nmax = max(Ns)
+        max_m_needed = max(fold_maps.keys())
+
+        # Cache discrepancy computations across betas (xs_full depends only on alpha,x0).
+        xs_cache: Dict[Tuple[float, float], np.ndarray] = {}
+        dn_star_exact_cache: Dict[Tuple[float, float, int], float] = {}
+        dn_star_ub_cache: Dict[Tuple[str, Tuple[int, ...], int], float] = {}
+
         for cfg in configs:
-            # Points are independent of m,beta: compute once for exact D_N^*.
-            Nmax = max(Ns)
-            xs_full = rotation_points(cfg.alpha, cfg.x0, Nmax)
-            for m in ms:
-                # Generate bits once per (cfg,m,Nmax) and slice prefixes for smaller N.
-                s_len = Nmax + (m + 1 if (m + 1) in fold_maps else m) - 1
-                s = rotation_bits(cfg.alpha, cfg.x0, cfg.beta, s_len)
+            ax_key = (cfg.alpha, cfg.x0)
+            if ax_key not in xs_cache:
+                xs_cache[ax_key] = rotation_points(cfg.alpha, cfg.x0, Nmax)
+            xs_full = xs_cache[ax_key]
 
-                for N in Ns:
-                    t0 = time.time()
-                    counts = count_folded_hist(
-                        s=s,
-                        m=m,
-                        N=N,
-                        fold_map=fold_maps[m],
-                        prog=prog,
-                    )
+            dn_star_exact_by_N: Dict[int, float] = {}
+            for N in Ns:
+                k = (cfg.alpha, cfg.x0, int(N))
+                if k not in dn_star_exact_cache:
+                    dn_star_exact_cache[k] = star_discrepancy(xs_full[:N])
+                dn_star_exact_by_N[N] = dn_star_exact_cache[k]
 
-                    # Normalize p
-                    p: Dict[int, float] = {k: v / float(N) for k, v in counts.items()}
-                    q = parry_qs[m]
-
-                    # Sanity: folded outputs should be golden-legal.
-                    for k in list(p.keys())[:10]:
-                        if (k & (k >> 1)) != 0:
-                            raise RuntimeError("Fold produced illegal word")
-
-                    tv = tv_distance_int(p, q)
-                    kl = kl_divergence_int(p, q)
-
-                    # Exact star discrepancy on the first N Kronecker points.
-                    dn_star_exact = star_discrepancy(xs_full[:N])
-
-                    # Cross-resolution projective residual E_m (only for moderate m).
-                    tv_multiscale = None
-                    if (m + 1) in fold_maps:
-                        counts_m1 = count_folded_hist(
-                            s=s,
-                            m=m + 1,
-                            N=N,
-                            fold_map=fold_maps[m + 1],
-                            prog=prog,
+            dn_star_ub_by_N: Dict[int, float] = {}
+            pq_key = (cfg.alpha_name, tuple(int(x) for x in cfg.partial_quotients_prefix))
+            for N in Ns:
+                k = (pq_key[0], pq_key[1], int(N))
+                if k not in dn_star_ub_cache:
+                    if cfg.alpha_name == "golden":
+                        dn_star_ub_cache[k] = min(
+                            _golden_discrepancy_upper_bound_explicit(N),
+                            discrepancy_upper_bound_from_partial_quotients(N, cfg.partial_quotients_prefix),
                         )
-                        p_m1_push = pushforward_truncate_last_bit(counts_m1)
-                        p_push: Dict[int, float] = {k: v / float(N) for k, v in p_m1_push.items()}
-                        tv_multiscale = tv_distance_int(p, p_push)
+                    else:
+                        dn_star_ub_cache[k] = discrepancy_upper_bound_from_partial_quotients(N, cfg.partial_quotients_prefix)
+                dn_star_ub_by_N[N] = dn_star_ub_cache[k]
 
-                    elapsed = time.time() - t0
+            # Generate one long bitstream and pack all window-words we may need.
+            s_len = Nmax + max_m_needed - 1
+            s_full = rotation_bits(cfg.alpha, cfg.x0, cfg.beta, s_len)
+            words_by_m = _packed_windows_by_m(s_full, N=Nmax, m_max=max_m_needed, needed_ms=fold_maps.keys())
+
+            for m in ms:
+                fold_map = fold_maps[m]
+                legal = legal_idxs[m]
+                q_legal = parry_qs[m][legal]
+
+                words_m = words_by_m[m]
+                folded_m = fold_map[words_m]
+                if np.any((folded_m & (folded_m >> 1)) != 0):
+                    raise RuntimeError("Fold produced illegal word(s)")
+
+                folded_m1 = None
+                if (m + 1) in fold_maps:
+                    fold_map_m1 = fold_maps[m + 1]
+                    words_m1 = words_by_m[m + 1]
+                    folded_m1 = fold_map_m1[words_m1]
+                    if np.any((folded_m1 & (folded_m1 >> 1)) != 0):
+                        raise RuntimeError("Fold produced illegal word(s) at m+1")
+
+                counts = np.zeros(1 << m, dtype=np.int64)
+                counts_m1 = np.zeros(1 << (m + 1), dtype=np.int64) if folded_m1 is not None else None
+                prev = 0
+                for N in Ns:
+                    counts += np.bincount(folded_m[prev:N], minlength=(1 << m))
+                    if counts_m1 is not None and folded_m1 is not None:
+                        counts_m1 += np.bincount(folded_m1[prev:N], minlength=(1 << (m + 1)))
+                    prev = N
+
+                    counts_legal = counts[legal]
+                    p_legal = counts_legal.astype(np.float64) / float(N)
+
+                    tv = 0.5 * float(np.sum(np.abs(p_legal - q_legal)))
+
+                    # KL(p||q) on the legal support.
+                    eps = 1e-300
+                    mask = counts_legal > 0
+                    if np.any(mask):
+                        ppos = p_legal[mask]
+                        qpos = q_legal[mask]
+                        qpos = np.where(qpos > 0.0, qpos, eps)
+                        kl = float(np.sum(ppos * np.log(ppos / qpos)))
+                    else:
+                        kl = 0.0
+
+                    tv_multiscale = None
+                    if counts_m1 is not None:
+                        # Push forward m+1 histogram by truncating last bit: parent = w >> 1.
+                        push_counts = counts_m1.reshape((1 << m), 2).sum(axis=1)
+                        # TV(p_m, push(p_{m+1})) = (1/(2N)) * sum |counts - push_counts|.
+                        tv_multiscale = (
+                            0.5 * float(np.sum(np.abs((counts - push_counts)[legal]))) / float(N)
+                        )
+
                     wr.writerow(
                         {
                             "model": "rotation_scan",
@@ -349,13 +424,10 @@ def main() -> None:
                             "N": N,
                             "tv": f"{tv:.12g}",
                             "kl": f"{kl:.12g}",
-                            "unique_types": len(counts),
-                            "DN_star_upper_bound": f"{min(_golden_discrepancy_upper_bound_explicit(N), discrepancy_upper_bound_from_partial_quotients(N, cfg.partial_quotients_prefix)):.12g}"
-                            if cfg.alpha_name == "golden"
-                            else f"{discrepancy_upper_bound_from_partial_quotients(N, cfg.partial_quotients_prefix):.12g}",
-                            "DN_star_exact": f"{dn_star_exact:.12g}",
+                            "unique_types": int(np.count_nonzero(counts_legal)),
+                            "DN_star_upper_bound": f"{dn_star_ub_by_N[N]:.12g}",
+                            "DN_star_exact": f"{dn_star_exact_by_N[N]:.12g}",
                             "tv_multiscale_residual": f"{tv_multiscale:.12g}" if tv_multiscale is not None else "",
-                            "elapsed_s": f"{elapsed:.6g}",
                         }
                     )
                     prog.tick(f"done cfg={cfg.alpha_name} m={m} N={N} tv={tv:.4g} kl={kl:.4g}")

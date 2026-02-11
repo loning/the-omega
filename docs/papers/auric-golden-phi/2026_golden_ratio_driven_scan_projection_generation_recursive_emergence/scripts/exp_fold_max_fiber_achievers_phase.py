@@ -34,6 +34,7 @@ from typing import List
 
 import numpy as np
 
+from common_mod_fib_dp import counts_mod_fib
 from common_paths import export_dir, generated_dir
 from common_phi_fold import Progress
 
@@ -73,20 +74,33 @@ def D2_closed(m: int) -> int | None:
     return int(D_closed(m) - F[k - 4])
 
 
-def counts_mod_fib(m: int, prog: Progress | None = None) -> np.ndarray:
-    """Compute residue counts c_m(r) for modulus F_{m+2}."""
-    if m < 0:
-        raise ValueError("m must be >= 0")
-    F = fib_upto(m + 2)
-    mod = F[m + 2]
-    c = np.zeros(mod, dtype=np.uint64)
-    c[0] = 1
-    for i in range(1, m + 1):
-        w = F[i + 1]
-        c = c + np.roll(c, w)
-        if prog is not None:
-            prog.tick(f"maxfiber m={m} step={i}/{m} mod={mod}")
-    return c
+def D3_closed(m: int) -> int | None:
+    """
+    Closed form for the third-largest multiplicity D_m^{(3)}.
+
+    Even branch (proved in paper): for m=2k with k>=6 (m>=12),
+      D_{2k}^{(3)} = F_{k+2} - F_{k-3}.
+
+    Odd branch (DP-stabilized in the audited Table 8 / m<=32 window): for m=2k+1 with k>=9 (m>=19),
+      D_{2k+1}^{(3)} = 2F_{k+1} - (F_{k-4}+F_{k-8}).
+
+    Returns None outside the stable regime.
+    """
+    if m < 12:
+        return None
+
+    if m % 2 == 0:
+        k = m // 2
+        if k < 6:
+            return None
+        F = fib_upto(k + 2)
+        return int(F[k + 2] - F[k - 3])
+
+    k = (m - 1) // 2
+    if k < 9:
+        return None
+    F = fib_upto(k + 1)
+    return int(2 * F[k + 1] - (F[k - 4] + F[k - 8]))
 
 
 def zeckendorf_word(m: int, r: int) -> str:
@@ -217,6 +231,10 @@ def main() -> None:
         D2c = D2_closed(m)
         if D2c is not None and D2 != D2c:
             raise ValueError(f"D2 mismatch at m={m}: DP={D2}, closed={D2c}")
+
+        D3c = D3_closed(m)
+        if D3c is not None and D3 != D3c:
+            raise ValueError(f"D3 mismatch at m={m}: DP={D3}, closed={D3c}")
 
         # Representative words (by smallest residues)
         residues_sorted = sorted(residues)[: args.show_words]

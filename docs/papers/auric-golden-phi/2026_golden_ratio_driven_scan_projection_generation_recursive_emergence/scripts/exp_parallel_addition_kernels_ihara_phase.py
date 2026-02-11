@@ -83,7 +83,7 @@ def count_undirected_edges(nbrs: List[List[int]]) -> int:
 
 def _power_iteration_pf(
     n: int,
-    mul,
+    mul_inplace,
     *,
     itmax: int,
     tol: float,
@@ -92,13 +92,14 @@ def _power_iteration_pf(
 ) -> Tuple[float, np.ndarray]:
     """PF power iteration for nonnegative operators, returning (lambda, right-eigenvector)."""
     x = np.full(n, 1.0 / n, dtype=float)
+    y = np.zeros(n, dtype=float)
     lam = 0.0
     for it in range(1, itmax + 1):
-        y = mul(x)
+        mul_inplace(x, y)
         s = float(np.sum(y))
         if not (s > 0.0):
             return 0.0, x
-        x = y / s
+        x[:] = y / s
         lam_new = s
         if it > 50 and abs(lam_new - lam) / max(1.0, abs(lam_new)) < tol:
             prog.tick(f"{label} pf it={it} lam~{lam_new:.12g}")
@@ -112,88 +113,80 @@ def _power_iteration_pf(
 @dataclass(frozen=True)
 class HashimotoOps:
     n_nodes: int
-    oriented: List[Tuple[int, int]]
-    rev: np.ndarray
-    out_edges_by_u: List[List[int]]
-    in_edges_by_v: List[List[int]]
+    src: np.ndarray  # oriented edge sources, shape (m_or,)
+    dst: np.ndarray  # oriented edge destinations, shape (m_or,)
+    rev: np.ndarray  # reverse-edge index, shape (m_or,)
 
-    def mul_B(self, x: np.ndarray) -> np.ndarray:
-        out_sum = np.zeros(self.n_nodes, dtype=x.dtype)
-        for u in range(self.n_nodes):
-            s = 0
-            for ei in self.out_edges_by_u[u]:
-                s += x[ei]
-            out_sum[u] = s
-        y = np.zeros(len(self.oriented), dtype=x.dtype)
-        for i, (_u, v) in enumerate(self.oriented):
-            y[i] = out_sum[v] - x[int(self.rev[i])]
-        return y
+    def mul_B_inplace(self, x: np.ndarray, out: np.ndarray, work_nodes: np.ndarray) -> None:
+        """out[:] = B x (Hashimoto / non-backtracking operator), no allocations."""
+        work_nodes.fill(0)
+        # work_nodes[u] = sum_{e: src(e)=u} x[e]
+        np.add.at(work_nodes, self.src, x)
+        out[:] = work_nodes[self.dst] - x[self.rev]
 
-    def mul_Bt(self, x: np.ndarray) -> np.ndarray:
-        in_sum = np.zeros(self.n_nodes, dtype=x.dtype)
-        for v in range(self.n_nodes):
-            s = 0
-            for ei in self.in_edges_by_v[v]:
-                s += x[ei]
-            in_sum[v] = s
-        y = np.zeros(len(self.oriented), dtype=x.dtype)
-        for i, (u, _v) in enumerate(self.oriented):
-            y[i] = in_sum[u] - x[int(self.rev[i])]
-        return y
+    def mul_Bt_inplace(self, x: np.ndarray, out: np.ndarray, work_nodes: np.ndarray) -> None:
+        """out[:] = B^T x, no allocations."""
+        work_nodes.fill(0)
+        # work_nodes[v] = sum_{e: dst(e)=v} x[e]
+        np.add.at(work_nodes, self.dst, x)
+        out[:] = work_nodes[self.src] - x[self.rev]
 
 
 def build_hashimoto_ops(nbrs: List[List[int]]) -> HashimotoOps:
-    oriented: List[Tuple[int, int]] = []
+    src_list: List[int] = []
+    dst_list: List[int] = []
     for u, ns in enumerate(nbrs):
         for v in ns:
-            oriented.append((u, v))
-    idx: Dict[Tuple[int, int], int] = {e: i for i, e in enumerate(oriented)}
-    m_or = len(oriented)
+            src_list.append(int(u))
+            dst_list.append(int(v))
+    src = np.asarray(src_list, dtype=np.int64)
+    dst = np.asarray(dst_list, dtype=np.int64)
+    m_or = int(src.shape[0])
+
+    idx: Dict[Tuple[int, int], int] = {(int(u), int(v)): i for i, (u, v) in enumerate(zip(src_list, dst_list, strict=True))}
     rev = np.zeros(m_or, dtype=np.int64)
-    out_edges_by_u: List[List[int]] = [[] for _ in range(len(nbrs))]
-    in_edges_by_v: List[List[int]] = [[] for _ in range(len(nbrs))]
-    for i, (u, v) in enumerate(oriented):
-        rev[i] = idx[(v, u)]
-        out_edges_by_u[u].append(i)
-        in_edges_by_v[v].append(i)
+    for i in range(m_or):
+        rev[i] = idx[(int(dst[i]), int(src[i]))]
     return HashimotoOps(
         n_nodes=len(nbrs),
-        oriented=oriented,
+        src=src,
+        dst=dst,
         rev=rev,
-        out_edges_by_u=out_edges_by_u,
-        in_edges_by_v=in_edges_by_v,
     )
 
 
 def spectral_radius_adjacency(nbrs: List[List[int]], prog: Progress, label: str) -> float:
     n = len(nbrs)
+    src_list: List[int] = []
+    dst_list: List[int] = []
+    for i, ns in enumerate(nbrs):
+        for j in ns:
+            src_list.append(int(i))
+            dst_list.append(int(j))
+    src = np.asarray(src_list, dtype=np.int64)
+    dst = np.asarray(dst_list, dtype=np.int64)
 
-    def mul(x: np.ndarray) -> np.ndarray:
-        y = np.zeros(n, dtype=float)
-        for i in range(n):
-            xi = x[i]
-            if xi == 0.0:
-                continue
-            for j in nbrs[i]:
-                y[j] += xi
-        return y
+    def mul_inplace(x: np.ndarray, out: np.ndarray) -> None:
+        out.fill(0.0)
+        np.add.at(out, dst, x[src])
 
-    lam, _vec = _power_iteration_pf(n, mul, itmax=8000, tol=1e-12, prog=prog, label=label)
+    lam, _vec = _power_iteration_pf(n, mul_inplace, itmax=8000, tol=1e-12, prog=prog, label=label)
     return lam
 
 
 def spectral_radius_hashimoto(ops: HashimotoOps, prog: Progress, label: str) -> Tuple[float, np.ndarray, np.ndarray]:
     """Return (rho(B), right PF vector r, left PF vector l) with l^T r = 1."""
-    n = len(ops.oriented)
+    n = int(ops.src.shape[0])
+    work_nodes = np.zeros(ops.n_nodes, dtype=float)
 
-    def mul_B_real(x: np.ndarray) -> np.ndarray:
-        return ops.mul_B(x)
+    def mul_B_real_inplace(x: np.ndarray, out: np.ndarray) -> None:
+        ops.mul_B_inplace(x, out, work_nodes)
 
-    def mul_Bt_real(x: np.ndarray) -> np.ndarray:
-        return ops.mul_Bt(x)
+    def mul_Bt_real_inplace(x: np.ndarray, out: np.ndarray) -> None:
+        ops.mul_Bt_inplace(x, out, work_nodes)
 
-    lam1, r = _power_iteration_pf(n, mul_B_real, itmax=16000, tol=1e-13, prog=prog, label=f"{label} rho(B)")
-    lam1_t, l = _power_iteration_pf(n, mul_Bt_real, itmax=16000, tol=1e-13, prog=prog, label=f"{label} rho(B)^T")
+    lam1, r = _power_iteration_pf(n, mul_B_real_inplace, itmax=16000, tol=1e-13, prog=prog, label=f"{label} rho(B)")
+    lam1_t, l = _power_iteration_pf(n, mul_Bt_real_inplace, itmax=16000, tol=1e-13, prog=prog, label=f"{label} rho(B)^T")
     # lam1_t should match lam1; keep lam1.
     _ = lam1_t
 
@@ -218,32 +211,34 @@ def sub_spectral_radius_hashimoto(
     label: str,
 ) -> float:
     """Approximate Lambda = max_{mu != lam1} |mu| for Hashimoto B via projected complex power iteration."""
-    n = len(ops.oriented)
+    n = int(ops.src.shape[0])
     rng = np.random.default_rng(int(seed))
 
-    def proj(x: np.ndarray) -> np.ndarray:
+    def proj_inplace(x: np.ndarray) -> None:
         # P = I - r l^T with l^T r = 1. Works for complex x.
-        return x - r_pf * np.dot(l_pf, x)
+        x -= r_pf * np.dot(l_pf, x)
 
     # Complex random start, projected to the non-PF subspace.
     x = rng.normal(size=n) + 1j * rng.normal(size=n)
-    x = proj(x)
+    proj_inplace(x)
     nx = float(np.linalg.norm(x))
     if nx == 0.0:
         # Extremely unlikely; retry with a different seed.
         x = (rng.normal(size=n) + 1j * rng.normal(size=n)) * (1.0 + 1j)
-        x = proj(x)
+        proj_inplace(x)
         nx = float(np.linalg.norm(x))
     x = x / nx
 
+    work_nodes = np.zeros(ops.n_nodes, dtype=complex)
+    y = np.zeros(n, dtype=complex)
     lam = 0.0
     for it in range(1, itmax + 1):
-        y = ops.mul_B(x)
-        y = proj(y)
+        ops.mul_B_inplace(x, y, work_nodes)
+        proj_inplace(y)
         ny = float(np.linalg.norm(y))
         if ny == 0.0:
             return 0.0
-        x = y / ny
+        x[:] = y / ny
         lam_new = ny
         if it > 80 and abs(lam_new - lam) / max(1.0, lam_new) < tol:
             prog.tick(f"{label} Lambda it={it} ~{lam_new:.12g}")

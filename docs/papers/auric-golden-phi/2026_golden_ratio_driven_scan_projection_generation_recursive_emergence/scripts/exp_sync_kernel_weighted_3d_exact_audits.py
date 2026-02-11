@@ -3,7 +3,7 @@
 """Exact algebraic audits for the 3D weighted sync-kernel (u,v,w).
 
 This script produces small LaTeX snippets that are fully checkable from the
-closed-form coefficients given in sections/90_appendix_sync_kernel_multi_dim.tex.
+closed-form coefficients given in `sections/appendix/sync_kernel/app__vector-potential.tex`.
 
 Outputs:
   - sections/generated/eq_sync_kernel_3d_critical_w_half_delta.tex

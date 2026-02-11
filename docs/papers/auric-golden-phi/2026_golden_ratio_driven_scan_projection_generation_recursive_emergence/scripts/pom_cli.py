@@ -112,6 +112,28 @@ def _normalize_fragment(fragment: str, raw: Sequence[str], word: Optional[str]) 
             "certificates": certs,
         }
 
+    if fragment == "threegen":
+        import exp_pom_projword_three_gen_anom_normalizer as tg
+
+        if word is None:
+            word = " ".join(raw)
+        if not word.strip():
+            raise SystemExit("Empty word. Provide tokens or --word.")
+        toks = tg.parse_word(word)
+        nf, trace, anom, certs = tg.normalize_with_anom(toks)
+        params = tg.extract_interface_params(nf)
+        hol = tg.holonomy_counter_from_certs(certs)
+        return {
+            "fragment": fragment,
+            "input": tg.word_to_str(toks),
+            "normal_form": tg.word_to_str(nf),
+            "interface_params": params,
+            "rewrite_trace": trace,
+            "anom_counter": anom,
+            "holonomy_counter": hol,
+            "certificates": certs,
+        }
+
     if fragment == "val":
         import exp_pom_rewriting_engine_demo as val
 
@@ -128,7 +150,7 @@ def _normalize_fragment(fragment: str, raw: Sequence[str], word: Optional[str]) 
             "rewrite_trace": trace,
         }
 
-    raise SystemExit(f"Unknown fragment {fragment!r}. Use one of: ze, zepq, liftproj, full, momtwist, val.")
+    raise SystemExit(f"Unknown fragment {fragment!r}. Use one of: ze, zepq, liftproj, full, momtwist, threegen, val.")
 
 
 def cmd_normalize(args: argparse.Namespace) -> None:
@@ -136,8 +158,18 @@ def cmd_normalize(args: argparse.Namespace) -> None:
     print(f"[pom-cli] fragment={payload['fragment']}", flush=True)
     print(f"[pom-cli] in:  {payload['input']}", flush=True)
     print(f"[pom-cli] nf:  {payload['normal_form']}", flush=True)
+    if "interface_params" in payload and isinstance(payload["interface_params"], dict):
+        p = payload["interface_params"]
+        print(
+            f"[pom-cli] params: u={p.get('u')} m={p.get('m')} group={p.get('group')}",
+            flush=True,
+        )
     if payload["rewrite_trace"]:
         print(f"[pom-cli] trace: {' '.join(payload['rewrite_trace'])}", flush=True)
+    if "anom_counter" in payload and payload["anom_counter"]:
+        print(f"[pom-cli] anom: {json.dumps(payload['anom_counter'], sort_keys=True)}", flush=True)
+    if "holonomy_counter" in payload and payload["holonomy_counter"]:
+        print(f"[pom-cli] hol: {json.dumps(payload['holonomy_counter'], sort_keys=True)}", flush=True)
     if args.json_out:
         _write_json(args.json_out, payload)
         print(f"[pom-cli] wrote {args.json_out}", flush=True)
@@ -154,9 +186,14 @@ def cmd_equiv(args: argparse.Namespace) -> None:
         p1 = _normalize_fragment(args.fragment, [], args.word1)
         p2 = _normalize_fragment(args.fragment, [], args.word2)
     eq = (p1["normal_form"] == p2["normal_form"])
+    if ("anom_counter" in p1) or ("anom_counter" in p2):
+        eq = eq and (p1.get("anom_counter") == p2.get("anom_counter"))
     print(f"[pom-cli] fragment={args.fragment}", flush=True)
     print(f"[pom-cli] nf1: {p1['normal_form']}", flush=True)
     print(f"[pom-cli] nf2: {p2['normal_form']}", flush=True)
+    if ("anom_counter" in p1) or ("anom_counter" in p2):
+        print(f"[pom-cli] anom1: {json.dumps(p1.get('anom_counter', {}), sort_keys=True)}", flush=True)
+        print(f"[pom-cli] anom2: {json.dumps(p2.get('anom_counter', {}), sort_keys=True)}", flush=True)
     print(f"[pom-cli] equivalent: {eq}", flush=True)
     raise SystemExit(0 if eq else 1)
 
@@ -407,14 +444,18 @@ def build_parser() -> argparse.ArgumentParser:
     sub = p.add_subparsers(dest="cmd", required=True)
 
     p_norm = sub.add_parser("normalize", help="Normalize a projection word (rewrite to normal form).")
-    p_norm.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "momtwist", "val"], default="liftproj")
+    p_norm.add_argument(
+        "--fragment",
+        choices=["ze", "zepq", "liftproj", "full", "momtwist", "threegen", "val"],
+        default="liftproj",
+    )
     p_norm.add_argument("--word", type=str, default=None, help="Optional raw word string (fragment-dependent).")
     p_norm.add_argument("--json-out", type=str, default=None, help="Write normalization payload to JSON.")
     p_norm.add_argument("tokens", nargs="*", help="Token list (used when --word is omitted).")
     p_norm.set_defaults(func=cmd_normalize)
 
     p_eq = sub.add_parser("equiv", help="Decide equivalence by comparing normal forms.")
-    p_eq.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "momtwist", "val"], default="liftproj")
+    p_eq.add_argument("--fragment", choices=["ze", "zepq", "liftproj", "full", "momtwist", "threegen", "val"], default="liftproj")
     p_eq.add_argument("--word1", type=str, required=True, help="Word 1 (fragment-dependent string form).")
     p_eq.add_argument("--word2", type=str, required=True, help="Word 2 (fragment-dependent string form).")
     p_eq.set_defaults(func=cmd_equiv)

@@ -774,7 +774,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("\\paragraph{从 $((3,3,5))$ 输出推导出的二级结论（可复现）}")
     lines.append("下述量全部由上表的 5 张 $3\\times 3$ 切片与最坏扭曲谱半径比直接计算得到。")
 
-    lines.append("\\paragraph{（i）慢模完全由碰撞 cocycle 主导}")
+    lines.append("\\paragraph{慢模完全由碰撞 cocycle 主导}")
     lines.append("最坏谱半径比与达到最坏的角色索引为：")
     lines.append("$$")
     lines.append(f"\\frac{{\\rho_{{3,3,5}}}}{{\\lambda}}\\approx {fmt(rho_ratio)}.")
@@ -791,43 +791,48 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         lines.append("$$")
     lines.append("由此定义主相关长度尺度（指数衰减的时间常数）与半衰期：")
     lines.append("$$")
+    lines.append("\\begin{aligned}")
     lines.append(
-        f"\\tau_{{\\mathrm{{mix}}}}:=\\frac{{1}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}\\approx {fmt(tau_mix)},\\qquad "
-        f"t_{{1/2}}:=\\frac{{\\log 2}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}\\approx {fmt(t_half)}."
+        f"\\tau_{{\\mathrm{{mix}}}}:=\\frac{{1}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}&\\approx {fmt(tau_mix)},\\\\"
     )
+    lines.append(
+        f"t_{{1/2}}:=\\frac{{\\log 2}}{{-\\log(\\rho_{{3,3,5}}/\\lambda)}}&\\approx {fmt(t_half)}."
+    )
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("并定义偏置易感度（Abel 累积的自然尺度）")
     lines.append("$$")
-    lines.append(
-        f"\\chi:=\\frac{{1}}{{1-\\rho_{{3,3,5}}/\\lambda}}\\approx {fmt(susceptibility)},\\qquad \\log\\chi\\approx {fmt(log_susceptibility)}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\chi:=\\frac{{1}}{{1-\\rho_{{3,3,5}}/\\lambda}}&\\approx {fmt(susceptibility)},\\\\")
+    lines.append(f"\\log\\chi&\\approx {fmt(log_susceptibility)}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
 
-    lines.append("\\paragraph{（ii）碰撞同余类 $c$ 的常数漂移（总偏置）}")
+    lines.append("\\paragraph{碰撞同余类 $c$ 的常数漂移（总偏置）}")
     lines.append("定义 $S_c:=\\sum_{a=0}^2\\sum_{b=0}^2 C^{(3,3,5)}_{a,b,c}$。数值上")
     lines.append("$$")
     vec = ",".join([f"{x:+.6f}" for x in S_c])
     lines.append(f"(S_0,S_1,S_2,S_3,S_4)\\approx({vec}).")
     lines.append("$$")
 
-    lines.append("\\paragraph{（iii）三维耦合在 $c$ 轴上的局部化（切片方差）}")
+    lines.append("\\paragraph{三维耦合在 $c$ 轴上的局部化（切片方差）}")
     lines.append("定义每张切片在 $3\\times 3$ 网格上的标准差（按 $9$ 个条目平均）：")
     lines.append("$$")
     vec_sd = ",".join([fmt_sd(x) for x in sd_c])
     lines.append(f"\\bigl(\\mathrm{{sd}}(c=0),\\dots,\\mathrm{{sd}}(c=4)\\bigr)\\approx\\bigl({vec_sd}\\bigr).")
     lines.append("$$")
 
-    lines.append("\\paragraph{（iii$''$）$c$-方向变分能量的局域共振（胞元/行/列贡献）}")
+    lines.append("\\paragraph{$c$-方向变分能量的局域共振（胞元/行/列贡献）}")
     lines.append("对每个胞元 $(a,b)$ 定义 $c$-方向方差能量 $\\mathrm{var}_{a,b}:=\\frac15\\sum_{c=0}^4\\bigl(C_{a,b,c}-\\frac15\\sum_{c'}C_{a,b,c'}\\bigr)^2$，并令总能量 $\\mathrm{Var}:=\\sum_{a,b}\\mathrm{var}_{a,b}$。数值上")
     lines.append("$$")
-    lines.append(
-        f"\\frac{{\\sum_a\\mathrm{{var}}_{{a,0}}}}{{\\mathrm{{Var}}}}\\approx {frac_row_b0:.6f},\\qquad "
-        f"\\frac{{\\sum_b\\mathrm{{var}}_{{1,b}}}}{{\\mathrm{{Var}}}}\\approx {frac_col_a1:.6f},\\qquad "
-        f"\\frac{{\\mathrm{{var}}_{{1,0}}}}{{\\mathrm{{Var}}}}\\approx {frac_cell_a1b0:.6f}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\frac{{\\sum_a\\mathrm{{var}}_{{a,0}}}}{{\\mathrm{{Var}}}}&\\approx {frac_row_b0:.6f},\\\\")
+    lines.append(f"\\frac{{\\sum_b\\mathrm{{var}}_{{1,b}}}}{{\\mathrm{{Var}}}}&\\approx {frac_col_a1:.6f},\\\\")
+    lines.append(f"\\frac{{\\mathrm{{var}}_{{1,0}}}}{{\\mathrm{{Var}}}}&\\approx {frac_cell_a1b0:.6f}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
 
-    lines.append("\\paragraph{（iii$'$）近因子化诊断：切片到 rank-0 的偏离}")
+    lines.append("\\paragraph{近因子化诊断：切片到 rank-0 的偏离}")
     lines.append("定义切片均值 $\\overline C_c:=\\frac19\\sum_{a,b}C_{a,b,c}$，并以 Frobenius 范数度量偏离")
     lines.append("$$")
     lines.append("\\Delta_c:=\\left\\|\\bigl(C_{a,b,c}\\bigr)_{a,b}-\\overline C_c\\,\\mathbf{1}\\mathbf{1}^\\top\\right\\|_F,\\qquad")
@@ -858,7 +863,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     )
     lines.append("$$")
 
-    lines.append("\\paragraph{（iii$'''$）三相正常形：每张切片的均值漂移与最大偏差}")
+    lines.append("\\paragraph{三相正常形：每张切片的均值漂移与最大偏差}")
     lines.append("记 $\\overline C_c:=\\frac19\\sum_{a,b}C_{a,b,c}$，以及 $\\Delta_c:=\\max_{a,b}|C_{a,b,c}-\\overline C_c|$。数值上")
     lines.append("$$")
     vec_mean = ",".join([f"{x:+.6f}" for x in mean_c])
@@ -870,26 +875,31 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append(f"(\\Delta_0,\\Delta_1,\\Delta_2,\\Delta_3,\\Delta_4)\\approx({vec_D}).")
     lines.append("$$")
 
-    lines.append("\\paragraph{（v）$S_c$ 的 $\\ZZ/5$-傅里叶结构（聚合漂移）}")
+    lines.append("\\paragraph{$S_c$ 的 $\\ZZ/5$-傅里叶结构（聚合漂移）}")
     lines.append("令 $\\widehat S(j):=\\frac15\\sum_{c=0}^{4}S_c\\,\\omega_5^{-jc}$。则")
     lines.append("$$")
-    lines.append(
-        f"\\widehat S(0)\\approx {Shat[0].real:.12f},\\qquad |\\widehat S(1)|=|\\widehat S(4)|\\approx {abs(Shat[1]):.12f},\\qquad |\\widehat S(2)|=|\\widehat S(3)|\\approx {abs(Shat[2]):.12f}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\widehat S(0)&\\approx {Shat[0].real:.12f},\\\\")
+    lines.append(f"|\\widehat S(1)|=|\\widehat S(4)|&\\approx {abs(Shat[1]):.12f},\\\\")
+    lines.append(f"|\\widehat S(2)|=|\\widehat S(3)|&\\approx {abs(Shat[2]):.12f}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
 
-    lines.append("\\paragraph{（iv）$\\mathbb{{Z}}/5$ 轴的傅里叶压缩指纹（均值 + 两个复模）}")
+    lines.append("\\paragraph{$\\mathbb{{Z}}/5$ 轴的傅里叶压缩指纹（均值 + 两个复模）}")
     lines.append("对每个固定的 $(a,b)$，令 $f_{a,b}(c):=C^{(3,3,5)}_{a,b,c}$（$c\\in\\ZZ/5$）。其离散傅里叶系数为")
     lines.append("$$")
-    lines.append(
-        "\\widehat f_{a,b}(j):=\\frac15\\sum_{c=0}^{4} f_{a,b}(c)\\,\\omega_5^{-jc},\\qquad \\omega_5=e^{2\\pi i/5}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append("\\widehat f_{a,b}(j)&:=\\frac15\\sum_{c=0}^{4} f_{a,b}(c)\\,\\omega_5^{-jc},\\\\")
+    lines.append("\\omega_5&:=e^{2\\pi i/5}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("从而有恒等分解（对所有 $c$ 精确成立）")
     lines.append("$$")
-    lines.append(
-        "f_{a,b}(c)=\\widehat f_{a,b}(0)+2\\Re\\bigl(\\widehat f_{a,b}(1)\\,\\omega_5^{c}\\bigr)+2\\Re\\bigl(\\widehat f_{a,b}(2)\\,\\omega_5^{2c}\\bigr)."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append("f_{a,b}(c)=\\widehat f_{a,b}(0)")
+    lines.append("&+2\\Re\\bigl(\\widehat f_{a,b}(1)\\,\\omega_5^{c}\\bigr)\\\\")
+    lines.append("&+2\\Re\\bigl(\\widehat f_{a,b}(2)\\,\\omega_5^{2c}\\bigr).")
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("记 $\\overline C_{b,a}:=\\widehat f_{a,b}(0)$（行 $b$、列 $a$）与两张复矩阵 $A^{(1)}_{b,a}:=\\widehat f_{a,b}(1)$、$A^{(2)}_{b,a}:=\\widehat f_{a,b}(2)$。则：")
     lines.append("$$")
@@ -927,7 +937,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("$$")
     lines.append("其中 $A^{(1)}$ 与 $A^{(2)}$ 的具体条目可由同一脚本在 JSON 输出中复核。")
 
-    lines.append("\\paragraph{（iv$^\\star$）二维边际矩阵与 $N_-\\bmod 3$ 的新边际向量（精确）}")
+    lines.append("\\paragraph{二维边际矩阵与 $N_-\\bmod 3$ 的新边际向量（精确）}")
     lines.append(
         "由 $\\sum_{c=0}^4\\omega_5^c=0$，对每个 $(a,b)$ 有严格恒等式 "
         "$\\sum_{c=0}^{4}C^{(3,3,5)}_{a,b,c}=5\\,\\overline C_{b,a}$。因此二维边际矩阵（行 $b$、列 $a$）为"
@@ -950,7 +960,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     )
     lines.append("$$")
 
-    lines.append("\\paragraph{（iv$^\\dagger$）共振胞元的傅里叶范数近极值：相位构造性对齐（定量）}")
+    lines.append("\\paragraph{共振胞元的傅里叶范数近极值：相位构造性对齐}")
     lines.append(
         "在共振胞元 $(a,b,c)=(1,0,0)$ 处，定义振荡抬升 "
         "$\\Delta_{b,a}(0):=C^{(3,3,5)}_{a,b,0}-\\overline C_{b,a}$。"
@@ -964,11 +974,15 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("$$")
     lines.append("而在该共振胞元处")
     lines.append("$$")
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\Delta_{{(b,a)=(0,1)}}(0)&\\approx {delta_res:.8f},\\\\")
     lines.append(
-        f"\\Delta_{{(b,a)=(0,1)}}(0)\\approx {delta_res:.8f},\\qquad "
-        f"2\\bigl(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty\\bigr)\\approx {bound_universal:.9f},\\qquad "
-        f"\\frac{{\\Delta_{{(0,1)}}(0)}}{{2(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty)}}\\approx {ratio_extremal:.9f}."
+        f"2\\bigl(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty\\bigr)&\\approx {bound_universal:.9f},\\\\"
     )
+    lines.append(
+        f"\\frac{{\\Delta_{{(0,1)}}(0)}}{{2(\\|A^{{(1)}}\\|_\\infty+\\|A^{{(2)}}\\|_\\infty)}}&\\approx {ratio_extremal:.9f}."
+    )
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("并且两条谐波的条目最大值同在该胞元（以 $(b,a)$ 坐标计）：")
     lines.append("$$")
@@ -982,7 +996,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append(f"\\bigl|\\arg A^{{(2)}}_{{0,1}}-\\arg A^{{(1)}}_{{0,1}}\\bigr|\\approx {phase_gap:.6f}\\ \\text{{(radian)}}.")
     lines.append("$$")
 
-    lines.append("\\paragraph{（iv$^\\ddagger$）两谐波矩阵的对齐证书：Frobenius 最佳共线残差}")
+    lines.append("\\paragraph{两谐波矩阵的对齐证书：Frobenius 最佳共线残差}")
     lines.append("以 Frobenius 内积定义最佳共线系数")
     lines.append("$$")
     lines.append(
@@ -1004,7 +1018,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         "两谐波在特定相位处的抵消。"
     )
 
-    lines.append("\\paragraph{（vi）整体低秩可压缩：$c$-中心化后的 rank-2 诊断（SVD）}")
+    lines.append("\\paragraph{整体低秩可压缩：$c$-中心化后的 rank-2 诊断（SVD）}")
     lines.append("把张量 $C^{(3,3,5)}_{a,b,c}$ 展平成 $T\\in\\RR^{5\\times 9}$（行索引 $c$，列索引为扁平化的 $(a,b)$），并做 $c$-方向中心化：对每一列减去其在 $c$ 上的均值。令中心化后的奇异值为 $s_1\\ge\\cdots\\ge s_5$，则（Frobenius 能量）累计占比为")
     lines.append("$$")
     if e_ctr_sum > 0:
@@ -1029,20 +1043,23 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         lines.append("\\text{(no data)}")
     lines.append("$$")
 
-    lines.append("\\paragraph{（iv$'$）强抵消残差与稳健标量指纹}")
+    lines.append("\\paragraph{强抵消残差与稳健标量指纹}")
     lines.append("统计全部 $45$ 个条目，记 $M:=\\sum_{a,b,c}C_{a,b,c}$，以及正项/负项之和 $\\sum_{C>0}C$ 与 $\\sum_{C<0}C$。数值上")
     lines.append("$$")
-    lines.append(
-        f"\\#\\{{C>0\\}}={cnt_pos},\\quad \\#\\{{C<0\\}}={cnt_neg},\\qquad "
-        f"\\sum_{{C>0}}C\\approx {sum_pos:.6f},\\qquad \\sum_{{C<0}}C\\approx {sum_neg:.6f},\\qquad M\\approx {total_sum:.12f}."
-    )
+    lines.append("\\begin{aligned}")
+    lines.append(f"\\#\\{{C>0\\}}&={cnt_pos},\\\\")
+    lines.append(f"\\#\\{{C<0\\}}&={cnt_neg},\\\\")
+    lines.append(f"\\sum_{{C>0}}C&\\approx {sum_pos:.6f},\\\\")
+    lines.append(f"\\sum_{{C<0}}C&\\approx {sum_neg:.6f},\\\\")
+    lines.append(f"M&\\approx {total_sum:.12f}.")
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("并定义抵消指纹")
     lines.append("$$")
     lines.append(f"\\kappa_{{\\mathrm{{cancel}}}}:=\\frac{{\\sum_{{C>0}}C}}{{\\sum C}}\\approx {kappa_cancel:.6f}.")
     lines.append("$$")
 
-    lines.append("\\paragraph{（vii）near-coboundary 小角二次律（可检验预测）}")
+    lines.append("\\paragraph{near-coboundary 小角二次律（可检验预测）}")
     lines.append("用 $p=5$ 的观测缺口 $1-\\rho_{3,3,5}/\\lambda$ 估计")
     lines.append("$$")
     if 0.0 < rho_ratio < 1.0:
@@ -1076,7 +1093,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         lines.append("\\text{(no prediction)}")
     lines.append("$$")
 
-    lines.append("\\paragraph{（vii$'$）方差密度识别：$\\kappa$ 的可证明本体（collision cocycle）}")
+    lines.append("\\paragraph{方差密度识别：$\\kappa$ 的可证明本体（collision cocycle）}")
     lines.append("对碰撞 cocycle $\\xi=\\mathbf{1}_{\\{d=2\\}}$，考虑实参倾斜 $u=\\exp(t)$ 的压力 $P(t)=\\log\\rho(M(1,1,\\exp(t)))$。数值差分给出")
     lines.append("$$")
     lines.append(
@@ -1088,7 +1105,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append(f"g_\\infty:=4\\pi^2\\,\\kappa_\\mathrm{{var}}=2\\pi^2\\sigma_\\xi^2\\approx {fmt(g_infty)}.")
     lines.append("$$")
 
-    lines.append("\\paragraph{（iv$''$）谐波能量指纹：第一谐波占比}")
+    lines.append("\\paragraph{谐波能量指纹：第一谐波占比}")
     lines.append("令 $A^{(1)},A^{(2)}$ 为 $\\ZZ/5$ 上的 $j=1,2$ 两个谐波复矩阵（见下文输出）。定义能量占比")
     lines.append("$$")
     lines.append("\\mathcal{E}_1:=\\frac{\\|A^{(1)}\\|_F^2}{\\|A^{(1)}\\|_F^2+\\|A^{(2)}\\|_F^2}.")
@@ -1104,7 +1121,7 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
         lines.append(f"R_\\mathrm{{harm}}:=\\frac{{\\|A^{{(1)}}\\|_F^2}}{{\\|A^{{(2)}}\\|_F^2}}=\\frac{{\\mathcal{{E}}_1}}{{1-\\mathcal{{E}}_1}}\\approx {R_harm:.6f}.")
         lines.append("$$")
 
-    lines.append("\\paragraph{（viii）碰撞 cocycle 的 near-coboundary 证书：best $\\ZZ/5$-着色缺陷}")
+    lines.append("\\paragraph{碰撞 cocycle 的 near-coboundary 证书：best $\\ZZ/5$-着色缺陷}")
     lines.append("把 40 状态图的每条边赋 cocycle $\\xi=\\mathbf{1}_{\\{d=2\\}}\\in\\ZZ/5$，并用局部改进的启发式在 $\\ZZ/5$ 上寻找 $h:V\\to\\ZZ/5$ 使得约束 $h(v)-h(u)\\equiv \\xi(u\\to v)\\ (\\mathrm{mod}\\ 5)$ 尽量多地满足。以边不一致比例定义缺陷")
     lines.append("$$")
     if mE > 0 and best_sat >= 0:
@@ -1116,11 +1133,11 @@ def _write_dirichlet_mertens_335_n2_summary_tex(
     lines.append("并进一步给出与平衡态一致的加权缺陷（用无扭曲 PF 平衡边测度加权）：")
     lines.append("$$")
     if not (math.isnan(eps_pi) or math.isnan(eps2_pi) or math.isnan(kappa_bound)):
-        lines.append(
-            f"\\varepsilon_\\pi:=\\mathbb{{P}}_\\pi[\\text{{violated}}]\\approx {fmt(eps_pi)},\\qquad "
-            f"\\varepsilon_\\pi^{{(2)}}:=\\mathbb{{E}}_\\pi[r(e)^2]\\approx {fmt(eps2_pi)},\\qquad "
-            f"\\kappa_\\mathrm{{var}}\\ \\le\\ \\varepsilon_\\pi^{{(2)}}/2\\approx {fmt(kappa_bound)}."
-        )
+        lines.append("\\begin{aligned}")
+        lines.append(f"\\varepsilon_\\pi&:=\\mathbb{{P}}_\\pi[\\text{{violated}}]\\approx {fmt(eps_pi)},\\\\")
+        lines.append(f"\\varepsilon_\\pi^{{(2)}}&:=\\mathbb{{E}}_\\pi[r(e)^2]\\approx {fmt(eps2_pi)},\\\\")
+        lines.append(f"\\kappa_\\mathrm{{var}}&\\le\\ \\varepsilon_\\pi^{{(2)}}/2\\approx {fmt(kappa_bound)}.")
+        lines.append("\\end{aligned}")
     else:
         lines.append("\\varepsilon_\\pi,\\ \\varepsilon_\\pi^{(2)}\\ \\text{undefined}.")
     lines.append("$$")

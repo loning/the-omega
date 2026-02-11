@@ -1,0 +1,62 @@
+\section{统计稳定性：从数据到概念的判别准则}\label{sec:statistical-stability}
+
+本节沿用第 \ref{sec:preliminaries} 节小节 \ref{subsec:freq-setting} 中固定的保测系统读出口径。
+\par
+测度论与遍历论的基本记号（轨道频率、唯一遍历下指示函数的正则性口径、稳定概念的定义）已在预备知识中统一固定，见第 \ref{sec:preliminaries} 节小节 \ref{subsec:prelim-ergodic-frequency}。本节在该输入口径之上给出用于判别与审计的分辨率指标、误差分解与可复现实验协议。
+
+\subsection{稳定性与有限分辨率}
+
+有限 $m$ 下微态空间 $\Omega_m$ 过大时，直接以原始微态为概念将导致不可控的稀疏性与不稳定。为建立可递归的概念层级，需要一个将 $\Omega_m$ 折叠到更小稳定类型空间的机制（第 \ref{sec:folding} 节）。该机制的数学要求是：折叠后类型空间随 $m$ 增长呈现自相似递归，并与黄金比例一致。
+
+\subsection{定量拟合：稳定类型分布的偏差指标}\label{sec:quant-fit}
+给定一段观测序列 $\omega_m(x;t)\in\Omega_m$，折叠后得到稳定类型序列（见第 \ref{sec:folding} 节）
+\[
+w_t:=\Fold_m(\omega_m(x;t))\in X_m.
+\]
+令 $\hat{\pi}_m$ 为经验分布（直方图）
+\[
+\hat{\pi}_m(u):=\frac{1}{N}\sum_{t=0}^{N-1}\ind_{\{w_t=u\}},\qquad u\in X_m.
+\]
+另一方面，黄金均值约束 $X_\infty$ 的标准最大熵平稳分布由 Perron--Frobenius 本征结构给出（见第 \ref{sec:group-unification} 节及注 \ref{prop:parry-measure-golden}；参见 \cite{LindMarcus1995}），其在长度 $m$ 上诱导的柱分布记为 $\pi_m$。于是可用如下两个无量纲偏差作为“拟合优度”：
+\[
+D_{\mathrm{TV}}(\hat{\pi}_m,\pi_m):=\frac12\sum_{u\in X_m}\abs{\hat{\pi}_m(u)-\pi_m(u)},\qquad
+D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m):=\sum_{u\in X_m}\hat{\pi}_m(u)\log\frac{\hat{\pi}_m(u)}{\pi_m(u)}.
+\]
+这一定量化步骤不依赖任何模拟；其意义在于：若系统在分辨率 $m$ 的稳定层确由黄金语法支配，则 $\hat{\pi}_m$ 应在遍历假设下趋近 $\pi_m$，且偏差可被直接审计。若进一步以 Parry 最大熵测度作为基准马尔可夫链，则两状态情形的收敛速率可由次特征值给出显式指数界（见 \cite{LindMarcus1995}，并参见注 \ref{prop:parry-measure-golden} 的基线参数）。
+
+\subsection{源模型与折叠输出的记号（仅用于定位对象）}\label{subsec:histogram-convergence-natural-sources}
+本节仅固定“源 $\Rightarrow$ 折叠输出直方图”的记号；平稳遍历收敛与 i.i.d./马尔可夫源的非渐近偏差界不作为本文依赖前提，故不展开。
+
+\begin{definition}[一般源与折叠输出过程]\label{def:source-and-fold-output}
+令 $S=(S_t)_{t\in\ZZ}$ 为取值于 $\{0,1\}$ 的双边随机过程，定义长度-$m$ 窗口与折叠输出为
+\[
+W_t^{(m)}:=S_tS_{t+1}\cdots S_{t+m-1}\in\Omega_m,
+\qquad
+Y_t^{(m)}:=\Fold_m(W_t^{(m)})\in X_m.
+\]
+对样本长度 $N$，定义折叠直方图（经验分布）
+\[
+\hat{\pi}_{m,N}(u):=\frac{1}{N}\sum_{t=0}^{N-1}\ind_{\{Y_t^{(m)}=u\}},
+\qquad u\in X_m,
+\]
+并记真实边缘分布（极限目标）为
+\[
+\pi_m^{\mathrm{fold}}(u):=\mathbb{P}\bigl(Y_0^{(m)}=u\bigr),\qquad u\in X_m.
+\]
+\end{definition}
+
+若 $S$ 平稳且遍历，则对任意固定 $m$ 与任意 $u\in X_m$，
+\[
+\hat{\pi}_{m,N}(u)\ \xrightarrow[N\to\infty]{}\ \pi_m^{\mathrm{fold}}(u)
+\quad\text{几乎处处},
+\]
+从而 $D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\to 0$（参见 \cite{WaltersErgodicTheory} 对遍历定理与有限字母表收敛的标准推论）。
+
+设 $S_t$ 为 i.i.d. 伯努利源。对重叠窗口的折叠直方图，可用分段子序列的 i.i.d. 结构与 \cite{WeissmanEtAl2003L1Empirical} 的 TV 置信半径得到显式指数型证书；其有效样本量降为 $N_{\min}=\lfloor N/m\rfloor$，相应的置信半径为
+\[
+\varepsilon_{\mathrm{TV}}(N_{\min},|X_m|;\delta)=\frac12\sqrt{\frac{2}{N_{\min}}\Bigl(|X_m|\log 2+\log(1/\delta)\Bigr)}.
+\]
+
+\begin{remark}[与 IID 块采样实验的关系]\label{rem:iid-overlap-vs-blocks}
+第 \ref{sec:experiments} 节的 IID 基线实验采用“独立 $m$-块采样”，因此其有效样本量为 $N$ 而非 $N/m$（证书更紧）。若回到更自然的“沿时间滑窗采样（重叠窗口）”，则可用上述标准证书得到同型的指数型 TV 界，但有效样本量降为 $\lfloor N/m\rfloor$，这与“窗口重叠导致相关”一致。
+\end{remark}

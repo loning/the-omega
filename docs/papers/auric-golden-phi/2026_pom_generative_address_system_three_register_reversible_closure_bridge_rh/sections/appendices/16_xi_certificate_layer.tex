@@ -1,0 +1,251 @@
+\section{\texorpdfstring{$(\Xi)$}{(Xi)} 的代数/谱证书机制：自倒数多项式、区间根与 Lyapunov--LMI}\label{app:xi-certificate-layer}
+
+本附录给出两类与 BridgeRH 的条件组 (B3)(B4) 直接相容的证书机制：其一是在 unitary slice 上把 $\Xi_{\Delta,L}$ 的核验代数化为\textbf{自倒数多项式}与\textbf{区间根判据}；其二是把“谱半径界/平方根界”转写为一份\textbf{可复算 PSD 证书}（Lyapunov--LMI）。这些机制并不替代 (B1.c) 的经典目标识别，而是把一旦落入有限维或可控模型后的“临界线/单位圆”断言压缩为可并行输出的有限核验对象。
+
+\subsection{自对偶切片诱导的自倒数多项式}\label{subsec:xi-reciprocal-polynomial}
+设 $\Delta(z,u)$ 满足自对偶条件
+$$
+\Delta(z,u)=\Delta(uz,1/u),
+$$
+并固定 $L>1$。沿用正文定义
+$$
+\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1}),\qquad u_L(s)=L^{2s-1}.
+$$
+为把 unitary slice 参数化为单变量，令
+$$
+y_L(s):=L^{s-\frac12},
+$$
+则恒有
+$$
+u_L(s)=y_L(s)^2,\qquad L^{-s}=L^{-\frac12}y_L(s)^{-1}.
+$$
+特别地，当 $\Re(s)=\tfrac12$ 时有 $\abs{y_L(s)}=1$，与命题 \ref{prop:critical-line-unitary-slice} 的 $\abs{u_L(s)}=1$ 等价。
+
+\begin{proposition}[自对偶 $\Rightarrow$ 完成化切片的函数方程]\label{prop:xi-functional-equation-self-dual}
+若 $\Delta$ 满足自对偶条件，则对任意 $L>1$ 与 $s\in\CC$ 有
+$$
+\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s).
+$$
+\end{proposition}
+\begin{proof}
+由自对偶条件，
+$$
+\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})
+=\Delta(L^{2s-1}\cdot L^{-s},L^{1-2s})
+=\Delta(L^{s-1},L^{1-2s}).
+$$
+注意 $L^{s-1}=L^{-(1-s)}$ 且 $L^{1-2s}=L^{2(1-s)-1}$，故
+$$
+\Xi_{\Delta,L}(s)=\Delta(L^{-(1-s)},L^{2(1-s)-1})=\Xi_{\Delta,L}(1-s).
+$$
+证毕。
+\end{proof}
+
+\paragraph{自倒数多项式的定义（有限维/可控设定）}
+在有限维行列式设定下（或更一般地：在 $y$ 变量下为 Laurent 多项式的设定中），函数
+$
+y\mapsto \Delta(L^{-\frac12}y^{-1},y^2)
+$
+是 $y$ 的 Laurent 多项式。取最小的整数 $d\ge 0$ 使得
+$$
+\Phi_{\Delta,L}(y):=y^d\,\Delta(L^{-\frac12}y^{-1},y^2)\in\CC[y]
+$$
+为一元多项式；称 $\Phi_{\Delta,L}$ 为 $\Xi_{\Delta,L}$ 在 unitary slice 上诱导的\textbf{自倒数化特征多项式}。
+
+\begin{proposition}[自对偶 $\Rightarrow$ 自倒数性]\label{prop:xi-reciprocal-polynomial}
+在上述设定下，$\Phi_{\Delta,L}$ 满足严格的自倒数恒等式
+$$
+\boxed{\ \Phi_{\Delta,L}(y)=y^{2d}\,\Phi_{\Delta,L}(1/y)\ }.
+$$
+并且对任意 $s$ 满足 $\Re(s)=\tfrac12$，有等价关系
+$$
+\Xi_{\Delta,L}(s)=0\quad\Longleftrightarrow\quad \Phi_{\Delta,L}\!\bigl(y_L(s)\bigr)=0,
+\qquad \abs{y_L(s)}=1.
+$$
+\end{proposition}
+\begin{proof}
+由定义，
+$
+\Phi_{\Delta,L}(1/y)=y^{-d}\Delta(L^{-\frac12}y,y^{-2})
+$。
+对 $(z,u)=(L^{-\frac12}y,y^{-2})$ 使用自对偶条件 $\Delta(z,u)=\Delta(uz,1/u)$ 得
+$$
+\Delta(L^{-\frac12}y,y^{-2})=\Delta(L^{-\frac12}y^{-1},y^2).
+$$
+故
+$$
+\Phi_{\Delta,L}(1/y)=y^{-d}\Delta(L^{-\frac12}y^{-1},y^2)=y^{-2d}\Phi_{\Delta,L}(y),
+$$
+等价于 $\Phi_{\Delta,L}(y)=y^{2d}\Phi_{\Delta,L}(1/y)$。
+第二条由 $\Xi_{\Delta,L}(s)=\Delta(L^{-\frac12}y_L(s)^{-1},y_L(s)^2)=y_L(s)^{-d}\Phi_{\Delta,L}(y_L(s))$ 直接推出。证毕。
+\end{proof}
+
+\subsection{从单位圆到 \texorpdfstring{$[-2,2]$}{[-2,2]}：区间根证书与 Jacobi 实现}\label{subsec:xi-interval-certificate}
+记 involution $\sigma:y\mapsto 1/y$。由命题 \ref{prop:xi-reciprocal-polynomial}，$y^{-d}\Phi_{\Delta,L}(y)$ 在 $\sigma$ 下不变；因此它属于不变环
+$
+\CC[y,y^{-1}]^{\langle\sigma\rangle}
+$。
+
+\begin{lemma}[倒数不变 Laurent 环的生成元]\label{lem:laurent-invariant-generated-by-s}
+令
+$$
+S:=y+y^{-1}.
+$$
+则有环同构
+$$
+\CC[y,y^{-1}]^{\langle y\mapsto 1/y\rangle}\cong \CC[S].
+$$
+更具体地，任意倒数不变 Laurent 多项式均可唯一写为 $S$ 的一元多项式。
+\end{lemma}
+\begin{proof}
+对任意 $k\ge 0$，$y^k+y^{-k}$ 为倒数不变元素，且满足递推
+$
+y^{k+1}+y^{-(k+1)}=S(y^k+y^{-k})-(y^{k-1}+y^{-(k-1)})
+$，
+从而所有 $y^k+y^{-k}$ 均落在 $\CC[S]$。另一方面，任意倒数不变 Laurent 多项式都可写成 $\sum_{k=0}^{K} c_k (y^k+y^{-k})$，于是属于 $\CC[S]$。唯一性来自：$\CC[S]\hookrightarrow \CC[y,y^{-1}]$ 的注入性（将 $S$ 视为 $y+y^{-1}$ 的代入）。证毕。
+\end{proof}
+
+\begin{proposition}[自倒数多项式的区间化表示]\label{prop:reciprocal-to-interval-polynomial}
+在命题 \ref{prop:xi-reciprocal-polynomial} 的设定下，存在唯一多项式 $P_{\Delta,L}(S)\in\CC[S]$ 使得
+$$
+\boxed{\ \Phi_{\Delta,L}(y)=y^d\,P_{\Delta,L}(y+y^{-1})\ }.
+$$
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:xi-reciprocal-polynomial}，$y^{-d}\Phi_{\Delta,L}(y)$ 在 $y\mapsto 1/y$ 下不变，故由引理 \ref{lem:laurent-invariant-generated-by-s} 存在唯一 $P_{\Delta,L}\in\CC[S]$ 使 $y^{-d}\Phi_{\Delta,L}(y)=P_{\Delta,L}(y+y^{-1})$。两边同乘 $y^d$ 即得。证毕。
+\end{proof}
+
+\begin{proposition}[单位圆根 \texorpdfstring{$\Leftrightarrow$}{<->} 区间根]\label{prop:unit-circle-root-iff-interval-root}
+沿用命题 \ref{prop:reciprocal-to-interval-polynomial} 的记号。令 $y\in\CC^\times$ 且 $S=y+y^{-1}$。则：
+\begin{enumerate}
+  \item 若 $\abs{y}=1$，则 $S\in[-2,2]$；
+  \item 若 $S\in[-2,2]$，则存在 $\abs{y}=1$ 使得 $S=y+y^{-1}$；
+  \item 对任意 $\abs{y}=1$，有
+  $$
+  \Phi_{\Delta,L}(y)=0\quad\Longleftrightarrow\quad P_{\Delta,L}(S)=0.
+  $$
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+令 $y=e^{i\theta}$，则 $S=e^{i\theta}+e^{-i\theta}=2\cos\theta\in[-2,2]$，得 (1)。对 (2)，任取 $S=2\cos\theta$，令 $y=e^{i\theta}$ 即可。对 (3)，由 $\Phi_{\Delta,L}(y)=y^dP_{\Delta,L}(S)$ 且 $y\neq 0$ 即得等价。证毕。
+\end{proof}
+
+\begin{definition}[unitary-root 参数 \texorpdfstring{$t(u)$}{t(u)}]\label{def:unitary-root-t}
+令 $u\in\CC^\times$，在 unitary slice 参数化 $u=y^2$（其中 $y=y_L(s)=L^{s-\frac12}$，见 \S\ref{subsec:xi-reciprocal-polynomial}）下，定义
+$$
+t(u):=u^{1/2}+u^{-1/2}:=y+y^{-1}=S.
+$$
+因此 $t(u)\in[-2,2]$ 等价于存在 $\abs{y}=1$ 使 $u=y^2$，并与“半角参数”一致。
+\end{definition}
+
+\begin{theorem}[unitary-root 判据（区间根证书模板）]\label{thm:unitary-root-criterion}
+设 $\Delta$ 自对偶并诱导区间多项式 $P_{\Delta,L}\in\RR[S]$（命题 \ref{prop:reciprocal-to-interval-polynomial}）。若 $P_{\Delta,L}$ 的全部实根都落在 $[-2,2]$，则 $\Phi_{\Delta,L}$ 的全部根都满足 $\abs{y}=1$；等价地，unitary slice 上的零点可被压缩为
+$$
+\Xi_{\Delta,L}(s)=0\quad\Longleftrightarrow\quad P_{\Delta,L}\bigl(t(u_L(s))\bigr)=0,\qquad t(u)=u^{1/2}+u^{-1/2},
+$$
+从而对零点必有 $\abs{u_L(s)}=1$，即 $\Re(s)=\tfrac12$。
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:unit-circle-root-iff-interval-root}，对任意根 $y$，若 $P_{\Delta,L}(S)=0$ 且 $S\in[-2,2]$，则存在 $\abs{y}=1$ 使 $S=y+y^{-1}$，从而 $\Phi_{\Delta,L}(y)=0$ 的根落在单位圆上。对 $u_L(s)=y_L(s)^2$，$\abs{y_L(s)}=1$ 等价于 $\abs{u_L(s)}=1$，再由命题 \ref{prop:critical-line-unitary-slice} 得 $\Re(s)=\tfrac12$。证毕。
+\end{proof}
+
+\begin{remark}[区间根的可核验性（Sturm/Jacobi 两条路线）]\label{rem:interval-root-audit}
+在 $P_{\Delta,L}$ 具有实系数且欲核验其全部根位于 $[-2,2]$ 的场景中，有两条完全可核验的路径：
+\begin{itemize}
+  \item \textbf{Sturm 序列设定：}用 Euclid--Sturm 链在端点 $-2,2$ 计算符号变换数，得到区间内根数（按重数计），从而无需求根即可输出严格的根区间证书；
+  \item \textbf{Jacobi 设定：}当 $P_{\Delta,L}$ 为实根多项式时，存在实对称三对角（Jacobi）矩阵 $J$ 使
+  $$
+  P_{\Delta,L}(S)=\det(SI-J),
+  $$
+  因而“全部根在 $[-2,2]$”等价于自伴谱包含于 $[-2,2]$。在有限维上该条件可进一步写为两条半正定约束
+  $$
+  2I-J\succeq 0,\qquad 2I+J\succeq 0,
+  $$
+  从而把区间根判据转写为可复算的 PSD 证书（参见 \cite{Fiedler1990SymmetricCharpoly,Schmeisser1993TridiagonalGivenCharpoly} 的构造性结论与综述）。
+\end{itemize}
+该区间化证书层与附录 \ref{app:godel-wsos-rouche} 的 WSOS/证明携带机制可直接对接：在需要时可进一步把 $[-2,2]$ 上的非负性/半正定性压缩为离线可核对的有理证书。
+\end{remark}
+
+\subsubsection{Cayley 四分之一角参数：unitary slice 的有理化输入与零浮点核验}\label{subsec:xi-cayley-rational}
+上文将 unitary slice 的零点核验压缩为区间多项式 $P_{\Delta,L}(S)$ 在 $[-2,2]$ 上的根结构。若进一步要求将相位输入从 $\exp(i\theta)$ 等超越函数中剥离，则可对半角变量 $y$ 使用 Cayley 参数化。
+
+\begin{definition}[Cayley 参数与有理坐标]\label{def:xi-cayley}
+令扩张实线 $\mathbb{R}_b:=\RR\cup\{\infty\}$。对 $x\in\mathbb{R}_b$ 定义
+$$
+y(x):=\frac{1+ix}{1-ix}\in\TT,\qquad u(x):=y(x)^2\in\TT,
+$$
+并定义完成化迹坐标
+$$
+S(x):=y(x)+y(x)^{-1}=2\frac{1-x^2}{1+x^2}.
+$$
+则对任意 $x\in\RR$ 有 $1+x^2\neq 0$，从而 $S(x)$ 为 $x$ 的有理函数；当 $x\in\QQ$ 时，$y(x),u(x)\in\QQ(i)$ 且 $S(x)\in\QQ$。
+\end{definition}
+
+\begin{theorem}[区间多项式的有理化清分母]\label{thm:xi-cayley-denom-clear}
+设 $R$ 为任意交换整环，$P(S)\in R[S]$ 为一元多项式，令 $d:=\deg P$。按定义 \ref{def:xi-cayley} 置
+$$
+P^\sharp(x):=(1+x^2)^d\,P\!\left(2\frac{1-x^2}{1+x^2}\right)\in R[x].
+$$
+则对任意 $x\in\RR$ 有等价关系
+$$
+P\bigl(S(x)\bigr)=0\quad\Longleftrightarrow\quad P^\sharp(x)=0.
+$$
+\end{theorem}
+
+\begin{proof}
+由 $P(S)=\sum_{j=0}^{d}c_j S^j$，代入 $S=S(x)$ 得
+$$
+P\bigl(S(x)\bigr)=\sum_{j=0}^{d}c_j\,2^j(1-x^2)^j(1+x^2)^{-j}.
+$$
+两边同乘 $(1+x^2)^d$ 得到 $P^\sharp(x)\in R[x]$。对 $x\in\RR$，$1+x^2\neq 0$，故乘法不引入或消去零点，从而零点等价成立。证毕。
+\end{proof}
+
+\begin{remark}[零浮点核验：从 $P_{\Delta,L}$ 到实根隔离证书]\label{rem:xi-zero-float-audit}
+若 $P_{\Delta,L}\in R[S]$ 的系数属于可精确运算的环（例如 $R=\ZZ,\ZZ[i]$ 或某个可表示的代数整数环），则定理 \ref{thm:xi-cayley-denom-clear} 将 unitary slice 上的零点核验转写为 $P_{\Delta,L}^\sharp(x)\in R[x]$ 的实根结构核验。特别地，结合 Sturm 序列或子结果式链，可输出完全离线可复算的根隔离盒，从而在该子语言中将 unitary slice 审计提升为“纯代数证书核对”，无需调用任何浮点舍入模型。
+\end{remark}
+
+\subsection{谱半径界的 Lyapunov--LMI 证书（可复算 PSD 输出）}\label{subsec:lyapunov-lmi-certificate}
+在核版 (G)RH/平方根界与扭曲通道核验中，最常见的可核验对象是谱半径不等式。下述命题把它严格转写为一个凸的半正定可行性问题，并提供可复算的证书输出格式。
+
+\begin{proposition}[谱半径界 \texorpdfstring{$\Leftrightarrow$}{<->} Lyapunov 不等式]\label{prop:lyapunov-spectral-radius-certificate}
+令 $A\in\CC^{n\times n}$，$r>0$。则以下条件等价：
+\begin{enumerate}
+  \item $\rho(A)<r$；
+  \item 存在 Hermitian 正定矩阵 $H\succ 0$ 使得
+  $$
+  \boxed{\ A^\ast H A\ \prec\ r^2 H\ }.
+  $$
+\end{enumerate}
+因此“谱半径界”可由一份 $H$ 作为 PSD 证书随核验输出，并可被离线复算核验。
+\end{proposition}
+\begin{proof}
+\textbf{(1)$\Rightarrow$(2)} 令 $B:=A/r$，则 $\rho(B)<1$。取
+$$
+H:=\sum_{k\ge 0}(B^\ast)^k B^k.
+$$
+由于 $\rho(B^\ast B)<1$，上式收敛并给出 $H\succ 0$。并且
+$$
+B^\ast H B=\sum_{k\ge 0}(B^\ast)^{k+1}B^{k+1}=H-I\ \prec\ H,
+$$
+从而 $A^\ast H A=r^2 B^\ast H B\prec r^2 H$。
+
+\textbf{(2)$\Rightarrow$(1)} 若 $A^\ast H A\prec r^2 H$，对任意特征对 $Av=\lambda v$（$v\neq 0$），有
+$$
+|\lambda|^2\,v^\ast H v=v^\ast A^\ast H A v<r^2\,v^\ast H v,
+$$
+故 $|\lambda|<r$，从而 $\rho(A)<r$。证毕。
+\end{proof}
+
+\begin{remark}[并行核验与证书物]\label{rem:lyapunov-audit-parallel}
+对参数族（例如 unitary slice 上的扭曲矩阵族）$A(u)$，若目标为证明/拒绝
+$
+\rho(A(u))<r(u)
+$，
+则可对每个核验采样点 $u$ 独立输出一份证书矩阵 $H_u\succ 0$ 与残差
+$
+r(u)^2H_u-A(u)^\ast H_u A(u)
+$；
+该输出天然可并行生成与并行复算，适合作为条件组 (B4) 的“规格化谱证书层”机制。
+\end{remark}
+

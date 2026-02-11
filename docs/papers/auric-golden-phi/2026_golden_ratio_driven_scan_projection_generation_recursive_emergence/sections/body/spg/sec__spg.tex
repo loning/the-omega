@@ -1,0 +1,242 @@
+\section{扫描—投影生成器：群作用与二元读出}\label{sec:spg}
+
+\paragraph{单生成群作用}
+
+设 $\Gamma=\langle g\rangle$ 为单生成群或半群。其元素可写为 $g^t$（$t\in\ZZ$ 或 $t\in\NN$），其中 $t$ 仅作为迭代次数的记号。给定一相空间 $X$ 与作用
+\[
+T^t:X\to X,\quad T^t(x)=g^t\cdot x,
+\]
+则“时间”被定义为作用的迭代计数，而非额外原语。
+
+\paragraph{投影读出与二元记录}
+
+给定可测集 $W\subseteq X$，定义二元读出（事件指示函数）
+\[
+s_t(x)=\ind_W(T^t x)\in\{0,1\}.
+\]
+对固定初值 $x$，长度 $m$ 的局部读出窗口产生微态词
+\[
+\omega_m(x;t)=s_t(x)s_{t+1}(x)\cdots s_{t+m-1}(x)\in \Omega_m:=\{0,1\}^m.
+\]
+$\Omega_m$ 是分辨率 $m$ 下可观测的全部微态集合，其基数为 $\abs{\Omega_m}=2^m$。
+
+该接口在紧群/算子代数语言中的等价表述仅作为桥接接口使用，见附录 \ref{app:op-algebra}。
+
+\paragraph{概念的空值投影范式}
+
+在此框架中，概念不被视为先验对象，而被视为“可寻址事件”。
+\begin{itemize}
+  \item \textbf{地址（address）：}任意有限词 $a\in\{0,1\}^k$ 作为索引。
+  \item \textbf{概念（concept）：}由地址 $a$ 指定的事件
+  \[
+  C_a=\{x\in X:\omega_k(x;0)=a\}.
+  \]
+  \item \textbf{时间平移的柱事件：}对任意 $t\in\ZZ$ 定义 $C_{a,t}:=\{x\in X:\omega_k(x;t)=a\}=T^{-t}C_a$。
+  \item \textbf{读出（evaluation）：}对给定 $x$，概念值为二元投影 $\ind_{C_a}(x)\in\{0,1\}$。
+\item \textbf{空值：}在未给定地址 $a$ 之前，$\ind_{C_a}$ 不定义；该“不定义”并非取值为 $0$，而是缺乏指称。
+\end{itemize}
+
+关键结论是：\textbf{地址先于概念值}。并且在递归机制中，新概念的地址由旧概念的读出序列构造（见第 \ref{sec:recursive-addressing} 节）。
+
+柱事件的可测性与平移关系 $C_{a,t}=T^{-t}C_a$ 均由定义直接给出。
+
+\paragraph{前缀超度量与“缩略图”解释}\label{par:spg-prefix-ultrametric}
+把无限读出词视为符号空间上的点。定义
+\[
+\omega_\infty(x):=s_0(x)s_1(x)s_2(x)\cdots\in\Omega_\infty:=\{0,1\}^{\NN},
+\]
+并对任意有限词（地址）$a\in\{0,1\}^k$ 定义其对应的\textbf{符号柱集}
+\[
+[a]:=\{\xi\in\Omega_\infty:\ \xi_0\xi_1\cdots\xi_{k-1}=a\}.
+\]
+则柱事件可写为 $C_a=\omega_\infty^{-1}([a])$。
+\par
+对 $\xi,\eta\in\Omega_\infty$ 定义共同前缀深度
+\[
+\ell(\xi,\eta):=\sup\{k\ge 0:\ \xi_0\cdots\xi_{k-1}=\eta_0\cdots\eta_{k-1}\}\in\NN\cup\{\infty\},
+\]
+并定义前缀超度量（取约定 $2^{-\infty}=0$）
+\[
+d_{\mathrm{pre}}(\xi,\eta):=2^{-\ell(\xi,\eta)}.
+\]
+这是 $\Omega_\infty$ 的一个标准超度量：\textbf{球即柱集}。更精确地，对任意 $a$ 与任意 $\xi\in[a]$，
+\[
+[a]=\overline{B}\bigl(\xi,2^{-|a|}\bigr)\qquad(|a|=k).
+\]
+因此，地址长度从 $k$ 增到 $k{+}1$ 等价于把同一“可见缩略图”细化为更小半径的超度量球；所谓“扫描更深使缩略图更清晰”，在此意义下就是沿柱集过滤的半径单调收缩。
+把该超度量通过 $\omega_\infty$ 拉回到相空间，得到伪超度量 $d_X(x,y):=d_{\mathrm{pre}}(\omega_\infty(x),\omega_\infty(y))$；若读出不单射则可能出现 $d_X(x,y)=0$ 的碰撞，这与后文“单值可核验读出/单射化记录轴/空值 $\mathsf{NULL}$”口径相容。
+
+\subsection{扫描深度与清晰度：可判定性、误差剖面与边界柱}\label{subsec:spg-scan-clarity}
+本小节在“地址先于概念值”的接口上，把“扫描越深越清晰”压缩为可审计的定量律：分辨率 $m$ 给出一个有限信息层；对任意命题 $\mathsf P$，其在该信息层的最优判错概率构成一条单调剖面 $m\mapsto \varepsilon_m(\mathsf P;\mu)$。后续关于同步扣除与 Chebotarev 预算的联立，将把该剖面作为“定义性清晰度”的输入（见备注 \ref{rem:spg-sync-null-interface} 与定理 \ref{thm:pom-sync-subtracted-chebotarev-capacity}）。
+
+\paragraph{柱代数与闭开性}
+令 $\tau$ 为 $\Omega_\infty$ 的积拓扑。对 $m\ge 1$ 记
+\[
+\mathcal{A}_m:=\sigma([a]:a\in\{0,1\}^m),
+\qquad
+\mathcal{A}_\infty:=\sigma\!\left(\bigcup_{m\ge 1}\mathcal{A}_m\right).
+\]
+并令
+\[
+\mathcal{F}_m:=\omega_\infty^{-1}(\mathcal{A}_m),
+\qquad
+\mathcal{F}_\infty:=\omega_\infty^{-1}(\mathcal{A}_\infty),
+\]
+它们给出“仅允许访问长度-$m$ 地址前缀信息”的可观测闭包；其与第 \ref{sec:preliminaries} 节“有限窗口事件生成的 $\sigma$-代数”口径一致。
+
+\begin{proposition}[可判定性与闭开性]\label{prop:spg-decidable-clopen}
+令 $P\subseteq\Omega_\infty$ 为 Borel 集。以下条件等价：
+\begin{enumerate}
+  \item $P\in\mathcal{A}_m$（即仅由长度 $m$ 前缀决定）；
+  \item 存在 $A\subseteq\{0,1\}^m$ 使得 $P=\bigcup_{a\in A}[a]$；
+  \item $P$ 在拓扑 $\tau$ 下为闭开集，且在前缀超度量 $d_{\mathrm{pre}}$ 下可写为若干半径 $2^{-m}$ 闭球的并。
+\end{enumerate}
+从而对 $X$ 上的事件 $\mathsf P\in\mathcal{F}_\infty$，若 $\mathsf P\in\mathcal{F}_m$，则其读出仅依赖分辨率 $m$ 的地址前缀。
+\end{proposition}
+
+\paragraph{扫描误差剖面}
+\begin{definition}[扫描误差剖面]\label{def:spg-scan-error-profile}
+在给定 $T$-不变概率测度 $\mu$ 下，对任意 $\mathsf P\in\mathcal{F}_\infty$ 定义
+\[
+\varepsilon_m(\mathsf P;\mu)
+:=\inf\left\{\mu(g\neq \ind_{\mathsf P}): g\in L^\infty(\mathcal{F}_m),\ g(X)\subseteq\{0,1\}\right\}.
+\]
+\end{definition}
+
+令 $\mathcal{C}_m:=\{C_a:a\in\{0,1\}^m\}$ 为分辨率 $m$ 的柱划分（空集允许）。则有柱分解表达式：
+
+\begin{proposition}[柱分解的精确表达]\label{prop:spg-scan-error-cylinder}
+沿用定义 \ref{def:spg-scan-error-profile} 的记号，有
+\[
+\varepsilon_m(\mathsf P;\mu)
+=\sum_{C\in\mathcal{C}_m}\min\{\mu(\mathsf P\cap C),\mu(C\setminus \mathsf P)\}.
+\]
+等价地，令 $p_C:=\mu(\mathsf P\,|\,C)$（当 $\mu(C)=0$ 时取 $p_C:=0$），则
+\[
+\varepsilon_m(\mathsf P;\mu)
+=\sum_{C\in\mathcal{C}_m}\mu(C)\min\{p_C,1-p_C\}
+=\mathbb{E}_\mu\bigl[\min\{p_m,1-p_m\}\bigr],
+\qquad
+p_m:=\mu(\mathsf P\,|\,\mathcal{F}_m).
+\]
+\end{proposition}
+
+\begin{corollary}[清晰度的基本性质]\label{cor:spg-clarity-basic}
+$m\mapsto\varepsilon_m(\mathsf P;\mu)$ 单调不增；并且 $\varepsilon_m(\mathsf P;\mu)=0$ 当且仅当 $\mathsf P\in\mathcal{F}_m$。
+\end{corollary}
+
+\paragraph{边界柱与收敛指数}
+\begin{definition}[边界柱覆盖数与柱 Minkowski 维数]\label{def:spg-boundary-cylinder-dimension}
+定义分辨率 $m$ 的边界柱覆盖数
+\[
+N_m(\partial\mathsf P)
+:=\#\left\{C\in\mathcal{C}_m:\ \mu(\mathsf P\cap C)>0\ \text{且}\ \mu(C\setminus \mathsf P)>0\right\}.
+\]
+若存在常数 $\lambda_{\mathrm{cyl}}>1$ 使得柱复杂度满足
+\[
+\#\{C\in\mathcal{C}_m:\mu(C)>0\}\asymp \lambda_{\mathrm{cyl}}^m,
+\]
+则定义上柱维数
+\[
+\overline{\dim}_B(\partial\mathsf P)
+:=\limsup_{m\to\infty}\frac{\log N_m(\partial\mathsf P)}{m\log\lambda_{\mathrm{cyl}}}\in[0,1].
+\]
+\end{definition}
+
+\begin{theorem}[边界维数控制的清晰度收敛]\label{thm:spg-clarity-boundary-dimension}
+设存在常数 $K<\infty$ 与 $\lambda_{\mathrm{cyl}}>1$ 使得对所有 $m$ 与所有 $C\in\mathcal{C}_m$ 有
+\[
+\mu(C)\le K\lambda_{\mathrm{cyl}}^{-m}.
+\]
+则对任意 $\mathsf P\in\mathcal{F}_\infty$，
+\[
+\varepsilon_m(\mathsf P;\mu)\le K\lambda_{\mathrm{cyl}}^{-m}N_m(\partial\mathsf P).
+\]
+特别地，若 $\overline{\dim}_B(\partial\mathsf P)=d<1$，则
+\[
+\varepsilon_m(\mathsf P;\mu)\le \lambda_{\mathrm{cyl}}^{-(1-d)m+o(m)}.
+\]
+\end{theorem}
+
+\begin{remark}[黄金均值稳定语法的专门化]\label{rem:spg-golden-mean-specialization}
+当可见符号系统为黄金均值子移位（禁止相邻 $11$）且取其最大熵（Parry）测度时，有 $\lambda_{\mathrm{cyl}}=\varphi$；
+因此定理 \ref{thm:spg-clarity-boundary-dimension} 的指数率由 $(1-d)\log\varphi$ 控制。
+\end{remark}
+
+\begin{remark}[与同步门与空值语义的接口]\label{rem:spg-sync-null-interface}
+上述剖面将“清晰度”定义为在给定 $\mathcal{F}_m$ 信息层上的最优判错概率。
+在 sofic 因子读出下，若长度前缀尚未同步，则同一前缀可能对应多个内部后缀，按“地址先于概念值”的约定可被等价视为时间层统计型 $\mathsf{NULL}$；
+其时间层刻画见备注 \ref{rem:Ym-stat-null-unsync}，同步时间预算与尾界见定理 \ref{thm:Ym-sync-tail}。
+该“同步门”对 Chebotarev 容量条件造成的扣除修正见定理 \ref{thm:pom-sync-subtracted-chebotarev-capacity}。
+\end{remark}
+
+\begin{theorem}[双预算寻址容量：统计型 \texorpdfstring{$\mathsf{NULL}$}{NULL} 与去碰撞的合成清晰度律]\label{thm:spg-double-budget-address-capacity}
+固定分辨率 \(m\) 并考虑“地址先于取值”的语义约定：未同步即无地址（时间层统计型 \(\mathsf{NULL}\)，见备注 \ref{rem:Ym-stat-null-unsync}）。
+令 \(T_m\) 为确定化右解析表示下的同步时间（定义 \ref{def:Ym-sync-time}），并令 \(\nu_m\) 为相应最大熵测度。
+另一方面，令 \(\nu_{u,m}\) 为温度门 \(\mathrm{PROJ}_u\) 在长度-\(m\) 地址空间 \(A_{\mathrm{out}}^m\) 上的推前分布（命题 \ref{prop:pom-proj-mom-psi-law}），并记二阶碰撞概率
+\[
+\mathrm{Col}_u(m):=\sum_{x\in A_{\mathrm{out}}^m}\nu_{u,m}(x)^2
+\]
+（定义 \ref{def:pom-col-u-h2}）。
+\par
+对 \(N\) 个独立对象，采用“时间预算 \(n\)”以消除统计型 \(\mathsf{NULL}\) 并采用“分辨率预算 \(m\)”产生地址；记失败事件 \(\mathsf{Fail}_{m,n,N}\) 为“存在 \(\mathsf{NULL}\) 或存在地址碰撞”。
+则有严格上界
+\begin{equation}\label{eq:spg-double-budget-fail-bound}
+\boxed{\;
+\mathbb{P}(\mathsf{Fail}_{m,n,N})
+\ \le\
+N\,\nu_m(T_m>n)\ +\ \binom{N}{2}\,\mathrm{Col}_u(m)\; }.
+\end{equation}
+\par
+进一步，若 \(Y_m^{\mathrm{amb}}\neq\varnothing\) 且 \(\varepsilon_m=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\)（定理 \ref{thm:Ym-sync-tail}），则存在常数 \(C_m>0\) 使 \(\nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}\)；
+并且由 \(h_2(u):=-\Psi(2,u)\)（定义 \ref{def:pom-col-u-h2}）有
+\(
+\mathrm{Col}_u(m)=\exp(-h_2(u)\,m+o(m))
+\)。
+因此对任意目标失败概率 \(\delta\in(0,1)\)，当 \(n\) 与 \(m\) 满足
+\[
+n\ \ge\ \frac{1}{\varepsilon_m}\Bigl(\log(NC_m)+\log\frac{2}{\delta}\Bigr),
+\qquad
+\binom{N}{2}\,\mathrm{Col}_u(m)\ \le\ \frac{\delta}{2},
+\]
+即可保证 \(\mathbb{P}(\mathsf{Fail}_{m,n,N})\le\delta\)。
+并且在 \(m\to\infty\) 的指数标度下，由 \(\mathrm{Col}_u(m)=\exp(-h_2(u)m+o(m))\) 可知：对充分大的 \(m\)，后一不等式可由显式预算
+\[
+m\ \ge\ \frac{2}{h_2(u)}\Bigl(\log N+\log\frac{2}{\delta}\Bigr)
+\]
+保证（把 \(o(m)\) 吸收进“充分大”的门槛）。
+在指数标度上，上述双预算律等价给出可寻址规模的清晰度上限
+\[
+\log N\ \lesssim\ \min\Bigl\{\varepsilon_m\,n,\ \tfrac12 h_2(u)\,m\Bigr\}.
+\]
+\end{theorem}
+
+\begin{proof}
+对第 \(i\) 个对象记“未同步”事件为 \(\mathsf{Null}_i:=\{T_m^{(i)}>n\}\)，并记“发生碰撞”事件为
+\(
+\mathsf{Col}:=\bigcup_{1\le i<j\le N}\{X_i=X_j\}
+\)，其中 \(X_i\sim\nu_{u,m}\) 独立同分布。
+则
+\(
+\mathsf{Fail}_{m,n,N}\subseteq \bigcup_{i=1}^N \mathsf{Null}_i\ \cup\ \mathsf{Col}
+\)。
+由并合界（union bound）得
+\[
+\mathbb{P}(\mathsf{Fail}_{m,n,N})
+\le
+\sum_{i=1}^N \mathbb{P}(\mathsf{Null}_i)
+\ +\
+\sum_{1\le i<j\le N}\mathbb{P}(X_i=X_j).
+\]
+在独立同分布假设下，\(\mathbb{P}(\mathsf{Null}_i)=\nu_m(T_m>n)\)，且
+\(
+\mathbb{P}(X_i=X_j)=\sum_x\nu_{u,m}(x)^2=\mathrm{Col}_u(m)
+\)，代回即得 \eqref{eq:spg-double-budget-fail-bound}。
+\par
+后续预算条件由 \(\nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}\)（定理 \ref{thm:Ym-sync-tail}）与对碰撞项的显式不等式 \(\binom{N}{2}\mathrm{Col}_u(m)\le \delta/2\) 直接推出；指数标度的 \(\min\{\varepsilon_m n,\tfrac12 h_2(u)m\}\) 由取对数并忽略常数项得到。证毕。
+\end{proof}
+
+\begin{remark}[与折叠可见度的接口]\label{rem:spg-visibility-interface}
+若将信息层从 $\mathcal{F}_m$ 替换为 $\sigma(\Fold_m)$（稳定类型可见域），则同样可定义相应的判错剖面；
+其与 $L^2$ 口径的“折叠可见度” $\mathcal{R}_{m,\mu}(f)$（定义 \ref{def:pom-fold-visibility}）之间存在无参数的二侧估计，见定理 \ref{thm:pom-visibility-to-error-two-sided}。
+\end{remark}

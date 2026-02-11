@@ -47,11 +47,10 @@ class ResultantSummary:
     leading_monomial: str
     leading_coeff: str
     u_adic_valuation: int
-    elapsed_sec: float
 
 
 def _build_F(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
-    # Must match appendix `90_appendix_sync_kernel_weighted.tex` exactly.
+    # Must match appendix `sections/appendix/sync_kernel/weighted/cor__sync-kernel-weighted-unit-root-finite.tex` (app:pressure-analytic).
     return (
         lam**6
         - (1 + u) * lam**5
@@ -108,8 +107,6 @@ def _tex_table(summary: ResultantSummary) -> str:
                  % summary.leading_coeff.replace("_", "\\_"))
     lines.append("$v_u(R_{\\mathrm{raw}})$ & $%d$\\\\"
                  % summary.u_adic_valuation)
-    lines.append("elapsed (sec) & %.3f\\\\"
-                 % summary.elapsed_sec)
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
@@ -122,6 +119,46 @@ def _tex_structure_block(
     u: sp.Symbol,
 ) -> str:
     """Write the auditable structural facts about R(alpha,u) as TeX equations."""
+    def _poly_multiline_tex(P: sp.Poly, var: sp.Symbol, *, max_line_len: int = 110) -> list[str]:
+        """Format a univariate integer polynomial as multiple TeX lines.
+
+        Output lines are meant to be used inside an amsmath aligned environment.
+        """
+        terms = []
+        for (e,), coeff in sorted(P.as_dict().items(), key=lambda kv: -int(kv[0][0])):
+            coeff = sp.Integer(coeff)
+            if coeff == 0:
+                continue
+            if e == 0:
+                terms.append(coeff)
+            else:
+                terms.append(coeff * (var ** int(e)))
+
+        if not terms:
+            return ["0"]
+
+        parts: list[str] = []
+        for idx, t in enumerate(terms):
+            t = sp.expand(t)
+            sign = -1 if t.could_extract_minus_sign() else 1
+            t_abs = -t if sign < 0 else t
+            tex = sp.latex(t_abs)
+            if idx == 0:
+                parts.append(("- " + tex) if sign < 0 else tex)
+            else:
+                parts.append(("- " + tex) if sign < 0 else ("+ " + tex))
+
+        lines_out: list[str] = []
+        cur = parts[0]
+        for p in parts[1:]:
+            if len(cur) + 1 + len(p) > max_line_len:
+                lines_out.append(cur)
+                cur = p
+            else:
+                cur = cur + " " + p
+        lines_out.append(cur)
+        return lines_out
+
     # Work as a polynomial in u with coefficients in Z[alpha].
     Pu = sp.Poly(R_norm.as_expr(), u, domain=sp.ZZ[alpha])
     deg_u = int(Pu.degree())
@@ -169,18 +206,19 @@ def _tex_structure_block(
         "R(\\alpha,u)&=u^{%d}\\,R(1-\\alpha,1/u),\\\\"
         % deg_u
     )
-    lines.append(
-        "r_0(\\alpha)&=%s,\\qquad r_{%d}(\\alpha)=%s,\\\\"
-        % (sp.latex(r0), deg_u, sp.latex(rd))
-    )
-    lines.append(
-        "r_1(\\alpha)&=%s,\\qquad r_{%d}(\\alpha)=%s,\\\\"
-        % (sp.latex(r1), deg_u - 1, sp.latex(rd1))
-    )
-    lines.append(
-        "R\\!\\left(\\tfrac12,u\\right)&=-\\frac{(u-1)^6}{64}\\,Q(u),\\qquad Q(u)=%s."
-        % sp.latex(QZ.as_expr())
-    )
+    lines.append("r_0(\\alpha)&=%s,\\\\" % sp.latex(r0))
+    lines.append("r_{%d}(\\alpha)&=%s,\\\\" % (deg_u, sp.latex(rd)))
+    lines.append("r_1(\\alpha)&=%s,\\\\" % sp.latex(r1))
+    lines.append("r_{%d}(\\alpha)&=%s,\\\\" % (deg_u - 1, sp.latex(rd1)))
+    lines.append("R\\!\\left(\\tfrac12,u\\right)&=-\\frac{(u-1)^6}{64}\\,Q(u),\\\\")
+    q_lines = _poly_multiline_tex(QZ, u, max_line_len=75)
+    if len(q_lines) == 1:
+        lines.append(f"Q(u)&={q_lines[0]}.")
+    else:
+        lines.append(f"Q(u)&={q_lines[0]}\\\\")
+        for ln in q_lines[1:-1]:
+            lines.append(f"&{ln}\\\\")
+        lines.append(f"&{q_lines[-1]}.")
     lines.append("\\end{align}")
     return "\n".join(lines) + "\n"
 
@@ -246,7 +284,6 @@ def main() -> None:
         leading_monomial=leading_monomial,
         leading_coeff=leading_coeff,
         u_adic_valuation=int(v_u),
-        elapsed_sec=time.time() - t0,
     )
 
     jout = Path(args.json_out)

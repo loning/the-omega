@@ -8,6 +8,8 @@
 \geometry{letterpaper, margin=1in}
 
 \usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\DeclareMathOperator{\tr}{tr}
 \usepackage{amscd}
 \makeatletter
 \@ifundefined{FASTBUILD}{%
@@ -18,18 +20,15 @@
 }%
 \makeatother
 
-% In FASTBUILD mode we still want compilation to succeed even if some
-% (pipeline-generated) graphics are missing. Replace missing graphics with a
-% small framed placeholder instead of a hard error.
+% Keep compilation robust even if some (pipeline-generated) graphics are missing.
+% Replace missing graphics with a small framed placeholder instead of a hard error.
 \makeatletter
-\@ifundefined{FASTBUILD}{}{%
-  \let\origincludegraphics\includegraphics
-  \renewcommand{\includegraphics}[2][]{%
-    \IfFileExists{#2}{%
-      \origincludegraphics[#1]{#2}%
-    }{%
-      \fbox{\ttfamily missing graphic: \detokenize{#2}}%
-    }%
+\let\origincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \origincludegraphics[#1]{#2}%
+  }{%
+    \fbox{\ttfamily missing graphic: \detokenize{#2}}%
   }%
 }%
 \makeatother
@@ -40,11 +39,14 @@
 \usepackage{placeins}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{adjustbox}
+\usepackage{etoolbox}
 \usepackage{fvextra}
 \usepackage{verbatim}
 \usepackage{url}
 \usepackage{mathrsfs}
 \usepackage{dsfont}
+\usepackage{subfiles}
 
 % Ask xeCJK to synthesize missing CJK font shapes when needed.
 \makeatletter
@@ -53,23 +55,33 @@
 }%
 \makeatother
 
+% FandolSong has no bold-italic face; substitute with bold-upright to avoid warnings.
+\DeclareFontShape{TU}{FandolSong-Regular(0)}{b}{it}{<->ssub*FandolSong-Regular(0)/b/n}{}
+
 % Allow line breaks in \url/\path at underscores.
 \makeatletter
 \g@addto@macro\UrlBreaks{\do\_}
 \makeatother
 
+% Scale tabular blocks to fit line width (avoid overfull boxes for wide tables).
+% NOTE: Use *Before/After* hooks to wrap the whole environment; using AtBegin/AtEnd
+% would inject code *inside* tabular and can break alignments (including \maketitle).
+\BeforeBeginEnvironment{tabular}{\begin{adjustbox}{max width=\linewidth}}%
+\AfterEndEnvironment{tabular}{\end{adjustbox}}%
+
 % Theorem environments (Chinese)
+\theoremstyle{plain}
 \newtheorem{theorem}{定理}[section]
 \newtheorem{lemma}[theorem]{引理}
 \newtheorem{proposition}[theorem]{命题}
 \newtheorem{corollary}[theorem]{推论}
+\newtheorem{conjecture}[theorem]{猜想}
+\theoremstyle{definition}
 \newtheorem{definition}[theorem]{定义}
-\newtheorem{remark}[theorem]{注}
-\newtheorem{axiom}[theorem]{公理}
-\newtheorem{assumption}[theorem]{假设}
 \newtheorem{example}[theorem]{例}
 \newtheorem{algorithm}[theorem]{算法}
-\newtheorem{conjecture}[theorem]{猜想}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{注}
 
 % Common commands
 \newcommand{\dd}{\mathrm{d}}
@@ -79,11 +91,13 @@
 \newcommand{\ZZ}{\mathbb{Z}}
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\TT}{\mathbb{T}}
+\newcommand{\Sol}{\Sigma_{\mathrm{sol}}}
 \newcommand{\abs}[1]{\left\lvert #1\right\rvert}
 \newcommand{\norm}[1]{\left\lVert #1\right\rVert}
 \newcommand{\ind}{\mathbf{1}}
 \newcommand{\card}[1]{\left\lvert #1\right\rvert}
 \newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\Span}{\mathrm{Span}}
 \newcommand{\Mat}{\mathrm{Mat}}
 
 % Paper-specific
@@ -91,6 +105,12 @@
 
 % Code listings (fvextra / fancyvrb)
 \fvset{breaklines=true,breakanywhere=true,fontsize=\small}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\small}
+
+% Silence underfull box warnings (layout remains visible in PDF).
+\hbadness=10000\relax
+\vbadness=10000\relax
+\hfuzz=60pt\relax
 
 \title{黄金比例驱动的扫描—投影生成：\\\large 由群作用与统计稳定性递归涌现的算术与概念层级}
 \author{马昊伯\\CHRONOAI PTE. LTD.\\\#14-02, Marina Bay Financial Centre Tower 1\\8 Marina Blvd, Singapore 018981}
@@ -98,29 +118,25 @@
 
 \begin{document}
 \sloppy
+\hfuzz=60pt\relax
 \maketitle
+\subfile{sections/frontmatter/main}
 
-\input{sections/00_frontmatter}
+\begingroup
+\tracinglostchars=0\relax
+\makeatletter
+\let\input@path\@empty
+\makeatother
+\tableofcontents
+\endgroup
+\newpage
 
-\input{sections/01_introduction}
-\input{sections/02_principles}
-\input{sections/03_generator}
-\input{sections/04_statistical_stability}
-\input{sections/05_recursive_addressing}
-\input{sections/06_golden_branch_folding}
-\input{sections/07_emergent_arithmetic}
-\input{sections/08_projection_ontology_mathematics}
-\input{sections/08_group_unification}
-\input{sections/09_zeta_finite_part}
-\input{sections/10_high_dimensional_cut_project}
-\input{sections/12_experiments}
-\input{sections/11_conclusion}
+\subfile{sections/body/main}
 
 \FloatBarrier
-\appendix
-\input{sections/90_appendix}
+\subfile{sections/appendix/main}
 
 \FloatBarrier
-\input{sections/99_bibliography}
+\subfile{sections/backmatter/main}
 
 \end{document}

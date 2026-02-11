@@ -23,30 +23,18 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 from common_paths import export_dir, paper_root
-from common_phi_fold import Progress, fold_m
+from common_fold_map_cache import fold_map_packed
+from common_phi_fold import Progress
 
 
 ROOT = paper_root()
 GEN = ROOT / "sections" / "generated"
 
 
-def _int_to_bits(x: int, m: int) -> List[int]:
-    return [(x >> (m - 1 - i)) & 1 for i in range(m)]
-
-
-def build_fold_map(m: int, prog: Progress) -> List[int]:
+def build_fold_map(m: int, prog: Progress) -> object:
     """Map w in [0,2^m) to packed Fold_m(word(w)) in [0,2^m)."""
-    size = 1 << m
-    out = [0] * size
-    for w in range(size):
-        bits = _int_to_bits(w, m)
-        folded = fold_m(bits)
-        y = 0
-        for b in folded:
-            y = (y << 1) | (1 if b else 0)
-        out[w] = y
-        prog.tick(f"build_fold_map m={m} w={w}/{size}")
-    return out
+    # Use the shared cached builder to avoid repeated O(2^m) work across scripts.
+    return fold_map_packed(m, prog=prog)
 
 
 def omega_star(m: int) -> List[int]:
@@ -112,7 +100,7 @@ def main() -> None:
     prog = Progress("fold_gauge_anomaly", every_seconds=20.0)
 
     m_max = 20
-    fold_maps: Dict[int, List[int]] = {}
+    fold_maps: Dict[int, object] = {}
     # Prebuild fold maps for m=2..21 (we need m+1 up to 21; m=1 uses size=4 too).
     for L in range(2, m_max + 2):
         fold_maps[L] = build_fold_map(L, prog)
@@ -131,9 +119,9 @@ def main() -> None:
 
         for w in range(size):
             prefix_m = w >> 1
-            folded_L = fold_map_L[w]
+            folded_L = int(fold_map_L[w])
             rem_m = folded_L >> 1
-            g = (prefix_m ^ rem_m).bit_count()
+            g = int(prefix_m ^ rem_m).bit_count()
             total_g += g
             if g > max_g:
                 max_g = g
@@ -146,9 +134,9 @@ def main() -> None:
         w_star_bits = omega_star(m)
         w_star = pack_bits(w_star_bits)
         prefix_star = w_star >> 1
-        folded_star = fold_map_L[w_star]
+        folded_star = int(fold_map_L[w_star])
         rem_star = folded_star >> 1
-        g_star = (prefix_star ^ rem_star).bit_count()
+        g_star = int(prefix_star ^ rem_star).bit_count()
 
         rows.append(
             Row(
@@ -189,7 +177,6 @@ def main() -> None:
         "rows": [r.__dict__ for r in rows],
         "audit": omega_star_prefixes,
         "generated_at_unix_s": time.time(),
-        "elapsed_s": time.time() - t0,
     }
     export_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     print(f"[fold_gauge_anomaly] wrote {export_path}", flush=True)

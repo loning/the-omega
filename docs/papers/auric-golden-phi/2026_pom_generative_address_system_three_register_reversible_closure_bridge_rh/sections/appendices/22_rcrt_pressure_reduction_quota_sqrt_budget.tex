@@ -1,0 +1,78 @@
+\section{RCRT 空间化与压力削减：residue 细分必然打散碰撞}\label{app:rcrt-pressure-reduction}
+
+本附录给出一组与 prime-register 容量直接相关的、完全初等且具有显式界的不等式：当用 prime-register 的 residue 轴把每条折叠纤维进一步细分为 \(P\) 个桶时，任意 \(q>1\) 的碰撞矩（\(q\)-矩）必然下降，并且下降幅度具有显式上下界。其意义是：同一 prime-register 容量变量不仅承载“无损提升/可逆回放”的残差，也在统计层面提供一条\textbf{可核验的碰撞压力削减律}，从而支撑局域并行读出与核验程序的资源预算。
+
+\subsection{纤维 \texorpdfstring{$q$}{q}-矩与 residue 细分}\label{subsec:rcrt-moment-def}
+固定分辨率 \(m\)。对稳定输出 \(x\in X_m\) 的纤维大小定义
+$$
+d_m(x):=\card{\Fold_m^{-1}(x)}
+$$
+（见正文 \S\ref{sec:ledger}）。
+对整数 \(q>1\)，定义纤维 \(q\)-矩
+$$
+S_q(m):=\sum_{x\in X_m} d_m(x)^q.
+$$
+它是“碰撞/重数”强度的一个可核验标量：\(q\) 越大，对大纤维的惩罚越强。
+
+令 \(P\ge 1\) 表示 prime-register 的一个有限 residue 容量（例如模数乘积或桶数）。
+把每条纤维按 residue 类细分：对每个 \(x\in X_m\)，取非负整数列 \(\{d_{m,i}(x)\}_{i=1}^{P}\) 满足
+$$
+d_m(x)=\sum_{i=1}^{P} d_{m,i}(x).
+$$
+定义细分后的 \(q\)-矩
+$$
+S_q^{(P)}(m):=\sum_{x\in X_m}\sum_{i=1}^{P} d_{m,i}(x)^q.
+$$
+
+\subsection{Jensen/凸性不等式与压力削减带}\label{subsec:rcrt-pressure-law}
+
+\begin{lemma}[细分矩的上下界（Jensen/凸性）]\label{lem:rcrt-jensen}
+对任意 \(q>1\) 与任意非负数列 \((d_i)_{i=1}^{P}\) 满足 \(\sum_{i=1}^{P}d_i=d\)，有
+$$
+\boxed{\;
+P^{1-q}d^q\ \le\ \sum_{i=1}^{P}d_i^q\ \le\ d^q\; }.
+$$
+\end{lemma}
+\begin{proof}
+右端由 \(\sum_i d_i^q\le (\sum_i d_i)^q=d^q\)（\(q>1\) 时 \(t\mapsto t^q\) 超可加）直接得到。
+左端由凸性（Jensen）：
+$$
+\frac{1}{P}\sum_{i=1}^{P} d_i^q\ \ge\ \left(\frac{1}{P}\sum_{i=1}^{P}d_i\right)^{\!q}
+=\left(\frac{d}{P}\right)^{\!q}.
+$$
+两边同乘 \(P\) 即得。证毕。
+\end{proof}
+
+\begin{corollary}[压力削减的显式律]\label{cor:rcrt-pressure-reduction-law}
+在上述设定下，对任意 \(q>1\) 与任意 \(m\) 有
+$$
+\boxed{\;
+P^{1-q}S_q(m)\ \le\ S_q^{(P)}(m)\ \le\ S_q(m)\; }.
+$$
+因此若定义有限尺度压力
+$$
+P_m(q):=\frac{1}{m}\log S_q(m)-q\log 2,\qquad
+P_m^{(P)}(q):=\frac{1}{m}\log S_q^{(P)}(m)-q\log 2,
+$$
+则满足可计算削减带
+$$
+\boxed{\;
+P_m(q)-\frac{q-1}{m}\log P\ \le\ P_m^{(P)}(q)\ \le\ P_m(q)\; }.
+$$
+\end{corollary}
+\begin{proof}
+对每个 \(x\) 应用引理 \ref{lem:rcrt-jensen}，再对 \(x\) 求和得到第一式；其余由取对数并除以 \(m\) 得到。证毕。
+\end{proof}
+
+\begin{remark}[自洽平方根前沿（经验近 Jensen 达界时）]\label{rem:rcrt-self-consistent-sqrt}
+若 residue 桶在统计上近均匀，使得对多数 \(x\) 近似达到 Jensen 下界
+\(
+\sum_{i=1}^{P}d_{m,i}(x)^q\approx P^{1-q}d_m(x)^q
+\)，
+则 \(S_q^{(P)}(m)\approx P^{1-q}S_q(m)\)。
+此时同一 prime-register 容量 \(P\) 可同时承担两类角色：
+\textbf{(i)}~承载残差以实现无损提升（附录 \ref{app:prime-uplift}），
+\textbf{(ii)}~通过 residue 细分把碰撞压力削减约 \((q-1)\log P\) 的指数量级（推论 \ref{cor:rcrt-pressure-reduction-law}）。
+在“既要承载又要打散”的自洽表述下，常出现 \(P\) 的平方根级预算前沿：若承载任务需要 \(P\gtrsim B\)，而打散任务使有效阈值约被除以 \(P\)，则两条约束联立往往要求 \(P^2\gtrsim B\) 量级（作为预算设计的启发式界）。
+\end{remark}
+

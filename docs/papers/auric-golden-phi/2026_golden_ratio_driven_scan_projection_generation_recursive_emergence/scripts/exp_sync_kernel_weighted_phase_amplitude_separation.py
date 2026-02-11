@@ -190,7 +190,6 @@ def main() -> None:
             for r in rows
         ],
         "note": "Small Im(lambda/r) and small rel_err support phase–amplitude separation.",
-        "elapsed_seconds": time.time() - t0,
     }
     jout.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"[phase-amplitude] wrote {jout}", flush=True)

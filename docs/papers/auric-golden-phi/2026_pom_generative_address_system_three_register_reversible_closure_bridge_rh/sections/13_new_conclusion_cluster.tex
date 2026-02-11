@@ -1,0 +1,606 @@
+\section{证书与统一编码层：自描述编码、单码残差与 unitary slice 的可重复核验}\label{sec:conclusion-cluster}
+
+本章在既定的“对象存在 $\Leftrightarrow$ 可寻址 $\Leftrightarrow$ 读出非 $\NULL$”语义与三寄存器闭包（尺度/素数/相位）之上，给出与可核验性直接相关的证书与编码层构造，并统一表述为“有限数据证书 $+$ 确定性验证程序”下的可核验命题族：
+\begin{enumerate}
+  \item \textbf{注入/编码的完全形式化：}给出具体的 $\mathrm{code}/\mathrm{decode}$（配对函数与自描述序列 Gödel 化），并证明其可判定互逆性；由此得到“有限结构 $\Leftrightarrow$ 单一自然数”的严格地址化。
+  \item \textbf{运算族的统一构造：}在同一构造框架下同时覆盖四则、商余、布尔表达式与（在可寻址语义域内的）ZFC 风格集合运算，并证明其在三寄存器闭包内的\textbf{可核验的可逆求值}（残差信息允许回放重构）。
+  \item \textbf{unitary slice 上的数值证书：}给出误差界、舍入模型与 $\NULL$ 判定的可重复性（reproducibility）定义与构造，使“可寻址零点”成为\textbf{可核验的证书对象}；并给出“连续自由度扩张 $\Rightarrow$ 证书类型外延 $\Rightarrow$ 第四寄存器”的形式化定理。
+\end{enumerate}
+
+在上述框架下，本章给出与第四寄存器障碍相关的若干定量结论（紧化坐标与比特下界），并把 unitary slice 上的数值核验表述为可重复的确定性证书验证过程；同时给出局部事件轨迹的 Gödel 编码与运算术语的统一编码表述，使其与“地址—残差—证书”的存在性语义相容。
+
+\subsection{可判定互逆的 Gödel 编码：从有限结构到单一自然数}\label{subsec:cc-godel}
+
+\subsubsection{Cantor 配对函数与其可判定逆}
+\begin{definition}[Cantor 配对函数]\label{def:cc-cantor-pair}
+在 $\NN:=\{0,1,2,\dots\}$ 上定义 Cantor 配对函数
+$$
+\langle a,b\rangle := \frac{(a+b)(a+b+1)}{2}+b,\qquad a,b\in\NN.
+$$
+\end{definition}
+
+\begin{definition}[反配对算子（可判定）]\label{def:cc-cantor-unpair}
+对 $n\in\NN$，令三角数 $T(w):=\frac{w(w+1)}{2}$，并定义
+$$
+w:=\max\{t\in\NN:\ T(t)\le n\},\qquad t:=T(w),
+$$
+$$
+b:=n-t,\qquad a:=w-b.
+$$
+定义 $\mathrm{unpair}:\NN\to\NN^2$ 为 $\mathrm{unpair}(n):=(a,b)$。
+\end{definition}
+
+\begin{theorem}[可判定互逆]\label{thm:cc-cantor-invertible}
+定义 \ref{def:cc-cantor-pair} 与定义 \ref{def:cc-cantor-unpair} 中的 $\langle\cdot,\cdot\rangle$ 与 $\mathrm{unpair}$ 互为双射逆；并且两者均为可判定（仅用有限整数运算与最大三角数搜索）。
+\end{theorem}
+
+\begin{proof}
+对任意 $n$，由 $w$ 的定义可知存在唯一 $w$ 满足 $T(w)\le n<T(w+1)$，从而 $b=n-T(w)$ 与 $a=w-b$ 唯一确定，故 $\mathrm{unpair}(n)$ 唯一。对任意 $a,b$，令 $w=a+b$，则 $T(w)\le \langle a,b\rangle <T(w+1)$ 且 $b=\langle a,b\rangle-T(w)$，从而 $\mathrm{unpair}(\langle a,b\rangle)=(a,b)$；反向同理得 $\langle\mathrm{unpair}(n)\rangle=n$。证毕。
+\end{proof}
+
+\begin{remark}[与本文附录中的替代配对]
+附录 \ref{app:inject-code-audit} 给出了 Cantor 配对的显式反解（用整数平方根与取整实现）；附录 \ref{app:godel-wsos-rouche} 进一步给出了不依赖平方根的偶奇配对 $\langle\cdot,\cdot\rangle_2$（定义 \ref{def:eo-pair}）。这些配对均满足“可判定互逆”，在后续编码层可互换使用；本章为与经典 Gödel 化叙述对齐，优先使用 Cantor 配对记号。
+\end{remark}
+
+\subsubsection{有限序列的自描述编码（无外部长度参数）}
+\begin{definition}[自描述序列编码]\label{def:cc-seq}
+记 $\NN^{<\omega}$ 为有限序列集合。定义
+$$
+\mathrm{Seq}():=0,\qquad
+\mathrm{Seq}(x_1,\dots,x_T):=\big\langle x_1,\mathrm{Seq}(x_2,\dots,x_T)\big\rangle+1.
+$$
+并定义 $\mathrm{Unseq}:\NN\to\NN^{<\omega}$：
+$$
+\mathrm{Unseq}(0):=(),\qquad
+\mathrm{Unseq}(n):=\bigl(x_1,x_2,\dots,x_T\bigr)
+$$
+当且仅当 $\mathrm{unpair}(n-1)=(x_1,r)$ 且 $\mathrm{Unseq}(r)=(x_2,\dots,x_T)$。
+\end{definition}
+
+\begin{theorem}[有限序列的 Gödel 双射]\label{thm:cc-seq-bijection}
+定义 \ref{def:cc-seq} 中的 $\mathrm{Seq}$ 与 $\mathrm{Unseq}$ 为可判定互逆双射：
+$$
+\mathrm{Unseq}(\mathrm{Seq}(s))=s,\qquad \mathrm{Seq}(\mathrm{Unseq}(n))=n.
+$$
+\end{theorem}
+
+\begin{proof}
+对序列长度 $T$ 归纳。$T=0$ 时 $\mathrm{Seq}()=0$ 且 $\mathrm{Unseq}(0)=()$。$T>0$ 时，递归定义与定理 \ref{thm:cc-cantor-invertible} 的双射性保证 $\mathrm{unpair}(n-1)$ 唯一恢复首元 $x_1$ 与余码 $r$，再由归纳假设恢复余序列；互逆性逐层代入即得。证毕。
+\end{proof}
+
+\subsubsection{事件—轨迹—证书的统一编码}\label{subsubsec:cc-event-trace}
+\begin{definition}[事件枚举与轨迹 Gödel 码]\label{def:cc-event-trace-godel}
+设 $\mathcal{E}$ 为任意可数事件类（例如原子重写事件、投影门调用、或证书原子步）。选择一个固定注入
+$$
+\iota_{\mathcal{E}}:\mathcal{E}\hookrightarrow \NN,
+$$
+并对有限事件序列 $e_{1:T}\in\mathcal{E}^{T}$ 定义其 Gödel 码为
+$$
+\mathrm{G}_{\mathcal{E}}(e_{1:T})
+:=\mathrm{Seq}\bigl(\iota_{\mathcal{E}}(e_1),\dots,\iota_{\mathcal{E}}(e_T)\bigr)\in\NN.
+$$
+\end{definition}
+
+\begin{proposition}[事件轨迹的可判定互逆]\label{prop:cc-event-trace-invertible}
+若 $\iota_{\mathcal{E}}$ 在其像上有可判定逆（即给定 $n\in\mathrm{Im}(\iota_{\mathcal{E}})$ 可判定恢复唯一事件），则 $\mathrm{G}_{\mathcal{E}}$ 在 $\mathcal{E}^{<\omega}$ 上可判定互逆：可从 $R=\mathrm{G}_{\mathcal{E}}(e_{1:T})$ 可判定恢复 $e_{1:T}$。
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:cc-seq-bijection} 可判定恢复自然数序列 $(\iota_{\mathcal{E}}(e_1),\dots,\iota_{\mathcal{E}}(e_T))$；再逐项应用 $\iota_{\mathcal{E}}^{-1}$ 得到事件序列。证毕。
+\end{proof}
+
+\begin{remark}[与 prime-register 的 $\mathrm{code}/\mathrm{decode}$ 对接]
+在本文实现中，事件编码常以 $\mathrm{code}/\mathrm{decode}$ 的形式写入 prime-register（附录 \ref{app:inject-code-audit}）；其本质正是对事件序列的可判定注入编码，再配合可判定解码以支持回放。命题 \ref{prop:cc-event-trace-invertible} 给出与“单一自然数残差”兼容的统一表述。
+\end{remark}
+
+\subsection{残差账本的单码压缩：三寄存器内的可逆求值极小化}\label{subsec:cc-singlecode-ledger}
+
+\subsubsection{两种残差表示}
+本论文的素数寄存器纤维 $P$（正文定义 \ref{def:prime-residual}）提供一种稀疏素数向量表示：残差为有限支撑向量 $r:\mathcal{P}\to\NN$。在逻辑层面，该残差也可被压缩为单一自然数：
+\begin{definition}[单码残差]\label{def:cc-singlecode-residual}
+设某一可核验求值过程在输入微态 $\omega$ 上产生输出值 $x$ 与事件序列 $e_{1:T}(\omega)\in\mathcal{E}^{<\omega}$。定义单码残差
+$$
+R(\omega):=\mathrm{G}_{\mathcal{E}}\bigl(e_{1:T}(\omega)\bigr)\in\NN,
+$$
+其中 $\mathrm{G}_{\mathcal{E}}$ 如定义 \ref{def:cc-event-trace-godel}。
+\end{definition}
+
+\subsubsection{“单码残差”保持可逆回放}
+\begin{theorem}[残差账本的单码可逆化]\label{thm:cc-singlecode-replay}
+设既有求值语义满足：存在确定性回放器 $\mathrm{Replay}_0$，使得对任意输入 $\omega$，由输出与显式事件序列可回放恢复输入：
+$$
+\mathrm{Replay}_0\bigl(x(\omega),e_{1:T}(\omega)\bigr)=\omega.
+$$
+若 $\iota_{\mathcal{E}}$ 在其像上可判定反解，则存在可判定回放器 $\mathrm{Replay}$，使得以单码残差替代显式序列仍保持可逆回放：
+$$
+\mathrm{Replay}\bigl(x(\omega),R(\omega)\bigr)=\omega.
+$$
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:cc-event-trace-invertible} 可从 $R(\omega)$ 可判定恢复 $e_{1:T}(\omega)$；再调用既有回放器 $\mathrm{Replay}_0$ 即得 $\omega$。证毕。
+\end{proof}
+
+\begin{corollary}[寄存器配额的结构性极小化]\label{cor:cc-register-min}
+在不改变可逆性的前提下，残差账本可被压缩为单一自然数残差 $R$。因此“残差必须分散在多素数坐标”并非逻辑必需；采用多素数支撑主要是为了便于局域并行与局部化读写（参见附录 \ref{app:prime-uplift} 与附录 \ref{app:bridge-rh-obligations} 的并行词典表述）。
+\end{corollary}
+
+\subsubsection{局域 Gödel 化：一步一素数的轨迹编码}\label{subsubsec:cc-local-godel-prime-step}
+为使“局域重写—残差外置—可逆回放”完全落到可判定对象，可将原子事件轨迹直接 Gödel 化为单一自然数，并使其支持一步一素数的逐步更新。
+
+\begin{definition}[事件编号与一步一素数编码]\label{def:cc-stepwise-prime-godel}
+设 $\Sigma_m$ 为某一固定分辨率 $m$ 下的原子事件字母表（例如 Fold$_m$ 的规则编号与局部位置的有限对）。将每个事件写为
+$$
+e\equiv(\rho,i),\qquad \rho\in\{0,\dots,R_m-1\},\quad i\in\{0,\dots,m-1\},
+$$
+并定义事件编号为 Cantor 配对
+$$
+g(e):=\langle \rho,i\rangle\in\NN.
+$$
+令 $p_0<p_1<p_2<\cdots$ 为素数序列。对有限轨迹 $\tau=(e_0,\dots,e_{T-1})\in\Sigma_m^{T}$ 定义其 Gödel 码为
+$$
+\mathrm{Code}(\tau):=\prod_{t=0}^{T-1}p_t^{\,g(e_t)+1}\in\NN_{\ge 1}.
+$$
+\end{definition}
+
+\begin{theorem}[code/decode 的可判定互逆性与逐步更新]\label{thm:cc-stepwise-prime-godel}
+沿用定义 \ref{def:cc-stepwise-prime-godel}。则：
+\begin{enumerate}
+  \item $\mathrm{Code}:\Sigma_m^\ast\to\NN_{\ge 1}$ 为单射；
+  \item 给定 $N=\mathrm{Code}(\tau)$，可通过依次读取 $v_{p_t}(N)$ 并应用 Cantor 反配对（定义 \ref{def:cc-cantor-unpair}）可判定恢复唯一轨迹 $\tau$；
+  \item 追加一步事件 $e_T$ 的更新仅需一次乘法：
+  $$
+  \mathrm{Code}(e_0,\dots,e_T)=\mathrm{Code}(e_0,\dots,e_{T-1})\cdot p_T^{\,g(e_T)+1},
+  $$
+  因此每一步仅触及一个新素数坐标，满足“局域更新”。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) 若 $\mathrm{Code}(\tau)=\mathrm{Code}(\tau')$，由算术基本定理对每个 $t$ 取 $p_t$-进赋值，得到 $g(e_t)=g(e'_t)$，再由 Cantor 配对的单射性恢复 $e_t=e'_t$，从而轨迹相同。
+(2) 对输入 $N$，依次计算 $v_{p_0}(N),v_{p_1}(N),\dots$，当剥离到剩余为 $1$ 即停机；令 $g_t:=v_{p_t}(N)-1$，再用 $\mathrm{unpair}$（定义 \ref{def:cc-cantor-unpair}）可判定恢复 $(\rho_t,i_t)$，从而恢复 $e_t$。
+(3) 由定义直接计算。证毕。
+\end{proof}
+
+\paragraph{Fold$^m$ 残差回放（规范形式）}
+以 Fold$_m$ 的正规化轨迹为例：对输入微态 $\omega\in\Omega_m$，记其归约到正规形的原子事件轨迹为 $\tau(\omega)$，并定义无损提升映射
+$$
+\widehat{\Fold}_m:\Omega_m\to X_m\times\NN_{\ge 1},\qquad
+\widehat{\Fold}_m(\omega):=\bigl(\Fold_m(\omega),\ \mathrm{Code}(\tau(\omega))\bigr).
+$$
+回放器的输入为 $(x,N)\in X_m\times\NN_{\ge 1}$：先由 (2) 解码 $N$ 得唯一轨迹 $\tau$，再按规则表逐步逆执行轨迹中每个事件的逆事件，得到唯一微态 $\omega$。该回放过程的可判定性完全归约为：有限规则表查表与有限长度轨迹解码。
+
+\begin{remark}[把单码残差嵌入单一素数轴]
+由 prime-register 的值映射 $N:P\to\NN_{\ge 1}$（唯一分解），可将任意 $R\in\NN$ 嵌入为“单质因子”残差：选定素数 $p_\star$，令 $r_\star(p_\star)=R+1$ 且其余坐标为 $0$，则 $N(r_\star)=p_\star^{R+1}$。由 $p_\star$-进赋值可判定恢复 $R$，再由定理 \ref{thm:cc-singlecode-replay} 回放。该嵌入说明：多素数支撑是并行与局域性的代价优化，而非可逆性的逻辑前提。
+\end{remark}
+
+\subsection{（可选）运算族的统一构造：四则、商余、布尔与 HF 集合运算}\label{subsec:cc-unified-ops}
+
+本节将第 \ref{sec:emergent-arithmetic} 节得到的稳定自然数半环 $\NN_{\POM}:=(Z,\oplus,\otimes)$ 作为基底，说明常用运算族可以在“可寻址读出 $+$ 正规化 $+$ 残差回放”的框架下统一实现，并在需要处以 $\NULL$ 显式截断不可预算/不可判定的自由度。为避免主文冗长，完整的可核验定义链、正规化与实现细节置于附录 \ref{app:ops-zfc} 与附录 \ref{app:godel-wsos-rouche}。
+
+\begin{proposition}[整数/有理对象的标准扩展（群完成与局部化）]\label{prop:cc-zq-summary}
+在 $\NN_{\POM}$ 上作 Grothendieck 群完成与局部化，可得对象域 $\ZZ_{\POM}$ 与 $\QQ_{\POM}$，并分别与经典 $(\ZZ,+,\cdot)$ 与 $(\QQ,+,\cdot)$ 同构；在商余读出可判定的前提下，存在可判定的正规化过程（例如以 $\gcd$ 约分并规范分母符号），从而对象层等价类与实现层表示一致。
+\end{proposition}
+
+\begin{proof}
+这是交换半环的标准代数构造；证明与可核验实现路径见附录 \ref{app:ops-zfc}（特别是 \S\ref{subsec:ops-zq}）。
+\end{proof}
+
+\begin{theorem}[全语言可逆求值的统一实现（概要）]\label{thm:cc-unified-reversible-compiler}
+令 $\mathcal{L}_{\mathrm{arith+bool+HF}}$ 为由算术项（$\NN_{\POM},\ZZ_{\POM},\QQ_{\POM}$）、布尔项与遗传有限集合代码域 $\mathrm{HF}_{\POM}$ 上的集合项组成的多排序语言（允许嵌套；$\mathrm{HF}_{\POM}$ 的代码语义见附录 \ref{app:ops-zfc}）。则存在统一构造映射 $\mathcal{C}$，把任意封闭项 $t$ 归约为三寄存器闭包内的可核验求值过程，输出
+$$
+\mathcal{C}(t)\Downarrow \bigl(\mathrm{Val}(t),\,R(t)\bigr),
+$$
+其中 $R(t)\in\NN$ 为单码残差，并存在可判定回放器从 $(\mathrm{Val}(t),R(t))$ 回放恢复求值轨迹与分支选择，从而满足强意义下的“信息不丢失”。
+\end{theorem}
+
+\begin{proof}
+证明为对语法树的结构递归：每个构造子均归约为有限可判定步骤组合；分支与规约路径以事件序列记录并编码为单码残差；回放由解码后的事件序列逐步逆执行。证明携带化的完整表述见附录 \ref{app:godel-wsos-rouche}。
+\end{proof}
+
+\begin{theorem}[ZFC 术语的可判定构造闭包（\texorpdfstring{$\NULL$}{NULL} 截断；概要）]\label{thm:cc-zfc-term-null-closure}
+设 $\mathsf{Term}_{\mathrm{HF}}$ 为在遗传有限集合代码域 $\mathrm{HF}_{\POM}$（附录 \ref{app:ops-zfc}）中生成的集合术语类：其构造仅使用 HF 上的可判定算子（空集、配对、并/交/差、集合并、幂集与有限枚举/有限递归等），并约定任何落在 PW 不可判定片段之外的判定子句一律回落为 $\NULL$。则存在构造映射 $\mathcal{C}:\mathsf{Term}_{\mathrm{HF}}\to \mathrm{PW}_{\mathrm{dec}}$，使得：若术语可证书化定义，则输出非 $\NULL$ 的地址并携带可离线核验的证书材料；否则输出 $\NULL$，且该 $\NULL$ 判定在固定验证规则与参数下可重复。
+\end{theorem}
+
+\begin{proof}
+详见附录 \ref{app:ops-zfc} 与附录 \ref{app:godel-wsos-rouche}：其中把 HF 术语归约为有限结构的可判定编码/解码与证书核验，并以 $\NULL$ 作为证书缺失的逻辑输出。
+\end{proof}
+
+\subsection{unitary slice 核验下的数值证书：误差界、舍入模型与 \texorpdfstring{$\NULL$}{NULL} 可重复性}\label{subsec:cc-us-cert}
+
+\paragraph{谱穿越重写（可控矩阵族设定）}
+在自对偶且矩阵族可核验的可控设定下，完成化截面在临界线可被重写为一个确定性的行列式读出：令 $\theta:=2t\log L$，则
+$$
+\Xi_{\Delta,L}\!\left(\frac12+it\right)=\det\!\bigl(I-U_L(\theta)\bigr),
+\qquad
+U_L(\theta)=L^{-1/2}e^{-i\theta/2}B(e^{i\theta}),
+$$
+从而零点事件等价于 $1\in\mathrm{Spec}(U_L(\theta))$。该重写与其在 unitary slice 上的核验对应关系见附录 \ref{app:inject-code-audit}；本节仅抽取与证书对象化及可重复性直接相关的表述。
+
+\subsubsection{舍入模型与确定性区间算术基底}
+\begin{definition}[dyadic 网格与可重复性]\label{def:cc-repro}
+固定精度参数 $p\in\NN$，定义 dyadic 网格
+$$
+\mathbb{D}_p := \left\{\frac{k}{2^p}:k\in\ZZ\right\}.
+$$
+称一个数值证书验证程序在精度参数 $p$ 下\textbf{可重复}，若证书验证仅依赖有限整数/有理运算与确定性规则，且同一证书在任意平台上验证结果一致。
+\end{definition}
+
+\subsubsection{unitary slice 上的零点/非零证书}
+\begin{definition}[两类区间证书]\label{def:cc-interval-certs}
+设 $F:\RR\to\RR$ 为 unitary slice 上的可核验实值函数。对输入 $(\theta,p)$，区间评估器输出一个包含性区间
+$
+\mathrm{Eval}_p(F;\theta)\rightsquigarrow [L,U]
+$。
+\begin{enumerate}
+  \item \textbf{非零证书（NonZero）：}若 $0\notin[L,U]$，则断言 $F(\theta)\neq 0$。
+  \item \textbf{零点区间证书（RootInterval）：}给定区间 $I=[a,b]\subset\mathbb{D}_p$，若端点区间满足 $U_a<0<L_b$ 或 $U_b<0<L_a$，则断言存在 $\theta^\star\in(a,b)$ 使 $F(\theta^\star)=0$。
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[规范化证书对象（存在零点/输出 \texorpdfstring{$\NULL$}{NULL}）]\label{def:cc-us-protocol-certs}
+为使核验结果完全由证书决定（与实现环境无关），可将“区间证书”进一步规范化为两类可传输对象（记 $\theta=2t\log L$）：
+\begin{enumerate}
+  \item \textbf{存在零点证书}（可选增强）：
+  $$
+  \mathsf{Cert}_\exists=\bigl(L,\ [t_-,t_+],\ p,\ \mathcal{P},\ \mathcal{N}\bigr),
+  $$
+  其中 $L\in\QQ_{>1}$、$[t_-,t_+]\subset\QQ$ 给出候选区间、$p\in\NN$ 为固定精度参数；$\mathcal{P}$ 为对 $\cos,\sin$ 或 $e^{i\theta}$ 的余项上界证书包；$\mathcal{N}$ 为区间 Newton/Krawczyk 型唯一性/收缩证明所需的界（例如对 $\det(I-U_L(\theta))$ 与其导数的区间外包络，或对最小奇异值的区间界）。验证通过时，可输出经验证的根括号（等价地输出收缩后的 $[\theta_-,\theta_+]$ 或 $[t_-,t_+]$）。
+  \item \textbf{$\NULL$ 证书}（覆盖式 NonZero）：
+  $$
+  \mathsf{Cert}_{\NULL}=\bigl(L,\ [t_-,t_+],\ \{[t_j^-,t_j^+]\}_{j=1}^{N},\ p,\ \mathcal{B}\bigr),
+  $$
+  其中 $[t_-,t_+]$ 被有限覆盖
+  $$
+  [t_-,t_+]\subseteq \bigcup_{j=1}^{N}[t_j^-,t_j^+],
+  $$
+  并且 $\mathcal{B}$ 为每个子区间上的 \textbf{NonZero} 证书材料（在 $\theta=2t\log L$ 的映射下验证 $0\notin \mathrm{Eval}_p(\det(I-U_L(\theta));\theta)$）。验证通过时，验证器返回 $\NULL$。
+\end{enumerate}
+上述对象的共同约束是：全部输入/输出均以规范化的有理或 dyadic 数据给出，所有余项界与区间运算规则固定，从而支持完全确定的离线核验。
+\end{definition}
+
+\begin{theorem}[证书可验证正确性]\label{thm:cc-us-cert-sound}
+在外向舍入的区间模型下，定义 \ref{def:cc-interval-certs} 的 NonZero 与 RootInterval 证书均可在有限整数时间内验证，且验证通过蕴含相应数学断言成立。
+\end{theorem}
+
+\begin{proof}
+验证仅需检查有限个区间端点与不等式（例如 $0\notin[L,U]$ 或端点符号严格相反）。区间包络的包含性保证断言成立；RootInterval 由连续性与介值定理给出。证毕。
+\end{proof}
+
+\subsubsection{\texorpdfstring{$\NULL$}{NULL} 判定：证书存在性即为可寻址}
+\begin{definition}[$\Read$ 的证书语义]\label{def:cc-read-null}
+给定候选点 $\theta$ 与精度参数 $p$，定义
+$$
+\Read(F;\theta,p)=
+\begin{cases}
+0\ \text{或}\ 1, & \text{若存在通过验证的证书对象给出相应断言（如“此处非零”或“此区间含零”）},\\
+\NULL, & \text{若不存在任何通过验证的证书对象。}
+\end{cases}
+$$
+其中 $0/1$ 仅表示“断言已被证书化”的两类标签输出，不与数值本身混同。
+\end{definition}
+
+\begin{theorem}[$\NULL$ 的可重复性]\label{thm:cc-null-repro}
+若证书验证算法是纯整数确定性的，则定义 \ref{def:cc-read-null} 的 $\Read$ 输出在同一输入 $(F,\theta,p)$ 下可重复；特别地，$\NULL$ 不是“数值不稳定”的副产品，而是“证书缺失”的逻辑结果。
+\end{theorem}
+
+\begin{proof}
+在固定验证规则与参数、并采用固定外向舍入规则下，证书验证为确定性整数计算；因此“存在通过验证的证书”与否为确定性事实，从而输出可重复。证毕（细节见附录 \ref{app:inject-code-audit} 的定理 \ref{thm:audit-us-reproducibility}）。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\NULL$}{NULL} 判定的可重复性（规范化表述）]\label{thm:cc-null-repro-protocol}
+在定义 \ref{def:cc-us-protocol-certs} 的二元有理区间算术与固定余项上界算法下，$\mathsf{Cert}_\exists$ 与 $\mathsf{Cert}_{\NULL}$ 的验证结果为完全确定的判定过程：对同一证书输入，任意实现（不同硬件/不同语言）给出相同输出；特别地，$\NULL$ 判定是可重复事实。
+\end{theorem}
+
+\begin{proof}
+验证过程仅依赖有限整数/有理运算、确定性的区间外向舍入规则与证书内给定的有限数据；因此其判定结果与实现环境无关。该结论亦可视为定理 \ref{thm:cc-null-repro} 在规范化证书对象表述下的直接推论。证毕。
+\end{proof}
+
+\subsubsection{连续自由度扩张 \texorpdfstring{$\Rightarrow$}{=>} 证书类型外延 \texorpdfstring{$\Rightarrow$}{=>} 第四寄存器}\label{subsubsec:cc-fourth}
+\begin{theorem}[连续自由度扩张的证书外延]\label{thm:cc-fourth-register-certs}
+在 unitary slice 上，连续可见参数为单参 $\theta$。若考虑一般点 $u=re^{i\theta}$，则出现第二连续参量 $\rho:=\log r$。\par
+在仅允许 $\theta$ 作为连续可见参数的证书类型系统中，任何需要显式依赖 $\rho\neq 0$ 的核验断言均无法以现有证书格式表达；要使其可证书化，必须扩展证书类型以承载 $\rho$。在寄存器语义中，该外延等价于引入额外连续寄存器（“第四寄存器”）。
+\end{theorem}
+
+\begin{proof}
+现有证书类型仅携带一维输入 $\theta$ 的编码；若某断言在同一 $\theta$ 下随 $\rho$ 变化而变化，则任何仅以 $\theta$ 编码的证书无法区分不同 $\rho$，从而无法保证可验证正确性。故证书类型必须外延以显式携带 $\rho$；在三寄存器闭包中这等价于额外连续寄存器以承载该自由度。证毕。
+\end{proof}
+
+\subsubsection{双相位紧化与精度势：第四寄存器的定量下界}\label{subsubsec:cc-dual-phase-compactification}
+
+\paragraph{相位紧化算子与径向变量的紧致化承载}
+令紧化坐标为
+$$
+\upsilon(x):=\frac{1}{\pi}\arctan(x)\in\Bigl(-\frac12,\frac12\Bigr),\qquad
+\vartheta(x):=2\arctan(x)\in(-\pi,\pi),
+$$
+并记 Cayley 嵌入
+$$
+\iota(x):=e^{i\vartheta(x)}=\frac{1+ix}{1-ix}\in\TT.
+$$
+则 $\upsilon:\RR\to(-\tfrac12,\tfrac12)$ 为双射，且反变换为
+$$
+\upsilon^{-1}(u)=\tan(\pi u).
+$$
+\par
+对任意 $u\in\CC^\times$ 取极分解
+$$
+u=e^{\varrho+i\theta},\qquad \theta\in\RR\ (\mathrm{mod}\ 2\pi),\qquad \varrho:=\log|u|\in\RR.
+$$
+在 unitary slice 上 $|u|=1$ 等价于 $\varrho=0$。因此离开 unitary slice 的最小连续参数可取为 $\varrho$。将 $\varrho$ 经 $\upsilon$（或等价的 $\vartheta$）紧化后得到第二相位坐标
+$$
+\phi:=\vartheta(\varrho)=2\arctan(\varrho)\in(-\pi,\pi),
+\qquad\text{或等价地}\qquad
+\upsilon(\varrho)\in\Bigl(-\frac12,\frac12\Bigr).
+$$
+故“离线自由度”的最小紧致化承载并非额外的实轴，而可等价实现为第二相位坐标（或等价的紧区间坐标）。
+
+\paragraph{精度势与第四寄存器的比特下界}
+由导数公式
+$$
+\frac{\dd\upsilon}{\dd x}=\frac{1}{\pi(1+x^2)}
+$$
+定义精度势（信息账本项）
+$$
+P(x):=-\log\Bigl|\frac{\dd\upsilon}{\dd x}\Bigr|=\log\pi+\log(1+x^2).
+$$
+
+\begin{theorem}[紧化坐标下的径向证书容量下界]\label{thm:cc-radial-bit-lowerbound}
+设需要以绝对误差不超过 $\epsilon\in(0,1]$ 的方式证书化一个径向参数 $x\in\RR$（例如 $x=\varrho=\log|u|$），且证书仅允许提供紧化值 $\upsilon(x)$ 的二进制近似 $\tilde u$，满足
+$$
+|\tilde u-\upsilon(x)|\le 2^{-n}.
+$$
+则必有
+$$
+n\ \ge\ \log_2\Bigl(\frac{1}{\epsilon}\Bigr)+\log_2(1+x^2)+\log_2(4\pi).
+$$
+\end{theorem}
+
+\begin{proof}
+记 $u_0:=\upsilon(x)$，并令 $\delta:=2^{-n}$。证书给出信息仅能将真实紧化值 $\upsilon(x)$ 限定在区间 $[u_0-\delta,u_0+\delta]$ 内；因此在不引入额外通道的前提下，$x$ 的一切可兼容候选值构成区间
+$$
+I_\delta(x):=\bigl[\upsilon^{-1}(u_0-\delta),\ \upsilon^{-1}(u_0+\delta)\bigr]
+=\bigl[\tan(\pi(u_0-\delta)),\ \tan(\pi(u_0+\delta))\bigr].
+$$
+若要在绝对误差不超过 $\epsilon$ 的意义下证书化 $x$，则必须有 $I_\delta(x)\subseteq[x-\epsilon,x+\epsilon]$；特别地，必须排除端点 $x+\epsilon$ 落入 $I_\delta(x)$ 的可能。由于 $\upsilon$ 单调递增，这要求
+$$
+\delta < \upsilon(x+\epsilon)-\upsilon(x).
+$$
+由 $\upsilon(x)=\pi^{-1}\arctan(x)$ 与介值定理，存在 $\xi\in(x,x+\epsilon)$ 使
+$$
+\upsilon(x+\epsilon)-\upsilon(x)=\frac{1}{\pi}\cdot\frac{\epsilon}{1+\xi^2}.
+$$
+又因 $\epsilon\le 1$，有 $|\xi|\le |x|+1$，从而
+$$
+1+\xi^2\le 1+(|x|+1)^2\le 4(1+x^2).
+$$
+故
+$$
+\upsilon(x+\epsilon)-\upsilon(x)\ge \frac{\epsilon}{4\pi(1+x^2)}.
+$$
+于是 $\delta<\upsilon(x+\epsilon)-\upsilon(x)$ 蕴含
+$$
+2^{-n}=\delta < \frac{\epsilon}{4\pi(1+x^2)}.
+$$
+取对数即得所示下界。证毕。
+\end{proof}
+
+\begin{remark}[对“第四寄存器”的定量化解释]
+定理 \ref{thm:cc-radial-bit-lowerbound} 表明：即便将径向自由度紧化为有界坐标，其可验证表达仍要求额外的、随 $\log(1+x^2)$ 增长的证书位数。故“第四寄存器”不仅是“多一条连续轴”，更体现为既有三寄存器预算无法吸收的精度负载。
+\end{remark}
+
+\begin{definition}[prime-register 预算（比特度量）]\label{def:cc-prime-budget}
+对素数寄存器残差 $r\in P=\NN^{(\mathcal{P})}$，记其值映射为 $N(r)=\prod_{p\in\mathcal{P}}p^{r(p)}$（附录 \ref{app:prime-uplift}）。定义 prime-register 的比特预算为
+$$
+\mathrm{Bud}_P(r):=\log_2 N(r)=\sum_{p\in\mathcal{P}} r(p)\log_2 p.
+$$
+该预算对残差的乘法合成是严格可加的：$N(r+r')=N(r)N(r')$，从而 $\mathrm{Bud}_P(r+r')=\mathrm{Bud}_P(r)+\mathrm{Bud}_P(r')$。
+\end{definition}
+
+\begin{proposition}[注入编码的容量下界]\label{prop:cc-prime-budget-lowerbound}
+设 $E:\{0,1\}^n\hookrightarrow P$ 为任意注入。则必存在某个 $\sigma\in\{0,1\}^n$ 使
+$$
+\mathrm{Bud}_P\bigl(E(\sigma)\bigr)\ge n.
+$$
+\end{proposition}
+
+\begin{proof}
+由算术基本定理，$N:P\hookrightarrow\NN_{\ge 1}$ 为单射。若对所有 $\sigma$ 都有 $\mathrm{Bud}_P(E(\sigma))<n$，则 $N(E(\sigma))<2^n$，从而 $N(E(\{0,1\}^n))\subseteq\{1,2,\dots,2^n-1\}$，其元素个数至多为 $2^n-1$，与 $\card{\{0,1\}^n}=2^n$ 及单射性矛盾。证毕。
+\end{proof}
+
+\begin{corollary}[径向可见性迫使 prime-register 预算下界]\label{cor:cc-radial-prime-budget}
+若径向证书通道由 prime-register 承载，并要求将径向参数 $x\in\RR$（例如 $x=\varrho=\log|u|$）以绝对误差不超过 $\epsilon\in(0,1]$ 的方式证书化，则 prime-register 的最小预算满足
+$$
+\mathrm{Bud}_P(r)\ \ge\ \log_2\Bigl(\frac{1}{\epsilon}\Bigr)+\log_2(1+x^2)-O(1),
+$$
+其中 $O(1)$ 只依赖于所选紧化坐标与编码常数。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:cc-radial-bit-lowerbound}，任何满足误差要求的紧化证书必须包含至少 $n$ 比特信息，其中 $n\ge \log_2(1/\epsilon)+\log_2(1+x^2)+\log_2(4\pi)$。将该 $n$ 比特负载作为一段有限二进制 payload 由 prime-register 残差承载，应用命题 \ref{prop:cc-prime-budget-lowerbound} 得 $\mathrm{Bud}_P(r)\ge n$，从而得到所示下界（把常数项吸收到 $O(1)$ 中）。证毕。
+\end{proof}
+
+\begin{proposition}[折叠纤维账本的残差预算下界]\label{prop:cc-fold-fiber-budget}
+设 $\widehat{\Fold}_m:\Omega_m\hookrightarrow X_m\times P$ 为任一无损提升（命题 \ref{prop:lossless-uplift}）。对任意 $x\in X_m$，记折叠纤维大小 $d_m(x)=\card{\Fold_m^{-1}(x)}$（第 \ref{sec:ledger} 节）。则有
+$$
+\max_{\omega\in\Fold_m^{-1}(x)}\ \mathrm{Bud}_P\!\bigl(r(\omega)\bigr)\ \ge\ \log_2 d_m(x),
+$$
+其中 $r(\omega)$ 表示提升输出的 prime-register 残差分量。
+\end{proposition}
+
+\begin{proof}
+固定 $x$。提升的单射性意味着映射 $\omega\mapsto r(\omega)$ 在纤维 $\Fold_m^{-1}(x)$ 上仍为单射，故 $\{r(\omega):\omega\in\Fold_m^{-1}(x)\}$ 至少含 $d_m(x)$ 个不同元素。由 $N:P\hookrightarrow\NN_{\ge 1}$ 的单射性，集合 $\{N(r(\omega))\}$ 亦含 $d_m(x)$ 个不同正整数，因此其最大值至少为 $d_m(x)$，从而存在某个 $\omega$ 使 $N(r(\omega))\ge d_m(x)$，即 $\mathrm{Bud}_P(r(\omega))\ge \log_2 d_m(x)$。证毕。
+\end{proof}
+
+\begin{remark}[三账本下界的组合读法]\label{rem:cc-three-ledger}
+命题 \ref{prop:cc-fold-fiber-budget} 给出折叠纤维压缩的最低残差预算，推论 \ref{cor:cc-radial-prime-budget} 给出径向精度通道的最低残差预算。二者共同刻画：在“可回放可逆 + 可重复核验”的约束下，若试图同时扩大可见参数维数并保持折叠可逆化，则 prime-register 的预算必须同时覆盖纤维账本与精度账本的下界；任何绕开该下界的实现都将表现为 $\NULL$ 发生率上升或证书不可复现。
+\end{remark}
+
+\begin{proposition}[自对偶完成化下的 \texorpdfstring{$(w,s)$}{(w,s)} 不变量表达]\label{prop:cc-self-dual-ws-invariants}
+设 $\Delta(z,u)\in\ZZ[z,u]$ 满足自对偶恒等式 $\Delta(z,u)=\Delta(uz,1/u)$。引入形式变量 $r$ 并置 $u=r^2$，再令
+$$
+w:=zr,\qquad s:=r+r^{-1}.
+$$
+则存在多项式 $\widehat\Delta(w,s)\in\ZZ[w,s]$ 使得在 $\ZZ[w,r,r^{-1}]$ 中成立
+$$
+\Delta(w/r,r^2)=\widehat\Delta(w,s).
+$$
+\end{proposition}
+
+\begin{proof}
+令 $F(w,r):=\Delta(w/r,r^2)$。由于 $\Delta$ 为 $z,u$ 的整系数多项式，$F$ 为 $r$ 的 Laurent 多项式，且系数在 $\ZZ[w]$ 中。由自对偶性，
+$$
+F(w,1/r)=\Delta(wr,1/r^2)=\Delta(w/r,r^2)=F(w,r),
+$$
+故 $F$ 在 involution $r\mapsto 1/r$ 下不变。对 Laurent 环 $\ZZ[w,r,r^{-1}]$，其不变子环由 $s=r+r^{-1}$ 生成，即
+$$
+\ZZ[w,r,r^{-1}]^{\langle r\mapsto 1/r\rangle}=\ZZ[w,s].
+$$
+因此存在 $\widehat\Delta(w,s)\in\ZZ[w,s]$ 使 $F(w,r)=\widehat\Delta(w,r+r^{-1})$，即得结论。
+\end{proof}
+
+\begin{assumption}[径向偶次耦合（规范形假设）]\label{ass:cc-even-radial-coupling}
+在分块规范形设定下，$\Delta(z,u)$ 关于 $(1-u)$ 仅以偶次出现，即
+$$
+\Delta(z,u)\in \ZZ[z]\bigl[(1+u),(1-u)^2\bigr].
+$$
+\end{assumption}
+
+\begin{theorem}[径向不可消去与 \texorpdfstring{$\NULL$}{NULL} 退化]\label{thm:cc-radial-null}
+在仅允许 unitary slice 单参 $\theta$ 作为连续可见输入的证书类型系统中，任何对 $\varrho=\log|u|$ 的非平凡依赖均必须通过额外证书通道显式呈现；否则在可重复核验意义下，该事件不可证书化并被读出为 $\NULL$。此外，若以紧化坐标 $\upsilon(\varrho)$ 的 $n$ 比特近似承载该额外通道，则为证书化 $|\varrho|$ 的绝对误差不超过 $\epsilon$，其 $n$ 必满足定理 \ref{thm:cc-radial-bit-lowerbound} 的下界（取 $x=\varrho$）。
+\end{theorem}
+
+\begin{proof}
+第一部分为定理 \ref{thm:cc-fourth-register-certs} 的直接推论：若断言在同一 $\theta$ 下随 $\varrho$ 变化，则仅以 $\theta$ 编码的证书无法区分不同 $\varrho$，从而无法保证可验证正确性；按定义 \ref{def:cc-read-null} 该情形等价于证书缺失并读出为 $\NULL$。第二部分由定理 \ref{thm:cc-radial-bit-lowerbound} 取 $x=\varrho$ 立得。
+\end{proof}
+
+\subsection{BridgeRH 的可验证条件与 unitary-root 判据：可控模型的最小示例}\label{subsec:cc-bridge}
+
+\subsubsection{BridgeRH 条件清单（可验证表述）}\label{subsubsec:cc-bridge-obligations}
+给定桥接对象 $\Delta(z,u)$ 与完成化切片 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$，将 BridgeRH 组织为以下可验证条件（每一项均应给出可判定证书对象；与正文假设 \ref{ass:bridge-rh} 的 (B1)--(B4) 表述一致，细化清单见附录 \ref{app:bridge-rh-obligations}）：\par
+\noindent\textbf{(O1) 解析条件：} $\Xi_{\Delta,L}$ 在目标域内解析（可控模型可用多项式/有理函数/有限维行列式直接保证）。\par
+\noindent\textbf{(O2) 自对偶条件：} $\Delta$ 满足 $\Delta(z,u)=\Delta(uz,1/u)$（或等价的可检查代数恒等式），从而 $\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s)$（参见附录 \ref{app:xi-certificate-layer} 的命题 \ref{prop:xi-functional-equation-self-dual}）。\par
+\noindent\textbf{(O3) unitary slice 实值条件：} 对 $s=\frac12+it$，$\Xi_{\Delta,L}(s)\in\RR$，使第 \ref{subsec:cc-us-cert} 节的区间证书验证程序适用。\par
+\noindent\textbf{(O4) 地址化条件：} 存在可判定构造映射把候选零点索引/描述映射到证书搜索任务，使“零点存在/非零”可被证书对象化。\par
+\noindent\textbf{(O5) 一致性条件：} 证书对象可被 Gödel 编码并在可判定片段内核验（见附录 \ref{app:godel-wsos-rouche} 的统一编码层）。
+
+\subsubsection{最小可验证条件集 \texorpdfstring{$\mathsf{Obl}_{\min}$}{Obl\_min}}\label{subsubsec:cc-oblmin}
+为将 BridgeRH 的“内核可核验”与“目标对齐”边界进一步显式化，可引入一个更偏形式化的最小条件集。
+
+\begin{definition}[最小可验证条件集 \texorpdfstring{$\mathsf{Obl}_{\min}$}{Obl\_min}]\label{def:cc-oblmin}
+定义 $\mathsf{Obl}_{\min}$ 为以下五项条件：
+\begin{enumerate}
+  \item \textbf{状态级自对偶：}存在置换矩阵 $\Pi$ 使
+  $$
+  \Pi^{-1}B(u)\Pi=uB(1/u),
+  $$
+  从而 $\Delta(z,u)=\det(I-zB(u))$ 满足 $\Delta(z,u)=\Delta(uz,1/u)$；
+  \item \textbf{完成化不变量可计算：}自对偶完成化可被组织为不变量表达（例如 \(\Delta(w/r,r^2)=\widehat\Delta(w,r+r^{-1})\)，命题 \ref{prop:cc-self-dual-ws-invariants}），使变量替换与一致性检查可核验；
+  \item \textbf{unitary slice 归约与实值化：}对任意 $L>1$，临界线值可严格写为 $\det(I-U_L(\theta))$，并且在固定验证规则下具有 Hardy 型实值化，使区间证书可用（见附录 \ref{app:inject-code-audit} 与 \S\ref{subsec:cc-us-cert}）；
+  \item \textbf{证书验证程序封闭：}存在可重复的证书对象格式（如定义 \ref{def:cc-us-protocol-certs} 的 $\mathsf{Cert}_\exists/\mathsf{Cert}_{\NULL}$），使“零点事件/证书缺失（$\NULL$）”成为离线可核验对象；
+  \item \textbf{可寻址注入（目标侧）：}给定目标零点事件类 $\mathcal{Z}_{\mathrm{target}}$，存在构造映射将每个事件注入 PW 地址空间并通过 unitary slice 的核验机制核验（对应 BridgeRH 的“零点可寻址桥接”条件）。
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[条件最小化的充分性]\label{thm:cc-oblmin-sufficient}
+在 $\mathsf{Obl}_{\min}$ 成立时，任何被注入并通过核验的“目标零点事件”在类型意义上自动满足 unitary slice 约束（\(\abs{u_L(s)}=1\)），因而在本文类型安全语义中被锁定在临界线。若进一步满足“目标侧注入完备性”（即对所有目标零点事件均存在可寻址地址并可核验通过），则得到与 BridgeRH 同型的条件性结论链：目标侧的偏移零点事件不可能在三寄存器闭包内被证书化。
+\end{theorem}
+
+\begin{proof}
+由 $\mathsf{Obl}_{\min}$-(3)(4)，核验路径被强类型化为 unitary slice 的核验机制并输出可核验证书；故一切通过核验的事件都落在 $\Re(s)=\tfrac12$ 的类型域内，与正文类型安全拒绝链一致。若目标侧注入完备性成立，则任何偏移零点事件都会要求一个通过核验的证书对象，但这与“偏移依赖需外延证书类型（定理 \ref{thm:cc-fourth-register-certs}）”矛盾，从而偏移事件在闭包内不可证书化。证毕。
+\end{proof}
+
+\subsubsection{最小可控模型：$2\times 2$ 自对偶桥接核}\label{subsubsec:cc-bridge-minimal}
+\begin{proposition}[最小可控自对偶模型]\label{prop:cc-bridge-2x2}
+取整数 $a,b\in\ZZ$，令
+$$
+B_0:=\begin{pmatrix} a & -b\\ -b & a\end{pmatrix},\qquad
+\Pi:=\begin{pmatrix} 1 & 0\\ 0 & -1\end{pmatrix},\qquad
+B_1:=\Pi^{-1}B_0\Pi=\begin{pmatrix} a & b\\ b & a\end{pmatrix},
+$$
+并定义矩阵族 $B(u):=B_0+uB_1$，以及二变量行列式对象
+$$
+\Delta(z,u):=\det(I-zB(u)).
+$$
+则：\textbf{(i)} $\Delta$ 满足自对偶恒等式 $\Delta(z,u)=\Delta(uz,1/u)$；\textbf{(ii)} 对任意 $L>1$，完成化切片 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$ 解析且满足函数方程 $\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s)$；\textbf{(iii)} 当 $s=\frac12+it$ 时 $\Xi_{\Delta,L}(s)\in\RR$。
+\end{proposition}
+
+\begin{proof}
+\textbf{(i)} 由 $B_1=\Pi^{-1}B_0\Pi$ 得
+$
+\Pi^{-1}B(u)\Pi=B_1+uB_0=u\bigl(B_0+(1/u)B_1\bigr)=uB(1/u)
+$，
+从而
+$
+\Delta(z,u)=\det(I-zB(u))=\det(I-uzB(1/u))=\Delta(uz,1/u)
+$。\par
+\textbf{(ii)} 由 (i) 与附录 \ref{app:xi-certificate-layer} 的命题 \ref{prop:xi-functional-equation-self-dual} 得函数方程；有限维行列式给出解析性。\par
+\textbf{(iii)} 令 $s=\frac12+it$，写 $\theta:=2t\log L$，则 $u=L^{2s-1}=e^{i\theta}$ 且 $z=L^{-s}=L^{-1/2}e^{-i\theta/2}$。直接计算
+$$
+B(e^{i\theta})=\begin{pmatrix} a(1+e^{i\theta}) & b(e^{i\theta}-1)\\ b(e^{i\theta}-1) & a(1+e^{i\theta})\end{pmatrix},
+$$
+从而
+$$
+z\,a(1+e^{i\theta})=2aL^{-1/2}\cos(\theta/2)\in\RR,\qquad
+z\,b(e^{i\theta}-1)=2ibL^{-1/2}\sin(\theta/2),
+$$
+其平方为实数。由于 $2\times 2$ 行列式仅含对角项与非对角项平方，故 $\Xi_{\Delta,L}(\frac12+it)=\Delta(z,u)\in\RR$。证毕。
+\end{proof}
+
+\begin{proposition}[维数 \texorpdfstring{$2$}{2} 的置换自对偶模型（交换矩阵示例）]\label{prop:cc-bridge-2x2-swap}
+取置换矩阵
+$$
+\Pi_{\mathrm{swap}}:=\begin{pmatrix}0&1\\1&0\end{pmatrix},
+$$
+给定任意整矩阵
+$$
+B_0:=\begin{pmatrix}a&b\\c&d\end{pmatrix}\in \Mat_{2}(\ZZ),
+$$
+并令
+$$
+B_1:=\Pi_{\mathrm{swap}}^{-1}B_0\Pi_{\mathrm{swap}}
+=\begin{pmatrix}d&c\\b&a\end{pmatrix},
+\qquad
+B(u):=B_0+uB_1.
+$$
+定义 $\Delta(z,u):=\det(I-zB(u))$。则 $\Delta$ 满足自对偶恒等式 $\Delta(z,u)=\Delta(uz,1/u)$。
+\end{proposition}
+
+\begin{proof}
+由 $B_1=\Pi_{\mathrm{swap}}^{-1}B_0\Pi_{\mathrm{swap}}$ 得
+$$
+\Pi_{\mathrm{swap}}^{-1}B(u)\Pi_{\mathrm{swap}}
+=B_1+uB_0
+=u\bigl(B_0+(1/u)B_1\bigr)
+=uB(1/u).
+$$
+从而
+$$
+\Delta(z,u)
+=\det(I-zB(u))
+=\det(I-uzB(1/u))
+=\Delta(uz,1/u).
+$$
+证毕。
+\end{proof}
+
+\subsubsection{unitary-root 判据（RH 充分条件模板）}\label{subsubsec:cc-unitary-root}
+\begin{theorem}[unitary-root 判据]\label{thm:cc-unitary-root}
+设存在实系数多项式 $P\in\RR[X]$ 使得对某一完成化对象的零点满足
+$$
+\Xi(s)=0\quad\Longleftrightarrow\quad P\bigl(t(u_L(s))\bigr)=0,
+\qquad t(u):=u^{1/2}+u^{-1/2},
+$$
+并且 $P$ 的全部实根属于区间 $[-2,2]$。则所有零点满足 $\abs{u_L(s)}=1$，等价地 $\Re(s)=\tfrac12$。
+\end{theorem}
+
+\begin{proof}
+若 $\Xi(s)=0$，则 $t(u_L(s))$ 为 $P$ 的实根，故 $t(u_L(s))\in[-2,2]$。令 $w=u_L(s)^{1/2}$，则 $t(u_L(s))=w+w^{-1}$。由
+$$
+\abs{w}=1\ \Longleftrightarrow\ w+w^{-1}\in[-2,2]
+$$
+（见附录 \ref{app:xi-certificate-layer} 的命题 \ref{prop:unit-circle-root-iff-interval-root}），得 $\abs{w}=1$，从而 $\abs{u_L(s)}=\abs{w}^2=1$。而 $u_L(s)=L^{2s-1}$ 满足 $\abs{u_L(s)}=L^{2\Re(s)-1}$，故 $\abs{u_L(s)}=1\Longleftrightarrow \Re(s)=\tfrac12$。证毕。
+\end{proof}
+
+本章给出的统一编码与证书对象格式，为后续关于 BridgeRH 条件的逐项核验、以及第四寄存器障碍的形式化表述提供共同的“有限数据 $+$ 可复算验证器”基底；讨论部分将据此明确主张边界、可证伪点与复现条件。
+

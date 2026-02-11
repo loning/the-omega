@@ -1,0 +1,69 @@
+\section{完备性与桥接假设：从内部 \texorpdfstring{$\Xi$}{Xi}-RH 到经典 RH}\label{sec:bridge-rh}
+
+\subsection{地址完备性假设与内部 \texorpdfstring{$\Xi$}{Xi}-RH}
+\begin{assumption}[$\Xi$-切片的地址完备性]\label{ass:xi-address-completeness}
+对固定 $L>1$，$\Xi_{\Delta,L}$ 的每一个零点 $s\in\CC$ 在本文 PW 闭包下均可寻址且可核对；等价地，不存在零点在该闭包下读出为 $\NULL$。
+\end{assumption}
+
+\begin{corollary}[地址完备性推出内部 $\Xi$-RH]\label{cor:xi-rh}
+在假设 \ref{ass:xi-address-completeness} 下，$\Xi_{\Delta,L}$ 的全部零点满足 $\Re(s)=\tfrac12$。
+\par\noindent\textnormal{\textbf{依赖：}假设 \ref{ass:xi-address-completeness}，定理 \ref{thm:type-safety-offcritical}。}
+\end{corollary}
+
+\begin{proof}
+由假设 \ref{ass:xi-address-completeness}，任意零点均可寻址；由定理 \ref{thm:type-safety-offcritical}，任意可寻址零点必满足 $\Re(s)=\tfrac12$。
+\end{proof}
+
+\subsection{BridgeRH：经典零点可寻址桥接条件}
+令经典完成化函数
+$$
+\Xi_\zeta(s):=\tfrac12 s(s-1)\pi^{-s/2}\Gamma\!\left(\tfrac{s}{2}\right)\zeta(s),
+$$
+其零点集（含重数）对应黎曼 $\zeta$ 的非平凡零点。经典 RH 可表述为：若 $\Xi_\zeta(s_0)=0$ 且 $0<\Re(s_0)<1$，则 $\Re(s_0)=\tfrac12$。
+
+\begin{assumption}[BridgeRH：经典零点的可寻址桥接条件（义务清单）]\label{ass:bridge-rh}
+存在由 SPG/PW 管线诱导的核族与二变量行列式对象 $\Delta(z,u)$（有限维行列式或 Fredholm 行列式情形均可），并存在 $L>1$，使得经典完成化零点事件可被组织为本文可核验对象域中的“地址化读出”。更精确地，以下四类义务均应在固定验证规则下以\textnormal{\textbf{有限证书对象}}核验：通过时输出可离线复算的证书包；失败时输出可核验的\textnormal{\textbf{局部失败见证}}（指出违例发生在何处）。其细化词典、证书格式与可控示例见附录 \ref{app:bridge-rh-obligations}。
+\begin{enumerate}[label=(B\arabic*), ref=B\arabic*]
+  \item \label{bridge:b1}
+  \textnormal{\textbf{目标对齐（object alignment）：}}给出一条可核验的验证路径与匹配准则，使完成化切片 $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$ 在该路径上与经典 $\Xi_\zeta(s)$ 在所需意义下相容（例如同零点集/同重数），并可由解析刚性提升到目标域；轨道侧 trace/primitive/Euler 的严格交换桥包与自对偶完成化条件作为该对齐的可核验输入。
+
+  \item \label{bridge:b2}
+  \textnormal{\textbf{事件注入与可寻址读出（addressable injection）：}}对任意满足 $\Xi_\zeta(s_0)=0$ 且 $0<\Re(s_0)<1$ 的零点事件（作为外部可核对输入），存在投影词地址 $W(s_0)\in\mathrm{PW}$，使其在可核验片段内规约到规范形并产生非 $\NULL$ 的读出；该读出须在 (\ref{bridge:b1}) 的识别准则下可核验地判定 $\Xi_{\Delta,L}(s_0)=0$。失败见证的基本形式是：给出某个 $s_0$ 使得任意候选地址均只能输出 $\NULL$ 或无法通过核验。
+
+  \item \label{bridge:b3}
+  \textnormal{\textbf{协议锁定（unitary slice lock）：}}任意零点事件的核验必须经由 unitary slice 的类型化核验接口（定义 \ref{def:unitary-slice-audit-axis} 与定义 \ref{def:us-typed-address-null}），从而零点地址参数满足 $\abs{u_L(s_0)}=1$。失败见证的基本形式是：核验不可避免地依赖径向自由度（需要额外证书类型/寄存器），从而在三寄存器闭包内退化为 $\NULL$。
+
+  \item \label{bridge:b4}
+  \textnormal{\textbf{规格与回归（specification \& regression）：}}桥接对象满足可核验的规格条件，以支持“零点与重数”的可核验回归机制（例如闭层全纯性、整数重数/留数证书 NonCancel、以及 Abel-first/有限部相容性等）；任一规格违例应输出可核验的反例证书，以终止相应的桥接推论链条。
+\end{enumerate}
+\end{assumption}
+
+\begin{definition}[BridgeRH 的可证伪规格：失败见证接口（schema）]\label{def:bridge-failure-witness}
+BridgeRH 作为外部输入规格，其每一分项义务均必须具备“可否证”的失败见证格式：对每个 (B$i$)（$i=1,2,3,4$），存在一族有限对象 $\mathsf{Wit}_{B i}$ 与确定性检查器 $\mathsf{Verify}_{B i}^{\mathrm{fail}}$，使得对任意见证 $w\in\mathsf{Wit}_{B i}$，
+$$
+\mathsf{Verify}_{B i}^{\mathrm{fail}}(w)=1\ \Longrightarrow\ \text{(B$i$) 不成立},
+$$
+并且该判定可在有限步内复核。\par
+在本文语境下，典型的失败见证分别对应：\textbf{(B1)} 给出对齐路径上的不相容证书（例如零点集/重数回归的反例）；\textbf{(B2)} 给出某个经典零点事件 $s_0$ 使任意候选地址均只能产生 $\NULL$ 或无法通过核验；\textbf{(B3)} 给出核验不可避免地依赖径向自由度（需要额外证书类型/第四纤维）的可核验说明；\textbf{(B4)} 给出规格违例的反例证书以终止相应归约链。
+\end{definition}
+
+BridgeRH 的分项条件清单、核验词典与最小可控示例见附录 \ref{app:bridge-rh-obligations}；与其直接相关的统一编码与证书对象格式见第 \ref{sec:conclusion-cluster} 节及附录 \ref{app:inject-code-audit}。
+
+\begin{remark}[BridgeRH 的逻辑地位与条件强度]\label{rem:bridge-rh-strength}
+假设 \ref{ass:bridge-rh} 的作用是将经典侧困难集中为一组可逐项核验的充分条件：\textbf{(B1)} 给出经典目标对齐所需的验证路径与解析刚性提升（使 $\Xi_{\Delta,L}$ 与 $\Xi_\zeta$ 在所需意义下同零点集/同重数）；\textbf{(B2)} 将每个经典零点事件注入 PW 闭包并输出非空值读出；\textbf{(B3)} 把该核验协议锁定到 unitary slice 的可见参数轴与类型化地址域（定义 \ref{def:unitary-slice-audit-axis} 与定义 \ref{def:us-typed-address-null}），从而使类型安全定理 \ref{thm:type-safety-offcritical} 可对目标侧零点集合施加临界线约束。\par
+因此，定理 \ref{thm:bridge-rh-implies-rh} 是“目标侧注入 $+$ 协议锁定”的条件推论：本文并不在主文层面构造或证明 (B1)--(B4) 的可实现性，而是给出其一旦成立即可推出经典 RH 的形式化依赖链；任一分项条件的可核验违例都会终止相应桥接推论链。
+\end{remark}
+
+\begin{theorem}[BridgeRH 推出经典 RH]\label{thm:bridge-rh-implies-rh}
+若假设 \ref{ass:bridge-rh} 成立，则经典 RH 成立：任意满足 $\Xi_\zeta(s_0)=0$ 且 $0<\Re(s_0)<1$ 的零点均满足 $\Re(s_0)=\tfrac12$。
+\par\noindent\textnormal{\textbf{依赖：}假设 \ref{ass:bridge-rh}（尤其 \ref{bridge:b2},\ref{bridge:b3}），定理 \ref{thm:type-safety-offcritical}，命题 \ref{prop:critical-line-unitary-slice}，以及 unitary slice 类型化地址域/未定义语义（定义 \ref{def:unitary-slice-audit-axis}--\ref{def:us-typed-address-null}）。}
+\end{theorem}
+
+\begin{proof}
+设存在 $s_0$ 满足 $\Xi_\zeta(s_0)=0$、$0<\Re(s_0)<1$ 且 $\Re(s_0)\neq \tfrac12$。由 (\ref{bridge:b2})，该零点事件在 PW 内存在可寻址地址并产生非 $\NULL$ 的可核对读出。由 (\ref{bridge:b3})，核验必须经由 unitary slice，因而零点地址参数需满足 $\abs{u_L(s_0)}=1$。另一方面，因 $u_L(s)=L^{2s-1}$，$\Re(s_0)\neq\tfrac12$ 蕴含 $\abs{u_L(s_0)}\neq 1$，与类型锁定矛盾；亦可表述为：由定理 \ref{thm:type-safety-offcritical} 与定义 \ref{def:us-typed-address-null}，当 $\Re(s_0)\neq\tfrac12$ 时不存在通过核验的零点证书将“$\Xi_{\Delta,L}(s_0)=0$”对象化为非空值读出，因而读出为 $\NULL$，这与 (\ref{bridge:b2}) 的非 $\NULL$ 读出矛盾。故不存在此类 $s_0$，从而经典 RH 成立。
+\end{proof}
+
+\begin{remark}[关于经典侧等价判据]
+本节的核心结论是：在 BridgeRH 的可寻址/可核验桥接条件成立时，经典零点事件一旦进入 unitary slice 核验机制，即被类型锁定为 $\abs{u_L(s)}=1$，从而推出 $\Re(s)=\tfrac12$。经典 RH 的若干等价表述（例如圆盘内全纯性、零点禁入或边界平均形式）可作为 (B1) 的候选验证路径；其具体形式不影响本节的形式推导。
+\end{remark}
+

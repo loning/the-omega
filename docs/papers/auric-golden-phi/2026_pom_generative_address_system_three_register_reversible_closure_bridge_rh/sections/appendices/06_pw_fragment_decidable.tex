@@ -1,0 +1,78 @@
+\section{投影词片段的正规化与判等}\label{app:pw-fragment}
+
+\subsection{最小可判定片段 \texorpdfstring{$\mathrm{PW}_{Z,E}$}{PW\_{Z,E}} 的语法}
+取仅由“规范投影门” $P_Z$ 与条件期望门 $\{E_m\}_{m\ge 1}$ 生成的局部子片段
+$$
+\mathrm{PW}_{Z,E}=\langle P_Z,\{E_m\}_{m\ge 1}\rangle.
+$$
+其 1-态射为有限复合词（投影词）
+$$
+W ::= \epsilon \mid P_Z \mid E_m \mid W\circ W.
+$$
+
+\subsection{重写规则族与正规形}
+在 $\mathrm{PW}_{Z,E}$ 上定义重写规则：
+\begin{itemize}
+  \item[(RZ)] 幂等缩并：$P_Z\circ P_Z \Rightarrow P_Z$；
+  \item[(RE)] 条件期望塔缩并：若 $m_2\ge m_1$，则
+  $$
+  E_{m_1}\circ E_{m_2}\Rightarrow E_{m_1}.
+  $$
+\end{itemize}
+在该重写系统下：
+\begin{enumerate}
+  \item 不存在无限重写链（终止性）；
+  \item 任意两条重写序列可汇合（局部合流）；
+  \item 不可约正规形唯一：仅含 $\{E_m\}$ 的复合词归约为单个 $E_{m_\star}$，其中 $m_\star$ 为出现过的最小分辨率指标；含 $P_Z$ 的情形正规形中 $P_Z$ 至多出现一次。
+\end{enumerate}
+终止性可用简单字典序度量实现：令
+$$
+\mu(W)=\bigl(\#P_Z(W)+\#E(W),\ \min\{m:E_m\text{ 出现在 }W\}\bigr),
+$$
+验证规则 (RZ),(RE) 均严格减少第一坐标；而塔性质保证不同缩并顺序语义一致，结合终止性导出正规形唯一。
+
+\subsection{词问题判定与检查器实现}
+\begin{theorem}[词问题可判定]\label{thm:pw-ze-decidable}
+在片段 $\mathrm{PW}_{Z,E}$ 上，等价关系（由 2-态射的可重写等式闭包定义）可判定。给定 $W_1,W_2$，计算其正规形 $N(W_1),N(W_2)$，则
+$$
+W_1\simeq W_2 \Longleftrightarrow N(W_1)=N(W_2).
+$$
+\end{theorem}
+
+\paragraph{检查器（最小版本）} 可分为三层：
+\begin{enumerate}
+  \item 语法检查：解析 $W$ 并验证每个 $E_m$ 的 $m\ge 1$；验证复合为有限词。
+  \item 重写合法性检查：对证书形式的“单步重写” $(W\Rightarrow W')$，验证其局部模式匹配 (RZ) 或 (RE) 及其侧条件（$m_2\ge m_1$）。
+  \item 判等检查：对输入两词，调用正规化器 $\mathrm{Normalize}_{Z,E}$ 得到 $N(W)$，比较 token 序列完全相等即通过。
+\end{enumerate}
+
+\subsection{三生成元规范片段：用于 \texorpdfstring{$\Xi$}{Xi}-核验与 BridgeRH 归约}
+为了支持“规范形 $\mathrm{LIFT}\circ\mathrm{PROJ}\circ E$”与 unitary slice 核验，可取由 $\mathrm{PROJ}_u$、$\mathrm{LIFT}_G$、$E_m$ 生成的片段，并引入如下重写规则（作为可核验 2-态射证书）：
+\begin{enumerate}
+  \item[(RPROJ)] 温度门合并：$\mathrm{PROJ}_u\circ\mathrm{PROJ}_v\Rightarrow \mathrm{PROJ}_{uv}$；
+  \item[(RLIFT)] lift 合并：$\mathrm{LIFT}_G\circ\mathrm{LIFT}_H\Rightarrow \mathrm{LIFT}_{G\times H}$；
+  \item[(RE)] 条件期望塔缩并：$E_{m_1}\circ E_{m_2}\Rightarrow E_{\min(m_1,m_2)}$；
+  \item[(RPL)] $\mathrm{PROJ}$ 与 $\mathrm{LIFT}$ 交换：$\mathrm{PROJ}_u\circ \mathrm{LIFT}_G\Rightarrow \mathrm{LIFT}_G\circ\mathrm{PROJ}_u$；
+  \item[(RELIFT)] 带残差的 $E_m$–$\mathrm{LIFT}$ 交换：将 $E_m\circ\mathrm{LIFT}_G$ 归约为 $\mathrm{LIFT}_G\circ E_m$，并输出异常签名 $\mathrm{Anom}_G(K;\theta)$ 作为可核对残差标签。
+\end{enumerate}
+异常签名的可组合律、上同调取商与 ASC 核验程序见附录 \ref{app:anom-cohomology-asc}。
+该片段的终止性可用“逆序对计数”机械化：取生成元正规序 $\mathrm{LIFT}\prec\mathrm{PROJ}\prec E$，定义逆序对计数 $\mu(W)$ 与词长 $\ell(W)$ 的字典序度量 $(\ell(W),\mu(W))$。每次重写严格降低该度量，因此重写终止；进而任意词可规约为规范形 $\mathrm{LIFT}_G\circ\mathrm{PROJ}_u\circ E_m$ 并伴随异常签名输出。
+
+\paragraph{审计优先的三值检查器（\texorpdfstring{$\mathrm{PW}_{\mathrm{aud}}$}{PW\_aud}）}
+将上述三生成元片段（含异常签名残差）记为 $\mathrm{PW}_{\mathrm{aud}}$。其检查器应区分三类结果：\textbf{拒绝}（语法/类型或证书不一致）、\textbf{通过}（在给定证书规则下可核验成立）、以及\textbf{空值}（在既定预算/证书通道下不可判定或无证书）。
+
+\begin{algorithm}[PW$_{\mathrm{aud}}$ 检查器（类型--规范化--残差核验）]\label{alg:pw-aud-checker}
+\textbf{输入：}投影词 $W$ 及可选证书包 $c$（异常签名声明、数值证书与预算参数等）。\\
+\textbf{输出：}状态 $s\in\{\mathrm{ACCEPT},\mathrm{REJECT},\NULL\}$ 与正规形 $N=\mathrm{NF}(W)$。
+\begin{enumerate}[label=(\arabic*), ref=\arabic*]
+  \item \textbf{类型检查：}自左向右验证每一步复合的源靶匹配与参数一致性；失败则输出 $(\mathrm{REJECT},\epsilon)$。
+  \item \textbf{规范化：}按规则 $(\mathrm{RPROJ}),(\mathrm{RLIFT}),(\mathrm{RE}),(\mathrm{RPL}),(\mathrm{RELIFT})$ 归约至不可再用，得到正规形 $N$，并输出沿规约轨迹累积的异常签名列表 $\mathcal{A}(W)$。
+  \item \textbf{残差一致性核验：}若 $c$ 中携带外部声明的异常签名 $\mathcal{A}_{\mathrm{ext}}$，则核对 $\mathcal{A}_{\mathrm{ext}}=\mathcal{A}(W)$；不一致则输出 $(\mathrm{REJECT},N)$。
+  \item \textbf{外部证书核验：}若 $N$ 的读出或等价性判断依赖额外的数值/谱证书（例如 unitary slice 的区间证书或 $\varepsilon$-sound 证书），则对 $c$ 中提供的证书逐项验证：\par
+  \quad 若存在可核验反例（证书不通过、或与声明矛盾），输出 $(\mathrm{REJECT},N)$；\par
+  \quad 若仅因预算不足/证书缺失而无法完成核验，输出 $(\NULL,N)$；\par
+  \quad 若全部核验通过，输出 $(\mathrm{ACCEPT},N)$。
+\end{enumerate}
+\end{algorithm}
+
+\paragraph{注} 在纯 exact 的可判定子片段（例如 $\mathrm{PW}_{Z,E}$）中，检查器不需要任何外部数值证书，因此不会输出 $\NULL$；$\NULL$ 仅在“审计协议显式允许的外部证书通道”存在且预算不足时出现，与正文“无地址则读出为 $\NULL$”的存在性语义兼容。

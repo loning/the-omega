@@ -315,66 +315,125 @@ def hmm_entropy_rate_bits(
     prog: Progress,
 ) -> float:
     # HMM with hidden state in STATES and symbol e in {0,1}.
-    # Transition-emission kernels:
-    #   T_e[i][j] = P(X_{t+1}=j, E_t=e | X_t=i)
+    #
+    # We run the standard filtering recursion (Blackwell entropy-rate estimator)
+    # for a long trajectory (10^7+ steps in the main pipeline). The naive dense
+    # O(n^2) implementation inside Python loops is too slow even for n=10.
+    #
+    # Here we exploit determinism + uniform input:
+    #   - each hidden state has exactly 3 transitions (d=0,1,2), weight 1/3
+    #   - for a fixed observed symbol sym, alpha' can be updated by a sparse
+    #     scatter-add over those transitions producing sym.
+    #
+    # This reduces per-step work to O(#transitions with sym) ~= 15 operations
+    # plus a short normalization, and avoids allocating new lists each step.
     idx = {s: i for i, s in enumerate(STATES)}
     nxt = _edge_map(edges)
     n = len(STATES)
-    T0 = [[0.0 for _ in range(n)] for _ in range(n)]
-    T1 = [[0.0 for _ in range(n)] for _ in range(n)]
+    inv3 = 1.0 / 3.0
+
+    # Build sparse transition lists for sym=0/1:
+    # out[dst] += alpha[src] * prob, where prob in {1/3,2/3,1}.
+    src0: List[int] = []
+    dst0: List[int] = []
+    prob0: List[float] = []
+    src1: List[int] = []
+    dst1: List[int] = []
+    prob1: List[float] = []
+    p1_given_state = [0.0] * n  # P(sym=1 | current hidden state)
+
     for s in STATES:
         i = idx[s]
+        # Aggregate counts by destination to match the dense kernel exactly.
+        c0: Dict[int, int] = {}
+        c1: Dict[int, int] = {}
+        ones = 0
         for d in (0, 1, 2):
             t, e = nxt[(s, d)]
             j = idx[t]
             if e == 0:
-                T0[i][j] += 1.0 / 3.0
+                c0[j] = c0.get(j, 0) + 1
             else:
-                T1[i][j] += 1.0 / 3.0
+                c1[j] = c1.get(j, 0) + 1
+                ones += 1
+        p1_given_state[i] = float(ones) * inv3
+        for j in sorted(c0.keys()):
+            src0.append(i)
+            dst0.append(j)
+            prob0.append(float(c0[j]) * inv3)
+        for j in sorted(c1.keys()):
+            src1.append(i)
+            dst1.append(j)
+            prob1.append(float(c1[j]) * inv3)
+
+    n0 = len(src0)
+    n1 = len(src1)
 
     # Start from stationary distribution to reduce transient.
     P = transition_matrix_Q(edges)
     pi = _solve_stationary(P)
-    alpha = [float(x) for x in pi]  # row vector belief
+    alpha = [float(x) for x in pi]  # row belief over hidden states
+    out = [0.0] * n  # reusable scratch
 
     rng = random.Random(seed)
+    rnd = rng.random
+    log2 = math.log2
 
-    def step_filter(alpha_row: List[float], sym: int) -> Tuple[List[float], float]:
-        # alpha' = alpha * T_sym, normalize; return (alpha_norm, p_sym)
-        T = T1 if sym == 1 else T0
-        out_row = [0.0 for _ in range(n)]
-        for i in range(n):
-            ai = alpha_row[i]
-            if ai == 0.0:
-                continue
-            row = T[i]
-            for j in range(n):
-                tij = row[j]
-                if tij:
-                    out_row[j] += ai * tij
-        p = sum(out_row)
-        if p <= 0.0:
-            # Should not happen in this primitive HMM.
-            return alpha_row, 0.0
-        inv = 1.0 / p
-        out_row = [x * inv for x in out_row]
-        return out_row, p
-
-    # Generate symbols from the model itself using the same alpha recursion:
-    # sample sym by p(sym | past) computed from alpha.
     total = 0.0
     count = 0
-    for t in range(steps + burn_in):
-        # compute p0,p1
-        _, p0 = step_filter(alpha, 0)
-        _, p1 = step_filter(alpha, 1)
-        z = rng.random()
-        sym = 1 if z < (p1 / (p0 + p1)) else 0
-        alpha, p_sym = step_filter(alpha, sym)
+    total_steps = int(steps) + int(burn_in)
+    if total_steps <= 0:
+        return float("nan")
+
+    # Call Progress.tick only occasionally; it rate-limits actual prints.
+    tick_mask = (1 << 16) - 1  # ~ every 65536 steps
+
+    for t in range(total_steps):
+        # Predictive symbol probability p1 = P(sym=1 | past) via state-marginal:
+        # p1 = sum_i alpha[i] * P(sym=1 | state=i).
+        p1 = 0.0
+        for i in range(n):
+            p1 += alpha[i] * p1_given_state[i]
+        # Clamp for numerical safety (should already be in [0,1]).
+        if p1 <= 0.0:
+            sym = 0
+        elif p1 >= 1.0:
+            sym = 1
+        else:
+            sym = 1 if rnd() < p1 else 0
+
+        # Reset scratch.
+        for j in range(n):
+            out[j] = 0.0
+
+        # Sparse filter update for the observed symbol.
+        p_sym = 0.0
+        if sym == 1:
+            for k in range(n1):
+                v = alpha[src1[k]] * prob1[k]
+                out[dst1[k]] += v
+                p_sym += v
+        else:
+            for k in range(n0):
+                v = alpha[src0[k]] * prob0[k]
+                out[dst0[k]] += v
+                p_sym += v
+
+        if not (p_sym > 0.0):
+            # Should not happen in this primitive HMM.
+            return float("nan")
+
+        inv = 1.0 / p_sym
+        for j in range(n):
+            alpha[j] = out[j] * inv
+
         if t >= burn_in:
-            total += -math.log(p_sym, 2.0)
+            total += -log2(p_sym)
             count += 1
-        prog.tick(f"hmm entropy t={t}")
+
+        if (t & tick_mask) == 0:
+            prog.tick(f"hmm entropy t={t}/{total_steps}")
+
     return total / float(count) if count > 0 else float("nan")
 
 

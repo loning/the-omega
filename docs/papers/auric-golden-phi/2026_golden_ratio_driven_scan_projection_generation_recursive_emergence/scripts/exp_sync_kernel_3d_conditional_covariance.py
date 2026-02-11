@@ -3,7 +3,7 @@
 """
 Conditional covariance from the 3D Hessian at theta=0.
 
-Appendix `sections/90_appendix_sync_kernel_multi_dim.tex` records the exact Hessian
+Appendix `sections/appendix/sync_kernel/app__vector-potential.tex` records the exact Hessian
 for (phi_e, phi_-, phi_2) at theta=0. This script computes the conditional
 covariance and correlation:
   Cov(phi_e, phi_- | phi_2)

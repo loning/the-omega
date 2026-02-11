@@ -1,0 +1,198 @@
+\subsubsection{bulk 共振梯的全整数推广与测度论表象：从常数缺口到可检验闭包}\label{subsubsec:fold-bulk-resonance-integer-ladder}
+本节在不重复 \S\ref{subsubsec:fold-critical-resonance} 既有结论的前提下，
+把临界 bulk 共振常数 \(C_\varphi\) 推广为一族以整数 \(u\) 参数化的共振梯 \(C_\varphi(u)\)，
+并据此给出可逐级强化的碰撞缺口下界与一个 Pisot--Bernoulli 卷积的 Fourier 表象；
+最后记录一个以可审计脚本检验为目标的全局极限猜想。
+
+\paragraph{整数参数化的共振极限常数}
+沿用定义 \ref{def:fold-normalized-amplitude} 的归一化幅度 \(a_m(k)\) 与碰撞表达
+\(
+\mathsf{Col}_m=\frac{1}{F_{m+2}}\sum_{k}a_m(k)^2
+\)。
+
+\begin{definition}[整数共振梯常数]\label{def:fold-critical-resonance-ladder}
+令 \(\varphi=(1+\sqrt 5)/2\)。
+对每个整数 \(u\in\ZZ\)，定义无穷乘积
+\[
+C_\varphi(u):=\prod_{n=2}^{\infty}\bigl|\cos(\pi u\,\varphi^{-n})\bigr|.
+\]
+\end{definition}
+
+\begin{theorem}[bulk 共振梯的全整数推广]\label{thm:fold-critical-resonance-constant-integer-ladder}
+对每个固定整数 \(u\in\ZZ\)，乘积 \(C_\varphi(u)\) 收敛且严格为正。
+并且若对每个 \(m\ge 1\) 定义同余代表
+\[
+k_m(u)\equiv uF_m\pmod{F_{m+2}},
+\qquad 0\le k_m(u)<F_{m+2},
+\]
+则存在极限
+\[
+\lim_{m\to\infty}a_m\!\bigl(k_m(u)\bigr)=C_\varphi(u).
+\]
+同样地，亦有
+\[
+\lim_{m\to\infty}a_m\!\bigl(uF_{m+1}\bigr)=C_\varphi(u).
+\]
+当 \(u=1\) 时，上述结论退化为定理 \ref{thm:fold-critical-resonance-constant}（即 \(C_\varphi(1)=C_\varphi\)）。
+\end{theorem}
+
+\begin{proof}
+先证乘积收敛与正性。
+对任意固定 \(u\)，当 \(x\) 足够小且 \(|x|\le 1/4\) 时存在常数 \(C>0\) 使
+\(
+|\log|\cos(\pi u x)||\le C u^2 x^2
+\)。
+取 \(x=\varphi^{-n}\) 得
+\(
+\sum_{n\ge 2}u^2\varphi^{-2n}<\infty
+\)，
+故对数级数绝对收敛，从而乘积收敛。
+由于每个因子均为正且收敛到 \(1\)，故极限严格为正。
+\par
+再证幅度极限。
+由定义 \ref{def:fold-normalized-amplitude}，
+\[
+a_m\!\bigl(k_m(u)\bigr)
+=\prod_{j=1}^{m}\Bigl|\cos\Bigl(\pi k_m(u)\,F_{j+1}/F_{m+2}\Bigr)\Bigr|.
+\]
+以 \(k_m(u)\equiv uF_m\ (\mathrm{mod}\ F_{m+2})\) 代入，并用引理 \ref{lem:fold-resonance-docagne} 的同余压缩
+\(
+F_mF_{j+1}\equiv (-1)^{j+1}F_{m+1-j}\ (\mathrm{mod}\ F_{m+2})
+\)
+以及余弦偶性，得到精确表示
+\[
+a_m\!\bigl(k_m(u)\bigr)
+=\prod_{j=1}^{m}\Bigl|\cos\Bigl(\pi u\,\frac{F_{m+1-j}}{F_{m+2}}\Bigr)\Bigr|.
+\]
+固定 \(j\) 令 \(m\to\infty\)，由 Binet 渐近 \(F_n=\varphi^n/\sqrt 5+O(\varphi^{-n})\) 得
+\(
+F_{m+1-j}/F_{m+2}\to \varphi^{-(j+1)}
+\)。
+并且由前述二次控制可对对数级数使用支配收敛，故乘积极限存在且等于
+\(
+\prod_{j=1}^{\infty}|\cos(\pi u\,\varphi^{-(j+1)})|
+=\prod_{n=2}^{\infty}|\cos(\pi u\,\varphi^{-n})|
+=C_\varphi(u)
+\)。
+从而第一个极限成立。
+\par
+最后，因 \(F_{m+1}\equiv -F_m\pmod{F_{m+2}}\) 与余弦偶性，知
+\(
+a_m(uF_{m+1})=a_m(-uF_m)=a_m(uF_m)=a_m(k_m(u))
+\)，
+故第二个极限同样成立。证毕。
+\end{proof}
+
+\paragraph{有限共振梯的逐级强化：碰撞缺口与最大纤维偏置}
+\begin{corollary}[有限共振梯强化的碰撞缺口下界]\label{cor:fold-collision-gap-resonance-ladder-U}
+对任意固定 \(U\in\NN\)，存在 \(m_0(U)\) 使得对所有 \(m\ge m_0(U)\) 都有确定性下界
+\[
+\mathsf{Col}_m
+\ge
+\frac{1}{F_{m+2}}
+\Bigl(1+2\sum_{u=1}^{U}a_m\!\bigl(k_m(u)\bigr)^2\Bigr).
+\]
+从而
+\[
+\liminf_{m\to\infty}F_{m+2}\,\mathsf{Col}_m
+\ge
+1+2\sum_{u=1}^{U}C_\varphi(u)^2.
+\]
+\end{corollary}
+
+\begin{proof}
+由定义 \ref{def:fold-normalized-amplitude}，
+\(
+\mathsf{Col}_m=\frac{1}{F_{m+2}}\sum_{k}a_m(k)^2
+\)。
+对固定 \(U\)，当 \(m\) 足够大时，\(\{k_m(u):1\le u\le U\}\) 在 \(\ZZ/(F_{m+2}\ZZ)\) 中两两不同且均非零，
+且每个 \(k_m(u)\) 与其相反数 \(-k_m(u)\) 给出不同频率；于是从求和中取出子集 \(\{0,\pm k_m(1),\dots,\pm k_m(U)\}\) 的项即得第一条不等式，
+并用 \(a_m(-k)=a_m(k)\) 合并成系数 \(2\)。
+再令 \(m\to\infty\) 并用定理 \ref{thm:fold-critical-resonance-constant-integer-ladder} 得到第二条不等式。证毕。
+\end{proof}
+
+\begin{corollary}[最大纤维的多共振 \texorpdfstring{$L^\infty$}{L∞} 偏置族]\label{cor:fold-maxfiber-bias-resonance-ladder}
+记最大纤维 \(M_m:=\max_r d_m(r)\) 与平均纤维 \(\overline d_m:=2^m/F_{m+2}\)。
+则对每个固定 \(u\in\NN\)，存在 \(m_0(u)\) 使得对所有 \(m\ge m_0(u)\) 都有
+\[
+M_m\ \ge\ \overline d_m\bigl(1+a_m(k_m(u))\bigr),
+\]
+从而
+\[
+\liminf_{m\to\infty}\frac{M_m}{\overline d_m}\ \ge\ 1+C_\varphi(u).
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:fold-max-fiber-fourier}（或其证明中的标准 Fourier 下界）有
+\(
+M_m\ge \overline d_m+\frac{1}{F_{m+2}}\max_{k\ne 0}|\widehat d_m(k)|
+\)。
+因此对任意指定频率 \(k\ne 0\) 亦有
+\(
+M_m\ge \overline d_m+\frac{1}{F_{m+2}}|\widehat d_m(k)|
+\)。
+取 \(k=k_m(u)\) 并用 \(a_m(k)=|\widehat d_m(k)|/2^m\) 即得第一式；
+令 \(m\to\infty\) 并用定理 \ref{thm:fold-critical-resonance-constant-integer-ladder} 得第二式。证毕。
+\end{proof}
+
+\paragraph{Pisot--Bernoulli 卷积表象：共振常数的测度化}
+\begin{theorem}[Pisot--Bernoulli 卷积的 Fourier 采样表象]\label{thm:fold-pisot-bernoulli-convolution-representation}
+令 \(q=\varphi^{-1}\in(0,1)\)。
+定义随机级数
+\[
+X=\sum_{n=2}^{\infty}\varepsilon_n q^n,
+\qquad
+\mathbb{P}(\varepsilon_n=1)=\mathbb{P}(\varepsilon_n=-1)=\tfrac12,
+\]
+并令 \(\mu_q^{(2)}\) 为 \(X\) 的分布（一个起始指标为 \(n=2\) 的 Pisot 参数 Bernoulli 卷积移位版本）。
+则其 Fourier--Stieltjes 变换满足乘积公式
+\[
+\widehat{\mu_q^{(2)}}(t)
+=\int_{\RR}e^{\mathrm{i}tx}\,d\mu_q^{(2)}(x)
+=\prod_{n=2}^{\infty}\cos(q^n t).
+\]
+从而对所有整数 \(u\in\ZZ\)，有恒等式
+\[
+C_\varphi(u)=\Bigl|\widehat{\mu_q^{(2)}}(\pi u)\Bigr|.
+\]
+并且 \S\ref{subsubsec:fold-critical-resonance} 的 edge 极限常数
+\(
+C_\varphi^{\mathrm{edge}}(k)=\prod_{n=1}^{\infty}|\cos(\pi k\varphi^{-n})|
+\)
+亦可视为同一 Bernoulli 卷积在算术格点上的 Fourier 采样（仅起始指标不同）。
+\end{theorem}
+
+\begin{proof}
+由独立性与 \(\mathbb{E}(e^{\mathrm{i}t\varepsilon_n q^n})=\cos(tq^n)\)，有
+\(
+\widehat{\mu_q^{(2)}}(t)=\prod_{n=2}^{\infty}\cos(q^n t)
+\)。
+取 \(t=\pi u\) 并取绝对值，即得
+\(
+|\widehat{\mu_q^{(2)}}(\pi u)|=\prod_{n=2}^{\infty}|\cos(\pi u\varphi^{-n})|=C_\varphi(u)
+\)。
+最后一段仅为指标平移的直接比较。证毕。
+\end{proof}
+
+\paragraph{全共振闭包的可检验极限猜想}
+\begin{conjecture}[碰撞常数的全共振闭包极限]\label{conj:fold-collision-constant-full-resonance-closure}
+设级数
+\[
+\Sigma_\varphi:=1+2\sum_{u=1}^{\infty}C_\varphi(u)^2
+\qquad(\text{若其收敛})
+\]
+收敛。
+则猜想存在极限
+\[
+\lim_{m\to\infty}F_{m+2}\,\mathsf{Col}_m=\Sigma_\varphi,
+\]
+并且更强地，主量完全由算术共振闭包 \(\{\,k\equiv \pm uF_m\ (\mathrm{mod}\ F_{m+2})\,\}_{u\ge 1}\) 饱和：
+除该闭包外其余频率对 \(\sum_k a_m(k)^2\) 的贡献为 \(o(1)\)。
+\end{conjecture}
+
+\begin{remark}[可复现数值审计入口]\label{rem:fold-sigma-phi-audit-pointer}
+关于 \(\Sigma_\varphi\) 的截断和与收敛剖面，本稿不在正文中以经验值作为推理前提；
+其数值审计将以脚本生成的 JSON 与 \LaTeX\ 片段给出，并纳入本论文的可复现流水线（见 \S\ref{sec:experiments} 的总体口径）。
+\end{remark}
+

@@ -1,0 +1,38 @@
+\section{讨论：主张边界、验证条件与后续工作}
+
+\subsection{健全性（soundness）与完备性（completeness）的逻辑分离}
+定理 \ref{thm:type-safety-offcritical} 给出健全性（soundness）：在本文类型化读出语义下，任何\emph{已可寻址且可核验}的零点证书必满足临界线约束。与之相对，完备性（completeness）即“零点事件必可寻址（读出非 $\NULL$）”并不由空值语义自动推出，必须作为桥接假设（例如假设 \ref{ass:xi-address-completeness}）或由额外构造证明。该分离保证推理依赖链可核验：凡涉及经典 RH 的推论，均必须显式标注其桥接前提（例如假设 \ref{ass:bridge-rh}）。
+
+\subsection{BridgeRH 的条件边界与可验证条件}
+BridgeRH 的作用是把“经典零点事件”组织为可核验对象域中的可核验读出，因此其核心并非在主文同一层面直接给出分析数论证明，而在于把困难转写为一组可逐项核验的分项条件。其核心要求可概括为两条边界约束：
+\begin{enumerate}
+  \item \textbf{对象对齐：}在核/行列式层建立与经典对象一致的解析刚性（零点集与重数一致），并将该一致性分解为可核验的分项条件；
+  \item \textbf{事件归约与核验锁定：}把经典零点事件归约为 PW 可寻址地址，并保证核验路径被锁定到 unitary slice 的核验机制，从而使“零点/非零/证书缺失（$\NULL$）”成为离线可核验事实。
+\end{enumerate}
+BridgeRH 的可验证条件清单、可控示例与核验词典见附录 \ref{app:bridge-rh-obligations}；与证书对象格式直接相关的统一编码与 unitary slice 数值证书构造见第 \ref{sec:conclusion-cluster} 节及附录 \ref{app:inject-code-audit}。
+
+\subsection{三寄存器闭包的适用范围与实现含义}
+三寄存器（尺度、相位、素数）闭包在本文中承担两类功能：其一，提供可寻址对象的规范代表与可逆回放所需的残差承载轴；其二，为 unitary slice 的核验机制提供可证书化的连续可见参数轴（相位）并实现类型安全拒绝链。需要强调的是：三寄存器闭包是\emph{证书类型系统}的最小实现之一，而非对外部数学对象的额外本体假设；在该闭包内，任何依赖径向自由度（$\rho=\log|u|$）的断言若无额外证书通道承载，则按定义退化为 $\NULL$（参见第 \ref{sec:conclusion-cluster} 节定理 \ref{thm:cc-fourth-register-certs}）。
+\par
+在实现层面，“可见参数轴仅为相位”的约束可以通过显式紧化共轭内在化：实轴上的加法/平移在单位圆相位域上可写为一个闭式 Möbius 动作；当进一步把相位限制到有理点时，精确编码与高度预算给出可重复审计的离散复杂度账本（见附录 \ref{app:phase-compactification-register-unification}）。
+
+\subsection{局限、可证伪点与一致性检查}
+本文的“可发表主张”以可离线核验的证书对象为边界，因此局限与证伪点可直接表述为验证规则层面的可核验条件：
+\begin{itemize}
+  \item \textbf{验证规则依赖：}数值核验结论依赖固定的外向舍入区间算术与余项上界证书；若更换舍入模型或引入平台相关浮点非确定性，则相应断言不再属于本文的可核验对象域（附录 \ref{app:audit}、\ref{app:inject-code-audit}）。
+  \item \textbf{$\NULL$ 的可重复性：}在固定验证规则与参数下，同一输入的 $\NULL$ 判定应可重复；若出现实现依赖导致的不一致，则说明验证器或证书格式不满足可核验性前提（第 \ref{sec:conclusion-cluster} 节定理 \ref{thm:cc-null-repro}）。
+  \item \textbf{回放一致性：}无损提升与可逆回放的主张要求给出可判定的 $\mathrm{code}/\mathrm{decode}$ 与回放器；若存在输入使回放不能恢复原微态，则相应的“扩展保存”主张被直接否证（附录 \ref{app:prime-uplift}、\ref{app:inject-code-audit}）。
+  \item \textbf{桥接条件的局部反例：}BridgeRH 的每一项条件均应允许输出局部失败见证；任何一项的可核验违例都足以否定相应的桥接推论链条（附录 \ref{app:bridge-rh-obligations}）。
+\end{itemize}
+
+\subsection{后续工作：形式化与证书化的推进路径}
+在既定分层（健全性已证、完备性需桥接或构造）下，后续工作可按“可验证条件”推进：
+\begin{enumerate}
+  \item \textbf{证书验证器与基元库：}实现区间算术、余项上界、行列式/谱界与收缩判据的证书化模块，使 $\mathsf{Cert}_\exists/\mathsf{Cert}_{\NULL}$ 可被独立复算核验（附录 \ref{app:inject-code-audit}）。
+  \item \textbf{BridgeRH 的逐项完成：}把核层对象与经典对象的对齐、零点事件的归约注入、以及核验路径锁定三类条件分别形式化并逐项给出证书材料（附录 \ref{app:bridge-rh-obligations}）。
+  \item \textbf{第四寄存器外延与闭合证书：}若目标是获得全局完备性的可核验形式，则需为径向自由度提供证书承载（第四寄存器）并实现相应闭合约束的可核验残差证书。
+  \item \textbf{局部--整体与粘合障碍：}阿德尔局部--整体闭合、$\NULL$ 的层论粘合障碍语义以及缺陷见证提取的构造，作为“失败归因格式”的候选结构层扩展，见附录 \ref{app:adelic-sheaf-null-witness}。
+\end{enumerate}
+\par
+与上述推进相配套的两类可离线核验通道已在附录中给出统一表述：其一是以谱流绕数把 $H^2$-粘合障碍整数化为可核验不变量（附录 \ref{app:spectral-flow-cohomology-min-register}）；其二是以端点尾律与有限核极点格点刚性提供可证伪的结构下界与否证器（附录 \ref{app:obstruction-tail-pole-rigidity}）。
+

@@ -184,7 +184,6 @@ def main() -> None:
             "mismatch": abs_diff(mismatch_bulk, target_mismatch),
             "P_Y_1": abs_diff(pY1_bulk, target_pY1),
         },
-        "elapsed_s": float(time.time() - t0),
     }
 
     out = Path(args.output)
@@ -196,7 +195,7 @@ def main() -> None:
     print("[fold_gauge_anomaly_limit] bulk P(X,Y):", {k: float(P_xy[k]) for k in sorted(P_xy)}, flush=True)
     print("[fold_gauge_anomaly_limit] bulk mismatch:", float(mismatch_bulk), "target", float(target_mismatch), flush=True)
     print("[fold_gauge_anomaly_limit] bulk P(Y=1):", float(pY1_bulk), "target", float(target_pY1), flush=True)
-    print(f"[fold_gauge_anomaly_limit] wrote {out} (elapsed {payload['elapsed_s']:.2f}s)", flush=True)
+    print(f"[fold_gauge_anomaly_limit] wrote {out}", flush=True)
 
 
 if __name__ == "__main__":

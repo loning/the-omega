@@ -3,7 +3,7 @@
 """
 Activated small eigenvalue branch near u=1 for the real-input 40-state kernel, output potential only.
 
-In `90_appendix_sync_12_app_real_input_40_zeta_u.tex` we define:
+In `sections/appendix/sync_kernel/real_input/app__real-input-40-zeta-u.tex` we define:
   G(lambda,u) := lambda^8 * F(lambda^{-1},u),
 so that for u>0 the Perron root is the largest positive real root of G=0.
 
@@ -78,7 +78,7 @@ class _Progress:
 
 
 def _build_G(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
-    # Must match `90_appendix_sync_12_app_real_input_40_zeta_u.tex`.
+    # Must match `sections/appendix/sync_kernel/real_input/app__real-input-40-zeta-u.tex`.
     return (
         lam**8
         - lam**7

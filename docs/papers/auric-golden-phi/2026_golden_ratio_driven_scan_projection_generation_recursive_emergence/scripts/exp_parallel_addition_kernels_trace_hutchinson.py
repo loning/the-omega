@@ -80,17 +80,27 @@ class MatOp:
     dst: np.ndarray  # shape (E,)
     kappa: np.ndarray  # shape (E,)
 
-    def matvec(self, x: np.ndarray, u: float) -> np.ndarray:
-        # y[dst] += x[src] * u^{kappa}
+    def weights(self, u: float) -> np.ndarray:
+        """Return edge weights w_e = u^{kappa_e} as float64 (no allocation on repeated u)."""
+        # kappa is small (0/1 for K9, up to 2 for K21 in our compilation).
         if u == 0.0:
-            w = (self.kappa == 0).astype(np.float64)
-        elif u == 1.0:
-            w = np.ones_like(self.kappa, dtype=np.float64)
-        else:
-            # kappa is small (0/1 for K9, up to 2 for K21 in our compilation).
-            w = np.power(u, self.kappa, dtype=np.float64)
-        contrib = x[self.src] * w
-        return np.bincount(self.dst, weights=contrib, minlength=self.n).astype(np.float64, copy=False)
+            return (self.kappa == 0).astype(np.float64, copy=False)
+        if u == 1.0:
+            return np.ones(self.kappa.shape[0], dtype=np.float64)
+        kmax = int(np.max(self.kappa)) if self.kappa.size else 0
+        pow_u = np.empty(kmax + 1, dtype=np.float64)
+        pow_u[0] = 1.0
+        for k in range(1, kmax + 1):
+            pow_u[k] = pow_u[k - 1] * float(u)
+        return pow_u[self.kappa.astype(np.int64, copy=False)]
+
+    def matvec_inplace(self, x: np.ndarray, w_edge: np.ndarray, y: np.ndarray, tmp: np.ndarray) -> None:
+        """Compute y := M(u) x using precomputed w_edge, without allocating."""
+        # tmp[e] = x[src[e]] * w_edge[e]
+        np.take(x, self.src, out=tmp)
+        tmp *= w_edge
+        y.fill(0.0)
+        np.add.at(y, self.dst, tmp)
 
 
 def _build_op(spec: bfs.KernelSpec, *, prog: bfs.Progress) -> Tuple[MatOp, int]:
@@ -105,20 +115,23 @@ def _build_op(spec: bfs.KernelSpec, *, prog: bfs.Progress) -> Tuple[MatOp, int]:
 
 def _power_method(op: MatOp, u: float, *, itmax: int, tol: float, prog: bfs.Progress, label: str) -> float:
     x = np.full(op.n, 1.0 / op.n, dtype=np.float64)
+    y = np.empty_like(x)
+    tmp = np.empty(op.src.shape[0], dtype=np.float64)
+    w_edge = op.weights(u)
     lam = 0.0
     t0 = time.time()
     for it in range(1, itmax + 1):
-        y = op.matvec(x, u)
-        s = float(y.sum())
+        op.matvec_inplace(x, w_edge, y, tmp)
+        s = float(np.sum(y))
         if s <= 0.0:
             return 0.0
-        y /= s
+        y *= 1.0 / s
         lam_new = s
         if it > 50 and abs(lam_new - lam) / max(1.0, abs(lam_new)) < tol:
             prog.tick(f"{label} power it={it} u={u} lam~{lam_new:.12g}")
             return lam_new
         lam = lam_new
-        x = y
+        x, y = y, x
         if (time.time() - t0) > 20.0:
             prog.tick(f"{label} power it={it} u={u} lam~{lam_new:.12g}")
             t0 = time.time()
@@ -138,12 +151,18 @@ def _hutchinson_trace_power(
     # Returns (mean, standard_error) for Tr(M(u)^n_power).
     vals = np.empty(samples, dtype=np.float64)
     t0 = time.time()
+    w_edge = op.weights(u)
+    tmp = np.empty(op.src.shape[0], dtype=np.float64)
+    buf_a = np.empty(op.n, dtype=np.float64)
+    buf_b = np.empty(op.n, dtype=np.float64)
     for s in range(samples):
         r = rng.integers(0, 2, size=op.n, dtype=np.int8)
         r = (2 * r - 1).astype(np.float64, copy=False)
-        v = r
+        v: np.ndarray = r
+        out = buf_a
         for _ in range(n_power):
-            v = op.matvec(v, u)
+            op.matvec_inplace(v, w_edge, out, tmp)
+            v, out = out, (buf_b if out is buf_a else buf_a)
         vals[s] = float(r @ v)
         if (time.time() - t0) > 20.0:
             prog.tick(f"{label} Hutch n={n_power} u={u} sample={s+1}/{samples}")
@@ -237,17 +256,27 @@ def _estimate_bhat_correlated(
     q: Dict[float, Dict[int, np.ndarray]] = {}
     t0 = time.time()
     for u_val, powers in need.items():
+        w_edge = op.weights(float(u_val))
+        tmp = np.empty(op.src.shape[0], dtype=np.float64)
+        buf_a = np.empty(op.n, dtype=np.float64)
+        buf_b = np.empty(op.n, dtype=np.float64)
         q_u: Dict[int, np.ndarray] = {p: np.empty(samples, dtype=np.float64) for p in powers}
         for s in range(samples):
             r = R[s]
-            v = r
-            # Walk powers in increasing order, filling required ones.
+            v: np.ndarray = r
+            out = buf_a
             pmax = powers[-1]
-            want = set(powers)
+            j = 0
+            target = powers[j]
             for p in range(1, pmax + 1):
-                v = op.matvec(v, u_val)
-                if p in want:
+                op.matvec_inplace(v, w_edge, out, tmp)
+                v, out = out, (buf_b if out is buf_a else buf_a)
+                if p == target:
                     q_u[p][s] = float(r @ v)
+                    j += 1
+                    if j >= len(powers):
+                        break
+                    target = powers[j]
             if (time.time() - t0) > 20.0:
                 prog.tick(f"{label} correlated traces u={u_val:.6g} sample={s+1}/{samples}")
                 t0 = time.time()

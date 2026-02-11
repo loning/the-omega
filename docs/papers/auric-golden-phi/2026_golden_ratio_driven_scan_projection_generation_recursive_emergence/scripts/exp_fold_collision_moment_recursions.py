@@ -6,8 +6,13 @@ We work with the Fold_m fiber multiplicities d_m(x)=|Fold_m^{-1}(x)| and define:
   S_k(m) = sum_x d_m(x)^k.
 
 The paper treats k=2 (A2 kernel), k=3 (A3 kernel), and k=4 (A4 kernel) explicitly.
-This script verifies exact integer recurrences for k=2..8 against enumerated S_k(m),
-and writes a small LaTeX table for auditability.
+This script verifies exact integer recurrences for k=2..8 against exact S_k(m)
+computed via modular DP residue counts:
+
+  S_k(m) = sum_{r mod F_{m+2}} c_m(r)^k.
+
+As a sanity check, we additionally brute-force enumerate Fold_m fibers for a small
+window of m (default: m<=12) and assert agreement.
 
 All output is English-only by repository convention.
 """
@@ -20,11 +25,33 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from common_mod_fib_dp import counts_mod_fib, hist_from_counts
 from common_paths import export_dir, generated_dir
 from common_phi_fold import Progress, fold_m, word_to_str
 
 
-def collision_counts(m: int, progress: Progress | None = None) -> Dict[str, int]:
+def _moments_from_counts(c: "object", k_max: int) -> Dict[int, int]:
+    """Compute S_k = sum_r c[r]^k for k=2..k_max as Python ints."""
+    import numpy as np
+
+    if k_max < 2:
+        raise ValueError("k_max must be >= 2")
+    if not isinstance(c, np.ndarray):
+        raise TypeError("c must be a numpy array")
+    vals, freq = hist_from_counts(c)
+    vals_py = [int(v) for v in vals.tolist()]
+    freq_py = [int(f) for f in freq.tolist()]
+    out: Dict[int, int] = {}
+    for k in range(2, k_max + 1):
+        s = 0
+        for v, f in zip(vals_py, freq_py, strict=True):
+            s += f * (v**k)
+        out[k] = int(s)
+    return out
+
+
+def _bruteforce_S(m: int, k_max: int, progress: Progress | None = None) -> Dict[int, int]:
+    """Exact enumeration of S_k(m) by folding all 2^m micro words (small m only)."""
     from itertools import product
 
     counts: Dict[str, int] = {}
@@ -33,25 +60,34 @@ def collision_counts(m: int, progress: Progress | None = None) -> Dict[str, int]
         x = word_to_str(fold_m(bits))
         counts[x] = counts.get(x, 0) + 1
         if progress is not None:
-            progress.tick(f"m={m} i={i}/{total} distinct={len(counts)}")
-    return counts
-
-
-def s_k_from_counts(counts: Dict[str, int], k: int) -> int:
-    if k == 2:
-        return sum(v * v for v in counts.values())
-    if k == 3:
-        return sum(v * v * v for v in counts.values())
-    return sum(int(v**k) for v in counts.values())
+            progress.tick(f"bruteforce m={m} i={i}/{total} distinct={len(counts)}")
+    out: Dict[int, int] = {}
+    for k in range(2, k_max + 1):
+        s = 0
+        for v in counts.values():
+            s += int(v**k)
+        out[k] = int(s)
+    return out
 
 
 def enumerate_S(m_min: int, m_max: int, k_max: int, prog: Progress) -> Dict[int, Dict[int, int]]:
     S: Dict[int, Dict[int, int]] = {k: {} for k in range(2, k_max + 1)}
+    # Brute-force cross-check is cheap and catches any accidental DP mismatch.
+    bruteforce_check_m_max = min(12, m_max)
     for m in range(m_min, m_max + 1):
-        counts = collision_counts(m, progress=prog)
+        c = counts_mod_fib(m, prog=prog)
+        mk = _moments_from_counts(c, k_max=k_max)
         for k in range(2, k_max + 1):
-            S[k][m] = s_k_from_counts(counts, k)
-        print(f"[moment-rec] m={m} |X_m|={len(counts)}", flush=True)
+            S[k][m] = int(mk[k])
+
+        if m <= bruteforce_check_m_max:
+            brute = _bruteforce_S(m, k_max=k_max, progress=None)
+            for k in range(2, k_max + 1):
+                if int(brute[k]) != int(S[k][m]):
+                    raise SystemExit(
+                        f"[moment-rec] DP/bruteforce mismatch at m={m} k={k}: dp={S[k][m]} brute={brute[k]}"
+                    )
+        print(f"[moment-rec] m={m} computed via moddp (checked up to m<=12)", flush=True)
     return S
 
 

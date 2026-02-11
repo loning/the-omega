@@ -9,6 +9,7 @@ import hashlib
 import json
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Sequence, Tuple
@@ -99,14 +100,6 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="rotation_multiscale_residual_summary",
-            script="exp_rotation_multiscale_residual_summary.py",
-            args=[],
-            expected_outputs=[
-                "sections/generated/tab_rotation_multiscale_residual_summary.tex",
-            ],
-        ),
-        Step(
             name="fold_gauge_anomaly",
             script="exp_fold_gauge_anomaly.py",
             args=[],
@@ -134,6 +127,87 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_density_transducer",
+            script="exp_fold_gauge_anomaly_density_transducer.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_density_transducer.json",
+                "sections/generated/eq_fold_gauge_anomaly_density_transducer.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_mc",
+            script="exp_fold_gauge_anomaly_mc.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_mc.json",
+                "sections/generated/tab_fold_gauge_anomaly_mc.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_kstep_mc",
+            script="exp_fold_gauge_anomaly_kstep_mc.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_kstep_mc.json",
+                "sections/generated/tab_fold_gauge_anomaly_kstep_mc.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_clt_variance",
+            script="exp_fold_gauge_anomaly_clt_variance.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_clt_variance.json",
+                "sections/generated/eq_fold_gauge_anomaly_clt_variance.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_pressure",
+            script="exp_fold_gauge_anomaly_pressure.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_pressure.json",
+                "sections/generated/eq_fold_gauge_anomaly_pressure.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_jordan_correlations",
+            script="exp_fold_gauge_anomaly_jordan_correlations.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_jordan_correlations.json",
+                "sections/generated/eq_fold_gauge_anomaly_jordan_correlations.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_spectral_fingerprint",
+            script="exp_fold_gauge_anomaly_spectral_fingerprint.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_spectral_fingerprint.json",
+                "sections/generated/eq_fold_gauge_anomaly_spectral_fingerprint.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_rate_curve_elimination",
+            script="exp_fold_gauge_anomaly_rate_curve_elimination.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_rate_curve_resultant.json",
+                "sections/generated/tab_fold_gauge_anomaly_rate_curve_resultant_degree.tex",
+                "sections/generated/eq_fold_gauge_anomaly_rate_curve_resultant_structure.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_ldp_rate",
+            script="exp_fold_gauge_anomaly_ldp_rate.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_fold_gauge_anomaly_ldp_rate.tex",
+            ],
+        ),
+        Step(
             name="iid_sources_fold_vs_parry",
             script="exp_iid_sources_fold_vs_parry.py",
             args=[],
@@ -151,6 +225,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="jensen_endpoint_window_hinfty_match",
+            script="exp_jensen_endpoint_window_hinfty_match.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/jensen_endpoint_window_hinfty_match.csv",
+                "sections/generated/tab_jensen_endpoint_window_hinfty_match.tex",
+            ],
+        ),
+        Step(
             name="boundary_tower_gut_signatures",
             script="exp_boundary_tower_gut_signatures.py",
             args=[],
@@ -158,6 +241,241 @@ def build_steps() -> List[Step]:
                 "artifacts/export/boundary_tower_gut_signatures.json",
                 "sections/generated/eq_boundary_tower_sm12.tex",
                 "sections/generated/tab_zeckendorf_gut_signatures.tex",
+            ],
+        ),
+        Step(
+            name="nap_selector_so10",
+            script="exp_nap_selector_so10.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/nap_selector_so10.json",
+                "sections/generated/tab_nap_selector_so10.tex",
+                "sections/generated/eq_nap_selector_so10.tex",
+            ],
+        ),
+        Step(
+            name="gut_information_cost_selector",
+            script="exp_gut_information_cost_selector.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/gut_information_cost_selector.json",
+                "sections/generated/tab_gut_information_cost_selector.tex",
+            ],
+        ),
+        Step(
+            name="m11_boundary_z34_fourier_decomposition",
+            script="exp_m11_boundary_z34_fourier_decomposition.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m11_boundary_z34_fourier_decomposition.json",
+                "sections/generated/eq_m11_boundary_z34_decomposition.tex",
+            ],
+        ),
+        Step(
+            name="fold6_b3c3_seed",
+            script="exp_fold6_b3c3_seed.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold6_b3c3_seed.json",
+                "sections/generated/eq_fold6_b3c3_seed.tex",
+                "sections/generated/tab_fold6_b3c3_root_dictionary_B3.tex",
+                "sections/generated/tab_fold6_b3c3_root_dictionary_C3.tex",
+            ],
+        ),
+        Step(
+            name="boundary_uplift_m10_b3c3_dictionary",
+            script="exp_boundary_uplift_m10_b3c3_dictionary.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/boundary_uplift_m10_b3c3_dictionary.json",
+                "sections/generated/eq_boundary_uplift_m10_isomorphism.tex",
+                "sections/generated/tab_boundary_uplift_m10_dictionary.tex",
+            ],
+        ),
+        Step(
+            name="window6_c6_orbit_patisalam_seed",
+            script="exp_window6_c6_orbit_patisalam_seed.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_c6_orbit_patisalam_seed.json",
+                "sections/generated/eq_window6_c6_orbit_decomposition.tex",
+                "sections/generated/eq_window6_c6_character_decomposition.tex",
+                "sections/generated/tab_window6_c6_orbit_decomposition.tex",
+                "sections/generated/tab_window6_patisalam_9633_partition.tex",
+                "sections/generated/eq_fold6_bin_uplift_delta_set.tex",
+                "sections/generated/tab_fold6_bin_uplift_choice_collapse.tex",
+                "sections/generated/tab_fold6_boundary_sheet_pairs.tex",
+                "sections/generated/tab_foldbin_boundary_lift_m6_m8.tex",
+            ],
+        ),
+        Step(
+            name="window6_edge_flux_skeleton",
+            script="exp_window6_edge_flux_skeleton.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_edge_flux_skeleton.json",
+                "artifacts/export/window6_pushforward_markov_kernel.json",
+                "sections/generated/eq_window6_pushforward_markov_kernel.tex",
+                "sections/generated/eq_window6_edge_flux_skeleton.tex",
+            ],
+        ),
+        Step(
+            name="window6_pushforward_markov_spectral_gap",
+            script="exp_window6_pushforward_markov_spectral_gap.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_pushforward_markov_spectral_gap.json",
+                "sections/generated/eq_window6_pushforward_markov_spectral_gap.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_geo_stabilizer",
+            script="exp_foldbin6_geo_stabilizer.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_geo_stabilizer.json",
+                "sections/generated/eq_foldbin6_geo_stabilizer.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_geo_orbit_charge",
+            script="exp_foldbin6_geo_orbit_charge.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_geo_orbit_charge.json",
+                "sections/generated/tab_foldbin6_geo_orbit_charge.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_strong_lumpability_counterexample",
+            script="exp_foldbin6_strong_lumpability_counterexample.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_strong_lumpability_counterexample.json",
+                "sections/generated/eq_foldbin6_strong_lumpability_counterexample.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_fiber_hamming_min_distance",
+            script="exp_foldbin6_fiber_hamming_min_distance.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_fiber_hamming_min_distance.json",
+                "sections/generated/eq_foldbin6_fiber_hamming_min_distance_value_counts.tex",
+                "sections/generated/tab_foldbin6_fiber_hamming_min_distance.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_bitflip_stability_polynomial",
+            script="exp_foldbin6_bitflip_stability_polynomial.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_bitflip_stability_polynomial.json",
+                "sections/generated/eq_foldbin6_bitflip_stability_polynomial.tex",
+            ],
+        ),
+        Step(
+            name="window6_type_adjacency_graph_rigidity",
+            script="exp_window6_type_adjacency_graph_rigidity.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_type_adjacency_graph_rigidity.json",
+                "sections/generated/eq_window6_type_adjacency_graph_rigidity.tex",
+            ],
+        ),
+        Step(
+            name="window6_fiber_edge_coupling_matrix",
+            script="exp_window6_fiber_edge_coupling_matrix.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_fiber_edge_coupling_matrix.json",
+                "sections/generated/eq_window6_fiber_edge_coupling_det.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_information_loss_constants",
+            script="exp_foldbin6_information_loss_constants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_information_loss_constants.json",
+                "sections/generated/eq_foldbin6_information_loss_constants.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_fiber_affine_geometry",
+            script="exp_foldbin6_fiber_affine_geometry.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_fiber_affine_geometry.json",
+                "sections/generated/tab_foldbin6_fiber_affine_geometry.tex",
+            ],
+        ),
+        Step(
+            name="fold_zeck_time_factor_succ_reset_audit",
+            script="exp_fold_zeck_time_factor_succ_reset_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zeck_time_factor_succ_reset_audit.json",
+                "sections/generated/tab_fold_zeck_succ_unique_branch_audit_m2_m10.tex",
+                "sections/generated/tab_fold_zeck_reset_event_audit_m2_m10.tex",
+                "sections/generated/tab_fold_zeck_reset_event_gaps_m6.tex",
+            ],
+        ),
+        Step(
+            name="window6_family_uplift_lock",
+            script="exp_window6_family_uplift_lock.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_family_uplift_lock.json",
+                "sections/generated/tab_window6_family_uplift_lock.tex",
+                "sections/generated/eq_window6_family_singlet_completion.tex",
+            ],
+        ),
+        Step(
+            name="fold_bin_gauge_m6_invariants",
+            script="exp_fold_bin_gauge_m6_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bin_gauge_m6_invariants.json",
+                "sections/generated/tab_fold_bin_gauge_m6_invariants.tex",
+                "sections/generated/tab_fold_bin_gauge_m6_fibers.tex",
+            ],
+        ),
+        Step(
+            name="fold_bin_degeneracy_spectrum_m6_m12",
+            script="exp_fold_bin_degeneracy_spectrum_m6_m12.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bin_degeneracy_spectrum_m6_m12.json",
+                "sections/generated/tab_fold_bin_degeneracy_spectrum_m6_m12.tex",
+            ],
+        ),
+        Step(
+            name="fold_bin_auditable_invariants_m6_m12",
+            script="exp_fold_bin_auditable_invariants_m6_m12.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bin_auditable_invariants_m6_m12.json",
+                "sections/generated/tab_fold_bin_auditable_invariants_m6_m12.tex",
+            ],
+        ),
+        Step(
+            name="foldbin_fold_complement_identity_m6_m12",
+            script="exp_foldbin_fold_complement_identity_m6_m12.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin_fold_complement_identity_m6_m12.json",
+                "sections/generated/eq_foldbin_fold_complement_identity_m6_m12.tex",
+            ],
+        ),
+        Step(
+            name="fibonacci_lie_resonance_ladder",
+            script="exp_fibonacci_lie_resonance_ladder.py",
+            args=["--m-min", "1", "--m-max", "500"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_lie_resonance_ladder.json",
+                "sections/generated/tab_fibonacci_lie_resonance_ladder.tex",
+                "sections/generated/eq_fib_lie_resonance_solutions.tex",
             ],
         ),
         Step(
@@ -176,6 +494,98 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fib_prime_resolution_windows.json",
                 "sections/generated/tab_fib_prime_resolution_windows.tex",
+            ],
+        ),
+        Step(
+            name="fibonacci_cube_fvector_audit",
+            script="exp_fibonacci_cube_fvector_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_cube_fvector_audit.json",
+                "sections/generated/eq_fibonacci_cube_bivariate_gf.tex",
+                "sections/generated/eq_fibonacci_cube_coeff_formula.tex",
+                "sections/generated/tab_fibonacci_cube_fvector_small_n.tex",
+            ],
+        ),
+        Step(
+            name="fibonacci_cube_gray_hamilton_audit",
+            script="exp_fibonacci_cube_gray_hamilton_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_cube_gray_hamilton_audit.json",
+                "sections/generated/tab_fibonacci_cube_gray_hamilton_audit.tex",
+            ],
+        ),
+        Step(
+            name="fibonacci_cube_toggle_coxeter_audit",
+            script="exp_fibonacci_cube_toggle_coxeter_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fibonacci_cube_toggle_coxeter_audit.json",
+                "sections/generated/tab_fibonacci_cube_toggle_coxeter_audit.tex",
+            ],
+        ),
+        Step(
+            name="fence_order_poly_spectral_audit",
+            script="exp_fence_order_poly_spectral_audit.py",
+            args=["--k-max", "12", "--l-max", "18"],
+            expected_outputs=[
+                "artifacts/export/fence_order_poly_spectral_audit.json",
+                "sections/generated/tab_fence_order_poly_spectral_audit.tex",
+            ],
+        ),
+        Step(
+            name="fence_scheduling_euler_volume_audit",
+            script="exp_fence_scheduling_euler_volume_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fence_scheduling_euler_volume_audit.json",
+                "sections/generated/tab_fence_scheduling_euler_volume_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_fiber_homotopy_window6",
+            script="exp_fold_fiber_homotopy_window6.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_fiber_homotopy_window6.json",
+                "sections/generated/tab_fold_fiber_homotopy_m6.tex",
+            ],
+        ),
+        Step(
+            name="fold_fiber_reconstruction_window6",
+            script="exp_fold_fiber_reconstruction_window6.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_fiber_reconstruction_window6.json",
+                "sections/generated/tab_fold_fiber_reconstruction_invariants_m6.tex",
+            ],
+        ),
+        Step(
+            name="fold_factor_chain_hypercube_gap_m6_m12",
+            script="exp_fold_factor_chain_hypercube_gap_m6_m12.py",
+            args=["--m-list", "6,12"],
+            expected_outputs=[
+                "artifacts/export/fold_factor_chain_hypercube_gap_m6_m12.json",
+                "sections/generated/tab_fold_factor_chain_gap_m6_m12.tex",
+            ],
+        ),
+        Step(
+            name="gut_crt_235_m58_collision_gap",
+            script="exp_gut_crt_235_m58_collision_gap.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/gut_crt_235_m58_collision_gap.json",
+                "sections/generated/eq_gut_crt_235_m58_collision_gap.tex",
+            ],
+        ),
+        Step(
+            name="hecke_e4_prime_audit_p235",
+            script="exp_hecke_e4_prime_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/hecke_e4_prime_audit_p235.json",
+                "sections/generated/tab_hecke_e4_prime_audit_p235.tex",
             ],
         ),
         Step(
@@ -205,6 +615,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_a2_twist_difference_chain_scan",
+            script="exp_fold_collision_a2_twist_difference_chain_scan.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_a2_twist_difference_chain_scan.json",
+                "sections/generated/tab_fold_collision_a2_twist_difference_chain_scan.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A3_primitive",
             script="exp_collision_kernel_A3_primitive.py",
             args=[],
@@ -220,6 +639,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/collision_kernel_A3_finite_part.json",
                 "sections/generated/tab_collision_kernel_A3_finite_part.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_edge_weight_threshold",
+            script="exp_collision_kernel_A4_edge_weight_threshold.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_edge_weight_threshold.json",
+                "sections/generated/eq_collision_kernel_A4_edge_weight_threshold.tex",
             ],
         ),
         Step(
@@ -241,6 +669,26 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_qstar_breakpoints_eps1e6_q2_20",
+            script="exp_fold_collision_qstar_breakpoints_eps1e6_q2_20.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_qstar_breakpoints_eps1e6_q2_20.json",
+                "sections/generated/tab_fold_collision_qstar_breakpoints_eps1e6_q2_20.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_multifractal_envelope_pz_q10",
+            script="exp_fold_collision_multifractal_envelope_pz_q10.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_multifractal_envelope_pz_q10.json",
+                "artifacts/export/fold_collision_multifractal_envelope_pz_q10.png",
+                "sections/generated/tab_fold_collision_multifractal_envelope_pz_q10.tex",
+                "sections/generated/fig_fold_collision_multifractal_envelope_pz_q10.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_renyi_endpoint_convergence_q60",
             script="exp_fold_collision_renyi_endpoint_convergence_q60.py",
             args=["--m-min", "24", "--m-max", "30", "--q-list", "20,30,40,60"],
@@ -252,7 +700,16 @@ def build_steps() -> List[Step]:
         Step(
             name="fold_collision_pressure_multifractal_q60",
             script="exp_fold_collision_pressure_multifractal_q60.py",
-            args=["--m-min", "24", "--m-max", "30", "--q-max", "60", "--use-exact-up-to", "17"],
+            args=[
+                "--m-min",
+                "24",
+                "--m-max",
+                "30",
+                "--q-max",
+                "60",
+                "--use-exact-up-to",
+                "17",
+            ],
             expected_outputs=[
                 "artifacts/export/fold_collision_pressure_multifractal_q60.json",
                 "artifacts/export/fold_collision_pressure_multifractal_q60_rq.png",
@@ -282,6 +739,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_max_fiber_achievers_hiddenbit_metrics",
+            script="exp_fold_max_fiber_achievers_hiddenbit_metrics.py",
+            args=["--m-min", "2", "--m-max", "32"],
+            expected_outputs=[
+                "artifacts/export/fold_max_fiber_achievers_hiddenbit_metrics.json",
+                "sections/generated/tab_fold_max_fiber_achievers_hiddenbit_metrics.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_recursions",
             script="exp_fold_collision_moment_recursions.py",
             args=[],
@@ -297,6 +763,122 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_recursions_moddp_9_17.json",
                 "sections/generated/tab_fold_collision_moment_recursions_9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod2_shadow_q9_17",
+            script="exp_fold_collision_charpoly_mod2_shadow_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod2_shadow_q9_17.json",
+                "sections/generated/tab_fold_collision_charpoly_mod2_shadow_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod3_selection_q13_15",
+            script="exp_fold_collision_charpoly_mod3_selection_q13_15.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod3_selection_q13_15.json",
+                "sections/generated/tab_fold_collision_charpoly_mod3_selection_q13_15.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod5_branch_q13_15",
+            script="exp_fold_collision_charpoly_mod5_branch_q13_15.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod5_branch_q13_15.json",
+                "sections/generated/tab_fold_collision_charpoly_mod5_branch_q13_15.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod7_selection_q13_15",
+            script="exp_fold_collision_charpoly_modp_factorization.py",
+            args=[
+                "--p",
+                "7",
+                "--q-list",
+                "13,14,15",
+                "--name",
+                "fold_collision_charpoly_mod7_selection_q13_15",
+                "--pull-out-a2",
+            ],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod7_selection_q13_15.json",
+                "sections/generated/tab_fold_collision_charpoly_mod7_selection_q13_15.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod11_fingerprint_q12_15",
+            script="exp_fold_collision_charpoly_modp_factorization.py",
+            args=[
+                "--p",
+                "11",
+                "--q-list",
+                "12,13,15",
+                "--name",
+                "fold_collision_charpoly_mod11_fingerprint_q12_15",
+                "--pull-out-a2",
+            ],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod11_fingerprint_q12_15.json",
+                "sections/generated/tab_fold_collision_charpoly_mod11_fingerprint_q12_15.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod13_fingerprint_q13",
+            script="exp_fold_collision_charpoly_modp_factorization.py",
+            args=[
+                "--p",
+                "13",
+                "--q-list",
+                "13",
+                "--name",
+                "fold_collision_charpoly_mod13_fingerprint_q13",
+                "--pull-out-a2",
+            ],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod13_fingerprint_q13.json",
+                "sections/generated/tab_fold_collision_charpoly_mod13_fingerprint_q13.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_resonance_nullmodes_hankel_q9_17",
+            script="exp_fold_collision_resonance_nullmodes_hankel.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_resonance_nullmodes_hankel_q9_17.json",
+                "sections/generated/tab_fold_collision_resonance_gap_delta_q_9_17.tex",
+                "sections/generated/tab_fold_collision_resonance_nullmodes_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_resonance_nullmodes_primitive_quotient_q9_17",
+            script="exp_fold_collision_resonance_nullmodes_primitive_quotient_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_resonance_nullmodes_primitive_quotient_q9_17.json",
+                "sections/generated/tab_fold_collision_resonance_nullmodes_primitive_quotient_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_col_hankel_mod3_alignment_q9",
+            script="exp_fold_collision_col_hankel_mod3_alignment.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_col_hankel_mod3_alignment_q9.json",
+                "artifacts/export/fold_collision_col_hankel_mod3_alignment_q9.png",
+                "sections/generated/fig_fold_collision_col_hankel_mod3_alignment_q9.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_moment_recursions_18_23_precomputed",
+            script="exp_fold_collision_moment_recursions_18_23_precomputed.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_recursions_18_23.json",
+                "sections/generated/tab_fold_collision_moment_recursions_18_23.tex",
             ],
         ),
         Step(
@@ -318,6 +900,33 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_moment_spectrum_k18_23",
+            script="exp_fold_collision_moment_spectrum_k18_23.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_spectrum_k18_23.json",
+                "sections/generated/tab_fold_collision_moment_spectrum_k18_23.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_phi_reconstruction_from_renyi",
+            script="exp_fold_collision_phi_reconstruction_from_renyi.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_phi_reconstruction_from_renyi.json",
+                "sections/generated/tab_fold_collision_phi_reconstruction_from_renyi.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_crossq_g_profile_q2_23",
+            script="exp_fold_collision_crossq_g_profile_q2_23.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_crossq_g_profile_q2_23.json",
+                "sections/generated/tab_fold_collision_crossq_g_profile_q2_23.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_kernel_rh_scan_q2_17",
             script="exp_fold_collision_kernel_rh_scan_q2_17.py",
             args=[],
@@ -327,12 +936,49 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_kernel_rh_scan_q18_23",
+            script="exp_fold_collision_kernel_rh_scan_q18_23.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_kernel_rh_scan_q18_23.json",
+                "sections/generated/tab_fold_collision_kernel_rh_scan_q18_23.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_delta_linear_fit_q18_23",
+            script="exp_fold_collision_delta_linear_fit_q18_23.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_delta_linear_fit_q18_23.json",
+                "sections/generated/eq_fold_collision_delta_linear_fit_q18_23.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_shadow_spectral_packet_q9_17",
             script="exp_fold_collision_shadow_spectral_packet_q9_17.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_collision_shadow_spectral_packet_q9_17.json",
                 "sections/generated/tab_fold_collision_shadow_spectral_packet_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_shadow_spectral_packet_new_conclusions_q9_17",
+            script="exp_fold_collision_shadow_spectral_packet_new_conclusions_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_shadow_spectral_packet_new_conclusions_q9_17.json",
+                "sections/generated/tab_fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17.tex",
+                "sections/generated/tab_fold_collision_shadow_spectral_packet_two_step_renormalization_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_resonance_aitken_certificate_q9_17",
+            script="exp_fold_collision_resonance_aitken_certificate_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_resonance_aitken_certificate_q9_17.json",
+                "sections/generated/tab_fold_collision_resonance_aitken_certificate_q9_17.tex",
             ],
         ),
         Step(
@@ -390,6 +1036,31 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_holonomy_cocycle_audit",
+            script="exp_pom_holonomy_cocycle_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_holonomy_cocycle_audit.json",
+            ],
+        ),
+        Step(
+            name="pom_projword_three_gen_kb_completion_audit",
+            script="exp_pom_projword_three_gen_kb_completion_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_projword_three_gen_kb_completion_audit.json",
+                "sections/generated/tab_pom_projword_three_gen_kb_completion_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_tail_budget_gamma_cert",
+            script="exp_fold_tail_budget_gamma_cert.py",
+            args=["--m", "24", "--eps-list", "1e-6,1e-9", "--q-max", "17"],
+            expected_outputs=[
+                "artifacts/export/fold_tail_budget_gamma_cert.json",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_hankel_rank",
             script="exp_fold_collision_moment_hankel_rank.py",
             args=[],
@@ -399,20 +1070,20 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="real_input_40_local_bigeometry_invariants",
-            script="exp_real_input_40_local_bigeometry_invariants.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/real_input_40_local_bigeometry_invariants.json",
-                "sections/generated/tab_real_input_40_local_bigeometry_invariants.tex",
-            ],
-        ),
-        Step(
             name="phi_m_sofic_entropy",
             script="exp_phi_m_sofic_entropy.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/phi_m_sofic_entropy.csv",
+            ],
+        ),
+        Step(
+            name="phi_m_sync_theory",
+            script="exp_phi_m_sync_theory.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/phi_m_sync_theory.json",
+                "sections/generated/tab_phi_m_sync_theory.tex",
             ],
         ),
         Step(
@@ -456,6 +1127,42 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_sp6_isotropy_scan",
+            script="exp_sync_kernel_weighted_sp6_isotropy_scan.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_sp6_isotropy_scan.json",
+                "sections/generated/tab_sync_kernel_weighted_sp6_isotropy_scan.tex",
+            ],
+        ),
+        Step(
+            name="sp6_isotropy_root_split_ratio",
+            script="exp_sp6_isotropy_root_split_ratio.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sp6_isotropy_root_split_ratio.json",
+                "sections/generated/tab_sp6_isotropy_root_split_ratio.tex",
+            ],
+        ),
+        Step(
+            name="moment_pressure_surface_sync10",
+            script="exp_moment_kernel_pressure_surface_sync10.py",
+            args=[
+                "--k-list",
+                "2,3,4,5",
+                "--u-grid",
+                "1,0.8,0.6,0.4,0.2",
+                "--energy",
+                "output",
+                "--plot",
+            ],
+            expected_outputs=[
+                "artifacts/export/moment_pressure_surface_sync10.json",
+                "artifacts/export/moment_pressure_surface_sync10.png",
+                "sections/generated/fig_moment_pressure_surface_sync10.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_3d_exact_audits",
             script="exp_sync_kernel_weighted_3d_exact_audits.py",
             args=[],
@@ -493,12 +1200,29 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_weighted_self_dual_bridge",
+            script="exp_sync_kernel_weighted_self_dual_bridge.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_self_dual_bridge.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_weighted_padic_unit_root",
             script="exp_sync_kernel_weighted_padic_unit_root.py",
             args=["--p", "5", "--N", "12", "--k-max", "6", "--u", "minus1"],
             expected_outputs=[
                 "artifacts/export/sync_kernel_weighted_padic_unit_root.json",
                 "sections/generated/tab_sync_kernel_weighted_padic_unit_root.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_weighted_newman_threshold",
+            script="exp_sync_kernel_weighted_newman_threshold.py",
+            args=["--dps", "120"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_weighted_newman_threshold.json",
+                "sections/generated/eq_sync_kernel_weighted_newman_threshold.tex",
             ],
         ),
         Step(
@@ -509,6 +1233,15 @@ def build_steps() -> List[Step]:
                 "artifacts/export/sync_kernel_rate_curve_resultant.json",
                 "sections/generated/tab_sync_kernel_rate_curve_resultant_degree.tex",
                 "sections/generated/eq_sync_kernel_rate_curve_resultant_structure.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_rate_curve_duality_reduction",
+            script="exp_sync_kernel_rate_curve_duality_reduction.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_rate_curve_duality_reduction.json",
+                "sections/generated/eq_sync_kernel_rate_curve_duality_reduction.tex",
             ],
         ),
         Step(
@@ -557,6 +1290,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_10_state_automaton_invariants",
+            script="exp_sync_kernel_10_state_automaton_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_10_state_automaton_invariants.json",
+                "sections/generated/tab_sync_kernel_reset_targets.tex",
+                "sections/generated/tab_sync_kernel_transition_semigroup_invariants.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_cyclotomic_elimination",
             script="exp_sync_kernel_cyclotomic_elimination.py",
             args=[],
@@ -574,6 +1317,16 @@ def build_steps() -> List[Step]:
                 "artifacts/export/sync_kernel_hatdelta_discriminant.json",
                 "sections/generated/eq_sync_kernel_hatdelta_discriminant.tex",
                 "sections/generated/tab_sync_kernel_hatdelta_branch_points.tex",
+                "sections/generated/tab_sync_kernel_hatdelta_nearest_complex_branch_point.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_hatdelta_nearest_complex_branch_point_tan_half_angle",
+            script="exp_sync_kernel_hatdelta_nearest_complex_branch_point_tan_half_angle.py",
+            args=["--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_hatdelta_nearest_complex_branch_point_tan_half_angle.json",
+                "sections/generated/tab_sync_kernel_hatdelta_nearest_complex_branch_point_tan_half_angle.tex",
             ],
         ),
         Step(
@@ -602,6 +1355,15 @@ def build_steps() -> List[Step]:
                 "sections/generated/eq_sync_kernel_xi_cubic_cos_polynomial.tex",
                 "sections/generated/eq_sync_kernel_xi_off_critical_shift.tex",
                 "sections/generated/tab_sync_kernel_xi_cubic_roots.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_unitary_slice_spectral_crossing",
+            script="exp_sync_kernel_unitary_slice_spectral_crossing.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_unitary_slice_spectral_crossing.json",
+                "sections/generated/tab_sync_kernel_unitary_slice_spectral_crossing.tex",
             ],
         ),
         Step(
@@ -648,6 +1410,33 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_lucas_pipeline",
+            script="exp_real_input_40_lucas_pipeline.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_lucas_pipeline.json",
+                "sections/generated/eq_real_input_40_lucas_pipeline.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_sync_time_absorbing_chain",
+            script="exp_real_input_40_sync_time_absorbing_chain.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_sync_time_absorbing_chain.json",
+                "sections/generated/tab_real_input_40_sync_time_absorbing_chain.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_reset_regeneration_constants",
+            script="exp_real_input_40_reset_regeneration_constants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_reset_regeneration_constants.json",
+                "sections/generated/eq_real_input_40_reset_regeneration_constants.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_kernel_newman_threshold",
             script="exp_real_input_40_kernel_newman_threshold.py",
             args=[],
@@ -665,12 +1454,37 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_real_input_40_zeta_uv",
+            script="exp_sync_kernel_real_input_40_zeta_uv.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_zeta_uv.json",
+            ],
+        ),
+        Step(
+            name="real_input_40_geodesic_prime_shadow",
+            script="exp_real_input_40_geodesic_prime_shadow.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_geodesic_prime_shadow.json",
+            ],
+        ),
+        Step(
             name="real_input_40_output_potential_zero_temp_ground_sft",
             script="exp_real_input_40_output_potential_zero_temp_ground_sft.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/real_input_40_output_potential_zero_temp_ground_sft.json",
                 "sections/generated/eq_real_input_40_output_potential_zero_temp_ground_sft.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_output_potential_puiseux_asymptotics",
+            script="exp_real_input_40_output_potential_puiseux_asymptotics.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_puiseux_asymptotics.json",
+                "sections/generated/eq_real_input_40_output_potential_puiseux_asymptotics.tex",
             ],
         ),
         Step(
@@ -703,14 +1517,29 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_addition_collision_spectrum",
+            script="exp_sync_kernel_addition_collision_spectrum.py",
+            args=[
+                "--dense-eig",
+            ],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_addition_collision_spectrum.json",
+                "sections/generated/tab_sync_kernel_addition_collision_spectrum.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity_charge_closed_form",
             script="exp_sync_kernel_real_input_40_arity_charge_closed_form.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_arity_charge_closed_form.json",
                 "sections/generated/eq_real_input_40_arity_charge_det_closed.tex",
+                "sections/generated/eq_real_input_40_arity_charge_det_q_cubic.tex",
                 "sections/generated/eq_real_input_40_arity_charge_zero_charge_zeta.tex",
                 "sections/generated/eq_real_input_40_arity_charge_cumulants_closed.tex",
+                "sections/generated/tab_real_input_40_arity_charge_coboundary_audit.tex",
+                "sections/generated/tab_real_input_40_arity_charge_density_audit.tex",
+                "sections/generated/eq_real_input_40_arity_charge_B_charpoly.tex",
             ],
         ),
         Step(
@@ -719,6 +1548,15 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_arity_2d.json",
+            ],
+        ),
+        Step(
+            name="real_input_40_rho_m2_fingerprint",
+            script="exp_real_input_40_rho_m2_fingerprint.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_rho_m2_fingerprint.json",
+                "sections/generated/tab_real_input_40_rho_m2_fingerprint.tex",
             ],
         ),
         Step(
@@ -756,6 +1594,26 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_arity_3d_N2_335.json",
                 "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2.tex",
+            ],
+        ),
+        Step(
+            name="bridge_kit_real_input_40_arity_335_N2",
+            script="exp_bridge_kit.py",
+            args=[
+                "--third-axis",
+                "N2",
+                "--triple",
+                "3x3x5",
+                "--k-max",
+                "200",
+                "--mertens-n",
+                "200",
+                "--output",
+                "artifacts/export/bridge_kit_real_input_40_arity_335_N2.json",
+            ],
+            expected_outputs=[
+                "artifacts/export/bridge_kit_real_input_40_arity_335_N2.json",
+                "sections/generated/eq_bridge_kit_real_input_40_arity_335_N2.tex",
             ],
         ),
         Step(
@@ -797,6 +1655,33 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_rho_ppp_prime_scan",
+            script="exp_real_input_40_rho_ppp_prime_scan.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_rho_ppp_prime_scan.json",
+                "sections/generated/tab_real_input_40_rho_ppp_prime_scan.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_spectral_tax_workload",
+            script="exp_real_input_40_spectral_tax_workload.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_spectral_tax_workload.json",
+                "sections/generated/tab_real_input_40_spectral_tax_workload.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_lapse_modulated_tau_mix",
+            script="exp_real_input_40_lapse_modulated_tau_mix.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_lapse_modulated_tau_mix.json",
+                "sections/generated/tab_real_input_40_lapse_modulated_tau_mix.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_covariance_worst_character",
             script="exp_real_input_40_covariance_predict_worst_character.py",
             args=["--triple", "3x3x5", "--third-axis", "N2", "--h", "0.0002"],
@@ -830,6 +1715,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_pure_collision_block_factorization.json",
                 "sections/generated/tab_real_input_40_pure_collision_block_factorization.tex",
+            ],
+        ),
+        Step(
+            name="collision_input_4x4_gibbs_closed_form_audit",
+            script="exp_collision_input_4x4_gibbs_closed_form_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_input_4x4_gibbs_closed_form_audit.json",
+                "sections/generated/tab_collision_input_4x4_gibbs_closed_form_audit.tex",
             ],
         ),
         Step(
@@ -867,6 +1761,15 @@ def build_steps() -> List[Step]:
                 "artifacts/export/arity_pure_collision_cubic_rh_threshold_beta.json",
                 "sections/generated/eq_arity_pure_collision_cubic_rh_threshold_uR.tex",
                 "sections/generated/tab_arity_pure_collision_cubic_rh_threshold_beta.tex",
+            ],
+        ),
+        Step(
+            name="arity_pure_collision_cubic_beta_asymptotic_rate",
+            script="exp_arity_pure_collision_cubic_beta_asymptotic_rate.py",
+            args=["--dps", "80"],
+            expected_outputs=[
+                "artifacts/export/arity_pure_collision_cubic_beta_asymptotic_rate.json",
+                "sections/generated/tab_arity_pure_collision_cubic_beta_asymptotic_rate.tex",
             ],
         ),
         Step(
@@ -950,6 +1853,24 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/sync_kernel_real_input_40_logM_theta_taylor.json",
                 "sections/generated/tab_real_input_40_logM_theta_taylor.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_local_bigeometry_invariants",
+            script="exp_real_input_40_local_bigeometry_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_local_bigeometry_invariants.json",
+                "sections/generated/tab_real_input_40_local_bigeometry_invariants.tex",
+            ],
+        ),
+        Step(
+            name="alignment_cos_vs_sqrt5_phi2",
+            script="exp_alignment_cos_vs_sqrt5_phi2.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/alignment_cos_vs_sqrt5_phi2.json",
+                "sections/generated/eq_alignment_cos_vs_sqrt5_phi2.tex",
             ],
         ),
         Step(
@@ -1090,6 +2011,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_lifted_chain_correlation",
+            script="exp_real_input_40_lifted_chain_correlation.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_lifted_chain_correlation.json",
+                "sections/generated/tab_real_input_40_lifted_chain_eta_envelope.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_tau_corr_vs_tau_mix",
             script="exp_real_input_40_tau_corr_vs_tau_mix.py",
             args=[],
@@ -1132,6 +2062,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_pn_sharp",
+            script="exp_real_input_40_pn_sharp.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_pn_sharp.json",
+                "sections/generated/tab_real_input_40_pn_sharp.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_abel_mertens_two_series_split",
             script="exp_real_input_40_abel_mertens_two_series_split.py",
             args=["--N", "160", "--dps", "80"],
@@ -1168,6 +2107,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="add_collision_spectrum_10_vs_40",
+            script="exp_add_collision_spectrum_10_vs_40.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/add_collision_spectrum_10_vs_40.json",
+                "sections/generated/tab_add_collision_spectrum_10_vs_40.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_graph_viz",
             script="exp_sync_kernel_graph_viz.py",
             args=[],
@@ -1192,6 +2140,15 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_parallel_addition_kernels_bfs.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint.tex",
                 "sections/generated/tab_parallel_addition_kernels_fingerprint_main.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_zero_temp_scales",
+            script="exp_parallel_addition_kernels_zero_temp_scales.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/parallel_addition_kernels_zero_temp_scales.json",
+                "sections/generated/tab_parallel_addition_kernels_zero_temp_scales.tex",
             ],
         ),
         Step(
@@ -1299,6 +2256,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_critical_resonance_constant",
+            script="exp_fold_critical_resonance_constant.py",
+            args=["--n-max", "200"],
+            expected_outputs=[
+                "artifacts/export/fold_critical_resonance_constant.json",
+                "sections/generated/eq_fold_critical_resonance_constant_numeric.tex",
+            ],
+        ),
+        Step(
+            name="fold_bulk_resonance_integer_ladder",
+            script="exp_fold_bulk_resonance_integer_ladder.py",
+            args=["--n-max", "200", "--u-max", "20000", "--store-u-max", "30"],
+            expected_outputs=[
+                "artifacts/export/fold_bulk_resonance_integer_ladder.json",
+                "sections/generated/eq_fold_bulk_resonance_integer_ladder_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_multiplicity_histogram",
             script="exp_fold_multiplicity_histogram.py",
             args=[],
@@ -1308,12 +2283,40 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zero_coset_union_count",
+            script="exp_fold_zero_coset_union_count.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zero_coset_union_count.json",
+            ],
+        ),
+        Step(
             name="fold_conditional_expectation_singular_spectrum",
             script="exp_fold_conditional_expectation_singular_spectrum.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_conditional_expectation_singular_spectrum.json",
                 "sections/generated/tab_fold_conditional_expectation_singular_spectrum.tex",
+            ],
+        ),
+        Step(
+            name="fold_fiber_dispersion_index",
+            script="exp_fold_fiber_dispersion_index.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_fiber_dispersion_index.json",
+                "sections/generated/tab_fold_fiber_dispersion_index.tex",
+            ],
+        ),
+        Step(
+            name="fold_conditional_expectation_left_tail_conclusions",
+            script="exp_fold_conditional_expectation_left_tail_conclusions.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_conditional_expectation_left_tail_conclusions.json",
+                "sections/generated/tab_fold_conditional_expectation_left_tail_bases.tex",
+                "sections/generated/tab_fold_conditional_expectation_effective_support.tex",
+                "sections/generated/eq_fold_conditional_expectation_left_tail_m24.tex",
             ],
         ),
         Step(
@@ -1344,6 +2347,178 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_kernel_rh_scan_q2_8",
+            script="exp_fold_collision_kernel_rh_scan_q2_8.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_fold_collision_kernel_rh_scan_q2_8.tex",
+                "sections/generated/eq_collision_kernel_A4_rh_breaking.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_atomic_2cycle_locator",
+            script="exp_real_input_40_atomic_2cycle_locator.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_real_input_40_atomic_2cycle_states.tex",
+            ],
+        ),
+        Step(
+            name="relative_zeta_sync_vs_grammar",
+            script="exp_relative_zeta_sync_vs_grammar.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_relative_zeta_sync_vs_grammar.tex",
+            ],
+        ),
+        Step(
+            name="relative_zeta_sync_vs_real_input",
+            script="exp_relative_zeta_sync_vs_real_input.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_relative_zeta_sync_vs_real_input.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_rate_curve_center_slice_audit",
+            script="exp_sync_kernel_rate_curve_center_slice_audit.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_rate_curve_center_slice_audit.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_weighted_pressure_2d_exact_mixed_derivatives",
+            script="exp_sync_kernel_weighted_pressure_2d_exact_mixed_derivatives.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/eq_sync_kernel_weighted_pressure_2d_exact_mixed_derivatives.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_finite_part",
+            script="exp_collision_kernel_A4_finite_part.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_collision_kernel_A4_finite_part.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_primitive",
+            script="exp_collision_kernel_A4_primitive.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_collision_kernel_A4_primitive.tex",
+            ],
+        ),
+        Step(
+            name="fold_binary_saturation",
+            script="exp_fold_binary_saturation.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_fold_binary_saturation_points.tex",
+            ],
+        ),
+        Step(
+            name="fold_output_gibbs_markov_fit",
+            script="exp_fold_output_gibbs_markov_fit.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_fold_output_gibbs_markov_fit.tex",
+                "sections/generated/eq_fold_output_gibbs_entropy_gap.tex",
+            ],
+        ),
+        Step(
+            name="parallel_addition_kernels_tunneling_action",
+            script="exp_parallel_addition_kernels_tunneling_action.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_parallel_addition_kernels_tunneling_action.tex",
+            ],
+        ),
+        Step(
+            name="phi_m_conjugacy_threshold",
+            script="exp_phi_m_conjugacy_threshold.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_phi_m_conjugacy_threshold.tex",
+            ],
+        ),
+        Step(
+            name="pom_projword_four_gen_kb_completion_audit",
+            script="exp_pom_projword_four_gen_kb_completion_audit.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_pom_projword_four_gen_kb_completion_audit.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_arity_charge_closed_form",
+            script="exp_sync_kernel_real_input_40_arity_charge_closed_form.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_arity_charge_coboundary_audit.tex",
+                "sections/generated/tab_real_input_40_arity_charge_density_audit.tex",
+                "sections/generated/eq_real_input_40_arity_charge_B_charpoly.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_arity_3d_335_N2",
+            script="exp_sync_kernel_real_input_40_arity_3d.py",
+            args=[
+                "--third-axis",
+                "N2",
+                "--triple-values",
+                "3x3x5",
+            ],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_fourier_top.tex",
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_summary.tex",
+            ],
+        ),
+        Step(
+            name="arity_335_n2_limit_law_table",
+            script="exp_arity_335_n2_limit_law_table.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_arity_dirichlet_mertens_335_N2_summary.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_artin_sign_mertens",
+            script="exp_real_input_40_artin_sign_mertens.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_artin_sign_mertens.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_collision_near1_pole_predictions",
+            script="exp_real_input_40_collision_near1_pole_predictions.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_real_input_40_collision_near1_pole_predictions.tex",
+            ],
+        ),
+        Step(
+            name="xi_2x2_selfdual_offcritical_template",
+            script="exp_xi_2x2_selfdual_offcritical_template.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_2x2_selfdual_offcritical_template.json",
+                "sections/generated/tab_xi_2x2_selfdual_offcritical_template.tex",
+            ],
+        ),
+        Step(
+            name="horizon_mu_endpoint_window_asymptotic",
+            script="exp_horizon_mu_endpoint_window_asymptotic.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/horizon_mu_endpoint_window_asymptotic.json",
+                "sections/generated/tab_horizon_mu_endpoint_window_asymptotic.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],
@@ -1363,6 +2538,7 @@ def build_steps() -> List[Step]:
                 "sections/generated/fig_arity_class_density.tex",
                 "sections/generated/fig_arity_class_logM.tex",
                 "sections/generated/tab_rotation_fold_vs_parry_summary.tex",
+                "sections/generated/tab_rotation_multiscale_residual_summary.tex",
                 "sections/generated/tab_iid_sources_fold_vs_parry_ci.tex",
                 "sections/generated/tab_phi_m_sofic_entropy.tex",
             ],
@@ -1389,6 +2565,9 @@ def main() -> None:
 
     cache = _load_cache()
     steps_cache: Dict[str, object] = dict(cache.get("steps", {}))  # type: ignore[assignment]
+
+    t0_all = time.time()
+    step_times: Dict[str, float] = {}
 
     for st in steps:
         script_path = scripts_dir() / st.script
@@ -1425,20 +2604,42 @@ def main() -> None:
 
         cmd = [sys.executable, str(script_path), *list(st.args)]
         print(f"[run_all] RUN {st.name}: {' '.join(cmd)}", flush=True)
+        t0 = time.time()
         subprocess.check_call(cmd, cwd=str(paper_root()))
+        dt = time.time() - t0
 
         for rel in st.expected_outputs:
             p = paper_root() / rel
             if not _nonempty(p):
                 raise SystemExit(f"[run_all] expected output missing/empty: {p}")
-        print(f"[run_all] OK {st.name}", flush=True)
+        step_times[st.name] = float(dt)
+        print(f"[run_all] OK {st.name} elapsed_s={dt:.3f}", flush=True)
 
         # Update cache after a successful step.
         steps_cache[st.name] = sig
         cache["steps"] = steps_cache
         _write_cache(cache)
 
-    print("[run_all] ALL DONE", flush=True)
+    dt_all = time.time() - t0_all
+    print(f"[run_all] ALL DONE elapsed_s={dt_all:.3f}", flush=True)
+
+    # Write a small timing audit (useful for performance regressions).
+    timing_path = paper_root() / "artifacts" / "export" / "run_all_timing.json"
+    timing_path.parent.mkdir(parents=True, exist_ok=True)
+    timing_path.write_text(
+        json.dumps(
+            {
+                "elapsed_s": float(dt_all),
+                "step_elapsed_s": {k: float(v) for k, v in sorted(step_times.items())},
+                "generated_at_unix_s": time.time(),
+                "python": sys.executable,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
 
 
 if __name__ == "__main__":

@@ -85,7 +85,7 @@ class _Progress:
 
 
 def _build_G(lam: sp.Symbol, u: sp.Symbol) -> sp.Expr:
-    # Must match `90_appendix_sync_12_app_real_input_40_zeta_u.tex`.
+    # Must match `sections/appendix/sync_kernel/real_input/app__real-input-40-zeta-u.tex`.
     return (
         lam**8
         - lam**7
@@ -113,6 +113,44 @@ def _alpha_rational() -> Tuple[sp.Expr, sp.Expr]:
     return num, den
 
 
+def _add_expr_multiline_tex(
+    expr: sp.Expr, *, symbol_names: Dict[sp.Symbol, str], max_line_len: int
+) -> list[str]:
+    expr = sp.expand(expr)
+    if expr == 0:
+        return ["0"]
+
+    if not expr.is_Add:
+        return [sp.latex(expr, symbol_names=symbol_names).strip()]
+
+    terms = sp.Add.make_args(expr)
+    pieces: list[str] = []
+    for i, t in enumerate(terms):
+        if i == 0:
+            pieces.append(sp.latex(t, symbol_names=symbol_names).strip())
+            continue
+
+        if t.could_extract_minus_sign():
+            pieces.append("- " + sp.latex(-t, symbol_names=symbol_names).strip())
+        else:
+            pieces.append("+ " + sp.latex(t, symbol_names=symbol_names).strip())
+
+    lines: list[str] = []
+    cur = ""
+    for p in pieces:
+        if not cur:
+            cur = p
+            continue
+        if len(cur) + 1 + len(p) <= max_line_len:
+            cur = cur + " " + p
+        else:
+            lines.append(cur)
+            cur = p
+    if cur:
+        lines.append(cur)
+    return lines
+
+
 def _write_tex(path: Path, res: LdpAlgebraicParam) -> None:
     lam, u = sp.Symbol("lam"), sp.Symbol("u")
     num = sp.sympify(res.numerator, locals={"lam": lam, "u": u})
@@ -133,14 +171,24 @@ def _write_tex(path: Path, res: LdpAlgebraicParam) -> None:
     lines.append("$$")
     lines.append("对本核的显式 $G$ 展开偏导后，上式可写为完全有理形式（其中分子分母均为多项式）：")
     lines.append("$$")
+    num_lines = _add_expr_multiline_tex(num, symbol_names=sym_names, max_line_len=75)
+    den_lines = _add_expr_multiline_tex(den, symbol_names=sym_names, max_line_len=75)
+    lines.append("\\begin{aligned}")
     lines.append(
-        "\\alpha(u)=\\frac{"
-        + sp.latex(num, symbol_names=sym_names)
-        + "}{"
-        + sp.latex(den, symbol_names=sym_names)
-        + "}"
-        "\\Bigg|_{\\lambda=\\lambda(u)}."
+        "\\alpha(u)&=\\left.\\frac{N(\\lambda,u)}{D(\\lambda,u)}\\right|_{\\lambda=\\lambda(u)}."
+        "\\\\"
     )
+    lines.append(f"N(\\lambda,u)&={num_lines[0]}\\\\")
+    for ln in num_lines[1:]:
+        lines.append(f"&\\qquad {ln}\\\\")
+    lines.append(f"D(\\lambda,u)&={den_lines[0]}\\\\")
+    for ln in den_lines[1:-1]:
+        lines.append(f"&\\qquad {ln}\\\\")
+    if len(den_lines) > 1:
+        lines.append(f"&\\qquad {den_lines[-1]}")
+    else:
+        lines[-1] = lines[-1].rstrip("\\\\")
+    lines.append("\\end{aligned}")
     lines.append("$$")
     lines.append("相应的大偏差率函数（Legendre 对偶）沿同一参数 $u$ 具有显式参数表示：")
     lines.append("$$")

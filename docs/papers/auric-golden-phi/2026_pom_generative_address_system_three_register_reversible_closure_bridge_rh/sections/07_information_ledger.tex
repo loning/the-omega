@@ -1,0 +1,137 @@
+\section{信息守恒：无损提升、可逆回放与信息账本}\label{sec:ledger}
+
+\subsection{折叠的多对一结构与纤维计数}
+固定 $m$，折叠 $\Fold_m:\Omega_m\twoheadrightarrow X_m$ 为多对一。对 $x\in X_m$ 定义纤维大小
+$$
+d_m(x):=\card{\Fold_m^{-1}(x)}.
+$$
+折叠的“不可逆性”由 $d_m(x)$ 的非平凡性刻画，其对数可被视为不可见容量预算。
+
+\subsection{推前与纤维均匀提升}
+定义推前（宏观化）算子
+$$
+P_m := (\Fold_m)_*:\Delta(\Omega_m)\to \Delta(X_m).
+$$
+对任意 $\pi\in\Delta(X_m)$，定义纤维均匀提升
+$$
+Q_m\pi := \mu^e\in\Delta(\Omega_m),
+$$
+其在每条纤维 $\Fold_m^{-1}(x)$ 上条件均匀，并满足 $P_m\circ Q_m=\mathrm{id}$。该对偶关系是“宏观直方图与微观最大熵提升”的严格对应。
+
+\subsection{信息账本恒等式}
+\begin{theorem}[信息账本恒等式]\label{thm:ledger-identity}
+取任意 $\mu\in\Delta(\Omega_m)$，记其稳定推前 $\pi:=P_m\mu \in \Delta(X_m)$，令 $\mu^e:=Q_m\pi$ 为纤维均匀提升。定义 Shannon 熵
+$$
+H(\nu):=-\sum_{s} \nu(s)\log \nu(s),
+$$
+以及 KL 散度
+$$
+D_{\mathrm{KL}}(\mu\|\nu):=\sum_{s} \mu(s)\log\frac{\mu(s)}{\nu(s)}.
+$$
+则有严格恒等式
+$$
+H(\mu)=H(\pi)+\EE_{\pi}[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e).
+$$
+\par\noindent\textnormal{\textbf{依赖：}$d_m(x)$ 的定义，推前 $P_m$ 与纤维均匀提升 $Q_m$ 的构造，以及 KL 展开恒等式。}
+\end{theorem}
+
+\begin{proof}
+对 $D_{\mathrm{KL}}(\mu\|\mu^e)$ 展开，并利用
+$$
+\mu^e(a)=\frac{\pi(x)}{d_m(x)},\qquad x=\Fold_m(a),
+$$
+按纤维分组，识别 $H(\pi)$ 与 $\EE_\pi[\log d_m(X)]$ 两项即可得到等式。
+\end{proof}
+
+该恒等式给出“微观信息”三项分解：宏观熵 $H(\pi)$ 是稳定可见部分；纤维体积项 $\EE_\pi[\log d_m]$ 是不可见容量预算；KL 残差项刻画偏离最大熵提升的“纤维内非均匀”信息。
+上述熵与散度的记号与基本性质可参见信息论标准参考 \cite{CoverThomas2006}。
+
+\begin{corollary}[最大熵提升与“不丢信息”的严格含义]\label{cor:maxent}
+对任意 $\mu\in\Delta(\Omega_m)$ 与 $\pi=P_m\mu$，有
+$$
+H(\mu)\le H(\pi)+\EE_\pi[\log d_m(X)],
+$$
+且等号当且仅当 $\mu=\mu^e$（即在每条纤维上条件均匀）。
+\end{corollary}
+
+\subsection{素数纤维（prime-register）外置残差与无损提升}
+折叠作为多对一投影必然丢失“纤维内标签”。POM 的策略不是否认该丢失，而是将其外置到可寻址残差空间，使整体演化在扩展空间上可逆。
+
+\begin{definition}[素数承载残差]\label{def:prime-residual}
+任意有限集合可嵌入有限支撑素数幂坐标；因此素数纤维 $P$（prime-register）可作为通用承载轴，将折叠纤维差异转移为可寻址的本体坐标，从而把“信息丢失”改写为“跨纤维存储”。
+\end{definition}
+
+\begin{proposition}[无损折叠提升的存在]\label{prop:lossless-uplift}
+存在单射
+$$
+\widehat{\Fold}_m:\Omega_m\hookrightarrow X_m\times P
+$$
+满足
+$$
+\mathrm{pr}_{X_m}\circ\widehat{\Fold}_m = \Fold_m.
+$$
+\end{proposition}
+
+该命题对应公理 (\ref{ax:pommin-a7})。一种具体构造是将折叠归一化的局部操作轨迹编码为素数指数向量，并在回放时按逆轨迹恢复微态（见附录 \ref{app:prime-uplift}）。
+\begin{remark}[残差规模的下界（解释性）]
+在均匀随机输入基线下，残差需要激活的素数轴数目一般具有线性下界；因此“信息守恒”在证书化实现中通常伴随不可忽略的残差规模。
+\end{remark}
+
+\subsection{记录轴单射化与预算下界（碰撞空值）}\label{subsec:injectivization-budget}
+为把“无损性”从本体性逆映射改写为可审计的语义对象，本文采用记录轴单射化（injectivization）语言：对多对一观测外置侧信息，使扩展读出成为单射。\par
+
+\begin{definition}[记录轴与单射化扩展]\label{def:record-axis-injectivization}
+设观测为折叠 $\Pi=\Fold_m:\Omega_m\twoheadrightarrow X_m$。称映射 $r:\Omega_m\to R$ 为一个\textbf{记录轴}；相应扩展观测定义为
+$$
+\Pi^{\mathrm e}(\omega):=\bigl(\Pi(\omega),\,r(\omega)\bigr)\in X_m\times R.
+$$
+若 $\Pi^{\mathrm e}$ 为单射，则称 $r$ \textbf{单射化}了观测 $\Pi$；此时“无损提升”被严格理解为：存在可核验回放器由 $(\Pi(\omega),r(\omega))$ 恢复 $\omega$（见命题 \ref{prop:lossless-uplift} 与附录 \ref{app:prime-uplift}）。
+\end{definition}
+
+\begin{proposition}[单射化的纤维判据]\label{prop:injectivization-fiber-criterion}
+记录轴 $r$ 单射化 $\Pi$ 当且仅当对任意 $x\in X_m$，其在纤维上的限制
+$
+r\!\restriction_{\Fold_m^{-1}(x)}
+$
+为单射。
+\end{proposition}
+
+\begin{proof}
+$\Pi^{\mathrm e}$ 在任意两点 $\omega_1,\omega_2$ 上相等当且仅当 $\Pi(\omega_1)=\Pi(\omega_2)$ 且 $r(\omega_1)=r(\omega_2)$。固定 $x=\Pi(\omega_1)=\Pi(\omega_2)$，这恰等价于 $r$ 在纤维 $\Pi^{-1}(x)$ 上无碰撞。证毕。
+\end{proof}
+
+\begin{corollary}[记录预算下界：每条纤维至少 $\log d_m(x)$]\label{cor:record-budget-lowerbound}
+若记录轴 $r$ 单射化 $\Pi=\Fold_m$，则对任意 $x\in X_m$ 有
+$$
+\card{r\!\left(\Fold_m^{-1}(x)\right)}\ \ge\ d_m(x),
+$$
+从而任何把 $r$ 编码为有限比特串的实现都必须在该纤维上支付至少 $\log_2 d_m(x)$ 量级的记录预算。反之，若预算不足以区分 $d_m(x)$ 个纤维内微态，则由抽屉原理必发生碰撞，从而触发“碰撞空值”型未定义（$\NULL$）。
+\end{corollary}
+
+\begin{remark}[分辨率增益与可辨识性增益的正交性]
+跨分辨率相容把“有限读出”固定为逆极限上的圆柱约束：由定理 \ref{thm:thumbnail-inverselimit} 与推论 \ref{cor:ultrametric-cylinder-diameter}，分辨率 $m$ 的读出 $x_m\in X_m$ 等价于限制 $x_\infty\in U_m(x_m)$，且该圆柱集在前缀超度量下的直径满足 $\mathrm{diam}(U_m(x_m))\le 2^{-m}$；因此“扫描更久”的确定性效果是把可兼容的逆极限候选集合收缩到更小直径（分辨率增益）。\par
+另一方面，折叠 $\Fold_m$ 的多对一性由纤维大小 $d_m(x)$ 刻画：即便分辨率增加，若在给定机制下仍存在 $d_m(x)>1$ 的纤维，则仅凭缩略图 $x_m$ 并不能强制唯一可逆。推论 \ref{cor:record-budget-lowerbound} 说明：要消除该多重度必须引入记录轴以在每条纤维上单射化，并在相应纤维上至少支付 $\log_2 d_m(x)$ 比特量级的侧信息预算（可辨识性增益）。\par
+因此，在本文的偏函数读出语义中，“更长扫描”与“更强可辨识”对应两条逻辑上正交的结构约束：前者由圆柱直径的 $2^{-m}$ 律控制，后者由纤维单射化的记录预算控制；二者缺一不可。
+\end{remark}
+
+\subsection{结构性综合：四因子记录型与混合账本}\label{subsec:four-factor-mixed-ledger}
+在与 unitary slice 核验、面积相位紧化等机制耦合时，记录轴不仅需要“足够大”，其\emph{结构类型}也受到严格约束。以下两条结构性定理给出本文“记录型完备性”与“精度账本”主线的统一表述（证明与细化见附录 \ref{app:structural-synthesis-phase-diagram} 与 \ref{app:phase-compactification-register-unification}）。\par
+
+\begin{theorem}[最小记录轴的规范四因子分解]\label{thm:record-axis-four-factor}
+当观测链同时包含：\textbf{(A)} 折叠/跨分辨率投影，\textbf{(B)} unitary slice 的强类型单参核验，\textbf{(C)} 面积相位紧化与端点读出，则任意满足扩展保存（即使扩展读出单射）的最小记录轴在同构意义下可规范分解为四个互不耦合因子：
+$$
+r\ \cong\ r_{\mathrm{fin}}\times r_{\widehat{\ZZ}}\times r_{\mathrm{wind}}\times r_{\mathrm{end}}.
+$$
+其中 $r_{\widehat{\ZZ}}$ 对应 profinite 同余/素数纤维通道，$r_{\mathrm{end}}$ 对应端点载荷（离散端点分支记忆 $+$ 连续精度载荷），其余两因子分别对应有限缺陷与绕数/周期折叠补偿。
+\par\noindent\textnormal{\textbf{依赖：}观测链 (A)--(C) 的设定与扩展保存定义；证明见附录 \ref{app:structural-synthesis-phase-diagram}。}
+\end{theorem}
+
+\begin{theorem}[离散$\times$连续的混合账本：最小平均记录成本]\label{thm:mixed-ledger-mincost}
+在“离散折叠纤维多重度 $\times$ 连续尺度变量 $X$（经面积相位紧化 $u=\upsilon(X)$）”的分解下，扩展保存意义下使读出单射所需的\textnormal{\textbf{最小平均记录成本}}满足可加的混合守恒式
+$$
+\mathcal{R}_{\min}\ =\ \kappa_m(\pi_m)\ +\ \EE\bigl[P(X)\bigr],
+$$
+其中 $\pi_m$ 表示离散侧折叠边缘分布，$\kappa_m(\pi_m)$ 为其诱导的平均纤维对数缺陷项；而 $P(X)=\log\pi+\log(1+X^2)$（其中 $\pi$ 为圆周率）为面积相位紧化的精度势（precision potential）。并且存在规范实现同时达到该下界：离散侧取纤维均匀提升以使“非均匀债务”完全由 KL 残差承载；连续侧采用无参面积相位门以使“尾部债务”完全由精度势承载。
+\par\noindent\textnormal{\textbf{依赖：}离散侧账本（定理 \ref{thm:ledger-identity} 的纤维缺陷项）与连续侧精度势（定义 \ref{def:radial-compactification-potential}）；证明与细化见附录 \ref{app:structural-synthesis-phase-diagram} 与 \ref{app:phase-compactification-register-unification}。}
+\end{theorem}
+

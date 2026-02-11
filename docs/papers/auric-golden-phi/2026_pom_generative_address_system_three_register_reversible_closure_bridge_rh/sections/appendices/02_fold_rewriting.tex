@@ -1,0 +1,109 @@
+\section{折叠 \texorpdfstring{$\Fold$}{Fold} 的局部重写系统：规则集与机械化证明}\label{app:fold-rewriting}
+
+本附录给出黄金均值语法（禁相邻 $11$）下折叠算子 $\Fold_m$ 的一个完全局部、值保持的重写实现，以及可机械化的终止/合流证明骨架。
+
+\subsection{对象域、配置空间与值同态}
+令分辨率为 $m\ge 1$ 的微态集合为 $\Omega_m=\{0,1\}^m$，稳定类型集合为
+$$
+X_m=\{w\in\{0,1\}^m:\text{不含子词 }11\}.
+$$
+将输入 $\omega=\omega_1\cdots\omega_m\in\Omega_m$ 嵌入到有限支撑数字配置空间
+$$
+D=\Bigl\{a=(a_1,a_2,\dots): a_k\in\NN,\ \#\{k:a_k\ne 0\}<\infty\Bigr\}
+$$
+的嵌入为
+$$
+\iota_m(\omega)=(\omega_1,\dots,\omega_m,0,0,\dots)\in D.
+$$
+在 $D$ 上定义 Fibonacci 加权值同态
+$$
+\mathrm{Val}(a)=\sum_{k\ge 1} a_k F_{k+1},
+$$
+并令
+$$
+N(\omega)=\sum_{k=1}^m \omega_k F_{k+1}=\mathrm{Val}(\iota_m(\omega)).
+$$
+折叠 $\Fold_m$ 可等价理解为：先取值，再取 Zeckendorf 规范数字，最后取前 $m$ 位前缀。关键在于给出“局部可执行”的值保持重写实现。
+
+\subsection{局部值保持重写规则集 \texorpdfstring{$\mathcal{R}_{\Fold}$}{R\_Fold}}
+记 $e_k$ 为第 $k$ 位单位向量。对任意 $a\in D$，允许在满足触发条件时进行如下局部替换（每条规则仅触及有限坐标）：
+\begin{itemize}
+  \item[$(\mathrm{R}_{\mathrm{adj}})$] 相邻合并：若 $a_k\ge 1$ 且 $a_{k+1}\ge 1$，则
+  $$
+  a \to a-e_k-e_{k+1}+e_{k+2}.
+  $$
+  \item[$(\mathrm{R}_1)$] 底位去重：若 $a_1\ge 2$，则
+  $$
+  a \to a-2e_1+e_2.
+  $$
+  \item[$(\mathrm{R}_2)$] 第二位去重：若 $a_2\ge 2$，则
+  $$
+  a \to a-2e_2+e_1+e_3.
+  $$
+  \item[$(\mathrm{R}_k)$] 一般位去重（$k\ge 3$）：若 $a_k\ge 2$，则
+  $$
+  a \to a-2e_k+e_{k-2}+e_{k+1}.
+  $$
+\end{itemize}
+这些规则分别对应于 Fibonacci 恒等式
+$$
+F_{k+1}+F_{k+2}=F_{k+3},\quad
+2F_2=F_3,\quad
+2F_3=F_2+F_4,\quad
+2F_{k+1}=F_{k-1}+F_{k+2},
+$$
+从而每一步均保持 $\mathrm{Val}$ 不变。
+
+\subsection{正规形集合与“折叠即归一化前缀”}
+定义 Zeckendorf 合法集合（无限版本）
+$$
+X_\infty=\Bigl\{(c_1,c_2,\dots)\in\{0,1\}^{\NN}:\forall k,\ c_kc_{k+1}=0\Bigr\}.
+$$
+上述规则恰在出现相邻 $11$ 或某位数字 $\ge 2$ 时可触发，因此不可约项当且仅当属于 $X_\infty$。令 $\mathrm{NF}(a)$ 表示从 $a$ 归约得到的不可约正规形，则折叠具有归约顺序无关的实现：
+$$
+\Fold_m(\omega)=\pi_m(\mathrm{NF}(\iota_m(\omega))),
+$$
+其中 $\pi_m$ 为取前 $m$ 位的截断。
+
+\subsection{终止性证明：可机械化下降量 \texorpdfstring{$\mu$}{mu}}
+定义三个可计算的下降量：
+$$
+A(a)=\sum_{k\ge 1}a_k,\qquad
+B(a)=\sum_{k\ge 1}k\,a_k,\qquad
+C(a)=a_2,
+$$
+并令
+$$
+\mu(a)=(A(a),B(a),C(a))\in\NN^3
+$$
+按字典序比较。则：
+\begin{itemize}
+  \item $(\mathrm{R}_{\mathrm{adj}})$ 与 $(\mathrm{R}_1)$ 使 $A$ 严格减少；
+  \item $(\mathrm{R}_k)$（$k\ge 3$）使 $B$ 严格减少；
+  \item $(\mathrm{R}_2)$ 保持 $A,B$ 不变但使 $C$ 严格减少。
+\end{itemize}
+故每一步都严格降低 $\mu$，从而不存在无限重写链，系统强终止。
+
+\paragraph{机械化要点} 在证明助理中将重写关系 $\to$ 定义为归纳关系；将 $\mu:D\to\NN^3$ 定义为可计算函数；以 $\NN^3$ 的字典序良基性给出良基关系；逐条证明每个规则触发时 $\mu$ 下降，即可得到强终止（$\mathrm{SN}$）。
+
+\subsection{合流性证明：局部合流 \texorpdfstring{$\Rightarrow$}{->} 合流（Newman 引理）}
+局部合流可采用“值保持 + Zeckendorf 唯一性”路径：若 $a$ 有两条一步归约 $a\to a_1$ 与 $a\to a_2$，则继续归约二者至不可约形后均落入 $X_\infty$，且由于每步保持 $\mathrm{Val}$，两不可约形同值；由 Zeckendorf 表示的唯一性，两不可约形必相同，故两支可汇合。在强终止前提下，由 Newman 引理 \cite{Newman1942} 推出系统合流，从而正规形存在且唯一。
+
+\paragraph{机械化要点（两条可替代闭合方式）}
+\begin{enumerate}
+  \item \textbf{值不变量 + Zeckendorf 唯一性闭合：}
+  \begin{enumerate}
+    \item 证明不变式：每条规则保持 $\mathrm{Val}$；
+    \item 将“不可约 $\Leftrightarrow X_\infty$”形式化为可判定谓词；
+    \item 将 Zeckendorf 唯一性作为外部引理（可另行机械化）输入；
+    \item 由“不可约同值 $\Rightarrow$ 相等”建立局部合流；结合强终止，引用 Newman 引理完成合流。
+  \end{enumerate}
+  \item \textbf{纯重写闭环（有限临界对）闭合：}
+  \begin{enumerate}
+    \item 已有：值不变义务与强终止义务（由下降量 $\mu$ 完成）；
+    \item 由于每条规则仅触及一个有限窗口（至多三处坐标且为线性邻域），任意两步并发的重叠类型仅由相对位移决定，从而局部合流可归约为\textbf{有限个}重叠模式的枚举验证；边界仅需额外处理有限个小指标情形（例如 $k\in\{1,2,3,4\}$）；
+    \item 对每个重叠模式，给出一条显式有限归约序列，使两分支归约到同一配置（可用符号执行逐条检查侧条件与结果）；
+    \item 由“强终止 + 局部合流”应用 Newman 引理，得到合流性与正规形唯一性。
+  \end{enumerate}
+\end{enumerate}
+

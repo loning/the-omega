@@ -1,0 +1,99 @@
+\section{谱流—上同调对应与最小寄存器扩展：整数谱不变量的离线核验通道}\label{app:spectral-flow-cohomology-min-register}
+
+本附录把三条在正文与附录中已出现但分散的结构线索收束为一组可直接投稿引用的结构定理：
+\textbf{(i)} 以谱流绕数把 $H^2$-粘合障碍整数化为可离线核验的不变量族；
+\textbf{(ii)} 将“最小记录轴四因子分解”提升为扩展保存范畴中的初对象刻画；
+\textbf{(iii)} 给出全局 $\NULL$ 失败的三分律：闭合缺陷/谱扭结/资源不足，并把每类失败写成可复算见证格式。
+
+\subsection{谱流绕数与上同调粘合障碍：从 $H^2$ 到 $\mathbb{Z}$ 的可核验压缩}\label{subsec:app30-spectral-flow-to-h2}
+
+沿用附录 \ref{app:adelic-sheaf-null-witness} 的地址站点 $(\Addr,J)$ 与非空值证书层 $\mathcal{S}^\times$（定义 \ref{def:future-sheaf}），并以 $[\alpha]\in H^2(\Addr,\underline{\mathcal{A}})$ 表示规则切换在三重交上产生的不可消去扭结类（命题 \ref{prop:future-asc-torsion}）。
+\par
+另一方面，沿用附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-winding-channel} 的“第二核验通道”：对每个非平凡角色 $\chi\neq 1$，在 unitary slice 相位轴 $u=e^{i\theta}$ 上给定可核验的扭曲块矩阵族 $M_\chi(u)$，并以
+$$
+D_\chi(u):=\det\!\bigl(I-M_\chi(u)\bigr)
+$$
+表示行列式读出。
+
+\begin{definition}[绕数谱不变量]\label{def:app30-wind}
+在 $D_\chi(e^{i\theta})\neq 0$ 的条件下，定义绕数
+$$
+\mathrm{Wind}_\chi
+:=\frac{1}{2\pi i}\int_{0}^{2\pi}\frac{\dd}{\dd\theta}\log D_\chi(e^{i\theta})\,\dd\theta
+\in\ZZ.
+$$
+并约定：在证书语义中，$\mathrm{Wind}_\chi$ 的可用性由离线证书包（例如 Rouch\'e/区间证书）保证其为整数且可核验（参见附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-winding-channel}）。
+\end{definition}
+
+\begin{assumption}[对偶侧可分离性与谱流可证书化]\label{ass:app30-separability-wind}
+假设：
+\begin{enumerate}
+  \item \textbf{（傅里叶可分离性）} 当前地址闭包在对偶侧对所有 $\chi\neq 1$ 具有分离能力（附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-fourier-separability}），从而“规则空值的不可见通道”被消除；
+  \item \textbf{（绕数可证书化）} 对每个 $\chi\neq 1$，存在一类离线证书使得 $\mathrm{Wind}_\chi$ 的整数值可核验输出（定义 \ref{def:app30-wind}）。
+\end{enumerate}
+\end{assumption}
+
+\begin{theorem}[谱流检测的上同调完备性（可实现异常类上的单射）]\label{thm:app30-h2-injection-by-wind}
+在假设 \ref{ass:app30-separability-wind} 下，存在自然同态
+$$
+\Phi:\ H^2(\Addr,\underline{\mathcal{A}})\longrightarrow \bigoplus_{\chi\neq 1}\ZZ,
+\qquad
+\Phi([\alpha])=\bigl(\mathrm{Wind}_\chi\bigr)_{\chi\neq 1},
+$$
+并且在所有由本文证书类型系统\textbf{可实现}的异常类子群上，$\Phi$ 为单射。因而：
+\begin{enumerate}
+  \item $[\alpha]=0$ 当且仅当对所有 $\chi\neq 1$ 都有 $\mathrm{Wind}_\chi=0$；
+  \item 若存在 $\chi\neq 1$ 使 $\mathrm{Wind}_\chi\neq 0$，则不存在任何仅靠常数层 strictification 修正即可恢复全局粘合的方案；按定理 \ref{thm:future-null-cohomology}，全局截面不存在，从而全局读出退化为 $\NULL$。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+构造思路为：把异常扭结类 $[\alpha]$ 在对偶侧分解到各角色通道上，并以 unitary slice 的闭合扫描把其配对为谱流绕数族；该配对在证书可实现的异常类上为可核验整数并满足加法性，从而给出同态 $\Phi$。单射性在“可分离性”假设下成立：若 $\Phi([\alpha])=0$，则所有角色通道的可核验谱流不变量同时为零；在可实现子群上，这等价于扭结可由某个 $1$-cochain 消去（命题 \ref{prop:future-asc-torsion}），从而 $[\alpha]=0$。第二条为其逆否命题。证毕。
+\end{proof}
+
+\subsection{最小寄存器扩展的普适性质：记录轴四因子分解的初对象刻画}\label{subsec:app30-initial-object}
+
+附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-record-axis-four-factor} 给出：在扩展保存制度下，最小记录轴具有规范四因子分解
+$$
+r\ \cong\ r_{\mathrm{fin}}\times r_{\widehat{\ZZ}}\times r_{\mathrm{wind}}\times r_{\mathrm{end}}.
+$$
+本小节将其提升为范畴论的普适性质，以把“最小性”从构造依赖命题推进为结构定理。
+
+\begin{definition}[扩展保存范畴]\label{def:app30-ext-category}
+令 $\mathsf{Ext}$ 为所有扩展对 $(\Pi,r)$ 的范畴，其中对象为使扩展读出 $\Pi_{\mathrm e}=(\Pi,r)$ 成为单射的记录轴 $r$；态射为保持“可核验等价”的因子映射（即在不改变证书可验证语义的意义下的压缩/投影）。
+\end{definition}
+
+\begin{theorem}[记录轴初对象与最小性分层]\label{thm:app30-initial-record-axis}
+在假设“互不耦合”与规范分解语义成立的前提下（附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-record-axis-four-factor}），存在规范对象
+$$
+r_0:=r_{\mathrm{fin}}\times r_{\widehat{\ZZ}}\times r_{\mathrm{wind}}\times r_{\mathrm{end}},
+$$
+使得对任意 $r\in\mathsf{Ext}$，存在唯一（在证书可核验等价意义下）态射 $r_0\to r$。并且：
+\begin{enumerate}
+  \item $r_{\mathrm{wind}}$ 在最小扩展中非平凡，当且仅当存在 $\chi\neq 1$ 使 $\mathrm{Wind}_\chi\neq 0$（定理 \ref{thm:app30-h2-injection-by-wind}）；
+  \item 若研究目标要求证书化乘积公式闭合项（$\mathrm{BR}_{\mathrm{PF}}$），则在 $r_0$ 之外还存在一个且仅一个额外连续寄存器维度的强制扩展，即无穷位径向寄存器 $\rho$（定理 \ref{thm:future-bridge-decomposition}）。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-record-axis-four-factor}，“扩展保存”可核验实现的全部不可逆来源被正交分解为四类互不耦合的记录负担，因此任意 $r\in\mathsf{Ext}$ 必包含与四因子同型的像；从而存在从 $r_0$ 到 $r$ 的因子映射。唯一性来自正交分解：在证书可核验等价意义下，每一因子的像由其所修复的失败类型决定。第 (1) 点由谱流—上同调对应给出：绕数非零的 strictification 障碍只能由整数记录轴承载。第 (2) 点由阿德尔闭合缺口的“唯一连续性”给出：拒绝 $\rho$ 则 $\mathrm{BR}_{\mathrm{PF}}$ 在三寄存器证书类型内不可表达。证毕。
+\end{proof}
+
+\subsection{全局失败的三分律：闭合缺陷/谱扭结/资源不足的完备见证}\label{subsec:app30-null-trichotomy}
+
+附录 \ref{app:adelic-sheaf-null-witness} 给出：$\NULL$ 等价于全局截面不存在（定理 \ref{thm:future-null-cohomology}），并构造了阿德尔缺陷见证 $\mathsf{Wit}_{\mathbb{A}}$（定义 \ref{def:future-adelic-defect}）把闭合项失败转写为可核验反例。另一方面，附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-resource-phase} 给出资源阈值相图，把“碰撞空值/端点空值”组织为可核验预算不等式。本小节把三条线索合并为统一的失败分类。
+
+\begin{theorem}[全局 $\NULL$ 失败的三分律]\label{thm:app30-null-trichotomy}
+在假设 \ref{ass:app30-separability-wind} 的傅里叶可分离性前提下，对任一目标查询 $q$，若全局读出为 $\NULL$，则必然存在且可离线核验的失败见证，其类型必落入以下三类之一：
+\begin{enumerate}
+  \item \textbf{阿德尔闭合缺陷（$\mathrm{BR}_{\mathrm{PF}}$ 失败）}：存在有限素数集合 $S$ 与闭合残差区间证书 $[L_{\mathrm{def}},U_{\mathrm{def}}]$ 使 $0\notin[L_{\mathrm{def}},U_{\mathrm{def}}]$，从而 $\rho_{\mathrm{def}}(q)\neq 0$（算法 \ref{alg:future-adelic-witness}）；
+  \item \textbf{谱流扭结（strictification 障碍）}：存在某个 $\chi\neq 1$ 使 $\mathrm{Wind}_\chi\neq 0$，从而异常扭结不可消去，$\mathcal{S}^\times$ 无全局截面（定理 \ref{thm:app30-h2-injection-by-wind}）；
+  \item \textbf{资源不足（碰撞配额/端点精度配额未达阈值）}：prime-register 的模积预算或端点精度预算违反硬阈值（附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-resource-phase}），从而扩展读出无法单射化，读出必退化为 $\NULL$。
+\end{enumerate}
+并且三类见证在证书语义上相互独立：分别归因于全局闭合、规则粘合、资源阈值，且对应记录轴分解中的 $\rho$（或 $r_{\mathrm{end}}$ 连续部分）、$r_{\mathrm{wind}}$ 与 $r_{\mathrm{fin}}\times r_{\widehat{\ZZ}}\times r_{\mathrm{end}}$ 的不同方向。
+\end{theorem}
+
+\begin{proof}
+在傅里叶可分离性成立时，“不可见通道”被消除（附录 \ref{app:structural-synthesis-phase-diagram} \S\ref{subsubsec:app28-fourier-separability}），因此 $\NULL$ 的剩余来源只可能来自：全局闭合缺口（$\mathrm{BR}_{\mathrm{PF}}$）、粘合扭结（$H^2$ 非零）或资源阈值不足。第一类由附录 \ref{app:adelic-sheaf-null-witness} 的缺陷见证提取给出；第二类由定理 \ref{thm:app30-h2-injection-by-wind} 给出并可用绕数证书离线核验；第三类由资源相图硬阈值直接判定。独立性来自记录轴正交分解：三类失败分别要求不同类型的记录轴外置，彼此不可由有限常数层修补相互替代。证毕。
+\end{proof}
+

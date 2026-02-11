@@ -10,6 +10,7 @@ We compute:
   - isobaric drift vector v_perp (Euclidean orthogonal projection)
   - correlations and partial correlations from Sigma and Omega=Sigma^{-1}
   - curvature mismatch spectrum: eig(Sigma^{-1} Hess_logM)
+  - dominant generalized eigenmode u_+ and its Euclidean alignment with v_perp
 
 Outputs (default):
   - artifacts/export/real_input_40_local_bigeometry_invariants.json
@@ -37,6 +38,8 @@ class Invariants:
     mu: float
     v_perp: List[float]
     v_perp_norm: float
+    u_plus_theta2_minus1: List[float]
+    cos_vperp_u_plus: float
     corr: List[List[float]]
     partial_corr: List[List[float]]
     eigs_sigma_inv_hlogm: List[float]
@@ -77,6 +80,26 @@ def compute() -> Invariants:
     v_perp = gL - mu * gP
     v_perp_norm = float(np.linalg.norm(v_perp))
 
+    # Generalized eigenproblem: H v = mu Sigma v (Sigma SPD, H symmetric).
+    # Use symmetric reduction for numerically stable real eigenvectors.
+    L = np.linalg.cholesky(Sigma)  # Sigma = L L^T
+    Linv = np.linalg.inv(L)
+    A = Linv @ HlogM @ Linv.T  # symmetric
+    evals, evecs = np.linalg.eigh(A)  # ascending
+    order = np.argsort(evals)[::-1]
+    evals = evals[order]
+    evecs = evecs[:, order]
+    # Back-transform eigenvectors to original coordinates: v = L^{-T} y
+    V = np.linalg.solve(L.T, evecs)
+    v_pos = np.array(V[:, 0], dtype=float)
+    # Fix sign / scale: enforce theta_2 component negative and set to -1.
+    if v_pos[2] > 0:
+        v_pos = -v_pos
+    if abs(v_pos[2]) < 1e-15:
+        raise ValueError("Unexpected near-zero theta_2 component in dominant eigenvector")
+    u_plus = v_pos / (-v_pos[2])
+    cos_vu = float((v_perp @ u_plus) / (v_perp_norm * np.linalg.norm(u_plus)))
+
     D = np.sqrt(np.diag(Sigma))
     corr = (Sigma / np.outer(D, D)).tolist()
 
@@ -86,13 +109,14 @@ def compute() -> Invariants:
     np.fill_diagonal(partial, 1.0)
     partial_corr = partial.tolist()
 
-    eigs = np.linalg.eigvals(np.linalg.solve(Sigma, HlogM))
-    eigs_real = sorted([float(x.real) for x in eigs], reverse=True)
+    eigs_real = [float(x) for x in evals.tolist()]
 
     return Invariants(
         mu=mu,
         v_perp=[float(x) for x in v_perp.tolist()],
         v_perp_norm=v_perp_norm,
+        u_plus_theta2_minus1=[float(x) for x in u_plus.tolist()],
+        cos_vperp_u_plus=cos_vu,
         corr=[[float(x) for x in row] for row in corr],
         partial_corr=[[float(x) for x in row] for row in partial_corr],
         eigs_sigma_inv_hlogm=eigs_real,
@@ -138,6 +162,11 @@ def write_table_tex(path: Path, inv: Invariants) -> None:
     lines.append(f"$\\mu$ (projection coefficient) & {_fmt(inv.mu, 7)}\\\\")
     lines.append(f"$v_\\perp$ (Euclidean, isobaric drift) & $({_fmt(inv.v_perp[0],6)},\\ {_fmt(inv.v_perp[1],6)},\\ {_fmt(inv.v_perp[2],6)})$\\\\")
     lines.append(f"$\\|v_\\perp\\|$ & {_fmt(inv.v_perp_norm, 6)}\\\\")
+    lines.append(
+        f"$u_+$ (scaled $(u_+)_{{\\theta_2}}=-1$) & "
+        f"$({_fmt(inv.u_plus_theta2_minus1[0],3)},\\ {_fmt(inv.u_plus_theta2_minus1[1],3)},\\ {_fmt(inv.u_plus_theta2_minus1[2],0)})$\\\\"
+    )
+    lines.append(f"$\\cos(v_\\perp,u_+)$ (Euclidean) & {_fmt(inv.cos_vperp_u_plus, 6)}\\\\")
     lines.append("\\midrule")
     lines.append(f"$\\rho_{{e,-}}$ & {_fmt(rho_e_minus, 6)}\\\\")
     lines.append(f"$\\rho_{{e,2}}$ & {_fmt(rho_e_2, 6)}\\\\")
@@ -177,6 +206,8 @@ def main() -> None:
         "mu": inv.mu,
         "v_perp": inv.v_perp,
         "v_perp_norm": inv.v_perp_norm,
+        "u_plus_theta2_minus1": inv.u_plus_theta2_minus1,
+        "cos_vperp_u_plus": inv.cos_vperp_u_plus,
         "corr": inv.corr,
         "partial_corr": inv.partial_corr,
         "eigs_sigma_inv_hlogm": inv.eigs_sigma_inv_hlogm,

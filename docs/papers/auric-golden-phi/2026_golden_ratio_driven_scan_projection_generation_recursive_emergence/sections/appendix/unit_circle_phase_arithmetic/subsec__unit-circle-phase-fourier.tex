@@ -1,0 +1,52 @@
+\subsection{圆上的谐波分析接口：相位 Fourier 与有理基函数}\label{subsec:unit-circle-phase-fourier}
+把 \(\mathbb{U}\) 视作 \(\RR/\ZZ\) 的基本区间，并用标准角色基 \(e^{2\pi\mathrm{i}ku}\)（\(k\in\ZZ\)）。
+对 \(f\in L^2(\RR,\dd\mu)\) 定义其相位 Fourier 系数
+\begin{equation}\label{eq:unit-circle-phase-fourier-coeff}
+\widehat f(k)
+:=\int_{-1/2}^{1/2} f\bigl(\tan(\pi u)\bigr)e^{-2\pi\mathrm{i}ku}\,\dd u
+=\int_{\RR} f(x)\,\overline{\iota(x)^k}\,\dd\mu(x),
+\qquad
+\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}.
+\end{equation}
+在 \(L^2\) 意义下可写出圆级数重构
+\begin{equation}\label{eq:unit-circle-phase-fourier-reconstruct}
+f\bigl(\tan(\pi u)\bigr)\sim \sum_{k\in\ZZ}\widehat f(k)\,e^{2\pi\mathrm{i}ku}.
+\end{equation}
+由于
+\(
+\iota(x)^k=\bigl(\tfrac{1+\mathrm{i}x}{1-\mathrm{i}x}\bigr)^k
+\)
+为 \(x\) 的有理函数，\eqref{eq:unit-circle-phase-fourier-coeff} 给出一个把“实轴上的函数（在自然权重下）”转写为“单位圆上的 Fourier 数据”的模板；其基函数族在代数上可直接操作，从而适合作为“分析问题 \(\to\) 有理结构”接口层的可审计基底。
+
+\begin{proposition}[有限模态 Hardy 投影的显式有理核]\label{prop:unit-circle-phase-hardy-kernel-rational}
+令
+\(
+w(x):=\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}
+\)。
+对整数 \(N\ge 1\)，定义截断核
+\begin{equation}\label{eq:unit-circle-phase-hardy-kernel}
+\boxed{\;
+K_N(x,y):=\sum_{k=0}^{N-1} w(x)^k\,\overline{w(y)}^{\,k}
+=\frac{1-\bigl(w(x)\overline{w(y)}\bigr)^N}{1-w(x)\overline{w(y)}}\;}
+\end{equation}
+（在 \(x=y\) 处具有可去奇点，且 \(K_N(x,x)=N\)）。
+则 \(K_N(x,y)\) 关于 \((x,y)\) 为显式有理函数，并且分母满足闭式化简
+\begin{equation}\label{eq:unit-circle-phase-hardy-kernel-denominator}
+\boxed{\;
+\frac{1}{1-w(x)\overline{w(y)}}
+=\frac{(1-\mathrm{i}x)(1+\mathrm{i}y)}{2\mathrm{i}(y-x)}
+=\frac12+\frac{1+xy}{2\mathrm{i}(y-x)}\;}
+\end{equation}
+（\(x\neq y\)；在 \(x=y\) 处取极限即可）。
+在自然权重 \(\dd\mu(x)=\frac{1}{\pi(1+x^2)}\dd x\) 下，\(L^2(\RR,\dd\mu)\) 上“前 \(N\) 个非负模态”正交投影可写为
+\[
+(\Pi_N f)(x)=\int_{\RR} K_N(x,y)\,f(y)\,\dd\mu(y),
+\qquad f\in L^2(\RR,\dd\mu).
+\]
+\end{proposition}
+\begin{proof}
+在相位坐标 \(u=\upsilon(x)\in\mathbb{U}\) 下，基函数满足 \(w(x)^k=e^{2\pi\mathrm{i}ku}\)，因此 \(\{w(\cdot)^k\}_{k\in\ZZ}\) 为 \(L^2(\RR,\dd\mu)\) 的正交角色基。
+由有限几何级数得到 \eqref{eq:unit-circle-phase-hardy-kernel}，而投影核表示式由正交展开的标准计算得到。
+对 \eqref{eq:unit-circle-phase-hardy-kernel-denominator}，直接在 \(y\in\RR\) 下用 \(\overline{w(y)}=\frac{1-\mathrm{i}y}{1+\mathrm{i}y}\) 代入并通分化简即可。
+当 \(x\to y\) 时，分式右端为可去奇点，对应极限与 \(K_N(x,x)=N\) 一致。证毕。
+\end{proof}
