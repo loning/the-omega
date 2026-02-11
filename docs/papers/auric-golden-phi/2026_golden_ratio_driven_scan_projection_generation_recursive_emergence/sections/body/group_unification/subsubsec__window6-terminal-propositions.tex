@@ -2,7 +2,7 @@
 \label{subsubsec:window6-terminal-propositions}
 
 在本文固定的单生成扫描—二元窗读出协议下，“时间”被定义为\emph{单生成扫描算子}的迭代计数（\S\ref{sec:spg}），并以 Hurwitz/Markov 的最坏逼近尺度固定反共振基线，使黄金分支 \(\alpha=\varphi^{-1}\) 成为规范代表（\S\ref{sec:principles}）。
-在此框架内，window-\(6\) 作为最小锚点同时控制：二元窗读出的离散时间刻度、6D 超立方体微态到稳定语法的压缩、由 uplift 尾部偏移与 Zeckendorf--Fibonacci 边界塔诱导的统一维数分支结构，并在 \(Q_6\) 的几何自同构作用下呈现可审计的边分离、稳定子刚性，以及由局部扰动推送诱导的四块 edge--flux skeleton（相互作用矩阵与谱指纹）。
+在此框架内，window-\(6\) 作为最小锚点同时控制：二元窗读出的离散时间刻度、6D 超立方体微态到稳定语法的压缩（以 Zeckendorf 截窗满射 \(\mathrm{Fold}^{\mathrm{bin}}_6:\{0,\dots,63\}\twoheadrightarrow X_6\) 且 \(|X_6|=21\) 作为最小可计算接口；\cite{Internal2025ResolutionFoldingPhiPi}，2025-12-25 版本）、由 uplift 尾部偏移与 Zeckendorf--Fibonacci 边界塔诱导的统一维数分支结构，并在 \(Q_6\) 的几何自同构作用下呈现可审计的边分离、稳定子刚性，以及由局部扰动推送诱导的四块 edge--flux skeleton（相互作用矩阵与谱指纹）。
 本小节仅陈述终端断言与可审计接口指针，不叙述中间推导。
 
 \begin{enumerate}
@@ -239,6 +239,20 @@
   并且其在二进制编号上携带的 \(\pm 34\) 掩码指纹见推论 \ref{cor:foldbin6-geo-mask-34}；详细的穷举审计与证书输出见定理 \ref{thm:foldbin6-geo-stabilizer-z2}。
   \end{corollary}
 
+  \begin{corollary}[局域 uplift 的唯一可实现分支：仅 \texorpdfstring{$\delta=34$}{δ=34}]\label{cor:terminal-window6-local-uplift-admissibility}
+  若把 window-\(6\) 的“uplift 分支”理解为：在保持稳定类型标签 \(F_6\) 不变的同时，由某个 \(\sigma\in\mathrm{Aut}(Q_6)\) 在微观编号 \(\mathrm{int}_6\) 上实现的整数位移，
+  则除平凡位移 \(0\) 外唯一可能的位移为 \(\pm 34\)。
+  因此，在 dyadic uplift 尾部偏移的三分支 \(\{F_8,F_9,F_{10}\}=\{21,34,55\}\) 中，只有 \(F_9=34\) 与“局域几何可实现且标签不变”的要求相容。
+  \end{corollary}
+  \begin{proof}
+  由推论 \ref{cor:terminal-foldbin6-geo-stabilizer-z2}，满足 \(F_6\circ\sigma=F_6\) 的 \(\sigma\) 仅有 \(\mathrm{id}\) 与 \(\sigma_{\mathrm{geo}}\)。
+  后者仅改变权重为 \(2^5\) 与 \(2^1\) 的两位，故
+  \(
+  \mathrm{int}_6(\sigma_{\mathrm{geo}}(\omega))-\mathrm{int}_6(\omega)\in\{0,\pm(2^5+2^1)\}=\{0,\pm 34\}
+  \)。
+  另一方面，window-\(6\) 的 dyadic uplift 尾部偏移集合包含于 \(\{F_8,F_9,F_{10}\}=\{21,34,55\}\)（定理 \ref{thm:terminal-window6-tail-three-branch}），从而非零局域位移只能为 \(34\)。证毕。
+  \end{proof}
+
   \begin{remark}[几何对称与 fold-gauge 的分离（window-\(6\) 最小模型）]\label{rem:terminal-foldbin6-geo-vs-gauge}
   定理 \ref{thm:terminal-foldbin6-cube-edge-separation} 与推论 \ref{cor:terminal-foldbin6-geo-stabilizer-z2} 表明：在保持 \(Q_6\) 邻接的几何自同构下，window-\(6\) 的折叠标签函数 \(F_6\) 几乎不允许纤维内混合；因此由纤维内任意置换所生成的 fold-gauge 自由度（如 \(\mathcal{G}^{\mathrm{bin}}_6\)）必然是\emph{非几何的}，不能由立方体的坐标置换/逐位取补实现。
   作为一个直接后果，\(X_6\) 在 window-\(6\) 上的离散分块字典（例如表 \ref{tab:window6_patisalam_9633_partition} 的刚性四块分解）不可能被解释为 \(\mathrm{Aut}(Q_6)\) 的标签偶然性，而必须回溯到折叠/归一化纪律本身的算术约束。
@@ -302,6 +316,46 @@
   由 \(\sigma\) 保边且 \(F_6\circ\sigma=\pi\circ F_6\) 可知 \(\pi\) 保持 \(\Gamma_6\) 的邻接关系；由命题 \ref{prop:terminal-gamma6-rigidity} 得 \(\pi=\mathrm{id}\)。
   \end{proof}
   \end{corollary}
+
+  \begin{theorem}[\(\mathrm{Fold}^{\mathrm{bin}}_6\) 推送的稳定类型 Markov 核：可逆性与平稳测度]\label{thm:terminal-foldbin6-pushforward-markov}
+  令 \(Q_6\) 为 \(6\) 维超立方体图，顶点集为 \(\Omega_6=\{0,1\}^6\)，并令标签函数
+  \(
+  F_6(\omega):=\mathrm{Fold}^{\mathrm{bin}}_6(\mathrm{int}_6(\omega))\in X_6
+  \)
+  如定理 \ref{thm:terminal-foldbin6-cube-edge-separation}。
+  对 \(w,w'\in X_6\) 定义推送邻接计数（有向边计数）
+  \[
+  A_6(w,w')
+  :=\#\bigl\{(\omega,\omega'):\ \omega\sim\omega'\text{ in }Q_6,\ F_6(\omega)=w,\ F_6(\omega')=w'\bigr\},
+  \]
+  并据此定义 \(X_6\) 上的 Markov 核
+  \[
+  P_6(w,w'):=\frac{A_6(w,w')}{6\,d^{\mathrm{bin}}_6(w)},
+  \qquad d^{\mathrm{bin}}_6(w):=\bigl|(\mathrm{Fold}^{\mathrm{bin}}_6)^{-1}(w)\bigr|.
+  \]
+  则 \(P_6\) 为 \(X_6\) 上的随机核；并且 \((X_6,P_6)\) 可逆，其平稳分布为
+  \[
+  \pi_6(w)=\frac{d^{\mathrm{bin}}_6(w)}{64}.
+  \]
+  更强地，对任意 \(w,w'\in X_6\) 有详细平衡恒等式
+  \(
+  \pi_6(w)P_6(w,w')=\pi_6(w')P_6(w',w)
+  \)。
+  \end{theorem}
+  \begin{proof}
+  由定义 \(\sum_{w'}A_6(w,w')=6\,d^{\mathrm{bin}}_6(w)\)，故 \(P_6\) 行和为 \(1\)。
+  另一方面，\(Q_6\) 的无向边在 \(A_6(w,w')\) 与 \(A_6(w',w)\) 中以相同次数出现，故 \(A_6(w,w')=A_6(w',w)\)。
+  于是
+  \[
+  \pi_6(w)P_6(w,w')=\frac{d^{\mathrm{bin}}_6(w)}{64}\cdot\frac{A_6(w,w')}{6\,d^{\mathrm{bin}}_6(w)}
+  =\frac{A_6(w,w')}{64\cdot 6}
+  =\pi_6(w')P_6(w',w),
+  \]
+  得详细平衡与可逆性；平稳性由 \(\sum_w \pi_6(w)P_6(w,w')=\pi_6(w')\) 立得。证毕。
+  \end{proof}
+  \input{sections/generated/eq_window6_pushforward_markov_kernel}
+
+  \input{subsubsec__window6-cube-fold6-additional-results}
 
   \begin{theorem}[纤维在 \texorpdfstring{$\mathbb{F}_2^6$}{F2^6} 中的仿射几何分类：仅 \texorpdfstring{$11/21$}{11/21} 为仿射平坦]\label{thm:terminal-foldbin6-fiber-affine-geometry}
   将 \(\Omega_6=\{0,1\}^6\) 视为仿射空间 \(\mathbb{F}_2^6\)（加法为逐位异或），并把纤维记为
@@ -520,6 +574,10 @@
   命题 \ref{prop:terminal-gamma6-rigidity}；
   生成片段 \texttt{eq\_window6\_type\_adjacency\_graph\_rigidity}；
   脚本 \texttt{scripts/exp\_window6\_type\_adjacency\_graph\_rigidity.py} 与证书 \texttt{artifacts/export/window6\_type\_adjacency\_graph\_rigidity.json}。
+  \item \textbf{6D 立方体局部扰动的推送 Markov 核（\(X_6\) 上的 \(P_6\) 与详细平衡）：}
+  定理 \ref{thm:terminal-foldbin6-pushforward-markov}；
+  证书片段 \eqref{eq:window6_pushforward_markov_kernel}；
+  脚本 \texttt{scripts/exp\_window6\_edge\_flux\_skeleton.py} 与证书 \texttt{artifacts/export/window6\_pushforward\_markov\_kernel.json}。
   \item \textbf{window-\(6\) 的 edge--flux skeleton（四块相互作用矩阵 \(E\)、粗粒化核 \(T\) 与谱指纹）：}
   定理 \ref{thm:terminal-window6-edge-flux-skeleton}；
   证书片段 \eqref{eq:window6_edge_flux_skeleton}；

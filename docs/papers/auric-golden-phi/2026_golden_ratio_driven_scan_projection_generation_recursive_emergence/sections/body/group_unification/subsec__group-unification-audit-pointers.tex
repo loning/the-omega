@@ -75,11 +75,17 @@
 \paragraph{可复核接口：window-6 的 edge--flux skeleton（6D 立方体局部扰动 \(\times\) \(9+6+3+3\) 四块分解）}
 终端命题 \ref{thm:terminal-window6-edge-flux-skeleton} 将超立方体图 \(Q_6\) 的一步局部扰动推送到 \(X_6\) 的四块 Levi 骨架上，
 得到一个完全显式且可复核的四块边计数矩阵 \(E\)，并由此构造粗粒化四状态 Markov 核 \(T\) 及其谱指纹（特征多项式的 \((t-1)\) 因子分解）。
-同一证书还给出 boundary 扇区 \(U_R\) 的割大小与稳态通量常数 \(\Phi_R=\frac1{12}\)：
+同一证书还给出 boundary 扇区 \(U_R\) 的割大小与稳态通量常数 \(\Phi_R=\frac1{12}\)，并输出 \(X_6\) 上推送 Markov 核 \(P_6\) 的平稳分布/详细平衡证书（定理 \ref{thm:terminal-foldbin6-pushforward-markov}）：
 \begin{itemize}
   \item \textbf{生成脚本：}\texttt{\detokenize{scripts/exp_window6_edge_flux_skeleton.py}}。
-  \item \textbf{LaTeX 生成物：}\texttt{\detokenize{sections/generated/eq_window6_edge_flux_skeleton.tex}}。
-  \item \textbf{审计 JSON：}\texttt{\detokenize{artifacts/export/window6_edge_flux_skeleton.json}}。
+  \item \textbf{LaTeX 生成物：}\texttt{\detokenize{sections/generated/eq_window6_pushforward_markov_kernel.tex}}，
+  \texttt{\detokenize{sections/generated/eq_window6_edge_flux_skeleton.tex}}。
+  \item \textbf{谱隙审计（\(\lambda_2\) 与 \(\lambda_\star\)）：}
+  \texttt{\detokenize{scripts/exp_window6_pushforward_markov_spectral_gap.py}} 生成片段
+  \texttt{\detokenize{sections/generated/eq_window6_pushforward_markov_spectral_gap.tex}}
+  与证书 \texttt{\detokenize{artifacts/export/window6_pushforward_markov_spectral_gap.json}}。
+  \item \textbf{审计 JSON：}\texttt{\detokenize{artifacts/export/window6_pushforward_markov_kernel.json}}，
+  \texttt{\detokenize{artifacts/export/window6_edge_flux_skeleton.json}}。
 \end{itemize}
 
 \paragraph{可复核接口：\texorpdfstring{$\mathrm{Aut}(Q_6)$}{Aut(Q6)} 几何稳定子（唯一 \texorpdfstring{$\ZZ_2$}{Z2}）与 \texorpdfstring{$\delta=34$}{δ=34} 掩码指纹}
@@ -89,16 +95,43 @@
   \item \textbf{生成脚本：}\texttt{\detokenize{scripts/exp_foldbin6_geo_stabilizer.py}}。
   \item \textbf{LaTeX 生成物：}\texttt{\detokenize{sections/generated/eq_foldbin6_geo_stabilizer.tex}}。
   \item \textbf{审计 JSON：}\texttt{\detokenize{artifacts/export/foldbin6_geo_stabilizer.json}}（含 \(|\mathrm{Stab}_{\mathrm{geo}}|=2\) 的穷举证书、生成元的 \((\mathrm{mask},\mathrm{perm})\) 参数化、固定点/支撑计数、以及二进制编号差值直方图）。
+  \item \textbf{几何审计接口（\(\sigma_{\mathrm{geo}}\) 在纤维内的轨道电荷分裂）。}
+  \texttt{\detokenize{scripts/exp_foldbin6_geo_orbit_charge.py}} 生成表
+  \texttt{\detokenize{sections/generated/tab_foldbin6_geo_orbit_charge.tex}}
+  与证书 \texttt{\detokenize{artifacts/export/foldbin6_geo_orbit_charge.json}}，
+  给出对每个 \(x\in X_6\) 的 \((f_x,p_x)\)（不动点数/二循环数）与七类直方图，可直接核验推论 \ref{cor:terminal-foldbin6-geo-orbit-charge}。
+  \item \textbf{动力学审计接口（强可并性失败的显式反例）。}
+  \texttt{\detokenize{scripts/exp_foldbin6_strong_lumpability_counterexample.py}} 生成片段
+  \texttt{\detokenize{sections/generated/eq_foldbin6_strong_lumpability_counterexample.tex}}
+  与证书 \texttt{\detokenize{artifacts/export/foldbin6_strong_lumpability_counterexample.json}}，
+  给出同纤维两点的一步邻域稳定类型计数分布差异，可直接核验“Foldbin6 纤维分割不具强可并（lumpability）”的断言。
   \item \textbf{几何审计接口（纤维内部最小汉明距离三值律）。}
   \texttt{\detokenize{scripts/exp_foldbin6_fiber_hamming_min_distance.py}} 生成表
   \texttt{\detokenize{sections/generated/tab_foldbin6_fiber_hamming_min_distance.tex}}
+  与计数直方图片段 \texttt{\detokenize{sections/generated/eq_foldbin6_fiber_hamming_min_distance_value_counts.tex}}
   与证书 \texttt{\detokenize{artifacts/export/foldbin6_fiber_hamming_min_distance.json}}，
   给出逐 \(w\in X_6\) 的 \(\delta_{\min}(w)\) 与预像清单，可直接核验定理 \ref{thm:terminal-foldbin6-fiber-hamming-three-valued} 的 \(\{2,3,5\}\) 三值律。
   \item \textbf{几何审计接口（类型邻接图 \texorpdfstring{$\Gamma_6$}{Gamma6} 的刚性）。}
   \texttt{\detokenize{scripts/exp_window6_type_adjacency_graph_rigidity.py}} 生成片段
   \texttt{\detokenize{sections/generated/eq_window6_type_adjacency_graph_rigidity.tex}}
   与证书 \texttt{\detokenize{artifacts/export/window6_type_adjacency_graph_rigidity.json}}，
-  给出 \(|V|,|E|\)、度直方图、连通性与 \(\mathrm{Aut}(\Gamma_6)=\{1\}\) 的可复核结论（命题 \ref{prop:terminal-gamma6-rigidity}）。
+  给出 \(|V|,|E|\)、度直方图、连通性、直径、单谱性与 \(\mathrm{Aut}(\Gamma_6)=\{1\}\) 的可复核结论（命题 \ref{prop:terminal-gamma6-rigidity} 与推论 \ref{cor:terminal-gamma6-diameter-simple-spectrum}）。
+\end{itemize}
+
+\paragraph{可复核接口：独立位翻转噪声下的 \texorpdfstring{$\mathrm{Fold}^{\mathrm{bin}}_6$}{Foldbin6} 精确稳定多项式}
+终端命题定理 \ref{thm:terminal-foldbin6-bitflip-stability-polynomial} 将 window-\(6\) 的稳定类型读出在 i.i.d.\ 位翻转信道下的稳定概率写成关于翻转率 \(p\) 的闭式多项式；其系数由 \(64\) 微态的有限穷举严格确定：
+\begin{itemize}
+  \item \textbf{生成脚本：}\texttt{\detokenize{scripts/exp_foldbin6_bitflip_stability_polynomial.py}}。
+  \item \textbf{LaTeX 生成物：}\texttt{\detokenize{sections/generated/eq_foldbin6_bitflip_stability_polynomial.tex}}。
+  \item \textbf{审计 JSON：}\texttt{\detokenize{artifacts/export/foldbin6_bitflip_stability_polynomial.json}}（含按噪声重量分层的稳定对数与多项式系数）。
+\end{itemize}
+
+\paragraph{可复核接口：纤维加权耦合矩阵 \(M\) 的可逆性与 \texorpdfstring{$\det(M)$}{det(M)} 素因子分解}
+终端命题定理 \ref{thm:terminal-window6-fiber-edge-coupling-det} 在 \(X_6\) 上以 \(Q_6\) 的边诱导加权耦合矩阵 \(M\in\mathbb{Z}^{21\times 21}\)（纤维间边数），并给出行和可观测性恒等式与 \(\det(M)\neq 0\) 的整因子分解证书：
+\begin{itemize}
+  \item \textbf{生成脚本：}\texttt{\detokenize{scripts/exp_window6_fiber_edge_coupling_matrix.py}}。
+  \item \textbf{LaTeX 生成物：}\texttt{\detokenize{sections/generated/eq_window6_fiber_edge_coupling_det.tex}}。
+  \item \textbf{审计 JSON：}\texttt{\detokenize{artifacts/export/window6_fiber_edge_coupling_matrix.json}}（含 \(M\) 的全矩阵、纤维大小与行和核验）。
 \end{itemize}
 
 \paragraph{可复核接口：\texorpdfstring{$X_6$}{X6} 的 \(1+8+12\) 字典与 \(12=8+4\) 两档重谱}

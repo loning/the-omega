@@ -14,7 +14,9 @@ The type adjacency graph Γ_6 is the simple graph on vertices X_6 where
 
 We compute:
   - |V(Γ_6)|, |E(Γ_6)|, connectedness,
+  - the diameter of Γ_6,
   - the degree histogram,
+  - whether the adjacency spectrum is simple (all eigenvalues distinct),
   - the automorphism group size (we expect Aut(Γ_6) to be trivial).
 
 Outputs:
@@ -30,6 +32,8 @@ import json
 from collections import Counter, defaultdict, deque
 from pathlib import Path
 from typing import Dict, List, Set, Tuple
+
+import sympy as sp
 
 from common_paths import export_dir, generated_dir
 from common_phi_fold import word_to_str, zeckendorf_digits
@@ -86,6 +90,38 @@ def _is_connected(n: int, adj: List[int]) -> bool:
                 seen.add(u)
                 q.append(u)
     return len(seen) == n
+
+
+def _diameter(n: int, adj: List[int]) -> int:
+    if n == 0:
+        return 0
+    diam = 0
+    for s in range(n):
+        dist = [-1] * n
+        dist[s] = 0
+        q = deque([s])
+        while q:
+            v = q.popleft()
+            bits = adj[v]
+            while bits:
+                lsb = bits & -bits
+                u = lsb.bit_length() - 1
+                bits -= lsb
+                if dist[u] == -1:
+                    dist[u] = dist[v] + 1
+                    q.append(u)
+        if any(d < 0 for d in dist):
+            raise RuntimeError("Graph is disconnected; diameter undefined.")
+        diam = max(diam, max(dist))
+    return int(diam)
+
+
+def _adjacency_matrix_sympy(n: int, edges: List[Tuple[int, int]]) -> sp.Matrix:
+    A = sp.zeros(n, n)
+    for i, j in edges:
+        A[i, j] = 1
+        A[j, i] = 1
+    return A
 
 
 def _wl_refine_colors(n: int, adj: List[int], initial: List[int]) -> List[int]:
@@ -238,8 +274,16 @@ def main() -> None:
     n = len(nodes)
     adj = _adj_bitsets(n, edges)
     connected = _is_connected(n, adj)
+    diam = _diameter(n, adj) if connected else None
     deg = [adj[v].bit_count() for v in range(n)]
     deg_hist = Counter(deg)
+
+    # Simple spectrum check: characteristic polynomial is squarefree over Q.
+    A_sp = _adjacency_matrix_sympy(n, edges)
+    t = sp.Symbol("t")
+    chi = sp.Poly(A_sp.charpoly(t).as_expr(), t, domain="ZZ")
+    g = sp.gcd(chi, chi.diff())
+    spectrum_is_simple = bool(g.degree() == 0)
 
     nontrivial = _find_nontrivial_automorphism(n, adj)
     aut_trivial = nontrivial is None
@@ -250,7 +294,9 @@ def main() -> None:
         "num_nodes": n,
         "num_edges": len(edges),
         "connected": bool(connected),
+        "diameter": int(diam) if diam is not None else None,
         "degree_histogram": {str(k): int(v) for k, v in sorted(deg_hist.items())},
+        "spectrum_is_simple": bool(spectrum_is_simple),
         "aut_is_trivial": bool(aut_trivial),
         "aut_size": aut_size,
         "nontrivial_automorphism_example": nontrivial,
@@ -272,7 +318,10 @@ def main() -> None:
     lines.append("\\begin{aligned}")
     lines.append(f"|V(\\Gamma_6)|&={n},\\qquad |E(\\Gamma_6)|={len(edges)},\\\\")
     lines.append(f"\\Gamma_6\\ \\text{{connected}}&=\\ {str(connected).lower()},\\\\")
+    if diam is not None:
+        lines.append(f"\\mathrm{{diam}}(\\Gamma_6)&=\\ {int(diam)},\\\\")
     lines.append(f"\\#\\{{v\\in V(\\Gamma_6):\\ \\deg(v)=d\\}}&=({dh_parts}),\\\\")
+    lines.append(f"\\Gamma_6\\ \\text{{simple spectrum}}&=\\ {str(spectrum_is_simple).lower()},\\\\")
     if aut_trivial:
         lines.append("\\mathrm{Aut}(\\Gamma_6)&=\\{1\\}.")
     else:

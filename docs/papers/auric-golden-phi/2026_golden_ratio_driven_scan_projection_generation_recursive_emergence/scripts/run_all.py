@@ -314,7 +314,18 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/window6_edge_flux_skeleton.json",
+                "artifacts/export/window6_pushforward_markov_kernel.json",
+                "sections/generated/eq_window6_pushforward_markov_kernel.tex",
                 "sections/generated/eq_window6_edge_flux_skeleton.tex",
+            ],
+        ),
+        Step(
+            name="window6_pushforward_markov_spectral_gap",
+            script="exp_window6_pushforward_markov_spectral_gap.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_pushforward_markov_spectral_gap.json",
+                "sections/generated/eq_window6_pushforward_markov_spectral_gap.tex",
             ],
         ),
         Step(
@@ -327,12 +338,40 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="foldbin6_geo_orbit_charge",
+            script="exp_foldbin6_geo_orbit_charge.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_geo_orbit_charge.json",
+                "sections/generated/tab_foldbin6_geo_orbit_charge.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_strong_lumpability_counterexample",
+            script="exp_foldbin6_strong_lumpability_counterexample.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_strong_lumpability_counterexample.json",
+                "sections/generated/eq_foldbin6_strong_lumpability_counterexample.tex",
+            ],
+        ),
+        Step(
             name="foldbin6_fiber_hamming_min_distance",
             script="exp_foldbin6_fiber_hamming_min_distance.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/foldbin6_fiber_hamming_min_distance.json",
+                "sections/generated/eq_foldbin6_fiber_hamming_min_distance_value_counts.tex",
                 "sections/generated/tab_foldbin6_fiber_hamming_min_distance.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_bitflip_stability_polynomial",
+            script="exp_foldbin6_bitflip_stability_polynomial.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_bitflip_stability_polynomial.json",
+                "sections/generated/eq_foldbin6_bitflip_stability_polynomial.tex",
             ],
         ),
         Step(
@@ -342,6 +381,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/window6_type_adjacency_graph_rigidity.json",
                 "sections/generated/eq_window6_type_adjacency_graph_rigidity.tex",
+            ],
+        ),
+        Step(
+            name="window6_fiber_edge_coupling_matrix",
+            script="exp_window6_fiber_edge_coupling_matrix.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_fiber_edge_coupling_matrix.json",
+                "sections/generated/eq_window6_fiber_edge_coupling_det.tex",
             ],
         ),
         Step(

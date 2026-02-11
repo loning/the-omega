@@ -9,6 +9,11 @@ We use the dyadic (binary-interval) fold at m=6:
 and the 6-cube graph Q_6 on vertices {0,1}^6 (encoded as integers 0..63),
 with edges given by single-bit flips.
 
+We also compute the pushforward Markov kernel on X_6 induced by one cube step:
+  P_6(w,w') = A_6(w,w') / (6 * d^{bin}_6(w)),
+where A_6(w,w') counts directed cube edges from the fiber of w to the fiber of w'.
+This kernel is reversible with stationary distribution pi_6(w)=d^{bin}_6(w)/64.
+
 We consider the rigid 9+6+3+3 partition of X_6 (Table tab_window6_patisalam_9633_partition):
   X_6 = X_6^{(2)} ⊔ X_6^{(1)} ⊔ X_6^{(L)} ⊔ X_6^{(R)}.
 
@@ -20,7 +25,9 @@ Aggregating Q_6 edges by the induced micro-vertex unions U_alpha, we compute:
   - boundary-sector cut constants and flux.
 
 Outputs:
+  - artifacts/export/window6_pushforward_markov_kernel.json
   - artifacts/export/window6_edge_flux_skeleton.json
+  - sections/generated/eq_window6_pushforward_markov_kernel.tex
   - sections/generated/eq_window6_edge_flux_skeleton.tex
 """
 
@@ -165,6 +172,16 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="Audit the window-6 edge–flux skeleton under Fold^{bin}_6.")
     ap.add_argument("--m", type=int, default=6)
     ap.add_argument(
+        "--json-out-pushforward",
+        type=str,
+        default=str(export_dir() / "window6_pushforward_markov_kernel.json"),
+    )
+    ap.add_argument(
+        "--tex-out-pushforward",
+        type=str,
+        default=str(generated_dir() / "eq_window6_pushforward_markov_kernel.tex"),
+    )
+    ap.add_argument(
         "--json-out",
         type=str,
         default=str(export_dir() / "window6_edge_flux_skeleton.json"),
@@ -185,6 +202,57 @@ def main() -> None:
     for b, ws in part.items():
         for w in ws:
             block_of_word[w] = b
+
+    # --- Pushforward Markov kernel on X_6 induced by one cube step ---
+    X6_words = _golden_words(6)
+    word_of_n: Dict[int, str] = {}
+    d_word: Dict[str, int] = {w: 0 for w in X6_words}
+    for n in range(0, 1 << m):
+        w = _fold_bin_prefix_word(n, m)
+        word_of_n[n] = w
+        d_word[w] += 1
+
+    # Sanity: Fold^{bin}_6 fibers have sizes in {2,3,4} with histogram 2:8, 3:4, 4:9.
+    hist = {2: 0, 3: 0, 4: 0}
+    for w in X6_words:
+        if d_word[w] not in hist:
+            raise RuntimeError(f"Unexpected fiber size for word {w}: {d_word[w]}")
+        hist[d_word[w]] += 1
+    if hist != {2: 8, 3: 4, 4: 9}:
+        raise RuntimeError(f"Unexpected fiber-size histogram for Fold^{{bin}}_6: {hist}")
+
+    idx_word = {w: i for i, w in enumerate(X6_words)}
+    A6: List[List[int]] = [[0 for _ in X6_words] for _ in X6_words]  # directed pushforward adjacency
+    for n in range(0, 1 << m):
+        i = idx_word[word_of_n[n]]
+        for j in range(m):
+            nn = n ^ (1 << j)
+            k = idx_word[word_of_n[nn]]
+            A6[i][k] += 1
+
+    # Row sums = 6 * fiber size; symmetry = undirected-edge origin; and no self-edges by edge separation.
+    for i, w in enumerate(X6_words):
+        if sum(A6[i]) != m * d_word[w]:
+            raise RuntimeError(f"Row-sum mismatch in A6 for word {w}: sum={sum(A6[i])}, d={d_word[w]}")
+        if A6[i][i] != 0:
+            raise RuntimeError(f"Unexpected self-adjacency in A6 for word {w}: A6[i][i]={A6[i][i]}")
+    for i in range(len(X6_words)):
+        for j in range(len(X6_words)):
+            if A6[i][j] != A6[j][i]:
+                raise RuntimeError("A6 symmetry check failed.")
+
+    P6: List[List[Fraction]] = [[Fraction(0) for _ in X6_words] for _ in X6_words]
+    pi6: List[Fraction] = [Fraction(d_word[w], 1 << m) for w in X6_words]
+    for i, w in enumerate(X6_words):
+        denom = Fraction(m * d_word[w], 1)
+        for j in range(len(X6_words)):
+            P6[i][j] = Fraction(A6[i][j], 1) / denom
+
+    # Detailed balance.
+    for i in range(len(X6_words)):
+        for j in range(len(X6_words)):
+            if pi6[i] * P6[i][j] != pi6[j] * P6[j][i]:
+                raise RuntimeError("Detailed-balance check failed for (X6,P6).")
 
     # Map each microstate n to its block via its stable type.
     block_of_n: Dict[int, str] = {}
@@ -288,9 +356,50 @@ def main() -> None:
         },
     }
 
+    # Pushforward Markov kernel payload.
+    payload_pushforward = {
+        "m": m,
+        "words": X6_words,
+        "fiber_size_d_bin": {w: int(d_word[w]) for w in X6_words},
+        "fiber_size_histogram": {str(k): int(v) for k, v in sorted(hist.items())},
+        "A6_directed_edge_counts": A6,
+        "P6_kernel": [[str(x) for x in row] for row in P6],
+        "pi6_stationary": [str(x) for x in pi6],
+        "checks": {
+            "A6_is_symmetric": True,
+            "A6_has_zero_diagonal": True,
+            "P6_row_stochastic": True,
+            "detailed_balance": True,
+        },
+    }
+
+    json_out_push = Path(str(args.json_out_pushforward))
+    json_out_push.parent.mkdir(parents=True, exist_ok=True)
+    json_out_push.write_text(
+        json.dumps(payload_pushforward, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
     json_out = Path(str(args.json_out))
     json_out.parent.mkdir(parents=True, exist_ok=True)
     json_out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    # TeX snippet (pushforward Markov kernel).
+    tex_out_push = Path(str(args.tex_out_pushforward))
+    tex_out_push.parent.mkdir(parents=True, exist_ok=True)
+    lines_push: List[str] = []
+    lines_push.append("% AUTO-GENERATED by scripts/exp_window6_edge_flux_skeleton.py")
+    lines_push.append("\\begin{equation}\\label{eq:window6_pushforward_markov_kernel}")
+    lines_push.append("\\begin{aligned}")
+    lines_push.append("\\pi_6(w)&:=\\frac{d^{\\mathrm{bin}}_6(w)}{64},\\\\")
+    lines_push.append("\\displaystyle P_6(w,w')&:=\\frac{A_6(w,w')}{6\\,d^{\\mathrm{bin}}_6(w)},\\\\")
+    lines_push.append(
+        "\\pi_6(w)P_6(w,w')&=\\pi_6(w')P_6(w',w)=\\frac{A_6(w,w')}{64\\cdot 6}."
+    )
+    lines_push.append("\\end{aligned}")
+    lines_push.append("\\end{equation}")
+    lines_push.append("")
+    tex_out_push.write_text("\n".join(lines_push), encoding="utf-8")
 
     # TeX snippet.
     tex_out = Path(str(args.tex_out))
@@ -329,7 +438,9 @@ def main() -> None:
     lines.append("")
     tex_out.write_text("\n".join(lines), encoding="utf-8")
 
+    print(f"File: {json_out_push.relative_to(export_dir().parent.parent)}")
     print(f"File: {json_out.relative_to(export_dir().parent.parent)}")
+    print(f"File: {tex_out_push.relative_to(generated_dir().parent.parent)}")
     print(f"File: {tex_out.relative_to(generated_dir().parent.parent)}")
 
 
