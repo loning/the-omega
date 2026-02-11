@@ -40,7 +40,7 @@ labeled by
 This yields a finite labeled graph $G_m=(V_m,E_m,\ell_m)$ with $\card{V_m}=2^{m-1}$ and $\card{E_m}=2^m$.
 \end{definition}
 
-\begin{theorem}[Sofic factor and auditable cover interface]\label{thm:phi-sofic-fischer}
+\begin{theorem}[Sofic factor, one-step distinguishability, and auditable cover interface]\label{thm:phi-sofic-fischer}
 Fix $m\ge 1$ and define $\Phi_m$ and $Y_m$ as in Definition~\ref{def:Phi_m}.
 Then:
 \begin{enumerate}
@@ -49,8 +49,29 @@ Then:
   Y_m=\mathcal{L}_m(Z_m),
   \]
   hence $Y_m$ is sofic. The state $V_m=\{0,1\}^{m-1}$ is the length-$(m-1)$ input suffix, and each transition appends one input bit and outputs the folded type of the current window.
-  \item \textbf{(Right-resolving / Fischer cover interface)} Determinization yields a right-resolving presentation $H_m^{\mathrm{det}}$ of $Y_m$; minimizing by follower sets yields the right Fischer cover \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
-  \item \textbf{(Computable invariants from a finite matrix)} For any follower-separated right-resolving cover $H_m$ of $Y_m$, let $A_m$ be its edge adjacency matrix (Definition~\ref{def:adjacency}). Then
+  \item \textbf{(One-step distinguishability; bi-resolving presentation)} For every $v\in\{0,1\}^{m-1}$,
+  \[
+  \Fold_m(v0)\neq \Fold_m(v1),
+  \qquad
+  \Fold_m(0v)\neq \Fold_m(1v).
+  \]
+  In particular, the labeled graph $G_m$ is right-resolving and left-resolving: outgoing (resp.\ incoming) edges at any vertex carry distinct labels.
+  \item \textbf{(Entropy saturation and finite defect register)} The sofic factor saturates the source entropy:
+  \[
+  h_{\mathrm{top}}(Y_m)=\log 2.
+  \]
+  Moreover, for $m\ge 2$, the map
+  \[
+  \Psi_m:\{0,1\}^{\ZZ}\to Y_m\times \{0,1\}^{m-1},
+  \qquad
+  \Psi_m(s):=\bigl(\Phi_m(s),\,s_0s_1\cdots s_{m-2}\bigr),
+  \]
+  is injective. Consequently, for every $y\in Y_m$,
+  \[
+  \card{\Phi_m^{-1}(y)}\le 2^{m-1}.
+  \]
+  \item \textbf{(Right Fischer cover interface and computable invariants)} Determinization yields a right-resolving presentation $H_m^{\mathrm{det}}$ of $Y_m$; minimizing by follower sets yields the right Fischer cover \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+  For any follower-separated right-resolving cover $H_m$ of $Y_m$, let $A_m$ be its edge adjacency matrix (Definition~\ref{def:adjacency}). Then
   \[
   h_{\mathrm{top}}(Y_m)=\log\rho(A_m),
   \]
@@ -63,13 +84,67 @@ Then:
 
 \begin{proof}
 Item (1) is proved by mapping input sequences to suffix-state paths in $G_m$ and conversely reconstructing a compatible binary sequence from any bi-infinite path; the labeling identity follows from the definition of $\ell_m$.
-Item (2) is standard determinization theory for labeled graphs and sofic shifts \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
-Item (3) follows from the SFT cover interface: entropy equals $\log\rho(A_m)$, Parry data are determined by PF eigenvectors, and the zeta determinant formula holds for SFTs (Appendix~\ref{app:pf-parry-zeta}).
+\par
+\textbf{Item (2).}
+Fix $v\in\{0,1\}^{m-1}$ and write $\omega_0:=v0$, $\omega_1:=v1\in\Omega_m$.
+Then $N(\omega_1)-N(\omega_0)=F_{m+1}$.
+If $\Fold_m(\omega_0)=\Fold_m(\omega_1)$, Lemma~\ref{lem:one-hidden-bit} gives
+\[
+N(\omega_1)-N(\omega_0)=\bigl(b(\omega_1)-b(\omega_0)\bigr)\,F_{m+2}\in\{0,\pm F_{m+2}\},
+\]
+contradicting $F_{m+1}\notin\{0,F_{m+2}\}$. Hence $\Fold_m(v0)\neq\Fold_m(v1)$.
+Similarly, let $\omega_0:=0v$ and $\omega_1:=1v$.
+Then $N(\omega_1)-N(\omega_0)=F_2=1$, while Lemma~\ref{lem:one-hidden-bit} would force the difference to lie in $\{0,\pm F_{m+2}\}$ if $\Fold_m(0v)=\Fold_m(1v)$, which is impossible since $F_{m+2}\ge 2$.
+Thus $\Fold_m(0v)\neq\Fold_m(1v)$. The right-/left-resolving interpretation follows from Definition~\ref{def:G_m}.
+\par
+\textbf{Item (3): entropy.}
+Since $\Phi_m$ is a factor of the full two-shift, $h_{\mathrm{top}}(Y_m)\le \log 2$.
+For the reverse inequality, fix any vertex $v\in V_m$.
+From $v$ there are exactly $2^n$ length-$n$ edge paths in $G_m$ (each step appends one bit).
+Because $G_m$ is right-resolving by Item~(2), the label map is injective on paths with a fixed start vertex, hence $Y_m$ has at least $2^n$ admissible length-$n$ blocks.
+Therefore $h_{\mathrm{top}}(Y_m)\ge \log 2$, proving $h_{\mathrm{top}}(Y_m)=\log 2$.
+\par
+\textbf{Item (3): finite defect register.}
+Assume $m\ge 2$ and suppose $\Psi_m(s)=\Psi_m(s')=(y,\delta)$.
+We show $s=s'$.
+For $t\in\ZZ$, write
+\[
+v_t:=s_t s_{t+1}\cdots s_{t+m-2}\in\{0,1\}^{m-1},\qquad
+v'_t:=s'_t s'_{t+1}\cdots s'_{t+m-2}\in\{0,1\}^{m-1}.
+\]
+Then $v_0=v'_0=\delta$.
+\par
+\emph{Forward direction.}
+Assume $v_t=v'_t$ for some $t\ge 0$.
+Then
+\[
+y_t=\Fold_m(v_t s_{t+m-1})=\Fold_m(v'_t s'_{t+m-1}),
+\]
+and Item~(2) implies $\Fold_m(v_t0)\neq\Fold_m(v_t1)$, hence $s_{t+m-1}=s'_{t+m-1}$.
+Therefore $v_{t+1}=v'_{t+1}$.
+By induction, $s_k=s'_k$ for all $k\ge 0$.
+\par
+\emph{Backward direction.}
+Assume $v_t=v'_t$ for some $t\le 0$.
+Then
+\[
+y_{t-1}=\Fold_m(s_{t-1}v_t)=\Fold_m(s'_{t-1}v'_t),
+\]
+and Item~(2) implies $\Fold_m(0v_t)\neq\Fold_m(1v_t)$, hence $s_{t-1}=s'_{t-1}$.
+Therefore $v_{t-1}=v'_{t-1}$.
+Iterating for $t=0,-1,-2,\dots$ yields $s_k=s'_k$ for all $k<0$.
+\par
+Thus $s=s'$, proving that $\Psi_m$ is injective.
+The fiber bound follows since the register $\delta$ has $2^{m-1}$ possibilities.
+\par
+\textbf{Item (4).}
+This is standard determinization/Fischer-cover theory for sofic shifts \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}, together with the SFT cover interface for entropy/PF/Parry/zeta (Appendix~\ref{app:pf-parry-zeta}).
 \end{proof}
 
 \subsection{Right-resolving presentation and Fischer cover interface}\label{subsec:right-resolving}
 For auditing, we require an explicit pathwise interface that turns sofic structure into computable linear-algebraic invariants.
-We therefore pass to a right-resolving presentation via determinization.
+For general sofic shifts, this is achieved by passing to a right-resolving presentation via determinization.
+In the present Zeckendorf folding model, the explicit graph $G_m$ is already right-resolving (and even left-resolving) by Theorem~\ref{thm:phi-sofic-fischer}(2); we nevertheless record the standard determinization pipeline to expose a canonical Fischer-cover interface.
 
 \begin{definition}[Determinization (subset construction)]\label{def:determinization}
 Let $G_m=(V_m,E_m,\ell_m)$.

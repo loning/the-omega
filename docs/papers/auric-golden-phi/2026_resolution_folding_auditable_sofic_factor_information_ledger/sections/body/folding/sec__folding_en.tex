@@ -24,6 +24,35 @@ be the length-$m$ restriction. Define the resolution folding map
 \Fold_m:\Omega_m\to X_m,\qquad \Fold_m(\omega):=\pi_m(Z(N(\omega))).
 \]
 
+\begin{definition}[Visible value of a folded type]\label{def:type-visible-value}
+For $x=x_1\cdots x_m\in X_m$, define its (visible) Fibonacci value by
+\[
+\mathrm{Val}_m(x):=\sum_{k=1}^{m} x_k F_{k+1}\in\NN.
+\]
+\end{definition}
+
+\begin{lemma}[One hidden bit decomposition]\label{lem:one-hidden-bit}
+For every $\omega\in\Omega_m$, there exists a unique bit $b(\omega)\in\{0,1\}$ such that
+\[
+N(\omega)=\mathrm{Val}_m(\Fold_m(\omega)) + b(\omega)\,F_{m+2}.
+\]
+\end{lemma}
+\begin{proof}
+Since $\omega_k\in\{0,1\}$, one has
+\[
+0\le N(\omega)\le \sum_{k=1}^{m} F_{k+1}=F_{m+3}-2<F_{m+3}.
+\]
+Therefore, in the Zeckendorf representation $Z(N(\omega))=(c_1,c_2,\dots)$ (Section~\ref{subsec:prelim-zeckendorf}), all digits $c_k$ must vanish for $k\ge m+2$.
+Write $b(\omega):=c_{m+1}\in\{0,1\}$.
+Then
+\[
+N(\omega)=\sum_{k=1}^{m} c_k F_{k+1} + c_{m+1}F_{m+2}
+=\mathrm{Val}_m(c_1\cdots c_m) + b(\omega)\,F_{m+2}.
+\]
+By definition, $c_1\cdots c_m=\Fold_m(\omega)$, proving the decomposition.
+Uniqueness follows from uniqueness of the Zeckendorf digits.
+\end{proof}
+
 \subsection{Local rewriting implementation}\label{subsec:fold-rewrite}
 To realize $\Fold_m$ as a local normalization procedure and to make the normal form auditable, we embed a word into a finite-support digit configuration.
 Let
