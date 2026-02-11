@@ -1,0 +1,59 @@
+\begin{proposition}[全变差与相对熵的最优矩控制：粗粒化信息损失的二阶精确项]\label{prop:xi-poisson-tv-kl-second-order}
+沿用命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form} 的记号，令
+\[
+g_t(x):=\frac{1}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2}
+\qquad (t>0)
+\]
+为同重心 \(\bar\gamma\) 的单 Cauchy 基准密度。
+并假设三阶中心矩有限：
+\(
+\int_{\RR}|\gamma-\bar\gamma|^3\,\dd\tilde\nu(\gamma)<\infty
+\)。
+则当 \(t\to\infty\) 时成立二阶尺度律：
+\[
+\|h_t-g_t\|_{L^1(\RR)}\ \asymp\ t^{-2}\cdot \mathrm{Var},
+\qquad
+D_{\mathrm{KL}}(h_t\mid g_t)\ \asymp\ t^{-4}\cdot \mathrm{Var}^2,
+\]
+其中相对熵取经典形式
+\(
+D_{\mathrm{KL}}(h\mid g):=\int_{\RR} h(x)\log\!\frac{h(x)}{g(x)}\,\dd x
+\)。
+特别地，当 \(\mathrm{Var}=0\) 时 \(h_t\equiv g_t\) 从而两者恒为 \(0\)；当 \(\mathrm{Var}>0\) 时，上式的隐含常数可取为与 \(\tilde\nu\) 无关的绝对常数。
+\end{proposition}
+\begin{proof}[证明要点]
+由命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form}，写作
+\[
+h_t(x)=g_t(x)+\mathrm{Var}\cdot r_t(x)+\varepsilon_t(x),
+\]
+其中
+\[
+r_t(x):=\frac{1}{\pi}\,
+\frac{t\bigl(3(x-\bar\gamma)^2-t^2\bigr)}{\bigl((x-\bar\gamma)^2+t^2\bigr)^3},
+\qquad
+\varepsilon_t(x)=O(t^{-4})
+\]
+且 \(\varepsilon_t\) 的 \(L^1\) 范数由三阶中心矩控制为 \(O(t^{-3})\)（由对 Poisson 核作三阶 Taylor 余项并用 \(\|P_t^{(3)}\|_{L^1}\asymp t^{-3}\)）。
+令 \(y=(x-\bar\gamma)/t\) 则
+\[
+\|r_t\|_{L^1(\RR)}=\frac{1}{t^2}\int_{\RR}\frac{|3y^2-1|}{\pi(1+y^2)^3}\,\dd y
+\asymp t^{-2},
+\]
+从而得到 \(\|h_t-g_t\|_{L^1}\asymp \mathrm{Var}\,t^{-2}\)。
+\par
+对相对熵，注意 \(h_t/g_t=1+O(\mathrm{Var}\,t^{-2})\) 在 \(t\) 充分大时一致有界；
+对 \(\log(1+u)\) 作二阶展开并利用 \(\int(h_t-g_t)=0\) 消去线性项，可得
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac12\int_{\RR}\frac{(h_t-g_t)^2}{g_t}\,\dd x\ +\ o(t^{-4})
+\asymp \mathrm{Var}^2\,t^{-4},
+\]
+其中主项常数由
+\(
+\int_{\RR}\frac{(3y^2-1)^2}{\pi(1+y^2)^5}\,\dd y
+\)
+给出并严格正。证毕。
+\end{proof}
+
+\endinput
+
