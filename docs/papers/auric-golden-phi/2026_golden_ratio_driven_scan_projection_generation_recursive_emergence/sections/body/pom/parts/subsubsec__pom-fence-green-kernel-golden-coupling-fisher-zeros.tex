@@ -1,0 +1,235 @@
+\paragraph{黄金耦合与 Fisher 零点：\texorpdfstring{\(t=1\)}{t=1} 的 Fibonacci 算术化、零点反正弦律与 Riccati 递推}
+本段把质量参数 \(t\) 的“黄金刻度”与离散行列式/Green 核的可审计闭式联结起来：
+一方面在 \(t=1\) 处得到完全算术化的 Fibonacci 行列式与两点关联；
+另一方面把 \(\det(L_k+tI)\) 的零点（Fisher 零点）与 \([-4,0]\) 上的反正弦律严格对齐，并给出零点的均匀化与边界 Riccati 递推的精确收敛率。
+
+\begin{corollary}[“黄金耦合”唯一性：\texorpdfstring{\(t=1\)}{t=1} 的等价刻画]\label{cor:pom-Lk-golden-coupling-unique}
+设 \(\varphi=\frac{1+\sqrt5}{2}\)，并对 \(t>0\) 定义
+\[
+\eta(t):=\mathrm{arsinh}\sqrt{\frac{t}{4}}\qquad(\Re\eta\ge 0).
+\]
+则下述命题等价，并给出同一唯一正解 \(t_\star=1\)：
+\[
+\eta(t_\star)=\log\varphi,
+\qquad
+q(t_\star):=e^{-2\eta(t_\star)}=\varphi^{-2},
+\qquad
+\lim_{k\to\infty}\frac{1}{k}\log\det(L_k+t_\star I)=2\log\varphi.
+\]
+因此 \(t=1\) 是使谱自由能密度严格匹配黄金移位熵刻度 \(2\log\varphi\) 的唯一正参数点。
+\end{corollary}
+\begin{proof}
+由定义，\(\eta(t)\) 在 \(t>0\) 上严格递增，因此方程 \(\eta(t)=\log\varphi\) 至多有一解。
+又
+\(
+\eta(t)=\mathrm{arsinh}(\sqrt{t}/2)
+\)
+等价于 \(\sqrt{t}/2=\sinh(\eta)\)。
+取 \(\eta=\log\varphi\)，利用
+\(
+\sinh(\log\varphi)=\frac{\varphi-\varphi^{-1}}{2}=\frac12
+\)
+得到 \(t=1\)。
+第二个等价式由 \(q(t)=e^{-2\eta(t)}\) 的定义立得。
+第三个等价式由推论 \ref{cor:pom-Lk-surface-free-energy} 的 \(f(t)=\lim_{k\to\infty}\frac1k\log\det(L_k+tI)=2\eta(t)\) 给出。证毕。
+\end{proof}
+
+\begin{corollary}[黄金耦合处的 Fibonacci 行列式与 Green 核全显式：分母 \texorpdfstring{\(F_{2k+1}\)}{F_{2k+1}} 的统一化]\label{cor:pom-Lk-t1-fibonacci-det-green}
+仍以 \(F_0=0,F_1=1\) 为 Fibonacci 数列。令 \(A_k:=L_k+I\in\ZZ^{k\times k}\)。
+则
+\[
+\det(A_k)=F_{2k+1}.
+\]
+并且其逆矩阵矩阵元对 \(1\le i\le j\le k\) 满足精确闭式
+\[
+(A_k^{-1})_{ij}
+=\frac{F_{2i}\,F_{2(k-j)+1}}{F_{2k+1}},
+\qquad
+(A_k^{-1})_{ji}=(A_k^{-1})_{ij}.
+\]
+等价地，伴随矩阵在对象层发生分离变量因子化：
+\[
+\operatorname{adj}(A_k)_{ij}=F_{2\min(i,j)}\,F_{2(k-\max(i,j))+1}.
+\]
+特别地，
+\[
+(A_k^{-1})_{11}=\frac{F_{2k-1}}{F_{2k+1}},
+\qquad
+(A_k^{-1})_{1k}=\frac{1}{F_{2k+1}}.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:pom-Lk-shifted-det-free-energy}，对 \(t=1\) 有
+\[
+\det(A_k)=\det(L_k+I)=\frac{\cosh((2k+1)\eta(1))}{\cosh(\eta(1))}.
+\]
+而 \(\eta(1)=\mathrm{arsinh}(1/2)=\log\varphi\)，并注意 \(\cosh(\log\varphi)=\frac{\varphi+\varphi^{-1}}{2}=\frac{\sqrt5}{2}\)。
+因此
+\[
+\det(A_k)=\frac{\cosh((2k+1)\log\varphi)}{\cosh(\log\varphi)}
+=\frac{(\varphi^{2k+1}+\varphi^{-(2k+1)})/2}{\sqrt5/2}
+=\frac{\varphi^{2k+1}+\varphi^{-(2k+1)}}{\sqrt5}
+=F_{2k+1}.
+\]
+矩阵元闭式由命题 \ref{prop:pom-Lk-green-kernel-entries} 取 \(t=1\) 得到：
+\[
+(A_k^{-1})_{ij}
+=\frac{\sinh(2i\log\varphi)\,\cosh((2(k-j)+1)\log\varphi)}{\sinh(2\log\varphi)\,\cosh((2k+1)\log\varphi)}.
+\]
+利用恒等式
+\(
+\sinh(2n\log\varphi)=\frac{\sqrt5}{2}F_{2n}
+\)
+与
+\(
+\cosh((2m+1)\log\varphi)=\frac{\sqrt5}{2}F_{2m+1}
+\)
+（由 Binet 公式直接化简）即得所示 Fibonacci 比。
+伴随矩阵公式由 \(\operatorname{adj}(A_k)=\det(A_k)\,A_k^{-1}\) 立得。证毕。
+\end{proof}
+
+\begin{remark}[“面积项 + 常数项 + 指数小修正”在 Fibonacci 上的精确实现]\label{rem:pom-Lk-fibonacci-area-law-exact}
+在黄金耦合 \(t=1\) 下，由 Binet 公式对奇指标的精确写法
+\[
+F_{2k+1}=\frac{\varphi^{2k+1}}{\sqrt5}\Bigl(1+\varphi^{-4k-2}\Bigr)
+\]
+得到不经渐近的精确分解
+\[
+\log F_{2k+1}=(2k+1)\log\varphi-\frac12\log 5+\log\bigl(1+\varphi^{-4k-2}\bigr),
+\qquad
+0<\log\bigl(1+\varphi^{-4k-2}\bigr)<\varphi^{-4k-2}.
+\]
+因此，“面积律主项 + 普适常数项 + 指数小有限尺寸修正”在本模型中可视为 Fibonacci 的严格代数恒等式，而非经验级近似。
+\end{remark}
+
+\begin{corollary}[边界熵导数与 Parry 质量的精确耦合：\texorpdfstring{\(t=1\)}{t=1} 处的同源闭合]\label{cor:pom-Lk-t1-parry-surface-derivative}
+令黄金均值 shift 的 Parry 最大熵测度在符号 \(1\) 上的质量为
+\(
+\pi(1)=\frac{1}{\varphi^2+1}
+\)
+（注 \ref{prop:parry-measure-golden}）。
+在谱侧，令 \(q(t)=e^{-2\eta(t)}\) 并取表面自由能 \(g(t)=-\log(1+q(t))\)（推论 \ref{cor:pom-Lk-surface-free-energy}）。
+则在黄金耦合点 \(t=1\) 有严格恒等式
+\[
+\frac{q(1)}{1+q(1)}=\frac{\varphi^{-2}}{1+\varphi^{-2}}=\frac{1}{\varphi^2+1}=\pi(1),
+\]
+并且
+\[
+g'(1)=\pi(1)\cdot\frac{1}{\sqrt{1\cdot(4+1)}}=\frac{\pi(1)}{\sqrt5}.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:pom-Lk-golden-coupling-unique} 知 \(q(1)=\varphi^{-2}\)，代入即得第一式。
+第二式由推论 \ref{cor:pom-Lk-surface-free-energy} 的
+\(
+g'(t)=\frac{q(t)}{1+q(t)}\cdot \frac{1}{\sqrt{t(4+t)}}
+\)
+在 \(t=1\) 处取值立得。证毕。
+\end{proof}
+
+\begin{theorem}[Fisher 零点的极限分布：\texorpdfstring{\(\det(L_k+tI)\)}{det(L_k+tI)} 的零点测度收敛到 \texorpdfstring{\([-4,0]\)}{[-4,0]} 上的反正弦律]\label{thm:pom-Lk-fisher-zeros-arcsine}
+把 \(P_k(t):=\det(L_k+tI)\) 视为关于 \(t\) 的次数 \(k\) 多项式，其零点为
+\[
+t_p=-4\sin^2\!\Bigl(\frac{(2p-1)\pi}{4k+2}\Bigr)\in(-4,0),
+\qquad p=1,\dots,k.
+\]
+令零点经验测度
+\(
+\omega_k:=\frac1k\sum_{p=1}^k\delta_{t_p}
+\)。
+则 \(\omega_k\) 在弱拓扑下收敛到 \([-4,0]\) 上的反正弦分布 \(\omega\)，其密度为
+\[
+\dd\omega(t)=\frac{1}{\pi\sqrt{(-t)(4+t)}}\,\dd t,\qquad t\in(-4,0).
+\]
+并且对任意 \(t\in\CC\setminus[-4,0]\)，归一化对数势存在且为闭式
+\[
+\lim_{k\to\infty}\frac{1}{k}\log\bigl|\det(L_k+tI)\bigr|
+=2\,\Re\,\mathrm{arsinh}\sqrt{\frac{t}{4}}.
+\]
+\end{theorem}
+\begin{proof}
+由于 \(P_k(t)=\prod_{p=1}^k(\mu_p+t)\) 且 \(\mu_p\) 为 \(L_k\) 的特征值（定理 \ref{thm:pom-Lk-arcsine-law}），零点满足 \(t_p=-\mu_p\)。
+故 \(\omega_k\) 是经验谱测度 \(\nu_k\) 在映射 \(t=-\mu\) 下的推前；由定理 \ref{thm:pom-Lk-arcsine-law} 立得极限密度为所示反正弦律。
+
+对对数势部分，由推论 \ref{cor:pom-Lk-shifted-det-free-energy} 的 Chebyshev 形式
+\(
+\det(L_k+tI)=T_{2k+1}(\sqrt{1+t/4})/\sqrt{1+t/4}
+\)
+并用 \(T_n(z)=\frac12(w^n+w^{-n})\)（其中 \(w=z+\sqrt{z^2-1}\)，在 \(\CC\setminus[-1,1]\) 上解析）可得
+\[
+\frac{1}{k}\log|\det(L_k+tI)|
+=\frac{2k+1}{k}\Re\log w(t)+o(1),
+\]
+其中 \(w(t)=\sqrt{1+t/4}+\sqrt{t/4}=\exp(\mathrm{arsinh}\sqrt{t/4})\)（选取与 \(t>0\) 相容的解析延拓）。
+令 \(k\to\infty\) 即得极限 \(2\Re\,\mathrm{arsinh}\sqrt{t/4}\)。证毕。
+\end{proof}
+
+\begin{remark}[零点的共形均匀化：Joukowsky 映射下的“奇根统一”]\label{rem:pom-Lk-fisher-zeros-uniformization}
+引入均匀化参数 \(w\in\CC^\times\) 使
+\[
+w+w^{-1}=t+2
+\qquad\Longleftrightarrow\qquad
+t=w+w^{-1}-2.
+\]
+则 \(P_k(t)=0\) 等价于
+\[
+w^{2k+1}=-1.
+\]
+因此零点集合是“\(-1\) 的奇阶单位根”在 Joukowsky 映射 \(t=w+w^{-1}-2\) 下的像；
+当 \(|w|=1\) 时，像域恰为线段 \([-4,0]\)，并把单位圆上的均匀离散点推前为定理 \ref{thm:pom-Lk-fisher-zeros-arcsine} 的反正弦律极限。
+该均匀化同时给出端点尺度的几何来源：\([-4,0]\) 是单位圆在 \(w+w^{-1}-2\) 下的精确像域端点。
+\end{remark}
+
+\begin{proposition}[边界反射系数的 Schur--Riccati 递推与黄金耦合下的 Fibonacci 收敛率]\label{prop:pom-Lk-boundary-riccati-recursion}
+定义有限尺度边界反射系数
+\[
+q_k(t):=(L_k+tI)^{-1}_{11}\qquad(t>0).
+\]
+则 \((q_k(t))_{k\ge 1}\) 满足 Schur--Riccati 递推
+\[
+q_{k+1}(t)=\frac{1}{t+2-q_k(t)},\qquad q_1(t)=\frac{1}{1+t},
+\]
+并收敛到固定点 \(q(t)\in(0,1)\)（推论 \ref{cor:pom-Lk-boundary-fixed-point-riccati}）：
+\[
+q(t)=\frac{1}{t+2-q(t)}\qquad\Longleftrightarrow\qquad q(t)^2-(2+t)q(t)+1=0.
+\]
+更强地，存在精确误差形式
+\[
+0<q_k(t)-q(t)=\frac{(1-q(t)^2)\,q(t)^{2k}}{1+q(t)^{2k+1}}
+< (1-q(t)^2)\,q(t)^{2k},
+\]
+从而 \(|q_k(t)-q(t)|=\Theta(q(t)^{2k})\)。
+在黄金耦合 \(t=1\) 下，该递推完全算术化：
+\[
+q_k(1)=\frac{F_{2k-1}}{F_{2k+1}}\ \xrightarrow[k\to\infty]{}\ \varphi^{-2},
+\qquad
+0<q_k(1)-\varphi^{-2}=\Theta(\varphi^{-4k}).
+\]
+\end{proposition}
+\begin{proof}
+递推由对称三对角矩阵 \(L_k+tI\) 的逐步 Schur 补（等价于一维 continued fraction）得到；也可由命题 \ref{prop:pom-Lk-green-kernel-entries} 的闭式 \(q_k(t)=\cosh((2k-1)\eta(t))/\cosh((2k+1)\eta(t))\) 直接验证。
+
+对误差，令 \(q=q(t)=e^{-2\eta(t)}\)（推论 \ref{cor:pom-Lk-boundary-fixed-point-riccati}），则
+\[
+q_k(t)=\frac{\cosh((2k-1)\eta)}{\cosh((2k+1)\eta)}
+=q\,\frac{1+q^{2k-1}}{1+q^{2k+1}},
+\]
+从而
+\[
+q_k(t)-q=q\,\frac{q^{2k-1}-q^{2k+1}}{1+q^{2k+1}}
+=\frac{(1-q^2)\,q^{2k}}{1+q^{2k+1}},
+\]
+并立得所示双边界与 \(\Theta(q^{2k})\)。
+最后，黄金耦合的 Fibonacci 表达由推论 \ref{cor:pom-Lk-t1-fibonacci-det-green} 的 \((A_k^{-1})_{11}=F_{2k-1}/F_{2k+1}\) 给出，且 \(\varphi^{-2}=q(1)\)。
+由 Binet 公式可得误差阶 \(\Theta(\varphi^{-4k})\)。证毕。
+\end{proof}
+
+\begin{remark}[有限窗审计：黄金耦合 Fibonacci 化、Fisher 零点与 Riccati 收敛]\label{rem:pom-fence-green-kernel-golden-coupling-audit}
+脚本在有限窗上核验：推论 \ref{cor:pom-Lk-golden-coupling-unique} 的 \(t_\star=1\) 唯一性刻画、
+推论 \ref{cor:pom-Lk-t1-fibonacci-det-green} 的 Fibonacci 行列式与矩阵元闭式、
+定理 \ref{thm:pom-Lk-fisher-zeros-arcsine} 的零点位置与反正弦律（通过映射 \(t=-\mu\) 与 Joukowsky 均匀化的数值一致性），
+以及命题 \ref{prop:pom-Lk-boundary-riccati-recursion} 的 Riccati 递推与收敛率。
+审计表如下：
+\input{sections/generated/tab_fence_green_kernel_golden_coupling_audit}
+\end{remark}
+

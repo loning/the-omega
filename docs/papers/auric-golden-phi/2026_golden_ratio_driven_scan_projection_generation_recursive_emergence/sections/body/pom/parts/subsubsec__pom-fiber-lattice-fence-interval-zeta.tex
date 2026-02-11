@@ -201,10 +201,48 @@ a_1\le a_2\ge a_3\le a_4\ge\cdots
 \)。
 \end{lemma}
 \begin{proof}
-这是离散 Dirichlet Laplacian 的 Green 核的标准谱计算：\(K_k\) 为三对角差分算子 \(D_k\) 的逆（端点 Dirichlet 条件），
-而 \(D_k\) 的本征向量为离散正弦基，特征值可完全显式写出；取倒数即得 \(\lambda_p(k)\)。
+这是离散 Green 核的标准谱计算。取 \(L_k:=K_k^{-1}\)，则 \(L_k\) 为混合边界的离散二阶差分算子（左端点 Dirichlet、右端点 Neumann）的矩阵表示（见注 \ref{rem:pom-Kk-factor4-spectral-rigidity}），
+其本征向量为离散正弦基，特征值可写成 \(2(1-\cos\theta_p)\) 且 \(\theta_p=\frac{(2p-1)\pi}{2k+1}\)。
+取倒数即得 \(\lambda_p(k)\) 的闭式。
 脚本在有限窗上对 \(\{\lambda_p(k)\}\) 与数值本征分解逐项核验（表 \ref{tab:fence_order_poly_spectral_audit}）。证毕。
 \end{proof}
+
+\begin{remark}[系数 \(4\) 的谱刚性：离散 Green 核的半奇整数角量子化]\label{rem:pom-Kk-factor4-spectral-rigidity}
+令 \(K_k=(K_k(i,j))_{1\le i,j\le k}\) 且 \(K_k(i,j)=\min(i,j)\)，并记其逆矩阵 \(L_k:=K_k^{-1}\)。
+直接验算可得
+\[
+L_k=
+\begin{pmatrix}
+2 & -1 & 0 & \cdots & 0\\
+-1 & 2 & -1 & \ddots & \vdots\\
+0 & \ddots & \ddots & \ddots & 0\\
+\vdots & \ddots & -1 & 2 & -1\\
+0 & \cdots & 0 & -1 & 1
+\end{pmatrix},
+\]
+它是一个混合边界离散 Laplacian（右端点 Neumann、左端点 Dirichlet）的三对角差分算子。
+其谱满足半奇整数角量子化
+\[
+\mathrm{Spec}(L_k)=
+\left\{
+2\bigl(1-\cos\theta_p\bigr):\ 
+\theta_p=\frac{(2p-1)\pi}{2k+1},\ p=1,\dots,k
+\right\},
+\]
+从而
+\[
+\mathrm{Spec}(K_k)=
+\left\{
+\frac{1}{2\bigl(1-\cos\theta_p\bigr)}
+=
+\frac{1}{4\sin^2(\theta_p/2)}:\ p=1,\dots,k
+\right\},
+\]
+与引理 \ref{lem:pom-Kk-eigenvalues} 的闭式一致。
+因此谱表示中的系数 \(4\) 并非可调归一化：在混合边界角量子化 \(\theta_p=(2p-1)\pi/(2k+1)\) 固定后，
+它由半角恒等式 \(2(1-\cos\theta)=4\sin^2(\theta/2)\) 结构性地强制引入；
+等价地，\(4k+2\) 与 \(4\sin^2(\cdot)\) 形式是同一量子化角的半角重写。
+\end{remark}
 
 \begin{corollary}[多链熵密度闭式与 \texorpdfstring{\(\pi\)}{pi} 的连续极限常数]\label{cor:pom-fence-multichain-entropy-pi}
 对固定 \(k\ge 1\)，定义锯齿多链熵密度
@@ -234,6 +272,8 @@ h_{\mathrm{ref}}(k)=\log(2k+1)-\log\pi+o(1).
 \(\lambda_1(k)\) 的闭式由引理 \ref{lem:pom-Kk-eigenvalues} 给出；将其代入即得 \(h_{\mathrm{ref}}(k)\) 的闭式。
 最后由 \(\sin x\sim x\) 得 \(h_{\mathrm{ref}}(k)=\log(2k+1)-\log\pi+o(1)\)。证毕。
 \end{proof}
+
+\input{parts/subsubsec__pom-fence-green-kernel-spectral-algebra}
 
 \paragraph{推回一般纤维：zeta 多项式的完全乘积化与函数型指纹}
 \begin{proposition}[一般纤维的多链谱乘积闭合]\label{prop:pom-fiber-zeta-product-fence}
@@ -320,6 +360,28 @@ e(P_x)
 代入 \(P_i=Z_{\ell_i}\) 即得结论。证毕。
 \end{proof}
 
+\begin{corollary}[最大链数的极值结构：全孤立分量最优]\label{cor:pom-fence-maxchains-all-isolated-optimal}
+沿用定理 \ref{thm:pom-fence-maxchains-euler} 的记号，并记 \(N=\sum_i \ell_i\)。
+则在固定 \(N\) 的约束下，最大链数满足严格上界
+\[
+|\mathrm{MC}(\mathcal L_x)|
+=
+N!\prod_{i=1}^r \frac{E_{\ell_i}}{\ell_i!}
+\le
+N!,
+\]
+且当且仅当 \(\ell_1=\cdots=\ell_r=1\)（即 \(P_x=\bigsqcup_{i=1}^{N} Z_1\)，等价于全部分量孤立）时取等号。
+因此，在固定总长度 \(N\) 的口径下，纤维的“调度自由度”\(|\mathrm{MC}(\mathcal L_x)|\) 由\emph{最碎裂}的分量结构极大化。
+\end{corollary}
+\begin{proof}
+由于 \(E_\ell\) 计数交错置换，故对任意 \(\ell\ge 1\) 有 \(E_\ell\le \ell!\)，且对 \(\ell\ge 2\) 严格小于（交错置换为全排列的真子集）。
+代入定理 \ref{thm:pom-fence-maxchains-euler} 的分解式即得
+\(
+\prod_i(E_{\ell_i}/\ell_i!)\le 1
+\)，从而 \(|\mathrm{MC}(\mathcal L_x)|\le N!\)。
+等号成立当且仅当每个因子 \(E_{\ell_i}/\ell_i!=1\)，即 \(\ell_i=1\) 对一切 \(i\)。证毕。
+\end{proof}
+
 \begin{remark}[有限窗审计：\(e(Z_n)=E_n\) 与体积常数]\label{rem:pom-fence-euler-volume-audit}
 脚本对 \(n\le 12\) 逐项核验 \(e(Z_n)=E_n\)，并输出 \(\log(E_n/n!)/n\) 向 \(\log(2/\pi)\) 收敛的数值证书（见定理 \ref{thm:pom-fence-volume-log2pi}）。
 审计表如下：
@@ -361,6 +423,46 @@ e(P_x)
 对 \(P_x\) 由定理 \ref{thm:pom-fence-maxchains-euler} 代入即得。证毕。
 \end{proof}
 
+\begin{theorem}[双不变量可达域的凸包定理：\texorpdfstring{\((\log d,\log\mathrm{MC})\)}{(log d, log MC)} 的 Pareto 几何由原子长度生成]\label{thm:pom-fiber-ab-convex-hull}
+固定总长度 \(N\ge 1\)，对任意分量分解 \(N=\sum_{i=1}^r \ell_i\) 定义归一化不变量
+\[
+A(\{\ell_i\})
+:=\frac{1}{N}\sum_{i=1}^r \log F_{\ell_i+2}
+=\frac{1}{N}\log d_m(x),
+\]
+\[
+B(\{\ell_i\})
+:=\frac{1}{N}\sum_{i=1}^r \log\frac{E_{\ell_i}}{\ell_i!}
+=\frac{1}{N}\log \mathsf V(x)
+=\frac{1}{N}\bigl(\log|\mathrm{MC}(\mathcal L_x)|-\log(N!)\bigr),
+\]
+其中 \(d_m(x)=\prod_i F_{\ell_i+2}\) 由定理 \ref{thm:pom-fiber-indset-factorization} 给出，而 \(\mathsf V(x)=\prod_i (E_{\ell_i}/\ell_i!)\) 与 \(|\mathrm{MC}(\mathcal L_x)|=N!\mathsf V(x)\) 由定理 \ref{thm:pom-order-polytope-volume-linext} 给出。
+令原子点集
+\[
+\mathcal P
+:=
+\left\{
+\left(\frac{1}{\ell}\log F_{\ell+2},\ \frac{1}{\ell}\log\frac{E_\ell}{\ell!}\right):\ \ell\in\NN
+\right\}
+\subset\RR^2,
+\]
+并令 \(\mathcal R\subset\RR^2\) 为所有由分解 \(\{\ell_i\}\) 产生的点 \((A(\{\ell_i\}),B(\{\ell_i\}))\) 在 \(N\to\infty\) 的尺度极限中所形成的可达域（即取闭包的极限可达点集）。
+则有
+\[
+\mathcal R=\overline{\mathrm{conv}}(\mathcal P).
+\]
+从而 \((A,B)\) 的 Pareto 前沿等价于 \(\overline{\mathrm{conv}}(\mathcal P)\) 的支撑曲线：对任意支撑方向 \((\alpha,\beta)\in\RR^2\)，极值 \(\sup_{(A,B)\in\mathcal R}(\alpha A+\beta B)\) 由有限多个原子长度 \(\ell\) 所张成的支撑超平面实现。
+\end{theorem}
+\begin{proof}
+对任意分解 \(N=\sum_i \ell_i\)，记权重 \(w_i:=\ell_i/N\)，则 \(\sum_i w_i=1\)，并且
+\[
+(A(\{\ell_i\}),B(\{\ell_i\}))
+=\sum_{i=1}^r w_i\left(\frac{1}{\ell_i}\log F_{\ell_i+2},\ \frac{1}{\ell_i}\log\frac{E_{\ell_i}}{\ell_i!}\right),
+\]
+故任一有限 \(N\) 的可达点均为 \(\mathcal P\) 的凸组合，从而 \(\mathcal R\subseteq \overline{\mathrm{conv}}(\mathcal P)\)。
+反向地，对任意有限凸组合 \(\sum_{j=1}^s \theta_j p_{\ell_j}\)（\(\theta_j\ge 0,\sum_j\theta_j=1\) 且 \(p_{\ell_j}\in\mathcal P\)），取大 \(N\) 并令 \(\ell_j\) 重复出现约 \(\theta_j N/\ell_j\) 次即可构造一列分解使其对应的 \((A,B)\) 逼近该凸组合；再由有限凸组合在闭凸包中的稠密性得到 \(\overline{\mathrm{conv}}(\mathcal P)\subseteq \mathcal R\)。证毕。
+\end{proof}
+
 \begin{theorem}[\texorpdfstring{\(\log(2/\pi)\)}{log(2/pi)} 常数的极限密度]\label{thm:pom-fence-volume-log2pi}
 Euler 交错数满足奇点主导渐近（\(\sec z+\tan z\) 的最近奇点位于 \(z=\pi/2\)），从而
 \[
@@ -378,6 +480,30 @@ Euler 交错数满足奇点主导渐近（\(\sec z+\tan z\) 的最近奇点位�
 第一式为 Euler 交错数的经典渐近结论：由 \(\sec z+\tan z\) 在 \(z=\pm\pi/2\) 的简单极点与标准系数渐近定理得到。
 第二式由加权平均与前述极限立得。证毕。
 \end{proof}
+
+\begin{remark}[“四分角”最近奇点律与 \texorpdfstring{\(\pi/2\)}{pi/2} 的普适折叠尺度]\label{rem:pom-quarter-turn-pi2-scale}
+定理 \ref{thm:pom-fence-volume-log2pi} 中 \(\log(2/\pi)\) 常数来自解析组合的最近奇点支配：\(\sec z+\tan z\) 的最近实奇点位于 \(z=\pm\pi/2\)。
+由于三角函数的基本周期为 \(2\pi\)，该奇点对应“全角的四分之一”，即 \(\pi/2=(2\pi)/4\)；因而 \(\log(2/\pi)=-\log(\pi/2)\) 可被理解为一个严格的“四分角奇点律”。
+\par
+另一方面，由推论 \ref{cor:pom-fence-multichain-entropy-pi} 的闭式
+\(
+h_{\mathrm{ref}}(k)=-\log\!\bigl(2\sin(\pi/(4k+2))\bigr)
+\)，令 \(N:=2k+1\) 则存在完全显式的高阶渐近展开
+\[
+h_{\mathrm{ref}}(k)
+=\log N-\log\pi+\frac{\pi^2}{24N^2}+\frac{\pi^4}{2880N^4}+O(N^{-6}).
+\]
+因此本文中出现的两类熵常数
+\[
+-\log\pi,\qquad \log\frac{2}{\pi}=-\log\frac{\pi}{2}
+\]
+并非彼此独立：它们共享唯一的角尺度 \(\pi/2\)（等价地共享比值 \(2\pi/(\pi/2)=4\)），并在谱细化侧与调度体积侧分别以“半角量子化”与“最近奇点支配”的形式实现。
+从而系数 \(4\) 的再现可被统一归因于同一 \(\pi/2\) 机制：在谱侧，它由半角恒等式与半奇整数模态强制给出（注 \ref{rem:pom-Kk-factor4-spectral-rigidity}）；
+在解析侧，它由全角周期与最近奇点位置的比值锁定。
+\par
+在纯谱几何层面，上述“端点正规性 \(\Rightarrow\) 半奇整数模态 \(\Rightarrow\) 半角表示”的链条提供了一个实现无关的结构原型，
+从而当在视界端点/圆锥尖点口径下出现 \(1/4\) 型比例常数（例如黑洞熵公式中的 \(1/4\) 系数）时，可将其视为同一角尺度在“半角/四分角”两种等价表述下的严格投影，而不依赖额外物理输入。
+\end{remark}
 
 \paragraph{Ehrhart--Hilbert 细化谱：整数细化时间的可审计计数}
 

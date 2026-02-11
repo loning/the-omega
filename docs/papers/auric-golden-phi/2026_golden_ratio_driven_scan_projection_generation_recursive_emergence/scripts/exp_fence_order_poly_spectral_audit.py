@@ -32,7 +32,15 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import numpy as np
+import sympy as sp
 
+from common_fence_green_kernel_limit_laws_audit import run_audit as run_green_kernel_limit_laws_audit
+from common_fence_green_kernel_area_law_resolvent_audit import (
+    run_audit as run_green_kernel_area_law_resolvent_audit,
+)
+from common_fence_green_kernel_golden_coupling_audit import (
+    run_audit as run_green_kernel_golden_coupling_audit,
+)
 from common_paths import export_dir, generated_dir
 
 
@@ -188,6 +196,161 @@ class Row:
         }
 
 
+@dataclass(frozen=True)
+class ExtraRow:
+    k: int
+    prod_err_abs: float
+    sum_err_abs: float
+    chebyshev_charpoly_ok: bool | None
+    det_shift_ok: bool | None
+    moments_ok: bool
+    gap_scaled: float
+    renorm_err_abs: float
+
+    def to_dict(self) -> Dict[str, object]:
+        return {
+            "k": int(self.k),
+            "prod_err_abs": float(self.prod_err_abs),
+            "sum_err_abs": float(self.sum_err_abs),
+            "chebyshev_charpoly_ok": (None if self.chebyshev_charpoly_ok is None else bool(self.chebyshev_charpoly_ok)),
+            "det_shift_ok": (None if self.det_shift_ok is None else bool(self.det_shift_ok)),
+            "moments_ok": bool(self.moments_ok),
+            "gap_scaled": float(self.gap_scaled),
+            "renorm_err_abs": float(self.renorm_err_abs),
+        }
+
+
+def _log_cosh(a: float) -> float:
+    """Numerically stable log(cosh(a)) for a>=0."""
+    a = float(a)
+    if a < 0:
+        a = -a
+    # cosh(a)=exp(a)/2*(1+exp(-2a))
+    return a - math.log(2.0) + math.log1p(math.exp(-2.0 * a))
+
+
+def _P_k_poly(k: int) -> sp.Expr:
+    """Return P_k(y)=T_{2k+1}(sqrt(y))/sqrt(y) as a Z[y] polynomial expression."""
+    y = sp.Symbol("y")
+    z = sp.Symbol("z")
+    T = sp.chebyshevt(2 * k + 1, z)
+    Q = sp.expand(T / z)  # even polynomial in z
+    polyQ = sp.Poly(Q, z)
+    P = 0
+    for exp, coeff in polyQ.terms():
+        e = int(exp[0])
+        if e % 2 != 0:
+            raise AssertionError("Unexpected odd power in T_{2k+1}(z)/z")
+        P += coeff * (y ** (e // 2))
+    return sp.expand(P)
+
+
+def _L_k_sympy(k: int) -> sp.Matrix:
+    """Mixed-boundary discrete Laplacian L_k = K_k^{-1} (integer tridiagonal)."""
+    L = sp.zeros(k, k)
+    for i in range(k):
+        L[i, i] = 2 if i < k - 1 else 1
+        if i + 1 < k:
+            L[i, i + 1] = -1
+            L[i + 1, i] = -1
+    return L
+
+
+def _odd_angle_checks(k: int) -> Tuple[float, float]:
+    """Return (prod_err_abs, sum_err_abs) for the (4 sin^2) product/sum identities."""
+    prod = 1.0
+    s = 0.0
+    for p in range(1, k + 1):
+        phi = (2 * p - 1) * math.pi / (4 * k + 2)
+        u = 4.0 * (math.sin(phi) ** 2)
+        prod *= u
+        s += 1.0 / u
+    prod_err = abs(prod - 1.0)
+    sum_err = abs(s - (k * (k + 1) / 2.0))
+    return float(prod_err), float(sum_err)
+
+
+def _moments_ok(k: int) -> bool:
+    """Check S_r(k) closed forms for r=1,2,3 at double precision."""
+    n = 2 * k + 1
+
+    def S(r: int) -> float:
+        out = 0.0
+        for p in range(1, k + 1):
+            phi = (2 * p - 1) * math.pi / (4 * k + 2)
+            out += (1.0 / math.sin(phi)) ** (2 * r)
+        return float(out)
+
+    s1 = S(1)
+    s2 = S(2)
+    s3 = S(3)
+    t1 = 0.5 * (n * n) - 0.5
+    t2 = (n**4) / 6.0 + (n * n) / 3.0 - 0.5
+    t3 = (n**6) / 15.0 + (n**4) / 6.0 + (4.0 * (n * n)) / 15.0 - 0.5
+    e1 = abs(s1 - t1)
+    e2 = abs(s2 - t2)
+    e3 = abs(s3 - t3)
+    # Loose tolerance: the identities are exact, but we only want to detect gross regressions.
+    return bool(max(e1, e2, e3) <= 1e-8 * max(1.0, abs(t3)))
+
+
+def _renorm_err_abs(k: int, t: float = 1.0) -> float:
+    """|F_k(t) - (-log(2*sqrt(1+t/4)))| for the shifted determinant free energy."""
+    x = math.sqrt(1.0 + (t / 4.0))
+    if x <= 1.0:
+        # For the audit table we only use t>0, but keep a safe fallback.
+        return float("nan")
+    eta = math.acosh(x)
+    a = (2 * k + 1) * eta
+    logdet = _log_cosh(a) - math.log(x)
+    F = logdet - (2 * k + 1) * eta
+    target = -math.log(2.0 * x)
+    return float(abs(F - target))
+
+
+def _gap_scaled(k: int) -> float:
+    """Return mu1*(2k+1)^2/pi^2 where mu1=4 sin^2(pi/(4k+2))."""
+    mu1 = 4.0 * (math.sin(math.pi / (4 * k + 2)) ** 2)
+    n = 2 * k + 1
+    return float(mu1 * (n * n) / (math.pi**2))
+
+
+def write_extra_table(rows: List[ExtraRow], out_path: Path, k_max: int) -> None:
+    lines: List[str] = []
+    lines.append("\\begin{table}[H]")
+    lines.append("\\centering")
+    lines.append("\\scriptsize")
+    lines.append("\\setlength{\\tabcolsep}{6pt}")
+    lines.append(
+        (
+            "\\caption{Green 核 $K_k(i,j)=\\min(i,j)$ 的谱代数审计："
+            "核验 Gram 分解与 $\\det(K_k)=1$ 的行列式归一化刚性（引理~\\ref{lem:pom-Kk-gram-det}），"
+            "$(4\\sin^2)$ 乘积/求和恒等式（推论~\\ref{cor:pom-Kk-sine-product-sum}），"
+            "混合边界 Laplacian $L_k=K_k^{-1}$ 的 Chebyshev 特征多项式识别（定理~\\ref{thm:pom-Lk-chebyshev-charpoly}），"
+            "以及移位行列式自由能重整化常数项与谱隙尺度（推论~\\ref{cor:pom-Lk-shifted-det-free-energy}、\\ref{cor:pom-Lk-gap-pi2}）。}"
+        )
+    )
+    lines.append("\\label{tab:fence_green_kernel_spectral_algebra_audit}")
+    lines.append("\\begin{tabular}{r r r c c c r r}")
+    lines.append("\\toprule")
+    lines.append(
+        "$k$ & $|\\prod 4\\sin^2-1|$ & $|\\sum (4\\sin^2)^{-1}-\\tfrac{k(k+1)}{2}|$ & Cheb & $\\det$-shift & moments & $\\mu_1(2k+1)^2/\\pi^2$ & $|F_k(1)-F_\\infty(1)|$\\\\"
+    )
+    lines.append("\\midrule")
+    for r in rows:
+        cheb = "--" if r.chebyshev_charpoly_ok is None else ("OK" if r.chebyshev_charpoly_ok else "FAIL")
+        dsh = "--" if r.det_shift_ok is None else ("OK" if r.det_shift_ok else "FAIL")
+        mom = "OK" if r.moments_ok else "FAIL"
+        lines.append(
+            f"{r.k} & {r.prod_err_abs:.2e} & {r.sum_err_abs:.2e} & {cheb} & {dsh} & {mom} & {r.gap_scaled:.8f} & {r.renorm_err_abs:.2e}\\\\"
+        )
+    lines.append("\\bottomrule")
+    lines.append("\\end{tabular}")
+    lines.append("\\end{table}")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def write_table(rows: List[Row], out_path: Path, k_max: int, l_max: int) -> None:
     lines: List[str] = []
     lines.append("\\begin{table}[H]")
@@ -314,6 +477,62 @@ def main() -> None:
     json_out.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     write_table(rows, out_path=(generated_dir() / "tab_fence_order_poly_spectral_audit.tex"), k_max=k_max, l_max=l_max)
+
+    # Extra audit: Gram/ determinant rigidity, Chebyshev identification, moments.
+    lam = sp.Symbol("lam")
+    y = sp.Symbol("y")
+    k_cheb_max = min(k_max, 7)  # keep sympy charpoly checks lightweight
+    extra_rows: List[ExtraRow] = []
+    for k in range(1, k_max + 1):
+        prod_err, sum_err = _odd_angle_checks(k)
+        cheb_ok: bool | None = None
+        det_shift_ok: bool | None = None
+        if k <= k_cheb_max:
+            L = _L_k_sympy(k)
+            char = sp.expand(L.charpoly(lam).as_expr())  # det(lam I - L)
+            Pk = _P_k_poly(k)
+            rhs = sp.expand(((-1) ** k) * Pk.subs(y, 1 - lam / 4))
+            cheb_ok = bool(sp.simplify(char - rhs) == 0)
+            # Shift determinant check at t=1 (integer).
+            t = sp.Integer(1)
+            det_shift = sp.expand((L + t * sp.eye(k)).det())
+            det_shift_rhs = sp.expand(Pk.subs(y, 1 + sp.Rational(1, 4)))
+            det_shift_ok = bool(sp.simplify(det_shift - det_shift_rhs) == 0)
+
+        extra_rows.append(
+            ExtraRow(
+                k=k,
+                prod_err_abs=prod_err,
+                sum_err_abs=sum_err,
+                chebyshev_charpoly_ok=cheb_ok,
+                det_shift_ok=det_shift_ok,
+                moments_ok=_moments_ok(k),
+                gap_scaled=_gap_scaled(k),
+                renorm_err_abs=_renorm_err_abs(k, t=1.0),
+            )
+        )
+
+    extra_payload: Dict[str, object] = {
+        "params": {"k_max": k_max, "k_cheb_max": k_cheb_max, "t_det_shift": 1.0},
+        "rows": [r.to_dict() for r in extra_rows],
+    }
+    extra_json = export_dir() / "fence_green_kernel_spectral_algebra_audit.json"
+    extra_json.parent.mkdir(parents=True, exist_ok=True)
+    extra_json.write_text(json.dumps(extra_payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    write_extra_table(
+        extra_rows,
+        out_path=(generated_dir() / "tab_fence_green_kernel_spectral_algebra_audit.tex"),
+        k_max=k_max,
+    )
+
+    # Limit-law audits (arcsine law / heat kernel / continuum determinant match).
+    run_green_kernel_limit_laws_audit(k_values=[50, 100, 200, 400])
+
+    # Area-law / resolvent / Green-kernel closed forms (q-form, Szegő integral, clustering).
+    run_green_kernel_area_law_resolvent_audit(k_values=[10, 20, 40, 200], t=1.0)
+
+    # Golden coupling (t=1): Fibonacci determinant/Green kernel, Fisher zeros, Riccati recursion.
+    run_green_kernel_golden_coupling_audit(k_values=[10, 20, 40, 200])
 
 
 if __name__ == "__main__":
