@@ -1,0 +1,197 @@
+\subsection{视界可观测性与零知识语义：Toeplitz--PSD 层级的可区分性门槛与面积律}\label{subsec:discussion-horizon-zk-toeplitz-area-law}
+本小节在本文既定的“圆盘化视界接口 + unitary slice 可见域 + Toeplitz--PSD 可审计证书”语义内，对\emph{无毛发（no-hair）}做一条信息论化重述：当验证者被制度性地限制为仅能访问有限阶视界多极矩（Toeplitz--Carath\'eodory 输入）时，任何 bulk 微观见证都自动退化为零知识见证；而一旦要求对离切片缺陷具备可否证性，则所需的视界阶数出现不可绕过的 \(1/\varepsilon\) 阈值律，并在黎曼零点语义下与端点二次压缩给出的 \(Q_\rho\asymp \gamma^2/\delta\) 面积律同标度。
+\par
+需要强调的是：本文对“零知识”的使用仅限于\textbf{信息论可模拟性}这一可审计含义；它并不引入外部密码学假设，而是把“可观测约束下验证者能学到的全部信息”等价重写为“视界毛发的完备性”这一已在正文 no-hair 语境中反复出现的制度陈述（参见 \S\ref{subsec:dephysicalized-horizon-timefiber-nohair} 与 \S\ref{subsubsec:discussion-bulk-horizon-dictionary}）。
+\par
+本小节所用的视界多极矩 \(c_n\) 与 Toeplitz 主子矩阵 \(\mathbf{T}_N\) 与附录 \S\ref{subsec:unit-disk-rh-equivalence}、\S\ref{subsubsec:app-horizon-weyl-carath-toeplitz} 完全一致；其中离切片深度（端点 horocycle 坐标）由 \(\mathcal{B}_{-1}(w)\) 与 \(h(\rho)=1-|w_\rho|^2\) 刻画（\S\ref{subsec:unit-disk-rh-equivalence} 及段落 \ref{par:app-horocycle-busemann}）。
+\par
+
+\paragraph{闭合链：有限维否证器 \texorpdfstring{$\Rightarrow$}{=>} 层析反演 \texorpdfstring{$\Rightarrow$}{=>} horocycle 深度估计 \texorpdfstring{$\Rightarrow$}{=>} strictification 不变量分解}
+在本文既有结果的范围内，上述链路可被理解为如下四步的\emph{同一接口闭合}：
+\begin{itemize}
+  \item \textbf{有限维否证器：}Toeplitz--PSD 层级在某一最小阶 \(N_\star\) 的失败给出一个有限维失败见证（负特征值/负向量），并可被压缩为最小 Verblunsky 越界事件 \(|\alpha_{m_\star-1}|\ge 1\)（定理 \ref{thm:xi-toeplitz-det-verblunsky}）。
+  \item \textbf{共振重构：}在有限离切片缺陷口径下，共动扫描剖面 \(H(x_0)\) 具有可逆的指数谱分解，从而可由单变量剖面反演 \((\gamma,\delta,m)\) 等 bulk 参数（\S\ref{subsec:discussion-comoving-tomography-prefix-budget-blindspot}；并见定理 \ref{thm:xi-comoving-horizon-scan-fourier-inversion}）。
+  \item \textbf{horocycle 深度估计：}端点 Busemann/Poisson 坐标把离临界线偏移 \(\delta\) 与视界深度 \(h(\rho)=1-|w_\rho|^2\) 以闭式恒等式绑定到同一 horocycle 分层（推论 \ref{cor:app-offcritical-horocycle-busemann} 与命题 \ref{prop:app-offcritical-radius-compression}）。
+  \item \textbf{strictification 不变量分解：}Toeplitz 证书的 Schur/CMV 参数化将“正性/失败”递归化为一列局部不变量（Verblunsky 前缀），从而把否证阶数、失败步定位与可审计见证承载统一为同一不变量分解（\S\ref{subsubsec:xi-verblunsky-cmv-from-local-jet}）。
+\end{itemize}
+该段落仅作解释性组织：其中每一步均由文内既有编号结果支撑，不引入新的证明前提。
+\par
+
+\begin{definition}[截断视界可观测量与可模拟性语义]\label{def:discussion-horizon-observable-zk}
+令 \(\mathcal{W}\) 为 bulk 微观见证空间（例如盘内零点多重集的有限截断、或其完成化后的谱数据对象）。
+对给定阶数 \(N\ge 0\)，定义截断视界读出（视界多极矩前缀）
+\[
+H_N:\mathcal{W}\to \CC^{N+1},\qquad
+H_N(w):=\bigl(c_0(w),c_1(w),\dots,c_N(w)\bigr),
+\]
+其中 \((c_n)\) 为视界 Carath\'eodory 对数导数 \(\mathscr{C}_\zeta\) 的幂级数系数（即 Toeplitz--Carath\'eodory 输入；见附录定理 \ref{thm:app-horizon-toeplitz-lmi}）。
+\par
+令 \(\Pi\) 为一个（允许随机化与交互的）验证过程；其对见证 \(w\in\mathcal{W}\) 所产生的\textbf{验证视图}记为随机变量 \(\mathrm{View}^{\Pi}(w)\)（取值于某个可测空间 \(\mathsf{View}\)）。
+称 \(\Pi\) 在阶 \(N\) 上满足\textbf{视界可模拟性}，若存在一个 Markov 核（信息论模拟器）
+\[
+\mathsf{S}_N:\CC^{N+1}\rightsquigarrow \mathsf{View}
+\]
+使得对所有 \(w\in\mathcal{W}\) 都有分布恒等
+\[
+\mathrm{View}^{\Pi}(w)\ \equiv\ \mathsf{S}_N\bigl(H_N(w)\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[无毛发 \texorpdfstring{$\Longleftrightarrow$}{<->} 零知识（可观测约束下的等价刻画）]\label{prop:discussion-nohair-iff-zk}
+在定义 \ref{def:discussion-horizon-observable-zk} 的设定下，下列两条陈述等价：
+\begin{enumerate}
+  \item \textbf{（可观测完备性）}对任意 \(w,w'\in\mathcal{W}\)，若 \(H_N(w)=H_N(w')\)，则验证视图同分布：
+  \[
+  \mathrm{View}^{\Pi}(w)\ \equiv\ \mathrm{View}^{\Pi}(w').
+  \]
+  \item \textbf{（信息论零知识/可模拟性）}\(\Pi\) 在阶 \(N\) 上满足视界可模拟性：存在模拟器 \(\mathsf{S}_N\) 使 \(\mathrm{View}^{\Pi}(w)\equiv \mathsf{S}_N(H_N(w))\) 对所有 \(w\) 成立。
+\end{enumerate}
+在该意义下，“验证者能学习到的全部信息”严格等于 \(H_N\) 所承载的信息，与 bulk 见证的其余自由度无关；这与本文 no-hair 口径中“可见信息 \(=\) 视界毛发前缀”的制度陈述同型。
+\end{proposition}
+
+\begin{proof}
+\((2)\Rightarrow(1)\) 由 \(H_N(w)=H_N(w')\Rightarrow \mathsf{S}_N(H_N(w))\equiv \mathsf{S}_N(H_N(w'))\) 立即得到。
+\par
+\((1)\Rightarrow(2)\) 令 \(c\in\CC^{N+1}\)。
+若存在 \(w_c\in\mathcal{W}\) 使 \(H_N(w_c)=c\)，则定义 \(\mathsf{S}_N(c)\) 为 \(\mathrm{View}^\Pi(w_c)\) 的分布；
+由 (1) 知该定义与 \(w_c\) 的选择无关，从而 \(\mathsf{S}_N\) 良定义。
+若不存在见证使 \(H_N(w)=c\)，则任取一分布作为 \(\mathsf{S}_N(c)\)（该值在实际调用中不会被触及）。
+于是对所有 \(w\) 有 \(\mathrm{View}^\Pi(w)\equiv \mathsf{S}_N(H_N(w))\)。证毕。
+\end{proof}
+
+\begin{proposition}[带单原子负缺陷的 Toeplitz--PSD 阈值律]\label{prop:discussion-toeplitz-negative-atom-threshold}
+令 \(\mu_+\) 为 \(\TT\) 上正测度，并假设其相对于 Haar 测度 \(\dd\theta/(2\pi)\) 绝对连续且密度满足
+\[
+m_0\ \le\ \frac{\dd\mu_+}{\dd\theta/(2\pi)}\ \le\ M_0
+\qquad\text{a.e. 于 }\TT,
+\]
+其中 \(0<m_0\le M_0<\infty\)。
+取 \(\xi_0\in\TT\) 与 \(\varepsilon>0\)，并令带符号有效测度
+\[
+\mu_{\mathrm{eff}}:=\mu_+-\varepsilon\,\delta_{\xi_0}.
+\]
+记其矩为
+\(
+c_n:=\int_{\TT}\xi^{-n}\,\dd\mu_{\mathrm{eff}}(\xi)
+\)
+并令对应 Toeplitz 主子矩阵
+\[
+\mathbf{T}_N:=\bigl(c_{j-k}\bigr)_{0\le j,k\le N}.
+\]
+则存在明确的 PSD 失效阈值：
+\begin{enumerate}
+  \item 若 \(\varepsilon\le \dfrac{m_0}{N+1}\)，则 \(\mathbf{T}_N\succeq 0\)（单原子负缺陷在阶 \(N\) 内可被背景吸收）。
+  \item 若 \(\varepsilon> \dfrac{M_0}{N+1}\)，则 \(\mathbf{T}_N\not\succeq 0\)（单原子负缺陷在阶 \(N\) 被强制暴露）。
+\end{enumerate}
+因此在该最小缺陷模型中，使 \(\mathbf{T}_N\) 必然失效所需的最小阶数满足量纲标度
+\[
+N_{\min}\ \asymp\ \varepsilon^{-1}.
+\]
+\end{proposition}
+
+\begin{proof}
+对任意向量 \(x=(x_0,\dots,x_N)^{\mathsf T}\in\CC^{N+1}\)，令三角多项式
+\(
+p(\xi):=\sum_{k=0}^{N}x_k\xi^k
+\)。
+则有标准恒等式
+\[
+x^\ast \mathbf{T}_N x
+=\int_{\TT}|p(\xi)|^2\,\dd\mu_{\mathrm{eff}}(\xi)
+=\int_{\TT}|p(\xi)|^2\,\dd\mu_+(\xi)-\varepsilon\,|p(\xi_0)|^2.
+\]
+由密度下界与 Parseval 恒等式，
+\[
+\int_{\TT}|p(\xi)|^2\,\dd\mu_+(\xi)
+\ge m_0\int_{\TT}|p(\xi)|^2\frac{\dd\theta}{2\pi}
+=m_0\sum_{k=0}^{N}|x_k|^2
+=m_0\|x\|_2^2.
+\]
+另一方面，由 Cauchy--Schwarz，
+\(
+|p(\xi_0)|
+\le \sum_{k=0}^{N}|x_k|
+\le \sqrt{N+1}\,\|x\|_2
+\)，故
+\[
+x^\ast \mathbf{T}_N x
+\ge \bigl(m_0-\varepsilon(N+1)\bigr)\|x\|_2^2.
+\]
+因此当 \(\varepsilon\le m_0/(N+1)\) 时，右端非负，对一切 \(x\) 成立，从而 \(\mathbf{T}_N\succeq 0\)。
+\par
+为证第二条，取 \(x=u\) 其中 \(u_k:=\xi_0^{-k}\)（\(0\le k\le N\)），则 \(\|u\|_2^2=N+1\) 且 \(p(\xi_0)=\sum_{k=0}^{N}u_k\xi_0^k=N+1\)。
+由密度上界得
+\[
+u^\ast \mathbf{T}_N u
+=\int_{\TT}|p(\xi)|^2\,\dd\mu_+(\xi)-\varepsilon|p(\xi_0)|^2
+\le M_0\|u\|_2^2-\varepsilon(N+1)^2
+=(N+1)\bigl(M_0-\varepsilon(N+1)\bigr).
+\]
+当 \(\varepsilon> M_0/(N+1)\) 时该值为负，故存在方向使二次型为负，从而 \(\mathbf{T}_N\not\succeq 0\)。证毕。
+\end{proof}
+
+\begin{remark}[毛发 \texorpdfstring{$=$}{=} 可验证不变量；微态 \texorpdfstring{$=$}{=} 零知识见证；\texorpdfstring{$\varepsilon$}{eps} 为统一接口参数]\label{rem:discussion-hair-microstate-eps-interface}
+在阶 \(N\) 的视界可观测约束下，\(H_N(w)\) 给出“毛发层”（验证者可审计的不变量前缀），而 \(H_N\) 的纤维则给出“微态层”（bulk 见证的剩余自由度）；命题 \ref{prop:discussion-nohair-iff-zk} 表明：任何仅依赖毛发层的制度在信息论意义下都自动满足可模拟性，从而微态在该口径下构成零知识见证。
+\par
+命题 \ref{prop:discussion-toeplitz-negative-atom-threshold} 进一步给出一个可核验的不可行性界：当所有潜在离切片缺陷均满足 \(\varepsilon\ll (N+1)^{-1}\) 时，单原子负缺陷在 \(\mathbf{T}_N\) 层级内可被背景吸收，任何仅基于阶 \(N\) 视界证书的验证都无法强制区分该缺陷。
+因此 \(\varepsilon\)（或在黎曼零点语义下等价的 \(h(\rho)\)）成为连接三者的统一接口参数：它同时刻画离切片深度、控制 Toeplitz 层级失效阶，并给出“在可模拟性语义下仍要可否证”所需的最低信息预算标度（见推论 \ref{cor:discussion-zk-area-law-gamma2-delta}）。
+\end{remark}
+
+\begin{corollary}[端点二次压缩下的可区分性面积律：\texorpdfstring{$h(\rho)^{-1}$}{h(rho)^(-1)} 为最低阶预算]\label{cor:discussion-zk-area-law-gamma2-delta}
+在固定 Cayley 图表中，令离临界线零点 \(\rho=\beta+\mathrm{i}\gamma\) 的圆盘像 \(w_\rho=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}\)（\(\delta:=\tfrac12-\beta>0\)），并定义其视界深度
+\[
+h(\rho):=1-|w_\rho|^2=\frac{4\delta}{\gamma^2+(1+\delta)^2}
+\qquad\text{（命题 \ref{prop:app-offcritical-radius-compression}）}.
+\]
+则当 \(|\gamma|\to\infty\) 且 \(\delta\) 有界时，
+\[
+h(\rho)\ \asymp\ \frac{\delta}{\gamma^2},
+\qquad
+h(\rho)^{-1}\ \asymp\ \frac{\gamma^2}{\delta}.
+\]
+在将“离切片点状信息”于视界上粗粒化为最小有效缺陷质量 \(\varepsilon\asymp h(\rho)\) 的抽象下，
+命题 \ref{prop:discussion-toeplitz-negative-atom-threshold} 给出可审计的必要预算：
+若仅允许访问阶 \(N\) 的视界多极矩前缀 \(H_N\)，则对高度 \(|\gamma|\) 的离切片偏移 \(\delta\)，其在 Toeplitz--PSD 层级意义下的最小可检测阶数满足
+\[
+N_{\min}(\rho)\ \asymp\ h(\rho)^{-1}\ \asymp\ \frac{\gamma^2}{\delta}.
+\]
+更精细的体系内检出门槛（包含余项审计与端点聚焦对数修正）由命题 \ref{prop:xi-extreme-resonance-toeplitz-threshold} 给出：
+\(
+N\gtrsim Q_\rho\log(1+\delta Q_\rho)
+\)
+其中 \(Q_\rho=h(\rho)^{-1}\)。
+\end{corollary}
+
+\begin{remark}[Toeplitz/Schur 结构的零知识化接口：以 Verblunsky 前缀作为纯视界见证]\label{rem:discussion-toeplitz-zk-compile}
+在本文的视界证书语言内，\(\mathbf{T}_N\succeq 0\) 的可行性不仅是线性矩阵不等式，而且天然携带一组低维参数化见证：当 \(\mathbf{T}_N\succ 0\) 时，存在唯一 Verblunsky/Schur 参数前缀 \((\alpha_0,\dots,\alpha_{N-1})\in\mathbb{D}^{N}\) 使得 Toeplitz 行列式与失败步可由单标量越界定位（定理 \ref{thm:xi-toeplitz-det-verblunsky}），并且该前缀可由有限阶局部喷射数据显式生成（定理 \ref{thm:xi-verblunsky-from-local-jet}）。
+\par
+因此，对“存在某个 bulk 见证 \(w\) 使得 \(H_N(w)=c^{(N)}\) 且 \(\mathbf{T}_N(c^{(N)})\succeq 0\)”这一公开陈述，可取\emph{纯视界对象}（例如 \((\alpha_k)\) 前缀及其递归一致性）作为见证承载，而不暴露产生它的 bulk 微观结构。
+从算法结构看，Toeplitz/Schur 的一维卷积几何使得“递归一致性 + 局部可行约束”的核验可被编译为有限条卷积型多项式恒等式与少量范数不等式，并可在 Toeplitz 乘法（FFT）意义下实现准线性验证；在此基础上，若允许引入标准承诺原语与经典零知识编译框架，则可得到一个统计零知识论证，其验证者所得信息严格受限于公开的 \(c^{(N)}\)（亦即视界毛发），从而与命题 \ref{prop:discussion-nohair-iff-zk} 的“可观测完备性 \(\Leftrightarrow\) 可模拟性”语义完全对齐。
+\end{remark}
+
+\begin{conjecture}[有限秩负缺陷分解模板（可直接否证）]\label{conj:discussion-finite-rank-negative-defect}
+若 RH 不成立，则在本文的圆盘化视界接口中，\(\zeta\) 的视界正性失败（Carath\'eodory 失效、等价地 Toeplitz--PSD 层级在某级失败）在任意固定分辨率切片上可被逼近为一个有限秩负缺陷分解：
+\[
+\mu_{\mathrm{eff}}=\mu_+ - \sum_{j=1}^r \varepsilon_j\,\delta_{\xi_j},
+\qquad
+\mu_+\ge 0,\quad r<\infty,\quad \varepsilon_j>0,
+\]
+其中每个 \(\varepsilon_j\) 与某个离切片零点簇的视界深度同阶（在固定图表下 \(\varepsilon_j\asymp h(\rho_j)\)）。
+并且对缺陷簇中最深者 \(\rho_\star\)，Toeplitz--PSD 失效所需的最小矩阶满足普适下界
+\[
+N_{\min}\ \gtrsim\ h(\rho_\star)^{-1}\ \asymp\ \frac{\gamma_\star^2}{\delta_\star}.
+\]
+否证口径明确：一旦可构造 RH 反例使得视界正性失败在任何有限秩负缺陷模型中都不能逼近（例如本质上需要无限秩负谱测度），则该模板失败；反之若模板成立，则端点二次压缩所导出的面积律下界成为一般 RH 违背的结构性后果。
+\end{conjecture}
+
+\begin{definition}[视界否证复杂度不变量]\label{def:discussion-horizon-falsification-complexity}
+对任意 bulk 性质 \(\mathcal{P}\)（其真伪可在本文的视界证书语言中表达），定义其\textbf{视界否证复杂度}为
+\[
+\mathfrak{C}(\mathcal{P})
+:=\inf\Bigl\{N:\ \exists\ \text{仅依赖 }H_N\text{ 的可审计证书链，足以否证 }\mathcal{P}\Bigr\}.
+\]
+特别地，当 \(\mathcal{P}\) 取为“视界 Toeplitz--PSD 全层级成立”（即 RH 的视界表述；附录定理 \ref{thm:app-horizon-toeplitz-lmi}）时，\(\mathfrak{C}(\mathcal{P})\) 度量最小否证阶：它在数学上等同于最小失败阶的定位问题（定理 \ref{thm:xi-toeplitz-det-verblunsky}），并在命题 \ref{prop:discussion-nohair-iff-zk} 的可模拟性语义下同时充当“可否证性所需的信息预算”的计数代理。
+\end{definition}
+
+\endinput
+
