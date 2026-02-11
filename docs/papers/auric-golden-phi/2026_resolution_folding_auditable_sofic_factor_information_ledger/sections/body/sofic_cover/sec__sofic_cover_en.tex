@@ -1,0 +1,142 @@
+\section{Sofic factor induced by folding and computable Markov covers}\label{sec:sofic-cover}
+
+This section lifts the window-level normalizer $\Fold_m$ to a sequence-level factor and derives a computable sofic presentation.
+We then extract a right-resolving / Fischer-cover interface that enables linear-algebraic computation of invariants (entropy, Parry data, cover zeta determinants).
+
+\subsection{Sliding block code induced by $\Fold_m$}\label{subsec:phi-def}
+Let $\sigma$ be the left shift on $\{0,1\}^{\ZZ}$ and on $X_m^{\ZZ}$.
+
+\begin{definition}[Sequence-level folding (sliding block code)]\label{def:Phi_m}
+For $m\ge 1$, define
+\[
+\Phi_m:\{0,1\}^{\ZZ}\to X_m^{\ZZ},\qquad (\Phi_m(s))_t:=\Fold_m(s_t s_{t+1}\cdots s_{t+m-1}).
+\]
+Let the image shift be
+\[
+Y_m:=\Phi_m(\{0,1\}^{\ZZ})\subset X_m^{\ZZ}.
+\]
+\end{definition}
+
+\begin{proposition}[Radius and shift equivariance]\label{prop:phi-radius-equiv}
+The map $\Phi_m$ is a sliding block code with memory $0$ and anticipation $m-1$, and it commutes with the shift:
+\[
+\Phi_m\circ\sigma=\sigma\circ\Phi_m.
+\]
+\end{proposition}
+
+\subsection{Explicit labeled graph for $Y_m$}\label{subsec:Gm}
+We now present $Y_m$ as the labeled image of an explicit finite graph.
+
+\begin{definition}[Suffix-state labeled graph]\label{def:G_m}
+Let the vertex set be $V_m:=\{0,1\}^{m-1}$.
+For each $v=v_1\cdots v_{m-1}\in V_m$ and $b\in\{0,1\}$, define an edge
+\[
+e=(v,b): v\to v':=v_2\cdots v_{m-1}b,
+\]
+labeled by
+\[
+\ell_m(e):=\Fold_m(v_1\cdots v_{m-1}b)\in X_m.
+\]
+This yields a finite labeled graph $G_m=(V_m,E_m,\ell_m)$ with $\card{V_m}=2^{m-1}$ and $\card{E_m}=2^m$.
+\end{definition}
+
+\begin{theorem}[Sofic factor and auditable cover interface]\label{thm:phi-sofic-fischer}
+Fix $m\ge 1$ and define $\Phi_m$ and $Y_m$ as in Definition~\ref{def:Phi_m}.
+Then:
+\begin{enumerate}
+  \item \textbf{(Explicit sofic presentation)} With the labeled graph $G_m$ from Definition~\ref{def:G_m}, let $Z_m\subset E_m^{\ZZ}$ be its bi-infinite edge shift and let $\mathcal{L}_m:Z_m\to X_m^{\ZZ}$ be coordinatewise labeling. Then
+  \[
+  Y_m=\mathcal{L}_m(Z_m),
+  \]
+  hence $Y_m$ is sofic. The state $V_m=\{0,1\}^{m-1}$ is the length-$(m-1)$ input suffix, and each transition appends one input bit and outputs the folded type of the current window.
+  \item \textbf{(Right-resolving / Fischer cover interface)} Determinization yields a right-resolving presentation $H_m^{\mathrm{det}}$ of $Y_m$; minimizing by follower sets yields the right Fischer cover \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+  \item \textbf{(Computable invariants from a finite matrix)} For any follower-separated right-resolving cover $H_m$ of $Y_m$, let $A_m$ be its edge adjacency matrix (Definition~\ref{def:adjacency}). Then
+  \[
+  h_{\mathrm{top}}(Y_m)=\log\rho(A_m),
+  \]
+  the Parry measure on the cover is given explicitly by PF eigenvectors, and the cover zeta function satisfies
+  \(
+  \zeta_{X_{A_m}}(z)=1/\det(I-zA_m).
+  \)
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Item (1) is proved by mapping input sequences to suffix-state paths in $G_m$ and conversely reconstructing a compatible binary sequence from any bi-infinite path; the labeling identity follows from the definition of $\ell_m$.
+Item (2) is standard determinization theory for labeled graphs and sofic shifts \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+Item (3) follows from the SFT cover interface: entropy equals $\log\rho(A_m)$, Parry data are determined by PF eigenvectors, and the zeta determinant formula holds for SFTs (Appendix~\ref{app:pf-parry-zeta}).
+\end{proof}
+
+\subsection{Right-resolving presentation and Fischer cover interface}\label{subsec:right-resolving}
+For auditing, we require an explicit pathwise interface that turns sofic structure into computable linear-algebraic invariants.
+We therefore pass to a right-resolving presentation via determinization.
+
+\begin{definition}[Determinization (subset construction)]\label{def:determinization}
+Let $G_m=(V_m,E_m,\ell_m)$.
+For a subset state $S\subseteq V_m$ and a label $a\in X_m$, define
+\[
+\delta_m(S,a):=\{v'\in V_m:\exists e:v\to v'\ \text{with}\ v\in S,\ \ell_m(e)=a\}.
+\]
+Starting from $S_0:=V_m$, take all reachable subsets as states and add transitions
+$S\xrightarrow{a}\delta_m(S,a)$.
+The resulting labeled graph is denoted $H_m^{\mathrm{det}}$.
+\end{definition}
+
+\begin{proposition}[Right-resolving presentation]\label{prop:right-resolving}
+The determinized presentation $H_m^{\mathrm{det}}$ is right-resolving and recognizes the same labeled language as $G_m$; hence its labeled shift is $Y_m$.
+\end{proposition}
+
+\begin{proof}
+By construction, for each state $S$ and label $a$ the successor is unique, so the presentation is right-resolving.
+Language equivalence is standard for automaton determinization \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+\end{proof}
+
+\subsection{Adjacency matrices, entropy, Parry data, and cover zeta}\label{subsec:cover-invariants}
+Fix a follower-separated right-resolving cover of $Y_m$ (e.g. the right Fischer cover obtained by minimizing $H_m^{\mathrm{det}}$ by follower sets).
+Let the cover graph be $H_m=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m)$, where edges are labeled by $\lambda_m:\mathcal{E}_m\to X_m$.
+
+\begin{definition}[Edge adjacency matrix]\label{def:adjacency}
+Let $X_{A_m}$ be the edge shift of $H_m$ (treat edges as symbols).
+Its adjacency matrix $A_m$ is the $0$--$1$ matrix indexed by $\mathcal{E}_m$ with
+\[
+(A_m)_{e,e'}:=\ind\{t(e)=s(e')\}.
+\]
+\end{definition}
+
+\begin{proposition}[Computable entropy via PF radius]\label{prop:entropy-logrho}
+If $H_m$ is irreducible (or after restricting to the maximal-entropy irreducible component), then
+\[
+h_{\mathrm{top}}(Y_m)=h_{\mathrm{top}}(X_{A_m})=\log\rho(A_m).
+\]
+\end{proposition}
+
+\begin{proof}
+The edge shift $X_{A_m}$ factors onto $Y_m$ by edge-labeling.
+On the Fischer cover this factor is finite-to-one on the maximal-entropy component, hence entropy is preserved.
+For SFTs, entropy equals $\log\rho(A_m)$ \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+\end{proof}
+
+\begin{proposition}[Parry measure on the cover]\label{prop:parry}
+Let $\lambda=\rho(A_m)$ and let $l,r>0$ be PF left/right eigenvectors normalized by $l^{\mathsf T}r=1$.
+Define $\pi(e)=l_e r_e$ and transition probabilities
+\[
+P_{e\to e'}:=\frac{(A_m)_{e,e'}\,r_{e'}}{\lambda\,r_e}.
+\]
+Then $(\pi,P)$ defines the Parry (maximal-entropy) Markov measure on $X_{A_m}$.
+\end{proposition}
+
+\begin{proposition}[Cover zeta determinant]\label{prop:cover-zeta}
+The Artin--Mazur zeta function of the cover SFT $X_{A_m}$ satisfies
+\[
+\zeta_{X_{A_m}}(z)=\frac{1}{\det(I-zA_m)},
+\qquad
+\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})=\mathrm{Tr}(A_m^n).
+\]
+\end{proposition}
+
+\begin{remark}[Intrinsic sofic zeta vs cover determinant]\label{rem:intrinsic-vs-cover}
+The intrinsic zeta function $\zeta_{Y_m}$ counts periodic \emph{label} sequences and is rational for sofic shifts \cite{Manning1971RationalZeta,Weiss1973SFTandSofic}.
+However, it is not invariant under finite-to-one factors and generally differs from $1/\det(I-zA_m)$.
+We treat $1/\det(I-zA_m)$ as an auditable \emph{cover-level} interface: it is entirely determined by a finite matrix and is therefore reproducible by linear algebra.
+\end{remark}
+

@@ -1,0 +1,64 @@
+\section{Notation and preliminaries}\label{sec:preliminaries}
+
+This section fixes notation and records the minimal background used later.
+
+\subsection{Finite windows, restrictions, and cylinders}\label{subsec:notation-windows}
+For $m\ge 1$, the microstate space is
+\[
+\Omega_m:=\{0,1\}^m.
+\]
+For a sequence $s\in\{0,1\}^{\ZZ}$, its length-$m$ window at time $t$ is
+\[
+\omega_m(s;t):=s_t s_{t+1}\cdots s_{t+m-1}\in\Omega_m.
+\]
+We write $\pi_{m_2\to m_1}$ for the prefix restriction on words (deleting the last $m_2-m_1$ coordinates):
+\[
+\pi_{m_2\to m_1}(x_1\cdots x_{m_2})=x_1\cdots x_{m_1}.
+\]
+For a shift space $Z\subset \mathcal{A}^{\ZZ}$ over a finite alphabet $\mathcal{A}$ and a word $w=w_0\cdots w_{n-1}\in\mathcal{A}^n$, the cylinder set is
+\[
+[w]:=\{z\in Z:\ z_0=w_0,\dots,z_{n-1}=w_{n-1}\}.
+\]
+
+\subsection{Fibonacci weights and Zeckendorf normal form}\label{subsec:prelim-zeckendorf}
+Let $(F_k)_{k\ge 1}$ be the Fibonacci sequence with $F_1=1$, $F_2=1$, and $F_{k+2}=F_{k+1}+F_k$.
+Zeckendorf's theorem states that every $N\in\NN$ admits a unique expansion
+\[
+N=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k\in\{0,1\},\qquad c_k c_{k+1}=0,
+\]
+called the Zeckendorf representation \cite{Zeckendorf1972}.
+We denote its digit sequence by $Z(N)=(c_1,c_2,\dots)$.
+
+\subsection{Sofic shifts, labeled graphs, and Fischer covers}\label{subsec:prelim-sofic}
+We use standard conventions from symbolic dynamics \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+A \emph{labeled directed graph} $G=(V,E,\ell)$ consists of vertices $V$, directed edges $E$, and a labeling map $\ell:E\to\mathcal{A}$.
+Its bi-infinite edge shift $X_G\subset E^{\ZZ}$ consists of bi-infinite paths, and the \emph{labeled shift} is the image $\ell_*(X_G)\subset\mathcal{A}^{\ZZ}$.
+A shift space is \emph{sofic} if it is the labeled image of an SFT.
+
+For sofic shifts, a right-resolving presentation exists and can be algorithmically obtained by determinization (subset construction).
+Minimal right-resolving presentations are encoded by the right Fischer cover; we will use only the computable interface rather than classification details.
+
+\subsection{Perron--Frobenius and Parry measures}\label{subsec:prelim-pf-parry}
+Let $A$ be a nonnegative matrix. If $A$ is irreducible, Perron--Frobenius theory provides a spectral radius $\rho(A)>0$ and positive left/right eigenvectors.
+For an irreducible SFT presented by an adjacency matrix, the unique measure of maximal entropy is the Parry measure, explicitly given by PF data \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+
+\subsection{Zeta functions (cover vs intrinsic)}\label{subsec:prelim-zeta}
+For an SFT with adjacency matrix $A$, the Artin--Mazur zeta function satisfies
+\[
+\zeta(z)=\frac{1}{\det(I-zA)},
+\qquad
+\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A^n).
+\]
+For a sofic shift, the intrinsic zeta function is still rational \cite{Manning1971RationalZeta,Weiss1973SFTandSofic}, but it must be distinguished from the cover-level determinant interface; we will treat this separation as an auditing requirement.
+
+\subsection{Information theory}\label{subsec:prelim-it}
+For a finite set $S$ and $\nu\in\Delta(S)$, the Shannon entropy (natural logarithm) is
+\[
+H(\nu):=-\sum_{s\in S}\nu(s)\log \nu(s).
+\]
+For $\mu,\nu\in\Delta(S)$ with $\mu\ll\nu$, the Kullback--Leibler divergence is
+\[
+D_{\mathrm{KL}}(\mu\|\nu):=\sum_{s\in S}\mu(s)\log\frac{\mu(s)}{\nu(s)}\ge 0,
+\]
+with equality iff $\mu=\nu$ \cite{CoverThomas2006,SasonVerdu2016fDivergence}.
+
