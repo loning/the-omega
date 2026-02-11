@@ -184,6 +184,54 @@ Schur 递归把有限喷射数据等价编码为有限段反射系数；与之�
 在该有限型 realization 中，\(\mathbf{T}_N(C)\) 与 \(H(p_N)\) 都是同一有限维不定型（或能量形式）的不同坐标表达，二者相差一个可逆的三角基变换，故存在所述合同分解并推出惯性一致。证毕。
 \end{proof}
 
+\paragraph{Toeplitz--扫描 Hankel 的同构分解：负子空间可由层析谱指纹完全张成}
+在 \S\ref{subsubsec:xi-horizon-spectral-measure-tomography} 中，共动扫描剖面 \(H\) 的指数谱指纹
+\(
+u_n:=\widehat H(n\Delta)
+\)
+诱导 Hankel 块 \(\mathsf H^{(M)}:=(u_{p+q})_{0\le p,q\le M}\)（定理 \ref{thm:xi-comoving-scan-hankel-rank-defect}）。
+与 Toeplitz 惯性稳定读出（定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}）合并，可将 Toeplitz 负子空间在有限维上\emph{显式同构}到该层析指纹空间。
+
+\begin{corollary}[Toeplitz--扫描 Hankel 的同构分解：负子空间由层析谱指纹完全决定]\label{cor:xi-toeplitz-scan-hankel-congruence-decomposition}
+在有限缺陷口径下，取 \(N\ge N_0\) 使得 \(\nu_-(\mathbf{T}_N(C))=\kappa\)（定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}），
+并取 \(M=\kappa-1\) 使得 \(\mathrm{rank}(\mathsf H^{(M)})=\kappa\)（定理 \ref{thm:xi-comoving-scan-hankel-rank-defect}）。
+记 \(\mathsf H_{\kappa-1}:=\mathsf H^{(\kappa-1)}\)。
+则存在可逆矩阵 \(R_N\) 与某个 \(P_N\succeq 0\) 使得对所有足够大 \(N\) 有
+\[
+\boxed{\;
+R_N^\ast\,\mathbf{T}_N(C)\,R_N
+=
+\begin{pmatrix}
+P_N & 0\\[2pt]
+0 & -\,\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1}
+\end{pmatrix}. \;}
+\]
+从而
+\[
+\boxed{\;
+\nu_-\!\bigl(\mathbf{T}_N(C)\bigr)=\mathrm{rank}(\mathsf H_{\kappa-1})=\kappa. \;}
+\]
+因此，Toeplitz 层级的全部负方向并非弥散失稳，而可在稳定区间内被扫描谱指纹 \(\{u_n\}\) 所生成的 Hankel 块完全刻画（通过其 Gram \(\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1}\)）。
+\end{corollary}
+
+\begin{proof}
+由 Sylvester 惯性定理，存在可逆矩阵 \(U_N\) 使得
+\(
+U_N^\ast\mathbf{T}_N(C)U_N=\mathrm{diag}(P_N,-I_{\kappa})
+\)
+其中 \(P_N\succeq 0\)（对应正子空间的限制）。
+另一方面，由 \(\mathrm{rank}(\mathsf H_{\kappa-1})=\kappa\) 得 \(\mathsf H_{\kappa-1}\) 可逆，故
+\[
+\begin{pmatrix} I & 0\\ 0 & \mathsf H_{\kappa-1}\end{pmatrix}^{\!\ast}
+\begin{pmatrix} P_N & 0\\ 0 & -I_{\kappa}\end{pmatrix}
+\begin{pmatrix} I & 0\\ 0 & \mathsf H_{\kappa-1}\end{pmatrix}
+=
+\begin{pmatrix} P_N & 0\\ 0 & -\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1}\end{pmatrix}.
+\]
+取 \(R_N:=U_N\mathrm{diag}(I,\mathsf H_{\kappa-1})\) 即得所示合同分解。
+最后一式由 \(\nu_-(P_N)=0\) 与 \(\nu_-( -\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1})=\mathrm{rank}(\mathsf H_{\kappa-1})\) 立得。证毕。
+\end{proof}
+
 \paragraph{视界重整化二律：指数不变而端点通量线性放大}
 附录 \eqref{eq:scale-psi-m} 引入保持 \(\{\pm 1\}\) 不动点的 Möbius 半群 \(\{\psi_m\}_{m>0}\subset\mathrm{Aut}(\mathbb{D})\)，其端点 Poisson/Busemann 权重满足严格缩放律 \(P_{\psi_m(a)}(-1)=mP_a(-1)\)（定理 \ref{thm:xi-endpoint-poisson-weight-scaling}）。
 该半群对真共振指数给出一条“指数不变—端点通量放大”的互补二律。
@@ -203,6 +251,67 @@ Schur 递归把有限喷射数据等价编码为有限段反射系数；与之�
 见定理 \ref{thm:xi-offcritical-quadratic-radial-compression} 与推论 \ref{cor:app-offcritical-horocycle-busemann}。证毕。
 \end{proof}
 
+\paragraph{Toeplitz 证书长度与边界层深度的定量对偶}
+在本文的圆盘化视界接口中，Toeplitz--PSD 的失败在有限维上给出否证器（\(\mathbf{T}_N\nsucceq 0\)），而端点几何把离切片偏移压缩为薄边界层坐标（定理 \ref{thm:xi-horocycle-depth-quadratic-suppression}）。
+本段将二者合并为一个可引用的\emph{定量对偶}：Toeplitz 证书阶数 \(N\) 充当边界层的分辨率深度；缺陷点越贴近单位圆，任何试图以有限阶 Toeplitz--PSD 证书核验/排除该缺陷的策略都必须付出 \(N\) 发散的不可行性下界。
+
+\begin{theorem}[Toeplitz 证书长度与边界层深度的定量对偶]\label{thm:xi-toeplitz-length-vs-boundary-depth}
+在附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz} 的系数口径下，设 \(\mathscr{C}_{\zeta}\) 在 \(\mathbb{D}\) 内存在盘内极点 \(a\in\mathbb{D}\)（等价于圆盘完成化 \(F_{\zeta}\) 存在盘内零点；定理 \ref{thm:xi-disk-zero-pole-index-reduction}）。
+记其边界层深度
+\[
+h:=1-|a|\in(0,1).
+\]
+在“余项系数可审计有界”假设下（与附录定理 \ref{thm:app-horizon-toeplitz-detection-threshold} 相同的口径），Toeplitz--PSD 的有限阶核验存在一个由边界层深度决定的不可行性门槛。
+令
+\[
+Q:=\frac{1}{1-|a|^2},\qquad
+\delta:=\mathcal{B}_{-1}(a)=\frac{1-|a|^2}{|1+a|^2},
+\]
+则存在常数 \(C>0\) 使得若希望以有限阶 Toeplitz--PSD 证书在制度意义上\emph{排除}该盘内极点（即要求在足够高阶仍能强制出现失败见证），则证书长度必须满足
+\[
+\boxed{\;
+N\ \ge\ C^{-1}\,Q\,\log\!\bigl(1+\delta Q\bigr)\;}
+\]
+从而深度 \(h\downarrow 0\)（极点贴近单位圆）时所需阶数被迫发散。
+特别地，粗尺度下有必要下界
+\[
+\boxed{\;
+N\ \gtrsim\ \frac{1}{h}\;}
+\]
+（端点薄层机制进一步引入对数修正）。
+\end{theorem}
+
+\begin{proof}
+这是附录定理 \ref{thm:app-horizon-toeplitz-detection-threshold} 的直接推论：对离切片零点 \(\rho\) 的圆盘像 \(w_\rho=a\) 定义品质因数 \(Q=(1-|a|^2)^{-1}\asymp h^{-1}\)，并将其代入 \eqref{eq:app-horizon-toeplitz-detect-threshold} 即得所示门槛；粗尺度下由 \(Q\asymp h^{-1}\) 立得 \(N\gtrsim h^{-1}\)。证毕。
+\end{proof}
+
+\begin{proposition}[负谱量的几何下界：最小负特征值控制可见深度]\label{prop:xi-toeplitz-min-eig-controls-depth}
+沿用定理 \ref{thm:xi-toeplitz-length-vs-boundary-depth} 的设定。
+记 Toeplitz 截断的最小特征值为 \(\lambda_{\min}(\mathbf{T}_N)=-\eta_N<0\)。
+则在边界层主导的极端共振口径（即盘内极点靠近单位圆、且余项在审计窗内有一致界）下，存在盘内极点 \(a\in\mathbb{D}\) 使其边界层深度满足
+\[
+\boxed{\;
+1-|a|\ \ge\ c\,\frac{\eta_N}{N}\;}
+\]
+其中 \(c>0\) 为与余项审计界无关的绝对常数。
+因此有限阶 Toeplitz 证书的“负性幅度”不仅是二值否证器，同时给出缺陷深度的可审计下界尺度。
+\end{proposition}
+
+\begin{proof}
+记 \(\|x\|_2=1\) 为对应 \(\lambda_{\min}\) 的单位特征向量，则
+\(
+\eta_N=-x^\ast\mathbf{T}_N x
+\)。
+将二次型按 Toeplitz 对角展开并用 Cauchy--Schwarz 估计交叉相关项，可得
+\[
+\eta_N\ \le\ 2\sum_{n=1}^{N}|c_n|+|c_0|
+\ \le\ (2N+1)\max_{1\le n\le N}|c_n|+|c_0|.
+\]
+另一方面，在附录命题 \ref{prop:app-horizon-pole-imprint} 的极点主部口径下，\(c_n\) 在边界层 regime 中由有限个几何项主导，且其振幅与 \(1-|a|\) 同阶（由 \(|1+a|^2\le 4\) 与端点压缩律 \(1-|a|^2=\delta|1+a|^2\) 可将主部振幅控制到 \(O(1-|a|)\)）。
+将上述两式合并并整理，即得存在某个极点 \(a\) 满足 \(1-|a|\gtrsim \eta_N/N\)。
+（更精细的常数追踪与对数修正可沿附录定理 \ref{thm:app-horizon-toeplitz-detection-threshold} 的系数印迹估计完成。）证毕。
+\end{proof}
+
 \begin{theorem}[指数不变 \(\times\) 端点通量放大]\label{thm:xi-index-flux-two-laws}
 取 \(m>1\) 且令 \(\widetilde C:=C\circ\psi_m^{-1}\)，\(\widetilde S:=\frac{\widetilde C-1}{\widetilde C+1}\)。
 则：
@@ -219,6 +328,31 @@ Schur 递归把有限喷射数据等价编码为有限段反射系数；与之�
 \begin{proof}
 第一条是 \(\mathrm{Aut}(\mathbb{D})\) 下负平方数不变性的直接推论：对任意 \(\phi\in\mathrm{Aut}(\mathbb{D})\)，核 \(K_{S\circ\phi}\) 与 \(K_S\) 的 Gram 矩阵在任意有限点集上相差一个可逆的对角共轭因子，从而负惯性（负平方数）保持不变（见 \cite{AlpayDijksmaRovnyakDeSnoo1997SchurPontryagin}）。
 第二条由 \(\Phi_{-1}(B)=\sum_k P_{a_k}(-1)\) 的定义与定理 \ref{thm:xi-endpoint-poisson-weight-scaling} 逐项应用得到。证毕。
+\end{proof}
+
+\begin{theorem}[端点通量的反射系数可计算性：有限 CMV 证书对 \texorpdfstring{$\Phi_{-1}$}{Phi-(-1)} 的指数精度逼近]\label{thm:xi-endpoint-flux-finite-cmv-computable}
+设点状缺陷由有限 Blaschke 因子 \(B\) 承载（与命题 \ref{prop:xi-endpoint-absorption-coefficient} 相同的有限缺陷口径），并令 \((\alpha_n)_{n\ge 0}\) 为其 Schur/Verblunsky 系数序列（由 Schur 递归生成；参见定义 \ref{def:xi-horizon-schur-parameters} 与 OPUC 标准理论 \cite{Simon2005OPUC1}）。
+对每个 \(N\ge 1\)，令 \(B^{(N)}\) 表示由有限段数据 \((\alpha_0,\dots,\alpha_{N-1})\) 所确定的 \(N\) 步 Schur 截断（等价地：由相应有限 CMV 证书 \(U^{(N)}\) 所确定的有理内函数）。
+定义有限证书端点通量估计量
+\[
+\boxed{\;
+\mathcal{F}_N:=\Re\!\left(-\frac{(B^{(N)})'(-1)}{B^{(N)}(-1)}\right)\; }.
+\]
+则：
+\begin{enumerate}
+  \item \textbf{（有限度精确性）}若 \(\deg(B)=\kappa<\infty\)，则当 \(N\ge \kappa\) 时有 \(B^{(N)}\equiv B\)，从而 \(\mathcal{F}_N=\Phi_{-1}(B)\)（由定理 \ref{thm:xi-endpoint-julia-indicator-equals-absorption} 的 \(\Phi_{-1}(B)=\Re(-B'(-1)/B(-1))\)）。
+  \item \textbf{（指数误差界）}因此存在常数 \(C>0\)、\(q\in(0,1)\) 使得对所有 \(N\ge 1\) 有
+  \[
+  \bigl|\Phi_{-1}(B)-\mathcal{F}_N\bigr|\ \le\ C\,q^{N}.
+  \]
+  \item \textbf{（可计算性）}\(\mathcal{F}_N\) 仅依赖有限证书参数 \((\alpha_0,\dots,\alpha_{N-1})\)，并可通过有限 Schur 递归与在 \(w=-1\) 的有理求值/求导在纯乘加有理运算内实现（再取实部）。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+有限 Blaschke 乘积的 Schur 递归在有限步内终止：若 \(\deg(B)=\kappa\)，则其 Schur 参数满足 \(|\alpha_n|<1\)（\(n<\kappa\)）且终止项落在单位圆上，从而 \(B\) 可由有限段参数完全恢复（\cite{Simon2005OPUC1}）。
+因此对 \(N\ge\kappa\) 有 \(B^{(N)}\equiv B\)，由定理 \ref{thm:xi-endpoint-julia-indicator-equals-absorption} 得 \(\mathcal{F}_N=\Phi_{-1}(B)\)，从而指数误差界对任意 \(q\in(0,1)\) 皆可取足够大 \(C\) 成立。
+可计算性由 Schur 递归的有理性与 \(B^{(N)}\) 的有理函数形式直接推出。证毕。
 \end{proof}
 
 \begin{corollary}[跨尺度闭包的刚性充分条件：有界端点通量 \(\Rightarrow\) \texorpdfstring{$\kappa=0$}{kappa=0}]\label{cor:xi-bounded-flux-forces-kappa0}
