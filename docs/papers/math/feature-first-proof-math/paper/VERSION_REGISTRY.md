@@ -9,7 +9,7 @@ This file tracks the latest reviewed version for each problem.
 | Q3 | Q3-R5 | FAIL (starred bridge missing) |
 | Q4 | Q4-R4 | FAIL (all-n open) |
 | Q5 | Q5-R2 | PASS |
-| Q6 | Q6-R0 | PENDING |
+| Q6 | Q6-R1 | FAIL (main existence not closed) |
 | Q7 | Q7-R1 | FAIL (partial theorem only) |
 | Q8 | Q8-R1 | FAIL |
 | Q9 | Q9-R1 | FAIL |
