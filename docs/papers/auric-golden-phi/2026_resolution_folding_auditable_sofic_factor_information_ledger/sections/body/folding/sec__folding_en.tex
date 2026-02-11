@@ -133,8 +133,75 @@ For every $m\ge 1$, there exists $\omega^\star\in\Omega_{m+1}$ such that $G_m(\o
 \end{proposition}
 
 \begin{proof}
-Take $\omega^\star$ whose first $m$ bits follow the periodic pattern $110110\cdots$ and choose the last bit so that the value-preserving merges in rule~\eqref{rule:adj-merge} apply at disjoint positions.
-After performing these disjoint merges, the normal form prefix flips to $001001\cdots$ on the first $m$ bits, yielding a bitwise mismatch on all $m$ coordinates. A detailed construction is standard from the local rewrite rules and is omitted.
+Fix $m\ge 1$.
+Define $\omega^\star=\omega^\star(m)\in\Omega_{m+1}$ by prescribing its first $m$ bits as the length-$m$ prefix of the periodic pattern $110110\cdots$:
+\[
+\omega^\star_k:=
+\begin{cases}
+1,& k\equiv 1,2\pmod 3,\ 1\le k\le m,\\
+0,& k\equiv 0\pmod 3,\ 1\le k\le m,
+\end{cases}
+\]
+and set the last bit by
+\[
+\omega^\star_{m+1}:=\mathbf 1_{\{m\equiv 1\ (\mathrm{mod}\ 3)\}}.
+\]
+Then $r_{m+1\to m}(\omega^\star)$ is the length-$m$ prefix of $110110\cdots$.
+
+Embed $\omega^\star$ into $\mathcal{D}$ by $a:=\iota_{m+1}(\omega^\star)$.
+For every $j\ge 0$ with $3j+1\le m$, the pair $(a_{3j+1},a_{3j+2})$ equals $(1,1)$, so the adjacent merge rule~\eqref{rule:adj-merge} applies at each such position.
+Moreover, these pairs are disjoint, hence the corresponding merges can be performed in any order without interference.
+Let $a'$ be the configuration obtained by performing all these merges:
+\[
+a':=a-\sum_{3j+1\le m}\bigl(e_{3j+1}+e_{3j+2}\bigr)+\sum_{3j+1\le m}e_{3j+3}.
+\]
+Each merge preserves $\mathrm{Val}(\cdot)$ (Definition~\ref{def:fold-rewrite-rules}), hence $\mathrm{Val}(a')=\mathrm{Val}(a)$.
+
+By construction, on the first $m$ coordinates, $a'$ equals the length-$m$ prefix of the complementary periodic pattern $001001\cdots$.
+In particular, $a'$ is $0$--$1$ valued and has no adjacent $11$, hence $a'\in X_\infty$ and is irreducible (Lemma~\ref{lem:rewrite-irreducible-characterization}).
+By uniqueness of normal forms (Theorem~\ref{thm:rewrite-unique-normal-form}), $a'$ is the unique normal form of $a$:
+\[
+\mathrm{NF}(a)=a'.
+\]
+Therefore
+\[
+\widetilde r_{m+1\to m}(\omega^\star)=\pi_{m+1\to m}\bigl(\Fold_{m+1}(\omega^\star)\bigr)
+=\pi_{m+1\to m}\bigl(\pi_{m+1}(\mathrm{NF}(a))\bigr)
+=\pi_m(a'),
+\]
+which is the length-$m$ prefix of $001001\cdots$.
+Since $110$ and $001$ differ in every coordinate, we conclude that $r_{m+1\to m}(\omega^\star)$ and $\widetilde r_{m+1\to m}(\omega^\star)$ are bitwise different on all $m$ positions, so $G_m(\omega^\star)=m$.
+\end{proof}
+
+\begin{corollary}[No bounded-tail correction recovers fold-aware restriction]\label{cor:gauge-anomaly-tail-incomplete}
+Fix $R\ge 0$.
+Suppose $T_{m,R}:\Omega_{m+1}\to\Omega_m$ is a map such that, for every $\omega\in\Omega_{m+1}$, the word $T_{m,R}(\omega)$ differs from $r_{m+1\to m}(\omega)$ only on the last $R$ coordinates.
+Then for every $m>R$ there exists $\omega\in\Omega_{m+1}$ such that
+\[
+T_{m,R}(\omega)\neq \widetilde r_{m+1\to m}(\omega).
+\]
+\end{corollary}
+\begin{proof}
+Take $\omega=\omega^\star(m)$ from Proposition~\ref{prop:gauge-anomaly-max}.
+By construction, $r_{m+1\to m}(\omega)$ and $\widetilde r_{m+1\to m}(\omega)$ disagree on the first $m$ coordinates.
+If $T_{m,R}$ may only change the last $R$ coordinates of $r_{m+1\to m}(\omega)$, then for every $k\le m-R$ we have
+\(
+(T_{m,R}(\omega))_k=(r_{m+1\to m}(\omega))_k
+\).
+Since $m>R$, such a coordinate exists, and at that coordinate the right-hand side differs from $(\widetilde r_{m+1\to m}(\omega))_k$.
+Therefore $T_{m,R}(\omega)\neq \widetilde r_{m+1\to m}(\omega)$.
+\end{proof}
+
+\begin{proposition}[Uniform-baseline gauge anomaly has constant density]\label{prop:gauge-anomaly-density-49}
+Let $\omega\sim\mathrm{Unif}(\Omega_{m+1})$ and define $\bar G_m:=\mathbb E[G_m(\omega)]$.
+Then the limit
+\[
+g_\ast:=\lim_{m\to\infty}\frac{\bar G_m}{m}
+\]
+exists and satisfies $g_\ast=\frac{4}{9}$.
+\end{proposition}
+\begin{proof}
+See Appendix~\ref{app:gauge-anomaly-transducer}, where $g_\ast$ is computed from the stationary distribution of the finite synchronizing kernel associated with Berstel's unambiguous Zeckendorf normalizer \cite{ITA_2001__35_6_491_0}.
 \end{proof}
 
 \begin{theorem}[Canonical folding with multiscale compatibility]\label{thm:fold-normal-form-multiscale}

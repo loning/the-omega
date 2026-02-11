@@ -1,0 +1,192 @@
+\section{Gauge anomaly under the uniform baseline}\label{app:gauge-anomaly-transducer}
+
+This appendix proves Proposition~\ref{prop:gauge-anomaly-density-49}.
+The argument is finite-state: it reduces the per-site gauge anomaly to a stationary expectation on a small synchronizing kernel induced by an unambiguous Zeckendorf normalizer.
+
+\subsection{From $G_m$ to a single-site mismatch probability}\label{app:gauge-anomaly-single-site}
+Let $\omega\sim\mathrm{Unif}(\Omega_{m+1})$ and recall
+\[
+G_m(\omega)=\bigl|\,r_{m+1\to m}(\omega)\ \oplus\ \widetilde r_{m+1\to m}(\omega)\,\bigr|_0
+\qquad\text{(Definition~\ref{def:gauge-anomaly}).}
+\]
+Write
+\[
+g_{m,k}(\omega):=\mathbf 1\Bigl\{\bigl(r_{m+1\to m}(\omega)\bigr)_k\neq \bigl(\widetilde r_{m+1\to m}(\omega)\bigr)_k\Bigr\},
+\qquad 1\le k\le m,
+\]
+so that $G_m(\omega)=\sum_{k=1}^{m} g_{m,k}(\omega)$.
+Let $I\sim\mathrm{Unif}(\{1,\dots,m\})$ be independent of $\omega$ and set
+\[
+X:=\omega_I,\qquad Y:=\bigl(\widetilde r_{m+1\to m}(\omega)\bigr)_I.
+\]
+Then by linearity of expectation,
+\begin{equation}\label{eq:gauge-anomaly-density-single-site}
+\frac{\bar G_m}{m}
+=\frac{1}{m}\sum_{k=1}^{m}\mathbb E[g_{m,k}(\omega)]
+=\mathbb P(X\neq Y),
+\qquad \bar G_m:=\mathbb E[G_m(\omega)].
+\end{equation}
+Thus the asymptotic density $g_\ast$ is the limiting single-site mismatch probability at a typical interior coordinate.
+
+\subsection{An unambiguous synchronous normalizer and its synchronizing kernel}\label{app:gauge-anomaly-kernel}
+To compute $\mathbb P(X\neq Y)$ in the limit $m\to\infty$, we invoke a standard finite-state realization of Zeckendorf normalization.
+Berstel~\cite{ITA_2001__35_6_491_0} constructs a $4$-state \emph{unambiguous} synchronous transducer that reads a binary digit string $x_1x_2\cdots$ and outputs its Zeckendorf-admissible normal form $y_1y_2\cdots$ (no adjacent $11$), digit by digit.
+Unambiguity means that, for any input, there is a unique accepting run and hence a unique output.
+
+For an unambiguous (in general nondeterministic) transducer, the chosen transition at a cut depends on both past and future.
+A convenient way to extract local statistics is to pass to a finite \emph{synchronizing kernel} built from left- and right-context determinization.
+Fix the state set $\{a,b,c,d\}$ of Berstel's normalizer.
+For a bi-infinite input $(x_i)_{i\in\ZZ}$, define:
+\begin{itemize}
+  \item the \emph{left context} $L_i$, the set of states reachable after reading the past $\cdots x_{i-2}x_{i-1}$;
+  \item the \emph{right context} $R_i$, the set of states from which an accepting state is reachable by reading the future $x_{i+1}x_{i+2}\cdots$.
+\end{itemize}
+Because the transducer is unambiguous, for each triple $(L_i,x_i,R_i)$ there is exactly one transition consistent with a global accepting run, hence the output digit $y_i$ is a deterministic function of $(L_i,x_i,R_i)$.
+Consequently, the mismatch indicator $\mathbf 1\{x_i\neq y_i\}$ is also a deterministic function of $(L_i,x_i,R_i)$.
+
+For IID input bits $x_i\sim\mathrm{Bernoulli}(1/2)$, the context processes are finite-state Markov chains.
+The subset construction for the left context yields only two reachable sets,
+\[
+L^{(0)}:=\{a,b\},\qquad L^{(1)}:=\{c,d\},
+\]
+with the update rule (depending on the current input bit $x\in\{0,1\}$)
+\begin{equation}\label{eq:left-context-updates}
+L^{(0)}\xrightarrow{x=0}L^{(0)},\quad
+L^{(0)}\xrightarrow{x=1}L^{(1)},\quad
+L^{(1)}\xrightarrow{x=0}L^{(0)},\quad
+L^{(1)}\xrightarrow{x=1}L^{(0)}.
+\end{equation}
+Under $\mathbb P(x=0)=\mathbb P(x=1)=1/2$, the stationary law of the left-context chain is therefore
+\begin{equation}\label{eq:left-context-stationary}
+\mathbb P(L_i=L^{(0)})=\frac{2}{3},\qquad \mathbb P(L_i=L^{(1)})=\frac{1}{3}.
+\end{equation}
+
+Similarly, the reverse-time subset construction for the right context yields three reachable sets,
+\[
+R^{(0)}:=\{a,c\},\qquad R^{(1)}:=\{a,d\},\qquad R^{(2)}:=\{b,c\},
+\]
+with deterministic updates driven by the next input bit:
+\begin{equation}\label{eq:right-context-updates}
+R^{(1)}\xrightarrow{x=0}R^{(1)},\quad R^{(1)}\xrightarrow{x=1}R^{(0)},\qquad
+R^{(0)}\xrightarrow{x=0}R^{(1)},\quad R^{(0)}\xrightarrow{x=1}R^{(2)},\qquad
+R^{(2)}\xrightarrow{x=0}R^{(0)},\quad R^{(2)}\xrightarrow{x=1}R^{(2)}.
+\end{equation}
+This chain has the uniform stationary distribution
+\begin{equation}\label{eq:right-context-stationary}
+\mathbb P(R_i=R^{(0)})=\mathbb P(R_i=R^{(1)})=\mathbb P(R_i=R^{(2)})=\frac{1}{3}.
+\end{equation}
+
+Finally, in the bi-infinite IID model, $L_i$ depends only on the past while $R_i$ depends only on the future, hence $L_i$ and $R_i$ are independent.
+In the finite-window formulation \eqref{eq:gauge-anomaly-density-single-site}, the same independence holds for the random index $I$, since the prefix $\omega_1\cdots\omega_{I-1}$ and the suffix $\omega_{I+1}\cdots\omega_{m+1}$ are independent under $\mathrm{Unif}(\Omega_{m+1})$.
+The limiting density is therefore governed by the stationary laws \eqref{eq:left-context-stationary}--\eqref{eq:right-context-stationary}.
+
+\subsection{Constant density computation}\label{app:gauge-anomaly-density-proof}
+\begin{theorem}[Uniform-baseline gauge anomaly density]\label{thm:gauge-anomaly-density-49}
+Let $\omega\sim\mathrm{Unif}(\Omega_{m+1})$ and $\bar G_m=\mathbb E[G_m(\omega)]$.
+Then
+\[
+\lim_{m\to\infty}\frac{\bar G_m}{m}=\frac{4}{9}.
+\]
+\end{theorem}
+\begin{proof}
+By \eqref{eq:gauge-anomaly-density-single-site}, it suffices to compute the limiting single-site mismatch probability.
+In the stationary bi-infinite IID model described above, define $X:=x_i$ and $Y:=y_i$ at a typical site $i$.
+Since $y_i$ is a deterministic function of $(L_i,X,R_i)$, the mismatch event $\{X\neq Y\}$ is decided by $(L_i,X,R_i)$.
+A direct inspection of Berstel's unambiguous normalizer (equivalently, of the synchronizing kernel defined by the reachable context sets) shows that mismatch occurs in exactly the following cases:
+\begin{itemize}
+  \item $X=1$ and $(L_i,R_i)=(L^{(0)},R^{(0)})$;
+  \item $X=1$ and $(L_i,R_i)=(L^{(1)},R^{(0)})$;
+  \item $X=1$ and $(L_i,R_i)=(L^{(1)},R^{(1)})$;
+  \item $(L_i,R_i)=(L^{(0)},R^{(2)})$ (in which case mismatch holds for both $X=0$ and $X=1$).
+\end{itemize}
+Using independence of $(L_i,R_i)$, the stationary laws \eqref{eq:left-context-stationary}--\eqref{eq:right-context-stationary}, and $\mathbb P(X=1)=1/2$, we obtain
+\begin{align*}
+\mathbb P(X\neq Y)
+&=\frac12\Bigl(\mathbb P(L^{(0)})\mathbb P(R^{(0)})+\mathbb P(L^{(1)})\mathbb P(R^{(0)})+\mathbb P(L^{(1)})\mathbb P(R^{(1)})\Bigr)
+ +\mathbb P(L^{(0)})\mathbb P(R^{(2)})\\
+&=\frac12\Bigl(\frac23\cdot\frac13+\frac13\cdot\frac13+\frac13\cdot\frac13\Bigr)+\frac23\cdot\frac13
+=\frac49.
+\end{align*}
+By \eqref{eq:gauge-anomaly-density-single-site}, this equals $\lim_{m\to\infty}\bar G_m/m$, completing the proof.
+\end{proof}
+
+\subsection{A pressure-matrix certificate (optional)}\label{app:gauge-anomaly-pressure}
+The constant $g_\ast=4/9$ is the first moment of the mismatch indicator.
+For auditing and falsifiability purposes, it is useful to expose a compact \emph{exponential-moment interface} for the entire mismatch sum:
+all exponential moments, cumulants, and large-deviation bounds reduce to the spectral data of a fixed finite matrix.
+
+\begin{proposition}[Mismatch pressure function as a spectral radius]\label{prop:gauge-anomaly-pressure}
+In the stationary IID baseline described above, let $g_i:=\mathbf 1\{x_i\neq y_i\}$ and define the pressure (log-moment generating rate)
+\[
+P_G(\theta):=\lim_{m\to\infty}\frac1m\log \mathbb E\exp\!\left(\theta\sum_{i=1}^{m} g_i\right).
+\]
+Then the limit exists and can be written as
+\[
+P_G(\theta)=\log\rho(A_\theta),\qquad
+A_\theta=\frac12\begin{pmatrix}
+1 & e^\theta & 0 & 1\\
+0 & 0 & e^\theta & 0\\
+e^\theta & 2 & 0 & 0\\
+1 & 0 & 0 & 0
+\end{pmatrix},
+\]
+where $\rho(\cdot)$ denotes the spectral radius.
+Equivalently, writing $u=e^\theta$ and $\mu(u):=2\rho(A_\theta)=\rho(2A_\theta)$, $\mu(u)$ is the largest real root of
+\[
+\mu^{4} - \mu^{3} - 2 \mu^{2} u - \mu^{2} - \mu u^{3} + 2 \mu u + 2 u=0.
+\]
+In particular, the first three derivatives at the origin admit closed forms:
+\[
+P_G'(0)=\frac{4}{9},\qquad P_G''(0)=\frac{118}{243},\qquad P_G^{(3)}(0)=- \frac{1174}{2187}.
+\]
+\end{proposition}
+\begin{proof}
+The weighted transfer matrix $A_\theta$ is obtained from Berstel's unambiguous Zeckendorf normalizer~\cite{ITA_2001__35_6_491_0} by assigning weight $e^\theta$ to mismatch transitions and weight $1$ otherwise, and multiplying each step by the IID input probability $1/2$.
+The exponential moment of $\sum_{i=1}^{m}g_i$ is therefore a finite path sum and can be written as a matrix coefficient of $A_\theta^m$.
+For nonnegative matrices, the exponential growth rate of such coefficients is governed by the Perron root, yielding $P_G(\theta)=\log\rho(A_\theta)$; see, e.g., \cite[Chapter~4]{LindMarcus1995}.
+
+Let $u=e^\theta$ and set $B_u:=2A_\theta$.
+Then $\mu(u)=\rho(B_u)$ is a root of the characteristic equation $\det(\mu I-B_u)=0$, which expands to the displayed quartic.
+At $(u,\mu)=(1,2)$ one has $\mu(1)=2$ and $\partial_\mu \det(\mu I-B_u)\neq 0$, so $\mu$ is differentiable near $u=1$.
+Implicit differentiation yields
+\[
+\mu'(1)=\frac{8}{9},\qquad
+\mu''(1)=\frac{116}{243},\qquad
+\mu'''(1)=-\frac{4208}{2187}.
+\]
+Since $P_G(\theta)=\log(\mu(e^\theta)/2)$, the chain rule gives
+$P_G'(0)=\mu'(1)/\mu(1)=4/9$ and the stated formulas for $P_G''(0)$ and $P_G^{(3)}(0)$.
+\end{proof}
+
+\begin{lemma}[Parry normalization at $\theta=0$]\label{lem:gauge-anomaly-parry-kernel}
+Let $A_0:=A_\theta|_{\theta=0}$ and order states as $(a,b,c,d)$.
+Then $\rho(A_0)=1$ with right and left Perron eigenvectors
+\[
+r=(2,1,2,1)^\top,\qquad \ell=(2,2,1,1)^\top,\qquad \ell^\top r=9.
+\]
+The associated Parry transition kernel and stationary distribution are
+\[
+P_{ij}:=\frac{(A_0)_{ij}\,r_j}{r_i},\qquad \pi_i:=\frac{\ell_i r_i}{\ell^\top r},
+\]
+i.e.
+\[
+P=\begin{pmatrix}\frac12&\frac14&0&\frac14\\0&0&1&0\\\frac12&\frac12&0&0\\1&0&0&0\end{pmatrix},
+\qquad
+\pi=\Bigl(\frac49,\frac29,\frac29,\frac19\Bigr).
+\]
+\end{lemma}
+\begin{proof}
+This is a direct check from $A_0r=r$ and $\ell^\top A_0=\ell^\top$, followed by the standard Parry normalization formulas \cite[Chapter~4]{LindMarcus1995}.
+\end{proof}
+
+\begin{corollary}[Mean mismatch as an edge expectation]\label{cor:gauge-anomaly-mean-edge}
+With the Parry kernel of Lemma~\ref{lem:gauge-anomaly-parry-kernel}, the mean mismatch satisfies
+\[
+P_G'(0)=\mathbb E_\pi[g_1]=\frac49.
+\]
+\end{corollary}
+\begin{proof}
+In $A_\theta$, the factor $e^\theta$ appears exactly on the three transitions $a\to b$, $b\to c$, and $c\to a$; these are precisely the mismatch edges.
+Hence $\mathbb E_\pi[g_1]=\pi_a P_{ab}+\pi_b P_{bc}+\pi_c P_{ca}=\frac49\cdot\frac14+\frac29\cdot 1+\frac29\cdot\frac12=\frac49$.
+\end{proof}
+

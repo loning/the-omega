@@ -1,22 +1,124 @@
 \section{Rewriting system details: termination and confluence}\label{app:rewrite-system}
 
-This appendix records additional details for Proposition~\ref{prop:fold-termination-confluence}.
-The main text already provides the lexicographic measure and the Newman's lemma closure argument; here we restate the key points in a self-contained form.
+This appendix gives a complete proof of Proposition~\ref{prop:fold-termination-confluence}.
+We use the configuration space $\mathcal{D}$, the value map $\mathrm{Val}(\cdot)$, and the local rewrite rules (R1)--(R4) from Definition~\ref{def:fold-rewrite-rules}.
+We write $a\to b$ for a single rewrite step and $a\to^\ast b$ for the reflexive--transitive closure.
 
-\subsection{A decreasing measure}\label{app:rewrite-measure}
-Let $a\in\mathcal{D}$ and define
+\subsection{Value preservation}\label{app:rewrite-value-preservation}
+\begin{lemma}[Each local rewrite preserves value]\label{lem:rewrite-preserves-val}
+If $a\to b$ is one application of any rule in Definition~\ref{def:fold-rewrite-rules}, then
+\[
+\mathrm{Val}(b)=\mathrm{Val}(a).
+\]
+\end{lemma}
+\begin{proof}
+Each rule is a direct transcription of a Fibonacci identity.
+Indeed, for $k\ge 1$,
+\[
+F_{k+1}+F_{k+2}=F_{k+3},\qquad
+2F_2=F_3,\qquad
+2F_3=F_2+F_4,\qquad
+2F_{k+1}=F_{k-1}+F_{k+2}\ (k\ge 3).
+\]
+Since $\mathrm{Val}(a)=\sum_{j\ge 1}a_jF_{j+1}$ is linear in the digits, replacing a local pattern according to any rule leaves $\mathrm{Val}$ unchanged.
+\end{proof}
+
+\subsection{Strong termination via a lexicographic measure}\label{app:rewrite-measure}
+Define, for $a\in\mathcal{D}$,
 \[
 A(a):=\sum_{k\ge 1} a_k,\qquad
 B(a):=\sum_{k\ge 1} k\,a_k,\qquad
 C(a):=a_2,
 \qquad
-\mu(a):=(A(a),B(a),C(a)).
+\mu(a):=(A(a),B(a),C(a))\in\NN^3,
 \]
-Each rewrite rule in Definition~\ref{def:fold-rewrite-rules} strictly decreases $\mu(a)$ in lexicographic order; hence infinite rewrite sequences are impossible.
+ordered lexicographically.
 
-\subsection{Local confluence and Zeckendorf uniqueness}\label{app:rewrite-local-confluence}
-Every rewrite preserves $\mathrm{Val}(a)$ by Fibonacci identities.
-Any irreducible configuration is a $0$--$1$ sequence with no adjacent $11$, hence corresponds to a Zeckendorf digit sequence.
-Since the Zeckendorf representation is unique \cite{Zeckendorf1972}, two irreducible configurations with the same value must coincide.
-This yields local confluence and therefore global confluence under strong termination.
+\begin{lemma}[Strict decrease of $\mu$]\label{lem:rewrite-measure-decrease}
+If $a\to b$, then $\mu(b)<_{\mathrm{lex}}\mu(a)$.
+\end{lemma}
+\begin{proof}
+We check each rule.
+\begin{itemize}
+  \item \textbf{(R1) Adjacent merge.}
+  The update is $b=a-e_k-e_{k+1}+e_{k+2}$, hence $A(b)=A(a)-1$, so $\mu$ decreases in the first component.
+  \item \textbf{(R2) Deduplicate $k=1$.}
+  The update is $b=a-2e_1+e_2$, hence $A(b)=A(a)-1$, so $\mu$ decreases in the first component.
+  \item \textbf{(R3) Deduplicate $k=2$.}
+  The update is $b=a-2e_2+e_1+e_3$, hence $A(b)=A(a)$ and $B(b)=B(a)$, while $C(b)=a_2-2<C(a)$, so $\mu$ decreases in the third component.
+  \item \textbf{(R4) Deduplicate $k\ge 3$.}
+  The update is $b=a-2e_k+e_{k-2}+e_{k+1}$, hence $A(b)=A(a)$ and
+  \[
+  B(b)=B(a)-2k+(k-2)+(k+1)=B(a)-1<B(a),
+  \]
+  so $\mu$ decreases in the second component.
+\end{itemize}
+This completes the case analysis.
+\end{proof}
+
+\begin{proposition}[Strong termination]\label{prop:rewrite-termination}
+There is no infinite rewrite sequence in $\mathcal{D}$; every sequence of rewrites from any $a\in\mathcal{D}$ terminates after finitely many steps.
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{lem:rewrite-measure-decrease}, each rewrite strictly decreases $\mu(a)$ in the well-founded lexicographic order on $\NN^3$.
+Hence infinite rewrite sequences are impossible.
+\end{proof}
+
+\subsection{Irreducible configurations and Zeckendorf normal form}\label{app:rewrite-irreducible}
+Let
+\[
+X_\infty:=\{(c_1,c_2,\dots)\in\{0,1\}^{\NN}:\ c_kc_{k+1}=0\ \forall k\}
+\]
+be the one-sided golden mean language.
+We identify a finite-support $0$--$1$ configuration in $\mathcal{D}$ with its infinite extension by trailing zeros, hence as an element of $X_\infty$.
+
+\begin{lemma}[Characterization of irreducibles]\label{lem:rewrite-irreducible-characterization}
+A configuration $a\in\mathcal{D}$ is irreducible (no rule applies) if and only if
+\[
+a_k\in\{0,1\}\ \ \forall k,\qquad\text{and}\qquad a_ka_{k+1}=0\ \ \forall k.
+\]
+Equivalently, $a$ is irreducible if and only if $a\in X_\infty$.
+\end{lemma}
+\begin{proof}
+If $a$ is irreducible, then no digit can satisfy $a_k\ge 2$ (otherwise a deduplication rule applies), hence $a_k\in\{0,1\}$ for all $k$.
+Also no adjacent pair can satisfy $a_k\ge 1$ and $a_{k+1}\ge 1$ (otherwise the adjacent merge applies), hence $a_ka_{k+1}=0$ for all $k$.
+Thus $a\in X_\infty$.
+
+Conversely, if $a\in X_\infty$, then all digits are $0$ or $1$ so no deduplication rule applies, and there are no adjacent $11$ so the adjacent merge does not apply either.
+Hence $a$ is irreducible.
+\end{proof}
+
+\subsection{Uniqueness of normal forms and confluence}\label{app:rewrite-confluence}
+\begin{theorem}[Unique normal form and confluence]\label{thm:rewrite-unique-normal-form}
+For every $a\in\mathcal{D}$ there exists a unique irreducible configuration $\mathrm{NF}(a)\in X_\infty$ such that
+\[
+a\to^\ast \mathrm{NF}(a),\qquad \mathrm{Val}(\mathrm{NF}(a))=\mathrm{Val}(a).
+\]
+Moreover, if $a\to^\ast b$ and $b$ is irreducible, then $b=\mathrm{NF}(a)$.
+In particular, the rewrite system is confluent and the normal form is independent of the reduction order.
+\end{theorem}
+\begin{proof}
+\textbf{Existence.}
+Start from $a$ and apply rewrites as long as possible.
+By strong termination (Proposition~\ref{prop:rewrite-termination}) this process ends at some irreducible $b$ with $a\to^\ast b$.
+By value preservation (Lemma~\ref{lem:rewrite-preserves-val}) we have $\mathrm{Val}(b)=\mathrm{Val}(a)$.
+By Lemma~\ref{lem:rewrite-irreducible-characterization}, $b\in X_\infty$.
+
+\textbf{Uniqueness.}
+Let $N:=\mathrm{Val}(a)\in\NN$.
+By Zeckendorf's theorem, there exists a unique digit sequence $Z(N)\in X_\infty$ such that $\mathrm{Val}(Z(N))=N$ \cite{Zeckendorf1972}.
+Therefore, any irreducible $b$ reachable from $a$ must satisfy $b=Z(N)$, hence is unique.
+Define $\mathrm{NF}(a):=Z(\mathrm{Val}(a))$.
+
+\textbf{Confluence.}
+If $a\to^\ast b_1$ and $a\to^\ast b_2$ with $b_1,b_2$ irreducible, the above uniqueness forces $b_1=b_2=\mathrm{NF}(a)$.
+Thus every pair of reductions from $a$ join at the unique normal form, i.e.\ the system is confluent.
+\end{proof}
+
+\begin{corollary}[Local confluence]\label{cor:rewrite-local-confluence}
+The rewrite system is locally confluent on $\mathcal{D}$.
+\end{corollary}
+\begin{proof}
+Confluence implies local confluence.
+\end{proof}
 
