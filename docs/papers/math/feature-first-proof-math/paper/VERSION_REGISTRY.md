@@ -6,7 +6,7 @@ This file tracks the latest reviewed version for each problem.
 |---|---|---|
 | Q1 | Q1-R4 | PASS |
 | Q2 | Q2-R3 | PASS |
-| Q3 | Q3-R5 | FAIL (starred bridge missing) |
+| Q3 | Q3-R6 | FAIL (adds unproven positivity assumptions) |
 | Q4 | Q4-R4 | FAIL (all-n open) |
 | Q5 | Q5-R2 | PASS |
 | Q6 | Q6-R1 | FAIL (main existence not closed) |
