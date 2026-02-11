@@ -1,0 +1,282 @@
+\subsection{模理论口径的视界零知识：Takesaki 判据、有限指数界与非交换行列式 \texorpdfstring{$\zeta$}{zeta}}\label{subsec:op-algebra-modular-zk-index-fkdet}
+本小节将正文“视界零知识（相对独立延拓）”的测度论定义（定义 \ref{def:xi-horizon-perfect-zero-knowledge} 与定理 \ref{thm:xi-horizon-perfect-zk-equivalences}）
+提升到 von Neumann 代数与 Tomita--Takesaki 模理论框架，并指出：
+视界零知识可被严格等价地刻画为一个\emph{态保持条件期望}的存在性；其存在性又等价于可见子代数对参考态模流的不变性（Takesaki 判据）。
+进一步地，在有限指数子因子包含下，Pimsner--Popa 不等式把“纤维内不可区分见证数”以 Jones 指数精确量化，从而给出零知识条件下健全性误差的不可改进下界。
+最后，引入 Fuglede--Kadison 行列式作为“视界 \(\zeta\) 函数”的非交换定义，并给出其与可见谱共振的零点对应。
+
+\paragraph{设置：体代数、可见子代数与转录信道}
+令 \(\mathcal{M}\) 为有限 von Neumann 代数，\(\varphi\) 为其上的忠实正规态；
+令 \(\mathcal{N}\subset \mathcal{M}\) 为“视界可见”子代数（可见因子）。
+令 \(\mathcal{T}\) 为转录代数（可取为任意 von Neumann 代数），并将一次协议转录抽象为正规完全正映射（normal u.c.p.\ channel）
+\[
+\Phi:\mathcal{M}\to\mathcal{T}.
+\]
+在该口径下，“仅依赖可见因子”的模拟器应当是一个只读取 \(\mathcal{N}\) 的信道。
+
+\begin{definition}[算子代数口径的视界完美零知识]\label{def:op-algebra-horizon-perfect-zk}
+称转录信道 \(\Phi:\mathcal{M}\to\mathcal{T}\) 相对于可见子代数 \(\mathcal{N}\) \textbf{完美零知识}，
+若存在一个 \(\varphi\)-保持的条件期望 \(E:\mathcal{M}\to\mathcal{N}\) 与一个正规完全正映射 \(S:\mathcal{N}\to\mathcal{T}\)，使得
+\begin{equation}\label{eq:op-algebra-zk-factorization}
+\boxed{\;\Phi=S\circ E.\;}
+\end{equation}
+此时 \(E\) 可视为“视界粗粒化”，而 \(S\) 为“仅依赖可见因子”的模拟器。
+\end{definition}
+
+\begin{remark}[与正文测度论定义的对应]\label{rem:op-algebra-zk-vs-measure}
+当 \(\mathcal{M}=L^\infty(\Omega,\mu)\)、\(\mathcal{N}=L^\infty(Y,\nu)\) 且 \(E\) 取为条件期望 \(\mathbb{E}[\cdot\mid Y]\) 时，
+\eqref{eq:op-algebra-zk-factorization} 退化为定义 \ref{def:xi-horizon-perfect-zero-knowledge} 的“转录核只依赖 \(y\)”；
+Takesaki 判据则给出：在非交换设定下，\(\varphi\)-保持条件期望存在性由模流不变性控制（定理 \ref{thm:op-algebra-takesaki-criterion}）。
+\end{remark}
+
+\paragraph{Takesaki 不变性与态保持条件期望存在}
+\begin{theorem}[Takesaki 判据：模群不变性 \texorpdfstring{$\Longleftrightarrow$}{<->} \(\varphi\)-保持条件期望]\label{thm:op-algebra-takesaki-criterion}
+令 \(\mathcal{M}\) 为 von Neumann 代数，\(\varphi\) 为其忠实正规态，\(\sigma_t^\varphi\) 为对应的模自同构群。
+对包含 \(\mathcal{N}\subset\mathcal{M}\)，下列命题等价：
+\begin{enumerate}
+  \item 存在 \(\varphi\)-保持的正规条件期望 \(E:\mathcal{M}\to\mathcal{N}\)，即 \(E\) 为 \(\mathcal{N}\)-双模（bimodular）且 \(\varphi\circ E=\varphi\)；
+  \item \(\mathcal{N}\) 在模流下不变：
+  \begin{equation}\label{eq:op-algebra-modular-invariance}
+  \boxed{\;\sigma_t^\varphi(\mathcal{N})=\mathcal{N}\qquad(\forall t\in\RR).\;}
+  \end{equation}
+\end{enumerate}
+并且在上述条件成立时，
+相对于 \(\mathcal{N}\) 的“完美零知识转录信道”恰为
+\[
+\bigl\{\,\Phi:\mathcal{M}\to\mathcal{T}\ \text{正规完全正}:\ \exists\,S:\mathcal{N}\to\mathcal{T}\ \text{s.t.}\ \Phi=S\circ E\,\bigr\}.
+\]
+\end{theorem}
+
+\begin{proof}
+\((1)\Leftrightarrow(2)\) 是 Takesaki 条件期望理论中的核心判据；
+在一般态的粗粒化（coarse-graining）框架下可参见 Accardi--Cecchini 的系统化表述 \cite{AccardiCecchini1982ConditionalExpectationsTakesaki}，
+亦可追溯至 Takesaki 的原始工作 \cite{Takesaki1972ConditionalExpectationsVNA}。
+最后一条刻画则由定义 \ref{def:op-algebra-horizon-perfect-zk} 的“因子闭包”语义直接给出：给定 \(E\)，任意 \(S\) 的后合成得到零知识信道；反向由 \(\Phi=S\circ E\) 即得。
+证毕。
+\end{proof}
+
+\begin{remark}[零知识的算子代数等价表述]\label{rem:op-algebra-zk-as-fixed-subalgebra}
+定理 \ref{thm:op-algebra-takesaki-criterion} 表明：“视界零知识”可等价地看作
+\(\mathcal{N}\) 是 \((\mathcal{M},\varphi)\) 的模群不变子代数，从而存在态保持条件期望 \(E\)。
+因此，零知识并非附加的概率论假设，而是一个\emph{可见子代数的模理论不变量}；
+这为正文将“可见闭包”与“功能方程型对称”（例如 \eqref{eq:xi-hzom-detailed-balance}）并置的做法提供了非交换来源。
+\end{remark}
+
+\paragraph{Pimsner--Popa 指数与不可区分见证数上界}
+下面在 \(\mathcal{M}\) 为 \(\mathrm{II}_1\) 因子且 \(\mathcal{N}\subset\mathcal{M}\) 为有限指数子因子时，
+用 Pimsner--Popa 不等式把“视界上不可区分的纤维大小”精确量化为 Jones 指数。
+
+\begin{theorem}[Pimsner--Popa 不等式与不可区分见证数界]\label{thm:op-algebra-pimsner-popa-witness-bound}
+设 \(\mathcal{M}\) 为 \(\mathrm{II}_1\) 因子，\(\mathcal{N}\subset\mathcal{M}\) 为子因子，且存在迹保持正规条件期望 \(E:\mathcal{M}\to\mathcal{N}\) 并具有有限 Jones 指数 \([\mathcal{M}:\mathcal{N}]<\infty\)。
+则存在最优常数
+\[
+\lambda=[\mathcal{M}:\mathcal{N}]^{-1}
+\]
+使对所有正元 \(x\in\mathcal{M}_+\) 有
+\begin{equation}\label{eq:op-algebra-pimsner-popa}
+\boxed{\;E(x)\ \ge\ \lambda\,x.\;}
+\end{equation}
+此外，若存在 \(k\) 个两两正交投影 \(\{p_i\}_{i=1}^k\subset\mathcal{M}\) 满足
+\begin{equation}\label{eq:op-algebra-indist-projections}
+\boxed{\;E(p_i)=k^{-1}1_{\mathcal{N}}\qquad(\forall i),\;}
+\end{equation}
+则必有
+\begin{equation}\label{eq:op-algebra-k-index-bound}
+\boxed{\;k\ \le\ [\mathcal{M}:\mathcal{N}].\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\eqref{eq:op-algebra-pimsner-popa} 及 \(\lambda=[\mathcal{M}:\mathcal{N}]^{-1}\) 的刻画是 Pimsner--Popa 的基本结果，参见 \cite{PimsnerPopa1986EntropyIndexSubfactors}。
+对 \eqref{eq:op-algebra-k-index-bound}：
+由 \eqref{eq:op-algebra-pimsner-popa} 取 \(x=p_i\) 并结合 \eqref{eq:op-algebra-indist-projections} 得
+\(
+k^{-1}1_{\mathcal{N}}=E(p_i)\ge \lambda p_i
+\)，
+于是 \(k^{-1}\ge\lambda\)，即 \(k\le \lambda^{-1}=[\mathcal{M}:\mathcal{N}]\)。证毕。
+\end{proof}
+
+\begin{corollary}[零知识健全性的指数下界（不可改进的尺度）]\label{cor:op-algebra-soundness-lower-bound-index}
+在定理 \ref{thm:op-algebra-pimsner-popa-witness-bound} 的设定下，
+若验证器的可见接口被限制在 \(\mathcal{N}\)（即其一切判定仅依赖 \(E(x)\in\mathcal{N}\)），
+则任何面对 \eqref{eq:op-algebra-indist-projections} 这类“纤维内不可区分”见证集合的策略都无法把最坏情形错误率压到
+\([\mathcal{M}:\mathcal{N}]^{-1}\) 之下。
+更精确地，若不可区分集合达到最大规模 \(k=[\mathcal{M}:\mathcal{N}]\)，则最坏情形不可区分率至少为 \(1/k\)，从而有尺度下界
+\[
+\boxed{\;\varepsilon_{\mathrm{sound}}\ \gtrsim\ [\mathcal{M}:\mathcal{N}]^{-1}.\;}
+\]
+\end{corollary}
+
+\paragraph{Fuglede--Kadison 行列式与“视界 \texorpdfstring{$\zeta$}{zeta}”的非交换定义}
+下述行列式为正文以 Fredholm 行列式 \(\det(I-\mathcal{K}_s)\) 定义“协议 \(\zeta\)”的非交换推广。
+
+\begin{definition}[Fuglede--Kadison 行列式与非交换 \texorpdfstring{$\zeta$}{zeta}]\label{def:op-algebra-fk-determinant-zeta}
+令 \((\mathcal{A},\tau)\) 为带忠实正规迹的有限 von Neumann 代数。
+对任意元 \(X\in\mathcal{A}\) 定义 Fuglede--Kadison 行列式
+\begin{equation}\label{eq:op-algebra-fkdet}
+\boxed{\;\Delta_\tau(X):=\exp\bigl(\tau(\log|X|)\bigr)\ \in\ [0,\infty),\qquad |X|:=(X^\ast X)^{1/2}.\;}
+\end{equation}
+其中当 \(|X|\) 有非平凡核时，按标准约定理解 \(\tau(\log|X|)=-\infty\) 并取 \(\Delta_\tau(X)=0\)。
+给定一族解析依赖 \(s\) 的“视界转移元” \(K_s\in\mathcal{A}\)，定义非交换 \(\zeta\)-型对象
+\begin{equation}\label{eq:op-algebra-nc-zeta}
+\boxed{\;
+Z_{\mathcal{A}}(s)\ :=\ \Delta_\tau(I-K_s)^{-1}.
+}
+\end{equation}
+\end{definition}
+
+\begin{proposition}[乘法性、矩阵退化与零点作为可见谱共振]\label{prop:op-algebra-fkdet-properties}
+在定义 \ref{def:op-algebra-fk-determinant-zeta} 的设定下：
+\begin{enumerate}
+  \item \(\Delta_\tau\) 具有严格乘法性：\(\Delta_\tau(XY)=\Delta_\tau(X)\Delta_\tau(Y)\)；
+  \item 当 \(\mathcal{A}=M_n(\CC)\) 且 \(\tau=\frac{1}{n}\Tr\) 时，有
+  \[
+  \Delta_\tau(X)=|\det(X)|^{1/n};
+  \]
+  \item 若 \(\Delta_\tau(I-K_s)=0\)，则 \(I-K_s\) 非可逆，等价于
+  \begin{equation}\label{eq:op-algebra-resonance}
+  \boxed{\;1\in\mathrm{Spec}_{\mathcal{A}}(K_s),\;}
+  \end{equation}
+  从而 \(Z_{\mathcal{A}}(s)\) 的“零点/极点异常”可被解释为可见谱的共振碰撞。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+乘法性与矩阵退化性质源自 Fuglede--Kadison 行列式的基本理论，参见 \cite{FugledeKadison1951DeterminantsTraceFiniteFactors}。
+第 (3) 条中，\(\Delta_\tau(X)=0\) 当且仅当 \(X\) 不可逆（在有限情形等价于 \(0\in\mathrm{Spec}(X)\)）；
+取 \(X=I-K_s\) 即得 \eqref{eq:op-algebra-resonance}。证毕。
+\end{proof}
+
+\paragraph{零知识模散射与功能方程的内禀来源}
+在模理论框架下，若存在两种互补视界粗粒化（入射/出射）且二者均为同一参考态的保持条件期望，
+则可将它们的相对模实现视为“散射”，并由对偶互反强制临界线纯相位性。
+
+\begin{proposition}[模散射行列式的反射对偶与临界线纯相位性]\label{prop:op-algebra-modular-scattering-phase}
+在定理 \ref{thm:op-algebra-takesaki-criterion} 的设定下，进一步假设存在两种 \(\varphi\)-保持条件期望
+\(
+E_{\mathrm{in}},E_{\mathrm{out}}:\mathcal{M}\to\mathcal{N}
+\)
+（对应入射/出射两种可见接口），并且可在某可迹化/正则化口径下定义由相对模互伴随诱导的可逆“散射算子族” \(S(s)\) 及其散射行列式 \(\varphi_{\mathrm{sc}}(s)\)。
+若该结构携带 \(s\leftrightarrow 1-s\) 的模对偶互反，则散射行列式满足功能方程
+\begin{equation}\label{eq:op-algebra-scattering-fe}
+\boxed{\;\varphi_{\mathrm{sc}}(s)\,\varphi_{\mathrm{sc}}(1-s)=1,\;}
+\end{equation}
+从而在临界切片 \(s=\tfrac12+\mathrm{i}t\) 上必有
+\begin{equation}\label{eq:op-algebra-scattering-unit-modulus}
+\boxed{\;\bigl|\varphi_{\mathrm{sc}}(\tfrac12+\mathrm{i}t)\bigr|=1.\;}
+\end{equation}
+\end{proposition}
+
+\begin{remark}[与有限体积双曲曲面散射的同型性]\label{rem:op-algebra-scattering-selberg-analogy}
+在有限体积双曲曲面（含 cusp）的标准谱理论中，散射矩阵行列式满足与 \eqref{eq:op-algebra-scattering-fe} 同型的功能方程，
+并与 Selberg \(\zeta\) 的完成化表达相耦合；相关讨论与定量分布性质可参见 \cite{GarunkstisSimenas2017SelbergAValues}。
+本命题将其抽象为：\(\varphi\)-保持粗粒化的双通道结构 \(+\) 模对偶互反 \(\Rightarrow\) 临界线幺正（纯相位）切片。
+\end{remark}
+
+\paragraph{Poisson 边界熵与零知识性的迭代判据}
+当辐射/蒸发过程被视为正规 Markov 作用的迭代时，Poisson 边界为“长期可见统计”的极限代数；
+边界熵为零恰对应于可见统计可被态保持条件期望完全拉回，从而存在全局模拟器。
+
+\begin{theorem}[Poisson 边界熵为零 \texorpdfstring{$\Longleftrightarrow$}{<->} 态保持条件期望存在]\label{thm:op-algebra-poisson-boundary-entropy}
+令 \(\mathcal{M}\) 为 \(\mathrm{II}_1\) 因子，\(\Phi\) 为其上的正规 Markov 作用（u.c.p.\ 并保持迹态），
+并令 \(\mathcal{A}\) 为与 \(\Phi\) 相关的 Poisson 边界代数（含包含 \(\mathcal{M}\subset\mathcal{A}\)）。
+对合适的边界态 \(\zeta\)，记边界熵为 \(h_\Phi(\mathcal{M}\subset\mathcal{A},\zeta)\)。
+则有严格等价
+\begin{equation}\label{eq:op-algebra-poisson-entropy-zero}
+\boxed{\;
+h_\Phi(\mathcal{M}\subset\mathcal{A},\zeta)=0
+\ \Longleftrightarrow\
+\exists\ \text{正规 }\zeta\text{-保持条件期望 }\mathcal{E}:\mathcal{A}\to\mathcal{M}.
+\;}
+\end{equation}
+因此，当且仅当边界熵为零时，长期迭代产生的全部可见统计可被视为由 \(\mathcal{E}\) 拉回，
+并可由仅依赖 \(\mathcal{M}\) 的全局模拟器生成；若边界熵严格为正，则任何模拟器必在某些尺度上失效（出现可放大的区分器）。
+\end{theorem}
+
+\begin{proof}
+这是 Poisson 边界理论中“熵零 \(\Leftrightarrow\) 边界平凡/可期望回收”的标准型结论；
+在 \(\mathrm{II}_1\) 因子 Poisson 边界的系统构造与熵理论中可参见 \cite{DasPeterson2022PoissonBoundariesII1}。
+证毕。
+\end{proof}
+
+\paragraph{贝叶斯逆 \texorpdfstring{$=$}{=} 模拟器}
+将“模拟器存在性”从概率论语言完全转译为“非交换贝叶斯反演是否可定义”，其存在性由模群判据控制。
+
+\begin{definition}[非交换贝叶斯逆（Bayesian inverse）]\label{def:op-algebra-bayesian-inverse}
+令 \(F:\mathcal{N}\hookrightarrow\mathcal{M}\) 为包含映射，\(\varphi\) 为 \(\mathcal{M}\) 上参考态并记 \(\xi:=\varphi\circ F\)。
+称 \(F\) 存在一个 \textbf{非交换贝叶斯逆} \(F^\sharp:\mathcal{M}\to\mathcal{N}\)，若 \(F^\sharp\) 为正规完全正映射，
+并在 \(\xi\)-意义下满足
+\begin{equation}\label{eq:op-algebra-bayes-inverse}
+\boxed{\;F^\sharp\circ F=\mathrm{id}_{\mathcal{N}},\qquad \xi\circ F^\sharp=\varphi.\;}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[贝叶斯逆存在性与模群判据；零知识分解的范畴闭包]\label{thm:op-algebra-bayes-inverse-zk}
+在定义 \ref{def:op-algebra-bayesian-inverse} 的设定下，
+贝叶斯逆 \(F^\sharp\) 的存在性由 Tomita--Takesaki 模群判据控制，并可视为 Takesaki 定理与 Accardi--Cecchini 粗粒化的统一推广。
+一旦 \(F^\sharp\) 存在，则对任意正规完全正转录信道 \(\Phi:\mathcal{M}\to\mathcal{T}\)，下列命题等价：
+\begin{enumerate}
+  \item 存在正规完全正映射 \(S:\mathcal{N}\to\mathcal{T}\) 使得
+  \begin{equation}\label{eq:op-algebra-zk-via-bayes-inverse}
+  \boxed{\;\Phi = S\circ F^\sharp\;}
+  \end{equation}
+  （即 \(\Phi\) 在范畴意义下因子化通过 \(F^\sharp\)，从而相对于 \(\mathcal{N}\) 完美零知识）；
+  \item \(\Phi\) 在“可见闭包”投影 \(F\circ F^\sharp:\mathcal{M}\to\mathcal{M}\) 下不变：
+  \begin{equation}\label{eq:op-algebra-zk-closure-fixed}
+  \boxed{\;\Phi=\Phi\circ F\circ F^\sharp.\;}
+  \end{equation}
+\end{enumerate}
+在等价条件成立时，因子化 \(\Phi=S\circ F^\sharp\) 中的 \(S\) 唯一，并由
+\begin{equation}\label{eq:op-algebra-zk-simulator-unique}
+\boxed{\;S=\Phi|_{\mathcal{N}},\qquad S(y)=\Phi(F(y))\ (y\in\mathcal{N}).\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+贝叶斯逆与模群之间的对应关系、以及对 Takesaki/Accardi--Cecchini 结果的推广见 \cite{GiorgettiEtAl2023BayesianInversionModularGroup}。
+\par
+\((1)\Rightarrow(2)\)：若 \(\Phi=S\circ F^\sharp\)，则
+\(
+\Phi\circ F\circ F^\sharp=S\circ (F^\sharp\circ F)\circ F^\sharp=S\circ F^\sharp=\Phi
+\)，得 \eqref{eq:op-algebra-zk-closure-fixed}。
+\par
+\((2)\Rightarrow(1)\)：若 \(\Phi=\Phi\circ F\circ F^\sharp\)，定义 \(S:\mathcal{N}\to\mathcal{T}\) 为 \(S:=\Phi\circ F\)。
+则
+\(
+S\circ F^\sharp=\Phi\circ F\circ F^\sharp=\Phi
+\)，得 \eqref{eq:op-algebra-zk-via-bayes-inverse}。
+\par
+唯一性：若 \(\Phi=S\circ F^\sharp\)，则对任意 \(y\in\mathcal{N}\) 有 \(y=F^\sharp(F(y))\)，从而
+\(
+S(y)=S(F^\sharp(F(y)))=\Phi(F(y))
+\)，即 \(S=\Phi|_{\mathcal{N}}\)（式 \eqref{eq:op-algebra-zk-simulator-unique}）。
+证毕。
+\end{proof}
+
+\paragraph{Selberg 行列式表达与算术散射中的 Riemann 共振}
+\begin{remark}[散射极点中的 \texorpdfstring{$\zeta$}{zeta}-比值结构与零知识失稳频率]\label{rem:op-algebra-selberg-zeros-as-resonances}
+在有限体积双曲曲面（含 cusp）的谱理论中，Selberg \(\zeta\) 可表达为 Laplacian 行列式与散射矩阵行列式的组合，
+并满足耦合的功能方程 \(Z(s)\varphi_{\mathrm{sc}}(s)=\eta(s)Z(1-s)\) 及 \(\varphi_{\mathrm{sc}}(s)\varphi_{\mathrm{sc}}(1-s)=1\)
+（见注 \ref{rem:op-algebra-scattering-selberg-analogy}）。
+在算术对称群相关的几何数据下，散射行列式中出现 \(\zeta(2s)\) 与 \(\zeta(2s-1)\) 的比值结构，
+从而 Riemann \(\zeta\) 的零点在散射对象中表现为极点/共振。
+因此，若以命题 \ref{prop:op-algebra-modular-scattering-phase} 的“临界线纯相位性”作为零知识稳定的幺正性要求，
+则一切共振只能以临界方式出现；任何假设性的非临界共振都会引入 \(|\varphi_{\mathrm{sc}}(\tfrac12+\mathrm{i}t)|\neq 1\) 的幅度异常，
+从而给出可放大的区分器（零知识失稳频率）。
+\end{remark}
+
+\paragraph{指数--行列式--零点的统一控制律（模板）}
+\begin{proposition}[指数作为共同控制量：可模拟性、零自由带与伪造优势]\label{prop:op-algebra-index-determinant-zero-control}
+设 \(\mathcal{N}\subset\mathcal{M}\) 为有限指数子因子包含且存在迹保持条件期望 \(E\)，并设 \((\mathcal{A},\tau)\) 上给定非交换 \(\zeta\) 对象 \(Z_{\mathcal{A}}(s)\)（定义 \ref{def:op-algebra-fk-determinant-zeta}），
+且其“可见谱共振”通过 \(\Delta_\tau(I-K_s)\) 的退化被视界验证统计读出。
+则 Jones 指数 \([\mathcal{M}:\mathcal{N}]\) 同时作为以下三类约束的共同控制量：
+\begin{enumerate}
+  \item \textbf{（纤维容量/不可区分数）}不可区分投影集合的最大规模受限于 \([\mathcal{M}:\mathcal{N}]\)（定理 \ref{thm:op-algebra-pimsner-popa-witness-bound}），从而给出零知识条件下健全性误差的不可改进尺度（推论 \ref{cor:op-algebra-soundness-lower-bound-index}）；
+  \item \textbf{（非交换行列式稳定域）}若在某开域内可建立 \(K_s\) 的谱收缩/可逆性证书（例如 \(\|K_s\|\le 1-c([\mathcal{M}:\mathcal{N}])\)），则由命题 \ref{prop:op-algebra-fkdet-properties} 得到一个由指数控制的零自由带：在该带内不存在由“纤维共振”诱导的零点；
+  \item \textbf{（带外零点 \(\Rightarrow\) 指数级区分优势）}一旦出现带外零点/共振，则对应的谱投影无法被条件期望抹平，必诱导可放大的区分器；其指数级增长模式与 (1) 的“不可区分容量”约束形成闭环矛盾，从而把零点偏离转译为零知识失稳的可审计证据。
+\end{enumerate}
+因此，指数既可被解释为“视界熵容量”，亦可被视为“\(\zeta\)-谱稳定性”与“协议健全性极限”的共同控制量。
+\end{proposition}
+
+\endinput
+

@@ -282,7 +282,7 @@ def main() -> None:
     tex.append(r"\end{remark}")
     tex.append("")
 
-    tex.append(r"\paragraph{结论族 I：未倾斜算子的谱指纹与 Jordan 残差}")
+    tex.append(r"\paragraph{未倾斜算子的谱指纹与 Jordan 残差}")
     tex.append(r"\begin{theorem}[$A_0$ 的精确谱指纹与 Jordan 结构]\label{thm:fold-gauge-anomaly-A0-jordan}")
     tex.append(
         r"令 $A_0:=A_\theta|_{\theta=0}$ 为命题 \ref{prop:fold-gauge-anomaly-pressure} 中的未倾斜加权邻接矩阵。"
@@ -302,12 +302,12 @@ def main() -> None:
     tex.append(
         r"定理 \ref{thm:fold-gauge-anomaly-A0-jordan} 表明，规范差的涨落除常规混合模态外还携带一个载荷为 $-1/2$ 的交错相位模态；"
         r"其 Jordan 缺陷在统计投影上产生“指数衰减 $\times$ 线性多项式”的可见尾项，"
-        r"从而可由二点统计直接捕捉（见下述结论族 II）。"
+        r"从而可由二点统计直接捕捉（见下述关于二点相关闭式与 $O(k2^{-k})$ 衰减律的段落）。"
     )
     tex.append(r"\end{remark}")
     tex.append("")
 
-    tex.append(r"\paragraph{结论族 II：二点相关闭式与 $O(k2^{-k})$ 衰减律}")
+    tex.append(r"\paragraph{二点相关闭式与 $O(k2^{-k})$ 衰减律}")
     tex.append(r"\begin{theorem}[失配指示过程的二点协方差闭式]\label{thm:fold-gauge-anomaly-cov-closed}")
     tex.append(
         r"令 $g_t=\mathbf 1\{X_t\neq Y_t\}$ 为命题 \ref{prop:fold-gauge-anomaly-pressure} 的逐位失配指示过程，并取其在均匀基线下的平稳极限口径。"
@@ -347,7 +347,7 @@ def main() -> None:
     tex.append(r"\end{corollary}")
     tex.append("")
 
-    tex.append(r"\paragraph{结论族 III：有限样本可核验的 Hankel 秩证书与递推律}")
+    tex.append(r"\paragraph{有限样本可核验的 Hankel 秩证书与递推律}")
     tex.append(r"\begin{theorem}[三阶线性递推与 Hankel 秩 $=3$]\label{thm:fold-gauge-anomaly-hankel-rank3}")
     tex.append(r"令 $d_k:=\mathrm{Cov}(g_t,g_{t+k})$（$k\ge 1$）。则对所有 $k\ge 1$ 有严格递推")
     tex.append(r"\[")
@@ -371,7 +371,7 @@ def main() -> None:
     tex.append(r"\end{corollary}")
     tex.append("")
 
-    tex.append(r"\paragraph{结论族 IV：有限长度方差的完全闭式（CLT 常数的全量校验）}")
+    tex.append(r"\paragraph{有限长度方差的完全闭式（CLT 常数的全量校验）}")
     tex.append(r"\begin{theorem}[$G_m=\sum_{t=1}^m g_t$ 的方差全闭式]\label{thm:fold-gauge-anomaly-var-finite-closed}")
     tex.append(r"在同一平稳口径下，对任意 $m\ge 1$，有")
     tex.append(r"\[")
