@@ -1,16 +1,17 @@
 ﻿# Problem 3 Review
 
 - Problem: `Q3`
-- Review Version: `Q3-R3`
-- Verdict: `FAIL`
+- Review Version: `Q3-R5`
+- Verdict: `FAIL` (for the original starred statement)
 
 ## Blocking Issues
 
-1. The final stationary formula is proved for unstarred objects `F_\eta(x;1,t), P_\lambda(x;1,t)` (ASEP/Macdonald from the Ayyer--Martin--Williams theorem), while the problem asks for starred interpolation objects `F^*_\mu, P^*_\lambda`. The proof currently does not include a theorem or derivation identifying these two pairs in the required regime, so the target statement is not yet established exactly as asked.
+1. Your proof fully closes the unstarred AMW statement `F_\eta/P_\lambda`, but Q3 asks for the starred interpolation ratio `F^*_\mu/P^*_\lambda`. A theorem-level bridge from unstarred to starred is still missing.
 
 ## Required Fixes
 
-1. Add one precise bridge result (with exact citation and hypotheses) that gives
-   - either `F^*_\mu(x;1,t)=F_\mu(x;1,t)` and `P^*_\lambda(x;1,t)=P_\lambda(x;1,t)` on your state space/parameter regime,
-   - or directly states that your ring inhomogeneous `t`-PushTASEP has stationary law `F^*_\mu/P^*_\lambda`.
-2. After adding the bridge, rewrite the final theorem statement and normalization line entirely in starred notation to match Q3 verbatim.
+1. Provide one precise published bridge theorem that yields the starred stationary law (or an exact starred-unstarred identification in the required regime).
+
+## Accepted Scope Note
+
+- The unstarred analogue (inhomogeneous `t`-PushTASEP at `q=1` with stationary law `F_\eta/P_\lambda`) is logically closed and publication-grade under the cited AMW theorem.

@@ -1,28 +1,38 @@
-﻿\section{Problem 1: Translation of the Finite-Volume $\Phi^4_3$ Measure}
+\section{Problem 1: Translation of the Finite-Volume $\Phi^4_3$ Measure}
 
 \begin{proposition}
-Let $\mu$ be the finite-volume $\Phi^4_3$ measure on $\mathcal D'(\mathbb T^3)$. For every nonzero smooth function $\psi\in C^\infty(\mathbb T^3)$, with translation map
+Let $\mu$ be the finite-volume $\Phi^4_3$ measure on $\mathcal D'(\mathbb T^3)$. For every nonzero smooth $\psi\in C^\infty(\mathbb T^3)$, with translation map
 \[
 T_\psi(u)=u+\psi,
 \]
-the measures $\mu$ and $T_{\psi\#}\mu$ are mutually singular. In particular, they are not equivalent.
+the measures $\mu$ and $T_{\psi\#}\mu$ are mutually singular. In particular, $\mu$ and $T_\psi^*\mu$ are not equivalent.
 \end{proposition}
 
 \begin{proof}
-For measurable sets $A\subset \mathcal D'(\mathbb T^3)$, define
+We first fix conventions. For measurable $A\subset\mathcal D'(\mathbb T^3)$,
 \[
-(T_{\psi\#}\mu)(A):=\mu\bigl(T_\psi^{-1}(A)\bigr).
+(T_{\psi\#}\mu)(A):=\mu\bigl(T_\psi^{-1}(A)\bigr),
 \]
-By Hairer (2022, Theorem 1.1), there exist constants $a,b\in\mathbb R$ such that for every smooth test function $\varphi$,
+and here $T_{\psi\#}\mu=T_\psi^*\mu$. Two measures are equivalent iff they have the same null sets; they are mutually singular iff there exists measurable $A$ with one measure equal to $1$ on $A$ and the other equal to $0$ on $A$.
+
+Fix a mollifier $\rho\in C_c^\infty(\mathbb R^3)$ with $\int_{\mathbb R^3}\rho=1$. Set
+\[
+\varepsilon_n:=e^{-e^n},\qquad \rho_n(x):=\varepsilon_n^{-3}\rho(x/\varepsilon_n),
+\]
+and view $\rho_n$ on $\mathbb T^3$ by periodicization. For $u\in\mathcal D'(\mathbb T^3)$, define $u_n:=u*\rho_n\in C^\infty(\mathbb T^3)$.
+
+We now use the external input (Hairer 2022, Theorem 1.1): there exist constants $a,b\in\mathbb R$ such that for every $\varphi\in C^\infty(\mathbb T^3)$,
 \[
 A_\varphi
 :=\left\{u:\lim_{n\to\infty}e^{-3n/4}\left\langle u_n^3-3ae^{e^n}u_n-9be^n u,\varphi\right\rangle=0\right\}
 \]
-satisfies $\mu(A_\varphi)=1$, and for every nonzero smooth shift $\widehat\psi$ there exists smooth $\varphi$ with
+satisfies $\mu(A_\varphi)=1$, and for every nonzero smooth shift $\widehat\psi$ there exists $\varphi\in C^\infty(\mathbb T^3)$ such that
 \[
 \mu(A_\varphi+\widehat\psi)=0.
 \]
-Set $\widehat\psi=-\psi\neq 0$. Choose the corresponding $\varphi$. Then
+In particular, $A_\varphi$ is measurable as a limit event of measurable real-valued observables.
+
+Fix nonzero smooth $\psi$, set $\widehat\psi:=-\psi$, and choose $\varphi$ from the theorem. Then
 \[
 \mu(A_\varphi-\psi)=\mu(A_\varphi+\widehat\psi)=0.
 \]
@@ -30,16 +40,15 @@ Since $T_\psi^{-1}(A)=A-\psi$ for translations,
 \[
 (T_{\psi\#}\mu)(A_\varphi)=\mu\bigl(T_\psi^{-1}(A_\varphi)\bigr)=\mu(A_\varphi-\psi)=0.
 \]
-At the same time, $\mu(A_\varphi)=1$. Hence there exists measurable $A_\varphi$ such that
+At the same time, $\mu(A_\varphi)=1$. Hence there exists measurable $A_\varphi$ with
 \[
 \mu(A_\varphi)=1,
 \qquad
-(T_{\psi\#}\mu)(A_\varphi)=0,
+(T_{\psi\#}\mu)(A_\varphi)=0.
 \]
-which is exactly $\mu\perp T_{\psi\#}\mu$.
-Therefore $\mu$ and $T_{\psi\#}\mu$ are not equivalent.
+Therefore $\mu\perp T_{\psi\#}\mu$, so $\mu$ and $T_\psi^*\mu$ are not equivalent.
 \end{proof}
 
 \begin{remark}
-The proof is a direct measure-theoretic consequence of the witness-event statement in Hairer (2022, Theorem 1.1). No additional quasi-invariance argument is needed.
+The only nontrivial analytic input is Hairer (2022, Thm. 1.1); the rest is a direct measure-theoretic deduction.
 \end{remark}

@@ -1,0 +1,241 @@
+\section{Problem 4: Partial Resolution and a Program Toward the General Case}
+
+Let $n\ge 2$. For monic degree-$n$ polynomials
+\[
+p(x)=\sum_{k=0}^n a_k x^{n-k},\qquad q(x)=\sum_{k=0}^n b_k x^{n-k},\qquad a_0=b_0=1,
+\]
+define
+\[
+(p\boxplus_n q)(x)=\sum_{k=0}^n c_k x^{n-k},
+\qquad
+c_k=\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k)!}\,a_i b_j.
+\]
+For real-rooted $p$ with roots $\lambda_1,\dots,\lambda_n$, define
+\[
+\Phi_n(p):=\sum_{i=1}^n\left(\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}\right)^2,
+\]
+and set $\Phi_n(p)=\infty$ if $p$ has a multiple root.
+
+The target inequality is
+\[
+\frac{1}{\Phi_n(p\boxplus_n q)}\ge \frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
+\tag{$\star$}\label{eq:q4-star}
+\]
+
+\begin{remark}[Strict Status]
+This section gives complete proofs of several structural identities and special cases, and records a concrete route for further progress. The all-$n$ statement \eqref{eq:q4-star} is not proved here.
+\end{remark}
+
+\begin{lemma}[Pairwise inverse-square identity]\label{lem:q4-pairwise}
+If $p$ has simple roots $\lambda_1,\dots,\lambda_n$, then
+\[
+\Phi_n(p)=\sum_{i\ne j}\frac{1}{(\lambda_i-\lambda_j)^2}
+=2\sum_{1\le i<j\le n}\frac{1}{(\lambda_i-\lambda_j)^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $S_i:=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$. Expanding $\sum_i S_i^2$ gives the pairwise inverse-square term plus a triple sum.
+For distinct $a,b,c$, one has
+\[
+\frac{1}{(a-b)(a-c)}+\frac{1}{(b-a)(b-c)}+\frac{1}{(c-a)(c-b)}=0,
+\]
+so triple contributions cancel by grouping unordered triples of indices.
+\end{proof}
+
+\begin{proposition}[Exact equality for $n=2$]\label{prop:q4-n2}
+For all monic real-rooted quadratics $p,q$,
+\[
+\frac{1}{\Phi_2(p\boxplus_2 q)}=\frac{1}{\Phi_2(p)}+\frac{1}{\Phi_2(q)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+p=x^2+a_1x+a_2,\qquad q=x^2+b_1x+b_2,\qquad r=p\boxplus_2 q=x^2+c_1x+c_2.
+\]
+From the definition,
+\[
+c_1=a_1+b_1,\qquad c_2=a_2+b_2+\tfrac12 a_1b_1.
+\]
+Hence
+\[
+\Delta_r:=c_1^2-4c_2=(a_1^2-4a_2)+(b_1^2-4b_2)=\Delta_p+\Delta_q.
+\]
+For a monic quadratic with distinct real roots and gap $d$, one has $\Delta=d^2$ and by Lemma~\ref{lem:q4-pairwise},
+\[
+\Phi_2=\frac{2}{d^2}=\frac{2}{\Delta},\qquad \frac{1}{\Phi_2}=\frac{\Delta}{2}.
+\]
+Thus
+\[
+\frac{1}{\Phi_2(r)}=\frac{\Delta_r}{2}=\frac{\Delta_p}{2}+\frac{\Delta_q}{2}.
+\]
+When a polynomial has a repeated root, $\Phi_2=\infty$ and the same identity holds with the convention $1/\infty=0$.
+\end{proof}
+
+\begin{proposition}[Full inequality for $n=3$]\label{prop:q4-n3}
+For all monic real-rooted cubics $p,q$,
+\[
+\frac{1}{\Phi_3(p\boxplus_3 q)}\ge \frac{1}{\Phi_3(p)}+\frac{1}{\Phi_3(q)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Step 1 (normalization by translation).
+For $a,b\in\mathbb R$, let
+\[
+\tau_a p(x):=p(x-a),\qquad \tau_b q(x):=q(x-b).
+\]
+Using the permutation-average model of $\boxplus_3$ on roots, one has
+\[
+(\tau_a p)\boxplus_3(\tau_b q)=\tau_{a+b}(p\boxplus_3 q).
+\]
+Since $\Phi_3$ depends only on root differences, it is translation-invariant:
+\[
+\Phi_3(\tau_c r)=\Phi_3(r).
+\]
+Hence it suffices to prove the inequality after translating $p,q$ so that each has root mean $0$.
+
+Step 2 (centered form).
+Write
+\[
+p(x)=x^3+A_1x+B_1,\qquad q(x)=x^3+A_2x+B_2
+\]
+with $A_1,A_2<0$ for nontrivial real-rooted cubics.
+From the coefficient definition of $\boxplus_3$:
+\[
+p\boxplus_3 q=x^3+(A_1+A_2)x+(B_1+B_2).
+\]
+
+Step 3 (closed formula for $1/\Phi_3$).
+For a centered monic cubic $r(x)=x^3+Ax+B$ with simple real roots:
+\[
+\Delta(r)=-4A^3-27B^2,\qquad
+\sum_{i<j}(\lambda_i-\lambda_j)^2=-6A.
+\]
+For three numbers, if $a,b,c$ are the three squared pairwise differences, then
+$ab+ac+bc=(a+b+c)^2/4$. Therefore
+\[
+\Phi_3(r)=2\sum_{i<j}\frac{1}{(\lambda_i-\lambda_j)^2}
+      =\frac{\bigl(\sum_{i<j}(\lambda_i-\lambda_j)^2\bigr)^2}{2\,\Delta(r)}
+      =\frac{18A^2}{\Delta(r)}.
+\]
+So
+\[
+\frac{1}{\Phi_3(r)}=\frac{\Delta(r)}{18A^2}
+=-\frac{2A}{9}-\frac{3}{2}\frac{B^2}{A^2}.
+\]
+
+Apply this to $p,q,r:=p\boxplus_3 q$:
+\[
+\frac{1}{\Phi_3(r)}-\frac{1}{\Phi_3(p)}-\frac{1}{\Phi_3(q)}
+=-\frac{3}{2}\left(
+\frac{(B_1+B_2)^2}{(A_1+A_2)^2}
+-\frac{B_1^2}{A_1^2}
+-\frac{B_2^2}{A_2^2}\right),
+\]
+because the linear $A$-terms cancel.
+
+Set $u:=-A_1>0$, $v:=-A_2>0$, $x:=B_1/A_1$, $y:=B_2/A_2$. Then
+\[
+\frac{(B_1+B_2)^2}{(A_1+A_2)^2}=\left(\frac{ux+vy}{u+v}\right)^2.
+\]
+By Cauchy (or Jensen for $t\mapsto t^2$),
+\[
+\left(\frac{ux+vy}{u+v}\right)^2\le \frac{ux^2+vy^2}{u+v}\le x^2+y^2
+=\frac{B_1^2}{A_1^2}+\frac{B_2^2}{A_2^2}.
+\]
+Hence the bracket is $\le 0$, so the displayed difference is $\ge 0$.
+
+If one polynomial has multiple roots, the convention $1/\infty=0$ and continuity from the simple-root regime give the same inequality. Therefore the claim holds for all real-rooted cubics.
+\end{proof}
+
+\begin{proposition}[Degenerate shift case]\label{prop:q4-shift}
+If $p(x)=(x-a)^n$, then
+\[
+p\boxplus_n q(x)=q(x-a),
+\]
+and
+\[
+\frac{1}{\Phi_n(p\boxplus_n q)}=\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(q)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Using the standard permutation-average model of symmetric additive convolution,
+\[
+(p\boxplus_n q)(x)=\frac1{n!}\sum_{\pi\in S_n}\prod_{r=1}^n(x-\lambda_r-\mu_{\pi(r)}),
+\]
+if all $\lambda_r=a$, each summand equals $\prod_r(x-a-\mu_r)=q(x-a)$. Root gaps are translation-invariant, so
+$\Phi_n(q(\cdot-a))=\Phi_n(q)$. Since $\Phi_n((x-a)^n)=\infty$, the equality follows.
+\end{proof}
+
+\begin{proposition}[Variance additivity under $\boxplus_n$]\label{prop:q4-var}
+Let $m(p)$ be the empirical mean of the roots of $p$ and $\operatorname{Var}(p)$ the empirical variance. Then
+\[
+\operatorname{Var}(p\boxplus_n q)=\operatorname{Var}(p)+\operatorname{Var}(q).
+\]
+\end{proposition}
+
+\begin{proof}
+For $p=x^n+a_1x^{n-1}+a_2x^{n-2}+\cdots$,
+\[
+\sum_i\lambda_i=-a_1,\qquad \sum_i\lambda_i^2=a_1^2-2a_2.
+\]
+For $r=p\boxplus_n q$, one has
+\[
+c_1=a_1+b_1,\qquad c_2=a_2+b_2+\frac{n-1}{n}a_1b_1.
+\]
+Hence
+\[
+\sum_i\gamma_i^2=c_1^2-2c_2=(a_1^2-2a_2)+(b_1^2-2b_2)+\frac{2}{n}a_1b_1,
+\]
+while
+\[
+\frac1n\Big(\sum_i\gamma_i\Big)^2=\frac1n(a_1+b_1)^2.
+\]
+The mixed term cancels exactly in
+\[
+\operatorname{Var}(r)=\frac1n\sum_i\gamma_i^2-\frac1{n^2}\Big(\sum_i\gamma_i\Big)^2,
+\]
+yielding additivity.
+\end{proof}
+
+\begin{lemma}[de Bruijn-type identity for polynomial heat flow]\label{lem:q4-debruijn}
+Let $p_t=e^{t\partial_{xx}}p$ and assume $p_t$ has simple real roots $\lambda_1(t),\dots,\lambda_n(t)$ on an interval of $t$. Then
+\[
+\frac{d}{dt}\log\operatorname{Disc}(p_t)=-4\,\Phi_n(p_t),
+\]
+where $\operatorname{Disc}(p_t)=\prod_{i<j}(\lambda_i(t)-\lambda_j(t))^2$.
+\end{lemma}
+
+\begin{proof}
+Differentiate $p_t(\lambda_i(t))=0$:
+\[
+0=\partial_t p_t(\lambda_i)+p_t'(\lambda_i)\lambda_i'=p_t''(\lambda_i)+p_t'(\lambda_i)\lambda_i',
+\]
+so
+\[
+\lambda_i'=-\frac{p_t''(\lambda_i)}{p_t'(\lambda_i)}=-2\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}.
+\]
+Also,
+\[
+\log\operatorname{Disc}(p_t)=2\sum_{i<j}\log|\lambda_i-\lambda_j|.
+\]
+Differentiate and substitute the formula for $\lambda_i'$ to get
+\[
+\frac{d}{dt}\log\operatorname{Disc}(p_t)
+=\sum_i \lambda_i'\Big(2\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}\Big)
+=-4\sum_i\Big(\sum_{j\ne i}\frac{1}{\lambda_i-\lambda_j}\Big)^2
+=-4\Phi_n(p_t).
+\]
+\end{proof}
+
+\begin{remark}[Program toward the full theorem]
+A viable closure route for \eqref{eq:q4-star} is to prove a finite-degree entropy-power inequality for a discriminant-based functional compatible with $\boxplus_n$. Combined with Lemma~\ref{lem:q4-debruijn}, this would mirror the classical entropy-power $\Rightarrow$ Stam mechanism.
+\end{remark}
+
+\begin{remark}[Current conclusion]
+Within this draft, \eqref{eq:q4-star} is proved only in the cases of Proposition~\ref{prop:q4-n2} and Proposition~\ref{prop:q4-shift}. The general all-$n$ statement remains open.
+\end{remark}
