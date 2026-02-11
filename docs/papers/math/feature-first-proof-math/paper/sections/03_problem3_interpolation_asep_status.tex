@@ -1,24 +1,82 @@
-\section{Problem 3: Interpolation ASEP/Macdonald Stationary Law}
+\section{Problem 3: Interpolation ASEP/Macdonald Stationary Ratio}
 
-\textbf{Latest Reviewed Version:} Q3-R8 (PASS).
-
-\textbf{Current Status.}
-Closed for the original starred question: the correct unconditional answer is \textbf{NO in general}.
-
-\textbf{Submission Record.}
-
-\textbf{Q3-V8 (user submission).}
-This version provides an explicit counterexample strategy for the original starred claim.
-Core idea: a stationary distribution must be nonnegative, so it suffices to find one admissible input where
+\textbf{Problem.}
+Let $\lambda=(\lambda_1>\cdots>\lambda_n\ge 0)$ be strict and restricted (unique part $0$, no part $1$), and let
 \[
-\pi(\mu)=\frac{F^*_{\mu}(x;1,t)}{P^*_{\lambda}(x;1,t)}
+S_n(\lambda)=\{\sigma(\lambda):\sigma\in S_n\}.
 \]
-is negative for some state.
+At $q=1$, define
+\[
+\pi(\mu):=\frac{F^*_\mu(x;1,t)}{P^*_\lambda(x;1,t)},\qquad \mu\in S_n(\lambda).
+\]
+Does there always exist a nontrivial Markov chain on $S_n(\lambda)$ with stationary distribution $\pi$?
 
-Using BDW's explicit formula for $f^*_{(0,2)}$ (Example 1.16), Hecke action (Definition of $T_1$), and Proposition 2.10 at $q=1$, one gets a concrete restricted partition example $\lambda=(2,0)$ with parameters (e.g. $t=1/2$, $x_1=5$, $x_2=1/2$) where one state ratio is negative while denominator is positive. Therefore no Markov chain can realize that ratio as a stationary distribution.
+\begin{theorem}
+In general, \textbf{no}. Even for restricted strict $\lambda$, there are parameters $(x,t)$ for which
+\[
+\frac{F^*_\mu(x;1,t)}{P^*_\lambda(x;1,t)}
+\]
+is negative for some state $\mu$, so it cannot be a stationary distribution of any Markov chain.
+\end{theorem}
 
-\textbf{Review Outcome (Q3-R8).}
-PASS: original Q3 is resolved as \textbf{NO in general}. The previously accepted MH construction remains valid only as a conditional theorem on the positivity domain.
+\begin{proof}
+A stationary distribution on a finite state space must be a probability vector, hence all coordinates are nonnegative.
+So it is enough to produce one admissible instance with a negative coordinate.
 
-\textbf{Tracking Rule.}
-Each newly submitted user version is first appended in this section, then reviewed in `reviews/problem3_review.md`.
+Take $n=2$ and
+\[
+\lambda=(2,0),\qquad S_2(\lambda)=\{(2,0),(0,2)\}.
+\]
+This $\lambda$ is strict and restricted.
+
+From Ben Dali--Williams (Example 1.16), at $q=1$ one has
+\[
+f^*_{(0,2)}(x_1,x_2;1,t)
+=(x_1-\tfrac1t)(x_2-\tfrac1t)
++\frac{1-t}{t}(x_1-\tfrac1t)
++(x_2-\tfrac1t)^2
++2\frac{1-t}{t}(x_2-\tfrac1t)
++\frac{(1-t)^2}{t^2}.
+\]
+Using the Hecke operator relation (Definition of $T_1$ and Proposition 2.10 in the same paper),
+\[
+T_1 f^*_{(0,2)}=(t-1)f^*_{(0,2)}+t f^*_{(2,0)},
+\]
+which gives an explicit polynomial expression for $f^*_{(2,0)}$.
+
+Now choose
+\[
+t=\frac12,\qquad x_1=5,\qquad x_2=\frac12.
+\]
+Direct substitution yields
+\[
+f^*_{(0,2)}\Bigl(5,\tfrac12;1,\tfrac12\Bigr)=-\frac54<0,
+\qquad
+f^*_{(2,0)}\Bigl(5,\tfrac12;1,\tfrac12\Bigr)=\frac{47}{2}>0.
+\]
+Hence
+\[
+P^*_{(2,0)}\Bigl(5,\tfrac12;1,\tfrac12\Bigr)
+=f^*_{(2,0)}+f^*_{(0,2)}
+=\frac{89}{4}>0,
+\]
+where $P^*_{\lambda}=\sum_{\mu\in S_n(\lambda)}F^*_\mu$ (Definition 1.14 and Theorem 1.15 in Ben Dali--Williams, together with $F^*=f^*$).
+Therefore
+\[
+\pi(0,2)
+=\frac{F^*_{(0,2)}}{P^*_{(2,0)}}
+=\frac{-\frac54}{\frac{89}{4}}
+=-\frac{5}{89}<0.
+\]
+So $\pi$ is not a probability distribution, and no Markov chain can have this $\pi$ as stationary law.
+
+Thus the original starred claim is false in general.
+\end{proof}
+
+\textbf{Conclusion.}
+The unconditional answer to Problem 3 is
+\[
+\boxed{\text{No in general.}}
+\]
+A Markov-chain realization is possible only on parameter regimes where
+$F^*_\mu(x;1,t)\ge 0$ for all states and $P^*_{\lambda}(x;1,t)>0$.
