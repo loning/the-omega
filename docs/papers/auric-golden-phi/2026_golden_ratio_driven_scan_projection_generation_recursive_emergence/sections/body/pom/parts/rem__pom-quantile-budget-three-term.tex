@@ -88,11 +88,11 @@ $$
 \boxed{\;
 \mathcal{D}_G(K;\theta):=\Bigl((\rho_\chi(\theta))_{\chi\in\widehat G},\ (\log\mathfrak{M}_\chi(\theta))_{\chi\in\widehat G}\Bigr).\;}
 \]
-接口 A 给出 drift（从而形成异常签名 \(\mathsf{Anom}_G\)），接口 B 给出 pole（谱半径比/慢模缺口）；二者并列即构成 \(\mathcal{D}_G\) 的常数级与指数级证书。
+异常签名接口给出 drift（从而形成异常签名 \(\mathsf{Anom}_G\)），慢模证书接口给出 pole（谱半径比/慢模缺口）；二者并列即构成 \(\mathcal{D}_G\) 的常数级与指数级证书。
 在小角 regime 下，二者还满足一条可机核验的二次“空间--时间换算律”（见附录命题 \ref{prop:real-input-40-space-time-conversion-law}）。
 \end{remark}
 
-\paragraph{接口 A：\texorpdfstring{$\mathsf{Anom}_G$}{Anom}（扭曲有限部异常签名）}
+\paragraph{异常签名接口：\texorpdfstring{$\mathsf{Anom}_G$}{Anom}（扭曲有限部异常签名）}
 对定义 \ref{def:pom-anom-signature}，工程上只需两步：枚举非平凡角色并计算对应的 \(\log\mathfrak{M}_\chi(\theta)\)。
 本文已有脚本在 \(\chi\)-切片上实现了 \(\theta=(t,0,-t)\) 的一维族（即把 arity-charge 作为势注入）并输出 \((P_\chi(t),\log\mathfrak{M}_\chi(t))\)：
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}。
@@ -117,7 +117,7 @@ return Anom
 若需要仅做“判等/判零”，可在少量采样点 \(\theta\in\Theta_{\mathrm{grid}}\) 上比较 \(\log\mathfrak{M}_\chi(\theta)\) 向量（推论 \ref{cor:pom-three-gen-normal-form-decidable}）。
 \end{remark}
 
-\paragraph{接口 B：扭曲谱半径比与最坏角色（慢模证书）}
+\paragraph{慢模证书接口：扭曲谱半径比与最坏角色（慢模证书）}
 异常签名是常数级残差；指数级慢模证书可由 \(\rho_\chi/\lambda\) 给出。
 本文对真实输入 40 状态核的某些势（例如 output potential）已经提供“单位根扭曲”的全表与最坏角色输出：
 \texttt{scripts/exp\_real\_input\_40\_output\_potential\_dirichlet\_twists.py}，
@@ -125,7 +125,7 @@ return Anom
 报告了每个模数 \(m\) 的最坏 \(j\) 与 \(\rho_m/\lambda\)。
 该接口与 \(\mathsf{Anom}\) 可并列使用：前者给指数缺口，后者给常数漂移。
 
-\paragraph{接口 C：moment 递推证书（\texorpdfstring{$r_q$}{rq} 与尾部预算）}
+\paragraph{尾部预算接口：moment 递推证书（\texorpdfstring{$r_q$}{rq} 与尾部预算）}
 对碰撞矩 \(S_q(m)\) 的“可审计证书”本文采用两种等价口径：
 \begin{itemize}
   \item \textbf{递推证书：}用整数递推系数核验 \(S_q\)（表 \ref{tab:fold_collision_moment_recursions}）。
@@ -136,8 +136,8 @@ return Anom
 
 以上三类脚本输出共同构成“\(r_q\) 可计算 \(\Rightarrow\) 尾部分位预算可计算”的闭环：将 \(r_q\) 代入注 \ref{rem:pom-quantile-budget-computable} 的显式不等式即可得到 prime-register 的可审计配额上界（推论 \ref{cor:pom-prime-register-quantile-budget}）。
 
-\paragraph{接口 D：Bridge-Kit（严格化交换图的二级回归测试包）}
-前述接口 A/B/C 分别给出：常数级残差（异常签名）、指数级慢模证书（最坏扭曲谱半径比）、以及 tail/prime-register 预算证书（由 \(r_q\) 控制）。
+\paragraph{Bridge-Kit 接口：严格化交换图的二级回归测试包}
+前述三类接口分别给出：常数级残差（异常签名）、指数级慢模证书（最坏扭曲谱半径比）、以及 tail/prime-register 预算证书（由 \(r_q\) 控制）。
 但在工程实践中，真正需要的是一个“\emph{可作为验收标准的一键桥包}”：任何对核实现、截断策略、角色分解或数值线性代数优化的改动，都必须保持一组低维可审计输出不漂移。
 \par
 为此我们把
@@ -223,7 +223,7 @@ E_m\circ \mathrm{LIFT}_G\circ \mathrm{CT}_{-\mathsf{Anom}^{\mathrm{rel}}_{G}(K;\
 给出：该 \(2\)-态射恰提供所需分裂的具体选择。证毕。
 \end{proof}
 
-\paragraph{接口 E：ISA/微码参考模拟器（32-bit 编码 + 成本计数）}
+\paragraph{ISA/微码参考模拟器接口：32-bit 编码 + 成本计数}
 为把 \S\ref{subsec:pom-isa} 的 ISA/微码口径落到可复现执行层面，本仓库提供脚本
 \texttt{scripts/pom\_isa\_sim\_v2.py}（实验层版本；本文仅保留该最新版）：
 它实现 32 个可见寄存器（写回默认触发 \(P_Z\equiv\Fold_\infty\)）与两类程序不可见寄存器（窗口寄存器 \(W\) 与素数指数寄存器 \(P\)），并在执行过程中维护成本计数器
