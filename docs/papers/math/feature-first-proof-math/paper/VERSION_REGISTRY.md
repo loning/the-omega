@@ -12,7 +12,7 @@ This file tracks the latest reviewed version for each problem.
 | Q6 | Q6-R1 | FAIL (main existence not closed) |
 | Q7 | Q7-R1 | FAIL (partial theorem only) |
 | Q8 | Q8-R1 | FAIL |
-| Q9 | Q9-R1 | FAIL |
+| Q9 | Q9-R2 | FAIL (Lemma 3.1 repeated-index case not closed) |
 | Q10 | Q10-R0 | PENDING |
 
 Process rule:
