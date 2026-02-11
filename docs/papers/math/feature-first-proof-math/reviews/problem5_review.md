@@ -1,22 +1,23 @@
 # Problem 5 Review
 
 - Problem: `Q5`
-- Submission Version: `Q5-V2`
-- Review Version: `Q5-R2`
+- Submission Version: `Q5-V3`
+- Review Version: `Q5-R3`
 - Verdict: `PASS`
 
 ## Findings
 
-No blocking correctness issues found in this version.
+No blocking correctness issues found.
 
-## What Was Fixed Relative to Q5-R1
+## Why This Update Is Necessary in Current Workflow
 
-1. Restriction bookkeeping is corrected using
-   `Res^K_L(\rho_K) \cong \rho_L^{\oplus [K:L]}`,
-   so slice degree is preserved as `k[K:L]|L|=k|K|`.
-2. The induction/restriction part is now compatible with the regular-slice generators after Mackey decomposition.
-3. The isotropy-separation argument is assembled into a complete `(2)=> (1)` subgroup-order induction.
+1. It makes the restriction-dimension bookkeeping explicit via
+   `Res^K_J(rho_K) = [K:J] rho_J`,
+   eliminating the prior ambiguity point-by-point.
+2. It closes the reverse direction with a complete isotropy-separation + subgroup induction chain.
+3. It records the geometric-piece criterion as a proved internal step rather than an informal transfer from the genuine case.
 
-## Residual Risk
+## Scope
 
-The proof depends on standard external structural results for `\mathrm{Sp}^G_{\mathcal O}` (restriction-induction adjunctions and geometric-local identification via `\widetilde E\mathcal P`-localization). Under those imported results, the argument is closed.
+The pass verdict is for the stated scope: connective objects and `n >= 0`, with standard imported structural facts for `Sp^O_G`.
+
