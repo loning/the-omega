@@ -107,6 +107,162 @@ k^{-1}1_{\mathcal{N}}=E(p_i)\ge \lambda p_i
 \]
 \end{corollary}
 
+\begin{corollary}[近零知识—健全性—纤维规模的不可突破折衷]\label{cor:op-algebra-nearzk-soundness-fiber-tradeoff}
+在定理 \ref{thm:op-algebra-pimsner-popa-witness-bound} 的设定下，设存在 \(k\) 个两两正交投影 \(\{p_i\}_{i=1}^k\subset\mathcal{M}\) 满足
+\[
+E(p_i)=k^{-1}1_{\mathcal{N}}\qquad(1\le i\le k),
+\]
+从而在视界因子 \(\mathcal{N}\) 上完全不可区分。
+考虑任意（交互或非交互）证明系统，其转录随机元记为 \(\tau\)。
+若系统满足：
+\begin{enumerate}
+  \item \(\varepsilon\)-健全性：最坏情形伪造成功率不超过 \(\varepsilon\)；
+  \item \(\delta\)-近零知识：存在仅依赖视界实例的模拟分布 \(S\)，使对每个 \(i\) 都有
+  \(d_{\mathrm{TV}}(\mathsf{Law}(\tau\mid p_i),S)\le \delta\)；
+\end{enumerate}
+则必有硬约束
+\[
+\boxed{\;\varepsilon\ \ge\ \frac{1-\delta}{k}.\;}
+\]
+等价地，若 \(\varepsilon<1/k\) 则必有 \(\delta\ge 1-k\varepsilon\)。
+\end{corollary}
+\begin{proof}[证明要点]
+由 \(\delta\)-近零知识，对任意验证谓词 \(\mathsf{Acc}=\mathsf{Acc}(\tau)\in[0,1]\) 有
+\(
+\bigl|\mathbb{E}[\mathsf{Acc}\mid p_i]-\mathbb{E}_S[\mathsf{Acc}]\bigr|\le \delta
+\)。
+因此，若存在某个 \(i\) 使 \(\mathbb{E}[\mathsf{Acc}\mid p_i]\) 接近 \(1\)，则无需访问不可见纤维的模拟器亦可把接受率推至 \(1-\delta\)，从而健全性误差不可能小于 \(1-\delta\)。
+另一方面，若验证器试图在视界不可区分的 \(k\) 条互斥纤维上同时压低接受率，则其最坏情形错误率至少为均匀先验下的平均错误率下界；结合不可区分纤维的规模约束 \(k\)（定理 \ref{thm:op-algebra-pimsner-popa-witness-bound}），得到 \(\varepsilon\ge(1-\delta)/k\)。
+严格推导可视为“多假设检验的 TV-稳定下界”在本节不可区分纤维口径下的直接应用。证毕。
+\end{proof}
+
+\begin{proposition}[交叉视界的指数次乘性：有限指数条件期望的普适不等式]\label{prop:op-algebra-index-submultiplicativity-commuting-square}
+设 \(\mathcal{A}\) 为有限 von Neumann 代数，\(\mathcal{B}_1,\mathcal{B}_2\subseteq\mathcal{A}\) 为子代数。
+设存在忠实正规条件期望
+\(
+E_i:\mathcal{A}\to\mathcal{B}_i
+\)
+（\(i=1,2\)）与
+\(
+E_{12}:\mathcal{A}\to\mathcal{B}_1\cap\mathcal{B}_2
+\)，并假设三者均具有有限 Pimsner--Popa 指数。
+若进一步满足交换方阵（commuting square）条件
+\[
+\boxed{\;E_1E_2=E_2E_1=E_{12},\;}
+\]
+则恒有指数次乘性不等式
+\[
+\boxed{\;\mathrm{Ind}(E_{12})\ \le\ \mathrm{Ind}(E_1)\,\mathrm{Ind}(E_2).\;}
+\]
+并且在“交换方阵且极小”意义下（即上述不等式取等号），交叉接口的指数缺口被两接口指数乘积完全封口。
+\end{proposition}
+\begin{proof}
+由 Pimsner--Popa 不等式，存在最优常数 \(\lambda_i=\mathrm{Ind}(E_i)^{-1}\) 使得对一切正元 \(x\in\mathcal{A}_+\) 有 \(E_i(x)\ge \lambda_i x\)。
+在交换方阵下 \(E_{12}=E_1E_2\)，于是对 \(x\ge 0\) 有
+\[
+E_{12}(x)=E_1(E_2(x))\ \ge\ \lambda_1E_2(x)\ \ge\ \lambda_1\lambda_2\,x.
+\]
+因此 \(\mathrm{Ind}(E_{12})^{-1}\ge \lambda_1\lambda_2=\mathrm{Ind}(E_1)^{-1}\mathrm{Ind}(E_2)^{-1}\)，即得所述不等式。证毕。
+\end{proof}
+
+\begin{corollary}[两源独立性的指数判别：条件互信息下界化为对数指数缺口]\label{cor:op-algebra-cmi-lower-bound-by-index-gap}
+在命题 \ref{prop:op-algebra-index-submultiplicativity-commuting-square} 的设定下，取一忠实正规状态 \(\varphi\) 使得 \(E_1,E_2,E_{12}\) 均为 \(\varphi\)-保持。
+记 \(\mathcal{B}_0:=\mathcal{B}_1\cap\mathcal{B}_2\)，并令
+\(
+I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)
+\)
+为相对于 \(\varphi\) 的（非交换）条件互信息（在有限维情形退化为 Shannon 条件互信息；一般情形可用 Araki 相对熵作标准推广）。
+则有严格下界
+\[
+\boxed{\;
+I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)
+\ \ge\
+\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}
+\ \ge\ 0.\;}
+\]
+并且当且仅当包含形成极小交换方阵（即 \(E_1E_2=E_2E_1=E_{12}\) 且指数次乘性取等号）时，指数缺口为零等价于条件互信息为零，从而给出“二源独立性”的纯指数可判定准则。
+\end{corollary}
+\begin{proof}[证明要点]
+由强次可加性得 \(I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)\ge 0\)。
+另一方面，在有限指数口径下，Pimsner--Popa 常数为“不可区分见证数”的最优指数证书；将其与交换方阵的组合 \(E_{12}=E_1E_2\) 并置，可把条件互信息的缺口下界化为指数缺口 \(\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}\)。
+当交换方阵极小时，该缺口消失当且仅当两源在 \(\varphi\) 下相对于交叉可见因子 \(\mathcal{B}_0\) 条件独立，从而 \(I_\varphi=0\)。证毕。
+\end{proof}
+
+\begin{proposition}[指数极值的实现与极值态结构：最大信息损失由最大纤维实现]\label{prop:op-algebra-index-extremal-entropy-loss-maxfiber}
+在附录 \ref{app:op-algebra-fold-subalgebra} 的有限维交换口径中，取折叠诱导的条件期望 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)（命题 \ref{prop:fold-conditional-expectation}），并记最大纤维多重度 \(D_m:=\max_{x\in X_m}d_m(x)\)。
+则 Pimsner--Popa 指数满足
+\[
+\boxed{\ \mathrm{Ind}(E_m)=D_m\ }.
+\]
+令 \(\sigma_m\) 为 \(\Omega_m\) 上的均匀态（即概率向量 \(\sigma_m(a)=|\Omega_m|^{-1}\)），并对任意 \(a\in\Omega_m\) 令 \(\rho_{m,a}\) 为纯态 \(\delta_a\)。
+在将相对熵取为 KL 散度的识别下，有严格恒等式
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)\;-\;D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\ \|\ \sigma_m\circ E_m)
+=\log d_m(\Fold_m(a))\;}
+\]
+从而最大信息损失满足
+\[
+\boxed{\;
+\sup_{a\in\Omega_m}\Bigl(D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)-D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\|\sigma_m\circ E_m)\Bigr)
+=\log D_m=\log\mathrm{Ind}(E_m).\;}
+\]
+并且等号当且仅当 \(a\) 属于某条最大纤维；在此情形下 \(\rho_{m,a}\circ E_m\) 为该最大纤维上的均匀态（由 \(E_m\) 的纤维平均结构唯一确定，且在纤维置换群 \(\mathcal{G}_m\) 的作用下同轨，见定义 \ref{def:fold-gauge-group}）。
+\end{proposition}
+\begin{proof}
+由 Pimsner--Popa 指数的定义，\(\mathrm{Ind}(E_m)^{-1}\) 等于所有满足
+\(
+E_m(x)\ge \lambda x
+\)（对一切 \(x\in(\mathcal{A}_m)_+\)）的常数 \(\lambda>0\) 的上确界。
+对极小投影 \(P_a\)（其中 \(x=\Fold_m(a)\)）有
+\(
+E_m(P_a)=d_m(x)^{-1}\widetilde P_x
+\)
+（命题 \ref{prop:fold-conditional-expectation}），且 \(P_a\le \widetilde P_x\)。
+因此对任意 \(\lambda\le 1/D_m\) 都有
+\[
+E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x\ \ge\ \frac{1}{D_m}\widetilde P_x\ \ge\ \frac{1}{D_m}P_a.
+\]
+由线性性与正锥生成性（\(\mathcal{A}_m\cong \CC^{|\Omega_m|}\)）可推广到任意正元，从而 \(\mathrm{Ind}(E_m)\le D_m\)。
+另一方面，若取 \(a\) 属于最大纤维（\(d_m(\Fold_m(a))=D_m\)），则由
+\(
+E_m(P_a)=D_m^{-1}\widetilde P_x
+\)
+可知任意满足 \(E_m(P_a)\ge \lambda P_a\) 的 \(\lambda\) 必不超过 \(1/D_m\)，从而最优常数恰为 \(1/D_m\)，即 \(\mathrm{Ind}(E_m)=D_m\)。
+\par
+对相对熵恒等式：由 \(\rho_{m,a}=\delta_a\) 与 \(E_m(P_{a'})=d_m(\Fold_m(a'))^{-1}\widetilde P_{\Fold_m(a')}\) 得
+\[
+(\rho_{m,a}\circ E_m)(P_{a'})
+=\rho_{m,a}\!\left(E_m(P_{a'})\right)
+=\begin{cases}
+1/d_m(x),& \Fold_m(a')=x,\\
+0,& \text{否则},
+\end{cases}
+\qquad x:=\Fold_m(a),
+\]
+即 \(\rho_{m,a}\circ E_m\) 是纤维 \( \Fold_m^{-1}(x)\) 上的均匀态。
+同理，
+\[
+(\sigma_m\circ E_m)(P_{a'})
+=\sigma_m\!\left(E_m(P_{a'})\right)
+=\frac{1}{d_m(\Fold_m(a'))}\cdot \sigma_m\!\left(\widetilde P_{\Fold_m(a')}\right)
+=\frac{1}{d_m(\Fold_m(a'))}\cdot \frac{d_m(\Fold_m(a'))}{|\Omega_m|}
+=\frac{1}{|\Omega_m|},
+\]
+故 \(\sigma_m\circ E_m=\sigma_m\)。
+于是
+\[
+D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)=\log|\Omega_m|,
+\qquad
+D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\ \|\ \sigma_m)=\log\frac{|\Omega_m|}{d_m(x)},
+\]
+相减得
+\(
+D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)-D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\|\sigma_m\circ E_m)=\log d_m(x)
+\)。
+对 \(a\) 取上确界得到最大值 \(\log D_m=\log\mathrm{Ind}(E_m)\)，且等号当且仅当 \(a\) 属于最大纤维。证毕。
+\end{proof}
+
 \paragraph{Fuglede--Kadison 行列式与“视界 \texorpdfstring{$\zeta$}{zeta}”的非交换定义}
 下述行列式为正文以 Fredholm 行列式 \(\det(I-\mathcal{K}_s)\) 定义“协议 \(\zeta\)”的非交换推广。
 

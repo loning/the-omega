@@ -113,6 +113,35 @@ D_\tau\circ A_t=A_{e^{\tau}t}\circ D_\tau\;}
 该判别式在制度层面提供一种不可回收的不适定性刻画：它完全由深度谱决定，且不依赖高度坐标 \(\gamma\)。
 \end{proposition}
 
+\begin{proposition}[粗粒化不适定性的指数律：尺度增长强制反演条件数指数爆炸]\label{prop:xi-coarsegraining-illposedness-exponential-law}
+取采样步长 \(\Delta>0\) 并令 \(t\ge 0\) 为加性粗粒化尺度。
+对每个缺陷 \((\delta_j,\gamma_j)\) 定义圆盘点
+\[
+r_j(t):=\exp\!\bigl(-(t+1+\delta_j)\Delta\bigr)\,e^{-\mathrm{i}\gamma_j\Delta}\in\mathbb{D}.
+\]
+记最小谱间距
+\[
+\mathrm{sep}(t):=\min_{j\ne k}|r_j(t)-r_k(t)|.
+\]
+则有严格缩放律
+\[
+\boxed{\;\mathrm{sep}(t)=e^{-t\Delta}\,\mathrm{sep}(0).\;}
+\]
+并且对任何基于有限样本的局部反演算法（例如 Prony/矩阵铅笔）在一般位置下的 Lipschitz 条件数 \(L(t)\) 必满足下界
+\[
+\boxed{\;
+L(t)\ \ge\ C_\kappa\,\mathrm{sep}(t)^{-(\kappa-1)}
+\ \ge\ C_\kappa\,e^{(\kappa-1)t\Delta}\,\mathrm{sep}(0)^{-(\kappa-1)}\;}
+\]
+其中 \(C_\kappa>0\) 仅依赖 \(\kappa\)。
+因此，Poisson/洛伦兹型粗粒化不仅收缩可分辨度，而且以严格指数速率将反演推入不可避免的不适定区。
+\end{proposition}
+\begin{proof}
+由定义 \(r_j(t)=e^{-t\Delta}r_j(0)\)，故 \(\mathrm{sep}(t)=e^{-t\Delta}\mathrm{sep}(0)\)。
+另一方面，在有限原子口径下样本序列具有指数和表示 \(\sum_{j=1}^{\kappa}A_j r_j(t)^n\)，其局部反演等价于求解 Vandermonde 型系统；一般位置下该系统的最小奇异值可由谱间距控制，从而任何局部右逆的 Lipschitz 常数至少为 \(\mathrm{sep}(t)^{-(\kappa-1)}\) 量级（常数只依赖 \(\kappa\)）。
+代入 \(\mathrm{sep}(t)\) 的缩放律即得指数爆炸下界。证毕。
+\end{proof}
+
 \begin{proposition}[深度--高度的最小耦合：从深度母函数到共动层析的唯一提升]
 设完整层析谱指纹（含高度）为
 \[
