@@ -6,7 +6,7 @@ This file tracks the latest reviewed version for each problem.
 |---|---|---|
 | Q1 | Q1-R4 | PASS |
 | Q2 | Q2-R5 | PASS |
-| Q3 | Q3-R7 | FAIL (conditional only; nontriviality not unconditional) |
+| Q3 | Q3-R8 | PASS (closed as NO in general via explicit negative-ratio counterexample) |
 | Q4 | Q4-R4 | FAIL (all-n open) |
 | Q5 | Q5-R3 | PASS |
 | Q6 | Q6-R2 | FAIL (partial results verified; main existence still open) |

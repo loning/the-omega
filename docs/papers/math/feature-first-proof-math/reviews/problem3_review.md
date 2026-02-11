@@ -1,25 +1,24 @@
 # Problem 3 Review
 
 - Problem: `Q3`
-- Submission Version: `Q3-V7`
-- Review Version: `Q3-R7`
-- Verdict: `FAIL` (for the original starred question)
+- Submission Version: `Q3-V8`
+- Review Version: `Q3-R8`
+- Verdict: `PASS` (original starred question closed as `NO in general`)
 
-## Blocking Issues
+## Correctness Check
 
-1. The proof is conditional on extra assumptions
-   `P^*_lambda(x;1,t) > 0` and `F^*_mu(x;1,t) >= 0` for all states.
-   These are not derived from the original Q3 hypotheses, so the original problem is not closed.
+1. Core logic is now complete:
+   a negative value of
+   `pi(mu)=F^*_mu(x;1,t)/P^*_lambda(x;1,t)` for one state is enough to rule out existence of any Markov chain with that stationary law.
 
-2. The theorem headline states existence of a `nontrivial` chain, but nontriviality is only shown under an additional support condition (`R(mu,nu)>0` and both weights positive on an edge). Without that condition, the constructed chain can be trivial.
+2. The submission provides a concrete restricted strict partition counterexample
+   `lambda=(2,0)` and explicit parameter choice `(t,x1,x2)=(1/2,5,1/2)`, together with symbolic derivation from BDW formulas (`Example 1.16`, `T_1` definition, `Prop. 2.10`, and `P^* = sum F^*`), yielding:
+   `P^*_{(2,0)} > 0` and `pi(0,2) < 0`.
 
-## Accepted Part
+3. Therefore the original unconditional Q3 statement is resolved as:
+   `NO in general`.
 
-1. Conditional result is correct: on a finite state space, if the starred weights are nonnegative and normalized by
-   `Z = sum_mu F^*_mu`, the Metropolis--Hastings kernel yields stationarity
-   `pi(mu)=F^*_mu/P^*_lambda`.
+## Accepted Final Position
 
-## Required Fixes
-
-1. Either prove positivity conditions in the target regime or restate the claim as conditional rather than full Q3 closure.
-2. If `nontrivial` is part of the theorem statement, add a global assumption guaranteeing at least one positive-mass transition edge, or weaken to existence of a Markov chain.
+1. Unconditional answer to original starred Q3: `NO in general` (closed).
+2. Previous MH construction remains valid only as a conditional theorem on the positivity domain.
