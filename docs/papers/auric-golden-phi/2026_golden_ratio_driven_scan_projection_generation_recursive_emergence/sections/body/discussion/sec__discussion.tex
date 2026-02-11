@@ -167,6 +167,45 @@ m_{\max}(T,\delta_0)=2\log_{\varphi}T+O(1)
 \)
 （推论 \ref{cor:fold-bin-gauge-m6} 与推论 \ref{cor:fold-bin-gauge-sign}；亦见 \S\ref{subsubsec:window6-discrete-results}），从而为“模式数 \(\leftrightarrow\) 分辨率 \(\leftrightarrow\) 视界证书深度”的离散标定提供一个可审计的最小视界胞元。
 
+\begin{proposition}[折叠--相位推前的视界测度候选：由 \texorpdfstring{$\{0,1\}^6$}{0,1^6} 的 \texorpdfstring{$\varphi$}{phi}-切投影生成]\label{prop:discussion-horizon-measure-fold6-pushforward}
+取一个有限参数的相位泛函 \(\Theta:\{0,1\}^6\to\RR/2\pi\ZZ\)（例如由 \(v\in(\ZZ[\varphi])^6\) 给出 \(\Theta(\omega)=2\pi\langle v,\omega\rangle\ \mathrm{mod}\ 2\pi\)），并令 \(\Theta_m:X_m\to\RR/2\pi\ZZ\) 为长度 \(m\) 的块相位叠加（由折叠生成的数据流决定）。
+用折叠推前分布 \(\pi_m(x)=d_m(x)/2^m\)（\S\ref{subsec:pom-multifractal-from-rk}）定义单位圆上的离散概率测度
+\[
+\mu_m:=\sum_{x\in X_m}\pi_m(x)\,\delta_{e^{\mathrm{i}\Theta_m(x)}}.
+\]
+则其 Carath\'eodory 变换
+\[
+\mathscr{C}_m(w):=\int_{\TT}\frac{\xi+w}{\xi-w}\,\dd\mu_m(\xi)
+\qquad(|w|<1)
+\]
+满足 \(\Re\mathscr{C}_m(w)\ge 0\)，从而生成 Toeplitz--PSD 层级 \(\mathbf{T}^{(m)}_N\succeq 0\)（\(\forall N\ge 0\)）。
+因此 \(\{\mu_m\}\) 给出一个显式、可复算的“视界正性”候选序列；若进一步存在弱极限 \(\mu=\lim_{m\to\infty}\mu_m\)，则其 Toeplitz 矩序列为自然的审计输入（并与猜想 \ref{conj:discussion-horizon-measure-cutproject} 的“几何识别”目标相容）。
+\end{proposition}
+\begin{proof}
+由 \(\mu_m\) 为有限正测度，\(\mathscr{C}_m\) 具有标准的 Carath\'eodory/Herglotz 表示（附录式 \eqref{eq:app-horizon-herglotz-disk}），故 \(\Re\mathscr{C}_m\ge 0\) 于 \(\mathbb{D}\)。
+Toeplitz--PSD 层级由 \(\mathbf{T}^{(m)}_N\) 作为 \(L^2(\mu_m)\) 中 \(\{1,\xi,\dots,\xi^N\}\) 的 Gram 矩阵立得（定理 \ref{thm:app-horizon-toeplitz-lmi} 的一般论证）。证毕。
+\end{proof}
+
+\begin{conjecture}[\texorpdfstring{$\varphi$}{phi}-视界层级上的 Toeplitz--Herglotz 稀疏化审计指数（可证伪）]\label{conj:discussion-phi-sparsified-toeplitz-audit}
+固定偏移下界 \(\delta\ge\delta_0>0\)，并考虑高度窗 \(|\gamma|\le T\)。
+在端点二次压缩与 \(\varphi\)-分辨率标定下，所需的最深视界层级满足 \(m_{\max}(T,\delta_0)=2\log_{\varphi}T+O(1)\)（上段）。
+记 min-entropy 端点常数 \(h_\infty=\log(2/\sqrt\varphi)\)（推论 \ref{cor:pom-min-entropy-rate}）并令
+\[
+D_\infty=\frac{h_\infty}{\log\varphi}=\frac{\log(2/\sqrt\varphi)}{\log\varphi}\approx 0.94042009.
+\]
+猜想存在一条与 \(\varphi\)-层级相容的稀疏化审计策略，使得在第 \(m\) 层仅需 \(n_m\) 阶“有效矩约束”，其中
+\[
+n_m\ \asymp\ \varphi^{mD_\infty}\ \asymp\ \frac{1}{p_{\max}(m)},
+\qquad
+p_{\max}(m):=\max_{x\in X_m}\pi_m(x),
+\]
+且覆盖高度窗的总证书规模满足
+\[
+n(T)\ \asymp\ \varphi^{D_\infty m_{\max}(T,\delta_0)}\ =\ T^{2D_\infty+o(1)}.
+\]
+该预测把端点压缩（\(T^2\)）、折叠端点常数 \(D_\infty\) 与视界 Toeplitz--PSD 审计预算在同一标度上对齐；其否证口径为：在可计算窗口内，若任何实现该策略的证书规模在 \(T\) 上呈现严格高于 \(T^{2D_\infty+o(1)}\) 的增长，则该稀疏化指数不可成立。
+\end{conjecture}
+
 \begin{conjecture}[\texorpdfstring{$\varphi$}{phi}-视界准晶猜想（强形式，可证伪）]\label{conj:discussion-horizon-measure-cutproject}
 本猜想仅用于统一定位，不作为正文证明链的前提。
 存在一个以 \(\varphi\) 为 Pisot 膨胀因子的 \(6\) 维 cut-and-project 方案 \((\RR^6=E_{\parallel}\oplus E_{\perp},\ \mathcal{L},\ W)\)，以及一个由窗边界编码诱导的可测映射 \(\Theta\)，使得：
@@ -246,6 +285,24 @@ m_{\max}(T,\delta_0)=2\log_{\varphi}T+O(1)
 |\nu_N(I)-|I|/(2\pi)|
 \)
 不趋于 \(0\)，或存在某个固定阶的 Toeplitz 主子式/矩统计在 \(N\) 增大时出现与 (1)--(3) 不相容的稳定偏离，则该猜想在相应口径下可被直接拒绝。
+\end{conjecture}
+
+\begin{conjecture}[端点 Bessel 完成化的普适性猜想：由零点计数常数项锁定 \texorpdfstring{$x_{\mathrm{B}}=2\pi$}{xB=2pi}]\label{conj:discussion-endpoint-bessel-universality}
+存在一族参数 \(x_{\mathrm{B}}>0\) 的“端点 Bessel 完成化模件”\(\Xi_{\mathrm{Bessel},x_{\mathrm{B}}}\)（可视为端点 \(w=-1\) 的局部缩放极限对象），其零点计数满足
+\[
+N_{\mathrm{Bessel},x_{\mathrm{B}}}(T)
+=\frac{T}{2\pi}\log\!\Bigl(\frac{T}{e\,x_{\mathrm{B}}}\Bigr)+O(1).
+\]
+并且当 \(x_{\mathrm{B}}=2\pi\) 时，上式的主项与次主项与黎曼--冯\,曼戈尔特主项完全对齐（备注 \ref{rem:app-rvm-endpoint-constant}），因此该参数在“常数项匹配”意义下被唯一锁定为 \(x_{\mathrm{B}}=2\pi\)。
+\par
+进一步地，任何同时满足
+\begin{enumerate}
+  \item[(i)] Ramanujan 型相位闭包（边界酉化/内函数化，\S\ref{subsubsec:ramanujan-phase-lift-symmetry}），
+  \item[(ii)] 自对偶固定切片承载（\S\ref{subsubsec:selfdual-blaschke-defect-fixed-slice} 与附录 \ref{subsec:unit-disk-rh-equivalence}），
+  \item[(iii)] \(\varphi\)-重整化折叠的端点常数 \(D_\infty\)（推论 \ref{cor:xi-bulk-horizon-defect-visibility-Dinfty}），
+\end{enumerate}
+并且通过尺度混合打破单尺度晶格刚性以允许 \(T\log T\) 级零密度增长的 unitary-slice 系统，
+其端点 \(w=-1\) 的局部缩放极限落入同一 Bessel--\(K\) 普适类；在该类中，零点计数常数项匹配再次锁定 \(x_{\mathrm{B}}=2\pi\)。
 \end{conjecture}
 
 \input{subsec__discussion-rh-garbage-collector-core}

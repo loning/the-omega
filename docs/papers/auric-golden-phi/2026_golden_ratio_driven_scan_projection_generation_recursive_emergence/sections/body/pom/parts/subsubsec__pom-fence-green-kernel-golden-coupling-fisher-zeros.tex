@@ -180,6 +180,44 @@ w^{2k+1}=-1.
 该均匀化同时给出端点尺度的几何来源：\([-4,0]\) 是单位圆在 \(w+w^{-1}-2\) 下的精确像域端点。
 \end{remark}
 
+\begin{proposition}[临界端点的平方根型分支：\texorpdfstring{$t=0$}{t=0} 与 \texorpdfstring{$t=-4$}{t=-4} 的 Puiseux 指数刚性]\label{prop:pom-Lk-branch-puiseux}
+把
+\[
+f(t):=\lim_{k\to\infty}\frac{1}{k}\log\det(L_k+tI)
+=2\,\mathrm{arsinh}\sqrt{\frac{t}{4}}
+\]
+视为 \(t\in\CC\setminus[-4,0]\) 上的解析函数（固定与 \(t>0\) 相容的 \(\sqrt{t(4+t)}\) 分支）。
+则 \(t=0\) 与 \(t=-4\) 是仅有的平方根型分支点（对应判别式 \(\Delta(t)=t(4+t)\) 的两零点）。
+并且在外域极限 \(t\to 0\) 下有 Puiseux 展开
+\[
+\boxed{\;
+f(t)=\sqrt{t}-\frac{t^{3/2}}{24}+O(t^{5/2})\;}
+\]
+（分支由 \(\sqrt{t}\) 的选取确定）。
+另一方面，令表面自由能 \(g(t):=-\log(1+e^{-2\eta(t)})\)（其中 \(\eta(t)=\mathrm{arsinh}\sqrt{t/4}\)，见推论 \ref{cor:pom-Lk-surface-free-energy}），则同一极限下
+\[
+\boxed{\;
+g(t)=-\log 2+\frac{\sqrt{t}}{2}+O(t)\;}
+\]
+从而 bulk 与表面项的非解析性均由同一 Puiseux 指数 \(1/2\) 控制；并且第二分支点 \(t=-4\) 的位置恰为 \(\Delta(t)\) 的另一零点，等价于分支点间距的规范化常数 \(4\)。
+\end{proposition}
+
+\begin{proof}
+令 \(z=\sqrt{t}/2\)，则 \(\eta(t)=\mathrm{arsinh}(z)\)。
+由级数 \(\mathrm{arsinh}(z)=z-\frac{z^3}{6}+O(z^5)\)（\(z\to 0\)）得
+\[
+f(t)=2\eta(t)=2z-\frac{2z^3}{6}+O(z^5)
+=\sqrt{t}-\frac{t^{3/2}}{24}+O(t^{5/2}).
+\]
+并且 \(q(t)=e^{-2\eta(t)}=e^{-f(t)}=1-\sqrt{t}+O(t)\)，故
+\[
+g(t)=-\log(1+q(t))
+=-\log\!\bigl(2-\sqrt{t}+O(t)\bigr)
+=-\log2+\frac{\sqrt{t}}{2}+O(t).
+\]
+分支点位置来自 \(\sqrt{t(4+t)}\) 在 \(t=0,-4\) 的平方根退化。证毕。
+\end{proof}
+
 \begin{proposition}[边界反射系数的 Schur--Riccati 递推与黄金耦合下的 Fibonacci 收敛率]\label{prop:pom-Lk-boundary-riccati-recursion}
 定义有限尺度边界反射系数
 \[
@@ -222,6 +260,43 @@ q_k(t)-q=q\,\frac{q^{2k-1}-q^{2k+1}}{1+q^{2k+1}}
 并立得所示双边界与 \(\Theta(q^{2k})\)。
 最后，黄金耦合的 Fibonacci 表达由推论 \ref{cor:pom-Lk-t1-fibonacci-det-green} 的 \((A_k^{-1})_{11}=F_{2k-1}/F_{2k+1}\) 给出，且 \(\varphi^{-2}=q(1)\)。
 由 Binet 公式可得误差阶 \(\Theta(\varphi^{-4k})\)。证毕。
+\end{proof}
+
+\begin{corollary}[Riccati 近似的精确误差分解：由 \texorpdfstring{$D_k$}{Dk} 控制的单调收敛与级数余项]\label{cor:pom-Lk-riccati-error-by-determinants}
+对 \(k\ge 0\) 定义 \(D_k(t):=\det(L_k+tI)\) 并约定 \(D_0(t)=1\)。
+则对一切 \(k\ge 1\) 有精确恒等式
+\[
+\boxed{\;
+q_k(t)=\frac{D_{k-1}(t)}{D_k(t)}\; }.
+\]
+并且由命题 \ref{prop:pom-Lk-det-cassini-pell} 得差分公式
+\[
+\boxed{\;
+q_k(t)-q_{k+1}(t)=\frac{t}{D_k(t)\,D_{k+1}(t)}\; }.
+\]
+因此当 \(t>0\) 时，\((q_k(t))_{k\ge 1}\) 严格单调递减并收敛到固定点 \(q(t)\in(0,1)\)，且误差具有完全显式的级数余项表示
+\[
+\boxed{\;
+q_k(t)-q(t)=t\sum_{n\ge k}\frac{1}{D_n(t)\,D_{n+1}(t)}\; }.
+\]
+\end{corollary}
+
+\begin{proof}
+令 \(A_k:=L_k+tI\)。
+由 Cramer 公式，
+\(
+(A_k^{-1})_{11}=\det(A_k^{(1,1)})/\det(A_k)
+\)，其中 \(A_k^{(1,1)}\) 为删去第 \(1\) 行第 \(1\) 列所得主子式。
+由于 \(A_k^{(1,1)}\) 与 \(L_{k-1}+tI\) 在显式三对角结构上同构，故 \(\det(A_k^{(1,1)})=D_{k-1}(t)\)，从而 \(q_k=D_{k-1}/D_k\)。
+差分公式由
+\[
+q_k-q_{k+1}
+=\frac{D_{k-1}}{D_k}-\frac{D_k}{D_{k+1}}
+=\frac{D_{k-1}D_{k+1}-D_k^2}{D_kD_{k+1}}
+=\frac{t}{D_kD_{k+1}}
+\]
+（命题 \ref{prop:pom-Lk-det-cassini-pell}）立得。
+对 \(t>0\) 有 \(D_k(t)>0\)，故 \(q_k-q_{k+1}>0\) 并给出单调性；余项表示由对差分公式从 \(n=k\) 到 \(\infty\) 求和并用 \(q_n\to q\) 得到。证毕。
 \end{proof}
 
 \begin{remark}[有限窗审计：黄金耦合 Fibonacci 化、Fisher 零点与 Riccati 收敛]\label{rem:pom-fence-green-kernel-golden-coupling-audit}
