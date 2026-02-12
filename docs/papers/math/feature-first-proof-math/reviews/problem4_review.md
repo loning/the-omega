@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V23`
-- Review Version: `Q4-R23`
+- Submission Version: `Q4-V24`
+- Review Version: `Q4-R24`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -72,6 +72,23 @@
     proposition `q4-firststep-n23` proves
     `N((I-alpha D)p) >= N(p)` for all real-rooted monic `p` when `n=2,3`.
     (`n=2` by explicit discriminant increment; `n=3` by applying the proved full `n=3` Stam inequality to `q_alpha`.)
+31. **NEW: Defect-split identity (exact algebraic decomposition)**:
+    with `S1=sum g`, `S2=sum g^2`, `S3=sum g^3`, `rho=S2/S1`,
+    the concavity numerator decomposes as
+    `A+B`, where
+    `A=S1||Ls-rho s||^2 >= 0`
+    and
+    `B=S1 sum g(g-rho)^2` (signed).
+    This isolates the all-`n` bottleneck to balancing a nonnegative Laplacian defect
+    against a signed edge-cubic defect.
+32. **NEW: Explicit bounded counterexample to the stronger sufficient condition `B>=0`**:
+    for `n=8`, a concrete root configuration gives `B<0` while `A+B>0`.
+    So `B>=0` is not the right closure target; `A+B>=0` remains the true criterion.
+33. **NEW: Incidence-matrix bottleneck form**:
+    with weighted edge-incidence `D`, `g=Ds`, `L=D^T D`, `rho=S2/S1`, `h=g-rho*1`,
+    the unresolved term is exactly
+    `(A+B)/S1 = ||D^T h||^2 + h^T diag(g) h`.
+    This recasts general-`n` closure as one signed quadratic-form inequality on `h`.
 
 ## Findings From Independent Re-check
 
@@ -89,6 +106,8 @@
    failures of item (20) correspond to negative signed edge-moment defect,
    but they can be absorbed by a positive Cauchy-Schwarz defect.
 7. Additional search found no negative value for `sum g_{ij}^3` in tested dimensions (up to `n=12`) under random + local minimization.
+8. New local minimization confirms `B` can be negative (moderate bounded configurations),
+   while the full concavity numerator `A+B` remained positive on the same samples.
 
 ## Remaining Gap
 

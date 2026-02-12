@@ -283,7 +283,6 @@ Then:
 then
 \[
 p\boxplus_n q
-
 =
  \Bigl(\prod_{m=1}^{n}(I-\alpha_m D)\Bigr)p,
 \qquad D:=\frac{d}{dx}.
@@ -999,6 +998,123 @@ and numerically
 \]
 Hence a direct factor-by-factor proof through arbitrary quadratic blocks
 cannot be the final closure mechanism.
+\end{remark}
+
+\begin{remark}[Two additional candidate bridges ruled out]
+The following two plausible strengthening routes are also false in general.
+\begin{enumerate}[nosep]
+\item \textbf{Derivative-density bridge.}
+Define for a simple-root configuration
+\[
+\Psi(\xi):=\frac{2\sum_{i<j} g_{ij}(\xi)^2}{\Phi_n(\xi)^2},
+\]
+the $t$-derivative density of $N_n=1/\Phi_n$ along the semi-Gaussian flow.
+A natural candidate was
+\[
+2\Psi(\lambda\boxplus_n\mu)\le \Psi(\lambda)+\Psi(\mu),
+\]
+which would force monotonic decay of a smoothed Stam gap.
+Numerical search yields explicit counterexamples already for $n=4$.
+\item \textbf{Permutation-wise monotone-sum lift.}
+Using the permutation-average model of $\boxplus_n$, one might hope
+\[
+N_n(\lambda+\mu_\pi)\ge N_n(\lambda)+N_n(\mu)\quad\forall \pi\in S_n.
+\]
+This is false: explicit $n=4,5,6$ examples violate the inequality for some permutations.
+\end{enumerate}
+Hence neither bridge can serve as the final all-$n$ proof mechanism.
+\end{remark}
+
+\begin{lemma}[Defect-split identity for the concavity numerator]\label{lem:q4-defect-split}
+Along the simple-root semi-Gaussian flow notation
+of Theorem~\ref{thm:q4-semi-gaussian}, set
+\[
+S_1:=\sum_{i<j} g_{ij},\qquad
+S_2:=\sum_{i<j} g_{ij}^2,\qquad
+S_3:=\sum_{i<j} g_{ij}^3,\qquad
+\rho:=\frac{S_2}{S_1}.
+\]
+Define
+\[
+A:=S_1\|Ls\|^2-S_2^2,\qquad
+B:=S_1S_3-S_2^2,
+\]
+where $L$ is the root-gap Laplacian and $s$ the score vector.
+Then
+\[
+A=S_1\|Ls-\rho s\|^2,\qquad
+B=S_1\sum_{i<j} g_{ij}(g_{ij}-\rho)^2,
+\]
+and therefore
+\[
+2S_2^2-S_1(\|Ls\|^2+S_3)=-(A+B).
+\]
+Hence concavity of $N_n=1/\Phi_n$ is equivalent to $A+B\ge 0$.
+\end{lemma}
+
+\begin{proof}
+The identity $A=S_1\|Ls-\rho s\|^2$ is an expansion:
+\[
+S_1\|Ls-\rho s\|^2
+=S_1\|Ls\|^2-2\rho S_1\langle Ls,s\rangle+\rho^2S_1\|s\|^2.
+\]
+Using $\langle Ls,s\rangle=S_2$, $\|s\|^2=S_1$, and $\rho=S_2/S_1$ gives
+$A=S_1\|Ls\|^2-S_2^2$.
+
+For $B$, expand
+\[
+S_1\sum_{i<j} g_{ij}(g_{ij}-\rho)^2
+=S_1\sum_{i<j}\bigl(g_{ij}^3-2\rho g_{ij}^2+\rho^2 g_{ij}\bigr)
+=S_1S_3-2\rho S_1S_2+\rho^2S_1^2
+=S_1S_3-S_2^2.
+\]
+The last displayed identity is immediate from
+\[
+A+B
+=S_1\|Ls\|^2+S_1S_3-2S_2^2.
+\]
+\end{proof}
+
+\begin{remark}[The $B$-term is genuinely signed]
+The sufficient condition $B\ge 0$ is false in general.
+For example at $n=8$, with root configuration
+\[
+\lambda=(-2.65957813,-2.33376004,-2.01386493,-0.29829949,-0.00772366,0.26569633,0.56410613,2.09599611),
+\]
+one gets numerically
+\[
+S_1\approx 138.0503,\quad
+S_2\approx 1809.6123,\quad
+S_3\approx 23717.2508,\quad
+B=S_1S_3-S_2^2\approx -522.72<0.
+\]
+At the same point,
+\[
+A\approx 5.4699\times 10^5,
+\qquad
+A+B\approx 5.4647\times 10^5>0.
+\]
+So the all-$n$ bottleneck is the balance $A+B\ge 0$, not $B\ge 0$ alone.
+\end{remark}
+
+\begin{remark}[Incidence-matrix reformulation of the bottleneck]
+Let $E=\{(i,j):1\le i<j\le n\}$, $m=|E|$, and define
+the weighted incidence matrix $D\in\mathbb R^{m\times n}$ by rows
+\[
+b_{ij}:=\frac{e_i-e_j}{\lambda_i-\lambda_j},\qquad (i,j)\in E.
+\]
+Then
+\[
+g=Ds,\qquad L=D^\top D,\qquad D^\top\mathbf 1=s.
+\]
+With $\rho=S_2/S_1$ and $h:=g-\rho\mathbf 1$, Lemma~\ref{lem:q4-defect-split} becomes
+\[
+\frac{A+B}{S_1}
+=
+\|D^\top h\|^2 + h^\top\!\operatorname{diag}(g)\,h.
+\]
+Hence the unresolved all-$n$ step can be read as a single signed
+quadratic-form inequality on the specific vector $h=Ds-\rho\mathbf 1$.
 \end{remark}
 
 \begin{remark}[Additional stress-tests after rejecting \eqref{eq:q4-A}]
