@@ -84,7 +84,26 @@ def _outputs_ok(step: Step) -> Tuple[bool, List[str]]:
 
 def build_steps() -> List[Step]:
     # Register experiment/table generation steps here.
-    return []
+    return [
+        Step(
+            name="collision_moments",
+            script="gen_collision_moments.py",
+            args=["--m-min", "2", "--m-max", "18", "--k", "2", "--k", "3", "--table-m-max", "12"],
+            expected_outputs=[
+                "artifacts/export/collision_moments.csv",
+                "sections/generated/tab_collision_rates.tex",
+            ],
+        ),
+        Step(
+            name="moment_kernel_spectra",
+            script="gen_moment_kernel_spectra.py",
+            args=["--k", "2", "--k", "3", "--input-alphabet", "01"],
+            expected_outputs=[
+                "artifacts/export/moment_kernel_spectra.csv",
+                "sections/generated/tab_moment_kernel_spectra.tex",
+            ],
+        ),
+    ]
 
 
 def _run_step(step: Step) -> None:

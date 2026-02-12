@@ -166,6 +166,80 @@ By construction, for each state $S$ and label $a$ the successor is unique, so th
 Language equivalence is standard for automaton determinization \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
 \end{proof}
 
+\subsection{Output-driven filtering and synchronization time}\label{subsec:sofic-sync}
+The determinized automaton $H_m^{\mathrm{det}}$ can be interpreted as an \emph{output-driven filter}:
+it tracks, for a given observed output prefix, the set of internal suffix states that remain consistent with that prefix.
+This yields a canonical notion of synchronization time and an auditable tail bound in terms of a finite-state entropy gap.
+
+\begin{definition}[Candidate-set filter and synchronization time]\label{def:sync-time}
+Fix $m\ge 1$ and let $\delta_m$ be as in Definition~\ref{def:determinization}.
+For $y\in Y_m$, define the candidate-set recursion
+\[
+S_0(y):=V_m,\qquad S_{t+1}(y):=\delta_m(S_t(y),y_t)\quad(t\ge 0).
+\]
+Define the \emph{synchronization time}
+\[
+T_m(y):=\inf\{\,t\ge 0:\ |S_t(y)|=1\,\}\in\NN\cup\{\infty\}.
+\]
+\end{definition}
+
+\begin{definition}[Ambiguity shell]\label{def:ambiguity-shell}
+Define the \emph{ambiguity shell} as the set of outputs that never synchronize:
+\[
+Y_m^{\mathrm{amb}}:=\{y\in Y_m:\ T_m(y)=\infty\}.
+\]
+Equivalently, $Y_m^{\mathrm{amb}}$ consists of those $y$ for which the filter state $S_t(y)$ stays non-singleton for all $t$.
+\end{definition}
+
+\begin{remark}[Finite-state realization of the ambiguity shell]\label{rem:amb-shell-sofic}
+Let $H_m^{\mathrm{det}}$ be the determinized right-resolving presentation from Definition~\ref{def:determinization}.
+Restrict $H_m^{\mathrm{det}}$ to the (reachable) subset states $S$ with $|S|>1$ and keep only transitions between such states.
+The labeled shift recognized by this restricted automaton is precisely the ambiguity shell $Y_m^{\mathrm{amb}}$; in particular, $Y_m^{\mathrm{amb}}$ is sofic.
+\end{remark}
+
+\begin{theorem}[Synchronization tail bound from an entropy gap]\label{thm:sync-tail-entropy-gap}
+Let $\nu_m$ be a measure of maximal entropy on $Y_m$.
+Let $\varepsilon_m:=h_{\mathrm{top}}(Y_m)-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\ge 0$.
+Assume $\varepsilon_m>0$.
+Then there exists a constant $C_m>0$ such that for all sufficiently large $n$,
+\[
+\nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}.
+\]
+\end{theorem}
+\begin{proof}
+Write $\mathcal{W}_m^{\mathrm{unsync}}(n)\subset X_m^n$ for the set of length-$n$ blocks $w=w_0\cdots w_{n-1}$ such that, starting from $S_0=V_m$ and iterating $S_{t+1}=\delta_m(S_t,w_t)$, one has $|S_n|>1$.
+Then
+\[
+\{T_m>n\}=\bigcup_{w\in\mathcal{W}_m^{\mathrm{unsync}}(n)} [w],
+\]
+where $[w]$ is the length-$n$ cylinder in $Y_m$.
+\par
+By definition of topological entropy, there exists $C_m^{\mathrm{lang}}>0$ such that
+\[
+|\mathcal{W}_m^{\mathrm{unsync}}(n)|
+\le
+C_m^{\mathrm{lang}}\exp\!\bigl(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\,n\bigr)
+\]
+for all sufficiently large $n$.
+On the other hand, for a maximal-entropy measure on a mixing right-resolving cover (e.g.\ the Parry measure on a Fischer cover, pushed forward to labels), cylinder probabilities admit a uniform upper bound of the form $\nu_m([w])\le C_m^{\mathrm{cyl}}e^{-h_{\mathrm{top}}(Y_m)n}=C_m^{\mathrm{cyl}}2^{-n}$; see \cite[Chapter~4]{LindMarcus1995}.
+Therefore, for large $n$,
+\[
+\nu_m(T_m>n)
+\le
+\sum_{w\in\mathcal{W}_m^{\mathrm{unsync}}(n)}\nu_m([w])
+\le
+|\mathcal{W}_m^{\mathrm{unsync}}(n)|\cdot C_m^{\mathrm{cyl}}2^{-n}
+\le
+(C_m^{\mathrm{cyl}}C_m^{\mathrm{lang}})\exp\!\bigl(-(\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}}))n\bigr),
+\]
+which is the claimed bound with $\varepsilon_m=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})$.
+\end{proof}
+
+\begin{remark}[When the ambiguity shell is empty]\label{rem:amb-shell-empty}
+If $Y_m^{\mathrm{amb}}=\varnothing$, then $T_m(y)\le L_m<\infty$ for all $y\in Y_m$ and some finite $L_m$, i.e.\ synchronization occurs after a uniformly bounded time.
+In this case the output determines the internal suffix state after finitely many steps and yields an explicit inverse sliding-block reconstruction.
+\end{remark}
+
 \subsection{Adjacency matrices, entropy, Parry data, and cover zeta}\label{subsec:cover-invariants}
 Fix a follower-separated right-resolving cover of $Y_m$ (e.g. the right Fischer cover obtained by minimizing $H_m^{\mathrm{det}}$ by follower sets).
 Let the cover graph be $H_m=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m)$, where edges are labeled by $\lambda_m:\mathcal{E}_m\to X_m$.

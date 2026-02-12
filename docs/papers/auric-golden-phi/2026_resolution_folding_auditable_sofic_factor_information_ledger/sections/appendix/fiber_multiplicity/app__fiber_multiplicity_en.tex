@@ -121,6 +121,29 @@ Hence the number of such choices is $\binom{\ell+1-j}{j}$.
 Summing over $j$ yields the polynomial formula.
 \end{proof}
 
+\subsection{Relation to classical Fibonacci representation counts}\label{app:fiber-related-work}
+The inverse-replay viewpoint in Definition~\ref{def:fiber-adm-path} is closely related to a classical theme in Fibonacci numeration:
+an integer typically admits many binary Fibonacci representations, and the Zeckendorf representation is obtained by iterating the normalization rewrite $011\mapsto 100$.
+Counting the number of equivalent representations (or, more generally, counting representation sets recognized by transducers/automata) has a long history; see, e.g., Carlitz and subsequent refinements, and Berstel's transducer/automaton formulation \cite{Carlitz1968FibonacciRepresentations,ITA_2001__35_6_491_0}.
+
+Our fiber multiplicity $d_m(x)=|\Fold_m^{-1}(x)|$ can be interpreted in this language as a \emph{resolution-conditioned} representation count.
+Indeed, for $\omega\in\Omega_m$ the fold $\Fold_m(\omega)$ is obtained by (i) evaluating the Fibonacci-weighted value $N(\omega)$ and (ii) truncating the Zeckendorf digit sequence $Z(N(\omega))$ to its first $m$ digits.
+Thus, fixing $x\in X_m$ and counting $\omega$ with $\Fold_m(\omega)=x$ amounts to counting those binary representations whose Zeckendorf normal form begins with the prefix $x$.
+Lemma~\ref{lem:one-hidden-bit} shows that at fixed resolution the underlying values split into at most two congruence classes:
+every $\omega\in\Fold_m^{-1}(x)$ satisfies
+\[
+N(\omega)=\mathrm{Val}_m(x)+b(\omega)F_{m+2},\qquad b(\omega)\in\{0,1\}.
+\]
+
+Theorem~\ref{thm:fiber-indset-factorization} provides a structural refinement of these classical counts:
+instead of a global matrix-product interface for the number of representations of a given integer, it decomposes the fiber into \emph{independent inverse triggers} supported on an induced path graph $\Gamma_x$ determined by the canonical prefix $x$.
+This yields an exact factorization of the fiber generating function into path independence polynomials, and in particular the closed product formula
+\(
+d_m(x)=\prod_i F_{\ell_i+2}
+\)
+in terms of the connected path components of $\Gamma_x$.
+From the point of view of the entropy ledger, this fiberwise factorization is the crucial feature: it turns the hidden fiber-volume term $\mathbb{E}_\nu[\log d_m]$ into an auditable combinatorial object.
+
 \subsection{A composition partition function and a \texorpdfstring{$\sqrt{17}$}{sqrt(17)} entropy rate}\label{app:fiber-sqrt17-partition}
 The product formula $d_m(x)=\prod_i F_{\ell_i+2}$ in Theorem~\ref{thm:fiber-indset-factorization} suggests studying a baseline statistical-mechanics object obtained by summing such multiplicative weights over all ordered decompositions of a fixed total length.
 We record a closed-form computation; the resulting free-energy constant lives in $\QQ(\sqrt{17})$.

@@ -60,6 +60,11 @@ The pipeline will write:
 - `sections/generated/*.tex`
 - `artifacts/export/*`
 
+Registered steps (see `python3 scripts/run_all.py --list`):
+
+- **collision_moments**: brute-force enumerations of collision moments \(S_k(m)\) for small \(m\); exports `artifacts/export/collision_moments.csv` and `sections/generated/tab_collision_rates.tex`.
+- **moment_kernel_spectra**: compiles moment-kernel spectra from the delay-\(3\) online transducer; exports `artifacts/export/moment_kernel_spectra.csv` and `sections/generated/tab_moment_kernel_spectra.tex`.
+
 ## Writing and splitting conventions
 
 - Each content file should define a **primary label** at its first major anchor (e.g. `\section`, `\subsection`, `\begin{theorem}`).

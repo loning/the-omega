@@ -1,0 +1,99 @@
+\section{Collision spectra and moment-kernel interfaces}\label{sec:collision-spectra}
+
+This section upgrades the fiber multiplicity profile $\{d_m(x)\}_{x\in X_m}$ to a spectrum of computable invariants.
+The guiding principle is that Zeckendorf normalization is finite-state online (Appendix~\ref{app:online-normalization}); therefore, \emph{fiber-collision statistics} admit finite-state counting interfaces.
+
+\subsection{Collision moments and their meaning}\label{subsec:collision-defs}
+Fix $m\ge 1$.
+Recall the fiber multiplicity
+\[
+d_m(x):=\card{\Fold_m^{-1}(x)},\qquad x\in X_m.
+\]
+
+\begin{definition}[Collision moments]\label{def:collision-moments}
+For each integer $k\ge 2$, define the $k$-th collision moment at resolution $m$ by
+\[
+S_k(m):=\sum_{x\in X_m} d_m(x)^k
+=\card{\Bigl\{(\omega^{(1)},\dots,\omega^{(k)})\in\Omega_m^k:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(k)})\Bigr\}}.
+\]
+\end{definition}
+
+\begin{remark}[Uniform baseline and R\'enyi fingerprints]\label{rem:collision-renyi}
+Under the uniform baseline $\mu=\mathrm{Unif}(\Omega_m)$, the folded type distribution is
+\(
+w_m(x)=d_m(x)/2^m
+\).
+Hence
+\[
+\sum_{x\in X_m} w_m(x)^k=\frac{S_k(m)}{2^{km}},
+\]
+so exponential rates of $(S_k(m))_{m\ge 1}$ encode a family of R\'enyi-type fingerprints of the fold fiber spectrum.
+\end{remark}
+
+\subsection{Moment kernels: finite-state counting of collisions}\label{subsec:moment-kernel}
+The next theorem provides a finite-state interface for all collision moments.
+
+\begin{theorem}[Moment-kernel representation of collision moments]\label{thm:moment-kernel-collisions}
+Fix an integer $k\ge 2$.
+There exist a finite nonnegative integer matrix $A_k$ and nonnegative integer vectors $u_k,v_k$ such that
+\begin{equation}\label{eq:Sk-matrix-coefficient}
+S_k(m)=u_k^{\mathsf T}A_k^{\,m}v_k
+\end{equation}
+for all sufficiently large $m$.
+In particular, the limit
+\[
+\lim_{m\to\infty}\frac{1}{m}\log S_k(m)=\log r_k
+\]
+exists, where $r_k:=\rho(A_k)$ is the Perron--Frobenius spectral radius of $A_k$.
+\end{theorem}
+
+\begin{proof}[Proof idea (finite-state compilation)]
+Appendix~\ref{app:online-normalization} provides a deterministic finite-state subsequential transducer that computes $\Fold_\infty$ on digit streams, and hence induces a constant-memory streaming normalization of finite inputs.
+
+Run $k$ independent copies of this transducer in parallel on an input $k$-tuple $(\omega^{(1)},\dots,\omega^{(k)})\in\Omega_m^k$.
+At each step, enforce the equality constraint that all $k$ copies emit the same output bit.
+This produces a finite directed graph whose vertices are $k$-tuples of transducer states (augmented by the constant-size terminal buffer), and whose edges are labeled by input $k$-tuples in $\{0,1\}^k$ satisfying the output-equality constraint.
+
+The number of length-$m$ paths in this graph is precisely the number of $k$-tuples of length-$m$ microstates whose normalized outputs agree, i.e.\ $S_k(m)$, up to a boundary correction that depends only on the fixed delay.
+Encoding path counts by the adjacency matrix yields \eqref{eq:Sk-matrix-coefficient} for all sufficiently large $m$.
+The exponential growth rate is governed by the Perron root of the maximal-entropy irreducible component, giving the stated limit.
+\end{proof}
+
+\subsection{Symmetry quotient: polynomial-size compressed kernels}\label{subsec:symmetric-quotient}
+The fiber-collision constraint is invariant under permutation of the $k$ inputs.
+This yields a canonical symmetry quotient that reduces the kernel size from exponential in $k$ to polynomial in $k$ (for fixed base transducer).
+
+\begin{proposition}[Symmetric compression]\label{prop:moment-kernel-symmetric-compression}
+Let $Q$ be the finite state set of the delay-$3$ online transducer from Appendix~\ref{app:online-normalization}, and let $|Q|<\infty$.
+For each $k\ge 2$, there exists a quotient moment kernel $\widetilde A_k$ and vectors $\widetilde u_k,\widetilde v_k$ such that
+\[
+S_k(m)=\widetilde u_k^{\mathsf T}\widetilde A_k^{\,m}\widetilde v_k
+\quad\text{for all sufficiently large $m$},
+\qquad
+\rho(\widetilde A_k)=\rho(A_k).
+\]
+Moreover, the dimension satisfies the explicit bound
+\[
+\dim(\widetilde A_k)\ \le\ \binom{k+|Q|-1}{|Q|-1}=O(k^{|Q|-1}).
+\]
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The parallel $k$-fold construction acts on $Q^k$.
+Because the output-equality constraint and edge multiplicities are invariant under permuting coordinates, the adjacency operator commutes with the natural action of the symmetric group $S_k$.
+Quotienting by $S_k$ identifies a state with its histogram $\nu\in\NN^{Q}$ of multiplicities, with $\sum_{q\in Q}\nu(q)=k$.
+The number of such histograms is $\binom{k+|Q|-1}{|Q|-1}$.
+Path counts and the Perron root are preserved on the maximal-growth component under this symmetry reduction.
+\end{proof}
+
+\subsection{Zeta/primitive interface (standard tool)}\label{subsec:moment-zeta-interface}
+Once a moment kernel is fixed, standard SFT technology applies to it as a \emph{counting interface}.
+In particular, the Artin--Mazur zeta function of the kernel SFT satisfies
+\[
+\zeta_{A_k}(z)=\frac{1}{\det(I-zA_k)},
+\qquad
+\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A_k^n),
+\]
+and primitive-orbit counts are extracted by M\"obius/Witt inversion (cf.\ Section~\ref{subsec:prelim-zeta}).
+We emphasize that this interface is used as a reproducible packaging of collision statistics, rather than as a new invariant of the sofic factor $Y_m$ itself.
+

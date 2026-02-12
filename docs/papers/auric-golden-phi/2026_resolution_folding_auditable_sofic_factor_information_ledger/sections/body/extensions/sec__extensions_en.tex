@@ -2,10 +2,160 @@
 
 This final section records minimal extensions that preserve the folding main line, and states explicit limits that keep the theory falsifiable.
 
-\subsection{Beyond the golden mean: Ostrowski and metallic families}\label{subsec:extensions-ostrowski}
-The Zeckendorf/golden-mean folding is the simplest member of a broader family based on Ostrowski numeration associated to an irrational rotation number $\alpha$ \cite{Ostrowski1922,Berthe2001Ostrowski}.
-In such generalizations, the stable language $X_m(\alpha)$ is defined by the admissible digit constraints of the corresponding numeration system, and folding is defined as ``value $\to$ canonical digit expansion $\to$ truncate''.
-The induced factor $\Phi_m(\alpha)$ again yields a sofic image with a computable cover interface, though the state complexity may increase with the partial quotients of $\alpha$.
+\subsection{Beyond the golden mean: Ostrowski design space and metallic families}\label{subsec:extensions-ostrowski}
+The Zeckendorf/golden-mean fold is the simplest binary member of a broader family based on Ostrowski numeration associated to an irrational rotation number $\alpha$ \cite{Ostrowski1922,Berthe2001Ostrowski,HieronymiTerry2018OstrowskiAddition}.
+We record a minimal formalization of this design space and a rigidity statement that explains why the golden endpoint $\alpha=\varphi^{-1}$ is forced under a binary-alphabet constraint.
+
+\subsubsection{Ostrowski numeration and admissible digit blocks}
+Let $\alpha\in(0,1)\setminus\QQ$ have continued fraction expansion
+\[
+\alpha=[0;a_1,a_2,\dots],\qquad a_n\in\NN.
+\]
+Let $(q_n)_{n\ge 0}$ be the denominators of the convergents, defined by
+\[
+q_{-1}=0,\quad q_0=1,\qquad q_{n+1}=a_{n+1}q_n+q_{n-1}\quad(n\ge 0).
+\]
+Ostrowski's representation theorem states that every $N\in\NN$ admits a unique digit sequence $(d_n)_{n\ge 1}$ with
+\[
+0\le d_n\le a_n,\qquad d_n=a_n\Rightarrow d_{n-1}=0\ \ (n\ge 2),
+\qquad
+N=\sum_{n\ge 1} d_n q_{n-1},
+\]
+and only finitely many nonzero digits; we write this canonical digit sequence as $Z_\alpha(N)=(d_1,d_2,\dots)$.
+
+\begin{definition}[Ostrowski microstates and stable types]\label{def:ostrowski-omega-Xm}
+For $m\ge 1$, define the raw length-$m$ digit space
+\[
+\Omega_m^{(\alpha)}:=\prod_{n=1}^{m}\{0,1,\dots,a_n\},
+\]
+and the admissible (stable) length-$m$ type space
+\[
+X_m^{(\alpha)}:=\Bigl\{(d_1,\dots,d_m)\in \Omega_m^{(\alpha)}:\ d_n=a_n\Rightarrow d_{n-1}=0\ (n\ge 2)\Bigr\}.
+\]
+Let $\pi^{(\alpha)}_{m_2\to m_1}$ denote prefix restriction (truncate to the first $m_1$ digits).
+\end{definition}
+
+\begin{proposition}[Counting admissible blocks]\label{prop:ostrowski-admissible-count}
+Let $c_m:=|X_m^{(\alpha)}|$ and set $c_0:=1$.
+Then $c_1=a_1+1$ and, for all $m\ge 2$,
+\[
+c_m=a_m\,c_{m-1}+c_{m-2}.
+\]
+In particular, in the binary case $a_n\equiv 1$ one recovers $|X_m|=F_{m+2}$.
+\end{proposition}
+\begin{proof}
+For $m=1$, the only constraint is $0\le d_1\le a_1$, hence $c_1=a_1+1$.
+For $m\ge 2$, partition admissible words $(d_1,\dots,d_m)\in X_m^{(\alpha)}$ according to $d_m$.
+If $d_m\in\{0,1,\dots,a_m-1\}$, there are $a_m$ choices for $d_m$ and $c_{m-1}$ choices for the prefix $(d_1,\dots,d_{m-1})$.
+If $d_m=a_m$, then admissibility forces $d_{m-1}=0$ and the remaining prefix $(d_1,\dots,d_{m-2})$ has $c_{m-2}$ choices.
+Summing these disjoint cases gives $c_m=a_m c_{m-1}+c_{m-2}$.
+For $a_n\equiv 1$, this recurrence yields $c_m=F_{m+2}$.
+\end{proof}
+
+\subsubsection{Normalization-then-truncation folding}
+The Ostrowski design space comes with a canonical finite-resolution fold induced by $Z_\alpha$.
+
+\begin{definition}[Ostrowski value and folding]\label{def:fold-ostrowski}
+For $\omega=(\omega_1,\dots,\omega_m)\in\Omega_m^{(\alpha)}$, define the Ostrowski-weighted value
+\[
+N_\alpha(\omega):=\sum_{n=1}^{m}\omega_n q_{n-1}\in\NN.
+\]
+Define the length-$m$ Ostrowski fold by
+\[
+\Fold_m^{(\alpha)}:\Omega_m^{(\alpha)}\to X_m^{(\alpha)},
+\qquad
+\Fold_m^{(\alpha)}(\omega):=\pi_m^{(\alpha)}\!\bigl(Z_\alpha(N_\alpha(\omega))\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Basic properties]\label{prop:fold-ostrowski-basic}
+For each $m\ge 1$, the fold $\Fold_m^{(\alpha)}$ is well-defined and satisfies:
+\begin{enumerate}
+  \item \textbf{(Normalization)} $\Fold_m^{(\alpha)}(\omega)\in X_m^{(\alpha)}$ for all $\omega\in\Omega_m^{(\alpha)}$;
+  \item \textbf{(Idempotence on stable types)} $\Fold_m^{(\alpha)}(x)=x$ for all $x\in X_m^{(\alpha)}$;
+  \item \textbf{(Surjectivity)} $\Fold_m^{(\alpha)}:\Omega_m^{(\alpha)}\twoheadrightarrow X_m^{(\alpha)}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Item (1) holds because $Z_\alpha(\cdot)$ is admissible by definition.
+For (2), if $x\in X_m^{(\alpha)}$ then $x$ is the prefix of a unique Ostrowski digit sequence $Z_\alpha(N)$, so truncating $Z_\alpha(N_\alpha(x))$ returns $x$.
+For (3), given $x\in X_m^{(\alpha)}$ take $\omega=x$.
+\end{proof}
+
+\subsubsection{Binary endpoint rigidity}
+We now isolate the simplest rigidity mechanism: binary alphabets force the golden endpoint.
+
+\begin{proposition}[Binary alphabet forces the golden endpoint]\label{prop:binary-forces-golden}
+If $\Omega_m^{(\alpha)}=\{0,1\}^m$ for all $m\ge 1$, then $a_n=1$ for all $n$ and hence
+\[
+\alpha=[0;1,1,1,\dots]=\varphi^{-1}.
+\]
+Consequently, among Ostrowski folds constrained to a binary digit alphabet at all resolutions, the golden-mean syntax is forced.
+\end{proposition}
+\begin{proof}
+If $\Omega_m^{(\alpha)}=\prod_{n=1}^{m}\{0,1,\dots,a_n\}$ equals $\{0,1\}^m$ for all $m$, then necessarily $a_n=1$ for every $n$, hence $\alpha=[0;1,1,1,\dots]=\varphi^{-1}$.
+\end{proof}
+
+\begin{remark}[Index conventions at the golden endpoint]\label{rem:ostrowski-index-convention}
+At $\alpha=\varphi^{-1}$ one has $a_n\equiv 1$ and hence $q_0=q_1=1$.
+Standard Ostrowski expansions start from the weight $q_0=1$ and therefore contain a duplicated unit weight in this special case.
+The Fibonacci/Zeckendorf convention adopted in Section~\ref{sec:folding} suppresses this redundancy by starting the weight sequence at $F_2=1$ and then using $F_{k+1}$ for positions $k\ge 1$; this corresponds to a harmless reindexing at the golden endpoint and does not affect the admissibility constraint (no adjacent maxima) nor the finite-state normalization mechanisms used later.
+\end{remark}
+
+\subsubsection{Metallic families: constant partial quotients}
+For constant continued-fraction coefficients $a_n\equiv A$ (the metallic family), the admissibility constraint is a two-state memory condition and the corresponding stable language is an SFT with an explicit Perron root.
+
+\begin{proposition}[Two-state SFT for metallic families]\label{prop:metallic-two-state-sft}
+Fix $A\in\NN_{\ge 1}$ and let $\alpha_A=[0;A,A,A,\dots]$.
+Then the infinite admissible language $X^{(\alpha_A)}\subseteq\{0,1,\dots,A\}^{\ZZ}$ is an SFT with a two-state presentation, and its topological entropy is
+\[
+h_{\mathrm{top}}\bigl(X^{(\alpha_A)}\bigr)=\log\lambda_A,
+\qquad
+\lambda_A:=\frac{A+\sqrt{A^2+4}}{2}.
+\]
+\end{proposition}
+\begin{proof}
+The constraint $d_n=A\Rightarrow d_{n-1}=0$ depends only on whether the previous digit equals $0$.
+Introduce two states encoding this memory, and count transitions: from a ``$0$'' state one may output any digit in $\{0,1,\dots,A\}$, while from a ``nonzero'' state one may output digits in $\{0,1,\dots,A-1\}$.
+The resulting $2\times 2$ adjacency matrix has Perron root $\lambda_A$, and the SFT entropy equals the logarithm of the Perron root.
+\end{proof}
+
+\subsubsection{Natural multiscale restriction on microstates}
+For microstates, naive truncation generally changes the value and need not be compatible with folding.
+The natural cross-resolution map is therefore the fold-aware restriction, and it is uniquely characterized by a commutative diagram requirement.
+
+\begin{definition}[Fold-aware restriction]\label{def:fold-ostrowski-restriction}
+For $m_2\ge m_1$, define the fold-aware restriction
+\[
+\widetilde r^{(\alpha)}_{m_2\to m_1}:\Omega_{m_2}^{(\alpha)}\to X_{m_1}^{(\alpha)},
+\qquad
+\widetilde r^{(\alpha)}_{m_2\to m_1}(\omega):=\pi^{(\alpha)}_{m_2\to m_1}\bigl(\Fold_{m_2}^{(\alpha)}(\omega)\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Commutativity and uniqueness]\label{prop:fold-ostrowski-commute-unique}
+For all $m_2\ge m_1$, the diagram commutes:
+\[
+\begin{CD}
+\Omega_{m_2}^{(\alpha)} @>{\Fold_{m_2}^{(\alpha)}}>> X_{m_2}^{(\alpha)}\\
+@V{\widetilde r^{(\alpha)}_{m_2\to m_1}}VV @VV{\pi^{(\alpha)}_{m_2\to m_1}}V\\
+\Omega_{m_1}^{(\alpha)} @>{\Fold_{m_1}^{(\alpha)}}>> X_{m_1}^{(\alpha)}.
+\end{CD}
+\]
+Moreover, if $\widehat r:\Omega_{m_2}^{(\alpha)}\to X_{m_1}^{(\alpha)}$ satisfies
+\(
+\Fold_{m_1}^{(\alpha)}\circ \widehat r=\pi^{(\alpha)}_{m_2\to m_1}\circ\Fold_{m_2}^{(\alpha)},
+\)
+then $\widehat r=\widetilde r^{(\alpha)}_{m_2\to m_1}$.
+\end{proposition}
+\begin{proof}
+Since $\widetilde r^{(\alpha)}_{m_2\to m_1}(\omega)\in X_{m_1}^{(\alpha)}$, Proposition~\ref{prop:fold-ostrowski-basic}(2) gives
+\(
+\Fold_{m_1}^{(\alpha)}(\widetilde r^{(\alpha)}_{m_2\to m_1}(\omega))=\widetilde r^{(\alpha)}_{m_2\to m_1}(\omega)
+=\pi^{(\alpha)}_{m_2\to m_1}(\Fold_{m_2}^{(\alpha)}(\omega)).
+\)
+For uniqueness, the same idempotence implies $(\Fold_{m_1}^{(\alpha)}\circ\widehat r)(\omega)=\widehat r(\omega)$ for all $\omega$, hence $\widehat r(\omega)=\pi^{(\alpha)}_{m_2\to m_1}(\Fold_{m_2}^{(\alpha)}(\omega))$.
+\end{proof}
 
 \subsection{What is strictly computable vs empirically estimated}\label{subsec:extensions-computable-vs-estimated}
 Our auditing loop separates quantities into:
