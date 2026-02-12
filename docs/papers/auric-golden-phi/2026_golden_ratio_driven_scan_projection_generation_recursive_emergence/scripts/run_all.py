@@ -1053,6 +1053,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_multiplicity_lambdaq_taylor_q0_constants",
+            script="exp_pom_multiplicity_lambdaq_taylor_q0_constants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_multiplicity_lambdaq_taylor_q0_constants.json",
+                "sections/generated/eq_pom_multiplicity_lambdaq_taylor_q0_constants.tex",
+            ],
+        ),
+        Step(
             name="fold_tail_budget_gamma_cert",
             script="exp_fold_tail_budget_gamma_cert.py",
             args=["--m", "24", "--eps-list", "1e-6,1e-9", "--q-max", "17"],

@@ -61,6 +61,50 @@ S(t)=\Phi\,\langle e_1,(tI+J)^{-1}e_1\rangle
 再乘以 \(\Phi\) 即得结论。谱识别由特征多项式给出，而主子式谱与全谱的交错由 Cauchy 交错定理给出。证毕。
 \end{proof}
 
+\begin{proposition}[Kre\u{\i}n 谱移位函数的离散化：影谱区间上的阶梯移位与对数行列式表示]\label{prop:xi-krein-spectral-shift-staircase-shadow}
+在结论 \ref{con:xi-shadow-spectrum-determinant-ratio} 的设定下，定义归一化行列式比
+\[
+R(t):=(t+1)\,\frac{\det(tI+J^{(1)})}{\det(tI+J)}
+=\frac{t+1}{\Phi}\,S(t)\qquad (t>0).
+\]
+则 \(R(t)>0\) 且 \(R(t)\to 1\)（\(t\to\infty\)）。
+令阶梯谱移位函数 \(\xi:(1,\infty)\to\{0,1\}\) 定义为
+\[
+\xi(s):=\ind_{(1,a_1)}(s)\ +\ \sum_{j=1}^{\kappa-1}\ind_{(b_j,a_{j+1})}(s).
+\]
+则对一切 \(t>0\) 有 Stieltjes 型对数表示
+\[
+\boxed{\;
+\log R(t)\ =\ -\int_{(1,\infty)}\frac{\xi(s)}{t+s}\,\dd s\; }.
+\]
+其中 \(\xi\) 在交错格 \(\{1,a_1,b_1,a_2,\dots,b_{\kappa-1},a_\kappa\}\) 的每个开区间上常值，且跳跃仅发生于 \(\{a_j,b_j\}\)。
+\end{proposition}
+\begin{proof}
+由谱分解
+\(
+\det(tI+J)=\prod_{j=1}^{\kappa}(t+a_j)
+\)、
+\(
+\det(tI+J^{(1)})=\prod_{j=1}^{\kappa-1}(t+b_j)
+\)
+得
+\[
+R(t)=\frac{(t+1)\prod_{j=1}^{\kappa-1}(t+b_j)}{\prod_{j=1}^{\kappa}(t+a_j)}.
+\]
+另一方面，由
+\(
+\int_{u}^{v}\frac{\dd s}{t+s}=\log\frac{t+v}{t+u}
+\)
+与 \(\xi\) 的定义可得
+\[
+\int_{(1,\infty)}\frac{\xi(s)}{t+s}\,\dd s
+=\log\frac{t+a_1}{t+1}
+\ +\ \sum_{j=1}^{\kappa-1}\log\frac{t+a_{j+1}}{t+b_j}
+=\log\frac{\prod_{j=1}^{\kappa}(t+a_j)}{(t+1)\prod_{j=1}^{\kappa-1}(t+b_j)}.
+\]
+取负号即得所示恒等式。证毕。
+\end{proof}
+
 \begin{proposition}[终止 \texorpdfstring{$J$}{J}-分式的唯一性：最小寄存器等价于唯一的正系数连分式]\label{con:xi-terminating-jfraction-uniqueness}
 存在且仅存在一组系数
 \[
@@ -188,6 +232,13 @@ S_{n+1}(t)-S_n(t)=
 \]
 因此，只需有限个 \((\alpha_k,\beta_k)\) 即可在全尺度 \(t>0\) 上给出一致上下界与显式误差宽度。
 \end{proposition}
+
+\begin{remark}[影谱的“最优压缩节点”意义：极值包络、原子 Lévy 测度与交错误差格]\label{rem:xi-shadow-spectrum-optimal-compression-nodes}
+结论 \ref{con:xi-jfraction-convergents-alternating-bounds} 表明：在制度仅允许访问有限寄存器系数 \((\alpha_k,\beta_k)\) 的口径下，连分式收敛子给出对真轨道 \(S(t)\) 的全尺度最强上下证书；其误差宽度由 continuant 恒等式显式给出，并随寄存器长度确定性收缩。
+另一方面，Bernstein 对偶 \(B(t)=1/S(t)\) 的离散 Lévy 测度支撑被强制钉在影谱 \(\{b_j\}\) 上（结论 \ref{con:xi-bernstein-dual-levy-shadow-spectrum}），从而“外部粗粒化余量”的原子节点在代数意义下唯一。
+\par
+二者合并给出一种严格的最优性解释：影谱并非任意引入的中介参数，而是在 Stieltjes 正性与交错结构之下，为使全尺度证书保持保序性（极点实负、留数正、误差交错）所不可避免的最小节点集；任意试图在不外置新的连续自由度的条件下压缩/逼近 \(S\) 与 \(1/S\) 的方案，都将被迫回到交错格 \(\{-a_j,-b_j\}\) 所生成的有理结构。
+\end{remark}
 
 \begin{proposition}[影谱的结构稳定性：权重扰动下的正则响应与不可避免的碰撞病态]\label{con:xi-shadow-spectrum-stability}
 在 \(a_1<\cdots<a_\kappa\) 固定且互异的条件下，影深度 \((b_1,\dots,b_{\kappa-1})\) 作为归一化权重向量

@@ -98,6 +98,108 @@ F_{\ell+2}=F_{\ell+1}+F_\ell\le 2^{\ell-1}+2^{\ell-2}\le 2^\ell
 故上界取等号当且仅当 \(\ell_i=1\) 对所有 \(i\) 成立。证毕。
 \end{proof}
 
+\begin{proposition}[固定部件数下的纤维乘法多重度极值律：极端碎裂与二元下包络]\label{prop:pom-multiplicity-fixed-r-extrema}
+令 \(L\ge 1\) 且 \(1\le r\le L\)，并令
+\[
+\mathcal{C}_{L,r}:=\Bigl\{(\ell_1,\dots,\ell_r):\ \ell_i\in\NN_{\ge 1},\ \sum_{i=1}^r\ell_i=L\Bigr\}.
+\]
+对 \(\boldsymbol{\ell}=(\ell_1,\dots,\ell_r)\in\mathcal{C}_{L,r}\) 记
+\(
+d(\boldsymbol{\ell})=\prod_{i=1}^r F_{\ell_i+2}
+\)。
+则在 \(\mathcal{C}_{L,r}\) 上有如下严格极值结构（端点均唯一至置换）：
+\begin{enumerate}
+  \item \textbf{（极大值：极端碎裂）}有
+  \begin{equation}\label{eq:pom-multiplicity-fixed-r-max}
+  \boxed{\;\max_{\mathcal{C}_{L,r}} d(\boldsymbol{\ell})=2^{\,r-1}\,F_{L-r+3}\;}
+  \end{equation}
+  且取等号当且仅当 \(\boldsymbol{\ell}\) 为 \((1,\dots,1,L-r+1)\) 的排列。
+  \item \textbf{（极小值：尽可能多的 \(2\)-部件）}令
+  \(
+  u:=L-r
+  \)
+  （相对全 \(1\)-基线的“可分配余长”）。
+  若 \(u\le r\)（等价于 \(L\le 2r\)），则
+  \begin{equation}\label{eq:pom-multiplicity-fixed-r-min-short}
+  \boxed{\;\min_{\mathcal{C}_{L,r}} d(\boldsymbol{\ell})=2^{\,2r-L}\,3^{\,L-r}\;}
+  \end{equation}
+  且取等号当且仅当 \(\boldsymbol{\ell}\) 由 \(u\) 个 \(2\) 与 \(r-u\) 个 \(1\) 组成。
+  若 \(u\ge r\)（等价于 \(L\ge 2r\)），则
+  \begin{equation}\label{eq:pom-multiplicity-fixed-r-min-long}
+  \boxed{\;\min_{\mathcal{C}_{L,r}} d(\boldsymbol{\ell})=3^{\,r-1}\,F_{L-2r+4}\;}
+  \end{equation}
+  且取等号当且仅当 \(\boldsymbol{\ell}\) 由 \(r-1\) 个 \(2\) 与一个长度 \(L-2r+2\) 的部件组成（注意此时 \(L-2r+2\ge 2\)）。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\textbf{极大值：}取任意 \(a,b\ge 2\)。由引理 \ref{lem:pom-shifted-fib-fusion-defect-positive} 与 Fibonacci 加法公式
+\(
+F_{m+n}=F_mF_{n+1}+F_{m-1}F_n
+\)
+得
+\[
+2F_{a+b+1}-F_{a+2}F_{b+2}
+=\underbrace{(2F_{a+b+1}-F_{a+b+2})}_{=\,F_{a+b-1}}
+-F_aF_b
+=F_{a-1}F_{b-1}>0.
+\]
+因此对两分量替换
+\(
+(a,b)\mapsto(1,a+b-1)
+\)
+严格增大乘积 \(F_{a+2}F_{b+2}\mapsto 2F_{a+b+1}\)。
+从任意 \(\boldsymbol{\ell}\in\mathcal{C}_{L,r}\) 出发，若存在至少两项 \(\ge 2\)，反复对其中两项应用上述替换，可严格增大 \(d\) 并使“长度 \(1\) 的部件数”每步增加 \(1\)。
+过程必在有限步后终止于恰有 \(r-1\) 个 \(1\) 的分解，即为 \((1,\dots,1,L-r+1)\) 的排列；其值即为 \eqref{eq:pom-multiplicity-fixed-r-max}，且严格性给出端点唯一性。
+\par
+\textbf{极小值：第一步（消去可避免的 \(1\)）。}对任意 \(b\ge 3\)，有
+\[
+2F_{b+2}-3F_{b+1}
+=2(F_{b+1}+F_b)-3F_{b+1}
+=F_{b-2}>0,
+\]
+因此替换
+\(
+(1,b)\mapsto(2,b-1)
+\)
+严格减小乘积 \(2F_{b+2}\mapsto 3F_{b+1}\)。
+故在极小化问题中，当 \(L>r\) 时一切仍出现的 \(1\) 都只能与所有其余部件长度 \(\le 2\) 相容；于是当 \(L\le 2r\) 时，极小解必由 \(1\) 与 \(2\) 组成，且由于 \(\sum_i\ell_i=L\) 约束其计数唯一，得到 \eqref{eq:pom-multiplicity-fixed-r-min-short} 与端点结构。
+\par
+\textbf{极小值：第二步（消去多余的 \(\ge 3\) 部件）。}在 \(L\ge 2r\) 情形下，已可令所有部件长度 \(\ge 2\)。
+若存在两项 \(a,b\ge 3\)，则由引理 \ref{lem:pom-shifted-fib-fusion-defect-positive} 与恒等式 \(3F_n=F_{n+2}+F_{n-2}\)（\(n\ge 2\)）可得
+\[
+F_{a+2}F_{b+2}-3F_{a+b}
+=\bigl(F_{a+b+2}+F_aF_b\bigr)-\bigl(F_{a+b+2}+F_{a+b-2}\bigr)
+=F_aF_b-F_{a+b-2}
+=F_{a-2}F_{b-2}>0,
+\]
+从而替换
+\(
+(a,b)\mapsto(2,a+b-2)
+\)
+严格减小乘积 \(F_{a+2}F_{b+2}\mapsto 3F_{a+b}\)。
+反复应用该替换，可严格下降 \(d\) 并使“长度 \(\ge 3\) 的部件数”每步减少 \(1\)，最终得到至多一项 \(\ge 3\) 的分解；在 \(\sum_i\ell_i=L\) 与 \(r\) 固定下，该终态必为 \(r-1\) 个 \(2\) 与一个长度 \(L-2r+2\) 的部件，从而得到 \eqref{eq:pom-multiplicity-fixed-r-min-long} 与端点唯一性。证毕。
+\end{proof}
+
+\begin{corollary}[固定总长度下的“部件数—多重度”外包络：可达区间与单调分层]\label{cor:pom-multiplicity-fixed-L-r-envelope}
+对固定 \(L\ge 1\) 与 \(1\le r\le L\)，令
+\[
+\mathcal{D}_{L,r}:=\Bigl\{d(\boldsymbol{\ell}):\ \boldsymbol{\ell}\in\mathcal{C}_{L,r}\Bigr\}.
+\]
+则 \(\mathcal{D}_{L,r}\subseteq\bigl[d_{\min}(L,r),d_{\max}(L,r)\bigr]\)，其中端点由命题 \ref{prop:pom-multiplicity-fixed-r-extrema} 的闭式给出且均可达。
+此外，对任意 \(1\le r<r'\le L\) 有严格单调分层
+\[
+\boxed{\ \min\mathcal{D}_{L,r}\ <\ \min\mathcal{D}_{L,r'},\qquad
+\max\mathcal{D}_{L,r}\ <\ \max\mathcal{D}_{L,r'}\ } .
+\]
+因此部件数 \(r\) 在长度 \(L\) 下同时控制乘法多重度的上下边界，并将“可实现多重度”划分为按 \(r\) 严格上移的闭式外包络族。
+\end{corollary}
+\begin{proof}
+区间外包络与端点可达由命题 \ref{prop:pom-multiplicity-fixed-r-extrema} 直接给出。
+对单调性：由命题 \ref{prop:pom-path-component-multiplicity-refinement-monotone-extrema}，任取 \(\boldsymbol{\ell}\in\mathcal{C}_{L,r}\) 做一次细化（把某部件拆成两段正长度）得到 \(\boldsymbol{\ell}'\in\mathcal{C}_{L,r+1}\) 且 \(d(\boldsymbol{\ell}')>d(\boldsymbol{\ell})\)，故 \(\max\mathcal{D}_{L,r+1}>\max\mathcal{D}_{L,r}\)。
+另一方面，任取 \(\boldsymbol{\ell}'\in\mathcal{C}_{L,r+1}\) 融合相邻两段得到 \(\boldsymbol{\ell}\in\mathcal{C}_{L,r}\) 且 \(d(\boldsymbol{\ell})<d(\boldsymbol{\ell}')\)，从而 \(\min\mathcal{D}_{L,r}<\min\mathcal{D}_{L,r+1}\)。
+对 \(r<r'\) 迭代上述严格不等式即得结论。证毕。
+\end{proof}
+
 \begin{proposition}[多重度的二参数 Binet 正规形与全局误差界]\label{prop:pom-multiplicity-binet-two-parameter-normal-form}
 令 \(\varphi=\frac{1+\sqrt5}{2}\)，并设 \(\ell_1,\dots,\ell_r\ge 1\)、\(L=\sum_i\ell_i\)。
 则乘法多重度 \(d(\ell_1,\dots,\ell_r)=\prod_i F_{\ell_i+2}\) 具有精确分解

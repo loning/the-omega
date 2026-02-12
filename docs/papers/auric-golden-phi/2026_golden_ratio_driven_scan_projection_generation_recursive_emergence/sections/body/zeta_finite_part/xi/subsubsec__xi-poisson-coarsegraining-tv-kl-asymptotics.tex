@@ -1,3 +1,82 @@
+\begin{proposition}[Poisson 粗粒化的从属原理：唯一 \texorpdfstring{$1/2$}{1/2}-稳定子ordinator 的随机时间表示]\label{prop:xi-poisson-subordination-half-stable}
+在 \(\RR\) 上令热半群与 Poisson 半群分别为
+\[
+G_s f:=e^{s\Delta}f,
+\qquad
+P_t f:=e^{-t|D|}f
+\qquad(s,t>0),
+\]
+其 Fourier 乘子为 \(\widehat{G_s f}(\xi)=e^{-s\xi^2}\widehat f(\xi)\) 与 \(\widehat{P_t f}(\xi)=e^{-t|\xi|}\widehat f(\xi)\)。
+则存在唯一一族概率测度 \(\{\eta_t\}_{t>0}\)（\(1/2\)-稳定从属测度）满足
+\[
+\boxed{\;
+P_t f=\int_{0}^{\infty} G_s f\ \dd\eta_t(s)\qquad(t>0)\;}
+\]
+并且 \(\eta_t\) 由 Laplace 指数唯一确定：
+\[
+\boxed{\;
+\int_{0}^{\infty}e^{-\lambda s}\,\dd\eta_t(s)=e^{-t\sqrt{\lambda}}
+\qquad(\lambda>0)\; }.
+\]
+在密度意义下可取
+\[
+\dd\eta_t(s)=\frac{t}{2\sqrt{\pi}}\,s^{-3/2}\exp\!\left(-\frac{t^2}{4s}\right)\dd s.
+\]
+\end{proposition}
+\begin{proof}[证明要点]
+由上式 Laplace 指数，取 \(\lambda=\xi^2\ge 0\) 得
+\(
+\int_0^\infty e^{-s\xi^2}\dd\eta_t(s)=e^{-t|\xi|}
+\)。
+对任意 \(f\in L^1(\RR)\cap L^2(\RR)\)，在 Fourier 侧计算
+\[
+\widehat{\int_0^\infty G_s f\,\dd\eta_t(s)}(\xi)
+=\widehat f(\xi)\int_0^\infty e^{-s\xi^2}\dd\eta_t(s)
+=e^{-t|\xi|}\widehat f(\xi)
+=\widehat{P_t f}(\xi),
+\]
+从而得到从属表示；唯一性由 Laplace 变换的唯一性给出。证毕。
+\end{proof}
+
+\begin{proposition}[相对熵耗散的分数 Fisher 恒等式：Poisson 半群下的严格耗散律]\label{prop:xi-poisson-kl-dissipation-fractional-fisher}
+令 \(p,q\) 为 \(\RR\) 上概率密度，定义 Poisson 粗粒化 \(p_t:=P_t*p\)、\(q_t:=P_t*q\)。
+则相对熵
+\[
+D_{\mathrm{KL}}(p\mid q):=\int_{\RR} p(x)\log\!\frac{p(x)}{q(x)}\,\dd x
+\]
+沿 Poisson 流满足精确耗散恒等式
+\[
+\boxed{\;
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(p_t\mid q_t)=-\mathcal I_1(p_t\mid q_t)\;}
+\]
+其中分数 Fisher 信息（耗散率）可取为非局部 Dirichlet 形式
+\[
+\boxed{\;
+\mathcal I_1(p\mid q)
+:=\frac{1}{2\pi}\iint_{\RR^2}
+\Bigl(\log\frac{p(x)}{q(x)}-\log\frac{p(y)}{q(y)}\Bigr)
+\Bigl(\frac{p(x)}{q(x)}-\frac{p(y)}{q(y)}\Bigr)
+\frac{q(x)q(y)}{(x-y)^2}\,\dd x\,\dd y\ \ge\ 0\;}
+\]
+（按主值理解；由于差分结构该积分在 \(p,q\) 足够正则时有限）。
+并且 \(\mathcal I_1(p_t\mid q_t)=0\) 当且仅当 \(p_t=q_t\)（a.e.\）。
+\end{proposition}
+\begin{proof}[证明要点]
+把 \(|D|\) 视为 \((-\Delta)^{1/2}\) 的生成元，并用其 Lévy--Dirichlet 表示（核 \(\asymp |x-y|^{-2}\)）对
+\(
+\frac{\dd}{\dd t}\int p_t\log(p_t/q_t)
+\)
+作差分化计算，可将导数写成对称双重积分形式：
+\[
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(p_t\mid q_t)
+=-\frac{1}{2\pi}\iint_{\RR^2}
+\Bigl(\log r_t(x)-\log r_t(y)\Bigr)\Bigl(r_t(x)-r_t(y)\Bigr)\,
+\frac{q_t(x)q_t(y)}{(x-y)^2}\,\dd x\,\dd y,
+\]
+其中 \(r_t:=p_t/q_t\)。
+由于函数 \(u\mapsto \log u\) 单调递增，故 \((r(x)-r(y))(\log r(x)-\log r(y))\ge 0\)，从而耗散率非负并在且仅在 \(r\) 常值（即 \(p_t=q_t\)）时为零。证毕。
+\end{proof}
+
 \begin{proposition}[全变差与相对熵的最优矩控制：粗粒化信息损失的二阶精确项]\label{prop:xi-poisson-tv-kl-second-order}
 沿用命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form} 的记号，令
 \[
