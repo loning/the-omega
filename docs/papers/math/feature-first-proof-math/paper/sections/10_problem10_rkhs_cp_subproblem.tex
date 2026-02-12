@@ -1,0 +1,150 @@
+\section{Problem 10: Efficient PCG for RKHS-Constrained CP Mode-$k$ Subproblem}
+
+\subsection*{Problem Setup}
+Given the mode-$k$ subproblem of a CP decomposition with RKHS constraint $A_k = KW$, we must solve the $nr\times nr$ linear system
+\begin{equation}\label{eq:q10-sys}
+\bigl[(Z\otimes K)^T S S^T (Z\otimes K) + \lambda(I_r\otimes K)\bigr]\,\mathrm{vec}(W)
+= (I_r\otimes K)\,\mathrm{vec}(B),
+\end{equation}
+where $K\in\mathbb R^{n\times n}$ is the PSD kernel matrix, $Z\in\mathbb R^{M\times r}$ is the Khatri--Rao product of all other factor matrices, $S\in\mathbb R^{N\times q}$ is the selection matrix for the $q$ observed entries, $B=TZ$ is the MTTKRP, and $\lambda>0$ is the regularization parameter.
+Throughout we assume $n,r<q\ll N$ and avoid any $O(N)$ computation.
+
+\subsection*{Step 1: Operator Rewrite}
+
+Define the forward map $\mathcal A\colon\mathbb R^{n\times r}\to\mathbb R^{n\times M}$ by
+\[
+\mathcal A(X) = K X Z^T,
+\]
+and the observation operator $\mathcal A_\Omega(X)=\mathcal M_\Omega(\mathcal A(X))$, where $\mathcal M_\Omega$ zeros out all entries outside the observed set $\Omega$.
+
+\begin{lemma}[Adjoint]\label{lem:q10-adj}
+The adjoint of $\mathcal A$ with respect to the Frobenius inner product is $\mathcal A^*(Y) = K Y Z$.
+\end{lemma}
+\begin{proof}
+For $X\in\mathbb R^{n\times r}$ and $Y\in\mathbb R^{n\times M}$:
+\[
+\langle \mathcal A(X), Y\rangle_F
+= \mathrm{tr}(Z X^T K^T Y)
+= \mathrm{tr}(X^T K Y Z)
+= \langle X, K Y Z\rangle_F,
+\]
+using $K^T=K$ (symmetric) and the cyclic property of trace.
+\end{proof}
+
+System~\eqref{eq:q10-sys} becomes
+\begin{equation}\label{eq:q10-op}
+\mathcal A^*\bigl(\mathcal A_\Omega(W)\bigr) + \lambda K W = K B,
+\end{equation}
+i.e.,
+\[
+K\,\mathcal M_\Omega(K W Z^T)\,Z + \lambda K W = K B.
+\]
+
+\subsection*{Step 2: Matrix-Free Matvec}
+
+\begin{proposition}[Matrix-free operator application]\label{prop:q10-matvec}
+Given $X\in\mathbb R^{n\times r}$, the left-hand side of~\eqref{eq:q10-op} is computed as
+\[
+\mathcal T(X) := K\,\mathcal M_\Omega(K X Z^T)\,Z + \lambda K X
+\]
+without forming any $N\times N$ or $n\times M$ dense matrix.
+\end{proposition}
+
+\begin{proof}[Algorithm]
+\leavevmode
+\begin{enumerate}
+\item Compute $P = KX$ \hfill [$O(n^2 r)$, since $K$ is $n\times n$, $X$ is $n\times r$]
+\item For each observed index $(i,j)\in\Omega$, compute
+\[
+(PZ^T)_{i,j} = P_{i,:}\cdot z_j,
+\]
+where $z_j\in\mathbb R^r$ is the $j$-th row of $Z$.
+\hfill [$O(qr)$ total, one dot product per observed entry]
+\item Form the sparse $n\times M$ matrix $R$ with $R_{i,j}=(PZ^T)_{i,j}$ for $(i,j)\in\Omega$ and zero elsewhere.
+\item Compute $Q = RZ\in\mathbb R^{n\times r}$:
+\[
+Q_{i,:} = \sum_{j:\,(i,j)\in\Omega} R_{i,j}\,z_j^T.
+\]
+\hfill [$O(qr)$ total]
+\item Return $\mathcal T(X) = KQ + \lambda KX = K(Q + \lambda X)$.
+\hfill [$O(n^2 r)$]
+\end{enumerate}
+\textbf{Total per matvec:} $O(n^2 r + qr)$. No $N$-dependent computation.
+\end{proof}
+
+\subsection*{Step 3: SPD Structure}
+
+\begin{proposition}\label{prop:q10-spd}
+If $K\succ 0$ and $\lambda>0$, the operator $\mathcal T$ is symmetric positive definite on $\mathbb R^{n\times r}$.
+\end{proposition}
+
+\begin{proof}
+Symmetry: $\langle \mathcal T(X),Y\rangle = \langle \mathcal A^*\mathcal A_\Omega(X),Y\rangle + \lambda\langle KX,Y\rangle$. Both terms are symmetric in $(X,Y)$, using self-adjointness of $\mathcal A^*\mathcal A_\Omega$ (projection composed with self-adjoint operators) and symmetry of $K$.
+
+Positive definiteness: for $X\ne 0$,
+\[
+\langle \mathcal T(X),X\rangle
+= \|\mathcal M_\Omega(KXZ^T)\|_F^2 + \lambda\,\mathrm{tr}(X^T K X).
+\]
+The first term is $\ge 0$, and the second term is $>0$ since $K\succ 0$ and $X\ne 0$.
+\end{proof}
+
+Since $\mathcal T$ is SPD, the conjugate gradient (CG) method is applicable and converges in at most $nr$ iterations.
+
+\subsection*{Step 4: Preconditioner}
+
+\begin{proposition}[Kronecker preconditioner]\label{prop:q10-precond}
+Define $G = Z^T D Z\in\mathbb R^{r\times r}$ where $D\in\mathbb R^{M\times M}$ is diagonal with $D_{jj} = |\{i:(i,j)\in\Omega\}|$ (column observation count). Set
+\[
+P = (G + \lambda I_r)\otimes K.
+\]
+Then:
+\begin{enumerate}
+\item $P$ is SPD (when $K\succ 0$ and $\lambda>0$).
+\item $P^{-1}\,\mathrm{vec}(R) = \mathrm{vec}\bigl(K^{-1} R\,(G+\lambda I_r)^{-1}\bigr)$ for any $R\in\mathbb R^{n\times r}$.
+\item Applying $P^{-1}$ costs $O(n^2 r + n r^2)$ after one-time factorizations of $K$ ($O(n^3)$) and $G+\lambda I_r$ ($O(r^3)$).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) $(G+\lambda I_r)\succ 0$ since $G\succeq 0$ and $\lambda>0$. The Kronecker product of two SPD matrices is SPD.
+
+(2) $(A\otimes B)^{-1} = A^{-1}\otimes B^{-1}$ for invertible $A,B$, and $\mathrm{vec}(BXA^T) = (A\otimes B)\mathrm{vec}(X)$.
+
+(3) Solve $K^{-1}R$: backsolve with pre-computed Cholesky of $K$, costing $O(n^2 r)$. Solve $(G+\lambda I_r)^{-1}$: backsolve with pre-computed Cholesky of $G+\lambda I_r$, costing $O(r^2)$ per column, $O(nr^2)$ total.
+\end{proof}
+
+\begin{remark}[Motivation for $P$]
+The preconditioner $P$ approximates $\mathcal T$ by replacing the sparse observation mask $\mathcal M_\Omega$ with the diagonal count matrix $D$:
+\[
+\mathcal A^*\mathcal A_\Omega(X) = K\,\mathcal M_\Omega(KXZ^T)\,Z
+\;\approx\; K\,(D\odot KXZ^T)\,Z,
+\]
+which under the diagonal-dominance approximation gives
+\[
+\approx K^2 X (Z^T D Z) = K^2 X G.
+\]
+Adding the regularization and one factor of $K^{-1}$ (since the system has an overall $K$ factor on the right) yields $P = (G+\lambda I_r)\otimes K$.
+\end{remark}
+
+\subsection*{Step 5: Complexity Analysis}
+
+\begin{proposition}[Per-iteration cost]\label{prop:q10-cost}
+Each PCG iteration costs $O(n^2 r + q r + n r^2)$.
+\end{proposition}
+\begin{proof}
+\begin{itemize}
+\item Matvec $\mathcal T(X)$: $O(n^2 r + qr)$ (Proposition~\ref{prop:q10-matvec}).
+\item Preconditioner $P^{-1}$: $O(n^2 r + nr^2)$ (Proposition~\ref{prop:q10-precond}).
+\item Vector operations (inner products, updates): $O(nr)$.
+\end{itemize}
+Total: $O(n^2 r + qr + nr^2)$.
+\end{proof}
+
+\begin{remark}[Comparison with direct solve]
+A direct solve of the $nr\times nr$ system costs $O(n^3 r^3)$, and explicitly forming the matrix costs an additional $O(n^2 r^2 q)$ or more (involving $N$-dependent terms if done naively). The PCG approach replaces this with $O(\kappa_{\mathrm{eff}} \cdot (n^2 r + qr + nr^2))$ where $\kappa_{\mathrm{eff}}$ is the effective condition number after preconditioning, which is typically $O(1)$ or $O(\log(\cdot))$ for well-chosen preconditioners.
+\end{remark}
+
+\begin{remark}[Singular $K$]
+When $K$ is PSD but not PD, the operator $\mathcal T$ is positive semi-definite. The standard fix is to add a small nugget: replace $K$ with $K+\delta I$ for $\delta>0$, or restrict the solve to $\mathrm{range}(K)$.
+\end{remark}

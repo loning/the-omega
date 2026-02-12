@@ -1,0 +1,109 @@
+\section{Problem 6: Large $\varepsilon$-Light Vertex Sets}
+
+\subsection*{Problem}
+Let $G=(V,E)$ be a finite simple unweighted graph, $|V|=n$, with Laplacian
+\[
+L=\sum_{\{u,v\}\in E}L_{uv},\qquad L_{uv}=(e_u-e_v)(e_u-e_v)^\top.
+\]
+For $S\subseteq V$, let
+\[
+L_S=\sum_{\{u,v\}\in E(S)}L_{uv},\qquad E(S)=\{\{u,v\}\in E:\ u,v\in S\}.
+\]
+We call $S$ \emph{$\varepsilon$-light} if
+\[
+L_S\preceq \varepsilon L.
+\]
+Question: does there exist a universal constant $c>0$ such that for every graph $G$ and every $\varepsilon\in(0,1)$ there exists an $\varepsilon$-light $S$ with
+\[
+|S|\ge c\,\varepsilon\,|V|?
+\]
+
+\subsection*{Rigorous results obtained}
+
+\begin{proposition}[Necessary upper bound]\label{prop:q6-upper-half}
+Any universal constant $c$ as above must satisfy
+\[
+c\le \frac12.
+\]
+\end{proposition}
+
+\begin{proof}
+Take $G$ to be a perfect matching on $n=2m$ vertices, and fix $\varepsilon\in(0,1)$.
+If $S$ contains both endpoints of one matched edge $\{a,b\}$, choose $x$ supported on $\{a,b\}$ with $x_a=1$, $x_b=0$.
+Then
+\[
+x^\top Lx=1,\qquad x^\top L_Sx=1,
+\]
+so
+\[
+x^\top(\varepsilon L-L_S)x=\varepsilon-1<0,
+\]
+contradicting $\varepsilon$-lightness. Thus any $\varepsilon$-light set has at most one endpoint per matched edge:
+\[
+|S|\le m=\frac n2.
+\]
+If a universal lower bound $|S|\ge c\varepsilon n$ held for all $\varepsilon\in(0,1)$, then
+\[
+c\varepsilon n\le \frac n2\quad\forall \varepsilon\in(0,1).
+\]
+Let $\varepsilon\to 1^-$ to get $c\le 1/2$.
+\end{proof}
+
+\begin{lemma}[Linearization inequality]\label{lem:q6-linearization}
+Define
+\[
+L_u:=\sum_{v\sim u}L_{uv}.
+\]
+Then for every $S\subseteq V$,
+\[
+L_S\preceq \frac12\sum_{u\in S}L_u.
+\]
+\end{lemma}
+
+\begin{proof}
+For any $x\in\mathbb R^V$,
+\[
+x^\top\Big(\sum_{u\in S}L_u\Big)x
+=\sum_{u\in S}\sum_{v\sim u}(x_u-x_v)^2.
+\]
+Each edge inside $S$ is counted twice; each cut edge $(S,V\setminus S)$ is counted once; others zero. Hence
+\[
+\sum_{u\in S}L_u=2L_S+L_{\partial S}\succeq 2L_S,
+\]
+where $L_{\partial S}\succeq 0$ is the cut-edge Laplacian.
+\end{proof}
+
+\begin{corollary}[Sufficient criterion]\label{cor:q6-suff}
+If
+\[
+\sum_{u\in S}L_u\preceq 2\varepsilon L,
+\]
+then $S$ is $\varepsilon$-light.
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:q6-linearization},
+\[
+L_S\preceq \frac12\sum_{u\in S}L_u\preceq \varepsilon L.
+\]
+\end{proof}
+
+\begin{remark}[Why this does not close the main question]
+The condition in Corollary~\ref{cor:q6-suff} is strictly stronger than $L_S\preceq\varepsilon L$.
+In the matching graph, choose one endpoint per edge. Then $L_S=0$ (hence $S$ is $\varepsilon$-light for every $\varepsilon$), but
+\[
+\sum_{u\in S}L_u=L,
+\]
+which violates $\sum_{u\in S}L_u\preceq 2\varepsilon L$ when $\varepsilon<1/2$.
+So linearization alone cannot prove the universal theorem.
+\end{remark}
+
+\subsection*{Current status and program}
+The global existence claim is still open in this manuscript.
+What is fully proved here:
+\begin{enumerate}
+\item sharp necessary barrier $c\le 1/2$;
+\item exact linearization identity/inequality and its sufficient consequence.
+\end{enumerate}
+
+The remaining step is to control $\lambda_{\max}(L^{-1/2}L_SL^{-1/2})$ directly (not just its trace) for a set $S$ of size $\Omega(\varepsilon n)$, likely via a tailored vertex-selection discrepancy/barrier argument.

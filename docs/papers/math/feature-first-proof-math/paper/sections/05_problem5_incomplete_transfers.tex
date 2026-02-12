@@ -1,0 +1,158 @@
+\section{Problem 5: $\mathcal O$-Adapted Slice Filtration and Geometric Fixed Points}
+
+Let $G$ be a finite group and let $\mathcal O$ be an incomplete transfer system (equivalently an $N_\infty$-operadic indexing system). Write $\mathrm{Sp}^{\mathcal O}_G$ for the corresponding incomplete equivariant stable category.
+
+\subsection*{Definition of the $\mathcal O$-adapted regular slice filtration}
+
+For $H\le G$, let $\rho_H$ be the real regular representation of $H$. For $n\in\mathbb Z$, define
+\[
+\tau^{\mathcal O}_{\ge n}
+:=\operatorname{Loc}\{\,G_+\wedge_H S^{k\rho_H}\;:\;H\le G,\ k\ge 0,\ k|H|\ge n\,\}\subset\mathrm{Sp}^{\mathcal O}_G,
+\]
+where $\operatorname{Loc}$ means localizing subcategory (closed under equivalences, cofibers, suspensions, retracts, and arbitrary coproducts).
+
+An object $E\in\mathrm{Sp}^{\mathcal O}_G$ is called \emph{$\mathcal O$-slice $n$-connective} if $E\in\tau^{\mathcal O}_{\ge n}$.
+
+\subsection*{Main theorem}
+
+\begin{theorem}[Geometric fixed-point criterion]\label{thm:q5-main}
+Let $E\in\mathrm{Sp}^{\mathcal O}_G$ be connective and let $n\ge 0$. Then
+\[
+E\in\tau^{\mathcal O}_{\ge n}
+\quad\Longleftrightarrow\quad
+\forall H\le G,\ \Phi^H(E)\in\mathrm{Sp}_{\ge\lceil n/|H|\rceil}.
+\]
+\end{theorem}
+
+\subsection*{Proof}
+
+We use the standard isotropy-separation strategy (regular slice version), together with the incomplete-category structure (restriction, induction, geometric fixed points).
+
+\begin{lemma}[Restriction of regular representations]\label{lem:q5-res-rho}
+For $L\le K\le G$,
+\[
+\operatorname{Res}^K_L(\rho_K)\cong \rho_L^{\oplus [K:L]}.
+\]
+Hence a cell of slice degree $k|K|$ restricts to cells of the same degree.
+\end{lemma}
+
+\begin{proof}
+As an $L$-set, $K$ is a disjoint union of $[K:L]$ left cosets, each isomorphic to $L$. Passing to permutation representations gives the formula. Then
+\[
+k[K:L]|L|=k|K|.
+\]
+\end{proof}
+
+\begin{lemma}[Restriction preserves slice-connectivity]\label{lem:q5-res-preserve}
+For every $H\le G$,
+\[
+\operatorname{Res}^G_H(\tau^{\mathcal O}_{\ge n})\subseteq \tau^{\mathcal O|_H}_{\ge n}.
+\]
+\end{lemma}
+
+\begin{proof}
+It is enough to check generators. Restrict
+\[
+G_+\wedge_K S^{k\rho_K}
+\]
+to $H$ and apply Mackey decomposition:
+\[
+\operatorname{Res}^G_H(G_+\wedge_K S^{k\rho_K})
+\simeq \bigvee_{HgK\in H\backslash G/K} H_+\wedge_{J_g} S^{k\,\operatorname{Res}^{gKg^{-1}}_{J_g}(\rho_{gKg^{-1}})},
+\]
+where $J_g:=H\cap gKg^{-1}$. By Lemma~\ref{lem:q5-res-rho}, each summand is
+\[
+H_+\wedge_{J_g} S^{k[gKg^{-1}:J_g]\rho_{J_g}},
+\]
+with slice degree
+\[
+k[gKg^{-1}:J_g]|J_g|=k|K|\ge n.
+\]
+So each summand is in $\tau^{\mathcal O|_H}_{\ge n}$, hence the wedge is.
+\end{proof}
+
+\begin{lemma}[Induction preserves slice-connectivity]\label{lem:q5-ind-preserve}
+For $H\le G$,
+\[
+\operatorname{Ind}^G_H(\tau^{\mathcal O|_H}_{\ge n})\subseteq \tau^{\mathcal O}_{\ge n}.
+\]
+\end{lemma}
+
+\begin{proof}
+On generators,
+\[
+\operatorname{Ind}^G_H(H_+\wedge_K S^{k\rho_K})\simeq G_+\wedge_K S^{k\rho_K},
+\]
+which is a generator of $\tau^{\mathcal O}_{\ge n}$ when $k|K|\ge n$. Extend by locality.
+\end{proof}
+
+\begin{lemma}[Isotropy separation]\label{lem:q5-isotropy}
+Let $\mathcal P$ be the family of proper subgroups of $G$. For all $E\in\mathrm{Sp}^{\mathcal O}_G$ there is a cofiber sequence
+\[
+E\mathcal P_+\wedge E\longrightarrow E\longrightarrow \widetilde E\mathcal P\wedge E.
+\]
+\end{lemma}
+
+\begin{lemma}[Proper-isotropy criterion]\label{lem:q5-proper}
+For $n\in\mathbb Z$, the following are equivalent:
+\begin{enumerate}
+\item $E\mathcal P_+\wedge E\in\tau^{\mathcal O}_{\ge n}$.
+\item $\operatorname{Res}^G_H E\in\tau^{\mathcal O|_H}_{\ge n}$ for every proper $H<G$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(1)$\Rightarrow$(2): restrict and use Lemma~\ref{lem:q5-res-preserve}; since $(E\mathcal P)^H$ is contractible for $H\in\mathcal P$, one has
+\[
+\operatorname{Res}^G_H(E\mathcal P_+\wedge E)\simeq \operatorname{Res}^G_H E.
+\]
+(2)$\Rightarrow$(1): $E\mathcal P$ is a homotopy colimit of $G/H$ with $H<G$, so
+\[
+E\mathcal P_+\wedge E\simeq \operatorname*{hocolim}_{H<G} \operatorname{Ind}^G_H\operatorname{Res}^G_H E.
+\]
+Apply Lemma~\ref{lem:q5-ind-preserve} termwise.
+\end{proof}
+
+\begin{lemma}[Geometric piece criterion]\label{lem:q5-geom}
+For $n\in\mathbb Z$,
+\[
+\widetilde E\mathcal P\wedge E\in\tau^{\mathcal O}_{\ge n}
+\Longleftrightarrow
+\Phi^G(E)\in\mathrm{Sp}_{\ge\lceil n/|G|\rceil}.
+\]
+\end{lemma}
+
+\begin{proof}
+$X:=\widetilde E\mathcal P\wedge E$ is geometric (proper restrictions contractible). Hence maps from cells induced from proper subgroups to $X$ vanish. Therefore slice-connectivity of $X$ is detected only by cells $S^{k\rho_G}$ with $k|G|\ge n$.
+Under $\Phi^G$, one has $\Phi^G(S^{k\rho_G})\simeq S^k$, so this corresponds exactly to ordinary connectivity threshold $k\ge\lceil n/|G|\rceil$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:q5-main}]
+Induct on $|G|$.
+
+If $E\in\tau^{\mathcal O}_{\ge n}$, then by Lemma~\ref{lem:q5-res-preserve}, every restriction to $H\le G$ is slice-$n$-connective in $H$; applying the $H$-version of Lemma~\ref{lem:q5-geom} gives
+\[
+\Phi^H(E)\in\mathrm{Sp}_{\ge\lceil n/|H|\rceil}.
+\]
+
+Conversely, assume
+\[
+\forall H\le G,\ \Phi^H(E)\in\mathrm{Sp}_{\ge\lceil n/|H|\rceil}.
+\]
+By induction on proper subgroups, $\operatorname{Res}^G_H E\in\tau^{\mathcal O|_H}_{\ge n}$ for all $H<G$. Lemma~\ref{lem:q5-proper} gives
+\[
+E\mathcal P_+\wedge E\in\tau^{\mathcal O}_{\ge n}.
+\]
+For $H=G$, the assumption plus Lemma~\ref{lem:q5-geom} gives
+\[
+\widetilde E\mathcal P\wedge E\in\tau^{\mathcal O}_{\ge n}.
+\]
+Now use the cofiber sequence in Lemma~\ref{lem:q5-isotropy} and closure of $\tau^{\mathcal O}_{\ge n}$ under extensions to conclude
+\[
+E\in\tau^{\mathcal O}_{\ge n}.
+\]
+\end{proof}
+
+\begin{remark}[Interpretation]
+For connective objects, the criterion is expressed entirely by geometric fixed-point connectivity bounds indexed by subgroup size.
+\end{remark}

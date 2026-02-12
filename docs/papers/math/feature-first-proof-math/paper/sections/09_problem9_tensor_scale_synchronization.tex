@@ -1,0 +1,83 @@
+\section{Problem 9: Block-Scaling Synchronization for Determinantal 4-Tensors}
+
+\subsection*{Problem}
+For Zariski-generic cameras $A^{(1)},\dots,A^{(n)}\in\mathbb R^{3\times 4}$ ($n\ge 5$), define
+\[
+Q^{(\alpha\beta\gamma\delta)}_{ijkl}
+=\det\!
+\begin{bmatrix}
+A^{(\alpha)}(i,:)\\
+A^{(\beta)}(j,:)\\
+A^{(\gamma)}(k,:)\\
+A^{(\delta)}(\ell,:)
+\end{bmatrix}
+\in\mathbb R^{3\times3\times3\times3}.
+\]
+Given block scalars $\lambda_{\alpha\beta\gamma\delta}$ (with $\lambda_{iiii}=0$ and all other entries nonzero), set $T=\lambda*Q$ blockwise.
+The target is a polynomial map $F$ (degree bound independent of $n$, independent of $A$) such that
+\[
+F(T)=0
+\iff
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta
+\quad\text{for all non-identical }(\alpha,\beta,\gamma,\delta).
+\]
+
+\subsection*{Verified structural facts}
+
+\begin{lemma}[Diagonal blocks vanish]
+For every $\alpha$, one has
+\[
+Q^{(\alpha\alpha\alpha\alpha)}\equiv 0.
+\]
+\end{lemma}
+
+\begin{proof}
+Each determinant uses four rows drawn from only three rows of $A^{(\alpha)}$, hence two rows repeat and the determinant is zero.
+\end{proof}
+
+\begin{lemma}[Tucker form / multilinear rank bound]
+There exists a stacked matrix $C\in\mathbb R^{(3n)\times 4}$ and Levi-Civita core $\varepsilon\in(\mathbb R^4)^{\otimes 4}$ such that
+\[
+\mathcal Q=\varepsilon\times_1 C\times_2 C\times_3 C\times_4 C,
+\]
+for the global tensor $\mathcal Q\in(\mathbb R^{3n})^{\otimes 4}$ obtained by reindexing blocks.
+Hence each mode rank of $\mathcal Q$ is at most $4$ (and equals $4$ generically).
+\end{lemma}
+
+\begin{proof}
+Expand each entry by the multilinear determinant formula against Levi-Civita.
+\end{proof}
+
+\begin{corollary}[Polynomial detector candidate]
+Let $F$ be the collection of all $5\times 5$ minors of the four mode unfoldings of an input tensor $\mathcal T\in(\mathbb R^{3n})^{\otimes 4}$.
+Then each coordinate of $F$ has degree $5$, independent of $n$, and $F$ is independent of camera parameters.
+\end{corollary}
+
+\subsection*{What is proved and what is missing}
+
+\begin{proposition}[Verified "if" direction]
+If
+\[
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta
+\]
+on all non-identical quadruples, then $F(\lambda*Q)=0$ for the minor map above.
+\end{proposition}
+
+\begin{proof}
+Separable block scaling is modewise diagonal scaling of $\mathcal Q$; this preserves mode ranks $\le 4$. Therefore all $5\times 5$ unfolding minors vanish.
+\end{proof}
+
+\begin{remark}[Current blocking gap]
+The full "only if" direction is not yet complete in this manuscript.
+Existing drafts establish mode-wise separability constraints and significant progress, but the final global compatibility step over all non-identical quadruples is not fully closed at strict-proof level.
+Accordingly, the full equivalence remains open here.
+\end{remark}
+
+\subsection*{Current conclusion}
+The manuscript provides:
+\begin{enumerate}
+\item a concrete universal polynomial detector candidate of bounded degree (all $5\times5$ unfolding minors),
+\item a proved separable $\Rightarrow$ vanishing direction,
+\item strong generic-structure lemmas.
+\end{enumerate}
+The complete biconditional characterization is \textbf{not yet closed} in this draft.
