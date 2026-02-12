@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V9`
-- Review Version: `Q4-R9`
+- Submission Version: `Q4-V10`
+- Review Version: `Q4-R10`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -21,6 +21,8 @@
 10. New all-`n` theorem proved for the monotone root-sum model
     `nu_i = lambda_i + mu_i`:
     `1/Phi_n(nu) >= 1/Phi_n(lambda) + 1/Phi_n(mu)`.
+11. New exact semigroup identity:
+    `H_{2t}(p boxplus_n q) = (H_t p) boxplus_n (H_t q)` for `H_t = exp(t d^2/dx^2)`.
 
 ## Findings From Independent Re-check
 
@@ -33,7 +35,7 @@
 ## Remaining Gap
 
 The all-`n` statement of `(star)` for `n>=4` is still unproved.
-Current bottleneck is a weaker global mechanism replacing uniform-in-`w` superadditivity.
+Current bottleneck is a weaker global mechanism replacing uniform-in-`w` superadditivity; the new heat-intertwining lemma provides the algebraic backbone for an eventual entropy-power route but does not itself close `(star)`.
 
 ## Conclusion
 
