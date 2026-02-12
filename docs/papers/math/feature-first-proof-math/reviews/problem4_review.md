@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V17`
-- Review Version: `Q4-R17`
+- Submission Version: `Q4-V18`
+- Review Version: `Q4-R18`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -43,6 +43,8 @@
     concavity numerator equals
     `4[(||s||^2||Ls||^2-(sum g_{ij}^2)^2) + (||s||^2 sum g_{ij}^3-(sum g_{ij}^2)^2)]`,
     i.e. Cauchy-Schwarz defect + signed edge-moment defect.
+22. New explicit working conjecture:
+    edge-cubic nonnegativity `sum_{i<j} g_{ij}^3 >= 0` (verified numerically in adversarial search up to tested `n=12`).
 
 ## Findings From Independent Re-check
 
@@ -59,6 +61,7 @@
 6. The new defect decomposition clarifies mechanism:
    failures of item (20) correspond to negative signed edge-moment defect,
    but they can be absorbed by a positive Cauchy-Schwarz defect.
+7. Additional search found no negative value for `sum g_{ij}^3` in tested dimensions (up to `n=12`) under random + local minimization.
 
 ## Remaining Gap
 
