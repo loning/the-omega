@@ -224,6 +224,97 @@ L(t)\ \ge\ C_\kappa\,\mathrm{sep}(t)^{-(\kappa-1)}
 代入 \(\mathrm{sep}(t)\) 的缩放律即得指数爆炸下界。证毕。
 \end{proof}
 
+\begin{proposition}[扫描--证书等价的谱条件数：同一分离度同步控制 Hankel 病态与 Pick--Poisson 谱裕度]\label{prop:xi-scan-toeplitz-conditioning-by-separation}
+沿用命题 \ref{prop:xi-coarsegraining-illposedness-exponential-law} 的有限缺陷设定，并对固定 \(t\ge 0\) 记圆盘谱点为 \(\{r_j(t)\}_{j=1}^{\kappa}\subset\mathbb{D}\)。
+令 \(\mathsf P(t)\in\Mat_{\kappa}(\CC)_{\mathrm{Herm}}\) 为由点集 \(\{r_j(t)\}\) 通过 Pick--Poisson Gram 公式 \eqref{eq:xi-pick-poisson-gram} 构造得到的矩阵（即在 \eqref{eq:xi-pick-poisson-gram} 中取 \(a_j=r_j(t)\)）。
+记端点权重 \(p_j(t):=P_{r_j(t)}(-1)\)、伪双曲距离 \(\rho_{jk}(t):=\rho(r_j(t),r_k(t))\)，并记
+\[
+\rho_{\min}(t):=\min_{j<k}\rho_{jk}(t),\qquad
+p_{\max}(t):=\max_j p_j(t),\qquad
+r_{\max}(t):=\max_j|r_j(t)|.
+\]
+则 \(\mathsf P(t)\) 的最小特征值满足两类可审计界：
+\begin{enumerate}
+  \item \textbf{（显式下界）}由推论 \ref{cor:xi-pick-poisson-gap-lower-bound} 的同型不等式，
+  \[
+  \boxed{\;
+  \lambda_{\min}(\mathsf P(t))
+  \ \ge\
+  \frac{\Bigl(\prod_{j=1}^{\kappa}p_j(t)\Bigr)\Bigl(\prod_{1\le j<k\le\kappa}\rho_{jk}(t)^2\Bigr)}
+  {\Bigl(\sum_{j=1}^{\kappa}p_j(t)\Bigr)^{\kappa-1}}\;}
+  \]
+  从而利用 \(\rho(a,b)=\frac{|a-b|}{|1-\overline b a|}\ge \frac{|a-b|}{1+|a||b|}\ge \frac{|a-b|}{2}\) 得到
+  \[
+  \lambda_{\min}(\mathsf P(t))
+  \ \gtrsim\
+  \Bigl(\frac{\mathrm{sep}(t)}{2}\Bigr)^{\kappa(\kappa-1)}
+  \cdot
+  \frac{\prod_j p_j(t)}{\bigl(\sum_j p_j(t)\bigr)^{\kappa-1}}.
+  \]
+  \item \textbf{（二次上界）}令 \(\rho_{\min}(t)=\rho(r_{j^\star}(t),r_{k^\star}(t))\)。
+  由 \(2\times 2\) 主子式的最小特征值上界与 \(\det\mathsf P_{[j^\star,k^\star]}=p_{j^\star}(t)p_{k^\star}(t)\rho_{\min}(t)^2\)（推论 \ref{cor:xi-pick-poisson-gap-lower-bound} 的 \(\kappa=2\) 特例）可得
+  \[
+  \boxed{\;
+  \lambda_{\min}(\mathsf P(t))
+  \ \le\
+  p_{\max}(t)\,\rho_{\min}(t)^2
+  \ \le\
+  p_{\max}(t)\Bigl(\frac{\mathrm{sep}(t)}{1-r_{\max}(t)^2}\Bigr)^{\!2}\; }.
+  \]
+\end{enumerate}
+因此当 \(\mathrm{sep}(t)\downarrow 0\)（扫描谱点碰撞）时，Hankel/Vandermonde 反演条件数按命题 \ref{prop:xi-coarsegraining-illposedness-exponential-law} 指数爆炸，而 Toeplitz 侧 Pick--Poisson 谱裕度 \(\lambda_{\min}(\mathsf P(t))\) 同步塌缩（至少二次退化）；从而“层析通道”与“矩证书通道”在同一分离参数上发生一致病态。
+\end{proposition}
+\begin{proof}[证明要点]
+下界为推论 \ref{cor:xi-pick-poisson-gap-lower-bound} 的逐点应用并用 \(|1-\overline b a|\le 1+|a||b|\le 2\) 控制 \(\rho\)。
+上界方面：全矩阵的最小特征值不超过任一 \(2\times 2\) 主子矩阵的最小特征值；对 \(2\times 2\) 正定矩阵有 \(\lambda_{\min}\le \det/\lambda_{\max}\le 2\det/\mathrm{tr}\)，并用 \(\mathrm{tr}\ge p_{j^\star}(t)\) 即得 \(\lambda_{\min}\le p_{k^\star}(t)\rho_{\min}(t)^2\le p_{\max}(t)\rho_{\min}(t)^2\)。
+最后用 \(|1-\overline b a|\ge 1-|a||b|\ge 1-r_{\max}(t)^2\) 得 \(\rho_{\min}(t)\le \mathrm{sep}(t)/(1-r_{\max}(t)^2)\)。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\Delta$}{Delta}-流的矩层级交换律：推前指数映射诱导的导数--升阶耦合]\label{prop:xi-delta-flow-moment-ladder-commutation}
+设深度测度 \(\mu\) 支撑于 \([1,\infty)\)。
+对采样步长 \(\Delta>0\)，考虑推前指数映射 \(a\mapsto e^{-\Delta a}\) 所诱导的 Hausdorff 矩母函数
+\[
+U_0(z,\Delta):=\int_{[1,\infty)}\frac{1}{1-ze^{-\Delta a}}\,\dd\mu(a),\qquad |z|<1.
+\]
+并对 \(k\ge 0\) 定义升阶母函数
+\[
+U_k(z,\Delta):=\int_{[1,\infty)}\frac{a^k}{1-ze^{-\Delta a}}\,\dd\mu(a).
+\]
+则对一切 \(|z|<1\)、\(\Delta>0\) 成立严格交换律
+\[
+\boxed{\;
+\partial_\Delta U_k(z,\Delta)\ =\ -\,z\,\partial_z U_{k+1}(z,\Delta).\;}
+\]
+该恒等式表明：步长方向（\(\Delta\)）的演化在制度可见层面必然以 \(z\partial_z\) 的形式注入更高深度矩 \(a^{k+1}\)，从而把“离散采样尺度”与“高阶深度自由度”严格耦合。
+\end{proposition}
+\begin{proof}
+对 \(|z|<1\) 可在积分号内逐点求导：
+\[
+\partial_\Delta\frac{a^k}{1-ze^{-\Delta a}}
+=-\,a^k\,\frac{zae^{-\Delta a}}{(1-ze^{-\Delta a})^2},
+\qquad
+\partial_z\frac{a^{k+1}}{1-ze^{-\Delta a}}
+=a^{k+1}\,\frac{e^{-\Delta a}}{(1-ze^{-\Delta a})^2}.
+\]
+两式相乘并积分即可得到 \(\partial_\Delta U_k=-z\partial_z U_{k+1}\)。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\Delta$}{Delta}-流的严格非自洽性：除退化态外不可在有限矩层级内闭合]\label{prop:xi-delta-flow-nonclosure}
+沿用命题 \ref{prop:xi-delta-flow-moment-ladder-commutation} 的设定。
+若存在某个有限 \(K\) 使得对所有 \(|z|<1\)、\(\Delta>0\)，函数 \(U_{K+1}(z,\Delta)\) 可由有限集合 \(\{U_k(z,\Delta)\}_{k=0}^{K}\) 通过代数封闭运算（有限次加减乘除与复合）确定，
+则 \(\mu\) 必为单原子测度（支撑为一点）。
+等价地：对任何非退化深度谱，\(\Delta\)-流在制度闭包中具有严格“非自洽性”——步长演化必持续产生新的独立高阶矩自由度，不能在固定有限矩寄存器内关闭。
+\end{proposition}
+\begin{proof}[证明要点]
+由
+\(
+U_k(z,\Delta)=\sum_{n\ge 0}z^n\int a^k e^{-n\Delta a}\,\dd\mu(a)
+\)
+可知 \(U_k\) 的 \(z\)-系数给出 \(\mu\) 的离散 Laplace 矩族。
+交换律 \(\partial_\Delta U_k=-z\partial_z U_{k+1}\) 表明：\(\Delta\) 导数必然“升阶”产生 \(a^{k+1}\) 的独立矩信息。
+若某个有限 \(K\) 在全域上闭合，则这些离散 Laplace 矩在有限维代数内封闭，从而强制 \(\mu\) 的 Laplace 变换满足有限阶代数/微分约束；由 Laplace 变换的唯一性与指数多项式刻画，这只能发生在单指数情形，即 \(\mu\) 为单原子。证毕。
+\end{proof}
+
 \begin{proposition}[深度--高度的最小耦合：从深度母函数到共动层析的唯一提升]\label{prop:xi-depth-height-minimal-coupling}
 设完整层析谱指纹（含高度）为
 \[
@@ -252,6 +343,40 @@ u_n=\sum_{j=1}^{M}4\pi\,m_j\frac{\delta_j}{1+\delta_j}\,e^{-(1+\delta_j)|n|\Delt
 \]
 其中上界在“均匀深度”配置 \(\delta_j\equiv \Phi/\kappa\)（对所有 \(j\) 满足 \(m_j>0\)）时取等号；下界在“极端集中”极限中达到其下确界：令一原子承载全部通量 \(\Phi\) 而其余原子深度 \(\delta\downarrow 0\)。
 \end{proposition}
+
+\begin{corollary}[“Page 阈值”式尺度：粗粒化使尺度熵穿越 \texorpdfstring{$\kappa/2$}{kappa/2} 的唯一解与显式夹逼]\label{cor:xi-scale-entropy-page-threshold}
+令尺度熵轨道 \(S(t)=\sum_{j}m_j\frac{\delta_j}{t+1+\delta_j}\)，并记 \(\kappa=\sum_j m_j\)。
+则方程
+\[
+S(t)=\frac{\kappa}{2}
+\]
+在 \(t\ge 0\) 上至多有一个解 \(t_\ast\)。
+并且若 \(S(0)>\kappa/2\)，则该解存在且唯一，并满足夹逼
+\[
+\kappa\,\frac{\delta_{\min}}{t_\ast+1+\delta_{\min}}
+\ \le\ \frac{\kappa}{2}\ \le\
+\kappa\,\frac{\delta_{\max}}{t_\ast+1+\delta_{\max}},
+\qquad
+\delta_{\min}:=\min_j\delta_j,\ \delta_{\max}:=\max_j\delta_j,
+\]
+从而
+\[
+\boxed{\;
+\max\{0,\delta_{\min}-1\}\ \le\ t_\ast\ \le\ \delta_{\max}-1.\;}
+\]
+该阈值给出一条纯尺度的“信息可见/不可见”分界：粗粒化一旦超过 \(t_\ast\)，尺度熵必落入 \(S(t)\le\kappa/2\) 的回收相；其位置完全由深度区间封口，不依赖高度谱。
+\end{corollary}
+\begin{proof}
+由于
+\(
+S'(t)=-\sum_j m_j\delta_j(t+1+\delta_j)^{-2}<0
+\)，函数 \(S\) 在 \(t\ge0\) 上严格递减，故解至多唯一；若 \(S(0)>\kappa/2\) 则由 \(S(t)\to 0\)（\(t\to\infty\)）知存在唯一 \(t_\ast\)。
+由 \(x\mapsto x/(t+1+x)\) 的单调性得到
+\(
+\kappa\frac{\delta_{\min}}{t+1+\delta_{\min}}\le S(t)\le \kappa\frac{\delta_{\max}}{t+1+\delta_{\max}}
+\)；
+在 \(t=t_\ast\) 处代入并解不等式即得所示夹逼。证毕。
+\end{proof}
 
 \begin{proposition}[Laplace--Stieltjes 因子分解：深度谱配分函数与尺度熵的等价表述]
 在有限深度谱设定下，定义深度配分函数

@@ -2528,6 +2528,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_horizon_dtn_fourier_laplace_audit",
+            script="exp_xi_horizon_dtn_fourier_laplace_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_horizon_dtn_fourier_laplace_audit.json",
+                "sections/generated/tab_xi_horizon_dtn_fourier_laplace_audit.tex",
+            ],
+        ),
+        Step(
             name="generated_tex_fragments",
             script="exp_generated_tex.py",
             args=[],

@@ -38,6 +38,214 @@ w_\rho=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}
 该段落仅作解释性组织：其中每一步均由文内既有编号结果支撑，不引入新的证明前提。
 \par
 
+\paragraph{可发表结论链：DtN 生成元、二维缺陷测度层析、负谱半经典极限与 strictification 尾不变量}
+在保持“圆盘化视界接口 + unitary-slice 可见域 + Toeplitz--PSD 证书语言”的封闭语境不变的前提下，可进一步提取一组可独立引用的结论链，用以把有限维否证、共振重构、horocycle 深度与 strictification 不变量在同一几何接口上严格对齐。
+
+\begin{proposition}[Dirichlet--to--Neumann 等价：\texorpdfstring{$|D|$}{|D|} 为视界粗粒化半群的生成元]\label{con:discussion-dtn-generator}
+令
+\[
+P_t(x):=\frac{1}{\pi}\frac{t}{x^2+t^2}\qquad(t>0)
+\]
+为 \(\RR\) 上 Poisson 核，并令粗粒化半群 \(T_t f:=P_t*f\)。
+对 \(f\in\mathcal{S}(\RR)\) 定义上半平面调和延拓
+\(
+u_f(x,y):=(P_y*f)(x)
+\)。
+则成立 Dirichlet--to--Neumann 恒等式
+\[
+\boxed{\;
+\partial_y u_f(x,0)=-(|D|f)(x),\qquad \widehat{|D|f}(\xi)=|\xi|\,\widehat f(\xi)\;}
+\]
+从而
+\[
+\boxed{\;T_t=\exp(-t|D|)\qquad(t>0).\;}
+\]
+此外，在\emph{平移不变、Markov 且一阶齐次}的强连续卷积半群类中，生成元符号必为 \(c|\xi|\)（\(c\ge 0\)），故在时间标尺规一化后 \( |D| \)（等价 DtN）为唯一生成元；因此 Poisson 粗粒化所诱导的耗散律与不可逆“回收”并非实现偶然，而由视界几何的唯一动力学所强制。
+\end{proposition}
+\begin{proof}[证明要点]
+由 \(\widehat{P_y}(\xi)=e^{-y|\xi|}\) 得 \(\widehat u_f(\xi,y)=e^{-y|\xi|}\widehat f(\xi)\)，对 \(y\) 求导并令 \(y\downarrow 0\) 即得 \(\partial_y u_f(\cdot,0)=-|D|f\)；
+再由半群性质得 \(T_t=\exp(-t|D|)\)。
+对唯一性：平移不变 Markov 半群在 Fourier 侧为乘子 \(e^{-t\psi(\xi)}\)（L\'evy--Khintchine，\(\psi\) 连续负定且 \(\psi(0)=0\)），一阶齐次性给出 \(\psi(\lambda\xi)=\lambda\psi(\xi)\)，从而 \(\psi(\xi)=c|\xi|\)。证毕。
+\end{proof}
+
+\begin{proposition}[二维缺陷测度的 Fourier--Laplace 指纹：一般 \texorpdfstring{$\nu$}{nu} 的可逆层析公式]\label{con:discussion-defect-measure-fourier-laplace}
+令 \(\nu\) 为 \(\RR\times(0,\infty)\) 上有限正测度，并定义可见边界密度
+\[
+H_\nu(x):=\int_{\RR\times(0,\infty)}\frac{4\delta}{(x-\gamma)^2+(1+\delta)^2}\,\dd\nu(\gamma,\delta),
+\qquad
+H_{\nu,t}:=P_t*H_\nu.
+\]
+则其 Fourier 变换满足严格分解
+\[
+\boxed{\;
+\widehat{H_{\nu,t}}(\xi)
+=4\pi\,e^{-t|\xi|}
+\int_{\RR\times(0,\infty)}
+\frac{\delta}{1+\delta}\,
+e^{-(1+\delta)|\xi|}\,e^{-\mathrm{i}\gamma\xi}\,\dd\nu(\gamma,\delta).\;}
+\]
+令 \(s:=|\xi|\) 并定义二参数指纹
+\[
+F(\xi,s):=e^{(t+1)s}\widehat{H_{\nu,t}}(\xi),
+\]
+则
+\[
+\boxed{\;
+F(\xi,s)
+=4\pi\int_{\RR\times(0,\infty)}\frac{\delta}{1+\delta}\,e^{-s\delta}\,e^{-\mathrm{i}\gamma\xi}\,\dd\nu(\gamma,\delta).\;}
+\]
+因此 \(F\) 是 \(\gamma\) 的 Fourier 变换与 \(\delta\) 的 Laplace 变换的张量化组合；特别地，映射 \(\nu\mapsto F\) 在有限测度类上为单射，从而 \(\nu\) 可由 \(F\)（在 \(\RR\times(0,\infty)\) 上的取值）唯一恢复。
+\end{proposition}
+\begin{proof}[证明要点]
+对固定 \((\gamma,\delta)\)，核 \(\frac{4\delta}{(x-\gamma)^2+(1+\delta)^2}\) 的 Fourier 变换为 \(4\pi\frac{\delta}{1+\delta}e^{-(1+\delta)|\xi|}e^{-\mathrm{i}\gamma\xi}\)（由 \(\int_{\RR}\frac{e^{-\mathrm{i}\xi t}}{t^2+a^2}\dd t=\frac{\pi}{a}e^{-a|\xi|}\)）。
+再用 Poisson 半群乘子 \(\widehat{P_t}(\xi)=e^{-t|\xi|}\) 得第一式；乘上 \(e^{(t+1)|\xi|}\) 即得第二式。
+单射性由 Fourier 变换与 Laplace 变换在有限测度上的唯一性推出。证毕。
+\end{proof}
+
+表 \ref{tab:xi-horizon-dtn-fourier-laplace-audit} 给出命题 \ref{con:discussion-dtn-generator} 与命题 \ref{con:discussion-defect-measure-fourier-laplace} 的数值审计（由可复现实验管线生成）。
+\input{sections/generated/tab_xi_horizon_dtn_fourier_laplace_audit}
+
+\begin{proposition}[Toeplitz 负谱的半经典极限：由 Pick--Poisson Gram 矩阵完整编码]\label{con:discussion-toeplitz-negative-spectrum-semiclassical}
+设离切片点状缺陷由有限 Blaschke 因子承载，并令 \(\mathbf{T}_N\) 为对应的视界 Toeplitz 证书矩阵。
+在 \(N\to\infty\) 且 \(N(1-|a_j|)\to\infty\) 的深度区间内，\(\mathbf{T}_N\) 在其负子空间上的限制在算子范数意义下收敛到一个显式的 Pick--Poisson Gram 矩阵 \(\mathsf P\)（见 \eqref{eq:xi-pick-poisson-gram}；命题 \ref{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram}）：
+负谱在主阶上由 \(-\mathsf P\) 的谱完全决定。
+特别地，迹不变量满足
+\(
+\mathrm{tr}(\mathsf P)=\sum_j P_{a_j}(-1)
+\)
+并与端点通量恒等式一致（定理 \ref{thm:xi-endpoint-flux-pointmode-coupling}）；
+而行列式进一步分解为 Poisson 权重与伪双曲 Vandermonde 的乘积（命题 \ref{prop:xi-pick-poisson-det-factorization}），从而给出对贴边与碰撞同时敏感的完备负谱不变量。
+\end{proposition}
+\begin{proof}[证明要点]
+这是一条“模型空间负方向 \(\Rightarrow\) 截断再生向量读出 \(\Rightarrow\) 端点规一化 Gram 极限”的稳定读出链；
+其技术实现与符号闭式在 \S\ref{subsubsec:xi-pontryagin-toeplitz-blaschke-tomography-tate} 的命题 \ref{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram}--\ref{prop:xi-pick-poisson-det-factorization} 中给出。证毕。
+\end{proof}
+
+\begin{proposition}[负特征值计数函数的阈值律：Toeplitz 层级的最小规模由最浅缺陷控制]\label{con:discussion-toeplitz-negative-count-threshold}
+沿用结论 \ref{con:discussion-toeplitz-negative-spectrum-semiclassical} 的记号，并令最浅缺陷深度
+\[
+h_{\min}:=\min_{1\le j\le \kappa}\bigl(1-|a_j|\bigr).
+\]
+则存在常数 \(c,C>0\)（其依赖仅在于 \(\kappa\) 与零点分离的粗界）使得：
+\[
+\boxed{\;
+N\ge C\,h_{\min}^{-1}\ \Longrightarrow\ \nu_-(\mathbf{T}_N)=\kappa,\qquad
+N\le c\,h_{\min}^{-1}\ \Longrightarrow\ \nu_-(\mathbf{T}_N)\le \kappa-1.\;}
+\]
+因此 Toeplitz 层级要“完整显影”全部点状缺陷（负方向维数达到 \(\kappa\)），其阶数门槛在量级上由最浅缺陷单独控制；该阈值律把“靠近视界的缺陷更难被有限证书识别”提升为计数函数的相变结论，并与单原子负缺陷的 \(1/\varepsilon\) 阈值律（命题 \ref{prop:discussion-toeplitz-negative-atom-threshold}）同型。
+\end{proposition}
+\begin{proof}[证明要点]
+由定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}，对 \(N\) 足够大时负惯性稳定为 \(\kappa\)；
+而深度 \(h_{\min}\) 控制截断再生核对负方向的解析分辨率：当 \(N\gg h_{\min}^{-1}\) 时，所有点模态均在 \(\{1,w,\dots,w^N\}\) 的有限维读出中呈现为线性独立负方向，从而 \(\nu_-(\mathbf{T}_N)=\kappa\)；
+当 \(N\ll h_{\min}^{-1}\) 时，最浅缺陷对应的截断模态不可在有限阶上与背景分离，故负方向维数严格小于 \(\kappa\)。证毕。
+\end{proof}
+
+\begin{proposition}[CMV 尾不变量：有限步改动不改变缺陷指数与点谱残差维数]\label{con:discussion-cmv-tail-invariant}
+令 \((\alpha_n)_{n\ge 0}\)、\((\tilde\alpha_n)_{n\ge 0}\) 为两列 Verblunsky 系数，并令 \(U_\infty\)、\(\tilde U_\infty\) 为相应的无限维 CMV 幺正对象。
+若存在 \(N_0\) 使得 \(\tilde\alpha_n=\alpha_n\) 对所有 \(n\ge N_0\) 成立，则 \(U_\infty-\tilde U_\infty\) 为有限秩扰动。
+并且在本文的有限缺陷口径（有限 Blaschke 且无奇异内因子）下，由 Toeplitz 惯性稳定读出的缺陷指数
+\(
+\kappa=\sup_{N}\nu_-(\mathbf{T}_N)
+\)
+与点谱残差维数 \(\dim\mathcal H_{\mathrm{pp}}(U_\infty)\)（推论 \ref{cor:xi-cmv-point-spectrum-dimension-equals-blaschke-degree}）均为严格尾不变量：
+\[
+\boxed{\;
+\kappa(U_\infty)=\kappa(\tilde U_\infty),
+\qquad
+\dim\mathcal H_{\mathrm{pp}}(U_\infty)=\dim\mathcal H_{\mathrm{pp}}(\tilde U_\infty).\;}
+\]
+因此“缺陷指数”不依赖有限步实现细节，而仅由稳定尾部（制度闭包的最终语法）决定。
+\end{proposition}
+\begin{proof}[证明要点]
+CMV 矩阵为五对角局部结构；有限个 \(\alpha_n\) 的改动仅影响有限条对角带，因此 \(U_\infty-\tilde U_\infty\) 为有限秩。
+另一方面，广义 Schur/Carath\'eodory 的负平方指数可由高阶 Toeplitz 截断的负惯性稳定读出（定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}），而有限步 Schur 递归对应 \(J\)-酉线性分式变换并保持负平方指数；
+有限缺陷口径下再由点谱残差刻画（推论 \ref{cor:xi-cmv-point-spectrum-dimension-equals-blaschke-degree}）将其转译为点谱维数结论。证毕。
+\end{proof}
+
+\begin{corollary}[方差缺口的积分恒等式：非均匀性消耗即回收强度的累积量]\label{con:discussion-variance-gap-integral}
+在命题 \ref{prop:xi-defect-entropy-scaling-variance-gap-identity} 的记号下，对任意 \(s_0<s_1\) 有精确恒等式
+\[
+\boxed{\;
+\int_{s_0}^{s_1}\kappa\,\mathrm{Var}_{m}\!\bigl(p(s)\bigr)\,\dd s
+=\int_{s_0}^{s_1}S(s)\Bigl(1-\frac{S(s)}{\kappa}\Bigr)\,\dd s-\bigl(S(s_1)-S(s_0)\bigr).\;}
+\]
+因此若且唯若深度全程均匀（\(\mathrm{Var}_m\equiv 0\)），则 \(S(s)\) 精确沿 logistic 上包络演化；否则方差项的时间积分给出严格的累计缺口。
+\end{corollary}
+\begin{proof}
+对 \eqref{eq:xi-defect-entropy-logistic-variance-gap} 在 \([s_0,s_1]\) 上积分并移项即得。证毕。
+\end{proof}
+
+\begin{proposition}[指数缺口的强逆：次线性泄漏极限强制指数饱和]\label{con:discussion-index-gap-strong-converse}
+设 \(\mathcal{B}_1,\mathcal{B}_2\subseteq\mathcal{A}\) 为两源接口子代数，\(\mathcal{B}_0:=\mathcal{B}_1\cap\mathcal{B}_2\)，并设存在有限指数条件期望 \(E_i:\mathcal{A}\to\mathcal{B}_i\)（\(i=0,1,2\)）且满足交换方阵口径。
+令指数缺口
+\[
+\Gamma:=\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_0)}\ \ge\ 0.
+\]
+若存在一族 \(n\)-期张量化外部化机制使得
+\[
+I\bigl(\mathcal{B}_1^{\otimes n}:\mathcal{B}_2^{\otimes n}\mid\mathcal{B}_0^{\otimes n}\bigr)=o(n),
+\]
+则必有 \(\Gamma=0\)，即指数饱和成立。
+\end{proposition}
+\begin{proof}[证明要点]
+由附录推论 \ref{cor:op-algebra-cmi-lower-bound-by-index-gap} 得
+\(
+I(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)\ge \Gamma
+\)。
+对张量幂，指数与对数指数缺口按乘法/加法张量化，从而得到线性下界
+\(
+I(\mathcal{B}_1^{\otimes n}:\mathcal{B}_2^{\otimes n}\mid\mathcal{B}_0^{\otimes n})\ge n\Gamma
+\)。
+与 \(o(n)\) 假设矛盾，故 \(\Gamma=0\)。证毕。
+\end{proof}
+
+\begin{proposition}[随机性成本下界：去链接所需外加随机性至少为指数缺口]\label{con:discussion-randomness-cost-lower-bound}
+沿结论 \ref{con:discussion-index-gap-strong-converse} 的设定，并在有限维交换（Shannon）口径下考虑任意引入外加随机变量 \(R\) 的外部化机制。
+若该机制满足
+\[
+I(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0,R)\le \varepsilon,
+\]
+则其外加随机性的 Shannon 熵满足
+\[
+\boxed{\;H(R)\ \ge\ \Gamma-\varepsilon.\;}
+\]
+因此指数缺口不仅给出不可消去的链接残差的下界，也给出将残差压低到 \(\varepsilon\) 所必须支付的最小随机性成本。
+\end{proposition}
+\begin{proof}
+由链式法则与信息单调性，
+\[
+I(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)
+\le I(\mathcal{B}_1:\mathcal{B}_2,R\mid\mathcal{B}_0)
+=I(\mathcal{B}_1:R\mid\mathcal{B}_0)+I(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0,R)
+\le H(R)+\varepsilon.
+\]
+再由附录推论 \ref{cor:op-algebra-cmi-lower-bound-by-index-gap} 的下界
+\(
+I(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)\ge \Gamma
+\)
+得 \(H(R)\ge \Gamma-\varepsilon\)。证毕。
+\end{proof}
+
+\begin{proposition}[连续毛发的二次可判别：非解析点的 Hausdorff 维数下界由奇异测度支撑控制]\label{con:discussion-singular-hair-hausdorff-lower-bound}
+令缺陷边界对象由 Herglotz 测度分解
+\(
+\dd\mu=\dd\mu_{\mathrm{ac}}+\dd\mu_{\mathrm{s}}+\sum_j m_j\delta_{\theta_j}
+\)
+给出（参见命题 \ref{prop:xi-analytic-boundary-density-iff-no-singular-inner}）。
+若 \(\mu_{\mathrm{s}}\neq 0\)，则相应边界密度在任何开区间上不可能为实解析。
+更定量地：若记 \(E\subset\RR\) 为边界密度（以非切向极限理解）\emph{非实解析}的点集，则必有
+\[
+\boxed{\;
+\dim_{\mathrm{H}}(E)\ \ge\ \dim_{\mathrm{H}}\bigl(\mathrm{supp}(\mu_{\mathrm{s}})\bigr).\;}
+\]
+因此连续毛发一旦存在，必在边界上产生具有正 Hausdorff 维数的不可消去奇异集合；点状缺陷仅产生离散奇性（可由有理极点完全刻画），而奇异内因子必诱导分形尺度的边界不可解析性。
+\end{proposition}
+\begin{proof}[证明要点]
+\(\mu_{\mathrm{s}}\) 的边界贡献为不可约奇异分布，故边界密度不可能在任意开区间上由实解析函数代表（命题 \ref{prop:xi-analytic-boundary-density-iff-no-singular-inner}）。
+并且任何实解析密度在分布意义下必绝对连续于 Lebesgue 测度，故 \(\mu_{\mathrm{s}}\) 的支撑点必属于非解析集 \(E\)；从而 \(\mathrm{supp}(\mu_{\mathrm{s}})\subseteq E\) 推出所示 Hausdorff 维数下界。证毕。
+\end{proof}
+
+\par
 \paragraph{补充：三阶迹法的双谱证书闭合链（与 Toeplitz 链正交）}
 除上述 Toeplitz--PSD 视界链外，零密度/大值频次估计中常用的三阶迹法亦可在本文的“证书化”口径下形成一条闭合链：以低阶迹矩控制 Gram 矩阵并通过最优截断矩极值律完成谱范数提升（定理 \ref{thm:gm-trace3-spectral-norm-extremal} 与命题 \ref{prop:gm-trace3-gap-optimal-spectralization}），其非零 Poisson 频率残差可组织为连续 moment-kernel 的二体碰撞能量并在带宽闭包下离散化为半正定谱证书（命题 \ref{prop:gm-trace3-poisson-collision-energy}）；当大值点集来自 Zeckendorf/sofic 等有限状态约束时，其加性能量可进一步编译为 Perron 指纹（定理 \ref{thm:gm-zeck-sofic-additive-energy}），从而把频次上界分离为两条互相正交的谱半径门槛（定理 \ref{thm:gm-dual-spectral-certificates}；附录 \S\ref{subsubsec:gm-third-trace-dual-certificates}）。
 同一编译接口还统一覆盖任意固定线性一致性约束（定理 \ref{thm:gm-sofic-zeck-linear-constraints-pf}），由此导出非平凡仿射近闭包的不可能性（定理 \ref{thm:gm-affine-selfmap-spectral-gap}）与模 \(q\) Fourier 衰减的扭曲谱降判别（定理 \ref{thm:gm-twisted-perron-fourier-decay}）；相应谱隙可作为残差通道压缩的结构来源，并在三阶迹路线中触发中能量段幂次节省模板（命题 \ref{prop:gm-affine-gap-improves-trace3}）。
