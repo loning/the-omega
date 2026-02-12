@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V13`
-- Review Version: `Q4-R13`
+- Submission Version: `Q4-V14`
+- Review Version: `Q4-R14`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -46,7 +46,8 @@
 2. Additional stress tests found no violation of `(star)`:
    random search (`n=4..12`), adversarial local descent near `n=4`, and near-degenerate families.
 3. Candidate bridge `1/Phi(roots(p boxplus q)) >= 1/Phi(sort(lambda+mu))` is false numerically.
-4. The new sufficient inequality in item (20) passed large-scale numerical checks, but is not yet proved in full generality.
+4. The new sufficient inequality in item (20) is mathematically valid as a sufficient route, but it is too strong in general:
+   explicit numerical counterexamples appear (first found at `n=12`) while the full concavity condition in (18) can still hold.
 
 ## Remaining Gap
 
@@ -54,9 +55,9 @@ The all-`n` statement of `(star)` for `n>=4` is still unproved.
 Current main closure routes:
 
 1. **Entropy power route (Section 13):** prove concavity of `N_n(p_t)` for `n>=4`.
-2. **Single-bottleneck route (new):** prove
+2. **Single-bottleneck route (new, now known too strong globally):** the inequality
    `(sum g_{ij}^2)^2 <= (sum g_{ij})(sum g_{ij}^3)`
-   on the Dyson root-flow state space.
+   implies concavity, but cannot be the final all-`n` closure target.
 3. **Score decomposition route:** establish a polynomial Blachman-Stam analogue for `boxplus_n`.
 
 ## Conclusion
