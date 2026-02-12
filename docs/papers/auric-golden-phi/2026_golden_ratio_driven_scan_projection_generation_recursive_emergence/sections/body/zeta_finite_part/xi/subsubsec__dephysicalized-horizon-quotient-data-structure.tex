@@ -285,6 +285,32 @@ E(x^\ast x)\ \ge\ \Lambda^{-1}\,x^\ast x.\;}
 可参见 \cite{PimsnerPopa1986EntropyIndexSubfactors,Hiai1991MinimumIndexSubfactorsEntropyII} 的“指数 \(\leftrightarrow\) 相对熵”定理链。证毕。
 \end{proof}
 
+\begin{proposition}[零知识模拟定理的算子版本：条件期望的精确可模拟性与指数下界]\label{prop:dephys-operator-zk-simulation-index-lower-bound}
+在定义 \ref{def:dephys-conditional-expectation-externalization-map} 的设定下，
+对任意外部可测过程（即任意仅依赖 \(\mathcal{A}_{\mathrm{ext}}\) 的 POVM/检验），存在\textbf{精确模拟器}：其输入仅为外部可见态
+\(
+\sigma:=\rho|_{\mathcal{A}_{\mathrm{ext}}}\equiv \Pi(\rho)|_{\mathcal{A}_{\mathrm{ext}}}
+\)，
+输出的外部统计分布与真实 \(\rho\) 下完全一致。
+\par
+进一步，若 \(\mathrm{Ind}(E)<\infty\)，并要求以某个有限维 Stinespring 稀释实现条件期望 \(E\)（等价实现外部化 \(\Pi\)），
+则其最小辅助维数 \(d_{\min}\) 满足
+\[
+\boxed{\;d_{\min}^2\ \ge\ \mathrm{Ind}(E)\;}
+\]
+从而最小辅助资源的对数尺度具有不可逾越下界 \(\tfrac12\log\mathrm{Ind}(E)\)。
+\end{proposition}
+\begin{proof}[证明要点]
+第一部分是定义层的等价改写：任意 \(M\in\mathcal{A}_{\mathrm{ext}}\) 的期望满足
+\(
+\rho(M)=\rho(E(M))=\Pi(\rho)(M)
+\)，故外部统计仅依赖 \(\sigma=\rho|_{\mathcal{A}_{\mathrm{ext}}}\)。
+\par
+第二部分可由有限维实现中的“准基/证书元”计数给出：若 \(E\) 具有一个以 \(d\)-维辅助系统实现的 Stinespring 表示，则可构造至多 \(d^2\) 个算子元形成一组实现 \(E\) 的有限证书基；
+而有限指数 \(\mathrm{Ind}(E)\) 作为 Pimsner--Popa 常数的最小化量级，不能超过任何此类有限证书的“平方规模”。
+因此 \(\mathrm{Ind}(E)\le d^2\)，取最小 \(d=d_{\min}\) 即得结论。证毕。
+\end{proof}
+
 \begin{corollary}[链式法则：嵌套视界的指数可加性与信息损失可加性]\label{cor:dephys-index-chain-rule}
 设 \(\mathcal{A}_0\subseteq \mathcal{A}_1\subseteq \mathcal{A}_2\) 且存在条件期望
 \(
@@ -412,6 +438,35 @@ D(\rho\|\sigma)=D(\rho\|\Pi(\rho)) + D(\Pi(\rho)\|\sigma).\;}
 Pythagoras 分解 \eqref{eq:dephys-relative-entropy-pythagoras} 可视为相对熵在条件期望诱导的“信息投影”上的正交分解：
 其本质等价于相对熵的链式公式与 \(E\) 的“充分统计/可恢复性”结构（参见 \cite{Petz2003MonotonicityRelativeEntropyRevisited} 的等号条件与量子 Markov 结构讨论）。
 在有限维（密度矩阵）情形下，该分解亦可由对数似然的正交分解直接验证；一般 von Neumann 代数情形由 Araki 相对熵的模块算子表述给出。证毕。
+\end{proof}
+
+\begin{proposition}[幂等回收单子的唯一熵：\texorpdfstring{$D(\rho\|\Pi(\rho))$}{D(rho||Pi(rho))} 的刻画公理]\label{prop:dephys-idempotent-monad-entropy-axiomatic-uniqueness}
+令 \(\Pi\) 为 \eqref{eq:dephys-ext-externalization-Pi} 所定义的外部化幂等投影。
+设回收代价泛函 \(C:\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\to[0,\infty)\) 满足下列公理族：
+\begin{enumerate}
+  \item \textbf{单子不变性：} \(C(\rho)=0\iff \rho\in\mathrm{Fix}(\Pi)\)；
+  \item \textbf{可加性：}对张量积外部化 \(\Pi_{12}:=\Pi_1\otimes\Pi_2\) 有 \(C(\rho_1\otimes\rho_2)=C(\rho_1)+C(\rho_2)\)；
+  \item \textbf{单调性：}对任意与 \(\Pi\) 交换的量子信道 \(\mathcal{N}\) 有 \(C(\mathcal{N}\rho)\le C(\rho)\)；
+  \item \textbf{\(I\)-投影分解：}存在常数 \(c>0\) 使对任意 \(\sigma\in\mathrm{Fix}(\Pi)\) 有
+  \[
+  \boxed{\;
+  D(\rho\|\sigma)=c^{-1}C(\rho)+D(\Pi(\rho)\|\sigma)\;}
+  \]
+  （与 \eqref{eq:dephys-relative-entropy-pythagoras} 同型）。
+\end{enumerate}
+则 \(C\) 必为相对熵投影势的唯一尺度化：
+\[
+\boxed{\;
+C(\rho)=c\,D\bigl(\rho\ \|\ \Pi(\rho)\bigr)\;}
+\]
+其中比例常数 \(c\) 仅反映对数底/单位选择。
+\end{proposition}
+\begin{proof}[证明要点]
+由第 (iv) 条取 \(\sigma=\Pi(\rho)\in\mathrm{Fix}(\Pi)\) 得
+\(
+D(\rho\|\Pi(\rho))=c^{-1}C(\rho)
+\)，即 \(C(\rho)=cD(\rho\|\Pi(\rho))\)。
+其余公理与定理 \ref{thm:dephys-idempotent-monad-i-projection} 的结构相容性（单调性、可加性）由相对熵的标准性质给出。证毕。
 \end{proof}
 
 \endinput
