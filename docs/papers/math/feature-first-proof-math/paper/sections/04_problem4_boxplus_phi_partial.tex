@@ -232,6 +232,114 @@ Differentiate and substitute the formula for $\lambda_i'$ to get
 \]
 \end{proof}
 
+\begin{lemma}[Differential-operator representation of $\boxplus_n$]\label{lem:q4-diffrepr}
+For any monic degree-$n$ polynomials $p,q$,
+\[
+(p\boxplus_n q)(x)=\frac{1}{n!}\sum_{k=0}^{n} p^{(k)}(x)\,q^{(n-k)}(0).
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+p(x)=\sum_{i=0}^n a_i x^{n-i},\qquad q(x)=\sum_{j=0}^n b_j x^{n-j}.
+\]
+For fixed $k$,
+\[
+p^{(k)}(x)=\sum_{i=0}^{n-k} a_i\frac{(n-i)!}{(n-i-k)!}x^{n-i-k},
+\qquad
+q^{(n-k)}(0)=b_k (n-k)!.
+\]
+Hence
+\[
+\frac1{n!}\sum_{k=0}^{n} p^{(k)}(x)q^{(n-k)}(0)
+=
+\sum_{k=0}^{n}\sum_{i=0}^{n-k}
+a_i b_k\frac{(n-i)!(n-k)!}{n!(n-i-k)!}x^{n-i-k}.
+\]
+Set $m=i+k$. The coefficient of $x^{n-m}$ is
+\[
+\sum_{i+k=m}\frac{(n-i)!(n-k)!}{n!(n-m)!}a_i b_k,
+\]
+which is exactly the defining coefficient formula of $p\boxplus_n q$.
+\end{proof}
+
+\begin{lemma}[Variational formula for $1/\Phi_n$]\label{lem:q4-variational}
+If $p$ has simple real roots $\lambda_1,\dots,\lambda_n$, then
+\[
+\frac1{\Phi_n(p)}
+=
+\min_{\substack{w_{ij}\in\mathbb R\\ \sum_{i\neq j} w_{ij}=1}}
+\sum_{i\neq j} w_{ij}^2(\lambda_i-\lambda_j)^2.
+\]
+The minimum is attained at
+\[
+w_{ij}=\frac{(\lambda_i-\lambda_j)^{-2}}{\sum_{a\neq b}(\lambda_a-\lambda_b)^{-2}}
+=\frac{(\lambda_i-\lambda_j)^{-2}}{\Phi_n(p)}.
+\]
+\end{lemma}
+
+\begin{proof}
+Set $d_{ij}:=(\lambda_i-\lambda_j)^2>0$.
+For any weights with $\sum_{i\neq j} w_{ij}=1$, Cauchy--Schwarz gives
+\[
+1^2
+=\left(\sum_{i\neq j} w_{ij}\right)^2
+=\left(\sum_{i\neq j} (w_{ij}\sqrt{d_{ij}})\,d_{ij}^{-1/2}\right)^2
+\le
+\left(\sum_{i\neq j} w_{ij}^2 d_{ij}\right)
+\left(\sum_{i\neq j} d_{ij}^{-1}\right).
+\]
+Thus
+\[
+\sum_{i\neq j} w_{ij}^2 d_{ij}\ge \frac1{\sum_{i\neq j} d_{ij}^{-1}}
+=\frac1{\Phi_n(p)}.
+\]
+Equality holds iff $w_{ij}\sqrt{d_{ij}}$ is proportional to $d_{ij}^{-1/2}$, i.e. $w_{ij}=c\,d_{ij}^{-1}$.
+The constraint $\sum w_{ij}=1$ gives $c=1/\Phi_n(p)$.
+\end{proof}
+
+\begin{proposition}[Reduction of \eqref{eq:q4-star} to a weighted quadratic inequality]\label{prop:q4-reductionA}
+For roots $\lambda$ of $p$, $\mu$ of $q$, and $\gamma$ of $p\boxplus_n q$, define
+\[
+\mathcal Q_w(\xi):=\sum_{i\neq j} w_{ij}^2(\xi_i-\xi_j)^2
+\quad\text{for}\quad
+w=(w_{ij})_{i\neq j},\ \sum_{i\neq j}w_{ij}=1.
+\]
+Assume the following statement holds for all such $w$:
+\[
+\mathcal Q_w(\gamma)\ge \mathcal Q_w(\lambda)+\mathcal Q_w(\mu).
+\tag{A}\label{eq:q4-A}
+\]
+Then \eqref{eq:q4-star} follows.
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-variational},
+\[
+\frac1{\Phi_n(p\boxplus_n q)}=\min_w \mathcal Q_w(\gamma).
+\]
+If \eqref{eq:q4-A} holds for every $w$, then
+\[
+\min_w \mathcal Q_w(\gamma)
+\ge
+\min_w\big(\mathcal Q_w(\lambda)+\mathcal Q_w(\mu)\big)
+\ge
+\min_w \mathcal Q_w(\lambda)+\min_w \mathcal Q_w(\mu),
+\]
+and another application of Lemma~\ref{lem:q4-variational} gives
+\[
+\frac1{\Phi_n(p\boxplus_n q)}
+\ge
+\frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
+\]
+\end{proof}
+
+\begin{remark}[General-$n$ bottleneck in one line]
+The all-$n$ closure of \eqref{eq:q4-star} is reduced to proving \eqref{eq:q4-A} uniformly in $n$ and $w$.
+This isolates the remaining difficulty to a single weighted quadratic superadditivity statement at the root level.
+\end{remark}
+
 \begin{remark}[Program toward the full theorem]
 A viable closure route for \eqref{eq:q4-star} is to prove a finite-degree entropy-power inequality for a discriminant-based functional compatible with $\boxplus_n$. Combined with Lemma~\ref{lem:q4-debruijn}, this would mirror the classical entropy-power $\Rightarrow$ Stam mechanism.
 \end{remark}
