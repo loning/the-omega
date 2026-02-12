@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V21`
-- Review Version: `Q4-R21`
+- Submission Version: `Q4-V22`
+- Review Version: `Q4-R22`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -64,6 +64,10 @@
     support
     `1/Phi_n((I-alpha D)p) >= 1/Phi_n(p)` whenever `(I-alpha D)p` stays real-rooted.
     This is the `N(q_alpha)=0` boundary case with `q_alpha(x)=x^n-n alpha x^{n-1}`.
+29. **NEW: Quadratic-step route falsified**:
+    direct monotonicity for
+    `I - beta D + gamma D^2` (`gamma>0`, `beta^2<4gamma`) is false even on real-rooted inputs/outputs.
+    Explicit `n=4` counterexample added in section text.
 
 ## Findings From Independent Re-check
 
@@ -104,7 +108,7 @@ Current main closure routes:
    into elementary steps `(I - alpha_m D)` and proving the inequality inductively.
 5. **First-order step route (new evidence):** prove the one-step monotonicity
    `N((I-alpha D)p) >= N(p)` for all real-rooted admissible steps; combine with a
-   factorization regime where `T_n(q)` can be handled by real admissible factors.
+   factorization regime where `T_n(q)` can be handled without relying on naive quadratic-step monotonicity.
 
 ## Conclusion
 
