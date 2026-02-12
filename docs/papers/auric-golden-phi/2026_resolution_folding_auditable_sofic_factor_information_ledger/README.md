@@ -63,7 +63,7 @@ The pipeline will write:
 Registered steps (see `python3 scripts/run_all.py --list`):
 
 - **collision_moments**: brute-force enumerations of collision moments \(S_k(m)\) for small \(m\); exports `artifacts/export/collision_moments.csv` and `sections/generated/tab_collision_rates.tex`.
-- **moment_kernel_spectra**: compiles moment-kernel spectra from the delay-\(3\) online transducer; exports `artifacts/export/moment_kernel_spectra.csv` and `sections/generated/tab_moment_kernel_spectra.tex`.
+- **sync_theory**: determinization-based synchronization certificates for the ambiguity shell; exports `artifacts/export/sync_theory.csv` and `sections/generated/tab_sync_theory.tex`.
 
 ## Writing and splitting conventions
 
