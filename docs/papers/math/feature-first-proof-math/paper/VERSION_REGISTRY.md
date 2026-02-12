@@ -7,7 +7,7 @@ This file tracks the latest reviewed version for each problem.
 | Q1 | Q1-R4 | PASS |
 | Q2 | Q2-R5 | PASS |
 | Q3 | Q3-R8 | PASS (closed as NO in general via explicit negative-ratio counterexample) |
-| Q4 | Q4-R15 | PARTIAL PASS (special cases + monotone-sum all-n theorem + heat intertwining + derivative recursion + transform-factor decomposition + edge-score first-moment identity closed; added single-bottleneck sufficient reduction and explicit n=8 counterexample showing it is too strong; general boxplus n>=4 open) |
+| Q4 | Q4-R16 | PARTIAL PASS (special cases + monotone-sum all-n theorem + heat intertwining + derivative recursion + transform-factor decomposition + edge-score first-moment identity closed; added single-bottleneck sufficient reduction and explicit n=8 counterexample showing it is too strong; added direct adversarial tests of concavity numerator with no positive counterexample found up to tested n=14; general boxplus n>=4 open) |
 | Q5 | Q5-R5 | PASS |
 | Q6 | Q6-R3 | FAIL (partial results verified; main existence still open) |
 | Q7 | Q7-R5 | FAIL (odd-torsion no-go closed; pure 2-primary case open) |

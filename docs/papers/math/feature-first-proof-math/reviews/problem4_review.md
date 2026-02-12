@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V15`
-- Review Version: `Q4-R15`
+- Submission Version: `Q4-V16`
+- Review Version: `Q4-R16`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -48,6 +48,10 @@
 3. Candidate bridge `1/Phi(roots(p boxplus q)) >= 1/Phi(sort(lambda+mu))` is false numerically.
 4. The new sufficient inequality in item (20) is mathematically valid as a sufficient route, but it is too strong in general:
    explicit numerical counterexamples appear already at `n=8`, while the full concavity condition in (18) can still hold on the same root configuration.
+5. Direct adversarial search on the exact concavity numerator
+   `2(Phi')^2 - Phi'' Phi` (whose positivity would refute concavity)
+   found no positive values for tested dimensions `n=8,10,12,14`;
+   best values approached `0` from below.
 
 ## Remaining Gap
 
