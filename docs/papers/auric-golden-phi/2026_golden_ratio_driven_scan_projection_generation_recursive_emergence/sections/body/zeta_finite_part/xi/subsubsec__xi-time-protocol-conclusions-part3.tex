@@ -1,0 +1,371 @@
+\subsubsection{稳定边界的 \texorpdfstring{$\mathcal{O}_2$}{O2} 表示、码长 KMS 常数与指数律}\label{subsubsec:xi-time-protocol-conclusions-part3}
+本节续接 \S\ref{subsubsec:xi-time-protocol-conclusions-part2}。依 \cite{Internal2026POMGenerativeAddressThreeRegisterBridgeRH}（2026-02-09 版本）所固定的单生成元扫描迭代口径，时间被视为协议内禀变量（迭代计数），并在“二元窗口读出 \(+\) 规范归一化层”约束下把黄金分支外部化为可审计的不变量常数。以下给出结论 139--153 的可审计形式化压缩：它们把稳定语法的前缀分割提升为 \(\mathcal{O}_2\) 的前缀等距机制，并把 \(\beta=\log\varphi\) 与 \(\log(2/\varphi)\) 分别锁定为热力学与指数预算的强迫常数。
+\par
+
+\paragraph{稳定边界语法与前缀分割}
+记稳定边界语法为
+\[
+X_\infty:=\{c\in\{0,1\}^{\mathbb N}:\ c_kc_{k+1}=0\ \ (k\ge 1)\},
+\]
+并用圆柱集记号
+\(
+[0]:=\{x\in X_\infty:\ x_1=0\}
+\)、
+\(
+[10]:=\{x\in X_\infty:\ x_1=1,\ x_2=0\}
+\)。
+由于禁词 \(11\)，有严格分割 \(X_\infty=[0]\sqcup[10]\)。
+
+\begin{theorem}[前缀分割诱导的 Cuntz 关系：稳定边界的 \texorpdfstring{$\mathcal{O}_2$}{O2} 前缀表示]\label{thm:xi-prefix-partition-cuntz-o2-representation}
+令
+\(
+A=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix}
+\)
+为黄金均值 SFT 的邻接矩阵，并记其一侧空间为 \(X_A^+\)。
+则可自然识别 \(X_A^+\cong X_\infty\)，且在 Cuntz--Krieger 代数 \(\mathcal{O}_A\) 中存在两等距元
+\[
+T_0:=S_0,\qquad T_1:=S_{10}:=S_1S_0,
+\]
+满足 Cuntz 关系
+\[
+T_i^\ast T_j=\delta_{ij}I,\qquad T_0T_0^\ast+T_1T_1^\ast=I.
+\]
+从而 \(\mathrm{C}^\ast(T_0,T_1)\) 给出 \(\mathcal{O}_2\) 的一个具体实现；其对角子代数 \(\mathcal{D}_A\cong C(X_\infty)\) 为规范 MASA，且圆柱投影 \(T_\mu T_\mu^\ast\) 对应于 \(\mathbf 1_{[\mu]}\)（见注 \ref{prop:ck-diagonal-cylinders}）。
+\end{theorem}
+
+\begin{proof}
+在 \(\mathcal{O}_A\) 的标准生成元 \(\{S_0,S_1\}\) 下，
+Cuntz--Krieger 关系给出 \(S_0^\ast S_0=S_0S_0^\ast+S_1S_1^\ast=I\)，且 \(S_0^\ast S_1=0\)。
+因此 \(T_0=S_0\) 为等距，且
+\[
+T_1^\ast T_1
+=(S_1S_0)^\ast(S_1S_0)
+=S_0^\ast S_1^\ast S_1 S_0
+=S_0^\ast(S_0S_0^\ast)S_0
+=I.
+\]
+又由 \(S_0^\ast S_1=0\) 得 \(T_0^\ast T_1=0\)。
+并且
+\(
+T_1T_1^\ast=S_1S_0S_0^\ast S_1^\ast=S_1S_1^\ast
+\)，
+故
+\(
+T_0T_0^\ast+T_1T_1^\ast=S_0S_0^\ast+S_1S_1^\ast=I
+\)。
+由此得到所述 Cuntz 关系。
+对角 MASA 与柱投影识别已在注 \ref{prop:ck-diagonal-cylinders} 中固定，证毕。
+\end{proof}
+
+\begin{theorem}[Fibonacci SFT 的非交换包络唯一锁定为 \texorpdfstring{$\mathcal{O}_2$}{O2}]\label{thm:xi-fibonacci-sft-ck-algebra-is-o2}
+在定理 \ref{thm:xi-prefix-partition-cuntz-o2-representation} 的设定下，有同构
+\[
+\mathcal{O}_A\ \cong\ \mathcal{O}_2.
+\]
+并且由 \(I-A^{\mathsf T}=\begin{pmatrix}0&-1\\[2pt]-1&1\end{pmatrix}\) 的 \(\det=-1\) 可核验地得到
+\[
+K_0(\mathcal{O}_A)\cong \mathrm{coker}(I-A^{\mathsf T})=0,\qquad
+K_1(\mathcal{O}_A)\cong \ker(I-A^{\mathsf T})=0.
+\]
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:xi-prefix-partition-cuntz-o2-representation}，
+\(\{T_0,T_1\}\subset\mathcal{O}_A\) 满足 \(\mathcal{O}_2\) 的生成关系，
+故由普适性质存在满同态
+\(\pi:\mathcal{O}_2\twoheadrightarrow \mathrm{C}^\ast(T_0,T_1)\)。
+另一方面，
+\(
+S_0=T_0
+\)、
+\(
+S_1=T_1T_0^\ast
+\)
+均属于 \(\mathrm{C}^\ast(T_0,T_1)\)，从而 \(\mathrm{C}^\ast(T_0,T_1)=\mathcal{O}_A\)，故 \(\pi\) 为满同态到 \(\mathcal{O}_A\)。
+由于 \(\mathcal{O}_2\) 为单纯代数，\(\ker\pi\) 只能为 \(0\)，从而 \(\pi\) 为同构。
+\par
+最后一段的 \(K\)-群计算是对 \(I-A^{\mathsf T}\) 的整数线性代数核验，且与文内已固定的 Cuntz--Krieger \(K\)-理论接口公式一致。
+证毕。
+\end{proof}
+
+\begin{proposition}[规范核的维数群为 \texorpdfstring{$\mathbb Z[\varphi]$}{Z[phi]}：AF 核与唯一迹]\label{prop:xi-af-core-dimension-group-zphi}
+令 \(\gamma\) 为 \(\mathcal{O}_A\) 的规范圆周作用（gauge action），并记不动点代数 \(F_A:=\mathcal{O}_A^\gamma\)。
+则 \(F_A\) 为 AF 代数，且其 \(K_0\) 维数群具有平稳归纳极限表示
+\[
+K_0(F_A)\ \cong\ \varinjlim\bigl(\mathbb Z^2\xrightarrow{A^{\mathsf T}}\mathbb Z^2\xrightarrow{A^{\mathsf T}}\cdots\bigr),
+\]
+并作为有序交换群与 \(\mathbb Z[\varphi]=\{a+b\varphi:\ a,b\in\mathbb Z\}\) 同构（秩 \(2\)），其正锥由 Perron--Frobenius 特征向量诱导。特别地，\(F_A\) 存在唯一规范迹 \(\tau\)，其在 \(K_0(F_A)\) 上给出唯一状态同态。
+\end{proposition}
+
+\begin{proof}[证明要点]
+\(F_A\) 的 AF 性与其维数群的平稳归纳极限表示是 Cuntz--Krieger 核的标准结构结论；
+对 \(A=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)\)，PF 特征值为 \(\varphi\)，故由 PF 数据诱导的有序维数群可等价表述为 \(\mathbb Z[\varphi]\)（秩 \(2\)）及其自然正锥。
+原始性（primitive）保证迹的遍历性，从而规范迹唯一。证毕。
+\end{proof}
+
+\begin{theorem}[由码长 \((1,2)\) 诱导的准自由动力学：KMS 临界逆温 \texorpdfstring{$\beta=\log\varphi$}{beta=log phi} 的强迫性]\label{thm:xi-kms-critical-beta-logphi}
+在 \(\mathcal{O}_2\) 的前缀等距族 \(\{T_0,T_1\}\) 上定义准自由时间演化
+\[
+\alpha_t(T_0)=e^{it}T_0,\qquad \alpha_t(T_1)=e^{2it}T_1.
+\]
+若 \(\omega\) 为某个逆温 \(\beta\) 的 KMS\(_\beta\) 态，则 \(\beta\) 被 Kraft 自洽方程强制为唯一解
+\[
+e^{-\beta}+e^{-2\beta}=1,
+\qquad\text{从而}\qquad
+\beta=\log\varphi.
+\]
+并且在该 \(\beta\) 处存在唯一 KMS\(_\beta\) 态 \(\omega_\beta\)，其在对角 \(C(X_\infty)\cong\mathcal{D}_A\) 上诱导的平衡测度 \(\nu\) 满足
+\[
+\nu([0])=\varphi^{-1},\qquad \nu([10])=\varphi^{-2}.
+\]
+\end{theorem}
+
+\begin{proof}
+对任意 KMS\(_\beta\) 态 \(\omega\) 与解析元 \(T_i\)，由 KMS 条件得
+\[
+\omega(T_iT_i^\ast)=\omega\bigl(T_i^\ast\alpha_{i\beta}(T_i)\bigr)
+=e^{-\beta\ell_i}\,\omega(T_i^\ast T_i)
+=e^{-\beta\ell_i},
+\]
+其中 \((\ell_0,\ell_1)=(1,2)\)。
+将 \(I=T_0T_0^\ast+T_1T_1^\ast\) 代入即得 \(1=e^{-\beta}+e^{-2\beta}\)，且该方程在 \(\beta>0\) 上单调递减故解唯一，显式解为 \(\beta=\log\varphi\)。
+\par
+唯一性与对角边际由准自由动力学的标准 KMS 分类给出：\(\omega_\beta\) 在柱投影上满足
+\(\omega_\beta(T_0T_0^\ast)=\varphi^{-1}\)、\(\omega_\beta(T_1T_1^\ast)=\varphi^{-2}\)，并由乘法结构确定其在 \(\mathcal{D}_A\) 上的平衡测度 \(\nu\)。证毕。
+\end{proof}
+
+\begin{proposition}[稳定边界的谱维数：\texorpdfstring{$\dim_{\mathrm H}(X_\infty)=\frac{\log\varphi}{\log 2}$}{dimH=logphi/log2}]\label{prop:xi-stable-boundary-hausdorff-dimension}
+以超度量
+\(
+d(x,y)=2^{-N(x,y)}
+\)
+赋予 \(X_\infty\) Cantor 结构，其中 \(N(x,y)\) 为首次分歧位次。
+则 Hausdorff 维数满足
+\[
+\dim_{\mathrm H}(X_\infty)=\frac{\log\varphi}{\log 2}.
+\]
+\end{proposition}
+
+\begin{proof}
+长度为 \(m\) 的圆柱划分给出直径 \(2^{-m}\) 的球覆盖，其球数为合法词数 \(|X_m|=F_{m+2}\)。
+由 Binet 渐近 \(F_{m+2}=\varphi^{m+2}/\sqrt5+o(\varphi^m)\) 得
+\[
+\dim_{\mathrm H}(X_\infty)
+=\lim_{m\to\infty}\frac{\log |X_m|}{m\log 2}
+=\frac{\log\varphi}{\log 2}.
+\]
+证毕。
+\end{proof}
+
+\begin{proposition}[可测谱三元组实现：谱维数与 Dixmier 迹恢复平衡测度]\label{prop:xi-stable-boundary-spectral-triple}
+存在 Connes 型谱三元组 \((\mathcal A,\mathcal H,D)\)（\(\mathcal A\subset C(X_\infty)\) 为 Lipschitz 稠密子代数），使得谱维数满足
+\[
+\inf\{s>0:\ \mathrm{Tr}(|D|^{-s})<\infty\}
+=\frac{\log\varphi}{\log 2},
+\]
+并且在临界指数处的 Dixmier 迹在 \(\mathcal A\) 上诱导出定理 \ref{thm:xi-kms-critical-beta-logphi} 的平衡测度 \(\nu\)（在柱代数上与 \(\omega_\beta\) 的对角边际一致）。
+\end{proposition}
+
+\begin{proof}[证明要点（可审计）]
+以圆柱树（Michon 树）实现 \(X_\infty\) 的超度量结构，并按层级直径 \(2^{-m}\) 取标准 Dirac 赋值 \(D\sim 2^m\)；
+谱 \(\zeta\)-函数的收敛指数由层级球计数增长率 \(|X_m|\asymp \varphi^m\) 决定，从而给出谱维数等于命题 \ref{prop:xi-stable-boundary-hausdorff-dimension} 的 Hausdorff 维数。
+对 Dixmier 迹的边际恢复由该树上“按层归一化”的迹极限与柱投影权重一致性给出，证毕。
+\end{proof}
+
+\begin{proposition}[折叠的自由能密度恒等式：\texorpdfstring{$\log 2-\log\varphi=\log(2/\varphi)$}{log2-logphi} 作为模斜率]\label{prop:xi-free-energy-density-log2-over-phi}
+在二元窗口读出与 Zeckendorf 归一化层的制度下，令 \(\mathrm{Fold}^{\mathrm{bin}}_m\) 为二进制区间折叠，\(\mu_m\) 为均匀微态推前分布（推论 \ref{cor:fold-bin-two-point-limit-law}），并令 \(\omega_\beta\) 为定理 \ref{thm:xi-kms-critical-beta-logphi} 的 KMS 平衡态。
+则相对熵密度极限存在且满足
+\[
+\lim_{m\to\infty}\frac{1}{m}\,\mathbb E_{\mu_m}\bigl[\log d_m^{\mathrm{bin}}(W_m)\bigr]
+=\log 2-\log\varphi
+=\log(2/\varphi),
+\]
+其中 \(d_m^{\mathrm{bin}}\) 为 bin-fold 纤维多重度（定理 \ref{thm:fold-bin-two-state-asymptotic}），\(W_m\sim\mu_m\)。
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:fold-bin-two-state-asymptotic} 的两态一致渐近，
+\(
+\log d_m^{\mathrm{bin}}(w)
+=m\log(2/\varphi)-w_m\log\varphi+O(1)
+\)
+且误差一致。
+再由推论 \ref{cor:fold-bin-two-point-limit-law} 给出的末位权重极限，得
+\(
+\mathbb E_{\mu_m}[w_m]\to 1/(\varphi\sqrt5)
+\)，
+从而主阶密度为 \(m\log(2/\varphi)\)；两端同除以 \(m\) 得所示极限。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\mathcal{O}_2$}{O2} 前缀动力学的零色散：有限块长二阶项退化为常数]\label{thm:xi-zero-dispersion-prefix}
+在 bin-fold 读出制度下，令 \(B_m^{\mathrm{bin}}(\varepsilon)\) 为纤维阈值分位（推论 \ref{cor:fold-bin-quantile-threshold-constant}）。
+则对任意固定 \(\varepsilon\in(0,1)\) 存在分段常数 \(b(\varepsilon)\) 使
+\[
+\log B_m^{\mathrm{bin}}(\varepsilon)
+=m\log(2/\varphi)+b(\varepsilon)+o(1),
+\qquad (m\to\infty),
+\]
+并且不存在 \(\sqrt m\) 级二阶修正项（“色散”为零）：偏离主阶的随机波动在 \(O(1)\) 量级上封顶。
+\end{theorem}
+
+\begin{proof}
+推论 \ref{cor:fold-bin-quantile-threshold-constant} 给出
+\(
+(\varphi/2)^m B_m^{\mathrm{bin}}(\varepsilon)\to c(\varepsilon)\in\{1,\varphi^{-1}\}
+\)，
+从而
+\(
+\log B_m^{\mathrm{bin}}(\varepsilon)
+=m\log(2/\varphi)+\log c(\varepsilon)+o(1)
+\)。
+故二阶仅为常数漂移 \(b(\varepsilon)=\log c(\varepsilon)\)，不存在 \(\sqrt m\) 级项。证毕。
+\end{proof}
+
+\begin{proposition}[全局一致的最优可逆化构造：跨分辨率回放语义的可计算自然性]\label{prop:xi-global-reversible-lifting}
+对每个 \(m\) 存在一族可计算双射
+\[
+\Theta_m:\Omega_m\ \xrightarrow{\ \cong\ }\ \bigsqcup_{x\in X_m}\{x\}\times[d_m(x)],
+\]
+满足：
+\begin{enumerate}
+  \item 第一坐标等于折叠 \(x=\Fold_m(\omega)\)；
+  \item 第二坐标可取为纤维重构图 \(\mathcal F_x\) 的 Hamilton 路径序号，从而在每步仅翻转一个微观位点（一次开关）并常延迟枚举全纤维（推论 \ref{cor:pom-fiber-constant-delay-traversal}）；
+  \item 在 fold-aware restriction 的 Gauge 口径下（定义 \ref{def:pom-fold-aware-restriction}、命题 \ref{prop:pom-gauge-natural}），上述回放坐标可与稳定逆系统 \(\varprojlim X_m\) 的截断自然相容，从而形成跨分辨率一致的回放语义。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[证明要点]
+对固定 \(m\) 与 \(x\in X_m\)，推论 \ref{cor:pom-fiber-constant-delay-traversal} 给出 \(\Fold_m^{-1}(x)\) 的 Hamilton 遍历，从而给出纤维内的可计算编号；在全体纤维上拼接得到 \(\Theta_m\)。
+跨分辨率相容性由 fold-aware restriction 的自然性（命题 \ref{prop:pom-gauge-natural}）与逆极限泛性质（定理 \ref{thm:pom-inverse-limit}）保证：跨尺度比较必须先落到稳定逆系统坐标，回放坐标随后作为纤维内选择的附加证书并可在该 Gauge 下统一。证毕。
+\end{proof}
+
+\begin{proposition}[Zeckendorf 正规化的 Bratteli--Vershik 极限与 \texorpdfstring{$\mathcal{O}_2$}{O2} 端同态：重写系统的算子化闭包]\label{prop:xi-zeckendorf-bratteli-vershik-endomorphism}
+将 Zeckendorf 正规化视为局部重写系统（核 \(011\leftrightarrow 100\)），并在稳定逆极限 \(X_\infty\cong\varprojlim X_m\) 上构造 Bratteli--Vershik 变换
+\(
+V:X_\infty\to X_\infty
+\)
+（由字典序后继与端点回绕定义），从而得到交叉积 \(C(X_\infty)\rtimes_V\mathbb Z\) 的可逆回放闭包。
+\par
+在定理 \ref{thm:xi-prefix-partition-cuntz-o2-representation} 的前缀等距族 \((T_0,T_1)\) 下，Cuntz 端同态
+\[
+\Lambda(a):=T_0 a T_0^\ast+T_1 a T_1^\ast
+\]
+把对角 \(C(X_\infty)\cong\mathcal{D}_A\) 压缩到与前缀分割相容的不可逆观测层；与之配对的 \(V\) 轨道提供“正规形唯一”的全局回放坐标，从而把“值保持重写—回放—压缩”统一到同一可审计闭包图式。
+\end{proposition}
+
+\begin{proof}[证明要点]
+Bratteli--Vershik 变换可取为 Fibonacci Bratteli 图上的 adic 后继；其路径空间与 \(X_\infty\) 的圆柱树同构，并与稳定逆系统投影相容（定理 \ref{thm:pom-inverse-limit}）。
+端同态 \(\Lambda\) 的存在性由 \(\mathcal{O}_2\) 的等距生成关系给出；其在对角上的作用由柱投影 \(T_\mu T_\mu^\ast\leftrightarrow \mathbf 1_{[\mu]}\) 的识别（注 \ref{prop:ck-diagonal-cylinders}）逐项核验即可。
+证毕。
+\end{proof}
+
+\begin{proposition}[折叠条件期望的指数斜率：指数常数与 \texorpdfstring{$\log(2/\varphi)$}{log(2/phi)} 的同一]\label{prop:xi-fold-conditional-expectation-index-slope}
+对 bin-fold 的有限维交换代数包含 \(\mathcal{B}_m\subset\mathcal{A}_m\) 取纤维平均条件期望 \(E_m^{\mathrm{bin}}:\mathcal{A}_m\to\mathcal{B}_m\)。
+记其 Watatani 指数为 \(\mathrm{Ind}(E_m^{\mathrm{bin}})\)，并定义指数斜率
+\[
+\iota:=\lim_{m\to\infty}\frac{1}{m}\log \mathrm{Ind}(E_m^{\mathrm{bin}}).
+\]
+则极限存在且满足
+\[
+\iota=\log(2/\varphi).
+\]
+\end{proposition}
+
+\begin{proof}
+在有限维交换口径下，\(\mathrm{Ind}(E_m^{\mathrm{bin}})\) 等于最大纤维多重度 \(d^{\mathrm{bin}}_{\max}(m)\)（与命题 \ref{prop:op-algebra-index-extremal-entropy-loss-maxfiber} 的同型推导一致）。
+由定理 \ref{thm:fold-bin-max-fiber-exponent}，
+\(
+\lim_{m\to\infty}\frac{1}{m}\log d^{\mathrm{bin}}_{\max}(m)=\log(2/\varphi)
+\)，
+故结论成立。证毕。
+\end{proof}
+
+\begin{proposition}[稳定边界的唯一遍历平衡：Parry 测度的不可替代性]\label{prop:xi-unique-equilibrium-parry}
+在定理 \ref{thm:xi-kms-critical-beta-logphi} 的码长动力学下，平衡测度 \(\nu\) 为唯一 KMS 平衡测度，并在 \(X_\infty\) 上唯一遍历。
+因此任何与前缀动力学相容且具有限能量密度的可见统计极限，必与 \(\nu\) 的圆柱边际一致。
+\end{proposition}
+
+\begin{proof}[证明要点]
+对一侧 SFT，最大熵态（Parry 测度）唯一且遍历（命题 \ref{prop:Phi_m-parry} 及其标准推论）。
+而码长 KMS 平衡在对角上等价于上述平衡测度（定理 \ref{thm:xi-kms-critical-beta-logphi}）。
+故平衡测度唯一且唯一遍历；相容统计极限在圆柱代数上由平衡态锁定。证毕。
+\end{proof}
+
+\begin{proposition}[尺度协变 LDP 退化：指数速度上的单点率函数]\label{prop:xi-ldp-collapse-single-point}
+令 \(\mathcal I_m\) 为由 bin-fold 纤维量生成的信息密度序列（如 \(\log d_m^{\mathrm{bin}}(W_m)\) 或其可测函数），并以 \(\mu_m\) 取样。
+则在指数速度 \(m\) 下，\(\mathcal I_m/m\) 的大偏差率函数退化为单点：除一个确定常数外率函数为 \(+\infty\)。
+等价地，所有指数级相变均被排除，偏离只可能残留在 \(O(1)\) 偏置项上。
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:fold-bin-renyi-rate-collapse}，\(\gamma_m:=\frac{1}{m}\log d_m^{\mathrm{bin}}(W_m)\) 满足
+\(
+\gamma_m\to \log(2/\varphi)
+\)
+且偏离仅为 \(O(m^{-1})\)。
+因此任意固定 \(\epsilon>0\)，事件 \(|\gamma_m-\log(2/\varphi)|>\epsilon\) 从某个 \(m\) 起概率恒为 \(0\)，从而指数速度的大偏差率函数在该常数点外取 \(+\infty\)。证毕。
+\end{proof}
+
+\begin{proposition}[两码长系统的 Kraft 自洽方程：逆温由码长唯一决定]\label{prop:xi-kraft-equation-kms-two-lengths}
+设 \(\mathcal{O}_2\) 含一 Cuntz 等距族 \((V_0,V_1)\)，并给定码长 \(\ell_0,\ell_1\in\mathbb N\)。
+以
+\(
+\alpha_t(V_i)=e^{i\ell_i t}V_i
+\)
+定义准自由演化。
+则任一 KMS\(_\beta\) 态的逆温 \(\beta\) 必满足唯一自洽方程
+\[
+e^{-\beta \ell_0}+e^{-\beta \ell_1}=1,
+\]
+从而当 \((\ell_0,\ell_1)=(1,2)\) 时回收 \(\beta=\log\varphi\)。
+\end{proposition}
+
+\begin{proof}
+与定理 \ref{thm:xi-kms-critical-beta-logphi} 同理，KMS 条件给出
+\(
+\omega(V_iV_i^\ast)=e^{-\beta\ell_i}
+\)。
+对 \(\sum_i V_iV_i^\ast=I\) 取态值得到 Kraft 方程；
+其在 \(\beta>0\) 上严格单调，故解唯一。证毕。
+\end{proof}
+
+\begin{proposition}[从码长 KMS 到边界三塔计数的函子化接口]\label{prop:xi-kms-to-boundary-tower-functor}
+令 \(\mathcal{D}_m\subset C(X_\infty)\) 为长度 \(m\) 圆柱代数，并以自然投影把圆柱 \([c_1\cdots c_m]\) 压缩到有限层 \(X_m\)。
+则定理 \ref{thm:xi-kms-critical-beta-logphi} 的 KMS 平衡态 \(\omega_\beta\) 在 \(\mathcal{D}_m\) 上诱导一族相容的有限层边际；其在边界词塔（\S\ref{subsec:bdry-tower-zeck-gut}）的三层 \(m\in\{4,6,8\}\) 上给出可审计的有限秩截断：
+\[
+\dim \mathcal{D}_m=|X_m|=F_{m+2},\qquad
+\mathrm{rank}\!\left(\sum_{x\in X_m^{\mathrm{bdry}}}P_x\right)=|X_m^{\mathrm{bdry}}|=F_{m-2},
+\]
+从而边界三塔计数接口严格回收
+\(
+|X_4^{\mathrm{bdry}}|+|X_6^{\mathrm{bdry}}|+|X_8^{\mathrm{bdry}}|
+=1+3+8
+\)。
+\end{proposition}
+
+\begin{proof}[证明要点]
+\(\mathcal{D}_m\) 的极小投影与长度 \(m\) 合法词一一对应，故 \(\dim\mathcal{D}_m=|X_m|\)。
+边界投影为边界圆柱投影之和，其秩即对应可见边界词数 \(|X_m^{\mathrm{bdry}}|\)，而该计数在 \S\ref{subsec:bdry-tower-zeck-gut} 中已由稳定语法的闭式给出。证毕。
+\end{proof}
+
+\begin{proposition}[临界切片的非负模方充分条件：单侧因子化 \texorpdfstring{$\Rightarrow$}{=>} 临界切片非负性]\label{prop:xi-critical-line-nonnegative-modsquare}
+设存在解析族 \(s\mapsto D_+(s)\) 使完成化行列式满足因子化
+\[
+D(s)=D_+(s)\,\overline{D_+(1-\overline{s})}.
+\]
+则在临界切片上有严格恒等式
+\[
+D\!\left(\tfrac12+it\right)=\Bigl|D_+\!\left(\tfrac12+it\right)\Bigr|^2\in\mathbb R_{\ge 0}.
+\]
+因此离临界异常可被归约为单侧因子 \(D_+\) 在右半平面的零点结构。
+\end{proposition}
+
+\begin{proof}
+将 \(s=\tfrac12+it\) 代入因子化式，并注意到 \(1-\overline{s}=\tfrac12+it\)，得
+\(
+D(\tfrac12+it)=D_+(\tfrac12+it)\,\overline{D_+(\tfrac12+it)}
+=|D_+(\tfrac12+it)|^2
+\)；
+右端非负实性显然。证毕。
+\end{proof}
+
