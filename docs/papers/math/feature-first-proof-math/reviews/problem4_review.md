@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V16`
-- Review Version: `Q4-R16`
+- Submission Version: `Q4-V17`
+- Review Version: `Q4-R17`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -39,6 +39,10 @@
     `sum_{i<j} g_{ij} = ||s||^2 = Phi_n`.
 20. New one-inequality sufficient reduction:
     If `(sum g_{ij}^2)^2 <= (sum g_{ij})(sum g_{ij}^3)`, then the full concavity condition in (18) follows.
+21. New exact defect-split identity:
+    concavity numerator equals
+    `4[(||s||^2||Ls||^2-(sum g_{ij}^2)^2) + (||s||^2 sum g_{ij}^3-(sum g_{ij}^2)^2)]`,
+    i.e. Cauchy-Schwarz defect + signed edge-moment defect.
 
 ## Findings From Independent Re-check
 
@@ -52,6 +56,9 @@
    `2(Phi')^2 - Phi'' Phi` (whose positivity would refute concavity)
    found no positive values for tested dimensions `n=8,10,12,14`;
    best values approached `0` from below.
+6. The new defect decomposition clarifies mechanism:
+   failures of item (20) correspond to negative signed edge-moment defect,
+   but they can be absorbed by a positive Cauchy-Schwarz defect.
 
 ## Remaining Gap
 
