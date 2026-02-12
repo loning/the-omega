@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V22`
-- Review Version: `Q4-R22`
+- Submission Version: `Q4-V23`
+- Review Version: `Q4-R23`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -68,6 +68,10 @@
     direct monotonicity for
     `I - beta D + gamma D^2` (`gamma>0`, `beta^2<4gamma`) is false even on real-rooted inputs/outputs.
     Explicit `n=4` counterexample added in section text.
+30. **NEW: First-order step closed for low degree**:
+    proposition `q4-firststep-n23` proves
+    `N((I-alpha D)p) >= N(p)` for all real-rooted monic `p` when `n=2,3`.
+    (`n=2` by explicit discriminant increment; `n=3` by applying the proved full `n=3` Stam inequality to `q_alpha`.)
 
 ## Findings From Independent Re-check
 
@@ -112,4 +116,4 @@ Current main closure routes:
 
 ## Conclusion
 
-`Q4` remains `PARTIAL PASS`: `n=2,3` closed for all `(p,q)`; semi-Gaussian case closed for all `n`; general `n>=4` reduced to precise algebraic bottlenecks.
+`Q4` remains `PARTIAL PASS`: `n=2,3` closed for all `(p,q)` (and first-order step fully closed there); semi-Gaussian case closed for all `n`; general `n>=4` reduced to precise algebraic bottlenecks.
