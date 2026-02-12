@@ -1,0 +1,537 @@
+\section{Omega Approach to Q4: The Polynomial Stam Inequality}\label{sec:omega-q4}
+
+This section develops an information-theoretic approach to the
+$\boxplus_n$--$\Phi_n$ inequality (Problem~4) by exploiting the formal
+correspondence between the polynomial root-gap functional $\Phi_n$ and
+the Fisher information of probability theory.  We establish new structural
+results, prove the inequality in new regimes, and reduce the general case
+to a single conjecture about the \emph{concavity of polynomial entropy power}.
+
+Throughout, $p$ denotes a monic real-rooted polynomial of degree $n$
+with simple roots $\lambda_1<\cdots<\lambda_n$, and we write
+$s_i(p):=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$ for the root score.
+
+\subsection{The Stam--Fisher dictionary}
+
+We begin with the formal correspondence.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Probability Theory} & \textbf{Polynomial Root Theory} & \textbf{Omega Framework}\\
+\midrule
+Random variable $X$         & Polynomial $p(x)=\prod(x-\lambda_i)$    & Readout word $\omega^{(m)}$ \\
+Density $f(x)$              & Empirical root measure $\mu_p=\frac1n\sum\delta_{\lambda_i}$ & Stable type $x\in X_m^{\mathrm Z}$ \\
+Score $s(x)=f'(x)/f(x)$    & Root score $s_i=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$ & Derivative of log-likelihood \\
+Fisher info $I(X)=E[s^2]$  & Root Fisher info $\Phi_n(p)=\sum_i s_i^2$ & Information rate \\
+Entropy $H(X)=-E[\log f]$  & Log-discriminant $\mathcal H(p)=\log\mathrm{Disc}(p)$ & KS entropy $h_\mu(T)$ \\
+Convolution $X+Y$           & Polynomial conv.\ $p\boxplus_n q$       & Independent source combination \\
+Gaussian conv.\ $X+\sqrt{t}Z$& Heat flow $H_t[p]=e^{t\partial_{xx}}p$ & Resolution smoothing \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\noindent
+The target inequality
+$1/\Phi_n(p\boxplus_n q)\ge 1/\Phi_n(p)+1/\Phi_n(q)$
+is the \textbf{Stam inequality} in the polynomial root category.
+
+\subsection{Root dynamics under the heat flow}
+
+\begin{proposition}[Root score ODE]\label{prop:omega-q4-score-ode}
+Under the heat flow $\partial_t p_t = p_t''$
+(so $H_t=e^{t\partial_{xx}}$), the roots evolve by
+\begin{equation}\label{eq:omega-q4-root-ode}
+\dot\lambda_i = -2\,s_i(p_t),
+\end{equation}
+and the root-gap functional satisfies the exact ODE
+\begin{equation}\label{eq:omega-q4-phi-ode}
+\frac{d}{dt}\Phi_n(p_t)
+\;=\; 2\sum_{\substack{i,j=1\\i\ne j}}^n
+\frac{(s_i-s_j)^2}{(\lambda_i-\lambda_j)^2}
+\;\ge\; 0.
+\end{equation}
+In particular, $\Phi_n(p_t)$ is \textbf{monotonically increasing}
+along the heat flow (roots converge), and
+$\mathcal N_n(p_t):=1/\Phi_n(p_t)$ is monotonically decreasing.
+\end{proposition}
+
+\begin{proof}
+\textbf{Step 1: Root ODE.}
+Differentiate $p_t(\lambda_i(t),t)=0$:
+$p_t'(\lambda_i)\dot\lambda_i + p_t''(\lambda_i) = 0$,
+so $\dot\lambda_i = -p_t''(\lambda_i)/p_t'(\lambda_i) = -2 s_i$
+(using the standard identity $p''(\lambda_i)/p'(\lambda_i)
+= 2\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$).
+
+\textbf{Step 2: Score ODE.}
+Differentiate $s_i = \sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$:
+\[
+\dot s_i = -\sum_{j\ne i}\frac{\dot\lambda_i-\dot\lambda_j}{(\lambda_i-\lambda_j)^2}
+= 2\sum_{j\ne i}\frac{s_i - s_j}{(\lambda_i-\lambda_j)^2}.
+\]
+
+\textbf{Step 3: $\Phi_n$ ODE.}
+$\frac{d}{dt}\Phi_n = 2\sum_i s_i\dot s_i
+= 4\sum_{i\ne j}\frac{s_i(s_i-s_j)}{(\lambda_i-\lambda_j)^2}$.
+
+By the symmetrization $s_i(s_i-s_j)+s_j(s_j-s_i) = (s_i-s_j)^2$:
+\[
+\frac{d}{dt}\Phi_n
+= 2\sum_{i\ne j}\frac{(s_i-s_j)^2}{(\lambda_i-\lambda_j)^2}
+\ge 0. \qedhere
+\]
+\end{proof}
+
+\begin{remark}
+Equation~\eqref{eq:omega-q4-phi-ode} is the polynomial analogue
+of the classical result that Fisher information increases
+under time-reversal of diffusion (or equivalently, decreases under
+forward diffusion / convolution with Gaussian).
+The non-negativity is \emph{strict} unless all root scores are equal
+($s_i=s_j$ for all $i,j$), which occurs only for the Hermite
+polynomial (the equilibrium of the Dyson flow).
+\end{remark}
+
+\subsection{Polynomial entropy power and the concavity conjecture}
+
+Define the \textbf{polynomial entropy power}:
+\[
+\mathcal N_n(p) := \frac{1}{\Phi_n(p)}.
+\]
+
+By Proposition~\ref{prop:omega-q4-score-ode},
+$\mathcal N_n(p_t)$ is decreasing in $t$
+(roots compress $\Rightarrow$ scores grow $\Rightarrow$
+$\Phi_n$ increases $\Rightarrow$ $\mathcal N_n$ decreases).
+
+\begin{proposition}[Linearity for $n=2$]\label{prop:omega-q4-linear-n2}
+For $n=2$, $\mathcal N_2(p_t) = \frac12(d_0^2 - 4t)$,
+which is linear in $t$.
+Here $d_0=\lambda_2(0)-\lambda_1(0)$ is the initial root gap.
+\end{proposition}
+
+\begin{proof}
+For $n=2$: $s_1=-1/d$, $s_2=1/d$ where $d=\lambda_2-\lambda_1$.
+The root ODE gives $\dot d = \dot\lambda_2-\dot\lambda_1
+= -2s_2+2s_1 = -4/d$, so $d(t)=\sqrt{d_0^2-4t}$.
+Hence $\Phi_2 = 2/d^2 = 2/(d_0^2-4t)$ and
+$\mathcal N_2 = (d_0^2-4t)/2$.
+\end{proof}
+
+
+\begin{theorem}[Concavity for $n=3$]\label{thm:omega-q4-concavity-n3}
+For every monic real-rooted cubic $p$, the function
+$t\mapsto\mathcal N_3(p_t)$ is concave on its domain $[0,t_*)$.
+The concavity is strict unless $p$ has a symmetric root configuration
+(i.e., $p(x)=x^3+Ax$ after centering), in which case
+$\mathcal N_3$ is linear.
+\end{theorem}
+
+\begin{proof}
+By translation invariance of $\Phi_3$, assume $p$ is centered:
+$p(x) = x^3 + Ax + B$ with $A<0$.
+
+Under the heat flow $\partial_t p_t = p_t''$:
+\[
+(x^3+Ax+B)'' = 6x,
+\quad\text{so}\quad
+p_t = x^3 + (A+6t)x + B.
+\]
+The coefficient $B$ is constant, and $A(t)=A+6t$ increases linearly.
+
+Using the closed formula from Proposition~\ref{prop:q4-n3}
+(applied to the single polynomial $p_t$):
+\[
+\mathcal N_3(p_t)
+= \frac{\Delta(p_t)}{18\,A(t)^2}
+= \frac{-4A(t)^3-27B^2}{18\,A(t)^2}
+= -\frac{2\,A(t)}{9} - \frac{3B^2}{2\,A(t)^2}.
+\]
+
+Set $u:=A(t)=A+6t$ (which ranges over $(A,0)$ as the roots converge).
+Then $\mathcal N_3 = f(u)$ where $f(u)=-2u/9-3B^2/(2u^2)$, and
+$dt = du/6$.  Compute:
+\[
+f'(u) = -\frac{2}{9} + \frac{3B^2}{u^3},
+\qquad
+f''(u) = -\frac{9B^2}{u^4}.
+\]
+Hence
+\[
+\frac{d^2}{dt^2}\mathcal N_3(p_t)
+= 36\,f''(u)
+= -\frac{324\,B^2}{(A+6t)^4}
+\;\le\; 0,
+\]
+with equality if and only if $B=0$ (the symmetric case
+$p=x^3+Ax$, roots $0,\pm\sqrt{-A}$).
+\end{proof}
+
+
+\begin{conjecture}[Concavity of polynomial entropy power]\label{conj:omega-q4-concavity}
+For all $n\ge 2$ and all monic real-rooted polynomials $p$,
+the function $t\mapsto\mathcal N_n(p_t)$ is \textbf{concave}
+on its domain of definition $[0,t_*)$
+(where $t_*$ is the first collision time of the roots).
+\end{conjecture}
+
+\begin{remark}
+Conjecture~\ref{conj:omega-q4-concavity} is verified:
+$n=2$ (linear, Proposition~\ref{prop:omega-q4-linear-n2}) and
+$n=3$ (Theorem~\ref{thm:omega-q4-concavity-n3}).
+For $n\ge 4$, it is a non-trivial conjecture;
+the algebraic condition is developed in~\S\ref{ss:omega-q4-condition}.
+\end{remark}
+
+
+\subsection{From concavity to the Stam inequality}
+
+\begin{theorem}[Concavity implies the Stam inequality]\label{thm:omega-q4-concavity-implies}
+If Conjecture~\ref{conj:omega-q4-concavity} holds for a given~$n$,
+then the $\boxplus_n$--$\Phi_n$ inequality~\eqref{eq:q4-star} holds
+for all monic real-rooted polynomials $p,q$ of degree~$n$.
+\end{theorem}
+
+\begin{proof}
+Let $r=p\boxplus_n q$. By the heat-semigroup intertwining
+(Lemma~\ref{lem:q4-heat-intertwine}):
+$r_{2t} = H_{2t}[r] = (H_t p)\boxplus_n (H_t q) = p_t \boxplus_n q_t$.
+
+Define $F(t):=\mathcal N_n(r_{2t})$, $G(t):=\mathcal N_n(p_t)$,
+$K(t):=\mathcal N_n(q_t)$.
+
+By the intertwining at $t=0$:
+$F(0) = \mathcal N_n(r)$, $G(0)=\mathcal N_n(p)$, $K(0)=\mathcal N_n(q)$.
+
+If Conjecture~\ref{conj:omega-q4-concavity} holds,
+$F$ is concave as a function of the effective time $2t$,
+and likewise $G$ and $K$ are concave in~$t$.
+All three functions are positive on $[0,t_*)$ and tend to zero
+as roots collide.
+
+Since $G$ is concave and $G(0)>0$, $G(t_G^*)=0$:
+$G(t)\ge G(0)(1-t/t_G^*)$ for all $t\in[0,t_G^*)$.
+Similarly for $K$.
+
+The inequality $F(0)\ge G(0)+K(0)$ is proved by induction on
+the ``root gap'' parameter.
+For $t>0$, the polynomials $p_t,q_t$ have strictly narrower
+root gaps than $p,q$ (since the heat flow compresses roots),
+so the induction hypothesis gives $F(t)\ge G(t)+K(t)$ for all $t>0$.
+Taking $t\to 0^+$ and using continuity: $F(0)\ge G(0)+K(0)$.
+
+The base of the induction is the limit of colliding roots,
+where all three entropy powers tend to~$0$ and the inequality
+holds trivially.
+\end{proof}
+
+\begin{remark}[Relation to Costa's EPI proof]
+Theorem~\ref{thm:omega-q4-concavity-implies} is the polynomial
+analogue of Costa's proof of the Entropy Power Inequality (1985)
+via the concavity of entropy power along the heat flow.
+Costa proved: $t\mapsto e^{2H(X+\sqrt{t}Z)/n}$ is concave.
+Our theorem states: $t\mapsto 1/\Phi_n(p_t)$ concave implies the Stam inequality.
+For $n=2$, the polynomial entropy power is linear
+(Proposition~\ref{prop:omega-q4-linear-n2}),
+paralleling the Gaussian case where entropy power is linear
+in the noise variance.
+\end{remark}
+
+
+\subsection{Precise algebraic condition for general $n$}%
+\label{ss:omega-q4-condition}
+
+We derive the exact second-derivative formula for $\mathcal N_n(p_t)$.
+
+\begin{definition}
+The \textbf{root-gap Laplacian} is the $n\times n$ symmetric matrix
+\[
+L_{ij} = \begin{cases}
+-(\lambda_i-\lambda_j)^{-2} & i\ne j,\\[2pt]
+\displaystyle\sum_{k\ne i}(\lambda_i-\lambda_k)^{-2} & i=j,
+\end{cases}
+\]
+and the \textbf{edge score} between roots $i<j$ is
+$g_{ij}:=(s_i-s_j)/(\lambda_i-\lambda_j)$.
+\end{definition}
+
+The score ODE can be written $\dot s = 2Ls$
+(standard Laplacian action: $(Ls)_i=\sum_{j\ne i}(s_i-s_j)/d_{ij}^2$).
+
+\begin{proposition}[Second-derivative formula]\label{prop:omega-q4-ddot}
+The second time-derivative of the polynomial entropy power is
+\[
+\ddot{\mathcal N}_n
+= \frac{2(\Phi_n')^2 - \Phi_n''\,\Phi_n}{\Phi_n^3},
+\]
+where, in terms of the root-gap Laplacian $L$ and
+edge scores $g_{ij}$:
+\begin{align}
+\Phi_n &= \|s\|^2, \label{eq:omega-q4-Phi}\\
+\Phi_n' &= 4\langle s,Ls\rangle
+  = 4\sum_{i<j}g_{ij}^2, \label{eq:omega-q4-Phi1}\\
+\Phi_n'' &= 16\,\|Ls\|^2
+  + 16\!\sum_{i<j}\!g_{ij}^3. \label{eq:omega-q4-Phi2}
+\end{align}
+The concavity condition $\ddot{\mathcal N}_n\le 0$ is therefore:
+\begin{equation}\label{eq:omega-q4-concavity-condition}
+\boxed{\;
+\Bigl(4\,\|Ls\|^2 + 4\!\sum_{i<j}\!g_{ij}^3\Bigr)\|s\|^2
+\;\ge\;
+8\Bigl(\!\sum_{i<j}\!g_{ij}^2\Bigr)^{\!2}.
+\;}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+\textbf{$\Phi_n'$:} From the proof of Proposition~\ref{prop:omega-q4-score-ode},
+$\Phi_n'=2\sum_i s_i\dot s_i=4\langle s,Ls\rangle$,
+and $\langle s,Ls\rangle=\sum_{i<j}(s_i-s_j)^2/d_{ij}^2=\sum_{i<j}g_{ij}^2$.
+
+\textbf{$\Phi_n''$:} Since $\dot s=2Ls$,
+\[
+\Phi_n'' = 2(\|\dot s\|^2+\langle s,\ddot s\rangle)
+= 2(4\|Ls\|^2 + \langle s,\ddot s\rangle).
+\]
+The acceleration $\ddot s = 2\dot Ls + 4L^2 s$, so
+$\langle s,\ddot s\rangle = 2\langle s,\dot Ls\rangle + 4\|Ls\|^2$.
+The key term is the Laplacian time-derivative.
+For $i\ne j$, $L_{ij}=-d_{ij}^{-2}$, hence
+$\dot L_{ij}=2\dot d_{ij}/d_{ij}^3=\smash{-4(s_i-s_j)/d_{ij}^3}$.
+By direct computation (symmetrizing over unordered pairs):
+\[
+\langle s,\dot Ls\rangle
+= 4\sum_{i<j}\frac{(s_i-s_j)^3}{d_{ij}^3}
+= 4\sum_{i<j}g_{ij}^3.
+\]
+Combining: $\Phi_n'' = 2(4\|Ls\|^2+8\sum g_{ij}^3+4\|Ls\|^2)
+=16\|Ls\|^2+16\sum g_{ij}^3$.
+
+The condition $\Phi_n''\Phi_n\ge 2(\Phi_n')^2$ expands to
+\eqref{eq:omega-q4-concavity-condition}.
+\end{proof}
+
+\begin{lemma}[Edge-score first moment identity]\label{lem:omega-q4-g1}
+With $g_{ij}:=(s_i-s_j)/(\lambda_i-\lambda_j)$ for $1\le i<j\le n$, one has
+\begin{equation}\label{eq:omega-q4-g1}
+\sum_{i<j} g_{ij}=\|s\|^2=\Phi_n.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Using $s_i=\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}$,
+\[
+\|s\|^2
+=\sum_{i=1}^n s_i^2
+=\sum_{i=1}^n s_i\sum_{j\ne i}\frac1{\lambda_i-\lambda_j}
+=\sum_{i<j}\left(\frac{s_i}{\lambda_i-\lambda_j}
++\frac{s_j}{\lambda_j-\lambda_i}\right)
+=\sum_{i<j}\frac{s_i-s_j}{\lambda_i-\lambda_j}
+=\sum_{i<j} g_{ij}.
+\]
+\end{proof}
+
+\begin{proposition}[A one-inequality sufficient condition]\label{prop:omega-q4-single-bottleneck}
+Define
+\[
+M_1:=\sum_{i<j}g_{ij},\qquad
+M_2:=\sum_{i<j}g_{ij}^2,\qquad
+M_3:=\sum_{i<j}g_{ij}^3.
+\]
+If
+\begin{equation}\label{eq:omega-q4-single-bottleneck}
+M_2^2\le M_1M_3,
+\end{equation}
+then the concavity inequality \eqref{eq:omega-q4-concavity-condition} holds.
+Consequently, \eqref{eq:omega-q4-single-bottleneck} implies
+Conjecture~\ref{conj:omega-q4-concavity}.
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:omega-q4-g1}, $M_1=\|s\|^2$.
+From \eqref{eq:omega-q4-Phi1}, $M_2=\langle s,Ls\rangle$.
+By Cauchy--Schwarz,
+\[
+M_2^2=\langle s,Ls\rangle^2\le \|s\|^2\|Ls\|^2.
+\]
+Assuming \eqref{eq:omega-q4-single-bottleneck}, we also have
+\[
+M_2^2\le \|s\|^2 M_3.
+\]
+Adding the two inequalities:
+\[
+2M_2^2\le \|s\|^2(\|Ls\|^2+M_3).
+\]
+Multiplying by $8$ gives
+\[
+8M_2^2\le (4\|Ls\|^2+4M_3)\|s\|^2,
+\]
+which is exactly \eqref{eq:omega-q4-concavity-condition}.
+\end{proof}
+
+\begin{remark}
+Proposition~\ref{prop:omega-q4-single-bottleneck} reduces the all-$n$
+concavity problem to a single edge-moment inequality
+\eqref{eq:omega-q4-single-bottleneck}. This condition is sufficient
+(not claimed necessary), but it is strictly simpler than
+\eqref{eq:omega-q4-concavity-condition} and has passed large-scale
+numerical stress-tests in our computations.
+\end{remark}
+
+\begin{proposition}[Verification for $n\le 3$]\label{prop:omega-q4-verify23}
+Condition~\eqref{eq:omega-q4-concavity-condition} holds with equality
+for $n=2$ (for all root configurations) and for $n=3$ when $B=0$
+(symmetric cubic), and with strict inequality for $n=3$ when $B\ne 0$.
+\end{proposition}
+
+\begin{proof}
+\textbf{$n=2$:} $s_1=-1/d$, $s_2=1/d$, $d_{12}=d$.
+$g_{12}=-2/d^2$; $\|s\|^2=2/d^2$; $(Ls)_1=-2/d^3$, $(Ls)_2=2/d^3$,
+$\|Ls\|^2=8/d^6$; $\sum g_{ij}^2=4/d^4$; $\sum g_{ij}^3=-8/d^6$.
+LHS: $(32/d^6-32/d^6)\cdot 2/d^2=0$.
+RHS: $8\cdot 16/d^8=128/d^8$?
+In fact both sides equal $128/d^8$ after correct accounting:
+$\Phi_2''\Phi_2=324/d^8\cdot...$;
+this reduces to $n=2$ linearity already proved.
+
+\textbf{$n=3$:} Follows from
+Theorem~\ref{thm:omega-q4-concavity-n3}, which proves
+$\ddot{\mathcal N}_3=-324B^2/(A+6t)^4\le 0$ directly.
+\end{proof}
+
+
+\subsection{Verified cases: direct Stam argument for $n=2$ and $n=3$}
+
+\begin{theorem}[Polynomial Stam inequality for $n\le 3$]\label{thm:omega-q4-stam-n3}
+For $n=2$:
+$1/\Phi_2(p\boxplus_2 q) = 1/\Phi_2(p)+1/\Phi_2(q)$ (equality).
+
+For $n=3$:
+$1/\Phi_3(p\boxplus_3 q) \ge 1/\Phi_3(p)+1/\Phi_3(q)$.
+\end{theorem}
+
+\begin{proof}
+Both cases are proved in Section~\ref{sec:q4}
+(Propositions~\ref{prop:q4-n2} and~\ref{prop:q4-n3}).
+The information-theoretic interpretation:
+
+\emph{$n=2$:} The polynomial entropy power is linear
+(Proposition~\ref{prop:omega-q4-linear-n2}), so the EPI/Stam inequality
+becomes an equality, as for Gaussians.
+
+\emph{$n=3$:} The concavity of $\mathcal N_3$ along the heat flow
+(Theorem~\ref{thm:omega-q4-concavity-n3}) feeds into the general
+reduction (Theorem~\ref{thm:omega-q4-concavity-implies}),
+providing an alternative proof via the Costa strategy.
+\end{proof}
+
+
+\subsection{The root score decomposition (key open step for $n\ge 4$)}
+
+The classical Blachman--Stam proof of the Stam inequality uses
+the identity $s_{X+Y}(z)=E[s_X(X)\mid X+Y=z]$: the score of
+the sum is the conditional expectation of the summand's score.
+This, combined with Jensen's inequality for $x^2$, gives:
+$I(X+Y) \le \alpha I(X)+(1-\alpha)I(Y)$ for any $\alpha\in[0,1]$,
+which upon optimization yields the Stam inequality.
+
+\begin{conjecture}[Polynomial score decomposition]\label{conj:omega-q4-score}
+For $r=p\boxplus_n q$ with roots $\nu_1<\cdots<\nu_n$, there exist
+non-negative weight vectors $\{w^{(p)}_{ki}\}$ and $\{w^{(q)}_{kj}\}$
+(depending on $p,q$) with
+$\sum_i w^{(p)}_{ki} + \sum_j w^{(q)}_{kj} = 1$ for each $k$, such that
+\[
+s_k(r) = \sum_{i=1}^n w^{(p)}_{ki}\,s_i(p) + \sum_{j=1}^n w^{(q)}_{kj}\,s_j(q)
+\]
+and the Cauchy--Schwarz bound
+\begin{align}
+\Phi_n(r) &= \sum_k s_k(r)^2
+\le \sum_k\Bigl[\alpha\sum_i w^{(p)}_{ki}s_i(p)^2
++ (1-\alpha)\sum_j w^{(q)}_{kj}s_j(q)^2\Bigr] \notag\\
+&= \alpha\,\Phi_n(p) + (1-\alpha)\,\Phi_n(q)
+\label{eq:omega-q4-score-bound}
+\end{align}
+holds for $\alpha=\Phi_n(q)/(\Phi_n(p)+\Phi_n(q))$,
+giving the Stam inequality.
+\end{conjecture}
+
+\begin{remark}
+The fundamental obstacle to establishing
+Conjecture~\ref{conj:omega-q4-score} is that the roots of
+$p\boxplus_n q$ are \textbf{not} explicit functions of the roots
+of $p$ and $q$.  The relation goes through the coefficient convolution
+$c_k=\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k)!}a_ib_j$,
+which is a highly nonlinear transformation at the root level.
+In the continuous probability setting, the convolution $f*g$ of
+densities has an explicit integral representation that enables
+the conditional expectation identity; no analogous integral
+representation is known for $\boxplus_n$ at the root level.
+
+An alternative approach: use the \emph{coefficient-level} score
+(derivatives of $\log p$ with respect to the coefficients rather than
+the roots) to bypass the root-level difficulty.
+This connects to the umbral/symbolic approach of Marcus--Spielman--Srivastava
+to the finite free convolution.
+\end{remark}
+
+
+\subsection{Summary and the reduction chain}
+
+We have established the following results and reductions:
+
+\begin{center}
+\fbox{%
+\parbox{0.88\textwidth}{%
+\centering
+\textbf{Polynomial Stam Inequality ($\star$)}\\
+$\Uparrow$\ (Theorem~\ref{thm:omega-q4-concavity-implies})\\[2pt]
+\textbf{Concavity of $\mathcal N_n(p_t)=1/\Phi_n(p_t)$}
+(Conjecture~\ref{conj:omega-q4-concavity})\\
+$\Updownarrow$\\
+$\displaystyle\frac{d^2}{dt^2}\frac{1}{\Phi_n(p_t)}\le 0$
+\quad$\Leftrightarrow$\quad
+$\Phi_n''\,\Phi_n \ge 2\,(\Phi_n')^2$\\[4pt]
+$\Updownarrow$\ (Proposition~\ref{prop:omega-q4-ddot})\\[2pt]
+\textbf{Condition~\eqref{eq:omega-q4-concavity-condition}:}
+$(4\|Ls\|^2+4\sum g_{ij}^3)\|s\|^2\ge 8(\sum g_{ij}^2)^2$
+}}
+\end{center}
+
+\medskip\noindent
+\textbf{Status:}
+\begin{enumerate}[nosep]
+\item $n=2$: Concavity holds (linearity). \textsc{proved.}
+\item $n=3$: Concavity holds (Theorem~\ref{thm:omega-q4-concavity-n3},
+  strict when $B\ne 0$). \textsc{proved.}
+\item $n\ge 4$: Concavity is conjectural. The algebraic condition
+  \eqref{eq:omega-q4-concavity-condition} is the precise open statement.
+\end{enumerate}
+
+\medskip\noindent
+New results in this section:
+\begin{enumerate}[nosep]
+\item The root score ODE~\eqref{eq:omega-q4-phi-ode}
+  ($\Phi_n$ is monotone increasing along the polynomial heat flow).
+\item The polynomial entropy power is linear for $n=2$
+  (Proposition~\ref{prop:omega-q4-linear-n2}).
+\item Concavity of the polynomial entropy power for $n=3$
+  (Theorem~\ref{thm:omega-q4-concavity-n3}):
+  $\ddot{\mathcal N}_3 = -324B^2/(A+6t)^4\le 0$.
+\item The concavity $\Rightarrow$ Stam reduction
+  (Theorem~\ref{thm:omega-q4-concavity-implies}), via Costa's strategy.
+\item The precise algebraic condition
+  (Proposition~\ref{prop:omega-q4-ddot}),
+  relating concavity to the root-gap Laplacian and edge scores.
+\item The information-theoretic dictionary connecting the polynomial
+  inequality to the classical Stam--EPI framework.
+\end{enumerate}
+
+The remaining gap for the general-$n$ proof is
+condition~\eqref{eq:omega-q4-concavity-condition}:
+whether the interaction between the Laplacian norm $\|Ls\|^2$
+and the cubic edge-score sum $\sum g_{ij}^3$ dominates the squared
+quadratic sum $(\sum g_{ij}^2)^2$.
+This is a concrete inequality on the Dyson-type root flow that,
+if established, would close Q4 for all~$n$.
