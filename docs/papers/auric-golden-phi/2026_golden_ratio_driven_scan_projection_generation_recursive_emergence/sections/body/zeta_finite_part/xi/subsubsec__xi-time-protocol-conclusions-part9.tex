@@ -1,0 +1,159 @@
+\paragraph{尾部可加闭包的 Ap\'ery 规约：二生成正规形、同余截断账本与复位时钟矩不变量}
+本段在定理 \ref{thm:xi-window6-tail-semigroup-frobenius-threshold} 的尾部可加机制之上，把可达性从“生成元集合”进一步规约为一个同余阈值族，并给出与之等价的正规形、不可达集合的有限截断剖分、以及复位间隔时钟的矩不变量。
+\par
+
+\begin{theorem}[尾部可加机制的二生成规约与规范解]\label{thm:xi-window6-tail-semigroup-two-generator-normal-form}
+在 window-\(6\) uplift 的尾部偏移可加闭包口径下，设可加生成元集合为 \(\{21,34,55\}\)。
+由于 \(55=21+34\)，相应可达半群满足
+\[
+S_6=\langle 21,34,55\rangle=\langle 21,34\rangle\subset\mathbb N.
+\]
+对任意 \(n\in\mathbb N\)，令 \(r\equiv n\ (\mathrm{mod}\ 21)\)。
+定义
+\[
+b_r:=13r\ (\mathrm{mod}\ 21)\in\{0,1,\dots,20\},
+\qquad
+w_r:=34\,b_r,
+\]
+则 \(n\in\langle 21,34\rangle\) 当且仅当 \(n\ge w_r\)。
+并且在该可达情形下，存在唯一一组
+\(
+(a,b)\in\mathbb N\times\{0,1,\dots,20\}
+\)
+满足
+\[
+n=21a+34b,\qquad b=b_r,\qquad a=\frac{n-w_r}{21}.
+\]
+因此可达性在同余类 \(r\) 上具有常数时间判据，并诱导唯一的“模 \(21\) 规范形”（把 \(b\) 规约到 \(\{0,\dots,20\}\)）。
+\end{theorem}
+
+\begin{proof}
+恒等式 \(55=21+34\) 说明 \(\langle 21,34,55\rangle=\langle 21,34\rangle\)。
+又因 \(34\equiv 13\ (\mathrm{mod}\ 21)\) 且 \(13^2\equiv 1\ (\mathrm{mod}\ 21)\)，故 \(13\) 为 \(34\) 在模 \(21\) 下的逆元，从而
+\(
+34\,b_r\equiv r\ (\mathrm{mod}\ 21)
+\)
+成立，且 \(b_r\) 在 \(\{0,\dots,20\}\) 内唯一。
+\par
+若 \(n=21a+34b\) 可达，则必有 \(b\equiv b_r\ (\mathrm{mod}\ 21)\)，从而 \(b=b_r+21k\)（\(k\in\mathbb N\)）并推出
+\(
+n=w_r+21(a+34k)\ge w_r
+\)。
+反之，若 \(n\equiv r\ (\mathrm{mod}\ 21)\) 且 \(n\ge w_r\)，则 \(n-w_r\) 为 \(21\) 的非负倍数，取 \(a=(n-w_r)/21\ge 0\) 与 \(b=b_r\) 即得分解。
+唯一性由 \(b\in\{0,\dots,20\}\) 的规约条件强制：若 \(21a+34b=21a'+34b'\) 且 \(b,b'\in\{0,\dots,20\}\)，则 \(34(b-b')\) 为 \(21\) 的倍数，因 \(\gcd(34,21)=1\) 得 \(b=b'\)，进而 \(a=a'\)。证毕。
+\end{proof}
+
+\begin{proposition}[Ap\'ery 阈值族与不可达计数的同余分解]\label{prop:xi-window6-tail-semigroup-apery-thresholds}
+令 \(w_r\) 如定理 \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form}。
+则 \(\{w_r\}_{r=0}^{20}\) 构成 \(\langle 21,34\rangle\) 关于模 \(21\) 的 Ap\'ery 阈值族：
+\[
+w_r=\min\{s\in\langle 21,34\rangle:\ s\equiv r\ (\mathrm{mod}\ 21)\}.
+\]
+并且同余类 \(r\) 内的不可达点精确个数为
+\[
+g_r:=\frac{w_r-r}{21}\in\mathbb N,
+\]
+从而不可达集合可写为有限截断并
+\(
+\bigcup_{r=0}^{20}\{r,\,r+21,\dots,r+21(g_r-1)\}
+\)。
+其全量数据由表 \ref{tab:window6_tail_semigroup_apery_21_34} 给出，且总不可达计数满足
+\[
+\sum_{r=0}^{20}g_r=330.
+\]
+\end{proposition}
+
+\input{sections/generated/tab_window6_tail_semigroup_apery_21_34}
+
+\begin{proposition}[维数可达集合的有限截断同余并完全刻画]\label{prop:xi-window6-dimension-reachability-congruence-union}
+令总维数写为 \(D=12+n\)（其中 \(n\) 为尾部可加增量）。
+则在定理 \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form} 的口径下：
+\begin{enumerate}
+  \item \(D\) 可达当且仅当存在 \(r\in\{0,\dots,20\}\) 使 \(n\equiv r\ (\mathrm{mod}\ 21)\) 且 \(n\in w_r+21\mathbb N\)；
+  等价地，
+  \[
+  D\in\bigcup_{r=0}^{20}\bigl(12+w_r+21\mathbb N\bigr).
+  \]
+  \item \(D\) 不可达当且仅当存在 \(r\) 使 \(n=r+21k\) 且 \(0\le k<g_r\)；
+  因此不可达集合是 \(21\) 条算术级数的有限截断并，其截断长度由 \(\{g_r\}\) 完全给出。
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[最小可达代表与 Zeckendorf 签名的单射编码]\label{prop:xi-window6-minrep-zeckendorf-signature-injection}
+对每个 \(r\in\{0,\dots,20\}\)，定义同余类的最小可达维数
+\[
+D_r^{\min}:=12+w_r=12+34\,b_r.
+\]
+令 \(S(D)\subset\mathbb N\) 表示整数 \(D\) 的 Zeckendorf 指标集合（即 \(D=\sum_{k\in S(D)}F_k\)，且 \(S(D)\) 不含相邻指标）。
+则 \(\{S(D_r^{\min})\}_{r=0}^{20}\) 两两不同；
+并且对全部 \(r\)，有 \(2\in S(D_r^{\min})\) 且 \(3\notin S(D_r^{\min})\)。
+其全量数据由表 \ref{tab:window6_tail_semigroup_minrep_zeckendorf_signatures} 给出。
+因此，“同余类 \(r\)”在最小代表层面可被 \(S(D_r^{\min})\) 无歧义编码。
+\end{proposition}
+
+\input{sections/generated/tab_window6_tail_semigroup_minrep_zeckendorf_signatures}
+
+\begin{proposition}[同余置换的自对偶性：\texorpdfstring{$r\mapsto b_r$}{r->br} 为对合]\label{prop:xi-window6-congruence-involution}
+映射 \(r\mapsto b_r=13r\ (\mathrm{mod}\ 21)\) 满足 \(13^2\equiv 1\ (\mathrm{mod}\ 21)\)，从而为自反置换：
+\[
+b_{b_r}=r.
+\]
+因此 Ap\'ery 阈值族满足互换律
+\[
+w_{b_r}=34\,b_{b_r}=34\,r.
+\]
+\end{proposition}
+
+\begin{proposition}[阈值族的一阶守恒：平均最小代表的闭式]\label{prop:xi-window6-apery-first-moment}
+由于 \(r\mapsto b_r\) 为 \(\{0,\dots,20\}\) 上的置换，得
+\[
+\sum_{r=0}^{20}b_r=\sum_{k=0}^{20}k=210,
+\qquad
+\sum_{r=0}^{20}w_r=34\sum_{r=0}^{20}b_r=7140.
+\]
+从而
+\[
+\frac{1}{21}\sum_{r=0}^{20}w_r=340,
+\qquad
+\frac{1}{21}\sum_{r=0}^{20}D_r^{\min}=12+340=352.
+\]
+\end{proposition}
+
+\begin{proposition}[两间隔复位时钟的显式矩不变量]\label{prop:xi-window6-reset-gap-mgf-moments}
+在结论 \ref{cor:xi-window6-reset-clock-gap-frequencies} 的设定下，
+令复位间隔随机变量 \(G\) 取值于 \(\{34,55\}\)，且
+\[
+\mathbb P(G=55)=\frac{1}{\varphi},\qquad \mathbb P(G=34)=\frac{1}{\varphi^2}.
+\]
+则其矩母函数为
+\[
+M_G(t):=\mathbb E[e^{tG}]
+=\frac{1}{\varphi}e^{55t}+\frac{1}{\varphi^2}e^{34t},
+\]
+并且均值与方差满足闭式
+\[
+\mathbb E[G]=\frac{55}{\varphi}+\frac{34}{\varphi^2}=13+21\varphi,
+\qquad
+\mathrm{Var}(G)=441(2\varphi-3).
+\]
+\end{proposition}
+
+\begin{corollary}[Fibonacci 表达的漂移耦合]\label{cor:xi-window6-reset-gap-fib-coupling}
+记 \(F_7=13\)、\(F_8=21\)。
+则命题 \ref{prop:xi-window6-reset-gap-mgf-moments} 的漂移与涨落可重写为
+\[
+\mathbb E[G]=F_7+F_8\varphi,
+\qquad
+\mathrm{Var}(G)=F_8^2(2\varphi-3),
+\]
+从而复位漂移与涨落在整数层面由 \((F_7,F_8)\) 与同一无理常数 \(\varphi\) 完全确定。
+\end{corollary}
+
+\begin{proposition}[不可达集合的质量不变量与二阶一致性账本]\label{prop:xi-window6-gap-ledger-invariants}
+令 \(\mathcal G\subset\mathbb N\) 为 \(\langle 21,34\rangle\) 的不可达增量集合（即命题 \ref{prop:xi-window6-tail-semigroup-apery-thresholds} 的有限截断并对应点集）。
+则其基数、总权重以及由截断长度 \(\{g_r\}\) 导出的二阶组合量满足严格恒等式
+\input{sections/generated/eq_window6_tail_semigroup_gap_ledger_21_34}
+因此，维数层面的不可达点集 \(\{12+n:\ n\in\mathcal G\}\) 的均值为 \(12+\frac{686}{3}=\frac{722}{3}\)。
+上述恒等式与表 \ref{tab:window6_tail_semigroup_apery_21_34} 的阈值族共同构成一组可核验的一致性账本；其任一破坏都等价于同余阈值族或“尾部可加”机制假设的失配。
+\end{proposition}
+

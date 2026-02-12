@@ -320,6 +320,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_ur_first_return_time",
+            script="exp_window6_ur_first_return_time.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_ur_first_return_time.json",
+                "sections/generated/eq_window6_ur_first_return_time_pgf.tex",
+            ],
+        ),
+        Step(
             name="window6_pushforward_markov_spectral_gap",
             script="exp_window6_pushforward_markov_spectral_gap.py",
             args=[],
@@ -429,6 +438,34 @@ def build_steps() -> List[Step]:
                 "artifacts/export/window6_family_uplift_lock.json",
                 "sections/generated/tab_window6_family_uplift_lock.tex",
                 "sections/generated/eq_window6_family_singlet_completion.tex",
+            ],
+        ),
+        Step(
+            name="window6_tail_semigroup_frobenius",
+            script="exp_window6_tail_semigroup_frobenius.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_tail_semigroup_frobenius.json",
+                "sections/generated/eq_window6_tail_semigroup_frobenius.tex",
+            ],
+        ),
+        Step(
+            name="window6_tail_semigroup_apery_21_34",
+            script="exp_window6_tail_semigroup_apery_21_34.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_tail_semigroup_apery_21_34.json",
+                "sections/generated/tab_window6_tail_semigroup_apery_21_34.tex",
+                "sections/generated/tab_window6_tail_semigroup_minrep_zeckendorf_signatures.tex",
+            ],
+        ),
+        Step(
+            name="window6_tail_semigroup_gap_ledger_21_34",
+            script="exp_window6_tail_semigroup_gap_ledger_21_34.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_tail_semigroup_gap_ledger_21_34.json",
+                "sections/generated/eq_window6_tail_semigroup_gap_ledger_21_34.tex",
             ],
         ),
         Step(
