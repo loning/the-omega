@@ -13,7 +13,7 @@ Context:
     belongs to ker(H^T). In particular, any low-degree multiple Q(λ)P_q(λ) yields a Hankel-null
     vector whenever it fits in the window.
 
-New auditable layer (as suggested in the 2026-02-03 addendum):
+New auditable layer (as suggested in the addendum):
   - Define the multiplication subspace M(P_q) as the span (over Q) of all coefficient vectors
     of Q(λ)P_q(λ) that fit in length n (i.e. deg Q <= n - deg(P_q) - 1 = Δ(q)-1).
   - Define the "primitive null quotient"
