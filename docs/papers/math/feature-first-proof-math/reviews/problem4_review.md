@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V18`
-- Review Version: `Q4-R18`
+- Submission Version: `Q4-V20`
+- Review Version: `Q4-R20`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -43,7 +43,20 @@
     concavity numerator equals
     `4[(||s||^2||Ls||^2-(sum g_{ij}^2)^2) + (||s||^2 sum g_{ij}^3-(sum g_{ij}^2)^2)]`,
     i.e. Cauchy-Schwarz defect + signed edge-moment defect.
-22. New explicit working conjecture:
+22. **NEW: Edge-score first-moment identity** (Lemma `q4-edge-score`):
+    `sum_{i<j} g_{ij} = Phi_n`. Simple but foundational for the semi-Gaussian proof.
+23. **NEW: Hermite Fisher information** (Lemma `q4-hermite-phi`):
+    `Phi_n(He_n) = n(n-1)/4`. Computed from the Hermite ODE eigenrelation `s_i = lambda_i/2`.
+24. **NEW: Scaled-Hermite transform identity** (Lemma `q4-hermite-transform`):
+    `T_n(t^{n/2} He_n(x/sqrt(t))) = n! exp(-t z^2/2)` in `R[z]/(z^{n+1})`.
+25. **NEW: Semi-Gaussian flow identity** (Lemma `q4-semi-gauss-flow`):
+    `p boxplus_n (t^{n/2} He_n(x/sqrt(t))) = H_{-t/2} p`.
+26. **NEW: Semi-Gaussian Stam inequality (all n, regularity regime)** (Theorem `q4-semi-gaussian`):
+    For every `n >= 2`, `p` monic real-rooted, `s > 0`, assuming simple-real-root flow on `(0,s]`:
+    `1/Phi_n(p boxplus_n sqrt(s) He_n) >= 1/Phi_n(p) + 1/Phi_n(sqrt(s) He_n)`.
+    Proof is now explicit via backward-heat representation + root ODE + edge-score Cauchy bound.
+    Equality family is verified for scaled Hermite inputs.
+27. New explicit working conjecture:
     edge-cubic nonnegativity `sum_{i<j} g_{ij}^3 >= 0` (verified numerically in adversarial search up to tested `n=12`).
 
 ## Findings From Independent Re-check
@@ -65,15 +78,25 @@
 
 ## Remaining Gap
 
-The all-`n` statement of `(star)` for `n>=4` is still unproved.
+The all-`n` statement of `(star)` for arbitrary `p, q` with `n>=4` is still unproved.
+Current proved infinite families:
+- **n=2**: all `p, q` (equality).
+- **n=3**: all `p, q` (strict inequality).
+- **All n, shift**: `p = (x-a)^n` (equality).
+- **All n, monotone coupling**: `nu_i = lambda_i + mu_i`.
+- **All n, semi-Gaussian (regularity regime)**: `q = sqrt(s) He_n`.
+
 Current main closure routes:
 
 1. **Entropy power route (Section 13):** prove concavity of `N_n(p_t)` for `n>=4`.
-2. **Single-bottleneck route (new, now known too strong globally):** the inequality
+2. **Single-bottleneck route (now known too strong globally):** the inequality
    `(sum g_{ij}^2)^2 <= (sum g_{ij})(sum g_{ij}^3)`
    implies concavity, but cannot be the final all-`n` closure target.
 3. **Score decomposition route:** establish a polynomial Blachman-Stam analogue for `boxplus_n`.
+4. **Elementary-step composition route (new):** the semi-Gaussian Stam combined with the
+   transform-factorization (Lemma `q4-transform-factor`) suggests decomposing `p boxplus_n q`
+   into elementary steps `(I - alpha_m D)` and proving the inequality inductively.
 
 ## Conclusion
 
-`Q4` remains `PARTIAL PASS`: `n=2,3` closed; `n>=4` reduced to precise algebraic bottlenecks.
+`Q4` remains `PARTIAL PASS`: `n=2,3` closed for all `(p,q)`; semi-Gaussian case closed in the stated regularity regime; general `n>=4` reduced to precise algebraic bottlenecks.

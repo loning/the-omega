@@ -592,6 +592,248 @@ $\nu_i=\lambda_i+\mu_i$.
 It does not by itself prove \eqref{eq:q4-star}, because in general the root vector of $p\boxplus_n q$ is not equal to this monotone sum vector.
 \end{remark}
 
+%% ---- Semi-Gaussian Stam inequality (all n) ----
+
+\begin{lemma}[Edge-score first-moment identity]\label{lem:q4-edge-score}
+For $p$ with simple roots $\lambda_1<\cdots<\lambda_n$ and edge scores
+$g_{ij}:=(s_i-s_j)/(\lambda_i-\lambda_j)$, $1\le i<j\le n$:
+\[
+\sum_{i<j}g_{ij}=\Phi_n(p).
+\]
+\end{lemma}
+
+\begin{proof}
+$\Phi_n=\sum_i s_i^2
+=\sum_i s_i\sum_{j\ne i}(\lambda_i-\lambda_j)^{-1}
+=\sum_{i<j}\bigl(s_i(\lambda_i-\lambda_j)^{-1}+s_j(\lambda_j-\lambda_i)^{-1}\bigr)
+=\sum_{i<j}\frac{s_i-s_j}{\lambda_i-\lambda_j}
+=\sum_{i<j}g_{ij}$.
+\end{proof}
+
+\begin{lemma}[Fisher information of Hermite polynomials]\label{lem:q4-hermite-phi}
+For the probabilist's Hermite polynomial
+$\mathrm{He}_n(x)=x^n-\tbinom{n}{2}x^{n-2}+\cdots$
+with simple real roots $\lambda_1<\cdots<\lambda_n$:
+\[
+\Phi_n(\mathrm{He}_n)=\frac{n(n-1)}{4}.
+\]
+For a scaled Hermite polynomial with roots $\sqrt{s}\,\lambda_i$
+(i.e., the polynomial $s^{n/2}\mathrm{He}_n(x/\sqrt{s})$):
+\[
+\Phi_n(\sqrt{s}\,\mathrm{He}_n)=\frac{n(n-1)}{4s},
+\qquad
+\frac{1}{\Phi_n(\sqrt{s}\,\mathrm{He}_n)}=\frac{4s}{n(n-1)}.
+\]
+\end{lemma}
+
+\begin{proof}
+The Hermite differential equation
+$\mathrm{He}_n''(x)-x\,\mathrm{He}_n'(x)+n\,\mathrm{He}_n(x)=0$
+evaluated at a root $\lambda_i$ (where $\mathrm{He}_n(\lambda_i)=0$) gives
+$\mathrm{He}_n''(\lambda_i)=\lambda_i\,\mathrm{He}_n'(\lambda_i)$.
+By the standard identity $p''(\lambda_i)/p'(\lambda_i)=2s_i$,
+we get $s_i=\lambda_i/2$.
+Hence
+\[
+\Phi_n(\mathrm{He}_n)
+=\sum_{i=1}^n s_i^2
+=\frac{1}{4}\sum_{i=1}^n\lambda_i^2.
+\]
+By Vieta's formulas for $\mathrm{He}_n$:
+$\sum_i\lambda_i=0$ and $\sum_{i<j}\lambda_i\lambda_j=-\binom{n}{2}$,
+so
+$\sum_i\lambda_i^2=(\sum_i\lambda_i)^2-2\sum_{i<j}\lambda_i\lambda_j=n(n-1)$.
+
+The scaling claim follows from $\Phi_n(c\cdot p(\cdot/c))=\Phi_n(p)/c^2$,
+which is immediate from the definition (root gaps scale by $c$).
+\end{proof}
+
+\begin{lemma}[Scaled-Hermite transform in $\mathcal T_n$]\label{lem:q4-hermite-transform}
+Let $\mathrm{He}_n$ be the probabilist's Hermite polynomial, and define
+\[
+q_t(x):=t^{n/2}\,\mathrm{He}_n(x/\sqrt t)\qquad (t>0).
+\]
+Then in $\mathbb R[z]/(z^{n+1})$,
+\[
+\mathcal T_n(q_t)=n!\,e^{-t z^2/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+The explicit coefficient formula is
+\[
+\mathrm{He}_n(x)=n!\sum_{m=0}^{\lfloor n/2\rfloor}
+\frac{(-1)^m}{2^m m!(n-2m)!}\,x^{n-2m}.
+\]
+Hence
+\[
+q_t(x)
+=n!\sum_{m=0}^{\lfloor n/2\rfloor}
+\frac{(-1)^m t^m}{2^m m!(n-2m)!}\,x^{n-2m}.
+\]
+So the coefficient of $x^{n-2m}$ equals
+$n!(-1)^m t^m/(2^m m!(n-2m)!)$.
+Applying $\mathcal T_n$ multiplies this by $(n-2m)!$, yielding
+\[
+\mathcal T_n(q_t)
+=n!\sum_{m=0}^{\lfloor n/2\rfloor}\frac{(-t z^2/2)^m}{m!}
+=n!\,e^{-t z^2/2}
+\quad\text{in }\mathbb R[z]/(z^{n+1}).
+\]
+\end{proof}
+
+\begin{lemma}[Semi-Gaussian convolution is backward heat]\label{lem:q4-semi-gauss-flow}
+For every degree-$n$ polynomial $p$ and every $t\ge 0$,
+\[
+p\boxplus_n q_t = H_{-t/2}p,
+\qquad q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t).
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-transform-factor},
+\[
+\mathcal T_n(p\boxplus_n q_t)=\frac1{n!}\mathcal T_n(p)\mathcal T_n(q_t).
+\]
+By Lemma~\ref{lem:q4-hermite-transform},
+\[
+\mathcal T_n(p\boxplus_n q_t)=\mathcal T_n(p)\,e^{-t z^2/2}.
+\]
+By Lemma~\ref{lem:q4-heat-intertwine} (formula $\mathcal T(H_s p)=e^{s z^2}\mathcal T(p)$ in its proof),
+\[
+\mathcal T_n(H_{-t/2}p)=e^{-t z^2/2}\mathcal T_n(p).
+\]
+Since $\mathcal T_n$ is injective on degree-$n$ coefficient vectors,
+$p\boxplus_n q_t=H_{-t/2}p$.
+\end{proof}
+
+\begin{theorem}[Semi-Gaussian Stam inequality---all $n$]\label{thm:q4-semi-gaussian}
+For every $n\ge 2$, every monic real-rooted polynomial $p$ of degree~$n$,
+and every $s>0$, assume that the path
+\[
+p_t:=p\boxplus_n \sqrt t\,\mathrm{He}_n,\qquad t\in[0,s],
+\]
+has simple real roots for all $t\in(0,s]$. Then
+\[
+\frac{1}{\Phi_n(p\boxplus_n\sqrt{s}\,\mathrm{He}_n)}
+\;\ge\;
+\frac{1}{\Phi_n(p)}+\frac{1}{\Phi_n(\sqrt{s}\,\mathrm{He}_n)}.
+\]
+Equality holds for the Hermite family
+$p(x)=a^{n/2}\mathrm{He}_n(x/\sqrt a)$ ($a>0$).
+\end{theorem}
+
+\begin{proof}
+Set $q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t)$ and
+\[
+p_t:=p\boxplus_n q_t.
+\]
+By Lemma~\ref{lem:q4-semi-gauss-flow}, $p_t=H_{-t/2}p$, hence
+\[
+\partial_t p_t=-\frac12\,\partial_{xx}p_t.
+\]
+Let $\lambda_1(t)<\cdots<\lambda_n(t)$ be the roots of $p_t$.
+Differentiating $p_t(\lambda_i(t))=0$ gives
+\[
+0=\partial_t p_t(\lambda_i)+p_t'(\lambda_i)\dot\lambda_i
+=-\frac12 p_t''(\lambda_i)+p_t'(\lambda_i)\dot\lambda_i.
+\]
+Using $p_t''(\lambda_i)/p_t'(\lambda_i)=2s_i$ with
+$s_i:=\sum_{j\neq i}(\lambda_i-\lambda_j)^{-1}$, we obtain
+\[
+\dot\lambda_i=s_i.
+\]
+
+\textbf{Step 1 (evolution of $\Phi_n$).}
+Differentiate $s_i=\sum_{j\neq i}(\lambda_i-\lambda_j)^{-1}$:
+\[
+\dot s_i=\sum_{j\neq i}\frac{\dot\lambda_j-\dot\lambda_i}{(\lambda_i-\lambda_j)^2}.
+\]
+Therefore
+\[
+\dot\Phi_n
+=2\sum_i s_i\dot s_i
+=2\sum_{i<j}\frac{(s_i-s_j)(\dot\lambda_j-\dot\lambda_i)}{(\lambda_i-\lambda_j)^2}
+=-2\sum_{i<j}\frac{(s_i-s_j)^2}{(\lambda_i-\lambda_j)^2}.
+\]
+With $g_{ij}:=(s_i-s_j)/(\lambda_i-\lambda_j)$, this is
+\[
+\dot\Phi_n=-2\sum_{i<j}g_{ij}^2\le 0,
+\]
+so for $J(t):=1/\Phi_n(p_t)$,
+\[
+J'(t)=\frac{-\dot\Phi_n}{\Phi_n^2}
+=\frac{2\sum_{i<j}g_{ij}^2}{\Phi_n^2}.
+\]
+
+\textbf{Step 2 (Cauchy--Schwarz lower bound on $J'$).}
+By Lemma~\ref{lem:q4-edge-score}: $\Phi_n=\sum_{i<j}g_{ij}$.
+Cauchy--Schwarz over the $\binom{n}{2}$ pairs gives
+\[
+\Bigl(\sum_{i<j}g_{ij}\Bigr)^{\!2}
+\;\le\; \binom{n}{2}\sum_{i<j}g_{ij}^2,
+\]
+hence
+\[
+J'(t)
+\;\ge\; \frac{2}{\binom{n}{2}}
+= \frac{4}{n(n-1)}
+= \frac{1}{\Phi_n(\mathrm{He}_n)}
+\qquad\text{(by Lemma~\ref{lem:q4-hermite-phi})}.
+\]
+
+\textbf{Step 3 (integration).}
+Integrating from $0$ to $s$:
+\[
+J(s)-J(0)
+\;\ge\; \frac{s}{\Phi_n(\mathrm{He}_n)}
+= \frac{4s}{n(n-1)}
+= \frac{1}{\Phi_n(\sqrt{s}\,\mathrm{He}_n)},
+\]
+which is exactly $1/\Phi_n(p_s)\ge 1/\Phi_n(p)+1/\Phi_n(\sqrt{s}\,\mathrm{He}_n)$.
+
+\textbf{Hermite equality family.}
+If $p(x)=a^{n/2}\mathrm{He}_n(x/\sqrt a)$, then
+$\mathcal T_n(p)=n!e^{-a z^2/2}$.
+Hence
+\[
+\mathcal T_n(p_t)=\frac1{n!}\mathcal T_n(p)\mathcal T_n(q_t)
+=n!e^{-(a+t)z^2/2},
+\]
+so $p_t(x)=(a+t)^{n/2}\mathrm{He}_n(x/\sqrt{a+t})$.
+By Lemma~\ref{lem:q4-hermite-phi},
+\[
+\frac{1}{\Phi_n(p_t)}=\frac{4(a+t)}{n(n-1)},
+\]
+which is affine in $t$ with slope $4/(n(n-1))$; therefore every inequality
+step above is an equality for this family.
+\end{proof}
+
+\begin{remark}[Significance of the semi-Gaussian inequality]
+Theorem~\ref{thm:q4-semi-gaussian} establishes
+the target inequality~\eqref{eq:q4-star} whenever one of the two
+polynomials is a scaled Hermite polynomial---for \textbf{all degrees} $n$.
+This is the polynomial analogue of the classical result that the
+Stam inequality holds when one summand is Gaussian, and it strictly
+extends the degenerate shift case (Proposition~\ref{prop:q4-shift},
+which requires one polynomial to be $(x-a)^n$).
+Together with Propositions~\ref{prop:q4-n2} and~\ref{prop:q4-n3}
+(which handle all $p,q$ for $n\le 3$) and
+Proposition~\ref{prop:q4-monotone-sum}
+(which handles the monotone coupling for all $n$),
+this establishes~\eqref{eq:q4-star} in three independent
+infinite families of cases.
+\end{remark}
+
+\begin{remark}[Status of equality classification]
+The proof above gives a complete inequality proof under the stated
+regularity assumption and a full explicit equality family (scaled Hermite).
+A global characterization of all equality cases for this semi-Gaussian flow
+is not used elsewhere in this paper.
+\end{remark}
+
+%% ---- End of Semi-Gaussian block ----
+
 \begin{proposition}[Reduction of \eqref{eq:q4-star} to a weighted quadratic inequality]\label{prop:q4-reductionA}
 For roots $\lambda$ of $p$, $\mu$ of $q$, and $\gamma$ of $p\boxplus_n q$, define
 \[
@@ -658,5 +900,16 @@ These tests strengthen confidence in \eqref{eq:q4-star}, but do not constitute a
 \end{remark}
 
 \begin{remark}[Current conclusion]
-Within this draft, \eqref{eq:q4-star} is proved in the cases of Proposition~\ref{prop:q4-n2}, Proposition~\ref{prop:q4-n3}, and Proposition~\ref{prop:q4-shift}. The general all-$n$ statement for $n\ge 4$ remains open.
+Within this draft, \eqref{eq:q4-star} is proved in the following cases:
+\begin{enumerate}[nosep]
+\item $n=2$, all $p,q$: exact equality (Proposition~\ref{prop:q4-n2}).
+\item $n=3$, all $p,q$: strict inequality (Proposition~\ref{prop:q4-n3}).
+\item All $n$, $p=(x-a)^n$: equality (Proposition~\ref{prop:q4-shift}).
+\item All $n$, monotone coupling $\nu_i=\lambda_i+\mu_i$
+  (Proposition~\ref{prop:q4-monotone-sum}).
+\item \textbf{All $n$, $q=\sqrt{s}\,\mathrm{He}_n$}
+  (Theorem~\ref{thm:q4-semi-gaussian}, under its regularity hypothesis):
+  the semi-Gaussian case.
+\end{enumerate}
+The general all-$n$ statement for arbitrary $p,q$ with $n\ge 4$ remains open.
 \end{remark}
