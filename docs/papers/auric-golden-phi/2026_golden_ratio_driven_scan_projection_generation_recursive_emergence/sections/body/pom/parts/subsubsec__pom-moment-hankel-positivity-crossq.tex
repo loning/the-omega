@@ -1,0 +1,168 @@
+\subsubsection{矩阶正性与跨阶凸性：Hankel 正半定、生成函数有理性与谱约束}\label{subsubsec:pom-moment-hankel-positivity-crossq}
+本段刻画固定分辨率 \(m\) 下的\textbf{矩阶（\(q\) 轴）结构}：把幂和矩 \(\{S_q(m)\}_{q\ge 0}\) 解释为离散测度的矩序列，
+由 Hankel 正性推出跨阶离散凸性，并与正文的压力/谱半径指纹（命题 \ref{prop:pom-pressure-convexity}）对齐。
+此外，我们记录“有限态矩阵幂读出 \(\Rightarrow\) 有理生成函数 \(\Rightarrow\) Jordan 全阶展开”的标准谱分解口径，
+以便将递推/核实现的后果直接组织为可复核的渐近式链条。
+
+\begin{proposition}[幂和矩的 Hankel 正半定与主子式非负]\label{prop:pom-power-sum-hankel-psd}
+固定分辨率 \(m\ge 1\)，令折叠 \(\Fold_m:\Omega_m\twoheadrightarrow X_m\) 的纤维多重度为
+\(
+d_m(x):=\card{\Fold_m^{-1}(x)}\ge 1
+\)。
+对整数 \(q\ge 0\) 定义幂和矩
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q,
+\qquad
+S_0(m)=|X_m|,
+\qquad
+S_1(m)=\sum_x d_m(x)=|\Omega_m|=2^m.
+\]
+则对任意整数 \(r\ge 0\)，Hankel 矩阵
+\[
+H^{(m)}_r:=\bigl[S_{i+j}(m)\bigr]_{0\le i,j\le r}
+\]
+为正半定矩阵；因此其全部主子式（principal minors）非负。
+\end{proposition}
+\begin{proof}
+对任意 \(c=(c_0,\dots,c_r)^{\mathsf T}\in\RR^{r+1}\)，有
+\[
+c^{\mathsf T}H^{(m)}_r c
+=\sum_{i,j=0}^{r} c_ic_jS_{i+j}(m)
+=\sum_{x\in X_m}\Bigl(\sum_{i=0}^{r}c_i\,d_m(x)^i\Bigr)^2
+\ge 0,
+\]
+从而 \(H^{(m)}_r\succeq 0\)。
+正半定矩阵的任意主子矩阵仍正半定，故其行列式均非负。证毕。
+\end{proof}
+
+\begin{corollary}[跨 \(q\) 的离散对数凸性链与比值单调性]\label{cor:pom-crossq-logconvex-chain}
+在命题 \ref{prop:pom-power-sum-hankel-psd} 的设定下，对任意整数 \(q\ge 1\) 有
+\[
+\boxed{\;
+S_q(m)^2\ \le\ S_{q-1}(m)\,S_{q+1}(m)\; }.
+\]
+更一般地，对任意整数 \(q\ge r\ge 1\) 有
+\[
+\boxed{\;
+S_q(m)^2\ \le\ S_{q-r}(m)\,S_{q+r}(m)\; }.
+\]
+从而比值
+\(
+R_q(m):=S_{q+1}(m)/S_q(m)
+\)
+在 \(q\ge 0\) 上单调不减（即 \(R_{q}(m)\ge R_{q-1}(m)\) 对一切 \(q\ge 1\) 成立）。
+\end{corollary}
+\begin{proof}
+第一式可由 \(2\times 2\) 主子式 \(\det\bigl[\begin{smallmatrix}S_{q-1}(m)&S_q(m)\\ S_q(m)&S_{q+1}(m)\end{smallmatrix}\bigr]\ge 0\) 直接得到。
+对一般 \(r\ge 1\)，对向量 \((d_m(x)^{(q-r)/2})_x\) 与 \((d_m(x)^{(q+r)/2})_x\) 用 Cauchy--Schwarz 得
+\[
+S_q(m)=\sum_x d_m(x)^{(q-r)/2}d_m(x)^{(q+r)/2}
+\le \sqrt{S_{q-r}(m)}\,\sqrt{S_{q+r}(m)},
+\]
+平方即得第二式。
+最后由 \(S_q(m)^2\le S_{q-1}(m)S_{q+1}(m)\) 得
+\(
+S_{q+1}(m)/S_q(m)\ge S_q(m)/S_{q-1}(m)
+\)，
+即 \(R_q(m)\ge R_{q-1}(m)\)。证毕。
+\end{proof}
+
+\begin{corollary}[压力的离散凸性与 Perron 根不等式]\label{cor:pom-crossq-pressure-convexity}
+令 \(\tau(q):=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m)\) 为定义 \ref{def:pom-moment-pressure} 的 moment 压力。
+则对一切整数 \(q\ge 1\) 成立离散凸性不等式
+\[
+\boxed{\;
+2\tau(q)\ \le\ \tau(q-1)+\tau(q+1)\; }.
+\]
+若进一步在已核验口径下 \(\tau(q)=\log r_q\)（其中 \(r_q=\rho(A_q)\) 为 \(q\)-阶碰撞核的 Perron 根；见定理 \ref{thm:pom-collision-kernel-ak} 与定义 \ref{def:pom-moment-pressure}），则有跨阶谱半径约束
+\[
+\boxed{\;
+r_q^{\,2}\ \le\ r_{q-1}\,r_{q+1}\; }.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:pom-crossq-logconvex-chain} 的 \(S_q(m)^2\le S_{q-1}(m)S_{q+1}(m)\)，取 \(\log\)、除以 \(m\) 并取 \(\limsup\) 即得第一式。
+第二式由 \(\tau(q)=\log r_q\) 代入第一式并指数化得到。证毕。
+\end{proof}
+
+\begin{proposition}[矩序列的有理型生成函数与 Jordan 全阶谱展开]\label{prop:pom-moment-genfunc-jordan}
+固定整数 \(q\ge 2\)。
+若存在有限维非负矩阵 \(A_q\) 与向量 \(u_q,v_q\ge 0\)，以及整数偏移 \(m_0\ge 0\)，使得对所有 \(n\ge 0\) 有
+\[
+S_q(n+m_0)=u_q^{\mathsf T}A_q^{\,n}v_q,
+\]
+则幂级数
+\[
+G_q(z):=\sum_{n\ge 0} S_q(n+m_0)\,z^n
+\]
+在形式意义下为有理函数，并满足 resolvent 恒等式
+\[
+\boxed{\;
+G_q(z)=u_q^{\mathsf T}(I-zA_q)^{-1}v_q\; }.
+\]
+其分母可取为 \(\det(I-zA_q)\) 的因子。
+\par
+进一步，设 \(A_q\) 的谱为 \(\mathrm{Spec}(A_q)=\{\lambda_1,\dots,\lambda_s\}\)（按 Jordan 结构计入），
+则存在多项式 \(P_j(n)\)（次数严格小于对应 Jordan 块大小）使得对所有 \(n\ge 0\) 有全阶精确展开
+\[
+\boxed{\;
+S_q(n+m_0)=\sum_{j=1}^{s} P_j(n)\,\lambda_j^{\,n}\; }.
+\]
+若 \(A_q\) 原始（primitive），记 Perron 根 \(r_q=\rho(A_q)>0\)，则存在常数 \(c_q>0\) 与 \(0<\theta_q<r_q\) 使得
+\[
+S_q(n+m_0)=c_q\,r_q^{\,n}+O(\theta_q^{\,n})\qquad(n\to\infty).
+\]
+若 \(A_q\) 不原始且不可约周期为 \(p\)，则存在 \(p\)-周期系数列 \(\{c_{q,r}\}_{r=0}^{p-1}\) 使得
+\[
+S_q(n+m_0)=r_q^{\,n}\bigl(c_{q,n\bmod p}+o(1)\bigr)\qquad(n\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+由 Neumann 级数 \((I-zA_q)^{-1}=\sum_{n\ge 0} z^nA_q^n\)（形式幂级数意义）得
+\(
+u_q^{\mathsf T}(I-zA_q)^{-1}v_q=\sum_{n\ge 0}u_q^{\mathsf T}A_q^n v_q\,z^n
+\)，从而得到 \(G_q\) 的有理表示，分母可由 \(\det(I-zA_q)\) 控制。
+Jordan 展开为有限维线性代数的标准结论：把 \(A_q\) 置于 Jordan 标准形并展开 \(u_q^{\mathsf T}A_q^{n}v_q\) 即得多项式乘指数之和；
+原始/周期情形由 Perron--Frobenius 理论对外周谱结构的刻画推出。证毕。
+\end{proof}
+
+\begin{proposition}[Chernoff 型阈值上界：计数测度与推前测度的统一形式]\label{prop:pom-chernoff-threshold-bounds}
+固定分辨率 \(m\) 并令阈值集合
+\[
+A_m(\alpha):=\{x\in X_m:\ \log d_m(x)\ge \alpha m\}\qquad(\alpha\ge 0).
+\]
+则对任意整数 \(q\ge 1\) 与任意 \(\alpha\ge 0\) 有确定性上界
+\[
+\boxed{\;
+|A_m(\alpha)|\ \le\ e^{-q\alpha m}\,S_q(m)\; }.
+\]
+此外令 \(w_m(x):=d_m(x)/2^m\) 为均匀微态的折叠推前，并取 \(X_m\sim w_m\)。
+则对任意整数 \(q\ge 1\) 与任意 \(\alpha\ge 0\) 有
+\[
+\boxed{\;
+\mathbb{P}\bigl(\log d_m(X_m)\ge \alpha m\bigr)
+\ \le\ e^{-q\alpha m}\,\frac{S_{q+1}(m)}{2^m}\; }.
+\]
+两式在指数尺度上分别回收命题 \ref{prop:pom-spectrum-legendre-upper}（计数测度的谱上界）与 \S\ref{subsec:pom-spectral-resource-type} 的 Chernoff/Markov 尾界（输出测度的尾部预算）。
+\end{proposition}
+\begin{proof}
+对第一式，若 \(x\in A_m(\alpha)\) 则 \(d_m(x)^q\ge e^{q\alpha m}\)，故
+\(
+|A_m(\alpha)|e^{q\alpha m}\le \sum_{x\in A_m(\alpha)}d_m(x)^q\le S_q(m)
+\)。
+对第二式，在 \(A_m(\alpha)\) 上有 \(d_m(x)^{q+1}\ge e^{q\alpha m}d_m(x)\)，从而
+\(
+\sum_{x\in A_m(\alpha)}d_m(x)\le e^{-q\alpha m}\sum_{x\in A_m(\alpha)}d_m(x)^{q+1}\le e^{-q\alpha m}S_{q+1}(m)
+\)，
+再除以 \(2^m\) 即得结论。证毕。
+\end{proof}
+
+\begin{remark}[Fibonacci 基准线、严格性与端点极值谱]\label{rem:pom-fib-baseline-and-endpoint}
+关于矩压力的 Fibonacci 规模普适下界与其严格性判别，可直接参见命题 \ref{prop:pom-rq-universal-bounds}；
+其等号条件在固定 \(m\) 上等价于纤维完全等尺寸（即 \(d_m(\cdot)\) 处处常数），从而对应于推前分布 \(w_m\) 的严格均匀性。
+\par
+关于极端纤维指数（最大纤维增长率）与高阶压力斜率端点的谱刻画，
+正文已由命题 \ref{prop:pom-rq-qinfty-endpoint} 与命题 \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint} 给出：
+其核心机制正是基本夹逼 \(M_m^q\le S_q(m)\le |X_m|M_m^q\) 在 \(q\to\infty\) 的斜率极限中压缩掉 \(|X_m|\) 的常数级贡献。
+\end{remark}
+

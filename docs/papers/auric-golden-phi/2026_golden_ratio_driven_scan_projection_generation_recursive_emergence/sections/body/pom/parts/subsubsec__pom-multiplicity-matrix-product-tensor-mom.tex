@@ -1,0 +1,210 @@
+\subsubsection{纤维多重度的矩阵积表示与张量化 MOM 编译：有限窗逆码下的非交换计数}\label{subsubsec:pom-multiplicity-matrix-product-tensor-mom}
+在正文的碰撞谱口径中，\(S_q(m)=\sum_{x\in X_m}d_m(x)^q\) 被视为一个“\(q\)-重纤维积”计数对象（定义 \ref{def:pom-moment-q}），并通过有限状态 moment-kernel 统一纳入 Perron--Frobenius/\(\zeta\) 接口（命题 \ref{prop:pom-moment-kernel-exists} 及定义 \ref{def:pom-moment-pressure}）。
+本段补充一个更细的结构层：在存在\emph{有限窗逆码}（finite-window inverse code）的制度下，单个纤维体积 \(d_m(x)\) 本身就具有矩阵积计数式；并且对任意整数阶 \(q\)，\((\mathrm{MOM}_q)\) 的碰撞核可显式写成“语法两态骨架 \(\times\) 逆码转移的 \(q\)-重同步直积”的 Kronecker 耦合。
+
+\paragraph{有限窗逆码 \texorpdfstring{$\Rightarrow$}{=>} 纤维体积的矩阵积计数}
+\begin{theorem}[纤维多重度的矩阵积表示与最小歧义态维数]\label{thm:pom-fiber-multiplicity-matrix-product}
+设 \(\Fold_\infty:\Omega_\infty=\{0,1\}^{\NN}\to X_\infty\) 为二元折叠因子，且 \(X_\infty\subseteq\{0,1\}^{\NN}\) 为黄金均值移位（禁止相邻 \(11\)）。
+假设 \(\Fold_\infty\) 存在一个有限窗逆码 \(\Psi\)，使得“给定输出前缀 \(x_1\cdots x_m\)”时其全部合法预像可由一个有限状态确定化系统逐位更新并计数（等价地，可取一个 follower-separated 的右解析表示并在其上做计数读出）。
+则存在有限状态集合 \(\mathcal S\)、边界向量 \(u,v\in\NN^{\mathcal S}\)，以及两矩阵
+\[
+T_0,T_1\in M_{|\mathcal S|}(\NN),
+\]
+使得对任意合法宏观词 \(x=x_1\cdots x_m\in X_m\)（\(m\ge 1\)）有精确计数式
+\[
+\boxed{\;
+d_m(x)=u^{\mathsf T}T_{x_1}T_{x_2}\cdots T_{x_m}v\; }.
+\]
+此外，在所有满足上述表示的选择中，最小可能维数 \(|\mathcal S|\) 等于右歧义类（follower ambiguity classes）的有限完备集合基数；
+因此当 \(\Psi\) 取为由最小在线延迟/最小同步结构诱导的规范逆码时，该最小维数由 \(\Fold_\infty\) 唯一确定。
+\end{theorem}
+\begin{proof}
+由假设，逆码可实现为一个确定性有限状态计数机：其状态记录“在给定输出前缀下仍可能的歧义类”，读入下一个输出符号 \(b\in\{0,1\}\) 后作确定更新。
+令 \(\mathcal S\) 为该计数机的（可达）状态集，并令 \((T_b)_{b\in\{0,1\}}\) 为按输出符号分解的转移计数矩阵（每一步的计数语义由逆码产生的分支数给出，因而条目为非负整数）。
+取 \(u\) 为初始状态分布（由边界/起始允许态确定），取 \(v\) 为末端读出向量（对允许终止态求和），则长度 \(m\) 的输出词 \(x_1\cdots x_m\) 的全部预像数正是沿该确定性计数机的路径计数，从而得到矩阵积公式。
+\par
+最小性结论是确定性有限自动机的标准最小化：将状态按“拥有相同 follower 集（同一切右延拓族）”的等价关系合并得到最小右解析 follower-separated 表示，其等价类数即为所述右歧义类完备集合基数；任何矩阵积表示必须区分这些等价类，故其维数不小于该基数，而由最小化构造可达该下界。
+\end{proof}
+
+\paragraph{张量化 MOM 编译：黄金语法骨架 \texorpdfstring{$\otimes$}{x} \(q\)-重逆码同步直积}
+\begin{proposition}[MOM\texorpdfstring{$\,_q$}{\_q} 的张量分解型碰撞核]\label{prop:pom-momq-tensor-kernel-construction}
+在定理 \ref{thm:pom-fiber-multiplicity-matrix-product} 的设定下，令
+\[
+G_0:=\begin{pmatrix}1&0\\[2pt]1&0\end{pmatrix},
+\qquad
+G_1:=\begin{pmatrix}0&1\\[2pt]0&0\end{pmatrix}
+\in M_2(\{0,1\})
+\]
+为黄金均值两态骨架的符号分解转移矩阵（满足 \(G_0+G_1=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)\)）。
+对任意整数 \(q\ge 1\)，定义显式的 \(q\)-阶碰撞转移核
+\[
+A_q^{\mathrm{ten}}
+\;:=\;
+G_0\otimes T_0^{\otimes q}\;+\;G_1\otimes T_1^{\otimes q}
+\ \in\ M_{2|\mathcal S|^q}(\NN).
+\]
+令 \(e_0:=(1,0)^{\mathsf T}\in\NN^2\)、\(\mathbf 1:=(1,1)^{\mathsf T}\in\NN^2\)，并取边界向量
+\[
+\alpha_q:=e_0\otimes u^{\otimes q},
+\qquad
+\beta_q:=\mathbf 1\otimes v^{\otimes q}.
+\]
+则对所有 \(m\ge 1\) 有线性递推计数表示
+\[
+\boxed{\;
+S_q(m)=\sum_{x\in X_m}d_m(x)^q
+\;=\;
+\alpha_q^{\mathsf T}\bigl(A_q^{\mathrm{ten}}\bigr)^{m}\beta_q\; }.
+\]
+因此 \((\mathrm{MOM}_q)\) 的“有限状态编译”可取为张量分解型结构：\(q\)-体重合约束在核层面等同于逆码转移的 \(q\)-重同步直积，再与黄金语法两态骨架作 Kronecker 耦合。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-multiplicity-matrix-product}，
+\(
+d_m(x)=u^{\mathsf T}T_{x_1}\cdots T_{x_m}v
+\)。
+于是
+\[
+d_m(x)^q
+=
+\bigl(u^{\otimes q}\bigr)^{\mathsf T}\,
+\bigl(T_{x_1}^{\otimes q}\bigr)\cdots
+\bigl(T_{x_m}^{\otimes q}\bigr)\,
+v^{\otimes q}.
+\]
+对所有合法词 \(x\in X_m\) 求和可由黄金均值两态骨架的路径展开实现：每一步选择符号 \(b\in\{0,1\}\) 并按 \(G_b\) 更新语法态，同时在 \(\mathcal S^{\times q}\) 上施加 \(T_b^{\otimes q}\) 的同步更新。
+因此加权路径总和恰为 \(\alpha_q^{\mathsf T}(A_q^{\mathrm{ten}})^m\beta_q\)。证毕。
+\end{proof}
+
+\paragraph{整数阶压力的离散凸性与二阶碰撞的协议下界}
+\begin{corollary}[离散凸性与 \texorpdfstring{$\rho(A_2)$}{rho(A2)} 的严格协议下界]\label{cor:pom-integer-pressure-discrete-convexity-strict-bound}
+记
+\[
+\tau_q:=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)
+\qquad(q\in\NN),
+\]
+其中 \(\tau_0=\log\varphi\)（因 \(|X_m|=S_0(m)\asymp \varphi^m\)）且 \(\tau_1=\log 2\)（因 \(S_1(m)=\sum_x d_m(x)=|\Omega_m|=2^m\)）。
+则整数列 \((\tau_q)_{q\ge 0}\) 满足离散凸性
+\[
+\boxed{\;
+\tau_{q+1}-\tau_q\ \ge\ \tau_q-\tau_{q-1}\qquad(q\ge 1)\; }.
+\]
+若进一步处于定理 \ref{thm:pom-real-q-pressure-analytic-interpolation} 的严格凸制度（例如纤维多重度势不与常数同调），则上述不等式对一切 \(q\ge 1\) 严格成立。
+特别地在非平凡折叠（严格凸）情形下，
+\[
+\boxed{\;
+\tau_2\ >\ 2\tau_1-\tau_0\ =\ 2\log 2-\log\varphi,
+\qquad\text{等价地}\qquad
+\rho\!\left(A_2^{\mathrm{ten}}\right)\ >\ \frac{4}{\varphi}\; }.
+\]
+\end{corollary}
+\begin{proof}
+离散凸性为推论 \ref{cor:pom-crossq-pressure-convexity} 的整点形式（亦可直接对每个固定 \(m\) 用 Hölder 不等式得到 \(S_q(m)^2\le S_{q-1}(m)S_{q+1}(m)\)，再取对数并除以 \(m\) 取极限）。
+严格性由定理 \ref{thm:pom-real-q-pressure-analytic-interpolation} 的严格凸条件推出。
+将 \(q=1\) 代入即得所示二阶下界与谱半径不等式。证毕。
+\end{proof}
+
+\paragraph{二阶碰撞谱的可去因子分解：同步尾指数的谱反演}
+\begin{proposition}[同步吸收块与歧义尾核：碰撞 \texorpdfstring{$\zeta$}{zeta} 的可去因子]\label{prop:pom-collision-zeta-removable-sync-factor}
+在命题 \ref{prop:pom-momq-tensor-kernel-construction} 的 \(q=2\) 情形，按逆码歧义态空间 \(\mathcal S\) 的“已同步态/未同步态”（候选集为单元 vs.\ 非单元）作分解，
+可将 \(A_2^{\mathrm{ten}}\) 通过对基的置换重排为块三角矩阵
+\[
+A_2^{\mathrm{ten}}\ \sim\
+\begin{pmatrix}
+D & *\\
+0 & B
+\end{pmatrix},
+\]
+其中 \(D\) 为同步吸收块的计数核，\(B\) 为未同步歧义子系统的尾谱核。
+于是有行列式分解
+\[
+\boxed{\;
+\det(I-zA_2^{\mathrm{ten}})
+=
+\det(I-zD)\,\det(I-zB)\; }.
+\]
+因此，一旦同步吸收因子 \(\det(I-zD)\) 可显式计算，则“同步尾”主导极点半径 \(z_{\mathrm{sync}}:=\rho(B)^{-1}\) 可由二阶碰撞谱
+\(\det(I-zA_2^{\mathrm{ten}})\)
+在剔除 \(\det(I-zD)\) 后的剩余极点集合中单独反演得到。
+\end{proposition}
+\begin{proof}
+由“已同步态”在确定性逆码更新下保持为已同步态（候选集一旦为单元即永不再分裂），同步态张成的子空间为不变子空间，从而存在如上块三角分解。
+块三角矩阵的行列式等于对角块行列式之积，故得分解式；极点反演结论随之成立。证毕。
+\end{proof}
+
+\paragraph{黄金两态骨架诱导的二次特征方程：\texorpdfstring{$\rho(A_q)$}{rho(Aq)} 的固定点表征}
+\begin{proposition}[Perron 根的固定点方程与单调求根]\label{prop:pom-golden-grammar-fixed-point-rho-aq}
+在命题 \ref{prop:pom-momq-tensor-kernel-construction} 的设定下，\(A_q^{\mathrm{ten}}\) 可写为 \(2\times 2\) 块矩阵
+\[
+A_q^{\mathrm{ten}}
+\;=\;
+\begin{pmatrix}
+T_0^{\otimes q} & T_1^{\otimes q}\\[2pt]
+T_0^{\otimes q} & 0
+\end{pmatrix}.
+\]
+令 \(\lambda_q:=\rho(A_q^{\mathrm{ten}})>0\)。
+则 \(\lambda_q\) 等价于唯一满足
+\[
+\boxed{\;
+\rho\!\left(\lambda_q^{-1}T_0^{\otimes q}+\lambda_q^{-2}T_1^{\otimes q}T_0^{\otimes q}\right)=1\; }
+\]
+的正实数。
+并且函数
+\[
+F_q(\lambda):=\rho\!\left(\lambda^{-1}T_0^{\otimes q}+\lambda^{-2}T_1^{\otimes q}T_0^{\otimes q}\right)
+\]
+在 \(\lambda>0\) 上严格单调递减，从而可用二分法或单调迭代在一维上收敛求得 \(\lambda_q\)。
+\end{proposition}
+\begin{proof}
+对 Perron 本征对 \((\lambda_q,(u_0,u_1))\)（其中 \(u_0,u_1\ge 0\) 非零）写出本征方程：
+\[
+\lambda_q u_0=T_0^{\otimes q}u_0+T_1^{\otimes q}u_1,
+\qquad
+\lambda_q u_1=T_0^{\otimes q}u_0.
+\]
+消去 \(u_1=\lambda_q^{-1}T_0^{\otimes q}u_0\) 得
+\(
+u_0=\lambda_q^{-1}T_0^{\otimes q}u_0+\lambda_q^{-2}T_1^{\otimes q}T_0^{\otimes q}u_0
+\)，
+故 \(1\) 为矩阵 \(\lambda_q^{-1}T_0^{\otimes q}+\lambda_q^{-2}T_1^{\otimes q}T_0^{\otimes q}\) 的特征值；由非负性与不可约性，其谱半径必须为 \(1\)。
+反向方向同理：若存在 \(\lambda>0\) 使该谱半径为 \(1\)，取 Perron 向量 \(u_0\) 并令 \(u_1=\lambda^{-1}T_0^{\otimes q}u_0\) 即构造出 \(A_q^{\mathrm{ten}}\) 的 Perron 本征向量，从而 \(\lambda=\rho(A_q^{\mathrm{ten}})\)。
+\par
+单调性来自谱半径对非负矩阵条目的单调性：\(\lambda\) 增大时两项 \(\lambda^{-1},\lambda^{-2}\) 同时严格减小，故 \(F_q\) 严格递减。证毕。
+\end{proof}
+
+\paragraph{Rényi 熵率的谱公式与碰撞指数的离散凹性}
+\begin{corollary}[碰撞指数的凹性与 Rényi 熵率谱公式]\label{cor:pom-renyi-rate-spectral-formula-discrete-concavity}
+对整数 \(q\ge 2\) 定义未分离尾
+\[
+\Pi_q(m):=\sum_{x\in X_m}w_m(x)^q=\frac{S_q(m)}{2^{mq}},
+\]
+并令其指数衰减率（碰撞指数）为
+\[
+E_q:=\lim_{m\to\infty}-\frac{1}{m}\log \Pi_q(m).
+\]
+若 \(S_q(m)=\Theta(\rho(A_q^{\mathrm{ten}})^m)\)（例如 \(A_q^{\mathrm{ten}}\) 原始且边界向量非退化），则
+\[
+\boxed{\;
+E_q=q\log 2-\log\rho(A_q^{\mathrm{ten}})\;=\;h_q\;=\;-P(q)\; }
+\]
+（记号见定义 \ref{def:pom-moment-pressure}）。
+并且整数列 \((E_q)_{q\ge 2}\) 在 \(q\) 上满足离散凹性
+\[
+\boxed{\;
+E_{q+1}-E_q\ \le\ E_q-E_{q-1}\qquad(q\ge 3)\; }.
+\]
+相应的 Rényi 熵率（标准归一化，记为 \(h_q^{\mathrm R}\)）满足谱闭式
+\[
+\boxed{\;
+h_q^{\mathrm R}
+:=\lim_{m\to\infty}\frac{1}{m}\cdot\frac{1}{1-q}\log\sum_{x\in X_m}w_m(x)^q
+\;=\;\frac{E_q}{q-1}
+\;=\;\frac{q\log 2-\log\rho(A_q^{\mathrm{ten}})}{q-1}\; }.
+\]
+\end{corollary}
+\begin{proof}
+谱闭式由 \(\Pi_q(m)=S_q(m)/2^{mq}\) 与 \(\tau(q)=\log\rho(A_q^{\mathrm{ten}})\) 直接得到，并与 \(h_q=\log(2^q/r_q)\) 的定义一致（定义 \ref{def:pom-moment-pressure}）。
+离散凹性由 \(\tau_q\) 的离散凸性（推论 \ref{cor:pom-integer-pressure-discrete-convexity-strict-bound} 的非严格版本）经恒等变换 \(E_q=q\log2-\tau_q\) 立即推出。证毕。
+\end{proof}
+

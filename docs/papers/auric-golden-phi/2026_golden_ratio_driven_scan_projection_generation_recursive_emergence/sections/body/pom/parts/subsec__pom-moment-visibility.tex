@@ -123,6 +123,37 @@ $$
 它对应于一组由 Hankel 秩下降强制出现的共振线性约束（见表 \ref{tab:fold_collision_resonance_nullmodes_q9_17}），从而把“乘法式的 \(q\)-重交互”在可审计层面压缩为一个整数缺口证书与一组显式约束向量。
 \end{remark}
 
+\begin{proposition}[因子化对称幂上界：最小 realization 维数的乘法递归控制]\label{prop:pom-factorized-sympower-upper-bound}
+沿用定义 \ref{def:pom-moment-q} 的记号，令 \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\)。
+对整数 \(q\ge 2\)，令 \(d_q\) 表示序列 \(\{S_q(m)\}_{m\ge 2}\) 的最小整系数递推阶数（等价地 Hankel 最小实现维数；见定理 \ref{thm:hankel-rank-minimal} 与推论 \ref{cor:pom-moment-dim-collapse}）。
+取任意整数 \(q_1,q_2\ge 2\) 并记 \(q=q_1q_2\)。
+则有确定性上界
+\[
+\boxed{\;
+d_{q}\ \le\ \binom{q_2+d_{q_1}-1}{d_{q_1}-1}\; }.
+\]
+因此对任意素因子分解 \(q=\prod_{i=1}^{k}p_i\)，沿任意括号化次序递推可得一族显式上界。
+在“素因子链 + 逐步最小化/压缩”的编译策略下（注 \ref{rem:pom-mom-prime-factor-compiler}），该上界把后续对称幂商的名义维数建立在已压缩的中间 realization 之上；
+当中间层确有降维（例如 \(d_{q_1}\) 显著小于一次性编译的名义对称幂维数）时，可得到严格优于“一次性对称幂上界”的递归复杂度控制。
+\end{proposition}
+\begin{proof}
+取 \(q_1\) 的某个最小线性实现 \((u,A,v)\)（命题 \ref{prop:pom-hankel-realization-protocol}），其维数为 \(d_{q_1}\) 且满足
+\(
+S_{q_1}(m)=u^{\mathsf T}A^{m-m_0}v
+\)（\(m\ge m_0\)）。
+将该 realization 视为一个有限维的“后端核”（加权自动机/线性表示），并对其施加 \(q_2\)-重 moment 编译：取 \(q_2\) 份同步直积并在每一步施加“输出一致”的局部筛选。
+在折叠 moment 的计数语义下，该编译等价于对 \(q_1\)-重纤维积再取 \(q_2\)-重纤维积；由纤维积的结合律得到
+\(
+\mathrm{MOM}_{q_2}\circ \mathrm{MOM}_{q_1}\cong \mathrm{MOM}_{q_1q_2}
+\)
+在计数语义上严格保真，因此上述构造确实现了 \(S_{q_1q_2}(m)\)。
+\par
+该 \(q_2\)-重同步直积核具有拷贝置换对称。
+对该对称性取商（对称幂商核）可将状态空间取为占据向量（直方图）集合；其基数至多为
+\(\binom{q_2+d_{q_1}-1}{d_{q_1}-1}\)，即齐次次数 \(q_2\) 的对称幂维度上界。
+由最小性定义，\(d_{q_1q_2}\) 不超过任何 realization 的状态维数，遂得结论。证毕。
+\end{proof}
+
 \paragraph{从 \texorpdfstring{$r_q$}{r\_q} 到压力与“纤维多重度谱”：凸共轭上界（严格）}
 已核验的 \(q\)-阶碰撞核满足 \(S_q(m)=\Theta(r_q^m)\)，其中 \(r_q=\rho(A_q)\) 为 Perron 根（推论 \ref{cor:pom-s2-asymptotic}、\ref{cor:pom-s3-asymptotic}、\ref{cor:pom-s4-asymptotic} 及表 \ref{tab:fold_collision_moment_recursions}）。
 因此 moment 指纹不仅给出单点常数 \(h_q=\log(2^q/r_q)\)，还诱导出一条可做 Legendre 变换的“压力曲线”，从而把“空间损失”提升为真正的谱结构。

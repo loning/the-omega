@@ -1,0 +1,136 @@
+\subsubsection{循环 lift 的 primitive 轨道与 Dirichlet 梳齿：整除筛选、闭式与平方根放缩}\label{subsubsec:zeta-online-kernel-cyclic-lift-primitives}
+本段把附录 \ref{app:real-input-40-finite-rh} 的循环相位提升 \(M^{\langle q\rangle}=M\otimes P_q\)（命题 \ref{prop:finite-rh-phase-lift}）与正文的
+\(s\)-平面极点字典（命题 \ref{prop:s-plane-spectrum-poles}）、
+以及 primitive 的 Möbius 反演模板（注 \ref{prop:finite-dimensional-explicit-formula}）对齐，
+从而得到一组可直接引用的闭式推论：循环 lift 一方面在临界线极点侧实现“\(q\)-梳齿”细分，
+另一方面在长度/迹侧引入严格的整除门控，并据此给出 primitive 轨道数与误差的封闭形。
+
+\begin{corollary}[循环 lift 的 primitive 轨道数闭式]\label{cor:zeta-cyclic-lift-primitive-orbits}
+设 \(M\) 为有限维矩阵，取整数 \(q\ge 2\)，令 \(P_q\) 为 \(q\)-循环置换矩阵并令 \(M^{\langle q\rangle}:=M\otimes P_q\)（命题 \ref{prop:finite-rh-phase-lift}）。
+记迹序列 \(a_n:=\Tr(M^n)\)、\(a_n^{\langle q\rangle}:=\Tr((M^{\langle q\rangle})^n)\)，以及对应的 primitive 轨道数
+\[
+p_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\qquad
+p_n^{\langle q\rangle}:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a^{\langle q\rangle}_{n/d}
+\]
+（Witt/Möbius 反演，见注 \ref{prop:finite-dimensional-explicit-formula}）。
+则：
+\begin{enumerate}
+  \item 若 \(q\nmid n\)，则 \(p_n^{\langle q\rangle}=0\)。
+  \item 若 \(n=qm\)，则有封闭形
+  \[
+  \boxed{\;
+  p_{qm}^{\langle q\rangle}
+  =\frac{1}{m}\sum_{d\mid m}\mu(d)\,\Tr\!\bigl(M^{qm/d}\bigr)\; }.
+  \]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:finite-rh-phase-lift-trace-filter} 的整除筛选，
+\(
+a_n^{\langle q\rangle}=q a_n
+\)
+当且仅当 \(q\mid n\)，否则 \(a_n^{\langle q\rangle}=0\)。
+代入 Möbius 反演得到第一条；当 \(n=qm\) 时，仅有 \(n/d\) 仍被 \(q\) 整除（即 \(d\mid m\)）的项贡献，从而得到第二条闭式。证毕。
+\end{proof}
+
+\begin{corollary}[Dirichlet 极点的 \(q\)-梳齿化与 RH 不变量]\label{cor:zeta-cyclic-lift-dirichlet-comb}
+设 \(M\) 为有限维矩阵，\(\lambda=\rho(M)>1\)，并令
+\(
+Z_M(s)=\det(I-\lambda^{-s}M)^{-1}
+\)
+为 Dirichlet 化 \(\zeta\)-接口（命题 \ref{prop:s-plane-spectrum-poles}）。
+对循环 lift \(M^{\langle q\rangle}=M\otimes P_q\)，其 Dirichlet 化
+\(
+Z_{M^{\langle q\rangle}}(s)=\det(I-\lambda^{-s}M^{\langle q\rangle})^{-1}
+\)
+满足：
+\begin{enumerate}
+  \item \textbf{（实部不变）} \(Z_{M^{\langle q\rangle}}\) 的全部极点实部集合与 \(Z_M\) 完全相同。
+  \item \textbf{（虚部密度放大）} 若 \(M\) 的某个非零特征值为 \(\mu\neq 0\)，则对应的极点列在虚部方向的基频间隔由 \(2\pi/\log\lambda\) 缩小为
+  \[
+  \boxed{\;
+  \frac{2\pi}{q\log\lambda}\; },
+  \]
+  等价地极点虚部密度严格放大 \(q\) 倍（命题 \ref{prop:finite-rh-phase-lift} 的极点梳齿公式）。
+  \item \textbf{（kernel-RH 保持）} 核版 RH/Ramanujan 半径界
+  \(
+  \max_{\mu\neq\lambda}|\mu|\le \sqrt{\lambda}
+  \)
+  在循环 lift 下严格不变（命题 \ref{prop:finite-rh-phase-lift}）；其 \(s\)-平面表述即右半开带 \(\tfrac12<\Re(s)<1\) 无极点的性质保持不变（命题 \ref{prop:s-plane-spectrum-poles}）。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+命题 \ref{prop:finite-rh-phase-lift} 给出谱相位细分
+\(
+\mathrm{spec}(M^{\langle q\rangle})=\{\mu\,\omega_q^k\}
+\)
+且模长不变；再由命题 \ref{prop:s-plane-spectrum-poles} 的字典
+\(
+s=(\log\mu+2\pi i\mathbb{Z})/\log\lambda
+\)
+即可得到 (1)(2)。
+(3) 仅涉及模长，故由 \(|\omega_q^k|=1\) 立得。证毕。
+\end{proof}
+
+\begin{proposition}[循环 lift 的“素数影子”主项与平方根误差]\label{prop:zeta-cyclic-lift-prime-shadow-asymptotic}
+设 \(M\) 为 primitive 非负整数矩阵，\(\lambda=\rho(M)>1\)，并记
+\(
+\Lambda:=\max_{\mu\neq\lambda}|\mu|
+\)。
+令 \(p_n^{\langle q\rangle}\) 为推论 \ref{cor:zeta-cyclic-lift-primitive-orbits} 的 primitive 轨道数。
+则对任意整数 \(m\ge 1\) 有渐近式
+\[
+\boxed{\;
+p_{qm}^{\langle q\rangle}
+=\frac{\lambda^{qm}}{m}
++O\!\left(\frac{\max\{\Lambda^{qm},\,\lambda^{qm/2}\}}{m}\right),\qquad
+p_n^{\langle q\rangle}=0\ (q\nmid n)\; }.
+\]
+特别地，若 kernel-RH 成立（\(\Lambda\le\sqrt{\lambda}\)），则
+\[
+\boxed{\;
+p_{qm}^{\langle q\rangle}
+=\frac{\lambda^{qm}}{m}
++O\!\left(\frac{\lambda^{qm/2}}{m}\right).\;}
+\]
+并且当存在达界谱点 \(|\mu|=\sqrt{\lambda}\) 时，该平方根尺度一般不可再改进（详见附录中关于 RH-sharp 振荡与奇偶门控的命题 \ref{prop:finite-rh-parity-general}）。
+\end{proposition}
+\begin{proof}
+将推论 \ref{cor:zeta-cyclic-lift-primitive-orbits} 的闭式代入
+\(
+\Tr(M^n)=\lambda^n+O(\Lambda^n)
+\)：
+主项来自 \(d=1\) 的 Perron 贡献 \(\lambda^{qm}/m\)。
+误差项一部分来自 \(O(\Lambda^{qm/d})\)，其最大量级为 \(O(\Lambda^{qm})\)；
+另一部分来自 \(d\ge 2\) 的 Perron 次级项 \(\lambda^{qm/d}\le \lambda^{qm/2}\)。
+合并并除以 \(m\) 得到所示上界；RH 情形下 \(\Lambda^{qm}\le \lambda^{qm/2}\) 立得简化式。证毕。
+\end{proof}
+
+\begin{corollary}[符号翻转模态与临界线半格点梳齿]\label{cor:zeta-signflip-half-lattice}
+设 \(M\) 为有限维矩阵，\(\lambda=\rho(M)>1\)，并令 \(Z_M(s)=\det(I-\lambda^{-s}M)^{-1}\)。
+则以下两命题等价：
+\begin{enumerate}
+  \item \(M\) 存在特征值 \(\mu=-\sqrt{\lambda}\)；
+  \item \(Z_M\) 在临界线 \(\Re(s)=\tfrac12\) 上存在半格点极点晶格
+  \[
+  \boxed{\;
+  s=\frac12+\frac{(2k+1)\pi i}{\log\lambda}\qquad(k\in\ZZ)\; }.
+  \]
+\end{enumerate}
+更一般地，若存在达界谱点 \(\mu=\sqrt{\lambda}e^{i\theta}\)，则临界线上的极点列为
+\[
+\boxed{\;
+s=\frac12+\frac{(\theta+2\pi k)i}{\log\lambda}\qquad(k\in\ZZ)\; }.
+\]
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:s-plane-spectrum-poles}，\(\lambda^{-s}\mu=1\) 当且仅当
+\(
+s=(\log\mu+2\pi i k)/\log\lambda
+\)。
+当 \(\mu=\sqrt{\lambda}e^{i\theta}\) 时可取 \(\log\mu=\tfrac12\log\lambda+i(\theta+2\pi\ell)\)，代入即得一般式；
+取 \(\theta=\pi\) 得半格点情形。
+反向推理同理：临界线极点给出 \(|\mu|=\sqrt{\lambda}\) 且辐角为 \(\theta\)（模 \(2\pi\)）。证毕。
+\end{proof}
+
