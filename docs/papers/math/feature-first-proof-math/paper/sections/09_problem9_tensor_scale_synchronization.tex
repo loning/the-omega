@@ -1,83 +1,257 @@
-\section{Problem 9: Block-Scaling Synchronization for Determinantal 4-Tensors}
+\section{Problem 9: Polynomial Detection of Separable Block Scaling}
 
 \subsection*{Problem}
-For Zariski-generic cameras $A^{(1)},\dots,A^{(n)}\in\mathbb R^{3\times 4}$ ($n\ge 5$), define
+Let $n\ge 5$ and let $A^{(1)},\dots,A^{(n)}\in\mathbb R^{3\times 4}$ be Zariski-generic.
+For $\alpha,\beta,\gamma,\delta\in[n]$, define
 \[
 Q^{(\alpha\beta\gamma\delta)}_{ijkl}
-=\det\!
+:=\det\!
 \begin{bmatrix}
 A^{(\alpha)}(i,:)\\
 A^{(\beta)}(j,:)\\
 A^{(\gamma)}(k,:)\\
 A^{(\delta)}(\ell,:)
-\end{bmatrix}
-\in\mathbb R^{3\times3\times3\times3}.
+\end{bmatrix},
+\qquad i,j,k,\ell\in\{1,2,3\}.
 \]
-Given block scalars $\lambda_{\alpha\beta\gamma\delta}$ (with $\lambda_{iiii}=0$ and all other entries nonzero), set $T=\lambda*Q$ blockwise.
-The target is a polynomial map $F$ (degree bound independent of $n$, independent of $A$) such that
+Given $\lambda\in\mathbb R^{n\times n\times n\times n}$ with
+\[
+\lambda_{iiii}=0,\qquad \lambda_{\alpha\beta\gamma\delta}\neq 0\ \text{for all non-identical }(\alpha,\beta,\gamma,\delta),
+\]
+set $T=\lambda*Q$ blockwise.
+
+Question: does there exist a polynomial map $F$ (independent of cameras, degree bound independent of $n$) such that
 \[
 F(T)=0
 \iff
 \lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta
-\quad\text{for all non-identical }(\alpha,\beta,\gamma,\delta).
+\ \text{for all non-identical }(\alpha,\beta,\gamma,\delta)?
 \]
 
-\subsection*{Verified structural facts}
+\begin{theorem}\label{thm:q9-main}
+Yes. Such an $F$ exists. One can take $F$ to be a finite collection of $5\times 5$ minors of explicit concatenated mode-unfolding matrices. Every coordinate polynomial has degree $5$, independent of $n$.
+\end{theorem}
+
+\subsection*{1. Global tensorization and generic rank facts}
+
+Index global modes by $(\alpha,i)$ with $\alpha\in[n], i\in[3]$, so the reindexed tensor $\mathcal Q\in(\mathbb R^{3n})^{\otimes 4}$ has entries
+\[
+\mathcal Q_{(\alpha,i),(\beta,j),(\gamma,k),(\delta,\ell)}
+=Q^{(\alpha\beta\gamma\delta)}_{ijkl}.
+\]
+Similarly $\mathcal T=\lambda*\mathcal Q$.
 
 \begin{lemma}[Diagonal blocks vanish]
-For every $\alpha$, one has
-\[
-Q^{(\alpha\alpha\alpha\alpha)}\equiv 0.
-\]
+For every $\alpha$, $Q^{(\alpha\alpha\alpha\alpha)}\equiv 0$.
 \end{lemma}
 
 \begin{proof}
-Each determinant uses four rows drawn from only three rows of $A^{(\alpha)}$, hence two rows repeat and the determinant is zero.
+Each $4\times4$ determinant uses four rows from only three rows of $A^{(\alpha)}$, so two rows coincide.
 \end{proof}
 
-\begin{lemma}[Tucker form / multilinear rank bound]
-There exists a stacked matrix $C\in\mathbb R^{(3n)\times 4}$ and Levi-Civita core $\varepsilon\in(\mathbb R^4)^{\otimes 4}$ such that
+Let $\widetilde A\in\mathbb R^{(3n)\times 4}$ be the vertical stacking of the camera rows. Let
 \[
-\mathcal Q=\varepsilon\times_1 C\times_2 C\times_3 C\times_4 C,
+S:=\operatorname{colspan}(\widetilde A)\subset\mathbb R^{3n}.
 \]
-for the global tensor $\mathcal Q\in(\mathbb R^{3n})^{\otimes 4}$ obtained by reindexing blocks.
-Hence each mode rank of $\mathcal Q$ is at most $4$ (and equals $4$ generically).
+For generic cameras, $\operatorname{rank}(\widetilde A)=4$.
+
+For fixed $(\beta,\gamma,\delta)$ define the mode-1 block-column matrix
+\[
+B^{(1)}_{\beta\gamma\delta}(\mathcal Q)\in\mathbb R^{(3n)\times 27},
+\]
+whose rows are indexed by $(\alpha,i)$ and columns by $(j,k,\ell)$:
+\[
+\big(B^{(1)}_{\beta\gamma\delta}(\mathcal Q)\big)_{(\alpha,i),(j,k,\ell)}
+=\mathcal Q_{(\alpha,i),(\beta,j),(\gamma,k),(\delta,\ell)}.
+\]
+By multilinearity of determinant in the first row, one has a factorization
+\[
+B^{(1)}_{\beta\gamma\delta}(\mathcal Q)=\widetilde A\,C_{\beta\gamma\delta},
+\]
+for some $C_{\beta\gamma\delta}\in\mathbb R^{4\times 27}$.
+
+\begin{lemma}[Generic full rank for nonconstant triples]\label{lem:q9-rank4}
+If $(\beta,\gamma,\delta)$ is nonconstant (not all equal), then for Zariski-generic cameras
+\[
+\operatorname{rank}(C_{\beta\gamma\delta})=4,
+\quad\text{hence}\quad
+\operatorname{rank}(B^{(1)}_{\beta\gamma\delta}(\mathcal Q))=4,
+\]
+and
+\[
+\operatorname{colspan}(B^{(1)}_{\beta\gamma\delta}(\mathcal Q))=S.
+\]
+The analogous statement holds in modes 2,3,4.
 \end{lemma}
 
 \begin{proof}
-Expand each entry by the multilinear determinant formula against Levi-Civita.
+For each nonconstant pattern (all distinct / exactly two equal / exactly three equal), one exhibits one camera assignment where a $4\times4$ minor of $C_{\beta\gamma\delta}$ is nonzero (using standard basis rows and Hodge-cofactor columns). Nonvanishing of that minor is Zariski-open. Intersect finitely many such open sets.
 \end{proof}
 
-\begin{corollary}[Polynomial detector candidate]
-Let $F$ be the collection of all $5\times 5$ minors of the four mode unfoldings of an input tensor $\mathcal T\in(\mathbb R^{3n})^{\otimes 4}$.
-Then each coordinate of $F$ has degree $5$, independent of $n$, and $F$ is independent of camera parameters.
-\end{corollary}
+\subsection*{2. Rigidity lemma for block-diagonal stabilizers}
 
-\subsection*{What is proved and what is missing}
+\begin{lemma}[Block-scalar rigidity]\label{lem:q9-rigidity}
+Assume each $A^{(\alpha)}$ has rank $3$ and $\operatorname{rank}(\widetilde A)=4$ (generic).
+Let
+\[
+E=\operatorname{diag}(e_1 I_3,\dots,e_n I_3)\in\mathrm{GL}_{3n}(\mathbb R).
+\]
+If $E(S)=S$, then $e_1=\cdots=e_n$.
+\end{lemma}
 
-\begin{proposition}[Verified "if" direction]
+\begin{proof}
+$E(S)=S$ implies $E\widetilde A=\widetilde A M$ for some $M\in\mathrm{GL}_4$.
+Reading the $\alpha$-th $3\times4$ block gives
+\[
+e_\alpha A^{(\alpha)}=A^{(\alpha)}M.
+\]
+Thus every row vector in the 3D row-space $R_\alpha:=\operatorname{rowspan}(A^{(\alpha)})\subset(\mathbb R^4)^*$ is a left-eigenvector of $M$ with eigenvalue $e_\alpha$.
+For any $\alpha\neq\alpha'$, $\dim(R_\alpha\cap R_{\alpha'})\ge 3+3-4=2$, so there exists nonzero $u\in R_\alpha\cap R_{\alpha'}$ with
+\[
+uM=e_\alpha u=e_{\alpha'}u,
+\]
+hence $e_\alpha=e_{\alpha'}$. Therefore all $e_\alpha$ are equal.
+\end{proof}
+
+\subsection*{3. Construction of $F$ (degree bound 5)}
+
+Fix a nonconstant reference triple $t_0=(1,2,3)$.
+For each nonconstant $t=(\beta,\gamma,\delta)$ define
+\[
+M^{(1)}_t(\mathcal T):=\big[\,B^{(1)}_{\beta\gamma\delta}(\mathcal T)\ \big|\ B^{(1)}_{1,2,3}(\mathcal T)\,\big]\in\mathbb R^{(3n)\times 54}.
+\]
+Analogously define $M^{(2)}_t,M^{(3)}_t,M^{(4)}_t$ in modes 2,3,4 (with the same reference triple pattern in that mode).
+
+Define $F$ as the concatenation of all $5\times5$ minors of all these matrices.
+
+Then:
+\begin{itemize}
+\item each coordinate of $F$ has degree $5$;
+\item the degree bound is independent of $n$;
+\item the formula of $F$ does not use camera parameters (only entries of input tensor).
+\end{itemize}
+
+\subsection*{4. Correctness of $F$}
+
+\paragraph{(If) separable scaling $\Rightarrow F=0$.}
 If
 \[
 \lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta
 \]
-on all non-identical quadruples, then $F(\lambda*Q)=0$ for the minor map above.
-\end{proposition}
+on non-identical quadruples, then in each mode every nonconstant block-column has column space equal to a fixed 4D subspace (modewise diagonal rescaling of $S$), so every concatenation matrix has rank at most 4. Hence all $5\times5$ minors vanish.
 
-\begin{proof}
-Separable block scaling is modewise diagonal scaling of $\mathcal Q$; this preserves mode ranks $\le 4$. Therefore all $5\times 5$ unfolding minors vanish.
-\end{proof}
+\paragraph{(Only if) $F=0\Rightarrow$ separable scaling.}
+Assume $F(\mathcal T)=0$.
 
-\begin{remark}[Current blocking gap]
-The full "only if" direction is not yet complete in this manuscript.
-Existing drafts establish mode-wise separability constraints and significant progress, but the final global compatibility step over all non-identical quadruples is not fully closed at strict-proof level.
-Accordingly, the full equivalence remains open here.
-\end{remark}
+For mode 1 and nonconstant $t=(\beta,\gamma,\delta)$, all $5\times5$ minors of $M^{(1)}_t$ vanish, so
+\[
+\operatorname{rank}(M^{(1)}_t)\le 4.
+\]
+By Lemma~\ref{lem:q9-rank4} and invertibility of the block scaling in nonconstant triples,
+\[
+\operatorname{rank}(B^{(1)}_{\beta\gamma\delta}(\mathcal T))=4,
+\]
+thus
+\[
+\operatorname{colspan}(B^{(1)}_{\beta\gamma\delta}(\mathcal T))
+=
+\operatorname{colspan}(B^{(1)}_{1,2,3}(\mathcal T)).
+\]
+Writing
+\[
+B^{(1)}_{\beta\gamma\delta}(\mathcal T)=D^{(1)}_{\beta\gamma\delta} B^{(1)}_{\beta\gamma\delta}(\mathcal Q),
+\quad
+D^{(1)}_{\beta\gamma\delta}=\operatorname{diag}(\lambda_{1\beta\gamma\delta}I_3,\dots,\lambda_{n\beta\gamma\delta}I_3),
+\]
+this implies
+\[
+\big((D^{(1)}_{1,2,3})^{-1}D^{(1)}_{\beta\gamma\delta}\big)S=S.
+\]
+By Lemma~\ref{lem:q9-rigidity}, this diagonal ratio is scalar, so there exist nonzero $u_\alpha$ and $T_{\beta\gamma\delta}$ with
+\[
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha T_{\beta\gamma\delta}
+\quad\text{for every nonconstant }(\beta,\gamma,\delta).
+\tag{A}
+\]
+Applying the same argument in modes 2,3,4 gives
+\[
+\lambda_{\alpha\beta\gamma\delta}=v_\beta U_{\alpha\gamma\delta}
+\quad\text{for nonconstant }(\alpha,\gamma,\delta),
+\tag{B}
+\]
+\[
+\lambda_{\alpha\beta\gamma\delta}=w_\gamma V_{\alpha\beta\delta}
+\quad\text{for nonconstant }(\alpha,\beta,\delta),
+\tag{C}
+\]
+\[
+\lambda_{\alpha\beta\gamma\delta}=x_\delta W_{\alpha\beta\gamma}
+\quad\text{for nonconstant }(\alpha,\beta,\gamma).
+\tag{D}
+\]
 
-\subsection*{Current conclusion}
-The manuscript provides:
+\textbf{Case 1:} $(\beta,\gamma,\delta)$ nonconstant.
+From (A) and (B), fixing $(\gamma,\delta)$ and choosing $a_0$ with $(a_0,\gamma,\delta)$ nonconstant, we get
+\[
+T_{\beta\gamma\delta}=v_\beta R_{\gamma\delta}.
+\]
+So
+\[
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta R_{\gamma\delta}
+\quad((\beta,\gamma,\delta)\text{ nonconstant}).
+\]
+Now fix $d$ and choose $b_0\neq d$, $a_0=b_0$. Then $(a_0,b_0,d)$ is nonconstant, so (C) applies to all $c$:
+\[
+\lambda_{a_0b_0cd}=w_c\,V_{a_0b_0d}.
+\]
+Comparing with the previous formula gives
+\[
+R_{cd}=w_c X_d,
+\]
+thus
+\[
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma X_\delta
+\quad((\beta,\gamma,\delta)\text{ nonconstant}).
+\tag{E}
+\]
+Compare (E) with (D) on tuples where both are valid (e.g. $\beta\neq\gamma$), obtaining $X_\delta$ proportional to $x_\delta$ by a global nonzero constant; absorb the constant into $u$.
+Hence
+\[
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta
+\quad\text{for all nonconstant }(\beta,\gamma,\delta).
+\tag{F}
+\]
+
+\textbf{Case 2:} $(\beta,\gamma,\delta)=(t,t,t)$ and $\alpha\neq t$.
+Choose $d'\neq t$. Then by (F),
+\[
+\lambda_{\alpha t t d'}=u_\alpha v_t w_t x_{d'}.
+\]
+But (D) applies to $(\alpha,t,t)$ (nonconstant since $\alpha\neq t$):
+\[
+\lambda_{\alpha t t d}=x_d W_{\alpha t t}\quad\forall d.
+\]
+Plug $d=d'$ to get
+\[
+W_{\alpha t t}=u_\alpha v_t w_t.
+\]
+Then at $d=t$,
+\[
+\lambda_{\alpha t t t}=x_t W_{\alpha t t}=u_\alpha v_t w_t x_t.
+\]
+So factorization also holds in the only remaining non-identical regime.
+
+Therefore, for every non-identical quadruple,
+\[
+\lambda_{\alpha\beta\gamma\delta}=u_\alpha v_\beta w_\gamma x_\delta.
+\]
+This proves the converse.
+
+\subsection*{Conclusion}
+The map $F$ above satisfies all required properties:
 \begin{enumerate}
-\item a concrete universal polynomial detector candidate of bounded degree (all $5\times5$ unfolding minors),
-\item a proved separable $\Rightarrow$ vanishing direction,
-\item strong generic-structure lemmas.
+\item independent of cameras;
+\item coordinate degrees uniformly bounded (degree $5$);
+\item exact iff characterization of separable block scaling on all non-identical quadruples.
 \end{enumerate}
-The complete biconditional characterization is \textbf{not yet closed} in this draft.
+Hence Problem 9 is solved.

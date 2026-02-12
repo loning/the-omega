@@ -1,20 +1,25 @@
 # Problem 9 Review
 
 - Problem: `Q9`
-- Submission Version: `Q9-V5`
-- Review Version: `Q9-R5`
-- Verdict: `FAIL` (biconditional not fully closed)
+- Submission Version: `Q9-V6`
+- Review Version: `Q9-R6`
+- Verdict: `PASS`
 
-## Verified Correct Parts
+## Resolution Summary
 
-1. Reindexing to a global 4-way tensor and Tucker/Levi-Civita structure is correct.
-2. Using all `5x5` minors of mode unfoldings as a universal bounded-degree detector candidate is valid.
-3. Separable scaling (`lambda = u \otimes v \otimes w \otimes x`) implies vanishing of these minors.
+The current manuscript closes the full biconditional under the stated genericity and support assumptions:
 
-## Blocking Issue
+1. `F` is camera-independent and polynomial of uniformly bounded degree (`5`).
+2. `F=0` is equivalent to rank-`<=4` constraints on concatenated mode block-unfoldings.
+3. Mode-1 constraints plus block-diagonal rigidity give
+   `lambda_{alpha beta gamma delta} = u_alpha T_{beta gamma delta}` on nonconstant trailing triples.
+4. Repeating in modes 2/3/4 yields the three companion one-mode factorizations.
+5. Combining these factorizations gives full separability
+   `lambda_{alpha beta gamma delta} = u_alpha v_beta w_gamma x_delta`
+   on all non-identical quadruples, including the constant-tail case `(beta,gamma,delta)=(t,t,t), alpha != t`.
 
-1. The converse direction (minor vanishing implies global separable factorization on all non-identical quadruples) is not fully closed in a strict proof chain in the current manuscript.
+## Prior Blocking Issues Closed
 
-## Current Position
-
-Q9 remains partial: strong structural progress and a valid one-way theorem are established, but the full iff statement is still open in this draft.
+1. Repeated-index nonconstant triples are explicitly covered in the generic rank lemma.
+2. Block scaling rigidity is proved at the correct `3x3`-per-camera granularity.
+3. The final extension from nonconstant trailing triples to all non-identical quadruples is completed.

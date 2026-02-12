@@ -12,7 +12,7 @@ This file tracks the latest reviewed version for each problem.
 | Q6 | Q6-R3 | FAIL (partial results verified; main existence still open) |
 | Q7 | Q7-R5 | FAIL (odd-torsion no-go closed; pure 2-primary case open) |
 | Q8 | Q8-R3 | FAIL (YES proof attempt still has local-to-global gaps) |
-| Q9 | Q9-R5 | FAIL (one-way result proved; full iff still open) |
+| Q9 | Q9-R6 | PASS |
 | Q10 | Q10-R2 | PASS |
 
 Process rule:
