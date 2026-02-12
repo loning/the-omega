@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V8`
-- Review Version: `Q4-R8`
+- Submission Version: `Q4-V9`
+- Review Version: `Q4-R9`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -18,6 +18,9 @@
 8. Variational formula:
    `1/Phi_n(p) = min_{sum w=1} sum w_{ij}^2 (lambda_i-lambda_j)^2`.
 9. Sufficient reduction `(A) => (star)` is logically correct.
+10. New all-`n` theorem proved for the monotone root-sum model
+    `nu_i = lambda_i + mu_i`:
+    `1/Phi_n(nu) >= 1/Phi_n(lambda) + 1/Phi_n(mu)`.
 
 ## Findings From Independent Re-check
 
