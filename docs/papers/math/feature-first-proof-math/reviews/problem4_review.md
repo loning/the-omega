@@ -1,30 +1,37 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V6` (general-n reduction strengthened)
-- Review Version: `Q4-R6`
-- Verdict: `PARTIAL PASS` (special cases closed; current general-`n` bridge remains open)
+- Submission Version: `Q4-V8`
+- Review Version: `Q4-R8`
+- Verdict: `PARTIAL PASS`
 
-## What Is Closed
+## Closed Results
 
 1. Pairwise inverse-square identity for `Phi_n` (all `n`).
 2. Full equality for `n=2`.
 3. Full inequality for `n=3`.
-4. Degenerate shift case `p(x)=(x-a)^n` (all `n`).
+4. Degenerate shift case `p(x)=(x-a)^n` (all `n`), with equality.
 5. Variance additivity under `boxplus_n` (all `n`).
 6. de Bruijn-type identity for polynomial heat flow.
-7. New: differential-operator representation
+7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
-8. New: variational formula
+8. Variational formula:
    `1/Phi_n(p) = min_{sum w=1} sum w_{ij}^2 (lambda_i-lambda_j)^2`.
-9. New: exact implication `(A) => (star)` (Proposition `q4-reductionA`), valid as a sufficient route.
+9. Sufficient reduction `(A) => (star)` is logically correct.
 
-## Remaining Open Step
+## Findings From Independent Re-check
 
-The full all-`n` theorem remains open for `n >= 4`.
-The manuscript now explicitly notes that uniform-in-`w` quadratic superadditivity `(A)` is generally too strong (numerically false), so closure must come from a weaker global mechanism.
+1. The bridge `(A)` is too strong and cannot be used as the final closure mechanism.
+   Numerical counterexamples exist for `(A)` while `(star)` still appears true on those same inputs.
+2. Additional stress tests found no violation of `(star)`:
+   random search (`n=4..8`, `6e4` samples per `n`), adversarial local descent for `n=4`, and near-degenerate families.
+3. Near `(x-a)^n` inputs, the margin behaves like `+C eps^2` in tested families, consistent with stable equality at the degenerate endpoint.
+
+## Remaining Gap
+
+The all-`n` statement of `(star)` for `n>=4` is still unproved.
+Current bottleneck is a weaker global mechanism replacing uniform-in-`w` superadditivity.
 
 ## Conclusion
 
-The manuscript now has a strict and explicit reduction framework for the general case.
-Status remains `PARTIAL PASS` because proposition `(A)` is still unproved.
+`Q4` remains `PARTIAL PASS`: the section is now internally consistent and technically stronger, but a full all-`n` proof is still missing.
