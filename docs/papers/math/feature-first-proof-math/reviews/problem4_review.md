@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V14`
-- Review Version: `Q4-R14`
+- Submission Version: `Q4-V15`
+- Review Version: `Q4-R15`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -47,7 +47,7 @@
    random search (`n=4..12`), adversarial local descent near `n=4`, and near-degenerate families.
 3. Candidate bridge `1/Phi(roots(p boxplus q)) >= 1/Phi(sort(lambda+mu))` is false numerically.
 4. The new sufficient inequality in item (20) is mathematically valid as a sufficient route, but it is too strong in general:
-   explicit numerical counterexamples appear (first found at `n=12`) while the full concavity condition in (18) can still hold.
+   explicit numerical counterexamples appear already at `n=8`, while the full concavity condition in (18) can still hold on the same root configuration.
 
 ## Remaining Gap
 
