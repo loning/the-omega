@@ -108,6 +108,9 @@
 7. Additional search found no negative value for `sum g_{ij}^3` in tested dimensions (up to `n=12`) under random + local minimization.
 8. New local minimization confirms `B` can be negative (moderate bounded configurations),
    while the full concavity numerator `A+B` remained positive on the same samples.
+9. Section stress-tests now explicitly separate:
+   `margin` near-zero behavior for `(star)` and signed-defect behavior for `B`,
+   clarifying that the remaining target is strictly `A+B>=0`.
 
 ## Remaining Gap
 
