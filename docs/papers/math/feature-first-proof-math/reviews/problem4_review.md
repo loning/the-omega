@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V11`
-- Review Version: `Q4-R11`
+- Submission Version: `Q4-V12`
+- Review Version: `Q4-R12`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -26,6 +26,10 @@
 12. New derivative recursion:
     `(d/dx)(p boxplus_n q) = (1/n) (p' boxplus_{n-1} q')`,
     and its iterated `m`-th derivative form.
+13. New transform-factorization lemma:
+    `T_n(p boxplus_n q) = (1/n!) T_n(p)T_n(q)`, and decomposition
+    `p boxplus_n q = (prod_m (I-α_m D))p` after factoring `T_n(q)=n! prod_m (1-α_m z)`.
+    In particular, elementary step with `q_α(x)=x^n-nαx^{n-1}` is `p -> p-αp'`.
 
 ## Findings From Independent Re-check
 

@@ -264,6 +264,94 @@ Set $m=i+k$. The coefficient of $x^{n-m}$ is
 which is exactly the defining coefficient formula of $p\boxplus_n q$.
 \end{proof}
 
+\begin{lemma}[Transform factorization and elementary-step decomposition]\label{lem:q4-transform-factor}
+Define
+\[
+\mathcal T_n\!\left(\sum_{k=0}^{n}a_k x^{n-k}\right):=
+\sum_{k=0}^{n}(n-k)!\,a_k z^k\in \mathbb R[z]/(z^{n+1}).
+\]
+Then:
+\begin{enumerate}
+\item
+\[
+\mathcal T_n(p\boxplus_n q)=\frac1{n!}\,\mathcal T_n(p)\mathcal T_n(q).
+\]
+\item If
+\[
+\mathcal T_n(q)=n!\prod_{m=1}^{n}(1-\alpha_m z),
+\]
+then
+\[
+p\boxplus_n q
+
+=
+ \Bigl(\prod_{m=1}^{n}(I-\alpha_m D)\Bigr)p,
+\qquad D:=\frac{d}{dx}.
+\]
+Equivalently, if $q_{\alpha}(x):=x^n-n\alpha x^{n-1}$, then
+\[
+p\boxplus_n q
+=
+(\cdots((p\boxplus_n q_{\alpha_1})\boxplus_n q_{\alpha_2})\cdots)\boxplus_n q_{\alpha_n},
+\]
+and each elementary step satisfies
+\[
+p\boxplus_n q_{\alpha}=p-\alpha p'.
+\]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For (1), write
+\[
+p(x)=\sum_{i=0}^{n}a_i x^{n-i},\qquad
+q(x)=\sum_{j=0}^{n}b_j x^{n-j},\qquad
+r:=p\boxplus_n q=\sum_{k=0}^{n}c_k x^{n-k}.
+\]
+By definition,
+\[
+c_k=\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k)!}\,a_i b_j.
+\]
+Hence
+\[
+(n-k)!\,c_k=\frac1{n!}\sum_{i+j=k}(n-i)!\,a_i\,(n-j)!\,b_j,
+\]
+which is exactly coefficient-wise multiplication identity
+\[
+\mathcal T_n(r)=\frac1{n!}\,\mathcal T_n(p)\mathcal T_n(q).
+\]
+
+For (2), note first that for $q_{\alpha}(x)=x^n-n\alpha x^{n-1}$ we have
+\[
+\mathcal T_n(q_\alpha)=n!(1-\alpha z).
+\]
+Applying (1),
+\[
+\mathcal T_n(p\boxplus_n q_\alpha)=\frac1{n!}\,\mathcal T_n(p)\,n!(1-\alpha z)
+=(1-\alpha z)\mathcal T_n(p).
+\]
+Since $\mathcal T_n$ is an isomorphism on degree-$n$ coefficient vectors, this realizes $p\boxplus_n q_\alpha$ as multiplication by $(1-\alpha z)$ in $\mathcal T_n$-space.
+
+Now from Lemma~\ref{lem:q4-diffrepr},
+\[
+p\boxplus_n q_\alpha
+=
+\frac1{n!}\bigl(p\,q_\alpha^{(n)}(0)+p'\,q_\alpha^{(n-1)}(0)\bigr)
+=
+\frac1{n!}\bigl(p\,n!+p'(-\alpha n!)\bigr)=p-\alpha p'.
+\]
+
+Finally, because multiplication in $\mathbb R[z]/(z^{n+1})$ is associative and commutative,
+\[
+\frac1{n!}\mathcal T_n(p)\mathcal T_n(q)
+=
+\frac1{n!}\mathcal T_n(p)\,n!\prod_{m=1}^{n}(1-\alpha_m z)
+=
+\mathcal T_n(p)\prod_{m=1}^{n}(1-\alpha_m z),
+\]
+which equals the $\mathcal T_n$-image of successive convolutions by $q_{\alpha_m}$, i.e. successive application of $(I-\alpha_m D)$.
+\end{proof}
+
 \begin{lemma}[Derivative recursion for $\boxplus_n$]\label{lem:q4-deriv-recursion}
 For monic degree-$n$ polynomials $p,q$,
 \[
