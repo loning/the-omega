@@ -178,6 +178,106 @@ S_{\mathrm{def}}
 在固定总和约束下，等深度配置为主序最小元，从而给出最大值；极端集中为主序最大端点，从而给出下确界。证毕。
 \end{proof}
 
+\begin{proposition}[统一伸缩的熵重整化不等式：\texorpdfstring{$\delta\mapsto m\delta$}{delta -> m delta} 的 Jensen 包络]\label{prop:xi-defect-entropy-uniform-scaling-jensen-envelope}
+令
+\(
+p_j:=\delta_j/(1+\delta_j)\in(0,1)
+\)，并记
+\(
+S:=S_{\mathrm{def}}=\sum_j m_j p_j
+\)、
+\(
+\kappa:=\kappa_{\mathrm{ind}}=\sum_j m_j
+\)。
+对任意 \(m>0\) 施加统一伸缩 \(\delta_j\mapsto m\delta_j\)，并定义新熵
+\[
+S_m:=\sum_j m_j\,\frac{m\delta_j}{1+m\delta_j}.
+\]
+则在 \(p\)-坐标下该变换由 Möbius 变换
+\begin{equation}\label{eq:xi-defect-entropy-scaling-mobius}
+\boxed{\;
+\Psi_m(p):=\frac{mp}{1+(m-1)p}\qquad(p\in[0,1])\;}
+\end{equation}
+给出：\(S_m=\sum_j m_j\,\Psi_m(p_j)\)。
+并且：
+\begin{enumerate}
+  \item 若 \(m>1\)，则 \(\Psi_m\) 在 \([0,1]\) 上严格凹，故由 Jensen 不等式得
+  \[
+  \boxed{\;
+  S_m\ \le\ \kappa\,\Psi_m\!\left(\frac{S}{\kappa}\right),\;}
+  \]
+  且等号当且仅当所有 \(p_j\)（按重数展开）相等；
+  \item 若 \(0<m<1\)，则 \(\Psi_m\) 在 \([0,1]\) 上严格凸，故同理得到
+  \[
+  \boxed{\;
+  S_m\ \ge\ \kappa\,\Psi_m\!\left(\frac{S}{\kappa}\right),\;}
+  \]
+  且等号当且仅当所有 \(p_j\)（按重数展开）相等。
+\end{enumerate}
+因此，“统一尺度变化下熵的可达域”被压缩为单变量 Möbius 包络，而“均匀深度”是唯一饱和构型。
+\end{proposition}
+
+\begin{proof}
+由 \(p=\delta/(1+\delta)\) 解出 \(\delta=p/(1-p)\)，代入 \(m\delta\) 并化简得
+\(\frac{m\delta}{1+m\delta}=\Psi_m(p)\)，从而 \(S_m=\sum_j m_j\Psi_m(p_j)\)。
+计算
+\[
+\Psi_m'(p)=\frac{m}{(1+(m-1)p)^2},
+\qquad
+\Psi_m''(p)=-\frac{2m(m-1)}{(1+(m-1)p)^3},
+\]
+故 \(m>1\) 时 \(\Psi_m''<0\)（严格凹），\(0<m<1\) 时 \(\Psi_m''>0\)（严格凸）。
+再以权重 \(m_j/\kappa\) 应用 Jensen 即得两条不等式；严格取等条件由严格凸/凹的等号条件给出。证毕。
+\end{proof}
+
+\begin{proposition}[连续重整化流的方差缺口恒等式：偏离均匀性即回收强度]\label{prop:xi-defect-entropy-scaling-variance-gap-identity}
+以对数尺度 \(s=\log m\) 参数化统一伸缩 \(\delta\mapsto e^{s}\delta\)，并令
+\(
+p_j(s):=\Psi_{e^{s}}(p_j(0))
+\)、
+\(
+S(s):=\sum_j m_j p_j(s)
+\)、
+\(
+\bar p(s):=S(s)/\kappa
+\)。
+则对所有 \(s\in\RR\) 有导数闭式
+\begin{equation}\label{eq:xi-defect-entropy-logistic-variance-gap}
+\boxed{\;
+\frac{\dd}{\dd s}S(s)
+=\sum_j m_j\,p_j(s)\bigl(1-p_j(s)\bigr)
+=S(s)\Bigl(1-\frac{S(s)}{\kappa}\Bigr)-\kappa\,\mathrm{Var}_m\!\bigl(p(s)\bigr),\;}
+\end{equation}
+其中加权方差定义为
+\[
+\mathrm{Var}_m(p):=\frac{1}{\kappa}\sum_j m_j\bigl(p_j-\bar p\bigr)^2\ \ge\ 0.
+\]
+因此
+\[
+\boxed{\;
+\frac{\dd}{\dd s}S(s)\ \le\ S(s)\Bigl(1-\frac{S(s)}{\kappa}\Bigr),\;}
+\]
+且严格不等号当且仅当深度非均匀（\(\mathrm{Var}_m(p(s))>0\)）。
+该恒等式把“回收器强度”量化为一个可计算的缺口项：均匀化是唯一达到 logistic 速率上界的情形，而任何非均匀性都以方差在制度层面被额外抹平。
+\end{proposition}
+
+\begin{proof}
+由 \eqref{eq:xi-defect-entropy-scaling-mobius} 的闭式可直接验证
+\[
+\frac{\partial}{\partial s}\Psi_{e^s}(p)
+=\frac{e^sp}{(1+(e^s-1)p)^2}
+=\Psi_{e^s}(p)\bigl(1-\Psi_{e^s}(p)\bigr),
+\]
+故 \(p_j'(s)=p_j(s)(1-p_j(s))\)，从而 \(\frac{\dd}{\dd s}S(s)=\sum_j m_j p_j(s)(1-p_j(s))\)。
+再用恒等式
+\[
+\sum_j m_j p_j(1-p_j)
+\;=\;
+\kappa\,\bar p(1-\bar p)\;-\;\kappa\,\mathrm{Var}_m(p),
+\]
+并代入 \(\bar p=S/\kappa\)，即得 \eqref{eq:xi-defect-entropy-logistic-variance-gap}。证毕。
+\end{proof}
+
 \begin{corollary}[证书复杂度的双曲指数律：有限阶矩证书只覆盖对数半径]\label{cor:xi-certificate-complexity-hyperbolic-exponential-law}
 设 \(a\in\mathbb{D}\) 为盘内点状缺陷（等价视界对数导数在 \(a\) 处出现极点；定理 \ref{thm:xi-disk-zero-pole-index-reduction}），并记其欧氏边界深度
 \(

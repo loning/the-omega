@@ -48,6 +48,46 @@ H_{N-1}:=\bigl(\mu_{i+j}\bigr)_{0\le i,j\le N-1}\succeq 0,
 \(\mathfrak{d}_N=\mathrm{rank}(H_{N-1})\) 正是该有限维矩问题的最小原子数下界，达到性由 Gauss 型求积/谱测度构造给出。证毕。
 \end{proof}
 
+\begin{proposition}[深度谱 Hankel 行列式闭式：Vandermonde 平方律与分离病态的代数封口]\label{prop:xi-depth-hankel-determinant-vandermonde-square}
+在有限原子口径下，设
+\[
+\mu=\sum_{j=1}^{\kappa}w_j\,\delta_{a_j},
+\qquad
+1<a_1<a_2<\cdots<a_\kappa,\qquad w_j>0,
+\]
+并令矩链 \(\mu_n=\int a^{-(n+1)}\,\dd\mu(a)\)。
+记 \(b_j:=a_j^{-1}\in(0,1)\)、\(\widetilde w_j:=w_j b_j>0\)，则
+\[
+\mu_n=\sum_{j=1}^{\kappa}\widetilde w_j\,b_j^{n}\qquad(n\ge 0).
+\]
+令 Hankel 主块 \(\mathsf H_{\kappa-1}:=(\mu_{p+q})_{0\le p,q\le \kappa-1}\)。
+则成立 Vandermonde 因子分解
+\[
+\boxed{\;
+\mathsf H_{\kappa-1}=V\,\mathrm{diag}(\widetilde w_1,\dots,\widetilde w_\kappa)\,V^{\mathsf T},\qquad
+V_{pj}:=b_j^{p}\;}
+\]
+并因此得到行列式闭式
+\begin{equation}\label{eq:xi-depth-hankel-det-vandermonde}
+\boxed{\;
+\det \mathsf H_{\kappa-1}
+=\left(\prod_{j=1}^{\kappa}\widetilde w_j\right)
+\left(\prod_{1\le j<k\le \kappa}(b_k-b_j)^2\right).\;}
+\end{equation}
+特别地，\(\det \mathsf H_{\kappa-1}=0\) 当且仅当存在谱碰撞 \(b_j=b_k\) 或权重退化 \(\widetilde w_j=0\)。
+并且任何基于 Hankel 反演（如 Prony/Pad\'e/Hankel 核空间法）的局部稳定性常数不可能在 \(b\)-碰撞极限保持一致有界：当 \(\prod_{j<k}|b_k-b_j|\downarrow 0\) 时，其误差放大因子至少按 \(\bigl(\prod_{j<k}|b_k-b_j|^{-2}\bigr)\) 的量级发散。
+\end{proposition}
+
+\begin{proof}
+由
+\(
+\mu_{p+q}=\sum_j \widetilde w_j\,b_j^{p+q}
+\)
+直接得到矩阵分解 \(\mathsf H_{\kappa-1}=V\,\mathrm{diag}(\widetilde w)\,V^{\mathsf T}\)。
+取行列式并用 \(\det(V)=\prod_{j<k}(b_k-b_j)\) 得 \eqref{eq:xi-depth-hankel-det-vandermonde}。
+最后一条为标准条件数下界：\(\|\mathsf H_{\kappa-1}^{-1}\|\) 至少与 \((\det\mathsf H_{\kappa-1})^{-1}\) 在尺度上同阶（至多差一个由 \(\|\mathsf H_{\kappa-1}\|\) 控制的多项式因子），故 Vandermonde 平方因子塌缩必触发反演病态爆炸。证毕。
+\end{proof}
+
 \begin{proposition}[截断 Pad\'e--Stieltjes 逼近的保序性：极点实负、留数正、并给出全尺度单调收敛]\label{prop:xi-pade-stieltjes-order-preserving}
 若 \(S\) 为上述 Stieltjes 函数，则其在 \(t=0\) 处的对角 Pad\'e 逼近 \([N/N]\)（匹配前 \(2N\) 个 Taylor 系数）仍为 Stieltjes 型有理函数：其全部极点位于 \((-\infty,-1)\) 且为单根，并且对应部分分式展开的留数严格为正。
 此外，对任意 \(t>0\)，序列 \([N/N](t)\) 在 \(N\) 上按奇偶分裂为两条单调链，分别从上、下夹逼真值 \(S(t)\)；并且当 \(N\to\infty\) 时其夹逼区间收敛到单点 \(\{S(t)\}\)。

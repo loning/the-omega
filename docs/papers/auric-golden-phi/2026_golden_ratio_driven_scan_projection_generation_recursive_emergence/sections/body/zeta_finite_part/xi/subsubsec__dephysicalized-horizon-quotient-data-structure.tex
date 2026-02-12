@@ -254,6 +254,56 @@ Petz 理论刻画其取等条件，并给出取等当且仅当存在恢复算子
 因此 \((ii)\Longleftrightarrow(iii)\) 成立；而“充分性”的统计意义与“相对熵全保真/可恢复性”在该设定下同义，故与 (i) 等价。证毕。
 \end{proof}
 
+\begin{corollary}[充分统计 \(\Rightarrow\) 通用零知识模拟：恢复诱导的通道因子化]\label{cor:dephys-universal-zk-simulation-factorization}
+在定理 \ref{thm:dephys-petz-sufficiency-equivalences} 的设定下，
+若存在恢复算子 \(R:\mathcal{A}_{\mathrm{ext}}\to\mathcal{A}_{\mathrm{bulk}}\) 使得
+\(\rho=\rho\circ R\circ E\) 对所有 \(\rho\in\mathcal{F}\) 成立，
+则对任意输出 von Neumann 代数 \(\mathcal{C}\) 与任意正常量子通道
+\(\Gamma_*:\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\to\mathcal{S}(\mathcal{C})\)
+（即正常、仿射且由某个正常完全正迹保持映射在 Schr\"odinger 口径诱导），
+都存在一个正常量子通道
+\(\widetilde\Gamma_*:\mathcal{S}(\mathcal{A}_{\mathrm{ext}})\to\mathcal{S}(\mathcal{C})\)
+使得在态族 \(\mathcal{F}\) 上成立通用因子化恒等式
+\begin{equation}\label{eq:dephys-universal-zk-factorization-on-family}
+\boxed{\;
+\Gamma_*(\rho)=\widetilde\Gamma_*(\rho\circ E)\qquad(\forall\,\rho\in\mathcal{F}).\;}
+\end{equation}
+并且可取一个显式模拟器构造：
+\[
+\boxed{\;
+\widetilde\Gamma_*(\sigma):=\Gamma_*(\sigma\circ R)\qquad(\sigma\in\mathcal{S}(\mathcal{A}_{\mathrm{ext}})).\;}
+\]
+因此，“外部可验证输出在 \(\mathcal{F}\) 上完全由外部像 \(\rho\circ E\) 决定”不仅是集合论层的商空间谓词闭包，
+而是在完全正范畴中与 Petz 型恢复（充分统计）严格对齐的一条通用零知识模拟律。
+\end{corollary}
+
+\begin{proof}
+对任意 \(\rho\in\mathcal{F}\)，由假设 \(\rho=\rho\circ R\circ E\) 得
+\[
+\widetilde\Gamma_*(\rho\circ E)
+=\Gamma_*\bigl((\rho\circ E)\circ R\bigr)
+=\Gamma_*(\rho),
+\]
+即得 \eqref{eq:dephys-universal-zk-factorization-on-family}。
+由 \(\sigma\mapsto \sigma\circ R\) 与 \(\Gamma_*\) 的正常性与仿射性可知 \(\widetilde\Gamma_*\) 仍为正常量子通道。证毕。
+\end{proof}
+
+\begin{corollary}[全态族可恢复 \(\Rightarrow\) 视界平凡：\(\mathrm{Ind}(E)=1\)]\label{cor:dephys-full-state-recovery-forces-trivial-index1}
+设存在正常完全正幺映射 \(R:\mathcal{A}_{\mathrm{ext}}\to\mathcal{A}_{\mathrm{bulk}}\) 使得
+\begin{equation}\label{eq:dephys-left-inverse-recovery-map}
+\boxed{\;R\circ E=\mathrm{id}_{\mathcal{A}_{\mathrm{bulk}}}.\;}
+\end{equation}
+则必有 \(\mathcal{A}_{\mathrm{bulk}}=\mathcal{A}_{\mathrm{ext}}\) 且 \(E\) 为恒等映射；
+特别地，\(\mathrm{Ind}(E)=1\)。
+\end{corollary}
+
+\begin{proof}
+由 \eqref{eq:dephys-left-inverse-recovery-map} 知 \(E\) 为单射。
+但 \(E\) 为条件期望，因而在其像 \(\mathcal{A}_{\mathrm{ext}}\) 上恒等且为幂等投影；若 \(\mathcal{A}_{\mathrm{ext}}\subsetneq \mathcal{A}_{\mathrm{bulk}}\)，则 \(E\) 必存在非零核方向，从而不可能单射。
+故只能有 \(\mathcal{A}_{\mathrm{bulk}}=\mathcal{A}_{\mathrm{ext}}\) 且 \(E=\mathrm{id}\)。
+由定义 \ref{def:dephys-pimsner-popa-index}，\(\mathrm{Ind}(\mathrm{id})=1\)。证毕。
+\end{proof}
+
 \begin{definition}[Pimsner--Popa 有限指数]\label{def:dephys-pimsner-popa-index}
 在上述设定下，称条件期望 \(E\) 具有有限 Pimsner--Popa 指数，若存在常数 \(\Lambda\in(1,\infty)\) 使对一切 \(x\in\mathcal{A}_{\mathrm{bulk}}\) 成立
 \begin{equation}\label{eq:dephys-pimsner-popa-inequality}
@@ -283,6 +333,25 @@ E(x^\ast x)\ \ge\ \Lambda^{-1}\,x^\ast x.\;}
 相对熵的单调性给出被积表达式非负。
 有限指数情形下，上式的上界与可达性由 Pimsner--Popa 的指数化相对熵估计与其极值构造给出；
 可参见 \cite{PimsnerPopa1986EntropyIndexSubfactors,Hiai1991MinimumIndexSubfactorsEntropyII} 的“指数 \(\leftrightarrow\) 相对熵”定理链。证毕。
+\end{proof}
+
+\begin{proposition}[隐藏标签容量的硬上界：相对交换子维数受指数封顶]\label{prop:dephys-relative-commutant-dimension-index-cap}
+设 \(N\subset M\) 为有限指数子因子包含，并令 \(E:M\to N\) 为标准（迹保持）条件期望。
+若 Jones 指数有限 \([M:N]=\mathrm{Ind}(E)<\infty\)，则相对交换子 \(N'\cap M\) 为有限维 \(C^\ast\)-代数且满足维数上界
+\begin{equation}\label{eq:dephys-relative-commutant-dimension-bound}
+\boxed{\;\dim(N'\cap M)\ \le\ \mathrm{Ind}(E).\;}
+\end{equation}
+从而任意一族两两正交的非零投影 \(\{p_j\}\subset N'\cap M\) 的基数满足
+\(
+|\{p_j\}|\le \mathrm{Ind}(E)
+\)。
+在“外部接口为 \(N\)”的语义下，该结论把外部不可区分而内部可区分的离散标签数目压缩为一个由视界指数唯一控制的硬上界。
+\end{proposition}
+
+\begin{proof}[证明要点]
+有限指数包含给出 \(L^2(M)\) 作为 \(N\)-模的有限维 Jones 维数，而 \(N'\cap M\) 可识别为该有限模上的互换子代数的一部分；
+其维数上界由 Pimsner--Popa 基与基本构造中的维数估计推出（参见 \cite{PimsnerPopa1986EntropyIndexSubfactors} 的指数/基构造链路）。
+正交投影族的基数不超过代数维数，故推论成立。证毕。
 \end{proof}
 
 \begin{corollary}[链式法则：嵌套视界的指数可加性与信息损失可加性]\label{cor:dephys-index-chain-rule}
@@ -412,6 +481,72 @@ D(\rho\|\sigma)=D(\rho\|\Pi(\rho)) + D(\Pi(\rho)\|\sigma).\;}
 Pythagoras 分解 \eqref{eq:dephys-relative-entropy-pythagoras} 可视为相对熵在条件期望诱导的“信息投影”上的正交分解：
 其本质等价于相对熵的链式公式与 \(E\) 的“充分统计/可恢复性”结构（参见 \cite{Petz2003MonotonicityRelativeEntropyRevisited} 的等号条件与量子 Markov 结构讨论）。
 在有限维（密度矩阵）情形下，该分解亦可由对数似然的正交分解直接验证；一般 von Neumann 代数情形由 Araki 相对熵的模块算子表述给出。证毕。
+\end{proof}
+
+\begin{corollary}[多期累积的指数下界：两源可链接残差线性增长]\label{cor:dephys-multiplicity-index-gap-linear-cmi}
+在命题 \ref{prop:dephys-commuting-square-mutual-information-defect} 的设定下，
+设存在有限指数条件期望 \(E_i:\mathcal{A}_{\mathrm{bulk}}\to \mathcal{A}_{\mathrm{ext}}^{(i)}\)（\(i=1,2\)）及其交 \(\mathcal{A}_{\mathrm{ext}}^{(0)}:=\mathcal{A}_{\mathrm{ext}}^{(1)}\cap\mathcal{A}_{\mathrm{ext}}^{(2)}\) 上的有限指数期望 \(E_0\)，并令指数缺口
+\[
+\Gamma:=\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_0)}\ \ge\ 0.
+\]
+考虑 \(n\) 期独立重复（张量化）系统 \(\mathcal{A}_{\mathrm{bulk}}^{\otimes n}\) 与 \((\mathcal{A}_{\mathrm{ext}}^{(i)})^{\otimes n}\)。
+则由指数的乘法性
+\(
+\mathrm{Ind}(E_i^{\otimes n})=\mathrm{Ind}(E_i)^n
+\)
+得缺口放大为 \(n\Gamma\)。
+进一步地，在附录 \S\ref{subsec:op-algebra-modular-zk-index-fkdet} 的条件互信息口径下（推论 \ref{cor:op-algebra-cmi-lower-bound-by-index-gap}），对任意 \(\varphi\)-保持态族的条件互信息有线性下界
+\[
+\boxed{\;
+I\bigl((\mathcal{A}_{\mathrm{ext}}^{(1)})^{\otimes n}:(\mathcal{A}_{\mathrm{ext}}^{(2)})^{\otimes n}\,\big|\,(\mathcal{A}_{\mathrm{ext}}^{(0)})^{\otimes n}\bigr)
+\ \ge\ n\Gamma.\;}
+\]
+因此，只要 \(\Gamma>0\)，任何企图在多期累积中同时实现“二源完全不可链接”与“接口完备恢复”的外部化都将遭遇不可消去的线性累积泄漏；唯一规避通道为指数饱和 \(\Gamma=0\)。
+\end{corollary}
+
+\begin{corollary}[匿名两源完备性的指数判别模板：指数饱和 \texorpdfstring{$\Longleftrightarrow$}{<->} 条件独立 \texorpdfstring{$\Longleftrightarrow$}{<->} 可恢复]\label{cor:dephys-two-source-anonymy-completeness-template}
+沿用推论 \ref{cor:dephys-multiplicity-index-gap-linear-cmi} 的设定，并额外假设两源外部化满足交换方阵兼容性
+\(
+E_0=E_1E_2=E_2E_1
+\)
+且三者均为某一忠实正规状态 \(\varphi\) 的 \(\varphi\)-保持条件期望。
+则由附录推论 \ref{cor:op-algebra-cmi-lower-bound-by-index-gap} 得到等价模板：
+\[
+\boxed{\;
+\Gamma=0
+\quad\Longleftrightarrow\quad
+I_\varphi(\mathcal{A}^{(1)}_{\mathrm{ext}}:\mathcal{A}^{(2)}_{\mathrm{ext}}\mid\mathcal{A}^{(0)}_{\mathrm{ext}})=0.\;}
+\]
+当上述等价成立时，“两源接口在交叉可见因子 \(\mathcal{A}^{(0)}_{\mathrm{ext}}\) 下的条件独立”在 Petz 充分性意义下等价于可恢复性：存在正常完全正幺恢复映射使得相关态族的外部化无损（定理 \ref{thm:dephys-petz-sufficiency-equivalences} 的取等口径）。
+从而对任意在该态族上仅依赖外部像的外部通道，其输出都可由外部像通用因子化模拟（推论 \ref{cor:dephys-universal-zk-simulation-factorization}），可视为“匿名两源完备”的严格零知识型表述。
+\end{corollary}
+
+\begin{corollary}[Rényi 平坦性：有限折叠视界下最坏损失与阶数 \texorpdfstring{$\alpha$}{alpha} 无关]\label{cor:dephys-renyi-flatness-fold-commutative}
+设 \(\Omega\twoheadrightarrow X\) 为有限交换折叠，并令 \(E:\CC^{\Omega}\to\CC^{X}\) 为按纤维均匀平均的条件期望。
+记最大纤维多重度 \(M:=\max_{x\in X}d(x)\)，则 \(\mathrm{Ind}(E)=M\)（命题/推论 \ref{prop:op-algebra-index-extremal-entropy-loss-maxfiber} 的交换口径）。
+对任意 \(\alpha\in[1,\infty]\)，令 \(D_\alpha\) 为（交换情形下的）sandwiched Rényi 相对熵，则成立平坦极值律
+\[
+\boxed{\;
+\sup_{\rho}D_\alpha(\rho\mid\rho\circ E)=\log M=\log\mathrm{Ind}(E),\qquad(\forall\,\alpha\in[1,\infty]).\;}
+\]
+并且上确界由“最大纤维上一点态”实现：取 \(a\in\Omega\) 使 \(d(\Fold(a))=M\)，则对 \(\rho=\delta_a\) 有
+\(
+D_\alpha(\rho\mid\rho\circ E)=\log M
+\)
+对所有 \(\alpha\in[1,\infty]\) 同时成立。
+\end{corollary}
+
+\begin{proof}
+由附录推论 \ref{cor:op-algebra-renyi-loss-spectrum-capped-by-index}，对任意 \(\rho\) 与任意 \(\alpha\) 有
+\(
+D_\alpha(\rho\mid\rho\circ E)\le \log\mathrm{Ind}(E)=\log M
+\)。
+另一方面，对 \(a\) 属于最大纤维，\(\rho=\delta_a\) 时 \(\rho\circ E\) 为该纤维上的均匀态；
+在交换情形下直接代入 Rényi 散度定义即得
+\(
+D_\alpha(\delta_a\mid \mathrm{Unif}_{F^\star})=\log M
+\)
+（与 \(\alpha\) 无关），从而上界可达且给出上确界。证毕。
 \end{proof}
 
 \endinput

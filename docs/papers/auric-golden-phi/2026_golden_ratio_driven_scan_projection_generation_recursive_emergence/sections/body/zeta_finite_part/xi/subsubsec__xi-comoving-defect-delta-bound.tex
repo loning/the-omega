@@ -194,6 +194,49 @@ h_{x_0}(\rho_j)=\frac{4\delta_j}{(\gamma_j-x_0)^2+(1+\delta_j)^2}.
 \(\int_{\RR}\frac{1}{x^2+a^2}\dd x=\pi/a\)。
 \end{proof}
 
+\begin{proposition}[缺陷边界密度锥的 Choquet 完备性：Dirac 射线为唯一极端元]\label{prop:xi-defect-density-cone-choquet-extreme}
+令
+\[
+K_{\gamma,\delta}(x):=\frac{4\delta}{(x-\gamma)^2+(1+\delta)^2}\qquad\bigl((\gamma,\delta)\in\RR\times(0,\infty)\bigr),
+\]
+并令 \(\nu^{\mathrm{bdry}}\) 为 \(\RR\times(0,\infty)\) 上有限正 Borel 测度，定义
+\begin{equation}\label{eq:xi-defect-density-Hnu}
+\boxed{\;
+H_{\nu^{\mathrm{bdry}}}(x):=\int_{\RR\times(0,\infty)}K_{\gamma,\delta}(x)\,\dd\nu^{\mathrm{bdry}}(\gamma,\delta).\;}
+\end{equation}
+记可见缺陷密度的闭凸锥
+\[
+\mathfrak{C}:=\{H_{\nu^{\mathrm{bdry}}}:\ \nu^{\mathrm{bdry}}\ge 0\}.
+\]
+则：
+\begin{enumerate}
+  \item \textbf{（单射性）}映射 \(\nu^{\mathrm{bdry}}\mapsto H_{\nu^{\mathrm{bdry}}}\) 在 \(\mathfrak{C}\subset L^1(\RR)\cap C^{\omega}(\RR)\) 上为单射；
+  \item \textbf{（极端射线）}\(\mathfrak{C}\) 的极端射线恰由 Dirac 测度生成：对 \(H\in\mathfrak{C}\)，
+  \[
+  H\ \text{生成极端射线}
+  \quad\Longleftrightarrow\quad
+  \exists(\gamma,\delta),\,c>0\ \text{使}\ H=c\,K_{\gamma,\delta};
+  \]
+  \item \textbf{（整数化/重数约束）}若进一步要求缺陷重数为整数，则对应于 \(\nu^{\mathrm{bdry}}\) 为离散整数权原子测度
+  \(
+  \nu^{\mathrm{bdry}}=\sum_j m_j\,\delta_{(\gamma_j,\delta_j)}
+  \)
+  且 \(m_j\in\NN\)，从而把合法缺陷识别为 \(\mathfrak{C}\) 内的整点锥格结构。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[证明要点]
+由 \eqref{eq:xi-comoving-horizon-scan-fourier} 的单峰傅里叶变换公式与线性性，\(H_{\nu^{\mathrm{bdry}}}\) 的傅里叶变换为
+\[
+\widehat H_{\nu^{\mathrm{bdry}}}(\xi)
+=4\pi\int_{\RR\times(0,\infty)}\frac{\delta}{1+\delta}\,e^{-(1+\delta)|\xi|}\,e^{-\mathrm{i}\gamma\xi}\,\dd\nu^{\mathrm{bdry}}(\gamma,\delta).
+\]
+右端是 \((\gamma,\delta)\) 上的 Fourier--Laplace 变换；由其对有限正测度的唯一性得单射性。
+极端射线部分：\(\nu^{\mathrm{bdry}}\mapsto H_{\nu^{\mathrm{bdry}}}\) 为线性嵌入，故 \(\mathfrak{C}\) 与有限正测度锥在锥同构意义下等价；
+而正测度锥的极端射线恰为 Dirac 测度的正倍数，推得结论。
+整数化陈述为“测度权重取 \(\NN\)”的直接翻译。证毕。
+\end{proof}
+
 \paragraph{轴外零点的缺陷测度与共动 Poisson 场}
 上面的共动深度剖面 \(H(x_0)\) 以固定图表中的“端点余量”
 \(
@@ -250,6 +293,72 @@ G_t(x)
 因此对 \(\nu\) 的每个原子项逐项卷积并求和得到 \eqref{eq:xi-offcritical-poisson-semigroup-convolution}。
 \eqref{eq:xi-offcritical-poisson-semigroup-fourier} 由对 \eqref{eq:xi-offcritical-poisson-semigroup-convolution} 取傅里叶变换得到；
 再对 \eqref{eq:xi-offcritical-poisson-semigroup-fourier} 关于 \(t\) 求导即得 \eqref{eq:xi-offcritical-poisson-semigroup-pde}。证毕。
+\end{proof}
+
+\begin{proposition}[相对熵收缩：Poisson 粗粒化下“相对 Cauchy 背景”的可分辨度单调下降]\label{prop:xi-poisson-relative-entropy-contraction}
+令 \(P_t(x)=\frac{1}{\pi}\frac{t}{x^2+t^2}\) 为 Poisson 核，并令基准密度
+\[
+c_0(x):=\frac{1}{\pi}\frac{1}{x^2+1}.
+\]
+对任意概率密度 \(h\) 定义粗粒化
+\[
+h_t:=P_t*h,\qquad c_t:=P_t*c_0=\frac{1}{\pi}\frac{t+1}{x^2+(t+1)^2}\qquad(t\ge 0).
+\]
+记经典相对熵
+\(
+D_{\mathrm{KL}}(f\mid g):=\int_{\RR} f(x)\log\!\frac{f(x)}{g(x)}\,\dd x
+\)。
+若 \(D_{\mathrm{KL}}(h\mid c_0)<\infty\)，则对任意 \(s,t\ge 0\) 成立数据处理不等式链
+\begin{equation}\label{eq:xi-poisson-kl-monotone}
+\boxed{\;
+D_{\mathrm{KL}}(h_{t+s}\mid c_{t+s})\ \le\ D_{\mathrm{KL}}(h_t\mid c_t)\ \le\ D_{\mathrm{KL}}(h\mid c_0).\;}
+\end{equation}
+并且若对某个 \(t>0\) 取等号 \(D_{\mathrm{KL}}(h_t\mid c_t)=D_{\mathrm{KL}}(h\mid c_0)\)，则必有 \(h=c_0\)（几乎处处），从而 \(D_{\mathrm{KL}}(h_u\mid c_u)\equiv 0\)（\(\forall u\ge 0\)）。
+\end{proposition}
+
+\begin{proof}[证明要点]
+卷积算子 \(T_s:f\mapsto P_s*f\) 为 Markov 核诱导的随机映射，故经典相对熵满足数据处理不等式
+\(
+D_{\mathrm{KL}}(T_s f\mid T_s g)\le D_{\mathrm{KL}}(f\mid g)
+\)。
+取 \((f,g)=(h_t,c_t)\) 得
+\(
+D_{\mathrm{KL}}(h_{t+s}\mid c_{t+s})\le D_{\mathrm{KL}}(h_t\mid c_t)
+\)，再取 \((t,s)=(0,t)\) 得右端不等式。
+严格性由命题 \ref{prop:xi-poisson-relative-entropy-fisher-krein} 的耗散恒等式推出：若在某个 \(t>0\) 取等号，则耗散泛函在 \([0,t]\) 上为零，从而 \(h=c_0\)。证毕。
+\end{proof}
+
+\begin{proposition}[非局域 Fisher--Krein 耗散：相对熵导数的 Dirichlet 形式]\label{prop:xi-poisson-relative-entropy-fisher-krein}
+沿用命题 \ref{prop:xi-poisson-relative-entropy-contraction} 的记号，并假设 \(D_{\mathrm{KL}}(h\mid c_0)<\infty\)。
+则函数
+\(
+t\mapsto D_{\mathrm{KL}}(h_t\mid c_t)
+\)
+绝对连续，且存在显式非负耗散泛函 \(\mathcal{I}(t)\ge 0\) 使对几乎处处 \(t>0\) 有
+\begin{equation}\label{eq:xi-fisher-krein-dissipation}
+\boxed{\;
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid c_t)=-\,\mathcal{I}(t).\;}
+\end{equation}
+其中可取（等价地）一类非局域 Dirichlet 形式表示：
+\begin{equation}\label{eq:xi-fisher-krein-dirichlet-form}
+\boxed{\;
+\mathcal I(t)=\frac{1}{2\pi}\int_{\RR}\int_{\RR}
+\frac{\Bigl(\log\frac{h_t(x)}{c_t(x)}-\log\frac{h_t(y)}{c_t(y)}\Bigr)^2}{(x-y)^2}\,
+\frac{h_t(x)c_t(y)+h_t(y)c_t(x)}{2}\,\dd x\,\dd y.\;}
+\end{equation}
+并且 \(\mathcal{I}(t)=0\) 当且仅当 \(h_t=c_t\)（几乎处处），从而推出 \(h=c_0\)。
+\end{proposition}
+
+\begin{proof}[证明要点]
+Poisson 半群的生成元为 \(-|D|\)（\eqref{eq:xi-offcritical-poisson-semigroup-pde}），其对称 Dirichlet 形式满足
+\[
+\langle f,|D|f\rangle_{L^2(\RR)}
+=\frac{1}{2\pi}\iint_{\RR^2}\frac{(f(x)-f(y))^2}{(x-y)^2}\,\dd x\,\dd y.
+\]
+将相对熵沿同一 Markov 半群对两端同时推进并对 \(t\) 求导，可把导数写成上述形式在 \(\log(h_t/c_t)\) 上的非局域能量；
+再通过极化与对称化得到 \eqref{eq:xi-fisher-krein-dirichlet-form}。
+零耗散等价于 \(\log(h_t/c_t)\) 为常数，从而 \(h_t=c_t\)。
+由 Poisson 乘子 \(e^{-t|\xi|}\) 非零可知 \(h=c_0\)。证毕。
 \end{proof}
 
 \begin{theorem}[守恒量与高频耗散：不变量与耗散量严格分离]\label{thm:xi-offcritical-poisson-conservation-dissipation}
