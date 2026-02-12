@@ -1,4 +1,4 @@
-\section{Problem 4: Partial Resolution and a Program Toward the General Case}
+\section{Problem 4: Partial Resolution and a Program Toward the General Case}\label{sec:q4}
 
 Let $n\ge 2$. For monic degree-$n$ polynomials
 \[
@@ -262,6 +262,83 @@ Set $m=i+k$. The coefficient of $x^{n-m}$ is
 \sum_{i+k=m}\frac{(n-i)!(n-k)!}{n!(n-m)!}a_i b_k,
 \]
 which is exactly the defining coefficient formula of $p\boxplus_n q$.
+\end{proof}
+
+\begin{lemma}[Derivative recursion for $\boxplus_n$]\label{lem:q4-deriv-recursion}
+For monic degree-$n$ polynomials $p,q$,
+\[
+\frac{d}{dx}(p\boxplus_n q)
+=
+\frac1n\,(p'\boxplus_{n-1} q').
+\]
+More generally, for every integer $m$ with $0\le m\le n$,
+\[
+\frac{d^m}{dx^m}(p\boxplus_n q)
+=
+\frac{1}{n(n-1)\cdots(n-m+1)}
+\bigl(p^{(m)}\boxplus_{n-m} q^{(m)}\bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+p(x)=\sum_{i=0}^n a_i x^{n-i},\qquad
+q(x)=\sum_{j=0}^n b_j x^{n-j},\qquad
+r(x):=(p\boxplus_n q)(x)=\sum_{k=0}^n c_k x^{n-k}.
+\]
+By definition,
+\[
+c_k=\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k)!}\,a_i b_j.
+\]
+Hence
+\[
+r'(x)=\sum_{k=0}^{n-1}(n-k)c_k\,x^{n-1-k},
+\]
+so the coefficient of $x^{(n-1)-k}$ in $r'$ is
+\[
+(n-k)c_k
+=
+\sum_{i+j=k}\frac{(n-i)!(n-j)!}{n!(n-k-1)!}\,a_i b_j.
+\tag{1}
+\]
+
+Now write
+\[
+p'(x)=\sum_{i=0}^{n-1}\alpha_i x^{(n-1)-i},
+\quad
+q'(x)=\sum_{j=0}^{n-1}\beta_j x^{(n-1)-j},
+\]
+with
+\[
+\alpha_i=(n-i)a_i,\qquad \beta_j=(n-j)b_j.
+\]
+In degree $n-1$, the $\boxplus_{n-1}$ coefficient formula gives:
+the coefficient of $x^{(n-1)-k}$ in $(p'\boxplus_{n-1}q')$ equals
+\[
+\sum_{i+j=k}
+\frac{(n-1-i)!(n-1-j)!}{(n-1)!(n-1-k)!}\,\alpha_i\beta_j
+\]
+\[
+=
+\sum_{i+j=k}
+\frac{(n-i)!(n-j)!}{(n-1)!(n-k-1)!}\,a_i b_j.
+\tag{2}
+\]
+Comparing (1) and (2), we get
+\[
+r'=\frac1n\,(p'\boxplus_{n-1}q').
+\]
+This proves the $m=1$ case.
+
+Iterating the identity $m$ times yields
+\[
+\frac{d^m}{dx^m}(p\boxplus_n q)
+=
+\frac1n\cdot\frac1{n-1}\cdots\frac1{n-m+1}
+\bigl(p^{(m)}\boxplus_{n-m} q^{(m)}\bigr),
+\]
+which is the stated general formula.
 \end{proof}
 
 \begin{lemma}[Heat-semigroup intertwining]\label{lem:q4-heat-intertwine}
