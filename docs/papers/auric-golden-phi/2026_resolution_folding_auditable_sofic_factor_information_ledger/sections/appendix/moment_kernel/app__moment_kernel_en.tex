@@ -1,0 +1,116 @@
+\section{Moment kernels: explicit symmetric-quotient construction}\label{app:moment-kernel}
+
+This appendix records an explicit construction of the symmetry-quotient moment kernels used in Section~\ref{sec:collision-spectra}.
+The only inputs are determinism and finiteness of a base online transducer for Zeckendorf normalization (Appendix~\ref{app:online-normalization}).
+
+\subsection{Deterministic base transducer interface}\label{app:mk-base}
+Let $Q$ be a finite state set.
+Fix input/output alphabets
+\(
+\mathcal{A}_{\mathrm{in}}=\{0,1\}
+\)
+and
+\(
+\mathcal{A}_{\mathrm{out}}=\{0,1\}.
+\)
+Assume a deterministic one-step update/output rule
+\begin{equation}\label{eq:mk-base-delta-eps}
+\delta:Q\times\mathcal{A}_{\mathrm{in}}\to Q,
+\qquad
+\varepsilon:Q\times\mathcal{A}_{\mathrm{in}}\to\mathcal{A}_{\mathrm{out}},
+\end{equation}
+so that reading a digit $d\in\mathcal{A}_{\mathrm{in}}$ in state $q\in Q$ emits the output symbol $\varepsilon(q,d)$ and updates the state to $\delta(q,d)$.
+We also allow a bounded terminal flush (subsequential output), but it can be absorbed into a constant-size state augmentation and does not change the constructions below.
+
+\subsection{Histogram (occupancy-vector) states}\label{app:mk-histogram}
+Fix an integer $k\ge 2$.
+The $k$-fold synchronous product of the base transducer acts on $Q^k$.
+Since the collision constraint is invariant under permuting the $k$ coordinates, it admits a canonical quotient by the symmetric group $S_k$.
+The quotient states are \emph{occupancy vectors}
+\begin{equation}\label{eq:mk-occupancy}
+\nu\in\NN^{Q},
+\qquad
+\sum_{q\in Q}\nu(q)=k,
+\end{equation}
+where $\nu(q)$ counts how many coordinates are currently in base state $q$.
+
+\subsection{One-step transition weights by binomial convolution}\label{app:mk-transition-weights}
+For a fixed output symbol $e\in\mathcal{A}_{\mathrm{out}}$, the collision constraint at one step requires that all $k$ copies emit $e$.
+For each base state $q\in Q$, let $\nu(q)$ copies sit at $q$.
+Among those, we may choose some number $a_q$ to take input $0$ and the remaining $\nu(q)-a_q$ to take input $1$, provided these inputs indeed emit the required output $e$.
+
+\begin{proposition}[Histogram transition weights]\label{prop:mk-histogram-transition}
+Fix $k\ge 2$ and let $\nu,\nu'\in\NN^Q$ satisfy \eqref{eq:mk-occupancy}.
+For $e\in\{0,1\}$, define $w_e(\nu,\nu')$ as follows.
+Sum over all integer families $\{a_q\}_{q\in Q}$ with $0\le a_q\le \nu(q)$ that satisfy:
+\begin{enumerate}
+  \item\label{it:mk-output-constraint}\textbf{(output constraint)} for each $q\in Q$,
+  \[
+  \varepsilon(q,0)\neq e\ \Rightarrow\ a_q=0,
+  \qquad
+  \varepsilon(q,1)\neq e\ \Rightarrow\ a_q=\nu(q);
+  \]
+  \item\label{it:mk-next-hist}\textbf{(next-histogram constraint)} for each $q'\in Q$,
+  \[
+  \nu'(q')
+  =
+  \sum_{q\in Q}\Bigl(
+  a_q\,\ind\{\delta(q,0)=q'\}+(\nu(q)-a_q)\,\ind\{\delta(q,1)=q'\}
+  \Bigr).
+  \]
+\end{enumerate}
+For each feasible family $\{a_q\}$, assign weight $\prod_{q\in Q}\binom{\nu(q)}{a_q}$ and define
+\begin{equation}\label{eq:mk-we-binomial}
+w_e(\nu,\nu')
+:=
+\sum_{\{a_q\}\ \text{satisfying \ref{it:mk-output-constraint}--\ref{it:mk-next-hist}}}
+\ \prod_{q\in Q}\binom{\nu(q)}{a_q}.
+\end{equation}
+Then the one-step symmetric-quotient collision kernel is the nonnegative integer matrix
+\begin{equation}\label{eq:mk-Atilde-def}
+\widetilde A_k(\nu,\nu'):=w_0(\nu,\nu')+w_1(\nu,\nu').
+\end{equation}
+Moreover, for fixed $|Q|$ the computation of all outgoing weights $\widetilde A_k(\nu,\nu')$ from a given $\nu$ can be performed in time $\mathrm{poly}(k)$ via dynamic programming (binomial-coefficient convolution).
+\end{proposition}
+
+\begin{proof}
+Fix $\nu$ and an output bit $e$.
+For each base state $q$, among the $\nu(q)$ copies sitting at $q$ we choose which ones read input $0$ (the remaining read input $1$).
+If both inputs are allowed under the output constraint $\varepsilon(q,d)=e$, the number of choices with exactly $a_q$ zeros is $\binom{\nu(q)}{a_q}$; if only one input is allowed, then $a_q$ is forced to be $0$ or $\nu(q)$.
+Given a family $\{a_q\}$, determinism of $\delta$ implies that each copy updates to $\delta(q,0)$ or $\delta(q,1)$ accordingly, so the next occupancy vector $\nu'$ is uniquely determined by the aggregation formula in Item~\ref{it:mk-next-hist}.
+Summing the independent choices over all feasible $\{a_q\}$ yields \eqref{eq:mk-we-binomial}.
+Finally, summing over $e\in\{0,1\}$ yields \eqref{eq:mk-Atilde-def}.
+\par
+The dynamic programming claim follows because $|Q|$ is fixed: the convolution takes place over a fixed number of bins and the only growing parameter is the total mass $k$.
+\end{proof}
+
+\begin{corollary}[Coefficient-extraction form]\label{cor:mk-coefficient-extraction}
+Introduce indeterminates $\{z_{q'}\}_{q'\in Q}$ and write $z^{\nu'}:=\prod_{q'\in Q} z_{q'}^{\nu'(q')}$.
+For each $q\in Q$ and $e\in\{0,1\}$ define the transition polynomial
+\[
+P_{q,e}(z):=\sum_{d\in\{0,1\}:\ \varepsilon(q,d)=e} z_{\delta(q,d)}.
+\]
+For each occupancy vector $\nu$ define
+\[
+F_{\nu,e}(z):=\prod_{q\in Q} P_{q,e}(z)^{\nu(q)}.
+\]
+Then
+\[
+F_{\nu,e}(z)=\sum_{\nu'} w_e(\nu,\nu')\,z^{\nu'},
+\qquad
+w_e(\nu,\nu')=[z^{\nu'}]\,F_{\nu,e}(z),
+\]
+and consequently
+\[
+\widetilde A_k(\nu,\nu')
+=
+\sum_{e\in\{0,1\}}[z^{\nu'}]\,F_{\nu,e}(z).
+\]
+\end{corollary}
+
+\begin{proof}
+Expand each factor $P_{q,e}(z)^{\nu(q)}$ and multiply over $q\in Q$.
+Each monomial corresponds to choosing, for each of the $\nu(q)$ copies at $q$, an input digit $d\in\{0,1\}$ compatible with $\varepsilon(q,d)=e$, and contributes the variable corresponding to the resulting next state $\delta(q,d)$.
+Collecting terms by the exponent vector yields the stated coefficient identity, and agrees term-by-term with the binomial-counting formula in Proposition~\ref{prop:mk-histogram-transition}.
+\end{proof}
+

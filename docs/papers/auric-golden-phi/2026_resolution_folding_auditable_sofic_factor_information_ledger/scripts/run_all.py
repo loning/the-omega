@@ -95,12 +95,12 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="moment_kernel_spectra",
-            script="gen_moment_kernel_spectra.py",
-            args=["--k", "2", "--k", "3", "--input-alphabet", "01"],
+            name="sync_theory",
+            script="gen_sync_theory.py",
+            args=["--m-min", "2", "--m-max", "10"],
             expected_outputs=[
-                "artifacts/export/moment_kernel_spectra.csv",
-                "sections/generated/tab_moment_kernel_spectra.tex",
+                "artifacts/export/sync_theory.csv",
+                "sections/generated/tab_sync_theory.tex",
             ],
         ),
     ]
