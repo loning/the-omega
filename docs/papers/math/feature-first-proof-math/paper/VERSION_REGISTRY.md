@@ -7,7 +7,7 @@ This file tracks the latest reviewed version for each problem.
 | Q1 | Q1-R4 | PASS |
 | Q2 | Q2-R5 | PASS |
 | Q3 | Q3-R8 | PASS (closed as NO in general via explicit negative-ratio counterexample) |
-| Q4 | Q4-R20 | PARTIAL PASS (special cases + monotone-sum all-n theorem + heat intertwining + derivative recursion + transform-factor decomposition closed; added edge-score first-moment identity, Hermite Phi formula, scaled-Hermite transform identity, and semi-Gaussian flow identity; semi-Gaussian Stam inequality proved for all n via explicit root-ODE/Cauchy integration plus discriminant-partition/continuity closure, with scaled-Hermite equality family; general boxplus n>=4 open) |
+| Q4 | Q4-R21 | PARTIAL PASS (special cases + monotone-sum all-n theorem + heat intertwining + derivative recursion + transform-factor decomposition closed; added edge-score first-moment identity, Hermite Phi formula, scaled-Hermite transform identity, and semi-Gaussian flow identity; semi-Gaussian Stam inequality proved for all n via explicit root-ODE/Cauchy integration plus discriminant-partition/continuity closure, with scaled-Hermite equality family; added first-order step monotonicity evidence for `(I-alpha D)`; general boxplus n>=4 open) |
 | Q5 | Q5-R5 | PASS |
 | Q6 | Q6-R3 | FAIL (partial results verified; main existence still open) |
 | Q7 | Q7-R5 | FAIL (odd-torsion no-go closed; pure 2-primary case open) |
