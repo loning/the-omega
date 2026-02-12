@@ -51,10 +51,11 @@
     `T_n(t^{n/2} He_n(x/sqrt(t))) = n! exp(-t z^2/2)` in `R[z]/(z^{n+1})`.
 25. **NEW: Semi-Gaussian flow identity** (Lemma `q4-semi-gauss-flow`):
     `p boxplus_n (t^{n/2} He_n(x/sqrt(t))) = H_{-t/2} p`.
-26. **NEW: Semi-Gaussian Stam inequality (all n, regularity regime)** (Theorem `q4-semi-gaussian`):
-    For every `n >= 2`, `p` monic real-rooted, `s > 0`, assuming simple-real-root flow on `(0,s]`:
+26. **NEW: Semi-Gaussian Stam inequality (all n, unconditional)** (Theorem `q4-semi-gaussian`):
+    For every `n >= 2`, `p` monic real-rooted, `s > 0`:
     `1/Phi_n(p boxplus_n sqrt(s) He_n) >= 1/Phi_n(p) + 1/Phi_n(sqrt(s) He_n)`.
-    Proof is now explicit via backward-heat representation + root ODE + edge-score Cauchy bound.
+    Proof uses backward-heat representation + root ODE + edge-score Cauchy bound,
+    then removes temporary simple-root assumptions by discriminant partition + continuity.
     Equality family is verified for scaled Hermite inputs.
 27. New explicit working conjecture:
     edge-cubic nonnegativity `sum_{i<j} g_{ij}^3 >= 0` (verified numerically in adversarial search up to tested `n=12`).
@@ -84,7 +85,7 @@ Current proved infinite families:
 - **n=3**: all `p, q` (strict inequality).
 - **All n, shift**: `p = (x-a)^n` (equality).
 - **All n, monotone coupling**: `nu_i = lambda_i + mu_i`.
-- **All n, semi-Gaussian (regularity regime)**: `q = sqrt(s) He_n`.
+- **All n, semi-Gaussian**: `q = sqrt(s) He_n`.
 
 Current main closure routes:
 
@@ -99,4 +100,4 @@ Current main closure routes:
 
 ## Conclusion
 
-`Q4` remains `PARTIAL PASS`: `n=2,3` closed for all `(p,q)`; semi-Gaussian case closed in the stated regularity regime; general `n>=4` reduced to precise algebraic bottlenecks.
+`Q4` remains `PARTIAL PASS`: `n=2,3` closed for all `(p,q)`; semi-Gaussian case closed for all `n`; general `n>=4` reduced to precise algebraic bottlenecks.
