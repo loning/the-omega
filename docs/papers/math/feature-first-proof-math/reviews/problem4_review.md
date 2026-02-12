@@ -3,7 +3,7 @@
 - Problem: `Q4`
 - Submission Version: `Q4-V6` (general-n reduction strengthened)
 - Review Version: `Q4-R6`
-- Verdict: `PARTIAL PASS` (special cases closed; all-`n` reduced to one explicit open bottleneck)
+- Verdict: `PARTIAL PASS` (special cases closed; current general-`n` bridge remains open)
 
 ## What Is Closed
 
@@ -17,16 +17,12 @@
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
 8. New: variational formula
    `1/Phi_n(p) = min_{sum w=1} sum w_{ij}^2 (lambda_i-lambda_j)^2`.
-9. New: exact reduction from target inequality to weighted quadratic superadditivity `(A)` (Proposition `q4-reductionA`).
+9. New: exact implication `(A) => (star)` (Proposition `q4-reductionA`), valid as a sufficient route.
 
 ## Remaining Open Step
 
-The full all-`n` theorem is now equivalent to proving, for every admissible weight system `w`,
-the root-level inequality
-
-`Q_w(gamma(p boxplus_n q)) >= Q_w(lambda(p)) + Q_w(mu(q))`.
-
-This is the unique unresolved bottleneck.
+The full all-`n` theorem remains open for `n >= 4`.
+The manuscript now explicitly notes that uniform-in-`w` quadratic superadditivity `(A)` is generally too strong (numerically false), so closure must come from a weaker global mechanism.
 
 ## Conclusion
 
