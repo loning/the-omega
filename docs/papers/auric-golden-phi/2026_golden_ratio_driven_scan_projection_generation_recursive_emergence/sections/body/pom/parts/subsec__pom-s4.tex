@@ -166,6 +166,15 @@ t=\frac{y^5-2y^4-2y+2}{y^3}
  因此原整数核 \(A_4=A_4(7)\) 位于临界右侧且仅有临界附近的超出 \(7-t_\star\ll 1\)，从而解释了 \(R_4-1\) 的 \(10^{-3}\) 量级。
 \end{remark}
 
+\begin{remark}[张量硬核底座上的四阶临界与整数 \(7\) 的先验出现]\label{rem:pom-q4-disjointness-base-critical}
+不交图张量底座 \(\mathcal{D}_q\) 的 Ramanujan 比率满足精确闭式
+\(
+\Lambda_q^{\mathrm{disj}}/\sqrt{r_q^{\mathrm{disj}}}=\varphi^{q/2-2}
+\)，从而 \(q=4\) 为唯一整数临界点（推论 \ref{cor:pom-disjointness-ramanujan-q4-critical}）。
+同时，在 \(S_q\) 对称压缩 \(B_q\) 的四阶特征多项式中，系数 \(7\) 已作为谱不变量出现（命题 \ref{prop:pom-disjointness-symmetric-compression-bq}）。
+因此，四阶核族的 near-RH 贴线与整数边权 \(7\) 的出现，可被理解为对一个已临界的张量底座作有限维压缩/扰动后所继承的结构性指纹，而非由局部 Fold 细节任意生成。
+\end{remark}
+
 \begin{proposition}[四阶核族的一参数 Perron 指数曲线与 \texorpdfstring{$E_6/E_7/E_8$}{E6/E7/E8} 的 Jones 指数交点]\label{prop:pom-a4t-jones-ade-intersections}
 沿注 \ref{rem:pom-collision-rh-break-a4-threshold}，令
 \(
@@ -213,8 +222,42 @@ p_{t(I)}(I)=I^5-2I^4-t(I)I^3-2I+2=0,
 将 \(I=I_{E_6},I_{E_7},I_{E_8}\) 代入即得结论；数值近似由直接代入 \(t(I)\) 计算得到。
 \end{proof}
 
+\begin{proposition}[\texorpdfstring{$E_6/E_7/E_8$}{E6/E7/E8} 交点参数的极低次数最小多项式与判别式指纹]\label{prop:pom-a4t-ade-intersection-t-minpoly-discriminant}
+沿命题 \ref{prop:pom-a4t-jones-ade-intersections} 的记号，令 \(t_{E_k}:=t(I_{E_k})\)。
+则三点的最小多项式次数呈现 \((2,3,4)\) 的低阶阶梯；其整系数证书及判别式因子分解由式 \eqref{eq:collision_kernel_A4_ade_intersection_t_minpoly_discriminant} 给出。
+特别地，\(\mathrm{Disc}(P_{E_7})\) 为完全平方，从而对应不可约三次域为循环三次扩张；
+而 \(\mathrm{Disc}(P_{E_8})\) 的平方自由部分为 \(5\)，因此 \(t_{E_8}\) 的分裂域包含典范的判别式二次子域 \(\QQ(\sqrt5)\)。
+\end{proposition}
+\begin{proof}
+将代数数 \(I_{E_6},I_{E_7},I_{E_8}\) 代入有理参数化 \(t(I)\)，并对 \(t_{E_k}\) 计算 \(\QQ\)-最小多项式及其判别式即可得到式 \eqref{eq:collision_kernel_A4_ade_intersection_t_minpoly_discriminant} 的整系数证书与因子分解。
+循环性结论来自不可约三次的判别式平方判据；二次子域结论来自 \(\QQ(\sqrt{\mathrm{Disc}})\) 的判别式二次子域识别。
+可复现脚本：\texttt{scripts/exp\_collision\_kernel\_A4\_ade\_intersection\_t\_minpoly\_discriminant.py}。证毕。
+\end{proof}
+
+\input{sections/generated/eq_collision_kernel_A4_ade_intersection_t_minpoly_discriminant}
+
 \input{sections/generated/eq_collision_kernel_A4_edge_weight_threshold}
 
+\begin{corollary}[Newman 阈值与 \texorpdfstring{$E_6/E_7/E_8$}{E6/E7/E8} 指数点的严格相对位置]\label{cor:pom-a4t-newman-threshold-ade-ordering}
+记 \(t_\star\) 为式 \eqref{eq:collision_kernel_A4_edge_weight_threshold} 的唯一正实根（即四阶 Newman 临界阈值），并令 \(t_{E_6},t_{E_7},t_{E_8}\) 如命题 \ref{prop:pom-a4t-jones-ade-intersections}。
+则参数轴上存在严格次序链
+\[
+\boxed{\;t_{E_6}<t_\star<7<t_{E_7}<t_{E_8}\;}
+\]
+并且数值上
+\[
+t_{E_6}\approx 6.3589838486,\qquad
+t_\star\approx 6.9757658955,\qquad
+t_{E_7}\approx 7.1922220997,\qquad
+t_{E_8}\approx 7.6442014686.
+\]
+因此整数核 \(t=7\) 已位于 Newman 破缺相（\(\Lambda>\sqrt r\)）之内，但仍严格处在到达 \(E_7\) 指数交点之前；换言之，四阶核族在尚未触及 \(E_7\) 的阶段即发生谱越线。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-a4t-jones-ade-intersections} 的 \(t_{E_k}\) 数值近似与式 \eqref{eq:collision_kernel_A4_edge_weight_threshold} 的 \(t_\star\) 数值近似直接比较即可；各相邻差均为正，故次序链严格成立。证毕。
+\end{proof}
+
+\input{parts/para__pom-s4-e8-square-spectrum-collapse}
 
 \begin{remark}[四阶核族的判别式闭式与根型刚性]\label{rem:pom-a4t-discriminant-root-type}
 沿注 \ref{rem:pom-collision-rh-break-a4-threshold} 的记号，四阶核族的特征多项式为

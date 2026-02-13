@@ -699,6 +699,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_ade_intersection_t_minpoly_discriminant",
+            script="exp_collision_kernel_A4_ade_intersection_t_minpoly_discriminant.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_ade_intersection_t_minpoly_discriminant.json",
+                "sections/generated/eq_collision_kernel_A4_ade_intersection_t_minpoly_discriminant.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_E8_square_spectrum_collapse",
+            script="exp_collision_kernel_E8_square_spectrum_collapse.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_E8_square_spectrum_collapse.json",
+                "sections/generated/eq_collision_kernel_E8_square_spectrum_collapse.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_newman_critical_quadratic_subfield",
             script="exp_collision_kernel_A4_newman_critical_quadratic_subfield.py",
             args=[],
