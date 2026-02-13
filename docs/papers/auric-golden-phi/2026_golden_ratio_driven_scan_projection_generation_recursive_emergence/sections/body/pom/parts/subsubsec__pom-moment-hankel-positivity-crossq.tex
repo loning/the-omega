@@ -67,6 +67,78 @@ S_{q+1}(m)/S_q(m)\ge S_q(m)/S_{q-1}(m)
 即 \(R_q(m)\ge R_{q-1}(m)\)。证毕。
 \end{proof}
 
+\paragraph{Prony--Hankel 重构：固定 \(m\) 的纤维谱由有限个 \(q\)-矩完全确定}
+固定分辨率 \(m\) 并考虑纤维多重度的取值集合
+\[
+\mathcal{D}_m:=\{d_m(x):\ x\in X_m\}=\{a_1<\cdots<a_{r_m}\}\subset\NN,
+\qquad
+n_i:=\#\{x\in X_m:\ d_m(x)=a_i\}.
+\]
+则对一切整数 \(q\ge 0\) 有有限指数和表示
+\[
+S_q(m)=\sum_{i=1}^{r_m} n_i\,a_i^{\,q}.
+\]
+
+\begin{theorem}[最小阶与 Hankel 秩]\label{thm:pom-fiber-spectrum-prony-hankel-rank}
+在上述设定下，\(r_m\) 等于无限 Hankel 矩阵 \(\bigl[S_{i+j}(m)\bigr]_{i,j\ge 0}\) 的秩。
+等价地，\(r_m\) 是序列 \(q\mapsto S_q(m)\) 满足的最小阶线性递推的阶数（以 \(q\) 为时间变量）：
+存在唯一的最小整数 \(r=r_m\) 与常数 \(c_0,\dots,c_{r-1}\) 使对所有 \(q\ge 0\) 有
+\[
+\boxed{\;
+S_{q+r}(m)+c_{r-1}S_{q+r-1}(m)+\cdots+c_0 S_q(m)=0\; }.
+\]
+\end{theorem}
+\begin{proof}
+由表示 \(S_q(m)=\sum_{i=1}^{r_m}n_i a_i^q\)（\(a_i\) 两两不同且非零），序列 \((S_q(m))_{q\ge 0}\) 为 \(r_m\) 个指数项的有限和，
+从而满足阶数至多 \(r_m\) 的线性递推：取
+\(
+Q_m(t):=\prod_{i=1}^{r_m}(t-a_i)=t^{r_m}+c_{r_m-1}t^{r_m-1}+\cdots+c_0
+\)，
+则对每个 \(i\) 有 \(a_i^{q+r_m}+c_{r_m-1}a_i^{q+r_m-1}+\cdots+c_0 a_i^q=0\)，
+乘以 \(n_i\) 并对 \(i\) 求和即得递推。
+\par
+反之，若存在阶数 \(r\) 的递推，则 Hankel 矩阵的列向量满足长度 \(r\) 的线性相关关系，故其秩至多 \(r\)；
+从而最小递推阶数等于 Hankel 秩。
+而对有限指数和，Hankel 秩恰等于指数项个数 \(r_m\)（经典 Prony/Hankel 理论）。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$2r_m$}{2rm} 个矩的完全重构]\label{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction}
+仅由有限数据 \(\{S_q(m)\}_{q=0}^{2r_m-1}\) 可唯一确定全部原子 \(\{a_i\}_{i=1}^{r_m}\) 与其重数 \(\{n_i\}_{i=1}^{r_m}\)。
+更具体地，存在唯一的首一多项式
+\[
+Q_m(t)=t^{r_m}+c_{r_m-1}t^{r_m-1}+\cdots+c_0=\prod_{i=1}^{r_m}(t-a_i)
+\]
+使得对所有 \(q\ge 0\) 递推恒等式
+\(
+S_{q+r_m}(m)+c_{r_m-1}S_{q+r_m-1}(m)+\cdots+c_0S_q(m)=0
+\)
+成立。
+系数 \((c_j)\) 由线性方程组
+\[
+\sum_{j=0}^{r_m} c_j\,S_{q+j}(m)=0,\qquad q=0,\dots,r_m-1,\qquad c_{r_m}=1
+\]
+唯一解出；随后 \(\{a_i\}\) 为 \(Q_m\) 的根（按重数计），而 \(\{n_i\}\) 由 Vandermonde 系统
+\[
+\sum_{i=1}^{r_m} n_i\,a_i^{\,q}=S_q(m),\qquad q=0,\dots,r_m-1
+\]
+唯一恢复。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-spectrum-prony-hankel-rank} 的最小递推刻画，
+\((c_0,\dots,c_{r_m-1})\) 满足所示线性方程组。
+当 \(r_m\) 取为最小阶时，相应 Hankel 主子式 \(\det H^{(m)}_{r_m-1}>0\)，故该线性系统可逆并给出唯一解。
+由递推构造 \(Q_m\) 后，\(Q_m\) 的根即为指数和的底数集合 \(\{a_i\}\)；
+在根互异时 Vandermonde 矩阵可逆，从而重数 \(\{n_i\}\) 唯一确定。
+（若出现重根，则对应指数项需乘以多项式因子并进入 Jordan 型广义 Prony；在本文的纤维计数口径下 \(a_i\) 为不同整数取值，故无重根。）证毕。
+\end{proof}
+
+\begin{corollary}[两谱情形的有限判别]\label{cor:pom-fiber-spectrum-two-atom-complete-invariant}
+若固定 \(m\) 时纤维多重度仅取两值（\(r_m=2\)），
+则四个矩数据 \(\{S_q(m)\}_{q=0}^{3}\) 已足以完全恢复该分辨率上的纤维谱 \(\{(a_1,n_1),(a_2,n_2)\}\)。
+因此在两谱可解模型（例如附录的 bin-fold 可解口径，见注 \ref{rem:fold-bin-solvable-model}）中，
+“二谱数据”在每个固定 \(m\) 上构成一个完全不变量。
+\end{corollary}
+
 \begin{corollary}[压力的离散凸性与 Perron 根不等式]\label{cor:pom-crossq-pressure-convexity}
 令 \(\tau(q):=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m)\) 为定义 \ref{def:pom-moment-pressure} 的 moment 压力。
 则对一切整数 \(q\ge 1\) 成立离散凸性不等式

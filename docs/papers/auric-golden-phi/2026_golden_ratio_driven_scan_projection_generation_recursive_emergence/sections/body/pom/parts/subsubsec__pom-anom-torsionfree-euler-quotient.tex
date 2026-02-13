@@ -1,9 +1,10 @@
 \subsubsection{异常类的一点判别与交叉异常坐标化：torsion-free 判据与 Euler 商不变量}\label{subsubsec:pom-anom-torsionfree-euler-quotient}
 本段在三生成元片段的异常上同调口径（推论 \ref{cor:pom-anom-cohomology-class}）与其 moment 放大律（命题 \ref{prop:pom-anom-moment-amplification}）之上，
-补充三个“常数层”结论：
-其一给出 torsion-free 情形下的\emph{一点零异常判别}；
-其二给出无需 torsion-free 假设的\emph{互素两点完备判别}，并由此得到“全矩阶零异常”的两点有限化（预言机坍缩）；
-其三把高阶交叉异常族 \(\{\Delta_S\}\) 组织为 Euler/直积可分解性的\emph{最小线性坐标}（商空间同构与维数公式）。
+给出一组与常数层审计直接相关的判别与坐标化结论：
+其一在 torsion-free 情形下给出\emph{一点零异常判别}；
+其二在不预设 torsion-free 的情形下给出\emph{互素两点完备判别}，并由此推出“全矩阶零异常”的两点有限化（预言机坍缩）；
+其三刻画一般交换群上的\emph{torsion 可消去性与最小消去阶}，并在环面型目标群上给出分母的最小公倍数律；
+其四把高阶交叉异常族 \(\{\Delta_S\}\) 组织为 Euler/直积可分解性的\emph{最小线性坐标}（商空间同构与维数公式）。
 
 \begin{corollary}[torsion-free 情形的一点零异常判别]\label{cor:pom-anom-one-point-zero-test}
 令 \(H\) 表示投影词片段的异常上同调群（由中心标签群按 coboundary 取商得到的交换群），并令 \([\mathrm{Anom}(w)]\in H\) 为任意 \(1\)-态射 \(w\) 的异常类。
@@ -68,8 +69,72 @@ a=(u q_1+v q_2)a=u(q_1 a)+v(q_2 a)=0.
 其触发条件均可压缩为仅核验两个互素矩阶；换言之，“全矩阶异常轴”的审计复杂度在逻辑上坍缩为两点。
 \end{corollary}
 
-\begin{corollary}[非零异常的无界放大与阈值穿越]\label{cor:pom-anom-unbounded-amplification}
-在推论 \ref{cor:pom-anom-one-point-zero-test} 的设定下，若 \([\mathrm{Anom}(w)]\neq 0\)，则集合
+\begin{theorem}[torsion 可消去性判别与最小消去阶]\label{thm:pom-anom-torsion-eliminability-min-order}
+在定理 \ref{thm:pom-anom-coprime-two-point-test} 的设定下，令 \(a:=[\mathrm{Anom}(w)]\in H\)，并记
+\[
+H_{\mathrm{tor}}:=\{x\in H:\ \exists\,n\ge 1\ \text{使}\ nx=0\}
+\]
+为 \(H\) 的 torsion 子群。
+则：
+\begin{enumerate}
+  \item 存在整数 \(q\ge 2\) 使 \([\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=0\) 当且仅当 \(a\in H_{\mathrm{tor}}\)。
+  \item 若 \(a\notin H_{\mathrm{tor}}\) 且 \(H\) 可嵌入为某赋范实线性空间 \((V,\|\cdot\|)\) 的加法子群，则
+  \[
+  \bigl\|[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]\bigr\|
+  =\|qa\|\xrightarrow[q\to\infty]{}\infty.
+  \]
+  \item 若 \(a\in H_{\mathrm{tor}}\) 且其阶为 \(\mathrm{ord}(a)\in\NN\)，则对任意整数 \(q\ge 2\) 有严格等价
+  \[
+  \boxed{\;
+  [\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=0\quad\Longleftrightarrow\quad \mathrm{ord}(a)\mid q\; }.
+  \]
+  特别地，\(\mathrm{ord}(a)\) 为异常可由矩编译消去的最小正整数（最小消去阶）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-anom-moment-amplification}，
+\(
+[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=qa
+\)。
+故存在 \(q\ge 2\) 使其为零当且仅当存在 \(q\ge 2\) 使 \(qa=0\)，这等价于 \(a\in H_{\mathrm{tor}}\)。
+若 \(a\notin H_{\mathrm{tor}}\) 且 \(H\hookrightarrow (V,\|\cdot\|)\)，则 \(a\neq 0\) 且 \(\|qa\|=q\|a\|\to\infty\)。
+若 \(a\in H_{\mathrm{tor}}\) 且 \(\mathrm{ord}(a)=n\)，则 \(qa=0\) 当且仅当 \(n\mid q\)，从而最小正整数即为 \(n\)。证毕。
+\end{proof}
+
+\begin{corollary}[环面型相位异常的有限覆盖消去与分母最小公倍数律]\label{cor:pom-anom-torus-phase-elimination}
+设异常取值于紧环面
+\(
+H=(\RR/2\pi\ZZ)^r
+\)，并写 \(a=(a_1,\dots,a_r)\in H\)。
+则存在整数 \(q\ge 2\) 使 \(qa=0\) 于 \(H\) 当且仅当对每个 \(1\le j\le r\) 都有
+\[
+a_j\in 2\pi\QQ/2\pi\ZZ.
+\]
+在该情形下，若对每个 \(j\) 取既约表示
+\(
+a_j\equiv 2\pi\,u_j/v_j\pmod{2\pi}
+\)（\(\gcd(u_j,v_j)=1\)），则最小消去阶为
+\[
+\boxed{\;
+q_\star=\mathrm{lcm}(v_1,\dots,v_r)\; },
+\]
+并且对任意整数 \(q\ge 1\) 有 \(qa=0\) 当且仅当 \(q_\star\mid q\)。
+\end{corollary}
+\begin{proof}
+在 \(H\) 中有 \(qa=0\) 当且仅当对每个 \(j\) 都有 \(q a_j\equiv 0\ (\mathrm{mod}\ 2\pi)\)，亦即 \(a_j/(2\pi)\in \QQ/\ZZ\) 且其分母整除 \(q\)。
+最小正整数由分母的最小公倍数给出。证毕。
+\end{proof}
+
+\begin{corollary}[单位根相位的 torsion 充分条件]\label{cor:pom-anom-cyclotomic-phase-torsion}
+在推论 \ref{cor:pom-anom-torus-phase-elimination} 的设定下，若存在正整数 \(N\) 使得对每个坐标 \(a_j\) 都满足 \(N a_j\equiv 0\ (\mathrm{mod}\ 2\pi)\)（等价于 \(e^{\mathrm{i}a_j}\) 为有限阶单位根），则 \(a\in H_{\mathrm{tor}}\)，从而存在有限阶 \(q\ge 2\) 使 \([\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=0\)。
+\end{corollary}
+\begin{proof}
+由假设可取同一 \(N\) 使 \(Na=0\) 于 \(H\)，故 \(a\) 为 torsion 元。
+再由定理 \ref{thm:pom-anom-torsion-eliminability-min-order} 得结论。证毕。
+\end{proof}
+
+\begin{corollary}[非 torsion 异常的无界放大与阈值穿越]\label{cor:pom-anom-unbounded-amplification}
+在定理 \ref{thm:pom-anom-torsion-eliminability-min-order} 的设定下，若异常类 \(a=[\mathrm{Anom}(w)]\) 不是 torsion 元，则集合
 \(
 \{[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]:q\ge 2\}
 \)
@@ -83,9 +148,9 @@ a=(u q_1+v q_2)a=u(q_1 a)+v(q_2 a)=0.
 \begin{proof}
 由命题 \ref{prop:pom-anom-moment-amplification}，对 \(q\ge 2\) 有
 \(
-[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=q\,[\mathrm{Anom}(w)]
+[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=qa
 \)。
-若 \(q_1\neq q_2\) 且 \(q_1a=q_2a\)（其中 \(a=[\mathrm{Anom}(w)]\neq 0\)），则 \((q_1-q_2)a=0\)，与 torsion-free 矛盾；故 \(\{qa:q\ge 2\}\) 无穷。
+若存在 \(q_1\neq q_2\) 使 \(q_1a=q_2a\)，则 \((q_1-q_2)a=0\)，迫使 \(a\in H_{\mathrm{tor}}\)，与假设矛盾；故 \(\{qa:q\ge 2\}\) 无穷。
 在赋范嵌入下，齐次性给出 \(|qa|=q|a|\to\infty\)，从而可取 \(q>\tau/|a|\) 得阈值穿越。证毕。
 \end{proof}
 

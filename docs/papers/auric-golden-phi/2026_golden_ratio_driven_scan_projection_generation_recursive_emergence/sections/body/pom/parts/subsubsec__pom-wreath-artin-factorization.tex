@@ -36,3 +36,119 @@ A_q^{(H)}\ \cong\ \bigoplus_{\rho\in\widehat H}
 它把需要的扭曲块读出压缩到可枚举角色族上，从而形成一条可审计的“标签--谱”通道。
 \end{remark}
 
+\paragraph{Schur--循环指标断层成像：由低阶碰撞矩显式恢复非平凡 Schur 通道}
+沿 moment 的 \(q\)-重并行语义，因子置换群 \(S_q\) 自然作用于未取商的 \(q\)-并行核；在最小实现下相应矩核与该作用对易，
+从而可对 \(S_q\) 做等变 Schur 分解并把“非平凡置换通道”的谱指纹显式还原为低阶碰撞矩的角色加权组合。
+
+\begin{theorem}[角色加权的 Schur 断层成像公式]\label{thm:pom-schur-cycle-index-tomography}
+固定整数 \(q\ge 2\)。
+设某个未取商的 \(q\)-并行 moment-kernel realization（可取张量化 moment-kernel \(A_q^{\mathrm{ten}}\) 的最小化实现）携带线性 \(S_q\)-作用并与矩核对易，
+从而存在 \(S_q\)-等变分解
+\[
+A_q\ \cong\ \bigoplus_{\lambda\vdash q}\bigl(B_{q,\lambda}\otimes I_{f^\lambda}\bigr),
+\qquad f^\lambda:=\dim S^\lambda,
+\]
+其中 \(\lambda\) 遍历 \(q\) 的分拆、\(S^\lambda\) 为相应 Specht 模。
+对任意 \(m\ge 1\) 定义通道迹序列
+\[
+T_{q,\lambda}(m):=\mathrm{Tr}\!\left(B_{q,\lambda}^{\,m}\right).
+\]
+另一方面，对任意置换 \(\sigma\in S_q\) 记其循环类型为 \(1^{c_1}2^{c_2}\cdots\)（长度为 \(r\) 的循环数为 \(c_r\)），并定义循环类型碰撞多项式
+\[
+\mathcal{C}_\sigma(m):=\prod_{r\ge 1} S_r(m)^{\,c_r},
+\qquad
+S_r(m):=\sum_{x\in X_m} d_m(x)^r.
+\]
+则对每个分拆 \(\lambda\vdash q\) 成立显式公式
+\[
+\boxed{\;
+T_{q,\lambda}(m)
+=
+\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\mathcal{C}_\sigma(m)\; },
+\]
+其中 \(\chi^\lambda\) 为 Specht 模 \(S^\lambda\) 的特征标。
+并且求和仅依赖于循环类型，故可按共轭类压缩为对 \(q\) 的分拆求和。
+\end{theorem}
+\begin{proof}
+设 \(\rho_\lambda\) 为 \(S^\lambda\) 的表示，则中心幂等元
+\(
+e_\lambda=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\sigma
+\)
+给出 \(\lambda\)-等变投影（特征标正交性）。
+由于 \(A_q\) 与 \(S_q\) 对易，故 \(e_\lambda\) 与 \(A_q\) 对易，且在等变分解下 \(e_\lambda\) 仅作用于 Specht 因子，从而
+\[
+\mathrm{Tr}(e_\lambda A_q^{\,m})=\mathrm{Tr}(B_{q,\lambda}^{\,m})\,\mathrm{Tr}(\mathrm{Id}_{S^\lambda})
+=f^\lambda\,T_{q,\lambda}(m).
+\]
+另一方面，
+\[
+\mathrm{Tr}(e_\lambda A_q^{\,m})
+=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\mathrm{Tr}(\sigma A_q^{\,m}).
+\]
+最后，对未取商的 \(q\)-并行核，\(\mathrm{Tr}(\sigma A_q^{\,m})\) 只依赖于 \(\sigma\) 的循环类型：
+长度为 \(r\) 的循环把 \(q\) 份并行约束为 \(r\) 份识别，从而贡献一个幂和矩 \(S_r(m)\)；各循环相互独立，故得到乘积
+\(
+\mathrm{Tr}(\sigma A_q^{\,m})=\mathcal{C}_\sigma(m)
+\)。
+代回并约去 \(f^\lambda\) 即得公式。证毕。
+\end{proof}
+
+\begin{corollary}[无需显式编译高维 \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} 核的 Schur 谱审计]\label{cor:pom-schur-spectrum-audit-from-low-moments}
+对固定 \(q\ge 2\)，全部 Schur 通道的迹序列 \(\{T_{q,\lambda}(m)\}_{m\ge 1,\ \lambda\vdash q}\)
+由有限集合 \(\{S_r(m)\}_{1\le r\le q,\ m\ge 1}\) 通过一次特征标加权显式计算得到（定理 \ref{thm:pom-schur-cycle-index-tomography}）。
+因此任何仅依赖于各通道迹/特征多项式的审计量（例如通道 \(\zeta\) 的零极结构、Schur 包络半径、以及通道约化行列式常数）
+均可在不构造高维并行自动机的前提下由低阶碰撞矩直接恢复。
+\end{corollary}
+
+\paragraph{冻结熵与 Schur 包络的可验证分离}
+最大纤维达到者的熵率 \(h_\ast\)（定义 \ref{def:pom-max-fiber-entropy-rate}）刻画零温截距与最大集合的指数复杂度（定理 \ref{thm:pom-zero-temperature-two-term-expansion-maxfiber-entropy}），
+而 \(S_q\) 的非平凡 Schur 通道则控制“置换通道的外周谱”。
+为将两类证书在同一记号体系内对齐，记
+\[
+\Lambda_q^{\mathrm{Schur}}
+:=
+\max_{\lambda\vdash q,\ \lambda\neq(q)}\rho(B_{q,\lambda}),
+\qquad
+\rho_q:=\rho(B_{q,(q)}),
+\qquad
+\Delta_q:=\log\!\Bigl(\frac{(\Lambda_q^{\mathrm{Schur}})^2}{\rho_q}\Bigr).
+\]
+
+\begin{proposition}[冻结证书与 near-RH 证书互不蕴含]\label{prop:pom-freezing-vs-schur-envelope-separation}
+在上述设定下，“最大纤维熵”证书 \(h_\ast>0\) 与“Schur 包络过临界”证书 \(\Delta_q>0\) 属于两条本质不同的审计轴：
+\begin{enumerate}
+  \item \(h_\ast\) 由 \(q\to\infty\) 的零温截距控制（定理 \ref{thm:pom-zero-temperature-two-term-expansion-maxfiber-entropy}），并可在最大集合为有限型子移位时由 \(\rho(A^{\max})\) 机器核验（推论 \ref{cor:pom-max-fiber-subshift-spectral-entropy}）。
+  \item 对每个固定 \(q\)，\(\Delta_q\) 仅依赖于阶数 \(\le q\) 的幂和矩数据：由定理 \ref{thm:pom-schur-cycle-index-tomography}，
+  全部非平凡通道的迹序列（从而其谱包络）可由 \(\{S_r(m)\}_{1\le r\le q}\) 显式恢复。
+\end{enumerate}
+因此在不额外假设“最大集合结构 \(\Rightarrow\) 非平凡通道谱隙”的耦合律时，
+任何试图以其中一类证书推出另一类证书的推断都必须显式引入额外约束；
+在可审计协议层面，两者应被视为需要分别核验的独立变量。
+\end{proposition}
+
+\paragraph{跨分辨率--跨矩阶的双向可逆编译}
+将固定 \(m\) 的 Prony--Hankel 重构（定理 \ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction}）
+与固定 \(q\) 的 Schur 断层成像（定理 \ref{thm:pom-schur-cycle-index-tomography}）并置，可得到一个在有限矩阶窗内完全代数化的双向编译桥。
+
+\begin{theorem}[纤维谱--Schur 谱的双向可逆性（有限矩阶窗）]\label{thm:pom-fiber-schur-bidirectional-compilation}
+设给定整数 \(Q\ge 2\)，并对所有分辨率 \(m\ge 1\) 给出碰撞矩数据 \(\{S_q(m)\}_{1\le q\le Q}\)。
+令 \(r_m:=|\mathcal{D}_m|\) 为第 \(m\) 层纤维谱的不同取值数（见 \S\ref{subsubsec:pom-moment-hankel-positivity-crossq}）。
+则在如下两条可审计条件下：
+\begin{enumerate}
+  \item \textbf{（纤维端可逆）}对每个 \(m\) 有 \(Q\ge 2r_m-1\)；
+  \item \textbf{（Schur 端可逆）}对每个 \(q\le Q\) 的并行核满足定理 \ref{thm:pom-schur-cycle-index-tomography} 的 \(S_q\)-等变实现假设；
+\end{enumerate}
+数据 \(\{S_q(m)\}_{1\le q\le Q,\ m\ge 1}\) 同时决定：
+\[
+\text{（纤维端）}\ \{(a_i(m),n_i(m))\}_{i=1}^{r_m}\ \text{对每个 }m;\qquad
+\text{（Schur 端）}\ \{T_{q,\lambda}(m)\}_{m\ge 1,\ \lambda\vdash q}\ \text{对每个 }q\le Q.
+\]
+因而在有限矩阶窗内，\(\{S_q(m)\}\) 既是“纤维谱断层扫描”，亦是“Schur 谱断层扫描”，并且两端之间存在完全可逆的纯代数编译桥。
+\end{theorem}
+
+\begin{corollary}[有限矩阶窗内的全谱审计可判定性]\label{cor:pom-finite-q-window-decidable-full-audit}
+在定理 \ref{thm:pom-fiber-schur-bidirectional-compilation} 的设定下，若对每个 \(q\le Q\) 与每个 \(\lambda\vdash q\)，迹序列 \(m\mapsto T_{q,\lambda}(m)\) 来自某个有限维矩阵幂读出（等价地：满足有限阶线性递推），
+则对应通道的 \(\zeta\) 函数、极点/零点结构与约化行列式常数均可由有限个 \(m\) 值完全恢复（生成函数有理性；参见命题 \ref{prop:pom-moment-genfunc-jordan} 的同型论证）。
+因此在有限矩阶窗内，near-RH 判别（\(\Delta_q\) 的符号）与常数层异常审计都可还原为有限计算问题。
+\end{corollary}
+
