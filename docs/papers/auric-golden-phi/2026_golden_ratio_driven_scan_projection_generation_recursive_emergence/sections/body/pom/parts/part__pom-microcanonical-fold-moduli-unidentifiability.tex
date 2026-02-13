@@ -1,0 +1,168 @@
+\paragraph{宏观完备而微观不可识别：固定纤维谱的折叠实现模空间与查询下界}
+定理 \ref{thm:pom-oracle-tomography-completeness-f-Iu-Iw} 表明：在指数尺度上，容量曲线 \(\Gamma_{\mathrm{orc}}\) 足以反演计数谱 \(f\) 及两类速率函数。
+然而 \(\Gamma_{\mathrm{orc}}\)（乃至完整的纤维谱 \(d_m\)）并不决定\emph{折叠实现本身}：同一纤维谱对应一个阶乘级的实现模空间，并诱导出截面选择的指数自由度与识别所需的查询下界。
+本段将这些“宏观完备/微观不可识别”的事实写成可直接引用的闭式计数与信息论不等式。
+
+\begin{definition}[固定纤维谱的微正则折叠实现类]\label{def:pom-microcanonical-fold-class}
+固定分辨率 \(m\)，并记
+\[
+\Omega_m=\{0,1\}^m,
+\qquad
+X_m\ \text{为稳定类型集合},
+\qquad
+N:=\card{\Omega_m}=2^m,
+\qquad
+n:=\card{X_m}.
+\]
+给定纤维多重度函数 \(d:X_m\to\NN_{\ge 1}\) 满足 \(\sum_{x\in X_m}d(x)=N\)。
+定义具有指定纤维谱 \(d\) 的折叠实现类为
+\[
+\mathfrak{Fold}_m(d)
+:=\Bigl\{F:\Omega_m\to X_m:\ \card{F^{-1}(x)}=d(x)\ \ \forall x\in X_m\Bigr\}.
+\]
+并定义归一化纤维谱分布 \(w\in\Delta(X_m)\) 为 \(w(x):=d(x)/N\)。
+\end{definition}
+
+\begin{theorem}[同像计数闭式]\label{thm:pom-microcanonical-fold-class-count}
+在定义 \ref{def:pom-microcanonical-fold-class} 的设定下，有严格等式
+\[
+\boxed{\;
+\card{\mathfrak{Fold}_m(d)}=\frac{N!}{\prod_{x\in X_m} d(x)!}\; } .
+\]
+\end{theorem}
+\begin{proof}
+构造 \(F\in\mathfrak{Fold}_m(d)\) 等价于将 \(\Omega_m\) 的 \(N\) 个元素划分为 \(n\) 个带标签的块 \(F^{-1}(x)\)（\(x\in X_m\)），且各块大小分别为 \(\{d(x)\}_{x\in X_m}\)。
+带标签的多项式分割计数即为多项式系数
+\(
+\binom{N}{(d(x))_{x\in X_m}}=N!/\prod_x d(x)!
+\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[微正则折叠熵：同谱模空间的指数率]\label{thm:pom-microcanonical-fold-entropy}
+令 \(w(x)=d(x)/N\)，并记 Shannon 熵（自然对数）
+\[
+H(w):=-\sum_{x\in X_m} w(x)\log w(x).
+\]
+则有精确渐近式
+\[
+\boxed{\;
+\log\card{\mathfrak{Fold}_m(d)}=N\,H(w)+O(n\log N)\;}
+\]
+并且在 \(n\log N=o(N)\) 的条件下，
+\[
+\boxed{\;
+\frac{1}{N}\log\card{\mathfrak{Fold}_m(d)}=H(w)+o(1)\;}
+\qquad(m\to\infty).
+\]
+上述条件在本文主线 \(n=\card{X_m}\asymp \varphi^m\)、\(N=2^m\) 下成立。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-microcanonical-fold-class-count}，
+\(
+\log\card{\mathfrak{Fold}_m(d)}=\log N!-\sum_x\log d(x)!
+\)。
+对任意整数 \(k\ge 1\) 取 Stirling 展开
+\(
+\log k!=k\log k-k+\tfrac12\log(2\pi k)+O(1)
+\)，得到
+\[
+\log\card{\mathfrak{Fold}_m(d)}
+=N\log N-\sum_x d(x)\log d(x)+O\!\left(\log N+\sum_x\log d(x)\right).
+\]
+由 \(\sum_x d(x)=N\) 且 \(1\le d(x)\le N\) 得 \(\sum_x\log d(x)\le n\log N\)，从而误差项为 \(O(n\log N)\)。
+主项化简为
+\[
+N\log N-\sum_x d(x)\log d(x)
+=-\sum_x Nw(x)\log w(x)
+=N H(w).
+\]
+于是得到第一式；若 \(n\log N=o(N)\) 则将误差除以 \(N\) 得第二式。证毕。
+\end{proof}
+
+\begin{corollary}[本体描述长度下界：仅知纤维谱时指定折叠的最小信息量]\label{cor:pom-microcanonical-fold-description-length-lower-bound}
+在仅给定纤维谱 \(d\) 的前提下，任何能唯一指定某个 \(F\in\mathfrak{Fold}_m(d)\) 的编码所需比特数 \(L_m(d)\) 必满足
+\[
+\boxed{\;
+L_m(d)\ \ge\ \log_2\card{\mathfrak{Fold}_m(d)}
+=\frac{1}{\log 2}\log\card{\mathfrak{Fold}_m(d)}\; } .
+\]
+特别地，在定理 \ref{thm:pom-microcanonical-fold-entropy} 的条件下，
+\[
+L_m(d)\ \ge\ \frac{N}{\log 2}H(w)+o(N).
+\]
+\end{corollary}
+\begin{proof}
+若可用的码字总数小于 \(\card{\mathfrak{Fold}_m(d)}\)，则不可能对 \(\mathfrak{Fold}_m(d)\) 中所有对象给出单射编码；由鸽巢原理得到矛盾。证毕。
+\end{proof}
+
+\begin{theorem}[截面选择的指数自由度：右逆空间的精确计数]\label{thm:pom-microcanonical-section-count}
+对任意 \(F\in\mathfrak{Fold}_m(d)\)，定义其右逆（截面）集合
+\[
+\mathfrak{S}(F):=\Bigl\{s:X_m\to \Omega_m:\ F\circ s=\mathrm{id}_{X_m}\Bigr\}.
+\]
+则有闭式
+\[
+\boxed{\;
+\card{\mathfrak{S}(F)}=\prod_{x\in X_m} d(x)\; } ,
+\qquad
+\boxed{\;
+\log\card{\mathfrak{S}(F)}=\sum_{x\in X_m}\log d(x)\; } .
+\]
+若记 \(\nu:=\mathrm{Unif}(X_m)\)，并定义
+\(
+\kappa_\nu(d):=\mathbb{E}_{\nu}[\log d(X)]=\frac{1}{n}\sum_x\log d(x)
+\)，则
+\[
+\boxed{\;
+\log\card{\mathfrak{S}(F)}=n\,\kappa_\nu(d).\;}
+\]
+\end{theorem}
+\begin{proof}
+构造 \(s\in\mathfrak{S}(F)\) 等价于对每个 \(x\in X_m\) 从纤维 \(F^{-1}(x)\) 中选择一个代表元；各纤维选择彼此独立，计数为乘积 \(\prod_x d(x)\)。
+取对数并改写为 \(\nu\) 下的均值即得。证毕。
+\end{proof}
+
+\begin{theorem}[谱不可导出截面：仅凭纤维谱无法产生普适有效的规范右逆]\label{thm:pom-spectrum-cannot-induce-universal-section}
+设存在一“谱\(\to\)截面”规则 \(\mathcal{A}\)，其输入仅为纤维谱 \(d\)，输出为映射 \(s_d:X_m\to\Omega_m\)。
+称 \(\mathcal{A}\) 为\emph{普适有效}，若对所有 \(F\in\mathfrak{Fold}_m(d)\) 都有 \(F\circ s_d=\mathrm{id}_{X_m}\)。
+若满足 \(n=\card{X_m}\ge 2\) 且存在某个 \(x_0\in X_m\) 使 \(d(x_0)\ge 2\)，则不存在普适有效的 \(\mathcal{A}\)。
+\end{theorem}
+\begin{proof}
+反设存在普适有效的 \(s_d\)。
+任取 \(F\in\mathfrak{Fold}_m(d)\) 并取 \(x_0\in X_m\) 使 \(d(x_0)\ge 2\)。
+令 \(\omega_0:=s_d(x_0)\in\Omega_m\)，则由普适有效性知 \(F(\omega_0)=x_0\)。
+\par
+由于 \(n\ge 2\) 且 \(d(x)\ge 1\) 对所有 \(x\) 成立，存在某个 \(x_1\neq x_0\) 以及 \(\omega_1\in\Omega_m\) 使 \(F(\omega_1)=x_1\neq x_0\)。
+取置换 \(\sigma\) 交换 \(\omega_0\) 与 \(\omega_1\)，并令 \(F':=F\circ\sigma^{-1}\)。
+则 \(\card{(F')^{-1}(x)}=\card{F^{-1}(x)}=d(x)\) 对一切 \(x\) 成立，即 \(F'\in\mathfrak{Fold}_m(d)\)。
+但
+\[
+F'(s_d(x_0))=F'(\omega_0)=F(\sigma^{-1}(\omega_0))=F(\omega_1)\neq x_0,
+\]
+从而 \(F'\circ s_d\neq \mathrm{id}_{X_m}\)，与普适有效性矛盾。证毕。
+\end{proof}
+
+\begin{theorem}[学习/审计的查询下界：识别同谱折叠所需查询次数]\label{thm:pom-microcanonical-fold-query-lower-bound}
+在黑箱查询模型中，未知 \(F\in\mathfrak{Fold}_m(d)\) 作为 oracle 给出；算法可自适应选择
+\(\omega^{(1)},\dots,\omega^{(k)}\in\Omega_m\)，并观察响应 \(F(\omega^{(i)})\in X_m\)。
+若算法在确定性意义下对所有 \(F\in\mathfrak{Fold}_m(d)\) 都能唯一确定 \(F\)，则其查询次数必满足
+\[
+\boxed{\;
+k\ \ge\ \left\lceil \frac{\log\card{\mathfrak{Fold}_m(d)}}{\log\card{X_m}}\right\rceil\; } .
+\]
+结合定理 \ref{thm:pom-microcanonical-fold-entropy}，在 \(n\log N=o(N)\) 下有
+\[
+k\ \ge\ \frac{N\,H(w)}{\log n}+o\!\left(\frac{N}{\log n}\right).
+\]
+在本文主线 \(n\asymp\varphi^m\) 下，\(\log n=\Theta(m)\)，从而 \(k=\Omega(2^m/m)\)。
+\end{theorem}
+\begin{proof}
+任意 \(k\) 次查询产生的响应轨迹至多有 \(n^k=\card{X_m}^k\) 种可能。
+若 \(n^k<\card{\mathfrak{Fold}_m(d)}\)，则存在 \(F\neq F'\) 产生同一轨迹（鸽巢原理），算法无法区分，因而不可能精确识别。
+故必须有 \(n^k\ge \card{\mathfrak{Fold}_m(d)}\)，取对数即得第一式。
+其余结论由定理 \ref{thm:pom-microcanonical-fold-entropy} 代入并用 \(\log n=\Theta(m)\) 得到。证毕。
+\end{proof}
+
+\endinput
+
