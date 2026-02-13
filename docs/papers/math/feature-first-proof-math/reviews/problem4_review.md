@@ -203,6 +203,10 @@
     `1/Phi_n(q) >= 1/Phi_n(H_{t/2}q) + C_n t` with `C_n=4/(n(n-1))`.
     This yields the explicit forward-heat lower estimate
     `1/Phi_n(q) >= C_n t` up to real-rootedness time.
+42. **NEW: Forward-heat survival-time bound**:
+    defining `tau_+(q)=sup{t>=0: H_{t/2}q real-rooted}`,
+    one gets the rigorous quantitative bound
+    `1/Phi_n(q) >= C_n tau_+(q)`.
 
 ## Findings From Independent Re-check
 
