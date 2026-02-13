@@ -1162,12 +1162,143 @@ If we set $v:=s-\rho\lambda$, then Lemma~\ref{lem:q4-h-lift} gives $h=Dv$, so
 =\|D^\top h\|^2+h^\top\!\operatorname{diag}(g)\,h
 =v^\top K v.
 \]
-Thus the unresolved concavity bottleneck is equivalent to proving
+Thus the concavity bottleneck is equivalent to proving
 \[
 v^\top K v\ge 0\qquad\text{for }v=s-\rho\lambda.
 \]
 This is strictly weaker than requiring $K\succeq 0$ on all of $\mathbb R^n$.
 \end{remark}
+
+\begin{lemma}[Convexity of the inverse-square interaction]\label{lem:q4-convex-V}
+On the Weyl chamber $\{\lambda_1<\cdots<\lambda_n\}$, define
+\[
+\mathcal V(\lambda):=\sum_{1\le i<j\le n}\frac{1}{(\lambda_i-\lambda_j)^2}
+=\frac12\,\Phi_n(\lambda).
+\]
+Then
+\[
+\nabla^2\mathcal V(\lambda)
+=
+6\sum_{1\le i<j\le n}
+\frac{(e_i-e_j)(e_i-e_j)^\top}{(\lambda_i-\lambda_j)^4}
+\succeq 0.
+\]
+In particular, $\mathcal V$ is convex on each Weyl chamber.
+\end{lemma}
+
+\begin{proof}
+For fixed $i<j$, set $\ell_{ij}(\lambda):=\lambda_i-\lambda_j$ and
+$\varphi(t):=t^{-2}$ on $(-\infty,0)$ (or $(0,\infty)$).
+Then
+\[
+\frac{1}{(\lambda_i-\lambda_j)^2}
+=
+\varphi(\ell_{ij}(\lambda)),
+\qquad
+\varphi''(t)=\frac{6}{t^4}>0.
+\]
+Since $\ell_{ij}$ is linear,
+\[
+\nabla^2\!\big(\varphi(\ell_{ij}(\lambda))\big)
+=
+\varphi''(\ell_{ij}(\lambda))\,(e_i-e_j)(e_i-e_j)^\top
+=
+\frac{6}{(\lambda_i-\lambda_j)^4}(e_i-e_j)(e_i-e_j)^\top.
+\]
+Summing over $i<j$ yields the displayed Hessian formula and positivity.
+\end{proof}
+
+\begin{lemma}[Hessian identity in $(D,L,g)$ notation]\label{lem:q4-hessian-DLg}
+With the notation above, one has
+\[
+\nabla^2\mathcal V
+=
+L^2+2D^\top\!\operatorname{diag}(g)\,D.
+\]
+Equivalently, for every $y\in\mathbb R^n$, if $h_y:=Dy$, then
+\[
+y^\top(\nabla^2\mathcal V)y
+=
+\|Ly\|^2+2\sum_{i<j} g_{ij}(h_y)_{ij}^2.
+\]
+\end{lemma}
+
+\begin{proof}
+From $\mathcal V=\frac12\|s\|^2$ and $ds[y]=-Ly$,
+\[
+d\mathcal V[y]=\langle s,ds[y]\rangle=-\langle s,Ly\rangle.
+\]
+Differentiate again along $y$:
+\[
+d^2\mathcal V[y,y]
+=
+\|Ly\|^2-\langle s,(dL[y])y\rangle.
+\]
+Now for each edge $(i,j)$:
+\[
+\partial_y\!\left(\frac{1}{(\lambda_i-\lambda_j)^2}\right)
+=
+-2\,\frac{y_i-y_j}{(\lambda_i-\lambda_j)^3},
+\]
+and a direct expansion gives
+\[
+-\langle s,(dL[y])y\rangle
+=
+2\sum_{i<j}\frac{s_i-s_j}{\lambda_i-\lambda_j}
+\left(\frac{y_i-y_j}{\lambda_i-\lambda_j}\right)^2
+=
+2\sum_{i<j} g_{ij}(h_y)_{ij}^2.
+\]
+Hence
+\[
+d^2\mathcal V[y,y]
+=
+\|Ly\|^2+2\sum_{i<j} g_{ij}(h_y)_{ij}^2
+=
+y^\top\!\left(L^2+2D^\top\!\operatorname{diag}(g)\,D\right)y.
+\]
+Since this holds for all $y$, the matrix identity follows.
+\end{proof}
+
+\begin{proposition}[Concavity bottleneck $A+B\ge 0$ is resolved]\label{prop:q4-bottleneck-closed}
+With $A,B,S_1,\rho,v$ as in Lemma~\ref{lem:q4-defect-split} and
+Lemma~\ref{lem:q4-h-lift}, one has
+\[
+A+B\ge 0.
+\]
+Therefore the semi-Gaussian concavity criterion
+\[
+2S_2^2-S_1(\|Ls\|^2+S_3)\le 0
+\]
+holds for every simple-root configuration.
+\end{proposition}
+
+\begin{proof}
+Let $v:=s-\rho\lambda$ and $h:=Dv$.
+By Lemma~\ref{lem:q4-defect-split},
+\[
+\frac{A}{S_1}=\|Lv\|^2,\qquad
+\frac{B}{S_1}=\sum_{i<j} g_{ij}h_{ij}^2.
+\]
+Hence
+\[
+\frac{A+2B}{S_1}
+=
+\|Lv\|^2+2\sum_{i<j} g_{ij}h_{ij}^2
+=
+v^\top(\nabla^2\mathcal V)\,v
+\]
+by Lemma~\ref{lem:q4-hessian-DLg}.
+By Lemma~\ref{lem:q4-convex-V}, $\nabla^2\mathcal V\succeq 0$, so
+$A+2B\ge 0$.
+
+Also $A\ge 0$ from Lemma~\ref{lem:q4-defect-split}. Therefore
+\[
+A+B=\frac12\big((A+2B)+A\big)\ge 0.
+\]
+The equivalent concavity inequality is exactly the last displayed form in
+Lemma~\ref{lem:q4-defect-split}.
+\end{proof}
 
 \begin{remark}[Additional stress-tests after rejecting \eqref{eq:q4-A}]
 After identifying \eqref{eq:q4-A} as too strong, we ran three independent numerical checks:
@@ -1191,6 +1322,10 @@ Within this draft, \eqref{eq:q4-star} is proved in the following cases:
 \item \textbf{All $n$, $q=\sqrt{s}\,\mathrm{He}_n$}
   (Theorem~\ref{thm:q4-semi-gaussian}):
   the semi-Gaussian case.
+\item \textbf{All $n$, concavity bottleneck for the semi-Gaussian flow}
+  (Proposition~\ref{prop:q4-bottleneck-closed}):
+  the algebraic condition $A+B\ge 0$ is proved via convexity of
+  $\mathcal V(\lambda)=\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$.
 \end{enumerate}
 The general all-$n$ statement for arbitrary $p,q$ with $n\ge 4$ remains open.
 \end{remark}

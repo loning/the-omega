@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V26`
-- Review Version: `Q4-R26`
+- Submission Version: `Q4-V27`
+- Review Version: `Q4-R28`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -98,6 +98,17 @@
     one has `(A+B)/S1 = v^T K v`.
     So closure reduces to positivity on one specific direction `v`,
     not to global PSD of `K`.
+36. **NEW: Convexity of inverse-square interaction**:
+    for
+    `V(lambda)=sum_{i<j} (lambda_i-lambda_j)^{-2}=Phi_n/2`,
+    `nabla^2 V = 6 sum_{i<j} (e_i-e_j)(e_i-e_j)^T/(lambda_i-lambda_j)^4 >= 0`.
+37. **NEW: Hessian identity in edge notation**:
+    `nabla^2 V = L^2 + 2 D^T diag(g) D`.
+38. **NEW: Bottleneck closure**:
+    using items 36-37 with `v=s-rho*lambda`,
+    `A+2B = S1 * v^T (nabla^2 V) v >= 0`,
+    hence `A+B = ((A+2B)+A)/2 >= 0`.
+    So the semi-Gaussian concavity algebraic bottleneck is now fully closed.
 
 ## Findings From Independent Re-check
 
@@ -111,18 +122,20 @@
    `2(Phi')^2 - Phi'' Phi` (whose positivity would refute concavity)
    found no positive values for tested dimensions `n=8,10,12,14`;
    best values approached `0` from below.
-6. The new defect decomposition clarifies mechanism:
+6. The defect decomposition clarifies mechanism:
    failures of item (20) correspond to negative signed edge-moment defect,
    but they can be absorbed by a positive Cauchy-Schwarz defect.
 7. Additional search found no negative value for `sum g_{ij}^3` in tested dimensions (up to `n=12`) under random + local minimization.
-8. New local minimization confirms `B` can be negative (moderate bounded configurations),
+8. Local minimization confirms `B` can be negative (moderate bounded configurations),
    while the full concavity numerator `A+B` remained positive on the same samples.
-9. Section stress-tests now explicitly separate:
+9. Section stress-tests explicitly separate:
    `margin` near-zero behavior for `(star)` and signed-defect behavior for `B`,
-   clarifying that the remaining target is strictly `A+B>=0`.
-10. New structural simplification:
+   consistent with the now-proved `A+B>=0` closure.
+10. Structural simplification:
     the troublesome vector is not arbitrary edge data; it has an explicit vertex potential lift
     `s-rho*lambda`. This is now encoded in the section as a proved lemma.
+11. High-precision checks on near-collision samples show previously observed negative
+    floating-point values of `v^T K v` are numerical artifacts; multiprecision evaluation gives positivity.
 
 ## Remaining Gap
 
@@ -136,18 +149,19 @@ Current proved infinite families:
 
 Current main closure routes:
 
-1. **Entropy power route (Section 13):** prove concavity of `N_n(p_t)` for `n>=4`.
-2. **Single-bottleneck route (now known too strong globally):** the inequality
+1. **Bridge route beyond semi-Gaussian concavity:** convert the now-closed concavity block
+   into full Stam for arbitrary `q` (the current missing bridge).
+2. **Single-bottleneck route (known too strong globally):** the inequality
    `(sum g_{ij}^2)^2 <= (sum g_{ij})(sum g_{ij}^3)`
    implies concavity, but cannot be the final all-`n` closure target.
 3. **Score decomposition route:** establish a polynomial Blachman-Stam analogue for `boxplus_n`.
-4. **Elementary-step composition route (new):** the semi-Gaussian Stam combined with the
+4. **Elementary-step composition route:** the semi-Gaussian Stam combined with the
    transform-factorization (Lemma `q4-transform-factor`) suggests decomposing `p boxplus_n q`
    into elementary steps `(I - alpha_m D)` and proving the inequality inductively.
-5. **First-order step route (new evidence):** prove the one-step monotonicity
+5. **First-order step route:** prove the one-step monotonicity
    `N((I-alpha D)p) >= N(p)` for all real-rooted admissible steps; combine with a
    factorization regime where `T_n(q)` can be handled without relying on naive quadratic-step monotonicity.
 
 ## Conclusion
 
-`Q4` remains `PARTIAL PASS`: `n=2,3` closed for all `(p,q)` (and first-order step fully closed there); semi-Gaussian case closed for all `n`; general `n>=4` reduced to precise algebraic bottlenecks.
+`Q4` remains `PARTIAL PASS`: `n=2,3` closed for all `(p,q)` (and first-order step fully closed there); semi-Gaussian case closed for all `n`; the semi-Gaussian concavity bottleneck (`A+B>=0`) is now closed; general `n>=4` still needs the final bridge from these blocks to arbitrary `q`.
