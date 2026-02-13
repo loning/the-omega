@@ -2,7 +2,7 @@
 
 - Problem: `Q4`
 - Submission Version: `Q4-V27`
-- Review Version: `Q4-R40`
+- Review Version: `Q4-R41`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -196,6 +196,13 @@
 40. **NEW: All-`n` semi-Gaussian concavity promoted to theorem**:
     `t -> N_n(p boxplus_n q_t)` is now proved concave (simple-root intervals + continuity closure),
     no longer only a conjectural bottleneck for this flow family.
+41. **NEW: Heat deconvolution identity + forward-heat lower bound**:
+    exact factorization
+    `q = (H_{t/2}q) boxplus_n q_t` (all degree-`n` polynomials),
+    and corollary (when `H_{t/2}q` remains real-rooted):
+    `1/Phi_n(q) >= 1/Phi_n(H_{t/2}q) + C_n t` with `C_n=4/(n(n-1))`.
+    This yields the explicit forward-heat lower estimate
+    `1/Phi_n(q) >= C_n t` up to real-rootedness time.
 
 ## Findings From Independent Re-check
 

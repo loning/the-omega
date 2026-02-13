@@ -996,6 +996,76 @@ Since $\mathcal T_n$ is injective on degree-$n$ coefficient vectors,
 $p\boxplus_n q_t=H_{-t/2}p$.
 \end{proof}
 
+\begin{lemma}[Heat deconvolution identity]\label{lem:q4-heat-deconv}
+For every degree-$n$ polynomial $q$ and every $t\ge 0$,
+\[
+q = (H_{t/2}q)\boxplus_n q_t,
+\qquad q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t).
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-transform-factor},
+\[
+\mathcal T_n\big((H_{t/2}q)\boxplus_n q_t\big)
+=
+\frac1{n!}\,\mathcal T_n(H_{t/2}q)\,\mathcal T_n(q_t).
+\]
+Using $\mathcal T_n(H_s f)=e^{s z^2}\mathcal T_n(f)$ (from
+Lemma~\ref{lem:q4-heat-intertwine}) and
+Lemma~\ref{lem:q4-hermite-transform},
+\[
+\mathcal T_n(H_{t/2}q)=e^{t z^2/2}\mathcal T_n(q),
+\qquad
+\mathcal T_n(q_t)=n!e^{-t z^2/2}.
+\]
+Hence
+\[
+\mathcal T_n\big((H_{t/2}q)\boxplus_n q_t\big)
+=
+\frac1{n!}\,e^{t z^2/2}\mathcal T_n(q)\cdot n!e^{-t z^2/2}
+=
+\mathcal T_n(q).
+\]
+Injectivity of $\mathcal T_n$ on degree-$n$ coefficient vectors gives
+the claim.
+\end{proof}
+
+\begin{corollary}[Forward-heat lower bound from the semi-Gaussian inequality]\label{cor:q4-forward-heat-lower}
+Fix $n\ge 2$ and define $C_n:=4/(n(n-1))$.
+Let $q$ be monic real-rooted degree-$n$, and let $t\ge 0$ be such that
+$H_{t/2}q$ is still real-rooted. Then
+\[
+\frac1{\Phi_n(q)}
+\ge
+\frac1{\Phi_n(H_{t/2}q)} + C_n t.
+\]
+In particular,
+\[
+\frac1{\Phi_n(q)}\ge C_n t.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Lemma~\ref{lem:q4-heat-deconv}:
+\[
+q=(H_{t/2}q)\boxplus_n q_t.
+\]
+Since $H_{t/2}q$ is real-rooted by assumption, Theorem~\ref{thm:q4-semi-gaussian}
+applies with $p:=H_{t/2}q$ and $s:=t$:
+\[
+\frac1{\Phi_n(q)}
+\ge
+\frac1{\Phi_n(H_{t/2}q)}+\frac1{\Phi_n(q_t)}.
+\]
+By Lemma~\ref{lem:q4-hermite-phi},
+\[
+\frac1{\Phi_n(q_t)}=C_n t.
+\]
+This gives the first displayed inequality; the second follows from
+$1/\Phi_n(H_{t/2}q)\ge 0$.
+\end{proof}
+
 \begin{theorem}[Semi-Gaussian Stam inequality---all $n$]\label{thm:q4-semi-gaussian}
 For every $n\ge 2$, every monic real-rooted polynomial $p$ of degree~$n$,
 and every $s>0$:
