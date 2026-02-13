@@ -207,6 +207,10 @@
     defining `tau_+(q)=sup{t>=0: H_{t/2}q real-rooted}`,
     one gets the rigorous quantitative bound
     `1/Phi_n(q) >= C_n tau_+(q)`.
+43. **NEW: Discriminant-entropy candidate bridge recorded**:
+    added explicit conjecture
+    `Disc(p boxplus_n q)^{1/binom(n,2)} >= Disc(p)^{1/binom(n,2)} + Disc(q)^{1/binom(n,2)}`,
+    with expanded random stress-test evidence through `n=10` and no observed violation.
 
 ## Findings From Independent Re-check
 
