@@ -189,7 +189,7 @@ def _write_tex(
     lines.append(
         r"r_{E_8}&:=4\cos^2\!\left(\frac{\pi}{30}\right)\approx "
         + _fmt(r_e8, 16)
-        + r",\qquad"
+        + r",\qquad "
         + r"t_{E_8}\approx "
         + _fmt(t_e8, 16)
         + r"."
