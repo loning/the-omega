@@ -109,6 +109,29 @@ T:=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\in\NN\cup\{\infty\}
 证毕。
 \end{proof}
 
+\begin{corollary}[无需同步核谱信息的全变差耦合上界：由禁词尾完全控制]\label{cor:sync10-regeneration-tv-bound}
+在推论 \ref{cor:sync10-regeneration-correlation-bound} 的记号下，进一步假设输入序列 \((D_t)\) 为独立同分布，且 \(\mathbb{P}(D_t=d)=\pi(d)\)（\(d\in\{0,1,2\}\)）。
+则由输入随机化诱导的同步状态过程 \((Q_t)\) 为 \(Q\) 上的齐次马尔可夫链，其转移核为
+\[
+P(s,t):=\sum_{d\in\{0,1,2\}}\pi(d)\,\mathbf 1_{\{\delta(s,d)=t\}}.
+\]
+令 \(\nu,\nu'\) 为 \(Q\) 上任意两初始分布，则对所有 \(n\ge 0\) 有统一耦合上界
+\[
+\boxed{\;
+\bigl\|\nu P^{n}-\nu'P^{n}\bigr\|_{\mathrm{TV}}\ \le\ \mathbb{P}(T>n-5)\;},
+\]
+其中 \(T=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\)。
+因此在该确定核上，混合/相关的上界可被系统性地降阶为输入模型对禁词 \(\texttt{00000}\) 的避免尾问题，而无需求助于 \(P\) 的谱隙估计。
+\end{corollary}
+\begin{proof}
+用同一条随机输入序列 \((D_t)\) 驱动两条同步核轨道，并分别以 \(\nu,\nu'\) 为初分布取初态。
+由推论 \ref{cor:sync10-regeneration-correlation-bound}，在事件 \(\{T\le n-5\}\) 上两条轨道在时刻 \(n\) 必然相等；因此
+\(
+\mathbb{P}(Q_n\neq Q_n')\le \mathbb{P}(T>n-5)
+\)。
+对任意耦合都有 \(\|\nu P^n-\nu'P^n\|_{\mathrm{TV}}\le \mathbb{P}(Q_n\neq Q_n')\)，取该耦合即得结论。证毕。
+\end{proof}
+
 进一步地，若固定目标态 $t\in Q$，定义其\textbf{复位深度}
 \[
 \ell(t):=\min\{|w|:\ \delta(Q,w)=\{t\}\}.
@@ -118,6 +141,21 @@ T:=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\in\NN\cup\{\infty\}
 这些结论由脚本 \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py} 一键复现。
 
 \input{sections/generated/tab_sync_kernel_reset_targets}
+
+\begin{proposition}[复位深度谱的集中与常量映射理想的长度直径]\label{prop:sync10-reset-depth-diameter}
+以 \(\ell(t)\) 为复位深度（见上文定义）。
+则在该 \(10\) 态同步核上，
+\[
+\max_{t\in Q}\ell(t)=6,
+\]
+并且除 \(t\in\{0\overline{1}2,\ 11\overline{1}\}\) 外的其余 \(8\) 个目标态均满足 \(\ell(t)=5\)。
+因此由 \(\{f_0,f_1,f_2\}\) 生成的变换半群中，全部常量映射（把 \(Q\) 压到单点的幂等元）在词长意义下形成一个长度直径为 \(6\) 的层；并且“深度 \(6\)”的例外仅占目标态的 \(2/10\)。
+\end{proposition}
+\begin{proof}
+由表 \ref{tab:sync-kernel-reset-target-depth} 的逐目标态最短 witness，可直接读出 \(\ell(t)\le 6\) 对所有 \(t\) 成立，并且恰有两态取到 \(6\)，其余取到 \(5\)。
+常量映射到 \(t\) 与复位词 \(w\) 的一一对应由定义给出：\(\delta(Q,w)=\{t\}\) 当且仅当 \(f_w\) 为常量映射且值为 \(t\)。
+因此 \(\max_t\ell(t)\) 即常量映射层的词长直径。证毕。
+\end{proof}
 
 \subsection{变换半群不变量：大小、单位群与局部 \texorpdfstring{$\mathbb{Z}_2$}{Z2} 周期}\label{app:sync-kernel-semigroup}
 把每个输入字母 $d\in\{0,1,2\}$ 视为对 $Q$ 的函数 $f_d:q\mapsto\delta(q,d)$，考虑其生成的变换幺半群
