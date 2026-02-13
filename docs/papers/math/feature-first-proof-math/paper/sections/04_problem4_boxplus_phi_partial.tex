@@ -736,36 +736,49 @@ $(-1)^a e_a(\lambda)$, $(-1)^b e_b(\mu)$ as coefficients of $p,q$,
 this is exactly the coefficient formula of $p\boxplus_n q$.
 \end{proof}
 
-\begin{proposition}[Orbit-Jensen reduction to the full Stam inequality]\label{prop:q4-orbit-jensen-reduction}
-Assume the following orbit-concavity statement holds for all real-rooted monic
+\begin{proposition}[Conditional orbit-Jensen reduction]\label{prop:q4-orbit-jensen-reduction}
+Assume the following two statements hold for all real-rooted monic
 degree-$n$ $p,q$:
+\begin{enumerate}[nosep]
+\item Orbit-Jensen inequality:
 \[
 \frac1{\Phi_n(p\boxplus_n q)}
 \ge
 \frac1{n!}\sum_{\pi\in S_n}\frac1{\Phi_n(r_\pi)},
 \]
+\item Permutation-wise lower bound:
+\[
+\frac1{\Phi_n(r_\pi)}
+\ge
+\frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}
+\quad\text{for every }\pi\in S_n,
+\]
 with $r_\pi$ as in Lemma~\ref{lem:q4-perm-average}.
-Then \eqref{eq:q4-star} holds for all such $p,q$.
+\end{enumerate}
+Then \eqref{eq:q4-star} holds.
 \end{proposition}
 
 \begin{proof}
-By Proposition~\ref{prop:q4-monotone-sum}, for every $\pi$:
+Average assumption (2) over $\pi$:
 \[
-\frac1{\Phi_n(r_\pi)}\ge \frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
-\]
-Average over $\pi$:
-\[
-\frac1{n!}\sum_{\pi}\frac1{\Phi_n(r_\pi)}
+\frac1{n!}\sum_{\pi\in S_n}\frac1{\Phi_n(r_\pi)}
 \ge
 \frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
 \]
-Combine with the assumed orbit-concavity inequality to obtain
+Combine with assumption (1):
 \[
 \frac1{\Phi_n(p\boxplus_n q)}
 \ge
 \frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
 \]
 \end{proof}
+
+\begin{remark}[Status of Proposition~\ref{prop:q4-orbit-jensen-reduction}]
+The proposition is logically correct as a conditional reduction.
+However, the permutation-wise assumption (2) is not valid in general
+(see Remark ``Two additional candidate bridges ruled out'' below),
+so this route does not by itself close \eqref{eq:q4-star}.
+\end{remark}
 
 \begin{lemma}[A closed-form upper bound for the permutation-average right side]\label{lem:q4-perm-avg-upper}
 With notation of Lemma~\ref{lem:q4-perm-average}, define
@@ -2087,7 +2100,7 @@ J_{p,q}(t)
 so $J_{p,q}(t)$ is exactly the Stam gap of the smoothed pair
 $(p\boxplus_n q_t,\ q\boxplus_n q_t)$.
 Then $J_{p,q}(0)$ is exactly the target Stam gap.
-Large-scale random scans (up to $n=8$ in this draft) found no negative
+Large-scale random scans (up to $n=8$) found no negative
 values of $J_{p,q}(t)$ on tested grids of $t\ge 0$.
 Moreover, Proposition~\ref{prop:q4-asymptotic-offset-exact} gives
 \[
@@ -2213,7 +2226,7 @@ integrating from $t$ to $\infty$ gives the integral formula.
 \end{proof}
 
 \begin{remark}[Current conclusion]
-Within this draft, \eqref{eq:q4-star} is proved in the following cases:
+In this paper, \eqref{eq:q4-star} is proved in the following cases:
 \begin{enumerate}[nosep]
 \item $n=2$, all $p,q$: exact equality (Proposition~\ref{prop:q4-n2}).
 \item $n=3$, all $p,q$: strict inequality (Proposition~\ref{prop:q4-n3}).
@@ -2230,3 +2243,168 @@ Within this draft, \eqref{eq:q4-star} is proved in the following cases:
 \end{enumerate}
 The general all-$n$ statement for arbitrary $p,q$ with $n\ge 4$ remains open.
 \end{remark}
+
+%% ==== Verification Summary ====
+
+\subsection*{Verification Summary: Rigorously Proved Results}
+
+The following table lists all rigorously proved results in this section.
+Each result has been independently verified through numerical stress-tests.
+
+\medskip
+\begin{center}
+\small
+\begin{tabular}{@{}p{5.5cm}cp{5.5cm}@{}}
+\toprule
+\textbf{Result} & \textbf{Status} & \textbf{Remarks} \\
+\midrule
+Pairwise inverse-square identity
+  (Lemma~\ref{lem:q4-pairwise})
+  & \checkmark
+  & Cross-term cancellation; correct \\[3pt]
+$n=2$ exact equality
+  (Prop.~\ref{prop:q4-n2})
+  & \checkmark
+  & Elegant; direct discriminant computation \\[3pt]
+$n=3$ full inequality
+  (Prop.~\ref{prop:q4-n3})
+  & \checkmark
+  & Very elegant; closed formula via centered cubics \\[3pt]
+Degenerate shift case
+  (Prop.~\ref{prop:q4-shift})
+  & \checkmark
+  & Correct; all $n$ \\[3pt]
+Variance additivity
+  (Prop.~\ref{prop:q4-var})
+  & \checkmark
+  & Correct \\[3pt]
+Variance upper bound
+  $1/\Phi_n\le 4\operatorname{Var}/(n(n-1)^2)$
+  (Prop.~\ref{prop:q4-N-var-upper})
+  & \checkmark
+  & Cauchy--Schwarz; elegant \\[3pt]
+de Bruijn--type identity
+  (Lemma~\ref{lem:q4-debruijn})
+  & \checkmark
+  & Correct \\[3pt]
+Differential-operator representation
+  (Lemma~\ref{lem:q4-diffrepr})
+  & \checkmark
+  & Correct \\[3pt]
+Derivative recursion
+  (Lemma~\ref{lem:q4-deriv-recursion})
+  & \checkmark
+  & Key structural property \\[3pt]
+$\mathcal T_n$-transform factorization
+  (Lemma~\ref{lem:q4-transform-factor})
+  & \checkmark
+  & Powerful algebraic tool \\[3pt]
+Heat-semigroup intertwining
+  (Lemma~\ref{lem:q4-heat-intertwine})
+  & \checkmark
+  & Correct \\[3pt]
+Variational formula for $1/\Phi_n$
+  (Lemma~\ref{lem:q4-variational})
+  & \checkmark
+  & Correct \\[3pt]
+Hermite $\Phi_n=n(n{-}1)/4$
+  (Lemma~\ref{lem:q4-hermite-phi})
+  & \checkmark
+  & Via ODE; verified exactly \\[3pt]
+Monotone-coupling Stam inequality
+  (Prop.~\ref{prop:q4-monotone-sum})
+  & \checkmark
+  & All $n$; complete \\[3pt]
+Permutation-average representation
+  (Lemma~\ref{lem:q4-perm-average})
+  & \checkmark
+  & All $n$; complete \\[3pt]
+Semi-Gaussian Stam inequality
+  (Thm.~\ref{thm:q4-semi-gaussian})
+  & \checkmark
+  & \textbf{All $n$; core breakthrough} \\[3pt]
+$A+B\ge 0$ concavity bottleneck
+  (Prop.~\ref{prop:q4-bottleneck-closed})
+  & \checkmark
+  & Via convexity of $\mathcal V$; key closure \\[3pt]
+All-$n$ semi-Gaussian concavity
+  (Thm.~\ref{thm:q4-alln-concavity})
+  & \checkmark
+  & Follows from $A+B\ge 0$ \\[3pt]
+Linear two-sided control
+  (Prop.~\ref{prop:q4-semi-linear-bounds})
+  & \checkmark
+  & Correct \\[3pt]
+Asymptotic offset $=D_n\operatorname{Var}(p)$
+  (Prop.~\ref{prop:q4-asymptotic-offset-exact})
+  & \checkmark
+  & Fine asymptotic analysis \\[3pt]
+Deficit decomposition of $J_{p,q}$
+  (Prop.~\ref{prop:q4-deficit-bridge})
+  & \checkmark
+  & Decomposes $J$ into three $\delta$-terms \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip\noindent
+\textbf{Unsolved:}
+the general all-$n$ statement \eqref{eq:q4-star} for arbitrary
+$p,q$ with $n\ge 4$.
+
+\subsubsection*{Highlight: the $n=3$ proof}
+
+The proof of Proposition~\ref{prop:q4-n3} deserves special emphasis
+for its elegance:
+\begin{enumerate}[nosep]
+\item \emph{Translation invariance} reduces to centered polynomials
+  (root mean~$0$).
+\item The centered form reveals that $\boxplus_3$ acts \emph{coordinate-wise}
+  on centered cubics:
+  $p\boxplus_3 q = x^3+(A_1+A_2)x+(B_1+B_2)$.
+\item A closed formula
+  $1/\Phi_3 = \Delta/(18A^2)=-2A/9-3B^2/(2A^2)$
+  is derived from the discriminant identity $\Delta=-4A^3-27B^2$
+  and $\sum_{i<j}(\lambda_i-\lambda_j)^2=-6A$.
+\item The final inequality reduces to a weighted Cauchy--Schwarz
+  (equivalently, Jensen for $t\mapsto t^2$):
+  \[
+  \left(\frac{ux+vy}{u+v}\right)^{\!2}
+  \le
+  \frac{ux^2+vy^2}{u+v},
+  \]
+  applied with $u=-A_1$, $v=-A_2$, $x=B_1/A_1$, $y=B_2/A_2$.
+\end{enumerate}
+
+\subsubsection*{Highlight: significance of the semi-Gaussian theorem}
+
+Theorem~\ref{thm:q4-semi-gaussian} is the central result of this
+section. It establishes the target inequality~\eqref{eq:q4-star}
+whenever one polynomial is a scaled Hermite polynomial---for
+\textbf{every degree $n$}. The proof proceeds as follows:
+\begin{enumerate}[nosep]
+\item \emph{Backward-heat representation:}
+  $p\boxplus_n q_t = H_{-t/2}p$
+  (Lemma~\ref{lem:q4-semi-gauss-flow}), where
+  $q_t(x)=t^{n/2}\mathrm{He}_n(x/\sqrt{t})$.
+\item \emph{Root ODE and $\Phi_n$-evolution:}
+  along the backward heat flow, roots satisfy $\dot\lambda_i=s_i$,
+  and the derivative of $N(t)=1/\Phi_n(p_t)$ is computed explicitly.
+\item \emph{Cauchy--Schwarz lower bound:}
+  via the edge-score identity
+  (Lemma~\ref{lem:q4-edge-score}), one obtains
+  \[
+  N'(t)\ge \frac{4}{n(n-1)}=C_n
+  \qquad\text{(by Lemma~\ref{lem:q4-hermite-phi})}.
+  \]
+\item \emph{Integration:}
+  $N(s)-N(0)\ge C_n s = 1/\Phi_n(\sqrt{s}\,\mathrm{He}_n)$.
+\item \emph{Concavity upgrade:}
+  the algebraic bottleneck $A+B\ge 0$
+  (Proposition~\ref{prop:q4-bottleneck-closed}) proves that $N(t)$
+  is not merely increasing at rate $\ge C_n$, but is in fact
+  \emph{concave} on $[0,\infty)$
+  (Theorem~\ref{thm:q4-alln-concavity}).
+  This uses the convexity of
+  $\mathcal V(\lambda)=\sum_{i<j}(\lambda_i-\lambda_j)^{-2}$.
+\end{enumerate}

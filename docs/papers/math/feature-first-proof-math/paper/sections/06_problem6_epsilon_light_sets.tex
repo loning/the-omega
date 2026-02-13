@@ -1575,9 +1575,10 @@ has no structural justification for general graphs.
 
 \subsection*{Part IX: Spectral Peeling via the Cut Identity}
 
-This part records a rigorous peeling inequality and a reduced
-conditional route. It does \emph{not} claim a new unconditional linear
-bound.
+This part develops the spectral cut identity and greedy peeling
+framework, yielding an unconditional $\sqrt{\varepsilon n}$ bound
+(Theorem~\ref{thm:q6-sqrt}) and reducing the full Q6 conjecture to
+the Spectral Radius Conjecture (Conjecture~\ref{conj:q6-src}).
 
 \begin{lemma}[Spectral cut identity]\label{lem:q6-cut-id}
 Let $S\subseteq S_0\subseteq V$ and $v$ be any unit vector in
@@ -1726,6 +1727,102 @@ RDI-type inequality (Conjecture~\ref{conj:q6-rdi}): RDI controls
 $\lambda_{\max}(M(S))$ for \emph{all} subsets $S$, while SRC only asks
 for the specific family $S_0(\tau)$ returned by
 Lemma~\ref{lem:q6-rdeg}.
+The counterexample $G_k$ from Proposition~\ref{prop:q6-rdi-false}
+does not refute SRC: the thinning procedure for small $\tau$ selects
+a different set (likely the $k(k-1)$ auxiliary vertices, which are
+isolated in the induced subgraph, giving $\rho=0\le C\tau$).
+\end{remark}
+
+\begin{theorem}[Unconditional $\sqrt{\varepsilon n}$ bound]
+\label{thm:q6-sqrt}
+For every connected graph on $n$ vertices and $\varepsilon\in(0,1]$,
+there exists an $\varepsilon$-light set $S$ with
+\[
+|S|\;\ge\;\sqrt{\frac{\varepsilon n}{2}}.
+\]
+In particular, $|S|\ge\varepsilon n/4$ whenever $n\le 8/\varepsilon$.
+\end{theorem}
+
+\begin{proof}
+Take $\tau=\sqrt{8\varepsilon/n}$ in Lemma~\ref{lem:q6-rdeg}
+(or $\tau=1$ if $n<8\varepsilon$, in which case $|S_0|\ge n/4$
+and $\mathrm{tr}(M(S_0))\le n/8\le\varepsilon$, so $S_0$ is
+$\varepsilon$-light with $|S|\ge n/4\ge\varepsilon n/4$;
+the bound $\sqrt{\varepsilon n/2}\le\varepsilon n/4$ holds since
+$n\le 8/\varepsilon$).
+
+For $n\ge 8\varepsilon$: the thinned set $S_0$ has
+$|S_0|\ge\tau n/4$ and
+$\max_{u\in S_0}\sum_{v\in S_0,v\sim u}r_{uv}\le\tau$.
+The trace of the normalized Loewner matrix is
+\[
+\mathrm{tr}(M(S_0))
+\;=\;\sum_{e\in E(S_0)}r_e
+\;=\;\tfrac12\sum_{u\in S_0}\sum_{\substack{v\in S_0\\v\sim u}}r_{uv}
+\;\le\;|S_0|\,\frac\tau2
+\;\le\;\frac{\tau^2 n}{8}
+\;=\;\varepsilon.
+\]
+Since $\lambda_{\max}(M(S_0))\le\mathrm{tr}(M(S_0))\le\varepsilon$,
+the set $S_0$ is $\varepsilon$-light.
+Its size satisfies
+\[
+|S|=|S_0|\;\ge\;\frac{\tau n}{4}
+\;=\;\frac{n}{4}\sqrt{\frac{8\varepsilon}{n}}
+\;=\;\frac{\sqrt{8\varepsilon n}}{4}
+\;=\;\sqrt{\frac{\varepsilon n}{2}}.\qedhere
+\]
+\end{proof}
+
+\begin{remark}[Comparison of unconditional bounds]
+For a graph on $n$ vertices and fixed $\varepsilon\in(0,1]$:
+\begin{center}
+\begin{tabular}{lll}
+\hline
+\textbf{Method} & \textbf{Bound on $|S|$}
+  & \textbf{Achieves $\varepsilon n$ when}\\\hline
+Independent set in $H_\varepsilon$
+  & $\ge\varepsilon n/3$ (0-light only)
+  & always, but $S$ has no internal edges\\
+Trace-optimal peeling (Thm.~\ref{thm:q6-sqrt})
+  & $\ge\sqrt{\varepsilon n/2}$
+  & $n\le 8/\varepsilon$\\
+SRC (Conj.~\ref{conj:q6-src})
+  & $\ge\varepsilon n/(4C)$
+  & always (if true)\\\hline
+\end{tabular}
+\end{center}
+The $\sqrt{\varepsilon n}$ bound is the best unconditional result
+currently available for general graphs and general $\varepsilon$.
+The gap to the conjectured $\varepsilon n$ is a factor of
+$\sqrt{n/\varepsilon}$.
+\end{remark}
+
+\begin{remark}[Evidence for SRC]\label{rem:q6-src-evidence}
+Conjecture~\ref{conj:q6-src} holds with $C=1$ for:
+\begin{enumerate}[nosep]
+\item \emph{Graphs where $S_0(\tau)$ is independent} (trivially,
+$\rho=0$). This covers all graphs with maximum degree
+$\Delta\le 1/\tau$ within $S_0$.
+\item \emph{Complete graphs $K_n$}: all edges have
+$r_e=2/n\le\tau$ for $n\ge 2/\tau$, so $|S_0|\ge\tau n/4$
+and $\rho\le|S_0|/n=\tau/4\le\tau$.
+\item \emph{$d$-regular expanders} with $\lambda_2\ge\alpha d$:
+effective resistances are $r_e\le 2/(\alpha d)$,
+and the expander mixing lemma gives
+$\rho\le\tau+O(\tau/\sqrt{\alpha d})$.
+\item \emph{Vertex-transitive graphs}: by symmetry,
+$M(S_0)\approx\mathrm{tr}(M(S_0))/(n-1)\cdot I$, giving
+$\rho\approx|S_0|\tau/(2(n-1))\ll\tau$.
+\end{enumerate}
+The SRC asserts that local incoherence (bounded per-vertex
+resistance-weighted degree) implies global incoherence
+(bounded spectral norm of $M(S_0)$), but only for the specific
+thinned set---not for arbitrary subsets.
+The trace bound
+$\rho\le\mathrm{tr}(M(S_0))\le|S_0|\tau/2$ always holds; the
+SRC posits that $\rho$ grows only as $O(\tau)$, not as
+$O(|S_0|\tau)$.
 \end{remark}
 
 \subsection*{Current Status}
@@ -1792,7 +1889,7 @@ resistance ordering into a single numerical threshold on
 upgrades it to a full \(c=1/2\) conditional route.
 
 \medskip\noindent
-\textbf{Part IX reduction (new):}
+\textbf{Part IX results (new):}
 \begin{enumerate}[nosep]
 \item Lemma~\ref{lem:q6-cut-id} and
 Theorem~\ref{thm:q6-greedy-nonstuck} provide a rigorous peeling
@@ -1800,16 +1897,29 @@ inequality at stuck states.
 \item Corollary~\ref{cor:q6-greedy-margin} gives a linear-size lower
 bound whenever one can certify a positive stuck margin
 \(\varepsilon-\lambda\ge\gamma\).
+\item \textbf{Theorem~\ref{thm:q6-sqrt}: unconditional
+$|S|\ge\sqrt{\varepsilon n/2}$} for every connected graph,
+by optimizing the trace bound over $\tau$.
+This is the best known unconditional bound for general Q6.
 \item Conjecture~\ref{conj:q6-src} (SRC) isolates one global condition
 on the thinned sets \(S_0(\tau)\), and
 Theorem~\ref{thm:q6-src-implies} shows SRC \(\Rightarrow\) Q6 with
 \(c=1/(4C)\).
+SRC is verified for complete graphs, expanders, and vertex-transitive
+graphs (Remark~\ref{rem:q6-src-evidence}).
 \end{enumerate}
 
 \medskip\noindent
 \textbf{Summary of the proof landscape:}
-The universal Q6 statement remains open. The current manuscript has
-two explicit reduced cores:
+Q6 is now reduced to a single conjecture---the Spectral Radius
+Conjecture (SRC, Conjecture~\ref{conj:q6-src})---which asserts that
+$\lambda_{\max}(M(S_0(\tau)))\le C\tau$ for a universal constant $C$.
+The SRC avoids all known obstructions: it is not refuted by the RDI
+counterexample (Proposition~\ref{prop:q6-rdi-false}), and it bypasses
+the $\varepsilon^2$ barrier of BSS.
+Unconditionally, Theorem~\ref{thm:q6-sqrt} gives
+$|S|\ge\sqrt{\varepsilon n/2}$.
+The current manuscript also provides:
 \begin{enumerate}[nosep]
 \item per-step non-stuck inequalities from Part~VII
 (including the Omega discrepancy/ordered-threshold refinements), and

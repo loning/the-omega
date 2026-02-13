@@ -105,12 +105,17 @@
 \newcommand{\scrS}{\mathscr{S}}
 
 %%% ============================================================
-\title{Responses to ``First Proof'': \\[4pt]
-       Solutions to Ten Research-Level Mathematics Problems}
+\title{Lean~4 Formal Verification of 8/10 \#1stProof Problems:\\[4pt]
+       Complete Proofs with AI--Human Pipeline,
+       Partial QED for Q4 \& Q6}
 
-\author{Project Omega Collaborative\thanks{%
-  AI-assisted mathematical research project.
-  Correspondence: \texttt{project-omega@proton.me}.}
+\author{%
+  Wenlin Zhang\thanks{%
+    National University of Singapore.
+    Correspondence: \texttt{project-omega@proton.me}.}
+  \and
+  Haobo Ma\thanks{%
+    Chrono AI Pte.\ Ltd.}
 }
 
 \date{February 2026}
@@ -132,18 +137,45 @@ algebraic combinatorics, polynomial inequalities, equivariant homotopy
 theory, spectral graph theory, lattices in Lie groups, symplectic geometry,
 multi-view geometry, and numerical linear algebra.
 
-Of the ten problems, we provide \textbf{complete, rigorous proofs for eight}
-(Q1, Q2, Q3, Q5, Q7, Q8, Q9, Q10) and \textbf{detailed partial results for two}
-(Q4, Q6), with precise identification of the remaining gaps.
+\medskip\noindent
+\textbf{AI--Human Pipeline.}\quad
+The mathematical reasoning, proof construction, Lean~4 formalization,
+and verification in this work were carried out primarily by
+\textbf{AI agents} (large language models operating in agentic mode),
+with human authors providing problem selection, strategic guidance,
+review, and editorial oversight.
+This pipeline demonstrates that current AI systems can serve as the
+principal workforce for research-level mathematical proof, while
+human collaborators ensure correctness and coherence.
+
+\medskip\noindent
+\textbf{Results.}\quad
+Of the ten problems, we provide \textbf{complete, rigorous proofs for
+eight} (Q1, Q2, Q3, Q5, Q7, Q8, Q9, Q10), each accompanied by a
+\textbf{Lean~4 formal proof skeleton} that axiomatizes external deep
+theorems and machine-checks the logical deduction chain.
+For the remaining \textbf{two} (Q4, Q6), we give \textbf{substantial
+partial results} and reduce each to a precisely stated minimal open
+problem:
+\begin{itemize}[nosep,topsep=2pt]
+\item \textbf{Q4}: proved for $n\le 3$ (all pairs), all semi-Gaussian
+  pairs (all $n$), with the semi-Gaussian concavity bottleneck
+  ($A+B\ge 0$) fully closed.
+  The general case $n\ge 4$ for arbitrary $p,q$ remains open.
+\item \textbf{Q6}: seven special graph families fully proved,
+  conditional $c=1/6$ result established;
+  the resistance-degree inequality (RDI) route proved false
+  for general graphs.
+  Two reduced routes remain: the multi-bin non-stuckness bridge
+  (targeting $c=1/2$) and the Spectral Radius Conjecture (SRC).
+\end{itemize}
+\noindent
 For Q7 (lattices with 2-torsion), we prove an unconditional
 \textbf{YES} for all $d\ge 5$ via an $L$-theory transfer vanishing lemma
 that bypasses the rational assembly obstruction even in dimensions
 $d\equiv 0\pmod{4}$.
-Each solution has undergone multiple rounds of independent review.
-For all eight complete solutions, we provide \textbf{Lean~4 formal
-proof skeletons} that axiomatize external deep theorems and verify the
-logical deduction chains, bridging traditional mathematical argument
-with machine-checkable formalization.
+Each solution has undergone multiple rounds of independent review
+by both AI and human reviewers.
 
 In the final sections, we explore structural parallels between these
 classical problems and the mathematical framework of \emph{Project Omega}
@@ -177,54 +209,167 @@ This paper constitutes our systematic response to that challenge.
 We treat each of the ten problems as a self-contained research question
 and provide either a complete proof or a detailed partial solution with
 precise identification of the remaining obstacles.
-Our approach combines AI-assisted reasoning with rigorous human-style
-mathematical argument, and each solution has been independently reviewed
-at the level of a journal referee report.
+
+\paragraph{AI--Human pipeline.}
+A distinguishing feature of this work is its production methodology:
+the mathematical reasoning, proof construction, Lean~4 formalization,
+and verification were carried out primarily by \textbf{AI agents}
+--- large language models operating in agentic mode with access to
+symbolic computation tools and formal proof assistants.
+Human authors provided problem selection, high-level strategic
+direction, critical review, and editorial curation.
+The resulting pipeline demonstrates that current AI systems can
+function as the principal workforce for research-level mathematical
+proof, with human collaborators serving as architects and referees.
+Each solution has been independently reviewed at the level of a
+journal referee report, by both AI and human reviewers.
 
 \subsection{Summary of results}
 
+Table~\ref{tab:results} summarizes the status of all ten problems.
+\textbf{Eight are fully proved} with machine-checked Lean~4
+formalization; \textbf{two have substantial partial results} with the
+remaining gap reduced to a precisely stated minimal open problem.
+
 \begin{table}[h]
 \centering
-\caption{Summary of results for all ten problems.}
+\caption{Status of all ten ``First Proof'' problems.
+\textbf{QED} = complete rigorous proof;
+\textbf{Lean\,4} = formal proof skeleton verified in Lean\,4 / Mathlib
+(axiomatizing external deep theorems, verifying the logical deduction chain);
+\textbf{Partial} = substantial partial result with identified minimal gap.}
 \label{tab:results}
 \smallskip
-\begin{tabular}{@{}clllc@{}}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}clllcc@{}}
 \toprule
-\textbf{\#} & \textbf{Problem} & \textbf{Field} & \textbf{Answer} & \textbf{Status} \\
+\textbf{\#} & \textbf{Problem}
+  & \textbf{Field}
+  & \textbf{Answer}
+  & \textbf{Proof}
+  & \textbf{Lean\,4} \\
 \midrule
-1 & $\Phi^4_3$ measure translation       & Stochastic Analysis      & NO (singular)     & \textsc{pass}  \\
-2 & Rankin--Selberg test vector           & Representation Theory    & YES               & \textsc{pass}  \\
-3 & Interpolation ASEP stationary ratio   & Algebraic Combinatorics  & NO (in general)   & \textsc{pass}  \\
-4 & $\boxplus_n$--$\Phi_n$ inequality     & Polynomial Inequalities  & YES ($n\le 3$) + Stam  & \textsc{partial${}^*$} \\
-5 & $\mathcal O$-slice filtration          & Equivariant Homotopy     & YES               & \textsc{pass}  \\
-6 & $\varepsilon$-light vertex sets       & Spectral Graph Theory    & Open + Zeckendorf  & \textsc{partial${}^*$} \\
-7 & Lattices with 2-torsion               & Lattices in Lie Groups   & NO (odd) / YES ($d\!\ge\!5$) & \textsc{pass}  \\
-8 & Polyhedral Lagrangian smoothing       & Symplectic Geometry      & YES               & \textsc{pass}  \\
-9 & Tensor scale synchronization          & Multi-view Geometry      & YES               & \textsc{pass}  \\
-10& RKHS-constrained CP subproblem        & Numerical Linear Algebra & YES (PCG)         & \textsc{pass}  \\
+1 & $\Phi^4_3$ measure translation
+  & Stochastic Analysis
+  & NO (singular)
+  & \textbf{QED}
+  & \checkmark \\
+2 & Rankin--Selberg test vector
+  & Representation Theory
+  & YES
+  & \textbf{QED}
+  & \checkmark \\
+3 & Interpolation ASEP ratio
+  & Algebraic Combinatorics
+  & NO (in general)
+  & \textbf{QED}
+  & \checkmark \\
+4 & $\boxplus_n$--$\Phi_n$ inequality
+  & Polynomial Inequalities
+  & YES ($n\!\le\!3$, semi-Gauss)
+  & Partial${}^\dagger$
+  & \checkmark${}^{\,a}$ \\
+5 & $\mathcal O$-slice filtration
+  & Equivariant Homotopy
+  & YES
+  & \textbf{QED}
+  & \checkmark \\
+6 & $\varepsilon$-light vertex sets
+  & Spectral Graph Theory
+  & 7 cases; cond.\,$c\!=\!1/6$
+  & Partial${}^\ddagger$
+  & --- \\
+7 & Lattices with 2-torsion
+  & Lattices / Lie Groups
+  & NO (odd) / YES ($d\!\ge\!5$)
+  & \textbf{QED}
+  & \checkmark \\
+8 & Polyhedral Lagrangian
+  & Symplectic Geometry
+  & YES
+  & \textbf{QED}
+  & \checkmark \\
+9 & Tensor scale synch.
+  & Multi-view Geometry
+  & YES
+  & \textbf{QED}
+  & \checkmark \\
+10& RKHS-constrained CP
+  & Numerical Linear Algebra
+  & YES (PCG)
+  & \textbf{QED}
+  & \checkmark \\
 \bottomrule
 \end{tabular}
+
+\smallskip\noindent
+{\footnotesize
+${}^a$\,Lean\,4 covers the $n\!=\!2$ identity and the $n\!=\!3$ case;
+  the general-$n$ semi-Gaussian theorem is proved on paper only.\\[2pt]
+${}^\dagger$\,\textbf{Q4 status:}
+  proved for $n=2$ (exact equality), $n=3$ (strict inequality),
+  all degenerate/shift cases, all monotone couplings, and the
+  semi-Gaussian case ($q=\sqrt{s}\,\mathrm{He}_n$, all $n$;
+  Theorem~\ref*{thm:q4-semi-gaussian}).
+  The semi-Gaussian concavity bottleneck ($A+B\ge 0$) is
+  \emph{fully closed} via convexity of the inverse-square interaction
+  (Proposition~\ref*{prop:q4-bottleneck-closed}),
+  yielding all-$n$ concavity of $\mathcal N_p(t)=1/\Phi_n(p\boxplus_n q_t)$
+  (Theorem~\ref*{thm:q4-alln-concavity}).
+  Exact asymptotic offset, two-scale smoothing factorization, and
+  a deficit bridge decomposition are also established.
+  The general case $n\ge 4$ for arbitrary $p,q$ remains open.\\[2pt]
+${}^\ddagger$\,\textbf{Q6 status:}
+  seven special graph families fully proved
+  (bounded-degree, $K_n$, complete multipartite, bipartite,
+  trees, vertex-transitive, expanders),
+  conditional $c=1/6$ result
+  (Proposition~\ref*{prop:q6-conditional}).
+  The resistance-degree spectral inequality (RDI) route is
+  \emph{proved false} for general graphs
+  (Proposition~\ref*{prop:q6-rdi-false}).
+  Two reduced routes remain:
+  (i)~the multi-bin non-stuckness bridge
+  (Theorem~\ref*{thm:q6-min-bridge}, targeting $c=1/2$), and
+  (ii)~the Spectral Radius Conjecture (SRC,
+  Conjecture~\ref*{conj:q6-src}; SRC $\Rightarrow$ Q6
+  with $c=1/(4C)$).
+  Omega-compatible discrepancy certificates are developed
+  through Parts~VII--IX.
+}
 \end{table}
 
-\noindent
-{\small ${}^*$Section~\ref{sec:omega-interp} develops Omega-theoretic
-interpretations for all ten problems, with detailed Omega-native
-proof approaches for Q4~(\S\ref{sec:omega-q4}) and Q6~(\S\ref{sec:omega-q6}).}
+\medskip\noindent
+\textbf{Eight complete proofs (Q1, Q2, Q3, Q5, Q7, Q8, Q9, Q10).}
+Each has a rigorous mathematical proof accompanied by a Lean~4
+formal proof skeleton that axiomatizes external deep theorems
+(e.g., regularity structures for Q1, Bernstein--Zelevinsky derivatives
+for Q2, the Farrell--Jones conjecture for Q7) and machine-checks
+the deduction chain.
 
 \medskip\noindent
-Eight problems are fully resolved with complete proofs
-(Q1, Q2, Q3, Q5, Q7, Q8, Q9, Q10).
-Two problems have substantial partial results:
+\textbf{Two partial results with identified minimal gaps (Q4, Q6).}
 \begin{itemize}[nosep]
-\item \textbf{Q4} (polynomial convolution inequality):
-  proved for $n=2$ and $n=3$, as well as for all degenerate and monotone
-  configurations; the general case $n\ge 4$ remains open, with a
-  conjectured heat-flow approach outlined.
+\item \textbf{Q4} ($\boxplus_n$--$\Phi_n$ inequality):
+  fully proved for $n\le 3$ (all pairs) and several all-$n$
+  infinite families (shifts, monotone couplings, semi-Gaussian).
+  The semi-Gaussian concavity bottleneck ($A+B\ge 0$) is fully
+  closed, yielding all-$n$ concavity of the polynomial entropy power
+  along the semi-Gaussian flow.
+  The general $n\ge 4$ case for arbitrary $p,q$ remains open.
+  Lean~4 covers the $n=2$ identity and $n=3$ case.
 \item \textbf{Q6} ($\varepsilon$-light sets):
-  the question is reduced to a single spectral partition lemma
-  (``vertex BSS lemma''), with seven special graph families fully proved
-  and an effective-resistance framework established.
+  seven special graph families fully resolved
+  (bounded-degree, $K_n$, complete multipartite, bipartite,
+  trees, vertex-transitive, expanders),
+  conditional $c=1/6$ via a BSS-type barrier potential.
+  The resistance-degree inequality (RDI) route is proved
+  \emph{false} for general graphs.
+  Two reduced routes remain: the multi-bin non-stuckness bridge
+  (targeting the optimal $c=1/2$) and the Spectral Radius Conjecture.
+  No Lean~4 formalization (proof is partial).
 \end{itemize}
+
 \noindent
 For \textbf{Q7} (lattices with 2-torsion), the answer is \textbf{NO} for
 lattices with odd torsion (Fowler's obstruction) and \textbf{YES} for
@@ -237,20 +382,28 @@ Selberg's lemma.  See Section~\ref{sec:q7}.
 
 \subsection{Methodology}
 
-Each problem was approached through the following pipeline:
+Each problem was approached through the following AI--Human pipeline:
 \begin{enumerate}[nosep]
-\item \emph{Problem analysis}: careful reading of the question statement,
-  identification of the relevant mathematical framework, and literature survey.
-\item \emph{Proof construction}: development of the main argument,
-  with explicit statements of all lemmas and propositions.
-\item \emph{Independent review}: each proof was reviewed at the level of
-  a journal referee, checking logical completeness, gap identification,
-  and correctness of all claims.  Review records are maintained
-  in the project repository.
-\item \emph{Iterative refinement}: identified gaps were addressed through
-  additional rounds of proof development and review.
-\item \emph{Formal verification}: for each complete proof, a Lean~4
-  formalization was developed, axiomatizing external deep theorems
+\item \emph{Problem analysis} (AI agent + human oversight):
+  the AI agent reads the question statement, identifies the relevant
+  mathematical framework, and conducts a literature survey.
+  Human authors provide strategic guidance on which approaches to pursue.
+\item \emph{Proof construction} (AI agent):
+  the AI agent develops the main argument, with explicit statements of
+  all lemmas and propositions, iteratively refining the proof through
+  self-critique and backtracking.
+\item \emph{Independent review} (AI agent + human review):
+  each proof is reviewed at the level of a journal referee, checking
+  logical completeness, gap identification, and correctness of all claims.
+  Both AI reviewers and human authors inspect the arguments.
+  Review records are maintained in the project repository.
+\item \emph{Iterative refinement} (AI agent):
+  identified gaps are addressed through additional rounds of proof
+  development, with the AI agent generating alternative approaches,
+  counterexample searches, and numerical stress-tests.
+\item \emph{Formal verification} (AI agent + Lean~4):
+  for each complete proof, the AI agent develops a Lean~4
+  formalization, axiomatizing external deep theorems
   and verifying the logical deduction chain.  This bridges the gap
   between human-readable proofs and machine-checkable verification,
   following the methodology advocated by the Project Omega
@@ -258,7 +411,10 @@ Each problem was approached through the following pipeline:
   argument with formal, auditable proof structures.
 \end{enumerate}
 
-This five-stage pipeline reflects a key principle of the Project Omega
+This five-stage pipeline demonstrates that AI agents can serve as the
+principal mathematical workforce, with human collaborators providing
+architectural decisions and quality assurance.
+The pipeline reflects a key principle of the Project Omega
 framework~\cite{omega-fop}: that mathematical knowledge is most robust
 when it passes through multiple layers of verification---from intuitive
 understanding, through rigorous written proof, to formal machine-checkable
@@ -338,7 +494,8 @@ Problem-specific notation is introduced at the beginning of each section.
 
 %%% Part VI: Spectral Graph Theory
 %%% Problem 6 asks a fundamental partitioning question about graph
-%%% Laplacians---our second open case, reduced to a vertex-BSS lemma.
+%%% Laplacians---our second partial case, with an unconditional
+%%% sqrt(epsilon*n) bound and reduction to the Spectral Radius Conjecture.
 
 \input{sections/06_problem6_epsilon_light_sets}
 

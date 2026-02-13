@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V27`
-- Review Version: `Q4-R41`
+- Submission Version: `Q4-V28`
+- Review Version: `Q4-R45`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -59,13 +59,15 @@
       p\boxplus_n q = \frac1{n!}\sum_{\pi\in S_n}\prod_i \bigl(x-(\lambda_i+\mu_{\pi(i)})\bigr),
     \]
     with a full coefficient-level combinatorial proof.
-5i. Orbit-Jensen reduction:
+5i. Conditional orbit-Jensen reduction:
     if one proves
     \[
       \frac1{\Phi_n(p\boxplus q)}\ge \frac1{n!}\sum_\pi \frac1{\Phi_n(r_\pi)},
     \]
-    then the full Stam inequality follows immediately by combining with the
-    all-`n` monotone-sum theorem on each `r_\pi`.
+    and in addition has permutation-wise lower bounds
+    `1/Phi_n(r_pi) >= 1/Phi_n(p)+1/Phi_n(q)` for all `pi`,
+    then the full Stam inequality follows by averaging and chaining.
+    (This is a formal conditional reduction; the permutation-wise bound is not valid in general.)
 5j. Orbit-Jensen pressure test:
     full-permutation (not subsampled) scans up to `n=8` found no violation of
     \[
