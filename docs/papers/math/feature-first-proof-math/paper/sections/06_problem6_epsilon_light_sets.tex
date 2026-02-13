@@ -578,6 +578,70 @@ The multi-bin formulation has the advantage of targeting $c=1/2$ directly
 while the single-set BSS barrier approach yields $c=1/6$ conditionally
 (Proposition~\ref{prop:q6-conditional}).
 
+\begin{proposition}[Minimal bridge inequality for one-step feasibility]\label{prop:q6-min-bridge-step}
+Fix $\varepsilon\in(0,1]$ and $k\ge 1$.
+At a step of the multi-bin process, let current bins be $B_1,\dots,B_k$,
+let
+\[
+\lambda_i:=\lambda_{\max}(M(B_i))<\varepsilon,
+\qquad
+w_i(u):=\sum_{v\in B_i,\ v\sim u} r_{uv}
+\]
+for the arriving vertex $u$.
+If
+\[
+\sum_{i=1}^k \frac{w_i(u)}{\varepsilon-\lambda_i}\le k,
+\]
+then the step is non-stuck: there exists $i$ such that
+$\lambda_{\max}(M(B_i\cup\{u\}))\le\varepsilon$.
+\end{proposition}
+
+\begin{proof}
+By averaging,
+\[
+\min_{1\le i\le k}\frac{w_i(u)}{\varepsilon-\lambda_i}
+\le
+\frac1k\sum_{i=1}^k \frac{w_i(u)}{\varepsilon-\lambda_i}
+\le 1.
+\]
+So for some $i$,
+\[
+w_i(u)\le \varepsilon-\lambda_i
+\quad\Longleftrightarrow\quad
+\lambda_i+w_i(u)\le\varepsilon.
+\]
+Now apply Proposition~\ref{prop:q6-onestep}.
+\end{proof}
+
+\begin{theorem}[Minimal bridge to $c=1/2$]\label{thm:q6-min-bridge}
+Let $\varepsilon\in(0,1]$ and $k:=\lceil 2/\varepsilon\rceil$.
+Assume there exists an online binning strategy such that, for every step
+and arriving vertex $u$, with current states $\lambda_i<\varepsilon$,
+\[
+\sum_{i=1}^k \frac{w_i(u)}{\varepsilon-\lambda_i}\le k.
+\]
+Then the process never gets stuck and returns an $\varepsilon$-light bin
+$B_j$ with
+\[
+|B_j|\ge \frac{n}{k}\ge \frac{\varepsilon n}{2}.
+\]
+Hence Conjecture~\ref{conj:q6} holds with the optimal constant $c=1/2$.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:q6-min-bridge-step}, each step has a feasible bin,
+so the process assigns all vertices and keeps every bin $\varepsilon$-light.
+Pigeonhole gives $|B_j|\ge n/k\ge \varepsilon n/2$.
+\end{proof}
+
+\begin{remark}[Why this is the smallest remaining bridge]
+Theorem~\ref{thm:q6-min-bridge} isolates the unresolved core into one
+scalar inequality per step. This is strictly weaker than proving a global
+RDI-type inequality (now known false by
+Proposition~\ref{prop:q6-rdi-false}) and directly targets the optimal
+$c=1/2$ endpoint.
+\end{remark}
+
 \subsection*{Part VIII: The Resistance-Degree Spectral Inequality}
 
 This part records a natural route we pursued:
@@ -873,6 +937,18 @@ some vertex has bounded potential increase.
 partitioning $I$ into $O(1/\varepsilon)$ bins via greedy assignment,
 the largest bin is $\varepsilon$-light.
 \end{enumerate}
+
+\medskip\noindent
+\textbf{Minimal sufficient bridge (new):}
+Part~VII isolates a one-line per-step target
+(Proposition~\ref{prop:q6-min-bridge-step}): prove
+\[
+\sum_{i=1}^k \frac{w_i(u)}{\varepsilon-\lambda_i}\le k
+\]
+for each arriving vertex $u$ (with $k=\lceil 2/\varepsilon\rceil$).
+By Theorem~\ref{thm:q6-min-bridge}, this alone yields Q6 with the
+optimal constant $c=1/2$.
+
 These are equivalent and reduce Q6 to controlling the
 \emph{collective spectral norm} of vertex-induced edge sets
 under per-edge leverage bounds. The BSS budget analysis (Part~VIII)
