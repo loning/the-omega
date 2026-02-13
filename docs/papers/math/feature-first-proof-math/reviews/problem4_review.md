@@ -109,6 +109,11 @@
     `A+2B = S1 * v^T (nabla^2 V) v >= 0`,
     hence `A+B = ((A+2B)+A)/2 >= 0`.
     So the semi-Gaussian concavity algebraic bottleneck is now fully closed.
+39. **NEW: Two-scale smoothed-gap bridge candidate recorded**:
+    `J_{p,q}(t)=N((p boxplus q) boxplus q_{2t})-N(p boxplus q_t)-N(q boxplus q_t)`,
+    where `q_t=sqrt(t)^n He_n(x/sqrt(t))`.
+    `J_{p,q}(0)` is exactly the target Stam gap.
+    Extensive scans (up to `n=8`) found no negative values on tested `t`-grids.
 
 ## Findings From Independent Re-check
 
@@ -136,6 +141,8 @@
     `s-rho*lambda`. This is now encoded in the section as a proved lemma.
 11. High-precision checks on near-collision samples show previously observed negative
     floating-point values of `v^T K v` are numerical artifacts; multiprecision evaluation gives positivity.
+12. New bridge observable `J_{p,q}(t)` remains numerically nonnegative in broad tests and decays toward `0`,
+    suggesting a plausible final route from semi-Gaussian smoothing back to `t=0`.
 
 ## Remaining Gap
 
