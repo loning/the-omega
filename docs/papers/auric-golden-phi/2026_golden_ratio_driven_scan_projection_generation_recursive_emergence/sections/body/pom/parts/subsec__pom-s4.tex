@@ -133,6 +133,43 @@ t=\frac{y^5-2y^4-2y+2}{y^3}
 \input{sections/generated/eq_collision_kernel_A4_edge_weight_threshold}
 
 
+\begin{remark}[四阶核族的判别式闭式与根型刚性]\label{rem:pom-a4t-discriminant-root-type}
+沿注 \ref{rem:pom-collision-rh-break-a4-threshold} 的记号，四阶核族的特征多项式为
+\[
+p_t(x)=\det(xI-A_4(t))=x^5-2x^4-tx^3-2x+2.
+\]
+其关于变量 \(x\) 的判别式可显式写成
+\[
+\mathrm{Disc}_x(p_t)
+=-16\Bigl(27t^5+35t^4+434t^3+4394t^2+10832t+7403\Bigr).
+\]
+因此对一切实参数 \(t\ge 0\)，括号内多项式严格为正，从而 \(\mathrm{Disc}_x(p_t)<0\)。
+由此推出：对每个 \(t\ge 0\)，\(p_t\) 无重根；并且其根型在该区间上保持不变，恰有三个实根与一对共轭非实根。
+该结论表明四阶核族的“非实谱”并非由代数重根/谱碰撞触发，而是在 \(t\ge 0\) 的参数区间内以结构性方式稳定存在。
+\end{remark}
+
+\begin{proposition}[四阶碰撞核的分裂域与满对称伽罗瓦群]\label{prop:pom-a4-galois-s5}
+令 \(A_4=A_4(7)\)，并取其特征多项式
+\[
+p_7(x)=\det(xI-A_4)=x^5-2x^4-7x^3-2x+2.
+\]
+则 \(p_7\) 在 \(\QQ[x]\) 上不可约，且其伽罗瓦群同构于满对称群：
+\[
+\mathrm{Gal}\bigl(p_7/\QQ\bigr)\cong S_5.
+\]
+此外其判别式为
+\[
+\mathrm{Disc}_x(p_7)=-2^4\cdot 985219,
+\]
+从而并非 \(\QQ\) 中平方。
+\end{proposition}
+\begin{proof}
+模 \(5\) 约化时 \(p_7\) 在 \(\FF_5[x]\) 上不可约，从而其 Frobenius 置换包含一个 \(5\)-循环；模 \(29\) 约化时 \(p_7\) 在 \(\FF_{29}[x]\) 上分解为一个不可约二次因子与三个一次因子，从而其 Frobenius 置换包含一个换位（\(2\)-循环）。
+因此 \(\mathrm{Gal}(p_7/\QQ)\) 作为 \(S_5\) 的一个传递子群同时含 \(5\)-循环与换位，必为 \(S_5\)。
+判别式的显式值可由直接消元计算得到（可复现脚本：\texttt{scripts/exp\_collision\_kernel\_A234\_operator\_algebra\_flow\_invariants.py}）。证毕。
+\end{proof}
+
+
 \begin{remark}[四阶碰撞核的 near-RH 破缺（\texorpdfstring{$A_4$}{A4}）]\label{rem:pom-collision-rh-break-a4}
 记 \(r_4=\rho(A_4)\)，并令次谱半径
 \[
@@ -218,6 +255,115 @@ C(A)=\frac{r^{d-1}}{\chi_A'(r)}
 3940876C^5-3940876C^4+920083C^3-33522C^2+168C+4=0\quad(C=C(A_4)).}
 \]
 由此得到一个无需小数对齐的强审计协议：对每个 \(A_q\)，只需公开（i）\(\chi_{A_q}\in\ZZ[\lambda]\)，（ii）\(C(A_q)\) 的最小多项式 \(P_{C_q}\in\ZZ[C]\)；并配合表中 \texttt{tail proxy} 作为 \(\log\mathfrak{M}\) 尾截断误差的数值证书，即可把“可复现性”提升为整系数方程级约束。
+
+\paragraph{符号动力学与算子代数不变量：Bowen--Franks 群、流等价与 Cuntz--Krieger \texorpdfstring{$K$}{K}-理论}
+除 \(\zeta\)、primitive 谱与有限部常数外，整数邻接矩阵还携带一组对流等价（flow equivalence）与稳定同构分类高度敏感的整格不变量（参见附录 \ref{app:op-algebra} 与附录中真实输入核的对应讨论）。
+对任意整数矩阵 \(A\in M_n(\ZZ)\) 定义 Bowen--Franks 群
+\[
+\mathrm{BF}(A):=\ZZ^n/(I-A)\ZZ^n,
+\]
+（见 \cite{BowenFranks1977HomologyZeroDim}）
+并对由 \(A\) 定义的 Cuntz--Krieger 代数 \(\mathcal O_A\) 取标准同构
+\[
+K_0(\mathcal O_A)\cong \mathrm{coker}(I-A^\mathsf T),\qquad
+K_1(\mathcal O_A)\cong \ker(I-A^\mathsf T)
+\]
+（见 \cite{CuntzKrieger1980}）。
+
+\begin{proposition}[低阶碰撞核的 Smith 归约与 Bowen--Franks 群]\label{prop:pom-collision-bf-snf-q234}
+令 \(A_2,A_3,A_4(t)\) 分别为命题 \ref{prop:pom-s2-recurrence}、命题 \ref{prop:pom-s3-recurrence} 与注 \ref{rem:pom-collision-rh-break-a4-threshold} 中的低阶碰撞核（其中 \(t\in\ZZ_{\ge 0}\)）。
+则有
+\[
+\det(I-A_2)=-1,\qquad \det(I-A_3)=-3,\qquad \det(I-A_4(t))=-(t+1),
+\]
+并且相应的 Smith 标准形满足
+\[
+\mathrm{SNF}(I-A_2)=\mathrm{diag}(1,1,1),\qquad
+\mathrm{SNF}(I-A_3)=\mathrm{diag}(1,1,3),\qquad
+\mathrm{SNF}(I-A_4(t))=\mathrm{diag}(1,1,1,1,t+1).
+\]
+因此
+\[
+\mathrm{BF}(A_2)=0,\qquad
+\mathrm{BF}(A_3)\cong \ZZ/3\ZZ,\qquad
+\mathrm{BF}(A_4(t))\cong \ZZ/(t+1)\ZZ.
+\]
+\end{proposition}
+\begin{proof}
+对 \(A_2,A_3\) 直接计算 \(I-A_q\) 并做 Smith 归约即可读出不变因子；对 \(A_4(t)\) 可对整数 \(t\) 做同样归约并核验其对角形随 \(t\) 的稳定模式（并与 \(\det(I-A_4(t))=-(t+1)\) 一致）。
+可复现脚本：\texttt{scripts/exp\_collision\_kernel\_A234\_operator\_algebra\_flow\_invariants.py}。证毕。
+\end{proof}
+
+\begin{corollary}[低阶碰撞核的流等价类型]\label{cor:pom-collision-flow-equivalence-full-shift}
+对命题 \ref{prop:pom-collision-bf-snf-q234} 中的三类核，均有 \(\det(I-A_q)<0\)，并且对应边移位为不可约有限型移位。
+因此由 Franks 的流等价分类定理（以 \(\mathrm{BF}(A)\) 与 \(\mathrm{sgn}\det(I-A)\) 为完备不变量；见 \cite{Franks1984FlowEquivalenceSFT}）可知：
+\[
+(X_{A_2},\sigma)\ \sim_{\mathrm{flow}}\ \text{full }2\text{-shift},\qquad
+(X_{A_3},\sigma)\ \sim_{\mathrm{flow}}\ \text{full }4\text{-shift},
+\]
+\[
+(X_{A_4(t)},\sigma)\ \sim_{\mathrm{flow}}\ \text{full }(t+2)\text{-shift}\qquad(t\in\ZZ_{\ge 0}).
+\]
+\end{corollary}
+
+\begin{remark}[流等价不变量的塌缩与细谱信息的不可见性]\label{rem:pom-collision-flow-collapse}
+推论 \ref{cor:pom-collision-flow-equivalence-full-shift} 表明：尽管低阶碰撞核在谱分解与算术证书层面呈现出非平凡细结构（例如负实模态触发的反相慢振荡、四阶核族的非实谱稳定存在以及 near-RH 贴线等现象），Franks 不变量在流等价层面仅识别出一顶点全移位的流等价型。
+因此，碰撞核的精细谱/算术信息若要被捕获，必须诉诸比流等价更细的动力学不变量或更强的算子代数层次结构。
+\end{remark}
+
+\begin{conjecture}[碰撞核的 Fibonacci 扭结律]\label{conj:pom-collision-fibonacci-twist}
+设 \(A_q\) 为由 Fold 碰撞体系诱导的 \(q\)-阶碰撞核（\(q\ge 2\)）。
+则猜想成立
+\[
+\det(I-A_q)=-F_{2q-2},
+\qquad
+\mathrm{BF}(A_q)\cong \ZZ/F_{2q-2}\ZZ,
+\]
+其中 \(F_n\) 为 Fibonacci 数列（\(F_0=0,F_1=1\)）。
+该猜想与命题 \ref{prop:pom-collision-bf-snf-q234} 在 \(q=2,3,4\) 的显式计算相符（\(-1=-F_2\)、\(-3=-F_4\)、\(-8=-F_6\)）。
+若其成立，则 \((X_{A_q},\sigma)\) 与 full \((F_{2q-2}+1)\)-shift 流等价。
+\end{conjecture}
+
+\begin{proposition}[低阶碰撞核的 Cuntz--Krieger 代数：与 Cuntz 代数族的完全识别]\label{prop:pom-collision-ck-classification-q234}
+对命题 \ref{prop:pom-collision-bf-snf-q234} 中的三类核，其 Cuntz--Krieger 代数的 \(K\)-群满足
+\[
+K_0(\mathcal O_{A_2})=0,\ K_1(\mathcal O_{A_2})=0;\qquad
+K_0(\mathcal O_{A_3})\cong \ZZ/3\ZZ,\ K_1(\mathcal O_{A_3})=0;\qquad
+K_0(\mathcal O_{A_4(t)})\cong \ZZ/(t+1)\ZZ,\ K_1(\mathcal O_{A_4(t)})=0.
+\]
+并且其单位类满足：\([1_{\mathcal O_{A_3}}]=0\in K_0(\mathcal O_{A_3})\)，而 \([1_{\mathcal O_{A_4(t)}}]\) 在 \(K_0(\mathcal O_{A_4(t)})\) 中为生成元。
+因而在 Kirchberg--Phillips 分类意义下（带单位类的 \(K\)-理论不变量；见 \cite{Phillips2000ClassificationPurelyInfinite}）有同构识别
+\[
+\mathcal O_{A_2}\cong \mathcal O_2,\qquad
+\mathcal O_{A_3}\cong M_3(\mathcal O_4),\qquad
+\mathcal O_{A_4(t)}\cong \mathcal O_{t+2}\ \ (t\in\ZZ_{\ge 0}),
+\]
+特别地 \(\mathcal O_{A_4}\cong \mathcal O_9\)。
+\end{proposition}
+\begin{proof}
+由 \(\det(I-A_q)\neq 0\) 可知 \(I-A_q^\mathsf T\) 在 \(\QQ\) 上可逆，故 \(K_1(\mathcal O_{A_q})\cong\ker(I-A_q^\mathsf T)=0\)。
+另一方面，命题 \ref{prop:pom-collision-bf-snf-q234} 的 Smith 形给出
+\(
+K_0(\mathcal O_{A_q})\cong\mathrm{coker}(I-A_q^\mathsf T)\cong\mathrm{coker}(I-A_q)
+\)
+的循环分解。
+单位类对应于 \((1,\dots,1)^{\mathsf T}\) 在余核中的像：对 \(A_3\)，取 \(x=(1,0,-3)^{\mathsf T}\) 满足
+\(
+(I-A_3^\mathsf T)x=(1,1,1)^{\mathsf T}
+\)，故 \([1_{\mathcal O_{A_3}}]=0\)。
+对 \(A_4(t)\)，令 \(M:=I-A_4(t)^\mathsf T\)、\(v:=(1,1,1,1,1)^{\mathsf T}\)，则
+\[
+\operatorname{adj}(M)\,v=\bigl(-(3t+4),\ -1,\ 4(t+1),\ -(2t+3),\ -(t+2)\bigr)^{\mathsf T},
+\]
+其坐标最大公因子为 \(1\)。若存在 \(x\in\ZZ^{5}\) 使 \(Mx=kv\)，则由 \(\operatorname{adj}(M)Mx=\det(M)x\) 得 \((t+1)\mid k\)。
+另一方面，由恒等式 \(M\,\operatorname{adj}(M)=\det(M)I\) 可知 \(x=\operatorname{adj}(M)v\) 给出 \(Mx=\det(M)v\)，从而 \(v\) 在 \(\mathrm{coker}(M)\cong \ZZ/(t+1)\ZZ\) 中的阶恰为 \(t+1\)，即 \([1_{\mathcal O_{A_4(t)}}]\) 为生成元。
+最后，\(\mathcal O_n\) 的不变量为 \((K_0,K_1,[1])=(\ZZ/(n-1)\ZZ,0,1)\)，并且 \(M_k(\mathcal O_n)\) 的单位类为 \(k\cdot [1]\)；据此即可得到所述同构识别。证毕。
+\end{proof}
+
+\begin{remark}[算子代数分类中的标准化塌缩]\label{rem:pom-collision-ck-standardization}
+命题 \ref{prop:pom-collision-ck-classification-q234} 表明：尽管低阶碰撞核的谱现象与整数证书具有非平凡细结构，其关联的 Cuntz--Krieger 代数在同构分类意义下落入最标准的 Cuntz 代数族（或其矩阵放大）。
+因此，碰撞核动力学可被直接置于 UCT Kirchberg 代数范畴，并以带单位类的 \(K\)-理论数据实现完全识别。
+\end{remark}
 
 \begin{remark}[常数层稀有性尺度：\texorpdfstring{$\mathsf{M}(A_4)/\mathsf{M}(A_3)$}{M(A4)/M(A3)} 的近减半]\label{rem:pom-collision-mertens-halving}
 表 \ref{tab:collision_kernel_A3_finite_part} 与表 \ref{tab:collision_kernel_A4_finite_part} 给出

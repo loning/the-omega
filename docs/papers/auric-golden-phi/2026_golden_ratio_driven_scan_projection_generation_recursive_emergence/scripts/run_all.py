@@ -699,6 +699,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A234_operator_algebra_flow_invariants",
+            script="exp_collision_kernel_A234_operator_algebra_flow_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A234_operator_algebra_flow_invariants.json",
+            ],
+        ),
+        Step(
             name="fold_collision_renyi_spectrum",
             script="exp_fold_collision_renyi_spectrum.py",
             args=[],
