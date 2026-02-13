@@ -2,7 +2,7 @@
 
 - Problem: `Q4`
 - Submission Version: `Q4-V27`
-- Review Version: `Q4-R35`
+- Review Version: `Q4-R36`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -54,6 +54,18 @@
     \[
       \delta_u(t)=\int_t^\infty\!\left(\frac{d}{ds}\frac1{\Phi_n(u\boxplus q_s)}-C_n\right)ds.
     \]
+5h. Exact permutation-average representation:
+    \[
+      p\boxplus_n q = \frac1{n!}\sum_{\pi\in S_n}\prod_i \bigl(x-(\lambda_i+\mu_{\pi(i)})\bigr),
+    \]
+    with a full coefficient-level combinatorial proof.
+5i. Orbit-Jensen reduction:
+    if one proves
+    \[
+      \frac1{\Phi_n(p\boxplus q)}\ge \frac1{n!}\sum_\pi \frac1{\Phi_n(r_\pi)},
+    \]
+    then the full Stam inequality follows immediately by combining with the
+    all-`n` monotone-sum theorem on each `r_\pi`.
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.

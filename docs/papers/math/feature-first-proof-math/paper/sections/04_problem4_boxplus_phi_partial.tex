@@ -655,6 +655,118 @@ $\nu_i=\lambda_i+\mu_i$.
 It does not by itself prove \eqref{eq:q4-star}, because in general the root vector of $p\boxplus_n q$ is not equal to this monotone sum vector.
 \end{remark}
 
+\begin{lemma}[Permutation-average representation of $\boxplus_n$]\label{lem:q4-perm-average}
+Let
+\[
+p(x)=\prod_{i=1}^n (x-\lambda_i),\qquad
+q(x)=\prod_{i=1}^n (x-\mu_i),
+\]
+with real roots (not necessarily distinct). For $\pi\in S_n$, define
+\[
+r_\pi(x):=\prod_{i=1}^n \bigl(x-(\lambda_i+\mu_{\pi(i)})\bigr).
+\]
+Then
+\[
+p\boxplus_n q
+=
+\frac1{n!}\sum_{\pi\in S_n} r_\pi.
+\]
+\end{lemma}
+
+\begin{proof}
+Write
+\[
+p(x)=\sum_{a=0}^n (-1)^a e_a(\lambda)\,x^{n-a},
+\qquad
+q(x)=\sum_{b=0}^n (-1)^b e_b(\mu)\,x^{n-b},
+\]
+where $e_k$ are elementary symmetric polynomials.
+For fixed $\pi$,
+\[
+r_\pi(x)=\sum_{k=0}^n (-1)^k e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)})\,x^{n-k}.
+\]
+Hence the coefficient of $x^{n-k}$ in $\frac1{n!}\sum_\pi r_\pi$ is
+\[
+(-1)^k\,\frac1{n!}\sum_{\pi} e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)}).
+\]
+It suffices to evaluate the expectation of that $e_k$.
+
+Expand:
+\[
+e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)})
+=
+\sum_{\substack{I,T\subset[n]\\ I\cap T=\varnothing\\ |I|=a,\ |T|=b,\ a+b=k}}
+\Bigl(\prod_{i\in I}\lambda_i\Bigr)\Bigl(\prod_{j\in T}\mu_{\pi(j)}\Bigr).
+\]
+For fixed $T$ with $|T|=b$, under uniform $\pi$, the multiset
+$\{\pi(j):j\in T\}$ is a uniform $b$-subset of $[n]$, so
+\[
+\frac1{n!}\sum_{\pi}\prod_{j\in T}\mu_{\pi(j)}
+=
+\frac{e_b(\mu)}{\binom{n}{b}}
+=
+\frac{b!(n-b)!}{n!}\,e_b(\mu).
+\]
+Therefore
+\[
+\frac1{n!}\sum_{\pi} e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)})
+=
+\sum_{a+b=k}
+\frac{b!(n-b)!}{n!}
+\!\!\!\sum_{\substack{I,T\subset[n]\\ I\cap T=\varnothing\\ |I|=a,\ |T|=b}}
+\prod_{i\in I}\lambda_i\, e_b(\mu).
+\]
+For fixed $I$ ($|I|=a$), the number of $T$ disjoint from $I$ with $|T|=b$ is
+$\binom{n-a}{b}$, hence
+\[
+\sum_{\substack{I,T\subset[n]\\ I\cap T=\varnothing\\ |I|=a,\ |T|=b}}
+\prod_{i\in I}\lambda_i
+=
+\binom{n-a}{b}\,e_a(\lambda).
+\]
+So
+\[
+\frac1{n!}\sum_{\pi} e_k(\lambda_1+\mu_{\pi(1)},\dots,\lambda_n+\mu_{\pi(n)})
+=
+\sum_{a+b=k}
+\frac{(n-a)!(n-b)!}{n!(n-k)!}\,e_a(\lambda)e_b(\mu).
+\]
+Multiplying by $(-1)^k$ and using
+$(-1)^a e_a(\lambda)$, $(-1)^b e_b(\mu)$ as coefficients of $p,q$,
+this is exactly the coefficient formula of $p\boxplus_n q$.
+\end{proof}
+
+\begin{proposition}[Orbit-Jensen reduction to the full Stam inequality]\label{prop:q4-orbit-jensen-reduction}
+Assume the following orbit-concavity statement holds for all real-rooted monic
+degree-$n$ $p,q$:
+\[
+\frac1{\Phi_n(p\boxplus_n q)}
+\ge
+\frac1{n!}\sum_{\pi\in S_n}\frac1{\Phi_n(r_\pi)},
+\]
+with $r_\pi$ as in Lemma~\ref{lem:q4-perm-average}.
+Then \eqref{eq:q4-star} holds for all such $p,q$.
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:q4-monotone-sum}, for every $\pi$:
+\[
+\frac1{\Phi_n(r_\pi)}\ge \frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
+\]
+Average over $\pi$:
+\[
+\frac1{n!}\sum_{\pi}\frac1{\Phi_n(r_\pi)}
+\ge
+\frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
+\]
+Combine with the assumed orbit-concavity inequality to obtain
+\[
+\frac1{\Phi_n(p\boxplus_n q)}
+\ge
+\frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}.
+\]
+\end{proof}
+
 %% ---- Semi-Gaussian Stam inequality (all n) ----
 
 \begin{lemma}[Edge-score first-moment identity]\label{lem:q4-edge-score}
