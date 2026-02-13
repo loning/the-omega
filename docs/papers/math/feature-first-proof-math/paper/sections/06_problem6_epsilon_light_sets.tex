@@ -936,6 +936,108 @@ For monotone \(q_i\), the sequence \(1/q_i\) is monotone decreasing, so
 Substitute this bound in Proposition~\ref{prop:q6-prefix-var}.
 \end{proof}
 
+\begin{proposition}[Prefix-debt certificate for
+\(\Delta_{\mathrm{pref}}\)]\label{prop:q6-prefix-debt}
+Fix one step, and let \(q_i=s_i-s_{i-1}\) from a partition
+\(0=s_0<\cdots<s_k=1\).
+Assume the normalized load profile is \(p_i=n_i/M\) with
+\(\sum_i n_i=M\), and there exists \(B\ge 0\) such that for every
+\(1\le j\le k\),
+\[
+\left|
+\sum_{i=1}^j n_i - M s_j
+\right|\le B.
+\]
+Then
+\[
+\Delta_{\mathrm{pref}}(p,q)\le \frac{B}{M}.
+\]
+Hence a sufficient one-step condition is
+\[
+W\left(1+\frac{B}{kM}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G.
+\]
+\end{proposition}
+
+\begin{proof}
+For each \(j\),
+\[
+\sum_{i=1}^j (p_i-q_i)
+=
+\frac1M\sum_{i=1}^j n_i - s_j,
+\]
+so
+\[
+\left|\sum_{i=1}^j (p_i-q_i)\right|
+=
+\frac1M\left|
+\sum_{i=1}^j n_i - M s_j
+\right|
+\le \frac{B}{M}.
+\]
+Taking maximum over \(j\) gives
+\(\Delta_{\mathrm{pref}}(p,q)\le B/M\).
+Substitute in Proposition~\ref{prop:q6-prefix-var}.
+\end{proof}
+
+\begin{corollary}[Unit-debt branch]\label{cor:q6-prefix-debt-one}
+Under Proposition~\ref{prop:q6-prefix-debt} with \(B=1\),
+\[
+\Delta_{\mathrm{pref}}(p,q)\le \frac1M,
+\]
+and the sufficient step condition becomes
+\[
+W\left(1+\frac{1}{kM}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G.
+\]
+\end{corollary}
+
+\begin{proof}
+Immediate from Proposition~\ref{prop:q6-prefix-debt}.
+\end{proof}
+
+\begin{corollary}[Ordered explicit one-step threshold]\label{cor:q6-ordered-explicit}
+Fix \(k=\lceil 2/\varepsilon\rceil\), process vertices in the ordering of
+Lemma~\ref{lem:q6-rdeg-order}, and consider one arrival \(u\).
+Assume:
+\begin{enumerate}[nosep]
+\item (unit debt) \(\Delta_{\mathrm{pref}}(p,q)\le 1/M\);
+\item (near-uniform gaps)
+\[
+\frac{1-\delta}{k}\le q_i\le \frac{1+\delta}{k},
+\quad \delta\in[0,1),
+\]
+after reindexing bins so \(q_1\le\cdots\le q_k\);
+\item
+\[
+\sum_{i=1}^k \lambda_i
+\le
+k\varepsilon
+-2\left(1+\frac{2\delta}{(1-\delta^2)M}\right).
+\]
+\end{enumerate}
+Then the step is non-stuck.
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:q6-rdeg-order}, the arriving vertex has total load
+\(W=\sum_i w_i(u)\le 2\).
+Assumption (3) is exactly
+\[
+G=k\varepsilon-\sum_i\lambda_i
+\ge
+2\left(1+\frac{2\delta}{(1-\delta^2)M}\right)
+\ge
+W\left(1+\frac{2\delta}{(1-\delta^2)M}\right).
+\]
+Using (1), (2), Corollary~\ref{cor:q6-prefix-var-near-uniform},
+and then Proposition~\ref{prop:q6-prefix-var}, we get
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}\le k,
+\]
+so Proposition~\ref{prop:q6-min-bridge-step} gives non-stuckness.
+\end{proof}
+
 \begin{proposition}[Kronecker histogram certificate for
 \(\Delta_{\mathrm{pref}}\)]\label{prop:q6-omega-kronecker}
 Fix one step and keep $q=(q_i)_{i=1}^k$.
@@ -1360,6 +1462,12 @@ Theorem~\ref{thm:q6-omega-kronecker-route}.
 Corollary~\ref{cor:q6-prefix-var-near-uniform} further reduces this to
 controlling a relative gap-uniformity parameter \(\delta\) and
 prefix discrepancy \(\Delta_{\mathrm{pref}}\).
+Proposition~\ref{prop:q6-prefix-debt} converts Omega-style
+prefix-debt bounds directly into \(\Delta_{\mathrm{pref}}\) bounds;
+the unit-debt case is Corollary~\ref{cor:q6-prefix-debt-one}.
+Corollary~\ref{cor:q6-ordered-explicit} packages this with
+resistance ordering into a single numerical threshold on
+\(\sum_i\lambda_i\).
 
 These are equivalent and reduce Q6 to controlling the
 \emph{collective spectral norm} of vertex-induced edge sets
