@@ -291,6 +291,72 @@ noncomputable def deltaC0 (u x : ℝ) : ℝ := (u / 3) * phi x
 noncomputable def G4C0 (u1 x1 u2 x2 x12 : ℝ) : ℝ :=
   deltaC0 u1 x1 + deltaC0 u2 x2 - deltaC0 (u1 + u2) x12
 
+noncomputable def xParam (u B : ℝ) : ℝ := B ^ 2 / (32 * u ^ 3)
+
+theorem xParam_nonneg (u B : ℝ) (hu : 0 < u) : 0 ≤ xParam u B := by
+  unfold xParam
+  exact div_nonneg (sq_nonneg B) (by positivity)
+
+theorem xParam_lt_one_of_bound
+    (u B : ℝ) (hu : 0 < u) (hB : B ^ 2 < 32 * u ^ 3) :
+    xParam u B < 1 := by
+  unfold xParam
+  have hden : 0 < 32 * u ^ 3 := by positivity
+  have hdiv : B ^ 2 / (32 * u ^ 3) < (32 * u ^ 3) / (32 * u ^ 3) :=
+    div_lt_div_of_pos_right hB hden
+  simpa [hden.ne'] using hdiv
+
+theorem xParam_add_le_weighted
+    (u1 B1 u2 B2 : ℝ) (hu1 : 0 < u1) (hu2 : 0 < u2) :
+    xParam (u1 + u2) (B1 + B2)
+      ≤ (u1 / (u1 + u2)) * xParam u1 B1
+          + (u2 / (u1 + u2)) * xParam u2 B2 := by
+  have hu12 : 0 < u1 + u2 := add_pos hu1 hu2
+  have hcs :
+      (B1 + B2) ^ 2
+        ≤ ((B1 / u1) ^ 2 + (B2 / u2) ^ 2) * (u1 ^ 2 + u2 ^ 2) := by
+    have hsq : 0 ≤ ((B1 / u1) * u2 - (B2 / u2) * u1) ^ 2 := sq_nonneg _
+    have hsq_expand :
+        ((B1 / u1) * u2 - (B2 / u2) * u1) ^ 2
+          =
+          ((B1 / u1) ^ 2 + (B2 / u2) ^ 2) * (u1 ^ 2 + u2 ^ 2)
+            - (B1 + B2) ^ 2 := by
+      field_simp [hu1.ne', hu2.ne']
+      ring
+    have haux :
+        0 ≤
+          ((B1 / u1) ^ 2 + (B2 / u2) ^ 2) * (u1 ^ 2 + u2 ^ 2)
+            - (B1 + B2) ^ 2 := by
+      simpa [hsq_expand] using hsq
+    nlinarith
+  have hsum : u1 ^ 2 + u2 ^ 2 ≤ (u1 + u2) ^ 2 := by
+    nlinarith [sq_nonneg (u1 - u2)]
+  have hfac_nonneg : 0 ≤ (B1 / u1) ^ 2 + (B2 / u2) ^ 2 := by nlinarith
+  have hmain :
+      (B1 + B2) ^ 2
+        ≤ ((B1 / u1) ^ 2 + (B2 / u2) ^ 2) * (u1 + u2) ^ 2 := by
+    exact le_trans hcs (mul_le_mul_of_nonneg_left hsum hfac_nonneg)
+  have hdiv :
+      (B1 + B2) ^ 2 / (32 * (u1 + u2) ^ 3)
+        ≤ (((B1 / u1) ^ 2 + (B2 / u2) ^ 2) * (u1 + u2) ^ 2) /
+            (32 * (u1 + u2) ^ 3) := by
+    exact div_le_div_of_nonneg_right hmain (by positivity)
+  have hrewrite :
+      (((B1 / u1) ^ 2 + (B2 / u2) ^ 2) * (u1 + u2) ^ 2) /
+          (32 * (u1 + u2) ^ 3)
+      =
+      (u1 / (u1 + u2)) * xParam u1 B1
+        + (u2 / (u1 + u2)) * xParam u2 B2 := by
+    unfold xParam
+    field_simp [hu1.ne', hu2.ne', hu12.ne']
+  unfold xParam at hdiv ⊢
+  calc
+    (B1 + B2) ^ 2 / (32 * (u1 + u2) ^ 3)
+        ≤ (((B1 / u1) ^ 2 + (B2 / u2) ^ 2) * (u1 + u2) ^ 2) /
+            (32 * (u1 + u2) ^ 3) := hdiv
+    _ = (u1 / (u1 + u2)) * (B1 ^ 2 / (32 * u1 ^ 3))
+          + (u2 / (u1 + u2)) * (B2 ^ 2 / (32 * u2 ^ 3)) := hrewrite
+
 /-- Monotonicity of `phi` on `[0,1)`. -/
 theorem phi_mono_nonneg_lt1
     {x y : ℝ} (hx0 : 0 ≤ x) (hxy : x ≤ y) (hy1 : y < 1) :
@@ -443,6 +509,50 @@ theorem G4C0_nonneg
     exact phi_mono_nonneg_lt1 hx0 hxy hy1
   · intro w x y hw0 hw1 hx1 hy1
     exact phi_convex_two_point w x y hw0 hw1 hx1 hy1
+
+theorem G4C0_nonneg_of_B_bounds
+    (u1 B1 u2 B2 : ℝ)
+    (hu1 : 0 < u1) (hu2 : 0 < u2)
+    (hB1 : B1 ^ 2 < 32 * u1 ^ 3)
+    (hB2 : B2 ^ 2 < 32 * u2 ^ 3) :
+    0 ≤ G4C0 u1 (xParam u1 B1) u2 (xParam u2 B2) (xParam (u1 + u2) (B1 + B2)) := by
+  have hu12 : 0 < u1 + u2 := add_pos hu1 hu2
+  have hx1_lt1 : xParam u1 B1 < 1 := xParam_lt_one_of_bound u1 B1 hu1 hB1
+  have hx2_lt1 : xParam u2 B2 < 1 := xParam_lt_one_of_bound u2 B2 hu2 hB2
+  have hx12_nonneg : 0 ≤ xParam (u1 + u2) (B1 + B2) := xParam_nonneg (u1 + u2) (B1 + B2) hu12
+  have hBound :
+      xParam (u1 + u2) (B1 + B2)
+        ≤ (u1 / (u1 + u2)) * xParam u1 B1
+            + (u2 / (u1 + u2)) * xParam u2 B2 := by
+    exact xParam_add_le_weighted u1 B1 u2 B2 hu1 hu2
+  have hw0 : 0 ≤ u1 / (u1 + u2) := div_nonneg hu1.le hu12.le
+  have hw1 : 0 ≤ u2 / (u1 + u2) := div_nonneg hu2.le hu12.le
+  have hw0pos : 0 < u1 / (u1 + u2) := div_pos hu1 hu12
+  have hw1pos : 0 < u2 / (u1 + u2) := div_pos hu2 hu12
+  have hwsum : u1 / (u1 + u2) + u2 / (u1 + u2) = 1 := by
+    field_simp [hu12.ne']
+  have hMixLt :
+      (u1 / (u1 + u2)) * xParam u1 B1 + (u2 / (u1 + u2)) * xParam u2 B2 < 1 := by
+    have hterm1 :
+        (u1 / (u1 + u2)) * xParam u1 B1
+          < (u1 / (u1 + u2)) * 1 := by
+      exact mul_lt_mul_of_pos_left hx1_lt1 hw0pos
+    have hterm2 :
+        (u2 / (u1 + u2)) * xParam u2 B2
+          < (u2 / (u1 + u2)) * 1 := by
+      exact mul_lt_mul_of_pos_left hx2_lt1 hw1pos
+    have hsumlt :
+        (u1 / (u1 + u2)) * xParam u1 B1 + (u2 / (u1 + u2)) * xParam u2 B2
+          <
+        (u1 / (u1 + u2)) * 1 + (u2 / (u1 + u2)) * 1 := by
+      exact add_lt_add hterm1 hterm2
+    have hRhs :
+        (u1 / (u1 + u2)) * 1 + (u2 / (u1 + u2)) * 1 = 1 := by
+      nlinarith [hwsum]
+    nlinarith [hsumlt, hRhs]
+  exact
+    G4C0_nonneg u1 (xParam u1 B1) u2 (xParam u2 B2) (xParam (u1 + u2) (B1 + B2))
+      hu1.le hu2.le hu12 hx1_lt1 hx2_lt1 hx12_nonneg hBound hMixLt
 
 end Problem4QuarticOdd
 
