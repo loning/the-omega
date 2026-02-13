@@ -699,6 +699,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_newman_critical_quadratic_subfield",
+            script="exp_collision_kernel_A4_newman_critical_quadratic_subfield.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_critical_quadratic_subfield.json",
+            ],
+        ),
+        Step(
             name="collision_kernel_A234_operator_algebra_flow_invariants",
             script="exp_collision_kernel_A234_operator_algebra_flow_invariants.py",
             args=[],

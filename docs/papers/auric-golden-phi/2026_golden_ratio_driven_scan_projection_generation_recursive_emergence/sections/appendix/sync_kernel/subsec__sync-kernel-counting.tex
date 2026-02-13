@@ -97,6 +97,14 @@ T:=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\in\NN\cup\{\infty\}
 \[
 \mathbb{P}\!\left(Q^{(q)}_n\neq Q^{(q')}_n\right)\ \le\ \mathbb{P}(T>n-5).
 \]
+若进一步假设输入 \((D_t)\) 独立同分布，则 \((Q^{(q)}_t)\) 为齐次 Markov 链，其一步转移核 \(P\) 由
+\[
+P(s,s'):=\mathbb{P}\bigl(\delta(s,D_0)=s'\bigr),\qquad s,s'\in Q,
+\]
+给出。此时对任意两初始分布 \(\nu,\nu'\)（视为 \(Q\) 上概率向量）与任意 \(n\ge 0\)，由上述共输入耦合与全变差的耦合刻画可得
+\[
+\bigl\|\nu P^{n}-\nu'P^{n}\bigr\|_{\mathrm{TV}}\le \mathbb{P}(T>n-5).
+\]
 特别地，任何由同步状态\emph{确定性生成}的可观测量（例如输出位、带权累加势等）的滞后 \(n\) 相关都只能来自事件 \(\{T>n-5\}\)；
 因此可将“相关长度/混合速度”的上界替换为等待时间尾分布 \(n\mapsto \mathbb{P}(T>n)\)，而该尾分布仅由输入模型对片段 \(\texttt{00000}\) 的出现统计所决定（无需谱估计或数值拟合）。
 \end{corollary}
@@ -109,36 +117,20 @@ T:=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\in\NN\cup\{\infty\}
 证毕。
 \end{proof}
 
-\begin{corollary}[无需同步核谱信息的全变差耦合上界：由禁词尾完全控制]\label{cor:sync10-regeneration-tv-bound}
-在推论 \ref{cor:sync10-regeneration-correlation-bound} 的记号下，进一步假设输入序列 \((D_t)\) 为独立同分布，且 \(\mathbb{P}(D_t=d)=\pi(d)\)（\(d\in\{0,1,2\}\)）。
-则由输入随机化诱导的同步状态过程 \((Q_t)\) 为 \(Q\) 上的齐次马尔可夫链，其转移核为
-\[
-P(s,t):=\sum_{d\in\{0,1,2\}}\pi(d)\,\mathbf 1_{\{\delta(s,d)=t\}}.
-\]
-令 \(\nu,\nu'\) 为 \(Q\) 上任意两初始分布，则对所有 \(n\ge 0\) 有统一耦合上界
-\[
-\boxed{\;
-\bigl\|\nu P^{n}-\nu'P^{n}\bigr\|_{\mathrm{TV}}\ \le\ \mathbb{P}(T>n-5)\;},
-\]
-其中 \(T=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\)。
-因此在该确定核上，混合/相关的上界可被系统性地降阶为输入模型对禁词 \(\texttt{00000}\) 的避免尾问题，而无需求助于 \(P\) 的谱隙估计。
-\end{corollary}
-\begin{proof}
-用同一条随机输入序列 \((D_t)\) 驱动两条同步核轨道，并分别以 \(\nu,\nu'\) 为初分布取初态。
-由推论 \ref{cor:sync10-regeneration-correlation-bound}，在事件 \(\{T\le n-5\}\) 上两条轨道在时刻 \(n\) 必然相等；因此
-\(
-\mathbb{P}(Q_n\neq Q_n')\le \mathbb{P}(T>n-5)
-\)。
-对任意耦合都有 \(\|\nu P^n-\nu'P^n\|_{\mathrm{TV}}\le \mathbb{P}(Q_n\neq Q_n')\)，取该耦合即得结论。证毕。
-\end{proof}
-
-进一步地，若固定目标态 $t\in Q$，定义其\textbf{复位深度}
+\begin{proposition}[复位深度谱的“几乎全常量”性质与常量映射长度直径]\label{prop:sync10-reset-depth-spectrum}
+对任一目标态 \(t\in Q\) 定义复位深度
 \[
 \ell(t):=\min\{|w|:\ \delta(Q,w)=\{t\}\}.
 \]
-表 \ref{tab:sync-kernel-reset-target-depth} 给出所有目标态的 $\ell(t)$ 与一个最短 witness 词。
-特别地并非所有目标态都能在长度 $5$ 达到：仅有两个目标态 $0\overline{1}2$ 与 $11\overline{1}$ 满足 $\ell(t)=6$，其最短 witness 分别为 \texttt{000102} 与 \texttt{000020}。
-这些结论由脚本 \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py} 一键复现。
+则除两态 \(0\overline{1}2\)、\(11\overline{1}\) 外，所有目标态均满足 \(\ell(t)\le 5\)；并且仅有这两态满足 \(\ell(t)=6\)。
+因此同步转移半群在常量映射层面的生成长度直径为
+\[
+\max_{t\in Q}\ell(t)=6,
+\]
+且“长度 \(6\) 的例外”仅占 \(2/10\)。
+最短 witness 词见表 \ref{tab:sync-kernel-reset-target-depth}（例如 \(\ell(0\overline{1}2)=6\) 的见证为 \texttt{000102}，\(\ell(11\overline{1})=6\) 的见证为 \texttt{000020}）。
+上述枚举证书由脚本 \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py} 自动生成。
+\end{proposition}
 
 \input{sections/generated/tab_sync_kernel_reset_targets}
 

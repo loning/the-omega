@@ -1,0 +1,272 @@
+% Auto-split to keep each TeX source < 600 lines.
+
+\paragraph{bin-fold 的可解信息几何：escort 温度族、散度谱与规范密度的两尺度修正}
+定理 \ref{thm:fold-bin-two-state-asymptotic} 的两态一致渐近表明：在指数主阶上，纤维多重度仅依赖于末位 \(w_m\)。
+这一退化把若干常用的信息几何泛函（escort 温度族、Rényi/Csiszár 散度族以及规范体积密度）统一压缩为同一组显式常数，并给出一致的指数收敛率。
+
+\begin{proposition}[escort 温度族的末位极限律与纤维信息常数项（bin-fold）]\label{prop:fold-bin-escort-lastbit}
+对任意 \(q\ge 0\)，定义 escort 分布
+\[
+\pi_{m,q}(w):=\frac{\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q}{S_q^{\mathrm{bin}}(m)},\qquad w\in X_m,
+\]
+并令随机变量 \(W^{(q)}_m\sim\pi_{m,q}\)。
+设
+\[
+\theta(q):=\frac{1}{1+\varphi^{q+1}}.
+\]
+则当 \(m\to\infty\) 时有
+\[
+\mathbb{P}\bigl(W^{(q)}_m(m)=1\bigr)\to \theta(q),
+\qquad
+\mathbb{P}\bigl(W^{(q)}_m(m)=0\bigr)\to 1-\theta(q),
+\]
+并且对固定 \(q\) 收敛速度为 \(O\bigl((\varphi/2)^m\bigr)\)。
+
+进一步，定义 \(q\)-escort 纤维信息
+\[
+\kappa^{\mathrm{bin}}_m(q):=\mathbb{E}_{\pi_{m,q}}\bigl[\log d^{\mathrm{bin}}_m(W^{(q)}_m)\bigr],
+\]
+则存在一致展开
+\[
+\kappa^{\mathrm{bin}}_m(q)=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-\theta(q)\log\varphi+O\bigl((\varphi/2)^m\bigr)
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-\frac{\log\varphi}{1+\varphi^{q+1}}+O\bigl((\varphi/2)^m\bigr),
+\]
+其中误差在 \(q\) 固定时对 \(m\) 一致。
+\end{proposition}
+
+\begin{proof}
+由定义，
+\[
+\mathbb{P}\bigl(W^{(q)}_m(m)=1\bigr)
+=\sum_{w_m=1}\pi_{m,q}(w)
+=\frac{\sum_{w_m=1}\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q}{S_q^{\mathrm{bin}}(m)}.
+\]
+由定理 \ref{thm:fold-bin-two-state-asymptotic} 的一致主项可得
+\(
+\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q=\bigl(\frac{2}{\varphi}\bigr)^{qm}\varphi^{-qw_m}\bigl(1+O(q(\varphi/2)^m)\bigr)
+\)
+在 \(w\in X_m\) 上一致。
+因此
+\[
+\sum_{w_m=1}\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q
+=F_m\Bigl(\frac{2}{\varphi}\Bigr)^{qm}\varphi^{-q}\Bigl(1+O\bigl(q(\varphi/2)^m\bigr)\Bigr),
+\]
+而命题 \ref{prop:fold-bin-power-sum-asymptotic} 给出
+\(
+S_q^{\mathrm{bin}}(m)=\bigl(\frac{2}{\varphi}\bigr)^{qm}\bigl(F_{m+1}+\varphi^{-q}F_m\bigr)\bigl(1+O(q(\varphi/2)^m)\bigr)
+\)。
+两式相除得到
+\[
+\mathbb{P}\bigl(W^{(q)}_m(m)=1\bigr)
+=\frac{F_m\varphi^{-q}}{F_{m+1}+\varphi^{-q}F_m}+O\bigl((\varphi/2)^m\bigr)
+\longrightarrow\ \frac{1}{1+\varphi^{q+1}},
+\]
+其中用到 \(F_{m+1}/F_m\to\varphi\)。
+另一端概率由互补得到。
+
+对 \(\kappa^{\mathrm{bin}}_m(q)\)，由定理 \ref{thm:fold-bin-two-state-asymptotic} 的一致对数展开
+\[
+\log d^{\mathrm{bin}}_m(w)
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-w_m\log\varphi+O\bigl((\varphi/2)^m\bigr),
+\qquad (w\in X_m),
+\]
+对 \(\pi_{m,q}\) 取期望并代入 \(\mathbb{P}(W^{(q)}_m(m)=1)=\theta(q)+O((\varphi/2)^m)\) 即得结论。
+\end{proof}
+
+\begin{proposition}[escort--escort 的温度间 KL 极限（bin-fold）]\label{prop:fold-bin-escort-escort-kl}
+对 \(p,q\ge 0\)，令 \(\pi_{m,q}\) 如命题 \ref{prop:fold-bin-escort-lastbit}。
+则极限
+\[
+\lim_{m\to\infty}D_{\mathrm{KL}}(\pi_{m,q}\Vert \pi_{m,p})
+\]
+存在，并可写成一维 Bernoulli KL 的闭式。设 \(\theta(\cdot)\) 如命题 \ref{prop:fold-bin-escort-lastbit} 中所定义，则
+\[
+\lim_{m\to\infty}D_{\mathrm{KL}}(\pi_{m,q}\Vert \pi_{m,p})
+=\theta(q)\log\Bigl(\frac{\theta(q)}{\theta(p)}\Bigr)+\bigl(1-\theta(q)\bigr)\log\Bigl(\frac{1-\theta(q)}{1-\theta(p)}\Bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:fold-bin-two-state-asymptotic}，对任意固定 \(q\ge 0\) 有
+\[
+\pi_{m,q}(w)=\frac{\varphi^{-qw_m}}{F_{m+1}+\varphi^{-q}F_m}\Bigl(1+O\bigl((\varphi/2)^m\bigr)\Bigr),
+\qquad (w\in X_m),
+\]
+其中误差在 \(w\) 上一致；同理对 \(p\) 成立。
+因此在 \(w_m\) 给定的条件下，\(\pi_{m,q}\) 与 \(\pi_{m,p}\) 在该扇区内均渐近为均匀分布，而比值 \(\pi_{m,q}(w)/\pi_{m,p}(w)\) 亦在扇区内渐近为常数。
+将 KL 散度按两扇区 \(w_m\in\{0,1\}\) 分解，并用
+\(\mathbb{P}_{\pi_{m,q}}(w_m=1)\to \theta(q)\)、\(\mathbb{P}_{\pi_{m,p}}(w_m=1)\to \theta(p)\)
+即可得到所示 Bernoulli KL 极限。
+\end{proof}
+
+\begin{corollary}[两尺度极限残差的两点律（bin-fold）]\label{cor:fold-bin-escort-two-scale-residual}
+对任意 \(q\ge 0\) 令 \(W^{(q)}_m\sim\pi_{m,q}\)，并定义尺度化残差变量
+\[
+Z^{(q)}_m:=\Bigl(\frac{\varphi}{2}\Bigr)^m d^{\mathrm{bin}}_m\bigl(W^{(q)}_m\bigr).
+\]
+则 \(Z^{(q)}_m\Rightarrow Z^{(q)}\) 且 \(Z^{(q)}\) 为两点分布
+\[
+Z^{(q)}\in\{1,\varphi^{-1}\},
+\qquad
+\mathbb{P}\bigl(Z^{(q)}=\varphi^{-1}\bigr)=\theta(q),
+\quad
+\mathbb{P}\bigl(Z^{(q)}=1\bigr)=1-\theta(q).
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:fold-bin-two-state-asymptotic}，
+\(
+Z^{(q)}_m=\varphi^{-W^{(q)}_m(m)}+o(1)
+\)
+（在概率意义下），而 \(W^{(q)}_m(m)\) 的极限分布由命题 \ref{prop:fold-bin-escort-lastbit} 给出，故结论成立。
+\end{proof}
+
+\begin{theorem}[bin-fold 输出分布的全 Rényi 散度极限（对稳定层均匀）]\label{thm:fold-bin-renyi-divergence-limit}
+令 \(\mu_m(w):=d^{\mathrm{bin}}_m(w)/2^m\) 为 bin-fold 的推前输出分布，\(u_m(w):=1/|X_m|\) 为稳定层均匀分布。
+对任意 \(\alpha>0\) 定义 Rényi 散度 \(D_\alpha(\mu_m\Vert u_m)\)（\(\alpha=1\) 取 KL 散度的连续延拓）。
+则极限
+\[
+D_\alpha^\infty:=\lim_{m\to\infty}D_\alpha(\mu_m\Vert u_m)
+\]
+存在，且给出闭式表达：
+\begin{enumerate}
+  \item 若 \(\alpha\neq 1\)，则
+  \[
+  D_\alpha^\infty=\frac{(2\alpha-2)\log\varphi+\log(\varphi+\varphi^{-\alpha})-\alpha\log\sqrt{5}}{\alpha-1}.
+  \]
+  \item 若 \(\alpha=1\)，则
+  \[
+  D_1^\infty=\frac{\varphi}{\sqrt5}\log\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)+\frac{1}{\varphi\sqrt5}\log\Bigl(\frac{\varphi}{\sqrt5}\Bigr).
+  \]
+\end{enumerate}
+并且对每个固定 \(\alpha\)，收敛速度为
+\[
+D_\alpha(\mu_m\Vert u_m)=D_\alpha^\infty+O\bigl((\varphi/2)^m\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+当 \(\alpha\neq 1\) 时，由定义
+\[
+D_\alpha(\mu_m\Vert u_m)
+=\frac{1}{\alpha-1}\log\sum_{w\in X_m}\mu_m(w)^\alpha\,u_m(w)^{1-\alpha}.
+\]
+代入 \(\mu_m(w)=d^{\mathrm{bin}}_m(w)/2^m\)、\(u_m(w)=1/|X_m|\) 得
+\[
+D_\alpha(\mu_m\Vert u_m)
+=\frac{1}{\alpha-1}\log\Bigl(|X_m|^{\alpha-1}\cdot 2^{-\alpha m}\cdot S_\alpha^{\mathrm{bin}}(m)\Bigr).
+\]
+由 \(|X_m|=F_{m+2}\) 与命题 \ref{prop:fold-bin-power-sum-asymptotic}，
+\[
+2^{-\alpha m}S_\alpha^{\mathrm{bin}}(m)
+=\varphi^{-\alpha m}\Bigl(F_{m+1}+\varphi^{-\alpha}F_m\Bigr)\Bigl(1+O\bigl((\varphi/2)^m\bigr)\Bigr).
+\]
+因此
+\[
+D_\alpha(\mu_m\Vert u_m)
+=\frac{1}{\alpha-1}\log\Bigl(F_{m+2}^{\alpha-1}\varphi^{-\alpha m}\bigl(F_{m+1}+\varphi^{-\alpha}F_m\bigr)\Bigr)
+O\bigl((\varphi/2)^m\bigr).
+\]
+将 Binet 渐近 \(F_n=\varphi^n/\sqrt5+O(\varphi^{-n})\) 代入并整理，可得极限常数为
+\[
+\frac{1}{\alpha-1}\Bigl((2\alpha-2)\log\varphi+\log(\varphi+\varphi^{-\alpha})-\alpha\log\sqrt5\Bigr),
+\]
+即所示 \(D_\alpha^\infty\)。误差界由命题 \ref{prop:fold-bin-power-sum-asymptotic} 的相对误差与 Binet 的指数余项合并得到。
+\par
+当 \(\alpha=1\) 时，\(D_1(\mu_m\Vert u_m)=D_{\mathrm{KL}}(\mu_m\Vert u_m)\)，其极限由命题 \ref{prop:fold-bin-kl-constant} 给出；同时由两态极限比值 \(\mu_m/u_m\Rightarrow\{\varphi^2/\sqrt5,\varphi/\sqrt5\}\) 亦可直接得到所示闭式。证毕。
+\end{proof}
+
+\begin{proposition}[bin-fold 的 \texorpdfstring{$f$}{f}-散度普适塌缩（Csiszár 指标）]\label{prop:fold-bin-f-divergence-collapse}
+令 \(f:(0,\infty)\to\RR\) 为凸函数且 \(f(1)=0\)，并定义 Csiszár \(f\)-散度
+\[
+D_f(\mu_m\Vert u_m):=\sum_{w\in X_m}u_m(w)\,f\Bigl(\frac{\mu_m(w)}{u_m(w)}\Bigr).
+\]
+则极限 \(D_f^\infty:=\lim_{m\to\infty}D_f(\mu_m\Vert u_m)\) 存在，并由两点闭式给出
+\[
+D_f^\infty=\frac{1}{\varphi}\,f\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)+\frac{1}{\varphi^2}\,f\Bigl(\frac{\varphi}{\sqrt5}\Bigr).
+\]
+并且对固定 \(f\)，有收敛速度 \(D_f(\mu_m\Vert u_m)=D_f^\infty+O\bigl((\varphi/2)^m\bigr)\)。
+\end{proposition}
+
+\begin{proof}
+注意
+\[
+\frac{\mu_m(w)}{u_m(w)}=\frac{d^{\mathrm{bin}}_m(w)}{2^m}\cdot |X_m|
+=d^{\mathrm{bin}}_m(w)\,\frac{F_{m+2}}{2^m}.
+\]
+由定理 \ref{thm:fold-bin-two-state-asymptotic} 与 Binet 渐近得一致展开
+\[
+\frac{\mu_m(w)}{u_m(w)}
+=\frac{\varphi^{2-w_m}}{\sqrt5}+O\bigl((\varphi/2)^m\bigr),
+\qquad (w\in X_m),
+\]
+并且在均匀测度 \(u_m\) 下，
+\(
+u_m(w_m=0)=F_{m+1}/F_{m+2}\to 1/\varphi
+\)、
+\(
+u_m(w_m=1)=F_m/F_{m+2}\to 1/\varphi^2
+\)。
+于是
+\[
+D_f(\mu_m\Vert u_m)
+=\frac{F_{m+1}}{F_{m+2}}\,f\Bigl(\frac{\varphi^2}{\sqrt5}+O\bigl((\varphi/2)^m\bigr)\Bigr)
+\;+\;\frac{F_m}{F_{m+2}}\,f\Bigl(\frac{\varphi}{\sqrt5}+O\bigl((\varphi/2)^m\bigr)\Bigr).
+\]
+由凸函数在紧区间上的一致连续性即可令 \(m\to\infty\) 得到所示两点极限；误差阶同理由一致展开与 \(F_{m+1}/F_{m+2}-1/\varphi=O(\varphi^{-2m})\) 合并得到。证毕。
+\end{proof}
+
+\begin{proposition}[规范体积密度的两尺度展开（bin-fold）]\label{prop:fold-bin-gauge-density-two-scale}
+令 \(\mathcal{G}^{\mathrm{bin}}_m\) 为 bin-fold 的 fold-gauge 群体积
+\(
+|\mathcal{G}^{\mathrm{bin}}_m|=\prod_{w\in X_m} d^{\mathrm{bin}}_m(w)!
+\)
+并定义密度 \(g_m:=2^{-m}\log|\mathcal{G}^{\mathrm{bin}}_m|\)。
+记
+\(
+\kappa_m:=\mathbb{E}_{\mu_m}\bigl[\log d^{\mathrm{bin}}_m(W_m)\bigr]
+\)
+（即命题 \ref{prop:fold-bin-kl-constant} 中的纤维信息项）。
+则当 \(m\to\infty\) 时有二尺度展开
+\[
+g_m=\kappa_m-1+\frac{(\varphi/2)^m}{2\sqrt5}\Bigl(\varphi^2 m\log\!\Bigl(\frac{2}{\varphi}\Bigr)+\varphi^2\log(2\pi)-\log\varphi\Bigr)+O\bigl((\varphi/2)^m\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:fold-bin-gauge-volume-stirling-second-order}，
+\[
+g_m=\kappa_m-1+\frac{1}{2^{m+1}}\Bigl(|X_m|\log(2\pi)+\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)\Bigr)+R_m,
+\qquad 0\le R_m\le \frac{|X_m|}{12\cdot 2^m}.
+\]
+由定理 \ref{thm:fold-bin-two-state-asymptotic} 的一致对数展开，
+\[
+\log d^{\mathrm{bin}}_m(w)=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-w_m\log\varphi+O\bigl((\varphi/2)^m\bigr),
+\qquad (w\in X_m),
+\]
+求和并用
+\(
+\card\{w\in X_m:w_m=0\}=F_{m+1},\ \card\{w\in X_m:w_m=1\}=F_m
+\)
+得
+\[
+\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)|X_m|-\log\varphi\cdot F_m+O\bigl(|X_m|(\varphi/2)^m\bigr).
+\]
+代回并用 Binet 渐近 \(F_{m+2}=|X_m|=\varphi^{m+2}/\sqrt5+O(\varphi^{-m})\)、\(F_m=\varphi^m/\sqrt5+O(\varphi^{-m})\) 得
+\[
+\frac{|X_m|}{2^{m+1}}
+=\frac{\varphi^2}{2\sqrt5}\Bigl(\frac{\varphi}{2}\Bigr)^m+O\bigl((\varphi/2)^m\bigr),
+\qquad
+\frac{F_m}{2^{m+1}}
+=\frac{1}{2\sqrt5}\Bigl(\frac{\varphi}{2}\Bigr)^m+O\bigl((\varphi/2)^m\bigr),
+\]
+并由 \(R_m=O(|X_m|/2^m)=O((\varphi/2)^m)\) 合并得到所示展开。证毕。
+\end{proof}
+
+\begin{remark}[两态压缩作为解析基准解]\label{rem:fold-bin-solvable-model}
+在 bin-fold 情形下，命题 \ref{prop:fold-bin-power-sum-asymptotic}--命题 \ref{prop:fold-bin-gauge-density-two-scale} 表明：全阶碰撞矩、全温度 escort 族、Rényi/\(f\)-散度族以及规范体积密度的首个可见修正项，均可在同一对两态常数与一致误差阶下闭式化。
+该结构为正文更一般折叠机制提供一个可对照的解析基准。
+\end{remark}
+
