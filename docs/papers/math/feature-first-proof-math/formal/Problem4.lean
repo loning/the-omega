@@ -131,6 +131,25 @@ def Xi4 (u1 B1 c1 u2 B2 c2 : ℝ) : ℝ :=
 def denBridge4 (u1 B1 c1 u2 B2 c2 : ℝ) : ℝ :=
   denQ4 u1 B1 c1 * denQ4 u2 B2 c2 * denQ4 (u1 + u2) (B1 + B2) (c1 + c2)
 
+def lFac (u c : ℝ) : ℝ := 6 * u ^ 2 + c
+
+def qFac (u B c : ℝ) : ℝ := 96 * u ^ 3 - 16 * u * c - 3 * B ^ 2
+
+def chamberPlus (u B c : ℝ) : Prop :=
+  0 < lFac u c ∧ 0 < qFac u B c
+
+theorem denQ4_eq_factorized (u B c : ℝ) :
+    denQ4 u B c = 144 * lFac u c * qFac u B c := by
+  rfl
+
+theorem denQ4_pos_of_chamberPlus
+    (u B c : ℝ) (hC : chamberPlus u B c) :
+    0 < denQ4 u B c := by
+  rcases hC with ⟨hL, hQ⟩
+  rw [denQ4_eq_factorized]
+  have h144 : (0 : ℝ) < 144 := by norm_num
+  exact mul_pos (mul_pos h144 hL) hQ
+
 theorem G4_eq_Xi4_div
     (u1 B1 c1 u2 B2 c2 : ℝ)
     (h1 : denQ4 u1 B1 c1 ≠ 0)
@@ -193,6 +212,19 @@ theorem G4_nonneg_iff_Xi4_nonneg
   constructor
   · exact Xi4_nonneg_of_G4_nonneg u1 B1 c1 u2 B2 c2 h1 h2 h12
   · exact G4_nonneg_of_Xi4_nonneg u1 B1 c1 u2 B2 c2 h1 h2 h12
+
+theorem G4_nonneg_of_Xi4_nonneg_chamberPlus
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (hC1 : chamberPlus u1 B1 c1)
+    (hC2 : chamberPlus u2 B2 c2)
+    (hC12 : chamberPlus (u1 + u2) (B1 + B2) (c1 + c2))
+    (hXi : 0 ≤ Xi4 u1 B1 c1 u2 B2 c2) :
+    0 ≤ G4 u1 B1 c1 u2 B2 c2 := by
+  have h1 : 0 < denQ4 u1 B1 c1 := denQ4_pos_of_chamberPlus u1 B1 c1 hC1
+  have h2 : 0 < denQ4 u2 B2 c2 := denQ4_pos_of_chamberPlus u2 B2 c2 hC2
+  have h12 : 0 < denQ4 (u1 + u2) (B1 + B2) (c1 + c2) :=
+    denQ4_pos_of_chamberPlus (u1 + u2) (B1 + B2) (c1 + c2) hC12
+  exact G4_nonneg_of_Xi4_nonneg u1 B1 c1 u2 B2 c2 h1 h2 h12 hXi
 
 end Problem4QuarticBridge
 
