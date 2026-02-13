@@ -89,6 +89,10 @@
     the unresolved term is exactly
     `(A+B)/S1 = ||D^T h||^2 + h^T diag(g) h`.
     This recasts general-`n` closure as one signed quadratic-form inequality on `h`.
+34. **NEW: Affine-root lift identity**:
+    `1 = D lambda`, `g = D s`, hence
+    `h = g - rho*1 = D(s-rho*lambda)`.
+    So the critical defect vector is always in the cut subspace `Im(D)`.
 
 ## Findings From Independent Re-check
 
@@ -111,6 +115,9 @@
 9. Section stress-tests now explicitly separate:
    `margin` near-zero behavior for `(star)` and signed-defect behavior for `B`,
    clarifying that the remaining target is strictly `A+B>=0`.
+10. New structural simplification:
+    the troublesome vector is not arbitrary edge data; it has an explicit vertex potential lift
+    `s-rho*lambda`. This is now encoded in the section as a proved lemma.
 
 ## Remaining Gap
 
