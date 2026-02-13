@@ -87,6 +87,116 @@ theorem deltaQ4_closed_eq (u B c : ℝ) :
 end Problem4Quartic
 
 /-!
+  ## Problem 4 (quartic Route-1 bridge): denominator-clearing reduction
+
+  For two quartic Route-1 states `(u₁,B₁,c₁)` and `(u₂,B₂,c₂)`, set
+    `(u₁₂,B₁₂,c₁₂) = (u₁+u₂, B₁+B₂, c₁+c₂)`.
+  The smoothed bridge gap at fixed time can be written as
+    G₄ = δ(u₁,B₁,c₁) + δ(u₂,B₂,c₂) - δ(u₁₂,B₁₂,c₁₂),
+  with each `δ` a rational function.
+
+  This namespace formalizes the exact denominator-clearing identity
+    G₄ = Ξ₄ / (D₁ D₂ D₁₂),
+  so proving `G₄ ≥ 0` on a chamber with positive denominators reduces to
+  proving the polynomial inequality `Ξ₄ ≥ 0`.
+-/
+
+namespace Problem4QuarticBridge
+
+def numQ4 (u B c : ℝ) : ℝ :=
+  27 * B ^ 4
+    + 144 * u * B ^ 2 * (5 * c + 6 * u ^ 2)
+    + 256 * c ^ 2 * (6 * u ^ 2 - c)
+
+def denQ4 (u B c : ℝ) : ℝ := Problem4Quartic.denomQ4 u B c
+
+noncomputable def delta4 (u B c : ℝ) : ℝ := numQ4 u B c / denQ4 u B c
+
+noncomputable def G4 (u1 B1 c1 u2 B2 c2 : ℝ) : ℝ :=
+  delta4 u1 B1 c1
+    + delta4 u2 B2 c2
+    - delta4 (u1 + u2) (B1 + B2) (c1 + c2)
+
+def Xi4 (u1 B1 c1 u2 B2 c2 : ℝ) : ℝ :=
+  numQ4 u1 B1 c1
+      * denQ4 u2 B2 c2
+      * denQ4 (u1 + u2) (B1 + B2) (c1 + c2)
+    + numQ4 u2 B2 c2
+      * denQ4 u1 B1 c1
+      * denQ4 (u1 + u2) (B1 + B2) (c1 + c2)
+    - numQ4 (u1 + u2) (B1 + B2) (c1 + c2)
+      * denQ4 u1 B1 c1
+      * denQ4 u2 B2 c2
+
+def denBridge4 (u1 B1 c1 u2 B2 c2 : ℝ) : ℝ :=
+  denQ4 u1 B1 c1 * denQ4 u2 B2 c2 * denQ4 (u1 + u2) (B1 + B2) (c1 + c2)
+
+theorem G4_eq_Xi4_div
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (h1 : denQ4 u1 B1 c1 ≠ 0)
+    (h2 : denQ4 u2 B2 c2 ≠ 0)
+    (h12 : denQ4 (u1 + u2) (B1 + B2) (c1 + c2) ≠ 0) :
+    G4 u1 B1 c1 u2 B2 c2 =
+      Xi4 u1 B1 c1 u2 B2 c2 / denBridge4 u1 B1 c1 u2 B2 c2 := by
+  unfold G4 delta4 Xi4 denBridge4
+  field_simp [h1, h2, h12]
+
+theorem G4_nonneg_of_Xi4_nonneg
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (h1 : 0 < denQ4 u1 B1 c1)
+    (h2 : 0 < denQ4 u2 B2 c2)
+    (h12 : 0 < denQ4 (u1 + u2) (B1 + B2) (c1 + c2))
+    (hXi : 0 ≤ Xi4 u1 B1 c1 u2 B2 c2) :
+    0 ≤ G4 u1 B1 c1 u2 B2 c2 := by
+  have hz1 : denQ4 u1 B1 c1 ≠ 0 := ne_of_gt h1
+  have hz2 : denQ4 u2 B2 c2 ≠ 0 := ne_of_gt h2
+  have hz12 : denQ4 (u1 + u2) (B1 + B2) (c1 + c2) ≠ 0 := ne_of_gt h12
+  have hEq := G4_eq_Xi4_div u1 B1 c1 u2 B2 c2 hz1 hz2 hz12
+  have hDenPos : 0 < denBridge4 u1 B1 c1 u2 B2 c2 := by
+    unfold denBridge4
+    exact mul_pos (mul_pos h1 h2) h12
+  rw [hEq]
+  exact div_nonneg hXi hDenPos.le
+
+theorem Xi4_nonneg_of_G4_nonneg
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (h1 : 0 < denQ4 u1 B1 c1)
+    (h2 : 0 < denQ4 u2 B2 c2)
+    (h12 : 0 < denQ4 (u1 + u2) (B1 + B2) (c1 + c2))
+    (hG : 0 ≤ G4 u1 B1 c1 u2 B2 c2) :
+    0 ≤ Xi4 u1 B1 c1 u2 B2 c2 := by
+  have hz1 : denQ4 u1 B1 c1 ≠ 0 := ne_of_gt h1
+  have hz2 : denQ4 u2 B2 c2 ≠ 0 := ne_of_gt h2
+  have hz12 : denQ4 (u1 + u2) (B1 + B2) (c1 + c2) ≠ 0 := ne_of_gt h12
+  have hEq := G4_eq_Xi4_div u1 B1 c1 u2 B2 c2 hz1 hz2 hz12
+  have hDenPos : 0 < denBridge4 u1 B1 c1 u2 B2 c2 := by
+    unfold denBridge4
+    exact mul_pos (mul_pos h1 h2) h12
+  rw [hEq] at hG
+  have hMul : 0 ≤
+      (Xi4 u1 B1 c1 u2 B2 c2 / denBridge4 u1 B1 c1 u2 B2 c2)
+        * denBridge4 u1 B1 c1 u2 B2 c2 := by
+    exact mul_nonneg hG hDenPos.le
+  have hRewrite :
+      (Xi4 u1 B1 c1 u2 B2 c2 / denBridge4 u1 B1 c1 u2 B2 c2)
+        * denBridge4 u1 B1 c1 u2 B2 c2 =
+      Xi4 u1 B1 c1 u2 B2 c2 := by
+    field_simp [denBridge4, hz1, hz2, hz12]
+  simpa [hRewrite] using hMul
+
+theorem G4_nonneg_iff_Xi4_nonneg
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (h1 : 0 < denQ4 u1 B1 c1)
+    (h2 : 0 < denQ4 u2 B2 c2)
+    (h12 : 0 < denQ4 (u1 + u2) (B1 + B2) (c1 + c2)) :
+    (0 ≤ G4 u1 B1 c1 u2 B2 c2) ↔ (0 ≤ Xi4 u1 B1 c1 u2 B2 c2) := by
+  constructor
+  · exact Xi4_nonneg_of_G4_nonneg u1 B1 c1 u2 B2 c2 h1 h2 h12
+  · exact G4_nonneg_of_Xi4_nonneg u1 B1 c1 u2 B2 c2 h1 h2 h12
+
+end Problem4QuarticBridge
+
+/-!
   ## Problem 4 (reduction layer): one-gap closure template
 
   This section does not yet prove the all-`n` Stam inequality.
