@@ -196,6 +196,92 @@ theorem G4_nonneg_iff_Xi4_nonneg
 
 end Problem4QuarticBridge
 
+namespace Problem4QuarticEven
+
+/-- Two-variable Titu/Engel form. -/
+theorem titu2 (x y a b : ℝ) (ha : 0 < a) (hb : 0 < b) :
+    (x + y) ^ 2 / (a + b) ≤ x ^ 2 / a + y ^ 2 / b := by
+  have hab : a + b ≠ 0 := by linarith
+  have hEq :
+      x ^ 2 / a + y ^ 2 / b - (x + y) ^ 2 / (a + b) =
+        (b * x - a * y) ^ 2 / (a * b * (a + b)) := by
+    field_simp [ha.ne', hb.ne', hab]
+    ring
+  have hDenPos : 0 < a * b * (a + b) := by
+    exact mul_pos (mul_pos ha hb) (add_pos ha hb)
+  have hNonneg :
+      0 ≤ (b * x - a * y) ^ 2 / (a * b * (a + b)) := by
+    exact div_nonneg (sq_nonneg _) hDenPos.le
+  have hMain : 0 ≤ x ^ 2 / a + y ^ 2 / b - (x + y) ^ 2 / (a + b) := by
+    rw [hEq]
+    exact hNonneg
+  linarith
+
+noncomputable def G4Even (u1 c1 u2 c2 : ℝ) : ℝ :=
+  (c1 ^ 2 / (u1 * (6 * u1 ^ 2 + c1))
+      + c2 ^ 2 / (u2 * (6 * u2 ^ 2 + c2))
+      - (c1 + c2) ^ 2 / ((u1 + u2) * (6 * (u1 + u2) ^ 2 + (c1 + c2)))) / 9
+
+/-- In the `B=0` quartic subfamily, the bridge gap is nonnegative under
+natural lower-bound chamber conditions on `c`. -/
+theorem G4Even_nonneg_of_bounds
+    (u1 c1 u2 c2 : ℝ)
+    (hu1 : 0 < u1) (hu2 : 0 < u2)
+    (hc1 : -3 * u1 ^ 2 ≤ c1) (hc2 : -3 * u2 ^ 2 ≤ c2) :
+    0 ≤ G4Even u1 c1 u2 c2 := by
+  let A : ℝ := u1 * (6 * u1 ^ 2 + c1)
+  let B : ℝ := u2 * (6 * u2 ^ 2 + c2)
+  let C : ℝ := (u1 + u2) * (6 * (u1 + u2) ^ 2 + (c1 + c2))
+  have hAfac : 0 < 6 * u1 ^ 2 + c1 := by
+    have hu1sq : 0 < u1 ^ 2 := sq_pos_of_ne_zero (by exact hu1.ne')
+    nlinarith
+  have hBfac : 0 < 6 * u2 ^ 2 + c2 := by
+    have hu2sq : 0 < u2 ^ 2 := sq_pos_of_ne_zero (by exact hu2.ne')
+    nlinarith
+  have hApos : 0 < A := by
+    dsimp [A]
+    exact mul_pos hu1 hAfac
+  have hBpos : 0 < B := by
+    dsimp [B]
+    exact mul_pos hu2 hBfac
+  have hDiff :
+      C - (A + B) =
+        18 * u1 ^ 2 * u2 + 18 * u1 * u2 ^ 2 + u1 * c2 + u2 * c1 := by
+    dsimp [A, B, C]
+    ring
+  have hCross1 : u1 * c2 ≥ -3 * u1 * u2 ^ 2 := by
+    nlinarith
+  have hCross2 : u2 * c1 ≥ -3 * u2 * u1 ^ 2 := by
+    nlinarith
+  have hCgeAB : A + B ≤ C := by
+    rw [← sub_nonneg, hDiff]
+    nlinarith [hCross1, hCross2, hu1, hu2]
+  have hABpos : 0 < A + B := add_pos hApos hBpos
+  have hCpos : 0 < C := lt_of_lt_of_le hABpos hCgeAB
+  have hInv : (1 : ℝ) / C ≤ (1 : ℝ) / (A + B) := by
+    exact one_div_le_one_div_of_le hABpos hCgeAB
+  have hSq : 0 ≤ (c1 + c2) ^ 2 := sq_nonneg (c1 + c2)
+  have hScale :
+      (c1 + c2) ^ 2 / C ≤ (c1 + c2) ^ 2 / (A + B) := by
+    have hMul := mul_le_mul_of_nonneg_left hInv hSq
+    simpa [div_eq_mul_inv, mul_comm, mul_left_comm, mul_assoc] using hMul
+  have hTitu :
+      (c1 + c2) ^ 2 / (A + B) ≤ c1 ^ 2 / A + c2 ^ 2 / B := by
+    exact titu2 c1 c2 A B hApos hBpos
+  have hCore :
+      0 ≤ c1 ^ 2 / A + c2 ^ 2 / B - (c1 + c2) ^ 2 / C := by
+    nlinarith [hScale, hTitu]
+  have hNine : 0 < (9 : ℝ) := by norm_num
+  unfold G4Even
+  have hDiv : 0 ≤
+      (c1 ^ 2 / (u1 * (6 * u1 ^ 2 + c1))
+        + c2 ^ 2 / (u2 * (6 * u2 ^ 2 + c2))
+        - (c1 + c2) ^ 2 / ((u1 + u2) * (6 * (u1 + u2) ^ 2 + (c1 + c2)))) := by
+    simpa [A, B, C] using hCore
+  exact div_nonneg hDiv hNine.le
+
+end Problem4QuarticEven
+
 /-!
   ## Problem 4 (reduction layer): one-gap closure template
 
