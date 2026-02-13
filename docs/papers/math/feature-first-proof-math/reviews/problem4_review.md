@@ -211,6 +211,12 @@
     added explicit conjecture
     `Disc(p boxplus_n q)^{1/binom(n,2)} >= Disc(p)^{1/binom(n,2)} + Disc(q)^{1/binom(n,2)}`,
     with expanded random stress-test evidence through `n=10` and no observed violation.
+44. **NEW: Orbit-convexity empirical layer for `Phi_n`**:
+    full-permutation scans (tested through `n=7`) found no violation of
+    `Phi_n(p boxplus_n q) <= avg_pi Phi_n(r_pi)`.
+    This yields
+    `N(p boxplus_n q) >= 1/avg_pi Phi_n(r_pi)` (harmonic lower bound),
+    which is weaker than orbit-Jensen and does not close `(star)` yet.
 
 ## Findings From Independent Re-check
 
