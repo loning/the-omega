@@ -68,6 +68,11 @@
     direct monotonicity for
     `I - beta D + gamma D^2` (`gamma>0`, `beta^2<4gamma`) is false even on real-rooted inputs/outputs.
     Explicit `n=4` counterexample added in section text.
+29b. **NEW: Admissible-block strengthening**:
+    the same quadratic-step failure persists when `(beta,gamma)` is not arbitrary
+    but comes from an actual complex root pair of `T_n(q)` for a real-rooted `q`.
+    So a factor-by-factor closure through quadratic blocks is ruled out even on the
+    admissible parameter locus.
 30. **NEW: First-order step closed for low degree**:
     proposition `q4-firststep-n23` proves
     `N((I-alpha D)p) >= N(p)` for all real-rooted monic `p` when `n=2,3`.
