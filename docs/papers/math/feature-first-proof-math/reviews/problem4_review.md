@@ -2,7 +2,7 @@
 
 - Problem: `Q4`
 - Submission Version: `Q4-V27`
-- Review Version: `Q4-R39`
+- Review Version: `Q4-R40`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -82,6 +82,10 @@
     pairwise midpoint concavity on transposition-averaged orbit polynomials fails
     (explicit `n=4` numeric counterexample recorded), so orbit-Jensen cannot be
     closed by local transposition Jensen induction.
+5m. Bridge monotonicity elimination:
+    `J_{p,q}(t)` is not monotone in general (high-precision explicit `n=4`
+    counterexample with `J(0.10)>J(0.05)>J(0)`), so the final proof cannot rely on
+    a monotone-to-zero argument.
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
