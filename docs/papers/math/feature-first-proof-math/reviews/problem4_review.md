@@ -2,7 +2,7 @@
 
 - Problem: `Q4`
 - Submission Version: `Q4-V27`
-- Review Version: `Q4-R38`
+- Review Version: `Q4-R39`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -78,6 +78,10 @@
       \left(\sum_{i\neq j}\frac1{(\lambda_i-\lambda_j)^2+\frac{2n}{n-1}\Var(\mu)}\right)^{-1}.
     \]
     (proved via variational formula + explicit permutation moments).
+5l. Route elimination:
+    pairwise midpoint concavity on transposition-averaged orbit polynomials fails
+    (explicit `n=4` numeric counterexample recorded), so orbit-Jensen cannot be
+    closed by local transposition Jensen induction.
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
