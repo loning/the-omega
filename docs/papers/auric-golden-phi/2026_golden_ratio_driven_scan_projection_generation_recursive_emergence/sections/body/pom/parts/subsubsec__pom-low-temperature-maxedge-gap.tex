@@ -1,0 +1,122 @@
+\subsubsection{低温截距与边权缺口：最大权子核的谱证书}\label{subsubsec:pom-low-temperature-maxedge-gap}
+本段给出一个对有限带权有向图（或有限核）通用的“低温/大 \(q\)”展开：当边权按 \(q\)-次幂放大时，谱半径对数（压力）由最大边权的指数率与最大边子图的 Perron 根给出，并且误差在边权缺口 \(\Delta\) 控制下指数衰减。
+进一步地，有限个大 \(q\) 的压力样本即可通过差分直接提取“地态能量、地态熵与缺口”的可核验证书。
+
+\begin{definition}[低温矩核与压力]\label{def:pom-low-temperature-weighted-adjacency}
+令 \(G\) 为有限有向图，顶点集为 \(V\)，边集为 \(E\)，并对每条边 \(e\in E\) 赋予权重 \(a(e)>0\)。
+对实数 \(q\ge 0\) 定义加权邻接矩阵
+\[
+A(q)_{ij}:=\sum_{e:i\to j} a(e)^{q},
+\qquad i,j\in V,
+\]
+并定义压力函数
+\[
+P(q):=\log\rho(A(q)).
+\]
+记最大边权 \(a_*:=\max_{e\in E}a(e)\)，并令 \(G_*\) 为由所有满足 \(a(e)=a_*\) 的边生成的子图。
+其邻接计数矩阵记为
+\[
+(A_*)_{ij}:=\#\{e:i\to j,\ a(e)=a_*\}.
+\]
+令次大边权
+\[
+a_{(2)}:=\max\{a(e):a(e)<a_*\},
+\]
+若不存在则约定 \(a_{(2)}=0\)。
+定义边权缺口
+\[
+\Delta:=\log(a_*/a_{(2)})\in(0,\infty]\qquad(\log(a_*/0):=+\infty).
+\]
+\end{definition}
+
+\begin{theorem}[低温三项展开与指数误差]\label{thm:pom-low-temperature-three-term-expansion}
+在定义 \ref{def:pom-low-temperature-weighted-adjacency} 的记号下，假设 \(\rho(A_*)>0\)（等价于 \(G_*\) 含有有向回路）。
+则当 \(q\to\infty\) 时成立
+\[
+\boxed{\;
+P(q)=q\log a_*+\log\rho(A_*)+O(e^{-q\Delta})\; },
+\]
+其中误差常数仅依赖于图的规模与边数。
+更具体地，存在常数 \(C>0\) 与 \(q_0\ge 0\) 使对一切 \(q\ge q_0\) 有
+\[
+0\ \le\ P(q)-q\log a_*-\log\rho(A_*)\ \le\ C\,e^{-q\Delta}.
+\]
+\end{theorem}
+\begin{proof}
+将 \(A(q)\) 写为
+\[
+A(q)=a_*^{q}\bigl(A_*+E(q)\bigr),
+\qquad
+E(q)_{ij}:=\sum_{e:i\to j,\ a(e)<a_*}\left(\frac{a(e)}{a_*}\right)^q.
+\]
+由定义知 \(E(q)\ge 0\) 且存在常数 \(C_0>0\) 使得对任意一致矩阵范数均有 \(\|E(q)\|\le C_0 e^{-q\Delta}\)。
+由于 \(\rho\) 在非负锥上单调，得 \(\rho(A_*+E(q))\ge \rho(A_*)\)；
+另一方面由 \(\rho(B)\le \|B\|\)（任意次乘法范数）与 \(\rho(A_*+E)\le \rho(A_*)+\rho(E)\) 得
+\[
+0\le \rho(A_*+E(q))-\rho(A_*)\le \rho(E(q))\le \|E(q)\|\le C_0 e^{-q\Delta}.
+\]
+再用 \(\rho(A_*)>0\) 与 \(\log(1+x)=x+O(x^2)\)（\(x\to 0\)）可得
+\[
+0\le \log\rho(A_*+E(q))-\log\rho(A_*)\le C\,e^{-q\Delta}
+\]
+对充分大 \(q\) 成立（取 \(C\) 吸收常数）。
+由
+\(
+P(q)=q\log a_*+\log\rho(A_*+E(q))
+\)
+即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[差分证书：由有限个大 \texorpdfstring{$q$}{q} 的压力值提取截距与缺口]\label{thm:pom-low-temperature-difference-certificates}
+在定理 \ref{thm:pom-low-temperature-three-term-expansion} 的设定下，对整数 \(q\ge 1\) 定义差分量
+\[
+\widehat\alpha(q):=P(q+1)-P(q),\qquad
+\widehat h(q):=P(q)-q\,\widehat\alpha(q),\qquad
+\Delta^2P(q):=P(q+1)-2P(q)+P(q-1).
+\]
+则存在常数 \(C>0\) 与 \(q_0\) 使对所有整数 \(q\ge q_0\) 有
+\[
+\boxed{\;
+\bigl|\widehat\alpha(q)-\log a_*\bigr|\le C\,e^{-q\Delta}\; },
+\qquad
+\boxed{\;
+\bigl|\widehat h(q)-\log\rho(A_*)\bigr|\le C\,q\,e^{-q\Delta}\; }.
+\]
+并且
+\[
+\boxed{\;
+\Delta^2P(q)=O(e^{-q\Delta})\qquad(q\to\infty)\; }.
+\]
+此外，若存在常数 \(c\neq 0\) 使得 \(\Delta^2P(q)\sim c\,e^{-q\Delta}\)，则缺口满足可核验极限公式
+\[
+\boxed{\;
+\Delta=-\lim_{q\to\infty}\log\left|\frac{\Delta^2P(q+1)}{\Delta^2P(q)}\right|\; }.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-low-temperature-three-term-expansion} 写
+\(
+P(q)=q\log a_*+\log\rho(A_*)+R(q)
+\)
+其中 \(R(q)=O(e^{-q\Delta})\)。
+则
+\[
+\widehat\alpha(q)-\log a_*=R(q+1)-R(q)=O(e^{-q\Delta}),
+\]
+并且
+\[
+\widehat h(q)-\log\rho(A_*)
+=R(q)-q\bigl(R(q+1)-R(q)\bigr)
+=O(e^{-q\Delta})+q\,O(e^{-q\Delta})
+=O(qe^{-q\Delta}).
+\]
+同理
+\(
+\Delta^2P(q)=R(q+1)-2R(q)+R(q-1)=O(e^{-q\Delta})
+\)。
+若进一步 \(\Delta^2P(q)\sim c e^{-q\Delta}\)，则
+\(
+\Delta^2P(q+1)/\Delta^2P(q)\to e^{-\Delta}
+\)，取对数即得极限公式。证毕。
+\end{proof}
+
