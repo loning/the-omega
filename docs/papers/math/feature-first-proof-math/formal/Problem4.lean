@@ -226,6 +226,29 @@ theorem G4_nonneg_of_Xi4_nonneg_chamberPlus
     denQ4_pos_of_chamberPlus (u1 + u2) (B1 + B2) (c1 + c2) hC12
   exact G4_nonneg_of_Xi4_nonneg u1 B1 c1 u2 B2 c2 h1 h2 h12 hXi
 
+theorem Xi4_nonneg_of_G4_nonneg_chamberPlus
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (hC1 : chamberPlus u1 B1 c1)
+    (hC2 : chamberPlus u2 B2 c2)
+    (hC12 : chamberPlus (u1 + u2) (B1 + B2) (c1 + c2))
+    (hG : 0 ≤ G4 u1 B1 c1 u2 B2 c2) :
+    0 ≤ Xi4 u1 B1 c1 u2 B2 c2 := by
+  have h1 : 0 < denQ4 u1 B1 c1 := denQ4_pos_of_chamberPlus u1 B1 c1 hC1
+  have h2 : 0 < denQ4 u2 B2 c2 := denQ4_pos_of_chamberPlus u2 B2 c2 hC2
+  have h12 : 0 < denQ4 (u1 + u2) (B1 + B2) (c1 + c2) :=
+    denQ4_pos_of_chamberPlus (u1 + u2) (B1 + B2) (c1 + c2) hC12
+  exact Xi4_nonneg_of_G4_nonneg u1 B1 c1 u2 B2 c2 h1 h2 h12 hG
+
+theorem G4_nonneg_iff_Xi4_nonneg_chamberPlus
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (hC1 : chamberPlus u1 B1 c1)
+    (hC2 : chamberPlus u2 B2 c2)
+    (hC12 : chamberPlus (u1 + u2) (B1 + B2) (c1 + c2)) :
+    (0 ≤ G4 u1 B1 c1 u2 B2 c2) ↔ (0 ≤ Xi4 u1 B1 c1 u2 B2 c2) := by
+  constructor
+  · exact Xi4_nonneg_of_G4_nonneg_chamberPlus u1 B1 c1 u2 B2 c2 hC1 hC2 hC12
+  · exact G4_nonneg_of_Xi4_nonneg_chamberPlus u1 B1 c1 u2 B2 c2 hC1 hC2 hC12
+
 end Problem4QuarticBridge
 
 namespace Problem4QuarticEven
