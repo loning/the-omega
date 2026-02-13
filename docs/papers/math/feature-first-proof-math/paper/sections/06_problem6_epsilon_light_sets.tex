@@ -736,6 +736,85 @@ This is a concrete, checkable bridge strictly weaker than a global RDI
 inequality.
 \end{remark}
 
+\begin{definition}[Cyclic prefix discrepancy]\label{def:q6-cyc-prefix}
+For probability vectors $p,q\in\mathbb R_{\ge 0}^k$ with
+$\sum_i p_i=\sum_i q_i=1$, define
+\[
+\Delta_{\mathrm{pref}}(p,q):=
+\max_{1\le t\le k}\left|\sum_{i=1}^t (p_i-q_i)\right|.
+\]
+\end{definition}
+
+\begin{lemma}[Prefix discrepancy controls cyclic transport]\label{lem:q6-cyc-prefix-w1}
+With $d_{\mathrm{cyc}}$ and $W_1^{\mathrm{cyc}}$ as in
+Proposition~\ref{prop:q6-omega-transport}, one has
+\[
+W_1^{\mathrm{cyc}}(p,q)\le \Delta_{\mathrm{pref}}(p,q).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $d_i:=p_i-q_i$, so $\sum_{i=1}^k d_i=0$.
+Fix $h$ with $\mathrm{Lip}_{d_{\mathrm{cyc}}}(h)\le 1$ and set
+$\tilde h_i:=h_i-h_1$. Since $\sum_i d_i=0$,
+\[
+\sum_{i=1}^k h_i d_i=\sum_{i=1}^k \tilde h_i d_i.
+\]
+Define prefix sums $P_t:=\sum_{i=1}^t d_i$.
+By discrete summation by parts and $\sum_i d_i=0$:
+\[
+\sum_{i=1}^k \tilde h_i d_i
+=
+\sum_{t=1}^{k-1}(\tilde h_t-\tilde h_{t+1})\,P_t.
+\]
+For adjacent bins, $d_{\mathrm{cyc}}(t,t+1)=1/k$, hence
+\[
+|\tilde h_t-\tilde h_{t+1}|\le \frac{1}{k}.
+\]
+Therefore
+\[
+\left|\sum_{i=1}^k h_i d_i\right|
+\le
+\frac1k\sum_{t=1}^{k-1}|P_t|
+\le
+\max_{1\le t\le k}|P_t|
+=
+\Delta_{\mathrm{pref}}(p,q).
+\]
+Taking supremum over all admissible $h$ gives the claim.
+\end{proof}
+
+\begin{corollary}[Omega discrepancy-to-non-stuck bridge]\label{cor:q6-omega-discrepancy}
+In the setup of Proposition~\ref{prop:q6-omega-transport}, assume
+\begin{enumerate}[nosep]
+\item $q_i\ge q_\star>0$ for all $i$;
+\item $|q_{i+1}-q_i|\le L/k$ for all $i$ (cyclically);
+\item $\Delta_{\mathrm{pref}}(p,q)\le \Delta$;
+\item
+\[
+W\left(1+\frac{L\,\Delta}{k\,q_\star^2}\right)\le G.
+\]
+\end{enumerate}
+Then
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}\le k,
+\]
+so the step is non-stuck.
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{lem:q6-cyc-prefix-w1},
+$W_1^{\mathrm{cyc}}(p,q)\le \Delta_{\mathrm{pref}}(p,q)\le\Delta$.
+Apply Proposition~\ref{prop:q6-omega-transport} with $\eta:=\Delta$.
+\end{proof}
+
+\begin{remark}[Why Corollary~\ref{cor:q6-omega-discrepancy} is useful]
+It removes direct $W_1$ estimation: it is enough to certify prefix
+discrepancy between load and gap profiles.
+This is exactly the format delivered by Omega discrepancy certificates
+for Kronecker/Beatty-style balancing schedules.
+\end{remark}
+
 \subsection*{Part VIII: The Resistance-Degree Spectral Inequality}
 
 This part records a natural route we pursued:
@@ -1046,6 +1125,8 @@ optimal constant $c=1/2$.
 An Omega-compatible sufficient route is now explicit
 (Proposition~\ref{prop:q6-omega-transport}): control the
 load-gap mismatch in cyclic $W_1$ and keep a positive gap floor.
+An even more checkable form is Corollary~\ref{cor:q6-omega-discrepancy},
+which replaces $W_1$ by prefix discrepancy control.
 
 These are equivalent and reduce Q6 to controlling the
 \emph{collective spectral norm} of vertex-induced edge sets
