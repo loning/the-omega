@@ -12,6 +12,9 @@
 3. Full inequality for `n=3`.
 4. Degenerate shift case `p(x)=(x-a)^n` (all `n`), with equality.
 5. Variance additivity under `boxplus_n` (all `n`).
+5b. Universal sharp-form upper bound:
+    `1/Phi_n(p) <= 4 Var(p)/(n(n-1)^2)` for every real-rooted degree-`n` polynomial
+    (proved by the exact identity `sum lambda_i s_i = n(n-1)/2` + Cauchy).
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
