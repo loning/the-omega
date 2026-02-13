@@ -1,0 +1,69 @@
+\paragraph{临界预算的熵解释与 Zeckendorf 基准分解}
+本段把临界斜率 \(a_1=\tau'(1^-)\) 与临界预算 \(\beta_{\mathrm{crit}}=a_1/\log 2\) 解释为“折叠推前分布的条件熵亏损率”，
+并将其精确拆分为 Zeckendorf 结构基准项与非均匀性惩罚项。
+
+\begin{theorem}[临界预算的熵恒等式]\label{thm:pom-oracle-critical-budget-entropy-identity}
+令 \(w_m(x)=d_m(x)/2^m\) 为均匀微态推前分布，并定义其 Shannon 熵
+\[
+H_1(m):=-\sum_{x\in X_m}w_m(x)\log w_m(x).
+\]
+若 \(\tau\) 在 \(q=1\) 的左邻域可微并满足 \(a_1:=\tau'(1^-)\)（同定理 \ref{thm:pom-oracle-critical-window-gaussian}），
+则熵率极限
+\[
+h_1:=\lim_{m\to\infty}\frac{1}{m}H_1(m)
+\]
+存在且满足严格恒等式
+\[
+\boxed{\;
+h_1=\log 2-a_1,\qquad
+\beta_{\mathrm{crit}}=1-\frac{h_1}{\log 2}\; } .
+\]
+\end{theorem}
+\begin{proof}
+由 \(w_m(x)=d_m(x)/2^m\) 得
+\[
+H_1(m)
+=-\sum_x \frac{d_m(x)}{2^m}\log\frac{d_m(x)}{2^m}
+=m\log 2-\sum_x w_m(x)\log d_m(x).
+\]
+另一方面，
+\[
+\frac{\dd}{\dd q}\log S_q(m)\Big|_{q=1}
+=\frac{\sum_x d_m(x)\log d_m(x)}{\sum_x d_m(x)}
+=\sum_x w_m(x)\log d_m(x).
+\]
+在 \(\tau\) 的可微性制度下，\(\frac{1}{m}\log S_q(m)\to\tau(q)\) 且在 \(q=1^-\) 可交换求导，
+从而
+\[
+\lim_{m\to\infty}\frac{1}{m}\sum_x w_m(x)\log d_m(x)
+=\tau'(1^-)=a_1.
+\]
+将其代回 \(H_1(m)=m\log 2-\sum_x w_m(x)\log d_m(x)\) 并除以 \(m\) 即得 \(h_1=\log 2-a_1\)；
+再代入 \(\beta_{\mathrm{crit}}=a_1/\log 2\) 得第二式。证毕。
+\end{proof}
+
+\begin{theorem}[Zeckendorf 基准项与熵缺口率分解]\label{thm:pom-oracle-critical-budget-zeckendorf-plus-gap}
+令 \(U_m=\mathrm{Unif}(X_m)\) 为类型均匀分布，并设极限
+\[
+\gamma:=\lim_{m\to\infty}\frac{1}{m}D_{\mathrm{KL}}(w_m\|U_m)
+=\lim_{m\to\infty}\frac{1}{m}\bigl(\log|X_m|-H_1(m)\bigr)
+\]
+存在。
+若进一步有 \(\lim_{m\to\infty}\frac{1}{m}\log|X_m|=\log\varphi\)，则
+\[
+\boxed{\;
+a_1=(\log 2-\log\varphi)+\gamma,\qquad
+\beta_{\mathrm{crit}}=1-\frac{\log\varphi}{\log 2}+\frac{\gamma}{\log 2}\; } .
+\]
+\end{theorem}
+\begin{proof}
+由恒等式 \(D_{\mathrm{KL}}(w_m\|U_m)=\log|X_m|-H_1(m)\) 得
+\(
+\gamma=\log\varphi-h_1
+\)。
+将定理 \ref{thm:pom-oracle-critical-budget-entropy-identity} 的 \(a_1=\log 2-h_1\) 与上式合并，
+得到 \(a_1=(\log 2-\log\varphi)+\gamma\)，再除以 \(\log 2\) 即得对 \(\beta_{\mathrm{crit}}\) 的分解。证毕。
+\end{proof}
+
+\endinput
+
