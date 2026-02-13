@@ -267,6 +267,85 @@ So a proof of Q6 must exploit additional global structure beyond
 pointwise local-load bounds.
 \end{remark}
 
+\begin{proposition}[One-step non-stuck criterion for multi-bin assignment]\label{prop:q6-onestep}
+Fix $\varepsilon\in(0,1]$ and $k\ge 1$.
+At some step of a $k$-bin process, let current bin matrices be
+$M_i:=M(B_i)$, and set $\lambda_i:=\lambda_{\max}(M_i)$.
+For a new vertex $u$, define
+\[
+w_i(u):=\sum_{v\in B_i,\ v\sim u} r_{uv}.
+\]
+If there exists $i$ with
+\[
+\lambda_i+w_i(u)\le \varepsilon,
+\]
+then assigning $u$ to bin $i$ keeps that bin $\varepsilon$-light:
+\[
+\lambda_{\max}\!\big(M(B_i\cup\{u\})\big)\le \varepsilon.
+\]
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+\Delta_i(u):=M(B_i\cup\{u\})-M(B_i)
+=\sum_{v\in B_i,\ v\sim u} b_{uv}b_{uv}^\top.
+\]
+All edges in $\Delta_i(u)$ are incident to $u$, so this is a star-type
+update. By Proposition~\ref{prop:q6-rdi-star},
+\[
+\lambda_{\max}(\Delta_i(u))\le w_i(u).
+\]
+By Weyl monotonicity for PSD sums,
+\[
+\lambda_{\max}(M_i+\Delta_i(u))
+\le \lambda_{\max}(M_i)+\lambda_{\max}(\Delta_i(u))
+\le \lambda_i+w_i(u)\le\varepsilon.
+\]
+\end{proof}
+
+\begin{corollary}[Global slack sufficient condition]\label{cor:q6-slack}
+In the setup of Proposition~\ref{prop:q6-onestep}, if
+\[
+\sum_{i=1}^k \lambda_i \le k\varepsilon-\sum_{i=1}^k w_i(u),
+\]
+then there exists a feasible bin for $u$ (hence the step is non-stuck).
+In particular, under the ordering from
+Lemma~\ref{lem:q6-rdeg-order} (so $\sum_i w_i(u)\le 2$), the sufficient
+condition is
+\[
+\sum_{i=1}^k \lambda_i \le k\varepsilon-2.
+\]
+\end{corollary}
+
+\begin{proof}
+If no feasible bin existed, then $\lambda_i+w_i(u)>\varepsilon$ for all
+$i$. Summing over $i$ gives
+\[
+\sum_i\lambda_i+\sum_i w_i(u)>k\varepsilon,
+\]
+contradicting the displayed assumption.
+The specialization uses $\sum_i w_i(u)\le 2$ from
+Lemma~\ref{lem:q6-rdeg-order}.
+\end{proof}
+
+\begin{remark}[Why the naive global-slack route still fails]
+If one always assigns $u$ to a minimum-load bin, then by
+Corollary~\ref{cor:q6-rdeg-order-bin},
+$w_i(u)\le 2/k$ for the chosen bin.
+Proposition~\ref{prop:q6-onestep} and Weyl then imply the crude growth
+bound
+\[
+\sum_{i=1}^k \lambda_i \ \text{can increase by at most}\ 2/k
+\]
+per inserted vertex.
+Over $\Theta(n)$ insertions this gives
+$\sum_i\lambda_i=O(n/k)$, far larger than $k\varepsilon-2=O(1)$ when
+$k=\Theta(1/\varepsilon)$.
+So controlling only $\sum_i\lambda_i$ cannot close non-stuckness; a
+successful proof must use a stronger (nonlinear) spectral potential.
+\end{remark}
+
 \begin{remark}[Precise remaining inequality after Lemma~\ref{lem:q6-rdeg}]
 Lemma~\ref{lem:q6-rdeg} gives linear-size subsets with uniform control of
 the \emph{resistance-weighted internal degree}. A natural candidate was
