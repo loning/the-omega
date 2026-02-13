@@ -1,8 +1,8 @@
 # Problem 4 Review
 
 - Problem: `Q4`
-- Submission Version: `Q4-V25`
-- Review Version: `Q4-R25`
+- Submission Version: `Q4-V26`
+- Review Version: `Q4-R26`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -93,6 +93,11 @@
     `1 = D lambda`, `g = D s`, hence
     `h = g - rho*1 = D(s-rho*lambda)`.
     So the critical defect vector is always in the cut subspace `Im(D)`.
+35. **NEW: Vertex-space form of the bottleneck**:
+    with `K = L^2 + D^T diag(g) D` and `v = s-rho*lambda`,
+    one has `(A+B)/S1 = v^T K v`.
+    So closure reduces to positivity on one specific direction `v`,
+    not to global PSD of `K`.
 
 ## Findings From Independent Re-check
 
