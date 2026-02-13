@@ -282,6 +282,79 @@ theorem G4Even_nonneg_of_bounds
 
 end Problem4QuarticEven
 
+namespace Problem4QuarticOdd
+
+noncomputable def phi (x : ℝ) : ℝ := x * (1 + x) / (1 - x)
+
+noncomputable def deltaC0 (u x : ℝ) : ℝ := (u / 3) * phi x
+
+noncomputable def G4C0 (u1 x1 u2 x2 x12 : ℝ) : ℝ :=
+  deltaC0 u1 x1 + deltaC0 u2 x2 - deltaC0 (u1 + u2) x12
+
+/-- Convex+monotone one-step bridge for the `c=0` quartic reduction.
+This is the exact inequality used in the paper proof once
+`x12 ≤ (u1/(u1+u2))x1 + (u2/(u1+u2))x2` is supplied. -/
+theorem G4C0_nonneg_of_convex_mono
+    (u1 x1 u2 x2 x12 : ℝ)
+    (hu1 : 0 ≤ u1) (hu2 : 0 ≤ u2) (hTot : 0 < u1 + u2)
+    (hx1_lt_one : x1 < 1) (hx2_lt_one : x2 < 1)
+    (hx12_nonneg : 0 ≤ x12)
+    (hBound :
+      x12 ≤ (u1 / (u1 + u2)) * x1 + (u2 / (u1 + u2)) * x2)
+    (hMixLt :
+      (u1 / (u1 + u2)) * x1 + (u2 / (u1 + u2)) * x2 < 1)
+    (hMono :
+      ∀ {x y : ℝ}, 0 ≤ x → x ≤ y → y < 1 → phi x ≤ phi y)
+    (hConv :
+      ∀ (w x y : ℝ), 0 ≤ w → w ≤ 1 → x < 1 → y < 1 →
+        phi (w * x + (1 - w) * y) ≤ w * phi x + (1 - w) * phi y) :
+    0 ≤ G4C0 u1 x1 u2 x2 x12 := by
+  let w : ℝ := u1 / (u1 + u2)
+  have hw0 : 0 ≤ w := by
+    dsimp [w]
+    exact div_nonneg hu1 (le_of_lt hTot)
+  have hw1 : w ≤ 1 := by
+    dsimp [w]
+    have hden : u1 + u2 ≠ 0 := ne_of_gt hTot
+    field_simp [hden]
+    linarith
+  have hwComp :
+      1 - w = u2 / (u1 + u2) := by
+    dsimp [w]
+    field_simp [hTot.ne']
+    ring
+  have hMixEq :
+      w * x1 + (1 - w) * x2 =
+        (u1 / (u1 + u2)) * x1 + (u2 / (u1 + u2)) * x2 := by
+    rw [hwComp]
+  have hPhiMono :
+      phi x12 ≤ phi (w * x1 + (1 - w) * x2) := by
+    apply hMono hx12_nonneg
+    · rw [hMixEq]
+      exact hBound
+    · rw [hMixEq]
+      exact hMixLt
+  have hPhiConv :
+      phi (w * x1 + (1 - w) * x2) ≤ w * phi x1 + (1 - w) * phi x2 := by
+    exact hConv w x1 x2 hw0 hw1 hx1_lt_one hx2_lt_one
+  have hPhi :
+      phi x12 ≤ w * phi x1 + (1 - w) * phi x2 := by
+    exact le_trans hPhiMono hPhiConv
+  have hScale :
+      (u1 + u2) / 3 * phi x12
+        ≤ (u1 + u2) / 3 * (w * phi x1 + (1 - w) * phi x2) := by
+    exact mul_le_mul_of_nonneg_left hPhi (by positivity)
+  have hRewrite :
+      (u1 + u2) / 3 * (w * phi x1 + (1 - w) * phi x2)
+        = u1 / 3 * phi x1 + u2 / 3 * phi x2 := by
+    dsimp [w]
+    field_simp [hTot.ne']
+    ring
+  unfold G4C0 deltaC0
+  linarith [hScale, hRewrite]
+
+end Problem4QuarticOdd
+
 /-!
   ## Problem 4 (reduction layer): one-gap closure template
 
