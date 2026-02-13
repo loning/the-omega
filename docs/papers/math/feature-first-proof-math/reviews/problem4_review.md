@@ -2,7 +2,7 @@
 
 - Problem: `Q4`
 - Submission Version: `Q4-V27`
-- Review Version: `Q4-R36`
+- Review Version: `Q4-R37`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -66,6 +66,11 @@
     \]
     then the full Stam inequality follows immediately by combining with the
     all-`n` monotone-sum theorem on each `r_\pi`.
+5j. Orbit-Jensen pressure test:
+    full-permutation (not subsampled) scans up to `n=8` found no violation of
+    \[
+      \frac1{\Phi_n(p\boxplus q)}\ge \frac1{n!}\sum_{\pi}\frac1{\Phi_n(r_\pi)}.
+    \]
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
