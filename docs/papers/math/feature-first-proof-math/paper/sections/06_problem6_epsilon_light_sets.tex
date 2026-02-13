@@ -197,21 +197,83 @@ By construction, the final set $S$ has weighted degree at most $\tau$ at
 every vertex.
 \end{proof}
 
+\begin{lemma}[Resistance-degeneracy ordering]\label{lem:q6-rdeg-order}
+There exists an ordering of vertices
+$v_1,\dots,v_n$ such that for every $t$,
+\[
+\sum_{\substack{s<t\\ v_s\sim v_t}} r_{v_s v_t}\le 2.
+\]
+\end{lemma}
+
+\begin{proof}
+For any nonempty $U\subseteq V$, let $H:=G[U]$ be the induced subgraph.
+For every $e\in E(H)$, Rayleigh monotonicity gives
+$r_e(G)\le r_e(H)$.
+Hence
+\[
+\sum_{e\in E(H)} r_e(G)
+\le
+\sum_{e\in E(H)} r_e(H)
+=|U|-\mathrm{cc}(H)\le |U|-1
+\]
+by Foster's theorem on $H$ (componentwise).
+Therefore the average resistance-weighted degree in $H$ is
+\[
+\frac{2}{|U|}\sum_{e\in E(H)} r_e(G)<2.
+\]
+So every nonempty induced subgraph has a vertex with
+resistance-weighted degree at most $2$ (with respect to $r_e(G)$).
+Remove such a vertex repeatedly.
+In reverse removal order $v_1,\dots,v_n$, each $v_t$ has
+resistance-weighted adjacency at most $2$ to earlier vertices.
+\end{proof}
+
+\begin{corollary}[Greedy multi-bin local load bound]\label{cor:q6-rdeg-order-bin}
+Fix $k\ge 1$ and process vertices in the order from
+Lemma~\ref{lem:q6-rdeg-order}.
+Assign each arriving vertex to the bin that minimizes its
+resistance-weighted adjacency to previously placed vertices in that bin.
+Then every inserted vertex $u$ satisfies
+\[
+\sum_{\substack{v\sim u\\ v\text{ earlier in same bin}}} r_{uv}\le \frac{2}{k}.
+\]
+\end{corollary}
+
+\begin{proof}
+At insertion of $u$, Lemma~\ref{lem:q6-rdeg-order} gives total
+resistance-weighted adjacency to all earlier vertices at most $2$.
+This total is split across $k$ bins, so the minimum bin load is at most
+$2/k$.
+The greedy rule chooses such a minimum-load bin.
+\end{proof}
+
+\begin{remark}[What Corollary~\ref{cor:q6-rdeg-order-bin} gives]
+Taking $k=\lceil 2/\varepsilon\rceil$, every inserted vertex can be
+placed so that its \emph{local} resistance load in its bin is at most
+$\varepsilon$.
+This is a deterministic non-probabilistic control of the dense-regime
+local term. The remaining difficulty is purely spectral:
+convert this local load control into a uniform bound
+$\lambda_{\max}(M(B_i))\le \varepsilon$ for each bin.
+\end{remark}
+
 \begin{remark}[Precise remaining inequality after Lemma~\ref{lem:q6-rdeg}]
 Lemma~\ref{lem:q6-rdeg} gives linear-size subsets with uniform control of
-the \emph{resistance-weighted internal degree}. To close Q6 from this
-point, it would suffice to prove a universal matrix inequality of the form
+the \emph{resistance-weighted internal degree}. A natural candidate was
+to prove a universal matrix inequality of the form
 \[
 \lambda_{\max}\!\big(M(S)\big)
 \le C\cdot
 \max_{u\in S}\sum_{v\in S} r_{uv}
 \]
-with an absolute constant $C$.
-Indeed, taking $\tau=\varepsilon/C$ in Lemma~\ref{lem:q6-rdeg} would then
-yield $\lambda_{\max}(M(S))\le\varepsilon$ and
+with an absolute constant $C$. If true, taking $\tau=\varepsilon/C$ in
+Lemma~\ref{lem:q6-rdeg} would yield
+$\lambda_{\max}(M(S))\le\varepsilon$ and
 $|S|\ge (\varepsilon/(4C))\,n$.
-This is a strictly sharper reduction than the previous vertex-BSS
-formulation, but the displayed inequality is currently unproved.
+
+Part~VIII proves this candidate inequality is in fact \emph{false}:
+the best possible constant $C$ is unbounded
+(Proposition~\ref{prop:q6-rdi-false}).
 \end{remark}
 
 \begin{proposition}[Lower bound on the constant in the
@@ -223,62 +285,55 @@ every $S\subseteq V$,
 \le C\cdot
 \max_{u\in S}\sum_{v\in S} r_{uv}.
 \]
-Then necessarily $C\ge 4/3$.
+Then necessarily $C\ge 7/5$.
 \end{proposition}
 
 \begin{proof}
-Consider the $8$-vertex graph $G$ with edge set
+Consider the $10$-vertex graph $G$ with edge set
 \[
 \begin{aligned}
 E=\{&
-\{0,1\},\{2,3\},\{0,4\},\{0,6\},\{1,5\},\{1,7\},\\
-&\{2,5\},\{2,7\},\{3,4\},\{3,6\},\{4,6\},\{5,7\}\}.
+\{0,2\},\{0,5\},\{0,6\},\{0,8\},
+\{1,3\},\{1,6\},\{1,9\},\\
+&\{2,4\},\{2,5\},\{2,6\},\{2,8\},
+\{3,7\},\{3,9\},\\
+&\{4,5\},\{4,6\},\{5,7\},\{5,8\},\{6,8\},\{7,9\}\}.
 \end{aligned}
 \]
-Let $S=\{0,1,2,3\}$. Then
-$E(S,S)=\{\{0,1\},\{2,3\}\}$ (two disjoint edges).
+Let $S=\{1,5,6,7\}$. Then
+$E(S,S)=\{\{1,6\},\{5,7\}\}$ (two disjoint edges).
 
-Write $e_1=\{0,1\}$ and $e_2=\{2,3\}$.
-By symmetry (or by solving the nodal linear system), the effective
-resistances are
+Write $e_1=\{1,6\}$ and $e_2=\{5,7\}$.
+Solving Kirchhoff equations for unit injections on these pairs gives
 \[
-r_{e_1}=r_{e_2}=\frac34.
+r_{e_1}=r_{e_2}=\frac57.
 \]
 Since each vertex of $S$ is incident to exactly one edge of $E(S,S)$,
 \[
-\max_{u\in S}\sum_{v\in S} r_{uv}=\frac34.
+\max_{u\in S}\sum_{v\in S} r_{uv}=\frac57.
 \]
 
-Now form the $2\times 2$ Gram matrix
+Now form the $2\times2$ Gram matrix
 \[
 G=\begin{pmatrix}
 \langle b_{e_1},b_{e_1}\rangle & \langle b_{e_1},b_{e_2}\rangle\\
 \langle b_{e_2},b_{e_1}\rangle & \langle b_{e_2},b_{e_2}\rangle
 \end{pmatrix}.
 \]
-Its diagonal entries are $3/4$.
-The off-diagonal entry is a transfer current. Inject unit current
-from $0$ to $1$ and denote node potentials by $\phi$ with $\phi_1=0$.
-Solving Kirchhoff equations gives
-\[
-\phi_0=\frac34,\quad \phi_2=\frac14,\quad \phi_3=\frac12,
-\quad \phi_4=\phi_6=\frac58,\quad \phi_5=\phi_7=\frac18.
-\]
-Hence current on edge $e_2=\{2,3\}$ equals
-$\phi_2-\phi_3=-1/4$, so
-$|\langle b_{e_1},b_{e_2}\rangle|=1/4$.
+The diagonal entries are $5/7$. The off-diagonal entry is the transfer
+current on $e_2$ under unit injection on $e_1$, which equals $-2/7$.
 Therefore
 \[
-G=\begin{pmatrix}3/4&\pm\,1/4\\ \pm\,1/4&3/4\end{pmatrix},
+G=\begin{pmatrix}5/7&-2/7\\ -2/7&5/7\end{pmatrix},
 \]
-whose largest eigenvalue is $1$.
+whose eigenvalues are $1$ and $3/7$.
 Nonzero eigenvalues of
 $M(S)=\sum_{e\in E(S,S)} b_e b_e^\top$
 coincide with those of $G$, so $\lambda_{\max}(M(S))=1$.
 
 Thus any universal admissible $C$ must satisfy
 \[
-C\ge \frac{1}{3/4}=\frac43.
+C\ge \frac{1}{5/7}=\frac75.
 \]
 \end{proof}
 
@@ -292,8 +347,10 @@ Combining Lemma~\ref{lem:q6-rdeg} with the inequality
 would yield Conjecture~\ref{conj:q6} with
 $c=1/(4C)$.
 Proposition~\ref{prop:q6-C-lower} shows that this route cannot use
-$C<4/3$, so along this specific reduction one cannot get
-$c>3/16$.
+$C<7/5$, so along this specific reduction one cannot get
+$c>5/28$.
+Part~VIII further shows that, in fact, no universal finite $C$ exists for
+this inequality.
 \end{remark}
 
 \subsection*{Part V: Proved Special Cases}
@@ -434,12 +491,14 @@ while the single-set BSS barrier approach yields $c=1/6$ conditionally
 
 \subsection*{Part VIII: The Resistance-Degree Spectral Inequality}
 
-The preceding analysis reduces Q6 to a single matrix inequality.
-We now formulate this precisely, prove it for several graph classes,
-and show that the full conjecture follows.
+This part records a natural route we pursued:
+control $\lambda_{\max}(M(S))$ by the maximum resistance-weighted
+internal degree. The conditional implication to Q6 is correct, and the
+inequality holds in several classes (stars, complete graphs, two-edge
+matchings). However, we now show this route is \emph{false in general}.
 
-\begin{conjecture}[Resistance-degree spectral inequality]\label{conj:q6-rdi}
-There exists a universal constant $C\ge 4/3$ such that for every
+\begin{conjecture}[Resistance-degree spectral inequality (false)]\label{conj:q6-rdi}
+There exists a universal constant $C\ge 7/5$ such that for every
 graph $G=(V,E)$ on $n$ vertices and every $S\subseteq V$:
 \[
 \lambda_{\max}\!\bigl(M(S)\bigr)
@@ -464,8 +523,8 @@ Hence $S$ is $\varepsilon$-light with $|S|\ge\varepsilon n/(4C)$.
 \end{proof}
 
 \begin{remark}
-By Proposition~\ref{prop:q6-C-lower}, $C\ge 4/3$.
-Hence this route yields $c\le 3/16$ at best.
+By Proposition~\ref{prop:q6-C-lower}, $C\ge 7/5$.
+Hence this route yields $c\le 5/28$ at best.
 \end{remark}
 
 We now verify the inequality for several graph classes.
@@ -500,58 +559,172 @@ So $M(S)=L_S/n$ has eigenvalue $s/n$ (multiplicity $s-1$)
 and $0$ (multiplicity $n-s$) on $\mathbf{1}^\perp$.
 \end{proof}
 
-\begin{proposition}[RDI for matchings]\label{prop:q6-rdi-match}
-If $E(S,S)$ is a matching (disjoint edges $e_1,\dots,e_k$),
-then $C\le 4/3$ suffices. This bound is tight
-(attained by the $8$-vertex graph in
-Proposition~\ref{prop:q6-C-lower}).
+\begin{proposition}[RDI for two-edge matchings]\label{prop:q6-rdi-match}
+If $E(S,S)=\{e_1,e_2\}$ consists of exactly two disjoint edges, then
+\[
+\lambda_{\max}(M(S))
+\le 2\cdot \max\{r_{e_1},r_{e_2}\}
+=2\cdot\max_{u\in S}\sum_{v\in S}r_{uv}.
+\]
+Hence for this class one has
+\[
+\frac75 \le C \le 2,
+\]
+where the lower bound is attained by
+Proposition~\ref{prop:q6-C-lower}.
 \end{proposition}
 
 \begin{proof}
-The Gram matrix of $\{b_{e_i}\}$ is $G\in\mathbb R^{k\times k}$
-with $G_{ij}=b_{e_i}^\top b_{e_j}$.
-For $e_i=\{u_i,v_i\}$ and $e_j=\{u_j,v_j\}$ with
-$\{u_i,v_i\}\cap\{u_j,v_j\}=\emptyset$:
+Let
 \[
-G_{ij}=\tfrac12(r_{u_iv_j}+r_{v_iu_j}-r_{u_iu_j}-r_{v_iv_j}).
+G=\begin{pmatrix}
+r_{e_1} & c\\
+c & r_{e_2}
+\end{pmatrix},
+\qquad c:=\langle b_{e_1},b_{e_2}\rangle.
 \]
-Since $G$ is a Gram matrix, $G\succeq 0$, so all off-diagonal
-entries satisfy $|G_{ij}|\le\sqrt{G_{ii}G_{jj}}=\sqrt{r_{e_i}r_{e_j}}$.
-Moreover, $G_{ij}\le\min(r_{e_i},r_{e_j})$
-(Cauchy--Schwarz on $b_{e_i},b_{e_j}$, plus the PSD constraint).
-
-Since $E(S)$ is a matching, each vertex of $S$ is incident to
-exactly one edge, so $\max_{u\in S}\sum_{v}r_{uv}=\max_i r_{e_i}$.
-
-For $\lambda_{\max}(G)$: write $G=D+R$ where $D=\mathrm{diag}(r_{e_1},\dots,r_{e_k})$ and $R$ is the off-diagonal part.
-By the PSD constraint $G\succeq 0$ with $G_{ij}\le\min(G_{ii},G_{jj})$:
+Then $G$ is the Gram matrix of $\{b_{e_1},b_{e_2}\}$, so
+$|c|\le \sqrt{r_{e_1}r_{e_2}}$ by Cauchy--Schwarz.
+Because nonzero eigenvalues of $M(S)$ are those of $G$,
 \[
-\lambda_{\max}(G) = \lambda_{\max}(D+R)
-\le \max_i G_{ii} + \lambda_{\max}(R).
+\lambda_{\max}(M(S))
+=\lambda_{\max}(G)
+\le \max\{r_{e_1},r_{e_2}\}+|c|
+\le \max\{r_{e_1},r_{e_2}\}+\sqrt{r_{e_1}r_{e_2}}
+\le 2\max\{r_{e_1},r_{e_2}\}.
 \]
-For $k=2$ edges with $r_{e_1}=r_{e_2}=r$ and $|R_{12}|=c\le r$:
-$\lambda_{\max}(G)=r+c\le 2r$. But the PSD constraint forces $c\le r$,
-and the tightest ratio occurs when $c=r/3$
-(as in Proposition~\ref{prop:q6-C-lower}, where $r=3/4$, $c=1/4$):
-$\lambda_{\max}=r+r/3=4r/3$, giving $C=4/3$.
-
-For $k\ge 3$ edges: by the Schur test on $G$ with
-weight $p_i=\sqrt{r_{e_i}}$, each row sum satisfies
+For two disjoint edges, each vertex is incident to exactly one internal
+edge, so
 \[
-\frac{1}{\sqrt{r_{e_i}}}\sum_j |G_{ij}|\sqrt{r_{e_j}}
-\le r_{e_i} + \sum_{j\ne i}\sqrt{r_{e_i}r_{e_j}}\cdot
-\frac{\sqrt{r_{e_j}}}{\sqrt{r_{e_i}}}
-= r_{e_i} + \sum_{j\ne i}r_{e_j}.
+\max_{u\in S}\sum_{v\in S}r_{uv}=\max\{r_{e_1},r_{e_2}\}.
 \]
-This gives $\lambda_{\max}\le\max_i(r_{e_i}+\sum_{j\ne i}r_{e_j})
-=\sum_i r_{e_i}=\mathrm{tr}\,M(S)$, which is loose.
-The tight analysis for $k=2$ (giving $C=4/3$) uses the
-structure of the Gram matrix directly.
-For general $k$, the inequality $C\le 4/3$ can be verified
-by noting that the Gram matrix decomposes as the sum of $k$
-rank-1 PSD matrices in an $(n-1)$-dimensional space,
-with pairwise inner products controlled by the
-four-point effective resistance identity.
+This proves the displayed bound.
+\end{proof}
+
+\begin{proposition}[RDI fails in general]\label{prop:q6-rdi-false}
+For every integer $k\ge 2$, there exists a simple graph $G_k$ and a
+vertex subset $S_k\subseteq V(G_k)$ such that:
+\begin{enumerate}[nosep]
+\item $E(S_k,S_k)$ is a matching of $k$ disjoint edges;
+\item $\lambda_{\max}(M(S_k))=1$;
+\item $\max_{u\in S_k}\sum_{v\in S_k,\,v\sim u} r_{uv}=5/(k+4)$.
+\end{enumerate}
+Hence
+\[
+\frac{\lambda_{\max}(M(S_k))}
+{\max_{u\in S_k}\sum_{v\in S_k,\,v\sim u} r_{uv}}
+\;=\;\frac{k+4}{5}\xrightarrow[k\to\infty]{}\infty,
+\]
+so no universal constant $C$ can satisfy
+Conjecture~\ref{conj:q6-rdi}.
+\end{proposition}
+
+\begin{proof}
+Fix $k\ge 2$.
+Create terminal vertices
+\[
+S_k=\{a_1,b_1,\dots,a_k,b_k\}.
+\]
+Include matching edges $a_i b_i$ for all $i$.
+For each $1\le i<j\le k$, add two new vertices $x_{ij},y_{ij}$ and edges
+\[
+a_i x_{ij},\ a_j x_{ij},\ b_i y_{ij},\ b_j y_{ij}.
+\]
+No other edges are present.
+Thus $E(S_k,S_k)=\{a_i b_i:1\le i\le k\}$ is exactly a matching.
+
+Let $g_i:=e_{a_i}-e_{b_i}$ and define
+$R_{ij}:=g_i^\top L^+ g_j=\langle b_{a_i b_i}, b_{a_j b_j}\rangle$.
+The nonzero eigenvalues of $M(S_k)$ are eigenvalues of $R$.
+
+Eliminate each degree-$2$ vertex $x_{ij},y_{ij}$ by
+Kron reduction. This preserves effective resistances between terminals.
+The reduced network on $S_k$ has conductances:
+\begin{enumerate}[nosep]
+\item $c(a_i,b_i)=1$ for every $i$;
+\item $c(a_i,a_j)=1/2$ for $i\ne j$;
+\item $c(b_i,b_j)=1/2$ for $i\ne j$;
+\item no other terminal-terminal edges.
+\end{enumerate}
+
+Inject $+1$ at $a_1$ and $-1$ at $b_1$.
+By permutation symmetry on indices $\{2,\dots,k\}$, set
+\[
+V(a_1)=A,\quad V(b_1)=B,\quad
+V(a_j)=C,\quad V(b_j)=D\ (j\ge 2).
+\]
+Kirchhoff equations are
+\[
+1=(A-B)+\frac{k-1}{2}(A-C),\qquad
+0=(C-D)+\frac12(C-A),
+\]
+together with the symmetric equations at $b_1,b_j$.
+By the involution exchanging $a$- and $b$-sides (and flipping source/sink),
+the unique solution satisfies $B=-A$, $D=-C$.
+Then
+\[
+0=(C-(-C))+\frac12(C-A)\iff 5C=A,
+\]
+and
+\[
+1=2A+\frac{k-1}{2}\!\left(A-\frac A5\right)
+ =\frac{2(k+4)}{5}\,A,
+\]
+so
+\[
+A=\frac{5}{2(k+4)},\qquad
+C=\frac{1}{2(k+4)}.
+\]
+Therefore
+\[
+r_{a_1b_1}=V(a_1)-V(b_1)=2A=\frac{5}{k+4},
+\]
+and for $j\ge2$,
+\[
+R_{1j}=V(a_j)-V(b_j)=2C=\frac{1}{k+4}.
+\]
+By symmetry, all diagonal entries of $R$ are $5/(k+4)$ and all off-diagonal
+entries are $1/(k+4)$. Hence
+\[
+R=\frac{4}{k+4}\,I_k+\frac{1}{k+4}\,J_k.
+\]
+So eigenvalues of $R$ are
+\[
+1\ \text{(once)},\qquad \frac{4}{k+4}\ \text{(multiplicity $k-1$)}.
+\]
+Thus $\lambda_{\max}(M(S_k))=\lambda_{\max}(R)=1$.
+
+Since $E(S_k,S_k)$ is a matching and every matching edge has resistance
+$5/(k+4)$, each terminal has resistance-weighted internal degree $5/(k+4)$:
+\[
+\max_{u\in S_k}\sum_{v\in S_k,\,v\sim u} r_{uv}
+ =\frac{5}{k+4}.
+\]
+The ratio is $(k+4)/5$, proving the claim.
+\end{proof}
+
+\begin{corollary}[Normalized matching bound also fails]\label{cor:q6-match-norm-false}
+There is no absolute constant $B$ such that
+\[
+\lambda_{\max}\!\Big(\sum_{e\in F}\frac{b_e b_e^\top}{r_e}\Big)\le B
+\]
+for every graph and every matching $F$.
+\end{corollary}
+
+\begin{proof}
+Take $G_k$ and matching $F=E(S_k,S_k)$ from
+Proposition~\ref{prop:q6-rdi-false}.
+All edges in $F$ have $r_e=5/(k+4)$, and
+\[
+\sum_{e\in F}\frac{b_e b_e^\top}{r_e}
+\;=\;\frac{k+4}{5}\,M(S_k).
+\]
+Since $\lambda_{\max}(M(S_k))=1$, we get
+\[
+\lambda_{\max}\!\Big(\sum_{e\in F}\frac{b_e b_e^\top}{r_e}\Big)
+\;=\;\frac{k+4}{5},
+\]
+which is unbounded as $k\to\infty$.
 \end{proof}
 
 \begin{remark}[BSS budget analysis and the $\varepsilon^2$ barrier]
@@ -586,22 +759,23 @@ has no structural justification for general graphs.
 \end{remark}
 
 \subsection*{Current Status}
-The full universal existence proof (Conjecture~\ref{conj:q6}) is
-\textbf{reduced to the resistance-degree spectral inequality}
-(Conjecture~\ref{conj:q6-rdi}).
+The full universal existence proof (Conjecture~\ref{conj:q6}) remains open.
 All structural components, the seven special cases, and the
 conditional $c=1/6$ result (Proposition~\ref{prop:q6-conditional})
 are rigorously verified.
 
 \medskip\noindent
-\textbf{Three equivalent formulations of the remaining gap:}
+\textbf{What is now ruled out:}
 \begin{enumerate}[nosep]
-\item \textbf{Resistance-degree spectral inequality}
-(Conjecture~\ref{conj:q6-rdi}):
-$\lambda_{\max}(M(S))\le C\cdot\max_{u\in S}\sum_v r_{uv}$
-for universal $C$. Proved for stars ($C=1$), complete graphs ($C=1$),
-matchings ($C\le 4/3$, tight). Lower bound: $C\ge 4/3$.
+\item The resistance-degree route with a universal constant
+$C$ is false (Proposition~\ref{prop:q6-rdi-false}).
+\item The normalized matching route is also false:
+its optimal constant is unbounded (Corollary~\ref{cor:q6-match-norm-false}).
+\end{enumerate}
 
+\medskip\noindent
+\textbf{Two equivalent formulations of the remaining gap:}
+\begin{enumerate}[nosep]
 \item \textbf{Vertex BSS lemma} (Steps~1--4 in Part~VII):
 in the greedy barrier potential framework, when $|S|<c\varepsilon|I|$,
 some vertex has bounded potential increase.
@@ -610,7 +784,7 @@ some vertex has bounded potential increase.
 partitioning $I$ into $O(1/\varepsilon)$ bins via greedy assignment,
 the largest bin is $\varepsilon$-light.
 \end{enumerate}
-All three are equivalent and reduce Q6 to controlling the
+These are equivalent and reduce Q6 to controlling the
 \emph{collective spectral norm} of vertex-induced edge sets
 under per-edge leverage bounds. The BSS budget analysis (Part~VIII)
 shows that barrier-potential methods face an intrinsic
