@@ -291,6 +291,79 @@ noncomputable def deltaC0 (u x : ℝ) : ℝ := (u / 3) * phi x
 noncomputable def G4C0 (u1 x1 u2 x2 x12 : ℝ) : ℝ :=
   deltaC0 u1 x1 + deltaC0 u2 x2 - deltaC0 (u1 + u2) x12
 
+/-- Monotonicity of `phi` on `[0,1)`. -/
+theorem phi_mono_nonneg_lt1
+    {x y : ℝ} (hx0 : 0 ≤ x) (hxy : x ≤ y) (hy1 : y < 1) :
+    phi x ≤ phi y := by
+  have hx1 : x < 1 := lt_of_le_of_lt hxy hy1
+  have hy0 : 0 ≤ y := le_trans hx0 hxy
+  have hxden : 0 < 1 - x := sub_pos.mpr hx1
+  have hyden : 0 < 1 - y := sub_pos.mpr hy1
+  have hfac_nonneg : 0 ≤ 1 + x + y - x * y := by
+    have hy1mx_nonneg : 0 ≤ y * (1 - x) := mul_nonneg hy0 hxden.le
+    have hrewrite : 1 + x + y - x * y = 1 + x + y * (1 - x) := by ring
+    rw [hrewrite]
+    nlinarith
+  have hdiff :
+      phi y - phi x =
+        (y - x) * (1 + x + y - x * y) / ((1 - x) * (1 - y)) := by
+    unfold phi
+    field_simp [hxden.ne', hyden.ne']
+    ring
+  have hnum_nonneg : 0 ≤ (y - x) * (1 + x + y - x * y) := by
+    exact mul_nonneg (sub_nonneg.mpr hxy) hfac_nonneg
+  have hden_pos : 0 < (1 - x) * (1 - y) := mul_pos hxden hyden
+  have hsub_nonneg : 0 ≤ phi y - phi x := by
+    rw [hdiff]
+    exact div_nonneg hnum_nonneg hden_pos.le
+  linarith
+
+/-- Two-point convexity inequality for `phi` on `(-∞,1)`. -/
+theorem phi_convex_two_point
+    (w x y : ℝ)
+    (hw0 : 0 ≤ w) (hw1 : w ≤ 1)
+    (hx1 : x < 1) (hy1 : y < 1) :
+    phi (w * x + (1 - w) * y) ≤ w * phi x + (1 - w) * phi y := by
+  let m : ℝ := w * x + (1 - w) * y
+  have hwm_nonneg : 0 ≤ 1 - w := by linarith
+  have hdx : 0 < 1 - x := sub_pos.mpr hx1
+  have hdy : 0 < 1 - y := sub_pos.mpr hy1
+  have hm1 : m < 1 := by
+    have hterm1_nonneg : 0 ≤ w * (1 - x) := mul_nonneg hw0 hdx.le
+    have hterm2_nonneg : 0 ≤ (1 - w) * (1 - y) := mul_nonneg hwm_nonneg hdy.le
+    have hsum : 0 < w * (1 - x) + (1 - w) * (1 - y) := by
+      by_cases hwz : w = 0
+      · subst hwz
+        have hterm2_pos : 0 < (1 - (0 : ℝ)) * (1 - y) := by nlinarith [hdy]
+        nlinarith [hterm2_pos]
+      · have hwpos : 0 < w := lt_of_le_of_ne hw0 (Ne.symm hwz)
+        have hterm1_pos : 0 < w * (1 - x) := mul_pos hwpos hdx
+        nlinarith [hterm1_pos, hterm2_nonneg]
+    have hrewrite : 1 - m = w * (1 - x) + (1 - w) * (1 - y) := by
+      dsimp [m]
+      ring
+    have : 0 < 1 - m := by simpa [hrewrite] using hsum
+    exact sub_pos.mp this
+  have hdm : 0 < 1 - m := sub_pos.mpr hm1
+  have hgap :
+      w * phi x + (1 - w) * phi y - phi m =
+        2 * w * (1 - w) * (x - y) ^ 2 /
+          ((1 - x) * (1 - y) * (1 - m)) := by
+    unfold phi
+    field_simp [hdx.ne', hdy.ne', hdm.ne']
+    ring
+  have hnum_nonneg : 0 ≤ 2 * w * (1 - w) * (x - y) ^ 2 := by
+    have hsq : 0 ≤ (x - y) ^ 2 := sq_nonneg (x - y)
+    have hww : 0 ≤ w * (1 - w) := mul_nonneg hw0 hwm_nonneg
+    nlinarith
+  have hden_pos : 0 < (1 - x) * (1 - y) * (1 - m) := by
+    exact mul_pos (mul_pos hdx hdy) hdm
+  have hgap_nonneg : 0 ≤ w * phi x + (1 - w) * phi y - phi m := by
+    rw [hgap]
+    exact div_nonneg hnum_nonneg hden_pos.le
+  have : phi m ≤ w * phi x + (1 - w) * phi y := by linarith
+  simpa [m] using this
+
 /-- Convex+monotone one-step bridge for the `c=0` quartic reduction.
 This is the exact inequality used in the paper proof once
 `x12 ≤ (u1/(u1+u2))x1 + (u2/(u1+u2))x2` is supplied. -/
@@ -352,6 +425,24 @@ theorem G4C0_nonneg_of_convex_mono
     ring
   unfold G4C0 deltaC0
   linarith [hScale, hRewrite]
+
+theorem G4C0_nonneg
+    (u1 x1 u2 x2 x12 : ℝ)
+    (hu1 : 0 ≤ u1) (hu2 : 0 ≤ u2) (hTot : 0 < u1 + u2)
+    (hx1_lt_one : x1 < 1) (hx2_lt_one : x2 < 1)
+    (hx12_nonneg : 0 ≤ x12)
+    (hBound :
+      x12 ≤ (u1 / (u1 + u2)) * x1 + (u2 / (u1 + u2)) * x2)
+    (hMixLt :
+      (u1 / (u1 + u2)) * x1 + (u2 / (u1 + u2)) * x2 < 1) :
+    0 ≤ G4C0 u1 x1 u2 x2 x12 := by
+  refine G4C0_nonneg_of_convex_mono
+      u1 x1 u2 x2 x12 hu1 hu2 hTot hx1_lt_one hx2_lt_one
+      hx12_nonneg hBound hMixLt ?_ ?_
+  · intro x y hx0 hxy hy1
+    exact phi_mono_nonneg_lt1 hx0 hxy hy1
+  · intro w x y hw0 hw1 hx1 hy1
+    exact phi_convex_two_point w x y hw0 hw1 hx1 hy1
 
 end Problem4QuarticOdd
 
