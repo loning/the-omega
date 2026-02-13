@@ -37,6 +37,56 @@ theorem stam_n2_identity (a1 a2 b1 b2 : ℝ) :
 end Problem4
 
 /-!
+  ## Problem 4 (quartic Route-1 algebra): exact closed form for `δ`
+
+  For the centered quartic flow normal form
+    r_{u,B,c}(x) = x^4 - 6u x^2 + Bx + (3u^2 + c),
+  the Route-1 derivation uses the identity
+    δ(u,B,c) = ((u/3) * R(u,B,c) - Δ(u,B,c)) / R(u,B,c),
+  where `Δ` is the quartic discriminant and `R = Φ * Δ`.
+
+  The theorem below formally checks that this expression is exactly the
+  closed rational formula used in the paper.
+-/
+
+namespace Problem4Quartic
+
+def discQ4 (u B c : ℝ) : ℝ :=
+  -27 * B ^ 4
+    - 864 * B ^ 2 * c * u
+    - 1728 * B ^ 2 * u ^ 3
+    + 256 * c ^ 3
+    - 2304 * c ^ 2 * u ^ 2
+    + 27648 * u ^ 6
+
+def denomQ4 (u B c : ℝ) : ℝ :=
+  144 * (6 * u ^ 2 + c) * (96 * u ^ 3 - 16 * u * c - 3 * B ^ 2)
+
+noncomputable def deltaQ4Closed (u B c : ℝ) : ℝ :=
+  (27 * B ^ 4
+      + 144 * u * B ^ 2 * (5 * c + 6 * u ^ 2)
+      + 256 * c ^ 2 * (6 * u ^ 2 - c)) /
+    denomQ4 u B c
+
+noncomputable def deltaQ4FromDisc (u B c : ℝ) : ℝ :=
+  ((u / 3) * denomQ4 u B c - discQ4 u B c) / denomQ4 u B c
+
+theorem deltaQ4_numerator_identity (u B c : ℝ) :
+    (u / 3) * denomQ4 u B c - discQ4 u B c =
+      27 * B ^ 4
+        + 144 * u * B ^ 2 * (5 * c + 6 * u ^ 2)
+        + 256 * c ^ 2 * (6 * u ^ 2 - c) := by
+  unfold denomQ4 discQ4
+  ring
+
+theorem deltaQ4_closed_eq (u B c : ℝ) :
+    deltaQ4FromDisc u B c = deltaQ4Closed u B c := by
+  unfold deltaQ4FromDisc deltaQ4Closed
+  rw [deltaQ4_numerator_identity]
+
+end Problem4Quartic
+
+/-!
   ## Problem 4 (reduction layer): one-gap closure template
 
   This section does not yet prove the all-`n` Stam inequality.
