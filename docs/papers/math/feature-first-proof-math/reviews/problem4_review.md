@@ -2,7 +2,7 @@
 
 - Problem: `Q4`
 - Submission Version: `Q4-V27`
-- Review Version: `Q4-R34`
+- Review Version: `Q4-R35`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -43,6 +43,17 @@
     \]
     so `J_{p,q}(t)` is exactly the Stam gap of the smoothed pair
     `(p\boxplus q_t,\ q\boxplus q_t)`.
+5g. Deficit bridge decomposition (exact):
+    with
+    `delta_u(t)=D_n Var(u) - (1/Phi_n(u boxplus q_t)-C_n t)`,
+    one has
+    \[
+      J_{p,q}(t)=\delta_p(t)+\delta_q(t)-\delta_{p\boxplus q}(2t),
+    \]
+    and
+    \[
+      \delta_u(t)=\int_t^\infty\!\left(\frac{d}{ds}\frac1{\Phi_n(u\boxplus q_s)}-C_n\right)ds.
+    \]
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
