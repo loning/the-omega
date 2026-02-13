@@ -85,3 +85,83 @@ q\,\log\det\nolimits'\!\left(I-\frac{A^{(1)}_\theta}{\rho_1}\right)\; }.
 并取对数相减即得。证毕。
 \end{proof}
 
+\begin{proposition}[核版 RH 给出的留数常数压扁界：维数 \texorpdfstring{$\times$}{x} 平方根缺口]\label{prop:finite-part-residue-constant-rh-squeeze}
+设 \(A\) 为原始非负矩阵，\(\rho=\rho(A)>1\)，维数 \(d:=\dim A\)，并以命题 \ref{prop:finite-part-residue-reduced-determinant} 的记号定义主极点留数常数 \(C(A)\)。
+若核版 RH（平方根界）成立，即对一切非 Perron 特征值 \(\mu\neq\rho\) 有 \(|\mu|\le \rho^{1/2}\)，则有双侧界
+\[
+(1+\rho^{-1/2})^{-(d-1)}\ \le\ C(A)\ \le\ (1-\rho^{-1/2})^{-(d-1)}.
+\]
+特别地，当 \(\rho\ge 4\) 时（从而 \(\rho^{-1/2}\le \tfrac12\)），有粗界
+\[
+|\log C(A)|\ \le\ 2(d-1)\rho^{-1/2}.
+\]
+\end{proposition}
+
+\begin{proof}
+由命题 \ref{prop:finite-part-residue-reduced-determinant}，
+\(
+C(A)=\prod_{j=2}^{d}(1-\mu_j/\rho)^{-1}
+\)（\(\mu_1=\rho\)）。
+原始非负矩阵的谱关于共轭闭合，故 \(C(A)>0\) 且
+\(
+C(A)=\prod_{j=2}^{d}|1-\mu_j/\rho|^{-1}
+\)。
+在 \(|\mu_j|/\rho\le \rho^{-1/2}\) 下有
+\(
+1-\rho^{-1/2}\le |1-\mu_j/\rho|\le 1+\rho^{-1/2}
+\)，逐项相乘即得双侧界。
+当 \(\rho^{-1/2}\le\tfrac12\) 时，用 \(\log(1-x)^{-1}\le 2x\)（\(0<x\le\tfrac12\)）与 \(\log(1+x)\le x\le 2x\) 得
+\[
+-(d-1)\log(1+\rho^{-1/2})
+\ \le\ \log C(A)\ \le\ (d-1)\log(1-\rho^{-1/2})^{-1},
+\]
+从而 \(|\log C(A)|\le 2(d-1)\rho^{-1/2}\)。证毕。
+\end{proof}
+
+\begin{theorem}[异常—RH—维数三岔：线性留数漂移迫使 RH 破裂或维数指数爆炸]\label{thm:finite-part-residue-drift-trichotomy}
+对某个 moment-kernel 族 \(\{A^{(q)}_\theta\}_{q\ge 2}\)（\(\theta\) 固定），记
+\(\rho_q:=\rho(A^{(q)}_\theta)\)、\(d_q:=\dim A^{(q)}_\theta\) 与 \(C_q(\theta):=C(A^{(q)}_\theta)\)。
+假设存在常数 \(c>1\) 使 \(\rho_q\ge c^q\) 对所有充分大 \(q\) 成立，并假设维数次指数增长
+\[
+\log d_q=o(q)\qquad(q\to\infty).
+\]
+若核版 RH 对所有充分大 \(q\) 成立，则必有
+\[
+\log C_q(\theta)=o(q)\qquad(q\to\infty).
+\]
+因此，任一满足
+\[
+\liminf_{q\to\infty}\frac{1}{q}\,|\log C_q(\theta)|>0
+\]
+的“线性留数漂移”现象，都必然迫使下述二者之一发生：
+\begin{enumerate}
+  \item 存在某个有限 \(q\) 使核版 RH 失效；
+  \item \(d_q\) 不能保持次指数增长，必须进入指数增长区间。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:finite-part-residue-constant-rh-squeeze}，当 \(q\) 充分大使 \(\rho_q\ge 4\) 时有
+\(
+|\log C_q(\theta)|\le 2(d_q-1)\rho_q^{-1/2}
+\le 2d_q\,c^{-q/2}
+\)。
+在 \(\log d_q=o(q)\) 下，右端为 \(o(q)\)，故 \(\log C_q(\theta)=o(q)\)。
+若 \(\liminf_{q\to\infty}\frac{1}{q}|\log C_q(\theta)|>0\) 仍成立，则与上述 \(o(q)\) 结论矛盾；因此只能落入 (1) 或 (2)。证毕。
+\end{proof}
+
+\begin{corollary}[预言机—异常等价律：非零异常必以“有限见证”或“维数爆炸”出现]\label{cor:finite-part-oracle-anomaly-equivalence}
+在本文 \(\mathbf{PW}\) 语义中，设某个“异常量”在 \(q\)-重 moment 放大下呈线性规模，并且其谱侧见证可归约为留数常数漂移的线性下界，即存在常数 \(\alpha>0\) 使
+\[
+|\mathsf{Anom}(q)|\not\equiv 0
+\quad\Longrightarrow\quad
+\liminf_{q\to\infty}\frac{1}{q}\,|\log C_q(\theta)|\ge \alpha.
+\]
+则若该异常量非零，必有且仅有如下二者之一发生：存在有限阶 \(q\) 的核版 RH 反例见证；或 \(d_q\) 至少指数增长，从而无限核性质只能以预言机式的无限族检查（或外置模式轴）表达。
+\end{corollary}
+
+\begin{proof}
+由假设，异常非零迫使 \(|\log C_q(\theta)|\) 出现线性漂移。
+在 \(\rho_q\ge c^q\) 与 \(d_q\) 次指数增长的常规尺度假设下，定理 \ref{thm:finite-part-residue-drift-trichotomy} 立即给出二择一结局。证毕。
+\end{proof}
+

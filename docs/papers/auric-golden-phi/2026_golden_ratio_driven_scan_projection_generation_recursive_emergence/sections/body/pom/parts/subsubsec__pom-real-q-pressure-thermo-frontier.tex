@@ -12,6 +12,87 @@ d_m(x):=\card{\Fold_m^{-1}(x)}\ge 1.
 \]
 对 \(q=0\) 有 \(S_0(m)=|X_m|\)，对 \(q=1\) 有 \(S_1(m)=\sum_x d_m(x)=|\Omega_m|=2^m\)。
 
+\paragraph{MOM 特征的交换对称完备性：碰撞矩生成全部可学习的对称可观测量}
+固定分辨率 \(m\) 并记 \(n:=|X_m|\)。
+对任意分布 \(w\in\Delta(X_m)\)，定义幂和特征
+\[
+p_q(w):=\sum_{x\in X_m}w(x)^q,\qquad q=2,3,\dots,n.
+\]
+当 \(w=w_m\) 为均匀微态推前 \(w_m(x)=d_m(x)/2^m\) 时，有严格恒等式
+\[
+p_q(w_m)=2^{-mq}S_q(m).
+\]
+令 \(\mathfrak{S}_{n}\) 作用于 \(\Delta(X_m)\) 为对坐标（即类型标签）的置换，
+并令 \(\mathcal{C}_{\mathrm{sym}}(\Delta(X_m))\) 表示在该作用下不变的连续函数空间（交换对称可观测量）。
+记 \(\mathcal{A}_m\) 为由 \(\{p_q\}_{q=2}^{n}\) 生成的多项式代数在一致范数 \(\|\cdot\|_\infty\) 下的闭包。
+
+\begin{theorem}[对称可观测量的统一逼近：\texorpdfstring{$\{p_q\}$}{pq} 的 Stone--Weierstrass 完备性]\label{thm:pom-mom-symmetric-observables-stone-weierstrass}
+\(\mathcal{A}_m\) 在 \(\mathcal{C}_{\mathrm{sym}}(\Delta(X_m))\) 中稠密。
+等价地：对任意交换对称连续统计量 \(F\in \mathcal{C}_{\mathrm{sym}}(\Delta(X_m))\) 与任意 \(\varepsilon>0\)，存在某个多项式 \(P\) 使
+\[
+\sup_{w\in\Delta(X_m)}\left|F(w)-P\bigl(p_2(w),\dots,p_{n}(w)\bigr)\right|<\varepsilon.
+\]
+\end{theorem}
+\begin{proof}
+考虑紧 Hausdorff 商空间 \(K:=\Delta(X_m)/\mathfrak{S}_{n}\)。
+对称连续函数空间 \(\mathcal{C}_{\mathrm{sym}}(\Delta(X_m))\) 与 \(C(K)\) 自然同构。
+幂和族 \(\{p_2,\dots,p_n\}\) 在 \(K\) 上分离点：若两轨道不同，则两分布的坐标多重集不同；
+由 Newton 恒等式可知 \(\{p_1,\dots,p_n\}\) 决定基本对称多项式，从而决定该多重集；而 \(p_1\equiv 1\) 在单纯形上已固定，故必存在某个 \(2\le q\le n\) 使 \(p_q\) 取值不同。
+因此 \(\mathcal{A}_m\) 对应于 \(C(K)\) 上一个含常数且分离点的交换子代数。
+由 Stone--Weierstrass 定理，\(\mathcal{A}_m\) 在 \(\mathcal{C}_{\mathrm{sym}}(\Delta(X_m))\) 中稠密。证毕。
+\end{proof}
+
+\begin{theorem}[碰撞矩坐标图：Vandermonde--Jacobian 判别]\label{thm:pom-power-sum-vandermonde-jacobian}
+令 \(\Delta^{n-1}_{\circ}:=\{(w_1,\dots,w_n)\in\RR^n:\ w_i>0,\ \sum_i w_i=1\}\) 为单纯形内点集，并定义幂和映射
+\[
+\Phi(w):=\bigl(p_2(w),p_3(w),\dots,p_n(w)\bigr)\in\RR^{n-1},
+\qquad
+p_k(w)=\sum_{i=1}^n w_i^k.
+\]
+在开稠密集合
+\[
+U:=\{w\in\Delta^{n-1}_{\circ}:\ w_i\ \text{两两不等}\}
+\]
+上，\(\Phi\) 在交换对称意义下给出局部坐标：其 Jacobian 在切空间 \(\{\delta w:\sum_i\delta w_i=0\}\) 上满秩 \(n-1\)。
+更具体地，扩展映射
+\(
+\widetilde\Phi(w):=(p_1(w),p_2(w),\dots,p_n(w))
+\)
+的 Jacobian 行列式满足
+\[
+\det\Bigl[\frac{\partial p_k}{\partial w_i}\Bigr]_{k,i=1}^{n}
+=
+n!\prod_{1\le i<j\le n}(w_j-w_i),
+\]
+从而在 \(U\) 上非零。
+\end{theorem}
+\begin{proof}
+有 \(\frac{\partial p_k}{\partial w_i}=k\,w_i^{k-1}\)。
+故 Jacobian 矩阵可写为
+\[
+J=\bigl[k\,w_i^{k-1}\bigr]_{k,i=1}^{n}
+=\mathrm{diag}(1,2,\dots,n)\cdot V,
+\qquad
+V_{k,i}:=w_i^{k-1},
+\]
+其中 \(V\) 为 Vandermonde 矩阵。
+因此
+\(
+\det J=(1\cdot2\cdots n)\det V
+\)
+并由 Vandermonde 行列式公式得到
+\(
+\det J=n!\prod_{i<j}(w_j-w_i)
+\)。
+在 \(U\) 上右端非零，故 \(\widetilde\Phi\) 为局部微分同胚。
+又因 \(p_1\equiv 1\) 在单纯形上固定，去掉第一坐标即得 \(\Phi\) 在切空间满秩；从而在 \(U/\mathfrak{S}_n\) 上诱导局部坐标图。证毕。
+\end{proof}
+
+\begin{corollary}[有限碰撞矩的局部可逆性：\texorpdfstring{$(p_2,\dots,p_n)$}{(p2,...,pn)} 在一般位置给出对称坐标]\label{cor:pom-power-sum-local-chart}
+在 \(U\) 上，分布 \(w\) 的交换对称轨道由有限向量 \((p_2(w),\dots,p_n(w))\) 在局部唯一确定。
+因此在一般位置，阶数不超过 \(n\) 的有限碰撞矩已构成对称分布空间的局部坐标系。
+\end{corollary}
+
 \begin{theorem}[实参数压力曲线：解析性、凸性与整数点严格插值]\label{thm:pom-real-q-pressure-analytic-interpolation}
 沿用附录 \ref{app:pom-projective-pressure-operator} 的射影转移算子 \(\mathcal{L}_q\)（定义 \ref{def:pom-projective-transfer-operator}），并假设存在一个 Hölder 型 Banach 空间 \(\mathcal{B}\subset C(\Delta)\)，使得：
 \begin{enumerate}
@@ -67,6 +148,43 @@ F_m''(q)=\mathbb{E}_{w_{m,q}}[(\log d_m)^2]-\mathbb{E}_{w_{m,q}}[\log d_m]^2
 \)。
 证毕。
 \end{proof}
+
+\begin{corollary}[零温极限定量律：escort 在 \(q\sim m\) 标度下的超指数集中]\label{cor:pom-escort-zero-temperature-superexp-concentration}
+固定分辨率 \(m\ge 1\)。
+令最大纤维
+\(
+M_m:=\max_{x\in X_m} d_m(x)
+\)，并记
+\[
+\alpha_m:=\frac1m\log M_m,\qquad
+A_m(\varepsilon):=\left\{x\in X_m:\ \frac1m\log d_m(x)\le \alpha_m-\varepsilon\right\}\qquad(\varepsilon>0).
+\]
+则对任意整数 \(q\ge 1\) 有
+\[
+\boxed{\ w_{m,q}\bigl(A_m(\varepsilon)\bigr)\ \le\ |X_m|\,e^{-q\varepsilon m}\ }.
+\]
+从而当 \(q\) 随 \(m\) 线性增长（例如 \(q=\tau m\)）时，
+\[
+w_{m,q}\bigl(A_m(\varepsilon)\bigr)\ \le\ |X_m|\,\exp(-\tau\varepsilon m^2),
+\]
+表现为 \(m^2\) 级别的超指数收缩。
+\end{corollary}
+\begin{proof}
+对任意 \(x\in A_m(\varepsilon)\) 有 \(d_m(x)^q\le M_m^q e^{-q\varepsilon m}\)。
+因此
+\[
+\sum_{x\in A_m(\varepsilon)} d_m(x)^q \le |A_m(\varepsilon)|\,M_m^q e^{-q\varepsilon m}\le |X_m|\,M_m^q e^{-q\varepsilon m}.
+\]
+而 \(S_q(m)=\sum_x d_m(x)^q\ge M_m^q\)，故
+\[
+w_{m,q}(A_m(\varepsilon))
+=\frac{\sum_{x\in A_m(\varepsilon)} d_m(x)^q}{S_q(m)}
+\le |X_m|\,e^{-q\varepsilon m}.
+\]
+证毕。
+\end{proof}
+
+\input{sections/body/pom/parts/part__pom-pressure-multiplicative-chain-entropy-loss}
 
 \begin{theorem}[Gibbs--变分原理：\texorpdfstring{$\kappa_m$}{kappa} 的 Pareto 前沿由 escort 族严格刻画]\label{thm:pom-kappa-gibbs-variational-escort-frontier}
 固定分辨率 \(m\ge 1\)。对任意分布 \(\pi\in\Delta(X_m)\)，令
