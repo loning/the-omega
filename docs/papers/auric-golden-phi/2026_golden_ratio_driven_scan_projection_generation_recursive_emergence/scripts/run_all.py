@@ -848,6 +848,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_charpoly_mod2_shadow_q2_10",
+            script="exp_fold_collision_charpoly_mod2_shadow_q2_10.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod2_shadow_q2_10.json",
+                "sections/generated/tab_fold_collision_charpoly_mod2_shadow_q2_10.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_charpoly_mod2_shadow_q9_17",
             script="exp_fold_collision_charpoly_mod2_shadow_q9_17.py",
             args=[],

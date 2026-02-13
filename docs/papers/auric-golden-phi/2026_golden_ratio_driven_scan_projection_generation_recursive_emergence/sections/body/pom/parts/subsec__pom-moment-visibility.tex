@@ -98,6 +98,43 @@ $$
 线性递推由 Cayley--Hamilton 定理立得，且递推系数为整数（因为 \(A_q\) 为整数矩阵）。证毕。
 \end{proof}
 
+\begin{proposition}[固定 \texorpdfstring{$q$}{q} 的有限状态可积性：最小整系数递推与 Hankel 秩]\label{prop:pom-moment-minrecurrence-hankel}
+对每个整数 \(q\ge 2\)，序列 \(m\mapsto S_q(m)\) 从某个 \(m_0\) 起满足一条齐次整系数线性递推
+\[
+S_q(m)=\sum_{j=1}^{d_q} c_{q,j}\,S_q(m-j)\qquad(m\ge m_0),
+\]
+其中 \((c_{q,j})\subset\ZZ\) 且阶数 \(d_q\) 可取为最小。
+该最小阶 \(d_q\) 等于该序列的 Hankel 秩（等价地，等于最小线性表示 \(a_n=u^{\mathsf T}A^n v\) 的维数；定理 \ref{thm:hankel-rank-minimal}），并且最小递推在“首一化”约定下唯一确定。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:pom-moment-kernel-exists}，固定 \(q\) 后存在整数矩阵 realization \(S_q(m)=u_q^{\mathsf T}A_q^{\,m-m_0}v_q\)；
+由 Cayley--Hamilton 定理，\(\{S_q(m)\}_{m\ge m_0}\) 必满足某条整系数常系数递推，从而 \(d_q\) 的存在性成立。
+最小阶与 Hankel 秩/最小 realization 维数的等价性由定理 \ref{thm:hankel-rank-minimal} 给出；最小递推的唯一性是该等价刻画的直接推论（同构意义下最小 realization 唯一，因而其 annihilator 多项式唯一）。证毕。
+\end{proof}
+
+\begin{remark}[阶数塌缩与 \texorpdfstring{$q$}{q}-轴“非复杂度性”]\label{rem:pom-moment-order-collapse-nonmonotone}
+在已核验范围内，最小阶 \(d_q\) 不随 \(q\) 单调增长：例如 \(d_9=7\)（表 \ref{tab:fold_collision_moment_recursions_9_17}），并且 \(d_{13}=11<d_{12}=13\)、\(d_{15}=11<d_{14}=13\)（同表）。
+该非单调塌缩与定理 \ref{thm:pom-moment-resonance} 的模态约束口径一致：提高矩阶并不必然引入同等数量的新指数模态，隐藏对称与代数消去可强制模态并合，从而降低 Hankel 可见维数。
+因此在 Fold 的碰撞统计中，Rényi 阶数 \(q\) 与最小状态复杂度 \(d_q\) 在概念上可分离：更高阶矩可能暴露出维数下降的结构性指纹，而非单调地提升“状态数”。
+\end{remark}
+
+\begin{algorithm}[递推多项式作为 moment-kernel 的原始谱接口（无矩阵抽取）]\label{alg:pom-recurrence-polynomial-spectral-extraction}
+固定 \(q\ge 2\)，给定有限采样 \(\{S_q(m)\}\)（长度满足 \(>\!2d_q\) 的冗余），可在不构造任何 realization 矩阵的前提下恢复谱指纹：
+\begin{enumerate}
+  \item 用 Hankel 核空间/Prony--Pad\'e 等价接口恢复最小阶 \(d_q\) 与递推系数 \((c_{q,1},\dots,c_{q,d_q})\)；
+  \item 构造递推特征多项式
+  \[
+  P_q(\lambda):=\lambda^{d_q}-\sum_{j=1}^{d_q}c_{q,j}\lambda^{d_q-j};
+  \]
+  \item 令 \(r_q\) 为 \(P_q\) 的 Perron 根，并令
+  \(
+  \Lambda_q:=\max\{|\mu|:\ \mu\in\mathrm{Roots}(P_q),\ \mu\ne r_q\}
+  \)，则 \((r_q,\Lambda_q)\) 给出核版 RH 指纹（\(\beta_q,\delta_q\) 等；见注 \ref{rem:pom-collision-kernel-rh-phase}）；
+  \item 对任意素数 \(p\)，\(\,P_q(\lambda)\bmod p\) 的因子分解给出与实谱正交的模 \(p\) 指纹（例如 \((\lambda+1)\) 的重数台阶律；见注 \ref{rem:pom-charpoly-mod2-staircase-q2-10} 与注 \ref{rem:pom-charpoly-mod2-shadow}）。
+\end{enumerate}
+因此递推多项式 \(P_q\) 可视为更原始的谱承载对象：矩阵 \(A_q\) 仅是其一种实现，而非必需结构。
+\end{algorithm}
+
 \begin{remark}[可计算的对称压缩：星形 fiber-product 的 \texorpdfstring{$O(q^2)$}{O(q^2)} 轨道表示]\label{rem:pom-star-sympress}
 命题 \ref{prop:pom-moment-kernel-exists} 的一般编译路线在 \(q\) 增大时会遇到同步直积状态数的指数爆炸。
 但在一类“星形耦合”情形下（即碰撞约束可被组织为“中心轨道与每条叶子轨道分别满足同一 pair 约束”，并且该 pair 约束带有\emph{中心输入符号}分解，例如存在 \(3\)-态 pair kernel 的分解 \(A_2=B_0+B_1\)），
