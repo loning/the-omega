@@ -642,6 +642,100 @@ Proposition~\ref{prop:q6-rdi-false}) and directly targets the optimal
 $c=1/2$ endpoint.
 \end{remark}
 
+\begin{proposition}[Omega transport bridge for the minimal step]\label{prop:q6-omega-transport}
+Fix one step of the multi-bin process with
+\[
+g_i:=\varepsilon-\lambda_i>0,\qquad
+W:=\sum_{i=1}^k w_i(u),\qquad
+G:=\sum_{i=1}^k g_i.
+\]
+Assume $W>0$ and define normalized profiles
+\[
+p_i:=\frac{w_i(u)}{W},\qquad q_i:=\frac{g_i}{G}\qquad (1\le i\le k).
+\]
+Let the cyclic metric on bins be
+\[
+d_{\mathrm{cyc}}(i,j):=\frac{1}{k}\min\{|i-j|,\,k-|i-j|\},
+\]
+and define the dual transport discrepancy
+\[
+W_1^{\mathrm{cyc}}(p,q):=
+\sup_{\mathrm{Lip}_{d_{\mathrm{cyc}}}(h)\le 1}
+\sum_{i=1}^k h_i\,(p_i-q_i).
+\]
+Suppose there exist parameters $q_\star>0$, $L\ge 0$, $\eta\ge 0$ such that
+\begin{enumerate}[nosep]
+\item $q_i\ge q_\star$ for all $i$;
+\item (cyclic smoothness) with $q_{k+1}:=q_1$,
+\[
+|q_{i+1}-q_i|\le \frac{L}{k}\quad (1\le i\le k);
+\]
+\item $W_1^{\mathrm{cyc}}(p,q)\le \eta$;
+\item
+\[
+W\left(1+\frac{L\,\eta}{k\,q_\star^2}\right)\le G.
+\]
+\end{enumerate}
+Then
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}\le k.
+\]
+Hence Proposition~\ref{prop:q6-min-bridge-step} applies and the step is non-stuck.
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}
+\;=\;\sum_{i=1}^k\frac{W p_i}{G q_i}
+\;=\;\frac{W}{G}\sum_{i=1}^k\frac{p_i}{q_i}.
+\]
+So it suffices to bound $\sum_i p_i/q_i$.
+Set $f_i:=1/q_i$.
+By $q_i\ge q_\star$ and cyclic smoothness,
+\[
+|f_{i+1}-f_i|
+=\frac{|q_{i+1}-q_i|}{q_i q_{i+1}}
+\le \frac{L/k}{q_\star^2},
+\]
+thus $\mathrm{Lip}_{d_{\mathrm{cyc}}}(f)\le L/q_\star^2$.
+By the definition of $W_1^{\mathrm{cyc}}$,
+\[
+\sum_{i=1}^k f_i(p_i-q_i)
+\le \mathrm{Lip}_{d_{\mathrm{cyc}}}(f)\,W_1^{\mathrm{cyc}}(p,q)
+\le \frac{L}{q_\star^2}\,\eta.
+\]
+Therefore
+\[
+\sum_{i=1}^k \frac{p_i}{q_i}
+\;=\;\sum_{i=1}^k f_i p_i
+\;=\;\sum_{i=1}^k f_i q_i + \sum_{i=1}^k f_i(p_i-q_i)
+\;\le\; k + \frac{L}{q_\star^2}\eta,
+\]
+since $\sum_i f_i q_i=\sum_i 1 = k$.
+Hence
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}
+\le
+\frac{W}{G}\left(k+\frac{L}{q_\star^2}\eta\right)
+=
+\frac{kW}{G}\left(1+\frac{L\eta}{k q_\star^2}\right)
+\le k
+\]
+by assumption (4).
+\end{proof}
+
+\begin{remark}[Omega link of Proposition~\ref{prop:q6-omega-transport}]
+The Omega documents already use discrepancy and transport certificates
+($W_1$ with Lipschitz test functions) for finite-resolution control.
+Proposition~\ref{prop:q6-omega-transport} shows exactly how such a
+certificate feeds into Q6: prove that the normalized load profile
+$p=(w_i/W)$ tracks the normalized gap profile $q=(g_i/G)$ in
+$W_1^{\mathrm{cyc}}$, with a non-collapsing floor $q_\star$.
+This is a concrete, checkable bridge strictly weaker than a global RDI
+inequality.
+\end{remark}
+
 \subsection*{Part VIII: The Resistance-Degree Spectral Inequality}
 
 This part records a natural route we pursued:
@@ -948,6 +1042,10 @@ Part~VII isolates a one-line per-step target
 for each arriving vertex $u$ (with $k=\lceil 2/\varepsilon\rceil$).
 By Theorem~\ref{thm:q6-min-bridge}, this alone yields Q6 with the
 optimal constant $c=1/2$.
+
+An Omega-compatible sufficient route is now explicit
+(Proposition~\ref{prop:q6-omega-transport}): control the
+load-gap mismatch in cyclic $W_1$ and keep a positive gap floor.
 
 These are equivalent and reduce Q6 to controlling the
 \emph{collective spectral norm} of vertex-induced edge sets
