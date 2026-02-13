@@ -2,7 +2,7 @@
 
 - Problem: `Q4`
 - Submission Version: `Q4-V27`
-- Review Version: `Q4-R37`
+- Review Version: `Q4-R38`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -71,6 +71,13 @@
     \[
       \frac1{\Phi_n(p\boxplus q)}\ge \frac1{n!}\sum_{\pi}\frac1{\Phi_n(r_\pi)}.
     \]
+5k. Closed-form bound on permutation-average RHS:
+    \[
+      \frac1{n!}\sum_{\pi}\frac1{\Phi_n(r_\pi)}
+      \le
+      \left(\sum_{i\neq j}\frac1{(\lambda_i-\lambda_j)^2+\frac{2n}{n-1}\Var(\mu)}\right)^{-1}.
+    \]
+    (proved via variational formula + explicit permutation moments).
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
