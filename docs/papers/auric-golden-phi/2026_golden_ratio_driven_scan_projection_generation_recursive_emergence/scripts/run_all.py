@@ -320,6 +320,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_green_kernel_audit_prime_571",
+            script="exp_window6_green_kernel_audit_prime_571.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_green_kernel_audit_prime_571.json",
+                "sections/generated/eq_window6_green_kernel_audit_prime_571.tex",
+                "sections/generated/tab_window6_green_kernel_Z.tex",
+                "sections/generated/tab_window6_mean_first_passage_times.tex",
+            ],
+        ),
+        Step(
             name="window6_ur_first_return_time",
             script="exp_window6_ur_first_return_time.py",
             args=[],

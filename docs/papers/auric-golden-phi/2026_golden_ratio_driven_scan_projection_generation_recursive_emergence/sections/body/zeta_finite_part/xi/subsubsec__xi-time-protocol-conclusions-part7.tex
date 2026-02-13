@@ -153,6 +153,147 @@ b(\varepsilon)=
 因此 \(b(\varepsilon)\) 为方程 \(P_\star(c)=1-\varepsilon\) 的最小解；对两段线性形式逐段反解得所示闭式。
 \end{proof}
 
+\paragraph{折叠推前相对稳定层均匀基线的二原子极限账本}
+令
+\[
+p^{\mathrm{bin}}_m(w):=\frac{d^{\mathrm{bin}}_m(w)}{2^m}\qquad(w\in X_m)
+\]
+为 bin-fold 在稳定类型层 \(X_m\) 上的推前分布（亦即推论 \ref{cor:fold-bin-two-point-limit-law} 的 \(\mu_m\)），并令
+\[
+u_m(w):=\frac{1}{|X_m|}
+\qquad(w\in X_m)
+\]
+为稳定层均匀分布。
+记相对密度
+\[
+R_m(w):=\frac{p^{\mathrm{bin}}_m(w)}{u_m(w)}=|X_m|\,p^{\mathrm{bin}}_m(w),
+\]
+并采用全变差距离的标准约定
+\[
+D_{\mathrm{TV}}(p\Vert q):=\frac12\sum_{w}\bigl|p(w)-q(w)\bigr|.
+\]
+
+\begin{theorem}[bin-fold 推前分布相对均匀基线的二原子极限：TV 常数、任意 \(f\)-散度与 \texorpdfstring{$L^p$}{Lp} 谱]\label{thm:xi-foldbin-pushforward-uniform-two-atom-ledger}
+在定理 \ref{thm:fold-bin-two-state-asymptotic} 的两态一致渐近口径下，令
+\[
+r_0:=\frac{\varphi^2}{\sqrt5},\qquad r_1:=\frac{\varphi}{\sqrt5}.
+\]
+则：
+\begin{enumerate}
+  \item \textbf{（全变差极限常数）}极限存在且为
+  \[
+  \lim_{m\to\infty}D_{\mathrm{TV}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+  =\frac12\Bigl(\frac{1}{\sqrt5}-\frac{1}{\varphi^3}\Bigr),
+  \]
+  并且误差为 \(O\bigl((\varphi/2)^m\bigr)\)。
+  \item \textbf{（任意 \(f\)-散度的二原子闭式）}对任意凸函数 \(f:(0,\infty)\to\mathbb R\) 满足 \(f(1)=0\)，定义
+  \[
+  D_f\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+  :=\sum_{w\in X_m}u_m(w)\,f\!\left(\frac{p^{\mathrm{bin}}_m(w)}{u_m(w)}\right)
+  =\sum_{w\in X_m}u_m(w)\,f\!\bigl(R_m(w)\bigr).
+  \]
+  则极限存在并满足二原子闭式
+  \[
+  \lim_{m\to\infty}D_f\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+  =\frac{1}{\varphi}\,f(r_0)+\frac{1}{\varphi^2}\,f(r_1),
+  \]
+  且误差为 \(O\bigl((\varphi/2)^m\bigr)\)。
+  \item \textbf{（相对密度的 \(L^p\) 极限谱与动态范围）}对任意 \(p\in[1,\infty)\)，有
+  \[
+  \lim_{m\to\infty}\norm{R_m-1}_{L^p(u_m)}
+  =
+  \Bigl[\frac{1}{\varphi}\bigl|r_0-1\bigr|^p+\frac{1}{\varphi^2}\bigl|1-r_1\bigr|^p\Bigr]^{1/p}.
+  \]
+  并且
+  \[
+  \lim_{m\to\infty}\norm{R_m}_{L^\infty(u_m)}=r_0,\qquad
+  \lim_{m\to\infty}\operatorname*{ess\,inf}_{u_m}R_m=r_1,
+  \qquad
+  \frac{r_0}{r_1}=\varphi.
+  \]
+  \item \textbf{（Pinsker 缺口的常数化）}令
+  \(
+  C_{\mathrm{TV}}:=\frac12(\frac{1}{\sqrt5}-\varphi^{-3})
+  \)
+  并令
+  \(
+  C_{\mathrm{KL}}:=\lim_{m\to\infty}D_{\mathrm{KL}}(p^{\mathrm{bin}}_m\Vert u_m)
+  \)
+  （其闭式见命题 \ref{prop:fold-bin-kl-constant}）。
+  则
+  \[
+  \lim_{m\to\infty}\frac{2\,D_{\mathrm{TV}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)^2}{D_{\mathrm{KL}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)}
+  =\frac{2\,C_{\mathrm{TV}}^2}{C_{\mathrm{KL}}}\in(0,1),
+  \]
+  从而 Pinsker 不等式在该 bin-fold 极限下严格不饱和。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:fold-bin-two-state-asymptotic}，
+\(
+d^{\mathrm{bin}}_m(w)=\varphi^{-w_m}(2/\varphi)^m+O(1)
+\)
+且误差在 \(w\in X_m\) 上一致。
+又 \(|X_m|=F_{m+2}=\varphi^{m+2}/\sqrt5+O(\varphi^{-m})\)（Binet 公式），故对所有 \(w\in X_m\) 有一致展开
+\[
+R_m(w)
+=\frac{|X_m|}{2^m}\,d^{\mathrm{bin}}_m(w)
+=\frac{\varphi^{m+2}}{\sqrt5}\cdot\frac{1}{\varphi^m}\cdot\varphi^{-w_m}+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right)
+=\varphi^{-w_m}\,r_0+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right),
+\]
+从而 \(R_m(w)=r_{w_m}+O((\varphi/2)^m)\)（其中 \(r_{0}=r_0,r_{1}=r_1\)）且一致于 \(w\)。
+另一方面，稳定层均匀分布下末位边际满足
+\[
+u_m(w_m=0)=\frac{F_{m+1}}{F_{m+2}}=\frac{1}{\varphi}+O(\varphi^{-m}),
+\qquad
+u_m(w_m=1)=\frac{F_{m}}{F_{m+2}}=\frac{1}{\varphi^2}+O(\varphi^{-m}).
+\]
+由此对任意连续函数 \(g\)（例如本定理各项出现的 \(g(t)=|t-1|\)、\(g(t)=f(t)\)、\(g(t)=|t-1|^p\)、\(g(t)=t\log t\)）可得
+\[
+\sum_{w\in X_m}u_m(w)\,g\!\bigl(R_m(w)\bigr)
+=\frac{1}{\varphi}\,g(r_0)+\frac{1}{\varphi^2}\,g(r_1)+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right),
+\]
+从而 (2)(3) 成立。
+(1) 取 \(g(t)=\frac12|t-1|\)，并用 \(r_0>1>r_1\) 得到所示常数；其化简使用恒等式
+\(
+\varphi-\varphi^{-1}=1
+\)
+与
+\(
+\varphi^{-2}-\varphi^{-1}=-\varphi^{-3}
+\)。
+(4) 由 (2) 取 \(f(t)=t\log t\) 得 \(C_{\mathrm{KL}}>0\)，再由 Pinsker 不等式与 \(p^{\mathrm{bin}}_m\neq u_m\)（充分大 \(m\)）得极限比值严格落在 \((0,1)\)。
+证毕。
+\end{proof}
+
+\begin{proposition}[可逆重建成功率曲线的精确折线律：离散导数等于纤维尾分布]\label{prop:xi-reconstruction-success-curve-discrete-derivative}
+固定 \(m\)。
+对任意寄存器大小 \(M\in\mathbb N\) 定义最优平均成功率
+\[
+P_m^\star(M):=\sup\mathbb P[\widehat\omega=U_m],
+\]
+其中上确界取遍允许使用 \(M\) 值附加寄存器的全部编码/解码方案（同定理 \ref{thm:xi-optimal-reconstruction-success-probability-constant-bias}，但此处把 \(M\) 视为自变量）。
+则有闭式
+\[
+P_m^\star(M)=\frac{1}{2^m}\sum_{x\in X_m}\min\!\bigl\{d^{\mathrm{bin}}_m(x),\,M\bigr\}.
+\]
+因此 \(M\mapsto P_m^\star(M)\) 为离散凹折线，并且其离散导数满足
+\[
+P_m^\star(M+1)-P_m^\star(M)=\frac{1}{2^m}\#\{x\in X_m:\ d^{\mathrm{bin}}_m(x)\ge M+1\}.
+\]
+\end{proposition}
+
+\begin{proof}
+闭式即定理 \ref{thm:xi-optimal-reconstruction-success-probability-constant-bias} 的第一段（把 \(M_m\) 视为任意整数参数 \(M\)）。
+差分恒等式由
+\(
+\min\{d,M+1\}-\min\{d,M\}=\ind_{\{d\ge M+1\}}
+\)
+逐项求和得到。
+导数项随 \(M\) 单调不增，故 \(P_m^\star\) 离散凹。证毕。
+\end{proof}
+
 \begin{theorem}[强反定理与精确指数：低于临界速率时成功率指数塌缩]\label{thm:xi-strong-converse-exponent-below-critical-rate}
 记附加寄存器速率 \(R_m:=\frac{1}{m}\log M_m\)。
 若存在 \(\delta>0\) 使对充分大 \(m\) 有

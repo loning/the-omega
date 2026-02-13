@@ -157,3 +157,182 @@ M_G(t):=\mathbb E[e^{tG}]
 上述恒等式与表 \ref{tab:window6_tail_semigroup_apery_21_34} 的阈值族共同构成一组可核验的一致性账本；其任一破坏都等价于同余阈值族或“尾部可加”机制假设的失配。
 \end{proposition}
 
+\paragraph{Sturmian 复位时钟的有界漂移与常数时间可计算性}
+
+\begin{proposition}[两间隔 Sturmian 复位时钟的有界漂移：抖动上界等于间隔差]\label{prop:xi-window6-reset-clock-bounded-drift}
+令 window-\(6\) 的复位事件序列如定理 \ref{thm:terminal-reset-events-sturmian}，并记相邻复位间隔为
+\[
+G_n:=r_{n+1}-r_n\in\{34,55\}\qquad(n\ge 1).
+\]
+定义部分和（复位时刻增量）
+\[
+T_n:=\sum_{j=1}^{n}G_j\qquad(n\ge 1),
+\]
+并令均值漂移常数
+\[
+\mu:=\mathbb E[G]=\frac{55}{\varphi}+\frac{34}{\varphi^2}=13+21\varphi
+\]
+如命题 \ref{prop:xi-window6-reset-gap-mgf-moments}。
+则存在截距参数 \(\theta\in[0,1)\)，使得长间隔计数
+\[
+S_n:=\#\{1\le j\le n:\ G_j=55\}
+\]
+满足 \(S_n=\lfloor n/\varphi+\theta\rfloor\)，并且漂移偏差具有统一有界性
+\[
+T_n-n\mu=21\Bigl(S_n-\frac{n}{\varphi}\Bigr),
+\qquad
+\bigl|T_n-n\mu\bigr|\le 21
+\quad(\forall n\ge 1).
+\]
+因此该复位时钟在所有尺度上具有确定性的“零扩散”抖动：偏离均值线性漂移的误差不随 \(n\) 增长，且其最坏幅度恰等于两间隔之差 \(55-34=21\)。
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:terminal-reset-events-sturmian}，指示序列 \(\ind_{\{G_j=55\}}\) 为 slope \(\varphi^{-1}\) 的 Sturmian 序列（等价于无理旋转的区间窗读出）。
+Sturmian 序列的平衡性给出：存在 \(\theta\in[0,1)\) 使得
+\(
+S_n=\lfloor n/\varphi+\theta\rfloor
+\)
+且 \(|S_n-n/\varphi|\le 1\)。
+另一方面，恒等式 \(T_n=55S_n+34(n-S_n)=34n+21S_n\) 与 \(\mu=34+21/\varphi\) 推出
+\(
+T_n-n\mu=21(S_n-n/\varphi)
+\)；
+由 \(|S_n-n/\varphi|\le 1\) 得 \(|T_n-n\mu|\le 21\)。证毕。
+\end{proof}
+
+\begin{corollary}[复位时钟的常数时间可计算性：Beatty 取整与无扫描更新]\label{cor:xi-window6-reset-clock-O1-computable}
+在命题 \ref{prop:xi-window6-reset-clock-bounded-drift} 的记号下，给定 \(n\) 可在常数时间计算 \(T_n\)：
+令 \(S_n=\lfloor n/\varphi+\theta\rfloor\)，则
+\[
+T_n=34n+21S_n.
+\]
+从而复位时刻集合 \(\{T_n\}\) 可由一次 Beatty 取整实现，不需枚举 \((G_1,\dots,G_n)\)。
+\end{corollary}
+
+\begin{remark}[漂移余差的旋转表示与同余不变量]\label{rem:xi-window6-reset-clock-residual-rotation-congruence}
+由 \(S_n=\lfloor n/\varphi+\theta\rfloor\) 得
+\[
+S_n-\frac{n}{\varphi}=\theta-\Bigl\{\frac{n}{\varphi}+\theta\Bigr\}\in(\theta-1,\theta],
+\qquad
+T_n-n\mu=21\Bigl(\theta-\Bigl\{\frac{n}{\varphi}+\theta\Bigr\}\Bigr),
+\]
+其中 \(\{\cdot\}\) 为小数部分。
+由于 \(1/\varphi\) 无理，\(\{\frac{n}{\varphi}+\theta\}\) 在 \([0,1)\) 上稠密，从而漂移余差 \(\{T_n-n\mu\}_{n\ge 1}\) 在某个长度为 \(21\) 的区间上稠密。
+另一方面，\(\theta-\{\frac{n}{\varphi}+\theta\}\) 的符号仅由
+\(\{\frac{n}{\varphi}+\theta\}\in[0,\theta]\) 或 \((\theta,1)\) 两端区间决定；
+因此漂移余差的\emph{符号语义}在二元预算下即可压缩（对应 Sturmian 二元窗读出下的局部模式二分）。
+另一方面，由 \(34\equiv 55\equiv 13\ (\mathrm{mod}\ 21)\) 得
+\[
+T_n\equiv 13n\ (\mathrm{mod}\ 21),
+\]
+故复位时刻在模 \(21\) 的同余类上呈现完全确定的有限剩余类结构。
+\end{remark}
+
+\begin{corollary}[复位时钟与尾部半群的可达性耦合：有限障碍仅发生于浅层]\label{cor:xi-window6-reset-clock-semigroup-coupling}
+令 \(S=\langle 21,34\rangle\)。
+则对任意整数 \(t\ge 715\)，存在 \(n\in\mathbb N\) 与 \(s\in S\) 使
+\[
+t=T_n+s
+\qquad\text{且}\qquad
+\bigl|t-(n\mu+s)\bigr|\le 21,
+\]
+其中 \(\mu\) 与 \(\{T_n\}\) 如命题 \ref{prop:xi-window6-reset-clock-bounded-drift}。
+因此在深尺度上，“复位时钟（Sturmian）”与“尾部可达半群（Ap\'ery）”形成确定性的近共终结构；真正的不可达障碍仅可能出现在有限多个浅层尺度上。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form}（或等价地由 \(\gcd(21,34)=1\) 的 Frobenius 余有限性），有 \(n\ge 660\Rightarrow n\in S\)。
+取任意 \(t\ge 715\)。
+注意 \(T_1\in\{34,55\}\)，故 \(s:=t-T_1\ge 660\)，从而 \(s\in S\) 且 \(t=T_1+s\)。
+另一方面由命题 \ref{prop:xi-window6-reset-clock-bounded-drift}（取 \(n=1\)）得
+\(
+|T_1-\mu|\le 21
+\)，于是
+\(
+|t-(\mu+s)|=|T_1-\mu|\le 21
+\)。
+证毕。
+\end{proof}
+
+\paragraph{尾部三元组与审计素数的算术闭环}
+
+\begin{corollary}[GUT 三元尾部偏移与最大退化三元组的双源同一：\texorpdfstring{$\{21,34,55\}$}{\{21,34,55\}} 的自洽闭环]\label{cor:xi-tail-offsets-maxfiber-triple-closure}
+在 window-\(6\) uplift 的尾部偏移口径下，非零偏移仅可能取自
+\[
+\Delta_{\mathrm{tail}}(6)\subseteq \{F_8,F_9,F_{10}\}=\{21,34,55\}
+\]
+（定理 \ref{thm:xi-window6-tail-semigroup-frobenius-threshold}）。
+另一方面，由最大纤维闭式（定理 \ref{thm:pom-max-fiber}）在偶数分辨率上有 \(D_{2k}=F_{k+2}\)，从而
+\[
+D_{12}=F_8=21,\qquad D_{14}=F_9=34,\qquad D_{16}=F_{10}=55.
+\]
+因此同一 Fibonacci 三元组 \(\{21,34,55\}\) 以两条机制同时出现：一条来自 window-\(6\) 的尾部跃迁字母表，另一条来自更高分辨率的最大退化规模；该双源同一在纯离散层面封闭了“统一三分支”的自洽核对链条。
+\end{corollary}
+
+\begin{proof}
+第一部分由定理 \ref{thm:xi-window6-tail-semigroup-frobenius-threshold}。
+第二部分由定理 \ref{thm:pom-max-fiber} 取 \(k=6,7,8\) 并代入 \(F_8=21,F_9=34,F_{10}=55\)。
+合并即得。证毕。
+\end{proof}
+
+\begin{corollary}[最大纤维的奇偶闭式与最大达到者 hidden-bit 分裂的有限态谱]\label{cor:xi-max-fiber-parity-hiddenbit-finite-spectrum}
+令 \(D_m:=\max_{x\in X_m}d_m(x)\)。
+则最大纤维满足奇偶闭式
+\[
+D_{2k}=F_{k+2},\qquad D_{2k+1}=2F_{k+1}
+\qquad(k\ge 1)
+\]
+（定理 \ref{thm:pom-max-fiber}）。
+对任意最大达到者 \(x\in X_m\)（即 \(d_m(x)=D_m\)），按 hidden-bit 分裂定义 \((d_{m,0}(x),d_{m,1}(x))\)（注 \ref{rem:pom-max-fiber-achievers-bsplit}），则在稳定阈值区间内分裂对满足闭式有限态结构：
+\begin{itemize}
+  \item \textbf{偶数 \(m=2k\ge 10\)：}
+  \[
+  (d_{2k,0}(x),d_{2k,1}(x))\in\{(F_{k+1},F_k),(F_k,F_{k+1})\}.
+  \]
+  \item \textbf{奇数 \(m=2k+1\ge 13\)：}
+  \[
+  (d_{2k+1,0}(x),d_{2k+1,1}(x))\in\{(F_{k+1},F_{k+1}),\ (F_{k+1}\pm F_{k-2},\,F_{k+1}\mp F_{k-2})\}.
+  \]
+\end{itemize}
+特别地，对奇数窗 \(m=2k+1\ge 13\) 定义
+\(
+p_1(x):=d_{m,1}(x)/D_m
+\)。
+则三态谱满足
+\[
+p_1(x)\in\left\{\frac12,\ \frac12\pm\frac{F_{k-2}}{2F_{k+1}}\right\},
+\qquad
+\Delta_k:=\frac{F_{k-2}}{2F_{k+1}}=\frac12\varphi^{-3}+O(\varphi^{-2k}),
+\]
+从而 \(p_1\) 的极限谱为 \(\{\varphi^{-2},\tfrac12,\varphi^{-1}\}\)，并以指数速度收敛。
+\end{corollary}
+
+\begin{proof}
+最大纤维的奇偶闭式由定理 \ref{thm:pom-max-fiber} 给出。
+达到者分裂对的闭式有限态结构见注 \ref{rem:pom-max-fiber-achievers-bsplit}，而三态谱与极限谱见推论 \ref{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}。
+最后的渐近由 Binet 公式给出：\(F_{k-2}/F_{k+1}=\varphi^{-3}+O(\varphi^{-2k})\)。证毕。
+\end{proof}
+
+\begin{corollary}[审计素数 \texorpdfstring{$p_\star=571$}{p*=571} 的尾部半群 Ap\'ery 正规形与唯一性]\label{cor:xi-audit-prime-571-apery-normal-form}
+令 \(p_\star:=571\) 为四块商图的树数指纹素数（推论 \ref{cor:xi-window6-block-tree-number-audit-prime}），并令尾部半群 \(S=\langle 21,34\rangle\)。
+则 \(p_\star\in S\)，且在定理 \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form} 的模 \(21\) 规范形约束 \(b\in\{0,\dots,20\}\) 下具有唯一表示
+\[
+p_\star=21\cdot 11+34\cdot 10.
+\]
+其中系数 \(b=10\) 正是同余类 \(p_\star\ (\mathrm{mod}\ 21)\) 的 Ap\'ery 正规形系数（即 \(34\cdot 10\) 为该同余类在 \(S\) 中的最小代表）。
+\end{corollary}
+
+\begin{proof}
+计算 \(p_\star\equiv 571\equiv 4\ (\mathrm{mod}\ 21)\)。
+由定理 \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form}，规范系数为
+\(
+b_{4}=13\cdot 4\ (\mathrm{mod}\ 21)=10
+\)，从而同余类阈值 \(w_4=34\,b_4=340\)。
+于是
+\(
+p_\star-w_4=571-340=231=21\cdot 11
+\)，得表示 \(571=21\cdot 11+34\cdot 10\)。
+唯一性由同一定理的“模 \(21\) 规范形”唯一性直接推出。证毕。
+\end{proof}
+
