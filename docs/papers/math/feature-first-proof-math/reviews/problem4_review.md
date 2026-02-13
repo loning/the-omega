@@ -114,6 +114,9 @@
     where `q_t=sqrt(t)^n He_n(x/sqrt(t))`.
     `J_{p,q}(0)` is exactly the target Stam gap.
     Extensive scans (up to `n=8`) found no negative values on tested `t`-grids.
+40. **NEW: All-`n` semi-Gaussian concavity promoted to theorem**:
+    `t -> N_n(p boxplus_n q_t)` is now proved concave (simple-root intervals + continuity closure),
+    no longer only a conjectural bottleneck for this flow family.
 
 ## Findings From Independent Re-check
 
