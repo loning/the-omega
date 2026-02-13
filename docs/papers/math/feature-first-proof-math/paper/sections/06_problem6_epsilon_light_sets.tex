@@ -815,6 +815,93 @@ This is exactly the format delivered by Omega discrepancy certificates
 for Kronecker/Beatty-style balancing schedules.
 \end{remark}
 
+\begin{proposition}[Prefix-variation bridge (smaller form)]\label{prop:q6-prefix-var}
+In one step of the multi-bin process, keep notation
+\[
+g_i=\varepsilon-\lambda_i>0,\quad
+W=\sum_i w_i(u),\quad
+G=\sum_i g_i,\quad
+p_i=\frac{w_i(u)}{W},\quad
+q_i=\frac{g_i}{G}.
+\]
+Define
+\[
+\Delta_{\mathrm{pref}}:=\Delta_{\mathrm{pref}}(p,q),
+\qquad
+\operatorname{Var}_1\!\left(\frac1q\right):=
+\sum_{t=1}^{k-1}\left|\frac1{q_{t+1}}-\frac1{q_t}\right|.
+\]
+If
+\[
+W\left(1+\frac{\Delta_{\mathrm{pref}}}{k}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)\le G,
+\]
+then
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}\le k,
+\]
+hence the step is non-stuck.
+\end{proposition}
+
+\begin{proof}
+Let $d_i:=p_i-q_i$ and $P_t:=\sum_{i=1}^t d_i$.
+Since $\sum_i d_i=0$ and $q_i>0$,
+\[
+\sum_{i=1}^k \frac{p_i}{q_i}
+=
+\sum_{i=1}^k\left(1+\frac{d_i}{q_i}\right)
+=
+k+\sum_{i=1}^k d_i f_i,
+\qquad f_i:=\frac1{q_i}.
+\]
+By discrete summation by parts (with $P_k=0$):
+\[
+\sum_{i=1}^k d_i f_i
+=
+\sum_{t=1}^{k-1} P_t\,(f_t-f_{t+1}).
+\]
+Hence
+\[
+\left|\sum_{i=1}^k d_i f_i\right|
+\le
+\Delta_{\mathrm{pref}}
+\sum_{t=1}^{k-1}|f_{t+1}-f_t|
+=
+\Delta_{\mathrm{pref}}\,
+\operatorname{Var}_1\!\left(\frac1q\right),
+\]
+so
+\[
+\sum_{i=1}^k \frac{p_i}{q_i}
+\le
+k+\Delta_{\mathrm{pref}}\,
+\operatorname{Var}_1\!\left(\frac1q\right).
+\]
+Multiply by $W/G$:
+\[
+\sum_{i=1}^k\frac{w_i(u)}{\varepsilon-\lambda_i}
+=
+\frac{W}{G}\sum_{i=1}^k\frac{p_i}{q_i}
+\le
+\frac{W}{G}\left(
+k+\Delta_{\mathrm{pref}}\,
+\operatorname{Var}_1\!\left(\frac1q\right)\right)
+\le k
+\]
+by the assumed inequality. Now use
+Proposition~\ref{prop:q6-min-bridge-step}.
+\end{proof}
+
+\begin{remark}[Why Proposition~\ref{prop:q6-prefix-var} is the smallest bridge so far]
+This form removes explicit transport and floor/smoothness parameters.
+Only two quantities remain to certify per step:
+\(\Delta_{\mathrm{pref}}(p,q)\) and
+\(\operatorname{Var}_1(1/q)\).
+In particular, the Omega discrepancy machinery can target
+\(\Delta_{\mathrm{pref}}\) directly, while gap-equalization policies
+target \(\operatorname{Var}_1(1/q)\).
+\end{remark}
+
 \subsection*{Part VIII: The Resistance-Degree Spectral Inequality}
 
 This part records a natural route we pursued:
@@ -1127,6 +1214,10 @@ An Omega-compatible sufficient route is now explicit
 load-gap mismatch in cyclic $W_1$ and keep a positive gap floor.
 An even more checkable form is Corollary~\ref{cor:q6-omega-discrepancy},
 which replaces $W_1$ by prefix discrepancy control.
+The smallest algebraic form currently obtained is
+Proposition~\ref{prop:q6-prefix-var}: certify
+\(\Delta_{\mathrm{pref}}(p,q)\) and
+\(\operatorname{Var}_1(1/q)\) per step.
 
 These are equivalent and reduce Q6 to controlling the
 \emph{collective spectral norm} of vertex-induced edge sets
