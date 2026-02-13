@@ -1509,6 +1509,126 @@ f_p(t_2)-f_p(t_1)\ge C_n(t_2-t_1).
 The upper bound gives boundedness from above, hence convergence.
 \end{proof}
 
+\begin{proposition}[Asymptotic offset is exactly the variance constant]\label{prop:q4-asymptotic-offset-exact}
+With notation of Proposition~\ref{prop:q4-semi-linear-bounds},
+for every monic real-rooted degree-$n$ polynomial $p$:
+\[
+f_p(t)=C_n t + D_n\,\operatorname{Var}(p)+O(t^{-1/2})
+\qquad (t\to\infty).
+\]
+In particular, the offset constant from
+Proposition~\ref{prop:q4-semi-linear-bounds} is exact:
+\[
+B_n(p)=D_n\,\operatorname{Var}(p).
+\]
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+p(x)=x^n+a_1x^{n-1}+a_2x^{n-2}+\cdots+a_n.
+\]
+Let
+\[
+p_t:=p\boxplus_n q_t = H_{-t/2}p,
+\qquad
+R_t(y):=t^{-n/2}p_t(\sqrt t\,y).
+\]
+Since $H_{-t/2}x^m=t^{m/2}\mathrm{He}_m(x/\sqrt t)$ for each $m$,
+linearity gives
+\[
+R_t(y)=\sum_{k=0}^n a_k\,t^{-k/2}\,\mathrm{He}_{n-k}(y).
+\]
+We first center $p$: by translation invariance of both $\operatorname{Var}$ and
+$\Phi_n$, replacing $p$ by $\tau_m p(x):=p(x-m)$ does not change the target
+formula; moreover $H_{-t/2}$ commutes with translations, so the same asymptotic
+constant is obtained. Hence we may assume $a_1=0$.
+Then
+\[
+R_t(y)=\mathrm{He}_n(y)+a_2 t^{-1}\mathrm{He}_{n-2}(y)+O(t^{-3/2})
+\]
+in coefficient norm.
+
+Now consider the scaled-Hermite family
+\[
+\mathcal H_a(y):=a^{n/2}\mathrm{He}_n\!\bigl(y/\sqrt a\bigr).
+\]
+Differentiate at $a=1$:
+\[
+\partial_a \mathcal H_a\big|_{a=1}
+=
+\frac n2\,\mathrm{He}_n-\frac12\,y\,\mathrm{He}_n'
+=
+-\frac12\,\mathrm{He}_n''
+=
+-\frac{n(n-1)}2\,\mathrm{He}_{n-2},
+\]
+using the Hermite ODE
+$\mathrm{He}_n''-y\mathrm{He}_n'+n\mathrm{He}_n=0$
+and $\mathrm{He}_n''=n(n-1)\mathrm{He}_{n-2}$.
+Therefore, with
+\[
+\eta_t:=-\frac{2a_2}{n(n-1)}\,t^{-1},
+\]
+we have
+\[
+\mathcal H_{1+\eta_t}(y)
+=
+\mathrm{He}_n(y)+a_2 t^{-1}\mathrm{He}_{n-2}(y)+O(t^{-2}),
+\]
+hence
+\[
+R_t(y)-\mathcal H_{1+\eta_t}(y)=O(t^{-3/2})
+\]
+in coefficients.
+
+All roots of $\mathrm{He}_n$ are simple, so in a neighborhood of $\mathrm{He}_n$
+the roots depend smoothly on coefficients; consequently
+$N(Q):=1/\Phi_n(Q)$ is smooth there. Thus
+\[
+N(R_t)=N(\mathcal H_{1+\eta_t})+O(t^{-3/2}).
+\]
+If $Q$ has roots $\rho_i$, then $x\mapsto t^{n/2}Q(x/\sqrt t)$ has roots
+$\sqrt t\,\rho_i$, so $N$ scales by $t$:
+\[
+N(p_t)=t\,N(R_t).
+\]
+Also $N(\mathcal H_a)=a\,N(\mathrm{He}_n)=aC_n$. Therefore
+\[
+N(p_t)
+=
+t\Big(C_n(1+\eta_t)+O(t^{-3/2})\Big)
+=
+C_nt + C_n\eta_t t + O(t^{-1/2}).
+\]
+Hence
+\[
+N(p_t)=C_nt-\frac{2C_n a_2}{n(n-1)}+O(t^{-1/2}).
+\]
+For centered $p$ ($a_1=0$),
+\[
+a_2=\sum_{i<j}\lambda_i\lambda_j
+=
+-\frac12\sum_i\lambda_i^2
+=
+-\frac n2\,\operatorname{Var}(p),
+\]
+so
+\[
+-\frac{2C_n a_2}{n(n-1)}
+=
+\frac{C_n}{n-1}\operatorname{Var}(p)
+=
+D_n\,\operatorname{Var}(p).
+\]
+This proves
+\[
+N(p_t)=C_n t+D_n\operatorname{Var}(p)+O(t^{-1/2}).
+\]
+Returning from centered $p$ to general $p$ by translation invariance yields the
+same formula. Therefore $B_n(p)=D_n\operatorname{Var}(p)$.
+\end{proof}
+
 \begin{remark}[Additional stress-tests after rejecting \eqref{eq:q4-A}]
 After identifying \eqref{eq:q4-A} as too strong, we ran three independent numerical checks:
 \begin{enumerate}
@@ -1520,6 +1640,56 @@ After identifying \eqref{eq:q4-A} as too strong, we ran three independent numeri
 These tests strengthen confidence in \eqref{eq:q4-star}, but do not constitute a proof.
 \end{remark}
 
+\begin{lemma}[Two-scale smoothing factorization]\label{lem:q4-two-scale-factor}
+For all monic degree-$n$ $p,q$ and all $t\ge 0$:
+\[
+((p\boxplus_n q)\boxplus_n q_{2t})
+=
+(p\boxplus_n q_t)\boxplus_n(q\boxplus_n q_t),
+\]
+where $q_t(x)=t^{n/2}\mathrm{He}_n(x/\sqrt t)$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:q4-transform-factor},
+\[
+\mathcal T_n((p\boxplus_n q)\boxplus_n q_{2t})
+=
+\frac1{n!}\,\mathcal T_n(p\boxplus_n q)\,\mathcal T_n(q_{2t})
+=
+\frac1{(n!)^2}\,\mathcal T_n(p)\mathcal T_n(q)\mathcal T_n(q_{2t}).
+\]
+Using Lemma~\ref{lem:q4-hermite-transform},
+\[
+\mathcal T_n(q_t)=n!e^{-tz^2/2},
+\qquad
+\mathcal T_n(q_{2t})=n!e^{-tz^2}
+=
+\frac1{n!}\,\mathcal T_n(q_t)^2.
+\]
+Hence
+\[
+\mathcal T_n((p\boxplus_n q)\boxplus_n q_{2t})
+=
+\frac1{(n!)^3}\,\mathcal T_n(p)\mathcal T_n(q)\mathcal T_n(q_t)^2.
+\]
+On the other hand,
+\[
+\mathcal T_n\big((p\boxplus_n q_t)\boxplus_n(q\boxplus_n q_t)\big)
+=
+\frac1{n!}\,\mathcal T_n(p\boxplus_n q_t)\,\mathcal T_n(q\boxplus_n q_t)
+\]
+\[
+=
+\frac1{n!}\Big(\frac1{n!}\mathcal T_n(p)\mathcal T_n(q_t)\Big)
+\Big(\frac1{n!}\mathcal T_n(q)\mathcal T_n(q_t)\Big)
+=
+\frac1{(n!)^3}\,\mathcal T_n(p)\mathcal T_n(q)\mathcal T_n(q_t)^2.
+\]
+Thus the two $\mathcal T_n$-images are equal; injectivity of $\mathcal T_n$
+on degree-$n$ coefficient vectors gives the claim.
+\end{proof}
+
 \begin{remark}[Two-scale semi-Gaussian bridge candidate]
 Let $q_t(x):=t^{n/2}\mathrm{He}_n(x/\sqrt t)$ and define
 \[
@@ -1528,12 +1698,39 @@ J_{p,q}(t):=
 -\frac1{\Phi_n(p\boxplus_n q_t)}
 -\frac1{\Phi_n(q\boxplus_n q_t)}.
 \]
+By Lemma~\ref{lem:q4-two-scale-factor},
+\[
+J_{p,q}(t)
+=
+\frac1{\Phi_n\!\big((p\boxplus_n q_t)\boxplus_n(q\boxplus_n q_t)\big)}
+-\frac1{\Phi_n(p\boxplus_n q_t)}
+-\frac1{\Phi_n(q\boxplus_n q_t)},
+\]
+so $J_{p,q}(t)$ is exactly the Stam gap of the smoothed pair
+$(p\boxplus_n q_t,\ q\boxplus_n q_t)$.
 Then $J_{p,q}(0)$ is exactly the target Stam gap.
 Large-scale random scans (up to $n=8$ in this draft) found no negative
 values of $J_{p,q}(t)$ on tested grids of $t\ge 0$.
-Empirically, $J_{p,q}(t)\to 0$ as $t\to\infty$, consistent with
-variance additivity and first-order asymptotics of
-$\Phi_n^{-1}(r\boxplus_n q_t)$.
+Moreover, Proposition~\ref{prop:q4-asymptotic-offset-exact} gives
+\[
+\lim_{t\to\infty}J_{p,q}(t)=0.
+\]
+Indeed:
+\[
+\frac1{\Phi_n((p\boxplus_n q)\boxplus_n q_{2t})}
+=
+2C_n t + D_n\operatorname{Var}(p\boxplus_n q)+o(1),
+\]
+\[
+\frac1{\Phi_n(p\boxplus_n q_t)}
+=
+C_n t + D_n\operatorname{Var}(p)+o(1),
+\quad
+\frac1{\Phi_n(q\boxplus_n q_t)}
+=
+C_n t + D_n\operatorname{Var}(q)+o(1),
+\]
+and $\operatorname{Var}(p\boxplus_n q)=\operatorname{Var}(p)+\operatorname{Var}(q)$.
 
 This identifies a concrete final bridge target:
 prove $J_{p,q}(t)\ge 0$ for all $t\ge 0$.

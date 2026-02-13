@@ -2,7 +2,7 @@
 
 - Problem: `Q4`
 - Submission Version: `Q4-V27`
-- Review Version: `Q4-R28`
+- Review Version: `Q4-R34`
 - Verdict: `PARTIAL PASS`
 
 ## Closed Results
@@ -22,6 +22,27 @@
       f_p(0)+C_n t \le f_p(t)\le D_n Var(p)+C_n t.
     \]
     Hence `f_p(t)-C_n t` is monotone increasing, bounded above, and has finite limit.
+5d. Exact asymptotic offset (all `n`):
+    \[
+      \frac{1}{\Phi_n(p\boxplus q_t)}
+      =
+      C_n t + D_n Var(p) + O(t^{-1/2}),\quad t\to\infty,
+    \]
+    so the offset from 5c is exactly `B_n(p)=D_n Var(p)`.
+5e. Two-scale bridge tail is now rigorous:
+    for
+    \[
+      J_{p,q}(t)=\frac1{\Phi_n((p\boxplus q)\boxplus q_{2t})}
+      -\frac1{\Phi_n(p\boxplus q_t)}
+      -\frac1{\Phi_n(q\boxplus q_t)},
+    \]
+    one has `lim_{t->infty} J_{p,q}(t)=0` (using 5d + variance additivity).
+5f. Two-scale smoothing factorization:
+    \[
+      ((p\boxplus q)\boxplus q_{2t})=((p\boxplus q_t)\boxplus(q\boxplus q_t)),
+    \]
+    so `J_{p,q}(t)` is exactly the Stam gap of the smoothed pair
+    `(p\boxplus q_t,\ q\boxplus q_t)`.
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
