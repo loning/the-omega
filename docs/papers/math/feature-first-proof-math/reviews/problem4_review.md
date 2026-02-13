@@ -15,6 +15,13 @@
 5b. Universal sharp-form upper bound:
     `1/Phi_n(p) <= 4 Var(p)/(n(n-1)^2)` for every real-rooted degree-`n` polynomial
     (proved by the exact identity `sum lambda_i s_i = n(n-1)/2` + Cauchy).
+5c. Semi-Gaussian linear two-sided control:
+    for `f_p(t)=1/Phi_n(p boxplus q_t)`, constants
+    `C_n=4/(n(n-1))`, `D_n=4/(n(n-1)^2)`,
+    \[
+      f_p(0)+C_n t \le f_p(t)\le D_n Var(p)+C_n t.
+    \]
+    Hence `f_p(t)-C_n t` is monotone increasing, bounded above, and has finite limit.
 6. de Bruijn-type identity for polynomial heat flow.
 7. Differential-operator representation:
    `(p boxplus_n q)(x) = (1/n!) sum_{k=0}^n p^{(k)}(x) q^{(n-k)}(0)`.
