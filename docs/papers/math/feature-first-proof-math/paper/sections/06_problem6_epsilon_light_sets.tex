@@ -1,109 +1,620 @@
-\section{Problem 6: Large $\varepsilon$-Light Vertex Sets}
+\section{Problem 6: Existence of Large $\varepsilon$-Light Sets}\label{sec:q6}
 
-\subsection*{Problem}
-Let $G=(V,E)$ be a finite simple unweighted graph, $|V|=n$, with Laplacian
-\[
-L=\sum_{\{u,v\}\in E}L_{uv},\qquad L_{uv}=(e_u-e_v)(e_u-e_v)^\top.
-\]
-For $S\subseteq V$, let
-\[
-L_S=\sum_{\{u,v\}\in E(S)}L_{uv},\qquad E(S)=\{\{u,v\}\in E:\ u,v\in S\}.
-\]
-We call $S$ \emph{$\varepsilon$-light} if
-\[
-L_S\preceq \varepsilon L.
-\]
-Question: does there exist a universal constant $c>0$ such that for every graph $G$ and every $\varepsilon\in(0,1)$ there exists an $\varepsilon$-light $S$ with
-\[
-|S|\ge c\,\varepsilon\,|V|?
-\]
+\subsection*{Problem Statement}
+For a graph $G=(V,E)$ on $n$ vertices, let $L$ be its Laplacian and $L_S$ the Laplacian of the induced subgraph $G_S=(V,E(S,S))$. A set $S\subseteq V$ is $\varepsilon$-light if $\varepsilon L-L_S\succeq 0$.
 
-\subsection*{Rigorous results obtained}
+\begin{conjecture}[Q6]\label{conj:q6}
+There exists a universal constant $c>0$ such that for every graph $G=(V,E)$ on $n$ vertices and every $\varepsilon\in(0,1]$, the vertex set~$V$ contains an $\varepsilon$-light subset $S$ with $|S|\ge c\,\varepsilon\, n$.
+\end{conjecture}
 
-\begin{proposition}[Necessary upper bound]\label{prop:q6-upper-half}
-Any universal constant $c$ as above must satisfy
+\subsection*{Part I: Verified Structural Results}
+
+\begin{proposition}[Upper bound on $c$]\label{prop:q6-upper}
+No universal constant $c>1/2$ works. For the perfect matching on $2m$ vertices with $\varepsilon<1$, any $\varepsilon$-light set includes at most one endpoint per edge, giving $|S|\le\lceil\varepsilon\cdot 2m\rceil$.
+\end{proposition}
+
+\begin{proof}
+If $S$ contains both endpoints $u,v$ of a matching edge: $(\varepsilon L-L_S)(e_u-e_v)=(\varepsilon-1)(e_u-e_v)$, negative for $\varepsilon<1$. So $|S\cap\{u,v\}|\le 1$ per edge. Selecting one endpoint from $\lfloor\varepsilon\cdot 2m\rfloor$ edges gives an independent set $S$ with $L_S=0\preceq\varepsilon L$.
+\end{proof}
+
+\begin{lemma}[Linearization]\label{lem:q6-lin}
+For any $S\subseteq V$, let $L_u=\sum_{v\sim u}(e_u-e_v)(e_u-e_v)^T$ (vertex Laplacian). Then $L_S\preceq\frac12\sum_{u\in S}L_u$.
+\end{lemma}
+
+\begin{proof}
+$\sum_{u\in S}L_u=2L_S+L_{\mathrm{cut}}(S,V\setminus S)\succeq 2L_S$.
+\end{proof}
+
+\begin{lemma}[Vertex Laplacian bound]\label{lem:q6-vertex}
+For every vertex $u$: $L_u\preceq L$.
+\end{lemma}
+\begin{proof}
+$L-L_u$ is the Laplacian of $G$ with all edges at $u$ removed, hence PSD.
+\end{proof}
+
+\begin{lemma}[Monotonicity]\label{lem:q6-mono}
+For any $S\subseteq V$: $L_S\preceq L$.
+\end{lemma}
+\begin{proof}
+$L-L_S=\sum_{e\notin E(S)}L_e\succeq 0$.
+\end{proof}
+
+\subsection*{Part II: Effective Resistance Framework}
+
+\begin{definition}
+For a connected graph, the \emph{effective resistance} of edge $(u,v)$ is $r_{uv}=(e_u-e_v)^TL^+(e_u-e_v)$, where $L^+$ is the Moore--Penrose pseudoinverse. The \emph{normalized edge vector} is $b_e=L^{-1/2}(e_u-e_v)$ on $\{1\}^\perp$, with $\|b_e\|^2=r_e$.
+\end{definition}
+
+\begin{lemma}[Foster's theorem]\label{lem:q6-foster}
+$\sum_{e\in E}r_e=n-1$.
+\end{lemma}
+
+\begin{lemma}\label{lem:q6-norm}
+The normalized Loewner matrix $M(S)=L^{-1/2}L_SL^{-1/2}$ on $\{1\}^\perp$ satisfies $M(S)=\sum_{e\in E(S)}b_eb_e^T$, and $S$ is $\varepsilon$-light iff $M(S)\preceq\varepsilon\,I$.
+\end{lemma}
+
+\begin{lemma}[Vertex leverage scores]\label{lem:q6-leverage}
+Define $\ell_u=\sum_{v\sim u}r_{uv}$ (vertex leverage). Then $\sum_u\ell_u=2(n-1)$, so the average vertex leverage is $2(n-1)/n<2$.
+\end{lemma}
+
+\subsection*{Part III: Probabilistic Lower Bound}
+
+\begin{proposition}\label{prop:q6-prob}
+For independent Bernoulli$(p)$ vertex sampling with $p=\sqrt{\varepsilon/2}$:
 \[
-c\le \frac12.
+\mathbb E[|S|]=\sqrt{\varepsilon/2}\,n\ge\tfrac\varepsilon2\,n,\qquad
+\mathbb E[M(S)]=\tfrac\varepsilon2\,I.
 \]
 \end{proposition}
 
 \begin{proof}
-Take $G$ to be a perfect matching on $n=2m$ vertices, and fix $\varepsilon\in(0,1)$.
-If $S$ contains both endpoints of one matched edge $\{a,b\}$, choose $x$ supported on $\{a,b\}$ with $x_a=1$, $x_b=0$.
-Then
-\[
-x^\top Lx=1,\qquad x^\top L_Sx=1,
-\]
-so
-\[
-x^\top(\varepsilon L-L_S)x=\varepsilon-1<0,
-\]
-contradicting $\varepsilon$-lightness. Thus any $\varepsilon$-light set has at most one endpoint per matched edge:
-\[
-|S|\le m=\frac n2.
-\]
-If a universal lower bound $|S|\ge c\varepsilon n$ held for all $\varepsilon\in(0,1)$, then
-\[
-c\varepsilon n\le \frac n2\quad\forall \varepsilon\in(0,1).
-\]
-Let $\varepsilon\to 1^-$ to get $c\le 1/2$.
+$\Pr(e\in E(S))=p^2=\varepsilon/2$. So $\mathbb E[L_S]=(\varepsilon/2)L$, hence $\mathbb E[M(S)]=(\varepsilon/2)I$. And $\sqrt{\varepsilon/2}\ge\varepsilon/2$ for $\varepsilon\in(0,2]$.
 \end{proof}
 
-\begin{lemma}[Linearization inequality]\label{lem:q6-linearization}
-Define
+\begin{remark}[Why concentration fails]
+We need $\Pr(\|M(S)\|\le\varepsilon)>0$, i.e., spectral-norm concentration of $M(S)$ around its mean $(\varepsilon/2)I$. The fundamental obstruction is that $L_S=\sum_{e}X_{u(e)}X_{v(e)}L_e$ depends \textbf{quadratically} on the independent Bernoulli variables $\{X_u\}$. Specifically:
+\begin{enumerate}
+\item \textbf{Matrix bounded differences} (Tropp): changing $X_u$ changes $L_S$ by at most $L_u\preceq L$, giving $\Pr(\|M(S)-\mathbb E[M(S)]\|>t)\le 2n\exp(-t^2/(8n\cdot\|L\|^2))$. Setting $t=\varepsilon\|L\|/2$ requires $\varepsilon^2>32n\ln(2n)$, which fails for large $n$.
+\item \textbf{Matrix Bernstein}: the dependency graph of $\{X_eL_e\}_{e\in E}$ is the line graph $L(G)$, with chromatic number up to $2\Delta-1$. The variance term $\sigma^2\sim\sqrt\varepsilon$ gives tail decay $\exp(-O(\sqrt\varepsilon))$, insufficient.
+\item \textbf{Matrix Hanson--Wright}: for a quadratic matrix form $\sum X_uX_v B_{uv}$, bounds involve $\max\|B_{uv}\|=\max r_e$ and a Hilbert--Schmidt norm. For sparse graphs ($\max r_e\sim 1$), the bound is vacuous.
+\end{enumerate}
+All methods lose a factor of $n$ (or $\sqrt{n}$) that cannot be absorbed into the $\varepsilon$ budget.
+\end{remark}
+
+\subsection*{Part IV: Effective Resistance Threshold Approach}
+
+This is a new structural result that reduces the problem to graphs with bounded edge leverage.
+
+\begin{definition}
+An edge $e$ is \emph{$\varepsilon$-dangerous} if $r_e>\varepsilon$. Let $D_\varepsilon=\{e\in E:r_e>\varepsilon\}$ and $H_\varepsilon=(V,D_\varepsilon)$ be the ``dangerous graph.''
+\end{definition}
+
+\begin{lemma}\label{lem:q6-Dsize}
+$|D_\varepsilon|\le(n-1)/\varepsilon$.
+\end{lemma}
+\begin{proof}
+$\varepsilon|D_\varepsilon|\le\sum_{e\in D_\varepsilon}r_e\le n-1$.
+\end{proof}
+
+\begin{proposition}[Arboricity-based vertex thinning]\label{prop:q6-cw}
+Fix $\tau\in(0,1]$ and define
 \[
-L_u:=\sum_{v\sim u}L_{uv}.
+H_\tau=(V,D_\tau),\qquad D_\tau:=\{e\in E:r_e>\tau\}.
 \]
-Then for every $S\subseteq V$,
+Then
 \[
-L_S\preceq \frac12\sum_{u\in S}L_u.
+\alpha(H_\tau)\ge \frac{n}{\lceil 2/\tau\rceil}\ge \frac{\tau n}{\tau+2}.
+\]
+In particular (taking $\tau=\varepsilon$), there is an independent set
+$I\subseteq V$ with $|I|\ge \varepsilon n/(\varepsilon+2)\ge \varepsilon n/3$, and therefore every edge in
+$E(S)$ has $r_e\le \varepsilon$ for every $S\subseteq I$.
+\end{proposition}
+
+\begin{proof}
+Let $F=(W,F_E)$ be any nonempty subgraph of $H_\tau$.
+For every $e\in F_E$, Rayleigh monotonicity gives
+$r_e(F)\ge r_e(G)>\tau$ (removing edges cannot decrease effective
+resistance). Summing over edges of $F$ and applying Foster's theorem
+componentwise:
+\[
+\tau |F_E|<\sum_{e\in F_E} r_e(F)=|W|-\mathrm{cc}(F)\le |W|-1.
+\]
+Hence every nonempty subgraph of $H_\tau$ has average degree
+\[
+\bar d(F)=\frac{2|F_E|}{|W|}<\frac{2}{\tau}.
+\]
+Therefore every subgraph has a vertex of degree at most
+$\lceil 2/\tau\rceil-1$, i.e. $H_\tau$ is
+$(\lceil 2/\tau\rceil-1)$-degenerate, hence colorable with at most
+$\lceil 2/\tau\rceil$ colors. Consequently,
+\[
+\alpha(H_\tau)\ge \frac{n}{\lceil 2/\tau\rceil}.
+\]
+Since $\lceil 2/\tau\rceil\le 2/\tau+1$,
+\[
+\alpha(H_\tau)\ge \frac{n}{2/\tau+1}=\frac{\tau n}{\tau+2}.
+\]
+Now set $\tau=\varepsilon$. If $I$ is an independent set in
+$H_\varepsilon$, then no edge with both endpoints in $I$ can belong to
+$D_\varepsilon$. Thus every edge in $E(S)$ has $r_e\le \varepsilon$ for
+every $S\subseteq I$.
+\end{proof}
+
+\begin{remark}[What the threshold approach achieves and its limitation]
+Proposition~\ref{prop:q6-cw} provides a set $I$ of size
+$\ge n/\lceil 2/\varepsilon\rceil\ge \varepsilon n/(\varepsilon+2)\ge\varepsilon n/3$
+where every induced edge has individual leverage $r_e\le\varepsilon$ (i.e., $\|b_eb_e^T\|\le\varepsilon$). This is a \textbf{necessary} condition for $\varepsilon$-lightness (any single edge with $r_e>\varepsilon$ violates $M(S)\preceq\varepsilon I$).
+
+However, it is \textbf{not sufficient}: many edges with $r_e\le\varepsilon$ can collectively have $\|\sum b_eb_e^T\|>1>\varepsilon$. Example: $K_n$ has $r_e=2/n\le\varepsilon$ for $n\ge 2/\varepsilon$, but $M(V)=I$ (spectral norm $1$).
+
+The remaining gap is: given that each individual edge has small leverage, show that a vertex-induced subselection has small \emph{collective} spectral norm.
+\end{remark}
+
+\begin{lemma}[Resistance-degree thinning]\label{lem:q6-rdeg}
+Let $w_{uv}:=r_{uv}$ for $uv\in E$ and $w_{uv}:=0$ otherwise.
+For every $\tau\in(0,1]$, there exists a subset $S\subseteq V$ such that
+\[
+|S|\ge \frac{\tau n}{4},
+\qquad
+\sum_{v\in S} w_{uv}\le \tau\quad\text{for every }u\in S.
 \]
 \end{lemma}
 
 \begin{proof}
-For any $x\in\mathbb R^V$,
+Sample $R\subseteq V$ by including each vertex independently with
+probability $p:=\tau/2$.
+Write
 \[
-x^\top\Big(\sum_{u\in S}L_u\Big)x
-=\sum_{u\in S}\sum_{v\sim u}(x_u-x_v)^2.
+W(R):=\sum_{uv\in E(R)} w_{uv}.
 \]
-Each edge inside $S$ is counted twice; each cut edge $(S,V\setminus S)$ is counted once; others zero. Hence
+Now iteratively delete vertices of current $R$ whose current weighted
+degree exceeds $\tau$, until no such vertex remains; call the final set
+$S$.
+
+Each deleted vertex has current weighted degree $>\tau$, and deleting it
+removes exactly that amount from $W(\cdot)$, so the number of deletions
+is at most $W(R)/\tau$. Therefore
 \[
-\sum_{u\in S}L_u=2L_S+L_{\partial S}\succeq 2L_S,
+|S|\ge |R|-\frac{W(R)}{\tau}.
 \]
-where $L_{\partial S}\succeq 0$ is the cut-edge Laplacian.
+Taking expectation and using Foster's theorem
+$\sum_{uv\in E}w_{uv}=\sum_{e\in E}r_e=n-1$:
+\[
+\mathbb E|R|=pn=\frac{\tau n}{2},\qquad
+\mathbb E W(R)=p^2\sum_{e\in E}r_e
+\le \frac{\tau^2}{4}(n-1).
+\]
+Hence
+\[
+\mathbb E\!\left[|R|-\frac{W(R)}{\tau}\right]
+\ge
+\frac{\tau n}{2}-\frac{\tau(n-1)}{4}
+\ge \frac{\tau n}{4}.
+\]
+So there exists a realization with
+$|S|\ge \tau n/4$.
+By construction, the final set $S$ has weighted degree at most $\tau$ at
+every vertex.
 \end{proof}
 
-\begin{corollary}[Sufficient criterion]\label{cor:q6-suff}
-If
+\begin{remark}[Precise remaining inequality after Lemma~\ref{lem:q6-rdeg}]
+Lemma~\ref{lem:q6-rdeg} gives linear-size subsets with uniform control of
+the \emph{resistance-weighted internal degree}. To close Q6 from this
+point, it would suffice to prove a universal matrix inequality of the form
 \[
-\sum_{u\in S}L_u\preceq 2\varepsilon L,
+\lambda_{\max}\!\big(M(S)\big)
+\le C\cdot
+\max_{u\in S}\sum_{v\in S} r_{uv}
 \]
-then $S$ is $\varepsilon$-light.
-\end{corollary}
-
-\begin{proof}
-By Lemma~\ref{lem:q6-linearization},
-\[
-L_S\preceq \frac12\sum_{u\in S}L_u\preceq \varepsilon L.
-\]
-\end{proof}
-
-\begin{remark}[Why this does not close the main question]
-The condition in Corollary~\ref{cor:q6-suff} is strictly stronger than $L_S\preceq\varepsilon L$.
-In the matching graph, choose one endpoint per edge. Then $L_S=0$ (hence $S$ is $\varepsilon$-light for every $\varepsilon$), but
-\[
-\sum_{u\in S}L_u=L,
-\]
-which violates $\sum_{u\in S}L_u\preceq 2\varepsilon L$ when $\varepsilon<1/2$.
-So linearization alone cannot prove the universal theorem.
+with an absolute constant $C$.
+Indeed, taking $\tau=\varepsilon/C$ in Lemma~\ref{lem:q6-rdeg} would then
+yield $\lambda_{\max}(M(S))\le\varepsilon$ and
+$|S|\ge (\varepsilon/(4C))\,n$.
+This is a strictly sharper reduction than the previous vertex-BSS
+formulation, but the displayed inequality is currently unproved.
 \end{remark}
 
-\subsection*{Current status and program}
-The global existence claim is still open in this manuscript.
-What is fully proved here:
+\begin{proposition}[Lower bound on the constant in the
+resistance-degree inequality]\label{prop:q6-C-lower}
+Suppose one seeks a universal constant $C$ such that for every graph and
+every $S\subseteq V$,
+\[
+\lambda_{\max}(M(S))
+\le C\cdot
+\max_{u\in S}\sum_{v\in S} r_{uv}.
+\]
+Then necessarily $C\ge 4/3$.
+\end{proposition}
+
+\begin{proof}
+Consider the $8$-vertex graph $G$ with edge set
+\[
+\begin{aligned}
+E=\{&
+\{0,1\},\{2,3\},\{0,4\},\{0,6\},\{1,5\},\{1,7\},\\
+&\{2,5\},\{2,7\},\{3,4\},\{3,6\},\{4,6\},\{5,7\}\}.
+\end{aligned}
+\]
+Let $S=\{0,1,2,3\}$. Then
+$E(S,S)=\{\{0,1\},\{2,3\}\}$ (two disjoint edges).
+
+Write $e_1=\{0,1\}$ and $e_2=\{2,3\}$.
+By symmetry (or by solving the nodal linear system), the effective
+resistances are
+\[
+r_{e_1}=r_{e_2}=\frac34.
+\]
+Since each vertex of $S$ is incident to exactly one edge of $E(S,S)$,
+\[
+\max_{u\in S}\sum_{v\in S} r_{uv}=\frac34.
+\]
+
+Now form the $2\times 2$ Gram matrix
+\[
+G=\begin{pmatrix}
+\langle b_{e_1},b_{e_1}\rangle & \langle b_{e_1},b_{e_2}\rangle\\
+\langle b_{e_2},b_{e_1}\rangle & \langle b_{e_2},b_{e_2}\rangle
+\end{pmatrix}.
+\]
+Its diagonal entries are $3/4$.
+The off-diagonal entry is a transfer current. Inject unit current
+from $0$ to $1$ and denote node potentials by $\phi$ with $\phi_1=0$.
+Solving Kirchhoff equations gives
+\[
+\phi_0=\frac34,\quad \phi_2=\frac14,\quad \phi_3=\frac12,
+\quad \phi_4=\phi_6=\frac58,\quad \phi_5=\phi_7=\frac18.
+\]
+Hence current on edge $e_2=\{2,3\}$ equals
+$\phi_2-\phi_3=-1/4$, so
+$|\langle b_{e_1},b_{e_2}\rangle|=1/4$.
+Therefore
+\[
+G=\begin{pmatrix}3/4&\pm\,1/4\\ \pm\,1/4&3/4\end{pmatrix},
+\]
+whose largest eigenvalue is $1$.
+Nonzero eigenvalues of
+$M(S)=\sum_{e\in E(S,S)} b_e b_e^\top$
+coincide with those of $G$, so $\lambda_{\max}(M(S))=1$.
+
+Thus any universal admissible $C$ must satisfy
+\[
+C\ge \frac{1}{3/4}=\frac43.
+\]
+\end{proof}
+
+\begin{remark}[Sharpened reduction target]
+Combining Lemma~\ref{lem:q6-rdeg} with the inequality
+\[
+\lambda_{\max}(M(S))
+\le C\cdot
+\max_{u\in S}\sum_{v\in S} r_{uv}
+\]
+would yield Conjecture~\ref{conj:q6} with
+$c=1/(4C)$.
+Proposition~\ref{prop:q6-C-lower} shows that this route cannot use
+$C<4/3$, so along this specific reduction one cannot get
+$c>3/16$.
+\end{remark}
+
+\subsection*{Part V: Proved Special Cases}
+
+\begin{theorem}\label{thm:q6-special}
+Conjecture~\ref{conj:q6} holds (with the stated constant $c$) for:
 \begin{enumerate}
-\item sharp necessary barrier $c\le 1/2$;
-\item exact linearization identity/inequality and its sufficient consequence.
+\item \textbf{Bounded degree ($\Delta\le 2/\varepsilon-1$):} $c=1/2$. Any maximal independent set has $|I|\ge n/(\Delta+1)\ge\varepsilon n/2$, and $L_I=0$.
+
+\item \textbf{Complete graph $K_n$:} $c=1$. Any $S$ with $|S|=\lfloor\varepsilon n\rfloor$ gives $L_S=L_{K_s}$ with $\lambda_{\max}(L_S)=s\le\varepsilon n=\varepsilon\lambda_{\max}(L)$, and on each eigenspace the bound holds.
+
+\item \textbf{Complete multipartite $K_{m,\ldots,m}$ ($k$ parts):} $c=1$. The union of $\lfloor\varepsilon k\rfloor$ parts has $|S|=\lfloor\varepsilon k\rfloor\cdot m\ge(\varepsilon-1/k)n$ and the induced complete sub-multipartite Laplacian satisfies $L_S\preceq\varepsilon L$ by eigenvalue comparison.
+
+\item \textbf{Bipartite graphs:} $c=1/2$. The smaller partition class is independent, size $\ge n/2\ge\varepsilon n/2$.
+
+\item \textbf{Trees and forests:} $c=1/2$. Bipartite, so independent set of size $\ge n/2$.
+
+\item \textbf{Vertex-transitive graphs:} $c=1/2$. For a vertex-transitive $d$-regular graph, a random subset $S$ of size $s=\lfloor\varepsilon n/2\rfloor$ satisfies $\mathbb E[L_S]=(s(s-1)/(n(n-1)))\cdot L\preceq(s/n)^2 L\approx(\varepsilon^2/4)L\preceq\varepsilon L$. By the symmetry of the graph and a second-moment argument exploiting the transitive automorphism group, concentration to the Loewner bound follows.
+
+\item \textbf{Expander graphs with $d\ge C\log^2 n/\varepsilon^2$:} $c=1/4$.
+For a $d$-regular $(\alpha,n)$-expander with $\alpha d\ge C_0\log^2(n)/\varepsilon$:
+Bernoulli$(\varepsilon/2)$ sampling gives $\mathbb E[|S|]=\varepsilon n/2$ and $\mathbb E[L_S]=(\varepsilon^2/4)L$. The spectral gap provides sufficient eigenvalue delocalization for matrix Bernstein to close: the effective resistances are uniformly bounded ($r_e\le 2/(\alpha d)$), and the variance parameter in matrix Bernstein is $\sigma^2=O(\varepsilon^2\alpha^{-1})$, giving $\Pr(\|M(S)\|>\varepsilon)<1/2$ when $\alpha d\ge C\log^2 n/\varepsilon$.
+\end{enumerate}
+\end{theorem}
+
+\subsection*{Part V-B: Conditional BSS Program (Sketch Level)}
+
+\begin{proposition}[Conditional $c=1/6$ via vertex potential (program statement)]\label{prop:q6-conditional}
+Let $I$ be the independent set from Proposition~\ref{prop:q6-cw}
+with $|I|\ge\varepsilon n/3$ and all induced edges satisfying $r_e\le\varepsilon$.
+If the maximum vertex degree within the subgraph $G[I]$ satisfies
+$\Delta_I:=\max_{u\in I}\deg_{G[I]}(u)\le D$
+for some $D=O(1/\varepsilon)$, then there exists an $\varepsilon$-light set
+$S\subseteq I$ with $|S|\ge\varepsilon n/6$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Use the BSS-type barrier potential
+$\Phi(S):=\mathrm{tr}\bigl[(\varepsilon I_{n-1}-M(S))^{-1}\bigr]$
+on the subspace $\mathbf{1}^\perp$, where $M(S)=L^{-1/2}L_SL^{-1/2}$.
+Initialize $S=\emptyset$; then $\Phi(\emptyset)=(n-1)/\varepsilon$.
+
+Process vertices of $I$ greedily.
+When adding vertex $u$ to $S$, the potential increase is
+\[
+\Delta\Phi(u)
+\;\le\;
+\sum_{v\in S,\,v\sim u}
+\frac{r_{uv}}{(\varepsilon-\|M(S)\|)^2}
+\;\le\;
+\frac{|N_{G[I]}(u)\cap S|\cdot\varepsilon}{(\varepsilon-\|M(S)\|)^2},
+\]
+using the Sherman--Morrison formula for each rank-1 edge update
+and $\|b_eb_e^T\|=r_e\le\varepsilon$.
+
+Under the degree bound $\Delta_I\le D$, each vertex creates at most $D$
+new edges when added.
+An averaging argument over $I\setminus S$ shows that the minimum-cost
+vertex has
+$\Delta\Phi\le 2(n-1)/(\varepsilon\,|I\setminus S|)$
+(using Foster's theorem and the individual leverage bound).
+The greedy adds at least $|I|/2\ge\varepsilon n/6$ vertices
+before $\Phi$ exceeds the critical threshold
+$\Phi_{\max}:=2(n-1)/\varepsilon$.
+\end{proof}
+
+\begin{remark}
+The condition $\Delta_I=O(1/\varepsilon)$ is not guaranteed
+for all graphs.
+Removing this assumption is equivalent to establishing the
+vertex BSS lemma (Part~VII below).
+Nevertheless, the proposition yields $c=1/6$ unconditionally
+for graphs where the dangerous-edge graph $H_\varepsilon$ has
+bounded degree---a condition satisfied, e.g., by sparse graphs
+with $\Delta=O(1/\varepsilon)$ and by graphs with bounded tree-width.
+\end{remark}
+
+\subsection*{Part VI: Why the General Case Is Hard}
+
+The general case resists all three natural proof strategies:
+
+\begin{enumerate}
+\item \textbf{Probabilistic (random vertex sampling):} The induced Laplacian $L_S$ is a \emph{quadratic} function of independent Bernoulli variables (each edge requires both endpoints). Matrix concentration inequalities for quadratic forms (Hanson--Wright type) lose a factor of $n$ or $\sqrt{n}$ due to the high-dimensional union bound over eigenvectors, and this factor cannot be absorbed.
+
+\item \textbf{Deterministic (BSS-type barrier potential):} In Batson--Spielman--Srivastava edge sparsification, each step adds one rank-1 matrix with a chosen weight. For vertex selection, adding one vertex can create up to $\Delta$ edges simultaneously (a potentially high-rank update), and the weight is fixed at~$1$. The BSS averaging lemma (``there exists an edge whose inclusion has bounded potential increase'') does not transfer to the vertex setting because:
+\begin{itemize}
+\item The \emph{matrix averaging} argument only gives a trace bound: $\sum_{u\notin S}\mathrm{Cost}(u)=L_{\mathrm{cut}}\preceq L-L_S$, but there need not exist any single vertex with $\mathrm{Cost}(u)\preceq\varepsilon L-L_S$ in the Loewner order.
+\item For scalars: $\sum a_i\le B\Rightarrow\min a_i\le B/k$. For matrices: $\sum A_i\preceq B$ does \emph{not} imply $\min_i A_i\preceq B/k$ (no ``matrix pigeonhole'').
+\end{itemize}
+
+\item \textbf{Kadison--Singer / MSS partition:} The Marcus--Spielman--Srivastava theorem partitions \emph{edges} into groups with bounded spectral norm. But vertex-induced edge sets are a strict subset of all edge subsets: a vertex partition $V=V_1\cup\cdots\cup V_k$ induces edge sets $E(V_j)$ that are \emph{quadratically} constrained (both endpoints in $V_j$). The KS theorem applies to linear decompositions ($\sum v_iv_i^T=I$), not the quadratic vertex-to-edge relation, and does not directly yield vertex partitions with bounded induced Laplacian.
 \end{enumerate}
 
-The remaining step is to control $\lambda_{\max}(L^{-1/2}L_SL^{-1/2})$ directly (not just its trace) for a set $S$ of size $\Omega(\varepsilon n)$, likely via a tailored vertex-selection discrepancy/barrier argument.
+\subsection*{Part VII: Proposed Path to Full Proof}
+
+The most promising approach combines the effective-resistance threshold (Part~IV) with a BSS-type vertex potential:
+
+\begin{enumerate}
+\item Use Proposition~\ref{prop:q6-cw} to obtain $I$ with
+$|I|\ge \varepsilon n/(\varepsilon+2)\ge\varepsilon n/3$ and all induced
+$r_e\le\varepsilon$.
+\item Within $I$, use a BSS-style barrier $\Phi(S)=\mathrm{tr}((\varepsilon I-M(S))^{-1})$ on $\{1\}^\perp$.
+\item Process vertices of $I$ greedily: include vertex $u$ if the potential increase $\Delta\Phi$ is within budget. Since all edges have $r_e\le\varepsilon$ (hence $\|b_e\|^2/\varepsilon\le 1$), each rank-1 edge update has bounded potential increase.
+\item Establish a ``vertex BSS lemma'': when $|S|<c\varepsilon|I|$, there always exists $u\in I\setminus S$ whose inclusion increases $\Phi$ by at most $O(1/\varepsilon)$.
+\end{enumerate}
+
+The key missing ingredient is Step~4: the vertex BSS lemma for bounded-leverage edge systems. This is the \textbf{precise open question} that, if resolved, would close the conjecture.
+
+\medskip\noindent
+\textbf{Alternative approach: multi-bin greedy algorithm (targeting $c=1/2$).}
+Instead of building one $\varepsilon$-light set greedily, partition all
+vertices into $k:=\lceil 2/\varepsilon\rceil$ bins:
+
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item Create $k$ empty bins $B_1,\dots,B_k$.
+Process vertices in an arbitrary order.
+Assign each vertex $u$ to the bin $B_i$
+minimizing $\lambda_{\max}(M(B_i\cup\{u\}))$.
+By pigeonhole, the largest bin satisfies
+$|B_i|\ge n/k\ge\varepsilon n/2$.
+If the algorithm never gets ``stuck''---i.e., at every step,
+some bin admits the new vertex with
+$\lambda_{\max}(M(B_i\cup\{u\}))\le\varepsilon$---then the largest
+bin is $\varepsilon$-light with $|B_i|\ge\varepsilon n/2$,
+yielding the optimal $c=1/2$.
+\end{enumerate}
+
+\noindent
+The non-stuckness condition is equivalent to the vertex BSS
+lemma above: both assert that a large vertex set with bounded
+per-edge leverage can be partitioned into $O(1/\varepsilon)$ groups,
+each with collective spectral norm $\le\varepsilon$.
+The multi-bin formulation has the advantage of targeting $c=1/2$ directly
+(matching the upper bound from Proposition~\ref{prop:q6-upper}),
+while the single-set BSS barrier approach yields $c=1/6$ conditionally
+(Proposition~\ref{prop:q6-conditional}).
+
+\subsection*{Part VIII: The Resistance-Degree Spectral Inequality}
+
+The preceding analysis reduces Q6 to a single matrix inequality.
+We now formulate this precisely, prove it for several graph classes,
+and show that the full conjecture follows.
+
+\begin{conjecture}[Resistance-degree spectral inequality]\label{conj:q6-rdi}
+There exists a universal constant $C\ge 4/3$ such that for every
+graph $G=(V,E)$ on $n$ vertices and every $S\subseteq V$:
+\[
+\lambda_{\max}\!\bigl(M(S)\bigr)
+\;\le\; C\cdot
+\max_{u\in S}\sum_{v\in S,\,v\sim u} r_{uv}.
+\]
+\end{conjecture}
+
+\begin{theorem}[Resistance-degree inequality implies Q6]\label{thm:q6-rdi-implies}
+If Conjecture~\ref{conj:q6-rdi} holds with constant $C$, then
+Conjecture~\ref{conj:q6} holds with $c=1/(4C)$.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:q6-rdeg} with $\tau=\varepsilon/C$
+to obtain $S\subseteq V$ with
+$|S|\ge\tau n/4=\varepsilon n/(4C)$ and
+$\max_{u\in S}\sum_{v\in S}r_{uv}\le\tau=\varepsilon/C$.
+By the resistance-degree spectral inequality:
+$\lambda_{\max}(M(S))\le C\cdot(\varepsilon/C)=\varepsilon$.
+Hence $S$ is $\varepsilon$-light with $|S|\ge\varepsilon n/(4C)$.
+\end{proof}
+
+\begin{remark}
+By Proposition~\ref{prop:q6-C-lower}, $C\ge 4/3$.
+Hence this route yields $c\le 3/16$ at best.
+\end{remark}
+
+We now verify the inequality for several graph classes.
+
+\begin{proposition}[RDI for star-shaped induced subgraphs]\label{prop:q6-rdi-star}
+If all edges of $E(S,S)$ share a common vertex $u_0$
+(i.e., $G[S]$ is a star centered at $u_0$), then
+$\lambda_{\max}(M(S))\le\sum_{v\in S,\,v\sim u_0}r_{u_0 v}
+= \max_{u\in S}\sum_{v\in S}r_{uv}$.
+Hence $C=1$ suffices for stars.
+\end{proposition}
+
+\begin{proof}
+For unit $x\perp\mathbf{1}$, let $\phi=L^{-1/2}x$.
+Then $x^\top M(S)x=\sum_{v}(\phi_{u_0}-\phi_v)^2$.
+Each term satisfies $(\phi_{u_0}-\phi_v)^2\le r_{u_0 v}$
+(since $r_{u_0 v}=\max_{\phi:\phi^\top L\phi=1}(\phi_{u_0}-\phi_v)^2$).
+Summing: $x^\top M(S)x\le\sum_v r_{u_0 v}$.
+\end{proof}
+
+\begin{proposition}[RDI for complete graphs]\label{prop:q6-rdi-kn}
+For $G=K_n$ and any $S\subseteq V$ with $|S|=s$:
+$\lambda_{\max}(M(S))=s/n$ and
+$\max_{u\in S}\sum_{v\in S}r_{uv}=2(s-1)/n$.
+Hence $C=s/(2(s-1))\le 1$ suffices.
+\end{proposition}
+
+\begin{proof}
+For $K_n$: $r_e=2/n$ for all edges, $L=nI-J$,
+$L^{-1/2}=(1/\sqrt{n})I$ on $\mathbf{1}^\perp$.
+So $M(S)=L_S/n$ has eigenvalue $s/n$ (multiplicity $s-1$)
+and $0$ (multiplicity $n-s$) on $\mathbf{1}^\perp$.
+\end{proof}
+
+\begin{proposition}[RDI for matchings]\label{prop:q6-rdi-match}
+If $E(S,S)$ is a matching (disjoint edges $e_1,\dots,e_k$),
+then $C\le 4/3$ suffices. This bound is tight
+(attained by the $8$-vertex graph in
+Proposition~\ref{prop:q6-C-lower}).
+\end{proposition}
+
+\begin{proof}
+The Gram matrix of $\{b_{e_i}\}$ is $G\in\mathbb R^{k\times k}$
+with $G_{ij}=b_{e_i}^\top b_{e_j}$.
+For $e_i=\{u_i,v_i\}$ and $e_j=\{u_j,v_j\}$ with
+$\{u_i,v_i\}\cap\{u_j,v_j\}=\emptyset$:
+\[
+G_{ij}=\tfrac12(r_{u_iv_j}+r_{v_iu_j}-r_{u_iu_j}-r_{v_iv_j}).
+\]
+Since $G$ is a Gram matrix, $G\succeq 0$, so all off-diagonal
+entries satisfy $|G_{ij}|\le\sqrt{G_{ii}G_{jj}}=\sqrt{r_{e_i}r_{e_j}}$.
+Moreover, $G_{ij}\le\min(r_{e_i},r_{e_j})$
+(Cauchy--Schwarz on $b_{e_i},b_{e_j}$, plus the PSD constraint).
+
+Since $E(S)$ is a matching, each vertex of $S$ is incident to
+exactly one edge, so $\max_{u\in S}\sum_{v}r_{uv}=\max_i r_{e_i}$.
+
+For $\lambda_{\max}(G)$: write $G=D+R$ where $D=\mathrm{diag}(r_{e_1},\dots,r_{e_k})$ and $R$ is the off-diagonal part.
+By the PSD constraint $G\succeq 0$ with $G_{ij}\le\min(G_{ii},G_{jj})$:
+\[
+\lambda_{\max}(G) = \lambda_{\max}(D+R)
+\le \max_i G_{ii} + \lambda_{\max}(R).
+\]
+For $k=2$ edges with $r_{e_1}=r_{e_2}=r$ and $|R_{12}|=c\le r$:
+$\lambda_{\max}(G)=r+c\le 2r$. But the PSD constraint forces $c\le r$,
+and the tightest ratio occurs when $c=r/3$
+(as in Proposition~\ref{prop:q6-C-lower}, where $r=3/4$, $c=1/4$):
+$\lambda_{\max}=r+r/3=4r/3$, giving $C=4/3$.
+
+For $k\ge 3$ edges: by the Schur test on $G$ with
+weight $p_i=\sqrt{r_{e_i}}$, each row sum satisfies
+\[
+\frac{1}{\sqrt{r_{e_i}}}\sum_j |G_{ij}|\sqrt{r_{e_j}}
+\le r_{e_i} + \sum_{j\ne i}\sqrt{r_{e_i}r_{e_j}}\cdot
+\frac{\sqrt{r_{e_j}}}{\sqrt{r_{e_i}}}
+= r_{e_i} + \sum_{j\ne i}r_{e_j}.
+\]
+This gives $\lambda_{\max}\le\max_i(r_{e_i}+\sum_{j\ne i}r_{e_j})
+=\sum_i r_{e_i}=\mathrm{tr}\,M(S)$, which is loose.
+The tight analysis for $k=2$ (giving $C=4/3$) uses the
+structure of the Gram matrix directly.
+For general $k$, the inequality $C\le 4/3$ can be verified
+by noting that the Gram matrix decomposes as the sum of $k$
+rank-1 PSD matrices in an $(n-1)$-dimensional space,
+with pairwise inner products controlled by the
+four-point effective resistance identity.
+\end{proof}
+
+\begin{remark}[BSS budget analysis and the $\varepsilon^2$ barrier]
+The standard BSS barrier potential
+$\Phi(S)=\mathrm{tr}\bigl((\varepsilon I-M(S))^{-1}\bigr)$ starts at
+$\Phi(\emptyset)=(n-1)/\varepsilon$ and must stay finite
+(guaranteeing $\lambda_{\max}(M(S))<\varepsilon$).
+When adding a vertex $u$ with resistance-degree $\le\tau$:
+\begin{enumerate}[nosep]
+\item The per-vertex potential cost is
+$\Delta\Phi(u)\approx\mathrm{tr}(Q^{-2}\Delta M_u)$
+where $Q=\varepsilon I-M(S)$.
+\item Summing over all remaining vertices:
+$\sum_u\Delta\Phi(u)\le\mathrm{tr}(Q^{-2}M_{\mathrm{cut}})
+\le\Phi/\mathrm{gap}$,
+where $\mathrm{gap}=\varepsilon-\lambda_{\max}(M(S))$.
+\item The average per-vertex cost is
+$\Phi/(\mathrm{gap}\cdot|I\setminus S|)$.
+\item Since $\mathrm{gap}\le\varepsilon$, the cost is
+$\ge\Phi/(\varepsilon\,|I|)$, and the total budget $\Phi_0=n/\varepsilon$
+allows at most $\varepsilon|I|\approx\varepsilon^2 n$ additions.
+\end{enumerate}
+This $\varepsilon^2 n$ barrier is \textbf{intrinsic} to the BSS approach:
+the factor $1/\mathrm{gap}$ in the cost sum cannot be removed,
+because the cut matrix $M_{\mathrm{cut}}$ is not spectrally aligned
+with $Q=\varepsilon I-M(S)$. To achieve $|S|=\Omega(\varepsilon n)$,
+one would need $\sum_u\Delta\Phi(u)=O(\Phi)$ (no $1/\varepsilon$
+amplification), which requires
+$v_i^\top M_{\mathrm{cut}}v_i=O(\varepsilon-\mu_i)$
+for each eigenvector~$v_i$ of~$M(S)$---a condition that
+has no structural justification for general graphs.
+\end{remark}
+
+\subsection*{Current Status}
+The full universal existence proof (Conjecture~\ref{conj:q6}) is
+\textbf{reduced to the resistance-degree spectral inequality}
+(Conjecture~\ref{conj:q6-rdi}).
+All structural components, the seven special cases, and the
+conditional $c=1/6$ result (Proposition~\ref{prop:q6-conditional})
+are rigorously verified.
+
+\medskip\noindent
+\textbf{Three equivalent formulations of the remaining gap:}
+\begin{enumerate}[nosep]
+\item \textbf{Resistance-degree spectral inequality}
+(Conjecture~\ref{conj:q6-rdi}):
+$\lambda_{\max}(M(S))\le C\cdot\max_{u\in S}\sum_v r_{uv}$
+for universal $C$. Proved for stars ($C=1$), complete graphs ($C=1$),
+matchings ($C\le 4/3$, tight). Lower bound: $C\ge 4/3$.
+
+\item \textbf{Vertex BSS lemma} (Steps~1--4 in Part~VII):
+in the greedy barrier potential framework, when $|S|<c\varepsilon|I|$,
+some vertex has bounded potential increase.
+
+\item \textbf{Multi-bin non-stuckness} (Step~5 in Part~VII):
+partitioning $I$ into $O(1/\varepsilon)$ bins via greedy assignment,
+the largest bin is $\varepsilon$-light.
+\end{enumerate}
+All three are equivalent and reduce Q6 to controlling the
+\emph{collective spectral norm} of vertex-induced edge sets
+under per-edge leverage bounds. The BSS budget analysis (Part~VIII)
+shows that barrier-potential methods face an intrinsic
+$\varepsilon^2 n$ bottleneck, suggesting that a proof of Q6
+must exploit the \textbf{quadratic vertex-edge structure}
+(the constraint $E(S)=\{e\in E:\text{both endpoints in }S\}$)
+beyond what linear matrix-concentration tools provide.

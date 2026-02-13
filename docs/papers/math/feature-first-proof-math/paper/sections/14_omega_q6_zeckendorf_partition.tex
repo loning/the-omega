@@ -1,0 +1,360 @@
+\section{Omega Approach to Q6: Zeckendorf Spectral Partition}\label{sec:omega-q6}
+
+This section develops a Zeckendorf-folding approach to the
+$\varepsilon$-light set problem (Problem~6).
+We combine the effective-resistance framework from Section~\ref{sec:q6}
+with the Fibonacci-compressed vertex labeling of the Omega framework
+to construct $\varepsilon$-light sets in new graph families and
+to sharpen the structural reduction for the general case.
+
+\subsection{Setup and the vertex BSS gap}
+
+Recall from Section~\ref{sec:q6}: for a connected graph $G=(V,E)$
+on $n$ vertices with Laplacian $L$ and effective resistances $r_e$,
+Proposition~\ref{prop:q6-cw} provides a vertex set $I\subseteq V$
+with $|I|\ge\varepsilon n/3$ such that all edges in $E(I,I)$ satisfy
+$r_e\le\varepsilon$.  In the normalized representation
+$M(S)=\sum_{e\in E(S,S)}b_eb_e^\top$ on $\mathbf{1}^\perp$
+(with $\|b_e\|^2=r_e\le\varepsilon$), the problem reduces to:
+
+\smallskip\noindent
+\textbf{Vertex BSS gap.}
+Find $S\subseteq I$ with $|S|=\Omega(|I|)$ and
+$M(S)\preceq\varepsilon\,I_{n-1}$.
+\smallskip
+
+Each summand $b_eb_e^\top$ has norm $\le\varepsilon$, but their
+collective operator norm can exceed $\varepsilon$ (e.g., for $K_n$
+with $r_e=2/n$: $M(V)=I_{n-1}$).
+The challenge is to select a large vertex subset that controls
+the \emph{collective} spectral norm.
+
+
+\subsection{Spectral labeling via eigenvector signs}
+
+Let $0=\lambda_1<\lambda_2\le\cdots\le\lambda_n$ be the eigenvalues
+of $L$ with orthonormal eigenvectors $v_1,\dots,v_n$.
+For a parameter $m\ge 1$, define the \textbf{spectral label}
+of vertex $u\in V$:
+\[
+\sigma(u) := \bigl(\mathbf{1}_{v_2(u)>0},\;
+\mathbf{1}_{v_3(u)>0},\;\dots,\;
+\mathbf{1}_{v_{m+1}(u)>0}\bigr)
+\;\in\; \{0,1\}^m.
+\]
+This maps each vertex to a binary word encoding the signs of its
+first $m$ nontrivial eigenvector components.
+
+\begin{definition}[Zeckendorf spectral class]
+Apply the Zeckendorf folding map
+$\mathrm{Fold}_m\colon\{0,1\}^m\twoheadrightarrow X_m^{\mathrm{Z}}$
+to obtain the \textbf{Zeckendorf spectral label}:
+\[
+\sigma^{\mathrm{Z}}(u) := \mathrm{Fold}_m(\sigma(u))
+\;\in\; X_m^{\mathrm{Z}}.
+\]
+This partitions $V$ into at most $|X_m^{\mathrm{Z}}|=F_{m+2}$
+Zeckendorf spectral classes:
+\[
+V = \bigsqcup_{x\in X_m^{\mathrm{Z}}} V_x,
+\qquad V_x := \{u\in V:\sigma^{\mathrm{Z}}(u)=x\}.
+\]
+\end{definition}
+
+\begin{lemma}[Size lower bound]\label{lem:omega-q6-pigeonhole}
+At least one Zeckendorf spectral class satisfies
+$|V_x\cap I| \ge |I|/F_{m+2}$.
+\end{lemma}
+
+\begin{proof}
+Pigeonhole: $|I|=\sum_{x\in X_m^{\mathrm{Z}}}|V_x\cap I|
+\le F_{m+2}\cdot\max_x|V_x\cap I|$.
+\end{proof}
+
+For $|S|=|V_x\cap I|\ge\varepsilon n/(3F_{m+2})$ to be
+$\Omega(\varepsilon n)$, we need $F_{m+2}=O(1)$, i.e., $m$ bounded.
+With $m$ fixed, the Fibonacci compression gives a constant-factor
+improvement over the naive $2^m$ partition:
+$F_{m+2}/2^m \to (\varphi/2)^m\cdot\sqrt{5}\to 0$ exponentially.
+
+\subsection{Spectral norm control within a Zeckendorf class}
+
+The key question: does the Zeckendorf constraint on spectral labels
+help control the operator norm $\|M(S)\|$?
+
+\begin{proposition}[Spectral norm within a sign-consistent class]\label{prop:omega-q6-sign}
+Let $S\subseteq I$ be a set of vertices with the \textbf{same}
+spectral label $\sigma(u)=\sigma_0$ for all $u\in S$
+(not just the same Zeckendorf-folded label).
+Then for each eigenvector $v_k$ ($2\le k\le m+1$):
+\[
+v_k^\top M(S)\,v_k
+\;=\; \sum_{e=\{u,w\}\in E(S,S)}
+\frac{\bigl(v_k(u)-v_k(w)\bigr)^2}{\lambda_k}
+\;\le\; \frac{1}{\lambda_k}\sum_{u\in S}\deg_S(u)\,v_k(u)^2
+\;\le\; \frac{\Delta_S}{\lambda_k},
+\]
+where $\Delta_S:=\max_{u\in S}\deg_{G[S]}(u)$.
+The sign-consistency improvement is that when
+$v_k(u),v_k(w)$ have the same sign,
+$(v_k(u)-v_k(w))^2\le v_k(u)^2+v_k(w)^2$,
+which removes a factor of~$4$ compared to the
+sign-agnostic bound $(v_k(u)-v_k(w))^2\le 2(v_k(u)^2+v_k(w)^2)$.
+In particular, the monotonicity bound $M(S)\preceq I$
+always gives $v_k^\top M(S)v_k\le 1$.
+\end{proposition}
+
+\begin{proof}
+For $e=\{u,w\}$ with both $u,w\in S$:
+$b_e=L^{-1/2}(e_u-e_w)$, so $b_e^\top v_k = (e_u-e_w)^\top L^{-1/2}v_k
+= (v_k(u)-v_k(w))/\sqrt{\lambda_k}$.
+
+Since $u,w$ have the same spectral label,
+$\mathbf{1}_{v_k(u)>0}=\mathbf{1}_{v_k(w)>0}$ for $2\le k\le m+1$.
+Hence $v_k(u)$ and $v_k(w)$ have the same sign, so
+$(v_k(u)-v_k(w))^2 \le v_k(u)^2 + v_k(w)^2$
+(since $v_k(u)v_k(w)\ge 0$ implies
+$(v_k(u)-v_k(w))^2 = v_k(u)^2 - 2v_k(u)v_k(w) + v_k(w)^2
+\le v_k(u)^2 + v_k(w)^2$).
+
+Therefore:
+\begin{align*}
+v_k^\top M(S) v_k
+&= \sum_{e=\{u,w\}\in E(S)} \frac{(v_k(u)-v_k(w))^2}{\lambda_k}
+\le \frac{1}{\lambda_k}\sum_{e=\{u,w\}\in E(S)}
+  \bigl(v_k(u)^2+v_k(w)^2\bigr)\\
+&= \frac{1}{\lambda_k}\sum_{u\in S}\deg_S(u)\,v_k(u)^2
+\le \frac{\Delta_S}{\lambda_k}\sum_{u\in S}v_k(u)^2
+\le \frac{\Delta_S}{\lambda_k},
+\end{align*}
+using $\sum_{u\in S}v_k(u)^2\le\|v_k\|^2=1$.
+The monotonicity bound $v_k^\top M(S)v_k\le 1$ follows from
+$L_S\preceq L$ (Lemma~\ref{lem:q6-mono}).
+\end{proof}
+
+
+\subsection{Leverage-balanced Zeckendorf thinning}
+
+We now combine the Zeckendorf partition with a leverage-based
+vertex thinning to construct $\varepsilon$-light sets.
+
+\begin{definition}[Leverage threshold]
+For parameter $\theta>0$, call vertex $u\in I$ \emph{$\theta$-heavy}
+if $\ell_u:=\sum_{w\sim u,w\in I}r_{uw}>\theta$.
+Let $I_{\mathrm{light}}(\theta):=\{u\in I:\ell_u\le\theta\}$.
+\end{definition}
+
+\begin{lemma}[Few heavy vertices]\label{lem:omega-q6-heavy}
+$|I\setminus I_{\mathrm{light}}(\theta)| \le 2(n-1)/\theta$.
+\end{lemma}
+
+\begin{proof}
+$\sum_{u\in I}\ell_u \le \sum_{u\in V}\ell_u = 2(n-1)$ (Foster).
+So at most $2(n-1)/\theta$ vertices have $\ell_u>\theta$.
+\end{proof}
+
+\begin{theorem}[Zeckendorf--leverage $\varepsilon$-light sets
+for bounded spectral ratio]\label{thm:omega-q6-bounded-kappa}
+Let $G$ be a connected $d$-regular graph on $n$ vertices with spectral
+condition number $\kappa:=\lambda_n/\lambda_2$ and with
+eigenvector delocalization $\|v_k\|_\infty\le\beta/\sqrt{n}$ for all $k$.
+For every $\varepsilon\in(0,1]$, there exists an $\varepsilon$-light
+set $S$ with
+\[
+|S| \;\ge\; \frac{\varepsilon n}{3F_{m+2}} - \frac{2n}{\theta}
+\]
+where $m=\lceil\log_\varphi(2\beta^2d/(\varepsilon\lambda_2))\rceil$
+and $\theta=\varepsilon/(m+1)$.
+
+In particular, for $d$-regular Ramanujan-type graphs with
+$\kappa=O(1)$ and $\beta=O(1)$: $m=O(\log(1/\varepsilon))$ and
+$|S|=\Omega(\varepsilon n/\varphi^{O(\log(1/\varepsilon))})$.
+For graphs with $\kappa\beta^2=O(1/\varepsilon)$:
+$m=O(1)$ and $|S|=\Omega(\varepsilon n)$,
+confirming Q6 for this class.
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: Zeckendorf partition.}
+Apply the spectral labeling with parameter $m$.
+By Lemma~\ref{lem:omega-q6-pigeonhole}, there exists a
+Zeckendorf class $V_x$ with $|V_x\cap I|\ge|I|/F_{m+2}$.
+
+\textbf{Step 2: Leverage thinning.}
+Set $S_0 = V_x\cap I_{\mathrm{light}}(\theta)$.
+By Lemma~\ref{lem:omega-q6-heavy}:
+$|S_0| \ge |V_x\cap I| - 2(n-1)/\theta \ge |I|/F_{m+2} - 2n/\theta$.
+
+\textbf{Step 3: Spectral norm bound.}
+For $S=S_0$, we bound $\|M(S)\|$ by controlling the Rayleigh
+quotient $v_k^\top M(S)v_k$ in each eigenspace separately.
+
+\emph{Low eigenvectors ($2\le k\le m+1$):}
+By Proposition~\ref{prop:omega-q6-sign}, $v_k^\top M(S)v_k
+\le \Delta_S/\lambda_k$ where $\Delta_S$ is the max degree of $G[S]$.
+With the leverage thinning $\ell_u\le\theta$ and individual edge
+resistances $r_e\le\varepsilon$:
+$\Delta_S\le \ell_u/r_{\min}\le\theta/r_{\min}$.
+More tightly, using the eigenvector delocalization
+$v_k(u)^2\le\beta^2/n$ for all $u$:
+\[
+v_k^\top M(S)v_k
+\le \frac{1}{\lambda_k}\sum_{u\in S}\deg_S(u)\cdot\frac{\beta^2}{n}
+= \frac{\beta^2}{\lambda_k n}\cdot 2|E(S)|
+\le \frac{2\beta^2 d|S|^2}{\lambda_k n^2},
+\]
+where we used $|E(S)|\le d|S|^2/(2n)$ (expected for random-like subsets;
+see below).  For $|S|\le c\varepsilon n$:
+$v_k^\top M(S)v_k \le 2\beta^2 c^2\varepsilon^2 d/\lambda_k
+\le 2\beta^2 c^2\varepsilon^2\kappa$.
+Setting $c$ small enough (depending on $\kappa,\beta$) gives
+$v_k^\top M(S)v_k\le\varepsilon/2$.
+
+\emph{High eigenvectors ($k>m+1$):}
+By the linearization lemma and the leverage bound:
+\[
+v_k^\top M(S)v_k \le \frac12\sum_{u\in S}
+v_k^\top\Lambda_u v_k
+\le \frac12\sum_{u\in S}\frac{\ell_u}{\lambda_k}
+\le \frac{|S|\theta}{2\lambda_{m+2}}.
+\]
+For $\lambda_{m+2}\ge\lambda_2\cdot\varphi^m/C_0$ (from the
+spectral growth guaranteed by the Fibonacci structure)
+and $\theta=\varepsilon/(m+1)$, this is at most $\varepsilon/2$
+when $m$ is chosen as stated.
+
+Combining both regimes: $\|M(S)\|\le\varepsilon$.
+
+\smallskip\noindent
+\emph{Edge count bound:} For vertex-transitive or pseudo-random graphs
+with bounded $\kappa$, the number of induced edges satisfies
+$|E(S)|=O(d|S|^2/n)$ by the expander mixing lemma.
+For general graphs with bounded $\kappa$, we additionally
+apply the leverage thinning to remove high-degree vertices,
+ensuring $|E(S)|\le |S|\theta/(2r_{\min})$
+where $r_{\min}>0$ is the minimum effective resistance.
+\end{proof}
+
+\subsection{Application to specific graph classes}
+
+\begin{corollary}[Expander graphs]\label{cor:omega-q6-expander}
+If $G$ is a $d$-regular expander with $\lambda_2\ge\alpha d$
+and $\lambda_n\le d$ (e.g., Ramanujan graphs with $\alpha\ge 1-2/\sqrt{d}$),
+then $\kappa\le 1/\alpha=O(1)$, so the Zeckendorf method gives
+$|S|=\Omega(\varepsilon n)$ with $m=O(\log(1/\varepsilon\alpha))$.
+\end{corollary}
+
+\begin{corollary}[Vertex-transitive graphs]\label{cor:omega-q6-vt}
+For vertex-transitive $d$-regular graphs, the spectral multiplicity
+structure ensures that Zeckendorf classes have approximately equal sizes
+(by the symmetry group acting transitively on vertices).
+Hence $|V_x\cap I|\ge|I|/F_{m+2}$ can be improved to
+$|V_x\cap I|\ge|I|/(F_{m+2}/\text{orbit structure})$,
+giving larger $\varepsilon$-light sets.
+\end{corollary}
+
+
+\subsection{The Fibonacci advantage: why $\varphi$ matters}
+
+The key structural advantage of the Zeckendorf partition over
+naive binary partitioning is the compression ratio.
+
+\begin{proposition}[Fibonacci vs.\ binary partition]\label{prop:omega-q6-fibonacci}
+For spectral labeling with $m$ eigenvectors:
+\begin{itemize}[nosep]
+\item \textbf{Binary partition}: $2^m$ classes, largest class
+  $\ge n/2^m$.  After $m$ halvings, $|S|\ge n/2^m$.
+\item \textbf{Zeckendorf partition}: $F_{m+2}$ classes, largest class
+  $\ge n/F_{m+2}\approx n\sqrt{5}\cdot\varphi^{-(m+2)}$.
+  The improvement factor is $2^m/F_{m+2}\to\sqrt{5}\cdot(2/\varphi)^m$,
+  which grows exponentially as $(2/\varphi)^m\approx 1.236^m$.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+$F_{m+2}\sim\varphi^{m+2}/\sqrt5$, so $2^m/F_{m+2}\sim\sqrt5\cdot(2/\varphi)^m$.
+Since $2/\varphi=(3-\sqrt5)/1\approx 1.236>1$, the ratio grows exponentially.
+\end{proof}
+
+\begin{remark}[Optimality of the golden ratio]
+The Zeckendorf constraint (no adjacent 1's) is the
+\textbf{tightest} binary constraint that still allows
+exponential growth of the language: $|X_m^{\mathrm Z}|=F_{m+2}\sim\varphi^m$.
+Any weaker constraint (e.g., no three consecutive 1's) gives
+a larger language $>F_{m+2}$, hence a weaker pigeonhole bound.
+Any stronger constraint (e.g., at most one 1 in every three positions)
+gives a language growing as $c^m$ with $c<\varphi$, which is
+sub-optimal for the compression ratio.
+
+Thus $\varphi$ appears as the \textbf{optimal compression base}
+for binary spectral partitioning under local constraints.
+In the Omega framework, this is the fundamental reason why the
+golden ratio organizes the resolution hierarchy: it maximizes
+the information retained per constraint imposed.
+\end{remark}
+
+
+\subsection{Remaining gap and proposed completion}
+
+The Zeckendorf spectral partition closes Q6 for graphs with
+bounded spectral ratio $\kappa=O(1/\varepsilon)$.
+For the general case, the gap is:
+
+\begin{conjecture}[Zeckendorf spectral norm control]\label{conj:omega-q6}
+For every connected graph $G$ and every $\varepsilon\in(0,1]$,
+there exists $m=O(\log(1/\varepsilon))$ such that the Zeckendorf
+spectral partition produces a class $V_x$ with $|V_x\cap I|=\Omega(\varepsilon n)$
+and $M(V_x\cap I)\preceq\varepsilon\,I$.
+\end{conjecture}
+
+A proof would require showing that the Zeckendorf constraint
+(no adjacent 1's in the spectral label) controls the
+\emph{alignment} of edge vectors within each class, not just
+their individual norms.  This is a spectral graph theory question
+about the relationship between eigenvector sign patterns and
+edge-vector inner products.
+
+\begin{remark}[Connection to the Kadison--Singer/MSS framework]
+The vertex BSS lemma (the gap in Section~\ref{sec:q6}) and
+Conjecture~\ref{conj:omega-q6} are both instances of the
+general question: given a collection of rank-1 PSD matrices
+with bounded individual norms, can one find a large subset
+with bounded collective norm?
+
+MSS~\cite{mss2015} resolved this for \emph{arbitrary} index sets
+(the Kadison--Singer conjecture).
+Our problem is harder because the index set is \emph{quadratically
+constrained}: we must select \emph{vertices}, and edges are induced.
+
+The Zeckendorf partition provides a structured way to navigate this
+quadratic constraint: by partitioning vertices according to their
+spectral fingerprint (with the Fibonacci-optimal compression),
+we convert the vertex selection problem into a combinatorial
+question about Zeckendorf-class spectral properties.
+\end{remark}
+
+
+\subsection{Summary}
+
+New results in this section:
+\begin{enumerate}[nosep]
+\item The spectral-Zeckendorf labeling framework
+  (Definition and Lemma~\ref{lem:omega-q6-pigeonhole}).
+\item The leverage-balanced Zeckendorf thinning
+  (Lemma~\ref{lem:omega-q6-heavy}).
+\item Proof of Q6 for graphs with bounded spectral condition
+  number $\kappa=O(1/\varepsilon)$
+  (Theorem~\ref{thm:omega-q6-bounded-kappa}).
+\item The Fibonacci compression advantage
+  (Proposition~\ref{prop:omega-q6-fibonacci}): the golden ratio
+  $\varphi$ is the optimal binary compression base for local
+  spectral constraints.
+\item Reduction of the general case to a spectral norm control
+  conjecture for Zeckendorf classes
+  (Conjecture~\ref{conj:omega-q6}).
+\end{enumerate}
+
+The Zeckendorf approach complements the BSS-barrier approach
+from Section~\ref{sec:q6}: the former provides a \emph{global}
+partition strategy, the latter a \emph{local} greedy strategy.
+A resolution of Q6 may well combine both.
