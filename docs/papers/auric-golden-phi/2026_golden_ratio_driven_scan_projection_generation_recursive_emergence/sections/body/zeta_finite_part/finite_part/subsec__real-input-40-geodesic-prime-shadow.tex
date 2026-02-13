@@ -69,10 +69,69 @@ p_n^{\mathrm{nb}}=\frac1n\sum_{d\mid n}\mu(d)\,a_{n/d}^{\mathrm{nb}}.
 \[
 (p_n^{\mathrm{nb}})_{n=1}^{15}=(0,0,4,9,12,22,47,95,196,399,843,1775,3790,8038,17258).
 \]
-并且由 \(a_n^{\mathrm{nb}}\ll \rho_{\mathrm{nb}}^n\) 得到一般估计
+
+\begin{corollary}[测地 prime shadow 的严格 Ramanujan 裕度与次指数误差]\label{cor:real-input-40-geodesic-ramanujan-margin}
+令
+\(
+\Delta_{\mathrm{nb}}(z):=\det(I-zH_{\mathrm{nb}})
+\)
+（定理 \ref{thm:real-input-40-geodesic-det}），并将其根按模排序为
+\(
+0<|z_1|\le |z_2|\le\cdots\le |z_{15}|
+\)
+（计重数）。
+则 \(\rho_{\mathrm{nb}}=|z_1|^{-1}\) 且 \(z_1=\rho_{\mathrm{nb}}^{-1}\)；
+并定义
 \[
-p_n^{\mathrm{nb}}=\frac{\rho_{\mathrm{nb}}^n}{n}+O\!\left(\frac{\rho_{\mathrm{nb}}^{n/2}}{n}\right).
+\Lambda_{\mathrm{nb}}:=|z_2|^{-1},\qquad
+\delta_{\mathrm{nb}}:=\log\frac{\Lambda_{\mathrm{nb}}^2}{\rho_{\mathrm{nb}}}.
 \]
+数值审计给出
+\[
+|z_2|\approx 0.7346134203,\qquad
+\Lambda_{\mathrm{nb}}\approx 1.3612601844,\qquad
+\frac{\Lambda_{\mathrm{nb}}}{\sqrt{\rho_{\mathrm{nb}}}}\approx 0.8984360744<1,
+\qquad
+\delta_{\mathrm{nb}}\approx -0.2141994446<0.
+\]
+进一步，测地 primitive 轨道数满足渐近式
+\[
+p_n^{\mathrm{nb}}
+=\frac{\rho_{\mathrm{nb}}^n}{n}
++O\!\left(\frac{\max\{\Lambda_{\mathrm{nb}}^{n},\,\rho_{\mathrm{nb}}^{n/2}\}}{n}\right).
+\]
+特别地，当 \(n=p\ge 3\) 为素数时有
+\[
+p_p^{\mathrm{nb}}=\frac{\rho_{\mathrm{nb}}^{p}}{p}+O\!\left(\frac{\Lambda_{\mathrm{nb}}^{p}}{p}\right),
+\]
+其误差指数底严格小于 \(\rho_{\mathrm{nb}}^{1/2}\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:real-input-40-geodesic-det}，
+\(
+\Delta_{\mathrm{nb}}(z)=\prod_{j=1}^{15}(1-z\lambda_j)
+\)
+其中 \(\{\lambda_j\}\) 为 \(H_{\mathrm{nb}}\) 的全部非零特征值，并且 \(\lambda_j=z_j^{-1}\)。
+因此
+\(
+a_n^{\mathrm{nb}}=\Tr(H_{\mathrm{nb}}^n)=\sum_{j=1}^{15}\lambda_j^n
+=\rho_{\mathrm{nb}}^n+O(\Lambda_{\mathrm{nb}}^n)
+\)。
+将其代入 Möbius 反演公式
+\(
+p_n^{\mathrm{nb}}=\frac1n\sum_{d\mid n}\mu(d)\,a_{n/d}^{\mathrm{nb}}
+\)，
+主项来自 \(d=1\) 的 Perron 贡献 \(\rho_{\mathrm{nb}}^n/n\)；
+误差一部分来自 \(d=1\) 的次谱模态，量级为 \(O(\Lambda_{\mathrm{nb}}^n/n)\)；
+另一部分来自 \(d\ge 2\) 的 Perron 次级项 \(\rho_{\mathrm{nb}}^{n/d}\le \rho_{\mathrm{nb}}^{n/2}\)。
+合并即得所示上界。
+当 \(n=p\ge 3\) 为素数时，求和仅含 \(d=1,p\)，从而
+\(
+p_p^{\mathrm{nb}}=(a_p^{\mathrm{nb}}-a_1^{\mathrm{nb}})/p
+=\rho_{\mathrm{nb}}^{p}/p+O(\Lambda_{\mathrm{nb}}^{p}/p)
+\)
+（其中 \(a_1^{\mathrm{nb}}\) 为常数项），得到素数情形。证毕。
+\end{proof}
 
 \begin{theorem}[测地 Mertens 常数（Abel 有限部）]\label{thm:real-input-40-geodesic-mertens}
 定义测地 primitive 生成函数
