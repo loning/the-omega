@@ -709,6 +709,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_unit_circle_branchpoints",
+            script="exp_collision_kernel_A4_unit_circle_branchpoints.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_unit_circle_branchpoints.json",
+                "sections/generated/eq_collision_kernel_A4_unit_circle_branchpoints.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_newman_sparse_generator",
             script="exp_collision_kernel_A4_newman_sparse_generator.py",
             args=[],
@@ -899,6 +908,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_recursions_moddp_9_17.json",
                 "sections/generated/tab_fold_collision_moment_recursions_9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_moment_order_lower_bound_q12_14_16_m25",
+            script="exp_fold_collision_moment_order_lower_bound_q12_14_16.py",
+            args=["--k-list", "12,14,16", "--m-fit", "24", "--m-break", "25", "--order-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_order_lower_bound_q12_14_16.json",
             ],
         ),
         Step(
