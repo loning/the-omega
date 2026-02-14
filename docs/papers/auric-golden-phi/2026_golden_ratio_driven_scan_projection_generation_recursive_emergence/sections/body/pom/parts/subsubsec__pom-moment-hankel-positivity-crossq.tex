@@ -132,6 +132,50 @@ S_{q+r_m}(m)+c_{r_m-1}S_{q+r_m-1}(m)+\cdots+c_0S_q(m)=0
 （若出现重根，则对应指数项需乘以多项式因子并进入 Jordan 型广义 Prony；在本文的纤维计数口径下 \(a_i\) 为不同整数取值，故无重根。）证毕。
 \end{proof}
 
+\begin{theorem}[信息完备阈值的最小性：一般情形下 \texorpdfstring{$2r$}{2r} 个矩不可降低]\label{thm:pom-fiber-spectrum-prony-hankel-threshold-sharp}
+对任意整数 \(r\ge 2\)，存在两组不同的有限原子谱
+\[
+\{(a_i,n_i)\}_{i=1}^{r}\ \neq\ \{(a'_i,n'_i)\}_{i=1}^{r}
+\]
+（其中 \(a_i,a'_i\in\NN_{\ge 1}\) 两两不同且 \(n_i,n'_i\in\NN_{\ge 1}\)），使得其幂和矩满足
+\[
+\sum_{i=1}^{r}n_i a_i^{\,k}
+\;=\;
+\sum_{i=1}^{r}n'_i (a'_i)^{\,k}
+\qquad(0\le k\le 2r-2),
+\]
+但在 \(k=2r-1\) 处不相等。
+因此在不附加额外结构假设时，任何仅依赖于 \(\{S_k\}_{k=0}^{2r-2}\) 的方法都无法唯一确定 \(r\)-原子谱；
+换言之，定理 \ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction} 的 \(2r\) 矩阈值在一般意义下是尖锐的。
+\end{theorem}
+\begin{proof}
+取 \(n:=2r-1\)，并考虑二项式系数权重 \(w_j:=\binom{n}{j}\)（\(0\le j\le n\)）。
+定义两组原子谱（各含 \(r\) 个不同原子）：
+\[
+a_i:=2i-1,\quad n_i:=\binom{n}{2i-2}\qquad(1\le i\le r),
+\]
+\[
+a'_i:=2i,\quad n'_i:=\binom{n}{2i-1}\qquad(1\le i\le r).
+\]
+对每个整数 \(k\ge 0\)，考虑交错和
+\[
+\Delta_k:=\sum_{j=0}^{n}(-1)^j\binom{n}{j}(j+1)^k.
+\]
+这是多项式 \(p(x)=x^k\) 的 \(n\)-阶有限差分在点 \(x=1\) 的取值（差分算子作用于多项式会使次数降低），因此当 \(k\le n-1\) 时有 \(\Delta_k=0\)。
+从 \(\Delta_k=0\) 立即推出
+\[
+\sum_{j\ \mathrm{even}}\binom{n}{j}(j+1)^k
+\;=\;
+\sum_{j\ \mathrm{odd}}\binom{n}{j}(j+1)^k
+\qquad(0\le k\le n-1),
+\]
+这正是两组谱在 \(k\le 2r-2\) 的矩相等性。
+\par
+当 \(k=n\) 时，\(\Delta_n\) 等于 \(n\)-阶差分对首项 \(x^n\) 的作用常数，满足 \(\Delta_n=(-1)^n n!\neq 0\)，
+从而两组谱在 \(k=2r-1\) 的矩必不相等。
+因此得到所述反例族，结论成立。证毕。
+\end{proof}
+
 \begin{corollary}[两谱情形的有限判别]\label{cor:pom-fiber-spectrum-two-atom-complete-invariant}
 若固定 \(m\) 时纤维多重度仅取两值（\(r_m=2\)），
 则四个矩数据 \(\{S_q(m)\}_{q=0}^{3}\) 已足以完全恢复该分辨率上的纤维谱 \(\{(a_1,n_1),(a_2,n_2)\}\)。
@@ -262,7 +306,7 @@ D(z,u):=\det(I-z\,\mathcal{A}(u))\in\QQ(z,u),
 证毕。
 \end{proof}
 
-\input{subsubsec__pom-bivariate-system-identification}
+\input{sections/body/pom/parts/subsubsec__pom-bivariate-system-identification}
 
 \begin{proposition}[Chernoff 型阈值上界：计数测度与推前测度的统一形式]\label{prop:pom-chernoff-threshold-bounds}
 固定分辨率 \(m\) 并令阈值集合

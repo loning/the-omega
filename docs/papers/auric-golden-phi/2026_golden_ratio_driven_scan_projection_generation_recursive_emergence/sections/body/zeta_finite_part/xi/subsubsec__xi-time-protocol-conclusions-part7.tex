@@ -267,6 +267,97 @@ u_m(w_m=1)=\frac{F_{m}}{F_{m+2}}=\frac{1}{\varphi^2}+O(\varphi^{-m}).
 证毕。
 \end{proof}
 
+\begin{corollary}[bin-fold 推前分布的 Shannon 亏损常数闭式：由 \texorpdfstring{$\varphi$}{phi} 与 \texorpdfstring{$\sqrt5$}{sqrt5} 刚性锁定]\label{cor:xi-foldbin-shannon-deficit-constant-closed-form}
+在定理 \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} 的设定下，KL 散度（相对熵）极限常数为
+\[
+C_{\mathrm{KL}}
+:=\lim_{m\to\infty}D_{\mathrm{KL}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+=\frac{3\varphi-1}{\sqrt5}\log\varphi-\frac12\log 5\ >\ 0,
+\]
+并且收敛误差为 \(O((\varphi/2)^m)\)。
+由于 \(u_m\) 为均匀分布，亦即
+\[
+D_{\mathrm{KL}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)=\log|X_m|-H\bigl(p^{\mathrm{bin}}_m\bigr),
+\]
+故 Shannon 亏损 \(\log|X_m|-H(p^{\mathrm{bin}}_m)\) 收敛到同一闭式常数 \(C_{\mathrm{KL}}\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} (2) 取 \(f(t)=t\log t\)，得
+\[
+C_{\mathrm{KL}}
+=\frac{1}{\varphi}\,r_0\log r_0+\frac{1}{\varphi^2}\,r_1\log r_1,
+\qquad
+r_0=\frac{\varphi^2}{\sqrt5},\ r_1=\frac{\varphi}{\sqrt5}.
+\]
+将 \(\log(\varphi^k/\sqrt5)=k\log\varphi-\tfrac12\log 5\) 代入，并用恒等式
+\(\varphi^{-1}=\varphi-1\) 与 \(\varphi+\varphi^{-1}=\sqrt5\) 化简，即得所示闭式。
+误差项同定理 \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} (2)。
+最后，由 \(u_m(w)=1/|X_m|\) 得
+\(
+D_{\mathrm{KL}}(p\Vert u_m)=-H(p)-\sum_w p(w)\log u_m(w)=\log|X_m|-H(p)
+\)，证毕。
+\end{proof}
+
+\begin{proposition}[全 Rényi 亏损谱的闭式：\texorpdfstring{$\alpha$}{alpha}-族散度在极限中完全可解]\label{prop:xi-foldbin-renyi-deficit-spectrum-closed-form}
+在定理 \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} 的设定下，对任意 \(\alpha>0\)、\(\alpha\neq 1\)，定义 Rényi 散度
+\[
+D_{\alpha}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+:=\frac{1}{\alpha-1}\log\sum_{w\in X_m}u_m(w)\,R_m(w)^{\alpha}
+\qquad\bigl(R_m=p^{\mathrm{bin}}_m/u_m\bigr).
+\]
+则极限存在并满足完全闭式
+\[
+\lim_{m\to\infty}D_{\alpha}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+=\frac{1}{\alpha-1}\log\Bigl(\frac{1}{\varphi}r_0^\alpha+\frac{1}{\varphi^2}r_1^\alpha\Bigr)
+=\frac{1}{\alpha-1}\left(
+\log(\varphi^{2\alpha-1}+\varphi^{\alpha-2})-\frac{\alpha}{2}\log 5
+\right),
+\]
+其中 \(r_0=\varphi^2/\sqrt5\)、\(r_1=\varphi/\sqrt5\)。
+并且端点阶满足
+\[
+\lim_{\alpha\to\infty}\ \lim_{m\to\infty} D_{\alpha}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+=\log r_0
+=2\log\varphi-\frac12\log 5,
+\qquad
+\lim_{\alpha\to 1}\ \lim_{m\to\infty} D_{\alpha}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+=C_{\mathrm{KL}}.
+\]
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} 的证明，\(R_m(w)=r_{w_m}+O((\varphi/2)^m)\) 且一致于 \(w\)，并且 \(u_m(w_m=0)=\varphi^{-1}+o(1)\)、\(u_m(w_m=1)=\varphi^{-2}+o(1)\)。
+因此
+\[
+\sum_{w}u_m(w)\,R_m(w)^\alpha
+=\frac{1}{\varphi}r_0^\alpha+\frac{1}{\varphi^2}r_1^\alpha+o(1),
+\]
+代入定义即得第一条极限。
+进一步代入 \(r_0=\varphi^2/\sqrt5\)、\(r_1=\varphi/\sqrt5\) 并整理为
+\[
+\frac{1}{\varphi}\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)^\alpha+\frac{1}{\varphi^2}\Bigl(\frac{\varphi}{\sqrt5}\Bigr)^\alpha
+=\frac{\varphi^{2\alpha-1}+\varphi^{\alpha-2}}{5^{\alpha/2}},
+\]
+得到所示闭式。
+\(\alpha\to\infty\) 时极限给出本质上确界散度 \(\log\max\{r_0,r_1\}=\log r_0\)；
+\(\alpha\to 1\) 的连续性给出 KL 极限并与推论 \ref{cor:xi-foldbin-shannon-deficit-constant-closed-form} 一致。证毕。
+\end{proof}
+
+\begin{corollary}[bin-fold 熵率的刚性：每步熵趋于 \texorpdfstring{$\log\varphi$}{log phi}，亏损仅为常数级且指数收敛]\label{cor:xi-foldbin-entropy-rate-rigidity}
+在定理 \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} 的设定下，
+\[
+\frac{1}{m}H\bigl(p^{\mathrm{bin}}_m\bigr)\ \longrightarrow\ \log\varphi,
+\qquad
+\log|X_m|-H\bigl(p^{\mathrm{bin}}_m\bigr)=C_{\mathrm{KL}}+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right).
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:xi-foldbin-shannon-deficit-constant-closed-form}，
+\(
+H(p^{\mathrm{bin}}_m)=\log|X_m|-D_{\mathrm{KL}}(p^{\mathrm{bin}}_m\Vert u_m)
+\)。
+再用 \(\log|X_m|=\log F_{m+2}=m\log\varphi+O(1)\) 与 \(D_{\mathrm{KL}}(p^{\mathrm{bin}}_m\Vert u_m)=C_{\mathrm{KL}}+O((\varphi/2)^m)\)，即可得到两条结论。证毕。
+\end{proof}
+
 \begin{proposition}[可逆重建成功率曲线的精确折线律：离散导数等于纤维尾分布]\label{prop:xi-reconstruction-success-curve-discrete-derivative}
 固定 \(m\)。
 对任意寄存器大小 \(M\in\mathbb N\) 定义最优平均成功率

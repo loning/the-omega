@@ -234,6 +234,48 @@ S_{q_1}(m)=u^{\mathsf T}A^{m-m_0}v
 \((1)\Rightarrow(2)\) 取逆否命题由定理 \ref{thm:pom-sympower-sqrt-bound-instability} 给出。证毕。
 \end{proof}
 
+\begin{theorem}[函子型核版 RH 不可能：乘法闭合的 Perron 保真子链除谱秩一外必有限阶破裂]\label{thm:pom-functorial-kernel-rh-impossibility}
+设 \(A\in\RR^{d\times d}\) 为原始非负矩阵，Perron 根为 \(\rho>1\)，取 Perron 特征向量 \(u\succ0\)。
+对每个整数 \(b\ge 1\)，令 \(V_b\subseteq \mathrm{Sym}^b(\RR^d)\) 为子空间，满足：
+\begin{enumerate}
+  \item \textbf{（Perron 线保真）} \(u^{\odot b}\in V_b\)；
+  \item \textbf{（乘法闭合）}对一切 \(b\ge 2\) 与一切 \(v\in V_1\) 有 \(u^{\odot(b-1)}\odot v\in V_b\)；
+  \item \textbf{（不变性）} \(V_b\) 在 \(\mathrm{Sym}^b(A)\) 下不变。记限制算子 \(B_b:=\mathrm{Sym}^b(A)|_{V_b}\)，并记
+  \[
+  \eta(B_b):=\max\bigl\{|\lambda|:\ \lambda\in\mathrm{spec}(B_b),\ \lambda\ne \rho(B_b)\bigr\}.
+  \]
+\end{enumerate}
+则若 \(\eta(B_1)>0\)（亦即 \(B_1\) 非谱秩一退化），则存在有限 \(b_0\) 使得 \(B_{b_0}\) 违反核版 RH 的平方根谱界：
+\[
+\eta(B_{b_0})\ >\ \rho(B_{b_0})^{1/2}=\rho^{b_0/2}.
+\]
+等价地：若对所有 \(b\ge 1\) 都有 \(\eta(B_b)\le \rho(B_b)^{1/2}\)，则必有 \(\eta(B_1)=0\)，从而 \(B_1\) 在谱意义下退化为 Perron 线 \(\oplus\) 零谱。
+\end{theorem}
+\begin{proof}
+由 \(u^{\odot b}\in V_b\) 与 \(V_b\) 的不变性知 \(u^{\odot b}\) 为 \(B_b\) 的特征向量，对应特征值 \(\rho^b\)，故 \(\rho(B_b)=\rho^b\)。
+\par
+若 \(\eta(B_1)>0\)，取 \(B_1\) 的某个特征值 \(\mu\ne\rho\) 满足 \(|\mu|=\eta(B_1)\)，并取相应特征向量 \(v\in V_1\)。
+由乘法闭合，\(u^{\odot(b-1)}\odot v\in V_b\)。
+并且
+\[
+\mathrm{Sym}^b(A)\bigl(u^{\odot(b-1)}\odot v\bigr)
+=(Au)^{\odot(b-1)}\odot(Av)
+(\rho u)^{\odot(b-1)}\odot(\mu v)
+=\rho^{b-1}\mu\,(u^{\odot(b-1)}\odot v),
+\]
+从而 \(\rho^{b-1}\mu\in\mathrm{spec}(B_b)\)。
+因此
+\[
+\eta(B_b)\ \ge\ \rho^{b-1}|\mu|=\rho^{b-1}\eta(B_1).
+\]
+比较 \(\rho(B_b)^{1/2}=\rho^{b/2}\)，可知
+\(
+\eta(B_b)>\rho^{b/2}
+\)
+当且仅当 \(\eta(B_1)\rho^{b/2-1}>1\)，该不等式对充分大 \(b\) 必成立。
+取任一满足该不等式的 \(b_0\) 即得结论。证毕。
+\end{proof}
+
 \begin{definition}[第一变分扇区与保真编译]\label{def:pom-first-variation-sector}
 设 \(A\) 为原始非负矩阵，Perron 根为 \(\rho\)，取 Perron 特征向量 \(u\)。
 对整数 \(b\ge 2\)，定义对称幂中的\textbf{第一变分扇区}

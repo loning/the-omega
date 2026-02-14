@@ -29,6 +29,57 @@
 对 \(N=r_n\) 有 \(A(r_n)=n-1\)，故 \(|(n-1)-\delta r_n|\le 1\)，从而 \(|n-\delta r_n|\le 2\)，可取 \(C_m=2\)。证毕。
 \end{proof}
 
+\begin{conclusion}[复位时钟的对数时间算法：仅用 Fibonacci 替换矩阵即可计算 \texorpdfstring{$r_n$}{rn}]\label{con:xi-terminal-reset-clock-logtime}
+沿用结论 \ref{con:xi-terminal-reset-bounded-remainder-clock} 的记号，并记差分字
+\(
+w=w_1w_2\cdots\in\{A,B\}^{\mathbb N}
+\)
+为 Fibonacci 替换
+\(
+\sigma(A)=AB,\ \sigma(B)=A
+\)
+的以 \(A\) 开头的不动点（定理 \ref{thm:terminal-reset-events-sturmian}）。
+对任意 \(L\ge 0\) 定义前缀计数
+\[
+c_A(L):=\#\{1\le t\le L:\ w_t=A\},\qquad
+c_B(L):=L-c_A(L),
+\]
+并记 \(A:=F_{m+4}\)、\(B:=F_{m+3}\)。
+则对一切 \(n\ge 1\) 有严格前缀和表达
+\[
+r_n=r_1+A\,c_A(n-1)+B\,c_B(n-1).
+\]
+并且向量 \((c_A(L),c_B(L))\) 可在 \(O(\log L)\) 时间内由替换矩阵
+\[
+M:=\begin{pmatrix}1&1\\ 1&0\end{pmatrix}
+\]
+的快速幂确定：对任意 \(k\ge 0\)，\(\sigma^k(A)\) 的字母计数等于 \(M^k(1,0)^{\mathsf T}\)，而其前缀计数可由拼接恒等式
+\(
+\sigma^{k+1}(A)=\sigma^k(A)\sigma^{k-1}(A)
+\)
+递归分解得到。
+因此复位时刻序列 \(\{r_n\}\) 可作为确定性的离散时钟在 \(O(\log n)\) 时间内计算，而该复杂度不依赖于 \(m\)。
+\end{conclusion}
+\begin{proof}[证明]
+由定理 \ref{thm:terminal-reset-events-sturmian}，差分字 \(w\) 为 Fibonacci 替换不动点，并满足
+\(
+\sigma^{k+1}(A)=\sigma^k(A)\sigma^{k-1}(A)
+\)
+的标准拼接结构。
+替换矩阵 \(M\) 的定义保证：若记 \(\sigma^k(A)\) 中两字母的计数向量为
+\[
+\mathbf c_k:=
+\begin{pmatrix}
+\#\{1\le t\le |\sigma^k(A)|:\ (\sigma^k(A))_t=A\}\\
+\#\{1\le t\le |\sigma^k(A)|:\ (\sigma^k(A))_t=B\}
+\end{pmatrix},
+\]
+则 \(\mathbf c_{k+1}=M\mathbf c_k\) 且 \(\mathbf c_0=(1,0)^{\mathsf T}\)，从而 \(\mathbf c_k=M^k(1,0)^{\mathsf T}\)。
+对给定 \(L\)，取最小 \(k\) 使 \(|\sigma^k(A)|\ge L\)，并沿上述拼接把长度 \(L\) 的前缀拆分为 \(O(k)\) 个块并累加字母计数，即得 \(c_A(L),c_B(L)\)。
+由于 \(|\sigma^k(A)|\) 为 Fibonacci 级增长，故 \(k=O(\log L)\)；同时 \(M^k\) 可由二分幂在 \(O(\log k)\) 次 \(2\times 2\) 矩阵乘法内得到。
+将 \((c_A(n-1),c_B(n-1))\) 代入前缀和表达式即得 \(r_n\)。证毕。
+\end{proof}
+
 \begin{conclusion}[Zeckendorf 时间因子图的最小非可逆性：一分支一汇聚 \texorpdfstring{$\Rightarrow$}{=>} 非单射仅支撑于 \texorpdfstring{$\mathcal R_m$}{R_m}]\label{con:xi-terminal-succ-minimal-noninvertibility}
 在时间因子图 \(G^{\mathrm{Succ}}_m\)（定义 \ref{def:terminal-succ-m}）中，除唯一分支点 \(b_m\) 外所有顶点满足 \(|\mathrm{Succ}_m(w)|=1\)，且
 \[

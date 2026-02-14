@@ -1,0 +1,82 @@
+\begin{theorem}[折叠规范群的 Stirling--Bernoulli 层级：由折叠数据内生读出全部 Bernoulli 系数]\label{thm:fold-bin-gauge-constant-stirling-bernoulli-hierarchy}
+沿用推论 \ref{cor:fold-bin-recover-2pi} 的 \(C_m\) 定义，并记 \(\log C_m\) 为其自然对数。
+则存在完整渐近展开：对任意固定整数 \(R\ge 1\)，当 \(m\to\infty\) 时
+\[
+\boxed{\;
+\log C_m
+=\log(2\pi)+
+\sum_{r=1}^{R}
+\frac{B_{2r}}{r(2r-1)}
+\Bigl(\varphi^{-1}+\varphi^{2r-3}\Bigr)
+\Bigl(\frac{\varphi}{2}\Bigr)^{(2r-1)m}
+\;+\;
+O\!\Bigl(\Bigl(\frac{\varphi}{2}\Bigr)^{(2R+1)m}\Bigr)\; } ,
+\]
+其中 \(B_{2r}\) 为 Bernoulli 数。
+因此对每个 \(r\ge 1\)，Bernoulli 系数 \(B_{2r}\) 可由折叠数据序列 \(\{\log C_m\}_{m\ge 1}\) 通过逐阶消元在极限中唯一恢复；
+并且结合标准恒等式
+\[
+B_{2r}=(-1)^{r-1}\frac{2(2r)!}{(2\pi)^{2r}}\zeta(2r),
+\]
+可将全部 \(\zeta(2r)\) 视作该折叠规范常数的渐近谱信息。
+\end{theorem}
+\begin{proof}
+采用 Stirling--Bernoulli 渐近展开（作为外部工具）：对任意固定 \(R\ge 1\) 与整数 \(d\ge 1\) 有
+\[
+\log(d!)=d\log d-d+\frac12\log(2\pi d)+
+\sum_{r=1}^{R}\frac{B_{2r}}{2r(2r-1)}\,d^{-(2r-1)}
+\;+\;
+O\!\bigl(d^{-(2R+1)}\bigr).
+\]
+将其应用到 \(d=d^{\mathrm{bin}}_m(w)\) 并对 \(w\in X_m\) 求和，再除以 \(2^m\)，并按
+\(
+g_m:=2^{-m}\sum_w\log(d^{\mathrm{bin}}_m(w)!)
+\)
+与
+\(
+\kappa_m:=2^{-m}\sum_w d^{\mathrm{bin}}_m(w)\log d^{\mathrm{bin}}_m(w)
+\)
+整理，可得
+\[
+g_m
+=\kappa_m-1+\frac{1}{2^{m+1}}\sum_{w\in X_m}\log(2\pi d^{\mathrm{bin}}_m(w))
+\;+\;
+\sum_{r=1}^{R}\frac{B_{2r}}{2r(2r-1)}\cdot
+\frac{1}{2^{m}}\sum_{w\in X_m} d^{\mathrm{bin}}_m(w)^{-(2r-1)}
+\;+\;
+O\!\left(\frac{1}{2^{m}}\sum_{w\in X_m} d^{\mathrm{bin}}_m(w)^{-(2R+1)}\right).
+\]
+将
+\(
+\sum_w\log(2\pi d)=|X_m|\log(2\pi)+\sum_w\log d
+\)
+代回，并代入 \(\log C_m\) 的定义（推论 \ref{cor:fold-bin-recover-2pi}），主项严格抵消，仅留下 Bernoulli 级数的均匀平均：
+\[
+\log C_m
+=\log(2\pi)+
+\sum_{r=1}^{R}\frac{B_{2r}}{r(2r-1)}\cdot
+\frac{1}{|X_m|}\sum_{w\in X_m} d^{\mathrm{bin}}_m(w)^{-(2r-1)}
+\;+\;
+O\!\left(\frac{1}{|X_m|}\sum_{w\in X_m} d^{\mathrm{bin}}_m(w)^{-(2R+1)}\right).
+\]
+\par
+由定理 \ref{thm:fold-bin-two-state-asymptotic} 的一致渐近
+\(
+d^{\mathrm{bin}}_m(w)=\varphi^{-w_m}(2/\varphi)^m+O(1)
+\)
+以及末位分块 \(\#\{w\in X_m:w_m=0\}=F_{m+1}\)、\(\#\{w\in X_m:w_m=1\}=F_m\) 与 \(F_{m+1}/F_{m+2}\to\varphi^{-1}\)、\(F_m/F_{m+2}\to\varphi^{-2}\)，可得对每个固定 \(r\ge 1\) 有
+\[
+\frac{1}{|X_m|}\sum_{w\in X_m} d^{\mathrm{bin}}_m(w)^{-(2r-1)}
+=\Bigl(\varphi^{-1}+\varphi^{2r-3}\Bigr)\Bigl(\frac{\varphi}{2}\Bigr)^{(2r-1)m}
+\;+\;
+O\!\Bigl(\Bigl(\frac{\varphi}{2}\Bigr)^{(2r+1)m}\Bigr).
+\]
+同理，
+\(
+|X_m|^{-1}\sum_w d^{-(2R+1)}
+=O((\varphi/2)^{(2R+1)m})
+\)。
+代回即得所示展开与余项阶。最后两句关于“逐阶消元恢复 \(B_{2r}\)”与 \(\zeta(2r)\) 的编码为标准推论：由于各阶指数 \((\varphi/2)^{(2r-1)m}\) 相互分离，可通过依次去除低阶项并令 \(m\to\infty\) 唯一读出每个系数。证毕。
+\end{proof}
+
+\endinput
