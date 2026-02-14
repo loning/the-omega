@@ -1,0 +1,242 @@
+% (User input window)
+% 2026-02-14 17:56:07（Asia/Singapore）
+
+\paragraph{端点展开、曲率审计与 Hellinger 普适极限}
+沿用定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的最优耦合结构与对偶敏感性公式。
+本段记录速率函数 \(R_w(\delta)\) 在两端点 \(\delta\downarrow 0\) 与 \(\delta\uparrow (1-p_2(w))\) 的显式渐近律，并给出由有限碰撞矩可审计的端点曲率常数与稀有错配下的 Hellinger 极限形状。
+
+\begin{theorem}[小失真端点律：\texorpdfstring{$\delta\downarrow0$}{delta->0} 时对偶变量对数发散与速率端点展开]\label{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint}
+令有限字母表 \(X\)（\(|X|\ge2\)），取全支撑分布 \(w\in\Delta(X)\)。
+记
+\[
+R_w(\delta):=\inf\{I_P(X;Y):P_X=P_Y=w,\ \mathbb P(X=Y)\ge 1-\delta\},\qquad \delta\in[0,1].
+\]
+定义 Hellinger 量
+\[
+A_{1/2}(w):=\sum_{x\in X}\sqrt{w(x)}\quad(>1).
+\]
+令 \(\lambda(\delta)\) 为最优对偶变量（满足 \(\frac{\mathrm d}{\mathrm d\delta}R_w(\delta)=-\lambda(\delta)\)，参见定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}）。
+则当 \(\delta\downarrow 0\) 时成立
+\[
+\lambda(\delta)=\log\frac{A_{1/2}(w)^2-1}{\delta}+o(1),
+\]
+并且
+\[
+R_w(\delta)
+=H(w)-\delta\log\frac{1}{\delta}-\delta\log\bigl(A_{1/2}(w)^2-1\bigr)+O(\delta).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}，最优耦合满足
+\[
+P^\star_\delta(x,y)=\frac{u_xu_y\bigl(1+\kappa\,\mathbf 1_{\{x=y\}}\bigr)}{Z},
+\qquad \lambda=\log(1+\kappa).
+\]
+在 \(\delta\downarrow 0\) 时，对角约束逼近确定耦合，故必有 \(\kappa\to\infty\)。
+利用尺度不变性，可取一族等价规范使得
+\(
+\kappa\sum_x u_x^2=1+o(1)
+\)（从而 \(Z=(\sum_x u_x)^2+\kappa\sum_x u_x^2=1+o(1)\)）。
+在该规范下，边缘约束方程给出
+\[
+u_x=\frac{1}{\sqrt{\kappa}}\sqrt{w(x)}+o(\kappa^{-1/2}),
+\qquad
+\sum_x u_x=\frac{A_{1/2}(w)}{\sqrt{\kappa}}+o(\kappa^{-1/2}),
+\qquad
+\sum_x u_x^2=\frac{1}{\kappa}+o(\kappa^{-1}).
+\]
+于是对角质量
+\[
+\mathbb P(X=Y)
+=\frac{(1+\kappa)\sum_x u_x^2}{(\sum_x u_x)^2+\kappa\sum_x u_x^2}
+=1-\frac{A_{1/2}(w)^2-1}{\kappa}+o(\kappa^{-1}),
+\]
+从而
+\(
+\kappa=\frac{A_{1/2}(w)^2-1}{\delta}\,(1+o(1))
+\)
+并给出
+\(
+\lambda(\delta)=\log(1+\kappa)=\log\frac{A_{1/2}(w)^2-1}{\delta}+o(1)
+\)。
+由 \(R'_w(\delta)=-\lambda(\delta)\) 在 \(\delta\downarrow 0\) 的积分并用 \(R_w(0)=H(w)\)（见正文中的端点说明）即得所示展开。证毕。
+\end{proof}
+
+\begin{theorem}[零速率端点的二次起跳：\texorpdfstring{$\delta\uparrow(1-p_2(w))$}{delta->delta0} 时曲率仅依赖 \texorpdfstring{$p_2,p_3$}{p2,p3}]\label{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature}
+记幂和 \(p_k(w):=\sum_{x\in X}w(x)^k\)，并令
+\[
+\delta_0:=1-p_2(w).
+\]
+则 \(\delta\ge\delta_0\) 时独立耦合 \(w\otimes w\) 可行且给出 \(R_w(\delta)=0\)（命题 \ref{prop:pom-diagonal-rate-zero-threshold-collision}）。
+当 \(\delta\uparrow\delta_0\) 时，
+\[
+R_w(\delta)=\frac{(\delta_0-\delta)^2}{2\,C(w)}+O\bigl((\delta_0-\delta)^3\bigr),
+\]
+其中曲率常数
+\[
+C(w):=p_2(w)+p_2(w)^2-2p_3(w)
+=\sum_{x\in X}w(x)^2(1-w(x))^2+2\sum_{x<y}w(x)^2w(y)^2>0.
+\]
+\end{theorem}
+\begin{proof}
+在 \(\delta\uparrow\delta_0\) 时，最优解逼近独立耦合，对偶参数 \(\kappa(\delta)=e^{\lambda(\delta)}-1\downarrow 0\)（定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}）。
+利用尺度不变性取规范 \(\sum_x u_x=1\)。
+写
+\(
+u_x=w(x)+\kappa a_x+O(\kappa^2)
+\)。
+由边缘约束
+\(
+w(x)=u_x(1+\kappa u_x)/(1+\kappa\sum_a u_a^2)
+\)
+的一阶比较可得
+\(
+a_x=w(x)\bigl(p_2(w)-w(x)\bigr)
+\)，并因此
+\(
+\sum_x u_x^2=p_2(w)+2\kappa\bigl(p_2(w)^2-p_3(w)\bigr)+O(\kappa^2)
+\)。
+对角质量为
+\[
+\mathbb P(X=Y)=\frac{(1+\kappa)\sum_x u_x^2}{1+\kappa\sum_x u_x^2}
+=p_2(w)+\kappa\,C(w)+O(\kappa^2),
+\]
+从而
+\(
+\delta_0-\delta=\mathbb P(X=Y)-p_2(w)=\kappa C(w)+O(\kappa^2)
+\)。
+另一方面，由敏感性公式
+\(
+R'_w(\delta)=-\log(1+\kappa)=-\kappa+O(\kappa^2)
+\)。
+消去 \(\kappa\) 得
+\(
+R'_w(\delta)=-(\delta_0-\delta)/C(w)+O((\delta_0-\delta)^2)
+\)，对 \(\delta\) 积分即得二次起跳展开。证毕。
+\end{proof}
+
+\begin{proposition}[解析凸性与曲率表示：\texorpdfstring{$R_w$}{R} 在 \texorpdfstring{$(0,\delta_0)$}{(0,delta0)} 上严格凸]\label{prop:pom-diagonal-rate-analytic-strict-convexity-curvature}
+令 \(\delta\in(0,\delta_0)\)，记最优对偶参数 \(\kappa(\delta)=e^{\lambda(\delta)}-1\in(0,\infty)\)。
+则 \(R_w(\delta)\) 在 \((0,\delta_0)\) 上为实解析且严格凸，并满足端点斜率
+\[
+R_w'(0^+)=-\infty,\qquad R_w'(\delta_0^-)=0.
+\]
+并且二阶导数具有显式形式
+\[
+R_w''(\delta)=-\frac{\kappa'(\delta)}{1+\kappa(\delta)}>0,
+\qquad
+R_w''(\delta)=\left(\frac{\mathrm d}{\mathrm d\lambda}\mathbb P_{P^\star_\delta}(X=Y)\right)^{-1}.
+\]
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}，在 \((0,\delta_0)\) 上最优解唯一且随参数光滑变化；\(\kappa\mapsto \mathbb P(X=Y)\) 为严格增的实解析函数，故由隐函数定理得 \(\kappa(\delta)\) 在 \((0,\delta_0)\) 上实解析且严格递减。
+由
+\(
+R_w'(\delta)=-\log(1+\kappa(\delta))
+\)
+得
+\(
+R_w''(\delta)=-\kappa'(\delta)/(1+\kappa(\delta))>0
+\)，从而严格凸。
+端点斜率由 \(\delta\downarrow 0\Rightarrow \kappa\to\infty\) 与 \(\delta\uparrow\delta_0\Rightarrow \kappa\to 0\) 直接给出。
+最后一式由 \(\lambda=\log(1+\kappa)\) 与 \(\delta\)-约束 \(\mathbb P(X=Y)=1-\delta\) 的链式求导得到。证毕。
+\end{proof}
+
+\begin{proposition}[端点的有限矩闭包：\texorpdfstring{$\delta_0$}{delta0} 邻域内 Taylor 系数仅依赖有限阶碰撞矩]\label{prop:pom-diagonal-rate-finite-moment-closure}
+记 \(\varepsilon:=\delta_0-\delta\ge 0\)。
+在 \(\varepsilon\) 足够小的邻域内，\(R_w(\delta)\) 可展开为
+\[
+R_w(\delta)=\sum_{j\ge 2} a_j(w)\,\varepsilon^j,
+\qquad
+a_2(w)=\frac{1}{2C(w)}.
+\]
+并且对任意整数 \(j\ge 2\)，系数 \(a_j(w)\) 可表示为 \(w\) 的对称多项式，且可由有限幂和 \(\{p_2(w),p_3(w),\dots,p_{j+1}(w)\}\) 的有理函数唯一确定。
+\end{proposition}
+\begin{proof}
+在 \(\kappa\to 0\) 的解析区间内，最优缩放向量 \(u_x\) 可作 \(\kappa\) 的幂级数展开，其每一阶系数为 \(\{w(x)\}\) 的对称多项式；
+因此 \(\varepsilon(\kappa)\) 与 \(R_w(\kappa)\) 均可写为 \(\kappa\) 的幂级数，其第 \(j\) 阶系数仅涉及至多 \(w(x)^{j+1}\) 的加权求和。
+由 Newton--Girard 恒等式，任意此类对称多项式可用有限幂和 \(p_2,\dots,p_{j+1}\) 表达；
+对 \(\varepsilon(\kappa)\) 在零点附近解析可逆后消去 \(\kappa\) 即得所示闭包与唯一性。证毕。
+\end{proof}
+
+\begin{corollary}[折叠可审计曲率：对任意固定 \texorpdfstring{$m$}{m}，二次起跳由 \texorpdfstring{$(\mathrm{MOM}_2,\mathrm{MOM}_3)$}{(MOM2,MOM3)} 完全决定]\label{cor:pom-diagonal-rate-folded-curvature-auditable}
+在折叠语义下令推前分布 \(w_m(x)=d_m(x)/2^m\)，并记碰撞矩
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q.
+\]
+则
+\[
+p_2(w_m)=\sum_x w_m(x)^2=2^{-2m}S_2(m),\qquad
+p_3(w_m)=\sum_x w_m(x)^3=2^{-3m}S_3(m),
+\qquad
+\delta_0(m):=1-p_2(w_m).
+\]
+记
+\[
+C_m:=p_2(w_m)+p_2(w_m)^2-2p_3(w_m).
+\]
+则当 \(\delta\uparrow \delta_0(m)\) 时成立
+\[
+R_{w_m}(\delta)=\frac{(\delta_0(m)-\delta)^2}{2C_m}+O\bigl((\delta_0(m)-\delta)^3\bigr).
+\]
+特别地，曲率常数 \(C_m\) 仅依赖于 \(\{S_2(m),S_3(m)\}\)，因而在本文的有限核编译口径下可由 \(\mathrm{MOM}_2,\mathrm{MOM}_3\) 的有限状态计数直接审计，而无需重建全体 \(w_m\)。
+\end{corollary}
+\begin{proof}
+对固定 \(m\) 将定理 \ref{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature} 应用于 \(w=w_m\)，并代入 \(p_k(w_m)=2^{-mk}S_k(m)\) 即得。证毕。
+\end{proof}
+
+\begin{theorem}[稀有错配的 Hellinger 普适性：\texorpdfstring{$\delta\downarrow0$}{delta->0} 时最优耦合的非对角极限形状]\label{thm:pom-diagonal-rate-rare-mismatch-hellinger-universality}
+令 \(P^\star_\delta\) 为实现 \(R_w(\delta)\) 的唯一最优耦合，并记 \(A_{1/2}(w)=\sum_x\sqrt{w(x)}\)。
+当 \(\delta\downarrow 0\) 时，对任意 \(x\ne y\) 有
+\[
+\frac{1}{\delta}\,P^\star_\delta(x,y)\ \longrightarrow\ \frac{\sqrt{w(x)w(y)}}{A_{1/2}(w)^2-1},
+\]
+并且对角项满足
+\[
+P^\star_\delta(x,x)
+=w(x)-\delta\,\frac{\sqrt{w(x)}\bigl(A_{1/2}(w)-\sqrt{w(x)}\bigr)}{A_{1/2}(w)^2-1}+o(\delta).
+\]
+令背景分布
+\(
+\pi_\delta(x):=u_x/\sum_y u_y
+\)
+（\(u\) 为定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的最优缩放向量），则
+\[
+\pi_\delta(x)\ \longrightarrow\ \pi_{1/2}(x):=\frac{\sqrt{w(x)}}{A_{1/2}(w)}.
+\]
+并且符号依赖保持率 \(p_x(\delta):=\mathbb P(Y=x\mid X=x)\) 满足
+\[
+p_x(\delta)
+=1-\delta\,\frac{A_{1/2}(w)-\sqrt{w(x)}}{\sqrt{w(x)}\,(A_{1/2}(w)^2-1)}+o(\delta).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的指数族表示，\(P^\star_\delta(x,y)=u_xu_y(1+\kappa\mathbf 1_{\{x=y\}})/Z\)。
+在 \(\delta\downarrow 0\) 时 \(\kappa\to\infty\)，并由定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 的证明可取同一规范使
+\(
+u_x=\kappa^{-1/2}\sqrt{w(x)}+o(\kappa^{-1/2})
+\)
+且
+\(
+\kappa\sim (A_{1/2}(w)^2-1)/\delta
+\)，同时 \(Z=1+o(1)\)。
+于是对 \(x\ne y\),
+\[
+P^\star_\delta(x,y)=\frac{u_xu_y}{Z}
+=\frac{1}{\kappa}\sqrt{w(x)w(y)}\,(1+o(1))
+=\delta\,\frac{\sqrt{w(x)w(y)}}{A_{1/2}(w)^2-1}\,(1+o(1)),
+\]
+得第一式。
+对角项由边缘约束
+\(
+w(x)=\sum_y P^\star_\delta(x,y)
+\)
+与非对角极限求和得到二式。
+背景分布极限由 \(u_x\propto \sqrt{w(x)}\) 直接给出。
+最后，由
+\(
+p_x(\delta)=P^\star_\delta(x,x)/w(x)
+\)
+代入对角展开即得保持率展开。证毕。
+\end{proof}
+
