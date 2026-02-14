@@ -150,6 +150,19 @@ theorem denQ4_pos_of_chamberPlus
   have h144 : (0 : ℝ) < 144 := by norm_num
   exact mul_pos (mul_pos h144 hL) hQ
 
+theorem denBridge4_pos_of_chamberPlus
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (hC1 : chamberPlus u1 B1 c1)
+    (hC2 : chamberPlus u2 B2 c2)
+    (hC12 : chamberPlus (u1 + u2) (B1 + B2) (c1 + c2)) :
+    0 < denBridge4 u1 B1 c1 u2 B2 c2 := by
+  have h1 : 0 < denQ4 u1 B1 c1 := denQ4_pos_of_chamberPlus u1 B1 c1 hC1
+  have h2 : 0 < denQ4 u2 B2 c2 := denQ4_pos_of_chamberPlus u2 B2 c2 hC2
+  have h12 : 0 < denQ4 (u1 + u2) (B1 + B2) (c1 + c2) :=
+    denQ4_pos_of_chamberPlus (u1 + u2) (B1 + B2) (c1 + c2) hC12
+  unfold denBridge4
+  exact mul_pos (mul_pos h1 h2) h12
+
 theorem G4_eq_Xi4_div
     (u1 B1 c1 u2 B2 c2 : ℝ)
     (h1 : denQ4 u1 B1 c1 ≠ 0)
@@ -159,6 +172,19 @@ theorem G4_eq_Xi4_div
       Xi4 u1 B1 c1 u2 B2 c2 / denBridge4 u1 B1 c1 u2 B2 c2 := by
   unfold G4 delta4 Xi4 denBridge4
   field_simp [h1, h2, h12]
+
+theorem G4_eq_Xi4_div_of_chamberPlus
+    (u1 B1 c1 u2 B2 c2 : ℝ)
+    (hC1 : chamberPlus u1 B1 c1)
+    (hC2 : chamberPlus u2 B2 c2)
+    (hC12 : chamberPlus (u1 + u2) (B1 + B2) (c1 + c2)) :
+    G4 u1 B1 c1 u2 B2 c2 =
+      Xi4 u1 B1 c1 u2 B2 c2 / denBridge4 u1 B1 c1 u2 B2 c2 := by
+  have h1 : denQ4 u1 B1 c1 ≠ 0 := ne_of_gt (denQ4_pos_of_chamberPlus u1 B1 c1 hC1)
+  have h2 : denQ4 u2 B2 c2 ≠ 0 := ne_of_gt (denQ4_pos_of_chamberPlus u2 B2 c2 hC2)
+  have h12 : denQ4 (u1 + u2) (B1 + B2) (c1 + c2) ≠ 0 := by
+    exact ne_of_gt (denQ4_pos_of_chamberPlus (u1 + u2) (B1 + B2) (c1 + c2) hC12)
+  exact G4_eq_Xi4_div u1 B1 c1 u2 B2 c2 h1 h2 h12
 
 theorem G4_nonneg_of_Xi4_nonneg
     (u1 B1 c1 u2 B2 c2 : ℝ)
