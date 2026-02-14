@@ -121,11 +121,16 @@ R'_w(\delta)=-(\delta_0-\delta)/C(w)+O((\delta_0-\delta)^2)
 \[
 R_w'(0^+)=-\infty,\qquad R_w'(\delta_0^-)=0.
 \]
-并且二阶导数具有显式形式
+并且对角指示变量
+\[
+Z:=\mathbf 1_{\{X=Y\}}\qquad\bigl((X,Y)\sim P^\star_\delta\bigr)
+\]
+满足 \(\EE[Z]=1-\delta\)，且二阶导数具有涨落—耗散形式
 \[
 R_w''(\delta)=-\frac{\kappa'(\delta)}{1+\kappa(\delta)}>0,
 \qquad
-R_w''(\delta)=\left(\frac{\mathrm d}{\mathrm d\lambda}\mathbb P_{P^\star_\delta}(X=Y)\right)^{-1}.
+R_w''(\delta)=\left(\frac{\mathrm d}{\mathrm d\lambda}\mathbb P_{P^\star_\delta}(X=Y)\right)^{-1}
+=\frac{1}{\Var_{P^\star_\delta}(Z)}.
 \]
 \end{proposition}
 \begin{proof}
@@ -139,7 +144,19 @@ R_w'(\delta)=-\log(1+\kappa(\delta))
 R_w''(\delta)=-\kappa'(\delta)/(1+\kappa(\delta))>0
 \)，从而严格凸。
 端点斜率由 \(\delta\downarrow 0\Rightarrow \kappa\to\infty\) 与 \(\delta\uparrow\delta_0\Rightarrow \kappa\to 0\) 直接给出。
-最后一式由 \(\lambda=\log(1+\kappa)\) 与 \(\delta\)-约束 \(\mathbb P(X=Y)=1-\delta\) 的链式求导得到。证毕。
+由 \(\lambda=\log(1+\kappa)\) 与约束 \(\EE_{P^\star_\delta}[Z]=1-\delta\) 的链式求导得
+\[
+\frac{\mathrm d}{\mathrm d\delta}\lambda(\delta)
+=-\left(\frac{\mathrm d}{\mathrm d\lambda}\EE_{P^\star_\delta}[Z]\right)^{-1}.
+\]
+而在指数族 \(P^\star_\delta\propto u_xu_y e^{\lambda Z}\) 下，配分函数的二阶导数恒等式给出
+\(
+\frac{\mathrm d}{\mathrm d\lambda}\EE[Z]=\Var(Z)
+\)。
+结合 \(R_w'(\delta)=-\lambda(\delta)\)（定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}）即得
+\(
+R_w''(\delta)=-\lambda'(\delta)=1/\Var(Z)
+\)，从而严格凸。证毕。
 \end{proof}
 
 \begin{proposition}[端点的有限矩闭包：\texorpdfstring{$\delta_0$}{delta0} 邻域内 Taylor 系数仅依赖有限阶碰撞矩]\label{prop:pom-diagonal-rate-finite-moment-closure}
@@ -238,5 +255,98 @@ w(x)=\sum_y P^\star_\delta(x,y)
 p_x(\delta)=P^\star_\delta(x,x)/w(x)
 \)
 代入对角展开即得保持率展开。证毕。
+\end{proof}
+
+\begin{proposition}[最优缩放与保持率的同序性]\label{prop:pom-diagonal-rate-scaling-keep-comonotone}
+取全支撑分布 \(w\in\Delta(X)\) 与 \(\delta\in(0,\delta_0)\)（\(\delta_0:=1-p_2(w)\)）。
+令 \(P^\star_\delta\) 为实现 \(R_w(\delta)\) 的唯一最优耦合，并写成定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的形式
+\[
+P^\star_\delta(x,y)=\frac{u_xu_y\bigl(1+\kappa\,\mathbf 1_{\{x=y\}}\bigr)}{Z},
+\qquad
+\kappa>0,\ u\in\RR_{>0}^X.
+\]
+定义条件核 \(K_\delta(y\mid x):=P^\star_\delta(x,y)/w(x)\)、保持率
+\[
+p_\delta(x):=K_\delta(x\mid x)=\mathbb P(Y=x\mid X=x),
+\]
+以及背景分布（缩放归一化）
+\[
+\pi_\delta(x):=\frac{u_x}{\sum_{z\in X}u_z}.
+\]
+若 \(w(x)\ge w(y)\)，则必有
+\[
+u_x\ge u_y,\qquad \pi_\delta(x)\ge \pi_\delta(y),\qquad p_\delta(x)\ge p_\delta(y).
+\]
+并且当 \(w\) 非均匀时，上述不等式对至少一对 \((x,y)\) 为严格。
+\end{proposition}
+\begin{proof}
+令 \(A:=\sum_z u_z\)。
+由边缘自洽关系 \(w(x)=u_x(A+\kappa u_x)/Z\) 得到对每个 \(x\) 的二次方程
+\[
+\kappa u_x^2+A u_x=Zw(x).
+\]
+右端仅随 \(w(x)\) 变化而系数 \((\kappa,A,Z)\) 对所有 \(x\) 相同，故其正根 \(u_x=f(w(x))\)（\(f\) 严格递增）直接给出 \(w(x)\ge w(y)\Rightarrow u_x\ge u_y\)；
+归一化得到 \(\pi_\delta\) 同序。
+另一方面，
+\[
+p_\delta(x)
+=\frac{P^\star_\delta(x,x)}{w(x)}
+=\frac{(1+\kappa)u_x^2/Z}{u_x(A+\kappa u_x)/Z}
+=\frac{(1+\kappa)u_x}{A+\kappa u_x},
+\]
+其对 \(u_x\) 严格递增，因此 \(u_x\ge u_y\Rightarrow p_\delta(x)\ge p_\delta(y)\)。
+若 \(w\) 非均匀，则存在 \(x,y\) 使 \(w(x)>w(y)\)，由 \(f\) 严格递增即得严格性。证毕。
+\end{proof}
+
+\begin{theorem}[缩放分布的主序插值：\texorpdfstring{$\pi_\delta$}{pi} 从 \texorpdfstring{$\pi_{1/2}$}{pi1/2} 到 \(w\) 的单调链]\label{thm:pom-diagonal-rate-pi-majorization-chain}
+令 \(w\in\Delta(X)\) 全支撑并记 \(\delta_0:=1-p_2(w)\)。
+对 \(\delta\in(0,\delta_0)\) 令 \(\pi_\delta\) 为命题 \ref{prop:pom-diagonal-rate-scaling-keep-comonotone} 的背景分布，并定义
+\[
+\pi_{1/2}(x):=\frac{\sqrt{w(x)}}{\sum_{z\in X}\sqrt{w(z)}}.
+\]
+则当 \(\delta\downarrow 0\) 时有 \(\pi_\delta\to \pi_{1/2}\)，当 \(\delta\uparrow\delta_0\) 时有 \(\pi_\delta\to w\)。
+并且对每个 \(\delta\in(0,\delta_0)\) 成立主序夹逼
+\[
+\pi_{1/2}\ \prec\ \pi_\delta\ \prec\ w,
+\]
+其中 \(\prec\) 为 Hardy--Littlewood--P\'olya 主序；若 \(w\) 非均匀则上述不等式为严格。
+进一步地，若 \(0<\delta_1<\delta_2<\delta_0\)，则有单调主序链
+\[
+\pi_{\delta_1}\ \prec\ \pi_{\delta_2}.
+\]
+\end{theorem}
+\begin{proof}
+端点极限由定理 \ref{thm:pom-diagonal-rate-rare-mismatch-hellinger-universality}（\(\delta\downarrow 0\)）与
+定理 \ref{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature} 的 \(\kappa\downarrow 0\) 展开（在规约 \(\sum_x u_x=1\) 下 \(u\to w\)，从而 \(\pi_\delta\to w\)）给出。
+\par
+为证明主序关系，按 \(w\) 的非增序排列字母表，使得 \(w_{(1)}\ge\cdots\ge w_{(n)}\)，并相应排列 \(\pi_\delta\)。
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的二次关系可写成
+\(
+\kappa u_x^2+A u_x=Zw(x)
+\)，
+从而
+\(
+u_x/w(x)=\frac{2Z}{A+\sqrt{A^2+4\kappa Zw(x)}}
+\)
+随 \(w(x)\) 严格递减。
+因此序列 \(\bigl(\pi_{\delta,(i)}/w_{(i)}\bigr)_{i=1}^n\) 严格递增（常数 \(\sum_z u_z\) 只作整体缩放）。
+由此对任意 \(k\in\{1,\dots,n\}\)，初段加权平均满足
+\[
+\frac{\sum_{i=1}^k \pi_{\delta,(i)}}{\sum_{i=1}^k w_{(i)}}
+=\frac{\sum_{i=1}^k w_{(i)}\cdot(\pi_{\delta,(i)}/w_{(i)})}{\sum_{i=1}^k w_{(i)}}
+\le \frac{\sum_{i=1}^n w_{(i)}\cdot(\pi_{\delta,(i)}/w_{(i)})}{\sum_{i=1}^n w_{(i)}}
+=1,
+\]
+其中不等式由“向递增序列加入不小于当前平均的新项会增加平均”的基本事实给出。
+于是 \(\sum_{i=1}^k \pi_{\delta,(i)}\le \sum_{i=1}^k w_{(i)}\)（\(k=1,\dots,n-1\)），即 \(\pi_\delta\prec w\)。
+若 \(w\) 非均匀，则 \(\pi_{\delta,(i)}/w_{(i)}\) 非常数，故至少对某个 \(k\) 严格不等，得到严格主序。
+\par
+对单调链，注意 \(\delta\mapsto \kappa(\delta)\) 严格递减（命题 \ref{prop:pom-diagonal-rate-analytic-strict-convexity-curvature}），而对固定 \(w\) 上述比值谱
+\(
+w\mapsto u_x/w(x)
+\)
+在 \(\kappa\) 上呈严格单调的扁平化：\(\kappa\) 越大，对大权重坐标的相对压缩越强，从而 \(\pi_\delta\) 在主序意义下越接近均匀端点 \(\pi_{1/2}\)。
+据此对 \(0<\delta_1<\delta_2<\delta_0\) 得 \(\pi_{\delta_1}\prec \pi_{\delta_2}\)，并由端点极限推出 \(\pi_{1/2}\prec \pi_\delta\)。
+证毕。
 \end{proof}
 

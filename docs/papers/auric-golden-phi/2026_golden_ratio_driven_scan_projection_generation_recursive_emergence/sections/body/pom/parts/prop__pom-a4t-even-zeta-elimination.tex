@@ -150,6 +150,92 @@ Q_{t_\star}(r_\star)=4r_\star^{\,3}Q_{t_\star}(1/r_\star)\;}
 \end{proof}
 
 % (User input window)
+% 2026-02-14 20:22:37（Asia/Singapore）
+%
+\begin{proposition}[Newman 临界的极点二次共振刻画：\texorpdfstring{$D_t(v^2)=D_t(-v)=0$}{Dt(v^2)=Dt(-v)=0}]\label{prop:pom-a4t-newman-pole-quadratic-resonance}
+沿注 \ref{rem:pom-collision-rh-break-a4-threshold}，令
+\(
+D_t(z):=\det(I-zA_4(t))
+\)
+为四阶核族的谱行列式（其显式闭式见式 \eqref{eq:collision_kernel_A4_newman_pole_quadratic_resonance}）。
+则四阶 Newman 临界参数 \(t_\star\) 等价于存在唯一 \(v_\star\in(0,1)\) 使得
+\[
+D_{t_\star}(v_\star^2)=0,\qquad D_{t_\star}(-v_\star)=0.
+\]
+等价地，若记 \(z_+(t)\in(0,1)\) 为 \(D_t\) 的最小正实根并记 \(z_-(t)\in(-1,0)\) 为其负实根分支，则
+\[
+z_+(t_\star)=z_-(t_\star)^2.
+\]
+消去 \(t\) 后，\(v_\star\) 满足不可约八次约束，且 \(t_\star\) 可由 \(v_\star\) 显式给出（式 \eqref{eq:collision_kernel_A4_newman_pole_quadratic_resonance}）。
+\end{proposition}
+\begin{proof}
+由定义，
+\(
+D_t(z)=\det(I-zA_4(t))=z^5\det(z^{-1}I-A_4(t))=z^5p_t(1/z)
+\)；
+故 \(D_t(z)=0\) 当且仅当 \(1/z\in\mathrm{spec}(A_4(t))\)。
+另一方面，注 \ref{rem:pom-collision-rh-break-a4-threshold} 给出 Newman 达界的负实根通道刻画：\(t=t_\star\) 当且仅当存在 \(y<0\) 使 \(p_{t_\star}(y)=p_{t_\star}(y^2)=0\)。
+令 \(v:=-1/y\in(0,1)\)，则 \(p_{t_\star}(y)=0\iff D_{t_\star}(-v)=0\)，并且 \(p_{t_\star}(y^2)=0\iff D_{t_\star}(v^2)=0\)，从而得到所示等价刻画。
+\par
+八次约束与 \(t_\star\) 的两条显式闭式由直接消元与代入展开给出；其可复现输出见式 \eqref{eq:collision_kernel_A4_newman_pole_quadratic_resonance}（脚本 \texttt{scripts/exp\_collision\_kernel\_A4\_pole\_quadratic\_resonance\_and\_cyclotomic\_adjacency\_injection.py}）。证毕。
+\end{proof}
+
+\input{sections/generated/eq_collision_kernel_A4_newman_pole_quadratic_resonance}
+
+\begin{proposition}[核版 Newman 偏移的极点几何判据：\texorpdfstring{$\delta(t)=\log(z_+(t)/z_-(t)^2)$}{delta(t)=log(z+/z-^2)}]\label{prop:pom-a4t-newman-offset-pole-geometry}
+沿注 \ref{rem:pom-collision-rh-break-a4-threshold}，令 \(t\ge 0\) 并记
+\(
+D_t(z):=\det(I-zA_4(t))
+\)。
+设 \(z_+(t)\in(0,1)\) 为 \(D_t\) 的最小正实根，并设 \(z_-(t)\in(-1,0)\) 为 \(D_t\) 的唯一负实根。
+令
+\[
+r(t):=\rho(A_4(t))=\frac{1}{z_+(t)},\qquad
+\mu_-(t):=\frac{1}{z_-(t)}<0,\qquad
+\Lambda(t):=|\mu_-(t)|=-\frac{1}{z_-(t)}.
+\]
+则 Newman 型偏移 \(\delta(t):=\log(\Lambda(t)^2/r(t))\) 满足恒等式
+\[
+\delta(t)=\log\!\Bigl(\frac{z_+(t)}{z_-(t)^2}\Bigr),
+\]
+从而
+\[
+\delta(t)\begin{cases}
+<0 &\Longleftrightarrow z_+(t)<z_-(t)^2,\\
+=0 &\Longleftrightarrow z_+(t)=z_-(t)^2,\\
+>0 &\Longleftrightarrow z_+(t)>z_-(t)^2.
+\end{cases}
+\]
+并且 \(\delta(t)=0\) 当且仅当 \(t=t_\star\)。
+\end{proposition}
+\begin{proof}
+由 \(D_t(z)=0\iff 1/z\in\mathrm{spec}(A_4(t))\) 可知 \(z_+(t)=1/r(t)\)。
+另一方面，注 \ref{rem:pom-a4t-discriminant-root-type} 给出：对每个 \(t\ge 0\)，\(p_t\) 恰有三条实根与一对共轭非实根；而 \(A_4(t)\) 为非负矩阵，故其谱半径 \(r(t)\) 为实正特征值。
+因此剩余两条实根一正一负，其中负实根对应的极点恰为 \(z_-(t)\in(-1,0)\)，并且唯一性成立。
+由定义
+\(
+\delta(t)=\log(\Lambda(t)^2/r(t))
+\)
+以及
+\(
+\Lambda(t)=-1/z_-(t),\ r(t)=1/z_+(t)
+\)
+立得 \(\delta(t)=\log(z_+(t)/z_-(t)^2)\) 及其符号等价。
+\par
+最后，\(\delta(t)=0\iff z_+(t)=z_-(t)^2\)，而该二次共振条件与 \(t=t_\star\) 的等价性由命题 \ref{prop:pom-a4t-newman-pole-quadratic-resonance} 给出。证毕。
+\end{proof}
+
+\begin{remark}[极点比值的单阈值几何：\texorpdfstring{$z_+(t)/z_-(t)^2$}{z+(t)/z-(t)^2} 的审计单调窗]\label{rem:pom-a4t-pole-ratio-monotone-window}
+在命题 \ref{prop:pom-a4t-newman-offset-pole-geometry} 的记号下，令
+\(
+g(t):=z_+(t)/z_-(t)^2
+\)。
+脚本 \texttt{scripts/exp\_collision\_kernel\_A4\_pole\_quadratic\_resonance\_and\_cyclotomic\_adjacency\_injection.py}
+在包含 Newman 临界与 \((E_6,E_7,E_8)\) 指数交点的区间 \([t_{E_6},t_{E_8}]\) 上对 \(g(t)\) 作网格审计，
+得到 \(g\) 在该窗内严格递增；结合 \(g(t_\star)=1\) 的唯一性，可把四阶相变等价为“正极点是否位于负极点平方的左侧/右侧”的几何判据。
+\end{remark}
+
+% (User input window)
 % 2026-02-14 18:04:07（Asia/Singapore）
 %
 \paragraph{偶谱曲线的二次可解性、Lucas 消元与黄金比例共振塔}

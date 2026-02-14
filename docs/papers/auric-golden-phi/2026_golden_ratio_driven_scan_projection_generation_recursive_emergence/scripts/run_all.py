@@ -718,6 +718,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_pole_quadratic_resonance_and_cyclotomic_adjacency_injection",
+            script="exp_collision_kernel_A4_pole_quadratic_resonance_and_cyclotomic_adjacency_injection.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_pole_quadratic_resonance_and_cyclotomic_adjacency_injection.json",
+                "sections/generated/eq_collision_kernel_A4_newman_pole_quadratic_resonance.tex",
+                "sections/generated/eq_collision_kernel_A4_cyclotomic_adjacency_injection.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_E8_square_spectrum_collapse",
             script="exp_collision_kernel_E8_square_spectrum_collapse.py",
             args=[],
