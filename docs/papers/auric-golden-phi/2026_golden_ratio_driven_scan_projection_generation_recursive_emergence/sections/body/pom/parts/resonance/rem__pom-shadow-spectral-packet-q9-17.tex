@@ -125,6 +125,18 @@ z_\ast:=\frac{-1-\mathrm{i}\sqrt{15}}{4},
 \]
 应保持在小量级范围内。其可复算读数见表 \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}。
 \par
+为便于解释该残差证书，注意对任意 \(\zeta\in\mathbb{S}^1\) 有严格恒等式
+\begin{equation}\label{eq:pom-phase-lock-residual-trace-equivalence}
+\rho(\zeta):=\bigl|2\zeta^{2}+\zeta+2\bigr|
+=\bigl|2(\zeta+\zeta^{-1})+1\bigr|
+=\bigl|4\Re(\zeta)+1\bigr|,
+\qquad
+\left|(\zeta+\zeta^{-1})+\tfrac12\right|=\frac{\rho(\zeta)}{2}.
+\end{equation}
+确因 \(|\zeta|=1\) 时 \(2\zeta^2+\zeta+2=\zeta\bigl(2(\zeta+\zeta^{-1})+1\bigr)\)，并且 \(\zeta+\zeta^{-1}=2\Re(\zeta)\)。
+特别地，\(\rho_q=\rho(\zeta_q)\) 等价刻画了“迹偏差” \(\zeta_q+\zeta_q^{-1}\) 偏离 \(-\tfrac12\) 的幅度；
+因此锁定强度在该口径下并非二维复量，而可压缩为单一实标量。
+\par
 为量化复模态的衰减，引入“复模态缺口指数”
 \[
 g_q^{(c)}:=1-\sigma_q(\mu_q)
@@ -144,7 +156,151 @@ S_q(m)=C_1 r_q^m + C_- (\lambda_q^-)^m + 2|C_c|\,|\mu_q|^m\cos\!\bigl(m\arg(\mu_
 因此若先用二周期消去器（例如对比值/残差做 Aitken \(\Delta^2\)；推论 \ref{cor:pom-aitken-cancels-two-cycle}）压低由 \((\lambda_q^-)^m\) 触发的主交替误差，再把剩余残差按 \(r_q^{-\sigma_q(\mu_q)m}\) 归一化，则应出现一个频率近似固定的余弦波形；并且当 \(q\) 增大时，该波形的衰减包络会随 \(g_q^{(c)}\) 的下降而显著变慢。
 \end{remark}
 
+\begin{proposition}[两步重标度的“固定点律”：若 \texorpdfstring{$|\mu_q|/r_{q-2}\to 1$}{|mu|/r->1}，则复缺口以 \texorpdfstring{$1/\log r_q$}{1/log r_q} 级闭合]\label{prop:pom-two-step-renorm-fixed-point-loglaw}
+沿用注 \ref{rem:pom-shadow-spectral-packet-q9-17} 的两步重标度比 \(R_q:=r_q/r_{q-2}\) 与注 \ref{rem:pom-resonance-trimodal-phase-lock} 的复模态缺口指数
+\[
+g_q^{(c)}:=1-\frac{\log|\mu_q|}{\log r_q}.
+\]
+则有恒等式
+\[
+\frac{|\mu_q|}{r_{q-2}}\ =\ R_q\,r_q^{-g_q^{(c)}}.
+\]
+若进一步存在极限 \(R_\infty:=\lim_{q\to\infty}R_q\in(1,\infty)\) 且 \(|\mu_q|/r_{q-2}\to 1\)，则必有
+\[
+g_q^{(c)}\log r_q\ \longrightarrow\ \log R_\infty,
+\qquad
+g_q^{(c)}\sim \frac{\log R_\infty}{\log r_q}.
+\]
+等价地，定义 Aitken 后误差强度
+\[
+\delta_{\mathrm{ait}}(q):=\frac{|\mu_q|}{r_q}=r_q^{-g_q^{(c)}},
+\]
+则 \(\delta_{\mathrm{ait}}(q)=(|\mu_q|/r_{q-2})/R_q\to 1/R_\infty\)。
+在已核验窗口中，表 \ref{tab:fold_collision_shadow_spectral_packet_two_step_renormalization_q9_17} 的读数 \(R_{17}=1.5831\) 与表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17} 的 \(|\mu_{17}|/r_{15}=0.9960\) 共同给出
+\(\delta_{\mathrm{ait}}(17)=|\mu_{17}|/r_{17}\approx 0.6291\)，与固定点律的数值贴近一致。
+\end{proposition}
+\begin{proof}%
+由定义 \(g_q^{(c)}=1-\frac{\log|\mu_q|}{\log r_q}\) 得
+\(
+r_q^{-g_q^{(c)}}=|\mu_q|/r_q
+\)；
+再乘以 \(R_q=r_q/r_{q-2}\) 即得恒等式。
+在极限假设下，左端 \(|\mu_q|/r_{q-2}\to 1\)，故 \(r_q^{-g_q^{(c)}}\to 1/R_\infty\)，取对数得到 \(g_q^{(c)}\log r_q\to \log R_\infty\) 并推出渐近式。
+最后 \(\delta_{\mathrm{ait}}(q)=|\mu_q|/r_q=(|\mu_q|/r_{q-2})/R_q\) 为代数恒等式。证毕。
+\end{proof}
+
+\begin{corollary}[黄金极限：Aitken 主误差强度的 \texorpdfstring{$\varphi^{-1}$}{phi^{-1}} 收敛律]\label{cor:pom-aitken-golden-limit}
+沿用注 \ref{rem:pom-shadow-spectral-packet-q9-17} 的两步重整化比 \(R_q:=r_q/r_{q-2}\) 与注 \ref{rem:pom-resonance-poisson-lorentz-prelimit} 的两步模量
+\(
+\eta_q:=|\mu_q|/r_{q-2}
+\)。
+若满足：
+\begin{enumerate}
+  \item[(i)] \(\lim_{q\to\infty} r_q^{1/q}=\sqrt{\varphi}\)（等价于 \(\frac{1}{q}\log r_q\to \tfrac12\log\varphi\)）；
+  \item[(ii)] \(\eta_q\to 1\)（两步饱和：复根模长逼近两步尺度）。
+\end{enumerate}
+则 Aitken 证书所定义的主误差强度（定义 \ref{def:pom-resonance-aitken-fingerprints}；在共振窗中 \(|\lambda_{3,q}|=|\mu_q|\)）
+\[
+\delta_{\mathrm{ait}}(q):=\frac{|\lambda_{3,q}|}{r_q}=\frac{|\mu_q|}{r_q}=\frac{\eta_q}{R_q}
+\]
+满足严格极限
+\[
+\lim_{q\to\infty}\delta_{\mathrm{ait}}(q)=\varphi^{-1}.
+\]
+\end{corollary}
+\begin{proof}
+由 (i) 得
+\[
+\log R_q=\log r_q-\log r_{q-2}
+=q\cdot\frac{\log r_q}{q}-(q-2)\cdot\frac{\log r_{q-2}}{q-2}\ \longrightarrow\ \log\varphi,
+\]
+从而 \(R_q\to\varphi\)。
+再由恒等式 \(\delta_{\mathrm{ait}}(q)=\eta_q/R_q\) 与 (ii) 得 \(\delta_{\mathrm{ait}}(q)\to 1/\varphi\)。证毕。
+\end{proof}
+
+\begin{corollary}[共振饱和 \texorpdfstring{$\Rightarrow$}{=>} 复缺口指数的 \texorpdfstring{$2/q$}{2/q} 标度律]\label{cor:pom-resonance-complex-gap-2overq}
+在推论 \ref{cor:pom-aitken-golden-limit} 的假设下，记复缺口指数（注 \ref{rem:pom-resonance-trimodal-phase-lock}）
+\[
+g_q^{(c)}:=1-\sigma_q(\mu_q)=1-\frac{\log|\mu_q|}{\log r_q}.
+\]
+则必有
+\[
+\lim_{q\to\infty}q\,g_q^{(c)}=2.
+\]
+\end{corollary}
+\begin{proof}
+由 \(\eta_q=|\mu_q|/r_{q-2}\) 与 \(|\mu_q|=r_q^{1-g_q^{(c)}}\) 得到恒等式
+\[
+\log\eta_q=\log R_q-g_q^{(c)}\log r_q,
+\qquad R_q:=r_q/r_{q-2}.
+\]
+由推论 \ref{cor:pom-aitken-golden-limit} 的 (ii) 有 \(\log\eta_q\to 0\)，由 (i) 有 \(\log R_q\to\log\varphi\)，故
+\(
+g_q^{(c)}\log r_q\to\log\varphi
+\)。
+再由 (i) 得 \(\log r_q\sim \frac{q}{2}\log\varphi\)，从而 \(qg_q^{(c)}\to 2\)。证毕。
+\end{proof}
+
 \input{sections/generated/tab_fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}
+
+\begin{proposition}[相位残差证书的线性化常数：\texorpdfstring{$\rho\sim\sqrt{15}\,|\delta\theta|$}{rho~sqrt15|dtheta|} 且具统一二次误差界]\label{prop:pom-phase-residual-linearization-sqrt15}
+令 \(z_\ast:=(-1-\mathrm{i}\sqrt{15})/4\in\mathbb{S}^1\) 为单位圆根（满足 \(2z_\ast^2+z_\ast+2=0\)）。
+对任意 \(\zeta\in\mathbb{S}^1\) 设
+\[
+\delta\theta:=\arg(\zeta/z_\ast)\in(-\pi,\pi],
+\qquad
+\rho(\zeta):=\bigl|2\zeta^2+\zeta+2\bigr|.
+\]
+则当 \(|\delta\theta|\le \tfrac{1}{10}\) 时成立统一估计
+\[
+\boxed{\;
+\bigl|\rho(\zeta)-\sqrt{15}\,|\delta\theta|\bigr|\ \le\ 2\,\delta\theta^{2}\; }.
+\]
+因此在该小相位区间内，\(\rho(\zeta)\) 与 \(|\delta\theta|\) 一阶等价：
+\(
+\rho(\zeta)/|\delta\theta|=\sqrt{15}+O(|\delta\theta|)
+\)。
+\end{proposition}
+\begin{proof}
+记 \(x:=\delta\theta\)，则 \(\zeta=z_\ast e^{\mathrm{i}x}\)。
+由 \eqref{eq:pom-phase-lock-residual-trace-equivalence} 有 \(\rho(\zeta)=|4\Re(\zeta)+1|\)。
+写 \(z_\ast=a+\mathrm{i}b\)（\(a=-\tfrac14\)、\(b=-\tfrac{\sqrt{15}}{4}\)），则
+\[
+\Re(\zeta)=\Re\bigl((a+\mathrm{i}b)(\cos x+\mathrm{i}\sin x)\bigr)=a\cos x-b\sin x
+=-\frac14\cos x+\frac{\sqrt{15}}{4}\sin x.
+\]
+从而
+\[
+4\Re(\zeta)+1=1-\cos x+\sqrt{15}\sin x.
+\]
+\par
+\textbf{若 \(x\ge 0\)}，则
+\[
+\rho(\zeta)=1-\cos x+\sqrt{15}\sin x,
+\]
+并有
+\[
+\bigl|\rho(\zeta)-\sqrt{15}\,x\bigr|
+\le |1-\cos x|+\sqrt{15}\,|\sin x-x|
+\le \frac{x^2}{2}+\sqrt{15}\cdot\frac{x^3}{6}
+\le 2x^2,
+\]
+其中用到标准余项界 \(|1-\cos x|\le x^2/2\)、\(|\sin x-x|\le x^3/6\) 以及 \(x\le 1/10\)。
+\par
+\textbf{若 \(x<0\)}，令 \(u:=-x>0\)。此时
+\[
+4\Re(\zeta)+1=1-\cos u-\sqrt{15}\sin u<0\qquad(0<u\le\tfrac{1}{10}),
+\]
+故 \(\rho(\zeta)=-(1-\cos u-\sqrt{15}\sin u)=\sqrt{15}\sin u-(1-\cos u)\)。
+于是
+\[
+\bigl|\rho(\zeta)-\sqrt{15}\,u\bigr|
+\le |1-\cos u|+\sqrt{15}\,|\sin u-u|
+\le \frac{u^2}{2}+\sqrt{15}\cdot\frac{u^3}{6}
+\le 2u^2.
+\]
+合并两种情形并用 \(u=|x|\) 得结论。证毕。
+\end{proof}
 
 \begin{remark}[CM 相位锁定诱导的“二阶振子”湮灭子：\texorpdfstring{$2T^2+T+2$}{2T^2+T+2}（可实施的三步消振接口）]\label{rem:pom-cm-annihilator}
 沿用上文的 \(\mu_q\) 与 \(r_{q-2}\)，并置归一化复根
@@ -176,7 +332,124 @@ T:=r_{q-2}^{-1}E.
 \bigl|\mathcal L_{\mathrm{CM}}(T)\,S_q\bigr|
 \)
 在消振前后的衰减率来直接审计（不依赖额外的 DP 数据）。
+\par
+进一步，令 \(\mu\ne 0\) 并写 \(\mu=|\mu|\,\zeta\)（\(\zeta\in\mathbb{S}^1\)），并定义归一化实振子
+\[
+u(m):=\frac{\mu^{m}}{|\mu|^{m}}+\frac{\overline{\mu}^{m}}{|\mu|^{m}}
+=\zeta^{m}+\zeta^{-m}\in\mathbb{R}.
+\]
+则对所有 \(m\ge 0\) 有严格递推
+\[
+u(m+2)-(\zeta+\zeta^{-1})u(m+1)+u(m)=0.
+\]
+因此
+\[
+2u(m+2)+u(m+1)+2u(m)=\bigl(2(\zeta+\zeta^{-1})+1\bigr)\,u(m+1),
+\]
+从而得到逐点恒等式
+\[
+\bigl|2u(m+2)+u(m+1)+2u(m)\bigr|
+=\rho(\zeta)\,|u(m+1)|\qquad(\forall m\ge 0),
+\]
+其中 \(\rho(\zeta)\) 如 \eqref{eq:pom-phase-lock-residual-trace-equivalence}。
+在锁定迹条件 \(\zeta+\zeta^{-1}=-\tfrac12\)（等价于 \(\rho(\zeta)=0\)）下，上式退化为固定小系数湮灭子
+\(
+2u(m+2)+u(m+1)+2u(m)\equiv 0
+\)。
+因此，对共振窗数据，若先用二周期消去器压低由负实慢模态 \((\lambda_q^-)^m\) 触发的交替项，再对剩余振荡残差按 \(|\mu_q|^m\) 归一化，则上述“二阶综合征”可直接在时域检验是否近零，从而把相位锁定转写为无需复求根的可审计接口；其偏离量由 \(\rho_q=\rho(\zeta_q)\) 精确量化。
 \end{remark}
+
+\begin{proposition}[共振锁定窗的二次 CM 刚性：\texorpdfstring{$\QQ(\sqrt{-15})$}{Q(sqrt(-15))} 的内禀出现]\label{prop:pom-cm-rigidity-qsqrtm15}
+设 \(\zeta\in\mathbb{S}^1\) 满足相位锁定残差 \(\rho(\zeta)=|2\zeta^2+\zeta+2|=0\)（等价地：\(\zeta\in\{z_\ast,\overline{z_\ast}\}\)）。
+令 \(f_\nu(m):=\nu^m\)，并取与注 \ref{rem:pom-cm-annihilator} 相同的归一化移位算子 \(T=r_{q-2}^{-1}E\)。
+则二维子空间
+\[
+V_\zeta:=\mathrm{span}_{\QQ}\{f_\zeta,\ f_{\overline{\zeta}}\}
+\]
+在 \(T\) 下不变，且其上由 \(T\) 生成的交换 \(\QQ\)-代数同构于二次域
+\[
+\QQ[T]\big|_{V_\zeta}\ \cong\ \QQ(\zeta)\ \cong\ \QQ(\sqrt{-15}).
+\]
+更具体地，整数子环 \(\ZZ[\zeta]\subset \QQ(\sqrt{-15})\) 在该二维子模态上给出一个内禀的交换子代数作用；若写 \(\zeta=e^{\mathrm{i}\theta^\ast}\)，则
+\[
+\cos\theta^\ast=\Re(\zeta)=-\frac14.
+\]
+\end{proposition}
+\begin{proof}
+由于 \(Tf_\nu=\nu f_\nu\)，子空间 \(V_\zeta\) 在 \(T\) 下不变，且在基 \(\{f_\zeta,f_{\overline{\zeta}}\}\) 上 \(T\) 表为 \(\mathrm{diag}(\zeta,\overline{\zeta})\)。
+当 \(\rho(\zeta)=0\) 时，\(\zeta\) 满足不可约二次多项式 \(2z^2+z+2=0\)，其判别式为 \(-15\)，故 \(\QQ(\zeta)\cong \QQ(\sqrt{-15})\)。
+因此 \(\QQ[T]\big|_{V_\zeta}\) 与 \(\QQ(\zeta)\) 同构，并诱导出整数子环 \(\ZZ[\zeta]\) 的交换作用。
+最后由 \(\zeta+\zeta^{-1}=-\tfrac12\)（即 \eqref{eq:pom-phase-lock-residual-trace-equivalence} 在 \(\rho(\zeta)=0\) 时的形式）得
+\(
+2\cos\theta^\ast=\zeta+\zeta^{-1}=-\tfrac12
+\)，
+从而 \(\cos\theta^\ast=-\tfrac14\)。证毕。
+\end{proof}
+
+\begin{remark}[近 CM 的稳定扰动模型（解释性语义；不作为推理前提）]\label{rem:pom-near-cm-stable-perturbation}
+在一般情形 \(\rho_q=\rho(\zeta_q)>0\) 但为小量时，\(\zeta_q\) 是二次方程 \(2z^2+z+2=0\) 的一对共轭根 \(\{z_\ast,\overline{z_\ast}\}\) 的受控扰动：相位锁定残差 \(\rho_q\) 可视为“偏离 CM 正规形”的一维强度坐标（\eqref{eq:pom-phase-lock-residual-trace-equivalence} 给出其迹偏差版本）。
+在该口径下，共振窗的二维复共轭子模态可被解释为在算子范数意义下“近 \(\QQ(\sqrt{-15})\)-线性”的稳定现象；而其 \(q\)-依赖主要通过实伸缩（\(|\mu_q|/r_{q-2}\uparrow 1\) 的贴边宽度）与更高阶偏移进入（参见注 \ref{rem:pom-resonance-poisson-lorentz-prelimit} 的两步重标度与宽度读出）。
+本注仅用于对齐传统的 CM/近共乘语义，不作为任何证明的前提。
+\end{remark}
+
+\begin{remark}[两步重标度点的 Poisson 峰 \texorpdfstring{$\Rightarrow$}{=>} Lorentz 极限：共振窗影子谱包的 Breit--Wigner 离散预极限]\label{rem:pom-resonance-poisson-lorentz-prelimit}
+在共振窗 \(q=9,\dots,17\) 中，定义两步重标度模量与相位
+\[
+\eta_q:=\frac{|\mu_q|}{r_{q-2}}\in(0,1),\qquad \theta_q:=\arg(\mu_q),
+\qquad a_q:=\eta_q e^{i\theta_q}=\frac{\mu_q}{r_{q-2}}\in\mathbb{D},
+\]
+其中 \(\eta_q\uparrow 1\) 的数值证书由表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17} 给出。
+考虑对应的有限 Blaschke 因子
+\[
+B_q(z):=\frac{z-a_q}{1-\overline{a_q}z}.
+\]
+则其边界相位导数满足标准 Poisson 核恒等式
+\[
+\frac{d}{dt}\arg B_q(e^{it})
+=\frac{1-\eta_q^{2}}{1-2\eta_q\cos(t-\theta_q)+\eta_q^{2}}
+ \;=:\; P_{\eta_q}(t-\theta_q).
+\]
+令 \(\varepsilon_q:=1-\eta_q\downarrow 0\)。则在缩放窗口 \(t=\theta_q+\varepsilon_q u\) 上有严格极限
+\[
+\lim_{\varepsilon_q\downarrow 0}\ \varepsilon_q\,P_{1-\varepsilon_q}(\varepsilon_q u)=\frac{2}{1+u^{2}}
+\qquad(\forall u\in\mathbb{R}),
+\]
+该极限由代入 \(\eta_q=1-\varepsilon_q\) 并对小角 \(\varepsilon_q u\) 作二阶展开得到：分子 \(1-\eta_q^2=2\varepsilon_q+O(\varepsilon_q^2)\)，分母 \(1-2\eta_q\cos(\varepsilon_q u)+\eta_q^2=\varepsilon_q^2(1+u^2)+O(\varepsilon_q^3)\)。
+右端为标准 Lorentz（Cauchy）核；因此共振窗的两步影子谱包在严格分析意义上给出 Lorentz/Breit--Wigner 轮廓的离散预极限，其“共振宽度”自然等同于 \(\varepsilon_q=1-|\mu_q|/r_{q-2}\)，峰位为 \(\theta_q\)。
+\par
+进一步，Poisson 核满足精确归一化
+\(
+\int_{-\pi}^{\pi}P_{\eta}(t)\,dt=2\pi
+\)
+（任意 \(\eta\in(0,1)\)），从而当 \(\eta_q\uparrow 1\) 时峰形虽尖化但总强度（面积）保持不变；并且峰高满足显式公式
+\[
+P_{\eta_q}(0)=\frac{1+\eta_q}{1-\eta_q}=\frac{2}{\varepsilon_q}+O(1).
+\]
+于是得到“高—宽互易”：峰高量级为 \(\varepsilon_q^{-1}\)，峰宽量级为 \(\varepsilon_q\)，而面积恒为常数 \(2\pi\)；该归一化为把谱锁定的集聚与 Lorentz 峰在同一标尺下比较提供了自然尺度。
+\par
+此外，在同一两步重标度口径下，复相位峰位的逐阶漂移可被宽度参数线性支配。
+令
+\(
+\varepsilon_q:=1-\eta_q
+\)
+并定义
+\(
+\Delta\theta_q:=|\theta_{q+1}-\theta_q|
+\)
+（\(q=9,\dots,16\)；取 \(\theta_q=\arg(\mu_q)\) 的主值）。
+由表 \ref{tab:fold_collision_shadow_spectral_packet_q9_17} 的审计读数直接计算得到
+\[
+\max_{9\le q\le 16}\frac{\Delta\theta_q}{\varepsilon_q}
+\;=\;\frac{0.0029}{0.0204}\;<\;0.143,
+\]
+从而在全窗 \(q=9,\dots,16\) 上成立一致不等式
+\[
+\Delta\theta_q\ \le\ 0.143\,\varepsilon_q.
+\]
+因此在自然缩放坐标 \(t=\theta_q+\varepsilon_q u\) 下，峰位随 \(q\) 的迁移为准同形的缓慢平移而非离散跳跃。
+\end{remark}
+
+\input{sections/body/pom/parts/resonance/subsubsec__pom-resonance-cayley-breitwigner}
 
 \begin{remark}[整数缺口与连续指纹的阈值耦合：\texorpdfstring{$\Delta(q)$}{Delta(q)} vs \texorpdfstring{$c_q$}{cq}（可复算/可证伪预测）]\label{rem:pom-delta-cq-threshold}
 定义一个完全内部的连续谱指纹
@@ -272,10 +545,13 @@ z_\ast:=\frac{-1-\mathrm{i}\sqrt{15}}{4},
 \paragraph{双相变相图：枢轴点 \(q=12\) 与平台跃迁 \(q=15\)}
 综合上述三条结构结论，可得到由三指纹联合刻画的共振相图：
 \begin{itemize}
-\item 枢轴点 \(q=12\)：同时满足 \(\Delta(12)=0\)、\(|\lambda_{12}^-|/r_{10}>1\)（通道越阈），且 \(\rho_{12}\) 取窗口最小；
+\item 枢轴点 \(q=12\)：同时满足 \(\Delta(12)=0\)、\(|\lambda_{12}^-|/r_{10}>1\)（通道越阈），且 \(\rho_{12}\) 取窗口最小；并且在模 \(11\) 的嵌入切片中出现 \(\chi_{A_2}\mid P_{12}\ (\mathrm{mod}\ 11)\) 的嵌入旗标（命题 \ref{prop:pom-charpoly-modp-a2-embedding}；表 \ref{tab:fold_collision_charpoly_mod11_fingerprint_q12_15}，同表 \(q=13,15\) 的嵌入列为 \(0\)）。
 \item 平台跃迁 \(q=15\)：首次进入 \(\Delta(q)=4\) 平台，并与 \(c_q\) 的跨越（\(c_{14}<c_\star<c_{15}\)）同步。
 \end{itemize}
 两点分别标记通道重排/相位最强锁定的枢轴机制与整数缺口阶跃上升的平台机制，并共同组织了三模态包 \((\lambda_q^-,\mu_q,\overline{\mu_q})\) 在窗口内的可观测结构。
+\par
+上述枢轴点的同步性来自四条互不依赖的审计管线：两步重标度的通道切换、代数相位残差的全窗最小、最小递推阶数导出的零缺口孤点，以及有限域分解给出的模 \(11\) 嵌入指纹。
+其在单一 \(q\) 上的并置提供了共振窗内唯一的“交汇点”刻画：在当前已核验窗口中，\(q=12\) 是这些审计不变量的共同落点。
 \par
 综上，共振窗口内的外侧谱现象可被压缩为单调乘积律、阈值区间律、二次代数相位约束与双相变相图四类可检验结构，并可由上述表格与注记的审计输出逐项复核。
 \end{remark}

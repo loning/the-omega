@@ -339,6 +339,43 @@ v_p(Nf_i)=v_p(N)+v_p(a_i)-v_p(b_i)
 这给出一个最小例子：确定性优先级选择可视为温度化序投影 \(\mathrm{PROJ}_u\) 的零温硬化（定义 \ref{def:pom-proj-temp}，注 \ref{rem:pom-order-as-zero-temp}）。
 \end{remark}
 
+\begin{proposition}[序投影的热形变：软 first-fit 的解析语义族与随机支配]\label{prop:pom-fractran-soft-firstfit-analytic-dominance}
+对固定 \(r\) 且 \(I(r)\neq\varnothing\)，令
+\[
+Z_r(u):=\sum_{j\in I(r)}u^{j}\qquad(u\in(0,1])
+\]
+并将注 \ref{rem:pom-fractran-zero-temp} 的分布正规化为
+\[
+\Pr_u(i\mid r):=\frac{u^{i}}{Z_r(u)}\,\ind[i\in I(r)].
+\]
+则：
+\begin{enumerate}
+  \item \textbf{（解析性）}映射 \(u\mapsto (\Pr_u(i\mid r))_{i=1}^{k}\) 在 \(u\in(0,1]\) 上为实解析的概率单纯形曲线；
+  \item \textbf{（零温极限）}\(\Pr_u(\cdot\mid r)\) 当 \(u\downarrow 0\) 时收敛到 \(\delta_{i^\ast(r)}\)（恢复硬 first-fit）；
+  \item \textbf{（随机支配随 \(u\downarrow 0\) 单调强化）}若 \(0<u_1<u_2\le 1\)，则对任意阈值 \(t\in\{1,\dots,k\}\) 有
+  \[
+  \sum_{i\le t}\Pr_{u_1}(i\mid r)\ \ge\ \sum_{i\le t}\Pr_{u_2}(i\mid r),
+  \]
+  即质量随 \(u\downarrow 0\) 单调向小索引集中（按索引序的一阶随机支配）。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由于 \(I(r)\subseteq\{1,\dots,k\}\) 为有限集，\(Z_r(u)\) 为非零多项式且在 \(u\in(0,1]\) 上严格为正，故每个 \(\Pr_u(i\mid r)\) 为多项式比值，从而对 \(u\in(0,1]\) 实解析，得到第 (1) 条。
+令 \(i_\ast:=\min I(r)=i^\ast(r)\)。将 \(Z_r(u)\) 写成 \(u^{i_\ast}\bigl(1+\sum_{j\in I(r)\setminus\{i_\ast\}}u^{j-i_\ast}\bigr)\) 即得当 \(u\downarrow 0\) 时 \(\Pr_u(i_\ast\mid r)\to 1\) 且其余坐标趋于 \(0\)，得到第 (2) 条。
+\par
+对第 (3) 条，注意到对任意 \(u\) 与 \(i\in I(r)\) 有 \(\Pr_u(i\mid r)\propto u^{i}\)，故当 \(0<u_1<u_2\) 时
+\[
+\frac{\Pr_{u_1}(i\mid r)}{\Pr_{u_2}(i\mid r)}
+=
+\frac{Z_r(u_2)}{Z_r(u_1)}\left(\frac{u_1}{u_2}\right)^{i}
+\]
+随 \(i\) 单调递减；因此该族满足单调似然比（MLR）序，从而按标准推论得到索引序的一阶随机支配：
+\(
+\Pr_{u_1}(i\ge t\mid r)\le \Pr_{u_2}(i\ge t\mid r)
+\),
+等价于所示的累积分布不等式。证毕。
+\end{proof}
+
 \begin{remark}[控制流外置：状态机即序投影的选择]\label{rem:pom-fractran-controlflow}
 在 FRACTRAN 中，“状态机”不必额外理解为图论对象：可行性谓词 \(r\ge \beta_i\) 给出一族分段线性可达区域，而 first-fit 规则正是对该分解上的\emph{选择投影}（把 \(r\) 映射到索引 \(i^\ast(r)\) 并据此选取更新）。
 FRACTRAN 还可通过引入若干专用素数轴把程序计数器与有限控制态外置到 \(\mathcal{P}\) 的坐标账本中（以这些素数的指数承载当前指令段/分支状态），从而把控制流也编译为素数寄存器的可寻址坐标。
@@ -351,6 +388,21 @@ FRACTRAN 还可通过引入若干专用素数轴把程序计数器与有限控�
 同时，可行性测试仅触及分母 \(b_i\) 的素数支撑 \(|\mathrm{supp}(b_i)|\) 个坐标（逐素数比较），从而“每步要读多少寄存器轴”与“要扫多深”在结构上正交。
 若要求把输出显式写回外表 \(X_\infty\)，则需额外一次 \texttt{PROJ\_NORM}，对应 \(k_Z\) 增加 \(1\)（定义 \ref{def:pom-cost}）。
 \end{remark}
+
+\begin{proposition}[图灵完备性的内禀串行性：first-fit 优先级选择深度的不可消去下界]\label{prop:pom-fractran-firstfit-serial-depth}
+固定一条长度为 \(k\) 的 FRACTRAN 程序 \(f_1,\dots,f_k\)（定义 \ref{def:pom-fractran}）。
+在仅允许通过序门 \(\mathrm{PROJ\_ORDER}(\text{first-fit})\) 实现优先级选择的 PW/ISA 语义模型中，任何与硬 first-fit 语义一致的一步实现，其最坏序投影聚合深度满足
+\[
+T_{\le}\ =\ \Omega(k).
+\]
+并且该下界不因把控制流外置到 \(\mathcal{P}\) 纤维或施加规范化重写而改变：不可并行开销仍被锁定在优先级选择深度上。
+\end{proposition}
+\begin{proof}
+取状态 \(r\) 使得可行集合 \(I(r)=\{k\}\)（例如使 \(r\ge \beta_k\) 且对所有 \(i<k\) 有 \(r\not\ge \beta_i\)；在有限指令表下总可通过逐素数坐标选取实现）。
+则硬 first-fit 必须输出 \(i^\ast(r)=k\)。
+在仅允许通过优先级选择序门确定 \(i^\ast(r)\) 的模型中，要排除所有 \(i<k\) 的可行性并确证 \(k\) 为最小可行索引，最坏情形下必须经历对 \(k\) 条指令的优先级扫描；因此 \(T_{\le}\) 至少线性受 \(k\) 控制。
+控制流外置与规范化重写只改变实现的纤维承载与常数层组织（注 \ref{rem:pom-fractran-controlflow}），而不改变“输出必须等于 \(\min I(r)\)”这一选择语义本身；故该下界不可消去。证毕。
+\end{proof}
 
 \paragraph{Prime-core 微码原语（FRACTRAN 兼容层）}
 在本文 ISA 抽象层中，可把 FRACTRAN 的核心一步封装为三个 prime-core 原语（它们不引入新数学结构，只是把 \(\mathcal{P}\)+\(P_{\le}\) 的组合写成可审计接口）：
