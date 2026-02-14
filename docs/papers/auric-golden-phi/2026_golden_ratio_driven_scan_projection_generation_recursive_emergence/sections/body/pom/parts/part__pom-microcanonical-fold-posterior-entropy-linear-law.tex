@@ -66,6 +66,42 @@ R/(N-k)\to w
 由 \(R/(N-k)\to w\) 与 \(H(\cdot)\) 的连续性，得到极限 \((1-\beta)H(w)\)。证毕。
 \end{proof}
 
+\begin{theorem}[对数后验模空间的高斯涨落：比例查询下的中心极限定理]\label{thm:pom-microcanonical-posterior-moduli-clt}
+在定理 \ref{thm:pom-microcanonical-posterior-entropy-linear-law} 的设定下，进一步假设字母表大小 \(n=\card{X_m}\) 固定，且 \(w\) 固定并满足 \(w(x)\in(0,1)\)。
+令
+\[
+V(w):=\Var_{X\sim w}\bigl(\log w(X)\bigr)
+=\sum_{x\in X_m}w(x)\bigl(\log w(x)\bigr)^2-\Bigl(\sum_{x\in X_m}w(x)\log w(x)\Bigr)^2.
+\]
+则当 \(N\to\infty\) 时，
+\[
+\boxed{\;
+\frac{\log \mathcal{M}_k(T_{1:k})-(1-\beta)NH(w)}{\sqrt{\beta(1-\beta)N}}
+\ \xrightarrow{d}\ \mathcal N\bigl(0,V(w)\bigr)\;}
+\]
+其中 \(k=\lfloor\beta N\rfloor\) 且 \(H(w)=-\sum_x w(x)\log w(x)\)。
+\end{theorem}
+\begin{proof}
+沿用定理 \ref{thm:pom-microcanonical-posterior-entropy-linear-law} 的记号，令 \(R=d-C_k\) 且 \(\widehat w:=R/(N-k)\)。
+当 \(n\) 固定时 Stirling 展开给出一致误差界
+\[
+\log\mathcal{M}_k=(N-k)H(\widehat w)+O(1).
+\]
+无放回抽样下的多元超几何中心极限定理给出
+\[
+\sqrt N\,(\widehat w-w)\ \xrightarrow{d}\ \mathcal N\!\left(0,\frac{\beta}{1-\beta}\bigl(\mathrm{diag}(w)-ww^{\mathsf T}\bigr)\right).
+\]
+对熵函数 \(H\) 作 delta 方法：在约束 \(\sum_x \widehat w(x)=1\) 下，
+\[
+H(\widehat w)-H(w)=-\sum_{x\in X_m}\bigl(\widehat w(x)-w(x)\bigr)\log w(x)+o_p(N^{-1/2}),
+\]
+故
+\[
+\sqrt N\bigl(H(\widehat w)-H(w)\bigr)\ \xrightarrow{d}\ \mathcal N\!\left(0,\frac{\beta}{1-\beta}V(w)\right).
+\]
+再乘以 \(N-k=(1-\beta)N\) 并吸收 \(O(1)\) 余项（相对 \(\sqrt N\) 为 \(o(\sqrt N)\)），即得所示结论。证毕。
+\end{proof}
+
 \begin{corollary}[典型后验精确恢复成功率的双指数衰减]\label{cor:pom-microcanonical-posterior-map-success-double-exponential}
 在定理 \ref{thm:pom-microcanonical-posterior-entropy-linear-law} 的设定下，
 由定理 \ref{thm:pom-microcanonical-count-sufficient-statistic-posterior-uniform} 的后验均匀性，
