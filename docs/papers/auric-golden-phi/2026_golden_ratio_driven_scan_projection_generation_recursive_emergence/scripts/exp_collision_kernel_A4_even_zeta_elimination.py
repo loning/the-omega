@@ -24,6 +24,15 @@ Moreover, eliminating r between the Perron curve P_t(r)=det(rI-A_4(t)) and the e
 spectrum embedding constraint r^5 E_t(1/r)=0 yields a resultant whose nontrivial
 degree-8 factor is exactly the Newman/RH threshold certificate P_4(t).
 
+In addition, the 'completed' even-spectrum polynomial
+
+  Xi_t(u) := u^5 E_t(1/u) + 4 E_t(u)
+
+admits a full factorization into a linear factor and two quadratic Gamma-factors.
+This yields a closed reconstruction formula expressing E_t(u) purely in terms of
+those Gamma-factors, and shows that the curve constraint r^5 E_t(1/r)=0 is (up to
+a constant 15) equivalent to a shorter, purely Gamma-defined quintic.
+
 Outputs:
   - artifacts/export/collision_kernel_A4_even_zeta_elimination.json
   - sections/generated/eq_collision_kernel_A4_even_zeta_quintic.tex
@@ -71,6 +80,18 @@ class Payload:
     E_t_u: str
     disc_u_E: str
     disc_u_E_factor: str
+    # completed polynomial and Gamma factorization
+    Xi_t_u: str
+    Xi_t_u_factor: str
+    Q_t_u: str
+    E_from_Q: str
+    # gamma curve reduction
+    G_t_r: str
+    # sanity checks
+    check_E_ok: bool
+    check_Xi_ok: bool
+    check_E_from_Q_ok: bool
+    check_G_ok: bool
     # resultant certificate
     resultant_r: str
     resultant_r_factor: str
@@ -159,11 +180,29 @@ def main() -> None:
     disc_u = sp.discriminant(sp.Poly(E, u), u)
     disc_u_fact = sp.factor(disc_u)
 
+    # Completed polynomial and Gamma-factorization.
+    Xi = sp.expand(u**5 * sp.together(E_expected.subs(u, 1 / u)) + 4 * E_expected)
+    Xi_fact = sp.factor(Xi)
+    Q_u = sp.expand((t * u + 3 * u**2 - 2) * (t * u + 4 * t - 5 * u**2 + 4 * u + 6))
+    Xi_expected = sp.expand(u * Q_u)
+    check_Xi = sp.expand(Xi - Xi_expected)
+
+    # Reconstruction of E_t(u) from Q_t(u).
+    E_from_Q = sp.together((4 * u * Q_u - u**4 * sp.together(Q_u.subs(u, 1 / u))) / 15)
+    E_from_Q = sp.expand(E_from_Q)
+    check_E_from_Q = sp.expand(E_from_Q - E_expected)
+
     # Perron curve and even-spectrum embedding curve.
     P = sp.expand(r**5 - 2 * r**4 - t * r**3 - 2 * r + 2)
     Q = sp.expand(r**5 * sp.together(E_expected.subs(u, 1 / r)))
     # Ensure Q is polynomial in r.
     Q = sp.expand(sp.together(Q))
+
+    # Short Gamma-based quintic (up to the constant 15): G_t(r) = 15 r^5 E_t(1/r).
+    Q_r = sp.expand(Q_u.subs(u, r))
+    Q_1r = sp.expand(sp.together(Q_u.subs(u, 1 / r)))
+    G = sp.expand(4 * r**4 * Q_1r - r * Q_r)
+    check_G = sp.expand(G - 15 * Q)
 
     Res = sp.resultant(P, Q, r)
     Res_fact = sp.factor(Res)
@@ -172,7 +211,11 @@ def main() -> None:
     expected = sp.expand(-8 * (t + 1) ** 2 * P4.as_expr())
     check_Res = sp.expand(Res - expected)
 
-    checks_ok = (check_E == 0) and (check_Res == 0)
+    check_E_ok = (check_E == 0)
+    check_Xi_ok = (check_Xi == 0)
+    check_E_from_Q_ok = (check_E_from_Q == 0)
+    check_G_ok = (check_G == 0)
+    checks_ok = check_E_ok and check_Xi_ok and check_E_from_Q_ok and check_G_ok and (check_Res == 0)
 
     _write_tex_even_quintic(Path(args.tex_even_out), E=E_expected, disc_u=disc_u_fact)
     _write_tex_resultant(Path(args.tex_resultant_out), P4=P4, Res=Res, Q=Q)
@@ -181,6 +224,15 @@ def main() -> None:
         E_t_u=str(E_expected),
         disc_u_E=str(disc_u),
         disc_u_E_factor=str(disc_u_fact),
+        Xi_t_u=str(Xi_expected),
+        Xi_t_u_factor=str(Xi_fact),
+        Q_t_u=str(Q_u),
+        E_from_Q=str(E_from_Q),
+        G_t_r=str(G),
+        check_E_ok=bool(check_E_ok),
+        check_Xi_ok=bool(check_Xi_ok),
+        check_E_from_Q_ok=bool(check_E_from_Q_ok),
+        check_G_ok=bool(check_G_ok),
         resultant_r=str(Res),
         resultant_r_factor=str(Res_fact),
         resultant_expected=str(expected),

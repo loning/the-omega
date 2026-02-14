@@ -1,3 +1,6 @@
+% (User input window)
+% 2026-02-14 13:41:27（Asia/Singapore）
+
 \begin{proposition}[四阶核族的偶谱五次闭式与偶谱单纯性]\label{prop:pom-a4t-even-zeta-quintic}
 沿注 \ref{rem:pom-collision-rh-break-a4-threshold}，令 \(A_4(t)\) 为四阶碰撞核族，并定义
 \[
@@ -20,6 +23,56 @@ D_t(z)\,D_t(-z)=\det(I-z^2A_4(t)^2)=:E_t(u)\qquad(u=z^2),
 \end{proof}
 
 \input{sections/generated/eq_collision_kernel_A4_even_zeta_quintic}
+
+\begin{proposition}[完成多项式的扭曲互反与 \texorpdfstring{$\Gamma$}{Gamma}-因子分裂]\label{prop:pom-a4t-even-spectrum-completion-gamma-factorization}
+沿命题 \ref{prop:pom-a4t-even-zeta-quintic}，令
+\[
+E_t(u):=\det(I-uA_4(t)^2)\in\ZZ[t,u],
+\qquad
+\Xi_t(u):=u^5E_t(1/u)+4E_t(u).
+\]
+则存在严格恒等式
+\[
+\boxed{\;
+\Xi_t(u)
+=
+u\,(tu+3u^2-2)\,(tu+4t-5u^2+4u+6)\;}
+\]
+从而 \(\Xi_t(u)\) 在 \(\ZZ[t,u]\) 中完全分裂为一个线性因子与两条二次 \(\Gamma\)-因子。
+\end{proposition}
+\begin{proof}
+由式 \eqref{eq:collision_kernel_A4_even_zeta_quintic} 中的闭式，
+\(E_t(u)=1-(2t+4)u+(t^2-4)u^2+(4t+8)u^3+4u^4-4u^5\)。
+将其代入 \(\Xi_t(u)=u^5E_t(1/u)+4E_t(u)\) 并展开因式分解即可得到所示恒等式。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\Gamma$}{Gamma}-因子反演：由两条二次因子唯一重建偶谱五次多项式]\label{prop:pom-a4t-even-spectrum-gamma-inversion}
+在命题 \ref{prop:pom-a4t-even-spectrum-completion-gamma-factorization} 的记号下，令
+\[
+Q_t(u):=(tu+3u^2-2)(tu+4t-5u^2+4u+6).
+\]
+则偶谱多项式满足精确重建公式
+\[
+\boxed{\;
+E_t(u)=\frac{4u\,Q_t(u)-u^4\,Q_t(1/u)}{15}\ \in\ \ZZ[t,u]\; } .
+\]
+从而分子在 \(\ZZ[t,u]\) 中被 \(15\) 整除为结构性事实。
+\end{proposition}
+\begin{proof}
+命题 \ref{prop:pom-a4t-even-spectrum-completion-gamma-factorization} 给出
+\[
+u^5E_t(1/u)+4E_t(u)=uQ_t(u).
+\]
+将该恒等式在 \(u\mapsto 1/u\) 下重写并乘以 \(u^5\)，得到
+\(
+E_t(u)+4u^5E_t(1/u)=u^4Q_t(1/u)
+\)。
+将两式视为关于未知量 \((E_t(u),u^5E_t(1/u))\) 的线性方程组消元，得到
+\(
+15E_t(u)=4uQ_t(u)-u^4Q_t(1/u)
+\)。
+由于左端为整系数多项式，右端必在 \(\ZZ[t,u]\) 中被 \(15\) 整除，且商即为 \(E_t(u)\)。证毕。
+\end{proof}
 
 \begin{proposition}[Newman 八次证书的曲线交点刻画：Perron 曲线与偶谱嵌入曲线的消元结果式]\label{prop:pom-a4t-newman-resultant-curve-intersection}
 沿注 \ref{rem:pom-collision-rh-break-a4-threshold}，令四阶核族特征多项式为
@@ -45,4 +98,54 @@ r^5E_t(1/r)=0
 \end{proof}
 
 \input{sections/generated/eq_collision_kernel_A4_newman_resultant_curve_intersection}
+
+\begin{proposition}[Newman 八次阈值的更短消元刻画：两条五次曲线的交点证书]\label{prop:pom-a4t-newman-short-elimination}
+沿命题 \ref{prop:pom-a4t-even-spectrum-gamma-inversion}，定义
+\[
+G_t(r):=4r^4Q_t(1/r)-rQ_t(r).
+\]
+则恒有严格恒等式
+\[
+\boxed{\;G_t(r)=15\,r^5E_t(1/r)\;}
+\]
+从而关于 \(r\) 的结式满足
+\[
+\boxed{\;
+\mathrm{Res}_r\!\bigl(P_t(r),\,G_t(r)\bigr)
+=-2^3\cdot 3^5\cdot 5^5\cdot (t+1)^2\,P_4(t)\;}
+\]
+其中 \(P_4(t)\) 为式 \eqref{eq:collision_kernel_A4_edge_weight_threshold} 中的八次整系数阈值证书。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:pom-a4t-even-spectrum-gamma-inversion} 取 \(u=1/r\) 得
+\[
+E_t(1/r)=\frac{4r^3Q_t(1/r)-Q_t(r)}{15r^4},
+\]
+两边乘以 \(15r^5\) 即得 \(G_t(r)=15r^5E_t(1/r)\)。
+\par
+结式的比例因子由结果式的齐次性给出：若 \(f\) 为次数 \(m\) 多项式，则 \(\mathrm{Res}(f,cg)=c^{m}\mathrm{Res}(f,g)\)。
+这里 \(P_t(r)\) 为关于 \(r\) 的五次多项式，故
+\[
+\mathrm{Res}_r(P_t,\,G_t)=15^5\,\mathrm{Res}_r(P_t,\,r^5E_t(1/r)).
+\]
+再代入式 \eqref{eq:collision_kernel_A4_newman_resultant_curve_intersection} 的恒等式并用 \(15^5=3^5\cdot 5^5\) 化简即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[阈值的互反锁定律：\texorpdfstring{$Q_t$}{Qt} 在临界点处的刚性比例]\label{prop:pom-a4t-newman-reciprocal-locking}
+令 \(t_\star>0\) 为 \(P_4(t)\) 的唯一正实根（式 \eqref{eq:collision_kernel_A4_edge_weight_threshold}）。
+则存在 \(r_\star>1\) 使得同时满足 \(P_{t_\star}(r_\star)=0\) 与 \(G_{t_\star}(r_\star)=0\)；
+后一条件等价于互反锁定关系
+\[
+\boxed{\;
+Q_{t_\star}(r_\star)=4r_\star^{\,3}Q_{t_\star}(1/r_\star)\;}
+\]
+从而 Newman 临界点由一条“正向评估/反向评估”之间的严格三次幂比例平衡刻画。
+\end{proposition}
+\begin{proof}
+令 \(r_\star=\rho(A_4(t_\star))>1\) 为 Perron 分支，故 \(P_{t_\star}(r_\star)=0\)。
+由命题 \ref{prop:pom-a4t-newman-resultant-curve-intersection}，在该临界参数处 Perron 曲线与偶谱嵌入曲线相交，
+从而 \(E_{t_\star}(1/r_\star)=0\)。
+再由命题 \ref{prop:pom-a4t-newman-short-elimination} 的恒等式 \(G_t(r)=15r^5E_t(1/r)\)，得到 \(G_{t_\star}(r_\star)=0\)。
+最后将 \(G_{t_\star}(r_\star)=0\) 展开即为所示互反锁定关系。证毕。
+\end{proof}
 

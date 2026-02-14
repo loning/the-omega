@@ -142,6 +142,97 @@ r_q^{\mathrm{disj}}=\varphi^{\,q},\qquad \Lambda_q^{\mathrm{disj}}=\varphi^{\,q-
 当 \(q=4\) 时对该 \(5\times 5\) 矩阵直接计算特征多项式并因式分解即可得到所示闭式。证毕。
 \end{proof}
 
+% (User input window)
+% 2026-02-14 13:41:27（Asia/Singapore）
+
+\paragraph{Lucas 平方谱分解与闭式迹公式：\texorpdfstring{$B_q$}{Bq} 的完全可计算周期动力学}
+令
+\(
+M=\bigl(\begin{smallmatrix}1&1\\[2pt]1&0\end{smallmatrix}\bigr)
+\)
+并记 Lucas 数列为 \(L_0=2,L_1=1\) 且 \(L_{n+1}=L_n+L_{n-1}\)。
+
+\begin{proposition}[\texorpdfstring{$B_q=\mathrm{Sym}^q(M)$}{Bq=Sym^q(M)} 与谱闭式]\label{prop:pom-bq-is-symq-and-spectrum}
+对任意整数 \(q\ge 1\)，对称压缩核 \(B_q\) 与 \(M\) 的 \(q\)-次对称幂同构：
+\[
+\boxed{\;B_q\ \cong\ \mathrm{Sym}^q(M)\in \mathrm{GL}_{q+1}(\ZZ)\;}
+\]
+从而其全部特征值严格为
+\[
+\boxed{\;\mu_k=(-1)^k\varphi^{\,q-2k}\qquad(0\le k\le q)\;}
+\]
+且每个模态在 \(B_q\) 上的代数重数均为 \(1\)。
+\end{proposition}
+\begin{proof}
+令 \(V=\RR^2\) 并取基向量 \(e_0,e_1\)。
+用标准同构将 \(\mathrm{Sym}^q(V)\) 表示为齐次次数为 \(q\) 的二元多项式空间：形式变量 \(x,y\) 分别对应 \(e_0,e_1\)，从而 \(\{x^{q-j}y^j\}_{j=0}^{q}\) 构成一组基。
+矩阵 \(M\) 在基 \((e_0,e_1)\) 下满足 \(Me_0=e_0+e_1\)、\(Me_1=e_0\)，故其在该多项式模型中诱导代入作用
+\((x,y)\mapsto (x+y,x)\)。
+于是 \(x^{q-j}y^j\) 的像为 \((x+y)^{q-j}x^{j}\)，其在基 \(\{x^{q-i}y^i\}\) 下的展开系数恰为 \(\binom{q-j}{i}\)；
+从而 \(\mathrm{Sym}^q(M)\) 的矩阵系数与命题 \ref{prop:pom-disjointness-symmetric-compression-bq} 的闭式一致，得到 \(B_q\cong\mathrm{Sym}^q(M)\)。
+\par
+由于 \(M\) 的特征值为 \(\varphi\) 与 \(-\varphi^{-1}\)，对称幂的谱为所有乘积 \(\varphi^{q-k}(-\varphi^{-1})^{k}=(-1)^k\varphi^{q-2k}\ (0\le k\le q)\)，且次数为 \(q+1\)，故重数均为 \(1\)。证毕。
+\end{proof}
+
+\begin{theorem}[Lucas 平方谱分解：\texorpdfstring{$\det(I-uB_q^2)$}{det(I-uBq^2)} 的完全因式分解]\label{thm:pom-bq-lucas-square-spectrum-factorization}
+对任意整数 \(q\ge 1\) 有严格恒等式
+\[
+\boxed{\;
+\det(I-uB_q^2)
+=(1-u)^{\mathbf 1_{\{q\ \mathrm{even}\}}}
+\prod_{\substack{1\le d\le q\\ d\equiv q\ (\mathrm{mod}\ 2)}}
+\bigl(u^2-L_{2d}\,u+1\bigr)\; } .
+\]
+特别地，当 \(q=4\) 时
+\[
+\det(I-uB_4^2)=(1-u)(u^2-7u+1)(u^2-47u+1),
+\]
+其中 \(7=L_4\)、\(47=L_8\) 给出四阶平方谱合迹的整系数来源。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-bq-is-symq-and-spectrum}，\(B_q\) 的特征值为 \(\mu_k=(-1)^k\varphi^{q-2k}\)，故 \(B_q^2\) 的特征值为 \(\lambda_k:=\mu_k^2=\varphi^{2(q-2k)}\)。
+当 \(q\) 为偶数时存在唯一自互反模态 \(k=q/2\) 使 \(\lambda_{q/2}=1\)，贡献因子 \(1-u\)；其余特征值按互反配对 \(\lambda\leftrightarrow 1/\lambda\)。
+对任意正整数 \(d\equiv q\ (\mathrm{mod}\ 2)\)（对应 \(\lambda=\varphi^{2d}\)），有 Lucas 偶指标恒等式
+\(
+L_{2d}=\varphi^{2d}+\varphi^{-2d}
+\)；
+从而
+\[
+(1-u\varphi^{2d})(1-u\varphi^{-2d})=u^2-(\varphi^{2d}+\varphi^{-2d})u+1=u^2-L_{2d}u+1.
+\]
+把所有互反对的因子相乘即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[闭式迹公式：\texorpdfstring{$\mathrm{Tr}(B_q^n)$}{Tr(Bq^n)} 的 Lucas 展开]\label{thm:pom-bq-trace-lucas}
+对任意整数 \(q\ge 1\)、\(n\ge 1\)，成立严格闭式
+\[
+\boxed{\;
+\mathrm{Tr}(B_q^{\,n})
+=
+\sum_{k=0}^{\lfloor q/2\rfloor-\mathbf 1_{\{q\ \mathrm{even}\}}}
+(-1)^{kn}\,L_{n(q-2k)}
+\;+\;
+\mathbf 1_{\{q\ \mathrm{even}\}}\cdot (-1)^{(q/2)n}\; } .
+\]
+因此对 \(B_q\) 的 primitive 轨道数（Möbius 反演）
+\[
+p_n(B_q):=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\mathrm{Tr}\!\bigl(B_q^{\,n/d}\bigr)
+\]
+可在有限步内化为 Lucas 数的有限线性组合。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-bq-is-symq-and-spectrum}，
+\(
+\mathrm{Tr}(B_q^{\,n})=\sum_{k=0}^{q}(-1)^{kn}\varphi^{n(q-2k)}
+\)。
+对 \(k\) 与 \(q-k\) 配对，并注意 \(q-2k\equiv q\ (\mathrm{mod}\ 2)\) 使得 \((-1)^{n(q-2k)}=(-1)^{nq}\)，可得每对之和为
+\[
+(-1)^{kn}\Bigl(\varphi^{n(q-2k)}+(-1)^{n(q-2k)}\varphi^{-n(q-2k)}\Bigr)=(-1)^{kn}L_{n(q-2k)}.
+\]
+若 \(q\) 为偶数，还需加上中点模态 \(k=q/2\) 的贡献 \((-1)^{(q/2)n}\)。
+primitive 轨道数的 Lucas 表达由定义的 Möbius 反演直接代入得到。证毕。
+\end{proof}
+
 \paragraph{整数阶压力的离散凸性与二阶碰撞的协议下界}
 \begin{corollary}[离散凸性与 \texorpdfstring{$\rho(A_2)$}{rho(A2)} 的严格协议下界]\label{cor:pom-integer-pressure-discrete-convexity-strict-bound}
 记
