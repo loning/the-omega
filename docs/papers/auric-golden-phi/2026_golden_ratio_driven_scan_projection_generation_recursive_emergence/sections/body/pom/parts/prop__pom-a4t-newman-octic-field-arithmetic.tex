@@ -1,0 +1,135 @@
+% (User input window)
+% 2026-02-15 00:29:25（Asia/Singapore）
+
+\paragraph{Newman 临界八次证书的局部算术指纹}
+注 \ref{rem:pom-collision-rh-break-a4-threshold} 的负实通道在临界点导出一个八次稀疏方程。
+为固定记号，令
+\[
+\mathcal Z_4(z):=z^8-2z^6-2z^5-2z^4-2z^3-2\in\ZZ[z],
+\]
+取 \(\theta\) 为 \(\mathcal Z_4\) 的一根，并设
+\(
+K:=\QQ(\theta)
+\)。
+在注 \ref{rem:pom-collision-rh-break-a4-threshold} 的记号下，临界坐标 \(z_\star:=-\mu_\star>0\) 即满足 \(\mathcal Z_4(z_\star)=0\)，因而 \(K\) 可取为 \(\QQ(z_\star)\)。
+下述结论把该证书对应的数域压缩为可审计的判别式与局部分解数据，从而为将 mod-\(p\) 指纹与分歧结构直接对接提供最短接口。
+
+\begin{proposition}[幂整基、判别式与签名]\label{prop:pom-a4t-newman-octic-field-basic}
+\(\mathcal Z_4\) 在素数 \(2\) 上为 Eisenstein 多项式，因此在 \(\QQ[z]\) 上不可约。
+并且其数域 \(K=\QQ(\theta)\) 满足
+\[
+\mathcal O_K=\ZZ[\theta],
+\qquad
+\mathrm{Disc}(K)=\mathrm{Disc}(\mathcal Z_4)=-2^{10}\cdot 7^2\cdot 23^2\cdot 1151.
+\]
+从而 \(\{1,\theta,\theta^2,\dots,\theta^7\}\) 为 \(\mathcal O_K\) 的幂整基。
+此外，\(K\) 的签名为 \((r_1,r_2)=(2,3)\)，故由 Dirichlet 单位定理单位秩为 \(r_1+r_2-1=4\)。
+\end{proposition}
+\begin{proof}
+Eisenstein 判据给出不可约性。
+其余结论可由 maximal order 的 round-two 算法对 \(\mathcal Z_4\) 符号核验：该算法返回域判别式并判定 \(\ZZ[\theta]\) 已为极大整环（等价于指数为 \(1\)），从而 \(\mathrm{Disc}(\mathcal Z_4)=\mathrm{Disc}(K)\) 且幂整基成立。
+签名由 \(\mathcal Z_4\) 的实根个数给出（两条实根、三对共轭非实根），单位秩公式为 Dirichlet 定理的直接推论。
+可复现脚本：\texttt{scripts/exp\_collision\_kernel\_A4\_newman\_octic\_field\_arithmetic.py}。证毕。
+\end{proof}
+
+\begin{remark}[判别式二次子域的一致性]\label{rem:pom-a4t-newman-octic-field-quadratic-subfield}
+由命题 \ref{prop:pom-a4t-newman-octic-field-basic}，
+\(\mathrm{Disc}(\mathcal Z_4)\) 的平方自由部分为 \(-1151\)。
+因此 \(\mathcal Z_4\) 的分裂域含有典范的二次子域 \(\QQ(\sqrt{-1151})\)（对应于符号表示的核），与命题 \ref{prop:pom-a4t-newman-k2-class-number} 中从 \(P_4(t)\) 判别式切出的二次子域一致。
+\end{remark}
+
+\begin{proposition}[分歧素数与素理想分解]\label{prop:pom-a4t-newman-octic-field-prime-decomp}
+沿用命题 \ref{prop:pom-a4t-newman-octic-field-basic} 的设定。
+则 \(K/\QQ\) 的分歧素数恰为
+\(
+\{2,7,23,1151\}
+\)。
+并且在 \(\mathcal O_K\) 中有完全分解型（记 \((p,f(\theta))\) 为由 \(p\) 与 \(f(\theta)\) 生成的素理想）：
+\begin{align*}
+(2)\ &=\ \mathfrak p_2^{\,8},\qquad &&\mathfrak p_2:=(2,\theta), &&e(\mathfrak p_2\mid 2)=8,\ f(\mathfrak p_2\mid 2)=1;\\
+(7)\ &=\ \mathfrak p_7^{\,3}\,\mathfrak q_7,\qquad
+&&\mathfrak p_7:=(7,\theta-2), &&e(\mathfrak p_7\mid 7)=3,\ f(\mathfrak p_7\mid 7)=1,\\
+&&&&\mathfrak q_7:=(7,\theta^5-\theta^4+\theta^3+3\theta^2+3\theta+2), &&e(\mathfrak q_7\mid 7)=1,\ f(\mathfrak q_7\mid 7)=5;\\
+(23)\ &=\ \mathfrak p_{23}^{\,3}\,\mathfrak a_{23}\,\mathfrak b_{23}\,\mathfrak c_{23},\qquad
+&&\mathfrak p_{23}:=(23,\theta-6), &&e(\mathfrak p_{23}\mid 23)=3,\ f(\mathfrak p_{23}\mid 23)=1,\\
+&&&&\mathfrak a_{23}:=(23,\theta-7), &&e(\mathfrak a_{23}\mid 23)=1,\ f(\mathfrak a_{23}\mid 23)=1,\\
+&&&&\mathfrak b_{23}:=(23,\theta^2+10\theta+8), &&e(\mathfrak b_{23}\mid 23)=1,\ f(\mathfrak b_{23}\mid 23)=2,\\
+&&&&\mathfrak c_{23}:=(23,\theta^2-8\theta+1), &&e(\mathfrak c_{23}\mid 23)=1,\ f(\mathfrak c_{23}\mid 23)=2;\\
+(1151)\ &=\ \mathfrak p_{1151}^{\,2}\,\mathfrak b_{1151}\,\mathfrak c_{1151}\,\mathfrak d_{1151},\qquad
+&&\mathfrak p_{1151}:=(1151,\theta+499), &&e(\mathfrak p_{1151}\mid 1151)=2,\ f(\mathfrak p_{1151}\mid 1151)=1,\\
+&&&&\mathfrak b_{1151}:=(1151,\theta^2+200\theta-233), &&e(\mathfrak b_{1151}\mid 1151)=1,\ f(\mathfrak b_{1151}\mid 1151)=2,\\
+&&&&\mathfrak c_{1151}:=(1151,\theta^2+330\theta+217), &&e(\mathfrak c_{1151}\mid 1151)=1,\ f(\mathfrak c_{1151}\mid 1151)=2,\\
+&&&&\mathfrak d_{1151}:=(1151,\theta^2-377\theta+312), &&e(\mathfrak d_{1151}\mid 1151)=1,\ f(\mathfrak d_{1151}\mid 1151)=2.
+\end{align*}
+\end{proposition}
+\begin{proof}[证明要点]
+由命题 \ref{prop:pom-a4t-newman-octic-field-basic} 的单生成元性（\(\mathcal O_K=\ZZ[\theta]\)），可对每个素数 \(p\) 用 Dedekind 因式分解定理将 \(\mathcal Z_4\bmod p\) 的因式型转写为 \((p)\) 的素理想分解型；其可由 Cohen 算法的实现直接给出。
+可复现脚本同上。证毕。
+\end{proof}
+
+\begin{corollary}[奇分歧素数处的纯驯分歧与判别式指数]\label{cor:pom-a4t-newman-octic-field-tame}
+对每个奇分歧素数 \(p\in\{7,23,1151\}\)，扩张 \(K/\QQ\) 在 \(p\) 处为驯分歧，且域判别式指数满足驯分歧的最小公式
+\[
+v_p\!\bigl(\mathrm{Disc}(K)\bigr)=\sum_{\mathfrak p\mid p} f(\mathfrak p\mid p)\,\bigl(e(\mathfrak p\mid p)-1\bigr).
+\]
+特别地，
+\[
+v_7\!\bigl(\mathrm{Disc}(K)\bigr)=2,\qquad v_{23}\!\bigl(\mathrm{Disc}(K)\bigr)=2,\qquad v_{1151}\!\bigl(\mathrm{Disc}(K)\bigr)=1,
+\]
+相应惯性群阶分别为 \(3,3,2\)。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-a4t-newman-octic-field-prime-decomp}，在 \(p=7,23,1151\) 处的分歧指数分别为 \(3,3,2\)，均与 \(p\) 互素，故皆为驯分歧。
+驯分歧下的不同指数为 \(e-1\)，故判别式指数满足所示求和公式；代入各素理想的 \((e,f)\) 即得数值。
+证毕。
+\end{proof}
+
+\begin{proposition}[两素数证书与 \texorpdfstring{$S_8$}{S8}]\label{prop:pom-a4t-newman-octic-field-galois-s8}
+设 \(L\) 为 \(\mathcal Z_4\) 的分裂域，并令 \(G:=\mathrm{Gal}(L/\QQ)\le S_8\) 作用于 \(\mathcal Z_4\) 的八个根。
+则 \(G\cong S_8\)。
+\end{proposition}
+\begin{proof}
+由 Eisenstein 判据，\(\mathcal Z_4\) 在 \(\QQ[z]\) 上不可约，故 \(G\) 在八根上为传递群。
+又由命题 \ref{prop:pom-a4t-newman-octic-field-basic}，\(\mathrm{Disc}(\mathcal Z_4)\) 的分歧素数仅为 \(\{2,7,23,1151\}\)，因此在不分歧素数处可用 Frobenius 的循环型读取分裂型。
+\par
+在 \(p=13\) 处，\(\mathcal Z_4\bmod 13\) 不可约（分裂型为单一八次），故 \(G\) 含一条 \(8\)-循环。
+在 \(p=37\) 处，\(\mathcal Z_4\bmod 37\) 分解为一个不可约三次因子与一个不可约五次因子，故 \(G\) 含循环型为 \((3)(5)\) 的元素，从而亦含一条 \(5\)-循环。
+\par
+为给出原始性，反设 \(G\) 非原始，则存在一个非平凡块系，其块大小 \(b\) 必为 \(8\) 的真因子，故 \(b\in\{2,4\}\)，块数为 \(8/b\in\{4,2\}\)。
+而 \(G\) 含一条 \(5\)-循环时，该 \(5\)-循环在块系上的作用只能为平凡或长度为 \(5\) 的循环；由于 \(5>b\) 不可能在单个块内发生，故其必诱导一个 \(5\)-块循环，迫使 \(5\mid (8/b)\)，与 \(8/b\in\{2,4\}\) 矛盾。
+因此 \(G\) 必为原始群。
+由于 \(5\le 8-3\)，Jordan 定理推出 \(A_8\subseteq G\)。
+另一方面，\(8\)-循环为奇置换，故 \(G\not\subseteq A_8\)。
+综上 \(G=S_8\)。证毕。
+\end{proof}
+
+\begin{corollary}[剩余代数分解与幂零厚度]\label{cor:pom-a4t-newman-octic-field-residue-algebra}
+沿用命题 \ref{prop:pom-a4t-newman-octic-field-prime-decomp} 的分解型，由中国剩余定理与局部离散赋值环的结构，可把四个分歧素数处的剩余代数写成显式直积：
+\begin{align*}
+\mathcal O_K/2\mathcal O_K &\cong \FF_2[\varepsilon]/(\varepsilon^8),\\
+\mathcal O_K/7\mathcal O_K &\cong \FF_7[\varepsilon]/(\varepsilon^3)\times \FF_{7^5},\\
+\mathcal O_K/23\mathcal O_K &\cong \FF_{23}\times \FF_{23}[\varepsilon]/(\varepsilon^3)\times \FF_{23^2}\times \FF_{23^2},\\
+\mathcal O_K/1151\mathcal O_K &\cong \FF_{1151}[\varepsilon]/(\varepsilon^2)\times (\FF_{1151^2})^{3}.
+\end{align*}
+因此该 Newman 临界八次域在分歧点上的幂零厚度谱为 \((8;3;3;2)\)，而相应剩余域次数谱为 \((1;\,5;\,1,2,2;\,2,2,2)\)。
+\end{corollary}
+
+\begin{remark}[规范化局部参数与赋值标度]\label{rem:pom-a4t-newman-octic-field-local-parameters}
+对命题 \ref{prop:pom-a4t-newman-octic-field-prime-decomp} 中四个带分歧素理想，令 \(v_{\mathfrak p}\) 表示 \(\QQ_p\) 上 \(p\)-进赋值的延拓并按 \(v_{\mathfrak p}(p)=1\) 归一化。
+则 \(\theta\) 为 \(\mathfrak p_2\) 的局部参数且
+\(
+v_{\mathfrak p_2}(\theta)=1/8
+\)；
+同理，
+\(
+\theta-2,\theta-6,\theta+499
+\)
+分别为 \(\mathfrak p_7,\mathfrak p_{23},\mathfrak p_{1151}\) 的局部参数，并满足
+\[
+v_{\mathfrak p_7}(\theta-2)=1/3,\qquad
+v_{\mathfrak p_{23}}(\theta-6)=1/3,\qquad
+v_{\mathfrak p_{1151}}(\theta+499)=1/2.
+\]
+因此在四个分歧点处存在一组规范化的“坐标—赋值”锁定：任何对 \(\theta\) 的局部微扰在 \(p\)-进尺度下的放大率可被转写为由分歧指数 \((8,3,3,2)\) 直接控制的一组赋值常数。
+\end{remark}
+

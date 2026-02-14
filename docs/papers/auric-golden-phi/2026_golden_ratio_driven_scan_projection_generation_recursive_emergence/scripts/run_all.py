@@ -709,6 +709,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_newman_sparse_generator",
+            script="exp_collision_kernel_A4_newman_sparse_generator.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_sparse_generator.json",
+                "sections/generated/eq_collision_kernel_A4_newman_sparse_generator.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_sparse_generator_arithmetic",
+            script="exp_collision_kernel_A4_newman_sparse_generator_arithmetic.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_sparse_generator_arithmetic.json",
+                "sections/generated/eq_collision_kernel_A4_newman_sparse_generator_arithmetic.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_ade_intersection_t_minpoly_discriminant",
             script="exp_collision_kernel_A4_ade_intersection_t_minpoly_discriminant.py",
             args=[],
@@ -742,6 +760,14 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/collision_kernel_A4_newman_critical_quadratic_subfield.json",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_octic_field_arithmetic",
+            script="exp_collision_kernel_A4_newman_octic_field_arithmetic.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_octic_field_arithmetic.json",
             ],
         ),
         Step(
