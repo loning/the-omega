@@ -321,6 +321,221 @@ Fibonacci 立方 \(\Gamma_n\) 存在显式 Gray--Hamilton Hamilton 路径，覆�
 在交换折叠口径下 \(\mathrm{Ind}(E)=M\)（见命题 \ref{prop:fold-condexp-index-maxfiber}），并由交换情形的极值态刻画得到可达性（推论 \ref{cor:op-algebra-commutative-dmax-extremizers-maxfiber}）。
 \end{proof}
 
+\begin{conclusion}[查询--外置信息联合口径下的全恢复强逆：查询比例 \texorpdfstring{$\beta$}{beta} 与外置信息密度 \texorpdfstring{$b$}{b} 的最优成功指数为截断线性律]\label{con:xi-terminal-linear-strong-converse-query-sideinfo}
+设 \(X\) 为有限集合（\(|X|=n\ge 2\)），\(|\Omega|=N\)，给定纤维谱 \(d:X\to\NN\) 满足 \(\sum_{x\in X}d(x)=N\)。
+令
+\[
+\mathfrak{F}(d):=\left\{F:\Omega\to X:\ |F^{-1}(x)|=d(x)\ \ \forall x\in X\right\},
+\qquad
+F\sim\mathrm{Unif}(\mathfrak{F}(d)),
+\]
+并记 \(w(x):=d(x)/N\)、\(H(w):=-\sum_{x\in X}w(x)\log w(x)\)。
+进行 \(k=\lfloor \beta N\rfloor\) 次互异查询（允许自适应），得到轨迹 \(T_{1:k}\)。
+随后允许额外获得 \(B=\lfloor bN\rfloor\) 比特外置信息 \(\mathrm{enc}(F)\in\{0,1\}^B\)，并以 \((T_{1:k},\mathrm{enc}(F))\) 为输入尝试精确恢复整张映射 \(F\)。
+令最优成功率为 \(\mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N)\)。
+若 \(n\log N=o(N)\)，则极限存在并满足
+\[
+\boxed{\;
+\lim_{N\to\infty}\frac{1}{N}\log \mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N)
+=
+\min\bigl\{0,\ b\log 2-(1-\beta)H(w)\bigr\}.\;}
+\]
+从而临界密度为
+\[
+b_{\mathrm{crit}}(\beta):=\frac{(1-\beta)H(w)}{\log 2}.
+\]
+当 \(b<b_{\mathrm{crit}}(\beta)\) 时成功率以精确指数率 \((1-\beta)H(w)-b\log 2\) 衰减；当 \(b\ge b_{\mathrm{crit}}(\beta)\) 时成功率不呈指数衰减（指数率为 \(0\)）。
+\end{conclusion}
+\begin{proof}[证明]
+对给定轨迹 \(T_{1:k}\)，记 \(C_k(x)\) 为查询到的值 \(x\) 的出现次数，并令
+\[
+\mathcal{M}_k
+:=
+\frac{(N-k)!}{\prod_{x\in X}(d(x)-C_k(x))!}
+\]
+为在该轨迹下与 \(d\) 相容的后验可行映射数（剩余 \(N-k\) 个点的多项式计数）。
+由于 \(F\) 在 \(\mathfrak{F}(d)\) 上均匀，条件于 \(T_{1:k}\) 的后验在该集合上仍为均匀。
+对任意长度 \(B\) 的确定性编码 \(\mathrm{enc}(F)\)，其在后验可行集合上诱导一个至多 \(2^B\) 个码字的分割；于是最优条件成功率为
+\[
+\mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N\mid T_{1:k})
+=\min\Bigl(1,\frac{2^B}{\mathcal{M}_k}\Bigr),
+\]
+从而
+\(
+\mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N)=\mathbb{E}\bigl[\min(1,2^B/\mathcal{M}_k)\bigr]
+\)。
+\par
+由 Stirling 展开与 \(n\log N=o(N)\)，并记剩余经验分布
+\[
+R_N(x):=\frac{d(x)-C_k(x)}{N-k}\in\Delta(X),
+\]
+则有
+\(
+\frac{1}{N}\log\mathcal{M}_k=(1-\beta)H(R_N)+o_{\mathbb{P}}(1)
+\)。
+又由超几何大数律 \(R_N\to w\)（概率收敛），得
+\(
+\frac{1}{N}\log\mathcal{M}_k=(1-\beta)H(w)+o_{\mathbb{P}}(1)
+\)。
+\par
+当 \(b<b_{\mathrm{crit}}(\beta)\) 时，取任意 \(\varepsilon\in\bigl(0,(1-\beta)H(w)-b\log 2\bigr)\)，并令事件
+\[
+\mathcal{E}_N:=\left\{\left|\frac{1}{N}\log\mathcal{M}_k-(1-\beta)H(w)\right|\le \varepsilon\right\}.
+\]
+由 \(\frac{1}{N}\log\mathcal{M}_k=(1-\beta)H(w)+o_{\mathbb{P}}(1)\) 得 \(\mathbb{P}(\mathcal{E}_N)\to 1\)。
+在 \(\mathcal{E}_N\) 上对充分大 \(N\) 有 \(2^B\le \mathcal{M}_k\)，从而 \(\min(1,2^B/\mathcal{M}_k)=2^B/\mathcal{M}_k\)。
+再由 \(B=\lfloor bN\rfloor\) 得 \(2^B=\exp(bN\log 2+O(1))\)，且在 \(\mathcal{E}_N\) 上有
+\[
+\exp\!\bigl(-N((1-\beta)H(w)+\varepsilon)\bigr)
+\le
+\mathcal{M}_k^{-1}
+\le
+\exp\!\bigl(-N((1-\beta)H(w)-\varepsilon)\bigr).
+\]
+对 \(\mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N)=\EE[\min(1,2^B/\mathcal{M}_k)]\) 取期望并用 \(\mathbb{P}(\mathcal{E}_N^c)=o(1)\)，得到
+\[
+\exp\!\bigl(N(b\log 2-(1-\beta)H(w)-\varepsilon)+o(N)\bigr)
+\le
+\mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N)
+\le
+\exp\!\bigl(N(b\log 2-(1-\beta)H(w)+\varepsilon)+o(N)\bigr).
+\]
+令 \(\varepsilon\downarrow 0\) 即得所示负指数率。
+\par
+当 \(b\ge b_{\mathrm{crit}}(\beta)\) 时，取任意 \(\varepsilon>0\) 并令
+\[
+\mathcal{E}_N(\varepsilon):=\left\{\left|\frac{1}{N}\log\mathcal{M}_k-(1-\beta)H(w)\right|\le \varepsilon\right\},
+\]
+则 \(\mathbb{P}(\mathcal{E}_N(\varepsilon))\to 1\)。
+由 \(B=\lfloor bN\rfloor\) 与 \(b\log 2\ge (1-\beta)H(w)\) 可知在 \(\mathcal{E}_N(\varepsilon)\) 上有
+\[
+\min\!\left(1,\frac{2^B}{\mathcal{M}_k}\right)
+\ge
+\exp(-\varepsilon N+O(1)).
+\]
+取期望并用 \(\mathbb{P}(\mathcal{E}_N(\varepsilon))\to 1\) 得
+\[
+\mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N)\ge \exp(-\varepsilon N+o(N)),
+\]
+从而 \(\liminf_{N\to\infty}\frac{1}{N}\log \mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N)\ge -\varepsilon\)。
+令 \(\varepsilon\downarrow 0\) 得 \(\liminf\ge 0\)；再由 \(\mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N)\le 1\) 得 \(\limsup\le 0\)，故指数率为 \(0\)。
+证毕。
+\end{proof}
+
+\begin{conclusion}[超临界侧的失败指数：\texorpdfstring{$b>b_{\mathrm{crit}}(\beta)$}{b>bcrit(beta)} 时失败概率的精确变分式]\label{con:xi-terminal-supercritical-failure-exponent-variational}
+沿用结论 \ref{con:xi-terminal-linear-strong-converse-query-sideinfo} 的设定。
+定义失败概率
+\[
+\mathrm{Fail}^{\mathrm{opt}}_{\beta,b}(N):=1-\mathrm{Succ}^{\mathrm{opt}}_{\beta,b}(N).
+\]
+设 \(n\) 固定且 \(w\) 固定，并取 \(b>b_{\mathrm{crit}}(\beta)\)。
+令
+\[
+I_\beta(r):=
+\begin{cases}
+(1-\beta)D_{\mathrm{KL}}(r\|w)+\beta D_{\mathrm{KL}}\!\left(\dfrac{w-(1-\beta)r}{\beta}\,\middle\|\,w\right),
+& \text{若 }\ \dfrac{w-(1-\beta)r}{\beta}\in\Delta(X),\\[10pt]
++\infty, & \text{否则},
+\end{cases}
+\]
+则极限
+\[
+E_{\mathrm{fail}}(\beta,b)
+:=
+\lim_{N\to\infty}-\frac{1}{N}\log \mathrm{Fail}^{\mathrm{opt}}_{\beta,b}(N)
+\]
+存在，并满足精确变分式
+\[
+\boxed{\;
+E_{\mathrm{fail}}(\beta,b)
+=
+\inf\left\{I_\beta(r):\ (1-\beta)H(r)\ge b\log 2\right\}.\;}
+\]
+特别地，\(E_{\mathrm{fail}}(\beta,b)>0\) 且随 \(b\) 严格增大。
+\end{conclusion}
+\begin{proof}[证明]
+由结论 \ref{con:xi-terminal-linear-strong-converse-query-sideinfo} 的表示，
+\[
+\mathrm{Fail}^{\mathrm{opt}}_{\beta,b}(N)
+=
+\mathbb{E}\!\left[\Bigl(1-\frac{2^B}{\mathcal{M}_k}\Bigr)_+\right].
+\]
+同样由 Stirling 展开，
+\(
+\frac{1}{N}\log\mathcal{M}_k=(1-\beta)H(R_N)+o_{\mathbb{P}}(1)
+\)。
+当事件 \((1-\beta)H(R_N)\ge b\log 2+\varepsilon\) 发生时，有
+\(
+2^B/\mathcal{M}_k\le \exp(-\varepsilon N+o(N))
+\)，从而条件失败趋于 \(1\)；
+当 \((1-\beta)H(R_N)\le b\log 2-\varepsilon\) 时，条件失败为 \(0\)（对充分大 \(N\)）。
+因此
+\[
+\mathrm{Fail}^{\mathrm{opt}}_{\beta,b}(N)
+=
+\mathbb{P}\bigl((1-\beta)H(R_N)\ge b\log 2\bigr)\cdot(1+o(1)).
+\]
+而 \((R_N)_{N}\) 为超几何剩余经验分布，满足大偏差原理；其速率函数正为上式所定义的 \(I_\beta\)。
+应用收缩原理即得
+\[
+\lim_{N\to\infty}-\frac{1}{N}\log \mathrm{Fail}^{\mathrm{opt}}_{\beta,b}(N)
+=\inf\{I_\beta(r):(1-\beta)H(r)\ge b\log 2\}.
+\]
+严格单调性由约束集合随 \(b\) 严格收缩及 \(I_\beta\) 的严格凸性给出。证毕。
+\end{proof}
+
+\begin{conclusion}[最小化器的 escort--KKT 结构：失败指数的一参幂倾斜刻画与灵敏度公式]\label{con:xi-terminal-failure-exponent-escort-kkt}
+在结论 \ref{con:xi-terminal-supercritical-failure-exponent-variational} 的条件下，进一步假设 \(w\) 全支撑且非均匀，并取 \(b>b_{\mathrm{crit}}(\beta)\)。
+则：
+\begin{enumerate}
+  \item 变分问题
+  \(
+  \inf\{I_\beta(r):(1-\beta)H(r)\ge b\log 2\}
+  \)
+  存在唯一最小化器 \(r^\star\in\Delta(X)\)，且必位于边界 \((1-\beta)H(r^\star)=b\log 2\)。
+  \item 记
+  \[
+  q^\star:=\frac{w-(1-\beta)r^\star}{\beta}\in\Delta(X),
+  \]
+  则存在唯一拉格朗日乘子 \(\theta^\star>0\) 使得 \(q^\star\) 与 \(r^\star\) 满足幂倾斜（escort）关系
+  \[
+  \boxed{\;
+  q^\star(x)\ \propto\ r^\star(x)^{\,1+\theta^\star},\qquad x\in X.\;}
+  \]
+  \item 失败指数满足
+  \[
+  E_{\mathrm{fail}}(\beta,b)=I_\beta(r^\star)
+  =(1-\beta)D_{\mathrm{KL}}(r^\star\|w)+\beta D_{\mathrm{KL}}(q^\star\|w),
+  \]
+  且 \(b\mapsto E_{\mathrm{fail}}(\beta,b)\) 在超临界侧可微，其导数由乘子给出：
+  \[
+  \boxed{\;\frac{\partial}{\partial b}E_{\mathrm{fail}}(\beta,b)=\theta^\star\log 2.\;}
+  \]
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明]
+可行域 \(\{r:(1-\beta)H(r)\ge b\log 2\}\) 为凸集（因 \(H\) 凹，超水平集凸），而 \(I_\beta\) 在全支撑内为严格凸函数，故最小化器唯一且必满足约束取等（否则可沿指向 \(w\) 的线段降低 \(I_\beta\) 并保持可行）。
+\par
+对带不等式约束的凸优化应用 KKT 条件：存在唯一 \(\theta^\star\ge 0\) 使得
+\[
+\nabla I_\beta(r^\star)+\theta^\star\,\nabla\bigl(b\log 2-(1-\beta)H(r^\star)\bigr)=\lambda\,\mathbf 1
+\]
+（\(\lambda\) 为归一化约束的乘子）。
+在内点处 \(\nabla H(r)=-\log r-\mathbf 1\)，并且由 \(q^\star=(w-(1-\beta)r^\star)/\beta\) 可得
+\(
+\nabla I_\beta(r^\star)=(1-\beta)(\log r^\star-\log q^\star)
+\)
+（逐坐标计算）。
+代入并吸收常数项，得到
+\[
+(\,1+\theta^\star)\log r^\star-\log q^\star=\mathrm{const},
+\]
+即 \(q^\star(x)\propto r^\star(x)^{1+\theta^\star}\)。
+\par
+灵敏度公式为拉格朗日乘子敏感性结论的直接应用：将约束写为 \(g_b(r):=b\log 2-(1-\beta)H(r)\le 0\)，其对参数 \(b\) 的导数为 \(\partial_b g_b=\log 2\)，故 \(\partial_b E_{\mathrm{fail}}(\beta,b)=\theta^\star\log 2\)。
+证毕。
+\end{proof}
+
 \begin{conclusion}[Fibonacci 立方超平面统计的闭式：端点 \texorpdfstring{$\Theta$}{Theta}-类为唯一最大，给出体相--边界的几何判别]\label{con:xi-terminal-fibcube-hyperplane-theta-stats}
 将 \(\Gamma_n\) 视为 partial cube，设 \(\Theta_i\) 为第 \(i\) 坐标翻转的 \(\Theta\)-等价类（超平面）。
 则对任意 \(1\le i\le n\) 有严格闭式
