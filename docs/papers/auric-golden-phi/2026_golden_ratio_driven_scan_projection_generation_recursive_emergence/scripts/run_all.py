@@ -699,6 +699,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_even_zeta_elimination",
+            script="exp_collision_kernel_A4_even_zeta_elimination.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_even_zeta_elimination.json",
+                "sections/generated/eq_collision_kernel_A4_even_zeta_quintic.tex",
+                "sections/generated/eq_collision_kernel_A4_newman_resultant_curve_intersection.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_ade_intersection_t_minpoly_discriminant",
             script="exp_collision_kernel_A4_ade_intersection_t_minpoly_discriminant.py",
             args=[],
@@ -722,6 +732,14 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/collision_kernel_A4_newman_critical_quadratic_subfield.json",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_charpoly_quadratic_field_class_number",
+            script="exp_collision_kernel_A4_charpoly_quadratic_field_class_number.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_charpoly_quadratic_field_class_number.json",
             ],
         ),
         Step(
@@ -845,6 +863,18 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_recursions_moddp_9_17.json",
                 "sections/generated/tab_fold_collision_moment_recursions_9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_observable_minpoly_galois_audit_q9_13",
+            script="exp_fold_collision_observable_minpoly_galois_audit_q9_13.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_observable_minpoly_galois_audit_q9_13.json",
+                "sections/generated/eq_fold_collision_observable_minpoly_discriminants_q9_13.tex",
+                "sections/generated/tab_fold_collision_observable_minpoly_galois_certificate_q9_13.tex",
+                "sections/generated/eq_fold_collision_observable_minpoly_negative_real_dominance_q9_13.tex",
+                "sections/generated/tab_fold_collision_observable_minpoly_ramified_primes_q9_13.tex",
             ],
         ),
         Step(
