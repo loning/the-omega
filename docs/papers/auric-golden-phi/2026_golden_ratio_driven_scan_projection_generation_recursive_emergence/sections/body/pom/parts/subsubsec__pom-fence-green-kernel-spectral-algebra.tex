@@ -360,6 +360,34 @@ O\bigl(n^{2\Re(s)-2}\sum_{p\le k}(2p-1)^{2-2\Re(s)}\bigr)=O(n)=O(k)
 将尾项乘以 \(n^{2\Re(s)}\) 得到 \(O(k)\) 量级，从而结论成立。证毕。
 \end{proof}
 
+\begin{corollary}[归一化谱 \texorpdfstring{\(\zeta\)}{zeta} 的极限与奇频 Dirichlet 投影]\label{cor:pom-Lk-normalized-zeta-odd-projection}
+对 \(\Re(s)>\tfrac12\)，定义归一化谱函数
+\[
+\widetilde\zeta_k(s):=\Bigl(\frac{\pi}{2k+1}\Bigr)^{2s}\zeta_k(s).
+\]
+则对每个 \(\Re(s)>\tfrac12\) 有极限
+\[
+\lim_{k\to\infty}\widetilde\zeta_k(s)
+=\Bigl(1-2^{-2s}\Bigr)\zeta(2s)
+=\sum_{\substack{n\ge 1\\ n\ \mathrm{odd}}}\frac{1}{n^{2s}}.
+\]
+\end{corollary}
+\begin{proof}
+将命题 \ref{prop:pom-Lk-spectral-zeta-dirichlet} 的渐近式两端乘以 \(\bigl(\pi/(2k+1)\bigr)^{2s}\) 得
+\[
+\widetilde\zeta_k(s)
+=\Bigl(1-2^{-2s}\Bigr)\zeta(2s)
+\;+\;
+O(k)\Bigl(\frac{\pi}{2k+1}\Bigr)^{2s}.
+\]
+当 \(\Re(s)>\tfrac12\) 时，误差项为 \(O(k^{1-2\Re(s)})\to 0\)，故极限成立。
+最后一式由
+\(
+(1-2^{-2s})\zeta(2s)=\sum_{n\ \mathrm{odd}} n^{-2s}
+\)
+的恒等式给出。证毕。
+\end{proof}
+
 \begin{corollary}[连续极限的严格匹配：ND 行列式极限与 \texorpdfstring{\(t/4\)}{t/4} 的唯一尺度]\label{cor:pom-Lk-continuum-ND-det-cosh}
 令连续算子 \(\mathcal L:=-\frac{\dd^2}{\dd x^2}\) 作用于区间 \([0,1]\)，取 Neumann--Dirichlet 边界条件 \(u'(0)=0,\ u(1)=0\)。
 其谱为 \(\{((2p-1)\pi/2)^2\}_{p\ge 1}\)，且其加质量行列式满足
@@ -393,6 +421,52 @@ O\bigl(n^{2\Re(s)-2}\sum_{p\le k}(2p-1)^{2-2\Re(s)}\bigr)=O(n)=O(k)
 \longrightarrow \cosh(\sqrt{s}).
 \]
 最后关于“小模态匹配”的特征值渐近由 \(\sin x=x+O(x^3)\) 直接给出。证毕。
+\end{proof}
+
+\begin{corollary}[ND 行列式极限的局部一致收敛：谱不变量可逐阶交换极限]\label{cor:pom-Lk-continuum-ND-det-cosh-locally-uniform}
+沿用推论 \ref{cor:pom-Lk-continuum-ND-det-cosh} 的记号，并设
+\[
+D_k(s):=\det\!\Bigl(L_k+\frac{4s}{(2k+1)^2}I\Bigr).
+\]
+则对任意紧集 \(K\subset\CC\) 有局部一致收敛
+\[
+\sup_{s\in K}\bigl|D_k(s)-\cosh(\sqrt{s})\bigr|\longrightarrow 0,
+\]
+其中 \(\cosh(\sqrt{s})\) 视为整函数
+\(
+\sum_{n\ge 0}s^n/(2n)!
+\)。
+因此可逐阶交换导数与极限：对任意 \(n\ge 0\) 成立
+\[
+\lim_{k\to\infty}D_k^{(n)}(0)=\frac{n!}{(2n)!}.
+\]
+\end{corollary}
+\begin{proof}
+令 \(n:=2k+1\)。由推论 \ref{cor:pom-Lk-shifted-det-free-energy}，
+\[
+D_k(s)=\frac{T_{n}\!\bigl(\sqrt{1+s/n^2}\bigr)}{\sqrt{1+s/n^2}}.
+\]
+固定紧集 \(K\subset\CC\)，记 \(R:=\max_{s\in K}|s|\)。
+当 \(n\) 充分大时 \(|s|/n^2\le R/n^2\) 足够小，从而
+\(\sqrt{1+s/n^2}=1+O_K(n^{-2})\) 一致成立。
+并且由 \(\mathrm{arsinh}(z)=z+O(|z|^3)\) 得
+\[
+n\,\mathrm{arsinh}\!\Bigl(\frac{\sqrt{s}}{n}\Bigr)=\sqrt{s}+O_K(n^{-2}),
+\]
+其中误差界仅依赖于 \(|s|\)，故对 \(K\) 一致。
+结合恒等式 \(T_n(\sqrt{1+z^2})=\cosh(n\,\mathrm{arsinh}(z))\)（先在 \(z\in\RR_{\ge 0}\) 上成立，再由解析延拓推广），得到
+\[
+T_n(\sqrt{1+s/n^2})=\cosh(\sqrt{s}+O_K(n^{-2})).
+\]
+由于 \(\cosh\) 在有界集上一致 Lipschitz，且分母 \(\sqrt{1+s/n^2}=1+O_K(n^{-2})\)，可得
+\(
+\sup_{s\in K}|D_k(s)-\cosh(\sqrt{s})|\to 0
+\)。
+最后，局部一致收敛由 Weierstrass 定理推出导数可逐阶交换，从而
+\(
+\lim_{k\to\infty}D_k^{(n)}(0)=\bigl(\cosh(\sqrt{s})\bigr)^{(n)}|_{s=0}=n!/(2n)!
+\)。
+证毕。
 \end{proof}
 
 \begin{remark}[有限窗审计：经验谱律、热核与 ND 行列式极限]\label{rem:pom-fence-green-kernel-spectral-limit-laws-audit}

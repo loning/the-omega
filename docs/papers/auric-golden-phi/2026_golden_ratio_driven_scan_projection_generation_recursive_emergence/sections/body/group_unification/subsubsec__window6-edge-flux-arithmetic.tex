@@ -18,6 +18,51 @@
 故不可能与 \(\det(E)=10350\) 相容；从而 \(E\) 亦不可能与其在 \(\mathrm{GL}_4(\ZZ)\) 下同值。证毕。
 \end{proof}
 
+\begin{corollary}[标号刚性下的 edge--flux 算术指纹为协议绝对不变量]\label{cor:window6-edge-flux-arithmetic-protocol-invariant}
+在定理 \ref{thm:terminal-window6-edge-flux-skeleton} 的设定下，
+四块相互作用矩阵 \(E\) 的 Smith 形、余核分解与行列式等整数指纹在“保持推送计数”的协议等价下保持不变。
+更精确地：若另一实现与本协议在推送邻接多重度数据上一致，使得其对应矩阵 \(E'\) 与 \(E\) 相差至多一个块标号置换所诱导的置换相似 \(E'=PEP^{-1}\)（\(P\) 为置换矩阵），
+则 \(E\) 与 \(E'\) 在 \(\ZZ\)-同余意义下等价，从而 \(\mathrm{SNF}(E)\)、\(\mathrm{coker}(E)\) 与 \(\det(E)\) 一致。
+在标号刚性口径下（推论 \ref{cor:terminal-gamma6-multiplicity-rigidity}；亦见注 \ref{rem:terminal-window6-structure-defined-uniqueness}），该置换必为恒等，因而 \(E'=E\)。
+\end{corollary}
+\begin{proof}
+块标号置换对应以置换矩阵 \(P\in\mathrm{GL}_4(\ZZ)\) 作同时的行列重排，即 \(E\mapsto PEP^{-1}\)；
+该变换属于 \(\ZZ\)-同余变换，Smith 形、余核分解与行列式均为同余不变量，故第一部分成立。
+若进一步施加推论 \ref{cor:terminal-gamma6-multiplicity-rigidity}（见注 \ref{rem:terminal-window6-structure-defined-uniqueness}），则保持推送计数的数据不允许任何非平凡重标号，从而 \(P=I\)，结论得证。证毕。
+\end{proof}
+
+\begin{corollary}[edge--flux skeleton 的最大熵粗粒化核唯一性]\label{cor:window6-edge-flux-max-entropy-kernel-uniqueness}
+沿用定理 \ref{thm:terminal-window6-edge-flux-skeleton} 的记号，并令 \(\pi_\alpha:=|U_\alpha|/64\)。
+设 \(K\) 为四状态空间 \(\{2,1,L,R\}\) 上的 Markov 核（行随机矩阵），并满足对所有 \(\alpha\neq\beta\) 的边通量约束
+\[
+\pi_\alpha K_{\alpha\beta}=\frac{E_{\alpha\beta}}{6|\Omega_6|}=\frac{E_{\alpha\beta}}{6\cdot 64}.
+\]
+则 \(K\) 被上述约束唯一确定，且必与定理 \ref{thm:terminal-window6-edge-flux-skeleton} 定义的粗粒化核 \(T\) 一致。
+特别地，由 \(E_{\alpha\beta}=E_{\beta\alpha}\) 得到详细平衡
+\(
+\pi_\alpha T_{\alpha\beta}=\pi_\beta T_{\beta\alpha}
+\)，因此 \(T\) 为可逆核；并且在“通量固定 + 详细平衡”的口径下可行集为单点 \(\{T\}\)，从而 \(T\) 亦为熵率极大核（且唯一）。
+\end{corollary}
+\begin{proof}
+对 \(\alpha\neq\beta\)，由约束立得
+\[
+K_{\alpha\beta}=\frac{E_{\alpha\beta}}{6|\Omega_6|}\cdot\frac{1}{\pi_\alpha}
+=\frac{E_{\alpha\beta}}{6|U_\alpha|},
+\]
+与定理 \ref{thm:terminal-window6-edge-flux-skeleton} 中 \(T_{\alpha\beta}\) 的定义一致。
+由于 \(K\) 为行随机矩阵，故
+\(
+K_{\alpha\alpha}=1-\sum_{\beta\neq\alpha}K_{\alpha\beta}
+\)
+亦被唯一确定；而该对角元恰等于 \(T_{\alpha\alpha}\)（等价于把块内无向边数 \(E_{\alpha\alpha}\) 计为两条有向留在块内的边）。
+因此 \(K=T\)。
+对可逆性与详细平衡，由 \(E_{\alpha\beta}=E_{\beta\alpha}\) 直接推出
+\(
+\pi_\alpha T_{\alpha\beta}=E_{\alpha\beta}/(6|\Omega_6|)=\pi_\beta T_{\beta\alpha}
+\)。
+最后，由可行集为单点可知任何在该可行集上定义的熵率极大问题均由 \(T\) 唯一实现。证毕。
+\end{proof}
+
 \begin{corollary}[6D 四块骨架的 Kirchhoff 复杂度与临界群循环性]\label{cor:window6-edge-flux-critical-group-cyclic}
 仍在定理 \ref{thm:terminal-window6-edge-flux-skeleton} 的记号下，
 令 \(\mathcal{G}_E\) 为忽略块内自环后的加权多重图：顶点为四块 \(\{2,1,L,R\}\)，且当 \(\alpha\neq\beta\) 时边重数为 \(E_{\alpha\beta}\)。

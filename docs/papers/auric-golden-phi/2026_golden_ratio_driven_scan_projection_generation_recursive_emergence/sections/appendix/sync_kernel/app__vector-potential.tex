@@ -34,6 +34,66 @@ Q_-:=\{0\overline{1}2,\,1\overline{1}2,\,01\overline{1},\,11\overline{1}\},
 \]
 从而压力 $P(\theta)=\log\lambda(\theta)$ 完全由该三次方程的最大实根确定。
 
+\begin{proposition}[负携带势的代数大偏差：斜率的有理参数化与闭式速率函数]\label{prop:vector-potential-phi-minus-ldp-param}
+沿用本小节的记号。令 \(u=e^{\theta}>0\)，并令 \(\lambda(u)\) 为三次方程
+\[
+F(\lambda,u):=\lambda^3-(u+2)\lambda^2+(u-2)\lambda+3u=0
+\]
+在 \(u>0\) 上的 Perron 分支（最大正实根）。
+定义压力 \(P(\theta)=\log\lambda(e^\theta)\) 与斜率 \(\alpha(\theta):=P'(\theta)\)，并以 Legendre 变换定义率函数
+\[
+I(\alpha):=\sup_{\theta\in\RR}\bigl(\theta\alpha-(P(\theta)-P(0))\bigr).
+\]
+则存在参数 \(\lambda\in(1+\sqrt3,\infty)\) 的显式有理参数化，使得
+\[
+u(\lambda)=\frac{\lambda(\lambda^{2}-2\lambda-2)}{\lambda^{2}-\lambda-3},
+\qquad
+\alpha(\lambda)=\frac{\lambda^{4}-3\lambda^{3}-3\lambda^{2}+8\lambda+6}{\lambda^{4}-2\lambda^{3}-5\lambda^{2}+12\lambda+6},
+\]
+并且在该参数表示下率函数具有闭式
+\[
+I(\alpha(\lambda))=\alpha(\lambda)\log u(\lambda)-\log\lambda+\log 3.
+\]
+\end{proposition}
+\begin{proof}
+由 \(F(\lambda,u)=0\) 视为关于 \(u\) 的线性方程，直接解得
+\[
+u=\frac{\lambda^{3}-2\lambda^{2}-2\lambda}{\lambda^{2}-\lambda-3}
+=\frac{\lambda(\lambda^{2}-2\lambda-2)}{\lambda^{2}-\lambda-3}
+=:u(\lambda).
+\]
+对 \(u=e^{\theta}\) 由隐函数微分得
+\[
+\lambda_u=-\frac{\partial_u F}{\partial_\lambda F},
+\qquad
+\alpha(\theta)=\frac{\dd}{\dd\theta}\log\lambda(e^\theta)=\frac{u\,\lambda_u}{\lambda}
+=-\frac{u\,\partial_u F(\lambda,u)}{\lambda\,\partial_\lambda F(\lambda,u)}\Bigg|_{\lambda=\lambda(u)}.
+\]
+对本例，
+\(
+\partial_u F(\lambda,u)=-(\lambda^2-\lambda-3)
+\)
+与
+\(
+\partial_\lambda F(\lambda,u)=3\lambda^2-2(u+2)\lambda+(u-2)
+\)。
+代入并用 \(u=u(\lambda)\) 化简，即得到所示有理式 \(\alpha(\lambda)\)。
+\par
+对率函数，在极值点满足 \(\alpha=P'(\theta)\) 的口径下有
+\[
+I(\alpha)=\theta\alpha-P(\theta)+P(0).
+\]
+此处 \(\theta=\log u(\lambda)\)、\(P(\theta)=\log\lambda\)。并且当 \(u=1\) 时
+\(
+F(\lambda,1)=\lambda^{3}-3\lambda^{2}-\lambda+3=(\lambda-3)(\lambda^{2}-1)
+\)，故 Perron 根为 \(\lambda(1)=3\)，从而 \(P(0)=\log 3\)。
+代入即得
+\(
+I(\alpha(\lambda))=\alpha(\lambda)\log u(\lambda)-\log\lambda+\log 3
+\)。
+证毕。
+\end{proof}
+
 由隐式微分或脚本数值（\texttt{--phi neg\_state}）可得
 \[
 P'(0)=\frac{1}{8}\ \ (\approx 0.1250000006),\qquad
