@@ -1,0 +1,311 @@
+% (User input window)
+% 2026-02-14 11:55:10 (Asia/Singapore)
+
+\paragraph{Exponential Volume of Type-Class Hamming Balls and Partial Inversion Threshold: Diagonal-Constrained Maximum Entropy Coupling}
+The microcanonical posterior exhibits typical type-class structure when conditioned on "fixing only type counts/marginal composition": given marginal distribution \(w\), unlabeled vectors are uniform on the length-\(t\) type class.
+Therefore, the optimal "partial inversion" success rate under \(\delta\)-distortion can be reduced to a purely combinatorial covering problem:
+how many intra-type Hamming balls are needed to cover the type class on the exponential scale.
+This paragraph provides the exact exponential threshold of this covering rate, representing it as a maximum entropy coupling problem under diagonal constraints;
+further proves uniqueness of the maximal coupling, exponential family structure, scalarization solution, and mutual information/dual derivative characterization.
+
+\begin{definition}[Type Class and Intra-Type Hamming Ball]\label{def:pom-typeclass-and-hamming-ball}
+Let \(X\) be a finite alphabet with \(|X|=n\ge 2\), take full-support distribution \(w\in\Delta(X)\).
+Let \(t\to\infty\) satisfying \(t\,w(x)\in\NN\) (for all \(x\in X\)).
+Define the type class
+\[
+\mathcal T_t(w):=\Bigl\{x^t\in X^t:\ \frac{1}{t}\bigl|\{i:\ x_i=a\}\bigr|=w(a)\ \ \forall a\in X\Bigr\}.
+\]
+For any reference sequence \(x^t\in\mathcal T_t(w)\) and any distortion parameter \(\delta\in[0,1]\), define the intra-type ball
+\[
+\mathcal B_t(w,\delta;x^t):=\Bigl\{y^t\in\mathcal T_t(w):\ t^{-1}d_{\rm H}(x^t,y^t)\le \delta\Bigr\}.
+\]
+\end{definition}
+
+\begin{definition}[Exponential Volume and Covering Threshold]\label{def:pom-typeclass-volume-and-threshold}
+If the limit exists and is independent of the reference sequence \(x^t\in\mathcal T_t(w)\), define the exponential volume
+\[
+\mathcal V_w(\delta):=\lim_{t\to\infty}\frac{1}{t}\log|\mathcal B_t(w,\delta;x^t)|.
+\]
+Define the corresponding covering threshold
+\[
+R_w(\delta):=H(w)-\mathcal V_w(\delta)\ \ge\ 0.
+\]
+\end{definition}
+
+\begin{theorem}[Existence and Variational Representation of Exponential Volume]\label{thm:pom-typeclass-hamming-ball-volume-variational}
+In the setting of Definition \ref{def:pom-typeclass-and-hamming-ball}, the limit \(\mathcal V_w(\delta)\) exists and satisfies the strict variational formula
+\[
+\boxed{\;
+\mathcal V_w(\delta)
+=
+\sup\Bigl\{H_P(Y|X):\ P\in\Delta(X\times X),\ P_X=P_Y=w,\ \mathbb P_P(X=Y)\ge 1-\delta\Bigr\}\; }.
+\]
+Moreover, this exponential volume is independent of the choice of reference sequence \(x^t\in\mathcal T_t(w)\).
+\end{theorem}
+\begin{proof}
+For any \(x^t\in\mathcal T_t(w)\) and any \(y^t\in\mathcal T_t(w)\), denote their joint empirical distribution (contingency table) as \(P_{x^t y^t}\in\Delta(X\times X)\).
+The type constraint \(y^t\in\mathcal T_t(w)\) is equivalent to \(P_Y=w\), while \(x^t\in\mathcal T_t(w)\) is equivalent to \(P_X=w\).
+The Hamming constraint \(t^{-1}d_{\rm H}(x^t,y^t)\le \delta\) is equivalent to \(P(X=Y)\ge 1-\delta\).
+\par
+For fixed \(x^t\), when \(y^t\) has joint type equal to some feasible \(P\),
+the number of \(y^t\) conforming to that joint type has exponential rate \(H_P(Y|X)\) (standard type counting: \(|\{y^t:\ P_{x^t y^t}=P\}|=\exp(tH_P(Y|X)+o(t))\)).
+Hence \(|\mathcal B_t(w,\delta;x^t)|\) is determined on the exponential scale by the maximum \(H_P(Y|X)\) over the feasible set, yielding the stated supremum.
+\par
+Since the feasible set is compact in the finite-dimensional simplex and \(H_P(Y|X)\) is continuous, the maximum exists.
+Upper bound (\(\limsup\)) and lower bound (\(\liminf\)) are obtained by pairing upper bounds over unions of finitely many joint types with lower bounds by selecting near-optimal joint types, establishing existence of the limit.
+Finally, the type class has transitive action under coordinate permutations, \(|\mathcal B_t(w,\delta;x^t)|\) depends only on the type of \(x^t\) rather than the specific sequence, hence is independent of the reference sequence. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Unique Maximal Coupling and Exponential Family Structure]\label{thm:pom-typeclass-hamming-ball-unique-maximizer-exponential-family}
+For each \(\delta\in(0,1)\), the supremum in Theorem \ref{thm:pom-typeclass-hamming-ball-volume-variational} is attained by a unique coupling \(P^\star_\delta\).
+There exist unique scalar \(\lambda(\delta)\in\RR\) and unique positive vector \(u(\delta)\in\RR_{>0}^{X}\) such that
+\[
+\boxed{\;
+P^\star_\delta(x,y)
+=
+\frac{u_xu_y\,\exp\!\bigl(\lambda(\delta)\,\mathbf 1_{\{x=y\}}\bigr)}
+{\sum_{a,b\in X}u_au_b\,\exp\!\bigl(\lambda(\delta)\,\mathbf 1_{\{a=b\}}\bigr)}\qquad(\forall x,y\in X)\; }.
+\]
+Moreover, its marginals satisfy \(P^\star_{\delta,X}=P^\star_{\delta,Y}=w\).
+Write \(p_0:=\sum_{x\in X}w(x)^2\).
+If \(1-\delta>p_0\), the diagonal mass constraint saturates and satisfies \(\mathbb P_{P^\star_\delta}(X=Y)=1-\delta\), with \(\lambda(\delta)>0\).
+If \(1-\delta\le p_0\), the optimal coupling is the independent coupling \(P^\star_\delta=w\otimes w\), and \(\lambda(\delta)=0\), \(\mathcal V_w(\delta)=H(w)\), \(R_w(\delta)=0\).
+\end{theorem}
+\begin{proof}
+The feasible set is given by linear constraints and inequality constraints, hence is compact and convex.
+The function \(H_P(Y|X)=H(P)-H(w)\) is strictly concave in \(P\) (since \(H(P)\) is strictly concave and \(H(w)\) is constant),
+hence the maximizer is unique.
+\par
+Duality (KKT) yields exponential family form:
+\(
+P(x,y)\propto \exp(\alpha_x+\beta_y+\lambda\mathbf 1_{\{x=y\}})
+\).
+Since constraints require \(P_X=P_Y=w\) and the problem is symmetric under exchanging \(X,Y\), uniqueness forces \(\alpha=\beta\) (up to constant absorbed in normalization).
+Setting \(u_x=e^{\alpha_x}>0\) yields the stated structure.
+\par
+Let \(P^{\mathrm{ind}}:=w\otimes w\), then \(H_{P^{\mathrm{ind}}}(Y|X)=H(w)\) and \(\mathbb P_{P^{\mathrm{ind}}}(X=Y)=p_0\).
+Since for any coupling \(P\) we always have \(H_P(Y|X)\le H(Y)=H(w)\), when \(1-\delta\le p_0\), \(P^{\mathrm{ind}}\) is feasible and attains the global upper bound;
+hence by uniqueness we know \(P^\star_\delta=P^{\mathrm{ind}}\), and the exponential family parameter satisfies \(\lambda(\delta)=0\).
+\par
+When \(1-\delta>p_0\), the independent coupling is infeasible.
+If the constraint is strict inequality at the optimal point, then by complementary slackness we must have \(\lambda(\delta)=0\), yielding the independent coupling again, a contradiction.
+Hence the constraint must saturate, with \(\lambda(\delta)>0\) and \(\mathbb P_{P^\star_\delta}(X=Y)=1-\delta\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Exponential Threshold for Partial Inversion: Covering Rate Determined by \texorpdfstring{$R_w(\delta)$}{Rw(delta)}]\label{thm:pom-microcanonical-partial-inversion-threshold}
+Let \(Y^t\) be uniformly distributed on \(\mathcal T_t(w)\).
+Allow additional \(B\) bits of side information: encoder takes any map \(\mathrm{enc}:\mathcal T_t(w)\to\{1,\dots,2^B\}\),
+decoder outputs \(\widehat Y^t\in\mathcal T_t(w)\) given input \(\mathrm{enc}(Y^t)\).
+For fixed \(\delta\in(0,1)\) define distortion event
+\[
+\mathcal E_\delta:=\{t^{-1}d_{\rm H}(Y^t,\widehat Y^t)\le \delta\},
+\]
+and let optimal success rate be
+\[
+\mathrm{Succ}^{\mathrm{opt}}_t(B,\delta):=\sup_{\mathrm{enc},\mathrm{dec}}\ \mathbb P(\mathcal E_\delta).
+\]
+Let \(\mathcal V_w(\delta)\) and \(R_w(\delta)\) be as in Definition \ref{def:pom-typeclass-volume-and-threshold}.
+As \(t\to\infty\) with \(B=\lfloor rt/\log 2\rfloor\) (rate \(r\ge 0\) fixed), a phase transition occurs:
+\[
+\boxed{\;
+\lim_{t\to\infty}\mathrm{Succ}^{\mathrm{opt}}_t(B,\delta)=
+\begin{cases}
+0, & r<R_w(\delta),\\
+1, & r>R_w(\delta).
+\end{cases}\;}
+\]
+Moreover, when \(r<R_w(\delta)\) there is an exponential upper bound
+\[
+\boxed{\;
+\limsup_{t\to\infty}\frac{1}{t}\log \mathrm{Succ}^{\mathrm{opt}}_t(B,\delta)\ \le\ r-R_w(\delta)\;<0\; }.
+\]
+\end{theorem}
+\begin{proof}
+By type counting, \(|\mathcal T_t(w)|=\exp(tH(w)+o(t))\).
+By Theorem \ref{thm:pom-typeclass-hamming-ball-volume-variational}, for any reference point \(x^t\in\mathcal T_t(w)\) we have
+\(|\mathcal B_t(w,\delta;x^t)|=\exp(t\mathcal V_w(\delta)+o(t))\), with error term independent of reference point.
+\par
+\textbf{Upper bound:}
+Any encoding produces at most \(M=2^B=\exp(rt+o(t))\) decoding output points,
+whose \(\delta\)-success set is contained in the union of at most \(M\) intra-type balls, with covering number at most
+\(
+M\exp(t\mathcal V_w(\delta)+o(t))
+\).
+Dividing by \(|\mathcal T_t(w)|\) yields
+\[
+\mathrm{Succ}^{\mathrm{opt}}_t(B,\delta)
+\le
+\exp\!\bigl(t(r-\!R_w(\delta))+o(t)\bigr),
+\]
+establishing exponential decay when \(r<R_w(\delta)\) and yielding the stated \(\limsup\) upper bound.
+\par
+\textbf{Lower bound:}
+Take a maximal ball covering (greedy selection of ball centers suffices), the required number of balls has exponential rate equal to
+\(|\mathcal T_t(w)|/|\mathcal B_t(w,\delta;\cdot)|=\exp(tR_w(\delta)+o(t))\).
+When \(r>R_w(\delta)\), the allowed number of codewords \(M=\exp(rt+o(t))\) strictly exceeds the required covering number on the exponential scale,
+hence one can construct a codebook with coverage ratio tending to \(1\), yielding \(\mathrm{Succ}^{\mathrm{opt}}_t(B,\delta)\to 1\).
+This completes the proof.
+\end{proof}
+
+\paragraph{Scalarization of Optimal Coupling: Single-Parameter Solution for Diagonal Multiplier}
+Following the exponential family parameters of Theorem \ref{thm:pom-typeclass-hamming-ball-unique-maximizer-exponential-family}.
+Write \(\kappa:=e^{\lambda}-1\in(-1,\infty)\), and denote \(A:=\sum_{x\in X}u_x\).
+
+\begin{theorem}[Quadratic Roots and Self-Consistent Equation for Marginal Constraints]\label{thm:pom-typeclass-diagonal-coupling-scalarization}
+For any given \(\kappa>-1\) and any \(A>0\), the marginal constraint \(P_X=P_Y=w\) is equivalent to satisfying the quadratic equation for each \(x\in X\)
+\[
+\boxed{\;
+\kappa u_x^2+A u_x-w(x)=0\; } .
+\]
+Hence (taking positive root) we have explicit expression
+\[
+u_x(A,\kappa)=
+\begin{cases}
+\dfrac{-A+\sqrt{A^2+4\kappa w(x)}}{2\kappa}, & \kappa\ne0,\\[10pt]
+\dfrac{w(x)}{A}, & \kappa=0.
+\end{cases}
+\]
+Moreover, for each fixed \(\kappa>-1\), there exists unique \(A=A(\kappa)>0\) such that the self-consistent condition \(A=\sum_x u_x(A,\kappa)\) holds;
+this unique solution yields unique vector \(u(\kappa)\).
+\end{theorem}
+\begin{proof}
+By the exponential family form we can write (where \(A=\sum_x u_x\))
+\[
+P(x,y)=\frac{u_xu_y\bigl(1+\kappa\mathbf 1_{\{x=y\}}\bigr)}{Z},
+\qquad
+Z:=\sum_{a,b\in X}u_au_b\bigl(1+\kappa\mathbf 1_{\{a=b\}}\bigr)=A^2+\kappa\sum_{a\in X}u_a^2.
+\]
+Summing over fixed \(x\) yields marginal
+\[
+w(x)=\sum_y P(x,y)=\frac{u_x(A+\kappa u_x)}{Z}.
+\]
+Note that \(u\mapsto cu\ (c>0)\) does not change \(P\) (numerator and denominator multiply by \(c^2\)), so we can choose equivalent scaling such that \(Z=1\).
+Under this normalization, the marginal constraint is equivalent to \(w(x)=u_x(A+\kappa u_x)\), i.e., the stated quadratic equation.
+The explicit positive root follows immediately.
+\par
+For fixed \(\kappa>-1\), the function \(A\mapsto \sum_x u_x(A,\kappa)\) is continuous and strictly decreasing, tending to \(+\infty\) as \(A\downarrow 0\) and to \(0\) as \(A\to\infty\),
+hence the equation \(A=\sum_x u_x(A,\kappa)\) has a unique solution.
+Uniqueness yields uniqueness of \(u(\kappa)\).
+Finally, summing \(w(x)=u_x(A+\kappa u_x)\) over \(x\) gives \(A^2+\kappa\sum_x u_x^2=\sum_x w(x)=1\), hence \(Z=1\) is consistent with the above normalization. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Strict Monotonicity and Unique Matching of Diagonal Mass]\label{thm:pom-typeclass-diagonal-mass-monotone}
+Let \(P^\star_{\delta(\kappa)}\) be the optimal coupling given by parameter \(\kappa\in(-1,\infty)\), and denote its diagonal mass
+\[
+\Delta(\kappa):=\sum_{x\in X}P^\star_{\delta(\kappa)}(x,x)=\mathbb P(X=Y).
+\]
+Then \(\Delta(\kappa)\) is strictly increasing on \(\kappa\in(-1,\infty)\), with endpoint values
+\[
+\Delta(0)=\sum_x w(x)^2,\qquad
+\lim_{\kappa\downarrow-1}\Delta(\kappa)=0,\qquad
+\lim_{\kappa\to\infty}\Delta(\kappa)=1.
+\]
+Hence when \(1-\delta>\sum_x w(x)^2\), there exists unique \(\kappa(\delta)>0\) such that \(\Delta(\kappa(\delta))=1-\delta\);
+while when \(1-\delta\le \sum_x w(x)^2\), the optimal coupling is the independent coupling corresponding to \(\kappa(\delta)=0\).
+\end{theorem}
+\begin{proof}
+By the exponential family form and marginal constraint, \(\Delta(\kappa)\) can be expressed as a rational function of \(u(\kappa)\);
+when \(\kappa\) increases, the diagonal weight \((1+\kappa)u_x^2\) strictly rises relative to off-diagonal weight \(u_xu_y\ (x\neq y)\),
+while the marginal is fixed to \(w\), hence diagonal mass must strictly increase.
+Endpoint values follow from continuity as \(\kappa\to 0\) and limits as \(\kappa\downarrow-1,\ \kappa\to\infty\) (diagonal terms vanish/dominate respectively).
+Strict monotonicity and endpoint surjectivity guarantee: for any target diagonal mass \(p\in(0,1)\) there exists unique \(\kappa\in(-1,\infty)\) such that \(\Delta(\kappa)=p\).
+Combined with the discussion in Theorem \ref{thm:pom-typeclass-hamming-ball-unique-maximizer-exponential-family} of "active constraint \(\Leftrightarrow 1-\delta>\sum_x w(x)^2\)", we obtain the stated matching relation. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Keep-Resample Structure: Optimal Coupling as One-Parameter Gibbs Channel]\label{thm:pom-typeclass-keep-resample-channel}
+Let \(P^\star_\delta\) be the optimal coupling, represented by parameters \((u,\kappa)\).
+Denote
+\[
+A=\sum_x u_x,\qquad \pi(x):=\frac{u_x}{A},
+\qquad
+p_x:=\mathbb P_{P^\star_\delta}(Y=x\mid X=x)=\frac{(1+\kappa)u_x}{A+\kappa u_x}\in(0,1).
+\]
+Then the conditional distribution \(Y\mid X=x\) has the decomposition
+\[
+\boxed{\;
+\mathbb P(Y=x\mid X=x)=p_x,\qquad
+\mathbb P(Y=y\mid X=x,\ y\neq x)=(1-p_x)\frac{\pi(y)}{1-\pi(x)}\; }.
+\]
+\end{theorem}
+\begin{proof}
+By the exponential family form, for fixed \(x\) we have
+\(
+P^\star_\delta(x,x)\propto (1+\kappa)u_x^2
+\)
+while for \(y\neq x\) we have
+\(
+P^\star_\delta(x,y)\propto u_xu_y
+\).
+Normalizing over \(y\) and writing in terms of \(\pi\) yields the decomposition. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Mutual Information Characterization of Covering Threshold: Minimum Mutual Information under Diagonal Constraint]\label{thm:pom-typeclass-rate-distortion-mutual-information}
+Let
+\[
+\mathcal C_\delta(w):=\Bigl\{P\in\Delta(X\times X):\ P_X=P_Y=w,\ \mathbb P_P(X=Y)\ge 1-\delta\Bigr\}.
+\]
+Then the strict equality holds
+\[
+\boxed{\;
+R_w(\delta)=\inf_{P\in\mathcal C_\delta(w)} I_P(X;Y)\; } ,
+\]
+and this infimum is attained by the unique coupling \(P^\star_\delta\).
+\end{theorem}
+\begin{proof}
+For any \(P\in\mathcal C_\delta(w)\), the identity holds
+\(
+I_P(X;Y)=H(w)-H_P(Y|X)
+\).
+Hence minimizing mutual information over \(\mathcal C_\delta(w)\) is equivalent to maximizing conditional entropy.
+By Theorem \ref{thm:pom-typeclass-hamming-ball-volume-variational},
+the maximum conditional entropy value is \(\mathcal V_w(\delta)\), attained by the unique maximal coupling of Theorem \ref{thm:pom-typeclass-hamming-ball-unique-maximizer-exponential-family}.
+Thus
+\(
+R_w(\delta)=H(w)-\mathcal V_w(\delta)=I_{P^\star_\delta}(X;Y)
+\).
+This completes the proof.
+\end{proof}
+
+\begin{theorem}[Dual Derivative Identity: \texorpdfstring{$R_w'(\delta)$}{Rw'(delta)} Equals Negative of Optimal Diagonal Multiplier]\label{thm:pom-typeclass-dual-derivative}
+Write \(p_0=\sum_{x\in X}w(x)^2\).
+When \(1-\delta>p_0\) (diagonal mass constraint active), the function \(\delta\mapsto R_w(\delta)\) is differentiable on this interval, satisfying
+\[
+\boxed{\;
+-\frac{d}{d\delta}R_w(\delta)=\lambda(\delta)\; } ,
+\]
+where \(\lambda(\delta)\) is the KKT multiplier (shadow price of diagonal mass constraint) of the optimal coupling in Theorem \ref{thm:pom-typeclass-hamming-ball-unique-maximizer-exponential-family}.
+When \(1-\delta\le p_0\), the optimal coupling is independent, \(R_w(\delta)=0\) and \(\lambda(\delta)=0\).
+\end{theorem}
+\begin{proof}
+Write the diagonal mass constraint as
+\(
+g_\delta(P):=(1-\delta)-\mathbb P_P(X=Y)\le 0
+\).
+For the maximization problem
+\(
+\sup\{H_P(Y|X):\ P_X=P_Y=w,\ g_\delta(P)\le 0\}
+\),
+take Lagrangian
+\[
+\mathscr L(P,\lambda)
+:=H_P(Y|X)-\lambda\,g_\delta(P)
+=H_P(Y|X)+\lambda\bigl(\mathbb P_P(X=Y)-1+\delta\bigr),
+\qquad \lambda\ge 0.
+\]
+By Theorem \ref{thm:pom-typeclass-hamming-ball-unique-maximizer-exponential-family}:
+when \(1-\delta>p_0\) the constraint is active and saturates (\(\lambda(\delta)>0\));
+when \(1-\delta\le p_0\) the optimal solution is independent coupling with \(\lambda(\delta)=0\).
+In both cases strict concavity yields strong duality and uniqueness of multiplier.
+Hence the optimal value can be written as
+\[
+\mathcal V_w(\delta)=\max_{P_X=P_Y=w}\ \mathscr L(P,\lambda(\delta)),
+\]
+with \(\lambda(\delta)\) consistent with the diagonal coefficient in the exponential family form.
+By the envelope theorem,
+\[
+\frac{d}{d\delta}\mathcal V_w(\delta)=\frac{\partial}{\partial\delta}\mathscr L(P^\star_\delta,\lambda(\delta))=\lambda(\delta).
+\]
+Since \(R_w(\delta)=H(w)-\mathcal V_w(\delta)\), we have \(R_w'(\delta)=-\lambda(\delta)\), yielding the stated identity. This completes the proof.
+\end{proof}
+
+\endinput

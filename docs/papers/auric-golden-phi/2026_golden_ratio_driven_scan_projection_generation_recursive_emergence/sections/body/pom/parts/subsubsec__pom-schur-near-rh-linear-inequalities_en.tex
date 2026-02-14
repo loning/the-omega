@@ -1,0 +1,143 @@
+% (User input window)
+% 2026-02-14 12:37:04 (Asia/Singapore)
+
+\paragraph{Linear Inequality Completion of Near-RH: Determining Square Root Threshold by Finite Pressure Constraints}
+Theorem \ref{thm:pom-schur-channel-radius-character-sieve} shows that: under the "non-degenerate leading term dominance" regime,
+the spectral radius \(\rho(B_{q,\lambda})\) of each Schur channel is given by the \emph{linear functional maximum} of a family of partition cycle count vectors on low-order pressures \(\{P(r)\}_{r\le q}\).
+This section records a direct corollary: if this non-degenerate regime holds for all non-trivial channels, then global near-RH (all non-trivial channels satisfy square root bounds) is equivalent to a set of \emph{finitely enumerable} linear inequalities,
+and the "linear margin" can directly propagate as exponential certificates for the spectral gap and prime-shadow deviation.
+
+\paragraph{Notation Recall: Partition Linear Form and Visible Cycle Type Set}
+Adopt the notation from \S\ref{subsubsec:pom-wreath-artin-factorization} and
+\S\ref{subsubsec:pom-schur-character-sieve-thermodynamic}.
+Fix an integer \(q\ge2\), and assume there exists a Schur block decomposition
+\(
+A_q\simeq\bigoplus_{\lambda\vdash q}(B_{q,\lambda}\otimes I_{f^\lambda})
+\).
+For a partition \(\nu\vdash q\), write its cycle count as \(c_r(\nu)\).
+Let the low-order pressures \(P(r)=\log\rho_r\ (1\le r\le q)\) be as defined before \eqref{eq:pom-sr-main-term-kappa},
+and define the partition linear form
+\[
+L(\nu):=\sum_{r\ge1} c_r(\nu)\,P(r).
+\]
+Additionally, define the "non-trivial character visible" cycle type set
+\[
+\mathcal{N}_q
+:=
+\Bigl\{\nu\vdash q:\ \exists\,\lambda\vdash q,\ \lambda\neq(q)\ \text{such that}\ \chi^\lambda(\nu)\neq0\Bigr\}.
+\]
+
+\begin{theorem}[Complete Linearization of Near-RH]\label{thm:pom-schur-near-rh-linear-inequality-complete}
+Under the setup of Theorem \ref{thm:pom-schur-channel-radius-character-sieve},
+further assume its "non-degenerate leading term dominance" condition holds for \emph{all} non-trivial channels \(\lambda\neq(q)\),
+i.e., for each \(\lambda\neq(q)\),
+\[
+\log\rho(B_{q,\lambda})=\max_{\nu:\ \chi^\lambda(\nu)\neq0} L(\nu).
+\]
+Then the following two statements are equivalent:
+\begin{enumerate}
+  \item \textbf{(All-channel square root bound / near-RH)}
+  \[
+  \max_{\lambda\neq(q)}\rho(B_{q,\lambda})\ \le\ \rho(B_{q,(q)})^{1/2}
+  \qquad\Bigl(\rho(B_{q,(q)})=e^{P(q)}\Bigr);
+  \]
+  \item \textbf{(Finite linear inequality family)} For all \(\nu\in\mathcal{N}_q\),
+  \[
+  \boxed{\;2L(\nu)\ \le\ P(q)\; }.
+  \]
+\end{enumerate}
+Therefore, under the above non-degenerate regime, near-RH is strictly equivalent to a family of explicitly enumerable finite linear constraints on the pressure vector \((P(1),\dots,P(q))\).
+\end{theorem}
+\begin{proof}
+\textbf{(1)\(\Rightarrow\)(2).}
+Take any \(\nu\in\mathcal{N}_q\).
+By definition, there exists \(\lambda\neq(q)\) such that \(\chi^\lambda(\nu)\neq0\).
+By the non-degeneracy assumption and the definition of \(\max\),
+\(
+L(\nu)\le \log\rho(B_{q,\lambda})
+\).
+Further by near-RH, \(\log\rho(B_{q,\lambda})\le \frac12\log\rho(B_{q,(q)})=\frac12P(q)\),
+hence \(2L(\nu)\le P(q)\).
+\par
+\textbf{(2)\(\Rightarrow\)(1).}
+For any \(\lambda\neq(q)\), its character support
+\(
+\mathrm{Supp}(\lambda)=\{\nu:\chi^\lambda(\nu)\neq0\}
+\)
+satisfies \(\mathrm{Supp}(\lambda)\subseteq\mathcal{N}_q\).
+Hence by (2), \(L(\nu)\le P(q)/2\) for all \(\nu\in\mathrm{Supp}(\lambda)\),
+thus
+\[
+\log\rho(B_{q,\lambda})
+=\max_{\nu\in\mathrm{Supp}(\lambda)} L(\nu)\ \le\ \frac12P(q),
+\]
+i.e., \(\rho(B_{q,\lambda})\le e^{P(q)/2}=\rho(B_{q,(q)})^{1/2}\).
+Taking the maximum over all \(\lambda\neq(q)\) yields near-RH.
+\end{proof}
+
+\begin{corollary}[Margin Propagation of Square Root Bound: Linear Margin \texorpdfstring{$\delta$}{delta} Yields All-Channel Spectral Gap and Prime-Deviation Exponential Rates]\label{cor:pom-schur-near-rh-margin-propagation}
+Under the setup of Theorem \ref{thm:pom-schur-near-rh-linear-inequality-complete}, given \(\delta>0\).
+If for all \(\nu\in\mathcal{N}_q\), the strict margin holds
+\[
+2L(\nu)\ \le\ P(q)-\delta,
+\]
+then for all non-trivial channels \(\lambda\neq(q)\), the quantitative spectral gap holds
+\[
+\boxed{\;
+\rho(B_{q,\lambda})\ \le\ \exp\!\Bigl(\frac{P(q)-\delta}{2}\Bigr)\; }.
+\]
+Thus by Theorem \ref{thm:pom-schur-chebotarev-prime-deviation} (the explicit formula template for channel prime-shadow),
+for each \(\lambda\neq(q)\), there exists a constant \(C_{q,\lambda}>0\) such that for all \(N\ge2\),
+\[
+\boxed{\;
+\Pi_\lambda(N)=O\!\left(\frac{\exp\!\bigl(\tfrac{P(q)-\delta}{2}N\bigr)}{N}\right)\;}
+\]
+(error's exponential rate is controlled by \(\rho(B_{q,\lambda})\)).
+\end{corollary}
+\begin{proof}
+By the assumption, for any \(\lambda\neq(q)\), we have
+\(
+\max_{\nu\in\mathrm{Supp}(\lambda)}L(\nu)\le (P(q)-\delta)/2
+\);
+further by the non-degeneracy assumption \(\log\rho(B_{q,\lambda})=\max_{\nu\in\mathrm{Supp}(\lambda)}L(\nu)\), the spectral radius upper bound follows.
+The prime-shadow error term estimate is a direct substitution into Theorem \ref{thm:pom-schur-chebotarev-prime-deviation}.
+\end{proof}
+
+\begin{corollary}[Schur-Pressure Polytope Shell: Channel Spectral Radius as Support Function of Explicit Convex Polytope]\label{cor:pom-schur-pressure-polytope-shell}
+Fix \(q\ge2\) and write the pressure vector \(p:=(P(1),\dots,P(q))\in\RR^q\).
+Let the cycle count vector
+\(
+c(\nu):=(c_1(\nu),\dots,c_q(\nu))\in\NN_0^q
+\)
+and define the convex polytope
+\[
+\mathcal{P}_q:=\mathrm{conv}\{c(\nu):\ \nu\vdash q\}\subset\RR^q,
+\qquad
+\mathcal{P}_q(\lambda):=\mathrm{conv}\{c(\nu):\ \nu\in\mathrm{Supp}(\lambda)\}\subseteq\mathcal{P}_q.
+\]
+Then under the non-degenerate regime of Theorem \ref{thm:pom-schur-channel-radius-character-sieve}, for each \(\lambda\vdash q\), the support function representation holds
+\[
+\boxed{\;
+\log\rho(B_{q,\lambda})
+=
+\max_{\nu\in\mathrm{Supp}(\lambda)}L(\nu)
+=
+\max_{x\in\mathcal{P}_q(\lambda)}\langle x,p\rangle\; }.
+\]
+Therefore, the channel spectral radius set
+\(\{\log\rho(B_{q,\lambda})\}_{\lambda\vdash q}\)
+is the support function values of the same pressure vector \(p\) on a family of explicitly enumerable convex polytopes \(\{\mathcal{P}_q(\lambda)\}\);
+in particular, the near-RH constraint belongs to the finite-dimensional linear programming category:
+\[
+\max_{\lambda\neq(q)}\ \max_{x\in\mathcal{P}_q(\lambda)}\bigl(2\langle x,p\rangle-P(q)\bigr)\ \le\ 0.
+\]
+\end{corollary}
+\begin{proof}
+By definition, \(L(\nu)=\langle c(\nu),p\rangle\).
+And \(\max_{\nu\in\mathrm{Supp}(\lambda)}\langle c(\nu),p\rangle\), as a maximum over a discrete set, is equivalent to the support function value on its convex hull \(\mathcal{P}_q(\lambda)\);
+further by Theorem \ref{thm:pom-schur-channel-radius-character-sieve}, \(\log\rho(B_{q,\lambda})=\max_{\nu\in\mathrm{Supp}(\lambda)}L(\nu)\).
+The last near-RH constraint writes \(\log\rho(B_{q,\lambda})\le P(q)/2\) as a support function inequality and takes the maximum.
+\end{proof}
+
+\input{sections/body/pom/parts/subsubsec__pom-schur-near-rh-linear-inequalities-part2_en}
+

@@ -1,0 +1,247 @@
+% (User input window)
+% 2026-02-14 17:56:07 (Asia/Singapore)
+
+\paragraph{Endpoint Expansions, Curvature Audit, and Hellinger Universal Limit}
+Adopt the optimal coupling structure and dual sensitivity formula from Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}.
+This section records the explicit asymptotic laws of the rate function \(R_w(\delta)\) at both endpoints \(\delta\downarrow 0\) and \(\delta\uparrow (1-p_2(w))\), and provides endpoint curvature constants auditable by finite collision moments and the Hellinger limit shape under rare mismatch.
+
+\begin{theorem}[Small Distortion Endpoint Law: Dual Variable Logarithmic Divergence and Rate Endpoint Expansion as \texorpdfstring{$\delta\downarrow0$}{delta->0}]\label{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint}
+Let \(X\) be a finite alphabet (\(|X|\ge2\)), and take a full support distribution \(w\in\Delta(X)\).
+Write
+\[
+R_w(\delta):=\inf\{I_P(X;Y):P_X=P_Y=w,\ \mathbb P(X=Y)\ge 1-\delta\},\qquad \delta\in[0,1].
+\]
+Define the Hellinger quantity
+\[
+A_{1/2}(w):=\sum_{x\in X}\sqrt{w(x)}\quad(>1).
+\]
+Let \(\lambda(\delta)\) be the optimal dual variable (satisfying \(\frac{\mathrm d}{\mathrm d\delta}R_w(\delta)=-\lambda(\delta)\), see Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}).
+Then as \(\delta\downarrow 0\), we have
+\[
+\lambda(\delta)=\log\frac{A_{1/2}(w)^2-1}{\delta}+o(1),
+\]
+and
+\[
+R_w(\delta)
+=H(w)-\delta\log\frac{1}{\delta}-\delta\log\bigl(A_{1/2}(w)^2-1\bigr)+O(\delta).
+\]
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}, the optimal coupling satisfies
+\[
+P^\star_\delta(x,y)=\frac{u_xu_y\bigl(1+\kappa\,\mathbf 1_{\{x=y\}}\bigr)}{Z},
+\qquad \lambda=\log(1+\kappa).
+\]
+As \(\delta\downarrow 0\), the diagonal constraint approaches the deterministic coupling, so we must have \(\kappa\to\infty\).
+Using scale invariance, we can choose an equivalence gauge such that
+\(
+\kappa\sum_x u_x^2=1+o(1)
+\)
+(hence \(Z=(\sum_x u_x)^2+\kappa\sum_x u_x^2=1+o(1)\)).
+Under this gauge, the marginal constraint equations give
+\[
+u_x=\frac{1}{\sqrt{\kappa}}\sqrt{w(x)}+o(\kappa^{-1/2}),
+\qquad
+\sum_x u_x=\frac{A_{1/2}(w)}{\sqrt{\kappa}}+o(\kappa^{-1/2}),
+\qquad
+\sum_x u_x^2=\frac{1}{\kappa}+o(\kappa^{-1}).
+\]
+Hence the diagonal mass
+\[
+\mathbb P(X=Y)
+=\frac{(1+\kappa)\sum_x u_x^2}{(\sum_x u_x)^2+\kappa\sum_x u_x^2}
+=1-\frac{A_{1/2}(w)^2-1}{\kappa}+o(\kappa^{-1}),
+\]
+giving
+\(
+\kappa=\frac{A_{1/2}(w)^2-1}{\delta}\,(1+o(1))
+\)
+and thus
+\(
+\lambda(\delta)=\log(1+\kappa)=\log\frac{A_{1/2}(w)^2-1}{\delta}+o(1)
+\).
+Integrating \(R'_w(\delta)=-\lambda(\delta)\) from \(\delta\downarrow 0\) and using \(R_w(0)=H(w)\) (see endpoint discussion in the main text) yields the stated expansion.
+\end{proof}
+
+\begin{theorem}[Quadratic Lift-Off at Zero Rate Endpoint: Curvature Depending Only on \texorpdfstring{$p_2,p_3$}{p2,p3} as \texorpdfstring{$\delta\uparrow(1-p_2(w))$}{delta->delta0}]\label{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature}
+Write the power sums \(p_k(w):=\sum_{x\in X}w(x)^k\), and let
+\[
+\delta_0:=1-p_2(w).
+\]
+Then when \(\delta\ge\delta_0\), the independent coupling \(w\otimes w\) is feasible and gives \(R_w(\delta)=0\) (Proposition \ref{prop:pom-diagonal-rate-zero-threshold-collision}).
+As \(\delta\uparrow\delta_0\),
+\[
+R_w(\delta)=\frac{(\delta_0-\delta)^2}{2\,C(w)}+O\bigl((\delta_0-\delta)^3\bigr),
+\]
+where the curvature constant
+\[
+C(w):=p_2(w)+p_2(w)^2-2p_3(w)
+=\sum_{x\in X}w(x)^2(1-w(x))^2+2\sum_{x<y}w(x)^2w(y)^2>0.
+\]
+\end{theorem}
+\begin{proof}
+As \(\delta\uparrow\delta_0\), the optimal solution approaches the independent coupling, and the dual parameter \(\kappa(\delta)=e^{\lambda(\delta)}-1\downarrow 0\) (Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}).
+Using scale invariance, choose the gauge \(\sum_x u_x=1\).
+Write
+\(
+u_x=w(x)+\kappa a_x+O(\kappa^2)
+\).
+By the first-order comparison of the marginal constraint
+\(
+w(x)=u_x(1+\kappa u_x)/(1+\kappa\sum_a u_a^2)
+\),
+we obtain
+\(
+a_x=w(x)\bigl(p_2(w)-w(x)\bigr)
+\),
+and hence
+\(
+\sum_x u_x^2=p_2(w)+2\kappa\bigl(p_2(w)^2-p_3(w)\bigr)+O(\kappa^2)
+\).
+The diagonal mass is
+\[
+\mathbb P(X=Y)=\frac{(1+\kappa)\sum_x u_x^2}{1+\kappa\sum_x u_x^2}
+=p_2(w)+\kappa\,C(w)+O(\kappa^2),
+\]
+hence
+\(
+\delta_0-\delta=\mathbb P(X=Y)-p_2(w)=\kappa C(w)+O(\kappa^2)
+\).
+On the other hand, by the sensitivity formula
+\(
+R'_w(\delta)=-\log(1+\kappa)=-\kappa+O(\kappa^2)
+\).
+Eliminating \(\kappa\) gives
+\(
+R'_w(\delta)=-(\delta_0-\delta)/C(w)+O((\delta_0-\delta)^2)
+\),
+integrating over \(\delta\) yields the quadratic lift-off expansion.
+\end{proof}
+
+\begin{proposition}[Analytic Convexity and Curvature Representation: \texorpdfstring{$R_w$}{R} is Strictly Convex on \texorpdfstring{$(0,\delta_0)$}{(0,delta0)}]\label{prop:pom-diagonal-rate-analytic-strict-convexity-curvature}
+Let \(\delta\in(0,\delta_0)\), and write the optimal dual parameter \(\kappa(\delta)=e^{\lambda(\delta)}-1\in(0,\infty)\).
+Then \(R_w(\delta)\) is real analytic and strictly convex on \((0,\delta_0)\), and satisfies the endpoint slopes
+\[
+R_w'(0^+)=-\infty,\qquad R_w'(\delta_0^-)=0.
+\]
+Moreover, the second derivative has the explicit form
+\[
+R_w''(\delta)=-\frac{\kappa'(\delta)}{1+\kappa(\delta)}>0,
+\qquad
+R_w''(\delta)=\left(\frac{\mathrm d}{\mathrm d\lambda}\mathbb P_{P^\star_\delta}(X=Y)\right)^{-1}.
+\]
+\end{proposition}
+\begin{proof}
+By Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}, on \((0,\delta_0)\) the optimal solution is unique and varies smoothly with parameters; \(\kappa\mapsto \mathbb P(X=Y)\) is a strictly increasing real analytic function, so by the implicit function theorem \(\kappa(\delta)\) is real analytic and strictly decreasing on \((0,\delta_0)\).
+From
+\(
+R_w'(\delta)=-\log(1+\kappa(\delta))
+\)
+we obtain
+\(
+R_w''(\delta)=-\kappa'(\delta)/(1+\kappa(\delta))>0
+\),
+hence strictly convex.
+The endpoint slopes follow directly from \(\delta\downarrow 0\Rightarrow \kappa\to\infty\) and \(\delta\uparrow\delta_0\Rightarrow \kappa\to 0\).
+The last identity follows from the chain rule differentiation of \(\lambda=\log(1+\kappa)\) and the \(\delta\)-constraint \(\mathbb P(X=Y)=1-\delta\).
+\end{proof}
+
+\begin{proposition}[Finite Moment Closure at Endpoints: Taylor Coefficients Depend Only on Finite-Order Collision Moments in \texorpdfstring{$\delta_0$}{delta0} Neighborhood]\label{prop:pom-diagonal-rate-finite-moment-closure}
+Write \(\varepsilon:=\delta_0-\delta\ge 0\).
+In a sufficiently small neighborhood of \(\varepsilon\), \(R_w(\delta)\) can be expanded as
+\[
+R_w(\delta)=\sum_{j\ge 2} a_j(w)\,\varepsilon^j,
+\qquad
+a_2(w)=\frac{1}{2C(w)}.
+\]
+Moreover, for any integer \(j\ge 2\), the coefficient \(a_j(w)\) can be expressed as a symmetric polynomial of \(w\), and is uniquely determined by the finite power sums \(\{p_2(w),p_3(w),\dots,p_{j+1}(w)\}\) as a rational function.
+\end{proposition}
+\begin{proof}
+In the analytic interval as \(\kappa\to 0\), the optimal scaling vector \(u_x\) can be expanded in a power series of \(\kappa\), with each order's coefficient being a symmetric polynomial of \(\{w(x)\}\);
+thus both \(\varepsilon(\kappa)\) and \(R_w(\kappa)\) can be written as power series in \(\kappa\), with the \(j\)-th order coefficient involving only weighted sums of at most \(w(x)^{j+1}\).
+By Newton-Girard identities, any such symmetric polynomial can be expressed using the finite power sums \(p_2,\dots,p_{j+1}\);
+analytically inverting \(\varepsilon(\kappa)\) near zero and eliminating \(\kappa\) yields the stated closure and uniqueness.
+\end{proof}
+
+\begin{corollary}[Folded Auditable Curvature: For Any Fixed \texorpdfstring{$m$}{m}, Quadratic Lift-Off is Completely Determined by \texorpdfstring{$(\mathrm{MOM}_2,\mathrm{MOM}_3)$}{(MOM2,MOM3)}]\label{cor:pom-diagonal-rate-folded-curvature-auditable}
+Under the folding semantics, let the pushforward distribution \(w_m(x)=d_m(x)/2^m\), and write the collision moments
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q.
+\]
+Then
+\[
+p_2(w_m)=\sum_x w_m(x)^2=2^{-2m}S_2(m),\qquad
+p_3(w_m)=\sum_x w_m(x)^3=2^{-3m}S_3(m),
+\qquad
+\delta_0(m):=1-p_2(w_m).
+\]
+Write
+\[
+C_m:=p_2(w_m)+p_2(w_m)^2-2p_3(w_m).
+\]
+Then as \(\delta\uparrow \delta_0(m)\), we have
+\[
+R_{w_m}(\delta)=\frac{(\delta_0(m)-\delta)^2}{2C_m}+O\bigl((\delta_0(m)-\delta)^3\bigr).
+\]
+In particular, the curvature constant \(C_m\) depends only on \(\{S_2(m),S_3(m)\}\), and thus under the finite kernel compilation caliber of this paper can be directly audited by the finite state counts of \(\mathrm{MOM}_2,\mathrm{MOM}_3\), without needing to reconstruct the full \(w_m\).
+\end{corollary}
+\begin{proof}
+For fixed \(m\), apply Theorem \ref{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature} to \(w=w_m\), and substitute \(p_k(w_m)=2^{-mk}S_k(m)\).
+\end{proof}
+
+\begin{theorem}[Hellinger Universality of Rare Mismatch: Non-Diagonal Limit Shape of Optimal Coupling as \texorpdfstring{$\delta\downarrow0$}{delta->0}]\label{thm:pom-diagonal-rate-rare-mismatch-hellinger-universality}
+Let \(P^\star_\delta\) be the unique optimal coupling achieving \(R_w(\delta)\), and write \(A_{1/2}(w)=\sum_x\sqrt{w(x)}\).
+As \(\delta\downarrow 0\), for any \(x\ne y\) we have
+\[
+\frac{1}{\delta}\,P^\star_\delta(x,y)\ \longrightarrow\ \frac{\sqrt{w(x)w(y)}}{A_{1/2}(w)^2-1},
+\]
+and the diagonal term satisfies
+\[
+P^\star_\delta(x,x)
+=w(x)-\delta\,\frac{\sqrt{w(x)}\bigl(A_{1/2}(w)-\sqrt{w(x)}\bigr)}{A_{1/2}(w)^2-1}+o(\delta).
+\]
+Let the background distribution
+\(
+\pi_\delta(x):=u_x/\sum_y u_y
+\)
+(where \(u\) is the optimal scaling vector from Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}), then
+\[
+\pi_\delta(x)\ \longrightarrow\ \pi_{1/2}(x):=\frac{\sqrt{w(x)}}{A_{1/2}(w)}.
+\]
+Moreover, the symbol preservation rate \(p_x(\delta):=\mathbb P(Y=x\mid X=x)\) satisfies
+\[
+p_x(\delta)
+=1-\delta\,\frac{A_{1/2}(w)-\sqrt{w(x)}}{\sqrt{w(x)}\,(A_{1/2}(w)^2-1)}+o(\delta).
+\]
+\end{theorem}
+\begin{proof}
+By the exponential family representation of Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}, \(P^\star_\delta(x,y)=u_xu_y(1+\kappa\mathbf 1_{\{x=y\}})/Z\).
+As \(\delta\downarrow 0\), \(\kappa\to\infty\), and by the proof of Theorem \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} we can choose the same gauge such that
+\(
+u_x=\kappa^{-1/2}\sqrt{w(x)}+o(\kappa^{-1/2})
+\)
+and
+\(
+\kappa\sim (A_{1/2}(w)^2-1)/\delta
+\),
+with \(Z=1+o(1)\).
+Thus for \(x\ne y\),
+\[
+P^\star_\delta(x,y)=\frac{u_xu_y}{Z}
+=\frac{1}{\kappa}\sqrt{w(x)w(y)}\,(1+o(1))
+=\delta\,\frac{\sqrt{w(x)w(y)}}{A_{1/2}(w)^2-1}\,(1+o(1)),
+\]
+giving the first identity.
+The diagonal term follows from the marginal constraint
+\(
+w(x)=\sum_y P^\star_\delta(x,y)
+\)
+and summing the non-diagonal limits.
+The background distribution limit follows directly from \(u_x\propto \sqrt{w(x)}\).
+Finally, from
+\(
+p_x(\delta)=P^\star_\delta(x,x)/w(x)
+\),
+substituting the diagonal expansion yields the preservation rate expansion.
+\end{proof}
+

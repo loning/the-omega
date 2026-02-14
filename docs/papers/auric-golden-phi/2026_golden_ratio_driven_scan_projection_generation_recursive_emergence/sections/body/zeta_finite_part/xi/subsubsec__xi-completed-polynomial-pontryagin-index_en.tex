@@ -1,0 +1,266 @@
+\subsubsection{Pontryagin index of completed polynomial: radial defect, Toeplitz inertia, and closed alignment of detection threshold}\label{subsubsec:xi-completed-polynomial-pontryagin-index}
+In \S\ref{subsec:xi-from-self-dual}, the completion-compression rewrites the slice zero-point problem equivalently as the unit-circle root distribution of the self-reciprocal polynomial \(\Phi_L\), given by its horizon Carathéodory function \(\mathscr{C}_{\Phi_L}\) providing the Toeplitz--PSD certificate chain (Theorem~\ref{thm:xi-slice-horizon-carath-toeplitz}).
+This section, under \(\Xi\)-RH failure, further indexes the geometric information of "roots deviating from the unit circle" as a fully auditable integer invariant: the disk-interior root count simultaneously equals the negative-square index, stable Toeplitz negative inertia, and minimal Pontryagin negative-energy degrees of freedom;
+and aligns the minimal off-line distance \(\delta_{\min}\) with the detection-threshold of finite-order Toeplitz infeasibility as an explicit lower bound.\footnote{Archive timestamp for this section's entries: 2026-02-14 13:34:34 (Asia/Singapore).}
+\par
+To avoid finite auditing details from unit-circle boundary roots, we adopt a general-position assumption below: \(\Phi_L\) has no zeros on \(\TT\); boundary root handling can be completed via limit/local factorization-juxtaposition, see Remark~\ref{rem:xi-schur-cohn-sdp-interface} and the boundary-pole-free caliber in \S\ref{subsubsec:xi-negative-square-index-pontryagin-realization}.
+
+\begin{definition}[Disk-interior root index and nearest-boundary depth]\label{def:xi-phiL-disk-index-depth}
+Following the notation of \S\ref{subsec:xi-from-self-dual}: given \(L>1\), let
+\(
+P_L(S)=\widehat\Delta(L^{-1/2},S)\in\RR[S]
+\)
+with \(d=\deg P_L\), and let
+\[
+\Phi_L(y):=y^{d}P_L(y+y^{-1})\in\RR[y],\qquad D:=\deg\Phi_L=2d.
+\]
+Assume \(\Phi_L\) has no zeros on the unit circle \(\TT\).
+Define its \textbf{disk-interior root index}
+\[
+\boxed{\;
+\kappa(\Phi_L):=\sum_{\substack{a\in\mathbb{D}:\\ \Phi_L(a)=0}}\operatorname{ord}_{a}(\Phi_L)\ \in\ \NN\cup\{0\}\;}
+\]
+and define the \textbf{nearest boundary radius} and \textbf{thinnest boundary-layer depth}
+\[
+\boxed{\;
+r_{\max}(\Phi_L):=
+\begin{cases}
+\max\{|a|:\ a\in\mathbb{D},\ \Phi_L(a)=0\}, & \kappa(\Phi_L)>0,\\[2pt]
+0, & \kappa(\Phi_L)=0,
+\end{cases}
+\qquad
+h_{\min}(\Phi_L):=1-r_{\max}(\Phi_L).\;}
+\]
+\end{definition}
+
+\begin{theorem}[Negative-square index of completed polynomial: strict equivalence with disk-interior root count (41)]\label{thm:xi-phiL-negative-squares-equals-disk-roots}
+Under the setup of Definition~\ref{def:xi-phiL-disk-index-depth}, the horizon Carathéodory function defined in Theorem~\ref{thm:xi-slice-horizon-carath-toeplitz}
+\[
+\mathscr{C}_{\Phi_L}(\omega):=1-\frac{2}{D}\,\omega\,\frac{\Phi_L'(\omega)}{\Phi_L(\omega)}
+\qquad(\omega\in\mathbb{D})
+\]
+has exactly \(\kappa(\Phi_L)\) poles (counted with order) in \(\mathbb{D}\), hence belongs to the generalized Carathéodory class \(\mathcal{C}_{\kappa(\Phi_L)}\setminus\mathcal{C}_{\kappa(\Phi_L)-1}\), and satisfies the negative-square index identity
+\[
+\boxed{\ \mathrm{sq}_-\!\bigl(\mathscr{C}_{\Phi_L}\bigr)=\kappa(\Phi_L).\ }
+\]
+\end{theorem}
+
+\begin{proof}
+Since \(\Phi_L(0)=\mathrm{lc}(P_L)\neq 0\), \(\mathscr{C}_{\Phi_L}\) is analytic at \(\omega=0\).
+Moreover, all poles of \(\mathscr{C}_{\Phi_L}\) can only come from \(\Phi_L'/\Phi_L\), i.e., precisely the zeros of \(\Phi_L\); when \(\Phi_L\) has a zero of order \(m\) at \(a\in\mathbb{D}\), \(\Phi_L'/\Phi_L\) has an \(m\)-th order pole at \(a\), so the total pole order of \(\mathscr{C}_{\Phi_L}\) in \(\mathbb{D}\) is exactly \(\kappa(\Phi_L)\).
+By the general-position assumption, there are no poles on \(\partial\mathbb{D}\).
+Hence we can apply Theorem~\ref{thm:xi-poles-negative-squares-equivalence} (pole count \(\Longleftrightarrow\) negative-square index) to \(C=\mathscr{C}_{\Phi_L}\), obtaining \(\mathrm{sq}_-(\mathscr{C}_{\Phi_L})=\kappa(\Phi_L)\) and yielding \(\mathscr{C}_{\Phi_L}\in\mathcal{C}_{\kappa(\Phi_L)}\setminus\mathcal{C}_{\kappa(\Phi_L)-1}\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Toeplitz negative-inertia stable readout: stable negative dimension equals disk-interior root index (42)]\label{cor:xi-phiL-toeplitz-inertia-stabilizes}
+Following the notation of Theorem~\ref{thm:xi-slice-horizon-carath-toeplitz}, expand \(\mathscr{C}_{\Phi_L}\) at \(\omega=0\) as
+\(
+\mathscr{C}_{\Phi_L}(\omega)=c_0+2\sum_{n\ge 1}c_n\omega^n
+\)
+and let the Toeplitz truncation be
+\(
+\mathbf{T}_N:=(c_{j-k})_{0\le j,k\le N}
+\).
+Then there exists \(N_0\) such that for all \(N\ge N_0\) we have
+\[
+\boxed{\;
+\nu_-\!\bigl(\mathbf{T}_N\bigr)=\kappa(\Phi_L).\;}
+\]
+Consequently, once \(\kappa(\Phi_L)>0\), the Toeplitz--PSD hierarchy must produce a refuter at some finite level; whereas \(\kappa(\Phi_L)=0\) is equivalent to \(\mathbf{T}_N\succeq 0\) for all \(N\), i.e., equivalent to criticality of \(\Xi_{\Delta,L}\) (Theorem~\ref{thm:xi-slice-horizon-carath-toeplitz}).
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:xi-phiL-negative-squares-equals-disk-roots}, \(\mathscr{C}_{\Phi_L}\in\mathcal{C}_{\kappa(\Phi_L)}\) with finitely many poles in \(\mathbb{D}\) and no boundary poles.
+Hence we can apply Theorem~\ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa} (Toeplitz negative-inertia stable readout) to \(C=\mathscr{C}_{\Phi_L}\), obtaining \(\nu_-(\mathbf{T}_N)=\mathrm{sq}_-(\mathscr{C}_{\Phi_L})=\kappa(\Phi_L)\) stabilizing at sufficiently high order. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Nearest disk root \(\Longleftrightarrow\) minimal off-line distance: compatibility with \(\mathrm{arcosh}\) closed form (43)]\label{prop:xi-phiL-depth-delta-min-alignment}
+Under the completion representation of Proposition~\ref{prop:xi-rh-interval-criterion} and Corollary~\ref{cor:xi-rh-unit-circle-reciprocal},
+\[
+\Xi_{\Delta,L}(s)=0
+\quad\Longleftrightarrow\quad
+\Phi_L\!\bigl(L^{\,s-\frac12}\bigr)=0.
+\]
+Assume \(\kappa(\Phi_L)>0\), and let \(r_{\max}(\Phi_L)\) be as in Definition~\ref{def:xi-phiL-disk-index-depth}.
+Then the minimal horizontal distance from off-critical zeros of \(\Xi_{\Delta,L}\) to the critical line \(\Re(s)=\tfrac12\) satisfies
+\[
+\boxed{\;
+\delta_{\min}(\Xi_{\Delta,L})
+\;=\;
+\frac{1}{\log L}\,\log\frac{1}{r_{\max}(\Phi_L)}\;}
+\]
+and moreover
+\[
+\boxed{\;
+r_{\max}(\Phi_L)=L^{-\delta_{\min}(\Xi_{\Delta,L})},
+\qquad
+h_{\min}(\Phi_L)=1-L^{-\delta_{\min}(\Xi_{\Delta,L})}.\;}
+\]
+\par
+If further in the "out-of-bounds real root" caliber: there exists a real root \(S_\star\in\RR\) satisfying \(|S_\star|>2\) and \(P_L(S_\star)=0\), and using Definition~\ref{def:xi-radial-defect-index-delta-min} to denote
+\(
+\delta_{\min}(P_L)
+\);
+then for the nearest disk root \(a_\star\in\mathbb{D}\cap\RR\) induced by this shallowest out-of-bounds root, we have the closed form
+\[
+\boxed{\;
+a_\star=\frac{S_\star-\operatorname{sgn}(S_\star)\sqrt{S_\star^{2}-4}}{2}
+\;=\;
+\operatorname{sgn}(S_\star)\exp\!\Bigl(-\operatorname{arcosh}(|S_\star|/2)\Bigr)\;}
+\]
+and
+\(
+\delta_{\min}(\Xi_{\Delta,L})=\delta_{\min}(P_L)
+\)
+(consistent with the \(\mathrm{arcosh}\) closed form of Corollary~\ref{cor:xi-single-scale-radial-deviation-arcosh}).
+\end{proposition}
+
+\begin{proof}
+By \(y:=L^{s-\frac12}\) (proof of Proposition~\ref{prop:xi-rh-interval-criterion}), for any root \(y_0\in\CC^\times\) of \(\Phi_L\), the multi-valuedness of the complex logarithm yields the zero tower
+\[
+s=\frac12+\frac{\log y_0+2\pi i k}{\log L},\qquad k\in\ZZ.
+\]
+Its horizontal displacement is \(|\Re(s)-\tfrac12|=\frac{1}{\log L}|\log|y_0||\).
+Since \(\Phi_L\) is self-reciprocal (Corollary~\ref{cor:xi-rh-unit-circle-reciprocal}), its zeros come in pairs under \(y\mapsto 1/\overline y\), so the "minimal horizontal displacement" is determined by the zero whose modulus is closest to \(1\); this is precisely given by the largest modulus among disk-interior zeros, \(r_{\max}(\Phi_L)\), yielding
+\(\delta_{\min}(\Xi_{\Delta,L})=\frac{1}{\log L}\log\frac{1}{r_{\max}(\Phi_L)}\).
+The remaining two formulas are algebraic rewrites.
+\par
+Under the out-of-bounds real root caliber, let \(S_\star\) be a real root of \(P_L\) with \(|S_\star|>2\); then the two roots of the quadratic equation \(y+y^{-1}=S_\star\) are
+\(
+y_\star^{\pm}=\frac{S_\star\pm\sqrt{S_\star^2-4}}{2}
+\);
+exactly one of them satisfies \(|y|<1\), which is the \(a_\star\) in the displayed formula, so \(|a_\star|=\exp\!\bigl(-\operatorname{arcosh}(|S_\star|/2)\bigr)\).
+Substituting this value back into \(\delta_{\min}(\Xi_{\Delta,L})=\frac{1}{\log L}\log(1/|a_\star|)\) yields \(\delta_{\min}(\Xi_{\Delta,L})=\delta_{\min}(P_L)\) in alignment with Corollary~\ref{cor:xi-single-scale-radial-deviation-arcosh}. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Infeasibility threshold for finite-order Toeplitz detection: \((\delta_{\min}\log L)^{-1}\) divergence law under \(\delta_{\min}\log L\) thin layer (44)]\label{cor:xi-phiL-toeplitz-length-lb-delta-min}
+Under the general-position assumption of Theorem~\ref{thm:xi-phiL-negative-squares-equals-disk-roots}, if \(\kappa(\Phi_L)>0\) and the nearest disk root has modulus \(r_{\max}(\Phi_L)\), then any strategy hoping to \emph{rule out} this disk-interior pole in the regime sense via finite-order Toeplitz--PSD verification must have certificate length \(N\) satisfying
+\[
+\boxed{\;
+N\ \gtrsim\ \frac{1}{h_{\min}(\Phi_L)}
+\;=\;\frac{1}{1-r_{\max}(\Phi_L)}
+\;=\;\frac{1}{1-L^{-\delta_{\min}(\Xi_{\Delta,L})}}\;}
+\]
+where \(\delta_{\min}(\Xi_{\Delta,L})\) is given by Proposition~\ref{prop:xi-phiL-depth-delta-min-alignment}.
+In particular, in the thin-layer regime \(\delta_{\min}(\Xi_{\Delta,L})\,\log L\ll 1\), we have
+\[
+\boxed{\;
+N\ \gtrsim\ \frac{1}{\delta_{\min}(\Xi_{\Delta,L})\,\log L}\;}
+\]
+so "extremely weak off-critical deviation" (\(\delta_{\min}\downarrow 0\)) forces unavoidable certificate-length explosion in the Toeplitz caliber.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:xi-phiL-negative-squares-equals-disk-roots}, \(\mathscr{C}_{\Phi_L}\) has a disk-interior pole \(a\) with \(|a|=r_{\max}(\Phi_L)\).
+Since \(\mathscr{C}_{\Phi_L}\) is a rational function, the "tail-coefficient auditably-bounded" hypothesis is trivially satisfied in this caliber (no tail terms).
+Hence we can apply Theorem~\ref{thm:xi-toeplitz-length-vs-boundary-depth} to \(C=\mathscr{C}_{\Phi_L}\), taking \(h=1-|a|=h_{\min}(\Phi_L)\), obtaining the necessary lower bound \(N\gtrsim h^{-1}\).
+By Proposition~\ref{prop:xi-phiL-depth-delta-min-alignment}, \(r_{\max}(\Phi_L)=L^{-\delta_{\min}(\Xi_{\Delta,L})}\); substituting yields the first boxed formula.
+\par
+When \(\delta_{\min}\log L\ll 1\), we have \(1-L^{-\delta_{\min}}=1-e^{-\delta_{\min}\log L}\asymp \delta_{\min}\log L\), yielding the second boxed formula. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Endpoint asymmetry: \texorpdfstring{$S_\star<-2$}{S<-2} triggers inevitable logarithmic correction in Toeplitz detection threshold (45)]\label{cor:xi-phiL-endpoint-asymmetry-log-correction}
+Under the general-position setup of Corollary~\ref{cor:xi-phiL-toeplitz-length-lb-delta-min}, further assume the nearest disk root \(a_\star\in\mathbb{D}\cap\RR\) is induced by some out-of-bounds real root \(S_\star\in\RR\setminus[-2,2]\) (Proposition~\ref{prop:xi-phiL-depth-delta-min-alignment}).
+Let the thinnest boundary-layer depth be \(h:=1-|a_\star|\in(0,1)\).
+Then the Busemann compression at endpoint \(-1\) (Theorem~\ref{thm:xi-toeplitz-length-vs-boundary-depth}) exhibits strict sign asymmetry under single-scale real out-of-bounds root caliber:
+\begin{enumerate}
+  \item If \(S_\star>2\) (equivalent to \(a_\star\in(0,1)\)), then there exists a constant \(c>0\) such that the necessary lower bound can be taken as pure power-law
+  \[
+  \boxed{\;
+  N\ \ge\ c\,h^{-1}\; }.
+  \]
+  \item If \(S_\star<-2\) (equivalent to \(a_\star\in(-1,0)\)), then there exists a constant \(c'>0\) such that the necessary lower bound has logarithmic correction
+  \[
+  \boxed{\;
+  N\ \ge\ c'\,h^{-1}\log\frac{1}{h}\; }.
+  \]
+\end{enumerate}
+Equivalently, in the thin-layer regime \(h\asymp \delta_{\min}(\Xi_{\Delta,L})\,\log L\),
+\[
+N\ \gtrsim\ \frac{1}{\delta_{\min}(\Xi_{\Delta,L})\,\log L}\qquad(S_\star>2),
+\]
+\[
+N\ \gtrsim\ \frac{1}{\delta_{\min}(\Xi_{\Delta,L})\,\log L}\,
+\log\!\Bigl(\frac{1}{\delta_{\min}(\Xi_{\Delta,L})\,\log L}\Bigr)\qquad(S_\star<-2).
+\]
+\end{corollary}
+
+\begin{proof}
+Since \(\mathscr{C}_{\Phi_L}\) is a rational function, the "tail-coefficient auditably-bounded" caliber in Theorem~\ref{thm:xi-toeplitz-length-vs-boundary-depth} is trivially satisfied here.
+Let \(a=a_\star\in(-1,1)\).
+For real \(a\) we have \(Q=(1-a^2)^{-1}\) and
+\(
+\delta=\mathcal{B}_{-1}(a)=(1-a^2)/(1+a)^2
+\),
+so \(\delta Q=(1+a)^{-2}\).
+Substituting into the fine threshold of Theorem~\ref{thm:xi-toeplitz-length-vs-boundary-depth}
+\(
+N\ge C^{-1}Q\log(1+\delta Q)
+\)
+yields
+\[
+N\ \gtrsim\ \frac{1}{1-a^2}\,
+\log\!\Bigl(1+\frac{1}{(1+a)^2}\Bigr).
+\]
+If \(a\in(0,1)\) (equivalent to \(S_\star>2\)), then \(1+a\in(1,2)\), so the logarithmic factor is an absolute constant, while \((1-a^2)^{-1}\asymp (1-a)^{-1}=h^{-1}\), yielding the first formula.
+If \(a\in(-1,0)\) and \(h=1-|a|=1+a\), then \(1-a\in(1,2)\) and \((1-a^2)^{-1}\asymp (1+a)^{-1}=h^{-1}\), while \(\log(1+(1+a)^{-2})\asymp \log(h^{-2})\asymp \log(1/h)\), yielding the second formula.
+The final two equivalent formulas follow from substituting \(h=1-L^{-\delta_{\min}(\Xi_{\Delta,L})}\asymp \delta_{\min}(\Xi_{\Delta,L})\log L\) (thin layer) given by Proposition~\ref{prop:xi-phiL-depth-delta-min-alignment}. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Pontryagin--Hilbert--Pólya index obstruction: \(\kappa(\Phi_L)\) as minimal negative-energy degrees of freedom (46)]\label{cor:xi-phiL-pontryagin-realization-index}
+Under the above setup, let the Cayley--Schur transform be
+\[
+S_{\Phi_L}(\omega):=\frac{\mathscr{C}_{\Phi_L}(\omega)-1}{\mathscr{C}_{\Phi_L}(\omega)+1}.
+\]
+Then \(S_{\Phi_L}\in\mathcal{S}_{\kappa(\Phi_L)}\setminus\mathcal{S}_{\kappa(\Phi_L)-1}\), and there exists a Pontryagin space \(\Pi_{\kappa(\Phi_L)}\) with index \(\kappa(\Phi_L)\) and a minimal \(J\)-unitary conservative realization on it such that \(S_{\Phi_L}\) is its characteristic function (transfer function).
+In particular,
+\[
+\boxed{\;
+\kappa(\Phi_L)=0\ \Longleftrightarrow\ \text{there exists a Hilbert (unitary) realization}\;}
+\]
+whereas once \(\kappa(\Phi_L)>0\), any conservative realization unavoidably requires \(\kappa(\Phi_L)\) negative-energy degrees of freedom, thus precisely indexing "unit-circle root breaking" as minimal-dimensional evidence of Hilbert--Pólya unitarity breaking.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:xi-phiL-negative-squares-equals-disk-roots}, \(\mathrm{sq}_-(\mathscr{C}_{\Phi_L})=\kappa(\Phi_L)\).
+By Definition~\ref{def:xi-generalized-carath-class} and the Cayley--Schur transform, \(\mathrm{sq}_-(S_{\Phi_L})=\mathrm{sq}_-(\mathscr{C}_{\Phi_L})\), so \(S_{\Phi_L}\in\mathcal{S}_{\kappa(\Phi_L)}\setminus\mathcal{S}_{\kappa(\Phi_L)-1}\).
+By Theorem~\ref{thm:xi-minimal-pontryagin-conservative-realization} (minimal Pontryagin conservative realization), we immediately obtain existence of the realization and that the minimal index equals \(\kappa(\Phi_L)\).
+The case \(\kappa(\Phi_L)=0\) degenerates to unitary realization on Hilbert space; conversely if there exists a Hilbert unitary realization then the negative-square index is zero, so \(\kappa(\Phi_L)=0\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Single-scalar encapsulation of radial defect weight: Blaschke origin modulus and \(\mathrm{arcosh}\) summation law (47)]\label{prop:xi-phiL-defect-weight-blaschke-origin}
+Under the general-position assumption, let \(B_{\Phi_L}\) denote the finite Blaschke product constructed from the disk-interior zeros of \(\Phi_L\) (counted with multiplicity):
+\[
+B_{\Phi_L}(\omega):=\prod_{\substack{a\in\mathbb{D}:\\ \Phi_L(a)=0}}
+\left(\frac{\omega-a}{1-\overline a\,\omega}\right)^{\operatorname{ord}_a(\Phi_L)}.
+\]
+Then its origin modulus satisfies
+\[
+\boxed{\;
+|B_{\Phi_L}(0)|
+=\prod_{\substack{a\in\mathbb{D}:\\ \Phi_L(a)=0}}|a|^{\operatorname{ord}_a(\Phi_L)},\qquad
+-\log|B_{\Phi_L}(0)|
+=\sum_{\substack{a\in\mathbb{D}:\\ \Phi_L(a)=0}}\operatorname{ord}_a(\Phi_L)\,\log\frac{1}{|a|}\;}
+\]
+so \(-\log|B_{\Phi_L}(0)|\) provides a "total radial weight" compressing all disk-interior pointwise defects into a single scalar.
+\par
+If further in the "out-of-bounds real root" caliber (Definition~\ref{def:xi-radial-defect-index-delta-min}), denoting all out-of-bounds real roots as \(\{S_\star\}\subset\RR\) (counted with multiplicity), then the above total radial weight has the \(\mathrm{arcosh}\) closed form
+\[
+\boxed{\;
+-\log|B_{\Phi_L}(0)|
+=\sum_{\substack{S_\star\in\RR:\\ |S_\star|>2,\ P_L(S_\star)=0}}
+\mathrm{mult}(S_\star)\,\operatorname{arcosh}\!\bigl(|S_\star|/2\bigr)\; }.
+\]
+\end{proposition}
+
+\begin{proof}
+The first set of identities is a direct algebraic property of finite Blaschke products: by definition \(B_{\Phi_L}(0)=\prod (-a)^{\operatorname{ord}_a(\Phi_L)}\); taking modulus and logarithm yields the result.
+\par
+Under the out-of-bounds real root caliber, for each real root satisfying \(|S_\star|>2\) (multiplicity \(m\)), the disk-interior solution of the quadratic equation \(y+y^{-1}=S_\star\) is \(a_\star\) (Proposition~\ref{prop:xi-phiL-depth-delta-min-alignment}), satisfying
+\(
+|a_\star|=\exp(-\operatorname{arcosh}(|S_\star|/2))
+\).
+Thus this root's contribution to \(-\log|B_{\Phi_L}(0)|\) is \(m\,\operatorname{arcosh}(|S_\star|/2)\); summing over all out-of-bounds real roots yields the displayed closed form. This completes the proof.
+\end{proof}
+
+\endinput

@@ -1,0 +1,582 @@
+\subsubsection{Second-Order Collision Moments and \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--2 Projection Entropy Rate}\label{subsec:pom-s2}
+The maximum fiber multiplicity characterizes the "worst-case spatial defect," but a statistically more robust indicator arises from the collision moment (\(\ell^2\) mass). It yields an exponential-scale constant determined solely by the folding map \(P_Z\), which can be placed alongside the online delay \(\delta_{\min}=3\).
+
+\begin{lemma}[Collision Equivalence to Congruence Modulo \texorpdfstring{$F_{m+2}$}{F\_{m+2}}]\label{lem:pom-fold-congruence}
+Let \(\omega,\omega'\in\Omega_m=\{0,1\}^m\), and define the window value
+$$
+N(\omega):=\sum_{k=1}^m \omega_k F_{k+1}.
+$$
+Then the following equivalence holds
+$$
+\Fold_m(\omega)=\Fold_m(\omega')
+\quad\Longleftrightarrow\quad
+N(\omega)\equiv N(\omega')\pmod{F_{m+2}}.
+$$
+\end{lemma}
+\begin{proof}
+Let \(x=\Fold_m(\omega)\in X_m\), \(x'=\Fold_m(\omega')\in X_m\). By Lemma \ref{lem:pom-one-bit} (single hidden bit decomposition), there exist unique \(b(\omega),b(\omega')\in\{0,1\}\) such that
+$$
+N(\omega)=V_m(x)+b(\omega)F_{m+2},\qquad
+N(\omega')=V_m(x')+b(\omega')F_{m+2}.
+$$
+If \(x=x'\), subtracting the two equations yields \(N(\omega)-N(\omega')=(b(\omega)-b(\omega'))F_{m+2}\), hence the congruence holds.
+Conversely, if \(N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})\), then they have the same remainder modulo \(F_{m+2}\). Since \(V_m(\Fold_m(\cdot))\) is precisely the value corresponding to the first \(m\) bits in the Zeckendorf canonical form (Definition \ref{def:pom-window-value}), this remainder uniquely determines the folded stable type \(x\in X_m\), therefore \(x=x'\), that is, \(\Fold_m(\omega)=\Fold_m(\omega')\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Fold as Canonical Section of Modular Congruence Projection]\label{prop:pom-fold-as-section}
+Let \(r(\omega):=N(\omega)\bmod F_{m+2}\in\{0,1,\dots,F_{m+2}-1\}\).
+For each \(0\le r\le F_{m+2}-1\), let \(Z(r)\in X_\infty\) be the Zeckendorf encoding of \(r\), and denote the truncation \(\pi_m: X_\infty\to X_m\) (see the cross-resolution compatible gauge in Section \ref{sec:folding}). Define the canonical section
+\[
+s_m(r):=\pi_m(Z(r))\in X_m.
+\]
+Then for any \(\omega\in\Omega_m\), we have
+\[
+\boxed{\;\Fold_m(\omega)=s_m\bigl(r(\omega)\bigr).\;}
+\]
+That is, \(\Fold_m\) factorizes as the composite of "linear projection modulo \(F_{m+2}\)" and a canonical section.
+\end{proposition}
+\begin{proof}
+By Lemma \ref{lem:pom-fold-congruence}, \(\Fold_m(\omega)\) depends only on \(r(\omega)=N(\omega)\bmod F_{m+2}\).
+On the other hand, \(V_m:X_m\to\{0,1,\dots,F_{m+2}-1\}\) is a bijection (Lemma \ref{lem:zeckendorf-range-bijection}), and by definition \(V_m(s_m(r))=r\).
+Therefore when \(r(\omega)=r\), \(\Fold_m(\omega)\) must equal the unique stable type \(x=s_m(r)\) satisfying \(V_m(x)=r\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$q$}{q}-fold Collision Congruence Moment Expression]\label{prop:pom-moment-congruence-q}
+For any integer \(q\ge 2\), define
+$$
+S_q(m):=\sum_{x\in X_m} d_m(x)^q.
+$$
+and let
+$$
+c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\},\qquad r\in\ZZ/F_{m+2}\ZZ.
+$$
+Then the following identity holds
+$$
+\boxed{\
+S_q(m)=\sum_{r\in\ZZ/F_{m+2}\ZZ} c_m(r)^q.
+\ }
+$$
+\end{proposition}
+\begin{proof}
+Denote
+$$
+R_m^{(q)}:=\{(\omega^{(1)},\dots,\omega^{(q)})\in\Omega_m^q:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(q)})\}.
+$$
+By definition, we have \(|R_m^{(q)}|=\sum_{x\in X_m}d_m(x)^q=S_q(m)\).
+On the other hand, by Lemma \ref{lem:pom-fold-congruence}, for any two windows \(\omega,\omega'\), we have
+\(
+\Fold_m(\omega)=\Fold_m(\omega')\iff N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})
+\).
+Therefore \((\omega^{(1)},\dots,\omega^{(q)})\in R_m^{(q)}\) if and only if
+$$
+N(\omega^{(1)})\equiv \cdots \equiv N(\omega^{(q)})\pmod{F_{m+2}}.
+$$
+Grouping by the common residue class \(r\in\ZZ/F_{m+2}\ZZ\), we obtain
+$$
+|R_m^{(q)}|
+=\sum_{r\in\ZZ/F_{m+2}\ZZ}\#\{\omega^{(1)}:\ N(\omega^{(1)})\equiv r\}\cdots \#\{\omega^{(q)}:\ N(\omega^{(q)})\equiv r\}
+=\sum_{r}c_m(r)^q.
+$$
+Combining with \(|R_m^{(q)}|=S_q(m)\) yields the conclusion. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Explicit Fourier Moment-Kernel Formula for Arbitrary \texorpdfstring{$q$}{q}]\label{prop:pom-moment-fourier-q}
+Let $F:=F_{m+2}$, and define the congruence distribution on the additive group $G:=\ZZ/F\ZZ$
+$$
+c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F)\},\qquad r\in G.
+$$
+Take $\omega_F:=e^{2\pi i/F}$, and define the discrete Fourier transform
+$$
+\widehat c_m(t):=\sum_{r\in G} c_m(r)\,\omega_F^{tr},\qquad t\in G.
+$$
+Then for any integer $q\ge 2$, we have the explicit formula
+$$
+\boxed{\;
+S_q(m)=\frac{1}{F^{\,q-1}}
+\sum_{t_1,\dots,t_{q-1}\in G}
+\widehat c_m(t_1)\cdots \widehat c_m(t_{q-1})\,
+\widehat c_m\!\Bigl(-\sum_{j=1}^{q-1}t_j\Bigr)\;}
+$$
+and $\widehat c_m$ has the complete factorization form
+$$
+\boxed{\;
+\widehat c_m(t)=\sum_{\omega\in\Omega_m}\omega_F^{tN(\omega)}
+=\prod_{k=1}^m\bigl(1+\omega_F^{tF_{k+1}}\bigr)\; }.
+$$
+\end{proposition}
+\begin{proof}
+The factorization follows from
+$$
+\widehat c_m(t)=\sum_{\omega_1,\dots,\omega_m\in\{0,1\}}\ \prod_{k=1}^m \omega_F^{t\omega_kF_{k+1}}
+=\prod_{k=1}^m\sum_{\omega_k\in\{0,1\}} \omega_F^{t\omega_kF_{k+1}}
+$$
+directly.
+
+To obtain the formula for general $q$, we first use Fourier inversion
+$$
+c_m(r)=\frac{1}{F}\sum_{t\in G}\widehat c_m(t)\,\omega_F^{-tr}.
+$$
+Substituting into $S_q(m)=\sum_{r\in G}c_m(r)^q$ and expanding:
+$$
+S_q(m)
+=\frac{1}{F^q}\sum_{t_1,\dots,t_q\in G}\widehat c_m(t_1)\cdots\widehat c_m(t_q)\sum_{r\in G}\omega_F^{-(t_1+\cdots+t_q)r}.
+$$
+By character orthogonality,
+$$
+\sum_{r\in G}\omega_F^{-(t_1+\cdots+t_q)r}
+=
+\begin{cases}
+F,& t_1+\cdots+t_q\equiv 0\ (\mathrm{mod}\ F),\\
+0,& \text{otherwise}.
+\end{cases}
+$$
+Therefore
+$$
+S_q(m)=\frac{1}{F^{q-1}}\sum_{\substack{t_1,\dots,t_q\in G\\ t_1+\cdots+t_q\equiv 0}}
+\widehat c_m(t_1)\cdots\widehat c_m(t_q).
+$$
+Eliminating the constraint with $t_q=-(t_1+\cdots+t_{q-1})$ yields the stated formula. This completes the proof.
+\end{proof}
+
+\begin{definition}[Fold Collision Moment]\label{def:pom-s2}
+Define the second-order collision sum
+$$
+S_2(m):=\sum_{x\in X_m} d_m(x)^2,
+\qquad d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|.
+$$
+Equivalently, if two windows \(\omega,\omega'\) are drawn uniformly and independently from \(\Omega_m\), then
+$$
+\mathbb{P}\bigl[\Fold_m(\omega)=\Fold_m(\omega')\bigr]=\frac{S_2(m)}{4^m}.
+$$
+\end{definition}
+
+\begin{proposition}[Three-State Representation and Third-Order Recurrence of Collision Kernel]\label{prop:pom-s2-recurrence}
+Let the collision relation be
+$$
+R_m:=\{(\omega,\omega')\in\Omega_m\times\Omega_m:\Fold_m(\omega)=\Fold_m(\omega')\}.
+$$
+Then there exists a three-state nonnegative integer matrix (which can be viewed as the adjacency matrix of a "collision kernel")
+$$
+A_2:=
+\begin{pmatrix}
+0&0&1\\
+0&1&1\\
+2&1&1
+\end{pmatrix},
+$$
+such that for all \(m\ge 2\),
+$$
+S_2(m)=|R_m|
+=2\,\mathbf{1}^{\mathsf T}A_2^{\,m-2}\mathbf{1},
+\qquad \mathbf{1}:=(1,1,1)^{\mathsf T}.
+$$
+Consequently, \(S_2(m)\) satisfies the exact recurrence (\(m\ge 5\))
+$$
+S_2(m)=2S_2(m-1)+2S_2(m-2)-2S_2(m-3),
+$$
+with initial values \(S_2(2)=6,S_2(3)=14,S_2(4)=36\).
+\end{proposition}
+\begin{proof}
+By Lemma \ref{lem:pom-fold-congruence}, we have
+$$
+|R_m|
+=\#\{(\omega,\omega'):\ N(\omega)\equiv N(\omega')\ (\mathrm{mod}\ F_{m+2})\}
+=\sum_{r\in\ZZ/F_{m+2}\ZZ} c_m(r)^2,
+$$
+where \(c_m(r):=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}\).
+Therefore \(S_2(m)\) is completely determined by "congruence counting modulo \(F_{m+2}\)," which can be viewed as a sum of squares for a discrete finite-state counting problem (the \(\ell^2\) mass of the collision kernel).
+
+We now provide an\textbf{ auditable construction}: a nonnegative three-state realization can be taken as the \(A_2\) shown above. This matrix is not arbitrary—it can be automatically recovered from enumeration data for small \(m\): starting from \(S_2(2),\dots,S_2(7)\), we solve for the minimal third-order recurrence coefficients, then search in the class of small integer matrices for a nonnegative \(3\times 3\) realization satisfying
+\(
+S_2(m)=2\,\mathbf{1}^{\mathsf T}A^{m-2}\mathbf{1}
+\),
+yielding this canonical solution \(A_2\) (reproducible via script \texttt{scripts/exp\_fold\_collision\_kernel\_a2\_search.py}).
+To verify correctness, direct computation yields
+$$
+2\,\mathbf{1}^{\mathsf T}A_2^{\,0}\mathbf{1}=6,\qquad
+2\,\mathbf{1}^{\mathsf T}A_2^{\,1}\mathbf{1}=14,\qquad
+2\,\mathbf{1}^{\mathsf T}A_2^{\,2}\mathbf{1}=36,
+$$
+consistent with \(S_2(2),S_2(3),S_2(4)\). On the other hand, the characteristic polynomial of \(A_2\) is
+$$
+\det(\lambda I-A_2)=\lambda^3-2\lambda^2-2\lambda+2,
+$$
+therefore any vector sequence \(u_m:=\mathbf{1}^{\mathsf T}A_2^{m}\mathbf{1}\) (\(m\ge 0\)) satisfies the third-order linear recurrence induced by the Cayley--Hamilton theorem. Multiplying by the constant \(2\) and shifting indices yields the recurrence relation and initial values for \(S_2(m)\).
+
+Finally, the choice of \(\mathbf{1}\) and \(A_2\) provides a completely explicit, auditable three-state "collision kernel" realization; its numerical values, recurrence, and consistency with the \(A_2\) realization can be verified term by term via scripts \texttt{scripts/exp\_fold\_collision\_s2.py} and \texttt{scripts/exp\_fold\_collision\_kernel\_a2\_search.py}. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Plancherel Representation and Character Factorization of \texorpdfstring{$S_2(m)$}{S2(m)}]\label{prop:pom-s2-plancherel}
+Let \(G_m:=\ZZ/F_{m+2}\ZZ\), and take its standard character
+\(
+\chi_j(r):=\exp(2\pi i jr/F_{m+2})
+\)
+(\(j\in G_m\)). For the congruence count \(c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\}\), define the discrete Fourier transform
+\[
+\widehat c_m(j):=\sum_{r\in G_m} c_m(r)\,\chi_j(r).
+\]
+Then the second-order collision moment satisfies the strict identity
+\[
+\boxed{\;
+S_2(m)=\sum_{r\in G_m}c_m(r)^2=\frac{1}{|G_m|}\sum_{j\in G_m}\bigl|\widehat c_m(j)\bigr|^2\;}
+\]
+and \(\widehat c_m(j)\) has the complete factorization form
+\[
+\boxed{\;
+\widehat c_m(j)=\sum_{\omega\in\Omega_m}\chi_j\!\bigl(N(\omega)\bigr)
+=\prod_{k=1}^m\Bigl(1+\chi_j(F_{k+1})\Bigr)
+=\prod_{k=1}^m\left(1+\exp\!\frac{2\pi i j F_{k+1}}{F_{m+2}}\right).\;}
+\]
+Consequently,
+\[
+S_2(m)
+=\frac{1}{F_{m+2}}\sum_{j=0}^{F_{m+2}-1}\ \prod_{k=1}^m\left|1+\exp\!\frac{2\pi i j F_{k+1}}{F_{m+2}}\right|^2.
+\]
+\end{proposition}
+\begin{proof}
+The first formula is the Plancherel identity on finite abelian groups. Here we provide a direct derivation consistent with the notation of this section: by the inversion formula
+\(
+c_m(r)=\frac{1}{|G_m|}\sum_{j}\widehat c_m(j)\,\overline{\chi_j(r)}
+\)
+and character orthogonality
+\(
+\sum_{r}\chi_j(r)\overline{\chi_{j'}(r)}=|G_m|\,\mathbf{1}_{j=j'}
+\)
+we immediately obtain
+\[
+\sum_{r}c_m(r)^2
+=\frac{1}{|G_m|}\sum_{j}|\widehat c_m(j)|^2.
+\]
+
+For the factorization: by definition
+\[
+\widehat c_m(j)
+=\sum_{r}\sum_{\substack{\omega\in\Omega_m\\N(\omega)\equiv r}}\chi_j(r)
+=\sum_{\omega\in\Omega_m}\chi_j\!\bigl(N(\omega)\bigr).
+\]
+Using the linear decomposition of window values \(N(\omega)=\sum_{k=1}^m \omega_k F_{k+1}\) (Definition \ref{def:pom-window-value}) and the multiplicativity of characters,
+\[
+\chi_j\!\bigl(N(\omega)\bigr)
+=\prod_{k=1}^m \chi_j(F_{k+1})^{\omega_k},
+\]
+summing over each bit \(\omega_k\in\{0,1\}\) yields
+\(
+\widehat c_m(j)=\prod_{k=1}^m(1+\chi_j(F_{k+1}))
+\).
+The final expression follows by substituting \(|G_m|=F_{m+2}\) and \(\chi_j(F_{k+1})=\exp(2\pi i jF_{k+1}/F_{m+2})\). This completes the proof.
+\end{proof}
+
+\begin{remark}[Maximum Nontrivial Fourier Coefficient Certificate and Critical Resonance Obstruction]\label{rem:pom-max-fourier-obstruction}
+Normalize the congruence count to a probability distribution \(p_m(r):=c_m(r)/2^m\), and denote \(\widehat p_m(j):=\widehat c_m(j)/2^m\).
+Then Proposition \ref{prop:pom-s2-plancherel} is equivalent to
+\[
+\sum_{r\in G_m}p_m(r)^2=\frac{1}{F_{m+2}}\sum_{j\in G_m}\bigl|\widehat p_m(j)\bigr|^2.
+\]
+If we set \(A_m:=\max_{j\in G_m,\ j\neq 0}|\widehat p_m(j)|\), we immediately obtain
+\[
+\sum_{r\in G_m}p_m(r)^2\le \frac{1}{F_{m+2}}\Bigl(1+(F_{m+2}-1)A_m^2\Bigr).
+\]
+However, the critical resonance theorem \ref{thm:fold-critical-resonance-constant} in Appendix \ref{app:fold-multiplicity} establishes that along resonance frequencies \(j=F_m,F_{m+1}\), we have
+\(
+|\widehat p_m(j)|\to C_\varphi>0
+\)
+(and Corollary \ref{cor:fold-critical-resonance-gap} provides the corresponding collision lower bound).
+Therefore, on the raw Fold, \(A_m\) cannot decay exponentially with \(m\): to derive "collision uniformity/spectral contraction" on the Fourier side, one must control the frequency \emph{average energy} or bulk large deviations after edge/bulk decomposition, rather than merely controlling the maximum coefficient (see also Remark \ref{rem:fold-edge-nondecay}).
+\end{remark}
+
+\begin{remark}[Strict Commutative "Fold--Fourier--Parseval" Bridge Package (Commutative Diagram)]\label{rem:fold-fourier-parseval-bridge}
+Under the notation of Propositions \ref{prop:pom-moment-fourier-q}--\ref{prop:pom-s2-plancherel}, let \(F:=F_{m+2}\), \(G_m:=\ZZ/F\ZZ\).
+By Theorem \ref{thm:fold-congruence-mod-semirings} in the Appendix, the Fold quotient object \(\Omega_m/\!\equiv_m\) at finite resolution can be identified as the explicit cyclic ring \(G_m\), hence the congruence count \(c_m\) can be viewed as a class function in the group algebra \(\CC[G_m]\).
+Denote \(\delta_a\in\CC[G_m]\) as the Dirac element, and let \(\ast\) denote convolution.
+Then \(c_m\) has an explicit "spatial-side convolutional superposition" decomposition:
+\[
+c_m=(\delta_0+\delta_{F_2})\ast(\delta_0+\delta_{F_3})\ast\cdots\ast(\delta_0+\delta_{F_{m+1}})\qquad\text{in }\CC[G_m],
+\]
+while the discrete Fourier transform \(\mathcal{F}:\CC[G_m]\to\CC[\widehat G_m]\) strictly diagonalizes convolution into pointwise multiplication \(\widehat{f\ast g}=\widehat f\cdot\widehat g\), thus yielding complete factorization (the "Euler-product form" of the Fold branch):
+\[
+\widehat c_m(t)=\prod_{k=1}^{m}\bigl(1+\omega_F^{tF_{k+1}}\bigr).
+\]
+On the other hand, the Plancherel/Parseval identity strictly aligns the spatial-side \(\ell^2\) mass with the frequency-domain energy; expressed as a commutative diagram:
+\[
+\begin{CD}
+c_m=(\delta_0+\delta_{F_2})\ast(\delta_0+\delta_{F_3})\ast\cdots\ast(\delta_0+\delta_{F_{m+1}}) @>\mathcal{F}>> \widehat c_m(t)=\prod_{k=1}^{m}(1+\omega_F^{tF_{k+1}})\\
+@V{\|\,\cdot\,\|_2^2}VV @VV{\frac{1}{F}\|\,\cdot\,\|_2^2}V\\
+S_2(m)=\sum_{r\in G_m}c_m(r)^2 @= S_2(m)
+\end{CD}
+\]
+where \(\|f\|_2^2:=\sum_{r\in G_m}|f(r)|^2\) uses the counting measure.
+In particular, if we denote
+\[
+\mathsf{Col}_m:=\mathbb{P}[\Fold_m(\omega)=\Fold_m(\omega')]=\frac{S_2(m)}{4^m}
+\qquad(\text{see Definition \ref{def:pom-s2}}),
+\]
+then from \(\widehat c_m(0)=\sum_r c_m(r)=2^m\) we obtain a "common gauge" (nontrivial spectral energy \(\Longleftrightarrow\) collision gap):
+\[
+\boxed{\;
+F_{m+2}\,\mathsf{Col}_m-1=\frac{1}{4^m}\sum_{t\ne 0}\bigl|\widehat c_m(t)\bigr|^2\; }.
+\]
+Therefore on the Fold branch, the "space/time duality" can be strictly realized: spatial-side convolution (serial superposition) \(\Longleftrightarrow\) frequency-domain pointwise multiplication (decomposable multiplicative chain), with both pinned to the same auditable gauge via Parseval.
+\end{remark}
+
+\begin{corollary}[Explicit Exponential Upper Bound on Fold Uniformity Gap]\label{cor:fold-col-gap-exp-upper}
+Let \(\mathsf{Col}_m:=\mathbb{P}[\Fold_m(\omega)=\Fold_m(\omega')]=S_2(m)/4^m\) (see Definition \ref{def:pom-s2}), and denote the uniformity gap of the fold output
+\(
+g_{\mathrm{col}}^2(m):=\mathsf{Col}_m-\frac{1}{F_{m+2}}
+\)
+(Appendix \ref{app:fold-multiplicity}).
+Let \(r_2:=\rho(A_2)\) be the Perron root of the three-state collision kernel \(A_2\) (Proposition \ref{prop:pom-s2-recurrence}), and take its right Perron vector \(v>0\) satisfying \(A_2v=r_2v\), normalized so that \(\min_i v_i=1\) (hence \(\mathbf{1}\le v\) holds coordinatewise).
+Define the constant
+\[
+C_2:=\frac{2\,(\mathbf{1}^{\mathsf T}v)}{r_2^2}.
+\]
+Then for all \(m\ge 2\), we have
+\[
+g_{\mathrm{col}}^2(m)\le \mathsf{Col}_m\le C_2\left(\frac{r_2}{4}\right)^m.
+\]
+\end{corollary}
+
+\begin{proof}
+The first inequality follows directly from the definition \(g_{\mathrm{col}}^2(m)=\mathsf{Col}_m-1/F_{m+2}\).
+For the second inequality, by Proposition \ref{prop:pom-s2-recurrence}, we have
+\(
+S_2(m)=2\,\mathbf{1}^{\mathsf T}A_2^{\,m-2}\mathbf{1}
+\).
+Since \(\mathbf{1}\le v\) and \(A_2^{m-2}\) is nonnegative, we obtain
+\[
+\mathbf{1}^{\mathsf T}A_2^{\,m-2}\mathbf{1}\le \mathbf{1}^{\mathsf T}A_2^{\,m-2}v=\mathbf{1}^{\mathsf T}(r_2^{m-2}v)=r_2^{m-2}\,(\mathbf{1}^{\mathsf T}v).
+\]
+Therefore
+\[
+\mathsf{Col}_m=\frac{S_2(m)}{4^m}\le \frac{2(\mathbf{1}^{\mathsf T}v)}{4^m}\,r_2^{m-2}
+=\frac{2(\mathbf{1}^{\mathsf T}v)}{r_2^2}\left(\frac{r_2}{4}\right)^m
+=C_2\left(\frac{r_2}{4}\right)^m.
+\]
+This completes the proof.
+\end{proof}
+
+\begin{lemma}[Minimality of Third-Order Recurrence]\label{lem:pom-s2-minimal-order}
+The sequence \(\{S_2(m)\}_{m\ge 2}\) does not satisfy any second-order constant-coefficient linear recurrence. Therefore, the third-order recurrence in Proposition \ref{prop:pom-s2-recurrence} is minimal in the sense of "linear recurrence order."
+\end{lemma}
+\begin{proof}
+Suppose for contradiction that there exist constants \(\alpha,\beta\) such that \(S_2(m)=\alpha S_2(m-1)+\beta S_2(m-2)\) for all \(m\).
+From the initial values \(S_2(2)=6,S_2(3)=14,S_2(4)=36,S_2(5)=88\), solving the linear system
+$$
+36=\alpha\cdot 14+\beta\cdot 6,\qquad
+88=\alpha\cdot 36+\beta\cdot 14
+$$
+yields \(\alpha=6/5,\ \beta=16/5\). Then
+$$
+S_2(6)=\alpha S_2(5)+\beta S_2(4)=\frac65\cdot 88+\frac{16}{5}\cdot 36=\frac{1104}{5}=220.8,
+$$
+contradicting \(S_2(6)=220\) (Proposition \ref{prop:pom-s2-recurrence} or script \path{scripts/exp_fold_collision_s2.py}). Therefore no second-order recurrence exists. This completes the proof.
+\end{proof}
+
+\begin{remark}[Minimal Realization Dimension and Nonnegative Kernel]\label{rem:pom-s2-minimal-realization}
+By Lemma \ref{lem:pom-s2-minimal-order}, the minimal linear recurrence order of \(\{S_2(m)\}\) is \(3\), therefore any linear state-space representation \(S_2(m)=u^{\mathsf T}B^{m}v\) has minimal dimension at least \(3\). The three-state matrix \(A_2\) given in Proposition \ref{prop:pom-s2-recurrence} is thus minimal in the dimension sense; moreover, it is a\emph{ nonnegative integer} realization (which can be viewed as the adjacency matrix of a three-state finite graph), thereby incorporating the exponential scale of \(S_2\) completely into the unified interface of Perron--Frobenius/\(\zeta\).
+\end{remark}
+
+\begin{remark}[Hankel Minimal Realization and Nonnegative Similar Normal Form of \texorpdfstring{$A_2$}{A2}]\label{rem:pom-s2-hankel}
+Relabel the sequence as \(a_n:=S_2(n+2)/2\) (\(n\ge 0\)). Since the recurrence order is \(3\), the rank of the Hankel matrix family is \(3\), hence there exists a three-dimensional\textbf{ minimal linear realization} (the standard gauge for weighted automata/linear representations): take
+$$
+H_0=(a_{i+j})_{0\le i,j\le 2},\qquad H_1=(a_{i+j+1})_{0\le i,j\le 2},
+$$
+then when \(H_0\) is invertible, we can define the "shift realization matrix"
+$$
+A:=H_0^{-1}H_1,
+$$
+hence \(a_n=u^{\mathsf T}A^{n}v\) (for some \(u,v\)) gives a minimal realization. This Hankel normal form \(A\) generally contains signed entries (e.g., negative coefficients), but it is similar to the nonnegative integer kernel \(A_2\): there exists an integer matrix \(P\) with determinant \(\pm 1\) such that
+$$
+P^{-1}AP=A_2.
+$$
+The above Hankel construction and unimodular similarity transformation can be reproduced via script \path{scripts/exp_fold_collision_hankel_realization.py}, thereby strictly aligning "minimal realization (provable)" with "nonnegative kernel (interpretable as finite graph)."
+\end{remark}
+
+\begin{theorem}[Hankel Rank Theorem (Linear Myhill--Nerode Gauge for Weighted Automata)]\label{thm:hankel-rank-minimal}
+Let \(k\) be a field (e.g., \(\mathbb{Q}\) or \(\mathbb{R}\)). Given a sequence \(a=(a_n)_{n\ge 0}\subset k\), its Hankel matrix is defined as
+$$
+H(a):=(a_{i+j})_{i,j\ge 0}.
+$$
+We say \((u,A,v)\) is a linear representation of \(a\) if \(u,v\in k^d\), \(A\in k^{d\times d}\), and for all \(n\ge 0\),
+$$
+a_n=u^{\mathsf T}A^n v.
+$$
+Then we have
+$$
+\mathrm{rank}\bigl(H(a)\bigr)=\min\{d:\exists\ (u,A,v)\text{ giving a linear representation of dimension }d\}.
+$$
+Equivalently, \(\mathrm{rank}(H(a))\) equals the number of states of the minimal weighted automaton (rational series) generating the sequence (see \cite{BerstelReutenauer1988RationalSeries}).
+\end{theorem}
+
+\begin{lemma}[Hankel Window Determinant Nonzero: Rank at Least \texorpdfstring{$3$}{3}]\label{lem:pom-s2-hankel-det}
+Let \(a_n:=S_2(n+2)/2\). Take the \(3\times 3\) Hankel window
+$$
+H_0:=
+\begin{pmatrix}
+a_0 & a_1 & a_2\\
+a_1 & a_2 & a_3\\
+a_2 & a_3 & a_4
+\end{pmatrix}.
+$$
+Then
+$$
+(a_0,a_1,a_2,a_3,a_4)=\Bigl(3,7,18,44,110\Bigr),
+\qquad
+\det(H_0)=-2\neq 0.
+$$
+Therefore the Hankel rank is at least \(3\), hence the minimal dimension of any linear realization is at least \(3\).
+\end{lemma}
+\begin{proof}
+From \(S_2(2)=6,S_2(3)=14,S_2(4)=36,S_2(5)=88,S_2(6)=220\) (Proposition \ref{prop:pom-s2-recurrence}), we obtain
+\(
+a_n=S_2(n+2)/2
+\)
+with the first five terms \((3,7,18,44,110)\). Direct computation of \(\det(H_0)\) yields \(-2\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Hankel Rank Exactly \texorpdfstring{$3$}{3}, and Three States as Minimal Collision Kernel]\label{thm:pom-s2-rank-exact}
+Let \(a_n:=S_2(n+2)/2\) and denote by \(H=(a_{i+j})_{i,j\ge 0}\) its Hankel matrix. Then:
+\begin{enumerate}
+  \item \(\mathrm{rank}(H)=3\).
+  \item The minimal linear representation (equivalent to minimal weighted automaton) of \(a_n\) has state dimension \(3\) (by Theorem \ref{thm:hankel-rank-minimal}).
+  \item The three-state nonnegative integer kernel \(A_2\) given in Proposition \ref{prop:pom-s2-recurrence} is minimal in the dimension sense as a collision kernel realization.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(1)} By Lemma \ref{lem:pom-s2-hankel-det}, there exists a \(3\times 3\) Hankel principal minor \(\det(H_0)\neq 0\), hence \(\mathrm{rank}(H)\ge 3\).
+On the other hand, Proposition \ref{prop:pom-s2-recurrence} provides a three-dimensional linear realization
+$$
+a_n=\mathbf{1}^{\mathsf T}A_2^{\,n}\mathbf{1},
+$$
+therefore the row/column space of the Hankel matrix is contained in the subspace spanned by a 3-dimensional linear representation over \(\mathbb{R}^3\), hence \(\mathrm{rank}(H)\le 3\). Combining yields \(\mathrm{rank}(H)=3\).
+
+\textbf{(2)} By Theorem \ref{thm:hankel-rank-minimal}, \(\mathrm{rank}(H)\) equals the minimal linear representation dimension; combined with (1)'s \(\mathrm{rank}(H)=3\), the minimal dimension is \(3\).
+
+\textbf{(3)} By (2), any realization has dimension at least 3, while \(A_2\) gives a 3-dimensional realization, hence it is minimal in the dimension sense. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Collision Exponent and \texorpdfstring{$h_2$}{h2}]\label{cor:pom-s2-asymptotic}
+Let \(r_2\) be the largest real root of the polynomial
+$$
+x^3-2x^2-2x+2=0
+$$
+(\(r_2\approx 2.481194304092\)). Then
+$$
+S_2(m)=\Theta(r_2^m),
+\qquad
+\mathbb{P}\bigl[\Fold_m(\omega)=\Fold_m(\omega')\bigr]
+=\Theta\!\left(\left(\frac{r_2}{4}\right)^m\right).
+$$
+Furthermore, let \(w_m(x):=d_m(x)/2^m\) be the output distribution of the uniform microstate after folding, then its \(\mathrm{R\acute{e}nyi}\)--2 projection entropy rate exists and equals
+$$
+h_2:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}w_m(x)^2\Bigr)
+=\log\!\left(\frac{4}{r_2}\right)\approx 0.477554342632.
+$$
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-s2-recurrence}, the generating function of \(S_2(m)\) has denominator \(1-2z-2z^2+2z^3\), whose radius of convergence is determined by the smallest modulus zero of this denominator, equivalent to the largest real root \(r_2\) of the recurrence characteristic polynomial. Therefore \(S_2(m)=\Theta(r_2^m)\). Also
+$$
+\sum_{x\in X_m}w_m(x)^2=\sum_x \frac{d_m(x)^2}{4^m}=\frac{S_2(m)}{4^m},
+$$
+substituting the asymptotic yields \(h_2=\log(4/r_2)\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Second-Order "Approximate Uniform Coverage": Exponential Characterization of Deviation Constant]\label{cor:pom-renyi2-near-uniform}
+Let \(w_m(x)=d_m(x)/2^m\) be the fold pushforward of the uniform microstate, and let \(u_m(x)\equiv 1/|X_m|=1/F_{m+2}\) be the uniform distribution on \(X_m\). Define the second-order collision ratio (i.e., the exponentialized Rényi--2 relative entropy)
+\[
+\begin{aligned}
+R_m
+&:=\frac{\sum_x w_m(x)^2}{\sum_x u_m(x)^2}\\
+&=|X_m|\sum_x w_m(x)^2\\
+&=\frac{F_{m+2}\,S_2(m)}{4^m}.
+\end{aligned}
+\]
+Then the exponential rate is
+\[
+\boxed{
+\begin{aligned}
+\lim_{m\to\infty}\frac{1}{m}\log R_m
+&=\log\!\left(\frac{\varphi\,r_2}{4}\right)\\
+&\approx 3.657482\times 10^{-3}.
+\end{aligned}
+}.
+\]
+Therefore in the second-order sense, the intensity with which \(w_m\) deviates from the uniform distribution grows per resolution with base \(\varphi r_2/4\approx 1.003664\).
+\end{corollary}
+\begin{proof}
+By definition,
+\(
+\sum_x u_m(x)^2=|X_m|\cdot |X_m|^{-2}=|X_m|^{-1}=F_{m+2}^{-1}
+\).
+Also by Definition \ref{def:pom-s2} and Corollary \ref{cor:pom-s2-asymptotic},
+\(
+\sum_x w_m(x)^2=S_2(m)/4^m=\Theta((r_2/4)^m)
+\).
+Thus
+\[
+R_m=F_{m+2}\cdot \Theta\!\left(\left(\frac{r_2}{4}\right)^m\right)
+=\Theta\!\left(\left(\frac{\varphi\,r_2}{4}\right)^m\right),
+\]
+where we use the Fibonacci asymptotic \(F_{m+2}=\Theta(\varphi^m)\). Taking logarithm, dividing by \(m\), and letting \(m\to\infty\) yields the conclusion. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Entropy Spectrum Squeeze: \texorpdfstring{$h_2\le h_1\le \log\varphi$}{h2<=h1<=log phi}]\label{cor:pom-shannon-entropy-squeeze}
+Let \(w_m(x)=d_m(x)/2^m\) be the fold pushforward of the uniform microstate, and define its Shannon entropy
+\[
+H_1(m):=-\sum_{x\in X_m}w_m(x)\log w_m(x).
+\]
+Let the upper and lower limits of its entropy rate be
+\[
+\underline h_1:=\liminf_{m\to\infty}\frac{1}{m}H_1(m),
+\qquad
+\overline h_1:=\limsup_{m\to\infty}\frac{1}{m}H_1(m).
+\]
+Then we have the squeeze
+\[
+\boxed{\;
+h_2\ \le\ \underline h_1\ \le\ \overline h_1\ \le\ \log\varphi\; }.
+\]
+Consequently, the gap between \(\overline h_1\) and the upper bound \(\log\varphi\) is completely quantified by the second-order constant:
+\[
+0\ \le\ \log\varphi-\overline h_1\ \le\ \log\varphi-h_2
+=\log\!\left(\frac{\varphi r_2}{4}\right),
+\]
+where the right-hand side is precisely the deviation exponential constant from Corollary \ref{cor:pom-renyi2-near-uniform} (approximately \(3.657482\times 10^{-3}\)).
+\end{corollary}
+\begin{proof}
+For any finite-support distribution \(\pi\), Rényi entropy is monotone decreasing with order, hence \(H_2(\pi)\le H_1(\pi)\le H_0(\pi)\);
+here \(H_2(\pi)=-\log\sum_x\pi(x)^2\), \(H_0(\pi)=\log|\mathrm{supp}(\pi)|\).
+Applying to \(\pi=w_m\) yields
+\[
+-\log\sum_x w_m(x)^2\ \le\ H_1(m)\ \le\ \log|X_m|=\log F_{m+2}.
+\]
+Dividing both ends by \(m\) and taking \(\liminf,\limsup\), then using \(\lim_{m\to\infty}\frac{1}{m}\log F_{m+2}=\log\varphi\) and Corollary \ref{cor:pom-s2-asymptotic}'s
+\(
+h_2=\lim_{m\to\infty}\frac{1}{m}\bigl(-\log\sum_x w_m(x)^2\bigr)
+\)
+yields the first set of squeezes. The identity \(\log\varphi-h_2=\log(\varphi r_2/4)\) follows directly from simplifying \(h_2=\log(4/r_2)\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Closed-Form Endpoint of Min-Entropy Rate]\label{cor:pom-min-entropy-rate}
+Let
+\[
+H_\infty(m):=-\log\max_{x\in X_m}w_m(x),
+\qquad
+h_\infty:=\lim_{m\to\infty}\frac{1}{m}H_\infty(m).
+\]
+Then the limit exists and satisfies the closed form
+\[
+\boxed{\;
+h_\infty=\log 2-\frac{1}{2}\log\varphi=\log\!\left(\frac{2}{\sqrt{\varphi}}\right).\;}
+\]
+\end{corollary}
+\begin{proof}
+Since \(\max_x w_m(x)=D_m/2^m\) (where \(D_m==\max_x d_m(x)\)), we have
+\(
+H_\infty(m)=m\log 2-\log D_m
+\).
+Using Theorem \ref{thm:pom-max-fiber}'s \(D_m=\Theta(\varphi^{m/2})\) yields
+\(
+\lim_{m\to\infty}\frac{1}{m}\log D_m=\frac{1}{2}\log\varphi
+\),
+substituting gives the conclusion. This completes the proof.
+\end{proof}

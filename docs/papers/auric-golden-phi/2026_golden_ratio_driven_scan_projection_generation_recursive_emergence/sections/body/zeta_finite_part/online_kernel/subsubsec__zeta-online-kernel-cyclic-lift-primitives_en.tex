@@ -134,3 +134,160 @@ setting \(\theta=\pi\) gives the half-lattice case.
 The converse reasoning proceeds identically: a critical-line pole yields \(|\mu|=\sqrt{\lambda}\) with argument \(\theta\) (modulo \(2\pi\)). \qed
 \end{proof}
 
+\paragraph{Finite probes and resolution: addressability and audit limits for RH-sharp combs}
+Let \(M\) be RH-sharp: there exists a boundary eigenvalue \(\mu=\sqrt{\lambda}e^{i\theta}\) (\(\lambda=\rho(M)>1\)).
+By the comb formula of Corollary \ref{cor:zeta-cyclic-lift-dirichlet-comb}, for any \(q\ge 2\) the cyclic lift
+\(
+M^{\langle q\rangle}=M\otimes P_q
+\)
+generates a \(q\)-subdivision imaginary comb on the critical line \(\Re(s)=\tfrac12\).
+Taking the imaginary part modulo the fundamental period \(2\pi/\log\lambda\), define
+\[
+\mathcal T_q(\theta):=
+\left\{\left.\frac{\theta+2\pi j}{q\log\lambda}\ \right|\ j=0,1,\dots,q-1\right\}
+\ \subset\ \RR/\Bigl(\frac{2\pi}{\log\lambda}\Bigr)\ZZ .
+\]
+
+\begin{theorem}[Finite-probe evasion: any finite probe can be evaded by cyclic-lift closure]\label{thm:zeta-cyclic-lift-finite-probe-evasion}
+Given any finite set
+\(
+S\subset \RR/\bigl(\tfrac{2\pi}{\log\lambda}\bigr)\ZZ
+\).
+Except in the degenerate aligned case (i.e., \(\theta\equiv 0\ (\mathrm{mod}\ 2\pi)\) and \(0\in S\)), there exist infinitely many integers \(q\ge 2\) such that
+\[
+S\cap \mathcal T_q(\theta)=\varnothing.
+\]
+Consequently, any ``finite-probe audit'' that verifies a \(\zeta\)-type object only at finitely many critical-line sampling points cannot falsify RH-sharp in the sense of cyclic-lift closure: in the presence of a boundary mode, one can always choose certain lift orders \(q\) such that all sampling points avoid the comb poles.
+\end{theorem}
+\begin{proof}
+Via the isomorphism
+\(
+x:=t\log\lambda/(2\pi)\ (\mathrm{mod}\ 1)
+\)
+identify the quotient group \(\RR/(\tfrac{2\pi}{\log\lambda})\ZZ\) with the circle \(\mathbb T:=\RR/\ZZ\), and set \(\alpha:=\theta/(2\pi)\in[0,1)\).
+Then \(\mathcal T_q(\theta)\) corresponds to the phase-point set
+\[
+\mathcal P_q(\alpha):=\left\{\left.\frac{\alpha+j}{q}\ \right|\ j=0,1,\dots,q-1\right\}\subset\mathbb T,
+\]
+and for any \(x\in\mathbb T\) one has the equivalence
+\(
+x\in\mathcal P_q(\alpha)\Longleftrightarrow qx-\alpha\in\ZZ
+\).
+Let \(X\subset\mathbb T\) denote the image of \(S\). The desired conclusion is equivalent to showing there exist infinitely many \(q\ge 2\) with \(X\cap\mathcal P_q(\alpha)=\varnothing\).
+\par
+\emph{(1) \(\alpha\) irrational:} If \(\alpha\notin\QQ\), then for any rational \(x\) we have \(qx\in\QQ\) and thus \(qx-\alpha\notin\ZZ\) (no solution); for any irrational \(x\), if \(q_1x-\alpha,q_2x-\alpha\in\ZZ\) then \((q_1-q_2)x\in\ZZ\), forcing \(x\in\QQ\), a contradiction, so each irrational \(x\) excludes at most one \(q\).
+Hence the finite set \(X\) excludes only finitely many \(q\), leaving infinitely many \(q\) available.
+\par
+\emph{(2) \(\alpha\) rational:} Suppose \(\alpha=a/b\in\QQ\cap[0,1)\) in reduced form.
+If \(b=1\) (i.e., \(\alpha=0\)), then \(x\in\mathcal P_q(0)\) is equivalent to \(qx\in\ZZ\).
+When \(0\notin X\), all points in \(X\) that could be hit are rational with denominator \(\ge 2\), so each point excludes only a set of multiples of some positive integer; choosing infinitely many large primes \(q\) avoids all of them.
+When \(0\in X\), we have \(0\in\mathcal P_q(0)\) for all \(q\), so evasion is impossible (corresponding to the degenerate aligned case in the theorem statement).
+\par
+Now assume \(b\ge 2\), and take any prime divisor \(p\mid b\).
+If \(x=m/n\in X\cap\QQ\) is in reduced form and there exists \(q\) with \(qx-\alpha\in\ZZ\), then necessarily \(b\mid n\);
+write \(n=bd\) (\(d\ge 1\)). From
+\(
+q\cdot \frac{m}{bd}-\frac{a}{b}\in\ZZ
+\)
+we deduce
+\(
+qm-ad\in bd\,\ZZ
+\),
+and thus (since \(\gcd(m,bd)=1\)) \(q\equiv ad\,m^{-1}\ (\mathrm{mod}\ bd)\).
+In particular, \(q=dq'\) with \(q'\equiv a m^{-1}\ (\mathrm{mod}\ b)\), hence \(\gcd(q',b)=1\).
+Therefore, for any \(p\mid b\) we have
+\[
+v_p(q)=v_p(d)\qquad(\text{when }x=m/(bd)\ \text{ is hit}).
+\]
+Since \(X\) is finite, the set of values \(v_p(d)\) corresponding to all hittable rational points is finite.
+Take \(N\) larger than the maximum of this finite set and set \(q:=p^{N}\);
+then \(v_p(q)=N\) cannot equal any hittable \(v_p(d)\), so \(X\cap\mathcal P_q(\alpha)=\varnothing\).
+Letting \(N\to\infty\) yields infinitely many such \(q\). \qed
+\end{proof}
+
+\begin{proposition}[Covering radius of the addressable grid: generic phase yields \texorpdfstring{$\Theta(Q^{-1})$}{Theta(1/Q)}]\label{prop:zeta-cyclic-lift-addressable-grid-covering-radius}
+Retaining the notation \(\alpha\in[0,1)\) and \(\mathcal P_q(\alpha)\) from above, define the union of grids up to order \(Q\):
+\[
+\mathcal P_{\le Q}(\alpha):=\bigcup_{q=2}^{Q}\mathcal P_q(\alpha)\subset\mathbb T .
+\]
+Let \(d_{\mathbb T}\) denote the circle distance. Then for any \(Q\ge 2\) one has
+\[
+\boxed{\;
+\frac{\min\{\alpha,\,1-\alpha\}}{Q}
+\ \le\
+\sup_{x\in\mathbb T} d_{\mathbb T}\bigl(x,\mathcal P_{\le Q}(\alpha)\bigr)
+\ \le\
+\frac{1}{2Q}\; }.
+\]
+In particular, when \(\alpha\in(0,1)\) is fixed, the above formula gives a worst-case covering radius of order \(\Theta(Q^{-1})\).
+\end{proposition}
+\begin{proof}
+The upper bound follows from the single-layer comb at \(q=Q\): \(\mathcal P_Q(\alpha)\) is an equispaced grid with step \(1/Q\), so any \(x\) has distance \(\le 1/(2Q)\) to \(\mathcal P_Q(\alpha)\), and hence to the union \(\mathcal P_{\le Q}(\alpha)\).
+\par
+For the lower bound, take \(x=0\): for each \(q\), the nearest point in \(\mathcal P_q(\alpha)\) to \(0\) is \(\alpha/q\) or \(1-(1-\alpha)/q\), so
+\(
+d_{\mathbb T}(0,\mathcal P_q(\alpha))=\min\{\alpha,1-\alpha\}/q
+\);
+minimizing over \(q\le Q\) gives \(\min\{\alpha,1-\alpha\}/Q\).
+Hence the worst-case covering radius (supremum over \(x\)) is at least this value. \qed
+\end{proof}
+
+\begin{proposition}[Counting lower bound: worst-case covering radius at least \texorpdfstring{$\gg Q^{-2}$}{gg Q^-2}]\label{prop:zeta-cyclic-lift-covering-radius-counting-lb}
+Retaining the notation \(\mathcal P_{\le Q}(\alpha)\), let
+\(
+N_Q:=\bigl|\mathcal P_{\le Q}(\alpha)\bigr|
+\)
+denote its cardinality (note that duplicates may occur, so this is only an upper-bound count).
+Then for any \(Q\ge 2\) there exists \(x\in\mathbb T\) such that
+\[
+\boxed{\;
+d_{\mathbb T}\bigl(x,\mathcal P_{\le Q}(\alpha)\bigr)\ \ge\ \frac{1}{Q(Q+1)}\; }.
+\]
+\end{proposition}
+\begin{proof}
+Clearly the cardinality satisfies
+\[
+N_Q\le \sum_{q=2}^{Q} q=\frac{Q(Q+1)}{2}-1.
+\]
+If one covers all points of \(\mathcal P_{\le Q}(\alpha)\) by arcs of radius \(r\), the total covering length is at most \(2r\,N_Q\).
+Taking \(r<\frac{1}{2N_Q}\), the total length is \(<1\), so there must exist an uncovered point \(x\) satisfying
+\(
+d_{\mathbb T}(x,\mathcal P_{\le Q}(\alpha))\ge r
+\).
+Substituting \(N_Q\le Q(Q+1)/2\) and taking \(r=\frac{1}{Q(Q+1)}\) yields the result. \qed
+\end{proof}
+
+\begin{corollary}[Oracle resolution law: worst-case resolution scale imposed by lift-order bound \(Q\)]\label{cor:zeta-cyclic-lift-resolution-law}
+Under the RH-sharp setting, define the worst-case resolution (modulo the fundamental period):
+\[
+\varepsilon_Q:=\sup_{t\in \RR/(\tfrac{2\pi}{\log\lambda})\ZZ}\ \inf_{2\le q\le Q}\ \inf_{t_q\in\mathcal T_q(\theta)} d(t,t_q),
+\]
+where \(d\) denotes the circle distance (aligned with \(d_{\mathbb T}\) above).
+Then the normalized identity holds:
+\[
+\frac{\varepsilon_Q\log\lambda}{2\pi}
+=\sup_{x\in\mathbb T} d_{\mathbb T}\bigl(x,\mathcal P_{\le Q}(\alpha)\bigr),
+\qquad \alpha=\frac{\theta}{2\pi},
+\]
+and hence by Proposition \ref{prop:zeta-cyclic-lift-addressable-grid-covering-radius} we obtain the two-sided bound
+\[
+\boxed{\;
+\frac{\min\{\alpha,\,1-\alpha\}}{Q}
+\ \le\
+\frac{\varepsilon_Q\log\lambda}{2\pi}
+\ \le\
+\frac{1}{2Q}\; }.
+\]
+Thus, for a generic phase \(\alpha\in(0,1)\) fixed, in order to reduce the worst-case uncertainty to scale \(\varepsilon\), any mechanism relying on ``cyclic lift up to order \(Q\)'' must satisfy in terms of resources
+\[
+Q\ \gtrsim\ \frac{1}{\varepsilon\log\lambda},
+\]
+and this \(Q^{-1}\) scaling is not improvable in order of magnitude.
+For the aligned case \(\alpha=0\) and the \(Q^{-2}\) improvement, see Remark \ref{rem:zeta-cyclic-lift-aligned-farey-q2}.
+\end{corollary}
+
+\begin{remark}[Aligned case \texorpdfstring{$\alpha=0$}{alpha=0} and the \texorpdfstring{$Q^{-2}$}{Q^-2} improvement]\label{rem:zeta-cyclic-lift-aligned-farey-q2}
+When \(\alpha=0\) (equivalent to \(\theta\equiv 0\ (\mathrm{mod}\ 2\pi)\)), \(\mathcal P_q(0)=\{j/q\}\) is the standard rational grid, and its union \(\mathcal P_{\le Q}(0)\) is of the same order as the Farey grid with denominators \(\le Q\); the worst-case covering radius improves to \(\Theta(Q^{-2})\) (the classical Dirichlet/Farey approximation order).
+In this case, the resource scaling improves from the generic-phase \(Q\asymp \varepsilon^{-1}\) to \(Q\asymp \varepsilon^{-1/2}\) (in the normalized variable \(x\)).
+\end{remark}
+

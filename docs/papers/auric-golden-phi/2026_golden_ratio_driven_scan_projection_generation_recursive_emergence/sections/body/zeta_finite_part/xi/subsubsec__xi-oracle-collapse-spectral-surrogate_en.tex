@@ -1,0 +1,86 @@
+\paragraph{Oracle collapse and spectral surrogates: finite certification bifurcation under uniformly bounded minimal realization dimension}
+This paragraph extracts a logical bifurcation that repeatedly appears throughout the text but is often presented with different interface languages: if the "minimal realization dimension/visible degrees of freedom" remain uniformly bounded over the family under consideration, then many infinite constraints phrased as "for all truncation orders \(N\)" can be eliminated to finite certificates; conversely, if no uniform dimension bound exists, then no fixed finite audit can decide global properties such as kernel-version RH/completeness, and "spectral surrogates" that are fully consistent with finite data but have opposite global truth values necessarily exist.
+
+\begin{theorem}[Oracle collapse: uniformly bounded minimal realization dimension \texorpdfstring{$\Longrightarrow$}{=>} finite truncation of Toeplitz--PSD]\label{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation}
+For each parameter pair \((\ell,\theta)\), let
+\[
+C_{\ell,\theta}(w)=c^{(\ell,\theta)}_0+2\sum_{n\ge 1}c^{(\ell,\theta)}_n w^n
+\]
+be a Carath\'eodory candidate function on \(\mathbb D\), and let its Toeplitz truncation be
+\[
+T^{(\ell,\theta)}_N:=\bigl(c^{(\ell,\theta)}_{j-k}\bigr)_{0\le j,k\le N}\qquad(N\ge 0),
+\]
+where we set \(c^{(\ell,\theta)}_{-n}:=\overline{c^{(\ell,\theta)}_n}\) to ensure \(T^{(\ell,\theta)}_N\) is Hermitian.
+Let \(d_{\min}^{(\ell)}(\theta)\) denote the minimal linear realization dimension of the coefficient sequence \(c^{(\ell,\theta)}_\bullet\).
+Suppose there exists a uniform upper bound \(D\) for all \((\ell,\theta)\) such that \(d_{\min}^{(\ell)}(\theta)\le D\)
+(equivalently: there exists a constant-coefficient linear recurrence of order \(\le D\) that annihilates \(c^{(\ell,\theta)}_\bullet\) in a sufficiently late segment, i.e., the Hankel rank is uniformly bounded by \(D\); see the minimal realization criterion in Theorem \ref{thm:hankel-rank-minimal}).
+Then there exists a uniform finite truncation threshold \(N_0\le 2D\), such that for each fixed \((\ell,\theta)\) the equivalence
+\[
+\forall N\ge 0,\;T^{(\ell,\theta)}_N\succeq 0
+\quad\Longleftrightarrow\quad
+\forall N\in\{0,1,\dots,N_0\},\;T^{(\ell,\theta)}_N\succeq 0.
+\]
+holds. More specifically, for each \(N\ge 0\) there exists a scalar matrix \(W^{(\ell,\theta)}_N\in M_{(N_0+1)\times (N+1)}(\CC)\) such that
+\[
+T^{(\ell,\theta)}_N=(W^{(\ell,\theta)}_N)^\ast\,T^{(\ell,\theta)}_{N_0}\,W^{(\ell,\theta)}_N.
+\]
+\end{theorem}
+
+\begin{proof}
+From minimal realization dimension \(\le D\) (or equivalently Hankel rank \(\le D\)), we can choose a constant-coefficient linear recurrence of order \(\le D\) such that the coefficient family satisfies the same recurrence closure in a sufficiently late segment; combined with the Hermitian symmetry \(c_{-n}=\overline{c_n}\), this closure can be viewed as a finite-dimensional shift-invariant subspace acting on the bi-infinite coefficient index.
+Therefore, at any truncation order \(N\), the column space (or row space) of the Toeplitz principal submatrix is spanned by finitely many "basis shift columns", whose spanning dimension can be controlled by \(O(D)\); taking \(N_0:=2D\) and fixing a spanning basis, we can write every column vector of \(T_N\) as a scalar linear combination of column vectors of \(T_{N_0}\), thus obtaining some \(W_N\) such that \(T_N=W_N^\ast T_{N_0}W_N\).
+Positive semi-definiteness is preserved and reflected under congruence (compression): if \(T_{N_0}\succeq 0\) then \(T_N=W_N^\ast T_{N_0}W_N\succeq 0\); the reverse direction follows trivially from principal submatrix closure.
+Thus "for all \(N\)" and "for finite \(N\le N_0\)" are strictly equivalent, with \(N_0\) uniformly chosen.
+\end{proof}
+
+\begin{remark}[Finite certification of infinite constraints: quantifier elimination on fixed finite audit slices]\label{rem:xi-oracle-collapse-finite-certification}
+Theorem \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation} eliminates the "\(\forall N\)" quantifier in the Toeplitz--PSD hierarchy: once the uniform dimension bound \(D\) holds, the infinite PSD family at each parameter point can be uniformly compressed to joint verification of finitely many truncation orders.
+Therefore, under the finite audit semantics of this paper (\(\Theta\) is a finite audit slice; see the convention for \(\Theta\) in \S\ref{subsec:pom-three-generator-residual-closure}), all kernel-version RH/completeness constraints expressed via Toeplitz/Hankel families (or their equivalent Carath\'eodory/Herglotz interfaces) can, under the premise of uniformly bounded minimal realization dimension, be rewritten as: joint verification over the finite set \(\Theta\) and the finite order set \(\{0,\dots,N_0\}\). In other words, the oracle requirement of "needing infinite checks over all levels" is logically collapsed to a finite certificate object.
+\end{remark}
+
+\begin{corollary}[Two-axis finitization of oracle elimination: uniform dimension compactness \texorpdfstring{$+$}{+} coprime two-moment zero anomaly]\label{cor:xi-oracle-elimination-two-axes}
+Under the uniform dimension bound regime of Theorem \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation}, any kernel-version RH/completeness assertion phrased via Toeplitz/Hankel families can have its "\(\forall N\)" quantifier uniformly eliminated to verification at finite truncation orders \(N\le N_0\).
+Moreover, on the calculus side where anomaly amplification holds, the requirement "anomaly vanishes for all moment orders \(q\ge 2\)" of infinite moment-order audit is equivalently compressed to verification at two coprime moment orders (e.g., \(q=2,3\); Theorem \ref{thm:pom-anom-all-moments-collapse-to-two}).
+\par
+Therefore, under the audit semantics of this paper, provided both premises (uniform finite truncation threshold \(N_0\) and coprime two-moment zero anomaly) hold simultaneously, the two classes of oracle quantifiers on the spectral side and cohomology side (\(\forall N\), \(\forall q\)) can be completely replaced by finite certificates under the same calibration.
+\end{corollary}
+\begin{proof}
+The first sentence is a direct restatement of Theorem \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation}.
+The second sentence is provided by Theorem \ref{thm:pom-anom-all-moments-collapse-to-two}; combining both yields the conclusion.
+\end{proof}
+
+\begin{theorem}[Spectral surrogates: no uniform dimension bound \texorpdfstring{$\Longrightarrow$}{=>} undecidability under any finite audit]\label{thm:xi-spectral-surrogate-finite-audit-undecidable}
+Suppose there exists no integer \(D\) such that the minimal realization dimension of the family \(\{c^{(\ell,\theta)}_\bullet\}_{(\ell,\theta)}\) satisfies a uniform bound, i.e.,
+\(
+\sup_{(\ell,\theta)}d_{\min}^{(\ell)}(\theta)=\infty
+\).
+Let \(\mathcal A\) be any fixed \emph{finite audit rule}: its input depends only on finitely many visible data (e.g., finitely many principal minors or spectral quantities of Toeplitz/Hankel truncations, finitely many \((\ell,\theta)\) sample points, or finite-length primitive/trace sequence segments).
+Then there exist two kernel candidates \(\mathcal K^{(+)}\), \(\mathcal K^{(-)}\) satisfying:
+\begin{enumerate}
+  \item \(\mathcal K^{(+)}\) and \(\mathcal K^{(-)}\) completely agree on all finite data accessed by audit \(\mathcal A\);
+  \item Their global truth values are opposite: \(\mathcal K^{(+)}\) satisfies kernel-version RH (or completeness), while \(\mathcal K^{(-)}\) does not (or vice versa).
+\end{enumerate}
+Therefore, under the semantics of "not knowing the uniform dimension bound", kernel-version RH/completeness is undecidable for any finite audit: without externalizing additional modal axes or introducing infinite family checks, spectral surrogates that are fully isomorphic to the audit data necessarily exist.
+\end{theorem}
+
+\begin{proof}
+Let \(N_{\mathcal A}\) be the maximum truncation order used by audit \(\mathcal A\) (or the equivalent maximum regression length/maximum moment order window), and let \(\Theta_{\mathcal A}\) be the finite parameter subset it accesses.
+Since no uniform dimension bound exists, we can construct a "silent degree of freedom" module at some higher realization dimension level: this module has minimal recurrence length strictly greater than \(N_{\mathcal A}\), hence produces no visible contribution at all audited finite truncation orders (equivalently: does not alter any Toeplitz/Hankel truncations and their derived scalars visible to \(\mathcal A\)).
+While keeping all audit-visible data unchanged, we can arrange this silent module to introduce (or exclude) boundary-attaining spectral points/super-boundary spectral points at higher orders, thereby flipping the global positivity/no-pole truth value required by kernel-version RH (or completeness).
+Thus we obtain two extensions: the one without the silent module and the one with it are indistinguishable under finite audit yet have opposite global properties, establishing the conclusion.
+\end{proof}
+
+\begin{corollary}[Critical line poles' "empty/dense" dichotomy: strict RH versus RH-sharp]\label{cor:xi-critical-line-poles-empty-or-dense}
+Let \(M\) be a finite kernel matrix, \(\lambda=\rho(M)>1\), and define in Dirichlet coordinates
+\[
+\widehat{\zeta}_M(s):=\det\!\bigl(I-\lambda^{-s}M\bigr)^{-1}.
+\]
+If strict kernel-version RH holds, i.e., \(\max_{\mu\neq\lambda}|\mu|<\sqrt{\lambda}\), then the critical line \(\Re(s)=\tfrac12\) contains no nontrivial poles.
+If boundary-attaining spectral points exist, \(|\mu|=\sqrt{\lambda}\) (RH-sharp), then for any integer \(q\ge 2\) the cyclic lift \(M^{\langle q\rangle}=M\otimes P_q\) has critical line pole imaginary parts containing a \(q\)-fold equidistant comb in the group \(\RR/(2\pi/\log\lambda)\ZZ\); as \(q\) ranges over the integers, the union of these combs is dense in this quotient group.
+\end{corollary}
+
+\begin{proof}
+Under strict RH, by the spectral--\(s\)-plane dictionary (see \S\ref{subsec:pom-rh-sharp} and \S\ref{subsubsec:zeta-online-kernel-cyclic-lift-primitives}) any non-Perron spectral point satisfies \(\Re(s)=\log|\mu|/\log\lambda<\tfrac12\), hence the critical line has no poles.
+The comb structure and densification for RH-sharp follow directly from part (4) and the final sentence of the cyclic phase lifting Proposition \ref{prop:finite-rh-phase-lift}.
+\end{proof}
+

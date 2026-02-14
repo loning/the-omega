@@ -40,7 +40,7 @@ If \(n=21a+34b\) is reachable, then necessarily \(b\equiv b_r\ (\mathrm{mod}\ 21
 n=w_r+21(a+34k)\ge w_r
 \).
 Conversely, if \(n\equiv r\ (\mathrm{mod}\ 21)\) and \(n\ge w_r\), then \(n-w_r\) is a nonnegative multiple of \(21\); setting \(a=(n-w_r)/21\ge 0\) and \(b=b_r\) yields the decomposition.
-Uniqueness is forced by the reduction condition \(b\in\{0,\dots,20\}\): if \(21a+34b=21a'+34b'\) with \(b,b'\in\{0,\dots,20\}\), then \(34(b-b')\) is a multiple of \(21\), and since \(\gcd(34,21)=1\), we get \(b=b'\), hence \(a=a'\).
+Uniqueness is forced by the reduction condition \(b\in\{0,\dots,20\}\): if \(21a+34b=21a'+34b'\) with \(b,b'\in\{0,\dots,20\}\), then \(34(b-b')\) is a multiple of \(21\), and since \(\gcd(34,21)=1\), we get \(b=b'\), hence \(a=a'\). This completes the proof.
 \end{proof}
 
 \begin{proposition}[Ap\'ery Threshold Family and Congruence Decomposition of the Unreachable Count]\label{prop:xi-window6-tail-semigroup-apery-thresholds}
@@ -63,7 +63,7 @@ The complete data is given in Table \ref{tab:window6_tail_semigroup_apery_21_34}
 \]
 \end{proposition}
 
-\input{sections/generated/tab_window6_tail_semigroup_apery_21_34_en}
+\input{sections/generated/tab_window6_tail_semigroup_apery_21_34}
 
 \begin{proposition}[Complete Congruence-Union Characterization of the Reachable Dimension Set with Finite Truncation]\label{prop:xi-window6-dimension-reachability-congruence-union}
 Write the total dimension as \(D=12+n\) (where \(n\) is the tail-additive increment).
@@ -91,7 +91,7 @@ The complete data is given in Table \ref{tab:window6_tail_semigroup_minrep_zecke
 Therefore, "congruence class \(r\)" can be unambiguously encoded at the minimal representative level by \(S(D_r^{\min})\).
 \end{proposition}
 
-\input{sections/generated/tab_window6_tail_semigroup_minrep_zeckendorf_signatures_en}
+\input{sections/generated/tab_window6_tail_semigroup_minrep_zeckendorf_signatures}
 
 \begin{proposition}[Self-Duality of the Congruence Permutation: \texorpdfstring{$r\mapsto b_r$}{r->br} Is an Involution]\label{prop:xi-window6-congruence-involution}
 The map \(r\mapsto b_r=13r\ (\mathrm{mod}\ 21)\) satisfies \(13^2\equiv 1\ (\mathrm{mod}\ 21)\), and hence is a self-inverse permutation:
@@ -152,7 +152,186 @@ so that the reset drift and fluctuation are completely determined at the integer
 \begin{proposition}[Mass Invariants and Second-Order Consistency Ledger of the Unreachable Set]\label{prop:xi-window6-gap-ledger-invariants}
 Let \(\mathcal G\subset\mathbb N\) be the unreachable increment set of \(\langle 21,34\rangle\) (i.e., the point set corresponding to the finite truncated union in Proposition \ref{prop:xi-window6-tail-semigroup-apery-thresholds}).
 Then its cardinality, total weight, and second-order combinatorial quantities derived from the truncation lengths \(\{g_r\}\) satisfy the strict identities
-\input{sections/generated/eq_window6_tail_semigroup_gap_ledger_21_34_en}
+\input{sections/generated/eq_window6_tail_semigroup_gap_ledger_21_34}
 Therefore, the mean of the dimension-level unreachable point set \(\{12+n:\ n\in\mathcal G\}\) is \(12+\frac{686}{3}=\frac{722}{3}\).
 The above identities, together with the threshold family in Table \ref{tab:window6_tail_semigroup_apery_21_34}, constitute a verifiable consistency ledger; any violation is equivalent to a mismatch in either the congruence threshold family or the "tail-additive" mechanism assumption.
 \end{proposition}
+
+\paragraph{Bounded Drift and Constant-Time Computability of the Sturmian Reset Clock}
+
+\begin{proposition}[Bounded Drift of the Two-Interval Sturmian Reset Clock: Jitter Upper Bound Equals Gap Difference]\label{prop:xi-window6-reset-clock-bounded-drift}
+Let the reset event sequence of window-\(6\) be as in Theorem \ref{thm:terminal-reset-events-sturmian}, and denote the consecutive reset intervals as
+\[
+G_n:=r_{n+1}-r_n\in\{34,55\}\qquad(n\ge 1).
+\]
+Define the partial sum (reset time increment)
+\[
+T_n:=\sum_{j=1}^{n}G_j\qquad(n\ge 1),
+\]
+and let the mean drift constant
+\[
+\mu:=\mathbb E[G]=\frac{55}{\varphi}+\frac{34}{\varphi^2}=13+21\varphi
+\]
+be as in Proposition \ref{prop:xi-window6-reset-gap-mgf-moments}.
+Then there exists an intercept parameter \(\theta\in[0,1)\) such that the long-interval count
+\[
+S_n:=\#\{1\le j\le n:\ G_j=55\}
+\]
+satisfies \(S_n=\lfloor n/\varphi+\theta\rfloor\), and the drift deviation has uniform boundedness
+\[
+T_n-n\mu=21\Bigl(S_n-\frac{n}{\varphi}\Bigr),
+\qquad
+\bigl|T_n-n\mu\bigr|\le 21
+\quad(\forall n\ge 1).
+\]
+Hence this reset clock has deterministic "zero-diffusion" jitter at all scales: the error deviating from the mean linear drift does not grow with \(n\), and its worst-case amplitude equals precisely the gap difference \(55-34=21\).
+\end{proposition}
+
+\begin{proof}
+By Theorem \ref{thm:terminal-reset-events-sturmian}, the indicator sequence \(\ind_{\{G_j=55\}}\) is a Sturmian sequence of slope \(\varphi^{-1}\) (equivalent to reading out an interval window from an irrational rotation).
+The balance property of Sturmian sequences gives: there exists \(\theta\in[0,1)\) such that
+\(
+S_n=\lfloor n/\varphi+\theta\rfloor
+\)
+and \(|S_n-n/\varphi|\le 1\).
+On the other hand, the identity \(T_n=55S_n+34(n-S_n)=34n+21S_n\) and \(\mu=34+21/\varphi\) imply
+\(
+T_n-n\mu=21(S_n-n/\varphi)
+\);
+from \(|S_n-n/\varphi|\le 1\), we get \(|T_n-n\mu|\le 21\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Constant-Time Computability of the Reset Clock: Beatty Rounding and Scan-Free Update]\label{cor:xi-window6-reset-clock-O1-computable}
+Under the notation of Proposition \ref{prop:xi-window6-reset-clock-bounded-drift}, given \(n\), one can compute \(T_n\) in constant time:
+let \(S_n=\lfloor n/\varphi+\theta\rfloor\), then
+\[
+T_n=34n+21S_n.
+\]
+Thus the reset time set \(\{T_n\}\) can be realized by a single Beatty rounding, without enumerating \((G_1,\dots,G_n)\).
+\end{corollary}
+
+\begin{remark}[Rotation Representation and Congruence Invariants of the Drift Residual]\label{rem:xi-window6-reset-clock-residual-rotation-congruence}
+From \(S_n=\lfloor n/\varphi+\theta\rfloor\), we have
+\[
+S_n-\frac{n}{\varphi}=\theta-\Bigl\{\frac{n}{\varphi}+\theta\Bigr\}\in(\theta-1,\theta],
+\qquad
+T_n-n\mu=21\Bigl(\theta-\Bigl\{\frac{n}{\varphi}+\theta\Bigr\}\Bigr),
+\]
+where \(\{\cdot\}\) denotes the fractional part.
+Since \(1/\varphi\) is irrational, \(\{\frac{n}{\varphi}+\theta\}\) is dense in \([0,1)\), so the drift residual \(\{T_n-n\mu\}_{n\ge 1}\) is dense in some interval of length \(21\).
+On the other hand, the sign of \(\theta-\{\frac{n}{\varphi}+\theta\}\) is determined solely by whether
+\(\{\frac{n}{\varphi}+\theta\}\in[0,\theta]\) or \((\theta,1)\);
+hence the \emph{sign semantics} of the drift residual can be compressed under a binary budget (corresponding to the local pattern dichotomy under binary window readout in the Sturmian sequence).
+Moreover, since \(34\equiv 55\equiv 13\ (\mathrm{mod}\ 21)\), we have
+\[
+T_n\equiv 13n\ (\mathrm{mod}\ 21),
+\]
+so the reset times exhibit a fully deterministic finite residue-class structure modulo \(21\).
+\end{remark}
+
+\begin{corollary}[Reachability Coupling of the Reset Clock and Tail Semigroup: Finite Obstruction Only at Shallow Scales]\label{cor:xi-window6-reset-clock-semigroup-coupling}
+Let \(S=\langle 21,34\rangle\).
+Then for any integer \(t\ge 715\), there exist \(n\in\mathbb N\) and \(s\in S\) such that
+\[
+t=T_n+s
+\qquad\text{and}\qquad
+\bigl|t-(n\mu+s)\bigr|\le 21,
+\]
+where \(\mu\) and \(\{T_n\}\) are as in Proposition \ref{prop:xi-window6-reset-clock-bounded-drift}.
+Hence at deep scales, "the reset clock (Sturmian)" and "the tail reachability semigroup (Ap\'ery)" form a deterministic near-cofinal structure; true unreachability obstructions can only appear at finitely many shallow scales.
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form} (or equivalently by cofiniteness of \(\gcd(21,34)=1\) from Frobenius), we have \(n\ge 660\Rightarrow n\in S\).
+Take any \(t\ge 715\).
+Note that \(T_1\in\{34,55\}\), so \(s:=t-T_1\ge 660\), from which \(s\in S\) and \(t=T_1+s\).
+On the other hand, by Proposition \ref{prop:xi-window6-reset-clock-bounded-drift} (taking \(n=1\)),
+\(
+|T_1-\mu|\le 21
+\), so
+\(
+|t-(\mu+s)|=|T_1-\mu|\le 21
+\).
+This completes the proof.
+\end{proof}
+
+\paragraph{Arithmetic Closure Loop of the Tail Triple and Audit Prime}
+
+\begin{corollary}[Two-Source Identity of the GUT Tail-Offset Triple and the Maximum-Degeneracy Triple: Self-Consistent Closure of \texorpdfstring{$\{21,34,55\}$}{\{21,34,55\}}]\label{cor:xi-tail-offsets-maxfiber-triple-closure}
+Under the tail-offset regime of the window-\(6\) uplift, nonzero offsets can only come from
+\[
+\Delta_{\mathrm{tail}}(6)\subseteq \{F_8,F_9,F_{10}\}=\{21,34,55\}
+\]
+(Theorem \ref{thm:xi-window6-tail-semigroup-frobenius-threshold}).
+On the other hand, from the maximum-fiber closed form (Theorem \ref{thm:pom-max-fiber}) at even resolutions, \(D_{2k}=F_{k+2}\), so
+\[
+D_{12}=F_8=21,\qquad D_{14}=F_9=34,\qquad D_{16}=F_{10}=55.
+\]
+Hence the same Fibonacci triple \(\{21,34,55\}\) appears via two mechanisms simultaneously: one from the tail-jump alphabet of window-\(6\), and another from the maximum degeneracy scale at higher resolutions; this two-source identity closes the self-consistent verification chain for "the three unification branches" at the purely discrete level.
+\end{corollary}
+
+\begin{proof}
+The first part is from Theorem \ref{thm:xi-window6-tail-semigroup-frobenius-threshold}.
+The second part is from Theorem \ref{thm:pom-max-fiber} with \(k=6,7,8\), substituting \(F_8=21,F_9=34,F_{10}=55\).
+Combining both yields the result. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Parity Closed Form of the Maximum Fiber and Finite-State Spectrum of the Maximum-Achiever Hidden-Bit Splitting]\label{cor:xi-max-fiber-parity-hiddenbit-finite-spectrum}
+Let \(D_m:=\max_{x\in X_m}d_m(x)\).
+Then the maximum fiber satisfies the parity closed form
+\[
+D_{2k}=F_{k+2},\qquad D_{2k+1}=2F_{k+1}
+\qquad(k\ge 1)
+\]
+(Theorem \ref{thm:pom-max-fiber}).
+For any maximum achiever \(x\in X_m\) (i.e., \(d_m(x)=D_m\)), define the hidden-bit splitting \((d_{m,0}(x),d_{m,1}(x))\) (Remark \ref{rem:pom-max-fiber-achievers-bsplit}); then within the stable threshold interval, the splitting pair satisfies a closed-form finite-state structure:
+\begin{itemize}
+  \item \textbf{Even \(m=2k\ge 10\):}
+  \[
+  (d_{2k,0}(x),d_{2k,1}(x))\in\{(F_{k+1},F_k),(F_k,F_{k+1})\}.
+  \]
+  \item \textbf{Odd \(m=2k+1\ge 13\):}
+  \[
+  (d_{2k+1,0}(x),d_{2k+1,1}(x))\in\{(F_{k+1},F_{k+1}),\ (F_{k+1}\pm F_{k-2},\,F_{k+1}\mp F_{k-2})\}.
+  \]
+\end{itemize}
+In particular, for odd windows \(m=2k+1\ge 13\), define
+\(
+p_1(x):=d_{m,1}(x)/D_m
+\).
+Then the three-state spectrum satisfies
+\[
+p_1(x)\in\left\{\frac12,\ \frac12\pm\frac{F_{k-2}}{2F_{k+1}}\right\},
+\qquad
+\Delta_k:=\frac{F_{k-2}}{2F_{k+1}}=\frac12\varphi^{-3}+O(\varphi^{-2k}),
+\]
+so the limiting spectrum of \(p_1\) is \(\{\varphi^{-2},\tfrac12,\varphi^{-1}\}\), converging at exponential speed.
+\end{corollary}
+
+\begin{proof}
+The parity closed form of the maximum fiber is given by Theorem \ref{thm:pom-max-fiber}.
+The closed-form finite-state structure of achiever splitting pairs is from Remark \ref{rem:pom-max-fiber-achievers-bsplit}, and the three-state spectrum and limiting spectrum are from Corollary \ref{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}.
+The asymptotics follow from Binet's formula: \(F_{k-2}/F_{k+1}=\varphi^{-3}+O(\varphi^{-2k})\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Ap\'ery Normal Form and Uniqueness of the Audit Prime \texorpdfstring{$p_\star=571$}{p*=571} for the Tail Semigroup]\label{cor:xi-audit-prime-571-apery-normal-form}
+Let \(p_\star:=571\) be the spanning-tree fingerprint prime of the four-block quotient graph (Corollary \ref{cor:xi-window6-block-tree-number-audit-prime}), and let the tail semigroup be \(S=\langle 21,34\rangle\).
+Then \(p_\star\in S\), and under the mod \(21\) normal form constraint \(b\in\{0,\dots,20\}\) in Theorem \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form}, it has a unique representation
+\[
+p_\star=21\cdot 11+34\cdot 10.
+\]
+Here the coefficient \(b=10\) is precisely the Ap\'ery normal-form coefficient for the congruence class \(p_\star\ (\mathrm{mod}\ 21)\) (i.e., \(34\cdot 10\) is the minimal representative of this congruence class in \(S\)).
+\end{corollary}
+
+\begin{proof}
+Compute \(p_\star\equiv 571\equiv 4\ (\mathrm{mod}\ 21)\).
+By Theorem \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form}, the normal-form coefficient is
+\(
+b_{4}=13\cdot 4\ (\mathrm{mod}\ 21)=10
+\), so the congruence threshold is \(w_4=34\,b_4=340\).
+Then
+\(
+p_\star-w_4=571-340=231=21\cdot 11
+\), yielding the representation \(571=21\cdot 11+34\cdot 10\).
+Uniqueness follows directly from the "mod \(21\) normal form" uniqueness of the same theorem. This completes the proof.
+\end{proof}

@@ -1,0 +1,176 @@
+% (User input window)
+% 2026-02-14 17:56:03 (Asia/Singapore, UTC+08)
+
+\subsubsection{Hidden Bit Constraints on Stable Layers: Mass Conservation, Bias, and Information Constants}\label{subsubsec:pom-hidden-bit-stable-layer-conclusions}
+Lemma \ref{lem:pom-one-bit} gives the single hidden bit decomposition
+\(
+N(\omega)=V_m(\Fold_m(\omega))+b(\omega)F_{m+2}
+\);
+where the hidden bit \(b(\omega)\in\{0,1\}\) indicates whether the weight \(F_{m+2}\) overflow is triggered.
+Under the uniform microcanonical baseline \(u_{\Omega_m}\), this one-bit residual not only determines the global density (Theorem \ref{thm:pom-hidden-bit-count}), but also induces on stable layers a set of conservation and information constants decoupled from fiber details.
+The following entries compress these consequences into directly citable conclusion chains, and align them with the fold factor chain \(\overline P_m^{\square}\) (Definition \ref{def:pom-fold-factor-chain}) and the spectral zero criterion (Theorem \ref{thm:fold-spectrum-zero-criterion}).
+
+\begin{conclusion}[Hidden Bit Mass Conservation and Binary Truncation of \texorpdfstring{$1/3$}{1/3}]\label{con:pom-hidden-bit-mass-conservation-truncation}
+For any \(m\ge 1\), for any \(x\in X_m\) and \(b\in\{0,1\}\), define the fiber-internal split count
+\[
+d_{m,b}(x):=\card{\{\omega\in\Omega_m:\ \Fold_m(\omega)=x,\ b(\omega)=b\}},
+\qquad
+d_m(x):=d_{m,0}(x)+d_{m,1}(x),
+\]
+and define the uniform microcanonical folded pushforward distribution \(w_m(x):=d_m(x)/2^m\) (Definition \ref{def:pom-wm-baseline}).
+Further let \(B_m:=\{\omega\in\Omega_m:\ b(\omega)=1\}\) (Theorem \ref{thm:pom-hidden-bit-count}).
+Then the strict identity holds
+\[
+\boxed{\;
+\mathbb E_{X\sim w_m}\Bigl[\frac{d_{m,1}(X)}{d_m(X)}\Bigr]
+=\mathbb P_{\omega\sim\mathrm{Unif}(\Omega_m)}[b(\omega)=1]
+=\frac{\card{B_m}}{2^m}
+=\frac13-\frac{\varepsilon_m}{3\cdot 2^m}\;},
+\]
+where \(\varepsilon_m=1\) (\(m\) even) or \(\varepsilon_m=2\) (\(m\) odd).
+Therefore, at any resolution \(m\), the weighted fraction of "upper layer mass" (\(b=1\)) does not depend on the details of \(\{d_m(x)\}\), but is forced by binary truncation to be \(1/3+O(2^{-m})\) (see also Remark \ref{rem:pom-hidden-bit-dyadic-trunc}).
+\end{conclusion}
+
+\begin{conclusion}[Global Pinning of Hidden Bit Net Bias: \texorpdfstring{$-1/3+O(2^{-m})$}{-1/3+O(2^-m)}]\label{con:pom-hidden-bit-global-sign-bias}
+Under the notation of Conclusion \ref{con:pom-hidden-bit-mass-conservation-truncation}, define the fiber-internal sign bias
+\[
+\beta(x):=\frac{d_{m,1}(x)-d_{m,0}(x)}{d_m(x)}
+=2\frac{d_{m,1}(x)}{d_m(x)}-1.
+\]
+Then under the uniform pushforward \(w_m\), the exact identity holds
+\[
+\boxed{\;
+\mathbb E_{X\sim w_m}\bigl[\beta(X)\bigr]
+=2\,\mathbb P[b(\omega)=1]-1
+=-\frac13-\frac{2\varepsilon_m}{3\cdot 2^m}\; }.
+\]
+Therefore, the hidden bit has a strict, non-cancelable negative bias toward the \(b=0\) side in the global average sense; its leading constant is independent of \(m\), with only a \(2^{-m}\)-order correction.
+\end{conclusion}
+
+\begin{conclusion}[Mutual Information Constant Between Hidden Bit and Terminal Bit: \texorpdfstring{$I(b;\omega_m)\to 0.4591479$}{I(b;omega_m)->0.4591479} bits]\label{con:pom-hidden-bit-topbit-mutual-information}
+Under the uniform microcanonical \(\omega\sim\mathrm{Unif}(\Omega_m)\), the construction of Theorem \ref{thm:pom-hidden-bit-count} gives the strict implication
+\[
+b(\omega)=1\ \Longrightarrow\ \omega_m=1,
+\]
+and when \(\omega_m=1,\ \omega_{m-1}=0\), the event \(\{b(\omega)=1\}\) is equivalent to an isotypic threshold event of length \(m-2\) (thus inducing the exact recursion \(\card{B_m}=2^{m-2}+\card{B_{m-2}}\), \(m\ge 3\)).
+Therefore, as \(m\to\infty\), the limiting conditional distribution exists
+\[
+\mathbb P[b=1]\to\tfrac13,\qquad
+\mathbb P[\omega_m=1\mid b=1]\to 1,\qquad
+\mathbb P[\omega_m=1\mid b=0]\to\tfrac14,
+\]
+and thus yields the limiting mutual information constant (in bits)
+\[
+\lim_{m\to\infty}I(b;\omega_m)
+=1-\frac{2}{3}\,H_{\mathrm{bin}}\!\Bigl(\tfrac14\Bigr)
+=0.4591479170\ldots\ \mathrm{bits},
+\]
+where \(H_{\mathrm{bin}}(p):=-p\log_2 p-(1-p)\log_2(1-p)\).
+Therefore, the hidden bit, as the "minimal residue beyond the first \(m\) bits," carries a strictly positive information constant with respect to the terminal bit \(\omega_m\), rather than asymptotically vanishing noise.
+\end{conclusion}
+
+\begin{conclusion}[Explicit Kernel of Fold Factor Chain in Modular Congruence Coordinates: Conditioned Fibonacci Step Random Walk]\label{con:pom-fold-factor-chain-explicit-kernel}
+Let \(M:=F_{m+2}\), and let the congruence coordinate
+\[
+r(\omega):=N(\omega)\bmod M\in\ZZ/M\ZZ.
+\]
+By Lemma \ref{lem:pom-fold-congruence} and Proposition \ref{prop:pom-fold-as-section}, the stable type \(x=\Fold_m(\omega)\) is determined only by \(r(\omega)\), so \(X_m\) and \(\ZZ/M\ZZ\) can be canonically identified via sections.
+Under the fold factor chain \(\overline P_m^{\square}\) of Definition \ref{def:pom-fold-factor-chain}, the one-step evolution from residue class \(r\) is equivalent to:
+uniformly sampling \(\omega\) within the fiber conditioned on \(\{r(\omega)=r\}\), then selecting a coordinate \(k\in\{1,\dots,m\}\) with equal probability and flipping \(\omega_k\).
+Let
+\[
+p_k(r):=\mathbb P[\omega_k=1\mid r(\omega)=r].
+\]
+Then on the congruence coordinates, the transition kernel of \(\overline P_m^{\square}\) has a completely explicit step-length form:
+\[
+\boxed{\;
+\overline P_m^{\square}(r,\ r+F_{k+1})=\frac{1}{m}\bigl(1-p_k(r)\bigr),\qquad
+\overline P_m^{\square}(r,\ r-F_{k+1})=\frac{1}{m}p_k(r)\; }.
+\]
+Moreover, there are no self-loops: \(\overline P_m^{\square}(r,r)=0\) (consistent with Proposition \ref{prop:pom-fold-factor-chain-reversible-noloop}).
+Therefore, \(\overline P_m^{\square}\) can be viewed as a random walk on \(\ZZ/M\ZZ\) with step-length set \(\{\pm F_{k+1}\}\), whose sign probabilities are finely controlled by the conditioned bit frequencies \(p_k(r)\).
+\end{conclusion}
+
+\begin{conclusion}[Coordinate-Wise Strict Zero Drift: Positive and Negative Fluxes for Each Fibonacci Step-Length Cancel Exactly in Stationary State]\label{con:pom-fold-factor-chain-no-drift}
+Under the notation of Conclusion \ref{con:pom-fold-factor-chain-explicit-kernel}, define the pushforward distribution on residue class coordinates
+\[
+w_m^{\mathrm{res}}(r):=\mathbb P[r(\omega)=r]=\frac{\card{\{\omega\in\Omega_m:\ r(\omega)=r\}}}{2^m}\qquad(r\in\ZZ/M\ZZ),
+\]
+which under the identification \(X_m\simeq\ZZ/M\ZZ\) is synonymous with \(w_m\) of Definition \ref{def:pom-wm-baseline}.
+Then for any \(1\le k\le m\), the strict identity holds
+\[
+\boxed{\;
+\mathbb E_{r\sim w_m^{\mathrm{res}}}[p_k(r)]
+=\mathbb P_{\omega\sim\mathrm{Unif}(\Omega_m)}[\omega_k=1]
+=\frac12\; }.
+\]
+Thus in the stationary state, the global flux for each step-length \(\pm F_{k+1}\) precisely balances:
+\[
+\sum_{r}w_m^{\mathrm{res}}(r)\,\overline P_m^{\square}(r,r+F_{k+1})
+=\sum_{r}w_m^{\mathrm{res}}(r)\,\overline P_m^{\square}(r,r-F_{k+1})
+=\frac{1}{2m}.
+\]
+This coordinate-wise zero-drift decomposition refines the reversibility of \(\overline P_m^{\square}\) into a positive-negative flux cancellation law on each Fibonacci step-length.
+\end{conclusion}
+
+\begin{conclusion}[Bi-Resolving One-Step Decidability of Fold Labeled Graph: Simultaneously Right-Resolving and Left-Resolving]\label{con:pom-fold-biresolving}
+For any \(m\ge 2\), for any \(v\in\{0,1\}^{m-1}\), we have
+\[
+\Fold_m(v0)\ne \Fold_m(v1),\qquad
+\Fold_m(0v)\ne \Fold_m(1v).
+\]
+Therefore, the labeled graph \(G_m\) (Definition \ref{def:G_m}) is simultaneously right-resolving and left-resolving (biresolving) in the sense of symbolic dynamics.
+\end{conclusion}
+\begin{proof}
+The first identity is given by Theorem \ref{thm:pom-right-resolving}, and the second by Theorem \ref{thm:pom-left-resolving}.
+By the definitions of right/left-resolving, these two one-step decidability properties imply bi-analyticity.
+\end{proof}
+
+\begin{conclusion}[Moment Compilation Dimension Reduction Forced by Hidden Bit Stratification: Relevant Layer Count is \texorpdfstring{$\lfloor k/2\rfloor+1$}{floor(k/2)+1}]\label{con:pom-hidden-bit-moment-compilation-dim-reduction}
+Under the caliber where the single hidden bit binary split (Lemma \ref{lem:pom-one-bit}) and upper layer mass non-sparsity (Theorem \ref{thm:pom-hidden-bit-count}) both hold,
+the compilation of the \(k\)-th order moment operator (\(\mathrm{MOM}_k\)) need not use "\(k\)-fold synchronous direct product" as the only entry.
+Adopting the mixed moment split notation of Proposition \ref{prop:pom-hiddenbit-mixed-moment-cluster},
+for
+\(
+S_k(m)=\sum_{x\in X_m}d_m(x)^k
+\)
+we have the strict representation
+\[
+S_k(m)=\sum_{a=0}^{\lfloor k/2\rfloor}\binom{k}{a}\,\widetilde M_a^{(k)}(m),
+\]
+thus the objectively relevant degrees of freedom are exactly \(\lfloor k/2\rfloor+1\) layers.
+This stratification regimentally compresses the correlation structure of high-order collision moments into finite layers, providing a strict dimensionality-reducing compilation path for constructing interpretable finite-state collision kernel spectrum (see Remark \ref{rem:pom-hiddenbit-mixed-moment-typing}).
+\end{conclusion}
+
+\begin{conclusion}[Three-Cycle Selection Law for Spectral Zeros: \texorpdfstring{$\mathcal Z_m\neq\varnothing$}{Z_m nonempty} Necessarily Forces \texorpdfstring{$m\equiv 1\ (\mathrm{mod}\ 3)$}{m=1 mod 3}]\label{con:pom-fold-spectrum-zero-selection}
+Let \(M:=F_{m+2}\), and let the spectral zero set \(\mathcal Z_m\subseteq \ZZ/M\ZZ\) as in Definition \ref{def:fold-spectrum-zero-set}.
+If \(\mathcal Z_m\neq\varnothing\), then by the congruence criterion for spectral zeros (Theorem \ref{thm:fold-spectrum-zero-criterion}), there exist \(k\in\ZZ/M\ZZ\) and \(j\in\{1,\dots,m\}\) such that
+\[
+e^{-2\pi i kF_{j+1}/M}=-1.
+\]
+This condition implies \(M\) must be even (otherwise the left side cannot take half-period phase), thus obtaining the necessary condition
+\[
+\boxed{\;
+\mathcal Z_m\neq\varnothing\ \Longrightarrow\ M\ \text{is even}\ \Longleftrightarrow\ m+2\equiv 0\pmod 3\ \Longleftrightarrow\ m\equiv 1\pmod 3\; }.
+\]
+Therefore, spectral zero triggering has three-cycle gating: non-trivial zero structure can only appear in the resolution subsequence \(m\equiv 1\ (\mathrm{mod}\ 3)\).
+\end{conclusion}
+
+\begin{conclusion}[Stable Constant for Hidden Bit Non-Uniform Cost: \texorpdfstring{$5/3-\log_2 3$}{5/3-log2 3} bits]\label{con:pom-hidden-bit-redundancy-constant}
+By Theorem \ref{thm:pom-hidden-bit-count} and Corollary \ref{cor:pom-hidden-bit-entropy}, under uniform microcanonical, \(\mathbb P[b(\omega)=1]\to 1/3\).
+Therefore, the hidden bit entropy (bits) has the limit
+\[
+H(b)\ \longrightarrow\ H_{\mathrm{bin}}\!\Bigl(\tfrac13\Bigr)
+=\log_2 3-\frac{2}{3}
+=0.9182958340\ldots\ \mathrm{bits},
+\]
+whose redundancy relative to the "ideal uniform one-bit" (i.e., the KL divergence to \(\mathrm{Bern}(\tfrac12)\), in bits) is a non-cancelable constant
+\[
+\boxed{\;
+1-H_{\mathrm{bin}}\!\Bigl(\tfrac13\Bigr)
+=\frac53-\log_2 3
+=0.0817041659\ldots\ \mathrm{bits}\; }.
+\]
+This constant does not decay with resolution \(m\), indicating that the hidden bit carries a stable non-uniform cost in the information-theoretic sense.
+\end{conclusion}
+

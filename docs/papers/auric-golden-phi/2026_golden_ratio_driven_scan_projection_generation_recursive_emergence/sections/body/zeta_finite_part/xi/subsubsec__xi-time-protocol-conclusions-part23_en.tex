@@ -1,0 +1,174 @@
+% (User input window)
+% 2026-02-14 16:12:45 (Asia/Singapore)
+
+\paragraph{Bethe equilibrium, Riccati pole cancellation, and \texorpdfstring{$\tau$}{tau}-gradient identity for potential coefficients}
+This paragraph provides two complementary formulations at the Heine--Stieltjes--Van Vleck interface: the first equivalently rewrites the equilibrium equation as pole cancellation of the Riccati quantity at anchor points; the second expresses the first-order coefficient of the Schr\"odinger potential as a "resultant--Vandermonde" logarithmic derivative, thereby compressing coefficient constraints into the gradient of a differentiable potential function.
+
+\begin{conclusion}[Pole cancellation characterization of Bethe equilibrium equation: anchor-pole-free criterion for the Riccati quantity]\label{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium}
+Take distinct points \(p_k=\gamma_k-\mathrm{i}a_k\in\CC_{-}\) (\(a_k>0\)) and set
+\[
+A(z):=\prod_{k=1}^{\kappa}(z-p_k)(z-\overline{p_k})\in\RR[z].
+\]
+Take distinct real points \(x_1,\dots,x_\kappa\in\RR\), and let
+\[
+y(z):=\prod_{j=1}^{\kappa}(z-x_j),\qquad
+W(z):=\frac{y'(z)}{y(z)}=\sum_{j=1}^{\kappa}\frac{1}{z-x_j}.
+\]
+Define the Riccati quantity
+\[
+R(z):=W'(z)+W(z)^2-\frac{A'(z)}{A(z)}W(z).
+\]
+Then for each \(i\in\{1,\dots,\kappa\}\), the principal part of \(R\) at \(z=x_i\) is
+\[
+R(z)=\frac{2\sum_{j\ne i}\frac{1}{x_i-x_j}-\frac{A'(x_i)}{A(x_i)}}{z-x_i}+O(1).
+\]
+Therefore, the following two conditions are equivalent:
+\begin{enumerate}
+  \item \(R\) is analytic at all anchor points \(\{x_i\}\) (i.e., has no anchor poles);
+  \item The strict equilibrium equation holds for all \(i\):
+  \[
+  2\sum_{j\ne i}\frac{1}{x_i-x_j}
+  =\frac{A'(x_i)}{A(x_i)}
+  =\sum_{k=1}^{\kappa}\left(\frac{1}{x_i-p_k}+\frac{1}{x_i-\overline{p_k}}\right)
+  =2\sum_{k=1}^{\kappa}\Re\frac{1}{x_i-p_k}.
+  \]
+\end{enumerate}
+Moreover, when the above equivalent conditions hold, the singularities of \(R\) can only come from \(\frac{A'}{A}\), namely \(\{p_k,\overline{p_k}\}\), and are all at most simple poles; furthermore \(R(z)=O(z^{-2})\) as \(z\to\infty\).
+Thus there exists a unique polynomial \(B\in\RR[z]\) (\(\deg B\le 2\kappa-2\)) such that
+\[
+R(z)=\frac{B(z)}{A(z)},
+\qquad\text{and}\qquad
+A(z)y''(z)-A'(z)y'(z)=B(z)y(z).
+\]
+\end{conclusion}
+\begin{proof}[Proof]
+As \(z\to x_i\),
+\[
+W(z)=\frac{1}{z-x_i}+S_i+O(z-x_i),\qquad S_i:=\sum_{j\ne i}\frac{1}{x_i-x_j},
+\]
+thus
+\[
+W'(z)+W(z)^2
+=-\frac{1}{(z-x_i)^2}+\frac{1}{(z-x_i)^2}+\frac{2S_i}{z-x_i}+O(1)
+=\frac{2S_i}{z-x_i}+O(1).
+\]
+Since \(A(x_i)\neq 0\) and \(\frac{A'}{A}\) is analytic at \(x_i\),
+\[
+\frac{A'(z)}{A(z)}W(z)=\frac{A'(x_i)}{A(x_i)}\cdot\frac{1}{z-x_i}+O(1),
+\]
+subtracting yields the principal part formula, hence the two conditions are equivalent.
+\par
+If \(R\) has no poles at \(\{x_i\}\), then the singularities of \(R\) can only come from \(\frac{A'}{A}\), namely \(\{p_k,\overline{p_k}\}\), and are at most simple poles.
+By
+\(
+W(z)=\kappa z^{-1}+O(z^{-2})
+\)
+and
+\(
+\frac{A'(z)}{A(z)}=2\kappa z^{-1}+O(z^{-2})
+\),
+we have \(R(z)=O(z^{-2})\).
+Let \(B:=AR\), then \(B\) is a polynomial with \(\deg B\le \deg A-2=2\kappa-2\).
+Finally, uniqueness of rational partial fraction decomposition with \(\deg B<\deg A\) yields uniqueness of \(B\); and the identity
+\(
+A y''-A'y'=By
+\)
+follows directly from
+\(
+W'+W^2=y''/y
+\)
+and \(R=B/A\). QED.
+\end{proof}
+
+\begin{conclusion}[Pure residue representation of Van Vleck ratio: complete explicit partial fraction and polynomial reconstruction of \texorpdfstring{$B/A$}{B/A}]\label{con:xi-terminal-van-vleck-ratio-residue-partial-fraction-reconstruction}
+When the equivalent conditions of Conclusion \ref{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium} hold, let
+\[
+r_k:=\operatorname*{Res}_{z=p_k}\frac{B(z)}{A(z)}=\frac{B(p_k)}{A'(p_k)}\in\CC.
+\]
+Then there is a strict identity
+\[
+\frac{B(z)}{A(z)}=\sum_{k=1}^{\kappa}\left(\frac{r_k}{z-p_k}+\frac{\overline{r_k}}{z-\overline{p_k}}\right),
+\qquad
+r_k=-\frac{y'(p_k)}{y(p_k)}=-\sum_{j=1}^{\kappa}\frac{1}{p_k-x_j}.
+\]
+Thus \(B\) can be explicitly reconstructed from anchor-point data as
+\[
+B(z)=
+-\sum_{k=1}^{\kappa}A(z)\left(
+\frac{y'(p_k)}{y(p_k)}\cdot\frac{1}{z-p_k}
+\;+\;
+\frac{\overline{y'(p_k)}}{\overline{y(p_k)}}\cdot\frac{1}{z-\overline{p_k}}
+\right).
+\]
+\end{conclusion}
+\begin{proof}[Proof]
+By Conclusion \ref{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium}, \(\deg B\le 2\kappa-2\) and \(\deg A=2\kappa\) imply \(B/A=O(z^{-2})\).
+Thus its partial fraction expansion contains no constant term and only simple poles, uniquely written as the sum of residues at each pole; reality of coefficients guarantees \(\overline{r_k}\) is the residue at \(\overline{p_k}\).
+From the equation \(Ay''-A'y'=By\) evaluated at \(z=p_k\) (\(A(p_k)=0\), \(A'(p_k)\neq 0\)),
+\[
+-A'(p_k)y'(p_k)=B(p_k)y(p_k)\quad\Longrightarrow\quad r_k=\frac{B(p_k)}{A'(p_k)}=-\frac{y'(p_k)}{y(p_k)}.
+\]
+Finally, \(y'/y=\sum_j(z-x_j)^{-1}\) substituted at \(z=p_k\) yields \(r_k=-\sum_j(p_k-x_j)^{-1}\).
+Multiplying both sides of the partial fraction expansion by \(A\) yields the reconstruction formula. QED.
+\end{proof}
+
+\begin{conclusion}[Resultant--Vandermonde representation of first-order potential coefficient: \texorpdfstring{$\tau$}{tau}-gradient identity]\label{con:xi-terminal-potential-tau-gradient-resultant-vandermonde}
+Use the notation of Conclusion \ref{con:xi-terminal-heine-stieltjes-schrodinger-reduction-local-exponent-rigidity} and
+Conclusion \ref{con:xi-terminal-heine-stieltjes-pole-expansion-renormalization-sum-rules}.
+Suppose the Schr\"odinger potential has the partial fraction expansion at \(\{p_k,\overline{p_k}\}\):
+\[
+U(z)=-\frac{3}{4}\sum_{k=1}^{\kappa}\left(\frac{1}{(z-p_k)^2}+\frac{1}{(z-\overline{p_k})^2}\right)
++\sum_{k=1}^{\kappa}\left(\frac{c_k}{z-p_k}+\frac{\overline{c_k}}{z-\overline{p_k}}\right),
+\]
+and denote the extended pole set
+\(
+\mathcal P:=\{p_1,\dots,p_\kappa,\overline{p_1},\dots,\overline{p_\kappa}\}
+\).
+Define the Vandermonde
+\[
+\Delta(\mathcal P):=\prod_{\substack{u,v\in\mathcal P\\ u<v}}(u-v),
+\]
+and the resultant
+\[
+\operatorname{Res}(y,A):=\prod_{k=1}^{\kappa}y(p_k)y(\overline{p_k})
+=\prod_{k=1}^{\kappa}|y(p_k)|^2.
+\]
+Then for each \(k\) (treating \(\overline{p_1},\dots,\overline{p_\kappa}\) as constants, taking the complex derivative only with respect to \(p_k\)), there is a strict identity
+\[
+\boxed{\;
+c_k=\frac{\partial}{\partial p_k}\left(\log \operatorname{Res}(y,A)-\log|\Delta(\mathcal P)|\right). \;}
+\]
+\end{conclusion}
+\begin{proof}[Proof]
+By Conclusion \ref{con:xi-terminal-heine-stieltjes-pole-expansion-renormalization-sum-rules},
+\(
+c_k=-r_k-\tfrac12 s_k
+\),
+and from the equation \(Ay''-A'y'=By\) evaluated at \(z=p_k\) (\(A(p_k)=0\), \(A'(p_k)\neq 0\)),
+\[
+-A'(p_k)y'(p_k)=B(p_k)y(p_k),
+\]
+thus \(r_k=B(p_k)/A'(p_k)=-y'(p_k)/y(p_k)\), so
+\[
+c_k=\frac{y'(p_k)}{y(p_k)}-\frac12 s_k.
+\]
+On the other hand,
+\[
+\frac{\partial}{\partial p_k}\log\operatorname{Res}(y,A)
+=\frac{\partial}{\partial p_k}\log|y(p_k)|^2
+=\frac{y'(p_k)}{y(p_k)}.
+\]
+For \(\Delta(\mathcal P)\), by logarithmic derivative,
+\[
+\frac{\partial}{\partial p_k}\log \Delta(\mathcal P)
+=\sum_{\substack{u\in\mathcal P\\ u\neq p_k}}\frac{1}{p_k-u}
+=s_k.
+\]
+Hence
+\(
+\frac{\partial}{\partial p_k}\log|\Delta(\mathcal P)|
+=\tfrac12 s_k
+\),
+substituting back yields the conclusion. QED.
+\end{proof}
+

@@ -1,0 +1,37 @@
+\begin{corollary}[Poisson--binomial representation and unified concentration]\label{cor:pom-fiber-rewrite-poisson-binomial}
+Adopt Definition \ref{def:pom-fiber-rewrite-rv}, and let \(d_x:=\deg Z_x\).
+Then there exist parameters \(p_{x,1},\dots,p_{x,d_x}\in(0,1)\) such that the normalized probability generating function factors strictly as
+\[
+\frac{Z_x(t)}{Z_x(1)}=\prod_{j=1}^{d_x}(1-p_{x,j}+p_{x,j}t).
+\]
+Therefore
+\[
+R_x\ \overset{d}{=}\ \sum_{j=1}^{d_x}\mathrm{Bernoulli}(p_{x,j}),
+\qquad
+\mathbb{E}[R_x]=\sum_{j=1}^{d_x} p_{x,j},
+\qquad
+\mathrm{Var}(R_x)=\sum_{j=1}^{d_x}p_{x,j}(1-p_{x,j}).
+\]
+Moreover, for any \(s>0\) there is a Bernstein-type concentration bound
+\[
+\mathbb{P}\bigl(|R_x-\mathbb{E}R_x|\ge s\bigr)
+\le 2\exp\!\left(-\frac{s^2}{2(\mathrm{Var}(R_x)+s/3)}\right).
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-fiber-rewrite-realroot-ulc}, all roots of \(Z_x(t)\) lie on the negative real axis.
+Let these roots be \(-\alpha_1,\dots,-\alpha_{d_x}\) (where \(\alpha_j>0\)); then
+\[
+Z_x(t)=Z_x(0)\prod_{j=1}^{d_x}\left(1+\frac{t}{\alpha_j}\right).
+\]
+Thus
+\[
+\frac{Z_x(t)}{Z_x(1)}
+=\prod_{j=1}^{d_x}\frac{\alpha_j+t}{\alpha_j+1}
+=\prod_{j=1}^{d_x}\left(1-\frac{1}{1+\alpha_j}+\frac{1}{1+\alpha_j}t\right).
+\]
+Setting \(p_{x,j}:=(1+\alpha_j)^{-1}\in(0,1)\) yields the pgf factorization, so the distribution of \(R_x\) equals the sum of independent Bernoullis (by uniqueness of pgf).
+Mean and variance formulas follow from additivity of independent sums.
+Finally, applying Bernstein's inequality to \(\sum_j(\mathrm{Bernoulli}(p_{x,j})-p_{x,j})\) (each term taking values in \([-p_{x,j},1-p_{x,j}]\subset[-1,1]\) with variance proxy \(\sum_j p_{x,j}(1-p_{x,j})\)) yields the stated concentration bound. \qed
+\end{proof}
+

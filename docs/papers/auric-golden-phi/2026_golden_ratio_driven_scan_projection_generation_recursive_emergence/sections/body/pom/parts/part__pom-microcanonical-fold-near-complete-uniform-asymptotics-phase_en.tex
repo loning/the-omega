@@ -1,0 +1,86 @@
+\paragraph{Unified asymptotics for near-complete queries: Bayes success rate and scaling phase diagram as \texorpdfstring{$t\to\infty$}{t->infty}}
+Theorem \ref{thm:pom-microcanonical-fold-bayes-success-thermo-limit} gives the thermodynamic limit for fixed \(t\):
+the Bayes success rate for \((N-t)\) queries converges to the complete homogeneous symmetric polynomial \(\mathsf{h}_t(w)\).
+The following result shows that when \(t\) grows with \(N\) but remains much smaller than a certain unified scale of \(N\),
+this approximation remains valid and splices with the dominant pole law of Theorem \ref{thm:pom-microcanonical-fold-dominant-pole-asymptotics} to form a three-regime scaling phase diagram.
+
+\begin{theorem}[Unified thermodynamic approximation for near-complete queries]\label{thm:pom-microcanonical-fold-bayes-success-near-complete-uniform}
+Suppose the alphabet size \(n=\card{X_m}\) is fixed, and there exists a distribution \(w\in\Delta(X_m)\) (all coordinates strictly positive) such that \(d(x)/N\to w(x)\).
+Take \(t=t(N)\to\infty\) satisfying
+\[
+t=o(N^{2/3}),
+\qquad
+k=N-t.
+\]
+Then under the uniform microcanonical prior \(F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d))\), the Bayes optimal exact recovery success rate for \((N-t)\) queries satisfies
+\[
+\boxed{\;
+\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)
+=\mathsf{h}_t(w)\,(1+o(1))\;}
+\qquad(N\to\infty),
+\]
+where \(\mathsf{h}_t(w)\) is defined in Theorem \ref{thm:pom-microcanonical-fold-bayes-success-thermo-limit}.
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-fold-bayes-success-Nminus-t},
+after \(k=N-t\) queries the residual count vector \(R=(R_x)_{x\in X_m}\) on the unqueried set follows a multivariate hypergeometric distribution,
+and
+\[
+\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)=\EE\!\left[\frac{\prod_x R_x!}{t!}\right],
+\qquad
+0\le \frac{\prod_x R_x!}{t!}\le 1.
+\]
+Let \(\widetilde R\sim\mathrm{Mult}(t;w)\).
+By the definition in Theorem \ref{thm:pom-microcanonical-fold-bayes-success-thermo-limit} we know
+\(
+\EE[\prod_x \widetilde R_x!/t!]=\mathsf{h}_t(w)
+\).
+Therefore
+\[
+\left|\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)-\mathsf{h}_t(w)\right|
+\le D_{\mathrm{TV}}\!\left(\mathrm{Law}(R),\ \mathrm{Law}(\widetilde R)\right).
+\]
+When \(n\) is fixed and \(w\) is strictly positive,
+applying Stirling expansion to the log-likelihood ratio of hypergeometric pmf and multinomial pmf (expanding the factorial ratio for each coordinate to second order and controlling the remainder),
+under \(t=o(N^{2/3})\) the remainder is \(o(1)\) and uniform in the typical region;
+combining with Gaussian concentration of the multinomial distribution (\(\widetilde R=tw+O_{\mathbb{P}}(\sqrt t)\)) we can deduce that the above log-likelihood ratio tends to \(0\) in probability, and from this deduce that the total variation distance is \(o(1)\).
+Substituting back yields the conclusion. \qed
+\end{proof}
+
+\begin{corollary}[Dominant exponent and reduction constant for near-complete queries]\label{cor:pom-microcanonical-fold-bayes-success-near-complete-pole-law}
+In the conditions of Theorem \ref{thm:pom-microcanonical-fold-bayes-success-near-complete-uniform}, if furthermore \(t\to\infty\),
+then by Theorem \ref{thm:pom-microcanonical-fold-dominant-pole-asymptotics} (notation \(w_\star,r,C(w)\) as in that theorem) we obtain
+\[
+\boxed{\;
+\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)
+=\frac{C(w)}{(r-1)!}\,t^{\,r-1}\,w_\star^{\,t}\,(1+o(1))\;}
+\]
+thus
+\[
+\boxed{\;
+\log \mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)
+=t\log w_\star+(r-1)\log t+\log\!\left(\frac{C(w)}{(r-1)!}\right)+o(1)\;}
+\qquad(N\to\infty).
+\]
+\end{corollary}
+
+\begin{corollary}[Three-regime scaling phase diagram for total recovery success rate]\label{cor:pom-microcanonical-fold-bayes-success-phase-diagram}
+In the conditions of Corollary \ref{cor:pom-microcanonical-fold-bayes-success-near-complete-pole-law} (hence \(n\) and \(w\) are fixed and \(w_\star<1\)),
+in the near-complete query interval \(t=o(N^{2/3})\) we have the following three-regime scaling:
+\begin{enumerate}
+  \item \textbf{Constant order (\(t=O(1)\))}: \(\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)\to \mathsf{h}_t(w)\in(0,1]\).
+  \item \textbf{Power-law order (\(t=\lfloor \lambda\log N\rfloor\))}: For any fixed \(\lambda>0\),
+  \[
+  \mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)
+  =N^{\lambda\log w_\star+o(1)}(\log N)^{r-1+o(1)}.
+  \]
+  In particular, the slope \(\lambda_\ast:=1/|\log w_\star|\) corresponds to the leading order \(\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)=N^{-1+o(1)}(\log N)^{r-1+o(1)}\).
+  \item \textbf{Exponential decay (\(t/\log N\to\infty\))}: If \(t/\log N\to\infty\) and still \(t=o(N^{2/3})\), then
+  \[
+  \frac{1}{t}\log \mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)\ \to\ \log w_\star<0.
+  \]
+\end{enumerate}
+\end{corollary}
+
+\endinput
+

@@ -1,0 +1,92 @@
+% (User input window)
+% 2026-02-14 15:46:02 (Asia/Singapore)
+% 2026-02-14 16:07:41 (Asia/Singapore)
+
+\paragraph{Connectivity, invertibility, and residue geometry on bounded slices}
+On any fixed bounded complexity slice \(\mathbf{PW}^{\ast}_{\le}\) as per Definition \ref{def:pom-bounded-slice}, the conservative semantic functor \(\mathsf{Sem}\) (Definition \ref{def:pom-sem-functor}; Theorem \ref{thm:pom-sem-conservative}) will implement the collapse of differences into natural isomorphism classes;
+meanwhile, composition failure residues are carried by the anomaly cohomology class \([\mathrm{Anom}]\) under the composable caliber (\S\ref{subsec:pom-anom-cohomology}).
+Within this framework, ``connectivity growth'' can be strictly decomposed into: the isomorphism class geometry induced by invertibilization, the cyclic degrees of freedom carried by residues, and the coherence obstructions encountered by strictification.
+
+\begin{conclusion}[Orthogonal factorization of auditable invertibles and uniqueness of connectivity normal form]\label{con:xi-connectivity-orthogonal-factorization-normal-form}
+Let \(\rho:\mathrm{Ob}(\mathbf{PW}^{\ast}_{\le})\to\NN\) be a resolution level function, and fix on \(\mathbf{PW}^{\ast}_{\le}\) a set of auditable residue accounting calibers such that:
+\begin{enumerate}
+  \item For any composable \(2\)-morphism certificate, its residue accumulation satisfies verifiable additivity (Definition \ref{def:pom-anom-accumulation}; Proposition \ref{prop:pom-anom-additive-up-to-boundary});
+  \item \(\mathsf{Sem}\) is conservative on this slice, hence reflects natural isomorphisms (Theorem \ref{thm:pom-sem-conservative}).
+\end{enumerate}
+Define two classes of \(1\)-morphisms: \(\mathcal L\) is the lifting class with resolution strictly non-decreasing (\(\rho\) monotone non-decreasing), and \(\mathcal P\) is the readout class with resolution strictly non-increasing (\(\rho\) monotone non-increasing).
+Then for any \(1\)-morphism \(w\) there exists a factorization
+\[
+w\simeq p\circ \ell,\qquad \ell\in\mathcal L,\ p\in\mathcal P,
+\]
+and this factorization is unique up to \(2\)-isomorphism.
+More strongly, \((\mathcal L,\mathcal P)\) forms a stable orthogonal factorization system: any ``readout--lifting'' commutative square admits a filler, and the filler is unique up to \(2\)-isomorphism.
+Therefore, any conceptual connectivity path given by generating gates has a unique (up to \(2\)-isomorphism) canonical form representative within this slice, and this representative simultaneously achieves minima in both residue and complexity senses.
+\end{conclusion}
+
+\begin{conclusion}[Graph-theoretic characterization of semantic equivalence classes: strongly connected components and invertible closure]\label{con:xi-connectivity-scc-invertible-closure}
+On a fixed bounded slice \(\mathbf{PW}^{\ast}_{\le}\), formally invert all \(1\)-morphisms identified as invertible by \(\mathsf{Sem}\) to obtain the localized groupoid \(\mathcal{G}_{\le}\).
+Take the generating \(1\)-morphisms to obtain a directed multigraph \(G_{\le}\) (vertices are objects, edges are generating morphisms).
+If auditable rewriting on this slice suffices to decide \(2\)-isomorphisms (so ``same \(\mathsf{Sem}\) output \(\Rightarrow\) natural isomorphism'' can be checked by finite certificates; Theorem \ref{thm:pom-sem-conservative}), then the strongly connected component decomposition of \(G_{\le}\) agrees with the isomorphism class decomposition of \(\mathcal{G}_{\le}\).
+Equivalently, two objects are mutually reachable in \(G_{\le}\) if and only if there exists a pair of auditable projection words in \(\mathbf{PW}^{\ast}_{\le}\) that are inverse to each other (up to \(2\)-isomorphism).
+Therefore, without changing the semantic partition, adding edges can only alter the navigational diameter within the same semantic class and the reachability cost of the condensation DAG between components, but cannot create new semantic isomorphism classes.
+\end{conclusion}
+
+\begin{conclusion}[Persistent connectivity spectrum under resolution filtration: barcode characterization of stable concepts]\label{con:xi-connectivity-persistent-barcode}
+Let the budget/resolution upper bound \(B\mapsto \mathbf{PW}^{\ast}_{\le B}\) give a family of monotonically embedded bounded slices, and let \(\mathcal{G}_{\le B}\) be its localized groupoid over \(\mathsf{Sem}\)-invertible morphisms.
+Denote \(\pi_0(\mathcal{G}_{\le B})\) as the set of isomorphism classes, then the inclusion functor induces a direct system
+\(
+\pi_0(\mathcal{G}_{\le B})\to \pi_0(\mathcal{G}_{\le B'})
+\)
+(for \(B\le B'\)).
+If for each \(B\) this set is finite, and class mergers can only be triggered by auditable certificates (no untraceable collapses occur), then this filtration uniquely determines an interval multiset \(\mathcal I\) (persistent connectivity spectrum/barcode) satisfying:
+\begin{enumerate}
+  \item Infinite intervals correspond one-to-one with stable semantic classes: there exists \(B_0\) such that for all \(B\ge B_0\) that class remains unchanged in \(\pi_0(\mathcal{G}_{\le B})\); \label{item:xi-persist-infinite}
+  \item Finite intervals correspond to transient isomorphisms or transient concepts, whose appearance and disappearance can be localized by residues and certificates; \label{item:xi-persist-finite}
+  \item Stable concepts can be characterized in the inverse limit sense as families of non-\(\mathsf{NULL}\) addressable objects in \(\varprojlim_B \mathcal{G}_{\le B}\) (cf.\ the same-type inverse system argument in Theorem \ref{thm:xi-time-consistent-inverse-limit-readout}). \label{item:xi-persist-invlim}
+\end{enumerate}
+Thus, the observable changes in connectivity with budget growth can be restated as: allowing auditable migrations of finite barcodes while keeping the infinite bars described in \ref{item:xi-persist-infinite} invariant, thereby constraining system growth to a controlled perturbation of the persistent spectrum.
+\end{conclusion}
+
+\begin{conclusion}[Inescapable cost of connectivity growth: cycle rank controlled by anomaly dimension lower bound]\label{con:xi-connectivity-betti-lower-bound-by-anom-rank}
+Let \(G_{\le B}\) be the generating graph under budget \(B\) (can take as the subgraph of \(G_{\le}\) from Conclusion \ref{con:xi-connectivity-scc-invertible-closure} below threshold \(B\)), and let \(\beta_1(G_{\le B})\) denote the first Betti number of its undirected graph.
+Take the abelian group \(\mathrm{Anom}_{\le B}\) representing the auditable anomaly degrees of freedom on slice \(\mathbf{PW}^{\ast}_{\le B}\) (e.g., generated by residue coordinates from Definition \ref{def:pom-anom-accumulation}), and suppose there exists a closed-path residue map
+\(
+\alpha_B:Z_1(G_{\le B})\to \mathrm{Anom}_{\le B}
+\)
+sending each closed path to its canonical audit residue.
+If zero-residue closed paths must be fillable and cancellable by \(2\)-isomorphisms (i.e., residue external minimality), then \(\alpha_B\) induces an injection in homology
+\[
+H_1(G_{\le B};\ZZ)\hookrightarrow \mathrm{Anom}_{\le B},
+\]
+whence the structural lower bound
+\[
+\beta_1(G_{\le B})\le \mathrm{rank}_{\ZZ}(\mathrm{Anom}_{\le B}).
+\]
+Therefore, if one attempts to increase connectivity density by adding edges while maintaining semantic non-collapse, the anomaly degrees of freedom must grow proportionally to carry the newly added independent cycles; otherwise the new cycles will be forced to collapse into invertible redundancies, producing no new usable structure.
+\end{conclusion}
+
+\begin{conclusion}[Third-order obstruction to audit-preserving strictification: higher coherence criterion for connectivity closure]\label{con:xi-connectivity-third-order-strictification-obstruction}
+In the bicategory structure of \(\mathbf{PW}^{\ast}_{\le B}\), connectivity depends not only on \(1\)-morphism reachability, but also on the compatibility of \(2\)-morphisms (audit coherence across different bracketings/different rewrite paths).
+From the bracketing differences in triple composition, one can define a third-order coherence obstruction class valued in \(\mathrm{Anom}_{\le B}\):
+\[
+\omega_B\in H^3(G_{\le B};\mathrm{Anom}_{\le B}),
+\]
+which can be viewed as the homology class of the associator defect of audit preservation.
+Then: there exists a strict \(2\)-category model equivalent to \(\mathbf{PW}^{\ast}_{\le B}\) in the \(2\)-category sense and preserving both \(\mathsf{Sem}\) and residue accounting if and only if \(\omega_B=0\).
+Therefore, reducing any multi-segment connectivity path to a unique canonical form with audit coherence---a ``machine-navigable closure''---is subject to a computable third-order coherence obstruction; when this obstruction vanishes, connectivity can be strictly closed without adding extra register degrees of freedom.
+\end{conclusion}
+
+\begin{conclusion}[Existence and counting of minimal knowledge graph skeleton: linear-scale realization of connectivity usability]\label{con:xi-connectivity-minimal-skeleton-linear-size}
+Let the number of objects under budget \(B\) be \(n_B:=|\mathrm{Ob}(\mathbf{PW}^{\ast}_{\le B})|\), and assume \(\mathrm{Anom}_{\le B}\) is a free abelian group, and the closed-path residue map \(\alpha_B\) is surjective in homology (i.e., anomaly dimension on the slice can be fully activated by closed-path certificates).
+Then there exists a subgraph \(H_B\subseteq G_{\le B}\) (audit equivalence skeleton) satisfying:
+\begin{enumerate}
+  \item \(H_B\) and \(G_{\le B}\) induce the same localized groupoid (isomorphism classes and reachability relations agree); \label{item:xi-skel-groupoid}
+  \item \(\alpha_B\) on \(H_B\) still maintains homological surjectivity (anomaly degrees of freedom not lost); \label{item:xi-skel-anom}
+  \item Edge count achieves the non-improvable lower bound
+  \[
+  |E(H_B)| = n_B - c_B + \mathrm{rank}_{\ZZ}(\mathrm{Anom}_{\le B}),
+  \]
+  where \(c_B\) is the number of weakly connected components of the condensation graph. \label{item:xi-skel-size}
+\end{enumerate}
+Therefore, under conservative semantics and sufficiently activated anomaly auditing, any usable conceptual connectivity can be compressed to a linear-scale skeleton, and the skeleton size is precisely determined by ``number of objects \(+\) necessary anomaly dimension;'' if anomaly dimension does not grow with connectivity growth, then newly added edges eventually form only deletable redundancies and do not increase usable structure coverage.
+\end{conclusion}

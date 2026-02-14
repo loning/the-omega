@@ -1,0 +1,161 @@
+% Conclusions (main.pdf draft, 2026-02-13 15:00:17 Asia/Singapore): 21--26.
+
+\paragraph{Scalarization over Fibonacci prime fields and Pisano period closure}\label{par:gut-fibprime-pgl2-pisano}
+Within the field-phase window (Corollary \ref{cor:field-phase-fib-prime}), when the modulus is a Fibonacci prime \(p=F_n\),
+the Fibonacci base matrix
+\[
+F:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix}
+\]
+exhibits an auditable rigidity over \(\mathbb{F}_p\): its \(n\)-th power returns to the identity in \(PGL_2(\mathbb{F}_p)\),
+while in \(GL_2(\mathbb{F}_p)\) it leaves only a quartic scalar factor controlled by \(F_{n+1}\).
+This causes the exponent \(n\), the Pisano period \(\pi(p)\), and several Legendre symbols to exhibit strict coupling, aligning with the cross-prime splitting fingerprint of the phase-locked quadratic form
+\(2z^2+z+2\) with discriminant \(-15\) (Proposition \ref{prop:pom-phase-lock-discriminant-minus15-splitting}).
+
+\begin{proposition}[Scalarization phenomenon for Fibonacci primes: exponent \(n\) returns as order in \(PGL_2(\mathbb{F}_p)\)]\label{prop:gut-fibprime-pgl2-order-n}
+Let \(p=F_n\) be a Fibonacci prime, and assume \(n\) is an odd prime (equivalently \(p\ge 5\) and \(n\) is a prime index).
+Then over \(\mathbb{F}_p\) we have the strict congruence
+\[
+F^n\equiv F_{n+1}\,I\pmod p,
+\]
+hence the image of \(F\) in \(PGL_2(\mathbb{F}_p)\) has precise order \(n\).
+\end{proposition}
+\begin{proof}
+By the standard identity
+\[
+F^n=
+\begin{pmatrix}
+F_{n+1} & F_n\\
+F_n & F_{n-1}
+\end{pmatrix},
+\]
+reduction modulo \(p=F_n\) yields
+\[
+F^n\equiv
+\mathrm{diag}(F_{n+1},F_{n-1})
+\pmod p.
+\]
+Moreover, since \(F_{n+1}-F_{n-1}=F_n\equiv 0\pmod p\), we have \(\mathrm{diag}(F_{n+1},F_{n-1})\equiv F_{n+1}I\).
+Therefore \(F^n\) becomes the identity in \(PGL_2(\mathbb{F}_p)\), so the order of its image divides \(n\).
+\par
+If the order is less than \(n\), since \(n\) is prime it can only be \(1\), meaning \(F\) is the identity in \(PGL_2(\mathbb{F}_p)\), equivalent to \(F\) being a scalar matrix in \(GL_2(\mathbb{F}_p)\).
+But when \(p\ge 5\), the off-diagonal entry of \(F\) is \(1\not\equiv 0\pmod p\), so \(F\) cannot be a scalar matrix, contradiction.
+Hence its order must be \(n\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Explicit quartic residue: \(F_{n+1}\) is \(\sqrt{-1}\) in \(\mathbb{F}_p\)]\label{cor:gut-fibprime-explicit-i}
+Under the setting of Proposition \ref{prop:gut-fibprime-pgl2-order-n}, we have
+\[
+F_{n+1}^2\equiv -1\pmod p.
+\]
+Therefore \(\left(\frac{-1}{p}\right)=1\) and \(p\equiv 1\pmod 4\).
+More strongly, an explicit imaginary unit in \(\mathbb{F}_p\) can be taken as
+\[
+i\equiv F_{n+1}\pmod p,
+\qquad i^2\equiv -1\pmod p.
+\]
+Moreover, since the Lucas number is fixed as the trace variable \(L_k:=\mathrm{Tr}(F^k)\), we have the identity
+\(
+L_n=F_{n-1}+F_{n+1}
+\)
+which can also be written as
+\[
+i\equiv \tfrac12\,L_n\pmod p.
+\]
+\end{corollary}
+\begin{proof}
+Cassini's identity gives
+\[
+F_{n+1}F_{n-1}-F_n^2=(-1)^n=-1
+\qquad(n\ \text{is odd}).
+\]
+Reducing modulo \(p=F_n\) yields \(F_{n+1}F_{n-1}\equiv -1\pmod p\).
+Using \(F_{n+1}\equiv F_{n-1}\ (\bmod\ F_n)\) gives \(F_{n+1}^2\equiv -1\pmod p\), hence yielding the explicit imaginary unit.
+The last identity follows from \(L_n=F_{n-1}+F_{n+1}\) and \(F_{n-1}\equiv F_{n+1}\ (\bmod\ p)\), with \(p\ge 5\) ensuring \(2\) is invertible in \(\mathbb{F}_p\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Precise closure of Pisano period: \texorpdfstring{$\pi(p)=4n$}{pi(p)=4n}]\label{cor:gut-fibprime-pisano-4n}
+Let \(p=F_n\) be a Fibonacci prime with \(n\) an odd prime.
+Denote by \(\pi(p)\) the Pisano period modulo \(p\).
+Then
+\[
+\pi(p)=4n.
+\]
+\end{corollary}
+\begin{proof}
+The classical representation shows that the Pisano period equals the order of \(F\) in \(GL_2(\mathbb{F}_p)\):
+if \((F_t,F_{t+1})\equiv(0,1)\ (\bmod\ p)\), then the matrix power identity
+\(
+F^t=\bigl(\begin{smallmatrix}F_{t+1}&F_t\\F_t&F_{t-1}\end{smallmatrix}\bigr)
+\)
+gives \(F^t\equiv I\);
+conversely, \(F^t\equiv I\) immediately implies \((F_t,F_{t+1})\equiv(0,1)\).
+\par
+By Proposition \ref{prop:gut-fibprime-pgl2-order-n}, we have \(F^n\equiv F_{n+1}I\);
+by Corollary \ref{cor:gut-fibprime-explicit-i}, we have \(F_{n+1}^2\equiv -1\), hence
+\[
+F^{2n}\equiv -I,\qquad F^{4n}\equiv I.
+\]
+Since \(p\ge 5\), we have \(-I\not\equiv I\), so \(F^{2n}\not\equiv I\); therefore \(\mathrm{ord}_{GL_2(\mathbb{F}_p)}(F)\) cannot divide \(2n\) but does divide \(4n\), hence its order must be \(4n\).
+Thus \(\pi(p)=4n\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Strong congruence rigidity of exponent–prime value: \texorpdfstring{$p\equiv (\frac{5}{p})\ (\bmod\ n)$}{p ≡ (5/p) mod n}]\label{prop:gut-fibprime-congruence-p-mod-n}
+Let \(p=F_n\) be a Fibonacci prime with \(n\) an odd prime (\(n>5\)).
+Then we must have
+\[
+p \equiv \left(\frac{5}{p}\right)\pmod n,
+\]
+hence \(p\equiv 1\ (\bmod\ n)\) or \(p\equiv -1\ (\bmod\ n)\), with the sign uniquely determined by the Legendre symbol \(\left(\frac{5}{p}\right)\in\{\pm 1\}\).
+\end{proposition}
+\begin{proof}
+Let \(r(p):=\min\{k\ge 1:\ p\mid F_k\}\) be the rank of apparition of \(p\) in the Fibonacci sequence.
+For any odd prime \(p\neq 5\), the classical Lucas/Fibonacci divisibility law gives
+\[
+r(p)\ \mid\ \Bigl(p-\left(\frac{5}{p}\right)\Bigr).
+\]
+In this proposition, \(p=F_n\) with \(n\) a prime index; by strict monotonicity of the Fibonacci sequence, for all \(k<n\) we have \(F_k<p\), hence \(p\nmid F_k\) (\(k<n\)), so \(r(p)=n\).
+Substituting back yields \(n\mid\bigl(p-(\frac{5}{p})\bigr)\), equivalent to the stated congruence. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Explicit sign determination: \texorpdfstring{$n\ (\mathrm{mod}\ 20)$}{n (mod 20)} determines \texorpdfstring{$p\equiv\pm 1\ (\mathrm{mod}\ n)$}{p ≡ ±1 (mod n)}]\label{cor:gut-fibprime-sign-by-n-mod20}
+Let \(p=F_n\) be a Fibonacci prime with \(n\) an odd prime (\(n>5\)).
+Then
+\[
+n\equiv 1,9,11,19\pmod{20}\ \Longrightarrow\ \left(\frac{5}{p}\right)=1\ \Longrightarrow\ p\equiv 1\pmod n,
+\]
+\[
+n\equiv 3,7,13,17\pmod{20}\ \Longrightarrow\ \left(\frac{5}{p}\right)=-1\ \Longrightarrow\ p\equiv -1\pmod n.
+\]
+\end{corollary}
+\begin{proof}
+We have \(\left(\frac{5}{p}\right)=1\) if and only if \(p\equiv \pm 1\ (\bmod\ 5)\), and \(\left(\frac{5}{p}\right)=-1\) if and only if \(p\equiv \pm 2\ (\bmod\ 5)\).
+On the other hand, \(p=F_n\ (\bmod\ 5)\) depends only on \(n\ (\bmod\ 20)\) (since the Pisano period modulo \(5\) is \(20\)).
+For odd primes \(n>5\), the admissible residue classes split precisely into the above two groups, thereby determining the sign of \(\left(\frac{5}{p}\right)\);
+then by Proposition \ref{prop:gut-fibprime-congruence-p-mod-n}, we obtain the sign of \(p\ (\bmod\ n)\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Structural alignment with \texorpdfstring{$A_2$}{A2} discriminant \texorpdfstring{$-15$}{-15}: phase-locked root criterion in Fibonacci prime fields]\label{cor:gut-fibprime-disc-minus15-criterion}
+Let \(p=F_n\) be a Fibonacci prime with \(n\) an odd prime.
+Consider the phase-locked quadratic polynomial \(2z^2+z+2\) (discriminant \(\Delta=-15\)).
+Then this polynomial splits over \(\mathbb{F}_p\) if and only if
+\[
+\left(\frac{15}{p}\right)=1.
+\]
+When it splits, its two roots can be written as
+\[
+z=\frac{-1\pm i\sqrt{15}}{4}\in\mathbb{F}_p,
+\]
+where \(i\in\mathbb{F}_p\) can be taken as the explicit value \(i\equiv F_{n+1}\ (\bmod\ p)\) from Corollary \ref{cor:gut-fibprime-explicit-i}.
+This criterion is consistent with the general splitting selection law of Proposition \ref{prop:pom-phase-lock-discriminant-minus15-splitting}, and in Fibonacci prime fields is further compressed to a single Legendre condition by the \(\left(\frac{-1}{p}\right)=1\) of Corollary \ref{cor:gut-fibprime-explicit-i}.
+\end{corollary}
+\begin{proof}
+Over any odd prime field \(\mathbb{F}_p\), a quadratic polynomial splits if and only if its discriminant is a quadratic residue.
+Here \(\Delta=-15\), so splitting is equivalent to \(\left(\frac{-15}{p}\right)=1\).
+By Corollary \ref{cor:gut-fibprime-explicit-i}, we have \(\left(\frac{-1}{p}\right)=1\), hence
+\(
+\left(\frac{-15}{p}\right)=\left(\frac{-1}{p}\right)\left(\frac{15}{p}\right)=\left(\frac{15}{p}\right)
+\), yielding the stated equivalence.
+The radical expression is given by the quadratic formula, with \(\sqrt{-15}=i\sqrt{15}\) realized via \(i^2=-1\); and \(i\equiv F_{n+1}\) is already provided by Corollary \ref{cor:gut-fibprime-explicit-i}. This completes the proof.
+\end{proof}
+
+\endinput

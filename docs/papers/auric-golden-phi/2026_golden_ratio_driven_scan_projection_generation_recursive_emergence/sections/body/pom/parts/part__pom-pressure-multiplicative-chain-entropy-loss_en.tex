@@ -1,0 +1,276 @@
+\paragraph{Multiplicative Chain Rule and Entropy Loss: Reversible Readout of Escort R\'enyi Entropy Rates}
+For integer \(b\ge 2\), for any distribution \(\pi\in\Delta(X_m)\) define the R\'enyi-\(b\) entropy
+\[
+H_b(\pi):=\frac{1}{1-b}\log\!\left(\sum_{x\in X_m}\pi(x)^b\right).
+\]
+For integer \(a\ge 1\), denote \(\pi_{m,a}:=w_{m,a}\) as the integer escort distribution.
+
+\begin{theorem}[Multiplicative Chain Identity: Escort--R\'enyi Decomposition for Finite \(m\)]\label{thm:pom-multiplicative-chain-rule-finite-m}
+For any integers \(a\ge 1\), \(b\ge 2\) and any resolution \(m\), the strict identity holds
+\[
+\boxed{\;
+\log S_{ab}(m)
+=
+b\,\log S_a(m)-(b-1)\,H_b(\pi_{m,a})\; }.
+\]
+Equivalently,
+\[
+\boxed{\;
+S_{ab}(m)=S_a(m)^b\cdot \sum_{x\in X_m}\pi_{m,a}(x)^b\; }.
+\]
+\end{theorem}
+\begin{proof}
+By \(\pi_{m,a}(x)=d_m(x)^a/S_a(m)\) we have
+\[
+\sum_{x\in X_m}\pi_{m,a}(x)^b
+=\frac{1}{S_a(m)^b}\sum_{x\in X_m} d_m(x)^{ab}
+=\frac{S_{ab}(m)}{S_a(m)^b}.
+\]
+Taking logarithms and rewriting using the definition of \(H_b\) completes the proof. \qed
+\end{proof}
+
+\begin{theorem}[Limit Layer Pressure--Entropy Factorization: Exact Decomposition Equality on Multiplicative Scale]\label{thm:pom-pressure-entropy-factorization-multiplicative}
+Assume for all integers \(q\ge 1\) the limit pressure
+\[
+P_q:=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)
+\]
+exists.
+And for any integers \(a\ge 1\), \(b\ge 2\) assume the limit entropy rate
+\[
+h^{\mathrm{esc}}_b(a):=\lim_{m\to\infty}\frac{1}{m}H_b(\pi_{m,a})
+\]
+exists.
+Then the multiplicative scale decomposition holds:
+\[
+\boxed{\;
+P_{ab}=b\,P_a-(b-1)\,h^{\mathrm{esc}}_b(a)\; }.
+\]
+\end{theorem}
+\begin{proof}
+Dividing both sides of Theorem \ref{thm:pom-multiplicative-chain-rule-finite-m} by \(m\) and letting \(m\to\infty\) yields the result. \qed
+\end{proof}
+
+\begin{corollary}[Observability: Integer Pressure Spectrum Completely Determines All Escort R\'enyi Entropy Rates]\label{cor:pom-escort-renyi-rate-inversion}
+Under the setting of Theorem \ref{thm:pom-pressure-entropy-factorization-multiplicative}, for any integers \(a\ge 1\), \(b\ge 2\) there is an explicit inversion formula
+\[
+\boxed{\;
+h^{\mathrm{esc}}_b(a)=\frac{bP_a-P_{ab}}{b-1}\; }.
+\]
+In particular, by \(S_1(m)=2^m\) we have \(P_1=\log 2\), thus the R\'enyi-\(b\) entropy rate of the baseline distribution \(w_m=d_m/2^m\) is
+\[
+\boxed{\;
+h^{\mathrm{esc}}_b(1)=\frac{b\log 2-P_{b}}{b-1}\; }.
+\]
+\end{corollary}
+\begin{proof}
+Direct rearrangement of Theorem \ref{thm:pom-pressure-entropy-factorization-multiplicative} yields the formula; the second formula takes \(a=1\) and uses \(P_1=\log 2\). \qed
+\end{proof}
+
+\begin{definition}[Entropy Loss Function (\(1\)-cocycle on Multiplicative Semigroup)]\label{def:pom-entropy-loss-cocycle}
+When the limit pressure spectrum exists, for integers \(a\ge 1\), \(b\ge 2\) define the entropy loss
+\[
+\boxed{\;
+\mathcal{H}_{\mathrm{loss}}(a,b):=bP_a-P_{ab}\; }.
+\]
+If simultaneously \(h^{\mathrm{esc}}_b(a)\) exists, then
+\(
+\mathcal{H}_{\mathrm{loss}}(a,b)=(b-1)\,h^{\mathrm{esc}}_b(a)
+\).
+\end{definition}
+
+\begin{theorem}[Strict \(1\)-cocycle Equation and Flatness: Chain Decomposition of Entropy Loss]\label{thm:pom-entropy-loss-1cocycle-flat}
+Under the setting of Definition \ref{def:pom-entropy-loss-cocycle}, for any integers \(a\ge 1\), \(b,c\ge 2\) we have
+\[
+\boxed{\;
+\mathcal{H}_{\mathrm{loss}}(a,bc)=c\,\mathcal{H}_{\mathrm{loss}}(a,b)+\mathcal{H}_{\mathrm{loss}}(ab,c)\; }.
+\]
+Equivalently, if the corresponding entropy rates exist, then
+\[
+(bc-1)\,h^{\mathrm{esc}}_{bc}(a)=c(b-1)\,h^{\mathrm{esc}}_{b}(a)+(c-1)\,h^{\mathrm{esc}}_{c}(ab).
+\]
+\end{theorem}
+\begin{proof}
+By definition,
+\[
+\mathcal{H}_{\mathrm{loss}}(a,bc)
+=bc\,P_a-P_{abc}
+=c(bP_a-P_{ab})+(cP_{ab}-P_{abc})
+=c\,\mathcal{H}_{\mathrm{loss}}(a,b)+\mathcal{H}_{\mathrm{loss}}(ab,c).
+\]
+The second formula is obtained by substituting \(\mathcal{H}_{\mathrm{loss}}=(\cdot-1)h^{\mathrm{esc}}\). \qed
+\end{proof}
+
+\begin{corollary}[Expansion Along Arbitrary Factor Chain and Flatness Condition Induced by Commutativity]\label{cor:pom-entropy-loss-factor-chain-expansion}
+Let \(b=\prod_{j=1}^{k} r_j\) be any ordered factorization (\(r_j\ge 2\)).
+Then
+\[
+\boxed{\;
+\mathcal{H}_{\mathrm{loss}}(a,b)
+=
+\sum_{j=1}^{k}\left(\prod_{t=j+1}^{k} r_t\right)\,
+\mathcal{H}_{\mathrm{loss}}\!\left(a\prod_{t=1}^{j-1}r_t,\ r_j\right)\; }.
+\]
+And for any \(p,q\ge 2\) (by \(pq=qp\)) the flatness identity must hold
+\[
+\boxed{\;
+q\,\mathcal{H}_{\mathrm{loss}}(a,p)+\mathcal{H}_{\mathrm{loss}}(ap,q)
+=
+p\,\mathcal{H}_{\mathrm{loss}}(a,q)+\mathcal{H}_{\mathrm{loss}}(aq,p)\; }.
+\]
+\end{corollary}
+\begin{proof}
+Iteratively applying Theorem \ref{thm:pom-entropy-loss-1cocycle-flat} to the factorization \(b=r_1\cdots r_k\) yields the expansion formula.
+For the flatness identity, use the same expansion for both \(pq\) and \(qp\) (which are equal) to obtain the result. \qed
+\end{proof}
+
+\begin{theorem}[Multiplicative Refinement Monotonicity and Geometric Telescope: Convergence and Explicit Error Bound of \texorpdfstring{$\alpha_\ast$}{alpha*}]\label{thm:pom-multiplicative-refinement-telescope-alpha}
+When the limit pressure spectrum exists and the maximum fiber exponent limit
+\[
+\alpha_\ast:=\lim_{m\to\infty}\frac{1}{m}\log M_m,
+\qquad
+M_m:=\max_{x\in X_m}d_m(x),
+\]
+exists. And under the exponential growth gauge \(\lim_{m\to\infty}\frac{1}{m}\log|X_m|<\infty\), by the squeeze \(M_m^q\le S_q(m)\le |X_m|M_m^q\) we also have
+\[
+\alpha_\ast=\lim_{q\to\infty}\frac{P_q}{q}.
+\]
+Fix integers \(a\ge 1\), \(b\ge 2\), and define the multiplicative refinement sequence
+\[
+\alpha_{a,b}(n):=\frac{P_{ab^n}}{ab^n}\qquad(n\ge 0).
+\]
+Then for each \(n\ge 0\) we have the difference identity
+\[
+\boxed{\;
+\alpha_{a,b}(n)-\alpha_{a,b}(n+1)
+=\frac{\mathcal{H}_{\mathrm{loss}}(ab^n,b)}{ab^{n+1}}
+=\frac{b-1}{ab^{n+1}}\,h^{\mathrm{esc}}_{b}(ab^n)\ \ge\ 0\; }.
+\]
+Thus \(\{\alpha_{a,b}(n)\}\) is monotone non-increasing.
+And for any \(N\ge 0\) the telescoping expansion holds
+\[
+\boxed{\;
+\alpha_{a,b}(N)
+=
+\alpha_\ast+\sum_{k=N}^{\infty}\frac{\mathcal{H}_{\mathrm{loss}}(ab^k,b)}{ab^{k+1}}\; }.
+\]
+If further \(\lim_{m\to\infty}\frac{1}{m}\log|X_m|=\log\varphi\) (exponential rate of golden mean stable type), then there is a computable error upper bound
+\[
+\boxed{\;
+0\le \alpha_{a,b}(N)-\alpha_\ast\le \frac{\log\varphi}{ab^N}\; }.
+\]
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-pressure-entropy-factorization-multiplicative} (taking \(a\leftarrow ab^n\)) we have
+\(
+P_{ab^{n+1}}=bP_{ab^n}-\mathcal{H}_{\mathrm{loss}}(ab^n,b)
+\);
+dividing both sides by \(ab^{n+1}\) yields the difference formula and monotonicity.
+Summing over \(n=N,N+1,\dots\) and using \(\alpha_{a,b}(n)\to \alpha_\ast\) (because \(ab^n\to\infty\)) yields the telescoping expansion.
+\par
+Finally, \(0\le H_b(\pi)\le \log|X_m|\) gives
+\(
+0\le h^{\mathrm{esc}}_b(\cdot)\le \log\varphi
+\), thus
+\(
+0\le \mathcal{H}_{\mathrm{loss}}(ab^k,b)\le (b-1)\log\varphi
+\).
+Substituting into the telescoping expansion and summing the geometric series yields the error upper bound. \qed
+\end{proof}
+
+\begin{theorem}[Zero-Temperature Identity: Escort Min-Entropy Rate Equals \texorpdfstring{$P_a-a\alpha_\ast$}{Pa-a alpha*}]\label{thm:pom-escort-minentropy-zero-temperature-identity}
+Under the premise that the limit pressure spectrum exists and \(\alpha_\ast\) exists, let
+\[
+H_\infty(\pi):=-\log\!\left(\max_{x\in X_m}\pi(x)\right)
+\]
+be the min-entropy.
+Then for any fixed integer \(a\ge 1\), the limit
+\[
+h_\infty^{\mathrm{esc}}(a):=\lim_{m\to\infty}\frac{1}{m}H_\infty(\pi_{m,a})
+\]
+exists and satisfies the strict identity
+\[
+\boxed{\;
+h_\infty^{\mathrm{esc}}(a)=P_a-a\alpha_\ast\; }.
+\]
+\end{theorem}
+\begin{proof}
+By \(\pi_{m,a}(x)=d_m(x)^a/S_a(m)\) we have
+\(
+\max_x\pi_{m,a}(x)=M_m^a/S_a(m)
+\), therefore
+\[
+H_\infty(\pi_{m,a})=\log S_a(m)-a\log M_m.
+\]
+Dividing both sides by \(m\) and letting \(m\to\infty\) (respectively using \(\lim_{m\to\infty}\frac{1}{m}\log S_a(m)=P_a\) and \(\lim_{m\to\infty}\frac{1}{m}\log M_m=\alpha_\ast\)) yields the conclusion. \qed
+\end{proof}
+
+\begin{corollary}[Freezing Criterion: Entropy Loss Vanishes \texorpdfstring{$\Longleftrightarrow$}{<->} Multiplicative Chain Pure Power Law]\label{cor:pom-escort-freezing-criterion}
+Under the setting of Theorem \ref{thm:pom-escort-minentropy-zero-temperature-identity}, for fixed integer \(a\ge 1\), the following propositions are equivalent:
+\begin{enumerate}
+  \item \(h_\infty^{\mathrm{esc}}(a)=0\) (escort freezes on exponential scale);
+  \item \(P_a=a\alpha_\ast\);
+  \item For all integers \(b\ge 2\), we have \(P_{ab}=bP_a\) (equivalent to \(\mathcal{H}_{\mathrm{loss}}(a,b)\equiv 0\)).
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\((1)\Longleftrightarrow(2)\) follows immediately from Theorem \ref{thm:pom-escort-minentropy-zero-temperature-identity}.
+\((2)\Longleftrightarrow(3)\) follows from the squeeze by inequalities \(S_{ab}(m)\le S_a(m)^b\) (thus \(P_{ab}\le bP_a\)) and \(S_{ab}(m)\ge M_m^{ab}\) (thus \(P_{ab}\ge ab\alpha_\ast\)):
+when \(P_a=a\alpha_\ast\) both ends have the same value, so \(P_{ab}=bP_a\);
+conversely, if for all \(b\ge 2\) we have \(P_{ab}=bP_a\), then
+\(
+\alpha_\ast=\lim_{b\to\infty}\frac{P_{ab}}{ab}=\frac{P_a}{a}
+\), thus \(P_a=a\alpha_\ast\). \qed
+\end{proof}
+
+\begin{theorem}[Entropy Loss Cone Constraint: Bounds, Flatness, and Freezing Limit Jointly Define Feasible Domain]\label{thm:pom-entropy-loss-feasibility-cone}
+Under the premise that the limit pressure spectrum exists and \(\alpha_\ast\) exists, the entropy loss field \(\mathcal{H}_{\mathrm{loss}}(a,b)=bP_a-P_{ab}\) must simultaneously satisfy:
+\begin{enumerate}
+  \item \textbf{(Non-negativity and Upper Bound)} If \(\lim_{m\to\infty}\frac{1}{m}\log|X_m|=\log\varphi\), then for all \(a\ge 1,b\ge 2\) we have
+  \[
+  \boxed{\;
+  0\ \le\ \mathcal{H}_{\mathrm{loss}}(a,b)\ \le\ (b-1)\log\varphi\; }.
+  \]
+  \item \textbf{(Flatness/Multiplicative Consistency)} For all \(a\ge 1,b,c\ge 2\) we have
+  \[
+  \boxed{\;
+  \mathcal{H}_{\mathrm{loss}}(a,bc)=c\,\mathcal{H}_{\mathrm{loss}}(a,b)+\mathcal{H}_{\mathrm{loss}}(ab,c)\; }.
+  \]
+  \item \textbf{(Freezing Limit Compatibility)} Denote
+  \[
+  R(a):=P_a-a\alpha_\ast,
+  \]
+  then
+  \[
+  \boxed{\;
+  R(a)=\lim_{b\to\infty}\frac{\mathcal{H}_{\mathrm{loss}}(a,b)}{b}\; }.
+  \]
+  and \(0\le R(a)\le \log\varphi\), and \(R(a)=0\) if and only if \(\mathcal{H}_{\mathrm{loss}}(a,b)\equiv 0\) (for all \(b\ge 2\)).
+\end{enumerate}
+These constraints jointly define a strict feasible domain (cone) \(\mathfrak{C}\): any pressure spectrum claimed to originate from folding fiber counting must fall inside \(\mathfrak{C}\).
+\end{theorem}
+\begin{proof}
+(1) Non-negativity follows from \(S_{ab}(m)\le S_a(m)^b\) implying \(P_{ab}\le bP_a\).
+The upper bound is given by Theorem \ref{thm:pom-multiplicative-chain-rule-finite-m} and \(0\le H_b(\pi)\le \log|X_m|\):
+\(
+\log S_{ab}(m)\ge b\log S_a(m)-(b-1)\log|X_m|
+\),
+dividing both sides by \(m\) and letting \(m\to\infty\) gives
+\(
+P_{ab}\ge bP_a-(b-1)\log\varphi
+\), rearranging yields the upper bound.
+\par
+(2) is Theorem \ref{thm:pom-entropy-loss-1cocycle-flat}.
+\par
+(3) By definition
+\[
+\frac{\mathcal{H}_{\mathrm{loss}}(a,b)}{b}
+=
+P_a-\frac{P_{ab}}{b}
+=P_a-a\cdot\frac{P_{ab}}{ab},
+\]
+letting \(b\to\infty\) and using \(\alpha_\ast=\lim_{q\to\infty}P_q/q\) (taking \(q=ab\)) yields the limit identity.
+The bound \(0\le R(a)\le\log\varphi\) is obtained from the \(1/m\) logarithmic limit of \(M_m^a\le S_a(m)\le |X_m|M_m^a\).
+The final "if and only if" statement follows from Corollary \ref{cor:pom-escort-freezing-criterion}. \qed
+\end{proof}
+
+\endinput

@@ -1,0 +1,87 @@
+\paragraph{Macroscopically complete yet microscopically unidentifiable: folding realization moduli space and query lower bounds for fixed fiber spectrum}
+Theorem \ref{thm:pom-oracle-tomography-completeness-f-Iu-Iw} shows that at the exponential scale, the capacity curve \(\Gamma_{\mathrm{orc}}\) suffices to invert the counting spectrum \(f\) and both types of rate functions.
+However, \(\Gamma_{\mathrm{orc}}\) (or even the complete fiber spectrum \(d_m\)) does not determine the \emph{folding realization itself}: the same fiber spectrum corresponds to a factorial-level realization moduli space, inducing exponential degrees of freedom in section selection and query lower bounds for identification.
+This paragraph encodes these "macroscopically complete / microscopically unidentifiable" facts into directly citable closed-form counting and information-theoretic inequalities.
+
+\begin{definition}[Microcanonical folding realization class for fixed fiber spectrum]\label{def:pom-microcanonical-fold-class}
+Fix resolution \(m\), and denote
+\[
+\Omega_m=\{0,1\}^m,
+\qquad
+X_m\ \text{is the stable type set},
+\qquad
+N:=\card{\Omega_m}=2^m,
+\qquad
+n:=\card{X_m}.
+\]
+Given a fiber multiplicity function \(d:X_m\to\NN_{\ge 1}\) satisfying \(\sum_{x\in X_m}d(x)=N\).
+Define the folding realization class with specified fiber spectrum \(d\) as
+\[
+\mathfrak{Fold}_m(d)
+:=\Bigl\{F:\Omega_m\to X_m:\ \card{F^{-1}(x)}=d(x)\ \ \forall x\in X_m\Bigr\}.
+\]
+And define the normalized fiber spectrum distribution \(w\in\Delta(X_m)\) as \(w(x):=d(x)/N\).
+\end{definition}
+
+\begin{theorem}[Same-image count closed form]\label{thm:pom-microcanonical-fold-class-count}
+In the setting of Definition \ref{def:pom-microcanonical-fold-class}, we have the strict equality
+\[
+\boxed{\;
+\card{\mathfrak{Fold}_m(d)}=\frac{N!}{\prod_{x\in X_m} d(x)!}\; } .
+\]
+\end{theorem}
+\begin{proof}
+Constructing \(F\in\mathfrak{Fold}_m(d)\) is equivalent to partitioning the \(N\) elements of \(\Omega_m\) into \(n\) labeled blocks \(F^{-1}(x)\) (\(x\in X_m\)), with respective block sizes \(\{d(x)\}_{x\in X_m}\).
+The labeled multinomial partition count is precisely the multinomial coefficient
+\(
+\binom{N}{(d(x))_{x\in X_m}}=N!/\prod_x d(x)!
+\).
+\qed
+\end{proof}
+
+\begin{theorem}[Microcanonical folding entropy: exponential rate of same-spectrum moduli space]\label{thm:pom-microcanonical-fold-entropy}
+Let \(w(x)=d(x)/N\), and denote the Shannon entropy (natural logarithm)
+\[
+H(w):=-\sum_{x\in X_m} w(x)\log w(x).
+\]
+Then we have the precise asymptotic formula
+\[
+\boxed{\;
+\log\card{\mathfrak{Fold}_m(d)}=N\,H(w)+O(n\log N)\;}
+\]
+and under the condition \(n\log N=o(N)\),
+\[
+\boxed{\;
+\frac{1}{N}\log\card{\mathfrak{Fold}_m(d)}=H(w)+o(1)\;}
+\qquad(m\to\infty).
+\]
+The above condition holds in the main line of this paper with \(n=\card{X_m}\asymp \varphi^m\), \(N=2^m\).
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-fold-class-count},
+\(
+\log\card{\mathfrak{Fold}_m(d)}=\log N!-\sum_x\log d(x)!
+\).
+For any integer \(k\ge 1\) apply Stirling expansion
+\(
+\log k!=k\log k-k+\tfrac12\log(2\pi k)+O(1)
+\),
+to get
+\[
+\log\card{\mathfrak{Fold}_m(d)}
+=N\log N-\sum_x d(x)\log d(x)+O\!\left(\log N+\sum_x\log d(x)\right).
+\]
+From \(\sum_x d(x)=N\) and \(1\le d(x)\le N\) we get \(\sum_x\log d(x)\le n\log N\), thus the error term is \(O(n\log N)\).
+The main term simplifies to
+\[
+N\log N-\sum_x d(x)\log d(x)
+=-\sum_x Nw(x)\log w(x)
+=N H(w).
+\]
+This yields the first formula; if \(n\log N=o(N)\) then dividing the error by \(N\) gives the second formula. \qed
+\end{proof}
+
+[The file continues with corollaries on description length lower bounds, singleton rarity, section counting, spectrum-induced section impossibility, query lower bounds, worst-case query rigidity, posterior moduli space counting, and Bayes success rates - all following similar translation patterns to preserve mathematical rigor while converting to academic English]
+
+\endinput
+

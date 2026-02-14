@@ -1,0 +1,50 @@
+\subsubsection{Conjugate Closure Sampling and Galois Certificate: Algebraic Consistency Verification of Single-Layer Torsion Tables}\label{subsubsec:finite-part-single-layer-torsion-galois-certificate}
+Theorem \ref{thm:finite-part-cyclic-lift-single-q-torsion-reconstruction} shows that when \(q\ge d\), single-layer torsion evaluations \(\{F_M(\omega_q^j)\}_{j=0}^{q-1}\) suffice to recover the reduced spectral polynomial \(F_M\) and reconstruct the normalized non-Perron spectrum.
+This subsection emphasizes: when the torsion evaluations are viewed as algebraic numbers and their conjugate closure is retained, the table also carries a formalizable Galois consistency certificate: it verifies "whether this table could possibly arise from some \(\QQ\)-coefficient polynomial" (and thus from the reduced spectral polynomial of some integer kernel).
+
+\begin{proposition}[Galois covariance of torsion evaluation table]\label{prop:finite-part-torsion-table-galois-covariance}
+Take an integer \(q\ge2\) and let \(\omega_q=e^{2\pi i/q}\).
+For any \(h\in(\ZZ/q\ZZ)^\times\), denote \(\sigma_h\in\mathrm{Gal}(\QQ(\omega_q)/\QQ)\) as the automorphism uniquely determined by \(\sigma_h(\omega_q)=\omega_q^{\,h}\).
+Then for any \(F(t)\in\QQ[t]\) and any integer \(j\),
+\[
+\boxed{\;\sigma_h\!\bigl(F(\omega_q^{\,j})\bigr)=F(\omega_q^{\,hj})\; }.
+\]
+In particular, for the reduced spectral polynomial \(F_M\in\QQ[t]\) (see definition in \S\ref{subsec:finite-part-cyclic-lift-cyclotomic-microscope}), its single-layer torsion table \(\{F_M(\omega_q^j)\}_{j=0}^{q-1}\) must satisfy the above covariance.
+\end{proposition}
+\begin{proof}
+Since \(\sigma_h\) is a field homomorphism fixing \(\QQ\),
+\[
+\sigma_h\!\bigl(F(\omega_q^{\,j})\bigr)
+=\sigma_h\!\left(\sum_{n\ge0}a_n(\omega_q^{\,j})^n\right)
+=\sum_{n\ge0}a_n\,\sigma_h(\omega_q)^{\,jn}
+=\sum_{n\ge0}a_n(\omega_q^{\,hj})^n
+=F(\omega_q^{\,hj}),
+\]
+where \(a_n\in\QQ\) are the coefficients of \(F\). \qed
+\end{proof}
+
+\begin{corollary}[Conjugate closure verification \texorpdfstring{$\Rightarrow$}{=>} rational coefficient certificate]\label{cor:finite-part-torsion-table-galois-certificate}
+Suppose given a torsion evaluation table \(\{y_j\}_{j=0}^{q-1}\subset\QQ(\omega_q)\), and assume it satisfies the covariance constraint for all \(h\in(\ZZ/q\ZZ)^\times\):
+\[
+\sigma_h(y_j)=y_{hj}\qquad(0\le j\le q-1).
+\]
+Define the discrete Fourier inversion coefficients
+\[
+a_n:=\frac{1}{q}\sum_{j=0}^{q-1}y_j\,\omega_q^{-jn}\qquad(0\le n\le q-1).
+\]
+Then for each \(n\), \(a_n\in\QQ\).
+Consequently, under the regime \(q\ge d\), if a single-layer torsion table passes the above covariance verification, then the candidate polynomial \(F(t)=\sum_{n=0}^{d-1}a_n t^n\) obtained via Vandermonde/DFT inversion automatically has \(\QQ\)-coefficients, thus providing a formalizable "Galois consistency certificate."
+\end{corollary}
+\begin{proof}
+For any \(h\in(\ZZ/q\ZZ)^\times\),
+\[
+\sigma_h(a_n)
+=\frac{1}{q}\sum_{j=0}^{q-1}\sigma_h(y_j)\,\sigma_h(\omega_q)^{-jn}
+=\frac{1}{q}\sum_{j=0}^{q-1}y_{hj}\,\omega_q^{-hjn}.
+\]
+Let \(j':=hj\) and note that \(j\mapsto hj\) is a permutation modulo \(q\):
+\[
+\sigma_h(a_n)=\frac{1}{q}\sum_{j'=0}^{q-1}y_{j'}\,\omega_q^{-j'n}=a_n.
+\]
+Thus \(a_n\) is fixed by all elements of \(\mathrm{Gal}(\QQ(\omega_q)/\QQ)\), hence \(a_n\in\QQ\). \qed
+\end{proof}

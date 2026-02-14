@@ -1,0 +1,134 @@
+% (User input window)
+% 2026-02-14 03:11:20 (Asia/Singapore) ... 2026-02-14 09:21:45 (Asia/Singapore)
+
+\subsubsection{Chebotarev and Dirichlet--Artin Decomposition for Length Congruence Classes: Root-of-Unity Filtering, Twisted \texorpdfstring{$\zeta$}{zeta}, and Square-Root Threshold}\label{subsubsec:zeta-online-kernel-length-modq-chebotarev}
+This subsection treats length congruence classes as the most basic ``\(\ZZ/q\ZZ\)-time cocycle'': it introduces no additional observables, yet provides a most direct auditable interface for congruence decomposition of primitive orbits, twisted \(\zeta\) sectors, and constant-layer (Mertens) drift.
+Furthermore, the spectral error of unnormalized prime-shadow is controlled by the non-Perron modulus \(\Lambda\), and kernel-RH (\(\Lambda\le\sqrt{\rho}\)) yields the square-root threshold.
+
+\paragraph{Primitive orbits and two calibrations of length congruence classes}
+Let \(M\in\ZZ_{\ge0}^{d\times d}\) be a primitive nonnegative integer matrix, \(\rho:=\rho(M)>1\) the Perron root, the remaining eigenvalues denoted \(\mu_2,\dots,\mu_d\), and set
+\[
+\Lambda:=\max_{k\ge2}|\mu_k|.
+\]
+Define the primitive orbit count (Witt/Möbius inversion; see Remark \ref{prop:finite-dimensional-explicit-formula})
+\[
+p_n(M):=\frac{1}{n}\sum_{m\mid n}\mu(m)\,\Tr\!\bigl(M^{n/m}\bigr)\qquad(n\ge1).
+\]
+For an integer \(q\ge2\) and residue class \(a\in\{0,1,\dots,q-1\}\), define the unnormalized cumulative count
+\[
+\Pi_a(N;q):=\sum_{\substack{1\le n\le N\\ n\equiv a\ (\mathrm{mod}\ q)}} p_n(M),
+\qquad
+\Pi(N):=\sum_{1\le n\le N}p_n(M),
+\]
+and the Mertens-normalized congruence class sum
+\[
+\mathcal{M}_{q,a}(N):=\sum_{\substack{1\le n\le N\\ n\equiv a\ (\mathrm{mod}\ q)}}\frac{p_n(M)}{\rho^{n}}.
+\]
+
+\begin{theorem}[Chebotarev--Mertens Theorem and Constant Decomposition for Length Congruence Classes]\label{thm:zeta-length-modq-chebotarev-mertens}
+Let \(\omega_q:=e^{2\pi i/q}\). Then as \(N\to\infty\) we have
+\[
+\boxed{\;
+\mathcal{M}_{q,a}(N)=\frac{1}{q}\log N+\mathsf{M}^{(\mathrm{len})}_{q,a}(M)+o(1)\; }.
+\]
+Here the constant term is explicitly given by the root-of-unity twisted primitive generating function: denote
+\(
+P_M(z):=\sum_{n\ge1}p_n(M)\,z^n
+\), then
+\[
+\boxed{\;
+\mathsf{M}^{(\mathrm{len})}_{q,a}(M)
+=\frac{\mathsf{M}(M)}{q}
++\frac{1}{q}\sum_{j=1}^{q-1}\omega_q^{-aj}\,P_M\!\left(\frac{\omega_q^{\,j}}{\rho}\right)\; }.
+\]
+Here \(\mathsf{M}(M)\) is the total Mertens constant, i.e.,
+\[
+\sum_{n\le N}\frac{p_n(M)}{\rho^n}=\log N+\mathsf{M}(M)+o(1).
+\]
+\end{theorem}
+\begin{proof}
+Expand the indicator function as a discrete Fourier filter
+\[
+\mathbf 1_{\{n\equiv a\ (\mathrm{mod}\ q)\}}
+=\frac{1}{q}\sum_{j=0}^{q-1}\omega_q^{\,j(n-a)}.
+\]
+Substituting into \(\mathcal{M}_{q,a}(N)\) and interchanging summations yields
+\[
+\mathcal{M}_{q,a}(N)
+=\frac{1}{q}\sum_{n\le N}\frac{p_n(M)}{\rho^n}
++\frac{1}{q}\sum_{j=1}^{q-1}\omega_q^{-aj}\sum_{n\le N}\frac{p_n(M)\,\omega_q^{\,jn}}{\rho^n}.
+\]
+The first term gives \(\frac{1}{q}\log N+\frac{\mathsf{M}(M)}{q}+o(1)\).
+For each \(j\ge1\), from
+\(
+p_n(M)/\rho^n
+=1/n+O(\vartheta^n/n)
+\)
+(where \(\vartheta:=\max\{\Lambda/\rho,\ \rho^{-1/2}\}<1\))
+and Dirichlet's test, we know that \(\sum_{n\ge1}p_n(M)\omega_q^{jn}/\rho^n\) converges; its sum is precisely \(P_M(\omega_q^{\,j}/\rho)\).
+Therefore the inner partial sum converges to \(P_M(\omega_q^{\,j}/\rho)\), yielding the stated constant decomposition formula. This completes the proof.
+\end{proof}
+
+\begin{remark}[Endpoint Bias and Square-Root Threshold for Unnormalized Prime-Shadow]\label{rem:zeta-length-modq-raw-endpoint-bias}
+The unnormalized \(\Pi_a(N;q)\) is dominated by the terminal term on exponential scale, hence generally does not possess a strict equidistribution main term over congruence classes.
+Let \(N_a:=\max\{n\le N:\ n\equiv a\ (\mathrm{mod}\ q)\}\); then from
+\(
+p_n(M)=\rho^n/n+O(\Lambda^n/n)
+\)
+and geometric summation along arithmetic progressions we obtain
+\[
+\Pi_a(N;q)
+=\frac{\rho^{N_a}}{N_a}\cdot\frac{\rho^q}{\rho^q-1}
++O\!\left(\frac{\rho^{N_a}}{N_a^2}\right)
++O\!\left(\frac{\Lambda^{N}}{N}\right).
+\]
+Therefore kernel-RH (\(\Lambda\le \sqrt{\rho}\)) uniformly compresses the spectral error of prime-shadow to square-root scale \(O(\rho^{N/2}/N)\), and when there exists a boundary spectral point \(|\mu_k|=\sqrt{\rho}\), a generally non-improvable square-root-level oscillation emerges (see the explicit formula template in Proposition \ref{prop:finite-rh-sqrt-resonance-general}).
+\end{remark}
+
+\paragraph{Dirichlet--Artin decomposition: Twisted \texorpdfstring{$\zeta$}{zeta} sectors and prime-generating function}
+For \(j\in\{0,1,\dots,q-1\}\) define the twisted \(\zeta\) (Artin factor)
+\[
+Z_j(z):=\det\bigl(I-\omega_q^{\,j}z\,M\bigr)^{-1},
+\qquad
+\mathcal{P}_j(z):=\sum_{n\ge1}\omega_q^{\,jn}p_n(M)\,z^n.
+\]
+
+\begin{theorem}[Möbius--log Form of Twisted Prime-Generating Function]\label{thm:zeta-length-modq-dirichlet-artin-mobiuslog}
+Within \(|z|<1/\rho\) we have the analytic identity
+\[
+\boxed{\;
+\mathcal{P}_j(z)=\sum_{m\ge1}\frac{\mu(m)}{m}\,\log Z_j(z^m)\; }.
+\]
+Thus the singularities of \(\mathcal{P}_j\) are generated by the \(m\)-th roots of \(\{\omega_q^{-j}\mu_k^{-1}\}_{k=1}^d\); in the Dirichlet variable \(s\) (taking \(z=\rho^{-s}\)), the singularity real part is
+\(
+\Re(s)=\log|\mu_k|/\log\rho
+\).
+\end{theorem}
+\begin{proof}
+From the determinant-trace expansion
+\[
+\log Z_j(z)=\sum_{n\ge1}\frac{\Tr((\omega_q^{\,j}M)^n)}{n}\,z^n
+=\sum_{n\ge1}\frac{\omega_q^{\,jn}\Tr(M^n)}{n}\,z^n
+\]
+and the standard duality of Witt/Möbius inversion, interchanging summation and rearranging by \(m\mid n\) yields the stated formula. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Artin Decomposition of Length Congruence Classes]\label{cor:zeta-length-modq-artin-decomposition}
+Let
+\[
+\mathcal{P}_a(z):=\sum_{n\ge1}\mathbf 1_{\{n\equiv a\ (\mathrm{mod}\ q)\}}\,p_n(M)\,z^n.
+\]
+Then
+\[
+\boxed{\;
+\mathcal{P}_a(z)
+=\frac{1}{q}\sum_{j=0}^{q-1}\omega_q^{-aj}\,\mathcal{P}_j(z)
+=\frac{1}{q}\sum_{j=0}^{q-1}\omega_q^{-aj}\sum_{m\ge1}\frac{\mu(m)}{m}\log Z_j(z^m)\; }.
+\]
+In particular, kernel-RH (\(|\mu_k|\le \sqrt{\rho}\) for all \(k\ge2\)) is equivalent to \(\mathcal{P}_a(\rho^{-s})\) being analytic in the open strip \(1/2<\Re(s)<1\).
+\end{corollary}
+\begin{proof}
+The first equality follows directly from the root-of-unity filter identity; the second follows by substituting Theorem \ref{thm:zeta-length-modq-dirichlet-artin-mobiuslog}.
+The final statement follows immediately from the above singularity real-part dictionary. This completes the proof.
+\end{proof}
+

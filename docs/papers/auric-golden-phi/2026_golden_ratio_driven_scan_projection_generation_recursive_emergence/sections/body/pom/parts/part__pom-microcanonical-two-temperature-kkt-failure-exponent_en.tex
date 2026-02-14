@@ -1,0 +1,220 @@
+% (User input window)
+% 2026-02-14 10:34:19 (Asia/Singapore)
+
+\paragraph{Variational Structure of Two-Temperature Failure Exponent: Power-Law Coupling, Majorization Chain, and Critical Quadratic Law}
+This paragraph lifts the KL-symmetric rate function of Theorem \ref{thm:pom-microcanonical-hypergeometric-ldp-kl-sym}
+from the single-variable formulation \((q\mapsto J_\beta(q))\) to a two-temperature variational problem, and gives the structure of the unique minimizer on the supercritical side of the entropy threshold.
+The result serves as an exponential-level failure certificate for the "residual composition entropy too large" event, compatible with the critical window narrative of Theorem \ref{thm:pom-microcanonical-query-plus-bits-phase}.
+
+\begin{definition}[Two-Temperature Failure Exponent: Minimum KL-Symmetric Cost for Entropy Threshold]\label{def:pom-microcanonical-two-temperature-failure-exponent}
+Let \(X\) be a finite set (\(|X|=n\ge 2\)), take full-support distribution \(w\in\Delta(X)\), and fix \(\beta\in(0,1)\).
+For any \(q,r\in\Delta(X)\) satisfying mass conservation
+\[
+w=\beta q+(1-\beta)r,
+\]
+define the two-temperature divergence functional
+\[
+J_\beta(q,r):=\beta D(q\|w)+(1-\beta)D(r\|w).
+\]
+For entropy threshold \(h>H(w)\), define the supercritical failure exponent
+\[
+E_{\mathrm{fail}}(\beta,h)
+:=
+\inf\Bigl\{J_\beta(q,r):\ q,r\in\Delta(X),\ w=\beta q+(1-\beta)r,\ H(r)\ge h\Bigr\}.
+\]
+If the feasible domain is empty, we conventionalize \(E_{\mathrm{fail}}(\beta,h)=+\infty\).
+\end{definition}
+
+\begin{theorem}[Two-Temperature KKT Structure: Power-Law Coupling of Unique Minimizer]\label{thm:pom-microcanonical-two-temperature-kkt-power-law}
+Following Definition \ref{def:pom-microcanonical-two-temperature-failure-exponent}, assume given \(h\) such that the feasible domain is non-empty and \(h>\!H(w)\).
+Then the minimization problem has a unique minimum point \((q^\star,r^\star)\), with entropy constraint saturating:
+\[
+H(r^\star)=h.
+\]
+Moreover, there exists unique multiplier \(\eta^\star>0\) (hence unique exponent \(\gamma>1\)) such that for all \(x\in X\),
+\[
+q^\star(x)=\frac{(r^\star(x))^{\gamma}}{\sum_{y\in X}(r^\star(y))^{\gamma}},
+\qquad
+\gamma=1+\frac{\eta^\star}{1-\beta},
+\]
+equivalently
+\(
+\log q^\star=\gamma\log r^\star+\mathrm{const}
+\)
+(constant independent of \(x\)).
+\end{theorem}
+\begin{proof}
+The feasible domain is given by linear equality and upper level set of concave function \(H\), hence is compact and convex; while \(J_\beta\) as a positively weighted sum of two KL divergences is strictly convex in the interior of \(\Delta(X)^2\), yielding unique minimum.
+\par
+Since \(w\) has full support and \(\beta\in(0,1)\), if \((q,r)\) is feasible, then \(q,r\) automatically have full support; hence we can write the KKT system in the interior.
+If the entropy constraint is not saturated, the corresponding multiplier \(\eta^\star=0\), hence the minimum must also minimize the relaxed problem containing only mass conservation; but the unique minimum of that relaxed problem is \(q=r=w\), contradicting \(h>H(w)\).
+Thus \(\eta^\star>0\) and \(H(r^\star)=h\).
+\par
+Writing the Lagrangian for the constraint and taking stationarity condition for each coordinate, eliminating the mass conservation multiplier yields
+\(
+\log r^\star=\alpha\log q^\star+\mathrm{const}
+\),
+where
+\(
+\alpha=\frac{1-\beta}{1-\beta+\eta^\star}\in(0,1)
+\).
+Hence \(q^\star\propto (r^\star)^{1/\alpha}\), setting \(\gamma:=1/\alpha=1+\eta^\star/(1-\beta)\) yields the stated power-law coupling.
+Uniqueness forces \(\eta^\star\) and \(\gamma\) to be unique. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Existence, Uniqueness, and Strict Monotonicity of Entropy along Power-Law Orbit]\label{prop:pom-microcanonical-two-temperature-escort-orbit-entropy-monotone}
+Following Definition \ref{def:pom-microcanonical-two-temperature-failure-exponent}.
+For each \(\gamma>1\), define power escort transform
+\[
+\mathrm{Escort}_\gamma(r)(x):=\frac{r(x)^\gamma}{\sum_{y\in X}r(y)^\gamma}\qquad(r\in\Delta(X)).
+\]
+If there exist \((q,r)\in\Delta(X)^2\) satisfying \(w=\beta q+(1-\beta)r\) and \(q=\mathrm{Escort}_\gamma(r)\), then this solution is unique; denote it \((q_\gamma,r_\gamma)\).
+Moreover, on its domain of definition, the map
+\[
+\gamma\longmapsto H(r_\gamma)
+\]
+is continuous and strictly increasing, satisfying
+\[
+\lim_{\gamma\downarrow 1}r_\gamma=w.
+\]
+Let
+\[
+H_{\max}(\beta,w):=\sup\Bigl\{H(r):\ r\in\Delta(X),\ \frac{w-(1-\beta)r}{\beta}\in\Delta(X)\Bigr\}\in(H(w),\log n],
+\]
+then \(\lim_{\gamma\to\infty}H(r_\gamma)=H_{\max}(\beta,w)\).
+In particular, if the uniform distribution \(U\) is feasible (equivalent to \(w(x)\ge (1-\beta)/n\) for all \(x\)), then \(H_{\max}(\beta,w)=\log n\) and \(r_\gamma\to U\).
+Therefore for any \(h\in(H(w),H_{\max}(\beta,w))\) there exists unique \(\gamma(h)>1\) such that \(H(r_{\gamma(h)})=h\), and this \((q_{\gamma(h)},r_{\gamma(h)})\) coincides with the minimizer of Theorem \ref{thm:pom-microcanonical-two-temperature-kkt-power-law}.
+\end{proposition}
+\begin{proof}
+For fixed \(\eta>0\) consider the penalized problem
+\[
+\mathcal{V}(\eta):=\inf\Bigl\{J_\beta(q,r)-\eta H(r):\ q,r\in\Delta(X),\ w=\beta q+(1-\beta)r\Bigr\}.
+\]
+Since \(-H\) is strictly convex and \(J_\beta\) is strictly convex, this problem has a unique minimum \((q_\eta,r_\eta)\);
+its KKT system yields the power-law relation \(q_\eta=\mathrm{Escort}_\gamma(r_\eta)\) with \(\gamma=1+\eta/(1-\beta)>1\).
+Hence for each \(\gamma>1\) there is at most one feasible solution, denoted \((q_\gamma,r_\gamma)\).
+\par
+The function \(\eta\mapsto \mathcal{V}(\eta)\) is the infimum envelope in \(\eta\), hence concave; and at the unique minimum is differentiable satisfying
+\(
+\mathcal{V}'(\eta)=-H(r_\eta)
+\).
+Concavity implies \(-\mathcal{V}'(\eta)=H(r_\eta)\) is strictly increasing in \(\eta\) (hence in \(\gamma\)), continuity follows from implicit function/stability and unique minimality.
+\par
+As \(\eta\downarrow 0\), the penalty term vanishes and the unique minimum of the relaxed problem is \(q=r=w\), hence \(r_\gamma\to w\) (\(\gamma\downarrow 1\)).
+As \(\eta\to\infty\), \(-\eta H(r)\) dominates and forces \(r_\eta\) to converge to the unique solution of "maximizing \(H\) within the feasible polyhedron", hence \(H(r_\gamma)\uparrow H_{\max}(\beta,w)\);
+if \(U\) is feasible, the maximum entropy point is \(U\) with limit \(\log n\).
+Finally, for \(h\in(H(w),H_{\max})\) strict monotonicity yields unique \(\gamma(h)\), matching the unique minimizer of Theorem \ref{thm:pom-microcanonical-two-temperature-kkt-power-law}. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Common Ordering and Majorization Chain: \texorpdfstring{$r^\star\prec w\prec q^\star$}{r* ≺ w ≺ q*}]\label{cor:pom-microcanonical-two-temperature-majorization-chain}
+In the setting of Theorem \ref{thm:pom-microcanonical-two-temperature-kkt-power-law}, there exists a single permutation such that the coordinates of \(r^\star,w,q^\star\) arranged in non-increasing order satisfy the cumulative sum chain
+\[
+\sum_{i=1}^k r^\star_{(i)}\ \le\ \sum_{i=1}^k w_{(i)}\ \le\ \sum_{i=1}^k q^\star_{(i)}\qquad(k=1,\dots,n-1),
+\]
+with at least one \(k\) strict inequality; hence \(r^\star\prec w\prec q^\star\).
+\end{corollary}
+\begin{proof}
+By power-law coupling \(q^\star=\mathrm{Escort}_\gamma(r^\star)\) (\(\gamma>1\)), they have the same coordinate ordering, and power transformation strictly cools the distribution in majorization sense: \(r^\star\prec q^\star\) (Hardy-Littlewood-Pólya).
+Since \(w=\beta q^\star+(1-\beta)r^\star\) is a convex combination of vectors with the same ordering, cumulative sums are linear in convex combinations, yielding the chain inequality and \(r^\star\prec w\prec q^\star\).
+Strictness follows from \(h>H(w)\) excluding \(r^\star=w\) (hence also excluding \(q^\star=w\)). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Jensen-Shannon Structure Identity: \texorpdfstring{$J_\beta$}{Jbeta} Equals Mixture Entropy Deficit]\label{prop:pom-microcanonical-two-temperature-js-identity}
+Under constraint \(w=\beta q+(1-\beta)r\), for any feasible \((q,r)\) the identity holds
+\[
+J_\beta(q,r)=H(w)-\beta H(q)-(1-\beta)H(r).
+\]
+Hence when the feasible domain is non-empty and \(h>H(w)\),
+\[
+E_{\mathrm{fail}}(\beta,h)
+=H(w)-(1-\beta)h-\beta\sup\Bigl\{H(q):\exists r,\ w=\beta q+(1-\beta)r,\ H(r)=h\Bigr\}.
+\]
+\end{proposition}
+\begin{proof}
+By \(D(p\|w)=-H(p)-\sum_x p(x)\log w(x)\), and using mass conservation
+\(
+\beta q+(1-\beta)r=w
+\)
+to cancel \(\sum_x(\beta q+(1-\beta)r)\log w\), we obtain the first formula.
+The second formula substitutes \(H(r^\star)=h\) from Theorem \ref{thm:pom-microcanonical-two-temperature-kkt-power-law} and performs equivalent maximization over \(q\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Strong Duality, Unique Multiplier, and Sensitivity Formula]\label{thm:pom-microcanonical-two-temperature-strong-duality-sensitivity}
+Following Definition \ref{def:pom-microcanonical-two-temperature-failure-exponent}, assume given \(h\in(H(w),H_{\max}(\beta,w))\) such that the feasible domain is non-empty.
+Define dual value function (\(\eta\ge 0\))
+\[
+\mathcal{V}(\eta):=\inf\Bigl\{J_\beta(q,r)-\eta H(r):\ q,r\in\Delta(X),\ w=\beta q+(1-\beta)r\Bigr\}.
+\]
+Then strong duality holds
+\[
+E_{\mathrm{fail}}(\beta,h)=\sup_{\eta\ge 0}\bigl(\mathcal{V}(\eta)+\eta h\bigr),
+\]
+with supremum attained at unique \(\eta^\star>0\).
+Moreover, the function \(h\mapsto E_{\mathrm{fail}}(\beta,h)\) is differentiable on \((H(w),H_{\max}(\beta,w))\), and
+\[
+\frac{\partial}{\partial h}E_{\mathrm{fail}}(\beta,h)=\eta^\star,
+\qquad
+\gamma(h)=1+\frac{\eta^\star}{1-\beta},
+\]
+where \(\gamma(h)\) is the unique power exponent of Theorem \ref{thm:pom-microcanonical-two-temperature-kkt-power-law}.
+\end{theorem}
+\begin{proof}
+The constraint \(H(r)\ge h\) is equivalent to convex inequality \(h-H(r)\le 0\), and satisfies Slater condition when \(h< H_{\max}(\beta,w)\) (strict feasible point exists).
+Hence strong duality holds, and since the primal minimizer is unique, the KKT multiplier is also unique satisfying \(\eta^\star>0\) (same as Theorem \ref{thm:pom-microcanonical-two-temperature-kkt-power-law}).
+Differentiability and derivative formula follow from general sensitivity theorem (envelope theorem) of convex duality;
+the last formula substitutes the power-law relation \(\gamma=1+\eta/(1-\beta)\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Critical Entropy Window Quadratic Law: Precise Jump-Off Coefficient as \texorpdfstring{$h\downarrow H(w)$}{h↓H(w)}]\label{thm:pom-microcanonical-two-temperature-critical-quadratic-law}
+Assume \(w\) has full support and is non-uniform, write
+\[
+V(w):=\Var_{X\sim w}\bigl(\log w(X)\bigr)>0
+\]
+(same as Corollary \ref{cor:pom-microcanonical-information-clt}).
+Let \(\delta:=h-H(w)\downarrow 0^+\) with \(h\in(H(w),H_{\max}(\beta,w))\).
+Then asymptotic expansion holds
+\[
+E_{\mathrm{fail}}(\beta,h)
+=\frac{1-\beta}{2\beta}\cdot \frac{\delta^2}{V(w)}+o(\delta^2).
+\]
+Equivalently, using bit density
+\(
+b:=\frac{(1-\beta)h}{\log 2}
+\)
+and critical point
+\(
+b_{\mathrm{crit}}:=\frac{(1-\beta)H(w)}{\log 2}
+\),
+\[
+E_{\mathrm{fail}}(\beta,b)
+=\frac{(b-b_{\mathrm{crit}})^2(\log 2)^2}{2\beta(1-\beta)V(w)}+o\!\left((b-b_{\mathrm{crit}})^2\right).
+\]
+\end{theorem}
+\begin{proof}
+As \(\delta\downarrow 0\), the optimal point \((q^\star,r^\star)\) approaches \((w,w)\).
+Write \(r=w+u\) (\(\sum_x u(x)=0\)), then by mass conservation \(q=w-\frac{1-\beta}{\beta}u\).
+Second-order expansion of KL at \(w\) yields
+\[
+J_\beta(q,r)
+=\frac{1-\beta}{2\beta}\sum_{x\in X}\frac{u(x)^2}{w(x)}+o(\|u\|_2^2).
+\]
+On the other hand, first-order variation of entropy (using \(\sum_x u(x)=0\)) gives
+\[
+H(w+u)-H(w)=-\sum_{x\in X}u(x)\log w(x)+o(\|u\|_2),
+\]
+hence leading-order constraint is \(\sum_x u(x)\log w(x)=-\delta\).
+Thus leading-order problem reduces to: minimize quadratic form \(\sum u^2/w\) under linear constraint \(\sum u\log w=-\delta\).
+Lagrange multiplier method yields unique leading direction
+\[
+u^\star(x)=-\frac{\delta}{V(w)}\,w(x)\Bigl(\log w(x)-\EE_w[\log w]\Bigr),
+\]
+satisfying
+\(
+\sum_x\frac{(u^\star(x))^2}{w(x)}=\delta^2/V(w)
+\).
+Substituting back yields
+\(
+E_{\mathrm{fail}}(\beta,h)=\frac{1-\beta}{2\beta}\cdot \frac{\delta^2}{V(w)}+o(\delta^2)
+\).
+Bit density form follows from substitution \(\delta=\frac{\log 2}{1-\beta}(b-b_{\mathrm{crit}})\). This completes the proof.
+\end{proof}

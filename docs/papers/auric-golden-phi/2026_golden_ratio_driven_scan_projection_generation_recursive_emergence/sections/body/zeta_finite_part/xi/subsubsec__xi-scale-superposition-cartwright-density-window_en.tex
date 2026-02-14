@@ -1,0 +1,141 @@
+\begin{proposition}[Vertical non-periodicity of continuous-scale superposition: no nonzero common purely imaginary period except zero period]\label{prop:xi-scale-mellin-no-nonzero-imag-period}
+Let \(\Delta\) be a finite sum
+\(
+\Delta(z,u)=\sum_{j,k}a_{j,k}z^j u^k
+\), and take a real-valued weight function \(w\) satisfying \(\mathrm{supp}(w)\subseteq[0,X]\).
+Define the scale-superposition completion
+\(
+\mathcal X_{\Delta,w}(s)=\int_0^\infty w(x)\Delta(e^{-sx},e^{(2s-1)x})\,dx
+\)
+as in Definition~\ref{def:xi-scale-mellin-superposition}.
+For each integer \(m\) define
+\[
+b_m(x):=\sum_{j-2k=m}a_{j,k}e^{-kx},
+\]
+and assume there exists some \(m\neq 0\) such that \(w(x)b_m(x)\) is nonzero on a set of positive measure in some interval, and \(\mathcal X_{\Delta,w}\not\equiv 0\).
+Then \(\mathcal X_{\Delta,w}\) has no nonzero purely imaginary period: if for some \(T\in i\RR\) we have
+\(
+\mathcal X_{\Delta,w}(s+T)\equiv \mathcal X_{\Delta,w}(s)
+\), then necessarily \(T=0\).
+\end{proposition}
+
+\begin{proof}
+Suppose to the contrary there exists \(T=i\tau\neq 0\) (\(\tau\in\RR\)) such that \(\mathcal X_{\Delta,w}(s+i\tau)\equiv \mathcal X_{\Delta,w}(s)\).
+Fix arbitrary \(\sigma\in\RR\), and let
+\[
+F_\sigma(t):=\mathcal X_{\Delta,w}(\sigma+\mathrm{i}t)\qquad(t\in\RR).
+\]
+By \(\mathrm{supp}(w)\subseteq[0,X]\) and \(\Delta\) being a finite sum, expanding gives
+\[
+F_\sigma(t)
+=\sum_{j,k}a_{j,k}\int_0^X w(x)e^{-kx}e^{-\sigma(j-2k)x}\,e^{-\mathrm{i}t(j-2k)x}\,dx,
+\]
+so \(F_\sigma\) is a finite linear combination of Fourier transforms of \(L^1\) functions.
+By the Riemann--Lebesgue lemma, we must have \(F_\sigma(t)\to 0\) as \(|t|\to\infty\).
+\par
+On the other hand, periodicity gives \(F_\sigma(t+\tau)=F_\sigma(t)\) for all \(t\).
+Letting \(n\to\infty\), we have
+\[
+F_\sigma(t)=F_\sigma(t+n\tau)\longrightarrow 0,
+\]
+so \(F_\sigma(t)\equiv 0\).
+Since \(\sigma\) is arbitrary, \(\mathcal X_{\Delta,w}\) vanishes identically on the entire vertical line; by the uniqueness theorem for analytic functions, we deduce \(\mathcal X_{\Delta,w}\equiv 0\), contradicting the hypothesis.
+Hence \(\tau=0\), i.e., \(T=0\).
+\end{proof}
+
+\begin{proposition}[Cartwright exponential type under finite bandwidth and compact support: explicit type upper bound and linear zero density]\label{prop:xi-scale-mellin-cartwright-explicit-type}
+Under the setup of Proposition~\ref{prop:xi-scale-mellin-zero-density-upper}, further let
+\[
+B:=\max\{|j-2k|:\ a_{j,k}\neq 0\},
+\qquad
+\mathrm{supp}(w)\subseteq[0,X].
+\]
+Denote
+\(
+F(t):=\mathcal X_{\Delta,w}\!\left(\tfrac12+it\right)
+\)
+and its zero count \(N_F(T)\) as in Proposition~\ref{prop:xi-scale-mellin-zero-density-upper}.
+Then \(F\) belongs to the Cartwright class of entire functions with exponential type at most \(XB\);
+consequently the critical-line zero count satisfies the explicit upper bound
+\[
+N_F(T)\le \frac{2XB}{\pi}\,T+o(T)\qquad(T\to\infty).
+\]
+\end{proposition}
+
+\begin{proof}
+The proof of Proposition~\ref{prop:xi-scale-mellin-zero-density-upper} already gave the decomposition
+\[
+F(t)=\sum_{j,k}a_{j,k}\,\widehat g_j\bigl((2k-j)t\bigr),
+\qquad
+g_j(x):=w(x)e^{-jx/2}\mathbf 1_{[0,X]}(x).
+\]
+Since \(\mathrm{supp}(g_j)\subseteq[0,X]\), \(\widehat g_j\) is an entire function of exponential type \(\le X\); the composition scaling \(t\mapsto (2k-j)t\) multiplies the exponential type by at most \(|2k-j|\), so the exponential type of \(F\) is at most \(X\max_{j,k}|2k-j|=XB\).
+Moreover, since \(\widehat g_j\) is uniformly bounded on the real axis by \(\|g_j\|_{L^1}\), \(F\) is also bounded on the real axis;
+hence \(F\) satisfies the defining growth condition for the Cartwright class.
+Applying the Jensen--Cartwright zero-density estimate for Cartwright-class entire functions yields
+\(
+N_F(T)\le \frac{2\,\mathrm{type}(F)}{\pi}T+o(T)\le \frac{2XB}{\pi}T+o(T)
+\).
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$T\log T$}{T log T} zero-density requiring scale window: compact-support superposition cannot achieve it]\label{cor:xi-scale-mellin-window-necessary-tlogt}
+Under the finite-bandwidth setup of Proposition~\ref{prop:xi-scale-mellin-cartwright-explicit-type}, consider a family of weights \(w_T\) satisfying
+\(
+\mathrm{supp}(w_T)\subseteq[0,X(T)]
+\)
+with bandwidth parameter \(B\) held fixed.
+Let
+\(
+F_T(t):=\mathcal X_{\Delta,w_T}(\tfrac12+it)
+\)
+and \(N_{F_T}(T)\) be its zero count on \([-T,T]\) (counted with multiplicity).
+Then
+\[
+N_{F_T}(T)\le \frac{2B}{\pi}\,X(T)\,T+o\!\bigl(X(T)T\bigr)\qquad(T\to\infty).
+\]
+Thus if \(X(T)=o(\log T)\), then necessarily \(N_{F_T}(T)=o(T\log T)\).
+\end{corollary}
+
+\begin{proof}
+For each \(T\), apply Proposition~\ref{prop:xi-scale-mellin-cartwright-explicit-type} to \(w=w_T\) (now \(X\) is replaced by \(X(T)\)) to obtain the first formula.
+If \(X(T)=o(\log T)\), then \(\frac{2B}{\pi}X(T)T=o(T\log T)\), so \(N_{F_T}(T)=o(T\log T)\).
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$T\log T$}{T log T} zero-density requiring scale-width lower bound: must mix up to \texorpdfstring{$X(T)\gtrsim \frac{1}{2B}\log T$}{X(T) gtrsim (1/2B) log T}]\label{cor:xi-scale-mellin-window-width-lower-bound-1over2B}
+Following the setup of Corollary~\ref{cor:xi-scale-mellin-window-necessary-tlogt}, denote \(\widetilde N_{F_T}(T):=N_{F_T}(T)\).
+If the goal is to achieve Riemann-type order in symmetric zero density
+\[
+\widetilde N_{F_T}(T)\ \asymp\ \frac{T}{\pi}\log T,
+\]
+then necessarily
+\[
+\liminf_{T\to\infty}\frac{X(T)}{\log T}\ \ge\ \frac{1}{2B}.
+\]
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:xi-scale-mellin-window-necessary-tlogt} we have
+\(
+\widetilde N_{F_T}(T)\le \frac{2B}{\pi}X(T)T+o(X(T)T)
+\).
+Comparing with \(\widetilde N_{F_T}(T)\asymp (T/\pi)\log T\) yields \(X(T)\gtrsim (1/(2B))\log T\), i.e., the displayed \(\liminf\) lower bound.
+\end{proof}
+
+\begin{corollary}[Base-parameter power-range threshold: approximating zero density forces \texorpdfstring{$L\lesssim T^{1/(2B)}$}{L lesssim T^{1/(2B)}} mixing range]\label{cor:xi-scale-mellin-base-range-threshold}
+Under the setup of Corollary~\ref{cor:xi-scale-mellin-window-width-lower-bound-1over2B}, let \(L=e^{x}\).
+Weight-function support \(x\in[0,X(T)]\) is equivalent to base-parameter mixing range
+\(
+1\le L\le e^{X(T)}
+\).
+If \(\widetilde N_{F_T}(T)\asymp (T/\pi)\log T\), then necessarily
+\[
+e^{X(T)}\ \ge\ T^{\,\frac{1}{2B}+o(1)}.
+\]
+In particular, in the minimal-bandwidth case \(B=1\), if not mixing up to the range \(L\ge T^{1/2+o(1)}\), then it is impossible to achieve Riemann-type order in zero density.
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:xi-scale-mellin-window-width-lower-bound-1over2B} we have \(X(T)\ge (\frac{1}{2B}+o(1))\log T\).
+Exponentiating both sides yields \(e^{X(T)}\ge T^{1/(2B)+o(1)}\).
+\end{proof}
+

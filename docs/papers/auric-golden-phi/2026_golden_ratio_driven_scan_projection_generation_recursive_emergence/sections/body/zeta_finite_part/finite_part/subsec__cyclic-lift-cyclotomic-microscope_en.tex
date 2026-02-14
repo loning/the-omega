@@ -1,0 +1,455 @@
+\subsubsection{Cyclotomic Sector Decomposition of Cyclic Lifts and Constant-Layer Spectral Microscope}\label{subsec:finite-part-cyclic-lift-cyclotomic-microscope}
+Proposition \ref{prop:finite-part-residue-reduced-determinant} identifies the principal pole residue constant \(C(M)\) as the reduced determinant with the Perron factor removed,
+thereby translating the constant-layer information of \(\zeta_M(z)=\det(I-zM)^{-1}\) into a product fingerprint of normalized non-Perron spectral points.
+This subsection connects this constant-layer fingerprint with the cyclic lift \(M^{\langle q\rangle}=M\otimes P_q\): the cyclic lift admits a complete cyclotomic sector factorization (Artin decomposition) at the \(\zeta\)-level, providing a closed-form compression formula for the constant layer. Furthermore, this compression is strictly invertible along the \(q\)-axis via multiple summation expansion and Möbius inversion, forming a constant-layer spectral microscope channel that does not rely on length-trace sequences.
+\par
+We adopt the following uniform convention: \(P_q\) denotes the \(q\)-cyclic permutation matrix, \(\omega_q=e^{2\pi i/q}\), and we set \(P_1=(1)\).
+Denote
+\[
+M^{\langle q\rangle}:=M\otimes P_q,\qquad
+\zeta_M(z):=\det(I-zM)^{-1}.
+\]
+
+\begin{proposition}[Product decomposition and iteration--sampling equivalence of cyclotomic sectors]\label{prop:finite-part-cyclic-lift-cyclotomic-sector}
+For any integer \(q\ge 2\) and any square matrix \(M\), the strict identity holds
+\[
+\boxed{\;
+\zeta_{M^{\langle q\rangle}}(z)=\prod_{k=0}^{q-1}\zeta_M(\omega_q^{k}z)\; }.
+\]
+Equivalently,
+\[
+\boxed{\;
+\zeta_{M^{\langle q\rangle}}(z)=\zeta_{M^{q}}(z^{q})\; }.
+\]
+\end{proposition}
+\begin{proof}
+The first identity is the \(\zeta\)-formulation of Proposition \ref{prop:finite-rh-phase-lift-artin}.
+By the identity \(\prod_{k=0}^{q-1}(1-x\omega_q^k)=1-x^q\), we have
+\(
+\prod_{k=0}^{q-1}\det(I-z\omega_q^kM)=\det(I-z^qM^q)
+\),
+which yields the second identity (also Corollary \ref{cor:finite-rh-phase-lift-time-rescale}). \qed
+\end{proof}
+
+\begin{proposition}[Torsion evaluation formula: constant layer of cyclic lift equals discrete product of original \texorpdfstring{$\zeta$}{zeta} at torsion points]\label{prop:finite-part-cyclic-lift-torsion-product}
+Let \(M\in\ZZ_{\ge 0}^{d\times d}\) be primitive with Perron root \(\rho=\rho(M)>0\), and denote the principal pole residue constant
+\(
+C(M)=\det\nolimits'\!\bigl(I-M/\rho\bigr)^{-1}
+\)
+(Proposition \ref{prop:finite-part-residue-reduced-determinant}).
+For any integer \(q\ge 2\), let \(\omega_q=e^{2\pi i/q}\) and \(M^{\langle q\rangle}=M\otimes P_q\).
+Then the strict identity holds
+\[
+\boxed{\;
+C(M^{\langle q\rangle})
+=C(M)\prod_{j=1}^{q-1}\zeta_M(\omega_q^j/\rho)\; }.
+\]
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:finite-part-cyclic-lift-cyclotomic-sector},
+\(
+\zeta_{M^{\langle q\rangle}}(z)=\prod_{j=0}^{q-1}\zeta_M(\omega_q^j z)
+\).
+As \(z\to 1/\rho\), only the \(j=0\) factor produces a simple pole at \(z=1/\rho\) with residue \(C(M)\);
+the remaining factors are analytic at \(z=1/\rho\) and evaluate to \(\zeta_M(\omega_q^j/\rho)\).
+Comparing the principal pole residues at \(z=1/\rho\) yields the stated identity. \qed
+\end{proof}
+
+\begin{proposition}[\(\gcd/\mathrm{lcm}\) composition law: multiple covering decomposition of composite cyclic lifts]\label{prop:finite-part-cyclic-lift-gcd-lcm}
+For any integers \(m,n\ge 2\), let \(g:=\gcd(m,n)\) and \(\ell:=\mathrm{lcm}(m,n)\).
+Then there exists a permutation similarity such that
+\[
+\boxed{\;
+P_m\otimes P_n\ \cong\ \bigoplus_{t=1}^{g} P_{\ell}\; }.
+\]
+Consequently, for any square matrix \(M\),
+\[
+\boxed{\;
+(M^{\langle m\rangle})^{\langle n\rangle}
+\cong
+\bigoplus_{t=1}^{g} M^{\langle \ell\rangle}\; }.
+\]
+At the \(\zeta\)-level, this yields the strict power law
+\[
+\boxed{\;
+\zeta_{(M^{\langle m\rangle})^{\langle n\rangle}}(z)
+=\bigl(\zeta_{M^{\langle \ell\rangle}}(z)\bigr)^{g}\; }.
+\]
+In particular, when \(\gcd(m,n)=1\), we have \((M^{\langle m\rangle})^{\langle n\rangle}\cong M^{\langle mn\rangle}\).
+\end{proposition}
+\begin{proof}
+The matrix \(P_m\otimes P_n\) induces the permutation
+\(
+(i,j)\mapsto(i+1,j+1)
+\)
+on the standard basis (indices taken modulo \(m,n\) respectively). The orbit length is the smallest positive integer satisfying \(k\equiv 0\ (\mathrm{mod}\ m)\) and \(k\equiv 0\ (\mathrm{mod}\ n)\), which is \(\ell\);
+the number of orbits is \(mn/\ell=g\).
+Hence the cycle decomposition of \(P_m\otimes P_n\) consists of \(g\) cycles of length \(\ell\), making it similar to \(\bigoplus_{t=1}^{g}P_\ell\) via permutation.
+The second identity follows from the associativity of tensor products
+\(
+(M\otimes P_m)\otimes P_n\cong M\otimes(P_m\otimes P_n)
+\)
+and direct sum decomposition.
+Finally, the \(\zeta\) power law follows from the multiplicativity of \(\det\) under direct sums. \qed
+\end{proof}
+
+\begin{theorem}[Gauss--cyclotomic compression: closed form of reduced determinant constant for cyclic lifts]\label{thm:finite-part-cyclic-lift-reduced-constant-closed}
+Let \(M\in\ZZ_{\ge 0}^{d\times d}\) be primitive with Perron root \(\rho=\rho(M)>0\) and remaining eigenvalues (counted with algebraic multiplicity) \(\mu_2,\dots,\mu_d\).
+Define
+\[
+\lambda_j:=\frac{\mu_j}{\rho}\qquad(j=2,\dots,d),
+\]
+and define the principal pole residue constant (Proposition \ref{prop:finite-part-residue-reduced-determinant})
+\[
+C(M):=\lim_{z\to 1/\rho}(1-\rho z)\,\zeta_M(z).
+\]
+Then for any integer \(q\ge 1\), the residue constant of the cyclic lift \(M^{\langle q\rangle}=M\otimes P_q\) satisfies the complete closed form
+\[
+\boxed{\;
+C(M^{\langle q\rangle})
+=\frac{1}{q}\prod_{j=2}^{d}\bigl(1-\lambda_j^{q}\bigr)^{-1}\; }.
+\]
+Equivalently,
+\[
+\boxed{\;
+\log C(M^{\langle q\rangle})
+=-\log q-\sum_{j=2}^{d}\log\!\bigl(1-\lambda_j^{q}\bigr)\; }.
+\]
+\end{theorem}
+\begin{proof}
+By the spectral phase subdivision of Proposition \ref{prop:finite-rh-phase-lift}, the eigenvalues of \(M^{\langle q\rangle}\) are \(\mu_j\omega_q^k\).
+Therefore,
+\[
+C(M^{\langle q\rangle})
+=\prod_{(j,k)\neq(1,0)}\left(1-\frac{\mu_j\omega_q^k}{\rho}\right)^{-1}.
+\]
+Separating \(j=1\) from \(j\ge 2\):
+\[
+\prod_{k=1}^{q-1}(1-\omega_q^k)^{-1}=\frac{1}{q},
+\qquad
+\prod_{k=0}^{q-1}\left(1-\lambda_j\omega_q^k\right)=1-\lambda_j^{q}\quad(|\lambda_j|<1),
+\]
+substituting back yields the stated closed form.
+The logarithmic form is merely a notational rewriting after taking logarithms (a uniform branch can be chosen by the power series definition for \(|\lambda_j|<1\)). \qed
+\end{proof}
+
+\begin{definition}[Constant-layer sequence, spectral power sums, and torsion polynomials]\label{def:finite-part-cyclic-lift-psi}
+Under the setting of Theorem \ref{thm:finite-part-cyclic-lift-reduced-constant-closed}, define
+\[
+\Psi_q(M):=\log q+\log C(M^{\langle q\rangle})\qquad(q\ge 1).
+\]
+Further define the constant-layer anomaly with trivial factor removed
+\[
+\mathcal{E}_q(M):=\Psi_q(M)-\log C(M)
+=\log q+\log\frac{C(M^{\langle q\rangle})}{C(M)}\qquad(q\ge 1),
+\]
+and the torsion polynomial
+\[
+F_M(t):=\frac{\det(I-tM/\rho)}{1-t}=\prod_{j=2}^{d}(1-\lambda_j t).
+\]
+Finally, denote the normalized spectral power sum and relative spectral radius ratio
+\[
+u_n(M):=\sum_{j=2}^{d}\lambda_j^{n}\qquad(n\ge 1),
+\qquad
+\Lambda_{\mathrm{rel}}(M):=\max_{2\le j\le d}|\lambda_j|\in(0,1).
+\]
+\end{definition}
+
+\begin{proposition}[Cyclotomic decomposition: divisor lattice inversion of constant-layer anomaly]\label{prop:finite-part-cyclic-lift-cyclotomic-divisor-mobius}
+Let \(\Phi_r\) denote the \(r\)-th cyclotomic polynomial.
+For each integer \(r\ge 2\), define its constant-layer component
+\[
+\mathcal{C}_r(M):=-\sum_{j=2}^{d}\log \Phi_r(\lambda_j),
+\]
+where \(\log\Phi_r(z)\) takes the analytic branch on \(|z|<1\) induced by \(\Phi_r(0)=1\) (since \(|\lambda_j|<1\), this branch is well-defined at each \(\lambda_j\)).
+Then for any integer \(q\ge 2\), the strict identity holds
+\[
+\boxed{\;
+\mathcal{E}_q(M)=\sum_{\substack{r\mid q\\ r\ge 2}}\mathcal{C}_r(M)\; }.
+\]
+Moreover, this can be inverted via Möbius inversion on the divisor lattice:
+\[
+\boxed{\;
+\mathcal{C}_q(M)=\sum_{r\mid q}\mu(r)\,\mathcal{E}_{q/r}(M)\qquad(q\ge 2)\; }.
+\]
+\end{proposition}
+\begin{proof}
+By Definition \ref{def:finite-part-cyclic-lift-psi} and Theorem \ref{thm:finite-part-cyclic-lift-reduced-constant-closed},
+\[
+\mathcal{E}_q(M)
+=-\sum_{j=2}^{d}\log\!\left(\frac{1-\lambda_j^{q}}{1-\lambda_j}\right).
+\]
+By the cyclotomic factorization \(1-x^{q}=\prod_{r\mid q}\Phi_r(x)\) (with \(\Phi_1(x)=x-1\)), we have
+\(
+\frac{1-x^{q}}{1-x}=\prod_{r\mid q,\ r\ge 2}\Phi_r(x)
+\).
+Substituting \(x=\lambda_j\) and summing over \(j\) after taking logarithms yields the first identity.
+The second identity is the unique inverse under Möbius inversion on the divisor lattice (in the sense of Dirichlet convolution) applied to \(\mathcal{E}_q=\sum_{r\mid q,\ r\ge 2}\mathcal{C}_r\). \qed
+\end{proof}
+
+\begin{proposition}[Multiple summation expansion: \(\Psi_q\) as folded transform of normalized power sums]\label{prop:finite-part-cyclic-lift-dirichlet-multiple-sum}
+Under the notation of Definition \ref{def:finite-part-cyclic-lift-psi}, for each \(q\ge 1\), there exists an absolutely convergent expansion
+\[
+\boxed{\;
+\Psi_q(M)=\sum_{m\ge 1}\frac{1}{m}\,u_{qm}(M)\; }.
+\]
+Consequently,
+\[
+\boxed{\;
+\Psi_q(M)=u_q(M)+O\!\left(\Lambda_{\mathrm{rel}}(M)^{2q}\right)\qquad(q\to\infty)\; }.
+\]
+\end{proposition}
+\begin{proof}
+By Theorem \ref{thm:finite-part-cyclic-lift-reduced-constant-closed},
+\(
+\Psi_q(M)=-\sum_{j=2}^{d}\log(1-\lambda_j^q)
+\).
+Using the power series identity \(-\log(1-x)=\sum_{m\ge 1}x^m/m\) for \(|x|<1\) and summing termwise,
+\[
+\Psi_q(M)=\sum_{j=2}^{d}\sum_{m\ge 1}\frac{\lambda_j^{qm}}{m}
+=\sum_{m\ge 1}\frac{1}{m}\sum_{j=2}^{d}\lambda_j^{qm}
+=\sum_{m\ge 1}\frac{1}{m}\,u_{qm}(M),
+\]
+where the interchange of summation is guaranteed by absolute convergence from \(|\lambda_j|<1\).
+The error estimate follows from
+\(
+|u_{qm}(M)|\le (d-1)\Lambda_{\mathrm{rel}}(M)^{qm}
+\)
+and
+\(
+\sum_{m\ge 2}\Lambda_{\mathrm{rel}}^{qm}=O(\Lambda_{\mathrm{rel}}^{2q})
+\).
+\qed
+\end{proof}
+
+\begin{corollary}[Multiple traces determine constant layer: determined solely by normalized traces at multiples of \texorpdfstring{$q$}{q}]\label{cor:finite-part-cyclic-lift-trace-sieve}
+Let \(M\in\ZZ_{\ge 0}^{d\times d}\) be primitive with Perron root \(\rho>0\), and denote
+\[
+t_n(M):=\frac{\Tr(M^n)}{\rho^n}-1\qquad(n\ge 1).
+\]
+Then for any integer \(q\ge 1\), the absolutely convergent identity holds
+\[
+\boxed{\;
+\log C(M^{\langle q\rangle})
+=-\log q+\sum_{m\ge 1}\frac{t_{qm}(M)}{m}\; }.
+\]
+Equivalently,
+\[
+\boxed{\;
+\Psi_q(M)=\sum_{m\ge 1}\frac{t_{qm}(M)}{m}\; }.
+\]
+\end{corollary}
+\begin{proof}
+By the spectral trace identity \(\Tr(M^n)=\sum_{j=1}^{d}\mu_j^n\),
+\[
+\frac{\Tr(M^n)}{\rho^n}-1=\sum_{j=2}^{d}\left(\frac{\mu_j}{\rho}\right)^{n}=u_n(M),
+\]
+i.e., \(t_n(M)=u_n(M)\).
+Substituting into Proposition \ref{prop:finite-part-cyclic-lift-dirichlet-multiple-sum} and using \(\Psi_q=\log q+\log C(M^{\langle q\rangle})\) yields both identities. \qed
+\end{proof}
+
+\begin{proposition}[Root-of-unity Fourier sieve: torsion evaluation filters congruence class components of spectral power sums]\label{prop:finite-part-cyclic-lift-root-unity-fourier-sieve}
+For any integer \(q\ge 2\) and \(0\le r\le q-1\), define the discrete Fourier coefficient
+\[
+\Gamma_{q,r}(M):=-\frac{1}{q}\sum_{j=0}^{q-1}\omega_q^{-rj}\,\log F_M(\omega_q^j),
+\]
+where \(\log F_M\) takes the analytic branch on \(|t|\le 1\) induced by \(F_M(0)=1\).
+Then:
+\begin{enumerate}
+  \item For \(1\le r\le q-1\), the absolutely convergent expansion holds
+  \[
+  \boxed{\;
+  \Gamma_{q,r}(M)=\sum_{m\ge 0}\frac{u_{r+mq}(M)}{r+mq}\; }.
+  \]
+  \item For \(r=0\),
+  \[
+  \boxed{\;
+  \Gamma_{q,0}(M)=\sum_{m\ge 1}\frac{u_{mq}(M)}{mq}\; }.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Since \(F_M(t)=\prod_{j=2}^{d}(1-\lambda_j t)\) and \(|\lambda_j|<1\), \(F_M\) has no zeros in \(|t|\le 1\), so an analytic branch of \(\log F_M\) exists and is uniquely determined by the Taylor expansion at \(t=0\).
+By the power series identity \(-\log(1-x)=\sum_{n\ge 1}x^n/n\) (\(|x|<1\)), for \(|t|\le 1\), the absolutely convergent expansion holds
+\[
+-\log F_M(t)=\sum_{n\ge 1}\frac{u_n(M)}{n}\,t^n.
+\]
+Substituting into \(\Gamma_{q,r}\) and interchanging summation (justified by absolute convergence),
+\[
+\Gamma_{q,r}(M)=\sum_{n\ge 1}\frac{u_n(M)}{n}\cdot \frac{1}{q}\sum_{j=0}^{q-1}\omega_q^{j(n-r)}.
+\]
+The inner sum is a root-of-unity filter: it equals \(1\) when \(n\equiv r\ (\mathrm{mod}\ q)\) and \(0\) otherwise.
+Thus when \(1\le r\le q-1\), \(n=r+mq\,(m\ge 0)\); when \(r=0\), \(n=mq\,(m\ge 1)\), yielding both identities. \qed
+\end{proof}
+
+\begin{theorem}[Single \texorpdfstring{$q$}{q}-layer torsion data determines reduced spectral polynomial]\label{thm:finite-part-cyclic-lift-single-q-torsion-reconstruction}
+Write
+\(
+F_M(t)=\sum_{n=0}^{d-1}a_n t^n
+\)
+as a polynomial of degree at most \(d-1\) (with \(a_0=1\)).
+If the integer \(q\ge d\), then the \(q\) evaluations \(\{F_M(\omega_q^j)\}_{j=0}^{q-1}\) uniquely determine all coefficients; specifically, for \(0\le n\le d-1\), the explicit inversion holds
+\[
+\boxed{\;
+a_n=\frac{1}{q}\sum_{j=0}^{q-1}F_M(\omega_q^j)\,\omega_q^{-jn}\; }.
+\]
+Consequently, the non-Perron normalized spectral points \(\{\lambda_j\}_{j=2}^{d}\) are uniquely recovered (with algebraic multiplicity) as reciprocals of the zeros of \(F_M\).
+\end{theorem}
+\begin{proof}
+Since \(F_M(\omega_q^j)=\sum_{n=0}^{d-1}a_n\omega_q^{jn}\), for fixed \(m\in\{0,\dots,q-1\}\), multiply both sides by \(\omega_q^{-jm}\) and average over \(j\):
+\[
+\frac{1}{q}\sum_{j=0}^{q-1}F_M(\omega_q^j)\omega_q^{-jm}
+=\sum_{n=0}^{d-1}a_n\cdot \frac{1}{q}\sum_{j=0}^{q-1}\omega_q^{j(n-m)}.
+\]
+By root-of-unity orthogonality, the inner sum equals \(\mathbf{1}_{\{n=m\}}\).
+When \(q\ge d\), taking \(m\le d-1\) successively yields the stated inversion formula. \qed
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\zeta$}{zeta} torsion evaluations and finite-part constant determine reduced spectrum]\label{cor:finite-part-cyclic-lift-zeta-torsion-determines-spectrum}
+For any \(q\ge 2\) and \(j\in\{1,\dots,q-1\}\),
+\[
+F_M(\omega_q^j)=\frac{\det(I-(\omega_q^j/\rho)M)}{1-\omega_q^j}
+=\frac{1}{1-\omega_q^j}\,\zeta_M(\omega_q^j/\rho)^{-1},
+\qquad
+F_M(1)=\det\nolimits'\!\left(I-\frac{M}{\rho}\right)=C(M)^{-1}.
+\]
+Therefore, when \(q\ge d\), the data
+\[
+\Bigl(C(M),\ \{\zeta_M(\omega_q^j/\rho)\}_{j=1}^{q-1}\Bigr)
+\]
+uniquely determines \(\{\lambda_j\}_{j=2}^{d}\) (with multiplicity) in a purely algebraic sense.
+\end{corollary}
+\begin{proof}
+The first identity follows directly from \(F_M(t)=\det(I-tM/\rho)/(1-t)\) and \(\zeta_M(z)=\det(I-zM)^{-1}\); the second is the evaluation of \(F_M(t)=\prod_{j=2}^{d}(1-\lambda_j t)\) at \(t=1\).
+Given \(C(M)\) and \(\{\zeta_M(\omega_q^j/\rho)\}_{j\ne 0}\), all \(F_M(\omega_q^j)\) can be recovered, and Theorem \ref{thm:finite-part-cyclic-lift-single-q-torsion-reconstruction} yields the coefficients of \(F_M\) and its roots, thus recovering \(\{\lambda_j\}\). \qed
+\end{proof}
+
+\begin{theorem}[Polylog--Dirichlet generating function: spectral \texorpdfstring{$L$}{L} channel generated by constant-layer anomaly]\label{thm:finite-part-cyclic-lift-polylog-dirichlet-xi}
+For complex \(s\) with \(\Re(s)>1\), define the Dirichlet generating function
+\[
+\Xi_M(s):=\sum_{q\ge 1}\frac{\mathcal{E}_q(M)}{q^s}.
+\]
+Then there exists an absolutely convergent polylog representation
+\[
+\boxed{\;
+\Xi_M(s)=\sum_{j=2}^{d}\sum_{m\ge 1}\frac{1}{m}\Bigl(\mathrm{Li}_s(\lambda_j^{m})-\zeta(s)\lambda_j^{m}\Bigr)\; },
+\]
+where \(\mathrm{Li}_s(z)=\sum_{q\ge 1}z^{q}/q^{s}\) (\(|z|<1\)) is the polylogarithm and \(\zeta(s)\) is the Riemann zeta function.
+Moreover, \(\Xi_M(s)\) as a function of \(s\) has at most a simple pole at \(s=1\) with residue
+\[
+\boxed{\;
+\mathrm{Res}_{s=1}\,\Xi_M(s)
+=\sum_{j=2}^{d}\log(1-\lambda_j)
+=\log\det\nolimits'\!\left(I-\frac{M}{\rho}\right)
+=-\log C(M)\; }.
+\]
+\end{theorem}
+\begin{proof}
+By Definition \ref{def:finite-part-cyclic-lift-psi} and the power series identity \(-\log(1-x)=\sum_{m\ge 1}x^m/m\),
+\[
+\mathcal{E}_q(M)=-\sum_{j=2}^{d}\log\!\left(\frac{1-\lambda_j^{q}}{1-\lambda_j}\right)
+=\sum_{j=2}^{d}\sum_{m\ge 1}\frac{1}{m}\bigl(\lambda_j^{qm}-\lambda_j^{m}\bigr),
+\]
+where the interchange is justified by absolute convergence from \(|\lambda_j|<1\).
+Taking Dirichlet-weighted sum over \(q\) and interchanging summation,
+\[
+\sum_{q\ge 1}\frac{\lambda^{qm}}{q^s}=\mathrm{Li}_s(\lambda^m),
+\qquad
+\sum_{q\ge 1}\frac{1}{q^s}=\zeta(s),
+\]
+yields the stated polylog formula (absolutely convergent for \(\Re(s)>1\)).
+Since \(|\lambda_j|<1\), \(\mathrm{Li}_s(\lambda_j^m)\) is holomorphic in \(s\); the only possible pole comes from \(\zeta(s)\), which has residue \(1\) at \(s=1\).
+Therefore,
+\[
+\mathrm{Res}_{s=1}\,\Xi_M(s)
+=-\sum_{j=2}^{d}\sum_{m\ge 1}\frac{\lambda_j^{m}}{m}
+=\sum_{j=2}^{d}\log(1-\lambda_j)
+=\log\det\nolimits'\!\left(I-\frac{M}{\rho}\right)
+=-\log C(M).
+\]
+\qed
+\end{proof}
+
+\begin{proposition}[Möbius inversion of multiple summation transform]\label{prop:finite-part-cyclic-lift-mobius-inversion}
+Under the notation of Definition \ref{def:finite-part-cyclic-lift-psi}, let
+\[
+B_q(M):=\frac{1}{q}\Psi_q(M)\qquad(q\ge 1).
+\]
+Then for any \(n\ge 1\), the exact inversion formula holds
+\[
+\boxed{\;
+\frac{u_n(M)}{n}=\sum_{t\ge 1}\mu(t)\,B_{tn}(M)\; }.
+\]
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:finite-part-cyclic-lift-dirichlet-multiple-sum},
+\[
+B_q(M)=\frac{1}{q}\sum_{m\ge 1}\frac{1}{m}u_{qm}(M)=\sum_{m\ge 1}\frac{u_{qm}(M)}{qm}.
+\]
+Define \(g(n):=u_n(M)/n\); then \(B_q(M)=\sum_{m\ge 1}g(qm)\) is the Dirichlet transform via multiple summation.
+Standard Möbius inversion of this transform gives
+\(
+g(n)=\sum_{t\ge 1}\mu(t)\,B_{tn}(M)
+\).
+Since \(|g(n)|\le (d-1)\Lambda_{\mathrm{rel}}(M)^n/n\), the right-hand side converges absolutely. \qed
+\end{proof}
+
+\begin{theorem}[Cyclic lift constants alone determine non-Perron spectrum: spectral identifiability via \(q\)-axis inversion]\label{thm:finite-part-cyclic-lift-spectrum-identifiability}
+Under the setting of Theorem \ref{thm:finite-part-cyclic-lift-reduced-constant-closed}, given the full constant sequence \(\{C(M^{\langle q\rangle})\}_{q\ge 1}\), then:
+\begin{enumerate}
+  \item By Definition \ref{def:finite-part-cyclic-lift-psi} and Proposition \ref{prop:finite-part-cyclic-lift-mobius-inversion}, the normalized power sum sequence \(\{u_n(M)\}_{n\ge 1}\) can be exactly recovered for each \(n\);
+  \item The sequence \(u_n(M)=\sum_{j=2}^{d}\lambda_j^n\) is a finite exponential sum satisfying a finite-order linear recurrence; there exists a minimal order \(r\le d-1\) such that \(\{u_n(M)\}\) is uniquely determined by its first \(2r\) terms, which determines all parameters \(\{\lambda_j\}_{j=2}^{d}\) (with algebraic multiplicity), this identifiability being isomorphic to the finite atomic spectral fingerprint recovery of \eqref{eq:xi-scan-fingerprint-one-sided-exponential-sum};
+  \item Consequently, the reduced characteristic polynomial \(\prod_{j=2}^{d}(t-\lambda_j)\) and the reduced determinant \(\det\nolimits'(I-tM/\rho)\) are uniquely determined.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The first point is given by Proposition \ref{prop:finite-part-cyclic-lift-mobius-inversion}.
+The second point belongs to the standard identifiability of the Prony--Hankel mechanism: a finite exponential sum is equivalent to a finite-rank Hankel matrix, thus admitting a minimal linear recurrence; the recurrence coefficients (or equivalently the minimal polynomial) determine \(\{\lambda_j\}\) (with multiplicity), and the first \(2r\) terms uniquely determine the recurrence.
+The third point follows directly from \(\lambda_j=\mu_j/\rho\) and polynomial coefficients being determined by the root set. \qed
+\end{proof}
+
+\begin{theorem}[\(q\)-axis limit extracts spectral radius ratio]\label{thm:finite-part-cyclic-lift-limsup-spectral-gap}
+Under the notation of Definition \ref{def:finite-part-cyclic-lift-psi},
+\[
+\boxed{\;
+\limsup_{q\to\infty}\bigl|\Psi_q(M)\bigr|^{1/q}
+=\Lambda_{\mathrm{rel}}(M)\; }.
+\]
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:finite-part-cyclic-lift-dirichlet-multiple-sum},
+\(
+\Psi_q(M)=u_q(M)+O(\Lambda_{\mathrm{rel}}(M)^{2q})
+\).
+Thus
+\[
+\limsup_{q\to\infty}|\Psi_q(M)|^{1/q}
+=\limsup_{q\to\infty}|u_q(M)|^{1/q},
+\]
+since the error term has exponential rate strictly less than \(\Lambda_{\mathrm{rel}}(M)\).
+\par
+Let \(\Lambda:=\Lambda_{\mathrm{rel}}(M)\) and write the normalized spectral points achieving maximal modulus as \(\eta_1,\dots,\eta_J\) (\(|\eta_j|=1\), counted with multiplicity). Then
+\(
+ u_q(M)=\Lambda^{q}\sum_{j=1}^{J}\eta_j^{q}+O((\Lambda')^q)
+\)
+where \(\Lambda'<\Lambda\).
+Let \(t_q:=\sum_{j=1}^{J}\eta_j^{q}\).
+Using Ces\`aro averaging of the squared modulus,
+\[
+\lim_{N\to\infty}\frac{1}{N}\sum_{q=1}^{N}|t_q|^2
+=\sum_{1\le i,j\le J}\ \lim_{N\to\infty}\frac{1}{N}\sum_{q=1}^{N}(\eta_i\overline{\eta_j})^{q}
+=\sum_{\substack{1\le i,j\le J\\ \eta_i=\eta_j}}1\ >\ 0,
+\]
+thus \(\limsup_{q\to\infty}|t_q|>0\).
+Therefore, there exist infinitely many \(q\) such that \(|u_q(M)|\ge c\,\Lambda^{q}\) (for some constant \(c>0\)), implying
+\(\limsup_{q\to\infty}|u_q(M)|^{1/q}\ge \Lambda\);
+the reverse upper bound \(\le \Lambda\) follows immediately from \(|u_q(M)|\le(d-1)\Lambda^{q}\).
+Combining yields the conclusion. \qed
+\end{proof}
+
+\begin{remark}[Constant-layer spectral channel of cyclic lifts]\label{rem:finite-part-cyclic-lift-spectral-microscope}
+Propositions \ref{prop:finite-part-cyclic-lift-cyclotomic-sector}, \ref{prop:finite-part-cyclic-lift-torsion-product}, and \ref{prop:finite-part-cyclic-lift-gcd-lcm} provide the cyclotomic sector decomposition, torsion evaluation formula, and arithmetic composability of cyclic lifts at the \(\zeta\)-level;
+Theorem \ref{thm:finite-part-cyclic-lift-reduced-constant-closed} compresses the constant layer into a \(q\)-th power product fingerprint of normalized non-Perron spectra, with cyclotomic component decomposition and inversion on the divisor lattice given by Proposition \ref{prop:finite-part-cyclic-lift-cyclotomic-divisor-mobius}.
+On the other hand, the multiple trace identity (Corollary \ref{cor:finite-part-cyclic-lift-trace-sieve}) and root-of-unity Fourier sieve (Proposition \ref{prop:finite-part-cyclic-lift-root-unity-fourier-sieve}) show that constant-layer anomalies can filter power sum congruence class components directly along torsion points without invoking the length axis; when \(q\ge d\), single-layer torsion data suffices to reconstruct the reduced spectral polynomial and all non-Perron normalized spectral points (Theorem \ref{thm:finite-part-cyclic-lift-single-q-torsion-reconstruction} and Corollary \ref{cor:finite-part-cyclic-lift-zeta-torsion-determines-spectrum}).
+Finally, the polylog--Dirichlet generating function \(\Xi_M\) (Theorem \ref{thm:finite-part-cyclic-lift-polylog-dirichlet-xi}) further encapsulates this discrete constant-layer channel into a spectral \(L\)-type object with a unique simple pole whose residue equals precisely \(\log\det\nolimits'(I-M/\rho)\).
+\end{remark}

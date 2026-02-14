@@ -1,0 +1,318 @@
+% (User input window)
+% 2026-02-14 14:27:19（Asia/Singapore）
+
+\paragraph{Schur--Variance Spectroscopy: Extracting Non-Trivial Channel Envelope and Square-Root Threshold from Second-Order Energy}
+Theorem \ref{thm:pom-schur-variance-decomposition} provides an exact identity for each resolution \(m\): the centered variance of the cycle-type monomial
+\(\sigma\mapsto \mathcal C_\sigma(m)\) exactly equals the sum of squares of all non-trivial Schur channel traces.
+This paragraph pushes that identity to the exponential scale: the growth rate of the variance and the envelope of non-trivial channel spectral radii are strictly consistent in the \(\limsup\) sense,
+thereby rewriting the near-RH square-root threshold as a completely intrinsic "second-order concentration" criterion,
+and accordingly providing a prime-shadow deviation upper bound without requiring channel-by-channel spectral decomposition.
+
+\paragraph{Notation: Variance Energy and Schur Envelope Radius}
+Fix an integer \(q\ge 2\), following the Schur decomposition of Theorem \ref{thm:pom-schur-cycle-index-tomography}
+\(
+A_q\cong\bigoplus_{\lambda\vdash q}(B_{q,\lambda}\otimes I_{f^\lambda})
+\)
+and channel trace \(T_{q,\lambda}(m)=\Tr(B_{q,\lambda}^{\,m})\).
+Let
+\[
+\overline{\mathcal C}(m):=\frac{1}{q!}\sum_{\sigma\in S_q}\mathcal{C}_\sigma(m),
+\qquad
+\mathcal V_q(m):=\frac{1}{q!}\sum_{\sigma\in S_q}\bigl|\mathcal{C}_\sigma(m)-\overline{\mathcal C}(m)\bigr|^2,
+\]
+and denote the non-trivial Schur envelope radius and trivial channel Perron root by
+\[
+\Lambda_q^{\mathrm{Schur}}
+:=\max_{\lambda\vdash q,\ \lambda\neq(q)}\rho(B_{q,\lambda}),
+\qquad
+\rho_q:=\rho(B_{q,(q)}).
+\]
+Define the near-RH defect scalar
+\[
+\Delta_q:=\log\!\Bigl(\frac{(\Lambda_q^{\mathrm{Schur}})^2}{\rho_q}\Bigr)\in[-\infty,\infty).
+\]
+
+\begin{theorem}[Spectral Identity for Variance Growth Rate]\label{thm:pom-schur-variance-growth-rate-spectral-identity}
+Under the above setup, the strict equality holds:
+\[
+\boxed{\;
+\limsup_{m\to\infty}\frac{1}{m}\log \mathcal V_q(m)
+=
+2\max_{\lambda\vdash q,\ \lambda\neq(q)}\log\rho(B_{q,\lambda})
+=
+2\log\Lambda_q^{\mathrm{Schur}}\; }.
+\]
+Thus the envelope radius can be precisely extracted from the variance exponent rate:
+\[
+\boxed{\;
+\Lambda_q^{\mathrm{Schur}}
+=\exp\!\left(\frac12\limsup_{m\to\infty}\frac{1}{m}\log \mathcal V_q(m)\right)\; } .
+\]
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-schur-variance-decomposition}, for each \(m\ge 1\) we have
+\[
+\mathcal V_q(m)=\sum_{\lambda\vdash q,\ \lambda\neq(q)}\left|\frac{T_{q,\lambda}(m)}{f^\lambda}\right|^2.
+\]
+For the lower bound, taking any \(\lambda\neq(q)\) yields \(\mathcal V_q(m)\ge |T_{q,\lambda}(m)/f^\lambda|^2\), hence
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log \mathcal V_q(m)
+\ge
+2\limsup_{m\to\infty}\frac{1}{m}\log|T_{q,\lambda}(m)|
+=2\log\rho(B_{q,\lambda}),
+\]
+where the last step uses the general lemma from the proof of Theorem \ref{thm:pom-schur-channel-radius-character-sieve} (for any finite-dimensional matrix \(B\), \(\limsup_m m^{-1}\log|\Tr(B^m)|=\log\rho(B)\)).
+Taking the maximum over all \(\lambda\neq(q)\) yields
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log \mathcal V_q(m)\ \ge\ 2\log\Lambda_q^{\mathrm{Schur}}.
+\]
+For the upper bound, note that for fixed \(q\) there are only finitely many partitions \(\lambda\vdash q\), and for any matrix \(B\) we have
+\(|\Tr(B^m)|\le (\dim B)\,\rho(B)^m\).
+Thus there exists a constant \(C_q<\infty\) such that for all \(m\ge 1\) we have
+\[
+\mathcal V_q(m)
+\le
+\sum_{\lambda\neq(q)}\left(\frac{\dim(B_{q,\lambda})}{f^\lambda}\right)^2\rho(B_{q,\lambda})^{2m}
+\le
+C_q\cdot(\Lambda_q^{\mathrm{Schur}})^{2m}.
+\]
+Taking logarithm on both sides, dividing by \(m\), and taking \(\limsup\) yields
+\(
+\limsup_m m^{-1}\log\mathcal V_q(m)\le 2\log\Lambda_q^{\mathrm{Schur}}
+\).
+Combining upper and lower bounds gives the first formula; the second formula is an exponential rewrite.
+\end{proof}
+
+\begin{corollary}[Pure Variance Criterion for Square-Root Threshold]\label{cor:pom-schur-near-rh-variance-concentration}
+Under the setup of Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity}, the following two propositions are equivalent:
+\begin{enumerate}
+  \item \textbf{(near-RH / square-root bound)} \(\Delta_q\le 0\), i.e., \(\Lambda_q^{\mathrm{Schur}}\le \rho_q^{1/2}\);
+  \item \textbf{(second-order concentration)} the variance energy satisfies the exponential upper bound
+  \[
+  \boxed{\;
+  \limsup_{m\to\infty}\frac{1}{m}\log \mathcal V_q(m)\ \le\ \log\rho_q\; }.
+  \]
+\end{enumerate}
+Moreover, under strict margin \(\Delta_q\le-\delta<0\), there exists a constant \(C_q>0\) such that for all \(m\ge 1\) we have
+\[
+\boxed{\;
+\mathcal V_q(m)\ \le\ C_q\,\exp\!\bigl((\log\rho_q-\delta)m\bigr)\; } .
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity},
+\(
+\limsup_m m^{-1}\log\mathcal V_q(m)=2\log\Lambda_q^{\mathrm{Schur}}
+\).
+Hence \(\Delta_q\le 0\) is equivalent to \(2\log\Lambda_q^{\mathrm{Schur}}\le \log\rho_q\), i.e., the stated second-order concentration inequality.
+If further \(\Delta_q\le-\delta\), then \((\Lambda_q^{\mathrm{Schur}})^{2}\le e^{-\delta}\rho_q\).
+By the upper bound estimate in the proof of Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity}
+\(\mathcal V_q(m)\le C_q(\Lambda_q^{\mathrm{Schur}})^{2m}\), the stated quantitative decay immediately follows.
+\end{proof}
+
+\begin{corollary}[Channel Prime-Shadow Deviation Upper Bound Directly from Variance]\label{cor:pom-schur-chebotarev-deviation-from-variance}
+Under the setup of Theorem \ref{thm:pom-schur-chebotarev-prime-deviation}, there exists a constant \(C_q>0\) such that for all \(\lambda\vdash q\) with \(\lambda\neq(q)\) and all \(N\ge 2\) we have
+\[
+\boxed{\;
+|\Pi_\lambda(N)|
+\ \le\
+C_q\,\frac{(\Lambda_q^{\mathrm{Schur}})^{N}}{N}
+\ =\
+C_q\,\frac{\exp\!\bigl(\tfrac12\,V_q\,N\bigr)}{N}\; } ,
+\qquad
+V_q:=\limsup_{m\to\infty}\frac{1}{m}\log\mathcal V_q(m).
+\]
+In particular, if near-RH is satisfied (equivalent to the second-order concentration in Corollary \ref{cor:pom-schur-near-rh-variance-concentration}), then
+\[
+\boxed{\;
+|\Pi_\lambda(N)|
+\ \le\
+C_q\,\frac{\rho_q^{\,N/2}}{N}\qquad(\forall\,\lambda\neq(q),\ \forall\,N\ge2)\; } .
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-schur-chebotarev-prime-deviation}, for each \(\lambda\neq(q)\) there exists \(C_{q,\lambda}>0\) such that
+\(
+|\Pi_\lambda(N)|\le C_{q,\lambda}\rho(B_{q,\lambda})^N/N
+\).
+Taking \(C_q:=\max_{\lambda\neq(q)}C_{q,\lambda}\) (finite maximum) and noting \(\rho(B_{q,\lambda})\le \Lambda_q^{\mathrm{Schur}}\), we obtain the first inequality.
+By Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity}, we have
+\(\Lambda_q^{\mathrm{Schur}}=\exp(\tfrac12 V_q)\), yielding the second equality.
+In the near-RH case, \(\Lambda_q^{\mathrm{Schur}}\le \rho_q^{1/2}\) substitutes back to give the square-root threshold upper bound.
+\end{proof}
+
+\begin{corollary}[Exponential Optimization Law for Cycle-Index Variance (Under Non-Degenerate Leading-Term Dominance)]\label{cor:pom-schur-variance-exponent-partition-optimization}
+Following the notation of Theorem \ref{thm:pom-schur-channel-radius-character-sieve} and assuming its non-degeneracy condition holds for all non-trivial channels \(\lambda\neq(q)\).
+Let \(P(r)\) and \(L(\nu)=\sum_{r\ge1}c_r(\nu)P(r)\) be as defined after \eqref{eq:pom-sr-main-term-kappa},
+and let
+\[
+\mathcal N_q:=\Bigl\{\nu\vdash q:\ \exists\,\lambda\vdash q,\ \lambda\neq(q)\ \text{such that}\ \chi^\lambda(\nu)\neq0\Bigr\}.
+\]
+Then there holds the finite optimization equality
+\[
+\boxed{\;
+\log\Lambda_q^{\mathrm{Schur}}=\max_{\nu\in\mathcal N_q}L(\nu)\;},
+\qquad
+\boxed{\;
+\limsup_{m\to\infty}\frac{1}{m}\log\mathcal V_q(m)=\max_{\nu\in\mathcal N_q}2L(\nu)\; } .
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-schur-channel-radius-character-sieve},
+for each \(\lambda\neq(q)\) we have
+\(
+\log\rho(B_{q,\lambda})=\max_{\nu:\ \chi^\lambda(\nu)\neq0}L(\nu)
+\).
+Taking the maximum over all \(\lambda\neq(q)\) is equivalent to taking the maximum over all cycle types "seen by some non-trivial character," the set \(\mathcal N_q\), yielding
+\(
+\log\Lambda_q^{\mathrm{Schur}}=\max_{\nu\in\mathcal N_q}L(\nu)
+\).
+By Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity}, we have
+\(
+\limsup_m m^{-1}\log\mathcal V_q(m)=2\log\Lambda_q^{\mathrm{Schur}}
+\),
+combining gives the result.
+\end{proof}
+
+\begin{proposition}[Zero-Temperature Intercept Readout from Variance: Under Perron Saturation, Variance Intercept Equals Ground-State Entropy]\label{prop:pom-variance-intercept-equals-groundstate-entropy}
+Assume that the zero-temperature two-term expansion of Theorem \ref{thm:pom-zero-temperature-two-term-expansion-maxfiber-entropy} holds, i.e.,
+\(
+P_q=q\alpha_\ast+h_\ast+o(1)
+\)
+(where \(P_q=\log\rho_q\)).
+Further assume that there exist infinitely many \(q\) such that some non-trivial channel \(\lambda\neq(q)\) satisfies \(\chi^\lambda((q))\neq 0\), and the non-degeneracy condition of Theorem \ref{thm:pom-schur-channel-radius-character-sieve} holds for this channel.
+Then for these \(q\) we have Perron saturation
+\[
+\boxed{\;\Lambda_q^{\mathrm{Schur}}=\rho_q\;},
+\qquad
+\boxed{\;V_q=2P_q\;},
+\]
+and consequently the intercept formula
+\[
+\boxed{\;
+\lim_{q\to\infty}\bigl(V_q-2q\alpha_\ast\bigr)=2h_\ast\; } .
+\]
+\end{proposition}
+\begin{proof}
+Take \(q\) and corresponding \(\lambda\neq(q)\) satisfying the assumptions.
+Since \(\chi^\lambda((q))\neq 0\), the \(q\)-cycle type \((q)\) belongs to \(\mathrm{Supp}(\lambda)\), so the sieved pressure in Theorem \ref{thm:pom-schur-channel-radius-character-sieve} satisfies
+\(
+\mathcal P_\lambda\ge L((q))=P_q
+\).
+On the other hand, by the block decomposition
+\(
+A_q\cong\bigoplus_{\mu\vdash q}(B_{q,\mu}\otimes I_{f^\mu})
+\)
+we have \(\rho(A_q)=\max_{\mu\vdash q}\rho(B_{q,\mu})\).
+In the primitive non-negative compilation regime where \(A_q\) commutes with the \(S_q\) action, its Perron eigenvalue is realized by the \(S_q\)-invariant positive eigenvector, thus falling in the trivial channel, so \(\rho(A_q)=\rho_q\) and for any \(\mu\) we have \(\rho(B_{q,\mu})\le \rho_q\).
+Therefore \(\rho(B_{q,\lambda})\le \rho_q\), and under the non-degeneracy condition we obtain
+\(\mathcal P_\lambda=\log\rho(B_{q,\lambda})\le P_q\).
+Thus \(\mathcal P_\lambda=P_q\), so the non-degeneracy condition implies
+\(
+\rho(B_{q,\lambda})=\exp(\mathcal P_\lambda)=e^{P_q}=\rho_q
+\).
+This means \(\Lambda_q^{\mathrm{Schur}}\ge \rho(B_{q,\lambda})=\rho_q\) and \(\Lambda_q^{\mathrm{Schur}}\le \rho_q\), hence \(\Lambda_q^{\mathrm{Schur}}=\rho_q\).
+Thus \(V_q=2\log\Lambda_q^{\mathrm{Schur}}=2P_q\) (Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity}).
+Finally, from \(P_q=q\alpha_\ast+h_\ast+o(1)\) we have
+\(
+V_q-2q\alpha_\ast=2(P_q-q\alpha_\ast)=2h_\ast+o(1)
+\),
+taking the limit yields the result.
+\end{proof}
+
+\begin{proposition}[Spectral Rigidity of Variance Vanishing: Non-Trivial Channel Radius Must Be Zero]\label{prop:pom-variance-vanishing-implies-nilpotent-channels}
+Fix \(q\ge 2\).
+\begin{enumerate}
+  \item If for some \(m\ge 1\) we have \(\mathcal V_q(m)=0\), then for all \(\lambda\vdash q\) with \(\lambda\neq(q)\) we have \(T_{q,\lambda}(m)=0\).
+  \item If there exists \(m_0\) such that \(\mathcal V_q(m)=0\) for all \(m\ge m_0\), then for all \(\lambda\neq(q)\) we have \(\rho(B_{q,\lambda})=0\); equivalently \(\Lambda_q^{\mathrm{Schur}}=0\) and \(V_q=-\infty\).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Point (1) follows immediately from the non-negative sum formula in Theorem \ref{thm:pom-schur-variance-decomposition}: if \(\sum_{\lambda\neq(q)}|T_{q,\lambda}(m)/f^\lambda|^2=0\), then each term is zero.
+\par
+Point (2): By point (1), \(\Tr(B_{q,\lambda}^{\,m})=0\) holds for all \(m\ge m_0\).
+Let the eigenvalues of \(B=B_{q,\lambda}\) be \(\{\mu_1,\dots,\mu_d\}\) (counting algebraic multiplicity), then for sufficiently small \(|t|\) we have the identity
+\[
+\sum_{m\ge 0}\Tr(B^{m})t^{m}=\sum_{j=1}^{d}\frac{1}{1-\mu_j t},
+\]
+where the left-hand side is the generating function of trace powers.
+If \(\Tr(B^{m})=0\) for all \(m\ge m_0\), then the left-hand side is a finite polynomial \(\sum_{m=0}^{m_0-1}\Tr(B^{m})t^{m}\), so the right-hand side cannot have poles;
+thus for all \(j\) we must have \(\mu_j=0\), i.e., \(\rho(B)=0\).
+Applying to all \(\lambda\neq(q)\) gives \(\Lambda_q^{\mathrm{Schur}}=0\), and by Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity} we have \(V_q=-\infty\).
+\end{proof}
+
+\paragraph{Bilateral Variational Characterization: Schur Envelope Radius as Exponential Resolution of Optimal Class-Function Probe}
+To avoid confusion with conjugacy class notation \(\mathrm{Cl}(\nu)\), this paragraph simply refers to "conjugacy-invariant functions" as class functions, and denotes their Hilbert space by \(\mathcal H_q\).
+
+\begin{definition}[Class-Function Space and Centered Cycle-Type Monomial]\label{def:pom-class-functions-centered-cycle-monomials}
+Let
+\[
+\mathcal H_q:=\bigl\{f:S_q\to\CC:\ f(\tau\sigma\tau^{-1})=f(\sigma)\ \ \forall\,\sigma,\tau\in S_q\bigr\},
+\qquad
+\langle f,g\rangle:=\frac{1}{q!}\sum_{\sigma\in S_q}f(\sigma)\overline{g(\sigma)}.
+\]
+Define the centered class function
+\[
+\mathcal C_m(\sigma):=\mathcal C_\sigma(m)-\overline{\mathcal C}(m)\qquad(\sigma\in S_q),
+\]
+where \(\overline{\mathcal C}(m)=\frac{1}{q!}\sum_{\sigma}\mathcal C_\sigma(m)\).
+\end{definition}
+
+\begin{theorem}[Variational Characterization of Schur Envelope]\label{thm:pom-schur-envelope-variational-characterization}
+Under the setup of Definition \ref{def:pom-class-functions-centered-cycle-monomials}, for each \(\lambda\vdash q\) with \(\lambda\neq(q)\) define the Fourier linear functional
+\[
+\widehat{\mathcal C}_m(\lambda):=\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\mathcal C_m(\sigma).
+\]
+Then there holds the strict equality
+\[
+\boxed{\;
+\Lambda_q^{\mathrm{Schur}}
+=
+\sup_{\lambda\vdash q,\ \lambda\neq(q)}\ \limsup_{m\to\infty}\left|\frac{\widehat{\mathcal C}_m(\lambda)}{q!}\right|^{1/m}\;}
+\]
+and the same quantity can also be given by the optimal exponential resolution of class-function probes:
+\[
+\boxed{\;
+\Lambda_q^{\mathrm{Schur}}
+=
+\limsup_{m\to\infty}\ \sup_{\substack{f\in\mathcal H_q\\ \langle f,1\rangle=0,\ \|f\|_2=1}}
+\left|\langle f,\mathcal C_m\rangle\right|^{1/m}\; } .
+\]
+\end{theorem}
+\begin{proof}
+For \(\lambda\neq(q)\), by Theorem \ref{thm:pom-schur-cycle-index-tomography} and centering (trivial channel is canceled), we have
+\[
+T_{q,\lambda}(m)
+=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\mathcal C_m(\sigma)
+=\frac{f^\lambda}{q!}\widehat{\mathcal C}_m(\lambda).
+\]
+Therefore
+\[
+\limsup_{m\to\infty}\left|\frac{\widehat{\mathcal C}_m(\lambda)}{q!}\right|^{1/m}
+=
+\limsup_{m\to\infty}\left|\frac{T_{q,\lambda}(m)}{f^\lambda}\right|^{1/m}
+=
+\rho(B_{q,\lambda}),
+\]
+where the last step again uses \(\limsup_m m^{-1}\log|\Tr(B^m)|=\log\rho(B)\).
+Taking the supremum over \(\lambda\neq(q)\) yields the first formula.
+\par
+For the second formula, note that since \(\mathcal C_m\in\mathcal H_q\) and \(\langle \mathcal C_m,1\rangle=0\), we have
+\[
+\sup_{\substack{f\in\mathcal H_q\\ \langle f,1\rangle=0,\ \|f\|_2=1}}
+|\langle f,\mathcal C_m\rangle|
+=\|\mathcal C_m\|_2
+=\sqrt{\mathcal V_q(m)},
+\]
+where the last step follows from \(\|\mathcal C_m\|_2^2=\frac1{q!}\sum_\sigma|\mathcal C_m(\sigma)|^2=\mathcal V_q(m)\).
+Hence
+\[
+\limsup_{m\to\infty}\ \sup_{f}\ |\langle f,\mathcal C_m\rangle|^{1/m}
+=\limsup_{m\to\infty}\ \mathcal V_q(m)^{1/(2m)}
+=\Lambda_q^{\mathrm{Schur}}
+\]
+where the last step follows from Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity}.
+\end{proof}
+
+\endinput
+

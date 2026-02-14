@@ -1,0 +1,286 @@
+% Auto-split to keep each TeX source < 600 lines.
+
+\subsubsection{Fiber ground-state structure, freezing threshold, and oracle capacity: from pressure spectral linearization to moment spectral duality}\label{subsubsec:fold-fiber-groundstate-freezing-oracle-capacity}
+This section records a set of general conclusions that are independent of specific folding implementations and depend only on the fiber multiplicity spectrum.
+The core idea is: once a strict exponential-scale gap appears between the maximal fiber and the second-maximal fiber, the high-order power-sum pressure spectrum must enter a linear "freezing phase" at sufficiently high orders; the corresponding escort measure exhibits exponential concentration on the ground-state set.
+The same fiber spectrum also determines a reversible capacity curve with side information (oracle bits) as a resource; this capacity curve and the high-order collision moment spectrum satisfy an exact Mellin-Stieltjes dual correspondence.
+
+\paragraph{Fiber power sums and pressure spectrum}
+At resolution \(m\), denote the folding operator by \(\Fold_m:\Omega_m\to X_m\), and let the fiber multiplicity function be
+\[
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|,
+\qquad x\in X_m.
+\]
+For integer \(a\ge 1\), define the power sum
+\[
+S_a(m):=\sum_{x\in X_m} d_m(x)^a,
+\]
+and assume the pressure limit
+\[
+P_a:=\lim_{m\to\infty}\frac{1}{m}\log S_a(m)
+\]
+exists for all integers \(a\ge 1\).
+Moreover, the stable type space in this work satisfies \(|X_m|=F_{m+2}\), thus
+\[
+\lim_{m\to\infty}\frac{1}{m}\log|X_m|=\log\varphi.
+\]
+
+Let
+\[
+M_m:=\max_{x\in X_m} d_m(x),
+\qquad
+K_m:=\bigl|\{x\in X_m:\ d_m(x)=M_m\}\bigr|,
+\]
+and assume the exponential limits exist
+\[
+\alpha_*:=\lim_{m\to\infty}\frac{1}{m}\log M_m,
+\qquad
+g_*:=\lim_{m\to\infty}\frac{1}{m}\log K_m.
+\]
+Further let
+\[
+M_m^{(2)}:=\max\{d_m(x):\ d_m(x)<M_m\},
+\]
+and define
+\[
+\alpha_*^{(2)}:=\limsup_{m\to\infty}\frac{1}{m}\log M_m^{(2)},
+\]
+where if no second-maximal fiber exists, we stipulate \(M_m^{(2)}:=1\).
+
+\begin{theorem}[Ground-state lower bound and global upper bound]\label{thm:fold-pressure-groundstate-bounds}
+For any integer \(a\ge 1\),
+\[
+a\alpha_*+g_*\ \le\ P_a\ \le\ a\alpha_*+\log\varphi.
+\]
+\end{theorem}
+
+\begin{proof}
+From \(S_a(m)\ge K_m M_m^a\), we obtain
+\[
+\frac{1}{m}\log S_a(m)\ge a\frac{1}{m}\log M_m+\frac{1}{m}\log K_m,
+\]
+letting \(m\to\infty\) yields the lower bound.
+On the other hand, \(S_a(m)\le |X_m|M_m^a\), so
+\[
+\frac{1}{m}\log S_a(m)\le a\frac{1}{m}\log M_m+\frac{1}{m}\log|X_m|,
+\]
+taking the limit and using \(\lim_{m\to\infty}\frac1m\log|X_m|=\log\varphi\) yields the upper bound. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Freezing threshold and high-order linearization]\label{thm:fold-pressure-freezing-threshold}
+If there exists a strict ground-state gap \(\alpha_*^{(2)}<\alpha_*\), and let
+\[
+a_{\mathrm c}:=\frac{\log\varphi-g_*}{\alpha_*-\alpha_*^{(2)}}\in[0,\infty),
+\]
+then for all integers \(a>a_{\mathrm c}\),
+\[
+P_a=a\alpha_*+g_*.
+\]
+That is: when the moment order exceeds the threshold \(a_{\mathrm c}\), the pressure spectrum enters a linear freezing phase with slope locked at \(\alpha_*\) and intercept locked at \(g_*\).
+\end{theorem}
+
+\begin{proof}
+Decompose
+\[
+S_a(m)=K_m M_m^a+\sum_{d_m(x)<M_m} d_m(x)^a
+\le K_m M_m^a+|X_m|\,(M_m^{(2)})^a.
+\]
+Taking \(\frac1m\log\) and letting \(m\to\infty\), we obtain
+\[
+P_a\le \max\{a\alpha_*+g_*,\ a\alpha_*^{(2)}+\log\varphi\}.
+\]
+When \(a(\alpha_*-\alpha_*^{(2)})>\log\varphi-g_*\), the maximum on the right is \(a\alpha_*+g_*\).
+Combining with the lower bound \(P_a\ge a\alpha_*+g_*\) from Theorem \ref{thm:fold-pressure-groundstate-bounds} yields the equality. This completes the proof.
+\end{proof}
+
+\paragraph{Escort exponential concentration in the freezing phase}
+For integer \(a\ge 1\), define the escort distribution
+\[
+\pi_{m,a}(x):=\frac{d_m(x)^a}{S_a(m)},\qquad x\in X_m,
+\]
+and denote the ground-state set by \(A_m^{\max}:=\{x\in X_m:\ d_m(x)=M_m\}\).
+
+\begin{theorem}[Exponential convergence of ground-state mass]\label{thm:fold-escort-groundstate-concentration}
+Under the assumptions of Theorem \ref{thm:fold-pressure-freezing-threshold}, if \(a>a_{\mathrm c}\), then
+\[
+\Delta(a):=a(\alpha_*-\alpha_*^{(2)})-(\log\varphi-g_*)>0
+\]
+and
+\[
+\pi_{m,a}(A_m^{\max})\ \ge\ 1-\exp\!\bigl(-m\Delta(a)+o(m)\bigr),
+\qquad m\to\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(S_a(m)=K_mM_m^a+R_a(m)\), where
+\(
+R_a(m):=\sum_{d_m(x)<M_m} d_m(x)^a\le |X_m|(M_m^{(2)})^a
+\).
+Then
+\[
+1-\pi_{m,a}(A_m^{\max})
+=\frac{R_a(m)}{S_a(m)}
+\le \frac{|X_m|(M_m^{(2)})^a}{K_mM_m^a}.
+\]
+Taking logarithm of the right side and dividing by \(m\), using \(\log|X_m|=m\log\varphi+o(m)\) along with \(\log K_m=mg_*+o(m)\), \(\log M_m=m\alpha_*+o(m)\),
+\(\log M_m^{(2)}\le m\alpha_*^{(2)}+o(m)\), we obtain
+\[
+\log\bigl(1-\pi_{m,a}(A_m^{\max})\bigr)
+\le -m\Delta(a)+o(m),
+\]
+thus the conclusion holds. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Ground-state degeneracy exponential identification in freezing phase]\label{cor:fold-escort-minentropy-rate}
+If the min-entropy rate
+\[
+h_\infty(a):=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\max_{x\in X_m}\pi_{m,a}(x)\Bigr)
+\]
+exists, then when \(a>a_{\mathrm c}\),
+\[
+h_\infty(a)=g_*.
+\]
+\end{corollary}
+
+\begin{proof}
+In the freezing phase, \(S_a(m)=K_mM_m^a\bigl(1+o(1)\bigr)\).
+On the other hand, \(\max_x\pi_{m,a}(x)=M_m^a/S_a(m)\), so
+\[
+\max_x\pi_{m,a}(x)=\frac{1}{K_m}\bigl(1+o(1)\bigr).
+\]
+Taking \(-\log\) of both sides and dividing by \(m\) yields \(h_\infty(a)=g_*\). This completes the proof.
+\end{proof}
+
+\paragraph{Oracle capacity: reversible microstate count under side information}
+View the folding as an information-loss channel \(\Fold_m:\Omega_m\to X_m\).
+Given integer \(B\ge 0\), call a pair of maps
+\[
+{\rm dec}:X_m\times\{0,1\}^B\to\Omega_m,\qquad
+{\rm enc}:\Omega_m\to\{0,1\}^B
+\]
+a \(B\)-bit oracle inversion mechanism if there exists a set \(\mathcal{G}\subseteq\Omega_m\) such that
+\[
+{\rm dec}\bigl(\Fold_m(\omega),{\rm enc}(\omega)\bigr)=\omega,\qquad \forall \omega\in\mathcal{G},
+\]
+and for all \(x\in X_m\), \(b\in\{0,1\}^B\), we have \(\Fold_m({\rm dec}(x,b))=x\) (decoding never crosses fibers).
+Define the oracle capacity
+\[
+\mathcal{C}_m(B):=\max_{({\rm enc},{\rm dec})}|\mathcal{G}|.
+\]
+
+\begin{theorem}[Closed-form expression for oracle capacity]\label{thm:fold-oracle-capacity-closed-form}
+For any integer \(B\ge 0\),
+\[
+\mathcal{C}_m(B)=\sum_{x\in X_m}\min\bigl(d_m(x),2^B\bigr).
+\]
+Thus under uniform microstate input (\(\omega\) uniform on \(\Omega_m\)), the optimal success rate is
+\[
+{\rm Succ}_m(B)=\frac{\mathcal{C}_m(B)}{2^m}.
+\]
+\end{theorem}
+
+\begin{proof}
+For fixed \(x\), the encoding restricted to fiber \(\Fold_m^{-1}(x)\) injects the reversible set \(\mathcal{G}\cap \Fold_m^{-1}(x)\) into \(\{0,1\}^B\), so its cardinality is at most \(2^B\); clearly it also cannot exceed the fiber size \(d_m(x)\).
+Therefore
+\[
+|\mathcal{G}|\le \sum_{x\in X_m}\min\bigl(d_m(x),2^B\bigr).
+\]
+The reverse construction can realize this upper bound fiber-wise: for each \(x\), arbitrarily select \(\min(d_m(x),2^B)\) microstates within the fiber and assign distinct codewords, thereby defining \({\rm enc}\) and \({\rm dec}\) to achieve equality. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Pure pigeonhole lower bound: necessary bit rate under no-structure condition]\label{cor:fold-oracle-pigeonhole-bound}
+If we require \({\rm Succ}_m(B)\ge 1-\varepsilon\), then necessarily
+\[
+B\ \ge\ m-\log_2|X_m|+\log_2(1-\varepsilon).
+\]
+Under \(|X_m|\sim \varphi^m\), this gives the asymptotic necessary bit rate lower bound
+\[
+\liminf_{m\to\infty}\frac{B}{m}\ge \log_2\Bigl(\frac{2}{\varphi}\Bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+From \(\min(d_m(x),2^B)\le 2^B\), we have \(\mathcal{C}_m(B)\le |X_m|2^B\), thus
+\(
+{\rm Succ}_m(B)=\mathcal{C}_m(B)/2^m\le |X_m|2^{B-m}
+\).
+If \({\rm Succ}_m(B)\ge 1-\varepsilon\), then \(1-\varepsilon\le |X_m|2^{B-m}\), rearranging yields the first formula.
+The second follows from \(\log_2|X_m|=m\log_2\varphi+o(m)\). This completes the proof.
+\end{proof}
+
+\paragraph{Dual measure decomposition of capacity and moment spectral duality}
+Let \(\mu_m\) be the pushforward distribution \(\mu_m(x):=d_m(x)/2^m\), and \(u_m\) the stable-layer uniform distribution \(u_m(x):=1/|X_m|\).
+Set the threshold \(T:=2^B\).
+
+\begin{proposition}[Dual measure identity of capacity]\label{prop:fold-oracle-capacity-bimeasure-identity}
+The strict identity holds
+\[
+\frac{\mathcal{C}_m(B)}{2^m}
+=\mu_m\bigl(\{x\in X_m:\ d_m(x)\le 2^B\}\bigr)
+\;+\;2^{B-m}|X_m|\,u_m\bigl(\{x\in X_m:\ d_m(x)>2^B\}\bigr),
+\]
+where \(\mu_m(E):=\sum_{x\in E}\mu_m(x)\), \(u_m(E):=\sum_{x\in E}u_m(x)\).
+\end{proposition}
+
+\begin{proof}
+By Theorem \ref{thm:fold-oracle-capacity-closed-form},
+\[
+\mathcal{C}_m(B)=\sum_{d_m(x)\le T} d_m(x)+\sum_{d_m(x)>T}T.
+\]
+The first term divided by \(2^m\) is precisely \(\sum_{d_m(x)\le T}\mu_m(x)=\mu_m(\{x\in X_m:\ d_m(x)\le T\})\).
+The second term is \(T\cdot|\{x\in X_m:\ d_m(x)>T\}|=2^B|X_m|\,u_m(\{x\in X_m:\ d_m(x)>T\})\), dividing by \(2^m\) yields the conclusion. This completes the proof.
+\end{proof}
+
+\begin{definition}[Tail count function and continuous capacity curve]\label{def:fold-capacity-tail}
+For fixed \(m\), define the tail count function
+\[
+N_m(t):=\bigl|\{x\in X_m:\ d_m(x)\ge t\}\bigr|,\qquad t\ge 0,
+\]
+and the continuous capacity curve
+\[
+\mathcal{C}_m^{\mathrm{cont}}(T):=\sum_{x\in X_m}\min\bigl(d_m(x),T\bigr),\qquad T\ge 0.
+\]
+\end{definition}
+
+\begin{proposition}[Capacity-tail function equivalence]\label{prop:fold-capacity-tail-equivalence}
+For all \(T\ge 0\), the strict identity holds
+\[
+\mathcal{C}_m^{\mathrm{cont}}(T)=\int_{0}^{T} N_m(t)\,\dd t.
+\]
+Moreover, \(N_m(t)\) can be recovered from \(\frac{\dd}{\dd T}\mathcal{C}_m^{\mathrm{cont}}(T)\) in the almost-everywhere sense.
+\end{proposition}
+
+\begin{proof}
+Using the identity \(\min(d,T)=\int_{0}^{T}\ind_{\{t\le d\}}\dd t\), summing over \(x\) and interchanging summation and integration yields
+\[
+\mathcal{C}_m^{\mathrm{cont}}(T)=\int_{0}^{T}\sum_{x\in X_m}\ind_{\{t\le d_m(x)\}}\dd t
+=\int_{0}^{T}N_m(t)\,\dd t.
+\]
+Since \(N_m\) is a step function, \(\mathcal{C}_m^{\mathrm{cont}}\) is differentiable almost everywhere and its derivative equals \(N_m\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Mellin-Stieltjes representation of moment spectrum]\label{prop:fold-moment-mellin-stieltjes}
+For any real \(q>0\), the strict identity holds
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q
+=q\int_{0}^{\infty} t^{q-1}N_m(t)\,\dd t,
+\]
+where the integral can be interpreted as Riemann-Stieltjes (here \(N_m\) is a step function, so the integral is equivalent to a finite sum).
+\end{proposition}
+
+\begin{proof}
+For each \(d\ge 0\), we have \(d^q=q\int_{0}^{d}t^{q-1}\dd t\).
+Accordingly,
+\[
+\sum_{x\in X_m}d_m(x)^q
+=q\sum_{x\in X_m}\int_{0}^{d_m(x)} t^{q-1}\dd t
+=q\int_{0}^{\infty} t^{q-1}\Bigl|\{x:\ d_m(x)\ge t\}\Bigr|\,\dd t,
+\]
+yielding the shown formula. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Completeness: capacity curve and moment spectrum are mutually sufficient statistics]\label{cor:fold-capacity-moment-completeness}
+Given \(\mathcal{C}_m^{\mathrm{cont}}(\cdot)\) is equivalent to given \(N_m(\cdot)\), which by Proposition \ref{prop:fold-moment-mellin-stieltjes} uniquely determines the entire moment spectrum \(\{S_q(m)\}_{q>0}\).
+Conversely, if a sufficiently rich moment spectrum is known and \(N_m\) can be reconstructed, then \(\mathcal{C}_m^{\mathrm{cont}}\) can also be uniquely recovered (Proposition \ref{prop:fold-capacity-tail-equivalence}).
+\end{corollary}

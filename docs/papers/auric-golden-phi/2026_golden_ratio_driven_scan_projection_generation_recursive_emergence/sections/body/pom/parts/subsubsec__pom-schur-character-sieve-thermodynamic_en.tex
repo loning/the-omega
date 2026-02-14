@@ -1,0 +1,380 @@
+% (User input window)
+% 2026-02-14 15:08:47（Asia/Singapore）
+
+\paragraph{Character Sieve—Thermodynamic Exponent Rate: Partition Resonance, Hook-Type Channels and Perron Purity Obstruction}\label{subsubsec:pom-schur-character-sieve-thermodynamic}
+This paragraph provides a purely algebraic compression of the exponent rate as \(m\to\infty\) based on the Schur tomography formula (Theorem \ref{thm:pom-schur-cycle-index-tomography}):
+We write the channel trace \(T_{q,\lambda}(m)=\Tr(B_{q,\lambda}^m)\) as a finite linear combination grouped by partitions (cycle types), and use finite combinations of matrix-order pressures \(P(r)\) to give a closed-form optimization formula for the channel spectral radius.
+Under this framework, the "Perron purity" of hook-type channels (the leading exponent term is not allowed to appear in non-trivial channels) requires partition resonance and satisfaction of a machine-verifiable leading-term cancellation constraint.
+
+\paragraph{Setup: Matrix-Order Pressure and Partition Monomials}
+Fix \(q\ge 2\), and assume that for each \(1\le r\le q\) there exist primitive non-negative matrices \(A_r\) and vectors \(u_r,v_r\ge 0\) such that
+\[
+S_r(m)=u_r^{\top}A_r^{\,m}v_r,
+\qquad
+\rho_r:=\rho(A_r),
+\qquad
+P(r):=\log\rho_r.
+\]
+By Perron--Frobenius theory there exist constants \(\kappa_r>0\) and \(0<\theta_r<\rho_r\) such that
+\begin{equation}\label{eq:pom-sr-main-term-kappa}
+S_r(m)=\kappa_r\,e^{mP(r)}+O(\theta_r^{\,m})\qquad(m\to\infty).
+\end{equation}
+For any partition \(\nu\vdash q\), denote its cycle count by \(c_r(\nu)\) (i.e., the cycle type is \(1^{c_1}2^{c_2}\cdots\)), and define the partition monomial
+\[
+\mathsf{M}_\nu(m):=\prod_{r\ge 1} S_r(m)^{\,c_r(\nu)}\qquad(\text{actually only need }1\le r\le q).
+\]
+We also denote
+\[
+z_\nu:=\prod_{r\ge 1} r^{c_r(\nu)}\,c_r(\nu)!\,,
+\]
+so that the conjugacy class size is \(|\mathrm{Cl}(\nu)|=q!/z_\nu\).
+
+\begin{proposition}[Schur Tomography Compressed by Conjugacy Classes]\label{prop:pom-schur-tomography-by-partitions}
+Following the notation of Theorem \ref{thm:pom-schur-cycle-index-tomography}, for any \(\lambda\vdash q\) and any \(m\ge 1\) we have
+\[
+\boxed{\;
+T_{q,\lambda}(m)
+=
+f^\lambda\sum_{\nu\vdash q}\frac{\chi^\lambda(\nu)}{z_\nu}\,\mathsf{M}_\nu(m)\; }.
+\]
+\end{proposition}
+\begin{proof}
+By Theorem \ref{thm:pom-schur-cycle-index-tomography},
+\(
+T_{q,\lambda}(m)
+=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\mathcal{C}_\sigma(m)
+\).
+Grouping by conjugacy classes, and using \(\mathcal{C}_\sigma(m)=\mathsf{M}_{\nu(\sigma)}(m)\) and \(|\mathrm{Cl}(\nu)|=q!/z_\nu\), we obtain
+\[
+\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\mathcal{C}_\sigma(m)
+=\sum_{\nu\vdash q}\frac{q!}{z_\nu}\,\chi^\lambda(\nu)\,\mathsf{M}_\nu(m),
+\]
+substituting back yields the result.
+\end{proof}
+
+\begin{theorem}[Strict Inverse Transform of Schur Tomography: Complete Recovery of Partition Monomials from Channel Traces]\label{thm:pom-schur-tomography-inverse-partition-monomials}
+Under the setup of Proposition \ref{prop:pom-schur-tomography-by-partitions}, for any partition \(\nu\vdash q\) there holds the strict identity
+\[
+\boxed{\;
+\mathsf{M}_\nu(m)
+=\sum_{\lambda\vdash q}\frac{\chi^\lambda(\nu)}{f^\lambda}\,T_{q,\lambda}(m)\; }.
+\]
+Thus for fixed \(q\), the collection \(\{T_{q,\lambda}(m)\}_{\lambda\vdash q}\) at each resolution \(m\) equivalently encodes all cycle-type monomials \(\{\mathsf{M}_\nu(m)\}_{\nu\vdash q}\).
+\end{theorem}
+\begin{proof}
+Multiplying both sides of the equation in Proposition \ref{prop:pom-schur-tomography-by-partitions} by \(\chi^\lambda(\nu)/f^\lambda\) and summing over \(\lambda\vdash q\), we get
+\[
+\sum_{\lambda\vdash q}\frac{\chi^\lambda(\nu)}{f^\lambda}\,T_{q,\lambda}(m)
+=\sum_{\mu\vdash q}\frac{\mathsf{M}_\mu(m)}{z_\mu}\sum_{\lambda\vdash q}\chi^\lambda(\nu)\chi^\lambda(\mu).
+\]
+By the column orthogonality relation for \(S_q\) characters
+\(
+\sum_{\lambda\vdash q}\chi^\lambda(\nu)\chi^\lambda(\mu)=z_\nu\,\mathbf 1_{\{\mu=\nu\}}
+\)
+(note that \(S_q\) characters are real-valued, so there is no conjugation term), the right-hand side reduces to \(\mathsf{M}_\nu(m)\), completing the proof.
+\end{proof}
+
+\begin{corollary}[Single Cycle-Type Readout of All Low-Order Collision Moments: Channel Traces for Fixed \(q\) Determine \(\{S_r(m)\}_{r\le q}\)]\label{cor:pom-schur-traces-determine-low-moments}
+For any \(1\le r\le q\), let \(\nu_r:=(r,1^{q-r})\vdash q\) be the "single \(r\)-cycle" partition.
+Then
+\[
+S_r(m)
+=\frac{\mathsf{M}_{\nu_r}(m)}{S_1(m)^{\,q-r}}
+=\frac{1}{S_1(m)^{\,q-r}}
+\sum_{\lambda\vdash q}\frac{\chi^\lambda(\nu_r)}{f^\lambda}\,T_{q,\lambda}(m),
+\]
+where \(S_1(m)=\sum_{x\in X_m}d_m(x)=2^m\).
+Thus for fixed \(q\), the channel trace vector \(\mathbf T_q(m):=(T_{q,\lambda}(m))_{\lambda\vdash q}\) at each \(m\) completely determines \(\mathbf S_{\le q}(m):=(S_1(m),\dots,S_q(m))\).
+\end{corollary}
+\begin{proof}
+From the cycle count of \(\nu_r\): \(c_r(\nu_r)=1\), \(c_1(\nu_r)=q-r\), we have
+\(
+\mathsf{M}_{\nu_r}(m)=S_r(m)\,S_1(m)^{q-r}
+\).
+Substituting into Theorem \ref{thm:pom-schur-tomography-inverse-partition-monomials} yields the result.
+\end{proof}
+
+\begin{corollary}[Moment--Channel Bidirectional Equivalence: Schur Trace Table and Low-Order Collision Moment Table Are Mutually Translatable at Each \(m\) for Fixed \(q\)]\label{cor:pom-schur-traces-moments-bijection}
+Under the premise that Theorem \ref{thm:pom-schur-cycle-index-tomography} (forward imaging) holds, for each fixed \(m\):
+\begin{enumerate}
+  \item \(\mathbf S_{\le q}(m)\mapsto \mathbf T_q(m)\) is given by the explicit imaging formula for \(\lambda\mapsto T_{q,\lambda}(m)\);
+  \item Its inverse map is given by the closed-form recovery in Corollary \ref{cor:pom-schur-traces-determine-low-moments}.
+\end{enumerate}
+Therefore, at each resolution \(m\), the Schur channel trace table and the low-order collision moment table for fixed \(q\) are strictly equivalent.
+\end{corollary}
+
+\begin{theorem}[Schur--Plancherel Energy Identity for MOM\texorpdfstring{$_q$}{q}: \texorpdfstring{$L^2$}{L2} Mass of Cycle-Type Monomials Equals Sum of Squared Normalized Channel Traces]\label{thm:pom-schur-plancherel-energy-identity}
+Fix \(q\ge 2\).
+For each \(m\), regard the class function \(\sigma\mapsto \mathcal{C}_\sigma(m)\) (from Theorem \ref{thm:pom-schur-cycle-index-tomography}) as a conjugacy-invariant function on \(S_q\), and define its mean-square energy
+\[
+\mathcal{E}_q(m):=\frac{1}{q!}\sum_{\sigma\in S_q}\bigl|\mathcal{C}_\sigma(m)\bigr|^2
+=\sum_{\nu\vdash q}\frac{1}{z_\nu}\,\bigl|\mathsf{M}_\nu(m)\bigr|^2.
+\]
+Then there holds the strict identity
+\[
+\boxed{\;
+\mathcal{E}_q(m)=\sum_{\lambda\vdash q}\left|\frac{T_{q,\lambda}(m)}{f^\lambda}\right|^2
+=\sum_{\lambda\vdash q}\frac{1}{(f^\lambda)^2}\,\bigl|T_{q,\lambda}(m)\bigr|^2\; }.
+\]
+\end{theorem}
+\begin{proof}
+The first equality follows immediately from \(|\mathrm{Cl}(\nu)|=q!/z_\nu\) and the conjugacy class constancy of \(\mathcal{C}_\sigma(m)=\mathsf{M}_{\nu(\sigma)}(m)\).
+\par
+From Proposition \ref{prop:pom-schur-tomography-by-partitions}, we can write
+\[
+\frac{T_{q,\lambda}(m)}{f^\lambda}
+=\sum_{\nu\vdash q}\frac{\chi^\lambda(\nu)}{z_\nu}\,\mathsf{M}_\nu(m).
+\]
+Taking the squared modulus and summing over \(\lambda\vdash q\), interchanging the order of summation, we obtain
+\[
+\sum_{\lambda\vdash q}\left|\frac{T_{q,\lambda}(m)}{f^\lambda}\right|^2
+=\sum_{\nu,\mu\vdash q}\frac{\mathsf{M}_\nu(m)\overline{\mathsf{M}_\mu(m)}}{z_\nu z_\mu}
+\sum_{\lambda\vdash q}\chi^\lambda(\nu)\chi^\lambda(\mu).
+\]
+By column orthogonality \(\sum_{\lambda}\chi^\lambda(\nu)\chi^\lambda(\mu)=z_\nu\,\mathbf 1_{\{\nu=\mu\}}\), the right-hand side reduces to
+\(
+\sum_{\nu\vdash q}\frac{1}{z_\nu}|\mathsf{M}_\nu(m)|^2=\mathcal E_q(m)
+\).
+\end{proof}
+
+\begin{theorem}[Schur Variance Decomposition: Sum of Non-Trivial Channel Energies Exactly Equals Variance of Cycle-Type Monomials]\label{thm:pom-schur-variance-decomposition}
+Fix \(q\ge 2\), and let
+\[
+\overline{\mathcal C}(m):=\frac{1}{q!}\sum_{\sigma\in S_q}\mathcal{C}_\sigma(m).
+\]
+Then there holds the strict identity
+\[
+\boxed{\;
+\frac{1}{q!}\sum_{\sigma\in S_q}\bigl|\mathcal{C}_\sigma(m)-\overline{\mathcal C}(m)\bigr|^2
+=\sum_{\lambda\vdash q,\ \lambda\ne(q)}\left|\frac{T_{q,\lambda}(m)}{f^\lambda}\right|^2\; }.
+\]
+The trivial representation satisfies \(T_{q,(q)}(m)=\overline{\mathcal C}(m)\).
+\end{theorem}
+\begin{proof}
+By \(\chi^{(q)}(\sigma)\equiv 1\) and \(f^{(q)}=1\), Theorem \ref{thm:pom-schur-cycle-index-tomography} gives
+\(
+T_{q,(q)}(m)=\frac{1}{q!}\sum_{\sigma\in S_q}\mathcal C_\sigma(m)=\overline{\mathcal C}(m)
+\).
+\par
+Apply Theorem \ref{thm:pom-schur-plancherel-energy-identity} to the centered class function
+\(\sigma\mapsto \mathcal C_\sigma(m)-\overline{\mathcal C}(m)\).
+Since the Fourier coefficient of the trivial channel is exactly canceled (equivalently, orthogonal to constant functions), the right-hand side sum can be restricted to \(\lambda\ne(q)\), yielding the stated identity.
+\end{proof}
+
+\begin{corollary}[Non-Uniformity \texorpdfstring{$\Longleftrightarrow$}{<->} Non-Trivial Schur Channel Must Activate]\label{cor:pom-schur-nontrivial-channel-activation}
+Under the setup of Theorem \ref{thm:pom-schur-variance-decomposition}, the following propositions are equivalent:
+\begin{enumerate}
+  \item \(\sigma\mapsto \mathcal C_\sigma(m)\) is not constant (equivalently, the left-hand side variance \(>0\));
+  \item There exists some \(\lambda\vdash q\) with \(\lambda\ne(q)\) such that \(T_{q,\lambda}(m)\ne 0\).
+\end{enumerate}
+More quantitatively, denoting by \(p(q)\) the partition number of \(q\), we have
+\[
+\max_{\lambda\vdash q,\ \lambda\ne(q)}\left|\frac{T_{q,\lambda}(m)}{f^\lambda}\right|
+\ \ge\
+\frac{1}{\sqrt{p(q)-1}}\left(\frac{1}{q!}\sum_{\sigma\in S_q}\bigl|\mathcal{C}_\sigma(m)-\overline{\mathcal C}(m)\bigr|^2\right)^{1/2}.
+\]
+\end{corollary}
+
+\paragraph{Partition Resonance Gap and Necessary Condition for Hook-Type Channels}
+Define the partition resonance gap (relative to \((q)\)):
+\[
+\Delta_{\mathrm{part}}(q)
+:=
+P(q)-\max_{\substack{\nu\vdash q\\ \nu\neq (q)}}\ \sum_{r\ge 1}c_r(\nu)\,P(r).
+\]
+
+\begin{theorem}[Hook-Type Channel \texorpdfstring{$\Rightarrow$}{=>} Resonance Gap Closure]\label{thm:pom-hook-channel-implies-partition-gap-closed}
+Further assume that \(A_q\) is primitive, and its Perron root \(\rho_q\) is simple and appears only in the trivial channel \(\lambda=(q)\) (i.e., for all \(\lambda\neq(q)\) we have \(\rho(B_{q,\lambda})<\rho_q\)).
+If there exists a hook partition \(\lambda=(q-k,1^k)\) (\(1\le k\le q-1\)) such that the corresponding channel is nonzero (\(B_{q,\lambda}\neq 0\)), then necessarily
+\[
+\boxed{\ \Delta_{\mathrm{part}}(q)=0\ }.
+\]
+Equivalently, there exists some non-trivial partition \(\nu\neq(q)\) such that
+\[
+P(q)=\sum_{r\ge 1}c_r(\nu)\,P(r).
+\]
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:pom-schur-tomography-by-partitions},
+\[
+T_{q,\lambda}(m)
+=
+f^\lambda\left(\frac{\chi^\lambda((q))}{q}\,S_q(m)+\sum_{\nu\vdash q,\ \nu\neq(q)}\frac{\chi^\lambda(\nu)}{z_\nu}\,\mathsf{M}_\nu(m)\right).
+\]
+For the hook \(\lambda=(q-k,1^k)\), by the Murnaghan--Nakayama rule we have \(\chi^\lambda((q))=(-1)^k\neq 0\), so the \(S_q(m)\) term must appear.
+If \(\Delta_{\mathrm{part}}(q)>0\), then for all \(\nu\neq(q)\) we have
+\(
+\sum_r c_r(\nu)P(r)\le P(q)-\Delta_{\mathrm{part}}(q)
+\).
+By \eqref{eq:pom-sr-main-term-kappa}, we have
+\[
+\mathsf{M}_\nu(m)
+=
+\Bigl(\prod_r \kappa_r^{c_r(\nu)}\Bigr)\exp\!\Bigl(m\sum_r c_r(\nu)P(r)\Bigr)\cdot(1+o(1)),
+\]
+so all terms with \(\nu\neq(q)\) are strictly lower than \(S_q(m)\sim \kappa_q e^{mP(q)}\) on the exponential scale.
+Therefore
+\[
+T_{q,\lambda}(m)
+=
+f^\lambda\frac{\chi^\lambda((q))}{q}\,\kappa_q e^{mP(q)}\cdot(1+o(1)),
+\]
+implying
+\(
+\limsup_{m\to\infty}\frac{1}{m}\log|T_{q,\lambda}(m)|=P(q)
+\).
+On the other hand, for any finite matrix \(B\) we have
+\(
+\limsup_{m\to\infty}\frac{1}{m}\log|\Tr(B^m)|=\log\rho(B)
+\)
+(see the lemma in the proof of Theorem \ref{thm:pom-schur-channel-radius-character-sieve}), so we obtain \(\rho(B_{q,\lambda})=\rho_q\), contradicting the assumption that "the Perron root appears only in the trivial channel."
+Thus \(\Delta_{\mathrm{part}}(q)=0\) must hold.
+\end{proof}
+
+\begin{theorem}[Strict Partition Gap \texorpdfstring{$\Rightarrow$}{=>} Hook-Type Channel Annihilation]\label{thm:pom-partition-gap-positive-kills-hooks}
+Under the assumptions of Theorem \ref{thm:pom-hook-channel-implies-partition-gap-closed}, if \(\Delta_{\mathrm{part}}(q)>0\), then for all non-trivial hooks \(\lambda=(q-k,1^k)\) (\(1\le k\le q-1\)) we have
+\[
+\boxed{\ B_{q,\lambda}=0\ },
+\]
+equivalently \(T_{q,\lambda}(m)=0\) for all \(m\ge 1\).
+\end{theorem}
+\begin{proof}
+Take any hook \(\lambda\neq(q)\). If \(B_{q,\lambda}\neq 0\), Theorem \ref{thm:pom-hook-channel-implies-partition-gap-closed} immediately gives \(\Delta_{\mathrm{part}}(q)=0\), contradicting the assumption.
+Hence \(B_{q,\lambda}=0\), and the equivalent statement follows from \(T_{q,\lambda}(m)=\Tr(B_{q,\lambda}^m)\).
+\end{proof}
+
+\paragraph{Leading-Term Cancellation in Resonant Phase and Decidability}
+Under the leading-term regime of \eqref{eq:pom-sr-main-term-kappa}, define the resonant partition family
+\[
+\mathcal{R}_q:=\left\{\nu\vdash q:\ \sum_{r\ge 1}c_r(\nu)\,P(r)=P(q)\right\}.
+\]
+
+\begin{theorem}[Algebraic Constraint for Leading-Term Cancellation in Hook-Type Channels]\label{thm:pom-hook-channel-leading-term-cancellation}
+Under the setup of Theorem \ref{thm:pom-hook-channel-implies-partition-gap-closed}, if there exists a non-trivial hook \(\lambda=(q-k,1^k)\) (\(k\ge 1\)) satisfying \(B_{q,\lambda}\neq 0\),
+then the strict identity must hold:
+\[
+\boxed{\;
+\frac{\chi^\lambda((q))}{q}\,\kappa_q
++\sum_{\nu\in\mathcal{R}_q\setminus\{(q)\}}
+\frac{\chi^\lambda(\nu)}{z_\nu}\,
+\prod_{r\ge 1}\kappa_r^{\,c_r(\nu)}
+=0\; }.
+\]
+At the exponential leading-order level given \(\{P(r)\}_{1\le r\le q}\) and \(\{\kappa_r\}_{1\le r\le q}\), this identity is equivalent to the "Perron purity" requirement: the exponent rate of non-trivial hook-type channels is strictly less than \(P(q)\).
+\end{theorem}
+\begin{proof}
+By \eqref{eq:pom-sr-main-term-kappa} and Proposition \ref{prop:pom-schur-tomography-by-partitions}, we have the asymptotic expansion
+\[
+\begin{aligned}
+T_{q,\lambda}(m)
+&=
+f^\lambda\sum_{\nu\vdash q}\frac{\chi^\lambda(\nu)}{z_\nu}
+\Bigl(\prod_r \kappa_r^{c_r(\nu)}\Bigr)
+\exp\!\Bigl(m\sum_r c_r(\nu)P(r)\Bigr)\cdot(1+o(1)).
+\end{aligned}
+\]
+Stratify the exponent rates by magnitude; when \(\Delta_{\mathrm{part}}(q)=0\), the layer with maximum exponent rate is exactly \(\mathcal{R}_q\), and its common exponent is \(P(q)\).
+Therefore the coefficient of \(e^{mP(q)}\) in \(T_{q,\lambda}(m)\) (after factoring out \(f^\lambda\)) is precisely the stated sum.
+If this coefficient is nonzero, then \(\limsup \frac1m\log|T_{q,\lambda}(m)|=P(q)\), implying \(\rho(B_{q,\lambda})=\rho_q\), violating the Perron purity assumption;
+conversely, if this coefficient is zero, then the maximum exponential layer is exactly canceled, the remaining terms have exponent rates strictly less than \(P(q)\), thus satisfying the exponential leading-order necessary condition \(\rho(B_{q,\lambda})<\rho_q\).
+\end{proof}
+
+\begin{theorem}[Ratio Test for Partition Resonance (Verifiable)]\label{thm:pom-partition-resonance-ratio-test}
+For any \(q\ge 2\) and any partition \(\nu\vdash q\), let \(\mathsf{M}_\nu(m)=\prod_r S_r(m)^{c_r(\nu)}\).
+Then under the above leading-term regime we have
+\[
+\boxed{\;
+\limsup_{m\to\infty}\frac{1}{m}\log\frac{S_q(m)}{\mathsf{M}_\nu(m)}
+=P(q)-\sum_{r\ge 1}c_r(\nu)\,P(r)\; }.
+\]
+In particular,
+\[
+P(q)=\sum_{r}c_r(\nu)P(r)
+\quad\Longleftrightarrow\quad
+\lim_{m\to\infty}\frac{S_q(m)}{\mathsf{M}_\nu(m)}
+=\frac{\kappa_q}{\prod_{r}\kappa_r^{c_r(\nu)}}\in(0,\infty).
+\]
+\end{theorem}
+\begin{proof}
+By \eqref{eq:pom-sr-main-term-kappa}, we have
+\(
+\frac{1}{m}\log S_r(m)\to P(r)
+\)
+and
+\(
+\frac{S_r(m)}{\kappa_r e^{mP(r)}}\to 1
+\).
+Therefore
+\[
+\frac{1}{m}\log \mathsf{M}_\nu(m)
+=\sum_r c_r(\nu)\cdot \frac{1}{m}\log S_r(m)\ \longrightarrow\ \sum_r c_r(\nu)P(r),
+\]
+so
+\(
+\limsup\frac1m\log\frac{S_q(m)}{\mathsf{M}_\nu(m)}
+=P(q)-\sum_r c_r(\nu)P(r)
+\).
+If we further use the leading-term ratio limit \(S_r(m)\sim \kappa_r e^{mP(r)}\), the constant of the ratio limit is also immediately obtained.
+\end{proof}
+
+\paragraph{Schur Channel Spectral Radius via "Character Sieve—Thermodynamic" Formula}
+For any \(\lambda\vdash q\), define the character support set
+\[
+\mathrm{Supp}(\lambda):=\{\nu\vdash q:\ \chi^\lambda(\nu)\neq 0\},
+\]
+and the sieved pressure
+\[
+\mathcal{P}_\lambda:=\max_{\nu\in\mathrm{Supp}(\lambda)}\ \sum_{r\ge 1}c_r(\nu)\,P(r).
+\]
+Let the maximizing set be
+\[
+\mathcal{M}_\lambda:=\left\{\nu\in\mathrm{Supp}(\lambda):\ \sum_{r}c_r(\nu)P(r)=\mathcal{P}_\lambda\right\}.
+\]
+
+\begin{theorem}[Character Sieve Formula for Channel Spectral Radius (Non-Degenerate Leading Term Dominance)]\label{thm:pom-schur-channel-radius-character-sieve}
+Under the above setup, assume that the weighted sum of leading coefficients over the maximizing set is nonzero:
+\[
+\sum_{\nu\in\mathcal{M}_\lambda}\frac{\chi^\lambda(\nu)}{z_\nu}\prod_{r\ge 1}\kappa_r^{c_r(\nu)}\neq 0.
+\]
+Then the channel spectral radius satisfies the strict equation
+\[
+\boxed{\ \rho(B_{q,\lambda})=\exp(\mathcal{P}_\lambda)\ }.
+\]
+Thus the near-RH type square-root threshold on this channel is equivalent to the pure scalar inequality
+\[
+\boxed{\ 2\mathcal{P}_\lambda\le P(q)\ }.
+\]
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:pom-schur-tomography-by-partitions} and the leading-term expansion \eqref{eq:pom-sr-main-term-kappa},
+\[
+T_{q,\lambda}(m)
+=
+f^\lambda\sum_{\nu\vdash q}\frac{\chi^\lambda(\nu)}{z_\nu}
+\Bigl(\prod_r \kappa_r^{c_r(\nu)}\Bigr)
+\exp\!\Bigl(m\sum_r c_r(\nu)P(r)\Bigr)\cdot(1+o(1)).
+\]
+Under the "non-degeneracy" assumption, the layer with maximum exponent rate \(\mathcal{P}_\lambda\) does not undergo complete cancellation, hence
+\(
+\limsup_{m\to\infty}\frac{1}{m}\log|T_{q,\lambda}(m)|=\mathcal{P}_\lambda
+\).
+On the other hand, for any finite-dimensional matrix \(B\) with eigenvalues \(\{\mu_j\}\), we have
+\(
+\Tr(B^m)=\sum_j \mu_j^m
+\).
+Let \(\rho=\rho(B)=\max_j|\mu_j|\), and denote \(\eta_j=\mu_j/\rho\) (so that \(|\eta_j|\le 1\) and at least one satisfies \(|\eta_j|=1\)), then
+\[
+\Tr(B^m)=\rho^m\Bigl(\sum_{|\eta_j|=1}\eta_j^m+O((\rho'/\rho)^m)\Bigr),
+\]
+where \(0\le \rho'<\rho\) is the sub-leading spectral radius. By a Ces\`aro squared-modulus argument of the same type as in Theorem \ref{thm:finite-part-cyclic-lift-limsup-spectral-gap}, we have
+\(\limsup_{m\to\infty}\bigl|\sum_{|\eta_j|=1}\eta_j^m\bigr|>0\),
+thus
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log|\Tr(B^m)|=\log\rho(B).
+\]
+Applying to \(B=B_{q,\lambda}\) and combining with the exponent rate identification in the previous paragraph, we obtain \(\log\rho(B_{q,\lambda})=\mathcal{P}_\lambda\).
+Finally, \(2\mathcal{P}_\lambda\le P(q)\) is equivalent to \(\rho(B_{q,\lambda})^2\le \rho_q\) (where \(\rho_q=e^{P(q)}\)), i.e., the square-root threshold.
+\end{proof}
+
+\input{sections/body/pom/parts/subsubsec__pom-schur-character-sieve-thermodynamic__finite-laplace-phase-gibbs_en}
+

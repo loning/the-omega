@@ -1,0 +1,340 @@
+% (User input window)
+% 2026-02-14 15:43:49 (Asia/Singapore)
+
+\paragraph{Query-Distortion Task: Uniformly Typed Source on Residual Types, Strong Converse Plane, and Zero-Bit Collision Threshold}
+Under the microcanonical prior \(F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d))\), \(k\) distinct queries reveal only count information;
+the unqueried portion degenerates to a uniformly typed source under a "residual type" constraint in the conditional posterior (Theorem \ref{thm:pom-microcanonical-count-sufficient-statistic-posterior-uniform}).
+This section aligns this structure with a recovery task allowing relative Hamming distortion, obtaining a strong converse phase diagram that is strictly flat on the exponential scale,
+and gives a contraction variational formula for the supercritical failure exponent and a Gaussian transition at the critical window.
+
+\begin{definition}[Unqueried Label Vector and Relative Hamming Distortion]\label{def:pom-microcanonical-query-distortion-setup}
+Under the setup of Definition \ref{def:pom-microcanonical-adaptive-trajectory-counts},
+let \(Q_k=\{\omega_1,\dots,\omega_k\}\subset\Omega_m\), \(U_k:=\Omega_m\setminus Q_k\), and write
+\[
+t:=\card{U_k}=N-k.
+\]
+Fix any ordering \(U_k=\{\upsilon_1,\dots,\upsilon_t\}\) of \(U_k\), and define the unqueried label vector
+\[
+Y^t:=(F(\upsilon_1),\dots,F(\upsilon_t))\in X_m^t.
+\]
+For any two vectors \(y^t,\widehat y^t\in X_m^t\) define the Hamming distance and relative distortion
+\[
+d_{\mathrm H}(y^t,\widehat y^t):=\card{\{i\in\{1,\dots,t\}:\ y_i\neq \widehat y_i\}},
+\qquad
+\frac{1}{t}d_{\mathrm H}(y^t,\widehat y^t)\in[0,1].
+\]
+\end{definition}
+
+\begin{definition}[Distortion Success Rate with Query + Side Information]\label{def:pom-microcanonical-query-distortion-success}
+Given \(k\) query trajectories \(T_{1:k}\), allow additionally obtaining \(B\) bits of side information:
+the encoder is any mapping \(\mathrm{enc}:\mathfrak{Fold}_m(d)\to\{0,1\}^B\), and the decoder is any mapping
+\[
+\mathrm{dec}:X_m^k\times\{0,1\}^B\to X_m^t,
+\qquad
+\widehat Y^t:=\mathrm{dec}(T_{1:k},\mathrm{enc}(F)).
+\]
+For \(\delta\in[0,1]\) define the optimal (Bayes) distortion success rate
+\[
+\mathrm{Succ}^{\mathrm{opt}}_{k,B}(\delta)
+:=\sup_{\mathrm{enc},\mathrm{dec}}\ \mathbb{P}\!\left(\frac{1}{t}d_{\mathrm H}(Y^t,\widehat Y^t)\le \delta\right).
+\]
+\end{definition}
+
+\begin{definition}[Residual Count, Residual Type, and Type Class]\label{def:pom-microcanonical-residual-type-class}
+For the count vector \(C_k\) of trajectory \(T_{1:k}\) (Definition \ref{def:pom-microcanonical-adaptive-trajectory-counts}), define the residual count vector
+\[
+R_x:=d(x)-C_k(x),\qquad x\in X_m,
+\qquad
+\sum_{x\in X_m}R_x=t,
+\]
+and the residual type \(r\in\Delta(X_m)\):
+\[
+r(x):=\frac{R_x}{t}.
+\]
+Define the corresponding type class
+\[
+\mathcal{T}_t(r):=\left\{y^t\in X_m^t:\ \card{\{i:\ y_i=x\}}=R_x\ \ \forall x\in X_m\right\}.
+\]
+\end{definition}
+
+\begin{proposition}[Strategy-Invariant Posterior Structure: Unqueried Portion as Uniformly Typed Source]\label{prop:pom-microcanonical-query-distortion-strategy-invariant-posterior}
+Adopt the notation of Definition \ref{def:pom-microcanonical-residual-type-class}.
+For any deterministic adaptive distinct query strategy and any trajectory \(T_{1:k}\), the strict equality holds
+\[
+\mathrm{Law}\bigl(Y^t\mid T_{1:k}\bigr)=\mathrm{Unif}\bigl(\mathcal{T}_t(r)\bigr).
+\]
+In particular, the conditional posterior depends only on the residual count vector \(R\) (equivalently, the residual type \(r\)), and is independent of the adaptive selection of query points.
+\end{proposition}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-count-sufficient-statistic-posterior-uniform},
+\(
+\mathrm{Law}(F|_{U_k}\mid T_{1:k})=\mathrm{Unif}(\mathfrak{F}_{U_k}(d-C_k))
+\);
+fixing an ordering of \(U_k\), the mapping \(F|_{U_k}\) and the vector \(Y^t\) are in one-to-one correspondence, and the constraint \(\card{(F|_{U_k})^{-1}(x)}=R_x\) is equivalent to \(Y^t\in\mathcal{T}_t(r)\).
+Hence the conditional distribution is \(\mathrm{Unif}(\mathcal{T}_t(r))\).
+Strategy invariance follows directly from the posterior depending only on \(C_k\) (and hence only on \(R=d-C_k\)).
+\end{proof}
+
+\begin{proposition}[Sufficient Statistic for Query-Distortion Task]\label{prop:pom-microcanonical-query-distortion-sufficient-statistic}
+Under the setup of Definition \ref{def:pom-microcanonical-query-distortion-success},
+for any query strategy and any trajectory \(T_{1:k}\), the conditional optimal success rate
+\[
+\sup_{\mathrm{enc},\mathrm{dec}}\ \mathbb{P}\!\left(\frac{1}{t}d_{\mathrm H}(Y^t,\widehat Y^t)\le \delta\ \Big|\ T_{1:k}\right)
+\]
+is a function of \((t,r,B,\delta)\) only.
+Therefore, on the exponential scale as \(N\to\infty\), the phase diagram of \(\mathrm{Succ}^{\mathrm{opt}}_{k,B}(\delta)\) is completely determined by \((\beta,w,\delta)\) and the bit density \(b=B/N\).
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:pom-microcanonical-query-distortion-strategy-invariant-posterior}, given the trajectory \(Y^t\) is \(\mathrm{Unif}(\mathcal{T}_t(r))\), and this conditional distribution no longer contains geometric information of \(\Omega_m\).
+Thus any encoding/decoding pair's conditional success rate is determined only by this uniformly typed source, the code length \(B\), and the distortion threshold \(\delta\), i.e., is a function of \((t,r,B,\delta)\).
+The last statement follows from \(k=\lfloor\beta N\rfloor\) (hence \(t/N\to 1-\beta\)) and \(r\to w\) by the law of large numbers for sampling without replacement (the isotypic convergence used in the proof of Theorem \ref{thm:pom-microcanonical-information-linear-law}).
+\end{proof}
+
+\begin{definition}[Type-Diagonal Constraint Rate Function]\label{def:pom-typed-diagonal-rate-function}
+Let \(X\) be a finite set, \(p\in\Delta(X)\), \(\delta\in[0,1]\).
+Define the rate function (in natural log units)
+\[
+R_p(\delta)
+:=\inf\Bigl\{I_P(X;Y):\ P_X=P_Y=p,\ \mathbb{P}(X=Y)\ge 1-\delta\Bigr\},
+\]
+where the infimum is over all joint distributions \(P\) on \(X\times X\), and \(I_P(X;Y)\) denotes their mutual information (natural log).
+\end{definition}
+
+\begin{theorem}[Strong Converse Plane for Query Fraction - Bit Density - Distortion]\label{thm:pom-microcanonical-query-distortion-strong-converse-plane}
+Adopt Definitions \ref{def:pom-microcanonical-query-distortion-success}--\ref{def:pom-typed-diagonal-rate-function}.
+Fix \(\delta\in[0,1]\), take \(k=\lfloor\beta N\rfloor\) and \(B=\lfloor bN\rfloor\) (\(\beta\in[0,1)\), \(b\ge 0\)), and assume \(n\log N=o(N)\) and \(w\) is fixed.
+Then the limit exists and satisfies
+\[
+\boxed{\;
+\lim_{N\to\infty}\frac{1}{N}\log \mathrm{Succ}^{\mathrm{opt}}_{k,B}(\delta)
+=\min\Bigl\{0,\ b\log 2-(1-\beta)\,R_w(\delta)\Bigr\}\; }.
+\]
+Therefore, the critical plane can be written as
+\[
+\boxed{\;
+b_{\mathrm{crit}}(\beta,\delta)=\frac{(1-\beta)\,R_w(\delta)}{\log 2}\; } .
+\]
+When \(\delta=0\), we have \(R_w(0)=H(w)\), hence \(b_{\mathrm{crit}}(\beta,0)=(1-\beta)H(w)/\log 2\), consistent with the exact recovery threshold of Theorem \ref{thm:pom-microcanonical-query-plus-bits-phase}.
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:pom-microcanonical-query-distortion-strategy-invariant-posterior}, conditioning on the trajectory yields source \(\mathrm{Unif}(\mathcal{T}_t(r))\).
+\par
+\textbf{Upper bound (covering volume).}
+The type class size satisfies \(|\mathcal{T}_t(r)|=\exp(tH(r)+o(t))\) (Stirling expansion), where \(H(\cdot)\) is Shannon entropy (natural log).
+For any reconstruction center \(\widehat y^t\),
+\(\mathcal{T}_t(r)\cap\{y^t:\ d_{\mathrm H}(y^t,\widehat y^t)\le \delta t\}\)
+can be decomposed by joint types into finitely many conditional type classes, whose exponential volume is controlled by \(\sup H(X|Y)\);
+under the marginal constraint \(P_X=P_Y=r\) and diagonal constraint \(\mathbb{P}(X=Y)\ge 1-\delta\),
+\[
+\sup H(X|Y)=H(r)-R_r(\delta)
+\]
+(by the equivalent rewriting of \(I(X;Y)=H(X)-H(X|Y)\)).
+Therefore, there exists a function \(o(t)\) (for fixed \(r,\delta\)) such that for all \(\widehat y^t\)
+\[
+\card{\mathcal{T}_t(r)\cap\{y^t:\ d_{\mathrm H}(y^t,\widehat y^t)\le \delta t\}}
+\le \exp\bigl(t(H(r)-R_r(\delta))+o(t)\bigr).
+\]
+Any \(B\)-bit code contains at most \(2^B\) reconstruction centers, so the conditional success rate is at most the covering fraction:
+\[
+\mathrm{Succ}^{\mathrm{opt}}_{k,B}(\delta\mid T_{1:k})
+\le
+\min\!\left(1,\frac{2^B\exp(t(H(r)-R_r(\delta))+o(t))}{\exp(tH(r)+o(t))}\right)
+=\min\!\left(1,\exp\bigl(B\log 2-tR_r(\delta)+o(t)\bigr)\right).
+\]
+Taking expectation over trajectories and using the law of large numbers \(r\to w\) under sampling without replacement and continuity of \(R_p(\delta)\) (at interior points of the simplex) yields the exponential upper bound
+\(\limsup \frac1N\log \mathrm{Succ}^{\mathrm{opt}}_{k,B}(\delta)\le \min\{0,b\log 2-(1-\beta)R_w(\delta)\}\).
+\par
+\textbf{Lower bound (type covering construction).}
+For any \(\varepsilon>0\), given \(r\), one can choose a set of size \(\exp(t(R_r(\delta)+\varepsilon))\) reconstruction centers whose \(\delta\)-balls cover a \(1-o(1)\) fraction of \(\mathcal{T}_t(r)\) (standard type covering construction; mainly composed of joint types achieving \(\sup H(X|Y)\)).
+When \(B\log 2\ge t(R_r(\delta)+\varepsilon)\), the conditional success rate can approach \(1\); when \(B\log 2\le t(R_r(\delta)-\varepsilon)\), the conditional success rate achieves exponential rate
+\(\exp(B\log 2-tR_r(\delta)-o(t))\).
+Taking expectation over random \(r\) and using \(r\to w\) yields the matching exponential lower bound.
+Letting \(\varepsilon\downarrow 0\) completes the proof.
+\end{proof}
+
+\begin{theorem}[Supercritical Failure Exponent: Contraction Variational Formula Triggered by Residual Type Deviations]\label{thm:pom-microcanonical-query-distortion-failure-exponent}
+Under the setup of Theorem \ref{thm:pom-microcanonical-query-distortion-strong-converse-plane},
+further assume we are on the supercritical side
+\[
+b\log 2>(1-\beta)\,R_w(\delta).
+\]
+Let \(\mathrm{Fail}^{\mathrm{opt}}_{k,B}(\delta):=1-\mathrm{Succ}^{\mathrm{opt}}_{k,B}(\delta)\).
+Then the limit
+\[
+E_{\mathrm{fail}}(\beta,b,\delta)
+:=\lim_{N\to\infty}-\frac{1}{N}\log \mathrm{Fail}^{\mathrm{opt}}_{k,B}(\delta)
+\]
+exists and satisfies the strict equality
+\[
+\boxed{\;
+E_{\mathrm{fail}}(\beta,b,\delta)
+=\inf\Bigl\{J_{1-\beta}(r):\ (1-\beta)\,R_r(\delta)\ge b\log 2\Bigr\}\; } ,
+\]
+where \(J_{1-\beta}\) is the large deviation rate function for residual type \(R_N=r_N\) (the symmetric form of Theorem \ref{thm:pom-microcanonical-hypergeometric-ldp-kl-sym}).
+When \(\delta=0\), \(R_r(0)=H(r)\), and the above formula reduces to the two-temperature failure exponent for the "residual entropy threshold" (Definition \ref{def:pom-microcanonical-two-temperature-failure-exponent}, taking \(h=b\log 2/(1-\beta)\)).
+\end{theorem}
+\begin{proof}
+By the conditional form of Theorem \ref{thm:pom-microcanonical-query-distortion-strong-converse-plane},
+given residual type \(r\), if \(b\log 2>(1-\beta)R_r(\delta)\) then the conditional failure probability can be compressed to \(e^{-\Theta(N)}\);
+if \(b\log 2<(1-\beta)R_r(\delta)\), then the conditional success rate decays exponentially, and thus the conditional failure approaches \(1\).
+Therefore, the failure event is exponentially equivalent to
+\[
+\{(1-\beta)R_{r_N}(\delta)\ge b\log 2\}.
+\]
+Applying the LDP of Theorem \ref{thm:pom-microcanonical-hypergeometric-ldp-kl-sym} to random \(r_N\) (with \(R_N\) as the contraction image) and using the contraction principle yields the stated variational formula.
+\end{proof}
+
+\begin{theorem}[Gaussian Law at Critical Window: Normal Transition at \texorpdfstring{$\sqrt N$}{sqrtN} Bit Scale]\label{thm:pom-microcanonical-query-distortion-critical-window-clt}
+Under the setup of Theorem \ref{thm:pom-microcanonical-query-distortion-strong-converse-plane},
+further assume the mapping \(p\mapsto R_p(\delta)\) is Fr\'echet differentiable at \(p=w\) (an interior point of the simplex);
+take its gradient representative \(g_\delta\in\RR^{X_m}\) and center it
+\[
+\widetilde g_\delta:=g_\delta-\langle g_\delta,w\rangle\,\mathbf 1.
+\]
+Let
+\[
+B_N=\left\lfloor \frac{(1-\beta)R_w(\delta)}{\log 2}\,N+\frac{s}{\log 2}\sqrt N\right\rfloor,\qquad s\in\RR.
+\]
+Then as \(N\to\infty\), the limit holds
+\[
+\boxed{\;
+\mathrm{Succ}^{\mathrm{opt}}_{k,B_N}(\delta)\ \longrightarrow\ \Phi\!\left(\frac{s}{\sigma_{\beta,\delta}}\right)\; } ,
+\]
+where \(\Phi\) is the standard normal cumulative distribution function, and
+\[
+\boxed{\;
+\sigma_{\beta,\delta}^2
+=\beta(1-\beta)\ \widetilde g_\delta^{\mathsf T}\bigl(\mathrm{diag}(w)-ww^{\mathsf T}\bigr)\widetilde g_\delta\; } .
+\]
+When \(\delta=0\), \(R_p(0)=H(p)\), and we can take \(\widetilde g_0(x)=-\log w(x)+\EE_{X\sim w}[\log w(X)]\), hence \(\sigma_{\beta,0}^2=\beta(1-\beta)V(w)\), consistent with the Gaussian critical window of Theorem \ref{thm:pom-microcanonical-query-plus-bits-phase}.
+\end{theorem}
+\begin{proof}
+By the CLT for isotypic sampling without replacement of Theorem \ref{thm:pom-microcanonical-hypergeometric-ldp-kl-sym} (used in the proof of Theorem \ref{thm:pom-microcanonical-posterior-moduli-clt}), we have
+\[
+\sqrt N\,(r_N-w)\ \xrightarrow{d}\ \mathcal N\!\left(0,\frac{\beta}{1-\beta}\bigl(\mathrm{diag}(w)-ww^{\mathsf T}\bigr)\right),
+\qquad r_N:=\frac{d-C_k}{N-k}.
+\]
+Applying the delta method to \(R_{r_N}(\delta)\) gives
+\[
+(1-\beta)N\bigl(R_{r_N}(\delta)-R_w(\delta)\bigr)
+\ \xrightarrow{d}\ \mathcal N\bigl(0,\sigma_{\beta,\delta}^2\bigr).
+\]
+At the critical scaling,
+\[
+B_N\log 2-(1-\beta)N R_{r_N}(\delta)=s\sqrt N-(1-\beta)N\bigl(R_{r_N}(\delta)-R_w(\delta)\bigr)+o_p(\sqrt N),
+\]
+whose sign is determined by the limiting normal variable.
+By the conditional form of the strong converse plane (Theorem \ref{thm:pom-microcanonical-query-distortion-strong-converse-plane}), the conditional success rate is asymptotically equivalent to a step function at this scale;
+taking expectation yields the stated Gaussian CDF limit.
+\end{proof}
+
+\begin{proposition}[Zero Rate Threshold: Precise Characterization by Second-Order Collision Probability]\label{prop:pom-diagonal-rate-zero-threshold-collision}
+Let \(X\) be a finite set, \(p\in\Delta(X)\), and write the second-order collision probability
+\[
+p_2(p):=\sum_{x\in X}p(x)^2.
+\]
+Then for any \(\delta\in[0,1]\), the strict necessary and sufficient condition holds
+\[
+\boxed{\;
+R_p(\delta)=0\quad\Longleftrightarrow\quad \delta\ge 1-p_2(p)\; } .
+\]
+\end{proposition}
+\begin{proof}
+If \(\delta\ge 1-p_2(p)\), take the independent coupling \(P(x,y)=p(x)p(y)\), then \(\mathbb{P}(X=Y)=p_2(p)\ge 1-\delta\) and \(I(X;Y)=0\), hence \(R_p(\delta)=0\).
+\par
+Conversely, if \(R_p(\delta)=0\), then there exists a feasible coupling with \(I(X;Y)=0\), and \(I=0\) if and only if \(X,Y\) are independent, so we must have \(P(x,y)=p(x)p(y)\);
+its diagonal mass is \(p_2(p)\), so feasibility requires \(p_2(p)\ge 1-\delta\), i.e., \(\delta\ge 1-p_2(p)\).
+\end{proof}
+
+\begin{theorem}[Explicit Parametrization of Rate Function and Dual Derivative]\label{thm:pom-diagonal-rate-explicit-param-and-derivative}
+Let \(X\) be a finite set, take a full support distribution \(w\in\Delta(X)\), and fix \(\delta\in(0,1)\) such that \(R_w(\delta)>0\) (equivalent to \(\delta<1-p_2(w)\), Proposition \ref{prop:pom-diagonal-rate-zero-threshold-collision}).
+Then the optimal coupling \(P^\star_\delta\) achieving \(R_w(\delta)\) uniquely exists and has the following structure:
+there exist unique parameter \(\kappa>0\) and unique vector \(u\in\RR_{>0}^X\) such that
+\[
+\boxed{\;
+P^\star_\delta(x,y)=\frac{u_xu_y\bigl(1+\kappa\,\mathbf 1_{\{x=y\}}\bigr)}{Z}\;},
+\qquad
+Z=\sum_{a,b\in X}u_au_b\bigl(1+\kappa\,\mathbf 1_{\{a=b\}}\bigr).
+\]
+Moreover, the marginal constraint \(P_X=P_Y=w\) is equivalent to the quadratic self-consistency relation for each \(x\in X\)
+\[
+\boxed{\;
+w(x)=\frac{u_x(A+\kappa u_x)}{Z}\;},
+\qquad
+A:=\sum_{y\in X}u_y.
+\]
+Under this parametrization, the rate has the closed-form representation
+\[
+\boxed{\;
+R_w(\delta)
+=2\sum_{x\in X}w(x)\log\frac{u_x}{w(x)}
+-\log Z+(1-\delta)\log(1+\kappa)\; } .
+\]
+Let the dual variable \(\lambda:=\log(1+\kappa)\ge 0\), then \(\delta\mapsto R_w(\delta)\) is differentiable on \((0,1-p_2(w))\) and satisfies the sensitivity formula
+\[
+\boxed{\;
+\frac{\mathrm d}{\mathrm d\delta}R_w(\delta)=-\lambda(\delta)=-\log(1+\kappa(\delta))<0\; } .
+\]
+Moreover, as \(\delta\uparrow 1-p_2(w)\), we have \(\kappa(\delta)\downarrow 0\) and \(R_w(\delta)\downarrow 0\).
+\end{theorem}
+\begin{proof}
+The diagonal constraint problem is a finite-dimensional convex program: with \(P\) as the variable, objective \(I_P(X;Y)\) convex, constraints linear and satisfying Slater's condition when \(\delta<1-p_2(w)\) (strict feasibility exists).
+Thus there exists a unique optimal solution \(P^\star_\delta\), and the diagonal constraint must saturate: \(\mathbb{P}_{P^\star_\delta}(X=Y)=1-\delta\).
+\par
+Writing the Lagrangian and solving the stationarity condition for \(P(x,y)\) yields the exponential family form
+\(
+P^\star_\delta(x,y)\propto a_x b_y\exp(\lambda\mathbf 1_{\{x=y\}})
+\);
+by symmetry and marginals both being \(w\), we can take \(a=b=u\), and write \(\exp(\lambda)-1\) as \(\kappa\), obtaining the stated \((u,\kappa)\) parametrization and normalization constant \(Z\).
+The marginal condition is the system of equations \(w(x)=\sum_y P^\star_\delta(x,y)\) for each \(x\), which simplifies to the quadratic self-consistency relation.
+\par
+The closed-form expression follows from expanding
+\(
+\log P^\star_\delta(x,y)=\log u_x+\log u_y+\log(1+\kappa\mathbf 1_{\{x=y\}})-\log Z
+\)
+and taking expectation over the marginal constraints on \(x\) and \(y\) sides separately.
+\par
+The dual derivative is given by the envelope theorem: the constraint can be written as \((1-\delta)-\mathbb{P}(X=Y)\le 0\), whose optimal multiplier is \(\lambda\), hence \(\frac{\mathrm d}{\mathrm d\delta}R_w(\delta)=-\lambda(\delta)\).
+As \(\delta\uparrow 1-p_2(w)\), the independent coupling becomes feasible and gives \(R=0\), so uniqueness forces \(\lambda\downarrow 0\) (i.e., \(\kappa\downarrow 0\)) and causes \(R_w(\delta)\downarrow 0\).
+\end{proof}
+
+\begin{corollary}[Zero-Bit Corridor: Collision Probability Determines the No Side Information Region]\label{cor:pom-query-distortion-zero-bit-corridor}
+Under the setup of Theorem \ref{thm:pom-microcanonical-query-distortion-strong-converse-plane},
+if \(\delta\ge 1-p_2(w)\), then \(R_w(\delta)=0\) and \(b_{\mathrm{crit}}(\beta,\delta)=0\) for all \(\beta\in[0,1)\);
+if \(\delta<1-p_2(w)\), then \(R_w(\delta)>0\) and for any \(\beta<1\) we have \(b_{\mathrm{crit}}(\beta,\delta)>0\).
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-diagonal-rate-zero-threshold-collision}, \(\delta\ge 1-p_2(w)\) if and only if \(R_w(\delta)=0\).
+Substituting into the critical plane formula of Theorem \ref{thm:pom-microcanonical-query-distortion-strong-converse-plane} completes the proof.
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\ell^2$}{l2} Histogram Invariant: Auditability of Zero-Bit Distortion Threshold]\label{cor:pom-query-distortion-zero-bit-threshold-auditable}
+Under the Fold caliber, the pushforward distribution is \(w_m(x)=d_m(x)/2^m\).
+Define the second-order collision probability (\(\ell^2\) histogram)
+\[
+\mathrm{Col}_m:=\sum_{x\in X_m}w_m(x)^2=\frac{S_2(m)}{2^{2m}}.
+\]
+Then the zero-bit achievable distortion threshold
+\[
+\delta_{0,m}:=\inf\{\delta:\ R_{w_m}(\delta)=0\}
+\]
+satisfies the strict equality
+\[
+\boxed{\;
+\delta_{0,m}=1-\mathrm{Col}_m
+=1-\frac{S_2(m)}{2^{2m}}\; } .
+\]
+If further a limit \(\mathrm{Col}_m\to \mathrm{Col}_\infty\) exists, then \(\delta_{0,m}\to 1-\mathrm{Col}_\infty\).
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-diagonal-rate-zero-threshold-collision},
+\(
+\delta_{0,m}=1-p_2(w_m)
+\).
+And \(p_2(w_m)=\sum_x w_m(x)^2=\mathrm{Col}_m=2^{-2m}S_2(m)\), substituting gives the closed form.
+The limit statement follows immediately from continuity.
+\end{proof}
+
+\input{sections/body/pom/parts/part__pom-microcanonical-query-distortion-strong-converse-part2_en}
+\endinput
+

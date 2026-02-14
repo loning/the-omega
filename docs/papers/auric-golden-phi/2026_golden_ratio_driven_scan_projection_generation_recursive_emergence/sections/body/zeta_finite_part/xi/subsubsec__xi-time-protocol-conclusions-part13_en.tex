@@ -1,0 +1,328 @@
+% (User input window)
+% 2026-02-14 14:27:19 (Asia/Singapore, UTC+08)
+
+\paragraph{Cross-interface terminal conclusions: memory observability of real-input kernel, strictification universality, and endpoint/entropy-rate audit constant families}
+This paragraph compresses the auditable constants and universal properties from three chains—real-input kernel, strictification (completely positive visible realization), and endpoint audit—into independently citable conclusion items; proofs merely point to the corresponding completed theorems/propositions/corollaries (or their auditable outputs), without repeating derivation details.
+
+\begin{conclusion}[Strict decoupling of Parry memory bits for real-input kernel: \texorpdfstring{$(p_x,p_y)$}{(px,py)} yields closed-form marginals and strict independence at maximum entropy]\label{con:xi-terminal-real-input-parry-memory-decoupling}
+Under the Parry maximum-entropy measure of the essential \(20\)-state real-input kernel \(M_{\mathrm{ess}}\), the input memory
+\(m=(p_x,p_y)\in\{00,01,10,11\}\) marginal distribution satisfies closed form
+\[
+\mathbb{P}(00)=\frac{3+\sqrt5}{10},\qquad
+\mathbb{P}(01)=\mathbb{P}(10)=\frac15,\qquad
+\mathbb{P}(11)=\frac{3-\sqrt5}{10}.
+\]
+Moreover, the two bits are strictly independent and identically marginal:
+\[
+\mathbb{P}(p_x=1)=\mathbb{P}(p_y=1)=\frac{5-\sqrt5}{10},
+\qquad
+\mathbb{P}(p_x,p_y)=\mathbb{P}(p_x)\mathbb{P}(p_y).
+\]
+This decoupling is an exact algebraic fact (not approximation), and can be reverse-engineered from the support structure of the synchronization state conditional distribution table (e.g., specific synchronization states appear only under single memory state).
+\end{conclusion}
+\begin{proof}[Proof]
+See Proposition \ref{prop:real-input-40-memory-marginal} and Corollary \ref{cor:real-input-40-memory-independence} (whose derivation uses the support structure of Table \ref{tab:real_input_40_parry_internal_distribution}). Proof complete.
+\end{proof}
+
+\begin{conclusion}[Hard-decision stratification and observability constants of sync-state—memory channel: mutual information and MAP accuracy exhibit \texorpdfstring{$\sqrt5$}{sqrt5} closed forms]\label{con:xi-terminal-sync-memory-hard-decision-map-accuracy}
+View synchronization state \(S\in Q\) as an observation channel for memory \(M=(p_x,p_y)\).
+Under the Parry maximum-entropy measure of \(M_{\mathrm{ess}}\), there exists a set of hard-decision synchronization states such that the posterior degenerates to a deterministic value:
+\[
+s\in\{01\text{-}1,010,11\text{-}1\}\Rightarrow \mathbb{P}(M=00\mid s)=1,
+\qquad
+s\in\{0\text{-}12,1\text{-}12\}\Rightarrow \mathbb{P}(M=11\mid s)=1,
+\]
+and the total probability of such hard-decision synchronization states is
+\[
+\mathbb{P}(01\text{-}1)+\mathbb{P}(010)+\mathbb{P}(11\text{-}1)+\mathbb{P}(0\text{-}12)+\mathbb{P}(1\text{-}12)=\frac{3}{10}.
+\]
+Moreover, the mutual information is the auditable constant
+\(
+I(S;M)\approx 0.812300
+\) bits.
+By MAP rule for online discrimination of memory (taking the maximizer of \(\mathbb{P}(\cdot\mid s)\)), the optimal achievable accuracy satisfies closed form
+\[
+\mathrm{Acc}^*(M\leftarrow S)=\sum_s \mathbb{P}(s)\max_m \mathbb{P}(m\mid s)=\frac{3\sqrt5}{10}.
+\]
+For several natural binary functions there are also closed-form optimal accuracies:
+\[
+\mathrm{Acc}^*(p_x\leftarrow S)=\mathrm{Acc}^*(p_y\leftarrow S)=\frac45,
+\qquad
+\mathrm{Acc}^*(C\leftarrow S)=\frac{17+\sqrt5}{20},
+\quad
+C:=\ind_{\{M=11\}}.
+\]
+\end{conclusion}
+\begin{proof}[Proof]
+Hard-decision stratification and its total probability are in Remark \ref{rem:real-input-40-bayes-decode}; mutual information constant is in Remark \ref{rem:real-input-40-mutual-info};
+MAP accuracy and its derived binary function closed forms are in Proposition \ref{prop:real-input-40-map-accuracies}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Universal characterization of strictification: \texorpdfstring{$G^{\mathrm{BC}}_m$}{GBCm} is the maximal visible group quotient for "completely positive visible realization existence"]\label{con:xi-terminal-strictification-maximal-cp-visible-quotient}
+Fix resolution \(m\) and let \(\mathcal{A}_m:=\CC[G^{\mathrm{BC}}_m]\).
+If the visible twisted channel family \(\{F_{\overline\chi}\}_{\overline\chi\in\widehat{G^{\mathrm{BC}}_m}}\) can be assembled into an \(\mathcal{A}_m\)-valued analytic function \(F_m:\mathbb{D}\to\mathcal{A}_m\), and
+\begin{enumerate}
+  \item Anomaly is strictly zero on visible channels;
+  \item The block Toeplitz--PSD hierarchy \(\mathbf{T}^{\mathcal{A}_m}_N(F_m)\succeq 0\) holds for all \(N\),
+\end{enumerate}
+then there exists an \(\mathcal{A}_m\)-valued positive measure \(\boldsymbol\mu_m\) such that \(F_m\) has an operator-valued Herglotz representation;
+thus all channels \(F_{\overline\chi}\) are simultaneously Fourier--Pontryagin projections of the same \(\boldsymbol\mu_m\) (completely positive visible realization exists).
+Conversely, if some group quotient \(G\twoheadrightarrow Q\) admits the above completely positive visible realization making the closed-loop interface strictly commutative, then this group quotient must uniquely factorize through \(G^{\mathrm{BC}}_m\);
+therefore strictification has the universal property of maximal visible quotient.
+\end{conclusion}
+\begin{proof}[Proof]
+See Theorem \ref{thm:xi-gbc-maximal-cp-visible-realization} (combined with Propositions \ref{prop:pom-bc-quotient-strictify}, \ref{prop:pom-bc-quotient-universal}). Proof complete.
+\end{proof}
+
+\begin{conclusion}[Centrality and channel strength spectrum carried by endpoint threshold: \texorpdfstring{$\boldsymbol\mu_m(\{-1\})$}{mu(-1)} induces non-negative scalar decomposition of irreducible channels]\label{con:xi-terminal-endpoint-atom-channel-strength-spectrum}
+Under the completely positive realization of Conclusion \ref{con:xi-terminal-strictification-maximal-cp-visible-quotient}, the endpoint \(-1\) atom
+\(
+\mathbf{M}_{-1}:=\boldsymbol\mu_m(\{-1\})\in(\mathcal{A}_m)_+
+\)
+exists and is a positive element.
+If \(G^{\mathrm{BC}}_m\) is abelian, then \(\mathcal{A}_m\) is commutative so \(\mathbf{M}_{-1}\) belongs to the center;
+more generally, if \(\boldsymbol\mu_m\) takes values in a central subalgebra, then for any irreducible component \(\pi\) we have
+\[
+(\mathbf{M}_{-1})_\pi=\lambda_\pi\,I_{d_\pi},
+\qquad
+\lambda_\pi\ge 0.
+\]
+The family \(\{\lambda_\pi\}\) gives a finite-dimensional "channel strength decomposition" for endpoint threshold carrying, compressing extreme resonance boundary layer strength to a set of non-negative spectral data under irreducible representation indexing.
+\end{conclusion}
+\begin{proof}[Proof]
+See Theorem \ref{thm:xi-endpoint-atom-central-channel-strength}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Strict identity for endpoint heat kernel probe: finite Toeplitz quadratic form monotonically extracts endpoint atom mass]\label{con:xi-terminal-endpoint-heat-kernel-probe-identity}
+Let \(\mathscr{C}(w)=c_0+2\sum_{n\ge 1}c_n w^n\) be analytic in a neighborhood of \(w=0\), and adopt the convention \(c_{-n}:=\overline{c_n}\).
+For each \(N\ge 0\) define the Toeplitz principal submatrix \(\mathbf{T}_N:=(c_{j-k})_{0\le j,k\le N}\), and let the binomial vector \(b^{(N)}\in\RR^{N+1}\) satisfy
+\[
+b^{(N)}_k:=(-1)^k\binom{N}{k}\qquad(0\le k\le N),
+\qquad
+a_N:=\frac{(b^{(N)})^{\mathsf T}\mathbf{T}_N b^{(N)}}{4^N}.
+\]
+If \(\mathscr{C}\) belongs to the Carathéodory class, then there exists unique finite positive measure \(\mu\) such that \(c_n=\int_{\TT}\xi^{-n}\,\dd\mu(\xi)\), and the strict identity holds
+\[
+a_N=\int_{\TT}\left|\frac{1-\xi}{2}\right|^{2N}\,\dd\mu(\xi)\ge 0,
+\qquad
+a_N\downarrow \mu(\{-1\})\quad(N\to\infty).
+\]
+Therefore, the endpoint threshold carrying \(\mu(\{-1\})\) can be unambiguously extracted from finite Toeplitz data in a monotone manner.
+\end{conclusion}
+\begin{proof}[Proof]
+See Theorem \ref{thm:xi-endpoint-heat-kernel-probe}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Exponential-type error bound for endpoint atom extraction: support-controlled case achieves exponential approximation]\label{con:xi-terminal-endpoint-atom-exponential-error}
+Under the setting of Conclusion \ref{con:xi-terminal-endpoint-heat-kernel-probe-identity}, take any closed set \(K\subset\TT\setminus\{-1\}\), and let
+\[
+q(K):=\sup_{\xi\in K}\left|\frac{1-\xi}{2}\right|\in(0,1).
+\]
+Then for all \(N\ge 0\) we have
+\[
+0\le a_N-\mu(\{-1\})\le q(K)^{2N}\mu(K)+\mu\!\bigl(\TT\setminus(\{-1\}\cup K)\bigr).
+\]
+In particular, if \(\mu(\TT\setminus(\{-1\}\cup K))=0\), then
+\(
+0\le a_N-\mu(\{-1\})\le q(K)^{2N}\mu(K)
+\), so that when a spectral gap exists outside the endpoint neighborhood (or support is controlled), the endpoint atom mass is extracted by \(\{a_N\}\) with exponential rate; where \(N\) serves as the strict endpoint resolution depth.
+\end{conclusion}
+\begin{proof}[Proof]
+See Corollary \ref{cor:xi-endpoint-heat-kernel-exp-error}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Threshold strength and endpoint spectral dimension: remainder decay exponent precisely equivalent to endpoint local power-law exponent]\label{con:xi-terminal-endpoint-threshold-spectral-dimension}
+Decompose the representing measure as
+\[
+\mu=\mathfrak m_{-1}\delta_{-1}+\mu_{\neq -1},
+\qquad
+\mathfrak m_{-1}:=\mu(\{-1\})\ge 0.
+\]
+Then for each \(N\ge 0\) there is the strict separation identity
+\[
+a_N=\mathfrak m_{-1}+\int_{\TT\setminus\{-1\}}\left|\frac{1-\xi}{2}\right|^{2N}\,\dd\mu_{\neq-1}(\xi),
+\qquad
+a_N-\mathfrak m_{-1}\downarrow 0,
+\]
+so that \(\mathfrak m_{-1}\) is the unique zeroth-order strength parameter of endpoint threshold carrying. Further, if \(\mu_{\neq -1}\) satisfies a local power law in the endpoint angular window: there exist \(\alpha>-1\) and constants \(K_\pm\ge 0\) such that as \(\varepsilon\downarrow 0\)
+\[
+\mu_{\neq -1}\bigl(\{\pi<\arg\xi<\pi+\varepsilon\}\bigr)=K_+\,\varepsilon^{\alpha+1}+o(\varepsilon^{\alpha+1}),
+\qquad
+\mu_{\neq -1}\bigl(\{\pi-\varepsilon<\arg\xi<\pi\}\bigr)=K_-\,\varepsilon^{\alpha+1}+o(\varepsilon^{\alpha+1}),
+\]
+then the remainder has power-law asymptotics
+\[
+a_N-\mathfrak m_{-1}\sim (\alpha+1)\,2^{\alpha}\,
+\Gamma\!\left(\frac{\alpha+1}{2}\right)\,
+(K_++K_-)\,N^{-(\alpha+1)/2}\qquad (N\to\infty).
+\]
+Especially when \(\mu\) is absolutely continuous in a neighborhood of \(\xi=-1\) and the angular density \(f(\theta)\) is continuous at \(\theta=\pi\) with \(f(\pi)>0\), we have \(\alpha=0\) and
+\[
+a_N-\mathfrak m_{-1}\sim 2f(\pi)\sqrt{\frac{\pi}{N}}.
+\]
+Thus the endpoint local spectral dimension exponent (Definition \ref{def:xi-endpoint-spectral-dimension}) can be directly identified from the power-law decay rate of \(a_N-\mathfrak m_{-1}\).
+\end{conclusion}
+\begin{proof}[Proof]
+See Corollary \ref{cor:xi-endpoint-atom-separation} and Theorem \ref{thm:xi-endpoint-spectral-dimension-laplace}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Adams--Toeplitz--PSD derived hierarchy: Carathéodory positivity closes under power covering]\label{con:xi-terminal-adams-toeplitz-psd-hierarchy}
+If \(\mathscr{C}(w)=c_0+2\sum_{n\ge 1}c_n w^n\) belongs to the Carathéodory class and is represented by positive measure \(\mu\), then for each \(m\ge 1\) define the pushforward measure \(\mu_m:=(\xi\mapsto\xi^m)_\ast\mu\). Its moments satisfy
+\[
+c^{(m)}_n:=\int_{\TT}\xi^{-n}\,\dd\mu_m(\xi)=c_{mn}.
+\]
+Therefore, for any \(N,m\ge 1\), the sparse Toeplitz principal submatrix family
+\[
+\mathbf{T}^{(m)}_N:=\bigl(c_{m(j-k)}\bigr)_{0\le j,k\le N}\succeq 0
+\]
+automatically holds. This derived hierarchy, without changing the positivity certificate regime, directly couples endpoint compression with external scale parameter \(m\), forming a family of multi-scale PSD constraints whose resolution can be tuned with \(m\).
+\end{conclusion}
+\begin{proof}[Proof]
+See Proposition \ref{prop:xi-adams-pushforward-toeplitz-principal-minor-monotonicity} and equation \eqref{eq:xi-adams-toeplitz-psd}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Scale exchange law: power covering transports endpoint boundary layer defects to arbitrary compact subdisks and produces height-independent Jensen positive defect]\label{con:xi-terminal-scale-exchange-power-covering-jensen}
+Under self-dual completion and fixed slice regime, the disk image \(w_\rho\) of off-slice point-state defect is structurally compressed by Cayley--Busemann to the endpoint boundary layer (Theorem \ref{thm:xi-offcritical-quadratic-radial-compression}).
+The Adams--Norm folding gate along power covering \(\pi_m(\omega)=\omega^m\) can transport this point-state defect in the endpoint boundary layer to any preset compact subdisk: for any \(r_\star\in(0,1)\) there exists explicit scale \(m_\star\) such that \(|w_\rho|^{m_\star}\le r_\star\).
+Moreover, it produces a height-independent Jensen positive defect lower bound at fixed radius \(R\in(r_\star,1)\):
+\[
+D_{\mathrm{Nm}_{m_\star}[F_\zeta]}(R)\ \ge\ \log\!\frac{R}{r_\star}\ >\ 0.
+\]
+This conclusion provides a regime-auditable exchange mechanism: quadratic compression presses off-slice information into the endpoint boundary layer, while power covering/folding gate decompresses it to fixed radius with scale parameter \(m_\star\) and manifests via Jensen defect.
+\end{conclusion}
+\begin{proof}[Proof]
+See Corollary \ref{cor:xi-adams-norm-fixed-radius-jensen-certificate} (combined with equations \eqref{eq:xi-adams-norm-mstar-def}--\eqref{eq:xi-adams-norm-mstar-radius}). Proof complete.
+\end{proof}
+
+\begin{conclusion}[Binary orthogonal decomposition of endpoint renormalization: universal \texorpdfstring{$\zeta$}{zeta}-pole \texorpdfstring{$\oplus$}{oplus} discrete \texorpdfstring{$\chi_4$}{chi4} intrinsic residue]\label{con:xi-terminal-endpoint-renormalization-zeta-chi4-orthogonal}
+Under completion coordinates \(S=r+r^{-1}\), the minimal anti-invariant fiber coordinate is \(\delta:=r-r^{-1}\), satisfying minimal closure of the anti-invariant part
+\(
+\mathcal{A}^{-}=\delta\,\ZZ[S]
+\)
+(Remark \ref{rem:endpoint-inv-antiinv-min-closure}).
+The odd Chebyshev--Adams adjoint family satisfies the identity
+\[
+D_d(S,\delta)=\delta\,U_{d-1}(S/2),
+\]
+thus at the endpoint branch \(r=\pm\mathrm{i}\) we have \(S=0\) and
+\[
+\frac{D_d(0,\delta)}{\delta}=U_{d-1}(0)=\sin(d\pi/2)=:\varepsilon(d)\in\{-1,0,1\}.
+\]
+This endpoint channel index \(\varepsilon(d)\) yields a complete odd-class splitting modulo \(4\), and strictly agrees with the nontrivial Dirichlet character \(\chi_4\): \(\varepsilon(d)=\chi_4(d)\) (Theorem \ref{thm:endpoint-four-channel-chi4}).
+Further, the anti-invariant endpoint observable is analytic as \(\sigma\downarrow 0\) and satisfies
+\[
+\lim_{\sigma\downarrow 0}\mathcal O(\mathcal W_{\sigma}^{\delta}G)
+=L(1,\chi_4)\,\mathcal O(G)=\frac{\pi}{4}\,\mathcal O(G),
+\]
+while orthogonally, all divergence in the even channel appears only along the rank-one direction and is completely controlled by the pole of \(\zeta(1+\sigma)\) (Theorem \ref{thm:endpoint-even-finite-part-renormalization}).
+Therefore, the non-compactness after endpoint renormalization can be compressed as "universal \(\zeta\)-pole \(\oplus\) discrete \(\chi_4\) intrinsic residue" binary orthogonal decomposition.
+\end{conclusion}
+\begin{proof}[Proof]
+Chebyshev--Adams identity and \(\varepsilon=\chi_4\) are in Proposition \ref{prop:endpoint-odd-chebyshev-identity} and Theorem \ref{thm:endpoint-four-channel-chi4};
+anti-invariant channel limit is in Corollary \ref{cor:endpoint-odd-analytic-at-zero};
+pole control and residue decomposition of even channel are in Remark \ref{rem:endpoint-renormalization-universal-pole-discrete-hair} (and see Remark \ref{rem:endpoint-obstruction-dichotomy}).
+Proof complete.
+\end{proof}
+
+\begin{conclusion}[Block Toeplitz diagonalization for finite abelian visible quotients: single block PSD certificate equivalent to all-channel PSD]\label{con:xi-terminal-abelian-block-toeplitz-diagonalization}
+Let \(\mathcal{A}\) be a finite-dimensional \(C^\ast\)-algebra, and take analytic function \(F:\mathbb{D}\to\mathcal{A}\).
+Then the following are equivalent: \(\Re F(w)\succeq 0\) (operator-valued Carathéodory), for each irreducible representation \(\pi\) we have \(\Re F_\pi(w)\succeq 0\), and for each \(N\ge 0\) the block Toeplitz truncation \(\mathbf{T}^{\mathcal{A}}_N(F)\succeq 0\).
+In particular, when \(\mathcal{A}=\CC[H]\) and \(H\) is a finite abelian group, under Fourier--Pontryagin dual decomposition \(\mathbf{T}^{\mathcal{A}}_N(F)\) is unitarily equivalent to the direct sum matrix \(\bigoplus_{\chi\in\widehat H}\mathbf{T}_N(F_\chi)\); therefore
+\[
+\mathbf{T}^{\mathcal{A}}_N(F)\succeq 0\ \Longleftrightarrow\ \forall\chi\in\widehat H,\ \mathbf{T}_N(F_\chi)\succeq 0.
+\]
+Thus "channel-by-channel PSD verification" can be unified as a single block Toeplitz--PSD feasible domain (single semi-definite certificate); combined with the Adams--Toeplitz derived hierarchy of Conclusion \ref{con:xi-terminal-adams-toeplitz-psd-hierarchy}, full-scale, all-channel positivity verification can be implemented under a single block certificate regime.
+\end{conclusion}
+\begin{proof}[Proof]
+See Theorem \ref{thm:xi-fourier-pontryagin-block-toeplitz} and Corollary \ref{cor:xi-abelian-block-toeplitz-directsum}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Anomaly class and scattering winding number are the same obstruction: commutation-failure residue and topological winding number strictly align in visible regime]\label{con:xi-terminal-anom-winding-obstruction-equivalence}
+Fix resolution \(m\) and consider the unitary-slice scattering determinant loops induced by visible twisted channels
+\(\{\det\mathcal S_{\overline\chi}\}_{\overline\chi\in\widehat{G^{\mathrm{BC}}_m}}\).
+If anomaly is strictly zero on visible channels, then each visible channel's scattering loop can take high-energy normalization
+\(\det\mathcal S_{\overline\chi}(\infty)=1\), and satisfies
+\[
+\mathrm{Wind}\bigl(\det\mathcal S_{\overline\chi}\bigr)=0
+\qquad(\forall\,\overline\chi\in\widehat{G^{\mathrm{BC}}_m}),
+\]
+thus all visible channels' true resonance indices vanish under finite-type point resonance regime.
+Conversely, if for some group quotient \(G\twoheadrightarrow H\) all visible channels can achieve the above normalization and zero winding number, then this group quotient must uniquely factorize through \(G^{\mathrm{BC}}_m\), and make anomaly strictly zero on \(H\).
+Therefore, "algebraic residue" (anomaly class) and "topological winding number" constitute the same obstruction class in the visible regime.
+\end{conclusion}
+\begin{proof}[Proof]
+See Theorem \ref{thm:xi-anom-winding-obstruction} (alignment of true resonance index with winding number/Blaschke degree is given by Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity}). Proof complete.
+\end{proof}
+
+\begin{conclusion}[Finite frontier principle for bounded slices: certificate search and compilation optimization degenerate to finite enumeration at each resolution level]\label{con:xi-terminal-finite-frontier-principle}
+Within any fixed bounded complexity slice \(\mathbf{PW}^{\ast}_{\le}\), take the conservative semantic functor \(\mathsf{Sem}\) and any cost functor \(\mathcal{C}\).
+Then for any projection word \(w\in \mathbf{PW}^{\ast}_{\le}\), its semantic equivalence class \([w]\)'s image in the cost domain \(\mathcal{C}([w])\subseteq \mathbb{T}^{(2)}\) has a finite Pareto frontier, and can be constructed by finite enumeration.
+Therefore, any certificate objective with "interface normal-form parameters—anomaly signature—spectrum fingerprint" as auditable output must degenerate to finite enumeration and finite verification at each fixed resolution level; difficulty is strictly concentrated in "slice upper-bound growth law with resolution" rather than implementation details.
+\end{conclusion}
+\begin{proof}[Proof]
+See Theorem \ref{thm:xi-finite-frontier-certificate}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Geometrization of input legitimacy constraints produces constant-level spectral jump: addition projection collision constant drops significantly on real kernel]\label{con:xi-terminal-addition-collision-spectrum-constant-factor-drop}
+Write the collision spectrum constant for "addition as one projection" co-image as \(r^{\mathrm{add}}_q\) (the Perron root of the corresponding \(q\)-collision moment-kernel; see Appendix \ref{app:add-collision-spectrum}).
+Between unconstrained input (10-state normalized kernel driving) and real-input constraint (40-state kernel encoding Zeckendorf legitimacy) there exists significant constant difference:
+\[
+r^{\mathrm{add}}_{2,\mathrm{sync}}\approx 8.7430515,\qquad
+r^{\mathrm{add}}_{2,\mathrm{real}}\approx 3.9985433,
+\qquad
+\frac{r^{\mathrm{add}}_{2,\mathrm{sync}}}{r^{\mathrm{add}}_{2,\mathrm{real}}}\approx 2.186559.
+\]
+This "constant-factor-level drop at exponential scale" provides a directly reportable value anchor: the real-input kernel is not only closer to arithmetic objects, but also carries independent information (characterized by collision leading scale) in the space loss spectrum that cannot be substituted by unconstrained normalizers.
+\end{conclusion}
+\begin{proof}[Proof]
+See Proposition \ref{prop:addition-collision-spectrum-sync10-vs-real40} and Table \ref{tab:add-collision-spectrum-10-vs-40}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Folding output's endogenous Gibbs specification and Parry baseline nearly isentropic: maximum entropy gap descends to microbit level and KL rate equals entropy gap]\label{con:xi-terminal-fold-output-gibbs-parry-microbit-gap}
+Fitting the block frequency of Fold output distribution \(\pi_m(x)=d_m(x)/2^m\) yields a two-state Markov specification \(P_{\mathrm{fit}}\), whose one-step transition differs from the golden-mean Parry baseline only at \(10^{-3}\) magnitude (e.g., \(P_{\mathrm{fit}}(1\mid 0)=0.3829949\) versus \(P_{\mathrm{Parry}}(1\mid 0)=0.3819660\)).
+More crucially is the micro-gap at entropy-rate level:
+\[
+h_{\mathrm{fit}}\approx 0.481210204266,\quad
+\log\varphi\approx 0.481211825060,\quad
+\Delta h:=\log\varphi-h_{\mathrm{fit}}\approx 1.620794\times 10^{-6}\ \text{nats/symbol}.
+\]
+Moreover, the KL divergence rate satisfies the strict consistency identity
+\[
+D_{\mathrm{KL}}^{\mathrm{rate}}(P_{\mathrm{fit}}\|P_{\mathrm{Parry}})=\log\varphi-h_{\mathrm{fit}}=\Delta h,
+\]
+so that the folding-induced "deviation" is mainly manifested as constant-level fingerprint (finite part/endpoint layer), rather than structural collapse at the entropy-rate level.
+\end{conclusion}
+\begin{proof}[Proof]
+See Remark \ref{rem:pom-gibbs-markov-fit} and Remark \ref{rem:pom-gibbs-parry-entropy-gap} (where numerical certificates are generated by \texttt{scripts/exp\_fold\_output\_gibbs\_markov\_fit.py} and incorporated into text via \texttt{\string\input}). Proof complete.
+\end{proof}
+
+\begin{conclusion}[Endpoint mass yields over-determined constraint audit for golden constant: two independent ratio estimates must co-converge to \texorpdfstring{$\varphi$}{phi} under Parry model]\label{con:xi-terminal-parry-endpoint-mass-overdetermined-phi-audit}
+Define endpoint mass from any empirical histogram \(\hat\pi_{m,N}\):
+\[
+\widehat M_{ij}(m):=\sum_{\substack{u\in X_m\\ u_1=i,\ u_m=j}}\hat\pi_{m,N}(u).
+\]
+If data approach the golden-mean Parry baseline at resolution \(m\), then two mutually independent golden-constant estimators can be constructed:
+\[
+\widehat\varphi_{(00/01)}(m):=\frac{\widehat M_{00}(m)}{\widehat M_{01}(m)}\cdot \frac{F_{m-1}}{F_m},
+\qquad
+\widehat\varphi_{(01/11)}(m):=\frac{\widehat M_{01}(m)}{\widehat M_{11}(m)}\cdot \frac{F_{m-2}}{F_{m-1}}.
+\]
+Under the Parry true model, both converge in the limit sense to the same constant \(\varphi\), thus forming a low-dimensional, over-determined self-consistency audit mechanism: any deviation from Parry endpoint structure will cause the two ratio estimates to produce detectable inconsistency.
+\end{conclusion}
+\begin{proof}[Proof]
+See Corollary \ref{cor:parry-endpoint-phi-estimators}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Bayesian inverse and zero-knowledge factorization under modular group criterion: "visible closure invariance" of completely positive channel yields sufficient and necessary characterization]\label{con:xi-terminal-bayesian-inverse-zk-factorization-invariance}
+In the operator algebra setting, existence of Bayesian inverse \(F^\sharp\) is controlled by the Tomita--Takesaki modular group criterion.
+Once \(F^\sharp\) exists, for any normal completely positive transcript channel \(\Phi:\mathcal{M}\to\mathcal{T}\), the following are equivalent:
+\begin{enumerate}
+  \item There exists normal completely positive map \(S:\mathcal{N}\to\mathcal{T}\) such that \(\Phi=S\circ F^\sharp\) (perfect zero-knowledge factorization relative to \(\mathcal{N}\));
+  \item \(\Phi\) is invariant under the visible closure idempotent \(K:=F\circ F^\sharp\): \(\Phi=\Phi\circ K\).
+\end{enumerate}
+Moreover, under the equivalence condition, \(S\) in the decomposition \(\Phi=S\circ F^\sharp\) is unique and satisfies \(S=\Phi|_{\mathcal{N}}\).
+Therefore, "zero-knowledge/factorizable" descends from a constructive problem to a single invariance test.
+\end{conclusion}
+\begin{proof}[Proof]
+See Theorem \ref{thm:op-algebra-bayes-inverse-zk}. Proof complete.
+\end{proof}

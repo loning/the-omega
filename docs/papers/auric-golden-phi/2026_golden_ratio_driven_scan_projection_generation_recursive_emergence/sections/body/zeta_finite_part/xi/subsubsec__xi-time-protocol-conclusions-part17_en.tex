@@ -1,0 +1,151 @@
+% (User input window)
+% 2026-02-14 15:43:22 (Asia/Singapore, UTC+08)
+
+\paragraph{Cross-interface terminal conclusions: Golden mean finite-volume regenerative decomposition, strong remainder of spectral law, and numerical/budget robustness of Toeplitz certificates}
+This paragraph compresses the finite-volume combinatorial structure of the Fibonacci cube (golden mean SFT), the strong remainder bounds for mixed boundary discrete spectral laws, and the numerical robustness and information budget threshold of horizon Toeplitz--PSD certificates into independently citable conclusion entries.
+Proofs only point to corresponding completed theorems/propositions/corollaries without repeating derivation details.
+
+\begin{conclusion}[Strict DLR--regenerative decomposition of golden mean finite volume: any \(k\)-point function is completely independent under ``forced-zero'' partition]\label{con:xi-terminal-golden-mean-dlr-regeneration-factorization}
+On the Fibonacci cube graph \(\Gamma_n\), take uniform counting and denote the legal word set \(X_n:=V(\Gamma_n)\) (Definition \ref{def:pom-fibonacci-cube}).
+For any index set \(S=\{i_1<\cdots<i_k\}\subseteq\{1,\dots,n\}\), if there exists \(j\) such that \(i_{j+1}-i_j=1\), then the constraint is infeasible and
+\[
+\#\{v\in X_n:\ v_{i_j}=1\ \forall j\}=0.
+\]
+If the spacing condition \(i_{j+1}-i_j\ge 2\) is satisfied, then there exists a strict product factorization
+\[
+\#\{v\in X_n:\ v_{i_j}=1\ \forall j\}
+=F_{i_1}\Bigl(\prod_{j=1}^{k-1}F_{i_{j+1}-i_j-1}\Bigr)F_{n-i_k+1},
+\qquad |X_n|=F_{n+2}.
+\]
+Therefore, under the finite-volume Gibbs/DLR caliber, the conditional events \(\{v_{i_j}=1\}\) force the adjacent positions to \(0\) on both sides of each \(i_j\), and split the system into \(k+1\) mutually disjoint free intervals;
+under this condition, the configurations on each free interval are strictly independent, and each segment is uniformly distributed over the corresponding length golden mean SFT.
+\end{conclusion}
+\begin{proof}
+See Theorem \ref{thm:pom-fibcube-kpoint-count}; where ``adjacent positions are forced to \(0\)'' and free segment splitting are precisely the structural source of the product factorization, so conditional independence also follows.
+\end{proof}
+
+\begin{conclusion}[Finite volume \texorpdfstring{$\Rightarrow$}{=>} Parry bulk phase at exponential rate: error locked solely by the second eigenvalue \texorpdfstring{$-\varphi^{-2}$}{-phi^{-2}}]\label{con:xi-terminal-unif-xn-to-parry-exp-rate}
+Let \(\nu_{\mathrm{Parry}}\) be the Parry maximum entropy equilibrium state of the golden mean SFT (Theorem \ref{thm:pom-parry-limit-chain-explicit}), whose two-state Markov transition matrix has unique nontrivial eigenvalue \(\lambda_2=-\varphi^{-2}\).
+For the uniform legal word \(U_n:=\mathrm{Unif}(X_n)\), take any fixed block length \(k\ge 1\).
+Then there exists a constant \(C_k\) such that for any position \(t\) and
+\(
+d:=\min\{t-1,\ n-t-k+1\}
+\),
+the exponential-type bulk phase convergence bound holds:
+\[
+\sup_{a_1\cdots a_k\in X_k}\Bigl|
+U_n(X_t\cdots X_{t+k-1}=a_1\cdots a_k)-\nu_{\mathrm{Parry}}([a_1\cdots a_k])
+\Bigr|
+\le C_k\,\varphi^{-2d}.
+\]
+Therefore, the correlation length and boundary influence decay rate from finite volume to bulk phase are both completely locked by the same algebraic constant \(\varphi^{-2}=|\lambda_2|\).
+\end{conclusion}
+\begin{proof}
+Local statistics convergence to the Parry measure is given by Proposition \ref{prop:pom-unif-xn-local-limit-parry}.
+Writing the cylinder set count as a product of power matrix elements of the golden mean adjacency matrix \(A\), and applying Perron--Frobenius decomposition to the left and right completion segments respectively, we can compress the error term precisely to the contribution of the sub-mode;
+since the second eigenvalue of \(A\) is \(-\varphi^{-1}\), the normalized error decays as \((|\varphi^{-1}|/\varphi)^d=\varphi^{-2d}\) in the sense of distance \(d\) from the boundary.
+Incorporating the constant for finitely many legal blocks into \(C_k\) yields the indicated upper bound.
+\end{proof}
+
+\begin{conclusion}[Closed forms for edges and average degree of fiber cube geometry: average degree linear coefficient exactly \texorpdfstring{$\frac{2}{5}(3-\varphi)$}{(2/5)(3-phi)}]\label{con:xi-terminal-fibcube-edge-avg-degree-closed}
+The number of edges and vertices of the Fibonacci cube \(\Gamma_n\) satisfy the closed forms
+\[
+|E(\Gamma_n)|=\frac{nF_{n+1}+2(n+1)F_n}{5},
+\qquad
+|V(\Gamma_n)|=F_{n+2},
+\]
+so the average degree is
+\[
+\overline{\deg}(\Gamma_n)
+=\frac{2|E(\Gamma_n)|}{|V(\Gamma_n)|}
+=\frac{2}{5}\left(
+n\frac{F_{n+1}}{F_{n+2}}+2(n+1)\frac{F_n}{F_{n+2}}
+\right)
+\sim \frac{2}{5}(3-\varphi)\,n.
+\]
+Furthermore, if the fiber reconstruction graph \(\mathcal F_x\) admits a Cartesian factorization
+\(
+\mathcal F_x\cong\prod_{i=1}^r\Gamma_{\ell_i}
+\)
+(Theorem \ref{thm:pom-fiber-reconstruction-cartesian-product}), then we have the complete closed forms for edges and average degree:
+\[
+|E(\mathcal F_x)|
+=\sum_{i=1}^r |E(\Gamma_{\ell_i})|\prod_{j\ne i}|V(\Gamma_{\ell_j})|,
+\qquad
+\overline{\deg}(\mathcal F_x)=\sum_{i=1}^r \overline{\deg}(\Gamma_{\ell_i}).
+\]
+Therefore, the ``local switchability'' scale of fibers strictly linearly scales in the bulk phase limit, anchored by the same coefficient \(\frac{2}{5}(3-\varphi)\) (with additive contribution from long components).
+\end{conclusion}
+\begin{proof}
+The edge count closed form and average degree formula for \(\Gamma_n\) are given by Corollary \ref{cor:pom-fibcube-edge-closed-form}.
+The Cartesian decomposition of fibers is given by Theorem \ref{thm:pom-fiber-reconstruction-cartesian-product}.
+For Cartesian product graphs, the edge set decomposes by ``selecting one edge in one factor and fixing vertices in the remaining factors,'' so we obtain the edge count formula; the average degree additivity follows from
+\(
+2|E|/|V|
+\)
+and the multiplicativity of vertex counts.
+\end{proof}
+
+\begin{conclusion}[Strong version of discrete Weyl law: counting function error strictly bounded by \(1\) over the entire interval, hence Kolmogorov distance is \(O(1/k)\)]\label{con:xi-terminal-discrete-weyl-strong-remainder}
+For spectral parameter \(\mu\in(0,4)\), let \(\theta(\mu)=\arccos(1-\mu/2)\in(0,\pi)\), and define the counting function
+\(
+N_k(\mu)=\#\{p\le k:\mu_p\le\mu\}
+\).
+Then there exists a completely explicit inverse-function formula
+\[
+N_k(\mu)=\Bigl\lfloor \frac{2k+1}{2\pi}\theta(\mu)+\frac12\Bigr\rfloor,
+\qquad
+\Bigl|N_k(\mu)-\frac{2k+1}{2\pi}\theta(\mu)\Bigr|\le 1
+\quad(\forall\mu\in(0,4)).
+\]
+Therefore, the empirical distribution function \(F_k(\mu):=N_k(\mu)/k\) uniformly approximates the limit distribution function \(F(\mu)=\theta(\mu)/\pi\) over the entire interval with \(O(1/k)\) precision.
+\end{conclusion}
+\begin{proof}
+See Corollary \ref{cor:pom-Lk-discrete-weyl}.
+\end{proof}
+
+\begin{conclusion}[Boundary spectral law is a strict quadratic tilt of the bulk spectral law: \texorpdfstring{$\dd\rho(\mu)=\frac{\mu(4-\mu)}{2}\,\dd\nu(\mu)$}{d rho=(mu(4-mu)/2)d nu}]\label{con:xi-terminal-boundary-bulk-spectral-quadratic-tilt}
+Let \(\nu\) be the bulk phase limit measure and \(\rho\) be the boundary limit measure.
+Then they satisfy the exact Radon--Nikodym relation
+\[
+\dd\rho(\mu)=\frac{\mu(4-\mu)}{2}\,\dd\nu(\mu),
+\qquad
+\int f(\mu)\,\dd\rho(\mu)=\frac12\int \mu(4-\mu)\,f(\mu)\,\dd\nu(\mu).
+\]
+Therefore, all integrable functionals of boundary spectral statistics can be exactly computed under the bulk measure with a single weighting/change of measure.
+\end{conclusion}
+\begin{proof}
+See Corollary \ref{cor:pom-Lk-boundary-bulk-radon-nikodym}.
+\end{proof}
+
+\begin{conclusion}[Numerical certificate robustness of Toeplitz--PSD: spectral margin and coefficient error yield completely explicit feasible region]\label{con:xi-terminal-toeplitz-psd-numerical-robustness}
+Let \(\mathbf{T}_N=(c_{j-k})_{0\le j,k\le N}\) be the Toeplitz truncation matrix, and \(\widehat{\mathbf{T}}_N=(\widehat c_{j-k})\) be any Hermitian approximation.
+If there exists a verifiable spectral margin \(\lambda_{\min}(\widehat{\mathbf{T}}_N)\ge\eta>0\) and the truncation error satisfies
+\(
+\|\widehat{\mathbf{T}}_N-\mathbf{T}_N\|_{\mathrm{op}}\le \eta/2
+\),
+then we must have \(\mathbf{T}_N\succeq 0\).
+Moreover, if the coefficient-wise error satisfies \(\max_{0\le n\le N}|\widehat c_n-c_n|\le\varepsilon\), then
+\[
+\|\widehat{\mathbf{T}}_N-\mathbf{T}_N\|_{\mathrm{op}}
+\le\sum_{k=-N}^{N}|\widehat c_k-c_k|
+\le (2N+1)\varepsilon.
+\]
+Therefore, finite-order Toeplitz--PSD verification can be reduced to a numerical--algebraic hybrid certificate chain of ``compute the minimum eigenvalue of \(\widehat{\mathbf{T}}_N\) and give a verifiable error bound.''
+\end{conclusion}
+\begin{proof}
+See Theorem \ref{thm:xi-spectral-margin-finite-psd-certificate}.
+\end{proof}
+
+\begin{conclusion}[Refutation threshold for single-atom negative defect is \texorpdfstring{$1/(N+1)$}{1/(N+1)} order and sharp: minimum information budget for horizon order is precisely locked]\label{con:xi-terminal-toeplitz-negative-atom-threshold-sharp}
+Under the horizon Toeplitz certificate caliber, consider the confrontation of a background positive measure with a single-atom negative defect \(\varepsilon\,\delta_{\xi_0}\).
+There exist density lower bound \(m_0\) and upper bound \(M_0\) such that:
+\begin{enumerate}
+  \item If \(\varepsilon\le m_0/(N+1)\), then for all \(x\in\CC^{N+1}\) we have \(x^\ast \mathbf{T}_N x\ge 0\), so \(\mathbf{T}_N\succeq 0\) (negative defect is completely absorbed by the background, horizon irrefutable).
+  \item If \(\varepsilon> M_0/(N+1)\), then there exists an explicit direction \(u_k=\xi_0^{-k}\) such that \(u^\ast\mathbf{T}_N u<0\), so \(\mathbf{T}_N\not\succeq 0\) (negative defect must be detected at the \(N\)-th level).
+\end{enumerate}
+Therefore, the refutability threshold for single-atom defects is strictly of order \(1/(N+1)\) and is sharp: to forcibly distinguish an \(\varepsilon\)-level defect, one must have horizon order budget \(N\gtrsim \varepsilon^{-1}\).
+\end{conclusion}
+\begin{proof}
+See Proposition \ref{prop:discussion-toeplitz-negative-atom-threshold}.
+\end{proof}

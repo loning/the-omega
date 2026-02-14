@@ -1,0 +1,788 @@
+\subsection{Folding Index and Projection Entropy Rate}\label{subsec:pom-projection-entropy}
+This section builds upon the canonical section from the full shift window $\Omega_m$ to the golden mean SFT language $X_m$ as presented in the paper: $X_m$ is the length-$m$ language with forbidden word $(11)$, $\Fold_m:\Omega_m\to X_m$ projects any window microstate onto this syntactic block, and $\Phi_m$ lifts window output to sequence-level sofic factorization; the corresponding labeled graph $G_m$ is constructed from length-$(m-1)$ suffix states with single-bit appending (Definition \ref{def:G_m}). Within this framework, fiber multiplicity $d_m(x)$ and conditional expectation $E_m$ constitute two types of interfaces for the canonical projection $P_Z$; the following results establish their scale structure.
+\begin{definition}[Folding index and projection entropy rate]\label{def:pom-fold-index}
+Define
+\[
+I_m:=\frac{|\Omega_m|}{|X_m|}=\frac{2^m}{F_{m+2}},
+\qquad
+S_Z(m):=\log I_m,
+\qquad
+h_Z:=\lim_{m\to\infty}\frac{S_Z(m)}{m}.
+\]
+$I_m$ is the average multiplicity index induced by folding, $S_Z(m)$ and $h_Z$ characterize the projection entropy rate at resolution $m$ and per unit resolution, respectively.
+\end{definition}
+
+\begin{proposition}[Asymptotics of folding index]\label{prop:pom-projection-entropy}
+We have
+\[
+S_Z(m)=m\log\!\left(\frac{2}{\varphi}\right)+O(1),
+\qquad
+h_Z=\log\!\left(\frac{2}{\varphi}\right).
+\]
+\end{proposition}
+\begin{proof}
+This follows directly from the asymptotic formula
+\(
+I_m\sim C(2/\varphi)^m
+\)
+in Appendix \ref{app:fold-multiplicity}.
+\end{proof}
+
+\begin{corollary}[Space threshold for insufficient resolution]\label{cor:pom-resolution-threshold}
+If one wishes that each stable type corresponds on average to no more than $R$ microstates, then one must satisfy
+\[
+m\lesssim \frac{\log R}{\log(2/\varphi)}.
+\]
+In other words, under the fixed calibration of stable vocabulary $X_m$ as forbidding word $(11)$, the average folding multiplicity $I_m\asymp (2/\varphi)^m$ grows with increasing $m$; if one wishes to control the average multiplicity within $R$, then the window resolution $m$ cannot increase without bound.
+\end{corollary}
+
+\begin{remark}[Binary slope of folding entropy]\label{rem:pom-fold-bits}
+Define the folding entropy in binary units
+\[
+S_Z^{(2)}(m):=\log_2\frac{2^m}{F_{m+2}}.
+\]
+Then
+\[
+S_Z^{(2)}(m)=m\log_2\!\left(\frac{2}{\varphi}\right)+O(1)
+\approx 0.305758\,m+O(1),
+\]
+giving the average information content compressed per additional bit of resolution.
+\end{remark}
+
+\subsubsection{Maximal Fiber Multiplicity of Window Folding}\label{subsec:pom-max-fiber}
+Write
+\[
+d_m(x):=\left|\Fold_m^{-1}(x)\right|,
+\qquad
+D_m:=\max_{x\in X_m} d_m(x).
+\]
+
+\begin{remark}[Average vs worst constraint: constant ratio of resolution thresholds]\label{rem:pom-avg-vs-max-threshold}
+Fix threshold $R$. To require average constraint $\overline d_m=I_m\le R$, by Proposition \ref{prop:pom-projection-entropy} we obtain
+\[
+m_{\mathrm{avg}}(R)=\frac{\log R}{\log(2/\varphi)}+O(1).
+\]
+To require worst constraint $D_m\le R$, by Theorem \ref{thm:pom-max-fiber}'s $D_m=\Theta(\varphi^{m/2})$ we obtain
+\[
+m_{\max}(R)=\frac{2\log R}{\log\varphi}+O(1).
+\]
+Therefore the ratio of these two thresholds at leading order is a constant
+\[
+\boxed{\;
+\frac{m_{\max}(R)}{m_{\mathrm{avg}}(R)}
+\approx
+\frac{2\log(2/\varphi)}{\log\varphi}
+\approx 0.881\; }.
+\]
+This indicates that under the same threshold $R$, controlling worst fiber relative to controlling average fiber requires only an additional constant factor of strictness (approximately $12\%$), consistent with Remark \ref{rem:pom-defect-gap}'s minimal exponential base for worst/average.
+\end{remark}
+\subsubsection{Information Ledger: Visible Entropy + Fiber Volume - Residual Information}\label{subsec:pom-information-ledger}
+Fix resolution $m$, let $\Omega_m=\{0,1\}^m$, $X_m$ be the stable language block forbidding $(11)$, and set $\Fold_m:\Omega_m\to X_m$ as the folding projection.
+Write the probability simplices as $\Delta(\Omega_m),\Delta(X_m)$.
+Define the pushforward (readout) operator
+\[
+P_m:=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m),
+\qquad
+(P_m\mu)(x)=\sum_{\Fold_m(a)=x}\mu(a),
+\]
+and the fiber-uniform lift (maximal symmetric lift) kernel
+\[
+Q_m:\Delta(X_m)\to\Delta(\Omega_m),
+\qquad
+(Q_m\pi)(a)=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))}.
+\]
+Then $P_m\circ Q_m=\mathrm{id}_{\Delta(X_m)}$ (see Theorem \ref{prop:fold-pushforward-lift} in Appendix \ref{app:op-algebra}).
+
+The above readout-lift structure provides a clear typed interpretation for the three ledger terms: $H(\pi)$ is the entropy of visible stable types, $\mathbb{E}_{\pi}[\log d_m(X)]$ is the fiber residual scale (invisible capacity), and $D_{\mathrm{KL}}(\mu\|\mu^{e})$ is the auditable residual information of microscopic distribution deviating from fiber-uniform lift under the same macrostate (where $\mu^{e}:=Q_m\pi$); Theorem \ref{thm:pom-kl-ledger} establishes their exact identity.
+
+\begin{theorem}[Relative entropy defect identity: closed form of information ledger]\label{thm:pom-kl-ledger}
+Take arbitrary $\mu\in\Delta(\Omega_m)$, denote its stable pushforward as $\pi:=P_m\mu\in\Delta(X_m)$, and let
+\[
+\mu^{e}:=Q_m\pi\in\Delta(\Omega_m)
+\]
+be the fiber-uniform lift of $\pi$ (i.e., conditionally uniform on each fiber).
+Define Shannon entropy and KL divergence (using natural logarithm)
+\[
+H(\nu):=-\sum_{s}\nu(s)\log\nu(s),
+\qquad
+D_{\mathrm{KL}}(\mu\|\nu):=\sum_{s}\mu(s)\log\frac{\mu(s)}{\nu(s)}.
+\]
+Then there holds the exact identity
+\[
+\boxed{\;
+H(\mu)=H(\pi)+\mathbb{E}_{\pi}\!\bigl[\log d_m(X)\bigr]\;-\;D_{\mathrm{KL}}(\mu\|\mu^{e}).
+\;}
+\]
+\end{theorem}
+\begin{proof}
+Expanding by KL definition yields
+\(
+D_{\mathrm{KL}}(\mu\|\mu^{e})=-H(\mu)-\sum_{a\in\Omega_m}\mu(a)\log\mu^{e}(a)
+\).
+Now
+\(
+\log\mu^{e}(a)=\log\pi(x)-\log d_m(x)
+\)
+where $x=\Fold_m(a)$.
+Therefore
+\[
+\sum_{a}\mu(a)\log\pi(\Fold_m(a))
+=\sum_{x\in X_m}\left(\sum_{\Fold_m(a)=x}\mu(a)\right)\log\pi(x)
+=\sum_{x}\pi(x)\log\pi(x)
+=-H(\pi),
+\]
+and
+\[
+\sum_{a}\mu(a)\log d_m(\Fold_m(a))
+=\sum_{x\in X_m}\left(\sum_{\Fold_m(a)=x}\mu(a)\right)\log d_m(x)
+=\sum_{x}\pi(x)\log d_m(x)
+=\mathbb{E}_{\pi}[\log d_m(X)].
+\]
+Substituting back and rearranging yields the result.
+\end{proof}
+
+\begin{remark}[Gluing ledger/reflector into prime-like commutative diagram]\label{rem:pom-ledger-glue-zeta}
+The information ledger identity (Theorem \ref{thm:pom-kl-ledger}) not only rigorously pins down the three-term decomposition of space/time,
+but the generated readout-lift pair \((P_m,Q_m)\) and fiber reflector \(K_m\) also provide an \emph{auditable} operator compression interface: compressing microscopic operators to stable-layer readout operators while preserving trace sequences.
+How this interface strictly commutes with the trace$\to$primitive$\to$Euler bridge package of Section \ref{subsec:operator-zeta-interface} (and further connects to the Lyapunov-SDP spectral certificate layer) is discussed in Remark \ref{rem:reflected-witt-euler-bridge}.
+\end{remark}
+
+\begin{corollary}[Rigorous meaning of ``no information loss'': unique carrier of maximal entropy lift and residual]\label{cor:pom-kl-ledger-bound}
+For any $\mu\in\Delta(\Omega_m)$ and $\pi=P_m\mu$, we have the upper bound
+\[
+H(\mu)\le H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)],
+\]
+with equality if and only if $\mu=\mu^{e}$ (i.e., $\mu$ is conditionally uniform on each folding fiber).
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-kl-ledger} and $D_{\mathrm{KL}}\ge 0$ we obtain the upper bound; and $D_{\mathrm{KL}}(\mu\|\mu^e)=0$ if and only if $\mu=\mu^e$.
+\end{proof}
+
+\begin{corollary}[Upper bound on worst entropy gap]\label{cor:pom-entropy-gap-bound}
+For any $\mu\in\Delta(\Omega_m)$, let $\pi=P_m\mu$. Then
+\[
+H(\mu)-H(\pi)\le \log D_m.
+\]
+Therefore the maximal visible entropy gap satisfies
+\[
+\sup_{\mu\in\Delta(\Omega_m)}\bigl(H(\mu)-H(\pi)\bigr)\le \log D_m.
+\]
+By Theorem \ref{thm:pom-max-fiber} we obtain
+\[
+\limsup_{m\to\infty}\frac{1}{m}\sup_{\mu}\bigl(H(\mu)-H(\pi)\bigr)\le \frac12\log\varphi.
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-kl-ledger},
+\(
+H(\mu)-H(\pi)=\mathbb{E}_{\pi}[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e)
+\).
+Note that this difference can be negative, but its upper bound is given by $\mathbb{E}_{\pi}[\log d_m(X)]\le \log D_m$. Taking supremum yields the first two formulas. The per-unit-resolution upper bound follows from the asymptotics of Theorem \ref{thm:pom-max-fiber}.
+\end{proof}
+
+\begin{lemma}[Fiberwise KL decomposition: residual as average of fiber-internal non-uniformity]\label{lem:pom-fiberwise-kl}
+Take arbitrary $\mu\in\Delta(\Omega_m)$, let $\pi=P_m\mu$. For each $x\in X_m$ define the fiber conditional distribution
+\[
+\mu_x(a):=
+\begin{cases}
+\mu(a)/\pi(x),& a\in \Fold_m^{-1}(x),\ \pi(x)>0,\\
+0,& a\in \Fold_m^{-1}(x),\ \pi(x)=0,
+\end{cases}
+\]
+and let $u_x$ be the uniform distribution on this fiber $u_x(a)=1/d_m(x)$ ($a\in\Fold_m^{-1}(x)$).
+Then for the fiber-uniform lift $\mu^e=Q_m\pi$, we have the chain identity
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\mu^e)=\sum_{x\in X_m}\pi(x)\,D_{\mathrm{KL}}(\mu_x\|u_x).
+\;}
+\]
+\end{lemma}
+\begin{proof}
+When $\pi(x)=0$, $\mu$ is zero-measure on fiber $\Fold_m^{-1}(x)$, so this fiber contributes nothing to either side.
+For any fiber satisfying $\pi(x)>0$, if $a\in\Fold_m^{-1}(x)$, then
+\(
+\mu(a)=\pi(x)\mu_x(a)
+\)
+and
+\(
+\mu^e(a)=\pi(x)u_x(a)
+\).
+Substituting into the KL definition and grouping by fiber yields
+\[
+D_{\mathrm{KL}}(\mu\|\mu^e)
+=\sum_{x}\sum_{a\in\Fold_m^{-1}(x)}\pi(x)\mu_x(a)\log\frac{\mu_x(a)}{u_x(a)}
+=\sum_x \pi(x)\,D_{\mathrm{KL}}(\mu_x\|u_x).
+\]
+\end{proof}
+
+\begin{corollary}[Fiber entropy deficit identity: explicit form of \texorpdfstring{$D_{\mathrm{KL}}(\mu\|\mu^e)$}{KL}]\label{cor:pom-fiber-entropy-deficit}
+Following the notation of Lemma \ref{lem:pom-fiberwise-kl}, denote the fiber conditional entropy
+\[
+H(\mu_x):=-\sum_{a\in\Fold_m^{-1}(x)}\mu_x(a)\log \mu_x(a).
+\]
+Then for each fiber satisfying $\pi(x)>0$, we have
+\[
+D_{\mathrm{KL}}(\mu_x\|u_x)=\log d_m(x)-H(\mu_x),
+\]
+and thus
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\mu^e)
+=\sum_{x\in X_m}\pi(x)\bigl(\log d_m(x)-H(\mu_x)\bigr).
+\;}
+\]
+Therefore $D_{\mathrm{KL}}(\mu\|\mu^e)$ is precisely the $\pi$-weighted average of fiber entropy deficit \(\log d_m(x)-H(\mu_x)\ge 0\); and $D_{\mathrm{KL}}(\mu\|\mu^e)=0$ if and only if $\mu$ is conditionally uniform on each folding fiber.
+\end{corollary}
+
+\begin{proof}
+For fixed fiber \(x\) (with \(\pi(x)>0\)), by \(u_x(a)=1/d_m(x)\) we have
+\[
+D_{\mathrm{KL}}(\mu_x\|u_x)
+=\sum_{a}\mu_x(a)\log\frac{\mu_x(a)}{1/d_m(x)}
+=\sum_a \mu_x(a)\log\mu_x(a)+\log d_m(x)
+=\log d_m(x)-H(\mu_x).
+\]
+Substituting back into Lemma \ref{lem:pom-fiberwise-kl} yields the result.
+\end{proof}
+
+\begin{corollary}[Entropy increase identity: increment of maximal entropy lift equals residual KL]\label{cor:pom-ent-increase-equals-kl}
+Following the above notation, there holds the exact identity
+\[
+\boxed{\;
+H(\mu^e)-H(\mu)=D_{\mathrm{KL}}(\mu\|\mu^e).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-kl-ledger} we have
+\(
+H(\mu)=H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e)
+\).
+On the other hand, substituting $\mu^e$ directly (or equivalently using fiber conditional uniformity) yields
+\(
+H(\mu^e)=H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)]
+\).
+Subtracting the two equations yields the result.
+\end{proof}
+
+\begin{theorem}[Fiber reflector: idempotent Markov projection and fixed point characterization]\label{thm:pom-fiber-reflector}
+Define the Markov operator
+\[
+K_m:=Q_m\circ P_m:\Delta(\Omega_m)\to\Delta(\Omega_m).
+\]
+Then:
+\begin{enumerate}
+  \item $K_m$ is idempotent: $K_m^2=K_m$;
+  \item For any $\mu$, if $\pi=P_m\mu$, then $K_m\mu=\mu^e$ is the fiber-uniform lift of $\pi$;
+  \item Fixed points satisfy: $K_m\mu=\mu$ if and only if $\mu$ is conditionally uniform on each fiber (equivalently $\mu=\mu^e$).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By $P_m\circ Q_m=\mathrm{id}$ we obtain
+\(
+K_m^2=Q_mP_mQ_mP_m=Q_m(P_mQ_m)P_m=Q_mP_m=K_m
+\).
+For any $\mu$, let $\pi=P_m\mu$, then $K_m\mu=Q_m\pi=\mu^e$ by definition.
+Finally, the image space of $K_m$ is exactly $\{Q_m\pi:\pi\in\Delta(X_m)\}$; therefore $K_m\mu=\mu$ if and only if $\mu$ belongs to this image space, i.e., is conditionally uniform on each fiber.
+\end{proof}
+
+\begin{corollary}[Entropy monotonization channel: ``window second law'' of \texorpdfstring{$Q_m\circ P_m$}{Q∘P}]\label{cor:pom-second-law-Km}
+For any $\mu\in\Delta(\Omega_m)$, there holds the exact identity
+\[
+\boxed{\;
+H(K_m\mu)-H(\mu)=D_{\mathrm{KL}}(\mu\|K_m\mu)\ \ge\ 0,
+\;}
+\]
+with equality if and only if $K_m\mu=\mu$ (equivalent to $\mu$ being conditionally uniform on each fiber).
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-fiber-reflector}, for any $\mu$ we have $K_m\mu=\mu^e$.
+Substituting this into Corollary \ref{cor:pom-ent-increase-equals-kl} yields
+\(
+H(K_m\mu)-H(\mu)=D_{\mathrm{KL}}(\mu\|K_m\mu)
+\);
+non-negativity and equality condition follow from basic properties of KL and the fixed point characterization of Theorem \ref{thm:pom-fiber-reflector}.
+\end{proof}
+
+\begin{proposition}[Kernel matrix of \texorpdfstring{$K_m$}{Km}: symmetric, bistochastic, and fiber averaging]\label{prop:pom-Km-bistochastic}
+Viewing $K_m$ as a Markov kernel on $\Omega_m$, its transition kernel is
+\[
+K_m(a,b):=
+\begin{cases}
+\dfrac{1}{d_m(\Fold_m(a))},& \Fold_m(b)=\Fold_m(a),\\[6pt]
+0,& \text{otherwise}.
+\end{cases}
+\]
+Then:
+\begin{enumerate}
+  \item \textbf{(Idempotent)} $K_m^2=K_m$;
+  \item \textbf{(Symmetric)} $K_m(a,b)=K_m(b,a)$;
+  \item \textbf{(Bistochastic)} For any $a$ we have $\sum_b K_m(a,b)=1$, and for any $b$ we have $\sum_a K_m(a,b)=1$;
+  \item \textbf{(Function version = fiber averaging)} For any function $f:\Omega_m\to\RR$,
+  \[
+  (K_m f)(a):=\sum_{b\in\Omega_m}K_m(a,b)f(b)
+  =\frac{1}{d_m(\Fold_m(a))}\sum_{\Fold_m(b)=\Fold_m(a)} f(b),
+  \]
+  i.e., $K_m$ at the observable level is the conditional expectation interface of arithmetic averaging over folding fibers.
+\end{enumerate}
+In particular, the uniform distribution $u_{\Omega_m}(a)\equiv 2^{-m}$ on $\Omega_m$ is an invariant distribution (immediate from bistochasticity).
+\end{proposition}
+\begin{proof}
+Decompose $\Omega_m$ into folding fibers. For each $x\in X_m$, $K_m$ on block $\Fold_m^{-1}(x)\times\Fold_m^{-1}(x)$ is the constant matrix $J/d_m(x)$ (other blocks are $0$). Therefore $(J/d)^2=J/d$, $J$ is symmetric and row/column sums agree, yielding idempotence/symmetry/bistochasticity; the function version formula is term-by-term expansion of matrix action.
+\end{proof}
+
+\begin{corollary}[Spectrum and projection interpretation of \texorpdfstring{$K_m$}{Km}]\label{cor:pom-Km-spectrum}
+Viewing $K_m$ as a linear operator on $\RR^{\Omega_m}$ (or $\CC^{\Omega_m}$):
+\begin{enumerate}
+  \item $K_m$ is an orthogonal projection (under counting inner product), whose image space is exactly the space of fiber-constant functions
+  \[
+  \mathrm{Im}(K_m)=\{f:\Omega_m\to\RR:\ f(a)=f(b)\ \text{if and only if}\ \Fold_m(a)=\Fold_m(b)\}.
+  \]
+  \item $\mathrm{rank}(K_m)=|X_m|$, and its spectrum consists only of $\{0,1\}$: eigenvalue $1$ has multiplicity $|X_m|$, eigenvalue $0$ has multiplicity $|\Omega_m|-|X_m|=2^m-|X_m|$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+By Proposition \ref{prop:pom-Km-bistochastic}, $K_m^2=K_m$ and $K_m$ is symmetric, so it is an orthogonal projection.
+For each $x\in X_m$, restricting to block $\Fold_m^{-1}(x)$, $K_m$ is $J/d$ (where $d=d_m(x)$). The image of this block is the one-dimensional subspace spanned by constant vectors, the kernel is the codimension-$1$ subspace of fiber-internal sum-zero.
+Thus the full space decomposes as a direct sum over fibers, $\mathrm{Im}(K_m)$ is exactly fiber-constant functions; hence rank equals fiber count $|X_m|$.
+Each block contributes one eigenvalue $1$ and $d-1$ eigenvalues $0$, aggregating to the spectrum and multiplicity formula.
+\end{proof}
+
+\begin{proposition}[Conditional expectation under arbitrary weight: orthogonal projection and exact variance decomposition]\label{prop:pom-weighted-condexp-variance}
+Take arbitrary $\mu\in\Delta(\Omega_m)$, let $\pi:=P_m\mu\in\Delta(X_m)$, and follow the fiber conditional distributions $\{\mu_x\}_{x\in X_m}$ from Lemma \ref{lem:pom-fiberwise-kl}.
+For any function $f:\Omega_m\to\RR$, define the (dependent on $\mu$) conditional expectation operator
+\[
+(E_{m}^{(\mu)}f)(a):=
+\begin{cases}
+\displaystyle \sum_{b\in \Fold_m^{-1}(x)} f(b)\,\mu_x(b),& x=\Fold_m(a),\ \pi(x)>0,\\[6pt]
+0,& x=\Fold_m(a),\ \pi(x)=0.
+\end{cases}
+\]
+Define the weighted inner product
+\[
+\langle f,g\rangle_\mu:=\sum_{a\in\Omega_m} f(a)g(a)\,\mu(a).
+\]
+Then:
+\begin{enumerate}
+  \item $E_m^{(\mu)}f$ depends only on $x=\Fold_m(a)$, hence belongs to the fiber-constant subspace (equivalent to pullback of some function on $X_m$);
+  \item $E_m^{(\mu)}$ is the orthogonal projection in $L^2(\mu)$ onto the fiber-constant subspace: for any function $f$ and any fiber-constant function $g$, we have
+  \[
+  \boxed{\;\langle f-E_m^{(\mu)}f,\ g\rangle_\mu=0.\;}
+  \]
+  \item Write
+  \(
+  \mathbb{E}_\mu[f]:=\sum_a f(a)\mu(a)
+  \)
+  and
+  \(
+  \mathrm{Var}_\mu(f):=\mathbb{E}_\mu[(f-\mathbb{E}_\mu[f])^2]
+  \).
+  Then there holds the exact variance decomposition (all finite sums):
+  \[
+  \boxed{\;
+  \mathrm{Var}_\mu(f)=\mathrm{Var}_\mu(E_m^{(\mu)}f)\;+\;\sum_{x\in X_m}\pi(x)\,\mathrm{Var}_{\mu_x}(f).
+  \;}
+  \]
+\end{enumerate}
+In particular, if $\mu$ is conditionally uniform on each fiber (i.e., $\mu=\mu^e=K_m\mu$), then $E_m^{(\mu)}$ and the function version of $K_m$ agree: $E_m^{(\mu)}f=K_m f$.
+\end{proposition}
+\begin{proof}
+(1) By definition, if $\Fold_m(a)=\Fold_m(a')=x$ and $\pi(x)>0$, then
+\(
+E_m^{(\mu)}f(a)=\sum_{b\in\Fold_m^{-1}(x)}f(b)\mu_x(b)=E_m^{(\mu)}f(a')
+\);
+when $\pi(x)=0$ this fiber is zero-measure under $\mu$, taking zero by definition does not affect any $\mu$-integral.
+
+(2) Take arbitrary fiber-constant $g$. There exists $\bar g:X_m\to\RR$ such that $g(a)=\bar g(\Fold_m(a))$.
+Grouping by fiber and using $\mu(a)=\pi(x)\mu_x(a)$ (for $\pi(x)>0$) yields
+\[
+\langle f-E_m^{(\mu)}f,\ g\rangle_\mu
+=\sum_{x\in X_m}\sum_{a\in\Fold_m^{-1}(x)}\pi(x)\mu_x(a)\bigl(f(a)-\mathbb{E}_{\mu_x}[f]\bigr)\bar g(x)=0,
+\]
+because for each fixed $x$, the inner sum is
+\(
+\bar g(x)\pi(x)\bigl(\mathbb{E}_{\mu_x}[f]-\mathbb{E}_{\mu_x}[f]\bigr)=0
+\).
+Hence $E_m^{(\mu)}$ is an orthogonal projection, which by definition of orthogonal projection must satisfy idempotence.
+
+(3) By orthogonality in (2), for $g:=E_m^{(\mu)}f-\mathbb{E}_\mu[f]$ (which is fiber-constant), apply Pythagorean decomposition:
+\[
+\mathbb{E}_\mu\!\bigl[(f-\mathbb{E}_\mu[f])^2\bigr]
+=\mathbb{E}_\mu\!\bigl[(E_m^{(\mu)}f-\mathbb{E}_\mu[f])^2\bigr]+\mathbb{E}_\mu\!\bigl[(f-E_m^{(\mu)}f)^2\bigr].
+\]
+The first term is $\mathrm{Var}_\mu(E_m^{(\mu)}f)$. The second term, grouping by fiber and using $\mu(a)=\pi(x)\mu_x(a)$, yields
+\[
+\mathbb{E}_\mu[(f-E_m^{(\mu)}f)^2]
+=\sum_{x\in X_m}\pi(x)\sum_{a\in\Fold_m^{-1}(x)}\mu_x(a)\bigl(f(a)-\mathbb{E}_{\mu_x}[f]\bigr)^2
+=\sum_{x\in X_m}\pi(x)\,\mathrm{Var}_{\mu_x}(f).
+\]
+Combining yields the variance decomposition. For the final statement: if $\mu$ is conditionally uniform on each fiber, then $\mu_x=u_x$, so
+\(
+E_m^{(\mu)}f(a)=\frac{1}{d_m(x)}\sum_{\Fold_m(b)=x}f(b)=(K_m f)(a)
+\).
+\end{proof}
+
+\begin{definition}[Folding visibility: variance retention ratio index]\label{def:pom-fold-visibility}
+For any $\mu\in\Delta(\Omega_m)$ and any observable $f:\Omega_m\to\RR$ with nonzero variance (i.e., $\mathrm{Var}_\mu(f)>0$), define the folding visibility
+\[
+\mathcal{R}_{m,\mu}(f):=\frac{\mathrm{Var}_\mu(E_m^{(\mu)}f)}{\mathrm{Var}_\mu(f)}\in(0,1].
+\]
+When $\mathcal{R}_{m,\mu}(f)\approx 1$, the main fluctuation of observable $f$ is determined by the stable type $x=\Fold_m(a)$ (macroscopically visible); when $\mathcal{R}_{m,\mu}(f)\approx 0$, fluctuation occurs mainly within fibers (macroscopically invisible).
+\end{definition}
+
+\begin{theorem}[Two-sided bounds on folding visibility and error profile]\label{thm:pom-visibility-to-error-two-sided}
+Take event $P\subseteq\Omega_m$ and let $f:=\ind_P$, assuming $0<\mu(P)<1$.
+Let $\mathcal{G}_m:=\sigma(\Fold_m)$, and define the minimal error probability when only stable type access is allowed
+\[
+\varepsilon_m^{\mathrm{fold}}(P;\mu)
+:=\inf\left\{\mu(g\neq f): g\in L^\infty(\mathcal{G}_m),\ g(\Omega_m)\subseteq\{0,1\}\right\}.
+\]
+Then letting
+\[
+p:=E_m^{(\mu)}f=\mathbb{E}_\mu[f\,|\,\mathcal{G}_m]\in[0,1],
+\]
+we have the exact expression
+\[
+\varepsilon_m^{\mathrm{fold}}(P;\mu)=\mathbb{E}_\mu\bigl[\min\{p,1-p\}\bigr],
+\]
+and the parameter-free two-sided estimate
+\[
+\mathrm{Var}_\mu(f)\bigl(1-\mathcal{R}_{m,\mu}(f)\bigr)
+\ \le\
+\varepsilon_m^{\mathrm{fold}}(P;\mu)
+\ \le\
+\sqrt{\mathrm{Var}_\mu(f)\bigl(1-\mathcal{R}_{m,\mu}(f)\bigr)}.
+\]
+\end{theorem}
+
+\begin{corollary}[I-projection representation of maximal entropy lift]\label{cor:pom-Iproj-maxent}
+Denote $u_{\Omega_m}$ as the uniform distribution on $\Omega_m$. For any fixed $\pi\in\Delta(X_m)$, the constraint set
+\[
+\mathcal{C}_\pi:=\{\nu\in\Delta(\Omega_m):P_m\nu=\pi\}
+\]
+is convex, and its unique maximal entropy element $\mu^e=Q_m\pi$ simultaneously satisfies
+\[
+\boxed{\;
+\mu^e=\arg\min_{\nu\in\mathcal{C}_\pi}D_{\mathrm{KL}}(\nu\|u_{\Omega_m})
+\;=\;
+\arg\max_{\nu\in\mathcal{C}_\pi}H(\nu).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+Since $u_{\Omega_m}(a)\equiv 2^{-m}$, for any $\nu$ we have
+\(
+D_{\mathrm{KL}}(\nu\|u_{\Omega_m})=\sum_a \nu(a)\log\nu(a)+m\log 2=\log(2^m)-H(\nu)
+\),
+so on the same constraint set $\mathcal{C}_\pi$, minimal KL to uniform and maximal entropy are equivalent.
+Uniqueness of the maximal entropy solution follows from Theorem \ref{thm:pom-maxent-lift} (or by block-by-block strict concavity over fibers).
+\end{proof}
+
+\begin{theorem}[KL Pythagorean decomposition to uniform microstate (exact three-term identity)]\label{thm:pom-kl-pythagoras-uniform}
+Denote $u_{\Omega_m}$ as the uniform distribution on $\Omega_m$, and define its stable pushforward (uniform microstate baseline)
+\[
+w_m:=P_m u_{\Omega_m}\in\Delta(X_m),\qquad
+w_m(x)=\frac{d_m(x)}{2^m}.
+\]
+Take arbitrary $\mu\in\Delta(\Omega_m)$, let $\pi:=P_m\mu\in\Delta(X_m)$, and let $\mu^e:=Q_m\pi$ be its fiber-uniform lift.
+Then there holds the exact identity
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=D_{\mathrm{KL}}(\pi\|w_m)\;+\;D_{\mathrm{KL}}(\mu\|\mu^e).
+\;}
+\]
+\end{theorem}
+\begin{proof}
+Expanding by KL definition and using $u_{\Omega_m}(a)\equiv 2^{-m}$ yields
+\[
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=\sum_{a\in\Omega_m}\mu(a)\log\mu(a)+m\log 2
+=m\log 2-H(\mu).
+\]
+On the other hand, by Theorem \ref{thm:pom-kl-ledger} (information ledger identity)
+\(
+H(\mu)=H(\pi)+\mathbb{E}_\pi[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e)
+\),
+substituting back yields
+\[
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=m\log 2-H(\pi)-\mathbb{E}_\pi[\log d_m(X)]\;+\;D_{\mathrm{KL}}(\mu\|\mu^e).
+\]
+Now by $w_m(x)=d_m(x)/2^m$ we compute directly
+\[
+D_{\mathrm{KL}}(\pi\|w_m)
+=\sum_{x\in X_m}\pi(x)\log\frac{\pi(x)}{d_m(x)/2^m}
+=m\log 2-H(\pi)-\mathbb{E}_\pi[\log d_m(X)].
+\]
+Combining yields the stated identity.
+\end{proof}
+
+\begin{corollary}[Exact error characterization of I-projection: KL distance as ``microscopic residual'']\label{cor:pom-Iproj-gap-exact}
+Following the notation of Theorem \ref{thm:pom-kl-pythagoras-uniform}, fix arbitrary $\pi\in\Delta(X_m)$ and take arbitrary $\mu\in\mathcal{C}_\pi$.
+Then
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})-D_{\mathrm{KL}}(\mu^e\|u_{\Omega_m})
+=D_{\mathrm{KL}}(\mu\|\mu^e).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+For fixed $\pi$, apply Theorem \ref{thm:pom-kl-pythagoras-uniform} decomposition first to general $\mu\in\mathcal{C}_\pi$;
+then substitute $\mu=\mu^e$ into the same decomposition; since $P_m\mu^e=\pi$ the macroscopic term agrees, subtracting the two equations yields the result.
+\end{proof}
+
+\begin{corollary}[Microscopic slip window under fixed macroscopic histogram (explicit interval law)]\label{cor:pom-micro-slip-window}
+At fixed resolution $m$, given macroscopic histogram $\pi\in\Delta(X_m)$, define its \textbf{invisible capacity} (fiber volume budget)
+\[
+\mathcal{W}^{\mathrm{inv}}(\pi):=\mathbb{E}_\pi[\log d_m(X)].
+\]
+Then for any microscopic distribution $\mu\in\Delta(\Omega_m)$ satisfying $P_m\mu=\pi$, we have the explicit squeeze
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\pi\|w_m)\ \le\ D_{\mathrm{KL}}(\mu\|u_{\Omega_m})\ \le\ D_{\mathrm{KL}}(\pi\|w_m)+\mathcal{W}^{\mathrm{inv}}(\pi)
+\;}
+\]
+equivalently,
+\[
+0\le D_{\mathrm{KL}}(\mu\|\mu^e)\le \mathcal{W}^{\mathrm{inv}}(\pi).
+\]
+Therefore under the same macroscopic histogram $\pi$, the distance to uniform microstate baseline is not single-valued, but slides within an auditable interval of length $\mathcal{W}^{\mathrm{inv}}(\pi)$; this interval length is completely determined by macroscopic $\pi$ and fiber multiplicity $d_m$.
+\end{corollary}
+\begin{proof}
+The left-endpoint lower bound follows immediately from Theorem \ref{thm:pom-kl-pythagoras-uniform} and $D_{\mathrm{KL}}(\mu\|\mu^e)\ge 0$.
+\par
+For the right-endpoint upper bound, by Lemma \ref{lem:pom-fiberwise-kl},
+\(
+D_{\mathrm{KL}}(\mu\|\mu^e)=\sum_x \pi(x)\,D_{\mathrm{KL}}(\mu_x\|u_x)
+\).
+For any fiber of finite size $d$, the KL divergence from a distribution to uniform satisfies
+\(
+D_{\mathrm{KL}}(\nu\|u)\le \log d
+\)
+(maximum attained at point mass).
+Therefore
+\[
+D_{\mathrm{KL}}(\mu\|\mu^e)\le \sum_x \pi(x)\log d_m(x)=\mathbb{E}_\pi[\log d_m(X)]=\mathcal{W}^{\mathrm{inv}}(\pi).
+\]
+Substituting back into Theorem \ref{thm:pom-kl-pythagoras-uniform} yields the stated interval law.
+\end{proof}
+
+\begin{theorem}[Canonical coarse-grained dynamics: lift first—evolve—then read out]\label{thm:pom-coarse-grained-kernel}
+Let $K:\Delta(\Omega_m)\to\Delta(\Omega_m)$ be any Markov kernel (window-layer dynamics).
+Define the coarse-grained kernel at stable layer
+\[
+\overline K:=P_m\circ K\circ Q_m:\Delta(X_m)\to\Delta(X_m).
+\]
+Then for any initial stable distribution $\pi_0\in\Delta(X_m)$, letting $\mu_0:=Q_m\pi_0$, we have
+\[
+\pi_1=\overline K\,\pi_0=P_m(K\mu_0).
+\]
+Moreover, $\overline K$ is the unique stable-layer Markov kernel satisfying this lift—evolve—read out semantics.
+\end{theorem}
+\begin{proof}
+The first formula is expansion of definition. If $\widetilde K$ also satisfies for all $\pi_0$ that
+\(
+\widetilde K\pi_0=P_m(K(Q_m\pi_0))
+\),
+then pointwise equality yields $\widetilde K=\overline K$.
+\end{proof}
+
+\begin{definition}[Parallelizable inverse substitution sites and interference graph]\label{def:pom-carry-interference-graph}
+For $x=x_1\cdots x_m\in X_m$, define its \emph{parallelizable inverse substitution site set}
+\[
+J(x):=\{i\in\{1,\dots,m-2\}:\ x_ix_{i+1}x_{i+2}=100\}.
+\]
+Define the interference graph $G(x)$: its vertex set is $J(x)$, and for $i\neq j$ there is an edge if and only if intervals $[i,i+2]$ and $[j,j+2]$ intersect (equivalent to $|i-j|\le 2$). Denote $\mathsf{Ind}(G(x))$ as the independent set family of $G(x)$.
+\end{definition}
+
+\begin{lemma}[Fiber lower bound from free inverse substitution]\label{lem:pom-fiber-lower-bound-independent-sets}
+For any $x\in X_m$, we have
+\[
+d_m(x)\ \ge\ \#\mathsf{Ind}(G(x)).
+\]
+\end{lemma}
+
+\begin{proof}
+Take any independent set $S\in\mathsf{Ind}(G(x))$. Since length-$3$ intervals corresponding to any two points in $S$ are disjoint, we can execute inverse substitution $100\mapsto 011$ simultaneously (or in any order) at all $i\in S$ on $x$, obtaining a binary word $\omega_S\in\Omega_m$.
+Reversing this process, i.e., executing forward carry $011\mapsto 100$ on $\omega_S$ at these sites, recovers $x$; therefore $\Fold_m(\omega_S)=x$.
+Since $S$ can be uniquely recovered from $\omega_S$ by the changed length-$3$ positions (disjoint intervals prevent confusion of local changes), the map $S\mapsto \omega_S$ is injective.
+Thus $\#\Fold_m^{-1}(x)=d_m(x)\ge \#\mathsf{Ind}(G(x))$.
+\end{proof}
+
+\begin{lemma}[Linear-time recurrence for independent set counting (radius-2 conflict)]\label{lem:pom-independence-dp-radius2}
+Let $x\in X_m$, and write $J(x)$ in ascending order as
+\[
+J(x)=\{i_1<i_2<\cdots<i_k\}.
+\]
+For $t\in\{1,\dots,k\}$ define
+\[
+p(t):=\max\{s\in\{0,1,\dots,t-1\}:\ i_t-i_s>2\},
+\]
+where we set $i_0:=-\infty$ (equivalently: $p(t)$ is the maximal index satisfying $i_t-i_{p(t)}>2$; if for all $s\le t-1$ we have $i_t-i_s\le 2$, then $p(t)=0$).
+Define the sequence $a_0:=1$ and for $t\ge 1$ the recurrence
+\[
+a_t:=a_{t-1}+a_{p(t)}.
+\]
+Then
+\[
+\#\mathsf{Ind}(G(x))=a_k.
+\]
+\end{lemma}
+
+\begin{proof}
+Count independent sets by prefix recurrence over $\{i_1,\dots,i_t\}$.
+Take any independent set $S\subseteq\{i_1,\dots,i_t\}$, classified into two cases:
+\begin{enumerate}
+  \item If $i_t\notin S$, then $S$ is an independent set of prefix $\{i_1,\dots,i_{t-1}\}$, counted as $a_{t-1}$;
+  \item If $i_t\in S$, then by the edge definition of $G(x)$ ($|i-j|\le 2$ conflict), $S$ cannot contain any $i_s$ satisfying $i_t-i_s\le 2$. Therefore $S\setminus\{i_t\}$ must be an independent set of prefix $\{i_1,\dots,i_{p(t)}\}$, counted as $a_{p(t)}$.
+\end{enumerate}
+The two cases are disjoint and cover all situations, therefore $a_t=a_{t-1}+a_{p(t)}$.
+Taking $t=k$ yields $\#\mathsf{Ind}(G(x))=a_k$.
+\end{proof}
+
+\begin{corollary}[A computable fiber lower bound]\label{cor:pom-fiber-lower-bound-dp}
+For any $x\in X_m$, using the recurrence of Lemma \ref{lem:pom-independence-dp-radius2} to compute $a_k$, we have
+\[
+d_m(x)\ge a_k.
+\]
+\end{corollary}
+
+\begin{proof}
+This follows directly from Lemma \ref{lem:pom-fiber-lower-bound-independent-sets} and Lemma \ref{lem:pom-independence-dp-radius2}.
+\end{proof}
+
+\begin{lemma}[Block decomposition of interference graph and multiplicative formula for independent sets]\label{lem:pom-ind-factorization}
+Let $x\in X_m$, and write $J(x)$ in ascending order as $\{i_1<\cdots<i_k\}$.
+Decompose the index set by breakpoints into consecutive blocks: call $t$ a breakpoint if and only if $i_{t+1}-i_t>2$, and accordingly decompose $J(x)$ into disjoint subsets
+\[
+J(x)=J_1\sqcup\cdots\sqcup J_r,
+\]
+where each $J_\ell$ satisfies adjacent differences $\le 2$ under ascending order.
+Then the interference graph $G(x)$ splits into a direct sum of disconnected induced subgraphs
+\(
+G(x)=G[J_1]\sqcup\cdots\sqcup G[J_r]
+\),
+and the independent set count satisfies the multiplicative formula
+\[
+\#\mathsf{Ind}(G(x))=\prod_{\ell=1}^r \#\mathsf{Ind}(G[J_\ell]).
+\]
+\end{lemma}
+
+\begin{proof}
+If $i\in J_a$, $j\in J_b$ with $a\neq b$, then by block definition we have $|i-j|>2$, so there are no cross-block edges in $G(x)$, hence the graph is a disconnected direct sum.
+For disconnected graphs, independent sets are chosen independently on each connected component, and the counting is multiplicative.
+\end{proof}
+
+\begin{corollary}[Block-level multiplicative cascade of fiber lower bound]\label{cor:pom-fiber-lower-bound-cascade}
+Following Definition \ref{def:pom-carry-interference-graph}, decompose $J(x)=J_1\sqcup\cdots\sqcup J_r$ into blocks as in Lemma \ref{lem:pom-ind-factorization}.
+Denote each block contribution
+\[
+I(J_\ell):=\#\mathsf{Ind}(G[J_\ell])\qquad(\ell=1,\dots,r).
+\]
+Then for any $x\in X_m$ we have
+\[
+\boxed{\;
+d_m(x)\ \ge\ \prod_{\ell=1}^r I(J_\ell)\;}
+\]
+and thus the logarithmic fiber volume admits at least the additive decomposition
+\[
+\boxed{\;
+\log d_m(x)\ \ge\ \sum_{\ell=1}^r \log I(J_\ell).\;}
+\]
+\end{corollary}
+\begin{proof}
+By Lemma \ref{lem:pom-fiber-lower-bound-independent-sets} we have $d_m(x)\ge \#\mathsf{Ind}(G(x))$, then by Lemma \ref{lem:pom-ind-factorization}'s multiplicative formula we obtain the product lower bound. Taking logarithm yields the second formula.
+\end{proof}
+
+\begin{lemma}[Local recurrence in single-block case: bifurcation between \texorpdfstring{$a_t=a_{t-1}+a_{t-2}$}{a=a+a} and \texorpdfstring{$a_t=a_{t-1}+a_{t-3}$}{a=a+a}]\label{lem:pom-ind-local-recurrence}
+Following the notation of Lemma \ref{lem:pom-independence-dp-radius2}.
+Assume $J(x)$ is itself a single block (i.e., for all $t$ we have $i_{t+1}-i_t\le 2$). Then for $t\ge 3$:
+\begin{enumerate}
+  \item If $i_t-i_{t-2}>2$, then $p(t)=t-2$, and thus
+  \[
+  a_t=a_{t-1}+a_{t-2};
+  \]
+  \item If $i_t-i_{t-2}=2$ (equivalent to $i_{t-1}=i_t-1$ and $i_{t-2}=i_t-2$), then $p(t)=t-3$, and thus
+  \[
+  a_t=a_{t-1}+a_{t-3}.
+  \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Under single-block condition, we must have $i_t-i_{t-1}\le 2$, so $p(t)\le t-2$.
+If $i_t-i_{t-2}>2$, then $s=t-2$ satisfies the definition condition and is maximal, so $p(t)=t-2$.
+If $i_t-i_{t-2}=2$, then $s=t-2$ does not satisfy the condition; since $i_{t-2}-i_{t-3}\ge 1$, we have $i_t-i_{t-3}\ge 3$, so $p(t)=t-3$.
+Substituting into Lemma \ref{lem:pom-independence-dp-radius2}'s recurrence yields the result.
+\end{proof}
+
+\begin{proposition}[Two-letter matrix grammar for single block]\label{prop:pom-ind-matrix-grammar}
+Assume $J(x)=\{i_1<\cdots<i_k\}$ is a single block, and take the sequence $a_t$ from Lemma \ref{lem:pom-independence-dp-radius2}.
+For $t\in\{3,\dots,k\}$ define the local letter
+\[
+\sigma_t:=
+\begin{cases}
+2,& i_t-i_{t-2}>2\quad(\text{equivalent to }p(t)=t-2),\\
+3,& i_t-i_{t-2}=2\quad(\text{equivalent to }p(t)=t-3),
+\end{cases}
+\]
+and let the state vector
+\(
+v_t:=(a_t,a_{t-1},a_{t-2})^\top
+\).
+Then for each $t=3,\dots,k$, the recurrence is equivalent to one of two fixed linear updates:
+\[
+v_t=M_{\sigma_t}\,v_{t-1},
+\qquad
+M_2=
+\begin{pmatrix}
+1&1&0\\
+1&0&0\\
+0&1&0
+\end{pmatrix},
+\qquad
+M_3=
+\begin{pmatrix}
+1&0&1\\
+1&0&0\\
+0&1&0
+\end{pmatrix}.
+\]
+Thus the block contribution (single-block independent set count) can be written as evaluation of a two-generator matrix word:
+\[
+I(J(x))=\#\mathsf{Ind}(G[J(x)])=a_k
+=e_1^\top\Bigl(\prod_{t=3}^k M_{\sigma_t}\Bigr)v_2,
+\]
+where $e_1=(1,0,0)^\top$, and in the single-block case the initial value is fixed as
+\(
+v_2=(a_2,a_1,a_0)^\top=(3,2,1)^\top
+\).
+\end{proposition}
+\begin{proof}
+By Lemma \ref{lem:pom-ind-local-recurrence}, in single block for $t\ge 3$ there are only two cases:
+if $p(t)=t-2$ then $a_t=a_{t-1}+a_{t-2}$, equivalent to $v_t=M_2v_{t-1}$;
+if $p(t)=t-3$ then $a_t=a_{t-1}+a_{t-3}$, equivalent to $v_t=M_3v_{t-1}$.
+Iterating $t=3,\dots,k$ and taking the first coordinate yields the matrix word expression.
+Finally, single block implies $i_2-i_1\le 2$, so $p(1)=p(2)=0$, hence $a_0=1,a_1=2,a_2=3$.
+\end{proof}
+
+\begin{definition}[Defect set]\label{def:pom-ind-defect-set}
+In the single-block setting of Proposition \ref{prop:pom-ind-matrix-grammar}, define the defect position set
+\[
+\mathcal D(J(x)):=\{t\in\{3,\dots,k\}:\ \sigma_t=3\}
+=\{t\in\{3,\dots,k\}:\ i_t-i_{t-2}=2\}.
+\]
+\end{definition}
+
+\begin{remark}[Defect set classification principle for spectral hierarchy]\label{rem:pom-ind-defect-class}
+Proposition \ref{prop:pom-ind-matrix-grammar} provides an auditable organizational scheme:
+\begin{enumerate}
+  \item \emph{Within block:} Single-block contribution $I(J)$ is determined by two-letter matrix word (equivalently: by defect set $\mathcal D(J)$); the defect-free case $\mathcal D(J)=\emptyset$ yields pure Fibonacci recurrence and maximal exponential growth (Perron root of $M_2$ is $\varphi$).
+  \item \emph{Globally:} By Corollary \ref{cor:pom-fiber-lower-bound-cascade}, lower bound $\#\mathsf{Ind}(G(x))$ multiplicatively cascades at block level, so a computable lower envelope of $\log d_m(x)$ naturally decomposes as sum of $\log I(J_\ell)$ over blocks.
+\end{enumerate}
+This unifies the mechanism for why near-maximal spectral hierarchy exhibits regular gaps/bifurcations: \emph{spectral hierarchy} can be viewed as combinatorial classes of block defect sets, assembled by block multiplicative cascade.
+\end{remark}
+Finally, Appendix \ref{subsec:unit-circle-phase-precision-ledger}—Remark \ref{rem:unit-circle-phase-precision-ledger-vs-pom} provides the precision potential ledger for continuous phase compactification, structurally isomorphic to the discrete folding ledger here.

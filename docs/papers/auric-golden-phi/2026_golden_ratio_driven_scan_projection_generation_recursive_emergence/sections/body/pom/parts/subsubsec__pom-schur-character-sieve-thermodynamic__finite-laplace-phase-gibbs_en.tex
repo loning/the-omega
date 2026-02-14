@@ -1,0 +1,302 @@
+% (User input window)
+% 2026-02-14 15:08:47（Asia/Singapore）
+
+\paragraph{Finite Laplace Principle and Phase Diagram: Leading Layer, Leading Coefficient and Symmetric Group Gibbs Limit}
+Following the above setup and notation.
+To simplify the exposition, for any partition \(\nu\vdash q\) we define its \textbf{partition pressure} and \textbf{partition leading coefficient}
+\[
+\mathcal{P}(\nu):=\sum_{r=1}^{q} c_r(\nu)\,P(r),
+\qquad
+K(\nu):=\prod_{r=1}^{q}\kappa_r^{\,c_r(\nu)}.
+\]
+We also denote the spectral gap parameter
+\[
+\varepsilon_*:=\min_{1\le r\le q}\log\!\left(\frac{\rho_r}{\theta_r}\right)>0
+\]
+(where \(\rho_r=e^{P(r)}\), and \(0<\theta_r<\rho_r\) is given by \eqref{eq:pom-sr-main-term-kappa}).
+
+\begin{lemma}[Exponential Leading Term of Partition Monomial]\label{lem:pom-partition-monomial-exponential-main-term}
+For any fixed partition \(\nu\vdash q\) we have
+\[
+\mathsf{M}_\nu(m)=K(\nu)\,e^{m\mathcal{P}(\nu)}+O\!\left(e^{m(\mathcal{P}(\nu)-\varepsilon_*)}\right)\qquad(m\to\infty).
+\]
+\end{lemma}
+\begin{proof}
+By \eqref{eq:pom-sr-main-term-kappa},
+\(
+S_r(m)=\kappa_r\rho_r^{\,m}+O(\theta_r^{\,m})
+=\kappa_r e^{mP(r)}\bigl(1+O(e^{-m\varepsilon_*})\bigr)
+\)
+holds simultaneously for all \(1\le r\le q\).
+Substituting into \(\mathsf{M}_\nu(m)=\prod_{r=1}^{q}S_r(m)^{c_r(\nu)}\) and taking the finite product, the error can be absorbed into constants and the relative error remains \(O(e^{-m\varepsilon_*})\).
+\end{proof}
+
+\begin{theorem}[Finite Laplace Principle for Schur Channel Trace: Decidable Formula for Leading Exponent and Leading Coefficient]\label{thm:pom-schur-trace-finite-laplace-principle}
+Fix \(q\ge 2\), and follow the partition summation formula of Proposition \ref{prop:pom-schur-tomography-by-partitions}
+\[
+T_{q,\lambda}(m)=f^\lambda\sum_{\nu\vdash q}\frac{\chi^\lambda(\nu)}{z_\nu}\,\mathsf{M}_\nu(m).
+\]
+For any \(\lambda\vdash q\) and any exponential layer \(v\in\RR\) define the layer coefficient
+\[
+A_\lambda(v):=
+f^\lambda\!\!\sum_{\substack{\nu\vdash q\\ \mathcal{P}(\nu)=v}}\frac{\chi^\lambda(\nu)}{z_\nu}\,K(\nu),
+\qquad
+\mathcal{V}_\lambda:=\left\{\mathcal{P}(\nu):\nu\in\mathrm{Supp}(\lambda)\right\}.
+\]
+If there exists \(v\in\mathcal{V}_\lambda\) such that \(A_\lambda(v)\neq 0\), let
+\[
+\mathcal{P}_\lambda^{\mathrm{eff}}
+:=
+\max\{v\in\mathcal{V}_\lambda:\ A_\lambda(v)\neq 0\}.
+\]
+Then there exists \(\varepsilon_\lambda>0\) such that
+\[
+T_{q,\lambda}(m)
+=
+A_\lambda(\mathcal{P}_\lambda^{\mathrm{eff}})\,e^{m\mathcal{P}_\lambda^{\mathrm{eff}}}
++O\!\left(e^{m(\mathcal{P}_\lambda^{\mathrm{eff}}-\varepsilon_\lambda)}\right),
+\qquad
+\limsup_{m\to\infty}\frac{1}{m}\log|T_{q,\lambda}(m)|=\mathcal{P}_\lambda^{\mathrm{eff}}.
+\]
+If for all \(v\in\mathcal{V}_\lambda\) we have \(A_\lambda(v)=0\), then
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log|T_{q,\lambda}(m)|
+\le
+\max_{v\in\mathcal{V}_\lambda}v-\varepsilon_*,
+\]
+i.e., the exponential leading order drops by at least \(\varepsilon_*\).
+In particular, if \(\mathcal{P}_\lambda\) and \(\mathcal{M}_\lambda\) are as defined above and \(A_\lambda(\mathcal{P}_\lambda)\neq 0\), then \(\mathcal{P}_\lambda^{\mathrm{eff}}=\mathcal{P}_\lambda\), consistent with the non-degenerate case of Theorem \ref{thm:pom-schur-channel-radius-character-sieve}.
+\end{theorem}
+\begin{proof}
+By Lemma \ref{lem:pom-partition-monomial-exponential-main-term}, we can write \(T_{q,\lambda}(m)\) as a finite sum of exponential terms, and re-stratify by \(\mathcal{P}(\nu)\):
+\[
+T_{q,\lambda}(m)=\sum_{v\in\mathcal{V}_\lambda} A_\lambda(v)\,e^{mv}+O\!\left(e^{m(\max\mathcal{V}_\lambda-\varepsilon_*)}\right).
+\]
+If there exists a nonzero layer coefficient, taking \(v=\mathcal{P}_\lambda^{\mathrm{eff}}\) as the maximal nonzero layer yields the leading term and exponent rate;
+the error term is controlled jointly by the exponential gap from lower layers \(v<\mathcal{P}_\lambda^{\mathrm{eff}}\) and the uniform deficit in the lemma.
+If all layer coefficients are zero, then the leading-term layer is completely canceled, leaving only error contributions from each \(\mathsf{M}_\nu(m)\), yielding the stated upper bound.
+\end{proof}
+
+\paragraph{Total Channel Cancellation of Resonant Layer: Character Orthogonality and Rigidity}
+Denote the global maximum pressure and its maximizing set by
+\[
+\mathcal{P}_{\max}:=\max_{\nu\vdash q}\mathcal{P}(\nu),
+\qquad
+\mathcal{R}_{\max}:=\{\nu\vdash q:\ \mathcal{P}(\nu)=\mathcal{P}_{\max}\}.
+\]
+Introduce the resonant layer weight function (viewed as a class function on \(S_q\))
+\[
+w(\nu):=K(\nu)\,\mathbf 1_{\{\nu\in\mathcal{R}_{\max}\}}.
+\]
+
+\begin{proposition}[Resonant Layer Fourier Coefficient and Necessary and Sufficient Condition for Total Channel Cancellation]\label{prop:pom-schur-resonant-layer-total-cancellation}
+For each \(\lambda\vdash q\) define the resonant layer Fourier coefficient
+\[
+b_\lambda:=\sum_{\nu\vdash q}\frac{\chi^\lambda(\nu)}{z_\nu}\,w(\nu)
+=\sum_{\nu\in\mathcal{R}_{\max}}\frac{\chi^\lambda(\nu)}{z_\nu}\,K(\nu).
+\]
+Then there holds the inversion formula: for any \(\mu\vdash q\),
+\[
+\boxed{\;
+w(\mu)=\sum_{\lambda\vdash q}\chi^\lambda(\mu)\,b_\lambda\; }.
+\]
+Thus the following two propositions are equivalent:
+\begin{enumerate}
+  \item For all non-trivial \(\lambda\neq(q)\) we have \(b_\lambda=0\);
+  \item \(w(\nu)\) is constant on all conjugacy classes (i.e., \(w\) is orthogonal to all non-trivial irreducible characters).
+\end{enumerate}
+In particular, if \(\mathcal{R}_{\max}\subsetneq\{\nu\vdash q\}\), then there must exist some non-trivial \(\lambda\neq(q)\) such that \(b_\lambda\neq 0\), i.e., the resonant exponential layer cannot be simultaneously canceled by all non-trivial Schur channels.
+\end{proposition}
+\begin{proof}
+By the column orthogonality relation for symmetric group characters
+\(
+\sum_{\lambda\vdash q}\chi^\lambda(\mu)\chi^\lambda(\nu)=z_\mu\,\mathbf 1_{\{\mu=\nu\}}
+\),
+we have
+\[
+\sum_{\lambda\vdash q}\chi^\lambda(\mu)\,b_\lambda
+=\sum_{\nu\vdash q}\frac{w(\nu)}{z_\nu}\sum_{\lambda\vdash q}\chi^\lambda(\mu)\chi^\lambda(\nu)
+=\sum_{\nu\vdash q}\frac{w(\nu)}{z_\nu}\,z_\mu\,\mathbf 1_{\{\mu=\nu\}}
+=w(\mu),
+\]
+so the inversion formula holds.
+If for all \(\lambda\neq(q)\) we have \(b_\lambda=0\), then \(w(\mu)=\chi^{(q)}(\mu)\,b_{(q)}\equiv b_{(q)}\) is constant;
+conversely, if \(w\) is a constant class function, then it is orthogonal to all non-trivial characters, so \(b_\lambda=0\) (\(\lambda\neq(q)\)).
+Finally, if \(\mathcal{R}_{\max}\) is not the set of all partitions, then \(w\) is not a constant class function, hence at least one non-trivial Fourier coefficient must be nonzero.
+\end{proof}
+
+\begin{theorem}[Pressure Vector Fan Phase Diagram: Piecewise Linear Structure of Channel Leading Layer]\label{thm:pom-schur-pressure-fan-diagram}
+Fix \(q\ge2\), and denote the pressure vector by \(p=(P(1),\dots,P(q))\in\RR^q\).
+For each partition \(\nu\vdash q\), \(\mathcal{P}(\nu)=\langle c(\nu),p\rangle\) is a linear function of \(p\) (where \(c(\nu)=(c_1(\nu),\dots,c_q(\nu))\)).
+Let the hyperplane family
+\[
+\mathcal{H}_q
+:=
+\left\{\langle c(\nu)-c(\mu),p\rangle=0:\ \nu,\mu\vdash q,\ \nu\neq\mu\right\}.
+\]
+Then for any \(p\notin\bigcup\mathcal{H}_q\), all \(\{\mathcal{P}(\nu)\}_{\nu\vdash q}\) are pairwise distinct.
+Thus for each \(\lambda\vdash q\), the maximizing set \(\mathcal{M}_\lambda\) is a singleton \(\{\nu_\lambda(p)\}\), and there exists \(\varepsilon_\lambda(p)>0\) such that
+\[
+T_{q,\lambda}(m)
+=
+f^\lambda\,\frac{\chi^\lambda(\nu_\lambda(p))}{z_{\nu_\lambda(p)}}\,K(\nu_\lambda(p))\,
+e^{m\mathcal{P}(\nu_\lambda(p))}
++O\!\left(e^{m(\mathcal{P}(\nu_\lambda(p))-\varepsilon_\lambda(p))}\right),
+\]
+where we can take
+\[
+\varepsilon_\lambda(p)=\min\!\left\{
+\varepsilon_*,
+\min_{\nu\in\mathrm{Supp}(\lambda),\,\nu\neq\nu_\lambda(p)}\bigl(\mathcal{P}(\nu_\lambda(p))-\mathcal{P}(\nu)\bigr)
+\right\}>0.
+\]
+\end{theorem}
+\begin{proof}
+When \(p\notin\bigcup\mathcal{H}_q\), \(\mathcal{P}(\nu)\) is strictly totally ordered on the finite set, so the maximum for each \(\lambda\) is uniquely attained on \(\mathrm{Supp}(\lambda)\) at \(\nu_\lambda(p)\).
+Moreover, \(\nu_\lambda(p)\in\mathrm{Supp}(\lambda)\) yields \(\chi^\lambda(\nu_\lambda(p))\neq 0\), and \(K(\nu_\lambda(p))>0\), so the leading layer coefficient is a single nonzero term.
+Substituting into Theorem \ref{thm:pom-schur-trace-finite-laplace-principle} and simultaneously incorporating the uniform deficit from Lemma \ref{lem:pom-partition-monomial-exponential-main-term} yields the stated error exponent.
+\end{proof}
+
+\begin{proposition}[Leading Cycle-Length Selection: Knapsack Structure of Maximum Exponential Layer]\label{prop:pom-partition-pressure-knapsack}
+For \(1\le r\le q\) define the per-part pressure \(a_r:=P(r)/r\), and denote \(a_*:=\max_{1\le r\le q}a_r\), \(R_*:=\{r:\ a_r=a_*\}\).
+Then for any partition \(\nu\vdash q\) we always have
+\[
+\mathcal{P}(\nu)\le q\,a_*.
+\]
+If \(\nu\) attains the maximum value \(\mathcal{P}_{\max}\), then any part length \(r\) appearing in \(\nu\) must satisfy \(r\in R_*\).
+If \(R_*=\{r_*\}\) is a singleton and \(r_*\mid q\), then the maximizing partition is unique and equals \(\nu=(r_*)^{q/r_*}\).
+\end{proposition}
+\begin{proof}
+By the constraint \(\sum_{r=1}^{q} r\,c_r(\nu)=q\), we have
+\[
+\mathcal{P}(\nu)=\sum_{r=1}^{q} r\,c_r(\nu)\,a_r\le a_*\sum_{r=1}^{q} r\,c_r(\nu)=q a_*.
+\]
+If some \(r\notin R_*\) still appears, then the corresponding term is strictly less than \(a_* r c_r(\nu)\), so the total is strictly less than \(q a_*\), cannot attain the maximum.
+Finally, when \(R_*=\{r_*\}\) and \(r_*\mid q\), the constraint forces all part lengths to be \(r_*\), and from \(\sum r_*c_{r_*}=q\) we obtain uniqueness.
+\end{proof}
+
+\begin{corollary}[Total Channel Collapse Under Identity Sector Dominance]\label{cor:pom-identity-sector-collapse-all-schur-channels}
+If the strict dominance holds:
+\[
+\frac{P(1)}{1}>\max_{2\le r\le q}\frac{P(r)}{r},
+\]
+then \(\mathcal{P}_{\max}=qP(1)\) and the unique maximizing partition is \(\nu_0=(1^q)\).
+Thus for all \(\lambda\vdash q\) there exists \(\varepsilon>0\) such that
+\[
+T_{q,\lambda}(m)
+=
+\frac{(f^\lambda)^2}{q!}\,\kappa_1^{\,q}\,e^{m qP(1)}
++O\!\left(e^{m(qP(1)-\varepsilon)}\right).
+\]
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-partition-pressure-knapsack}, strict dominance means \(R_*=\{1\}\), so the maximizing partition is uniquely \((1^q)\).
+Moreover, \(\chi^\lambda(1^q)=f^\lambda>0\), \(z_{1^q}=q!\), \(K(1^q)=\kappa_1^q\), so the leading coefficient is strictly nonzero.
+Substituting \(\nu_0\) into Theorem \ref{thm:pom-schur-trace-finite-laplace-principle} yields the stated leading term and exponential error.
+\end{proof}
+
+\paragraph{Symmetric Group Gibbs Limit: Conjugacy Class Freezing and Order Parameter}
+Define the Gibbs distribution on \(S_q\) (for fixed \(m\)):
+\[
+\mathbb P_{m,q}(\sigma):=\frac{\mathcal{C}_\sigma(m)}{\sum_{\pi\in S_q}\mathcal{C}_\pi(m)}
+=\frac{\mathsf{M}_{\nu(\sigma)}(m)}{\sum_{\pi\in S_q}\mathsf{M}_{\nu(\pi)}(m)}.
+\]
+Its projection onto the partition space is
+\[
+\mathbb P^{\mathrm{part}}_{m,q}(\nu)
+:=
+\sum_{\sigma:\,\nu(\sigma)=\nu}\mathbb P_{m,q}(\sigma)
+=
+\frac{\frac{q!}{z_\nu}\mathsf{M}_\nu(m)}{\sum_{\mu\vdash q}\frac{q!}{z_\mu}\mathsf{M}_\mu(m)}.
+\]
+Denote the total variation distance \(D_{\mathrm{TV}}(\mu,\nu):=\frac12\sum_x|\mu(x)-\nu(x)|\) (finite state space).
+
+\begin{theorem}[Freezing and Channel Order Parameter Limit Under Unique Leading Cycle Type]\label{thm:pom-symmetric-group-gibbs-freezing}
+If \(\mathcal{R}_{\max}=\{\nu_*\}\) is a singleton, and denote
+\[
+\delta:=\mathcal{P}_{\max}-\max_{\nu\neq\nu_*}\mathcal{P}(\nu)>0,
+\qquad
+\delta_*:=\min(\delta,\varepsilon_*)>0,
+\]
+then there exists a constant \(C_q>0\) such that
+\[
+D_{\mathrm{TV}}\!\left(\mathbb P_{m,q},\ \mathrm{Unif}(\mathrm{Cl}(\nu_*))\right)\le C_q\,e^{-m\delta_*},
+\qquad
+D_{\mathrm{TV}}\!\left(\mathbb P_{m,q}^{\mathrm{part}},\ \delta_{\nu_*}\right)\le C_q\,e^{-m\delta_*}.
+\]
+For any \(\lambda\vdash q\) define the order parameter
+\[
+\mathfrak m_\lambda(m):=\EE_{m,q}\bigl[\chi^\lambda(\sigma)\bigr],
+\]
+then we have
+\[
+\mathfrak m_\lambda(m)=\chi^\lambda(\nu_*)+O(e^{-m\delta_*}),
+\qquad
+\frac{T_{q,\lambda}(m)}{T_{q,(q)}(m)}=f^\lambda\,\mathfrak m_\lambda(m)
+=f^\lambda\,\chi^\lambda(\nu_*)+O(e^{-m\delta_*}).
+\]
+\end{theorem}
+\begin{proof}
+By Lemma \ref{lem:pom-partition-monomial-exponential-main-term},
+\(
+\mathsf{M}_\nu(m)=K(\nu)e^{m\mathcal{P}(\nu)}\bigl(1+O(e^{-m\varepsilon_*})\bigr)
+\).
+Substituting into the finite ratio formula for \(\mathbb P_{m,q}^{\mathrm{part}}(\nu)\), and controlling the remaining terms by the unique maximum layer gap \(\delta\), we obtain
+\(
+\mathbb P_{m,q}^{\mathrm{part}}(\nu_*)=1+O(e^{-m\delta_*})
+\)
+and \(\mathbb P_{m,q}^{\mathrm{part}}(\nu)=O(e^{-m\delta_*})\) (\(\nu\neq\nu_*\)).
+Thus the TV distance in partition space exponentially converges to \(\delta_{\nu_*}\).
+\par
+Since \(\mathcal{C}_\sigma(m)\) is constant within conjugacy classes, conditioned on \(\nu_*\), \(\mathbb P_{m,q}\) is uniform on \(\mathrm{Cl}(\nu_*)\),
+hence
+\(
+D_{\mathrm{TV}}(\mathbb P_{m,q},\mathrm{Unif}(\mathrm{Cl}(\nu_*)))\le 1-\mathbb P_{m,q}^{\mathrm{part}}(\nu_*)
+\),
+yielding the TV bound on \(S_q\).
+\par
+Characters are class functions, so \(\mathfrak m_\lambda(m)=\sum_{\nu}\mathbb P_{m,q}^{\mathrm{part}}(\nu)\chi^\lambda(\nu)\), and the convergence of the partition distribution yields the stated limit and error.
+Finally, from
+\(
+T_{q,\lambda}(m)=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\mathcal{C}_\sigma(m)
+\)
+and
+\(
+T_{q,(q)}(m)=\frac{1}{q!}\sum_{\sigma\in S_q}\mathcal{C}_\sigma(m)
+\)
+we obtain \(T_{q,\lambda}(m)=f^\lambda T_{q,(q)}(m)\mathfrak m_\lambda(m)\).
+\end{proof}
+
+\begin{theorem}[Mixture Limit in Multi-Maximizer Phase: Conjugacy Class Mixture and Order Parameter Jump]\label{thm:pom-symmetric-group-gibbs-mixture}
+If \(|\mathcal{R}_{\max}|\ge 2\), define the maximum layer weight
+\[
+W(\nu):=\frac{K(\nu)}{z_\nu}\qquad(\nu\in\mathcal{R}_{\max}),
+\qquad
+\pi_\infty(\nu):=\frac{W(\nu)}{\sum_{\mu\in\mathcal{R}_{\max}}W(\mu)}.
+\]
+Then there holds the limit
+\[
+\lim_{m\to\infty}\mathbb P^{\mathrm{part}}_{m,q}(\nu)=
+\begin{cases}
+\pi_\infty(\nu),& \nu\in\mathcal{R}_{\max},\\
+0,& \nu\notin\mathcal{R}_{\max},
+\end{cases}
+\]
+and
+\[
+\mathbb P_{m,q}\xrightarrow[m\to\infty]{}\sum_{\nu\in\mathcal{R}_{\max}}\pi_\infty(\nu)\,\mathrm{Unif}(\mathrm{Cl}(\nu)),
+\qquad
+\lim_{m\to\infty}\mathfrak m_\lambda(m)=\sum_{\nu\in\mathcal{R}_{\max}}\pi_\infty(\nu)\,\chi^\lambda(\nu).
+\]
+When the pressure vector \(p\) crosses a wall of \(\mathcal{H}_q\) and causes \(\mathcal{R}_{\max}\) to change, the above limiting weights and order parameters exhibit piecewise constant jumps.
+\end{theorem}
+\begin{proof}
+Still by Lemma \ref{lem:pom-partition-monomial-exponential-main-term}, substituting into \(\mathbb P_{m,q}^{\mathrm{part}}(\nu)\) with
+\(
+\mathsf{M}_\nu(m)=K(\nu)e^{m\mathcal{P}(\nu)}(1+o(1))
+\)
+and extracting the common factor \(\mathcal{P}_{\max}\):
+Non-maximum layers vanish exponentially, maximum layers remain and are normalized by \(W(\nu)\), yielding the partition space limit.
+Since weights within classes are constant, the limit on \(S_q\) is a convex combination of uniform distributions over each maximum conjugacy class; the character expectation converges accordingly, yielding the order parameter limit formula.
+\end{proof}
+

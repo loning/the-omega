@@ -1,0 +1,148 @@
+% (User input window)
+% 2026-02-14 16:12:45 (Asia/Singapore)
+
+\paragraph{Completeness relation and Gram inverse closed form for finite-rank anchoring kernel: full reconstruction of continuous kernel from discrete anchor points}
+Following the notation of Theorem~\ref{thm:xi-basepoint-scan-finite-rank-rkhs}: poles \(\{p_k\}_{k=1}^{\kappa}\subset\CC_{-}\), weights \(\{w_k\}_{k=1}^{\kappa}\subset\RR_{>0}\), feature map \(v\) and kernel \(K\).
+
+\begin{proposition}[Kernel completeness relation for full-rank anchor sets: full reconstruction of continuous kernel from discrete anchors]\label{prop:xi-basepoint-scan-kernel-completeness-full-rank}
+For any \(x\in\RR\) define
+\[
+v(x)_k:=\frac{\sqrt{w_k}}{x-p_k}\in\CC,\qquad
+K(x,y):=\langle v(x),v(y)\rangle_{\CC^\kappa}
+=\sum_{k=1}^{\kappa}\frac{w_k}{(x-p_k)(y-\overline{p_k})}\qquad(x,y\in\RR).
+\]
+Take distinct real anchor points \(A=\{a_1,\dots,a_\kappa\}\subset\RR\), and denote the Gram matrix
+\[
+G_A:=(K(a_i,a_j))_{1\le i,j\le \kappa}.
+\]
+Then \(G_A\) is invertible, and for all \(x,y\in\RR\) the completeness identity holds:
+\[
+\boxed{\;
+K(x,y)=K(x,A)\,G_A^{-1}\,K(A,y)\; },
+\]
+where
+\(
+K(x,A)=(K(x,a_1),\dots,K(x,a_\kappa))
+\),
+\(
+K(A,y)=(K(a_1,y),\dots,K(a_\kappa,y))^{\mathsf T}
+\).
+\end{proposition}
+\begin{proof}
+Let the matrix \(V\in\CC^{\kappa\times\kappa}\) be
+\(
+V_{ik}:=v(a_i)_k=\sqrt{w_k}/(a_i-p_k)
+\).
+Then \(G_A=VV^\ast\).
+By the Cauchy non-degeneracy in the proof of Theorem~\ref{thm:xi-basepoint-scan-finite-rank-rkhs}, \(V\) is invertible, so
+\[
+I_\kappa=V^\ast G_A^{-1}V.
+\]
+Multiplying both sides on the left by \(v(x)^\ast\) and on the right by \(v(y)\) gives
+\[
+K(x,y)
+=\langle v(x),v(y)\rangle
+=\langle v(x),V^\ast G_A^{-1}Vv(y)\rangle
+=K(x,A)\,G_A^{-1}\,K(A,y),
+\]
+which is the displayed completeness relation. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Full closed form of full-rank Gram inverse: \texorpdfstring{$G_A^{-1}$}{G\_A^{-1}} given explicitly via Cauchy inverse]\label{prop:xi-basepoint-scan-gram-inverse-closed-form}
+Under the full-rank setup of Proposition~\ref{prop:xi-basepoint-scan-kernel-completeness-full-rank}, let
+\[
+\Pi(z):=\prod_{k=1}^{\kappa}(z-p_k),\qquad
+y(z):=\prod_{j=1}^{\kappa}(z-a_j).
+\]
+Write \(V_{ik}=\sqrt{w_k}/(a_i-p_k)\), so \(V=C\,\mathrm{diag}(\sqrt w)\), where \(C_{ik}=(a_i-p_k)^{-1}\).
+By the Cauchy inverse closed form of Conclusion~\ref{con:xi-terminal-cauchy-lagrange-rational-interpolation-cauchy-inverse}, we have
+\[
+(V^{-1})_{k i}
+=\frac{1}{\sqrt{w_k}}\,(C^{-1})_{k i}
+=\frac{1}{\sqrt{w_k}}\cdot
+\frac{y(p_k)\,\Pi(a_i)}{(p_k-a_i)\,\Pi'(p_k)\,y'(a_i)}.
+\]
+Consequently
+\[
+G_A^{-1}=(V^{-1})^\ast V^{-1},
+\]
+and its entries have the explicit expression: for \(1\le i,j\le \kappa\),
+\[
+\boxed{\;
+(G_A^{-1})_{ij}
+=
+\frac{\overline{\Pi(a_i)}\,\Pi(a_j)}{y'(a_i)\,y'(a_j)}
+\sum_{k=1}^{\kappa}
+\frac{|y(p_k)|^2}{w_k\,|\Pi'(p_k)|^2}\cdot
+\frac{1}{(a_i-\overline{p_k})(a_j-p_k)}\; }.
+\]
+\end{proposition}
+\begin{proof}
+Since \(G_A=VV^\ast\) and \(V\) is invertible, we have \(G_A^{-1}=(V^{-1})^\ast V^{-1}\).
+Moreover, \(V=C\,\mathrm{diag}(\sqrt w)\) gives \(V^{-1}=\mathrm{diag}(w^{-1/2})\,C^{-1}\); substituting the \(C^{-1}\) closed form from Conclusion~\ref{con:xi-terminal-cauchy-lagrange-rational-interpolation-cauchy-inverse} yields \((V^{-1})_{ki}\).
+Expanding
+\(
+(G_A^{-1})_{ij}=\sum_{k}\overline{(V^{-1})_{ki}}(V^{-1})_{kj}
+\)
+term-by-term and simplifying gives the displayed expression. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Determinant increment and orthogonal gap: geometric meaning of Schur complement]\label{prop:xi-basepoint-scan-gram-determinant-schur-increment}
+For any anchor set \(A=\{a_1,\dots,a_n\}\subset\RR\) (\(n<\kappa\)) assuming \(G_A:=(K(a_i,a_j))_{i,j}\) is invertible, define
+\[
+k_A(x):=(K(x,a_1),\dots,K(x,a_n))^{\mathsf T},\qquad
+H(x):=K(x,x).
+\]
+Then for any \(x\in\RR\setminus A\) we have the strict identity
+\[
+\boxed{\;
+\det G_{A\cup\{x\}}=\det G_A\cdot\Bigl(H(x)-k_A(x)^\ast G_A^{-1}k_A(x)\Bigr)\; } .
+\]
+Moreover, the quantity inside the parentheses is non-negative and satisfies the orthogonal-gap representation
+\[
+H(x)-k_A(x)^\ast G_A^{-1}k_A(x)
+=\bigl\|v(x)-\mathrm{proj}_{\Span\{v(a_i)\}}v(x)\bigr\|_{\CC^\kappa}^{2}.
+\]
+\end{proposition}
+\begin{proof}
+Write in block-matrix form
+\[
+G_{A\cup\{x\}}=
+\begin{pmatrix}
+G_A & k_A(x)\\
+k_A(x)^\ast & H(x)
+\end{pmatrix}.
+\]
+Applying the Schur complement formula to the block determinant yields the first formula.
+The second formula follows from \(G_A=V_AV_A^\ast\) (\(V_A\) is the \(n\times\kappa\) matrix formed by \(v(a_i)\)) and the least-squares projection identity:
+\(
+k_A(x)=V_A v(x)
+\), so the Schur complement equals the squared orthogonal-gap norm of \(v(x)\) from \(\Span\{v(a_i)\}\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Leverage factorization of Gram determinant: multiplicative factorization and global upper bound under finite-rank kernel]\label{cor:xi-basepoint-scan-gram-determinant-leverage-product}
+For any ordered anchor sequence \((a_1,\dots,a_n)\) (distinct, with each \(G_{A_m}\) invertible), denote the incremental anchor sets \(A_m:=\{a_1,\dots,a_m\}\) (\(A_0=\varnothing\)), and define the leverage gap
+\[
+\ell_{A_{m-1}}(a_m):=
+H(a_m)-k_{A_{m-1}}(a_m)^\ast G_{A_{m-1}}^{-1}k_{A_{m-1}}(a_m)\ \ge 0.
+\]
+Then the strict multiplicative factorization holds:
+\[
+\boxed{\;
+\det G_{A_n}=\prod_{m=1}^{n}\ell_{A_{m-1}}(a_m)\; }.
+\]
+Consequently, for any \(n\)-point anchor set \(A\) (ignoring order) we have the upper bound
+\[
+\det G_A\le \prod_{m=1}^{n}\Bigl(\sup_{x\in\RR}\ell_{A_{m-1}}(x)\Bigr),
+\]
+with equality if and only if there exists a permutation such that each step \(a_m\) achieves the corresponding supremum.
+\end{corollary}
+\begin{proof}
+Applying Proposition~\ref{prop:xi-basepoint-scan-gram-determinant-schur-increment} for \(m=1,\dots,n\) successively gives
+\[
+\det G_{A_m}=\det G_{A_{m-1}}\cdot \ell_{A_{m-1}}(a_m),
+\]
+multiplying yields the factorization.
+The upper bound follows from \(\ell_{A_{m-1}}(a_m)\le \sup_x\ell_{A_{m-1}}(x)\) multiplied term-by-term; the equality condition follows from the necessity-sufficiency of achieving equality at each step. This completes the proof.
+\end{proof}
+

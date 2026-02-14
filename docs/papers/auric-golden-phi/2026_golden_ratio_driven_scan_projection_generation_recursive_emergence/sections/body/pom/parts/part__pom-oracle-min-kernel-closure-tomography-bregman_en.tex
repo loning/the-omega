@@ -1,0 +1,377 @@
+\paragraph{\texorpdfstring{$(\min)$}{min}-Kernel Closure and Oracle Tomography: Invertible Inversion of \texorpdfstring{$\Gamma_{\mathrm{orc}}$}{Gamma\_orc} and Local Cost Geometry}
+Theorem \ref{thm:pom-oracle-capacity-thermal-cut} gives the \((\min)\)-kernel representation of the capacity curve
+\(
+\Gamma_{\mathrm{orc}}=\sup_{\alpha}(f(\alpha)+\min(\alpha,\cdot))
+\).
+This paragraph abstracts this representation into a Galois duality with adjoint operator, thus writing "inverting \(f\) and two types of rate functions from \(\Gamma_{\mathrm{orc}}\)" as a fully auditable closure/anti-closure mechanism;
+and further provides the leading finite-size correction for the critical window, as well as the KL--Bregman identity and area representation for the local cost in the thermal phase
+\(
+R(a):=\tau(1)-\Gamma_{\mathrm{orc}}(a)=\log 2-\Gamma_{\mathrm{orc}}(a)
+\).
+
+\subparagraph{\texorpdfstring{$(\min)$}{min}-Kernel Galois Duality and Closure Operator}
+On the closed interval \([0,\log 2]\), for any upper semicontinuous function \(f:[0,\log 2]\to\RR\cup\{-\infty\}\) define
+\begin{equation}\label{eq:pom-min-kernel-closure-operator-T}
+(\mathfrak{T}_{\min} f)(a)
+:=\sup_{\alpha\in[0,\log 2]}\bigl(f(\alpha)+\min(\alpha,a)\bigr),
+\qquad a\in[0,\log 2],
+\end{equation}
+and for any function \(g:[0,\log 2]\to\RR\cup\{\pm\infty\}\) define the adjoint operator
+\begin{equation}\label{eq:pom-min-kernel-erosion-operator-E}
+(\mathfrak{E}_{\min} g)(\alpha)
+:=\inf_{a\in[0,\log 2]}\bigl(g(a)-\min(\alpha,a)\bigr),
+\qquad \alpha\in[0,\log 2].
+\end{equation}
+
+\begin{theorem}[Galois Duality and Closure/Kernel]\label{thm:pom-min-kernel-galois-adjunction-closure}
+For any \(f,g\) there is a strict equivalence
+\[
+\boxed{\;
+\mathfrak{T}_{\min}f\le g\quad\Longleftrightarrow\quad f\le \mathfrak{E}_{\min}g\;}
+\]
+(inequalities understood pointwise).
+Therefore \(\mathfrak{E}_{\min}\circ\mathfrak{T}_{\min}\) is an extensive operator, while \(\mathfrak{T}_{\min}\circ\mathfrak{E}_{\min}\) is a contractive operator, and the idempotent identities hold
+\[
+\boxed{\;
+\mathfrak{T}_{\min}\circ\mathfrak{E}_{\min}\circ\mathfrak{T}_{\min}=\mathfrak{T}_{\min},\qquad
+\mathfrak{E}_{\min}\circ\mathfrak{T}_{\min}\circ\mathfrak{E}_{\min}=\mathfrak{E}_{\min}\;}
+\]
+thus both \(\mathfrak{T}_{\min}\circ\mathfrak{E}_{\min}\) and \(\mathfrak{E}_{\min}\circ\mathfrak{T}_{\min}\) are projection operators (idempotent).
+\end{theorem}
+\begin{proof}
+By definition \eqref{eq:pom-min-kernel-closure-operator-T}, \(\mathfrak{T}_{\min}f\le g\) is equivalent to
+\(
+f(\alpha)+\min(\alpha,a)\le g(a)
+\)
+for all \((\alpha,a)\in[0,\log 2]^2\).
+Taking infimum over \(a\) for fixed \(\alpha\) gives
+\(
+f(\alpha)\le \inf_a(g(a)-\min(\alpha,a))=(\mathfrak{E}_{\min}g)(\alpha)
+\);
+conversely if \(f\le \mathfrak{E}_{\min}g\), then for any \(a\) we have
+\[
+(\mathfrak{T}_{\min}f)(a)
+=\sup_{\alpha}\bigl(f(\alpha)+\min(\alpha,a)\bigr)
+\le \sup_{\alpha}\bigl((\mathfrak{E}_{\min}g)(\alpha)+\min(\alpha,a)\bigr)
+\le g(a),
+\]
+where the last step follows pointwise from \((\mathfrak{E}_{\min}g)(\alpha)\le g(a)-\min(\alpha,a)\) (by the definition of \(\inf\)).
+The idempotent identities follow directly from this duality: for example taking \(g=\mathfrak{T}_{\min}f\), then \(f\le \mathfrak{E}_{\min}\mathfrak{T}_{\min}f\), applying \(\mathfrak{T}_{\min}\) gives
+\(
+\mathfrak{T}_{\min}f\le \mathfrak{T}_{\min}\mathfrak{E}_{\min}\mathfrak{T}_{\min}f
+\);
+while \(\mathfrak{T}_{\min}\mathfrak{E}_{\min}\) being contractive gives the reverse inequality, hence equality holds. The other formula is similar. \qed
+\end{proof}
+
+\begin{definition}[\texorpdfstring{$(\min)$}{min}-Kernel Realizable Class]\label{def:pom-min-kernel-class-G}
+Denote by \(\mathcal{G}_{\min}\) the class of functions \(g:[0,\log 2]\to\RR\cup\{-\infty\}\) satisfying the following three properties:
+\begin{enumerate}
+  \item \(g\) is upper semicontinuous;
+  \item \(g\) is concave;
+  \item \(g\) is \(1\)-Lipschitz: \(|g(a)-g(b)|\le |a-b|\);
+  \item \(g\) is monotone non-decreasing: if \(a\le b\), then \(g(a)\le g(b)\).
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[\texorpdfstring{$(\min)$}{min}-Kernel Conjugate Invertibility: Maximum Pre-Image and Exact Recovery]\label{thm:pom-min-kernel-projection-and-inversion}
+For any \(g:[0,\log 2]\to\RR\cup\{\pm\infty\}\), let
+\begin{equation}\label{eq:pom-min-kernel-inversion-f-from-g}
+\boxed{\;
+f_{\max}(\alpha):=(\mathfrak{E}_{\min}g)(\alpha)
+=\inf_{a\in[0,\log 2]}\bigl(g(a)-\min(\alpha,a)\bigr),\qquad \alpha\in[0,\log 2].\;}
+\end{equation}
+Then:
+\begin{enumerate}
+  \item \textbf{(Maximum Pre-Image)} For any \(f\) we have
+  \[
+  \mathfrak{T}_{\min}f\le g\quad\Longleftrightarrow\quad f\le f_{\max}.
+  \]
+  Thus among all pre-images satisfying \(\mathfrak{T}_{\min}f\le g\), \(f_{\max}\) is the unique maximum.
+  \item \textbf{(Exact Recovery When Realizable)} If \(g\) can be written as \(g=\mathfrak{T}_{\min}f\) (for some \(f\)), then
+  \[
+  \boxed{\;
+  g=\mathfrak{T}_{\min}f_{\max}=\mathfrak{T}_{\min}(\mathfrak{E}_{\min}g)\;}
+  \]
+  and for any \(\tilde f\) satisfying \(g=\mathfrak{T}_{\min}\tilde f\) we must have \(\tilde f\le f_{\max}\).
+  \item \textbf{(Simplified Inversion on \(\mathcal{G}_{\min}\))} If \(g\in\mathcal{G}_{\min}\), then the infimum in the above formula is attained at \(a=\alpha\), thus
+  \[
+  \boxed{\;
+  f_{\max}(\alpha)=g(\alpha)-\alpha\qquad(\alpha\in[0,\log 2])\;}
+  \]
+  and still \(g=\mathfrak{T}_{\min}f_{\max}\).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The first and second items are direct corollaries of Theorem \ref{thm:pom-min-kernel-galois-adjunction-closure}:
+\(\mathfrak{T}_{\min}f\le g\Longleftrightarrow f\le \mathfrak{E}_{\min}g=f_{\max}\), and if \(g=\mathfrak{T}_{\min}f\) then
+\(
+\mathfrak{T}_{\min}f_{\max}
+=\mathfrak{T}_{\min}\mathfrak{E}_{\min}\mathfrak{T}_{\min}f
+=\mathfrak{T}_{\min}f=g
+\)
+(using \(\mathfrak{T}_{\min}\circ\mathfrak{E}_{\min}\circ\mathfrak{T}_{\min}=\mathfrak{T}_{\min}\)).
+\par
+For the third item: let \(g\in\mathcal{G}_{\min}\) and fix \(\alpha\).
+When \(a\ge \alpha\), \(\min(\alpha,a)=\alpha\), so \(g(a)-\min(\alpha,a)=g(a)-\alpha\);
+by monotone non-decreasing property the infimum is attained at \(a=\alpha\), with value \(g(\alpha)-\alpha\).
+When \(a\le \alpha\), \(\min(\alpha,a)=a\), so \(g(a)-\min(\alpha,a)=g(a)-a\);
+while concavity and \(1\)-Lipschitz (combined with monotone non-decreasing) give any subgradient \(s(a)\in[0,1]\), thus
+\(
+\frac{d}{da}(g(a)-a)\le 0
+\)
+holds in the distributional sense, so \(a\mapsto g(a)-a\) is monotone non-increasing, hence its infimum on \([0,\alpha]\) is also attained at \(a=\alpha\).
+Combining both segments gives \(f_{\max}(\alpha)=g(\alpha)-\alpha\).
+Thus for any \(a\in[0,\log 2]\),
+\[
+(\mathfrak{T}_{\min}f_{\max})(a)
+=\sup_{\alpha}\bigl(g(\alpha)-\alpha+\min(\alpha,a)\bigr).
+\]
+When \(\alpha\le a\), the bracket equals \(g(\alpha)\le g(a)\) (monotone non-decreasing);
+when \(\alpha\ge a\), the bracket equals \(g(\alpha)-\alpha+a\le g(a)\) (by \(1\)-Lipschitz we have \(g(\alpha)-g(a)\le \alpha-a\)).
+Taking \(\alpha=a\) achieves equality, so \((\mathfrak{T}_{\min}f_{\max})(a)=g(a)\) for all \(a\). \qed
+\end{proof}
+
+\subparagraph{Complete Inversion of Spectrum and Rate Functions from \texorpdfstring{$\Gamma_{\mathrm{orc}}$}{Gamma\_orc}, and Thermal Phase Point Discrimination}
+Under the spectral equality regime of Theorem \ref{thm:pom-ldp-uniform-and-wm-exact-spectrum}, the counting spectrum \(f\) is upper semicontinuous and concave, satisfying
+\(
+\sup_\alpha f(\alpha)=\log\varphi
+\);
+while Theorem \ref{thm:pom-oracle-capacity-thermal-cut} gives
+\(
+\Gamma_{\mathrm{orc}}=\mathfrak{T}_{\min}f
+\).
+Therefore \(\Gamma_{\mathrm{orc}}\) on the exponential scale determines \(f\) and the corresponding two types of large deviation rate functions.
+
+\begin{theorem}[Exact Inversion of \texorpdfstring{$\Gamma_{\mathrm{orc}}$}{Gamma\_orc} and Dual Rate Reconstruction]\label{thm:pom-oracle-tomography-completeness-f-Iu-Iw}
+Assume \(\Gamma_{\mathrm{orc}}\in\mathcal{G}_{\min}\).
+Then by \eqref{eq:pom-min-kernel-inversion-f-from-g} we obtain the exact inversion of the spectrum
+\[
+\boxed{\;
+f(\alpha)=\inf_{a\in[0,\log 2]}\bigl(\Gamma_{\mathrm{orc}}(a)-\min(\alpha,a)\bigr),\qquad \alpha\in[0,\log 2].\;}
+\]
+And the rate functions corresponding to the type-uniform measure \(U_m=\mathrm{Unif}(X_m)\) and pushforward measure \(w_m\) (Definition \ref{def:pom-wm-baseline}) satisfy
+\[
+\boxed{\;
+I_U(\alpha)=\log\varphi-f(\alpha),\qquad
+I_w(\alpha)=\log 2-\alpha-f(\alpha)\;}
+\]
+(understood on their effective domains as spectral equality).
+Thus \(\Gamma_{\mathrm{orc}}\) alone determines the full curves of \(f\), \(I_U\), and \(I_w\).
+\end{theorem}
+\begin{proof}
+The first formula is the \((\min)\)-kernel inversion of Theorem \ref{thm:pom-min-kernel-projection-and-inversion}.
+In the second formula \(I_U=\log\varphi-f\) is the counting spectrum equality from Theorem \ref{thm:pom-ldp-uniform-and-wm-exact-spectrum};
+while \(w_m(x)=d_m(x)/2^m\) is the exponential tilting of \(U_m\) with respect to the observable \(Y_m=\frac1m\log d_m\),
+on the exponential scale giving
+\(
+w_m(Y_m\approx\alpha)\asymp \exp(m(f(\alpha)+\alpha-\log 2))
+\),
+hence \(I_w(\alpha)=\log 2-\alpha-f(\alpha)\). \qed
+\end{proof}
+
+\begin{theorem}[Thermal Interior Point Criterion: Differentiability and Slope Interval]\label{thm:pom-oracle-thermal-point-criteria}
+For any \(a\in(0,\log 2)\), the following two statements are equivalent:
+\begin{enumerate}
+  \item \(a\) belongs to the thermal phase interval \((a_0,a_1)\) (equivalent to the unique conjugate point \(q_*(a)\) in Theorem \ref{thm:pom-oracle-capacity-thermal-cut} falling in \((0,1)\));
+  \item \(\Gamma_{\mathrm{orc}}\) is differentiable at \(a\), and \(0<\Gamma_{\mathrm{orc}}'(a)<1\).
+\end{enumerate}
+Under this equivalence, the supremum representation
+\(
+\Gamma_{\mathrm{orc}}(a)=\sup_{\alpha}(f(\alpha)+\min(\alpha,a))
+\)
+is uniquely attained at the kink layer \(\alpha=a\), thus satisfying the strict identity
+\[
+\boxed{\;f(a)=\Gamma_{\mathrm{orc}}(a)-a.\;}
+\]
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-oracle-capacity-thermal-cut} and Corollary \ref{cor:pom-oracle-capacity-slope-readout},
+at thermal interior points there exists unique \(q_*(a)\in(0,1)\) and \(\Gamma_{\mathrm{orc}}'(a)=1-q_*(a)\in(0,1)\), giving \((1)\Rightarrow(2)\).
+Conversely, if \(\Gamma_{\mathrm{orc}}'(a)\in(0,1)\), then its supporting line slope differs both from the endpoint slope \(1\) of the linear segment (low-budget linear regime) and from the plateau slope \(0\), thus \(a\) cannot fall in the frozen phase and must belong to the thermal phase interval, giving \((2)\Rightarrow(1)\).
+At thermal interior points, Theorem \ref{thm:pom-oracle-capacity-thermal-cut} has given the kink unique optimality, so \(f(a)=\Gamma_{\mathrm{orc}}(a)-a\) holds as a direct corollary. \qed
+\end{proof}
+
+\subparagraph{Critical Window and Moderate Deviations: Finite-Size Correction of Success Rate}
+The following two conclusions upgrade the Gaussian limit of Theorem \ref{thm:pom-oracle-critical-window-gaussian} to leading correction and moderate deviation exponential level.
+
+\begin{theorem}[Edgeworth Leading Correction: Third-Order Pressure Derivative Controls Critical Window Deviation]\label{thm:pom-oracle-critical-window-edgeworth}
+Following the notation of Theorem \ref{thm:pom-oracle-critical-window-gaussian}, further assume \(\tau\) is real analytic in a left neighborhood of \(q=1\), and the third derivative
+\[
+\kappa_3:=\tau^{(3)}(1^-)
+\]
+exists.
+For fixed \(t\in\RR\) take
+\(
+B_m=\bigl\lfloor \beta_{\mathrm{crit}}m+\frac{t}{\log 2}\sqrt m\bigr\rfloor
+\), and let \(z:=t/\sigma\).
+Under the local limit theorem regime guaranteed by spectral gap and analytic regularity, we have the leading expansion
+\[
+\boxed{\;
+\mathrm{Succ}^{\mathrm{orc}}_m(B_m)
+=\Phi(z)+\frac{\kappa_3}{6\sigma^3}\,\frac{1}{\sqrt m}\,(1-z^2)\,\phi(z)+o(m^{-1/2})\; } ,
+\]
+where \(\Phi\) and \(\phi\) are the standard normal CDF and PDF respectively.
+\end{theorem}
+\begin{proof}[Proof Sketch]
+By the decomposition in Theorem \ref{thm:pom-oracle-critical-window-gaussian}, the main contribution to success rate in the critical window is determined by the event \(Y_m\le a_1+t/\sqrt m\), while the soft threshold complement term is \(\exp(-\Theta(\sqrt m))\) and can be absorbed into the error.
+Applying the Edgeworth expansion derived from the third-order analytic jet of \(\tau\) and spectral gap perturbation to the normalized variable \(\bigl(\sqrt m\,(Y_m-a_1)\bigr)/\sigma\), we obtain the shown leading correction. \qed
+\end{proof}
+
+\begin{proposition}[Moderate Deviation Principal Exponent: Universal Quadratic Law for Budget Deviation at \texorpdfstring{$m^\gamma$}{m^gamma} Scale]\label{prop:pom-oracle-critical-window-mdp}
+Assume \(\tau\) is twice differentiable in a left neighborhood of \(q=1\) and \(\sigma^2=\tau''(1^-)>0\).
+Take \(1/2<\gamma<1\) and \(s>0\), and let
+\[
+B_m=\left\lfloor \beta_{\mathrm{crit}}m-\frac{s}{\log 2}\,m^\gamma\right\rfloor.
+\]
+Under standard spectral gap regularity (making \(I_w\) twice differentiable at its minimum), we have
+\[
+\boxed{\;
+\log \mathrm{Succ}^{\mathrm{orc}}_m(B_m)
+=-\frac{s^2}{2\sigma^2}\,m^{2\gamma-1}+o\!\bigl(m^{2\gamma-1}\bigr)\; } ,
+\qquad m\to\infty.
+\]
+\end{proposition}
+\begin{proof}[Proof Sketch]
+Convert the budget to \(a_m=a_1-s\,m^{\gamma-1}+o(m^{\gamma-1})\).
+By the quadratic expansion of \(I_w\) at its minimum \(a_1\): \(I_w(a_1-\delta)=\delta^2/(2\sigma^2)+o(\delta^2)\) and the moderate deviation principle, we obtain
+\(
+\log w_m(Y_m\le a_m)=-(s^2/(2\sigma^2))m^{2\gamma-1}+o(m^{2\gamma-1})
+\).
+At this scale the soft threshold complement does not change the principal exponent, so success rate has the same exponential order as this tail probability. \qed
+\end{proof}
+
+\subparagraph{KL--Bregman Identity and Area Representation of Local Cost}
+Denote
+\[
+R(a):=\tau(1)-\Gamma_{\mathrm{orc}}(a)=\log 2-\Gamma_{\mathrm{orc}}(a)\ \ (\ge 0),
+\]
+which is the local "success rate gap exponent" in the thermal phase (also \(R(a)=-\Sigma_{\mathrm{orc}}(a)\), see Theorem \ref{thm:pom-oracle-restricted-fenchel-duality-negative-temp}).
+
+\begin{definition}[Bregman Divergence (Pressure Geometry)]\label{def:pom-bregman-divergence-pressure}
+Let \(\tau\) be differentiable and convex on an interval.
+For \(p,q\) define the Bregman divergence
+\[
+\mathcal{B}_{\tau}(p,q):=\tau(p)-\tau(q)-\tau'(q)(p-q)\ \ (\ge 0).
+\]
+\end{definition}
+
+\begin{theorem}[KL--Bregman Identity: Local Cost Equals Relative Entropy Rate from Escort to Baseline]\label{thm:pom-oracle-local-cost-kl-bregman}
+Let \(a\in(a_0,a_1)\) be a thermal interior point, and let \(q_*(a)\in(0,1)\) be the unique conjugate parameter (satisfying \(\tau'(q_*(a))=a\)).
+Then the strict identity holds
+\[
+\boxed{\;
+R(a)=\tau(1)-\tau(q_*(a))-(1-q_*(a))a
+=\mathcal{B}_{\tau}\bigl(1,q_*(a)\bigr)\; } .
+\]
+Furthermore, for the escort distribution \(\pi_{m,q}(x)=d_m(x)^q/S_q(m)\) and baseline \(w_m=\pi_{m,1}\), under the spectral gap regime allowing limit/derivative exchange we have
+\[
+\boxed{\;
+R(a)=\lim_{m\to\infty}\frac{1}{m}D_{\mathrm{KL}}\!\bigl(\pi_{m,q_*(a)}\ \|\ w_m\bigr)\; } .
+\]
+\end{theorem}
+\begin{proof}
+At thermal interior points, by the restricted variational representation \eqref{eq:pom-oracle-gamma-restricted-variational-q01} and unique optimality,
+\(
+\Gamma_{\mathrm{orc}}(a)=\tau(q_*)+(1-q_*)a
+\);
+substituting into \(R=\tau(1)-\Gamma_{\mathrm{orc}}\) gives the first formula, the second formula is Definition \ref{def:pom-bregman-divergence-pressure}.
+\par
+For KL, direct computation gives
+\[
+\log\frac{\pi_{m,q}(x)}{w_m(x)}
+=(q-1)\log d_m(x)-\bigl(\log S_q(m)-\log S_1(m)\bigr).
+\]
+Taking expectation with respect to \(\pi_{m,q}\) yields
+\(
+D_{\mathrm{KL}}(\pi_{m,q}\|w_m)=(q-1)\mathbb{E}_{\pi_{m,q}}[\log d_m]-\bigl(\log S_q-\log S_1\bigr)
+\).
+Dividing by \(m\) and letting \(m\to\infty\) (using the limit derivative formula from Corollary \ref{cor:pom-pressure-derivatives-from-escort}) yields
+\(
+\frac{1}{m}D_{\mathrm{KL}}\to (q-1)\tau'(q)-(\tau(q)-\tau(1))
+=\mathcal{B}_{\tau}(1,q)
+\);
+taking \(q=q_*(a)\) completes the proof. \qed
+\end{proof}
+
+\begin{corollary}[Rate--Budget Parameterization: Bregman Isodistance Curve Uniquely Determines Minimum Budget]\label{cor:pom-oracle-rate-budget-bregman-isodistance}
+In the thermal phase assume \(a\mapsto R(a)\) is continuous and strictly monotone.
+Given target cost exponent \(r\in(0,R(a_0^+))\), let
+\[
+a(r):=\inf\{a\in[0,\log 2]:\ R(a)\le r\}.
+\]
+Then there exists unique \(q(r)\in(0,1)\) such that
+\[
+\mathcal{B}_{\tau}\bigl(1,q(r)\bigr)=r,
+\qquad
+a(r)=\tau'(q(r)).
+\]
+Thus the optimal tradeoff curve is uniquely parameterized by \(q\mapsto(\tau'(q),\mathcal{B}_{\tau}(1,q))\) on \(q\in(0,1)\).
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-oracle-local-cost-kl-bregman}, in the thermal phase \(R(a)=\mathcal{B}_{\tau}(1,q_*(a))\) and \(a=\tau'(q_*(a))\).
+Strict convexity gives \(q\mapsto \mathcal{B}_{\tau}(1,q)\) strictly monotone on \((0,1)\), so for any \(r\) there exists unique \(q(r)\) solving, and by conjugate relation we obtain \(a(r)=\tau'(q(r))\). \qed
+\end{proof}
+
+\begin{theorem}[Information Projection Principle: Minimum Relative Entropy to \texorpdfstring{$w_m$}{wm} Under Mean Constraint Must Be Attained by Escort]\label{thm:pom-oracle-i-projection-escort}
+For fixed \(m\), denote \(y_m(x)=\frac{1}{m}\log d_m(x)\) and let
+\[
+\mathcal{M}_m(a):=\Bigl\{\pi\in\Delta(X_m):\ \mathbb{E}_{\pi}[y_m(X)]=a\Bigr\}.
+\]
+For \(a\) in the interior of the feasible interval, the minimization
+\[
+R_m(a):=\inf_{\pi\in\mathcal{M}_m(a)}D_{\mathrm{KL}}(\pi\|w_m)
+\]
+has a unique solution, and this solution is some escort distribution \(\pi_{m,q}\).
+And the dual formulation holds:
+\[
+\boxed{\;
+R_m(a)=\sup_{\theta\in\RR}\left(\theta a-\frac{1}{m}\log \mathbb{E}_{w_m}\bigl[e^{\theta m y_m(X)}\bigr]\right)\; }.
+\]
+Under thermal phase regularity, for any \(a\in(a_0,a_1)\) the uniform limit holds
+\[
+\lim_{m\to\infty}\frac{1}{m}R_m(a)=R(a),
+\qquad
+q\to q_*(a).
+\]
+\end{theorem}
+\begin{proof}
+For finite \(m\), this is KL minimization with linear moment constraint: by Lagrange multiplier method and strict convexity, the unique minimizer satisfies
+\(
+\pi(x)\propto w_m(x)e^{\theta m y_m(x)}
+\).
+Since \(w_m(x)\propto d_m(x)\) and \(e^{\theta m y_m(x)}=d_m(x)^{\theta}\), we have \(\pi(x)\propto d_m(x)^{1+\theta}\), which is the escort family.
+The dual formula is standard Fenchel duality (or obtained from the Gibbs variational formula for KL).
+Limit consistency is composed from pressure limits, conjugate uniqueness, and Theorem \ref{thm:pom-oracle-local-cost-kl-bregman}. \qed
+\end{proof}
+
+\begin{theorem}[Local Area Representation: Slope Gap Area and Second-Order Energy Integral]\label{thm:pom-oracle-local-cost-area-representation}
+In the thermal phase take \(a=\tau'(q)\) (\(q\in(0,1)\)).
+Then \(R(a)=\mathcal{B}_{\tau}(1,q)\) has the strict integral representation
+\[
+\boxed{\;
+R(a)=\int_{q}^{1}\bigl(\tau'(t)-\tau'(q)\bigr)\,\dd t
+=\int_{q}^{1}\bigl(\tau'(t)-a\bigr)\,\dd t
+=\int_{q}^{1}(1-t)\tau''(t)\,\dd t\; }.
+\]
+And by \(R(a)=\log 2-\Gamma_{\mathrm{orc}}(a)\) we obtain
+\[
+\boxed{\;
+R(a)=\int_{a}^{\log 2}\Gamma_{\mathrm{orc}}'(s)\,\dd s
+=\int_{a}^{\log 2}\bigl(1-q_*(s)\bigr)\,\dd s\qquad (a\in(a_0,a_1))\;}
+\]
+where the second equality uses \(\Gamma_{\mathrm{orc}}'(s)=1-q_*(s)\) from Corollary \ref{cor:pom-oracle-capacity-slope-readout}.
+\end{theorem}
+\begin{proof}
+By definition \(\mathcal{B}_{\tau}(1,q)=\tau(1)-\tau(q)-\tau'(q)(1-q)\), direct integration gives
+\[
+\int_q^1(\tau'(t)-\tau'(q))\,\dd t=\tau(1)-\tau(q)-(1-q)\tau'(q)=\mathcal{B}_{\tau}(1,q),
+\]
+and by integration by parts we obtain \(\int_q^1(1-t)\tau''(t)\,\dd t\).
+The second group of identities follows from \(\Gamma_{\mathrm{orc}}(\log 2)=\log 2\) and the fundamental theorem
+\(
+\log 2-\Gamma_{\mathrm{orc}}(a)=\int_a^{\log 2}\Gamma_{\mathrm{orc}}'(s)\dd s
+\);
+then substituting Corollary \ref{cor:pom-oracle-capacity-slope-readout} completes the proof. \qed
+\end{proof}
+
+\endinput

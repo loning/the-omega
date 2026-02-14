@@ -1,0 +1,739 @@
+\subsection{Spectral Gap-Driven Temporal Scales and Readout Stability}\label{subsec:pom-spectral-gap}
+\begin{corollary}[Readout Time Scale Controlled by Spectral Gap]\label{cor:pom-spectral-gap-time}
+Let $M_K(u)$ be primitive, with principal eigenvalue $\lambda_1(u)$ and maximum modulus of remaining eigenvalues $\lambda_2(u)$. By Theorem \ref{thm:kernel-weighted-prime-orbit},
+\[
+B_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{|\lambda_2(u)|^n}{n}\right),
+\]
+thus the relative error satisfies
+\[
+\left|\frac{nB_n(u)}{\lambda_1(u)^n}-1\right|
+\le C\left(\frac{|\lambda_2(u)|}{\lambda_1(u)}\right)^n.
+\]
+Given target precision $\varepsilon\in(0,1)$, it suffices to take
+\[
+n\ \ge\ \frac{\log(C/\varepsilon)}{\log\!\bigl(\lambda_1(u)/|\lambda_2(u)|\bigr)}
+\]
+to ensure the relative error does not exceed $\varepsilon$. If the kernel-version RH/GRH condition (Definition \ref{def:kernel-rh}) is further satisfied, one may replace $|\lambda_2(u)|$ by $\lambda_1(u)^{1/2}$, thereby obtaining a square-root decay scale (Corollary \ref{cor:kernel-rh-sqrt-error}).
+\end{corollary}
+
+\begin{remark}[Self-Duality and Completion Evenness]\label{rem:pom-duality-even}
+If the synchronization kernel satisfies the self-duality relation of Appendix \ref{app:kernel-self-dual}, the completed $\zeta$-function exhibits strict evenness in the $\theta$ variable. Consequently, its odd-order derivatives with respect to $\theta$ vanish at $\theta=0$, imposing symmetry constraints on the fluctuation statistics of the cost potential; the corresponding tunability can only be realized by breaking such self-duality structure.
+\end{remark}
+
+\subsubsection{Intrinsic Time Correlation: Correlation Length Scale Given by Spectral Gap (No External Input)}
+
+This subsection further interprets the "spectral gap" from prime-orbit error control as the \textbf{decay scale of temporal correlation}. We emphasize "no external input": the randomness considered arises from the kernel's own Parry/equilibrium measure (i.e., the stationary Markov structure induced by the finite-dimensional transfer operator), rather than from external noise or driving.
+
+\begin{proposition}[Spectral Gap \texorpdfstring{$\Rightarrow$}{=>} Exponential Decay of Time Correlation (Auditable)]\label{prop:pom-time-corr-gap}
+Let $B_\theta$ be the family of tilted transfer matrices for a finite-state synchronization kernel (e.g., a one-dimensional tilt with respect to output potential $e$), and assume that for given $\theta$ the matrix $B_\theta$ is primitive. Denote
+\(
+\lambda_1(\theta)=\rho(B_\theta),\quad
+\Lambda(\theta)=\max\{ |\lambda|:\ \lambda\in\mathrm{spec}(B_\theta),\ |\lambda|<\lambda_1(\theta)\}
+\), and let
+\[
+\rho(\theta):=\frac{\Lambda(\theta)}{\lambda_1(\theta)}\in[0,1),
+\qquad
+g(\theta):=-\log \rho(\theta)\in(0,+\infty).
+\]
+Then for any observables $F,G$ depending on finite windows (after block-lifting to single-time functions), under the Parry/equilibrium measure of $B_\theta$ there exists a constant $C_{F,G}(\theta)<\infty$ such that for all $n\ge 0$,
+\[
+\bigl|\mathrm{Cov}(F,\,G\circ\sigma^n)\bigr|\ \le\ C_{F,G}(\theta)\,\rho(\theta)^n.
+\]
+Therefore one may interpret
+\(
+\tau(\theta):=1/g(\theta)
+\)
+as the "correlation time," and $\tau_{1/2}(\theta):=\log 2\,/\,g(\theta)$ as the half-life (time for the exponential envelope to decay to $1/2$).
+\end{proposition}
+
+\begin{proof}
+For a primitive nonnegative matrix $B_\theta$, Perron--Frobenius theory yields a unique principal eigenvalue $\lambda_1(\theta)>0$ and corresponding left and right positive eigenvectors. By the standard construction of Parry measure (Doob transform), the covariance can be written as
+\(
+\mathrm{Cov}(F,G\circ\sigma^n)=\langle f,\,\mathcal{T}_\theta^n g\rangle
+\)
+for some form, where $\mathcal{T}_\theta$ is the normalized transfer operator (spectral radius $1$), whose nontrivial spectral radius is $\rho(\theta)$. For centered functions, the principal eigenmode vanishes, leaving only residual spectral contribution, thereby yielding the exponential decay bound. All quantities are finite-dimensional linear algebraic objects and can be directly audited via matrix spectra and vector inner products.
+\end{proof}
+
+\input{sections/generated/fig_sync_kernel_time_correlation}
+
+\subsection{Conclusion Cluster IV: Exponential Scale Saturation and Constant-Level Fingerprints}\label{subsec:pom-lambda-saturation}
+\begin{proposition}[Input Saturation of Exponential Scale]\label{prop:pom-lambda-saturation}
+For deterministic, complete-readout synchronization kernels, the Perron root $\lambda$ is primarily determined by the input skeleton, with the kernel direction contributing only smaller-modulus spectral corrections. Specifically, the 40-state real-input kernel satisfies $\rho(M)=\rho(A)=\varphi^2$ (Proposition \ref{prop:real-input-40-skeleton-factor}), and the 10-state synchronization kernel satisfies $\lambda=3$ (determinant factorization in Appendix \ref{app:sync-kernel-basic}). Thus $\log\lambda$ is closer to the saturation scale of "input branching entropy" than a fine-grained fingerprint of mechanism differences.
+\end{proposition}
+
+\begin{remark}[Three Classes of Fingerprints Distinguishing Mechanisms]\label{rem:pom-mechanism-fingerprint}
+When the principal scale $\lambda$ saturates, the objects truly distinguishing operational mechanisms come from constant-level and twisted spectral layers:
+\begin{itemize}
+  \item \textbf{Finite-part curve $\log\mathfrak{M}(\theta)$:} Recorded alongside $P(\theta)=\log\rho(M_\theta)$ on the same slice to characterize constant-level drift (see comparison note in \ref{subsec:chi-ldp}).
+  \item \textbf{Dirichlet--Mertens constant tensor:} Gives constant-level bias for primitive orbit counting stratified by congruence class (see \ref{subsec:arity-dirichlet-mertens-tensor} and related appendices).
+  \item \textbf{Worst-case twisted ratio $\rho/\lambda$:} Controls the order-projection mixing time scale via Chebotarev-type error control (Theorem \ref{thm:kernel-chebotarev-exp} and Corollary \ref{cor:pom-order-mixing}).
+\end{itemize}
+These three classes are orthogonal and complementary to $\lambda$, constituting an auditable fingerprint of "operational mechanism"; thus when $\lambda$ is locked by the input branching, differences between kernels must reside in finite-part interfaces such as $\log\mathfrak{M}$ and the Dirichlet--Mertens tensor.
+\end{remark}
+
+\subsection{RH-Sharp Spectral Bound and Toy RH for the Real-Input 40-State Kernel}\label{subsec:pom-rh-sharp}
+\begin{theorem}[RH-Sharp/Ramanujan Spectral Bound]\label{thm:pom-rh-sharp}
+The determinant factorization of the real-input 40-state kernel
+\[
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)
+\]
+(see Appendix \ref{app:real-input-40-finite-rh}) yields nonzero spectrum
+\[
+\mathrm{spec}(M)\setminus\{0\}
+=\{\lambda,\ -\sqrt{\lambda},\ 1^{(2)},\ (-1)^{(3)},\ \lambda^{-1},\ \lambda^{-1/2}\},
+\qquad \lambda=\varphi^2.
+\]
+Thus all nonzero eigenvalues $\nu$ other than $\lambda$ satisfy
+\[
+|\nu|\le \sqrt{\lambda}=\varphi,
+\]
+and exactly one nontrivial eigenvalue attains the bound: $\nu_2=-\sqrt{\lambda}$.
+\end{theorem}
+
+\begin{corollary}[Optimality of Square-Root Oscillation]\label{cor:pom-rh-sharp-an}
+Let $a_n=\Tr(M^n)$. Then
+\[
+a_n=\lambda^n+(-\sqrt{\lambda})^n+O(1),
+\]
+and the error term cannot be improved to $o(\lambda^{n/2})$. Equivalently, the dynamical version of "Chebyshev square-root error" attains critical optimality for this kernel.
+\end{corollary}
+
+\begin{proposition}[\texorpdfstring{$\zeta$}{zeta} Structural Factorization: Input Skeleton \texorpdfstring{$\times$}{x} \((-z)\) Twisted Golden Factor \texorpdfstring{$\times$}{x} Trivial Period Factor]\label{prop:pom-zeta-factorization-40}
+Let the golden-mean first-order Markov skeleton matrix be
+$$
+A:=
+\begin{pmatrix}
+1&1\\
+1&0
+\end{pmatrix},
+$$
+and let \(M\) be the adjacency matrix of the real-input 40-state kernel (Appendix \ref{app:real-input-40-abel}).
+Then there is an exact algebraic factorization
+$$
+\det(I-zM)
+=(1-z)^2(1+z)\cdot \det\!\bigl(I-z(A\otimes A)\bigr)\cdot \det(I+zA).
+$$
+Equivalently,
+$$
+\zeta_M(z)
+=\zeta_{A\otimes A}(z)\cdot \zeta_A(-z)\cdot \frac{1}{(1-z)^2(1+z)},
+$$
+where \(\zeta_B(z):=1/\det(I-zB)\) is the \(\zeta\)-function of a finite-type subshift.
+Moreover, the final "trivial period factor" \(\frac{1}{(1-z)^2(1+z)}\) only modifies short periods: at the primitive (Witt/Möbius) coefficient level it is nonzero only at \(n=1,2\) (term-by-term formula in Corollary \ref{cor:real-input-40-space-twist-boundary-split}).
+\end{proposition}
+\begin{proof}
+The eigenvalues of matrix \(A\) are \(\varphi\) and \(-\varphi^{-1}\), so the eigenvalues of \(A\otimes A\) are
+\(\{\varphi^2,-1,-1,\varphi^{-2}\}\), whence
+$$
+\det\!\bigl(I-z(A\otimes A)\bigr)=(1-\varphi^2 z)(1+z)^2(1-\varphi^{-2}z)=(1+z)^2(1-3z+z^2).
+$$
+Meanwhile
+\(
+\det(I+zA)=1+z-z^2
+\).
+Multiplying the above two by \((1-z)^2(1+z)\) yields
+$$
+(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2),
+$$
+which agrees with the factorization of \(\det(I-zM)\) in Theorem \ref{thm:pom-rh-sharp}. This completes the proof.
+\end{proof}
+
+\begin{remark}[Hidden \texorpdfstring{$(-A)$}{(-A)} Factor: Structural Origin of Toy RH Critical Line Lattice]\label{rem:pom-minusA-factor-critical-line}
+The third factor in Proposition \ref{prop:pom-zeta-factorization-40} can be further rewritten as
+$$
+\det(I+zA)=\det\!\bigl(I-z(-A)\bigr),
+$$
+whence
+$$
+\boxed{\;
+\det(I-zM)
+=(1-z)^2(1+z)\cdot \det\!\bigl(I-z(A\otimes A)\bigr)\cdot \det\!\bigl(I-z(-A)\bigr).
+\;}
+$$
+Equivalently, at the \(\zeta\)-function level,
+$$
+\boxed{\;
+\zeta_M(z)
+=\frac{1}{(1-z)^2(1+z)}\cdot \zeta_{A\otimes A}(z)\cdot \zeta_{-A}(z),
+\qquad
+\zeta_{-A}(z):=\frac{1}{\det(I-z(-A))}=\frac{1}{\det(I+zA)}.
+\;}
+$$
+This rewriting completely isolates the origin of the toy RH "critical line lattice": since the Perron root of \(-A\) is \(-\varphi\), and the principal scale is \(\lambda=\varphi^2\), the unique boundary-attaining eigenvalue
+\(
+-\sqrt{\lambda}=-\varphi
+\)
+does not arise from accidental resonance in the 40-state complex structure, but is necessarily embedded by the \textbf{sign-flipped factor \((-A)\) of the golden-mean adjacency operator \(A\)}.
+Hence the nontrivial pole sequence in the strip \(0<\Re(s)<1\) (Theorem \ref{thm:pom-toy-rh}) can be viewed as the direct image of \(\det(I-z(-A))=0\) under the Dirichlet coordinate \(z=\lambda^{-s}\).
+\end{remark}
+
+\begin{remark}[Permutation Lift Viewpoint: Ramanujan/RH-Sharp as "New Eigenvalue Bound"]\label{rem:pom-permutation-lift-ramanujan}
+Appendix \ref{prop:real-input-40-skeleton-factor} shows that the real-input \(40\)-state kernel can be written as a \(4\times 4\) block matrix, with nonzero blocks being \(10\times 10\) permutation matrices \(B^{(d)}\) induced by deterministic transitions, and that the constant-fiber subspace
+\(
+U=\RR^{4}\otimes \mathrm{span}\{\mathbf{1}\}
+\)
+is invariant under \(M\) with \(M|_{U}\simeq A\otimes A\).
+This is precisely the \textbf{permutation lift (cover)} in graph spectral language: the base graph is given by \(A\otimes A\), each base edge carries a permutation (induced by \(d\in\{0,1,2\}\) in this kernel), and the adjacency operator \(M\) of the lifted graph is assembled fiber-wise (see \cite{StarkTerras1996GraphCoverings,TerrasZetaGraphs} and reviews on spectral theory of graph lifts).
+\par
+Under this lift viewpoint, the spectrum of \(M\) naturally splits into two classes:
+\begin{itemize}
+  \item \textbf{Old spectrum (base/horizontal spectrum):} From the action on \(U\), i.e., the spectrum of the base graph \(A\otimes A\);
+  \item \textbf{New spectrum (vertical/fiber-orthogonal spectrum):} From the action on \(U^\perp=\RR^{4}\otimes \mathbf{1}^\perp\), whose entire content is carried by the "vertical residual factor" (the \(\det_{\mathrm{vert}}\) in Appendix \ref{prop:real-input-40-skeleton-factor}).
+\end{itemize}
+Thus the Ramanujan/RH-sharp radius bound in Theorem \ref{thm:pom-rh-sharp}
+\(
+\max_{\mu\neq\lambda}|\mu|\le \sqrt{\lambda}
+\)
+can be understood as a unified suppression bound on the \textbf{new eigenvalues} of the lift: compressing all vertical mode spectral radii within \(\sqrt{\lambda}\), with saturation in this kernel enforced solely by the hidden factor \((-A)\) (Remark \ref{rem:pom-minusA-factor-critical-line}).
+This provides a structural pipeline toward "kernel-version RH/GRH": translating the RH/GRH spectral bound problem into spectral engineering of lifts/covers (constructing/excluding near-coboundary twists to control new spectrum), thereby being isomorphic to the new-spectrum control problem for Ramanujan graphs and lifts (see representative works \cite{BiluLinial2006LiftsDiscrepancy,Friedman2008AlonSecondEigenvalue,LinialPuder2010WordMapsLifts}).
+\end{remark}
+
+\begin{corollary}[Additive Decomposition of Finite-Part Constant: Input \texorpdfstring{$\oplus$}{+} Twist \texorpdfstring{$\oplus$}{+} Trivial]\label{cor:pom-logM-split-40}
+Along the \(\zeta\)-decomposition of Proposition \ref{prop:pom-zeta-factorization-40}
+\(
+\zeta_M=\zeta_{\mathrm{in}}\zeta_{\mathrm{twist}}\zeta_{\mathrm{triv}}
+\), where the principal pole \(z_\star=1/\lambda=\varphi^{-2}\) comes only from \(\zeta_{\mathrm{in}}\).
+Thus the Abel/Hadamard finite-part constant satisfies an \textbf{exact additive decomposition}
+\[
+\log\mathfrak{M}_{\mathrm{tot}}
+\;=\;
+\log\mathfrak{M}_{\mathrm{in}}
+\;+\;
+\log\mathfrak{M}_{\mathrm{twist}}
+\;+\;
+\log\mathfrak{M}_{\mathrm{triv}},
+\]
+where \(\log\mathfrak{M}_{\mathrm{in}}\) is the finite-part constant of \(\zeta_{\mathrm{in}}\), and for analytic factors \(f\in\{\zeta_{\mathrm{twist}},\zeta_{\mathrm{triv}}\}\) the "finite-part contribution" is defined as
+\[
+\log\mathfrak{M}_f
+:=
+\log f(z_\star)
+\;+\;
+\sum_{k\ge 2}\frac{\mu(k)}{k}\log f(z_\star^k).
+\]
+The corresponding numerical split is given in Table \ref{tab:real_input_40_finite_part_split} (reproducible via script \texttt{scripts/exp\_real\_input\_40\_finite\_part\_split.py}).
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:abel-mertens-universal}, for any \(\zeta\)-function with simple principal pole \(z_\star\) one has
+\(
+\log\mathfrak{M}=\log C+\sum_{k\ge 2}\mu(k)\log\zeta(z_\star^k)/k
+\).
+Here \(\zeta_M=\zeta_{\mathrm{in}}\zeta_{\mathrm{twist}}\zeta_{\mathrm{triv}}\), and \(\zeta_{\mathrm{twist}},\zeta_{\mathrm{triv}}\) are analytic and nonzero at \(z=z_\star\), hence the principal residue satisfies
+\(
+C_{\mathrm{tot}}=C_{\mathrm{in}}\zeta_{\mathrm{twist}}(z_\star)\zeta_{\mathrm{triv}}(z_\star)
+\).
+Substituting \(\log\zeta_M=\log\zeta_{\mathrm{in}}+\log\zeta_{\mathrm{twist}}+\log\zeta_{\mathrm{triv}}\) into the Möbius tail and grouping by factors yields the additive decomposition; the "finite-part contribution" of an analytic factor \(f\) is precisely
+\(
+\log f(z_\star)+\sum_{k\ge2}\mu(k)\log f(z_\star^k)/k
+\).
+This completes the proof.
+\end{proof}
+
+\begin{remark}[Principal Pole and Residue in Closed Form]\label{rem:pom-logM-split-40-exact}
+For this kernel there are complete closed forms:
+\[
+z_\star=\lambda^{-1}=\varphi^{-2}=\frac{3-\sqrt5}{2},
+\qquad
+C_{\mathrm{in}}=\frac{3}{10}+\frac{7\sqrt5}{50},
+\qquad
+\zeta_{\mathrm{triv}}(z_\star)=1+\frac{2\sqrt5}{5},
+\qquad
+\zeta_{\mathrm{twist}}(z_\star)=\frac{1+\sqrt5}{4},
+\]
+whence
+\(
+C_{\mathrm{tot}}=\frac{47+21\sqrt5}{100}
+\).
+These closed forms, together with the split constants of \(\log\mathfrak{M}\), are given with verifiable numerics in Table \ref{tab:real_input_40_finite_part_split}.
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_finite_part_split}
+
+\begin{proposition}[Lucas--Square Closed Form]\label{prop:pom-lucas-square}
+Let the Lucas numbers be
+\(
+L_n:=\varphi^n+(-\varphi^{-1})^n
+\).
+Then
+\[
+a_n=L_n^2+(-1)^n(L_n+1)+2.
+\]
+\end{proposition}
+\begin{proof}
+From the closed form in Appendix \ref{app:real-input-40-abel}
+\(
+a_n=L_{2n}+(-1)^nL_n+2+3(-1)^n
+\)
+and the identity $L_{2n}=L_n^2-2(-1)^n$, direct simplification yields the result.
+\end{proof}
+
+\begin{proposition}[Lucas Closed Form for Odd-Prime-Length Primitives]\label{prop:pom-primitive-prime-lucas}
+Let \(p\) be an odd prime and \(L_n\) the Lucas numbers. Then the primitive orbit count of the real-input 40-state kernel satisfies
+$$
+p_p=\frac{L_p(L_p-1)}{p}.
+$$
+\end{proposition}
+\begin{proof}
+By Möbius inversion (Definition \ref{def:pom-proj-prim}) for prime \(p\) one has
+\(
+p_p=\frac{a_p-a_1}{p}
+\).
+By Proposition \ref{prop:pom-lucas-square} and since \(p\) is odd (thus \((-1)^p=-1\)), we have
+\(
+a_p=L_p^2-L_p+1
+\), and \(a_1=1\).
+Substituting yields \(p_p=\frac{L_p^2-L_p}{p}\). This completes the proof.
+\end{proof}
+
+\begin{lemma}[Lucas Prime Congruence: \texorpdfstring{$L_p\equiv 1\pmod p$}{Lp=1 mod p}]\label{lem:pom-lucas-modp}
+For any prime \(p\), the Lucas number satisfies \(L_p\equiv 1\ (\mathrm{mod}\ p)\).
+\end{lemma}
+\begin{proof}
+Assume \(p\neq 5\) (when \(p=5\) direct calculation gives \(L_5=11\equiv 1\pmod 5\)). In the ring \(\mathbb{Z}[\sqrt5]\),
+by binomial expansion and \(\binom{p}{k}\equiv 0\pmod p\) (\(1\le k\le p-1\)), we have
+$$
+(1+\sqrt5)^p+(1-\sqrt5)^p\equiv 2+(\sqrt5)^p+(-\sqrt5)^p\pmod p.
+$$
+When \(p\) is an odd prime the last two terms cancel, so
+\(
+(1+\sqrt5)^p+(1-\sqrt5)^p\equiv 2\pmod p
+\);
+when \(p=2\) direct verification also holds. From the definition \(2^p L_p=(1+\sqrt5)^p+(1-\sqrt5)^p\) and Fermat's little theorem \(2^{p-1}\equiv 1\pmod p\) we have
+\(
+2^p\equiv 2\pmod p
+\), thus \(L_p\equiv 1\pmod p\). This completes the proof.
+\end{proof}
+
+\begin{definition}[Prime-Length Wieferich Fingerprint (\texorpdfstring{$\nu_p$}{nu_p})]\label{def:pom-lucas-nu-p}
+For an odd prime \(p\), define
+\[
+\nu_p:=v_p(L_p-1)\in\ZZ_{\ge 1},
+\]
+where \(v_p(\cdot)\) is the \(p\)-adic valuation.
+\end{definition}
+
+\begin{corollary}[Complete Integer Criterion for Prime-Length Primitive Degeneracy]\label{cor:pom-lucas-nu-p-criterion}
+Let \(p\) be an odd prime and use the notation of Proposition \ref{prop:pom-primitive-prime-lucas}.
+Then
+\[
+v_p(p_p)=\nu_p-1.
+\]
+Thus the "degeneracy strength" at the prime-length layer is completely controlled by the single integer \(\nu_p\): for any \(k\ge 1\),
+\[
+p^{k}\mid p_p
+\qquad\Longleftrightarrow\qquad
+\nu_p\ge k+1.
+\]
+In particular, \(p\mid p_p\) if and only if \(\nu_p\ge 2\), equivalent to \(p^2\mid(L_p-1)\).
+\end{corollary}
+\begin{proof}
+By Lemma \ref{lem:pom-lucas-modp} we have \(L_p\equiv 1\pmod p\), whence \(v_p(L_p)=0\) and \(\nu_p\ge 1\).
+On the other hand, Proposition \ref{prop:pom-primitive-prime-lucas} gives
+\(
+p_p=L_p(L_p-1)/p
+\), thus
+\[
+v_p(p_p)=v_p(L_p)+v_p(L_p-1)-1=\nu_p-1.
+\]
+Hence \(p^k\mid p_p\) is equivalent to \(v_p(p_p)\ge k\), which by the above formula yields \(p^k\mid p_p\Longleftrightarrow \nu_p\ge k+1\).
+\end{proof}
+
+\begin{remark}[Integrality and Wieferich-Type Rare Events]\label{rem:pom-lucas-wieferich}
+By Corollary \ref{cor:pom-lucas-nu-p-criterion}, the integrality and rare degeneracy at the prime-length layer can be uniformly graded by
+\(
+\nu_p=v_p(L_p-1)
+\):
+\(\nu_p\ge 1\) always holds, whereas \(\nu_p\ge 2\) (equivalent to \(p\mid p_p\)) corresponds to a Wieferich-type rare event interface for Lucas sequences.
+Thus \(\nu_p\) may be viewed as an auditable fingerprint of "prime-length primitive arithmetic degeneracy," with \(\nu_p=2,3,\dots\) serving as a natural grading of anomaly strength.
+\end{remark}
+
+\begin{corollary}[Primitive Odd-Even Split]\label{cor:pom-prim-odd-even}
+Denote by $p_n$ the primitive orbit count. Then
+\[
+p_n=\frac{\lambda^n}{n}+\frac{\bigl((-1)^n-\mathbf{1}_{2\mid n}\bigr)\lambda^{n/2}}{n}
++O\!\left(\frac{\lambda^{n/3}}{n}\right).
+\]
+In the even case, the $\lambda^{n/2}$-level term exactly cancels between the $d=1,2$ terms in Möbius inversion (see Appendix \ref{app:real-input-40-finite-rh}).
+\par
+In particular, when \(n\) is odd, the above reduces to
+\[
+p_n=\frac{\lambda^n}{n}-\frac{\lambda^{n/2}}{n}+O\!\left(\frac{\lambda^{n/3}}{n}\right),
+\]
+whereas when \(n\) is even, the explicit oscillation term at \(\lambda^{n/2}\)-level completely vanishes; lower-order oscillation terms related to the boundary-attaining eigenvalue \(-\sqrt{\lambda}\) are discussed in Remark \ref{rem:pom-prim-even-lower-osc}.
+\end{corollary}
+
+\begin{remark}[Lower-Order Oscillation for Even-Length Orbits]\label{rem:pom-prim-even-lower-osc}
+Writing $n=2m$ and using $a_{m}=\lambda^{m}+(-\sqrt{\lambda})^{m}+O(1)$, one can further obtain
+\[
+p_{2m}=\frac{\lambda^{2m}}{2m}-\frac{(-\sqrt{\lambda})^{m}}{2m}
++O\!\left(\frac{\lambda^{2m/3}}{m}\right),
+\]
+indicating that the first explicit subleading term in even-length primitives is of scale $\lambda^{n/4}$.
+\end{remark}
+
+\begin{lemma}[Vertical Lattice in Dirichlet Logarithmic Coordinate]\label{lem:pom-dirichlet-vertical-lattice}
+Take \(\lambda>1\), and let \(z=\lambda^{-s}\), \(r=\lambda z=\lambda^{1-s}\).
+Given \(r_0\in\CC^\times\), the solutions to \(r=r_0\) form a vertical lattice in the \(s\)-plane:
+\[
+s=1-\frac{\log|r_0|}{\log\lambda}-\,\mathrm{i}\,\frac{\arg(r_0)+2\pi k}{\log\lambda},
+\qquad k\in\ZZ,
+\]
+where \(\arg(r_0)\in(-\pi,\pi]\).
+Thus the imaginary spacing is constant
+\[
+\boxed{\ \Delta\Im(s)=\frac{2\pi}{\log\lambda}\ }.
+\]
+In the special case \(r_0<0\), where \(\arg(r_0)=\pi\), the above reduces to
+\[
+s=1-\frac{\log|r_0|}{\log\lambda}-\,\mathrm{i}\,\frac{(2k+1)\pi}{\log\lambda},
+\qquad k\in\ZZ.
+\]
+\end{lemma}
+\begin{proof}
+From \(r=\lambda^{1-s}\) we have
+\(
+(1-s)\log\lambda=\log r_0
+\), and writing the multivalued logarithm as
+\(
+\log r_0=\log|r_0|+\mathrm{i}\,(\arg(r_0)+2\pi k)
+\) (\(k\in\ZZ\)), solving for \(s\) yields the result.
+\end{proof}
+
+\begin{theorem}[Dirichlet Pole Lattice and Toy RH]\label{thm:pom-toy-rh}
+Take Dirichlet variables $z=\lambda^{-s}$ and $r=\lambda z=\lambda^{1-s}$. Then all poles of $\widehat{\zeta}(s)=\zeta_M(\lambda^{-s})$ are given by
+\[
+r\in\{1,\ \pm\lambda,\ \lambda^2,\ \varphi^3,\ -\varphi\}
+\]
+and satisfy
+\[
+\Re(s)\in\left\{1,\tfrac12,0,-\tfrac12,-1\right\}.
+\]
+Among these, $r=-\varphi$ generates a critical-line lattice
+\(
+s=\tfrac12+\frac{(2k+1)\pi i}{\log\lambda}
+\),
+which is the only pole sequence in the strip $0<\Re(s)<1$ (see Appendix \ref{app:real-input-40-finite-rh}).
+\end{theorem}
+
+\begin{remark}[Logarithmic Image Mechanism of Critical Line (Toy RH)]\label{rem:pom-toy-rh-critical-line-log}
+By Lemma \ref{lem:pom-dirichlet-vertical-lattice}, any negative pole \(r_0<0\) generates a vertical lattice line of fixed real part in Dirichlet logarithmic coordinates
+\(
+\Re(s)=1-\frac{\log|r_0|}{\log\lambda}
+\).
+Under the standard normalization \(\lambda=\varphi^2\) in this paper, taking \(r_0=-\varphi=-\sqrt{\lambda}\) yields
+\(
+\Re(s)=\tfrac12
+\), so the "critical line" can be viewed as the algebraic ratio image of a negative pole under the logarithmic map; for the kernel factorization interpretation of its structural origin, see Remark \ref{rem:pom-minusA-factor-critical-line}.
+\end{remark}
+
+\begin{proposition}[Closed Forms for Second- and Third-Order Cumulants of Output Pressure]\label{prop:pom-pressure-cumulants}
+Let $u=e^{\theta}$, $\lambda(u)=\rho(M(u))$, $P(\theta)=\log\lambda(e^\theta)$, and characterize $\lambda(u)$ by
+\(
+G(\lambda,u)=0
+\)
+(see Appendix \ref{app:real-input-40-zeta-u}). Then
+\[
+P''(0)=\frac{1791}{200}-\frac{3983}{1000}\sqrt5,
+\qquad
+P'''(0)=\frac{1416369}{5000}-\frac{126691}{1000}\sqrt5,
+\]
+whence $P''(0)\approx 0.0487412456$, $P'''(0)\approx -0.0158881374$.
+\end{proposition}
+\begin{proof}
+Applying implicit differentiation to $G(\lambda(u),u)=0$, and using the chain rule $u=e^\theta$ to convert $u$-derivatives to $\theta$-derivatives; substituting $u=1,\lambda=\varphi^2$ yields the result.
+\end{proof}
+
+\begin{corollary}[Zero-Temperature Limit Constant]\label{cor:pom-pressure-zero-temp}
+From Appendix \ref{app:real-input-40-zeta-u}, as $\theta\to+\infty$ one has
+\[
+P(\theta)=\frac{\theta}{2}+\log c+o(1),
+\]
+where $c=\sqrt{y_{\max}}$ and $y_{\max}$ is the largest positive root of $y^4-6y^3+9y^2-y-1=0$.
+\end{corollary}
+
+\input{sections/generated/eq_real_input_40_output_potential_puiseux_asymptotics}
+
+\subsection{Bridge from Prime Shadows to Prime Registers}\label{subsec:pom-prime-bridge}
+\paragraph{Twist and Factorization of Finite Axis Bundles}
+For a twisted matrix family $M_{K,\rho}(u)$ with finite group label $G$ and twisted $\zeta/L$-functions, Proposition \ref{prop:kernel-artin-factorization} provides an Artin-type factorization. This decomposition shows that finite axis bundles are essentially "auditable fiberizations" with $\widehat G$ as the spectral coordinate system.
+
+\paragraph{Irreducibility of Additional Modular Axes}
+Proposition \ref{prop:arity-335-n2-nondegenerate} proves that the third axis $N_2(\gamma)\bmod 5$ cannot be eliminated by the first two, thus introducing this modular axis brings irreducible new degrees of freedom. This fact establishes at the kernel level the auditable conclusion that "increasing axis bundles is not relabeling."
+
+\begin{definition}[Limit Aperture of Prime Register Fibers]\label{def:pom-profinite}
+Take the projective limit of the modular system $\{\ZZ/m\ZZ\}_{m\ge 1}$
+\[
+\widehat{\ZZ}:=\varprojlim_m \ZZ/m\ZZ\ \cong\ \prod_{p\in\mathbb{P}}\ZZ_p,
+\]
+and take this as the limit object of "infinite prime axis bundle." This limit unifies all finite modular axis bundles into the same fiber coordinate system, thereby providing a structural definition for "prime registers" (see \cite{Apostol1976} for relevant content on CRT and p-adic decomposition).
+\end{definition}
+
+\begin{remark}[Alignment with True Aperture of Dirichlet Characters: \texorpdfstring{$\widehat{\ZZ}^\times$}{Zhat^x}]\label{rem:pom-profinite-units}
+In analytic number theory, Dirichlet characters act on the unit group $(\ZZ/m\ZZ)^\times$, whose natural limit object is
+\[
+\widehat{\ZZ}^{\,\times}:=\varprojlim_m (\ZZ/m\ZZ)^\times\ \cong\ \prod_{p\in\mathbb{P}}\ZZ_p^\times.
+\]
+In this paper, we use $\widehat{\ZZ}$ as the unified coordinate at the "congruence axis bundle" level, in order to incorporate all finite-modulus residue readouts into the same fiberization framework; when strict alignment with Dirichlet/Artin character language is needed, one simply restricts the readout to the unit part within this framework (and correspondingly changes the character basis to the dual coordinates of $\widehat{\ZZ}^{\,\times}$) to obtain the "full character family" aperture closer to the true GRH.
+\end{remark}
+
+\begin{definition}[Dirichlet-Type Congruence Axis Bundle (Unit Version)]\label{def:pom-dirichlet-axis-units}
+For each modulus \(m\ge 1\), take
+\[
+G_m:=(\ZZ/m\ZZ)^\times,
+\]
+and form an inverse system with the natural projections \(G_{m_2}\to G_{m_1}\) (when \(m_1\mid m_2\)); its inverse limit is
+\[
+G_\infty:=\varprojlim_m G_m=\widehat{\ZZ}^{\,\times}.
+\]
+Under this aperture, the character set \(\widehat{G_m}\) at the finite level is identified with the family of Dirichlet characters "modulo \(m\)" (strictly speaking, their restriction to the unit group; by convention extending them to functions on \(\ZZ/m\ZZ\) taking value \(0\) on non-units recovers standard Dirichlet characters).
+\end{definition}
+
+\begin{proposition}[Finite-Word Stability: Finite-Layer Reduction of Infinite Congruence Axes]\label{prop:pom-finite-modulus-stability}
+Under the Dirichlet axis bundle aperture of Definition \ref{def:pom-dirichlet-axis-units}, let \(w\) be any finite projection word (1-morphism).
+Denote
+\[
+\mathsf{Mod}(w):=\{\,m\ge 1:\ w\ \text{syntactically explicitly invokes some finite layer}\ G_m=(\ZZ/m\ZZ)^\times\ \text{or its character/twist gate}\,\},
+\]
+and let
+\[
+m_\ast:=\mathrm{lcm}\,\mathsf{Mod}(w)\qquad(\text{take}\ m_\ast:=1\ \text{when}\ \mathsf{Mod}(w)=\varnothing).
+\]
+Then:
+\begin{enumerate}
+  \item \textbf{(Finite-layer closure)} All semantic dependence of \(w\) in the congruence/character direction can close in a single finite layer \(G_{m_\ast}\): any Dirichlet character channel appearing in \(w\) can be viewed as a restriction of some \(\chi_\ast\in\widehat{G_{m_\ast}}\) (pullback along \(G_{m_\ast}\to G_m\)).
+  \item \textbf{(Audit reduction)} Thus under the audit aperture of "full character scan/worst channel" as input (e.g., \(\sup_{\chi\neq 1}\rho(M_{m,\chi}(u))\) or finite-part constant comparison on a fixed grid), verification of \(w\) reduces to exhaustive checking over the finite set \(\widehat{G_{m_\ast}}\).
+\end{enumerate}
+This realizes the "infinite register" as a certifiable pro-object: \(G_\infty\) manifests as an incrementally expandable axis bundle, but any finite implementation necessarily terminates and completes verification at some finite layer.
+\end{proposition}
+\begin{proof}
+Since \(w\) is a finite word, it can syntactically only explicitly appear at finitely many modulus levels, so \(\mathsf{Mod}(w)\) is a finite set and \(m_\ast\) is well-defined.
+For any \(m\in\mathsf{Mod}(w)\) one has \(m\mid m_\ast\), whence there exists a natural projection \(G_{m_\ast}\to G_m\); this induces a pullback under Pontryagin duality
+\(
+\widehat{G_m}\hookrightarrow \widehat{G_{m_\ast}}
+\).
+Thus all finite-layer character/twist channels appearing in \(w\) can be uniformly lifted to channels on \(\widehat{G_{m_\ast}}\), and the congruence/character semantics of \(w\) closes at this finite layer. Since \(\widehat{G_{m_\ast}}\) is a finite set, "full character verification" exhaustion terminates in finite steps. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Locally Finite Dirichlet Twisted Action and Tensorization Closure]\label{cor:pom-local-finite-dirichlet-action}
+Under the setting of Proposition \ref{prop:pom-finite-modulus-stability}, any finite projection word \(w\)'s Dirichlet twist channel is structurally \textbf{locally finite}:
+\begin{enumerate}
+  \item \textbf{(Finite-layer factorization)} For \(w\), there exists a closure layer \(m_\ast\) such that all twist gates/channels semantically requiring enumeration (e.g., the \(\mathrm{Tw}_\chi\) aperture in Remark \ref{rem:twist-commuting-cube}) can be viewed as restrictions of characters on \(\widehat{G_{m_\ast}}\); thus any "full character scan/worst channel" audit factors through the finite group \(G_{m_\ast}\) and terminates in finite steps.
+  \item \textbf{(Tensorization closure)} If for finitely many words \(\{w_i\}_{i=1}^{\ell}\) one takes the closure class generated by direct sums, tensor products, direct factors, and finite compositions, the Dirichlet dependence still closes at some single finite layer; the closure layer can be taken as
+  \(m_\ast=\mathrm{lcm}\bigl(m_\ast(w_1),\dots,m_\ast(w_\ell)\bigr)\).
+\end{enumerate}
+This conclusion realizes the termination property of "infinite congruence/character axis bundles" as an auditable finiteness principle: the infinite register exists only as inverse-limit semantics, while any finite implementation completes verification at a finite layer.
+\end{corollary}
+
+\begin{remark}[Cyclotomic Quotient in Tannakian Aperture (Optional Viewpoint)]\label{rem:pom-cyclotomic-quotient-tannakian}
+Organize the finite kernels/matrix families with Dirichlet twist structure and their intertwiners (e.g., the \(\mathbf{End}_R\) aperture in Appendix Proposition \ref{prop:witt-bridge-functorial}) into a \(\QQ\)-linear rigid tensor category \(\mathcal{C}\), and suppose there exists a faithful tensor fiber functor \(\omega:\mathcal{C}\to\mathrm{Vect}_{\QQ}\).
+Then the "character direction" of the tensor automorphism group \(\mathrm{Aut}^{\otimes}(\omega)\) is induced by twist gates \(\mathrm{Tw}_\chi\); by the local finiteness of Corollary \ref{cor:pom-local-finite-dirichlet-action}, this direction factors through some finite layer \(G_{m_\ast}\) on each object, thereby yielding a natural surjection (cyclotomic quotient) to the inverse limit
+\(
+G_\infty=\varprojlim_m G_m
+\)
+\[
+\mathrm{Aut}^{\otimes}(\omega)\twoheadrightarrow G_\infty.
+\]
+This viewpoint is used only to explain the categorical origin of "twist channels are not external labels but representation-theoretic decomposition enforced by the structure" (see also the Big-Witt aperture in Appendix Theorem \ref{thm:witt-dirichlet-twist}); all auditable conclusions in the main text rely solely on the finite-layer closure of Proposition \ref{prop:pom-finite-modulus-stability} and its subsequent certificate chain.
+\end{remark}
+
+\begin{corollary}[Dirichlet Character Twisted Spectral Bound: Kernel-Version GRH in "Dirichlet--GRH-Like" Form]\label{cor:pom-dirichlet-grh-twisted-radius}
+In Proposition \ref{prop:pom-profinite-artin-hilbert} take \(G_\infty=\widehat{\ZZ}^{\,\times}\), and assume a one-step cocycle
+\(
+g:E(K)\to \widehat{\ZZ}^{\,\times}
+\)
+gives a group extension kernel with "unit label." Then:
+\begin{enumerate}
+  \item \textbf{(Finite-layer aperture)} For each \(m\), read the label out to the finite layer \(G_m=(\ZZ/m\ZZ)^\times\), and for each Dirichlet character \(\chi\in\widehat{G_m}\) define the twisted matrix
+  \[
+  M_{m,\chi}(u):=M_\chi(u),
+  \]
+  where \(M_\chi(u)\) is given by the entry formula in Proposition \ref{prop:pom-profinite-artin-hilbert} (group operation taken as multiplication).
+  \item \textbf{(GRH-type equivalent statement)} Denote the Perron root of the trivial character channel by
+  \(
+  \lambda_1(u):=\rho(M_{m,1}(u))
+  \).
+  Then the kernel-version GRH "uniform square-root bound for all characters"
+  \[
+  \sup_{\chi\in\widehat{G_m},\ \chi\neq 1}\rho\!\left(M_{m,\chi}(u)\right)\ \le\ \lambda_1(u)^{1/2}
+  \]
+  is isomorphic to the operator spectral radius inequality in item 3 of Proposition \ref{prop:pom-profinite-artin-hilbert}, and aligns structurally layer-by-layer with the square-root error of this paper's kernel-version Chebotarev/prime number theorem form (Definition \ref{def:kernel-rh} and Corollary \ref{cor:kernel-rh-sqrt-error}).
+\end{enumerate}
+\end{corollary}
+
+\begin{remark}[From Finite Twists to Infinite Register]
+Finite group twists provide an auditable spectral decomposition of "finite modular axis bundles"; the irreducibility of additional axes means this decomposition strictly increases degrees of freedom as the modulus grows. Thus the limit aperture of $\widehat{\ZZ}$ and the prime register fiber $\mathcal{P}$ are structurally compatible: the former is the "completion of modular axis bundles," the latter is the "linearized axis bundle of multiplicative coordinates."
+\end{remark}
+
+\begin{remark}[Inverse Limit of Congruence Axes and Character Diagonalization]\label{rem:pom-congruence-invlimit}
+Viewing the finite congruence axes $\{\ZZ/m\ZZ\}_{m\ge 1}$ as a projective system, their inverse limit gives
+\(
+\widehat{\ZZ}\cong\prod_{p}\ZZ_p
+\);
+the corresponding character basis
+\(
+\chi_{k/m}(n)=e^{2\pi i kn/m}
+\)
+is the natural coordinate in Pontryagin duality. Thus "finite congruence axis + phase diagonalization + twisted $\zeta$" forms an auditable construction path, with the limit being the rigorous realization of "infinite prime register fiber."
+\end{remark}
+
+\begin{proposition}[Profinite Character Diagonalization: Artin Decomposition on Hilbert Space and Operatorization of Kernel-Version GRH]\label{prop:pom-profinite-artin-hilbert}
+Let \(K\) be a finite kernel (directed graph/Markov kernel) with vertex set \(V\), and let \(\kappa:E(K)\to\ZZ\) be a one-step additive potential (e.g., carry/collision/output potential).
+Take the profinite congruence axis \(G_\infty:=\widehat{\ZZ}\) (or its unit part \(\widehat{\ZZ}^{\,\times}\), see Remark \ref{rem:pom-profinite-units}), and let
+\(
+g:E(K)\to G_\infty
+\)
+be a one-step congruence cocycle (i.e., labeling each edge with a residue increment; readout to finite modulus \(m\) is the composition \(G_\infty\to\ZZ/m\ZZ\)).
+On the Hilbert space
+\[
+\mathcal{H}:=\CC^{V}\otimes L^2(G_\infty)
+\]
+(\(G_\infty\) with Haar measure), define the "group extension adjacency operator"
+\[
+\bigl(\mathcal{M}_u f\bigr)(j,h)
+:=\sum_{e:i\to j} u^{\kappa(e)}\, f\!\bigl(i,\ h\cdot g(e)\bigr),
+\qquad u>0,
+\]
+where \(f\in\mathcal{H}\) is viewed as a square-integrable function on \(V\times G_\infty\), and \(h\mapsto h\cdot g(e)\) is right multiplication.
+Then:
+\begin{enumerate}
+  \item \textbf{(Fourier decomposition and block diagonalization)} Since \(G_\infty\) is a compact abelian group, there is a character orthogonal basis decomposition
+  \[
+  L^2(G_\infty)\cong \bigoplus_{\chi\in\widehat{G_\infty}}\CC\,\chi,
+  \]
+  and under this decomposition \(\mathcal{M}_u\) unitarily reduces to a direct sum
+  \[
+  \mathcal{M}_u\ \cong\ \bigoplus_{\chi\in\widehat{G_\infty}} M_\chi(u),
+  \]
+  where each block \(M_\chi(u)\) is a finite-dimensional twisted matrix on \(\CC^{V}\):
+  \[
+  (M_\chi(u))_{i\to j}:=\sum_{e:i\to j} u^{\kappa(e)}\,\chi\!\bigl(g(e)\bigr).
+  \]
+  \item \textbf{(Operator readout of worst-case twisted spectral radius)} Denote the trivial character by \(1\), and let
+  \(
+  \mathcal{H}_0:=\CC^V\otimes\mathrm{span}\{1\}
+  \)
+  and \(\mathcal{H}_\perp:=\mathcal{H}_0^\perp\).
+  Then
+  \[
+  \rho\!\left(\mathcal{M}_u|_{\mathcal{H}_\perp}\right)
+  =\sup_{\chi\neq 1}\rho\!\left(M_\chi(u)\right),
+  \qquad
+  \rho\!\left(\mathcal{M}_u|_{\mathcal{H}_0}\right)=\rho\!\left(M_1(u)\right)=:\lambda_1(u).
+  \]
+  \item \textbf{(Operatorization of kernel-version GRH)} If the kernel-version GRH (isomorphic condition in Definition \ref{def:kernel-rh}) holds for this profinite character family, i.e.,
+  \(
+  \sup_{\chi\neq 1}\rho(M_\chi(u))\le \lambda_1(u)^{1/2}
+  \),
+  then equivalently there is an operator spectral radius inequality
+  \[
+  \rho\!\left(\mathcal{M}_u|_{\mathcal{H}_\perp}\right)\ \le\ \lambda_1(u)^{1/2}.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+For finite-modulus \(m\) axis bundles, Proposition \ref{prop:kernel-artin-factorization} gives the finite group version of determinant factorization, whose essence is Fourier/character decomposition of the regular representation.
+For compact abelian group \(G_\infty\), the Pontryagin dual \(\widehat{G_\infty}\) is a discrete abelian group, and characters form an orthogonal basis in \(L^2(G_\infty)\); right multiplication \(T_{g(e)}:f(h)\mapsto f(h\cdot g(e))\) diagonalizes on this basis with eigenvalue \(\chi(g(e))\).
+Thus \(\mathcal{M}_u\) reduces character-by-character to finite-dimensional blocks \(M_\chi(u)\) in the Fourier basis of \(L^2(G_\infty)\), yielding the direct sum decomposition. The spectral radius identity follows from the spectrum of a direct sum operator being the union of block spectra. This completes the proof.
+\end{proof}
+
+\begin{definition}[Finite-Layer Lifted System and Fiber Measure]\label{def:pom-lifted-system-m}
+For modulus $m$ finite congruence axis $G_m$, define its \textbf{finite-layer lifted system} as the product dynamical system $(\Sigma \times G_m, \sigma_m)$, where $\Sigma$ is the base state space and $\sigma_m$ is the lifted transition induced by kernel $K$ and congruence cocycle $g$.
+Define its stationary measure as the \textbf{lifted Parry measure}:
+\[
+\widetilde\mu_m := \mu_{\mathrm{Parry}} \otimes \mathrm{Haar}_{G_m},
+\]
+where $\mu_{\mathrm{Parry}}$ is the Parry measure on the base system and Haar measure on $G_m$ is normalized.
+Define the \textbf{zero-mean fiber observable space} as
+\[
+L^2_0(G_m) := \left\{ f \in L^2(G_m) : \int_{G_m} f(g) \, d\mathrm{Haar}(g) = 0 \right\},
+\]
+and naturally embed it as functions on the lifted system $F(x, g) = f(g)$.
+\end{definition}
+
+\begin{theorem}[Congruence Fiber Correlation Decay Rate = Worst Twisted Ratio]\label{thm:pom-fiber-corr-decay}
+Fix $u>0$. Let $f \in L^2_0(G_m)$ be a zero-mean fiber observable. Define its time correlation function as
+\[
+C_f(n) := \mathbb{E}_{\widetilde\mu_m} [f(g_0) \overline{f(g_n)}],
+\]
+where $g_n$ is the fiber coordinate after $n$-step transition. Denote $\lambda_1(u) := \rho(M_{m,1}(u))$ as the base system principal eigenvalue. Then:
+\begin{enumerate}
+    \item \textbf{(Exponential decay bound)} The correlation function satisfies
+    \[
+    |C_f(n)| \le \|f\|_2^2 \cdot \eta_m(u)^n,
+    \]
+    where $\eta_m(u)$ is the \textbf{worst twisted ratio}:
+    \[
+    \eta_m(u) := \max_{\chi \in \widehat{G_m},\, \chi \neq 1} \frac{\rho(M_{m,\chi}(u))}{\rho(M_{m,1}(u))}.
+    \]
+    \item \textbf{(Character decomposition formula)} Let $f = \sum_{\chi \neq 1} \hat{f}(\chi) \chi$ be the Fourier expansion of $f$. Let $\mathcal{L}_\chi$ be the normalized twisted transfer operator with matrix elements $(\mathcal{L}_\chi)_{ij} = \sum_{e:i\to j} \frac{h_j}{\lambda_1(u) h_i} \chi(g(e))$, where $h$ is the right positive eigenvector of $M_{m,1}(u)$. Then the correlation function has exact character superposition representation:
+    \[
+    C_f(n) = \sum_{\chi \neq 1} |\hat{f}(\chi)|^2 \langle \pi, \mathcal{L}_\chi^n \mathbf{1} \rangle,
+    \]
+    where $\pi$ is the stationary distribution of the base system (satisfying $\pi \mathcal{L}_1 = \pi$) and $\mathbf{1}$ is the all-ones vector.
+    \item \textbf{(Scale distinction: horizontal vs vertical)}
+    State-layer correlation decay (Proposition \ref{prop:pom-time-corr-gap}) is determined by the base matrix spectral gap $\rho = \Lambda/\lambda_1$, characterizing base space mixing speed;
+    whereas fiber-layer correlation decay is determined by the twisted ratio $\eta_m(u)$, characterizing the "decorrelation" speed of congruence labels in path evolution.
+    These two are independent structural objects: the former from internal spectral structure of $M_1(u)$, the latter from the relative modulus ratio of $M_\chi(u)$ to $M_1(u)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Denote the path cocycle by $g(e_1 \dots e_n) := g(e_1) \cdots g(e_n)$, with multiplication order consistent with right shift $h \mapsto h \cdot g(e)$.
+Since the lifted measure $\widetilde\mu_m = \mu_{\mathrm{Parry}} \otimes \mathrm{Haar}_{G_m}$ is a product measure, and fiber transition $g_n = g_0 \cdot g(e_1 \dots e_n)$ depends only on base path, the correlation function can be written as:
+\[
+C_f(n) = \int_{G_m} \int_{\Sigma} f(g_0) \overline{f(g_0 \cdot g(e_1 \dots e_n))} \, d\mu_{\mathrm{Parry}} \, d\mathrm{Haar}(g_0).
+\]
+Using translation invariance of Haar measure and character orthogonality $\int \chi(g) \overline{\chi'(g)} dg = \delta_{\chi,\chi'}$, substituting $f = \sum \hat{f}(\chi) \chi$ yields:
+\[
+C_f(n) = \sum_{\chi \neq 1} |\hat{f}(\chi)|^2 \int_{\Sigma} \overline{\chi(g(e_1 \dots e_n))} \, d\mu_{\mathrm{Parry}}.
+\]
+The integral term is precisely the $n$-step transition expectation $\langle \pi, \mathcal{L}_\chi^n \mathbf{1} \rangle$ of the normalized twisted operator $\mathcal{L}_\chi$.
+Since $\rho(\mathcal{L}_\chi) = \rho(M_{m,\chi}(u))/\lambda_1(u)$, by the spectral radius formula we have $|\langle \pi, \mathcal{L}_\chi^n \mathbf{1} \rangle| \le \rho(\mathcal{L}_\chi)^n$.
+Taking $\eta_m(u) = \max_{\chi \neq 1} \rho(\mathcal{L}_\chi)$ and using Parseval's identity $\sum |\hat{f}(\chi)|^2 = \|f\|_2^2$ yields the exponential decay bound.
+Since $f \in L^2_0(G_m)$, the trivial character coefficient $\hat{f}(1) = 0$, so correlation is entirely determined by nontrivial twisted channels.
+\end{proof}
+
+\begin{remark}[Numerical Certificate for Congruence Fiber Correlation Decay]\label{rem:pom-fiber-corr-decay-certificate}
+The exponential decay bound of Theorem \ref{thm:pom-fiber-corr-decay} is controlled by the worst twisted ratio $\eta_m(u)$. Table \ref{tab:real-input-40-lifted-chain-eta-envelope} provides numerical certificates under modulus reduction $((3,3,5))$, where the third axis is $N_2 \bmod 5$ (collision count). This certificate comes from script \verb|scripts/exp_real_input_40_lifted_chain_correlation.py| output \verb|artifacts/export/real_input_40_lifted_chain_correlation.json|, determining the worst twisted character $j^\star=(0,0,4)$ and corresponding ratio $\eta_m \approx 0.9506$ by computing spectral radii of transition matrices $M_{m,\chi}(u)$ for all nontrivial characters $\chi \neq 1$. The envelope maximum $\max_n |C_f(n)|/\eta_m^n \approx 1.0027$ is attained at $n=2$, verifying tightness of the theoretical bound.
+
+\input{sections/generated/tab_real_input_40_lifted_chain_eta_envelope}
+\end{remark}
+
+\begin{remark}[Comparison: Isomorphic Mechanism of Ihara--Ramanujan]\label{rem:pom-profinite-ihara-ramanujan}
+The structure of Proposition \ref{prop:pom-profinite-artin-hilbert} is completely isomorphic to the graph-theoretic Ihara-\(\zeta\) "graph-version RH \(\Leftrightarrow\) Ramanujan spectral bound":
+character decomposition diagonalizes the operator on the cover/axis bundle into twisted blocks, and the "square-root bound" is the unified spectral radius control for all nontrivial blocks.
+This paper's kernel-version RH/GRH (Definition \ref{def:kernel-rh}) precisely transplants this mechanism to the auditable scenario of "primitive orbit counting/explicit formula error" (see Remark \ref{rem:kernel-graph-rh}).
+\end{remark}
+
+\begin{remark}[Prime Lengths as Parallel Structure Probe]\label{rem:pom-prime-length-probe}
+On the globally tensored kernel, the trace sequence satisfies $a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m$, and the primitive spectrum is given by Witt/Möbius inversion (Corollary \ref{cor:par-add-global-lift-endpoints}). When $n=\ell$ is prime,
+\[
+p_\ell^{\mathrm{glob}}(u)=\frac{1}{\ell}\Bigl(a_\ell^{\mathrm{flow}}(u)^m-a_1^{\mathrm{flow}}(u^\ell)^m\Bigr),
+\]
+thus prime-length primitive terms directly isolate the difference between "irreducible cycles" and "power-repeated cycles." This difference is highly sensitive to parallel tensorization and can serve as an unbiased probe of hidden parallelism and structural decomposition.
+\end{remark}
+
+\subsection{Projection Word Normal Form and Readout Level Tower}\label{subsec:pom-normal-form}
+\begin{theorem}[One-Fold Normal Form of Semiring Closure]\label{thm:pom-one-fold-normal-form}
+Let $t$ be any term generated by $\oplus,\otimes,0_X,1_X$ with variables valued in $X_\infty$. Then there exists a polynomial
+\(
+P\in\NN[x_1,\dots,x_k]
+\)
+such that for any $c_1,\dots,c_k\in X_\infty$,
+\[
+t(c_1,\dots,c_k)=Z\!\left(P\bigl(\mathrm{Val}(c_1),\dots,\mathrm{Val}(c_k)\bigr)\right).
+\]
+Thus in the semiring closure, the canonical projection $P_Z$ can be invoked once at the end in a unified manner, while intermediate steps can remain entirely at the procedural layer.
+\end{theorem}
+\begin{proof}
+By Theorems \ref{thm:add-definitional} and \ref{thm:mul-definitional}, $\mathrm{Val}$ gives a semiring isomorphism between $(X_\infty,\oplus,\otimes)$ and $(\NN,+,\times)$. Any term $t$ corresponds to a polynomial $P$ over $\NN$; thus
+\(
+\mathrm{Val}(t(c_1,\dots,c_k))=P(\mathrm{Val}(c_1),\dots,\mathrm{Val}(c_k))
+\).
+Then by $Z=\mathrm{Val}^{-1}$ the result follows. This completes the proof.
+\end{proof}
+
+\begin{remark}[Blueprint: Readout Level Tower]\label{rem:pom-hyper-iteration}
+Theorem \ref{thm:pom-one-fold-normal-form} shows that in the semiring closure "canonical projection is needed only once at the end." One can further construct a readout level tower along the approach of Theorem \ref{thm:composition-two-layer}: layer $0$ uses one iteration of composition $\circ$ to read out addition, layer $1$ uses "addition iteration" for multiplication; recursively define the "operation" of layer $k$ as the iterative readout of layer $k{-}1$ in the same manner. This level tower introduces no new primitives at the procedural layer, but transfers complexity to the elevation of readout levels.
+\end{remark}

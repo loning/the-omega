@@ -1,0 +1,116 @@
+\paragraph{Entropy Interpretation of Critical Budget and Zeckendorf Baseline Decomposition}
+This paragraph interprets the critical slope \(a_1=\tau'(1^-)\) and critical budget \(\beta_{\mathrm{crit}}=a_1/\log 2\) as the "conditional entropy deficit rate of the fold pushforward distribution",
+and precisely decomposes it into Zeckendorf structural baseline term and non-uniformity penalty term.
+
+\begin{theorem}[Entropy Identity for Critical Budget]\label{thm:pom-oracle-critical-budget-entropy-identity}
+Let \(w_m(x)=d_m(x)/2^m\) be the uniform microstate pushforward distribution, and define its Shannon entropy
+\[
+H_1(m):=-\sum_{x\in X_m}w_m(x)\log w_m(x).
+\]
+If \(\tau\) is differentiable in the left neighborhood of \(q=1\) satisfying \(a_1:=\tau'(1^-)\) (same as Theorem \ref{thm:pom-oracle-critical-window-gaussian}),
+then the entropy rate limit
+\[
+h_1:=\lim_{m\to\infty}\frac{1}{m}H_1(m)
+\]
+exists and satisfies the strict identity
+\[
+\boxed{\;
+h_1=\log 2-a_1,\qquad
+\beta_{\mathrm{crit}}=1-\frac{h_1}{\log 2}\; } .
+\]
+\end{theorem}
+\begin{proof}
+From \(w_m(x)=d_m(x)/2^m\) we obtain
+\[
+H_1(m)
+=-\sum_x \frac{d_m(x)}{2^m}\log\frac{d_m(x)}{2^m}
+=m\log 2-\sum_x w_m(x)\log d_m(x).
+\]
+On the other hand,
+\[
+\frac{\dd}{\dd q}\log S_q(m)\Big|_{q=1}
+=\frac{\sum_x d_m(x)\log d_m(x)}{\sum_x d_m(x)}
+=\sum_x w_m(x)\log d_m(x).
+\]
+In the differentiability regime of \(\tau\), \(\frac{1}{m}\log S_q(m)\to\tau(q)\) and differentiation can be exchanged at \(q=1^-\), hence
+\[
+\lim_{m\to\infty}\frac{1}{m}\sum_x w_m(x)\log d_m(x)
+=\tau'(1^-)=a_1.
+\]
+Substituting back into \(H_1(m)=m\log 2-\sum_x w_m(x)\log d_m(x)\) and dividing by \(m\) yields \(h_1=\log 2-a_1\);
+further substituting into \(\beta_{\mathrm{crit}}=a_1/\log 2\) gives the second formula. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Extremes Fixed but Entropy Adjustable: \texorpdfstring{$(\alpha_*,g_*)$}{(alpha*,g*)} Does Not Determine \texorpdfstring{$\beta_{\mathrm{crit}}$}{beta\_crit} in Non-Frozen Phase]\label{cor:pom-extremes-do-not-determine-beta-crit}
+Let \(d_m:X_m\to\NN_{\ge 1}\) be a family of fiber spectra, denoting
+\[
+D_m:=\max_{x\in X_m}d_m(x),\qquad
+K_m:=\card{\{x\in X_m:\ d_m(x)=D_m\}}.
+\]
+Assume limits
+\[
+\alpha_*:=\lim_{m\to\infty}\frac{1}{m}\log D_m,\qquad
+g_*:=\lim_{m\to\infty}\frac{1}{m}\log K_m
+\]
+exist satisfying \(\alpha_*+g_*<\log2\).
+Assume type space has exponential scale: there exists constant \(c_X>0\) such that \(\log|X_m|\ge c_X m\) for sufficiently large \(m\), with \(c_X>\log2-\alpha_*\).
+Then while keeping \((D_m,K_m)\) (hence \((\alpha_*,g_*)\)) fixed, merely by redistributing non-maximal layer mass one can construct two spectrum families \(\{d_m\}\), \(\{\tilde d_m\}\), such that the entropy rates \(h_1\) of corresponding pushforward distributions converge to two different constants; hence by Theorem \ref{thm:pom-oracle-critical-budget-entropy-identity}, \(\beta_{\mathrm{crit}}=1-h_1/\log2\) can also vary within a positive-length interval.
+\end{corollary}
+\begin{proof}
+By \(\alpha_*+g_*<\log2\) we obtain
+\[
+\frac{K_mD_m}{2^m}=\exp\!\bigl((\alpha_*+g_*-\log2+o(1))m\bigr)\ \longrightarrow\ 0,
+\]
+hence maximal layer mass fraction in probability sense tends to zero, while residual mass
+\(
+R_m:=2^m-K_mD_m
+\)
+satisfies \(R_m=2^m(1-o(1))\).
+\par
+Take constants \(c_-,c_+\) such that \(\log2-\alpha_*<c_-<c_+<c_X\).
+For each \(m\), let \(L_m^\pm:=\lfloor e^{c_\pm m}\rfloor\) and take disjoint type point sets \(Y_m^\pm\subseteq X_m\) satisfying \(|Y_m^\pm|=L_m^\pm\) and disjoint from maximal layer achiever set (guaranteed feasible by \(c_\pm<c_X\)).
+Define two spectrum families: in both constructions let exactly \(K_m\) types take value \(D_m\) on maximal layer, and distribute residual mass \(R_m\) as uniformly as possible onto \(Y_m^\pm\) (with integer correction and remainder collection), remaining types take value \(1\).
+Since
+\[
+\frac{1}{m}\log\Bigl(\frac{R_m}{L_m^\pm}\Bigr)
+=(\log2-c_\pm)+o(1)\ <\ \alpha_*,
+\]
+for sufficiently large \(m\) we can ensure each value assigned to \(Y_m^\pm\) is strictly less than \(D_m\), hence both spectrum families have same \((D_m,K_m)\).
+\par
+Let \(w_m,\tilde w_m\) be pushforward distributions for the two spectrum families.
+In both constructions, after removing \(o(1)\) mass from maximal layer, remaining mass with \(1-o(1)\) fraction approximately uniformly distributes over \(L_m^\pm\) types,
+hence Shannon entropy satisfies
+\[
+H_1(m)=\log L_m^\pm+o(m),
+\]
+yielding entropy rate limits
+\(
+h_1=\lim\frac1m H_1(m)=c_\pm
+\) respectively, with \(c_-\ne c_+\).
+Finally by Theorem \ref{thm:pom-oracle-critical-budget-entropy-identity} identity \(\beta_{\mathrm{crit}}=1-h_1/\log2\) we obtain the stated conclusion. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Zeckendorf Baseline Term and Entropy Gap Rate Decomposition]\label{thm:pom-oracle-critical-budget-zeckendorf-plus-gap}
+Let \(U_m=\mathrm{Unif}(X_m)\) be type uniform distribution, and assume limit
+\[
+\gamma:=\lim_{m\to\infty}\frac{1}{m}D_{\mathrm{KL}}(w_m\|U_m)
+=\lim_{m\to\infty}\frac{1}{m}\bigl(\log|X_m|-H_1(m)\bigr)
+\]
+exists.
+If further \(\lim_{m\to\infty}\frac{1}{m}\log|X_m|=\log\varphi\), then
+\[
+\boxed{\;
+a_1=(\log 2-\log\varphi)+\gamma,\qquad
+\beta_{\mathrm{crit}}=1-\frac{\log\varphi}{\log 2}+\frac{\gamma}{\log 2}\; } .
+\]
+\end{theorem}
+\begin{proof}
+By identity \(D_{\mathrm{KL}}(w_m\|U_m)=\log|X_m|-H_1(m)\) we obtain
+\(
+\gamma=\log\varphi-h_1
+\).
+Combining Theorem \ref{thm:pom-oracle-critical-budget-entropy-identity}'s \(a_1=\log 2-h_1\) with the above,
+we obtain \(a_1=(\log 2-\log\varphi)+\gamma\), dividing by \(\log 2\) yields the decomposition for \(\beta_{\mathrm{crit}}\). This completes the proof.
+\end{proof}
+
+\endinput

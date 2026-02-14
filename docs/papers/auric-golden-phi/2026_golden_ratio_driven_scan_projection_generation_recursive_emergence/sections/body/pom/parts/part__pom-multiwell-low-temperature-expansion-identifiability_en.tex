@@ -1,0 +1,94 @@
+% (User input window)
+% 2026-02-14 12:37:04 (Asia/Singapore)
+
+\paragraph{Multi-Well Low-Temperature Expansion and Top-Tier Structure Identifiability: \texorpdfstring{$q\to\infty$}{q->∞} Softmax Geometry}
+Theorem \ref{thm:pom-zero-temperature-two-term-expansion-maxfiber-entropy} gives the zero-temperature two-term expansion
+\(
+P_q=q\alpha_\ast+h_\ast+o(1)
+\) (\(q\to\infty\)) and identifies the endpoint intercept as the entropy rate of maximal fiber achievers.
+In the regime of finite graphs/finite-state compilation kernels, the pressure \(q\mapsto P(q)=\log\rho(A(q))\) can also exhibit "multi-well competition" low-temperature analytic structure:
+beyond the top tier, finitely many visible phases may exist, whose contributions superimpose as exponentially small quantities inducing a family of computable crossover scales.
+This paragraph records a self-contained softmax calibration and computability conclusion for recovering top-tier parameter families from finite difference windows.
+
+\paragraph{Setting: Power-Weight Matrix Family and Closed-Path Logarithmic Mean Weight}
+Let \(G\) be a finite directed graph (allowing multi-edges), assign weight \(a(e)>0\) to each edge \(e\).
+For each real parameter \(q\ge0\) define weighted adjacency matrix family \(A(q)\):
+for all edges \(e:i\to j\) from vertex \(i\to j\), sum
+\[
+A(q)_{ij}:=\sum_{e:i\to j} a(e)^q.
+\]
+Assume for each \(q\) the matrix \(A(q)\) is primitive, and denote pressure
+\[
+P(q):=\log\rho(A(q)).
+\]
+For any closed path \(\gamma=e_1\cdots e_\ell\) define its logarithmic mean weight
+\[
+\alpha(\gamma):=\frac{1}{\ell}\sum_{t=1}^{\ell}\log a(e_t).
+\]
+Let \(\{\alpha_i\}_{i=1}^K\) be the \emph{de-duplicated finite set} of all closed-path logarithmic mean weights (an additional structural assumption), ordered decreasingly
+\(
+\alpha_1>\alpha_2>\cdots>\alpha_K
+\).
+Let \(h_i\) be the Perron entropy of the critical subgraph (maximal strongly connected subgraph spanned by all closed paths satisfying \(\alpha(\gamma)=\alpha_i\)):
+if this critical layer consists of multiple strongly connected components, then \(h_i\) takes their maximum value (i.e., maximum \(\log\rho\)).
+
+\begin{theorem}[Multi-Phase Softmax Low-Temperature Expansion]\label{thm:pom-multiwell-softmax-low-temperature-expansion}
+In the above setting, let
+\(
+c:=\min_{i\ge2}(\alpha_1-\alpha_i)>0
+\).
+Then there exists constant \(C>0\) such that as \(q\to\infty\)
+\[
+\boxed{\;
+P(q)=\log\!\Bigl(\sum_{i=1}^{K}\exp(q\alpha_i+h_i)\Bigr)+O\!\bigl(e^{-cq}\bigr)\; }.
+\]
+Equivalently,
+\[
+\boxed{\;
+P(q)=q\alpha_1+h_1+\log\!\Bigl(1+\sum_{i\ge2}\exp\bigl(-(\alpha_1-\alpha_i)q+(h_i-h_1)\bigr)\Bigr)+O\!\bigl(e^{-cq}\bigr)\; }.
+\]
+Hence inducing crossover scales (visible competition temperature of top phase \(i\) against main phase)
+\[
+q_{i\leftrightarrow 1}\ \asymp\ \frac{h_1-h_i}{\alpha_1-\alpha_i},
+\]
+which uniformly characterize the balance scale on \(q\)-axis between slope difference \((\alpha_1-\alpha_i)\) and intercept difference \((h_1-h_i)\).
+\end{theorem}
+\begin{proof}[Proof Sketch]
+Write entries of \(A(q)\) as finite sum \(\sum_e \exp(q\log a(e))\) and perform "max-term" renormalization as \(q\to\infty\):
+in the max-plus limit, the leading logarithmic term of spectral radius is determined by the maximum value \(\alpha_1\) of closed-path logarithmic mean weights,
+while the intercept is given by the Perron entropy on the critical subgraph achieving this maximum mean weight (i.e., \(h_1\)).
+When the closed-path mean weight set \(\{\alpha_i\}\) is finite with positive gap \(c>0\), contributions from non-top phases are exponentially suppressed by \(\exp(-(\alpha_1-\alpha_i)q)\);
+aggregating these contributions in the Collatz-Wielandt variational formula for spectral radius and performing block comparison on critical subgraphs yields the stated softmax form and exponential remainder.
+This completes the proof.
+\end{proof}
+
+\begin{theorem}[Finite Recoverability of Top-Tier Parameters: Identifying \texorpdfstring{$(\alpha_i,h_i)$}{(alpha_i,hi)} by Finite Differences on \texorpdfstring{$q$}{q}-Axis]\label{thm:pom-multiwell-top-parameter-identifiability}
+Following the setting of Theorem \ref{thm:pom-multiwell-softmax-low-temperature-expansion}.
+Define discrete differences
+\[
+\Delta P(q):=P(q+1)-P(q),
+\qquad
+\Delta^2 P(q):=P(q+1)-2P(q)+P(q-1).
+\]
+Then there exist integer \(Q_0\) and constant \(K_0\) (depending only on graph size and upper bound on number of phases) such that when \(q\ge Q_0\),
+the finite window data \(\{\Delta P(q+j)\}_{j=0}^{K_0}\) suffices to recover at exponential precision:
+\begin{enumerate}
+  \item Main phase parameters \((\alpha_1,h_1)\);
+  \item All secondary phase sets \(\{(\alpha_i,h_i)\}_{i\ge2}\) with visible competition against main phase;
+  \item Crossover scales \(q_{i\leftrightarrow1}\) for each phase.
+\end{enumerate}
+Hence the "low-temperature multi-phase structure" is not merely a limit object, but can in principle be directly identified from finite difference windows forming computationally auditable data.
+\end{theorem}
+\begin{proof}[Proof Sketch]
+By Theorem \ref{thm:pom-multiwell-softmax-low-temperature-expansion},
+\(
+P(q)-q\alpha_1-h_1
+\)
+as \(q\to\infty\) is a logarithmic perturbation of finitely many exponential terms
+\(\sum_{i\ge2}\exp(-(\alpha_1-\alpha_i)q+(h_i-h_1))\)
+(with exponentially small remainder).
+Taking discrete differences of this perturbation yields the same class of finite exponential sum structure;
+hence one can apply Prony-Hankel identification mechanism (same type as Theorem \ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction}) to the difference sequence:
+finite window suffices to recover exponential rates \((\alpha_1-\alpha_i)\) and coefficients \(\exp(h_i-h_1)\), thereby recovering \((\alpha_i,h_i)\) and crossover scales.
+This completes the proof.
+\end{proof}

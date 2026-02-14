@@ -1,0 +1,229 @@
+\paragraph{Cross-interface terminal conclusions: reset clocks, compression compilation, and scalable estimation of intermediate weights}
+This paragraph continues to consolidate several terminal assertions already established in the text/appendices in an "auditable, independently citable" format as conclusion items; proofs merely point to the corresponding completed theorems/propositions, supplementing where necessary with equivalent formulations directly derived from them.
+
+\begin{conclusion}[Reset event point process "bounded-remainder" clock: density \texorpdfstring{$\varphi^{-(m+2)}$}{phi^{-(m+2)}} and error \texorpdfstring{$O(1)$}{O(1)} strict linearization]\label{con:xi-terminal-reset-bounded-remainder-clock}
+Let the reset event set \(\mathcal R_m\) be as in Definition \ref{def:terminal-reset-events}, and write its increasing enumeration as \(\mathcal R_m=\{r_1<r_2<\cdots\}\).
+Then:
+\begin{enumerate}
+  \item \textbf{Return time binary spectrum:} For all \(n\ge 1\), the difference takes only two values
+  \[
+  r_{n+1}-r_n\in\{F_{m+3},F_{m+4}\}.
+  \]
+  \item \textbf{Sturmian difference word:} Let letters \(A:=F_{m+4}\), \(B:=F_{m+3}\); then the difference word over alphabet \(\{A,B\}\) is the Fibonacci substitution fixed point (Sturmian, slope \(\varphi^{-1}\)).
+  \item \textbf{Density and strong uniform error bound:} The natural density exists and equals
+  \[
+  \lim_{N\to\infty}\frac{\#(\mathcal R_m\cap[0,N))}{N}=\varphi^{-(m+2)},
+  \qquad
+  \sup_{N\ge 1}\Bigl|\#(\mathcal R_m\cap[0,N))-\varphi^{-(m+2)}N\Bigr|\le 1.
+  \]
+  \item \textbf{Return time linearization:} There exists constant \(C_m<\infty\) such that
+  \[
+  \sup_{n\ge 1}\Bigl|\varphi^{-(m+2)}\,r_n-n\Bigr|\le C_m,
+  \]
+  so that the reset clock is strictly a cut-and-project point process in scale: the main frequency is anchored by \(\varphi^{-(m+2)}\), while the deviation does not diverge in \(n\).
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[Proof]
+The first three items are in Theorem \ref{thm:terminal-reset-events-sturmian}.
+Let \(A(N):=\#(\mathcal R_m\cap[0,N))\) and \(\delta:=\varphi^{-(m+2)}\), then \(|A(N)-\delta N|\le 1\) holds for all \(N\in\NN\).
+For \(N=r_n\) we have \(A(r_n)=n-1\), so \(|(n-1)-\delta r_n|\le 1\), thus \(|n-\delta r_n|\le 2\), and we can take \(C_m=2\). Proof complete.
+\end{proof}
+
+\begin{conclusion}[Logarithmic-time algorithm for reset clock: computing \texorpdfstring{$r_n$}{rn} requires only Fibonacci substitution matrix]\label{con:xi-terminal-reset-clock-logtime}
+Continue with the notation of Conclusion \ref{con:xi-terminal-reset-bounded-remainder-clock}, and write the difference word
+\(
+w=w_1w_2\cdots\in\{A,B\}^{\mathbb N}
+\)
+as the fixed point of the Fibonacci substitution
+\(
+\sigma(A)=AB,\ \sigma(B)=A
+\)
+starting with \(A\) (Theorem \ref{thm:terminal-reset-events-sturmian}).
+For any \(L\ge 0\) define prefix counts
+\[
+c_A(L):=\#\{1\le t\le L:\ w_t=A\},\qquad
+c_B(L):=L-c_A(L),
+\]
+and write \(A:=F_{m+4}\), \(B:=F_{m+3}\).
+Then for all \(n\ge 1\) there is the strict prefix-sum expression
+\[
+r_n=r_1+A\,c_A(n-1)+B\,c_B(n-1).
+\]
+Moreover, the vector \((c_A(L),c_B(L))\) can be determined in \(O(\log L)\) time by fast exponentiation of the substitution matrix
+\[
+M:=\begin{pmatrix}1&1\\ 1&0\end{pmatrix}
+\]
+: for any \(k\ge 0\), the letter count of \(\sigma^k(A)\) equals \(M^k(1,0)^{\mathsf T}\), and its prefix count can be obtained by recursively decomposing via the concatenation identity
+\(
+\sigma^{k+1}(A)=\sigma^k(A)\sigma^{k-1}(A)
+\).
+Therefore, the reset time sequence \(\{r_n\}\) can be computed as a deterministic discrete clock in \(O(\log n)\) time, and this complexity is independent of \(m\).
+\end{conclusion}
+\begin{proof}[Proof]
+By Theorem \ref{thm:terminal-reset-events-sturmian}, the difference word \(w\) is a Fibonacci substitution fixed point, satisfying the standard concatenation structure
+\(
+\sigma^{k+1}(A)=\sigma^k(A)\sigma^{k-1}(A)
+\).
+The definition of the substitution matrix \(M\) ensures: writing the count vector of the two letters in \(\sigma^k(A)\) as
+\[
+\mathbf c_k:=
+\begin{pmatrix}
+\#\{1\le t\le |\sigma^k(A)|:\ (\sigma^k(A))_t=A\}\\
+\#\{1\le t\le |\sigma^k(A)|:\ (\sigma^k(A))_t=B\}
+\end{pmatrix},
+\]
+then \(\mathbf c_{k+1}=M\mathbf c_k\) and \(\mathbf c_0=(1,0)^{\mathsf T}\), thus \(\mathbf c_k=M^k(1,0)^{\mathsf T}\).
+For given \(L\), take minimal \(k\) such that \(|\sigma^k(A)|\ge L\), and split the prefix of length \(L\) into \(O(k)\) blocks along the above concatenation and accumulate letter counts, yielding \(c_A(L),c_B(L)\).
+Since \(|\sigma^k(A)|\) grows at Fibonacci rate, \(k=O(\log L)\); meanwhile \(M^k\) can be obtained in \(O(\log k)\) \(2\times 2\) matrix multiplications via binary exponentiation.
+Substituting \((c_A(n-1),c_B(n-1))\) into the prefix-sum expression yields \(r_n\). Proof complete.
+\end{proof}
+
+\begin{conclusion}[Minimal non-invertibility of Zeckendorf time factor graph: one-branch-one-merge \texorpdfstring{$\Rightarrow$}{=>} non-injectivity supported only on \texorpdfstring{$\mathcal R_m$}{R_m}]\label{con:xi-terminal-succ-minimal-noninvertibility}
+In the time factor graph \(G^{\mathrm{Succ}}_m\) (Definition \ref{def:terminal-succ-m}), except for the unique branch point \(b_m\), all vertices satisfy \(|\mathrm{Succ}_m(w)|=1\), and
+\[
+\mathrm{Succ}_m(b_m)=\{0^m,0^{m-1}1\}.
+\]
+Meanwhile the unique vertex with in-degree \(2\) is the merge point \(0^m\), whose predecessors are precisely \(u_m\) and \(b_m\).
+Therefore \(G^{\mathrm{Succ}}_m\) is a "single-branch—single-merge" minimal non-invertible directed system, and the non-injectivity of time advance \(N\mapsto N+1\) appears only on the reset event set \(\mathcal R_m\) (Definition \ref{def:terminal-reset-events}).
+Combined with Conclusion \ref{con:xi-terminal-reset-bounded-remainder-clock}, this non-invertibility occurs at fixed density \(\varphi^{-(m+2)}\) with no long-range drift.
+\end{conclusion}
+\begin{proof}[Proof]
+Branch/merge structure is in Theorem \ref{thm:terminal-succ-unique-branch-merge}.
+"Non-injectivity occurs only on \(\mathcal R_m\)" is obtained from the characterization in Definition \ref{def:terminal-reset-events} and the two branches of \(b_m\) in the same theorem.
+Density and bounded-remainder property are given by Theorem \ref{thm:terminal-reset-events-sturmian}, already summarized in Conclusion \ref{con:xi-terminal-reset-bounded-remainder-clock}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Closed-form constants for reset sector under Parry baseline: strict return strength and conditional waiting time in \texorpdfstring{$\mathbb Q(\sqrt5)$}{Q(sqrt5)}]\label{con:xi-terminal-parry-reset-sector-constants}
+Under the two-lane independent Parry baseline input of Proposition \ref{prop:real-input-40-reset-regeneration-constants}, define the reset sector event
+\[
+Z_{\ge 5}:=\{d_{k-4}\cdots d_k=0^5\},
+\]
+then its stationary time fraction is the closed-form constant
+\[
+\mathbb P(Z_{\ge 5})=\frac{9-4\sqrt5}{5},
+\]
+and by Kac's formula the average return interval is
+\[
+\mathbb E[\tau_{Z_{\ge 5}}]=\frac{1}{\mathbb P(Z_{\ge 5})}=45+20\sqrt5.
+\]
+Moreover, the waiting time \(T\) from a typical non-reset moment (conditioned on \(Z_{\ge 5}^c\)) to the next entrance into \(Z_{\ge 5}\) satisfies
+\[
+\mathbb E[T]=\frac{555}{8}+\frac{127}{4}\sqrt5.
+\]
+Therefore, the regeneration threshold can be elevated to fully closed-form strong normalization constants on the Parry baseline, providing auditable numerical anchors for correlation/mixing upper bounds of the synchronization kernel.
+\end{conclusion}
+\begin{proof}[Proof]
+See Proposition \ref{prop:real-input-40-reset-regeneration-constants} (and the auditable construction given in its proof). Proof complete.
+\end{proof}
+
+\begin{conclusion}[Computability of energy--length Newton support extreme slopes, and saturation density strictly \texorpdfstring{$1/2$}{1/2} for real-input kernel]\label{con:xi-terminal-newton-extreme-slopes-alpha-half}
+For the joint primitive count \(p_{n,k}\) (length \(n\), energy \(k\)) Newton support, define extreme slopes
+\[
+\alpha_{\min}:=\inf\left\{\frac{k}{n}:p_{n,k}>0\right\},\qquad
+\alpha_{\max}:=\sup\left\{\frac{k}{n}:p_{n,k}>0\right\}.
+\]
+Then \(\alpha_{\min},\alpha_{\max}\) are equivalent to the minimum/maximum mean energy densities of directed cycles, and can be found in polynomial time by a Karp-type mean-cycle algorithm:
+\[
+\alpha_{\min}=\min_{\gamma\ \mathrm{cycle}}\frac{\sum_{e\in\gamma}\kappa(e)}{|\gamma|},\qquad
+\alpha_{\max}=\max_{\gamma\ \mathrm{cycle}}\frac{\sum_{e\in\gamma}\kappa(e)}{|\gamma|}.
+\]
+Meanwhile, for the endpoint saturation of pressure \(P(\theta)=\log\rho(B(e^\theta))\) we have
+\(
+\lim_{\theta\to\pm\infty}P'(\theta)=\alpha_{\max/\min}
+\).
+In the output potential weighting of the real-input \(40\)-state kernel, the extreme saturation density is
+\[
+\alpha_{\max}=\frac12,
+\]
+so that no cycle with mean energy density exceeding \(1/2\) exists; equivalently the joint primitive support satisfies the hard wedge domain constraint \(p_{n,k}>0\Rightarrow k\le n/2\).
+\end{conclusion}
+\begin{proof}[Proof]
+Mean-cycle characterization and computability of extreme slopes are in Proposition \ref{prop:sync-newton-extreme-slopes}.
+The real-input kernel's \(\alpha_{\max}=1/2\) is in Corollary \ref{cor:real-input-40-alpha-max}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Polynomial-state exact compilation of symmetric-power quotient kernel \texorpdfstring{$A^{\mathrm{eq}}_q$}{Aeq}: \texorpdfstring{$q$}{q}-fold collision descends from exponential states to binomial states]\label{con:xi-terminal-sympower-quotient-kernel-poly-state}
+For the deterministic online kernel implementing \(\Fold_\infty\) (internal state set \(Q\)), take \(q\ge 2\) copies in synchronous direct product and apply "output-consistent" filtering to obtain the \(q\)-fold collision count sequence \(S_q(m)\).
+Since \(S_q\) is completely symmetric under copy permutation \(S_q\), the orbit is uniquely determined by the occupation vector
+\[
+N_q:=\Bigl\{(n_s)_{s\in Q}\in\ZZ_{\ge 0}^{Q}:\ \sum_{s\in Q}n_s=q\Bigr\},
+\]
+so that there exists a non-negative integer adjacency matrix \(A^{\mathrm{eq}}_q\) (index set \(N_q\)) and integer readout vectors \(u^{\mathrm{eq}}_q,v^{\mathrm{eq}}_q\), such that
+\[
+S_q(m)= (u^{\mathrm{eq}}_q)^{\mathsf T}\,(A^{\mathrm{eq}}_q)^{\,m-m_0}\,v^{\mathrm{eq}}_q\qquad(m\ge m_0),
+\]
+and the state count is
+\[
+|N_q|=\binom{q+|Q|-1}{|Q|-1}.
+\]
+Moreover, entries of \(A^{\mathrm{eq}}_q\) can be realized by explicit coefficient extraction from a set of transition polynomials, yielding a backend kernel generatable from first principles.
+\end{conclusion}
+\begin{proof}[Proof]
+Take \(A^{\mathrm{eq}}_q:=\widetilde A_q\), \(u^{\mathrm{eq}}_q:=\widetilde u_q\), \(v^{\mathrm{eq}}_q:=\widetilde v_q\); then the conclusion is Proposition \ref{prop:pom-moment-symmetric-power};
+coefficient extraction implementation is in Remark \ref{rem:pom-moment-symmetric-power-coefficient-extraction}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Two-stage executable compression: \texorpdfstring{$\text{direct product}\Rightarrow A^{\mathrm{eq}}_q\Rightarrow \mathsf{MinH}(S_q)$}{product=>Aeq=>MinH} yields "backend-generatable--frontend minimal certificate" dual track closed loop]\label{con:xi-terminal-two-stage-compression-sympower-minh}
+Within the verified \(q\le 16\) window, there exists strict engineering and certificate division of labor:
+\(A^{\mathrm{eq}}_q\) (Conclusion \ref{con:xi-terminal-sympower-quotient-kernel-poly-state}) serves as "backend realization generatable from first principles," while on the sequence side one can use Hankel/recurrence minimal realization functor \(\mathsf{MinH}\) to directly recover from \(\{S_q(m)\}\) a minimal dimension \(d_q\) far smaller than \(|N_q|\), serving as "frontend compression and auditable certificate."
+Moreover, this compression can be stacked: first pre-compress bottom-layer states by collision counting equivalence class \(Q\to Q/{\sim_{\mathrm{col}}}\), then do symmetric power quotient compression; in the "star coupling" case one can further compress to orbit-count states \((n_1,n_2,n_3)\) (dimension \(\binom{q+1}{2}\)).
+Therefore, "generatable (backend)--minimized (frontend)" forms a composable, auditable closed-loop interface.
+\end{conclusion}
+\begin{proof}[Proof]
+The two-stage compression law and its implementation regime in the \(q\le 16\) verification window are in Remarks \ref{rem:pom-sympower-then-minh} and \ref{rem:pom-moment-symmetric-power-impl}.
+Collision count pre-compression is in Proposition \ref{prop:pom-moment-col-lumping}; the \(\binom{q+1}{2}\) orbit representation for star coupling is in Remark \ref{rem:pom-star-sympress}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Projection word calculus including \texorpdfstring{$\mathrm{MOM}[q]$}{MOM[q]} and \texorpdfstring{$\mathrm{TWIST}[\chi]$}{TWIST[chi]} forms canonical interface normal form; anomaly compressed to minimal scalar with homological invariance]\label{con:xi-terminal-projword-normal-form-mom-twist-anom}
+Under the joint closure of rule family \ref{def:pom-four-gen-rewrite-rules} and three-generator rule family \ref{def:pom-three-gen-rewrite-rules}, any projection word generated solely by
+\(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G,\mathrm{MOM}_q\)
+can be rewritten into canonical interface normal form
+\[
+\mathrm{MOM}_Q\circ \mathrm{LIFT}_{G'}\circ \mathrm{PROJ}_{u'}\circ E_{m'}.
+\]
+Accompanied by three classes of auditable outputs: anomaly signature \(\mathsf{Anom}_{G'}\) from \(E\)--lift commutation, (optionally) higher-order anomaly signature tower \(\mathsf{Anom}^{(Q)}_{G'}\) obtained from role domain expansion by \((\mathrm{RMOML})\), and (when necessary) scalar moment-anomaly \(\mathsf{Anom}^{(Q)}_{\mathrm{mom}}\) from \(E\)--\(\mathrm{MOM}\) outer extraction.
+If the moment Beck--Chevalley condition holds, then \(\mathsf{Anom}^{(Q)}_{\mathrm{mom}}=0\); otherwise the difference between the two compilation paths can be minimally compressed at the finite-part layer to this single scalar.
+Moreover, anomaly labels can be incorporated into extended label groups, so that "changing reduction priority only changes boundary terms; whether the residue is zero remains a path-invariant" holonomy/coboundary mechanism maintains formal invariance.
+\end{conclusion}
+\begin{proof}[Proof]
+Canonical interface normal form and three classes of outputs are in Proposition \ref{prop:pom-mom-interface-normal-form}.
+Minimal scalar compression of moment-anomaly is in Definition \ref{def:pom-moment-anom-signature} and Proposition \ref{prop:pom-em-mom-residual-swap}.
+The unified formulation of homological invariance is in Remark \ref{rem:pom-anom-cohomology-mom}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Semantic functor \texorpdfstring{$\mathsf{Sem}$}{Sem} on restricted slices is a conservative invariant: unitary slice phase parameterization has no external parameters]\label{con:xi-terminal-sem-conservative-unitary-slice}
+On bounded slices \(\mathbf{PW}^{\ast}_{\le}\), the phase variable \(u\in\TT\) of the unitary slice (e.g., \(|u|=1\)) can be generated by the Cayley compactification gate from parameter-free real-axis coordinates \(x\in\RR\)
+\(
+u=\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}
+\).
+And on this slice there exists an auditable semantic functor
+\[
+\mathsf{Sem}:\mathbf{PW}^{\ast}_{\le}\longrightarrow \mathbf{Sig}_{\le}\times \mathbf{Spec}_{\le},
+\]
+whose signature part consists of interface normal-form parameters and finite anomaly sampling, and whose spectrum part consists of integer matrix spectra, twisted spectra, and derived pressure/budget objects.
+Theorem \ref{thm:pom-sem-conservative} establishes conservativity: \(\mathsf{Sem}\) reflects natural isomorphisms, so that "canonical normal form + finite anomaly grid + finite spectrum fingerprint grid" constitutes an implementation-independent and auditable equivalence criterion.
+\end{conclusion}
+\begin{proof}[Proof]
+Unitary slice parameter-free parameterization is in Remark \ref{rem:pom-unitary-slice-param-by-real-line}.
+The definition of \(\mathsf{Sem}\) is in Definition \ref{def:pom-sem-functor}, its conservativity is in Theorem \ref{thm:pom-sem-conservative}. Proof complete.
+\end{proof}
+
+\begin{conclusion}[Scalable estimation of primitive spectrum for intermediate weights \texorpdfstring{$u\in(0,1)$}{u in (0,1)}: Möbius--Hutchinson's correlated combination converts cancellation noise to controlled variance]\label{con:xi-terminal-intermediate-u-mobius-hutchinson}
+When \(u\in(0,1)\), \(M_K(u)^n\) rapidly becomes dense as \(n\) grows, making explicit construction hard to scale;
+one can use Hutchinson random trace estimation to unbiasedly estimate
+\(
+a_n(u)=\Tr(M_K(u)^n)
+\)
+at cost of only \(n\) sparse matvecs, and substitute into Möbius inversion to obtain primitive approximation
+\[
+\widehat B_{K,n}(u)=\frac1n\sum_{d\mid n}\mu(d)\,\widehat a_{n/d}(u^d).
+\]
+To suppress noise amplification from Möbius cancellation, one can simultaneously reuse the same set of random probes \(\{\mathbf r_s\}\) for all \(u^d\) and all required powers, and complete the Möbius combination at the sample level before taking the mean (common random numbers + correlated combining), thereby converting instability from "independent noise difference" to "correlated noise cancellation."
+When estimating PSD objects (such as \(\Tr((M_K(u)^n)^{\mathsf T}M_K(u)^n)\) or block symmetrized objects), Hutch++ can improve sample complexity from \(O(\varepsilon^{-2})\) to \(O(\varepsilon^{-1})\) (using only matvec).
+Additionally, global block-level objects of the kernel satisfy single-stream lifting relations, so expensive computation can be completed in single stream while maintaining reproducibility.
+\end{conclusion}
+\begin{proof}[Proof]
+Implementation regime in the main text is in \S\ref{sec:experiments} subsection "Intermediate weights \(u\in(0,1)\): matrix-free random trace estimation + Möbius inversion";
+protocolization and error propagation are in Appendix \S\ref{app:kernel-fingerprint-hutchinson}, especially Propositions \ref{prop:hutchinson-unbiased-mfree} and \ref{prop:mobius-error-propagation}.
+The Hutch++ PSD orbit interface is also given in that appendix subsection. Proof complete.
+\end{proof}

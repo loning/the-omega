@@ -1,0 +1,277 @@
+% (User input window)
+% 2026-02-14 11:58:09 (Asia/Singapore)
+
+\subsubsection{Dirichlet Character Decomposition: Character Resolution and Congruence Class Slice Power Sums of Primitive Torsion Tables}\label{subsubsec:finite-part-dirichlet-character-torsion-spectral-slices}
+The previous subsection interpreted cyclotomic atoms as primitive torsion point averages (Corollary \ref{cor:finite-part-cyclotomic-atom-ramanujan-projection}).
+This subsection further introduces Dirichlet character weights modulo \(q\), lifting the single-layer primitive torsion table to a "character-resolved" spectral power sum interface;
+in the prime modulus case, this interface can be concatenated with the \(q\)-axis compression of the constant layer (\S\ref{subsec:finite-part-cyclic-lift-cyclotomic-microscope}) to form a completely invertible congruence class slice reconstruction.
+
+\paragraph{Setting: reduced spectral polynomial and character torsion functional}
+We follow the notation of \S\ref{subsubsec:finite-part-ramanujan-parseval-nyquist}:
+Let \(M\in\ZZ_{\ge0}^{d\times d}\) be primitive, \(\rho=\rho(M)>0\), and denote normalized non-Perron spectral points \(\lambda_k=\mu_k/\rho\ (k=2,\dots,d)\), so that \(|\lambda_k|<1\).
+Define
+\[
+F_M(t):=\frac{\det(I-tM/\rho)}{1-t}=\prod_{k=2}^{d}(1-\lambda_k t),
+\qquad
+u_n(M):=\sum_{k=2}^{d}\lambda_k^{n}\quad(n\ge1).
+\]
+Fix an integer \(q\ge2\), denote \(U(q):=(\ZZ/q\ZZ)^\times\) and \(\omega_q:=e^{2\pi i/q}\).
+For any Dirichlet character \(\chi\) (modulo \(q\), allowing non-primitive, viewed as a character of \(U(q)\)), define the character torsion functional
+\[
+\mathcal{L}_M(\chi;q):=-\sum_{a\in U(q)}\chi(a)\,\log F_M(\omega_q^{\,a})\in\CC/2\pi i\ZZ,
+\]
+where \(\log F_M\) takes the analytic branch on \(|t|\le1\) induced by \(F_M(0)=1\) (since \(|\lambda_k|<1\), this branch is well-defined at each \(\omega_q^{\,a}\)).
+When \(\chi=\chi_0\) is the trivial character, Theorem \ref{thm:finite-part-cyclotomic-atom-primitive-torsion-average} gives \(\mathcal{L}_M(\chi_0;q)=\mathcal{C}_q(M)\).
+
+\begin{theorem}[Gauss--Dirichlet expansion and character-resolved spectral power sum]\label{thm:finite-part-dirichlet-torsion-gauss-expansion}
+Let
+\[
+G(\chi;n):=\sum_{a\in U(q)}\chi(a)\,\omega_q^{\,an}\qquad(n\ge1),
+\qquad
+\tau(\chi):=G(\chi;1)=\sum_{a\in U(q)}\chi(a)\omega_q^{\,a}.
+\]
+Then the absolutely convergent identity holds
+\[
+\boxed{\;
+\mathcal{L}_M(\chi;q)=\sum_{n\ge1}\frac{u_n(M)}{n}\,G(\chi;n)\;}
+\]
+and for all \(n\) satisfying \((n,q)=1\),
+\[
+G(\chi;n)=\overline{\chi}(n)\,\tau(\chi).
+\]
+If \(\chi\) is a primitive Dirichlet character (with conductor \(q\)), then \(\tau(\chi)\neq0\), and under the Dirichlet convention \(\chi(n)=0\) (when \((n,q)>1\)),
+\[
+G(\chi;n)=\overline{\chi}(n)\,\tau(\chi)\qquad(n\ge1),
+\]
+thus
+\[
+\boxed{\;
+\mathcal{L}_M(\chi;q)
+=\tau(\chi)\sum_{\substack{n\ge1\\(n,q)=1}}\frac{u_n(M)}{n}\,\overline{\chi}(n)\;}
+\]
+provides the Dirichlet--Fourier readout of congruence class slice power sums.
+\end{theorem}
+\begin{proof}
+By \(-\log(1-x)=\sum_{n\ge1}x^n/n\) (\(|x|<1\)) and \(|\lambda_k|<1\),
+\[
+-\log F_M(\omega_q^{\,a})
+=\sum_{n\ge1}\frac{u_n(M)}{n}\,\omega_q^{\,an},
+\]
+and this series is absolutely convergent, allowing termwise summation.
+Multiplying by \(\chi(a)\) and summing over \(a\in U(q)\), interchanging summation yields the first identity.
+\par
+When \((n,q)=1\), multiplication \(a\mapsto an\) is a permutation on the group \(U(q)\), so
+\[
+G(\chi;n)=\sum_{a\in U(q)}\chi(a)\omega_q^{\,an}
+=\sum_{a\in U(q)}\chi(an^{-1})\omega_q^{\,a}
+=\overline{\chi}(n)\,G(\chi;1)
+=\overline{\chi}(n)\,\tau(\chi).
+\]
+In the primitive case, \(G(\chi;n)=0\) for \((n,q)>1\) is a standard Gauss sum property (also viewed as the same formula when \(\chi(n)=0\)). \qed
+\end{proof}
+
+\begin{corollary}[Character-resolved congruence class projection: Dirichlet--Fourier readout of single-layer primitive torsion table]\label{cor:finite-part-dirichlet-character-projection}
+Fix \(q\) and let \(\chi\) be a primitive non-trivial character.
+Then \(\mathcal{L}_M(\chi;q)/\tau(\chi)\) depends only on the Dirichlet--Fourier component of the sequence \(\{u_n(M)/n\}\) on \(U(q)\),
+providing a "character-resolved" spectral projection according to congruence classes \((n\bmod q)\).
+\end{corollary}
+
+\paragraph{Complete inversion for prime moduli: recovering all unit congruence class slices from single-layer \(q\) character torsion table}
+For general composite moduli, the primitive torsion table covers only the primitive orbits of \(\omega_q\), requiring de-aliasing reduction combined with divisor lattice constant-layer compression.
+For prime \(q\), this reduction can be written as a completely explicit inversion.
+
+\begin{theorem}[Character orthogonality inversion for prime moduli: character torsion table at fixed \(q\) uniquely determines unit slice potentials]\label{thm:finite-part-dirichlet-character-inversion-prime}
+Let \(q\ge3\) be prime and denote \(U(q)=\{1,\dots,q-1\}\).
+For each \(r\in U(q)\), define the unit congruence class slice potential
+\[
+V_{q,r}(M):=\sum_{m\ge0}\frac{u_{r+mq}(M)}{r+mq}.
+\]
+Let \(\widehat{U(q)}\) be all characters of \(U(q)\) (equivalently, all Dirichlet characters modulo \(q\)), and for each character \(\chi\in\widehat{U(q)}\), define
+\[
+A(\chi):=
+\begin{cases}
+\dfrac{\mathcal{L}_M(\chi;q)}{\tau(\chi)}, & \chi\neq\chi_0,\\[10pt]
+\displaystyle \sum_{\substack{n\ge1\\(n,q)=1}}\frac{u_n(M)}{n}
+=-\log F_M(1)-\sum_{m\ge1}\frac{u_{qm}(M)}{qm}
+=\log C(M)-B_q(M), & \chi=\chi_0,
+\end{cases}
+\]
+where \(B_q(M):=\Psi_q(M)/q\) follows the notation of Proposition \ref{prop:finite-part-cyclic-lift-mobius-inversion}.
+Then for each \(r\in U(q)\), the strict inversion formula holds
+\[
+\boxed{\;
+V_{q,r}(M)=\frac{1}{q-1}\sum_{\chi\in\widehat{U(q)}}A(\chi)\,\chi(r)\; }.
+\]
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:finite-part-dirichlet-torsion-gauss-expansion},
+for each non-trivial character \(\chi\neq\chi_0\) (whose conductor must be \(q\)),
+\[
+A(\chi)
+=\sum_{\substack{n\ge1\\(n,q)=1}}\frac{u_n(M)}{n}\,\overline{\chi}(n)
+=\sum_{r\in U(q)}\overline{\chi}(r)\,V_{q,r}(M),
+\]
+where the last step groups by \(n\equiv r\pmod q\).
+While \(A(\chi_0)\) is the unweighted coefficient for \((n,q)=1\), already given by \(-\log F_M(1)=\sum_{n\ge1}u_n(M)/n\) and the multiple sum \(\sum_{m\ge1}u_{qm}(M)/(qm)=B_q(M)\).
+Thus \(\{A(\chi)\}_{\chi\in\widehat{U(q)}}\) is precisely the family of Fourier coefficients of the function \(r\mapsto V_{q,r}\) on the compact group \(U(q)\),
+and character orthogonality immediately yields the stated inversion. \qed
+\end{proof}
+
+\begin{corollary}[Single-layer invertible interface at fixed prime modulus]\label{cor:finite-part-dirichlet-character-single-layer-complete-prime}
+Under the setting of Theorem \ref{thm:finite-part-dirichlet-character-inversion-prime},
+the finite data at a fixed prime \(q\)
+\[
+\bigl\{\mathcal{L}_M(\chi;q)\bigr\}_{\chi\in\widehat{U(q)}}\ \cup\ \{C(M),C(M^{\langle q\rangle})\}
+\]
+uniquely determines all unit slice potentials \(\{V_{q,r}(M)\}_{r\in U(q)}\), thus providing a spectral power sum projection interface stratified by congruence classes.
+\end{corollary}
+
+\paragraph{Character vanishing and cyclotomic symmetric rigidity}
+\begin{theorem}[Non-principal character vanishing if and only if cyclotomic symmetric closure]\label{thm:finite-part-dirichlet-vanishing-cyclotomic-symmetry}
+Fix an integer \(q\ge2\).
+Say the normalized non-Perron spectral multiset \(\{\lambda_k\}_{k=2}^d\) has \(\omega_q\)-closure if for each spectral point \(\lambda\) (with multiplicity), the set
+\(\{\lambda\omega_q^j:0\le j\le q-1\}\) (with multiplicity) is contained in the spectral multiset.
+Then the following are equivalent:
+\begin{enumerate}
+  \item For all primitive non-trivial Dirichlet characters \(\chi\ (\bmod q)\), \(\mathcal{L}_M(\chi;q)=0\);
+  \item There exists a polynomial \(G(t)\in\CC[t]\) such that
+  \[
+  F_M(t)=G(t^q),
+  \]
+  equivalently, \(\{\lambda_k\}\) has \(\omega_q\)-closure.
+\end{enumerate}
+In this case, the power sums satisfy strict sparsity:
+\(u_n(M)=0\) when \((n,q)=1\), and for \(n\ge1\), \(u_{qn}(M)=q\,u_n'(G)\), where \(u_n'(G)\) is the root power sum of \(G\).
+\end{theorem}
+\begin{proof}[Proof sketch]
+If \(F_M(t)=G(t^q)\), then for any \(a\in U(q)\), \(F_M(\omega_q^{\,a})=G(1)\) is constant;
+for any non-trivial character \(\chi\), since \(\sum_{a\in U(q)}\chi(a)=0\), we have \(\mathcal{L}_M(\chi;q)=0\).
+\par
+Conversely, if \(\mathcal{L}_M(\chi;q)=0\) for all primitive non-trivial \(\chi\), then by character orthogonality, the function
+\(a\mapsto \log F_M(\omega_q^{\,a})\) is constant on \(U(q)\), so
+\(\sum_{a\in U(q)}\omega_q^{\,an}\log F_M(\omega_q^{\,a})=0\) for all \((n,q)=1\).
+Combined with the absolutely convergent expansion
+\(
+-\log F_M(t)=\sum_{n\ge1}u_n(M)t^n/n
+\)
+and exponential decay from \(|\lambda_k|<1\),
+the "complete collapse of unit congruence class slices" can be lifted to power sum sparsity \(u_n(M)=0\) (when \((n,q)=1\)),
+which in turn implies \(-\log F_M(t)\) contains only \(t^{qm}\) terms, hence \(F_M(t)=G(t^q)\).
+\end{proof}
+
+\paragraph{Constant \(q\)-axis and primitive orbits: double Möbius inversion isomorphism (interface reformulation)}
+\begin{corollary}[Cyclic lift constant sequence uniquely determines primitive orbit sequence]\label{cor:finite-part-cyclic-constant-determines-prime-orbits}
+Given the full cyclic lift residue constant sequence \(\{C(M^{\langle q\rangle})\}_{q\ge1}\), Proposition \ref{prop:finite-part-cyclic-lift-mobius-inversion} exactly recovers the power sum sequence \(\{u_n(M)\}_{n\ge1}\), thus recovering
+\[
+\Tr(M^n)=\rho^n\bigl(1+u_n(M)\bigr)\qquad(n\ge1),
+\]
+and further applying Witt/Möbius inversion yields the primitive orbit count
+\[
+p_n(M)=\frac{1}{n}\sum_{m\mid n}\mu(m)\,\Tr\!\bigl(M^{n/m}\bigr)\qquad(n\ge1).
+\]
+Therefore, "cyclic lift constant sequence" and "primitive orbit sequence" are strictly equivalent in a purely algebraic sense.
+\end{corollary}
+
+\paragraph{Near-RH \(q\)-axis criterion: unified suppression of square-root spectral bound and constant-layer envelope}
+\begin{corollary}[Kernel-RH equivalent to exponential suppression of constant-layer envelope]\label{cor:finite-part-near-rh-q-axis-envelope}
+Following the notation of Definition \ref{def:finite-part-cyclic-lift-psi}, denote
+\(
+\Lambda_{\mathrm{rel}}(M):=\max_{k\ge2}|\lambda_k|.
+\)
+Then kernel-RH (\(\Lambda_{\mathrm{rel}}(M)\le\rho^{-1/2}\)) is equivalent to the existence of a constant \(K>0\) such that for all \(q\ge1\),
+\[
+|\Psi_q(M)|\le K\,\rho^{-q/2}.
+\]
+More strongly, if \(\Lambda_{\mathrm{rel}}(M)>\rho^{-1/2}\), then there exist infinitely many \(q\) such that
+\(
+|\Psi_q(M)|\ge c\,\Lambda_{\mathrm{rel}}(M)^q
+\)
+(for some constant \(c>0\)).
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:finite-part-cyclic-lift-limsup-spectral-gap},
+\(
+\limsup_{q\to\infty}|\Psi_q(M)|^{1/q}=\Lambda_{\mathrm{rel}}(M)
+\),
+the result follows immediately. \qed
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$q$}{q}-axis energy extraction of boundary modulus multiplicity]\label{thm:finite-part-boundary-multiplicity-qaxis-energy}
+Let
+\(
+\Lambda:=\Lambda_{\mathrm{rel}}(M)=\max_{k\ge2}|\lambda_k|\in(0,1)
+\),
+and let the set of spectral points achieving maximal modulus be
+\[
+\mathcal{E}_\Lambda:=\{\lambda_k:\ |\lambda_k|=\Lambda\},
+\qquad
+r:=|\mathcal{E}_\Lambda|\ \ (\text{counted with algebraic multiplicity}).
+\]
+Write \(\mathcal{E}_\Lambda\) as \(\lambda_k=\Lambda\,\eta_k\) (\(|\eta_k|=1\), \(k=1,\dots,r\), listed with multiplicity).
+Then there exists \(0\le \Lambda'<\Lambda\) such that
+\[
+u_q(M)=\Lambda^{q}\sum_{k=1}^{r}\eta_k^{q}+O\!\bigl((\Lambda')^{q}\bigr)\qquad(q\to\infty).
+\]
+Therefore, for the Ces\`aro energy average, the limit holds
+\[
+\boxed{\;
+\lim_{N\to\infty}\frac{1}{N}\sum_{q=1}^{N}\frac{|u_q(M)|^2}{\Lambda^{2q}}
+=\sum_{\zeta\in\mathbb{T}} m(\zeta)^2\; },
+\]
+where \(m(\zeta)\) is the multiplicity of \(\zeta\) among the \(\eta_k\) (so \(\sum_\zeta m(\zeta)=r\)).
+In particular, if the boundary spectral angles satisfy a general position condition (\(\eta_i\overline{\eta_j}\) is not a root of unity when \(i\neq j\)), then the right-hand side reduces to \(r\), and in general, we have the sandwich
+\[
+\boxed{\;
+r\ \le\ \limsup_{N\to\infty}\frac{1}{N}\sum_{q=1}^{N}\frac{|u_q(M)|^2}{\Lambda^{2q}}\ \le\ r^2\; }.
+\]
+The same conclusion holds for \(\Psi_q(M)\): since by Proposition \ref{prop:finite-part-cyclic-lift-dirichlet-multiple-sum},
+\(
+\Psi_q(M)=u_q(M)+O(\Lambda^{2q})
+\),
+replacing \(u_q\) with \(\Psi_q\) does not change the above energy limit and sandwich.
+\end{theorem}
+\begin{proof}
+Let
+\(
+t_q:=\sum_{k=1}^{r}\eta_k^{q}
+\)
+and substitute into \(u_q(M)=\Lambda^{q}t_q+O((\Lambda')^{q})\).
+Then
+\[
+\frac{|u_q(M)|^2}{\Lambda^{2q}}
+=|t_q|^2+O\!\left(\left(\frac{\Lambda'}{\Lambda}\right)^{q}\right),
+\]
+and the error term vanishes under Ces\`aro averaging.
+On the other hand,
+\[
+|t_q|^2=\sum_{i,j=1}^{r}(\eta_i\overline{\eta_j})^{q}.
+\]
+For each complex number \(\xi\) with \(|\xi|=1\),
+\(
+\lim_{N\to\infty}\frac{1}{N}\sum_{q=1}^{N}\xi^{q}=1
+\)
+if and only if \(\xi=1\), otherwise the limit is \(0\).
+Therefore,
+\[
+\lim_{N\to\infty}\frac{1}{N}\sum_{q=1}^{N}|t_q|^2
+=\#\{(i,j):\ \eta_i=\eta_j\}
+=\sum_{\zeta} m(\zeta)^2.
+\]
+Under general position, \(m(\zeta)\in\{0,1\}\), so the limit is \(r\); the general sandwich \(r\le \sum_\zeta m(\zeta)^2\le r^2\) follows directly from Cauchy--Schwarz.
+Finally, substituting \(\Psi_q=u_q+O(\Lambda^{2q})\) yields the same conclusion for \(\Psi_q\). \qed
+\end{proof}
+
+\begin{remark}[Normalization of logarithmic branch and algebraic verifiability]\label{rem:finite-part-torsion-log-branch-normalization}
+Since \(|\lambda_k|<1\), the reduced spectral polynomial \(F_M(t)=\prod_{k\ge2}(1-\lambda_k t)\) has no zeros in the closed unit disk \(\{|t|\le1\}\),
+thus there exists a unique holomorphic logarithm \(\log F_M\) satisfying \(\log F_M(0)=0\); therefore, the values \(\log F_M(\omega_q^{\,a})\) are \emph{canonically determined} under the present convention (without additional branch choice).
+Under this convention, \(\mathcal{L}_M(\chi;q)\) actually yields a definite complex number; writing it as \(\CC/2\pi i\ZZ\) merely emphasizes its branch invariance under multivalued logarithms.
+\par
+If furthermore the coefficients of \(F_M(t)\) belong to some number field \(K\) (e.g., the algebraic extension generated by \(\rho\)), then for any \(q\) and any \(a\in U(q)\),
+\(
+F_M(\omega_q^{\,a})\in K(\omega_q)
+\);
+thus the single-layer torsion table \(\{F_M(\omega_q^{\,a})\}_{a\in U(q)}\) and its Dirichlet character decomposition
+\(\{\mathcal{L}_M(\chi;q)\}_\chi\)
+can in principle be uniformly tracked under Galois action of the finite extension \(K(\omega_q)\) (at the logarithmic level, the global \(2\pi i\ZZ\) ambiguity is eliminated via the above normalization).
+The same normalization also applies to the torsion polynomials and torsion character functionals of the Schur channel (see Definition \ref{def:pom-schur-dirichlet-torsion-functional} in \S\ref{subsubsec:pom-wreath-artin-factorization}).
+\end{remark}

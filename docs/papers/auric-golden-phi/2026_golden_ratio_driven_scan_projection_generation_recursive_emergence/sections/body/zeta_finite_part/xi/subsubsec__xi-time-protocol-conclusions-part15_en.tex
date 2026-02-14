@@ -1,0 +1,187 @@
+% (User input window)
+% 2026-02-14 10:47:42 (Asia/Singapore)
+
+\paragraph{Cross-interface terminal conclusions: Parity weight modality, sign fiber partition, and full explicit closure of the disjoint symmetric power kernel}
+This paragraph collects three classes of directly verifiable ``constant/closed-form'' entries: first, we record the parity weight alternating count of the golden mean stable words \(X_m\), which corresponds to an implicit \(6\)-th cyclotomic modality; second, we decompose the fold fiber multiplicity by parity weight into a sign partition, yielding a third-order linear recurrence completely orthogonal to the \(q\)-collision moment, along with its complex conjugate dominant mode constant; third, we identify the \(S_q\)-symmetric compression matrix \(B_q\) of the disjoint graph \(\mathcal D_q\) as \(\mathrm{Sym}^q(M)\), and thereby obtain unimodularity, an explicit inverse matrix, and a Fibonacci--binomial closed form for \(n\)-step transfer coefficients.
+
+\begin{conclusion}[Parity weight alternating count of golden mean stable words: strict \(6\)-periodicity and rational generating function]\label{con:xi-terminal-xm-parity-weight-6period}
+Let
+\[
+X_m:=\{x\in\{0,1\}^m:\ \forall i,\ x_ix_{i+1}=0\},
+\qquad
+A_m^{\mathrm{par}}:=\sum_{x\in X_m}(-1)^{|x|_1}.
+\]
+Then for all \(m\ge 3\) we have the second-order recurrence
+\[
+A_m^{\mathrm{par}}=A_{m-1}^{\mathrm{par}}-A_{m-2}^{\mathrm{par}},
+\qquad
+A_1^{\mathrm{par}}=0,\ A_2^{\mathrm{par}}=-1,
+\]
+so that \(\bigl(A_m^{\mathrm{par}}\bigr)_{m\ge 1}\) is strictly \(6\)-periodic, and moreover
+\[
+A_m^{\mathrm{par}}=0\iff m\equiv 1,4\pmod 6,\qquad
+A_m^{\mathrm{par}}=-1\iff m\equiv 2,3\pmod 6,\qquad
+A_m^{\mathrm{par}}=1\iff m\equiv 0,5\pmod 6.
+\]
+If we set \(A_0^{\mathrm{par}}:=1\) (the empty word having weight \(1\)), then the generating function has the closed form
+\[
+\sum_{m\ge 0}A_m^{\mathrm{par}}t^m=\frac{1-t}{1-t+t^2}.
+\]
+\end{conclusion}
+\begin{proof}
+Decompose by the first segment: \(X_m=\{0u:u\in X_{m-1}\}\sqcup \{10v:v\in X_{m-2}\}\) for \(m\ge 3\).
+The first class does not change \(|x|_1\), while the second class introduces an additional \(1\), so the weight contribution acquires an extra factor of \((-1)\).
+Thus we obtain the recurrence
+\(
+A_m^{\mathrm{par}}=A_{m-1}^{\mathrm{par}}-A_{m-2}^{\mathrm{par}}
+\)
+along with the initial values (directly verified from \(X_1=\{0,1\},X_2=\{00,01,10\}\)).
+The characteristic equation is \(\lambda^2-\lambda+1=0\), with roots \(e^{\pm i\pi/3}\), so the sequence is strictly \(6\)-periodic;
+the residue class values modulo \(6\) follow immediately by direct expansion.
+The generating function is obtained by standard recurrence summation (or by directly expanding \((1-t+t^2)\sum_{m\ge 0}A_m^{\mathrm{par}}t^m\) and substituting the initial values).
+\end{proof}
+
+\begin{conclusion}[Third-order recurrence of the sign fiber partition function: a complex conjugate dominant mode constant independent of \(q\)]\label{con:xi-terminal-signed-fiber-partition-recurrence}
+Let \(\Fold_m:\Omega_m=\{0,1\}^m\to X_m\) be the standard folding map, and let the fiber multiplicity be \(d_m(x):=|\Fold_m^{-1}(x)|\).
+Define the sign fiber partition function
+\[
+B_m^{\mathrm{sgn}}:=\sum_{x\in X_m}(-1)^{|x|_1}\,d_m(x)
+=\sum_{\omega\in\Omega_m}(-1)^{|\Fold_m(\omega)|_1}.
+\]
+Then \(B_m^{\mathrm{sgn}}\) satisfies the third-order linear recurrence
+\[
+B_m^{\mathrm{sgn}}=B_{m-1}^{\mathrm{sgn}}-B_{m-2}^{\mathrm{sgn}}-B_{m-3}^{\mathrm{sgn}}\qquad(m\ge 4),
+\]
+with initial values \(B_1^{\mathrm{sgn}}=0,B_2^{\mathrm{sgn}}=0,B_3^{\mathrm{sgn}}=-2\).
+The corresponding characteristic polynomial is \( \lambda^3-\lambda^2+\lambda+1\), whose complex conjugate roots have modulus
+\[
+\rho:=1.3562030656262951\ldots .
+\]
+Therefore, the exponential growth and sign oscillation of this sign channel are controlled by the complex conjugate dominant mode (rather than the Perron positive root), and yield a verifiable oscillatory fingerprint orthogonal to the positive partition moment family \(\{S_q(m)\}_q\).
+\end{conclusion}
+\begin{proof}
+Since \(\Fold_m\) is the deterministic readout of the finite-state Zeckendorf reduction kernel (see Definition \ref{def:source-and-fold-output} and Appendix for the reduction kernel construction), the path sum of the weight function \(\omega\mapsto(-1)^{|\Fold_m(\omega)|_1}\) can express \(B_m^{\mathrm{sgn}}\) as a matrix coefficient of a fixed finite-dimensional signed transfer matrix,
+whence \(\bigl(B_m^{\mathrm{sgn}}\bigr)\) satisfies a finite-order constant-coefficient linear recurrence.
+In this fold instance, the recurrence can be recovered via exact enumeration for \(m=1,2,\dots\) and minimal recurrence reconstruction, stabilizing to the indicated third-order form;
+the initial values are likewise obtained by direct enumeration for \(m\le 3\).
+The characteristic polynomial and \(\rho\) are given by explicit root computation of this third-order recurrence.
+\end{proof}
+
+\begin{conclusion}[Stable phase of the top three fiber spectrum: gap Fibonacci closure and even branch achiever count plateau]\label{con:xi-terminal-top3-fiber-spectrum-stable-multiplicity-phase}
+Let \(D_m^{(1)}>\!D_m^{(2)}>\!D_m^{(3)}\) be the top three distinct values in the fold fiber multiplicity spectrum (Definition \ref{def:pom-top-fiber-spectrum}), and let \(F_1=F_2=1\) be Fibonacci numbers.
+Then when \(m=2k\ge 12\),
+\[
+D_{2k}^{(1)}-D_{2k}^{(2)}=F_{k-4},
+\qquad
+D_{2k}^{(1)}-D_{2k}^{(3)}=F_{k-3},
+\]
+and the normalized gap converges as \(k\to\infty\) to constant ratios
+\[
+\lim_{k\to\infty}\frac{D_{2k}^{(1)}-D_{2k}^{(2)}}{D_{2k}^{(1)}}=\varphi^{-6},
+\qquad
+\lim_{k\to\infty}\frac{D_{2k}^{(1)}-D_{2k}^{(3)}}{D_{2k}^{(1)}}=\varphi^{-5}.
+\]
+Moreover, the even branch enters a stable multiplicity phase after the threshold: for all even \(m\ge 18\), the stable type counts achieving \(D_m^{(1)},D_m^{(2)},D_m^{(3)}\) stabilize respectively to
+\[
+\#\{x:d_m(x)=D_m^{(1)}\}=2,\qquad
+\#\{x:d_m(x)=D_m^{(2)}\}=6,\qquad
+\#\{x:d_m(x)=D_m^{(3)}\}=4.
+\]
+\end{conclusion}
+\begin{proof}
+The Fibonacci gap closed forms are directly given by Theorem \ref{thm:pom-second-max-fiber-closed-form} and Theorem \ref{thm:pom-third-max-fiber-even-closed-form} (see also Remark \ref{rem:pom-top-fiber-spectrum-ladder}).
+Using \(D_{2k}^{(1)}=F_{k+2}\) (Theorem \ref{thm:pom-max-fiber}) and Binet's formula \(F_n\sim \varphi^n/\sqrt5\), we obtain the normalized gap limit ratio constants.
+\par
+The achiever count plateau can be verified by the same residue DP/exact enumeration protocol for each \(m\): its numerical values stabilize for the even branch \(m\ge 18\) within the verifiable window, and are consistent with the maximal achiever stabilization Theorem \ref{thm:pom-max-achievers-phase-stabilization} (even branch equals \(2\)).
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$S_q$}{Sq}-symmetric compression equals symmetric power representation: \texorpdfstring{$B_q=\mathrm{Sym}^q(M)$}{Bq=Sym^q(M)} and unimodular invertibility with explicit inverse]\label{con:xi-terminal-disjointness-bq-sympower-unimodular-inverse}
+Let \(M=\bigl(\begin{smallmatrix}1&1\\[2pt]1&0\end{smallmatrix}\bigr)\), and let \(B_q\) be the \(S_q\)-symmetric compression operator of the disjoint graph \(\mathcal D_q\) (Proposition \ref{prop:pom-disjointness-symmetric-compression-bq}).
+Then under the homogeneous polynomial basis
+\(
+e_j:=x^{q-j}y^j\ (0\le j\le q)
+\),
+\(B_q\) is strictly equal to the matrix of the symmetric power representation \(\mathrm{Sym}^q(M)\):
+\[
+\boxed{\;B_q=\mathrm{Sym}^q(M)\;}
+\qquad\text{and}\qquad
+B_q(i,j)=\binom{q-j}{i}.
+\]
+Furthermore, let \(\mathbf{P}_q\) be the Pascal matrix \(\mathbf{P}_q(i,j)=\binom{j}{i}\) (for \(i\le j\), else \(0\)), and let \(\mathbf{J}_q\) be the column reversal permutation matrix \(\mathbf{J}_q(i,j)=\mathbf{1}_{i=q-j}\).
+Then we have the factorization
+\[
+B_q=\mathbf{P}_q\,\mathbf{J}_q,
+\]
+so that \(B_q\) is an integer unimodular matrix, and
+\[
+\det(B_q)=\det(\mathbf{J}_q)=(-1)^{q(q+1)/2}.
+\]
+Its inverse matrix is also completely explicit: for \(0\le i,j\le q\), if \(i+j<q\) then \((B_q^{-1})(i,j)=0\);
+if \(i+j\ge q\) then
+\[
+(B_q^{-1})(i,j)=(-1)^{i+j-q}\binom{j}{q-i}.
+\]
+\end{conclusion}
+\begin{proof}
+By Proposition \ref{prop:pom-disjointness-symmetric-compression-bq} we already know \(B_q(i,j)=\binom{q-j}{i}\).
+On the other hand, the symmetric power representation satisfies: for any \(a,b,c,d\), the action of the matrix \(\bigl(\begin{smallmatrix}a&b\\ c&d\end{smallmatrix}\bigr)\) on the basis \(e_j\) is
+\[
+e_j(x,y)\longmapsto (ax+by)^{q-j}(cx+dy)^j.
+\]
+Taking \(M=\bigl(\begin{smallmatrix}1&1\\ 1&0\end{smallmatrix}\bigr)\) gives
+\[
+e_j\longmapsto (x+y)^{q-j}x^j=\sum_{i=0}^{q-j}\binom{q-j}{i}x^{q-i}y^i,
+\]
+so \(\mathrm{Sym}^q(M)(i,j)=\binom{q-j}{i}=B_q(i,j)\), whence \(B_q=\mathrm{Sym}^q(M)\).
+\par
+The factorization \(B_q=\mathbf{P}_q\mathbf{J}_q\) follows immediately from
+\((\mathbf{P}_q\mathbf{J}_q)(i,j)=\mathbf{P}_q(i,q-j)=\binom{q-j}{i}\).
+\(\mathbf{P}_q\) is lower triangular with all diagonal entries \(1\), hence \(\det(\mathbf{P}_q)=1\), so \(\det(B_q)=\det(\mathbf{J}_q)=(-1)^{q(q+1)/2}\).
+The explicit inverse matrix follows by composition of the standard closed form for \(\mathbf{P}_q^{-1}\) and \(\mathbf{J}_q^{-1}=\mathbf{J}_q\), and can be directly verified entry-wise via \(B_qB_q^{-1}=I\).
+\end{proof}
+
+\begin{conclusion}[Fully explicit closed form for \texorpdfstring{$B_q^n$}{Bq^n}: all layer-to-layer transfer coefficients are nonnegative integer combinations of Fibonacci powers]\label{con:xi-terminal-bq-power-fibonacci-nonnegative-sum}
+For any integer \(n\ge 1\), we have the strict identity
+\[
+B_q^{\,n}=\mathrm{Sym}^q(M^n),
+\qquad
+M^n=\begin{pmatrix}F_{n+1}&F_n\\[2pt]F_n&F_{n-1}\end{pmatrix}.
+\]
+Therefore under the same basis, for all \(0\le i,j\le q\) we have the completely explicit entry formula
+\[
+\boxed{\;
+\bigl(B_q^{\,n}\bigr)(i,j)
+=\sum_{v=0}^{\min(i,j)}
+\binom{q-j}{i-v}\binom{j}{v}\,
+F_{n+1}^{\,q-j-i+v}\,
+F_{n}^{\,i+j-2v}\,
+F_{n-1}^{\,v}\; }.
+\]
+\end{conclusion}
+\begin{proof}
+By Conclusion \ref{con:xi-terminal-disjointness-bq-sympower-unimodular-inverse}, \(B_q=\mathrm{Sym}^q(M)\).
+The symmetric power representation is a representation functor, so \(\mathrm{Sym}^q(M^n)=\mathrm{Sym}^q(M)^n=B_q^{\,n}\).
+Moreover, by the Fibonacci matrix identity \(M^n=\bigl(\begin{smallmatrix}F_{n+1}&F_n\\ F_n&F_{n-1}\end{smallmatrix}\bigr)\) we obtain the indicated entry expansion:
+the action on basis vector \(e_j\) is
+\[
+e_j\longmapsto (F_{n+1}x+F_ny)^{q-j}(F_nx+F_{n-1}y)^j,
+\]
+separately expand binomially and collect the coefficient of \(y^i\) to obtain the summation formula; each term coefficient is a nonnegative integer and contains only Fibonacci power monomials.
+\end{proof}
+
+\begin{conclusion}[Boundary layer no-mixing law: the first row and last column of \texorpdfstring{$B_q^n$}{Bq^n} directly reconstruct the Fibonacci power spectrum]\label{con:xi-terminal-bq-boundary-nonmixing-law}
+In the entry formula of Conclusion \ref{con:xi-terminal-bq-power-fibonacci-nonnegative-sum}, the boundary layers exhibit a completely degenerate no-mixing structure:
+for any \(0\le j\le q\) we have
+\[
+\bigl(B_q^{\,n}\bigr)(0,j)=F_{n+1}^{\,q-j}F_n^{\,j},
+\]
+and for any \(0\le i\le q\) we have
+\[
+\bigl(B_q^{\,n}\bigr)(i,q)=\binom{q}{i}F_n^{\,q-i}F_{n-1}^{\,i}.
+\]
+Therefore \(B_q^{\,n}\) pointwise encodes the power spectrum of Fibonacci (with exact binomial weights) on two boundary edges, serving as the shortest structural benchmark for symmetric power dynamics.
+\end{conclusion}
+\begin{proof}
+In the summation formula of Conclusion \ref{con:xi-terminal-bq-power-fibonacci-nonnegative-sum}, taking \(i=0\) leaves only \(v=0\) possible, immediately yielding the first formula.
+Taking \(j=q\), the binomial \(\binom{q-j}{i-v}=\binom{0}{i-v}\) forces \(v=i\), substituting back yields the second formula.
+\end{proof}

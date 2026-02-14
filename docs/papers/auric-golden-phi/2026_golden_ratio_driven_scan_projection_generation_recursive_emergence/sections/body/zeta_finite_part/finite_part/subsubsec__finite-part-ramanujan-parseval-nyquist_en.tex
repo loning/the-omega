@@ -1,0 +1,148 @@
+% (User input window)
+% 2026-02-14 10:03:12 (Asia/Singapore)
+
+\subsubsection{Ramanujan--Parseval/Nyquist: Exact Projection of Cyclotomic Atoms and Torsion Sampling}\label{subsubsec:finite-part-ramanujan-parseval-nyquist}
+Proposition \ref{prop:finite-part-cyclic-lift-cyclotomic-divisor-mobius} decomposes the constant-layer anomaly into cyclotomic atoms \(\mathcal{C}_m(M)\) and closes its invertibility via divisor lattice inversion.
+This subsection supplements a more "signal-processing-style" interpretation: the atom \(\mathcal{C}_m(M)\) itself equals a primitive average over a single-layer torsion evaluation table (Ramanujan character projection), and the quadratic energy of torsion sampling yields exponential-precision recovery of spectral energy under Parseval and discrete aliasing identities (Nyquist--Parseval law).
+
+\paragraph{Object review: reduced spectral polynomial and cyclotomic atoms}
+Let \(M\in\ZZ_{\ge0}^{d\times d}\) be primitive, \(\rho=\rho(M)>0\), and denote normalized non-Perron spectral points \(\lambda_k=\mu_k/\rho\ (k=2,\dots,d)\), so that \(|\lambda_k|<1\).
+Define the reduced spectral polynomial
+\[
+F_M(t):=\frac{\det(I-tM/\rho)}{1-t}=\prod_{k=2}^{d}(1-\lambda_k t),
+\]
+and for \(m\ge 2\), define the cyclotomic atom (Proposition \ref{prop:finite-part-cyclic-lift-cyclotomic-divisor-mobius})
+\[
+\mathcal{C}_m(M):=-\sum_{k=2}^{d}\log \Phi_m(\lambda_k),
+\]
+where \(\log\Phi_m\) takes the analytic branch on \(|z|<1\) induced by \(\Phi_m(0)=1\).
+
+\begin{theorem}[Atom equals primitive torsion average]\label{thm:finite-part-cyclotomic-atom-primitive-torsion-average}
+Let \(\omega_m=e^{2\pi i/m}\). Then for any \(m\ge 2\), the exact identity holds
+\[
+\boxed{\;
+\mathcal{C}_m(M)=-\sum_{a\in(\ZZ/m\ZZ)^\times}\log F_M(\omega_m^{\,a})\; }.
+\]
+\end{theorem}
+\begin{proof}
+For any complex number \(|x|<1\), by the factorization of primitive roots (as a polynomial identity in \(x\)),
+\[
+\Phi_m(x)=\prod_{a\in(\ZZ/m\ZZ)^\times}(1-x\,\omega_m^{\,a}),
+\]
+both sides evaluate to \(1\) at \(x=0\), and the zero sets are the inverses of primitive \(m\)-th roots of unity (which are themselves), so the two sides are equal.
+Taking logarithms and applying uniform continuation of the analytic branch,
+\(
+\log\Phi_m(x)=\sum_{a\in(\ZZ/m\ZZ)^\times}\log(1-x\omega_m^{\,a})
+\)
+holds for all \(|x|<1\).
+Substituting \(x=\lambda_k\) and summing over \(k=2,\dots,d\), interchanging summation and using
+\(
+\log F_M(t)=\sum_{k=2}^{d}\log(1-\lambda_k t)
+\)
+yields the conclusion. \qed
+\end{proof}
+
+\begin{corollary}[Ramanujan sum expansion: atom is primitive character projection of power sum]\label{cor:finite-part-cyclotomic-atom-ramanujan-projection}
+Let the normalized power sum be
+\(
+u_n(M):=\sum_{k=2}^{d}\lambda_k^{n}
+\)
+(\(n\ge 1\)), and define the Ramanujan sum
+\[
+c_m(n):=\sum_{a\in(\ZZ/m\ZZ)^\times}\omega_m^{\,an}\qquad(n\ge 1).
+\]
+Then the absolutely convergent expansion holds
+\[
+\boxed{\;
+\mathcal{C}_m(M)=\sum_{n\ge 1}\frac{u_n(M)}{n}\,c_m(n)\; }.
+\]
+\end{corollary}
+\begin{proof}
+By \(-\log(1-x)=\sum_{n\ge 1}x^n/n\) (\(|x|<1\)) and \(|\lambda_k|<1\),
+\[
+-\log F_M(e^{i\theta})
+=\sum_{n\ge 1}\frac{u_n(M)}{n}e^{in\theta},
+\]
+and since \(|u_n(M)|\le (d-1)\Lambda_{\mathrm{rel}}(M)^n\) (where \(\Lambda_{\mathrm{rel}}(M):=\max_{k\ge 2}|\lambda_k|<1\)), this series is absolutely convergent and allows termwise summation.
+Evaluating at \(\theta=2\pi a/m\) and summing over \(a\in(\ZZ/m\ZZ)^\times\), interchanging summation yields
+\[
+-\sum_{a\in(\ZZ/m\ZZ)^\times}\log F_M(\omega_m^{\,a})
+=\sum_{n\ge 1}\frac{u_n(M)}{n}\sum_{a\in(\ZZ/m\ZZ)^\times}\omega_m^{\,an}
+=\sum_{n\ge 1}\frac{u_n(M)}{n}\,c_m(n).
+\]
+By Theorem \ref{thm:finite-part-cyclotomic-atom-primitive-torsion-average}, the conclusion follows. \qed
+\end{proof}
+
+\paragraph{Nyquist--Parseval: energy and aliasing error of torsion sampling}
+Take any continuous logarithm branch and define the \(2\pi\)-periodic function
+\[
+g(\theta):=-\log F_M(e^{i\theta})
+=\sum_{n\ge 1}\frac{u_n(M)}{n}e^{in\theta},
+\qquad \theta\in\RR.
+\]
+
+\begin{theorem}[Continuous Parseval and discrete aliasing identity]\label{thm:finite-part-nyquist-parseval-aliasing}
+The Parseval identity holds
+\[
+\boxed{\;
+\frac{1}{2\pi}\int_{0}^{2\pi}|g(\theta)|^2\,d\theta=\sum_{n\ge 1}\frac{|u_n(M)|^2}{n^2}\; }.
+\]
+Moreover, for any integer \(q\ge 1\), let sample points \(\theta_j:=2\pi j/q\), then the exact aliasing identity holds
+\[
+\boxed{\;
+\frac{1}{q}\sum_{j=0}^{q-1}|g(\theta_j)|^2
+=\sum_{n\ge 1}\frac{|u_n(M)|^2}{n^2}
+\;+\;
+\sum_{\ell\ne 0}\ \sum_{n\ge 1}\frac{u_n(M)\,\overline{u_{n+\ell q}(M)}}{n(n+\ell q)}\; }.
+\]
+\end{theorem}
+\begin{proof}
+The continuous Parseval is a standard result from the Fourier series representation and orthogonality.
+For discrete sampling, expand
+\(
+|g(\theta_j)|^2
+=\sum_{n,n'\ge 1}\frac{u_n\overline{u_{n'}}}{nn'}e^{i(n-n')\theta_j}
+\)
+and average over \(j\), using discrete orthogonality
+\[
+\frac{1}{q}\sum_{j=0}^{q-1}e^{i(n-n')\theta_j}
+=
+\mathbf 1_{\{n\equiv n'\ (\mathrm{mod}\ q)\}},
+\]
+we obtain
+\[
+\frac{1}{q}\sum_{j=0}^{q-1}|g(\theta_j)|^2
+=\sum_{n\ge 1}\frac{|u_n|^2}{n^2}
++\sum_{\ell\ne 0}\sum_{n\ge 1}\frac{u_n\overline{u_{n+\ell q}}}{n(n+\ell q)}.
+\]
+\qed
+\end{proof}
+
+\begin{corollary}[Exponential bound on Nyquist error]\label{cor:finite-part-nyquist-error-exp}
+Let \(\Lambda:=\Lambda_{\mathrm{rel}}(M)=\max_{k\ge 2}|\lambda_k|\in(0,1)\).
+Then there exists a constant \(K>0\) (depending only on \(d\) and \(\Lambda\)) such that for all integers \(q\ge 1\),
+\[
+\boxed{\;
+\left|\frac{1}{q}\sum_{j=0}^{q-1}|g(\theta_j)|^2-\sum_{n\ge 1}\frac{|u_n(M)|^2}{n^2}\right|
+\le K\,\Lambda^{\,q}\; }.
+\]
+Therefore, the quadratic energy from single-layer \(q\)-torsion sampling alone recovers the spectral energy \(\sum |u_n|^2/n^2\) within exponential precision, with error decay rate directly controlled by \(\Lambda\).
+\end{corollary}
+\begin{proof}
+By the aliasing term of Theorem \ref{thm:finite-part-nyquist-parseval-aliasing} and the estimate \(|u_n(M)|\le (d-1)\Lambda^{n}\),
+\[
+\sum_{\ell\ne 0}\sum_{n\ge 1}\left|\frac{u_n\overline{u_{n+\ell q}}}{n(n+\ell q)}\right|
+\le
+(d-1)^2\sum_{\ell\ne 0}\sum_{n\ge 1}\frac{\Lambda^{2n+|\ell|q}}{n(n+|\ell|q)}.
+\]
+Since \(n(n+|\ell|q)\ge n^2\), summing first over \(n\) then over \(|\ell|\ge 1\), the right-hand side is
+\[
+\ll
+\left(\sum_{n\ge 1}\frac{\Lambda^{2n}}{n^2}\right)\left(\sum_{|\ell|\ge 1}\Lambda^{|\ell|q}\right)
+\le
+\left(\sum_{n\ge 1}\frac{\Lambda^{2n}}{n^2}\right)\frac{2\Lambda^{q}}{1-\Lambda^{q}}
+\le
+K\,\Lambda^{q},
+\]
+where the last step absorbs \(1-\Lambda^{q}\ge 1-\Lambda\) into the constant \(K\). \qed
+\end{proof}

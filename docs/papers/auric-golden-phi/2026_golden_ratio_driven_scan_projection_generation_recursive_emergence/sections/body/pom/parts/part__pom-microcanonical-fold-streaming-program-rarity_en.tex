@@ -1,0 +1,120 @@
+\paragraph{Exponential rarity of finite-state streaming realizability: width lower bound within same-spectrum realization class}
+In the realization class \(\mathfrak{Fold}_m(d)\) with fixed fiber spectrum (Definition \ref{def:pom-microcanonical-fold-class}),
+the same-image constraint does not force "realizability by small state machines in streaming fashion":
+even allowing only one-pass reading of input bits, the function family coverable by width-limited finite-state programs occupies only a tiny fraction.
+This paragraph gives pure counting upper bounds and derives typical width lower bounds under the microcanonical prior.
+
+\begin{definition}[Read-once width-\texorpdfstring{$S$}{S} streaming branching program]\label{def:pom-oblivious-widthS-branching-program}
+Fix length \(m\) and state count \(S\ge 1\).
+A set of transition tables and output labels
+\[
+\delta_i:[S]\times\{0,1\}\to [S]\quad(1\le i\le m),
+\qquad
+\lambda:[S]\to X_m
+\]
+is called a \emph{read-once (oblivious)} width-\(S\) streaming branching program (or equivalently: deterministic width-\(S\) streaming program with fixed bit-reading order).
+Take initial state \(s_0:=1\), for input \(\omega=(\omega_1,\dots,\omega_m)\in\Omega_m=\{0,1\}^m\) define the recursion
+\[
+s_i:=\delta_i(s_{i-1},\omega_i)\quad(1\le i\le m),
+\]
+and let the computed function be
+\[
+F_{\delta,\lambda}(\omega):=\lambda(s_m)\in X_m.
+\]
+\end{definition}
+
+\begin{theorem}[Count upper bound for realizable functions by width-limited streaming programs]\label{thm:pom-oblivious-widthS-branching-program-count}
+Denote \(n:=\card{X_m}\).
+Then the total count of functions realizable by some length-\(m\) read-once streaming branching program with width at most \(S\) satisfies
+\[
+\boxed{\;
+\mathcal N^{\mathrm{bp}}_{m,S}(n)
+\ \le\ n^{S}\,S^{2Sm}\;}
+\]
+where \(\mathcal N^{\mathrm{bp}}_{m,S}(n)\) denotes an upper bound on the cardinality of all \(F:\Omega_m\to X_m\) realizable by some width-\(\le S\) program.
+\end{theorem}
+\begin{proof}
+For each \(i\), the transition table \(\delta_i\) takes values in \([S]\) on each input in \([S]\times\{0,1\}\), so its possible count is
+\(
+S^{2S}
+\);
+thus the possible count for \((\delta_1,\dots,\delta_m)\) is at most \(S^{2Sm}\).
+The output label \(\lambda:[S]\to X_m\) has \(n^S\) possibilities.
+Different programs produce at most distinct functions, so the total count of realizable functions is controlled by the above program count upper bound. \qed
+\end{proof}
+
+\begin{theorem}[Exponential rarity within microcanonical realization class: small-width programs almost never appear]\label{thm:pom-microcanonical-streaming-program-rarity}
+In the setting of Definition \ref{def:pom-microcanonical-fold-class}, let \(F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d))\).
+Then for any \(S\ge 1\), we have
+\[
+\mathbb{P}\Bigl(F\ \text{realizable by some width}\le S\ \text{length-}m\ \text{streaming branching program}\Bigr)
+\ \le\
+\exp\!\Bigl(2Sm\log S+S\log n-\log\card{\mathfrak{Fold}_m(d)}\Bigr).
+\]
+Combining with Theorem \ref{thm:pom-microcanonical-fold-entropy} (let \(w(x)=d(x)/N\)) gives
+\[
+\boxed{\;
+\mathbb{P}(\cdot)
+\ \le\
+\exp\!\Bigl(2Sm\log S+S\log n-NH(w)+O(n\log N)\Bigr)\;}
+\qquad(N=\card{\Omega_m}=2^m).
+\]
+\end{theorem}
+\begin{proof}
+Let \(\mathcal{C}_{m,S}\) be the set of all functions realizable by some width-\(\le S\) streaming branching program.
+By Theorem \ref{thm:pom-oblivious-widthS-branching-program-count} we have
+\(
+\card{\mathcal{C}_{m,S}}\le n^S S^{2Sm}
+\).
+Since \(F\) is uniform on \(\mathfrak{Fold}_m(d)\), we get
+\[
+\mathbb{P}(F\in\mathcal{C}_{m,S})
+=\frac{\card{\mathcal{C}_{m,S}\cap\mathfrak{Fold}_m(d)}}{\card{\mathfrak{Fold}_m(d)}}
+\le \frac{\card{\mathcal{C}_{m,S}}}{\card{\mathfrak{Fold}_m(d)}}.
+\]
+Taking logarithm and exponentiating yields the first formula; the second formula is obtained by substituting Theorem \ref{thm:pom-microcanonical-fold-entropy}. \qed
+\end{proof}
+
+\begin{corollary}[Exponential lower bound for typical minimum width]\label{cor:pom-microcanonical-streaming-program-typical-width-lb}
+Suppose there exists a constant \(c_0>0\) such that \(H(w)\ge c_0\log n\).
+And assume \(\log n=O(m)\) and \(n\log N=o(N)\).
+Then there exist constants \(c_1,c_2>0\) such that for all satisfying
+\[
+S\ \le\ c_1\,\frac{N}{m\log N},
+\]
+we have
+\[
+\boxed{\;
+\mathbb{P}\Bigl(\min\{S:\ F\ \text{realizable by width}\le S\ \text{streaming branching program}\}\le S\Bigr)
+\ \le\ \exp(-c_2N)\;}
+\qquad
+F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d)).
+\]
+In particular, in the main line of this paper with \(N=2^m\), the typical minimum width satisfies
+\[
+\min\{S:\ F\ \text{realizable by width}\le S\ \text{streaming branching program}\}
+\ \ge\ \Omega\!\left(\frac{2^m}{m^2}\right)
+\]
+with probability \(1-\exp(-\Theta(2^m))\).
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-streaming-program-rarity}, the main exponent is
+\(
+2Sm\log S+S\log n-NH(w)+O(n\log N)
+\).
+Under \(\log n=O(m)\) and \(\log S\le \log N=O(m)\), we have
+\[
+2Sm\log S+S\log n\ \le\ C\,S\,m\log N,
+\]
+where the constant \(C\) depends only on the implicit constant of \(\log n=O(m)\).
+On the other hand, from \(H(w)\ge c_0\log n\) and \(n\ge 2\) (thus \(\log n\ge \log 2\)) we get
+\(
+NH(w)\ge c_0N\log n\ge c_0N\log 2
+\).
+Take \(c_1\) sufficiently small so that when \(S\le c_1 N/(m\log N)\) we have \(2Sm\log S+S\log n\le \tfrac{1}{2}c_0N\log 2\);
+using \(n\log N=o(N)\) to absorb the error term, we obtain a probability bound with exponent strictly less than \(-c_2N\).
+The last statement follows by substituting \(\log N=\Theta(m)\) and simplifying. \qed
+\end{proof}
+
+\endinput
+

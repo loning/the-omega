@@ -1,0 +1,127 @@
+\begin{theorem}[Rational Herglotz representation and pole tomography of the scan profile]\label{thm:xi-basepoint-scan-rational-herglotz-pole-tomography}
+Adopt the notation of Definition \ref{def:xi-basepoint-scan-profile} and Proposition \ref{prop:xi-basepoint-depth-closed-form}, and let \(a_k:=1+\delta_k\).
+Then there exists a unique function \(F\) satisfying:
+\begin{enumerate}
+  \item \(F\) is analytic on the upper half-plane \(\mathbb{C}_{+}\) with \(\Im F(z)>0\) (Herglotz property);
+  \item \(F(z)=O(1/|z|)\) as \(|z|\to\infty\) with \(z\in\mathbb{C}_{+}\);
+  \item The boundary value satisfies \(\Im F(x)=H(x)\) for all \(x\in\mathbb{R}\).
+\end{enumerate}
+Furthermore, \(F\) admits the explicit partial fraction representation
+\[
+\boxed{\;
+F(z)=
+-\sum_{k=1}^{\kappa}\frac{4\delta_k}{a_k}\cdot\frac{1}{z-(\gamma_k-\mathrm{i}a_k)}\; }.
+\]
+Consequently, the off-axis parameters \(\{(\gamma_k,\delta_k)\}\) can be uniquely recovered from the poles and residues of \(F\): the poles are located at \(\gamma_k-\mathrm{i}(1+\delta_k)\), with corresponding residues \(-4\delta_k/(1+\delta_k)\).
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:xi-basepoint-depth-closed-form}, we have
+\(
+H(x)=\sum_{k=1}^{\kappa}\frac{4\delta_k}{(x-\gamma_k)^2+a_k^2}
+\).
+For any \(z=x+\mathrm{i}y\in\mathbb{C}_{+}\), note that
+\[
+-\frac{4\delta_k}{a_k}\cdot\frac{1}{z-(\gamma_k-\mathrm{i}a_k)}
+=-\frac{4\delta_k}{a_k}\cdot\frac{1}{(x-\gamma_k)+\mathrm{i}(y+a_k)},
+\]
+whose imaginary part is
+\[
+\Im\!\left(-\frac{4\delta_k}{a_k}\cdot\frac{1}{(x-\gamma_k)+\mathrm{i}(y+a_k)}\right)
+=\frac{4\delta_k}{a_k}\cdot\frac{y+a_k}{(x-\gamma_k)^2+(y+a_k)^2}\ >\ 0.
+\]
+Thus \(F\) is analytic on \(\mathbb{C}_{+}\) with \(\Im F>0\), and clearly \(F(z)=O(1/|z|)\).
+Letting \(y\downarrow 0\), we obtain
+\[
+\Im F(x)
+=\sum_{k=1}^{\kappa}\frac{4\delta_k}{a_k}\cdot\frac{a_k}{(x-\gamma_k)^2+a_k^2}
+=H(x),
+\]
+thus \(F\) satisfies (1)--(3).
+\par
+Uniqueness: If \(F_1,F_2\) also satisfy (1)--(3), then \(G:=F_1-F_2\) is analytic on \(\mathbb{C}_{+}\), with \(\Im G(x)=0\) (\(x\in\mathbb{R}\)), and satisfies \(G(z)=O(1/|z|)\) at infinity.
+By Schwarz reflection, \(G\) extends to an entire function vanishing at infinity, hence by the maximum principle \(G\equiv 0\), thus \(F_1\equiv F_2\).
+Finally, the partial fraction formula directly yields the poles and residues; by \(a_k=1+\delta_k\) we recover \(\delta_k\), with residue consistency providing self-consistent verification.
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$L^{2}$}{L2} energy closed form and positive-definite interaction kernel for the scan profile]\label{prop:xi-basepoint-scan-l2-energy-pd-kernel}
+Adopt the setting of Theorem \ref{thm:xi-basepoint-scan-inversion-uniqueness}, and let \(a_k:=1+\delta_k\).
+Then \(H\in L^{2}(\mathbb{R})\) and admits the complete closed-form decomposition
+\[
+\boxed{\;
+\int_{\mathbb{R}}H(x)^{2}\,\dd x
+=16\pi\sum_{j,k=1}^{\kappa}\delta_j\delta_k\,
+\frac{a_j+a_k}{a_ja_k\bigl((\gamma_j-\gamma_k)^{2}+(a_j+a_k)^{2}\bigr)}\; }.
+\]
+Moreover, the kernel
+\[
+K_{jk}:=\frac{a_j+a_k}{a_ja_k\bigl((\gamma_j-\gamma_k)^{2}+(a_j+a_k)^{2}\bigr)}
+\]
+is a positive-definite kernel (\((K_{jk})\succ 0\)).
+\end{proposition}
+\begin{proof}
+Write \(\psi_k(x):=\frac{1}{(x-\gamma_k)^2+a_k^2}\), then \(H(x)=\sum_k 4\delta_k\,\psi_k(x)\), thus
+\[
+\int_{\mathbb{R}}H(x)^2\,\dd x
+=16\sum_{j,k}\delta_j\delta_k\int_{\mathbb{R}}\psi_j(x)\psi_k(x)\,\dd x.
+\]
+For any \(A,B>0\) and \(u,v\in\mathbb{R}\), the identity
+\[
+\int_{\mathbb{R}}\frac{\dd x}{((x-u)^{2}+A^{2})((x-v)^{2}+B^{2})}
+=\frac{\pi(A+B)}{AB((u-v)^{2}+(A+B)^{2})},
+\]
+holds, which can be obtained via residue calculus. Taking \(A=a_j,B=a_k,u=\gamma_j,v=\gamma_k\) yields the stated closed form.
+\par
+By the same identity, we deduce
+\(
+K_{jk}=\frac{1}{\pi}\int_{\mathbb{R}}\psi_j(x)\psi_k(x)\,\dd x
+\),
+thus \((K_{jk})\) is the Gram matrix of the vector family \(\{\psi_k\}\) in \(L^2(\mathbb{R})\), and must be positive definite.
+\end{proof}
+
+\begin{corollary}[Diagonal lower bound: explicit strict lower bound for \texorpdfstring{$\|H\|_{2}^{2}$}{||H||2^2}]\label{cor:xi-basepoint-scan-l2-energy-diagonal-lower-bound}
+Under the setting of Proposition \ref{prop:xi-basepoint-scan-l2-energy-pd-kernel}, we have
+\[
+\int_{\mathbb{R}}H(x)^{2}\,\dd x
+\ \ge\ 8\pi\sum_{k=1}^{\kappa}\frac{\delta_k^{2}}{(1+\delta_k)^{3}},
+\]
+with strict inequality when \(\kappa\ge 2\).
+\end{corollary}
+\begin{proof}
+From the closed-form decomposition of Proposition \ref{prop:xi-basepoint-scan-l2-energy-pd-kernel} and \(K_{jk}>0\) (hence cross-terms are non-negative), we obtain
+\[
+\int_{\mathbb{R}}H(x)^{2}\,\dd x\ge 16\pi\sum_{k=1}^{\kappa}\delta_k^2 K_{kk}.
+\]
+Now
+\(
+K_{kk}=\frac{2a_k}{a_k^2(0+(2a_k)^2)}=\frac{1}{2a_k^3}
+\), substituting \(a_k=1+\delta_k\) yields the stated lower bound.
+If \(\kappa\ge 2\), then there exists at least one term with \(j\neq k\) such that \(\delta_j\delta_k K_{jk}>0\), hence the inequality is strict.
+\end{proof}
+
+\begin{proposition}[Cauchy stable convolution law: self-convolution of the scan profile generates the sum-set spectrum]\label{prop:xi-basepoint-scan-cauchy-stable-convolution}
+Let \(P_a(x):=\frac{a}{\pi(x^2+a^2)}\) be the standard Cauchy--Poisson kernel (\(a>0\)), and let \(a_k:=1+\delta_k\).
+Then
+\[
+\frac{4\delta_k}{(x-\gamma_k)^2+a_k^2}
+=4\pi\frac{\delta_k}{a_k}\,P_{a_k}(x-\gamma_k),
+\qquad
+H(x)=\sum_{k=1}^{\kappa}4\pi\frac{\delta_k}{a_k}\,P_{a_k}(x-\gamma_k).
+\]
+Since \(P_a*P_b=P_{a+b}\), we obtain the closed-form self-convolution of the scan profile:
+\[
+\boxed{\;
+(H*H)(x)=
+\sum_{j,k=1}^{\kappa}\frac{16\pi^{2}\delta_j\delta_k}{a_ja_k}\,
+P_{a_j+a_k}\bigl(x-(\gamma_j+\gamma_k)\bigr)\; }.
+\]
+More generally, for any \(n\ge 2\), \(H^{(*n)}\) remains a finite mixture of Cauchy kernels: its centers lie on the \(n\)-fold sum-set \(\{\gamma_{i_1}+\cdots+\gamma_{i_n}\}\), and its scale parameters lie on \(\{a_{i_1}+\cdots+a_{i_n}\}\).
+\end{proposition}
+\begin{proof}
+From the Fourier transform \(\widehat{P_a}(\omega)=e^{-a|\omega|}\) we obtain
+\(
+\widehat{P_a*P_b}=\widehat{P_a}\cdot\widehat{P_b}=e^{-(a+b)|\omega|}=\widehat{P_{a+b}}
+\), thus \(P_a*P_b=P_{a+b}\).
+The convolution of shifted kernels \(P_a(\cdot-\gamma)\) yields addition of centers and scales; expanding \(H\) as the stated finite sum and performing pairwise convolution yields the closed form. The \(n\)-fold convolution follows similarly by induction.
+\end{proof}
+
+\endinput

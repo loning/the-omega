@@ -1,0 +1,138 @@
+\paragraph{Posterior moduli space exponential law under proportional queries: linear entropy contraction and typical irrecoverable threshold}
+In the microcanonical semantics with fixed fiber spectrum, queries only provide information in the sense of "removing several named positions and revealing their labels";
+when the number of queries is of the same order as \(N\), the logarithmic size of the posterior feasible realization count contracts linearly with proportion \((1-\beta)\).
+
+\begin{definition}[Posterior moduli space size under proportional queries]\label{def:pom-microcanonical-posterior-moduli-size-beta}
+In the setting of Definition \ref{def:pom-microcanonical-adaptive-trajectory-counts}, given trajectory \(t\in X_m^k\) and its count \(c_t\), define the posterior feasible realization count (posterior moduli space)
+\[
+\mathcal{M}_k(t)
+:=\card{\Bigl\{F\in\mathfrak{Fold}_m(d):\ F(\omega_i)=t_i,\ 1\le i\le k\Bigr\}}
+=\frac{(N-k)!}{\prod_{x\in X_m}\bigl(d(x)-c_t(x)\bigr)!},
+\]
+where if there exists \(x\) such that \(c_t(x)>d(x)\) we interpret this as \(0\).
+\end{definition}
+
+\begin{theorem}[Linear contraction rate of posterior entropy: deterministic exponential law under proportional queries]\label{thm:pom-microcanonical-posterior-entropy-linear-law}
+Let \(n=\card{X_m}\ge 2\), and let \(w(x):=d(x)/N\in\Delta(X_m)\).
+Take constant \(\beta\in(0,1)\) and let \(k=\lfloor \beta N\rfloor\).
+Then as \(N\to\infty\) with \(w\) fixed, we have convergence in probability
+\[
+\boxed{\;
+\frac{1}{N}\log \mathcal{M}_k(T_{1:k})
+\ \xrightarrow{\ \mathbb{P}\ }\ (1-\beta)\,H(w)\;},
+\qquad
+H(w):=-\sum_{x\in X_m}w(x)\log w(x).
+\]
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-adaptive-no-gain-without-replacement},
+\((T_i)\) is equivalent to sampling without replacement from the multiset \(\{x^{\times d(x)}\}\);
+therefore for each \(x\), the count \(C_k(x)\) is a hypergeometric random variable satisfying
+\(
+\EE[C_k(x)]=kw(x)
+\)
+and \(\Var(C_k(x))=O(N)\).
+By Chebyshev's inequality we get
+\(
+C_k(x)/N\to \beta w(x)
+\)
+(for each \(x\)) and by finite dimensionality we deduce vector convergence \(C_k/N\to \beta w\) in probability;
+thus the residual counting vector
+\(
+R:=d-C_k
+\)
+satisfies
+\(
+R/(N-k)\to w
+\)
+in probability.
+\par
+Apply Stirling expansion to \(\log\mathcal{M}_k=\log(N-k)!-\sum_x\log R_x!\):
+\[
+\log (N-k)!
+=(N-k)\log(N-k)-(N-k)+O(\log N),
+\]
+\[
+\sum_x\log R_x!
+=\sum_x\bigl(R_x\log R_x-R_x\bigr)+O(n\log N).
+\]
+Combining and dividing by \(N\) gives
+\[
+\frac{1}{N}\log\mathcal{M}_k
+=\frac{N-k}{N}\Bigl(\log(N-k)-\sum_x \frac{R_x}{N-k}\log R_x\Bigr)+o(1)
+=(1-\beta)\,H\!\left(\frac{R}{N-k}\right)+o(1),
+\]
+where \(o(1)\) uses \(n\) fixed (or more generally \(n\log N=o(N)\)) and \(\log(N-k)=O(\log N)=o(N)\).
+From \(R/(N-k)\to w\) and continuity of \(H(\cdot)\), we obtain the limit \((1-\beta)H(w)\). \qed
+\end{proof}
+
+\begin{theorem}[Gaussian fluctuation of log posterior moduli space: central limit theorem under proportional queries]\label{thm:pom-microcanonical-posterior-moduli-clt}
+In the setting of Theorem \ref{thm:pom-microcanonical-posterior-entropy-linear-law}, further assume the alphabet size \(n=\card{X_m}\) is fixed, and \(w\) is fixed satisfying \(w(x)\in(0,1)\).
+Let
+\[
+V(w):=\Var_{X\sim w}\bigl(\log w(X)\bigr)
+=\sum_{x\in X_m}w(x)\bigl(\log w(x)\bigr)^2-\Bigl(\sum_{x\in X_m}w(x)\log w(x)\Bigr)^2.
+\]
+Then as \(N\to\infty\),
+\[
+\boxed{\;
+\frac{\log \mathcal{M}_k(T_{1:k})-(1-\beta)NH(w)}{\sqrt{\beta(1-\beta)N}}
+\ \xrightarrow{d}\ \mathcal N\bigl(0,V(w)\bigr)\;}
+\]
+where \(k=\lfloor\beta N\rfloor\) and \(H(w)=-\sum_x w(x)\log w(x)\).
+\end{theorem}
+\begin{proof}
+Following the notation of Theorem \ref{thm:pom-microcanonical-posterior-entropy-linear-law}, let \(R=d-C_k\) and \(\widehat w:=R/(N-k)\).
+When \(n\) is fixed, Stirling expansion gives uniform error bound
+\[
+\log\mathcal{M}_k=(N-k)H(\widehat w)+O(1).
+\]
+The multivariate hypergeometric central limit theorem under sampling without replacement gives
+\[
+\sqrt N\,(\widehat w-w)\ \xrightarrow{d}\ \mathcal N\!\left(0,\frac{\beta}{1-\beta}\bigl(\mathrm{diag}(w)-ww^{\mathsf T}\bigr)\right).
+\]
+Apply delta method to the entropy function \(H\): under the constraint \(\sum_x \widehat w(x)=1\),
+\[
+H(\widehat w)-H(w)=-\sum_{x\in X_m}\bigl(\widehat w(x)-w(x)\bigr)\log w(x)+o_p(N^{-1/2}),
+\]
+thus
+\[
+\sqrt N\bigl(H(\widehat w)-H(w)\bigr)\ \xrightarrow{d}\ \mathcal N\!\left(0,\frac{\beta}{1-\beta}V(w)\right).
+\]
+Multiplying by \(N-k=(1-\beta)N\) and absorbing the \(O(1)\) remainder (which is \(o(\sqrt N)\) relative to \(\sqrt N\)), we obtain the stated result. \qed
+\end{proof}
+
+\begin{corollary}[Double-exponential decay of typical posterior exact recovery success rate]\label{cor:pom-microcanonical-posterior-map-success-double-exponential}
+In the setting of Theorem \ref{thm:pom-microcanonical-posterior-entropy-linear-law},
+by the posterior uniformity of Theorem \ref{thm:pom-microcanonical-count-sufficient-statistic-posterior-uniform},
+the Bayes optimal conditional success probability for exactly outputting the entire mapping \(F\) given trajectory \(T_{1:k}\) is precisely
+\[
+\mathrm{Succ}^{\mathrm{Bayes}}\bigl(F\mid T_{1:k}\bigr)=\frac{1}{\mathcal{M}_k(T_{1:k})}.
+\]
+Therefore in probability we have
+\[
+\boxed{\;
+\frac{1}{N}\log \mathrm{Succ}^{\mathrm{Bayes}}\bigl(F\mid T_{1:k}\bigr)
+\ \xrightarrow{\ \mathbb{P}\ }\ -(1-\beta)\,H(w)\; } .
+\]
+In particular, in the main line of this paper with \(N=2^m\), the above gives double-exponential decay in \(m\) for the typical conditional success rate
+\(
+\mathrm{Succ}^{\mathrm{Bayes}}(F\mid T_{1:k})
+=\exp(-(1-\beta)H(w)\,2^m+o(2^m))
+\).
+\end{corollary}
+
+\begin{remark}[Distinction between global Bayes success rate and typical exponential rate]\label{rem:pom-microcanonical-global-vs-typical-bayes-success}
+By definition, the global Bayes success rate is \(\EE[\mathcal{M}_k(T_{1:k})^{-1}]\).
+Since the posterior is uniform on the compatible set for each trajectory,
+for any fixed \(k\) we also have the strict identity
+\[
+\EE\!\left[\frac{1}{\mathcal{M}_k(T_{1:k})}\right]
+=\frac{\card{\{t\in X_m^k:\ c_t(x)\le d(x)\ \forall x\}}}{\card{\mathfrak{Fold}_m(d)}}.
+\]
+This identity shows that the global success rate is determined only by the ratio "total number of realizable trajectories / microcanonical realization class size";
+whereas Corollary \ref{cor:pom-microcanonical-posterior-map-success-double-exponential} characterizes the conditional exponential rate under typical trajectories.
+\end{remark}
+
+\endinput
+

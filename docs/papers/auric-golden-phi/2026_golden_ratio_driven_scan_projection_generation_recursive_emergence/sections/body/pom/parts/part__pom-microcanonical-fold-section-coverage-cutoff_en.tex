@@ -1,0 +1,215 @@
+\paragraph{Coverage time for section learnability: strategy invariance, exact tail formula, and \texorpdfstring{$n\log n$}{n log n} cutoff}
+Under the microcanonical prior, the type trajectory produced by any adaptive distinct query is identically distributed to sampling without replacement (Theorem \ref{thm:pom-microcanonical-adaptive-no-gain-without-replacement}).
+Therefore, the coverage time for "first collecting all stable types" is independent of strategy and can be written as an inclusion-exclusion closed form;
+under balanced fiber conditions, this coverage time exhibits \(n\log n\) scaling and Gumbel cutoff.
+This provides an auditable exact model for the complexity separation between "obtaining a right inverse section" and "exactly identifying the entire mapping."
+
+\begin{definition}[Coverage time and missing type count]\label{def:pom-microcanonical-section-cover-time}
+Let \(F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d))\), and let \(\mathcal{A}\) be any deterministic adaptive algorithm performing distinct queries (Definition \ref{def:pom-microcanonical-adaptive-trajectory-counts}), obtaining trajectory \(T_1,T_2,\dots\in X_m\).
+Define the coverage time
+\[
+\tau_{\mathcal A}:=\min\Bigl\{t\in\{0,1,\dots,N\}:\ \{T_1,\dots,T_t\}=X_m\Bigr\},
+\]
+and for any \(t\in\{0,1,\dots,N\}\) define the missing type count
+\[
+M(t):=\card{X_m\setminus\{T_1,\dots,T_t\}}.
+\]
+\end{definition}
+
+\begin{theorem}[Strategy invariance of coverage time]\label{thm:pom-microcanonical-cover-time-strategy-invariance}
+In the setting of Definition \ref{def:pom-microcanonical-section-cover-time}, for any two adaptive distinct query strategies \(\mathcal{A},\mathcal{A}'\), we have
+\[
+\boxed{\;
+\tau_{\mathcal A}\ \stackrel{d}{=}\ \tau_{\mathcal A'}\;}
+\qquad\text{and}\qquad
+\boxed{\;
+M_{\mathcal A}(t)\ \stackrel{d}{=}\ M_{\mathcal A'}(t)\ \ \forall\,t\;}
+\]
+where \(M_{\mathcal A}(t)\) denotes the missing type count process under strategy \(\mathcal A\).
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-adaptive-no-gain-without-replacement},
+the joint distribution of \((T_i)_{i\ge 1}\) is independent of strategy and equivalent to sampling without replacement from the multiset \(\{x^{\times d(x)}\}_{x\in X_m}\).
+The coverage time \(\tau_{\mathcal A}\) and missing process \(M_{\mathcal A}(t)\) are both symmetric functionals of the trajectory \((T_i)\),
+thus their distributions are also independent of strategy. \qed
+\end{proof}
+
+\begin{theorem}[Exact tail probability of coverage time: inclusion-exclusion closed form]\label{thm:pom-microcanonical-cover-time-tail-inclusion-exclusion}
+Following the notation of Definition \ref{def:pom-microcanonical-fold-class}, for any subset \(A\subseteq X_m\) denote
+\[
+d(A):=\sum_{x\in A}d(x).
+\]
+Let \(\tau\) be the sampling-without-replacement coverage time (identically distributed to \(\tau_{\mathcal A}\), see Theorem \ref{thm:pom-microcanonical-cover-time-strategy-invariance}).
+Then for any \(t\in\{0,1,\dots,N\}\), the strict identity holds
+\[
+\boxed{\;
+\mathbb{P}(\tau>t)
+=\sum_{\emptyset\neq A\subseteq X_m}(-1)^{\card{A}+1}\,
+\frac{\binom{N-d(A)}{t}}{\binom{N}{t}}\;}
+\]
+where when \(N-d(A)<t\) the corresponding term is interpreted as \(0\).
+\end{theorem}
+\begin{proof}
+The event \(\{\tau>t\}\) is equivalent to "there exist some types that never appear in the first \(t\) samples."
+For a fixed nonempty \(A\subseteq X_m\), the event "all types in \(A\) are missing in the first \(t\) steps" occurs if and only if
+we draw \(t\) items without replacement from the \(N-d(A)\) non-\(A\) elements, so its probability is \(\binom{N-d(A)}{t}/\binom{N}{t}\).
+Applying inclusion-exclusion to "at least one type is missing" yields the shown formula. \qed
+\end{proof}
+
+\begin{corollary}[Expected coverage time closed form]\label{cor:pom-microcanonical-cover-time-mean}
+In the setting of Theorem \ref{thm:pom-microcanonical-cover-time-tail-inclusion-exclusion},
+\[
+\boxed{\;
+\EE[\tau]
+=\sum_{t=0}^{N-1}\mathbb{P}(\tau>t)
+=\sum_{t=0}^{N-1}\ \sum_{\emptyset\neq A\subseteq X_m}(-1)^{\card{A}+1}\,
+\frac{\binom{N-d(A)}{t}}{\binom{N}{t}}\;}
+\]
+and for any strategy \(\mathcal A\) we have \(\EE[\tau_{\mathcal A}]=\EE[\tau]\).
+\end{corollary}
+\begin{proof}
+By the identity \(\EE[\tau]=\sum_{t\ge 0}\mathbb{P}(\tau>t)\) for nonnegative integer-valued random variables and \(\tau\le N\), we get the first formula.
+The second statement follows immediately from Theorem \ref{thm:pom-microcanonical-cover-time-strategy-invariance}. \qed
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$n\log n$}{n log n} scaling under balanced fibers]\label{thm:pom-microcanonical-cover-time-nlogn-scale}
+Let \(n=\card{X_m}\to\infty\), and assume the balance condition: there exist constants \(0<c_-\le c_+<\infty\) such that for all \(x\in X_m\)
+\[
+c_-\frac{N}{n}\ \le\ d(x)\ \le\ c_+\frac{N}{n}.
+\]
+Further assume \(n\log n=o(N)\).
+Then there exist constants \(C_1,C_2>0\) (depending only on \(c_\pm\)) such that
+\[
+\boxed{\;
+n\log n-C_1n\ \le\ \EE[\tau]\ \le\ n\log n+C_2n\;}
+\]
+and there is probabilistic concentration
+\[
+\boxed{\;
+\tau=n\log n+O_{\mathbb{P}}(n)\;}
+\qquad(n\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+For any singleton set \(\{x\}\), by sampling without replacement we have
+\[
+\mathbb{P}(x\ \text{missing in first }t\ \text{steps})
+=\frac{\binom{N-d(x)}{t}}{\binom{N}{t}}
+=\prod_{j=0}^{t-1}\left(1-\frac{d(x)}{N-j}\right).
+\]
+When \(t\le n\log n+O(n)\) and \(n\log n=o(N)\), the right-hand side is consistent with
+\(\exp(-t\,d(x)/N)\) at the exponential order.
+By balance \(d(x)/N\asymp 1/n\), for \(t=n(\log n+s)\) we have
+\[
+\mathbb{P}(x\ \text{missing})\asymp \frac{e^{-s}}{n}.
+\]
+\par
+\textbf{Upper bound:} Union bound gives \(\mathbb{P}(\tau>t)\le\sum_{x}\mathbb{P}(x\ \text{missing})\le C e^{-s}\),
+summing over \(t\) (or integral comparison) yields \(\EE[\tau]\le n\log n+O(n)\).
+\par
+\textbf{Lower bound:} Let \(M(t)\) be the missing type count at time \(t\).
+Under sampling without replacement, the missing indicator family satisfies negative association, thus \(\Var(M(t))\le \EE[M(t)]\).
+Take \(t=n(\log n-s)\) such that \(\EE[M(t)]\ge c e^{s}\).
+By Paley-Zygmund inequality we get \(\mathbb{P}(M(t)>0)\) is bounded away from zero,
+thus \(\mathbb{P}(\tau>t)\) does not tend to \(0\) at this scale;
+summing over \(t\) yields \(\EE[\tau]\ge n\log n-O(n)\).
+Probabilistic concentration follows from combining the exponential tail bound for \(\mathbb{P}(\tau>n(\log n+s))\) with the lower bound at the same scale. \qed
+\end{proof}
+
+\begin{corollary}[Exponential separation under Fibonacci scaling: section acquisition \texorpdfstring{$\ll 2^m$}{<<2^m} while total identification requires \texorpdfstring{$2^m$}{2^m} level]\label{cor:pom-microcanonical-cover-time-fibonacci-separation}
+In the folding main line of this paper with \(N=\card{\Omega_m}=2^m\), \(n=\card{X_m}=F_{m+2}\asymp\varphi^m\) (see \S\ref{subsec:pom-fold-compression}),
+if the balance condition holds on this scale family, then by Theorem \ref{thm:pom-microcanonical-cover-time-nlogn-scale} we get
+\[
+\EE[\tau]=n\log n+O(n)=\Theta(m\varphi^m),
+\qquad
+\frac{\EE[\tau]}{2^m}=\Theta\!\bigl(m(\varphi/2)^m\bigr)\xrightarrow[m\to\infty]{}0.
+\]
+Therefore, under the microcanonical prior, the typical query size for "obtaining a right inverse section (one microstate representative per class)" is \(\Theta(m\varphi^m)\),
+while "exactly identifying the entire mapping" requires at least \(N-1=2^m-1\) queries in the worst case (Theorem \ref{thm:pom-microcanonical-fold-worstcase-query-rigidity}), exhibiting exponential separation between the two.
+\end{corollary}
+
+\begin{theorem}[Gumbel limit for balanced collection without replacement: coverage time exhibits cutoff]\label{thm:pom-microcanonical-cover-time-gumbel-cutoff}
+Let \(N\to\infty\), \(n\to\infty\), with counts \(d_1,\dots,d_n\in\NN\) satisfying \(\sum_{i=1}^n d_i=N\).
+Assume balance
+\[
+\max_{1\le i\le n}\left|\frac{d_i}{N}-\frac{1}{n}\right|=o\!\left(\frac{1}{n}\right),
+\qquad
+n(\log n)^2=o(N).
+\]
+Let \(\tau\) be the first time all \(n\) types appear under sampling without replacement (Theorem \ref{thm:pom-microcanonical-cover-time-strategy-invariance} shows: under microcanonical prior, the coverage time for any adaptive distinct query is identically distributed to this \(\tau\)).
+For any fixed \(c\in\RR\), let
+\[
+t_n(c):=\left\lfloor n(\log n+c)\right\rfloor.
+\]
+Then the limit holds
+\[
+\boxed{\;
+\lim_{N\to\infty}\mathbb{P}(\tau\le t_n(c))=\exp(-e^{-c})\;},
+\qquad
+\frac{\tau-n\log n}{n}\xrightarrow{d}G,
+\]
+where \(G\) has the standard Gumbel distribution (\(\mathbb{P}(G\le c)=\exp(-e^{-c})\)).
+\end{theorem}
+\begin{proof}
+For any nonempty subset \(A\subseteq[n]\), denote \(d(A):=\sum_{i\in A}d_i\).
+By sampling without replacement, the probability that "all types in \(A\) are missing in the first \(t\) steps" is
+\[
+\frac{\binom{N-d(A)}{t}}{\binom{N}{t}}
+=\prod_{j=0}^{t-1}\left(1-\frac{d(A)}{N-j}\right).
+\]
+Under \(t=t_n(c)=O(n\log n)\) and \(n(\log n)^2=o(N)\), we have uniform expansion
+\[
+\log\prod_{j=0}^{t-1}\left(1-\frac{d(A)}{N-j}\right)
+=t\log\!\left(1-\frac{d(A)}{N}\right)+o(1).
+\]
+By balance we get \(d(A)=\frac{\card{A}}{n}N(1+o(1))\), thus
+\[
+\frac{\binom{N-d(A)}{t}}{\binom{N}{t}}
+=\exp\!\Bigl(-\frac{\card{A}}{n}t+o(1)\Bigr)
+=\exp\!\bigl(-\card{A}(\log n+c)+o(1)\bigr).
+\]
+Substituting into the inclusion-exclusion representation of Theorem \ref{thm:pom-microcanonical-cover-time-tail-inclusion-exclusion} and grouping by \(\card{A}=r\), we get
+\[
+\mathbb{P}(\tau>t_n(c))
+=\sum_{r=1}^n(-1)^{r+1}\binom{n}{r}\exp\!\bigl(-r(\log n+c)+o(1)\bigr)
+=1-\Bigl(1-\frac{e^{-c}}{n}+o\!\bigl(\tfrac1n\bigr)\Bigr)^n+o(1),
+\]
+thus \(\mathbb{P}(\tau\le t_n(c))\to \exp(-e^{-c})\). \qed
+\end{proof}
+
+\begin{theorem}[Poisson limit for missing type count: stronger characterization of cutoff]\label{thm:pom-microcanonical-missing-types-poisson}
+In the assumptions of Theorem \ref{thm:pom-microcanonical-cover-time-gumbel-cutoff}, take \(t=t_n(c)\) and denote the missing type count as \(M(t)\) (Definition \ref{def:pom-microcanonical-section-cover-time}).
+Then for any fixed \(c\in\RR\), we have distributional convergence
+\[
+\boxed{\;
+M(t)\xrightarrow{d}\mathrm{Poisson}(e^{-c})\;},
+\qquad
+\mathbb{P}(\tau\le t)=\mathbb{P}(M(t)=0)\to e^{-e^{-c}}.
+\]
+\end{theorem}
+\begin{proof}
+For any fixed integer \(r\ge 1\), consider the falling factorial moment
+\[
+\EE\bigl[(M(t))_r\bigr]
+=\sum_{\substack{A\subseteq[n]\\ \card{A}=r}}
+\mathbb{P}\bigl(\text{all types in \(A\) missing in first \(t\) steps}\bigr)
+=\sum_{\card{A}=r}\frac{\binom{N-d(A)}{t}}{\binom{N}{t}}.
+\]
+By the uniform approximation in the proof of Theorem \ref{thm:pom-microcanonical-cover-time-gumbel-cutoff},
+when \(\card{A}=r\) is fixed
+\(
+\binom{N-d(A)}{t}/\binom{N}{t}
+=\exp(-rt/n+o(1))
+=\exp(-r(\log n+c)+o(1))
+\).
+Thus
+\[
+\EE\bigl[(M(t))_r\bigr]
+=\binom{n}{r}n^{-r}e^{-rc}(1+o(1))\to \frac{e^{-rc}}{r!}.
+\]
+Poisson distributions are characterized by all falling factorial moments, thus \(M(t)\Rightarrow\mathrm{Poisson}(e^{-c})\).
+The last formula follows from \(\mathbb{P}(\tau\le t)=\mathbb{P}(M(t)=0)\). \qed
+\end{proof}
+
+\endinput
+

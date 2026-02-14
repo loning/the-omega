@@ -1,0 +1,113 @@
+\begin{proposition}[Nonlinear Order Collapse of Observable Minimal Polynomial: \texorpdfstring{$q=9,10,11,13$}{q=9,10,11,13} First Appearance of Fixed Genus Defect (Auditable)]\label{prop:pom-observable-minpoly-order-collapse-q9-13}
+Using the notation of Theorem \ref{thm:pom-moment-resonance}, let \(P_q(\lambda)\in\ZZ[\lambda]\) be the minimal integer-coefficient recurrence characteristic polynomial for the sequence \(m\mapsto S_q(m)\) (i.e., the observable minimal annihilating polynomial; note that this paper uses \(\Pi_q\) to denote the Perron projection, thus we avoid the notation \(\Pi_q(\lambda)\) to prevent confusion).
+Then for \(q\in\{9,10,11,13\}\), \(P_q(\lambda)\) is an irreducible polynomial with integer coefficients, whose degrees are respectively
+\[
+\deg P_9=7,\qquad \deg P_{10}=9,\qquad \deg P_{11}=9,\qquad \deg P_{13}=11,
+\]
+and a fixed genus defect appears relative to the "nominal dimension" \(2\lfloor q/2\rfloor+1\) of the differential modal truncation:
+\[
+2\Bigl\lfloor\frac{q}{2}\Bigr\rfloor+1-\deg P_q=2.
+\]
+In particular, \(q=9\) is the smallest \(q\) in the verified window at which this type of "order collapse" (Hankel rank drop) first manifests.
+This fixed genus defect phenomenon indicates that high-order Rényi collision moments do not necessarily introduce the same number of new observable spectral modes; instead, the observable subspace can undergo algebraic cancellation at discrete \(q\), leading to an auditable "counter-intuitive complexity reduction."
+\end{proposition}
+\begin{proof}
+The degrees and explicit expressions are given in Theorem \ref{thm:pom-moment-resonance}.
+Irreducibility can be audited via modulo-prime irreducibility certificates: for instance, the \(p_{\mathrm{irr}}\) column in Table \ref{tab:fold_collision_observable_minpoly_galois_certificate_q9_13} provides primes \(p\) such that \(P_q(\lambda)\bmod p\) remains irreducible; thus \(P_q\) is irreducible over \(\QQ[\lambda]\), and hence irreducible over \(\ZZ[\lambda]\) by Gauss's lemma.
+The order-collapse equality simply takes \(2\lfloor q/2\rfloor+1\) and directly subtracts the above degrees. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Discriminant Blacklist and Ramified Prime Set: Local Spectral Ramification Can Only Occur at \texorpdfstring{$p\mid \mathrm{Disc}(P_q)$}{p|Disc(Pq)} (\(q=9,10,11,13\), Auditable)]\label{prop:pom-observable-minpoly-discriminant-ramification-q9-13}
+For \(q\in\{9,10,11,13\}\), denote by \(\Delta_q^{\mathrm{disc}}\) the square-free part (including sign) of \(\mathrm{Disc}(P_q)\), and define the associated quadratic field
+\[
+K_q^{\mathrm{disc}}:=\QQ\!\left(\sqrt{\Delta_q^{\mathrm{disc}}}\right).
+\]
+Let
+\(
+\mathcal{B}_q:=\{p:\ p\ \text{is prime and}\ p\mid \mathrm{Disc}(P_q)\}
+\)
+be the set of ramified primes.
+Then:
+\begin{enumerate}
+  \item The prime factorization of \(\mathrm{Disc}(P_q)\) is given by \eqref{eq:fold_collision_observable_minpoly_discriminants_q9_13}; consequently \(\Delta_q^{\mathrm{disc}}\) is nontrivial and induces the quadratic field \(K_q^{\mathrm{disc}}\). The explicit lists of \(\Delta_q^{\mathrm{disc}}\) and \(\mathcal{B}_q\) are provided in Table \ref{tab:fold_collision_observable_minpoly_ramified_primes_q9_13}.
+  \item For any prime \(p\notin\mathcal{B}_q\), the polynomial \(P_q(\lambda)\bmod p\) must be square-free over \(\FF_p[\lambda]\); therefore all "\(\mathrm{repeat?}\)"-type local spectral ramification (repeated roots/Jordan modulation) can only occur on the finite blacklist \(\mathcal{B}_q\).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Point 1 is obtained by symbolic computation and integer factorization of the discriminant of \(P_q\) in Theorem \ref{thm:pom-moment-resonance}, performed by the script \path{scripts/exp_fold_collision_observable_minpoly_galois_audit_q9_13.py}; the reproducible output is precisely \eqref{eq:fold_collision_observable_minpoly_discriminants_q9_13}.
+Point 2 is a standard property of discriminants: for \(\mathrm{char}(\FF_p)\nmid \mathrm{Disc}(P_q)\) (equivalent to \(p\notin\mathcal{B}_q\)), we have
+\(\gcd(P_q,\partial_\lambda P_q)=1\) over \(\FF_p[\lambda]\), so \(P_q\bmod p\) has no repeated roots and is thus square-free.
+Combined with the local criterion in Remark \ref{rem:pom-a2-embedding-local-ramification}, the "exceptional prime set" within this window can be fully operationalized as \(\mathcal{B}_q\). This completes the proof.
+\end{proof}
+\input{sections/generated/eq_fold_collision_observable_minpoly_discriminants_q9_13}
+\input{sections/generated/tab_fold_collision_observable_minpoly_ramified_primes_q9_13}
+
+\begin{proposition}[Maximal Galois Group of High-Order Recurrence: \texorpdfstring{$\mathrm{Gal}(P_q/\QQ)\cong S_d$}{Gal(Pq/Q)=Sd} (\(q=9,10,11,13\), Auditable)]\label{prop:pom-observable-minpoly-galois-sd-q9-13}
+Let \(d=\deg P_q\).
+Then for \(q\in\{9,10,11,13\}\) we have
+\[
+\mathrm{Gal}(P_9/\QQ)\cong S_7,\qquad
+\mathrm{Gal}(P_{10}/\QQ)\cong S_9,\qquad
+\mathrm{Gal}(P_{11}/\QQ)\cong S_9,\qquad
+\mathrm{Gal}(P_{13}/\QQ)\cong S_{11}.
+\]
+\end{proposition}
+\begin{proof}
+For each \(q\in\{9,10,11,13\}\), Table \ref{tab:fold_collision_observable_minpoly_galois_certificate_q9_13} provides three unramified prime certificates:
+\begin{itemize}
+  \item There exists a prime \(p_{\mathrm{irr}}\notin\mathcal{B}_q\) such that \(P_q\bmod p_{\mathrm{irr}}\) is irreducible, so the Frobenius element contains a \(d\)-cycle, and \(P_q\) is irreducible over \(\QQ\) (thus \(G_q:=\mathrm{Gal}(P_q/\QQ)\) is transitive);
+  \item There exists a prime \(p_{(d-1,1)}\notin\mathcal{B}_q\) such that the factorization type is \((d-1,1)\), so \(G_q\) contains a \((d-1)\)-cycle and is therefore primitive;
+  \item There exists a prime \(p_{\mathrm{J}}\notin\mathcal{B}_q\) such that the factorization type includes a prime-length cycle: for \(d=7\) contains a \(3\)-cycle, for \(d=9\) contains a \(5\)-cycle, for \(d=11\) contains a \(7\)-cycle; and this prime length \(\le d-3\).
+\end{itemize}
+By Jordan's theorem, a primitive group \(G_q\) containing a prime-length \(p\)-cycle (\(p\le d-3\)) must contain \(A_d\subseteq G_q\).
+On the other hand, by Proposition \ref{prop:pom-observable-minpoly-discriminant-ramification-q9-13}, \(\mathrm{Disc}(P_q)\) is not a perfect square (\(\Delta_q^{\mathrm{disc}}\neq 1\)), so \(G_q\not\subseteq A_d\).
+Together we have \(G_q=S_d\). This completes the proof.
+\end{proof}
+\input{sections/generated/tab_fold_collision_observable_minpoly_galois_certificate_q9_13}
+
+\begin{corollary}[Verifiable Frequency Law of Chebotarev Density: Irreducibility Density is \texorpdfstring{$1/d$}{1/d}]\label{cor:pom-observable-minpoly-chebotarev-density-q9-13}
+Under the conclusion of Proposition \ref{prop:pom-observable-minpoly-galois-sd-q9-13}, for the set of primes excluding the finite ramified prime set \(\mathcal{B}_q\), the natural density of occurrence of any splitting type (equivalent to some conjugacy class in \(S_d\)) equals the proportion of that conjugacy class in \(S_d\).
+In particular, the density of \(P_q(\lambda)\bmod p\) remaining irreducible (Frobenius is a \(d\)-cycle) is \(1/d\), so
+\[
+\mathrm{dens}\{p:\ P_9\bmod p\ \text{is irreducible}\}=\frac17,\quad
+\mathrm{dens}\{p:\ P_{10}\bmod p\ \text{is irreducible}\}=\frac19,
+\]
+\[
+\mathrm{dens}\{p:\ P_{11}\bmod p\ \text{is irreducible}\}=\frac19,\quad
+\mathrm{dens}\{p:\ P_{13}\bmod p\ \text{is irreducible}\}=\frac1{11}.
+\]
+\end{corollary}
+\begin{proof}
+By the Chebotarev density theorem, the Frobenius conjugacy classes of unramified primes are equidistributed in \(G_q=S_d\) according to conjugacy class size; and \(d\)-cycles occupy proportion \((d-1)!/d!=1/d\) in \(S_d\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Discriminant Quadratic Character Provides Closed-Form Criterion for Frobenius Parity]\label{cor:pom-observable-minpoly-frob-parity-q9-13}
+Under \(G_q=S_d\), the unique index-\(2\) normal subgroup of \(S_d\) is \(A_d\), whose fixed field is \(\QQ(\sqrt{\mathrm{Disc}(P_q)})=\QQ(\sqrt{\Delta_q^{\mathrm{disc}}})\).
+Therefore for any unramified prime \(p\notin\mathcal{B}_q\), the parity of the Frobenius permutation is strictly given by the Kronecker symbol:
+\[
+\mathrm{sgn}(\mathrm{Frob}_p)=\left(\frac{\Delta_q^{\mathrm{disc}}}{p}\right).
+\]
+In particular, for \(q=9\), by \eqref{eq:fold_collision_observable_minpoly_discriminants_q9_13}, \(\Delta_9^{\mathrm{disc}}\) is prime, so the parity criterion reduces to a single Legendre symbol \(\left(\frac{\Delta_9^{\mathrm{disc}}}{p}\right)\).
+\end{corollary}
+\begin{proof}
+This is the standard characterization via discriminant: \(\mathrm{Disc}(P_q)\) in its square class corresponds to the quadratic subfield cut out by the sign representation (permutation parity) of \(G_q\) to \(\{\pm 1\}\); for unramified primes, the Frobenius image is read off by quadratic reciprocity via the Kronecker symbol. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Negative Real Dominance Law and Alternating Correction: Effective Ramanujan Ratio for \texorpdfstring{$q=9,10,11,13$}{q=9,10,11,13}]\label{prop:pom-observable-minpoly-negative-real-dominance-q9-13}
+For \(q\in\{9,10,11,13\}\), denote by \(r_q\) the Perron root of \(P_q\), and let
+\[
+\Lambda_q:=\max\{|\mu|:\ P_q(\mu)=0,\ \mu\neq r_q\}.
+\]
+Then the root achieving \(\Lambda_q\) is the unique negative real root \(\mu^-_q<0\), so the first non-principal exponential correction of \(S_q(m)\) carries a strict alternating phase \(({-1})^m\).
+Moreover, the effective Ramanujan ratio
+\(
+R_q:=|\mu^-_q|/\sqrt{r_q}
+\)
+within this window satisfies the reproducible numerical values in \eqref{eq:fold_collision_observable_minpoly_negative_real_dominance_q9_13} (all strictly greater than \(1\)).
+\end{proposition}
+\begin{proof}
+By the script \path{scripts/exp_fold_collision_observable_minpoly_galois_audit_q9_13.py}, high-precision numerical root-finding is performed on all roots of \(P_q\), and their moduli are compared one by one to obtain: aside from the Perron root, the root with largest modulus is the unique negative real root.
+Correspondingly, in the spectral expansion of the recurrence solution, the contribution from this root carries sign \((\mu^-_q)^m=(-1)^m|\mu^-_q|^m\), yielding the alternating correction; the numerical value of the ratio \(R_q\) is obtained by directly substituting this root and \(r_q\) into the definition. This completes the proof.
+\end{proof}
+\input{sections/generated/eq_fold_collision_observable_minpoly_negative_real_dominance_q9_13}
+

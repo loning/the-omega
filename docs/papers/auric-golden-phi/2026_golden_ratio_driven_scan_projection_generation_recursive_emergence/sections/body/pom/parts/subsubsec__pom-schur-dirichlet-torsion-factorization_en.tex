@@ -1,0 +1,152 @@
+% (User input window)
+% 2026-02-14 11:58:09 (Asia/Singapore)
+
+\paragraph{Schur-Dirichlet Torsion Factorization: Dirichlet-Fourier Split of Channel Torsion Value Tables}
+Theorem \ref{thm:pom-schur-cycle-index-tomography} gives the \(S_q\)-equivariant Schur decomposition
+\[
+A_q\ \cong\ \bigoplus_{\lambda\vdash q}\bigl(B_{q,\lambda}\otimes I_{f^\lambda}\bigr),
+\qquad f^\lambda:=\dim S^\lambda,
+\]
+and encodes the trace sequence of each Schur channel as a finite combination weighted by characters.
+This section supplements an interface parallel to the finite part "primitive torsion table \(\Rightarrow\) character-resolved power sums": for each Schur channel, taking values at primitive \(q\)-th roots of unity and performing Dirichlet character decomposition yields a set of character torsion functionals, which are analytically equivalent to the normalized spectral power sum slices of that channel.
+
+\paragraph{Setup: Normalized Torsion Polynomial and Character Torsion Functional}
+Fix an integer \(q\ge2\), write \(U(q):=(\ZZ/q\ZZ)^\times\) and \(\omega_q:=e^{2\pi i/q}\), and denote the Perron root of the trivial channel as
+\[
+\rho_q:=\rho(B_{q,(q)}).
+\]
+For each channel \(\lambda\vdash q\), define the normalized torsion polynomial
+\[
+F_{q,\lambda}(t)
+:=
+\frac{\det\!\bigl(I-tB_{q,\lambda}/\rho_q\bigr)}
+{(1-t)^{\mathbf 1_{\{\lambda=(q)\}}}},
+\]
+and define the normalized (trivial-factor-removed) power sum
+\[
+u_{n,\lambda}
+:=
+\frac{\Tr(B_{q,\lambda}^{\,n})}{\rho_q^{\,n}}
+-\mathbf 1_{\{\lambda=(q)\}}
+\qquad(n\ge1).
+\]
+Thus \(F_{q,\lambda}(t)=\prod_{\mu\in\mathrm{spec}'(B_{q,\lambda})}(1-(\mu/\rho_q)t)\), where \(\mathrm{spec}'\) denotes deletion of the Perron root \(\rho_q\) (by multiplicity) when \(\lambda=(q)\), otherwise taking the full spectrum.
+In particular, since \(|\mu/\rho_q|<1\) for all \(\mu\in\mathrm{spec}'(B_{q,\lambda})\), \(\log F_{q,\lambda}\) can be uniquely determined on \(\{|t|\le1\}\) by the analytic branch with \(F_{q,\lambda}(0)=1\).
+
+\begin{definition}[Schur-Dirichlet Character Torsion Functional]\label{def:pom-schur-dirichlet-torsion-functional}
+For any Dirichlet character \(\chi\) (modulo \(q\), allowing non-primitive, viewed as a character of \(U(q)\)), define
+\[
+\mathcal{L}_{q,\lambda}(\chi)
+:=
+-\sum_{a\in U(q)}\chi(a)\,\log F_{q,\lambda}(\omega_q^{\,a})
+\ \in\ \CC/2\pi i\ZZ.
+\]
+\end{definition}
+
+\begin{theorem}[Schur-Dirichlet Factorization and Gauss-Dirichlet Expansion]\label{thm:pom-schur-dirichlet-factorization}
+Let
+\[
+G(\chi;n):=\sum_{a\in U(q)}\chi(a)\,\omega_q^{\,an},
+\qquad
+\tau(\chi):=G(\chi;1)=\sum_{a\in U(q)}\chi(a)\omega_q^{\,a}.
+\]
+Then for any \(\lambda\vdash q\) and any \(\chi\), the absolutely convergent identity holds
+\[
+\boxed{\;
+\mathcal{L}_{q,\lambda}(\chi)
+=
+\sum_{n\ge1}\frac{u_{n,\lambda}}{n}\,G(\chi;n)\; }.
+\]
+Moreover, when \((n,q)=1\), we have \(G(\chi;n)=\overline{\chi}(n)\tau(\chi)\).
+If \(\chi\) is a primitive character (conductor \(q\)), then \(\tau(\chi)\neq0\), and under Dirichlet's convention \(\chi(n)=0\) (when \((n,q)>1\)),
+\[
+\boxed{\;
+\mathcal{L}_{q,\lambda}(\chi)
+=
+\tau(\chi)\sum_{\substack{n\ge1\\(n,q)=1}}\frac{u_{n,\lambda}}{n}\,\overline{\chi}(n)\; }.
+\]
+Furthermore, \(\{\mathcal{L}_{q,\lambda}(\chi)\}_{\chi\in\widehat{U(q)}}\) and the primitive torsion table \(\{\log F_{q,\lambda}(\omega_q^{\,a})\}_{a\in U(q)}\) are precisely dual under the Dirichlet character transform:
+\[
+\boxed{\;
+-\log F_{q,\lambda}(\omega_q^{\,a})
+=
+\frac{1}{\varphi(q)}\sum_{\chi\in\widehat{U(q)}}\overline{\chi}(a)\,\mathcal{L}_{q,\lambda}(\chi)
+\qquad(a\in U(q))\; }.
+\]
+\end{theorem}
+\begin{proof}
+For any \(|x|<1\), we have \(-\log(1-x)=\sum_{n\ge1}x^n/n\).
+By \(F_{q,\lambda}(t)=\prod_{\mu\in\mathrm{spec}'(B_{q,\lambda})}(1-(\mu/\rho_q)t)\) and \(|\mu/\rho_q|<1\), we get
+\[
+-\log F_{q,\lambda}(\omega_q^{\,a})
+=
+\sum_{n\ge1}\frac{u_{n,\lambda}}{n}\,\omega_q^{\,an},
+\]
+and this series is absolutely convergent allowing term-wise summation.
+Multiplying by \(\chi(a)\) and summing over \(a\in U(q)\), exchanging the order of summation yields the first identity.
+When \((n,q)=1\), the multiplication \(a\mapsto an\) is a permutation on \(U(q)\), hence \(G(\chi;n)=\overline{\chi}(n)\tau(\chi)\);
+for the primitive case with \((n,q)>1\), \(G(\chi;n)=0\) is a standard Gauss sum property.
+The last identity is the character orthogonality inversion on \(U(q)\): for the function
+\(
+f(a):=-\log F_{q,\lambda}(\omega_q^{\,a})
+\),
+we have \(\mathcal{L}_{q,\lambda}(\chi)=\sum_{a\in U(q)}\chi(a)f(a)\), so
+\(
+f(a)=\varphi(q)^{-1}\sum_{\chi}\overline{\chi}(a)\mathcal{L}_{q,\lambda}(\chi)
+\).
+\end{proof}
+
+\begin{theorem}["Character-Schur-Torsion" Triple Interface: Spectral Envelope, Constant Anomaly, and Prime-Shadow Certificates]\label{thm:pom-schur-dirichlet-torsion-triple-interface}
+Fix an integer \(q\ge2\) and adopt the above notation.
+Assume for each channel \(\lambda\vdash q\), the normalized torsion polynomial \(F_{q,\lambda}(t)\) has degree satisfying
+\[
+\deg F_{q,\lambda}\ \le\ \varphi(q),
+\]
+so the primitive torsion table \(\{F_{q,\lambda}(\omega_q^{\,a})\}_{a\in U(q)}\) can be algebraically uniquely recovered by interpolation.
+Then for fixed \(q\), the finite data
+\[
+\Bigl\{\mathcal{L}_{q,\lambda}(\chi)\Bigr\}_{\lambda\vdash q,\ \chi\in\widehat{U(q)}}
+\quad\text{and}\quad
+\mathcal{M}_{q,(q)}:=\det\nolimits'\!\bigl(I-B_{q,(q)}/\rho_q\bigr)^{-1}
+\]
+uniquely determines the following three classes of objects:
+\begin{enumerate}
+  \item \textbf{(Exponential level)} The normalized spectral envelope \(\max_{\mu\in\mathrm{spec}'(B_{q,\lambda})}|\mu|/\rho_q\) for each channel, thus determining \(\rho(B_{q,\lambda})\) under the given scaling by \(\rho_q\), and determining the near-RH defect
+  \(
+  \Delta_q=\max_{\lambda\neq(q)}\bigl(2\log\rho(B_{q,\lambda})-\log\rho_q\bigr)
+  \)
+  (see definition in \S\ref{subsubsec:pom-wreath-artin-factorization});
+  \item \textbf{(Constant level)} The constant-layer anomaly for each channel
+  \[
+  \mathcal{M}_{q,\lambda}:=
+  \begin{cases}
+  \mathcal{M}_{q,(q)}, & \lambda=(q),\\[2pt]
+  \det\!\bigl(I-B_{q,\lambda}/\rho_q\bigr)^{-1}=F_{q,\lambda}(1)^{-1}, & \lambda\neq(q),
+  \end{cases}
+  \]
+  and the overall moment-anomaly generated by finite linear combinations of these constants;
+  \item \textbf{(Arithmetic level)} Schur prime-shadow square root threshold certificates: substituting the \(\rho(B_{q,\lambda})\) and constant inputs into Theorem \ref{thm:pom-schur-chebotarev-prime-deviation} yields all verifiable upper bounds for channel prime-deviation, and the near-RH overcriticality event \(\Delta_q>0\) is equivalent to some non-trivial channel deviation crossing the square root threshold (same as Theorem \ref{thm:pom-schur-chebotarev-prime-deviation}).
+\end{enumerate}
+Thus, for fixed \(q\), the "character torsion table" is simultaneously: a tomographic scan of the Schur channel spectrum, additive coordinates for constant-level anomalies, and analytic certificates for prime-shadow deviations; all three are obtained from the same finite data under three orthogonal projections.
+\end{theorem}
+\begin{proof}[Proof Outline]
+By the inversion formula of Theorem \ref{thm:pom-schur-dirichlet-factorization}, \(\{\mathcal{L}_{q,\lambda}(\chi)\}_\chi\) and the primitive torsion table are equivalent data;
+under the degree bound \(\deg F_{q,\lambda}\le\varphi(q)\), interpolation uniqueness allows recovery of the coefficients and root set of \(F_{q,\lambda}\), thus recovering the normalized spectral envelope and each constant \(\mathcal{M}_{q,\lambda}=F_{q,\lambda}(1)^{-1}\).
+The last prime-shadow certificate follows directly from Theorem \ref{thm:pom-schur-chebotarev-prime-deviation}.
+\end{proof}
+
+\begin{remark}[Normalization of Torsion Logarithm Branches and Algebraic Auditability]\label{rem:pom-schur-dirichlet-log-branch-normalization}
+Since for all \(\mu\in\mathrm{spec}'(B_{q,\lambda})\), we have \(|\mu/\rho_q|<1\), the normalized torsion polynomial
+\(
+F_{q,\lambda}(t)=\prod_{\mu\in\mathrm{spec}'(B_{q,\lambda})}(1-(\mu/\rho_q)t)
+\)
+has no zeros in the closed unit disk \(\{|t|\le1\}\),
+hence there exists a unique holomorphic logarithm \(\log F_{q,\lambda}\) satisfying \(\log F_{q,\lambda}(0)=0\);
+therefore \(\log F_{q,\lambda}(\omega_q^{\,a})\) and \(\mathcal{L}_{q,\lambda}(\chi)\) are canonically determined complex numbers under the regime of this paper,
+writing \(\CC/2\pi i\ZZ\) only emphasizes branch invariance (isotypic to Remark \ref{rem:finite-part-torsion-log-branch-normalization} for the finite part).
+\par
+If further the coefficients of \(F_{q,\lambda}(t)\) lie in some number field \(K\) (e.g., generated by the characteristic polynomial of \(B_{q,\lambda}\)), then the primitive torsion table
+\(\{F_{q,\lambda}(\omega_q^{\,a})\}_{a\in U(q)}\) belongs to \(K(\omega_q)\),
+and thus can be consistently tracked under Galois action together with its Dirichlet character decomposition (at the logarithm level, eliminating global \(2\pi i\ZZ\) indeterminacy via the above normalization).
+\end{remark}
+

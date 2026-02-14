@@ -1,0 +1,536 @@
+% Auto-split to keep each TeX source < 600 lines.
+
+\paragraph{Solvable information geometry of bin-fold: escort temperature family, divergence spectra, and two-scale corrections for gauge density}
+The two-state uniform asymptotics of Theorem \ref{thm:fold-bin-two-state-asymptotic} shows that at exponential leading order, fiber multiplicity depends only on the last bit \(w_m\).
+This degeneracy compresses several commonly used information-geometric functionals (escort temperature families, Rényi/Csiszár divergence families, and gauge volume density) uniformly into the same set of explicit constants, with uniform exponential convergence rates.
+
+\begin{proposition}[Last-bit sufficiency of bin-fold pushforward distribution: total variation collapse and exponential tilting model]\label{prop:fold-bin-lastbit-sufficient-tv}
+Adopting the notation of \(\mu_m\) from Corollary \ref{cor:fold-bin-two-point-limit-law}, and letting \(\ell(w):=w_m\in\{0,1\}\) denote the last-bit indicator,
+partition \(X_m\) by last bit into two blocks
+\[
+A_i:=\{w\in X_m:\ \ell(w)=i\}\qquad(i\in\{0,1\}),
+\]
+and define the last-bit conditioned approximation (block-wise uniformization)
+\[
+\overline\mu_m(w):=\frac{\mu_m(A_{\ell(w)})}{|A_{\ell(w)}|},\qquad w\in X_m.
+\]
+Then there exists an absolute constant \(C>0\) such that for all sufficiently large \(m\),
+\[
+D_{\mathrm{TV}}(\mu_m,\overline\mu_m)
+:=\frac12\sum_{w\in X_m}\bigl|\mu_m(w)-\overline\mu_m(w)\bigr|
+\ \le\ C\Bigl(\frac{\varphi}{2}\Bigr)^m.
+\]
+Moreover, there exists \(\beta_m\in\RR\) such that \(\overline\mu_m\) can be written as an exponential tilt of the stable-layer uniform distribution \(u_m(w)=1/|X_m|\):
+\[
+\overline\mu_m(w)=\frac{1}{Z_m}\,u_m(w)\,e^{-\beta_m\ell(w)},
+\qquad
+Z_m:=\sum_{w\in X_m}u_m(w)e^{-\beta_m\ell(w)},
+\]
+and \(\beta_m\to\log\varphi\).
+\end{proposition}
+\begin{proof}
+By the uniform bound \eqref{eq:fold-bin-two-state-asymptotic} of Theorem \ref{thm:fold-bin-two-state-asymptotic}, within each last-bit block \(A_i\),
+\(
+d^{\mathrm{bin}}_m(w)
+\)
+differs from its block-wise average by \(O(1)\) (uniformly in \(w\in A_i\)), thus
+\[
+\sup_{w\in A_i}\bigl|\mu_m(w)-\overline\mu_m(w)\bigr|
+=\sup_{w\in A_i}\Bigl|\frac{d^{\mathrm{bin}}_m(w)}{2^m}-\frac{1}{|A_i|}\sum_{w'\in A_i}\frac{d^{\mathrm{bin}}_m(w')}{2^m}\Bigr|
+\ \le\ \frac{C_1}{2^m}.
+\]
+Summing over both blocks yields
+\[
+\sum_{w\in X_m}\bigl|\mu_m(w)-\overline\mu_m(w)\bigr|
+\le
+|X_m|\cdot \frac{C_1}{2^m}
+=O\!\Bigl(\Bigl(\frac{\varphi}{2}\Bigr)^m\Bigr),
+\]
+where we used \(|X_m|=F_{m+2}=\Theta(\varphi^m)\), thus obtaining the shown total variation bound.
+\par
+For the exponential tilt representation, note that \(\overline\mu_m\) is constant on each \(A_i\): \(\overline\mu_m|_{A_i}=\mu_m(A_i)/|A_i|\).
+Let
+\[
+e^{-\beta_m}:=\frac{\mu_m(A_1)/|A_1|}{\mu_m(A_0)/|A_0|},
+\]
+then for any \(w\in A_i\) we have \(\overline\mu_m(w)\propto e^{-\beta_m i}\), so there exists a normalization constant \(Z_m\) such that
+\(
+\overline\mu_m(w)=Z_m^{-1}u_m(w)e^{-\beta_m\ell(w)}
+\).
+\par
+Finally, by the block mass limits of Corollary \ref{cor:fold-bin-two-point-limit-law}
+\(\mu_m(A_0)\to \varphi/\sqrt5\), \(\mu_m(A_1)\to 1/(\varphi\sqrt5)\), and \(|A_0|=F_{m+1}\), \(|A_1|=F_m\) giving
+\(|A_1|/|A_0|\to \varphi^{-1}\), we obtain
+\[
+e^{-\beta_m}
+=\frac{\mu_m(A_1)}{\mu_m(A_0)}\cdot\frac{|A_0|}{|A_1|}
+\longrightarrow
+\frac{\varphi^{-2}}{1}\cdot \varphi
+=\varphi^{-1},
+\]
+therefore \(\beta_m\to\log\varphi\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Last-bit limit law of escort temperature family and fiber information constant (bin-fold)]\label{prop:fold-bin-escort-lastbit}
+For any \(q\ge 0\), define the escort distribution
+\[
+\pi_{m,q}(w):=\frac{\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q}{S_q^{\mathrm{bin}}(m)},\qquad w\in X_m,
+\]
+and let the random variable \(W^{(q)}_m\sim\pi_{m,q}\).
+Set
+\[
+\theta(q):=\frac{1}{1+\varphi^{q+1}}.
+\]
+Then as \(m\to\infty\),
+\[
+\mathbb{P}\bigl(W^{(q)}_m(m)=1\bigr)\to \theta(q),
+\qquad
+\mathbb{P}\bigl(W^{(q)}_m(m)=0\bigr)\to 1-\theta(q),
+\]
+and for fixed \(q\) the convergence rate is \(O\bigl((\varphi/2)^m\bigr)\).
+
+Furthermore, define the \(q\)-escort fiber information
+\[
+\kappa^{\mathrm{bin}}_m(q):=\mathbb{E}_{\pi_{m,q}}\bigl[\log d^{\mathrm{bin}}_m(W^{(q)}_m)\bigr],
+\]
+then there exists a uniform expansion
+\[
+\kappa^{\mathrm{bin}}_m(q)=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-\theta(q)\log\varphi+O\bigl((\varphi/2)^m\bigr)
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-\frac{\log\varphi}{1+\varphi^{q+1}}+O\bigl((\varphi/2)^m\bigr),
+\]
+where the error is uniform in \(m\) for fixed \(q\).
+\end{proposition}
+
+\begin{proof}
+By definition,
+\[
+\mathbb{P}\bigl(W^{(q)}_m(m)=1\bigr)
+=\sum_{w_m=1}\pi_{m,q}(w)
+=\frac{\sum_{w_m=1}\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q}{S_q^{\mathrm{bin}}(m)}.
+\]
+By the uniform leading term of Theorem \ref{thm:fold-bin-two-state-asymptotic}, we obtain
+\(
+\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q=\bigl(\frac{2}{\varphi}\bigr)^{qm}\varphi^{-qw_m}\bigl(1+O(q(\varphi/2)^m)\bigr)
+\)
+uniformly on \(w\in X_m\).
+Therefore
+\[
+\sum_{w_m=1}\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q
+=F_m\Bigl(\frac{2}{\varphi}\Bigr)^{qm}\varphi^{-q}\Bigl(1+O\bigl(q(\varphi/2)^m\bigr)\Bigr),
+\]
+while Proposition \ref{prop:fold-bin-power-sum-asymptotic} gives
+\(
+S_q^{\mathrm{bin}}(m)=\bigl(\frac{2}{\varphi}\bigr)^{qm}\bigl(F_{m+1}+\varphi^{-q}F_m\bigr)\bigl(1+O(q(\varphi/2)^m)\bigr)
+\).
+Dividing the two yields
+\[
+\mathbb{P}\bigl(W^{(q)}_m(m)=1\bigr)
+=\frac{F_m\varphi^{-q}}{F_{m+1}+\varphi^{-q}F_m}+O\bigl((\varphi/2)^m\bigr)
+\longrightarrow\ \frac{1}{1+\varphi^{q+1}},
+\]
+where we used \(F_{m+1}/F_m\to\varphi\).
+The other endpoint probability follows by complement.
+
+For \(\kappa^{\mathrm{bin}}_m(q)\), by the uniform logarithmic expansion of Theorem \ref{thm:fold-bin-two-state-asymptotic}
+\[
+\log d^{\mathrm{bin}}_m(w)
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-w_m\log\varphi+O\bigl((\varphi/2)^m\bigr),
+\qquad (w\in X_m),
+\]
+taking expectation under \(\pi_{m,q}\) and substituting \(\mathbb{P}(W^{(q)}_m(m)=1)=\theta(q)+O((\varphi/2)^m)\) yields the conclusion.
+\end{proof}
+
+\begin{proposition}[Escort-escort KL limit between temperatures (bin-fold)]\label{prop:fold-bin-escort-escort-kl}
+For \(p,q\ge 0\), let \(\pi_{m,q}\) be as in Proposition \ref{prop:fold-bin-escort-lastbit}.
+Then the limit
+\[
+\lim_{m\to\infty}D_{\mathrm{KL}}(\pi_{m,q}\Vert \pi_{m,p})
+\]
+exists and can be written as a closed form of one-dimensional Bernoulli KL. Setting \(\theta(\cdot)\) as defined in Proposition \ref{prop:fold-bin-escort-lastbit}, we have
+\[
+\lim_{m\to\infty}D_{\mathrm{KL}}(\pi_{m,q}\Vert \pi_{m,p})
+=\theta(q)\log\Bigl(\frac{\theta(q)}{\theta(p)}\Bigr)+\bigl(1-\theta(q)\bigr)\log\Bigl(\frac{1-\theta(q)}{1-\theta(p)}\Bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+By Theorem \ref{thm:fold-bin-two-state-asymptotic}, for any fixed \(q\ge 0\),
+\[
+\pi_{m,q}(w)=\frac{\varphi^{-qw_m}}{F_{m+1}+\varphi^{-q}F_m}\Bigl(1+O\bigl((\varphi/2)^m\bigr)\Bigr),
+\qquad (w\in X_m),
+\]
+where the error is uniform in \(w\); similarly for \(p\).
+Therefore, conditioned on \(w_m\), both \(\pi_{m,q}\) and \(\pi_{m,p}\) are asymptotically uniform within that sector, and the ratio \(\pi_{m,q}(w)/\pi_{m,p}(w)\) is also asymptotically constant within the sector.
+Decomposing KL divergence by the two sectors \(w_m\in\{0,1\}\) and using
+\(\mathbb{P}_{\pi_{m,q}}(w_m=1)\to \theta(q)\), \(\mathbb{P}_{\pi_{m,p}}(w_m=1)\to \theta(p)\)
+yields the shown Bernoulli KL limit.
+\end{proof}
+
+\begin{corollary}[Two-point law of two-scale limit residual (bin-fold)]\label{cor:fold-bin-escort-two-scale-residual}
+For any \(q\ge 0\) let \(W^{(q)}_m\sim\pi_{m,q}\), and define the scaled residual variable
+\[
+Z^{(q)}_m:=\Bigl(\frac{\varphi}{2}\Bigr)^m d^{\mathrm{bin}}_m\bigl(W^{(q)}_m\bigr).
+\]
+Then \(Z^{(q)}_m\Rightarrow Z^{(q)}\) and \(Z^{(q)}\) is a two-point distribution
+\[
+Z^{(q)}\in\{1,\varphi^{-1}\},
+\qquad
+\mathbb{P}\bigl(Z^{(q)}=\varphi^{-1}\bigr)=\theta(q),
+\quad
+\mathbb{P}\bigl(Z^{(q)}=1\bigr)=1-\theta(q).
+\]
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:fold-bin-two-state-asymptotic},
+\(
+Z^{(q)}_m=\varphi^{-W^{(q)}_m(m)}+o(1)
+\)
+(in the sense of probability), and the limiting distribution of \(W^{(q)}_m(m)\) is given by Proposition \ref{prop:fold-bin-escort-lastbit}, so the conclusion follows.
+\end{proof}
+
+\begin{theorem}[Full Rényi divergence limit of bin-fold output distribution (against stable-layer uniform)]\label{thm:fold-bin-renyi-divergence-limit}
+Let \(\mu_m(w):=d^{\mathrm{bin}}_m(w)/2^m\) be the pushforward output distribution of bin-fold, and \(u_m(w):=1/|X_m|\) the stable-layer uniform distribution.
+For any \(\alpha>0\), define Rényi divergence \(D_\alpha(\mu_m\Vert u_m)\) (with \(\alpha=1\) taken as the continuous extension to KL divergence).
+Then the limit
+\[
+D_\alpha^\infty:=\lim_{m\to\infty}D_\alpha(\mu_m\Vert u_m)
+\]
+exists and has a closed form:
+\begin{enumerate}
+  \item If \(\alpha\neq 1\), then
+  \[
+  D_\alpha^\infty=\frac{(2\alpha-2)\log\varphi+\log(\varphi+\varphi^{-\alpha})-\alpha\log\sqrt{5}}{\alpha-1}.
+  \]
+  \item If \(\alpha=1\), then
+  \[
+  D_1^\infty=\frac{\varphi}{\sqrt5}\log\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)+\frac{1}{\varphi\sqrt5}\log\Bigl(\frac{\varphi}{\sqrt5}\Bigr).
+  \]
+\end{enumerate}
+Moreover, for each fixed \(\alpha\), the convergence rate is
+\[
+D_\alpha(\mu_m\Vert u_m)=D_\alpha^\infty+O\bigl((\varphi/2)^m\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+When \(\alpha\neq 1\), by definition
+\[
+D_\alpha(\mu_m\Vert u_m)
+=\frac{1}{\alpha-1}\log\sum_{w\in X_m}\mu_m(w)^\alpha\,u_m(w)^{1-\alpha}.
+\]
+Substituting \(\mu_m(w)=d^{\mathrm{bin}}_m(w)/2^m\), \(u_m(w)=1/|X_m|\) yields
+\[
+D_\alpha(\mu_m\Vert u_m)
+=\frac{1}{\alpha-1}\log\Bigl(|X_m|^{\alpha-1}\cdot 2^{-\alpha m}\cdot S_\alpha^{\mathrm{bin}}(m)\Bigr).
+\]
+By \(|X_m|=F_{m+2}\) and Proposition \ref{prop:fold-bin-power-sum-asymptotic},
+\[
+2^{-\alpha m}S_\alpha^{\mathrm{bin}}(m)
+=\varphi^{-\alpha m}\Bigl(F_{m+1}+\varphi^{-\alpha}F_m\Bigr)\Bigl(1+O\bigl((\varphi/2)^m\bigr)\Bigr).
+\]
+Therefore
+\[
+D_\alpha(\mu_m\Vert u_m)
+=\frac{1}{\alpha-1}\log\Bigl(F_{m+2}^{\alpha-1}\varphi^{-\alpha m}\bigl(F_{m+1}+\varphi^{-\alpha}F_m\bigr)\Bigr)
++O\bigl((\varphi/2)^m\bigr).
+\]
+Substituting Binet's asymptotics \(F_n=\varphi^n/\sqrt5+O(\varphi^{-n})\) and simplifying yields the limiting constant
+\[
+\frac{1}{\alpha-1}\Bigl((2\alpha-2)\log\varphi+\log(\varphi+\varphi^{-\alpha})-\alpha\log\sqrt5\Bigr),
+\]
+namely the shown \(D_\alpha^\infty\). The error bound follows from combining the relative error of Proposition \ref{prop:fold-bin-power-sum-asymptotic} with Binet's exponential remainder.
+\par
+When \(\alpha=1\), \(D_1(\mu_m\Vert u_m)=D_{\mathrm{KL}}(\mu_m\Vert u_m)\), whose limit is given by Proposition \ref{prop:fold-bin-kl-constant}; it can also be obtained directly from the two-state limit ratios \(\mu_m/u_m\Rightarrow\{\varphi^2/\sqrt5,\varphi/\sqrt5\}\), yielding the shown closed form. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Universal collapse of \texorpdfstring{$f$}{f}-divergence (Csiszár index) for bin-fold]\label{prop:fold-bin-f-divergence-collapse}
+Let \(f:(0,\infty)\to\RR\) be a convex function with \(f(1)=0\), and define the Csiszár \(f\)-divergence
+\[
+D_f(\mu_m\Vert u_m):=\sum_{w\in X_m}u_m(w)\,f\Bigl(\frac{\mu_m(w)}{u_m(w)}\Bigr).
+\]
+Then the limit \(D_f^\infty:=\lim_{m\to\infty}D_f(\mu_m\Vert u_m)\) exists and is given by a two-point closed form
+\[
+D_f^\infty=\frac{1}{\varphi}\,f\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)+\frac{1}{\varphi^2}\,f\Bigl(\frac{\varphi}{\sqrt5}\Bigr).
+\]
+Moreover, for fixed \(f\), the convergence rate is \(D_f(\mu_m\Vert u_m)=D_f^\infty+O\bigl((\varphi/2)^m\bigr)\).
+\end{proposition}
+
+\begin{proof}
+Note that
+\[
+\frac{\mu_m(w)}{u_m(w)}=\frac{d^{\mathrm{bin}}_m(w)}{2^m}\cdot |X_m|
+=d^{\mathrm{bin}}_m(w)\,\frac{F_{m+2}}{2^m}.
+\]
+By Theorem \ref{thm:fold-bin-two-state-asymptotic} and Binet's asymptotics, we obtain the uniform expansion
+\[
+\frac{\mu_m(w)}{u_m(w)}
+=\frac{\varphi^{2-w_m}}{\sqrt5}+O\bigl((\varphi/2)^m\bigr),
+\qquad (w\in X_m),
+\]
+and under the uniform measure \(u_m\),
+\(
+u_m(w_m=0)=F_{m+1}/F_{m+2}\to 1/\varphi
+\),
+\(
+u_m(w_m=1)=F_m/F_{m+2}\to 1/\varphi^2
+\).
+Thus
+\[
+D_f(\mu_m\Vert u_m)
+=\frac{F_{m+1}}{F_{m+2}}\,f\Bigl(\frac{\varphi^2}{\sqrt5}+O\bigl((\varphi/2)^m\bigr)\Bigr)
+\;+\;\frac{F_m}{F_{m+2}}\,f\Bigl(\frac{\varphi}{\sqrt5}+O\bigl((\varphi/2)^m\bigr)\Bigr).
+\]
+By uniform continuity of convex functions on compact intervals, we may let \(m\to\infty\) to obtain the shown two-point limit; the error order similarly follows from the uniform expansion and \(F_{m+1}/F_{m+2}-1/\varphi=O(\varphi^{-2m})\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Identifiability of golden parameter: strict monotone inversion of power divergence limit constant]\label{prop:fold-bin-phi-identifiable-power-divergence}
+For any \(\alpha>1\), take the strictly convex function
+\[
+f_\alpha(t):=t^\alpha-1-\alpha(t-1)\qquad(t>0),
+\]
+and denote its \(f\)-divergence limit by \(D_{f_\alpha}^\infty=\lim_{m\to\infty}D_{f_\alpha}(\mu_m\Vert u_m)\) (Proposition \ref{prop:fold-bin-f-divergence-collapse}).
+Then the closed form is
+\[
+D_{f_\alpha}^\infty
+=\frac{1}{5^{\alpha/2}}\Bigl(\varphi^{2\alpha-1}+\varphi^{\alpha-2}\Bigr)-1.
+\]
+Viewing the right-hand side as a function of parameter \(\xi>1\),
+\[
+\mathcal{D}_\alpha(\xi):=\frac{1}{5^{\alpha/2}}\Bigl(\xi^{2\alpha-1}+\xi^{\alpha-2}\Bigr)-1,
+\]
+then \(\mathcal{D}_\alpha:(1,\infty)\to\RR\) is strictly increasing; hence from the single scalar \(D_{f_\alpha}^\infty\) one can uniquely invert \(\xi\), thus in this system one can uniquely recover \(\xi=\varphi\).
+\end{proposition}
+\begin{proof}
+By definition, \(\sum_{w\in X_m}u_m(w)\,\frac{\mu_m(w)}{u_m(w)}=\sum_w \mu_m(w)=1\), so for any \(m\),
+\[
+D_{f_\alpha}(\mu_m\Vert u_m)=\sum_{w}u_m(w)\Bigl(\frac{\mu_m(w)}{u_m(w)}\Bigr)^\alpha-1.
+\]
+Letting \(m\to\infty\), by the two-point limit law of Proposition \ref{prop:fold-bin-f-divergence-collapse}, we obtain
+\[
+D_{f_\alpha}^\infty
+=\frac{1}{\varphi}\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)^\alpha+\frac{1}{\varphi^2}\Bigl(\frac{\varphi}{\sqrt5}\Bigr)^\alpha-1
+=\frac{1}{5^{\alpha/2}}\Bigl(\varphi^{2\alpha-1}+\varphi^{\alpha-2}\Bigr)-1.
+\]
+For \(\xi>1\), the derivative of \(\mathcal{D}_\alpha\) is
+\[
+\mathcal{D}_\alpha'(\xi)=\frac{1}{5^{\alpha/2}}\Bigl((2\alpha-1)\xi^{2\alpha-2}+(\alpha-2)\xi^{\alpha-3}\Bigr).
+\]
+When \(\alpha\ge 2\), the above is clearly positive.
+When \(1<\alpha<2\), since \(\xi^{\alpha+1}\ge 1\) and
+\(
+(2\alpha-1)-(2-\alpha)=3(\alpha-1)>0
+\), we have
+\[
+(2\alpha-1)\xi^{2\alpha-2}+(\alpha-2)\xi^{\alpha-3}
+\ge \xi^{\alpha-3}\bigl((2\alpha-1)\xi^{\alpha+1}-(2-\alpha)\bigr)
+>0.
+\]
+Therefore \(\mathcal{D}_\alpha'(\xi)>0\) for all \(\xi>1\), so \(\mathcal{D}_\alpha\) is strictly increasing and hence invertible. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Two-scale expansion of gauge volume density (bin-fold)]\label{prop:fold-bin-gauge-density-two-scale}
+Let \(\mathcal{G}^{\mathrm{bin}}_m\) be the fold-gauge group volume of bin-fold
+\(
+|\mathcal{G}^{\mathrm{bin}}_m|=\prod_{w\in X_m} d^{\mathrm{bin}}_m(w)!
+\)
+and define the density \(g_m:=2^{-m}\log|\mathcal{G}^{\mathrm{bin}}_m|\).
+Denote
+\(
+\kappa_m:=\mathbb{E}_{\mu_m}\bigl[\log d^{\mathrm{bin}}_m(W_m)\bigr]
+\)
+(the fiber information term in Proposition \ref{prop:fold-bin-kl-constant}).
+Then as \(m\to\infty\), the two-scale expansion holds
+\[
+g_m=\kappa_m-1+\frac{(\varphi/2)^m}{2\sqrt5}\Bigl(\varphi^2 m\log\!\Bigl(\frac{2}{\varphi}\Bigr)+\varphi^2\log(2\pi)-\log\varphi\Bigr)+O\bigl((\varphi/2)^m\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+By Theorem \ref{thm:fold-bin-gauge-volume-stirling-second-order},
+\[
+g_m=\kappa_m-1+\frac{1}{2^{m+1}}\Bigl(|X_m|\log(2\pi)+\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)\Bigr)+R_m,
+\qquad 0\le R_m\le \frac{|X_m|}{12\cdot 2^m}.
+\]
+By the uniform logarithmic expansion of Theorem \ref{thm:fold-bin-two-state-asymptotic},
+\[
+\log d^{\mathrm{bin}}_m(w)=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-w_m\log\varphi+O\bigl((\varphi/2)^m\bigr),
+\qquad (w\in X_m),
+\]
+summing and using
+\(
+\card\{w\in X_m:w_m=0\}=F_{m+1},\ \card\{w\in X_m:w_m=1\}=F_m
+\)
+yields
+\[
+\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)|X_m|-\log\varphi\cdot F_m+O\bigl(|X_m|(\varphi/2)^m\bigr).
+\]
+Substituting back and using Binet's asymptotics \(F_{m+2}=|X_m|=\varphi^{m+2}/\sqrt5+O(\varphi^{-m})\), \(F_m=\varphi^m/\sqrt5+O(\varphi^{-m})\) yields
+\[
+\frac{|X_m|}{2^{m+1}}
+=\frac{\varphi^2}{2\sqrt5}\Bigl(\frac{\varphi}{2}\Bigr)^m+O\bigl((\varphi/2)^m\bigr),
+\qquad
+\frac{F_m}{2^{m+1}}
+=\frac{1}{2\sqrt5}\Bigl(\frac{\varphi}{2}\Bigr)^m+O\bigl((\varphi/2)^m\bigr),
+\]
+and combining with \(R_m=O(|X_m|/2^m)=O((\varphi/2)^m)\) yields the shown expansion. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Scale limit of bin-fold degeneracy spectrum: tail counts and two kinks in continuous capacity curve]\label{prop:fold-bin-degeneracy-tail-capacity-kinks}
+For each \(m\ge 1\), define the bin-fold degeneracy tail count function
+\[
+N^{\mathrm{bin}}_m(t):=\bigl|\{w\in X_m:\ d^{\mathrm{bin}}_m(w)\ge t\}\bigr|,\qquad t\ge 0,
+\]
+and the continuous capacity curve
+\[
+\mathcal{C}^{\mathrm{bin,cont}}_m(T):=\sum_{w\in X_m}\min\bigl(d^{\mathrm{bin}}_m(w),T\bigr),\qquad T\ge 0.
+\]
+Then for all \(T\ge 0\), the strict identity holds
+\[
+\mathcal{C}^{\mathrm{bin,cont}}_m(T)=\int_{0}^{T}N^{\mathrm{bin}}_m(t)\,\dd t.
+\]
+For fixed \(s>0\), define the scaled processes
+\[
+\widehat N^{\mathrm{bin}}_m(s):=\frac{1}{|X_m|}\,N^{\mathrm{bin}}_m\!\Bigl(s\Bigl(\frac{2}{\varphi}\Bigr)^m\Bigr),
+\qquad
+\widehat C^{\mathrm{bin}}_m(s):=2^{-m}\,\mathcal{C}^{\mathrm{bin,cont}}_m\!\Bigl(s\Bigl(\frac{2}{\varphi}\Bigr)^m\Bigr).
+\]
+Then for each \(s\notin\{\varphi^{-1},1\}\), the pointwise limit holds
+\[
+\widehat N^{\mathrm{bin}}_m(s)\longrightarrow
+\begin{cases}
+1, & 0<s<\varphi^{-1},\\[2pt]
+\varphi^{-1}, & \varphi^{-1}<s<1,\\[2pt]
+0, & s>1,
+\end{cases}
+\]
+and \(\widehat C^{\mathrm{bin}}_m\) converges uniformly on every compact set to the piecewise linear function
+\[
+\widehat C^{\mathrm{bin}}_\infty(s)
+=\frac{\varphi}{\sqrt5}\min\{1,s\}+\frac{1}{\sqrt5}\min\{\varphi^{-1},s\}.
+\]
+Therefore in the bin-fold limit, the scaled "visible capacity-tail spectrum" exhibits two rigid kinks at \(s=\varphi^{-1}\) and \(s=1\).
+\end{proposition}
+\begin{proof}
+The capacity-tail function identity follows from \(\min(d,T)=\int_0^T\ind_{\{t\le d\}}\,\dd t\), summing over \(w\) and interchanging summation and integration.
+\par
+Let \(t_m(s):=s(2/\varphi)^m\).
+By the uniform asymptotics of Theorem \ref{thm:fold-bin-two-state-asymptotic},
+\[
+\Bigl(\frac{\varphi}{2}\Bigr)^m d^{\mathrm{bin}}_m(w)=\varphi^{-w_m}+O\bigl((\varphi/2)^m\bigr),
+\qquad (w\in X_m),
+\]
+so for fixed \(s\notin\{\varphi^{-1},1\}\), on sufficiently large \(m\) the inequality
+\(
+d^{\mathrm{bin}}_m(w)\ge t_m(s)
+\)
+is equivalent to the last-bit condition:
+\begin{itemize}
+  \item If \(0<s<\varphi^{-1}\), then it holds for all \(w\in X_m\);
+  \item If \(\varphi^{-1}<s<1\), then if and only if \(w_m=0\);
+  \item If \(s>1\), then it holds for no \(w\in X_m\).
+\end{itemize}
+Therefore
+\[
+N^{\mathrm{bin}}_m(t_m(s))
+=
+\begin{cases}
+|X_m|,& 0<s<\varphi^{-1},\\
+|A_0|,& \varphi^{-1}<s<1,\\
+0,& s>1,
+\end{cases}
+\qquad A_0=\{w:\ w_m=0\},
+\]
+thus
+\(
+\widehat N^{\mathrm{bin}}_m(s)\to 1
+\)
+or
+\(
+\widehat N^{\mathrm{bin}}_m(s)\to |A_0|/|X_m|=F_{m+1}/F_{m+2}\to \varphi^{-1}
+\), yielding the shown pointwise limit.
+\par
+For the capacity curve, partitioning \(X_m\) by \(w_m\in\{0,1\}\) and using the two-state uniform asymptotics yields
+\[
+\mathcal{C}^{\mathrm{bin,cont}}_m(t_m(s))
+=\sum_{w_m=0}\min\!\Bigl(\Bigl(\frac{2}{\varphi}\Bigr)^m+O(1),\ s\Bigl(\frac{2}{\varphi}\Bigr)^m\Bigr)
+\;+\;
+\sum_{w_m=1}\min\!\Bigl(\varphi^{-1}\Bigl(\frac{2}{\varphi}\Bigr)^m+O(1),\ s\Bigl(\frac{2}{\varphi}\Bigr)^m\Bigr).
+\]
+For fixed \(s\) and sufficiently large \(m\), the leading order of the two \(\min\) terms are respectively \((2/\varphi)^m\min\{1,s\}\) and \((2/\varphi)^m\min\{\varphi^{-1},s\}\), with errors of \(O(|X_m|)\).
+Therefore
+\[
+\widehat C^{\mathrm{bin}}_m(s)
+=2^{-m}\Bigl(\frac{2}{\varphi}\Bigr)^m\Bigl(|A_0|\min\{1,s\}+|A_1|\min\{\varphi^{-1},s\}\Bigr)+O\!\Bigl(\frac{|X_m|}{2^m}\Bigr),
+\]
+where \(|A_0|=F_{m+1}\), \(|A_1|=F_m\).
+By Binet's asymptotics \(F_{m+1}/\varphi^m\to \varphi/\sqrt5\), \(F_m/\varphi^m\to 1/\sqrt5\), and noting
+\(
+2^{-m}(2/\varphi)^m=\varphi^{-m}
+\), we obtain
+\[
+\widehat C^{\mathrm{bin}}_m(s)\to \frac{\varphi}{\sqrt5}\min\{1,s\}+\frac{1}{\sqrt5}\min\{\varphi^{-1},s\}.
+\]
+The error term \(O(|X_m|/2^m)=O((\varphi/2)^m)\) is uniform on every compact set, thus yielding uniform convergence. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Endogenous recovery of \texorpdfstring{\(2\pi\)}{2pi} from fold-gauge volume and fiber information term]\label{cor:fold-bin-recover-2pi}
+Adopting the notation of \(g_m,\kappa_m\) from Proposition \ref{prop:fold-bin-gauge-density-two-scale},
+define the constant estimate sequence given directly by folding data
+\[
+C_m
+:=\exp\!\Biggl(
+\frac{2^{m+1}}{|X_m|}\bigl(g_m-\kappa_m+1\bigr)
+-\frac{1}{|X_m|}\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)
+\Biggr).
+\]
+Then the limit exists and satisfies
+\[
+\lim_{m\to\infty}C_m=2\pi.
+\]
+Moreover, the convergence has exponential rate: there exists a constant \(c>0\) such that for all sufficiently large \(m\),
+\[
+\bigl|\log C_m-\log(2\pi)\bigr|\le c\Bigl(\frac{\varphi}{2}\Bigr)^m.
+\]
+\end{corollary}
+\begin{proof}
+For any integer \(d\ge 1\), Stirling's formula with remainder gives
+\[
+\log(d!)=d\log d-d+\frac12\log(2\pi d)+\varepsilon(d),
+\qquad |\varepsilon(d)|\le \frac{1}{12d}.
+\]
+Summing over \(d=d^{\mathrm{bin}}_m(w)\) and dividing by \(2^m\), using \(\sum_w d^{\mathrm{bin}}_m(w)=2^m\), we obtain
+\[
+g_m
+=\kappa_m-1+\frac{1}{2^{m+1}}\sum_{w\in X_m}\log(2\pi d^{\mathrm{bin}}_m(w))
+\;+\;\frac{1}{2^m}\sum_{w\in X_m}\varepsilon\bigl(d^{\mathrm{bin}}_m(w)\bigr).
+\]
+Substituting
+\(
+\sum_w \log(2\pi d)=|X_m|\log(2\pi)+\sum_w \log d
+\)
+and rearranging yields
+\[
+\log C_m=\log(2\pi)+\frac{2}{|X_m|}\sum_{w\in X_m}\varepsilon\bigl(d^{\mathrm{bin}}_m(w)\bigr).
+\]
+By the uniform asymptotics of Theorem \ref{thm:fold-bin-two-state-asymptotic}, there exist \(m_0\) and constant \(c_0>0\) such that for \(m\ge m_0\) and all \(w\in X_m\),
+\(
+d^{\mathrm{bin}}_m(w)\ge c_0(2/\varphi)^m
+\).
+Therefore
+\[
+\Bigl|\frac{2}{|X_m|}\sum_{w}\varepsilon\bigl(d^{\mathrm{bin}}_m(w)\bigr)\Bigr|
+\le \frac{2}{|X_m|}\sum_{w}\frac{1}{12\,d^{\mathrm{bin}}_m(w)}
+\le \frac{1}{6}\cdot \frac{1}{\min_w d^{\mathrm{bin}}_m(w)}
+\le c\Bigl(\frac{\varphi}{2}\Bigr)^m,
+\]
+thus \(\log C_m\to\log(2\pi)\) with exponential convergence bound. This completes the proof.
+\end{proof}
+
+\input{thm__fold-bin-gauge-constant-stirling-bernoulli-hierarchy_en}
+
+\begin{remark}[Two-state compression as analytic benchmark solution]\label{rem:fold-bin-solvable-model}
+In the bin-fold case, Propositions \ref{prop:fold-bin-power-sum-asymptotic}--\ref{prop:fold-bin-gauge-density-two-scale} show that: all-order collision moments, full-temperature escort families, Rényi/\(f\)-divergence families, and the first visible correction term of gauge volume density can all be closed-form expressed under the same pair of two-state constants with uniform error order.
+This structure provides an analytic benchmark for comparison with the more general folding mechanisms in the main text.
+\end{remark}

@@ -1,0 +1,37 @@
+% Conclusions (2026-02-13): 28--29.
+
+\begin{corollary}[Strictification of the "fourth register dichotomy": off-slice zero assertions have only two falsifiable forms within the system]\label{cor:xi-fourth-register-dichotomy}
+Under unitary slice visible domain locking \(X_{\mathrm{vis}}=\mathsf{Phase}\) (Definition \ref{def:xi-visible-read-null}), \(\mathbf{PW}\) closure type safety (Theorem \ref{thm:xi-offset-null-type-safety}), and the "no unrecorded continuous axis" principle (Theorem \ref{thm:xi-pw-no-continuous-hair}), any assertion claiming the existence of off-slice zeros (i.e., requiring radial degrees of freedom \(|u|\neq 1\); equivalently requiring in-disk information \(|w|<1\) in the disk-coordinate variable) can only appear in the protocol semantics as one of the following two:
+\begin{enumerate}
+  \item \textbf{Explicit extensional modal axis:} Add radial record to the address multi-axis prefix
+  \[
+  \varrho(u):=\log|u|
+  \]
+  (or any equivalent "extension preservation" extension making the extension readout injective; see Remark \ref{rem:xi-soundness-vs-completeness} and Proposition \ref{prop:xi-null-three-way}), thereby objectifying the off-domain degrees of freedom as auditable output;
+  \item \textbf{Finite failure witness:} Output an off-line verifiable failure witness proving that this assertion is not typable under the established closure/visible domain regime, and its readout must degrade to \(\mathsf{NULL}\).
+\end{enumerate}
+Moreover, no third path exists: any scheme attempting to bypass \(\mathsf{NULL}\) via "an additional continuous coordinate register decoupled from phase \(\theta\)" will either be rejected in closure and read out as \(\mathsf{NULL}\), or be factor-equivalent to the unique radial extension \(\varrho(u)\) above.
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:xi-offset-null-type-safety}, under the unitary slice regime all off-slice objects are non-addressable in closure, and the readout degrades to \(\mathsf{NULL}\) by definition.
+If one wishes to reduce \(\mathsf{NULL}\) without changing the visible domain locking, the only legitimate path is to externalize the flattened degrees of freedom via "extension preservation": decompose \(u=re^{i\theta}\) into phase and radial parts, and explicitly record the radial part as a modal axis (Remark \ref{rem:xi-soundness-vs-completeness}).
+Any strategy that does not explicitly record yet attempts to introduce new continuous coordinates contradicts the "no unrecorded continuous axis" principle (Theorem \ref{thm:xi-pw-no-continuous-hair}); its semantic consequence can only be type rejection and readout as \(\mathsf{NULL}\).
+Therefore, off-slice assertions falsifiable within the system can only fall into the two classes "explicit radial extension" or "finite failure witness", with no third bypass path.
+\end{proof}
+
+\begin{corollary}[Decidable closure under unitary-slice protocol: the complement of \texorpdfstring{$\mathsf{NULL}$}{NULL} also has finite certificates]\label{cor:xi-unitary-slice-decidable}
+Under the setting of Theorem \ref{thm:xi-null-orthogonal-trichotomy-resource-nonsubstitutable}, for any query/object \(q\) compiled to the unitary-slice audit interface, if its global readout is \(\mathsf{NULL}\), then there exists a finite failure witness \(\mathrm{Wit}(q)\), whose type must fall into one of the following three classes and can be off-line verified by a deterministic verifier:
+\begin{enumerate}
+  \item \textbf{Closure/off-domain rejection witness:} Prove that the interpretation of \(q\) requires radial modes \(|u|\neq 1\) or other degrees of freedom prohibited by the protocol (Definition \ref{def:xi-visible-read-null});
+  \item \textbf{Čech second-order gluing obstruction witness:} Provide and verify an \(H^2\) obstruction class \([\alpha]\neq 0\) at prefix stations, thereby deducing the address fiber is empty (Proposition \ref{prop:null-as-h2-obstruction});
+  \item \textbf{Hard threshold resource insufficiency witness:} Provide a violation certificate for the prime-register modular product threshold or endpoint resolution threshold, thereby excluding any legitimate externalization making the readout single-valued and verifiable (Theorem \ref{thm:xi-null-orthogonal-trichotomy-resource-nonsubstitutable} class (3)).
+\end{enumerate}
+Therefore, the "addressability predicate" (whether the readout is \(\mathsf{NULL}\)) under this closure regime has both positive and negative finite certificates: if an address/certificate exists it can be verified, if a failure witness exists it can be verified; thus this predicate is a decidable object in this regime sense.
+\end{corollary}
+\begin{proof}
+The existence and classification of the three failure witness classes are directly provided by Theorem \ref{thm:xi-null-orthogonal-trichotomy-resource-nonsubstitutable}; their "finiteness/off-line verifiability" comes from the fact that every witness class referenced by that theorem is organized as a finite combinatorial object (finite prefix, finite cohomology representative, or finite threshold inequality chain), and verification relies only on algebraic/combinatorial verification without accessing invisible fibers.
+On the other hand, if the readout is not \(\mathsf{NULL}\), then by the readout convention of Definition \ref{def:xi-visible-read-null} it must accompany a verifiable address/certificate prefix falling within the visible domain; this verification is a deterministic process in the closure interface.
+Combining both directions yields "both positive/negative sides have finite certificates", hence decidability holds.
+\end{proof}
+
+\endinput
