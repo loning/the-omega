@@ -866,6 +866,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_moment_2adic_odometer_q4_10",
+            script="exp_fold_collision_moment_2adic_odometer_q4_10.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_2adic_odometer_q4_10.json",
+                "sections/generated/tab_fold_collision_moment_2adic_odometer_q4_10.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_observable_minpoly_galois_audit_q9_13",
             script="exp_fold_collision_observable_minpoly_galois_audit_q9_13.py",
             args=[],
