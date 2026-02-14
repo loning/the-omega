@@ -1,0 +1,173 @@
+% (User input window)
+% 2026-02-14 16:12:45（Asia/Singapore）
+
+\paragraph{Bethe 平衡、Riccati 极点消去与势系数的 \texorpdfstring{$\tau$}{tau}-梯度恒等式}
+本段在 Heine--Stieltjes--Van Vleck 接口上给出两个互补表述：其一把平衡方程等价改写为 Riccati 量在锚点处的极点消去；其二把 Schr\"odinger 势的一阶系数写成“结果式--Vandermonde”对数导数，从而把系数约束压缩为一个可微势函数的梯度。
+
+\begin{conclusion}[Bethe 平衡方程的“极点消去”刻画：Riccati 量的无锚极点充要条件]\label{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium}
+取互异点 \(p_k=\gamma_k-\mathrm{i}a_k\in\CC_{-}\)（\(a_k>0\)）并设
+\[
+A(z):=\prod_{k=1}^{\kappa}(z-p_k)(z-\overline{p_k})\in\RR[z].
+\]
+取互异实点 \(x_1,\dots,x_\kappa\in\RR\)，令
+\[
+y(z):=\prod_{j=1}^{\kappa}(z-x_j),\qquad
+W(z):=\frac{y'(z)}{y(z)}=\sum_{j=1}^{\kappa}\frac{1}{z-x_j}.
+\]
+定义 Riccati 量
+\[
+R(z):=W'(z)+W(z)^2-\frac{A'(z)}{A(z)}W(z).
+\]
+则对每个 \(i\in\{1,\dots,\kappa\}\)，\(R\) 在 \(z=x_i\) 的主部为
+\[
+R(z)=\frac{2\sum_{j\ne i}\frac{1}{x_i-x_j}-\frac{A'(x_i)}{A(x_i)}}{z-x_i}+O(1).
+\]
+因此下列两条件等价：
+\begin{enumerate}
+  \item \(R\) 在全部锚点 \(\{x_i\}\) 处解析（即无锚极点）；
+  \item 对全部 \(i\) 成立严格平衡方程
+  \[
+  2\sum_{j\ne i}\frac{1}{x_i-x_j}
+  =\frac{A'(x_i)}{A(x_i)}
+  =\sum_{k=1}^{\kappa}\left(\frac{1}{x_i-p_k}+\frac{1}{x_i-\overline{p_k}}\right)
+  =2\sum_{k=1}^{\kappa}\Re\frac{1}{x_i-p_k}.
+  \]
+\end{enumerate}
+并且当上述等价条件成立时，\(R\) 的奇点仅可能来自 \(\frac{A'}{A}\)，即 \(\{p_k,\overline{p_k}\}\)，且皆为至多一阶极点；同时 \(R(z)=O(z^{-2})\)（\(z\to\infty\)）。
+从而存在唯一多项式 \(B\in\RR[z]\)（\(\deg B\le 2\kappa-2\)）使
+\[
+R(z)=\frac{B(z)}{A(z)},
+\qquad\text{并且}\qquad
+A(z)y''(z)-A'(z)y'(z)=B(z)y(z).
+\]
+\end{conclusion}
+\begin{proof}[证明]
+在 \(z\to x_i\) 时，
+\[
+W(z)=\frac{1}{z-x_i}+S_i+O(z-x_i),\qquad S_i:=\sum_{j\ne i}\frac{1}{x_i-x_j},
+\]
+从而
+\[
+W'(z)+W(z)^2
+=-\frac{1}{(z-x_i)^2}+\frac{1}{(z-x_i)^2}+\frac{2S_i}{z-x_i}+O(1)
+=\frac{2S_i}{z-x_i}+O(1).
+\]
+又因 \(A(x_i)\neq 0\) 且 \(\frac{A'}{A}\) 在 \(x_i\) 处解析，故
+\[
+\frac{A'(z)}{A(z)}W(z)=\frac{A'(x_i)}{A(x_i)}\cdot\frac{1}{z-x_i}+O(1),
+\]
+相减即得主部公式，因而两条件等价。
+\par
+若 \(R\) 在 \(\{x_i\}\) 无极点，则 \(R\) 的奇点仅可能来自 \(\frac{A'}{A}\)，即 \(\{p_k,\overline{p_k}\}\)，并且至多为一阶极点。
+又由
+\(
+W(z)=\kappa z^{-1}+O(z^{-2})
+\)
+与
+\(
+\frac{A'(z)}{A(z)}=2\kappa z^{-1}+O(z^{-2})
+\)
+得 \(R(z)=O(z^{-2})\)。
+令 \(B:=AR\)，则 \(B\) 为多项式且 \(\deg B\le \deg A-2=2\kappa-2\)。
+最后，\(\deg B<\deg A\) 下的有理分解唯一性给出 \(B\) 的唯一性；而恒等式
+\(
+A y''-A'y'=By
+\)
+由
+\(
+W'+W^2=y''/y
+\)
+与 \(R=B/A\) 直接推出。证毕。
+\end{proof}
+
+\begin{conclusion}[Van Vleck 比值的纯留数表示：\texorpdfstring{$B/A$}{B/A} 的完全显式部分分式与多项式重构]\label{con:xi-terminal-van-vleck-ratio-residue-partial-fraction-reconstruction}
+在结论 \ref{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium} 的等价条件成立时，令
+\[
+r_k:=\operatorname*{Res}_{z=p_k}\frac{B(z)}{A(z)}=\frac{B(p_k)}{A'(p_k)}\in\CC.
+\]
+则有严格恒等式
+\[
+\frac{B(z)}{A(z)}=\sum_{k=1}^{\kappa}\left(\frac{r_k}{z-p_k}+\frac{\overline{r_k}}{z-\overline{p_k}}\right),
+\qquad
+r_k=-\frac{y'(p_k)}{y(p_k)}=-\sum_{j=1}^{\kappa}\frac{1}{p_k-x_j}.
+\]
+从而 \(B\) 可由锚点数据显式重构为
+\[
+B(z)=
+-\sum_{k=1}^{\kappa}A(z)\left(
+\frac{y'(p_k)}{y(p_k)}\cdot\frac{1}{z-p_k}
+\;+\;
+\frac{\overline{y'(p_k)}}{\overline{y(p_k)}}\cdot\frac{1}{z-\overline{p_k}}
+\right).
+\]
+\end{conclusion}
+\begin{proof}[证明]
+由结论 \ref{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium}，\(\deg B\le 2\kappa-2\) 且 \(\deg A=2\kappa\) 蕴含 \(B/A=O(z^{-2})\)。
+因此其部分分式展开无常数项且仅含一阶极点，唯一地写为各极点留数之和；实系数保证 \(\overline{r_k}\) 为 \(\overline{p_k}\) 处留数。
+又由方程 \(Ay''-A'y'=By\) 在 \(z=p_k\) 处取值（\(A(p_k)=0\)、\(A'(p_k)\neq 0\)）得
+\[
+-A'(p_k)y'(p_k)=B(p_k)y(p_k)\quad\Longrightarrow\quad r_k=\frac{B(p_k)}{A'(p_k)}=-\frac{y'(p_k)}{y(p_k)}.
+\]
+最后 \(y'/y=\sum_j(z-x_j)^{-1}\) 代入 \(z=p_k\) 即得 \(r_k=-\sum_j(p_k-x_j)^{-1}\)。
+将部分分式两边乘以 \(A\) 得重构公式。证毕。
+\end{proof}
+
+\begin{conclusion}[势的一阶系数的结果式--Vandermonde 表示：\texorpdfstring{$\tau$}{tau}-梯度恒等式]\label{con:xi-terminal-potential-tau-gradient-resultant-vandermonde}
+沿用结论 \ref{con:xi-terminal-heine-stieltjes-schrodinger-reduction-local-exponent-rigidity} 与
+结论 \ref{con:xi-terminal-heine-stieltjes-pole-expansion-renormalization-sum-rules} 的记号。
+设 Schr\"odinger 势在 \(\{p_k,\overline{p_k}\}\) 的部分分式展开为
+\[
+U(z)=-\frac{3}{4}\sum_{k=1}^{\kappa}\left(\frac{1}{(z-p_k)^2}+\frac{1}{(z-\overline{p_k})^2}\right)
++\sum_{k=1}^{\kappa}\left(\frac{c_k}{z-p_k}+\frac{\overline{c_k}}{z-\overline{p_k}}\right),
+\]
+并记扩展极点集
+\(
+\mathcal P:=\{p_1,\dots,p_\kappa,\overline{p_1},\dots,\overline{p_\kappa}\}
+\)。
+定义 Vandermonde
+\[
+\Delta(\mathcal P):=\prod_{\substack{u,v\in\mathcal P\\ u<v}}(u-v),
+\]
+以及结果式
+\[
+\operatorname{Res}(y,A):=\prod_{k=1}^{\kappa}y(p_k)y(\overline{p_k})
+=\prod_{k=1}^{\kappa}|y(p_k)|^2.
+\]
+则对每个 \(k\)（把 \(\overline{p_1},\dots,\overline{p_\kappa}\) 视为常量，仅对 \(p_k\) 作复导数）有严格恒等式
+\[
+\boxed{\;
+c_k=\frac{\partial}{\partial p_k}\left(\log \operatorname{Res}(y,A)-\log|\Delta(\mathcal P)|\right). \;}
+\]
+\end{conclusion}
+\begin{proof}[证明]
+由结论 \ref{con:xi-terminal-heine-stieltjes-pole-expansion-renormalization-sum-rules}，
+\(
+c_k=-r_k-\tfrac12 s_k
+\)
+且由方程 \(Ay''-A'y'=By\) 在 \(z=p_k\) 处取值（\(A(p_k)=0\)、\(A'(p_k)\neq 0\)）得
+\[
+-A'(p_k)y'(p_k)=B(p_k)y(p_k),
+\]
+故 \(r_k=B(p_k)/A'(p_k)=-y'(p_k)/y(p_k)\)，从而
+\[
+c_k=\frac{y'(p_k)}{y(p_k)}-\frac12 s_k.
+\]
+另一方面，
+\[
+\frac{\partial}{\partial p_k}\log\operatorname{Res}(y,A)
+=\frac{\partial}{\partial p_k}\log|y(p_k)|^2
+=\frac{y'(p_k)}{y(p_k)}.
+\]
+并且对 \(\Delta(\mathcal P)\)，由对数导数得
+\[
+\frac{\partial}{\partial p_k}\log \Delta(\mathcal P)
+=\sum_{\substack{u\in\mathcal P\\ u\neq p_k}}\frac{1}{p_k-u}
+=s_k.
+\]
+于是
+\(
+\frac{\partial}{\partial p_k}\log|\Delta(\mathcal P)|
+=\tfrac12 s_k
+\)，代回即得结论。证毕。
+\end{proof}
+

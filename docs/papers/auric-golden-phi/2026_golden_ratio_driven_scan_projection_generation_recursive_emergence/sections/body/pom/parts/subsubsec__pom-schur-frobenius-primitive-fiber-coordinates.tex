@@ -1,0 +1,212 @@
+% (User input window)
+% 2026-02-14 15:40:23（Asia/Singapore）
+
+\paragraph{Frobenius 特征与原始纤维坐标：Schur 断层的整性、Euler 分解与模 \texorpdfstring{$p$}{p} 可审计直方图}
+本段把定理 \ref{thm:pom-schur-cycle-index-tomography} 的角色加权显式式进一步压缩为对称函数恒等式：
+Schur 通道迹在严格意义上等同于“纤维多重度对角矩阵”的 Schur 多项式取值。
+该识别一方面给出整性与可审计整除性，另一方面允许以单一生成函数导出 Euler 分解与原始纤维坐标，
+并据此得到由高阶碰撞矩恢复 \(d_m\bmod p\) 直方图的严格反演公式。
+
+\begin{corollary}[Schur 通道迹的 Frobenius--特征标识别：等变 MOM 的输出即 \texorpdfstring{$\mathrm{GL}$}{GL}-迹]\label{cor:pom-schur-trace-frobenius-character-identification}
+在分辨率 \(m\) 上，设稳定类型集 \(X_m\) 与纤维多重度 \(d_m:X_m\to\NN\) 已定，令碰撞矩
+\[
+S_r(m):=\sum_{x\in X_m} d_m(x)^r\qquad(r\ge 1).
+\]
+定义对角矩阵
+\[
+D_m:=\mathrm{diag}\bigl(d_m(x)\bigr)_{x\in X_m}.
+\]
+对固定整数 \(q\ge 2\) 与任意 \(\lambda\vdash q\)，令 \(T_{q,\lambda}(m)\) 为定理 \ref{thm:pom-schur-cycle-index-tomography} 的 Schur 通道迹。
+记 \(s_\lambda\) 为 Schur 对称函数，并以 \(D_m\) 的对角元作为变量取值；其幂和满足
+\[
+p_r(D_m):=\Tr(D_m^r)=S_r(m).
+\]
+则成立恒等式
+\[
+\boxed{\;
+T_{q,\lambda}(m)=f^\lambda\, s_\lambda(D_m)\; } ,
+\qquad f^\lambda:=\dim S^\lambda.
+\]
+从而对每个 \((m,q,\lambda)\) 都有整性与可审计整除性：
+\[
+\frac{T_{q,\lambda}(m)}{f^\lambda}=s_\lambda(D_m)\in\ZZ,
+\qquad\text{并因此}\qquad
+f^\lambda\mid T_{q,\lambda}(m).
+\]
+特别地，平凡通道与符号通道分别满足
+\[
+T_{q,(q)}(m)=h_q(D_m),\qquad
+T_{q,(1^q)}(m)=e_q(D_m),
+\]
+其中 \(h_q,e_q\) 为完全对称与基本对称函数。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-schur-cycle-index-tomography}，
+\[
+\frac{T_{q,\lambda}(m)}{f^\lambda}
+=\frac{1}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\prod_{r\ge 1}S_r(m)^{c_r(\sigma)}.
+\]
+而 Frobenius 特征同构给出 Schur 函数的幂和展开
+\[
+s_\lambda=\frac{1}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\prod_{r\ge 1}p_r^{c_r(\sigma)}.
+\]
+代入 \(p_r=p_r(D_m)=S_r(m)\) 即得 \(T_{q,\lambda}(m)=f^\lambda s_\lambda(D_m)\)。
+由于 \(s_\lambda\) 为整系数对称多项式且 \(D_m\) 的对角元为整数，故 \(s_\lambda(D_m)\in\ZZ\)，从而 \(f^\lambda\mid T_{q,\lambda}(m)\)。
+最后两式为 Schur 函数在 \(\lambda=(q)\)、\(\lambda=(1^q)\) 的特例。证毕。
+\end{proof}
+
+\begin{proposition}[单一生成函数控制全 Schur 断层：Jacobi--Trudi 与原始纤维坐标的 Euler 分解]\label{prop:pom-schur-trace-jacobi-trudi-euler-primitive-fiber}
+令一元生成函数
+\[
+H_m(z):=\sum_{q\ge 0}h_q(D_m)\,z^q
+=\prod_{x\in X_m}\frac{1}{1-d_m(x)z}
+=\exp\!\left(\sum_{r\ge 1}\frac{S_r(m)}{r}z^r\right).
+\]
+则对任意 \(\lambda\vdash q\) 有 Jacobi--Trudi 确定式表达
+\[
+\boxed{\;
+s_\lambda(D_m)=\det\bigl(h_{\lambda_i-i+j}(D_m)\bigr)_{1\le i,j\le \ell(\lambda)}\;}
+\]
+（约定 \(h_0=1,h_k=0\ (k<0)\)）。
+\par
+进一步，引入原始纤维坐标
+\[
+b_n(m):=\frac{1}{n}\sum_{d\mid n}\mu(d)\,S_{n/d}(m)\qquad(n\ge 1),
+\]
+则存在严格 Euler 分解
+\[
+\boxed{\;
+H_m(z)=\prod_{n\ge 1}(1-z^n)^{-b_n(m)}\;}
+\]
+并且 \(b_n(m)\in\ZZ_{\ge 0}\)。
+若令有向多重图 \(G_m\) 的顶点集为 \(X_m\)，并在每个顶点 \(x\) 上附加恰好 \(d_m(x)\) 条带标签自环，
+则 \(S_n(m)=\Tr(A(G_m)^n)\) 为长度 \(n\) 闭路数，且 \(b_n(m)\) 正是该图中长度 \(n\) 的原始闭路数（按循环移位取商）。
+\end{proposition}
+\begin{proof}
+生成函数的乘积式由 \(h_q\) 的定义（完全对称函数的基本生成函数）给出；
+对数后用
+\(
+\log(1-t)^{-1}=\sum_{r\ge 1}t^r/r
+\)
+并代入 \(p_r(D_m)=S_r(m)\) 得指数式。
+Jacobi--Trudi 为 Schur 函数的标准确定式表达。
+\par
+Euler 分解由指数式与幂级数恒等式推得：
+\[
+\log\prod_{n\ge 1}(1-z^n)^{-b_n}
+=\sum_{n\ge 1}b_n\sum_{k\ge 1}\frac{z^{nk}}{k}
+=\sum_{r\ge 1}\frac{1}{r}\left(\sum_{n\mid r}n b_n\right)z^r.
+\]
+令 \(\sum_{n\mid r}n b_n=S_r(m)\) 并作 Möbius 反演即得 \(b_n(m)\) 的公式。
+整性由反演系数为整数给出；非负性可由图 \(G_m\) 的闭路与 primitive 闭路分解（necklace 分解）解释：长度 \(n\) 的闭路按最小周期分解，primitive 计数满足 \(S_n=\sum_{d\mid n} d\,b_d\)。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$p$}{p}-典型 Frobenius 同余与 Teichm\"uller 极限：由高阶碰撞矩恢复 \texorpdfstring{$d_m\bmod p$}{d\_m mod p} 的完整直方图]\label{prop:pom-collision-moment-ptypical-congruence-teichmuller-histogram}
+取素数 \(p\) 并固定 \(m\)。
+\begin{enumerate}
+  \item 对任意整数 \(k\ge 1\) 成立同余
+  \[
+  \boxed{\;
+  S_{p^k}(m)\equiv S_{p^{k-1}}(m)\pmod{p^k}\;}
+  \]
+  从而序列 \(\{S_{p^k}(m)\}_{k\ge 0}\) 在 \(\ZZ_p\) 中为 Cauchy 列，极限
+  \(
+  S_{p^\infty}(m):=\lim_{k\to\infty}S_{p^k}(m)\in\ZZ_p
+  \)
+  存在。
+  \item 记 \(\omega_p:\FF_p\to\ZZ_p\) 为 Teichm\"uller 提升（约定 \(\omega_p(0)=0\)，且对 \(a\in\FF_p^\times\) 有 \(\omega_p(a)^{p-1}=1\) 与 \(\omega_p(a)\equiv a\ (\mathrm{mod}\ p)\)）。
+  对任意 \(j\in\{1,\dots,p-2\}\)，极限
+  \[
+  U_j(m):=\lim_{k\to\infty}S_{j p^k}(m)\in\ZZ_p
+  \]
+  存在且满足恒等式
+  \[
+  \boxed{\;
+  U_j(m)=\sum_{x\in X_m}\omega_p\!\bigl(d_m(x)\bigr)^j\;}
+  \]
+  （右端在 \(\ZZ_p\) 中求和）。
+  另外定义
+  \[
+  U_0(m):=\lim_{k\to\infty}S_{(p-1)p^k}(m)=\sum_{x\in X_m}\omega_p\!\bigl(d_m(x)\bigr)^{p-1}\in\ZZ
+  \]
+  （该值等于 \(\card{\{x\in X_m:\ p\nmid d_m(x)\}}\)，对应于 \(\FF_p^\times\) 的平凡乘法角色按 \(0\mapsto 0\) 的延拓）。
+  令模 \(p\) 直方图
+  \[
+  N_a(m):=\card{\{x\in X_m:\ d_m(x)\equiv a\ (\mathrm{mod}\ p)\}}\qquad(a\in\FF_p),
+  \]
+  则对任意 \(a\in\FF_p^\times\) 有有限 Fourier 反演
+  \[
+  \boxed{\;
+  N_a(m)=\frac{1}{p-1}\left(U_0(m)+\sum_{j=1}^{p-2}a^{-j}\,U_j(m)\right),\qquad
+  N_0(m)=|X_m|-\sum_{a\in\FF_p^\times}N_a(m)\;}
+  \]
+  从而在不接触单点纤维的前提下，仅通过一族高阶碰撞矩沿 \(n=j p^k\)（\(1\le j\le p-2\)）与 \(n=(p-1)p^k\)（\(k\to\infty\)）的取值，即可严格恢复 \(d_m\bmod p\) 的完整计数。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+对任意整数 \(a\) 有基本同余 \(a^{p^k}\equiv a^{p^{k-1}}\ (\mathrm{mod}\ p^k)\)；对每个 \(x\) 取 \(a=d_m(x)\) 并求和即得 (1)。
+\par
+对 (2)：对任意整数 \(t\)，\(t^{p^k}\) 在 \(\ZZ_p\) 中收敛到 \(\omega_p(t\bmod p)\)。
+因此对 \(1\le j\le p-2\) 有 \(t^{j p^k}=(t^j)^{p^k}\to \omega_p(t)^j\)，而
+\(
+t^{(p-1)p^k}=(t^{p-1})^{p^k}\to \omega_p(t)^{p-1}
+\)（当 \(t\equiv 0\ (\mathrm{mod}\ p)\) 时极限为 \(0\)，当 \(t\not\equiv 0\) 时极限为 \(1\)）。
+逐项求和即得 \(U_j(m)\)（\(1\le j\le p-2\)）与 \(U_0(m)\) 的表示式。
+\par
+最后在乘法群 \(\FF_p^\times\) 上对函数 \(a\mapsto N_a(m)\) 作离散 Fourier 反演：由上式，
+对 \(1\le j\le p-2\) 有
+\(
+U_j(m)=\sum_{a\in\FF_p^\times}N_a(m)\omega_p(a)^j
+\)，而 \(U_0(m)=\sum_{a\in\FF_p^\times}N_a(m)\) 对应平凡角色。
+对固定 \(a\in\FF_p^\times\) 求和
+\(
+U_0+\sum_{j=1}^{p-2}a^{-j}U_j
+=\sum_{b\in\FF_p^\times}N_b\sum_{j=0}^{p-2}(b/a)^j
+=(p-1)N_a
+\)
+即得反演公式；\(N_0\) 由总数守恒得到。证毕。
+\end{proof}
+
+\begin{proposition}[平凡通道的原始纤维展开：\texorpdfstring{$T_{q,(q)}(m)$}{T\_{q,(q)}(m)} 为 \texorpdfstring{$b_n(m)$}{b\_n(m)} 的正整系数多项式]\label{prop:pom-schur-trace-trivial-channel-primitive-fiber-expansion}
+沿用命题 \ref{prop:pom-schur-trace-jacobi-trudi-euler-primitive-fiber} 的 Euler 分解
+\(
+H_m(z)=\prod_{n\ge 1}(1-z^n)^{-b_n(m)}=\sum_{q\ge 0}h_q(D_m)z^q
+\)。
+记平凡通道 \(T_{q,(q)}(m)=h_q(D_m)\)。
+则系数抽取给出完全显式有限和：
+\[
+\boxed{\;
+T_{q,(q)}(m)=
+\sum_{\substack{(k_n)_{n\ge 1}\subset\NN\\ \sum_{n\ge 1}n k_n=q}}
+\ \prod_{n\ge 1}\binom{b_n(m)+k_n-1}{k_n}\;}
+\]
+从而对固定 \(m\)，\(T_{q,(q)}(m)\) 是 \(\{b_n(m)\}_{1\le n\le q}\) 的正整系数多项式。
+\end{proposition}
+\begin{proof}
+由 Euler 分解
+\(
+(1-z^n)^{-b_n}=\sum_{k\ge 0}\binom{b_n+k-1}{k}z^{nk}
+\)。
+对全部 \(n\ge 1\) 取乘积并抽取 \(z^q\) 系数，得到对所有满足 \(\sum n k_n=q\) 的 \((k_n)\) 求和的闭式，即所示表达。证毕。
+\end{proof}
+
+\begin{corollary}[全 Schur 通道的原始纤维坐标化：\texorpdfstring{$T_{q,\lambda}(m)/f^\lambda\in\ZZ[b_1(m),\dots,b_q(m)]$}{T/f in Z[b]} 且可由有限确定式构造]\label{cor:pom-schur-trace-all-channels-primitive-fiber-coordinate}
+在命题 \ref{prop:pom-schur-trace-jacobi-trudi-euler-primitive-fiber} 的记号下，
+对任意 \(\lambda\vdash q\)，Jacobi--Trudi 确定式给出
+\[
+\frac{T_{q,\lambda}(m)}{f^\lambda}
+=s_\lambda(D_m)
+=\det\bigl(h_{\lambda_i-i+j}(D_m)\bigr)_{1\le i,j\le \ell(\lambda)}.
+\]
+而每个 \(h_n(D_m)\) 由命题 \ref{prop:pom-schur-trace-trivial-channel-primitive-fiber-expansion} 是 \(\{b_r(m)\}_{r\le n}\) 的整系数多项式，
+故
+\[
+\boxed{\;
+\frac{T_{q,\lambda}(m)}{f^\lambda}\in \ZZ[b_1(m),\dots,b_q(m)]\;}
+\]
+并由一次有限确定式计算可显式构造全部 Schur 通道迹。
+\end{corollary}
+\begin{proof}
+将 \(h_{\lambda_i-i+j}(D_m)\) 的 \(b\)-坐标多项式表示逐项代入 Jacobi--Trudi 确定式即可。证毕。
+\end{proof}
+
