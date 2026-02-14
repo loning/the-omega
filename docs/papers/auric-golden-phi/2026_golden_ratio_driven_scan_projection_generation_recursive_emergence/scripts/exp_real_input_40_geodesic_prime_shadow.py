@@ -8,6 +8,7 @@ build the edge-edge transition family H(t) with a backtracking fugacity t,
 and export:
 
 - the non-backtracking determinant det(I - z H(0)),
+- the non-backtracking roots z_j of det(I - z H(0)) and the strict Ramanujan margin,
 - the first primitive counts p_n^{nb},
 - the geodesic Mertens constant (Abel finite part),
 - the Bartholdi-type 2-variable determinant factorization
@@ -171,6 +172,27 @@ def main() -> None:
     rho_real = sorted([sp.re(r) for r in rho_roots if abs(sp.im(r)) < sp.Float("1e-40")])[-1]
     rho_nb = sp.N(rho_real, 50)
 
+    # Roots of det(I - z H_nb) and strict Ramanujan margin
+    z_roots = sp.nroots(det_nb_poly.as_expr(), n=80, maxsteps=200)
+    z_star_sym = sp.N(1 / rho_nb, 80)
+
+    def _cabs80(x: sp.Expr) -> float:
+        return abs(complex(sp.N(x, 80)))
+
+    # Identify the Perron reciprocal root via proximity to z_star
+    z_root1 = min(z_roots, key=lambda r: _cabs80(r - z_star_sym))
+    # Second-smallest modulus root (excluding z_root1 instance)
+    z_roots_sorted = sorted(z_roots, key=_cabs80)
+    z1_idx = min(range(len(z_roots_sorted)), key=lambda i: _cabs80(z_roots_sorted[i] - z_root1))
+    z_roots_wo_z1 = z_roots_sorted[:z1_idx] + z_roots_sorted[z1_idx + 1 :]
+    z_root2 = z_roots_wo_z1[0]
+
+    abs_z1 = sp.N(sp.Abs(z_root1), 50)
+    abs_z2 = sp.N(sp.Abs(z_root2), 50)
+    Lambda_nb = sp.N(1 / abs_z2, 50)
+    ratio_nb = sp.N(Lambda_nb / sp.sqrt(rho_nb), 50)
+    delta_nb = sp.N(sp.log(Lambda_nb**2 / rho_nb), 50)
+
     # Primitive counts
     a_n, p_n = _traces_and_primitives(H_nb=H_nb_np, max_n=args.max_n, prog=prog)
 
@@ -262,6 +284,17 @@ def main() -> None:
             "poly_str": str(det_nb_poly.as_expr()),
             "degree_z": int(det_nb_poly.degree()),
             "coeffs_low_to_high": det_nb_coeffs,
+        },
+        "det_nb_roots": {
+            "z_star": str(sp.N(z_star_sym, 50)),
+            "roots_sorted_by_abs": [str(sp.N(r, 50)) for r in z_roots_sorted],
+            "z1": str(sp.N(z_root1, 50)),
+            "z2": str(sp.N(z_root2, 50)),
+            "abs_z1": str(abs_z1),
+            "abs_z2": str(abs_z2),
+            "Lambda_nb": str(Lambda_nb),
+            "Lambda_over_sqrt_rho_nb": str(ratio_nb),
+            "delta_nb": str(delta_nb),
         },
         "char_nb_rho": {"poly_str": str(char_nb)},
         "rho_nb": str(rho_nb),

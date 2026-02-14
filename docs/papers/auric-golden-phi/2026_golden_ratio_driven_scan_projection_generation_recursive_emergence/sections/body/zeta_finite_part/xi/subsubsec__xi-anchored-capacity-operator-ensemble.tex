@@ -73,6 +73,80 @@
 若逼近上界，则必须同时逼近 \(\rho\)-项的上界与 AM--GM 的等号条件，给出（i）与（ii）。证毕。
 \end{proof}
 
+\begin{corollary}[锚定容量极值的定量稳定性：权重均匀化与最小分离度的显式误差界（51）]\label{cor:xi-anchored-capacity-extremal-stability-quant}
+令 \(A=\{a_1,\dots,a_\kappa\}\subset\mathbb{D}\) 为锚定构型，并记端点通量 \(p_j:=P_{a_j}(-1)\)、\(p_{\Sigma}:=\sum_{j=1}^{\kappa}p_j\)。\footnote{据内部文稿 \cite{Internal2025ResolutionFoldingPhiPi}（2025）整理。归档时间戳：2026-02-14 11:15:36（Asia/Singapore）。}
+定义极值亏损
+\[
+\boxed{\;
+\varepsilon(A):=\kappa\log\!\Bigl(\frac{p_{\Sigma}}{\kappa}\Bigr)-\log\det\mathsf P(A)\ \ge\ 0\;}
+\]
+则成立如下定量稳定估计：
+\begin{enumerate}
+  \item 令 \(q_j:=p_j/p_{\Sigma}\)（\(\sum_j q_j=1\)）与均匀分布 \(u_j:=1/\kappa\)。则有
+  \[
+  \boxed{\;
+  \sum_{j=1}^{\kappa}|q_j-u_j|
+  \ \le\ 
+  \sqrt{\frac{2\,\varepsilon(A)}{\kappa}},\qquad
+  \sum_{j=1}^{\kappa}\Bigl|p_j-\frac{p_{\Sigma}}{\kappa}\Bigr|
+  \ \le\
+  p_{\Sigma}\sqrt{\frac{2\,\varepsilon(A)}{\kappa}}\;}
+  \]
+  从而小亏损强迫端点权重在总变差意义下逼近均匀化。
+  \item 记最小分离度 \(\rho_{\min}(A):=\min_{j\ne k}\rho(a_j,a_k)\in(0,1]\)。则有
+  \[
+  \boxed{\;
+  \rho_{\min}(A)\ \ge\ \exp\!\Bigl(-\frac{\varepsilon(A)}{\kappa(\kappa-1)}\Bigr).\;}
+  \]
+  特别地，若 \(\varepsilon(A)=o(\kappa^2)\)，则必有 \(\rho_{\min}(A)\to 1\)，即极值逼近强迫点对渐近分离。
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+由行列式分解（命题 \ref{prop:xi-pick-poisson-det-factorization}）
+\[
+\log\det\mathsf P(A)
+=\sum_{j=1}^{\kappa}\log p_j+2\sum_{1\le j<k\le \kappa}\log\rho(a_j,a_k),
+ \qquad \rho(a_j,a_k)\in(0,1],
+\]
+从而
+\[
+\varepsilon(A)
+=\underbrace{\kappa\log\!\Bigl(\frac{p_{\Sigma}}{\kappa}\Bigr)-\sum_{j=1}^{\kappa}\log p_j}_{=:\,\varepsilon_w\ \ge\ 0}
+\;+\;
+\underbrace{\Bigl(-2\sum_{j<k}\log\rho(a_j,a_k)\Bigr)}_{=:\,\varepsilon_\rho\ \ge\ 0},
+\qquad \varepsilon_w,\varepsilon_\rho\le \varepsilon(A).
+\]
+令 \(q_j=p_j/p_{\Sigma}\)、\(u_j=1/\kappa\)。则
+\[
+\varepsilon_w=\sum_{j=1}^{\kappa}\log\!\Bigl(\frac{p_{\Sigma}/\kappa}{p_j}\Bigr)
+=\sum_{j=1}^{\kappa}\log\!\Bigl(\frac{u_j}{q_j}\Bigr)
+=\kappa\,D(u\Vert q),
+\]
+其中 \(D(u\Vert q)=\sum_j u_j\log(u_j/q_j)\) 为 KL 散度。由 Pinsker 不等式
+\(\|u-q\|_1\le\sqrt{2D(u\Vert q)}\)
+得
+\[
+\sum_{j=1}^{\kappa}|q_j-u_j|
+\le
+\sqrt{\frac{2\,\varepsilon_w}{\kappa}}
+\le
+\sqrt{\frac{2\,\varepsilon(A)}{\kappa}},
+\]
+乘以 \(p_{\Sigma}\) 即得第一条的第二个不等式。
+\par
+对第二条，由 \(\rho(a_j,a_k)\ge\rho_{\min}(A)\) 得
+\[
+\varepsilon_\rho
+=-2\sum_{j<k}\log\rho(a_j,a_k)
+\ge
+-2\binom{\kappa}{2}\log\rho_{\min}(A)
+=\kappa(\kappa-1)\bigl(-\log\rho_{\min}(A)\bigr).
+\]
+又 \(\varepsilon_\rho\le \varepsilon(A)\)，故
+\(-\log\rho_{\min}(A)\le \varepsilon(A)/(\kappa(\kappa-1))\)，即得到所示下界。证毕。
+\end{proof}
+
 \begin{proposition}[交叉互能的高斯互信息表述：并集缺口等于对数行列式互信息]\label{prop:xi-cross-energy-gaussian-mutual-information}
 令 \(A\sqcup B\) 为互不交叠并集（按重数计），并将 \(\mathsf P(A\cup B)\) 视为分块协方差矩阵。
 取\emph{适当的}复高斯向量 \(Z_{A\cup B}\sim\mathcal N_{\CC}(0,\mathsf P(A\cup B))\)，并令 \(Z_A,Z_B\) 为其在两块上的分量。
@@ -155,7 +229,7 @@ L_\kappa(\varphi)=\sum_{j=1}^{\kappa}\varphi(t_j)
 两边取指数即得所示结论。证毕。
 \end{proof}
 
-\begin{corollary}[交叉互能的显式下界：由最小分离度的乘法封口]\label{cor:xi-cross-energy-lower-bound-by-min-separation}
+\begin{corollary}[宏观分裂的 \texorpdfstring{$\kappa^2$}{k^2} 级行列式塌缩：交叉互能下界给出的指数压缩律（52）]\label{cor:xi-cross-energy-lower-bound-by-min-separation}
 对并集 \(A\sqcup B\) 的交叉互能 \(\mathcal I(A;B)\)（命题 \ref{prop:xi-cross-energy-gaussian-mutual-information}），记
 \(
 \rho_{\min}(A,B):=\min_{a\in A,b\in B}\rho(a,b)
@@ -168,11 +242,61 @@ L_\kappa(\varphi)=\sum_{j=1}^{\kappa}\varphi(t_j)
 \ \ge\
 2\,|A|\,|B|\cdot\bigl(-\log\rho_{\min}(A,B)\bigr).\;}
 \]
+从而由 \(\mathcal I(A;B)\) 的定义得到严格压缩律
+\[
+\boxed{\;
+\det\mathsf P(A\cup B)
+=\det\mathsf P(A)\det\mathsf P(B)\,e^{-\mathcal I(A;B)}
+\ \le\
+\det\mathsf P(A)\det\mathsf P(B)\,\rho_{\min}(A,B)^{2|A||B|}\; }.
+\]
+特别地，若存在常数 \(\rho_0<1\) 使 \(\rho_{\min}(A,B)\le \rho_0\)，且 \(|A|\) 与 \(|B|\) 同阶增长，则相对塌缩比值满足
+\(
+\det\mathsf P(A\cup B)\big/(\det\mathsf P(A)\det\mathsf P(B))
+\le \exp(-c\,|A||B|)
+\),
+其中 \(c=-2\log\rho_0>0\)，从而在宏观分裂 regime 中出现 \(\exp(-\Theta(\kappa^2))\) 级别的指数塌缩。
 \end{corollary}
 \begin{proof}[证明要点]
 由命题 \ref{prop:xi-pick-poisson-union-submultiplicativity-cross-energy} 的恒等式
 \(\mathcal I(A;B)=2\sum_{a\in A,b\in B}(-\log\rho(a,b))\)，并用
-\(-\log\rho(a,b)\ge -\log\rho_{\min}(A,B)\) 即得。证毕。
+\(-\log\rho(a,b)\ge -\log\rho_{\min}(A,B)\) 即得第一条不等式。
+将 \(\mathcal I(A;B)=-\log\det\mathsf P(A\cup B)+\log\det\mathsf P(A)+\log\det\mathsf P(B)\) 重写为
+\(
+\det\mathsf P(A\cup B)=\det\mathsf P(A)\det\mathsf P(B)e^{-\mathcal I(A;B)}
+\)，
+并代入 \(\mathcal I(A;B)\ge 2|A||B|(-\log\rho_{\min})\) 即得压缩律。证毕。
+\end{proof}
+
+\begin{corollary}[多块分裂的行列式指数塌缩：\texorpdfstring{$\kappa^2$}{k^2} 级压缩的全分区版本]\label{cor:xi-pick-poisson-det-multipartition-kappa2-collapse}
+设有限锚定集合 \(A\) 分解为互不交并集 \(A=\biguplus_{r=1}^{R}A_r\)，并记 \(\kappa_r:=|A_r|\)。
+在命题 \ref{prop:xi-pick-poisson-det-factorization} 的行列式分解制度下，恒有精确分解
+\[
+\boxed{\;
+\det\mathsf P(A)
+=\Bigl(\prod_{r=1}^{R}\det\mathsf P(A_r)\Bigr)\,
+\prod_{1\le r<s\le R}\ \prod_{a\in A_r,\ b\in A_s}\rho(a,b)^{2}\; }.
+\]
+从而得到统一上界：令
+\(
+\rho_{\min}(A_r,A_s):=\min_{a\in A_r,\ b\in A_s}\rho(a,b)
+\)，则
+\[
+\boxed{\;
+\det\mathsf P(A)\ \le\
+\Bigl(\prod_{r=1}^{R}\det\mathsf P(A_r)\Bigr)\,
+\prod_{1\le r<s\le R}\rho_{\min}(A_r,A_s)^{2\kappa_r\kappa_s}\; }.
+\]
+特别地，若存在常数 \(\rho_0<1\) 使对所有 \(r<s\) 有 \(\rho_{\min}(A_r,A_s)\le\rho_0\)，则
+\[
+\det\mathsf P(A)\ \le\ \Bigl(\prod_{r=1}^{R}\det\mathsf P(A_r)\Bigr)\,
+\exp\!\Bigl(-2(-\log\rho_0)\sum_{1\le r<s\le R}\kappa_r\kappa_s\Bigr),
+\]
+呈现普适的 \(\kappa^2\)-级指数塌缩律。
+\end{corollary}
+\begin{proof}
+将 \(\prod_{a<b}\rho(a,b)^2\) 按“块内对”与“跨块对”分解：块内对恰对应 \(\prod_r\det\mathsf P(A_r)/\prod_{a\in A}P_a(-1)\)，跨块对保持显式乘积，从而得到第一式。
+第二式对跨块对逐项应用 \(\rho(a,b)\le \rho_{\min}(A_r,A_s)\) 立得；最后一式由取对数并整理得到。证毕。
 \end{proof}
 
 \begin{remark}[锚定容量的“加法--乘法”会计结构与两种复合方式]\label{rem:xi-anchored-capacity-accounting-structures}

@@ -1,0 +1,277 @@
+% (User input window)
+% 2026-02-14 13:41:27（Asia/Singapore）
+
+\begin{proposition}[四阶核族的偶谱五次闭式与偶谱单纯性]\label{prop:pom-a4t-even-zeta-quintic}
+沿注 \ref{rem:pom-collision-rh-break-a4-threshold}，令 \(A_4(t)\) 为四阶碰撞核族，并定义
+\[
+D_t(z):=\det(I-zA_4(t)).
+\]
+则存在严格恒等式
+\[
+D_t(z)\,D_t(-z)=\det(I-z^2A_4(t)^2)=:E_t(u)\qquad(u=z^2),
+\]
+其中 \(E_t(u)\in\ZZ[t,u]\) 为关于 \(u\) 的五次整系数多项式，并且具有完全显式形式与判别式分解（式 \eqref{eq:collision_kernel_A4_even_zeta_quintic}）。
+特别地，对所有 \(t\ge 0\) 且 \(t\neq 1\)，有 \(\mathrm{Disc}_u(E_t)\neq 0\)，从而 \(E_t(u)\) 的五个根在偶谱层面均为单根；因此在包含 \(t_\star\) 与整数点 \(t=7\) 的参数区间上，偶谱退化不可能作为核版 Newman 贴线破缺的触发机制。
+\end{proposition}
+\begin{proof}
+恒等式来自行列式的乘法性：
+\(
+\det(I-zA)\det(I+zA)=\det\bigl((I-zA)(I+zA)\bigr)=\det(I-z^2A^2)
+\)。
+式 \eqref{eq:collision_kernel_A4_even_zeta_quintic} 给出 \(\mathrm{Disc}_u(E_t)=-256(t-1)^2(t+1)^2Q(t)\)，其中 \(Q(t)\) 的系数全为正，故当 \(t\ge 0\) 时 \(Q(t)>0\)；于是 \(\mathrm{Disc}_u(E_t)=0\) 在该半轴上仅可能发生于 \(t=1\)。
+因此对 \(t\ge 0\) 且 \(t\neq 1\)，\(E_t\) 无重根，偶谱点始终单纯。证毕。
+\end{proof}
+
+\input{sections/generated/eq_collision_kernel_A4_even_zeta_quintic}
+
+\begin{proposition}[完成多项式的扭曲互反与 \texorpdfstring{$\Gamma$}{Gamma}-因子分裂]\label{prop:pom-a4t-even-spectrum-completion-gamma-factorization}
+沿命题 \ref{prop:pom-a4t-even-zeta-quintic}，令
+\[
+E_t(u):=\det(I-uA_4(t)^2)\in\ZZ[t,u],
+\qquad
+\Xi_t(u):=u^5E_t(1/u)+4E_t(u).
+\]
+则存在严格恒等式
+\[
+\boxed{\;
+\Xi_t(u)
+=
+u\,(tu+3u^2-2)\,(tu+4t-5u^2+4u+6)\;}
+\]
+从而 \(\Xi_t(u)\) 在 \(\ZZ[t,u]\) 中完全分裂为一个线性因子与两条二次 \(\Gamma\)-因子。
+\end{proposition}
+\begin{proof}
+由式 \eqref{eq:collision_kernel_A4_even_zeta_quintic} 中的闭式，
+\(E_t(u)=1-(2t+4)u+(t^2-4)u^2+(4t+8)u^3+4u^4-4u^5\)。
+将其代入 \(\Xi_t(u)=u^5E_t(1/u)+4E_t(u)\) 并展开因式分解即可得到所示恒等式。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\Gamma$}{Gamma}-因子反演：由两条二次因子唯一重建偶谱五次多项式]\label{prop:pom-a4t-even-spectrum-gamma-inversion}
+在命题 \ref{prop:pom-a4t-even-spectrum-completion-gamma-factorization} 的记号下，令
+\[
+Q_t(u):=(tu+3u^2-2)(tu+4t-5u^2+4u+6).
+\]
+则偶谱多项式满足精确重建公式
+\[
+\boxed{\;
+E_t(u)=\frac{4u\,Q_t(u)-u^4\,Q_t(1/u)}{15}\ \in\ \ZZ[t,u]\; } .
+\]
+从而分子在 \(\ZZ[t,u]\) 中被 \(15\) 整除为结构性事实。
+\end{proposition}
+\begin{proof}
+命题 \ref{prop:pom-a4t-even-spectrum-completion-gamma-factorization} 给出
+\[
+u^5E_t(1/u)+4E_t(u)=uQ_t(u).
+\]
+将该恒等式在 \(u\mapsto 1/u\) 下重写并乘以 \(u^5\)，得到
+\(
+E_t(u)+4u^5E_t(1/u)=u^4Q_t(1/u)
+\)。
+将两式视为关于未知量 \((E_t(u),u^5E_t(1/u))\) 的线性方程组消元，得到
+\(
+15E_t(u)=4uQ_t(u)-u^4Q_t(1/u)
+\)。
+由于左端为整系数多项式，右端必在 \(\ZZ[t,u]\) 中被 \(15\) 整除，且商即为 \(E_t(u)\)。证毕。
+\end{proof}
+
+\begin{proposition}[Newman 八次证书的曲线交点刻画：Perron 曲线与偶谱嵌入曲线的消元结果式]\label{prop:pom-a4t-newman-resultant-curve-intersection}
+沿注 \ref{rem:pom-collision-rh-break-a4-threshold}，令四阶核族特征多项式为
+\(
+p_t(x)=\det(xI-A_4(t))=x^5-2x^4-tx^3-2x+2
+\)，并将其 Perron 分支写成曲线
+\[
+P_t(r):=r^5-2r^4-tr^3-2r+2=0
+\qquad(r>0).
+\]
+令 \(E_t(u)=\det(I-uA_4(t)^2)\) 如命题 \ref{prop:pom-a4t-even-zeta-quintic}，并定义偶谱嵌入曲线
+\(
+r^5E_t(1/r)=0
+\)。
+则二者关于 \(r\) 的结式消元给出严格恒等式（式 \eqref{eq:collision_kernel_A4_newman_resultant_curve_intersection}）：
+其非平凡因子正是边权阈值的 8 次整系数证书 \(P_4(t)\)（式 \eqref{eq:collision_kernel_A4_edge_weight_threshold}）。
+因此四阶 Newman 临界 \(t_\star\) 可等价刻画为：在排除退化点 \(t=-1\) 后，使得 Perron 曲线与偶谱嵌入曲线在 \((t,r)\)-平面上相交的唯一正参数点。
+\end{proposition}
+\begin{proof}
+由式 \eqref{eq:collision_kernel_A4_newman_resultant_curve_intersection} 的结果式恒等式可知，
+\(\mathrm{Res}_r(P_t(r),r^5E_t(1/r))\) 的零点集合（除去退化因子 \(t=-1\)）与 \(P_4(t)\) 的零点集合一致。
+另一方面，式 \eqref{eq:collision_kernel_A4_edge_weight_threshold} 给出 \(P_4\) 的唯一正实根 \(t_\star\)，从而交点参数在正半轴上唯一。证毕。
+\end{proof}
+
+\input{sections/generated/eq_collision_kernel_A4_newman_resultant_curve_intersection}
+
+\begin{proposition}[Newman 八次阈值的更短消元刻画：两条五次曲线的交点证书]\label{prop:pom-a4t-newman-short-elimination}
+沿命题 \ref{prop:pom-a4t-even-spectrum-gamma-inversion}，定义
+\[
+G_t(r):=4r^4Q_t(1/r)-rQ_t(r).
+\]
+则恒有严格恒等式
+\[
+\boxed{\;G_t(r)=15\,r^5E_t(1/r)\;}
+\]
+从而关于 \(r\) 的结式满足
+\[
+\boxed{\;
+\mathrm{Res}_r\!\bigl(P_t(r),\,G_t(r)\bigr)
+=-2^3\cdot 3^5\cdot 5^5\cdot (t+1)^2\,P_4(t)\;}
+\]
+其中 \(P_4(t)\) 为式 \eqref{eq:collision_kernel_A4_edge_weight_threshold} 中的八次整系数阈值证书。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:pom-a4t-even-spectrum-gamma-inversion} 取 \(u=1/r\) 得
+\[
+E_t(1/r)=\frac{4r^3Q_t(1/r)-Q_t(r)}{15r^4},
+\]
+两边乘以 \(15r^5\) 即得 \(G_t(r)=15r^5E_t(1/r)\)。
+\par
+结式的比例因子由结果式的齐次性给出：若 \(f\) 为次数 \(m\) 多项式，则 \(\mathrm{Res}(f,cg)=c^{m}\mathrm{Res}(f,g)\)。
+这里 \(P_t(r)\) 为关于 \(r\) 的五次多项式，故
+\[
+\mathrm{Res}_r(P_t,\,G_t)=15^5\,\mathrm{Res}_r(P_t,\,r^5E_t(1/r)).
+\]
+再代入式 \eqref{eq:collision_kernel_A4_newman_resultant_curve_intersection} 的恒等式并用 \(15^5=3^5\cdot 5^5\) 化简即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[阈值的互反锁定律：\texorpdfstring{$Q_t$}{Qt} 在临界点处的刚性比例]\label{prop:pom-a4t-newman-reciprocal-locking}
+令 \(t_\star>0\) 为 \(P_4(t)\) 的唯一正实根（式 \eqref{eq:collision_kernel_A4_edge_weight_threshold}）。
+则存在 \(r_\star>1\) 使得同时满足 \(P_{t_\star}(r_\star)=0\) 与 \(G_{t_\star}(r_\star)=0\)；
+后一条件等价于互反锁定关系
+\[
+\boxed{\;
+Q_{t_\star}(r_\star)=4r_\star^{\,3}Q_{t_\star}(1/r_\star)\;}
+\]
+从而 Newman 临界点由一条“正向评估/反向评估”之间的严格三次幂比例平衡刻画。
+\end{proposition}
+\begin{proof}
+令 \(r_\star=\rho(A_4(t_\star))>1\) 为 Perron 分支，故 \(P_{t_\star}(r_\star)=0\)。
+由命题 \ref{prop:pom-a4t-newman-resultant-curve-intersection}，在该临界参数处 Perron 曲线与偶谱嵌入曲线相交，
+从而 \(E_{t_\star}(1/r_\star)=0\)。
+再由命题 \ref{prop:pom-a4t-newman-short-elimination} 的恒等式 \(G_t(r)=15r^5E_t(1/r)\)，得到 \(G_{t_\star}(r_\star)=0\)。
+最后将 \(G_{t_\star}(r_\star)=0\) 展开即为所示互反锁定关系。证毕。
+\end{proof}
+
+% (User input window)
+% 2026-02-14 18:04:07（Asia/Singapore）
+%
+\paragraph{偶谱曲线的二次可解性、Lucas 消元与黄金比例共振塔}
+命题 \ref{prop:pom-a4t-even-zeta-quintic} 与式 \eqref{eq:collision_kernel_A4_even_zeta_quintic} 给出 \(E_t(u)=\det(I-uA_4(t)^2)\) 的整系数闭式。
+将该五次偶谱方程视为 \((t,u)\)-平面中的代数曲线，可进一步推出一条“关于 \(t\) 的二次可解性 \(\Rightarrow\) Lucas 坐标的四次消元 \(\Rightarrow\) 整参数二次分裂 \(\Rightarrow\) \(\varphi\)-幂谱离散共振”的结论链。
+
+\begin{conclusion}[四阶偶谱曲线在 \(t\) 上的二次可解性与平方判别式]\label{con:pom-a4-even-spectrum-t-quadratic}
+沿注 \ref{rem:pom-collision-rh-break-a4-threshold}，令 \(A_4(t)\) 为四阶五态核族，并令
+\[
+E_t(u):=\det(I-uA_4(t)^2)\in\ZZ[t,u]
+\]
+为偶谱多项式（式 \eqref{eq:collision_kernel_A4_even_zeta_quintic}）。
+则对任意固定 \(u\neq 0\)，方程 \(E_t(u)=0\) 等价为关于 \(t\) 的二次方程
+\[
+\boxed{\;
+u^2 t^2+(4u^3-2u)t+\bigl(1-4u-4u^2+8u^3+4u^4-4u^5\bigr)=0\; } .
+\]
+其判别式在 \(\ZZ[u]\) 中完全平方化：
+\[
+\boxed{\;
+\Delta(u):=\mathrm{Disc}_t\!\bigl(E_t(u)\bigr)
+=16u^3(u-1)^2(u+1)^2\; } .
+\]
+因此除退化点 \(u\in\{0,\pm1\}\) 外，偶谱曲线 \(E_t(u)=0\) 在 \(t\)-坐标上给出两条互异代数分支；其分支仅由 \(\sqrt u\) 与 \(u^2-1\) 控制。
+\end{conclusion}
+
+\begin{conclusion}[全局有理参数化：\texorpdfstring{$u=v^2$}{u=v^2} 归一化与支交换对合]\label{con:pom-a4-even-spectrum-rational-param}
+在结论 \ref{con:pom-a4-even-spectrum-t-quadratic} 的记号下，置 \(u=v^2\)（\(v\neq 0\)）。
+则偶谱曲线 \(E_t(u)=0\) 的归一化可由参数 \(v\) 给出，两支解为显式有理函数
+\[
+\boxed{\;
+t_{\pm}(v)= -2v^2+\frac{1}{v^2}\ \pm\ 2\Bigl(v^3-\frac{1}{v}\Bigr)\; } .
+\]
+并且满足严格对称性 \(t_{-}(v)=t_{+}(-v)\)，故支交换由中心对合 \(v\mapsto -v\) 给出；分支退化仅出现在 \(v\in\{0,\pm1,\infty\}\) 的极限处（等价于 \(u\in\{0,\pm1\}\)）。
+因此偶谱曲线的归一化为亏格 \(0\) 的有理曲线。
+\end{conclusion}
+
+\begin{conclusion}[Lucas 坐标消元的四次约束与判别式恒平方]\label{con:pom-a4-even-spectrum-lucas-elimination}
+沿结论 \ref{con:pom-a4-even-spectrum-t-quadratic}，令 \(u\neq 0\) 并记
+\[
+L:=u+u^{-1}.
+\]
+则任意满足 \(E_t(u)=0\) 的点 \((t,u)\) 的投影 \((t,L)\) 必满足四次整系数方程
+\[
+\boxed{\;
+R(t,L)=t^4+2Lt^3+(18+16L-3L^2-4L^3)t^2+(192+18L-80L^2-4L^3+8L^4)t
++(337-48L-164L^2+28L^3+20L^4-4L^5)=0\; } .
+\]
+并且 \(R(\cdot,L)\) 关于变量 \(t\) 的判别式在 \(\ZZ[L]\) 中为完全平方：
+\[
+\boxed{\;
+\mathrm{Disc}_t(R)=256\,(L-2)^6(L+2)^6(4L-17)^2(4L-1)^2\; } .
+\]
+因此 \((t,L)\mapsto L\) 的四次覆盖在判别式意义下受交替型约束；其退化仅可能发生于
+\(
+L\in\{2,-2,17/4,1/4\}
+\)。
+\end{conclusion}
+
+\begin{conclusion}[整参数子族 \texorpdfstring{$L=a^2-2$}{L=a^2-2} 的完全二次分裂]\label{con:pom-a4-even-spectrum-lucas-quadratic-splitting}
+在结论 \ref{con:pom-a4-even-spectrum-lucas-elimination} 的多项式 \(R(t,L)\) 下，取整数参数 \(a\in\ZZ\) 并置 \(L=a^2-2\)。
+则在 \(\ZZ[a,t]\) 中有严格分解
+\[
+\boxed{\;
+R(t,a^2-2)=P_a^{(+)}(t)\,P_a^{(-)}(t)\; } ,
+\]
+其中两条二次因子为
+\[
+P_a^{(+)}(t)=t^2+\bigl(2a^3+a^2-8a-2\bigr)t+\bigl(-2a^5-6a^4+6a^3+24a^2+8a+1\bigr),
+\]
+\[
+P_a^{(-)}(t)=t^2+\bigl(-2a^3+a^2+8a-2\bigr)t+\bigl(2a^5-6a^4-6a^3+24a^2-8a+1\bigr).
+\]
+因此存在一条以 \(a\in\ZZ\) 为层级指标的“二次可计算”共振塔：每个层级至多给出四个实参数 \(t\)，使得偶谱约束 \(E_t(u)=0\) 在 Lucas 位置 \(L=u+u^{-1}=a^2-2\) 发生精确命中。
+\end{conclusion}
+
+\begin{conclusion}[Lucas 层的黄金比例共振梯：\texorpdfstring{$u=\varphi^{\pm 4n}$}{u=phi^{pm4n}} 的实偶谱命中]\label{con:pom-a4-even-spectrum-golden-resonance-ladder}
+令 \(\varphi=(1+\sqrt5)/2\)，并令 Lucas 数列 \((L_n)_{n\ge 0}\) 由 \(L_0=2,L_1=1\) 与 \(L_{n+1}=L_n+L_{n-1}\) 定义。
+取 \(a=L_{2n}\in\ZZ\)（\(n\ge 1\)），则有恒等式
+\[
+L:=a^2-2=L_{2n}^2-2=L_{4n}.
+\]
+对任一满足 \(P_{L_{2n}}^{(\pm)}(t)=0\) 的实参数 \(t\)，结论 \ref{con:pom-a4-even-spectrum-lucas-quadratic-splitting} 给出 \(R(t,L_{4n})=0\)，从而存在 \(u\in\RR_{>0}\) 使 \(u+u^{-1}=L_{4n}\) 且 \(E_t(u)=0\)。
+由于 \(L_{4n}=\varphi^{4n}+\varphi^{-4n}\)，故上述正实根必为
+\[
+u=\varphi^{4n}\qquad\text{或}\qquad u=\varphi^{-4n}.
+\]
+等价地，矩阵 \(A_4(t)\) 的偶谱命中强制出现实特征值
+\[
+\lambda=\pm u^{-1/2}
+\in\{\pm\varphi^{2n},\ \pm\varphi^{-2n}\}.
+\]
+因此四阶核族在一条完全离散且可无限延拓的二次域参数序列上，精确吸附到 \(\varphi\)-幂谱通道。
+\end{conclusion}
+
+\begin{conclusion}[共振塔的尺度律：\texorpdfstring{$t_n\sim 2\varphi^{6n}$}{t_n~2phi^{6n}} 与 \texorpdfstring{$\varphi^6$}{phi^6} 放大比率]\label{con:pom-a4-even-spectrum-resonance-scale-law}
+在结论 \ref{con:pom-a4-even-spectrum-golden-resonance-ladder} 的设定下，令 \(t_n\) 为二次方程 \(P_{L_{2n}}^{(-)}(t)=0\) 的最大正实根（等价地，为 \(R(t,L_{4n})=0\) 的最大正实根）。
+则当 \(n\to\infty\) 时成立渐近展开
+\[
+\boxed{\;
+t_n=2\varphi^{6n}-2\varphi^{4n}+O(\varphi^{2n})\; } ,
+\]
+并且层间放大比率极限存在且满足
+\[
+\boxed{\;
+\lim_{n\to\infty}\frac{t_{n+1}}{t_n}=\varphi^6\; } .
+\]
+因此上述 Lucas/黄金比例共振并非零散点集，而呈现严格指数层级；其尺度常数由 \(\varphi^6\) 锁定。
+\end{conclusion}
+
+\begin{conclusion}[共振塔与 Newman 临界的算术分离：二次可计算族不包含八次临界点]\label{con:pom-a4-even-spectrum-resonance-vs-newman-separation}
+由结论 \ref{con:pom-a4-even-spectrum-lucas-quadratic-splitting}，Lucas 共振塔所生成的全部共振参数 \(t\) 都满足某个二次方程 \(P_a^{(\pm)}(t)=0\)，其代数次数至多为 \(2\)，并且
+\[
+t\in\QQ(\sqrt{a^2-4})
+\qquad(a\in\ZZ).
+\]
+相反，四阶 Newman 临界参数 \(t_\star\) 由式 \eqref{eq:collision_kernel_A4_edge_weight_threshold} 的八次整系数证书 \(P_4(t_\star)=0\) 确定，且 \(P_4\) 在 \(\QQ[t]\) 上不可约，从而 \(t_\star\) 的最小多项式次数为 \(8\)。
+因此
+\[
+\boxed{\;
+t_\star\notin \bigcup_{a\in\ZZ}\ \QQ(\sqrt{a^2-4})\;}
+\]
+即 Newman 临界机制在代数次数层面与上述全部 Lucas/黄金比例共振塔严格互不相交；两类现象属于不同的算术分辨率层级。
+\end{conclusion}
+

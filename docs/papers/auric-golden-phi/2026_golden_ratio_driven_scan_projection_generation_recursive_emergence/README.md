@@ -19,8 +19,6 @@
 
 ## 编译
 
-非主动要求请勿自动编译
-
 先 run_all.py 然后 build；若新增实验脚本，必须加入 `scripts/run_all.py` 的 steps 列表。
 
 ```bash

@@ -1,0 +1,113 @@
+\begin{proposition}[可观测最小多项式的非线性阶塌缩：\texorpdfstring{$q=9,10,11,13$}{q=9,10,11,13} 首次出现固定亏格（可审计）]\label{prop:pom-observable-minpoly-order-collapse-q9-13}
+沿用定理 \ref{thm:pom-moment-resonance} 的记号，令 \(P_q(\lambda)\in\ZZ[\lambda]\) 为序列 \(m\mapsto S_q(m)\) 的最小整系数递推特征多项式（亦即可观测最小湮灭多项式；注意本文用 \(\Pi_q\) 表示 Perron 投影，故不采用 \(\Pi_q(\lambda)\) 记号以免混淆）。
+则在 \(q\in\{9,10,11,13\}\) 上，\(P_q(\lambda)\) 为不可约整系数多项式，其次数分别为
+\[
+\deg P_9=7,\qquad \deg P_{10}=9,\qquad \deg P_{11}=9,\qquad \deg P_{13}=11,
+\]
+并且相对差分模态截断的“名义维数” \(2\lfloor q/2\rfloor+1\) 均出现固定亏格
+\[
+2\Bigl\lfloor\frac{q}{2}\Bigr\rfloor+1-\deg P_q=2.
+\]
+特别地，\(q=9\) 是该类“阶塌缩”（Hankel 秩下降）在已核验窗内首次显露的最小 \(q\)。
+该固定亏格现象表明：高阶 Rényi 碰撞矩并不必然引入同阶数量的新可观测谱模态；相反，可观测子空间可在离散 \(q\) 上发生代数消隐，从而出现可审计的“复杂度反直觉下降”。
+\end{proposition}
+\begin{proof}
+次数与显式表达式见定理 \ref{thm:pom-moment-resonance}。
+不可约性可由模素数不可约证书审计：例如表 \ref{tab:fold_collision_observable_minpoly_galois_certificate_q9_13} 的 \(p_{\mathrm{irr}}\) 列给出素数 \(p\) 使得 \(P_q(\lambda)\bmod p\) 仍不可约；从而 \(P_q\) 在 \(\QQ[\lambda]\) 上不可约，进而在 \(\ZZ[\lambda]\) 上不可约（Gauss 引理）。
+阶塌缩等式只是把 \(2\lfloor q/2\rfloor+1\) 与上述次数直接相减。证毕。
+\end{proof}
+
+\begin{proposition}[判别式黑名单与分歧素数集：局部谱分歧仅可能发生在 \texorpdfstring{$p\mid \mathrm{Disc}(P_q)$}{p|Disc(Pq)}（\(q=9,10,11,13\)，可审计）]\label{prop:pom-observable-minpoly-discriminant-ramification-q9-13}
+对 \(q\in\{9,10,11,13\}\)，记 \(\Delta_q^{\mathrm{disc}}\) 为 \(\mathrm{Disc}(P_q)\) 的平方自由部分（含符号），并定义伴随二次域
+\[
+K_q^{\mathrm{disc}}:=\QQ\!\left(\sqrt{\Delta_q^{\mathrm{disc}}}\right).
+\]
+令
+\(
+\mathcal{B}_q:=\{p:\ p\ \text{为素数且}\ p\mid \mathrm{Disc}(P_q)\}
+\)
+为分歧素数集。
+则：
+\begin{enumerate}
+  \item \(\mathrm{Disc}(P_q)\) 的素因子分解由式 \eqref{eq:fold_collision_observable_minpoly_discriminants_q9_13} 给出；因此 \(\Delta_q^{\mathrm{disc}}\) 非平凡，且诱导二次域 \(K_q^{\mathrm{disc}}\)。其 \(\Delta_q^{\mathrm{disc}}\) 与 \(\mathcal{B}_q\) 的显式列表见表 \ref{tab:fold_collision_observable_minpoly_ramified_primes_q9_13}。
+  \item 对任意素数 \(p\notin\mathcal{B}_q\)，多项式 \(P_q(\lambda)\bmod p\) 在 \(\FF_p[\lambda]\) 上必为平方自由；因而所有“\(\mathrm{repeat?}\)”型局部谱分歧（重根/Jordan 调制）只能发生在有限黑名单 \(\mathcal{B}_q\) 上。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第 1 点由脚本 \path{scripts/exp_fold_collision_observable_minpoly_galois_audit_q9_13.py} 对定理 \ref{thm:pom-moment-resonance} 中 \(P_q\) 的判别式做符号计算并整因子分解得到，可复算输出即式 \eqref{eq:fold_collision_observable_minpoly_discriminants_q9_13}。
+第 2 点是判别式的标准性质：对 \(\mathrm{char}(\FF_p)\nmid \mathrm{Disc}(P_q)\)（等价于 \(p\notin\mathcal{B}_q\)），有
+\(\gcd(P_q,\partial_\lambda P_q)=1\) 于 \(\FF_p[\lambda]\)，故 \(P_q\bmod p\) 无重根，从而平方自由。
+结合注 \ref{rem:pom-a2-embedding-local-ramification} 的局部判据，可把“异常素数集”在该窗口内完全操作化为 \(\mathcal{B}_q\)。证毕。
+\end{proof}
+\input{sections/generated/eq_fold_collision_observable_minpoly_discriminants_q9_13}
+\input{sections/generated/tab_fold_collision_observable_minpoly_ramified_primes_q9_13}
+
+\begin{proposition}[高阶递推的最大伽罗瓦群：\texorpdfstring{$\mathrm{Gal}(P_q/\QQ)\cong S_d$}{Gal(Pq/Q)=Sd}（\(q=9,10,11,13\)，可审计）]\label{prop:pom-observable-minpoly-galois-sd-q9-13}
+设 \(d=\deg P_q\)。
+则对 \(q\in\{9,10,11,13\}\) 有
+\[
+\mathrm{Gal}(P_9/\QQ)\cong S_7,\qquad
+\mathrm{Gal}(P_{10}/\QQ)\cong S_9,\qquad
+\mathrm{Gal}(P_{11}/\QQ)\cong S_9,\qquad
+\mathrm{Gal}(P_{13}/\QQ)\cong S_{11}.
+\]
+\end{proposition}
+\begin{proof}
+对每个 \(q\in\{9,10,11,13\}\)，表 \ref{tab:fold_collision_observable_minpoly_galois_certificate_q9_13} 给出三个不分歧素数证书：
+\begin{itemize}
+  \item 存在素数 \(p_{\mathrm{irr}}\notin\mathcal{B}_q\) 使得 \(P_q\bmod p_{\mathrm{irr}}\) 不可约，于是 Frobenius 含 \(d\)-循环，且 \(P_q\) 在 \(\QQ\) 上不可约（从而 \(G_q:=\mathrm{Gal}(P_q/\QQ)\) 传递）；
+  \item 存在素数 \(p_{(d-1,1)}\notin\mathcal{B}_q\) 使得分解型为 \((d-1,1)\)，故 \(G_q\) 含 \((d-1)\)-循环，从而 \(G_q\) 为原始群；
+  \item 存在素数 \(p_{\mathrm{J}}\notin\mathcal{B}_q\) 使得分解型包含一条素数长度循环：对 \(d=7\) 含 \(3\)-循环、对 \(d=9\) 含 \(5\)-循环、对 \(d=11\) 含 \(7\)-循环；且该素数长度 \(\le d-3\)。
+\end{itemize}
+由 Jordan 定理，原始群 \(G_q\) 若含素数长度 \(p\)-循环（\(p\le d-3\)），则 \(A_d\subseteq G_q\)。
+另一方面，由命题 \ref{prop:pom-observable-minpoly-discriminant-ramification-q9-13}，\(\mathrm{Disc}(P_q)\) 非平方（\(\Delta_q^{\mathrm{disc}}\neq 1\)），从而 \(G_q\not\subseteq A_d\)。
+综上 \(G_q=S_d\)。证毕。
+\end{proof}
+\input{sections/generated/tab_fold_collision_observable_minpoly_galois_certificate_q9_13}
+
+\begin{corollary}[Chebotarev 密度的可检验频率律：不可约密度为 \texorpdfstring{$1/d$}{1/d}]\label{cor:pom-observable-minpoly-chebotarev-density-q9-13}
+在命题 \ref{prop:pom-observable-minpoly-galois-sd-q9-13} 的结论下，对去除有限分歧素数集 \(\mathcal{B}_q\) 后的素数集合，任意分裂型（等价于 \(S_d\) 中某个共轭类）出现的自然密度等于该共轭类在 \(S_d\) 中的比例。
+特别地，\(P_q(\lambda)\bmod p\) 仍不可约（Frobenius 为 \(d\)-循环）的密度为 \(1/d\)，故
+\[
+\mathrm{dens}\{p:\ P_9\bmod p\ \text{不可约}\}=\frac17,\quad
+\mathrm{dens}\{p:\ P_{10}\bmod p\ \text{不可约}\}=\frac19,
+\]
+\[
+\mathrm{dens}\{p:\ P_{11}\bmod p\ \text{不可约}\}=\frac19,\quad
+\mathrm{dens}\{p:\ P_{13}\bmod p\ \text{不可约}\}=\frac1{11}.
+\]
+\end{corollary}
+\begin{proof}
+由 Chebotarev 密度定理，未分歧素数的 Frobenius 共轭类在 \(G_q=S_d\) 中按共轭类大小等分布；而 \(d\)-循环在 \(S_d\) 中所占比例为 \((d-1)!/d!=1/d\)。证毕。
+\end{proof}
+
+\begin{corollary}[判别式二次特征给出 Frobenius 奇偶的闭式判据]\label{cor:pom-observable-minpoly-frob-parity-q9-13}
+在 \(G_q=S_d\) 下，\(S_d\) 的唯一指数 \(2\) 正规子群为 \(A_d\)，其固定子域为 \(\QQ(\sqrt{\mathrm{Disc}(P_q)})=\QQ(\sqrt{\Delta_q^{\mathrm{disc}}})\)。
+因此对任意不分歧素数 \(p\notin\mathcal{B}_q\)，Frobenius 置换的奇偶性由 Kronecker 符号严格给出：
+\[
+\mathrm{sgn}(\mathrm{Frob}_p)=\left(\frac{\Delta_q^{\mathrm{disc}}}{p}\right).
+\]
+特别地，对 \(q=9\)，由式 \eqref{eq:fold_collision_observable_minpoly_discriminants_q9_13} 可知 \(\Delta_9^{\mathrm{disc}}\) 为素数，从而奇偶判据退化为单一 Legendre 符号 \(\left(\frac{\Delta_9^{\mathrm{disc}}}{p}\right)\)。
+\end{corollary}
+\begin{proof}
+这是判别式的标准刻画：\(\mathrm{Disc}(P_q)\) 的平方类对应 \(G_q\) 到 \(\{\pm 1\}\) 的符号表示（置换奇偶）所切出的二次子域；对不分歧素数，Frobenius 的像由二次互反律的 Kronecker 符号读出。证毕。
+\end{proof}
+
+\begin{proposition}[负实主导律与交替修正：\texorpdfstring{$q=9,10,11,13$}{q=9,10,11,13} 的有效 Ramanujan 比率]\label{prop:pom-observable-minpoly-negative-real-dominance-q9-13}
+对 \(q\in\{9,10,11,13\}\)，记 \(r_q\) 为 \(P_q\) 的 Perron 根，并令
+\[
+\Lambda_q:=\max\{|\mu|:\ P_q(\mu)=0,\ \mu\neq r_q\}.
+\]
+则达到 \(\Lambda_q\) 的根为唯一负实根 \(\mu^-_q<0\)，从而 \(S_q(m)\) 的首个非主指数修正带严格交替相位 \(({-1})^m\)。
+并且有效 Ramanujan 比率
+\(
+R_q:=|\mu^-_q|/\sqrt{r_q}
+\)
+在该窗口内满足式 \eqref{eq:fold_collision_observable_minpoly_negative_real_dominance_q9_13} 的可复算数值（均严格大于 \(1\)）。
+\end{proposition}
+\begin{proof}
+由脚本 \path{scripts/exp_fold_collision_observable_minpoly_galois_audit_q9_13.py} 对 \(P_q\) 的全部根做高精度数值求解，并逐一比较模长得到：除 Perron 根外，最大模根为唯一负实根。
+相应地，递推解的谱展开中该根贡献的符号为 \((\mu^-_q)^m=(-1)^m|\mu^-_q|^m\)，故出现交替修正；比率 \(R_q\) 的数值即由该根与 \(r_q\) 直接代入定义得到。证毕。
+\end{proof}
+\input{sections/generated/eq_fold_collision_observable_minpoly_negative_real_dominance_q9_13}
+

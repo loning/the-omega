@@ -320,6 +320,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_green_kernel_audit_prime_571",
+            script="exp_window6_green_kernel_audit_prime_571.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_green_kernel_audit_prime_571.json",
+                "sections/generated/eq_window6_green_kernel_audit_prime_571.tex",
+                "sections/generated/tab_window6_green_kernel_Z.tex",
+                "sections/generated/tab_window6_mean_first_passage_times.tex",
+            ],
+        ),
+        Step(
             name="window6_ur_first_return_time",
             script="exp_window6_ur_first_return_time.py",
             args=[],
@@ -688,6 +699,58 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_even_zeta_elimination",
+            script="exp_collision_kernel_A4_even_zeta_elimination.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_even_zeta_elimination.json",
+                "sections/generated/eq_collision_kernel_A4_even_zeta_quintic.tex",
+                "sections/generated/eq_collision_kernel_A4_newman_resultant_curve_intersection.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_ade_intersection_t_minpoly_discriminant",
+            script="exp_collision_kernel_A4_ade_intersection_t_minpoly_discriminant.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_ade_intersection_t_minpoly_discriminant.json",
+                "sections/generated/eq_collision_kernel_A4_ade_intersection_t_minpoly_discriminant.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_E8_square_spectrum_collapse",
+            script="exp_collision_kernel_E8_square_spectrum_collapse.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_E8_square_spectrum_collapse.json",
+                "sections/generated/eq_collision_kernel_E8_square_spectrum_collapse.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_critical_quadratic_subfield",
+            script="exp_collision_kernel_A4_newman_critical_quadratic_subfield.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_critical_quadratic_subfield.json",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_charpoly_quadratic_field_class_number",
+            script="exp_collision_kernel_A4_charpoly_quadratic_field_class_number.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_charpoly_quadratic_field_class_number.json",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A234_operator_algebra_flow_invariants",
+            script="exp_collision_kernel_A234_operator_algebra_flow_invariants.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A234_operator_algebra_flow_invariants.json",
+            ],
+        ),
+        Step(
             name="fold_collision_renyi_spectrum",
             script="exp_fold_collision_renyi_spectrum.py",
             args=[],
@@ -800,6 +863,36 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_recursions_moddp_9_17.json",
                 "sections/generated/tab_fold_collision_moment_recursions_9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_moment_2adic_odometer_q4_10",
+            script="exp_fold_collision_moment_2adic_odometer_q4_10.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_2adic_odometer_q4_10.json",
+                "sections/generated/tab_fold_collision_moment_2adic_odometer_q4_10.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_observable_minpoly_galois_audit_q9_13",
+            script="exp_fold_collision_observable_minpoly_galois_audit_q9_13.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_observable_minpoly_galois_audit_q9_13.json",
+                "sections/generated/eq_fold_collision_observable_minpoly_discriminants_q9_13.tex",
+                "sections/generated/tab_fold_collision_observable_minpoly_galois_certificate_q9_13.tex",
+                "sections/generated/eq_fold_collision_observable_minpoly_negative_real_dominance_q9_13.tex",
+                "sections/generated/tab_fold_collision_observable_minpoly_ramified_primes_q9_13.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_charpoly_mod2_shadow_q2_10",
+            script="exp_fold_collision_charpoly_mod2_shadow_q2_10.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_charpoly_mod2_shadow_q2_10.json",
+                "sections/generated/tab_fold_collision_charpoly_mod2_shadow_q2_10.tex",
             ],
         ),
         Step(

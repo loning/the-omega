@@ -1,0 +1,150 @@
+% (User input window)
+% 2026-02-14 16:12:45（Asia/Singapore）
+
+\paragraph{有限秩锚定核的完备关系与 Gram 逆闭式：由离散锚点完全重构连续核}
+沿用定理 \ref{thm:xi-basepoint-scan-finite-rank-rkhs} 的记号：极点 \(\{p_k\}_{k=1}^{\kappa}\subset\CC_{-}\)、权 \(\{w_k\}_{k=1}^{\kappa}\subset\RR_{>0}\)、特征映射 \(v\) 与核 \(K\)。
+
+\begin{proposition}[满秩锚集的核完备关系：由离散锚点完全重构连续核]\label{prop:xi-basepoint-scan-kernel-completeness-full-rank}
+对任意 \(x\in\RR\) 定义
+\[
+v(x)_k:=\frac{\sqrt{w_k}}{x-p_k}\in\CC,\qquad
+K(x,y):=\langle v(x),v(y)\rangle_{\CC^\kappa}
+=\sum_{k=1}^{\kappa}\frac{w_k}{(x-p_k)(y-\overline{p_k})}\qquad(x,y\in\RR).
+\]
+取互异实锚点 \(A=\{a_1,\dots,a_\kappa\}\subset\RR\)，并记 Gram 矩阵
+\[
+G_A:=(K(a_i,a_j))_{1\le i,j\le \kappa}.
+\]
+则 \(G_A\) 可逆，且对一切 \(x,y\in\RR\) 成立完备恒等式
+\[
+\boxed{\;
+K(x,y)=K(x,A)\,G_A^{-1}\,K(A,y)\; },
+\]
+其中
+\(
+K(x,A)=(K(x,a_1),\dots,K(x,a_\kappa))
+\)、
+\(
+K(A,y)=(K(a_1,y),\dots,K(a_\kappa,y))^{\mathsf T}
+\)。
+\end{proposition}
+\begin{proof}
+令矩阵 \(V\in\CC^{\kappa\times\kappa}\) 为
+\(
+V_{ik}:=v(a_i)_k=\sqrt{w_k}/(a_i-p_k)
+\)。
+则 \(G_A=VV^\ast\)。
+由定理 \ref{thm:xi-basepoint-scan-finite-rank-rkhs} 证明中 Cauchy 非退化性可知 \(V\) 可逆，
+故
+\[
+I_\kappa=V^\ast G_A^{-1}V.
+\]
+两边左乘 \(v(x)^\ast\)、右乘 \(v(y)\) 得
+\[
+K(x,y)
+=\langle v(x),v(y)\rangle
+=\langle v(x),V^\ast G_A^{-1}Vv(y)\rangle
+=K(x,A)\,G_A^{-1}\,K(A,y),
+\]
+即所示完备关系。证毕。
+\end{proof}
+
+\begin{proposition}[满秩 Gram 逆的全闭式：由 Cauchy 逆显式给出 \texorpdfstring{$G_A^{-1}$}{G\_A^{-1}}]\label{prop:xi-basepoint-scan-gram-inverse-closed-form}
+在命题 \ref{prop:xi-basepoint-scan-kernel-completeness-full-rank} 的满秩设定下，令
+\[
+\Pi(z):=\prod_{k=1}^{\kappa}(z-p_k),\qquad
+y(z):=\prod_{j=1}^{\kappa}(z-a_j).
+\]
+记 \(V_{ik}=\sqrt{w_k}/(a_i-p_k)\)，则 \(V=C\,\mathrm{diag}(\sqrt w)\)，其中 \(C_{ik}=(a_i-p_k)^{-1}\)。
+由结论 \ref{con:xi-terminal-cauchy-lagrange-rational-interpolation-cauchy-inverse} 的 Cauchy 逆闭式可得
+\[
+(V^{-1})_{k i}
+=\frac{1}{\sqrt{w_k}}\,(C^{-1})_{k i}
+=\frac{1}{\sqrt{w_k}}\cdot
+\frac{y(p_k)\,\Pi(a_i)}{(p_k-a_i)\,\Pi'(p_k)\,y'(a_i)}.
+\]
+从而
+\[
+G_A^{-1}=(V^{-1})^\ast V^{-1},
+\]
+并且其元素具有显式表达：对 \(1\le i,j\le \kappa\),
+\[
+\boxed{\;
+(G_A^{-1})_{ij}
+=
+\frac{\overline{\Pi(a_i)}\,\Pi(a_j)}{y'(a_i)\,y'(a_j)}
+\sum_{k=1}^{\kappa}
+\frac{|y(p_k)|^2}{w_k\,|\Pi'(p_k)|^2}\cdot
+\frac{1}{(a_i-\overline{p_k})(a_j-p_k)}\; }.
+\]
+\end{proposition}
+\begin{proof}
+由 \(G_A=VV^\ast\) 且 \(V\) 可逆，得 \(G_A^{-1}=(V^{-1})^\ast V^{-1}\)。
+而 \(V=C\,\mathrm{diag}(\sqrt w)\) 给出 \(V^{-1}=\mathrm{diag}(w^{-1/2})\,C^{-1}\)，代入结论 \ref{con:xi-terminal-cauchy-lagrange-rational-interpolation-cauchy-inverse} 的 \(C^{-1}\) 闭式即得 \((V^{-1})_{ki}\)。
+将
+\(
+(G_A^{-1})_{ij}=\sum_{k}\overline{(V^{-1})_{ki}}(V^{-1})_{kj}
+\)
+逐项代入并整理得到所示表达式。证毕。
+\end{proof}
+
+\begin{proposition}[行列式增量与正交缺口：Schur 补的几何意义]\label{prop:xi-basepoint-scan-gram-determinant-schur-increment}
+对任意锚集 \(A=\{a_1,\dots,a_n\}\subset\RR\)（\(n<\kappa\)）假设 \(G_A:=(K(a_i,a_j))_{i,j}\) 可逆，并定义
+\[
+k_A(x):=(K(x,a_1),\dots,K(x,a_n))^{\mathsf T},\qquad
+H(x):=K(x,x).
+\]
+则对任意 \(x\in\RR\setminus A\) 有严格恒等式
+\[
+\boxed{\;
+\det G_{A\cup\{x\}}=\det G_A\cdot\Bigl(H(x)-k_A(x)^\ast G_A^{-1}k_A(x)\Bigr)\; } .
+\]
+并且括号内量非负，且满足正交缺口表示
+\[
+H(x)-k_A(x)^\ast G_A^{-1}k_A(x)
+=\bigl\|v(x)-\mathrm{proj}_{\Span\{v(a_i)\}}v(x)\bigr\|_{\CC^\kappa}^{2}.
+\]
+\end{proposition}
+\begin{proof}
+写成分块矩阵
+\[
+G_{A\cup\{x\}}=
+\begin{pmatrix}
+G_A & k_A(x)\\
+k_A(x)^\ast & H(x)
+\end{pmatrix}.
+\]
+对分块行列式用 Schur 补公式即得第一式。
+第二式由 \(G_A=V_AV_A^\ast\)（\(V_A\) 为由 \(v(a_i)\) 组成的 \(n\times\kappa\) 矩阵）与最小二乘投影恒等式推出：
+\(
+k_A(x)=V_A v(x)
+\)，从而 Schur 补等于 \(v(x)\) 在 \(\Span\{v(a_i)\}\) 的正交缺口平方范数。证毕。
+\end{proof}
+
+\begin{corollary}[Gram 行列式的杠杆分解：有限秩核下的乘法因子化与全局上界]\label{cor:xi-basepoint-scan-gram-determinant-leverage-product}
+对任意有序锚列 \((a_1,\dots,a_n)\)（互异，且每步 \(G_{A_m}\) 可逆），记递增锚集 \(A_m:=\{a_1,\dots,a_m\}\)（\(A_0=\varnothing\)），并定义杠杆缺口
+\[
+\ell_{A_{m-1}}(a_m):=
+H(a_m)-k_{A_{m-1}}(a_m)^\ast G_{A_{m-1}}^{-1}k_{A_{m-1}}(a_m)\ \ge 0.
+\]
+则成立严格乘法分解
+\[
+\boxed{\;
+\det G_{A_n}=\prod_{m=1}^{n}\ell_{A_{m-1}}(a_m)\; }.
+\]
+从而对任意 \(n\) 点锚集 \(A\)（忽略顺序）有上界
+\[
+\det G_A\le \prod_{m=1}^{n}\Bigl(\sup_{x\in\RR}\ell_{A_{m-1}}(x)\Bigr),
+\]
+且当且仅当存在某个排列使得每一步 \(a_m\) 都实现相应的上确界时取等。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:xi-basepoint-scan-gram-determinant-schur-increment} 对 \(m=1,\dots,n\) 逐步应用得
+\[
+\det G_{A_m}=\det G_{A_{m-1}}\cdot \ell_{A_{m-1}}(a_m),
+\]
+连乘即得分解。
+上界由每因子 \(\ell_{A_{m-1}}(a_m)\le \sup_x\ell_{A_{m-1}}(x)\) 逐项相乘得到；
+取等条件由每步取等的必要充分性给出。证毕。
+\end{proof}
+

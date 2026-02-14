@@ -7,6 +7,60 @@ S_q(m):=\sum_{x\in X_m}d_m(x)^q
 \]
 其中 \(q=2\) 是成对碰撞，\(q=3\) 是三元碰撞，依此类推；\(S_q(m)\) 因而描述的是一个“\(q\)-重纤维积”上的计数对象，而非对某个固定核的简单幂函数。
 \par
+\input{parts/subsubsec__pom-collision-moment-hardcore-homomorphization}
+
+\begin{theorem}[纤维谱 resolvent 的有理结构：固定 \(m\) 的幂和矩刻画全部多重度极点]\label{thm:pom-fiber-spectrum-resolvent-rational}
+固定分辨率 \(m\ge 1\)，并将幂和矩扩展定义为
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q\qquad(q\in\ZZ_{\ge 0}).
+\]
+令 \(\{a_1<\cdots<a_R\}\) 为多重度集合 \(\{d_m(x):x\in X_m\}\) 的不同取值，并记
+\(
+c_j:=|\{x\in X_m:\ d_m(x)=a_j\}|
+\)。
+定义形式幂级数（纤维谱 resolvent）
+\[
+H_m(u):=\sum_{q=0}^{\infty} S_q(m)\,u^q.
+\]
+则 \(H_m\) 为有理函数，并具有严格部分分式展开
+\[
+\boxed{\;
+H_m(u)=\sum_{j=1}^{R}\frac{c_j}{1-a_j u}\; }.
+\]
+因此 \(H_m\) 的全部极点集合恰为 \(\{1/a_j\}_{j=1}^{R}\)，并且对应留数恰为重数 \(c_j\)。
+\end{theorem}
+\begin{proof}
+由恒等式 \(\sum_{q\ge 0}(au)^q=(1-au)^{-1}\)（形式幂级数意义）得
+\[
+H_m(u)=\sum_{x\in X_m}\sum_{q\ge 0}(d_m(x)u)^q
+=\sum_{x\in X_m}\frac{1}{1-d_m(x)u}
+=\sum_{j=1}^{R}\frac{c_j}{1-a_j u}.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[有限数据的完全重建与锐性：至多 \(2R\) 个幂和决定固定 \(m\) 的纤维谱]\label{thm:pom-fiber-spectrum-finite-reconstruction-sharp}
+沿用定理 \ref{thm:pom-fiber-spectrum-resolvent-rational} 的记号。
+则给定有限数据
+\(
+\{S_q(m)\}_{q=0}^{2R-1}
+\)
+即可唯一确定有理函数 \(H_m\)，从而唯一确定纤维谱多重集 \(\{(a_j,c_j)\}_{j=1}^{R}\)。
+并且在一般情形下，若只给定 \(\{S_q(m)\}_{q=0}^{2R-2}\)（少一项），则该纤维谱不再唯一可判定。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-spectrum-resolvent-rational} 可写 \(H_m(u)=P_m(u)/Q_m(u)\)，其中
+\(
+Q_m(u)=\prod_{j=1}^{R}(1-a_j u)
+\)
+为次数 \(R\) 的首一多项式，而 \(P_m\) 的次数 \(\le R-1\)。
+将恒等式 \(Q_m(u)H_m(u)=P_m(u)\) 在 \(u=0\) 处展开并比较系数可得：系数序列 \(q\mapsto S_q(m)\) 满足阶 \(\le R\) 的线性递推；反过来，由 \(\{S_q(m)\}_{q=0}^{2R-1}\) 可通过标准的 Pad\'e/Prony 方程唯一解出 \(Q_m\)（等价地解出该递推的最小特征多项式）。
+一旦 \(Q_m\) 确定，其零点给出全部 \(a_j\)；
+再由前 \(R\) 个矩方程 \(S_q(m)=\sum_{j=1}^{R}c_j a_j^q\ (0\le q\le R-1)\) 的 Vandermonde 可逆性，重数 \(c_j\) 亦被唯一确定。
+\par
+锐性可由参数计数给出：具有 \(R\) 个简单极点的部分分式族由 \(R\) 个极点位置与 \(R\) 个留数决定，因而自由参数为 \(2R\)；少一阶系数在一般情形下不足以排除非同构解。证毕。
+\end{proof}
+\par
 在 \(q=2,3,4\) 的情形，本文已经构造出低维的非负整数碰撞核 \(A_q\)，并把其 Perron 根 \(r_q=\rho(A_q)\) 与投影熵率 \(h_q=\log(2^q/r_q)\) 纳入同一 \(\zeta\)/primitive/有限部接口（见 \S\ref{subsec:pom-s2}--\S\ref{subsec:pom-s4} 及表 \ref{tab:fold_collision_renyi_spectrum}）。
 另一方面，对 \(q\ge 5\) 已经核验存在小阶整系数递推（表 \ref{tab:fold_collision_moment_recursions}），从而 \(r_q\) 与 \(h_q\) 可精确抽取，但递推本身并不自动给出“非负整数图核”的 realization。
 这引出一个自然的升级研究线：把“已知递推”进一步提升为“可解释的有限状态碰撞核谱系”。
@@ -77,6 +131,26 @@ q\Lambda_\infty\le \log r_q\le q\Lambda_\infty+\sup_m\frac{1}{m}\log|X_m|.
 \]
 两边除以 \(q\) 并令 \(q\to\infty\) 即得结论。证毕。
 \end{proof}
+
+\begin{corollary}[双极限的交换性：\texorpdfstring{$q\to\infty$}{q->infty} 与 \texorpdfstring{$m\to\infty$}{m->infty} 在主指数处同归 \texorpdfstring{$\tfrac12\log\varphi$}{(1/2)logphi}]\label{cor:pom-double-limit-commute-principal-exponent}
+对碰撞矩 \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\)，两条极限路线在主指数层面严格一致：
+\[
+\lim_{q\to\infty}\ \lim_{m\to\infty}\ \frac{1}{mq}\log S_q(m)
+\;=\;
+\lim_{m\to\infty}\ \lim_{q\to\infty}\ \frac{1}{mq}\log S_q(m)
+\;=\;\frac12\log\varphi.
+\]
+更具体地，固定 \(q\) 时由 \(r_q=\lim_{m\to\infty}S_q(m)^{1/m}\) 得
+\(
+\lim_{m\to\infty}\frac{1}{mq}\log S_q(m)=\frac{1}{q}\log r_q
+\)，再由端点定理 \ref{prop:pom-rq-qinfty-endpoint} 得 \(\lim_{q\to\infty}\frac{1}{q}\log r_q=\frac12\log\varphi\)；
+固定 \(m\) 时由最大项主导 \(\lim_{q\to\infty}S_q(m)^{1/q}=D_m\)，从而
+\(
+\lim_{q\to\infty}\frac{1}{mq}\log S_q(m)=\frac{1}{m}\log D_m
+\)，再由命题 \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint} 与 \ref{prop:pom-rq-qinfty-endpoint} 联合推出 \(\lim_{m\to\infty}\frac{1}{m}\log D_m=\frac12\log\varphi\)。
+\par
+因此两条路线的差异只能出现在低阶修正项：一类是 \(q\)-方向的端点残差（例如 \(\log r_q\) 的常数级自由能超额），另一类是 \(m\)-方向的有限分辨率相位/端点校正；主指数 \(\tfrac12\log\varphi\) 处不发生混叠。
+\end{corollary}
 
 \begin{proposition}[从递推到最小线性实现：Hankel realization]\label{prop:pom-hankel-realization-protocol}
 固定 \(q\ge 2\)，设序列 \(S_q(m)\) 满足某个最小阶的常系数线性递推（等价于其 Hankel 秩有限）。

@@ -97,6 +97,14 @@ T:=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\in\NN\cup\{\infty\}
 \[
 \mathbb{P}\!\left(Q^{(q)}_n\neq Q^{(q')}_n\right)\ \le\ \mathbb{P}(T>n-5).
 \]
+若进一步假设输入 \((D_t)\) 独立同分布，则 \((Q^{(q)}_t)\) 为齐次 Markov 链，其一步转移核 \(P\) 由
+\[
+P(s,s'):=\mathbb{P}\bigl(\delta(s,D_0)=s'\bigr),\qquad s,s'\in Q,
+\]
+给出。此时对任意两初始分布 \(\nu,\nu'\)（视为 \(Q\) 上概率向量）与任意 \(n\ge 0\)，由上述共输入耦合与全变差的耦合刻画可得
+\[
+\bigl\|\nu P^{n}-\nu'P^{n}\bigr\|_{\mathrm{TV}}\le \mathbb{P}(T>n-5).
+\]
 特别地，任何由同步状态\emph{确定性生成}的可观测量（例如输出位、带权累加势等）的滞后 \(n\) 相关都只能来自事件 \(\{T>n-5\}\)；
 因此可将“相关长度/混合速度”的上界替换为等待时间尾分布 \(n\mapsto \mathbb{P}(T>n)\)，而该尾分布仅由输入模型对片段 \(\texttt{00000}\) 的出现统计所决定（无需谱估计或数值拟合）。
 \end{corollary}
@@ -109,15 +117,37 @@ T:=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\in\NN\cup\{\infty\}
 证毕。
 \end{proof}
 
-进一步地，若固定目标态 $t\in Q$，定义其\textbf{复位深度}
+\begin{proposition}[复位深度谱的“几乎全常量”性质与常量映射长度直径]\label{prop:sync10-reset-depth-spectrum}
+对任一目标态 \(t\in Q\) 定义复位深度
 \[
 \ell(t):=\min\{|w|:\ \delta(Q,w)=\{t\}\}.
 \]
-表 \ref{tab:sync-kernel-reset-target-depth} 给出所有目标态的 $\ell(t)$ 与一个最短 witness 词。
-特别地并非所有目标态都能在长度 $5$ 达到：仅有两个目标态 $0\overline{1}2$ 与 $11\overline{1}$ 满足 $\ell(t)=6$，其最短 witness 分别为 \texttt{000102} 与 \texttt{000020}。
-这些结论由脚本 \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py} 一键复现。
+则除两态 \(0\overline{1}2\)、\(11\overline{1}\) 外，所有目标态均满足 \(\ell(t)\le 5\)；并且仅有这两态满足 \(\ell(t)=6\)。
+因此同步转移半群在常量映射层面的生成长度直径为
+\[
+\max_{t\in Q}\ell(t)=6,
+\]
+且“长度 \(6\) 的例外”仅占 \(2/10\)。
+最短 witness 词见表 \ref{tab:sync-kernel-reset-target-depth}（例如 \(\ell(0\overline{1}2)=6\) 的见证为 \texttt{000102}，\(\ell(11\overline{1})=6\) 的见证为 \texttt{000020}）。
+上述枚举证书由脚本 \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py} 自动生成。
+\end{proposition}
 
 \input{sections/generated/tab_sync_kernel_reset_targets}
+
+\begin{proposition}[复位深度谱的集中与常量映射理想的长度直径]\label{prop:sync10-reset-depth-diameter}
+以 \(\ell(t)\) 为复位深度（见上文定义）。
+则在该 \(10\) 态同步核上，
+\[
+\max_{t\in Q}\ell(t)=6,
+\]
+并且除 \(t\in\{0\overline{1}2,\ 11\overline{1}\}\) 外的其余 \(8\) 个目标态均满足 \(\ell(t)=5\)。
+因此由 \(\{f_0,f_1,f_2\}\) 生成的变换半群中，全部常量映射（把 \(Q\) 压到单点的幂等元）在词长意义下形成一个长度直径为 \(6\) 的层；并且“深度 \(6\)”的例外仅占目标态的 \(2/10\)。
+\end{proposition}
+\begin{proof}
+由表 \ref{tab:sync-kernel-reset-target-depth} 的逐目标态最短 witness，可直接读出 \(\ell(t)\le 6\) 对所有 \(t\) 成立，并且恰有两态取到 \(6\)，其余取到 \(5\)。
+常量映射到 \(t\) 与复位词 \(w\) 的一一对应由定义给出：\(\delta(Q,w)=\{t\}\) 当且仅当 \(f_w\) 为常量映射且值为 \(t\)。
+因此 \(\max_t\ell(t)\) 即常量映射层的词长直径。证毕。
+\end{proof}
 
 \subsection{变换半群不变量：大小、单位群与局部 \texorpdfstring{$\mathbb{Z}_2$}{Z2} 周期}\label{app:sync-kernel-semigroup}
 把每个输入字母 $d\in\{0,1,2\}$ 视为对 $Q$ 的函数 $f_d:q\mapsto\delta(q,d)$，考虑其生成的变换幺半群
