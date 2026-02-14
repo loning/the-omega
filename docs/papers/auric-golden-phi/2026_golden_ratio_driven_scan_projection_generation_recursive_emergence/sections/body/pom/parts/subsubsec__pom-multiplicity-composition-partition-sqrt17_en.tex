@@ -1,0 +1,680 @@
+\subsubsection{Partition Function and Typical Decomposition of Multiplicative Multiplicities: The Entropy Rate Constant from \texorpdfstring{$\mathbb{Q}(\sqrt{17})$}{Q(sqrt(17))}}\label{subsec:pom-multiplicity-composition-partition-sqrt17}
+Under the component-wise multiplicative factorization of Theorem \ref{thm:pom-fiber-indset-factorization}, the fiber multiplicity is given by the multiplicative weight
+\(
+\prod_i F_{\ell_i+2}
+\)
+over component lengths \((\ell_i)\).
+To characterize the statistical-mechanical baseline of this multiplicative structure over ``all component decompositions,'' this subsection introduces a partition function on the set of all ordered compositions (compositions) of fixed total length \(L\), and provides its auditable algebraic closed form and typical laws.
+
+\begin{definition}[Partition function of multiplicative multiplicities (ordered compositions)]\label{def:pom-multiplicity-composition-partition}
+Let \(L\ge 0\).
+Write \(\mathcal{C}_L\) for the set of all ordered compositions of \(L\): \(\boldsymbol{\ell}=(\ell_1,\dots,\ell_r)\) with
+\(\ell_i\in\NN_{\ge 1}\) and \(\sum_{i=1}^r \ell_i=L\); with the convention \(\mathcal{C}_0=\{()\}\) (the empty composition).
+Define the multiplicative weight and partition function
+\[
+w(\boldsymbol{\ell})
+:=\prod_{i=1}^r F_{\ell_i+2},
+\qquad
+Z_L:=\sum_{\boldsymbol{\ell}\in\mathcal{C}_L} w(\boldsymbol{\ell}),
+\]
+where the empty product is \(w(())=1\), so \(Z_0=1\).
+\end{definition}
+
+\begin{proposition}[Rational generating function and the \texorpdfstring{$\sqrt{17}$}{sqrt(17)} entropy rate constant for the partition function]\label{prop:pom-multiplicity-composition-partition-rational}
+Let \(Z_L\) be as in Definition \ref{def:pom-multiplicity-composition-partition}.
+Then the generating function is a strict rational expression:
+\begin{equation}\label{eq:pom-multiplicity-composition-partition-gf}
+\boxed{\;
+\sum_{L\ge 0} Z_L\,t^L=\frac{1-t-t^2}{1-3t-2t^2}.\;}
+\end{equation}
+Consequently, \((Z_L)\) satisfies the linear recurrence for \(L\ge 3\):
+\[
+\boxed{\;
+Z_L=3Z_{L-1}+2Z_{L-2}\qquad(L\ge 3),\;}
+\]
+and admits the complete closed form
+\begin{equation}\label{eq:pom-multiplicity-composition-partition-closed-form}
+\boxed{\;
+Z_L=\frac{17+\sqrt{17}}{34}\,\lambda_+^{L}
+\;+\;
+\frac{17-\sqrt{17}}{34}\,\lambda_-^{L},\qquad
+\lambda_\pm=\frac{3\pm\sqrt{17}}{2}.\;}
+\end{equation}
+In particular, the free energy density (entropy rate) exists and equals
+\begin{equation}\label{eq:pom-multiplicity-composition-partition-free-energy}
+\boxed{\;
+\lim_{L\to\infty}\frac1L\log Z_L=\log\lambda_+,\;}
+\end{equation}
+and the sub-leading term decays exponentially at rate \(\bigl|\lambda_-/\lambda_+\bigr|^L\).
+\end{proposition}
+\begin{proof}
+Let
+\(
+W(t):=\sum_{k\ge 1}F_{k+2}t^k
+\).
+Since ordered compositions are ordered concatenations of parts and the weight is multiplicative under concatenation,
+\[
+\sum_{L\ge 0} Z_L\,t^L
+=\sum_{r\ge 0} W(t)^r
+=\frac{1}{1-W(t)}.
+\]
+From the Fibonacci generating function
+\(
+\sum_{n\ge 0}F_n t^n=\frac{t}{1-t-t^2}
+\),
+one obtains
+\[
+\sum_{k\ge 0}F_{k+2}t^k=\frac{1+t}{1-t-t^2}
+\quad\Longrightarrow\quad
+W(t)=\sum_{k\ge 1}F_{k+2}t^k=\frac{2t+t^2}{1-t-t^2}.
+\]
+Substituting and simplifying yields \eqref{eq:pom-multiplicity-composition-partition-gf}.
+The recurrence follows from comparing coefficients of the denominator \(1-3t-2t^2\), taking effect from \(L\ge 3\) (the initial values \(Z_0=1,Z_1=2,Z_2=7\) can be directly audited).
+\par
+The closed form is given by the two roots \(\lambda_\pm=\frac{3\pm\sqrt{17}}{2}\) of the characteristic equation
+\(
+\lambda^2-3\lambda-2=0
+\);
+the coefficients are obtained by solving the linear system from \(Z_0=1,Z_1=2\), simplifying to \eqref{eq:pom-multiplicity-composition-partition-closed-form}.
+Finally, \(\lambda_+>|\lambda_-|\) gives \eqref{eq:pom-multiplicity-composition-partition-free-energy} together with the exponential error bound. \qed
+\end{proof}
+
+\begin{corollary}[Exponential rarity of the ``maximally refined state'': the gap constant between maximum and total partition function]\label{cor:pom-multiplicity-composition-all-ones-exponential-rarity}
+Let \(\boldsymbol{1}*L:=(1,1,\dots,1)\in\mathcal{C}_L\) (the finest decomposition, all parts of length \(1\)), so its weight is \(w(\boldsymbol{1}*L)=2^L\).
+Under \(\mathbb{P}_L\) from Definition \ref{def:pom-multiplicity-induced-composition-measure} below, its exact probability is
+\[
+\mathbb{P}_L(\boldsymbol{\ell}=\boldsymbol{1}*L)=\frac{2^L}{Z_L}.
+\]
+Moreover, a strict exponential decay law holds:
+\begin{equation}\label{eq:pom-multiplicity-composition-all-ones-rate}
+\boxed{\;
+-\lim_{L\to\infty}\frac1L\log_2\mathbb{P}_L(\boldsymbol{\ell}=\boldsymbol{1}*L)
+=\log_2\lambda_+-1,
+\qquad \lambda_+=\frac{3+\sqrt{17}}{2}.\;}
+\end{equation}
+Therefore, between the ``single-state maximum weight'' and the ``total weight sum'' there exists a strict linear information gap (bits/length), with constant \(\log_2\lambda_+-1\).
+\end{corollary}
+\begin{proof}
+From \eqref{eq:pom-multiplicity-composition-partition-closed-form},
+\(
+Z_L=\frac{17+\sqrt{17}}{34}\lambda_+^L\bigl(1+O((|\lambda_-|/\lambda_+)^L)\bigr)
+\).
+Hence
+\[
+\frac1L\log_2\mathbb{P}_L(\boldsymbol{1}*L)
+=1-\frac1L\log_2 Z_L
+\longrightarrow
+1-\log_2\lambda_+,
+\]
+yielding \eqref{eq:pom-multiplicity-composition-all-ones-rate}. \qed
+\end{proof}
+
+\begin{definition}[Multiplicity-induced typical composition measure]\label{def:pom-multiplicity-induced-composition-measure}
+On \(\mathcal{C}_L\) define the probability measure
+\[
+\mathbb{P}_L(\boldsymbol{\ell})
+:=\frac{w(\boldsymbol{\ell})}{Z_L}.
+\]
+Write \(R_L:=R(\boldsymbol{\ell})=r\) for the number of parts (length) of the random composition, and \(M_L:=\max_{1\le i\le R_L}\ell_i\) for the maximum part length.
+\end{definition}
+
+\begin{proposition}[Closed-form exponential moment generating function and characteristic roots for the part count]\label{prop:pom-multiplicity-composition-part-count-bivariate-gf}
+Define the polynomial partition function with part counting:
+\[
+Z_L(y):=\sum_{\boldsymbol{\ell}\in\mathcal{C}_L} y^{R(\boldsymbol{\ell})}\,w(\boldsymbol{\ell})
+\qquad(y>0).
+\]
+Then the bivariate generating function is a strict rational expression:
+\begin{equation}\label{eq:pom-multiplicity-composition-bivariate-gf}
+\boxed{\;
+\sum_{L\ge 0} Z_L(y)\,t^L=\frac{1-t-t^2}{1-(2y+1)t-(y+1)t^2}.\;}
+\end{equation}
+Consequently, for each fixed \(y>0\), the sequence \(L\mapsto Z_L(y)\) satisfies a second-order linear recurrence with characteristic roots
+\[
+\Lambda_\pm(y)=\frac{(2y+1)\pm\sqrt{4y^2+8y+5}}{2}.
+\]
+Moreover, for any \(t\in\RR\), the exponential moment limit is
+\begin{equation}\label{eq:pom-multiplicity-composition-cgf-limit}
+\boxed{\;
+\lim_{L\to\infty}\frac1L\log \mathbb{E}_{\mathbb{P}_L}\!\bigl[e^{tR_L}\bigr]
+=\log\frac{\Lambda_+(e^{t})}{\Lambda_+(1)}.\;}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For each part of length \(\ell\ge 1\), its weight is \(F_{\ell+2}\) with an additional counting factor \(y\) and length weight \(t^\ell\).
+Therefore the ``atomic generating function'' for a single part is
+\(
+y\sum_{\ell\ge 1}F_{\ell+2}t^\ell=y\,W(t)
+\), where \(W(t)\) is the same as in Proposition \ref{prop:pom-multiplicity-composition-partition-rational}.
+Ordered concatenation gives
+\[
+\sum_{L\ge 0}Z_L(y)t^L
+=\sum_{r\ge 0}\bigl(yW(t)\bigr)^r
+=\frac{1}{1-yW(t)}
+=\frac{1-t-t^2}{1-(2y+1)t-(y+1)t^2},
+\]
+establishing \eqref{eq:pom-multiplicity-composition-bivariate-gf}.
+The characteristic roots are read directly from the denominator quadratic.
+\par
+For the exponential moments, note that
+\(
+\mathbb{E}_{\mathbb{P}_L}[e^{tR_L}]
+=Z_L(e^t)/Z_L(1)
+\).
+From the closed-form solution of the second-order recurrence,
+\(
+Z_L(y)=A(y)\Lambda_+(y)^L+B(y)\Lambda_-(y)^L
+\)
+with \(|\Lambda_-(y)|<\Lambda_+(y)\) for fixed \(y>0\).
+Hence
+\(
+\frac1L\log Z_L(y)\to \log\Lambda_+(y)
+\), yielding \eqref{eq:pom-multiplicity-composition-cgf-limit}. \qed
+\end{proof}
+
+\begin{theorem}[Typical decomposition: strong law of large numbers and central limit theorem for part density]\label{thm:pom-multiplicity-composition-part-count-clt}
+Under the measure \(\mathbb{P}_L\), there exist rigorous constants
+\begin{equation}\label{eq:pom-multiplicity-composition-part-count-mean-var}
+\mu=\frac{17+5\sqrt{17}}{68},
+\qquad
+\sigma^2=\frac{289+73\sqrt{17}}{2312},
+\end{equation}
+such that
+\[
+\frac{R_L}{L}\xrightarrow[L\to\infty]{}\mu
+\qquad(\text{in probability}),
+\]
+and
+\[
+\frac{R_L-\mu L}{\sqrt{L}}\Longrightarrow \mathcal{N}(0,\sigma^2).
+\]
+Equivalently, the typical single-part length satisfies
+\[
+\frac{L}{R_L}\xrightarrow[L\to\infty]{}\frac{1}{\mu}=\frac{5\sqrt{17}-17}{2}
+\qquad(\text{in probability}).
+\]
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:pom-multiplicity-composition-part-count-bivariate-gf},
+\[
+\psi(t)
+:=\lim_{L\to\infty}\frac1L\log \mathbb{E}_{\mathbb{P}_L}\!\bigl[e^{tR_L}\bigr]
+=\log\frac{\Lambda_+(e^{t})}{\Lambda_+(1)}
+\]
+is analytic in a neighborhood of \(t=0\).
+Moreover, from the closed form
+\(
+Z_L(y)=A(y)\Lambda_+(y)^L+B(y)\Lambda_-(y)^L
+\)
+with exponentially decaying sub-leading root, there exists a neighborhood such that
+\[
+\log \mathbb{E}_{\mathbb{P}_L}\!\bigl[e^{tR_L}\bigr]
+=L\psi(t)+O(1)\qquad(L\to\infty).
+\]
+Therefore the CLT for \(R_L\) follows from the standard quasi-power/analytic saddle-point central limit theorem,
+with mean and variance given by
+\(
+\mu=\psi'(0),\ \sigma^2=\psi''(0)
+\);
+direct differentiation of
+\(
+\Lambda_+(y)=\frac{(2y+1)+\sqrt{4y^2+8y+5}}{2}
+\)
+and evaluation at \(y=1\) yields \eqref{eq:pom-multiplicity-composition-part-count-mean-var}.
+The CLT immediately gives \(R_L/L\to\mu\) in probability, hence \(L/R_L\to 1/\mu\). \qed
+\end{proof}
+
+\begin{proposition}[Limiting part length distribution and exponential tail parameter]\label{prop:pom-multiplicity-composition-part-length-iid-limit}
+Let
+\[
+\lambda_+:=\Lambda_+(1)=\frac{3+\sqrt{17}}{2},
+\qquad
+\rho_\star:=\lambda_+^{-1}=\frac{\sqrt{17}-3}{4}\in(0,1).
+\]
+Then under \(\mathbb{P}_L\), for any fixed \(r\ge 1\), the random prefix \((\ell_1,\dots,\ell_r)\) converges as \(L\to\infty\) to an i.i.d.\ limit whose marginal distribution is
+\begin{equation}\label{eq:pom-multiplicity-composition-part-length-limit-law}
+\boxed{\;
+\mathbb{P}(\ell=k)=F_{k+2}\,\rho_\star^{k}\qquad(k\ge 1).\;}
+\end{equation}
+This distribution has fully explicit moments:
+\[
+\boxed{\;
+\mathbb{E}[\ell]=\frac{5\sqrt{17}-17}{2},\qquad
+\mathrm{Var}(\ell)=18-4\sqrt{17}.\;}
+\]
+Writing \(\varphi=\frac{1+\sqrt5}{2}\) and letting
+\[
+a:=\rho_\star\varphi=\frac{(\sqrt{17}-3)(1+\sqrt5)}{8}\in(0,1),
+\qquad
+c_\star:=\frac{\varphi^2}{\sqrt5(1-a)},
+\]
+the tail satisfies the strict geometric asymptotics: there exists a constant \(c_\star>0\) such that
+\[
+\mathbb{P}(\ell\ge k)\sim c_\star\,a^{k}\qquad(k\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+For any fixed \((k_1,\dots,k_r)\), let \(s:=k_1+\cdots+k_r\).
+By the concatenation structure and Definition \ref{def:pom-multiplicity-induced-composition-measure},
+\[
+\mathbb{P}_L(\ell_1=k_1,\dots,\ell_r=k_r)
+=\frac{F_{k_1+2}\cdots F_{k_r+2}\,Z_{L-s}}{Z_L}.
+\]
+By the closed form of Proposition \ref{prop:pom-multiplicity-composition-partition-rational},
+\(
+Z_{L-s}/Z_L\to \lambda_+^{-s}=\rho_\star^{s}
+\).
+This gives the joint distribution limit as \(\prod_{i=1}^r F_{k_i+2}\rho_\star^{k_i}\), and since
+\(
+\sum_{k\ge 1}F_{k+2}\rho_\star^k=W(\rho_\star)=1
+\),
+this limit is indeed a probability distribution, establishing \eqref{eq:pom-multiplicity-composition-part-length-limit-law} together with the i.i.d.\ property.
+\par
+The closed-form moments can be computed from the derivatives of \(W(t)=\sum_{k\ge 1}F_{k+2}t^k=\frac{2t+t^2}{1-t-t^2}\) at \(t=\rho_\star\):
+\(
+\mathbb{E}[\ell]=\rho_\star W'(\rho_\star)
+\),
+\(
+\mathbb{E}[\ell^2]=\rho_\star W'(\rho_\star)+\rho_\star^2 W''(\rho_\star)
+\); simplification yields the stated expressions.
+The tail asymptotics follow from the Binet formula
+\(
+F_{k+2}=\frac{\varphi^{k+2}}{\sqrt5}\bigl(1+O(\varphi^{-2k})\bigr)
+\):
+\(
+\mathbb{P}(\ell=k)\sim \frac{\varphi^2}{\sqrt5}a^{k}
+\), and summing gives
+\(
+\mathbb{P}(\ell\ge k)\sim \frac{\varphi^2}{\sqrt5(1-a)}a^{k}=c_\star a^{k}
+\). \qed
+\end{proof}
+
+\begin{theorem}[Logarithmic scaling and Gumbel extreme value law for the maximum part length]\label{thm:pom-multiplicity-composition-max-part-gumbel}
+Let \(M_L:=\max_{1\le i\le R_L}\ell_i\), and take
+\[
+m_L(x):=\left\lfloor \frac{\log(\mu L c_\star)+x}{-\log a}\right\rfloor ,
+\]
+where the constants \(\mu,c_\star,a\) are as in Theorem \ref{thm:pom-multiplicity-composition-part-count-clt} and Proposition \ref{prop:pom-multiplicity-composition-part-length-iid-limit}.
+Then under \(\mathbb{P}_L\), the extreme value limit holds:
+\[
+\lim_{L\to\infty}\mathbb{P}_L\bigl(M_L\le m_L(x)\bigr)=\exp\bigl(-e^{-x}\bigr).
+\]
+Hence
+\(
+M_L=\frac{\log L}{-\log a}+O_{\mathbb{P}}(1)
+\), with fluctuations belonging to the Gumbel universality class; the scaling constant is completely determined by the algebraic number \(a=\rho_\star\varphi\).
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:pom-multiplicity-composition-part-length-iid-limit}, the limiting part length distribution has a geometric tail
+\(
+\mathbb{P}(\ell\ge k)\sim c_\star a^k
+\) with \(a\in(0,1)\).
+On the other hand, by Theorem \ref{thm:pom-multiplicity-composition-part-count-clt}, \(R_L=\mu L+o_{\mathbb{P}}(L)\).
+Therefore the extreme value behavior of \(M_L\) can be aligned with the maximum of \(n\approx \mu L\) i.i.d.\ geometric-tailed samples;
+for the latter, classical extreme value theory gives the limiting distribution under the centering \(m_L(x)\) as \(\exp(-e^{-x})\).
+Absorbing the relative fluctuation \(o_{\mathbb{P}}(L)\) of the random sample size into the logarithmic scaling term yields the stated limit. \qed
+\end{proof}
+
+\begin{theorem}[Large deviation principle for part density: algebraically auditable rate function]\label{thm:pom-multiplicity-composition-part-density-ldp}
+Let \(\theta\in(0,1)\).
+Then \(\frac{R_L}{L}\) satisfies a Cram\'er-type large deviation principle under \(\mathbb{P}_L\), with rate function
+\[
+I(\theta)=\sup_{t\in\RR}\{t\theta-\psi(t)\},
+\qquad
+\psi(t)=\log\frac{\Lambda_+(e^{t})}{\Lambda_+(1)},
+\]
+where
+\(
+\Lambda_+(y)=\frac{(2y+1)+\sqrt{4y^2+8y+5}}{2}
+\).
+Equivalently, \(I(\theta)\) has an algebraic closed-form parametrization in the parameter \(y>0\):
+\[
+I(\theta(y))=\theta(y)\log y-\log\frac{\Lambda_+(y)}{\Lambda_+(1)},
+\qquad
+\theta(y)=y\,\frac{d}{dy}\log \Lambda_+(y),
+\]
+and the unique minimum satisfies
+\(
+\theta(1)=\mu
+\)
+(Theorem \ref{thm:pom-multiplicity-composition-part-count-clt}).
+\end{theorem}
+\begin{proof}
+By the exponential moment limit \eqref{eq:pom-multiplicity-composition-cgf-limit} of Proposition \ref{prop:pom-multiplicity-composition-part-count-bivariate-gf},
+\(\psi(t)\) is finite and differentiable for all \(t\in\RR\), and is analytic in a neighborhood of \(t=0\).
+Therefore the G\"artner--Ellis theorem applies, yielding the large deviation principle for \(\frac{R_L}{L}\) with rate function given by the Legendre transform
+\(
+I(\theta)=\sup_t(t\theta-\psi(t))
+\).
+The parametric form is obtained by setting \(y=e^t\) and writing \(\theta(y)=\psi'(t)\);
+the unique minimum is given by \(\psi'(0)=\mu\) (Theorem \ref{thm:pom-multiplicity-composition-part-count-clt}). \qed
+\end{proof}
+
+\paragraph{Integer-order moment hierarchy and R\'enyi entropy rates: algebraic constant family for the fiber-weight probability spectrum}
+The preceding subsection established the auditable closed form and typical laws for the partition function \(Z_L\) under the ``linear weight'' (\(q=1\)) framework.
+Below we introduce the integer-order moment hierarchy of multiplicative multiplicities as a unified spectral family: on one hand it provides closed-form R\'enyi entropy rates of \(P_L\),
+and on the other hand it furnishes the same family of algebraic exponential constants for the collision probability, divergence rate from the uniform measure, and non-concentration of multiplicities under uniform composition.
+
+\begin{definition}[Integer-order moment partition function and growth constant]\label{def:pom-multiplicity-composition-integer-moment-partition}
+Following the weight \(w(\boldsymbol{\ell})=\prod_i F_{\ell_i+2}\) from Definition \ref{def:pom-multiplicity-composition-partition}.
+For any integer \(q\ge 1\), define the integer-order moment partition function and generating function
+\[
+Z_L^{(q)}
+:=\sum_{\boldsymbol{\ell}\in\mathcal{C}_L} w(\boldsymbol{\ell})^{q}
+=\sum_{\boldsymbol{\ell}=(\ell_1,\dots,\ell_r)\in\mathcal{C}_L}\ \prod_{i=1}^{r}F_{\ell_i+2}^{\,q},
+\qquad
+G_q(t):=\sum_{L\ge 0} Z_L^{(q)}t^L.
+\]
+with the convention \(Z_L^{(1)}=Z_L\).
+\end{definition}
+
+\begin{proposition}[Rationality and principal exponential growth constant of the integer-order moment partition function]\label{prop:pom-multiplicity-composition-moment-hierarchy-rational-growth}
+Under the setting of Definition \ref{def:pom-multiplicity-composition-integer-moment-partition}, for any integer \(q\ge 1\),
+\begin{equation}\label{eq:pom-multiplicity-composition-moment-hierarchy-gf}
+\boxed{\;
+G_q(t)=\frac{1}{1-W_q(t)},
+\qquad
+W_q(t):=\sum_{k\ge 1}F_{k+2}^{\,q}\,t^k.\;}
+\end{equation}
+Moreover, \(W_q(t)\) and \(G_q(t)\) are both strict rational functions.
+Let \(r_q\in(0,1)\) be the radius of convergence of \(G_q\) (equivalently, the smallest positive root of its denominator), and define the principal growth constant
+\[
+\boxed{\;\lambda_q:=r_q^{-1}>1.\;}
+\]
+Then the exponential law holds:
+\[
+\boxed{\;Z_L^{(q)}=\Theta(\lambda_q^{L}),\qquad
+\lim_{L\to\infty}\frac1L\log Z_L^{(q)}=\log\lambda_q.\;}
+\]
+\end{proposition}
+\begin{proof}
+For any \(\boldsymbol{\ell}=(\ell_1,\dots,\ell_r)\in\mathcal{C}_L\), taking the first part length \(k:=\ell_1\ge 1\), the tail \(\boldsymbol{\ell}':=(\ell_2,\dots,\ell_r)\) (possibly empty) belongs to \(\mathcal{C}_{L-k}\), and
+\(
+w(\boldsymbol{\ell})^{q}=F_{k+2}^{q}w(\boldsymbol{\ell}')^{q}
+\).
+Summing over \(L\ge 1\) yields the recurrence
+\[
+Z_L^{(q)}=\sum_{k=1}^{L}F_{k+2}^{q}\,Z_{L-k}^{(q)},
+\qquad Z_0^{(q)}=1,
+\]
+so the generating function satisfies
+\(
+G_q(t)=1+W_q(t)\,G_q(t)
+\), establishing \eqref{eq:pom-multiplicity-composition-moment-hierarchy-gf}.
+\par
+To prove rationality: by the Binet formula
+\(
+F_n=\frac{1}{\sqrt5}(\varphi^n-\psi^n)
+\) (\(\psi=-\varphi^{-1}\)),
+\[
+F_n^{q}=5^{-q/2}\sum_{j=0}^{q}\binom{q}{j}(-1)^j\bigl(\varphi^{\,q-j}\psi^{\,j}\bigr)^{n},
+\]
+so the sequence \(n\mapsto F_n^{q}\) is a linear combination of finitely many geometric-exponential terms, hence its ordinary generating function is rational.
+Therefore
+\(
+W_q(t)=\sum_{k\ge 1}F_{k+2}^{q}t^k
+\)
+is a rational function; substituting into \eqref{eq:pom-multiplicity-composition-moment-hierarchy-gf} shows that \(G_q\) is also rational.
+\par
+Since \(Z_L^{(q)}>0\), Pringsheim's theorem asserts that the dominant singularity on the convergence circle occurs on the positive real axis, so \(r_q\in(0,1)\) is the smallest positive root of the denominator and controls the exponential growth.
+By the rational generating function and partial fraction decomposition, \(Z_L^{(q)}\) is a linear combination of finitely many exponential terms with leading term of order \(\lambda_q^{L}\), yielding the stated \(\Theta(\lambda_q^L)\) and limit \(\frac1L\log Z_L^{(q)}\to\log\lambda_q\). \qed
+\end{proof}
+
+\begin{corollary}[Complete closed-form generating functions and algebraic growth constants for \texorpdfstring{$q=2,3$}{q=2,3}]\label{cor:pom-multiplicity-composition-moment-q2-q3-closed}
+Under the setting of Proposition \ref{prop:pom-multiplicity-composition-moment-hierarchy-rational-growth},
+\[
+\boxed{\;
+\sum_{L\ge 0} Z_L^{(2)}t^L=\frac{(1+t)(t^2-3t+1)}{1-6t-3t^2+2t^3}.}
+\]
+Hence \(\lambda_2\) is the largest real root of
+\[
+\boxed{\;\lambda^3-6\lambda^2-3\lambda+2=0\;}
+\]
+with numerical value \(\lambda_2\approx 6.41883267597\).
+\par
+Moreover,
+\[
+\boxed{\;
+\sum_{L\ge 0} Z_L^{(3)}t^L=\frac{(t^2-t-1)(t^2+4t-1)}{1-11t-9t^2+7t^3+2t^4}.}
+\]
+Hence \(\lambda_3\) is the largest real root of
+\[
+\boxed{\;\lambda^4-11\lambda^3-9\lambda^2+7\lambda+2=0\;}
+\]
+with numerical value \(\lambda_3\approx 11.71594345552\).
+\end{corollary}
+\begin{proof}
+Substituting \(q=2,3\) into the Binet expansion and summing the geometric series term by term, then simplifying via \eqref{eq:pom-multiplicity-composition-moment-hierarchy-gf}, yields the stated rational expressions;
+the corresponding characteristic polynomials are read directly from the denominator coefficients. \qed
+\end{proof}
+
+\begin{proposition}[Closed-form R\'enyi entropy rate of the fiber-weight measure]\label{prop:pom-multiplicity-composition-renyi-entropy-rate}
+Let \(P_L:=\mathbb{P}_L\) be the fiber-weight measure of Definition \ref{def:pom-multiplicity-induced-composition-measure}, and let \(q>1\).
+Define the R\'enyi entropy
+\[
+H_q(P_L):=\frac{1}{1-q}\log_2\sum_{\boldsymbol{\ell}\in\mathcal{C}_L}P_L(\boldsymbol{\ell})^{q}.
+\]
+Then the entropy rate limit exists and satisfies
+\begin{equation}\label{eq:pom-multiplicity-composition-renyi-entropy-rate}
+\boxed{\;
+\lim_{L\to\infty}\frac{1}{L}H_q(P_L)
+=\frac{1}{1-q}\Bigl(\log_2\lambda_q-q\log_2\lambda_1\Bigr),\qquad
+\lambda_1=\frac{3+\sqrt{17}}{2}.\;}
+\end{equation}
+In particular,
+\[
+\boxed{\;
+\lim_{L\to\infty}\frac{1}{L}H_2(P_L)=\log_2(\lambda_1^2/\lambda_2)\approx 0.98270181338,\;}
+\]
+\[
+\boxed{\;
+\lim_{L\to\infty}\frac{1}{L}H_3(P_L)=\frac12\log_2(\lambda_1^3/\lambda_3)\approx 0.97355896018.\;}
+\]
+Moreover, the limiting min-entropy rate satisfies
+\begin{equation}\label{eq:pom-multiplicity-composition-min-entropy-rate}
+\boxed{\;
+\lim_{q\to\infty}\ \lim_{L\to\infty}\frac{1}{L}H_q(P_L)
+=\log_2(\lambda_1/2)\approx 0.83250638358.\;}
+\end{equation}
+\end{proposition}
+\begin{proof}
+From \(P_L(\boldsymbol{\ell})=w(\boldsymbol{\ell})/Z_L^{(1)}\) and Definition \ref{def:pom-multiplicity-composition-integer-moment-partition},
+\[
+\sum_{\boldsymbol{\ell}}P_L(\boldsymbol{\ell})^q
+=\frac{1}{(Z_L^{(1)})^q}\sum_{\boldsymbol{\ell}}w(\boldsymbol{\ell})^q
+=\frac{Z_L^{(q)}}{(Z_L^{(1)})^q}.
+\]
+Hence
+\(
+H_q(P_L)=\frac{1}{1-q}\bigl(\log_2 Z_L^{(q)}-q\log_2 Z_L^{(1)}\bigr)
+\).
+By Proposition \ref{prop:pom-multiplicity-composition-moment-hierarchy-rational-growth},
+\(
+\frac{1}{L}\log Z_L^{(q)}\to \log\lambda_q
+\)
+and
+\(
+\frac{1}{L}\log Z_L^{(1)}\to \log\lambda_1
+\);
+substituting and taking the limit yields \eqref{eq:pom-multiplicity-composition-renyi-entropy-rate}; the constants for \(q=2,3\) follow from Corollary \ref{cor:pom-multiplicity-composition-moment-q2-q3-closed}.
+\par
+For the min-entropy rate: by the upper bound of Proposition \ref{prop:pom-path-component-multiplicity-refinement-monotone-extrema},
+\(
+\max_{\boldsymbol{\ell}\in\mathcal{C}_L}w(\boldsymbol{\ell})=w(\boldsymbol{1}*L)=2^L
+\).
+Therefore
+\[
+H_\infty(P_L):=-\log_2\max_{\boldsymbol{\ell}}P_L(\boldsymbol{\ell})
+=-\log_2\frac{2^L}{Z_L^{(1)}}=\log_2 Z_L^{(1)}-L,
+\]
+dividing by \(L\) and letting \(L\to\infty\) gives
+\(
+\lim_{L\to\infty}\frac{1}{L}H_\infty(P_L)=\log_2\lambda_1-1=\log_2(\lambda_1/2)
+\).
+Since \(q\mapsto H_q(P_L)\) is non-increasing in \(q\) with \(H_q\downarrow H_\infty\), this yields \eqref{eq:pom-multiplicity-composition-min-entropy-rate}. \qed
+\end{proof}
+
+\begin{corollary}[Exponential law and collision exponent for the collision probability]\label{cor:pom-multiplicity-composition-collision-exponent}
+Define the collision probability
+\(
+C_L:=\sum_{\boldsymbol{\ell}\in\mathcal{C}_L}P_L(\boldsymbol{\ell})^2
+\).
+Then
+\[
+\boxed{\;C_L=\frac{Z_L^{(2)}}{(Z_L^{(1)})^2}.\;}
+\]
+There exist constants \(0<c_-\le c_+<\infty\) such that for all sufficiently large \(L\),
+\[
+c_-\Bigl(\frac{\lambda_2}{\lambda_1^2}\Bigr)^L
+\le C_L\le
+c_+\Bigl(\frac{\lambda_2}{\lambda_1^2}\Bigr)^L.
+\]
+Equivalently,
+\[
+\boxed{\;-\lim_{L\to\infty}\frac{1}{L}\log_2 C_L=\log_2(\lambda_1^2/\lambda_2).\;}
+\]
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-multiplicity-composition-moment-hierarchy-rational-growth},
+\(
+Z_L^{(2)}=c_2\lambda_2^L(1+o(1))
+\)
+and
+\(
+Z_L^{(1)}=c_1\lambda_1^L(1+o(1))
+\)
+for some \(c_1,c_2>0\), so
+\(
+C_L=(c_2/c_1^2)(\lambda_2/\lambda_1^2)^L(1+o(1))
+\).
+From this, the constants \(c_\pm\) providing the double-sided bound and the limiting exponent follow. \qed
+\end{proof}
+
+\begin{corollary}[R\'enyi-\texorpdfstring{$2$}{2} divergence rate from the uniform composition measure]\label{cor:pom-multiplicity-composition-renyi2-divergence-to-uniform}
+For \(L\ge 1\), let \(U_L\) be the uniform measure on \(\mathcal{C}_L\): \(U_L(\boldsymbol{\ell})=2^{-(L-1)}\).
+Then the R\'enyi-\(2\) divergence satisfies
+\[
+D_2(P_L\|U_L)
+=\log_2\sum_{\boldsymbol{\ell}\in\mathcal{C}_L}\frac{P_L(\boldsymbol{\ell})^2}{U_L(\boldsymbol{\ell})}
+=\log_2\bigl(2^{L-1}C_L\bigr).
+\]
+Hence the divergence rate exists and has the closed form
+\[
+\boxed{\;
+\lim_{L\to\infty}\frac{1}{L}D_2(P_L\|U_L)
+=\log_2\!\Bigl(\frac{2\lambda_2}{\lambda_1^2}\Bigr)
+=1-\log_2(\lambda_1^2/\lambda_2)\approx 0.01729818662>0.\;}
+\]
+\end{corollary}
+\begin{proof}
+From the definition \(U_L(\boldsymbol{\ell})=2^{-(L-1)}\) and the collision probability \(C_L=\sum P_L^2\), the identity follows directly.
+The divergence rate then comes from the exponential limit of Corollary \ref{cor:pom-multiplicity-composition-collision-exponent}. \qed
+\end{proof}
+
+\begin{corollary}[Variance explosion rate of multiplicities under uniform composition]\label{cor:pom-multiplicity-composition-uniform-variance-explosion}
+Under \(U_L\), treating \(W_L:=w(\boldsymbol{\ell})\) as a random variable,
+\[
+\mathbb{E}_{U_L}[W_L]=\frac{Z_L^{(1)}}{2^{L-1}},
+\qquad
+\mathbb{E}_{U_L}[W_L^2]=\frac{Z_L^{(2)}}{2^{L-1}}.
+\]
+Therefore the coefficient of variation satisfies the exact identity
+\[
+\boxed{\;
+\frac{\mathrm{Var}_{U_L}(W_L)}{\mathbb{E}_{U_L}[W_L]^2}
+=2^{L-1}\frac{Z_L^{(2)}}{(Z_L^{(1)})^2}-1
+=2^{L-1}C_L-1.\;}
+\]
+Moreover, the exponential limit holds:
+\[
+\boxed{\;
+\lim_{L\to\infty}\frac{1}{L}\log_2\Bigl(1+\frac{\mathrm{Var}_{U_L}(W_L)}{\mathbb{E}_{U_L}[W_L]^2}\Bigr)
+=\log_2\!\Bigl(\frac{2\lambda_2}{\lambda_1^2}\Bigr).\;}
+\]
+\end{corollary}
+\begin{proof}
+The expectation and second moment follow from direct computation using the uniform measure and Definition \ref{def:pom-multiplicity-composition-integer-moment-partition};
+substituting into \(\mathrm{Var}(W)=\mathbb{E}[W^2]-\mathbb{E}[W]^2\) yields the identity.
+The exponential limit follows immediately from Corollary \ref{cor:pom-multiplicity-composition-renyi2-divergence-to-uniform} (or Corollary \ref{cor:pom-multiplicity-composition-collision-exponent}). \qed
+\end{proof}
+
+\begin{proposition}[Moment shift law under the fiber-weight measure]\label{prop:pom-multiplicity-composition-moment-shift-law}
+Under the fiber-weight measure \(P_L\), for any integer \(q\ge 0\) the exact identity holds:
+\[
+\boxed{\;
+\mathbb{E}_{P_L}[W_L^{\,q}]
+=\sum_{\boldsymbol{\ell}\in\mathcal{C}_L}\frac{w(\boldsymbol{\ell})^{q+1}}{Z_L^{(1)}}
+=\frac{Z_L^{(q+1)}}{Z_L^{(1)}}.\;}
+\]
+Therefore the exponential limit holds:
+\[
+\boxed{\;
+\lim_{L\to\infty}\frac{1}{L}\log \mathbb{E}_{P_L}[W_L^{\,q}]
+=\log\Bigl(\frac{\lambda_{q+1}}{\lambda_1}\Bigr),\;}
+\]
+and in particular,
+\(
+\lim_{L\to\infty}\frac{1}{L}\log \mathbb{E}_{P_L}[W_L]=\log(\lambda_2/\lambda_1)
+\).
+\end{proposition}
+\begin{proof}
+The first identity follows by expanding \(P_L(\boldsymbol{\ell})=w(\boldsymbol{\ell})/Z_L^{(1)}\) and comparing with the definition of \(Z_L^{(q+1)}\).
+The exponential limit follows directly from the growth constants of Proposition \ref{prop:pom-multiplicity-composition-moment-hierarchy-rational-growth}. \qed
+\end{proof}
+
+\begin{proposition}[Log-convexity of \texorpdfstring{$\lambda_q$}{lambda_q} and strict monotonicity of R\'enyi entropy rates]\label{prop:pom-multiplicity-composition-logconvex-lambdaq}
+For integer \(q\ge 2\), the principal growth constants satisfy the log-convexity inequality
+\[
+\boxed{\;
+\log \lambda_q-\frac12\bigl(\log \lambda_{q-1}+\log \lambda_{q+1}\bigr)\le 0.\;}
+\]
+Strict inequality holds when the multiplicity is non-degenerate (i.e., at least two different composition weights exist).
+Let
+\(
+h_q:=\lim_{L\to\infty}\frac{1}{L}H_q(P_L)
+\)
+be the R\'enyi entropy rate of Proposition \ref{prop:pom-multiplicity-composition-renyi-entropy-rate}. Then \(q\mapsto h_q\) is strictly decreasing on \(q>1\), and
+\[
+\boxed{\;
+\lim_{q\to\infty}h_q=\log_2(\lambda_1/2).\;}
+\]
+\end{proposition}
+\begin{proof}
+For fixed \(L\) and \(q\ge 2\), applying the Cauchy--Schwarz inequality to the weight family \(\{w(\boldsymbol{\ell})\}_{\boldsymbol{\ell}\in\mathcal{C}_L}\):
+let \(a_{\boldsymbol{\ell}}:=w(\boldsymbol{\ell})^{(q-1)/2}\) and \(b_{\boldsymbol{\ell}}:=w(\boldsymbol{\ell})^{(q+1)/2}\), then
+\[
+\Bigl(\sum_{\boldsymbol{\ell}}w(\boldsymbol{\ell})^{q}\Bigr)^2
+=\Bigl(\sum_{\boldsymbol{\ell}}a_{\boldsymbol{\ell}}b_{\boldsymbol{\ell}}\Bigr)^2
+\le
+\Bigl(\sum_{\boldsymbol{\ell}}a_{\boldsymbol{\ell}}^2\Bigr)\Bigl(\sum_{\boldsymbol{\ell}}b_{\boldsymbol{\ell}}^2\Bigr)
+=Z_L^{(q-1)}Z_L^{(q+1)}.
+\]
+Taking logarithms, dividing by \(L\), and letting \(L\to\infty\), using Proposition \ref{prop:pom-multiplicity-composition-moment-hierarchy-rational-growth} gives
+\(
+2\log\lambda_q\le \log\lambda_{q-1}+\log\lambda_{q+1}
+\).
+When at least two different weights exist, the equality condition of Cauchy--Schwarz (\(a_{\boldsymbol{\ell}}\propto b_{\boldsymbol{\ell}}\)) fails, so strict inequality holds.
+\par
+From \eqref{eq:pom-multiplicity-composition-renyi-entropy-rate},
+\[
+h_q
+=\frac{q\log_2\lambda_1-\log_2\lambda_q}{q-1}
+=\log_2\lambda_1-\frac{\log_2\lambda_q-\log_2\lambda_1}{q-1}.
+\]
+Write \(s_q:=\frac{\log_2\lambda_q-\log_2\lambda_1}{q-1}\) for the secant slope of the point \((q,\log_2\lambda_q)\) relative to \((1,\log_2\lambda_1)\).
+Log-convexity implies that \(s_q\) is strictly increasing in \(q\), hence \(h_q=\log_2\lambda_1-s_q\) is strictly decreasing.
+\par
+Finally, from \(\max_{\boldsymbol{\ell}}w(\boldsymbol{\ell})=2^L\) and \(|\mathcal{C}_L|=2^{L-1}\) (\(L\ge 1\)),
+\[
+2^{qL}\le Z_L^{(q)}\le 2^{L-1}\cdot 2^{qL}=2^{-1}\cdot 2^{(q+1)L}.
+\]
+Hence \(2^q\le \lambda_q\le 2^{q+1}\), so \(\frac{1}{q}\log_2\lambda_q\to 1\).
+Substituting back into \(h_q=\frac{1}{1-q}(\log_2\lambda_q-q\log_2\lambda_1)\) yields
+\(
+\lim_{q\to\infty}h_q=\log_2\lambda_1-1=\log_2(\lambda_1/2)
+\). \qed
+\end{proof}
+
+\input{sections/body/pom/parts/subsubsec__pom-multiplicity-composition-real-q-pressure}
+
+\endinput

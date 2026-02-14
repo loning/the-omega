@@ -1,0 +1,456 @@
+\subsection{Generalization: Stable Folding Under General Ostrowski Numeration}\label{subsec:ostrowski-generalized-fold}
+
+This section extends the ``Fibonacci/Zeckendorf folding'' to the Ostrowski numeration system associated with a general irrational number, thereby addressing the structural demand for ``extension to a broader numeration framework.'' The special status of the golden branch lies in the fact that when $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$, the Ostrowski numeration degenerates to the Fibonacci weights and Zeckendorf syntax, so that the stable type space reduces to the simplest binary SFT (forbidding adjacent $11$), and the PF/$\zeta$ interface admits closed-form expressions.
+
+\subsubsection{General Ostrowski Weights and Admissible Digits}
+
+Let $\alpha\in(0,1)\setminus\QQ$ have continued fraction expansion
+\[
+\alpha=[0;a_1,a_2,\dots],\qquad a_k\in\NN.
+\]
+Define its convergent denominators $(q_n)_{n\ge 0}$ by the recurrence
+\[
+q_{-1}=0,\ q_0=1,\qquad q_{n+1}=a_{n+1}q_n+q_{n-1}\quad(n\ge 0).
+\]
+
+The Ostrowski representation theorem guarantees: for any $N\in\NN$, there exists a unique digit sequence $(d_n)_{n\ge 1}$ satisfying
+$0\le d_n\le a_n$, if $d_n=a_n$ then $d_{n-1}=0$ ($n\ge 2$), and only finitely many $d_n\neq 0$, such that
+\[
+N=\sum_{n\ge 1} d_n q_{n-1}.
+\]
+In what follows, this unique sequence is referred to as the Ostrowski digits of $N$, denoted $Z_\alpha(N)=(d_1,d_2,\dots)$ (see \cite{Ostrowski1922} and subsequent surveys).
+
+\begin{definition}[General Stable Type Space]\label{def:Xm-alpha}
+For any $m\ge 1$, define the length-$m$ Ostrowski admissible set
+\[
+X_m^{(\alpha)}:=\Bigl\{(d_1,\dots,d_m):\ 0\le d_n\le a_n,\ \ d_n=a_n\Rightarrow d_{n-1}=0\ (n\ge 2)\Bigr\}.
+\]
+and define the truncation $\pi_m^{(\alpha)}(d_1,d_2,\dots)=(d_1,\dots,d_m)$.
+\end{definition}
+
+\begin{proposition}[Counting and Recurrence (Denominators as Counts)]\label{prop:Xm-alpha-cardinality}
+For any $m\ge 1$,
+\[
+\bigl|X_m^{(\alpha)}\bigr|=q_{m+1}.
+\]
+In particular, when $\alpha=\varphi^{-1}$ (i.e., $a_n\equiv 1$), $q_{m+1}=F_{m+2}$, and $X_m^{(\alpha)}$ degenerates to the golden mean syntax $X_m$ consisting of binary strings in $\{0,1\}^m$ with no adjacent $11$.
+\end{proposition}
+
+\begin{definition}[Entropy Gap Index for General Ostrowski Folding]\label{def:ostrowski-entropy-gap}
+For a given $\alpha=[0;a_1,a_2,\dots]$, the length-$m$ ``raw digit space'' and the stable type space are respectively
+\[
+\Omega_m^{(\alpha)}=\prod_{n=1}^{m}\{0,1,\dots,a_n\},
+\qquad
+X_m^{(\alpha)}\subseteq \Omega_m^{(\alpha)},
+\]
+with $|X_m^{(\alpha)}|=q_{m+1}$ (Proposition \ref{prop:Xm-alpha-cardinality}).
+Define the fold compression quantity at resolution $m$ (in natural logarithm)
+\[
+S_Z^{(\alpha)}(m):=\log\frac{|\Omega_m^{(\alpha)}|}{|X_m^{(\alpha)}|}
+=\sum_{n=1}^{m}\log(a_n+1)-\log q_{m+1},
+\]
+together with the corresponding entropy gap index
+\[
+\kappa(\alpha):=\limsup_{m\to\infty}\frac{1}{m}S_Z^{(\alpha)}(m).
+\]
+\end{definition}
+
+\begin{remark}[The Golden Branch as the Simplest Periodic Special Case]
+When $\alpha=\varphi^{-1}=[0;1,1,1,\dots]$, $\Omega_m^{(\alpha)}=\{0,1\}^m$, $|X_m^{(\alpha)}|=F_{m+2}$, so that
+\[
+S_Z^{(\alpha)}(m)=\log\frac{2^m}{F_{m+2}}
+=m\log\!\left(\frac{2}{\varphi}\right)+O(1),
+\]
+and therefore $\kappa(\varphi^{-1})=\log(2/\varphi)$, which is consistent with the entropy gap constant obtained in the binary folding of this paper (see the corresponding formulas in Section \ref{subsec:pom-projection-entropy}).
+\end{remark}
+
+\subsubsection{The Metallic Mean Family: Two-State Syntax and the ``Compression/Anti-Resonance'' Duality for Constant-Type \texorpdfstring{$\alpha_A=[0;A,A,A,\dots]$}{alphaA}}
+
+\paragraph{Two-State SFT Representation (Minimal Memory for the Admissible Syntax)}
+When $a_n\equiv A$ is constant ($A\in\NN_{\ge 1}$), the admissibility constraint
+\(
+d_n=A\Rightarrow d_{n-1}=0
+\)
+depends only on ``whether the previous digit is $0$.'' Hence the constraint can be captured by a two-state memory:
+\[
+S_0:\ d_{n-1}=0,\qquad S_+:\ d_{n-1}\in\{1,\dots,A\}.
+\]
+
+\begin{proposition}[The Admissible Syntax of the Metallic Mean Family Is a Two-State SFT]\label{prop:metallic-two-state-sft}
+Let $\alpha_A=[0;A,A,A,\dots]$ ($A\in\NN_{\ge 1}$). Then the length-$m$ admissible set $X_m^{(\alpha_A)}$ is governed by a two-state SFT with counting matrix
+\[
+M_A=
+\begin{pmatrix}
+1 & A\\
+1 & A-1
+\end{pmatrix},
+\qquad
+\chi_{M_A}(\lambda)=\lambda^2-A\lambda-1,
+\]
+whose Perron root is
+\[
+\lambda_A=\frac{A+\sqrt{A^2+4}}{2}.
+\]
+Furthermore, the topological entropy satisfies
+\[
+h_{\mathrm{top}}\bigl(X^{(\alpha_A)}\bigr)=\log\lambda_A.
+\]
+\end{proposition}
+\begin{proof}
+The transition counts are: from $S_0$, choosing $0$ ($1$ way) stays in $S_0$, choosing $1,\dots,A$ ($A$ ways) transitions to $S_+$; from $S_+$, choosing $0$ ($1$ way) transitions to $S_0$, choosing $1,\dots,A-1$ ($A-1$ ways) stays in $S_+$ (the digit $A$ is forbidden). Hence the counting matrix is $M_A$.
+The characteristic polynomial and the Perron root follow by direct computation; the topological entropy of an SFT equals the logarithm of the spectral radius of its adjacency matrix, yielding the stated result. \qed
+\end{proof}
+
+\paragraph{Optimality of Fold Compression: Existence of an Interior Maximum}
+For the metallic mean family, the raw digit space has size $|\Omega_m^{(\alpha_A)}|=(A+1)^m$, while Proposition \ref{prop:Xm-alpha-cardinality} gives
+\(
+|X_m^{(\alpha_A)}|=q_{m+1}\asymp \lambda_A^m
+\).
+Therefore the exponential slope of fold compression is
+\[
+h_Z(A):=\lim_{m\to\infty}\frac{1}{m}\log\frac{|\Omega_m^{(\alpha_A)}|}{|X_m^{(\alpha_A)}|}
+=\log\!\left(\frac{A+1}{\lambda_A}\right).
+\]
+
+\begin{proposition}[The Projection Compression Rate of the Metallic Mean Family Attains Its Maximum at \texorpdfstring{$A=\frac{3}{2}$}{A=3/2}]\label{prop:metallic-compression-extremum}
+Extending $A$ to a continuous real parameter ($A\ge 1$), the function
+\(
+h_Z(A)=\log\!\left(\frac{A+1}{\lambda_A}\right)
+\)
+has a unique maximum on the interval $[1,\infty)$ at
+\[
+A_\star=\frac{3}{2}.
+\]
+When restricted to $A\in\ZZ_{\ge 1}$, the maximum of $h_Z(A)$ is attained at $A=2$ (the silver branch).
+\end{proposition}
+\begin{proof}
+From $\lambda_A=(A+\sqrt{A^2+4})/2$, direct differentiation yields
+\[
+h_Z'(A)=\frac{1}{A+1}-\frac{1}{\sqrt{A^2+4}}.
+\]
+The equation $h_Z'(A)=0$ is equivalent to $\sqrt{A^2+4}=A+1$, whose unique solution is $A_\star=3/2$. From
+\[
+h_Z''(A)=-\frac{1}{(A+1)^2}+\frac{A}{(A^2+4)^{3/2}}<0\qquad(A\ge 1)
+\]
+(which can be verified by squaring and reducing to an elementary inequality), this critical point is a strict maximum and globally unique.
+For integer values, since $h_Z$ is strictly increasing on $[1,A_\star]$ and strictly decreasing on $[A_\star,\infty)$, the maximum can only occur at $A=1$ or $A=2$. Comparing:
+\[
+h_Z(2)-h_Z(1)=\log\!\left(\frac{3}{1+\sqrt2}\cdot\frac{1+\sqrt5}{4}\right)
+\]
+it suffices to verify
+\(
+3(1+\sqrt5)>4(1+\sqrt2)
+\), i.e.,
+\(
+3\sqrt5-4\sqrt2>1
+\), whose square gives $77-24\sqrt{10}>1$, equivalent to $(19/6)^2>10$, which holds. Hence the integer maximum is at $A=2$. \qed
+\end{proof}
+
+\paragraph{Incompatibility with Anti-Resonance Certificates}
+The gap/discrepancy certificates in Appendix \ref{app:kronecker-discrepancy-metallic-gap} provide another ``anti-resonance strength'' functional, whose typical form can be written as
+\[
+\kappa(A):=\frac{A}{\log\lambda_A},
+\]
+and this is strictly increasing on $A\ge 1$ (the golden branch $A=1$ is strictly optimal in the sense of this certificate).
+
+\begin{remark}[Separation of Two Notions of Optimality: Anti-Resonance vs.\ Projection Compression]\label{rem:metallic-dual-optimality}
+The scale change within the metallic mean family does not yield a single ``golden-optimal'' conclusion: two competing extremal objectives coexist along the same parameter axis.
+\begin{itemize}
+  \item \textbf{Strongest anti-resonance/finite-sample stability certificate:} By the monotonicity of $\kappa(A)$, $A=1$ (golden) is optimal;
+  \item \textbf{Maximal projection compression rate (maximum information compressed per digit):} By Proposition \ref{prop:metallic-compression-extremum}, the continuous extremum is at $A=3/2$, and the integer optimum is at $A=2$ (silver).
+\end{itemize}
+Therefore, ``anti-resonance optimality'' and ``projection compression optimality'' are incompatible within the metallic mean family: they correspond to two distinct auditable functionals whose extremal points are separated.
+\end{remark}
+
+\paragraph{Two-Objective Phase Diagram of the Metallic Mean Family: Pareto Frontier, Scalarization Threshold, and Finite-Sample Design Law}
+
+\begin{proposition}[Two-Objective Pareto Frontier of the Metallic Mean Family: Closed-Form Parametrization by \texorpdfstring{$\lambda$}{lambda}]\label{prop:metallic-pareto-frontier-lambda}
+Let \(\lambda:=\lambda_A\) be the Perron root from Proposition \ref{prop:metallic-two-state-sft}. The characteristic equation
+\(\lambda^2-A\lambda-1=0\) yields the parameter transformation
+\[
+A=\lambda-\lambda^{-1},\qquad \lambda\ge \varphi.
+\]
+The two auditable objective functions \(h_Z\) and \(\kappa\) can then be expressed as a one-dimensional closed-form curve
+\[
+h_Z(\lambda)=\log\!\left(1+\lambda^{-1}-\lambda^{-2}\right),
+\qquad
+\kappa(\lambda)=\frac{\lambda-\lambda^{-1}}{\log\lambda}.
+\]
+Under the continuous parameter \(A\ge 1\) (equivalently \(\lambda\ge\varphi\)), the continuous Pareto frontier for the criteria ``\textbf{maximize} \(h_Z\)'' and ``\textbf{minimize} \(\kappa\)'' is precisely the image of the interval \(\lambda\in[\varphi,2]\) (equivalently \(A\in[1,3/2]\)) under the map \(\lambda\mapsto(\kappa(\lambda),h_Z(\lambda))\);
+for \(\lambda>2\) (equivalently \(A>3/2\)), both objectives deteriorate simultaneously, and this branch is strictly dominated by the frontier.
+\end{proposition}
+\begin{proof}
+From \(\lambda^2-A\lambda-1=0\), solving directly gives \(A=\lambda-\lambda^{-1}\). Substituting this relation back into
+\(
+h_Z(A)=\log\bigl((A+1)/\lambda_A\bigr)
+\)
+and
+\(
+\kappa(A)=A/\log\lambda_A
+\)
+yields the stated closed-form expressions.
+\par
+On the other hand, Proposition \ref{prop:metallic-compression-extremum} shows that \(h_Z(A)\) is strictly increasing on \([1,3/2]\) and strictly decreasing on \([3/2,\infty)\), while \(\kappa(A)\) is strictly increasing on \(A\ge 1\).
+Therefore, for \(A>3/2\), taking \(A_\star=3/2\) gives \(\kappa(A_\star)<\kappa(A)\) and \(h_Z(A_\star)>h_Z(A)\), so this branch is strictly dominated; on \(A\in[1,3/2]\), any two points exhibit one objective increasing and the other decreasing, so they are mutually non-dominated, thereby forming the Pareto frontier. \qed
+\end{proof}
+
+\begin{remark}[Design Space Reduction: No Need to Consider \texorpdfstring{$A>3/2$}{A>3/2}]\label{rem:metallic-design-space-reduction}
+Proposition \ref{prop:metallic-pareto-frontier-lambda} shows that, under the continuous parameter, all branches with \(A>3/2\) are strictly dominated by \(A_\star=3/2\) in the two-objective ``compression/anti-resonance'' sense and therefore do not belong to the Pareto set.
+Hence if \(A\) is allowed to vary continuously, the design space can be reduced without loss to
+\[
+A\in\left[1,\frac{3}{2}\right].
+\]
+If \(A\) is constrained to \(A\in\ZZ_{\ge 1}\), then by the same monotonicity argument all \(A\ge 3\) are strictly dominated by \(A=2\), so the integer Pareto set reduces to \(\{1,2\}\).
+\end{remark}
+
+\begin{corollary}[``Syntax Entropy Locking'' at Maximum Projection Compression: \texorpdfstring{$\lambda=2$}{lambda=2}]\label{cor:metallic-compression-locking-lambda2}
+The continuous maximum point \(A_\star=3/2\) of Proposition \ref{prop:metallic-compression-extremum} is equivalent to
+\[
+\lambda_{A_\star}=2.
+\]
+At this point, the maximum compression slope is the closed-form constant
+\[
+h_Z(A_\star)=h_Z(\lambda=2)=\log\!\left(\frac{5}{4}\right).
+\]
+\end{corollary}
+\begin{proof}
+From \(\lambda_A=(A+\sqrt{A^2+4})/2\), substituting \(A_\star=3/2\) gives \(\lambda_{A_\star}=2\).
+Then from \(h_Z(A)=\log((A+1)/\lambda_A)\),
+\(
+h_Z(A_\star)=\log((5/2)/2)=\log(5/4)
+\). \qed
+\end{proof}
+
+\begin{proposition}[Endpoint Phase Transition Threshold Under Linear Scalarization]\label{prop:metallic-linear-scalarization-threshold}
+For weight \(\beta\ge 0\), consider the linear scalarization objective
+\[
+J_\beta(A):=h_Z(A)-\beta\,\kappa(A),\qquad A\ge 1.
+\]
+Define the critical threshold
+\[
+\beta_c:=\frac{h_Z'(1)}{\kappa'(1)}
+=\frac{\left(\frac{1}{2}-\frac{1}{\sqrt5}\right)(\log\varphi)^2}{\log\varphi-\frac{1}{\sqrt5}}
+\approx 0.35953.
+\]
+Then the maximizer \(A_\beta\) of \(J_\beta\) satisfies:
+\begin{itemize}
+  \item If \(\beta\ge \beta_c\), then \(A_\beta=1\) (the golden endpoint is forced);
+  \item If \(0\le \beta<\beta_c\), then there exists a unique \(A_\beta\in(1,3/2]\) such that \(J_\beta'(A_\beta)=0\), and as \(\beta\downarrow 0\), \(A_\beta\to 3/2\).
+\end{itemize}
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:metallic-pareto-frontier-lambda}, for any \(A>3/2\) we have \(h_Z(A)<h_Z(3/2)\) and \(\kappa(A)>\kappa(3/2)\), so for any \(\beta\ge 0\),
+\[
+J_\beta(A)=h_Z(A)-\beta\kappa(A)\ <\ h_Z(3/2)-\beta\kappa(3/2)=J_\beta(3/2),
+\]
+and therefore the maximizer must lie in the compact interval \([1,3/2]\).
+\par
+On this interval, from the derivation in Proposition \ref{prop:metallic-compression-extremum},
+\[
+h_Z'(A)=\frac{1}{A+1}-\frac{1}{\sqrt{A^2+4}},\qquad
+h_Z''(A)=-\frac{1}{(A+1)^2}+\frac{A}{(A^2+4)^{3/2}}<0.
+\]
+On the other hand, differentiating \(\lambda_A^2-A\lambda_A-1=0\) yields
+\[
+(\log\lambda_A)'=\frac{1}{\sqrt{A^2+4}},
+\]
+from which
+\[
+\kappa'(A)=\frac{\log\lambda_A-\frac{A}{\sqrt{A^2+4}}}{(\log\lambda_A)^2}.
+\]
+Next define
+\[
+f(A):=\frac{2A\sqrt{A^2+4}}{A^2+8}-\log\lambda_A.
+\]
+Direct computation gives
+\[
+f'(A)=\frac{A^2(8-A^2)}{\sqrt{A^2+4}\,(A^2+8)^2}>0\qquad(1\le A\le 3/2),
+\]
+and \(f(1)=2\sqrt5/9-\log\varphi\approx 1.50\times 10^{-2}>0\), so \(f(A)>0\) holds on \([1,3/2]\).
+Observing that
+\[
+\kappa''(A)=\frac{-A^2-8+\frac{2A\sqrt{A^2+4}}{\log\lambda_A}}{(A^2+4)^{3/2}(\log\lambda_A)^2},
+\]
+whose numerator has the same sign as \(f(A)\), we conclude that \(\kappa''(A)>0\) on \([1,3/2]\).
+Therefore, for any \(\beta\ge 0\),
+\[
+J_\beta''(A)=h_Z''(A)-\beta\,\kappa''(A)<0\qquad(1\le A\le 3/2),
+\]
+i.e., \(J_\beta\) is strictly concave on \([1,3/2]\), so the maximizer is unique.
+\par
+Computing \(J_\beta'(1)=h_Z'(1)-\beta\kappa'(1)\): when \(\beta\ge\beta_c\), \(J_\beta'(1)\le 0\), and combined with strict concavity, the maximizer is the endpoint \(A_\beta=1\).
+When \(0\le\beta<\beta_c\), \(J_\beta'(1)>0\), and \(J_\beta'(3/2)=h_Z'(3/2)-\beta\kappa'(3/2)=-\beta\kappa'(3/2)<0\); by the intermediate value theorem there exists a unique \(A_\beta\in(1,3/2]\) with \(J_\beta'(A_\beta)=0\), and by strict concavity this is the maximizer.
+Finally, as \(\beta\downarrow 0\), \(J_\beta'\to h_Z'\) uniformly on the compact interval, and \(h_Z'\) vanishes uniquely at \(A_\star=3/2\), so \(A_\beta\to 3/2\). \qed
+\end{proof}
+
+\begin{corollary}[Continuous Pareto Scale Law: Weight \texorpdfstring{$\beta$}{beta} \texorpdfstring{$\mapsto$}{->} Optimal \texorpdfstring{$A_\beta$}{A\_beta}]\label{cor:metallic-pareto-scale-law}
+Following the notation of Proposition \ref{prop:metallic-linear-scalarization-threshold}, let \(A_\beta\) denote the unique maximizer of the scalarized objective
+\(
+J_\beta(A)=h_Z(A)-\beta\kappa(A)
+\)
+over \(A\ge 1\).
+Then:
+\begin{enumerate}
+  \item For every \(\beta\ge 0\), there exists exactly one optimal scale \(A_\beta\in[1,3/2]\);
+  \item When \(0\le \beta<\beta_c\), \(A_\beta\in(1,3/2]\) is the unique interior solution of
+  \[
+  h_Z'(A_\beta)=\beta\,\kappa'(A_\beta),
+  \]
+  and the map \(\beta\mapsto A_\beta\) is continuous and strictly decreasing on \([0,\beta_c)\) (thus increasing \(\beta\) pushes the optimal scale monotonically from \(3/2\) toward \(1\));
+  \item When \(\beta\ge \beta_c\), the endpoint \(A_\beta=1\) is forced.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Proposition \ref{prop:metallic-linear-scalarization-threshold} already establishes that the maximizer is unique and must lie in \([1,3/2]\); and that when \(\beta<\beta_c\) the maximizer is an interior point satisfying the first-order condition \(J_\beta'(A_\beta)=0\), i.e., \(h_Z'(A_\beta)=\beta\kappa'(A_\beta)\).
+\par
+For \(\beta\in[0,\beta_c)\), define
+\(
+F(A,\beta):=h_Z'(A)-\beta\kappa'(A)
+\).
+From the derivation in Proposition \ref{prop:metallic-linear-scalarization-threshold}, on \([1,3/2]\) we have \(h_Z''(A)<0\) and \(\kappa''(A)>0\), so at the solution point
+\(
+\partial_A F(A_\beta,\beta)=h_Z''(A_\beta)-\beta\kappa''(A_\beta)<0
+\).
+Therefore, by the implicit function theorem, \(\beta\mapsto A_\beta\) is continuous and differentiable on \([0,\beta_c)\), with
+\[
+\frac{dA_\beta}{d\beta}
+=\frac{\kappa'(A_\beta)}{h_Z''(A_\beta)-\beta\kappa''(A_\beta)}<0,
+\]
+i.e., strictly decreasing. The endpoint conclusion for \(\beta\ge\beta_c\) is already given by the same proposition. \qed
+\end{proof}
+
+\begin{corollary}[Binding the Weight to a Finite-Sample Certificate's Sample Size Threshold]\label{cor:metallic-sample-threshold}
+Let
+\[
+\beta(N):=\frac{\log N}{N}\qquad(N\ge 2),
+\]
+and denote \(A_N:=A_{\beta(N)}\) for the maximizer from Proposition \ref{prop:metallic-linear-scalarization-threshold}.
+Let \(N_c\) be the unique solution of the equation \(\beta(N)=\beta_c\) on the interval \(N\in[e,\infty)\); then
+\[
+N_c\approx 3.42058.
+\]
+Consequently, for all integers \(N\ge 4\), we have \(A_N\in(1,3/2]\), and as \(N\to\infty\), \(A_N\to 3/2\).
+\end{corollary}
+\begin{proof}
+The function \(N\mapsto \beta(N)=\log N/N\) is strictly decreasing on \(N\ge e\), with \(\beta(e)=1/e>\beta_c\) and \(\lim_{N\to\infty}\beta(N)=0\), so on \([e,\infty)\) there exists a unique solution \(N_c\).
+The numerical approximation is obtained directly from this univariate equation (reproducible computation).
+When \(N\ge 4>N_c\), we have \(\beta(N)<\beta_c\), and Proposition \ref{prop:metallic-linear-scalarization-threshold} gives \(A_N\in(1,3/2]\).
+Since \(\beta(N)\to 0\), combining with the limiting conclusion of the same proposition yields \(A_N\to 3/2\). \qed
+\end{proof}
+
+\begin{remark}[Marginal Cost Constant of the ``Last \texorpdfstring{$5\%$}{5\%} Compression'']\label{rem:metallic-marginal-price}
+Comparing the continuous compression optimum \(A_\star=3/2\) of Corollary \ref{cor:metallic-compression-locking-lambda2} with the golden endpoint \(A=1\),
+the compression slope increment is
+\[
+\Delta h:=h_Z(3/2)-h_Z(1)
+=\log\!\left(\frac{5}{4}\right)-\log\!\left(\frac{2}{\varphi}\right)
+=\log\!\left(\frac{5\varphi}{8}\right)\approx 1.12082\times 10^{-2},
+\]
+with a relative gain of \(\Delta h/h_Z(1)\approx 5.29\%\).
+The anti-resonance certificate coefficient increment is
+\[
+\Delta \kappa:=\kappa(3/2)-\kappa(1)
+=\frac{3}{2\log 2}-\frac{1}{\log\varphi}\approx 8.59556\times 10^{-2}.
+\]
+Therefore the ``certificate cost per unit compression gain'' is captured by the reproducible constant fingerprint
+\[
+\boxed{\ \Pi:=\frac{\Delta \kappa}{\Delta h}\approx 7.669\ }
+\]
+\par
+If restricted to integer \(A\in\ZZ_{\ge 1}\), the corresponding ratio for the golden \(\to\) silver (\(A=2\)) transition is
+\[
+\Pi_{2:1}:=\frac{\kappa(2)-\kappa(1)}{h_Z(2)-h_Z(1)}\approx 36.03,
+\]
+reflecting a much steeper ``low-return, high-cost'' segment on the integer branch.
+\end{remark}
+
+\begin{remark}[Design Law: Golden \texorpdfstring{$A=1$}{A=1} $\to$ Silver \texorpdfstring{$A=2$}{A=2} Lies in the ``Low-Return, High-Cost'' Segment]\label{rem:metallic-design-law-low-return}
+On \(A\in[1,2]\) (equivalently \(\lambda\in[\varphi,1+\sqrt2]\)), the compression slope gain is of low order while the anti-resonance certificate monotonically worsens:
+\[
+0<h_Z(2)-h_Z(1)
+=\log\!\left(\frac{3}{1+\sqrt2}\cdot\frac{1+\sqrt5}{4}\right)\approx 5.2\times 10^{-3},
+\]
+whereas
+\[
+\kappa(2)-\kappa(1)=\frac{2}{\log(1+\sqrt2)}-\frac{1}{\log\varphi}>0.
+\]
+Therefore, if the primary objective is ``finite-sample stability/auditable certificates,'' the golden endpoint \(A=1\) is the most cost-effective Pareto endpoint;
+if the primary objective is ``maximal projection compression,'' then the parameter should be chosen near the continuous optimum \(\lambda=2\) (or the integer optimum \(A=2\)).
+\end{remark}
+
+\subsubsection{The General Fold Operator \texorpdfstring{$\Fold_m^{(\alpha)}$}{Fold\_m(alpha)}}
+
+To maintain consistency with the ``folding = evaluation + normal form'' mechanism of this paper, the general Ostrowski fold is defined as follows: first assign a non-canonical digit tuple (which may violate the adjacent maximum constraint) an auditable integer value, then take the Ostrowski normal form and truncate.
+
+\begin{definition}[Ostrowski Weighted Value and Fold]\label{def:fold-alpha}
+Let
+\[
+\Omega_m^{(\alpha)}:=\prod_{n=1}^{m}\{0,1,\dots,a_n\}
+\]
+be the length-$m$ ``raw digit space.'' For $\omega=(\omega_1,\dots,\omega_m)\in\Omega_m^{(\alpha)}$, define its Ostrowski weighted value
+\[
+N_\alpha(\omega):=\sum_{n=1}^{m}\omega_n q_{n-1}\in\NN.
+\]
+Define the general fold
+\[
+\Fold_m^{(\alpha)}:\Omega_m^{(\alpha)}\to X_m^{(\alpha)},\qquad
+\Fold_m^{(\alpha)}(\omega):=\pi_m^{(\alpha)}\!\bigl(Z_\alpha(N_\alpha(\omega))\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Basic Properties of the General Fold]\label{prop:fold-alpha-basic}
+$\Fold_m^{(\alpha)}$ is well-defined and satisfies:
+\begin{enumerate}
+  \item \textbf{(Canonicity)} $\Fold_m^{(\alpha)}(\omega)\in X_m^{(\alpha)}$;
+  \item \textbf{(Idempotence)} If $\omega\in X_m^{(\alpha)}$, then $\Fold_m^{(\alpha)}(\omega)=\omega$;
+  \item \textbf{(Surjectivity)} $\Fold_m^{(\alpha)}:\Omega_m^{(\alpha)}\twoheadrightarrow X_m^{(\alpha)}$ is surjective;
+  \item \textbf{(Multiscale compatibility)} For $m_2\ge m_1$,
+  \[
+  \pi_{m_2\to m_1}^{(\alpha)}\circ \Fold_{m_2}^{(\alpha)}=\Fold_{m_1}^{(\alpha)}\circ \pi_{m_2\to m_1}^{(\alpha)},
+  \]
+  where $\pi_{m_2\to m_1}^{(\alpha)}$ is the projection truncating to the first $m_1$ digits.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Property 1 follows immediately from the admissibility of the Ostrowski representation. Property 2: if $\omega$ is already admissible, then $\omega$ is the first $m$ digits of the canonical Ostrowski representation of some integer, and uniqueness forces the output of normalization followed by truncation to be unchanged. Property 3: for any $x\in X_m^{(\alpha)}$, taking $\omega=x$ gives $\Fold_m^{(\alpha)}(\omega)=x$. Property 4 follows from the functoriality of ``first evaluate, then normalize'': for any $\omega$, both sides equal $\pi_{m_1}^{(\alpha)}(Z_\alpha(N_\alpha(\omega)))$.
+\end{proof}
+
+\begin{theorem}[``Normalize Then Truncate'' and Cross-Resolution Functoriality]\label{thm:normalize-then-truncate-functorial}
+The general Ostrowski fold of Definition \ref{def:fold-alpha} adopts the order ``evaluate \(\to\) normalize \(\to\) truncate,'' so the cross-resolution commutative diagram (Proposition \ref{prop:fold-alpha-basic}-(4)) holds \textbf{by definition}: it is not an additional structure but is forced by the normalization order.
+\par
+In the binary Zeckendorf folding of this paper, the naive truncation \(r_{m+1\to m}\) on the microstate space \(\Omega_m=\{0,1\}^m\) (Section \ref{subsec:fold-omega-restriction}) corresponds to the order ``truncate first, then normalize,'' and therefore does not in general satisfy commutativity.
+In contrast, the fold-aware restriction
+\[
+\widetilde r_{m+1\to m}:=\pi_{m+1\to m}\circ \Fold_{m+1}\qquad(\Omega_{m+1}\to X_m\subset\Omega_m)
+\]
+corrects the resolution-reduction order at the microstate level to ``normalize first, then truncate,'' thereby restoring strict commutativity (Proposition \ref{prop:fold-omega-commute}).
+\par
+Moreover, this correction is unique under the following ``naturality'' constraint: if a map \(\widehat r_{m+1\to m}:\Omega_{m+1}\to X_m\) satisfies
+\[
+\Fold_m\circ \widehat r_{m+1\to m}=\pi_{m+1\to m}\circ \Fold_{m+1},
+\]
+then necessarily \(\widehat r_{m+1\to m}=\widetilde r_{m+1\to m}\).
+\end{theorem}
+
+\begin{proof}
+The first two paragraphs are simply a logical unfolding of Definition \ref{def:fold-alpha} and Proposition \ref{prop:fold-alpha-basic}-(4), together with a mechanistic explanation of ``naive truncation does not commute, fold-aware restriction does commute'' from Section \ref{subsec:fold-omega-restriction}.
+\par
+For uniqueness: if \(\widehat r_{m+1\to m}(\omega)\in X_m\), then by the idempotence of the binary fold (Theorem \ref{thm:fold-suite}-(2), i.e., \(\Fold_m|_{X_m}=\mathrm{id}\)),
+\[
+(\Fold_m\circ \widehat r_{m+1\to m})(\omega)=\widehat r_{m+1\to m}(\omega).
+\]
+Combining with the hypothesis \(\Fold_m\circ \widehat r_{m+1\to m}=\pi_{m+1\to m}\circ \Fold_{m+1}\) yields
+\(
+\widehat r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))=\widetilde r_{m+1\to m}(\omega)
+\)
+for all \(\omega\). \qed
+\end{proof}
+
+\begin{corollary}[Criterion for Cross-Resolution Auditable Invariants]\label{cor:multiscale-auditable-invariants}
+If a ``cross-resolution pattern/fingerprint'' depends on the use of the naive truncation \(r_{m+1\to m}\) rather than the fold-aware restriction \(\widetilde r_{m+1\to m}\), then it lacks the naturality of Proposition \ref{prop:fold-omega-commute} and can therefore only be regarded as a gauge phenomenon induced by the choice of resolution-reduction convention, rather than entering the repository of cross-resolution auditable invariants.
+\end{corollary}
+
+\begin{remark}[Relation to the Binary Readout of This Paper]
+The main experimental line of this paper fixes the binary readout and the golden syntax (to obtain closed-form PF/Parry/$\zeta$ baselines). The above generalization demonstrates that if a more general counting/address alphabet (or a more general observation channel) is permitted, then the ``folding = evaluation + Ostrowski normal form'' mechanism can in principle be extended; the golden branch is merely the simplest special case admitting full closed-form analysis.
+\end{remark}

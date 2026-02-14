@@ -1,0 +1,255 @@
+\paragraph{Deterministic area law: \texorpdfstring{\(\det(L_k+tI)\)}{det(L_k+tI)} in \(q\)-form, Szeg\H{o} decomposition, and resolvent/Green closed forms}
+This paragraph reformulates the determinant closed form of Corollary \ref{cor:pom-Lk-shifted-det-free-energy} into \(q\)-form and provides a bulk--surface decomposition fully aligned with symbolic integration,
+as well as hyperbolic closed forms for the resolvent trace and Green kernel matrix entries.
+
+\begin{corollary}[Deterministic ``area law'' decomposition: \(q\)-form and exponentially small finite-size correction]\label{cor:pom-Lk-area-law-qform}
+Take \(t>0\) and define
+\[
+\eta(t):=\mathrm{arsinh}\sqrt{\frac{t}{4}}\qquad(\Re\eta\ge 0),
+\qquad
+q(t):=e^{-2\eta(t)}\in(0,1).
+\]
+Then the following strict identity holds:
+\[
+\det(L_k+tI)=\frac{\cosh\!\bigl((2k+1)\eta(t)\bigr)}{\cosh(\eta(t))}
+=q(t)^{-k}\,\frac{1+q(t)^{2k+1}}{1+q(t)}.
+\]
+Consequently,
+\[
+\log\det(L_k+tI)=2k\,\eta(t)-\log(1+q(t))+\log\bigl(1+q(t)^{2k+1}\bigr),
+\]
+where the last term is a completely explicit finite-size correction satisfying
+\[
+0<\log\bigl(1+q(t)^{2k+1}\bigr)<q(t)^{2k+1}.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:pom-Lk-shifted-det-free-energy}, setting \(x=\sqrt{1+t/4}=\cosh(\eta(t))\) yields
+\[
+\det(L_k+tI)=\frac{T_{2k+1}(x)}{x}=\frac{\cosh((2k+1)\eta(t))}{\cosh(\eta(t))}.
+\]
+Then setting \(q=e^{-2\eta}\) and writing \(\cosh((2k+1)\eta)/\cosh(\eta)\) in exponential form gives
+\(
+q^{-k}(1+q^{2k+1})/(1+q)
+\);
+taking logarithms yields the stated decomposition.
+Finally, since \(q\in(0,1)\), one has \(\log(1+q^{2k+1})\in(0,q^{2k+1})\). \qed
+\end{proof}
+
+\begin{proposition}[Strong Szeg\H{o}-type decomposition with integrable closed form: symbol \(a_t(\theta)=1+\frac{t}{4\sin^2(\theta/2)}\)]\label{prop:pom-Kk-strong-szego-bulk-surface}
+From \(\det(K_k)=1\) (Lemma \ref{lem:pom-Kk-gram-det}), one has \(\det(I+tK_k)=\det(L_k+tI)\).
+For \(t>0\), define the symbol function
+\[
+a_t(\theta):=1+\frac{t}{4\sin^2(\theta/2)}\qquad(\theta\in(0,\pi)).
+\]
+Then the following strict decomposition holds:
+\[
+\log\det(I+tK_k)
+=k\cdot \frac{1}{\pi}\int_{0}^{\pi}\log a_t(\theta)\,\dd\theta
+\;+\;\log\frac{1+q(t)^{2k+1}}{1+q(t)},
+\]
+and the bulk integral term can be made explicit as
+\[
+\frac{1}{\pi}\int_{0}^{\pi}\log\!\Bigl(1+\frac{t}{4\sin^2(\theta/2)}\Bigr)\,\dd\theta
+=2\,\eta(t).
+\]
+Therefore the bulk density of \(\log\det(I+tK_k)\) is exactly \(2\eta(t)\), and the coefficient \(4\) in the symbol denominator is structurally forced by the alignment between this closed-form isomorphism and the Chebyshev--hyperbolic parameter \(\eta\).
+\end{proposition}
+\begin{proof}
+By Corollary \ref{cor:pom-Lk-area-law-qform},
+\(
+\log\det(I+tK_k)=2k\,\eta(t)+\log\frac{1+q^{2k+1}}{1+q}
+\).
+It thus suffices to prove
+\(
+\frac{1}{\pi}\int_0^\pi \log a_t(\theta)\,\dd\theta=2\eta(t)
+\).
+Let
+\(
+J(t):=\frac{1}{\pi}\int_0^\pi \log\bigl(1+\frac{t}{4\sin^2(\theta/2)}\bigr)\,\dd\theta
+\).
+For \(t>0\), differentiating under the integral sign gives
+\[
+J'(t)=\frac{1}{\pi}\int_0^\pi \frac{1}{t+4\sin^2(\theta/2)}\,\dd\theta
+=\frac{1}{\pi}\int_0^\pi \frac{1}{t+2(1-\cos\theta)}\,\dd\theta
+=\frac{1}{\sqrt{t(4+t)}},
+\]
+where the last step is a standard integral identity (also obtainable via contour integration or the Green function analytic solution for \(t\)).
+On the other hand, \(\eta(t)=\mathrm{arsinh}\sqrt{t/4}\) satisfies \(\eta'(t)=1/(2\sqrt{t(4+t)})\), so \((2\eta)'=J'\).
+Since \(J(0)=0=2\eta(0)\), it follows that \(J(t)=2\eta(t)\). \qed
+\end{proof}
+
+\begin{corollary}[Analytically auditable resolvent trace: hyperbolic closed form for \texorpdfstring{\(\tr(L_k+tI)^{-1}\)}{tr((L_k+tI)^{-1})}]\label{cor:pom-Lk-resolvent-trace-hyperbolic}
+Take \(t>0\) and use the notation \(\eta(t)\) as before.
+Then the resolvent trace satisfies the strict identity
+\[
+\tr(L_k+tI)^{-1}
+=\frac{\partial}{\partial t}\log\det(L_k+tI)
+=\frac{2k+1}{2\sqrt{t(4+t)}}\,\tanh\!\bigl((2k+1)\eta(t)\bigr)-\frac{1}{2(4+t)}.
+\]
+In particular, the trace density limit exists and equals
+\[
+\lim_{k\to\infty}\frac{1}{2k+1}\tr(L_k+tI)^{-1}
+=\frac{1}{2\sqrt{t(4+t)}}.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:pom-Lk-shifted-det-free-energy},
+\(
+\log\det(L_k+tI)=\log\cosh((2k+1)\eta)-\log\cosh\eta
+\) (where \(\eta=\eta(t)\)).
+Differentiating with respect to \(t\) and using \(\eta'(t)=1/(2\sqrt{t(4+t)})\) gives
+\[
+\frac{\partial}{\partial t}\log\det(L_k+tI)
+=\eta'(t)\Bigl((2k+1)\tanh((2k+1)\eta)-\tanh\eta\Bigr)
+=\frac{2k+1}{2\sqrt{t(4+t)}}\tanh((2k+1)\eta)-\frac{1}{2(4+t)},
+\]
+where the last step uses \(\tanh(\eta)=\sqrt{t/(4+t)}\).
+The identity \(\tr(L_k+tI)^{-1}=\partial_t\log\det(L_k+tI)\) is a general fact.
+Taking \(k\to\infty\) and using \(\eta>0\Rightarrow\tanh((2k+1)\eta)\to 1\) yields the limit. \qed
+\end{proof}
+
+\begin{proposition}[Complete closed form for Green kernel matrix entries: hyperbolic product formula for \texorpdfstring{\(((L_k+tI)^{-1}_{ij})\)}{((L_k+tI)^{-1}_{ij})}]\label{prop:pom-Lk-green-kernel-entries}
+Take \(t>0\) and write \(\eta=\eta(t)\).
+Then for any \(1\le i\le j\le k\), the inverse matrix entries satisfy the strict closed form
+\[
+(L_k+tI)^{-1}_{ij}
+=\frac{\sinh(2i\eta)\,\cosh\!\bigl((2(k-j)+1)\eta\bigr)}
+{\sinh(2\eta)\,\cosh\!\bigl((2k+1)\eta\bigr)},
+\qquad
+(L_k+tI)^{-1}_{ji}=(L_k+tI)^{-1}_{ij}.
+\]
+In particular,
+\[
+(L_k+tI)^{-1}_{11}=\frac{\cosh((2k-1)\eta)}{\cosh((2k+1)\eta)},
+\qquad
+(L_k+tI)^{-1}_{1k}=\frac{\cosh(\eta)}{\cosh((2k+1)\eta)}.
+\]
+\end{proposition}
+\begin{proof}
+Let \(A:=L_k+tI\). It is a symmetric tridiagonal matrix with diagonal entries \(2+t\) except at the endpoints where they are \(1+t\), and off-diagonal entries identically \(-1\).
+For \(r\ge 0\), define the leading principal minor
+\(
+D_r:=\det(A_{[1..r,\,1..r]})
+\)
+with the convention \(D_0:=1\). Then for \(1\le r\le k-1\), the recurrence \(D_r=(2+t)D_{r-1}-D_{r-2}\) holds, yielding
+\[
+D_{i-1}=\frac{\sinh(2i\eta)}{\sinh(2\eta)}.
+\]
+Similarly, define the trailing principal minor
+\(
+E_r:=\det(A_{[k-r+1..k,\,k-r+1..k]})
+\)
+with \(E_0:=1\), \(E_1:=1+t\). The recurrence and endpoint conditions give
+\[
+E_{k-j}=\frac{\cosh\!\bigl((2(k-j)+1)\eta\bigr)}{\cosh(\eta)}.
+\]
+The Cramer--Gantmacher formula for tridiagonal matrices (equivalently, the standard representation of one-dimensional difference Green functions) gives: for \(i\le j\),
+\[
+A^{-1}_{ij}=\frac{D_{i-1}\,E_{k-j}}{D_k},
+\]
+where \(D_k=\det(A)=\cosh((2k+1)\eta)/\cosh(\eta)\) is given by Corollary \ref{cor:pom-Lk-shifted-det-free-energy}.
+Substituting yields the stated closed form. \qed
+\end{proof}
+
+\begin{corollary}[Exponential clustering and correlation length: strict ``gap law'' for the mass parameter \(t\)]\label{cor:pom-Lk-exponential-clustering-gaplaw}
+Take \(t>0\) and let \(\eta=\eta(t)>0\). Then for any \(1\le i\le j\le k\), the uniform upper bound
+\[
+(L_k+tI)^{-1}_{ij}\ \le\ \frac{1}{\sinh(2\eta)}\,e^{-2\eta(j-i)}
+\]
+holds. One may thus define the correlation length
+\[
+\xi(t):=\frac{1}{2\eta(t)}=\frac{1}{2\,\mathrm{arsinh}\sqrt{t/4}},
+\]
+and obtain strict exponential clustering: for fixed \(t>0\), the Green correlation decays at rate \(e^{-(j-i)/\xi(t)}\) with lattice distance \(j-i\).
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-Lk-green-kernel-entries},
+\[
+(L_k+tI)^{-1}_{ij}
+=\frac{\sinh(2i\eta)\,\cosh((2(k-j)+1)\eta)}{\sinh(2\eta)\,\cosh((2k+1)\eta)}.
+\]
+Using \(\sinh u\le \tfrac12 e^{u}\) and \(\cosh u\le e^{u}\), together with \(\cosh((2k+1)\eta)\ge \tfrac12 e^{(2k+1)\eta}\), one obtains
+\[
+(L_k+tI)^{-1}_{ij}
+\le
+\frac{(\tfrac12 e^{2i\eta})\cdot (e^{(2(k-j)+1)\eta})}{\sinh(2\eta)\cdot (\tfrac12 e^{(2k+1)\eta})}
+=\frac{1}{\sinh(2\eta)}\,e^{-2\eta(j-i)}.
+\]
+The correlation length formulation follows directly from the rewriting \(\xi=1/(2\eta)\). \qed
+\end{proof}
+
+\begin{corollary}[Semi-infinite limit boundary fixed point: algebraic closed form for the reflection coefficient \(q(t)\) and Riccati equation]\label{cor:pom-Lk-boundary-fixed-point-riccati}
+Take \(t>0\) and let \(q(t)=e^{-2\eta(t)}\).
+Then the boundary Green value exists and satisfies
+\[
+\lim_{k\to\infty}(L_k+tI)^{-1}_{11}=q(t).
+\]
+Moreover, \(q(t)\) has the closed form
+\[
+q(t)=\Bigl(\frac{\sqrt{4+t}-\sqrt{t}}{2}\Bigr)^{2}
+=1+\frac{t}{2}-\frac{1}{2}\sqrt{t(4+t)},
+\]
+and is the unique solution in \((0,1)\) of the quadratic equation:
+\[
+q^2-(2+t)q+1=0.
+\]
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-Lk-green-kernel-entries}, \((L_k+tI)^{-1}_{11}=\cosh((2k-1)\eta)/\cosh((2k+1)\eta)\); taking \(k\to\infty\) gives the limit \(e^{-2\eta}=q\).
+Since \(\eta=\mathrm{arsinh}(\sqrt{t}/2)\), one has \(e^{-\eta}=\sqrt{1+t/4}-\sqrt{t}/2\), whence
+\[
+q=e^{-2\eta}=\Bigl(\sqrt{1+\frac{t}{4}}-\frac{\sqrt{t}}{2}\Bigr)^2
+=\Bigl(\frac{\sqrt{4+t}-\sqrt{t}}{2}\Bigr)^2,
+\]
+and expanding gives the second expression.
+Finally, from \(2\cosh(2\eta)=e^{2\eta}+e^{-2\eta}=q^{-1}+q=2+t\) one obtains \(q^2-(2+t)q+1=0\), and the conclusion follows from the uniqueness of the branch \(q\in(0,1)\). \qed
+\end{proof}
+
+\begin{corollary}[Surface free energy and boundary response: constant term closed form and observable derivative]\label{cor:pom-Lk-surface-free-energy}
+Take \(t>0\) and write \(\eta=\eta(t)\), \(q=q(t)\).
+Define the bulk free energy density and surface free energy as
+\[
+f(t):=\lim_{k\to\infty}\frac{1}{k}\log\det(L_k+tI)=2\eta(t),
+\qquad
+g(t):=\lim_{k\to\infty}\Bigl(\log\det(L_k+tI)-k f(t)\Bigr)=-\log(1+q(t)).
+\]
+Then for any \(k\ge 1\) the strict identity holds:
+\[
+\log\det(L_k+tI)=k f(t)+g(t)+\log\bigl(1+q(t)^{2k+1}\bigr),
+\]
+and the surface term derivative can be expressed via the boundary response:
+\[
+g'(t)=\lim_{k\to\infty}\Bigl(\tr(L_k+tI)^{-1}-k f'(t)\Bigr)
+=\frac{q(t)}{1+q(t)}\cdot \frac{1}{\sqrt{t(4+t)}}.
+\]
+\end{corollary}
+\begin{proof}
+By the exact decomposition of Corollary \ref{cor:pom-Lk-area-law-qform},
+\(
+\log\det=2k\eta-\log(1+q)+\log(1+q^{2k+1})
+\); taking limits gives \(f(t)=2\eta\) and \(g(t)=-\log(1+q)\) together with the stated identity.
+For the derivative part, note that \(f'(t)=2\eta'(t)=1/\sqrt{t(4+t)}\), and by Corollary \ref{cor:pom-Lk-resolvent-trace-hyperbolic},
+\[
+\tr(L_k+tI)^{-1}-k f'(t)
+=\frac{2k+1}{2\sqrt{t(4+t)}}\tanh((2k+1)\eta)-\frac{1}{2(4+t)}-\frac{k}{\sqrt{t(4+t)}}.
+\]
+Taking \(k\to\infty\) (\(\eta>0\Rightarrow\tanh((2k+1)\eta)\to 1\)) gives the limit
+\(
+\frac{1}{2\sqrt{t(4+t)}}-\frac{1}{2(4+t)}
+\).
+By the \(q\)-closed form from Corollary \ref{cor:pom-Lk-boundary-fixed-point-riccati}, this simplifies to
+\(
+\frac{q}{1+q}\cdot \frac{1}{\sqrt{t(4+t)}}
+\), consistent with \(g'(t)=-(q'/(1+q))\) (where \(q'=-(2\eta')q\)). \qed
+\end{proof}
+
+\begin{remark}[Finite-window audit: deterministic area law decomposition, resolvent trace, and Green kernel matrix entries]\label{rem:pom-fence-green-kernel-area-law-audit}
+The script verifies on a finite window: the \(q\)-form decomposition and exponentially small remainder bound of Corollary \ref{cor:pom-Lk-area-law-qform},
+the symbol integral closed form of Proposition \ref{prop:pom-Kk-strong-szego-bulk-surface},
+the resolvent trace closed form of Corollary \ref{cor:pom-Lk-resolvent-trace-hyperbolic},
+the matrix entry closed form of Proposition \ref{prop:pom-Lk-green-kernel-entries} and the exponential clustering upper bound of Corollary \ref{cor:pom-Lk-exponential-clustering-gaplaw},
+as well as numerical consistency certificates for the boundary fixed point \(q(t)\) and surface free energy derivative \(g'(t)\).
+The audit table is as follows:
+\input{sections/generated/tab_fence_green_kernel_area_law_resolvent_audit}
+\end{remark}

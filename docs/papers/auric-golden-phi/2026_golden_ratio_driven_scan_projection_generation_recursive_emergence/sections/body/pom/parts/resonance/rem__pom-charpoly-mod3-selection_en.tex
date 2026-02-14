@@ -1,0 +1,103 @@
+\begin{remark}[3-adic shadow selection law: odd--even partition of \texorpdfstring{$P_q(\lambda)$}{Pq} modulo \texorpdfstring{$3$}{3} (auditable)]\label{rem:pom-charpoly-mod3-selection}
+Following the characteristic polynomial convention of Theorem \ref{thm:pom-moment-resonance},
+\(
+P_q(\lambda)=\lambda^{d_q}-\sum_{i=1}^{d_q}c_i\lambda^{d_q-i}
+\),
+and the forward shift operator \(E\) (with \((ES)(m):=S(m+1)\)).
+On the resonance window \(q=13,14,15\), the factorization of \(P_q(\lambda)\) over \(\mathbb{F}_3[\lambda]\) yields an auditable strong partition:
+\begin{itemize}
+  \item For odd-order \(q=13,15\), \(P_q(\lambda)\) collapses completely modulo \(3\) to powers of the linear spectrum \(\{0,\pm 1\}\):
+  \[
+  P_{13}(\lambda)\equiv \lambda^2(\lambda-1)^4(\lambda+1)^5\pmod 3,
+  \qquad
+  P_{15}(\lambda)\equiv \lambda^2(\lambda-1)^4(\lambda+1)^5\pmod 3.
+  \]
+  \item For even-order \(q=14\), irreducible factors appear over \(\mathbb{F}_3\) (e.g., \((\lambda^2+1)^2\)), thereby introducing extension field modes.
+\end{itemize}
+This factorization is exported in one run by the script \texttt{scripts/exp\_fold\_collision\_charpoly\_mod3\_selection\_q13\_15.py}; see Table \ref{tab:fold_collision_charpoly_mod3_selection_q13_15} for details.
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_charpoly_mod3_selection_q13_15}
+
+\begin{proposition}[Two-phase compression modulo \texorpdfstring{$3$}{3}: for \texorpdfstring{$q=13,15$}{q=13,15} only the \texorpdfstring{$1$}{1} and \texorpdfstring{$-1$}{-1} generalized phases survive]\label{prop:pom-moment-mod3-two-phase}
+Within the effective range of the recursion from Theorem \ref{thm:pom-moment-resonance}, for \(q\in\{13,15\}\) set
+\(
+\widetilde S_q:=E^2S_q
+\).
+Then over \(\mathbb{F}_3\) the explicit annihilation law holds:
+\[
+(E-1)^4(E+1)^5\,\widetilde S_q\equiv 0\pmod 3.
+\]
+Equivalently, there exist coefficients \(a_0,\dots,a_3,b_0,\dots,b_4\in\mathbb{F}_3\) such that
+\[
+\widetilde S_q(m)\equiv
+\sum_{j=0}^{3}a_j\binom{m}{j}
+\ +\
+(-1)^m\sum_{j=0}^{4}b_j\binom{m}{j}
+\pmod 3,
+\]
+so that the long-term dynamics modulo \(3\) admits only two families of generalized modes: the constant phase \(1^m\) and the alternating phase \((-1)^m\); any higher-order finite field periodic eigenphases are strictly excluded within this window.
+\end{proposition}
+\begin{proof}
+From Table \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}, for \(q\in\{13,15\}\) we have
+\(
+P_q(\lambda)\equiv \lambda^2(\lambda-1)^4(\lambda+1)^5\ (\mathrm{mod}\ 3)
+\).
+Replacing \(\lambda\) by \(E\) and applying to \(S_q\) yields
+\[
+E^2(E-1)^4(E+1)^5S_q\equiv 0\pmod 3,
+\]
+i.e., \((E-1)^4(E+1)^5\widetilde S_q\equiv 0\).
+\par
+Since \((x-1)^4\) and \((x+1)^5\) are coprime in \(\mathbb{F}_3[x]\), there exist \(U,V\in\mathbb{F}_3[x]\) such that
+\(
+U(x)(x-1)^4+V(x)(x+1)^5=1
+\).
+Set
+\(
+A:=V(E)(E+1)^5\widetilde S_q
+\),
+\(
+B:=U(E)(E-1)^4\widetilde S_q
+\),
+then \(A+B=\widetilde S_q\), and
+\[
+(E-1)^4A\equiv 0,\qquad (E+1)^5B\equiv 0\pmod 3.
+\]
+For \(A\): the operator \(E-1\) is the forward difference, and the solution space of \((E-1)^4A=0\) is spanned by
+\(
+\binom{m}{0},\binom{m}{1},\binom{m}{2},\binom{m}{3}
+\),
+hence \(A(m)\equiv \sum_{j=0}^3 a_j\binom{m}{j}\).
+\par
+For \(B\): set \(C(m):=(-1)^mB(m)\), then
+\(
+(E-1)^5C(m)=(-1)^m(E+1)^5B(m)
+\)
+vanishes over \(\mathbb{F}_3\), so by the same reasoning
+\(
+C(m)\equiv \sum_{j=0}^4 b_j\binom{m}{j}
+\),
+and therefore \(B(m)\equiv (-1)^m\sum_{j=0}^4 b_j\binom{m}{j}\).
+Combining yields the conclusion.
+\end{proof}
+
+\begin{conjecture}[Odd--even partition selection law modulo \texorpdfstring{$3$}{3} (falsifiable)]\label{conj:pom-charpoly-mod3-odd-even}
+Within the resonance window of Theorem \ref{thm:pom-moment-resonance}, the characteristic polynomial \(P_q(\lambda)\) for odd-order \(q\) should tend to support only the linear spectrum \(\{0,\pm 1\}\) over \(\mathbb{F}_3[\lambda]\) (containing no nontrivial irreducible factors), while for even-order \(q\) it should tend to contain nontrivial irreducible factors that introduce extension field modes.
+This selection law holds on the verified slices \(q=13,14,15\) (Table \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}), and its falsification method is to continue computing the modulo \(3\) factorization for recursions at larger verified windows and check whether counterexamples arise.
+\end{conjecture}
+
+\begin{remark}[5-adic shadow bifurcation law: even within the odd-order class, \texorpdfstring{$\mathbb{F}_5$}{F5} can distinguish (auditable)]\label{rem:pom-charpoly-mod5-branch}
+Under reduction modulo \(5\), even within the fixed odd-order class, the characteristic polynomial undergoes an auditable structural bifurcation.
+For \(q=13,15\), Table \ref{tab:fold_collision_charpoly_mod5_branch_q13_15} provides the \(\mathbb{F}_5[\lambda]\) factorization and explicitly reads off the multiplicity \(a_0\) of the zero eigenvalue: \(q=13\) contains the factor \(\lambda^2\) while \(q=15\) does not.
+Therefore, reduction modulo \(5\) provides a computationally inexpensive ``transient vs.\ eigenvalue'' diagnostic interface: checking \(P_q(0)\equiv 0\ (\mathrm{mod}\ 5)\) (equivalently, \(5\)-divisibility of the constant term) suffices to determine whether the zero mode is present.
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_charpoly_mod5_branch_q13_15}
+
+\begin{remark}[Finite field factor exponent fingerprint: difference-order upper bounds and cross-domain audit sieves]\label{rem:pom-modp-factor-exponent-fingerprint}
+Over the finite field \(\mathbb{F}_p\), if \(P_q(\lambda)\) contains a linear factor \((\lambda-\omega)^e\), then the corresponding shift operator satisfies the generalized annihilation law of \((E-\omega)^e\); the exponent \(e\) thus provides an upper bound on the generalized order of the \(\omega\)-phase.
+For the modulo \(3\) collapse of \(q=13,15\), the exponent pair \((4,5)\) of \((\lambda-1)^4(\lambda+1)^5\) furnishes an arithmetic fingerprint orthogonal to the gap lower bound \(2h+1-d\): it compresses the observable solution space of \(\widetilde S_q=E^2S_q\) into the direct sum of ``constant-phase order \(\le 4\)'' and ``alternating-phase order \(\le 5\)'' (Proposition \ref{prop:pom-moment-mod3-two-phase}).
+Therefore, when explicitly solving for the modal constraint vector \(\alpha\) in the future (Theorem \ref{thm:pom-moment-resonance}), this \((4,5)\) fingerprint can serve as a cross-domain audit sieve: any candidate realization/constraint that, upon projection modulo \(3\), induces phase components exceeding the above difference-order upper bounds contradicts the finite field shadow of the output recursion and can therefore be directly excluded.
+\end{remark}
+

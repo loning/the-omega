@@ -1,0 +1,216 @@
+\subsubsection{Real-Parameter Pressure and the Escort Frontier: Strict Interpolation, Exact Large Deviations, and the Multifractal Equality}\label{subsubsec:pom-real-q-pressure-thermo-frontier}
+This paragraph promotes the ``integer-\(q\) moment-kernel fingerprint'' to a real-parameter pressure curve, and organizes the escort family induced thereby into an auditable variational frontier.
+The strict interpolation is given by the projective transfer operator \(\mathcal{L}_q\) of Appendix \ref{app:pom-projective-pressure-operator};
+while the cross-measure large deviations and the multifractal equality follow as closure consequences under the spectral gap/analytic perturbation regime assumption.
+
+\paragraph{From integer moments to real-parameter pressure}
+For any real number \(q\ge 0\) and any resolution \(m\), define the power-sum moment
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q,
+\qquad
+d_m(x):=\card{\Fold_m^{-1}(x)}\ge 1.
+\]
+For \(q=0\) we have \(S_0(m)=|X_m|\), and for \(q=1\) we have \(S_1(m)=\sum_x d_m(x)=|\Omega_m|=2^m\).
+
+\begin{theorem}[Real-parameter pressure curve: analyticity, convexity, and strict interpolation at integer points]\label{thm:pom-real-q-pressure-analytic-interpolation}
+Following the projective transfer operator \(\mathcal{L}_q\) of Appendix \ref{app:pom-projective-pressure-operator} (Definition \ref{def:pom-projective-transfer-operator}), assume there exists a H\"older-type Banach space \(\mathcal{B}\subset C(\Delta)\) such that:
+\begin{enumerate}
+  \item \(\mathcal{L}_q:\mathcal{B}\to\mathcal{B}\) forms a real-analytic operator family over some open interval \(J\subset(0,\infty)\);
+  \item \(\mathcal{L}_q\) uniformly satisfies cone contraction/quasi-compactness and strong positivity on every compact subinterval \(J_0\Subset J\), so that the Perron principal eigenvalue \(\lambda(q)>0\) exists as an isolated spectral point of algebraic multiplicity \(1\), with a uniform spectral gap on \(J_0\).
+\end{enumerate}
+Let
+\[
+\tau(q):=\log\lambda(q)\qquad(q\in J).
+\]
+Then:
+\begin{enumerate}
+  \item \(\tau\) is real-analytic and convex on \(J\); if the potential function \(\log g_b\) (Definition \ref{def:pom-projective-transfer-operator}) is not cohomologous to a constant under the projective dynamics, then \(\tau\) is strictly convex.
+  \item For each integer \(q\ge 2\) (with \(q\in J\)), the restriction of \(\mathcal{L}_q\) to the homogeneous polynomial subspace \(\mathcal{H}_q\) degenerates rigorously to the symmetric power moment-kernel \(\widetilde A_q\) (Theorem \ref{thm:pom-projective-operator-degenerates-to-moment-kernel}), and under the above spectral gap regime,
+  \[
+  \boxed{\;
+  \lambda(q)=\rho(\widetilde A_q)=r_q,\qquad \tau(q)=\log r_q\; }.
+  \]
+  \item Therefore \(q\mapsto \tau(q)\) provides a real-parameter moment pressure curve that is strictly aligned with the integer anchor points \(\{\log r_q\}_{q\ge 2}\); its normalized pressure \(\tau(q)-q\log 2\) is compatible with the main text's R\'enyi/collision framework (Definition \ref{def:pom-moment-pressure}).
+\end{enumerate}
+\end{theorem}
+
+\paragraph{Escort distributions and finite-window thermodynamic derivatives}
+For any \(m\) and any \(q\ge 0\), define the \(q\)-escort distribution
+\[
+w_{m,q}(x):=\frac{d_m(x)^q}{S_q(m)}\qquad(x\in X_m).
+\]
+When \(q=0\), \(w_{m,0}=U_m:=\mathrm{Unif}(X_m)\) is the type-uniform measure;
+when \(q=1\), \(w_{m,1}(x)=d_m(x)/2^m=w_m(x)\) is the uniform microstate pushforward (Definition \ref{def:pom-wm-baseline}).
+
+\begin{proposition}[Escort derivative formulas: finite-window second-order jet of the log-partition function]\label{prop:pom-escort-derivative-identities}
+Fix a resolution \(m\ge 1\) and let
+\[
+F_m(q):=\log S_q(m)\qquad(q\ge 0).
+\]
+Then \(F_m\) is convex and everywhere twice differentiable on \(q\ge 0\), satisfying the exact identities
+\[
+\boxed{\;
+F_m'(q)=\mathbb{E}_{w_{m,q}}[\log d_m(X)],\qquad
+F_m''(q)=\mathrm{Var}_{w_{m,q}}\!\bigl(\log d_m(X)\bigr)\ \ge\ 0\; }.
+\]
+\end{proposition}
+\begin{proof}
+For each fixed \(m\), the function \(q\mapsto S_q(m)=\sum_x e^{q\log d_m(x)}\) is a sum of finitely many exponential functions, so \(F_m=\log S_q(m)\) is a smooth convex function.
+Direct differentiation yields
+\[
+F_m'(q)=\frac{\sum_x (\log d_m(x))\,d_m(x)^q}{\sum_x d_m(x)^q}
+=\sum_x w_{m,q}(x)\log d_m(x),
+\]
+and differentiating once more gives
+\(
+F_m''(q)=\mathbb{E}_{w_{m,q}}[(\log d_m)^2]-\mathbb{E}_{w_{m,q}}[\log d_m]^2
+\).
+\qed
+\end{proof}
+
+\begin{theorem}[Gibbs variational principle: the Pareto frontier of \texorpdfstring{$\kappa_m$}{kappa} is rigorously characterized by the escort family]\label{thm:pom-kappa-gibbs-variational-escort-frontier}
+Fix a resolution \(m\ge 1\). For any distribution \(\pi\in\Delta(X_m)\), let
+\(
+\kappa_m(\pi):=\mathbb{E}_{\pi}[\log d_m(X)]
+\)
+(Definition \ref{def:pom-kappa}).
+For any \(q\ge 0\), let \(F_m(q):=\log S_q(m)\).
+Then the following rigorous variational characterization holds:
+\[
+\boxed{\;
+F_m(q)=\sup_{\pi\in\Delta(X_m)}\Bigl(q\,\kappa_m(\pi)+H(\pi)\Bigr)\; }.
+\]
+Moreover, the optimizer is unique and equals the \(q\)-escort distribution \(w_{m,q}(x)=d_m(x)^q/S_q(m)\).
+Therefore the mapping
+\(
+q\mapsto \bigl(H(w_{m,q}),\kappa_m(w_{m,q})\bigr)
+\)
+parametrizes the upper support boundary of the set \(\{(H(\pi),\kappa_m(\pi)):\pi\in\Delta(X_m)\}\): the optimal value of \(\kappa_m\) under a given entropy budget is rigorously attained by some escort.
+\end{theorem}
+\begin{proof}
+For any \(q\ge 0\) and any \(\pi\in\Delta(X_m)\), expanding the KL divergence with respect to \(w_{m,q}(x)=d_m(x)^q/S_q(m)\):
+\[
+\begin{aligned}
+D_{\mathrm{KL}}(\pi\|w_{m,q})
+&=\sum_x \pi(x)\log\frac{\pi(x)}{w_{m,q}(x)}
+=\sum_x \pi(x)\log\pi(x)-q\sum_x \pi(x)\log d_m(x)+\log S_q(m)\\
+&=-H(\pi)-q\,\kappa_m(\pi)+F_m(q).
+\end{aligned}
+\]
+Rearranging yields
+\(
+F_m(q)=q\,\kappa_m(\pi)+H(\pi)+D_{\mathrm{KL}}(\pi\|w_{m,q})
+\ge q\,\kappa_m(\pi)+H(\pi)
+\).
+Taking the supremum gives the variational formula; uniqueness follows from \(D_{\mathrm{KL}}(\pi\|w_{m,q})=0\Leftrightarrow \pi=w_{m,q}\). \qed
+\end{proof}
+
+\begin{corollary}[Limiting thermodynamics: \texorpdfstring{$\tau'(q),\tau''(q)$}{tau'(q),tau''(q)} given by escort limits]\label{cor:pom-pressure-derivatives-from-escort}
+Under the setting of Theorem \ref{thm:pom-real-q-pressure-analytic-interpolation}, if moreover for some \(q\in J\) the limit
+\[
+\tau(q)=\lim_{m\to\infty}\frac{1}{m}F_m(q)
+\]
+exists, and ``taking the limit'' and ``differentiating'' can be interchanged at that point (for example, guaranteed by the spectral gap and analytic perturbation), then
+\[
+\boxed{\;
+\tau'(q)=\lim_{m\to\infty}\frac{1}{m}\,\mathbb{E}_{w_{m,q}}[\log d_m(X)],\qquad
+\tau''(q)=\lim_{m\to\infty}\frac{1}{m}\,\mathrm{Var}_{w_{m,q}}\!\bigl(\log d_m(X)\bigr)\; }.
+\]
+\end{corollary}
+
+\begin{corollary}[Limiting frontier: \texorpdfstring{$(\alpha(q),h(q))$}{(alpha(q),h(q))}]\label{cor:pom-escort-frontier-limit-param}
+Under the setting of Theorem \ref{thm:pom-real-q-pressure-analytic-interpolation}, assume that for some \(q\in J\) the limit
+\(
+\tau(q)=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)
+\)
+exists and ``taking the limit'' and ``differentiating'' can be interchanged (so that \(\tau'(q)\) exists).
+Then the scaling limit of the escort frontier satisfies the parametric equations
+\[
+\boxed{\;
+\alpha(q):=\tau'(q)=\lim_{m\to\infty}\frac{1}{m}\kappa_m(w_{m,q}),\qquad
+h(q):=\lim_{m\to\infty}\frac{1}{m}H(w_{m,q})=\tau(q)-q\tau'(q)\; }.
+\]
+Thus the optimal trade-off between ``compression (entropy)'' and ``refinement (fiber information)'' is completely characterized by the Legendre geometry of \(\tau\).
+\end{corollary}
+
+\paragraph{Dual large deviations under counting measure and \texorpdfstring{$w_m$}{wm} measure, and the multifractal equality}
+Let
+\(
+Y_m(x):=\frac{1}{m}\log d_m(x)
+\).
+Under the type-uniform measure \(U_m=\mathrm{Unif}(X_m)\) and the pushforward measure \(w_m\) (Definition \ref{def:pom-wm-baseline}),
+one can respectively consider the large deviation behavior of the random variable \(Y_m(X)\).
+
+\begin{theorem}[Dual-version large deviation principle and spectral equality]\label{thm:pom-ldp-uniform-and-wm-exact-spectrum}
+Under the setting of Theorem \ref{thm:pom-real-q-pressure-analytic-interpolation}, further assume that \(q\mapsto \tau(q)\) is differentiable on some open interval and satisfies the essential smoothness condition of the G\"artner--Ellis theorem, and that for \(q\) in this interval,
+\(
+\tau(q)=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)
+\)
+(i.e., \(\tau\) agrees with the real-parameter partition function at exponential scale).
+Write \(\lim_{m\to\infty}\frac{1}{m}\log|X_m|=\log\varphi\).
+Then:
+\begin{enumerate}
+  \item \textbf{(Counting measure \(U_m\))}
+  Define the logarithmic moment generating function
+  \[
+  \Lambda_U(q):=\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}_{U_m}[e^{qmY_m}]
+  =\lim_{m\to\infty}\frac{1}{m}\log\frac{S_q(m)}{|X_m|}
+  =\tau(q)-\log\varphi,
+  \]
+  and let
+  \[
+  I_U(\alpha):=\sup_{q\ge 0}\bigl(q\alpha-\Lambda_U(q)\bigr).
+  \]
+  Then \((Y_m(X))\) satisfies a full large deviation principle under \((X_m,U_m)\) with rate function \(I_U\).
+  Moreover, for any continuity point of \(\alpha\), the local counting equality holds:
+  \[
+  \boxed{\;
+  \lim_{\varepsilon\downarrow 0}\ \lim_{m\to\infty}\frac{1}{m}\log
+  \#\{x\in X_m:\ |Y_m(x)-\alpha|<\varepsilon\}
+  =\log\varphi-I_U(\alpha)\; }.
+  \]
+  \item \textbf{(Pushforward measure \(w_m\))}
+  Define
+  \[
+  \Lambda_w(q):=\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}_{w_m}[e^{qmY_m}]
+  =\lim_{m\to\infty}\frac{1}{m}\log\frac{S_{q+1}(m)}{2^m}
+  =\tau(q+1)-\log 2,
+  \]
+  and let
+  \(
+  I_w(\alpha):=\sup_{q\ge 0}\bigl(q\alpha-\Lambda_w(q)\bigr)
+  \).
+  Then \((Y_m(X))\) also satisfies a full large deviation principle under \((X_m,w_m)\) with rate function \(I_w\), and provides the exact exponential rate for tail probabilities.
+  \item \textbf{(Multifractal spectrum equality)}
+  For the spectrum function \(f(\gamma)\) (in the notation of Definition \ref{def:pom-fiber-spectrum} and Proposition \ref{prop:pom-spectrum-legendre-upper}), under the above regime one may set
+  \[
+  \boxed{\;
+  f(\alpha)=\log\varphi-I_U(\alpha)\; }.
+  \]
+  Hence the upper spectral squeeze given by the pressure convex conjugate in the main text is upgraded to an exact Legendre dual under this spectral gap/strict convexity regime.
+\end{enumerate}
+\end{theorem}
+
+\paragraph{Real-parameter \texorpdfstring{$\zeta$}{zeta} and principal pole geometry (Fredholm framework)}
+For integer \(q\ge 2\), the finite-dimensional kernel provides a rational-type interface \(\zeta_{\widetilde A_q}(z)=\det(I-z\widetilde A_q)^{-1}\) (\S\ref{subsec:zeta-syntax-zeta}).
+For real-parameter \(q\in J\), under the assumption that trace-class executability or Fredholm framework definability holds (Definition \ref{def:fredholm-determinant}), one may define
+\[
+\zeta(q,z):=\frac{1}{\det(I-z\mathcal{L}_q)}.
+\]
+
+\begin{proposition}[Analytic motion of the principal pole and strict log-convexity]\label{prop:pom-real-q-zeta-main-pole}
+Under the spectral gap setting of Theorem \ref{thm:pom-real-q-pressure-analytic-interpolation}, for each \(q\in J\):
+\begin{enumerate}
+  \item \(\zeta(q,z)\) is analytic in \(|z|<e^{-\tau(q)}\), and the singularity nearest the origin is located at
+  \(
+  z_\star(q):=e^{-\tau(q)}=1/\lambda(q)
+  \)
+  and is a simple pole;
+  \item the mapping \(q\mapsto z_\star(q)\) is real-analytic on \(J\); moreover, in the non-degenerate (strictly convex) case, \(\log z_\star(q)=-\tau(q)\) is strictly concave, equivalently \(q\mapsto \lambda(q)\) is strictly log-convex;
+  \item when \(q\in\ZZ_{\ge 2}\), \(\zeta(q,z)\) on the finite-dimensional invariant subspace \(\mathcal{H}_q\) degenerates rigorously to
+  \[
+  \zeta(q,z)=\zeta_{\widetilde A_q}(z)=\det(I-z\widetilde A_q)^{-1},
+  \]
+  so that the pole geometry of the integer moment fingerprint obtains an analytic continuation at real parameters, and the ``convex geometry of the cross-order pressure curve'' is solidified into an immutable constraint on the principal pole.
+\end{enumerate}
+\end{proposition}

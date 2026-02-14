@@ -1,0 +1,690 @@
+\subsubsection{Rewrite Closure with \texorpdfstring{$\mathrm{MOM}_q$}{MOMq}: Exponential Law and Bubble Normal Form}\label{subsec:pom-mom-rewrite-normal}
+
+In Definition \ref{def:pom-projword-2cat}, \(\mathrm{MOM}_q\) (\(q\ge 2\)) has been fixed as a \(1\)-morphism generator of \(\mathbf{PW}\): it compiles the underlying folding/readout kernel into a \(q\)-fold collision fiber-product moment-kernel, thereby reading out the recursion of \(S_q(m)=\sum_x d_m(x)^q\) and the Perron principal scale \(r_q\) (Theorem \ref{thm:pom-collision-kernel-ak}).
+To promote ``spatial spectral readout'' from the semantic-side computation to a \emph{syntactically derivable calculus object on the lexical side}, the key step is to incorporate \(\mathrm{MOM}_q\) into the rewrite closure and provide directed rules admitting bubble extraction.
+
+\begin{definition}[\texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G,\mathrm{MOM}_q)$}{(PROJ,Em,LIFT,MOM)} Extended Rewrite Rule Family on the Four-Generator Fragment]\label{def:pom-four-gen-rewrite-rules}
+Extending the three-generator fragment of Definition \ref{def:pom-three-gen-rewrite-rules}, adjoin \(\{\mathrm{MOM}_q\}_{q\ge 2}\) and fix the following directed extension rules (all serving as \(2\)-morphism certificates):
+\begin{enumerate}
+  \item \textbf{Exponential law for moment gates (multiplicative merging):}
+  $$
+  (\mathrm{RMOM})\quad
+  \mathrm{MOM}_p\circ \mathrm{MOM}_q\ \Rightarrow\ \mathrm{MOM}_{pq}.
+  $$
+  \item \textbf{Bubble extraction for moment gates (structural bubble):}
+  For any generator \(X\in\{\mathrm{PROJ}_u,\mathrm{LIFT}_G,E_m\}\), provide a commutation certificate that extracts \(\mathrm{MOM}_q\) as a left prefix:
+  $$
+  (\mathrm{RMOM\text{-}BUBBLE})\quad
+  X\circ \mathrm{MOM}_q\ \Rightarrow\ \mathrm{MOM}_q\circ X',
+  $$
+  where \(X'\) is a gate of the same type (possibly with updated parameters): in the strictly commutative case, \(X'=X\);
+  when involving lift-axis juxtaposition, \(X'=\mathrm{LIFT}_{G^{\times q}}\) reflects the ``juxtaposed lift of \(q\) copies'';
+  in the case involving \(E_m\), the commutation certificate allows outputting an auditable scalar residual label
+  \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)\) (Definition \ref{def:pom-moment-anom-signature}), to carry the non-strict commutativity between \(E_m\) and the moment compilation in the general case.
+  \item \textbf{Moment--Lift Fourier distribution law (higher-order twisted channel expansion):}
+  When the normalized form exhibits an adjacent composite \(\mathrm{MOM}_q\circ \mathrm{LIFT}_G\), introduce a distribution-law certificate reducing this composite to a ``\(q\)-linear convolution over the character domain'':
+  \[
+  (\mathrm{RMOML})\quad
+  \mathrm{MOM}_q\circ \mathrm{LIFT}_G
+  \ \Rightarrow\
+  \frac{1}{|G|^{q-1}}
+  \bigoplus_{\substack{\chi_1,\dots,\chi_q\in\widehat G\\ \chi_1\cdots\chi_q=\chi_0}}
+  \mathrm{MOM}_{\chi_1,\dots,\chi_q},
+  \]
+  where the right-hand side \(\mathrm{MOM}_{\chi_1,\dots,\chi_q}\) denotes the ``multi-twisted moment-kernel obtained by applying \(\mathrm{TWIST}(\chi_i)\) to each of the \(q\) copies respectively'' (whose finite-\(m\) readout satisfies the strict identity of Proposition \ref{prop:pom-mom-lift-fourier-distribution}).
+  The auditable output of this distribution law is organized by the higher-order anomaly signature tower \(\mathsf{Anom}^{(q)}_G(K;\theta)\) (Definition \ref{def:pom-anom-signature-tower}).
+  \item \textbf{Moment--Lift wreath exchange (type-correct exchange with replication + permutation symmetry):}
+  When one wishes to extract \(\mathrm{LIFT}_G\) as a left prefix of \(\mathrm{MOM}_q\), there exists a type-correct canonical isomorphism certificate:
+  \[
+  (\mathrm{RMOM\text{-}WREATH})\quad
+  \mathrm{MOM}_q\circ \mathrm{LIFT}_G
+  \ \simeq\
+  \mathrm{LIFT}_{G\wr S_q}\circ \mathrm{MOM}_q,
+  \]
+  where
+  \(G\wr S_q:=G^{\times q}\rtimes S_q\)
+  is the wreath product (the semidirect product defined by the permutation action of \(S_q\) on \(G^{\times q}\)).
+  This exchange captures the fact that ``\(q\)-fold collision semantics first de-labels the \(q\) copies (taking orbits under \(S_q\))''; hence the correct symmetry object on the lift axis must simultaneously carry the labels of \(G^{\times q}\) and the permutation symmetry of \(S_q\).
+\end{enumerate}
+\end{definition}
+
+\begin{remark}[Reproducibility: Critical pair enumeration and completion audit for the four-generator fragment]\label{rem:pom-fourgen-kb-completion-audit}
+To extend the ``bounded overlap exhaustive audit'' of Remark \ref{rem:pom-threegen-kb-completion-audit} to the extended rule family \ref{def:pom-four-gen-rewrite-rules} containing \(\mathrm{MOM}_q\),
+we provide the script
+\texttt{scripts/exp\_pom\_projword\_four\_gen\_kb\_completion\_audit.py}:
+under fixed complexity bounds (restricting \(m\), restricting the list of groups for lift, restricting the list of moment orders, and restricting the temperature parameter sampling set), it enumerates all length-\(3\) overlap contexts,
+and compares whether the two local reduction branches are joinable to the same interface normal form, while verifying the consistency of residual counts (including the anomaly signature from \(E\)--lift and the higher-order anomaly signature tower residuals derived from \((\mathrm{RMOML})\)).
+The script outputs a JSON summary and several counterexample traces to
+\texttt{artifacts/export/pom\_projword\_four\_gen\_kb\_completion\_audit.json},
+and generates Table \ref{tab:pom_projword_four_gen_kb_completion_audit} as a reproducible witness:
+\input{sections/generated/tab_pom_projword_four_gen_kb_completion_audit}
+\end{remark}
+
+\begin{proposition}[Semantic correctness of the exponential law \texorpdfstring{$(\mathrm{RMOM})$}{RMOM} (fiber-product associativity)]\label{prop:pom-rmom-sound}
+Under the \(\mathrm{MOM}_q\) semantics of Definition \ref{def:pom-projword-2cat}, the rule
+\[
+\mathrm{MOM}_p\circ \mathrm{MOM}_q\ \Rightarrow\ \mathrm{MOM}_{pq}
+\]
+is strictly faithful in the underlying ``bitwise co-output'' fiber-product compilation framework: both sides compile to the same \(pq\)-fold collision kernel (the same counting language), and hence yield identical fingerprints for all readout targets (\(S_{pq}(m)\), Perron principal scale, and the pressure/finite part derived therefrom).
+\end{proposition}
+
+\begin{proof}
+By the \(q\)-fold collision relation of Definition \ref{def:pom-moment-q}, the semantics of \(\mathrm{MOM}_q\) compiles the ``\(q\) trajectories with bitwise co-output'' synchronization constraint onto a finite kernel (Proposition \ref{prop:pom-moment-kernel-exists}).
+For any length \(m\), first applying \(\mathrm{MOM}_q\) then \(\mathrm{MOM}_p\) is equivalent to: partitioning the paths into \(p\) groups of \(q\) each, and requiring that the output words of these \(p\) groups coincide; this is precisely equivalent to requiring all \(pq\) trajectories to have bitwise co-output in a single step.
+Therefore both sides count the same set
+\[
+R_m^{(pq)}=\Bigl\{(\omega^{(1)},\dots,\omega^{(pq)})\in\Omega_m^{pq}:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(pq)})\Bigr\}
+\]
+and generate the same sequence \(S_{pq}(m)=|R_m^{(pq)}|\); the corresponding finite kernel realizations can be chosen to be isomorphic (differing only in realization choice), and hence the rule \((\mathrm{RMOM})\) holds semantically. \qed
+\end{proof}
+
+\begin{proposition}[Lift--Moment Beck--Chevalley exchange law (group-axis replication)]\label{prop:pom-mom-lift-beck-chevalley}
+For any finite group \(G\) and integer \(q\ge 2\), under the lift semantics where ``each copy carries one group coordinate'' via juxtaposition, there is a natural isomorphism (serving as a rewritable certificate):
+\[
+\boxed{\;
+\mathrm{LIFT}_G\circ \mathrm{MOM}_q\ \simeq\ \mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}\; }.
+\]
+Equivalently, when extracting \(\mathrm{MOM}_q\) as a left prefix, the lift branch of \((\mathrm{RMOM\text{-}BUBBLE})\) can be taken as
+\[
+\mathrm{LIFT}_G\circ \mathrm{MOM}_q\ \Rightarrow\ \mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}.
+\]
+\end{proposition}
+
+\begin{proof}
+\(\mathrm{LIFT}_G\) extends the underlying state to ``original state \(\times\) group coordinate'', accumulating a cocycle on the group coordinate at each step (the group extension interface of Section \ref{sec:zeta-finite-part}).
+When subsequently applying the \(q\)-fold synchronous product of \(\mathrm{MOM}_q\), the state space is naturally \((Q\times G)^q\cong Q^q\times G^q\), and the ``bitwise co-output'' screening constrains only the output symbols without coupling the group coordinates of different copies.
+Therefore, this composite is equivalent to: first performing the \(q\)-fold synchronous product on the underlying layer to obtain \(Q^q\), then lifting the label axis to \(G^q\) in a single step (i.e., \(\mathrm{LIFT}_{G^{\times q}}\)), and finally applying the same output-consistency screening; this corresponds precisely to the semantics of the right-hand side \(\mathrm{MOM}_q\circ \mathrm{LIFT}_{G^{\times q}}\). \qed
+\end{proof}
+
+\begin{definition}[Wreath product and unlabeled replication]\label{def:pom-wreath-product}
+For any group \(G\) and integer \(q\ge 2\), define the wreath product
+\[
+G\wr S_q\ :=\ G^{\times q}\rtimes S_q,
+\]
+where \(S_q\) acts on \(G^{\times q}\) by permuting the \(q\) factors.
+In the moment-kernel semantics of this paper, the ``symmetric power quotient kernel'' realization of \(\mathrm{MOM}_q\) (Proposition \ref{prop:pom-moment-symmetric-power}) compresses the \(q\) copies from the \emph{labeled} direct product \(Q^q\) to the \emph{unlabeled} occupation vector space;
+hence when the lift labels are also carried into this unlabeled replication, the correct label symmetry group necessarily includes the permutation symmetry \(S_q\), and thus naturally falls within \(G\wr S_q\).
+\end{definition}
+
+\begin{proposition}[Moment--Lift wreath exchange law (type-correct exchange object)]\label{prop:pom-mom-lift-wreath-exchange}\label{prop:pom-mom-lift-wreath}
+For any finite group \(G\) and integer \(q\ge 2\), there exists a canonical isomorphism in the sense of natural isomorphisms of \(\mathbf{PW}\):
+\[
+\boxed{\;
+\mathrm{MOM}_q\circ \mathrm{LIFT}_G
+\ \simeq\
+\mathrm{LIFT}_{G\wr S_q}\circ \mathrm{MOM}_q\; }.
+\]
+Intuitively: the ``unlabeled replication + permutation symmetry'' of \(\mathrm{MOM}_q\) upgrades the \(q\) copies of the lift label axis from \(G^{\times q}\) to \(G^{\times q}\rtimes S_q\), i.e., the wreath product.
+\end{proposition}
+
+\begin{proof}
+Regard \(\mathrm{MOM}_q\) as the compilation operator for ``\(q\) parallel copies + output-consistency screening + symmetric power quotient compression'' (Definition \ref{def:pom-projword-2cat} and Proposition \ref{prop:pom-moment-symmetric-power}).
+If one first lifts and then takes the moment, each copy carries one \(G\)-coordinate, yielding the label axis \(G^{\times q}\); the subsequent symmetric power quotient compression internalizes the permutation symmetry ``exchanging the \(q\) copies does not alter the semantics'' as structural data.
+Therefore, the correct type for the lift is no longer the plain direct product \(G^{\times q}\), but its semidirect product with the permutation symmetry, \(G^{\times q}\rtimes S_q\), i.e., \(G\wr S_q\).
+Equivalently, this yields the canonical natural isomorphism from the ``lift then moment'' compilation to the ``moment then lift (wreath product)'' compilation.
+\end{proof}
+
+\begin{remark}[Relation to \texorpdfstring{$(\mathrm{RMOML})$}{RMOML}: the Fourier rule is a computable shadow of the wreath]\label{rem:pom-wreath-shadow-rmoml}
+Proposition \ref{prop:pom-mom-lift-wreath-exchange} provides the type-correct exchange object.
+When \(G\) is a finite abelian group and only one-dimensional character channels are taken, the label axis of the wreath product admits a computable expansion over the ``character domain'',
+and degenerates to the Fourier distribution law \((\mathrm{RMOML})\) adopted in this paper (Proposition \ref{prop:pom-rmoml-sound}): it writes the readout of \(\mathrm{MOM}_q\circ \mathrm{LIFT}_G\) as a \(q\)-linear convolution over \(\widehat G^q\) subject to the constraint \(\chi_1\cdots\chi_q=\chi_0\).
+The classification of irreducible representations of a general \(G\wr S_q\) is beyond the scope of this paper; however, for ``auditable implementation'' purposes, \((\mathrm{RMOML})\) suffices to unify the moment spectrum and the twisted spectrum into the same executable rewrite/fingerprint interface.
+\end{remark}
+
+\begin{proposition}[Anomaly amplification law: moment-ization linearly amplifies residual labels]\label{prop:pom-anom-gap-amplification}
+Following Definition \ref{def:pom-anom-accumulation} for the anomaly accumulation \(\mathrm{anom}(\cdot)\in\mathcal{A}_G\).
+For any \(2\)-morphism certificate \(\alpha:w\Rightarrow w'\), let \(\alpha^{\boxtimes q}\) denote its copy-wise replication under the \(q\)-fold fiber-product/symmetric power quotient compilation framework (i.e., applying the same certificate in parallel on the \(q\) copies, and identifying the permutation symmetry as isomorphism data; this operation is consistent with the compilation semantics of \(\mathrm{MOM}_q\)).
+Then the following strict amplification law holds:
+\[
+\boxed{\;\mathrm{anom}(\alpha^{\boxtimes q})=q\cdot \mathrm{anom}(\alpha).\;}
+\]
+Consequently, the canonical anomaly (Definition \ref{def:pom-anom-accumulation}) of any word \(w\) satisfies
+\[
+\boxed{\;[\mathrm{Anom}(w^{\boxtimes q})]=q\cdot [\mathrm{Anom}(w)]\;}
+\]
+(modulo coboundary, by Proposition \ref{prop:pom-anom-additive-up-to-boundary}).
+\end{proposition}
+
+\begin{remark}[Application: controllable gap amplification]\label{rem:pom-anom-gap-amplification-meaning}
+Proposition \ref{prop:pom-anom-gap-amplification} allows the scenario where ``the anomaly is too small, leading to unstable numerical evidence'' to be internally amplified:
+without modifying the underlying kernel or sampling framework, the discrepancy can be linearly amplified to an auditable range by increasing \(q\).
+In the implementation of this paper, the anomaly enters the rewrite trace as a central label (Remark \ref{rem:pom-projword-threegen-anom-normalizer-demo}, Remark \ref{rem:pom-projword-mom-twist-normalizer-demo}), and can be used in conjunction with holonomy/cocycle audit scripts (Remark \ref{rem:pom-holonomy-cocycle-audit}).
+\end{remark}
+
+\begin{proposition}[Moment--Lift Fourier distribution law certificate (\texorpdfstring{$\mathrm{RMOML}$}{RMOML})]\label{prop:pom-rmoml-sound}
+For any finite abelian group \(G\) and integer \(q\ge 2\), the finite-scale \(q\)-moment readout of the composite \(\mathrm{MOM}_q\circ \mathrm{LIFT}_G\) satisfies the strict identity of Proposition \ref{prop:pom-mom-lift-fourier-distribution}.
+Therefore, \((\mathrm{RMOML})\) (Definition \ref{def:pom-four-gen-rewrite-rules}) can be regarded as a composable \(2\)-morphism certificate of \(\mathbf{PW}\): it reduces ``collision after lift'' to a ``\(q\)-linear convolution over the character domain'', and provides a finite-dimensional, auditable twisted channel expansion for subsequent completion.
+\end{proposition}
+\begin{proof}
+This is a direct translation of Proposition \ref{prop:pom-mom-lift-fourier-distribution} as a projection-word syntax-level certificate. \qed
+\end{proof}
+
+\begin{definition}[Higher-order anomaly signature tower: \texorpdfstring{$\mathsf{Anom}^{(q)}_G$}{AnomGq}]\label{def:pom-anom-signature-tower}
+Fix a kernel with potential \(K\) (or equivalently a weighted matrix family \(M_\theta\)), a finite abelian label group \(G\), and an integer \(q\ge 2\).
+For each \(q\)-tuple of characters \((\chi_1,\dots,\chi_q)\in\widehat G^q\) satisfying \(\chi_1\cdots\chi_q=\chi_0\), let
+\(\zeta^{(q)}_{\theta,\chi_1,\dots,\chi_q}\)
+denote the \(\zeta\)-interface of the corresponding ``multi-twisted moment-kernel'' channel on the right-hand side of \((\mathrm{RMOML})\), and extract its Abel/Hadamard finite-part constant at the principal pole according to Definition \ref{def:abel-finite-part}, denoted \(\log\mathfrak{M}_{\chi_1,\dots,\chi_q}(\theta)\).
+Define the \textbf{higher-order anomaly signature tower} as
+\[
+\mathsf{Anom}^{(q)}_{G}(K;\theta)
+:=\Bigl(\log\mathfrak{M}_{\chi_1,\dots,\chi_q}(\theta)\Bigr)_{\substack{\chi_1\cdots\chi_q=\chi_0\\ (\chi_1,\dots,\chi_q)\neq(\chi_0,\dots,\chi_0)}}.
+\]
+It promotes the coupling between lift and \(q\)-moment from ``first-order twisted channels'' (\(\mathsf{Anom}_G\), Definition \ref{def:pom-anom-signature}) to the full-order multi-twisted mixed-term family; and it enters the rewrite--certificate--fingerprint closed loop as the auditable fingerprint output of \((\mathrm{RMOML})\) at the constant level.
+\end{definition}
+
+\begin{remark}[Prime-factor moment compiler: decomposing large order \texorpdfstring{$q$}{q} into a chain of small orders with stepwise minimization]\label{rem:pom-mom-prime-factor-compiler}
+By \((\mathrm{RMOM})\), any \(q=\prod_i p_i\) (prime factorization) can be equivalently realized as an auditable moment chain:
+\[
+\mathrm{MOM}_{p_1}\circ\mathrm{MOM}_{p_2}\circ\cdots\circ\mathrm{MOM}_{p_k}
+\ \Rightarrow\ \mathrm{MOM}_q.
+\]
+In practice, this allows replacing the ``direct compilation of \(\mathrm{MOM}_q\)'' with a pipeline: ``compile each prime factor \(\Rightarrow\) at each step perform Hankel/recursion minimization (Proposition \ref{prop:pom-hankel-realization-protocol}) or symmetric power compression (Proposition \ref{prop:pom-moment-symmetric-power}) \(\Rightarrow\) proceed to the next step''.
+Since for many \(q\) the minimal realization dimension is far smaller than the symmetric power upper bound (especially when structural collapse occurs within resonance windows, Theorem \ref{thm:pom-moment-resonance}), this ``prime-factor chain'' builds each subsequent step's state size on the already-compressed kernel, thereby extending higher-order moment fingerprints to larger \(q\) while maintaining computability and auditability.
+\end{remark}
+
+\begin{theorem}[Prime-factor moment compilation and resonance leverage (auditable complexity reduction)]\label{thm:pom-prime-factor-moment-compiler-resonance}
+Let \(q=\prod_{i=1}^{k}p_i\) be the prime factorization, and adopt the ``prime-factor chain + stepwise compression'' compilation strategy (Remark \ref{rem:pom-mom-prime-factor-compiler}) under the extended rule family \ref{def:pom-four-gen-rewrite-rules}:
+first represent \(\mathrm{MOM}_q\) as the chain
+\[
+\mathrm{MOM}_{p_1}\circ\cdots\circ \mathrm{MOM}_{p_k}\Rightarrow \mathrm{MOM}_q
+\]
+and apply Hankel/recursion minimization (Proposition \ref{prop:pom-hankel-realization-protocol}) or symmetric power quotient compression (Proposition \ref{prop:pom-moment-symmetric-power}) to the back-end kernel immediately after each moment compilation step.
+Then:
+\begin{enumerate}
+  \item \textbf{(Semantic fidelity and certificate composability)} By Proposition \ref{prop:pom-rmom-sound}, the chain merging is strictly faithful semantically; stepwise compression preserves the same \(q\)-moment fingerprint and can output auditable certificates (minimal realization/recursion + commutation residual labels).
+  \item \textbf{(Resonance leverage)} Within resonance windows, the minimal realization dimension can be significantly below the symmetric power upper bound and exhibit structural collapse (Theorem \ref{thm:pom-moment-resonance}); hence ``stepwise compression'' builds the state size for higher-order \(q\) on smaller intermediate kernels.
+\end{enumerate}
+Consequently, higher-order moments are not only computable but also possess an \emph{auditable generation path}: higher-order objects are obtained by merging a chain of lower-order moments with stepwise compression, each step carrying verifiable certificates and anomaly labels, preventing the rule extension from degenerating into an untraceable patch stack.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Concatenate the prime-factor chain of Remark \ref{rem:pom-mom-prime-factor-compiler} with the strict fidelity of Proposition \ref{prop:pom-rmom-sound};
+then use the Hankel/recursion minimization protocol (Proposition \ref{prop:pom-hankel-realization-protocol}) or symmetric power compression realization (Proposition \ref{prop:pom-moment-symmetric-power}) to ensure each compression step preserves the output fingerprint while retaining auditable certificates;
+the resonance dimension collapse is provided by Theorem \ref{thm:pom-moment-resonance}. \qed
+\end{proof}
+
+\paragraph{Moment residual: non-commutativity of \texorpdfstring{$E_m$}{Em} and \texorpdfstring{$\mathrm{MOM}_q$}{MOMq}}
+After incorporating \(\mathrm{MOM}_q\) into the rewrite closure, the smallest new critical pair arises from
+\(
+E_m\circ \mathrm{MOM}_q
+\)
+vs.\
+\(
+\mathrm{MOM}_q\circ E_m
+\):
+mechanistically, this corresponds to the structural difference between ``first taking the conditional expectation and then raising to the \(q\)-th power'' and ``first entering the \(q\)-fold fiber-product moment world and then averaging''.
+To compress this difference into an auditable signature, analogous to \(\mathsf{Anom}_G\), we introduce a scalar-type moment-anomaly.
+
+\begin{definition}[Moment finite-part constant and moment-anomaly signature]\label{def:pom-moment-anom-signature}
+Fix a kernel with potential \(K\) (or equivalently a weighted matrix family \(M_\theta\)), and a moment order \(q\ge 2\).
+Let a realization of the \(q\)-fold collision moment-kernel generated by \(\mathrm{MOM}_q\) (Definition \ref{def:pom-projword-2cat}) on a finite state space be denoted by the matrix \(A^{(q)}_\theta\)
+(e.g., the symmetric power quotient kernel \(\widetilde A_q(u)\), see Proposition \ref{prop:pom-moment-symmetric-power} and \S\ref{subsec:pom-pressure-surface-qu}).
+Denote its \(\zeta\)-interface as
+\[
+\zeta^{(q)}_\theta(z):=\det(I-zA^{(q)}_\theta)^{-1},
+\]
+and extract its Abel/Hadamard finite-part constant at the principal pole \(z_\star^{(q)}=1/\rho(A^{(q)}_\theta)\) according to Definition \ref{def:abel-finite-part}, denoted \(\log\mathfrak{M}^{(q)}(\theta)\).
+Let \(\log\mathfrak{M}^{(1)}(\theta)\) denote the baseline constant for \(q=1\) (i.e., the same-type interface of \(A^{(1)}_\theta=M_\theta\)).
+Define the \textbf{moment-anomaly} as the scalar residual
+\[
+\boxed{\;
+\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)
+:=
+\log\mathfrak{M}^{(q)}(\theta)
+- q\,\log\mathfrak{M}^{(1)}(\theta)\;}.
+\]
+\end{definition}
+
+\begin{proposition}[\texorpdfstring{$E_m$}{Em}--\texorpdfstring{$\mathrm{MOM}_q$}{MOMq} commutation certificate with moment-anomaly]\label{prop:pom-em-mom-residual-swap}
+In the projection-word $2$-category \(\mathbf{PW}\) (Definition \ref{def:pom-projword-2cat}), there exists a class of commutation certificates that rewrite the composite
+\(
+E_m\circ \mathrm{MOM}_q
+\)
+to
+\(
+\mathrm{MOM}_q\circ E_m
+\)
+accompanied by an auditable scalar residual label \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)\) (Definition \ref{def:pom-moment-anom-signature}).
+When the \(q\)-fold moment compilation satisfies a relative independence/pullback-type (moment Beck--Chevalley) condition with the conditional expectation at this folding layer,
+\(\zeta^{(q)}_\theta=\bigl(\zeta^{(1)}_\theta\bigr)^q\)
+so that \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}(K;\theta)=0\);
+in the general case, the ``observable non-commutativity'' between \(E_m\) and \(\mathrm{MOM}_q\) is entirely carried by this finite-part constant difference within the fingerprint framework of this paper.
+\end{proposition}
+
+\begin{proof}
+Analogous to Proposition \ref{prop:pom-em-lift-residual-swap}, this is an interface-level encapsulation:
+both compilation paths are constrained by the same closed loop
+\(
+\text{finite kernel/matrix family}\Rightarrow \zeta\Rightarrow \log\mathfrak{M}
+\)
+(\S\ref{subsec:pom-implementable-interfaces}).
+If the moment Beck--Chevalley condition holds, then the \(\zeta\) of the \(q\)-fold moment-kernel at the principal pole strictly decomposes into \(q\) independent copies, so that the finite-part constants are strictly additive and the residual vanishes;
+otherwise, the difference between the two paths can be minimally compressed at the finite-part level into a scalar constant, namely \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\) of Definition \ref{def:pom-moment-anom-signature}. \qed
+\end{proof}
+
+\begin{remark}[Unification with anomaly cohomology: extended label group]\label{rem:pom-anom-cohomology-mom}
+On the fragment containing \(\mathrm{MOM}\), one can jointly regard \(\mathsf{Anom}_G\), \(\mathsf{Anom}^{(q)}_{G}\) (Definition \ref{def:pom-anom-signature-tower}), and \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\) as \(2\)-morphism labels of \(\mathbf{PW}\):
+extend the label group from \(\mathcal{A}_G\) to
+\(
+\mathcal{A}_G\oplus\mathcal{A}^{(q)}_{G}\oplus\mathcal{A}_{\mathrm{mom}}
+\),
+where \(\mathcal{A}^{(q)}_{G}\) can be taken as a finite-dimensional real vector space indexed by the dimensions \(\{(\chi_1,\dots,\chi_q):\chi_1\cdots\chi_q=\chi_0,\ (\chi_1,\dots,\chi_q)\neq(\chi_0,\dots,\chi_0)\}\); for a fixed moment order, \(\mathcal{A}_{\mathrm{mom}}:=\RR\) (or \(\RR^{\mathcal{Q}}\) for a set of moment orders).
+Let each expansion step of \((\mathrm{RMOML})\) label with \(\mathsf{Anom}^{(q)}_{G}\), and each \(E_m\)--\(\mathrm{MOM}_q\) commutation step label with \(\mathsf{Anom}^{(q)}_{\mathrm{mom}}\).
+Then the holonomy/coboundary framework of Definition \ref{def:pom-anom-accumulation} and Proposition \ref{prop:pom-anom-additive-up-to-boundary} generalizes verbatim: changing the reduction priority only changes the boundary terms, while ``whether the residual vanishes'' remains a path invariant.
+\end{remark}
+
+\begin{remark}[Normalization strategy: first merge, then extract]\label{rem:pom-mom-normalize-strategy}
+Under rule family \ref{def:pom-four-gen-rewrite-rules}, a realizable normalization strategy incorporating \(\mathrm{MOM}\) is:
+first use \((\mathrm{RMOM})\) to merge all occurring moment gates into a single \(\mathrm{MOM}_Q\) (where \(Q\) is the product of all orders),
+then use \((\mathrm{RMOM\text{-}BUBBLE})\) to extract \(\mathrm{MOM}_Q\) as the leftmost prefix of the projection word,
+and finally apply the three-generator normalization of Proposition \ref{prop:pom-three-gen-interface-normal-form} to the remaining \(\mathrm{MOM}\)-free part and output the anomaly signature.
+The minimal reproducible witness in practice is given in Remark \ref{rem:pom-projword-mom-twist-normalizer-demo} (Table \ref{tab:pom_projword_mom_twist_normalizer_demo}).
+\end{remark}
+
+\begin{proposition}[Interface normal form with \texorpdfstring{$\mathrm{MOM}$}{MOM} (structural version)]\label{prop:pom-mom-interface-normal-form}
+Under the joint closure of rule family \ref{def:pom-four-gen-rewrite-rules} and the three-generator rule family \ref{def:pom-three-gen-rewrite-rules},
+any projection word generated solely by \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G,\mathrm{MOM}_q\) can be rewritten into an interface normal form with \(\mathrm{MOM}_Q\) as a left prefix:
+$$
+\boxed{\;
+\mathrm{MOM}_Q\ \circ\ \mathrm{LIFT}_{G'}\ \circ\ \mathrm{PROJ}_{u'}\ \circ\ E_{m'}
+\;}
+$$
+accompanied by three classes of auditable outputs:
+(i) the anomaly signature \(\mathsf{Anom}_{G'}(K;\theta)\) from \(E_m\)--lift commutation,
+(when needed)
+(ii) if one chooses to apply \((\mathrm{RMOML})\) to the prefix \(\mathrm{MOM}_Q\circ \mathrm{LIFT}_{G'}\) for character-domain expansion, then the higher-order anomaly signature tower \(\mathsf{Anom}^{(Q)}_{G'}(K;\theta)\) (Definition \ref{def:pom-anom-signature-tower}),
+and (when needed)
+(iii) the moment-anomaly label \(\mathsf{Anom}^{(Q)}_{\mathrm{mom}}(K;\theta)\) (Definition \ref{def:pom-moment-anom-signature}) from the \(E_m\)--\(\mathrm{MOM}\) extraction commutation.
+Here \(Q\) is obtained by merging via \((\mathrm{RMOM})\), and \((G',u',m')\) are determined by three-generator normalization (with consistent updates to lift parameters according to the type promotion during extraction).
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Merge all \(\mathrm{MOM}\) factors in the original word into a single \(\mathrm{MOM}_Q\) using \((\mathrm{RMOM})\), then use \((\mathrm{RMOM\text{-}BUBBLE})\) to swap it stepwise to the leftmost position, synchronously updating the necessary type parameters (e.g., the juxtaposition promotion of the lift axis).
+The remaining fragment without \(\mathrm{MOM}\) can be reduced by Proposition \ref{prop:pom-three-gen-interface-normal-form} to the form \(\mathrm{LIFT}\circ\mathrm{PROJ}\circ E\), outputting the anomaly signature.
+Concatenating both reduction segments yields the stated normal form and the accompanying residual outputs. \qed
+\end{proof}
+
+\subsubsection{Symmetric Power Compression: Compiling Moment-Kernels from Exponential to Polynomial State Spaces}\label{subsec:pom-moment-symmetric-power}
+
+Proposition \ref{prop:pom-moment-kernel-exists} above provides the fiber-product construction for arbitrary \(q\)-fold collisions: directly taking the \(q\)-fold synchronous product produces an intermediate state space of exponential size (\(|Q|^q\), where \(Q\) is the state set of the underlying online kernel).
+However, since the \(q\) copies are completely symmetric with respect to the counting objective (permuting the \(q\) trajectories does not alter the ``co-image'' constraint), one can take the quotient of the direct product kernel under the symmetric group action, thereby obtaining an equivalent counting kernel of \emph{polynomial size}.
+
+\begin{proposition}[Symmetric power quotient kernel: polynomial-state realization of \texorpdfstring{$q$}{q}-fold collisions]\label{prop:pom-moment-symmetric-power}
+Let \(\mathcal{T}\) be the deterministic online kernel realizing \(\Fold_\infty\) (in the framework of Proposition \ref{prop:pom-delay-min}), with finite internal state set \(Q\), reading one input symbol and outputting one stable address symbol at each step.
+Fix \(q\ge 2\). After taking the synchronous direct product of \(q\) independent copies and applying the ``output-consistency'' screening, the resulting \(q\)-fold collision kernel (Proposition \ref{prop:pom-moment-kernel-exists}) possesses a natural \(S_q\)-permutation symmetry at the state level: permuting the \(q\) copies does not alter reachability or the counting objective.
+
+Let
+$$
+\mathcal{N}_{q}:=\Bigl\{(n_s)_{s\in Q}\in\ZZ_{\ge 0}^{Q}:\ \sum_{s\in Q}n_s=q\Bigr\}
+$$
+be the symmetric quotient space (``occupation number vectors''). Then there exists a nonnegative integer matrix \(\widetilde A_q\) (indexed by \(\mathcal{N}_q\)) and integer readout vectors \(\widetilde u_q,\widetilde v_q\) such that
+$$
+S_q(m)=\widetilde u_q^{\mathsf T}\widetilde A_q^{\,m-m_0}\widetilde v_q\qquad(m\ge m_0).
+$$
+Moreover, the number of states satisfies the polynomial upper bound
+$$
+|\mathcal{N}_q|=\binom{q+|Q|-1}{|Q|-1}.
+$$
+\end{proposition}
+
+\begin{proof}
+In the direct product kernel on \(Q^q\), permuting the \(q\) coordinates does not alter the ``bitwise output-consistency'' screening condition, so the transition relation and counting objective are \(S_q\)-invariant.
+Taking the quotient of \(Q^q\) by the orbits of the \(S_q\) action, each orbit is uniquely determined by the occupation number vector \((n_s)_{s\in Q}\) indicating ``how many times each internal state appears''; hence the quotient space is \(\mathcal{N}_q\), whose cardinality is the multiset coefficient \(\binom{q+|Q|-1}{|Q|-1}\).
+For any single-step input symbol and output-consistency screening, the number of feasible transitions from one orbit to another can be explicitly given by polynomial counting (multinomial coefficients/polynomial expansion), yielding a nonnegative integer adjacency matrix \(\widetilde A_q\) with orbits as nodes and ``inter-orbit transition counts'' as edge weights.
+Path counting on this weighted kernel yields the same \(S_q(m)\) as a matrix power readout expression. \qed
+\end{proof}
+
+\begin{remark}[Implementation: coefficient extraction formula for the symmetric power moment-kernel]\label{rem:pom-moment-symmetric-power-coefficient-extraction}
+The ``polynomial counting'' of Proposition \ref{prop:pom-moment-symmetric-power} can be written as a directly implementable coefficient extraction formula.
+Following the deterministic transducer \(\tau(s,a)=(s',b)\) of Definition \ref{def:pom-collision-count-bisim}, and allowing one-step weights (edge weights after potential/temperature gate synthesis)
+\(
+w(s,a)\in\RR_{\ge 0}
+\)
+(the unweighted case takes \(w\equiv 1\) to yield strict integer counts).
+Let \(\mathbf{x}=(x_t)_{t\in Q}\).
+For each output symbol \(b\in A_{\mathrm{out}}\) and each internal state \(s\in Q\), define the \textbf{transition polynomial}
+\[
+T_{s}^{(b)}(\mathbf{x})
+:=\sum_{a\in A_{\mathrm{in}}:\ \mathrm{out}(s,a)=b}\ w(s,a)\,x_{\mathrm{next}(s,a)},
+\]
+where \(\mathrm{next}(s,a)\) and \(\mathrm{out}(s,a)\) are given by \(\tau(s,a)=(\mathrm{next}(s,a),\mathrm{out}(s,a))\).
+\par
+For any occupation vector \(\nu\in\mathcal{N}_q\), let
+\[
+G_{\nu}^{(b)}(\mathbf{x})
+:=\prod_{s\in Q}\bigl(T_s^{(b)}(\mathbf{x})\bigr)^{\nu(s)}.
+\]
+Then the entries of the symmetric power quotient kernel can be taken as
+\[
+\boxed{\;
+\widetilde A_q(\nu,\nu')
+\ =\
+\sum_{b\in A_{\mathrm{out}}}\ [\mathbf{x}^{\nu'}]\;G_{\nu}^{(b)}(\mathbf{x})\;},
+\qquad
+[\mathbf{x}^{\nu'}]\ \text{denotes the coefficient of}\ \prod_{t\in Q}x_t^{\nu'(t)}.
+\]
+Combinatorial interpretation: the coefficient \(\widetilde A_q(\nu, \nu')\) equals the weighted sum over input choices satisfying the output-consistency constraint (i.e., all \(q\) copies in their respective current states produce the same output symbol \(b \in A_{\mathrm{out}}\)). For a given \(b\), the coefficient \([\mathbf{x}^{\nu'}]\) of the polynomial \(G_{\nu}^{(b)}(\mathbf{x})\) counts the weight contributions of all input letter combinations such that the \(\nu(s)\) copies transitioning from state \(s\) yield a successor-state distribution that is exactly the occupation vector \(\nu'\).
+\par
+Under the pre-compression framework of Proposition \ref{prop:pom-moment-col-lumping}, one simply replaces \(Q\) with \(Q/{\sim_{\mathrm{col}}}\) and rewrites \(T_s^{(b)}\) as the class-wise counting/weighting \(T_C^{(b)}\), to obtain the same-type coefficient extraction formula directly implementable on the histogram state space.
+\end{remark}
+
+\subsubsection{Two-Dimensional Pressure Surface: Unifying the \texorpdfstring{$q$}{q}-Moment and Temperature Gate \texorpdfstring{$u$}{u} into a Computable Phase Diagram}\label{subsec:pom-pressure-surface-qu}
+
+The coefficient extraction formula of Remark \ref{rem:pom-moment-symmetric-power-coefficient-extraction} above allows one-step edge weights
+\(
+w(s,a)\in\RR_{\ge 0}
+\).
+When this edge weight comes from the tempered gate \(\mathrm{PROJ}_u\) (Definition \ref{def:pom-proj-temp}), the ``spatial axis'' (multiplicity moment order \(q\)) and the ``temporal axis'' (temperature parameter \(u\)) can be organized into the same two-dimensional spectral surface.
+
+\paragraph{Weighted collision kernel}
+Take a nonnegative additive cost potential \(E:Q\times A_{\mathrm{in}}\to\ZZ_{\ge 0}\), and let
+\[
+w_u(s,a):=u^{E(s,a)},\qquad u\in(0,1].
+\]
+Replacing \(w(s,a)\) in Remark \ref{rem:pom-moment-symmetric-power-coefficient-extraction} with \(w_u(s,a)\) yields a family of \(u\)-dependent symmetric power quotient moment-kernels
+\(
+\widetilde A_q(u)
+\)
+(whose entries are still given by the same-type coefficient extraction formula).
+Denote the Perron root as
+\[
+r_q(u):=\rho\!\bigl(\widetilde A_q(u)\bigr).
+\]
+When \(u=1\), \(w_u\equiv 1\) degenerates back to the unweighted counting kernel \(\widetilde A_q\) and the principal scale \(r_q\) of this paper.
+
+\paragraph{Two-dimensional pressure surface}
+Let \(|A_{\mathrm{out}}|\) denote the output alphabet size (typically \(|A_{\mathrm{out}}|=2\) for the folding readout in this paper).
+Define the two-dimensional pressure as
+\[
+\boxed{\;
+P(q,u):=\log r_q(u)-q\log|A_{\mathrm{out}}|\;}.
+\]
+\begin{remark}[Temperature parameter reparametrization: \texorpdfstring{$u=e^{-\beta}$}{u=exp(-beta)} and the pressure surface \texorpdfstring{$P(q,\beta)$}{P(q,beta)}]\label{rem:pom-pressure-beta-reparam}
+Let \(\beta:=-\log u\in[0,\infty)\), and define
+\[
+P(q,\beta):=P\!\bigl(q,e^{-\beta}\bigr)=\log r_q(e^{-\beta})-q\log|A_{\mathrm{out}}|.
+\]
+Under the binary readout framework \(|A_{\mathrm{out}}|=2\) of this paper, this gives \(P(q,\beta)=\log r_q(e^{-\beta})-q\log 2\).
+This notation is purely a coordinate rewrite: it reformulates the ``temperature axis'' from \(u\in(0,1]\) to the cost strength \(\beta\ge 0\), and is compatible with the two-dimensional convex dual formulation of Remark \ref{rem:pom-psi-2d-legendre-front}.
+\end{remark}
+It is compatible with the existing one-dimensional fingerprints of this paper in two limiting directions:
+\begin{enumerate}
+  \item \textbf{(Spatial endpoint)} \(P(q,1)=\log r_q-q\log|A_{\mathrm{out}}|=P(q)\) (the moment pressure curve of this paper);
+  \item \textbf{(Temporal endpoint)} Formally setting \(q=1\), the ``collision constraint'' becomes trivial, and \(\widetilde A_1(u)\) degenerates to the adjacency matrix of the underlying weighted kernel (the \(M_E(u)\) framework of Definition \ref{def:pom-proj-temp}), so \(r_1(u)=\lambda_1(u)\) recovers the single-axis temperature pressure \(P(1,u)=\log\lambda_1(u)-\log|A_{\mathrm{out}}|\).
+\end{enumerate}
+Therefore, \(P(q,u)\) serves as a unified phase diagram coordinate for ``space (collision moment spectrum)--time (temperature tilting)'', providing a computable spectral-side base for the \((u,q,\varepsilon)\) three-knob scheduling of Remark \ref{rem:pom-hardening-u-vs-q}.
+
+\begin{definition}[Normalized mixed pressure \texorpdfstring{$\Psi(q,u)$}{Psi(q,u)} (temperature scaling of the Renyi/collision spectrum)]\label{def:pom-psi-mixed-pressure}
+On the basis of the two-dimensional pressure surface \(P(q,u)\), define
+\[
+\boxed{\;
+\Psi(q,u):=P(q,u)-qP(1,u)
+=\log r_q(u)-q\log r_1(u)\;}
+\qquad(q\ge 2,\ u\in(0,1]).
+\]
+It is equivalent to the ``normalized difference of the \(q\)-collision principal scale relative to the baseline temperature free energy \(r_1(u)\)''.
+\end{definition}
+
+\begin{proposition}[Temperature scaling law: the \texorpdfstring{$q$}{q}-collision spectrum of \texorpdfstring{$\mathrm{PROJ}_u$}{PROJ_u} readout is given by \texorpdfstring{$\Psi(q,u)$}{Psi}]\label{prop:pom-proj-mom-psi-law}
+Following Definition \ref{def:pom-proj-temp}, take the stepwise readout \(R\) and denote by \(\nu_{u,m}\) the pushforward distribution of the equilibrium measure \(\mu_u\) on the length-\(m\) output word space \(A_{\mathrm{out}}^m\).
+Then for any integer \(q\ge 2\),
+\[
+\lim_{m\to\infty}\frac{1}{m}\log\sum_{x\in A_{\mathrm{out}}^m}\nu_{u,m}(x)^q
+=\Psi(q,u).
+\]
+\end{proposition}
+
+\begin{proof}
+Expand \(\sum_x\nu_{u,m}(x)^q\) as a sum over \(q\) independent paths, and use ``bitwise co-output'' to restrict the summation to reachable paths on the \(q\)-fold synchronous product (Proposition \ref{prop:pom-moment-kernel-exists}).
+The numerator is given by the path weight count of the weighted moment-kernel \(\widetilde A_q(u)\), whose exponential growth rate is \(r_q(u)\); the denominator comes from the Perron--Frobenius normalization of \(\mu_u\): the probability of each length-\(m\) path carries a factor \(r_1(u)^{-m}\), so the \(q\)-th power contributes \(r_1(u)^{-qm}\).
+By the Perron--Frobenius principal scale,
+\[
+\sum_{x\in A_{\mathrm{out}}^m}\nu_{u,m}(x)^q=\Theta\!\left(\left(\frac{r_q(u)}{r_1(u)^q}\right)^{\!m}\right),
+\]
+taking \(\frac1m\log\) and letting \(m\to\infty\) yields the conclusion. \qed
+\end{proof}
+
+\begin{definition}[Second-order collision probability and anti-collision exponent]\label{def:pom-col-u-h2}
+Following the notation of Proposition \ref{prop:pom-proj-mom-psi-law}, define the second-order collision probability
+\[
+\mathrm{Col}_u(m)
+:=
+\sum_{x\in A_{\mathrm{out}}^m}\nu_{u,m}(x)^2.
+\]
+and define the anti-collision exponent
+\[
+\boxed{\;
+h_2(u):=-\Psi(2,u)=2\log r_1(u)-\log r_2(u)\;\ge\;0\; }.
+\]
+\end{definition}
+
+\begin{theorem}[Collision threshold and addressing capacity: the \texorpdfstring{$1/2$}{1/2} rule governed by \texorpdfstring{$h_2(u)$}{h2(u)}]\label{thm:pom-collision-threshold-capacity}
+Fix \(u\in(0,1]\).
+Following Definition \ref{def:pom-col-u-h2},
+\[
+\mathrm{Col}_u(m)=\exp\!\bigl(-h_2(u)\,m+o(m)\bigr),\qquad m\to\infty.
+\]
+Let \(X_1,\dots,X_{N(m)}\) be independent and identically distributed \(A_{\mathrm{out}}^m\)-valued random variables, each with distribution \(\nu_{u,m}\), and denote the event
+\[
+\mathsf{Inj}_m:=\{\,X_1,\dots,X_{N(m)}\ \text{are pairwise distinct}\,\}.
+\]
+Then there exists a phase transition threshold:
+\begin{enumerate}
+  \item If \(\displaystyle \limsup_{m\to\infty}\frac{2\log N(m)}{m}<h_2(u)\), then \(\mathbb{P}(\mathsf{Inj}_m)\to 1\);
+  \item If \(\displaystyle \liminf_{m\to\infty}\frac{2\log N(m)}{m}>h_2(u)\), then \(\mathbb{P}(\mathsf{Inj}_m)\to 0\).
+\end{enumerate}
+Therefore, \(h_2(u)/2\) is the exponential capacity for ``collision-free addressing achievable at resolution budget \(m\)''; and \(h_2(u)\) is computable from the Perron roots of the finite kernel \((r_1(u),r_2(u))\) (Definition \ref{def:pom-psi-mixed-pressure}).
+\end{theorem}
+
+\begin{proof}
+By Proposition \ref{prop:pom-proj-mom-psi-law} with \(q=2\),
+\[
+\lim_{m\to\infty}\frac{1}{m}\log \mathrm{Col}_u(m)
+=\Psi(2,u)
+=-h_2(u),
+\]
+so \(\mathrm{Col}_u(m)=\exp(-h_2(u)m+o(m))\).
+\par
+Let
+\(
+I_{ij}:=\mathbf{1}\{X_i=X_j\}
+\)
+and denote the collision pair count
+\[
+Y:=\sum_{1\le i<j\le N} I_{ij},\qquad (N:=N(m)).
+\]
+Then \(\mathsf{Inj}_m=\{Y=0\}\).
+\par
+\textbf{(1) Sub-threshold: collision-free becomes certain.}
+By Markov's inequality,
+\[
+\mathbb{P}(Y\ge 1)\le \mathbb{E}Y=\binom{N}{2}\mathrm{Col}_u(m).
+\]
+When \(\frac{2\log N}{m}<h_2(u)\) holds strictly in the limit,
+\(
+\binom{N}{2}\mathrm{Col}_u(m)\to 0
+\), so \(\mathbb{P}(\mathsf{Inj}_m)=1-\mathbb{P}(Y\ge 1)\to 1\).
+\par
+\textbf{(2) Super-threshold: collision-free becomes impossible.}
+Using Chebyshev's inequality,
+\[
+\mathbb{P}(Y=0)
+\le
+\mathbb{P}\bigl(|Y-\mathbb{E}Y|\ge \mathbb{E}Y\bigr)
+\le
+\frac{\mathrm{Var}(Y)}{(\mathbb{E}Y)^2}.
+\]
+Note that \(\mathbb{E}I_{ij}=\mathrm{Col}_u(m)\) and for disjoint index pairs \((i,j)\cap(k,\ell)=\varnothing\), \(I_{ij}\) and \(I_{k\ell}\) are independent, hence
+\[
+\mathrm{Var}(Y)
+\le
+\sum_{i<j}\mathbb{E}I_{ij}
+ + 6\!\!\sum_{1\le i<j<k\le N}\!\!\mathbb{E}\bigl[I_{ij}I_{ik}\bigr].
+\]
+Here
+\(
+\mathbb{E}[I_{ij}I_{ik}]
+=\mathbb{P}(X_i=X_j=X_k)
+=\sum_x \nu_{u,m}(x)^3
+\).
+By \(\ell^p\)-norm monotonicity (or H\"older's inequality),
+\[
+\sum_x \nu_{u,m}(x)^3
+\le
+\left(\sum_x \nu_{u,m}(x)^2\right)^{3/2}
+=\mathrm{Col}_u(m)^{3/2}.
+\]
+Therefore
+\[
+\mathrm{Var}(Y)\ \le\ \binom{N}{2}\mathrm{Col}_u(m)\ +\ 6\binom{N}{3}\mathrm{Col}_u(m)^{3/2}.
+\]
+Since \(\mathbb{E}Y=\binom{N}{2}\mathrm{Col}_u(m)\),
+\[
+\frac{\mathrm{Var}(Y)}{(\mathbb{E}Y)^2}
+\ \lesssim\
+\frac{1}{\mathbb{E}Y}
+\ +\
+\frac{1}{N\sqrt{\mathrm{Col}_u(m)}}.
+\]
+When \(\frac{2\log N}{m}>h_2(u)\) holds strictly in the limit, \(N^2\mathrm{Col}_u(m)\to\infty\), so \(\mathbb{E}Y\to\infty\) and \(N\sqrt{\mathrm{Col}_u(m)}\to\infty\). Thus the right-hand side \(\to 0\), and \(\mathbb{P}(\mathsf{Inj}_m)=\mathbb{P}(Y=0)\to 0\).
+\qed
+\end{proof}
+
+\begin{remark}[Two-dimensional Legendre--Fenchel front: inverting the joint spatial--energy spectrum from \texorpdfstring{$\Psi(q,u)$}{Psi} (conditional formula)]\label{rem:pom-psi-2d-legendre-front}
+Let \(\gamma_m(x)=\frac{1}{m}\log d_m(x)\) be the fiber log-multiplicity density (Definition \ref{def:pom-fiber-spectrum}), and let
+\[
+\mathcal{E}_m:=\frac{1}{m}\sum_{t=1}^m E(e_t)
+\]
+be the energy density of the potential (Definition \ref{def:pom-proj-temp}).
+Under standard thermodynamic formalism conditions, \(\Psi(q,u)\) can be viewed as the limit of the mixed log-moment generating function of \((\gamma_m,\mathcal{E}_m)\); hence the joint front (rate function) can be given by a two-dimensional Legendre--Fenchel transform:
+\[
+I(\gamma,\mathcal{E})
+=\sup_{q\ge 2,\ u\in(0,1)}
+\Bigl((q-1)\gamma+(\log u)\mathcal{E}-\Psi(q,u)\Bigr).
+\]
+This formula upgrades the ``spatial loss spectrum'' from a single-parameter \(q\) to a joint spectral front simultaneously involving the temperature axis \(u\), and all input quantities are computable from the Perron roots of the finite kernel; hence even if computable only on a discrete \(q\) and sampled \(u\) grid, it can still output an auditable two-dimensional upper/lower envelope as a front certificate for the compiler and audit chain.
+\end{remark}
+
+\begin{corollary}[Pressure front-driven hardening time lower bound (prototype)]\label{cor:pom-pressure-delay-lower-bound}
+Under the framework where the order gate readout employs the twisted spectral gap scale (Corollary \ref{cor:pom-order-mixing}; Remark \ref{rem:pom-order-mixing-scale}), denote
+\[
+\Gamma(u)
+:=
+\log\!\Bigl(\frac{\lambda_1(u)}{\Lambda(u)}\Bigr)
+=\frac{1}{\tau_{\mathrm{mix}}(u)},
+\qquad
+\lambda_1(u):=\rho(M_1(u)),\quad
+\Lambda(u):=\sup_{\chi\neq 1}\rho(M_\chi(u)).
+\]
+Let \(\varepsilon_m\) be the total failure probability budget allowed under the reference sampling framework at resolution \(m\) (Definition \ref{def:pom-eps-sound-rewrite}).
+If a ``soft order gate \(\Rightarrow\) hard order gate'' hardening/comparison readout requires achieving
+\(
+\varepsilon_m\le \exp(-\alpha m)
+\)
+exponential reliability (\(\alpha>0\)), then its minimum iteration depth \(n_{\min}(m)\) satisfies
+\[
+\boxed{\;
+n_{\min}(m)\ \gtrsim\ \frac{\log(1/\varepsilon_m)}{\Gamma(u)}\ \ge\ \frac{\alpha}{\Gamma(u)}\,m\;}
+\]
+(constant factors absorbed into \(\gtrsim\)).
+In particular, when the reliability exponent \(\alpha\) is given by the rate function of the pressure front (e.g., taking \(\alpha=I(\gamma,\mathcal{E})\), see Remark \ref{rem:pom-psi-2d-legendre-front}), the minimum time growth for ``order projection hardening'' is rigidly constrained by the joint spatial--energy spectral front: the steeper the front (\(I\) larger), the greater the minimum number of time steps required at fixed \(\Gamma(u)\).
+\end{corollary}
+\begin{proof}
+Corollary \ref{cor:pom-order-mixing} gives the mixing time scale
+\(
+n\gtrsim \tau_{\mathrm{mix}}(u)\log(1/\varepsilon_m)
+\);
+rewriting with \(\Gamma(u)=1/\tau_{\mathrm{mix}}(u)\) yields the first inequality.
+The second follows immediately by taking the logarithm of \(\varepsilon_m\le e^{-\alpha m}\). \qed
+\end{proof}
+
+\begin{definition}[Hardening--endpoint swap anomaly \texorpdfstring{$\Delta_{\mathrm{swap}}$}{Delta_swap} (irreducible certificate primitive)]\label{def:pom-hard-tail-swap-anomaly}
+Under the mixed pressure \(\Psi(q,u)\) framework, define the double-limit commutator
+\[
+\boxed{\;
+\Delta_{\mathrm{swap}}
+:=
+\Bigl(\lim_{u\downarrow 0}\ \limsup_{q\to\infty}\ \frac{1}{q}\Psi(q,u)\Bigr)
+-
+\Bigl(\limsup_{q\to\infty}\ \frac{1}{q}\ \lim_{u\downarrow 0}\Psi(q,u)\Bigr).\;}
+\]
+\end{definition}
+
+\begin{remark}[Interpretation: \texorpdfstring{$\Delta_{\mathrm{swap}}$}{Delta_swap} nonzero means ``the boundary cannot be simultaneously absorbed into the normal form'']\label{rem:pom-hard-tail-swap-anomaly}
+\(\Delta_{\mathrm{swap}}\) compares two boundary paths: ``first harden \(u\to 0\) then take the worst collision \(q\to\infty\)'' versus ``first take the worst collision then harden''.
+When \(\Delta_{\mathrm{swap}}=0\), the two paths agree at the endpoint scale of the normalized pressure, supporting unification of the hard order gate boundary and the higher-order moment endpoint into the same spectral object;
+when \(\Delta_{\mathrm{swap}}\neq 0\), it indicates that the two global-limit operations are semantically non-interchangeable, thereby providing a computable obstruction for ``rewriting alone cannot simultaneously eliminate the globality of both'' (serving as an irreducible certificate in the audit chain output).
+\end{remark}
+
+\paragraph{Reproducible implementation (example kernel)}
+The script \texttt{scripts/exp\_moment\_kernel\_pressure\_surface\_sync10.py} constructs the weighted kernel \(\widetilde A_q(u)\) on the 10-state synchronization kernel of this paper using histogram DP (Remark \ref{rem:pom-moment-symmetric-power-coefficient-extraction}) and estimates \(r_q(u)\), thereby outputting a pressure heat map on a discrete grid:
+\input{sections/generated/fig_moment_pressure_surface_sync10}
+
+\begin{definition}[Collision count equivalence (\texorpdfstring{$\sim_{\mathrm{col}}$}{~col})]\label{def:pom-collision-count-bisim}
+Let \(\mathcal{T}\) be a deterministic online kernel/transducer: state set \(Q\), input alphabet \(A_{\mathrm{in}}\), output alphabet \(A_{\mathrm{out}}\), with deterministic transition-output
+\[
+\tau:Q\times A_{\mathrm{in}}\to Q\times A_{\mathrm{out}},\qquad (s,a)\mapsto (s',b).
+\]
+Call an equivalence relation \(\sim_{\mathrm{col}}\) a \textbf{collision count equivalence} if it is the maximal (coarsest) equivalence relation satisfying the following ``bucket by output, count by successor class'' condition:
+for any \(s,t\in Q\), if \(s\sim_{\mathrm{col}} t\), then for any output symbol \(b\in A_{\mathrm{out}}\) and any equivalence class \(C\in Q/{\sim_{\mathrm{col}}}\),
+\[
+N_{s}(b,C):=\#\{a\in A_{\mathrm{in}}:\ \tau(s,a)=(s',b)\ \text{and}\ s'\in C\}
+\ =\
+N_{t}(b,C).
+\]
+\end{definition}
+
+\begin{proposition}[Pre-compression before symmetric power: replacing \texorpdfstring{$|Q|$}{|Q|} with \texorpdfstring{$r_{\mathrm{col}}=|Q/{\sim_{\mathrm{col}}}|$}{rcol}]\label{prop:pom-moment-col-lumping}
+Following the setting of Proposition \ref{prop:pom-moment-symmetric-power}.
+Let \(\sim_{\mathrm{col}}\) be the collision count equivalence of Definition \ref{def:pom-collision-count-bisim}, and denote
+\(
+r_{\mathrm{col}}:=|Q/{\sim_{\mathrm{col}}}|.
+\)
+Then for any \(q\ge 2\), there exists a polynomial-state moment-kernel strictly equivalent to \(\widetilde A_q\) (generating the same \(S_q(m)\)), whose state space can be taken as ``class occupation number vectors''
+\[
+\widetilde{\mathcal{N}}_{q}:=\Bigl\{(n_{C})_{C\in Q/{\sim_{\mathrm{col}}}}\in\ZZ_{\ge 0}^{r_{\mathrm{col}}}:\ \sum_{C}n_{C}=q\Bigr\},
+\]
+so that the state count satisfies the stronger upper bound
+\[
+|\widetilde{\mathcal{N}}_q|=\binom{q+r_{\mathrm{col}}-1}{r_{\mathrm{col}}-1}.
+\]
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The one-step transition count of the moment-kernel depends only on: the internal state of each trajectory at the current time and, under the given output-consistency screening, ``how many input letters send it to which successor state''.
+If states in the same \(\sim_{\mathrm{col}}\) class have identical input counts \(N_s(b,C)\) for all output symbols \(b\) and all successor classes \(C\), then after the \(q\)-fold synchronous product with ``output-consistency'' screening, any computation of feasible transition counts depends only on ``how many trajectories are in each equivalence class'' (i.e., the class occupation vector), not on the specific state names within each class.
+Therefore one can first take the quotient \(Q\to Q/{\sim_{\mathrm{col}}}\) on the underlying states, then perform symmetric power histogram compression, to obtain the stated \(\widetilde{\mathcal{N}}_q\) and the same \(S_q(m)\) matrix power readout. \qed
+\end{proof}
+
+\begin{remark}[Executable interface: partition refinement and histogram-DP]\label{rem:pom-moment-col-lumping-impl}
+The \(\sim_{\mathrm{col}}\) of Definition \ref{def:pom-collision-count-bisim} can be computed in polynomial time via partition refinement;
+the script module \texttt{scripts/common\_moment\_kernel\_hist.py} implements this partition solver (function \texttt{collision\_count\_lumping\_partition}), and allows performing a \(\sim_{\mathrm{col}}\) pre-compression when constructing the histogram moment-kernel (parameter \texttt{lump\_by\_collision\_counts}, and demo \texttt{scripts/exp\_moment\_kernel\_histogram\_dp\_demo.py --lump-col}).
+This pre-compression stacks with the symmetric power quotient compression of Proposition \ref{prop:pom-moment-symmetric-power}: first reduce the dimension using \(|Q/{\sim_{\mathrm{col}}}|\), then use histogram/orbit representation to compress the exponential state space \(Q^q\) to polynomial states.
+\end{remark}
+
+\begin{remark}[Implementation suggestion: treat \texorpdfstring{$\widetilde A_q$}{Aq} as ``compiler back-end'' rather than minimal realization]\label{rem:pom-moment-symmetric-power-impl}
+Proposition \ref{prop:pom-moment-symmetric-power} provides a structural guarantee: an equivalent counting kernel can be constructed without enumerating the exponential state space \(Q^q\).
+However, within the \(q\le 16\) range verified in this paper, smaller realizations can be recovered directly by Hankel/recursion methods (Table \ref{tab:fold_collision_moment_recursions} and Corollary \ref{cor:pom-moment-minreal}), with dimensions far below \(|\mathcal{N}_q|\).
+Therefore the recommended engineering path is: \(\widetilde A_q\) provides the ``back-end kernel generatable from first principles'', while the minimal-order recursion/minimal realization serves as the ``front-end compression and certificate''.
+\end{remark}
+
+\begin{remark}[Symmetric power functor viewpoint: \texorpdfstring{$\widetilde A_q$}{Aq} is the representation of the substitution operator on \texorpdfstring{$\mathrm{Sym}^q$}{Symq}]\label{rem:pom-moment-symmetric-power-substitution-operator}
+Following the transition polynomials \(T^{(b)}_s(\mathbf{x})\) of Remark \ref{rem:pom-moment-symmetric-power-coefficient-extraction}.
+Let \(R:=\RR_{\ge 0}[\,x_s:\ s\in Q\,]\) be the polynomial semiring, and for each output symbol \(b\in A_{\mathrm{out}}\) define a \textbf{substitution operator}
+\[
+\mathcal{T}_b:R\to R,\qquad
+x_s\longmapsto T^{(b)}_s(\mathbf{x}),
+\]
+extended as an algebra endomorphism by the semiring structure; then let \(\mathcal{T}:=\sum_{b\in A_{\mathrm{out}}}\mathcal{T}_b\) (summation by coefficient addition).
+Then for each \(q\ge 2\), the matrix representation of \(\mathcal{T}\) on the homogeneous degree-\(q\) subspace \(R_q\) (with basis \(x^\nu=\prod_s x_s^{\nu(s)}\), \(\nu\in\mathcal{N}_q\)) is precisely the symmetric power quotient kernel \(\widetilde A_q\) of Proposition \ref{prop:pom-moment-symmetric-power}:
+\[
+\mathcal{T}(x^\nu)=\sum_{\nu'\in\mathcal{N}_q}\widetilde A_q(\nu,\nu')\,x^{\nu'}.
+\]
+Therefore, in the language of ``gates'', \(\mathrm{MOM}_q\) can be viewed as the composable operator obtained by applying the \(\mathrm{Sym}^q\) (symmetric power) functor to the underlying deterministic kernel, and \(\widetilde A_q\) is merely one realization representation of this operator in the monomial basis.
+\end{remark}
+
+\begin{remark}[From integer \texorpdfstring{$q$}{q} to real parameter: projective pressure operator]\label{rem:pom-moment-q-to-real-projective-operator}
+Remark \ref{rem:pom-fiber-index-ldp} requires upgrading the ``integer-order moment fingerprint'' to a ``real-parameter pressure curve''; the key is to define, for any real \(q\ge 1\), a positive operator that strictly degenerates to \(\widetilde A_q\) at integer points.
+Appendix \ref{app:pom-projective-pressure-operator} provides an executable strictification: the output-bucketed transition matrices \(B_b\) induce projective dynamics \(\Phi_b\) on the simplex, and the projective transfer operator \(\mathcal{L}_q f=\sum_b g_b^q\cdot f\!\circ\!\Phi_b\) is defined (Definition \ref{def:pom-projective-transfer-operator}).
+Theorem \ref{thm:pom-projective-operator-degenerates-to-moment-kernel} proves that for integer \(q\ge 2\), the restriction of \(\mathcal{L}_q\) to the homogeneous polynomial subspace \emph{is} the symmetric power moment-kernel \(\widetilde A_q\) of this paper.
+\end{remark}

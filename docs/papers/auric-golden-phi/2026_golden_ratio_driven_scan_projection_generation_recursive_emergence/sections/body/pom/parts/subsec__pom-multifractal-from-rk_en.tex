@@ -1,0 +1,242 @@
+\subsubsection{Spatial Loss Spectrum Derived from \texorpdfstring{$r_k$}{rk}: R\'enyi Family and Multifractal Upper Envelope}\label{subsec:pom-multifractal-from-rk}
+Define the Fold output distribution (the pushforward of the uniform distribution on $\Omega_m$) as
+\[
+\pi_m(x):=\frac{d_m(x)}{2^m},\qquad x\in X_m,
+\]
+and denote the ``spatial loss density'' (the logarithmic density of retained microstates per step) by
+\[
+s_m(x):=\frac{1}{m}\log d_m(x).
+\]
+For integer $q\ge 2$,
+\[
+\sum_{x\in X_m}\pi_m(x)^q
+=\frac{1}{2^{qm}}\sum_x d_m(x)^q
+=\frac{S_q(m)}{2^{qm}}.
+\]
+By Theorem \ref{thm:pom-collision-kernel-ak} and $S_q(m)=\Theta(r_q^m)$, one may define the pressure (discrete $q$-spectrum)
+\[
+P(q):=\log r_q-q\log 2,
+\]
+and obtain the R\'enyi projection entropy rate family (standard normalization)
+\[
+h_q^{\mathrm{R}}:=\frac{1}{q-1}\Bigl(q\log 2-\log r_q\Bigr)= -\frac{P(q)}{q-1}.
+\]
+The corresponding unnormalized fingerprint is \(h_q:=q\log 2-\log r_q=\log(2^q/r_q)\), and the two are related by \(h_q^{\mathrm{R}}=h_q/(q-1)\).
+Table \ref{tab:fold_collision_renyi_spectrum} provides the exact values (finite-state kernel) for $q=2,3,4$ together with several higher-order enumeration fingerprints.
+
+\begin{proposition}[Two-scale lower bounds and candidate freeze threshold]\label{prop:pom-freeze-threshold}
+Denote the mean fiber multiplicity by
+\(
+\overline d_m:=2^m/|X_m|=2^m/F_{m+2}
+\),
+the maximum fiber multiplicity by
+\(
+D_m:=\max_{x\in X_m}d_m(x)
+\),
+and the number of maximum fiber achievers by \(\kappa_m^{\mathrm{max}}\) (Definition \ref{def:pom-top-fiber-spectrum}).
+Then for any integer \(q\ge 2\) and any \(m\ge 1\), the following two strict lower bounds hold:
+\[
+S_q(m)=\sum_{x\in X_m}d_m(x)^q\ \ge\ |X_m|\,\overline d_m^{\,q},
+\qquad
+S_q(m)\ \ge\ \kappa_m^{\mathrm{max}}\,D_m^{\,q}.
+\]
+Combining these with \(S_q(m)=\Theta(r_q^m)\) (Theorem \ref{thm:pom-collision-kernel-ak}) and the asymptotics
+\(|X_m|=\Theta(\varphi^m)\), \(\overline d_m=\Theta((2/\varphi)^m)\) (Proposition \ref{prop:pom-projection-entropy}),
+\(D_m=\Theta(\varphi^{m/2})\) (Theorem \ref{thm:pom-max-fiber}), and \(\kappa_m^{\mathrm{max}}=O(1)\) (Theorem \ref{thm:pom-max-achievers-phase-stabilization}), one obtains the exponential-scale lower bounds
+\[
+\boxed{\;
+\log r_q\ \ge\ \max\Bigl(\log\varphi+q(\log 2-\log\varphi),\ \tfrac{q}{2}\log\varphi\Bigr).\;}
+\]
+Let \(k_{\mathrm{freeze}}\) denote the intersection point of the two linear bounds above; then
+\[
+\boxed{\;
+k_{\mathrm{freeze}}
+:=\frac{\log\varphi}{\tfrac32\log\varphi-\log 2}
+=\frac{\log\varphi}{\log(\varphi^{3/2}/2)}
+\approx 16.784. \;}
+\]
+Thus, within this ``two-scale competition'' framework: when \(q<k_{\mathrm{freeze}}\), the Jensen (mean-scale) lower bound dominates; when \(q>k_{\mathrm{freeze}}\), the maximum fiber (worst-scale) lower bound dominates.
+\end{proposition}
+\begin{proof}
+The first lower bound follows from Jensen's inequality: since the function \(t\mapsto t^q\) (\(q\ge 2\)) is convex,
+\(
+\frac1{|X_m|}\sum_x d_m(x)^q\ge \bigl(\frac1{|X_m|}\sum_x d_m(x)\bigr)^q=\overline d_m^q
+\);
+the second lower bound is immediate from the definition of the maximum.
+Taking \(\frac1m\log(\cdot)\) and letting \(m\to\infty\), using the listed asymptotics and the limit existence from Theorem \ref{thm:pom-collision-kernel-ak}, yields the lower bound on \(\log r_q\).
+The intersection formula is obtained by solving
+\(
+\log\varphi+q(\log 2-\log\varphi)=\frac{q}{2}\log\varphi
+\);
+note that \(\tfrac32\log\varphi-\log2=\log(\varphi^{3/2}/2)\), consistent with the ``worst/mean deviation base'' of Remark \ref{rem:pom-defect-gap}. \qed
+\end{proof}
+
+\begin{remark}[Verifiable freeze prediction: candidate fold-point scale of the pressure curve]\label{rem:pom-freeze-prediction}
+Proposition \ref{prop:pom-freeze-threshold} yields a fully computable constant \(k_{\mathrm{freeze}}\) derived solely from the ``mean scale vs.\ worst scale'' of Fold.
+If furthermore (as a falsifiable target) the achiever count in the high-multiplicity tail remains sub-exponential at exponential scale (i.e., no intermediate ``branch'' dominates the exponential growth rate of \(S_q\)), then the pressure
+\(
+P(q)=\log r_q-q\log2
+\)
+should exhibit a pronounced curvature change near \(q\approx k_{\mathrm{freeze}}\), gradually approaching the linear support given by the worst scale
+\(
+P(q)\approx q(\tfrac12\log\varphi-\log2)
+\)
+in the high-order regime.
+Table \ref{tab:fold_collision_renyi_spectrum} provides the direct verification interface via \(r_q\): computing \(\Delta P(q)\) and \(\Delta^2P(q)\) for discrete \(q\) and observing their convergence/decay in the \(q\)-direction converts the ``freeze segment/fold-point'' from narrative into an auditable criterion.
+\end{remark}
+
+\begin{remark}[Double-limit scale $q=\alpha m$: immediate freezing and auditable criterion]\label{rem:pom-q-alpha-m-freeze}
+The pressure/moment spectrum framework in this section defaults to taking $m\to\infty$ first and then fixing the order $q$ (or letting $q\to\infty$). If instead one adopts the new double-limit scale
+\[
+q_m:=\lfloor \alpha m\rfloor\qquad(\alpha>0\ \text{fixed}),
+\]
+then the collision moment
+\(
+S_{q_m}(m)=\sum_x d_m(x)^{q_m}
+\)
+enters the ``zero-temperature'' regime: any type whose \emph{exponential density} has a positive gap relative to the maximum fiber \(D_m\) is suppressed super-exponentially.
+Extracting the maximum term factor:
+\[
+S_{q_m}(m)
+=D_m^{q_m}\sum_{x\in X_m}\Bigl(\frac{d_m(x)}{D_m}\Bigr)^{q_m}.
+\]
+Thus the only terms capable of producing nontrivial competition are those satisfying \(d_m(x)/D_m=\Theta(1)\) with achiever counts that are not exponentially sparse in the ``near-maximum band.''
+\par
+At the top of the Fold spectrum, Corollary \ref{cor:pom-second-max-gap-constant} yields an explicit gap constant \(\theta_\star<1\) such that
+\(
+D_m^{(2)}\le \theta_\star D_m
+\), and Theorem \ref{thm:pom-max-achievers-phase-stabilization} gives \(\kappa_m^{\mathrm{max}}=O(1)\).
+Then for all \(m,q\), the crude upper bound
+\[
+S_q(m)\le \kappa_m^{\mathrm{max}}D_m^q+|X_m|\,(D_m^{(2)})^q
+\le D_m^q\Bigl(\kappa_m^{\mathrm{max}}+|X_m|\theta_\star^{\,q}\Bigr)
+\]
+holds, so that when \(\alpha>\alpha_{\mathrm{gap}}:=\log\varphi/(-\log\theta_\star)\),
+\[
+\frac{S_{q_m}(m)}{\kappa_m^{\mathrm{max}}D_m^{q_m}}=1+O\!\left(\exp\!\bigl(m(\log\varphi+\alpha\log\theta_\star)\bigr)\right),
+\]
+i.e., the contribution of non-maximum fibers vanishes at exponential scale, and $S_{q_m}$ is necessarily dominated by the maximum fiber family.
+\par
+The stronger assertion that ``any \(\alpha>0\) leads to immediate freezing'' does not automatically follow from the crude bound above: it is equivalent to the achiever count in the near-maximum tail remaining sub-exponential as $\theta\uparrow 1$.
+This provides a direct auditable experimental protocol: within the computable window, use residue DP to compute the tail count
+\(
+\#\{x:\ d_m(x)\ge \theta D_m\}
+\)
+at exponential rate, and verify whether this rate stabilizes to $0$ in the interval as $\theta$ approaches $1$; if so, then no nontrivial phase transition point \(\alpha_\ast>0\) exists in the double-limit scale (``freezing'' occurs immediately at any positive slope).
+\end{remark}
+
+\begin{proposition}[Multifractal upper envelope from the moment spectrum (Legendre--Fenchel framework)]\label{prop:pom-fold-multifractal-envelope}
+Suppose $P$ is given only at integer $q\ge 2$. Let $\widetilde P:\RR_{\ge 2}\to\RR\cup\{+\infty\}$ be the \emph{lower-closed convex extension} of the point set $\{(q,P(q)):\ q\in\ZZ_{\ge 2}\}$ (i.e., the smallest lower-semicontinuous convex function satisfying $\widetilde P(q)\le P(q)$ for all integers $q\ge2$).
+Define
+\[
+f^\star(s):=\inf_{q\ge 2}\bigl(qs-\widetilde P(q)\bigr)-\log 2,
+\]
+and define the ``approximate level set growth rate''
+\[
+f(s):=\lim_{\varepsilon\to 0}\limsup_{m\to\infty}\frac{1}{m}\log\Bigl|\{x\in X_m:\ |s_m(x)-s|<\varepsilon\}\Bigr|.
+\]
+Then for all $s$, the upper bound $f(s)\le f^\star(s)$ holds. Therefore, as long as $\{r_q\}_{q\ge 2}$ can be computed, one obtains an auditable ``spatial loss spectrum upper envelope'' $f^\star(s)$.
+\end{proposition}
+\begin{proof}[Proof outline]
+For any $q\ge 2$ and any set $A\subseteq X_m$, by the Markov inequality and
+\(
+\sum_x \pi_m(x)^q=S_q(m)/2^{qm}
+\),
+the level set cardinality can be controlled by $S_q(m)$; then using $S_q(m)=\Theta(r_q^m)$ yields an exponential upper bound. Optimizing over $q$ and using the convex extension to absorb the restriction ``known only at integer points'' gives the conclusion. The details are structurally isomorphic to the Legendre estimate of \S\ref{subsec:chi-ldp} (except that the parameter axis here is $q$ rather than a continuous tilt parameter $t$).
+\end{proof}
+
+\subsection{Space--Time Duality and Resource Functions}\label{subsec:pom-resources}
+\begin{definition}[Embedding--evolution--projection normal form]\label{def:pom-normal-form}
+For a family of operations $f_n$ parametrized by scale parameter $n$ (e.g., surface bit-length/input size), define their normal form as
+\[
+f_n=\Pi_n\circ U^{T(n)}\circ \iota_n,
+\]
+where $\iota_n$ is the dimension-raising embedding, $U^{T(n)}$ is the iterated ontological evolution, and $\Pi_n$ is the readout projection assembled from $P_Z,P_{\le}$.
+\end{definition}
+
+\begin{definition}[Space cost and time cost]\label{def:pom-space-time}
+Let $\mathcal M_n$ be the collection of hidden fiber blocks activated during the realization of $f_n$ (prime axes, phase axes, residual states, etc.), and define
+\[
+S(n):=\log|\mathcal M_n|.
+\]
+Define the time cost as the minimal stabilization step count
+\[
+T(n):=\min\{t:\ \Pi_n(U^t(\iota_n(x)))\ \text{is stable for all inputs}\}.
+\]
+The space--time duality principle states: increasing $S(n)$ can linearize mixing and reduce $T(n)$; conversely, restricting $S(n)$ forces information to accumulate along local propagation.
+\end{definition}
+
+\begin{definition}[Atomic space cost (prime-like atom budget)]\label{def:pom-atom-space-cost}
+Fix a kernel/evolution operator $T$ (or its weighted version $T(u)$), and let $p_n$ denote the primitive orbit count (or the value of the primitive stratification spectrum at $u=1$; see Definition \ref{def:pom-proj-prim}). Define the atomic space cost at length $n$ as
+$$
+S_{\mathrm{atom}}(n):=\log p_n.
+$$
+When $p_n$ is weighted (e.g., $p_n(u)$ or $B_{K,n}(u)$), setting $u=1$ yields the ``unweighted atom budget,'' while setting $u=0$ gives the carry-free atom budget (Corollary \ref{cor:Bn0-equals-primitive-skeleton}).
+\end{definition}
+
+\begin{remark}[Auditable mutual translation between time and atomic space]\label{rem:pom-atom-audit}
+By the commutative diagram of Proposition \ref{prop:time-space-commuting-diagram} and the M\"obius/Witt inversion (see Remark \ref{rem:pom-trace-to-prime}), $p_n$ and the time-side trace $a_n=\Tr(T^n)$ mutually determine each other:
+$$
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\qquad
+a_n=\sum_{d\mid n} d\,p_d.
+$$
+Therefore $S_{\mathrm{atom}}(n)$ is an auditable fingerprint that compresses ``time-side irreducible cycles'' into a space-side prime-like atom spectrum; in particular, at prime lengths $\ell$, the primitive term isolates the difference between ``irreducible cycles'' and ``power-repeated cycles'' (see the prime-length probe formula in Remark \ref{rem:pom-prime-length-probe}), which can be used to verify hidden coupling and parallel independence in tensor assembly.
+\end{remark}
+
+\begin{corollary}[Space lower bound induced by folding]\label{cor:pom-space-lower-bound}
+At resolution $m$, if the microstates within each fold fiber are required to be distinguishable (i.e., $P_Z$ does not lose information at this layer), then the hidden fiber size must satisfy at least
+\[
+|\mathcal M_m|\ \ge\ \frac{|\Omega_m|}{|X_m|}=\frac{2^m}{F_{m+2}},
+\]
+equivalently
+\[
+S(m)\ \ge\ S_Z(m)=\log\!\left(\frac{2^m}{F_{m+2}}\right).
+\]
+Thus the tight lower bound on space cost is directly locked by the fold entropy rate.
+\end{corollary}
+
+\subsection{Unified Arithmetic: Same Evolution, Different Readouts}\label{subsec:pom-unified-arith}
+\paragraph{Addition} is given by ``coordinatewise superposition $\Rightarrow$ normalization projection'':
+\[
+a\oplus b=\Fold_\infty(a+b),
+\]
+with projection word $W=(1,0)$ (Corollary \ref{cor:add-as-fold}).
+
+\begin{remark}[Addition as the spatial loss spectrum of a single projection: why the real-input $40$-state kernel has independent value]\label{rem:addition-as-projection-collision-spectrum}
+Viewing addition as a single readout that ``lifts to two input tracks \((x,y)\) and projects back to a stable type,'' its space-side indistinguishability can be measured by the collision spectrum constants \(r_q^{\oplus}=\rho(A_q^{\oplus})\) derived from \(\mathrm{MOM}_q\) (Definition \ref{def:pom-moment-q}): these depend only on the underlying finite-state mechanism kernel (the labeled graph of the transducer) and are independent of engineering-level parallelization/optimization.
+Appendix \ref{app:real-input-40-addition-collision-spectrum} computes \(r_2^{\oplus}\) for the same addition projection under two perspectives---``normalization kernel ($10$ states) vs.\ real arithmetic kernel ($40$ states)''---and obtains an auditable constant-factor difference at exponential scale (Proposition \ref{prop:addition-collision-spectrum-sync10-vs-real40}):
+ignoring the input legality constraint systematically exaggerates the second-order isomorphic collision intensity by roughly a factor of two or more.
+Therefore, the real-input $40$-state kernel is not a purely engineering wrapper around the normalizer but carries independent information at the level of the ``spatial loss spectrum'' as an auditable resource metric.
+\end{remark}
+
+\paragraph{Multiplication} can similarly be viewed as ``linearization $\Rightarrow$ normalization projection,'' with projection word again $W=(1,0)$; the difference is reflected in $D_U(n)$ and the chosen fiber: the phase fiber route diagonalizes convolution into pointwise multiplication, while the prime fiber route linearizes multiplication as addition in exponent coordinates (Definition \ref{def:pom-prime-fiber}). This decomposition does not change the ontological primitive but only the allocation of linearization depth and space overhead.
+
+\paragraph{Subtraction} has two readout paths:
+(i) first use $P_{\le}$ to determine sign/magnitude, then perform normalization; the projection word is $W=(1,1)$.
+(ii) internalize the sign into a stronger normalization of $P_Z$ using a redundant alphabet, avoiding explicit $P_{\le}$, so that $W=(1,0)$ but $\delta_Z$ increases. This decomposition transfers ``order information'' into the ontological kernel of the normalization projection.
+If the order readout uses the character projection $P_\chi$, then this step can be viewed as a stable determination of residue/character, with time scale controlled by $\tau_{\mathrm{mix}}$.
+
+\paragraph{Division/quotient-remainder} satisfies
+\[
+a=bq+r,\quad 0\le r<b,
+\]
+so $P_{\le}$ is an irreducible readout step. By the ``equation solving + normal form selection'' perspective of Remark \ref{rem:division-as-selection}: long division corresponds to linear growth in $k_{\le}$; the reciprocal/iterative method absorbs multiple multiplications into $D_U(n)$ and corrects with a constant number of $P_{\le}$ applications. The difference between the two is in the realization of the projection word, not in the ontological primitive.
+Under the character projection framework, the quotient-remainder can be stably read out via the congruence stratification of $P_\chi$; its irreducible parallel bottleneck is precisely the mixing time $\tau_{\mathrm{mix}}$.
+
+\begin{remark}[Generation mechanism and the meaning of ``mathematical system'']\label{rem:pom-math-world}
+``Generating the entire mathematical system'' here does not refer to completeness of a formal system, but rather to the unification of the generation mechanism for objects and operations: objects as stable readouts of ontological states under a family of projections, operations as the combinatorial closure of projection words. Different branches of mathematics correspond merely to differences in the chosen fibers and projection closures, rather than differences in ontology.
+\end{remark}
+
+\begin{definition}[Resolution decidability and resolution completeness]\label{def:pom-resolution-completeness}
+Let $\mathcal{F}_m$ be the $\sigma$-algebra generated by cylinder events of length $m$ (equivalently, the observable closure depending only on a finite window), and write $\mathcal{F}_\infty:=\sigma\!\bigl(\bigcup_{m\ge 1}\mathcal{F}_m\bigr)$.
+\begin{itemize}
+  \item A property/proposition $\mathsf{P}$ is called \textbf{$m$-decidable} if its indicator function belongs to $\mathcal{F}_m$ (i.e., depends only on a finite window).
+  \item $\mathsf{P}$ is called \textbf{resolution decidable} if there exists some $m$ for which it is $m$-decidable (i.e., $\mathbf{1}_{\mathsf P}\in\mathcal{F}_\infty$).
+  \item A conceptual system is said to be \textbf{resolution complete} under a given readout family if all its basic observable propositions are resolution decidable.
+\end{itemize}
+\end{definition}
+
+\begin{remark}[Resolution boundary and order projection]\label{rem:pom-resolution-boundary}
+The tower property of conditional expectations shows that the observable closure of $P_Z$ naturally falls within $\mathcal{F}_\infty$; hence all ``stable readout'' propositions belong to the resolution decidable level. In contrast, the order projection $P_{\le}$ typically corresponds to cross-window aggregation and global order constraints (Definition \ref{def:pom-proj-order}), and its determination generally does not close within any fixed $\mathcal{F}_m$, thereby structurally forming a resolution boundary: without introducing additional fiber axis bundles (such as spatialization of the modular axis, Theorem \ref{thm:pom-order-spatialization}), a readout depth growing with scale must be incurred.
+\end{remark}

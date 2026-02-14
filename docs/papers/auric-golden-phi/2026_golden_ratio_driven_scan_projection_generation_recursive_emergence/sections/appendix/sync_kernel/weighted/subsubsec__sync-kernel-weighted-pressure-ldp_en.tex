@@ -1,0 +1,722 @@
+\subsubsection{Pressure and Large Deviations of Weighted Kernels: Auditable Interface}\label{subsubsec:sync-kernel-weighted-pressure-ldp}
+Let $\phi$ be an observable on the edges of the synchronization graph (e.g., the indicator function of output bit $e$, or the indicator "reaching a state containing $\overline{1}$"). Define the weighted matrix
+\[
+(B_\theta)_{ij}:=\sum_{e:i\to j}\exp\bigl(\theta\,\phi(e)\bigr),
+\]
+where the sum is over all edges from $i$ to $j$. Write
+\[
+\lambda(\theta):=\rho(B_\theta),\qquad P(\theta):=\log\lambda(\theta).
+\]
+Then $P(\theta)$ is the pressure function for the finite-type case, and $P(0)=\log 3$. Let
+\[
+I(\alpha):=\sup_{\theta\in\RR}\bigl(\theta\alpha-(P(\theta)-P(0))\bigr),
+\]
+then $I(\alpha)$ gives the large deviation rate function for the long-run average of $\phi$ (standard thermodynamic formalism; see \cite{Ruelle1978Thermodynamic,ParryPollicott1990Zeta}).
+
+The weighted $\zeta$ is still given by
+\[
+\zeta_{B,\theta}(z)=\frac{1}{\det(I-zB_\theta)}
+\]
+and one can define the weighted primitive orbit spectrum
+\[
+a_n(\theta):=\mathrm{Tr}(B_\theta^n),\qquad
+p_n(\theta)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(d\theta),
+\]
+as well as the corresponding weighted Mertens constant family (obtained by taking the Abel finite part as $z\to 1/\lambda(\theta)$).
+Auditable numerics are output by script \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure.py}.
+
+\subsubsection{Witt Decomposition of Weighted Primitive--Periodic}\label{app:witt-weighted}
+Below we take output potential $\varphi(e)=e$, and let
+\[
+u=e^\theta,\qquad B(u)=B_0+uB_1,\qquad \Delta(z,u):=\det(I-zB(u)).
+\]
+Here $B_0$ (resp.\ $B_1$) counts only edges with output bit $e=0$ (resp.\ $e=1$).
+Then
+\[
+\zeta(z,u)=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(B(u)^n)}{n}z^n\right)=\Delta(z,u)^{-1}.
+\]
+Let
+\[
+a_n(u):=\mathrm{Tr}(B(u)^n),\qquad
+P(z,u):=\sum_{n\ge 1}p_n(u)z^n,
+\]
+where
+\(
+p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}
+\)
+is the weighted spectral polynomial of primitive orbits. The Euler product gives
+\[
+\zeta(z,u)=\prod_{\tau\ \mathrm{primitive}}\bigl(1-z^{|\tau|}u^{S_\tau\varphi}\bigr)^{-1}.
+\]
+Taking logarithm and expanding power repetition yields the Witt decomposition
+\[
+\log\zeta(z,u)=\sum_{m\ge 1}\frac{1}{m}P(z^m,u^m).
+\]
+By Möbius inversion we obtain
+\[
+P(z,u)=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\zeta(z^m,u^m),
+\]
+comparing coefficients immediately gives
+\[
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\quad\Longleftrightarrow\quad
+p_n(\theta)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(d\theta).
+\]
+
+\subsubsection{Big-Witt/Necklace Bridge Package and Verifiable Congruences}\label{app:witt-bridge-package}
+The above formula is not merely a "computable formula," but rather a standard coordinate transformation on Big-Witt (necklace ring): $a_n(u)$ are ghost components, $p_n(u)$ are Witt coordinates, and the Euler product is the plethystic exponential. Equivalently, for any parametrized matrix family $T(u)$, there is a strict identity
+\[
+\boxed{\ \zeta_T(z,u)=\mathrm{Exp}_W\bigl(\mathrm{Mob}_W(\mathrm{TrSeq}(T))\bigr)\ }
+\]
+where $\mathrm{TrSeq}(T)=(a_n(u))_{n\ge 1}$, $\mathrm{Mob}_W(a)=p$ gives $p_n(u)=\frac1n\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)$, and $\mathrm{Exp}_W$ is defined by
+\(
+\log\zeta=\sum_{m\ge 1}\frac{1}{m}P(z^m,u^m)
+\)
+. This "bridge package" directly produces a batch of verifiable arithmetic constraints:
+
+\begin{proposition}[Functoriality of the commutative diagram: naturality under intertwiner]\label{prop:witt-bridge-functorial}
+Take coefficient ring \(R\) (e.g.\ \(R=\ZZ[u]\) or \(R=\ZZ[u,u^{-1}]\)), and let objects in \(\mathbf{End}_R\) be triples \((V,T)\) (finitely generated free \(R\)-module with an \(R\)-linear endomorphism), with morphisms being intertwiners \(f:(V,T)\to (W,S)\) satisfying \(f\circ T=S\circ f\).
+Let \(\mathbf{Seq}_R\) be the category of \(R\)-valued sequences (with component-wise maps), and define
+\[
+\mathsf{Ghost}:\mathbf{End}_R\to \mathbf{Seq}_R,\qquad
+(V,T)\mapsto (a_n)_{n\ge 1},\ a_n:=\Tr(T^n).
+\]
+Then \(\mathsf{Ghost}\) is a functor, and for any intertwiner \(f\) we have \(a_n(T)=a_n(S)\) (hence \(\zeta_T=\zeta_S\)).
+Now let \(\mathsf{Mob}\) be the Witt--Möbius transform with Adams operation \(\psi^d(u)=u^d\)
+\[
+\mathsf{Mob}(a)=p,\qquad
+p_n(u):=\frac1n\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d),
+\]
+and let \(\mathsf{Euler}\) be the construction that generates the Euler product from \(p\) (equivalently the plethystic exponential).
+Then for each \((V,T)\) there is a strict identity
+\[
+\boxed{\;
+\mathsf{Zeta}(V,T)
+=\mathsf{Euler}\bigl(\mathsf{Mob}(\mathsf{Ghost}(V,T))\bigr)\; },
+\qquad
+\mathsf{Zeta}(V,T):=\exp\!\left(\sum_{n\ge 1}\frac{\Tr(T^n)}{n}z^n\right)=\det(I-zT)^{-1}.
+\]
+Thus the commutative diagram "trace (time ghost) \(\leftrightarrow\) primitive (space atom)" is not merely an analogy, but a strict natural transformation given by the Big-Witt coordinate transformation.
+\end{proposition}
+
+\begin{theorem}[Witt--Möbius Transform of Dirichlet Character Twist]\label{thm:witt-dirichlet-twist}
+For any Dirichlet character \(\chi\), define the twisted \(\mathsf{Mob}\) transform
+\[
+p_n^{(\chi)}:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\chi(d)\,\psi^d\!\bigl(a_{n/d}\bigr)\in R,
+\]
+and define the twisted zeta generating function
+\[
+\mathsf{Zeta}_{\chi}(V,T)
+:=\exp\!\Bigl(\sum_{n\ge 1}\frac{\chi(n)}{n}\,\Tr(T^{n})\,z^{n}\Bigr).
+\]
+Then there exists a strict identity
+\[
+\boxed{\;\mathsf{Zeta}_{\chi}(V,T)=\mathsf{Euler}\bigl(p^{(\chi)}\bigr)\; },
+\]
+and its "primitive stripping" (i.e.\ \(\mathsf{Mob}_{\chi}^{-1}\)) has Dirichlet coefficients \(\mu(n)\chi(n)\), completely isomorphic to the untwisted case \(\mathcal{P}(s)=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\mathcal{Z}(ms)\).
+\end{theorem}
+\begin{proof}
+By the twisted ghost components \(a_n^{(\chi)}:=\chi(n)\Tr(T^n)\) and the standard Witt/Möbius inversion \(n\,p_n=\sum_{d\mid n}\mu(d)\,\psi^d(a_{n/d})\), substituting \(a_{n/d}^{(\chi)}=\chi(n/d)\Tr(T^{n/d})\) gives \(p_n^{(\chi)}=\frac{1}{n}\sum_{d\mid n}\mu(d)\chi(d)\,\psi^d(a_{n/d})\); the Euler product is given by the correspondence between \(\mathsf{Zeta}_{\chi}=\exp\bigl(\sum_n \chi(n)\Tr(T^n)z^n/n\bigr)\) and the primitive expansion \(\log\mathsf{Zeta}_{\chi}=\sum_m p_m^{(\chi)}(z^m)/m\). The primitive stripping Möbius inversion kernel is \(\mu(n)\chi(n)\). QED.
+\end{proof}
+This theorem provides a characterization of the internal orthogonal representation decomposition of the system: when phase compression introduces character channels (e.g., branch memory modulo \(4\)), characters are not external labels, but rather necessary twists of the Big-Witt natural transformation on the Adams structure; the channelization decomposition of the phase layer is completely characterized by the representation-theoretic basis vectors given by Dirichlet characters.
+
+\begin{definition}[Adams--Dirichlet Renormalization Gate (Arithmetic Rescaling)]\label{def:witt-adams-dirichlet-renorm-gate}
+For each integer \(d\ge 1\), define an arithmetic renormalization gate acting on "twisted parameter pairs"
+\begin{equation}\label{eq:witt-adams-dirichlet-renorm-gate}
+\boxed{\;
+\mathsf{Ren}_d:\ (\chi,u)\longmapsto(\chi^d,u^d)\;}
+\end{equation}
+where \(\chi^d\) is the \(d\)-th power of the character: \(\chi^d(n):=\chi(n)^d\) (still a Dirichlet character), and \(u^d\) represents the Adams operation \(\psi^d\) in the case of coefficient polynomial rings through power replacement (\(\psi^d(u)=u^d\)).
+\end{definition}
+
+\begin{proposition}[Renormalization Monad: \texorpdfstring{$(\chi,u)\mapsto(\chi^d,u^d)$}{(chi,u)->(chi^d,u^d)} Semigroup Law and Twist Compatibility]\label{prop:witt-renorm-monoid}
+For any \(d,e\ge 1\) there is a semigroup law
+\[
+\mathsf{Ren}_d\circ\mathsf{Ren}_e=\mathsf{Ren}_{de}.
+\]
+Moreover, in the calibration of Theorem \ref{thm:witt-dirichlet-twist}, \(\mathsf{Ren}_d\) preserves the form invariance of the twisted--Witt commutative diagram: when \((\chi,u)\) is simultaneously replaced by \((\chi^d,u^d)\), the twisted Möbius formula and the Euler product expression of twisted \(\mathsf{Zeta}_\chi\) still hold term-by-term.
+\end{proposition}
+
+\begin{proof}
+The semigroup law follows directly from the associativity of powers and the composition law \(\psi^{de}=\psi^d\circ\psi^e\) of Adams operations (see the convention for \(\psi^d\) in Proposition \ref{prop:witt-bridge-functorial}).
+Compatibility follows because the formula in Theorem \ref{thm:witt-dirichlet-twist} consists only of the multiplicativity of \(\chi\) and the power replacement property of \(\psi^d\): for any \(d\ge 1\), making the substitution \((\chi,u)\mapsto(\chi^d,u^d)\), all terms still satisfy the same algebraic identity. QED.
+\end{proof}
+
+\begin{remark}[Categorified Shadow of Cyclotomic Power Map]\label{rem:witt-renorm-cyclotomic-power-shadow}
+On the main text's Dirichlet axis bundle \(G_\infty=\varprojlim_m(\ZZ/m\ZZ)^\times\), the power map \(g\mapsto g^d\) induces \(\chi\mapsto\chi^d\) on the dual side.
+Thus the \(\chi\)-direction of \(\mathsf{Ren}_d\) corresponds precisely to the power endomorphism on the cyclotomic quotient, while the \(u\)-direction corresponds to Adams/scale replacement; the two are unified as a single arithmetic rescaling gate within the Big-Witt commutative diagram.
+\end{remark}
+
+\begin{proposition}[Necklace Divisibility Law]\label{prop:witt-necklace-div}
+For any $n\ge 1$, we have
+\[
+n\ \Big|\ \sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)\qquad\text{in}\ \mathbb{Z}[u].
+\]
+\end{proposition}
+\begin{proof}
+Since $p_n(u)\in\mathbb{Z}[u]$ is the weighted count of primitive orbits, the polynomial is always in the integer coefficient ring; from $n\,p_n(u)=\sum_{d\mid n}\mu(d)a_{n/d}(u^d)$ we obtain the divisibility conclusion. QED.
+\end{proof}
+
+\begin{corollary}[$p$-Power Dwork-Type Congruence]\label{cor:witt-dwork-congruence}
+Take $n=p^k$ (prime $p$), then
+\[
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\pmod{p^k}\qquad\text{in}\ \mathbb{Z}[u].
+\]
+\end{corollary}
+\begin{proof}
+From $\mu(1)=1,\mu(p)=-1,\mu(p^2)=0$ we get
+\(
+p^k\,p_{p^k}(u)=a_{p^k}(u)-a_{p^{k-1}}(u^p)
+\).
+Applying Proposition \ref{prop:witt-necklace-div} immediately gives the conclusion. QED.
+\end{proof}
+
+\input{prop__witt-pk-sparsification}
+
+\begin{proposition}[Coefficient Ring Version: Necklace Divisibility Law and Dwork-Type \texorpdfstring{$p$}{p}-Power Congruence]\label{prop:witt-necklace-dwork-R}
+Let \(R\) be a commutative \(\ZZ\)-algebra equipped with a family of Adams operations \(\psi^d:R\to R\) (\(d\ge 1\)) satisfying
+\(\psi^1=\mathrm{id}\), \(\psi^{de}=\psi^d\circ\psi^e\), and in the case of parameter polynomial rings \(\psi^d\) is given by variable-wise power replacement (e.g., on \(\ZZ[u_1,\dots,u_m]\) it is \(u_i\mapsto u_i^d\)).
+Let \(B(\mathbf u)\) be a weighted adjacency matrix family induced by a finite weighted synchronization graph/finite state kernel, with entries in \(R\) (thus each edge carries a weight that is an element of \(R\)), and define
+\[
+a_n:=\Tr\bigl(B(\mathbf u)^n\bigr)\in R,\qquad n\ge 1.
+\]
+Define the primitive weighted spectral polynomial as
+\[
+p_n:=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n} w(\tau)\in R,
+\]
+where \(w(\tau)\in R\) is the weight product of that primitive orbit (for multiple parameters it is the product of corresponding monomials/weights).
+Then for each \(n\ge 1\) there is a strict identity (Witt/Möbius inversion)
+\[
+n\,p_n=\sum_{d\mid n}\mu(d)\,\psi^d\!\bigl(a_{n/d}\bigr)\in R.
+\]
+This yields two arithmetic constraints that hold for any such "Euler product kernel":
+\begin{enumerate}
+  \item \textbf{(Necklace divisibility)} \(\sum_{d\mid n}\mu(d)\,\psi^d(a_{n/d})\in nR\);
+  \item \textbf{(Dwork-type congruence)} For any prime \(p\) and \(k\ge 1\), we have
+  \[
+  a_{p^k}\equiv \psi^{p}\!\bigl(a_{p^{k-1}}\bigr)\pmod{p^k}\qquad\text{in}\ R.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+In the finite graph/SFT kernel calibration, periodic points (closed loops) and primitive orbits satisfy the standard relation
+\[
+a_n=\sum_{d\mid n} d\,\psi^{n/d}(p_d)\qquad(n\ge 1),
+\]
+whose meaning is: loops of length \(n\) decompose by minimal period \(d\), each primitive orbit contributes \(d\) phase starting points under \(n/d\) power repetition; weights under power repetition are acted upon by the Adams operation \(\psi^{n/d}\) (in multiparameter polynomial rings this is variable-wise power replacement \(x\mapsto x^{n/d}\)).
+Applying Möbius inversion to the above formula yields
+\(
+n\,p_n=\sum_{d\mid n}\mu(d)\psi^d(a_{n/d})
+\),
+and \(p_n\in R\) is guaranteed by its definition as a weighted sum of primitive orbits.
+When \(n=p^k\), since \(\mu(p^j)=0\) (\(j\ge 2\)), the above formula collapses to
+\(
+p^k p_{p^k}=a_{p^k}-\psi^{p}(a_{p^{k-1}})
+\),
+thus giving the displayed \(\bmod p^k\) congruence. QED.
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$p$}{p}-adic Supercongruence: \texorpdfstring{$a_{p^k}(-1)$}{a_{p^k}(-1)} is Divisible by \texorpdfstring{$p^k$}{p^k}]\label{cor:witt-dwork-supercongruence-minus1}
+Take any odd prime \(p\). Then for any \(k\ge 1\) we have
+\[
+\boxed{\ a_{p^k}(-1)\equiv 0\pmod{p^k}\ }.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:witt-dwork-congruence}, for \(k\ge 1\) we have
+\[
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\pmod{p^k}\qquad\text{in}\ \ZZ[u].
+\]
+Specializing at \(u=-1\) and using that \(p\) is odd (so \((-1)^p=-1\)) gives
+\[
+a_{p^k}(-1)\equiv a_{p^{k-1}}(-1)\pmod{p^k}.
+\]
+Since \(p^{k-1}\) is odd, by the conclusion \(a_n(-1)=0\) of Proposition \ref{prop:trace-palindrome} (odd \(n\)) we know \(a_{p^{k-1}}(-1)=0\).
+Thus \(a_{p^k}(-1)\equiv 0\pmod{p^k}\). QED.
+\end{proof}
+
+\begin{remark}[\texorpdfstring{$p$}{p}-Power Direction Witt Interpretation: Frobenius-Compatible Ghost Components]\label{rem:witt-ptypical-ghost}
+Viewing \(a_n(u)\) as ghost coordinates on the Big-Witt (necklace) ring, then \(\{a_{p^k}(u)\}_{k\ge 0}\) is its ghost subsequence on \(p\)-power indices.
+The Dwork-type congruence in Corollary \ref{cor:witt-dwork-congruence} shows that this subsequence satisfies strong \(p\)-adic compatibility under the Adams/Frobenius operation \(u\mapsto u^p\):
+\[
+a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^k\,\ZZ[u].
+\]
+Thus the primitive/trace bridge package of the synchronization kernel is auditable not only on the complex analytic side (\(\zeta\), Euler product), but also carries a natural "Frobenius-lift" constraint on the \(p\)-adic integrality side.
+In future considerations of \(p\)-adic direction interpolation or comparison of "arithmetic fingerprints" of different kernels, this congruence can serve as the most basic auditable input.
+\end{remark}
+
+\begin{proposition}[\texorpdfstring{$p$}{p}-Power Primitive Coordinate Explicit Formula]\label{prop:witt-ppower-primitive-coordinate}
+For any prime \(p\) and \(k\ge 1\), the Big-Witt/Möbius inversion at \(n=p^k\) collapses to
+\[
+\boxed{\;
+p_{p^k}(u)=\frac{a_{p^k}(u)-a_{p^{k-1}}(u^p)}{p^k}\in\ZZ[u]\; }.
+\]
+Thus Corollary \ref{cor:witt-dwork-congruence} is equivalent to "\(p\)-power direction primitive coordinate \(p_{p^k}(u)\) is well-defined in the integer coefficient ring," and provides an auditable \(p\)-adic difference fingerprint sequence \(\{p_{p^k}(u)\}_{k\ge 0}\).
+\end{proposition}
+\begin{proof}
+By definition
+\(
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\).
+When \(n=p^k\), divisors are only \(p^j\), and \(\mu(p^j)=0\) (\(j\ge 2\)), so only \(d=1\) and \(d=p\) remain, yielding
+\[
+p_{p^k}(u)=\frac{1}{p^k}\bigl(a_{p^k}(u)-a_{p^{k-1}}(u^p)\bigr).
+\]
+By Proposition \ref{prop:witt-necklace-div} the right side is indeed a \(\ZZ[u]\) element. QED.
+\end{proof}
+
+\begin{lemma}[Kernel-Version Dieudonné--Dwork Integrality Criterion (Formal Power Series)]\label{lem:witt-dieudonne-dwork}
+Let \(R\) be a \(p\)-torsion-free \(p\)-adically complete ring (e.g.\ \(R=\ZZ_p[u]\)), and define the Frobenius lift operator
+\[
+\varphi:\ R[[T]]\to R[[T]],\qquad
+\varphi\!\left(\sum_{n\ge 0}c_n(u)T^n\right):=\sum_{n\ge 0}c_n(u^p)\,T^{pn}.
+\]
+If \(F(T)\in 1+T\,R\otimes_{\ZZ_p}\QQ_p[[T]]\) satisfies
+\[
+\boxed{\;
+\frac{\varphi(F(T))}{F(T)^p}\in 1+pT\,R[[T]]\;},
+\]
+then necessarily \(F(T)\in 1+T\,R[[T]]\) (i.e., all coefficients of \(F\) are \(p\)-integral).
+\end{lemma}
+\begin{proof}
+This is a commonly used integrality criterion in \(p\)-typical Witt/Artin--Hasse theory (Dieudonné--Dwork form).
+In the form needed for this paper, one can prove it as follows: take the \(p\)-adic logarithm \(\log F\) of \(F\) (which converges in the \(T\)-adic topology), rewrite the condition as
+\(
+\varphi(\log F)-p\log F\in pT\,R[[T]]
+\);
+then by induction on the degree of \(T\), one can successively deduce that the coefficients of \(\log F\) are all in \(R\), so \(F=\exp(\log F)\) is also in \(1+T\,R[[T]]\). QED.
+\end{proof}
+
+\begin{theorem}[Kernel-Version Dwork Lemma \texorpdfstring{$p$}{p}-Typical Integrality: Local \texorpdfstring{$p$}{p}-Factor Closed in \texorpdfstring{$\ZZ_p[u]$}{Z\_p[u]}]\label{thm:witt-dwork-zp-integrality}
+Fix a prime \(p\). Define
+\[
+S_p(T;u):=\sum_{k\ge 0}\frac{a_{p^k}(u)}{p^k}\,T^{p^k}\in \QQ_p[u][[T]],
+\qquad
+Z_p(T;u):=\exp\!\bigl(S_p(T;u)\bigr).
+\]
+Then we have
+\[
+\boxed{\;
+Z_p(T;u)\in 1+T\,\ZZ_p[u][[T]]\; }.
+\]
+\end{theorem}
+\begin{proof}
+Take \(R=\ZZ_p[u]\) in Lemma \ref{lem:witt-dieudonne-dwork}.
+Applying \(\varphi\) to \(S_p\) gives
+\[
+\varphi(S_p)(T;u)
+=\sum_{k\ge 0}\frac{a_{p^k}(u^p)}{p^k}\,T^{p^{k+1}}
+=\sum_{k\ge 1}\frac{a_{p^{k-1}}(u^p)}{p^{k-1}}\,T^{p^{k}}.
+\]
+On the other hand
+\[
+pS_p(T;u)
+=p\,a_1(u)\,T+\sum_{k\ge 1}\frac{a_{p^k}(u)}{p^{k-1}}\,T^{p^k}.
+\]
+Therefore
+\[
+\varphi(S_p)(T;u)-pS_p(T;u)
+=-p\,a_1(u)\,T+\sum_{k\ge 1}\frac{a_{p^{k-1}}(u^p)-a_{p^k}(u)}{p^{k-1}}\,T^{p^k}.
+\]
+By Corollary \ref{cor:witt-dwork-congruence}, for \(k\ge 1\) we have
+\(
+a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^k\ZZ[u]
+\),
+so each term
+\(
+\frac{a_{p^{k-1}}(u^p)-a_{p^k}(u)}{p^{k-1}}
+\)
+is in \(p\,\ZZ_p[u]\). Also \(-p a_1(u)T\in pT\,\ZZ_p[u][[T]]\), thus
+\[
+\varphi(S_p)-pS_p\in pT\,\ZZ_p[u][[T]].
+\]
+Let \(Z_p=\exp(S_p)\), then
+\[
+\frac{\varphi(Z_p)}{Z_p^p}
+=\exp\!\bigl(\varphi(S_p)-pS_p\bigr)\in 1+pT\,\ZZ_p[u][[T]].
+\]
+By Lemma \ref{lem:witt-dieudonne-dwork} we get \(Z_p\in 1+T\,\ZZ_p[u][[T]]\). QED.
+\end{proof}
+
+\begin{proposition}[Unit-Root Limit Invariant: \texorpdfstring{$u^p=u$}{u^p=u} Implies \texorpdfstring{$a_{p^k}(u)$}{a_{p^k}(u)} Converges in \texorpdfstring{$\ZZ_p$}{Z_p}]\label{prop:witt-unit-root-limit}
+Let \(p\) be an odd prime. If \(u\) satisfies \(u^p=u\) (e.g., \(u\in\mu_{p-1}\subset\ZZ_p^\times\) is a Teichm\"uller unit), then the sequence \(\{a_{p^k}(u)\}_{k\ge 0}\) is Cauchy in \(\ZZ_p\), and converges to the limit
+\[
+\boxed{\;
+A_p(u):=\lim_{k\to\infty}a_{p^k}(u)\in \ZZ_p\; }.
+\]
+Moreover, there is an explicit \(p\)-adic error bound
+\[
+v_p\!\bigl(a_{p^k}(u)-a_{p^{k-1}}(u)\bigr)\ge k\qquad(k\ge 1).
+\]
+\end{proposition}
+\begin{proof}
+Under the condition \(u^p=u\), Corollary \ref{cor:witt-dwork-congruence} degenerates to
+\(
+a_{p^k}(u)\equiv a_{p^{k-1}}(u)\ (\mathrm{mod}\ p^k)
+\),
+i.e., \(a_{p^k}(u)-a_{p^{k-1}}(u)\in p^k\ZZ_p\), thus giving the displayed \(p\)-adic valuation bound.
+Therefore for any \(r>s\), we have
+\[
+a_{p^r}(u)-a_{p^s}(u)=\sum_{k=s+1}^{r}\bigl(a_{p^k}(u)-a_{p^{k-1}}(u)\bigr)\in p^{s+1}\ZZ_p,
+\]
+so it is Cauchy and converges in \(\ZZ_p\). QED.
+\end{proof}
+
+\begin{remark}[Unit-Root Limit and Self-Dual Compatibility]\label{rem:witt-unit-root-self-dual}
+If we further use the palindrome relation \(a_n(u)=u^n a_n(1/u)\) of Proposition \ref{prop:trace-palindrome}, then in the Teichm\"uller case \(u^p=u\) we have \(u^{p^k}=u\), thus
+\[
+a_{p^k}(u)=u\,a_{p^k}(1/u).
+\]
+Letting \(k\to\infty\) and using the convergence of Proposition \ref{prop:witt-unit-root-limit}, we can obtain that the limit invariant satisfies
+\[
+\boxed{\ A_p(u)=u\,A_p(1/u)\ }.
+\]
+This provides an auditable constraint for the unit-root fingerprint under self-dual symmetry.
+\end{remark}
+
+\subsubsection{Self-Dual Symmetry of the Synchronization Kernel}\label{app:kernel-self-dual}
+For the synchronization kernel there exists a state involution $\iota$, whose action is
+\[
+\iota:\quad
+000\leftrightarrow 101,\quad
+001\leftrightarrow 100,\quad
+002\leftrightarrow 010,\quad
+0\overline{1}2\leftrightarrow 11\overline{1},\quad
+1\overline{1}2\leftrightarrow 01\overline{1}.
+\]
+Let $\Pi$ be the matrix of this permutation, then
+\[
+\Pi^{-1}B_0\Pi=B_1,\qquad \Pi^{-1}B_1\Pi=B_0,
+\]
+thus
+\[
+\Pi^{-1}B(u)\Pi=uB(1/u).
+\]
+\begin{lemma}[\texorpdfstring{$\Pi$}{Pi}-Even/Odd Component and Unique Decomposition of \texorpdfstring{$B(u)$}{B(u)}]\label{lem:sync-kernel-even-odd-splitting}
+Define
+\[
+B_{\mathrm{sym}}:=\frac{B_0+B_1}{2},\qquad
+B_{\mathrm{asym}}:=\frac{B_1-B_0}{2}.
+\]
+Then for all \(u\in\CC\) we have
+\[
+\boxed{\ B(u)=(1+u)\,B_{\mathrm{sym}}+(u-1)\,B_{\mathrm{asym}}\ }.
+\]
+Moreover, under the self-dual commutation relation \(\Pi^{-1}B_0\Pi=B_1,\ \Pi^{-1}B_1\Pi=B_0\), we have
+\[
+\boxed{\ \Pi^{-1}B_{\mathrm{sym}}\Pi=B_{\mathrm{sym}},\qquad
+\Pi^{-1}B_{\mathrm{asym}}\Pi=-B_{\mathrm{asym}}\ }.
+\]
+Furthermore, the above \((1+u)\)--\((u-1)\) decomposition is unique in the \(\QQ\)-linear sense: if there exist \(S,A\) such that
+\(
+B(u)=(1+u)S+(u-1)A
+\), then necessarily \(S=B_{\mathrm{sym}}\) and \(A=B_{\mathrm{asym}}\).
+\end{lemma}
+
+\begin{proof}
+By definition, expanding directly
+\[
+(1+u)B_{\mathrm{sym}}+(u-1)B_{\mathrm{asym}}
+=\frac12\Bigl((1+u)(B_0+B_1)+(u-1)(B_1-B_0)\Bigr)
+=B_0+uB_1
+=B(u).
+\]
+Then from \(\Pi\) exchanging \(B_0,B_1\) we get
+\[
+\Pi^{-1}B_{\mathrm{sym}}\Pi
+=\frac{1}{2}\bigl(\Pi^{-1}B_0\Pi+\Pi^{-1}B_1\Pi\bigr)
+=\frac{B_1+B_0}{2}
+=B_{\mathrm{sym}},
+\]
+\[
+\Pi^{-1}B_{\mathrm{asym}}\Pi
+=\frac{1}{2}\bigl(\Pi^{-1}B_1\Pi-\Pi^{-1}B_0\Pi\bigr)
+=\frac{B_0-B_1}{2}
+=-B_{\mathrm{asym}}.
+\]
+Uniqueness is given by comparing at the two points \(u=0,1\): if \(B(u)=(1+u)S+(u-1)A\), then
+\(
+B(0)=S-A=B_0
+\)
+and
+\(
+B(1)=2S=B_0+B_1
+\)
+jointly solve to give \(S=(B_0+B_1)/2=B_{\mathrm{sym}}\), and substituting back gives \(A=(B_1-B_0)/2=B_{\mathrm{asym}}\).
+QED.
+\end{proof}
+
+\begin{remark}[Computable Bridge Package: Matrix-Level Verification Checklist for Lemma \ref{lem:sync-kernel-even-odd-splitting}]\label{rem:sync-kernel-even-odd-bridge}
+Given integer matrices \((B_0,B_1)\) and permutation matrix \(\Pi\), verify the following equations one by one:
+\begin{enumerate}
+  \item \textbf{Self-dual commutation:} Verify \(\Pi^{-1}B_0\Pi=B_1\) and \(\Pi^{-1}B_1\Pi=B_0\) (under permutation matrix equivalently \(\Pi^\top B_0\Pi=B_1\)).
+  \item \textbf{Even/odd components:} Compute \(2B_{\mathrm{sym}}=B_0+B_1\), \(2B_{\mathrm{asym}}=B_1-B_0\), and verify
+  \[
+  \Pi^{-1}(2B_{\mathrm{sym}})\Pi=2B_{\mathrm{sym}},\qquad
+  \Pi^{-1}(2B_{\mathrm{asym}})\Pi=-2B_{\mathrm{asym}}.
+  \]
+  \item \textbf{\(u\)-dependent reconstruction:} For any sampled \(u\) (e.g., random complex number), verify
+  \(
+  B(u)=B_0+uB_1=(1+u)B_{\mathrm{sym}}+(u-1)B_{\mathrm{asym}}
+  \).
+\end{enumerate}
+In the basis of the \(\Pi\) eigende composition of Proposition \ref{prop:self-dual-normal-form-1pmu}, the above components correspond to
+\(
+B_{\mathrm{sym}}=\bigl(\begin{smallmatrix}X&0\\0&W\end{smallmatrix}\bigr)
+\)
+and
+\(
+B_{\mathrm{asym}}=\bigl(\begin{smallmatrix}0&-Y\\-Z&0\end{smallmatrix}\bigr)
+\).
+The corresponding one-click audit script is \texttt{scripts/exp\_sync\_kernel\_weighted\_self\_dual\_bridge.py}.
+\end{remark}
+
+\begin{definition}[Completed Matrix]\label{def:completed-matrix}
+Let \(u=e^{\theta}\) (\(\theta\in\CC\)), and define the completed matrix
+\[
+\widetilde B(\theta):=e^{-\theta/2}B(e^{\theta}).
+\]
+\end{definition}
+
+\begin{lemma}[Self-Dual Similarity of Completion]\label{lem:completed-similarity}
+Under the above notation, for all \(\theta\) we have
+\[
+\boxed{\ \Pi^{-1}\widetilde B(\theta)\Pi=\widetilde B(-\theta)\ }.
+\]
+Thus \(\widetilde B(\theta)\) is similar to \(\widetilde B(-\theta)\); in particular,
+\(\det(\lambda I-\widetilde B(\theta))\) as an analytic function of \(\theta\) is an even function.
+\end{lemma}
+\begin{proof}
+By self-duality \(\Pi^{-1}B(u)\Pi=uB(1/u)\), substituting \(u=e^{\theta}\) gives
+\(
+\Pi^{-1}B(e^\theta)\Pi=e^\theta B(e^{-\theta})
+\).
+Multiplying both sides by \(e^{-\theta/2}\) immediately yields
+\(
+\Pi^{-1}\widetilde B(\theta)\Pi=\widetilde B(-\theta)
+\).
+Similarity implies the characteristic polynomials are equal, so \(\det(\lambda I-\widetilde B(\theta))=\det(\lambda I-\widetilde B(-\theta))\), which is an even function of \(\theta\). QED.
+\end{proof}
+
+\begin{lemma}[Ward Identity: \texorpdfstring{$B_{\mathrm{asym}}$}{B_asym} Orthogonal to All Time Traces at First Order]\label{lem:sync-kernel-ward-traces}
+Following the notation of Lemma \ref{lem:sync-kernel-even-odd-splitting}, and let
+\(
+\widetilde B(\theta)=e^{-\theta/2}B(e^{\theta})
+\).
+Then for any integer \(n\ge 1\) there is a strict identity
+\[
+\boxed{\ \Tr\!\bigl(B(1)^{n-1}\,B_{\mathrm{asym}}\bigr)=0\ }.
+\]
+\end{lemma}
+
+\begin{proof}
+By Lemma \ref{lem:completed-similarity}, \(\widetilde B(\theta)\) is similar to \(\widetilde B(-\theta)\), so
+\(
+\Tr(\widetilde B(\theta)^n)
+\)
+is an even function of \(\theta\), hence its first derivative at \(\theta=0\) is zero:
+\[
+0=\left.\frac{d}{d\theta}\Tr(\widetilde B(\theta)^n)\right|_{\theta=0}.
+\]
+On the other hand, for an analytic matrix family \(A(\theta)\) we have
+\(
+\frac{d}{d\theta}\Tr(A(\theta)^n)
+=\sum_{j=0}^{n-1}\Tr\!\bigl(A(\theta)^j A'(\theta)A(\theta)^{n-1-j}\bigr)
+=n\,\Tr\!\bigl(A(\theta)^{n-1}A'(\theta)\bigr)
+\)
+(last step using trace cyclicity).
+Taking \(A(\theta)=\widetilde B(\theta)\) and substituting at \(\theta=0\) gives
+\[
+0=n\,\Tr\!\bigl(\widetilde B(0)^{n-1}\widetilde B'(0)\bigr).
+\]
+Note that \(\widetilde B(0)=B(1)\), and from
+\(
+\widetilde B(\theta)=e^{-\theta/2}(B_0+e^\theta B_1)
+\)
+we directly compute
+\[
+\widetilde B'(0)=-\frac12(B_0+B_1)+B_1=\frac{B_1-B_0}{2}=B_{\mathrm{asym}}.
+\]
+Thus we obtain the displayed identity. QED.
+\end{proof}
+
+\begin{remark}[Computable Bridge Package: Trace Verification of Lemma \ref{lem:sync-kernel-ward-traces}]\label{rem:sync-kernel-ward-traces-bridge}
+For given \((B_0,B_1,\Pi)\), first compute \(B_{\mathrm{asym}}\) and \(B(1)=B_0+B_1\) via Lemma \ref{lem:sync-kernel-even-odd-splitting}, then verify term-by-term for a range of length upper bound \(1\le n\le N\) (e.g., \(N=30\))
+\[
+\Tr\!\bigl(B(1)^{n-1}B_{\mathrm{asym}}\bigr)=0.
+\]
+This identity is an exact equation at the integer (or rational) level, thus suitable for independent auditing (not relying on floating-point spectral ordering). The one-click verification script is \texttt{scripts/exp\_sync\_kernel\_weighted\_self\_dual\_bridge.py}.
+\end{remark}
+
+\begin{theorem}[Spectral Tangent Lock: All Spectral Logarithmic Slopes at \texorpdfstring{$u=1$}{u=1} Are Identically \texorpdfstring{$1/2$}{1/2}]\label{thm:sync-spectral-tangent-lock}
+Let \(\widetilde B(\theta)\) be as in Definition \ref{def:completed-matrix}.
+Take any \textbf{simple nonzero eigenvalue} \(\mu_0\neq 0\) of \(\widetilde B(0)=B(1)\) (i.e., it is a simple root in the characteristic polynomial).
+Then there exists a unique analytic function \(\mu(\theta)\) (in some neighborhood of \(\theta=0\)) satisfying
+\[
+\mu(0)=\mu_0,\qquad \mu(\theta)\in\mathrm{spec}\bigl(\widetilde B(\theta)\bigr),
+\]
+and this branch satisfies strict evenness
+\[
+\boxed{\ \mu(\theta)=\mu(-\theta)\ } \qquad(\text{thus } \mu'(0)=0).
+\]
+Let
+\[
+\lambda(\theta):=e^{\theta/2}\mu(\theta),
+\]
+then \(\lambda(\theta)\) is an analytic eigenvalue branch of matrix \(B(e^{\theta})\) (and \(\lambda(0)=\mu_0\neq 0\)), satisfying
+\[
+\boxed{\ \left.\frac{\mathrm{d}}{\mathrm{d}\theta}\log\lambda(\theta)\right|_{\theta=0}=\frac12\ }.
+\]
+\end{theorem}
+\begin{proof}
+By Lemma \ref{lem:completed-similarity}, \(\chi(\lambda,\theta):=\det(\lambda I-\widetilde B(\theta))\) is an even function of \(\theta\), and \(\chi(\mu_0,0)=0\).
+Since \(\mu_0\) is a simple eigenvalue, we have \(\partial_\lambda\chi(\mu_0,0)\neq 0\), so by the implicit function theorem there exists a unique analytic branch \(\mu(\theta)\) such that \(\chi(\mu(\theta),\theta)=0\) and \(\mu(0)=\mu_0\).
+On the other hand, evenness gives \(\chi(\lambda,\theta)=\chi(\lambda,-\theta)\), so \(\mu(-\theta)\) also satisfies the same equation and takes the same initial value \(\mu(-0)=\mu_0\); by uniqueness we obtain \(\mu(\theta)=\mu(-\theta)\), hence \(\mu'(0)=0\).
+Finally, from \(B(e^\theta)=e^{\theta/2}\widetilde B(\theta)\) we know \(\lambda(\theta)=e^{\theta/2}\mu(\theta)\) is an eigenvalue branch of \(B(e^\theta)\), and
+\[
+\left.\frac{\mathrm{d}}{\mathrm{d}\theta}\log\lambda(\theta)\right|_{\theta=0}
+=\left.\frac{\mathrm{d}}{\mathrm{d}\theta}\left(\frac{\theta}{2}+\log\mu(\theta)\right)\right|_{\theta=0}
+=\frac12+\frac{\mu'(0)}{\mu(0)}
+=\frac12.
+\]
+QED.
+\end{proof}
+
+\begin{corollary}[The 6 Nonzero Spectral Branches of the Synchronization Kernel Simultaneously Lock at \texorpdfstring{$u=1$}{u=1}]\label{cor:sync-spectral-tangent-lock-6}
+For this synchronization kernel, matrix \(B(1)\) has exactly \(6\) nonzero spectral branches, all simple eigenvalues at \(u=1\) (its characteristic polynomial is degree \(6\) of \(\det(I-zB(1))\), see Appendix \ref{app:sync-kernel-basic} for explicit factorization).
+Thus all these \(6\) nonzero spectral branches satisfy the conclusion of Theorem \ref{thm:sync-spectral-tangent-lock}:
+under the parameter \(u=e^\theta\), \(\left.\frac{\mathrm{d}}{\mathrm{d}\theta}\log\lambda_j(\theta)\right|_{\theta=0}=\frac12\).
+\end{corollary}
+
+Thus
+\[
+\Delta(z,u)=\det(I-zB(u))=\det(I-uzB(1/u))=\Delta(uz,1/u).
+\]
+
+\begin{proposition}[Self-Dual-Induced \texorpdfstring{$(1+u)$}{(1+u)}--\texorpdfstring{$(1-u)$}{(1-u)} Two-Parameter Normal Form]\label{prop:self-dual-normal-form-1pmu}
+Suppose \(B(u)=B_0+uB_1\) and the self-dual permutation matrix \(\Pi\) satisfies \(\Pi^{-1}B_0\Pi=B_1\).
+Let
+\[
+V_+:=\ker(\Pi-I),\qquad V_-:=\ker(\Pi+I),
+\qquad V=V_+\oplus V_-,
+\]
+and write \(B_0\) in the decomposition \(V_+\oplus V_-\) as block operator
+\[
+B_0=
+\begin{pmatrix}
+X & Y\\
+Z & W
+\end{pmatrix}.
+\]
+Then for all \(u\in\CC\) we have
+\[
+\boxed{
+B(u)=B_0+u\Pi^{-1}B_0\Pi
+=
+\begin{pmatrix}
+(1+u)X & (1-u)Y\\
+(1-u)Z & (1+u)W
+\end{pmatrix}.
+}
+\]
+For this synchronization kernel, \(\Pi\) is a direct sum of five interchanges, so \(\dim V_+=\dim V_-=5\).
+\end{proposition}
+\begin{proof}
+In the decomposition \(V=V_+\oplus V_-\), \(\Pi\) acts as \(\Pi|_{V_+}=+I,\ \Pi|_{V_-}=-I\), so for any block operator \(T=\bigl(\begin{smallmatrix}X&Y\\ Z&W\end{smallmatrix}\bigr)\) we have
+\(
+\Pi^{-1}T\Pi=\bigl(\begin{smallmatrix}X&-Y\\ -Z&W\end{smallmatrix}\bigr)
+\).
+Taking \(T=B_0\) and substituting into \(B(u)=B_0+u\Pi^{-1}B_0\Pi\) immediately gives the conclusion. QED.
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$u=1$}{u=1} Forced Decoupling]\label{cor:self-dual-u1-decouple}
+In the block representation of Proposition \ref{prop:self-dual-normal-form-1pmu},
+\[
+\boxed{\ B(1)=
+\begin{pmatrix}
+2X & 0\\
+0 & 2W
+\end{pmatrix}\ }.
+\]
+Thus cross-subspace coupling terms appear only through the coefficient \((1-u)\) and are forcibly suppressed at \(u=1\).
+\end{corollary}
+
+\begin{corollary}[\texorpdfstring{$u=1$}{u=1} Two-Channel \texorpdfstring{$\Delta/\zeta$}{Delta/zeta} Factorization]\label{cor:self-dual-u1-two-channel-zeta}
+Following the block notation of Proposition \ref{prop:self-dual-normal-form-1pmu}, at \(u=1\) there is a strict factor decomposition
+\[
+\boxed{\ \Delta(z,1)=\det(I-zB(1))=\det(I-2zX)\cdot\det(I-2zW)\ }.
+\]
+Thus defining two "channel \(\zeta\)" as
+\[
+\zeta_{V_+}(z):=\det(I-2zX)^{-1},\qquad
+\zeta_{V_-}(z):=\det(I-2zW)^{-1},
+\]
+we have
+\[
+\boxed{\ \zeta(z,1)=\Delta(z,1)^{-1}=\zeta_{V_+}(z)\,\zeta_{V_-}(z)\ }.
+\]
+\end{corollary}
+
+\begin{proof}
+By Corollary \ref{cor:self-dual-u1-decouple}, \(B(1)\) in the decomposition \(V_+\oplus V_-\) is block diagonal \(\mathrm{diag}(2X,2W)\).
+Taking \(\det(I-z\cdot)\) of a block diagonal matrix immediately gives
+\(
+\det(I-zB(1))=\det(I-2zX)\det(I-2zW)
+\).
+The \(\zeta\) factorization is obtained by taking reciprocals. QED.
+\end{proof}
+
+\begin{remark}[Computable Bridge Package: Block Verification of Corollary \ref{cor:self-dual-u1-two-channel-zeta}]\label{rem:sync-kernel-u1-two-channel-bridge}
+For given \((B_0,B_1,\Pi)\), first diagonalize \(\Pi\) (take any basis of \(V_+\oplus V_-\), equivalently pair states by \(\Pi\)'s \(2\)-cycles and take \(\pm\) combinations), and accordingly write \(B(1)\) as block diagonal \(\mathrm{diag}(2X,2W)\).
+Then:
+\begin{enumerate}
+  \item \textbf{Matrix level:} Verify the off-diagonal blocks of \(B(1)\) are zero;
+  \item \textbf{Determinant level:} For a set of sampled \(z\) verify \(\det(I-zB(1))=\det(I-2zX)\det(I-2zW)\);
+  \item \textbf{Channel \(\zeta\):} Compute \(\zeta_{V_\pm}\) separately and verify \(\zeta(z,1)=\zeta_{V_+}(z)\zeta_{V_-}(z)\).
+\end{enumerate}
+The one-click verification script is \texttt{scripts/exp\_sync\_kernel\_weighted\_self\_dual\_bridge.py}.
+\end{remark}
+
+\begin{corollary}[\texorpdfstring{$\Delta(z,u)$}{Delta(z,u)} Dependence Compression in \texorpdfstring{$(1-u)^2$}{(1-u)^2}]\label{cor:self-dual-delta-even-in-1mu}
+In the normal form of Proposition \ref{prop:self-dual-normal-form-1pmu}, for each fixed \(z\),
+\(\Delta(z,u)=\det(I-zB(u))\)
+as a polynomial in \(u\), appears only in even powers of \((1-u)\); equivalently,
+\[
+\boxed{\ \Delta(z,u)\in \ZZ[z]\bigl[(1+u),\ (1-u)^2\bigr]\ }.
+\]
+Similarly, expanding \(a_n(u)=\Tr(B(u)^n)\) as a \(u\)-polynomial, its coefficients can also be rewritten as elements in \(\ZZ[(1+u),(1-u)^2]\).
+\end{corollary}
+\begin{proof}
+The permutation expansion of the determinant consists of permutation cycles; each cycle must return to the starting point, so it crosses \(V_+\leftrightarrow V_-\) an even number of times.
+Crossings come only from off-diagonal blocks \((1-u)Y,(1-u)Z\), so in each term the total index of \((1-u)\) is even, thus \(\Delta\) is a polynomial in \((1-u)^2\).
+The same holds for \(\Tr(B(u)^n)\): it is a sum of weights of closed paths of length \(n\), and each closed path has an even number of subspace flips.
+QED.
+\end{proof}
+
+Moreover, \(\Delta\) for this kernel can be directly recovered as an explicit polynomial from the sextic equation \(F(\lambda,u)=0\) (and pointwise verified consistent with the \(10\times 10\) matrix definition):
+\input{sections/generated/eq_sync_kernel_weighted_delta_explicit}
+\begin{proposition}[Completed Determinant Bivariate Closed Form: \texorpdfstring{$\Delta(z,u)=\widehat\Delta(w,s)$}{Delta=hatDelta}]\label{prop:sync-kernel-weighted-hat-delta}
+Take completed coordinates
+\[
+u=r^2,\qquad w:=zr=z\sqrt{u},\qquad s:=r+r^{-1}=\sqrt{u}+\frac{1}{\sqrt{u}}.
+\]
+Then there exists an integer coefficient bivariate polynomial \(\widehat\Delta(w,s)\in\ZZ[w,s]\) such that
+\[
+\boxed{\ \Delta(z,u)=\widehat\Delta\!\left(z\sqrt{u},\ \sqrt{u}+\frac{1}{\sqrt{u}}\right)\ }.
+\]
+For this kernel, \(\widehat\Delta\) can be taken as the closed form of equation \eqref{eq:sync-kernel-weighted-delta-completed} (generated directly by script and verified term-by-term consistent with \eqref{eq:sync-kernel-weighted-delta-explicit}):
+\input{sections/generated/eq_sync_kernel_weighted_delta_completed}
+\end{proposition}
+\begin{proof}
+By self-duality \(\Delta(z,u)=\Delta(uz,1/u)\), writing \(u=r^2\) and letting \(w=zr\), we know
+\(
+\Delta(w/r,r^2)
+\)
+is invariant under \(r\mapsto r^{-1}\).
+The invariant subring identity
+\(
+\ZZ[r,r^{-1}]^{\,r\mapsto r^{-1}}=\ZZ[r+r^{-1}]=\ZZ[s]
+\)
+ensures it can be written as some \(\widehat\Delta(w,s)\in\ZZ[w,s]\).
+Substituting \eqref{eq:sync-kernel-weighted-delta-explicit} into \(u=r^2,z=w/r\) and simplifying on the invariant basis \(C_k(s)=r^k+r^{-k}\) yields \eqref{eq:sync-kernel-weighted-delta-completed}; the script \texttt{scripts/exp\_sync\_kernel\_weighted\_delta\_completed.py} performs symbolic verification of this identity. QED.
+\end{proof}

@@ -1,0 +1,337 @@
+\subsubsection{Sequential Discrimination and Measure Bridges: Likelihood Ratio Martingales, Symmetric Threshold SPRT, and Large Deviation Exponents}\label{subsubsec:pom-golden-sequential-martingale-sprt-ldp}
+
+This paragraph further extracts three ``auditable closed-form chains'' from the two-phase model of Proposition \ref{prop:pom-phi-logistic-posterior-grid}:
+(i) the power law of the likelihood ratio \(\Rightarrow\) likelihood ratio martingale and dual martingale;
+(ii) symmetric threshold first passage \(\Rightarrow\) closed-form risk and expected sample size for the sequential probability ratio test (SPRT);
+(iii) Cram\'er large deviations for biased increments \(\Rightarrow\) triple identification of error exponents and the Esscher debiasing bridge.
+
+\subsubsection{Likelihood Ratio Martingale and Dual Martingale}
+
+\begin{proposition}[Likelihood ratio martingale and dual martingale for the golden two-phase hidden bit]\label{prop:pom-golden-likelihood-ratio-martingales}
+Let \(\varphi=\frac{1+\sqrt5}{2}\).
+In the two-phase model, let \(B_i\in\{0,1\}\) be the hidden bit observation, and define
+\[
+Y_i:=2B_i-1\in\{\pm 1\},\qquad
+K_n:=\sum_{i=1}^{n}Y_i,\qquad
+\mathcal{F}_n:=\sigma(B_1,\dots,B_n).
+\]
+Suppose the two phase hypotheses \(\theta_+\) and \(\theta_-\) are complementary, so that under \(\theta_+\)
+\(\mathbb{P}(B_i=1)=\varphi^{-1}\), and under \(\theta_-\)
+\(\mathbb{P}(B_i=1)=\varphi^{-2}\) (with \(B_i\) conditionally i.i.d.).
+Define the likelihood ratio
+\[
+L_n:=\frac{\mathbb{P}_{\theta_+}(B_1^n)}{\mathbb{P}_{\theta_-}(B_1^n)}.
+\]
+Then \(L_n\) satisfies the strict power law
+\[
+\boxed{\;L_n=\varphi^{K_n}\;}
+\]
+and \((L_n)_{n\ge 0}\) is a nonnegative martingale under \(\mathbb{P}_{\theta_-}\), while \((L_n^{-1})_{n\ge 0}\) is a nonnegative martingale under \(\mathbb{P}_{\theta_+}\).
+Therefore, for any bounded stopping time \(\tau\),
+\[
+\boxed{\;\mathbb{E}_{\theta_-}[L_\tau]=1,\qquad \mathbb{E}_{\theta_+}[L_\tau^{-1}]=1.\;}
+\]
+\end{proposition}
+
+\begin{proof}
+By the complementary relation \(\varphi^{-2}=1-\varphi^{-1}\), the single-step likelihood ratio is
+\[
+\frac{\mathbb{P}_{\theta_+}(B_i=b)}{\mathbb{P}_{\theta_-}(B_i=b)}
+=\begin{cases}
+\varphi,& b=1,\\
+\varphi^{-1},& b=0,
+\end{cases}
+=\varphi^{2b-1}.
+\]
+By independence,
+\(
+L_n=\prod_{i=1}^{n}\varphi^{2B_i-1}=\varphi^{K_n}
+\).
+\par
+For the martingale property under \(\mathbb{P}_{\theta_-}\), note that
+\(
+L_{n+1}=L_n\,\varphi^{Y_{n+1}}
+\), and under \(\theta_-\) we have \(\mathbb{P}(Y_{n+1}=+1)=\varphi^{-2}\), \(\mathbb{P}(Y_{n+1}=-1)=\varphi^{-1}\), so that
+\[
+\mathbb{E}_{\theta_-}[\varphi^{Y_{n+1}}]
+=\varphi^{-2}\varphi+\varphi^{-1}\varphi^{-1}
+=\varphi^{-1}+\varphi^{-2}
+=1.
+\]
+Hence \(\mathbb{E}_{\theta_-}[L_{n+1}\mid\mathcal{F}_n]=L_n\).
+The dual martingale follows analogously: under \(\theta_+\), \(\mathbb{E}_{\theta_+}[\varphi^{-Y_{n+1}}]=\varphi^{-1}\varphi^{-1}+\varphi^{-2}\varphi=1\), so \(\mathbb{E}_{\theta_+}[L_{n+1}^{-1}\mid\mathcal{F}_n]=L_n^{-1}\).
+Finally, applying the optional stopping theorem to bounded stopping times yields the expectation identities. \qed
+\end{proof}
+
+\subsubsection{Symmetric Threshold Sequential Discrimination: Risk, Expected Sample Size, and Posterior Quantization}
+
+\begin{theorem}[Exact error rates of symmetric threshold sequential discrimination: \texorpdfstring{$\varphi$}{phi}-logistic constants]\label{thm:pom-sprt-symmetric-threshold-error}
+Under the setting of Proposition \ref{prop:pom-golden-likelihood-ratio-martingales}, take an integer threshold \(T\ge 1\) and let
+\[
+\tau_T:=\inf\{n\ge 0:\ |K_n|=T\},\qquad
+\widehat\Theta_T:=\mathrm{sign}(K_{\tau_T})\in\{+,-\}.
+\]
+Then this stopping--decision rule is equivalent to the symmetric threshold sequential probability ratio test (SPRT):
+\[
+\widehat\Theta_T=+\ \Longleftrightarrow\ L_{\tau_T}\ge \varphi^T,\qquad
+\widehat\Theta_T=-\ \Longleftrightarrow\ L_{\tau_T}\le \varphi^{-T}.
+\]
+Moreover, when the true phase is \(\theta_+\), the error probability admits a completely closed form
+\[
+\boxed{\;
+\mathbb{P}_{\theta_+}(\widehat\Theta_T=-)=\frac{1}{1+\varphi^{T}},\qquad
+\mathbb{P}_{\theta_+}(\widehat\Theta_T=+)=\frac{\varphi^{T}}{1+\varphi^{T}}.\;}
+\]
+(Symmetrically, when the true phase is \(\theta_-\), the signs are exchanged.)
+\end{theorem}
+
+\begin{proof}
+By \(L_n=\varphi^{K_n}\) (Proposition \ref{prop:pom-golden-likelihood-ratio-martingales}), the event \(|K_n|=T\) is equivalent to \(L_n\in\{\varphi^{T},\varphi^{-T}\}\), which is fully consistent with the symmetric threshold of the SPRT.
+\par
+To compute the error rate, apply the optional stopping theorem to the dual martingale \(L_n^{-1}\) under \(\theta_+\) at the truncated stopping time \(\tau_T\wedge N\), and let \(N\to\infty\) (here \(\tau_T\) has finite expectation; see Theorem \ref{thm:pom-sprt-symmetric-threshold-mean-time}), yielding
+\[
+1=\mathbb{E}_{\theta_+}[L_{\tau_T}^{-1}]
+=\mathbb{P}_{\theta_+}(\widehat\Theta_T=+)\,\varphi^{-T}
+\mathbb{P}_{\theta_+}(\widehat\Theta_T=-)\,\varphi^{T}.
+\]
+Setting \(e_T:=\mathbb{P}_{\theta_+}(\widehat\Theta_T=-)\) and using \(\mathbb{P}(\widehat\Theta_T=+)=1-e_T\), we solve to obtain
+\(
+e_T=(\varphi^{T}-1)/(\varphi^{2T}-1)=1/(1+\varphi^{T})
+\).
+\qed
+\end{proof}
+
+\begin{theorem}[Exact expected sample size for symmetric threshold sequential discrimination: drift--absorption identity]\label{thm:pom-sprt-symmetric-threshold-mean-time}
+Continuing the setting of Theorem \ref{thm:pom-sprt-symmetric-threshold-error}, let the drift be
+\[
+\mu:=\mathbb{E}_{\theta_+}[Y_1]=\varphi^{-1}-\varphi^{-2}=\varphi^{-3}.
+\]
+Then the expected absorption time satisfies the strict closed form
+\[
+\boxed{\;
+\mathbb{E}_{\theta_+}[\tau_T]
+=\varphi^{3}T\cdot\frac{\varphi^{T}-1}{\varphi^{T}+1}.\;}
+\]
+In particular, \(\mathbb{E}_{\theta_+}[\tau_T]\sim \varphi^{3}T\), with relative error \(O(\varphi^{-T})\).
+\end{theorem}
+
+\begin{proof}
+Let \(M_n:=K_n-\mu n\) be a martingale. Applying the optional stopping theorem to the truncated stopping time \(\tau_T\wedge N\) and taking expectations yields
+\(
+\mathbb{E}_{\theta_+}[K_{\tau_T\wedge N}]=\mu\,\mathbb{E}_{\theta_+}[\tau_T\wedge N]
+\).
+Letting \(N\to\infty\) gives \(\mathbb{E}_{\theta_+}[K_{\tau_T}]=\mu\,\mathbb{E}_{\theta_+}[\tau_T]\).
+\par
+On the other hand, \(K_{\tau_T}\in\{+T,-T\}\), so
+\[
+\mathbb{E}_{\theta_+}[K_{\tau_T}]
+=T\cdot\mathbb{P}_{\theta_+}(\widehat\Theta_T=+)-T\cdot\mathbb{P}_{\theta_+}(\widehat\Theta_T=-)
+=T\cdot\frac{\varphi^{T}-1}{\varphi^{T}+1},
+\]
+where the last step uses the closed-form error rates from Theorem \ref{thm:pom-sprt-symmetric-threshold-error}.
+Dividing by \(\mu=\varphi^{-3}\) yields the stated formula.
+The relative error follows from \(\frac{\varphi^T-1}{\varphi^T+1}=1-\frac{2}{\varphi^T+1}=1-O(\varphi^{-T})\). \qed
+\end{proof}
+
+\begin{corollary}[Integer auditability of the stopping posterior: the terminal error is a deterministic constant]\label{cor:pom-sprt-stopping-posterior-constant}
+Under equal priors, the posterior error (minimum posterior probability) at the stopping time \(\tau_T\) is
+\[
+\varepsilon_T:=\min\{\mathbb{P}(\theta_+\mid B_1^{\tau_T}),\ \mathbb{P}(\theta_-\mid B_1^{\tau_T})\}
+\]
+and equals the constant almost surely
+\[
+\boxed{\;\varepsilon_T=\frac{1}{1+\varphi^{T}}.\;}
+\]
+Thus this sequential rule achieves ``exact \(\varphi\)-resolution quantization'' in the posterior sense: the error level and the threshold \(T\) are in one-to-one correspondence with no random fluctuation.
+\end{corollary}
+
+\begin{proof}
+By Proposition \ref{prop:pom-phi-logistic-posterior-grid},
+\(
+\mathbb{P}(\theta_+\mid B_1^n)=\frac{1}{1+\varphi^{-K_n}}
+\).
+At \(n=\tau_T\) we have \(|K_{\tau_T}|=T\), so one of the two posteriors equals \((1+\varphi^{-T})^{-1}\) and the other equals \((1+\varphi^{T})^{-1}\); the minimum is always \((1+\varphi^{T})^{-1}\). \qed
+\end{proof}
+
+\begin{proposition}[Parametric closed form and invertibility of the risk--complexity frontier]\label{prop:pom-risk-complexity-frontier}
+Let \(R(T):=\varepsilon_T\) and \(N(T):=\mathbb{E}_{\theta_+}[\tau_T]\).
+Then
+\[
+\boxed{\;
+R(T)=\frac{1}{1+\varphi^{T}},\qquad
+N(T)=\varphi^{3}T\cdot\frac{1-\varphi^{-T}}{1+\varphi^{-T}}.\;}
+\]
+Hence for any target risk \(r\in(0,\tfrac12)\), there exists a unique integer
+\[
+T=\left\lceil\log_\varphi\!\left(\frac{1-r}{r}\right)\right\rceil
+\]
+such that \(R(T)\le r<R(T-1)\), yielding an explicit auditable upper bound on the optimal expected sample size:
+\[
+\inf_{\text{sequential Bayes rule}:\ \varepsilon\le r}\ \mathbb{E}[\tau]
+\ \le\ N(T)
+=\varphi^{3}T\cdot\frac{\varphi^{T}-1}{\varphi^{T}+1}.
+\]
+\end{proposition}
+
+\begin{proof}
+The first two formulas follow from Corollary \ref{cor:pom-sprt-stopping-posterior-constant} and Theorem \ref{thm:pom-sprt-symmetric-threshold-mean-time}, respectively.
+Since \(R(T)\) is strictly decreasing in \(T\), and \(R(T)\le r\) is equivalent to \(\varphi^T\ge (1-r)/r\), the minimal integer threshold is given by the ceiling.
+The final inequality simply states that taking the symmetric threshold SPRT of this section as a candidate rule achieves risk \(\le r\), so its expected stopping time provides an upper bound on the infimum. \qed
+\end{proof}
+
+\subsubsection{Large Deviation Rate Function, Exponent Constant Identification, and the Esscher Debiasing Bridge}
+
+\begin{theorem}[Closed-form large deviation rate function for the golden drift random walk]\label{thm:pom-golden-drift-walk-ldp-rate}
+Under \(\theta_+\), the random variable \(K_n/n\in[-1,1]\) satisfies a Cram\'er-type large deviation principle, whose rate function \(I:[-1,1]\to[0,\infty]\) (in bits) admits the completely closed form:
+\[
+\boxed{\;
+I(x)= -1+\frac{3-x}{2}\log_2\varphi+\frac{x}{2}\log_2\!\frac{1+x}{1-x}+\frac12\log_2(1-x^2),
+\qquad x\in(-1,1),\;}
+\]
+with continuous extension \(I(\pm 1)=+\infty\).
+Its unique zero is the typical drift \(x=\mathbb{E}_{\theta_+}[Y_1]=\varphi^{-3}\).
+\end{theorem}
+
+\begin{proof}
+Let \(u:=\frac{1+x}{2}\in(0,1)\). The event \(K_n/n\approx x\) is equivalent to the frequency of \(+1\) increments among \(Y_i\) being approximately \(u\).
+Cram\'er's theorem for \(\{\pm 1\}\)-valued variables yields the rate function as a two-point KL divergence:
+\[
+I(x)=u\log_2\frac{u}{p}+(1-u)\log_2\frac{1-u}{q},
+\qquad p=\varphi^{-1},\ q=\varphi^{-2}.
+\]
+Expanding and substituting the power expressions for \(p,q\) (\(\log_2 p=-\log_2\varphi\), \(\log_2 q=-2\log_2\varphi\)) yields the stated closed form.
+The unique zero follows from \(I(x)=0\iff u=p\iff x=2p-1=\varphi^{-3}\). \qed
+\end{proof}
+
+\begin{corollary}[Triple identification of the error exponent: Chernoff constant = zero-drift large deviation = half of the order-\texorpdfstring{$1/2$}{1/2} R\'enyi divergence]\label{cor:pom-error-exponent-triple-identity}
+Let \(P=\mathrm{Bern}(\varphi^{-1})\), \(Q=\mathrm{Bern}(\varphi^{-2})\).
+Then the optimal exponent constant satisfies the strict identification:
+\[
+\boxed{\;
+C_\varphi
+=I(0)
+=\frac12\,D_{1/2}(P\|Q)
+=\frac32\log_2\varphi-1.\;}
+\]
+\end{corollary}
+
+\begin{proof}
+Substituting \(x=0\) in Theorem \ref{thm:pom-golden-drift-walk-ldp-rate} yields \(I(0)=\frac32\log_2\varphi-1\).
+By Proposition \ref{prop:pom-complementary-golden-bernoulli-renyi-spectrum},
+\(
+D_{1/2}(P\|Q)=3\log_2\varphi-2
+\), so \(\frac12 D_{1/2}=\frac32\log_2\varphi-1\).
+This constant also coincides with the Chernoff exponent closed form from Theorem \ref{thm:pom-max-fiber-even-chernoff-exponent} (taking the limiting parameter \(p=\varphi^{-1}\)). \qed
+\end{proof}
+
+\begin{proposition}[Golden symmetrization via the Esscher transform: strict debiasing and measure bridge for the biased increment]\label{prop:pom-golden-esscher-symmetrization}
+Under \(\theta_+\), let \(Y_i=2B_i-1\in\{\pm 1\}\) with \(\mathbb{P}_{\theta_+}(Y_i=+1)=\varphi^{-1}\), \(\mathbb{P}_{\theta_+}(Y_i=-1)=\varphi^{-2}\).
+Define the normalized exponential transform (\(n\)-step Radon--Nikodym derivative)
+\[
+\boxed{\;
+\frac{d\mathbb{Q}}{d\mathbb{P}_{\theta_+}}\Big|_{\mathcal{F}_n}
+=\Big(\frac{\varphi^{3/2}}{2}\Big)^{n}\,\varphi^{-K_n/2}.\;}
+\]
+Then under \(\mathbb{Q}\) the increment distribution is strictly symmetric:
+\[
+\boxed{\;\mathbb{Q}(Y_i=+1)=\mathbb{Q}(Y_i=-1)=\tfrac12,\;}
+\]
+so that \((K_n)\) is a simple symmetric random walk under \(\mathbb{Q}\).
+\end{proposition}
+
+\begin{proof}
+The transform decomposes step-by-step into i.i.d.\ exponential tilts: for a single step \(Y\in\{\pm 1\}\), take
+\(
+t=\tfrac12\log\varphi
+\)
+and set the weight to \(e^{-tY}=\varphi^{-Y/2}\).
+Under \(\theta_+\) the normalizing constant is
+\[
+M:=\mathbb{E}_{\theta_+}[\varphi^{-Y/2}]
+=\varphi^{-1}\varphi^{-1/2}+\varphi^{-2}\varphi^{1/2}
+=2\varphi^{-3/2}.
+\]
+Hence the \(n\)-step RN derivative is \(M^{-n}\varphi^{-K_n/2}=(\varphi^{3/2}/2)^n\varphi^{-K_n/2}\).
+\par
+Under \(\mathbb{Q}\),
+\[
+\mathbb{Q}(Y=+1)=\frac{\varphi^{-1}\varphi^{-1/2}}{M}
+=\frac{\varphi^{-3/2}}{2\varphi^{-3/2}}=\frac12,
+\qquad
+\mathbb{Q}(Y=-1)=\frac{\varphi^{-2}\varphi^{1/2}}{M}=\frac12.
+\]
+\qed
+\end{proof}
+
+\subsubsection{Finite-Scale Corrections: Alternating Error and Entropy Spectrum Oscillations of \texorpdfstring{$p_k$}{p\_k}}
+
+\begin{proposition}[Finite-scale correction for the maximal fiber splitting ratio: alternating error and \texorpdfstring{$\varphi^{-2k}$}{phi^{-2k}} convergence rate]\label{prop:pom-max-fiber-split-ratio-finite-scale}
+Let the maximal fiber splitting counts at even stable scale \(m=2k\) be \((F_{k+1},F_k)\) (with the two phases exchanged), and define
+\[
+p_k:=\frac{F_{k+1}}{F_{k+2}},\qquad q_k:=\frac{F_k}{F_{k+2}}=1-p_k.
+\]
+Then \(p_k\to\varphi^{-1}\), \(q_k\to\varphi^{-2}\), and there exists a completely closed form (Binet ratio form):
+\[
+\boxed{\;
+p_k=\varphi^{-1}\cdot\frac{1-(-\varphi^{-2})^{k+1}}{1-(-\varphi^{-2})^{k+2}},\qquad
+p_k-\varphi^{-1}
+=-\varphi^{-1}(1+\varphi^{-2})\cdot
+\frac{(-\varphi^{-2})^{k+1}}{1-(-\varphi^{-2})^{k+2}}\; }.
+\]
+Hence the error is strictly alternating and satisfies a uniform exponential bound (for \(k\ge 1\)):
+\[
+\boxed{\;
+\frac{\varphi^{-1}(1+\varphi^{-2})\,\varphi^{-2k-2}}{1+\varphi^{-2k-4}}
+\ \le\
+|p_k-\varphi^{-1}|
+\ \le\
+\frac{\varphi^{-1}(1+\varphi^{-2})\,\varphi^{-2k-2}}{1-\varphi^{-2k-4}}\; }.
+\]
+\end{proposition}
+
+\begin{proof}
+By the Binet formula \(F_n=(\varphi^n-\psi^n)/\sqrt5\), \(\psi=-\varphi^{-1}\), we have
+\[
+\frac{F_{k+1}}{F_{k+2}}
+=\frac{\varphi^{k+1}-\psi^{k+1}}{\varphi^{k+2}-\psi^{k+2}}
+=\varphi^{-1}\cdot\frac{1-(\psi/\varphi)^{k+1}}{1-(\psi/\varphi)^{k+2}},
+\qquad \frac{\psi}{\varphi}=-\varphi^{-2},
+\]
+yielding the first formula. Subtracting \(\varphi^{-1}\) and finding a common denominator gives the second formula.
+Finally, noting that \(|(-\varphi^{-2})^{k+2}|=\varphi^{-2k-4}\) and
+\(
+1-\varphi^{-2k-4}\le |1-(-\varphi^{-2})^{k+2}|\le 1+\varphi^{-2k-4}
+\),
+substituting into the absolute value expression yields the upper and lower bounds. \qed
+\end{proof}
+
+\begin{proposition}[Alternating shift of the finite-scale entropy spectrum: leading-order closed form for \texorpdfstring{$H_b(p_k)$}{Hb(pk)}]\label{prop:pom-finite-scale-entropy-oscillation}
+Let \(H_b(p)\) denote the binary entropy (in bits). For \(p_k\) from Proposition \ref{prop:pom-max-fiber-split-ratio-finite-scale}, we have the analytic asymptotic expansion
+\[
+\boxed{\;
+H_b(p_k)=H_b(\varphi^{-1})-\log_2\varphi\,(p_k-\varphi^{-1})+O(\varphi^{-4k})\; }.
+\]
+Moreover, since \(p_k-\varphi^{-1}\) oscillates in an alternating fashion (Proposition \ref{prop:pom-max-fiber-split-ratio-finite-scale}),
+\(
+H_b(p_k)-H_b(\varphi^{-1})
+\)
+also exhibits alternating oscillations, with leading-order amplitude \(\asymp \varphi^{-2k}\).
+\end{proposition}
+
+\begin{proof}
+The derivative of the binary entropy is \(H_b'(p)=\log_2\frac{1-p}{p}\). At \(p=\varphi^{-1}\),
+\(
+H_b'(\varphi^{-1})=\log_2(\varphi^{-2}/\varphi^{-1})=-\log_2\varphi
+\).
+Taylor-expanding \(H_b\) around \(\varphi^{-1}\) gives
+\[
+H_b(p_k)=H_b(\varphi^{-1})+H_b'(\varphi^{-1})(p_k-\varphi^{-1})+O\bigl((p_k-\varphi^{-1})^2\bigr).
+\]
+By Proposition \ref{prop:pom-max-fiber-split-ratio-finite-scale},
+\(
+p_k-\varphi^{-1}=O(\varphi^{-2k})
+\), so the squared term is \(O(\varphi^{-4k})\).
+The alternating oscillation property and leading-order amplitude follow from the same error term. \qed
+\end{proof}
+
+\endinput

@@ -1,0 +1,460 @@
+\subsubsec{Collision kernel family: from recursion to non-negative integer realization (auditable protocol)}\label{subsubsec:pom-collision-kernel-family}
+The above has given a unified entry from folding fibers to collision spectrum:
+for any integer \(q\ge 2\),
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q
+=\#\{(\omega^{(1)},\dots,\omega^{(q)})\in\Omega_m^q:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(q)})\}.
+\]
+where \(q=2\) is pairwise collision, \(q=3\) is triple collision, and so on; thus \(S_q(m)\) describes a counting object on a ``\(q\)-fold fiber product'', not a simple power function of some fixed kernel.
+\par
+For \(q=2,3,4\), this paper has constructed low-dimensional non-negative integer collision kernels \(A_q\), and incorporated their Perron roots \(r_q=\rho(A_q)\) and projection entropy rates \(h_q=\log(2^q/r_q)\) into the same \(\zeta\)/primitive/finite-part interface (see \S\ref{subsec:pom-s2}--\S\ref{subsec:pom-s4} and Table \ref{tab:fold_collision_renyi_spectrum}).
+On the other hand, for \(q\ge 5\) small-order integer-coefficient recursions have been verified (Table \ref{tab:fold_collision_moment_recursions}), thus \(r_q\) and \(h_q\) can be precisely extracted, but recursion itself does not automatically give ``non-negative integer graph kernel'' realization.
+This raises a natural upgrade research line: further elevate ``known recursion'' to ``interpretable finite-state collision kernel family''.
+
+\begin{proposition}[Collision moment spectrum recursion—spectral radius equivalence: Rényi fingerprint rate uniformly closed by Perron root family]\label{prop:pom-collision-renyi-perron-closure}
+Fix integer \(q\ge 2\).
+Suppose collision moment \(S_q(m)=\sum_x d_m(x)^q\) satisfies a minimal-order constant-coefficient linear recursion from some \(m\) (equivalent to finite Hankel rank), and denote by \(r_q\) the maximal modulus root of its recursion characteristic polynomial (Perron root).
+Then:
+\begin{enumerate}
+  \item There exists some minimal-dimension linear realization (e.g., Hankel realization of Proposition \ref{prop:pom-hankel-realization-protocol}) such that
+  \(
+  S_q(m)=\Theta(r_q^m)
+  \), and this \(r_q\) equals the spectral radius of any minimal realization matrix (Corollary \ref{cor:pom-hankel-free-energy-evaluator}).
+  \item If further natural concatenation submultiplicativity exists (e.g., \(S_q(m+n)\le S_q(m)S_q(n)\)), then limit
+  \[
+  \boxed{\ r_q=\lim_{m\to\infty}S_q(m)^{1/m}\ }
+  \]
+  exists and agrees with above Perron root.
+  \item Define Rényi fingerprint rate
+  \[
+  h_q:=\log\!\left(\frac{2^q}{r_q}\right),
+  \qquad
+  h_q^{\mathrm R}:=\frac{h_q}{q-1}.
+  \]
+  Once limit framework of \(h_q^{\mathrm R}\) holds (e.g., directly defined by limit \(r_q\)),
+  by Rényi monotonicity of finite-support distributions, \(q\mapsto h_q^{\mathrm R}\) is monotone decreasing, and endpoint limit exists
+  \[
+  h_\infty^{\mathrm R}:=\lim_{q\to\infty}h_q^{\mathrm R}
+  =\log 2-\lim_{q\to\infty}\frac{1}{q}\log r_q.
+  \]
+  On Fold gate, this endpoint is locked to \(h_\infty^{\mathrm R}=\log(2/\sqrt{\varphi})\) by Proposition \ref{prop:pom-rq-qinfty-endpoint} (also see Remark \ref{rem:pom-renyi-gap-to-hinfty}).
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Exponential limit consistency: maximal fiber exponent equals Rényi spectrum \texorpdfstring{$(q\to\infty)$}{(q->infty)} boundary]\label{prop:pom-maxfiber-exponent-equals-renyi-endpoint}
+Suppose folding semigroup \(\Fold_m:\Omega_m\twoheadrightarrow X_m\) satisfies concatenation compatibility, such that fiber multiplicity
+\(
+d_m(x):=\card{\Fold_m^{-1}(x)}
+\)
+has submultiplicativity: for any \(m,n\) and any \(x\in X_{m+n}\), there exist \(x_1\in X_m\), \(x_2\in X_n\) such that
+\[
+d_{m+n}(x)\le d_m(x_1)\,d_n(x_2).
+\]
+And assume for each integer \(q\ge 1\), collision moment satisfies submultiplicativity \(S_q(m+n)\le S_q(m)S_q(n)\), and exponential bound exists
+\(
+\sup_m \frac{1}{m}\log|X_m|<\infty
+\).
+Let
+\[
+M_m:=\max_{x\in X_m} d_m(x),\qquad
+\Lambda_\infty:=\lim_{m\to\infty}\frac{1}{m}\log M_m,\qquad
+r_q:=\lim_{m\to\infty} S_q(m)^{1/m}.
+\]
+Then above limits all exist, and strict identity holds
+\[
+\boxed{\ \Lambda_\infty=\lim_{q\to\infty}\frac{1}{q}\log r_q\ }.
+\]
+\end{proposition}
+\begin{proof}
+By concatenation submultiplicativity taking supremum over maximal values gives \(M_{m+n}\le M_mM_n\), so by Fekete's lemma \(\Lambda_\infty=\lim_{m\to\infty}\frac{1}{m}\log M_m\) exists.
+On other hand, for any \(q\ge 1\) and any \(m\),
+\[
+M_m^q\ \le\ \sum_{x\in X_m}d_m(x)^q=S_q(m)\ \le\ |X_m|\,M_m^q.
+\]
+Take logarithm and divide by \(m\), then let \(m\to\infty\) (using \(S_q\)'s submultiplicativity to guarantee \(r_q\) exists, and using \(\sup_m \frac{1}{m}\log|X_m|<\infty\) to control error term) gives
+\[
+q\Lambda_\infty\le \log r_q\le q\Lambda_\infty+\sup_m\frac{1}{m}\log|X_m|.
+\]
+Divide both sides by \(q\) and let \(q\to\infty\) yields conclusion. $\qed$
+\end{proof}
+
+\begin{proposition}[From recursion to minimal linear realization: Hankel realization]\label{prop:pom-hankel-realization-protocol}
+Fix \(q\ge 2\), suppose sequence \(S_q(m)\) satisfies some minimal-order constant-coefficient linear recursion (equivalent to finite Hankel rank).
+Let \(a_n:=S_q(n+2)\) (\(n\ge 0\)), and let \(d:=\mathrm{rank}(H)\) be its Hankel rank.
+Then there exists a minimal linear realization of dimension equal to \(d\)
+\[
+a_n=\alpha^{\mathsf T}A^n\beta\qquad(n\ge 0),
+\]
+where \(A\in M_d(\QQ)\) can be directly constructed by Hankel matrices \(H_0=(a_{i+j})_{0\le i,j\le d-1}\) and \(H_1=(a_{i+j+1})_{0\le i,j\le d-1}\) via closed form
+\[
+A=H_0^{-1}H_1=\frac{\mathrm{adj}(H_0)\,H_1}{\det(H_0)}.
+\]
+When \(a_n\in\ZZ\), we have \(H_0,H_1\in M_d(\ZZ)\), thus all denominators of \(A\) divide \(\det(H_0)\).
+\end{proposition}
+
+\begin{remark}[Denominator lower bound and \texorpdfstring{$p$}{p}-adic stiffness exponent: arithmetic stiffness of Hankel certificate]\label{rem:pom-hankel-denominator-stiffness}
+In case \(a_n\in\ZZ\), above formula shows \(\det(H_0)\) controls rational denominator of minimal realization.
+For prime \(p\) can define stiffness exponent
+\[
+\mathsf{Stiff}_p:=v_p\!\bigl(\det(H_0)\bigr),
+\]
+which gives minimal \(p\)-adic precision threshold needed to unambiguously recover \(A\) entries in \(\ZZ_p\).
+In this paper's concrete data, corresponding \(p\)-adic stiffness signals can be directly read from Hankel witness block determinant valuations (Remark \ref{rem:pom-hankel-stiffness-p5}).
+\end{remark}
+
+\begin{remark}[Search framework for non-negative integer collision kernels (suggested as new experimental protocol)]\label{rem:pom-nonneg-kernel-search-protocol}
+The \(A\) given by Proposition \ref{prop:pom-hankel-realization-protocol} generally has signs (or negative entries), but it carries definite structure of ``minimal linear realization''.
+To obtain interpretable ``finite-state collision kernel'' \(A_q\), one can perform auditable similarity transformation search on \(\mathrm{GL}_d(\ZZ)\):
+\[
+A_q=P^{-1}AP,\qquad P\in\mathrm{GL}_d(\ZZ),
+\]
+goal is to make \(A_q\) have non-negative integer entries (thus viewable as adjacency matrix of some finite graph/SFT), and simultaneously transform readout vectors \((\alpha,\beta)\) to obtain isomorphic counting formula.
+Since \(P\) is unimodular, \(P^{-1}\in M_d(\ZZ)\), this similarity transformation does not introduce new denominators; if one can find \(P\) making \(A_q\in M_d(\ZZ_{\ge 0})\), then this pure integer basis change completely eliminates denominators while maintaining minimal dimension (contrast Remark \ref{rem:pom-hankel-denominator-stiffness}).
+This path has been realized in fully reproducible manner for \(q=4\) five-state kernel by script \texttt{scripts/exp\_fold\_collision\_hankel\_realization\_q4.py}; for higher \(q\) can generalize following same paradigm, and use ``minimal dimension, minimal maximal entry, minimal topological entropy'' etc. as search criteria, forming an infinitely upward-pushable collision kernel family experiment route.
+\end{remark}
+
+\begin{corollary}[Constant-cost free energy evaluator: locking \texorpdfstring{$r_q$}{rq} by Hankel minimal realization]\label{cor:pom-hankel-free-energy-evaluator}
+Under setting of Proposition \ref{prop:pom-hankel-realization-protocol}, denote minimal dimension by \(d\).
+Then there exists an auditable offset \(\ell_q\ge 0\) (e.g., minimal offset making Hankel block invertible in Definition \ref{def:pom-hankel-normal-form}) such that with only \(2d\) sample points
+\(
+S_q(\ell_q+2),S_q(\ell_q+3),\dots,S_q(\ell_q+2d+1)
+\)
+one can construct \(H_0^{(\ell_q)},H_1^{(\ell_q)}\), thus obtaining minimal realization matrix \(A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}\).
+Its eigenvalue set gives recursion characteristic polynomial roots, hence exponential growth main scale satisfies
+\[
+r_q=\rho(A),
+\]
+and once some non-negative integer realization \(A_q=P^{-1}AP\) is found, similarly \(r_q=\rho(A_q)\) (Perron root).
+Thus for fixed integer \(q\), free energy \(\tau(q)=\log r_q\) and ``typical loss'' generating function integer point value
+\(
+\Lambda(q-1)=\log r_q-\log2
+\)
+(see Proposition \ref{prop:pom-fiber-index-cgf} and Remark \ref{rem:pom-lambda-tau-shift}) can both be read out within \(O(d^3)\) matrix algebra cost, without pushing \(m\) to large values then fitting slope.
+\end{corollary}
+
+\begin{definition}[Hankel-normal form: \texorpdfstring{$\mathrm{HANKELNF}_q$}{HANKELNFq}]\label{def:pom-hankel-normal-form}
+Fix \(q\ge 2\), let \(a_n:=S_q(n+2)\) (\(n\ge 0\)), and let \(d:=\mathrm{rank}(H)\) be its Hankel rank (equivalent to minimal recursion order/minimal linear realization dimension).
+Since \(\mathrm{rank}(H)=d\), there exists some offset \(\ell\ge 0\) such that \(d\times d\) Hankel blocks
+\[
+H_0^{(\ell)}:=(a_{\ell+i+j})_{0\le i,j\le d-1},
+\qquad
+H_1^{(\ell)}:=(a_{\ell+i+j+1})_{0\le i,j\le d-1},
+\]
+are invertible.
+Let \(\ell_q\) be minimal offset making \(\det(H_0^{(\ell)})\neq 0\) (an auditable integer certificate; in practice can be output by Hankel-minor search script).
+Define Hankel shift realization
+\[
+A:=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)},
+\qquad
+\alpha^{\mathsf T}:=(a_{\ell_q},a_{\ell_q+1},\dots,a_{\ell_q+d-1}),
+\qquad
+\beta:=e_0.
+\]
+Call
+\[
+\boxed{\;
+\mathrm{HANKELNF}_q:=\bigl(d,\ell_q;\ H_0^{(\ell_q)},H_1^{(\ell_q)};\ A,\alpha,\beta\bigr)\;}
+\]
+the \textbf{Hankel-normal form} of \(q\)-moment: it is minimal realization directly and deterministically constructed from finite segment \(a_{\ell_q},\dots,a_{\ell_q+2d-1}\) (Proposition \ref{prop:pom-hankel-realization-protocol}).
+\end{definition}
+
+\begin{proposition}[Moment finite sampling equality: \texorpdfstring{$2d$}{2d} points determine entire sequence]\label{prop:pom-moment-finite-sampling-decidable}
+Under setting of Definition \ref{def:pom-hankel-normal-form}, suppose two realization paths (e.g., two compilation/state encoding methods) give two \(q\)-moment sequences \(S_q,S'_q\), and both have same Hankel rank \(d\).
+If
+\[
+S_q(m)=S'_q(m)\qquad(m=\ell_q+2,\ \ell_q+3,\ \dots,\ \ell_q+2d+1),
+\]
+then they have same Hankel-normal form \(\mathrm{HANKELNF}_q\), thus for all \(m\ge 2\) have \(S_q(m)=S'_q(m)\); and all fingerprints derived from this normal form (recursion, characteristic polynomial, Perron root \(r_q\), and subsequent pressure/budget readout, etc.) completely agree.
+\end{proposition}
+\begin{proof}
+Rewrite condition as \(a_n=a'_n\) for all \(\ell_q\le n\le \ell_q+2d-1\).
+Therefore \(H_0^{(\ell_q)},H_1^{(\ell_q)}\) constructed from this length-\(2d\) window on both sides (and \(A=(H_0^{(\ell_q)})^{-1}H_1^{(\ell_q)}\), \(\alpha,\beta\)) are entrywise identical, so \(\mathrm{HANKELNF}_q=\mathrm{HANKELNF}'_q\).
+By minimal realization expression \(a_n=\alpha^{\mathsf T}A^n\beta\) (Proposition \ref{prop:pom-hankel-realization-protocol}) immediately get \(a_n=a'_n\) for all \(n\ge 0\), i.e., \(S_q(m)=S'_q(m)\) for all \(m\ge 2\).
+Remaining fingerprint consistency follows directly from sharing same \(A\) and same characteristic polynomial. $\qed$
+\end{proof}
+
+\begin{remark}[Dual-path consistency audit: residue-DP fit vs. realization Perron root]\label{rem:pom-dp-vs-realization-audit}
+For each fixed \(q\), can output two parallel auditable readouts:
+\begin{itemize}
+  \item residue-DP computes \(S_q(m)\) on finite window and fits to obtain \(\widehat r_q\);
+  \item precise \(r_q=\rho(A_q)\) read from recursion/companion matrix or Hankel minimal realization (and its non-negative integer kernel \(A_q\)).
+\end{itemize}
+These two should agree; if not, either DP window insufficient, or realization not implementing same sequence (or boundary terms not absorbed into start/end vectors).
+\end{remark}
+
+\subsubsection{Endogenous Gibbs weight: output equilibrium state induced by fiber volume and transfer matrix}\label{subsubsec:pom-gibbs-pi}
+This paper has defined folding output distribution as
+\[
+\pi_m(x):=\frac{d_m(x)}{2^m}\qquad(x\in X_m),
+\]
+where \(d_m(x)=|\Fold_m^{-1}(x)|\) is fiber volume.
+This form can be understood as completely endogenous Gibbs weight: let energy
+\[
+E_m(x):=-\log d_m(x),
+\]
+then
+\[
+\pi_m(x)=\frac{e^{-E_m(x)}}{Z_m},
+\qquad
+Z_m:=\sum_{x\in X_m}e^{-E_m(x)}=\sum_{x\in X_m}d_m(x)=|\Omega_m|=2^m.
+\]
+Therefore \(\pi_m\) is not externally imposed baseline distribution, but natural equilibrium state induced by folding map as ``coarse-graining'' on stable syntax space: larger fiber (higher preimage freedom) implies larger output mass.
+\par
+
+\begin{proposition}[Large deviation principle for fiber exponent: collision spectral radius gives complete rate function]\label{prop:pom-fiber-index-ldp-from-collision-spectrum}
+Let random variable \(X_m\sim\pi_m\) and \(Y_m:=\frac{1}{m}\log d_m(X_m)\).
+If limit cumulant generating function
+\[
+\Lambda(q):=\lim_{m\to\infty}\frac{1}{m}\log\mathbb{E}_{\pi_m}\!\left[e^{qmY_m}\right]
+\]
+exists and is finite on some open interval containing \(q=0\), and satisfies essential smoothness etc. regularity conditions required by Gärtner--Ellis theorem (e.g., setting in Theorem \ref{thm:pom-fiber-index-ldp-thermo}), then \((Y_m)\) satisfies large deviation principle with rate function
+\[
+I(y)=\sup_{q\in\RR}\bigl(qy-\Lambda(q)\bigr).
+\]
+In particular, under above essential smoothness/strict convexity regime, \(I\) is strictly convex in its effective domain interior with unique zero at
+\[
+y_\ast=\Lambda'(0),\qquad I(y_\ast)=0.
+\]
+If further \(\Lambda\) is twice differentiable at \(q=0\) neighborhood and \(\Lambda''(0)>0\), then \(I\) is twice differentiable at \(y_\ast\) neighborhood and satisfies curvature duality identity
+\[
+\boxed{\ I'(y_\ast)=0,\qquad I''(y_\ast)=\frac{1}{\Lambda''(0)}\ }.
+\]
+And under \(|\Omega_m|=2^m\) Fold framework, for any integer \(q\ge 0\) integer point identity holds
+\[
+\boxed{\ \Lambda(q)=\log r_{q+1}-\log 2\ }
+\]
+(by integer point consistency of Proposition \ref{prop:pom-fiber-index-cgf}; where \(r_{q+1}=\lim_{m\to\infty}S_{q+1}(m)^{1/m}\)).
+\end{proposition}
+
+\begin{corollary}[Central limit theorem and variance certificate: second jet gives typical fluctuation of fiber exponent]\label{cor:pom-fiber-index-clt-variance-certificate}
+Under setting of Proposition \ref{prop:pom-fiber-index-ldp-from-collision-spectrum}, further assume \(\Lambda\) twice differentiable at \(q=0\) neighborhood and satisfies spectral gap/analytic perturbation conditions (so ``take limit/differentiate'' commute; see Theorem \ref{thm:pom-fiber-index-clt-thermo}).
+Then unique typical exponent \(y_\ast=\Lambda'(0)\) exists, with central limit theorem
+\[
+\sqrt{m}\,(Y_m-y_\ast)\ \Longrightarrow\ \mathcal N(0,\sigma^2),
+\qquad
+\sigma^2=\Lambda''(0).
+\]
+where \(\sigma^2\) can be cross-audited by second jet of collision spectral radius family at \(q=1\) (Remark \ref{rem:pom-fiber-index-ldp} and Theorem \ref{thm:pom-fiber-index-clt-thermo}).
+\end{corollary}
+
+\begin{proposition}[Rényi tangent formula for typical fiber exponent: derivative at \texorpdfstring{$q=1$}{q=1} is average information loss rate]\label{prop:pom-typical-fiber-exponent-renyi-tangent}
+Suppose microstate exponent rate
+\[
+h_0:=\lim_{m\to\infty}\frac{1}{m}\log|\Omega_m|
+\]
+and macrostate Shannon rate
+\[
+h_{\mathrm{mac}}:=\lim_{m\to\infty}\frac{1}{m}H(\pi_m),
+\qquad
+H(\pi_m):=-\sum_{x\in X_m}\pi_m(x)\log\pi_m(x)
+\]
+both exist.
+And suppose typical fiber exponent
+\[
+y_\ast:=\lim_{m\to\infty}\frac{1}{m}\mathbb{E}_{\pi_m}\!\bigl[\log d_m(X_m)\bigr]
+\]
+exists.
+Then strict identity holds
+\[
+\boxed{\ y_\ast=h_0-h_{\mathrm{mac}}\ }.
+\]
+If further \(q\mapsto \log r_q\) is differentiable at \(q=1\) neighborhood (e.g., guaranteed by analytic perturbation continuation of pressure), then also Rényi tangent formula
+\[
+\boxed{\ y_\ast=\left.\frac{\mathrm d}{\mathrm dq}\log r_q\right|_{q=1}\ }.
+\]
+\end{proposition}
+\begin{proof}
+Take \(\mu\) uniform distribution on \(\Omega_m\), then its folding pushforward is precisely \(\pi_m\), and \(\mu\) is conditionally uniform on each fiber, so in information ledger identity (Theorem \ref{thm:pom-kl-ledger}) residual term \(D_{\mathrm{KL}}(\mu\|\mu^{e})=0\).
+Thus
+\[
+H(\mu)=H(\pi_m)+\mathbb{E}_{\pi_m}\!\bigl[\log d_m(X_m)\bigr].
+\]
+Also \(H(\mu)=\log|\Omega_m|\), divide both sides by \(m\) and let \(m\to\infty\) yields \(y_\ast=h_0-h_{\mathrm{mac}}\).
+\par
+For second formula, denote \(\tau_m(q):=\frac{1}{m}\log S_q(m)\). Direct differentiation gives
+\[
+\tau_m'(1)=\frac{1}{m}\cdot\frac{\sum_{x}d_m(x)\log d_m(x)}{\sum_x d_m(x)}
+=\frac{1}{m}\mathbb{E}_{\pi_m}\!\bigl[\log d_m(X_m)\bigr].
+\]
+If can interchange ``take limit/differentiate'' at \(q=1\), then by \(\tau_m(q)\to \log r_q\) get
+\(
+y_\ast=\lim_{m\to\infty}\tau_m'(1)=\left.\frac{\mathrm d}{\mathrm dq}\log r_q\right|_{q=1}
+\).
+$\qed$
+\end{proof}
+
+\begin{proposition}[Convex cone monotonicity: convexity of \texorpdfstring{$q\mapsto\log r_q$}{q->log rq} forces \texorpdfstring{$y_\ast\le\Lambda_\infty$}{y*<=Lambda_infty}]\label{prop:pom-convexity-forces-typical-le-worst}
+Assume \(q\mapsto \log r_q\) finite and convex on \([1,\infty)\), and differentiable at \(q=1\).
+Let Rényi boundary slope
+\[
+\Lambda_\infty^{(\mathrm R)}:=\lim_{q\to\infty}\frac{1}{q}\log r_q
+\]
+exist.
+Then necessarily
+\[
+\boxed{\ y_\ast\le \Lambda_\infty^{(\mathrm R)}\ }.
+\]
+If simultaneously satisfies boundary identity \(\Lambda_\infty=\Lambda_\infty^{(\mathrm R)}\) (Proposition \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint}), get strict comparison
+\[
+\boxed{\ y_\ast\le \Lambda_\infty\ }.
+\]
+\end{proposition}
+\begin{proof}
+By convexity and differentiability at \(q=1\), for any \(q>1\) support line inequality
+\[
+\log r_q\ \ge\ \log r_1+(q-1)\left.\frac{\mathrm d}{\mathrm dq}\log r_q\right|_{q=1}.
+\]
+Divide both sides by \(q\) and let \(q\to\infty\), get
+\(
+\left.\frac{\mathrm d}{\mathrm dq}\log r_q\right|_{q=1}\le \liminf_{q\to\infty}\frac{1}{q}\log r_q
+\).
+Then by tangent formula of Proposition \ref{prop:pom-typical-fiber-exponent-renyi-tangent} and existence of \(\Lambda_\infty^{(\mathrm R)}\) yields first formula.
+If further use Proposition \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint}'s \(\Lambda_\infty^{(\mathrm R)}=\Lambda_\infty\), yields second formula. $\qed$
+\end{proof}
+
+\begin{proposition}[Product law for independent foldings: strict additivity of collision spectrum and fiber exponent]\label{prop:pom-product-fold-additivity}
+Suppose two folding semigroups \(\Fold_m^{(i)}:\Omega_m^{(i)}\twoheadrightarrow X_m^{(i)}\) (\(i=1,2\)) both satisfy limit quantity existence assumptions of this section, and denote respective fiber multiplicities by \(d_m^{(i)}\), collision moments by \(S_q^{(i)}(m)=\sum_{x\in X_m^{(i)}}(d_m^{(i)}(x))^q\).
+Construct direct product folding
+\[
+\Fold_m^{(\otimes)}:\Omega_m^{(1)}\times\Omega_m^{(2)}\twoheadrightarrow X_m^{(1)}\times X_m^{(2)},
+\qquad
+\Fold_m^{(\otimes)}(\omega_1,\omega_2):=\bigl(\Fold_m^{(1)}(\omega_1),\Fold_m^{(2)}(\omega_2)\bigr).
+\]
+Then its fiber multiplicity satisfies \(d_m^{(\otimes)}(x_1,x_2)=d_m^{(1)}(x_1)d_m^{(2)}(x_2)\), and for all \(q\ge 1\) strict product law
+\[
+\boxed{\ S_q^{(\otimes)}(m)=S_q^{(1)}(m)\,S_q^{(2)}(m)\ }.
+\]
+Thus on exponential scale (where limits exist) \(r_q^{(\otimes)}=r_q^{(1)}r_q^{(2)}\);
+and corresponding typical fiber exponent and worst fiber exponent satisfy additivity:
+\[
+\boxed{\ y_\ast^{(\otimes)}=y_\ast^{(1)}+y_\ast^{(2)},\qquad \Lambda_\infty^{(\otimes)}=\Lambda_\infty^{(1)}+\Lambda_\infty^{(2)}\ }.
+\]
+\end{proposition}
+\begin{proof}
+By definition,
+\(
+\bigl(\Fold_m^{(\otimes)}\bigr)^{-1}(x_1,x_2)=\bigl(\Fold_m^{(1)}\bigr)^{-1}(x_1)\times \bigl(\Fold_m^{(2)}\bigr)^{-1}(x_2)
+\),
+so \(d_m^{(\otimes)}(x_1,x_2)=d_m^{(1)}(x_1)d_m^{(2)}(x_2)\).
+Thus
+\[
+S_q^{(\otimes)}(m)
+=\sum_{x_1,x_2}\bigl(d_m^{(1)}(x_1)d_m^{(2)}(x_2)\bigr)^q
+=\left(\sum_{x_1}(d_m^{(1)}(x_1))^q\right)\left(\sum_{x_2}(d_m^{(2)}(x_2))^q\right),
+\]
+get product law; taking \(m\to\infty\) \(1/m\) logarithmic limit yields \(r_q^{(\otimes)}=r_q^{(1)}r_q^{(2)}\).
+For \(\Lambda_\infty\) and \(y_\ast\), respectively by
+\(
+\max_{x_1,x_2}d_m^{(\otimes)}(x_1,x_2)=\bigl(\max_{x_1}d_m^{(1)}(x_1)\bigr)\bigl(\max_{x_2}d_m^{(2)}(x_2)\bigr)
+\)
+and
+\(
+\log d_m^{(\otimes)}(X_1,X_2)=\log d_m^{(1)}(X_1)+\log d_m^{(2)}(X_2)
+\)
+(under \(\pi_m^{(\otimes)}=\pi_m^{(1)}\otimes\pi_m^{(2)}\)) directly get additivity. $\qed$
+\end{proof}
+
+\begin{proposition}[Saturation phase characterization: \texorpdfstring{$\Lambda_\infty=y_\ast$}{Lambda_infty=y*} iff fiber exponent concentrates at exponential scale]\label{prop:pom-saturation-phase-characterization}
+Under setting of Proposition \ref{prop:pom-fiber-index-ldp-from-collision-spectrum}, further assume \(I\) is good function and strictly convex in effective domain interior (e.g., \(\Lambda\) essentially smooth and \(\Lambda''(0)>0\)).
+Let \(y_\ast=\Lambda'(0)\), and let \(\Lambda_\infty\) be worst fiber exponent (Proposition \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint}).
+Then following statements equivalent:
+\begin{enumerate}
+  \item \(\Lambda_\infty=y_\ast\);
+  \item For any \(\varepsilon>0\),
+  \[
+  \lim_{m\to\infty}\frac{1}{m}\log \pi_m\!\left(\left\{x\in X_m:\ \frac{1}{m}\log d_m(x)\ge \Lambda_\infty-\varepsilon\right\}\right)=0;
+  \]
+  \item \(I(\Lambda_\infty)=0\).
+\end{enumerate}
+And when above equivalent conditions hold, fiber exponent strongly concentrates at exponential scale: for any \(\varepsilon>0\) exists \(c_\varepsilon>0\) such that
+\[
+\pi_m\bigl(|Y_m-y_\ast|>\varepsilon\bigr)\ \le\ \exp\!\bigl(-(c_\varepsilon+o(1))m\bigr).
+\]
+\end{proposition}
+\begin{proof}
+By \(Y_m\le \frac{1}{m}\log M_m\) and \(\frac{1}{m}\log M_m\to \Lambda_\infty\), can know event \(\{Y_m\ge \Lambda_\infty-\varepsilon\}\) equivalent to stated set event up to \(o(1)\) error.
+By large deviation upper bound, for closed set \(F=[\Lambda_\infty-\varepsilon,\infty)\),
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log \pi_m(Y_m\in F)\ \le\ -\inf_{y\in F}I(y).
+\]
+On other hand, by large deviation lower bound for open set \(G=(\Lambda_\infty-\varepsilon,\infty)\) get opposite direction inequality, thus
+\[
+\lim_{m\to\infty}\frac{1}{m}\log \pi_m\bigl(Y_m\ge \Lambda_\infty-\varepsilon\bigr)
+=-\inf_{y\ge \Lambda_\infty-\varepsilon}I(y).
+\]
+Therefore (2) equivalent to \(\inf_{y\ge \Lambda_\infty-\varepsilon}I(y)=0\) for all \(\varepsilon>0\).
+By lower semicontinuity and good property of \(I\), let \(\varepsilon\downarrow 0\) yields this condition equivalent to \(I(\Lambda_\infty)=0\), thus (2)\(\Leftrightarrow\)(3).
+Also since strict convexity makes \(I\)'s zero unique, and \(I(y_\ast)=0\) (Proposition \ref{prop:pom-fiber-index-ldp-from-collision-spectrum}), so \(I(\Lambda_\infty)=0\) iff \(\Lambda_\infty=y_\ast\). Thus (1)\(\Leftrightarrow\)(3), three equivalent.
+\par
+Finally, strict convexity and good property give
+\(
+c_\varepsilon:=\inf_{|y-y_\ast|\ge \varepsilon}I(y)>0
+\),
+by LDP upper bound yields concentration inequality. $\qed$
+\end{proof}
+
+\begin{proposition}[Capacity saturation exponential discriminant: boundary between maximal fiber growth rate and microstate growth rate]\label{prop:pom-capacity-saturation-discriminant}
+Let \(M_m:=\max_{x\in X_m}d_m(x)\), and denote maximal fiber exponent
+\(
+\Lambda_\infty:=\lim_{m\to\infty}\frac{1}{m}\log M_m
+\)
+(exists under concatenation submultiplicativity, see Proposition \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint}).
+Then maximal output probability satisfies strict identity
+\[
+\max_{x\in X_m}\pi_m(x)=\frac{M_m}{2^m},
+\]
+thus exponential rarity rate is
+\[
+-\lim_{m\to\infty}\frac{1}{m}\log\max_x\pi_m(x)=\log 2-\Lambda_\infty.
+\]
+Therefore two regimes strictly separate:
+\begin{enumerate}
+  \item If \(\Lambda_\infty<\log 2\), then maximal fiber is exponentially rare under \(\pi_m\): \(\max_x\pi_m(x)=\exp\!\bigl(-m(\log 2-\Lambda_\infty)+o(m)\bigr)\).
+  \item If \(\Lambda_\infty=\log 2\), then exists sequence \(x_m\in X_m\) such that \(d_m(x_m)=\exp(m\log 2-o(m))\), i.e., folding achieves capacity saturation at exponential level: maximal fiber and \(|\Omega_m|=2^m\) have same-order exponential growth.
+\end{enumerate}
+And by Proposition \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint}, saturation discrimination can be equivalently rewritten as
+\(
+\lim_{q\to\infty}\frac{1}{q}\log r_q=\log 2
+\).
+\end{proposition}
+
+Further, if one wishes to upgrade this Gibbs weight to a computable transfer matrix (to replace framework using only Parry/PF as external baseline), one auditable route is: starting from weighted block frequency of \(\pi_m\), construct a finite-order Markov (equivalently: finite-range Gibbs) approximation, and extract its steady state using Perron--Frobenius.
+
+\begin{remark}[Reproducible protocol: fitting finite-order transfer matrix from \texorpdfstring{$\pi_m$}{pi_m}]\label{rem:pom-gibbs-markov-fit}
+Fix \(m\) (take moderate resolution, e.g., \(m=18\)), after enumerating to obtain \(\pi_m\), for some small block length \(\ell\ge 2\) compute \(\pi_m\)-weighted \(\ell\)-block frequency,
+and obtain a \((\ell-1)\)-order Markov chain by maximum likelihood (its states are legal blocks in space \(X_{\ell-1}\)).
+This chain is a probability-normalized version of finite-state transfer matrix; its induced 1-step transition can be quantitatively compared with Parry baseline, thus obtaining auditable certificate for ``endogenous potential function deviation from maximum entropy baseline''.
+Table \ref{tab:fold_output_gibbs_markov_fit} gives representative output (script \texttt{scripts/exp\_fold\_output\_gibbs\_markov\_fit.py} one-click generation).
+\end{remark}
+\input{sections/generated/tab_fold_output_gibbs_markov_fit}
+
+\begin{remark}[Entropy rate/KL certificate: microbit-level difference between endogenous Gibbs weight and Parry maximum entropy baseline]\label{rem:pom-gibbs-parry-entropy-gap}
+Under two-state adjacency of golden-mean SFT
+\(
+A=\begin{psmallmatrix}1&1\\[2pt]1&0\end{psmallmatrix}
+\),
+Parry (PF) baseline \(P_{\mathrm{Parry}}\) has maximal entropy rate
+\(
+h(P_{\mathrm{Parry}})=\log\varphi
+\)
+(where \(\varphi\) is Perron root).
+For any two-state Markov specification \(P\) with same support, its relative Parry KL divergence rate satisfies
+\[
+D_{\mathrm{KL}}^{\mathrm{rate}}(P\|P_{\mathrm{Parry}})=\log\varphi-h(P),
+\]
+thus ``maximum entropy gap'' can equivalently output as KL-rate certificate.
+\par
+For fit output in Table \ref{tab:fold_output_gibbs_markov_fit} (\(m=18,\ell=4\)), this gap has reduced to microbit level; script \texttt{scripts/exp\_fold\_output\_gibbs\_markov\_fit.py} synchronously outputs following reproducible numerical certificate:
+\input{sections/generated/eq_fold_output_gibbs_entropy_gap}
+This magnitude supports interpretation framework that ``endogenous potential function induced by folding deviates from maximum entropy baseline mainly as constant-level fingerprint, not entropy-rate-level structural collapse''.
+\end{remark}
+
+\begin{remark}[Interface closed loop: collision spectrum \texorpdfstring{$\leftrightarrow$}{<->} typical space loss three auditable corollaries]\label{rem:pom-interface-loop-collision-loss}
+After juxtaposing two interfaces (Hankel minimal realization and endogenous Gibbs weight) in this section, following three closed-loop corollaries can be obtained (all directly derived from in-text mechanisms, auditable using existing scripts):
+\begin{itemize}
+  \item \textbf{(Isomorphism)} For \(X\sim\pi_m\) and \(L_m=\log d_m(X)\), have
+  \(\mathbb{E}_{\pi_m}[e^{(q-1)L_m}]=S_q(m)/2^m\), thus \(\Lambda(t)=\tau(t+1)-\log2\), and yields \(\mu=\tau'(1)\), \(\sigma^2=\tau''(1)\) (Proposition \ref{prop:pom-fiber-index-cgf} and Remark \ref{rem:pom-lambda-tau-shift}).
+  \item \textbf{(Zero-parameter squeeze)} Convexity of \(\tau\) squeezes \(\mu\) by three-point endpoints: \(\log(2/\varphi)\le \mu\le \log(r_2/2)\); and itemwise auditable squeeze given on finite \(m\) (Corollary \ref{cor:pom-mu-secant-audit}).
+  \item \textbf{(Constant-cost evaluator)} Once Hankel framework recovers minimal realization for some \(q\) (and further finds non-negative integer kernel \(A_q\)), then \(r_q=\rho(A_q)\) locks immediately, thus simultaneously locks \(\tau(q)=\log r_q\) and \(\Lambda(q-1)=\log r_q-\log2\), and can perform dual-path consistency audit with residue-DP fit output (Corollary \ref{cor:pom-hankel-free-energy-evaluator} and Remark \ref{rem:pom-dp-vs-realization-audit}).
+\end{itemize}
+\end{remark}

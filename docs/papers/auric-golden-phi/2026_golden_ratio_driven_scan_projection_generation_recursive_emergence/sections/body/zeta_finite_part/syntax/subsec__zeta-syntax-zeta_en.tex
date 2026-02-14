@@ -1,0 +1,139 @@
+\subsection{Dynamical \texorpdfstring{$\zeta$}{zeta} functions (stable syntax layer)}\label{subsec:zeta-syntax-zeta}
+
+At the stable syntax layer, this paper uses exclusively the subshift of finite type (SFT) caliber: given adjacency matrix $A$, the dynamical $\zeta$ satisfies
+\[
+\zeta_A(z)=\det(I-zA)^{-1}
+=\exp\!\left(\sum_{n\ge 1}\frac{\Tr(A^n)}{n}z^n\right)
+\]
+(see \cite{LindMarcus1995}). For the golden mean constraint
+\(
+A=\begin{pmatrix}1&1\\1&0\end{pmatrix}
+\)
+one obtains
+\[
+\zeta(z)=\frac{1}{1-z-z^2},
+\]
+whose dominant pole is $z_\star=\varphi^{-1}$.
+
+\begin{remark}[Discrepancy object: the degeneracy-$\zeta$ simultaneously aligns the trace side and the primitive side]\label{rem:degeneracy-zeta-bridge}
+To compress the discrepancy between the ``unconstrained'' (full $2$-shift) and the ``golden stable constraint'' into a single computable object, write
+\[
+\zeta_{\mathrm{full}}(z)=\frac{1}{1-2z},
+\qquad
+\zeta(z)=\frac{1}{1-z-z^2},
+\]
+and define the discrepancy ratio (degeneracy-$\zeta$) as
+\[
+\zeta_{\mathrm{deg}}(z):=\frac{\zeta_{\mathrm{full}}(z)}{\zeta(z)}
+=\frac{1-z-z^2}{1-2z}.
+\]
+Its logarithmic coefficients directly package the ``trace-side discrepancy'':
+\[
+\log \zeta_{\mathrm{deg}}(z)
+=\sum_{n\ge 1}\frac{2^n-\Tr(A^n)}{n}z^n
+\]
+In the periodic closure (cyclic/trace) caliber, the corresponding ``time-side degeneracy ratio'' can be taken as
+\[
+\delta_n^{\mathrm{cyc}}:=\frac{2^n}{\Tr(A^n)},
+\]
+whose exponential rate is given by the spectral radius ratio \(2/\varphi\).
+
+Furthermore: the same discrepancy object also determines the ``prime-like (primitive periodic orbit) side discrepancy''. Writing the trace sequences as
+\(
+a_n^{\mathrm{full}}:=2^n,\ a_n^{\mathrm{gold}}:=\Tr(A^n)
+\), the primitive counts are given by Witt/M\"obius inversion (Appendix~\S\ref{app:witt-bridge-package}):
+\[
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+The discrepancy primitive counts
+\(
+p_n^{\mathrm{deg}}:=p_n^{\mathrm{full}}-p_n^{\mathrm{gold}}
+\)
+are therefore extracted from \(\{2^n-\Tr(A^n)\}\) by the same M\"obius/Witt transform. In other words, \(\zeta_{\mathrm{deg}}\) as a single object outputs both the trace-side discrepancy (periodic points/closed paths) and the primitive-side discrepancy (``prime-like closed loops''), thereby functorializing the ``trace \(\Rightarrow\) prime-like'' bridge into an auditable discrepancy encapsulation.
+\end{remark}
+
+\begin{remark}[Relative object: the carry-excess primitive spectrum of \texorpdfstring{$\zeta_B/\zeta_A$}{zetaB/zetaA} and the relative finite-part shift]\label{rem:relative-zeta-sync-vs-grammar}
+This paper simultaneously possesses \(\zeta\)-interfaces of two types of SFT: one is the golden mean adjacency matrix \(A\) at the stable syntax layer (above), and the other is the synchronization kernel adjacency matrix \(B\) induced by the online normalization mechanism (\S\ref{subsec:zeta-online-kernel} and Appendix~\ref{app:sync-kernel-basic}).
+Both share the same chain of auditable identities:
+\[
+\zeta_M(z)=\det(I-zM)^{-1}
+=\exp\!\left(\sum_{n\ge 1}\frac{\Tr(M^n)}{n}z^n\right),
+\qquad
+a_n(M)=\Tr(M^n),
+\]
+and by Witt/M\"obius inversion the periodic trace sequence \(a_n\) is strictly extracted into primitive orbit counts \(p_n\) (counted by orbits):
+\[
+p_n(M)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(M).
+\]
+
+\paragraph{Relative ghost (trace) sequence and strict multiplicative factorization}
+Define the ``mechanism exceeding syntax'' relative trace sequence (relative ghost coordinates)
+\[
+r_n:=a_n(B)-a_n(A)=\Tr(B^n)-\Tr(A^n).
+\]
+and define the relative \(\zeta\) via the same exponential/Fredholm caliber
+\[
+\zeta_{B/A}(z):=\exp\!\left(\sum_{n\ge 1}\frac{r_n}{n}z^n\right).
+\]
+Since the trace in the exponent is linear, one immediately obtains the strict identity (not an approximation, not an analogy)
+$$
+\boxed{\ \zeta_B(z)=\zeta_A(z)\cdot \zeta_{B/A}(z)\ }.
+$$
+This yields a strict ``space (syntax)/time (mechanism)'' commutative encapsulation: the synchronization kernel's \(\zeta_B\) factorizes as the product of the stable syntax's \(\zeta_A\) and the pure mechanism excess term \(\zeta_{B/A}\).
+
+\paragraph{Carry-excess prime-like: the relative primitive spectrum}
+Since M\"obius inversion on trace sequences is linear, the relative primitive counts
+\[
+q_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,r_{n/d}
+\]
+satisfy the strict difference identity
+$$
+\boxed{\ q_n=p_n(B)-p_n(A)\ }.
+$$
+Therefore the relative \(\zeta\) automatically possesses an Euler product (prime-like side):
+$$
+\boxed{\ \zeta_{B/A}(z)=\prod_{n\ge 1}(1-z^n)^{-q_n}\ }.
+$$
+Here \((q_n)\) can be interpreted as ``the primitive part of mechanism closed loops not accountable by syntax closed loops'' (carry-excess primes).
+
+\paragraph{Relative exponent and relative finite-part constant (constant-level fingerprint)}
+The difference in dominant spectral scales can be read off from the Perron root ratio:
+\[
+\Delta h:=\log\rho(B)-\log\rho(A)=\log\frac{3}{\varphi}.
+\]
+On the other hand, following Proposition~\ref{prop:abel-finite-part-mobius-zeta}'s M\"obius--\(\zeta\) closed form,
+the stable syntax layer likewise admits an Abel/Hadamard finite-part constant \(\log\mathfrak{M}_A\);
+and one can form the relative shift with the synchronization kernel's \(\log\mathfrak{M}_B\):
+\[
+\log\mathfrak{M}_{B/A}:=\log\mathfrak{M}_B-\log\mathfrak{M}_A.
+\]
+This constant compresses the ``carry-excess prime-like'' information in the sense of Abel regularization into a single comparable scalar.
+
+\paragraph{Reproducible numerics (first 10 terms and constants)}
+The relative trace sequence \((r_n)\), the relative primitive spectrum \((q_n)\), together with \(\log\mathfrak{M}_A,\log\mathfrak{M}_{B/A}\), are reproducibly generated by the script
+\texttt{scripts/exp\_relative\_zeta\_sync\_vs\_grammar.py} and written to:
+\input{sections/generated/eq_relative_zeta_sync_vs_grammar}
+which simultaneously includes a series consistency check for ``\(\zeta_B=\zeta_A\zeta_{B/A}\)'' and a term-by-term audit of \(q_n=p_n(B)-p_n(A)\).
+\end{remark}
+
+\begin{remark}[Relative object: the input-sieve primitive spectrum of \texorpdfstring{$\zeta_B/\zeta_M$}{zetaB/zetaM} and the relative finite-part constant]\label{rem:relative-zeta-sync-vs-real-input}
+Following the ``relative \(\zeta\) as discrepancy encapsulation'' caliber of the preceding remark, but replacing the comparison object from the stable syntax layer \(A\) with the 40-state kernel \(M\) constrained by real arithmetic input (Appendix~\ref{app:real-input-40-finite-rh} provides its \(\det(I-zM)\) factorization and M\"obius--primitive interface).
+Define the relative trace sequence and relative \(\zeta\) as
+\[
+r_n:=a_n(B)-a_n(M),\qquad
+\zeta_{B/M}(z):=\exp\!\left(\sum_{n\ge 1}\frac{r_n}{n}z^n\right)=\frac{\zeta_B(z)}{\zeta_M(z)}.
+\]
+The relative primitives (input-sieve prime-like) are defined as
+\[
+q_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,r_{n/d}=\boxed{\ p_n(B)-p_n(M)\ }.
+\]
+Since \(\rho(M)<3\), \(\zeta_M\) is analytic at \(z_\star=1/3\) with \(\zeta_M(1/3)\neq 0\), so \(\zeta_{B/M}\) has a simple pole at \(z_\star\):
+$$
+\zeta_{B/M}(z)=\frac{C_{B/M}}{1-3z}+O(1),
+\qquad
+C_{B/M}=\frac{C_B}{\zeta_M(1/3)}.
+$$
+One can further define an analogous ``relative finite-part constant'' \(\log M_{B/M}\) at the \(z_\star=1/3\) scale (reusing Proposition~\ref{prop:abel-finite-part-mobius-zeta}'s M\"obius--\(\zeta\) sampling closed form; the sampling points \(3^{-m}\) are rational, so convergence is extremely rapid).
+
+\input{sections/generated/eq_relative_zeta_sync_vs_real_input}
+\end{remark}

@@ -1,0 +1,192 @@
+\subsubsection{Scale Exchange Law of Endpoint Compression: Adams--Norm Fold Gate and Fixed-Radius Certificates}\label{subsubsec:xi-adams-norm-scale-transport}
+Theorem \ref{thm:xi-offcritical-quadratic-radial-compression} has established the structural compression of off-slice zeros
+\(\rho=\beta+\mathrm{i}\gamma\) (\(0<\beta<\tfrac12\)) in disk coordinates:
+let \(\delta:=\tfrac12-\beta>0\) and \(w_\rho=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}\), then
+\[
+1-|w_\rho|^2=\frac{4\delta}{\gamma^2+(1+\delta)^2},
+\qquad
+|w_\rho|^2=1-\frac{4\delta}{\gamma^2+(1+\delta)^2}.
+\]
+Therefore, when \(|\gamma|\to\infty\) with \(\delta\) fixed, the disk radius gap \(1-|w_\rho|^2\) is compressed into the boundary layer of the endpoint neighborhood at rate \(\Theta(\gamma^{-2})\), inducing the resolution/bit-budget threshold in Corollary \ref{cor:xi-offcritical-visibility-threshold-bit-budget}.
+\par
+Under the unitary slice locking regime (Definition \ref{def:xi-visible-read-null}, with \(X_{\mathrm{vis}}=\mathsf{Phase}\)), radial information is not permitted to be externalized as a continuous register; thus the intrinsic question is:
+without introducing a radial continuous mode axis and while preserving the existing self-dual completion and fixed-slice regime, does there exist a purely algebraic/functorial scale gate that transports point defects in the endpoint boundary layer to a prescribed compact subdisk, so that ``high-height invisibility'' can be rewritten as ``visibility of a scale parameter''?
+\par
+This paragraph provides a rigorous realization: along the power covering \(w\mapsto w^m\), the Adams--Norm fold gate symmetrizes the branch degrees of freedom via the product, thereby transporting point defects from the endpoint neighborhood into fixed-radius verifiable Jensen defect lower bounds; the cost is an externalized scale parameter \(m\) (which can be explicitly estimated and admits integer-coefficient closure in invariant coordinates).
+
+\paragraph{Power covering and Adams--Norm fold gate}
+For any integer \(m\ge 1\), let
+\[
+\pi_m:\mathbb{D}\to\mathbb{D},\qquad \pi_m(\omega)=\omega^m
+\]
+be the \(m\)-fold covering (deck group \(\mu_m=\{\zeta_m^k:0\le k\le m-1\}\), \(\zeta_m=e^{2\pi\mathrm{i}/m}\)).
+
+\begin{definition}[Adams--Norm fold gate]\label{def:xi-adams-norm-fold}
+Let \(F\) be analytic in \(\mathbb{D}\). Define its \textbf{fold norm} (Norm) along \(\pi_m\) as
+\begin{equation}\label{eq:xi-adams-norm-def}
+\boxed{\;
+\mathrm{Nm}_m[F](w)
+~:=~
+\prod_{\omega^m=w}F(\omega),
+\qquad w\in\mathbb{D}.
+\;}
+\end{equation}
+Equivalently, by locally choosing an analytic branch of the \(m\)-th root \(w^{1/m}\), one can write
+\begin{equation}\label{eq:xi-adams-norm-branch}
+\mathrm{Nm}_m[F](w)
+~=~
+\prod_{k=0}^{m-1}F\!\bigl(\zeta_m^k\,w^{1/m}\bigr).
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Single-valued analyticity]\label{prop:xi-adams-norm-holomorphic}
+If \(F\) is analytic in \(\mathbb{D}\), then \(\mathrm{Nm}_m[F]\) is analytic and single-valued in \(\mathbb{D}\).
+\end{proposition}
+
+\begin{proof}
+On any simply connected open set \(U\subset\mathbb{D}\setminus\{0\}\), one can choose an analytic branch \(w^{1/m}\), and \eqref{eq:xi-adams-norm-branch} gives an analytic expression for \(\mathrm{Nm}_m[F]\) on \(U\).
+Changing the branch amounts to multiplying \(w^{1/m}\) by some \(\zeta_m^\ell\), which merely permutes the factors and leaves the product invariant; hence the definition is independent of the branch choice and can be analytically continued to \(\mathbb{D}\setminus\{0\}\).
+At \(w=0\), \(\mathrm{Nm}_m[F](0)=F(0)^m\), and by the Taylor expansion of \(F\) one sees that there is no essential singularity, so the continuation extends to an analytic function.
+Therefore \(\mathrm{Nm}_m[F]\) is analytic and single-valued in \(\mathbb{D}\). \qedhere
+\end{proof}
+
+\paragraph{Scale transport of point defects}
+\begin{theorem}[Scale transport of point defects]\label{thm:xi-adams-norm-zero-transport}
+Let \(F\) be analytic in \(\mathbb{D}\), and take \(m\ge 1\).
+If \(F(a)=0\) (\(a\in\mathbb{D}\)), then \(\mathrm{Nm}_m[F](a^m)=0\).
+More generally, if \(\mathrm{ord}_a(F)=r\), then
+\[
+\mathrm{ord}_{a^m}\bigl(\mathrm{Nm}_m[F]\bigr)\ \ge\ r.
+\]
+\end{theorem}
+
+\begin{proof}
+If \(F(a)=0\), then the \(\pi_m\)-fiber over \(w=a^m\) contains the point \(a\), so the product in \eqref{eq:xi-adams-norm-def} includes the factor \(F(a)=0\), hence \(\mathrm{Nm}_m[F](a^m)=0\).
+\par
+If \(\mathrm{ord}_a(F)=r\), take a local parameter \(t\) so that \(F(\omega)=(\omega-a)^r g(\omega)\) with \(g(a)\neq 0\).
+For the case \(a\neq 0\), choose in a neighborhood of \(w\) an analytic branch satisfying \(\omega(w)^m=w\), \(\omega(a^m)=a\); then
+\((\omega(w)-a)\) is first-order nondegenerate in \(w-a^m\), so the factor \(F(\omega(w))\) contributes at least \(r\) orders of vanishing; the remaining factors are products of analytic functions, so the total order is at least \(r\).
+For the case \(a=0\), write \(F(\omega)=\omega^{r}g(\omega)\) with \(g(0)\neq 0\).
+By \eqref{eq:xi-adams-norm-branch},
+\[
+\mathrm{Nm}_m[F](w)
+=\prod_{k=0}^{m-1}\bigl(\zeta_m^k w^{1/m}\bigr)^{r}\,g\!\bigl(\zeta_m^k w^{1/m}\bigr)
+=\Bigl(\prod_{k=0}^{m-1}\zeta_m^{kr}\Bigr)\,w^{r}\cdot \prod_{k=0}^{m-1}g\!\bigl(\zeta_m^k w^{1/m}\bigr).
+\]
+The last factor is analytic at \(w=0\) and evaluates to \(g(0)^m\neq 0\), so \(\mathrm{ord}_{0}(\mathrm{Nm}_m[F])=r\).
+\qedhere
+\end{proof}
+
+\paragraph{Invertibilization of endpoint compression: explicit scale threshold and fixed-radius Jensen certificate}
+Following \eqref{eq:xi-ramanujan-horizon-Fzeta} for the diskified completion object \(F_\zeta\) (\(F_\zeta(w)=\Xi_\zeta(\frac12+\mathrm{i}\mathcal{C}^{-1}(w))\)), fix a target radius \(r_\star\in(0,1)\).
+For any off-slice zero \(\rho=\beta+\mathrm{i}\gamma\) (\(0<\beta<\tfrac12\)), its disk image \(w_\rho\) satisfies \(|w_\rho|<1\) and \(F_\zeta(w_\rho)=0\) (Theorem \ref{thm:app-rh-iff-disk-zero-free} and the corresponding caliber of Theorem \ref{thm:xi-offcritical-quadratic-radial-compression}).
+\par
+Define the explicit scale threshold
+\begin{equation}\label{eq:xi-adams-norm-mstar-def}
+m_\star(\gamma,\delta;r_\star)
+:=\left\lceil \frac{\log(r_\star^{2})}{\log(|w_\rho|^{2})}\right\rceil,
+\qquad
+\delta=\tfrac12-\beta,
+\end{equation}
+then since \(|w_\rho|^2\in(0,1)\) one has \(\log(|w_\rho|^2)<0\), hence
+\begin{equation}\label{eq:xi-adams-norm-mstar-radius}
+|w_\rho|^{m_\star}\ \le\ r_\star.
+\end{equation}
+Moreover, when \(|\gamma|\to\infty\) with \(\delta\) bounded, using the first-order logarithmic expansion of
+\(|w_\rho|^{2}=1-\frac{4\delta}{\gamma^{2}+(1+\delta)^{2}}\) one obtains the asymptotic
+\begin{equation}\label{eq:xi-adams-norm-mstar-asymptotic}
+\boxed{\;
+m_\star(\gamma,\delta;r_\star)
+\sim
+\frac{\gamma^{2}+(1+\delta)^{2}}{4\delta}\,\log\!\frac{1}{r_\star^{2}}
+\qquad(|\gamma|\to\infty).\;}
+\end{equation}
+
+\begin{corollary}[Fixed-radius defect certificate (scale exchange law)]\label{cor:xi-adams-norm-fixed-radius-jensen-certificate}
+Take any \(R\in(r_\star,1)\).
+If there exists an off-slice zero \(\rho=\beta+\mathrm{i}\gamma\) (\(0<\beta<\tfrac12\)) with corresponding disk zero \(w_\rho\), and one takes \(m_\star=m_\star(\gamma,\delta;r_\star)\) as in \eqref{eq:xi-adams-norm-mstar-def},
+then \(\mathrm{Nm}_{m_\star}[F_\zeta]\) satisfies a deterministic lower bound on the Jensen defect (Definition \ref{def:app-jensen-defect}) at radius \(R\):
+\[
+D_{\mathrm{Nm}_{m_\star}[F_\zeta]}(R)\ \ge\ \log\!\frac{R}{|w_\rho|^{m_\star}}\ \ge\ \log\!\frac{R}{r_\star}\ >\ 0,
+\]
+thereby producing a positive defect lower bound at fixed radius \(R\) that is independent of the height parameter \(\gamma\); the cost is borne by the scale parameter \(m_\star\), which satisfies the quadratic growth law \eqref{eq:xi-adams-norm-mstar-asymptotic}.
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:xi-adams-norm-zero-transport}, \(F_\zeta(w_\rho)=0\) implies \(\mathrm{Nm}_{m_\star}[F_\zeta](w_\rho^{m_\star})=0\), and by \eqref{eq:xi-adams-norm-mstar-radius} one has \(|w_\rho^{m_\star}|\le r_\star<R\).
+By the Jensen summation formula (Proposition \ref{prop:app-jensen-formula-defect}), any zero satisfying \(|a|<R\) contributes at least \(\log(R/|a|)\), hence
+\[
+D_{\mathrm{Nm}_{m_\star}[F_\zeta]}(R)\ \ge\ \log\!\frac{R}{|w_\rho|^{m_\star}}
+\ \ge\ \log\!\frac{R}{r_\star}.
+\]
+\qedhere
+\end{proof}
+
+\paragraph{Integer-coefficient alignment with Chebyshev--Adams: algebraic closure of the scale gate}
+It has been shown in the main text that under half-angle completion coordinates, the power semigroup \(u\mapsto u^m\) is equivalent in invariant trace coordinates to the integer-coefficient polynomial action \(S\mapsto C_m(S)\) (Remark \ref{rem:xi-half-angle-endpoint-paradigm}).
+Therefore \(\pi_m\) is not a purely analytic device but is isomorphic to the Chebyshev--Adams dynamics in invariant coordinates: the scale parameter \(m\) can be addressed with integer coefficients in the \(\ZZ\)-structure.
+In this sense, the fold gate \(\mathrm{Nm}_m\) can be viewed as the multiplicative pushforward along \(\pi_m\): it folds the branch degrees of freedom of the \(m\)-fold covering into a single-valued object, enabling point defects in the endpoint boundary layer to be transported to a prescribed compact subdisk and made manifest at a fixed radius via Jensen defect certificates (Corollary \ref{cor:xi-adams-norm-fixed-radius-jensen-certificate}).
+
+\paragraph{Root-free audit interface and endpoint four-channel closure (minimal introduction of contravariant fiber)}
+Under the Cayley rational parametrization, the power action on half-angle variables can be lifted to purely rational/integer-coefficient operations: parametrize the half-angle variable by
+\(
+r=\iota(x)=(1+\mathrm{i}x)/(1-\mathrm{i}x)
+\),
+then the completion trace coordinate \(S=r+r^{-1}\) yields the fully rational closed form \(S(x)=2(1-x^{2})/(1+x^{2})\), and there exists an integer-coefficient recursion \(x\mapsto\tau_d(x)\) such that \(C_d(S(x))=S(\tau_d(x))\) (Proposition \ref{prop:chebyshev-adams-fully-rational}).
+Therefore, unitary-slice certificate constructions aligned with \(S\mapsto C_d(S)\) can be implemented at the integer level as a ``no trigonometric functions, no algebraic radicals'' computable audit interface.
+\par
+On the other hand, if the endpoint branch memory is to be lifted from the three-state ejection to a full \(\ZZ/4\) channel, one must introduce a minimal inversion contravariant fiber coordinate; to avoid confusion with the off-slice offset \(\delta=\tfrac12-\beta\) in this section, this is denoted
+\(
+\delta_{\mathrm{anti}}:=r-r^{-1}
+\).
+The appendix provides the exact minimal closure and the companion identity:
+\(
+\mathcal A^{-}=\delta_{\mathrm{anti}}\ZZ[S]
+\)
+and
+\(
+D_d(S,\delta_{\mathrm{anti}})=\delta_{\mathrm{anti}}\,U_{d-1}(S/2)
+\)
+(Remark \ref{rem:endpoint-inv-antiinv-min-closure}, Proposition \ref{prop:endpoint-odd-chebyshev-identity}), thereby producing the discrete index \(U_{d-1}(0)=\sin(d\pi/2)\) at the endpoint branch \(r=\pm\mathrm{i}\) and realizing the minimal \(\chi_4\)-type four-channel readout (Theorem \ref{thm:endpoint-four-channel-chi4}).
+
+\paragraph{Multi-scale Toeplitz--PSD derived hierarchy: from Toeplitz--PSD to Adams--Toeplitz--PSD}
+By Appendix Theorem \ref{thm:app-horizon-toeplitz-lmi}, if \(\mathscr{C}(w)=c_0+2\sum_{n\ge 1}c_n w^n\) belongs to the Carath\'eodory class, then there exists a positive measure \(\mu\) such that
+\(
+c_n=\int_{\TT}\xi^n\,d\mu(\xi)
+\).
+For each \(m\ge 1\), define the pushforward measure \(\mu_m:=(\xi\mapsto \xi^m)_*\mu\); its moments satisfy
+\[
+c^{(m)}_n:=\int_{\TT}\xi^n\,d\mu_m(\xi)=\int_{\TT}(\xi^m)^n\,d\mu(\xi)=c_{mn}.
+\]
+Therefore, for any \(N,m\ge 1\), the sparse Toeplitz principal submatrix family
+\begin{equation}\label{eq:xi-adams-toeplitz-psd}
+\boxed{\;
+\mathbf{T}^{(m)}_N
+:=\bigl(c_{m(j-k)}\bigr)_{0\le j,k\le N}\ \succeq\ 0\qquad(\forall\,N,m)\;}
+\end{equation}
+holds automatically.
+This derived hierarchy couples endpoint compression directly with the externalized scale parameter \(m\): while preserving the positivity certificate caliber, it forms a family of multi-scale PSD constraints whose resolution can be selected via \(m\).
+
+\begin{theorem}[Scaled theorem of the symmetry--auditability tension (scale exchange law)]\label{thm:xi-symmetry-audit-tension-scaled}
+Under the self-dual completion and fixed-slice regime, the disk image \(w_\rho\) of an off-slice point defect \(\rho=\beta+\mathrm{i}\gamma\) is structurally compressed into the endpoint boundary layer by the Cayley--Busemann mechanism and satisfies the quadratic radial compression law of Theorem \ref{thm:xi-offcritical-quadratic-radial-compression}.
+The Adams--Norm fold gate \(\mathrm{Nm}_m\) along the power covering \(\pi_m(\omega)=\omega^m\) can transport point defects from this endpoint boundary layer to any prescribed compact subdisk: for any \(r_\star\in(0,1)\) there exists an explicit scale \(m_\star\) such that \(|w_\rho|^{m_\star}\le r_\star\) and \(\mathrm{Nm}_{m_\star}[F_\zeta]\) produces a height-independent positive Jensen defect lower bound at fixed radius \(R\in(r_\star,1)\) (Corollary \ref{cor:xi-adams-norm-fixed-radius-jensen-certificate}).
+This scale gate is isomorphic to the integer-coefficient Chebyshev--Adams operation in invariant coordinates, and induces a multi-scale derived PSD hierarchy \eqref{eq:xi-adams-toeplitz-psd} compatible with the Toeplitz--PSD interface.
+\end{theorem}
+
+\paragraph{Linear gain in the endpoint channel: scale amplification of \texorpdfstring{$\Phi_{-1}$}{Phi-1} \texorpdfstring{$\perp$}{orthogonal to} Jensen reparametrization of radius}
+It should be emphasized that under the power pullback \(F^{(m)}(w)=F(w^m)\), the Jensen defect undergoes only a deterministic reparametrization
+\(
+D_{F^{(m)}}(\varrho)=D_F(\varrho^m)
+\)
+(Proposition \ref{prop:app-jensen-defect-power-covariance}), so this operation itself does not produce new radial-average certificate gain.
+In contrast, under the caliber where ``offset is carried solely by Blaschke data,'' the endpoint absorption coefficient \(\Phi_{-1}(B)\) (Proposition \ref{prop:xi-endpoint-absorption-coefficient}) satisfies a linear rescaling under the odd Adams gate
+\(
+B^{(m)}(w)=B(w^m)
+\):
+\(
+\Phi_{-1}(B^{(m)})=m\Phi_{-1}(B)
+\)
+(Theorem \ref{thm:xi-endpoint-absorption-adams-rescaling}).
+Therefore, the same scale parameter \(m\) merely reparametrizes the observation radius in the radial-average channel, while providing verifiable linear amplification in the endpoint channel; this contrast is compatible with the ``scale exchange law'' caliber of this subsection and provides an endpoint gain mechanism independent of the fixed-radius Jensen certificate for subsequent multi-scale audit chains.
+
+\endinput

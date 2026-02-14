@@ -1,0 +1,276 @@
+\begin{lemma}[Strict fusion identity and positive defect term for shifted Fibonacci]\label{lem:pom-shifted-fib-fusion-defect-positive}
+Take Fibonacci sequence $F_0=0,F_1=1$.
+Then for any integers $a,b\ge 0$ the identity holds:
+\begin{equation}\label{eq:pom-shifted-fib-fusion-defect}
+\boxed{\;
+F_{a+2}F_{b+2}=F_{a+b+2}+F_aF_b.\;}
+\end{equation}
+In particular,
+\(
+F_{a+2}F_{b+2}\ge F_{a+b+2}
+\),
+with strict inequality if and only if $a,b\ge 1$;
+thus the shifted sequence $G(n):=F_{n+2}$ is strictly super-multiplicative over the additive semigroup $(\NN_{\ge 1},+)$,
+with its "fusion defect" precisely given by the positive term $F_aF_b$.
+\end{lemma}
+\begin{proof}
+By the Fibonacci addition formula
+\(
+F_{m+n}=F_mF_{n+1}+F_{m-1}F_n
+\),
+taking $m=a+2$, $n=b$ yields:
+\[
+F_{a+b+2}=F_{a+2}F_{b+1}+F_{a+1}F_b.
+\]
+Moreover, by the recurrence $F_{b+2}=F_{b+1}+F_b$ and $F_{a+2}=F_{a+1}+F_a$, we have:
+\[
+F_{a+2}F_{b+2}
+=F_{a+2}(F_{b+1}+F_b)
+=\underbrace{F_{a+2}F_{b+1}+F_{a+1}F_b}_{=\,F_{a+b+2}}
+\;+\;F_aF_b,
+\]
+yielding \eqref{eq:pom-shifted-fib-fusion-defect}.
+The strict inequality holds if and only if $F_aF_b>0$ (i.e., $a,b\ge 1$). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Fibonacci volume law for two-dimensional determinant]\label{cor:pom-fib-determinant-volume-law}
+For any integers $a,b\ge 0$, define the matrix:
+\[
+M(a,b):=\begin{pmatrix}
+F_{a+2} & F_a\\
+F_b & F_{b+2}
+\end{pmatrix}.
+\]
+Then its determinant satisfies the strict identity:
+\[
+\boxed{\;\det M(a,b)=F_{a+b+2}.\;}
+\]
+This identity elevates the "shifted product—fusion defect" structure to a deterministic area (volume) law: the area image of the two-component parameter pair $(a,b)$ on the integer lattice is completely characterized by a single Fibonacci number $F_{a+b+2}$.
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{lem:pom-shifted-fib-fusion-defect-positive},
+\(
+F_{a+2}F_{b+2}-F_aF_b=F_{a+b+2}
+\),
+and the left-hand side is precisely $\det M(a,b)$. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Refined monotonicity and extremal bounds for path component multiplicative multiplicity]\label{prop:pom-path-component-multiplicity-refinement-monotone-extrema}
+Define the multiplicative multiplicity of path component lengths $\ell_1,\dots,\ell_r\ge 1$ as:
+\[
+d(\ell_1,\dots,\ell_r):=\prod_{i=1}^r F_{\ell_i+2},
+\qquad
+L:=\sum_{i=1}^r \ell_i.
+\]
+If two components $(a,b)$ are fused into a single component $(a+b)$ (where $a,b\ge 1$), the multiplicity strictly decreases with the decrease amount in closed form:
+\[
+\boxed{\;
+d(\ldots,a,b,\ldots)-d(\ldots,a+b,\ldots)
+=\Big(\prod_{\text{other }i}F_{\ell_i+2}\Big)\,F_aF_b\ >\ 0.\;}
+\]
+Therefore $d$ is strictly monotonic with respect to the "component refinement partial order": any refinement operation (splitting some component into two positive-length segments) strictly increases $d$.
+Thus for any decomposition $L=\sum_i\ell_i$ we have the extremal bounds:
+\[
+\boxed{\;
+F_{L+2}\ \le\ \prod_{i=1}^r F_{\ell_i+2}\ \le\ 2^L.\;}
+\]
+The left-hand equality holds if and only if $r=1$ (single component); the right-hand equality holds if and only if $\ell_i\equiv 1$ (all components of length $1$, finest decomposition).
+\end{proposition}
+\begin{proof}
+The difference closed form follows from Lemma~\ref{lem:pom-shifted-fib-fusion-defect-positive} by taking $(a,b)$ and multiplying by the remaining factors:
+\[
+F_{a+2}F_{b+2}-F_{a+b+2}=F_aF_b>0\qquad(a,b\ge 1).
+\]
+\par
+\textbf{Lower bound:} Starting from any decomposition $(\ell_1,\dots,\ell_r)$, progressively fuse two components until obtaining a single component $(L)$;
+each fusion step strictly decreases $d$, thus:
+\(
+d(\ell_1,\dots,\ell_r)\ge d(L)=F_{L+2}
+\),
+with equality if and only if $r=1$.
+\par
+\textbf{Upper bound:} For each $\ell\ge 1$, we can prove by induction that $F_{\ell+2}\le 2^\ell$: when $\ell=1$, $F_3=2$;
+if it holds for $\ell-1,\ell-2$, then:
+\(
+F_{\ell+2}=F_{\ell+1}+F_\ell\le 2^{\ell-1}+2^{\ell-2}\le 2^\ell
+\).
+Therefore:
+\(
+\prod_i F_{\ell_i+2}\le \prod_i 2^{\ell_i}=2^{\sum_i\ell_i}=2^L
+\).
+If some $\ell_i\ge 2$, then $F_{\ell_i+2}<2^{\ell_i}$, making the overall product strictly less than $2^L$;
+thus the upper bound equality holds if and only if $\ell_i=1$ for all $i$. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Extremal law for fiber multiplicative multiplicity under fixed component number: extreme fragmentation and binary lower envelope]\label{prop:pom-multiplicity-fixed-r-extrema}
+Let $L\ge 1$ and $1\le r\le L$, and let:
+\[
+\mathcal{C}_{L,r}:=\Bigl\{(\ell_1,\dots,\ell_r):\ \ell_i\in\NN_{\ge 1},\ \sum_{i=1}^r\ell_i=L\Bigr\}.
+\]
+For $\boldsymbol{\ell}=(\ell_1,\dots,\ell_r)\in\mathcal{C}_{L,r}$, denote:
+\(
+d(\boldsymbol{\ell})=\prod_{i=1}^r F_{\ell_i+2}
+\).
+Then on $\mathcal{C}_{L,r}$ we have the following strict extremal structure (endpoints unique up to permutation):
+\begin{enumerate}
+  \item \textbf{(Maximum: extreme fragmentation)} We have:
+  \begin{equation}\label{eq:pom-multiplicity-fixed-r-max}
+  \boxed{\;\max_{\mathcal{C}_{L,r}} d(\boldsymbol{\ell})=2^{\,r-1}\,F_{L-r+3}\;}
+  \end{equation}
+  with equality if and only if $\boldsymbol{\ell}$ is a permutation of $(1,\dots,1,L-r+1)$.
+  \item \textbf{(Minimum: as many $2$-components as possible)} Let:
+  \(
+  u:=L-r
+  \)
+  (the "allocatable surplus length" relative to the all-$1$ baseline).
+  If $u\le r$ (equivalent to $L\le 2r$), then:
+  \begin{equation}\label{eq:pom-multiplicity-fixed-r-min-short}
+  \boxed{\;\min_{\mathcal{C}_{L,r}} d(\boldsymbol{\ell})=2^{\,2r-L}\,3^{\,L-r}\;}
+  \end{equation}
+  with equality if and only if $\boldsymbol{\ell}$ consists of $u$ copies of $2$ and $r-u$ copies of $1$.
+  If $u\ge r$ (equivalent to $L\ge 2r$), then:
+  \begin{equation}\label{eq:pom-multiplicity-fixed-r-min-long}
+  \boxed{\;\min_{\mathcal{C}_{L,r}} d(\boldsymbol{\ell})=3^{\,r-1}\,F_{L-2r+4}\;}
+  \end{equation}
+  with equality if and only if $\boldsymbol{\ell}$ consists of $r-1$ copies of $2$ and one component of length $L-2r+2$ (note that $L-2r+2\ge 2$ in this case).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\textbf{Maximum:} Take any $a,b\ge 2$. By Lemma~\ref{lem:pom-shifted-fib-fusion-defect-positive} and the Fibonacci addition formula
+\(
+F_{m+n}=F_mF_{n+1}+F_{m-1}F_n
+\),
+we obtain:
+\[
+2F_{a+b+1}-F_{a+2}F_{b+2}
+=\underbrace{(2F_{a+b+1}-F_{a+b+2})}_{=\,F_{a+b-1}}
+-F_aF_b
+=F_{a-1}F_{b-1}>0.
+\]
+Therefore, the two-component replacement
+\(
+(a,b)\mapsto(1,a+b-1)
+\)
+strictly increases the product $F_{a+2}F_{b+2}\mapsto 2F_{a+b+1}$.
+Starting from any $\boldsymbol{\ell}\in\mathcal{C}_{L,r}$, if at least two entries $\ge 2$ exist, repeatedly applying the above replacement to two such entries strictly increases $d$ while increasing "the number of length-$1$ components" by $1$ each step.
+The process must terminate in finite steps at a decomposition with exactly $r-1$ copies of $1$, which is a permutation of $(1,\dots,1,L-r+1)$; its value is precisely \eqref{eq:pom-multiplicity-fixed-r-max}, and strictness yields endpoint uniqueness.
+\par
+\textbf{Minimum: Step 1 (eliminating avoidable $1$s).} For any $b\ge 3$, we have:
+\[
+2F_{b+2}-3F_{b+1}
+=2(F_{b+1}+F_b)-3F_{b+1}
+=F_{b-2}>0,
+\]
+thus the replacement:
+\(
+(1,b)\mapsto(2,b-1)
+\)
+strictly decreases the product $2F_{b+2}\mapsto 3F_{b+1}$.
+Therefore, in the minimization problem, when $L>r$ all remaining $1$s can only be compatible with all other component lengths $\le 2$; thus when $L\le 2r$, the minimal solution must consist of $1$s and $2$s, and due to the constraint $\sum_i\ell_i=L$ their counts are unique, yielding \eqref{eq:pom-multiplicity-fixed-r-min-short} and endpoint structure.
+\par
+\textbf{Minimum: Step 2 (eliminating excess $\ge 3$ components).} In the case $L\ge 2r$, we can already require all component lengths $\ge 2$.
+If two entries $a,b\ge 3$ exist, then by Lemma~\ref{lem:pom-shifted-fib-fusion-defect-positive} and the identity $3F_n=F_{n+2}+F_{n-2}$ ($n\ge 2$), we obtain:
+\[
+F_{a+2}F_{b+2}-3F_{a+b}
+=\bigl(F_{a+b+2}+F_aF_b\bigr)-\bigl(F_{a+b+2}+F_{a+b-2}\bigr)
+=F_aF_b-F_{a+b-2}
+=F_{a-2}F_{b-2}>0,
+\]
+thus the replacement:
+\(
+(a,b)\mapsto(2,a+b-2)
+\)
+strictly decreases the product $F_{a+2}F_{b+2}\mapsto 3F_{a+b}$.
+Repeatedly applying this replacement strictly decreases $d$ while reducing "the number of components of length $\ge 3$" by $1$ each step, eventually reaching a decomposition with at most one entry $\ge 3$; under the constraints $\sum_i\ell_i=L$ and fixed $r$, this terminal state must be $r-1$ copies of $2$ and one component of length $L-2r+2$, yielding \eqref{eq:pom-multiplicity-fixed-r-min-long} and endpoint uniqueness. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Outer envelope for "component number—multiplicity" under fixed total length: reachable interval and monotonic stratification]\label{cor:pom-multiplicity-fixed-L-r-envelope}
+For fixed $L\ge 1$ and $1\le r\le L$, let:
+\[
+\mathcal{D}_{L,r}:=\Bigl\{d(\boldsymbol{\ell}):\ \boldsymbol{\ell}\in\mathcal{C}_{L,r}\Bigr\}.
+\]
+Then $\mathcal{D}_{L,r}\subseteq\bigl[d_{\min}(L,r),d_{\max}(L,r)\bigr]$, where the endpoints are given by the closed forms in Proposition~\ref{prop:pom-multiplicity-fixed-r-extrema} and are both attainable.
+Moreover, for any $1\le r<r'\le L$ we have strict monotonic stratification:
+\[
+\boxed{\ \min\mathcal{D}_{L,r}\ <\ \min\mathcal{D}_{L,r'},\qquad
+\max\mathcal{D}_{L,r}\ <\ \max\mathcal{D}_{L,r'}\ } .
+\]
+Therefore, the component number $r$ simultaneously controls both the upper and lower boundaries of multiplicative multiplicity under fixed length $L$, partitioning "realizable multiplicities" into a family of closed-form outer envelopes that strictly rise with $r$.
+\end{corollary}
+\begin{proof}
+The interval envelope and endpoint attainability follow directly from Proposition~\ref{prop:pom-multiplicity-fixed-r-extrema}.
+For monotonicity: by Proposition~\ref{prop:pom-path-component-multiplicity-refinement-monotone-extrema}, take any $\boldsymbol{\ell}\in\mathcal{C}_{L,r}$ and perform one refinement (splitting some component into two positive-length segments) to obtain $\boldsymbol{\ell}'\in\mathcal{C}_{L,r+1}$ with $d(\boldsymbol{\ell}')>d(\boldsymbol{\ell})$, thus $\max\mathcal{D}_{L,r+1}>\max\mathcal{D}_{L,r}$.
+On the other hand, take any $\boldsymbol{\ell}'\in\mathcal{C}_{L,r+1}$ and fuse two adjacent segments to obtain $\boldsymbol{\ell}\in\mathcal{C}_{L,r}$ with $d(\boldsymbol{\ell})<d(\boldsymbol{\ell}')$, thus $\min\mathcal{D}_{L,r}<\min\mathcal{D}_{L,r+1}$.
+Iterating the above strict inequalities for $r<r'$ yields the conclusion. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Two-parameter Binet normal form and global error bound for multiplicity]\label{prop:pom-multiplicity-binet-two-parameter-normal-form}
+Let $\varphi=\frac{1+\sqrt5}{2}$, and suppose $\ell_1,\dots,\ell_r\ge 1$, $L=\sum_i\ell_i$.
+Then the multiplicative multiplicity $d(\ell_1,\dots,\ell_r)=\prod_i F_{\ell_i+2}$ has the exact decomposition:
+\[
+\boxed{\;
+d(\ell_1,\dots,\ell_r)
+=\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)^r\varphi^{L}\prod_{i=1}^r\bigl(1-(-\varphi^{-2})^{\ell_i+2}\bigr).\;}
+\]
+Since $\ell_i\ge 1\Rightarrow |(-\varphi^{-2})^{\ell_i+2}|\le \varphi^{-6}$, we obtain the uniform two-sided bounds:
+\[
+\boxed{\;
+\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)^r\varphi^{L}(1-\varphi^{-6})^r
+\ \le\
+d(\ell_1,\dots,\ell_r)
+\ \le\
+\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)^r\varphi^{L}(1+\varphi^{-6})^r.\;}
+\]
+Therefore, on a logarithmic scale, $d$ is dominated by the two parameters $(L,r)$, while oscillatory terms are uniformly controlled by the explicit exponent $\varphi^{-6}$.
+\end{proposition}
+\begin{proof}
+By Binet's formula $F_n=(\varphi^n-\psi^n)/\sqrt5$ with $\psi=-\varphi^{-1}$, we have:
+\[
+F_{\ell+2}=\frac{\varphi^{\ell+2}}{\sqrt5}\Bigl(1-\Bigl(\frac{\psi}{\varphi}\Bigr)^{\ell+2}\Bigr)
+=\frac{\varphi^{\ell+2}}{\sqrt5}\bigl(1-(-\varphi^{-2})^{\ell+2}\bigr).
+\]
+Taking the product over $i$ yields the stated exact decomposition.
+Moreover, since $\ell_i+2\ge 3$, we have:
+\(
+|(-\varphi^{-2})^{\ell_i+2}|\le \varphi^{-6}
+\),
+thus each factor falls in the interval $[1-\varphi^{-6},\,1+\varphi^{-6}]$; taking the product yields the two-sided bounds. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Associativity constraint for fusion defect: Fibonacci \texorpdfstring{$2$}{2}-cocycle identity]\label{prop:pom-fusion-defect-2cocycle-identity}
+Let $G(n):=F_{n+2}$, and define the fusion defect term:
+\(
+\omega(a,b):=F_aF_b
+\)
+($a,b\ge 0$).
+By Lemma~\ref{lem:pom-shifted-fib-fusion-defect-positive}'s fusion law:
+\(
+G(a)G(b)=G(a+b)+\omega(a,b)
+\)
+and multiplicative associativity, for any $a,b,c\ge 0$ we must have the strict identity:
+\[
+\boxed{\;
+\omega(a,b)G(c)+\omega(a+b,c)
+=\omega(b,c)G(a)+\omega(a+b,c)
+=\omega(c,a)G(b)+\omega(c+a,b).\;}
+\]
+This identity shows that $\omega$ as a "fusion defect term" satisfies a nontrivial $2$-cocycle consistency: the total defect for any three components is independent of fusion order and is jointly characterized by the three explicit expressions above.
+\end{proposition}
+\begin{proof}
+Expand the product $G(a)G(b)G(c)$ in two bracketing ways: $(ab)c$ and $a(bc)$:
+\[
+\bigl(G(a)G(b)\bigr)G(c)=\bigl(G(a+b)+\omega(a,b)\bigr)G(c)=G(a+b+c)+\omega(a+b,c)+\omega(a,b)G(c),
+\]
+\[
+G(a)\bigl(G(b)G(c)\bigr)=G(a)\bigl(G(b+c)+\omega(b,c)\bigr)=G(a+b+c)+\omega(a,b+c)+\omega(b,c)G(a),
+\]
+Comparing the two expressions and canceling the common term $G(a+b+c)$ yields:
+\[
+\omega(a,b)G(c)+\omega(a+b,c)
+=\omega(b,c)G(a)+\omega(a,b+c).
+\]
+Since $\omega$ is symmetric ($\omega(a,b)=\omega(b,a)$), we have $\omega(a,b+c)=\omega(b+c,a)$, yielding the first equality.
+Cyclic permutation of $(a,b,c)$ yields the equality of all three. This completes the proof.
+\end{proof}
+
+\endinput

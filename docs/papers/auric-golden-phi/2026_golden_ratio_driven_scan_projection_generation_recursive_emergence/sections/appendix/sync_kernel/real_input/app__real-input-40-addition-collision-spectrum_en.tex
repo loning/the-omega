@@ -1,0 +1,58 @@
+\subsubsection{Addition as Projection: Collision Spectrum and Constant Factor Differences Between the 10-State Normalized Kernel and the Real Input 40-State Kernel}
+\label{app:real-input-40-addition-collision-spectrum}
+
+Stable addition satisfies the folding formula
+\(
+c\oplus d=\Fold_\infty(c+d)
+\)
+(Corollary \ref{cor:add-as-fold}), whose mechanistic semantics can be expressed as ``first lift the input to two bit streams, then project back to a stable type'':
+the input is \((x_k,y_k)\in\{0,1\}^2\), the intermediate ontological field is the digit-wise sum \(d_k=x_k+y_k\in\{0,1,2\}\), and the synchronization kernel then outputs the normalized bit \(e_k\in\{0,1\}\).
+
+\paragraph{Two Kernel Calibers: Normalized Kernel vs.\ Real Arithmetic Kernel}
+The $10$-state synchronization kernel of Appendix \ref{app:sync-kernel-basic} is the online normalizer of \(\Fold_\infty\): its input alphabet is \(d\in\{0,1,2\}\) and its output alphabet is \(e\in\{0,1\}\).
+The \(40\)-state real input kernel of Proposition \ref{prop:real-input-40-essential-20} incorporates the constraint that ``the input must come from two legitimate Zeckendorf orbits (forbidding adjacent \(11\))'' into the state space,
+thereby yielding the minimal auditable mechanistic object under real arithmetic driving.
+
+\paragraph{The \texorpdfstring{$q$}{q}-fold Collision Moment and Collision Spectral Constant of the Addition Projection}
+Following the caliber of Definition \ref{def:pom-moment-q}, we view addition as a deterministic transducer (which reads \((x_k,y_k)\) at each step and outputs \(e_k\)).
+For an integer \(q\ge 2\), define the \(q\)-th order collision moment of length \(m\) as
+\[
+S_q^{\oplus}(m):=\sum_{y} d_m(y)^q,
+\]
+where \(y\) ranges over all output blocks of length \(m\) (Zeckendorf digit blocks), and \(d_m(y)\) is the preimage count of input blocks (length-\(m\) \((x,y)\)-pairs) producing that output block.
+By the moment-kernel compilation route of Proposition \ref{prop:pom-moment-kernel-exists} (taking the \(q\)-fold synchronous direct product of the underlying transducer and imposing the ``simultaneous same output'' constraint at each step), there exists a finite nonneg integer kernel \(A_q^{\oplus}\) such that
+\(
+S_q^{\oplus}(m)=\Theta((r_q^{\oplus})^m)
+\), where
+\(
+r_q^{\oplus}:=\rho(A_q^{\oplus})
+\)
+is the Perron dominant scale; this constant can be regarded as the spectral fingerprint of the indistinguishability manufactured by ``addition as a single projection'' on the spatial side.
+
+\begin{proposition}[Collision Spectrum of the Addition Projection: 10-State vs.\ Real Input 40-State]\label{prop:addition-collision-spectrum-sync10-vs-real40}
+Let \(r_q^{\oplus,\mathrm{sync10}}\) denote the addition projection collision spectral constant obtained on the $10$-state normalized kernel driven by full shift input \(\{0,1\}^2\);
+let \(r_q^{\oplus,\mathrm{real}}\) denote the corresponding constant obtained under the real input \(40\)-state kernel (with the Zeckendorf guard constraint).
+Then numerically (script-generated):
+\[
+r_2^{\oplus,\mathrm{sync10}}\approx 8.7430515270,\qquad
+r_3^{\oplus,\mathrm{sync10}}\approx 19.8508935221,\qquad
+r_2^{\oplus,\mathrm{real}}\approx 3.9985433445,
+\]
+whence the second-order collision dominant scale exhibits a significant decrease
+\[
+\frac{r_2^{\oplus,\mathrm{sync10}}}{r_2^{\oplus,\mathrm{real}}}\approx 2.186559.
+\]
+\end{proposition}
+
+\begin{remark}[Interpretation: The Independent Value of the 40-State Kernel Arises from ``Geometrizing the Input Constraint into the Kernel'' (Auditable)]
+\label{rem:addition-collision-spectrum-interpretation}
+Proposition \ref{prop:addition-collision-spectrum-sync10-vs-real40} shows that:
+if one uses only the $10$-state normalized kernel while ignoring the legitimacy constraint on the real arithmetic input, the second-order same-image collision strength of ``addition as projection'' (characterized by \(r_2^{\oplus}\)) is systematically exaggerated at exponential scale.
+The real input kernel promotes this constraint to finite-state geometry, yielding a quantifiable constant factor difference on the hardest spatial metric \(r_2^{\oplus}\);
+therefore the \(40\)-state kernel is not only more ``realistic'' but also makes an independent information contribution at the spatial loss spectrum level.
+\end{remark}
+
+\paragraph{Reproducibility Protocol}
+Table \ref{tab:sync-kernel-addition-collision-spectrum} reports the above constants and derived quantities; the generating script is
+\texttt{scripts/exp\_sync\_kernel\_addition\_collision\_spectrum.py} (included in the \texttt{scripts/run\_all.py} pipeline).
+\input{sections/generated/tab_sync_kernel_addition_collision_spectrum}

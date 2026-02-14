@@ -1,0 +1,169 @@
+\subsubsection{Moment-Order Positivity and Cross-Order Convexity: Hankel Positive Semi-Definiteness, Rational Generating Functions, and Spectral Constraints}\label{subsubsec:pom-moment-hankel-positivity-crossq}
+This paragraph characterizes the \textbf{moment-order (\(q\)-axis) structure} at fixed resolution \(m\): the power-sum moments \(\{S_q(m)\}_{q\ge 0}\) are interpreted as the moment sequence of a discrete measure,
+from which Hankel positivity yields cross-order discrete convexity, aligning with the pressure/spectral radius fingerprints of the main text (Proposition \ref{prop:pom-pressure-convexity}).
+In addition, we record the standard spectral decomposition protocol ``finite-state matrix power readout \(\Rightarrow\) rational generating function \(\Rightarrow\) full-order Jordan expansion,''
+so that the consequences of the recurrence/kernel realization can be directly organized into a verifiable chain of asymptotic formulas.
+
+\begin{proposition}[Hankel positive semi-definiteness and nonnegativity of principal minors for power-sum moments]\label{prop:pom-power-sum-hankel-psd}
+Fix a resolution \(m\ge 1\), and let the fiber multiplicity of the folding \(\Fold_m:\Omega_m\twoheadrightarrow X_m\) be
+\(
+d_m(x):=\card{\Fold_m^{-1}(x)}\ge 1
+\).
+For integer \(q\ge 0\) define the power-sum moment
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q,
+\qquad
+S_0(m)=|X_m|,
+\qquad
+S_1(m)=\sum_x d_m(x)=|\Omega_m|=2^m.
+\]
+Then for any integer \(r\ge 0\), the Hankel matrix
+\[
+H^{(m)}_r:=\bigl[S_{i+j}(m)\bigr]_{0\le i,j\le r}
+\]
+is positive semi-definite; consequently all its principal minors are nonnegative.
+\end{proposition}
+\begin{proof}
+For any \(c=(c_0,\dots,c_r)^{\mathsf T}\in\RR^{r+1}\),
+\[
+c^{\mathsf T}H^{(m)}_r c
+=\sum_{i,j=0}^{r} c_ic_jS_{i+j}(m)
+=\sum_{x\in X_m}\Bigl(\sum_{i=0}^{r}c_i\,d_m(x)^i\Bigr)^2
+\ge 0,
+\]
+whence \(H^{(m)}_r\succeq 0\).
+Any principal submatrix of a positive semi-definite matrix is itself positive semi-definite, so its determinant is nonnegative. \qed
+\end{proof}
+
+\begin{corollary}[Cross-\(q\) discrete log-convexity chain and ratio monotonicity]\label{cor:pom-crossq-logconvex-chain}
+Under the setting of Proposition \ref{prop:pom-power-sum-hankel-psd}, for any integer \(q\ge 1\),
+\[
+\boxed{\;
+S_q(m)^2\ \le\ S_{q-1}(m)\,S_{q+1}(m)\; }.
+\]
+More generally, for any integers \(q\ge r\ge 1\),
+\[
+\boxed{\;
+S_q(m)^2\ \le\ S_{q-r}(m)\,S_{q+r}(m)\; }.
+\]
+Hence the ratio
+\(
+R_q(m):=S_{q+1}(m)/S_q(m)
+\)
+is nondecreasing in \(q\ge 0\) (i.e., \(R_{q}(m)\ge R_{q-1}(m)\) for all \(q\ge 1\)).
+\end{corollary}
+\begin{proof}
+The first inequality follows directly from the nonnegativity of the \(2\times 2\) principal minor \(\det\bigl[\begin{smallmatrix}S_{q-1}(m)&S_q(m)\\ S_q(m)&S_{q+1}(m)\end{smallmatrix}\bigr]\ge 0\).
+For general \(r\ge 1\), applying the Cauchy--Schwarz inequality to the vectors \((d_m(x)^{(q-r)/2})_x\) and \((d_m(x)^{(q+r)/2})_x\) yields
+\[
+S_q(m)=\sum_x d_m(x)^{(q-r)/2}d_m(x)^{(q+r)/2}
+\le \sqrt{S_{q-r}(m)}\,\sqrt{S_{q+r}(m)},
+\]
+and squaring gives the second inequality.
+Finally, from \(S_q(m)^2\le S_{q-1}(m)S_{q+1}(m)\) we obtain
+\(
+S_{q+1}(m)/S_q(m)\ge S_q(m)/S_{q-1}(m)
+\),
+i.e., \(R_q(m)\ge R_{q-1}(m)\). \qed
+\end{proof}
+
+\begin{corollary}[Discrete convexity of the pressure and Perron root inequality]\label{cor:pom-crossq-pressure-convexity}
+Let \(\tau(q):=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m)\) be the moment pressure from Definition \ref{def:pom-moment-pressure}.
+Then for all integers \(q\ge 1\) the discrete convexity inequality holds:
+\[
+\boxed{\;
+2\tau(q)\ \le\ \tau(q-1)+\tau(q+1)\; }.
+\]
+If, moreover, in the verified regime \(\tau(q)=\log r_q\) (where \(r_q=\rho(A_q)\) is the Perron root of the \(q\)-th order collision kernel; see Theorem \ref{thm:pom-collision-kernel-ak} and Definition \ref{def:pom-moment-pressure}), then the cross-order spectral radius constraint
+\[
+\boxed{\;
+r_q^{\,2}\ \le\ r_{q-1}\,r_{q+1}\; }
+\]
+holds.
+\end{corollary}
+\begin{proof}
+From \(S_q(m)^2\le S_{q-1}(m)S_{q+1}(m)\) (Corollary \ref{cor:pom-crossq-logconvex-chain}), taking logarithms, dividing by \(m\), and passing to \(\limsup\) yields the first inequality.
+The second follows by substituting \(\tau(q)=\log r_q\) and exponentiating. \qed
+\end{proof}
+
+\begin{proposition}[Rational generating function and full-order Jordan spectral expansion of the moment sequence]\label{prop:pom-moment-genfunc-jordan}
+Fix an integer \(q\ge 2\).
+Suppose there exist a finite-dimensional nonnegative matrix \(A_q\) and vectors \(u_q,v_q\ge 0\), together with an integer offset \(m_0\ge 0\), such that for all \(n\ge 0\),
+\[
+S_q(n+m_0)=u_q^{\mathsf T}A_q^{\,n}v_q.
+\]
+Then the power series
+\[
+G_q(z):=\sum_{n\ge 0} S_q(n+m_0)\,z^n
+\]
+is a rational function in the formal sense, satisfying the resolvent identity
+\[
+\boxed{\;
+G_q(z)=u_q^{\mathsf T}(I-zA_q)^{-1}v_q\; }.
+\]
+Its denominator can be taken as a factor of \(\det(I-zA_q)\).
+\par
+Furthermore, let \(\mathrm{Spec}(A_q)=\{\lambda_1,\dots,\lambda_s\}\) (counted with Jordan structure) be the spectrum of \(A_q\).
+Then there exist polynomials \(P_j(n)\) (of degree strictly less than the corresponding Jordan block size) such that for all \(n\ge 0\),
+\[
+\boxed{\;
+S_q(n+m_0)=\sum_{j=1}^{s} P_j(n)\,\lambda_j^{\,n}\; }.
+\]
+If \(A_q\) is primitive, write \(r_q=\rho(A_q)>0\) for its Perron root; then there exist constants \(c_q>0\) and \(0<\theta_q<r_q\) such that
+\[
+S_q(n+m_0)=c_q\,r_q^{\,n}+O(\theta_q^{\,n})\qquad(n\to\infty).
+\]
+If \(A_q\) is irreducible but not primitive, with period \(p\), then there exist \(p\)-periodic coefficient sequences \(\{c_{q,r}\}_{r=0}^{p-1}\) such that
+\[
+S_q(n+m_0)=r_q^{\,n}\bigl(c_{q,n\bmod p}+o(1)\bigr)\qquad(n\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+By the Neumann series \((I-zA_q)^{-1}=\sum_{n\ge 0} z^nA_q^n\) (in the sense of formal power series),
+\(
+u_q^{\mathsf T}(I-zA_q)^{-1}v_q=\sum_{n\ge 0}u_q^{\mathsf T}A_q^n v_q\,z^n
+\), yielding the rational representation of \(G_q\) with denominator controlled by \(\det(I-zA_q)\).
+The Jordan expansion is a standard result from finite-dimensional linear algebra: placing \(A_q\) in Jordan normal form and expanding \(u_q^{\mathsf T}A_q^{n}v_q\) gives the polynomial-times-exponential sum;
+the primitive and periodic cases follow from the Perron--Frobenius characterization of the peripheral spectrum. \qed
+\end{proof}
+
+\begin{proposition}[Chernoff-type threshold upper bounds: unified form for counting and pushforward measures]\label{prop:pom-chernoff-threshold-bounds}
+Fix a resolution \(m\) and define the threshold set
+\[
+A_m(\alpha):=\{x\in X_m:\ \log d_m(x)\ge \alpha m\}\qquad(\alpha\ge 0).
+\]
+Then for any integer \(q\ge 1\) and any \(\alpha\ge 0\), we have the deterministic upper bound
+\[
+\boxed{\;
+|A_m(\alpha)|\ \le\ e^{-q\alpha m}\,S_q(m)\; }.
+\]
+Furthermore, let \(w_m(x):=d_m(x)/2^m\) be the folding pushforward of the uniform microstate measure, and sample \(X_m\sim w_m\).
+Then for any integer \(q\ge 1\) and any \(\alpha\ge 0\),
+\[
+\boxed{\;
+\mathbb{P}\bigl(\log d_m(X_m)\ge \alpha m\bigr)
+\ \le\ e^{-q\alpha m}\,\frac{S_{q+1}(m)}{2^m}\; }.
+\]
+The two bounds recover, at exponential scale, the spectral upper bound of Proposition \ref{prop:pom-spectrum-legendre-upper} (counting measure) and the Chernoff/Markov tail bounds of \S\ref{subsec:pom-spectral-resource-type} (output measure tail budget), respectively.
+\end{proposition}
+\begin{proof}
+For the first bound, if \(x\in A_m(\alpha)\) then \(d_m(x)^q\ge e^{q\alpha m}\), so
+\(
+|A_m(\alpha)|e^{q\alpha m}\le \sum_{x\in A_m(\alpha)}d_m(x)^q\le S_q(m)
+\).
+For the second bound, on \(A_m(\alpha)\) we have \(d_m(x)^{q+1}\ge e^{q\alpha m}d_m(x)\), hence
+\(
+\sum_{x\in A_m(\alpha)}d_m(x)\le e^{-q\alpha m}\sum_{x\in A_m(\alpha)}d_m(x)^{q+1}\le e^{-q\alpha m}S_{q+1}(m)
+\),
+and dividing by \(2^m\) yields the result. \qed
+\end{proof}
+
+\begin{remark}[Fibonacci baseline, strictness, and endpoint extremal spectrum]\label{rem:pom-fib-baseline-and-endpoint}
+For the Fibonacci-scale universal lower bound on the moment pressure and its strictness criterion, see directly Proposition \ref{prop:pom-rq-universal-bounds};
+the equality condition at fixed \(m\) is equivalent to all fibers having equal size (i.e., \(d_m(\cdot)\) is constant everywhere), corresponding to strict uniformity of the pushforward distribution \(w_m\).
+\par
+For the characterization of the extreme fiber exponent (maximal fiber growth rate) and the endpoint of the higher-order pressure slope,
+the main text has already provided this via Proposition \ref{prop:pom-rq-qinfty-endpoint} and Proposition \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint}:
+the core mechanism is that the basic squeeze \(M_m^q\le S_q(m)\le |X_m|M_m^q\) compresses the constant-level contribution of \(|X_m|\) in the slope limit as \(q\to\infty\).
+\end{remark}
+

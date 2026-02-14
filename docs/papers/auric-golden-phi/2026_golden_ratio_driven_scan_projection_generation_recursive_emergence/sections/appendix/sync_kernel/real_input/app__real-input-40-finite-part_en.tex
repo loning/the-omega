@@ -1,0 +1,284 @@
+\subsubsection{Abel Finite Part Constant logM Interface Formula}\label{app:real-input-40-finite-part}
+Let the primitive orbit generating function be
+\[
+P(z):=\sum_{n\ge 1}p_n z^n,
+\qquad
+\mathcal{P}(r):=P(r/\lambda)=\sum_{n\ge 1}\frac{p_n}{\lambda^n}r^n.
+\]
+Then as $r\uparrow 1$, the standard singularity expansion holds:
+\[
+\mathcal{P}(r)=-\log(1-r)+\log\mathfrak{M}+o(1),
+\]
+so that the Abel finite part can be written as
+\[
+\log\mathfrak{M}=\mathrm{fp}_{r=1}\bigl(\mathcal{P}(r)+\log(1-r)\bigr),
+\]
+which is fully isomorphic to the Abel/finite part interface of Section \ref{sec:zeta-finite-part} in the main text.
+
+\begin{remark}[Prime-orbit Mertens Abel sum (same-caliber instance of Definition \ref{def:abel-finite-part})]\label{rem:real-input-40-mertens-abel}
+On this kernel, $\mathcal{P}(r)$ can also be viewed directly as the Abel generating function of the prime-orbit Mertens sum. If one defines
+\[
+\mathcal{M}_{\mathrm{Abel}}(r):=\sum_{n\ge 1}\frac{p_n}{\lambda^n}r^n,
+\]
+then $\mathcal{M}_{\mathrm{Abel}}(r)=\mathcal{P}(r)$, and
+\[
+\mathcal{M}_{\mathrm{Abel}}(r)=-\log(1-r)+\log\mathfrak{M}+o(1)\qquad(r\uparrow 1).
+\]
+Therefore
+\[
+\boxed{\ \log\mathfrak{M}=\mathrm{fp}_{r=1}\Bigl(\mathcal{M}_{\mathrm{Abel}}(r)+\log(1-r)\Bigr)\ },
+\]
+which is precisely the same-type readout of the ``Abel regularization + Laurent constant term finite part'' from Definition \ref{def:abel-finite-part} in the main text: the only difference is that here the critical $1/n$ divergence comes from the primitive orbit weight $p_n/\lambda^n\sim 1/n$, rather than the $n^{-s}$ criticality of the orbit Dirichlet series.
+\end{remark}
+
+\begin{corollary}[Identity between the prime-orbit Mertens constant and the Abel finite part constant]\label{cor:real-input-40-Mertens-constant}
+Let
+\[
+\mathcal{M}(N):=\sum_{n\le N}\frac{p_n}{\lambda^n}.
+\]
+Then there exists a constant $\mathsf{M}$ such that
+\[
+\mathcal{M}(N)=\log N+\mathsf{M}+o(1),
+\qquad
+\boxed{\ \mathsf{M}=\gamma+\log\mathfrak{M}\ }.
+\]
+\end{corollary}
+
+\begin{proof}
+Write
+\(
+\frac{p_n}{\lambda^n}=\frac{1}{n}+b_n
+\)
+where $b_n:=\frac{p_n}{\lambda^n}-\frac{1}{n}$. From $p_n=\lambda^n/n+O(\varphi^n/n)$ (since $|\mathrm{spec}_2|=\varphi<\lambda$), one knows that $\sum_{n\ge 1}b_n$ converges absolutely.
+Hence
+\[
+\sum_{n\le N}\frac{p_n}{\lambda^n}
+\;=\;
+\sum_{n\le N}\frac{1}{n}
+\;+\;
+\sum_{n\le N}b_n
+\;=\;
+\log N+\gamma+\sum_{n\ge 1}b_n+o(1).
+\]
+On the other hand, from the Abel finite part readout in Remark \ref{rem:real-input-40-mertens-abel},
+\(
+\sum_{n\ge 1}b_n=\log\mathfrak{M}
+\)
+(equivalently $\mathrm{fp}_{r=1}\bigl(\sum b_n r^n\bigr)=\sum b_n$), yielding $\mathsf{M}=\gamma+\log\mathfrak{M}$.
+\end{proof}
+
+\paragraph{M\"obius--Abel fast formula (interface computation formula)}
+Writing the M\"obius--log inversion in Abel coordinates gives
+\[
+\log\mathfrak{M}
+:=\log C+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\widetilde{\zeta}_M(\lambda^{1-m}),
+\qquad (\lambda^{1-m}\in(0,1)\ \text{with exponent tending to zero}).
+\]
+Each term of this representation requires only sampling $\widetilde{\zeta}_M$ inside the convergence disk, so numerical convergence is extremely fast.
+Equivalently, from $z_\star=\lambda^{-1}$ and $\widetilde{\zeta}_M(\lambda^{1-m})=\zeta_M(z_\star^{\,m})=\zeta_M(\lambda^{-m})$, one may also write
+\[
+\log\mathfrak{M}
+:=\log C+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_M(\lambda^{-m}).
+\]
+
+\begin{proposition}[Explicit tail certificate for the M\"obius--Abel fast formula: the finite part constant can be truncated to exponential precision]\label{prop:real-input-40-logM-trunc-bound}
+Suppose $\zeta_M(z)=1/\det(I-zM)$ is analytic in the disk $|z|\le z_\star^{\,2}=\lambda^{-2}$ with $\zeta_M(0)=1$. Define the constant
+\[
+A:=\sup_{0<|z|\le \lambda^{-2}}\ \frac{|\log\zeta_M(z)|}{|z|}\ <\ \infty.
+\]
+For any truncation order $K\ge 2$, set
+\[
+\log\mathfrak{M}^{(K)}:=\log C+\sum_{m=2}^{K}\frac{\mu(m)}{m}\log\zeta_M(\lambda^{-m}).
+\]
+Then the tail satisfies the explicit error bound
+\[
+\boxed{\;
+|\log\mathfrak{M}-\log\mathfrak{M}^{(K)}|
+\le
+A\sum_{m>K}\frac{\lambda^{-m}}{m}
+\le
+\frac{A}{(K+1)(\lambda-1)}\,\lambda^{-K}.
+\;}
+\]
+\end{proposition}
+\begin{proof}
+For $m\ge 2$, the point $\lambda^{-m}$ lies in the disk $|z|\le\lambda^{-2}$, so by the definition of $A$,
+\(
+|\log\zeta_M(\lambda^{-m})|\le A\lambda^{-m}
+\).
+Also $|\mu(m)|\le 1$, so
+\[
+|\log\mathfrak{M}-\log\mathfrak{M}^{(K)}|
+\le \sum_{m>K}\frac{1}{m}|\log\zeta_M(\lambda^{-m})|
+\le A\sum_{m>K}\frac{\lambda^{-m}}{m}.
+\]
+For the tail sum, using monotonicity:
+\[
+\sum_{m>K}\frac{\lambda^{-m}}{m}
+\le
+\frac{1}{K+1}\sum_{m>K}\lambda^{-m}
+:=\frac{1}{K+1}\cdot\frac{\lambda^{-(K+1)}}{1-\lambda^{-1}}
+:=\frac{1}{(K+1)(\lambda-1)}\,\lambda^{-K}.
+\]
+\end{proof}
+
+\paragraph{Double M\"obius--Abel series aligned with the primitive decomposition}
+From the decomposition identity
+\[
+\log\zeta_M(z)=\sum_{m\ge 1}\frac{P(z^m)}{m}
+\]
+and substituting $z=r/\lambda$, isolating the $m=1$ term, one obtains
+\[
+P(r/\lambda)=-\log(1-r)+\log\mathfrak{M}+o(1)\qquad(r\uparrow 1),
+\]
+together with the constant decomposition
+\[
+\log\mathfrak{M}=\log C-\sum_{m\ge 2}\frac{P(\lambda^{-m})}{m}.
+\]
+On the other hand, the M\"obius inversion gives the closed form of the primitive generating function
+\[
+P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_M(z^k).
+\]
+Substituting back yields a double sum representation composed entirely of $\zeta_M$ and converging extremely fast:
+\[
+\log\mathfrak{M}
+:=\log C-\sum_{m\ge 2}\frac{1}{m}\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_M(\lambda^{-mk}).
+\]
+
+\paragraph{\texorpdfstring{$\mu$}{mu}-Pochhammer decomposition: compressing primitive complexity into universal product functions}
+The M\"obius--$\log$ inversion essentially transforms a finite-dimensional rational \(\zeta_M\) into a logarithmic-type combination of the primitive generating function \(P(z)\); to make its ``source of complexity'' explicit, we introduce a family of Pochhammer products with M\"obius weights.
+
+\begin{definition}[\texorpdfstring{$\mu$}{mu}-Pochhammer product]\label{def:mu-pochhammer}
+For any complex parameter \(\alpha\in\CC\), under the principal branch of the logarithm for \(|z|<1\), define
+\[
+\Phi_\alpha(z)
+:\!=\prod_{m\ge 1}\bigl(1-\alpha z^m\bigr)^{\mu(m)/m},
+\qquad
+\log\Phi_\alpha(z)
+:\!=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\bigl(1-\alpha z^m\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[\texorpdfstring{$\mu$}{mu}-Pochhammer decomposition formula]\label{prop:mu-pochhammer-decomposition}
+Let \(M\) be a finite-dimensional matrix with \(\zeta_M(z)=1/\det(I-zM)\), whose nonzero eigenvalues (counted with algebraic multiplicity) are \(\lambda\neq 0\), each with algebraic multiplicity \(m_\lambda\).
+Then for \(|z|\) sufficiently small (so that \(\log\) takes the principal value and the series converges uniformly), the strict identity holds:
+\[
+\boxed{\;
+P(z)
+=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_M(z^k)
+=-\sum_{\lambda\neq 0}m_\lambda\,\log\Phi_\lambda(z)\; }.
+\]
+\end{proposition}
+\begin{proof}
+By spectral decomposition (counted with algebraic multiplicity),
+\(
+\det(I-zM)=\prod_{\lambda\neq 0}(1-\lambda z)^{m_\lambda}
+\),
+so
+\(
+\log\zeta_M(z)
+=-\sum_{\lambda\neq 0}m_\lambda\log(1-\lambda z)
+\).
+Substituting into the M\"obius--$\log$ inversion
+\(
+P(z)=\sum_{k\ge 1}\mu(k)\log\zeta_M(z^k)/k
+\) and interchanging the finite sum with the uniformly convergent series yields
+\[
+P(z)
+=-\sum_{\lambda\neq 0}m_\lambda\sum_{k\ge 1}\frac{\mu(k)}{k}\log(1-\lambda z^k)
+=-\sum_{\lambda\neq 0}m_\lambda\,\log\Phi_\lambda(z).
+\]
+\end{proof}
+
+\begin{corollary}[Explicit decomposition for the real input \(40\)-state kernel]\label{cor:real-input-40-mu-pochhammer-explicit}
+On the real input \(40\)-state kernel of Proposition \ref{prop:real-input-40-essential-20}, the nonzero eigenvalues (with multiplicities) are
+\[
+\{\varphi^2,-\varphi,1^{(2)},(-1)^{(3)},\varphi^{-2},\varphi^{-1}\}.
+\]
+Therefore the primitive generating function satisfies the fully explicit decomposition
+\[
+\boxed{
+P(z)=
+-\log\Phi_{\varphi^2}(z)
+-\log\Phi_{-\varphi}(z)
+-2\log\Phi_{1}(z)
+-3\log\Phi_{-1}(z)
+-\log\Phi_{\varphi^{-2}}(z)
+-\log\Phi_{\varphi^{-1}}(z).
+}
+\]
+Furthermore, by the closed forms \(\log\Phi_{1}(z)=-z\) and \(\log\Phi_{-1}(z)=z-z^2\) from Lemma \ref{lem:mobius-collapse}, the ``trivial spectrum'' part can be exactly compressed to a quadratic polynomial:
+\[
+\boxed{
+P(z)=
+-\log\Phi_{\varphi^2}(z)
+-\log\Phi_{-\varphi}(z)
+-\log\Phi_{\varphi^{-2}}(z)
+-\log\Phi_{\varphi^{-1}}(z)
+-z+3z^2.
+}
+\]
+\end{corollary}
+
+\paragraph{Natural boundary: rational \texorpdfstring{$\zeta$}{zeta} and the mechanism chain of the ``singularity forest''}
+The formula above concentrates the analytic complexity of \(P\) into the two terms \(\Phi_{\varphi^2}\) and \(\Phi_{-\varphi}\) with \(|\lambda|>1\): they replicate the finitely many dominant poles of \(\zeta_M\) via M\"obius-weighted root systems, generating a family of logarithmic branch singularities that accumulate densely on the unit circle.
+
+\begin{theorem}[Natural boundary at the unit circle]\label{thm:primitive-natural-boundary-unit-circle}
+Let \(P(z)\) be the primitive generating function of the real input \(40\)-state kernel. Then the analytic continuation of \(P\) from \(|z|<1\) has a natural boundary at \(|z|=1\):
+for any point \(e^{i\theta}\) on the unit circle and any neighborhood thereof, logarithmic branch singularities of \(P\) are present; consequently, \(P\) cannot be analytically continued through any non-trivial arc of \(|z|=1\).
+\end{theorem}
+\begin{proof}
+By Corollary \ref{cor:real-input-40-mu-pochhammer-explicit}, \(P\) is a sum of several \(-\log\Phi_\alpha(z)\) terms and a polynomial, where \(\alpha\in\{\varphi^2,-\varphi,\varphi^{-2},\varphi^{-1}\}\).
+When \(|\alpha|<1\), \((1-\alpha z^m)\neq 0\) for all \(|z|\le 1\), so \(\log\Phi_\alpha\) is analytic on \(|z|\le 1\) and does not create singularities on the unit circle.
+
+When \(|\alpha|>1\) (here \(\alpha=\varphi^2\) or \(\alpha=-\varphi\)), for any squarefree integer \(m\ge 2\) and any \(m\)-th root of unity \(\omega\), the point
+\[
+z_{m,\omega}^{(\alpha)}:=\alpha^{-1/m}\omega
+\]
+satisfies \(1-\alpha z^m=0\) and \(|z_{m,\omega}^{(\alpha)}|=|\alpha|^{-1/m}\uparrow 1\) (\(m\to\infty\)).
+By Definition \ref{def:mu-pochhammer}, the summand of \(\log\Phi_\alpha\) includes
+\(\frac{\mu(m)}{m}\log(1-\alpha z^m)\), and \(\mu(m)\neq 0\) if and only if \(m\) is squarefree.
+Therefore, for each squarefree \(m\), \(\log\Phi_\alpha\) has an irremovable logarithmic branch singularity at \(z=z_{m,\omega}^{(\alpha)}\); hence \(P\) also has a branch singularity at these points (the polynomial part is analytic and cannot cancel the branch).
+
+Finally, observe: for fixed \(m\), the set \(\{\omega:\omega^m=1\}\) partitions the unit circle equally; as \(m\) ranges over squarefree integers, the union of these partition points is dense on the unit circle.
+Meanwhile, the radii \(|\alpha|^{-1/m}\) approach \(1\), so the above branch singularities accumulate everywhere on the unit circle, making \(|z|=1\) a natural boundary for \(P\).
+\end{proof}
+
+\begin{remark}[Arithmetic monodromy at a single point and single loop]\label{rem:primitive-monodromy-mu}
+In the notation above, continuing analytically around a small loop encircling \(z_{m,\omega}^{(\varphi^2)}=\varphi^{-2/m}\omega\),
+the branch switch from the term \(-\frac{\mu(m)}{m}\log(1-\varphi^2 z^m)\) gives
+\[
+\Delta P=-\frac{\mu(m)}{m}\cdot 2\pi i,
+\]
+with all other terms remaining analytic in that neighborhood; the situation for loops around \(z_{m,\omega}^{(-\varphi)}=\varphi^{-1/m}e^{(2j+1)\pi i/m}\) is analogous.
+Therefore the branch structure of \(P\) near the unit circle exhibits an explicit ``squarefree root system lattice'', with generator weights directly given by \(\mu(m)/m\).
+\end{remark}
+
+\paragraph{Structural decomposition of the Abel constant: PF universal constant \texorpdfstring{$+$}{+} stable factors \texorpdfstring{$+$}{+} algebraic correction term}
+Let \(\lambda=\varphi^2\), \(z_\star=\lambda^{-1}=\varphi^{-2}\). From \(P(z)=-\log(1-\lambda z)+\log\mathfrak{M}+o(1)\) (\(z\to z_\star^{-}\)) and Corollary \ref{cor:real-input-40-mu-pochhammer-explicit}, one can decompose \(\log\mathfrak M\) into a universal constant depending only on the PF root, three rapidly convergent stable \(\mu\)-Pochhammer values, and a purely algebraic correction term.
+
+\begin{corollary}[\texorpdfstring{$\mu$}{mu}-Pochhammer decomposition of the Abel finite part constant]\label{cor:logM-mu-pochhammer-split}
+Define the PF universal constant
+\[
+K_{\mathrm{PF}}
+:=\prod_{m\ge 2}\bigl(1-\varphi^{2(1-m)}\bigr)^{\mu(m)/m},
+\qquad
+\log K_{\mathrm{PF}}
+=\sum_{m\ge 2}\frac{\mu(m)}{m}\log\bigl(1-\varphi^{2(1-m)}\bigr).
+\]
+Then on the real input \(40\)-state kernel, the strict identity holds:
+\[
+\boxed{
+\log\mathfrak{M}
+=-\log K_{\mathrm{PF}}
+-\log\Phi_{-\varphi}(z_\star)
+-\log\Phi_{\varphi^{-1}}(z_\star)
+-\log\Phi_{\varphi^{-2}}(z_\star)
+\;+\;\bigl(-z_\star+3z_\star^2\bigr).
+}
+\]
+Moreover, the algebraic correction term simplifies completely to
+\[
+-z_\star+3z_\star^2=-\varphi^{-2}+3\varphi^{-4}=9-4\sqrt5.
+\]
+\end{corollary}

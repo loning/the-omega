@@ -1,0 +1,364 @@
+% Auto-split: keep each TeX source comfortably below ~600 lines.
+%
+% This part isolates the (q+1)-dimensional S_q-symmetric exceptional block of the
+% q-replica soft-core transfer matrix T^{(q)} (equivalently A^{(q)}), and records
+% closed-form Vieta data, asymptotics, and Perron--Doob mixing consequences.
+%
+
+\paragraph{Vieta Rigidity of the Exceptional Spectral Block and Perron--Doob Mixing Constants}
+
+\begin{theorem}[Complete closed form for the exceptional spectral product and the triangular number sign law]\label{thm:pom-replica-softcore-exceptional-spectrum-product}
+Continuing with the
+\(S_q\)-symmetric reduced matrix \(A^{(q)}\) from Proposition \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction} (Definition \eqref{eq:pom-multiplicity-composition-Aq-def}),
+denote its spectrum (counted with algebraic multiplicity) by
+\[
+\mathrm{spec}\!\bigl(A^{(q)}\bigr)=\{\lambda_i^{(q)}\}_{i=0}^{q}.
+\]
+Then for any integer \(q\ge 2\), the exceptional spectral product satisfies the strict identity
+\begin{equation}\label{eq:pom-replica-softcore-exceptional-product}
+\boxed{\;
+\prod_{i=0}^{q}\lambda_i^{(q)}
+\;=\;
+(-1)^{\frac{q(q+1)}{2}}\,2^{-q}. \;}
+\end{equation}
+Equivalently,
+\[
+\det\!\bigl(A^{(q)}\bigr)=(-1)^{\frac{q(q+1)}{2}}\,2^{-q},
+\]
+so that this product is independent of \(\varphi\) and exhibits pure binary rigidity.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:pom-multiplicity-composition-Aq-def}, let
+\(
+\mathbf{1}:=(1,\dots,1)^{\mathsf T}\in\RR^{q+1}
+\)
+and
+\(
+b:=(\binom{q}{0},\dots,\binom{q}{q})^{\mathsf T}
+\)
+and define the matrix \(C^{(q)}\in\RR^{(q+1)\times(q+1)}\) by
+\[
+C^{(q)}_{k,l}:=\binom{q-k}{l}\qquad(0\le k,l\le q).
+\]
+Then we have the decomposition
+\begin{equation}\label{eq:pom-replica-softcore-Aq-rankone-plus-C}
+A^{(q)}=\frac12\bigl(\mathbf{1}b^{\mathsf T}+C^{(q)}\bigr).
+\end{equation}
+\par
+First we compute \(\det(C^{(q)})\).
+Let \(R\) be the row-reversal permutation matrix: \((Rx)_k=x_{q-k}\).
+Then
+\[
+(RC^{(q)})_{k,l}=C^{(q)}_{q-k,l}=\binom{k}{l},
+\]
+so \(RC^{(q)}=P\), where \(P_{k,l}:=\binom{k}{l}\) is the lower-triangular Pascal matrix, hence \(\det(P)=1\).
+The row reversal \(R\) requires \(\frac{q(q+1)}{2}\) transpositions, therefore
+\begin{equation}\label{eq:pom-replica-softcore-detC}
+\det(C^{(q)})=\det(R)\det(P)=(-1)^{\frac{q(q+1)}{2}}.
+\end{equation}
+\par
+Next, applying the rank-one determinant lemma to \(\det(\mathbf{1}b^{\mathsf T}+C^{(q)})\):
+\[
+\det\!\bigl(C^{(q)}+\mathbf{1}b^{\mathsf T}\bigr)=\det(C^{(q)})\Bigl(1+b^{\mathsf T}(C^{(q)})^{-1}\mathbf{1}\Bigr).
+\]
+Note that \(C^{(q)}e_0=\mathbf{1}\) (where \(e_0:=(1,0,\dots,0)^{\mathsf T}\)), hence \((C^{(q)})^{-1}\mathbf{1}=e_0\), whence
+\(
+b^{\mathsf T}(C^{(q)})^{-1}\mathbf{1}=b^{\mathsf T}e_0=\binom{q}{0}=1
+\).
+Substituting back yields
+\[
+\det\!\bigl(C^{(q)}+\mathbf{1}b^{\mathsf T}\bigr)=2\,\det(C^{(q)}).
+\]
+Combining with \eqref{eq:pom-replica-softcore-Aq-rankone-plus-C} and \eqref{eq:pom-replica-softcore-detC} gives
+\[
+\det(A^{(q)})
+=2^{-(q+1)}\det\!\bigl(C^{(q)}+\mathbf{1}b^{\mathsf T}\bigr)
+=2^{-q}\det(C^{(q)})
+=(-1)^{\frac{q(q+1)}{2}}2^{-q},
+\]
+which is equivalent to \eqref{eq:pom-replica-softcore-exceptional-product}. \qed
+\end{proof}
+
+\begin{theorem}[Closed form for the exceptional spectral trace: \texorpdfstring{$2^{q-1}$}{2^{q-1}} leading term and \texorpdfstring{$\mathbb Z[\varphi]$}{Z[phi]} correction term]\label{thm:pom-replica-softcore-exceptional-spectrum-trace}
+Under the setting of Theorem \ref{thm:pom-replica-softcore-exceptional-spectrum-product}, let
+\(
+\rho_q:=\max\{\lambda_i^{(q)}\}
+=\rho\!\bigl(A^{(q)}\bigr)=\rho\!\bigl(T^{(q)}\bigr)
+\)
+be the Perron root.
+Then the exceptional spectral sum (i.e., the trace of the exceptional block) satisfies the strict identity
+\begin{equation}\label{eq:pom-replica-softcore-exceptional-trace}
+\boxed{\;
+\sum_{i=0}^{q}\lambda_i^{(q)}
+\;=\;
+2^{q-1}
+\;+\;
+\frac{\varphi^{q+2}+(-1)^q\varphi^{-q}}{2(\varphi+2)}\; } .
+\end{equation}
+Therefore the trace of the exceptional block consists of a binomial leading term \(2^{q-1}\) and an explicit \(\mathbb Z[\varphi]\)-correction term.
+\end{theorem}
+\begin{proof}
+By \eqref{eq:pom-multiplicity-composition-Aq-def}, directly computing the trace:
+\[
+\Tr\!\bigl(A^{(q)}\bigr)
+=\sum_{k=0}^{q}A^{(q)}_{k,k}
+=\frac12\sum_{k=0}^{q}\binom{q}{k}
+\;+\;\frac12\sum_{k=0}^{q}\binom{q-k}{k}
+=2^{q-1}+\frac12\sum_{k=0}^{q}\binom{q-k}{k}.
+\]
+Using the classical identity
+\(
+\sum_{k\ge 0}\binom{q-k}{k}=F_{q+1}
+\)
+(where \(F_n\) is the Fibonacci number), we obtain
+\[
+\Tr\!\bigl(A^{(q)}\bigr)=2^{q-1}+\frac12F_{q+1}.
+\]
+Applying the Binet formula \(F_{q+1}=\frac{\varphi^{q+1}+(-1)^q\varphi^{-(q+1)}}{\sqrt5}\)
+and the identity \(\varphi+2=\sqrt5\,\varphi\), this simplifies to
+\[
+\frac12F_{q+1}
+=\frac{\varphi^{q+2}+(-1)^q\varphi^{-q}}{2(\varphi+2)}.
+\]
+Finally, since \(\Tr(A^{(q)})=\sum_i\lambda_i^{(q)}\), we obtain \eqref{eq:pom-replica-softcore-exceptional-trace}. \qed
+\end{proof}
+
+\begin{theorem}[Leading-order asymptotics of the second exceptional eigenvalue: exponential approach to \texorpdfstring{$\varphi^q/2$}{phi^q/2}]\label{thm:pom-replica-softcore-second-exceptional-eigenvalue-asymptotics}
+Let \(\nu_q\) be the second-largest eigenvalue in the exceptional spectrum (i.e., the eigenvalue in the \((S_q)\)-symmetric subspace next to \(\rho_q\)).
+Then \(0<\nu_q<\varphi^q/2\), and there exists a strict asymptotic expansion
+\begin{equation}\label{eq:pom-replica-softcore-nuq-asymptotics}
+\nu_q
+=\frac{\varphi^{q}}{2}\Bigg(1-r^{q}
++O\!\bigl(q\,r^{2q}\bigr)\Bigg),
+\qquad q\to\infty,
+\end{equation}
+where
+\(
+r:=\frac{5+2\sqrt5}{10}
+=\frac12\bigl(1+\frac{2\sqrt5}{5}\bigr)\in(0,1)
+\).
+In other words, \(\nu_q\) approaches \(\varphi^q/2\) exponentially in relative error with base \(r\).
+\end{theorem}
+\begin{proof}[Proof outline]
+By Proposition \ref{prop:pom-multiplicity-composition-replica-explicit-eigs},
+\(
+T^{(q)}=\frac12(\mathbf{1}\mathbf{1}^{\mathsf T}+K^{\otimes q})
+\)
+and \(K\) can be diagonalized in the eigenbasis \(\{v^+,v^-\}\) (Theorem \ref{thm:pom-replica-softcore-tensor-eigenbasis}).
+Coordinatizing the \(S_q\)-symmetric subspace on this tensor spectral layer, the exceptional block can be viewed as a rank-one coupling perturbation of the largest positive spectral layer of \(K^{\otimes q}\);
+as \(q\to\infty\), the principal coupling coefficient is determined by the single-coordinate overlap ratio, giving rise to the exponential correction term with base \(r\);
+the second-order error follows from the exponential suppression of higher spectral layers and standard resolvent expansion. \qed
+\end{proof}
+
+\begin{theorem}[Exponential law for the spectral gap ratio and logarithmic separation rate]\label{thm:pom-replica-softcore-gap-ratio-log-separation}
+Let \(\rho_q\) and \(\nu_q\) be as above. Then
+\begin{equation}\label{eq:pom-replica-softcore-gap-ratio}
+\frac{\nu_q}{\rho_q}
+=\Big(\frac{\varphi}{2}\Big)^{q}\Big(1+o(1)\Big),
+\qquad q\to\infty,
+\end{equation}
+and the logarithmic separation satisfies
+\begin{equation}\label{eq:pom-replica-softcore-gap-log-separation}
+\log\frac{\rho_q}{\nu_q}
+= q\log\frac{2}{\varphi}+o(q).
+\end{equation}
+Therefore the two leading eigenvalues in the exceptional spectrum separate linearly on the logarithmic scale at rate \(\log(2/\varphi)\).
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-replica-softcore-second-exceptional-eigenvalue-asymptotics},
+\(
+\nu_q=\frac{\varphi^q}{2}(1+o(1))
+\).
+On the other hand, \(T^{(q)}\) is a symmetric matrix satisfying
+\(
+T^{(q)}=\frac12(\mathbf{1}\mathbf{1}^{\mathsf T}+K^{\otimes q})
+\)
+(Proposition \ref{prop:pom-multiplicity-composition-replica-explicit-eigs}).
+By Weyl's perturbation bound (eigenvalue stability for symmetric matrices),
+\[
+\bigl|\rho_q-2^{q-1}\bigr|
+\le \frac12\,\rho\!\bigl(K^{\otimes q}\bigr)
+=\frac{\varphi^q}{2},
+\]
+whence \(\rho_q=2^{q-1}(1+o(1))\) (since \((\varphi/2)^q\to 0\)).
+Dividing the two expressions yields \eqref{eq:pom-replica-softcore-gap-ratio},
+and taking logarithms gives \eqref{eq:pom-replica-softcore-gap-log-separation}. \qed
+\end{proof}
+
+\begin{theorem}[Reversible Markov kernel from the Perron--Doob transform and correlation decay constant]\label{thm:pom-replica-softcore-doob-reversible-markov-corr}
+Let \(\psi^{(q)}\succ 0\) be the Perron eigenvector of \(T^{(q)}\) (normalized to \(\|\psi^{(q)}\|_2=1\)).
+Define the Perron--Doob transform kernel
+\[
+\mathcal{P}^{(q)}(u,v)
+:=\frac{T^{(q)}_{u,v}\,\psi^{(q)}_{v}}{\rho_q\,\psi^{(q)}_{u}},
+\qquad u,v\in U_q.
+\]
+Then \(\mathcal{P}^{(q)}\) is a reversible Markov kernel with stationary distribution
+\[
+\pi^{(q)}(u)\propto \bigl(\psi^{(q)}_{u}\bigr)^2.
+\]
+Moreover, for any square-integrable observables \(f,g\in L^2(\pi^{(q)})\), if \((X_n)_{n\ge 0}\) is the stationary chain with transition kernel \(\mathcal{P}^{(q)}\) and initial distribution \(\pi^{(q)}\), then the spectrally controlled correlation decay holds:
+\begin{equation}\label{eq:pom-replica-softcore-cov-decay}
+\bigl|\mathrm{Cov}_{\pi^{(q)}}(f(X_0),g(X_n))\bigr|
+\;\le\;
+\|f\|_{L^2(\pi^{(q)})}\,\|g\|_{L^2(\pi^{(q)})}\,
+\Bigl(\frac{\Lambda_q}{\rho_q}\Bigr)^{n},
+\end{equation}
+where \(\Lambda_q:=\max\{|\lambda|:\lambda\in\mathrm{spec}(T^{(q)}),\ |\lambda|<\rho_q\}\).
+If \(f,g\) are further restricted to \(S_q\)-symmetric observables (i.e., depending only on the Hamming weight), then \(\Lambda_q\) in the above bound can be replaced by
+\(
+\max_{1\le i\le q}|\lambda_i^{(q)}|
+\);
+by Theorems \ref{thm:pom-replica-softcore-second-exceptional-eigenvalue-asymptotics}--\ref{thm:pom-replica-softcore-gap-ratio-log-separation}, this quantity is saturated by \(\nu_q\) as \(q\to\infty\).
+Combining Theorem \ref{thm:pom-replica-softcore-gap-ratio-log-separation} with the fixed spectral cluster upper bound from Proposition \ref{prop:pom-multiplicity-composition-replica-explicit-eigs},
+the decay base satisfies as \(q\to\infty\):
+\[
+\frac{\Lambda_q}{\rho_q}
+=\Big(\frac{\varphi}{2}\Big)^q\bigl(1+o(1)\bigr),
+\]
+so that the correlation length is of order \(1/q\).
+\end{theorem}
+\begin{proof}[Proof outline]
+By Perron--Frobenius theory and the standard Doob transform construction, \(\mathcal{P}^{(q)}\) is a Markov kernel with stationary distribution \(\pi^{(q)}\).
+Since \(T^{(q)}\) is symmetric, \(\mathcal{P}^{(q)}\) is self-adjoint on \(L^2(\pi^{(q)})\), and
+\(
+\mathcal{P}^{(q)}
+\)
+is similar to
+\(
+T^{(q)}/\rho_q
+\),
+so its nontrivial spectral radius is \(\Lambda_q/\rho_q\).
+Applying the spectral decomposition to centered observables yields \eqref{eq:pom-replica-softcore-cov-decay}.
+Finally, from the fixed spectral clusters
+\(\bigl\{ \frac{(-1)^j\varphi^{q-2j}}{2}\bigr\}_{j\ge 1}\)
+of Proposition \ref{prop:pom-multiplicity-composition-replica-explicit-eigs},
+we obtain \(\Lambda_q\ge \varphi^{q-2}/2\), and combining with the exceptional block leading exponential law of Theorem \ref{thm:pom-replica-softcore-gap-ratio-log-separation} yields the \(q\to\infty\) exponential rate. \qed
+\end{proof}
+
+\begin{theorem}[Explicit tensor eigenbasis of the fixed spectral clusters: coordinatized diagonalization of \texorpdfstring{$K^{\otimes q}$}{K^tensq}]\label{thm:pom-replica-softcore-tensor-eigenbasis}
+Let
+\(
+K=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix}
+\),
+and take its eigenvectors
+\(
+v^+=(\varphi,1)^{\mathsf T}
+\), \(
+v^-=(1,-\varphi)^{\mathsf T}
+\), corresponding to eigenvalues \(\varphi\) and \(-\varphi^{-1}\).
+For any \(S\subseteq[q]\), define the tensor vector
+\[
+f_S:=\bigotimes_{i=1}^{q} w_i,\qquad
+w_i=
+\begin{cases}
+v^-,& i\in S,\\
+v^+,& i\notin S.
+\end{cases}
+\]
+Then for \(D^{(q)}:=K^{\otimes q}\) the strict eigenrelation holds:
+\[
+D^{(q)}f_S = (-1)^{|S|}\varphi^{\,q-2|S|}\,f_S.
+\]
+Moreover, since
+\(
+T^{(q)}=\tfrac12(\mathbf{1}\mathbf{1}^{\mathsf T}+D^{(q)})
+\)
+and \(\mathbf{1}\mathbf{1}^{\mathsf T}\) vanishes on \(\mathbf{1}^\perp\),
+taking the \(\binom{q}{j}-1\)-dimensional subspace orthogonal to \(\mathbf{1}\) within each eigenspace of fixed \(|S|=j\)
+yields an explicit eigensubspace of \(T^{(q)}\) with eigenvalue
+\(
+\tfrac12(-1)^j\varphi^{q-2j}
+\).
+This provides a complete coordinatized description of all high-multiplicity spectral layers apart from the exceptional spectrum.
+\end{theorem}
+\begin{proof}
+The first statement follows directly from the tensor spectral multiplicativity of \(D^{(q)}\).
+The second follows from
+\(
+T^{(q)}|_{\mathbf{1}^\perp}=\frac12 D^{(q)}|_{\mathbf{1}^\perp}
+\)
+and the dimension estimate of the intersection of each \(D^{(q)}\) eigenspace (of dimension \(\binom{q}{j}\)) with \(\mathbf{1}^\perp\). \qed
+\end{proof}
+
+\begin{theorem}[Structural factorization of the characteristic polynomial: complete separation of exceptional and fixed factors]\label{thm:pom-replica-softcore-characteristic-factorization}
+Denote the characteristic polynomial of the exceptional block (of dimension \(q+1\)) by
+\(
+\chi_{\mathrm{exc}}^{(q)}(x):=\prod_{i=0}^{q}(x-\lambda_i^{(q)})
+\).
+Then the full characteristic polynomial of \(T^{(q)}\) satisfies the strict factorization
+\begin{equation}\label{eq:pom-replica-softcore-characteristic-factorization}
+\chi_{T^{(q)}}(x)
+=\chi_{\mathrm{exc}}^{(q)}(x)\;
+\prod_{j=0}^{q}\Bigl(x-\frac{(-1)^j\varphi^{q-2j}}{2}\Bigr)^{\binom{q}{j}-1}.
+\end{equation}
+The fixed factors are completely given by the tensor spectral clusters, while the exceptional factor absorbs all rank-one coupling effects; the two are algebraically strictly decoupled.
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:pom-multiplicity-composition-replica-explicit-eigs} and Theorem \ref{thm:pom-replica-softcore-tensor-eigenbasis},
+\(\frac{(-1)^j\varphi^{q-2j}}{2}\) (\(0\le j\le q\)) has eigenvalue multiplicity at least \(\binom{q}{j}-1\) on \(\mathbf{1}^\perp\),
+so the fixed spectral clusters contribute the characteristic factor
+\(
+\prod_{j=0}^{q}(x-\frac{(-1)^j\varphi^{q-2j}}{2})^{\binom{q}{j}-1}
+\).
+The remaining at most \(q+1\) eigenvalues all lie in the \(S_q\)-symmetric subspace and coincide with the spectrum of \(A^{(q)}\) (Proposition \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction}),
+so the remaining factor is exactly \(\chi_{\mathrm{exc}}^{(q)}\).
+Combining all eigenvalues by algebraic multiplicity yields \eqref{eq:pom-replica-softcore-characteristic-factorization}. \qed
+\end{proof}
+
+\begin{theorem}[Vieta rigidity of the exceptional characteristic polynomial: complete closed form for the monic subleading term and constant term]\label{thm:pom-replica-softcore-exceptional-vieta-endpoints}
+For \(q\ge 2\), the exceptional characteristic polynomial
+\(
+\chi_{\mathrm{exc}}^{(q)}(x)=\prod_{i=0}^{q}(x-\lambda_i^{(q)})
+\)
+satisfies
+\begin{equation}\label{eq:pom-replica-softcore-exceptional-vieta-xq}
+\chi_{\mathrm{exc}}^{(q)}(x)
+=x^{q+1}
+-\Bigl(2^{q-1}+\frac{\varphi^{q+2}+(-1)^q\varphi^{-q}}{2(\varphi+2)}\Bigr)x^{q}
++\cdots,
+\end{equation}
+and the constant term is
+\begin{equation}\label{eq:pom-replica-softcore-exceptional-vieta-const}
+\chi_{\mathrm{exc}}^{(q)}(0)
+=(-1)^{q+1}\prod_{i=0}^{q}\lambda_i^{(q)}
+=(-1)^{q+1+\frac{q(q+1)}{2}}\,2^{-q}.
+\end{equation}
+Thus the monic subleading coefficient and constant term of the exceptional factor are completely rigid in closed form.
+\end{theorem}
+\begin{proof}
+By Vieta's formulas,
+\(
+[x^{q}]\chi_{\mathrm{exc}}^{(q)}(x)=-\sum_{i=0}^{q}\lambda_i^{(q)}
+\)
+and
+\(
+\chi_{\mathrm{exc}}^{(q)}(0)=(-1)^{q+1}\prod_{i=0}^{q}\lambda_i^{(q)}
+\).
+Substituting Theorem \ref{thm:pom-replica-softcore-exceptional-spectrum-trace} and
+Theorem \ref{thm:pom-replica-softcore-exceptional-spectrum-product}
+yields \eqref{eq:pom-replica-softcore-exceptional-vieta-xq}--\eqref{eq:pom-replica-softcore-exceptional-vieta-const}. \qed
+\end{proof}
+
+\begin{theorem}[Spectral layer localization of the second exceptional eigenvector: exponential concentration toward the \texorpdfstring{$j=0$}{j=0} layer]\label{thm:pom-replica-softcore-second-exceptional-eigenvector-localization}
+Let \(\nu_q\) be as in Theorem \ref{thm:pom-replica-softcore-second-exceptional-eigenvalue-asymptotics}, and let \(\phi^{(q)}\) be its unit eigenvector (taken in the \((S_q)\)-symmetric subspace where the exceptional block resides).
+Let \(P_j\) denote the spectral layer orthogonal projection of \(D^{(q)}=K^{\otimes q}\) (corresponding to eigenvalue \((-1)^j\varphi^{q-2j}\)).
+Then there exists a constant \(c>0\) such that
+\begin{equation}\label{eq:pom-replica-softcore-second-eigvec-localization}
+1-\bigl\|\mathrm{Proj}_{\mathrm{span}\{P_0\mathbf{1}\}}\phi^{(q)}\bigr\|_2^2
+\;=\;
+O\!\bigl(r^{q}\bigr),
+\qquad q\to\infty,
+\end{equation}
+where \(r=\frac{5+2\sqrt5}{10}\) is the same as in \eqref{eq:pom-replica-softcore-nuq-asymptotics}.
+In other words, the eigenstate of \(\nu_q\) concentrates exponentially within the exceptional block toward the largest positive spectral layer direction of \(D^{(q)}\) (corresponding to \(j=0\)), at a rate consistent with the approach scale of Theorem \ref{thm:pom-replica-softcore-second-exceptional-eigenvalue-asymptotics}.
+\end{theorem}
+\begin{proof}[Proof outline]
+Let \(E_0:=\mathrm{Ran}(P_0)=\mathrm{span}\{(v^+)^{\otimes q}\}\) be the largest positive spectral layer of \(D^{(q)}\).
+By Theorem \ref{thm:pom-replica-softcore-second-exceptional-eigenvalue-asymptotics}, the spectral distance between \(\nu_q\) and \(\varphi^q/2\) is \(O(\varphi^q r^{q})\).
+On the other hand, all spectral layers apart from \(E_0\) differ from \(\varphi^q\) by at least a constant factor (e.g., the next layer is \(\varphi^{q-2}\)),
+so by standard spectral projection perturbation estimates the component of \(\phi^{(q)}\) in \(E_0^\perp\) can be controlled as \(O(r^{q/2})\),
+yielding \eqref{eq:pom-replica-softcore-second-eigvec-localization}. \qed
+\end{proof}
+
+\endinput

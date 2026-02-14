@@ -1,0 +1,636 @@
+\subsection{Conclusion cluster I: entropy saturation and maximal entropy lift}\label{subsec:pom-entropy-maxent}
+\begin{definition}[Window value and external value]\label{def:pom-window-value}
+For $\omega=\omega_1\cdots\omega_m\in\Omega_m$, define the window value:
+\[
+N(\omega):=\sum_{k=1}^m \omega_k F_{k+1}.
+\]
+For $x=x_1\cdots x_m\in X_m$, define the external value:
+\[
+V_m(x):=\sum_{k=1}^m x_k F_{k+1}.
+\]
+\end{definition}
+
+\begin{lemma}[Single hidden bit decomposition]\label{lem:pom-one-bit}
+For any $\omega\in\Omega_m$, there exists a unique $b(\omega)\in\{0,1\}$ such that:
+\[
+N(\omega)=V_m(\Fold_m(\omega)) + b(\omega)\,F_{m+2}.
+\]
+\end{lemma}
+\begin{proof}
+By $\sum_{k=1}^m F_{k+1}=F_{m+3}-2$ we have $0\le N(\omega)<F_{m+3}$. Therefore, the weight $F_{m+3}$ cannot appear in the Zeckendorf representation of $N(\omega)$, and nonzero bits can only occur up to $F_{m+2}$. By the definition of $\Fold_m$, $\Fold_m(\omega)$ gives the first $m$ bits, with the only possible high bit being $F_{m+2}$, thus there exists unique $b(\omega)\in\{0,1\}$ making the equality hold. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Two-layer decomposition of fiber degrees of freedom]\label{prop:pom-fiber-decompose}
+For any $x\in X_m$, denote $I(x)$ as the set of local sites in $x$ where the inverse substitution $100\mapsto 011$ can be executed (counted by length-$3$ windows), requiring selected sites to be non-adjacent to avoid overlap. Then any $\omega\in\Fold_m^{-1}(x)$ can be viewed as a combination of "one surplus bit $b\in\{0,1\}$" and "a set of non-adjacent inverse substitution sites"; therefore:
+\[
+d_m(x)\le 2\cdot \#\{\text{independent sets of path graph }P_{|I(x)|}\}
+\le 2F_{\lfloor m/2\rfloor+2}.
+\]
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{lem:pom-one-bit}, given $\omega$, the information beyond the first $m$ bits is at most one bit $b$. The remaining degrees of freedom come from the choice of inverse substitution $100\mapsto 011$: when two inverse substitutions overlap, they produce non-binary symbols, so legal choices can only come from non-adjacent site sets on a linear chain. Independent set counting on path graphs gives Fibonacci numbers, yielding the stated upper bound. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Closed-form count of $B_m$]\label{thm:pom-hidden-bit-count}
+For any $m\ge 1$, let:
+\[
+B_m:=\{\omega\in\Omega_m: b(\omega)=1\}.
+\]
+Then:
+$$
+\boxed{\ |B_m|=\left\lfloor \frac{2^m}{3}\right\rfloor\ }
+$$
+Equivalently:
+$$
+|B_m|=
+\begin{cases}
+\dfrac{2^m-1}{3}, & m\ \text{is even},\\[6pt]
+\dfrac{2^m-2}{3}, & m\ \text{is odd}.
+\end{cases}
+$$
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:zeckendorf-range-bijection}, $V_m(X_m)=\{0,1,\dots,F_{m+2}-1\}$. Thus by the decomposition in Lemma~\ref{lem:pom-one-bit}:
+$$
+N(\omega)=V_m(\Fold_m(\omega))+b(\omega)F_{m+2}
+$$
+we obtain:
+$$
+b(\omega)=1\quad\Longleftrightarrow\quad N(\omega)\ge F_{m+2}.
+$$
+We now count by cases based on the highest bit $\omega_m$.
+
+\paragraph{If $\omega_m=0$}
+Then:
+$$
+N(\omega)\le \sum_{k=1}^{m-1}F_{k+1}=F_{m+2}-1,
+$$
+so it cannot satisfy $N(\omega)\ge F_{m+2}$, thus this branch contributes nothing to $B_m$.
+
+\paragraph{If $\omega_m=1$}
+Write:
+$$
+N(\omega)=F_{m+1}+\omega_{m-1}F_m+\sum_{k=1}^{m-2}\omega_kF_{k+1}.
+$$
+The threshold is $F_{m+2}=F_{m+1}+F_m$, so $N(\omega)\ge F_{m+2}$ is equivalent to:
+$$
+\omega_{m-1}F_m+\sum_{k=1}^{m-2}\omega_kF_{k+1}\ \ge\ F_m.
+$$
+Subcasing on $\omega_{m-1}$:
+\begin{itemize}
+  \item If $\omega_{m-1}=1$, the condition is automatically satisfied; the remaining $m-2$ bits are arbitrary, contributing $2^{m-2}$ elements.
+  \item If $\omega_{m-1}=0$, the condition becomes:
+  $$
+  \sum_{k=1}^{m-2}\omega_kF_{k+1}\ge F_m.
+  $$
+  This is consistent with "the same type threshold problem for length $m-2$": the right-hand side is precisely $F_{(m-2)+2}=F_m$, thus this branch contributes $|B_{m-2}|$ elements.
+\end{itemize}
+Combining the above yields the recurrence:
+$$
+|B_m|=2^{m-2}+|B_{m-2}|\qquad(m\ge 3),
+$$
+with initial values $|B_1|=0$, $|B_2|=1$ from direct enumeration.
+
+Solving the recurrence: if $m=2k$, then:
+$$
+|B_{2k}|=1+\sum_{j=1}^{k-1}2^{2j}=\frac{2^{2k}-1}{3}.
+$$
+If $m=2k+1$, then:
+$$
+|B_{2k+1}|=\sum_{j=0}^{k-1}2^{2j+1}=\frac{2^{2k+1}-2}{3}.
+$$
+Both unify to $|B_m|=\lfloor 2^m/3\rfloor$. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Limiting density and "non-uniform one bit"]\label{cor:pom-hidden-bit-entropy}
+Under uniform distribution on $\Omega_m$:
+$$
+\mathbb{P}[b(\omega)=1]=\frac{|B_m|}{2^m}
+=\frac{1}{3}-\frac{\varepsilon_m}{3\cdot 2^m},
+$$
+where $\varepsilon_m=1$ when $m$ is even, $\varepsilon_m=2$ when $m$ is odd. Thus:
+$$
+\lim_{m\to\infty}\mathbb{P}[b(\omega)=1]=\frac{1}{3},\qquad
+\lim_{m\to\infty}\mathbb{P}[b(\omega)=0]=\frac{2}{3}.
+$$
+\end{corollary}
+
+\begin{remark}[Floor-free closed form and binary truncation]\label{rem:pom-hidden-bit-dyadic-trunc}
+By $2^m\bmod 3\in\{1,2\}$ alternating with parity of $m$:
+\[
+|B_m|
+=\left\lfloor\frac{2^m}{3}\right\rfloor
+=\frac{2^m-r_m}{3},
+\qquad
+r_m=
+\begin{cases}
+1,& m\ \text{is even},\\
+2,& m\ \text{is odd},
+\end{cases}
+\]
+thus unifying to a completely floor-free closed form:
+\[
+\boxed{\ |B_m|=\frac{2^{m+1}+(-1)^m-3}{6}\ }.
+\]
+Therefore:
+\[
+\boxed{\ \mathbb{P}[b(\omega)=1]-\frac13=\frac{(-1)^m-3}{6\cdot 2^m}\ },
+\]
+with error term uniquely determined by parity of $m$, exhibiting two-point oscillation with amplitude of order $2^{-m}$.
+Moreover, since:
+\[
+\frac13=0.\overline{01}_2=\sum_{j\ge 1}2^{-2j},
+\]
+we have:
+\[
+\frac{|B_m|}{2^m}=\frac{\lfloor 2^m/3\rfloor}{2^m}
+\]
+precisely as the dyadic approximation of $1/3$ truncated at $m$ bits; equivalently, the binary expansion of $|B_m|$ is the alternating string of length $m$:
+\[
+|B_m|=(0101\cdots)_2
+\]
+(e.g., for $m=4,5,6$ we have $5=(0101)_2$, $10=(01010)_2$, $21=(010101)_2$ respectively).
+This same constant $1/3$ also appears as the dominant pole of the delay-$3$ synchronization kernel $\zeta_B(z)$ (\S\ref{subsec:zeta-online-kernel}), thereby aligning the global density of hidden bits with the prime-like leading scale on the same algebraic ruler.
+\end{remark}
+
+\begin{corollary}[Global branch mass conservation and subset bias constraint]\label{cor:pom-branch-mass-law}
+For each $x\in X_m$ and $b\in\{0,1\}$, define the hidden bit split count within the fiber:
+\[
+d_{m,b}(x):=\#\{\omega\in\Omega_m:\ \Fold_m(\omega)=x,\ b(\omega)=b\},
+\]
+and denote the total fiber multiplicity $d_m(x)=d_{m,0}(x)+d_{m,1}(x)$ and the branch-$1$ mass fraction within the fiber:
+\[
+p_1(x):=\frac{d_{m,1}(x)}{d_m(x)}\in[0,1].
+\]
+Let $\omega\sim\mathrm{Unif}(\Omega_m)$, $X:=\Fold_m(\omega)$, and write the output distribution as $\pi_m(x):=\mathbb{P}(X=x)=d_m(x)/2^m$.
+Then we have the exact average identity:
+\[
+\boxed{\;
+\mathbb{E}_{X\sim\pi_m}\bigl[p_1(X)\bigr]
+=\mathbb{P}[b(\omega)=1]
+=\frac{|B_m|}{2^m}
+=\frac{\lfloor 2^m/3\rfloor}{2^m}. \;}
+\]
+Therefore:
+\[
+\left|\mathbb{E}_{\pi_m}[p_1]-\frac13\right|\le 2^{-m}.
+\]
+Moreover, for any subset $S\subseteq X_m$ satisfying $\pi_m(S)>0$, we have a \emph{conservation-type} constraint (strict identity):
+\[
+\boxed{\;
+\mathbb{E}_{\pi_m}[p_1\mid X\in S]-\mathbb{P}[b=1]
+=-\frac{\pi_m(S^c)}{\pi_m(S)}
+\left(\mathbb{E}_{\pi_m}[p_1\mid X\in S^c]-\mathbb{P}[b=1]\right). \;}
+\]
+That is, any systematic bias within a "special set" can only appear in the form of cross-set redistribution, and cannot net produce/net destroy hidden bit mass globally.
+\end{corollary}
+\begin{proof}
+For any $x\in X_m$, on the event $\{X=x\}$, $\omega$ is conditionally uniform within the fiber $\Fold_m^{-1}(x)$, thus:
+\(
+\mathbb{P}[b=1\mid X=x]=d_{m,1}(x)/d_m(x)=p_1(x)
+\).
+By the law of total expectation:
+\[
+\mathbb{E}_{X\sim\pi_m}[p_1(X)]=\mathbb{P}[b=1]=|B_m|/2^m,
+\]
+then using Theorem~\ref{thm:pom-hidden-bit-count} (and $|\lfloor 2^m/3\rfloor-2^m/3|\le 1$) yields the error bound.
+\par
+For any $S\subseteq X_m$, applying the law of total expectation again:
+\(
+\mathbb{P}[b=1]=\pi_m(S)\mathbb{E}[p_1\mid X\in S]+\pi_m(S^c)\mathbb{E}[p_1\mid X\in S^c]
+\),
+rearranging and dividing by $\pi_m(S)$ yields the conservation identity. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Correlation layer theorem: \texorpdfstring{$k$}{k}-moment mixed moment cluster splitting]\label{prop:pom-hiddenbit-mixed-moment-cluster}\label{prop:pom-mixed-moment-clusters}
+Following the two-branch split count $d_{m,b}(x)$ from Corollary~\ref{cor:pom-branch-mass-law}.
+For integer $k\ge 1$, define:
+\[
+S_k(m):=\sum_{x\in X_m} d_m(x)^k,
+\qquad
+M^{(k)}_{a}(m):=\sum_{x\in X_m} d_{m,0}(x)^a\,d_{m,1}(x)^{k-a}\qquad(0\le a\le k).
+\]
+Then we have the strict identity (mixed moment splitting):
+\[
+\boxed{\;
+S_k(m)=\sum_{a=0}^{k}\binom{k}{a}\,M^{(k)}_{a}(m)\; }.
+\]
+Furthermore, defining symmetrized mixed moments:
+\[
+\widetilde M^{(k)}_{a}(m):=
+\begin{cases}
+M^{(k)}_{a}(m)+M^{(k)}_{k-a}(m), & 0\le a<k-a,\\
+M^{(k)}_{a}(m), & a=k-a,
+\end{cases}
+\]
+then $S_k(m)$ depends only on the first half of symmetrized layers $a=0,1,\dots,\lfloor k/2\rfloor$:
+\[
+\boxed{\;
+S_k(m)=\sum_{a=0}^{\lfloor k/2\rfloor}\binom{k}{a}\,\widetilde M^{(k)}_{a}(m)\; }.
+\]
+Therefore, under the information condition of "treating hidden bit only as unlabeled two branches", the objective correlation degrees of freedom for $k$-moment is precisely $\lfloor k/2\rfloor+1$ layers.
+\end{proposition}
+
+\begin{remark}[Meaning: layered compilation with mixed moment clusters as types]\label{rem:pom-hiddenbit-mixed-moment-typing}
+Proposition~\ref{prop:pom-hiddenbit-mixed-moment-cluster} provides a structural source: compilation of $\mathrm{MOM}_k$ need not take "$k$ copies of synchronization direct product" as the only entry.
+Under the calibration where two-branch splitting objectively exists (Lemma~\ref{lem:pom-one-bit}) and global mass is non-sparse (Theorem~\ref{thm:pom-hidden-bit-count}),
+one can first establish mixed moment layers $a=0,\dots,\lfloor k/2\rfloor$ as object types, then separately compile (or separately do recurrence/minimal realization) for each layer, finally combining back to $S_k(m)$ via binomial coefficients.
+This elevates "number of correlation layers = $\lfloor k/2\rfloor+1$" from an empirical setting to an auditable structural degree of freedom forced by single hidden bit decomposition.
+\end{remark}
+
+\begin{theorem}[One-step discriminability and right-resolvingness]\label{thm:pom-right-resolving}
+For any $m\ge 2$ and any $v\in V_m=\{0,1\}^{m-1}$:
+\[
+\Fold_m(v0)\neq \Fold_m(v1).
+\]
+Therefore, the labeled graph $G_m$ (Definition~\ref{def:G_m}) is right-resolving: two outgoing edges from the same vertex have different labels.
+\end{theorem}
+\begin{proof}
+Denote $\omega_0=v0$, $\omega_1=v1$. Then $N(\omega_1)-N(\omega_0)=F_{m+1}$. If $\Fold_m(\omega_0)=\Fold_m(\omega_1)$, by Lemma~\ref{lem:pom-one-bit}:
+\[
+N(\omega_1)-N(\omega_0)\in\{0,F_{m+2}\},
+\]
+contradicting $F_{m+1}\neq F_{m+2}$. Thus the two labels are different, and right-resolvingness follows. This completes the proof.
+\end{proof}
+
+\begin{theorem}[One-step discriminability and left-resolvingness]\label{thm:pom-left-resolving}
+For any $m\ge 2$ and any $v\in V_m=\{0,1\}^{m-1}$:
+\[
+\Fold_m(0v)\neq \Fold_m(1v).
+\]
+Therefore, for any fixed length-$(m-1)$ \emph{suffix}, the readout values when prepending $0/1$ on its left are one-step discriminable; in other words, $\Fold_m$ is strictly discriminable for "first bit unknown" binary choice.
+\end{theorem}
+\begin{proof}
+Denote $\omega_0=0v$, $\omega_1=1v$. Then $N(\omega_1)-N(\omega_0)=F_2=1$.
+If $\Fold_m(\omega_0)=\Fold_m(\omega_1)$, by Lemma~\ref{lem:pom-one-bit}:
+\[
+N(\omega_1)-N(\omega_0)\in\{0,F_{m+2}\},
+\]
+but when $m\ge 2$, $F_{m+2}\ge 3$, contradicting $N(\omega_1)-N(\omega_0)=1$. Thus the two readouts are different. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Entropy saturation: folding does not change information rate]\label{thm:pom-entropy-saturation}
+For any $m\ge 2$, the image space $Y_m=\Phi_m(\{0,1\}^{\ZZ})$ satisfies:
+\[
+h_{\mathrm{top}}(Y_m)=\log 2.
+\]
+\end{theorem}
+\begin{proof}
+Since $\Phi_m$ is a sliding block factor, we must have $h_{\mathrm{top}}(Y_m)\le \log 2$. On the other hand, $G_m$ has two outgoing edges from each vertex, with total number of paths of length $n$ being $2^{m-1}\cdot 2^{n}$. By Theorem~\ref{thm:pom-right-resolving}, under fixed starting point the label sequence determines a unique path, thus the number of label words of length $n$ is at least $2^{n}$. Hence:
+\[
+\log 2\le h_{\mathrm{top}}(Y_m)\le \log 2,
+\]
+and the conclusion holds. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Two-axis complexity separation law: entropy rate does not drop, but minimal rewrite support for resolution reduction is linear scale]\label{cor:pom-two-axis-separation}
+At the sequence level, the information rate of the folding factor image $Y_m$ has no loss: for any $m\ge 2$, $h_{\mathrm{top}}(Y_m)=\log 2$ (Theorem~\ref{thm:pom-entropy-saturation}), and for any output orbit $y\in Y_m$ there is a finite-to-one defect upper bound $|\Phi_m^{-1}(y)|\le 2^{m-1}$ (Remark~\ref{rem:pom-finite-defect}).
+\par
+However, when performing cross-resolution downgrading, the support scale of modifications needed to correct the naive microstate truncation $r_{m+1\to m}$ to a folding-consistent coarse-graining $\widetilde r_{m+1\to m}$ (Subsection~\ref{subsec:fold-gauge-anomaly}) is given by the gauge difference $G_m(\omega)$ (Definition~\ref{def:fold-gauge-anomaly}), satisfying:
+\begin{enumerate}
+  \item \textbf{Worst case:} For any $m\ge 1$, there exists input $\omega^\star(m)\in\Omega_{m+1}$ such that $G_m(\omega^\star)=m$ (Theorem~\ref{thm:fold-gauge-anomaly-max}), i.e., correction can touch $\Theta(m)$ bits;
+  \item \textbf{Uniform baseline:} In exact enumeration within audit window $m\le 20$ (Table~\ref{tab:fold_gauge_anomaly_stats}), $\bar G_m/m$ has risen to approximately $0.4176$; and this linear scale can be sealed as a closed-form constant density law:
+  \[
+  \lim_{m\to\infty}\frac{\bar G_m}{m}=\frac{4}{9}
+  \]
+  (Theorem~\ref{thm:fold-gauge-anomaly-density}). Therefore, under the uniform microstate baseline, the "typical rewrite support scale" for reducing one resolution order satisfies $\bar G_m\sim (4/9)m$.
+\end{enumerate}
+Therefore, within this framework, "information rate per step (entropy rate)" and "minimal rewrite support scale needed for one resolution order reduction" form two orthogonal axes: the many-to-one nature of folding does not imply entropy rate compression; it migrates the cost to the global support rewrite amount needed for cross-scale consistency.
+\end{corollary}
+
+\begin{remark}[Finite defect: from fiber multiplicity to finite-part constants]\label{rem:pom-finite-defect}
+Entropy saturation shows that folding does not compress in the information rate sense; its "loss" manifests as \textbf{finite defect} rather than exponential scale. Specifically, given a label sequence $y\in Y_m$, its pre-image path count is given by the choice of starting vertex, thus:
+\[
+|\Phi_m^{-1}(y)|\le |V_m|=2^{m-1}.
+\]
+More strongly, this "finite defect" can be elevated to an explicit defect register: let:
+\[
+\mathcal{D}_m:=V_m=\{0,1\}^{m-1}.
+\]
+Define the map:
+\[
+\Psi_m:\{0,1\}^{\ZZ}\to Y_m\times \mathcal{D}_m,\qquad
+\Psi_m(s):=\bigl(\Phi_m(s),\,s_0s_1\cdots s_{m-2}\bigr).
+\]
+Then $\Psi_m$ is injective: given $y=\Phi_m(s)$ and defect register $\delta:=s_0\cdots s_{m-2}$, one can use Theorem~\ref{thm:pom-right-resolving} to step-by-step recover all successor bits for $t\ge 0$ (by the discriminable binary choice of the window's last bit), and use Theorem~\ref{thm:pom-left-resolving} to step-by-step recover all predecessor bits for $t<0$ (by the discriminable binary choice of the window's first bit), thereby recovering the entire input sequence $s$.
+Therefore, each $y\in Y_m$ has pre-image number at most $|\mathcal{D}_m|=2^{m-1}$, and "folding loss" can be understood as a finite initial state/cross-section register, rather than entropy rate loss.
+
+This finite defect can be characterized by the fiber multiplicity $d_m(x)$ and the block average structure of conditional expectation $E_m$ (Proposition~\ref{prop:fold-conditional-expectation}), and forms complementary "constant-level fingerprints" with Abel/Hadamard finite-part constants (Definition~\ref{def:abel-finite-part} and related appendix interfaces). Therefore, the "loss" of folding belongs to finite resolution residue, not entropy rate loss.
+\end{remark}
+
+\begin{remark}[Fiber average and finite-part constant share the same interface]\label{rem:pom-em-logm}
+At window scale, $E_m$ averages over fibers via $d_m$, compressing the unobservable degrees of freedom of a single projection; at orbit scale, the Abel/Hadamard finite-part constant:
+\[
+\log\mathfrak{M}(\theta)
+=
+\log C(\theta)
+\;+\;
+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_\theta\!\bigl(z_\star(\theta)^k\bigr)
+\]
+(Definition~\ref{def:abel-finite-part} and Proposition~\ref{prop:abel-finite-part-mobius-zeta}) compresses the finite-part drift of the primitive orbit product at infinite scale. Thus $E_m$ and $\log\mathfrak{M}$ are two scales (microscopic/macroscopic) of the same "information loss interface": the former is window fiber average, the latter is the renormalization constant after observing along cyclic repetition; their derived $\mathsf{M}(\theta)=\gamma+\log\mathfrak{M}(\theta)$ and $P(\theta)$ jointly form the double fingerprint of leading scale and finite-part (see~\ref{subsec:chi-ldp}).
+\end{remark}
+
+\begin{definition}[Pushforward and fiber uniform lift]\label{def:pom-maxent-lift}
+Identifying $\mathcal{A}_m\simeq\mathbb{C}^{\Omega_m}$, $\mathcal{B}_m\simeq\mathbb{C}^{X_m}$ as function algebras on finite sets (see Theorem~\ref{prop:fold-pushforward-lift}). For any distribution $\pi\in\Delta(X_m)$, define the fiber uniform lift:
+\[
+\widetilde\pi(a):=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))},\qquad a\in\Omega_m.
+\]
+Then $(\Fold_m)_*\widetilde\pi=\pi$.
+\end{definition}
+
+\begin{theorem}[Uniqueness of maximal entropy lift]\label{thm:pom-maxent-lift}
+Fix any $\pi\in\Delta(X_m)$. Among all distributions $\mu\in\Delta(\Omega_m)$ satisfying $(\Fold_m)_*\mu=\pi$, the Shannon entropy:
+\[
+H(\mu):=-\sum_{a\in\Omega_m}\mu(a)\log\mu(a)
+\]
+has a unique maximum achieved by $\widetilde\pi$. Moreover:
+\[
+H(\widetilde\pi)=H(\pi)+\mathbb{E}_{\pi}[\log d_m(X)].
+\]
+\end{theorem}
+\begin{proof}
+Fixing $x\in X_m$, the total mass on fiber $\Fold_m^{-1}(x)$ is $\pi(x)$. Within this fiber, entropy uniquely achieves maximum at "uniform allocation" (strict concavity). Summing over all fibers yields global maximum and uniqueness. Directly substituting $\widetilde\pi$ yields:
+\[
+H(\widetilde\pi)
+=-\sum_{x\in X_m}d_m(x)\frac{\pi(x)}{d_m(x)}\log\!\left(\frac{\pi(x)}{d_m(x)}\right)
+=H(\pi)+\sum_{x\in X_m}\pi(x)\log d_m(x).
+\]
+This completes the proof.
+\end{proof}
+
+\begin{definition}[Thermodynamic defect and space projection scalar]\label{def:pom-kappa}
+For any distribution $\pi\in\Delta(X_m)$, define:
+\[
+\kappa_m(\pi):=\mathbb{E}_{\pi}[\log d_m(X)].
+\]
+By Theorem~\ref{thm:pom-maxent-lift}, $\kappa_m(\pi)=H(\widetilde\pi)-H(\pi)$, thus $\kappa_m$ gives an observable scalar characterization of "degrees of freedom compressed away by folding fibers".
+\end{definition}
+
+\begin{definition}[Natural baseline distribution: folding pushforward of uniform microstates]\label{def:pom-wm-baseline}
+Let $u_{\Omega_m}$ denote the uniform distribution on $\Omega_m=\{0,1\}^m$ ($u_{\Omega_m}(a)\equiv 2^{-m}$).
+Define the natural baseline distribution on $X_m$:
+\[
+w_m:=(\Fold_m)_*u_{\Omega_m},\qquad
+w_m(x)=\frac{d_m(x)}{2^m}\quad(x\in X_m).
+\]
+It characterizes the output distribution of "uniform microstates" after folding (i.e., normalizing fiber multiplicity as probability weight).\footnote{To avoid confusion with the $\pi_m$ notation for Parry(PF) baseline in Section~\ref{sec:experiments}, this paper uniformly uses $w_m$ for this distribution. Old drafts once used the synonymous notation $\pi_m(x)=d_m(x)/2^m$ at collision moment/Rényi fingerprint locations, but this is no longer adopted below.}
+\end{definition}
+
+\begin{proposition}[Exact KL decomposition of \texorpdfstring{$\kappa_m(\pi)$}{kappa}]\label{prop:pom-kappa-kl-decomposition}
+For any $\pi\in\Delta(X_m)$, let $w_m$ be the natural baseline distribution from Definition~\ref{def:pom-wm-baseline}. Then we have the strict identity:
+\[
+\boxed{\;
+\kappa_m(\pi)=m\log 2\;-\;H(\pi)\;-\;D_{\mathrm{KL}}(\pi\|w_m)\; }.
+\]
+Therefore $\kappa_m(\pi)\le m\log 2-H(\pi)$, with equality if and only if $\pi=w_m$.
+\end{proposition}
+\begin{proof}
+By KL definition and $w_m(x)=d_m(x)/2^m$:
+\[
+\begin{aligned}
+D_{\mathrm{KL}}(\pi\|w_m)
+&=\sum_{x\in X_m}\pi(x)\log\frac{\pi(x)}{d_m(x)/2^m}\\
+&=\sum_x\pi(x)\log\pi(x)-\sum_x\pi(x)\log d_m(x)+m\log 2\\
+&=-H(\pi)-\kappa_m(\pi)+m\log 2.
+\end{aligned}
+\]
+Rearranging yields the identity; the inequality and equality condition follow from $D_{\mathrm{KL}}\ge 0$ and $D_{\mathrm{KL}}(\pi\|w_m)=0\Leftrightarrow \pi=w_m$. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Folding "near-regularity": mild linear upper bound for \texorpdfstring{$D_{\mathrm{KL}}(w_m\|U_m)$}{KL(w||U)}]\label{prop:pom-wm-kl-to-uniform}
+Let $U_m$ be the uniform distribution on $X_m$ ($U_m(x)\equiv 1/|X_m|=1/F_{m+2}$), and let the average fiber multiplicity be:
+\(
+\overline d_m:=2^m/|X_m|=2^m/F_{m+2}
+\).
+Then:
+\[
+\boxed{\;
+D_{\mathrm{KL}}(w_m\|U_m)\ \le\ \log\frac{D_m}{\overline d_m}
+\;=\;\log\!\left(\frac{D_m\,F_{m+2}}{2^m}\right)\; }.
+\]
+Moreover, by Remark~\ref{rem:pom-defect-gap}:
+\[
+D_{\mathrm{KL}}(w_m\|U_m)\ \le\ m\log\!\left(\frac{\varphi^{3/2}}{2}\right)+O(1),
+\qquad \log(\varphi^{3/2}/2)\approx 0.0286.
+\]
+\end{proposition}
+\begin{proof}
+Note that:
+\(
+\frac{w_m(x)}{U_m(x)}=\frac{d_m(x)/2^m}{1/|X_m|}=\frac{d_m(x)}{\overline d_m}
+\),
+thus $\sup_x \frac{w_m(x)}{U_m(x)}=D_m/\overline d_m$. By the general inequality:
+\(
+D_{\mathrm{KL}}(P\|Q)\le \log \sup_x \frac{P(x)}{Q(x)}
+\),
+the first formula follows immediately; the second formula follows from taking logarithm of $D_m/\overline d_m=\Theta((\varphi^{3/2}/2)^m)$ from Remark~\ref{rem:pom-defect-gap}. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Spectral-information sandwich: entropy gap controlled by \texorpdfstring{$(D_m,\mathsf{Col}_m,\mathcal Z_m)$}{(D,Col,Z)}]\label{thm:pom-spectral-information-sandwich}
+Let $w_m=(\Fold_m)_*u_{\Omega_m}$ be the folding pushforward of uniform microstates (Definition~\ref{def:pom-wm-baseline}), let $U_m$ be the uniform distribution on $X_m$ (Proposition~\ref{prop:pom-wm-kl-to-uniform}).
+Define the entropy gap to uniform (natural logarithm, units in nats):
+\[
+\mathrm{gap}_m^{(\mathrm{nat})}
+:=\log|X_m|-H(w_m)
+=D_{\mathrm{KL}}(w_m\|U_m),
+\qquad |X_m|=F_{m+2}.
+\]
+Further define the folding collision probability:
+\[
+\mathsf{Col}_m:=\sum_{x\in X_m}w_m(x)^2
+=\mathbb{P}\bigl(\Fold_m(\omega)=\Fold_m(\eta)\bigr),
+\qquad \omega,\eta\stackrel{\mathrm{iid}}{\sim}\mathrm{Unif}(\Omega_m).
+\]
+Then we have the following \emph{auditable} bilateral sandwich:
+\[
+\boxed{\;
+2\left(\frac{D_m}{2^m}-\frac{1}{F_{m+2}}\right)^2
+\ \le\
+\mathrm{gap}_m^{(\mathrm{nat})}
+\ \le\
+\log\!\bigl(F_{m+2}\,\mathsf{Col}_m\bigr)
+\ \le\
+\log\!\bigl(F_{m+2}-|\mathcal Z_m|\bigr).\;}
+\]
+where $D_m=\max_{x\in X_m}d_m(x)$ is the maximum fiber multiplicity (see Subsection~\ref{subsec:pom-max-fiber}), $\mathcal Z_m$ is the spectral zero set from Definition~\ref{def:fold-spectrum-zero-set} in Appendix~\ref{app:fold-multiplicity}.
+Dividing the above by $\log 2$ yields the gap in bit units $\mathrm{gap}_m^{(2)}=\mathrm{gap}_m^{(\mathrm{nat})}/\log 2$.
+\end{theorem}
+\begin{proof}
+\textbf{(1) Lower bound (Pinsker + maximum point difference).}
+Let $F:=F_{m+2}$.
+By Pinsker inequality (natural logarithm calibration):
+\(
+D_{\mathrm{KL}}(w_m\|U_m)\ge 2\,D_{\mathrm{TV}}(w_m,U_m)^2
+\),
+where:
+\(
+D_{\mathrm{TV}}(P,Q):=\frac12\sum_x|P(x)-Q(x)|
+\).
+Moreover:
+\[
+D_{\mathrm{TV}}(w_m,U_m)
+=\sum_{x:\,w_m(x)>1/F}\bigl(w_m(x)-1/F\bigr)
+\ge \max_x\bigl(w_m(x)-1/F\bigr),
+\]
+while $\max_x w_m(x)=D_m/2^m$, yielding:
+\(
+D_{\mathrm{KL}}(w_m\|U_m)\ge 2(D_m/2^m-1/F)^2
+\).
+\par
+\textbf{(2) Upper bound (Rényi-2/collision upper bound).}
+The second-order Rényi entropy (collision entropy) satisfies:
+\(
+H(w_m)\ge H_2(w_m):=-\log\sum_x w_m(x)^2=-\log \mathsf{Col}_m
+\),
+therefore:
+\[
+\mathrm{gap}_m^{(\mathrm{nat})}
+=\log F-H(w_m)
+\le \log F-H_2(w_m)
+=\log\bigl(F\,\mathsf{Col}_m\bigr).
+\]
+Finally, by Theorem~\ref{thm:fold-collision-zero-reduction} in Appendix~\ref{app:fold-multiplicity}:
+\(
+\mathsf{Col}_m\le 1-|\mathcal Z_m|/F
+\),
+thus $F\mathsf{Col}_m\le F-|\mathcal Z_m|$, yielding the rightmost upper bound. This completes the proof.
+\end{proof}
+
+\begin{definition}[Collision inflation coefficient (auditable second-order fingerprint)]\label{def:pom-collision-inflation}
+Following the notation of Theorem~\ref{thm:pom-spectral-information-sandwich}, define:
+\[
+C_{\mathrm{col}}(m)
+:=F_{m+2}\,\mathsf{Col}_m
+:=F_{m+2}\sum_{x\in X_m} w_m(x)^2.
+\]
+Its logarithm is precisely the second-order Rényi divergence:
+\(
+D_2(w_m\|U_m)=\log C_{\mathrm{col}}(m)
+\)
+(natural logarithm calibration), and:
+\[
+\chi^2(w_m\|U_m)
+:=\sum_{x\in X_m}\frac{(w_m(x)-U_m(x))^2}{U_m(x)}
+=C_{\mathrm{col}}(m)-1.
+\]
+By $w_m(x)=d_m(x)/2^m$ we obtain a fully enumerable fiber expression:
+\[
+C_{\mathrm{col}}(m)
+=\frac{F_{m+2}}{2^{2m}}\sum_{x\in X_m} d_m(x)^2
+=\frac{F_{m+2}}{2^{2m}}\sum_{d\ge 1}\#\{x\in X_m:\ d_m(x)=d\}\,d^2.
+\]
+\end{definition}
+
+\begin{remark}[Mechanism discrimination from "maximum fiber tail" to "overall second-order deviation"]\label{rem:pom-gap-bulk-vs-tail}
+The left-end lower bound in Theorem~\ref{thm:pom-spectral-information-sandwich} depends only on the single-point deviation term of maximum fiber:
+\(
+D_m/2^m-1/F_{m+2}
+\);
+for Fold, $D_m/2^m$ tends exponentially to zero (see Subsection~\ref{subsec:pom-max-fiber}), so this lower bound rapidly becomes extremely small on windows.
+In contrast, the bit gap $\mathrm{gap}_m^{(2)}=\log_2|X_m|-H(w_m)$ in Table~\ref{tab:fold_multiplicity_histogram} has reached constant magnitude within the audited window and exhibits slow drift;
+this suggests that the dominant evidence for "hidden/visible bit budget" does not come from extreme tail, but from the bulk spectral energy distribution reflected by overall second-order deviation ($C_{\mathrm{col}}(m)$ from Definition~\ref{def:pom-collision-inflation}).
+\par
+On the other hand, writing the gap as:
+\[
+\mathrm{gap}_m^{(2)}
+=\log_2 F_{m+2}-m+\mathbb{E}_{w_m}[\log_2 d_m(X)],
+\]
+and using Binet asymptotics $\log_2 F_{m+2}=(m+2)\log_2\varphi-\log_2\sqrt5+o(1)$, we obtain an auditable "constant decomposition":
+\[
+\mathrm{gap}_m^{(2)}
+=\underbrace{2\log_2\varphi-\log_2\sqrt5}_{\text{syntax constant}}
+\;+\;
+\underbrace{\Bigl(\mathbb{E}_{w_m}[\log_2 d_m(X)]-m\log_2(2/\varphi)\Bigr)}_{\text{fiber drift term}}
+\;+\;o(1),
+\]
+where the fiber drift term can be directly read and tracked from Table~\ref{tab:fold_fiber_log_moments_mu_sigma} (or Table~\ref{tab:fold_multiplicity_histogram}).
+\end{remark}
+
+\begin{corollary}[Exponential sparsity rate of maximum fiber achievers (two natural measures)]\label{cor:pom-maxfiber-rare-uniform}
+Let $\mathcal{M}_m:=\{x\in X_m:\ d_m(x)=D_m\}$. Under type-uniform measure $U_m=\mathrm{Unif}(X_m)$ and microstate-uniform pushforward measure $w_m(x)=d_m(x)/2^m$:
+\[
+U_m(\mathcal{M}_m)=\Theta(\varphi^{-m}),
+\qquad
+w_m(\mathcal{M}_m)=\Theta\!\left(\left(\frac{\sqrt{\varphi}}{2}\right)^m\right),\qquad \frac{\overline d_m}{D_m}
+=\Theta\!\left(\left(\frac{2}{\varphi^{3/2}}\right)^m\right).
+\]
+The first two terms respectively correspond to extremal hit rates under "type-uniform" and "microstate-uniform pushforward" natural sampling calibrations; more precise closed-form formulas are in Corollary~\ref{cor:pom-maxfiber-rarity-two-measures}.
+\end{corollary}
+\begin{proof}
+By Corollary~\ref{cor:pom-maxfiber-rarity-two-measures}:
+\(
+U_m(\mathcal{M}_m)=\Theta(\varphi^{-m})
+\)
+and:
+\(
+w_m(\mathcal{M}_m)=\Theta((\sqrt{\varphi}/2)^m)
+\).
+Moreover, under $U_m$:
+\(
+\mathbb{E}_{U_m}[d_m(X)]=\frac{1}{|X_m|}\sum_{x\in X_m}d_m(x)=\frac{2^m}{|X_m|}=\overline d_m
+\),
+by Markov inequality:
+\(
+\mathbb{P}_{U_m}(d_m(X)\ge D_m)\le \overline d_m/D_m
+\),
+while $\overline d_m/D_m=\Theta((2/\varphi^{3/2})^m)$ is given by Remark~\ref{rem:pom-defect-gap}. This completes the proof.
+\end{proof}
+
+\begin{remark}[Isomorphism of window defect and finite-part constant]\label{rem:pom-kappa-logm}
+At window scale, $\kappa_m(\pi)$ is the log fiber volume defect of a single folding projection; at orbit scale, $\log\mathfrak{M}(\theta)$ is the Möbius-Abel regularized finite-part of the primitive orbit product at infinite scale (Definition~\ref{def:abel-finite-part}). Both provide microscopic/macroscopic "fiber defect" interfaces, offering a unified calibration for cross-scale defect functional alignment.
+\end{remark}
+
+\begin{remark}[Duality with conditional expectation]
+The fiber uniform lift $\widetilde\pi$ and conditional expectation $E_m$ form dual interfaces: $E_m$ at the observable level is "fiber averaging", while $\widetilde\pi$ at the probability level is "fiber uniformization". Both respectively provide the operatorial and information-theoretic characterizations of folding.
+\end{remark}
+
+\begin{proposition}[Global KL defect identity: exact distance from deviating maximal entropy lift]\label{prop:pom-kl-defect-identity}
+Fix any $\pi\in\Delta(X_m)$, and let $\widetilde\pi\in\Delta(\Omega_m)$ be its fiber uniform lift (Definition~\ref{def:pom-maxent-lift}).
+Then for any $\mu\in\Delta(\Omega_m)$ satisfying $(\Fold_m)_*\mu=\pi$, we have the strict identity:
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\widetilde\pi)=H(\widetilde\pi)-H(\mu)\;}
+\]
+In particular, by Definition~\ref{def:pom-kappa} and Theorem~\ref{thm:pom-maxent-lift}:
+\[
+H(\widetilde\pi)=H(\pi)+\kappa_m(\pi),
+\qquad
+D_{\mathrm{KL}}(\mu\|\widetilde\pi)=H(\pi)+\kappa_m(\pi)-H(\mu),
+\]
+thus $\kappa_m(\pi)$ can be viewed as "when the macroscopic distribution $\pi$ is fixed, the maximum entropy defect that can be compressed at the microscopic level".
+\end{proposition}
+
+\begin{proof}
+By KL definition:
+\[
+D_{\mathrm{KL}}(\mu\|\widetilde\pi):=\sum_{a\in\Omega_m}\mu(a)\log\frac{\mu(a)}{\widetilde\pi(a)}
+=-H(\mu)-\sum_{a\in\Omega_m}\mu(a)\log\widetilde\pi(a).
+\]
+Since $\widetilde\pi(a)=\pi(x)/d_m(x)$ (where $x=\Fold_m(a)$), using $(\Fold_m)_*\mu=\pi$:
+\[
+\begin{aligned}
+\sum_{a\in\Omega_m}\mu(a)\log\widetilde\pi(a)
+&=\sum_{a\in\Omega_m}\mu(a)\bigl(\log\pi(\Fold_m(a))-\log d_m(\Fold_m(a))\bigr)\\
+&=\sum_{x\in X_m}\pi(x)\log\pi(x)-\sum_{x\in X_m}\pi(x)\log d_m(x).
+\end{aligned}
+\]
+Directly expanding entropy for $\widetilde\pi$ yields:
+\[
+H(\widetilde\pi)
+=-\sum_{a\in\Omega_m}\widetilde\pi(a)\log\widetilde\pi(a)
+=-\sum_{x\in X_m}\pi(x)\log\pi(x)+\sum_{x\in X_m}\pi(x)\log d_m(x).
+\]
+Thus $-\sum_a\mu(a)\log\widetilde\pi(a)=H(\widetilde\pi)$, substituting back yields:
+\(
+D_{\mathrm{KL}}(\mu\|\widetilde\pi)=H(\widetilde\pi)-H(\mu)
+\).
+This completes the proof.
+\end{proof}
+
+\begin{remark}[Lazy normalization postponement law]\label{rem:pom-lazy-fold}
+If intermediate evolution $U_t$ does not distinguish folding fibers at the observation level, i.e., for any $g\in\mathcal{A}_m$ we have $g\circ U_t\in\mathcal{B}_m$ equivalent to $g=\bar g\circ\Fold_m$ (Proposition~\ref{prop:pom-fiber-invariance}), then:
+\[
+E_m\circ U_t\circ E_m=E_m\circ U_t.
+\]
+Therefore, within such "fiber-indistinguishable" evolution segments, multiple $P_Z$ can be merged into a single one at the end, achieving postponed execution of canonical projection.
+\end{remark}

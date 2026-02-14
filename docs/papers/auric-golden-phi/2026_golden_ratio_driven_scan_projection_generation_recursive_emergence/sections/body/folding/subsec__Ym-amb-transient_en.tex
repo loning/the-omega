@@ -1,0 +1,130 @@
+\subsubsection{Transient Structure of the Ambiguity Shell: Monotonicity, Acyclicity, and Synchronization Delay}\label{subsec:Ym-amb-transient}
+This section refines the ``low-entropy ambiguity shell'' of Corollary \ref{cor:Ym-ambiguity-shell-low-entropy} into an auditable structural proposition: under the Zeckendorf folding of this paper ($m\ge 3$), ambiguity is not a recyclable ``bi-ambiguous syntax'' but rather a \textbf{purely transient layer with finite-step synchronization}; therefore it carries no periodic points and does not alter the intrinsic \(\zeta_{Y_m}\) periodic point spectrum (see Corollary \ref{cor:Phi_m-zeta-closed}).
+
+\begin{proposition}[Monotone Non-Increase of Candidate Sets (Set Dynamics of Right-Resolvingness)]\label{prop:det-candidate-set-monotone}
+On the labeled graph $G_m$ of Definition \ref{def:G_m}, if any two outgoing edges from the same vertex have distinct labels (i.e., $G_m$ is right-resolving; see Theorem \ref{thm:pom-right-resolving}), then for any candidate set $S\subset V_m$ and any output symbol $a\in X_m$, if $\delta_m(S,a)\neq\varnothing$ then
+\[
+|\delta_m(S,a)|\le |S|.
+\]
+Moreover, for any singleton $\{v\}$, its successor $\delta_m(\{v\},a)$ is either empty or again a singleton; in other words, the set of singleton states in $H_m^{\mathrm{det}}$ is closed under forward reading: once a singleton state is entered, it is impossible to return to a non-singleton state.
+\end{proposition}
+\begin{proof}
+Right-resolvingness means that for each $v\in V_m$ and each $a\in X_m$, there is at most one outgoing edge from $v$ with label $a$. Hence one can define a partial function
+\[
+f_a:V_m\rightharpoonup V_m,\qquad
+f_a(v):=
+\begin{cases}
+v' & \exists\,e:v\to v'\ \text{s.t. }\ell_m(e)=a,\\
+\text{undefined} & \text{otherwise}.
+\end{cases}
+\]
+By Definition \ref{def:Phi_m-right-resolving},
+\(
+\delta_m(S,a)=\{f_a(v):v\in S,\ f_a(v)\text{ defined}\}
+\)
+is the image of $S$ under $f_a$, so its cardinality does not exceed $|S|$. When $S=\{v\}$, $\delta_m(\{v\},a)$ contains at most one element, hence is a singleton or empty, so singleton states are closed under forward reading. \qed
+\end{proof}
+
+\begin{theorem}[Ambiguity Shell Is Acyclic: Purely Transient with No Periodic Points]\label{thm:Ym-ambiguity-shell-dag}
+Let $H_m^{\mathrm{det}}$ be the determinized right-resolving representation of Definition \ref{def:Phi_m-right-resolving}, with state set $\mathcal{S}_m^{\mathrm{det}}$. Define the ambiguous state set
+\[
+\mathcal{S}_m^{\mathrm{amb}}:=\{S\in\mathcal{S}_m^{\mathrm{det}}:\ |S|\ge 2\},
+\]
+and let $H_m^{\mathrm{amb}}$ be the induced subgraph of $H_m^{\mathrm{det}}$ on $\mathcal{S}_m^{\mathrm{amb}}$.
+Then for $m\ge 3$, $H_m^{\mathrm{amb}}$ is a DAG (contains no directed cycle). Consequently:
+\begin{enumerate}
+  \item $H_m^{\mathrm{amb}}$ carries no periodic orbits; equivalently, no periodic point of $Y_m$ can permanently remain in a non-singleton state under the determinized filter.
+  \item For any $y\in Y_m$, starting from the initial candidate set $S_0:=V_m$ and iterating $S_{t+1}:=\delta_m(S_t,y_t)$, the filter must enter a singleton state within finitely many steps and remain singleton thereafter; more specifically, for all $t\ge m$ we have $|S_t|=1$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By the ``local synchronization'' part of Theorem \ref{thm:Phi_m-conjugacy-threshold} (see also Table \ref{tab:phi_m_conjugacy_threshold}), when $m\ge 3$: for any admissible length-$m$ output block $a_0\cdots a_{m-1}$, starting from $S_0=V_m$ and iterating $S_{j+1}=\delta_m(S_j,a_j)$, the resulting $S_m$ must be a singleton. Equivalently, any length-$m$ labeled path starting from the initial state $V_m$ in $H_m^{\mathrm{det}}$ terminates in the singleton state set.
+
+Combined with the ``forward closure of singleton states'' from Proposition \ref{prop:det-candidate-set-monotone}, it follows immediately that for any $y\in Y_m$, once $S_m$ is a singleton, $S_t$ remains a singleton for all $t\ge m$, establishing conclusion (2).
+
+To prove that $H_m^{\mathrm{amb}}$ is acyclic, suppose for contradiction that there exists a directed cycle entirely within $\mathcal{S}_m^{\mathrm{amb}}$. Since $\mathcal{S}_m^{\mathrm{det}}$ by definition is the set of states reachable from the initial state $V_m$, any state on the cycle can be reached by some finite labeled path from $V_m$. Subsequently, cycling around the cycle generates an arbitrarily long labeled path that permanently stays in non-singleton states; this contradicts ``any length-$m$ path terminates in a singleton state.'' Hence $H_m^{\mathrm{amb}}$ contains no directed cycle and is a DAG, which also carries no periodic orbits, establishing conclusion (1). \qed
+\end{proof}
+
+\begin{corollary}[Periodic Point Rigidity and Degeneracy of the Intrinsic \texorpdfstring{$\zeta_{Y_m}$}{zetaYm}]\label{cor:Ym-periodic-rigidity}
+When $m\ge 3$, for all $n\ge 1$,
+\[
+\#\mathrm{Fix}(\sigma^n|_{Y_m})=2^n,
+\qquad
+\zeta_{Y_m}(z)=\frac{1}{1-2z}.
+\]
+\end{corollary}
+\begin{proof}
+This is a direct restatement of Corollary \ref{cor:Phi_m-zeta-closed} (whose proof is based on the conjugacy of Theorem \ref{thm:Phi_m-conjugacy-threshold}). Theorem \ref{thm:Ym-ambiguity-shell-dag} further provides a structural explanation: the ambiguity shell is a purely transient layer that contributes no periodic points, so the periodic point spectrum is entirely determined by the singleton state skeleton. \qed
+\end{proof}
+
+\begin{corollary}[Closed Form and Sharpness of Synchronization Delay]\label{cor:Ym-sync-delay}
+For $y\in Y_m$, define the determinized filter trajectory $S_0:=V_m$, $S_{t+1}:=\delta_m(S_t,y_t)$ ($t\ge 0$), and define the ``worst-case synchronization delay''
+\[
+D_{\mathrm{sync}}(m):=\max\{\,t\ge 0:\exists\,y\in Y_m\ \text{s.t. }|S_t|>1\,\}.
+\]
+Then for $m\ge 3$,
+\[
+\boxed{\ D_{\mathrm{sync}}(m)=m-1\ }.
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:Phi_m-conjugacy-threshold} (see also the ``non-singleton ends $(m)$'' column of Table \ref{tab:phi_m_conjugacy_threshold} being $0$), for any $y\in Y_m$ we have $|S_m|=1$; combined with the monotonicity of Proposition \ref{prop:det-candidate-set-monotone}, $|S_t|=1$ for all $t\ge m$, so $D_{\mathrm{sync}}(m)\le m-1$.
+On the other hand, the same table shows that ``non-singleton ends $(m-1)$'' is strictly positive ($m\ge 3$), meaning there exists some admissible output block such that $|S_{m-1}|>1$, hence $D_{\mathrm{sync}}(m)\ge m-1$. Combining the two yields the equality. \qed
+\end{proof}
+
+\begin{remark}[Ambiguity Shell as Subsystem Is Empty for \texorpdfstring{$m\ge 3$}{m>=3}]\label{rem:Ym-amb-empty}
+In Corollary \ref{cor:Ym-ambiguity-shell-low-entropy}, the set of points that ``never enter the singleton essential component'' was denoted as the ambiguity shell subsystem \(Y_m^{\mathrm{amb}}\).
+Theorem \ref{thm:Ym-ambiguity-shell-dag}, conclusion (2), shows that when \(m\ge 3\), the determinized filter starting from any output \(y\in Y_m\) must enter and permanently remain in a singleton state within at most \(m\) steps.
+Therefore, in the Zeckendorf folding model of this paper, \(Y_m^{\mathrm{amb}}=\varnothing\) (in the two-sided shift sense, no orbit ``remains ambiguous forever''); the so-called ``ambiguity shell'' actually represents a \emph{finite-step synchronization delay layer}, whose worst-case delay is precisely given by Corollary \ref{cor:Ym-sync-delay}.
+\par
+Furthermore, the condition \(Y_m^{\mathrm{amb}}=\varnothing\) can be lifted on the determinized state graph to a \textbf{computable synchronization delay theorem}:
+if one removes all singleton states and their outgoing edges from $H_m^{\mathrm{det}}$ to obtain the non-singleton induced subgraph $H_m^{\mathrm{amb}}$, then
+\[
+Y_m^{\mathrm{amb}}=\varnothing
+\quad\Longleftrightarrow\quad
+H_m^{\mathrm{amb}}\ \text{contains no directed cycle}.
+\]
+Indeed, if $H_m^{\mathrm{amb}}$ contains a directed cycle, then by reachability from the initial state, one can generate a two-sided labeled sequence that never enters a singleton state, yielding \(Y_m^{\mathrm{amb}}\neq\varnothing\), a contradiction; the reverse implication follows by definition.
+Therefore, when \(Y_m^{\mathrm{amb}}=\varnothing\), $H_m^{\mathrm{amb}}$ is a DAG, and there exists a uniform finite synchronization step count
+\[
+L_m:=D_{\mathrm{sync}}(m)+1<\infty,
+\]
+such that for any \(y\in Y_m\), the determinized filter trajectory enters a singleton state within at most \(L_m\) steps and remains singleton thereafter. Moreover, $L_m$ can be directly audited on the finite graph: computing the longest path by DP on the DAG yields the minimum \(D_{\mathrm{sync}}(m)\) (and hence \(L_m\)). The script \texttt{scripts/exp\_phi\_m\_sync\_theory.py} outputs a reproducible certificate for this computation (Table \ref{tab:phi_m_sync_theory}).
+\end{remark}
+
+\input{sections/generated/tab_phi_m_sync_theory}
+
+\begin{proposition}[Leading Pole Residue Ratio as a Constant-Level Kernel Fingerprint]\label{prop:Ym-zeta-residue-ratio}
+Suppose the cover \(\zeta\) and the intrinsic \(\zeta\) share the same leading pole modulus \(z_\star=\rho_m^{-1}\) (where \(\rho_m:=\rho(A_m)=\rho(B_m)\)) and both are first-order poles. Writing their Laurent principal parts as
+\[
+\zeta_{X_{A_m}}(z)\sim \frac{R_m^{\mathrm{cov}}}{1-\rho_m z},
+\qquad
+\zeta_{Y_m}(z)\sim \frac{R_m^{\mathrm{int}}}{1-\rho_m z},
+\qquad (z\to z_\star),
+\]
+define the constant ratio
+\[
+\boxed{\ \eta_m:=\frac{R_m^{\mathrm{int}}}{R_m^{\mathrm{cov}}}\ }.
+\]
+Then \(\eta_m\) is determined solely by the analytic structure of \((A_m,B_m)\) and is therefore a constant-level ``folding kernel fingerprint.'' Moreover, by the upper bound of Proposition \ref{prop:periodic-count-sandwich},
+\[
+0<\eta_m\le 1.
+\]
+\end{proposition}
+\begin{proof}
+The invariant nature of \(\eta_m\) follows from the definition: \(R_m^{\mathrm{cov}},R_m^{\mathrm{int}}\) are the principal part coefficients of the two \(\zeta\)-functions at the leading pole.
+
+From the periodic point expansion of \(\zeta\) (defining \(\zeta_{Y_m}(z)=\exp(\sum_{n\ge 1}\#\mathrm{Fix}(\sigma^n|_{Y_m})z^n/n)\)) and the per-$n$ upper bound of Proposition \ref{prop:periodic-count-sandwich},
+\(\#\mathrm{Fix}(\sigma^n|_{Y_m})\le \#\mathrm{Fix}(\sigma^n|_{X_{A_m}})\),
+one obtains for any \(0\le z<z_\star\):
+\[
+\log\zeta_{Y_m}(z)
+=\sum_{n\ge 1}\frac{\#\mathrm{Fix}(\sigma^n|_{Y_m})}{n}z^n
+\le
+\sum_{n\ge 1}\frac{\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})}{n}z^n
+=\log\zeta_{X_{A_m}}(z),
+\]
+so \(\zeta_{Y_m}(z)\le \zeta_{X_{A_m}}(z)\). Letting \(z\uparrow z_\star\) and multiplying by \(1-\rho_m z\), together with the principal part expansions, yields \(R_m^{\mathrm{int}}\le R_m^{\mathrm{cov}}\), hence \(0<\eta_m\le 1\). \qed
+\end{proof}
+
+The existence, uniqueness, and minimality of the right Fischer cover follow from the ``determinization + follower minimization'' construction (see \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}).

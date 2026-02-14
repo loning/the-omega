@@ -1,0 +1,349 @@
+\subsubsection{Spectral Resource Types: \texorpdfstring{$\Sigma_{\mathrm{space}}$}{Sigma space} and the Convex Closure Monad \texorpdfstring{$\mathbf{Conv}$}{Conv}}\label{subsec:pom-spectral-resource-type}
+
+The preceding discussion organized the Perron roots \(r_q(u)\) of the weighted collision moment-kernel into a two-dimensional pressure surface
+\(
+P(q,u)=\log r_q(u)-q\log|A_{\mathrm{out}}|
+\)
+(\S\ref{subsec:pom-pressure-surface-qu}), which will be used in \S\ref{subsec:pom-quantile-budget-law} to control tail quantiles and prime-register quotas.
+To upgrade ``the spectrum is a resource'' into a derivable type system (thereby directing strategy selection in rewriting/compilation), we tighten \(q\mapsto P(q,u)\) into a discrete convex budget object and regard its convex closure as the normal form.
+
+\paragraph{Budget domain and discrete convex closure}
+Let
+\[
+\mathbf{Bud}:=\{\,b:\ZZ_{\ge 2}\to\overline{\RR}\,\},
+\qquad
+b\le c\ \Longleftrightarrow\ (\forall q\ge 2)\ b(q)\le c(q),
+\qquad
+(b+c)(q):=b(q)+c(q),
+\]
+viewed as a symmetric monoidal preorder category.
+Let \(\mathbf{Conv}\subseteq \mathbf{Bud}\) be the full subcategory satisfying the discrete convexity condition
+\[
+b(q+1)-b(q)\ \ge\ b(q)-b(q-1)\qquad(q\ge 3)
+\]
+and denote the inclusion functor by \(J:\mathbf{Conv}\hookrightarrow \mathbf{Bud}\).
+Define the \textbf{discrete lower convex closure} \(\mathbb{T}:\mathbf{Bud}\to\mathbf{Conv}\) as follows: for any \(b\in\mathbf{Bud}\), \(\mathbb{T}(b)\) is the greatest discrete convex function \(c\) satisfying \(c\le b\) (equivalently, the lower convex hull of its epigraph; a reproducible implementation is described in Remark \ref{rem:pom-pressure-multifractal-q60}).
+Then \(\mathbb{T}\dashv J\), which induces an idempotent \emph{closure monad} \(J\circ\mathbb{T}:\mathbf{Bud}\to\mathbf{Bud}\):
+\[
+\mathbb{T}(b)\le b,\qquad
+\mathbb{T}(\mathbb{T}(b))=\mathbb{T}(b),\qquad
+b\le b'\ \Longrightarrow\ \mathbb{T}(b)\le \mathbb{T}(b').
+\]
+Under the convex duality framework, this closure can also be obtained via the bi-dual of the same Legendre--Fenchel conjugate (Remark \ref{rem:pom-legendre-chernoff-same-dual}).
+
+\paragraph{Spectral resource and type normal form for projection words}
+Following the spectral semantics functor \(\mathcal{S}:\mathbf{W}\to \mathbf{Kern}\) of Remark \ref{rem:pom-word-category}.
+For any projection word \(w\), temperature parameter \(u\in(0,1]\) and character channel \(\chi\), let \(r^{(w)}_{q,\chi}(u)\) denote the Perron root of the weighted collision moment-kernel of the kernel \(\mathcal{S}(w)\) under \(\chi\)-twist and temperature (the construction is analogous to \S\ref{subsec:pom-pressure-surface-qu}, with the underlying kernel replaced by the \(\chi\)-channel of \(\mathcal{S}(w)\)).
+Define the \textbf{spatial spectral resource curve} as
+\[
+\Sigma_{\mathrm{space}}(w)(q;\chi,u)
+:=\log r^{(w)}_{q,\chi}(u)-q\log|A_{\mathrm{out}}|.
+\]
+and define the \textbf{spectral resource type normal form} as
+\[
+\boxed{\;
+\mathrm{Ty}_{\mathrm{space}}(w;\chi,u)
+:=\mathbb{T}\bigl(q\mapsto \Sigma_{\mathrm{space}}(w)(q;\chi,u)\bigr)\in\mathbf{Conv}.}
+\]
+In the base case where \(w\) is the collision moment readout gate of this paper and \(\chi=\chi_0\), \(\Sigma_{\mathrm{space}}(w)\) reduces to the two-dimensional pressure \(P(q,u)\).
+
+Hence, after fixing the channel parameters \((\chi,u)\), the above construction can be viewed as a combinatorial valuation from the projection word $2$-category to the convex budget domain:
+\[
+\mathbf{PW}\xrightarrow{\ \Sigma_{\mathrm{space}}(-;\chi,u)\ }\mathbf{Bud}\xrightarrow{\ \mathbb{T}\ }\mathbf{Conv},
+\]
+where the idempotent closure monad given by \(\mathbb{T}\dashv J\) provides a canonical ``type normalizer.''
+
+\begin{remark}[Constant-level vs.\ exponential-level anomalies: complementary verification via \texorpdfstring{$\mathsf{Anom}_G$}{AnomG} and \texorpdfstring{$r^{(w)}_{q,\chi}$}{rqchi}]\label{rem:pom-constant-vs-exponential-anom}
+The anomaly signature \(\mathsf{Anom}_G(K;\theta)\) (Definition \ref{def:pom-anom-signature}) records the \emph{constant-level drift} of twisted channels in the Abel/Hadamard finite part of \(\zeta\);
+meanwhile \(\Sigma_{\mathrm{space}}(w)(q;\chi,u)=\log r^{(w)}_{q,\chi}(u)-q\log|A_{\mathrm{out}}|\) records the \emph{exponential-level principal scale} of the \(q\)-collision spectrum.
+One may therefore define an exponential-level ``spectral anomaly'' associated with the character channel (comparing nontrivial twist against the trivial channel at the same temperature \(u\)):
+\[
+\Delta^{\mathrm{exp}}_{\chi}(w;q,u)
+:=\log r^{(w)}_{q,\chi}(u)-\log r^{(w)}_{q,\chi_0}(u).
+\]
+When \(\Delta^{\mathrm{exp}}_{\chi}\equiv 0\) (over the audited \(q\)-window/grid), the twisted channel does not affect the exponential growth of the collision spectrum; whether \(\mathsf{Anom}_G\) vanishes further characterizes whether the constant-level residual can be eliminated by rewriting.
+This provides a two-dimensional cross-verification for diagnosing ``commutativity failure'': the same character family can be checked at the constant level via \(\mathsf{Anom}\) and at the exponential level via \(\Delta^{\mathrm{exp}}_{\chi}\).
+\end{remark}
+
+\begin{remark}[Type-directed rewriting: upgrading ``optimization'' to normal form selection]\label{rem:pom-type-directed-normalization}
+When the same readout task admits multiple auditable compilation paths (e.g., two hardening routes for sequential gates: temperature hardening vs.\ moment-quantile-CRT spatialization, Remark \ref{rem:pom-hardening-u-vs-q}), one often obtains a family of candidate projection words \(\{w_i\}\) that are equivalent (or \(\varepsilon\)-sound equivalent, Definition \ref{def:pom-eps-sound-rewrite}) under the visible output specification.
+In this case, one may use \(\mathrm{Ty}_{\mathrm{space}}(w_i;\chi,u)\) as a static budget type: select the pointwise-minimal element under the order \( \le \) as the lexicographic normal form representative, and record the deficit as a certificate (e.g., the failure probability ledger of \((\mathrm{RCRT}_\varepsilon)\) and the \(\gamma\)-certificate).
+Since \(\mathbb{T}\) normalizes the budget into a discrete convex object, the optimization (e.g., searching for the dual-optimal moment order \(q^\star\)) has a discrete quasi-convex structure over the integers; see the unimodality discussion in \S\ref{subsec:pom-quantile-budget-law}, which unifies ``choosing \(q\)'' and ``choosing a compilation strategy'' into a single auditable type minimization problem.
+\end{remark}
+
+\begin{definition}[Kink and kink set (discrete convex budget)]\label{def:pom-kink-set}
+Let \(b\in\mathbf{Conv}\), and consider its discrete slopes on a finite window \(q\in\{2,3,\dots,Q_{\max}\}\):
+\[
+\Delta b(q):=b(q)-b(q-1)\qquad(q=3,\dots,Q_{\max}).
+\]
+Discrete convexity is equivalent to \(\Delta b(q)\) being nondecreasing in \(q\).
+Define the \textbf{kink set} of \(b\) on this window as
+\[
+\mathrm{Kink}(b)
+:=\{2,Q_{\max}\}\ \cup\
+\Bigl\{\,q\in\{3,\dots,Q_{\max}-1\}:\ \Delta b(q+1)>\Delta b(q)\Bigr\}.
+\]
+\end{definition}
+
+\begin{proposition}[Kink principle for \texorpdfstring{$q$}{q}-selection (discrete optimization reduction via type closure)]\label{prop:pom-kink-principle-q-selection}
+Fix the channel parameters \((\chi,u)\) and a projection word \(w\), and let
+\(
+b:=\mathrm{Ty}_{\mathrm{space}}(w;\chi,u)\in\mathbf{Conv}
+\)
+be its spectral resource type normal form (as defined in \S\ref{subsec:pom-spectral-resource-type}).
+Then on any finite window \(q\in\{2,\dots,Q_{\max}\}\):
+\begin{enumerate}
+  \item \textbf{(Only kinks need to be checked)} For any affine objective \(L(q)=aq+c\), the optimal solution set of the discrete convex optimization
+  \[
+  \arg\min_{q\in\{2,\dots,Q_{\max}\}}\bigl(b(q)+L(q)\bigr)
+  \]
+  is a (possibly degenerate) contiguous integer interval; hence there exists an optimal point lying in \(\mathrm{Kink}(b)\).
+  \item \textbf{(Equivalent dual search formulation)} Equivalently, for any \(\gamma\in\RR\), the maximization of
+  \(
+  q\mapsto (q-1)\gamma-b(q)
+  \)
+  (discrete Legendre--Fenchel dual) can be localized by comparing the discrete slopes \(\Delta b(q)\) with \(\gamma\) at the elements of \(\mathrm{Kink}(b)\): the optimal \(q^\star\) can be taken as some kink such that \(\gamma\) falls within its left-right slope interval.
+\end{enumerate}
+Therefore, any \(q\)-optimization ``based on the type closure \(\mathbb{T}\)'' need not perform a full scan: it suffices to conduct a finite check on the kink set of the type normal form (the number of kinks is far smaller than the scan window length and can be output as a byproduct when computing \(\mathbb{T}\)).
+\end{proposition}
+
+\begin{proof}
+(1) Since \(b\in\mathbf{Conv}\), \(\Delta b(q)\) is nondecreasing, and \(b(q)+aq\) remains a discrete convex function.
+The sublevel sets of a discrete convex function are intervals, so the optimal solution set is also an interval; the interval endpoints correspond to locations where the discrete slope undergoes a jump (or lie at the window boundary), i.e., they belong to the kink set of Definition \ref{def:pom-kink-set}.
+(2) This is the dual formulation of (1): maximizing \((q-1)\gamma-b(q)\) is equivalent to minimizing \(b(q)-(q-1)\gamma\); the criterion for the optimal \(q^\star\) is given by the monotonicity of the discrete slopes.
+\end{proof}
+
+\subsubsection{Quantile Budget Law: From Fiber Multiplicity Tails to Prime-Register Budgets}\label{subsec:pom-quantile-budget-law}
+
+This paragraph rewrites the ``space-for-time'' prime-register design from a ``worst-case fiber'' specification to a ``tail quantile'' specification, so that the resource budget can be directly determined by the moment-kernel pressure curve.
+
+\begin{definition}[Tail quantile of the fiber index]\label{def:pom-gamma-quantile}
+Following Definition \ref{def:pom-fiber-spectrum} for \(\gamma_m(x)=\frac{1}{m}\log d_m(x)\), sample the random variable \(\gamma_m(X)\) under the output distribution \(w_m(x)=d_m(x)/2^m\).
+For \(\varepsilon\in(0,1)\), define the tail quantile
+$$
+\gamma_{m}(\varepsilon):=\inf\Bigl\{\gamma\ge 0:\ \mathbb{P}_{w_m}\big[\gamma_m(X)>\gamma\big]\le \varepsilon\Bigr\}.
+$$
+\end{definition}
+
+\begin{proposition}[Chernoff upper bound: bounding the tail via \texorpdfstring{$S_q$}{Sq}]\label{prop:pom-quantile-chernoff}
+For any integer \(q\ge 2\) and any \(\gamma\ge 0\),
+$$
+\mathbb{P}_{w_m}\big[\gamma_m(X)\ge \gamma\big]
+\ \le\
+\exp\!\bigl(-(q-1)m\gamma\bigr)\cdot \frac{S_q(m)}{2^m}.
+$$
+In particular, if \(\tau(q)=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m)\) (Definition \ref{def:pom-moment-pressure}), then at the exponential scale
+$$
+\limsup_{m\to\infty}\frac{1}{m}\log \mathbb{P}_{w_m}\big[\gamma_m(X)\ge \gamma\big]
+\ \le\
+\tau(q)-\log 2-(q-1)\gamma.
+$$
+\end{proposition}
+
+\begin{proof}
+By Proposition \ref{prop:pom-fiber-index-cgf},
+\(
+\mathbb{E}_{w_m}\big[\exp((q-1)m\gamma_m(X))\big]=S_q(m)/2^m
+\).
+Applying the Markov inequality to the event \(\{\gamma_m(X)\ge\gamma\}\) yields the first inequality; taking logarithms, dividing by \(m\), and taking \(\limsup\) yields the second. \qed
+\end{proof}
+
+\begin{corollary}[Dual optimization: turning \texorpdfstring{$q$}{q} into a solvable budget controller]\label{cor:pom-quantile-dual-optimizer}
+Let \(\tau(q)=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m)\) (Definition \ref{def:pom-moment-pressure}), and define
+\[
+\Phi(q):=\tau(q)-\log 2,
+\qquad
+I(\gamma):=\sup_{q\in\ZZ_{\ge 2}}\bigl((q-1)\gamma-\Phi(q)\bigr).
+\]
+Then for any \(\gamma\ge 0\) the exponential-scale upper bound holds:
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log \mathbb{P}_{w_m}\big[\gamma_m(X)\ge \gamma\big]
+\ \le\ -\,I(\gamma).
+\]
+In particular, when \(S_q(m)=\Theta(r_q^m)\) (so that \(\tau(q)=\log r_q\)),
+\(
+\Phi(q)=\log r_q-\log 2
+\)
+organizes tail control entirely as the convex dual of the computable moment principal scale family \(\{r_q\}_{q\ge 2}\).
+\end{corollary}
+
+\begin{corollary}[Strongest computable tail bound from the integer spectrum (finite-order truncation)]\label{cor:pom-integer-moment-strongest-tail-bound}\label{cor:pom-best-computable-tail-bound-integer-moments}
+In practice one often has access to only finitely many integer moment orders: given \(K\ge 2\), suppose only \(\{\Phi(q)\}_{2\le q\le K}\) (equivalently \(\{\tau(q)\}_{2\le q\le K}\) or \(\{r_q\}_{2\le q\le K}\)) are known.
+Define the truncated dual
+\[
+I_{\le K}(\gamma):=\sup_{2\le q\le K}\bigl((q-1)\gamma-\Phi(q)\bigr).
+\]
+Then the exponential-scale upper bound still holds:
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log \mathbb{P}_{w_m}\big[\gamma_m(X)\ge \gamma\big]
+\ \le\ -\,I_{\le K}(\gamma).
+\]
+\end{corollary}
+
+\begin{remark}[Information-theoretic optimality (under the condition of ``knowing only these integer moments'')]\label{rem:pom-integer-moment-tail-optimality}
+The \(I_{\le K}\) given by Corollary \ref{cor:pom-integer-moment-strongest-tail-bound} is not merely ``a computable upper bound,'' but rather the \textbf{strongest uniform exponential tail bound} under the information set \(\{\Phi(q)\}_{2\le q\le K}\):
+if one attempts to strictly improve the tail exponent bound at some \(\gamma\) (i.e., claim \(J(\gamma)>I_{\le K}(\gamma)\) for all candidate distributions consistent with the moment information), then in general it is not possible to simultaneously maintain consistency with all moment constraints for \(q\le K\).
+This can be understood as a convex duality/dual linear programming phenomenon for ``moment information \(\leftrightarrow\) tail bounds'': the integer moment spectrum provides a family of linear (affine) certificates, and taking their upper envelope yields the strongest exponential certificate that cannot be uniformly improved within this information set.
+\end{remark}
+
+\begin{corollary}[Quantile budget for prime-registers (replacing worst-case values with tail bounds)]\label{cor:pom-prime-register-quantile-budget}
+Take \(\varepsilon\in(0,1)\) and let \(B_m(\varepsilon):=\exp(m\,\gamma_m(\varepsilon))\).
+If a set of pairwise coprime moduli is chosen so that their product \(P_m\) satisfies
+$$
+P_m\ >\ 2\,B_m(\varepsilon),
+$$
+then under the interval readout/reconstruction specification of Definition \ref{def:pom-order-elimination-rewrite}, when using a prime-register (CRT) for external storage of fiber labels, the probability that ``label overflow prevents unique reconstruction'' is at most \(\varepsilon\) (under the \(w_m\)-sampled output stable type specification).
+\end{corollary}
+
+\begin{proof}
+For an output sample \(X\sim w_m\), its fiber size is \(d_m(X)=\exp(m\gamma_m(X))\).
+When \(\gamma_m(X)\le\gamma_m(\varepsilon)\), we have \(d_m(X)\le B_m(\varepsilon)\).
+Taking the interval bound \(B=B_m(\varepsilon)\), the side condition \(P>2B\) of Definition \ref{def:pom-order-elimination-rewrite} ensures unique CRT reconstruction.
+The probability of \(\gamma_m(X)>\gamma_m(\varepsilon)\) does not exceed \(\varepsilon\) by Definition \ref{def:pom-gamma-quantile}. \qed
+\end{proof}
+
+\medskip\noindent\textbf{Quasi-necessity of the quantile budget threshold (interval readout version)}
+Under the ``interval readout/reconstruction'' protocol of Definition \ref{def:pom-order-elimination-rewrite}, the product budget \(P_m\) of the prime-register not only provides the sufficient threshold of Corollary \ref{cor:pom-prime-register-quantile-budget}, but is also \emph{sharp} under this protocol:
+if an external prime-register scheme aims to push the ``failure probability due to label overflow preventing unique reconstruction'' to \(\le \varepsilon\), then its total modular product must satisfy
+\[
+\boxed{\ P_m\ >\ 2\,B_m(\varepsilon)\ }.
+\]
+Equivalently, if \(P_m\le 2B_m(\varepsilon)\), then for any interval bound \(B\) satisfying the side condition \(P_m>2B\) (necessarily \(B<P_m/2\)), the minimality of the tail quantile (Definition \ref{def:pom-gamma-quantile}) implies
+\(\mathbb{P}_{w_m}\!\big[d_m(X)>B\big]>\varepsilon\), so the failure probability cannot be driven below \(\le\varepsilon\) under the same protocol
+(up to strict inequality/integer rounding details).
+
+\medskip\noindent\textbf{Information conservation---quantile law (scaling of external information required for \(\varepsilon\)-tolerant reversibility)}
+Under the specification ``microstates sampled uniformly, output \(X\sim w_m\), given \(X=x\) the fiber is uniformly distributed,'' the information erased by the projection is precisely characterized by
+\[
+L_m(X):=\log d_m(X)
+\]
+(in nats); its \((1-\varepsilon)\)-tail quantile is
+\(\log B_m(\varepsilon)=m\,\gamma_m(\varepsilon)\).
+The quasi-necessity of the quantile budget threshold shows that under this protocol, achieving failure probability \(\le\varepsilon\) for external storage requires providing at least
+\[
+\log P_m\ \ge\ \log 2+\log B_m(\varepsilon)
+\qquad(\text{equivalently }P_m>2B_m(\varepsilon)),
+\]
+so \(B_m(\varepsilon)=\exp(m\gamma_m(\varepsilon))\) gives, at the exponential scale, the \emph{exact scaling} of the external information needed to ``recover the information lost by projection,'' and this scale cannot be further reduced.
+
+\medskip\noindent\textbf{Pressure--dual design equation (recovering the minimal prime-register growth rate from \(\tau(q)\))}
+Let \(\beta_m(\varepsilon):=\frac{1}{m}\log\frac{1}{\varepsilon}\).
+By Proposition \ref{prop:pom-quantile-chernoff} and the definition of the tail quantile (Definition \ref{def:pom-gamma-quantile}), the quantile strength can be upper-bounded at the exponential scale as a closed-form lower envelope over \(q\):
+\[
+\boxed{\;
+\gamma_m(\varepsilon)\ \le\
+\inf_{q\in\ZZ_{\ge 2}}
+\frac{\tau(q)-\log 2+\beta_m(\varepsilon)}{q-1}
+\qquad(\text{exponential scale}).\;}
+\]
+Therefore, under the interval readout/reconstruction specification of Definition \ref{def:pom-order-elimination-rewrite}, a sufficient auditable budget can be written as
+\[
+\boxed{\;
+\log P_m\ \gtrsim\ \log 2\ +\ m\cdot
+\inf_{q\in\ZZ_{\ge 2}}
+\frac{\tau(q)-\log 2+\beta_m(\varepsilon)}{q-1}\; }.
+\]
+Under the verified specification \(S_q(m)=\Theta(r_q^m)\), the \(\tau(q)\) above can be replaced by \(\log r_q\), and Remark \ref{rem:pom-quantile-budget-computable} provides a fully computable certificate-based design equation.
+
+\begin{corollary}[\texorpdfstring{$q$}{q}-parameterized quota upper bound: failure probability--register exponential budget family]\label{cor:pom-prime-register-q-quota-family}
+For any integer \(q\ge 2\) and any threshold \(B>0\), the following strict tail bound holds:
+\[
+\boxed{\;
+\mathbb{P}_{w_m}\!\bigl(d_m(X)\ge B\bigr)
+\ \le\
+\frac{S_q(m)}{2^m}\cdot B^{-(q-1)}\; }.
+\]
+In particular, writing \(B=e^{m\gamma}\),
+\[
+\mathbb{P}_{w_m}\!\bigl(d_m(X)\ge e^{m\gamma}\bigr)
+\ \le\
+\exp\!\bigl(-(q-1)m\gamma\bigr)\cdot \frac{S_q(m)}{2^m},
+\]
+and under the specification \(S_q(m)=\Theta(r_q^m)\) one reads off the exponential-scale ``phase diagram''
+\[
+\mathbb{P}_{w_m}\!\bigl(d_m(X)\ge e^{m\gamma}\bigr)
+\ \lesssim\
+\exp\!\Bigl(m\bigl(\log r_q-\log 2-(q-1)\gamma\bigr)\Bigr).
+\]
+Therefore, if one wishes to achieve \(\mathbb{P}_{w_m}(d_m(X)\ge B)\le \varepsilon\), a fully explicit sufficient condition is to take
+\[
+\boxed{\;
+B\ \ge\ B_{m,q}^{\mathrm{fin}}(\varepsilon)
+::=\varepsilon^{-1/(q-1)}\left(\frac{S_q(m)}{2^m}\right)^{\!1/(q-1)}\; }.
+\]
+Under the verified exponential specification \(S_q(m)=\Theta(r_q^m)\), this is equivalent to the exponential-scale closed-form budget family
+\[
+\boxed{\;
+B\ \gtrsim\ B_m^{(q)}(\varepsilon)
+::=\varepsilon^{-1/(q-1)}\left(\frac{r_q}{2}\right)^{\!m/(q-1)}\; }.
+\]
+Substituting into the CRT side condition (Definition \ref{def:pom-order-elimination-rewrite}, \(P>2B\)) yields an auditable prime-register quota family:
+\[
+\boxed{\;
+P_m\ >\ 2\,B_{m,q}^{\mathrm{fin}}(\varepsilon)
+\ \Longrightarrow\
+\mathbb{P}(\text{CRT label overflow prevents unique reconstruction})\ \le\ \varepsilon\; }.
+\]
+Writing
+\[
+\beta_{m,q}^{\mathrm{fin}}
+:=\frac{1}{q-1}\left(\frac{1}{m}\log S_q(m)-\log 2\right),
+\qquad
+\beta_q:=\frac{\log r_q-\log 2}{q-1},
+\]
+then
+\(
+\log B_{m,q}^{\mathrm{fin}}(\varepsilon)
+=m\,\beta_{m,q}^{\mathrm{fin}}+\frac{1}{q-1}\log(1/\varepsilon)
+\)
+and under the \(r_q\) specification,
+\(
+\log B_m^{(q)}(\varepsilon)=m\,\beta_q+\frac{1}{q-1}\log(1/\varepsilon)
+\).
+\end{corollary}
+\begin{proof}
+Set \(\gamma=(1/m)\log B\). Then the event \(\{d_m(X)\ge B\}\) is equivalent to \(\{\gamma_m(X)\ge \gamma\}\).
+Substituting \(\gamma=(1/m)\log B\) into Proposition \ref{prop:pom-quantile-chernoff} gives (where \(\pi_m\) denotes the old notation for \(w_m\)):
+\[
+\mathbb{P}_{w_m}\!\bigl(d_m(X)\ge B\bigr)
+=\mathbb{P}_{\pi_m}\!\bigl(\gamma_m(X)\ge \tfrac{1}{m}\log B\bigr)
+\le
+\exp\!\bigl(-(q-1)\log B\bigr)\cdot \frac{S_q(m)}{2^m}
+=\frac{S_q(m)}{2^m}\,B^{-(q-1)}.
+\]
+Setting the right-hand side \(\le \varepsilon\) and solving for \(B\) gives \(B_{m,q}^{\mathrm{fin}}(\varepsilon)\).
+The final statement ``\(P_m>2B_{m,q}^{\mathrm{fin}}(\varepsilon)\Rightarrow\) failure probability \(\le\varepsilon\)'' follows immediately from the monotonicity of Corollary \ref{cor:pom-prime-register-quantile-budget} for any \(B\): when \(P_m>2B\), overflow failure can only occur on the event \(\{d_m(X)>B\}\).
+\qed
+\end{proof}
+
+\begin{remark}[ISA-level constants: \texorpdfstring{$\beta_q$}{betaq} and endpoint closure]\label{rem:pom-betaq-isa}
+Corollary \ref{cor:pom-prime-register-q-quota-family} compresses the prime-register ``quota'' into an exponential law that can be directly substituted into cost models:
+\[
+\log P_m\ \gtrsim\ \log 2\ +\ m\,\beta_q\ +\ \frac{1}{q-1}\log(1/\varepsilon),
+\qquad
+\beta_q=\frac{\log r_q-\log 2}{q-1}.
+\]
+Therefore each integer \(q\ge 2\) induces an auditable ``register exponential budget slope'' \(\beta_q\) (Table \ref{tab:fold_collision_renyi_spectrum} provides exact \(r_q\) for \(q\le 17\)).
+For example, the lowest-order certificate \(q=2\) gives
+\[
+B_m^{(2)}(\varepsilon)=\varepsilon^{-1}\left(\frac{r_2}{2}\right)^m,
+\qquad
+\beta_2=\log(r_2/2),
+\qquad
+r_2=2.481194304092,
+\]
+yielding an ``extremely rigid'' closed-form spatial budget.
+\par
+More importantly, the endpoint constant locks the ``moment/time axis'' R\'{e}nyi fingerprint and the ``space/worst-case fiber'' to the same fact.
+By Proposition \ref{prop:pom-rq-qinfty-endpoint} (equivalently, by the closed-form maximum fiber theorem \ref{thm:pom-max-fiber} and the endpoint corollary \ref{cor:pom-max-fiber-rate-endpoint}),
+\[
+\lim_{q\to\infty}\frac{1}{q}\log r_q=\log\sqrt{\varphi},
+\qquad\text{hence}\qquad
+\lim_{q\to\infty}\beta_q=\log\sqrt{\varphi}.
+\]
+Moreover, \(D_m=\max_x d_m(x)\), with the closed-form/enumeration table (Table \ref{tab:fold_max_fiber_achievers_phase}), shows that
+\(
+m^{-1}\log D_m
+\)
+numerically approaches the same constant \(\log\sqrt{\varphi}\) rapidly, resulting in a closed-loop alignment of the ``high-order R\'{e}nyi endpoint'' and the ``worst-case fiber exponent'' within the framework of this paper.
+\end{remark}

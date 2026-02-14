@@ -1,0 +1,252 @@
+\begin{remark}[Three-term decomposition of the budget exponent: geometric inevitable loss + R\'enyi non-uniformity penalty + confidence term]\label{rem:pom-quantile-budget-three-term}
+The Chernoff certificates of this subsection can be viewed both as an explicit transform ``spectral/moment side \(\Rightarrow\) prime-register spatial budget'' and can be further decomposed into three \emph{computable} terms, thereby quantifying the ``space/time'' trade-off as an additive law.
+
+\medskip\noindent\textbf{(i) Exact finite-scale identity (no asymptotic assumption required)}
+Let \(u_m\) be the uniform distribution on \(X_m\): \(u_m(x)=1/|X_m|\).
+Let \(w_m\) be the fold push-forward distribution of the uniform microstate (with notation consistent with the main text):
+\(
+w_m(x)=d_m(x)/2^m
+\).
+For any \(q\ge 2\), denote by \(\mathrm{D}_q(w_m\Vert u_m)\) the R\'enyi-\(q\) divergence:
+\[
+\mathrm{D}_q(w_m\Vert u_m)
+:=\frac{1}{q-1}\log\Big(\sum_{x\in X_m}w_m(x)^q\cdot |X_m|^{q-1}\Big)
+\ \ge\ 0.
+\]
+Then for any \(\varepsilon\in(0,1)\) and any \(q\ge 2\), the finite-scale certificate of Proposition \ref{prop:pom-quantile-chernoff}
+\[
+\gamma^{\mathrm{cert,fin}}_{m,q}(\varepsilon)
+:=\frac{\frac{1}{m}\log S_q(m)-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1}
+\]
+satisfies the following \textbf{exact decomposition}:
+\[
+\boxed{\;
+\gamma^{\mathrm{cert,fin}}_{m,q}(\varepsilon)
+=
+\underbrace{\frac{1}{m}\log\Big(\frac{2^m}{|X_m|}\Big)}_{\text{geometric inevitable loss (mean fiber exponent)}}
+\;+\;
+\underbrace{\frac{1}{m}\mathrm{D}_q(w_m\Vert u_m)}_{\text{non-uniformity penalty (output distribution deviation from uniform)}}
+\;+\;
+\underbrace{\frac{1}{q-1}\cdot\frac{1}{m}\log(1/\varepsilon)}_{\text{confidence term (tail reliability cost)}}
+\;}
+\]
+The proof is a purely algebraic identity: substitute \(\sum_x w_m(x)^q=S_q(m)/2^{qm}\) into \(\mathrm{D}_q\) and simplify.
+
+\medskip\noindent\textbf{(The geometric floor cannot be ``optimized away'' by the moment method)}
+Since \(\mathrm{D}_q(w_m\Vert u_m)\ge 0\), the above decomposition immediately gives a hard lower bound for any \(q\ge 2\):
+\[
+\boxed{\;
+\gamma^{\mathrm{cert,fin}}_{m,q}(\varepsilon)
+\ \ge\
+\frac{1}{m}\log\Big(\frac{2^m}{|X_m|}\Big)
++\frac{1}{q-1}\cdot\frac{1}{m}\log(1/\varepsilon)\; }.
+\]
+Hence regardless of how the moment order \(q\) is scheduled, the first term ``geometric inevitable loss'' (determined solely by the visible type count \(|X_m|\)) cannot be eliminated; the moment method can only trade off between the non-uniformity penalty and the confidence term.
+
+\medskip\noindent\textbf{(ii) Asymptotic three-term decomposition (aligned with the \(\{r_q\}\) bridge-kit)}
+When \(S_q(m)=\Theta(r_q^m)\) and \(|X_m|=F_{m+2}\sim\varphi^m\), the above expression converges at the exponential scale to
+\[
+\gamma(q,\alpha)
+=
+\log\frac{2}{\varphi}
+\;+\;
+\Delta_q
+\;+\;
+\frac{\alpha}{q-1},
+\qquad
+\Delta_q:=\lim_{m\to\infty}\frac{1}{m}\mathrm{D}_q(w_m\Vert u_m)
+:=\frac{\log r_q-q\log 2+(q-1)\log\varphi}{q-1},
+\]
+where \(\alpha:=\lim_{m\to\infty}\frac{1}{m}\log(1/\varepsilon_m)\) represents the exponential-level reliability requirement \(\varepsilon_m\approx e^{-\alpha m}\).
+Thus \(\Delta_q\) is precisely the \emph{asymptotic R\'enyi divergence spectrum} of \(w_m\) relative to the uniform distribution \(u_m\); equivalently,
+\[
+\log r_q
+=q\log 2-(q-1)\log\varphi+(q-1)\Delta_q
+\]
+gives the explicit affine transformation \(\{r_q\}\leftrightarrow\{\Delta_q\}\).
+In particular, for \(q=2\),
+\(
+\Delta_2=\log(\varphi r_2/4)
+\)
+is precisely the second-order deviation exponent constant appearing throughout this paper (cf.\ the constant-term calibration of Corollary \ref{cor:pom-shannon-entropy-squeeze}).
+\end{remark}
+
+\subsubsection{Implementable interfaces: minimal pipeline for anomaly signatures and moment certificates}\label{subsec:pom-implementable-interfaces}
+
+To bring ``rewrite certificates/anomaly signatures/spectral identity tests'' to a reproducible execution layer, this paragraph provides a minimal pipeline in one-to-one correspondence with the repository scripts.
+The core principle is: all signatures in this paper originate from a single closed loop
+$$
+\text{finite kernel/matrix family}\ \Longrightarrow\ \zeta(z)=\det(I-zM)^{-1}\ \Longrightarrow\ (\text{twist})\ \Longrightarrow\ \log\mathfrak{M}\ \Longrightarrow\ \text{signature}.
+$$
+
+\begin{remark}[Pole--Drift bridge-pack: closing the prime-like and spectral/trace sides to a single auditable output]\label{rem:pom-pole-drift-bridgepack}
+The prime-like (Euler/primitive) side and the spectral/trace (det/trace) side of this paper do not merely correspond formally; in the implementation/audit calibration, their common image can be compressed to two classes of verifiable ledgers:
+\textbf{pole (exponential-level leading scale)} and \textbf{drift (constant-level finite-part drift)}.
+\par
+More specifically, for a given kernel \(K\), potential parameter \(\theta\), and finite abelian lift group \(G\), for each character \(\chi\in\widehat G\) denote by \(\rho_\chi(\theta):=\rho(M_{\theta,\chi})\) the twisted channel spectral radius, and denote by \(\log\mathfrak{M}_\chi(\theta)\) the Abel/Hadamard finite-part constant of the same channel (Definition \ref{def:abel-finite-part}). The minimal verifiable bridge-pack can then be written as
+\[
+\boxed{\;
+\mathcal{D}_G(K;\theta):=\Bigl((\rho_\chi(\theta))_{\chi\in\widehat G},\ (\log\mathfrak{M}_\chi(\theta))_{\chi\in\widehat G}\Bigr).\;}
+\]
+The anomaly signature interface provides the drift (forming the anomaly signature \(\mathsf{Anom}_G\)), while the slow-mode certificate interface provides the pole (spectral radius ratio/slow-mode gap); the two together constitute the constant-level and exponential-level certificates of \(\mathcal{D}_G\).
+In the small-angle regime, they further satisfy a machine-verifiable quadratic ``space--time conversion law'' (see Appendix Proposition \ref{prop:real-input-40-space-time-conversion-law}).
+\end{remark}
+
+\paragraph{Anomaly signature interface: \texorpdfstring{$\mathsf{Anom}_G$}{Anom} (twisted finite-part anomaly signature)}
+For Definition \ref{def:pom-anom-signature}, engineering-wise only two steps are needed: enumerate nontrivial characters and compute the corresponding \(\log\mathfrak{M}_\chi(\theta)\).
+This paper already has a script implementing the one-parameter family \(\theta=(t,0,-t)\) on the \(\chi\)-slice (i.e., injecting arity-charge as potential) and outputting \((P_\chi(t),\log\mathfrak{M}_\chi(t))\):
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}.
+Its internal implementation directly uses the closed form of Proposition \ref{prop:abel-finite-part-mobius-zeta} (M\"obius tail truncation) and computes residue constants from matrix eigenvalues (see the script header comments).
+
+\begin{remark}[Minimal executable workflow for anomaly signatures (pseudocode)]\label{rem:pom-anom-pseudocode}
+Given kernel \(K\), lift group \(G\), potential parameter \(\theta\) (or temperature slice \(t\)), output \(\mathsf{Anom}_G(K;\theta)\):
+\begin{verbatim}
+Input: kernel K (weighted matrix builder M_theta), finite abelian label group G,
+       parameter theta, mobius tail cutoff k_max
+Output: Anom := { logM_chi(theta) : chi in G^ \ {chi0} }
+
+for chi in characters(G) excluding trivial:
+    build twisted weighted matrix M_theta,chi  (character-twist on edges/labels)
+    lambda := spectral_radius(M_theta,chi)
+    z_star := 1/lambda
+    logC := log residue constant at z_star (eigenvalue product formula)
+    logM_chi := logC + sum_{k=2..k_max} mu(k)/k * log zeta_theta,chi(z_star^k)
+return Anom
+\end{verbatim}
+Here \(\log\zeta=-\log\det(I-zM)\) can be computed in a numerically stable manner using \texttt{slogdet} (as in the script implementation).
+If only ``identity testing/zero testing'' is needed, one may compare the \(\log\mathfrak{M}_\chi(\theta)\) vectors at a small number of sample points \(\theta\in\Theta_{\mathrm{grid}}\) (Corollary \ref{cor:pom-three-gen-normal-form-decidable}).
+\end{remark}
+
+\paragraph{Slow-mode certificate interface: twisted spectral radius ratio and worst character (slow-mode certificate)}
+The anomaly signature is a constant-level residual; exponential-level slow-mode certificates are given by \(\rho_\chi/\lambda\).
+For certain potentials of the real-input 40-state kernel (e.g., output potential), this paper has already provided full tables of ``root-of-unity twists'' and worst-character outputs:
+\texttt{scripts/exp\_real\_input\_40\_output\_potential\_dirichlet\_twists.py},
+with output table \texttt{sections/generated/tab\_real\_input\_40\_output\_potential\_dirichlet\_twists.tex}
+reporting the worst \(j\) and \(\rho_m/\lambda\) for each modulus \(m\).
+This interface can be used alongside \(\mathsf{Anom}\): the former gives the exponential gap, the latter gives the constant drift.
+
+\paragraph{Tail budget interface: moment recursion certificates (\texorpdfstring{$r_q$}{rq} and tail budgets)}
+For the ``auditable certificates'' of the collision moments \(S_q(m)\), this paper employs two equivalent calibrations:
+\begin{itemize}
+  \item \textbf{Recursion certificate:} Verify \(S_q\) using integer recursion coefficients (Table \ref{tab:fold_collision_moment_recursions}).
+  The corresponding script is \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py} (enumerates \(d_m\), verifies the recursion, and outputs JSON and LaTeX tables).
+  \item \textbf{Spectral certificate:} Obtain the Perron root \(r_q\) from the companion matrix or moment-kernel realization of the recursion, and derive pressure/tail upper bounds accordingly (Proposition \ref{prop:pom-quantile-chernoff} and Remark \ref{rem:pom-quantile-budget-computable}).
+  \item \textbf{Rank certificate:} Verify the minimal realization dimension via the Hankel rank lower bound (script \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py}; Table \ref{tab:fold_collision_moment_hankel_rank}).
+  \end{itemize}
+
+The outputs of the above three classes of scripts collectively form the closed loop ``\(r_q\) computable \(\Rightarrow\) tail quantile budget computable'': substituting \(r_q\) into the explicit inequality of Remark \ref{rem:pom-quantile-budget-computable} yields the auditable quota upper bound for the prime-register (Corollary \ref{cor:pom-prime-register-quantile-budget}).
+
+\paragraph{Bridge-Kit interface: second-level regression test suite for strictified commutative diagrams}
+The preceding three classes of interfaces respectively provide: constant-level residuals (anomaly signatures), exponential-level slow-mode certificates (worst twisted spectral radius ratios), and tail/prime-register budget certificates (controlled by \(r_q\)).
+However, in engineering practice, what is truly needed is a ``\emph{one-click bridge-kit usable as an acceptance criterion}'': any modification to the kernel implementation, truncation strategy, character decomposition, or numerical linear algebra optimization must preserve a set of low-dimensional auditable outputs without drift.
+\par
+To this end, we organize
+\[
+\bigl(\mathsf{Anom},\ C_r,\ \delta_{\mathrm{spec}},\ \mathcal{E}_1,\ \eta_{\mathrm{tail}},\ \text{SVD fingerprint}\bigr)
+\]
+into an independent Bridge-Kit interface, outputting a unified JSON second-level summary via script
+\texttt{scripts/exp\_bridge\_kit.py}
+(\texttt{artifacts/export/bridge\_kit\_real\_input\_40\_arity\_335\_N2.json}).
+Here \(C_r\) can be fully aligned with the Dirichlet--Mertens constant tensor of \S\ref{subsec:arity-dirichlet-mertens-tensor}; while \(\delta_{\mathrm{spec}},\mathcal{E}_1,\eta_{\mathrm{tail}}\) and the SVD energy fraction provide an ultra-low-dimensional regression fingerprint (see the \verb|\input|-able snippet generated by the same script):
+\input{sections/generated/eq_bridge_kit_real_input_40_arity_335_N2}
+
+\begin{remark}[Strictification of the central extension calibration and constant-level counterterm]\label{rem:pom-bridge-kit-strictification}
+In \ref{subsec:pom-anom-cohomology}, this paper has organized the anomaly signature \(\mathsf{Anom}\) as a \(2\)-cohomology class of \(\mathbf{PW}\) (the curvature \(2\)-cell of the fundamental square). Equivalently, it can be viewed as an explicit \(2\)-morphism label on a central extension
+\(
+\widetilde{\mathbf{PW}}=\mathbf{PW}\ltimes \mathcal{A}_G
+\)
+(\(\mathcal{A}_G\cong\RR^{\widehat G\setminus\{\chi_0\}}\) being the additive group of ``nontrivial character constant drifts''): thus the ``commutation failure'' of \(E_m\) and \(\mathrm{LIFT}_G\) is no longer an equality violation but rather additive coherence data.
+\par
+Furthermore, since \(\mathsf{Anom}\) in the calibration of this paper occurs only at the finite-part/constant level (\(\log\mathfrak{M}_\chi-\log\mathfrak{M}_{\chi_0}\)), a pure constant counterterm can strictly cancel this residual at the finite-part interface (anomaly cancellation): it introduces only constant-level padding (e.g., the \(e^{A_\infty}\) in the prime-register budget) without altering the leading exponential slope.
+\end{remark}
+
+\begin{definition}[Finite-part counterterm gate (pure constant strictification)]\label{def:pom-finite-part-counterterm-gate}
+Fix object \(\mathcal{I}(m;K;\kappa)\), finite abelian lift group \(G\), and potential parameter \(\theta\).
+Let \(\mathcal{A}_G:=\RR^{\widehat G\setminus\{\chi_0\}}\) (Definition \ref{def:pom-anom-accumulation}).
+For any \(\eta=(\eta_\chi)_{\chi\neq\chi_0}\in\mathcal{A}_G\), define a central gate \(\mathrm{CT}_\eta\) (counterterm) as follows: on the closed-loop interface
+\[
+\text{kernel/matrix family}\Rightarrow (\zeta_{\theta,\chi})_{\chi\in\widehat G}\Rightarrow (\rho_\chi(\theta))_{\chi\in\widehat G}\Rightarrow (\log\mathfrak{M}_\chi(\theta))_{\chi\in\widehat G}
+\]
+it preserves all twisted channel poles (\(\rho_\chi(\theta)\)) unchanged, and applies a translation to the drift (finite-part constants):
+\[
+\log\mathfrak{M}_\chi(\theta)\ \mapsto\ \log\mathfrak{M}_\chi(\theta)+\eta_\chi,\qquad \chi\neq\chi_0,
+\]
+with the convention \(\eta_{\chi_0}=0\).
+\end{definition}
+
+\begin{proposition}[Counterterm cancellation law: strictifying commutation with residual into exact commutation]\label{prop:pom-counterterm-anom-cancel}
+Under the setting of Proposition \ref{prop:pom-em-lift-residual-swap}, let the relative drift anomaly be
+\[
+\mathsf{Anom}^{\mathrm{rel}}_{G}(K;\theta)
+:=\Bigl(\log\mathfrak{M}_\chi(\theta)-\log\mathfrak{M}_{\chi_0}(\theta)\Bigr)_{\chi\in\widehat G\setminus\{\chi_0\}}\in\mathcal{A}_G.
+\]
+Then in the extension \(\widetilde{\mathbf{PW}}=\mathbf{PW}\ltimes\mathcal{A}_G\) there exists a strict commutation certificate
+\[
+E_m\circ \mathrm{LIFT}_G\circ \mathrm{CT}_{-\mathsf{Anom}^{\mathrm{rel}}_{G}(K;\theta)}
+\;\Rightarrow\;
+\mathrm{LIFT}_G\circ E_m,
+\]
+and this strictification does not alter any exponential-level leading scales (all \(\rho_\chi(\theta)\) and moment leading spectra \(r_q\) remain unchanged); it only modifies constant-level budget terms (e.g., the padding constant in the prime-register).
+\end{proposition}
+
+\begin{proof}
+By Definition \ref{def:pom-finite-part-counterterm-gate}, \(\mathrm{CT}_\eta\) only applies additive translations to the finite-part constant level on nontrivial twisted channels.
+Therefore, taking \(\eta\) as \(-\mathsf{Anom}^{\mathrm{rel}}_{G}(K;\theta)\) aligns the finite-part drift of all nontrivial channels with the trivial channel (relative drift becomes zero), thereby restoring the Beck--Chevalley-type strict commutation calibration at the closed-loop interface (Corollary \ref{cor:pom-zero-anom-pullback-exactness}, ``zero anomaly \(\Leftrightarrow\) strict commutation'').
+On the other hand, by definition this gate does not alter \(\rho_\chi\) (nor does it alter the moment leading spectra controlled by Perron roots), so the exponential-level leading scales remain unchanged; the change falls solely on the finite-part/constant level, thus only affecting constant-level padding.
+\end{proof}
+
+\begin{theorem}[Splitting of the central extension and equivalence characterization of strictification]\label{thm:pom-strictification-splitting}
+Under the calibration of Remark \ref{rem:pom-bridge-kit-strictification} and Definition \ref{def:pom-finite-part-counterterm-gate}, let
+\(
+\widetilde{\mathbf{PW}}=\mathbf{PW}\ltimes \mathcal{A}_G
+\)
+be the anomaly's central extension.
+Then Proposition \ref{prop:pom-counterterm-anom-cancel} can be equivalently understood as the following three structural statements:
+\begin{enumerate}
+  \item \textbf{(Completeness of the central label)} All observable residuals of the commutation failure \(E_m\circ \mathrm{LIFT}_G \Rightarrow \mathrm{LIFT}_G\circ E_m\) are completely characterized in the extension by the central label
+  \(\mathsf{Anom}^{\mathrm{rel}}_{G}(K;\theta)\in\mathcal{A}_G\);
+  in other words, this residual carries no new pole/exponential leading-scale data, and occurs only at the constant level of the finite-part drift.
+  \item \textbf{(Counterterm = choice of splitting)} Choosing a counterterm gate \(\mathrm{CT}_\eta\) is equivalent to choosing a splitting (section) on the central extension that absorbs the above central label as an additive \(2\)-morphism boundary; specifically, taking
+  \(\eta=-\mathsf{Anom}^{\mathrm{rel}}_{G}(K;\theta)\)
+  gives the strictification to exact commutation.
+  \item \textbf{(Categorified promotion of anomaly cancellation)} Therefore, anomaly cancellation in this paper's framework is promoted to a ``splitting problem of the central extension'': its domain of action is strictly confined to the finite-part/constant level, and hence only modifies constant-level budget terms (padding), while preserving all exponential-level leading scales (poles, \(\rho_\chi\), and the pressure/tail exponents they induce).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Statements (1) and (3) are direct restatements, in the language of central extensions, of the definitional constraints on \(\mathrm{CT}_\eta\) (preservation of poles) and the conclusion (translation of drift only) from Proposition \ref{prop:pom-counterterm-anom-cancel}; statement (2) follows from the strict commutation certificate
+\(
+E_m\circ \mathrm{LIFT}_G\circ \mathrm{CT}_{-\mathsf{Anom}^{\mathrm{rel}}_{G}(K;\theta)}
+\Rightarrow
+\mathrm{LIFT}_G\circ E_m
+\)
+provided by the same proposition: this \(2\)-morphism furnishes the specific choice of the required splitting. \qed
+\end{proof}
+
+\paragraph{ISA/microcode reference simulator interface: 32-bit encoding + cost counting}
+To bring the ISA/microcode calibration of \S\ref{subsec:pom-isa} to a reproducible execution layer, this repository provides the script
+\texttt{scripts/pom\_isa\_sim\_v2.py} (experiment-layer version; this paper retains only this latest version):
+it implements 32 visible registers (write-back defaults to triggering \(P_Z\equiv\Fold_\infty\)) and two classes of program-invisible registers (window register \(W\) and prime-exponent register \(P\)), maintaining during execution the cost counters
+\((k_Z,k_{\le},k_\chi,D_U)\)
+as well as the resolution-downgrade write-back support budget
+\(\mathrm{support}=\sum G_m\).
+Here \texttt{PROJ\_CHI} serves as the cost hook for \(P_\chi\) (counted by \(k_\chi\)), while \texttt{ZDIVMOD\_LD}/\texttt{ZDIVMOD\_REC} provide two comparable microcode routes for DIVMOD (true microcode: binary long division vs.\ fixed-point reciprocal Newton iteration), used to ground the structural proposition ``growth is bounded at \(P_{\le}\)'' onto a reproducible cost decomposition; and \texttt{--mulmode} is provided for calibrating the multiplication linearization depth (thereby affecting the \(D_U\) constant factor of the REC route).
+This script can serve as ``ISA-layer acceptance test'': when replacing the concrete kernel implementation of \(\Fold_\infty\) or adjusting the gauge correction strategy of \(\mathrm{RESCALE}\downarrow\), the arithmetic ground-truth layer output of the demo should remain unchanged; one may use \texttt{--gauge} mode to perform regression verification of the statistical density constant \(G_m/m\) (Theorem \ref{thm:fold-gauge-anomaly-density}); one may also use \texttt{--bench-div} to directly compare the \(k_{\le}\) and \(D_U\) decomposition between LD/REC at a fixed bit-length, or use \texttt{--workload} to generate random programs and output the \(k\)-count and total cost \(T\) decomposition, for comparing whether different routes place growth in \(k_{\le}\) or \(D_U\).
+Additionally, the script provides two minimal benchmark modes: \texttt{--chi-bench} (repeatedly calling \texttt{PROJ\_CHI}, directly observing the linear amplification of the \(\tau_{\mathrm{mix}}\) scale) and \texttt{--support-bench} (repeatedly executing \texttt{ZMUL}+\texttt{WGAUGE}, directly observing the dominant effect of \(\mathrm{support}=\sum G_m\)---the ``touched scale axis''---at moderate frequency).
+
+\begin{remark}[Reproducible: one-shot identity test/budgeter \texorpdfstring{\texttt{pom\_cli.py}}{pom_cli.py}]\label{rem:pom-cli-one-shot}
+To execute ``normal form + anomaly class + tail budget'' as a single entry point, this repository provides the unified command-line script \texttt{scripts/pom\_cli.py}.
+Typical usage is as follows:
+\begin{verbatim}
+# 1) Reduce to normal form (with rewrite trace/certificate)
+python3 scripts/pom_cli.py normalize --fragment threegen --word "E[5] LIFT[C3] PROJ[0.7] E[2]"
+
+# 2) Identity test (compare normal forms; threegen fragment also compares anom_counter)
+python3 scripts/pom_cli.py equiv --fragment threegen --word1 "..." --word2 "..."
+
+# 3) Compute tail-budget certificate from {r_q} (output gamma_cert, logB_cert, B_cert and prime suggestions)
+python3 scripts/pom_cli.py tail-budget --m 30 --eps 1e-6 --q-max 17
+\end{verbatim}
+This output can directly serve as an auditable input for the main text: \(\mathrm{NF}\) and \(\Omega\) are used for algorithmic equivalence verification (Definition \ref{def:pom-algorithmic-equivalence-nf-anom}), while \(\gamma\)/\(B\) are used to generate the threshold and prime-register quota of \((\mathrm{RCRT}_\varepsilon)\) (Proposition \ref{prop:pom-rcrt-epsilon}).
+\end{remark}
+

@@ -1,0 +1,50 @@
+\subsubsection{Addition as Projection: The Collision Spectrum of the 10-State Synchronization Kernel vs.\ the 40-State Real-Input Kernel}\label{app:add-collision-spectrum}
+
+\paragraph{Addition = lifting to \texorpdfstring{$\{0,1\}^2$}{\{0,1\}^2} then projecting back to \texorpdfstring{$X_\infty$}{X\_infty}}
+At the stable address level, Zeckendorf addition can be written as
+\[
+c\oplus d=\Fold_\infty(c+d),
+\]
+where \((c+d)_j:=c_j+d_j\in\{0,1,2\}\) is the digitwise sum and \(\Fold_\infty\) is the online normalization gate that maps \(\{0,1,2\}\) back to \(\{0,1\}\), which can be realized by the 10-state synchronization kernel \(K_{\mathrm{sync}}\) (Table \ref{tab:sync-kernel-A-compare}).
+Thus the mechanism of ``addition as a single projection'' can be viewed as:
+\[
+\{0,1\}^{\ZZ}\times\{0,1\}^{\ZZ}\xrightarrow{\ (x,y)\mapsto x+y\ }\{0,1,2\}^{\ZZ}\xrightarrow{\ K_{\mathrm{sync}}\ }\{0,1\}^{\ZZ}\supseteq X_\infty,
+\]
+i.e., first lifting the input to two bit streams (the ontological field), then projecting back to the stable address surface via the normalization kernel.
+
+\paragraph{Collision moments and spatial loss spectral constants}
+Viewing the above formula as a deterministic transducer (input alphabet \(\{0,1\}^2\), output alphabet \(\{0,1\}\)),
+for window length \(m\) and output block \(y\in\{0,1\}^m\), let
+\[
+d^{\mathrm{add}}_m(y):=\#\{(x,x')\in(\{0,1\}^m)^2:\ \Fold_m(x+x')=y\},
+\qquad
+S^{\mathrm{add}}_q(m):=\sum_{y\in\{0,1\}^m}d^{\mathrm{add}}_m(y)^q\quad(q\ge 2).
+\]
+The exponential growth rate of \(S^{\mathrm{add}}_q(m)\) is controlled by a family of finite non-negative integer moment-kernels \(A^{\mathrm{add}}_q\), with
+\[
+r^{\mathrm{add}}_q:=\rho\!\left(A^{\mathrm{add}}_q\right),
+\qquad
+S^{\mathrm{add}}_q(m)=\Theta\!\left((r^{\mathrm{add}}_q)^m\right).
+\]
+In particular, when \(q=2\), there is a probabilistic interpretation: if two pairs of inputs \((x_1,x'_1),(x_2,x'_2)\) are drawn uniformly and independently from \(\{0,1\}^{2m}\), then
+\[
+\mathbb{P}\bigl[\Fold_m(x_1+x'_1)=\Fold_m(x_2+x'_2)\bigr]=\frac{S^{\mathrm{add}}_2(m)}{16^m},
+\qquad
+h^{\mathrm{add}}_2=\log\!\left(\frac{16}{r^{\mathrm{add}}_2}\right).
+\]
+
+\paragraph{Real-input constraint: the 40-state lifting}
+If one requires that both input streams themselves be legal Zeckendorf orbits (each forbidding adjacent \(11\)), one can incorporate this constraint into the state, obtaining the 40-state real-input synchronization kernel \(K_{\mathrm{real}}\) (Table \ref{tab:sync-kernel-A-compare}).
+Performing the same collision-moment compilation for the ``addition projection'' on this kernel yields the real-input values \(r^{\mathrm{add,real}}_q\).
+
+\begin{remark}[Constant-level differences (reproducible)]\label{rem:add-collision-spectrum-10-vs-40}
+Using the repository script \texttt{scripts/exp\_add\_collision\_spectrum\_10\_vs\_40.py} (based on a histogram-DP moment-kernel implementation via symmetric quotient/coefficient extraction), one can reproduce the computation:
+\(\;r^{\mathrm{add}}_2\approx 8.743\;\),
+\(\;r^{\mathrm{add}}_3\approx 19.851\;\),
+while under the real-input constraint
+\(\;r^{\mathrm{add,real}}_2\approx 3.999\;\).
+The comparison table is given in Table \ref{tab:add-collision-spectrum-10-vs-40}.
+\input{sections/generated/tab_add_collision_spectrum_10_vs_40}
+
+This conclusion provides a direct, quantifiable ``independent value of the 40-state kernel'' anchor: once the input-legality constraint is promoted to kernel geometry, the spatial-side collision constant of ``addition as projection'' undergoes a significant change (a constant-factor decrease), so that its spatial loss spectrum can no longer be replaced by the unconstrained caliber of the 10-state normalizer.
+\end{remark}

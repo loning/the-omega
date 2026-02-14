@@ -1,0 +1,271 @@
+\subsubsection{The digit-wise sum layer of real inputs: three-state \texorpdfstring{$1$}{1}-step SFT, seventh-roots-of-unity spectrum, and algebraic information loss}\label{app:real-input-digitwise-sum-layer}
+
+This subsection, prior to entering the $40$-state real input synchronization kernel, fully explicates the constraints and statistical structure of ``real inputs'' at the \emph{digit-wise sum} level.
+The key point is: the digit-wise sum of two golden mean inputs is not an arbitrary $\{0,1,2\}$-sequence but lies in a three-symbol $1$-step SFT; moreover, under the product Parry measure, this factor process is not merely hidden Markov but \emph{strictly degenerates} to a first-order Markov chain, causing the information loss rate to admit a purely algebraic closed form.
+
+\paragraph{Digit-wise sum factor and image shift}
+Let $X\subset\{0,1\}^{\ZZ}$ be the golden mean (Zeckendorf) shift: the subword $11$ is forbidden. Define the digit-wise sum factor
+\[
+\Sigma_{\mathrm{sum}}:X\times X\to\{0,1,2\}^{\ZZ},\qquad
+(\Sigma_{\mathrm{sum}}(x,y))_k:=x_k+y_k.
+\]
+Denote its image by
+\[
+Y_{\mathrm{sum}}:=\Sigma_{\mathrm{sum}}(X\times X)\subset \{0,1,2\}^{\ZZ}.
+\]
+
+\begin{proposition}[Language characterization: three-state $1$-step SFT]\label{prop:real-input-digitwise-sum-sft}
+The image shift $Y_{\mathrm{sum}}$ is precisely the three-symbol $1$-step SFT with forbidden word set
+\[
+\mathcal{F}_{\mathrm{sum}}=\{12,\,21,\,22\}.
+\]
+Equivalently, the allowed transitions are
+\[
+0\to 0,1,2;\qquad 1\to 0,1;\qquad 2\to 0,
+\]
+so that symbol $2$ must be isolated by $0$ on both sides.
+Under the symbol ordering $(0,1,2)$, the adjacency matrix can be taken as
+\[
+A_{\mathrm{sum}}=
+\begin{pmatrix}
+1&1&1\\
+1&1&0\\
+1&0&0
+\end{pmatrix},
+\qquad
+\zeta_{Y_{\mathrm{sum}}}(z)=\frac{1}{\det(I-zA_{\mathrm{sum}})}=\frac{1}{1-2z-z^2+z^3}.
+\]
+\end{proposition}
+
+\begin{proof}
+If $d=\Sigma_{\mathrm{sum}}(x,y)$, then:
+\begin{itemize}
+  \item If $d_k=2$, then $(x_k,y_k)=(1,1)$. The golden mean constraint forces $x_{k\pm 1}=y_{k\pm 1}=0$, so $d_{k\pm 1}=0$, thus forbidding the subwords $21,22$.
+  \item If $d_k=1$, then $(x_k,y_k)\in\{(1,0),(0,1)\}$. In either case, the next position cannot simultaneously have both coordinates equal to $1$, so $d_{k+1}\neq 2$, thus forbidding the subword $12$.
+\end{itemize}
+Therefore $Y_{\mathrm{sum}}\subseteq \mathrm{SFT}(\mathcal{F}_{\mathrm{sum}})$.
+
+Conversely, take any $d\in\{0,1,2\}^{\ZZ}$ avoiding $\mathcal{F}_{\mathrm{sum}}$. Set
+\[
+d_k=0\Rightarrow (x_k,y_k):=(0,0),\qquad
+d_k=2\Rightarrow (x_k,y_k):=(1,1).
+\]
+Since $d$ avoids $21,22$, the condition $d_k=2$ implies $d_{k\pm1}=0$, so the above assignment does not produce adjacent $11$ in either coordinate.
+For positions where $d_k=1$, choose for each maximal connected run of $1$'s (which may be bi-infinite) a two-coloring that alternates the allocation of $1$ between the two coordinates (e.g., alternating between $(1,0)$ and $(0,1)$ by index parity); then in each coordinate the $1$'s are still separated by $0$'s, so $x,y\in X$ and the digit-wise sum satisfies $x_k+y_k=d_k$.
+Therefore $\mathrm{SFT}(\mathcal{F}_{\mathrm{sum}})\subseteq Y_{\mathrm{sum}}$, and the two sets are equal.
+The determinant expression is the standard $\zeta$-determinant formula for SFTs (see \cite{LindMarcus1995,BrinStuck2002}). \qed
+\end{proof}
+
+\begin{proposition}[Seventh-roots-of-unity spectrum and closed-form topological entropy]\label{prop:real-input-digitwise-sum-cyclotomic-spectrum}
+The characteristic polynomial of $A_{\mathrm{sum}}$ is
+\[
+\chi_{A_{\mathrm{sum}}}(\lambda)=\lambda^3-2\lambda^2-\lambda+1.
+\]
+Its three eigenvalues can be written as
+\[
+\lambda_k=1+2\cos\!\left(\frac{2\pi k}{7}\right),\qquad k=1,2,3.
+\]
+Therefore the Perron root is
+\[
+\rho(A_{\mathrm{sum}})=1+2\cos\!\left(\frac{2\pi}{7}\right)\approx 2.2469796037,
+\]
+yielding the topological entropy
+\[
+h_{\mathrm{top}}(Y_{\mathrm{sum}})=\log \rho(A_{\mathrm{sum}})=\log\!\left(1+2\cos\frac{2\pi}{7}\right).
+\]
+\end{proposition}
+
+\begin{proof}
+The characteristic polynomial is obtained by direct computation.
+Let $\zeta_7=e^{2\pi i/7}$ and write $t:=\zeta_7+\zeta_7^{-1}=2\cos(2\pi/7)$.
+From $(X-\zeta_7)(X-\zeta_7^{-1})=X^2-tX+1$ and the elimination using $\zeta_7^7=1$, one finds that $t$ satisfies the cubic
+\(
+t^3+t^2-2t-1=0
+\)
+(corresponding to the minimal polynomial of the generator of $\mathbb{Q}(\zeta_7)^+$).
+Setting $\lambda:=1+t$ and simplifying yields
+\(
+\lambda^3-2\lambda^2-\lambda+1=0
+\).
+The same holds for the conjugate embeddings $t\mapsto 2\cos(2\pi k/7)$ ($k=1,2,3$), giving the three-root expression.
+The entropy formula then follows from the Perron--Frobenius theorem and Proposition~\ref{prop:real-input-digitwise-sum-sft}. \qed
+\end{proof}
+
+\begin{corollary}[Exponential degeneracy of the digit-wise sum layer (pure topological counting)]\label{cor:real-input-digitwise-sum-topological-degeneracy}
+The number of real input blocks of length $n$ satisfies
+\[
+|\mathcal{L}_n(X\times X)|=\Theta(\varphi^{2n}),
+\]
+while the digit-wise sum image language satisfies
+\[
+|\mathcal{L}_n(Y_{\mathrm{sum}})|=\Theta(\rho(A_{\mathrm{sum}})^n).
+\]
+Therefore the exponential growth rate of the ``average number of preimages'' is
+\[
+\Delta h_{\mathrm{top}}
+=h_{\mathrm{top}}(X\times X)-h_{\mathrm{top}}(Y_{\mathrm{sum}})
+=\log(\varphi^2)-\log\!\left(1+2\cos\frac{2\pi}{7}\right).
+\]
+\end{corollary}
+
+\begin{proof}
+For the golden mean shift, $h_{\mathrm{top}}(X)=\log\varphi$, so $h_{\mathrm{top}}(X\times X)=2\log\varphi=\log(\varphi^2)$.
+On the other hand, by Proposition~\ref{prop:real-input-digitwise-sum-cyclotomic-spectrum}, $h_{\mathrm{top}}(Y_{\mathrm{sum}})=\log\rho(A_{\mathrm{sum}})$.
+For any mixing SFT, the language growth rate is controlled by its Perron root: $|\mathcal{L}_n|=\Theta(\rho^n)$.
+Dividing the exponential leading terms and taking logarithms yields the conclusion. \qed
+\end{proof}
+
+\paragraph{Exact first-order Markov property and information loss rate under product Parry measure}
+Let $\mu$ be the Parry (maximal entropy) measure on $X$, and take the product measure $\mu\times\mu$ on $X\times X$.
+Let $\nu:=(\Sigma_{\mathrm{sum}})_\ast(\mu\times\mu)$ be the pushforward measure, and write the random process
+\[
+D_k:=\bigl(\Sigma_{\mathrm{sum}}(x,y)\bigr)_k\in\{0,1,2\}.
+\]
+
+\begin{proposition}[Exact first-order Markov property of the pushforward process]\label{prop:real-input-digitwise-sum-parry-markov}
+Under $\nu$, the process $(D_k)_{k\in\ZZ}$ is strictly a first-order Markov chain with transition matrix
+\[
+T_{\mathrm{sum}}=
+\begin{pmatrix}
+\varphi^{-2} & 2\varphi^{-3} & \varphi^{-4}\\
+\varphi^{-1} & \varphi^{-2} & 0\\
+1 & 0 & 0
+\end{pmatrix}.
+\]
+Its stationary distribution is
+\[
+\pi_0=\left(\frac{\varphi^2}{\varphi^2+1}\right)^{\!2},\qquad
+\pi_1=\frac{2\varphi^2}{(\varphi^2+1)^2},\qquad
+\pi_2=\frac{1}{(\varphi^2+1)^2}.
+\]
+\end{proposition}
+
+\begin{proof}
+The golden mean Parry chain in a single coordinate has transitions
+\[
+\mathbb{P}(0\to 0)=\varphi^{-1},\qquad
+\mathbb{P}(0\to 1)=\varphi^{-2},\qquad
+\mathbb{P}(1\to 0)=1,
+\]
+and the two input chains are independent under the product measure.
+
+Conditioning on $D_k$ at any position $k$:
+\begin{itemize}
+  \item If $D_k=0$, then $(x_k,y_k)=(0,0)$ is uniquely determined; at the next step both chains independently transition from $0$, so
+  \[
+  \mathbb{P}(D_{k+1}=0\mid D_k=0)=\varphi^{-2},\quad
+  \mathbb{P}(D_{k+1}=1\mid D_k=0)=2\varphi^{-3},\quad
+  \mathbb{P}(D_{k+1}=2\mid D_k=0)=\varphi^{-4}.
+  \]
+  \item If $D_k=2$, then $(x_k,y_k)=(1,1)$ is uniquely determined; at the next step both chains are forced to $0$, so $\mathbb{P}(D_{k+1}=0\mid D_k=2)=1$.
+  \item If $D_k=1$, then $(x_k,y_k)\in\{(1,0),(0,1)\}$. In both cases, exactly one chain transitions from $0$ at the next step, and the distributions are identical, giving
+  \[
+  \mathbb{P}(D_{k+1}=0\mid D_k=1)=\varphi^{-1},\qquad
+  \mathbb{P}(D_{k+1}=1\mid D_k=1)=\varphi^{-2},\qquad
+  \mathbb{P}(D_{k+1}=2\mid D_k=1)=0.
+  \]
+\end{itemize}
+Therefore $(D_k)$ is a first-order Markov chain with the stated transition matrix.
+
+The stationary distribution can be obtained by solving $\pi=\pi T_{\mathrm{sum}}$; alternatively, by independence:
+writing $p:=\mathbb{P}_\mu(x_k=1)=1/(\varphi^2+1)$ (see the stationary distribution from Remark~\ref{prop:parry-measure-golden}), one has
+\(
+\pi_2=p^2,\ \pi_1=2p(1-p),\ \pi_0=(1-p)^2
+\), which simplifies to the stated closed form. \qed
+\end{proof}
+
+\begin{proposition}[Closed-form information loss rate (bits/step): appearance of a purely algebraic constant]\label{prop:real-input-digitwise-sum-information-loss-rate}
+Measuring entropy rates in bits, one has
+\[
+h_\nu(D)=\log_2(\varphi^2)-\frac{\sqrt5-1}{5}
+=\log_2(\varphi^2)-\frac{2}{5\varphi}.
+\]
+Therefore the conditional entropy rate (information loss rate) of the digit-wise sum factor $\Sigma_{\mathrm{sum}}$ under product Parry input is
+\[
+h_{\mu\times\mu}(X\times X\mid D)
+=h_{\mu\times\mu}(X\times X)-h_\nu(D)
+=\frac{\sqrt5-1}{5}\ \text{bits/step}.
+\]
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:real-input-digitwise-sum-parry-markov}, $h_\nu(D)=H(D_{k+1}\mid D_k)$, which can be written as
+\[
+h_\nu(D)=\sum_{i\in\{0,1,2\}}\pi_i\cdot H\!\left(T_{\mathrm{sum}}(i,\cdot)\right),
+\]
+where $H$ denotes Shannon entropy (in $\log_2$).
+Note that $T_{\mathrm{sum}}(2,\cdot)$ is a deterministic distribution, so its contribution is $0$.
+
+For $i=1$:
+\(
+H(T_{\mathrm{sum}}(1,\cdot))=-(\varphi^{-1}\log_2\varphi^{-1}+\varphi^{-2}\log_2\varphi^{-2})
+=(\varphi^{-1}+2\varphi^{-2})\log_2\varphi
+\).
+For $i=0$:
+\[
+H(T_{\mathrm{sum}}(0,\cdot))
+=-\Bigl(\varphi^{-2}\log_2\varphi^{-2}+2\varphi^{-3}\log_2(2\varphi^{-3})+\varphi^{-4}\log_2\varphi^{-4}\Bigr)
+\]
+\[
+=\bigl(2\varphi^{-2}+6\varphi^{-3}+4\varphi^{-4}\bigr)\log_2\varphi-2\varphi^{-3}.
+\]
+Substituting into $h_\nu(D)=\pi_0H(T_{\mathrm{sum}}(0,\cdot))+\pi_1H(T_{\mathrm{sum}}(1,\cdot))$
+and simplifying using $\varphi^2=\varphi+1$ and
+\(
+(\varphi^2+1)^2=(\varphi+2)^2=5\varphi^2
+\)
+yields
+\[
+h_\nu(D)=2\log_2\varphi-\frac{2}{5\varphi}
+=\log_2(\varphi^2)-\frac{2}{5\varphi}.
+\]
+Finally, from $\varphi=(1+\sqrt5)/2$ one has $2/\varphi=\sqrt5-1$, giving the equivalent form
+\(
+h_\nu(D)=\log_2(\varphi^2)-(\sqrt5-1)/5
+\).
+
+On the other hand, $\mu$ is the maximal entropy measure of $X$, so $h_\mu(X)=h_{\mathrm{top}}(X)=\log_2\varphi$, and thus
+\(
+h_{\mu\times\mu}(X\times X)=2\log_2\varphi=\log_2(\varphi^2)
+\).
+The factor map $\Sigma_{\mathrm{sum}}$ is deterministic, so the conditional entropy rate satisfies
+\(
+h_{\mu\times\mu}(X\times X\mid D)=h_{\mu\times\mu}(X\times X)-h_\nu(D)
+\), and substitution gives the stated algebraic constant. \qed
+\end{proof}
+
+\paragraph{Real inputs do not reduce the minimum delay of online normalization: preservation of \texorpdfstring{$\delta_{\min}=3$}{delta=3}}
+Define real input addition (Zeckendorf sum) as
+\[
+\mathrm{Add}:X\times X\to X,\qquad
+\mathrm{Add}(x,y):=\Fold_\infty\!\bigl(\Sigma_{\mathrm{sum}}(x,y)\bigr).
+\]
+The literature and the main text have established that $\Fold_\infty$ admits a single-pass online implementation with delay $3$ on the full domain $\{0,1,2\}^{\ZZ}$ (Theorem~\ref{thm:online-delay-fold}), and its minimality satisfies $\delta_{\min}(\Fold_\infty)=3$ (Proposition~\ref{prop:pom-delay-min}).
+The question of interest here is whether the real input constraint $d=\Sigma_{\mathrm{sum}}(x,y)\in Y_{\mathrm{sum}}$ could further reduce the minimum delay.
+
+\begin{proposition}[Delay rigidity: real input addition still requires three-step lookahead]\label{prop:real-input-add-delay-rigidity}
+\[
+\delta_{\min}(\mathrm{Add})=3.
+\]
+\end{proposition}
+
+\begin{proof}
+The upper bound $\delta_{\min}(\mathrm{Add})\le 3$ follows from the direct restriction of the delay-$3$ online implementation of $\Fold_\infty$ to its subdomain $Y_{\mathrm{sum}}$.
+
+For the lower bound, consider the deterministic Mealy transducer representation of the synchronization kernel (Theorem~\ref{thm:online-delay-fold}; state set $Q$, edges labeled by $d/e$). In the synchronization kernel there are two outgoing edges
+\[
+010\xrightarrow{0/0}100,\qquad
+010\xrightarrow{2/1}0\overline{1}2.
+\]
+Under the real input constraint, the memory state $m=(x_{k-1},y_{k-1})=00$ allows the next input $(x_k,y_k)=(0,0)$ (giving $d=0$) and $(x_k,y_k)=(1,1)$ (giving $d=2$).
+Moreover, the state $(010,00)$ is reachable in the $40$-state real input kernel: for instance, via the path
+\[
+(000,00)\xrightarrow{d/e=1/0}(001,01)\xrightarrow{d/e=0/0}(010,00)
+\]
+(each step corresponds to an input pair satisfying the golden mean constraint).
+Therefore, from the same reachable state $(010,00)$, there exist two outgoing edges allowed under real input, with output bits $e$ equal to $0$ and $1$, respectively.
+
+This means that with the same shared past (reaching the same internal state), merely changing the digit-wise sum symbol at ``the $3$-rd position ahead'' between $d\in\{0,2\}$ can force the normalization output to flip at the corresponding time coordinate.
+Therefore any single-pass online algorithm with $\delta\le 2$ cannot consistently determine the output bit for all real inputs, giving $\delta_{\min}(\mathrm{Add})\ge 3$.
+Combining with the upper bound yields equality. \qed
+\end{proof}

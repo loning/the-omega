@@ -1,0 +1,545 @@
+\begin{theorem}[Closed form for the third-largest fiber on even branches]\label{thm:pom-third-max-fiber-even-closed-form}
+For \(k\ge 6\), the third-largest fiber multiplicity on even branches satisfies
+\[
+D_{2k}^{(3)}=F_{k+2}-F_{k-3}.
+\]
+\end{theorem}
+\begin{proof}
+The argument is the same as in Theorem \ref{thm:pom-second-max-fiber-closed-form}, with ``minimal defect'' replaced by the second-smallest endpoint forbidden pairing. By Lemma \ref{lem:pom-forbidden-pair-fib-gap}(2), the forbidden pairing \(\{1,4\}\) removes \(I_{k-5}=F_{k-3}\); subtracting from \(D_{2k}=I_k=F_{k+2}\) yields \(D_{2k}^{(3)}=F_{k+2}-F_{k-3}\). \qed
+\end{proof}
+
+\begin{remark}[Stable closed form for the third-largest fiber on odd branches (auditable)]\label{rem:pom-third-max-fiber-odd-closed-form}
+The auditable window \(m\le 32\) in Table \ref{tab:fold_max_fiber_achievers_phase} provides the DP output for the third-largest fiber multiplicity \(D_m^{(3)}\).
+From this table one can directly read that odd branches enter the stable phase from \(m=19\) onward.
+Writing \(m=2k+1\), for all \(k\ge 9\) (i.e., \(m\ge 19\)) the exact closed form holds term by term:
+\[
+\boxed{\;
+D_{2k+1}^{(3)}=2F_{k+1}-\bigl(F_{k-4}+F_{k-8}\bigr).\;}
+\]
+This closed form, together with Theorem \ref{thm:pom-third-max-fiber-even-closed-form} for even branches, locks the top-three spectral gaps into explicit Fibonacci tail terms, thereby enabling further quantitative deductions of the ``spectral gap \(\Rightarrow\) higher-order moment selection'' type without introducing any additional assumptions (see Remark \ref{rem:pom-third-max-gap-parity}).
+\end{remark}
+
+\begin{remark}[Fibonacci ladder gaps of the top-layer fiber spectrum]\label{rem:pom-top-fiber-spectrum-ladder}
+Theorems \ref{thm:pom-second-max-fiber-closed-form} and \ref{thm:pom-third-max-fiber-even-closed-form} show that the top-layer fiber spectrum does not ``spread continuously,'' but instead exhibits rigid Fibonacci ladder gaps at the top:
+\[
+D_{2k}-D_{2k}^{(2)}=F_{k-4},\qquad
+D_{2k}-D_{2k}^{(3)}=F_{k-3}\qquad(k\ge 6),
+\]
+as well as
+\[
+D_{2k+1}-D_{2k+1}^{(2)}=F_{k-4}\qquad(k\ge 5).
+\]
+Moreover, in the stable phase of the odd-branch third layer (Remark \ref{rem:pom-third-max-fiber-odd-closed-form}),
+\[
+D_{2k+1}-D_{2k+1}^{(3)}=F_{k-4}+F_{k-8}\qquad(k\ge 9).
+\]
+Equivalently, for all \(m\ge 10\) (i.e., \(\lfloor m/2\rfloor\ge 5\)), the unified formula holds:
+\[
+\boxed{\;
+D_m^{(2)}=D_m-F_{\lfloor m/2\rfloor-4}\; }.
+\]
+In other words, the minimum ``spatial loss'' upon departing from the maximal fiber state is locked by the Fibonacci recurrence into discrete energy levels.
+\end{remark}
+
+\begin{remark}[Spectral gap ratio parity dichotomy: clustering fingerprint of \texorpdfstring{$(D_m^{(2)},D_m^{(3)})$}{(D2,D3)}]\label{rem:pom-spectrum-gap-ratio-fingerprint}
+Define the top-three-layer spectral gaps
+\[
+g_{1}(m):=D_m-D_m^{(2)},
+\qquad
+g_{2}(m):=D_m^{(2)}-D_m^{(3)}.
+\]
+and the ``second-order defect ratio'' (spectral clustering fingerprint)
+\[
+\Psi(m):=\frac{g_2(m)}{g_1(m)}
+=\frac{D_m^{(2)}-D_m^{(3)}}{D_m-D_m^{(2)}}.
+\]
+It depends only on three integers from Table \ref{tab:fold_max_fiber_achievers_phase}, and therefore serves as a structural audit requiring no additional computational overhead and directly recomputable: any implementation error in the identification of the second/third layer spectral ordering or representative maximizer class will typically be amplified in \(\Psi(m)\) (since it is a ``ratio of second-order differences'').
+\par
+In the provably closed-form regime of even branches \(m=2k\) with \(k\ge 6\) (Theorems \ref{thm:pom-second-max-fiber-closed-form} and \ref{thm:pom-third-max-fiber-even-closed-form}),
+\[
+g_1(2k)=F_{k-4},\qquad g_2(2k)=F_{k-5},
+\qquad
+\Psi(2k)=\frac{F_{k-5}}{F_{k-4}}
+\longrightarrow \varphi^{-1}\approx 0.618034.
+\]
+In the stable closed-form regime of odd-branch third layers (Remark \ref{rem:pom-third-max-fiber-odd-closed-form}), for \(m=2k+1\) with \(k\ge 9\),
+\[
+g_1(2k+1)=F_{k-4},\qquad g_2(2k+1)=F_{k-8},
+\qquad
+\Psi(2k+1)=\frac{F_{k-8}}{F_{k-4}}
+\longrightarrow \varphi^{-4}\approx 0.145898.
+\]
+Moreover, the second-order isolation has a stable constant at relative scale as well:
+\[
+\boxed{\;
+\frac{D_{2k}^{(2)}-D_{2k}^{(3)}}{D_{2k}}
+=\frac{F_{k-5}}{F_{k+2}}
+\xrightarrow[k\to\infty]{}\varphi^{-7},\qquad
+\frac{D_{2k+1}^{(2)}-D_{2k+1}^{(3)}}{D_{2k+1}}
+=\frac{F_{k-8}}{2F_{k+1}}
+\xrightarrow[k\to\infty]{}\frac{\varphi^{-9}}{2}\; }.
+\]
+Therefore the top three spectral layers do not ``fall uniformly,'' but exhibit a stable parity-dependent clustering selection law: on odd windows \((D_m^{(2)},D_m^{(3)})\) form a tight cluster (\(g_2\ll g_1\)), while on even windows the two layers maintain same-order separation (\(g_2\asymp g_1\)).
+For example, at the top of the auditable window,
+\[
+\Psi(30)=\frac{1508-1453}{1597-1508}=\frac{55}{89}\approx 0.61798,\qquad
+\Psi(31)=\frac{1885-1872}{1974-1885}=\frac{13}{89}\approx 0.14607,
+\]
+with the parity splitting clearly discernible.
+\par
+This clustering directly determines the threshold scale at which ``the third layer becomes negligible relative to the second layer'' in higher-order moments. Setting
+\[
+\left(\frac{D_m^{(3)}}{D_m^{(2)}}\right)^q\approx e^{-1}
+\quad\Longleftrightarrow\quad
+q_{2\to3}(m):=\frac{1}{-\log\!\bigl(D_m^{(3)}/D_m^{(2)}\bigr)}
+\approx \frac{D_m^{(2)}}{g_2(m)},
+\]
+where the approximation uses \(\log(1-x)\approx -x\) when \(g_2\ll D_m^{(2)}\).
+Then
+\[
+q_{2\to3}(2k)\approx \frac{F_{k+2}-F_{k-4}}{F_{k-5}}
+\longrightarrow \varphi^7-\varphi=14+6\sqrt5\approx 27.416,
+\]
+while
+\[
+q_{2\to3}(2k+1)\approx \frac{2F_{k+1}-F_{k-4}}{F_{k-8}}
+\longrightarrow 2\varphi^9-\varphi^4=\frac{145+65\sqrt5}{2}\approx 145.171.
+\]
+This yields a falsifiable two-stage timetable: as \(q\) increases, even windows undergo ``intra-cluster condensation'' earlier (the third layer is suppressed before the second), while on odd windows this effect is delayed to a \(q\) value one order of magnitude higher; consequently, on odd windows, even within the ``maximal-layer dominated'' high-\(q\) range, the second and third layers continue to participate jointly as a two-phase cluster over a substantial interval.
+\end{remark}
+
+\begin{remark}[Third-layer spectral gap plateau and \(q\)-threshold (parity separation)]\label{rem:pom-third-max-gap-parity}
+Define the third-layer suppression factor
+\[
+\gamma_m^{(3)}:=\frac{D_m^{(3)}}{D_m}\in(0,1).
+\]
+For even branches, Theorems \ref{thm:pom-max-fiber} and \ref{thm:pom-third-max-fiber-even-closed-form} give the exact ratio
+\[
+\frac{D_{2k}^{(3)}}{D_{2k}}
+=1-\frac{F_{k-3}}{F_{k+2}}
+\longrightarrow
+1-\varphi^{-5}
+\approx 0.9098300563.
+\]
+For odd branches in the stable third-layer closed-form regime (Remark \ref{rem:pom-third-max-fiber-odd-closed-form}), the exact ratio is likewise available:
+\[
+\frac{D_{2k+1}^{(3)}}{D_{2k+1}}
+=1-\frac{F_{k-4}+F_{k-8}}{2F_{k+1}}
+\longrightarrow
+1-\tfrac12(\varphi^{-5}+\varphi^{-9})
+\approx 0.9483372194.
+\]
+Therefore the third layer is asymptotically \textbf{closer to the maximal layer} on odd windows, with the parity separation emerging explicitly for the first time at the top-three spectral level.
+\par
+Furthermore, using
+\[
+\left(\gamma_m^{(3)}\right)^q\approx e^{-1}
+\qquad\Longleftrightarrow\qquad
+q\approx \frac{1}{-\log \gamma_m^{(3)}}
+\]
+as a rough threshold for ``the third layer becoming negligible in \(q\)-th order moments,'' the two plateau constants above yield two characteristic scales:
+\[
+q_{\mathrm{even}}\approx \frac{1}{-\log(1-\varphi^{-5})}\approx 10.58,
+\qquad
+q_{\mathrm{odd}}\approx \frac{1}{-\log\bigl(1-\tfrac12(\varphi^{-5}+\varphi^{-9})\bigr)}\approx 18.85.
+\]
+This predicts a new effect requiring no additional assumptions: as \(q\) increases, ``the third layer becoming invisible'' occurs significantly earlier on even windows, thus providing a directly verifiable parity fingerprint for the higher-order selection/collapse phenomenon.
+\par
+Mechanistically, this separation can be explained within the same interference graph independent-set DP framework: the maximal layer corresponds to the ``defect-free'' step-\(2\) chain (Lemma \ref{lem:pom-independence-dp-radius2} with \(p(t)=t-2\) holding throughout), yielding Fibonacci numbers; the second and third layers correspond to the Fibonacci tail terms stripped off by the earliest triggerable \(p(t)\) jumps (forbidden pairings; see Lemma \ref{lem:pom-forbidden-pair-fib-gap}).
+On odd windows, the endpoint constraint of the hidden bit from Lemma \ref{lem:pom-one-bit} is superimposed, causing the third-layer defects to propagate in coupled ``paired defect'' form across both endpoints, resulting in the additive two-tail loss \(F_{k-4}+F_{k-8}\).
+\end{remark}
+
+\begin{remark}[Constant-order phase/defect resource meters]\label{rem:pom-phase-defect-resource-meters}
+By Theorem \ref{thm:pom-max-achievers-phase-stabilization}, the maximal state is not a single point but a finite phase orbit, so one may define the phase register overhead
+\[
+R_{\mathrm{phase}}(m):=\left\lceil \log_2 \kappa_m^{\mathrm{max}}\right\rceil
+=
+\begin{cases}
+1,& m\ \text{even and sufficiently large},\\
+2,& m\ \text{odd and sufficiently large}.
+\end{cases}
+\]
+Further define the ``defect resolution overhead''
+\[
+R_{\mathrm{defect}}(m):=-\log_2\!\left(1-\frac{D_m^{(2)}}{D_m}\right).
+\]
+By Corollary \ref{cor:pom-second-max-gap-constant}, as \(m\to\infty\), \(R_{\mathrm{defect}}(m)\) converges to a constant: the even-branch limit is \(-\log_2(\varphi^{-6})\), and the odd-branch limit is \(-\log_2\!\bigl(\tfrac12\varphi^{-5}\bigr)\) (the latter giving the worst case).
+\par
+Similarly, from the third-layer suppression factor \(\gamma_m^{(3)}\) (Remark \ref{rem:pom-third-max-gap-parity}), define the third-layer defect resolution overhead
+\[
+R_{\mathrm{defect}}^{(3)}(m)
+:=-\log_2\!\left(1-\gamma_m^{(3)}\right)
+:=-\log_2\!\left(1-\frac{D_m^{(3)}}{D_m}\right).
+\]
+Then from
+\(
+1-\gamma_{2k}^{(3)}\to \varphi^{-5}
+\)
+and
+\(
+1-\gamma_{2k+1}^{(3)}\to \tfrac12(\varphi^{-5}+\varphi^{-9})=\tfrac12\varphi^{-5}(1+\varphi^{-4})
+\),
+the rigorous limiting constants are
+\[
+\boxed{\;
+\lim_{k\to\infty}R_{\mathrm{defect}}^{(3)}(2k)=5\log_2\varphi,\qquad
+\lim_{k\to\infty}R_{\mathrm{defect}}^{(3)}(2k+1)=5\log_2\varphi+1-\log_2(1+\varphi^{-4})\; }.
+\]
+\end{remark}
+
+\begin{remark}[Hidden-bit splitting of maximal fiber achievers: Fibonacci rigidity of \texorpdfstring{$(d_{m,0},d_{m,1})$}{(d0,d1)} (reproducible observation)]\label{rem:pom-max-fiber-achievers-bsplit}
+By Lemma \ref{lem:pom-one-bit} (single hidden-bit decomposition), for each \(x\in X_m\) define
+\[
+d_{m,b}(x):=\#\{\omega\in\Omega_m:\ \Fold_m(\omega)=x,\ b(\omega)=b\}\qquad(b\in\{0,1\}),
+\]
+so that \(d_m(x)=d_{m,0}(x)+d_{m,1}(x)\).
+Since the maximum window value satisfies \(\max_{\omega}N(\omega)=F_{m+3}-2<2F_{m+2}\) (\(m\ge 2\)), the hidden bit \(b(\omega)\) is equivalent to the quotient of \(N(\omega)\) divided by \(F_{m+2}\), so for \(r=V_m(x)\in[0,F_{m+2})\),
+\[
+d_{m,0}(x)=\#\{\omega:\ N(\omega)=r\},\qquad
+d_{m,1}(x)=\#\{\omega:\ N(\omega)=r+F_{m+2}\}.
+\]
+Table \ref{tab:fold_max_fiber_achievers_bsplit} directly computes, for all achievers \(x\) in the auditable window \(m\le 32\), the splitting pairs \((d_{m,0}(x),d_{m,1}(x))\).
+Its output reveals a set of Fibonacci rigidities compatible with Theorem \ref{thm:pom-max-fiber} but at a finer level:
+\begin{itemize}
+  \item \textbf{Even \(m=2k\):} For \(m\ge 10\), the achievers are exactly two phases, with splitting pairs
+  \[
+  (d_{2k,0},d_{2k,1})\in\{(F_{k+1},F_k),(F_k,F_{k+1})\},\qquad d_{2k,0}+d_{2k,1}=F_{k+2}=D_{2k}.
+  \]
+  \item \textbf{Odd \(m=2k+1\):} For \(m\ge 13\), the achievers are exactly four phases. Writing \(\tau(a,b):=(b,a)\) for the exchange action, the multiset of achiever splitting pairs decomposes under \(\tau\) into one exchange orbit (biased phase) and one fixed-point pair (balanced phase):
+  \[
+  (d_{2k+1,0},d_{2k+1,1})=(F_{k+1},F_{k+1})\ \text{occurs twice}\quad(\tau\text{-fixed point, multiplicity }2),
+  \]
+  \[
+  (d_{2k+1,0},d_{2k+1,1})\in\{(F_{k+1}-F_{k-2},F_{k+1}+F_{k-2}),(F_{k+1}+F_{k-2},F_{k+1}-F_{k-2})\},
+  \]
+  with the total always \(2F_{k+1}=D_{2k+1}\).
+\end{itemize}
+Note that
+\(
+F_{k+1}-F_{k-2}=2F_{k-1}
+\),
+\(
+F_{k+1}+F_{k-2}=2F_{k}
+\),
+so the biased exchange orbit can equivalently be written as \((2F_{k-1},2F_k)\) and its exchange; the \(p_1\) values of the biased two phases can also be written as
+\[
+\frac12\pm\frac{F_{k-2}}{2F_{k+1}}
+=\left\{\frac{F_k}{F_{k+1}},\ \frac{F_{k-1}}{F_{k+1}}\right\}.
+\]
+This splitting structure further refines ``maximal fiber count = independent set count on a chain'' (Remark \ref{rem:pom-overflow-rec}) into ``independent set counts under endpoint constraints in two classes,'' thereby forcing the appearance of adjacent Fibonacci number exchange splittings at the achiever level.
+\end{remark}
+\input{parts/cor__pom-max-fiber-achievers-bsplit-gcd-trichotomy}
+
+\begin{corollary}[Hidden-bit probability spectrum of maximal fiber achievers: three universal limits]\label{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}
+For maximal fiber achievers \(x\in X_m\) (i.e., \(d_m(x)=D_m\)), define the relative frequency of hidden bit \(1\):
+\[
+p_1(x):=\frac{d_{m,1}(x)}{D_m}.
+\]
+Then in the stable threshold range (Remark \ref{rem:pom-max-fiber-achievers-bsplit}):
+\begin{itemize}
+  \item \textbf{Even \(m=2k\ge 10\):}
+  \[
+  p_1(x)\in\left\{\frac{F_k}{F_{k+2}},\ \frac{F_{k+1}}{F_{k+2}}\right\}
+  \xrightarrow[k\to\infty]{}\left\{\varphi^{-2},\ \varphi^{-1}\right\}.
+  \]
+  \item \textbf{Odd \(m=2k+1\ge 13\):}
+  \[
+  p_1(x)\in\left\{\frac12,\ \frac12\pm\frac{F_{k-2}}{2F_{k+1}}\right\}
+  \xrightarrow[k\to\infty]{}\left\{\frac12,\ \frac12\pm\frac{\varphi^{-3}}{2}\right\}
+  =
+  \left\{\frac12,\ \varphi^{-2},\ \varphi^{-1}\right\}.
+  \]
+\end{itemize}
+Therefore, in the ``limiting sense,'' the hidden-bit probability spectrum of maximal fiber achievers exhibits only three universal constants:
+\[
+\boxed{\;
+p_1\in\left\{\frac12,\ \varphi^{-1},\ \varphi^{-2}\right\}\quad(\text{accumulation point set}).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+From the closed-form splitting pairs of Remark \ref{rem:pom-max-fiber-achievers-bsplit}, dividing directly gives the finite-\(k\) value sets stated above.
+Using the Binet asymptotics \(F_{n+a}/F_{n+b}\to \varphi^{a-b}\) yields
+\(
+F_k/F_{k+2}\to\varphi^{-2}
+\),
+\(
+F_{k+1}/F_{k+2}\to\varphi^{-1}
+\),
+and
+\(
+F_{k-2}/F_{k+1}\to\varphi^{-3}
+\);
+substituting back gives the odd-branch limiting identity
+\(
+\tfrac12\pm\tfrac12\varphi^{-3}=\{\varphi^{-1},\varphi^{-2}\}
+\).
+\qed
+\end{proof}
+\input{parts/rem__pom-max-fiber-prob-spectrum-mobius-closure}
+
+\input{parts/prop__pom-fib-pell-unit-mobius}
+
+\begin{corollary}[Universal limiting constant for the hidden-bit relative imbalance of maximal achievers: parity-independent]\label{cor:pom-max-fiber-achievers-hidden-bit-imbalance}
+Define the hidden-bit relative imbalance of maximal achievers:
+\[
+\Delta_m^{(b)}:=\max_{x:\ d_m(x)=D_m}\frac{|d_{m,0}(x)-d_{m,1}(x)|}{D_m}.
+\]
+Then in the stable threshold range (Remark \ref{rem:pom-max-fiber-achievers-bsplit}), the closed forms are
+\[
+\Delta_{2k}^{(b)}=\frac{F_{k-1}}{F_{k+2}},
+\qquad
+\Delta_{2k+1}^{(b)}=\frac{F_{k-2}}{F_{k+1}},
+\]
+yielding a parity-independent universal limit:
+\[
+\boxed{\;
+\lim_{m\to\infty}\Delta_m^{(b)}=\varphi^{-3}=\sqrt5-2\approx 0.236068.
+\;}
+\]
+\end{corollary}
+\begin{proof}
+Even \(m=2k\): Remark \ref{rem:pom-max-fiber-achievers-bsplit} gives splitting pairs \((F_{k+1},F_k)\) and \((F_k,F_{k+1})\), so the maximum difference is \(|F_{k+1}-F_k|=F_{k-1}\); dividing by \(D_{2k}=F_{k+2}\) gives \(\Delta_{2k}^{(b)}=F_{k-1}/F_{k+2}\).
+\par
+Odd \(m=2k+1\): the biased splitting pairs differ by \(2F_{k-2}\), and \(D_{2k+1}=2F_{k+1}\), so \(\Delta_{2k+1}^{(b)}=F_{k-2}/F_{k+1}\).
+Both formulas yield the limit \(\varphi^{-3}\) by Binet asymptotics.
+The identity \(\varphi^{-3}=\sqrt5-2\) follows directly from \(\varphi=\frac{1+\sqrt5}{2}\). \qed
+\end{proof}
+\input{parts/rem__pom-max-fiber-bias-amplitude-cf-acceleration}
+
+\begin{corollary}[Hidden-bit entropy of maximal achievers: two limiting constants (even/odd phase structures differ)]\label{cor:pom-max-fiber-achievers-hidden-bit-entropy}
+For a maximal fiber achiever \(x\), define the hidden-bit binary entropy (bits):
+\[
+H_b(x):=-p_1(x)\log_2 p_1(x)-(1-p_1(x))\log_2(1-p_1(x)).
+\]
+Let
+\[
+H_\varphi:=H_b(\varphi^{-1})=H_b(\varphi^{-2})\approx 0.9594187\ \text{bits}.
+\]
+Then in the stable threshold range:
+\begin{itemize}
+  \item \textbf{Even \(m\ge 10\):} Both maximal achiever phases are golden-biased, with \(H_b(x)\to H_\varphi\) (the balanced phase at \(1\) bit does not appear);
+  \item \textbf{Odd \(m\ge 13\):} Among the four phases, exactly two are balanced splittings (\(p_1=1/2\), hence \(H_b\to 1\) bit), while the other two are golden-biased splittings (\(H_b\to H_\varphi\)).
+\end{itemize}
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}, the achievers' \(p_1\) converges only to \(\{1/2,\varphi^{-1},\varphi^{-2}\}\).
+Since binary entropy satisfies \(H_b(p)=H_b(1-p)\), the biased limits \(\varphi^{-1}\) and \(\varphi^{-2}\) give the same constant \(H_\varphi\), while \(p=1/2\) gives \(H_b=1\).
+The parity-dependent phase structure count comes from the splitting type classification of Remark \ref{rem:pom-max-fiber-achievers-bsplit}. \qed
+\end{proof}
+
+\begin{corollary}[Exact hidden-bit unbiasedness from phase pairing (maximal fiber family; even branch)]\label{cor:pom-max-fiber-hidden-bit-unbiased}
+Let \(m=2k\ge 10\). By Theorem \ref{thm:pom-max-achievers-phase-stabilization}, the maximal fiber achievers are exactly two phases, denoted \(x^{(1)},x^{(2)}\in X_{2k}\).
+Then by the closed-form splitting pairs of Remark \ref{rem:pom-max-fiber-achievers-bsplit},
+\[
+\bigl(d_{2k,0}(x^{(1)}),d_{2k,1}(x^{(1)})\bigr)=(F_{k+1},F_k),
+\qquad
+\bigl(d_{2k,0}(x^{(2)}),d_{2k,1}(x^{(2)})\bigr)=(F_k,F_{k+1}),
+\]
+so the phase pairing \emph{strictly cancels} the hidden-bit bias across the maximal fiber family:
+\[
+d_{2k,0}(x^{(1)})+d_{2k,0}(x^{(2)})=F_{k+1}+F_k=F_{k+2}=D_{2k},
+\]
+\[
+d_{2k,1}(x^{(1)})+d_{2k,1}(x^{(2)})=F_k+F_{k+1}=D_{2k}.
+\]
+Equivalently, averaging uniformly over the two maximal phases yields exact hidden-bit unbiasedness on the maximal fiber family:
+\[
+\mathbb{E}\!\left[\frac{d_{2k,0}(X)}{D_{2k}}\right]
+=\mathbb{E}\!\left[\frac{d_{2k,1}(X)}{D_{2k}}\right]
+=\frac12,\qquad X\sim\mathrm{Unif}\{x^{(1)},x^{(2)}\}.
+\]
+\end{corollary}
+
+\begin{proof}
+From the even-branch closed-form splitting pairs of Remark \ref{rem:pom-max-fiber-achievers-bsplit} and \(D_{2k}=F_{k+2}=F_{k+1}+F_k\) (Theorem \ref{thm:pom-max-fiber}),
+\[
+d_{2k,0}(x^{(1)})+d_{2k,0}(x^{(2)})=F_{k+1}+F_k=D_{2k},
+\]
+and similarly \(d_{2k,1}(x^{(1)})+d_{2k,1}(x^{(2)})=D_{2k}\). Dividing both sides by \(2D_{2k}\) gives the unbiasedness conclusion. \qed
+\end{proof}
+
+\begin{corollary}[Hidden-bit bias spectrum of maximal fiber phases (closed form and golden constant limits)]\label{cor:pom-max-fiber-hidden-bit-bias-spectrum}
+For each \(m\ge 2\) and \(x\in X_m\), define the normalized bias under hidden-bit splitting:
+\[
+\mathrm{Bias}_m(x):=\frac{d_{m,0}(x)-d_{m,1}(x)}{D_m}\in[-1,1].
+\]
+In the stable phase range of Remark \ref{rem:pom-max-fiber-achievers-bsplit}, the following closed forms hold:
+\begin{itemize}
+  \item \textbf{Even branch \(m=2k\ge 10\):} The two maximal phases satisfy
+  \[
+  \mathrm{Bias}_{2k}(x)=\pm\frac{F_{k-1}}{F_{k+2}},
+  \]
+  hence \(\abs{\mathrm{Bias}_{2k}(x)}\to \varphi^{-3}=\sqrt5-2\).
+  \item \textbf{Odd branch \(m=2k+1\ge 13\):} Among the four maximal phases, exactly two are balanced splittings with \(\mathrm{Bias}_{2k+1}(x)=0\); the remaining two are biased splittings with
+  \[
+  \mathrm{Bias}_{2k+1}(x)=\pm\frac{F_{k-2}}{F_{k+1}},
+  \]
+  hence the biased-phase amplitude also satisfies \(\abs{\mathrm{Bias}_{2k+1}(x)}\to \varphi^{-3}\).
+\end{itemize}
+Therefore, the maximal phase family on odd branches exhibits a \emph{two-level spectrum} in the bias framework: \(\{0,\pm\varphi^{-3}\}\) (asymptotically).
+\end{corollary}
+\begin{proof}
+Directly substituting the splitting pairs of Remark \ref{rem:pom-max-fiber-achievers-bsplit} into the definition and simplifying using \(D_{2k}=F_{k+2}\) and \(D_{2k+1}=2F_{k+1}\) (Theorem \ref{thm:pom-max-fiber}).
+The limit follows from \(F_{n-3}/F_n\to \varphi^{-3}\); the closed form \(\varphi^{-3}=\sqrt5-2\) follows from \(\varphi^3=2+\sqrt5\). \qed
+\end{proof}
+
+\begin{corollary}[Mutual information between maximal phases and hidden bit: two limiting constants]\label{cor:pom-max-fiber-phase-hidden-bit-mi}
+Let \(\mathcal{M}_m:=\{x\in X_m:\ d_m(x)=D_m\}\) be the set of maximal fiber achievers (phase set), and take the random variable
+\[
+X\sim\mathrm{Unif}(\mathcal{M}_m).
+\]
+Conditional on \(X=x\), take
+\(
+\omega\sim\mathrm{Unif}(\Fold_m^{-1}(x))
+\), and let the hidden bit be \(B:=b(\omega)\in\{0,1\}\).
+Then for any \(x\in\mathcal{M}_m\),
+\[
+\mathbb{P}(B=1\mid X=x)=p_1(x)=\frac{d_{m,1}(x)}{D_m},
+\qquad
+H(B\mid X=x)=H_b(x),
+\]
+where \(H_b(x)\) is the binary entropy (bits) of Corollary \ref{cor:pom-max-fiber-achievers-hidden-bit-entropy}.
+Hence the mutual information (bits)
+\[
+I(X;B):=H(B)-\mathbb{E}\!\bigl[H(B\mid X)\bigr]
+\]
+in the stable threshold range (Remark \ref{rem:pom-max-fiber-achievers-bsplit}) satisfies:
+\begin{itemize}
+  \item \textbf{Even \(m=2k\ge 10\):} By Corollary \ref{cor:pom-max-fiber-hidden-bit-unbiased} (exact hidden-bit unbiasedness under phase-uniform averaging), \(H(B)=1\).
+  Also, by Corollary \ref{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum} with the two-phase complementarity \(p_1\in\{F_k/F_{k+2},F_{k+1}/F_{k+2}\}\) and \(H_b(p)=H_b(1-p)\),
+  \[
+  \boxed{\;
+  I(X;B)=1-H_b\!\left(\frac{F_k}{F_{k+2}}\right)
+  \xrightarrow[k\to\infty]{}
+  1-H_\varphi\;\approx\;0.0405813\ \mathrm{bits}\; }.
+  \]
+  \item \textbf{Odd \(m=2k+1\ge 13\):} By Remark \ref{rem:pom-max-fiber-achievers-bsplit}, among the four phases, two satisfy \(p_1=1/2\) and the other two satisfy \(p_1=\tfrac12\pm \tfrac{F_{k-2}}{2F_{k+1}}\) (complementary); hence whether averaging uniformly over phases or by fiber size (the two coincide here), \(\mathbb{P}(B=1)=1/2\) and thus \(H(B)=1\).
+  Moreover,
+  \[
+  \boxed{\;
+  I(X;B)=1-\frac{1}{2}\left(1+H_b\!\left(\frac12+\frac{F_{k-2}}{2F_{k+1}}\right)\right)
+  \xrightarrow[k\to\infty]{}
+  \frac{1-H_\varphi}{2}\;\approx\;0.0202907\ \mathrm{bits}\; }.
+  \]
+\end{itemize}
+\end{corollary}
+
+\begin{remark}[Closed form and ``leakage constant'' of the golden-biased entropy constant]\label{rem:pom-max-fiber-hidden-bit-leakage-constants}
+From \(\varphi^{-1}+\varphi^{-2}=1\) (and \(\log_2(\varphi^{-a})=-a\log_2\varphi\)), the constant \(H_\varphi\) of Corollary \ref{cor:pom-max-fiber-achievers-hidden-bit-entropy} admits the closed form
+\[
+H_\varphi
+=-\varphi^{-1}\log_2(\varphi^{-1})-\varphi^{-2}\log_2(\varphi^{-2})
+=\bigl(\varphi^{-1}+2\varphi^{-2}\bigr)\log_2\varphi
+=(3-\varphi)\log_2\varphi.
+\]
+Therefore, by Corollary \ref{cor:pom-max-fiber-phase-hidden-bit-mi}, the two auditable ``phase \(\Rightarrow\) hidden bit'' mutual information limiting constants are
+\[
+I_{\mathrm{even}}
+:=1-(3-\varphi)\log_2\varphi,
+\qquad
+I_{\mathrm{odd}}
+:=\frac{1-(3-\varphi)\log_2\varphi}{2}.
+\]
+Even when the maximal fiber closed form \(D_m\) remains unchanged, any modification to the folding/normalization rules that alters the achievers' \(p_1\)-spectrum (and hence \(H_\varphi\)) will cause these two constants to be among the first ``information-theoretic fingerprints'' to drift.
+\end{remark}
+
+\begin{corollary}[Hidden-bit entropy heterogeneity of maximal phases: two-point mixture on odd branches]\label{cor:pom-max-fiber-phase-hidden-bit-entropy-spread}
+Following the randomization setup of Corollary \ref{cor:pom-max-fiber-phase-hidden-bit-mi}, define the phase entropy random variable
+\[
+H_X:=H(B\mid X)=H_b\!\bigl(p_1(X)\bigr)\quad(\text{bits}).
+\]
+Then in the stable threshold range:
+\begin{itemize}
+  \item \textbf{Even \(m\ge 10\):} \(H_X\) takes the same value on both phases, so \(\mathrm{Var}(H_X)=0\);
+  \item \textbf{Odd \(m\ge 13\):} \(H_X\) is a two-point mixture: with weight \(1/2\) it takes value \(1\) (balanced two phases), and with weight \(1/2\) it takes value \(H_b(\tfrac12+\tfrac{F_{k-2}}{2F_{k+1}})\) (golden-biased two phases).
+  Hence
+  \[
+  \mathrm{Std}(H_X)
+  =\frac12\left|1-H_b\!\left(\frac12+\frac{F_{k-2}}{2F_{k+1}}\right)\right|
+  \xrightarrow[k\to\infty]{}
+  \frac{1-H_\varphi}{2}
+  \approx 0.0202907\ \mathrm{bits}.
+  \]
+\end{itemize}
+In other words: odd branches introduce a \emph{non-vanishing} entropy heterogeneity within the maximal phase family, while even branches exhibit no such phenomenon.
+\end{corollary}
+
+\begin{remark}[Intra-phase selection: \texorpdfstring{$b$}{b}-split refined moments on odd maximal phases collapse onto the biased pair]\label{rem:pom-max-fiber-bsplit-phase-selection}
+The standard collision moment \(S_q(m)=\sum_x d_m(x)^q\) does \emph{not} produce ``intra-phase selection'' within the maximal fiber family, since all maximal achievers share the same \(d_m(x)=D_m\).
+However, if one considers refined moments sensitive to hidden-bit splitting, such as
+\[
+S_q^{\mathrm{split}}(m):=\sum_{x\in X_m}\bigl(d_{m,0}(x)^q+d_{m,1}(x)^q\bigr),
+\]
+or taking only the maximal branch of each fiber:
+\[
+S_q^{\max}(m):=\sum_{x\in X_m}\max\{d_{m,0}(x),d_{m,1}(x)\}^q,
+\]
+then in the odd stable phase \(m=2k+1\ge 13\), among the four maximal achiever phases the biased pair has maximum branch \(F_{k+1}+F_{k-2}\), while the balanced pair has maximum branch \(F_{k+1}\) (Remark \ref{rem:pom-max-fiber-achievers-bsplit}).
+Therefore the maximum branch ratio is
+\[
+R_k:=\frac{F_{k+1}+F_{k-2}}{F_{k+1}}=1+\frac{F_{k-2}}{F_{k+1}}\longrightarrow 1+\varphi^{-3}=\sqrt5-1.
+\]
+Consequently, as \(q\) increases, the contribution of the biased pair to these \(\max\)-framework or \(b\)-split-framework higher-order moments is exponentially amplified relative to the balanced pair (at scale \(R_k^q\)), manifesting as a selection effect that ``effectively collapses 4 phases to 2 phases within the maximal achiever family.''
+\end{remark}
+
+\begin{corollary}[Squeeze interval for spatial defects]\label{cor:pom-defect-band}
+Let the average fiber multiplicity be $\overline d_m=2^m/F_{m+2}$. Then
+\[
+\log \overline d_m\sim m\log\!\left(\frac{2}{\varphi}\right),
+\qquad
+\log D_m\sim \frac{m}{2}\log\varphi.
+\]
+Therefore spatial defects form a hard squeeze interval between the ``average scale'' and the ``worst-case scale.''
+\end{corollary}
+
+\begin{remark}[Deviation of the worst-case scale from the average scale]\label{rem:pom-defect-gap}
+From the closed form of Theorem \ref{thm:pom-max-fiber} and the Binet asymptotics \(F_n=\frac{1}{\sqrt5}(\varphi^n-\psi^n)\) (\(\psi=-\varphi^{-1}\)), the exponential law for the maximal amplification ratio is
+\[
+\lim_{m\to\infty}\frac{1}{m}\log\frac{D_m}{\overline d_m}
+=\log\!\left(\frac{\varphi^{3/2}}{2}\right),
+\qquad
+\frac{\varphi^{3/2}}{2}\approx 1.029\ldots
+\]
+and
+\[
+\frac{D_m}{\overline d_m}
+=
+\Theta\!\left(\left(\frac{\varphi^{3/2}}{2}\right)^m\right).
+\]
+More precisely, the even and odd branches have completely explicit multiplicative constants:
+\[
+\frac{D_m}{\overline d_m}
+=
+\begin{cases}
+\displaystyle \frac{\varphi^{4}}{5}\Bigl(\frac{\varphi^{3/2}}{2}\Bigr)^{m}\,(1+o(1)),& m\ \text{even},\\[1.2ex]
+\displaystyle \frac{2\varphi^{5/2}}{5}\Bigl(\frac{\varphi^{3/2}}{2}\Bigr)^{m}\,(1+o(1)),& m\ \text{odd}.
+\end{cases}
+\]
+Therefore, although the worst-case fiber deviation from the average fiber is exponential, the base is extremely small, indicating that the folding projection maintains mild scale expansion in the ``worst-case spatial loss'' sense, and the constant terms can be fully audited.
+\end{remark}
+
+\begin{corollary}[Sparsity of high-multiplicity fibers]\label{cor:pom-high-multiplicity-sparse}
+For any $\alpha\in(0,1]$, let
+\[
+S_\alpha(m):=\{x\in X_m:\ d_m(x)\ge \alpha D_m\}.
+\]
+Then
+\[
+|S_\alpha(m)|\le \frac{2^m}{\alpha D_m},
+\qquad
+\frac{|S_\alpha(m)|}{|X_m|}\le \frac{2^m}{\alpha D_m F_{m+2}}.
+\]
+Moreover, by Theorem \ref{thm:pom-max-fiber} and $F_{m+2}\sim \varphi^m/\sqrt5$,
+\[
+\frac{|S_\alpha(m)|}{|X_m|}
+=O\!\left(\frac{1}{\alpha}\left(\frac{2}{\varphi^{3/2}}\right)^m\right).
+\]
+\end{corollary}
+\begin{proof}
+From $\sum_{x\in X_m} d_m(x)=|\Omega_m|=2^m$,
+\(
+\alpha D_m |S_\alpha(m)|\le \sum_{x\in S_\alpha(m)} d_m(x)\le 2^m
+\),
+giving the first bound; dividing by $|X_m|=F_{m+2}$ gives the second. The last line follows from the asymptotics. \qed
+\end{proof}

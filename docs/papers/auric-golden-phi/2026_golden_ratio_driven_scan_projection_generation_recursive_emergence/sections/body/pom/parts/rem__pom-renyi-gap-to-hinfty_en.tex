@@ -1,0 +1,289 @@
+\begin{remark}[Error bars on the endpoint constant: viewing low-order R\'enyi fingerprints as approximations to \texorpdfstring{$h_\infty$}{h_infty}]\label{rem:pom-renyi-gap-to-hinfty}
+For any finitely supported distribution \(\pi\), the R\'enyi entropy \(H_q(\pi)\) is monotonically decreasing in \(q\) and satisfies \(H_q(\pi)\to H_\infty(\pi)\) (min-entropy).
+Therefore, in the rate notation of this paper, if the standardized entropy rate
+\[
+h_q^{\mathrm R}:=\frac{h_q}{q-1}
+\]
+exists, then necessarily \(h_q^{\mathrm R}\ge h_\infty\), and as \(q\to\infty\), \(h_q^{\mathrm R}\to h_\infty\) (see also Proposition \ref{prop:pom-rq-qinfty-endpoint}).
+This makes the closed-form endpoint \(h_\infty=\log(2/\sqrt{\varphi})\) not merely a ``limiting constant,'' but an \textbf{auditable error anchor} for each finite-\(q\) fingerprint: define
+\[
+\varepsilon_q:=h_q^{\mathrm R}-h_\infty\ \ge\ 0,
+\]
+so that the low-order fingerprints for \(q\le 8\) in Table \ref{tab:fold_collision_moment_spectrum_k2_8} can be read as upper approximations to the endpoint constant together with error bars (the last column of that table is precisely \(\varepsilon_q\)).
+\end{remark}
+
+\begin{definition}[Collision kernel SFT and collision \texorpdfstring{$\zeta$}{zeta}]\label{def:pom-collision-zeta}
+Let \(A_2\) be the three-state nonnegative integer matrix from Proposition \ref{prop:pom-s2-recurrence}, and denote its edge shift by \((X_{A_2},\sigma)\). Define the collision \(\zeta\)-function
+$$
+\zeta_{A_2}(z):=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(A_2^n)}{n}z^n\right)
+=\frac{1}{\det(I-zA_2)}.
+$$
+and define the primitive orbit count \(p_n(A_2)\) (counted by orbit) as satisfying
+$$
+\mathrm{Tr}(A_2^n)=\sum_{d\mid n} d\,p_d(A_2),
+\qquad
+p_n(A_2)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\mathrm{Tr}(A_2^{n/d}).
+$$
+\end{definition}
+
+\input{sections/generated/tab_collision_kernel_A2_primitive}
+\input{sections/generated/tab_collision_kernel_A2_finite_part}
+
+\begin{corollary}[Unified spectral benchmark for the fold gate (\texorpdfstring{$A_2$}{A2}: cross-resolution auditable fingerprint)]\label{cor:pom-a2-benchmark}
+The three-state collision kernel \(A_2\) is induced solely by the second-order collision structure of the fold gate \(\Fold\) and is independent of the specific resolution \(m\); it therefore provides a unified benchmark that is cross-resolution consistent and directly auditable:
+\begin{itemize}
+  \item \textbf{Exponential scale:} Perron root \(r_2=\rho(A_2)\) and R\'enyi-2 projection entropy rate \(h_2=\log(4/r_2)\) (Corollary \ref{cor:pom-s2-asymptotic});
+  \item \textbf{Atomic scale:} Primitive orbit spectrum \(p_n(A_2)\) (Table \ref{tab:collision_kernel_A2_primitive});
+  \item \textbf{Constant scale:} Abel/Mertens finite-part constants \(\log\mathfrak{M}(A_2)\) and \(\mathsf{M}(A_2)=\gamma+\log\mathfrak{M}(A_2)\) (Table \ref{tab:collision_kernel_A2_finite_part}).
+\end{itemize}
+Moreover, the second-order ``near-uniform gap constant''
+\(
+\delta_2:=\log(\varphi r_2/4)
+\)
+has been given explicitly by Corollary \ref{cor:pom-renyi2-near-uniform}: it completely quantifies the R\'enyi-2 deviation of \(\pi_m\) from the uniform distribution as a purely constant-level exponential rate.
+\end{corollary}
+
+\paragraph{Minimal 5-state ``grand unification'' completion: rank-one unification direct channel + doublet exchange}
+The three-state kernel \(A_2\) is already the minimal representation in the Hankel/recursion sense (Theorem \ref{thm:pom-s2-rank-exact}).
+However, from the structural perspective of ``unification \(\to\) breaking,'' it further carries a finer low-rank decomposition: writing \(A_2\) as a rank-one ``unification direct channel'' plus a rank-two ``doublet exchange correction.''
+
+\begin{proposition}[Minimal 5-state completion of the second-order collision kernel \(A_2\)]\label{prop:pom-a2-gut-completion}
+Let
+\[
+U:=
+\begin{pmatrix}
+0&0&1\\
+0&0&1\\
+0&0&1
+\end{pmatrix},
+\qquad
+R:=A_2-U=
+\begin{pmatrix}
+0&0&0\\
+0&1&0\\
+2&1&0
+\end{pmatrix}.
+\]
+Then \(\mathrm{rank}(U)=1\), \(\mathrm{rank}(R)=2\), and there exist \(B\in\ZZ_{\ge 0}^{3\times 2}\), \(C\in\ZZ_{\ge 0}^{2\times 3}\) such that \(R=BC\); for instance, one may take
+\[
+B=
+\begin{pmatrix}
+0&0\\
+0&1\\
+1&0
+\end{pmatrix},
+\qquad
+C=
+\begin{pmatrix}
+2&1&0\\
+0&1&0
+\end{pmatrix}.
+\]
+Hence
+\[
+A_2=U+BC.
+\]
+Interpreting the intermediate dimension \(2\) as two ``heavy meson/heavy exchange states,'' one can externalize them as a \(5\times 5\) block kernel (unification mother kernel)
+\[
+A_{\mathrm{GUT}}
+:=
+\begin{pmatrix}
+U & B\\
+C & 0_{2\times 2}
+\end{pmatrix}
+=
+\begin{pmatrix}
+0&0&1&0&0\\
+0&0&1&0&1\\
+0&0&1&1&0\\
+2&1&0&0&0\\
+0&1&0&0&0
+\end{pmatrix}.
+\]
+Furthermore, this completion is minimal in the sense of ``number of auxiliary states'': any decomposition \(A_2=U+\widetilde B\widetilde C\) (where \(\mathrm{rank}(U)=1\), \(\widetilde B\in\RR^{3\times k}\), \(\widetilde C\in\RR^{k\times 3}\)) must satisfy \(k\ge 2\).
+\end{proposition}
+\begin{proof}
+The matrix \(U\) can be expressed as the outer product \(U=uv^{\mathsf T}\), where \(u=(1,1,1)^{\mathsf T}\), \(v=(0,0,1)^{\mathsf T}\). Since \(u, v\) are both nonzero vectors, \(\mathrm{rank}(U)=1\).
+The first two columns of \(R\) are \((0,0,2)^{\mathsf T}\) and \((0,1,1)^{\mathsf T}\), which are linearly independent, so \(\mathrm{rank}(R)=2\).
+Direct multiplication verifies that the given \(B,C\) satisfy \(BC=R\), hence \(A_2=U+BC\).
+Finally, if \(R=\widetilde B\widetilde C\) with \(\widetilde B\) having \(k\) columns, then \(\mathrm{rank}(R)\le \mathrm{rank}(\widetilde B\widetilde C)\le k\), combined with \(\mathrm{rank}(R)=2\) yields \(k\ge 2\). \qed
+\end{proof}
+
+\begin{proposition}[Unification \(\to\) breaking interpolation and spectral splitting cubic family]\label{prop:pom-a2-gut-spectral-splitting}
+Define the one-parameter ``unification \(\to\) breaking'' effective kernel
+\[
+A_{\mathrm{eff}}(\alpha):=U+\alpha\,R=U+\alpha\,BC,\qquad \alpha\in[0,1].
+\]
+Its characteristic polynomial has the closed form
+\[
+\boxed{\;
+\chi_\alpha(\lambda)
+:=\det(\lambda I-A_{\mathrm{eff}}(\alpha))
+=
+\lambda^3-(1+\alpha)\lambda^2-2\alpha\lambda+2\alpha^2\; }.
+\]
+The endpoint \(\alpha=0\) gives \(\mathrm{spec}(A_{\mathrm{eff}}(0))=\{1,0,0\}\), while \(\alpha=1\) degenerates back to
+\(\det(\lambda I-A_2)=\lambda^3-2\lambda^2-2\lambda+2\).
+\end{proposition}
+\begin{proof}
+From
+\(
+A_{\mathrm{eff}}(\alpha)=\begin{pmatrix}0&0&1\\0&\alpha&1\\2\alpha&\alpha&1\end{pmatrix}
+\),
+directly computing \(\det(\lambda I-A_{\mathrm{eff}}(\alpha))\) yields the closed form.
+The endpoint conclusions follow by substituting \(\alpha=0,1\). \qed
+\end{proof}
+
+\begin{corollary}[Falsifiable inversion: recovering \(\alpha\) from the effective leading root]\label{cor:pom-a2-gut-invert-alpha}
+If the effective leading root observed at some scale is \(\lambda=\rho(A_{\mathrm{eff}}(\alpha))\), then \(\alpha\) must satisfy the quadratic equation
+\[
+2\alpha^2-(\lambda^2+2\lambda)\alpha+\lambda^2(\lambda-1)=0.
+\]
+Furthermore, on the feasible branch \(\alpha\in[0,1]\) there is an explicit inversion
+\[
+\boxed{\;
+\alpha(\lambda)=\frac{\lambda}{4}\Bigl((\lambda+2)-\sqrt{(\lambda-2)^2+8}\Bigr)\; }.
+\]
+Therefore, once the ``effective growth mode'' \(\lambda\) is provided independently, the inversion of \(\alpha\) under this unification mechanism has zero degrees of freedom (directly falsifiable/verifiable).
+\end{corollary}
+\begin{proof}
+Viewing \(\chi_\alpha(\lambda)=0\) from Proposition \ref{prop:pom-a2-gut-spectral-splitting} as an equation in \(\alpha\) yields the stated quadratic; applying the quadratic formula and selecting the branch with \(\alpha(1)=0\), \(\alpha(r_2)=1\) gives the closed form. \qed
+\end{proof}
+
+\begin{remark}[Distinction between ``mother kernel'' and one-step spectral radius]\label{rem:pom-a2-gut-mother-vs-effective}
+The \(A_{\mathrm{GUT}}\) of Proposition \ref{prop:pom-a2-gut-completion} is a bookkeeping completion that externalizes the rank-two exchange term as two intermediate states;
+its ``low-energy effective kernel'' is given by \(A_{\mathrm{eff}}(\alpha)=U+\alpha BC\).
+Therefore the Perron root of \(A_{\mathrm{GUT}}\) need not equal \(r_2=\rho(A_2)\): the unification \(\to\) breaking interpolation occurs on the effective weight (\(\alpha\)) of the exchange term, not necessarily on the spectral radius of the one-step adjacency.
+\end{remark}
+
+\begin{proposition}[Determinant and leading pole of the collision kernel]\label{prop:pom-collision-det}
+There is a closed form
+$$
+\det(I-zA_2)=1-2z-2z^2+2z^3.
+$$
+Therefore the leading pole of \(\zeta_{A_2}(z)\) is located at \(z_\star=1/r_2\), where \(r_2\) is the largest real root of \(x^3-2x^2-2x+2=0\) (Corollary \ref{cor:pom-s2-asymptotic}), and the topological entropy of the collision kernel is
+$$
+h_{\mathrm{top}}(X_{A_2},\sigma)=\log r_2.
+$$
+\end{proposition}
+\begin{proof}
+Direct computation of the determinant for \(A_2\) gives \(\det(I-zA_2)=1-2z-2z^2+2z^3\). The leading pole corresponds to the smallest-modulus zero of \(\det(I-zA_2)\), i.e., \(z_\star=1/\rho(A_2)=1/r_2\). The topological entropy of an SFT equals \(\log\rho(A_2)\), hence \(\log r_2\). \qed
+\end{proof}
+
+\begin{remark}[Fast calculator for the primitive spectrum: \texorpdfstring{$O(N\log N)$}{O(N log N)} generation of \texorpdfstring{$p_n(A_2)$}{p_n(A2)}]\label{rem:pom-a2-primitive-fast}
+Let \(t_n:=\mathrm{Tr}(A_2^n)\).
+By the characteristic polynomial \(\lambda^3-2\lambda^2-2\lambda+2=0\) of \(A_2\) (equivalently the Cayley--Hamilton identity \(A_2^3=2A_2^2+2A_2-2I\)), multiplying both sides by \(A_2^{n-3}\) and taking traces gives the third-order recursion
+\[
+\boxed{\;
+t_n=2t_{n-1}+2t_{n-2}-2t_{n-3}\qquad(n\ge 4)\;}
+\]
+with initial values \(t_1=2,t_2=8,t_3=14\).
+On the other hand, by Witt/M\"obius inversion (Definition \ref{def:pom-collision-zeta}),
+\[
+p_n(A_2)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,t_{n/d}.
+\]
+Therefore, for any \(N\), one can first generate \(\{t_n\}_{n\le N}\) via the recursion in \(O(N)\) time, then generate all \(\{p_n(A_2)\}_{n\le N}\) via the divisor-sum sieve in \(O(N\log N)\) time;
+this provides a directly reproducible algorithmic calibration for using \(A_2\) as a ``collision primitive spectrum benchmark'' (for comparing the exponential constants and finite-part constant offsets of more complex kernel families).
+\end{remark}
+
+\begin{remark}[Strict RH margin of the second-order collision kernel (\texorpdfstring{$A_2$}{A2})]\label{rem:pom-collision-rh-margin}
+Let \(\lambda:=\rho(A_2)=r_2\approx 2.481194304092\). By the characteristic polynomial
+\[
+\det(\lambda I-A_2)=\lambda^3-2\lambda^2-2\lambda+2
+\]
+of \(A_2\), all three eigenvalues are real. Besides the Perron root, the other two roots are numerically approximately
+\[
+\mu_2\approx -1.170086486626,\qquad
+\mu_3\approx 0.688892182534.
+\]
+Therefore
+\[
+\max\{|\mu_2|,|\mu_3|\}\approx 1.170086\ <\ \sqrt{r_2}\approx 1.575181,
+\]
+i.e., the second-order collision kernel has a strict margin on the kernel-version RH inequality: the non-leading spectrum lies strictly within the square-root disk.
+\end{remark}
+
+\begin{proposition}[Strict RH for the second-order collision kernel: interval certificate]\label{prop:pom-a2-strict-rh-certificate}
+Let \(r_2=\rho(A_2)\), and define
+\[
+\Lambda_2:=\max_{\mu\in\mathrm{spec}(A_2)\setminus\{r_2\}}|\mu|
+\]
+as the sub-spectral radius. Then the strict inequality
+\[
+\boxed{\;\Lambda_2<\sqrt{r_2}.\;}
+\]
+holds.
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:pom-collision-det} (or direct computation), the characteristic polynomial of \(A_2\) is
+\[
+p(\lambda):=\lambda^3-2\lambda^2-2\lambda+2.
+\]
+Direct computation gives
+\[
+p\!\left(\frac94\right)=-\frac{79}{64}<0,\qquad
+p\!\left(\frac52\right)=\frac18>0,
+\]
+so there exists a root \(r_2\in\left(\frac94,\frac52\right)\), hence \(\sqrt{r_2}>\frac32\).
+On the other hand,
+\[
+p\!\left(-\frac32\right)=-\frac{23}{8}<0,\qquad p(-1)=1>0
+\]
+gives a negative root \(\mu_-\in\left(-\frac32,-1\right)\), so \(|\mu_-|<\frac32\); and
+\[
+p(0)=2>0,\qquad p(1)=-1<0
+\]
+gives a positive root \(\mu_+\in(0,1)\), so \(|\mu_+|<1\).
+Therefore \(\Lambda_2=\max\{|\mu_-|,|\mu_+|\}<\frac32<\sqrt{r_2}\). \qed
+\end{proof}
+
+\begin{remark}[Difference-chain twist kernel: minimal auditable character twist experiment on the three-state \texorpdfstring{$A_2$}{A2}]\label{rem:pom-a2-diffchain-twist}
+The \(A_2\) given by Proposition \ref{prop:pom-s2-recurrence} is an \emph{unlabeled} nonnegative realization; to define character twists \(A_{2,\chi}\), one first needs to place an additive ``difference charge'' label on the edges. A minimal, fully auditable choice is to start from the difference
+\(
+D_m:=N(\omega)-N(\omega')\in\ZZ
+\)
+of paired windows, letting the one-step increment be \(\delta_k:=\omega_k-\omega'_k\in\{-1,0,1\}\), and noting that \(\delta_k=0\) has two realizations \((0,0),(1,1)\) while \(\delta_k=\pm 1\) each has exactly one.
+\par
+Introducing the difference generating function
+\[
+P_m(z):=\prod_{k=1}^m\Bigl(2+z^{F_{k+1}}+z^{-F_{k+1}}\Bigr)=\sum_{D\in\ZZ}a_m(D)\,z^D,
+\]
+where \(a_m(D)\) counts the number of window pairs with \(D_m=D\). Tracking the three-coefficient vector
+\(
+v_m:=(a_m(0),a_m(F_{m+1}),a_m(F_{m+2}))^{\mathsf T}
+\)
+yields a three-state integer transfer \(v_{m+1}=Mv_m\), where
+\[
+M=
+\begin{pmatrix}
+2&0&2\\
+1&0&2\\
+0&1&0
+\end{pmatrix},
+\qquad
+\det(\lambda I-M)=\lambda^3-2\lambda^2-2\lambda+2.
+\]
+Therefore \(\rho(M)=\rho(A_2)=r_2\), and its non-leading spectrum is also consistent with Remark \ref{rem:pom-collision-rh-margin} (same characteristic polynomial).
+\par
+Further labeling each step increment \(\delta_k\) as an edge label and twisting by the character \(\chi(1)=u\), one obtains an explicit complex matrix family
+\[
+M(u)=M_0+uM_++u^{-1}M_-=
+\begin{pmatrix}
+2&0&u+u^{-1}\\
+u&0&2\\
+0&u&0
+\end{pmatrix},
+\]
+Note that here \(\chi\) is a \emph{local} twist on the one-step difference charge \(\delta_k\in\{-1,0,1\}\), and is not the same as the \emph{global} character \(\chi_j\) defined on \(G_m=\ZZ/F_{m+2}\ZZ\) in Proposition \ref{prop:pom-s2-plancherel}. It is therefore more suitable as a ``controllable minimal twist platform'' for testing the worst-mode scan and \(\zeta\)-determinant decomposition numerical interfaces.
+One may use roots of unity \(u=e^{2\pi i r/n}\) for direct spectral radius scanning to numerically locate the ``worst twist mode'' (corresponding to low-frequency modes with \(u\) near \(1\)). This example also serves as a reminder: \textbf{not every edge-label twist satisfies the square-root disk bound}; under this difference-chain twist, there exist many nontrivial \(u\) with \(\rho(M(u))>\sqrt{r_2}\), see Table \ref{tab:fold_collision_a2_twist_difference_chain_scan} (reproducible script \texttt{scripts/exp\_fold\_collision\_a2\_twist\_difference\_chain\_scan.py}).
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_a2_twist_difference_chain_scan}
+
+\begin{remark}[Isotypic position in the time--space commutative diagram: second-order moment \texorpdfstring{$\leftrightarrow$}{<->} fiber-product kernel]\label{rem:pom-collision-diagram}
+Section \ref{subsec:pom-time-space-diagram} unifies the ``time trace \(\mathrm{Tr}(T^n)\)'' and the ``primitive atomic spectrum'' via the \(\zeta\)-determinant (Proposition \ref{prop:time-space-commuting-diagram}). The collision kernel \(A_2\) provides an isotypic interface: it is not the step-by-step time trace of the original kernel, but the fiber-product kernel induced by the ``second-order moment/collision statistics'' of Fold. Its Perron root \(r_2\) and the leading pole of \(\zeta_{A_2}\) control the R\'enyi-2 projection entropy rate \(h_2=\log(4/r_2)\) (Corollary \ref{cor:pom-s2-asymptotic}), thereby promoting the ``window-level fiber defect functional'' to an auditable spectral fingerprint object, aligned with the \(\zeta\)/primitive/finite-part constant interface of Section \ref{sec:zeta-finite-part} within the same paradigm.
+\end{remark}
+
+\begin{remark}[Isotypic with the \texorpdfstring{$\zeta$}{zeta}/spectral fingerprint interface]\label{rem:pom-s2-zeta}
+The essence of Proposition \ref{prop:pom-s2-recurrence} is: the collision relation \(R_m\) is generated by a finite-state fiber-product kernel, whose counting leading scale is controlled by the Perron root \(r_2\). This role is isotypic with the ``weighted kernel \(\Rightarrow\) spectral radius/pole \(\Rightarrow\) exponential scale'' interface of Section \ref{sec:zeta-finite-part}: \(r_2\) provides a new, purely fold-gate-induced auditable exponential constant, thereby aligning the window-scale fiber structure \((d_m,E_m)\) with the orbit-scale \(\zeta/\lambda\) interface into a single ``spectral scale'' paradigm.
+\end{remark}

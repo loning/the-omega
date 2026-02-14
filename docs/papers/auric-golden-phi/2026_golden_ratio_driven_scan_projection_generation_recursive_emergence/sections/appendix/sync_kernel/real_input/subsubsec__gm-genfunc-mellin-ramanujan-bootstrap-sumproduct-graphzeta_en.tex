@@ -1,0 +1,320 @@
+\subsubsection{Generating function cancellation, Mellin spectral fingerprint, and Ramanujan denominator layers: from finite verification to double energy complementarity and graph \texorpdfstring{$\zeta$}{zeta}}\label{subsubsec:gm-genfunc-mellin-ramanujan-bootstrap-sumproduct-graphzeta}
+This subsection further closes the three interface chains from \S\ref{subsubsec:gm-odd-moment-sdp-modq-profinite} and \S\ref{subsubsec:gm-farey-limit-mod-obstruction-zeck-measure}---namely ``linear constraint counting \(\Leftrightarrow\) Perron fingerprint,'' ``modular obstruction \(\Leftrightarrow\) coboundary,'' and ``continuous limit \(\Leftrightarrow\) twisted spectral gap''---into: multivariate generating function rationality (Conclusion 61), Mellin analytification and pole spectral fingerprint of the limit measure (Conclusion 62), uniform exponential decay and curvature law at non-resonant frequencies (Conclusion 65), spectral expression of the rational frequency Gram via Ramanujan sum denominator layers (Conclusion 66), single-scale-triggered scale bootstrap and finite verification principles (Conclusions 67--68), and their role as higher-order moment saving and critical interval improvement inputs for automatic coefficient Dirichlet polynomials (Conclusions 69--70). Finally, we include the compilability of multiplicative energy in the same framework, additive/multiplicative double energy complementarity with the sum--product exponent law for Fibonacci-base systems (Conclusions 71--73), and the cyclotomic factor classification of graph \(\zeta\) characterizing finite modular obstructions (Conclusion 75).
+
+\paragraph{Rationality of the multivariate generating function for linear constraint counting: explicit cancellation with characteristic polynomial denominator}
+\begin{theorem}[Rationality of the multivariate generating function for linear constraint counting: explicit cancellation with characteristic polynomial denominator]\label{thm:gm-linear-constraints-genfunc-rational}
+Retaining the notation of Theorem \ref{thm:gm-sofic-zeck-linear-constraints-pf}, fix an integer linear system \(Qx=b\) (of fixed dimension), and let \(\Omega_m(Q,b)\) be the set of feasible \(K\)-tuples of length \(m\).
+Define the length generating function
+\[
+F_{Q,b}(z):=\sum_{m\ge 0}\#\Omega_m(Q,b)\,z^m.
+\]
+Then \(F_{Q,b}(z)\) is a rational function and can be written as
+\begin{equation}\label{eq:gm-genfunc-resolvent}
+\boxed{\
+F_{Q,b}(z)
+=u_{Q,b}^{\mathsf T}\,(I-zB_{Q,b})^{-1}v_{Q,b}\ } ,
+\end{equation}
+where \(B_{Q,b}\) is a finite non-negative integer matrix explicitly constructed via the synchronization transducer, and \(u_{Q,b},v_{Q,b}\ge 0\) are entrance/exit vectors.
+In particular, all poles of \(F_{Q,b}\) are contained in the root set of
+\(
+\det(I-zB_{Q,b})=0
+\);
+and \(\#\Omega_m(Q,b)\) as a function of \(m\) can be analytically continued over the entire complex plane as a sum of finitely many ``exponential-polynomial'' terms (explicitly given by the Jordan structure of \(B_{Q,b}\)).
+\end{theorem}
+
+\begin{proof}
+By Theorem \ref{thm:gm-sofic-zeck-linear-constraints-pf}, \(\#\Omega_m(Q,b)=u_{Q,b}^{\mathsf T}B_{Q,b}^{\,m}v_{Q,b}\).
+Summing the power series for \(|z|<\rho(B_{Q,b})^{-1}\) gives
+\(
+\sum_{m\ge 0}B_{Q,b}^{\,m}z^m=(I-zB_{Q,b})^{-1}
+\),
+yielding \eqref{eq:gm-genfunc-resolvent}.
+The pole containment follows from the determinant denominator of the matrix resolvent; the exponential-polynomial representation comes from the Jordan decomposition and the Cayley--Hamilton theorem. \qed
+\end{proof}
+
+\paragraph{Mellin analytification of the matrix subdivision equation: meromorphic continuation on \texorpdfstring{$\varphi^{-s}$}{phi^{-s}} and pole spectral fingerprint}
+\begin{theorem}[Mellin analytification of the matrix subdivision equation: spectral fingerprint on \texorpdfstring{$\varphi^{-s}$}{phi^{-s}}]\label{thm:gm-mellin-meromorphic-fingerprint}
+Let \(\mu\) be the limit normalized measure of Theorem \ref{thm:gm-zeck-normalized-limit-measure} (supported on \([0,1]\)), and suppose its vector subdivision equation can be abstractly written as
+\begin{equation}\label{eq:gm-matrix-refinement-abstract}
+\vec\mu=\sum_{j\in\mathcal{J}}T_j\cdot(\vec\mu\circ S_j^{-1}),
+\qquad
+S_j(x)=\varphi^{-a_j}x+t_j,
+\end{equation}
+where \(a_j\in\NN\) are fixed, \(t_j\in[0,1]\), and \(T_j\) are non-negative matrices (of finite dimension).
+Let
+\[
+M(s):=\int_0^1 x^{s}\,d\mu(x),\qquad \Re(s)>-1,
+\]
+and let \(z:=\varphi^{-s}\) (taking the principal branch in the \(z\)-plane).
+Then there exists a finite-dimensional linear system
+\begin{equation}\label{eq:gm-mellin-linear-system}
+\boxed{\ (I-P(z))\,\mathbf{M}(s)=\mathbf{H}(s)\ },
+\qquad
+P(z):=\sum_{\substack{j\in\mathcal{J}\\ t_j=0}} z^{a_j}\,T_j,
+\end{equation}
+where \(\mathbf{M}(s)\) is a vector consisting of finitely many ``state Mellin moments'' (including the component of \(M(s)\) in the Perron direction), and \(\mathbf{H}(s)\) is analytic in the half-plane \(\Re(s)>-1\) and extends as an entire function in the \(s\)-plane.
+Therefore, \(\mathbf{M}(s)\) (and hence \(M(s)\)) is meromorphic as a function of \(z\), and its pole set is contained in
+\[
+\det(I-P(z))=0;
+\]
+the order of each pole is determined by the Jordan structure of \(P(z)\) at that point.
+This pole data constitutes the ``Mellin spectral fingerprint of the limit distribution'': endpoint-type (\(x\to 0^+\)) power-law/logarithmic corrections and moment growth can be read off from the finite matrix spectrum in an offline caliber.
+\end{theorem}
+
+\begin{proof}[Key ideas]
+Take the Mellin transform (or componentwise \(\int x^s\)) of \eqref{eq:gm-matrix-refinement-abstract}:
+when \(t_j=0\), \(\int (S_j x)^s\,d\mu=\varphi^{-a_js}\int x^s\,d\mu\) gives a strict \(z^{a_j}\) coefficient;
+when \(t_j>0\), \(x\mapsto (t_j+\varphi^{-a_j}x)^s\) is analytic in \(\Re(s)>-1\) and uniformly controlled for \(x\in[0,1]\), contributing an analytic function term that is absorbed into \(\mathbf{H}(s)\).
+Moving all \(t_j=0\) branch terms to the left-hand side yields \eqref{eq:gm-mellin-linear-system}.
+Meromorphicity and the pole set follow from the matrix resolvent \((I-P(z))^{-1}\); the pole order is determined by the Jordan structure. \qed
+\end{proof}
+
+\paragraph{Statistical inferences from the spectral gap: central limit theorem and H\"older regularity (finite-state spectral data \texorpdfstring{$\Rightarrow$}{=>} real-analytic properties)}
+\begin{theorem}[Spectral gap CLT for finite-state weight functions: limit theorem with auditable error budget]\label{thm:gm-sofic-spectral-clt}
+Let \(\omega=(\omega_k)_{k\ge 1}\) be the stationary Markov chain output under a primitive sofic shift, and let \(w\) be a bounded integer-valued weight function (viewed as an edge weight or local potential).
+Define the additive functional
+\[
+S_m:=\sum_{k=1}^{m} w(\omega_k),
+\qquad
+Y_m:=\frac{S_m-\mathbb{E}S_m}{\sqrt{\mathrm{Var}(S_m)}}.
+\]
+If the weight function satisfies the non-arithmetic condition (equivalent to the non-existence of a non-trivial modulus \(q\) for which it is a coboundary; also equivalent to the invariant \(d=1\) in Proposition \ref{prop:gm-cycle-gcd-mod-obstruction}), then \(Y_m\) converges in distribution to the standard normal.
+Moreover, this conclusion can be fully certified in the ``twisted Perron branch'' caliber of this paper: there exists a constant \(C>0\) such that for any bounded Lipschitz test function \(\varphi\),
+\[
+\Bigl|\mathbb{E}\varphi(Y_m)-\mathbb{E}\varphi(Z)\Bigr|
+\ \ll_{\varphi}\ m^{-1/2}\ +\ C\cdot \rho_\star^{\,m},
+\qquad Z\sim\mathcal{N}(0,1),
+\]
+where \(\rho_\star\in(0,1)\) is given by the twisted spectral gap and can be verified offline.
+\end{theorem}
+
+\begin{proof}[Key ideas]
+Write the characteristic function as a linear functional of matrix powers of the finite-dimensional twisted transfer matrix, and expand analytically around zero in \(\theta\):
+\(\log\lambda(\theta)=\log\lambda(0)+i\mu\theta-\tfrac12\sigma^2\theta^2+O(\theta^3)\).
+Under the CLT scaling \(\theta\asymp m^{-1/2}\), the principal term gives the Gaussian limit; the remaining spectrum and truncation error contribute an exponentially small term \(\rho_\star^m\) via the twisted spectral gap.
+The Berry--Esseen-level \(m^{-1/2}\) error comes from third-order term control and Fourier inversion. \qed
+\end{proof}
+
+\begin{theorem}[Computable H\"older regularity exponent of the limit density: \texorpdfstring{$C^\alpha$}{C^alpha} derived from the complex twisted spectral gap]\label{thm:gm-holder-regularity-from-gap}
+Under the setting of Theorem \ref{thm:gm-zeck-normalized-limit-measure}, suppose the Fourier--Perron isomorphism of the limit measure \(\mu\) satisfies the following ``complex twist uniform spectral gap'': there exists \(\delta\in(0,1)\) such that for all \(\xi\ne 0\),
+\[
+\rho\!\bigl(T(\xi)\bigr)\ \le\ (1-\delta)\,\rho\!\bigl(T(0)\bigr),
+\]
+where \(T(\xi)\) is the real-frequency twisted transfer operator (defined in Theorem \ref{thm:gm-zeck-normalized-limit-measure}).
+Let
+\[
+\beta:=\frac{-\log(1-\delta)}{\log\varphi}.
+\]
+If \(\beta>1\) (equivalent to \((1-\delta)\varphi<1\)), then \(\mu\) is absolutely continuous and the density \(f=d\mu/dx\) belongs to a H\"older class \(C^\alpha([0,1])\), with explicit lower bound
+\[
+\alpha\ <\ \beta-1.
+\]
+Furthermore, \(|f|_{C^\alpha}\) admits auditable control in terms of the finite-state spectral data and \(\delta\).
+\end{theorem}
+
+\begin{proof}[Key ideas]
+The uniform spectral gap ensures that at each scale descent (\(\xi\mapsto \xi/\varphi\)), the principal growth of the twisted transfer is multiplied by at most \((1-\delta)\).
+The number of iterations is \(\asymp \log_\varphi|\xi|\), yielding the power-law decay
+\(
+|\widehat\mu(\xi)|\ll |\xi|^{-\beta}
+\).
+When \(\beta>1+\alpha\), \(\int |\xi|^{\alpha}|\widehat\mu(\xi)|\,d\xi<\infty\) follows from the power-law integral,
+so Fourier inversion and difference estimates imply \(f\in C^\alpha\), with the H\"older norm controlled by the decay constant. \qed
+\end{proof}
+
+\paragraph{Exponential sums at non-resonant frequencies and uniform large deviation: curvature law of the principal eigenvalue}
+\begin{proposition}[Uniform large deviation for exponential sums at non-resonant frequencies: second-order curvature law of the spectral radius]\label{prop:gm-nonresonant-exp-sum-curvature}
+Let \(\mathcal{L}\) be a primitive sofic language, and let
+\(
+S_m(\theta)=\sum_{\omega\in\mathcal{L}_m} e^{i\theta\,\mathrm{val}(\omega)}
+\).
+Then there exists a twisted Perron branch \(\lambda(\theta)\) such that for some constant \(C>0\),
+\[
+|S_m(\theta)|\ \le\ C\,|\lambda(\theta)|^{m}.
+\]
+Moreover, on any compact set bounded away from the resonance set \(\Theta_{\mathrm{res}}\), \(\log|\lambda(\theta)|\) has a strictly negative second-order lower bound: there exists \(c>0\) such that for all \(\theta\) sufficiently far from \(\Theta_{\mathrm{res}}\),
+\[
+\log|\lambda(\theta)|\ \le\ \log\lambda(0)-c\,\mathrm{dist}(\theta,\Theta_{\mathrm{res}})^2.
+\]
+This yields a uniform exponential decay law applicable to major arc discrimination, compatible with the major arc mechanism of \S\ref{subsubsec:gm-rational-sieve-affine-centered-opuc-multifractal}.
+\end{proposition}
+
+\begin{proof}[Key ideas]
+By the finite-state twisted transfer matrix representation \(S_m(\theta)=p^{\mathsf T}A(\theta)^{m}q\), where \(A(\theta)\) is analytic in \(\theta\).
+Let \(\lambda(\theta)\) be the principal eigenvalue branch of \(A(\theta)\); then the spectral decomposition of \(A(\theta)^m\) gives the first formula.
+Away from the resonance set, a uniform gap exists between the principal eigenvalue and the remaining spectrum; and the second-order expansion of \(\log\lambda(\theta)\) near resonance points, together with the strict concavity of \(\log|\lambda(\theta)|\) induced by non-trivial twisting, gives the quadratic distance lower bound. \qed
+\end{proof}
+
+\paragraph{Denominator layer orthogonal decomposition of the rational frequency Gram: spectral expression via Ramanujan sum kernels}
+\begin{proposition}[Denominator layer orthogonal decomposition of the rational frequency Gram matrix: spectral expression via Ramanujan sum kernels]\label{prop:gm-ramanujan-layer-decomposition}
+Let \(\psi\) be an even Schwartz function, \(\mathcal{Q}_M=\{a/q\in[0,1]:1\le q\le M,(a,q)=1\}\), and let
+\(
+K_{M,L}
+\)
+be the kernel matrix
+\(
+(K_{M,L})_{r,r'}=\psi(L(r-r'))
+\)
+(of the same type as in \S\ref{subsubsec:gm-farey-limit-mod-obstruction-zeck-measure}).
+Periodize \(\psi\) on \(\TT=\RR/\ZZ\) and still denote it by \(\psi\); then for any \(g\in\ell^2(\mathcal{Q}_M)\), the Fourier expansion gives
+\[
+\langle g,K_{M,L}g\rangle
+=\sum_{n\in\ZZ}\widehat\psi(n/L)\,
+\Bigl|\sum_{q\le M}\ \sum_{(a,q)=1} g(a/q)\,e^{2\pi i an/q}\Bigr|^2.
+\]
+Under the denominator layer decomposition \(\ell^2(\mathcal{Q}_M)\cong\bigoplus_{q\le M}\ell^2((\ZZ/q\ZZ)^\times)\), the above formula precisely localizes the principal contribution to \(\|K_{M,L}\|_{\mathrm{op}}\) in the low-frequency Ramanujan sum correlations: when \(g\) is nearly constant on each denominator layer, the inner sum degenerates to a weighted superposition of Ramanujan sums
+\(
+c_q(n)=\sum_{(a,q)=1}e^{2\pi i an/q}
+\).
+\end{proposition}
+
+\begin{proof}
+After periodization, \(\psi\) has Fourier coefficients \(\widehat\psi(n/L)\).
+Writing the kernel as \(\psi(L(r-r'))=\sum_{n\in\ZZ}\widehat\psi(n/L)e^{2\pi i n(r-r')}\), substituting into the quadratic form, and exchanging the order of summation yields the conclusion. \qed
+\end{proof}
+
+\paragraph{Scale bootstrap and finite verification: from single-scale spectral drop to uniform spectral gap}
+\begin{proposition}[Scale bootstrap principle: a single spectral drop triggers polynomial decay at all scales]\label{prop:gm-scale-bootstrap-gram}
+Suppose there exists a scale \(M_0\) with \(L\asymp M_0^2\) such that
+\[
+\|K_{M_0,L}\|_{\mathrm{op}}\ \le\ M_0^{-\eta}
+\qquad(\eta>0).
+\]
+Then there exists a constant \(\eta'=\eta'(\eta,\psi)>0\) such that for all \(M\ge M_0\) (with the same-type scaling \(L\asymp M^2\)),
+\[
+\|K_{M,L}\|_{\mathrm{op}}\ \ll\ M^{-\eta'}.
+\]
+In other words, the spectral drop of the rational major arc Gram possesses a ``single-scale trigger--all-scale propagation'' bootstrap property.
+\end{proposition}
+
+\begin{proof}[Proof outline]
+By Proposition \ref{prop:gm-ramanujan-layer-decomposition}, the principal contribution to \(\|K_{M,L}\|_{\mathrm{op}}\) comes from the low-frequency \(n\) segment of Ramanujan sum correlations.
+When \(L\asymp M^2\), the Farey local covering and denominator semigroup structure cause the low-frequency correlations across different scales to satisfy an iterable convolution-type inequality; a spectral drop at a single scale can be propagated to larger scales via positivity and Schur/Young-type comparison, and converted into polynomial decay. \qed
+\end{proof}
+
+\begin{theorem}[Finite verification principle: decidability and finite check set for uniform spectral gap]\label{thm:gm-finite-verification-uniform-gap}
+For any given primitive sofic--weight system (with fixed automaton and edge weights), there exists an explicitly computable finite set
+\[
+\mathscr{T}\subset(0,2\pi),\qquad \mathscr{M}\subset\NN,
+\]
+such that the following equivalence holds:
+\begin{enumerate}
+  \item For all \(\theta\notin 2\pi\ZZ\), a uniform twisted spectral gap holds: \(\rho(A(e^{i\theta\cdot}))\le (1-\delta)\rho(A(0))\) (for some \(\delta>0\)).
+  \item For all \(\theta\in\mathscr{T}\) and all \(M\in\mathscr{M}\), the corresponding twisted spectral radius is verified to be strictly less than \(\rho(A(0))\) (or equivalently, the spectral drop threshold for the relevant \(K_{M,L}\) is verified).
+\end{enumerate}
+The construction of \(\mathscr{T}\) is controlled by the modular obstruction invariant \(d\) (Proposition \ref{prop:gm-cycle-gcd-mod-obstruction}) and the number of states, while the construction of \(\mathscr{M}\) is determined by the scale bootstrap (Proposition \ref{prop:gm-scale-bootstrap-gram}).
+\end{theorem}
+
+\begin{proof}[Key ideas]
+Modular obstructions can only occur on the finite set \(\{q:\ q\mid d\}\), and their resonant frequencies are finite and enumerable, so a finite \(\mathscr{T}\) can be chosen to cover neighborhood representatives of all potential resonance points.
+After excluding these frequencies, the spectral radius as a continuous function of \(\theta\) attains its maximum on a compact set; combined with discrete grid approximation, the condition ``strictly less than'' can be reduced to a finite check.
+The scale direction is provided by Proposition \ref{prop:gm-scale-bootstrap-gram}: it suffices to verify the spectral drop at finitely many initial scales to deduce uniformity at all scales. \qed
+\end{proof}
+
+\paragraph{Automatic coefficient Dirichlet polynomials: uniform higher-order moment savings and critical interval improvement}
+\begin{theorem}[Non-asymptotic higher-order moment bound for automatic coefficient Dirichlet polynomials: uniform \texorpdfstring{$2k$}{2k}-th order control under spectral gap input]\label{thm:gm-automatic-dirichlet-moment-bound}
+Let \((b_n)\) be produced by a finite-state system (e.g., an automatic/sofic series truncated on the interval \([N,2N]\)), and suppose the corresponding twisted transfer operator satisfies a uniform spectral gap (equivalent to excluding the finite modular obstruction family; see Theorem \ref{thm:gm-improvability-iff-d1}).
+Then for any fixed \(k\in\NN\), there exist \(\varepsilon_k>0\) and a constant \(C_k\) such that for all \(T\ge 1\),
+\[
+\int_0^T\Bigl|\sum_{n\sim N} b_n n^{it}\Bigr|^{2k}\,dt
+\ \le\
+C_k\,T\,N^{k}\,(\log N)^{O_k(1)}\,N^{-\varepsilon_k}.
+\]
+\end{theorem}
+
+\begin{proof}[Proof outline]
+Expanding the \(2k\)-th power and exchanging the integral, one obtains an oscillatory integral over logarithmic phases \(\log(n_1\cdots n_k)-\log(n_{k+1}\cdots n_{2k})\) together with multi-body counting from coefficient correlations.
+The uniform spectral gap makes all non-trivial twisted correlations decay exponentially, thereby suppressing the contribution beyond the ``diagonal principal term'' by a power saving of \(N^{-\varepsilon_k}\); the near-diagonal part on the logarithmic scale is absorbed by separation/bandwidth window patches and polylogarithmic factors. \qed
+\end{proof}
+
+\begin{corollary}[Structural improvement in the critical interval: strict power saving at \texorpdfstring{$V\asymp N^{3/4}$}{V~N^{3/4}} for automatic coefficients]\label{cor:gm-critical-window-automatic-saving}
+Under the setting of Theorem \ref{thm:gm-automatic-dirichlet-moment-bound}, let
+\(
+D(t)=\sum_{n\sim N} b_n n^{it}
+\)
+and take \(W=\{t\in[0,T]:|D(t)|\ge V\}\) to be the \(1\)-separated large value point set.
+Then at the scaling \(T=N^{6/5}\) and threshold \(V\asymp N^{3/4}\), there exists \(\epsilon>0\) (determined only by the spectral gap data and the automaton) such that
+\[
+|W|\ \ll\ N^{12/5-\epsilon}\,V^{-4}.
+\]
+\end{corollary}
+
+\begin{proof}[Key ideas]
+Combining the third trace/higher-order moment certificate chain (\S\ref{subsubsec:gm-third-trace-dual-certificates} and \S\ref{subsubsec:gm-affine-inverse-gram-arithmetic-dichotomy}) with the non-asymptotic moment saving of Theorem \ref{thm:gm-automatic-dirichlet-moment-bound}, one can break through the bottleneck term caused by the energy coupling channel at the critical interval, and read off the stated power saving at the \(T=N^{6/5}\) scaling. \qed
+\end{proof}
+
+\paragraph{Compilability of multiplicative energy and sum--product exponent law: double energy complementarity}
+\begin{theorem}[Compilability of multiplicative energy for Zeckendorf--sofic: Perron fingerprint of product equation counting (conditional version)]\label{thm:gm-multiplicative-energy-compilable}
+Let \(A_m=\{\mathrm{val}(\omega):\omega\in\mathcal{L}_m\}\) come from a primitive sofic--Zeckendorf system.
+If there exists a ``multiplicative normalization transducer'' (implementing multiplication carry/normalization in finite states, coupled with the four-fold synchronization product of \(\mathcal{L}\)), then there exist a finite non-negative integer matrix \(B_{\times}\) and vectors \(u,v\ge 0\) such that
+\[
+E_{\times}(A_m):=\#\{a_1a_2=a_3a_4:\ a_i\in A_m\}
+=u^{\mathsf T}B_{\times}^{\,m}v,
+\]
+so that \(\lim_{m\to\infty}m^{-1}\log E_\times(A_m)=\log\rho(B_\times)\) exists and satisfies a finite-order linear recurrence closure.
+\end{theorem}
+
+\begin{theorem}[Spectral form of additive and multiplicative double energy complementarity: strict interior domain constraint under tensor transducer]\label{thm:gm-add-mult-energy-complementarity}
+Under the conditions of Theorem \ref{thm:gm-multiplicative-energy-compilable}, write
+\[
+|A_m|\asymp \alpha^m,\qquad
+E_+(A_m)\asymp \beta_+^m,\qquad
+E_\times(A_m)\asymp \beta_\times^m.
+\]
+Then there exists a constant \(\kappa>0\) depending only on \(\mathcal{L}\) such that
+\[
+\boxed{\ \log\beta_+ + \log\beta_\times\ \le\ 6\log\alpha-\kappa\ }.
+\]
+Therefore the same Zeckendorf--sofic set cannot, in the exponential sense, simultaneously be close to ``additively highly structured'' and ``multiplicatively highly structured''; this complementarity is strictly enforced by the finite-state tensor spectral radius.
+\end{theorem}
+
+\begin{corollary}[Sum--product exponent law for Fibonacci-base: exponential expansion from double energy complementarity]\label{cor:gm-sumproduct-exponent-law}
+Let \(\Sigma_m=A_m+A_m\) and \(\Pi_m=A_m\cdot A_m\).
+Under the hypothesis of Theorem \ref{thm:gm-add-mult-energy-complementarity}, there exists \(\delta>0\) such that for sufficiently large \(m\),
+\[
+\max\{|\Sigma_m|,|\Pi_m|\}\ \ge\ |A_m|^{1+\delta}
+\]
+(expansion in the exponential sense), and \(\delta\) can be explicitly bounded from below by \(\kappa\) and \(\alpha\):
+\(
+\delta\ge \kappa/(2\log\alpha)
+\).
+\end{corollary}
+
+\paragraph{Double large sieve input and cyclotomic factors of graph \texorpdfstring{$\zeta$}{zeta}: algebraic discrimination of modular obstructions}
+\begin{proposition}[Unified form of double large sieve input: simultaneous spectral gapping of additive and multiplicative characters]\label{prop:gm-double-large-sieve-input}
+Let \((b_n)\) be generated by the same finite-state system, and suppose both its additive character twist and multiplicative Dirichlet character twist transfer operators satisfy uniform spectral gaps (equivalent to excluding the finite obstruction family).
+Then there exist \(\delta_1,\delta_2>0\) such that for any fixed \(\theta>0\), any \(Q\le N^\theta\), and any non-trivial Dirichlet character \(\chi\ (\bmod q)\) (\(q\le Q\)) and additive character \(e(an/q)\) (same \(q\le Q\)),
+\[
+\sum_{n\sim N} b_n\chi(n)\ \ll\ N^{1-\delta_1},
+\qquad
+\sum_{n\sim N} b_n e(an/q)\ \ll\ N^{1-\delta_2},
+\]
+with implied constants depending only on the finite-state spectral data.
+\end{proposition}
+
+\begin{theorem}[Cyclotomic factor classification of the graph \texorpdfstring{$\zeta$}{zeta} function: \texorpdfstring{$\zeta$}{zeta}--spectral equivalence characterization of modular obstructions]\label{thm:gm-graph-zeta-cyclotomic-classification}
+Let \(G\) be a primitive directed graph with edge weights \(w\) inducing mod \(q\) character-twisted adjacency operators \(A(\chi)\).
+Define the twisted graph \(\zeta\) function (dynamical \(\zeta\)):
+\[
+Z_G(u,\chi):=\prod_{[\gamma]}\bigl(1-u^{\ell(\gamma)}\chi(w(\gamma))\bigr)^{-1},
+\]
+where the product runs over prime cycle homotopy classes \([\gamma]\).
+Then there exists an explicit polynomial \(P_\chi(u)\) such that
+\[
+Z_G(u,\chi)=\frac{P_\chi(u)}{\det(I-uA(\chi))}.
+\]
+Moreover, a non-trivial modular obstruction exists if and only if \(Z_G(u,\chi)\) contains a cyclotomic factor for some \(\chi\ne 1\); equivalently,
+\[
+\rho(A(\chi))=\rho(A(1))
+\]
+holds for some non-trivial \(\chi\).
+Therefore the entire source of ``finite modular obstructions'' can be equivalently reduced to an enumerable cyclotomic factor structure.
+\end{theorem}
+
+\begin{proof}[Key ideas]
+For SFT/sofic dynamical \(\zeta\), there is a standard determinant representation \(Z(u)=\exp(\sum_{n\ge 1}\mathrm{tr}(A^n)u^n/n)=1/\det(I-uA)\) (see \cite[Chapter~6]{LindMarcus1995}); the twisted case replaces \(A\) by \(A(\chi)\) in the denominator.
+The numerator \(P_\chi\) absorbs corrections from finite prefixes/transient states (in the primitive case it can be taken as a constant).
+Cyclotomic factors correspond to roots on the unit circle, hence to iso-radius between twisted and untwisted spectral radii; their equivalence with the modular coboundary/obstruction is given by the structural characterization of Proposition \ref{prop:gm-cycle-gcd-mod-obstruction} and Theorem \ref{thm:gm-uniform-twist-gap-from-gcd}. \qed
+\end{proof}
+
+\endinput

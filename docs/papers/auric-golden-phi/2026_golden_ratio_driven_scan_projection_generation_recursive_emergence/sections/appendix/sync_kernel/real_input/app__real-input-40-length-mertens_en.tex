@@ -1,0 +1,106 @@
+\subsubsection{Dirichlet/Mertens Theory for Length Congruence Classes (by \texorpdfstring{$|\tau|\bmod m$}{|tau| mod m})}\label{app:real-input-40-length-mertens}
+This subsection treats "length \(|\tau|\bmod m\)" as the simplest time cocycle: each step adds \(1\in\ZZ/m\ZZ\).
+It depends on no additional observables, thus providing an auditable interface orthogonal to arity/collision congruence stratification, yet closer to "decomposing Dirichlet/Mertens constants by congruence classes."
+
+\begin{proposition}[Convergence and closed form of length-twisted primitive sum]\label{prop:real-input-40-length-twist-converge}
+Take any unit complex number \(\omega\in\CC\) satisfying \(|\omega|=1\) and \(\omega\neq 1\). Define the length-twisted primitive sum
+\[
+S(\omega;N):=\sum_{n\le N}\frac{p_n\,\omega^n}{\lambda^n}.
+\]
+Then the limit
+\[
+S(\omega;\infty):=\sum_{n\ge 1}\frac{p_n\,\omega^n}{\lambda^n}
+\]
+converges (conditionally), and satisfies the strict identity
+\[
+\boxed{\;
+S(\omega;\infty)=P\!\left(\frac{\omega}{\lambda}\right)\; }.
+\]
+Furthermore, by Möbius--log inversion
+\[
+P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_M(z^k)
+\]
+one obtains the exponentially convergent closed form
+\[
+\boxed{\;
+P\!\left(\frac{\omega}{\lambda}\right)
+=\sum_{k\ge 1}\frac{\mu(k)}{k}\log \zeta_M\!\left(\left(\frac{\omega}{\lambda}\right)^k\right)\; }.
+\]
+\end{proposition}
+\begin{proof}
+From \(p_n=\lambda^n/n+O(\varphi^n/n)\) (where \(\varphi<\lambda\); see proof of Corollary \ref{cor:real-input-40-Mertens-constant}) we have
+\(
+p_n/\lambda^n=1/n+O(\lambda^{-n/2}/n)
+\).
+When \(\omega\neq 1\), \(\sum_{n\ge 1}\omega^n/n\) converges by Dirichlet's test, and the error term is absolutely summable, so \(S(\omega;\infty)\) converges.
+On the other hand, by definition \(P(z)=\sum_{n\ge 1}p_n z^n\), taking \(z=\omega/\lambda\) (whose modulus is \(<1\)) gives \(S(\omega;\infty)=P(\omega/\lambda)\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Mertens theorem and constant decomposition for length congruence classes]\label{thm:real-input-40-length-mertens-prog}
+For integer \(m\ge 2\) and \(r\in\{0,1,\dots,m-1\}\), define the Mertens sum for length congruence class
+\[
+\mathcal{M}_{m,r}(N):=\sum_{\substack{n\le N\\ n\equiv r\ (\mathrm{mod}\ m)}}\frac{p_n}{\lambda^n}.
+\]
+Then as \(N\to\infty\) one has the asymptotic
+\[
+\boxed{\;
+\mathcal{M}_{m,r}(N)=\frac{1}{m}\log N+\mathsf{M}^{(\mathrm{len})}_{m,r}+o(1)\; }.
+\]
+The constant term is given explicitly by the discrete Fourier transform with roots of unity: let \(\zeta_m:=e^{2\pi i/m}\), then
+\[
+\boxed{\;
+\mathsf{M}^{(\mathrm{len})}_{m,r}
+=\frac{\mathsf{M}}{m}+\frac{1}{m}\sum_{j=1}^{m-1}\zeta_m^{-jr}\,P\!\left(\frac{\zeta_m^{\,j}}{\lambda}\right)\; },
+\]
+where \(\mathsf{M}\) is the total Mertens constant from Corollary \ref{cor:real-input-40-Mertens-constant}.
+\end{theorem}
+\begin{proof}
+Use the discrete Fourier expansion of the indicator function
+\[
+\mathbf{1}_{\{n\equiv r\ (m)\}}
+=\frac{1}{m}\sum_{j=0}^{m-1}\zeta_m^{\,j(n-r)}.
+\]
+Substituting into \(\mathcal{M}_{m,r}(N)\) and exchanging summation yields
+\[
+\mathcal{M}_{m,r}(N)
+=\frac{1}{m}\sum_{n\le N}\frac{p_n}{\lambda^n}+\frac{1}{m}\sum_{j=1}^{m-1}\zeta_m^{-jr}\sum_{n\le N}\frac{p_n\,\zeta_m^{\,jn}}{\lambda^n}.
+\]
+The first term is given by Corollary \ref{cor:real-input-40-Mertens-constant} as
+\(
+\frac{1}{m}\log N+\frac{\mathsf{M}}{m}+o(1)
+\).
+For each \(j\ge 1\), \(\omega=\zeta_m^{\,j}\neq 1\), the inner sum converges to \(P(\zeta_m^{\,j}/\lambda)\) by Proposition \ref{prop:real-input-40-length-twist-converge}, yielding the constant term decomposition. This completes the proof.
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$L(1)$}{L(1)} for length sign character: radical closed form]\label{cor:real-input-40-length-sign-L1}
+Define the "length sign character" Euler product (assigning \(\pm 1\) to primitive orbits by parity)
+\[
+L_-(s):=\prod_{\tau\ \mathrm{primitive}}\Bigl(1-(-1)^{|\tau|}\,N(\tau)^{-s}\Bigr)^{-1}.
+\]
+On this kernel \(N(\tau)=\lambda^{|\tau|}\), so \(L_-(s)=\zeta_M(-\lambda^{-s})\). In particular,
+\[
+\boxed{\;
+L_-(1)=\zeta_M\!\left(-\frac{1}{\lambda}\right)
+=\frac{41}{40}+\frac{11}{24}\sqrt5\; }.
+\]
+\end{corollary}
+\begin{proof}
+From \(\zeta_M(z)=1/\Delta(z)\) and \(\Delta(z)=\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)\), substitute \(z=-1/\lambda\) and simplify using \(\lambda=\varphi^2=(3+\sqrt5)/2\). This completes the proof.
+\end{proof}
+
+\begin{remark}[Auditable numerical anchors: length congruence constants for \texorpdfstring{$m=2,3$}{m=2,3}]\label{rem:real-input-40-length-mertens-numeric}
+Using the discrete Fourier formula from Theorem \ref{thm:real-input-40-length-mertens-prog} and Möbius--log evaluation from Proposition \ref{prop:real-input-40-length-twist-converge}, one obtains
+\[
+\mathsf{M}^{(\mathrm{len})}_{2,0}\approx 0.444974882790,\qquad
+\mathsf{M}^{(\mathrm{len})}_{2,1}\approx -0.122071879790,
+\qquad
+P(-1/\lambda)\approx 0.567046762580.
+\]
+For \(m=3\):
+\[
+\mathsf{M}^{(\mathrm{len})}_{3,0}\approx -0.288125030686,\qquad
+\mathsf{M}^{(\mathrm{len})}_{3,1}\approx 0.038533764040,\qquad
+\mathsf{M}^{(\mathrm{len})}_{3,2}\approx 0.572494269646,
+\]
+and their sum recovers the total constant \(\mathsf{M}\approx 0.322903002999817\).
+\end{remark}

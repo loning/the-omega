@@ -1,0 +1,135 @@
+\subsection{Resolution Fold Map (Folding)}\label{subsec:folding-map}
+
+The purpose of folding is to normalize any window microstate $\omega=\omega_1\cdots \omega_m\in\Omega_m$ into a legal word $x\in X_m$.
+
+To avoid ``artificial numbering,'' this paper directly assigns each microstate an auditable integer value via Fibonacci weights, then takes its Zeckendorf normal form:
+\begin{definition}[Fibonacci Weighted Value and Fold Operator]\label{def:fold-word}
+For $\omega=\omega_1\cdots\omega_m\in\Omega_m$, define its Fibonacci weighted value
+\[
+N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}\ \in\ \NN.
+\]
+Let $Z(N(\omega))=(c_1,c_2,\dots)$ be the Zeckendorf digits of $N(\omega)$ (\cite{Zeckendorf1972}). Define the resolution-$m$ fold
+\[
+\Fold_m:\Omega_m\to X_m,\qquad
+\Fold_m(\omega):=\pi_m\!\bigl(Z(N(\omega))\bigr).
+\]
+\end{definition}
+
+\subsubsection{Local Rewriting Implementation of Folding: Termination, Confluence, and Order Independence}\label{subsec:fold-local-rewrite}
+Definition \ref{def:fold-word} specifies $\Fold_m$ via ``first compute value, then take Zeckendorf normal form.'' To realize this as a \textbf{local, executable} normalization process and to clarify that ``the reduction order does not affect the normal form,'' we embed the input window into a configuration space that permits intermediate states with redundant digits and perform value-preserving rewriting.
+
+\paragraph{Configuration Space and Value Function}
+Let
+\[
+\mathcal{D}:=\Bigl\{a=(a_1,a_2,\dots): a_k\in\NN,\ \text{only finitely many }a_k\neq 0\Bigr\}
+\]
+be the set of finitely supported nonnegative integer digit configurations. Define the value homomorphism
+\[
+\mathrm{Val}(a):=\sum_{k\ge 1} a_k F_{k+1}.
+\]
+For a given $\omega\in\Omega_m$, denote its embedding by
+\[
+\iota_m(\omega):=(\omega_1,\dots,\omega_m,0,0,\dots)\in\mathcal{D},
+\]
+so that $\mathrm{Val}(\iota_m(\omega))=N(\omega)$.
+
+\paragraph{Local Rewriting Rules (Value-Preserving)}
+For $a\in\mathcal{D}$, the following substitutions are permitted whenever the stated conditions hold (where $e_k$ denotes the $k$-th standard basis vector):
+\begin{enumerate}
+  \renewcommand{\theenumi}{R\arabic{enumi}}
+  \renewcommand{\labelenumi}{(\theenumi)}
+  \item \label{rule:fold:adj}\textbf{Adjacent merging:} If $a_k\ge 1$ and $a_{k+1}\ge 1$, then
+  \[
+  a\ \to\ a-e_k-e_{k+1}+e_{k+2}.
+  \]
+  \item \label{rule:fold:dedup1}\textbf{Bottom-position redundancy elimination:} If $a_1\ge 2$, then
+  \[
+  a\ \to\ a-2e_1+e_2.
+  \]
+  \item \label{rule:fold:dedup2}\textbf{Second-position redundancy elimination:} If $a_2\ge 2$, then
+  \[
+  a\ \to\ a-2e_2+e_1+e_3.
+  \]
+  \item \label{rule:fold:dedupk}\textbf{General-position redundancy elimination ($k\ge 3$):} If $a_k\ge 2$, then
+  \[
+  a\ \to\ a-2e_k+e_{k-2}+e_{k+1}.
+  \]
+\end{enumerate}
+Each rule modifies only finitely many coordinates and is therefore a strictly \textbf{local} rewrite. Moreover, they correspond respectively to the identities
+\(
+F_{k+1}+F_{k+2}=F_{k+3},
+2F_2=F_3,
+2F_3=F_2+F_4,
+2F_{k+1}=F_{k-1}+F_{k+2}
+\), so every step preserves $\mathrm{Val}$.
+
+\begin{lemma}[Weight Recurrence Rigidity of Binary Local Normalization]\label{lem:fold-local-weight-rigidity-fibonacci}
+Suppose the same set of local rules \textup{(\ref{rule:fold:adj})--(\ref{rule:fold:dedupk})} acts on
+\(
+\mathrm{Val}_w(a):=\sum_{k\ge 1}a_k w_k
+\)
+and each rewriting step is required to strictly preserve \(\mathrm{Val}_w\).
+Then the weight sequence \((w_k)_{k\ge 1}\) must satisfy
+\[
+w_{k+2}=w_{k+1}+w_k\qquad(k\ge 1).
+\]
+If one further fixes the normalization \(w_1=1,\ w_2=2\), the unique solution is \(w_k=F_{k+1}\).
+\end{lemma}
+
+\begin{proof}
+From the value-preserving condition of rule \textup{(\ref{rule:fold:adj})},
+\[
+w_k+w_{k+1}=w_{k+2}\qquad(k\ge 1),
+\]
+yielding the second-order linear recurrence.
+This recurrence already implies the value-preserving identities for rules \textup{(\ref{rule:fold:dedup1})--(\ref{rule:fold:dedupk})}, so it is a necessary condition.
+Under the initial values \(w_1=1,w_2=2\), the recurrence uniquely determines \(w_k=F_{k+1}\).
+\end{proof}
+
+\paragraph{Irreducible Terms and Zeckendorf Normal Form}
+Denote $X_\infty=\{(c_1,c_2,\dots)\in\{0,1\}^{\mathbb{N}}:\ c_kc_{k+1}=0\}$. The above rules are applicable precisely when adjacent $11$ or some digit $\ge 2$ appears, so irreducible terms are exactly those belonging to $X_\infty$.
+
+\begin{proposition}[Termination, Local Confluence, and Confluence (Newman's Lemma)]\label{prop:fold-rewrite-newman}
+The above rewriting system is strongly terminating on $\mathcal{D}$ and locally confluent; by Newman's lemma it is confluent. Therefore every $a\in\mathcal{D}$ has a unique normal form $\mathrm{NF}(a)\in X_\infty$ satisfying
+\[
+\mathrm{Val}(\mathrm{NF}(a))=\mathrm{Val}(a).
+\]
+\end{proposition}
+
+\begin{proof}
+\textbf{(Termination)} Let $A(a)=\sum_{k\ge 1} a_k$, $B(a)=\sum_{k\ge 1} k\,a_k$, $C(a)=a_2$, and set $\mu(a)=(A(a),B(a),C(a))$ compared in lexicographic order. Then rules (\ref{rule:fold:adj}) and (\ref{rule:fold:dedup1}) decrease $A$; rule (\ref{rule:fold:dedupk}) ($k\ge 3$) decreases $B$; rule (\ref{rule:fold:dedup2}) preserves $A,B$ but decreases $C$. Hence every rewriting step strictly lowers $\mu$, and the system is strongly terminating.
+
+\textbf{(Local confluence)} If $a$ admits two one-step reductions $a\to a_1,a_2$, then continuing reduction on both sides reaches irreducible forms in $X_\infty$; since every step preserves $\mathrm{Val}$, the two irreducible forms have the same value; by Zeckendorf uniqueness they coincide, so the two branches can be joined.
+
+\textbf{(Confluence)} By Newman's lemma (strong termination + local confluence $\Rightarrow$ confluence), the conclusion follows.
+\end{proof}
+
+\begin{corollary}[Reduction-Order-Independent Implementation of \texorpdfstring{$\Fold_m$}{Fold\_m}]\label{cor:foldm-order-indep}
+For any $\omega\in\Omega_m$,
+\[
+\Fold_m(\omega)\ =\ \pi_m\bigl(\mathrm{NF}(\iota_m(\omega))\bigr),
+\]
+and the right-hand side is independent of the order in which rules/positions are selected during reduction.
+\end{corollary}
+
+\begin{remark}[Canonical Section and Computability]\label{rem:fold-normal-form-computable-section}
+Proposition \ref{prop:fold-rewrite-newman} provides a computable canonical section: for any $a\in\mathcal{D}$, the normal form $\mathrm{NF}(a)\in X_\infty$ exists uniquely and is independent of the reduction order. Therefore, when a ``third parameter'' corresponds merely to the choice of representative within an equivalence class (gauge redundancy), there is no need to explicitly record that parameter; one can select a unique representative in polynomial time by computing the normal form (the resolution caliber is linear; see Proposition \ref{prop:fold-complexity}). It should be emphasized that this elimination only recovers the stable representative and does not recover the microstate residual within the same fiber.
+\end{remark}
+
+\begin{proposition}[Canonicity, Idempotence, and Surjectivity of Folding]\label{prop:fold-basic}
+The fold operator $\Fold_m$ is well-defined and satisfies:
+\begin{enumerate}
+\normalfont
+  \item \textbf{(Canonicity)} $\Fold_m(\omega)\in X_m$;
+  \item \textbf{(Idempotence)} If $\omega\in X_m$, then $\Fold_m(\omega)=\omega$;
+  \item \textbf{(Surjectivity)} $\Fold_m:\Omega_m\twoheadrightarrow X_m$ is surjective.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(Canonicity)} By Definition \ref{def:fold-word}, $Z(N(\omega))\in X_\infty$, hence $\pi_m(Z(N(\omega)))\in X_m$.
+
+\textbf{(Idempotence)} If $\omega\in X_m$, let $N=\sum_{k=1}^m \omega_k F_{k+1}$. Since $\omega$ is already a legal length-$m$ prefix of Zeckendorf digits and the Zeckendorf representation is unique, the first $m$ digits of $Z(N)$ must equal $\omega$, so $\Fold_m(\omega)=\omega$.
+
+\textbf{(Surjectivity)} For any $x\in X_m$, take $\omega=x\in\Omega_m$; by idempotence, $\Fold_m(\omega)=x$, so $\Fold_m$ is surjective.
+\end{proof}

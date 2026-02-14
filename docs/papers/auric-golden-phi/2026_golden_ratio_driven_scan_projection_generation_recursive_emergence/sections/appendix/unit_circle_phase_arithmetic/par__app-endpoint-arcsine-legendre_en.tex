@@ -1,0 +1,179 @@
+\paragraph{Measure-theoretic normal form of the endpoint horizon: arcsine duality of Cayley circle sampling and Legendre moments}\label{par:app-endpoint-arcsine-legendre}
+This paragraph writes the ``high imaginary-part sampling at the endpoint \(w\approx-1\)'' as a completely closed-form probabilistic object.
+Fix \(0<\varrho<1\), let \(\Theta\sim\mathrm{Unif}[0,2\pi)\), and define
+\[
+t(\varrho,\Theta):=\mathcal{C}^{-1}(\varrho e^{\mathrm{i}\Theta})\in\mathbb{H},
+\qquad
+Y_{\varrho}:=\Im\,t(\varrho,\Theta)\in(0,\infty).
+\]
+By \eqref{eq:app-t-rho-theta-explicit}, the explicit expression for \(Y_{\varrho}\) is
+\[
+Y_{\varrho}
+=\frac{1-\varrho^2}{1+\varrho^2+2\varrho\cos\Theta}.
+\]
+Write the endpoints as
+\[
+y_{-}(\varrho):=\frac{1-\varrho}{1+\varrho},
+\qquad
+y_{+}(\varrho):=\frac{1+\varrho}{1-\varrho},
+\qquad
+y_{-}(\varrho)\,y_{+}(\varrho)=1
+\]
+(Proposition~\ref{prop:app-cayley-preimage-modulus-circle}).
+
+\begin{theorem}[Dual arcsine density of the endpoint horizon]\label{thm:app-endpoint-arcsine-duality}
+Under the above setup, the support of the random variable \(Y_{\varrho}\) is the interval \([y_{-}(\varrho),y_{+}(\varrho)]\), and on the open interval \((y_{-}(\varrho),y_{+}(\varrho))\) it possesses the continuous density
+\begin{equation}\label{eq:app-endpoint-y-density-tilted-arcsine}
+\boxed{\quad
+f_{\varrho}(y)
+=\frac{1}{\pi\,y\,\sqrt{(y-y_{-}(\varrho))(y_{+}(\varrho)-y)}},
+\qquad y\in\bigl(y_{-}(\varrho),y_{+}(\varrho)\bigr).
+\quad}
+\end{equation}
+Moreover, its reciprocal
+\[
+Z_{\varrho}:=Y_{\varrho}^{-1}
+=\frac{1+\varrho^2+2\varrho\cos\Theta}{1-\varrho^2}
+\]
+follows a standard arcsine density on the same interval:
+\begin{equation}\label{eq:app-endpoint-z-density-arcsine}
+\boxed{\quad
+g_{\varrho}(z)
+=\frac{1}{\pi\,\sqrt{(z-y_{-}(\varrho))(y_{+}(\varrho)-z)}},
+\qquad z\in\bigl(y_{-}(\varrho),y_{+}(\varrho)\bigr).
+\quad}
+\end{equation}
+The two satisfy the simple duality relation
+\[
+\boxed{\ f_{\varrho}(y)=\frac{g_{\varrho}(y)}{y}\ }.
+\]
+Furthermore,
+\[
+\mathbb{E}[Y_{\varrho}]=1,
+\qquad
+\mathbb{E}[\log Y_{\varrho}]=\log(1-\varrho^{2}),
+\qquad
+\mathbb{P}(Y_{\varrho}\ge 1)=\frac{\arccos(\varrho)}{\pi}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(U:=\cos\Theta\). Then \(U\in[-1,1]\) with arcsine density
+\(
+\frac{1}{\pi\sqrt{1-u^{2}}}\,\dd u
+\).
+From \(Z_{\varrho}=\frac{1+\varrho^{2}+2\varrho U}{1-\varrho^{2}}\) one sees that \(Z_{\varrho}\) is an affine transformation of \(U\),
+whose endpoint values correspond to \(U=\pm 1\), so \(\mathrm{supp}(Z_{\varrho})=[y_{-}(\varrho),y_{+}(\varrho)]\), and the density \eqref{eq:app-endpoint-z-density-arcsine} follows directly from change of variables.
+Since \(Y_{\varrho}=1/Z_{\varrho}\), the density transformation formula \(f_{\varrho}(y)=g_{\varrho}(1/y)\,y^{-2}\) together with \(y_{-}y_{+}=1\) simplifies to \eqref{eq:app-endpoint-y-density-tilted-arcsine} and yields \(f_{\varrho}(y)=g_{\varrho}(y)/y\).
+\par
+\(\mathbb{E}[Y_{\varrho}]=1\) can be verified directly from the standard Poisson kernel identity:
+\[
+\frac{1}{2\pi}\int_{0}^{2\pi}\frac{1-\varrho^{2}}{1+\varrho^{2}+2\varrho\cos\theta}\,\dd\theta=1.
+\]
+Moreover,
+\(
+\log Y_{\varrho}
+=\log(1-\varrho^{2})-\log|1+\varrho e^{\mathrm{i}\Theta}|^{2}
+\);
+by Jensen's formula (a standard corollary of Proposition~\ref{prop:app-jensen-formula-defect}),
+\(
+\frac{1}{2\pi}\int_{0}^{2\pi}\log|1+\varrho e^{\mathrm{i}\theta}|\,\dd\theta=0
+\) (\(\varrho<1\) implies the zero lies outside the circle), so \(\mathbb{E}[\log Y_{\varrho}]=\log(1-\varrho^{2})\).
+Finally, the event \(Y_{\varrho}\ge 1\) is equivalent to \(\cos\Theta\le -\varrho\), whence
+\[
+\mathbb{P}(Y_{\varrho}\ge 1)=\frac{1}{2\pi}\,\mathrm{meas}\{\theta:\cos\theta\le-\varrho\}
+=\frac{\arccos(\varrho)}{\pi}.
+\]
+\qed
+\end{proof}
+
+\begin{theorem}[Legendre moments: spherical-function diagonalization of the time fiber]\label{thm:app-legendre-moment-timefiber}
+Let the hyperbolic radius parameter be
+\[
+a:=2\,\operatorname{artanh}\varrho\in(0,\infty),
+\qquad
+\varrho=\tanh\frac{a}{2},
+\qquad
+\cosh a=\frac{1+\varrho^{2}}{1-\varrho^{2}},
+\quad
+\sinh a=\frac{2\varrho}{1-\varrho^{2}}.
+\]
+Then \(y_{\pm}(\varrho)=e^{\pm a}\), and
+\(
+Z_{\varrho}=\cosh a+\sinh a\cos\Theta
+\).
+For any complex number \(\nu\in\CC\) (with real logarithm branch defining \(z^{\nu}:=\exp(\nu\log z)\)), one has the strict identity
+\begin{equation}\label{eq:app-legendre-moment}
+\boxed{\quad
+\mathbb{E}\bigl[Z_{\varrho}^{\,\nu}\bigr]
+=\frac{1}{\pi}\int_{e^{-a}}^{e^{a}}
+\frac{z^{\,\nu}}{\sqrt{(z-e^{-a})(e^{a}-z)}}\,\dd z
+=\frac{1}{\pi}\int_{0}^{\pi}\bigl(\cosh a+\sinh a\cos\varphi\bigr)^{\nu}\,\dd\varphi
+=:P_{\nu}(\cosh a).
+\quad}
+\end{equation}
+The right-hand side gives the standard integral representation of the Legendre function of the first kind \(P_{\nu}\) at \(x=\cosh a>1\); in particular, when \(\nu=-\tfrac12+\mathrm{i}r\) (\(r\in\RR\)),
+\(
+P_{-\frac12+\mathrm{i}r}(\cosh a)
+\)
+is precisely the \(SO(2)\)-spherical function (radial eigenfunction) of the hyperbolic plane \(\mathbb{D}\simeq SL_{2}(\RR)/SO(2)\).
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:app-endpoint-arcsine-duality}, \(Z_{\varrho}\) follows the arcsine density \eqref{eq:app-endpoint-z-density-arcsine} on \((e^{-a},e^{a})\) (noting \(y_{\pm}=e^{\pm a}\)), so the first integral expression follows directly from the definition.
+\par
+Making the substitution \(z=\cosh a+\sinh a\cos\varphi\) (\(\varphi\in[0,\pi]\)):
+the algebraic identity \(\cosh a\pm\sinh a=e^{\pm a}\) gives the endpoints,
+and
+\[
+(z-e^{-a})(e^{a}-z)=(\sinh a)^{2}\sin^{2}\varphi,
+\qquad
+\dd z=-\sinh a\,\sin\varphi\,\dd\varphi,
+\]
+so
+\(
+\dd z/\sqrt{(z-e^{-a})(e^{a}-z)}=-\dd\varphi
+\), yielding the second integral expression.
+Finally, the notation \(P_{\nu}(\cosh a)\) is defined by this integral representation (which coincides with the Legendre function of the first kind). \qed
+\end{proof}
+
+\begin{corollary}[The \texorpdfstring{$e^{-a/2}$}{e^{-a/2}}-level compression of the endpoint angle window]\label{cor:app-endpoint-window-exp-half}
+Fix a threshold \(Y>0\).
+As \(a=2\,\operatorname{artanh}\varrho\uparrow\infty\) (equivalently \(\varrho\uparrow 1\)),
+\[
+\mathbb{P}(Y_{\varrho}\ge Y)
+=\frac{\mathrm{meas}\,A_{Y}(\varrho)}{2\pi}
+=\frac{2}{\pi}\,e^{-a/2}\,Y^{-1/2}\,\bigl(1+o(1)\bigr),
+\]
+where \(A_Y(\varrho)=\{\theta:\Im\,t(\varrho,\theta)\ge Y\}\) is as in Proposition~\ref{prop:app-jensen-endpoint-angle-window}.
+Therefore, in the endpoint limit, the visible contribution of any fixed height threshold is compressed onto a narrow angle window of \(e^{-a/2}\) level.
+\end{corollary}
+
+\begin{proof}
+The boundary-layer asymptotics of Proposition~\ref{prop:app-jensen-endpoint-angle-window} give
+\(
+\mathrm{meas}\,A_Y(\varrho)=2\sqrt{2(1-\varrho)/Y}\,(1+o(1))
+\) (\(\varrho\uparrow 1\)).
+On the other hand, \(\varrho=\tanh(a/2)\) implies
+\(
+1-\varrho=1-\tanh(a/2)=2e^{-a}\,(1+o(1))
+\) (\(a\uparrow\infty\)).
+Substituting and dividing by \(2\pi\) yields the stated probability asymptotics. \qed
+\end{proof}
+
+\begin{remark}[Spherical filter perspective (conditional caliber)]\label{rem:app-jensen-spherical-filter-view}
+Theorem~\ref{thm:app-legendre-moment-timefiber} shows that under the hyperbolic radius parameter \(a\), sampling along the ``time fiber'' (fixed \(|w|=\varrho\)) is encapsulated by the Legendre spherical function \(P_{\nu}(\cosh a)\).
+On the other hand, if one takes \(U(w):=\log|F(w)|\) and performs the \(SO(2)\)-averaging (radialization)
+\(
+U^{\sharp}(a):=\frac{1}{2\pi}\int_{0}^{2\pi}U(\tanh(a/2)e^{\mathrm{i}\theta})\,\dd\theta
+\), then the Jensen defect satisfies \(D_F(\varrho)=U^{\sharp}(a)-U(0)\).
+In the standard caliber of hyperbolic harmonic analysis, radial functions can be decomposed in the spherical function family
+\(
+\phi_{r}(a):=P_{-\frac12+\mathrm{i}r}(\cosh a)
+\)
+via the spherical transform; therefore the role of \(a\) can be understood as a one-dimensional spherical filter.
+The countable auditing and endpoint resolution threshold established in this paper for RH (Theorem~\ref{thm:app-jensen-countable-criterion}, Proposition~\ref{prop:app-jensen-endpoint-angle-window}, Corollary~\ref{cor:app-endpoint-window-exp-half}) can be interpreted under this perspective as follows:
+if an irreducible nontrivial spherical spectral component exists, its visibility can only be stably captured through the limiting ledger of the endpoint window; otherwise, under a pure phase regime, the unaddressable/null-value semantics of \S\ref{subsec:xi-pw-type-safety-null} will be triggered.
+\end{remark}
+
+\endinput

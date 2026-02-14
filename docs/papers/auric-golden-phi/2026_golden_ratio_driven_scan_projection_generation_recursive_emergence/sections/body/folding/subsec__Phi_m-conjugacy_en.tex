@@ -1,0 +1,93 @@
+\subsubsection{Invertibility Threshold: Conjugacy and Fiber Collapse of \texorpdfstring{$\Phi_m$}{Phi\_m}}\label{subsec:Phi_m-conjugacy}
+
+The previous section organized $Y_m$ as the image of the labeled graph $G_m$ (Theorem \ref{thm:Phi_m-sofic-graph}) and proved entropy non-drop (Corollary \ref{cor:Phi_m-entropy-no-drop}).
+This section provides definitive results on invertibility and fiber structure: under the Zeckendorf fold $\Fold_m$, except for the two-point degeneracy at $m=2$, $\Phi_m$ is a conjugacy for $m\ge 3$.
+
+\paragraph{Terminable Local Decision Caliber (Subset Filtering)}
+Following Definition \ref{def:G_m}, for any candidate suffix set $S\subseteq V_m$ and output symbol $a\in X_m$, define the one-step update
+$$
+\delta_m(S,a):=\{v'\in V_m:\exists\,e:v\to v'\ \text{s.t. }v\in S,\ \ell_m(e)=a\}.
+$$
+Starting from the initial set $S_0:=V_m$, for any output block $a_0a_1\cdots a_{t-1}$ iterate
+$$
+S_{j+1}:=\delta_m(S_j,a_j)\qquad(0\le j<t).
+$$
+This iteration can be viewed as a finite-state filter ``driven only by the output block'': $S_j$ records the candidate set of internal suffixes (vertices) still possible after reading the first $j$ output symbols.
+When $S_t$ is a singleton, it means that the length-$t$ output block has synchronized the internal suffix to a unique value.
+
+\begin{theorem}[Invertibility Threshold and Finite-Window Inverse Code]\label{thm:Phi_m-conjugacy-threshold}
+Let $\Phi_m$ be the sliding block code of Definition \ref{def:Phi_m} and $Y_m$ the image subshift of Definition \ref{def:Y_m}.
+Then:
+\begin{enumerate}
+  \item When $m\ge 3$, $\Phi_m:\{0,1\}^{\ZZ}\to Y_m$ is a topological conjugacy; more specifically, there exists a sliding block code
+  $$
+  \Psi_m:Y_m\to\{0,1\}^{\ZZ},
+  $$
+  with \textbf{memory} $m-1$ and \textbf{anticipation} $0$, satisfying
+  $$
+  \Psi_m\circ\Phi_m=\mathrm{id}_{\{0,1\}^{\ZZ}},\qquad
+  \Phi_m\circ\Psi_m=\mathrm{id}_{Y_m}.
+  $$
+  \item When $m=2$, $\Phi_2$ exhibits exactly a $2$-to-$1$ degeneracy on the two constant sequences $0^{\ZZ}$ and $1^{\ZZ}$; all other points are one-to-one.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The proof strategy is built on a ``finitely decidable'' filter.
+
+\paragraph{Local Synchronization: Length-$m$ Blocks Reduce the Candidate Set to a Singleton}
+For a fixed $m$, consider the filter update $S_{j+1}=\delta_m(S_j,a_j)$ above, and let
+$$
+R_m:=\{S_m:\exists\,a_0\cdots a_{m-1}\in\mathcal{L}_m(Y_m)\ \text{s.t.\ the iteration yields }S_m\}.
+$$
+If every element of $R_m$ is a singleton, then any length-$m$ output block synchronizes the internal suffix to a unique vertex.
+This claim is a \textbf{fully finite} decision problem for each fixed $m$: the state space is the reachable part of the power set of $V_m$, and transitions are given by $G_m$.
+The script \texttt{scripts/exp\_phi\_m\_conjugacy\_threshold.py} provides reproducible certificates for $m\in[2,12]$; the output summary is given in Table \ref{tab:phi_m_conjugacy_threshold}.
+\input{sections/generated/tab_phi_m_conjugacy_threshold}
+For $m\ge 3$, the ``non-singleton ends $(m)$'' of $R_m$ is $0$, whereas for $m=2$ there is exactly one non-singleton terminal state at every step count, corresponding to the two-point degeneracy caused by constant output blocks.
+Additionally, ``non-singleton ends $(m-1)$'' in the table is strictly positive for $m\ge 3$, witnessing the sharpness of the synchronization delay: in general, a complete length-$m$ output block is needed to reduce the candidate set to a singleton (corresponding to inverse code memory $m-1$).
+
+\paragraph{From Singleton Terminal State to Unique Lift: Exploiting Bilateral Resolvingness}
+By Theorems \ref{thm:pom-right-resolving} and \ref{thm:pom-left-resolving}, the labeled graph $G_m$ under Zeckendorf folding is simultaneously right-resolving and left-resolving: one-step extensions from (or to) the same vertex can be uniquely determined by the label.
+Therefore, once a length-$m$ output block synchronizes the terminal state to a singleton $\{v'\}$, the length-$m$ lift path of this block on $G_m$ not only exists but can also be uniquely traced back from the endpoint $v'$ step by step via left-resolvingness; hence this output block corresponds to a unique length-$(2m-1)$ input block.
+
+\paragraph{Construction of the Inverse Code \texorpdfstring{$\Psi_m$}{Psi\_m}}
+When $m\ge 3$, the above two steps show that for any admissible length-$m$ output block
+$$
+a_{t-m+1}\cdots a_t\in\mathcal{L}_m(Y_m),
+$$
+there exists a unique $G_m$-path
+$$
+e_{t-m+1},\dots,e_t\in E_m
+$$
+whose edge-by-edge labels are exactly this output block.
+Let $e_{t-m+1}=(v,b)$ (where $b\in\{0,1\}$ is the appended bit of this edge), and define
+$$
+(\Psi_m(y))_t:=b,
+$$
+where $y\in Y_m$ and $a_j=y_j$.
+This definition depends only on $y_{t-m+1},\dots,y_t$, so $\Psi_m$ has memory $m-1$ and anticipation $0$.
+By construction, $\Psi_m\circ\Phi_m=\mathrm{id}$, and since $\Phi_m$ is surjective onto $Y_m$, $\Phi_m\circ\Psi_m=\mathrm{id}_{Y_m}$.
+
+\paragraph{Two-Point Degeneracy at $m=2$}
+The script certificate shows that the unique non-singleton terminal state corresponds to the constant output block, which arises from exactly the two input constant sequences $0^{\ZZ},1^{\ZZ}$;
+for all other output points, the filter synchronizes to a singleton within finitely many steps, so the lift is unique.
+Combining the above yields the ``only two-point $2$-to-$1$'' degeneracy conclusion for $m=2$.
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\zeta_{Y_m}$}{zetaYm} Closure and ``Folding Factor Produces No Nontrivial Prime Shadow'']\label{cor:Phi_m-zeta-closed}
+For $m\ge 3$, since $Y_m$ is conjugate to the binary full shift (Theorem \ref{thm:Phi_m-conjugacy-threshold}), its periodic point count satisfies
+$$
+\#\mathrm{Fix}(\sigma^n|_{Y_m})=2^n\qquad(n\ge 1),
+$$
+so the intrinsic Artin--Mazur \(\zeta\)-function is
+$$
+\zeta_{Y_m}(z)=\frac{1}{1-2z}.
+$$
+For $m=2$,
+$$
+\#\mathrm{Fix}(\sigma^n|_{Y_2})=2^n-1,\qquad
+\zeta_{Y_2}(z)=\frac{1-z}{1-2z}.
+$$
+Therefore, when $m\ge 3$, the prime-orbit/\(\zeta\) fingerprint of $Y_m$ itself degenerates to the full shift skeleton; the nontrivial prime shadows appearing in this paper must arise from ``kernel + potential/weight + twist channel'' (rather than from the folding factor $Y_m$ alone).
+\end{corollary}

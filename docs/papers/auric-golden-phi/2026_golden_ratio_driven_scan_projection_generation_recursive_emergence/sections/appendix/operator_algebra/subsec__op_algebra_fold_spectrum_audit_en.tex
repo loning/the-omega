@@ -1,0 +1,142 @@
+\subsection{Fold Audit Interface: Singular Value Spectrum Completeness and Interlacing Spectral Bounds}\label{subsec:op-algebra-fold-audit-spectrum}
+Proposition \ref{prop:fold-conditional-expectation-singular-spectrum} has made the singular value spectrum of the fold conditional expectation \(E_m\) fully explicit;
+the following corollaries show that this spectral data and the degeneracy histogram are mutually complete audit interfaces in the finite-dimensional sense,
+and provide an ``interlacing certificate from stable-layer compression to microscopic spectral bounds.''
+
+\begin{corollary}[Complete mutual translation between singular value spectrum and degeneracy histogram]\label{cor:fold-conditional-expectation-spectrum-histogram}
+Under the notation of Proposition \ref{prop:fold-conditional-expectation-singular-spectrum} and Definition \ref{def:fold-fiber-multiplicity-operator}:
+\begin{enumerate}
+  \item The singular value multiset \(\{\sigma_x(E_m):x\in X_m\}\) and the fiber multiplicity multiset \(\{d_m(x):x\in X_m\}\) uniquely determine each other via \(d=\sigma^{-2}\); hence the degeneracy histogram and the full singular value spectrum of \(E_m\) are equivalent in the finite-dimensional sense.
+  \item The power sum data \(\{\Tr(\mathcal{F}_m^{t})\}_{t=1}^{|X_m|}\) uniquely determines the characteristic polynomial of \(\mathcal{F}_m\) via Newton's identities, and hence uniquely determines the multiset \(\{d_m(x)\}\) and its degeneracy histogram.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\textbf{(1)} By Proposition \ref{prop:fold-conditional-expectation-singular-spectrum},
+\(\sigma_x(E_m)=d_m(x)^{-1/2}\).
+Hence, given the singular value multiset, one recovers \(\{d_m(x)\}\) by taking the reciprocal square of each entry, and vice versa.
+\par
+\textbf{(2)} By Proposition \ref{prop:fold-fiber-multiplicity-trace-moments},
+\(\Tr(\mathcal{F}_m^{t})=\sum_x d_m(x)^{t}\) gives the power sums of \(\mathcal{F}_m\).
+For an \(r\times r\) matrix (here \(r=|X_m|\)), the power sums \(\Tr(\mathcal{F}_m^{t})\) (\(t=1,\dots,r\)) uniquely determine the coefficients of the characteristic polynomial via Newton's identities,
+and hence the eigenvalue multiset, i.e., \(\{d_m(x)\}\). \qedhere
+\end{proof}
+
+\begin{proposition}[Spectral interlacing bounds for reflection audit: stable-layer certificates yield two-sided spectral bounds on microscopic operators]\label{prop:fold-audit-spectral-interlacing}
+Fix a resolution \(m\), and let \(N:=|\Omega_m|=2^m\), \(r:=|X_m|\).
+On the Hilbert space \(\ell^2(\Omega_m)\) (with the counting inner product), let \(U_m:\ell^2(X_m)\to \ell^2(\Omega_m)\) be the isometric embedding
+\[
+(U_m g)(a):=\frac{g(\Fold_m(a))}{\sqrt{d_m(\Fold_m(a))}},\qquad a\in\Omega_m,
+\]
+and let \(\Pi_m:=U_mU_m^\ast\) be the orthogonal projection onto its image (equivalently, the \(\ell^2\)-caliber realization of \(\Pi_m=\iota_m\circ E_m\)).
+For any self-adjoint operator \(T\) (on \(\ell^2(\Omega_m)\)), define the stable-layer compression and the reflection-visible operator
+\[
+T_m^{\mathrm{stab}}:=U_m^\ast T U_m\quad(\text{on }\ell^2(X_m)),
+\qquad
+T_m^{\mathrm{aud}}:=\Pi_m T \Pi_m\quad(\text{on }\ell^2(\Omega_m)).
+\]
+Denote the eigenvalues of \(T\) in decreasing order as \(\lambda_1(T)\ge\cdots\ge\lambda_N(T)\),
+and denote the eigenvalues of \(T_m^{\mathrm{stab}}\) (equivalently, the restriction of \(T_m^{\mathrm{aud}}\) to \(\mathrm{Im}(\Pi_m)\)) in decreasing order as
+\(\lambda_1(T_m^{\mathrm{stab}})\ge\cdots\ge\lambda_r(T_m^{\mathrm{stab}})\).
+Then for all \(k=1,\dots,r\), the compression interlacing bound holds:
+\[
+\boxed{\;
+\lambda_k(T)\ \ge\ \lambda_k(T_m^{\mathrm{stab}})\ \ge\ \lambda_{k+N-r}(T).
+\;}
+\]
+Hence \(\|T_m^{\mathrm{stab}}\|_{op}\le \|T\|_{op}\).
+Therefore, any spectral radius/spectral gap certificate formed on the stable layer \(\ell^2(X_m)\) automatically yields a two-sided spectral bound certificate for the microscopic operator \(T\).
+\end{proposition}
+\begin{proof}
+\(U_m\) is an isometric embedding, so \(T_m^{\mathrm{stab}}\) is the orthogonal compression of \(T\) to the subspace \(\mathrm{Im}(U_m)=\mathrm{Im}(\Pi_m)\).
+The compression interlacing bound is the standard Cauchy interlacing theorem for Hermitian operators under orthogonal compression (equivalently, a direct consequence of the min--max principle).
+The operator norm inequality follows immediately from the interlacing bounds on the largest/smallest eigenvalues. \qedhere
+\end{proof}
+
+\subsubsection{Closed-Form Decomposition and Fiber Matrix Units of the Jones Basic Construction: An Algebraically Complete Certificate for the Degeneracy Histogram}\label{subsubsec:op-algebra-fold-jones-basic-construction}
+The preceding part of this section has translated the singular value spectrum of the fold conditional expectation \(E_m\) and the degeneracy histogram into equivalent audit interfaces.
+In the finite-dimensional commutative algebra caliber, one can further promote the ``fiber histogram \(\{d_m(x)\}\)'' to a fully explicit \emph{Jones basic construction} decomposition:
+the basic construction algebra splits into a direct sum of full matrix algebras over the fibers, and there exists a set of canonical matrix units generated by point projections and the Jones projection.
+
+\begin{theorem}[Closed form of the Jones basic construction for the fold inclusion: direct sum matrix algebra decomposition and depth-two completeness]\label{thm:fold-jones-basic-construction-directsum}
+Fix a resolution \(m\).
+Let
+\(
+A_m:=\CC^{\Omega_m}
+\)
+be the complex-valued function algebra on the microstate set \(\Omega_m\) (equivalently: the diagonal operator algebra on \(\ell^2(\Omega_m)\)),
+let
+\(
+B_m:=\CC^{X_m}
+\)
+be the function algebra on the stable layer \(X_m\), and let \(\iota_m:B_m\hookrightarrow A_m\) be the pullback embedding \((\iota_m f)(\omega)=f(\Fold_m(\omega))\).
+Take the fiber-average conditional expectation \(E_m:A_m\to B_m\) (Proposition \ref{prop:fold-conditional-expectation}), and let
+\[
+e_m:=\iota_m\circ E_m:\ \ell^2(\Omega_m)\to \ell^2(\Omega_m)
+\]
+be the corresponding (\(\ell^2\)-caliber) Jones projection, i.e., the orthogonal projection that takes the arithmetic average within each fiber and fills it back into that fiber.
+Then the basic construction algebra satisfies the natural isomorphism
+\[
+\boxed{\;
+\langle A_m,e_m\rangle
+\ \cong\
+\bigoplus_{x\in X_m} M_{d_m(x)}(\CC)\; }.
+\]
+Therefore, all finite-dimensional standard invariants of the inclusion \(B_m\subset A_m\) at this level are completely determined by the degeneracy histogram
+\(
+\{d:\#\{x\in X_m:d_m(x)=d\}\}
+\);
+and its principal graph is the disjoint union of star graphs centered at \(x\in X_m\) with degree \(d_m(x)\), so it is a depth-two object in the Jones tower sense (the basic construction closes after one step).
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Under the standard basis \(\{\delta_\omega\}_{\omega\in\Omega_m}\), \(\ell^2(\Omega_m)\) decomposes into the fiber direct sum
+\[
+\ell^2(\Omega_m)=\bigoplus_{x\in X_m}\ell^2\!\bigl(\Fold_m^{-1}(x)\bigr).
+\]
+The algebra \(A_m\) consists of all diagonal operators and hence preserves this decomposition, containing all coordinate point projections on each fiber subspace;
+\(e_m\) is the rank-\(1\) averaging projection on each fiber and also preserves this direct sum decomposition.
+Therefore, \(\langle A_m,e_m\rangle\) is block diagonal under this decomposition, with each block generated by ``point projections on the fiber + the fiber averaging projection.''
+The canonical matrix units from Proposition \ref{prop:fold-jones-matrix-units} (below) show that the generated algebra on each fiber is exactly \(M_{d_m(x)}(\CC)\).
+Taking the direct sum over \(x\) yields the stated isomorphism.
+The principal graph/depth-two statement is equivalent in this case to ``the block decomposition is a disjoint union of stars and closes in one step,'' which is read off directly from the direct sum structure. \qedhere
+\end{proof}
+
+\begin{proposition}[Canonical generation of fiber matrix elements: full matrix from point projections and \texorpdfstring{$e_m$}{e_m}]\label{prop:fold-jones-matrix-units}
+Following the setup of Theorem \ref{thm:fold-jones-basic-construction-directsum},
+for any \(x\in X_m\), denote the fiber point projection family as
+\(
+\{P_\omega\}_{\omega\in \Fold_m^{-1}(x)}\subset A_m
+\)
+(on \(\ell^2(\Omega_m)\) these are the coordinate projections onto \(\delta_\omega\)).
+For \(\omega,\omega'\in \Fold_m^{-1}(x)\), define
+\[
+E_{\omega,\omega'}:=d_m(x)\,P_\omega\,e_m\,P_{\omega'}\ \in\ \langle A_m,e_m\rangle.
+\]
+Then on each fiber, the matrix unit relations hold:
+\[
+\boxed{\;
+E_{\omega,\omega'}E_{\eta,\eta'}=\delta_{\omega',\eta}\,E_{\omega,\eta'},
+\qquad
+E_{\omega,\omega'}^{\ast}=E_{\omega',\omega}\; }.
+\]
+Hence \(\{E_{\omega,\omega'}\}_{\omega,\omega'\in\Fold_m^{-1}(x)}\) constitutes a set of canonical matrix units for \(M_{d_m(x)}(\CC)\), providing a fully auditable basis;
+in particular, ``all invertible microscopic relabelings within a fiber'' are realized at the algebraic level as the permutation action of
+\(
+\prod_{x\in X_m}S_{d_m(x)}
+\)
+on this matrix unit basis.
+\end{proposition}
+
+\begin{proof}
+Observe that \(e_m\) is the averaging projection on the fiber \(\Fold_m^{-1}(x)\):
+\(
+e_m\,\delta_{\omega'}=d_m(x)^{-1}\sum_{\eta\in\Fold_m^{-1}(x)}\delta_\eta
+\).
+Therefore,
+\(
+P_\omega e_m P_{\omega'}\delta_{\omega'}
+=d_m(x)^{-1}\delta_\omega
+\),
+and thus \(E_{\omega,\omega'}\delta_{\omega'}=\delta_\omega\), while \(E_{\omega,\omega'}\) vanishes outside the fiber.
+Direct computation then yields the matrix unit multiplication and adjoint relations; these agree exactly with the action of the standard matrix units \(e_{\omega,\omega'}\) in the basis \(\{\delta_\omega\}\). \qedhere
+\end{proof}

@@ -1,0 +1,511 @@
+% Auto-split to keep each TeX source < 800 lines.
+
+\paragraph{Two-State Uniform Asymptotics and Quantile Thresholds for the Fiber Spectrum (bin-fold)}
+Building on the tail representation of Proposition~\ref{prop:fold-bin-fiber-tail}, this paragraph establishes a closed-form limiting picture for the fiber multiplicity spectrum of the binary interval fold
+\(\mathrm{Fold}^{\mathrm{bin}}_m:\{0,\dots,2^m-1\}\to X_m\)
+as \(m\to\infty\): at exponential leading order, the fiber size degenerates to a two-state constant determined solely by the last digit \(w_m\); from this, an explicit exponential constant \(\log(2/\varphi)\) is derived, isomorphic to the prime-register quantile threshold.
+
+\begin{theorem}[Two-state uniform asymptotics of fiber size (bin-fold)]\label{thm:fold-bin-two-state-asymptotic}
+There exists an absolute constant \(C>0\) such that for all sufficiently large \(m\) and any \(w=(w_1,\dots,w_m)\in X_m\), the fiber multiplicity of the binary interval fold satisfies
+\begin{equation}\label{eq:fold-bin-two-state-asymptotic}
+\boxed{\;
+\Bigl|\,d^{\mathrm{bin}}_m(w)\ -\ \varphi^{-w_m}\Bigl(\frac{2}{\varphi}\Bigr)^m\,\Bigr|\ \le\ C\;}
+\end{equation}
+where \(\varphi=\frac{1+\sqrt5}{2}\).
+Equivalently,
+\[
+\Bigl(\frac{\varphi}{2}\Bigr)^m d^{\mathrm{bin}}_m(w)
+=\varphi^{-w_m}+O\!\Bigl(\Bigl(\frac{\varphi}{2}\Bigr)^m\Bigr),
+\qquad (m\to\infty),
+\]
+and the error is uniform over \(w\in X_m\).
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:fold-bin-fiber-tail},
+\(
+d^{\mathrm{bin}}_m(w)
+\)
+is equivalent to counting all tail bit strings \((c_{m+1},\dots,c_K)\) satisfying the adjacency and boundary constraints, while simultaneously satisfying the threshold constraint
+\[
+V_m(w)+\sum_{k=m+1}^{K}c_k F_{k+1}\le 2^m-1,
+\]
+where \(K=K(m)\) (Definition~\ref{def:K-of-m}).
+Let \(L:=K-m\ge 0\) and set
+\(
+d_i:=c_{m+i}\ (1\le i\le L)
+\).
+Define two tail linear functions:
+\[
+x(d):=\sum_{i=1}^{L} d_i F_{i+1},
+\qquad
+y(d):=\sum_{i=1}^{L} d_i F_i.
+\]
+\par
+\noindent\textbf{(1) Fibonacci decomposition of the tail sum.}
+By the identity
+\(
+F_{m+i+1}=F_{m+1}F_{i+1}+F_m F_i
+\)
+(provable by induction on \(i\)),
+\begin{equation}\label{eq:fold-bin-tail-sum-split}
+\sum_{i=1}^{L} d_i F_{m+i+1}=F_{m+1}x(d)+F_m y(d).
+\end{equation}
+\par
+\noindent\textbf{(2) Bounded deviation between \(x(d)\) and \(y(d)\).}
+From the exact identity derived via Binet's formula,
+\(
+F_{i+1}-\varphi F_i=(-1/\varphi)^i
+\),
+we obtain
+\[
+x(d)-\varphi y(d)=\sum_{i=1}^{L} d_i\Bigl(-\frac{1}{\varphi}\Bigr)^i=:S(d).
+\]
+Since admissibility \(d_id_{i+1}=0\) forbids adjacent indices from simultaneously equaling \(1\),
+\[
+-1\ \le\ S(d)\ \le\ \sum_{k\ge 1}\varphi^{-2k}=\frac{1}{\varphi},
+\]
+hence
+\begin{equation}\label{eq:fold-bin-y-as-x-over-phi}
+y(d)=\frac{x(d)}{\varphi}+O(1),
+\end{equation}
+where the \(O(1)\) bound is absolute and independent of \(m,w\).
+\par
+\noindent\textbf{(3) Reducing the threshold constraint to a truncated count on \(x(d)\).}
+Substituting \eqref{eq:fold-bin-y-as-x-over-phi} into \eqref{eq:fold-bin-tail-sum-split} and using
+\(
+F_{m+1}=\varphi F_m+(-1/\varphi)^m
+\)
+gives
+\[
+\sum_{i=1}^{L} d_i F_{m+i+1}
+=F_m\Bigl(\Bigl(\varphi+\frac{1}{\varphi}\Bigr)x(d)+O(1)\Bigr)+O(1)
+=\sqrt5\,F_m\,x(d)+O(F_m)+O(1).
+\]
+Let \(B_w:=2^m-1-V_m(w)\).
+From \(0\le V_m(w)\le F_{m+2}-1\) and \(F_{m+2}=\Theta(\varphi^m)\),
+\begin{equation}\label{eq:fold-bin-Bw-as-2m}
+B_w=2^m+O(\varphi^m).
+\end{equation}
+Therefore there exist absolute constants such that
+\begin{equation}\label{eq:fold-bin-d-count-x-threshold}
+d^{\mathrm{bin}}_m(w)
+=\#\Bigl\{d:\ d\ \text{admissible},\ w_m d_1=0,\ x(d)\le \frac{B_w}{\sqrt5\,F_m}+O(1)\Bigr\}.
+\end{equation}
+\par
+\noindent\textbf{(4) Leading-order scale and the last-digit two-state factor.}
+By the Binet asymptotic \(F_m=\varphi^m/\sqrt5+O(\varphi^{-m})\) and \eqref{eq:fold-bin-Bw-as-2m},
+\begin{equation}\label{eq:fold-bin-x-threshold-main}
+\frac{B_w}{\sqrt5\,F_m}=\Bigl(\frac{2}{\varphi}\Bigr)^m+O(1).
+\end{equation}
+On the other hand, the number of admissible tail words of length \(L\) is \(F_{L+2}\);
+while the number with the first-bit constraint \(d_1=0\) is \(F_{L+1}\), so their ratio tends to \(1/\varphi\).
+Combining this two-state ratio with \eqref{eq:fold-bin-d-count-x-threshold}--\eqref{eq:fold-bin-x-threshold-main} yields
+\[
+d^{\mathrm{bin}}_m(w)
+=\Bigl(\frac{2}{\varphi}\Bigr)^m\times
+\begin{cases}
+1+O\bigl((\varphi/2)^m\bigr),& w_m=0,\\[2pt]
+\varphi^{-1}+O\bigl((\varphi/2)^m\bigr),& w_m=1,
+\end{cases}
+\]
+which gives \eqref{eq:fold-bin-two-state-asymptotic}. \qed
+\end{proof}
+
+\begin{corollary}[Two-point limit law (bin-fold)]\label{cor:fold-bin-two-point-limit-law}
+Let \(U_m\sim\mathrm{Unif}\{0,\dots,2^m-1\}\) and \(W_m:=\mathrm{Fold}^{\mathrm{bin}}_m(U_m)\in X_m\).
+Define the pushforward distribution
+\[
+\mu_m(w):=\mathbb{P}(W_m=w)=\frac{d^{\mathrm{bin}}_m(w)}{2^m},\qquad w\in X_m,
+\]
+and the rescaled random variable
+\(
+Z_m:=\bigl(\frac{\varphi}{2}\bigr)^m d^{\mathrm{bin}}_m(W_m)
+\).
+Then \(Z_m\) converges in distribution to the two-point distribution \(Z\):
+\[
+Z=
+\begin{cases}
+1,& \text{with probability }\displaystyle \frac{\varphi}{\sqrt5},\\[6pt]
+\varphi^{-1},& \text{with probability }\displaystyle \frac{1}{\varphi\sqrt5}.
+\end{cases}
+\]
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:fold-bin-two-state-asymptotic}, \(Z_m=\varphi^{-W_m(m)}+o(1)\) (in probability), so it suffices to compute the limiting weights of the last digit \(W_m(m)=w_m\).
+Note that \(\card{\{w\in X_m:w_m=0\}}=F_{m+1}\) and \(\card{\{w\in X_m:w_m=1\}}=F_m\).
+By the leading term of the theorem, \(d^{\mathrm{bin}}_m(w)\sim \varphi^{-w_m}(2/\varphi)^m\), so
+\[
+\mathbb{P}(w_m=0)
+=\sum_{w_m=0}\mu_m(w)
+\sim
+F_{m+1}\cdot \frac{(2/\varphi)^m}{2^m}
+=\frac{F_{m+1}}{\varphi^m}\to \frac{\varphi}{\sqrt5},
+\]
+and similarly \(\mathbb{P}(w_m=1)\to \frac{1}{\varphi\sqrt5}\). \qed
+\end{proof}
+
+\begin{corollary}[Explicit exponential constant for the quantile threshold (bin-fold)]\label{cor:fold-bin-quantile-threshold-constant}
+In the quantile caliber isomorphic to Definition~\ref{def:pom-gamma-quantile}, define the fiber exponent for the bin-fold:
+\[
+\gamma^{\mathrm{bin}}_m(w):=\frac{1}{m}\log d^{\mathrm{bin}}_m(w),\qquad w\in X_m,
+\]
+and let \(\gamma^{\mathrm{bin}}_m(\varepsilon)\) be its tail quantile under the output distribution \(\mu_m(w)=d^{\mathrm{bin}}_m(w)/2^m\):
+\[
+\gamma^{\mathrm{bin}}_{m}(\varepsilon):=\inf\Bigl\{\gamma:\ \mathbb{P}_{\mu_m}\bigl(\gamma^{\mathrm{bin}}_m(W_m)>\gamma\bigr)\le \varepsilon\Bigr\},
+\qquad
+B^{\mathrm{bin}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{bin}}_m(\varepsilon)\bigr).
+\]
+Then as \(m\to\infty\), the piecewise constant limit holds:
+\[
+\Bigl(\frac{\varphi}{2}\Bigr)^m B^{\mathrm{bin}}_m(\varepsilon)\ \longrightarrow\
+\begin{cases}
+1,& 0<\varepsilon<\displaystyle\frac{\varphi}{\sqrt5},\\[6pt]
+\varphi^{-1},& \displaystyle\frac{\varphi}{\sqrt5}<\varepsilon<1.
+\end{cases}
+\]
+In particular, for any fixed \(\varepsilon\in(0,\varphi/\sqrt5)\),
+\[
+B^{\mathrm{bin}}_m(\varepsilon)
+=\Bigl(\frac{2}{\varphi}\Bigr)^m\,(1+o(1)),
+\qquad
+\frac{1}{m}\log B^{\mathrm{bin}}_m(\varepsilon)\to \log\frac{2}{\varphi}.
+\]
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:fold-bin-two-point-limit-law},
+\(
+(\varphi/2)^m d^{\mathrm{bin}}_m(W_m)\Rightarrow Z\in\{1,\varphi^{-1}\}
+\) in probability;
+the quantile limit therefore degenerates to the quantile function of the two-point distribution, yielding the stated piecewise limit.
+The last formula follows by taking \(\log\) of both sides and dividing by \(m\). \qed
+\end{proof}
+
+\paragraph{Constant-order non-uniformity of the output distribution: KL limit, power-sum constants, and R\'enyi rate collapse}
+The two-state uniform asymptotics not only yield the explicit exponential constant for the quantile threshold, but also allow compressing the deviation of the output distribution \(\mu_m\) from the stable-layer uniform distribution into a \emph{constant-order} ledger:
+at exponential scale, \(H_q(\mu_m)/m\) collapses to \(\log\varphi\) for all \(q>0\), and all non-uniformity survives only in the \(O(1)\) drift term.
+
+\begin{proposition}[Limit constant law for bin-fold output non-uniformity: \texorpdfstring{$D_{\mathrm{KL}}(\mu_m\Vert u_m)\to C_{\mathrm{KL}}$}{DKL(mu||u)->CKL}]\label{prop:fold-bin-kl-constant}
+Continuing with the notation of Corollary~\ref{cor:fold-bin-two-point-limit-law},
+let \(u_m\) denote the uniform distribution on \(X_m\): \(u_m(w)=1/|X_m|\).
+Define the relative entropy (KL divergence)
+\[
+D_{\mathrm{KL}}(\mu_m\Vert u_m)
+:=\sum_{w\in X_m}\mu_m(w)\log\frac{\mu_m(w)}{u_m(w)}.
+\]
+Then there exists a limit constant
+\[
+C_{\mathrm{KL}}
+=2\log\varphi-\frac12\log 5-\frac{\log\varphi}{\varphi\sqrt5},
+\]
+such that
+\[
+D_{\mathrm{KL}}(\mu_m\Vert u_m)\ \longrightarrow\ C_{\mathrm{KL}}
+\qquad(m\to\infty).
+\]
+Equivalently, the expected fiber information loss satisfies
+\[
+\mathbb{E}_{\mu_m}\bigl[\log d^{\mathrm{bin}}_m(W_m)\bigr]
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-\frac{\log\varphi}{\varphi\sqrt5}+o(1),
+\]
+and the output Shannon entropy exhibits a constant-order entropy gap:
+\[
+H(\mu_m)=\log|X_m|-C_{\mathrm{KL}}+o(1),
+\qquad
+H(\mu_m):=-\sum_{w\in X_m}\mu_m(w)\log \mu_m(w).
+\]
+\end{proposition}
+
+\begin{proof}
+From \(\mu_m(w)=d^{\mathrm{bin}}_m(w)/2^m\) and \(u_m(w)=1/|X_m|\), we obtain the identity
+\begin{equation}\label{eq:fold-bin-kl-identity}
+D_{\mathrm{KL}}(\mu_m\Vert u_m)
+=\mathbb{E}_{\mu_m}\bigl[\log d^{\mathrm{bin}}_m(W_m)\bigr]-m\log 2+\log|X_m|.
+\end{equation}
+By the uniform leading term of Theorem~\ref{thm:fold-bin-two-state-asymptotic},
+\[
+\log d^{\mathrm{bin}}_m(w)
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-w_m\log\varphi+O\!\Bigl(\Bigl(\frac{\varphi}{2}\Bigr)^m\Bigr),
+\qquad (w\in X_m),
+\]
+so
+\[
+\mathbb{E}_{\mu_m}\bigl[\log d^{\mathrm{bin}}_m(W_m)\bigr]
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)-\log\varphi\cdot \mathbb{P}(W_m(m)=1)+o(1).
+\]
+By Corollary~\ref{cor:fold-bin-two-point-limit-law}, \(\mathbb{P}(W_m(m)=1)\to \frac{1}{\varphi\sqrt5}\), yielding the stated expected asymptotic.
+On the other hand, by Binet asymptotics \(F_{m+2}=\varphi^{m+2}/\sqrt5+o(\varphi^m)\),
+\[
+\log|X_m|=\log F_{m+2}=(m+2)\log\varphi-\frac12\log 5+o(1).
+\]
+Substituting both into \eqref{eq:fold-bin-kl-identity} gives \(D_{\mathrm{KL}}(\mu_m\Vert u_m)\to C_{\mathrm{KL}}\).
+Finally, the identity \(D_{\mathrm{KL}}(\mu_m\Vert u_m)=\log|X_m|-H(\mu_m)\) gives the entropy gap expression. \qed
+\end{proof}
+
+\begin{proposition}[Closed-form exponential law for multiplicity power sums: Perron root and constant term of \texorpdfstring{$S_q^{\mathrm{bin}}(m)$}{Sqbin(m)}]\label{prop:fold-bin-power-sum-asymptotic}
+For any fixed \(q>0\), define the power sum
+\[
+S_q^{\mathrm{bin}}(m):=\sum_{w\in X_m}\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q.
+\]
+Then there exists an explicit constant \(A_q>0\) such that
+\[
+S_q^{\mathrm{bin}}(m)=A_q\Bigl(\frac{2^q}{\varphi^{q-1}}\Bigr)^{m}\bigl(1+o(1)\bigr),
+\qquad
+A_q=\frac{\varphi+\varphi^{-q}}{\sqrt5}.
+\]
+Therefore the exponential growth constant (Perron root) of \(S_q^{\mathrm{bin}}(m)\) is
+\[
+r_q=\frac{2^q}{\varphi^{q-1}}.
+\]
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{thm:fold-bin-two-state-asymptotic}, for all \(w\in X_m\),
+\(
+d^{\mathrm{bin}}_m(w)=(2/\varphi)^m\varphi^{-w_m}+O(1)
+\),
+with uniform error.
+Since \((2/\varphi)^m\to\infty\),
+\[
+\bigl(d^{\mathrm{bin}}_m(w)\bigr)^q
+=\Bigl(\frac{2}{\varphi}\Bigr)^{qm}\varphi^{-q w_m}\bigl(1+o(1)\bigr),
+\]
+where \(o(1)\) is uniform over \(w\in X_m\).
+Splitting \(X_m\) by the last digit \(w_m\in\{0,1\}\) and using
+\(
+\card\{w\in X_m:w_m=0\}=F_{m+1}
+\), \(
+\card\{w\in X_m:w_m=1\}=F_{m}
+\), gives
+\[
+S_q^{\mathrm{bin}}(m)
+=\Bigl(\frac{2}{\varphi}\Bigr)^{qm}\Bigl(F_{m+1}+\varphi^{-q}F_m\Bigr)\bigl(1+o(1)\bigr).
+\]
+Applying Binet asymptotics \(F_{m+1}=\varphi^{m+1}/\sqrt5+o(\varphi^m)\), \(F_m=\varphi^m/\sqrt5+o(\varphi^m)\) yields
+\[
+F_{m+1}+\varphi^{-q}F_m
+=\frac{\varphi^m}{\sqrt5}\bigl(\varphi+\varphi^{-q}\bigr)\bigl(1+o(1)\bigr),
+\]
+hence
+\[
+S_q^{\mathrm{bin}}(m)
+=\frac{\varphi+\varphi^{-q}}{\sqrt5}\,
+2^{qm}\varphi^{-(q-1)m}\bigl(1+o(1)\bigr)
+=A_q\Bigl(\frac{2^q}{\varphi^{q-1}}\Bigr)^m\bigl(1+o(1)\bigr).
+\]
+\qed
+\end{proof}
+
+\begin{theorem}[R\'enyi rate collapse and vanishing ``pseudo-multifractal'': \texorpdfstring{$H_q(\mu_m)/m\to\log\varphi$}{Hq(mu)/m->log phi}]\label{thm:fold-bin-renyi-rate-collapse}
+Continuing with the \(\mu_m\) notation of Corollary~\ref{cor:fold-bin-two-point-limit-law},
+for \(q>0\), \(q\neq 1\), define the R\'enyi entropy
+\[
+H_q(\mu_m):=\frac{1}{1-q}\log\sum_{w\in X_m}\mu_m(w)^q,
+\]
+with the Shannon entropy \(H_1(\mu_m):=H(\mu_m)\) defined as a limit.
+Then the following unified limit holds for all \(q>0\):
+\[
+\lim_{m\to\infty}\frac{1}{m}H_q(\mu_m)=\log\varphi,
+\qquad
+\lim_{m\to\infty}\frac{1}{m}H_1(\mu_m)=\log\varphi.
+\]
+Furthermore, let
+\(
+\gamma_m:=\frac{1}{m}\log d^{\mathrm{bin}}_m(W_m)
+\) (\(W_m\sim\mu_m\));
+then \(\gamma_m\to\log(2/\varphi)\), with deviation of only \(O(m^{-1})\).
+\end{theorem}
+
+\begin{proof}
+When \(q\neq 1\), from \(\mu_m(w)=d^{\mathrm{bin}}_m(w)/2^m\),
+\[
+\sum_{w\in X_m}\mu_m(w)^q
+=2^{-qm}\,S_q^{\mathrm{bin}}(m).
+\]
+Substituting the asymptotics from Proposition~\ref{prop:fold-bin-power-sum-asymptotic} gives
+\[
+\log\sum_{w}\mu_m(w)^q
+=-qm\log 2 + m\log r_q + O(1)
+=(1-q)m\log\varphi+O(1),
+\]
+where we used \(r_q=2^q/\varphi^{q-1}\).
+Dividing both sides by \(m(1-q)\) and letting \(m\to\infty\) gives \(\frac{1}{m}H_q(\mu_m)\to\log\varphi\).
+\par
+When \(q=1\), by Proposition~\ref{prop:fold-bin-kl-constant},
+\(
+H(\mu_m)=\log|X_m|-D_{\mathrm{KL}}(\mu_m\Vert u_m)
+=m\log\varphi+O(1)
+\),
+so \(\frac{1}{m}H_1(\mu_m)\to\log\varphi\).
+\par
+Finally, by the uniform expansion of Theorem~\ref{thm:fold-bin-two-state-asymptotic},
+\(
+\log d^{\mathrm{bin}}_m(W_m)=m\log(2/\varphi)-W_m(m)\log\varphi+o(1)
+\)
+with \(W_m(m)\in\{0,1\}\); dividing by \(m\) gives
+\(
+\gamma_m=\log(2/\varphi)+O(m^{-1})
+\), and the conclusion holds. \qed
+\end{proof}
+
+\begin{corollary}[Phase transition in the reconstruction budget: \texorpdfstring{$\log\varphi$}{log phi}-order savings at the threshold \texorpdfstring{$\varepsilon_c=\varphi/\sqrt5$}{epsc=phi/sqrt5}]\label{cor:fold-bin-budget-phase-transition}
+Continuing with the tail quantile threshold \(B^{\mathrm{bin}}_m(\varepsilon)\) of Corollary~\ref{cor:fold-bin-quantile-threshold-constant},
+if a class of reconstruction/decoding protocols has failure probability controllable by the fiber threshold as
+\[
+\mathbb{P}\Bigl(d^{\mathrm{bin}}_m(W_m)>\frac{P_m}{2}\Bigr)\ \le\ \varepsilon,
+\]
+then a sufficient condition is to choose the modular product budget \(P_m>2B^{\mathrm{bin}}_m(\varepsilon)\).
+Under this caliber, let \(\varepsilon_c:=\varphi/\sqrt5\).
+Then the minimum logarithmic budget exhibits a piecewise phase transition:
+\[
+\log P_m\ \ge\ m\log\!\Bigl(\frac{2}{\varphi}\Bigr)+\log 2+o(1)\qquad(0<\varepsilon<\varepsilon_c),
+\]
+while for \(\varepsilon>\varepsilon_c\) it can be reduced to
+\[
+\log P_m\ \ge\ m\log\!\Bigl(\frac{2}{\varphi}\Bigr)+\log 2-\log\varphi+o(1).
+\]
+\end{corollary}
+
+\begin{proof}
+By definition of \(B^{\mathrm{bin}}_m(\varepsilon)\),
+\(
+\mathbb{P}\bigl(d^{\mathrm{bin}}_m(W_m)>B^{\mathrm{bin}}_m(\varepsilon)\bigr)\le \varepsilon
+\);
+therefore if \(P_m>2B^{\mathrm{bin}}_m(\varepsilon)\) then
+\(
+\mathbb{P}\bigl(d^{\mathrm{bin}}_m(W_m)>P_m/2\bigr)\le\varepsilon
+\), satisfying the required failure probability control.
+\par
+On the other hand, by Corollary~\ref{cor:fold-bin-quantile-threshold-constant},
+\[
+\Bigl(\frac{\varphi}{2}\Bigr)^m B^{\mathrm{bin}}_m(\varepsilon)\to
+\begin{cases}
+1,& 0<\varepsilon<\varepsilon_c,\\
+\varphi^{-1},& \varepsilon_c<\varepsilon<1,
+\end{cases}
+\]
+hence
+\[
+\log B^{\mathrm{bin}}_m(\varepsilon)
+=m\log\!\Bigl(\frac{2}{\varphi}\Bigr)+
+\begin{cases}
+o(1),& 0<\varepsilon<\varepsilon_c,\\
+-\log\varphi+o(1),& \varepsilon>\varepsilon_c.
+\end{cases}
+\]
+Taking \(P_m=2B^{\mathrm{bin}}_m(\varepsilon)(1+o(1))\) gives the two lower bounds. \qed
+\end{proof}
+
+\begin{corollary}[Maximum fiber, combinatorial upper bound, and saturation criterion]\label{cor:fold-bin-saturation}
+For any \(m\ge 1\), the maximum fiber is attained at \(w=0^m\) and satisfies the combinatorial upper bound
+\begin{equation}\label{eq:fold-bin-upper}
+d^{\mathrm{bin}}_{\max}(m):=d^{\mathrm{bin}}_m(0^m)\le |X_{K(m)-m}|=F_{K(m)-m+2}.
+\end{equation}
+Let \(K=K(m)\), \(L=K-m\), and define the \emph{maximum tail sum} under the adjacency constraint:
+\[
+S_{\max}(m):=\max\Bigl\{\sum_{k=m+1}^{K} c_k F_{k+1}:\ (c_{m+1},\dots,c_K)\in\{0,1\}^{L},\ c_k c_{k+1}=0\Bigr\}.
+\]
+Then for \(w=0^m\), the upper bound \eqref{eq:fold-bin-upper} is saturated if and only if the threshold constraint is redundant for all legal tails, i.e.,
+\begin{equation}\label{eq:fold-bin-sat-iff}
+d^{\mathrm{bin}}_{\max}(m)=F_{K(m)-m+2}\quad\Longleftrightarrow\quad 2^m-1\ge S_{\max}(m).
+\end{equation}
+Moreover, \(S_{\max}(m)\) has a completely explicit closed form (attained by the ``1010\(\cdots\)'' maximal tail):
+\begin{equation}\label{eq:fold-bin-Smax-closed}
+S_{\max}(m)=
+\begin{cases}
+F_{K(m)+2}-F_{m+1}, & L=K(m)-m\ \text{is odd},\\
+F_{K(m)+2}-F_{m+2}, & L=K(m)-m\ \text{is even}.
+\end{cases}
+\end{equation}
+Equivalently, the saturation criterion can be rewritten as
+\[
+F_{K(m)+2}-2^m\le
+\begin{cases}
+F_{m+1}-1,& L\ \text{odd},\\
+F_{m+2}-1,& L\ \text{even}.
+\end{cases}
+\]
+\end{corollary}
+
+\begin{theorem}[Maximum fiber exponent and \texorpdfstring{$\log(2/\varphi)$}{log(2/phi)} (bin-fold)]\label{thm:fold-bin-max-fiber-exponent}
+Let \(d^{\mathrm{bin}}_{\max}(m):=\max_{w\in X_m} d^{\mathrm{bin}}_m(w)\).
+Then the limit exists and satisfies
+\[
+\lim_{m\to\infty}\frac{1}{m}\log d^{\mathrm{bin}}_{\max}(m)=\log\frac{2}{\varphi}.
+\]
+In particular, this exponential constant coincides with the irreducible step size \(\Delta_{\min}=\log(2/\varphi)\) from Proposition~\ref{prop:beta-quantization-step} in the main text.
+\end{theorem}
+\begin{proof}
+From the surjection \(\mathrm{Fold}^{\mathrm{bin}}_m:\{0,\dots,2^m-1\}\twoheadrightarrow X_m\) and the counting identity
+\(
+\sum_{w\in X_m} d^{\mathrm{bin}}_m(w)=2^m
+\),
+we get
+\(
+d^{\mathrm{bin}}_{\max}(m)\ge 2^m/|X_m|
+=2^m/F_{m+2}
+\).
+By Binet asymptotics \(F_{m+2}=\Theta(\varphi^{m})\),
+\[
+\liminf_{m\to\infty}\frac{1}{m}\log d^{\mathrm{bin}}_{\max}(m)\ \ge\ \log\frac{2}{\varphi}.
+\]
+\par
+On the other hand, by the upper bound of Corollary~\ref{cor:fold-bin-saturation},
+\(
+d^{\mathrm{bin}}_{\max}(m)\le F_{K(m)-m+2}
+\).
+From the definition \eqref{eq:K-of-m},
+\(
+F_{K(m)+1}\le 2^m-1 < F_{K(m)+2}
+\);
+combined with \(\log F_n=n\log\varphi+O(1)\),
+\[
+\bigl(K(m)+1\bigr)\log\varphi+O(1)\ \le\ m\log 2\ \le\ \bigl(K(m)+2\bigr)\log\varphi+O(1),
+\]
+hence \(K(m)=m\log_{\varphi}2+O(1)\), and
+\[
+\log F_{K(m)-m+2}=\bigl(K(m)-m\bigr)\log\varphi+O(1)
+=m(\log 2-\log\varphi)+O(1).
+\]
+Dividing by \(m\) and taking the limsup gives
+\(
+\limsup_{m\to\infty}\frac{1}{m}\log d^{\mathrm{bin}}_{\max}(m)\le \log(2/\varphi)
+\).
+Combining the upper and lower bounds yields the limit identity. \qed
+\end{proof}
+
+\begin{remark}[Exponential Diophantine approximation and ``only finitely many saturations'']\label{rem:fold-bin-finite}
+From \eqref{eq:fold-bin-Smax-closed}, the saturation condition forces \(2^m\) to be \emph{unusually close} to a certain Fibonacci number \(F_{K(m)+2}\).
+Using Binet's formula \(F_n=\varphi^n/\sqrt5+O(\varphi^{-n})\) to reformulate, one can derive an exponentially small linear logarithmic form constraint:
+\[
+\Bigl|(K(m)+2)\log\varphi - m\log 2 - \log\sqrt5\Bigr|
+\ \lesssim\ \Bigl(\frac{\varphi}{2}\Bigr)^m.
+\]
+Since \(\varphi\) is algebraic and \(2\) is rational, the left-hand side is a nonzero linear form in logarithms; Baker-type lower bounds (e.g., Matveev's explicit form) give an \emph{at most polynomial} small lower bound (see \cite{Matveev2000LinearFormsLogs,BakerWustholz2007LogarithmicForms}), which contradicts the exponentially small right-hand side, yielding:
+\[
+\text{The upper bound is saturated only finitely many times.}
+\]
+This conclusion can be directly numerically audited within the reproducible pipeline of this paper (see Table~\ref{tab:fold_binary_saturation_points}).
+\end{remark}
+
+\begin{proposition}[\(O(m)\) Fibonacci-digit DP for computing \(\boldsymbol{d^{\mathrm{bin}}_m(w)}\)]\label{prop:fold-bin-digit-dp}
+Given \(m\ge 1\) and \(w\in X_m\). Let \(K=K(m)\) and set \(V=V_m(w)\), then \(\mathrm{slack}:=2^m-1-V\).
+Write \(\mathrm{slack}\) as the Zeckendorf bit string \(Z(\mathrm{slack})=(b_1,\dots,b_K)\) (legal, no adjacent \(11\)).
+Then \(d^{\mathrm{bin}}_m(w)\) can be computed exactly via the following digit DP in \(O(K-m)=O(m)\) time:
+\[
+\mathrm{DP}(k,\mathrm{prev},\mathrm{tight})
+\quad(k=K,K-1,\dots,m+1),
+\]
+where \(\mathrm{prev}\in\{0,1\}\) records whether the previous (higher) digit was set to \(1\), and \(\mathrm{tight}\in\{0,1\}\) indicates whether the current prefix still matches \((b_k,\dots,b_K)\);
+at each transition, one chooses \(c_k\in\{0,1\}\) subject to
+\[
+c_k c_{k+1}=0,\qquad
+\mathrm{tight}=1\Rightarrow c_k\le b_k,\qquad
+w_m=1\Rightarrow c_{m+1}=0,
+\]
+and updates \(\mathrm{tight}\) according to whether equality is maintained. The output of this DP is the number of tails satisfying \(\sum_{k=m+1}^K c_k F_{k+1}\le \mathrm{slack}\), which equals \(d^{\mathrm{bin}}_m(w)\).
+\end{proposition}
+
+\input{sections/generated/tab_fold_binary_saturation_points}

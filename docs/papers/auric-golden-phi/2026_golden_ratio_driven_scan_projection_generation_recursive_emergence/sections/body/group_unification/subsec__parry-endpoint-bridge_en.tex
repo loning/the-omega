@@ -1,0 +1,162 @@
+\subsection{Endpoint Collapse of the Parry (PF) Cylinder Distribution and the Auditable Bridge Package}\label{subsec:parry-endpoint-bridge}
+
+This subsection extracts a set of directly verifiable ``endpoint bridge package'' conclusions: they link the cylinder distribution under the maximum entropy baseline (statistical side) with the adjacency matrix powers/traces (spectral side) through a rigorous chain of equalities.
+
+\begin{theorem}[Endpoint collapse of the Parry cylinder distribution]\label{thm:parry-endpoint-collapse}
+Let \(X\) be an irreducible subshift of finite type with adjacency matrix \(A\in\{0,1\}^{d\times d}\) and spectral radius \(\lambda>0\).
+Take the Perron--Frobenius left and right eigenvectors \(\ell,r\in\RR_{>0}^d\) satisfying
+\(
+\ell^{\mathsf T}A=\lambda \ell^{\mathsf T},\ Ar=\lambda r
+\).
+Define the transition probabilities of the Parry maximum entropy Markov chain:
+\[
+P_{ij}:=\frac{A_{ij}r_j}{\lambda r_i},
+\qquad
+\pi(i):=\frac{\ell_i r_i}{\langle \ell,r\rangle},
+\qquad
+\langle \ell,r\rangle:=\sum_{v=1}^d \ell_v r_v,
+\]
+and let \(\pi_m\) be its length-\(m\) cylinder distribution:
+\(
+\pi_m(u_1\cdots u_m)=\pi(u_1)\prod_{t=1}^{m-1}P_{u_tu_{t+1}}
+\) (for any admissible word \(u_1\cdots u_m\)).
+Then for any admissible word \(u=u_1\cdots u_m\in X_m\), the strict endpoint collapse formula holds:
+\[
+\boxed{\;
+\pi_m(u)=\frac{\ell_{u_1}\,r_{u_m}}{\langle \ell,r\rangle}\cdot \lambda^{-(m-1)}\;}
+\]
+so \(\pi_m(u)\) depends only on the endpoints \((u_1,u_m)\) and is independent of the arrangement of intermediate symbols.
+\end{theorem}
+\begin{proof}
+For an admissible word, \(A_{u_tu_{t+1}}=1\), hence
+\[
+\prod_{t=1}^{m-1}P_{u_tu_{t+1}}
+=
+\prod_{t=1}^{m-1}\frac{r_{u_{t+1}}}{\lambda r_{u_t}}
+=\frac{r_{u_m}}{\lambda^{m-1}r_{u_1}}.
+\]
+Substituting \(\pi(u_1)=\ell_{u_1}r_{u_1}/\langle \ell,r\rangle\) yields the result.
+\end{proof}
+
+\begin{corollary}[Golden mean chain: three-level cylinder probabilities and Fibonacci endpoint cardinalities]\label{cor:parry-golden-three-levels}
+In the golden mean two-state case of Remark~\ref{prop:parry-measure-golden}, the length-\(m\) cylinder distribution \(\pi_m\) takes only three levels of values on \(X_m\),
+determined by endpoint type:
+\begin{enumerate}
+  \item \((u_1,u_m)=(0,0)\): \(\pi_m(u)=\pi(0)\,\varphi^{-(m-1)}\);
+  \item \((u_1,u_m)\in\{(0,1),(1,0)\}\): \(\pi_m(u)=\pi(0)\,\varphi^{-m}\);
+  \item \((u_1,u_m)=(1,1)\): \(\pi_m(u)=\pi(1)\,\varphi^{-(m-1)}=\pi(0)\,\varphi^{-(m+1)}\).
+\end{enumerate}
+Moreover, the cardinalities of the endpoint fibers are
+\[
+\begin{aligned}
+\#\{u\in X_m:u_1=0,u_m=0\}&=F_m,\\
+\#\{u\in X_m:u_1\neq u_m\}&=2F_{m-1},\\
+\#\{u\in X_m:u_1=1,u_m=1\}&=F_{m-2},
+\end{aligned}
+\]
+where \(F_k\) denotes the Fibonacci number (this paper uses the convention \(|X_m|=F_{m+2}\)).
+Furthermore, the ratio of maximum to minimum cylinder probabilities is independent of \(m\):
+\[
+\boxed{\ \frac{\max_{u\in X_m}\pi_m(u)}{\min_{u\in X_m}\pi_m(u)}=\frac{\pi(0)}{\pi(1)}=\varphi^2\ }.
+\]
+\end{corollary}
+\begin{proof}
+The endpoint-only dependence follows from specializing Theorem~\ref{thm:parry-endpoint-collapse} to the two-state matrix \(A\);
+the explicit values from Remark~\ref{prop:parry-measure-golden} for \((\pi,P)\) are then substituted.
+The endpoint fiber cardinalities equal \((A^{m-1})_{ij}\), and the entries of \(A^{m-1}\) are the standard closed-form Fibonacci recurrence (in the same convention as \(|X_m|=F_{m+2}\)).
+The ratio formula follows from the maximum occurring at endpoint \(00\), the minimum at endpoint \(11\), and \(\pi(0)/\pi(1)=\varphi^2\).
+\end{proof}
+
+\begin{proposition}[Endpoint mass matrix: auditable bridge package from the statistical side to the matrix power side]\label{prop:parry-endpoint-mass-matrix}
+Under the general setting of Theorem~\ref{thm:parry-endpoint-collapse}, define the length-\(m\) endpoint mass matrix
+\[
+M^{(m)}_{ij}
+:=
+\sum_{\substack{u\in X_m\\ u_1=i,\ u_m=j}}\pi_m(u).
+\]
+Then the strict identity holds:
+\[
+\boxed{\;
+M^{(m)}_{ij}
+=
+(A^{m-1})_{ij}\cdot \frac{\ell_i r_j}{\langle \ell,r\rangle}\cdot \lambda^{-(m-1)}\;}
+\]
+Equivalently, using \(\pi(i)=\ell_i r_i/\langle \ell,r\rangle\) and \(P_{ij}=A_{ij}r_j/(\lambda r_i)\), this can be written as
+\[
+M^{(m)}_{ij}
+=(A^{m-1})_{ij}\cdot \pi(i)\cdot \frac{r_j}{\lambda^{m-1}r_i}.
+\]
+Therefore, under the Parry model, there is an explicit auditable diagonal scaling relation between the endpoint statistics \(M^{(m)}\) and the normalized power \(A^{m-1}/\lambda^{m-1}\).
+\end{proposition}
+\begin{proof}
+By Theorem~\ref{thm:parry-endpoint-collapse}, for each word \(u\) with fixed endpoints \((i,j)\), the probability is the same value
+\(\ell_i r_j\lambda^{-(m-1)}/\langle \ell,r\rangle\); multiplying by the number of words in that endpoint fiber \((A^{m-1})_{ij}\) yields the first formula.
+The second formula is an algebraic rewriting.
+\end{proof}
+
+\begin{corollary}[Over-determined constraint estimators for the golden constant from endpoint masses]\label{cor:parry-endpoint-phi-estimators}
+Let \(\hat\pi_{m,N}\) be the empirical histogram of any process at resolution \(m\) (Section~\ref{sec:experiments} notation), and define the endpoint masses
+\[
+\widehat M_{ij}(m):=\sum_{\substack{u\in X_m\\ u_1=i,\ u_m=j}}\hat\pi_{m,N}(u).
+\]
+If the data are close to the golden mean Parry baseline at this resolution, then two mutually independent estimators of \(\varphi\) can be constructed from the endpoint masses:
+\[
+\boxed{\;
+\widehat\varphi_{(00/01)}(m)
+:=\frac{\widehat M_{00}(m)}{\widehat M_{01}(m)}\cdot \frac{F_{m-1}}{F_m}\;},
+\qquad
+\boxed{\;
+\widehat\varphi_{(01/11)}(m)
+:=\frac{\widehat M_{01}(m)}{\widehat M_{11}(m)}\cdot \frac{F_{m-2}}{F_{m-1}}\;}.
+\]
+Under the true Parry model, they converge (in the limit) to the same constant \(\varphi\), thereby providing a low-dimensional, over-determined self-consistency audit.
+\end{corollary}
+\begin{proof}
+Under the Parry baseline, Proposition~\ref{prop:parry-endpoint-mass-matrix} gives
+\(
+M^{(m)}_{00}\propto (A^{m-1})_{00}\varphi^{-(m-1)}\),
+\(
+M^{(m)}_{01}\propto (A^{m-1})_{01}\varphi^{-m}\),
+\(
+M^{(m)}_{11}\propto (A^{m-1})_{11}\varphi^{-(m+1)}
+\)
+with \((A^{m-1})_{00}=F_m,(A^{m-1})_{01}=F_{m-1},(A^{m-1})_{11}=F_{m-2}\).
+Canceling the proportionality constants yields the two endpoint ratio identities; the empirical version simply replaces \(M\) by \(\widehat M\).
+\end{proof}
+
+\begin{definition}[Endpoint flatness residual and local commuting square residual]\label{def:endpoint-flatness-square-residue}
+For any empirical histogram \(\hat\pi_{m,N}\in\Delta(X_m)\), define the endpoint fiber
+\(
+\mathcal{F}_{ij}^{(m)}:=\{u\in X_m:\ u_1=i,\ u_m=j\}
+\).
+Define the endpoint flatness residual (span form)
+\[
+R_{ij}(m,N):=\max_{u\in \mathcal{F}_{ij}^{(m)}}\hat\pi_{m,N}(u)\ -\ \min_{u\in \mathcal{F}_{ij}^{(m)}}\hat\pi_{m,N}(u),
+\qquad
+R_{\max}(m,N):=\max_{i,j\in\{0,1\}}R_{ij}(m,N),
+\]
+where by convention \(\hat\pi_{m,N}(u)=0\) for unobserved words (so the span directly exposes ``fiber non-flatness'' when the support is sparse).
+Additionally, define the local commuting square residual
+\[
+S(N):=\bigl|\hat\pi_{3,N}(000)-\hat\pi_{3,N}(010)\bigr|.
+\]
+Under the Parry baseline, by the endpoint collapse (Theorem~\ref{thm:parry-endpoint-collapse}), the limit should satisfy \(R_{\max}(m,N)\to 0\);
+by the local square law (Proposition~\ref{prop:parry-commuting-square-gives-phi}), the limit should satisfy \(S(N)\to 0\).
+\end{definition}
+
+\begin{proposition}[Local commuting square \texorpdfstring{$\Rightarrow$}{=>} golden transition probability]\label{prop:parry-commuting-square-gives-phi}
+Under the golden mean constraint (forbidding \(11\)), consider any two-state Markov chain with \(P_{10}=1\).
+Let \(P_{00}=a\in(0,1)\), \(P_{01}=1-a\).
+If the two two-step paths \(0\to0\to0\) and \(0\to1\to0\) are required to satisfy a local ``commuting square'' conservation in weight:
+\[
+a^2=1-a,
+\]
+then necessarily
+\[
+\boxed{\ a=\varphi^{-1},\qquad P_{00}=\varphi^{-1},\quad P_{01}=\varphi^{-2}\ }.
+\]
+\end{proposition}
+\begin{proof}
+The equation \(a^2=1-a\) is equivalent to \(a^2+a-1=0\), whose unique solution in \(a\in(0,1)\) is \(a=(\sqrt5-1)/2=\varphi^{-1}\).
+Then \(1-a=\varphi^{-2}\).
+\end{proof}

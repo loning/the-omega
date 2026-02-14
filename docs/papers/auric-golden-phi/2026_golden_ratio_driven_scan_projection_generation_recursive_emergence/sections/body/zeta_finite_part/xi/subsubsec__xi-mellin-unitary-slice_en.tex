@@ -1,0 +1,120 @@
+% Mellin unitary slice: unique isometric readout line and self-dual conjugation
+
+\subsubsection{Unitary slice: the unique isometric line of Mellin readout and conjugation degeneracy of inversion duality}\label{subsubsec:xi-mellin-unitary-slice}
+
+This subsection establishes a ``multiplicative spectral decomposition'' fact that is strictly isomorphic to the unitary slice semantics adopted in this paper: when the readout is understood as the frequency-domain representation of the multiplicative group \(\RR_{+}^{\times}\), \(\Re(s)=\tfrac12\) is the unique slice admitting isometric (norm-preserving) readout; furthermore, the inversion duality \(x\mapsto 1/x\) degenerates on this slice to pointwise complex conjugation on the spectral side.
+This conclusion provides a purely harmonic-analytic equivalent explanation for the ``visible domain locking / off-slice yields \(\mathsf{NULL}\)'' in \(\mathbf{PW}\) type safety (\S\ref{subsec:xi-pw-type-safety-null}): departing from the unitary slice necessarily introduces an ineliminable weight distortion, and if the protocol refuses to externalize this distortion direction, then the readout no longer holds at the type level and is compiled as \(\mathsf{NULL}\) (Theorem \ref{thm:xi-offset-null-type-safety}).
+
+\paragraph{Multiplicative Haar measure and Mellin readout}
+Let \(\RR_{+}^{\times}=(0,\infty)\) be equipped with the multiplicative Haar measure
+\[
+\dd^{\times}x:=\frac{\dd x}{x},
+\]
+and denote
+\[
+L^{2}_{\times}:=L^{2}(\RR_{+}^{\times},\dd^{\times}x).
+\]
+For sufficiently nice \(f:\RR_{+}^{\times}\to\CC\) (e.g., \(f\in L^{1}\cap L^{2}_{\times}\)), define the critically shifted Mellin readout
+\begin{equation}\label{eq:mellin-shifted-readout}
+(\mathcal{M}f)(s):=\int_{0}^{\infty} f(x)\,x^{\,s-\frac12}\,\dd^{\times}x
+\qquad(s\in\CC),
+\end{equation}
+and define the readout along the slice \(\Re(s)=\sigma\)
+\[
+(\mathcal{M}_{\sigma}f)(t):=(\mathcal{M}f)(\sigma+\mathrm{i}t),\qquad t\in\RR.
+\]
+The above ``\(-\tfrac12\)'' shift aligns the unitary slice with the critical line of the completion aperture of this paper: when \(\sigma=\tfrac12\), the kernel is the unit-modulus character \(x^{\mathrm{i}t}\).
+
+\begin{theorem}[Mellin--Plancherel unitary slice and uniqueness]\label{thm:mellin-unitary-slice-unique}
+The map \(f\mapsto \mathcal{M}_{1/2}f\) extends on a dense subspace to a unitary isomorphism
+\[
+\mathcal{M}_{1/2}:L^{2}_{\times}\ \xrightarrow{\ \sim\ }\ L^{2}\!\left(\RR,\frac{\dd t}{2\pi}\right).
+\]
+Moreover, for any \(\sigma\in\RR\), the strict weight distortion identity holds:
+\begin{equation}\label{eq:mellin-sigma-weight-twist}
+\|\mathcal{M}_{\sigma}f\|_{L^{2}(\dd t/2\pi)}
+=
+\|\,x^{\sigma-\frac12}f\,\|_{L^{2}_{\times}}.
+\end{equation}
+Therefore, when \(\sigma\neq\tfrac12\), \(\mathcal{M}_{\sigma}\) cannot be an isometric operator on \(L^{2}_{\times}\); in other words, \(\Re(s)=\tfrac12\) is the unique isometric slice for Mellin readout.
+\end{theorem}
+
+\begin{proof}
+Set the logarithmic coordinate \(y:=\log x\), so \(\dd^{\times}x=\dd y\), and let \(g(y):=f(e^{y})\).
+By \eqref{eq:mellin-shifted-readout},
+\[
+(\mathcal{M}_{1/2}f)(t)
+=\int_{0}^{\infty} f(x)\,x^{\mathrm{i}t}\,\dd^{\times}x
+=\int_{\RR} g(y)\,e^{\mathrm{i}ty}\,\dd y.
+\]
+Taking the Fourier normalization used in Appendix \ref{subsec:unit-circle-scale-linearization} of this paper,
+\(
+(\mathcal{F}g)(\xi)=\int_{\RR}g(y)e^{-\mathrm{i}\xi y}\dd y
+\),
+the above expression is \((\mathcal{F}g)(-\!t)\).
+By the Plancherel theorem, \(\mathcal{F}:L^{2}(\RR,\dd y)\to L^{2}(\RR,\dd\xi/2\pi)\) is a unitary isomorphism, so \(\mathcal{M}_{1/2}\) is also a unitary isomorphism.
+\par
+For general \(\sigma\in\RR\),
+\[
+(\mathcal{M}_{\sigma}f)(t)
+=\int_{0}^{\infty} f(x)\,x^{\sigma-\frac12}\,x^{\mathrm{i}t}\,\dd^{\times}x
+=(\mathcal{M}_{1/2}(x^{\sigma-\frac12}f))(t).
+\]
+By the unitarity of \(\mathcal{M}_{1/2}\), \eqref{eq:mellin-sigma-weight-twist} follows immediately.
+If \(\sigma\neq\tfrac12\), then the weight factor \(x^{\sigma-\frac12}\) is not unit-modulus, so there exists \(f\in L^{2}_{\times}\) with \(\|x^{\sigma-\frac12}f\|_{L^{2}_{\times}}\neq\|f\|_{L^{2}_{\times}}\), whence \(\mathcal{M}_{\sigma}\) cannot be isometric. \qedhere
+\end{proof}
+
+\paragraph{Inversion duality and spectral-side conjugation}
+On \(L^{2}_{\times}\), define the inversion duality operator
+\[
+(Jf)(x):=\overline{f(1/x)}.
+\]
+Since \(\dd^{\times}x\) is invariant under \(x\mapsto 1/x\), \(J\) is an antilinear isometric involution (\(J^{2}=I\)).
+
+\begin{remark}[Jacobian normalization of the inversion duality]\label{rem:mellin-inversion-jacobian}
+If one instead uses the Lebesgue-measure Hilbert space \(L^{2}((0,\infty),\dd x)\), the antilinear isometric involution of the inversion \(x\mapsto 1/x\) can be written as
+\[
+(J_{\dd x}h)(x):=x^{-1}\overline{h(1/x)}.
+\]
+The two differ only by an isometric transport: the map \(h\mapsto f:=x^{1/2}h\) gives the isomorphism \(L^{2}((0,\infty),\dd x)\cong L^{2}_{\times}\), and satisfies
+\(
+J(x^{1/2}h)=x^{1/2}(J_{\dd x}h)
+\).
+Therefore, whether the factor \(x^{-1}\) appears is determined solely by the inner product/measure normalization choice, while the conclusion that ``inversion duality degenerates to spectral-side complex conjugation on the unitary slice'' is unaffected by this choice (Proposition \ref{prop:mellin-conjugation-identity}).
+\end{remark}
+
+\begin{proposition}[Mellin conjugation identity and critical slice degeneracy]\label{prop:mellin-conjugation-identity}
+For sufficiently nice \(f\) and any \(s\in\CC\), the identity holds:
+\[
+\boxed{\;(\mathcal{M}(Jf))(s)=\overline{(\mathcal{M}f)(1-\overline{s})}\;}
+\]
+whence on the unitary slice \(s=\tfrac12+\mathrm{i}t\), the spectral-side pointwise conjugation degeneracy
+\[
+\boxed{\;(\mathcal{M}_{1/2}(Jf))(t)=\overline{(\mathcal{M}_{1/2}f)(t)}\qquad(t\in\RR).\;}
+\]
+\end{proposition}
+
+\begin{proof}
+By definition and the substitution \(x\mapsto 1/x\) (under which \(\dd^{\times}x\) is invariant),
+\[
+(\mathcal{M}(Jf))(s)
+=\int_{0}^{\infty}\overline{f(1/x)}\,x^{\,s-\frac12}\,\dd^{\times}x
+=\int_{0}^{\infty}\overline{f(x)}\,x^{\,\frac12-s}\,\dd^{\times}x.
+\]
+Meanwhile,
+\[
+\overline{(\mathcal{M}f)(1-\overline{s})}
+=\overline{\int_{0}^{\infty} f(x)\,x^{\,1-\overline{s}-\frac12}\,\dd^{\times}x}
+=\int_{0}^{\infty}\overline{f(x)}\,x^{\,\frac12-s}\,\dd^{\times}x,
+\]
+and the two are identical, yielding the first identity.
+When \(s=\tfrac12+\mathrm{i}t\), one has \(1-\overline{s}=s\), yielding the second identity. \qedhere
+\end{proof}
+
+\begin{remark}[Alignment with the unitary slice semantics]\label{rem:mellin-unitary-slice-semantic-alignment}
+Theorem \ref{thm:mellin-unitary-slice-unique} shows that if one requires the readout to be isometric in the \(L^{2}\) sense (without introducing additional weight registers), then the slice parameter is structurally pinned to \(\Re(s)=\tfrac12\).
+In the completion interface of this paper, the unitary slice is characterized by \(|u_{L}(s)|=1\iff \Re(s)=\tfrac12\) (Remark \ref{rem:xi-critical-line-unit-circle}), and is promoted under \(\mathbf{PW}\) closure to a type constraint on the ``visible domain'' (Definition \ref{def:xi-visible-read-null}).
+Therefore, the above unitary slice uniqueness can be viewed as a rigorous translation of ``\(\tfrac12\) is the orthogonal axis'': the off-slice degrees of freedom first manifest as the weight distortion \(x^{\sigma-\frac12}\), and if the protocol refuses to externalize this distortion direction, then the readout does not hold at the type level and addressability is maintained as \(\mathsf{NULL}\) (Theorem \ref{thm:xi-offset-null-type-safety}).
+\end{remark}
+
+\endinput

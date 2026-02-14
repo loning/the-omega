@@ -1,0 +1,171 @@
+\subsubsection{Hölder reciprocal moments, mixed collision kernels, and reverse KL fingerprint}\label{subsubsec:pom-hoelder-mixed-kl-bridge}
+This paragraph, under notation of Definition \ref{def:pom-bidirectional-moments} and Corollary \ref{cor:pom-fiber-dispersion-index},
+provides three classes of purely algebraic bridging tools:
+(i) use higher-order positive moments \(S_q(m)\) to lower bound dispersion index \(\mathfrak{D}_m\) (Hölder bridge);
+(ii) mixed collision collision probability of two distributions can still be compiled by finite-state moment, thus forming auditable similarity fingerprint;
+(iii) \(\mathfrak{D}(w)\) simultaneously controls reverse relative entropy \(D_{\mathrm{KL}}(U\|w)\) and derives stability principle that ``constant-level rewriting does not change pressure spectrum''.
+
+\begin{proposition}[Hölder bridge: lower bounding fiber dispersion from positive moments]\label{prop:pom-hoelder-bridge-dispersion-from-Sq}
+For any integer \(q\ge 2\) and any resolution \(m\ge 1\), inequality holds
+\[
+\boxed{\;
+|X_m|^{\,q+1}\ \le\ S_q(m)\cdot \|E_m\|_{HS}^{2q}\;}
+\]
+where \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\), and \(\|E_m\|_{HS}^2=\sum_{x\in X_m}d_m(x)^{-1}\).
+Equivalently,
+\[
+\|E_m\|_{HS}^2\ \ge\ \frac{|X_m|^{1+1/q}}{S_q(m)^{1/q}},
+\qquad
+\mathfrak{D}_m\ \ge\ \frac{2^m}{|X_m|^{1-1/q}\,S_q(m)^{1/q}}.
+\]
+\end{proposition}
+\begin{proof}
+Take
+\(
+a_x:=d_m(x)^{\frac{q}{q+1}}
+\),
+\(
+b_x:=d_m(x)^{-\frac{q}{q+1}}
+\)
+(\(x\in X_m\)), then \(a_xb_x=1\) and
+\(
+\sum_x a_x^{q+1}=S_q(m)
+\), \(
+\sum_x b_x^{(q+1)/q}=\sum_x d_m(x)^{-1}=\|E_m\|_{HS}^2
+\).
+For conjugate exponent pair \((q+1,(q+1)/q)\) apply Hölder inequality to get
+\[
+|X_m|
+=\sum_{x\in X_m}a_xb_x
+\le
+\Bigl(\sum_x a_x^{q+1}\Bigr)^{1/(q+1)}
+\Bigl(\sum_x b_x^{(q+1)/q}\Bigr)^{q/(q+1)}
+=S_q(m)^{1/(q+1)}\|E_m\|_{HS}^{2q/(q+1)}.
+\]
+Raise both sides to power \(q+1\) yields first formula; remainder are algebraic transformations using \(\mathfrak{D}_m=\frac{2^m}{|X_m|^2}\|E_m\|_{HS}^2\) (Corollary \ref{cor:pom-fiber-dispersion-index}). $\qed$
+\end{proof}
+
+\begin{corollary}[\(L^q\) framework for output distribution]\label{cor:pom-dispersion-lq-lower-bound}
+Let \(w_m(x):=d_m(x)/2^m\) be folding pushforward distribution of uniform microstate (\(\sum_x w_m(x)=1\)), and denote
+\(
+\|w_m\|_q:=\bigl(\sum_x w_m(x)^q\bigr)^{1/q}
+\).
+Then for any integer \(q\ge 2\) and any \(m\ge 1\)
+\[
+\boxed{\;
+\mathfrak{D}_m\ \ge\ \frac{1}{|X_m|^{(q-1)/q}\,\|w_m\|_q}\; }.
+\]
+In particular, when \(q=2\) denoting
+\(
+\mathrm{Col}_m:=\sum_x w_m(x)^2
+\)
+(collision constant), then
+\[
+\boxed{\;
+\mathfrak{D}_m\ \ge\ \frac{1}{\sqrt{|X_m|\,\mathrm{Col}_m}}\; }.
+\]
+\end{corollary}
+
+\begin{definition}[Mixed collision collision probability]\label{def:pom-mixed-collision-probability}
+Suppose on same stable type set \(X_m\) given two distributions \(w_m^{(0)},w_m^{(1)}\in\Delta(X_m)\) everywhere positive.
+For any integer \(q\ge 1\), define \textbf{\(2q\)-body mixed collision collision probability}
+\[
+\boxed{\;
+\mathrm{Col}^{(0,1)}_q(m)
+:=
+\sum_{x\in X_m}\bigl(w_m^{(0)}(x)\bigr)^q\bigl(w_m^{(1)}(x)\bigr)^q\; }.
+\]
+When \(q=1\), \(\mathrm{Col}^{(0,1)}_1(m)=\langle w_m^{(0)},w_m^{(1)}\rangle_{\ell^2}\) is \(\ell^2\) inner product; when \(q\ge 2\), \(\mathrm{Col}^{(0,1)}_q(m)\) quantifies similarity under higher-order collision constraints.
+\end{definition}
+
+\begin{proposition}[Finite-state computability of mixed collision kernel]\label{prop:pom-mixed-collision-kernel-computable}
+If both distributions \(w_m^{(0)},w_m^{(1)}\) produced by some finite-state online kernel (deterministic transducer/output bucketing kernel framework),
+then for each fixed integer \(q\ge 1\), sequence \(\{\mathrm{Col}^{(0,1)}_q(m)\}_{m\ge m_0}\) can be compiled as some finite-dimensional non-negative matrix power readout,
+thus satisfying finite-order integer-coefficient linear recursion; and its exponential growth main scale given by Perron root.
+\end{proposition}
+
+\begin{corollary}[Hilbert feature embedding and positive definite kernel]\label{cor:pom-mixed-collision-pd-kernel}
+For fixed \(m\) and fixed \(q\ge 1\), mapping
+\(
+w\mapsto (w(x)^q)_{x\in X_m}\in \ell^2(X_m)
+\)
+gives explicit feature embedding, and
+\[
+\boxed{\;
+\mathrm{Col}^{(0,1)}_q(m)
+=\big\langle (w_m^{(0)})^q,\ (w_m^{(1)})^q\big\rangle_{\ell^2}\;}
+\]
+is corresponding inner product kernel; therefore \(\mathrm{Col}^{(0,1)}_q(m)\) on fixed \(m\) provides family of auditable positive definite similarity fingerprints.
+\end{corollary}
+
+\begin{proposition}[Deterministic upper bound for reverse KL: controlled by dispersion index]\label{prop:pom-reverse-kl-bound-by-dispersion}
+Let \(X\) be finite set, \(w\in\Delta(X)\) everywhere positive, denote \(U:=\mathrm{Unif}(X)\).
+Define
+\[
+\mathfrak{D}(w):=\frac{1}{|X|^2}\sum_{x\in X}\frac{1}{w(x)}.
+\]
+Then inequality holds
+\[
+\boxed{\;
+D_{\mathrm{KL}}(U\|w)\ \le\ \log \mathfrak{D}(w)\; }.
+\]
+In particular, under Fold output distribution \(w=w_m\) framework have \(\mathfrak{D}(w_m)=\mathfrak{D}_m\), thus \(D_{\mathrm{KL}}(U_m\|w_m)\le \log \mathfrak{D}_m\).
+\end{proposition}
+\begin{proof}
+Write
+\[
+D_{\mathrm{KL}}(U\|w)
+=\sum_{x\in X}\frac{1}{|X|}\log\frac{1/|X|}{w(x)}
+=-\log|X|+\frac{1}{|X|}\sum_{x\in X}\log\frac{1}{w(x)}.
+\]
+By Jensen's inequality (\(\log\) concave) get
+\[
+\frac{1}{|X|}\sum_{x\in X}\log\frac{1}{w(x)}
+\le
+\log\!\left(\frac{1}{|X|}\sum_{x\in X}\frac{1}{w(x)}\right).
+\]
+Substitute and rearrange to get
+\(
+D_{\mathrm{KL}}(U\|w)\le \log\!\left(\frac{1}{|X|^2}\sum_x \frac{1}{w(x)}\right)=\log \mathfrak{D}(w)
+\).
+Finally for \(w_m(x)=d_m(x)/2^m\) have
+\(
+\mathfrak{D}(w_m)=|X_m|^{-2}\sum_x 2^m/d_m(x)=\mathfrak{D}_m
+\)
+(Corollary \ref{cor:pom-fiber-dispersion-index}). $\qed$
+\end{proof}
+
+\begin{corollary}[Deterministic upper bound for point mass: controlled by \texorpdfstring{$\mathfrak{D}(w)$}{D(w)}]\label{cor:pom-max-mass-upper-bound-by-dispersion}
+Under setting of Proposition \ref{prop:pom-reverse-kl-bound-by-dispersion}, denote \(w_{\max}:=\max_{x\in X}w(x)\).
+Then deterministic inequality holds
+\[
+\boxed{\;
+\mathfrak{D}(w)\ \ge\ \frac{1}{|X|^2}\left(\frac{1}{w_{\max}}+\frac{(|X|-1)^2}{1-w_{\max}}\right)\; }.
+\]
+Thus \(w_{\max}\) controlled by explicit quadratic constraint upper bound; and (ignoring first term to get weakened form)
+\[
+\boxed{\;
+w_{\max}\ \le\ 1-\frac{(|X|-1)^2}{|X|^2\,\mathfrak{D}(w)}\; }.
+\]
+\end{corollary}
+
+\begin{lemma}[Bounded multiplicative perturbation invariance]\label{lem:pom-bounded-multiplicative-perturbation-invariance}
+Suppose \((a_m)_{m\ge 1}\), \((b_m)_{m\ge 1}\) are positive sequences.
+If constants \(0<c\le C<\infty\) and \(m_0\) exist such that for all \(m\ge m_0\)
+\(
+c\,a_m\le b_m\le C\,a_m
+\),
+then
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log a_m
+\;=\;
+\limsup_{m\to\infty}\frac{1}{m}\log b_m.
+\]
+If further both \(m\)-th root limits \(\lim_{m\to\infty}a_m^{1/m}\), \(\lim_{m\to\infty}b_m^{1/m}\) exist, then both limits equal.
+\end{lemma}
+
+\begin{corollary}[Stability principle for pressure spectrum and large deviation spectrum]\label{cor:pom-pressure-stability-under-bounded-perturbation}
+Under collision moment/pressure spectrum framework, if some rewriting/strictification/counterterm changes counting sequence only at constant or bounded multiplicative scale (i.e., satisfies hypothesis of Lemma \ref{lem:pom-bounded-multiplicative-perturbation-invariance}),
+then derived exponential pressure (e.g., \(\tau(q)=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m)\)) strictly invariant;
+furthermore any exponential-level spectral object obtained by Legendre--Fenchel inversion from this pressure also strictly invariant, difference can only fall in finite-part or subexponential correction layer.
+\end{corollary}

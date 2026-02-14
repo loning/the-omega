@@ -1,0 +1,334 @@
+\subsection{The \texorpdfstring{$\zeta_B$}{zeta\_B} of the online normalization synchronization kernel and the primitive orbit spectrum}\label{subsec:zeta-online-kernel}
+The single-pass online delay transducer from \S\ref{subsec:online-delay} has a synchronization component that yields a 10-state SFT (see Appendix B); denote its adjacency matrix by $B$. By the standard SFT formula,
+\[
+\zeta_B(z)=\frac{1}{\det(I-zB)},\qquad
+a_n:=\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(B^n).
+\]
+Fix the state ordering consistent with Appendix B, and let
+\[
+B_{ij}:=\#\{d\in\{0,1,2\}:\ q_i\xrightarrow{d}q_j\},
+\]
+so that $B$ is obtained by edge-by-edge enumeration from the synchronization transition table; its explicit matrix and computational details are given in Appendix B.
+For this synchronization kernel, one obtains the explicit factorization (Appendix B provides the matrix and computation)
+\[
+\det(I-zB)=(z-1)(z+1)(3z-1)\bigl(z^3-z^2+z+1\bigr),
+\]
+so the dominant pole is located at $z_\star=1/3$, corresponding to the Perron--Frobenius dominant eigenvalue $\lambda=3$, and
+\[
+\zeta_B(z)=\frac{C_B}{1-3z}+O(1)
+\]
+where the residue constant \(C_B\) can be read off directly from the following closed form. Let $p_n$ denote the number of primitive orbits of length $n$ (counted by orbits); then
+
+\begin{remark}[Residue constant at the dominant pole of the 10-state synchronization kernel]\label{lem:sync-kernel-10-residue-constant}
+At \(z_\star=1/3\), define
+\(
+C_B:=\lim_{z\to z_\star}(1-3z)\zeta_B(z)
+\).
+From \(\zeta_B(z)=1/\det(I-zB)\) and
+\(
+\det(I-zB)=(z-1)(z+1)(3z-1)(z^3-z^2+z+1)
+\),
+direct substitution yields
+\[
+\boxed{\; C_B=\frac{243}{272}\; }.
+\]
+\end{remark}
+
+\begin{remark}[Number field stratification of the dominant residue constant: the synchronization kernel lies in \texorpdfstring{$\mathbb{Q}$}{Q}, while the real-input kernel enters \texorpdfstring{$\mathbb{Q}(\sqrt5)$}{Q(sqrt5)}]\label{rem:residue-field-sync-vs-real}
+The dominant residue constant of the synchronization kernel \(B\) satisfies \(C_B=243/272\in\QQ\) (Remark \ref{lem:sync-kernel-10-residue-constant}).
+In contrast, the dominant residue constant \(C_{\mathrm{real}}\) of the 40-state real-input kernel admits a closed form and lies in the quadratic number field \(\QQ(\sqrt5)\) (Proposition \ref{prop:real-input-40-residue-constant}).
+This indicates that the mechanism upgrade of ``incorporating real-input constraints'' not only changes the dominant spectral scale (from \(\lambda=3\) to \(\lambda=\varphi^2\)), but also promotes the arithmetic type of the finite-part interface to the golden quadratic field, which is cognate with the \(\varphi\)-geometric structure appearing throughout this paper.
+\end{remark}
+\[
+a_n=\sum_{d\mid n} d\,p_d,
+\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+
+\begin{remark}[The 10-state synchronization kernel does not satisfy the kernel RH (\texorpdfstring{$u=1$}{u=1})]\label{prop:sync-kernel-10-nonrh}
+Denote the adjacency matrix of the 10-state synchronization kernel by $B$, with Perron root $\lambda=\rho(B)=3$. Then there exists a nontrivial eigenvalue $\mu$ satisfying
+\[
+|\mu|>\sqrt{\lambda}=\sqrt{3},
+\]
+so that the kernel RH condition (Definition \ref{def:kernel-rh}) fails at $u=1$.
+\end{remark}
+
+\paragraph{Functorialization of the HTF/Big-Witt bridge package: the strict commutative diagram from trace sequences $\Rightarrow$ primitive atoms $\Rightarrow$ Euler products}
+Let $R$ be a commutative ring equipped with Adams operations (in the weighted case of this paper, take $R=\ZZ[u]$ and set
+$\psi^d(f)(u):=f(u^d)$).
+Consider the category $\mathbf{End}_\psi(R)$ of parametrized endomorphisms: objects are $(V,T(u))$, where $V$ is a finite free $R$-module,
+$T(u)\in \mathrm{End}_R(V)$, and the convention is that $\psi^d$ acts on the parameter (i.e., $u\mapsto u^d$).
+Let $\mathbf{Seq}(R)$ be the category of $R$-valued sequences, and $\mathbf{EP}(R)$ the multiplicative category of invertible elements in $1+zR[[z]]$ (equivalently, objects in Euler product form).
+Define four functors/operators:
+\[
+\mathsf{TrSeq}:\mathbf{End}_\psi(R)\to \mathbf{Seq}(R),\quad
+(V,T)\mapsto (a_n)_{n\ge 1},\ \ a_n(u)=\Tr(T(u)^n),
+\]
+\[
+\mathsf{Mob}_W:\mathbf{Seq}(R)\to \mathbf{Seq}(R),\quad
+(a_n)\mapsto (p_n),\ \
+p_n(u)=\frac1n\sum_{d\mid n}\mu(d)\,\psi^d\!\bigl(a_{n/d}\bigr)
+\;=\;\frac1n\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d),
+\]
+\[
+\begin{aligned}
+\mathsf{EP}:\mathbf{Seq}(R)\to \mathbf{EP}(R),\quad
+(p_n)\mapsto \prod_{n\ge 1}(1-z^n)^{-p_n},\\
+\mathsf{Det}:\mathbf{End}_\psi(R)\to \mathbf{EP}(R),\quad
+(V,T)\mapsto \det(I-zT)^{-1}.
+\end{aligned}
+\]
+Then the HTF (trace $\leftrightarrow$ prime shadow $\leftrightarrow$ Euler product) can be stated in this framework as the following \textbf{strict commutativity}:
+\[
+\begin{CD}
+\mathbf{End}_\psi(R) @>\mathsf{TrSeq}>> \mathbf{Seq}(R) @>\mathsf{Mob}_W>> \mathbf{Seq}(R) @>\mathsf{EP}>> \mathbf{EP}(R) \\
+@V\mathsf{Det}VV @. @. @| \\
+\mathbf{EP}(R) @= \mathbf{EP}(R) @= \mathbf{EP}(R) @= \mathbf{EP}(R)
+\end{CD}
+\]
+The content of commutativity consists of two auditable identities: the first is
+\[
+\det(I-zT(u))^{-1}=\exp\!\left(\sum_{n\ge 1}\frac{\Tr(T(u)^n)}{n}z^n\right),
+\]
+and the second is that the Witt (necklace) decomposition together with M\"obius inversion strips ``power-repetition closed loops'' from the primitive atoms (see Appendices \ref{app:witt-weighted} and \ref{app:witt-bridge-package}).
+Therefore, the relationship between ``trace-side time sequences (ghost coordinates)'' and ``prime-like atom-side Euler products (Witt coordinates)'' is not an analogy but a structure forced by the above commutative diagram.
+
+\begin{remark}[Big-Witt congruence guardrails: the necklace divisibility law and Dwork-type \texorpdfstring{$p$}{p}-power congruences]\label{cor:big-witt-audit-guardrails}
+Suppose a kernel (which may be a one-dimensional/two-dimensional/three-dimensional potential, or the real-input kernel, etc.) is given by a finite weighted synchronization graph/finite-state kernel, so that its \(\zeta\)-function has the determinantal form
+\[
+\zeta(z;\mathbf u)=\det(I-zB(\mathbf u))^{-1}=\exp\!\left(\sum_{n\ge 1}\frac{a_n(\mathbf u)}{n}z^n\right),
+\qquad a_n(\mathbf u):=\Tr(B(\mathbf u)^n).
+\]
+Let \(\psi^d\) denote the Adams operation on the parameters (component-wise power substitution \(\mathbf u\mapsto \mathbf u^d\)).
+Then for all \(n\ge 1\) and all primes \(p\), \(k\ge 1\), the following strict constraints hold:
+\[
+\boxed{\ \sum_{d\mid n}\mu(d)\,\psi^d\!\bigl(a_{n/d}\bigr)\in nR\ },
+\qquad
+\boxed{\ a_{p^k}\equiv \psi^p(a_{p^{k-1}})\pmod{p^k}\ },
+\]
+where \(R\) is the coefficient ring of the kernel (e.g., \(\ZZ[u]\), \(\ZZ[u,v]\), \(\ZZ[u,v,w]\)).
+\par
+\medskip\noindent\textbf{Acceptance criterion (integrality version of the strict commutative diagram)}
+In the above functorialized commutative diagram, for the bridge ``trace-side \((a_n)\) \(\xrightarrow{\ \mathsf{Mob}_W\ }\) primitive coordinates \((p_n)\) \(\xrightarrow{\ \mathsf{EP}\ }\) Euler product'' to hold \emph{strictly} in the integral-coefficient/auditable sense, it is equivalent to requiring that the primitive coordinates \(p_n=\frac1n\sum_{d\mid n}\mu(d)\,\psi^d(a_{n/d})\) obtained by M\"obius--Witt inversion all lie in \(R\).
+This in turn is equivalent to the necklace divisibility law \(\sum_{d\mid n}\mu(d)\psi^d(a_{n/d})\in nR\); the Dwork-type congruences provide the minimal modular audit subfamily in the \(p\)-power direction.
+Therefore, the above divisibility/congruence checks can be regarded as a zero-cost acceptance criterion for ``whether the commutative diagram truly commutes'': any single failure indicates a rupture of the bridge package at the implementation or model level.
+The strict coefficient-ring version and multidimensional generalization are given in Proposition \ref{prop:witt-necklace-dwork-R} and \S\ref{app:multi-dim-witt-guardrails} of Appendix \ref{app:witt-bridge-package}.
+\end{remark}
+
+\begin{algorithm}[Self-audit protocol: congruence consistency check without computing spectra or primitives]\label{alg:self-audit-witt}
+Given a kernel's weighted adjacency matrix family \(B(\mathbf u)\) (coefficient ring \(R\)), together with a set of integers \(\mathcal N\) and a set of prime powers \(\mathcal P=\{(p,k)\}\) to be audited:
+\begin{enumerate}
+  \item Compute the periodic trace polynomials \(a_n(\mathbf u)=\Tr(B(\mathbf u)^n)\in R\) (for kernels of typical size, this step can be carried out using exact matrix powers/recurrences).
+  \item For each \(n\in\mathcal N\), construct
+  \[
+  S_n(\mathbf u):=\sum_{d\mid n}\mu(d)\,a_{n/d}(\mathbf u^d)\in R,
+  \]
+  and check that \(S_n(\mathbf u)\in nR\) (i.e., each coefficient is divisible by \(n\)).
+  \item For each \((p,k)\in\mathcal P\), check that
+  \[
+  a_{p^k}(\mathbf u)-a_{p^{k-1}}(\mathbf u^p)\in p^kR
+  \]
+  (i.e., each coefficient is \(\equiv 0\ \mathrm{mod}\ p^k\)).
+\end{enumerate}
+Any single failure implies: the trace sequence cannot arise from the Euler product/primitive--periodic Big-Witt bridge package of this paper, and thus can be directly localized as an ``implementation/data pipeline error'' or ``the object does not fall within the \(\zeta\) caliber of this paper.''
+\end{algorithm}
+
+By the primitivity of $B$ (e.g., $B^5$ is entrywise positive), one obtains
+\[
+a_n=3^n+O(\rho^n),\qquad
+p_n=\frac{3^n}{n}+O\!\left(\frac{\rho^n}{n}\right)\quad(\rho<3).
+\]
+The corresponding ``prime counting curve'' is defined as $\Pi_B(N):=\sum_{n\le N}p_n$, whose discrete leading term is
+\[
+\Pi_B(N)\sim \frac{3}{2}\cdot \frac{3^N}{N},
+\]
+and can be written in the $X=3^N$ form as $X/\log X$ (see Appendix B for details). The reproducible experiment script is \texttt{scripts/exp\_sync\_kernel\_primitive\_spectrum.py}.
+
+\paragraph{Functional equation of the weighted $\zeta(z,u)$ and the output density constant}
+Take the output potential $\varphi(e)=e$, and let $B(u)=B_0+uB_1$, $\Delta(z,u)=\det(I-zB(u))$, and $\zeta(z,u)=\Delta(z,u)^{-1}$ (see Appendix \ref{app:witt-weighted}). Appendix \ref{app:kernel-self-dual} gives the self-dual symmetry
+\[
+\Delta(z,u)=\Delta(uz,1/u),\qquad
+\zeta(z,u)=\zeta(uz,1/u),
+\]
+so that $P(\theta)=\log\lambda(e^\theta)$ satisfies $P(\theta)=\theta+P(-\theta)$. Similarly, let
+\[
+\widetilde{\Delta}(z,\theta):=\Delta(e^{-\theta/2}z,e^\theta),
+\]
+then the completed determinant is strictly even-symmetric in $\theta$ (see Appendix \ref{app:kernel-completion}). Therefore
+\[
+P'(0)=\frac12,\qquad P''(0)=\frac{11}{102},
+\]
+and all odd-order cumulant densities beyond the mean vanish ($P^{(2k+1)}(0)=0,\ k\ge 1$; see Appendix \ref{app:pressure-analytic}).
+\par
+More strongly, the self-dual similarity transformation not only locks the tangent at the pressure level \(P'(0)=\tfrac12\), but also simultaneously locks the \textbf{logarithmic tangent of the entire nonzero spectrum} at \(u=1\): for every spectral branch \(\lambda_j(\theta)\) (\(u=e^\theta\)) that is nonzero and a simple eigenvalue at \(u=1\),
+\[
+\left.\frac{\mathrm{d}}{\mathrm{d}\theta}\log\lambda_j(\theta)\right|_{\theta=0}=\frac12
+\]
+(Theorem \ref{thm:sync-spectral-tangent-lock}).
+This ``spectral tangent locking'' manifests in the elimination closure of the output density curve as an auditable algebraic fingerprint: the normalized elimination polynomial \(R(\alpha,u)\) exhibits a sixfold aggregation of \((u-1)^6\) at the \(\alpha=\tfrac12\) cross-section, and the endpoint coefficients force the appearance of fourfold lateral clusters at \(\alpha\to\tfrac14,\tfrac34\) (Remark \ref{rem:rate-algebraic-elimination-structure}).
+\par
+Simultaneously, the Big-Witt/Dwork \(2\)-power congruences close in the invariant coordinate \(t=u+u^{-1}\) as an explicit dynamical congruence chain:
+\[
+A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\pmod{2^k}\qquad(k\ge 2),
+\]
+where \(a_{2^k}(u)=u^{2^{k-1}}A_{2^k}(u+u^{-1})\) is the unique decomposition of the even-degree palindromic trace polynomial on the invariant ring (Theorem \ref{thm:chebyshev-dwork-congruence-chain}).
+In a neighborhood of the typical density $\alpha_\star=\frac12$, one has
+\[
+I(\alpha)=\frac{(\alpha-\frac12)^2}{2P''(0)}+O\!\left((\alpha-\tfrac12)^3\right)
+=\frac{51}{11}\Bigl(\alpha-\frac12\Bigr)^2+O(\cdot),
+\]
+where $I$ is the LDP rate function for the output bit count (see Appendices \ref{app:pressure-analytic} and \ref{app:rate-param}). The mirror symmetry for finite $n$ and the resulting Mertens parity are given in Corollary \ref{cor:primitive-finite-sym} and Proposition \ref{prop:mertens-even}; the term-by-term palindromic constraints on periodic trace polynomials and $\Delta$ coefficients are given in Proposition \ref{prop:trace-palindrome} and Corollary \ref{cor:delta-coeff-palindrome}.
+
+\begin{remark}[Dual--conjugate symmetry of the completed zeros (fundamental domain for the kernel RH)]\label{prop:completed-zero-symmetry}
+Suppose \(\Delta(z,u)=\det(I-zB(u))\) satisfies the self-dual symmetry \(\Delta(z,u)=\Delta(uz,1/u)\), and let \(N:=\dim B\).
+Define the completed variable and completed determinant
+\[
+w:=z\,u^{1/2},\qquad
+\widehat{\Delta}(w,u):=u^{-N/2}\,\Delta(wu^{-1/2},u).
+\]
+Then:
+\begin{enumerate}
+  \item \textbf{Dual identification:} \(\widehat{\Delta}(w,1/u)=u^{N}\widehat{\Delta}(w,u)\). Therefore, for any \(u\neq 0\), the completed zero set depends only on the invariant
+  \(s:=u^{1/2}+u^{-1/2}\) (equivalently, \(u\leftrightarrow 1/u\) gives the same completed curve).
+  \item \textbf{Conjugate symmetry on the unit circle:} When \(|u|=1\), the zeros of \(\widehat{\Delta}(\,\cdot\,,u)\) come in conjugate pairs in the \(w\)-plane: if \(\widehat{\Delta}(w_0,u)=0\), then \(\widehat{\Delta}(\overline{w_0},u)=0\).
+  \item \textbf{Klein four-group action: in the \((w,u)\)-plane} when \(|u|=1\), the zero set is closed under
+  \((w,u)\mapsto (w,1/u)\) and \((w,u)\mapsto(\overline{w},\overline{u})\); since \(1/u=\overline{u}\) in this case, these two symmetries generate a Klein four-group, thereby reducing the ``kernel RH check'' to a fundamental domain (for instance, one need only scan \(t\in[0,\pi]\) with \(\Im w\ge 0\)).
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[Pressure symmetry \texorpdfstring{$\Rightarrow$}{=>} exact mirror of the large deviation spectrum]\label{thm:sync-pressure-sym-ldp-mirror}
+Suppose the synchronization kernel satisfies the self-dual symmetry, so that the pressure function satisfies
+\[
+P(\theta)=\theta+P(-\theta)
+\qquad(\theta\ \text{in some neighborhood}).
+\]
+Let \(I\) be the large deviation rate function for the output bit count (unit-length output density \(\alpha\)), which on the differentiable domain is given by the Legendre transform
+\[
+I(\alpha)=\sup_{\theta\in\RR}\bigl(\theta\alpha-P(\theta)\bigr)
+\]
+(see Appendix \ref{app:rate-param}). Then:
+\begin{enumerate}
+  \item \textbf{Typical density mirror:} If one defines the typical density of the tilted family as \(\alpha(\theta):=P'(\theta)\), then
+  \[
+  \alpha(\theta)+\alpha(-\theta)=1.
+  \]
+  \item \textbf{Rate function mirror:} For all \(\alpha\) (within the effective domain), the following exact identity holds:
+  \[
+  \boxed{\ I(\alpha)=I(1-\alpha)\ }.
+  \]
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[The quadratic rigidity constant is locked by \texorpdfstring{$P''(0)$}{P''(0)}]\label{cor:sync-ldp-quadratic-locked}
+Under the conditions of Theorem \ref{thm:sync-pressure-sym-ldp-mirror}, the typical density is \(\alpha_\star=P'(0)=1/2\), and the quadratic approximation coefficient near it is uniquely determined by \(P''(0)\):
+\[
+I\!\left(\tfrac12+\delta\right)=\frac{\delta^2}{2P''(0)}+o(\delta^2)
+=\frac{51}{11}\delta^2+o(\delta^2).
+\]
+\end{remark}
+
+\paragraph{Cyclotomic elimination: the residue mixing error exponent modulo \texorpdfstring{$m$}{m} is an algebraic number with integer coefficients}
+Write the weighted primitive orbit spectrum as
+\[
+p_n(u)=\sum_{k}p_{n,k}\,u^k\in\ZZ[u],
+\]
+where $k$ is the number of occurrences of output $1$ along a primitive orbit of length $n$. For any modulus $m\ge 3$ and congruence class $a\in\ZZ/m\ZZ$, define the residue class primitive count
+\[
+p_{n,a}^{(m)}:=\sum_{k\equiv a\ (m)}p_{n,k}.
+\]
+By discrete Fourier inversion (evaluation at roots + DFT), the following strict identity holds:
+\[
+p_{n,a}^{(m)}=\frac{1}{m}\sum_{r=0}^{m-1}\omega_m^{-ar}\,p_n(\omega_m^r),
+\qquad \omega_m:=e^{2\pi i/m}.
+\]
+Therefore the residue mixing error exponent is controlled by the twisted Perron root
+\[
+\rho_m:=\max_{1\le r\le m-1}|\lambda(\omega_m^r)|<\lambda(1)=3
+\]
+($r=0$ is the trivial frequency giving the leading term). Below we convert $\rho_m$ into an \emph{integer-coefficient algebraic equation} (resultant) problem.
+
+\begin{proposition}[Energy-resolved Euler product: \texorpdfstring{$\zeta(z,u)=\prod_{n,k}(1-z^n u^k)^{-p_{n,k}}$}{zeta(z,u)=prod(1-z^n u^k)^(-p_{n,k})}]\label{prop:sync-bivariate-euler-product}
+Continuing with the notation above, decompose the primitive orbits by length and output energy into integer coefficients \(p_{n,k}\):
+\[
+p_n(u)=\sum_{k\ge 0}p_{n,k}u^k,\qquad n\ge 1.
+\]
+Then the weighted \(\zeta\)-function has an exact bivariate Euler product
+\[
+\zeta(z,u)=\frac{1}{\det(I-zB(u))}
+=\prod_{n\ge 1}\ \prod_{k\ge 0}\bigl(1-z^n u^k\bigr)^{-p_{n,k}}.
+\]
+\end{proposition}
+\begin{proof}
+By the primitive orbit product formula of Appendix \ref{app:witt-weighted},
+\(
+\zeta(z,u)=\prod_{\tau\ \mathrm{primitive}}\bigl(1-z^{|\tau|}u^{S_\tau\varphi}\bigr)^{-1}
+\).
+Grouping the primitive orbits by \((n,k)=(|\tau|,S_\tau\varphi)\) and denoting the orbit count in each group by \(p_{n,k}\), one obtains the stated double product (this can be made rigorous by comparing coefficients order by order in the formal power series ring \(\ZZ[u][[z]]\)). \qed
+\end{proof}
+
+\begin{proposition}[Joint prime spectrum and action gap: Newton support and computability]\label{prop:sync-action-gap}
+Continuing with the joint primitive counts \(p_{n,k}\) from Proposition \ref{prop:sync-bivariate-euler-product}.
+View \((n,k)\) as ``length--energy'' coordinates, and denote the joint primitive generating function
+\[
+P(z,u):=\sum_{n\ge 1}\sum_{k\ge 0}p_{n,k}\,z^n u^k.
+\]
+Define the action gap (minimal positive energy reachability) as
+\[
+A_B:=\min\{k>0:\ \exists n\ \text{such that}\ p_{n,k}>0\}.
+\]
+Then:
+\begin{enumerate}
+  \item \(A_B>0\) if and only if there exists a primitive circuit carrying positive energy (equivalently: there exists a directed cycle containing a positive-energy edge);
+  \item \(A_B\) and the finer ``minimum mean-energy cycle'' are both computable combinatorial invariants: if each edge is assigned an energy weight \(\kappa(e)\in\ZZ_{\ge 0}\) (the output potential of this section being one example), then the minimum mean energy
+  \[
+  \bar\kappa_{\min}:=\min_{\gamma\ \mathrm{cycle}}\ \frac{\sum_{e\in\gamma}\kappa(e)}{|\gamma|}
+  \]
+  can be computed in polynomial time using Karp's min-mean-cycle algorithm (see Remark \ref{rem:pom-order-as-zero-temp} for a description in the same caliber).
+\end{enumerate}
+Therefore, the joint prime spectrum \(p_{n,k}\) not only yields the bivariate Euler product, but also induces a family of non-degenerate ``first excitation'' kernel fingerprints (\(A_B,\bar\kappa_{\min}\)) that can be used to distinguish the mechanism differences between different synchronization kernels/weighted potentials.
+\end{proposition}
+\begin{proof}
+(1) If there exists \(p_{n,k}>0\) (\(k>0\)), then there exists a primitive circuit \(\tau\) with \(|\tau|=n\) and energy \(k\), so its edge set contains at least one positive-energy edge forming a directed cycle. Conversely, if there exists a directed cycle containing a positive-energy edge, then that cycle decomposes into several primitive circuits, at least one of which has positive energy, so some \(p_{n,k}\) (\(k>0\)) is nonzero, and hence \(A_B\) is well-defined and positive.
+
+(2) \(\bar\kappa_{\min}\) is the minimum mean cycle weight on a directed graph with edge weights; Karp's algorithm provides its polynomial-time computability; this is isomorphic to the ``hard order projection/zero-temperature limit'' caliber of this section (see Remark \ref{rem:pom-order-as-zero-temp}). \qed
+\end{proof}
+
+\begin{proposition}[Extreme slopes of the Newton support: \texorpdfstring{$\alpha_{\min},\alpha_{\max}$}{alpha_min, alpha_max} and saturation endpoints]\label{prop:sync-newton-extreme-slopes}
+Continuing with the joint primitive counts \(p_{n,k}\) from Proposition \ref{prop:sync-bivariate-euler-product}.
+Let
+\[
+\alpha_{\min}:=\inf\left\{\frac{k}{n}:\ p_{n,k}>0\right\},\qquad
+\alpha_{\max}:=\sup\left\{\frac{k}{n}:\ p_{n,k}>0\right\}.
+\]
+and view \(\alpha_{\min},\alpha_{\max}\) as the extreme slopes of the two outer supporting edges of the Newton support (the convex hull of \(\{(n,k):p_{n,k}>0\}\)) in the \((n,k)\)-plane.
+Then:
+\begin{enumerate}
+  \item \(\alpha_{\min},\alpha_{\max}\) are equivalent to the extreme mean energy densities of cycles:
+  \[
+  \alpha_{\min}=\min_{\gamma\ \mathrm{cycle}}\frac{\sum_{e\in\gamma}\kappa(e)}{|\gamma|},
+  \qquad
+  \alpha_{\max}=\max_{\gamma\ \mathrm{cycle}}\frac{\sum_{e\in\gamma}\kappa(e)}{|\gamma|},
+  \]
+  where \(\kappa(e):=\varphi(e)\in\ZZ_{\ge 0}\) is the edge potential (the output bit potential of this section being \(\kappa\in\{0,1\}\)).
+  \item For the pressure \(P(\theta)=\log\rho(B(e^{\theta}))\) and the typical density \(\alpha(\theta)=P'(\theta)\), the saturation endpoint identities hold:
+  \[
+  \lim_{\theta\to-\infty}\alpha(\theta)=\alpha_{\min},\qquad
+  \lim_{\theta\to+\infty}\alpha(\theta)=\alpha_{\max},
+  \]
+  and at extreme temperatures \(P(\theta)=\alpha_{\max}\theta+O(1)\) (\(\theta\to+\infty\)) and \(P(\theta)=\alpha_{\min}\theta+O(1)\) (\(\theta\to-\infty\)).
+  \item \(\alpha_{\min}\) (min-mean-cycle) and \(\alpha_{\max}\) (max-mean-cycle) are both polynomial-time computable combinatorial invariants (Karp-type algorithm).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:sync-bivariate-euler-product}, \(p_{n,k}>0\) if and only if there exists a cycle with mean energy density \(k/n\), so \(\alpha_{\min},\alpha_{\max}\) are the min/max mean-cycle values; the endpoint saturation and Karp computability follow from the relevant mean-cycle theory. \qed
+\end{proof}
+
+\begin{proposition}[Completion \texorpdfstring{$\to$}{->} cyclotomic resultant]\label{prop:sync-cyclotomic-elimination}
+Denote $\Delta(z,u)=\det(I-zB(u))$. Introduce the completed variables
+\[
+u=r^2,\qquad s:=r+r^{-1},\qquad w:=zr,
+\]
+then by the self-dual symmetry $\Delta(z,u)=\Delta(uz,1/u)$, $w$ and $s$ are invariants. Thus there exists
+\[
+\widehat{\Delta}(w,s)\in\ZZ[s][w]
+\]

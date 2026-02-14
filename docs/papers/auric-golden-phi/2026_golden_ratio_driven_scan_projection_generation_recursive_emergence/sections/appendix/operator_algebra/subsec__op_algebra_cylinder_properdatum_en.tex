@@ -1,0 +1,90 @@
+\subsection{Full-Layer Lift of Cylinder Projections: Marginalization Consistency, pro-\texorpdfstring{$\mathrm{PerDatum}$}{PerDatum} Coordinates, and Functorial Naturality}\label{subsec:op-algebra-cylinder-properdatum}
+This subsection introduces no new dynamical assumptions; rather, within the ``projection as concept'' caliber already established in Appendix \ref{app:op-algebra},
+it organizes the length-\(m\) cylinder projection family \(\{P_a\}_{a\in\{0,1\}^m}\) into a consistent coordinate system across all layers (\(m\to\infty\)),
+and establishes its naturality with respect to conjugacy morphisms. This structure provides an implementation-independent unified interface for the formal usage of ``cylinder events/prefixes/visible \(\sigma\)-algebras'' at multiple points in the main text.
+
+\paragraph{Setup}
+We follow the notation from the beginning of the appendix: in an (auditable) finite-dimensional realization, take a Hilbert space \(\mathcal{H}\), a unitary operator \(U\), and a projection \(P\), and let
+\(
+P_t:=U^{-t}PU^t
+\).
+For any word \(a=a_0\cdots a_{m-1}\in\{0,1\}^m\) of length \(m\), the cylinder projection is defined as
+\[
+P_a=\prod_{j=0}^{m-1}Q_j(a_j),
+\qquad
+Q_j(1)=P_j,\quad Q_j(0)=I-P_j
+\]
+(see the beginning of Appendix \ref{app:op-algebra}).
+Let \(\tau\) be the normalized trace on \(\mathcal{B}(\mathcal{H})\), \(\tau(X):=\Tr(X)/\dim\mathcal{H}\), and denote the cylinder probability
+\[
+p_m(a):=\tau(P_a)\in[0,1].
+\]
+
+\begin{proposition}[Marginalization consistency of cylinder probabilities]\label{prop:op-algebra-cylinder-marginalization}
+For any \(m\ge 1\) and any \(a\in\{0,1\}^m\), the exact identity
+\[
+p_m(a)=p_{m+1}(a0)+p_{m+1}(a1)
+\]
+holds.
+Therefore, \(\{p_m\}_{m\ge 1}\) forms a marginalization-consistent projective system (Kolmogorov consistency),
+and determines a limit probability object (with cylinder coordinates as coefficients).
+\end{proposition}
+
+\begin{proof}
+By definition,
+\(
+P_{a0}=P_a\,Q_m(0)
+\)
+and
+\(
+P_{a1}=P_a\,Q_m(1)
+\),
+and \(Q_m(0)+Q_m(1)=I\), so
+\(
+P_{a0}+P_{a1}=P_a
+\).
+Taking the trace on both sides and using the linearity of \(\tau\) yields the conclusion. \qedhere
+\end{proof}
+
+\begin{remark}[Coordinate understanding of pro-\texorpdfstring{$\mathrm{PerDatum}$}{PerDatum}]\label{rem:op-algebra-properdatum-coordinate}
+In the language of Definition \ref{def:perdatum},
+each cylinder projection \(P_a\) gives a period data object \((\mathcal{B}(\mathcal{H}),\tau,P_a)\);
+the marginalization consistency of Proposition \ref{prop:op-algebra-cylinder-marginalization} shows that the ``observable coordinates''
+\(\tau(P_a)\) of these objects are strictly compatible under cross-depth projections, and can thus be viewed as a pro-\(\mathrm{PerDatum}\) coordinate system
+(i.e., an inverse system with the cylinder event family as coordinates and marginalization as the structure maps).
+The remainder of this paper uses only the auditable consistency of this coordinate system and does not rely on further formalization of the pro-category.
+\end{remark}
+
+\begin{proposition}[Naturality under conjugacy morphisms]\label{prop:op-algebra-cylinder-naturality}
+Let \((\mathcal{H},U,P,\tau)\) and \((\mathcal{H}',U',P',\tau')\) be two instances of the above data,
+and suppose there exists a unitary isomorphism \(W:\mathcal{H}\to\mathcal{H}'\) such that
+\(
+WU=U'W
+\),
+\(
+WP=P'W
+\),
+and \(\tau'(W X W^{-1})=\tau(X)\) holds for all \(X\).
+Then for any \(m\) and any \(a\in\{0,1\}^m\),
+\[
+W P_a W^{-1}=P'_a,
+\qquad
+p_m(a)=p'_m(a).
+\]
+Therefore, the cylinder coordinate system \(\{p_m\}_m\) is invariant under conjugate realizations.
+\end{proposition}
+
+\begin{proof}
+From \(WU=U'W\), we obtain \(W P_t W^{-1}=P'_t\) (for all \(t\)).
+Since the cylinder projection \(P_a\) is a polynomial expression in \(\{P_t\}\), we get \(W P_a W^{-1}=P'_a\).
+Finally, using \(\tau'(W X W^{-1})=\tau(X)\), we obtain \(p_m(a)=p'_m(a)\). \qedhere
+\end{proof}
+
+\begin{corollary}[Fiber summation law for fold pushforward (formal identity at the coordinate level)]\label{cor:op-algebra-fold-pushforward-fiber-sum}
+For any fold map \(\Fold_m:\Omega_m=\{0,1\}^m\to X_m\) at depth \(m\),
+if the distribution \(p_m\) on \(\Omega_m\) is given by cylinder coordinates, then its pushforward \(\pi_m:=(\Fold_m)_*p_m\in\Delta(X_m)\) satisfies
+\[
+\pi_m(x)=\sum_{a\in\Omega_m:\ \Fold_m(a)=x} p_m(a).
+\]
+This identity is the direct probability-coordinate version of the ``fold stabilization fiber summation'' caliber in the main text.
+\end{corollary}

@@ -1,0 +1,314 @@
+\subsection{Multiscale Consistency: Restriction Inverse System and Compatibility Caliber}\label{subsec:folding-multiscale}
+
+When comparing outputs across different window lengths $m$, ``consistency'' should be precisely defined as cross-scale compatibility: after projecting a high-resolution output to lower resolution via a natural truncation (restriction), it should reproduce the content contained in the low-resolution output. Below we give the standard construction at the object level (complete proof in Appendix G).
+
+\subsubsection{Core Theorems of Folding and Factorization (Summary Statement)}\label{subsec:fold-theorem-suite}
+To unify the auditability requirements of the folding interface, this subsection summarizes the key structures induced by folding into a single summary theorem: it provides the precise definition of folding, reduction-order independence (termination/confluence), idempotence/surjectivity, multiscale restriction inverse system compatibility, the sequence-level sofic factor and minimal right-resolving cover, and the quantitative chain from discrepancy certificates to the folding histogram TV deviation.
+
+\begin{theorem}[Finite-Window Folding: Confluence, Inverse System Compatibility, Sofic Factor, and Quantitative Certificates]\label{thm:fold-suite}
+Let $\Omega_m=\{0,1\}^m$, $X_m=\{w\in\{0,1\}^m:\text{no subword }11\}$, and let $\Fold_m:\Omega_m\to X_m$ be as in Definition \ref{def:fold-word}. Then:
+\begin{enumerate}
+\normalfont
+  \item \textbf{(Reduction-order-independent normalization)} Folding can be realized by a value-preserving local rewriting system that is strongly terminating and confluent; therefore the implementation of $\Fold_m$ is independent of the reduction order.
+  \item \textbf{(Idempotence and surjectivity)} \(\Fold_m(\omega)\in X_m\); moreover \(\Fold_m|_{X_m}=\mathrm{id}\) and \(\Fold_m:\Omega_m\twoheadrightarrow X_m\).
+  \item \textbf{(Restriction inverse system and inverse limit)} For any $m_2\ge m_1$, the truncation $\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1}$ forms a restriction inverse system, and there exists a natural isomorphism \(X_\infty\cong\varprojlim X_m\) (Theorem \ref{thm:inverse-limit-golden}).
+\item \textbf{(Cross-resolution compatible commutative diagram)} Direct microstate truncation generally does not commute with folding; however, the fold-aware restriction \(\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\) of Definition \ref{subsec:fold-omega-restriction} makes the commutative diagram hold (Proposition \ref{prop:fold-omega-commute}).
+  \item \textbf{(Sequence-level factor and explicit sofic image)} The map \(\Phi_m\) induced by \(\Fold_m\) along sliding windows is a sliding block code with memory $0$ and anticipation $m-1$ (Proposition \ref{prop:Phi_m-radius}); its image space \(Y_m\subset X_m^{\ZZ}\) is a sofic subshift given by the explicit labeled graph \(G_m\) (Theorem \ref{thm:Phi_m-sofic-graph}).
+  \item \textbf{(Minimal right-resolving cover)} For \(Y_m\), a right-resolving representation can be obtained by subset determinization (Proposition \ref{prop:Phi_m-right-resolving}); further minimization by follower sets yields the right Fischer cover, whose minimality can be found in \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+  \item \textbf{(Quantitative certificate: discrepancy \(\Rightarrow\) folding histogram TV deviation)} Under the rotational scan (Sturmian) model, for any $N\ge 1$,
+  \[
+  D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \le\ (m+1)\,D_N^*(\alpha;x_0),
+  \]
+  and the error decomposition to the Parry baseline satisfies Corollary \ref{cor:tv-decomposition-parry}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) By Proposition \ref{prop:fold-rewrite-newman} (strong termination + confluence) and Corollary \ref{cor:foldm-order-indep}.
+
+(2) By Proposition \ref{prop:fold-basic}.
+
+(3) Restriction consistency follows from Lemma \ref{lem:pi-functorial-golden}; the inverse limit isomorphism from Theorem \ref{thm:inverse-limit-golden} (complete proof in Appendix G, Theorem \ref{app:multiscale-inverse-limit}).
+
+(4) By the definition in Section \ref{subsec:fold-omega-restriction} and Proposition \ref{prop:fold-omega-commute}.
+
+(5) The radius follows from Proposition \ref{prop:Phi_m-radius}; the sofic image and explicit labeled graph from Theorem \ref{thm:Phi_m-sofic-graph}.
+
+(6) By Proposition \ref{prop:Phi_m-right-resolving} and the minimality of the right Fischer cover (see \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}).
+
+(7) By Theorem \ref{thm:tv-certificate-hist} in Section \ref{sec:experiments} (whose proof gives the explicit coefficient $m+1$) and Corollary \ref{cor:tv-decomposition-parry} for the Parry baseline error decomposition.
+\end{proof}
+
+\begin{definition}[Scale Projection (Restriction)]\label{def:pi-m2-m1-golden}
+For any $m_2\ge m_1$, define the truncation projection
+\[
+\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1},\qquad
+\pi_{m_2\to m_1}(x_1,\dots,x_{m_2})=(x_1,\dots,x_{m_1}).
+\]
+\end{definition}
+
+\begin{lemma}[Consistency]\label{lem:pi-functorial-golden}
+For any $m_3\ge m_2\ge m_1$,
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}.
+\]
+Moreover, for any infinite legal sequence $c=(c_1,c_2,\dots)$,
+\[
+\pi_{m_2\to m_1}\bigl(\pi_{m_2}(c)\bigr)=\pi_{m_1}(c).
+\]
+\end{lemma}
+
+\begin{theorem}[Inverse Limit Isomorphism (Resolution-Independent Object)]\label{thm:inverse-limit-golden}
+Let
+\[
+X_\infty:=\{(c_1,c_2,\dots)\in\{0,1\}^{\mathbb{N}}:\ c_kc_{k+1}=0\ \forall k\ge 1\}.
+\]
+Then there exists a natural isomorphism
+\[
+X_\infty\ \cong\ \varprojlim X_m,
+\]
+and $X_m$ can be viewed as a finite truncation factor of $X_\infty$: the difference across different $m$ lies only in the ``visible prefix length,'' not in the unified object itself.
+\end{theorem}
+
+\subsubsection{On Compatibility of Microstate Truncation and Folding: The Correct Commutative Diagram}\label{subsec:fold-omega-restriction}
+The above inverse system structure occurs on the stable syntax sets $\{X_m\}$, with the restriction maps being the truncations $\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1}$ of Definition \ref{def:pi-m2-m1-golden}. A question that needs clarification is: can one directly form a commutative diagram using ``drop the last bit'' truncation on the microstate space $\Omega_m=\{0,1\}^m$ together with the fold $\Fold_m$?
+
+\paragraph{Direct Truncation Generally Does Not Commute with Folding}
+Let
+\[
+r_{m+1\to m}:\Omega_{m+1}\to\Omega_m,\qquad
+r_{m+1\to m}(\omega_1\cdots\omega_m\omega_{m+1}):=\omega_1\cdots\omega_m
+\]
+be the direct truncation on microstates. In general,
+\[
+\Fold_m\circ r_{m+1\to m}\ \neq\ \pi_{m+1\to m}\circ \Fold_{m+1}.
+\]
+For example, take $m=1$ and $\omega=11$: then $r_{2\to 1}(11)=1$, so $(\Fold_1\circ r_{2\to 1})(11)=\Fold_1(1)=1$; on the other hand, $N(11)=F_2+F_3=3$ has Zeckendorf normal form $3=F_4$, so $\Fold_2(11)=00$, whence $(\pi_{2\to 1}\circ \Fold_2)(11)=0$.
+
+\paragraph{Fold-Aware Restriction (Achieving Commutativity on $\Omega$)}
+To obtain a strictly commutative formalization at the microstate level, we define a restriction compatible with folding:
+\[
+\widetilde r_{m+1\to m}:\Omega_{m+1}\to \Omega_m,\qquad
+\widetilde r_{m+1\to m}(\omega):=\pi_{m+1\to m}\bigl(\Fold_{m+1}(\omega)\bigr).
+\]
+Note that $\widetilde r_{m+1\to m}(\omega)\in X_m\subset\Omega_m$, so this definition indeed gives a map $\Omega_{m+1}\to\Omega_m$ (it is not the ``raw truncation'' but an auditable coarsening via ``fold first, then truncate'').
+
+\begin{proposition}[Cross-Resolution Compatible Commutative Diagram]\label{prop:fold-omega-commute}
+For any $m\ge 1$, the following diagram commutes:
+\[
+\begin{CD}
+\Omega_{m+1} @>{\Fold_{m+1}}>> X_{m+1}\\
+@V{\widetilde r_{m+1\to m}}VV @VV{\pi_{m+1\to m}}V\\
+\Omega_m @>{\Fold_m}>> X_m.
+\end{CD}
+\]
+That is, for any $\omega\in\Omega_{m+1}$,
+\[
+\Fold_m\bigl(\widetilde r_{m+1\to m}(\omega)\bigr)
+\ =\
+\pi_{m+1\to m}\bigl(\Fold_{m+1}(\omega)\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+By definition, $\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\in X_m$. The idempotence of Proposition \ref{prop:fold-basic} gives: for any $x\in X_m$, $\Fold_m(x)=x$. Therefore
+\[
+\Fold_m\bigl(\widetilde r_{m+1\to m}(\omega)\bigr)
+=\Fold_m\!\left(\pi_{m+1\to m}(\Fold_{m+1}(\omega))\right)
+=\pi_{m+1\to m}(\Fold_{m+1}(\omega)).
+\]
+\qed
+\end{proof}
+
+\subsubsection{Gauge Anomaly: Worst-Case Global Deviation Between Direct Truncation and Fold-Aware Restriction}\label{subsec:fold-gauge-anomaly}
+\paragraph{Minimal Correction Between Two Resolution-Lowering Outputs}
+At the microstate level, we distinguished the direct truncation \(r_{m+1\to m}\) and the fold-aware restriction \(\widetilde r_{m+1\to m}\) (Section \ref{subsec:fold-omega-restriction}).
+Below, their discrepancy is quantified as a computable scalar in purely combinatorial terms.
+
+\begin{definition}[Gauge Anomaly \texorpdfstring{$G_m(\omega)$}{Gm(omega)}]\label{def:fold-gauge-anomaly}
+For \(m\ge 1\) and any \(\omega\in\Omega_{m+1}\), define the length-\(m\) gauge anomaly
+$$
+G_m(\omega)
+:=\bigl|\,r_{m+1\to m}(\omega)\ \oplus\ \widetilde r_{m+1\to m}(\omega)\,\bigr|_0,
+$$
+where \(\oplus\) is bitwise XOR (modulo-$2$ addition on \(\{0,1\}^m\)) and \(|\cdot|_0\) is the Hamming weight (count of nonzero positions).
+\end{definition}
+
+\begin{remark}[Semantics: Lower Bound on ``Temporal Projection'' Under Resolution Lowering]
+\(\widetilde r_{m+1\to m}\) is by definition the coarsening ``fold first, then truncate,'' while \(r_{m+1\to m}\) is the direct dimension reduction ``discard the last bit.''
+The quantity \(G_m(\omega)\) precisely answers: if starting from the direct truncation \(r_{m+1\to m}(\omega)\) and wishing to recover the low-resolution output consistent with folding \(\widetilde r_{m+1\to m}(\omega)\), how many output bits must be changed at minimum (in the Hamming sense)?
+It is therefore an auditable temporal projection certificate in the ``upscale--project'' language: it measures the support size of the output touched by resolution lowering, rather than the delay length of the local causal cone.
+\end{remark}
+
+\begin{theorem}[Worst-Case Gauge Anomaly Is Full-Length: Existence of Global-Flip Inputs]\label{thm:fold-gauge-anomaly-max}
+For any \(m\ge 1\), there exists \(\omega^\star(m)\in\Omega_{m+1}\) such that
+$$
+G_m\bigl(\omega^\star(m)\bigr)=m.
+$$
+In other words, the direct truncation and the fold-aware restriction differ \emph{at every position} in the first \(m\) bits under the worst-case input.
+\end{theorem}
+
+\begin{proof}
+By definition, \(0\le G_m(\omega)\le m\).
+We construct an \(\omega^\star(m)\) achieving the upper bound.
+\par
+Let the first \(m\) bits of \(\omega^\star=\omega^\star(m)\in\Omega_{m+1}\) follow the periodic pattern \(110\):
+$$
+\omega^\star_k=
+\begin{cases}
+1,& k\equiv 1,2\pmod 3,\ 1\le k\le m,\\
+0,& k\equiv 0\pmod 3,\ 1\le k\le m,
+\end{cases}
+$$
+and set the last bit as
+$$
+\omega^\star_{m+1}:=\mathbf{1}_{\{m\equiv 1\ (\mathrm{mod}\ 3)\}}.
+$$
+Then \(r_{m+1\to m}(\omega^\star)\) is the length-\(m\) prefix of \(110110\cdots\).
+\par
+Embed \(\omega^\star\) into the configuration space \(a:=\iota_{m+1}(\omega^\star)\in\mathcal D\) (Definition \ref{def:fold-word}).
+For each \(j\ge 0\) with \(3j+1\le m\), we have \(a_{3j+1}=a_{3j+2}=1\), so the adjacent merging rule (\ref{rule:fold:adj}) can be applied simultaneously at these pairwise disjoint positions (see Definition \ref{def:fold-word}):
+$$
+a\ \to\ a':=a-\sum_{3j+1\le m}\bigl(e_{3j+1}+e_{3j+2}\bigr)+\sum_{3j+1\le m}e_{3j+3}.
+$$
+By the Fibonacci identity \(F_{k+1}+F_{k+2}=F_{k+3}\), each step preserves \(\mathrm{Val}\), so \(\mathrm{Val}(a')=\mathrm{Val}(a)=N(\omega^\star)\).
+\par
+By construction, for \(1\le k\le m\), \(a'_k\) is the length-\(m\) prefix of the periodic pattern \(001001\cdots\); this prefix contains no adjacent \(11\), so \(a'\) is an irreducible form (belonging to \(X_\infty\)).
+By the confluence and Zeckendorf uniqueness of Proposition \ref{prop:fold-rewrite-newman}, \(a'\) must equal the normal form \(\mathrm{NF}(a)\).
+Hence
+$$
+\Fold_{m+1}(\omega^\star)=\pi_{m+1}(\mathrm{NF}(a))=\pi_{m+1}(a'),
+\qquad
+\widetilde r_{m+1\to m}(\omega^\star)=\pi_{m+1\to m}(\Fold_{m+1}(\omega^\star))=\pi_m(a').
+$$
+Thus \(\widetilde r_{m+1\to m}(\omega^\star)\) is the length-\(m\) prefix of \(001001\cdots\).
+The bitwise XOR of the two gives the all-ones string, so \(G_m(\omega^\star)=m\). \qed
+\end{proof}
+
+\begin{corollary}[Any ``Modify Only a Constant Number of Tail Bits'' Resolution-Lowering Patch Is Incomplete]\label{cor:fold-tail-patch-incomplete}
+Fix a constant \(R\ge 0\). Suppose an alternative map \(T_{m,R}:\Omega_{m+1}\to\Omega_m\) satisfies: for any \(\omega\in\Omega_{m+1}\), the string \(T_{m,R}(\omega)\) can differ from the direct truncation \(r_{m+1\to m}(\omega)\) only in the last \(R\) coordinates (i.e., at most the last \(R\) bits are modified).
+Then for all \(m>R\), there exists \(\omega\in\Omega_{m+1}\) such that \(T_{m,R}(\omega)\ne \widetilde r_{m+1\to m}(\omega)\).
+\end{corollary}
+
+\begin{proof}
+Take the \(\omega^\star(m)\) of Theorem \ref{thm:fold-gauge-anomaly-max}.
+Since \(r_{m+1\to m}(\omega^\star)\) and \(\widetilde r_{m+1\to m}(\omega^\star)\) differ at every position in the first \(m\) bits, and \(T_{m,R}\) can modify at most the last \(R\) bits, \(T_{m,R}(\omega^\star)\) differs from \(\widetilde r_{m+1\to m}(\omega^\star)\) in at least the first \(m-R\) positions, so they cannot be equal. \qed
+\end{proof}
+
+\begin{remark}[Finite Tail Patch Incompleteness and the Non-Locally-Eliminable \texorpdfstring{$\mathsf{NULL}$}{NULL} Paradigm]\label{rem:fold-tail-patch-null-nonlocal}
+Corollary \ref{cor:fold-tail-patch-incomplete} shows that in cross-resolution lowering, the fold-consistent restriction \(\widetilde r_{m+1\to m}\) cannot be recovered by a ``direct truncation \(r_{m+1\to m}\) + modify only a constant number of tail bits'' protocol.
+More precisely, the gauge anomaly \(G_m(\omega)\) (Definition \ref{def:fold-gauge-anomaly}) gives the minimum Hamming correction size from \(r_{m+1\to m}(\omega)\) to \(\widetilde r_{m+1\to m}(\omega)\); when only the last \(R\) bits are allowed to be touched, \(m>R\) guarantees the existence of inputs for which this correction \emph{necessarily} overflows, thereby conflicting with the fold compatibility checker (Proposition \ref{prop:fold-omega-commute}).
+\par
+Under the ``address precedes concept value'' semantic convention (see Section \ref{sec:spg}), this gives a strict non-locally-patchable paradigm:
+if one refuses to introduce sufficient orthogonal recording axes (e.g., externalizing the non-local information needed for resolution lowering as a residual ledger) while simultaneously imposing ``fold consistency/value preservation'' as a hard audit semantic constraint, then any implementation allowing only finite tail patches will lose addressability on certain input families;
+by the conventions of this paper, such ``addressless/undefined readout'' is equivalently treated as \(\mathsf{NULL}\).
+\end{remark}
+
+\begin{remark}[Statistical Phenomenon: Average Gauge Anomaly Under Uniform Input (Reproducible Enumeration)]\label{rem:fold-gauge-anomaly-typical}
+Besides the worst case, the average gauge anomaly under the uniform input baseline also exhibits linear scale.
+Let
+$$
+\bar G_m:=\mathbb{E}_{\omega\sim\mathrm{Unif}(\Omega_{m+1})}\,G_m(\omega).
+$$
+The script \texttt{scripts/exp\_fold\_gauge\_anomaly.py} performs exact enumeration for \(m\le 20\) and outputs \(\bar G_m\) and \(\bar G_m/m\) (Table \ref{tab:fold_gauge_anomaly_stats}), showing that \(\bar G_m/m\) increases monotonically with \(m\) and reaches approximately \(0.4176\) at \(m=20\).
+This result indicates that large-scale ``resolution-lowering rewriting'' is not triggered only by extreme constructions; under structureless input it also covers the full string with positive density.
+\par
+Furthermore, the average gauge anomaly density limit under uniform input not only exists but admits a closed-form constant:
+\[
+g_\ast:=\lim_{m\to\infty}\frac{\bar G_m}{m}=\frac49,
+\]
+see Theorem \ref{thm:fold-gauge-anomaly-density} (obtained directly from the stationary distribution of the finite synchronization kernel).
+As a supplementary audit of the convergence rate for ``large \(m\),'' the script \texttt{scripts/exp\_fold\_gauge\_anomaly\_mc.py} performs Monte Carlo estimation for \(m\in\{40,100,200\}\) with standard errors, and the estimates are consistent with \(4/9\) (Table \ref{tab:fold_gauge_anomaly_mc}).
+\end{remark}
+
+\input{sections/generated/tab_fold_gauge_anomaly_stats}
+
+\input{sections/generated/eq_fold_gauge_anomaly_density_49}
+
+\iffalse
+\begin{corollary}[``Large Gauge Anomaly'' but ``Small Information'': Mutual Information Constant and Constant Bayes Prediction]\label{cor:fold-gauge-anomaly-mi}
+Under the typical interior-point joint law of Theorem \ref{thm:fold-gauge-anomaly-density},
+\[
+\mathbb P(X=1)=\frac12,\qquad \mathbb P(Y=1)=\frac{5}{18}.
+\]
+The mutual information is
+\begin{align}
+I(X;Y)&:=\sum_{x,y\in\{0,1\}}\mathbb P(x,y)\log\frac{\mathbb P(x,y)}{\mathbb P(x)\mathbb P(y)}\nonumber\\
+&=\frac{7}{18}\log\frac{14}{13}+\frac{1}{9}\log\frac{4}{5}+\frac{1}{3}\log\frac{12}{13}+\frac{1}{6}\log\frac{6}{5}\nonumber\\
+&\approx 7.7321\times 10^{-3}\ \text{nats}\approx 1.1155\times 10^{-2}\ \text{bits}.
+\end{align}
+Moreover,
+\[
+\mathbb P(Y=1\mid X=0)=\frac{2}{9},\qquad \mathbb P(Y=1\mid X=1)=\frac{1}{3},
+\]
+so the Bayes optimal predictor degenerates to the constant prediction \(\widehat Y\equiv 0\), with minimum error rate
+\[
+\mathbb P(\widehat Y\neq Y)=\mathbb P(Y=1)=\frac{5}{18}.
+\]
+\end{corollary}
+
+\begin{remark}[Quantified ``Near-Parry'': One-Step KL Rate Approximately \(10^{-5}\) nats/step]\label{rem:fold-gauge-anomaly-parry-kl}
+From the first-order Markov approximation transition \(P\) of Remark \ref{rem:fold-gauge-anomaly-near-parry}, the stationary distribution is \(\pi_0=\frac{13}{18},\pi_1=\frac{5}{18}\).
+The Parry chain of the golden mean shift (maximal entropy baseline under the same forbidden word structure) satisfies
+\[
+Q(1\mid 0)=\varphi^{-2},\qquad Q(0\mid 0)=\varphi^{-1},\qquad Q(0\mid 1)=1.
+\]
+Measuring the two-chain deviation by per-step relative entropy rate,
+\[
+\mathcal D(P\|Q):=\sum_{i\in\{0,1\}}\pi_i\sum_j P_{ij}\log\frac{P_{ij}}{Q_{ij}}
+=\frac{13}{18}\!\left(\frac{8}{13}\log\frac{8/13}{\varphi^{-1}}+\frac{5}{13}\log\frac{5/13}{\varphi^{-2}}\right)
+\approx 1.0728\times 10^{-5}\ \text{nats/step}.
+\]
+Therefore at the bigram (order-1) statistical level, the uniform baseline fold output is consistent with the Parry maximal entropy chain; if systematic deviation exists, its main carrier should appear at longer-range dependencies (order \(\ge 2\)).
+\end{remark}
+\fi
+
+\input{sections/generated/tab_fold_gauge_anomaly_mc}
+\input{sections/generated/eq_fold_gauge_anomaly_clt_variance}
+\input{sections/generated/eq_fold_gauge_anomaly_pressure}
+\input{sections/generated/eq_fold_gauge_anomaly_jordan_correlations}
+\input{sections/generated/eq_fold_gauge_anomaly_spectral_fingerprint}
+\input{sections/generated/tab_fold_gauge_anomaly_rate_curve_resultant_degree}
+\input{sections/generated/eq_fold_gauge_anomaly_rate_curve_resultant_structure}
+\input{sections/generated/eq_fold_gauge_anomaly_ldp_rate}
+
+\input{subsubsec__fold-gauge-anomaly-spectral-recurrence-certificates_en}
+
+\begin{theorem}[Multi-Step Resolution Lowering: Gauge Anomaly Density Invariance]\label{thm:fold-gauge-anomaly-kstep-invariance}
+Fix an integer \(k\ge 1\).
+For any \(\omega\in\Omega_{m+k}=\{0,1\}^{m+k}\), define the multi-step direct truncation and fold-aware restriction
+\[
+r_{m+k\to m}(\omega):=\omega_{1}\cdots\omega_{m},
+\qquad
+\widetilde r_{m+k\to m}(\omega):=\pi_{m+k\to m}\bigl(\Fold_{m+k}(\omega)\bigr)\in X_m,
+\]
+and define the \(k\)-step gauge anomaly
+\[
+G_m^{(k)}(\omega):=\bigl|\,r_{m+k\to m}(\omega)\ \oplus\ \widetilde r_{m+k\to m}(\omega)\,\bigr|_0,
+\]
+where \(\oplus\) is bitwise XOR and \(|\cdot|_0\) is the Hamming weight.
+Under the uniform baseline \(\omega\sim\mathrm{Unif}(\Omega_{m+k})\),
+\[
+\boxed{\ \lim_{m\to\infty}\frac{1}{m}\,\mathbb E\!\left[G_m^{(k)}\right]=\frac49\ },
+\qquad
+\boxed{\ \frac{G_m^{(k)}-\frac49 m}{\sqrt m}\Rightarrow \mathcal N\!\left(0,\frac{118}{243}\right)\ }.
+\]
+Moreover, for any \(\theta\in\RR\), its per-step log moment generating function limit equals that of the \(k=1\) case: there exists a pressure function \(P_G(\theta)\) independent of \(k\) such that
+\[
+\lim_{m\to\infty}\frac{1}{m}\log\mathbb E\exp\!\bigl(\theta\,G_m^{(k)}\bigr)=P_G(\theta)=\log\rho(A_\theta),
+\]
+where \(A_\theta\) is the same \(4\times 4\) weighted adjacency matrix of Proposition \ref{prop:fold-gauge-anomaly-pressure}.
+Therefore, by Proposition \ref{prop:fold-gauge-anomaly-ldp}, the large deviation rate function of \(G_m^{(k)}/m\) has endpoint closed forms \(I(0)=\log(2/\varphi), I(1)=\log 2\) that also do not change with \(k\).
+\end{theorem}
+
+\begin{proof}[Proof sketch (structural)]
+The fold \(\Fold_\infty\) admits a finite-state online implementation: under IID Bernoulli\((1/2)\) input, the output and per-bit mismatch indicator can be represented as an additive observable on a primitive finite-state Markov chain (proof sketches of Theorem \ref{thm:fold-gauge-anomaly-clt} and Proposition \ref{prop:fold-gauge-anomaly-pressure}).
+For fixed \(k\), the finite word \(\omega\in\Omega_{m+k}\) only changes the right boundary condition of this two-sided synchronization implementation; by primitivity of the chain, the right boundary condition affects interior-point statistics with exponentially decaying influence, so its impact on the sum \(G_m^{(k)}\) in terms of expectation, variance, and exponential moments is only an \(O(1)\) boundary correction.
+Dividing this boundary correction by \(m\) (or normalizing by \(\sqrt m\)) makes it vanish, so the density limit, CLT constant, and pressure function \(P_G\) (and hence the LDP rate function) all agree with the \(k=1\) case. \qed
+\end{proof}
+
+\begin{remark}[Numerical Audit: Constant Density and Variance Rate Under Fixed Look-Ahead Bits]\label{rem:fold-gauge-anomaly-kstep-mc}
+To supplement the above structural argument of ``boundary influence decays exponentially,'' Table \ref{tab:fold_gauge_anomaly_kstep_mc} provides Monte Carlo audits for several fixed \(k\) and larger \(m\), showing that \(\mathbb E[G_m^{(k)}]/m\) and \(\mathrm{Var}(G_m^{(k)})/m\) stably align with \(\frac49\) and \(\frac{118}{243}\), respectively.
+\end{remark}
+
+\input{sections/generated/tab_fold_gauge_anomaly_kstep_mc}

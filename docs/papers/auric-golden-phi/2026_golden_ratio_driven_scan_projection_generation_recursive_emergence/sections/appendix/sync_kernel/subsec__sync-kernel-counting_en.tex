@@ -1,0 +1,289 @@
+\subsection{Counting of Stable Type Sets \texorpdfstring{$X_m$}{X\_m}}
+\label{subsec:sync-kernel-counting}
+Let $a_m=|X_m|$. By classifying according to the last digit:
+\begin{itemize}
+  \item If the last digit is $0$, then the first $m-1$ digits form an arbitrary stable word, yielding $a_{m-1}$ possibilities;
+  \item If the last digit is $1$, then the penultimate digit must be $0$, and the first $m-2$ digits form an arbitrary stable word, yielding $a_{m-2}$ possibilities.
+\end{itemize}
+Hence $a_m=a_{m-1}+a_{m-2}$, with $a_1=2,a_2=3$, and therefore $a_m=F_{m+2}$.
+
+\subsection{From the Online Delay Kernel to a 10-State SFT (Synchronization Kernel)}
+In the ``pure digit-string implementation'' caliber of Zeckendorf addition, one first performs digitwise superposition over the alphabet $\{0,1,2\}$, then completes normalization using a finite-state transducer. The literature provides online finite automaton implementations for addition under the golden ratio/Zeckendorf numeration (e.g., \cite{Frougny1999OnlineAddition}).
+Extracting the \textbf{synchronization part} of this online transducer (ignoring the initial transient and the terminal output function) yields a finite-state graph $\Gamma$. Its state set can be taken as ($\overline{1}$ denotes $-1$)
+\[
+Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\overline{1}\},
+\]
+and for each state and each input $d\in\{0,1,2\}$ there is a unique next state, so the synchronization kernel is a directed graph with \textbf{constant out-degree 3} (thus defining an edge shift/topological Markov chain, i.e., an SFT).
+
+\input{sections/generated/fig_sync_kernel_10_state_graph}
+
+\begin{remark}[Alignment with the $\zeta$ determinant interface in the main text]
+Section \ref{sec:zeta-finite-part} of the main text organizes the SFT $\zeta$ as a determinant interface ($\zeta_\sigma(z)=1/\det(I-zA)$) into an auditable chain. The construction here does exactly the same thing: only the ``syntactic SFT'' is replaced by the ``mechanism SFT (synchronization kernel).''
+\end{remark}
+
+\subsection{Synchronization Automaton Structure: Shortest Reset Word Length and Target Stratification}\label{app:sync-kernel-reset-automaton}
+After \emph{forgetting the output} from the above Mealy machine, one obtains a deterministic automaton over the input alphabet $\{0,1,2\}$:
+\(
+\delta:Q\times\{0,1,2\}\to Q
+\).
+A word $w\in\{0,1,2\}^\ast$ is called a \textbf{synchronizing reset word} if $\delta(q,w)$ is independent of the initial state $q\in Q$ (equivalently, $\delta(Q,w)$ is a singleton).
+
+\begin{proposition}[The shortest synchronizing length of the 10-state synchronization kernel is exactly $5$]\label{prop:sync10-reset-length-5}
+There exists a reset word of length $5$; for example,
+\[
+\delta(Q,00000)=\{000\}.
+\]
+Furthermore, no reset word of length $<5$ exists.
+\end{proposition}
+
+\begin{remark}[Structural reason for the threshold $5$: $0000$ first compresses to two states]\label{rem:sync10-reset-mechanism}
+The fact that the threshold is ``exactly $5$'' is not an accidental enumeration output: direct computation gives
+\[
+\delta(Q,0000)=\{000,100\},
+\]
+and from the transition table, for any input $d\in\{0,1,2\}$,
+\(
+\delta(000,d)=\delta(100,d)=00d
+\),
+so for any $d$ we have
+\(
+\delta(Q,0000d)=\{00d\}
+\).
+Therefore $00000$ (and more generally $0000d$) merges the two states into a single state in the last step, thereby explaining the ``$4+1$'' structure of the shortest synchronizing length.
+\end{remark}
+
+\begin{proposition}[Strict regeneration points induced by reset words: the synchronization state undergoes complete forgetting at \texorpdfstring{$00000$}{00000}]\label{prop:sync10-regeneration}
+Fix an arbitrary input sequence \(\mathbf d=(d_t)_{t\ge 0}\in\{0,1,2\}^{\NN}\).
+For any initial state \(q\in Q\), define the state evolution of the synchronization kernel by
+\[
+q^{(q)}_0:=q,\qquad q^{(q)}_{t+1}:=\delta\!\bigl(q^{(q)}_t,d_t\bigr)\qquad(t\ge 0).
+\]
+If for some time \(t\ge 0\) we have \(d_t d_{t+1}\cdots d_{t+4}=00000\), then for any initial state \(q\in Q\),
+\[
+q^{(q)}_{t+5}=000,
+\]
+so the synchronization state at time \(t+5\) is independent of both the initial state and all previous inputs \((d_0,\dots,d_{t-1})\).
+More generally, if \(d_t\cdots d_{t+3}d_{t+4}=0000d\) (\(d\in\{0,1,2\}\)), then for any \(q\in Q\) we have \(q^{(q)}_{t+5}=00d\).
+\par
+One may therefore define the set of regeneration points induced by reset words (indexed by the starting position of the fragment) as
+\[
+\mathcal T(\mathbf d):=\{t\ge 0:\ d_t\cdots d_{t+4}=00000\}.
+\]
+For any \(t\in\mathcal T(\mathbf d)\), the synchronization state trajectory from time \(t+5\) onward is determined solely by the future input \((d_{t+5},d_{t+6},\dots)\) and is completely decoupled from the past.
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:sync10-reset-length-5}, \(\delta(Q,00000)=\{000\}\), so for any state \(q_t\in Q\), after reading the word \(00000\), the resulting state is always \(000\), i.e., \(q^{(q)}_{t+5}=000\).
+The conclusion for ``\(0000d\)'' follows directly from \(\delta(Q,0000d)=\{00d\}\) in Remark \ref{rem:sync10-reset-mechanism}.
+The last paragraph is a semantic restatement of the above two conclusions. \qedhere
+\end{proof}
+
+\begin{corollary}[Regeneration upper bound on correlation/mixing: replacing ``correlation length'' with an auditable waiting-time quantity]\label{cor:sync10-regeneration-correlation-bound}
+Let \((D_t)_{t\ge 0}\) be a random input sequence taking values in \(\{0,1,2\}\) (not necessarily i.i.d.).
+For any initial state \(q\in Q\), denote by \((Q^{(q)}_t)_{t\ge 0}\) the synchronization state trajectory driven by the same input sequence \((D_t)\):
+\[
+Q^{(q)}_0:=q,\qquad Q^{(q)}_{t+1}:=\delta\!\bigl(Q^{(q)}_t,D_t\bigr)\qquad(t\ge 0).
+\]
+Let
+\[
+T:=\inf\{t\ge 0:\ D_t\cdots D_{t+4}=00000\}\in\NN\cup\{\infty\}
+\]
+be the waiting time for the first occurrence of the reset word \(\texttt{00000}\) (measured by starting position).
+Then for any two initial states \(q,q'\in Q\) and any \(n\ge 0\), on the event \(\{T\le n-5\}\) we necessarily have \(Q^{(q)}_n=Q^{(q')}_n\).
+Equivalently,
+\[
+\{T\le n-5\}\subseteq \{Q^{(q)}_n=Q^{(q')}_n\},
+\]
+which yields the probability upper bound
+\[
+\mathbb{P}\!\left(Q^{(q)}_n\neq Q^{(q')}_n\right)\ \le\ \mathbb{P}(T>n-5).
+\]
+In particular, any observable that is \emph{deterministically generated} by the synchronization state (e.g., output bits, weighted additive potentials) can have lag-\(n\) correlation only through the event \(\{T>n-5\}\);
+therefore, the upper bound on ``correlation length/mixing rate'' can be replaced by the waiting-time tail distribution \(n\mapsto \mathbb{P}(T>n)\), which depends only on the input model's occurrence statistics for the fragment \(\texttt{00000}\) (requiring no spectral estimation or numerical fitting).
+\end{corollary}
+\begin{proof}
+Consider two trajectories sharing the same input sequence \((D_t)\) but with initial states \(q,q'\) respectively.
+On the event \(\{T\le n-5\}\), there exists \(t\le n-5\) such that \(D_t\cdots D_{t+4}=00000\);
+by Proposition \ref{prop:sync10-regeneration}, both trajectories are simultaneously reset to the same deterministic state \(000\) at time \(t+5\), and since the subsequent inputs are identical, they remain identical at all later times, so \(Q^{(q)}_n=Q^{(q')}_n\).
+Thus \(\{T\le n-5\}\subseteq \{Q^{(q)}_n=Q^{(q')}_n\}\). Taking probabilities of both sides and complementing yields the stated inequality.
+The final paragraph is the ``forgetting'' semantics from Proposition \ref{prop:sync10-regeneration}: any observable depending only on the synchronization state is independent of the initial state on \(\{T\le n-5\}\), so its lag correlation can only arise from \(\{T>n-5\}\).
+\qedhere
+\end{proof}
+
+Furthermore, for a fixed target state $t\in Q$, define its \textbf{reset depth}
+\[
+\ell(t):=\min\{|w|:\ \delta(Q,w)=\{t\}\}.
+\]
+Table \ref{tab:sync-kernel-reset-target-depth} lists $\ell(t)$ and a shortest witness word for every target state.
+In particular, not all target states can be reached at length $5$: only the two target states $0\overline{1}2$ and $11\overline{1}$ satisfy $\ell(t)=6$, with shortest witnesses \texttt{000102} and \texttt{000020}, respectively.
+These results are reproduced in one step by the script \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py}.
+
+\input{sections/generated/tab_sync_kernel_reset_targets}
+
+\subsection{Transformation Semigroup Invariants: Size, Group of Units, and Local \texorpdfstring{$\mathbb{Z}_2$}{Z2} Periodicity}\label{app:sync-kernel-semigroup}
+Viewing each input letter $d\in\{0,1,2\}$ as a function $f_d:q\mapsto\delta(q,d)$ on $Q$, consider the transformation monoid they generate:
+\[
+\mathcal{S}:=\langle f_0,f_1,f_2\rangle\subseteq Q^Q.
+\]
+Table \ref{tab:sync-kernel-transition-semigroup-invariants} summarizes the reproducible invariants of $\mathcal{S}$ (size, rank distribution, number of units, etc.).
+Note that although there is only one globally invertible element (the identity), $\mathcal{S}$ does contain $2$-periodic elements (local $\mathbb{Z}_2$ subgroups), so this transformation semigroup is \emph{not} aperiodic (``group-free'').
+These are also automatically generated as auditable tables and witnesses by the script \texttt{scripts/exp\_sync\_kernel\_10\_state\_automaton\_invariants.py}.
+
+\input{sections/generated/tab_sync_kernel_transition_semigroup_invariants}
+
+\subsection{Adjacency Matrix $B$ and the Synchronization Kernel Shift $(X_B, \sigma)$}\label{app:sync-kernel-basic}
+Fix the state ordering
+\[
+(000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\overline{1}),
+\]
+and let $B_{ij}$ denote the number of input edges from state $i$ to state $j$ (each edge corresponding to an input symbol $d\in\{0,1,2\}$). Then the adjacency matrix of the synchronization kernel is
+\[
+B=
+\begin{pmatrix}
+1&1&1&0&0&0&0&0&0&0\\
+0&0&0&1&1&1&0&0&0&0\\
+1&1&0&0&0&0&0&0&0&1\\
+0&0&0&0&1&1&1&0&0&0\\
+1&1&1&0&0&0&0&0&0&0\\
+0&0&0&1&1&1&0&0&0&0\\
+0&0&0&1&1&0&0&0&1&0\\
+0&0&0&1&1&0&0&0&1&0\\
+0&1&1&0&0&0&0&1&0&0\\
+0&1&1&0&0&0&0&1&0&0
+\end{pmatrix}.
+\]
+Denote the edge shift defined by this adjacency matrix as $(X_B,\sigma)$.
+
+\subsection{Closed Form and Factorization of \texorpdfstring{$\zeta_B(z)$}{zeta\_B(z)} (Auditable Caliber)}
+Section \ref{sec:zeta-finite-part} of the main text defines the dynamical $\zeta$ for a general dynamical system:
+\[
+\zeta_S(z):=\exp\!\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(S^n)}{n}z^n\right),
+\]
+and provides for SFTs the identity
+\[
+\zeta_\sigma(z)=\frac{1}{\det(I-zA)},\qquad
+\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A^n),
+\]
+whose derivation rests on ``periodic points $\leftrightarrow$ closed path counting + matrix identities''; this is also rewritten as a verifiable chain within the Fredholm determinant caliber of the main text.
+
+Therefore, for the synchronization kernel $(X_B,\sigma)$,
+\[
+a_n:=\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(B^n),\qquad
+\zeta_B(z)=\frac{1}{\det(I-zB)}.
+\]
+
+For the explicit $B$ above, one directly computes the determinant factorization
+\[
+\det(I-zB)=(z-1)(z+1)(3z-1)\bigl(z^3-z^2+z+1\bigr),
+\]
+whence
+\[
+\zeta_B(z)=\frac{1}{(z-1)(z+1)(3z-1)(z^3-z^2+z+1)}.
+\]
+Thus near $z_\star=1/3$ one may write
+\[
+\zeta_B(z)=\frac{C_B}{1-3z}+O(1),
+\qquad
+C_B=\frac{243}{272}.
+\]
+The dominant pole is at $z_\star=1/3$, corresponding to the Perron--Frobenius dominant eigenvalue $\lambda=3$.
+
+\subsection{Primitive Orbit Spectrum \texorpdfstring{$p_n$}{p\_n} (``Prime-Like Objects'') and M\"obius Inversion}
+Let $a_n=\mathrm{Tr}(B^n)$. Define $p_n$ as the number of \textbf{primitive periodic orbits} of length exactly $n$ (counted by orbit). The decomposition of periodic orbits into power repetitions of primitive orbits yields the standard relation:
+\[
+a_n=\sum_{d\mid n} d\,p_d,
+\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\]
+where $\mu$ denotes the M\"obius function. This relation can be viewed as the equivalent expression of the Euler product structure of $\zeta$ under the ``periodic/primitive'' decomposition (consistent with the periodic-point counting interface of Section \ref{sec:zeta-finite-part} in the main text).
+
+\subsection{Explicit Numerics and Asymptotics: \texorpdfstring{$p_n\sim 3^n/n$}{p\_n ~ 3**n/n}}
+For this $B$, the first 10 periodic-point counts (traces) are
+\[
+(a_1,\dots,a_{10})=(2,14,20,94,222,770,2116,6694,19442,59494),
+\]
+and the primitive orbit counts are
+\[
+(p_1,\dots,p_{10})=(2,6,6,20,44,123,302,825,2158,5926).
+\]
+Thus $\Pi_B(10)=\sum_{n\le 10}p_n=9412$.
+
+Moreover, since the graph is primitive (e.g., $B^5$ is strictly positive), Perron--Frobenius gives
+\[
+a_n=\mathrm{Tr}(B^n)=3^n+O(\rho^n)
+\quad(\rho<3),
+\]
+and M\"obius inversion immediately yields
+\[
+p_n=\frac{3^n}{n}+O\!\left(\frac{\rho^n}{n}\right).
+\]
+In this example, the second-largest eigenvalue modulus may be taken as $\rho\approx 1.839286755$ (arising from the roots of the cubic factor $z^3-z^2+z+1$).
+
+\subsection{``Prime Counting Curve'' \texorpdfstring{$\Pi_B(N)$}{Pi\_B(N)}}
+If one defines the orbit prime counting function (by ``length'') as
+\[
+\Pi_B(N):=\sum_{n\le N}p_n,
+\]
+then from the exponential dominance $p_n\sim 3^n/n$ one obtains a leading term better suited to the discrete setting:
+\[
+\Pi_B(N)\sim \frac{3}{2}\cdot \frac{3^N}{N}.
+\]
+Indeed, from $p_n = \frac{3^n}{n} + O(\frac{\rho^n}{n})$ we have $\Pi_B(N) = \sum_{n=1}^N \frac{3^n}{n} + O(\frac{\rho^N}{N})$. Via the substitution $k = N - n$, the main-term sum can be expressed as
+\[
+\sum_{n=1}^N \frac{3^n}{n} = \frac{3^N}{N} \sum_{k=0}^{N-1} 3^{-k} \left( 1 - \frac{k}{N} \right)^{-1} = \frac{3^N}{N} \left( \sum_{k=0}^{N-1} 3^{-k} + O\left(\frac{1}{N}\sum_{k=0}^{N-1} k 3^{-k}\right) \right).
+\]
+Since the series $\sum_{k=0}^\infty 3^{-k} = 3/2$ and $\sum_{k=0}^\infty k 3^{-k}$ converges, the above gives $\Pi_B(N) = \frac{3}{2} \frac{3^N}{N} + O\left(\frac{3^N}{N^2}\right)$.
+
+If one wishes to write it in the form ``$x/\log x$,'' set $X:=3^N$; then
+\[
+\Pi_B(\lfloor \log_3 X\rfloor)\sim \frac{3}{2}\log 3\cdot \frac{X}{\log X},
+\]
+so the ``prime-like counting curve'' has a shape homologous to the prime counting function (differing only in the constant).
+
+\subsection{Alignment with the Abel Finite-Part Interface: An Auditable Constant Output}
+Section \ref{sec:zeta-finite-part} of the main text uses Abel regularization + Hadamard finite part as the ``discretization--regularization--finite part'' stability interface and formalizes it as Definition \ref{def:abel-finite-part}. For the primitive orbit spectrum of the synchronization kernel, one can also provide a ``boundary finite-part readout'' in exactly the same caliber, thereby incorporating it into the ``finite-part interface.''
+
+Define the primitive generating function
+\[
+P_B(z):=\sum_{n\ge 1}p_n z^n.
+\]
+By the Euler product,
+\[
+\log\zeta_B(z)=\sum_{m\ge 1}\frac{1}{m}P_B(z^m),
+\]
+so $P_B(z)=\log\zeta_B(z)-H_B(z)$, where $H_B$ is analytic at $z=1/3$.
+Since $p_n\sim 3^n/n$, a logarithmic divergence appears as $z\to 1/3$. Rescaling variables to the unit disk in the Abel caliber:
+\[
+r:=3z\in(0,1),\qquad
+\widetilde P_B(r):=P_B(r/3)=\sum_{n\ge 1}p_n\left(\frac{r}{3}\right)^n,
+\]
+then as $r\uparrow 1$,
+\[
+\widetilde P_B(r)= -\log(1-r)+\log\mathfrak{M}_B+o(1).
+\]
+Accordingly, one defines an ``orbit Mertens constant'' (finite-part output):
+\[
+\log\mathfrak{M}_B
+:=\mathrm{fp}_{r=1}\bigl(\widetilde P_B(r)+\log(1-r)\bigr),
+\]
+which is precisely the direct application to $\zeta$-type objects of the ``take the Laurent constant term/finite part after Abel regularization'' idea emphasized in Section \ref{sec:zeta-finite-part} of the main text.
+
+For the present 10-state synchronization kernel, the computation gives
+\[
+\log \mathfrak{M}_B\approx -0.3033268788310883,
+\qquad
+\mathfrak{M}_B\approx 0.7383577034164908.
+\]
+Higher-precision values of $\log\mathfrak{M}_B$ and the corresponding Dirichlet residue and $s=1$ finite-part constant (see the interface of Appendix \ref{app:real-input-40-dirichlet}) are summarized in Table \ref{tab:sync-kernel-B-dirichlet-constants} (generated by script and \verb|\input|):
+\input{sections/generated/tab_sync_kernel_B_dirichlet_constants}
+
+\begin{remark}[Interface note regarding Section \ref{sec:zeta-finite-part} of the main text]
+\begin{itemize}
+  \item Section \ref{sec:zeta-finite-part} of the main text provides the $\zeta$ determinant interface for the ``syntactic SFT''; here we provide $\zeta_B$ for the ``mechanism SFT (online normalization kernel).'' Both share the same auditable derivation chain: closed path counting $\Rightarrow \mathrm{Tr}(A^n) \Rightarrow \det(I-zA)$.
+  \item Section \ref{sec:zeta-finite-part} of the main text provides Abel/finite part as the analytic-layer readout; here we demonstrate how it compresses the primitive spectrum into a comparable scalar $\mathfrak{M}_B$.
+  \item Regarding ``sofic vs.\ SFT'' caliber consistency: the main text already emphasizes using a covering SFT (Fischer cover) for general sofic shifts to obtain the $\zeta$ interface $\det(I-zA)$; the present construction directly yields an SFT on the synchronization kernel (state graph) and thus represents the cleanest instance of the ``covering caliber.''
+\end{itemize}
+\end{remark}
+
+\begin{remark}[Auditable extension to weighted primitive spectra]
+One may further introduce weights on the edges of the synchronization kernel related to carry, negative carry, or states containing $\overline{1}$, constructing weighted matrices $B_\theta$ and $\zeta_{B,\theta}$, and extracting weighted finite-part constant families as $r\uparrow 1$. In this way, ``latent attributes'' are converted from state labels to a set of auditable analytic invariants (mean, variance, deviation constants), all of which remain entirely within the interface framework of Section \ref{sec:zeta-finite-part} of the main text.
+\end{remark}

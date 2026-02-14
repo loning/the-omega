@@ -1,0 +1,208 @@
+\subsubsection{Matrix Product Representation and Tensorized MOM Compilation of Fiber Multiplicities: Non-Commutative Counting under Finite-Window Inverse Codes}\label{subsubsec:pom-multiplicity-matrix-product-tensor-mom}
+In the main text's collision spectrum framework, \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\) is treated as a ``\(q\)-fold fiber product'' counting object (Definition \ref{def:pom-moment-q}), unified through finite-state moment-kernels into the Perron--Frobenius/\(\zeta\) interface (Proposition \ref{prop:pom-moment-kernel-exists} and Definition \ref{def:pom-moment-pressure}).
+This paragraph supplements a finer structural layer: under the regime where a \emph{finite-window inverse code} exists, the individual fiber volume \(d_m(x)\) itself admits a matrix product counting formula; moreover, for any integer order \(q\), the collision kernel of \((\mathrm{MOM}_q)\) can be explicitly written as the Kronecker coupling of ``the syntactic two-state golden skeleton \(\times\) the \(q\)-fold synchronous direct product of the inverse-code transfer.''
+
+\paragraph{Finite-window inverse code \texorpdfstring{$\Rightarrow$}{=>} matrix product counting of fiber volumes}
+\begin{theorem}[Matrix product representation of fiber multiplicities and minimal ambiguity-state dimension]\label{thm:pom-fiber-multiplicity-matrix-product}
+Let \(\Fold_\infty:\Omega_\infty=\{0,1\}^{\NN}\to X_\infty\) be the binary folding factor, and let \(X_\infty\subseteq\{0,1\}^{\NN}\) be the golden mean shift (forbidding adjacent \(11\)).
+Suppose \(\Fold_\infty\) admits a finite-window inverse code \(\Psi\), so that ``given the output prefix \(x_1\cdots x_m\),'' all legitimate preimages can be updated and counted position-by-position via a finite-state deterministic system (equivalently, one can take a follower-separated right-resolving presentation and perform counting readout on it).
+Then there exist a finite state set \(\mathcal S\), boundary vectors \(u,v\in\NN^{\mathcal S}\), and two matrices
+\[
+T_0,T_1\in M_{|\mathcal S|}(\NN),
+\]
+such that for any legitimate macroscopic word \(x=x_1\cdots x_m\in X_m\) (\(m\ge 1\)) the exact counting formula holds:
+\[
+\boxed{\;
+d_m(x)=u^{\mathsf T}T_{x_1}T_{x_2}\cdots T_{x_m}v\; }.
+\]
+Furthermore, among all choices satisfying the above representation, the minimum possible dimension \(|\mathcal S|\) equals the cardinality of the finite complete set of right ambiguity classes (follower ambiguity classes);
+therefore, when \(\Psi\) is taken to be the canonical inverse code induced by the minimal online delay/minimal synchronization structure, this minimum dimension is uniquely determined by \(\Fold_\infty\).
+\end{theorem}
+\begin{proof}
+By hypothesis, the inverse code can be realized as a deterministic finite-state counting automaton: its states record ``the ambiguity classes still possible given the output prefix,'' and upon reading the next output symbol \(b\in\{0,1\}\), a deterministic update is performed.
+Let \(\mathcal S\) be the (reachable) state set of this counting automaton, and let \((T_b)_{b\in\{0,1\}}\) be the transition counting matrices decomposed by output symbol (the counting semantics at each step are given by the branching numbers produced by the inverse code, so entries are nonneg\-ative integers).
+Take \(u\) as the initial state distribution (determined by boundary/starting admissible states), and \(v\) as the terminal readout vector (summing over admissible terminating states). Then the total number of preimages of the length-\(m\) output word \(x_1\cdots x_m\) is precisely the path count along this deterministic counting automaton, yielding the matrix product formula.
+\par
+The minimality conclusion is standard minimization of deterministic finite automata: merging states by the equivalence relation ``having the same follower set (identical right extension family)'' yields the minimal right-resolving follower-separated representation, whose number of equivalence classes is the stated right ambiguity class complete set cardinality; any matrix product representation must distinguish these equivalence classes, so its dimension cannot be less than this cardinality, while the minimization construction achieves this lower bound.
+\end{proof}
+
+\paragraph{Tensorized MOM compilation: golden syntactic skeleton \texorpdfstring{$\otimes$}{x} \(q\)-fold inverse-code synchronous direct product}
+\begin{proposition}[Tensor-decomposition-type collision kernel for MOM\texorpdfstring{$\,_q$}{\_q}]\label{prop:pom-momq-tensor-kernel-construction}
+Under the setting of Theorem \ref{thm:pom-fiber-multiplicity-matrix-product}, let
+\[
+G_0:=\begin{pmatrix}1&0\\[2pt]1&0\end{pmatrix},
+\qquad
+G_1:=\begin{pmatrix}0&1\\[2pt]0&0\end{pmatrix}
+\in M_2(\{0,1\})
+\]
+be the symbol-decomposed transition matrices of the golden mean two-state skeleton (satisfying \(G_0+G_1=\bigl(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\bigr)\)).
+For any integer \(q\ge 1\), define the explicit \(q\)-th order collision transfer kernel
+\[
+A_q^{\mathrm{ten}}
+\;:=\;
+G_0\otimes T_0^{\otimes q}\;+\;G_1\otimes T_1^{\otimes q}
+\ \in\ M_{2|\mathcal S|^q}(\NN).
+\]
+Let \(e_0:=(1,0)^{\mathsf T}\in\NN^2\), \(\mathbf 1:=(1,1)^{\mathsf T}\in\NN^2\), and take the boundary vectors
+\[
+\alpha_q:=e_0\otimes u^{\otimes q},
+\qquad
+\beta_q:=\mathbf 1\otimes v^{\otimes q}.
+\]
+Then for all \(m\ge 1\) the linear recurrence counting representation holds:
+\[
+\boxed{\;
+S_q(m)=\sum_{x\in X_m}d_m(x)^q
+\;=\;
+\alpha_q^{\mathsf T}\bigl(A_q^{\mathrm{ten}}\bigr)^{m}\beta_q\; }.
+\]
+Therefore, the ``finite-state compilation'' of \((\mathrm{MOM}_q)\) can be taken as a tensor-decomposition-type structure: the \(q\)-body overlap constraint at the kernel level is equivalent to the \(q\)-fold synchronous direct product of the inverse-code transfer, Kronecker-coupled with the golden syntactic two-state skeleton.
+\end{proposition}
+\begin{proof}
+By Theorem \ref{thm:pom-fiber-multiplicity-matrix-product},
+\(
+d_m(x)=u^{\mathsf T}T_{x_1}\cdots T_{x_m}v
+\).
+Hence
+\[
+d_m(x)^q
+=
+\bigl(u^{\otimes q}\bigr)^{\mathsf T}\,
+\bigl(T_{x_1}^{\otimes q}\bigr)\cdots
+\bigl(T_{x_m}^{\otimes q}\bigr)\,
+v^{\otimes q}.
+\]
+Summing over all legitimate words \(x\in X_m\) can be realized through the path expansion of the golden mean two-state skeleton: at each step one chooses a symbol \(b\in\{0,1\}\) and updates the syntactic state via \(G_b\), while simultaneously applying the synchronous update \(T_b^{\otimes q}\) on \(\mathcal S^{\times q}\).
+Therefore the weighted path sum is exactly \(\alpha_q^{\mathsf T}(A_q^{\mathrm{ten}})^m\beta_q\). \qed
+\end{proof}
+
+\paragraph{Discrete convexity of integer-order pressure and the protocol lower bound on second-order collision}
+\begin{corollary}[Discrete convexity and a strict protocol lower bound on \texorpdfstring{$\rho(A_2)$}{rho(A2)}]\label{cor:pom-integer-pressure-discrete-convexity-strict-bound}
+Write
+\[
+\tau_q:=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)
+\qquad(q\in\NN),
+\]
+where \(\tau_0=\log\varphi\) (since \(|X_m|=S_0(m)\asymp \varphi^m\)) and \(\tau_1=\log 2\) (since \(S_1(m)=\sum_x d_m(x)=|\Omega_m|=2^m\)).
+Then the integer sequence \((\tau_q)_{q\ge 0}\) satisfies discrete convexity:
+\[
+\boxed{\;
+\tau_{q+1}-\tau_q\ \ge\ \tau_q-\tau_{q-1}\qquad(q\ge 1)\; }.
+\]
+If moreover the strict convexity regime of Theorem \ref{thm:pom-real-q-pressure-analytic-interpolation} holds (for example, when the fiber multiplicity potential is not cohomologous to a constant), then the above inequality is strict for all \(q\ge 1\).
+In particular, in the non-trivial folding (strict convexity) case,
+\[
+\boxed{\;
+\tau_2\ >\ 2\tau_1-\tau_0\ =\ 2\log 2-\log\varphi,
+\qquad\text{equivalently}\qquad
+\rho\!\left(A_2^{\mathrm{ten}}\right)\ >\ \frac{4}{\varphi}\; }.
+\]
+\end{corollary}
+\begin{proof}
+Discrete convexity is the integer-point form of Corollary \ref{cor:pom-crossq-pressure-convexity} (alternatively, one can apply H\"older's inequality directly to each fixed \(m\) to obtain \(S_q(m)^2\le S_{q-1}(m)S_{q+1}(m)\), then take logarithms, divide by \(m\), and pass to the limit).
+Strictness follows from the strict convexity condition of Theorem \ref{thm:pom-real-q-pressure-analytic-interpolation}.
+Substituting \(q=1\) yields the stated second-order lower bound and spectral radius inequality. \qed
+\end{proof}
+
+\paragraph{Removable factor decomposition of the second-order collision spectrum: spectral inversion of the synchronization tail exponent}
+\begin{proposition}[Synchronization absorption block and ambiguity tail kernel: removable factors of the collision \texorpdfstring{$\zeta$}{zeta}]\label{prop:pom-collision-zeta-removable-sync-factor}
+In the \(q=2\) case of Proposition \ref{prop:pom-momq-tensor-kernel-construction}, decomposing the inverse-code ambiguity state space \(\mathcal S\) into ``synchronized states/unsynchronized states'' (candidate set is a singleton vs.\ non-singleton),
+\(A_2^{\mathrm{ten}}\) can be rearranged into a block upper-triangular matrix by permuting the basis:
+\[
+A_2^{\mathrm{ten}}\ \sim\
+\begin{pmatrix}
+D & *\\
+0 & B
+\end{pmatrix},
+\]
+where \(D\) is the counting kernel of the synchronization absorption block, and \(B\) is the tail spectral kernel of the unsynchronized ambiguity subsystem.
+Hence the determinant factorization holds:
+\[
+\boxed{\;
+\det(I-zA_2^{\mathrm{ten}})
+=
+\det(I-zD)\,\det(I-zB)\; }.
+\]
+Therefore, once the synchronization absorption factor \(\det(I-zD)\) can be computed explicitly, the ``synchronization tail'' dominant pole radius \(z_{\mathrm{sync}}:=\rho(B)^{-1}\) can be individually inverted from the residual pole set of the second-order collision spectrum
+\(\det(I-zA_2^{\mathrm{ten}})\)
+after removing \(\det(I-zD)\).
+\end{proposition}
+\begin{proof}
+Since ``synchronized states'' are preserved under the deterministic inverse-code update (once the candidate set becomes a singleton, it never splits again), the subspace spanned by synchronized states is an invariant subspace, yielding the block upper-triangular decomposition.
+The determinant of a block triangular matrix equals the product of the diagonal block determinants, hence the factorization formula follows; the pole inversion conclusion is immediate. \qed
+\end{proof}
+
+\paragraph{Quadratic characteristic equation induced by the golden two-state skeleton: fixed-point characterization of \texorpdfstring{$\rho(A_q)$}{rho(Aq)}}
+\begin{proposition}[Fixed-point equation and monotone root-finding for the Perron root]\label{prop:pom-golden-grammar-fixed-point-rho-aq}
+Under the setting of Proposition \ref{prop:pom-momq-tensor-kernel-construction}, \(A_q^{\mathrm{ten}}\) can be written as a \(2\times 2\) block matrix:
+\[
+A_q^{\mathrm{ten}}
+\;=\;
+\begin{pmatrix}
+T_0^{\otimes q} & T_1^{\otimes q}\\[2pt]
+T_0^{\otimes q} & 0
+\end{pmatrix}.
+\]
+Let \(\lambda_q:=\rho(A_q^{\mathrm{ten}})>0\).
+Then \(\lambda_q\) is equivalently the unique positive real number satisfying
+\[
+\boxed{\;
+\rho\!\left(\lambda_q^{-1}T_0^{\otimes q}+\lambda_q^{-2}T_1^{\otimes q}T_0^{\otimes q}\right)=1\; }
+\]
+Moreover, the function
+\[
+F_q(\lambda):=\rho\!\left(\lambda^{-1}T_0^{\otimes q}+\lambda^{-2}T_1^{\otimes q}T_0^{\otimes q}\right)
+\]
+is strictly monotonically decreasing in \(\lambda>0\), so \(\lambda_q\) can be found via bisection or monotone iteration with one-dimensional convergence.
+\end{proposition}
+\begin{proof}
+Writing out the Perron eigenpair \((\lambda_q,(u_0,u_1))\) (with \(u_0,u_1\ge 0\) nonzero) from the eigenvalue equation:
+\[
+\lambda_q u_0=T_0^{\otimes q}u_0+T_1^{\otimes q}u_1,
+\qquad
+\lambda_q u_1=T_0^{\otimes q}u_0.
+\]
+Eliminating \(u_1=\lambda_q^{-1}T_0^{\otimes q}u_0\) yields
+\(
+u_0=\lambda_q^{-1}T_0^{\otimes q}u_0+\lambda_q^{-2}T_1^{\otimes q}T_0^{\otimes q}u_0
+\),
+so \(1\) is an eigenvalue of \(\lambda_q^{-1}T_0^{\otimes q}+\lambda_q^{-2}T_1^{\otimes q}T_0^{\otimes q}\); by non\-negativity and irreducibility, its spectral radius must equal \(1\).
+The converse direction is analogous: if there exists \(\lambda>0\) for which the spectral radius is \(1\), taking the Perron vector \(u_0\) and setting \(u_1=\lambda^{-1}T_0^{\otimes q}u_0\) constructs a Perron eigenvector of \(A_q^{\mathrm{ten}}\), hence \(\lambda=\rho(A_q^{\mathrm{ten}})\).
+\par
+Monotonicity follows from the monotonicity of the spectral radius with respect to entries of a nonneg\-ative matrix: as \(\lambda\) increases, both terms \(\lambda^{-1}\) and \(\lambda^{-2}\) strictly decrease, so \(F_q\) is strictly decreasing. \qed
+\end{proof}
+
+\paragraph{Spectral formula for R\'enyi entropy rates and discrete concavity of the collision index}
+\begin{corollary}[Concavity of the collision index and the R\'enyi entropy rate spectral formula]\label{cor:pom-renyi-rate-spectral-formula-discrete-concavity}
+For integer \(q\ge 2\), define the unseparated tail
+\[
+\Pi_q(m):=\sum_{x\in X_m}w_m(x)^q=\frac{S_q(m)}{2^{mq}},
+\]
+and let its exponential decay rate (collision index) be
+\[
+E_q:=\lim_{m\to\infty}-\frac{1}{m}\log \Pi_q(m).
+\]
+If \(S_q(m)=\Theta(\rho(A_q^{\mathrm{ten}})^m)\) (for example, when \(A_q^{\mathrm{ten}}\) is primitive and the boundary vectors are non-degenerate), then
+\[
+\boxed{\;
+E_q=q\log 2-\log\rho(A_q^{\mathrm{ten}})\;=\;h_q\;=\;-P(q)\; }
+\]
+(notation as in Definition \ref{def:pom-moment-pressure}).
+Moreover, the integer sequence \((E_q)_{q\ge 2}\) satisfies discrete concavity in \(q\):
+\[
+\boxed{\;
+E_{q+1}-E_q\ \le\ E_q-E_{q-1}\qquad(q\ge 3)\; }.
+\]
+The corresponding R\'enyi entropy rate (standard normalization, denoted \(h_q^{\mathrm R}\)) satisfies the spectral closed form
+\[
+\boxed{\;
+h_q^{\mathrm R}
+:=\lim_{m\to\infty}\frac{1}{m}\cdot\frac{1}{1-q}\log\sum_{x\in X_m}w_m(x)^q
+\;=\;\frac{E_q}{q-1}
+\;=\;\frac{q\log 2-\log\rho(A_q^{\mathrm{ten}})}{q-1}\; }.
+\]
+\end{corollary}
+\begin{proof}
+The spectral closed form follows directly from \(\Pi_q(m)=S_q(m)/2^{mq}\) and \(\tau(q)=\log\rho(A_q^{\mathrm{ten}})\), and is consistent with the definition \(h_q=\log(2^q/r_q)\) (Definition \ref{def:pom-moment-pressure}).
+Discrete concavity follows from the discrete convexity of \(\tau_q\) (the non-strict version of Corollary \ref{cor:pom-integer-pressure-discrete-convexity-strict-bound}) via the identity transformation \(E_q=q\log2-\tau_q\). \qed
+\end{proof}

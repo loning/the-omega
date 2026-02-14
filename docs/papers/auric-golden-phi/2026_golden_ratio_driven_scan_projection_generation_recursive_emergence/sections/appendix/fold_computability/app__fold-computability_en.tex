@@ -1,0 +1,47 @@
+\section{Computability and Basic Properties of the Fold Operator \texorpdfstring{$\Fold_m$}{Fold\_m}}
+\label{app:fold-computability}
+
+The Zeckendorf normal form can be computed by a greedy algorithm: given $N\in\NN$, one repeatedly subtracts the largest Fibonacci weight not exceeding the current remainder and skips adjacent weights to enforce the no-consecutive-$1$'s constraint. The algorithm terminates and outputs the unique normal form $Z(N)=(c_1,c_2,\dots)$ (\cite{Zeckendorf1972}).
+
+For any $\omega=\omega_1\cdots\omega_m\in\Omega_m$, one first computes the Fibonacci-weighted value according to Definition \ref{def:fold-word}:
+\[
+N(\omega)=\sum_{k=1}^m \omega_k F_{k+1},
+\]
+then extracts the first $m$ digits of $Z(N(\omega))$ to obtain $\Fold_m(\omega)=\pi_m(Z(N(\omega)))\in X_m$. The entire procedure consists of finitely many integer arithmetic operations together with Zeckendorf greedy normalization, thereby furnishing an explicit algorithm for $\Fold_m$.
+
+The three properties of Proposition \ref{prop:fold-basic} follow directly from Zeckendorf uniqueness:
+\begin{itemize}
+  \item \textbf{Normality:} The first $m$ digits output by $\pi_m(Z(\cdot))$ satisfy the no-consecutive-$1$'s constraint and hence lie in $X_m$.
+  \item \textbf{Idempotence:} If $\omega\in X_m$, then its weighted value $N(\omega)$ already constitutes a valid Zeckendorf representation; uniqueness forces the first $m$ digits of $Z(N(\omega))$ to equal $\omega$.
+  \item \textbf{Surjectivity:} For any $x\in X_m$, setting $\omega=x$ yields $\Fold_m(\omega)=x$.
+\end{itemize}
+
+\begin{lemma}[Bijection on the Zeckendorf range]\label{lem:zeckendorf-range-bijection}
+For any $m\ge 1$, if $0\le N\le F_{m+2}-1$, then the nonzero digit indices of $Z(N)$ do not exceed $m$, so that
+\[
+\pi_m(Z(N))=Z(N)\ \text{(as a zero-padded truncation of length }m\text{)}.
+\]
+Consequently, the map $N\mapsto \pi_m(Z(N))$ defines a bijection from $\{0,1,\dots,F_{m+2}-1\}$ onto $X_m$, whose inverse is $w\mapsto V_m(w)$.
+\end{lemma}
+
+\textbf{Proof:}
+If $Z(N)$ had a $1$ in position $m+1$, then $N\ge F_{m+2}$ (since the weight of that position is $F_{m+2}$ and the remaining terms are nonneg\-ative), contradicting $N\le F_{m+2}-1$. Hence $c_{m+1}=c_{m+2}=\cdots=0$, so the truncation loses no information and yields the stated bijection.
+
+\subsection{The \texorpdfstring{$B_3/C_3$}{B3/C3} Root System Dictionary for Fold6 (Reproducible Audit Artifact)}
+\label{app:fold6-b3c3-seed-dictionary}
+
+The script \texttt{scripts/exp\_fold6\_b3c3\_seed.py} constructs the rigid split
+\(
+X_6=X_6^{\mathrm{cyc}}\sqcup X_6^{\mathrm{bdry}}
+\)
+for \(m=6\) as an auditable ``root system dictionary'' artifact.
+It generates the summary fragment referenced in \S\ref{subsec:bdry-tower-zeck-gut} of the main text via
+\verb|\input{sections/generated/eq_fold6_b3c3_seed}| (shown below),
+and exports the root dictionaries under both normalizations (long--short root interchange): Table \ref{tab:fold6_b3c3_root_dictionary_b3} and Table \ref{tab:fold6_b3c3_root_dictionary_c3}.
+
+\input{sections/generated/eq_fold6_b3c3_seed}
+
+\input{sections/generated/tab_fold6_b3c3_root_dictionary_B3}
+\input{sections/generated/tab_fold6_b3c3_root_dictionary_C3}
+
+In addition, the script writes a machine-verifiable JSON certificate \texttt{artifacts/export/fold6\_b3c3\_seed.json} (containing the \(18\oplus 3\) and \(6+12\) fingerprints, both dictionaries, and the orbit-size verification against the Weyl group order \(48\)).

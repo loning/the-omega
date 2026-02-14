@@ -1,0 +1,218 @@
+\subsection{Statistical Zero-Knowledge of Horizon Interactions: Comb--Diamond Norm Criterion, Decoupling Mechanism, and \texorpdfstring{$\zeta$}{zeta}-Spectral Closed Loop}\label{subsec:discussion-horizon-hszk-comb-sff-zeta}
+The previous subsection used ``truncated horizon multipole moments/Toeplitz--PSD certificates'' as observable algebraic constraints, providing an information-theoretic reformulation of no-hair and the distinguishability area law derived from the endpoint quadratic compression (\S\ref{subsec:discussion-horizon-zk-toeplitz-area-law}).
+This subsection elevates that caliber to the quantum interactive level: characterizing the horizon interface as a quantum comb (the pluggable skeleton of quantum strategies/quantum networks), and providing a verifiable criterion for ``horizon statistical zero-knowledge'' (HSZK) via the diamond norm of interactive maps; then quantitatively aligning HSZK error with externally extractable information (Holevo leakage), and converting the chaotic scrambling mechanism into zero-knowledge simulability via ``approximate 2-design \(\Rightarrow\) decoupling''; finally providing an operational spectral diagnostic path: controlling the approximate design threshold by the frame potential and spectral form factor (SFF), and in the \(\zeta\)-spectral model identifying the zero-point structure as the unique spectral input determining the time behavior of zero-knowledge error.
+\par
+The role of this subsection is solely interface docking and falsifiable alignment: all assertions except those explicitly labeled as conjectures are standard quantum information theory inequalities or their direct corollaries, and do not serve as premises of the main proof chain.
+\par
+
+\paragraph{Macroscopic charge fiber and horizon comb}
+Let \(\mathcal{H}_A\) be the microscopic degrees of freedom of the system (which may be taken to be finite-dimensional), and let \(\Omega\) be its state set (pure or mixed).
+Let \(Q:\Omega\to\mathcal{Q}\) be the macroscopic charge map (e.g., discretized sector labels for mass/angular momentum/charge), and denote the charge fiber as \(Q^{-1}(q)\).
+For any interaction duration \(t\ge 0\), the horizon interface is given in quantum comb form:
+\[
+\mathsf{H}_{\le t}:\Omega\to \mathrm{Comb}\bigl(\mathsf{In}_{\le t}\to \mathsf{Out}_{\le t}\bigr),
+\]
+meaning: an external verifier can adaptively inject probe states during \([0,t]\) and measure the output, while \(\mathsf{H}_{\le t}(\omega)\) gives the equivalence class of all interactive CPTP strategies permitted under microstate \(\omega\) (see \cite{ChiribellaDArianoPerinotti2008QuantumCircuitArchitecture,ChiribellaDArianoPerinotti2009FrameworkQuantumNetworks}).
+Let the external strategy (verifier) be any permitted comb \(\mathsf{V}_{\le t}\); composing it with \(\mathsf{H}_{\le t}(\omega)\) produces a terminal view (density operator):
+\[
+\sigma^{(t,\mathsf{V})}_\omega\ :=\ \mathrm{View}_t(\omega;\mathsf{V})\ \in\ \mathsf{D}(\mathcal{H}_{\mathsf{V}}),
+\]
+where \(\mathcal{H}_{\mathsf{V}}\) is the verifier's terminal register.
+\par
+
+\begin{definition}[Horizon statistical zero-knowledge (HSZK)]\label{def:discussion-hszk}
+Fix \(t\ge 0\) and \(\varepsilon\in[0,1]\).
+We say the horizon interface \(\mathsf{H}_{\le t}\) satisfies \textbf{horizon statistical zero-knowledge} at error \(\varepsilon\) (denoted \(\mathrm{HSZK}_\varepsilon(t)\)) if for any macroscopic charge \(q\in\mathcal{Q}\), there exists a ``charge-factorized interface'' depending only on \(q\):
+\[
+\widetilde{\mathsf{H}}_{\le t,q}\ \in\ \mathrm{Comb}\bigl(\mathsf{In}_{\le t}\to \mathsf{Out}_{\le t}\bigr)
+\]
+such that for any permitted external strategy \(\mathsf{V}_{\le t}\) and any \(\omega\in Q^{-1}(q)\),
+\begin{equation}\label{eq:discussion-hszk-view-trace}
+\norm{\sigma^{(t,\mathsf{V})}_\omega-\widetilde{\sigma}^{(t,\mathsf{V})}_q}_1\ \le\ \varepsilon,
+\qquad
+\widetilde{\sigma}^{(t,\mathsf{V})}_q:=\mathrm{View}_t(\widetilde{\mathsf{H}}_{\le t,q};\mathsf{V}).
+\end{equation}
+Here \(\norm{\cdot}_1\) denotes the trace norm.
+\end{definition}
+
+\begin{definition}[Diamond norm distance of combs]\label{def:discussion-comb-diamond}
+For any two same-type combs \(X,Y\in \mathrm{Comb}(\mathsf{In}_{\le t}\to\mathsf{Out}_{\le t})\), define their interactive distinguishing norm (diamond norm/strategy norm) as
+\begin{equation}\label{eq:discussion-comb-diamond-def}
+\boxed{\;
+\norm{X-Y}_\diamond
+:=\sup_{\mathsf{V}_{\le t}}\ \norm{\mathrm{View}_t(X;\mathsf{V})-\mathrm{View}_t(Y;\mathsf{V})}_1\;}
+\end{equation}
+where the supremum is taken over all permitted external strategy combs.
+\end{definition}
+
+\begin{theorem}[Categorical characterization and diamond norm criterion for HSZK]\label{thm:discussion-hszk-iff-diamond}
+Under the setting of Definitions \ref{def:discussion-hszk}--\ref{def:discussion-comb-diamond},
+\(\mathrm{HSZK}_\varepsilon(t)\)
+holds if and only if for any \(q\in\mathcal{Q}\) there exists \(\widetilde{\mathsf{H}}_{\le t,q}\) such that
+\begin{equation}\label{eq:discussion-hszk-diamond}
+\boxed{\;
+\sup_{\omega\in Q^{-1}(q)}\ \norm{\mathsf{H}_{\le t}(\omega)-\widetilde{\mathsf{H}}_{\le t,q}}_\diamond\ \le\ \varepsilon\;.}
+\end{equation}
+In this sense, the physical statement ``the horizon does not leak microstate information'' is rigorously promoted to an interactive norm criterion: within a fixed charge sector, the horizon comb family concentrates in the \(\norm{\cdot}_\diamond\) sense to an \(\varepsilon\)-neighborhood of a single charge interface \(\widetilde{\mathsf{H}}_{\le t,q}\).
+\end{theorem}
+
+\begin{proof}
+By Definition \ref{def:discussion-comb-diamond}, for any fixed \((\omega,q)\) and any candidate \(\widetilde{\mathsf{H}}_{\le t,q}\), the inequality
+\(
+\norm{\mathsf{H}_{\le t}(\omega)-\widetilde{\mathsf{H}}_{\le t,q}}_\diamond\le \varepsilon
+\)
+is equivalent to \eqref{eq:discussion-hszk-view-trace} holding for all \(\mathsf{V}_{\le t}\).
+Taking the supremum over \(\omega\in Q^{-1}(q)\) yields \eqref{eq:discussion-hszk-diamond}, which is consistent with the quantifier structure of \(\mathrm{HSZK}_\varepsilon(t)\). This completes the proof.
+\end{proof}
+
+\begin{remark}[Canonical simulator: microcanonical/maximum entropy representative and charge symmetry center]\label{rem:discussion-canonical-simulator-microcanonical}
+The ``charge-factorized interface'' in Definition \ref{def:discussion-hszk} is not required to be unique.
+On a given charge sector \(q\), a natural canonical choice is the maximum entropy representative (microcanonical average state):
+\[
+\bar\rho_q:=\frac{I_q}{\dim\mathcal{H}_q},
+\]
+where \(\mathcal{H}_q\) is the effective subspace of the charge sector.
+If \(\omega\mapsto \mathsf{H}_{\le t}(\omega)\) is affine on states (physical CPTP linearity) and covariant with respect to symmetry within the sector, then
+\(\widetilde{\mathsf{H}}_{\le t,q}:=\mathsf{H}_{\le t}(\bar\rho_q)\)
+gives a charge-symmetric canonical simulator.
+Under this covariant caliber, \(\bar\rho_q\) is the unique symmetric fixed point within the sector, and hence the most natural center choice in the ``charge-symmetric interface class''; the resulting simulator serves as the unified entry point for subsequently introducing spectral statistics into \(\varepsilon\) error control.
+\end{remark}
+
+\begin{proposition}[Equivalent characterization of zero-knowledge error and extractable information: Holevo leakage bound and reverse bound]\label{prop:discussion-hszk-holevo}
+Fix \(t,q\) and let \(\{\sigma^{(t,\mathsf{V})}_\omega\}_{\omega\in Q^{-1}(q)}\) be the view state family produced by some external strategy \(\mathsf{V}_{\le t}\).
+If \(\mathrm{HSZK}_\varepsilon(t)\) holds, then there exists \(\widetilde{\sigma}^{(t,\mathsf{V})}_q\) such that for all \(\omega\in Q^{-1}(q)\), \(\norm{\sigma^{(t,\mathsf{V})}_\omega-\widetilde{\sigma}^{(t,\mathsf{V})}_q}_1\le \varepsilon\).
+Then for any distribution \(p\) (supported on \(Q^{-1}(q)\)), the Holevo information satisfies
+\begin{equation}\label{eq:discussion-holevo-upper}
+\boxed{\;
+\chi\bigl(\{p(\omega),\sigma^{(t,\mathsf{V})}_\omega\}\bigr)
+\ \le\
+2\varepsilon\,\log d_{\mathsf{V}}+2\,h(\varepsilon)\;}
+\end{equation}
+where \(d_{\mathsf{V}}:=\dim\mathcal{H}_{\mathsf{V}}\) and \(h\) is the binary entropy function.
+\par
+Conversely, if for all permitted \(\mathsf{V}_{\le t}\) and all distributions \(p\subseteq Q^{-1}(q)\) we have \(\chi\le \delta\),
+then for any \(\omega,\omega'\in Q^{-1}(q)\),
+\begin{equation}\label{eq:discussion-holevo-reverse}
+\boxed{\;
+\norm{\sigma^{(t,\mathsf{V})}_\omega-\sigma^{(t,\mathsf{V})}_{\omega'}}_1
+\ \le\
+\sqrt{8(\ln 2)\,\delta}\;}
+\end{equation}
+so there exists \(\varepsilon=O(\sqrt{\delta})\) such that \(\mathrm{HSZK}_\varepsilon(t)\) holds (up to constant factors).
+Therefore, ``horizon zero-knowledge'' and ``externally extractable microstate information tending to zero'' are quantitatively equivalent characterizations.
+\end{proposition}
+
+\begin{proof}
+The upper bound \eqref{eq:discussion-holevo-upper} is a continuity estimate for Holevo information: when a family of states lies within the same \(\varepsilon\)-ball in trace distance, their distinguishable information is controlled by \(O(\varepsilon\log d+h(\varepsilon))\) (derivable from the Alicki--Fannes/Audenaert-type inequality).
+\par
+For the reverse bound \eqref{eq:discussion-holevo-reverse}, take the two-point distribution \(p=\frac12(\delta_\omega+\delta_{\omega'})\).
+Then the Holevo information is
+\(
+\chi=\frac12 D(\sigma_\omega\Vert \bar\sigma)+\frac12 D(\sigma_{\omega'}\Vert \bar\sigma)
+\)
+where \(\bar\sigma=\frac12(\sigma_\omega+\sigma_{\omega'})\).
+By the quantum Pinsker inequality \(D(\rho\Vert\sigma)\ge \frac{1}{2\ln 2}\norm{\rho-\sigma}_1^2\), and noting
+\(\sigma_\omega-\bar\sigma=\frac12(\sigma_\omega-\sigma_{\omega'})\), we get
+\(
+\chi\ge \frac{1}{8\ln 2}\norm{\sigma_\omega-\sigma_{\omega'}}_1^2
+\), yielding \eqref{eq:discussion-holevo-reverse}.
+Finally, taking a common reference point \(\omega_0\) for all \(\omega\) and setting \(\widetilde{\sigma}:=\sigma_{\omega_0}\), we obtain \(\mathrm{HSZK}_{O(\sqrt\delta)}\) (at the constant factor level). This completes the proof.
+\end{proof}
+
+\paragraph{Approximate 2-design \texorpdfstring{$\Rightarrow$}{=>} decoupling \texorpdfstring{$\Rightarrow$}{=>} HSZK}
+To strictly translate ``chaotic scrambling'' into a zero-knowledge error upper bound, we employ the decoupling theorem for approximate 2-designs (\cite{SzehrDupuisTomamichelRenner2013DecouplingTwoDesigns}).
+
+\begin{theorem}[Approximate 2-design decoupling implies horizon zero-knowledge (interactive observable upper bound)]\label{thm:discussion-2design-decoupling-hszk}
+Let \(A\) denote the system's microscopic degrees of freedom and \(R\) the reference system (which may absorb the verifier's private register to cover the interactive worst case).
+Suppose the effective evolution over duration \(t\) consists of two steps: first apply a random unitary \(U\sim\mathcal{E}_t\) to \(A\), then apply a fixed CPTP process \(T:A\to B\) (radiation release/externally accessible reduction), and denote the initial state as \(\rho_{AR}\).
+If \(\mathcal{E}_t\) is a \(\delta\)-approximate unitary 2-design, then there exists a marginal state \(\omega_B\) depending only on \(T\) such that
+\begin{equation}\label{eq:discussion-decoupling-bound}
+\mathbb{E}_{U\sim\mathcal{E}_t}\,
+\norm{\,T\bigl((U\otimes I_R)\rho_{AR}(U^\dagger\otimes I_R)\bigr)-\omega_B\otimes\rho_R\,}_1
+\ \le\
+\mathrm{poly}(\dim A)\cdot \sqrt{\delta}\cdot 2^{-\frac12\Xi_{\min}},
+\end{equation}
+where \(\Xi_{\min}\) is a negative exponent determined by the min-entropy data of \(\rho_{AR}\) and \(T\) (see \cite{SzehrDupuisTomamichelRenner2013DecouplingTwoDesigns} for the precise expression).
+\par
+Interpreting \eqref{eq:discussion-decoupling-bound}: at the time scale where the 2-design threshold is reached, the externally visible marginal and the reference system (i.e., microstate label) are approximately tensor-factored in trace distance, so there exists a simulated output \(\omega_B\) depending only on the macroscopic sector, thereby inducing \(\mathrm{HSZK}_{\varepsilon(t)}(t)\) (where \(\varepsilon(t)\) is explicitly controlled by the right side).
+\end{theorem}
+
+\paragraph{Spectral form: SFF/frame potential \texorpdfstring{$\Rightarrow$}{=>} approximate design threshold \texorpdfstring{$\Rightarrow$}{=>} HSZK}
+The spectral form factor (SFF) and frame potential are computable diagnostic quantities for ``proximity to the Haar second moment'' (see \cite{Liu2018SpectralFormFactors} and related design literature).
+
+\begin{definition}[Spectral form factor (SFF)]\label{def:discussion-sff}
+Given a Hamiltonian \(H\) and partition function \(Z(\beta)=\Tr(e^{-\beta H})\), define the standard normalized spectral form factor:
+\[
+\mathrm{SFF}(\beta,t):=\left|\frac{Z(\beta+\mathrm{i}t)}{Z(\beta)}\right|^2.
+\]
+\end{definition}
+
+\begin{proposition}[Computable sufficient condition for HSZK from frame potential/spectral diagnostics]\label{prop:discussion-framepotential-sff-to-hszk}
+Let \(\mathcal{E}_t\) be the time-smoothed evolution ensemble, \(F^{(2)}(\mathcal{E}_t)\) its second-order frame potential, and \(F^{(2)}_{\mathrm{Haar}}\) the Haar value.
+If there exists a function \(\eta(t)\) such that
+\[
+F^{(2)}(\mathcal{E}_t)-F^{(2)}_{\mathrm{Haar}}\ \le\ \eta(t),
+\]
+then \(\mathcal{E}_t\) is a \(\delta(t)\)-approximate 2-design (where \(\delta(t)\) is explicitly controlled by \(\eta(t)\)), and by Theorem \ref{thm:discussion-2design-decoupling-hszk} we obtain
+\(\mathrm{HSZK}_{\varepsilon(t)}(t)\), with \(\varepsilon(t)\) explicitly controlled by \(\eta(t)\) (and min-entropy data).
+\par
+In many standard spectral models, \(\eta(t)\) can be controlled by some smoothed upper bound of \(\mathrm{SFF}(\beta,t)\) or its higher moments; thus ``onset/failure of HSZK'' can be reduced to the quantitative determination of when the SFF enters the ramp--plateau region.
+\end{proposition}
+
+\paragraph{\texorpdfstring{$\zeta$}{zeta}-spectral model: zeros as the unique spectral input to zero-knowledge error}
+Consider the truncated energy spectrum \(E_n=\log n\) (\(n\le N\)).
+Let
+\(
+Z_N(s)=\sum_{n\le N}n^{-s}
+\), so that for \(\beta>0\),
+\(
+Z_N(\beta+\mathrm{i}t)=\sum_{n\le N}e^{-(\beta+\mathrm{i}t)\log n}
+\)
+is the truncated partition function of this spectral model.
+Its SFF thus has the closed form
+\[
+\mathrm{SFF}_N(\beta,t)=\left|\frac{Z_N(\beta+\mathrm{i}t)}{Z_N(\beta)}\right|^2.
+\]
+Under appropriate regularization and limiting caliber, the analytic structure of \(Z_N(s)\) coincides with that of \(\zeta(s)\), thereby directly aligning the dip--ramp--plateau behavior of the SFF with the modulus behavior of \(\zeta\) (see \cite{BasuDasKrishnan2025AnalyticZetaRamp}).
+
+\begin{proposition}[Explicit zero-knowledge control law in the \texorpdfstring{$\zeta$}{zeta}-spectral model: zeros enter the error bound as the unique input]\label{prop:discussion-zeta-spectral-hszk}
+Under the ``zero-knowledge--SFF control law'' caliber of Proposition \ref{prop:discussion-framepotential-sff-to-hszk},
+if \(\eta(t)\) can be controlled by some smoothed upper bound of \(\mathrm{SFF}_N(\beta,t)\), then the error upper bound of \(\mathrm{HSZK}_{\varepsilon(t)}(t)\) can be controlled by a function determined solely by \(|Z_N(\beta+\mathrm{i}t)|\) (and its smoothed average).
+In the analytic continuation caliber as \(N\to\infty\), this is equivalent to being controlled solely by \(|\zeta(\beta+\mathrm{i}t)|\).
+\par
+Since the modulus behavior of \(\zeta\) in analytic number theory is ultimately governed by its zero set (Hadamard decomposition/explicit formulas), in this spectral model:
+Riemann zeros appear not as an analogical rhetoric, but as the unique spectral input quantity determining the time behavior of zero-knowledge error.
+\end{proposition}
+
+\begin{definition}[Zero-knowledge mixing time]\label{def:discussion-zk-mixing-time}
+Define the zero-knowledge mixing time:
+\[
+t_{\mathrm{ZK}}(\varepsilon):=\inf\{\,t:\ \mathrm{HSZK}_{\varepsilon}(t)\ \text{holds}\,\}.
+\]
+\end{definition}
+
+\begin{corollary}[Identification of zero-knowledge mixing time with Thouless time (verifiable time scale)]\label{cor:discussion-zk-vs-thouless}
+If there exists a time scale \(t_{\mathrm{Th}}\) such that for \(t\ge t_{\mathrm{Th}}\), the spectral diagnostic (SFF or frame potential) enters a stable ramp and reaches the approximate 2-design threshold, then by Proposition \ref{prop:discussion-framepotential-sff-to-hszk} and Theorem \ref{thm:discussion-2design-decoupling-hszk},
+\[
+t_{\mathrm{ZK}}(\varepsilon)\ \le\ t_{\mathrm{Th}}+O_\varepsilon(1),
+\]
+where \(O_\varepsilon(1)\) depends on the threshold and smoothing scheme.
+For the \(\zeta\)-spectral model, existing analytic work provides evidence that its Thouless time is \(O(1)\) (in its canonical normalization, see \cite{BasuDasKrishnan2025AnalyticZetaRamp}), yielding the co-order conclusion \(t_{\mathrm{ZK}}(\varepsilon)=O(1)\).
+\end{corollary}
+
+\begin{conjecture}[Spectral rigidity conjecture for horizon zero-knowledge: HSZK \texorpdfstring{$\Rightarrow$}{=>} sine-kernel correlations]\label{conj:discussion-horizon-zk-rigidity}
+Suppose there exists a family of horizon interfaces \(\{\mathsf{H}^{(d)}_{\le t}\}\) with system dimension \(d\to\infty\), and a time scale \(t(d)=\mathrm{poly}(\log d)\) such that
+\(\mathrm{HSZK}_{o(1)}(t(d))\)
+holds uniformly for all polynomial-complexity external interactive strategies.
+Then it is conjectured that the unfolded energy levels of the corresponding effective Hamiltonian at the local unfolding scale must enter the random matrix level repulsion and sine-kernel two-point correlation universality class;
+in other words, if the local statistics significantly deviate from the Montgomery-type pair correlation (or its generalizations), then there exists a family of polynomial-complexity interactive verifiers that can construct an observable ``knowledge leakage'' distinguisher, thereby negating \(\mathrm{HSZK}_{o(1)}\).
+This conjecture promotes ``zero-knowledge simulability'' to a spectral universality principle, and provides an information-theoretic refutation interface for the pair correlation target in number theory (see \cite{GoldstonLeeSchettlerSuriajaya2025PairCorrelationConjecture} for advances on PCC).
+\end{conjecture}
+
+\begin{remark}[Near-horizon--zero realization screening principle: constraining zero realization mechanisms via HSZK]\label{rem:discussion-zk-filter-zero-realization}
+Proposals for near-horizon dynamical realizations of Riemann zeros (e.g., through matching near-horizon scalar field quasinormal mode frequencies with nontrivial zeros) can provide realization candidates for the zero set at the spectral level (see models of the type in \cite{Giri2010PhysicalRealizationRiemannZerosBlackHole}).
+This subsection provides an additional falsifiable screening principle: if one simultaneously requires that ``external interactions under fixed macroscopic charge do not leak microstates'' (i.e., the strong form of \(\mathrm{HSZK}_\varepsilon\)), then the effective evolution must induce approximate 2-design and decoupling in the interactive sense, so its SFF must enter the ramp--plateau universality class and satisfy quantitative thresholds consistent with \(\varepsilon(t)\).
+Therefore, a ``zero realization'' is no longer required merely to match some spectral set, but must simultaneously pass the dual constraints of zero-knowledge simulability and spectral form factor universality; this principle advances formal analogy to an auditable interface condition.
+\end{remark}
+
+\endinput

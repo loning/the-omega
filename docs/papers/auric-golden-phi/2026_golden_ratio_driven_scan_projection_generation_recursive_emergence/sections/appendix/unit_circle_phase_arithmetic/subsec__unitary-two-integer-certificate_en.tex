@@ -1,0 +1,71 @@
+\subsection{Two-Integer Certificate on the Unitary Slice and Reproducible Null Determination}\label{subsec:unitary-two-integer-certificate}
+This subsection provides a purely algebraic unitary certificate protocol: its output is a pair of integers \((p,q)\) from which a certificate point lying exactly on the unit circle is constructed; it also provides a reproducible accept/reject rule based on ``rounding pre-image intervals,'' where incompatibility between the certificate and the input floating-point bit string triggers a degeneration to the null value \(\mathsf{NULL}\).
+
+\paragraph{Two-integer representation and integer closure}
+\begin{definition}[Two-integer unitary certificate]\label{def:unitary-two-integer-certificate}
+For any \((p,q)\in\ZZ^{2}\) (not both zero), define
+\begin{equation}\label{eq:unitary-two-integer-map}
+\boxed{\;
+r(p,q):=\frac{q+\mathrm{i}p}{q-\mathrm{i}p}\in\TT\; }.
+\end{equation}
+The canonical form is
+\(
+\gcd(p,q)=1,\ q\ge 0
+\), with the endpoint \(r=-1\) assigned the unique representative \((p,q)=(1,0)\).
+\end{definition}
+
+\begin{proposition}[Unit circle multiplication is closed under the two-integer representation]\label{prop:unitary-two-integer-closure}
+For any \((p,q),(p',q')\in\ZZ^{2}\) (not both zero), write
+\[
+(p'',q''):=\bigl(pq'+qp',\ qq'-pp'\bigr)\in\ZZ^{2}.
+\]
+Then the following strict identities hold:
+\[
+r(p,q)\,r(p',q')=r(p'',q''),
+\qquad
+r(p,q)^{-1}=r(-p,q).
+\]
+\end{proposition}
+\begin{proof}
+Directly expanding
+\(
+\frac{q+\mathrm{i}p}{q-\mathrm{i}p}\cdot\frac{q'+\mathrm{i}p'}{q'-\mathrm{i}p'}
+\)
+and rearranging into conjugate-fraction form yields the multiplication closed form; the inverse follows from conjugate symmetry. \qed
+\end{proof}
+
+\paragraph{Deterministic protocol from floating-point input to certificate output}
+\begin{algorithm}[Deterministic generation of the unitary certificate and \texorpdfstring{$\mathsf{NULL}$}{NULL} determination]\label{alg:unitary-two-integer-deterministic}
+Input: a floating-point complex number \(\widehat u\in\CC\) (given as a bit string), a maximum denominator \(Q_{\max}\in\NN\), and an admissible error budget \(\delta>0\).
+
+\smallskip
+\noindent Output: a certificate \((p,q)\) (whence \(u_{\mathrm{cert}}:=r(p,q)\in\TT\)) or the null value \(\mathsf{NULL}\).
+\begin{enumerate}
+  \item Construct the rounding pre-image interval \(\mathcal{I}(\widehat u)\subset\CC\) from the bit string: it is the direct product of the ulp intervals of the real and imaginary parts, determined entirely by the rounding mode and the bit string.
+  \item When \(\Re(\widehat u)\neq-1\), define via the half-angle formula
+  \[
+  \widehat x:=\frac{\Im(\widehat u)}{1+\Re(\widehat u)}.
+  \]
+  If \(1+\Re(\widehat u)=0\) (endpoint neighborhood), use instead the symmetric formula
+  \(
+  \widehat x:=\frac{1-\Re(\widehat u)}{\Im(\widehat u)}
+  \)
+  and record the sign via a fixed branching rule.
+  \item Apply deterministic continued-fraction truncation to \(\widehat x\) (with a fixed truncation rule and maximum denominator \(Q_{\max}\)) to obtain the reduced fraction \(p/q\).
+  \item Set \(u_{\mathrm{cert}}:=r(p,q)\) and determine
+  \[
+  \mathrm{ACCEPT}(p,q)\Longleftrightarrow
+  \mathrm{dist}\bigl(u_{\mathrm{cert}},\mathcal{I}(\widehat u)\bigr)\le\delta,
+  \]
+  where \(\mathrm{dist}\) is any fixed computable norm (e.g., the \(\ell_{\infty}\) distance in the \((\Re,\Im)\) plane, realized via rational upper bounds).
+  If \(\mathrm{ACCEPT}(p,q)\) holds, output \((p,q)\); otherwise output \(\mathsf{NULL}\).
+\end{enumerate}
+\end{algorithm}
+
+\begin{proposition}[Reproducibility: the same bit string yields a unique certificate or null value]\label{prop:unitary-two-integer-reproducible}
+Under a fixed rounding mode, fixed \(Q_{\max}\), fixed continued-fraction truncation rule, and fixed \(\mathrm{dist}\), Algorithm~\ref{alg:unitary-two-integer-deterministic} produces a unique output (certificate or \(\mathsf{NULL}\)) for the same input bit string \(\widehat u\).
+Moreover, a third party can verify the truth value of \(\mathrm{ACCEPT}(p,q)\) using only the bit string and the output, thereby satisfying the requirements of replayability and cross-platform consistency.
+\end{proposition}
+\begin{proof}
+The rounding pre-image interval \(\mathcal{I}(\widehat u)\) is uniquely determined by the bit string; the continued-fraction truncation under a fixed rule determines \(p/q\); the acceptance criterion depends only on \((p,q)\), \(\mathcal{I}(\widehat u)\), \(\delta\), and a fixed norm upper-bound computation, so the output is unique and verifiable. \qed
+\end{proof}

@@ -1,0 +1,703 @@
+\frac{\|C_c-\overline C_c\,\mathbf{1}\mathbf{1}^{\top}\|_F}{|\overline C_c|}.
+$$
+This quantity is dimensionless and auditable: it directly measures the relative strength of ``the tail slice's deviation from a rank-$0$ constant matrix,'' and is more consistent than merely reporting $\mathrm{sd}(c)$ (since scale normalization has been performed). From the secondary summary output one can reproducibly obtain \(\eta_{\mathrm{tail}}\approx 0.433880\).
+\end{remark}
+
+\begin{remark}[Near-scalar behavior of the tail and evidence of rational tail law]\label{rem:arity-335-rational-tail}
+Let $\overline C_c:=\frac19\sum_{a,b}C^{(3,3,5)}_{a,b,c}$. From the secondary summary output one obtains
+\[
+\overline C_2\approx -0.035674,\qquad
+\overline C_3\approx -0.058700,\qquad
+\overline C_4\approx -0.071472,
+\]
+and $\max\mathrm{dev}(c)$ has already dropped to the $10^{-3}$ order at $c=3,4$, so the tail slices are approximately scalar matrices. Numerically they are respectively close to
+\(
+-(1/28),\ -(1/17),\ -(1/14)
+\)
+as simple reciprocals (relative error approximately $10^{-3}$), pointing to a testable ``rational tail law'' numerical rigidity.
+\end{remark}
+
+\begin{remark}[Collisions are rare but dominate the slow mode and exhibit constant-level anisotropy (near-resonant cocycle diagnostic)]\label{cor:arity-335-rare-collision-dominant}
+Under the three-potential pressure $P(\theta_e,\theta_-,\theta_2)=\log\rho(M_\theta)$ of the real-input 40-state kernel, the typical density of collision triggers $\varphi_2=\mathbf{1}_{\{d=2\}}$ is
+\[
+\partial_{\theta_2}P(0)=\frac{3-\sqrt5}{10}\approx 0.076393,
+\]
+i.e., the collision event density near the maximum entropy baseline is relatively low (see the closed form of $\nabla P(0)$ above).
+However, for the \(((3,3,5))\) Dirichlet--Mertens stratification (with the third axis being $c=N_2(\gamma)\bmod 5$), reproducible output simultaneously shows:
+\begin{itemize}
+  \item \textbf{Slow mode dominance:} the worst twisted spectral radius is achieved by the pure collision twist (Remark~\ref{prop:arity-335-collision-dominant}), and its decay scale is given by Remark~\ref{cor:arity-335-collision-mixing-scale};
+  \item \textbf{Constant-level anisotropy:} the aggregated drift vector $S_c=\sum_{a,b}C^{(3,3,5)}_{a,b,c}$ exhibits strongly nonuniform allocation along the $c$-axis (Remark~\ref{cor:arity-335-collision-residue-drift} and secondary summary output).
+\end{itemize}
+Therefore, despite the low typical density of collision events, they simultaneously determine the exponential scale of the worst equidistribution error and the principal direction of constant-level drift; their combinatorial characterization reduces to a testable signal of ``near-coboundary/near-rotation factors'': rare events carry coherent phase, so that their \(\ZZ/5\)-cocycle simultaneously controls the constant-term bias and the worst twisted slow mode.
+\end{remark}
+
+\begin{remark}[Fourier compression characteristic quantities along the \texorpdfstring{$\ZZ/5$}{Z/5} axis (exact identity decomposition)]\label{prop:arity-335-fourier-fingerprint}
+For each fixed $(a,b)$, let $f_{a,b}(c):=C^{(3,3,5)}_{a,b,c}$ ($c\in\ZZ/5$), and write $\omega_5=e^{2\pi i/5}$. Define the discrete Fourier coefficients
+\[
+\widehat f_{a,b}(j):=\frac15\sum_{c=0}^{4} f_{a,b}(c)\,\omega_5^{-jc},
+\qquad j\in\{0,1,2,3,4\}.
+\]
+Then for all $c$ the following identity decomposition holds:
+\[
+f_{a,b}(c)
+=\widehat f_{a,b}(0)
++2\Re\bigl(\widehat f_{a,b}(1)\,\omega_5^{c}\bigr)
++2\Re\bigl(\widehat f_{a,b}(2)\,\omega_5^{2c}\bigr),
+\]
+so that all information across the five slices along the $c$-axis can be equivalently compressed into three matrices: the mean matrix $\widehat f(0)$ and two complex matrices $\widehat f(1),\widehat f(2)$. This decomposition and its numerical values (including $\|\widehat f(1)\|_\infty,\|\widehat f(2)\|_\infty$) are output by the same script and can be audited for reproducibility.
+\end{remark}
+
+\begin{theorem}[Character decomposition \texorpdfstring{$\Rightarrow$}{=>} low-rank mechanism: rank-one outer product decomposition and Parseval energy identity for \texorpdfstring{$((3,3,5))$}{(3,3,5)}]\label{thm:arity-335-character-energy}
+Define the centralized constant tensor as
+\[
+\widetilde C_{a,b,c}:=C^{(3,3,5)}_{a,b,c}-\frac{\mathsf{M}}{45},
+\qquad
+\mathsf{M}:=\sum_{a=0}^2\sum_{b=0}^2\sum_{c=0}^4 C^{(3,3,5)}_{a,b,c}.
+\]
+Flatten it into a matrix \(\widetilde T\in\CC^{5\times 9}\), with row index \(c\in\ZZ/5\) and column index the flattened \((a,b)\in(\ZZ/3)^2\).
+For each nontrivial character index \(j=(j_1,j_2,j_3)\in(\ZZ/3)^2\times(\ZZ/5)\setminus\{(0,0,0)\}\), let
+\[
+(v_{j_3})_c:=\omega_5^{-j_3 c}\in\CC^{5},
+\qquad
+(w_{j_1,j_2})_{(a,b)}:=\omega_3^{-j_1 a}\omega_3^{-j_2 b}\in\CC^{9},
+\]
+and define the unnormalized three-dimensional discrete Fourier coefficient
+\[
+\widehat{\widetilde C}(j)
+:=
+\sum_{a=0}^2\sum_{b=0}^2\sum_{c=0}^4
+\widetilde C_{a,b,c}\,\omega_3^{j_1 a}\omega_3^{j_2 b}\omega_5^{j_3 c}.
+\]
+Then the following strict decomposition holds:
+\[
+\boxed{\;
+\widetilde T
+\ =\
+\frac{1}{45}\sum_{j\neq(0,0,0)}
+\widehat{\widetilde C}(j)\,v_{j_3}\,w_{j_1,j_2}^{\mathsf T}\; }.
+\]
+Moreover, by character orthogonality the Parseval identity holds:
+\[
+\boxed{\;
+\|\widetilde T\|_F^2
+:=
+\sum_{a,b,c}|\widetilde C_{a,b,c}|^2
+:=
+\frac{1}{45}\sum_{j\neq(0,0,0)}\bigl|\widehat{\widetilde C}(j)\bigr|^2\; }.
+\]
+\end{theorem}
+\begin{proof}
+The decomposition and norm identity follow directly from the discrete Fourier inversion and character orthogonality (Parseval) on the finite abelian group \(G=(\ZZ/3)^2\times(\ZZ/5)\). \qed
+\end{proof}
+
+\begin{remark}[Auditable diagnostic: head share of character energy \texorpdfstring{$\Rightarrow$}{=>} low-rank compressibility]\label{rem:arity-335-character-energy-diagnostic}
+Theorem~\ref{thm:arity-335-character-energy} shows: each character \(j\) contributes exactly one rank-one outer-product mode to the flattened matrix, and its Frobenius energy is exactly \(|\widehat{\widetilde C}(j)|^2/45\).
+Given \(\varepsilon\in(0,1)\), if there exists a character set \(J\subset G\setminus\{0\}\) such that \(\sum_{j\in J}|\widehat{\widetilde C}(j)|^2\ge (1-\varepsilon)\sum_{j\ne 0}|\widehat{\widetilde C}(j)|^2\), then by Theorem~\ref{thm:arity-335-character-energy} one can approximate \(\widetilde T\) with at most \(|J|\) rank-one modes, with the residual Frobenius energy share not exceeding \(\varepsilon\).
+The script \texttt{scripts/exp\_arity\_335\_character\_energy.py} outputs the character energy head table for the centralized tensor (with a Parseval error consistency check):
+\input{sections/generated/tab_arity_335_character_energy_head}
+\end{remark}
+
+\begin{remark}[Parseval conservation of bias energy (strong consistency check)]\label{rem:arity-335-parseval-bias}
+Let \(G:=\ZZ/5\).
+For any real vector \(x=(x_c)_{c\in G}\), write its de-meaned part as
+\[
+x_c^\circ:=x_c-\frac{1}{|G|}\sum_{c'\in G}x_{c'},
+\]
+and define the discrete Fourier coefficients
+\[
+\widehat x(j):=\sum_{c\in G}x_c^\circ\,\omega_5^{-jc}\qquad(j\in G).
+\]
+Then by the orthogonality relations of characters on a finite abelian group (Plancherel), the Parseval identity holds:
+\[
+\sum_{c\in G}\bigl|x_c^\circ\bigr|^2
+:=\frac{1}{|G|}\sum_{j\in G}\bigl|\widehat x(j)\bigr|^2
+:=\frac{1}{|G|}\sum_{j\in G\setminus\{0\}}\bigl|\widehat x(j)\bigr|^2,
+\]
+where the last step uses \(\widehat x(0)=\sum_c x_c^\circ=0\).
+\par
+Taking \(x\) to be the aggregated drift \(S_c=\sum_{a,b}C^{(3,3,5)}_{a,b,c}\) (see numerical output from the secondary summary), this identity provides a single-scalar strong consistency check: the left-hand side can be computed directly in \(c\)-space, while the right-hand side can be computed in the nontrivial frequency (pure third-axis twist) space using \(\widehat S(1),\widehat S(2)\); the two must agree.
+\par
+For a real vector \(S\) on \(G=\ZZ/5\), by the self-dual symmetry (Corollary~\ref{cor:arity-335-cosine-only}) one has conjugate pairing \(\widehat S(5-j)=\overline{\widehat S(j)}\) (\(j=1,2\)). Thus the nontrivial-frequency Fourier energy concentrates on conjugate pairs \(j=\pm 1\) and \(j=\pm 2\). For \(x=S\), the secondary summary provides explicit Fourier coefficient magnitudes:
+\[
+|\widehat S(1)|=|\widehat S(4)|\approx 0.474832655609,\qquad |\widehat S(2)|=|\widehat S(3)|\approx 0.371177729542.
+\]
+By the Parseval identity, the energy share of the conjugate pair \(j=\pm 1\) is \(2|\widehat S(1)|^2/\sum_{j\neq 0}|\widehat S(j)|^2\approx 0.6207\), and that of the conjugate pair \(j=\pm 2\) is \(2|\widehat S(2)|^2/\sum_{j\neq 0}|\widehat S(j)|^2\approx 0.3793\). Therefore the mechanism underlying ``constant tensor low-rank/compressibility'' is: in the Fourier decomposition over \(G=\ZZ/5\), the nontrivial-frequency energy is dominated by two conjugate pairs, with the pair \(j=\pm 1\) contributing approximately \(62.07\%\) and the pair \(j=\pm 2\) contributing approximately \(37.93\%\), summing to \(100\%\); this strict group-theoretic decomposition and the Parseval conservation law form an auditable consistency check.
+\end{remark}
+
+\begin{corollary}[Self-duality-forced cosine modes: evenness of the aggregated drift \(S_c\)]\label{cor:arity-335-cosine-only}
+Following Corollary~\ref{cor:arity-335-collision-residue-drift}'s aggregated drift vector \(S_c\) (\(c\in\ZZ/5\)).
+If the third-axis twist depends only on the output bit/collision trigger (thereby satisfying the self-dual symmetry of Appendix~\ref{app:witt-weighted}, and at the level of one-dimensional character channels satisfying the representation-level functional equation of Proposition~\ref{prop:kernel-self-dual-character}), then the nontrivial-frequency Fourier coefficients satisfy conjugate pairing
+\[
+\widehat S(5-j)=\overline{\widehat S(j)}\qquad(j=1,2),
+\]
+so that \(S_c\) must be an even function:
+\[
+\boxed{\;
+S_c=S_{-c}\qquad(c\in\ZZ/5)\; }.
+\]
+Equivalently, in the real Fourier mode decomposition, the sine mode coefficients of \(S_c\) must vanish, leaving only cosine modes.
+\end{corollary}
+\begin{proof}
+For the cyclic group \(\ZZ/5\), nontrivial characters are paired as \(\chi^{-1}=\overline{\chi}\).
+By Proposition~\ref{prop:kernel-self-dual-character}, the twisted channels at \(\chi\) and \(\chi^{-1}\) are bound by a functional equation; when evaluated at roots of unity, the constant terms/finite-part outputs of the two channels are complex conjugates.
+Hence \(\widehat S(5-j)=\overline{\widehat S(j)}\). Writing the inverse DFT in terms of cosine/sine bases yields \(S_c=S_{-c}\). \qed
+\end{proof}
+
+\begin{remark}[Exact ruler for \texorpdfstring{$c$}{c}-axis strength: Parseval identity for the global \texorpdfstring{$c$}{c}-variance]\label{thm:arity-335-c-variance-identity}
+For each fixed \((a,b)\) define the \(c\)-mean
+\[
+\overline C_{a,b}:=\frac{1}{5}\sum_{c=0}^{4}C^{(3,3,5)}_{a,b,c}
+=\widehat f_{a,b}(0),
+\]
+and define the global \(c\)-variance (third-axis energy)
+\[
+V_c:=\sum_{a=0}^{2}\sum_{b=0}^{2}\sum_{c=0}^{4}\Bigl(C^{(3,3,5)}_{a,b,c}-\overline C_{a,b}\Bigr)^2.
+\]
+Then by the two-harmonic identity decomposition above and the Parseval identity on \(\ZZ/5\), the following exact identity holds:
+\[
+\boxed{\
+V_c
+=10\Bigl(\|\widehat f(1)\|_F^2+\|\widehat f(2)\|_F^2\Bigr)
+\ }.
+\]
+Here \(\|\cdot\|_F\) denotes the Frobenius norm of a \(3\times 3\) matrix (entry-wise sum of squares over \((a,b)\), then square root).
+\par
+This identity elevates the ``third-axis strength'' of constant-level drift from a visual/worst-spectrum caliber to a scalar that is \textbf{entirely defined by and exactly auditable from the constant tensor itself}; moreover, it is strictly equivalent to the two harmonic matrices \(\widehat f(1),\widehat f(2)\) (also denoted \(A^{(1)},A^{(2)}\)).
+\end{remark}
+
+\begin{remark}[Low-rank compressibility: three-mode approximation characteristic quantities of the \texorpdfstring{$((3,3,5))$}{(3,3,5)} tensor]\label{prop:arity-335-low-rank}
+Viewing the constant tensor $C^{(3,3,5)}_{a,b,c}$ as a real matrix $T\in\RR^{5\times 9}$ (row index $c\in\{0,1,2,3,4\}$, column index the flattened $(a,b)\in(\ZZ/3)^2$). Let its singular values be $s_1\ge \cdots\ge s_5$. The secondary summary output shows
+\[
+\frac{s_1^2}{\sum s_i^2}\approx 0.935619,\qquad
+\frac{s_1^2+s_2^2}{\sum s_i^2}\approx 0.986715,\qquad
+\frac{s_1^2+s_2^2+s_3^2}{\sum s_i^2}\approx 0.999866,
+\]
+so using only the first three singular modes captures nearly all Frobenius energy; the entire 45-entry tensor can be stably characterized at the constant level by an extremely low-dimensional approximation (which can serve as a new kernel characteristic invariant).
+\end{remark}
+
+\begin{remark}[Homogeneity between low-rank compression and Hankel minimal realization]\label{rem:arity-335-low-rank-vs-hankel}
+Define the residual energy beyond the first three singular modes as
+\[
+\varepsilon_{\mathrm{extra}}
+:=1-\frac{s_1^2+s_2^2+s_3^2}{\sum_i s_i^2}\approx 1.34\times 10^{-4}.
+\]
+This ``superstructure residual'' is not merely numerically ``cosmetic'': in the collision kernel \(A_2\) at the window layer, the Hankel rank of the collision sequence is exactly \(3\), and the three-state realization is minimal (Theorem~\ref{thm:pom-s2-rank-exact}).
+Therefore, when the third-axis slow variable of \(((3,3,5))\) is dominated by the collision cocycle, the effective degrees of freedom of the constant tensor along the \(c\)-axis are naturally compressed to an extremely low-dimensional subspace; \(\varepsilon_{\mathrm{extra}}\) can be viewed as a dimensionless measure of ``residual coupling information beyond the three-state collision realization.''
+\end{remark}
+
+\begin{proposition}[Closed-form locking of the quadratic-law constant and \texorpdfstring{$p^{-4}$}{p^{-4}} correction]\label{prop:arity-collision-quadratic-closed}
+Let \(u=e^{z}\) and define the pressure function
+$$
+P_\xi(z):=\log\rho\bigl(A_\xi(e^{z})\bigr)\qquad(z\ \text{in a neighborhood of }0).
+$$
+Then \(P_\xi\) is analytic at \(z=0\), and its even-order derivatives have closed forms (see Table~\ref{tab:arity_pure_collision_cubic_asymp_coeffs}):
+$$
+P_\xi''(0)=\frac{6\sqrt5-5}{125}\approx 0.06733126292,
+\qquad
+P_\xi^{(4)}(0)=\frac{7+24\sqrt5}{3125}\approx 0.01941300207.
+$$
+Therefore, taking the unit-root twist \(u=e^{i\alpha}\) with \(\alpha\to 0\),
+$$
+\log\frac{\rho\bigl(A_\xi(e^{i\alpha})\bigr)}{\rho\bigl(A_\xi(1)\bigr)}
+=-\frac{P_\xi''(0)}{2}\alpha^2+\frac{P_\xi^{(4)}(0)}{24}\alpha^4-\frac{P_\xi^{(6)}(0)}{6!}\alpha^6+\frac{P_\xi^{(8)}(0)}{8!}\alpha^8+O(\alpha^{10}),
+$$
+so for odd primes \(p\), taking \(\alpha=2\pi/p\) yields a stronger asymptotic (including the \(p^{-4}\) correction):
+$$
+\frac{\rho_{3,3,p}}{\lambda}
+\approx
+\exp\!\left(
+-\kappa_\infty\left(\frac{2\pi}{p}\right)^2+\frac{P_\xi^{(4)}(0)}{24}\left(\frac{2\pi}{p}\right)^4
+\right),
+\qquad
+\kappa_\infty:=\frac{P_\xi''(0)}{2}=\frac{6\sqrt5-5}{250}.
+$$
+\end{proposition}
+\input{sections/generated/tab_arity_pure_collision_cubic_asymp_coeffs}
+\begin{proof}
+For the four-state skeleton pure-collision twisted matrix \(A_\xi(u)\) (\(u\in\CC\)), its characteristic polynomial factors as
+$$
+\det(\lambda I-A_\xi(u))=(\lambda+1)\bigl(\lambda^3-2\lambda^2-(u+1)\lambda+u\bigr).
+$$
+At \(u=1\) the Perron root is \(\rho(A_\xi(1))=\varphi^2\), and the corresponding cubic root is simple; hence by the implicit function theorem, the Perron branch admits analytic continuation in a neighborhood of \(u=1\).
+Setting \(u=e^z\) yields \(\rho(A_\xi(e^z))\) and \(P_\xi(z)\) analytic in a neighborhood of \(z=0\).
+Substituting the series in \(z\) into the cubic equation and matching coefficients order by order yields the algebraic closed forms \(P_\xi^{(2k)}(0)\); Table~\ref{tab:arity_pure_collision_cubic_asymp_coeffs} provides the reproducible output for the first several orders.
+Setting \(z=i\alpha\), taking real parts, and expanding by Taylor series yields the unit-root twist expansion and the \(p^{-4}\) correction. \qed
+\end{proof}
+
+\begin{remark}[Near-1 pole of the pure collision channel: diffusion law, fourth-order extrapolation, and out-of-sample prime points]\label{rem:arity-335-near-coboundary-scaling}
+In the \(((3,3,p))\) system with the third axis taking the pure collision twist (\(\xi=\mathbf{1}_{\{d=2\}}\)),
+the slowest mode necessarily enters the near-coboundary small-angle regime in the \(p\to\infty\) limit:
+let
+\(
+r_p:=\rho_{3,3,p}/\lambda
+\)
+and \(\alpha:=2\pi/p\), then by the pressure expansion (Proposition~\ref{prop:arity-collision-quadratic-closed}),
+\[
+\log r_p=-\kappa_\infty\,\alpha^2+\beta\,\alpha^4+O(\alpha^6),
+\qquad
+\kappa_\infty=\frac{\sigma_\xi^2}{2}\approx 0.03366563146,
+\quad
+\beta=\frac{P_\xi^{(4)}(0)}{24}\approx 8.088750861\times 10^{-4}.
+\]
+The most direct and stable fourth-order extrapolation is therefore
+\[
+\boxed{\ r_p\ \approx\ \exp(-\kappa_\infty\alpha^2+\beta\alpha^4)\ }.
+\]
+Mapping this near-1 pole back to the \(s\)-plane (\(z=\lambda^{-s}\)), the corresponding dominant pole's real part is
+\[
+s_p:=\frac{\log\rho_{3,3,p}}{\log\lambda}
+\;=\;
+1+\frac{\log r_p}{\log\lambda},
+\]
+which approaches \(1\) from the left at the diffusion-law rate of \(p^{-2}\).
+\par
+As out-of-sample numerical anchor points (which can also be viewed as ``mandatory checkpoints for extrapolation predictions''), the pure cubic equation channel yields (Table~\ref{tab:arity_pure_collision_cubic_primes}):
+\[
+\begin{aligned}
+p=17:&\ r_p\approx 0.995427056029,\quad \Re(s_p)\approx 0.995237615093,\\
+p=19:&\ r_p\approx 0.996334946425,\quad \Re(s_p)\approx 0.996184854416,\\
+p=23:&\ r_p\approx 0.997495286896,\quad \Re(s_p)\approx 0.997394229511,\\
+p=29:&\ r_p\approx 0.998422700625,\quad \Re(s_p)\approx 0.998359823534,\\
+p=31:&\ r_p\approx 0.998619324725,\quad \Re(s_p)\approx 0.998564427126.
+\end{aligned}
+\]
+The above constants and prime points can be recomputed in one step and exported to JSON by the minimal closed-loop script \path{scripts/exp_arity_pure_collision_near1_pole_closed_loop.py} (for audit and regression).
+\end{remark}
+\input{sections/generated/tab_arity_pure_collision_cubic_primes}
+
+\begin{remark}[Evenness and absence of cubic term for unit-circle twists]\label{lem:unit-circle-evenness}
+Let $M_\theta$ be a real matrix family that is real-analytic in $e^{\mathrm{i}\theta}$ and satisfies
+\[
+M_{-\theta}=\overline{M_\theta}\qquad(\theta\in\RR).
+\]
+Write $\rho(\theta):=\rho(M_\theta)$ for the spectral radius, and suppose there exists a simple dominant eigenvalue branch $\Lambda(\theta)$ ($\Lambda(0)>0$) in a neighborhood of $\theta=0$.
+Then \(\rho(\theta)=\rho(-\theta)\) and \(\rho\) is a real-analytic even function in a neighborhood of \(0\); consequently the Taylor expansion of \(\log(\rho(\theta)/\rho(0))\) contains only even-order terms, in particular
+\[
+\log\frac{\rho(\theta)}{\rho(0)}=-c_2\theta^2+c_4\theta^4+O(\theta^6),
+\qquad \theta\to 0.
+\]
+\end{remark}
+
+\begin{remark}[Quadratic law from small-angle twists: variance-density characterization of $\kappa$]\label{prop:arity-335-kappa-variance}
+Take the collision cocycle \(\xi=\mathbf{1}_{\{d=2\}}\) (taking values \(0/1\) along edges), and let the third axis in the three-axis twist be \(N_2(\gamma)\bmod p\).
+For \(\theta\in\RR\) define the pure-collision twisted matrix
+$$
+M_\theta:=M(1,1,e^{\mathrm{i}\theta})\qquad(\text{applying phase only to }\xi).
+$$
+Write \(\Lambda(\theta)\) for the dominant eigenvalue branch of \(M_\theta\) (\(\Lambda(0)=\lambda\)).
+Since the system is an analytic perturbation of a finite-dimensional primitive nonnegative matrix, \(\Lambda(\theta)\) is analytic in a neighborhood of \(\theta=0\) (by standard finite-dimensional spectral perturbation theory).
+Then there exist constants \(\mu_\xi\in\RR\) and \(\sigma_\xi^2\ge 0\) such that
+$$
+\log\frac{\Lambda(\theta)}{\lambda}
+=
+\mathrm{i}\mu_\xi\,\theta-\frac{\sigma_\xi^2}{2}\theta^2+O(\theta^3),
+\qquad \theta\to 0,
+$$
+whence
+$$
+\log\frac{|\Lambda(\theta)|}{\lambda}
+=
+-\frac{\sigma_\xi^2}{2}\theta^2+O(\theta^4).
+$$
+In particular, when \(\theta=2\pi/p\) (\(p\) an odd prime),
+$$
+1-\frac{\rho_{3,3,p}}{\lambda}
+=
+\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2
++
+O\!\left(p^{-4}\right),
+$$
+where \(\rho_{3,3,p}\) is the worst twisted spectral radius of \( ((3,3,p))\) (and in reproducible output is achieved by the pure collision twist).
+The essential content of the quadratic-law constant is therefore
+$$
+\kappa_\infty:=\lim_{p\to\infty}\frac{1-\rho_{3,3,p}/\lambda}{(2\pi/p)^2}
+=\frac{\sigma_\xi^2}{2}.
+$$
+Moreover, \(\sigma_\xi^2\) can be obtained from the real-parameter tilted pressure
+\(
+P(t):=\log\rho(M(1,1,e^t))
+\)
+as: \(\sigma_\xi^2=P''(0)\) (consistent with the finite-state Markov pressure derivative caliber of Proposition~\ref{prop:kernel-clt-ldp}).
+\end{remark}
+
+\begin{remark}[Variational/Poisson equation expression of \texorpdfstring{$\kappa_\infty$}{kappa} (computable)]\label{rem:arity-335-kappa-poisson}
+Remark~\ref{prop:arity-335-kappa-variance} gives the ``pressure second-derivative'' caliber \(\kappa_\infty=\sigma_\xi^2/2\).
+The same constant can also be characterized as a strictly convex minimum-energy problem, and therefore computed by a single round of linear algebra.
+\par
+Let \(A:=M(1,1,1)\) be the untwisted kernel's nonnegative adjacency matrix (treating integer entries as parallel-edge counts), \(\lambda=\rho(A)\) the Perron root.
+Take left and right Perron vectors \(r,\ell>0\) normalized by \(\ell^\top r=1\).
+By Parry normalization one obtains the Markov kernel and equilibrium distribution
+$$
+P_{ij}:=\frac{A_{ij}r_j}{\lambda r_i},\qquad \pi_i:=\ell_i r_i.
+$$
+For the edge cocycle \(\xi\in\{0,1\}\) (here the collision cocycle \(\xi=\mathbf{1}_{\{d=2\}}\)), let the edge mean be
+$$
+\mu:=\sum_{i,j}\pi_iP_{ij}\,\mathbb{E}[\xi(i\to j)\mid i\to j],
+$$
+where the conditional expectation is defined by uniform selection among parallel edges.
+For any vertex function \(f:V\to\RR\) define the residual energy functional
+$$
+\mathcal{E}(f):=\sum_{i,j}\pi_iP_{ij}\,\mathbb{E}\Big[(\xi(i\to j)-\mu+f(j)-f(i))^2\ \big|\ i\to j\Big].
+$$
+Then the effective variance density satisfies the variational expression
+$$
+\boxed{\ \sigma_\xi^2=\inf_f\mathcal{E}(f)\ },
+$$
+and the minimizer \(f_\star\) (unique under the gauge condition \(\sum_i\pi_if_i=0\)) satisfies the Poisson equation
+$$
+\boxed{\ (I-P)f=b,\qquad b_i:=\sum_jP_{ij}\,\mathbb{E}[\xi(i\to j)-\mu\mid i\to j]\ }.
+$$
+Therefore \(\kappa_\infty=\sigma_\xi^2/2\) can not only be estimated via \(\sigma_\xi^2=P''(0)\) but also extracted exactly by solving \((I-P)f=b\).
+The script \texttt{scripts/exp\_arity\_335\_kappa\_poisson.py} provides a reproducible implementation of this computation, cross-checking with the pressure-difference \(\sigma_\xi^2\) term by term (the two agree to the \(10^{-9}\) level), and also provides a discrete-angle comparison at \(p=5\):
+\input{sections/generated/eq_arity_335_kappa_poisson}
+\end{remark}
+
+\begin{remark}[Evenness-enhanced quadratic law and Richardson extrapolation estimator]\label{rem:arity-335-richardson-kappa}
+By Remark~\ref{lem:unit-circle-evenness}, the expansion of $\log(\rho(\theta)/\lambda)$ contains no odd-order terms, so there exists a constant $c_4\in\RR$ such that
+\[
+1-\frac{\rho(\theta)}{\lambda}
+=\kappa_\infty\,\theta^2+c_4\,\theta^4+O(\theta^6),
+\qquad \theta\to 0.
+\]
+On the other hand, writing in the ``log-pressure'' caliber
+\[
+\log\frac{\rho(\theta)}{\lambda}
+=-\kappa_\infty\,\theta^2+\beta\,\theta^4+O(\theta^6),
+\]
+the two sets of coefficients satisfy the deterministic relation
+\[
+\boxed{\ c_4=-(\beta+\kappa_\infty^2/2)\ }.
+\]
+For the pure-collision cubic pressure family (Proposition~\ref{prop:arity-collision-quadratic-closed}, Table~\ref{tab:arity_pure_collision_cubic_asymp_coeffs}) this relation yields the closed-form numerical value
+\(
+c_4\approx -1.3755624569\times 10^{-3}<0
+\),
+which can be used to align the ``fitted fourth-order correction'' with the theoretical constant, avoiding confusion between the fourth-order coefficient of \(\log r\) and that of \(1-r\).
+For odd primes $p$ let $\theta_p:=2\pi/p$, and write
+\[
+A(p):=\frac{1-\rho_{3,3,p}/\lambda}{(2\pi/p)^2},
+\]
+so that
+\[
+A(p)=\kappa_\infty+\frac{c_4(2\pi)^2}{p^2}+O(p^{-4}).
+\]
+One can therefore use two moduli $(p,q)$ for Richardson extrapolation to eliminate the $p^{-2}$ term, obtaining the improved estimator
+\[
+\widehat\kappa(p,q)
+:=\frac{A(p)\,p^2-A(q)\,q^2}{p^2-q^2}
+=\kappa_\infty+O(p^{-4})+O(q^{-4}).
+\]
+If $\widehat\kappa(5,7)$ and $\widehat\kappa(7,11)$ (or $\widehat\kappa(7,13)$) exhibit significant inconsistency,
+one can identify $p=5$ as an ``exceptional resonance modulus'' rather than a generic asymptotic point.
+\par
+Furthermore, in the pure-collision axis of the real-input $40$-state kernel, the numerical result is \(c_4<0\), so
+\(A(p)=\kappa_p\) drifts toward \(\kappa_\infty\) from below at rate \(p^{-2}\).
+The script \texttt{scripts/exp\_arity\_335\_n2\_poisson\_richardson\_validate.py} connects the Poisson extraction,
+\(c_4\) back-derivation, and Richardson extrapolation into a minimal closed loop, and performs ground-truth verification on \(p\ge 17\) (fourth-order correction error reduced to the \(10^{-7}\) level):
+\input{sections/generated/tab_real_input_40_arity_335_n2_poisson_richardson_validate}
+\end{remark}
+
+\begin{remark}[Covariance criterion for the worst character direction: minimization of \texorpdfstring{$t^\top\Sigma t$}{t^T Sigma t}]\label{prop:arity-335-worst-direction-cov}
+Write the three one-step additive quantities of the three-axis Dirichlet stratification as the vector cocycle
+\(
+\Xi:=(\chi,\nu,\xi)\in\RR^3
+\)
+(in the present section \(((3,3,5))\) takes \(\xi=\mathbf{1}_{\{d=2\}}\)).
+For real-parameter tilt \(\theta\in\RR^3\) define the positive-weight matrix \(M(e^{\theta_1},e^{\theta_2},e^{\theta_3})\) and set
+\(
+P(\theta):=\log\rho(M(e^{\theta_1},e^{\theta_2},e^{\theta_3}))
+\).
+Then the Hessian
+\[
+\Sigma:=\nabla^2 P(0)
+\]
+is the asymptotic covariance matrix of \(\Xi\) at equilibrium; and for small-angle unit-circle twists \(t\in\RR^3\) one has the standard quadratic-form expansion
+\[
+\log\frac{\rho(M(e^{\mathrm{i}t_1},e^{\mathrm{i}t_2},e^{\mathrm{i}t_3}))}{\lambda}
+=
+-\frac12\,t^\top\Sigma\,t
++O(|t|^3),
+\qquad t\to 0,
+\]
+where \(\lambda=\rho(M(1,1,1))\).
+Therefore, for the character set of a finite-modulus \(((m_1,m_2,m_3))\) (with discrete angles \(t(j)=(2\pi j_1/m_1,2\pi j_2/m_2,2\pi j_3/m_3)\)), the ``worst character direction'' that maximizes the twisted spectral radius tends in the small-angle regime toward the direction minimizing \(t(j)^\top\Sigma t(j)\).
+\end{remark}
+
+\begin{remark}[Reproducible verification: the worst character for \(((3,3,5))\) is predicted by the covariance]\label{rem:arity-335-worst-direction-cov-check}
+The script \texttt{scripts/exp\_real\_input\_40\_covariance\_predict\_worst\_character.py} computes \(\Sigma=\nabla^2P(0)\) by finite differences and compares
+\(
+j\mapsto t(j)^\top\Sigma t(j)
+\)
+over the discrete character set of \(((3,3,5))\) against the actual worst character index from the full scan. The output is given in Table~\ref{tab:real_input_40_covariance_worst_character}: the predicted worst index is \((0,0,1)\), consistent with the actual worst index \((0,0,\pm1)\).
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_covariance_worst_character}
+
+\begin{remark}[Selection-law discriminant \texorpdfstring{$g(p)$}{g(p)}: turning ``whether a modulus is special'' into a falsifiable conclusion]\label{rem:arity-335-selection-law-gp}
+Define the dimensionless discriminant
+$$
+g(p):=\left(1-\frac{\rho_{3,3,p}}{\lambda}\right)p^2.
+$$
+If the ``near-coboundary generic small-angle perturbation'' mechanism holds, then \(g(p)\) should remain approximately constant as \(p\) varies (with only slow drift); if the ``exceptional resonance at \(p=5\)'' mechanism holds, then \(g(5)\) will deviate significantly from the other \(g(p)\) values.
+
+The spectral scan for \(p\in\{5,7,11,13,17,19,23,29,31\}\) (computing only spectral radii, independent of the constant tensor) is generated by the script
+\texttt{scripts/exp\_arity\_335\_n2\_selection\_law\_primes.py}
+and output as an \verb|\input|-able table fragment:
+\input{sections/generated/tab_real_input_40_arity_335_n2_selection_law_primes}
+which simultaneously provides the character index \(j\) achieving the worst spectral radius (to verify whether ``the worst twist remains the pure collision twist \((0,0,\pm1)\)'').
+From the table one observes: over the scanned range, \(g(p)\) exhibits slow drift and converges toward a constant order; equivalently, the quadratic-law constant \(\kappa_p:=\bigl(1-\rho_{3,3,p}/\lambda\bigr)/\bigl((2\pi/p)^2\bigr)\) monotonically approaches its limit \(\kappa_\infty=\sigma_\xi^2/2\) (Remark~\ref{prop:arity-335-kappa-variance}) as \(p\) increases.
+Meanwhile, the worst character is consistently \((0,0,1)\) and \((0,0,-1)\) (modulo \(p\)), i.e., the slow mode is stably produced by the pure collision twist, consistent with the ``near-coboundary small-angle perturbation'' mechanism.
+\end{remark}
+
+\begin{remark}[Large-modulus limit law: scaling limit of the worst twisted deficit]\label{thm:arity-335-limit-law}
+For each odd prime \(p\), define the scaled worst twisted deficit
+$$
+D(p)
+:=
+\left(1-\frac{\rho_{3,3,p}}{\lambda}\right)\left(\frac{p}{2\pi}\right)^2
+=\kappa_p.
+$$
+Then under the assumptions and notation of Remark~\ref{prop:arity-335-kappa-variance},
+$$
+\lim_{p\to\infty}D(p)=\kappa_\infty=\frac{\sigma_\xi^2}{2},
+$$
+with \(D(p)=\kappa_\infty+O(p^{-2})\).
+\end{remark}
+
+\begin{corollary}[Negative result for uniform abelian-modulus spectral gap: fixed kernel]\label{cor:arity-335-abelian-uniform-gap-nogo}
+Following the notation of Remark~\ref{thm:arity-335-limit-law}, and assuming \(\kappa_\infty>0\).
+Then
+\[
+\frac{\rho_{3,3,p}}{\lambda}
+=
+1-\kappa_\infty\left(\frac{2\pi}{p}\right)^2+O(p^{-4})
+\xrightarrow[p\to\infty]{}1.
+\]
+Therefore for any constant \(c\in(0,1)\), there exists an odd prime \(p\) such that \(\rho_{3,3,p}/\lambda>c\);
+in particular, taking \(c=\lambda^{-1/2}\): under a fixed finite kernel and fixed local cocycle, it is impossible to simultaneously satisfy the kernel-version GRH square-root bound for all moduli \(p\):
+\[
+\rho_{3,3,p}\ \le\ \sqrt{\lambda}
+\qquad(\text{let alone }\ \rho_{3,3,p}\le \lambda^{1/2-\varepsilon}\ \text{as a uniform improvement}).
+\]
+In other words, the abelian profinite axis functions more like a ``diffusion microscope'': the near-1 pole is not accidental noise, but a mechanistic quadratic degeneracy of small-angle frequencies at fixed step size.
+\end{corollary}
+\begin{proof}
+Follows directly from the above limit and \(\lambda^{-1/2}<1\).
+\end{proof}
+
+\begin{remark}[Diffusive scaling: mixing time \texorpdfstring{$\tau_{\mathrm{mix}}(p)$}{tau_mix(p)} is \texorpdfstring{$O(p^2)$}{O(p^2)}]\label{cor:arity-335-diffusive-mixing}
+Let $\rho_{3,3,p}$ be the worst twisted spectral radius of $((3,3,p))$, $\lambda=\rho(M)$.
+Define the corresponding dominant correlation length scale
+\[
+\tau_{\mathrm{mix}}(p):=\frac{1}{-\log(\rho_{3,3,p}/\lambda)}.
+\]
+Then as $p\to\infty$ one has the diffusive-type scaling asymptotic
+\[
+\tau_{\mathrm{mix}}(p)=\frac{p^2}{4\pi^2\,\kappa_\infty}+O(1)
+\qquad\left(\kappa_\infty=\frac{\sigma_\xi^2}{2}\right).
+\]
+Therefore, if one wishes to suppress the congruence-class bias error to a relative threshold $\delta\in(0,1)$ (i.e., to make $(\rho_{3,3,p}/\lambda)^n\lesssim \delta$), the required length satisfies
+\[
+n_{\mathrm{mix}}(p,\delta)
+\sim
+\tau_{\mathrm{mix}}(p)\,\log\frac{1}{\delta}
+\sim
+\frac{p^2}{4\pi^2\,\kappa_\infty}\log\frac{1}{\delta}.
+\]
+\end{remark}
+
+\begin{remark}[Reproducible comparison: convergence of \texorpdfstring{$D(p)$}{D(p)} and near-coboundary upper bound]\label{rem:arity-335-limit-law-table}
+The script \texttt{scripts/exp\_arity\_335\_n2\_limit\_law\_table.py} reads the spectral scan output (Table~\ref{tab:real_input_40_arity_335_n2_selection_law_primes}) and generates the \(D(p)\) table, simultaneously comparing with the variance limit \(\kappa_\infty=\sigma_\xi^2/2\) and the certificate upper bounds \(\varepsilon/2,\varepsilon_\pi^{(2)}/2\). The output is given in Table~\ref{tab:real_input_40_arity_335_n2_limit_law}.
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_arity_335_n2_limit_law}
+
+\begin{remark}[Near-coboundary \texorpdfstring{$\Rightarrow$}{->} small deviation: scaling upper bound with \texorpdfstring{$4\sin^2(\pi/p)$}{4 sin^2}]\label{cor:arity-335-eps-trig-bound}
+Under the decomposition \(\xi=\delta h+r\) of Remark~\ref{rem:arity-335-eps-bound}, one has \(\sigma_\xi^2=\sigma_r^2\le \varepsilon_\pi^{(2)}\).
+Therefore for the minimal nontrivial angle \(\theta=2\pi/p\) (i.e., \(\omega_p=e^{2\pi i/p}\)),
+$$
+1-\frac{\rho_{3,3,p}}{\lambda}
+=
+\frac{\sigma_\xi^2}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-4})
+\ \le\
+\frac{\varepsilon_\pi^{(2)}}{2}\left(\frac{2\pi}{p}\right)^2+O(p^{-4}).
+$$
+Equivalently, writing \(|1-\omega_p|^2=4\sin^2(\pi/p)\),
+$$
+1-\frac{\rho_{3,3,p}}{\lambda}
+\le
+\frac{\varepsilon_\pi^{(2)}}{2}\,|1-\omega_p|^2\ +\ O(p^{-4}),
+$$
+whence in the scaling sense as \(p\to\infty\) one obtains \(\kappa_\infty\le \varepsilon_\pi^{(2)}/2\).
+\end{remark}
+
+\begin{remark}[Small-angle master curve and universal collapse: quadratic leading term \texorpdfstring{$+$}{+} quartic correction]\label{prop:arity-335-master-curve}
+Let \(\rho(\theta):=\rho(M(1,1,e^{\mathrm{i}\theta}))\) be the spectral radius function of the pure-collision twist, and write
+\(
+F(\theta):=1-\rho(\theta)/\lambda
+\).
+Then as \(\theta\to 0\),
+$$
+\log\frac{\rho(\theta)}{\lambda}
+=
+-\frac{\sigma_\xi^2}{2}\theta^2
+\;+\;
+\frac{P^{(4)}(0)}{24}\theta^4
+\;+\;
+O(\theta^6),
+$$
+where \(P(t):=\log\rho(M(1,1,e^{t}))\) is the real-parameter tilted pressure.
+Hence there exists \(\theta_0>0\) such that for \(0<\theta\le \theta_0\) the universal collapse holds:
+$$
+\frac{F(\theta)}{\kappa_\infty\,\theta^2}=1+O(\theta^2),
+\qquad
+\kappa_\infty=\sigma_\xi^2/2.
+$$
+\end{remark}
+
+\begin{remark}[Reproducible verification: master-curve comparison at discrete character points \texorpdfstring{$\theta=2\pi/p$}{theta=2pi/p}]\label{rem:arity-335-master-curve-check}
+The script \texttt{scripts/exp\_arity\_335\_n2\_master\_curve.py} estimates \(P''(0),P^{(4)}(0)\) by real-parameter finite differences, and compares \(\rho(\theta)/\lambda\) against the fourth-order correction prediction at discrete character angles \(\theta=2\pi/p\). The output is given in Table~\ref{tab:real_input_40_arity_335_n2_master_curve}.
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_arity_335_n2_master_curve}
+
+\begin{remark}[Harmonic energy characteristic quantity \texorpdfstring{$\mathcal{E}_1$}{E1}: expressing ``low-rank compressibility'' as an interpretable structural quantity]\label{rem:arity-335-harmonic-energy}
+For each fixed \((a,b)\), the function \(c\mapsto C^{(3,3,5)}_{a,b,c}\) on \(\ZZ/5\) has a finite Fourier expansion;
+due to real-valuedness, the nonzero harmonic pairs need only the two complex modes \(j=1,2\) for complete encoding (Remark~\ref{prop:arity-335-fourier-fingerprint}).
+Therefore ``whether the principal variation along the \(c\)-axis concentrates on the first harmonic'' can be quantified by the dimensionless characteristic quantity
+$$
+\mathcal{E}_1
+:=\frac{\|A^{(1)}\|_F^2}{\|A^{(1)}\|_F^2+\|A^{(2)}\|_F^2}
+$$
+where \(A^{(1)},A^{(2)}\) are the \(j=1,2\) harmonic complex matrices given in the secondary summary output.
+The larger \(\mathcal{E}_1\), the more concentrated the energy is on the lowest harmonic, and the closer the system is to a ``near-rotation/near-coboundary'' low-frequency structure; this is mechanistically homologous with the small-angle quadratic law (Remark~\ref{prop:arity-335-kappa-variance}) and the tensor low-rank compressibility phenomenon (Remark~\ref{prop:arity-335-low-rank}).
+\end{remark}
+
+\begin{remark}[Coboundary defect certificate for the collision cocycle: best \texorpdfstring{$\ZZ/5$}{Z/5} coloring]\label{rem:arity-335-best-5-coloring}
+Assign to each edge of the 40-state graph the cocycle $\xi=\mathbf{1}_{\{d=2\}}\in\ZZ/5$. If there exists $h:V\to\ZZ/5$ such that $h(v)-h(u)\equiv \xi(u\to v)\pmod 5$ holds on all edges, then the third-axis twist can be canceled by conjugation, and hence does not reduce the spectral radius ($\rho/\lambda=1$). The secondary summary output provides a reproducible ``best found'' coloring defect $\varepsilon$ (proportion of inconsistent edges), serving as a combinatorial certificate of ``near-coboundary''; its value should be mechanistically related to the spectral gap $1-\rho_{3,3,5}/\lambda$.
+\end{remark}
+
+\begin{remark}[The combinatorial and spectral measures of near-coboundary defect are of the same order]\label{rem:arity-335-eps-vs-gap}
+Let the spectral gap be
+$$
+\delta_{\mathrm{spec}}:=1-\frac{\rho_{3,3,5}}{\lambda}.
+$$
+The secondary summary output simultaneously provides the best-found coboundary defect certificate \(\varepsilon\lesssim 0.066667\) (\(|E|=90\)) and the spectral gap
+\(
+\delta_{\mathrm{spec}}\approx 0.049379
+\), satisfying
+$$
+\delta_{\mathrm{spec}}<\varepsilon.
+$$
+This same-order locking supports the following mechanistic interpretation: \(\varepsilon\) measures the disruption of cocycle coboundary property by ``a small number of defect edges,'' while \(\delta_{\mathrm{spec}}\) measures the exponential effect of the same disruption on the Perron--Frobenius dominant mode; hence the slow mode of \(((3,3,5))\) arises primarily from coherent phase obstruction induced by a few defect edges, rather than from complex multidimensional coupling.
+
+Furthermore, a natural falsifiable conjecture is that there exists a constant \(C>0\) depending only on coarse structural constants of the graph (e.g., the comparison constant between the maximum out-degree and the minimum positive weight) such that
+$$
+1-\frac{\rho(\omega_5)}{\rho(1)}\ \le\ C\,\varepsilon,
+$$
+where \(\rho(\omega_5)\) denotes the worst spectral radius under a nontrivial \(\ZZ/5\) character applied along the third axis (collision cocycle) (i.e., \(\rho_{3,3,5}\)), and \(\rho(1)=\lambda\). This idea can be unified in the following more general ``defect $\Rightarrow$ spectral gap'' conjecture.
+\end{remark}
+
+\input{09_zeta_finite_04_03b_rem_eps_eff_predictions}
+
+\begin{conjecture}[Coboundary defect $\Rightarrow$ spectral gap (quantitative GRH certificate)]\label{conj:coboundary-defect-gap}
+Let $M$ be a primitive nonnegative kernel, $\chi$ a root-of-unity character twist, and write
+$$
+\lambda:=\rho(M),\qquad \rho_\chi:=\rho(M_\chi).
+$$
+Let \(\varepsilon\) be the minimal coboundary defect: over all assignments \(f:V\to U(1)\), maximize the proportion of edges on which
+\(
+\chi(e)=f(t(e))\overline{f(s(e))}
+\)
+holds, and define \(\varepsilon\) as the remaining proportion; let \(\varepsilon_\pi\) be the corresponding defect weighted by the untwisted PF equilibrium edge measure. Then there exists a structural constant \(c>0\) depending only on the graph such that
+$$
+1-\frac{\rho_\chi}{\lambda}\ \ge\ c\,\varepsilon^2
+\qquad(\text{or }c\,\varepsilon_\pi^2),
+$$
+and the converse holds: if \(1-\rho_\chi/\lambda\le \delta\), then there exists some \(f\) such that the coboundary defect satisfies \(\varepsilon\lesssim \sqrt{\delta}\) (or \(\varepsilon_\pi\lesssim \sqrt{\delta}\)). Thus ``near-coboundary'' and ``small spectral gap'' are quantitatively equivalent, forming an auditable certificate interface for the kernel-version GRH.
+\end{conjecture}
+
+\begin{remark}[Proof roadmap: from energy functionals to discrete Poincar\'e inequalities]\label{rem:coboundary-defect-proof}
+Normalize $M$ to the PF equilibrium-measure Markov/transfer operator, and view the twist as a phase perturbation on edges. By the variational characterization of the spectral radius, one can write $1-\rho_\chi/\lambda$ as the minimum of an ``energy descent'' functional; the coboundary defect provides a discrete Poincar\'e/Cheeger-type lower bound, forcing the energy to decrease by at least \(\gtrsim \varepsilon^2\). The converse direction comes from phase coherence of the ``near-maximum vector'': if the spectral gap is tiny, then there exists \(g\) such that the phase can be absorbed by the gradient on most edges, yielding \(\varepsilon\lesssim \sqrt{\delta}\).
+\end{remark}
+
+\begin{remark}[Provable upper bound from ``best coloring'': \texorpdfstring{$\kappa_\infty\le \varepsilon_\pi^{(2)}/2$}{kappa <= eps/2}]\label{rem:arity-335-eps-bound}
+Let \(\xi=\mathbf{1}_{\{d=2\}}\in\{0,1\}\) be the collision cocycle, and take a coloring \(h:V\to\ZZ/5\).
+Define the edge residual as
+$$
+r(e):=\xi(e)-\bigl(h(v)-h(u)\bigr)\quad\in\ZZ/5,
+$$
+and take its minimum integer lift in \(\{-2,-1,0,1,2\}\) (still denoted \(r(e)\in\ZZ\)).
+Then one has the decomposition \(\xi=\delta h+r\), where the coboundary term \(\delta h\) telescopically cancels on orbit sums; hence the asymptotic variance density satisfies
+$$
+\sigma_\xi^2=\sigma_r^2\le \mathbb{E}_\pi[r(e)^2]=:\varepsilon_\pi^{(2)},
+$$
+where \(\pi\) is the untwisted system's PF equilibrium edge measure.
+Combining with Remark~\ref{prop:arity-335-kappa-variance}'s \(\kappa_\infty=\sigma_\xi^2/2\), one obtains the provable upper bound
+$$
+\kappa_\infty\ \le\ \varepsilon_\pi^{(2)}/2.
+$$
+The secondary summary output simultaneously provides \(\varepsilon\) (uniform edge-proportion defect) and \(\varepsilon_\pi^{(2)}\) (equilibrium-weighted quadratic defect), thereby upgrading the ``near-coboundary certificate'' to an auditable upper bound on the quadratic-law constant.
+\end{remark}
+
+\begin{remark}[Comparison: the version with the third dimension taking \texorpdfstring{$N_e\bmod 5$}{Ne mod 5}]\label{rem:arity-335-ne-mod5}
+If the third dimension is instead taken as the output count $N_e(\gamma)\bmod 5$, one obtains another isomorphic $((3,3,5))$ constant tensor (with the same leading coefficient $1/45$), whose output fragment is
+\verb|\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_335}|
+(the script defaults to the third dimension being \texttt{Ne}). This version reflects more of the ``output-side'' congruence stratification; the main text adopts $N_2\bmod 5$ to directly lock onto the collision trigger mechanism.
+\end{remark}
+
+\paragraph{\texorpdfstring{$((5,5,5))$}{(5,5,5)}: three-dimensional Dirichlet--Mertens constant tensor at higher modulus (full table)}
+To further increase the resolution of the congruence stratification, one can simultaneously raise all three observables to modulus $5$:
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 5,\ N_-(\gamma)\bmod 5,\ N_e(\gamma)\bmod 5\bigr)\in(\ZZ/5)^3.
+$$
+The corresponding $5\times 5\times 5$ constant tensor (125 entries in total), together with the worst twisted spectral radius ratio $\rho_{5,5,5}/\lambda$ and the worst character index, are all generated by the script
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+and output as \verb|\input|-able \LaTeX\ fragments:
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_555}
+
+\begin{remark}[Universality of the pure-collision slow mode and slower mixing]\label{cor:arity-555-collision-universal}
+In the reproducible output for $((5,5,5))$, the worst twisted character remains $(0,0,1),(0,0,4)$, and
+\[
+\rho_{5,5,5}/\lambda\approx 0.962814> \rho_{3,3,5}/\lambda\approx 0.950621.
+\]
+Compared with $((3,3,3))$'s worst characters $(1,2,2),(2,1,1)$ and $\rho_{3,3,3}/\lambda\approx 0.936686$:
+increasing the third-dimension modulus causes the slowest mode to stably degenerate to the \textbf{pure collision twist}, while $\rho/\lambda$ moves closer to $1$, indicating slower mixing and longer correlation lengths.
+\end{remark}
+
+\begin{remark}[Interaction-order characteristic quantities of the constant tensor: ANOVA/Hoeffding orthogonal decomposition]\label{rem:dirichlet-mertens-anova-fingerprint}
+For any three-dimensional Dirichlet--Mertens constant tensor \(C_{a,b,c}\) (where \(a=\chi\bmod m_1\), \(b=N_-\bmod m_2\), \(c\) is the third-axis congruence coordinate), let
+$$
+\widetilde C_{a,b,c}:=C_{a,b,c}-\frac{\mathsf{M}}{|G|},
+\qquad
+G=(\ZZ/m_1)\times(\ZZ/m_2)\times(\ZZ/m_3).
+$$
+Under the uniform inner product on \(G\), apply the standard Hoeffding/ANOVA orthogonal decomposition to \(\widetilde C\):
+$$
+\widetilde C
+=C^{(A)}+C^{(B)}+C^{(C)}+C^{(AB)}+C^{(AC)}+C^{(BC)}+C^{(ABC)},
+$$
+where each component has zero marginal sum on its respective indices and the components are pairwise orthogonal.
+Define the three-body interaction order parameter and the ``\(\chi\)--third-axis locking index''
+$$
+S_{ABC}:=\frac{\|C^{(ABC)}\|_2^2}{\|\widetilde C\|_2^2}\in[0,1],
+\qquad
+L_{A\leftrightarrow C}:=\frac{\|C^{(AC)}\|_2^2+\|C^{(ABC)}\|_2^2}{\|\widetilde C\|_2^2}\in[0,1],
+$$
+where \(A\) is fixed as the \(\chi\)-axis and \(C\) denotes the third axis (which in different tensors may be \(N_e\bmod m_3\) or \(N_2\bmod m_3\)).
+Table~\ref{tab:real_input_40_dirichlet_mertens_tensor_anova} and Figure~\ref{fig:real_input_40_dirichlet_mertens_tensor_anova_scatter} provide the generated interaction-order diagnostics together with the corresponding worst twisted ratio/worst character:
+\input{sections/generated/tab_real_input_40_dirichlet_mertens_tensor_anova}
+\input{sections/generated/fig_real_input_40_dirichlet_mertens_tensor_anova_scatter}
+\par
+In the reproducible samples from this kernel, changing the third axis of \(((3,3,5))\) from \(N_e\bmod 5\) to \(N_2\bmod 5\) significantly suppresses \(S_{ABC}\) and \(L_{A\leftrightarrow C}\);
+simultaneously, the worst character remains the pure third-axis \((0,0,1),(0,0,4)\), thereby isolating the slow-mode mechanism onto the collision congruence variable.
+This establishes a verifiable bridging characteristic quantity between ``the interaction-order structure of the constant-level drift tensor'' and ``the geometric direction of the worst twisted slow mode.''
+\end{remark}
+
+\paragraph{Why this is called ``the genuine arity-dimension prime spectrum''}
+The output above simultaneously provides three layers of auditable structure:
+\begin{itemize}
+  \item Primitive orbits as ``prime-like objects,'' satisfying $p_n\sim \lambda^n/n$;
+\item $\chi(\gamma)$ as arity-charge, encoding the visible/invisible allocation of binary collisions into an additive charge;
+  \item Dirichlet--Mertens constant tensors (e.g., \(((2,2,2))\), \(((3,2,2))\), \(((3,3,3))\), \(((3,3,5))\)) provide the constant-level drift of congruence classes (Abel/Hadamard finite part), while $\rho/\lambda$ provides the exponential error in the approach of congruence classes toward equidistribution.
+\end{itemize}

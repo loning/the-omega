@@ -1,0 +1,116 @@
+\section{Projective Pressure Operator: Lifting the Integer-\texorpdfstring{$q$}{q} Moment-Kernel to Real Parameters}\label{app:pom-projective-pressure-operator}
+
+This appendix fills the ``\(q\to t\)'' gap flagged in Remark \ref{rem:pom-fiber-index-ldp}: it provides a \textbf{projective transfer operator} defined for any real parameter \(q\ge 1\), which at integer points \(q\in\ZZ_{\ge 2}\) degenerates strictly to the symmetric-power moment-kernel \(\widetilde A_q\) of this paper (Remark \ref{rem:pom-moment-symmetric-power-substitution-operator}), thereby upgrading the discrete pressure \(\log r_q\) to an executable candidate for a continuous pressure curve.
+
+\subsection{From the Online Kernel to Projective Dynamics: Definition of \texorpdfstring{$(\Phi_b,g_b)$}{(Phi,g)}}
+Following Definition \ref{def:pom-collision-count-bisim}, consider the deterministic online kernel / transducer \(\mathcal{T}\): state set \(Q\), input alphabet \(A_{\mathrm{in}}\), output alphabet \(A_{\mathrm{out}}\), and the deterministic transition--output map
+\[
+\tau:Q\times A_{\mathrm{in}}\to Q\times A_{\mathrm{out}},\qquad (s,a)\mapsto (s',b).
+\]
+
+\begin{definition}[Output-bucketed transition matrix and projective update]\label{def:pom-projective-transfer-operator}
+For each output symbol \(b\in A_{\mathrm{out}}\), define the nonnegative integer matrix \(B_b\in\Mat_{Q\times Q}(\NN)\) by
+\[
+(B_b)_{s',s}:=\#\{a\in A_{\mathrm{in}}:\ \tau(s,a)=(s',b)\}.
+\]
+Let
+\[
+\Delta:=\Bigl\{w\in\RR_{\ge 0}^{Q}:\ \langle \mathbf{1},w\rangle=1\Bigr\}
+\]
+denote the standard simplex of state weights (\(\mathbf{1}\) is the all-ones vector).
+For \(w\in\Delta\) and \(b\in A_{\mathrm{out}}\), define
+\[
+g_b(w):=\langle \mathbf{1},B_b w\rangle\in\RR_{\ge 0},
+\qquad
+\Phi_b(w):=
+\begin{cases}
+\dfrac{B_b w}{\langle \mathbf{1},B_b w\rangle},& g_b(w)>0,\\[8pt]
+\text{an arbitrary point in }\Delta\text{ (this term will be zeroed out)},& g_b(w)=0.
+\end{cases}
+\]
+For any real parameter \(q\ge 1\), define the operator acting on functions \(f:\Delta\to\RR\) by
+\[
+(\mathcal{L}_q f)(w):=\sum_{b\in A_{\mathrm{out}}} g_b(w)^{\,q}\, f(\Phi_b(w)),
+\]
+where by convention, when \(g_b(w)=0\), the corresponding summand is set to \(0\) (for \(q\ge 1\) and continuous \(f\), this convention is independent of the choice of \(\Phi_b(w)\)).
+\end{definition}
+
+\begin{remark}[Interpretation: \texorpdfstring{$g_b$}{g} as ``local fiber growth'' and \texorpdfstring{$\Phi_b$}{Phi} as ``normalized successor'']
+Interpret \(w\) as the ``current weight distribution of the hidden state over \(Q\).'' Then \(B_b w\) is the \emph{unnormalized} successor weight obtained by aggregating over all admissible input letters conditioned on the output being \(b\); its total mass \(g_b(w)\) is the total count (or total weight) of ``producing output \(b\)'' at this step. \(\Phi_b(w)\) then projects this unnormalized weight back onto the simplex, yielding a projective dynamical system.
+\end{remark}
+
+\subsection{Strict Degeneration at Integer Points: \texorpdfstring{$\mathcal{L}_q|_{\mathcal{H}_q}=\widetilde A_q$}{Lq|Hq=Aq}}
+\begin{definition}[Homogeneous polynomial subspace]\label{def:pom-homogeneous-polynomials-simplex}
+For an integer \(q\ge 0\), let \(\mathcal{H}_q\) denote the space of polynomial functions on \(\Delta\) that are homogeneous of degree \(q\):
+\[
+\mathcal{H}_q:=\{\,p|_{\Delta}:\ p(w)=\sum_{|\nu|=q}c_\nu\,w^\nu,\ c_\nu\in\RR\,\},
+\qquad
+w^\nu:=\prod_{s\in Q} w_s^{\nu(s)}.
+\]
+\end{definition}
+
+\begin{proposition}[Invariance of the homogeneous subspace and denominator cancellation]\label{prop:pom-projective-operator-invariant-homogeneous}
+For any integer \(q\ge 1\), the subspace \(\mathcal{H}_q\) is invariant under \(\mathcal{L}_q\); moreover, for any \(p\in\mathcal{H}_q\) and \(w\in\Delta\),
+\[
+(\mathcal{L}_q p)(w)=\sum_{b\in A_{\mathrm{out}}} p(B_b w).
+\]
+\end{proposition}
+\begin{proof}
+Take \(p\in\mathcal{H}_q\) and fix \(b\in A_{\mathrm{out}}\).
+When \(g_b(w)>0\), \(\Phi_b(w)=B_b w/g_b(w)\), and since \(p\) is homogeneous of degree \(q\),
+\[
+p(\Phi_b(w))=p\!\left(\frac{B_b w}{g_b(w)}\right)=\frac{p(B_b w)}{g_b(w)^{\,q}}.
+\]
+Substituting into Definition \ref{def:pom-projective-transfer-operator} gives
+\[
+g_b(w)^{\,q}\,p(\Phi_b(w))=p(B_b w).
+\]
+When \(g_b(w)=0\), the total mass of \(B_b w\) is zero, and \(B_b\ge 0,w\ge 0\) implies \(B_b w=0\), so \(p(B_b w)=0\) (since \(q\ge 1\)). By definition, the corresponding term in \(\mathcal{L}_q\) is also set to \(0\). Hence for all \(w\in\Delta\),
+\[
+(\mathcal{L}_q p)(w)=\sum_{b} g_b(w)^{\,q}\,p(\Phi_b(w))=\sum_b p(B_b w).
+\]
+The right-hand side is a finite sum of homogeneous polynomials of degree \(q\) and therefore lies in \(\mathcal{H}_q\). \qed
+\end{proof}
+
+\begin{theorem}[Integer degeneration = symmetric-power moment-kernel]\label{thm:pom-projective-operator-degenerates-to-moment-kernel}
+Using the notation of Proposition \ref{prop:pom-moment-symmetric-power} and Remark \ref{rem:pom-moment-symmetric-power-substitution-operator}, for each integer \(q\ge 2\), the matrix representation of the operator \(\mathcal{L}_q\) on \(\mathcal{H}_q\) (in the monomial basis \(w^\nu\)) is precisely the symmetric-power quotient moment-kernel \(\widetilde A_q\):
+\[
+\bigl[\mathcal{L}_q|_{\mathcal{H}_q}\bigr]_{(w^\nu)}=\widetilde A_q.
+\]
+Consequently, its spectral radius satisfies
+\[
+\rho\!\bigl(\mathcal{L}_q|_{\mathcal{H}_q}\bigr)=\rho(\widetilde A_q)=r_q.
+\]
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:pom-projective-operator-invariant-homogeneous},
+\(
+(\mathcal{L}_q p)(w)=\sum_{b} p(B_b w)
+\)
+holds for all \(p\in\mathcal{H}_q\). On the other hand, in Remark \ref{rem:pom-moment-symmetric-power-substitution-operator},
+\(\mathcal{T}=\sum_b \mathcal{T}_b\)
+acts on the polynomial ring by the linear substitution \(\mathbf{x}=(x_s)_{s\in Q}\mapsto B_b^{\mathsf T}\mathbf{x}\) (since \(x_s\mapsto T_s^{(b)}(\mathbf{x})\) is the linear combination given by the \(s\)-th row). Under the identification of \(w\) with the coordinate vector, \(p(B_b w)\) is isomorphic to this substitution action.
+Hence \(\mathcal{L}_q|_{\mathcal{H}_q}\) is conjugate to \(\mathcal{T}|_{R_q}\); and Remark \ref{rem:pom-moment-symmetric-power-substitution-operator} already gives \(\widetilde A_q\) as the matrix representation of \(\mathcal{T}\) on the degree-\(q\) homogeneous subspace.
+The spectral radius conclusion follows immediately. \qed
+\end{proof}
+
+\subsection{Continuous Pressure Curve and Large Deviation Interface}
+\begin{remark}[Executable route from discrete \texorpdfstring{$r_q$}{rq} to continuous \texorpdfstring{$\Lambda(t)$}{Lambda(t)}]\label{rem:pom-projective-pressure-route}
+Theorem \ref{thm:pom-projective-operator-degenerates-to-moment-kernel} provides the strict alignment: at integer \(q\ge 2\), the restriction of \(\mathcal{L}_q\) to a finite-dimensional invariant subspace is precisely the moment-kernel.
+The continuous cumulant-generating function \(\Lambda(t)\) required in Remark \ref{rem:pom-fiber-index-ldp} can therefore be made concrete as follows: set \(q=t+1\ge 1\) and find the Perron leading eigenvalue \(\lambda(t+1)\) of \(\mathcal{L}_{t+1}\) on an appropriate function space (e.g., H\"older continuous or bounded variation functions; existence and uniqueness are ensured by the usual cone contraction / quasi-compactness conditions), then define
+\[
+\Lambda(t):=\log\lambda(t+1)-\log|A_{\mathrm{out}}|.
+\]
+At integer points \(t=q-1\), this strictly degenerates to
+\(
+\Lambda(q-1)=\log r_q-\log|A_{\mathrm{out}}|
+\)
+(for the Fold main kernel, \(\log r_q-\log 2\)), which is in exact agreement with the integer-point identity of Proposition \ref{prop:pom-fiber-index-cgf}.
+Once \(\Lambda\) satisfies the differentiability / essential strict convexity condition, the G\"artner--Ellis interface directly yields the large deviation rate function of the fiber index: \(I(\gamma)=\sup_{t\ge 0}(t\gamma-\Lambda(t))\).
+\end{remark}
+
+\begin{remark}[Numerical approximation suggestion: extrapolating from finite-dimensional ``integer truncation'' to real parameters]\label{rem:pom-projective-pressure-numerics}
+In practice, \(\mathcal{L}_{t+1}\) can be viewed as a positive operator on functions over \(\Delta\) and discretized via Galerkin / collocation methods:
+construct a finite-dimensional approximate operator \(\mathcal{L}_{t+1}^{(N)}\) using a low-order polynomial basis, simple grids, or sparse grids on \(\Delta\), and then take its Perron root as the approximation \(\lambda_N(t+1)\).
+At integer points, \(\mathcal{L}_{q}\) already admits an \emph{exact finite-dimensional} representation \(\widetilde A_q\) on \(\mathcal{H}_q\), so \(\rho(\widetilde A_q)=r_q\) serves as a strong consistency regression anchor for the discretization/extrapolation (in particular for checking the convexity of \(t\mapsto \log\lambda_N(t+1)\) and the interpolation error at \(t=q-1\)).
+\end{remark}

@@ -1,0 +1,690 @@
+\subsection{From syntax to operators: transfer operators, C*-algebras, and \texorpdfstring{$\zeta$}{zeta} (precise caliber)}\label{subsec:operator-zeta-interface}
+
+This subsection writes the ``syntax--spectrum--$\zeta$'' connection as assessable operator-theoretic statements, and makes explicit what objects this paper actually uses. The core point is: on the golden mean SFT, Perron--Frobenius (finite matrix) and the Ruelle transfer operator (infinite-dimensional operator) coincide on the cylinder function space; the corresponding C*-algebra framework (such as Cuntz--Krieger algebras/groupoid C*-algebras) provides tools for unifying cylinder projections, the maximum entropy state (Parry measure), and the spectrum/$\zeta$ in a single formulation.
+
+\subsubsection{Transfer operators and the Fredholm determinant caliber for \texorpdfstring{$\zeta$}{zeta}}
+
+Let $X_A^+\subset\{0,1\}^{\NN}$ be the one-sided SFT defined by the adjacency matrix $A$ (golden mean constraint), and let $\sigma:X_A^+\to X_A^+$ be the left shift. Define the Ruelle transfer operator at zero potential (counting potential) for bounded functions:
+\[
+(\mathcal{L}f)(x):=\sum_{\sigma y=x} f(y).
+\]
+In the SFT case, this sum is finite. Let $\mathcal{C}_m$ be the finite-dimensional subspace spanned by length-$m$ cylinder set indicator functions; then $\mathcal{L}$ acting on $\mathcal{C}_1$ is equivalent to the action of the matrix $A^{\mathsf T}$, and by the cylinder function closure can be tracked to all finite $m$.
+
+\begin{definition}[Fredholm determinant (auditable caliber)]\label{def:fredholm-determinant}
+If $T$ is a trace-class operator (which is automatic in the finite-dimensional/finite-rank case used in this paper), define its Fredholm determinant as
+\[
+\det(I-zT):=\exp\left(-\sum_{n\ge 1}\frac{\mathrm{Tr}(T^n)}{n}z^n\right),
+\quad |z|\ \text{sufficiently small}.
+\]
+In the finite-dimensional case, this definition coincides with the matrix determinant, and by analytic continuation yields a rational function identity (see \cite{Ruelle1976ZetaExpanding,ParryPollicott1990Zeta}).
+\end{definition}
+
+For subshifts of finite type (SFT), the identity for the dynamical $\zeta$ is
+\[
+\zeta_\sigma(z)=\frac{1}{\det(I-zA)},
+\]
+and can be given consistently via the periodic point count and the Fredholm determinant caliber (see \cite{LindMarcus1995,Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}).
+
+\subsubsection{Two-variable \texorpdfstring{$\zeta$}{zeta} fingerprint with ``complexity potential'': strict alignment of Euler products and trace sequences}\label{subsec:zeta-two-variable-kappa}
+
+This section provides a unified object that is compatible with both the ``prime-like (Euler product/explicit formula) side'' and the ``spectral/trace side'' of this paper, and is directly usable for numerical auditing: the \textbf{two-variable \(\zeta_K(z,u)\) with potential}. Here \(z\) counts time steps (power of the trace), \(u\) counts a locally additive ``complexity/serial cost potential'' \(\kappa\) (e.g., the number of non-parallelizable delay/carry events), thereby embedding the ``time cost'' as a multiplicative weight into the primitive factors of the Euler product.
+
+\begin{definition}[Two-variable \texorpdfstring{$\zeta_K(z,u)$}{zetaK(z,u)} with potential]\label{def:zetaK-zu}
+Given a finite directed graph (or finite-state synchronization system) \(\Gamma_K\), assign to each edge \(e\) a nonneg\-ative integer potential
+\[
+\kappa(e)\in\ZZ_{\ge 0}.
+\]
+Define the weighted adjacency matrix family \(M_K(u)\in \Mat_{|V|\times |V|}(\ZZ[u])\) by
+\[
+\bigl(M_K(u)\bigr)_{ij}:=\sum_{e:i\to j} u^{\kappa(e)}.
+\]
+Define the two-variable \(\zeta\) as a formal power series (or as an analytic function for \(|z|\) sufficiently small):
+\begin{equation}\label{eq:zetaK-trace-exp}
+\zeta_K(z,u)
+:=\exp\!\Bigl(\sum_{n\ge 1}\frac{a_n(u)}{n}z^n\Bigr),
+\qquad
+a_n(u):=\Tr\bigl(M_K(u)^n\bigr),
+\end{equation}
+so that in the finite-dimensional case, one has the strict identity
+\begin{equation}\label{eq:zetaK-det}
+\zeta_K(z,u)=\frac{1}{\det(I-zM_K(u))}.
+\end{equation}
+\end{definition}
+
+\begin{remark}[Euler product and the primitive stratification spectrum]\label{rem:zetaK-euler-product}
+Denote by \(\mathcal{P}_K\) the set of primitive directed closed orbits of \(\Gamma_K\); for \(\gamma\in\mathcal{P}_K\), write its length as \(|\gamma|\) and define the orbit potential as the orbit sum of the edge potentials:
+\[
+\kappa(\gamma):=\sum_{e\in\gamma}\kappa(e).
+\]
+Then by the ``periodic point/closed path'' expansion (see \cite{ParryPollicott1990Zeta,LindMarcus1995}), one obtains the strict formal product identity
+\begin{equation}\label{eq:zetaK-euler}
+\zeta_K(z,u)=\prod_{\gamma\in\mathcal{P}_K}\bigl(1-z^{|\gamma|}u^{\kappa(\gamma)}\bigr)^{-1}.
+\end{equation}
+Introduce the primitive stratification spectrum polynomials
+\begin{equation}\label{eq:zetaK-Bn}
+B_n(u):=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n} u^{\kappa(\gamma)}\in\ZZ[u],
+\end{equation}
+then \(\{B_n(u)\}_{n\ge 1}\) and the trace sequence \(\{a_n(u)\}_{n\ge 1}\) are related by a strict M\"obius/Witt exchange (see the following proposition).
+\end{remark}
+
+\begin{proposition}[Witt/M\"obius inversion: extracting the primitive stratification spectrum from the trace sequence]\label{prop:zetaK-mobius-primitive}
+Continuing with the notation of Definition \ref{def:zetaK-zu}--\ref{rem:zetaK-euler-product}. Then for all \(n\ge 1\):
+\begin{equation}\label{eq:zetaK-trace-from-primitive}
+a_n(u)=\sum_{d\mid n} d\,B_d\!\bigl(u^{n/d}\bigr),
+\end{equation}
+and by M\"obius inversion one can strictly recover
+\begin{equation}\label{eq:zetaK-primitive-from-trace}
+\boxed{\;
+B_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}\!\bigl(u^{d}\bigr)\; }.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Taking the logarithm of the Euler product \eqref{eq:zetaK-euler} and expanding as a geometric series gives
+\[
+\log\zeta_K(z,u)
+=\sum_{\gamma\in\mathcal{P}_K}\sum_{k\ge 1}\frac{1}{k}z^{k|\gamma|}u^{k\kappa(\gamma)}.
+\]
+Grouping the right-hand side by \(n=k|\gamma|\), and noting that the \(k\)-th power of each primitive orbit \(\gamma\) produces \( |\gamma| \) closed paths of length \(n\) with distinct starting points, the length-\(n\) trace count satisfies \eqref{eq:zetaK-trace-from-primitive}. Applying M\"obius inversion to \eqref{eq:zetaK-trace-from-primitive} gives \eqref{eq:zetaK-primitive-from-trace}. \qed
+\end{proof}
+
+\begin{remark}[Strict commutative ``trace $\to$ primitive $\to$ Euler'' bridge package (commutative diagram)]\label{rem:zetaK-commuting-diagram}
+Proposition \ref{prop:zetaK-mobius-primitive} together with Definition \ref{def:zetaK-zu} (the determinant caliber \eqref{eq:zetaK-det}) gives the \textbf{strict commutative} bridge package repeatedly invoked in this paper: for any finite kernel/finite matrix \(T\) (e.g., \(T=M_K(u)\) for fixed \(u\)), let
+\[
+a_n(T):=\Tr(T^n)\quad(n\ge 1),
+\qquad
+p_n(T):=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(T),
+\]
+and define the Euler transform
+\[
+\mathrm{Euler}\bigl((p_n)_{n\ge 1}\bigr)(z):=\prod_{n\ge 1}(1-z^n)^{-p_n}.
+\]
+Then for each \(T\), the following term-by-term identity holds:
+\[
+\boxed{\;
+\zeta_T(z):=\frac{1}{\det(I-zT)}
+=\exp\!\Bigl(\sum_{n\ge 1}\frac{a_n(T)}{n}z^n\Bigr)
+=\prod_{n\ge 1}(1-z^n)^{-p_n(T)}\; }.
+\]
+In other words, compressing ``trace sequence (ghost) $\to$ M\"obius/Witt inversion (primitive) $\to$ Euler product (prime-like)'' into the minimal structure, one can write the following strict commutative diagram:
+\[
+\begin{CD}
+T @>\mathrm{TrSeq}>> (a_n(T))_{n\ge 1} @>\mathrm{Mob}>> (p_n(T))_{n\ge 1} @>\mathrm{Euler}>> \prod_{n\ge 1}(1-z^n)^{-p_n(T)}\\
+@V\mathrm{ZetaDet}VV @. @. @VV=V\\
+\det(I-zT)^{-1} @. @. \det(I-zT)^{-1}
+\end{CD}
+\]
+where \(\mathrm{TrSeq}(T)=(a_n(T))\), \(\mathrm{Mob}(a)=p\) is M\"obius inversion, and \(\mathrm{ZetaDet}(T)=\det(I-zT)^{-1}\).
+\end{remark}
+
+\begin{remark}[Two-layer bridge package: the completed unitary slice and Hankel minimal realization]\label{rem:two_layer_bridge_package_completed_minH}
+The ``trace $\to$ primitive $\to$ Euler/\(\zeta\)'' chain of Remark \ref{rem:zetaK-commuting-diagram} has already locked the prime-like side and the trace side into strict commutativity.
+In the framework of this paper, there are two additional ``second-layer'' structural interfaces that run in parallel and are equally auditable, so that the ``time--space duality'' no longer remains at the level of metaphor:
+\begin{enumerate}
+  \item \textbf{Completion: functional equation/critical-line geometry.}
+  When the two-variable determinant
+  \(
+  \Delta(z,u)=\det(I-zB(u))
+  \)
+  of certain kernels satisfies self-duality \(\Delta(z,u)=\Delta(uz,1/u)\) (\S\ref{subsec:xi-from-self-dual}),
+  one can define the completed cross-section operator
+  \[
+  \mathsf{Comp}_L:\Delta(z,u)\longmapsto \Xi_{\Delta,L}(s):=\Delta(L^{-s},L^{2s-1}),
+  \]
+  and obtain the strict functional equation \(\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s)\) together with
+  the fixed geometry ``critical line \(\Re(s)=\tfrac12\) \(\Leftrightarrow\) unitary slice \(|u|=1\)'' (Proposition \ref{prop:xi-delta-L-functional-equation} and Remark \ref{rem:xi-critical-line-unit-circle}).
+  Furthermore, Proposition \ref{prop:xi-unitary-slice-spectral-crossing} provides an operator-theoretic rewriting: critical-line zeros are equivalent to eigenvalue crossings of the normalized kernel family \(U_L(\theta)\) through \(1\).
+  \item \textbf{Minimal realization: Hankel rank deficiency/invisible modes.}
+  For sequence objects output by \(\mathrm{TrSeq}\) or a moment-kernel, the Hankel caliber minimal realization
+  (Theorem \ref{thm:hankel-rank-minimal} and \S\ref{subsec:pom-moment-visibility})
+  lifts ``sequences'' to a minimal-dimensional linear representation (weighted automaton/rational series realization).
+  When the minimal dimension \(d_q\) is less than the nominal mode truncation dimension \(2\lfloor q/2\rfloor+1\),
+  the difference \(\Delta(q)=(2\lfloor q/2\rfloor+1)-d_q\) (Table \ref{tab:fold_collision_resonance_gap_delta_q_9_17})
+  provides a fully verifiable ``invisible/resonance constraint gap'' certificate: it quantifies the parallel degrees of freedom that are forcibly eliminated in the mode coordinates.
+\end{enumerate}
+Therefore, the bridging chain of this paper can be organized as a strict commutative two-layer package: the first layer aligns trace and Euler product; the second layer respectively compresses
+(i) the critical-line geometry into a spectral crossing problem on the unitary slice, and
+(ii) the mode/symmetric power compilation into integer certificates of Hankel minimal dimension and gap \(\Delta(q)\).
+\end{remark}
+
+\begin{remark}[Auditable bridge package: embedding the information ledger/fiber reflector \texorpdfstring{$K_m$}{Km} into the commutative diagram]\label{rem:reflected-witt-euler-bridge}
+The Witt/Euler bridge package of this section (Remark \ref{rem:zetaK-commuting-diagram}) uses only one input object: a finite-dimensional linear operator (finite kernel/finite matrix) \(T\).
+On the other hand, \S\ref{subsec:pom-information-ledger} provides a \textbf{more rigorous, auditable} ``readout--lift'' structure:
+the pushforward (readout) \(P_m=(\Fold_m)_*\), the fiber-uniform lift (maximum entropy lift) \(Q_m\), and the fiber reflector \(K_m:=Q_m\circ P_m\) generated therefrom
+(Theorem \ref{thm:pom-kl-ledger}, Theorem \ref{thm:pom-fiber-reflector}, Corollary \ref{cor:pom-second-law-Km}).
+(Note: here \(K_m\) is the fiber reflector at resolution \(m\); do not confuse it with the subscript \(K\) used in this section to label ``kernels/graphs'' (as in \(\Gamma_K,M_K(u)\)).)
+It decomposes the entropy of any microscopic distribution strictly as
+\[
+H(\mu)=H(P_m\mu)+\kappa_m(P_m\mu)-D_{\mathrm{KL}}(\mu\|K_m\mu),
+\qquad
+H(K_m\mu)-H(\mu)=D_{\mathrm{KL}}(\mu\|K_m\mu)\ge 0,
+\]
+where \(\kappa_m(\pi)=\mathbb{E}_{\pi}[\log d_m(X)]\) (Definition \ref{def:pom-kappa}) is the window-level ``fiber volume'' defect, and the residual KL is the irreducible information burden of ``within-fiber non-uniformity.''
+From the categorical viewpoint, \(K_m\) is precisely a resolution-\(m\) \emph{reflector}: it reflects any microscopic distribution onto the ``fiber-wise conditionally uniform'' readable subclass;
+its idempotence and fixed-point characterization are given by Theorem \ref{thm:pom-fiber-reflector}, and the metric version ``entropy increase \(=\) residual KL'' is given by Corollary \ref{cor:pom-second-law-Km}.
+
+\paragraph{Inserting \(K_m\) into End.}
+In the finite-dimensional caliber, \(P_m,Q_m,K_m\) can be viewed as linear operators on the vector spaces \(\CC^{\Omega_m}\), \(\CC^{X_m}\) (their action on the probability simplex being merely a restriction).
+For any linear operator \(T:\CC^{\Omega_m}\to\CC^{\Omega_m}\), define its resolution-\(m\) \emph{auditable compression} (stable-layer operator)
+\[
+\overline T_m\ :=\ P_m\circ T\circ Q_m:\CC^{X_m}\to\CC^{X_m},
+\]
+and write this compressed operator as \(\mathrm{Ref}_m(T):=\overline T_m\).
+Also define the corresponding \emph{reflected visible part}
+\[
+T_m^{\mathrm{aud}}\ :=\ Q_m\circ \overline T_m\circ P_m
+\ =\ (Q_mP_m)\,T\,(Q_mP_m)
+\ =\ K_m\,T\,K_m:\CC^{\Omega_m}\to\CC^{\Omega_m}.
+\]
+From \(P_mQ_m=\mathrm{id}\) (Theorem \ref{prop:fold-pushforward-lift}), it follows that:
+\begin{itemize}
+  \item The image and invariant subspace of \(T_m^{\mathrm{aud}}\) are contained in \(\mathrm{Im}(K_m)=Q_m(\CC^{X_m})\) (i.e., the ``fiber-wise conditionally uniform'' readable subspace);
+  \item \(\overline T_m\) and \(T_m^{\mathrm{aud}}\) are conjugate on this subspace, so their \textbf{entire nonzero spectra} coincide; consequently, for all \(n\ge 1\) the strict identity holds:
+  \[
+  \boxed{\ \Tr\!\bigl((T_m^{\mathrm{aud}})^n\bigr)=\Tr\!\bigl((\overline T_m)^n\bigr)\ }.
+  \]
+\end{itemize}
+Therefore, in the ``trace$\to$primitive$\to$Euler'' chain, replacing the input object from \(T\) by \(\overline T_m\) (or equivalently \(T_m^{\mathrm{aud}}\)) does not alter any trace sequence/primitive stratification spectrum/Euler product output; this is precisely the way to \emph{embed} the auditable reflection structure of the ``space/time duality'' into Remark \ref{rem:zetaK-commuting-diagram}.
+
+\paragraph{Minimal diagram of the four-way commutativity.}
+Compressing the above ``reflection compression + Witt/Euler strict commutativity + certificated spectral bounds'' into a single diagram, one can write
+\[
+\begin{CD}
+T @>\mathrm{Ref}_m>> \overline T_m @>\mathrm{TrSeq}>> (a_n(\overline T_m))_{n\ge 1} @>\mathrm{Mob}>> (p_n(\overline T_m))_{n\ge 1} @>\mathrm{Euler}>> \zeta_{\overline T_m}(z)\\
+@. @V\mathrm{Cert}_rVV @. @. @. @.\\
+@. \{\,H\succ 0:\ \overline T_m^\ast H\,\overline T_m\prec r^2 H\,\} @. @. @. @.
+\end{CD}
+\]
+where the top row is the strict commutative bridge package of Remark \ref{rem:zetaK-commuting-diagram}, and the bottom row's \(\mathrm{Cert}_r\) is the Lyapunov feasibility certificate for the spectral radius bound (Proposition \ref{prop:lyapunov-spectral-radius-certificate}).
+
+\paragraph{Auditable spectral certificate layer.}
+When a prime-like/RH-like criterion requires verification of a spectral radius bound (e.g., for a twisted component of the potential-weighted kernel \(M_K(u)\)),
+the Lyapunov certificate of Appendix \ref{app:op-algebra} (Proposition \ref{prop:lyapunov-spectral-radius-certificate}) rewrites
+\(\rho(A)<r\) as the LMI feasibility \(\exists\,H\succ 0:\ A^\ast H A\prec r^2H\), thereby allowing the ``spectral bound'' to be provided as a \textbf{reproducible audit certificate} in the form of a matrix \(H\) accompanying the output (see Remark \ref{rem:lyapunov-sdp}).
+\end{remark}
+
+\begin{remark}[Fourier--Witt double ghost bridge (FW-Bridge)]\label{rem:fw-bridge}
+Remark \ref{rem:zetaK-commuting-diagram} gives the time/spectral-side ``trace ghost \(\to\) primitive \(\to\) Euler'' strict commutative bridge package (Witt side).
+On the other hand, the Fold branch on the finite cyclic ring \(G_m=\ZZ/F_{m+2}\ZZ\) also possesses a completely independent, equally strictly commutative ``convolution \(\leftrightarrow\) pointwise multiplication + Parseval energy'' bridge package (Fourier side; see Remark \ref{rem:fold-fourier-parseval-bridge}).
+The two bridges share the same computable ``ghost gauge''---the second-order collision gap/nontrivial frequency spectral energy:
+\[
+F_{m+2}\,\mathsf{Col}_m-1=\frac{1}{4^m}\sum_{t\ne 0}\bigl|\widehat c_m(t)\bigr|^2,
+\]
+thereby aligning the prime-like (Euler product) side and the spectral/trace side in the same machine-verifiable commutative diagram: the Witt side strictly reads out the Euler product of \(\zeta=\det(I-zT)^{-1}\) from the trace, while the Fourier side strictly diagonalizes the Fold residue superposition and compresses the ``deviation from uniformity'' into the same scalar fingerprint \(F_{m+2}\mathsf{Col}_m-1\) (equivalent to the second-order collision ratio \(R_m-1\); see Corollary \ref{cor:pom-renyi2-near-uniform}).
+\end{remark}
+
+\begin{remark}[Strict commutative cube of Witt--Fourier double bridge gluing: the same character axis \texorpdfstring{$\mathrm{Tw}_\chi$}{Tw\_chi} simultaneously diagonalizes ``convolution--collision'' and ``trace--Euler'']\label{rem:twist-commuting-cube}
+Take the finite ring $G_m$ and its character group $\widehat G_m$. For each character $\chi$, define the fiber-side twist
+\[
+\mathrm{Tw}_\chi(d_m):=\sum_{r\in G_m} d_m(r)\,\chi(r)=\widehat d_m(\chi),
+\]
+and on the orbit side define the twisted kernel $T_\chi$ with the same character (multiplying by $\chi$ as a Dirichlet twist along edges/steps).
+\par
+By Theorem \ref{thm:fold-multiplicity-energy} (or equivalently Theorem \ref{thm:fold-collision-spectrum}), the Parseval/Plancherel identity allows one to write the ``collision energy'' as a character energy average:
+\[
+\boxed{\;
+\mathsf{Col}_m
+=\frac{1}{2^{2m}F_{m+2}}\sum_{\chi\in\widehat G_m}\bigl|\mathrm{Tw}_\chi(d_m)\bigr|^2\;}
+\]
+and from Theorem \ref{thm:fold-spectrum-factorization} one obtains the complete factorization
+\[
+\mathrm{Tw}_\chi(d_m)=\prod_{j=1}^m\bigl(1+\chi(F_{j+1})\bigr).
+\]
+Then ``Fourier diagonalization'' and the ``Witt/Euler commutative diagram'' are strictly compatible on the same $\mathrm{Tw}_\chi$ axis:
+\[
+\begin{CD}
+d_m @>\mathrm{FT}_m>> \widehat d_m \\
+@V\mathrm{Tw}_\chi VV @VV\mathrm{ev}_\chi V \\
+\widehat d_m(\chi) @= \widehat d_m(\chi)
+\end{CD}
+\qquad
+\begin{CD}
+T @>\mathrm{TrSeq}>> (a_n) @>\mathrm{Mob}>> (p_n) @>\mathrm{Euler}>> \zeta_T \\
+@V\mathrm{Tw}_\chi VV @V\mathrm{Tw}_\chi VV @V\mathrm{Tw}_\chi VV @V\mathrm{Tw}_\chi VV @V\mathrm{Tw}_\chi VV \\
+T_\chi @>\mathrm{TrSeq}>> (a_n^\chi) @>\mathrm{Mob}>> (p_n^\chi) @>\mathrm{Euler}>> \zeta_{T_\chi}
+\end{CD}
+\]
+Therefore, gluing these two commutative squares along the ``character twist'' direction yields a strict commutative cube: the same $\mathrm{Tw}_\chi$ simultaneously diagonalizes the fiber-side convolution/collision energy and the orbit-side iteration/trace expansion.
+\end{remark}
+
+\begin{remark}[Interpretation of \texorpdfstring{$u$}{u}: multiplicatively encoding ``non-parallelizable delay/serial cost'']\label{rem:zetaK-u-delay}
+In the kernel/scan operator context of this paper, \(\kappa(e)\) can be taken as the number of non-parallelizable cost events per step (e.g., carry trigger count, fixed delay event count, etc.). Then \eqref{eq:zetaK-euler} shows: along the primitive orbit \(\gamma\), the total cost \(\kappa(\gamma)\) enters the primitive factor as the multiplicative weight \(u^{\kappa(\gamma)}\):
+\[
+\bigl(1-z^{|\gamma|}u^{\kappa(\gamma)}\bigr)^{-1},
+\]
+so ``serial cost on the time side'' is \emph{automatically translated} on the prime-like side into the multiplicative exponent of the Euler product.
+This is precisely the verifiable bridge package needed in this paper: given the potential-weighted transfer kernel \(M_K(u)\), one can compute \(a_n(u)=\Tr(M_K(u)^n)\) on the trace side, strictly extract the primitive stratification spectrum \(B_n(u)\) via \eqref{eq:zetaK-primitive-from-trace}, and then recover the Euler product via \eqref{eq:zetaK-euler}.
+\end{remark}
+
+\begin{corollary}[Cost moments at the primitive level: direct readout of \texorpdfstring{$B_n^{(k)}(1)$}{Bn(k)(1)}]\label{cor:zetaK-primitive-moments}
+For each \(n\ge 1\), let
+\(
+B_n(u)=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n} u^{\kappa(\gamma)}
+\)
+as in \eqref{eq:zetaK-Bn}.
+Then the following term-by-term identities hold:
+\[
+\boxed{\;
+B_n'(1)=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n}\kappa(\gamma),\qquad
+B_n''(1)=\sum_{\gamma\in\mathcal{P}_K,\ |\gamma|=n}\kappa(\gamma)\bigl(\kappa(\gamma)-1\bigr).\;}
+\]
+Therefore, differentiating \(B_n(u)\) at \(u=1\) yields the first-order/second-order moment statistics of the ``serial cost event count'' on length-\(n\) primitive atoms; when \(\kappa\) is taken as the carry/delay trigger count, this provides a comparable complexity fingerprint.
+\end{corollary}
+\begin{proof}
+Differentiating each primitive orbit term \(u^{\kappa(\gamma)}\) term by term and evaluating at \(u=1\) yields the result. \qed
+\end{proof}
+
+\begin{remark}[Calibration baseline using the top overflow bit as the minimal potential]\label{rem:zetaK-overflow-calibration}
+At the Fold window level, the hidden bit \(b(\omega)\) (Lemma \ref{lem:pom-one-bit}) can be viewed as the minimal non-parallelizable shadow of ``whether the most significant carry penetrates'';
+its global count \(|B_m|=\lfloor 2^m/3\rfloor\) and its exact closed form without rounding are given in Theorem \ref{thm:pom-hidden-bit-count} and Remark \ref{rem:pom-hidden-bit-dyadic-trunc}.
+Therefore, when \(\kappa\) is chosen as a finer carry/delay event count, one can use the projection ``coarsening \(\kappa\) to the top carry indicator'' to recover the above closed form, serving as the minimal audit baseline for the \(u\)-potential and the implementation pipeline.
+\end{remark}
+
+\begin{remark}[From toy-RH to RH: the structural threshold of finite-dimensional pole lattices]\label{rem:finite-pole-lattice-barrier}
+The finite-dimensional caliber (adjacency matrix/finite-state kernel) heavily used in this paper has decisive advantages in auditability and computability; however, at the level of the \(s\)-plane ``critical-line geometry,'' it also carries an unavoidable structural limitation.
+
+For any finite-dimensional matrix kernel \(M\) with \(\lambda=\rho(M)\), let
+\(
+\widehat{\zeta}(s)=\det(I-\lambda^{-s}M)^{-1}
+\).
+Proposition \ref{prop:finite-rh-triangle-dict} gives the complete pole dictionary: each nonzero eigenvalue \(\mu\) produces an arithmetic lattice family on the vertical line
+\(
+\Re(s)=\log|\mu|/\log\lambda
+\)
+(with common difference \(2\pi/\log\lambda\)), so in any finite-dimensional model, the ``nontrivial pole geometry'' in the critical strip can only consist of \textbf{finitely many vertical lines + finitely phased arithmetic combs}.
+This explains why the toy-RH of the 40-state kernel (Proposition \ref{prop:finite-rh-40}), while able to push the poles to \(\Re(s)=\tfrac12\), still has a highly rigid imaginary structure on the critical line (determined by finitely many phases).
+
+Therefore, if one wishes to achieve richer ``critical-line geometry/statistics,'' one must introduce a limiting process (a sofic/SFT approximation sequence with growing state count) or directly enter the infinite-dimensional transfer operator's Fredholm determinant caliber; the latter allows singularity structures beyond the finite-dimensional ``phase comb'' (\cite{Ruelle1976ZetaExpanding,Ruelle1978Thermodynamic,ParryPollicott1990Zeta}).
+\end{remark}
+
+\begin{remark}[Iteratively refinable representation of the remainder map: candidate \texorpdfstring{$\mathcal{L}_s$}{Ls} and ``coarse partition degenerating to finite kernel'']\label{rem:remainder-map-transfer-operator-refinement}
+This paragraph views the remainder dynamics from \S\ref{subsec:online-delay},
+\[
+R(t)=\Bigl\{\varphi R(s)+d\varphi^{-3}\Bigr\},\qquad
+e=\Bigl\lfloor \varphi R(s)+d\varphi^{-3}\Bigr\rfloor\in\{0,1\},
+\]
+as a \textbf{multi-branch expanding-and-rounding system} on \(X:=[0,1)\): for each admissible branch pair \((d,e)\in\{0,1,2\}\times\{0,1\}\), define the inverse branch (affine contraction)
+\[
+\tau_{d,e}(r):=\frac{r+e-d\varphi^{-3}}{\varphi},
+\]
+and let \(I_{d,e}:=\tau_{d,e}(X)\cap X\) be its image interval (which is empty when \((d,e)\) is unreachable). Then for any function \(f\) (e.g., a bounded variation or analytic function), one can define a transfer operator family
+\[
+(\mathcal{L}_s f)(r)
+:=\sum_{(d,e)}\mathbf{1}_{I_{d,e}}(r)\,w_{d,e}(r;s)\,f\!\bigl(\tau_{d,e}(r)\bigr),
+\]
+where the weight function \(w_{d,e}(r;s)\) can be taken as \(e^{-s}\) (length potential per step) or as a more general analytic weight (e.g., incorporating carry/delay event potentials or the continuous scale mixing of \S\ref{subsec:xi-from-self-dual} as an \(s\)-dependent non-local constant potential), thereby placing \(\det(I-\mathcal{L}_s)\) within the Fredholm determinant paradigm.
+\par
+The key point is: \textbf{under a coarse partition, it degenerates back to the finite kernel already used in this paper}. Specifically, \S\ref{subsec:online-delay} has already given the synchronization kernel's $10$ states \(Q\) and edge table; and this edge table can be equivalently interpreted as a Markov partition \(\{J_q\}_{q\in Q}\) on \(X=[0,1)\):
+for each \(q\in Q\), let \(J_q\subset[0,1)\) be the domain of remainder values for which the ``realizable state'' is \(q\) (with endpoints generated by branch discontinuity points and their finite preimages).
+Then on the piecewise-constant subspace
+\(
+\mathcal{C}_Q:=\mathrm{span}\{\mathbf{1}_{J_q}:q\in Q\}
+\),
+the action of \(\mathcal{L}_s\) is completely characterized by a finite matrix; when taking \(w_{d,e}\equiv 1\), this matrix is precisely the transpose of the synchronization kernel's adjacency matrix \(B^{\mathsf T}\) (Appendix \ref{app:sync-kernel-basic}), i.e.,
+\[
+\mathcal{L}_0|_{\mathcal{C}_Q}\ \cong\ B^{\mathsf T}.
+\]
+\par
+Furthermore, if one takes the set of branch discontinuity points \(\mathcal{D}_0:=\{0,1\}\cup\partial I_{d,e}\) as the initial cut points and recursively refines
+\[
+\mathcal{D}_{m+1}:=\mathcal{D}_m\ \cup\ \bigcup_{(d,e)}\tau_{d,e}(\mathcal{D}_m),
+\qquad
+\Pi_m:=\text{interval partition induced by }\mathcal{D}_m,
+\]
+then one obtains a family of iteratively refinable Markov partitions \(\Pi_m\). Taking the piecewise-constant space \(\mathcal{C}_m\) on each \(\Pi_m\) yields a sequence of finite-rank approximations
+\(
+\mathcal{L}_s|_{\mathcal{C}_m}
+\),
+whose matrix entries are given term by term by ``which inverse branch maps one atom to another''; and at \(m=0\) (equivalent to the synchronization kernel coarse partition), it degenerates to the finite kernel \(B^{\mathsf T}\) above.
+This provides a minimal executable upgrade interface: preserving the auditable finite-matrix layer, while allowing entry into the truly infinite-dimensional Fredholm determinant framework in the \(m\to\infty\) limit.
+\end{remark}
+
+\subsubsection{HTF downgrade, NonCancel certificates, and residue ring audit: from ``logical barrier'' to ``executable audit/construction target''}\label{subsec:htf-downgrade-audit-constructive}
+This paragraph further compresses the logical barrier ``holomorphic inside the unit disk (closed layer) $\Rightarrow$ internal poles cannot appear (pole rigidity)'' into three reusable components:
+\begin{itemize}
+  \item \textbf{Weaker verification hypothesis}: The HTF (or any ``geometric side = spectral side'' bridge) need not match over the entire complex-parameter disk; as long as it holds pointwise on the real-axis interval \((0,1)\) of the actual protocol path \(r\uparrow 1\), analytic rigidity implies the disk-wide identity.
+  \item \textbf{Stronger NonCancel audit}: The requirement that ``same-point principal part cancellation does not occur'' is upgraded from an additional hypothesis to a \emph{positivity/integer multiplicity certificate} (which can serve as a construction target).
+  \item \textbf{Executable falsification channel}: Using finitely many circle samples to directly estimate the residue at a candidate point, with explicit bounds on the discretization error, thereby converting ``the residue must be \(0\)'' into an auditable test.
+\end{itemize}
+
+\begin{proposition}[Sufficiency of the real-axis protocol path: matching on \texorpdfstring{$(0,1)$}{(0,1)} alone suffices to deduce the disk-wide identity]\label{prop:real-arc-sufficiency-unit-disk}
+Let \(G(r)\) be holomorphic on the unit disk \(\{\,|r|<1\,\}\).
+Suppose the spectral side is written as
+\[
+G(r)=S(r)+A_\infty(r),
+\]
+where \(A_\infty(r)\) is holomorphic on \(|r|<1\), and \(S(r)\) is meromorphic on \(|r|<1\) (with isolated poles permitted).
+If the above identity holds for all real \(r\in(0,1)\), then it automatically extends as a meromorphic identity to the entire unit disk \(|r|<1\);
+moreover, all poles of \(S(r)\) inside \(|r|<1\) must be removable singularities (so \(S\) is in fact holomorphic on \(|r|<1\)).
+\end{proposition}
+\begin{proof}
+Let \(F(r):=G(r)-A_\infty(r)-S(r)\). Then \(F\) is meromorphic on \(|r|<1\) and identically \(0\) on \((0,1)\).
+But the zero set of a nonzero meromorphic function must be discrete in its domain; and \((0,1)\) has a limit point inside \(|r|<1\).
+Hence \(F\equiv 0\) (identically zero as a meromorphic function), so the identity holds on \(|r|<1\).
+Since \(G-A_\infty\) is holomorphic, all poles of \(S=G-A_\infty\) can only be removable singularities, and the conclusion follows.
+\end{proof}
+
+\begin{proposition}[Integer residue certificate for the resolvent-trace: positive multiplicity \texorpdfstring{$\Rightarrow$}{=>} NonCancel]\label{prop:resolvent-trace-integer-residue-noncancel}
+Let \(F\) be a finite-rank (or more generally trace-class) operator, and let
+\[
+S(r):=\Tr\bigl((I-rF)^{-1}-I\bigr)
+\]
+be defined for \(|r|\) sufficiently small by the power series \(S(r)=\sum_{n\ge 1}r^n\Tr(F^n)\), and viewed as its meromorphic continuation inside \(|r|<1\) (if it exists).
+Then for each nonzero eigenvalue \(\lambda\in\mathrm{spec}(F)\setminus\{0\}\), at the point \(r_0:=1/\lambda\), \(S(r)\) has at most a first-order pole, and its principal part coefficient is the trace of the corresponding Riesz projection \(P_\lambda\):
+\[
+S(r)=\frac{\Tr(P_\lambda)}{1-r\lambda}+(\text{terms analytic at }r_0),
+\qquad
+\mathrm{Res}(S;r_0)=-\frac{\Tr(P_\lambda)}{\lambda}.
+\]
+In particular, \(\Tr(P_\lambda)=\mathrm{rank}(P_\lambda)\in\NN\) is a positive integer, so same-point principal parts cannot ``spontaneously cancel''; any claimed pole inside \(|r|<1\) carries a residue certificate that cannot be zero.
+\end{proposition}
+\begin{proof}
+Take a small closed contour \(\Gamma\) around \(\lambda\) enclosing no other spectral point; the Riesz projection
+\[
+P_\lambda=\frac{1}{2\pi i}\oint_\Gamma (zI-F)^{-1}\,\dd z
+\]
+is a finite-rank projection with \(\Tr(P_\lambda)=\mathrm{rank}(P_\lambda)\).
+By the standard principal part of the spectral decomposition's resolvent (or by direct computation from the finite-dimensional Jordan form),
+\((I-rF)^{-1}\) has the principal part
+\(
+\frac{1}{1-r\lambda}P_\lambda
+\)
+near \(r_0=1/\lambda\)
+(higher-order terms \((1-r\lambda)^{-k}\) come from the nilpotent part, but their trace is \(0\)).
+Therefore \((I-rF)^{-1}-I\) has the same principal part near \(r_0\) (subtracting \(I\) only modifies the analytic terms).
+Taking the trace of \((I-rF)^{-1}-I\) yields the stated expansion and residue formula.
+\end{proof}
+
+\begin{algorithm}[Residue ring audit protocol (Residue-ring test; executable falsification channel)]\label{alg:residue-ring-test}
+Given a candidate point \(r_0\) (e.g., an internal pole position predicted by an external zero table/spectral table) and a function \(G(r)\) that is numerically evaluable inside \(|r|<1\), take any \(\varepsilon>0\) such that the closed disk \(\overline{D}(r_0,\varepsilon)\subset\{|r|<1\}\), and take an integer sample count \(K\ge 1\).
+Let \(\theta_k:=2\pi k/K\) and define the discrete residue estimate
+\[
+\boxed{\;
+\widehat{\mathrm{Res}}(G;r_0)
+\ :=\ \frac{\varepsilon}{K}\sum_{k=0}^{K-1} e^{i\theta_k}\,G\!\bigl(r_0+\varepsilon e^{i\theta_k}\bigr)\; }.
+\]
+If \(G\) is holomorphic inside \(|r|<1\), then theoretically \(\mathrm{Res}(G;r_0)=0\); therefore any numerical output significantly deviating from \(0\) serves as a falsification signal for ``HTF failure / NonCancel failure / or the candidate spectral point hypothesis is invalid.''
+\end{algorithm}
+
+\begin{proposition}[Explicit error bound for the discrete residue estimate (given by \texorpdfstring{$|G(r)|\le C/(1-|r|)$}{|G(r)|<=C/(1-|r|)})]\label{prop:residue-ring-explicit-error-bound}
+Suppose \(G\) is holomorphic on \(|r|<1\) and satisfies the explicit upper bound
+\[
+|G(r)|\le \frac{C}{1-|r|}\qquad(|r|<1)
+\]
+(e.g., this holds when \(G(r)=\sum_{t\ge 0}a_t r^t\) with \(|a_t|\le C\)).
+Take \(r_0\in\{|r|<1\}\), \(\varepsilon>0\) with \(|r_0|+\varepsilon<1\), and define \(\widehat{\mathrm{Res}}(G;r_0)\) as in Algorithm \ref{alg:residue-ring-test}.
+Then the true residue satisfies the Cauchy formula
+\[
+\mathrm{Res}(G;r_0)=\frac{1}{2\pi i}\oint_{|r-r_0|=\varepsilon}G(r)\,\dd r
+=\frac{\varepsilon}{2\pi}\int_0^{2\pi} e^{i\theta}\,G\!\bigl(r_0+\varepsilon e^{i\theta}\bigr)\,\dd\theta,
+\]
+and the discretization error can be explicitly controlled as follows: for any \(a>0\) satisfying \(|r_0|+\varepsilon e^{a}<1\),
+\[
+\boxed{\;
+\bigl|\widehat{\mathrm{Res}}(G;r_0)-\mathrm{Res}(G;r_0)\bigr|
+\le
+\varepsilon\cdot
+\frac{2\,e^{a}}{e^{aK}-1}\cdot
+\frac{C}{1-|r_0|-\varepsilon e^{a}}\; }.
+\]
+In particular, since \(\mathrm{Res}(G;r_0)=0\) when \(G\) is holomorphic, the above directly gives an auditable upper bound on
+\(
+|\widehat{\mathrm{Res}}(G;r_0)|
+\).
+\end{proposition}
+\begin{proof}
+Let \(g(\theta):=e^{i\theta}G(r_0+\varepsilon e^{i\theta})\).
+Then \(\mathrm{Res}(G;r_0)=\varepsilon\cdot \frac{1}{2\pi}\int_0^{2\pi}g(\theta)\,\dd\theta\), while \(\widehat{\mathrm{Res}}(G;r_0)=\varepsilon\cdot \frac{1}{K}\sum_{k=0}^{K-1}g(\theta_k)\).
+\par
+When \(|\Im\theta|\le a\), one has \(|e^{i\theta}|=e^{-\Im\theta}\le e^{a}\) and
+\(
+|r_0+\varepsilon e^{i\theta}|
+\le
+|r_0|+\varepsilon e^{a}
+<1
+\),
+so the given upper bound yields
+\[
+|g(\theta)|\le e^{a}\cdot \frac{C}{1-|r_0|-\varepsilon e^{a}}
+ =: M_a.
+\]
+Therefore \(g\), as a \(2\pi\)-periodic function, is holomorphic and bounded in the strip \(|\Im\theta|\le a\).
+Write its Fourier coefficients \(\widehat g_n=\frac{1}{2\pi}\int_0^{2\pi} g(\theta)\,e^{-in\theta}\,\dd\theta\); by contour shifting,
+\(
+|\widehat g_n|\le M_a e^{-a|n|}
+\).
+The discrete average samples only the frequency-\(K\)-multiple terms: \(\frac{1}{K}\sum_{k=0}^{K-1} g(\theta_k)=\sum_{m\in\ZZ}\widehat g_{mK}\).
+Hence the error satisfies
+\[
+\left|
+\frac{1}{K}\sum_{k=0}^{K-1} g(\theta_k)-\frac{1}{2\pi}\int_0^{2\pi}g(\theta)\,\dd\theta
+\right|
+\le
+\sum_{m\ne 0} |\widehat g_{mK}|
+\le
+2M_a\sum_{m\ge 1} e^{-amK}
+\ =\ \frac{2M_a}{e^{aK}-1}.
+\]
+Multiplying both sides by \(\varepsilon\) gives the stated inequality.
+\end{proof}
+
+\begin{remark}[Positive Fredholm-HTF: upgrading the finite kernel template to an executable specification capable of hosting infinite spectra (construction target)]\label{rem:positive-fredholm-htf}
+Remarks \ref{rem:finite-pole-lattice-barrier}--\ref{rem:remainder-map-transfer-operator-refinement} have pointed out: to escape the pole geometry of the finite-dimensional ``phase comb,'' one must enter the infinite-dimensional transfer operator/kernel operator and Fredholm determinant paradigm.
+On this basis, one can further specify the ``HTF (prime-like/geometric side \(\leftrightarrow\) spectral/trace side)'' as a \textbf{construction target that simultaneously inherits holomorphicity, NonCancel, and Abel-first regularization}:
+\begin{enumerate}
+  \item \textbf{Closed-layer holomorphicity:} Construct a family of trace-class kernel operators \((\mathcal{L}_u)\) (viewable as transfer/readout operators under the scan protocol) such that
+  \[
+  G_W(r):=\Tr\Bigl(W\bigl((I-r\mathcal{L}_1)^{-1}-I\bigr)\Bigr)
+  \]
+  is defined and holomorphic in \(|r|<1\), where \(W\in\mathcal{S}_1\) is any given trace-class channel operator (e.g., \(W\succeq 0\)). Furthermore, require that \(G_W\) satisfies a uniform upper bound analogous to Proposition \ref{prop:residue-ring-explicit-error-bound} (thereby providing holomorphicity and auditable control in the closed layer within the unit disk).
+  \item \textbf{Positivity/integer multiplicity certificate with automatic NonCancel:} Require that the discrete spectral points of \(\mathcal{L}_u\) have finite algebraic multiplicity \(m_\lambda=\Tr(P_\lambda)\in\NN\), and that the principal part coefficients of the relevant channel are given by \(\Tr(P_\lambda)\) or more generally \(\Tr(WP_\lambda)\ge 0\) (for some positive operator \(W\)); then any pole carries a residue certificate that cannot be zero (Proposition \ref{prop:resolvent-trace-integer-residue-noncancel}), and same-point cancellation is structurally excluded.
+  \item \textbf{Abel-first and finite-part compatibility:} Require that the Fredholm determinant (Definition \ref{def:fredholm-determinant})
+  \[
+  \log\det(I-r\mathcal{L}_u)=-\sum_{n\ge 1}\frac{r^n}{n}\Tr(\mathcal{L}_u^n)
+  \]
+  has its Abel regularization compatible with this paper's interface of ``first organize error terms via \(\zeta/\det\), then perform primitive/finite-part reduction'': i.e., first complete the organization and certification within the holomorphic domain \(|r|<1\), then read out the finite part/constant term along \(r\uparrow 1\).
+\end{enumerate}
+These three conditions lock ``holomorphicity (closed layer) + positivity (automatic NonCancel) + Fredholm determinant (infinite spectrum capacity)'' into a single executable specification, thereby converting ``do Hilbert--P{\'o}lya'' into an auditable operator construction checklist.
+\end{remark}
+
+\subsubsection{From Euler products back to trace-class operators: cyclic block trace-class lift (Fredholm--Witt cross-section)}\label{subsec:cyclic-traceclass-lift}
+
+This paragraph provides, within the trace-class caliber, a directly executable closed realization: for a verifiable class of Euler-type products, an explicit trace-class operator \(L_{\mathcal D}\) is constructed whose Fredholm determinant strictly recovers that product inside the unit disk, automatically carrying integer spectral multiplicities (NonCancel certificate) and Abel-first expansion; moreover, the finite-dimensional truncation error has a closed-form tail sum bound, thereby aligning with the three specifications of Remark \ref{rem:positive-fredholm-htf} and providing, on a verifiable subclass, a reverse cross-section beyond the ``trace \(\Rightarrow\) primitive \(\Rightarrow\) Euler'' commutative chain of Remark \ref{rem:zetaK-commuting-diagram}.
+
+\begin{definition}[Cyclic block]\label{def:cyclic-block}
+For \(n\in\NN_{\ge 1}\), let \(\Pi_n\in U(n)\) be the standard \(n\)-cyclic permutation matrix (\(\Pi_n e_j=e_{j+1}\), \(\Pi_n e_n=e_1\)).
+Given a scalar \(\alpha\in\CC\), define the cyclic block
+\[
+C(n,\alpha):=\alpha\,\Pi_n\in \mathrm{End}(\CC^n).
+\]
+\end{definition}
+
+\begin{definition}[Auditable primitive data and trace-class executability]\label{def:traceclass-primitive-data}
+Let \(\mathcal D=\{(n_j,\beta_j,m_j)\}_{j\in J}\) be a countable index family, where
+\[
+n_j\in\NN_{\ge 1},\qquad \beta_j\in(0,1),\qquad m_j\in\NN.
+\]
+Say that it satisfies \emph{trace-class executability} if
+\begin{equation}\label{eq:tc-executability}
+\sum_{j\in J} m_j\,n_j\,\beta_j^{1/n_j}<\infty.
+\end{equation}
+Under \eqref{eq:tc-executability}, set \(\alpha_j:=\beta_j^{1/n_j}\in(0,1)\), and define the Hilbert direct sum space
+\[
+H_{\mathcal D}:=\bigoplus_{j\in J}\bigl(\CC^{n_j}\otimes \CC^{m_j}\bigr),
+\]
+together with the trace-class operator
+\[
+L_{\mathcal D}:=\bigoplus_{j\in J}\bigl(C(n_j,\alpha_j)\otimes I_{m_j}\bigr)\in\mathcal{S}_1(H_{\mathcal D}).
+\]
+\end{definition}
+
+\begin{theorem}[Fredholm--Witt closed realization via cyclic blocks]\label{thm:cyclic-fredholm-witt}
+Continuing with the notation of Definition \ref{def:traceclass-primitive-data}, and assume \eqref{eq:tc-executability} holds. Then:
+\begin{enumerate}
+  \item \textbf{Closed-layer holomorphicity and uniform bound (aligning with Remark \ref{rem:positive-fredholm-htf}(i)).}
+  \(L_{\mathcal D}\) is a trace-class operator, and its trace norm and operator norm satisfy
+  \[
+  \norm{L_{\mathcal D}}_1=\sum_{j\in J} m_j\,n_j\,\alpha_j<\infty,
+  \qquad
+  \norm{L_{\mathcal D}}=\sup_{j\in J}\alpha_j<1.
+  \]
+  Therefore, for any \(|r|<1\), the operator \((I-rL_{\mathcal D})\) is invertible.
+  For any trace-class channel \(W\in\mathcal{S}_1(H_{\mathcal D})\) (e.g., \(W\succeq 0\)), define
+  \[
+  G_W(r):=\Tr\Bigl(W\bigl((I-rL_{\mathcal D})^{-1}-I\bigr)\Bigr),\qquad |r|<1.
+  \]
+  Then \(G_W\) is holomorphic in \(|r|<1\) and satisfies the uniform bound
+  \[
+  \abs{G_W(r)}
+  \le
+  \norm{W}_1\cdot\frac{|r|\,\norm{L_{\mathcal D}}}{1-|r|\,\norm{L_{\mathcal D}}}
+  \le
+  \norm{W}_1\cdot\frac{|r|}{1-|r|}.
+  \]
+
+  \item \textbf{Integer spectral multiplicities and NonCancel certificate (aligning with Remark \ref{rem:positive-fredholm-htf}(ii)).}
+  The spectrum of each direct summand \(C(n_j,\alpha_j)\otimes I_{m_j}\) is
+  \(
+  \{\alpha_j\omega:\ \omega^{n_j}=1\}
+  \), with algebraic multiplicity \(m_j\) for each spectral point in that block.
+  Therefore, any nonzero discrete spectral point \(\lambda\) of \(L_{\mathcal D}\) has finite algebraic multiplicity
+  \[
+  m_\lambda:=\Tr(P_\lambda)
+  =
+  \sum_{j\in J}\ \sum_{\substack{\omega^{n_j}=1\\ \alpha_j\omega=\lambda}} m_j
+  \in\NN,
+  \]
+  where \(P_\lambda\) is the corresponding Riesz projection.
+  In particular, for any \(W\succeq 0\), the principal part coefficient is given by \(\Tr(WP_\lambda)\ge 0\),
+  so same-point cancellation is structurally excluded (automatic NonCancel).
+
+  \item \textbf{Abel-first and finite-part compatibility (aligning with Remark \ref{rem:positive-fredholm-htf}(iii)).}
+  Define the Fredholm \(\zeta\)-interface function
+  \[
+  \zeta_{\mathcal D}(r):=\det(I-rL_{\mathcal D})^{-1}.
+  \]
+  Then by Definition \ref{def:fredholm-determinant}, one has the strict Abel-first expansion
+  \[
+  \log \zeta_{\mathcal D}(r)=\sum_{n\ge 1}\frac{\Tr(L_{\mathcal D}^n)}{n}\,r^n,\qquad |r|<1,
+  \]
+  which is fully consistent with the trace-class determinant caliber.
+  If one further assumes
+  \begin{equation}\label{eq:fp-summability}
+  \sum_{j\in J} m_j\,\abs{\log(1-\beta_j)}<\infty,
+  \end{equation}
+  then \(\log \zeta_{\mathcal D}(r)\) has a finite limit as \(r\uparrow 1\), and the finite-dimensional truncation error is controlled by a closed-form tail sum (see Corollary \ref{cor:cyclic-truncation-bounds}).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By construction, \(L_{\mathcal D}\) is a Hilbert direct sum of finite-dimensional blocks.
+Each block \(C(n_j,\alpha_j)\otimes I_{m_j}\) has all singular values equal to \(\alpha_j\), with multiplicity \(n_jm_j\), so the trace norm of that block is \(m_jn_j\alpha_j\).
+By the additivity of \eqref{eq:tc-executability}, \(\norm{L_{\mathcal D}}_1<\infty\), so \(L_{\mathcal D}\in\mathcal{S}_1(H_{\mathcal D})\); and \(\norm{L_{\mathcal D}}=\sup_j\alpha_j<1\) (since \(\sum_j\alpha_j\le\sum_j m_jn_j\alpha_j<\infty\) implies \(\alpha_j\to 0\), so the supremum is attained on a finite subset and is strictly less than \(1\)).
+
+For \(|r|<1\), by the Neumann series \((I-rL_{\mathcal D})^{-1}\) exists and
+\(
+\norm{(I-rL_{\mathcal D})^{-1}}\le (1-|r|\norm{L_{\mathcal D}})^{-1}
+\).
+Also \((I-rL_{\mathcal D})^{-1}-I=rL_{\mathcal D}(I-rL_{\mathcal D})^{-1}\) is the product of a bounded operator and a trace-class operator, hence still trace-class; therefore \(W((I-rL_{\mathcal D})^{-1}-I)\in\mathcal{S}_1\), and by \(\abs{\Tr(X)}\le \norm{X}_1\) and \(\norm{AB}_1\le \norm{A}_1\norm{B}\), the stated bound follows.
+Holomorphicity follows from the analyticity of the resolvent in \(|r|<1\) and the continuous linearity of the trace on \(\mathcal{S}_1\).
+
+The spectral and multiplicity conclusions come from the spectral structure of the finite-dimensional block \(C(n,\alpha)=\alpha\Pi_n\): the eigenvalues of \(\Pi_n\) are all \(n\)-th roots of unity, each simple; the tensor with \(I_{m}\) makes the algebraic multiplicity of each spectral point in that block equal to \(m\); the direct sum preserves the discreteness of spectral points and the additivity of algebraic multiplicities.
+Therefore for any nonzero discrete spectral point \(\lambda\), its Riesz projection \(P_\lambda\) is a finite-rank projection with \(\Tr(P_\lambda)=m_\lambda\in\NN\).
+Moreover, for \(W\succeq 0\), \(\Tr(WP_\lambda)\ge 0\).
+
+The Abel-first expansion follows directly from the trace-class Fredholm determinant Definition \ref{def:fredholm-determinant}.
+Under \eqref{eq:fp-summability}, the absolute summability and uniform convergence of the infinite product (or logarithmic series) ensure that the limit as \(r\uparrow 1\) exists, and the closed-form tail sum control for the error is given in Corollary \ref{cor:cyclic-truncation-bounds}.
+\end{proof}
+
+\begin{proposition}[Determinant identity for the cyclic permutation block]\label{prop:cycle-permutation-determinant}
+For any \(n\ge 1\) and any complex number \(t\),
+\[
+\det(I-t\Pi_n)=1-t^n.
+\]
+Hence for \(C(n,\alpha)=\alpha\Pi_n\),
+\[
+\det(I-rC(n,\alpha))=1-(\alpha r)^n.
+\]
+\end{proposition}
+
+\begin{proof}
+The eigenvalues of \(\Pi_n\) are all \(n\)-th roots of unity \(\{\omega:\omega^n=1\}\), so
+\(
+\det(I-t\Pi_n)=\prod_{\omega^n=1}(1-t\omega)=1-t^n
+\).
+The second formula follows by substituting \(t=\alpha r\). \qed
+\end{proof}
+
+\begin{corollary}[Explicit recovery of the Euler product (reverse cross-section on the trace-class operator side)]\label{cor:cyclic-euler-product}
+Under the setting of Theorem \ref{thm:cyclic-fredholm-witt}, \(\zeta_{\mathcal D}\) satisfies the strict identity on \(|r|<1\):
+\[
+\zeta_{\mathcal D}(r)
+=\prod_{j\in J}\bigl(1-\beta_j r^{n_j}\bigr)^{-m_j}.
+\]
+Therefore, any Euler-type product satisfying \eqref{eq:tc-executability} lies in the image of the trace-class Fredholm \(\zeta\)-interface, and is given a constructive realization by the explicit \(L_{\mathcal D}\).
+\end{corollary}
+
+\begin{proof}
+By the multiplicativity of determinants under direct sums and tensors, together with Proposition \ref{prop:cycle-permutation-determinant},
+\[
+\det(I-rL_{\mathcal D})
+=\prod_{j\in J}\det\bigl(I-r(C(n_j,\alpha_j)\otimes I_{m_j})\bigr)
+=\prod_{j\in J}\det\bigl(I-rC(n_j,\alpha_j)\bigr)^{m_j}
+=\prod_{j\in J}\bigl(1-\beta_j r^{n_j}\bigr)^{m_j}.
+\]
+Taking reciprocals on both sides yields the conclusion. \qed
+\end{proof}
+
+\begin{corollary}[Finite-dimensional truncation and tail sum error ledger]\label{cor:cyclic-truncation-bounds}
+Take any finite subset \(J_N\subset J\), and define the truncation
+\[
+L_{\mathcal D}^{(N)}:=\bigoplus_{j\in J_N}\bigl(C(n_j,\alpha_j)\otimes I_{m_j}\bigr),
+\qquad
+\zeta_{\mathcal D}^{(N)}(r):=\det(I-rL_{\mathcal D}^{(N)})^{-1}
+=\prod_{j\in J_N}\bigl(1-\beta_j r^{n_j}\bigr)^{-m_j}.
+\]
+Then for any \(0\le r<1\),
+\[
+0\le \log \zeta_{\mathcal D}(r)-\log \zeta_{\mathcal D}^{(N)}(r)
+=\sum_{j\in J\setminus J_N} m_j\,\bigl(-\log(1-\beta_j r^{n_j})\bigr)
+\le
+\sum_{j\in J\setminus J_N} m_j\,\frac{\beta_j r^{n_j}}{1-\beta_j r^{n_j}}.
+\]
+If one further assumes \eqref{eq:fp-summability}, then letting \(r\uparrow 1\) gives
+\[
+0\le \log \zeta_{\mathcal D}(1^-)-\log \zeta_{\mathcal D}^{(N)}(1)
+\le
+\sum_{j\in J\setminus J_N} m_j\,\frac{\beta_j}{1-\beta_j},
+\]
+so there is a closed-form tail sum control between the Abel limit finite part and the finite-dimensional approximation.
+\end{corollary}
+
+\subsubsection{Cylinder projections and the maximum entropy state: the C*-algebra caliber}
+
+Echoing the ``projection readout'' language of Appendix \ref{app:op-algebra}: on an SFT, cylinder events correspond to a family of pairwise orthogonal projections that generate a commutative subalgebra; the maximum entropy state (Parry measure) provides the canonical state thereon. Furthermore, the Cuntz--Krieger algebra $\mathcal{O}_A$ provides a noncommutative universal C*-algebra encapsulation for this SFT, whose diagonal subalgebra is naturally isomorphic to the cylinder projections.
+
+\begin{remark}[C*-algebra encapsulation of cylinder projections]\label{prop:ck-diagonal-cylinders}
+The diagonal subalgebra \(\mathcal{D}_A\subset\mathcal{O}_A\) is naturally isomorphic to \(C(X_A^+)\), and the cylinder set projections \(P_\mu=S_\mu S_\mu^*\) correspond to indicator functions \(\mathbf{1}_{[\mu]}\); any measure (such as the Parry measure) therefore induces a state on \(\mathcal{D}_A\). See \cite{CuntzKrieger1980}.
+\end{remark}
+
+\subsubsection{The novel bridging point of this paper: resolution folding as an auditable subalgebra selection}
+
+Appendix \ref{app:op-algebra-fold-subalgebra} provides a structure that is particularly crucial for this paper but does not automatically appear in the standard PF/thermodynamic formalism narrative: for any resolution $m$, the finite-dimensional commutative algebra $\mathcal{A}_m$ generated by all window microstate projections, and the subalgebra $\mathcal{B}_m$ selected by folding invariance. This subalgebra selection is precisely the operator-algebraic version of ``resolution compression/stable typing'': it restricts observables to those that are constant on folding fibers, thereby compressing the vast degrees of freedom at the microstate level into $|X_m|=F_{m+2}$ stable type coordinates.\par
+In this sense, the new operator-theoretic information of this paper is not to re-prove existing PF/Parry/$\zeta$ results, but to provide a \textbf{computable bridging chain from scan-projection readout to the syntax-layer operator interface}:
+\[
+\begin{aligned}
+&\text{Scan-projection binary readout}\ \Rightarrow\ \text{Window microstate projection algebra }\mathcal{A}_m\\
+&\Rightarrow\ \text{Folding-invariant subalgebra }\mathcal{B}_m\ \Rightarrow\ \text{Syntax layer (SFT/sofic) and }\zeta\text{ interface}.
+\end{aligned}
+\]
+
+\begin{remark}[Fold-specific new interface: fiber conditional expectation and multiplicity]\label{rem:fold-new-invariants}
+In the SFT/\(\zeta\) narrative, ``diagonal subalgebra/cylinder projections'' arise naturally once the syntax is given; whereas in the generation chain of this paper, the appearance of \(\mathcal{B}_m\subset\mathcal{A}_m\) is forced by the folding \(\Fold_m\) as a coarse-graining. Furthermore, Appendix \ref{prop:fold-conditional-expectation} provides a fully explicit conditional expectation
+\[
+E_m:\mathcal{A}_m\to\mathcal{B}_m,\qquad
+E_m(P_a)=\frac{1}{d_m(\Fold_m(a))}\widetilde P_{\Fold_m(a)},
+\]
+whose coefficients are given by the folding fiber multiplicities \(d_m(x)=|\Fold_m^{-1}(x)|\). This \(E_m\) can be viewed as an ``information loss interface'': it compresses microstate-level observables to those that are constant on folding fibers, and takes the multiplicity as an auditable input.
+
+At the kernel/synchronization graph level, this paper further encodes the ``folding/normalization mechanism'' as a finite graph shift, thereby introducing a family of comparable invariants: for example, the Abel/Hadamard finite-part constant \(\log\mathfrak{M}\), the orbit--Mertens constant \(\mathsf{M}\), as well as the Dirichlet--Mertens constant tensor and the worst-case twisted spectral radius ratio \(\rho/\lambda\). These objects are formally still derived from the analytic structure of \(\zeta=1/\det(I-zA)\), but their \emph{input matrix} comes from the synchronization graph of the normalization kernel (rather than merely from the syntax itself), and thus can serve as ``fold-specific spectral fingerprints'' for cross-kernel comparison.
+\end{remark}

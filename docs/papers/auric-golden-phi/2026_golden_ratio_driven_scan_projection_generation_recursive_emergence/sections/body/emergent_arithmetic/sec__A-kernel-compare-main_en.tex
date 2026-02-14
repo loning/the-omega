@@ -1,0 +1,767 @@
+\subsection{Kernel Comparison: Zero-Polynomial + q-Field, Carry-Free Skeleton, and Prime Shadows}\label{sec:A-kernel-compare-main}
+This subsection provides a \textbf{unified interface that can be directly programmed and whose state graph can be constructed via BFS}, for comparing three typical parallel normalization kernels ($9/13/21$-local; Algorithm~I/II/III \cite{SvobodovaAAMPVIIIParallelAddition}, with detailed rules in \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}) in the golden ratio base $\tau=\frac{1+\sqrt5}{2}$.
+
+\subsubsection{Unified generation template: zero-polynomial + q-field}
+Fix $\beta=\tau$. Given a Laurent polynomial
+\[
+Z(X)=\sum_{i=-h}^{k} b_i X^i,\qquad Z(\beta)=0,
+\]
+and a bounded integer field $q=(q_j)_{j\in\ZZ}$ (taking values in a finite set), define a single ``zero-polynomial injection'' update
+\[
+z'_j:=z_j-\sum_{i=-h}^{k} b_i\,q_{j-i}.
+\]
+Since $Z(\beta)=0$, this update preserves the value $\sum_j z'_j\beta^j=\sum_j z_j\beta^j$.
+
+\begin{remark}[``Raw field / control field / iteration'' and the layer correspondence with \texorpdfstring{$(e,\pi,\varphi)$}{(e, pi, varphi)}]\label{rem:z-q-iter-epi-phi}
+The update formula separates the value carrier \(z=(z_j)\), the control trigger \(q=(q_j)\), and the iterative composition (time) at the object level; in the golden ratio base \(\beta=\tau=\varphi\), the appearances of \((e,\pi,\varphi)\) correspond respectively to the exponential normalization of the compact group role and the background caliber of the algebraically irrational direction/expansion (see Section~\ref{sec:high-dimensional-cut-project}).
+\end{remark}
+
+\paragraph{The three golden ratio kernels use only two sparse stencils}
+Algorithms~I/II/III use only the following two sparse zero-polynomials (\cite{SvobodovaAAMPVIIIParallelAddition}; derivations and pseudocode in \cite{FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}):
+\[
+-\tau^4+7-\tau^{-4}=0\ \Rightarrow\ z'_j=z_j-7q_j+q_{j-4}+q_{j+4}\quad (9\text{-local}),
+\]
+\[
+-\tau^2+3-\tau^{-2}=0\ \Rightarrow\ z'_j=z_j-3q_j+q_{j-2}+q_{j+2}\quad (13/21\text{-local}).
+\]
+The three kernels differ only in the \textbf{range of $q$} and the \textbf{triggering strategy}: single-step (SRZ), fixed-step iteration (WRZ), or two-phase elimination (A$\circ$B).
+
+\subsubsection{Block-level on-line compilation: congruence-stream decoupling and minimal state specification (single stream)}
+Since the stencils couple only $\pm 4$ or $\pm 2$, the system decouples by congruence class: $\pm 4$ corresponds to $m=4$ streams modulo $4$, and $\pm 2$ corresponds to $m=2$ streams modulo $2$. Each stream can be compiled into a deterministic on-line machine (fixed delay), and its \textbf{reachable state space} can be directly explored via BFS; the global block-level on-line machine is the direct-product assembly of the individual streams (see below).
+
+\begin{proposition}[Minimal state variables for the single-stream on-line machine (BFS-constructible)]\label{prop:min-state-spec-flow}
+In single-stream coordinates (strong kernel: $j=4n+r$; weak kernel: $j=2n+r$), the three kernels admit the following minimal state variables such that ``reading one input symbol $\Rightarrow$ state update + output (fixed delay)'' is a deterministic local rule:
+\begin{itemize}
+  \item \textbf{$9$-local (strong kernel, SRZ):} Input $v_n\in[-10,10]\cap\ZZ$, $q_n\in\{-1,0,1\}$ uniquely determined by $v_n$ (pulling the center digit back to the inner alphabet). Take the state
+  \[
+  S^{(9)}_n=(v_{n-1},\,q_{n-2}),
+  \]
+  and upon reading $v_n$, output $z_{n-1}=v_{n-1}-7q_{n-1}+q_{n-2}+q_n$ (single-stream delay $1$).
+  \item \textbf{$13$-local (weak kernel, WRZ, three-stage micro-kernel pipeline):} Each micro-kernel stage takes state
+  \(
+  (z_{n-1},q_{n-2},q_{n-1})
+  \), and the three-stage direct product yields
+  \[
+  S^{(13)}_n=\bigl(S^{(1)}_n,S^{(2)}_n,S^{(3)}_n\bigr),
+  \qquad S^{(\ell)}_n=(z^{(\ell)}_{n-1},q^{(\ell)}_{n-2},q^{(\ell)}_{n-1}),
+  \]
+  with single-stream delay $3$.
+  \item \textbf{$21$-local (minimal alphabet, Algorithm G=A$\circ$B):} Using two-phase elimination (first eliminating $-2$, then $2$), the single-stream on-line machine has delay $5$ and may take the state
+  \[
+  S^{(21)}_t=(v_{t-2},v_{t-1};\ q^A_{t-3},q^A_{t-2};\ w_{t-6},w_{t-5},w_{t-4},w_{t-3};\ q^B_{t-6},q^B_{t-5}),
+  \]
+  and upon reading $v_t$, it sequentially determines $q^A_{t-1}$, updates $w_{t-2}$, determines $q^B_{t-4}$, and outputs $z_{t-5}$.
+\end{itemize}
+\end{proposition}
+
+\subsubsection{Carry-free skeleton: \texorpdfstring{$\zeta$}{zeta} classification and primitive spectral interface}
+For any finite-graph (SFT) adjacency matrix $A$, the dynamical $\zeta$-function and determinant satisfy (\cite{BrinStuck2002}, Chapter~3.4)
+\[
+\zeta_A(z)=\exp\!\left(\sum_{n\ge 1}\frac{|\mathrm{Fix}(\sigma^n)|}{n}z^n\right)=\frac{1}{\det(I-zA)},
+\qquad
+|\mathrm{Fix}(\sigma^n)|=\Tr(A^n).
+\]
+The primitive orbit count (counted by orbit) is extracted by M\"obius inversion:
+\[
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr(A^{n/d}).
+\]
+
+\begin{theorem}[Tripartite classification of the single-stream carry-free skeleton]\label{thm:carry-free-zeta-trichotomy}
+For the single-stream on-line machines of the $9/13/21$-local kernels, introduce the per-step ``atomic activity''
+\[
+\kappa(e):=\#\{\text{newly determined nonzero }q\text{ events at this step}\}.
+\]
+Taking $u=0$ (retaining only edges with $\kappa=0$) yields the carry-free skeleton adjacency matrix $A_0$. Its maximal strongly connected component is conjugate to the following three types of SFT, respectively:
+\begin{enumerate}
+  \item $9$-local: $7$-full shift, $\det(I-zA_0)=1-7z$;
+  \item $13$-local: $3$-full shift, $\det(I-zA_0)=1-3z$;
+  \item $21$-local: golden mean shift (forbidden word $11$), $\det(I-zA_0)=1-z-z^2$.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[Auditable proof location]
+The proof of Theorem~\ref{thm:carry-free-zeta-trichotomy} depends only on the explicit triggering rules of Algorithms~S/W/G (including the A/B decision conditions); to avoid repeating the expansion in the main text, the proof chain is given in Proposition~\ref{prop:carry-free-skeleton-three} of Appendix~\ref{app:sync-kernel-A-compare}.
+\end{remark}
+
+\begin{corollary}[Global (multi-stream) assembly and carry-free \texorpdfstring{$\zeta$}{zeta} factorization]\label{cor:global-assembly-zeta}
+Let $A_0^{\mathrm{flow}}$ be the single-stream carry-free skeleton matrix and $m$ the number of congruence streams (strong kernel: $m=4$, weak kernel: $m=2$). Then the global block-level carry-free skeleton is the tensor product
+\[
+A_0^{\mathrm{glob}}=(A_0^{\mathrm{flow}})^{\otimes m},
+\]
+and hence
+\[
+\zeta^{\mathrm{glob}}_0(z)=\frac{1}{\det(I-zA_0^{\mathrm{glob}})}.
+\]
+In particular:
+\[
+K_9:\ \det(I-zA_0^{\mathrm{glob}})=1-2401z,\qquad
+K_{13}:\ \det(I-zA_0^{\mathrm{glob}})=1-9z,
+\]
+\[
+K_{21}:\ \det(I-zA_0^{\mathrm{glob}})=(1+z)^2(1-3z+z^2).
+\]
+\end{corollary}
+
+\subsubsection{Kernel fingerprint table and computational interface}
+Table~\ref{tab:parallel-addition-kernels-fingerprint-main} summarizes the fingerprints of the three kernels under ``single-stream $\Rightarrow$ global block-level'' assembly (state count, delay, mean $\kappa$, carry-free $\det(I-zA_0)$ and primitive spectrum, and endpoints $\lambda(0),\lambda(1)$).
+\input{sections/generated/tab_parallel_addition_kernels_fingerprint_main}
+
+\subsubsection{Endpoint spectral table (\texorpdfstring{$u=0,1$}{u=0,1}): primitive baselines}\label{subsec:kernel-endpoint-primitive}
+To obtain a ``zero-error, cross-implementation verifiable'' hardest baseline, we further converge the comparable fingerprints of the three kernels to two endpoints:
+\begin{itemize}
+  \item $u=0$: carry-free skeleton (retaining only edges with $\kappa=0$), whose $p_n$ is obtained in closed form from the trace/inversion of $A_0=M_K(0)$;
+  \item $u=1$: ignoring carry intensity (unweighted), which in the single-stream compilation caliber of this paper satisfies $\Tr(M_K(1)^n)=|B|^n$, so that $p_n$ is the closed-form M\"obius inversion of the full shift.
+\end{itemize}
+Table~\ref{tab:parallel-addition-kernels-endpoint-primitive} gives the single-stream and global block-level $p_n$ ($n\le 20$) for the three kernels at both endpoints, serving as the baseline pedestal for subsequent comparison of intermediate $u\in(0,1)$ stratified spectra.
+\input{sections/generated/tab_parallel_addition_kernels_endpoint_primitive}
+
+\begin{corollary}[Degeneracy at \texorpdfstring{$u=1$}{u=1}: the full shift baseline that only sees input size]\label{cor:par-add-u1-degeneracy}
+On the deterministically complete single-stream synchronization graph, the weighted adjacency matrix $M_K(1)$ at $u=1$ degenerates to the ``edge-counting only'' adjacency matrix. If every state has exactly one outgoing edge for each input symbol, then every row sum is identically $|B_K|$, and hence
+\[
+\Tr(M_K(1)^n)=|B_K|^n,\qquad
+\zeta_K(z,1)=\exp\!\left(\sum_{n\ge 1}\frac{|B_K|^n}{n}z^n\right)=\frac{1}{1-|B_K|z}.
+\]
+Therefore the primitive orbit count (counted by orbit) is the closed-form M\"obius inversion of the full shift:
+\[
+p_n(1)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,|B_K|^{n/d}.
+\]
+For the three kernels of this paper, the single-stream input alphabet sizes are
+\(
+|B_9|=21,\ |B_{13}|=13,\ |B_{21}|=5
+\)
+(see Table~\ref{tab:parallel-addition-kernels-endpoint-primitive}), which explains why the introduction of $u$ is necessary for kernel comparison: otherwise the $\zeta$-level would degenerate to ``seeing only input size.''
+\end{corollary}
+
+\begin{corollary}[Closed-form lift of multi-stream global endpoints (avoiding direct-product large graphs)]\label{cor:par-add-global-lift-endpoints}
+Let $M_{\mathrm{flow}}(u)$ be the single-stream weighted adjacency matrix and $m$ the number of congruence streams (strong kernel: $m=4$, weak kernel: $m=2$). The global block-level kernel satisfies the tensor product structure
+\[
+M_{\mathrm{glob}}(u)=M_{\mathrm{flow}}(u)^{\otimes m},
+\qquad
+\Tr(M_{\mathrm{glob}}(u)^n)=\left(\Tr(M_{\mathrm{flow}}(u)^n)\right)^m.
+\]
+Therefore the global primitive stratified spectrum satisfies
+\[
+B^{\mathrm{glob}}_{n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\left(\Tr\!\left(M_{\mathrm{flow}}(u^d)^{n/d}\right)\right)^m,
+\]
+so that the global spectrum at the endpoints $u\in\{0,1\}$ can be lifted directly from the single-stream closed form (Table~\ref{tab:parallel-addition-kernels-endpoint-primitive}).
+\end{corollary}
+
+For prime shadow comparison, the computational interface can be taken as: first compute the periodic trace $a_n(u)=\Tr(M(u)^n)$, then use Witt/M\"obius inversion to extract the primitive weighted spectrum
+\[
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d),
+\]
+which is fully consistent with the interface of Appendix~\S\ref{app:witt-weighted}; under global block-level direct-product assembly, $a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m$, so only the single stream is needed to assemble the global primitive spectrum.
+
+\subsubsection{Two-variable \texorpdfstring{$\zeta_K(z,u)$}{zeta(z,u)} and primitive stratified spectrum \texorpdfstring{$B_n(u)$}{B\_n(u)}}
+For the single-stream synchronization graph $\Gamma_K$, using each edge's atomic activity $\kappa(e)\in\ZZ_{\ge 0}$ (the number of nonzero $q$ events newly determined at this step) as the potential, define the weighted adjacency matrix family
+\[
+M_K(u)_{ij}:=\sum_{e:i\to j}u^{\kappa(e)}\in\ZZ[u].
+\]
+Applying the Bowen--Lanford / Brin--Stuck determinant formula pointwise to $M_K(u)$, define the two-variable $\zeta$-fingerprint
+\[
+\zeta_K(z,u)
+:=\exp\!\left(\sum_{n\ge 1}\frac{\Tr(M_K(u)^n)}{n}z^n\right)
+=\frac{1}{\det(I-zM_K(u))}.
+\]
+This is the concrete instantiation of the Ruelle weighted $\zeta$-function for finite graphs (cf.\ \cite{Ruelle1976ZetaExpanding,ParryPollicott1990Zeta,BrinStuck2002}).
+
+Let $\mathcal{P}$ be the set of primitive periodic orbits of $\Gamma_K$, and write $\kappa(\gamma)=\sum_{e\in\gamma}\kappa(e)$. Then $\zeta_K(z,u)$ admits the Euler product form
+\[
+\zeta_K(z,u)=\prod_{\gamma\in\mathcal{P}}\bigl(1-z^{|\gamma|}u^{\kappa(\gamma)}\bigr)^{-1}.
+\]
+Define the ``stratified prime spectrum'' polynomial for primitive orbits of length exactly $n$:
+\[
+B_n(u):=\sum_{\substack{\gamma\in\mathcal{P}\\|\gamma|=n}}u^{\kappa(\gamma)}\in\ZZ[u].
+\]
+Writing $a_n(u):=\Tr(M_K(u)^n)$, the Witt/M\"obius inversion yields the computable formula
+\[
+B_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr\!\left(M_K(u^d)^{\,n/d}\right),
+\]
+which precisely decomposes ``periodic closed loops'' into ``powers of primitive closed loops,'' thereby making the ``prime shadows'' rigorous.
+
+Under global block-level direct-product assembly ($m$ congruence streams) with isomorphic streams,
+\[
+M_K^{\mathrm{glob}}(u)=(M_K^{\mathrm{flow}}(u))^{\otimes m},\qquad
+a_n^{\mathrm{glob}}(u)=a_n^{\mathrm{flow}}(u)^m,
+\]
+so only the single-stream $a_n(u)$ is needed to assemble the global $B_n^{\mathrm{glob}}(u)$ (via one more round of M\"obius inversion).
+
+\subsubsection{Pressure curve \texorpdfstring{$\lambda_K(u)$}{lambda(u)}, endpoints, and carry density}\label{subsec:kernel-pressure-curve}
+For each kernel's single-stream weighted adjacency matrix family $M_K(u)$, define the pressure curve (spectral radius curve)
+\[
+\lambda_K(u):=\rho(M_K(u)),\qquad P_K(u):=\log\lambda_K(u)\qquad(u\in[0,1]).
+\]
+It characterizes the response of the exponential growth rate to ``the degree to which carry is permitted ($u$)'' and can serve as a second-level spectral fingerprint; its numerical curve, together with the carry-free prime spectral phase diagram, can be found in Figure~\ref{fig:parallel-addition-kernels-lambda-u} and Figure~\ref{fig:parallel-addition-kernels-bn0} of Appendix~\ref{app:sync-kernel-A-compare} (script-reproducible).
+
+\begin{proposition}[Endpoints, monotonicity, and multi-stream lift]\label{prop:kernel-pressure-endpoints}
+Let $\kappa(e)\in\ZZ_{\ge 0}$, and let $A_0:=M_K(0)$ be the carry-free skeleton adjacency matrix.
+Then:
+\begin{enumerate}
+  \item \textbf{Endpoint $u=0$}: $\lambda_K(0)=\rho(A_0)$;
+  \item \textbf{Endpoint $u=1$}: if the on-line machine has an outgoing edge for every input symbol (deterministically complete readout), then $\lambda_K(1)=|B|$;
+  \item \textbf{Monotonicity/continuity}: $u\mapsto \lambda_K(u)$ is nondecreasing and continuous on $[0,1]$;
+  \item \textbf{Multi-stream lift}: if the global block level is assembled as a tensor product of $m$ isomorphic congruence streams, then
+  \(
+  \lambda^{\mathrm{glob}}_K(u)=\lambda^{\mathrm{flow}}_K(u)^m
+  \)
+  and
+  \(
+  P^{\mathrm{glob}}_K(u)=m\,P^{\mathrm{flow}}_K(u)
+  \).
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[Carry density and pressure derivative (thermodynamic formalism)]
+Viewing $\kappa$ as an edge potential and letting $\theta=\log u$, $P_K(u)=\log\rho(M_K(e^\theta))$ is the pressure function of the finite-graph shift.
+In the irreducible case, $P_K$ is differentiable on $(0,1)$ and satisfies
+\[
+u\frac{\mathrm{d}}{\mathrm{d}u}\log\lambda_K(u)
+=\frac{\mathrm{d}}{\mathrm{d}\theta}P_K(e^\theta)
+=\mathbb{E}_{\mu_u}[\kappa],
+\]
+where $\mu_u$ is the equilibrium state for the potential $\theta\kappa$ (in the finite-type Ruelle / Parry--Pollicott caliber; cf.\ \cite{Ruelle1978Thermodynamic,ParryPollicott1990Zeta}).
+This gives a carry density readout that is \textbf{different from} but comparable with ``uniform input drive'': the former comes from an externally imposed input distribution, while the latter comes from pressure optimization (more stable at the fingerprint level).
+\end{remark}
+
+\subsubsection{Thermodynamic formalism of kernels: zero-temperature ground state, CLT/LDP, and weighted prime-orbit theorem}\label{subsec:kernel-thermo}
+This subsection promotes ``carry intensity $\kappa$'' to a one-dimensional potential (observable) and views the kernel's single-stream synchronization graph as a one-dimensional dynamical system with finite-range interactions. The significance of this promotion is that, beyond ``whether addition/multiplication can be implemented,'' one can rigorously derive a set of new, computable structural conclusions---zero-temperature selection (ground state), pressure curve response, central limit theorem and large deviations of carry statistics, as well as counting laws and error control for weighted primitive (``prime-like objects'').
+
+\paragraph{Potential and temperature parametrization}
+For each edge $e$, take the potential $\kappa(e)\in\ZZ_{\ge 0}$ (atomic carry intensity), and let
+\[
+u=e^{-\beta}\in(0,1],\qquad \beta\ge 0.
+\]
+Then the weighted matrix $M_K(u)$ is equivalent to the finite-dimensional transfer operator for the locally constant potential $\phi_\beta:=-\beta\kappa$; $P_K(u)=\log\rho(M_K(u))$ is the corresponding pressure (free energy density).
+
+\begin{proposition}[Explicit PF formula for the equilibrium state (finite graph / locally constant potential)]\label{prop:kernel-equilibrium-pf}
+Let $u\in(0,1]$ and assume $M_K(u)$ is irreducible. Let $\lambda=\lambda_K(u)$, and take the Perron--Frobenius left and right eigenvectors $r,\ell>0$ satisfying
+\(
+M_K(u)\,r=\lambda r,\ \ell^{\mathsf T}M_K(u)=\lambda \ell^{\mathsf T}
+\)
+and normalized so that $\ell^{\mathsf T}r=1$. Then there exists a first-order Markov equilibrium state $\mu_u$ on the edge shift, whose transition probabilities can be written as
+\[
+\mathbb{P}_{\mu_u}(i\to j)=\frac{M_K(u)_{ij}\,r_j}{\lambda r_i}.
+\]
+Moreover, under this equilibrium state,
+\(
+\partial_\theta \log\lambda_K(e^\theta)=\mathbb{E}_{\mu_{e^\theta}}[\kappa]
+\)
+holds (same caliber as the preceding remark).
+\end{proposition}
+
+\paragraph{Zero-temperature limit (ground state)}
+As $\beta\to\infty$ (i.e., $u\to 0$), the potential $-\beta\kappa$ forces the system to select the orbit set with minimal average carry. For locally constant potentials on finite alphabets, the one-dimensional Gibbs state converges at zero temperature to a limit measure supported on a finite union of SFTs, and the ergodic decomposition weights can be given by a recursive algorithm (\cite{ChazottesGambaudoUgalde2011ZeroTempLocConst}).
+
+\begin{theorem}[Zero-temperature selection falls on the carry-free subshift]\label{thm:kernel-zero-temp}
+For the single-stream kernel's edge shift space, take the locally constant potential $\phi_\beta:=-\beta\kappa$ and let $\mu_\beta$ be its Gibbs equilibrium state. Then as $\beta\to+\infty$, $\mu_\beta$ converges in the weak-$\ast$ topology to a limit measure $\mu_0$; moreover, $\mu_0$ is supported on the finite-union SFT generated by the carry-free subgraph (edges with $\kappa=0$). If the carry-free subgraph has only one essential strongly connected component, then $\mu_0$ is the Parry (maximal entropy) measure of that component.
+\end{theorem}
+
+\begin{corollary}[Zero-temperature ground state of the minimal alphabet kernel is the Zeckendorf grammar]\label{cor:kernel-21-ground-state}
+For the $21$-local minimal alphabet kernel, the carry-free skeleton is conjugate to the golden mean shift (Theorem~\ref{thm:carry-free-zeta-trichotomy}), so the zero-temperature limit $\mu_0$ equals the Parry maximal entropy measure of the golden mean shift. In particular, the limiting density of ``output $1$'' is
+\[
+\mu_0(1)=\frac{1}{\varphi+2}\approx 0.276393,
+\]
+consistent with the explicit formula in Remark~\ref{prop:parry-measure-golden}.
+\end{corollary}
+
+\begin{remark}[``Differentiable fingerprint'' of the zero-temperature spectrum: first-order response read from the \texorpdfstring{$u=0$}{u=0} skeleton]\label{rem:kernel-zero-temp-differential-fingerprint}
+Beyond ``where the zero-temperature limit is supported,'' finer mechanistic differences can be directly read off at the \(u=0\) skeleton in derivative form.
+Specifically, writing the single-stream weighted matrix as
+$$
+M_K(u)=A_0+uA_1+u^2A_2+\cdots,
+$$
+and assuming the Perron root \(\lambda_0\) of the carry-free skeleton \(A_0\) is a simple eigenvalue, the spectral radius \(\lambda_K(u)=\rho(M_K(u))\) is analytic in a neighborhood of \(u=0\), and the first-order coefficient \(c_1\) has an explicit PF perturbation formula (see Proposition~\ref{prop:lambda-linear-response} in Appendix~\ref{app:sync-kernel-A-compare}):
+$$
+\lambda_K(u)=\lambda_0+c_1u+O(u^2),
+\qquad
+c_1=\frac{\ell^{\mathsf T}A_1 r}{\ell^{\mathsf T}r}.
+$$
+Therefore the mean carry density satisfies
+$$
+\mathbb{E}_u[\kappa]
+=u\frac{d}{du}\log\lambda_K(u)
+=\frac{c_1}{\lambda_0}u+O(u^2),
+$$
+which makes the audit interface for ``distinguishing mechanisms at the \(u=0\) skeleton without going to intermediate temperatures'' fully closed within the caliber of this paper.
+\end{remark}
+
+\paragraph{Carry statistics: CLT and large deviations (fixed temperature)}
+At fixed $u\in(0,1)$, $\mu_u$ is a finite-state Markov equilibrium state; for the partial sums of the edge observable $\kappa$,
+\(
+S_n:=\sum_{t=1}^{n}\kappa(e_t)
+\),
+one can directly apply the limit theorems for finite-state Markov chains (cf.\ the transfer operator caliber of \cite{Ruelle1978Thermodynamic}). The mean and variance can also be given by pressure derivatives.
+
+\begin{proposition}[CLT/LDP fingerprint of carry]\label{prop:kernel-clt-ldp}
+Let $u\in(0,1)$ and assume $M_K(u)$ is primitive. Let $\theta=\log u$, and write
+\(
+P(\theta):=\log\rho(M_K(e^\theta))
+\).
+Then:
+\begin{enumerate}
+  \item \textbf{(LLN/mean)} $\lim_{n\to\infty}\frac{1}{n}S_n=P'(\theta)$, almost surely and in $L^1$;
+  \item \textbf{(CLT)} If $\kappa$ is not a coboundary, then
+  \(
+  \frac{S_n-nP'(\theta)}{\sqrt{n}}
+  \)
+  converges under $\mu_u$ to a normal distribution with mean $0$ and variance $P''(\theta)$;
+  \item \textbf{(LDP)} The empirical mean $S_n/n$ satisfies a large deviation principle with rate function given by the Legendre transform
+  \[
+  I(\alpha)=\sup_{t\in\RR}\bigl(t\alpha-(P(\theta+t)-P(\theta))\bigr).
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{corollary}[Closed-form pressure curve of \texorpdfstring{$K_9$}{K9}: fully explicit CLT variance density and LDP rate function]\label{cor:k9-integrable-pressure-ldp}
+For the strong kernel \(K_9\) in single-stream compilation (Appendix~\ref{app:sync-kernel-A-compare}), the strictly linear relation holds:
+$$
+\lambda_9(u)=7+14u,
+$$
+and hence the pressure (with \(\theta=\log u\)) is
+$$
+P_9(\theta)=\log\lambda_9(e^\theta)=\log\!\bigl(7+14e^\theta\bigr).
+$$
+Its derivatives give the carry density and variance density (i.e., the CLT variance density):
+$$
+P_9'(\theta)=\frac{2e^\theta}{1+2e^\theta},\qquad
+P_9''(\theta)=\frac{2e^\theta}{(1+2e^\theta)^2}.
+$$
+Hence
+$$
+\mathbb{E}_{u}[\kappa]=u\frac{d}{du}\log\lambda_9(u)=\frac{2u}{1+2u}.
+$$
+Furthermore, for any baseline \(\theta_0=\log u_0\), writing
+$$
+\alpha_0:=P_9'(\theta_0)=\frac{2e^{\theta_0}}{1+2e^{\theta_0}}\in(0,1),
+$$
+the rate function for the empirical mean \(\bar\kappa_n=S_n/n\) under the \(\theta_0\)-equilibrium state, via the Legendre transform interface of Proposition~\ref{prop:kernel-clt-ldp}, can be written in closed form as
+$$
+I_{\theta_0}(\alpha)
+=\alpha\log\frac{\alpha}{\alpha_0}+(1-\alpha)\log\frac{1-\alpha}{1-\alpha_0},
+\qquad \alpha\in[0,1],
+$$
+where endpoints are understood by continuous extension (e.g., \(\alpha=0\) gives \(0\log 0:=0\)).
+This closed form depends only on the closed-form expression of the pressure curve; no additional independence assumptions are required.
+\end{corollary}
+
+\paragraph{Weighted prime-orbit theorem (thermodynamic leading term of ``prime shadows'')}
+For $B_n(u)=\sum_{|\gamma|=n,\ \gamma\ \mathrm{primitive}}u^{\kappa(\gamma)}$, the trace formula $a_n(u)=\Tr(M_K(u)^n)$ and M\"obius inversion allow the leading term and error to be directly traced back to the spectral gap.
+
+\begin{theorem}[Weighted primitive orbit counting with exponential error]\label{thm:kernel-weighted-prime-orbit}
+Let $u\in(0,1]$ and assume $M_K(u)$ is primitive. Write $\lambda_1(u)=\lambda_K(u)$, and let $\lambda_2(u)$ be the largest modulus among the remaining eigenvalues. Then
+\[
+B_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{|\lambda_2(u)|^n}{n}\right)\qquad(n\to\infty).
+\]
+Therefore \(\lambda_K(u)\) and the spectral gap ratio \( |\lambda_2(u)|/\lambda_1(u)\) constitute the ``prime thermodynamic fingerprint'' of the kernel.
+\end{theorem}
+
+More complete script reproductions, state machine constructions, and numerical outputs can be found in Appendix~\ref{app:sync-kernel-A-compare} and the generated tables.
+
+\paragraph{Chebotarev/Artin-\texorpdfstring{$L$}{L} analogy: internalizing ``congruence-class prime distribution'' into the kernel}
+This paragraph upgrades the ``prime shadows'' of primitive orbits from \emph{total counts} to a \emph{distribution law stratified by congruence classes}. The key point is: by attaching a finite abelian group label (cocycle) to the edges of the kernel's synchronization graph, one can define a family of twisted determinants (twisted $\zeta/L$-functions) and obtain a completely auditable ``Chebotarev-type'' error formula; the error exponent is explicitly controlled by the \emph{spectral radius of the nontrivial twists}.
+
+\begin{definition}[Finite group labeling and twisted matrix family]\label{def:kernel-group-twist}
+Take a finite group $G$ (in practice often an abelian group $G=\ZZ/m$ or a direct product thereof, but this definition allows the non-abelian case), and assign to each edge $e$ of the single-stream synchronization graph $\Gamma_K$ a group label $g(e)\in G$.
+For any finite-dimensional complex representation $\rho:G\to\mathrm{GL}(d_\rho,\CC)$ and temperature parameter $u\in(0,1]$, define the matrix-valued twisted operator
+\[
+M_{K,\rho}(u)_{ij}:=\sum_{e:i\to j}u^{\kappa(e)}\,\rho(g(e))\in\mathrm{Mat}_{d_\rho}(\CC),
+\]
+viewed as a block matrix acting on $\CC^{V}\otimes\CC^{d_\rho}$. Define the twisted $\zeta/L$-function as
+\[
+L_{K,\rho}(z,u):=\det(I-zM_{K,\rho}(u))^{-1}.
+\]
+When $\rho=\mathbf{1}$ is the trivial representation, $M_{K,\mathbf{1}}(u)=M_K(u)$, and hence $L_{K,\mathbf{1}}(z,u)=\zeta_K(z,u)$.
+\end{definition}
+
+\begin{definition}[Congruence-class stratified primitive spectrum]\label{def:kernel-chebotarev-spectrum}
+For $c\in G$, define the primitive orbit spectrum stratified by ``Frobenius label'':
+\[
+B_{n,c}(u):=\sum_{\substack{\gamma\in\mathcal{P}\\|\gamma|=n\\g(\gamma)=c}}u^{\kappa(\gamma)}.
+\]
+When $G$ is abelian, its irreducible representations are characters $\chi\in\widehat G$; in this case define the twisted primitive spectrum
+\[
+B_n(\chi;u):=\sum_{\substack{\gamma\in\mathcal{P}\\|\gamma|=n}}\chi(g(\gamma))\,u^{\kappa(\gamma)}.
+\]
+\end{definition}
+
+\begin{proposition}[Character Fourier inversion (exact identity for the Chebotarev stratification)]\label{prop:kernel-chebotarev-fourier}
+Under the notation of Definition~\ref{def:kernel-chebotarev-spectrum}, for any $c\in G$ the following exact identity holds:
+\[
+B_{n,c}(u)=\frac{1}{|G|}\sum_{\chi\in\widehat G}\overline{\chi(c)}\,B_n(\chi;u).
+\]
+\end{proposition}
+
+\begin{proof}
+For each primitive orbit $\gamma$, apply the character orthogonality relation of finite abelian groups,
+\(
+\frac{1}{|G|}\sum_{\chi\in\widehat G}\overline{\chi(c)}\,\chi(g(\gamma))=\mathbf{1}_{\{g(\gamma)=c\}},
+\)
+and expand term by term.
+\end{proof}
+
+\begin{proposition}[M\"obius--Adams extraction of the twisted primitive spectrum: \texorpdfstring{$(\chi,u)\mapsto (\chi^d,u^d)$}{(chi,u)->(chi\^d,u\^d)}]\label{prop:kernel-chebotarev-mobius-adams}
+Continuing with the notation of Definition~\ref{def:kernel-group-twist}, additionally assume that \(G\) is a finite abelian group.
+For any character \(\chi\in\widehat G\) and \(u\in(0,1]\), define the twisted trace sequence
+\[
+a_n(\chi;u):=\Tr\!\left(M_{K,\chi}(u)^n\right)\qquad(n\ge 1).
+\]
+Then the twisted primitive spectrum from Definition~\ref{def:kernel-chebotarev-spectrum} satisfies the exact identity
+\[
+\boxed{\
+B_n(\chi;u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}\!\bigl(\chi^{d};u^{d}\bigr)
+=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr\!\left(M_{K,\chi^{d}}(u^{d})^{\,n/d}\right)\ }.
+\]
+\end{proposition}
+\begin{proof}
+For fixed \((\chi,u)\), let
+\(
+\zeta_{K,\chi}(z,u):=\det(I-zM_{K,\chi}(u))^{-1}
+\).
+By the logarithmic expansion of the determinant,
+\[
+\log\zeta_{K,\chi}(z,u)
+=\sum_{n\ge 1}\frac{a_n(\chi;u)}{n}z^n.
+\]
+On the other hand, decomposing by primitive orbits (power repetitions) gives the exact identity
+\[
+\log\zeta_{K,\chi}(z,u)
+=\sum_{\gamma\in\mathcal{P}}\sum_{r\ge 1}\frac{1}{r}\Bigl(z^{|\gamma|}\chi(g(\gamma))u^{\kappa(\gamma)}\Bigr)^r
+=\sum_{r\ge 1}\frac{1}{r}\sum_{n\ge 1}B_n(\chi^r;u^r)\,z^{nr}.
+\]
+Comparing $z^n$ coefficients and performing a divisor substitution yields
+\[
+a_n(\chi;u)=\sum_{d\mid n} d\,B_d(\chi^{n/d};u^{n/d}).
+\]
+Applying M\"obius inversion to this relation gives the stated formula:
+\(
+B_n(\chi;u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(\chi^d;u^d)
+\). \qed
+\end{proof}
+
+\begin{remark}[Structural meaning: M\"obius/Witt extraction is an endomorphism operation with Adams scaling]\label{rem:kernel-chebotarev-mobius-adams-meaning}
+Proposition~\ref{prop:kernel-chebotarev-mobius-adams} shows that in the twisted context with a character axis, primitive extraction is \emph{not} a pointwise M\"obius inversion over \(n\) for each fixed \((\chi,u)\);
+rather, it necessarily introduces the \(d\)-th Adams scaling simultaneously:
+\[
+(\chi,u)\longmapsto(\chi^d,u^d),
+\]
+where \(\chi\mapsto\chi^d\) arises from the label power law under power repetition \(\chi(g(\gamma^d))=\chi(g(\gamma))^d\), and \(u\mapsto u^d\) from the additivity of energy \(\kappa(\gamma^d)=d\,\kappa(\gamma)\).
+The synchronization of this ``time divisor \(d\)'' with ``character/energy scaling'' is the core mechanism for subsequently assembling the Chebotarev (spatial side) and Witt (temporal side) into a strictly commutative diagram.
+\end{remark}
+
+\begin{corollary}[Chebotarev--Plancherel energy identity: spatial mean-square deviation \texorpdfstring{$=$}{=} character-side energy sum]\label{cor:kernel-chebotarev-plancherel-energy}
+Under the setting of Proposition~\ref{prop:kernel-chebotarev-fourier}, continue to assume \(G\) is a finite abelian group.
+Let
+\[
+\overline{B}_n(u):=\frac{1}{|G|}\sum_{c\in G}B_{n,c}(u)=\frac{1}{|G|}B_n(\mathbf{1};u),
+\qquad
+\varepsilon_n(c;u):=B_{n,c}(u)-\overline{B}_n(u).
+\]
+Then for any \(n\ge 1\) the following exact identity holds:
+\[
+\boxed{\;
+\sum_{c\in G}\bigl|\varepsilon_n(c;u)\bigr|^2
+=\frac{1}{|G|}\sum_{\chi\in\widehat G\setminus\{\mathbf{1}\}}\bigl|B_n(\chi;u)\bigr|^2\; }.
+\]
+\end{corollary}
+\begin{proof}
+By Proposition~\ref{prop:kernel-chebotarev-fourier},
+\[
+\varepsilon_n(c;u)
+=\frac{1}{|G|}\sum_{\chi\ne \mathbf{1}}\overline{\chi(c)}\,B_n(\chi;u).
+\]
+Applying the Parseval/Plancherel identity for the character basis of the finite abelian group \(G\) yields
+\(
+\sum_{c\in G}|\varepsilon_n(c;u)|^2=\frac{1}{|G|}\sum_{\chi\ne\mathbf{1}}|B_n(\chi;u)|^2
+\). \qed
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$L^2$}{L2} deviation monotonicity under quotient maps: refining the modulus only exposes more nontrivial character energy]\label{cor:kernel-chebotarev-L2-monotone}
+Let \(\pi:G_2\twoheadrightarrow G_1\) be a surjective homomorphism of finite abelian groups, and construct congruence-stratified primitive spectra \(B^{(i)}_{n,c}(u)\) (\(i\in\{1,2\}\)) on both layers.
+Let the coarse-layer stratified spectrum be given by the pushforward of the fine layer:
+\[
+B^{(1)}_{n,c_1}(u):=\sum_{c_2\in \pi^{-1}(c_1)}B^{(2)}_{n,c_2}(u),
+\qquad c_1\in G_1,
+\]
+and define the relative Haar density (mean $1$):
+\[
+r^{(i)}_{n}(c;u):=\frac{|G_i|\,B^{(i)}_{n,c}(u)}{B^{(i)}_{n}(\mathbf{1};u)},
+\qquad
+\frac{1}{|G_i|}\sum_{c\in G_i}r^{(i)}_{n}(c;u)=1.
+\]
+Then in the \(L^2(G_i)\) sense (normalized by Haar/uniform measure), the following monotonicity holds:
+\[
+\boxed{\;
+\bigl\|r^{(1)}_{n}(\cdot;u)-1\bigr\|_{L^2(G_1)}
+\le
+\bigl\|r^{(2)}_{n}(\cdot;u)-1\bigr\|_{L^2(G_2)}\; }.
+\]
+Equivalently: refining the group labeling (e.g., refining the modulus) can only increase (or maintain) the total visible nontrivial character energy.
+\end{corollary}
+\begin{proof}
+By the pushforward definition and \(|G_2|=|G_1|\cdot|\ker\pi|\), for any \(c_1\in G_1\),
+\[
+r^{(1)}_{n}(c_1;u)
+=\frac{1}{|\ker\pi|}\sum_{c_2\in\pi^{-1}(c_1)}r^{(2)}_{n}(c_2;u),
+\]
+i.e., \(r^{(1)}_{n}\) is precisely the fiber conditional expectation (fiber average) of \(r^{(2)}_{n}\) along \(\pi\).
+Since conditional expectation, as an \(L^2\) orthogonal projection, is a contraction,
+\(
+\|r^{(1)}_{n}-1\|_{2}\le \|r^{(2)}_{n}-1\|_{2}
+\). \qed
+\end{proof}
+
+\begin{proposition}[Non-abelian Chebotarev--Plancherel energy identity and quotient monotonicity (class function / irreducible character channels)]\label{prop:kernel-chebotarev-plancherel-nonabelian}
+Let \(G\) be a finite group. Write \(\mathrm{Cl}(G)\) for the Hilbert space of class functions (conjugacy-class-invariant complex-valued functions) on \(G\), equipped with the inner product
+\[
+\langle f_1,f_2\rangle_{\mathrm{Cl}(G)}
+:=\frac{1}{|G|}\sum_{g\in G} f_1(g)\,\overline{f_2(g)}.
+\]
+Let \(\{\chi_\rho\}_{\rho\in\widehat G}\) denote the irreducible characters of \(G\); they form an orthonormal basis of \(\mathrm{Cl}(G)\).
+For any \(\varepsilon\in \mathrm{Cl}(G)\) satisfying the zero-mean condition \(\sum_{g\in G}\varepsilon(g)=0\) (equivalently, \(\langle \varepsilon,\chi_{\mathbf{1}}\rangle=0\)), define the character channel amplitudes
+\[
+B(\rho):=\sum_{g\in G}\varepsilon(g)\,\overline{\chi_\rho(g)}
+\qquad(\rho\in\widehat G).
+\]
+Then the following Parseval/Plancherel-type exact identity holds:
+\[
+\boxed{\;
+\sum_{g\in G}\bigl|\varepsilon(g)\bigr|^2
+=\frac{1}{|G|}\sum_{\rho\in\widehat G\setminus\{\mathbf{1}\}}\bigl|B(\rho)\bigr|^2\; }.
+\]
+Furthermore, if \(\varphi:G\twoheadrightarrow H\) is a surjective homomorphism of finite groups, and one defines the fiber-averaging pushforward (conditional expectation)
+\[
+(\varphi_\ast\varepsilon)(h):=\frac{1}{|\ker\varphi|}\sum_{g\in \varphi^{-1}(h)}\varepsilon(g),
+\qquad h\in H,
+\]
+then in the normalized \(L^2\) sense,
+\[
+\bigl\|\varphi_\ast\varepsilon\bigr\|_{L^2(H)}
+\le
+\bigl\|\varepsilon\bigr\|_{L^2(G)}.
+\]
+\end{proposition}
+
+\begin{proof}
+The orthogonality relations of irreducible characters give the Fourier expansion
+\(
+\varepsilon=\sum_{\rho\in\widehat G}\langle \varepsilon,\chi_\rho\rangle\,\chi_\rho
+\)
+and the Parseval identity
+\(
+\|\varepsilon\|_{L^2(G)}^2=\sum_{\rho\in\widehat G}|\langle \varepsilon,\chi_\rho\rangle|^2
+\).
+By definition \(B(\rho)=|G|\langle \varepsilon,\chi_\rho\rangle\), and the zero-mean condition gives \(\langle \varepsilon,\chi_{\mathbf{1}}\rangle=0\), yielding the stated energy identity.
+
+For quotient monotonicity: for each \(h\in H\), by Cauchy--Schwarz,
+\[
+\bigl|(\varphi_\ast\varepsilon)(h)\bigr|^2
+=\left|\frac{1}{|\ker\varphi|}\sum_{g\in\varphi^{-1}(h)}\varepsilon(g)\right|^2
+\le
+\frac{1}{|\ker\varphi|}\sum_{g\in\varphi^{-1}(h)}|\varepsilon(g)|^2.
+\]
+Summing over \(h\) and using \(|G|=|H|\cdot|\ker\varphi|\) gives
+\[
+\frac{1}{|H|}\sum_{h\in H}\bigl|(\varphi_\ast\varepsilon)(h)\bigr|^2
+\le
+\frac{1}{|G|}\sum_{g\in G}|\varepsilon(g)|^2,
+\]
+i.e., \(\|\varphi_\ast\varepsilon\|_{L^2(H)}\le \|\varepsilon\|_{L^2(G)}\). \qed
+\end{proof}
+
+\begin{remark}[Comparison: the abelian case reduces to character-basis energy decomposition]\label{rem:kernel-chebotarev-plancherel-nonabelian-abelian}
+When \(G\) is abelian, \(\mathrm{Cl}(G)=\CC^{G}\) and irreducible characters are one-dimensional; the above formula degenerates to Corollary~\ref{cor:kernel-chebotarev-plancherel-energy}.
+Similarly, \(\varphi_\ast\) is the fiber-averaging conditional expectation, and the \(L^2\) contraction is the abstract operator fact from the proof of Corollary~\ref{cor:kernel-chebotarev-L2-monotone}.
+\end{remark}
+
+\begin{theorem}[Chebotarev-type leading term and exponential error for kernels (fully computable)]\label{thm:kernel-chebotarev-exp}
+Let $u\in(0,1]$ and assume $M_K(u)$ is primitive. Write $\lambda_1(u)=\rho(M_K(u))$, and let
+\[
+\eta(u):=\max_{\chi\in\widehat G,\ \chi\ne\mathbf{1}}\rho\bigl(M_{K,\chi}(u)\bigr),
+\qquad
+\Lambda(u):=\max\{|\lambda_2(u)|,\eta(u)\}.
+\]
+Then for each $c\in G$,
+\[
+B_{n,c}(u)=\frac{1}{|G|}\cdot\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\Lambda(u)^n}{n}\right)\qquad(n\to\infty).
+\]
+The error exponent $\Lambda(u)/\lambda_1(u)$ depends only on the worst-case nontrivial twisted spectral radius of the kernel under the given group labeling.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:kernel-chebotarev-fourier},
+\(
+B_{n,c}(u)=|G|^{-1}\sum_{\chi}\overline{\chi(c)}B_n(\chi;u).
+\)
+When $\chi=\mathbf{1}$, $B_n(\mathbf{1};u)=B_n(u)$, and by Theorem~\ref{thm:kernel-weighted-prime-orbit} the leading term and error $O(|\lambda_2(u)|^n/n)$ are obtained.
+When $\chi\ne\mathbf{1}$, by Proposition~\ref{prop:kernel-chebotarev-mobius-adams},
+\(
+B_n(\chi;u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr(M_{K,\chi^d}(u^d)^{\,n/d})
+\),
+and for any finite matrix $A$ the crude bound $|\Tr(A^m)|\le (\dim A)\,\rho(A)^m$ gives
+\(
+B_n(\chi;u)=O(\eta(u)^n/n)
+\)
+uniformly. Combining the two types of error yields the conclusion. \qed
+\end{proof}
+
+\begin{definition}[Kernel version of RH/GRH (square-root spectral gap bound)]\label{def:kernel-rh}
+At fixed temperature $u$, define the kernel's ``RH-type spectral gap condition''
+\[
+\textsf{RH}_K(u):\quad \max_{i\ge 2}|\lambda_i(u)|\le \lambda_1(u)^{1/2},
+\]
+and under a given finite group labeling $G$, the ``GRH-type twisted spectral gap condition''
+\[
+\textsf{GRH}_{K,G}(u):\quad \eta(u)\le \lambda_1(u)^{1/2}.
+\]
+\end{definition}
+
+\begin{corollary}[Square-root-level error: ``prime number theorem shape'' from the kernel version of RH/GRH]\label{cor:kernel-rh-sqrt-error}
+If $\textsf{RH}_K(u)$ holds, then
+\[
+B_n(u)=\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\lambda_1(u)^{n/2}}{n}\right).
+\]
+If furthermore $\textsf{GRH}_{K,G}(u)$ holds, then for each $c\in G$,
+\[
+B_{n,c}(u)=\frac{1}{|G|}\cdot\frac{\lambda_1(u)^n}{n}+O\!\left(\frac{\lambda_1(u)^{n/2}}{n}\right).
+\]
+\end{corollary}
+
+\begin{proof}
+Substitute Definition~\ref{def:kernel-rh} into Theorem~\ref{thm:kernel-weighted-prime-orbit} and Theorem~\ref{thm:kernel-chebotarev-exp}. \qed
+\end{proof}
+
+\begin{proposition}[Non-abelian channelization: Peter--Weyl block diagonalization and determinant factorization of the group algebra kernel]\label{prop:kernel-peter-weyl-block-diagonalization}
+Let \(G\) be a finite group, \(V\) a finite set, and let
+\[
+K=(K_{ij})_{i,j\in V}\in \CC[G]^{V\times V}
+\]
+be a matrix with group algebra coefficients. Write each matrix entry as
+\(
+K_{ij}=\sum_{g\in G}a_{ij}(g)\,g
+\)
+(where \(a_{ij}(g)\in\CC\)).
+Define the operator \(\mathcal{K}\in\mathrm{End}(\CC^{V}\otimes\CC[G])\) as the ``right convolution realization'':
+for basis vectors \(e_j\otimes \delta_h\) (\(j\in V,\ h\in G\)), set
+\[
+\mathcal{K}(e_j\otimes \delta_h)
+:=
+\sum_{i\in V}\sum_{g\in G}a_{ij}(g)\,(e_i\otimes\delta_{hg}).
+\]
+For any irreducible complex representation class \(\rho\in\widehat G\), take a representative \(\rho:G\to\mathrm{GL}(V_\rho)\) (\(d_\rho:=\dim V_\rho\)), and define the channel matrix
+\[
+K_\rho\in \mathrm{End}(\CC^{V}\otimes V_\rho),
+\qquad
+(K_\rho)_{ij}:=\sum_{g\in G}a_{ij}(g)\,\rho(g)\in\mathrm{End}(V_\rho).
+\]
+Then there exists a decomposition (depending on the choice of representation realization and basis, but the channel set \(\widehat G\) and multiplicity \(d_\rho\) are uniquely determined by the regular representation)
+\[
+\CC^{V}\otimes\CC[G]
+\ \cong\
+\bigoplus_{\rho\in\widehat G}\bigl(\CC^{V}\otimes V_\rho\bigr)\otimes \CC^{d_\rho},
+\]
+under which \(\mathcal{K}\) block-diagonalizes as
+\[
+\mathcal{K}\ \cong\ \bigoplus_{\rho\in\widehat G}\bigl(K_\rho\otimes I_{d_\rho}\bigr).
+\]
+This gives the exact determinant factorization
+\[
+\boxed{\;
+\det\!\bigl(I-z\mathcal{K}\bigr)
+=\prod_{\rho\in\widehat G}\det\!\bigl(I-zK_\rho\bigr)^{d_\rho}\; }.
+\]
+\end{proposition}
+
+\begin{proof}
+By the Wedderburn decomposition (equivalently, the Peter--Weyl theory for finite groups), there exists a \(\CC\)-algebra isomorphism
+\[
+\CC[G]\ \cong\ \bigoplus_{\rho\in\widehat G}\mathrm{End}(V_\rho),
+\qquad
+g\longmapsto (\rho(g))_{\rho\in\widehat G}.
+\]
+Under this isomorphism, the right convolution operator \(R_x:y\mapsto yx\) (\(x\in\CC[G]\)) componentizes to the ``right multiplication'' operator on each \(\rho\)-block:
+\[
+R_{\rho(x)}:\mathrm{End}(V_\rho)\to\mathrm{End}(V_\rho),\qquad X\longmapsto X\,\rho(x).
+\]
+Choosing a basis and using the vectorization isomorphism \(\mathrm{End}(V_\rho)\cong \CC^{d_\rho}\otimes\CC^{d_\rho}\), the right multiplication operator \(R_{\rho(x)}\) can be identified with \(I_{d_\rho}\otimes \rho(x)^{\mathsf T}\) (equivalently \(I_{d_\rho}\otimes\rho(x)\), differing only by a transpose); hence
+\[
+\det\!\bigl(I-z\,R_{\rho(x)}\bigr)
+=\det\!\bigl(I-z\,\rho(x)^{\mathsf T}\bigr)^{d_\rho}
+=\det\!\bigl(I-z\,\rho(x)\bigr)^{d_\rho}.
+\]
+Applying the same decomposition to the matrix \(K=(K_{ij})\): on the \(\rho\)-block, \(\mathcal{K}\) is equivalent to the block operator assembled from right multiplication operators \(R_{(K_\rho)_{ij}}\); another application of vectorization (with tensor factor reordering as needed) identifies it with \(K_\rho\otimes I_{d_\rho}\) (or equivalently \(K_\rho^{\mathsf T}\otimes I_{d_\rho}\)), whence
+\[
+\det\!\bigl(I-z\,\mathcal{K}\bigr)
+=\prod_{\rho\in\widehat G}\det\!\bigl(I-z(K_\rho\otimes I_{d_\rho})\bigr)
+=\prod_{\rho\in\widehat G}\det\!\bigl(I-zK_\rho\bigr)^{d_\rho}.
+\]
+\qed
+\end{proof}
+
+\begin{proposition}[Finite-dimensional Artin decomposition (determinant factorization for normal coverings)]\label{prop:kernel-artin-factorization}
+In the framework of Definition~\ref{def:kernel-group-twist}, let $M_{K,G}(u)$ be the ``group-extended adjacency operator'' acting on $\CC^{V}\otimes\CC[G]$:
+for basis vectors $e_{i}\otimes\delta_g$, set
+\[
+M_{K,G}(u):(e_i\otimes\delta_g)\mapsto \sum_{e:i\to j}u^{\kappa(e)}\,(e_j\otimes \delta_{g\cdot g(e)}).
+\]
+Then for any $z$, the determinant identity
+\[
+\det(I-zM_{K,G}(u))=\prod_{\rho\in\widehat G}\det(I-zM_{K,\rho}(u))^{\dim\rho}
+\]
+holds, where $\widehat G$ is the set of irreducible complex representation classes of $G$. Equivalently, the covering $\zeta$-function satisfies
+\[
+\zeta_{K,G}(z,u)=\prod_{\rho\in\widehat G}L_{K,\rho}(z,u)^{\dim\rho},
+\qquad
+\zeta_{K,G}:=\det(I-zM_{K,G}(u))^{-1}.
+\]
+\end{proposition}
+
+\begin{proof}
+View $M_{K,G}(u)$ as the right convolution realization of Proposition~\ref{prop:kernel-peter-weyl-block-diagonalization}: its group algebra coefficient matrix \(K(u)\in\CC[G]^{V\times V}\) has \((i,j)\)-entry given by the edge set from \(i\to j\):
+\[
+K(u)_{ij}:=\sum_{e:i\to j}u^{\kappa(e)}\,g(e)\in\CC[G],
+\]
+so that \(\mathcal{K}=M_{K,G}(u)\).
+For any \(\rho\in\widehat G\), by Definition~\ref{def:kernel-group-twist} the channel matrix is
+\(
+K(u)_\rho=M_{K,\rho}(u)
+\).
+Applying the determinant factorization conclusion of Proposition~\ref{prop:kernel-peter-weyl-block-diagonalization} to \(\mathcal{K}\) yields the stated Artin decomposition.
+\end{proof}
+
+\begin{remark}[Comparison: Ihara-\texorpdfstring{$\zeta$}{zeta} ``graph version of RH'' and Ramanujan]\label{rem:kernel-graph-rh}
+In the setting of non-backtracking edge shifts / non-backtracking walks, the Ihara \(\zeta\)-function and its Bass determinant formula bind the ``prime circuit spectrum'' to spectral radius / eigenvalue bounds; for $q$-regular graphs, Sunada's observation can be stated as: the Ramanujan condition is equivalent to a Riemann-hypothesis-type zero/pole constraint on the Ihara \(\zeta\)-function (see \cite{TerrasZetaGraphs,StarkTerras1996GraphCoverings}).
+The kernel versions of RH/GRH in this paper (Definition~\ref{def:kernel-rh}) share with this graph-theoretic analogy the common feature that the ``square-root bound'' on the prime-orbit error is translated into a verifiable spectral gap condition.
+\end{remark}
+
+\begin{remark}[Computable readout of the zero-temperature ``first excited state'': minimal mean cycle]\label{rem:kernel-min-cycle-mean}
+Given edge weight $w(e):=\kappa(e)$, define the periodic average carry density
+\(
+\bar\kappa(\gamma)=\kappa(\gamma)/|\gamma|.
+\)
+Then $\min_{\gamma}\bar\kappa(\gamma)$ equals the minimum mean cycle value of the directed graph and can be computed in polynomial time using Karp's algorithm (\cite{Karp1978MinCycleMean}).
+For the three $9/13/21$-local kernels of this paper, this minimum is $0$ (carry-free cycles exist); after contracting the carry-free essential component, the same algorithm gives the smallest positive average density among ``cycles that must produce carry,'' serving as the first excited state fingerprint at zero temperature.
+\end{remark}
+
+\begin{corollary}[Folding formula: addition is ``superposition followed by normalization'']\label{cor:add-as-fold}
+Viewing $c,d\in X_\infty$ as $0/1$ configurations in $\mathcal{D}$, let their componentwise sum be
+\[
+(c+d)_k:=c_k+d_k\in\{0,1,2\},
+\]
+then
+\[
+c\oplus d=\Fold_\infty(c+d).
+\]
+\end{corollary}
+
+\textbf{Proof:}
+By Definition~\ref{def:val-on-D}, $\mathrm{Val}(c+d)=\mathrm{Val}(c)+\mathrm{Val}(d)$; then by the definition of $\Fold_\infty$ from Theorem~\ref{thm:zeckendorf-transversal}, $\Fold_\infty(a)=Z(\mathrm{Val}(a))=\mathrm{Val}^{-1}(\mathrm{Val}(a))$, the result follows.
+
+\begin{theorem}[Definitional isomorphism for addition (notation fixing)]\label{thm:add-definitional}
+$(X_\infty,\oplus)$ is a commutative monoid, and $\mathrm{Val}:(X_\infty,\oplus)\to(\NN,+)$ is an isomorphism.
+\end{theorem}
+
+\textbf{Proof:}
+By Definition~\ref{def:stable-add}, $\mathrm{Val}(c\oplus d)=\mathrm{Val}(c)+\mathrm{Val}(d)$ holds directly. Since $\mathrm{Val}$ is a bijection (Zeckendorf uniqueness), associativity, commutativity, and the identity element of $(X_\infty,\oplus)$ all transfer from $(\NN,+)$, and $\mathrm{Val}$ gives the isomorphism.
+
+This theorem interprets addition as ``projection readout from non-canonical superposition to stable addresses'': the raw superposition (componentwise addition) does not in general preserve the stable grammar and requires normalization projection onto the stable address space.

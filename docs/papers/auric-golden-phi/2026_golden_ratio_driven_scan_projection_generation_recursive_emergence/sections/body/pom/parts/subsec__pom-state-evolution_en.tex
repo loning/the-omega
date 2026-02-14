@@ -1,0 +1,706 @@
+\subsection{Ontological State Space and Local Evolution}\label{subsec:pom-state-evolution}
+\begin{definition}[Resolution State Space]\label{def:pom-state-space}
+For resolution $m$, define the ontological state space
+\[
+\mathcal{H}_m:=\mathcal{X}_m\times \mathcal{M}_m,
+\]
+where $\mathcal{X}_m$ denotes the external coordinates (e.g., $X_m$ or a truncation of $X_\infty$), and $\mathcal{M}_m$ denotes the hidden fiber (which may include locally activated blocks of $\mathcal{S}_\varphi,\mathcal{T},\mathcal{P}$, synchronization kernel states, residuals, etc.).
+\end{definition}
+
+\begin{definition}[Locality and Finite Propagation]\label{def:pom-locality}
+Given a one-step ontological evolution operator
+\[
+U:\mathcal{H}_m\to\mathcal{H}_m
+\]
+we say that \(U\) satisfies \textbf{locality and finite propagation} if each step depends only on a finite window and updates only local blocks within a finite radius. This definition is consistent with the local kernel/online normalization caliber introduced in Section~\ref{sec:A-kernel-compare-main}.
+\end{definition}
+
+\subsection{Three Classes of Projections: Normalization Projection, Atomic Projection, and Order Projection}\label{subsec:pom-projections}
+\begin{definition}[Normalization Projection $P_Z$]\label{def:pom-proj-norm}
+At the window level, $P_Z$ is defined as the normalization projection of $\Fold_m:\Omega_m\to X_m$ (Definition~\ref{def:fold-word}), realized as a value-preserving local rewriting system that satisfies termination and confluence (Theorem~\ref{thm:fold-suite}). At the operator algebra level, $P_Z$ is realized by the conditional expectation induced by folding
+\[
+E_m:\mathcal{A}_m\to\mathcal{B}_m
+\]
+(Proposition~\ref{prop:fold-conditional-expectation}), so that $P_Z$ is an idempotent projection independent of the reduction order.
+\end{definition}
+
+\begin{definition}[Atomic Projection $P_{\mathrm{prim}}$]\label{def:pom-proj-prim}
+Given a kernel/evolution operator $T$, let the temporal trace sequence be $a_n:=\Tr(T^n)$. Define the primitive orbit spectrum
+\[
+p_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+Let $P_{\mathrm{prim}}(a):=(p_n)_{n\ge 1}$. Then by the Euler product and M\"obius/Witt inversion,
+\[
+Z=E\circ P_{\mathrm{prim}}\circ T,
+\qquad
+Z=E\circ M\circ T.
+\]
+Thus $P_{\mathrm{prim}}$ is the canonical readout gate that projects ``temporal traces'' onto the prime-like atomic layer.
+\end{definition}
+
+\begin{definition}[Order Projection $P_{\le}$]\label{def:pom-proj-order}
+The order projection $P_{\le}$ maps ontological states to readout certificates subject to ordering constraints (such as symbols, comparison decisions, or interval constraints), with the goal of encoding global ordering relations of the form ``$0\le r<b$'' as observable outputs. Unlike $P_Z$, $P_{\le}$ is not necessarily a ring homomorphism, nor is it guaranteed to be locally parallelizable; its readout often requires cross-window aggregation, making it the primary source of non-parallelizable growth.
+\end{definition}
+
+\begin{definition}[Temperaturized Order Projection $\mathrm{PROJ}_u$ (Soft Order Gate)]\label{def:pom-proj-temp}
+Let $\Gamma$ be a finite graph kernel used for order/constraint readout (e.g., comparison, interval constraint, or residue stratification kernel), and suppose each edge $e$ carries a non-negative additive cost potential
+\[
+E(e)\in\ZZ_{\ge 0},
+\qquad
+E(\gamma)=\sum_{e\in\gamma}E(e).
+\]
+For $u\in(0,1]$, define the weighted adjacency matrix
+\[
+M_E(u)_{ij}:=\sum_{e:i\to j}u^{E(e)}.
+\]
+Let $\mu_u$ be the equilibrium/Parry measure of this weighted SFT (equivalently, the one-step Markov measure given by the Perron--Frobenius eigenvector of $M_E(u)$). For any certificate readout function $R$ (e.g., comparison symbol, quotient-remainder interval label, or congruence class label), define the \textbf{temperaturized order projection} as its pushforward distribution under $\mu_u$:
+\[
+\mathrm{PROJ}_u(R):=R_\ast\mu_u.
+\]
+As $u$ approaches $1$, $\mathrm{PROJ}_u$ reflects ``soft constraint/average readout''; as $u$ decreases ($\beta=-\log u$ increases), the readout progressively concentrates on the set of paths with low cost (more constraint-satisfying/closer to optimal).
+\end{definition}
+
+\begin{remark}[Order Projection as Zero-Temperature Limit]\label{rem:pom-order-as-zero-temp}
+Under the locally constant potential (edge potential) setting, the zero-temperature limit $u\to 0$ (equivalently $\beta\to+\infty$) pushes the equilibrium measure $\mu_u$ toward the \emph{ground state set}: supported on periodic/sub-shift components that minimize the average cost $\bar E=\lim_{n\to\infty}E(\gamma_n)/|\gamma_n|$ (see \cite{ChazottesGambaudoUgalde2011ZeroTempLocConst} for the general result). Therefore, at the mechanism level, the order projection $P_{\le}$ can be understood as the ``hardening limit of the soft order gate $\mathrm{PROJ}_u$ at zero temperature'': transitioning from weighted averaging to selection/feasibility screening (typically an $\arg\min$ structure), which is also the root cause of the irreducibly non-parallelizable readout depth introduced by $P_{\le}$.
+
+On finite graphs, the zero-temperature ground state can be precisely characterized by the minimum mean cycle weight: let $\phi_\theta=\langle\theta,\Phi\rangle$ or more generally take $\phi=E$, then the minimum average cost equals the min-mean-cycle value on the graph, which can be computed in polynomial time using Karp's algorithm (\cite{Karp1978MinCycleMean}). This transforms the key limiting factor of the order projection into an auditable combinatorial certificate interface.
+\end{remark}
+
+\subsubsection{Convex Geometry Induced by Potentials: Achievable Mean Convex Body and Dual Pressure}\label{subsec:pom-potential-convex-geometry}
+\paragraph{Potential Vectors as Intrinsic Coordinates}
+For a finite graph kernel (SFT) \(\Gamma\), assign to each edge a multidimensional additive observable (potential vector)
+$$
+\varphi:E(\Gamma)\to \ZZ^d.
+$$
+For any \(\sigma\)-invariant measure \(\mu\), its average observable vector is defined as
+$$
+m(\mu):=\int \varphi\,d\mu\ \in\ \RR^d.
+$$
+Define the \textbf{achievable mean set} (rotation/mean set)
+$$
+\mathcal{R}_\varphi:=\{m(\mu):\ \mu\ \text{is a}\ \sigma\text{-invariant measure on}\ \Gamma\}\subset\RR^d.
+$$
+Since the set of invariant measures is compact and convex under the weak-\(\ast\) topology, and \(\mu\mapsto m(\mu)\) is a continuous linear map, \(\mathcal{R}_\varphi\) is also a compact convex set.
+
+\paragraph{Pressure Surface and Rate Function: Convex Duality Reads Out the ``Geometry''}
+For parameter \(\theta\in\RR^d\), let the edge weights be \(\exp\langle\theta,\varphi(e)\rangle\), yielding the weighted matrix family \(M_\theta\) and pressure
+$$
+P(\theta):=\log\rho(M_\theta).
+$$
+In the original setting, \(\nabla P(\theta)\) gives the typical mean density under the equilibrium state, while the Hessian \(\nabla^2P(\theta)\) gives the covariance density (the main text \ref{subsec:logM-analyticity} has already fixed this ``differentiable fingerprint'' as the realization interface).
+More importantly: for a fixed reference \(\theta_0\), the LDP rate function of the empirical mean can be written as
+$$
+I_{\theta_0}(x)=\sup_{t\in\RR^d}\Bigl(\langle t,x\rangle-\bigl(P(\theta_0+t)-P(\theta_0)\bigr)\Bigr),
+$$
+whose effective domain falls exactly on \(\mathcal{R}_\varphi\) (taking \(+\infty\) outside the domain).
+Therefore, the ``geometry'' need not be embedded a priori in Euclidean space: it is endogenously generated by the juxtaposition of potential vectors and kernel constraints, and is quantitatively read out through the \((P\leftrightarrow I)\) Legendre--Fenchel duality.
+
+\paragraph{6D Hypercube and 3D Cross-Sections (Minimal Form)}
+If one selects \(6\) binary channels (each step taking values \(0/1\)) as potential components \(\varphi=(\varphi_1,\dots,\varphi_6)\), then any orbit of length \(n\) yields a count vector
+$$
+N_n:=\sum_{t=0}^{n-1}\varphi(e_t)\in\{0,1,\dots,n\}^6,
+$$
+which after normalization falls in \([0,1]^6\). The true achievable set is the convex sub-body within it carved out by kernel-admissible paths (i.e., the concretization of \(\mathcal{R}_\varphi\) under this choice).
+The so-called ``3D cross-section of the 6D cube'' is the cross-section obtained by fixing \(3\) coordinates (or fixing \(3\) linear combinations, e.g., \(\chi=\varphi_e-\varphi_2\)); performing gradient/Hessian readout in the \(\theta\)-space on that slice corresponds to the first- and second-order local measurements of the convex body on that slice.
+
+\begin{remark}[Categorical Boundary and Non-Parallelizable Growth]\label{rem:pom-factor-boundary}
+Any sliding block factor code has constant online delay, and therefore all readout depth growing with scale must originate from non-factor-code projections (typically $P_{\le}$) or from leaving the mixing within the evolution depth $D_U$. This ``categorical boundary'' elevates the growth term from an algorithmic artifact to a structural constraint.
+\end{remark}
+
+\begin{definition}[Character/Congruence Projection $P_\chi$]\label{def:pom-proj-chi}
+The character projection $P_\chi$ stratifies primitive orbits by additive observables (such as $\chi(\gamma),N_-(\gamma),N_e(\gamma)$) according to congruence/character, and reads out residue class labels. It can be realized by the twisted matrix family $M(q)$ and the Dirichlet--Mertens constant tensor (see \ref{subsec:arity-dirichlet-mertens-tensor}), and is thus a concretization gate in the ``order/congruence/character readout'' direction of $P_{\le}$; it can also be viewed as a character-enhanced version of $P_{\mathrm{prim}}$.
+\end{definition}
+
+\begin{remark}[Dominant Axis of Order Constraints: Collision Axis]\label{rem:pom-collision-axis}
+In the real input 40-state kernel, the worst-case twisted spectral radius of \(((3,3,5))\) is achieved by the pure collision cocycle (Remark~\ref{prop:arity-335-collision-dominant}), indicating that the dominant limiting factor of the order projection is not the ``value axis'' but the collision/cancellation axis. Consequently, if trading space for time, introducing a separable collision-axis bundle takes priority over simply expanding value channels.
+\end{remark}
+
+\begin{remark}[``Adding Axes Does Not Necessarily Speed Up'': Finer Congruence Readout May Be Slower]\label{rem:pom-more-axis-slower}
+In the three-dimensional congruence stratification, two auditable worst-case twisted ratios have been provided:
+\[
+\rho_{3,3,3}/\lambda\approx 0.9366863402,
+\qquad
+\rho_{5,5,5}/\lambda\approx 0.9628140340
+\]
+(numerical output of Appendix~\ref{app:real-input-40-arity-3d}; see script \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}).
+Note that \(\rho_{5,5,5}/\lambda\) is closer to \(1\), so its twisted spectral gap \(-\log(\rho/\lambda)\) is smaller, corresponding to a larger mixing scale.
+
+This yields a structural result: when the worst-case twist is dominated by the \emph{pure collision cocycle}, increasing the modulus of congruence axes (finer residue/character readout) introduces more nontrivial characters, but \textbf{the slowest mode is not eliminated by ``value-axis refinement''}; on the contrary, it may further approach resonance, thereby slowing down mixing.
+Therefore, the effective means of ``trading space for time'' in this phase regime is not simply increasing the character dimension, but rather changing the kernel geometry to decouple/weaken the collision axis (e.g., introducing a separable collision-axis bundle or modifying the projection gate orchestration).
+\end{remark}
+
+\subsection{Projection Word Syntax and Cost Model}\label{subsec:pom-words}
+\begin{definition}[Projection Words and Semigroup]\label{def:pom-projection-word}
+Let the projection alphabet $\{Z,\le\}$ represent one invocation of $P_Z$ and one invocation of $P_{\le}$, respectively. For any instruction/microcode $I$, define the projection word
+\[
+W(I)=(k_Z(I),k_{\le}(I)),
+\]
+where $k_Z,k_{\le}$ denote the invocation counts of the normalization/order projections. Let
+\[
+\mathcal{W}=\langle Z,\le\rangle^*/\sim,\qquad Z^2\sim Z
+\]
+be the projection word semigroup (the idempotent law derives from $P_Z\circ P_Z=P_Z$); additional equivalence relations may be adjoined according to the causal cone/local commutativity of the specific implementation.
+\end{definition}
+
+\begin{remark}[Extended Projection Word with Atomic Projection]\label{rem:pom-word-prim}
+If the atomic projection is included in the readout, the alphabet can be extended to $\{Z,\mathrm{prim},\le\}$, with
+\[
+W^{\mathrm{full}}(I)=(k_Z(I),k_{\mathrm{prim}}(I),k_{\le}(I)).
+\]
+For arithmetic instructions, $k_{\mathrm{prim}}=0$ by default; the atomic projection primarily serves readout and mechanism audit of the prime-like spectrum.
+\end{remark}
+
+\begin{remark}[Projection Word Notation for Character Projection]\label{rem:pom-word-chi}
+When the order readout is realized by $P_\chi$, the projection alphabet may be written as $\{Z,\chi\}$, with
+\(
+W_\chi(I)=(k_Z(I),k_\chi(I))
+\).
+Here $k_\chi$ counts only the invocations of the character/congruence projection, serving as a concretized version of $k_{\le}$.
+\end{remark}
+
+\begin{definition}[Cross-Resolution Downscale Count]\label{def:pom-rescale-count}
+In addition to the readout gates $P_Z,P_{\le}$ in the projection word, if the instruction/microcode $I$ explicitly invokes the resolution downscale projection gate
+\(
+\mathrm{RESCALE}\downarrow:\Omega_{m+1}\to X_m
+\)
+(see Remark~\ref{rem:pom-rescale-gauge-anomaly}), then denote its invocation count by $k_{\downarrow}(I)$; if no cross-resolution readout is involved, set $k_{\downarrow}(I)=0$.
+\end{definition}
+
+\begin{definition}[Fiber Selection and Kernel Selection]\label{def:pom-fiber-kernel-choice}
+For any instruction/microcode $I$, denote the a priori fiber family activated during its realization by
+$$
+\mathcal{F}(I)\subseteq \{\mathcal{S}_\varphi,\mathcal{T},\mathcal{P},\widehat{\ZZ}\},
+$$
+corresponding to the scale fiber, phase fiber, prime register fiber, and profinite congruence axis, respectively (Definitions~\ref{def:pom-scale-fiber}, \ref{def:pom-phase-fiber}, \ref{def:pom-prime-fiber}, \ref{def:pom-profinite}).
+Furthermore, denote the normalization kernel used for the canonical readout by $K_Z(I)$ (i.e., the specific kernel implementing $P_Z$), and the kernel used for order/character readout by $K_{\le}(I)$ or $K_{\chi}(I)$ (implementing $P_{\le}$ or $P_\chi$, respectively).
+\end{definition}
+
+\begin{remark}[Phase Fiber and Register Axis Compact Group Packaging: Universal Solenoid Extension]\label{rem:pom-solenoid-extension}
+Definition~\ref{def:pom-fiber-kernel-choice} lists the phase fiber \(\mathcal{T}\) and congruence axis \(\widehat{\ZZ}\) as a priori fiber families that can be activated by \(\mathrm{LIFT}\).
+At the level of compact abelian groups, these two axes can be unified into a canonical compact abelian group extension: define the one-dimensional universal solenoid
+\begin{equation}\label{eq:pom-universal-solenoid-quotient}
+\boxed{\;
+\Sol\ :=\ (\RR\times \widehat{\ZZ})/\ZZ,\qquad
+n\cdot(t,a):=(t+n,\ a-n)\; }.
+\end{equation}
+Then there exists a natural short exact sequence
+\begin{equation}\label{eq:pom-universal-solenoid-ses}
+\boxed{\;
+0\ \longrightarrow\ \widehat{\ZZ}\ \xrightarrow{\ \iota_{\widehat{\ZZ}}\ }\ \Sol\ \xrightarrow{\ \pi_{\TT}\ }\ \TT\ \longrightarrow\ 0\;}
+\end{equation}
+where
+\(
+\iota_{\widehat{\ZZ}}(a)=[(0,a)]
+\)
+is the embedding, and
+\(
+\pi_{\TT}([(t,a)])=e^{2\pi \mathrm{i}t}
+\)
+is the surjection (whose kernel is isomorphic to \(\widehat{\ZZ}\)).
+\par
+The structural implication of this extension is: the phase circle \(\TT\) can be read out as a quotient group of \(\Sol\) (corresponding to the projected image of the phase fiber \(\mathcal{T}\)), while the congruence axis \(\widehat{\ZZ}\) is ``built in'' as an invisible degree of freedom serving as the kernel; therefore, any forgetting/irreversibility appearing under the phase projection can be strictly lifted to an invertible group action at the \(\Sol\) level, with the discrepancy externalized as residual coordinates in the kernel direction.
+This elevates the narrative constraint of ``information externalization conservation/invertibility'' to an auditable group extension structural interface.
+\end{remark}
+
+\begin{definition}[Instruction Signature: Projection Word $\times$ Kernel Fingerprint $\times$ Fiber Selection]\label{def:pom-instruction-signature}
+Let $\mathfrak{F}(K)$ denote the spectral fingerprint of the kernel (Definition~\ref{def:kernel-spectral-fingerprint}). For any instruction/microcode $I$, define its (audit) instruction signature as
+$$
+\Sigma(I):=\Bigl(W(I),\ k_{\downarrow}(I),\ \mathfrak{F}\bigl(K_Z(I)\bigr),\ \mathfrak{F}\bigl(K_{\le}(I)\bigr),\ \mathcal{F}(I)\Bigr),
+$$
+where $W(I)$ is the projection word (Definition~\ref{def:pom-projection-word}), $k_{\downarrow}(I)$ is the cross-resolution downscale invocation count (Definition~\ref{def:pom-rescale-count}), and $\mathcal{F}(I)$ is the fiber selection (Definition~\ref{def:pom-fiber-kernel-choice}). When the order readout is realized by $P_\chi$, $\mathfrak{F}(K_{\le}(I))$ may be replaced by $\mathfrak{F}(K_{\chi}(I))$.
+\end{definition}
+
+\begin{remark}[Why $W$ Is Not Enough: Kernel Geometry Enters the Fingerprint]\label{rem:pom-signature-why}
+The projection word $W(I)$ records only ``how many times the projection gates were invoked'' but not ``what the geometry of the projection gates is.'' The kernel fingerprint $\mathfrak{F}(K)$ (e.g., $\zeta_K$, primitive stratified spectrum $\{B_{K,n}(u)\}$, finite-part constants, and twisted spectral gaps) determines the differences at the mechanism level for the same projection gate (Appendix~\ref{app:sync-kernel-A-compare}). Therefore, the stronger unified classification object should be $\Sigma(I)$ rather than merely $W(I)$.
+\end{remark}
+
+\begin{proposition}[Signature Consistency $\Rightarrow$ Fingerprint Consistency and Cost Model Isomorphism]\label{prop:pom-signature-audit}
+Suppose two instructions/microcodes $I,J$ satisfy $\Sigma(I)=\Sigma(J)$. Then:
+\begin{enumerate}
+  \item \textbf{Projection audit invariants are consistent:} Under the same kernel fingerprint caliber, both yield identical $\zeta$, primitive atomic spectra (including their weighted stratifications), pressure curve endpoints, twisted spectral gaps, and other auditable fingerprints (fully determined by $\mathfrak{F}(K_Z),\mathfrak{F}(K_{\le})$).
+  \item \textbf{Cost models are isomorphic:} Under the caliber of Definition~\ref{def:pom-cost}, both have the same projection word coefficients $(k_Z,k_{\le})$ and the same cross-resolution downscale count $k_{\downarrow}$, and their constant terms (such as $\delta_Z$) and mixing scales (such as $\tau_{\mathrm{mix}}$) are consistent due to identical kernel fingerprints, yielding the same structural decomposition of the cost model:
+  $$
+  \begin{aligned}
+  T_I(n;m)&=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+k_{\downarrow}\,T_{\downarrow}(m)+D_U(n),\\
+  T_J(n;m)&=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+k_{\downarrow}\,T_{\downarrow}(m)+D_U'(n),
+  \end{aligned}
+  $$
+  where differences may appear only in the ``linearization depth/evolution depth'' term $D_U$, which is determined by the fiber selection $\mathcal{F}$ and the specific evolution orchestration (Definition~\ref{def:pom-space-time}).
+\end{enumerate}
+\end{proposition}
+
+\begin{definition}[Cost Model]\label{def:pom-cost}
+Let $\delta_Z$ be the baseline readout depth of one normalization projection (e.g., the fixed delay of online normalization, see Theorem~\ref{thm:online-delay-fold}), let $T_{\le}(n)$ be the aggregation depth of one order projection, let $T_{\downarrow}(m)$ be the typical write-back support size of one cross-resolution downscale gate $\mathrm{RESCALE}\downarrow$ (Remark~\ref{rem:pom-rescale-gauge-anomaly}), and let $D_U(n)$ be the depth required to complete linearization in the ontological evolution. Then define
+\[
+T_I(n;m)=k_Z(I)\,\delta_Z+k_{\le}(I)\,T_{\le}(n)+k_{\downarrow}(I)\,T_{\downarrow}(m)+D_U(n).
+\]
+This model separates projection readout from evolution depth, and is used to compare the strategic differences of various implementations in placing ``mixing'' in time versus space.
+\end{definition}
+
+\begin{remark}[Resolution Downscale Is Not ``Discarding the Tail'': \texorpdfstring{$\mathrm{RESCALE}\downarrow$}{RESCALE down} and the Gauge Anomaly Lower Bound]\label{rem:pom-rescale-gauge-anomaly}
+In addition to \(P_Z,P_{\le}\) in the projection word, the resolution transformation itself can also be viewed as an indispensable projection gate: on the microstate space \(\Omega_{m+1}\), na\"ive truncation
+\(
+r_{m+1\to m}:\Omega_{m+1}\to\Omega_m
+\)
+is generally not compatible with folding, whereas the folding-aware restriction
+\(
+\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\in X_m
+\)
+is the cross-scale consistent resolution-downscale readout (Section~\ref{subsec:fold-omega-restriction}).
+Therefore, in the ISA/microcode abstraction, one may treat
+$$
+\mathrm{RESCALE}\downarrow:\ \Omega_{m+1}\to X_m,\qquad \omega\mapsto \widetilde r_{m+1\to m}(\omega)
+$$
+as a primitive projection gate and include it in the cost.
+\par
+More critically: the \emph{spatial} projection support size of this gate is linear in the worst case. Define the gauge anomaly \(G_m(\omega)\) as
+\(
+|r_{m+1\to m}(\omega)\oplus \widetilde r_{m+1\to m}(\omega)|_0
+\)
+(Definition~\ref{def:fold-gauge-anomaly}), then Theorem~\ref{thm:fold-gauge-anomaly-max} gives the worst-case lower bound \(G_m^{\max}=m\).
+Moreover, under the uniform microstate baseline, its \emph{typical} support size is also linear with a closed-form constant density:
+\(
+\lim_{m\to\infty}\bar G_m/m=4/9
+\)
+(Theorem~\ref{thm:fold-gauge-anomaly-density}), so on average approximately \((4/9)m\) external bits need to be touched.
+If this ``support rewriting cost'' is recorded as an independent non-parallel overhead term \(T_{\downarrow}(m)\), then in the typical case
+\[
+T_{\downarrow}(m)\ \asymp\ \frac{4}{9}m.
+\]
+This shows that ``constant online delay'' (causal cone length) does not preclude the worst-case scenario of ``touching the entire external register to downscale by one resolution level'': the two characterize orthogonal complexity components (delay vs.\ total support size).
+\end{remark}
+
+\begin{remark}[Atomic Projection Readout Cost]\label{rem:pom-cost-prim}
+If reading the primitive atomic layer spectrum is required, one may add
+\[
+k_{\mathrm{prim}}(I)\,T_{\mathrm{prim}}(n),
+\]
+to the cost model, where $T_{\mathrm{prim}}(n)$ denotes the readout or M\"obius inversion depth of the orbit-layer spectrum; for arithmetic instructions, $k_{\mathrm{prim}}=0$.
+\end{remark}
+
+\begin{remark}[Time Upper Bound Under the Character Projection Gate]\label{rem:pom-cost-chi}
+When the order readout is realized by $P_\chi$, one may use $\tau_{\mathrm{mix}}$ as the effective scale for $T_{\le}$ (see Remark~\ref{rem:pom-chi-mixing}), yielding
+\[
+T_I(n;m)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ k_{\downarrow}(I)\,T_{\downarrow}(m)\ +\ D_U(n).
+\]
+This provides a direct quantitative interface from ``projection word $\Rightarrow$ non-parallel overhead.''
+\end{remark}
+
+\begin{remark}[Three Orthogonal Fingerprints of Non-Parallelizable Overhead (Delay/Support/Mixing)]\label{rem:pom-nonparallel-three-meters}
+Definition~\ref{def:pom-cost} gives the total cost.
+Under the caliber where ``linearization within a priori fibers (scale/phase/prime register, etc.) constitutes the ontological structure and can be unfolded in parallel,'' $D_U(n)$ can be viewed as a parallelizable term and excluded from the \emph{non-parallelizable} overhead.
+The scale-dependent part that cannot be eliminated through parallelization can then be characterized by the following three mutually irreplaceable fingerprints:
+\begin{itemize}
+  \item \textbf{Delay fingerprint \(\delta\):} The minimum online delay (causal cone length) of the normalization projection gate \(P_Z\). For Zeckendorf normalization,
+  \(\delta_{\min}(\Fold_\infty)=3\) (Proposition~\ref{prop:pom-delay-min}), and increasing space cannot push it down to \(2\) (Remark~\ref{rem:pom-space-time-orth}).
+  \item \textbf{Support fingerprint \(G_m\):} The number of external bits that need to be touched for cross-resolution downscale/write-back correction. Its worst case is \(G_m^{\max}=m\) (Theorem~\ref{thm:fold-gauge-anomaly-max}), and the typical density limit under the uniform baseline is
+  \(\lim_{m\to\infty}\bar G_m/m=4/9\) (Theorem~\ref{thm:fold-gauge-anomaly-density}), yielding \(T_{\downarrow}(m)\asymp (4/9)m\) (Remark~\ref{rem:pom-rescale-gauge-anomaly}).
+  \item \textbf{Mixing fingerprint \(\tau_{\mathrm{mix}}\):} The convergence scale of the order/congruence/character readout gate (\(P_{\le}\) or its character-enhanced version \(P_\chi\)). The necessary depth to achieve error threshold \(\varepsilon\) satisfies
+  \[
+  n\ \gtrsim\ \tau_{\mathrm{mix}}(u)\,\log(1/\varepsilon),
+  \qquad
+  \tau_{\mathrm{mix}}(u)=\frac{1}{\log(\lambda_1(u)/\Lambda(u))}
+  \]
+  (Corollary~\ref{cor:pom-order-mixing}; Remark~\ref{rem:pom-order-mixing-scale} and Remark~\ref{rem:pom-chi-mixing}).
+\end{itemize}
+Under this caliber, the non-parallelizable difference between ``four arithmetic operations and quotient-remainder'' manifests only in whether the order gate appears in the projection word: if \(k_{\le}=0\), the non-parallelizable delay main term is merely the constant \(\delta_Z\);
+if the semantics includes canonical solution selection (sign, minimum non-negative remainder, quotient-remainder constraint \(0\le r<b\), etc.), then necessarily \(k_{\le}\ge 1\), introducing a growth term scaled by \(\tau_{\mathrm{mix}}\).
+If the instruction explicitly invokes \(\mathrm{RESCALE}\downarrow\), then the support fingerprint \(G_m\) provides an independent write-back budget at linear scale.
+\par
+Furthermore, the \emph{spatial} non-injectivity of the normalization projection gate \(P_Z\) can still be spectrally quantified at the level of the Perron roots \(\{r_q\}_{q\ge 2}\) (or pressure curve) of the collision moment-kernel (Theorem~\ref{thm:pom-collision-kernel-ak}): this spectral fingerprint determines tail quantiles and prime-register budget certificates, but it characterizes the ``co-image collision strength'' and should not be conflated with the three types of non-parallelizable readout fingerprints above.
+A direct, reproducible example is: upon promoting the input legality constraint to the 40-state real input kernel, the spatial collision constant of ``addition as a single projection'' changes significantly (Appendix~\S\ref{app:add-collision-spectrum}).
+\end{remark}
+
+\subsection{Parameterized Projection Word \texorpdfstring{$2$}{2}-Category and Auditable Rewriting}\label{subsec:pom-2cat-rewrite}
+\paragraph{Objective}
+The projection word semigroup $\mathcal W$ (Definition~\ref{def:pom-projection-word}) provides ``lexical counting,'' and the instruction signature $\Sigma$ (Definition~\ref{def:pom-instruction-signature}) provides ``auditable invariants.''
+To obtain a derivable calculus, one must further consolidate ``rewritability, decidable equality, and valuation'' into a unified system: rewriting closes at the lexical/compilation level, while equality testing and valuation are completed at the spectral fingerprint level.
+
+\begin{definition}[Parameterized Projection Word \texorpdfstring{$2$}{2}-Category]\label{def:pom-projword-2cat}
+Define a (weak) $2$-category $\mathbf{PW}$ (projection-word) as follows:
+\begin{itemize}
+  \item \textbf{Objects (typed interfaces):} An object may be taken as a ternary interface
+  \[
+  \mathcal{I}(m;K;\kappa),
+  \]
+  where $m$ is the resolution (window length/truncation scale), $K$ is the mechanism kernel (synchronization kernel, real input kernel, collision kernel, etc.), and $\kappa$ is the edge potential/observable (event potential, character potential, congruence label, or cocycle). This object is equivalent to a parameterized version of ``readout layer and fiber configuration'': it fixes ``at which scale, with which kernel, reading which observable'' as the type, thereby constraining subsequent projection word composition to checkable type matching.
+  \item \textbf{$1$-morphisms:} Projection words (allowing finite composition) consisting of generators with their parameter annotations:
+  \[
+  \{\ P_Z,\ P_{\le},\ P_\chi,\ P_{\mathrm{prim}},\ E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{MOM}_q,\ \mathrm{TWIST}(\chi),\ U\ \}
+  \]
+  where $E_m$ is the conditional expectation interface (Definition~\ref{def:pom-proj-norm}), $\mathrm{PROJ}_u$ is the soft order gate (Definition~\ref{def:pom-proj-temp}), $\mathrm{LIFT}_G$ is the group extension/label lifting gate (see Section~\ref{sec:zeta-finite-part} for the group extension interface), $\mathrm{MOM}_q$ ($q\ge2$) is the $q$-fold collision/moment lifting gate: it compiles a folding/readout kernel into its $q$-fold fiber-product moment-kernel, thereby reading out the linear recurrence and Perron main scale of the higher-order collision moment \(S_q(m)=\sum_x d_m(x)^q\) (see Theorem~\ref{thm:pom-collision-kernel-ak}). Together with \(\mathrm{TWIST}(\chi)\), \(\mathrm{MOM}_q\) constitutes the minimal spectral gate interface for promoting ``lexical rewriting'' to ``computable spectral fingerprint/resource budget.'' The remaining generators are the projection gate families of this paper (Definitions~\ref{def:pom-proj-norm}--\ref{def:pom-proj-chi}).
+  \item \textbf{$2$-morphisms:} Rewriting certificates (equalities/isomorphisms) given by ``auditable structural facts,'' including but not limited to:
+  \begin{enumerate}
+    \item Idempotent and tower relations: $P_Z\circ P_Z=P_Z$, and $E_{m_1}\circ E_{m_2}=E_{m_1}$ (conditional expectation tower property);
+    \item Time--space commuting diagram: $Z=E\circ M\circ T$ (Proposition~\ref{prop:time-space-commuting-diagram}), strictly aligning the two realization paths of $\det(I-zT)^{-1}$ with the primitive/Euler product;
+    \item Group extension decomposition: for abelian label extensions, the determinant/spectral objects of $\mathrm{LIFT}_G$ can be decomposed over characters and read out by the family of $\mathrm{TWIST}(\chi)$ (Section~\ref{sec:zeta-finite-part}, DFT/twist interface);
+    \item Higher-order moment kernel compilation: for any \(q\ge2\), the moment-kernel produced by $\mathrm{MOM}_q$ closes on finite states, so that \(S_q(m)\) can be written as a readout of finite matrix powers and satisfies a finite-order integer-coefficient recurrence; its principal exponent is given by the Perron root \(r_q\) (Theorem~\ref{thm:pom-collision-kernel-ak}).
+    \item Hard order gate as zero-temperature limit: $P_{\le}$ can be viewed as the hardening limit of $\mathrm{PROJ}_u$ as $u\to 0$ (Remark~\ref{rem:pom-order-as-zero-temp}), whose ``limit degeneration'' provides a class of verifiable asymptotic rewriting rules.
+  \end{enumerate}
+\end{itemize}
+Treating these $2$-morphisms as ``provably equivalent/commutable compilation transformations,'' one can perform certified rewriting within $\mathbf{PW}$.
+\end{definition}
+
+\begin{remark}[Three Gates + Two Spectral Gates: Minimal Derivable Fragment]\label{rem:pom-pw-star-fragment}
+In the subsequent ``normal form--anomaly--spatial spectrum--zero-temperature certificate'' closed loop of this paper, the minimal generating fragment that appears repeatedly can be written as
+\[
+\mathbf{PW}^{\ast}:=\langle E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{TWIST}(\chi),\ \mathrm{MOM}_q\rangle\subseteq \mathbf{PW}.
+\]
+Here \(E_m,\mathrm{PROJ}_u,\mathrm{LIFT}_G\) provide three interface axes: resolution readout, temperaturized order gate, and group extension;
+while \(\mathrm{TWIST}(\chi)\) and \(\mathrm{MOM}_q\) objectify commutation failure/tail amplification and other ``residuals'' as computable spectral fingerprints (\(\log\mathfrak{M}_\chi\), \(\rho_\chi/\lambda\), \(r_q(u)\), \(P(q,u)\)).
+Therefore, on \(\mathbf{PW}^{\ast}\), an ``algorithmic equivalence'' can be presented both at the lexical level as normal forms and \(2\)-morphism certificates, and cross-validated at the spectral level as anomaly signatures and resource curves (see \S\ref{subsec:pom-three-generator-residual-closure}, \S\ref{subsec:pom-spectral-resource-type}, \S\ref{subsec:pom-proj-tropicalization}).
+\end{remark}
+
+\begin{definition}[\texorpdfstring{$\varepsilon$}{eps}-Sound Approximate Rewriting Certificate (Error Budget)]\label{def:pom-eps-sound-rewrite}
+Fix an object \(\mathcal{I}(m;K;\kappa)\), and stipulate that it carries a reference sampling distribution \(\mathbb{P}_{\mathcal I}\)
+(typical examples: the folding output baseline \(X\sim\pi_m\); the pushforward distribution induced by the Gibbs/Parry equilibrium state under the temperature gate caliber).
+For any isotypic projection words \(w,w'\) (same source and target), denote the visible readout they induce under this interface and sampling distribution as random variables
+\(
+Y_w,Y_{w'}.
+\)
+If there exists a bad event \(E\) satisfying \(\mathbb{P}_{\mathcal I}[E]\le \varepsilon\), and on \(E^c\) one has \(Y_w=Y_{w'}\) almost surely,
+then we say there exists an \textbf{\(\varepsilon\)-sound} approximate rewriting certificate, denoted
+$$
+w\ \Longrightarrow_{\varepsilon}\ w'.
+$$
+When \(\varepsilon=0\), this definition degenerates to an exact rewriting certificate.
+\end{definition}
+
+\begin{proposition}[Additive Composition Law of Error Budget]\label{prop:pom-eps-sound-compose}
+If \(w\Longrightarrow_{\varepsilon}w'\) and \(w'\Longrightarrow_{\delta}w''\), then \(w\Longrightarrow_{\varepsilon+\delta}w''\).
+Therefore, along any finite rewriting trajectory \(w=w_0\Rightarrow w_1\Rightarrow\cdots\Rightarrow w_r=w'\), if the budget of step \(i\) is \(\varepsilon_i\), then the overall failure probability satisfies
+\[
+\varepsilon_{\mathrm{tot}}\ \le\ \sum_{i=1}^{r}\varepsilon_i.
+\]
+\end{proposition}
+\begin{proof}
+Take the corresponding bad events \(E_1,E_2\).
+On \(E_1^c\cap E_2^c\) we have \(Y_w=Y_{w'}=Y_{w''}\), so the bad event may be taken as \(E_1\cup E_2\), whose probability does not exceed \(\varepsilon+\delta\). \qed
+\end{proof}
+
+\begin{definition}[Minimum Budget Distance (Lawvere Distance)]\label{def:pom-eps-distance}
+Fix an object \(\mathcal{I}(m;K;\kappa)\) and its reference sampling distribution \(\mathbb{P}_{\mathcal I}\) (Definition~\ref{def:pom-eps-sound-rewrite}).
+For any isotypic projection words \(w_1,w_2\) (same source and target), define their \textbf{minimum budget distance} as
+\[
+\boxed{\;
+d_{\mathcal I}(w_1,w_2)
+:=
+\inf\{\varepsilon\ge 0:\ w_1\Longrightarrow_{\varepsilon} w_2\}\;}
+\]
+with the convention that \(d_{\mathcal I}(w_1,w_2)=+\infty\) when the set is empty.
+\end{definition}
+
+\begin{proposition}[Budget Categorification: Minimum Budget Yields an Intrinsic Distance]\label{prop:pom-eps-distance-lawvere}
+Under the notation of Definition~\ref{def:pom-eps-distance}, for any isotypic projection words \(w_1,w_2,w_3\) with the same source and target,
+\[
+\boxed{\;
+d_{\mathcal I}(w,w)=0,\qquad
+d_{\mathcal I}(w_1,w_3)\ \le\ d_{\mathcal I}(w_1,w_2)+d_{\mathcal I}(w_2,w_3)\; }.
+\]
+Therefore, each hom-class \(\mathbf{PW}(A,B)\) carries a (generally asymmetric) Lawvere distance structure under \(d_{\mathcal I}\): the additive composition law of budgets is internalized as the triangle inequality of the distance.
+\end{proposition}
+\begin{proof}
+Taking \(E=\varnothing\) yields \(w\Longrightarrow_0 w\), hence \(d_{\mathcal I}(w,w)=0\).
+\par
+For the triangle inequality, take any \(\eta_1>d_{\mathcal I}(w_1,w_2)\), \(\eta_2>d_{\mathcal I}(w_2,w_3)\).
+By the definition of infimum, there exist certificates \(w_1\Longrightarrow_{\eta_1} w_2\) and \(w_2\Longrightarrow_{\eta_2} w_3\);
+by Proposition~\ref{prop:pom-eps-sound-compose} we obtain \(w_1\Longrightarrow_{\eta_1+\eta_2} w_3\), hence
+\(
+d_{\mathcal I}(w_1,w_3)\le \eta_1+\eta_2
+\).
+Letting \(\eta_1,\eta_2\downarrow\) yields the conclusion. \qed
+\end{proof}
+
+\begin{remark}[Lawvere Enrichment Caliber: \texorpdfstring{$\mathbf{PW}_\varepsilon$}{PW\_eps}]\label{rem:pom-pw-eps-lawvere}
+Regarding the \(\varepsilon\)-sound certificate \(w\Longrightarrow_\varepsilon w'\) as a budgeted \(2\)-morphism, and taking the minimum budget distance \(d_{\mathcal I}\) (Definition~\ref{def:pom-eps-distance}) as the intrinsic structure on hom-classes, then for a fixed interface \(\mathcal I\):
+\begin{itemize}
+  \item \textbf{Budget composition law} (Proposition~\ref{prop:pom-eps-sound-compose}) is equivalent to the triangle inequality of \(d_{\mathcal I}\) (Proposition~\ref{prop:pom-eps-distance-lawvere});
+  \item \textbf{Asymmetry} allows organizing ``achievable approximate compilation'' as a directed distance (Lawvere distance), without imposing a symmetry assumption.
+\end{itemize}
+In this sense, the projection word calculus can be viewed as a Lawvere enriched \(2\)-category with base \((\overline{\RR}_{\ge 0},\ge,+,0)\) (denoted \(\mathbf{PW}_\varepsilon\)): certificates and budgets are no longer attached to the output as external narrative but are internalized as categorical structure data.
+\end{remark}
+
+\begin{remark}[Compilation Output as \texorpdfstring{$(w',\varepsilon)$}{(w',eps)}]\label{rem:pom-compile-output-word-eps}
+From an engineering perspective, a ``certified'' compilation process typically outputs a normalized word \(w'\) together with its total error budget \(\varepsilon\) relative to the original word \(w\):
+this corresponds exactly to constructing a \(2\)-morphism certificate \(w\Longrightarrow_{\varepsilon} w'\) in \(\mathbf{PW}\).
+The subsequent quantile budgets and prime-register designs in this paper serve precisely to ``generate \(\varepsilon\)-sound certificates from side conditions'' (see \S\ref{subsec:pom-quantile-budget-law}).
+\end{remark}
+
+\paragraph{Locally Terminable/Confluent Rewriting Fragment (Normal Form for Readout Redundancy)}
+\begin{definition}[Readout Tower Rewriting System]\label{def:pom-rewrite-E-tower}
+Among the generators of $\mathbf{PW}$, take the local sub-fragment generated solely by conditional expectation gates and normalization projection gates
+\[
+\mathbf{PW}_{Z,E}:=\langle P_Z,\ \{E_m\}_{m\ge 1}\rangle.
+\]
+Define the rewriting rule family on it as:
+\begin{enumerate}
+  \item \textbf{(R$_Z$) Idempotent contraction:} $P_Z\circ P_Z\Rightarrow P_Z$;
+  \item \textbf{(R$_E$) Conditional expectation tower contraction:} If $m_2\ge m_1$, then $E_{m_1}\circ E_{m_2}\Rightarrow E_{m_1}$.
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[Termination and Confluence of Readout Tower Rewriting (Local Normal Form)]\label{thm:pom-rewrite-termination-confluence}
+Under the rewriting system~\ref{def:pom-rewrite-E-tower}, any $\mathbf{PW}_{Z,E}$-projection word satisfies:
+\begin{enumerate}
+  \item \textbf{Termination:} No infinite rewriting chain exists;
+  \item \textbf{(Local) Confluence:} Any two rewriting sequences eventually converge to the same irreducible word;
+  \item \textbf{Unique normal form:} For any composite word containing only $\{E_m\}$, its normal form is unique and equals a single $E_{m_\star}$, where $m_\star$ is the smallest resolution index appearing in the word; for words containing $P_Z$, the normal form contains at most one $P_Z$ factor.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{Termination:} For any word, define the measure
+\[
+\mu(W):=\bigl(\#P_Z(W)+\#E(W),\ \min\{m:\ E_m\ \text{appears in}\ W\}\bigr)\in\NN\times(\NN\cup\{+\infty\})
+\]
+and compare lexicographically. Rules (R$_Z$) and (R$_E$) both strictly decrease $\#P_Z+\#E$, so no infinite rewriting chain exists.
+
+\textbf{Confluence and normal form:} In the $\{E_m\}$ fragment, any binary adjacent subword can be contracted by (R$_E$) to the $E$ with smaller index; therefore any rewriting can only contract the word down to the form ``a single element with the smallest index remaining.'' Since the tower property itself yields the equality $E_{m_1}\circ E_{m_2}=E_{m_1}$ (conditional expectation tower property), different contraction orders correspond to the same composite operator, so the irreducible normal form is unique. The case involving $P_Z$ follows similarly: idempotent contraction merges redundant $P_Z$'s into one. \qed
+\end{proof}
+
+\begin{proposition}[Decidability of Equality in the Semiring Closure: Normal Form \texorpdfstring{$\Rightarrow$}{=>} Decidable Word Problem]\label{prop:pom-projword-decidable}
+On the fragment $\mathbf{PW}_{Z,E}$, the equivalence relation on $1$-morphisms (projection words) given by the equational closure of $2$-morphisms is decidable: given any two words $W_1,W_2\in\mathbf{PW}_{Z,E}$, compute their irreducible normal forms $N(W_1),N(W_2)$ under the rewriting system~\ref{def:pom-rewrite-E-tower}, then
+\[
+W_1\ \simeq\ W_2\quad\Longleftrightarrow\quad N(W_1)=N(W_2),
+\]
+so the word problem can be solved in polynomial time (normalization requires only stepwise contraction of adjacent subwords).
+\end{proposition}
+\begin{proof}
+By Theorem~\ref{thm:pom-rewrite-termination-confluence}, the rewriting system terminates and is (locally) confluent, so each word has exactly one irreducible normal form; moreover, two words are equivalent if and only if they can be rewritten to the same normal form. \qed
+\end{proof}
+
+\begin{remark}[Computable Realization: Readout Tower Normalizer]\label{rem:pom-projword-normalizer-script}
+The script \texttt{scripts/exp\_pom\_projword\_ze\_normalizer.py} provides a minimal reproducible normalizer for the $\mathbf{PW}_{Z,E}$ fragment: given a composite word consisting of symbols \texttt{PZ} and \texttt{E[m]} (in left-to-right composition order), it outputs the normal form after contraction by (R$_Z$),(R$_E$).
+This provides a minimal executable prototype for ``algorithmic equivalence \(\Rightarrow\) projection word equivalence'': in this fragment, equivalence is entirely determined by the normal form.
+\end{remark}
+
+\begin{remark}[Split-Epi Extended Fragment Computable Normalizer: \texorpdfstring{$\mathbf{PW}_{Z,E,P,Q}$}{PW_{Z,E,P,Q}}]\label{rem:pom-projword-zepq-normalizer-script}
+At resolution \(m\), the folding pushforward \(P_m:=(\Fold_m)_*\) and the fiber uniform lift \(Q_m\) satisfy the split-epi identity
+\(
+P_m\circ Q_m=\mathrm{id}
+\)
+(see \S\ref{subsec:pom-information-ledger} and Theorem~\ref{thm:pom-fiber-reflector}).
+Let \(K_m:=Q_m\circ P_m\) be the fiber reflector, then \(K_m^2=K_m\), and \(P_m\circ K_m=P_m\), \(K_m\circ Q_m=Q_m\).
+\par
+The script \texttt{scripts/exp\_pom\_projword\_zepq\_normalizer.py} provides an executable normalizer incorporating these local rules: given a composite word consisting of \texttt{PZ}, \texttt{E[m]}, \texttt{P[m]}, \texttt{Q[m]}, \texttt{K[m]}, it contracts it to an irreducible normal form via local rewriting rules.
+This implementation provides a more structurally faithful reproducible prototype of the projection word category: beyond the readout tower rules, it incorporates the split-epi (pushforward/lift duality) into the computable rewriting framework for deferred execution and redundancy elimination.
+\end{remark}
+
+\begin{remark}[Boundary: Order Projection \texorpdfstring{$P_{\le}$}{P<=} Does Not Belong to the Locally Cancelable Fragment]\label{rem:pom-rewrite-boundary-order}
+Theorem~\ref{thm:pom-rewrite-termination-confluence} only handles the terminable fragment of ``local coarse-graining redundancy.''
+Once $P_{\le}$ (or the zero-temperature hardening limit of its realization $\mathrm{PROJ}_u$) appears in the projection word, its readout typically depends on cross-window aggregation (Definition~\ref{def:pom-proj-order}), and no longer possesses a contraction measure controlled by monotonically decreasing resolution indices; therefore $P_{\le}$ is a structural boundary of the projection word calculus: it marks the entry point of non-parallelizable growth terms, rather than redundancy that can be eliminated by local rewriting.
+\end{remark}
+
+\begin{definition}[Signature Functor and Projection Gate Valuation]\label{def:pom-sigma-functor}
+Promote the instruction signature $\Sigma$ (Definition~\ref{def:pom-instruction-signature}) from ``instruction set'' to a (weak) $2$-functor on $\mathbf{PW}$
+\[
+\Sigma:\mathbf{PW}\to \mathbf{Inv},
+\]
+whose value on $1$-morphisms is
+\(
+\Sigma(I)=(W(I),\mathfrak F(K_Z(I)),\mathfrak F(K_{\le}(I)),\mathcal F(I))
+\)
+(or with $K_\chi$ replacing $K_{\le}$), and which sends $2$-morphisms (rewriting certificates) to identity isomorphisms (i.e., ``rewriting does not change the signature'').
+\end{definition}
+
+\begin{proposition}[Rewriting Invariance and Valuation Closed Loop]\label{prop:pom-rewrite-audit-loop}
+If a certified rewrite $I\Rightarrow J$ exists in $\mathbf{PW}$ (i.e., a $2$-morphism exists), then:
+\begin{enumerate}
+  \item \textbf{Signature invariance:} $\Sigma(I)=\Sigma(J)$.
+  \item \textbf{Projection gate cost can be valued by fingerprint:} For the character/congruence gate, let
+  \[
+  g(u):=\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr),
+  \qquad
+  \tau_{\mathrm{mix}}(u):=\frac{1}{g(u)},
+  \]
+  where $\lambda_1(u)$ is the principal spectral radius and $\Lambda(u)$ is the worst-case nontrivial twisted spectral radius (Corollary~\ref{cor:pom-order-mixing}).
+  Then the readout depth to achieve relative error $\varepsilon$ satisfies
+  \[
+  n\ \gtrsim\ \frac{\log(1/\varepsilon)}{g(u)}=\tau_{\mathrm{mix}}(u)\,\log(1/\varepsilon),
+  \]
+  and this scale is entirely determined by the twisted spectral gap in the kernel fingerprint (see Remark~\ref{rem:pom-chi-mixing}).
+\end{enumerate}
+\end{proposition}
+
+\begin{corollary}[GRH-Type Square Root Bound \texorpdfstring{$\Rightarrow$}{=>} Universal Upper Bound on Mixing Scale]\label{cor:pom-grh-mix-upper}
+If on a certain character/twist family the kernel version RH/GRH square root bound holds (the isotypic condition of Definition~\ref{def:kernel-rh}), i.e.,
+\(
+\Lambda(u)\le \lambda_1(u)^{1/2}
+\),
+then
+\[
+g(u)=\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)\ \ge\ \tfrac12\log\lambda_1(u),
+\qquad
+\tau_{\mathrm{mix}}(u)\ \le\ \frac{2}{\log\lambda_1(u)}.
+\]
+Therefore, when the square root bound holds, the ontological time scale of order/character readout is uniformly controlled by the logarithm of the principal scale $\lambda_1(u)$.
+\end{corollary}
+
+\subsection{Higher-Order Collision Kernels and Spatial Loss Spectrum}\label{subsec:pom-higher-collision-spectrum}
+This subsection promotes the ``fiber residual'' of the normalization projection $P_Z$ at finite resolution from a single average compression rate to a family of auditable spectral fingerprints. Denote the folding fiber multiplicity
+$$
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|,\qquad x\in X_m,
+$$
+and define the $k$-th order collision moment ($k$-tuple co-image count)
+$$
+S_k(m):=\sum_{x\in X_m} d_m(x)^k
+=\Bigl|\{(\omega^{(1)},\dots,\omega^{(k)})\in\Omega_m^k:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(k)})\}\Bigr|.
+$$
+When $k=2$, $S_2(m)$ is the pairwise collision count, controlling the R\'enyi-2 fingerprint of the Fold output distribution; more general $k$ yield an entire moment spectrum.
+
+\subsubsection{General \texorpdfstring{$k$}{k} Moment-Kernel \texorpdfstring{$A_k$}{Ak}: Existence and PF Principal Spectrum}\label{subsec:pom-ak-existence}
+\begin{theorem}[General $k$ Collision Kernel and Perron Principal Spectrum]\label{thm:pom-collision-kernel-ak}
+For each fixed integer $k\ge 2$, there exists a finite-state non-negative integer matrix $A_k$ (which can be viewed as the adjacency matrix of an SFT) and non-negative integer vectors $u_k,v_k$, such that for all sufficiently large $m$,
+\[
+S_k(m)=u_k^{\mathsf T}\,A_k^{\,m}\,v_k.
+\]
+Consequently, the limit
+\[
+\lim_{m\to\infty}\frac{1}{m}\log S_k(m)=\log r_k
+\]
+exists, where $r_k:=\rho(A_k)>0$ is the Perron--Frobenius principal eigenvalue (spectral radius).
+\end{theorem}
+\begin{proof}[Proof sketch (constructive, audit chain closed)]
+The key input fact is: $\Fold_\infty$ can be realized by a deterministic finite-state online transducer with fixed delay (Theorem~\ref{thm:online-delay-fold}), so the finite-resolution $\Fold_m$ can also be viewed as a ``finite-state synchronization graph + terminal function'' composite readout.
+
+Let the transducer's state set be $Q$, with one-step transitions given by ``read one bit $\Rightarrow$ output one bit + state update'' deterministic rules. Construct the $k$-fold synchronized product automaton: states are $Q^k$, one step reads $(d^{(1)},\dots,d^{(k)})\in\{0,1\}^k$ simultaneously, yielding $k$ output bits $(e^{(1)},\dots,e^{(k)})\in\{0,1\}^k$ and the next state. Then impose the \textbf{equality constraint} $e^{(1)}=\cdots=e^{(k)}$ (also incorporating the terminal function's finite output into this equality constraint: achievable by folding the ``terminal window'' into the state). This yields a finite directed graph whose edge multiplicities equal the number of input $k$-tuples satisfying the equality constraint.
+
+Thus, the number of admissible paths of length $m$ is precisely the count of ``$k$ input words transduced to the same output word,'' which is $S_k(m)$. Taking this graph's adjacency matrix as $A_k$, and encoding the initial state set and terminal function's finite correction using start/end vectors, yields $S_k(m)=u_k^{\mathsf T}A_k^{m}v_k$ (boundary terms for small $m$ can be absorbed into the ``sufficiently large'' threshold).
+
+Finally, applying the Perron--Frobenius theorem to the essentially strongly connected components of $A_k$: the principal spectral radius $r_k$ controls the exponential growth rate of path counts, yielding the stated limit.
+\end{proof}
+
+\begin{remark}[Generalization to the Moment Compiler for General Projection Words]\label{rem:pom-moment-compiler-general-word}
+The above construction uses only the fact that ``it can be realized by a finite-state transducer,'' and can therefore be directly generalized: as long as the semantics of some projection word \(W\) can be compiled into a finite-state synchronization graph (or equivalently a weighted automaton/finite-ambiguity transducer), for any \(k\ge 2\) one can construct a moment-kernel
+\(
+A_k^{(W)}
+\)
+depending on \(W\) and readout vectors, such that
+\(
+S_k^{(W)}(m)=u_k^{(W)\mathsf T}(A_k^{(W)})^{m}v_k^{(W)}
+\)
+with principal spectrum \(r_k^{(W)}=\rho(A_k^{(W)})\).
+Concretely: take the \(k\)-fold synchronized product and impose the ``output equality constraint,'' then symmetrize/histogram-compress (if the constraint and weights are coordinate-permutation invariant) to obtain a polynomial-size symmetric quotient kernel; this yields a unified computable compilation caliber from ``any projection word \(\Rightarrow\) moment spectrum.''
+\end{remark}
+
+\begin{remark}[Consistency Check with $k=2,3,4$ (Already Generated Fingerprints)]\label{rem:pom-ak-consistency}
+For $k=2,3,4$, this paper already has minimal finite-state ``collision kernel'' realizations (denoted $A_2,A_3,A_4$), so $r_k$ can be given exactly by the spectral radius of finite matrices, and has been compiled into the R\'enyi fingerprint table
+\[
+\texttt{sections/generated/tab\_fold\_collision\_renyi\_spectrum.tex}.
+\]
+Furthermore, the integer-coefficient recurrences for $S_k(m)$ with $k=4,\dots,8$ have been provided with enumeration-verified evidence (auditable evidence table
+\(
+\texttt{sections/generated/tab\_fold\_collision\_moment\_recursions.tex}
+\)
+; entry script \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}).
+\end{remark}
+
+\begin{proposition}[Symmetrized Compilation: Polynomial-Size Upper Bound for \texorpdfstring{$A_k$}{Ak} (Computable)]\label{prop:pom-ak-symmetric-compression}
+Let the synchronization state set of the fixed-delay online realization of $\Fold_\infty$ be $Q$ (in this paper, the delay-$3$ synchronization kernel has $|Q|=10$), and construct the $k$-fold moment-kernel \(A_k\) by the fiber-product construction of Theorem~\ref{thm:pom-collision-kernel-ak}.
+Then there exists a non-negative integer kernel \(\widetilde A_k\) obtained by symmetrization (quotienting by the $S_k$ action) and corresponding readout vectors \(\widetilde u_k,\widetilde v_k\), such that for sufficiently large $m$,
+\[
+S_k(m)=\widetilde u_k^{\mathsf T}\,\widetilde A_k^{\,m}\,\widetilde v_k,
+\qquad
+\rho(\widetilde A_k)=\rho(A_k)=r_k.
+\]
+Moreover, its state count satisfies the explicit upper bound
+\[
+\dim(\widetilde A_k)\ \le\ \binom{k+|Q|-1}{|Q|-1}.
+\]
+In particular, for the 10-state synchronization kernel of this paper ($|Q|=10$),
+\[
+\boxed{\ \dim(\widetilde A_k)\le \binom{k+9}{9}=O(k^9)\ }.
+\]
+\end{proposition}
+\begin{proof}[Proof sketch]
+On $Q^k$, the symmetric group $S_k$ acts by permuting coordinates. The fiber-product's ``bitwise output equality'' constraint and per-step counting weights depend only on which synchronization states the coordinates occupy and their available edge sets, and are therefore coordinate-permutation invariant. Hence, one may group the states of $Q^k$ by $S_k$-orbits, equivalently using ``histogram/multiset'' states
+\[
+\nu\in\NN^{Q},\qquad \sum_{q\in Q}\nu(q)=k
+\]
+as representatives: $\nu(q)$ records the count of the $k$ copies in state $q$. The total number of such $\nu$ is the combination count \(\binom{k+|Q|-1}{|Q|-1}\) of ``distributing $k$ among $|Q|$ bins.''
+
+For any two histogram states $\nu,\nu'$, define \(\widetilde A_k(\nu,\nu')\) as the total number of input $k$-tuples satisfying the ``output equality'' constraint and causing a one-step update from any representative (with histogram $\nu$) to histogram $\nu'$; this number is well-defined by permutation invariance and counting additivity, yielding a non-negative integer adjacency matrix \(\widetilde A_k\). The symmetrization of start/end vectors proceeds analogously. The resulting path count agrees with the original $A_k$ in the orbit-counting sense, yielding the same linear representation for $S_k(m)$.
+
+Finally, the relationship between $A_k$ and $\widetilde A_k$ can be viewed as projecting the representation space onto the $S_k$-invariant subspace (or as a symmetrization pre-compression before deterministic minimization of the weighted automaton); the Perron principal scale is determined by the growth rate on the essentially strongly connected components; symmetrization does not change the ``admissible path count'' exponential growth rate, so the spectral radius remains the same \(r_k\). \qed
+\end{proof}
+
+\begin{proposition}[Transition Weights of the Symmetric Quotient Moment-Kernel: Polynomial-Time Computable]\label{prop:pom-ak-symmetric-transition-poly}
+Following the construction of Theorem~\ref{thm:pom-collision-kernel-ak}, suppose the online synchronization kernel is a deterministic transducer: state set $Q$, input alphabet $\{0,1\}$, with deterministic functions
+$$
+\delta:Q\times\{0,1\}\to Q,\qquad \varepsilon:Q\times\{0,1\}\to\{0,1\},
+$$
+where $\delta(q,d)$ is the next state and $\varepsilon(q,d)$ is the output bit. Let $k\ge 2$, and use histogram states
+$$
+\nu\in\NN^{Q},\qquad \sum_{q\in Q}\nu(q)=k
+$$
+to represent the occurrence count of $k$ copies at each synchronization state.
+
+Then for any output bit $e\in\{0,1\}$ and any two histograms $\nu,\nu'$, the weight of transitioning from $\nu$ to $\nu'$ under the ``bitwise output equality equals $e$'' constraint can be written as
+$$
+w_e(\nu,\nu')
+=
+\sum_{\{a_q\}}
+\ \prod_{q\in Q}\binom{\nu(q)}{a_q},
+$$
+where the sum ranges over all integer families $\{a_q\}_{q\in Q}$ satisfying:
+\begin{itemize}
+  \item \textbf{(Output equality constraint)} For each $q\in Q$, one must have
+  $$
+  \varepsilon(q,0)\neq e\ \Rightarrow\ a_q=0,\qquad
+  \varepsilon(q,1)\neq e\ \Rightarrow\ a_q=\nu(q),
+  $$
+  i.e., $a_q$ takes values only among the allowed input bits ($a_q$ is interpreted as ``the number of orbits at state $q$ choosing input $0$'');
+  \item \textbf{(Next histogram constraint)} $\nu'$ is uniquely determined by $\{a_q\}$, and must satisfy
+  $$
+  \nu'(q')
+  =
+  \sum_{q\in Q}\Bigl(
+  a_q\,\mathbf{1}_{\delta(q,0)=q'}+(\nu(q)-a_q)\,\mathbf{1}_{\delta(q,1)=q'}
+  \Bigr),
+  \qquad \forall q'\in Q.
+  $$
+\end{itemize}
+Therefore, the one-step adjacency weight of the symmetric quotient kernel is
+$$
+\widetilde A_k(\nu,\nu')=w_0(\nu,\nu')+w_1(\nu,\nu').
+$$
+Moreover, when $|Q|$ is fixed (in this paper, $|Q|=10$), for any given $\nu$, all $w_e(\nu,\nu')$ (for all $\nu'$) can be computed via a state-by-state polynomial convolution/dynamic programming in $\mathrm{poly}(k)$ time, so the construction of \(\widetilde A_k\) is an executable polynomial-level procedure.
+\end{proposition}
+\begin{proof}[Proof outline (counting = binomial coefficient convolution)]
+Fix $\nu$ and output bit $e$. For each synchronization state $q$, the $\nu(q)$ orbits at $q$ choose among input bits $d\in\{0,1\}$ satisfying $\varepsilon(q,d)=e$; when both inputs are allowed, the number of ways to have $a_q$ choose $0$ and the rest choose $1$ is $\binom{\nu(q)}{a_q}$; when only one input is allowed, $a_q$ is forced to be $0$ or $\nu(q)$.
+
+Given all $\{a_q\}$, each orbit's next state is determined by $\delta(q,0)$ or $\delta(q,1)$, yielding a unique next histogram $\nu'$ whose coordinates satisfy the linear constraint in the statement. Summing over all feasible $\{a_q\}$ gives $w_e(\nu,\nu')$.
+
+Algorithmically, this amounts to a set of ``choose independently per state $\Rightarrow$ aggregate by target state'' counting convolutions: treating each $q$'s choice as a polynomial in the variable family $\{z_{q'}\}_{q'\in Q}$,
+$$
+P_{q,e}(z):=\mathbf{1}_{\varepsilon(q,0)=e}\,z_{\delta(q,0)}+\mathbf{1}_{\varepsilon(q,1)=e}\,z_{\delta(q,1)},
+$$
+then for fixed $\nu$ the generating function is
+$$
+\prod_{q\in Q} P_{q,e}(z)^{\nu(q)}
+=\sum_{\nu'} w_e(\nu,\nu')\,z^{\nu'},
+$$
+where $z^{\nu'}:=\prod_{q'\in Q} z_{q'}^{\nu'(q')}$. When $|Q|$ is fixed, coefficient extraction can be implemented via state-by-state convolution DP, with complexity being some fixed power of $k$. \qed
+\end{proof}
+
+\begin{corollary}[Coefficient Extraction Form: Transition Polynomial Generating Function]\label{cor:pom-ak-coefficient-extraction}
+Using the notation of Proposition~\ref{prop:pom-ak-symmetric-transition-poly}.
+For each synchronization state \(q\in Q\) and output bit \(e\in\{0,1\}\), define the transition polynomial
+\[
+P_{q,e}(z):=\sum_{d\in\{0,1\}:\ \varepsilon(q,d)=e} z_{\delta(q,d)}.
+\]
+For histogram state \(\nu\in\NN^Q\) (\(\sum_q\nu(q)=k\)), define
+\[
+F_{\nu,e}(z):=\prod_{q\in Q}P_{q,e}(z)^{\nu(q)}.
+\]
+Then the following strict coefficient extraction identity holds:
+\[
+F_{\nu,e}(z)=\sum_{\nu'} w_e(\nu,\nu')\,z^{\nu'},
+\qquad
+w_e(\nu,\nu')=[z^{\nu'}]\,F_{\nu,e}(z),
+\]
+where \([z^{\nu'}]\) denotes extracting the coefficient of the monomial \(z^{\nu'}=\prod_{q'\in Q} z_{q'}^{\nu'(q')}\).
+Therefore, the one-step weight of the symmetric quotient moment-kernel satisfies
+\[
+\widetilde A_k(\nu,\nu')=\sum_{e\in\{0,1\}}[z^{\nu'}]\,F_{\nu,e}(z).
+\]
+\end{corollary}

@@ -1,0 +1,427 @@
+\subsubsection{Abel--Mertens Interface: Primitive Spectrum, Dominant Pole, and Finite Part (Universal Closed-Form)}\label{app:abel-mertens-universal}
+Let $A$ be the adjacency matrix of a finite directed graph (or SFT), and denote
+\[
+a_n:=\Tr(A^n),\qquad
+\zeta_A(z):=\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)=\frac{1}{\det(I-zA)}.
+\]
+Let $p_n$ denote the number of primitive closed orbits of length $n$ (counted by orbit), and define the primitive generating function
+\[
+P(z):=\sum_{n\ge 1}p_n z^n.
+\]
+
+\begin{theorem}[Primitive Logarithmic Interface and Abel Finite Part Constant]\label{thm:abel-mertens-universal}
+The following identity holds:
+\[
+P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_A(z^k)
+\qquad(|z|\ \text{sufficiently small}).
+\]
+Further assume that $\zeta_A(z)$ has a unique dominant pole at $z_\star$, which is a simple pole, and denote
+\[
+\lambda:=\rho(A)=\frac{1}{z_\star},
+\qquad
+C:=\lim_{z\to z_\star}(1-\lambda z)\zeta_A(z).
+\]
+Then there exists an Abel/Hadamard finite part constant $\log\mathfrak{M}$ such that
+\[
+P(z)=-\log(1-\lambda z)+\log\mathfrak{M}+o(1)\qquad(z\to z_\star),
+\]
+and the constant term satisfies the closed-form decomposition
+\[
+\log\mathfrak{M}
+=\log C+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_A(z_\star^{\,k}).
+\]
+If we write $\Delta_A(z):=\det(I-zA)$, then when $z_\star$ is a simple zero of $\Delta_A$ we have
+\[
+C=\frac{1}{-z_\star\,\Delta_A'(z_\star)}=-\frac{\lambda}{\Delta_A'(z_\star)}.
+\]
+\end{theorem}
+
+\begin{proof}
+From $\zeta_A(z)=\prod_{\tau\ \mathrm{primitive}}(1-z^{|\tau|})^{-1}$ (the closed-orbit Euler product), taking the logarithm yields
+\[
+\log\zeta_A(z)=\sum_{\tau\ \mathrm{primitive}}\sum_{m\ge 1}\frac{z^{m|\tau|}}{m}
+=\sum_{m\ge 1}\frac{P(z^m)}{m}.
+\]
+Applying M\"obius inversion to the above gives
+\(
+P(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_A(z^k)
+\).
+
+As $z\to z_\star$, $\zeta_A(z)=\frac{C}{1-\lambda z}+O(1)$, so
+\[
+\log\zeta_A(z)=-\log(1-\lambda z)+\log C+o(1).
+\]
+Substituting this expansion into the primitive logarithmic interface and separating the $k=1$ term: when $k\ge 2$, $z^k\to z_\star^k$ with $|z_\star^k|<|z_\star|$,
+so $\log\zeta_A(z^k)$ is analytic at $z=z_\star$ and converges to $\log\zeta_A(z_\star^k)$. This yields
+\[
+P(z)=-\log(1-\lambda z)+\log C+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_A(z_\star^{\,k})+o(1),
+\]
+and thus the finite part constant is the stated closed-form decomposition.
+Finally, when $\Delta_A(z)=\det(I-zA)$ has a simple zero at $z_\star$,
+\(
+\zeta_A(z)=1/\Delta_A(z)
+\)
+and linearization immediately gives
+\(
+C=\lim_{z\to z_\star}(1-\lambda z)/\Delta_A(z)=1/(-z_\star\Delta_A'(z_\star))
+\).
+\end{proof}
+
+\begin{corollary}[Mertens Constant and Abel Finite Part Constant]\label{cor:abel-mertens-constant-universal}
+Let
+\[
+\mathcal{M}(N):=\sum_{n\le N}\frac{p_n}{\lambda^n}.
+\]
+Then there exists a constant $\mathsf{M}$ such that
+\[
+\mathcal{M}(N)=\log N+\mathsf{M}+o(1),
+\qquad
+\boxed{\ \mathsf{M}=\gamma+\log\mathfrak{M}\ }.
+\]
+\end{corollary}
+
+\begin{proof}
+From the dominant pole spectral gap (the modulus of the next-largest eigenvalue satisfies $<\lambda$), we obtain $p_n=\lambda^n/n+O(\lambda_2^n/n)$, so
+\(
+b_n:=p_n/\lambda^n-1/n
+\)
+is absolutely summable. Hence
+\[
+\sum_{n\le N}\frac{p_n}{\lambda^n}
+=\sum_{n\le N}\frac{1}{n}+\sum_{n\le N}b_n
+=\log N+\gamma+\sum_{n\ge 1}b_n+o(1).
+\]
+On the other hand,
+\[
+P(z)+\log(1-\lambda z)=\sum_{n\ge 1}\left(\frac{p_n}{\lambda^n}-\frac{1}{n}\right)(\lambda z)^n,
+\]
+so as $z\to z_\star$ (i.e., $\lambda z\to 1$), the Abel finite part constant is precisely $\sum_{n\ge 1}b_n=\log\mathfrak{M}$.
+\end{proof}
+
+\paragraph{Computable Recipe (Using Only $\zeta_A$ and the Dominant Residue)}
+Given the explicit representation $\zeta_A(z)=1/\det(I-zA)$ (or a numerically evaluable $\det(I-zA)$), compute $\log\mathfrak{M}$ as follows:
+\begin{itemize}
+  \item Find the dominant pole $z_\star$ (equivalently the dominant eigenvalue $\lambda=1/z_\star$);
+  \item Compute the dominant residue constant $C=\lim_{z\to z_\star}(1-\lambda z)\zeta_A(z)$ (or use $C=1/(-z_\star\Delta_A'(z_\star))$);
+  \item Compute the M\"obius tail term
+  \[
+  S_K:=\sum_{k=2}^{K}\frac{\mu(k)}{k}\log\zeta_A(z_\star^{\,k}),
+  \]
+  increasing $K$ until $S_K$ converges to the target precision;
+  \item Output
+  \(
+  \log\mathfrak{M}\approx \log C+S_K
+  \).
+\end{itemize}
+Since $|z_\star|<1$ and $z_\star^{\,k}$ tends to zero exponentially, $\zeta_A(z_\star^{\,k})\to 1$, so the above series converges rapidly in practice and is easy to audit.
+
+The Perron--Frobenius dominant eigenvalue of this system is
+\[
+\lambda=\varphi^2=\left(\frac{1+\sqrt5}{2}\right)^2=\frac{3+\sqrt5}{2}\approx 2.6180339887,
+\qquad
+h=\log\lambda=2\log\varphi,
+\]
+corresponding to the entropy scale of ``two parallel golden mean chains as input.'' For this $M$, the periodic point counts and primitive orbit numbers are
+
+\paragraph{Proof A (Finite-to-One Factor Invariance of Entropy)}
+The natural projection from $\Sigma$ to $X\times X$ (reading off the $(x,y)$ labels on edges) is a finite-to-one factor map: for a fixed $(x,y)$-orbit,
+the lift of the internal state $s$ within the synchronization kernel is determined solely by the initial state, so the fiber size is at most $|Q|=10$. A finite-to-one factor map preserves topological entropy,
+whence $h(\Sigma)=h(X\times X)=2\log\varphi$, and therefore $\rho(M)=e^{h(\Sigma)}=\varphi^2$.
+
+\paragraph{Proof B (Spectral Factorization)}
+The above can also be read directly from the factorization of the characteristic polynomial: from
+\[
+\det(tI-M)=t^{31}(t-1)^2(t+1)^3(t^2-3t+1)(t^2+t-1),
+\]
+the Perron--Frobenius dominant eigenvalue is the largest real root of the quadratic factor $t^2-3t+1$, namely $\lambda=(3+\sqrt5)/2=\varphi^2$.
+\[
+a_n=\varphi^{2n}+(-\varphi)^n+2+3(-1)^n+\varphi^{-2n}+\varphi^{-n},
+\]
+and this can be written in a more compact closed form using Lucas numbers. Let the Lucas sequence $L_n$ be
+\[
+L_n:=\varphi^n+(-\varphi^{-1})^n,
+\]
+then the following identity holds:
+\[
+a_n=L_{2n}+(-1)^nL_n+2+3(-1)^n.
+\]
+\begin{proposition}[Fibonacci Tensor Factorization ($\zeta$-Level)]\label{prop:real-input-40-fib-tensor}
+Let
+\[
+F:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},\qquad
+B:=F\otimes F,\qquad
+C:=-F,
+\]
+then at the $\zeta$-level there is a complete factorization
+\[
+\det(I-zM)=(1-z)^2(1+z)\det(I-zB)\det(I-zC),
+\]
+where
+\[
+\det(I-zB)=(1+z)^2(1-3z+z^2),\qquad
+\det(I-zC)=\det(I+zF)=1+z-z^2.
+\]
+\end{proposition}
+
+\begin{corollary}[Structural Interpretation of the Spectral Decomposition]\label{cor:real-input-40-spectrum-decomp}
+From Proposition \ref{prop:real-input-40-fib-tensor}, the nonzero spectrum satisfies
+\[
+\sigma(M)\setminus\{0\}
+=\sigma(F\otimes F)\ \cup\ \sigma(-F)\ \cup\ \{1,1,-1\}
+\]
+(counted with multiplicity). Here $\sigma(F\otimes F)=\{\varphi^2,1,1,\varphi^{-2}\}$ gives the ``input pair shift'' modes, $\sigma(-F)=\{-\varphi,-\varphi^{-1}\}$ gives the sign-twisted golden shift modes, and $(1,1,-1)$ are the modes corresponding to the trivial factors.
+\end{corollary}
+
+\begin{proposition}[Additive Decomposition of the Abel Finite Part Constant: Input Skeleton $+$ Vertical Synchronizer]\label{prop:real-input-40-logM-split}
+Following the notation of Proposition \ref{prop:real-input-40-fib-tensor}, let
+\[
+\Delta_M(z):=\det(I-zM)=(1-z)^2(1+z)\,\Delta_B(z)\,\Delta_C(z),
+\]
+where
+\[
+\Delta_B(z):=\det(I-zB)=(1+z)^2(1-3z+z^2),
+\qquad
+\Delta_C(z):=\det(I-zC)=1+z-z^2.
+\]
+Denote
+\(
+\zeta_M(z)=\Delta_M(z)^{-1}
+\)
+and the dominant pole
+\(
+z_\star=\lambda^{-1}=\varphi^{-2}
+\)
+(given by $\Delta_B(z_\star)=0$, with $z_\star\in(0,1)$).
+Define the ``input skeleton'' and ``vertical synchronizer'' parts
+\[
+\zeta_{\mathrm{in}}(z):=\Delta_B(z)^{-1},
+\qquad
+\zeta_{\mathrm{vert}}(z):=\bigl((1-z)^2(1+z)\Delta_C(z)\bigr)^{-1}.
+\]
+Then $\zeta_M=\zeta_{\mathrm{in}}\cdot \zeta_{\mathrm{vert}}$, and the Abel finite part constant satisfies the strict identity
+\[
+\boxed{\ \log\mathfrak{M}_M=\log\mathfrak{M}_{\mathrm{in}}+P_{\mathrm{vert}}(z_\star)\ },
+\]
+where $\log\mathfrak{M}_M$ and $\log\mathfrak{M}_{\mathrm{in}}$ are obtained by applying Theorem \ref{thm:abel-mertens-universal} to $\zeta_M$ and $\zeta_{\mathrm{in}}$ respectively, and
+\[
+P_{\mathrm{vert}}(z):=\sum_{m\ge 1}\frac{\mu(m)}{m}\log \zeta_{\mathrm{vert}}(z^m)
+\]
+is analytic in $|z|<1$, so $P_{\mathrm{vert}}(z_\star)$ is a well-defined positive real logarithm.
+\end{proposition}
+\begin{proof}
+From $\zeta_M=\zeta_{\mathrm{in}}\zeta_{\mathrm{vert}}$, the M\"obius--$\log$ operator $P(z)=\sum_{m\ge 1}\mu(m)\log\zeta(z^m)/m$ is linear over products:
+\(
+P_M=P_{\mathrm{in}}+P_{\mathrm{vert}}
+\).
+Since $\zeta_{\mathrm{vert}}$ is analytic and nonzero at $z=z_\star$, the dominant residue constant satisfies
+\(
+C_M=C_{\mathrm{in}}\cdot \zeta_{\mathrm{vert}}(z_\star)
+\).
+Substituting into the closed form of Theorem \ref{thm:abel-mertens-universal}
+\(
+\log\mathfrak{M}=\log C+\sum_{m\ge 2}\mu(m)\log\zeta(z_\star^m)/m
+\),
+and merging the $m=1$ term $\log\zeta_{\mathrm{vert}}(z_\star)$ with the tail sum, yields the stated identity. \qed
+\end{proof}
+
+\begin{corollary}[Semi-Closed Form for the ``Single Residual Constant'' of the Vertical Synchronizer]\label{cor:real-input-40-vert-single-series}
+Following the notation of Proposition \ref{prop:real-input-40-logM-split}, let
+\[
+S_F(z):=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\bigl(1+z^m-z^{2m}\bigr)\qquad(|z|<1).
+\]
+Then in \(|z|<1\) the following strict identity holds:
+\[
+\boxed{\;
+P_{\mathrm{vert}}(z)=z+z^2-S_F(z)\; }.
+\]
+In particular, at the dominant pole \(z_\star=\varphi^{-2}\),
+\(
+P_{\mathrm{vert}}(z_\star)
+\)
+has its non-algebraic content entirely compressed into the single M\"obius--$\log$ series \(S_F(z_\star)\).
+\end{corollary}
+\begin{proof}
+From \(\zeta_{\mathrm{vert}}(z)=((1-z)^2(1+z)\Delta_C(z))^{-1}\) and \(\Delta_C(z)=1+z-z^2\), we have
+\[
+\log \zeta_{\mathrm{vert}}(z)
+=-2\log(1-z)-\log(1+z)-\log(1+z-z^2).
+\]
+Substituting into
+\(
+P_{\mathrm{vert}}(z)=\sum_{m\ge 1}\mu(m)\log\zeta_{\mathrm{vert}}(z^m)/m
+\), and applying the closed forms of Lemma \ref{lem:mobius-collapse} separately to the first three terms
+\[
+\sum_{m\ge 1}\frac{\mu(m)}{m}\log(1-z^m)=-z,\qquad
+\sum_{m\ge 1}\frac{\mu(m)}{m}\log(1+z^m)=z-z^2,
+\]
+yields
+\[
+P_{\mathrm{vert}}(z)
+=-2(-z)-(z-z^2)-\sum_{m\ge 1}\frac{\mu(m)}{m}\log(1+z^m-z^{2m})
+=z+z^2-S_F(z).
+\]
+\qed
+\end{proof}
+
+\input{sections/generated/tab_real_input_40_vert_single_series}
+
+\begin{remark}[Numerical Decomposition: The Synchronizer Significantly Alters the Constant Term but Not the Dominant Pole]\label{rem:real-input-40-logM-split-numeric}
+For this kernel, $z_\star=\varphi^{-2}\approx 0.381966011250105$. Computing the two parts of the above decomposition (using the Abel--M\"obius recipe of Theorem \ref{thm:abel-mertens-universal}) gives
+\[
+\log\mathfrak{M}_{\mathrm{in}}\approx -0.647311419383551,
+\qquad
+P_{\mathrm{vert}}(z_\star)\approx 0.392998757481835,
+\]
+and hence
+\[
+\log\mathfrak{M}_M\approx -0.254312661901716.
+\]
+In particular, the vertical synchronizer provides a multiplicative amplification at the constant term level
+\[
+e^{P_{\mathrm{vert}}(z_\star)}\approx 1.4819,
+\]
+indicating that it does not alter the dominant growth rate (the dominant pole position remains locked at $\lambda=\varphi^2$), yet it produces a significant correction to the constant term of ``prime periodic orbits'' at the Abel finite part/Mertens constant level.
+\end{remark}
+
+\begin{remark}[Artin Additive Decomposition of the Primitive Spectrum: Signed ``Prime Spectrum'' of Input Skeleton \texorpdfstring{$+$}{+} Vertical Synchronizer]\label{rem:real-input-40-primitive-artin-signed}
+Following the decomposition \(\zeta_M=\zeta_{\mathrm{in}}\cdot\zeta_{\mathrm{vert}}\) of Proposition \ref{prop:real-input-40-logM-split},
+let
+\[
+P_T(z):=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\zeta_T(z^m)=\sum_{n\ge 1}p_n(T)\,z^n,
+\]
+then the strict identity \(P_M=P_{\mathrm{in}}+P_{\mathrm{vert}}\) holds. Therefore for each \(n\ge 1\), the primitive coefficients satisfy
+\[
+\boxed{\ p_n(M)=p_n(\mathrm{in})+q_n,\qquad q_n:=[z^n]P_{\mathrm{vert}}(z)\ }.
+\]
+On the real input \(40\)-state kernel, \(q_n\) can be further decomposed into a ``time-twist block'' and a ``boundary short-period'' part (Corollary \ref{cor:real-input-40-space-twist-boundary-split}), where the boundary terms are nonzero only for \(n=1,2\).
+Here \(p_n(M)\) and \(p_n(\mathrm{in})\) are both nonneg integers (the primitive orbit counts for the real kernel and the input skeleton respectively), while \(q_n\) can in general be negative: it captures the \textbf{signed} contribution of the ``vertical synchronizer'' at the primitive level, equivalent to the character-sum oscillation of a dynamical-system $L$-factor.
+Table \ref{tab:real_input_40_primitive_artin_split} provides reproducible output for the first \(10\) terms.
+\input{sections/generated/tab_real_input_40_primitive_artin_split}
+\end{remark}
+
+\input{subsec__real-input-40-prime-splitting_en}
+
+\begin{theorem}[Fibonacci Tensor Closure Class: Systematically Generating Kernel-RH-Sharp Kernels]\label{thm:fib-tensor-rhsharp-closure}
+Let
+\[
+F:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},\qquad
+B:=F\otimes F,\qquad
+C:=-F.
+\]
+For any $n\ge 1$ and nonneg integers $a,b$, define the block diagonal matrix
+\[
+M_{n;a,b}:=B^{\otimes n}\ \oplus\ C^{\otimes n}\ \oplus\ I_a\ \oplus\ (-I)_b.
+\]
+Denote
+\(
+\lambda_n:=\rho(M_{n;a,b})
+\).
+Then:
+\begin{enumerate}
+  \item \textbf{Dominant scale:} $\lambda_n=\rho(B^{\otimes n})=\rho(B)^n=\varphi^{2n}$.
+  \item \textbf{Kernel-RH/GRH square-root bound:} For any non-dominant eigenvalue $\mu\in\sigma(M_{n;a,b})$,
+  \[
+  |\mu|\le \sqrt{\lambda_n}=\varphi^{n},
+  \]
+  and this bound is attained at the dominant eigenvalue of $C^{\otimes n}$, namely $\mu=(-\varphi)^n$ (hence RH-sharp).
+  \item \textbf{Closed form for traces and primitives:} Let Lucas numbers $L_k:=\Tr(F^k)$. Then for all $k\ge 1$,
+  \[
+  \Tr(M_{n;a,b}^k)
+  =
+  \Tr\!\bigl((B^{\otimes n})^k\bigr)+\Tr\!\bigl((C^{\otimes n})^k\bigr)+a+b(-1)^k
+  =
+  (L_k^2)^{n}+(-1)^{kn}L_k^{n}+a+b(-1)^k.
+  \]
+  The corresponding primitive orbit counts satisfy
+  \[
+  p_k(M_{n;a,b})=\frac{1}{k}\sum_{d\mid k}\mu(d)\,\Tr(M_{n;a,b}^{\,k/d}),
+  \]
+  yielding a family of fully explicit, auditable Lucas--M\"obius closed forms.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(1)} The spectrum of a block diagonal matrix is the union of spectra, and the Kronecker tensor product satisfies $\rho(A\otimes B)=\rho(A)\rho(B)$, so $\rho(B^{\otimes n})=\rho(B)^n$. From $\rho(F)=\varphi$ we get $\rho(B)=\rho(F\otimes F)=\varphi^2$.
+
+\textbf{(2)} From $\sigma(F)=\{\varphi,-\varphi^{-1}\}$ we obtain
+\(
+\sigma(B)=\sigma(F\otimes F)=\{\varphi^2,-1,-1,\varphi^{-2}\}
+\),
+so the eigenvalue moduli of $B^{\otimes n}$ lie in $\{\varphi^{2n},1,\varphi^{-2n}\}$, all at most $\varphi^{n}=\sqrt{\varphi^{2n}}$.
+Also $C=-F$ has eigenvalues $-\varphi$ and $\varphi^{-1}$, so the spectral radius of $C^{\otimes n}$ is $\varphi^{n}$, attained by $(-\varphi)^n$. The trivial blocks $I_a,(-I)_b$ have eigenvalue modulus $1\le \varphi^{n}$. Combining gives the square-root bound and sharpness.
+
+\textbf{(3)} Using $\Tr((A\otimes B)^k)=\Tr(A^k)\Tr(B^k)$, we get $\Tr((B^{\otimes n})^k)=\Tr(B^k)^n$ and $\Tr((C^{\otimes n})^k)=\Tr(C^k)^n$.
+Also $\Tr(B^k)=\Tr((F\otimes F)^k)=\Tr(F^k)^2=L_k^2$, and $\Tr(C^k)=\Tr((-F)^k)=(-1)^k L_k$. Adding the traces of the trivial blocks completes the formula.
+Finally, the primitive closed form follows directly from M\"obius inversion. \qed
+\end{proof}
+
+\begin{corollary}[Tensor Trace Decomposition and Lucas Square Closed Form]\label{cor:real-input-40-trace-tensor}
+Denote the Lucas sequence $L_n=\Tr(F^n)$. From Proposition \ref{prop:real-input-40-fib-tensor} and $\log\zeta=\sum a_n z^n/n$, we obtain
+\[
+a_n=\Tr(B^n)+\Tr(C^n)+2+(-1)^n
+=L_n^2+(-1)^nL_n+2+(-1)^n,
+\]
+i.e.,
+\[
+\boxed{\ a_n=L_n^2+(-1)^n(L_n+1)+2\ }.
+\]
+This is equivalent to the $L_{2n}$ form above (via the identity $L_{2n}=L_n^2-2(-1)^n$).
+\end{corollary}
+
+\begin{corollary}[Order-$6$ Recurrence for Periodic Point Counts]\label{cor:real-input-40-trace-recurrence}
+Since the nonzero eigenvalues of $M$ consist of only
+\(
+\{\varphi^2,-\varphi,1,-1,\varphi^{-1},\varphi^{-2}\}
+\)
+--- six distinct roots --- the sequence $a_n=\Tr(M^n)$ satisfies
+\[
+\boxed{\;
+a_{n+6}=2a_{n+5}+4a_{n+4}-6a_{n+3}-2a_{n+2}+4a_{n+1}-a_n\;}.
+\]
+\end{corollary}
+
+\begin{corollary}[Lucas Square Closed Form for Primitive Orbit Counts]\label{cor:real-input-40-primitive-lucas}
+By M\"obius inversion
+\(
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}
+\)
+and Corollary \ref{cor:real-input-40-trace-tensor}, we obtain
+\[
+\boxed{\;
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\Bigl[L_{n/d}^2+(-1)^{n/d}(L_{n/d}+1)+2\Bigr]\; }.
+\]
+\end{corollary}
+
+\begin{corollary}[Lucas--M\"obius Simplified Formula (Constant Terms Vanish)]\label{cor:real-input-40-primitive-lucas-simplified}
+For any $n>2$, the more concise explicit formula holds:
+\[
+\boxed{\;
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\Bigl[L_{2n/d}+(-1)^{n/d}L_{n/d}\Bigr]\; }.
+\]
+\end{corollary}
+\begin{proof}
+By the identity $L_{2m}=L_m^2-2(-1)^m$, the summand in Corollary \ref{cor:real-input-40-primitive-lucas} can be rewritten as
+\(
+L_{2n/d}+(-1)^{n/d}L_{n/d}+2+3(-1)^{n/d}
+\).
+For $n>2$ we have
+\(
+\sum_{d\mid n}\mu(d)=0
+\)
+and
+\(
+\sum_{d\mid n}\mu(d)(-1)^{n/d}=0
+\),
+so the constant terms vanish completely in the M\"obius summation, yielding the stated simplified formula. \qed
+\end{proof}
+\[
+(a_1,\dots,a_{10})=(1,15,13,59,111,345,813,2259,5701,15255),
+\]
+\[
+(p_1,\dots,p_{10})=(1,7,4,11,22,53,116,275,632,1513),
+\]
+and satisfy
+\[
+p_n=\frac{\lambda^n}{n}+O\!\left(\frac{\varphi^n}{n}\right)
+=\frac{\varphi^{2n}}{n}+O\!\left(\frac{\varphi^n}{n}\right),
+\]
+where the next-largest eigenvalue modulus is $\varphi$.

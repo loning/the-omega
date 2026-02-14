@@ -1,0 +1,438 @@
+\paragraph{Shadow Spectrum, Terminating \texorpdfstring{$J$}{J}-Fraction, and Bernstein Duality: Algebraic/Operator Closure Forced by Stieltjes Orbit}
+In the finite-atom caliber, let the point defect depth spectrum be given by \(\{(\delta_j,m_j)\}_{j=1}^{M}\), and denote
+\[
+a_j:=1+\delta_j>1.
+\]
+Define the positive measure supported on \([1,\infty)\) (\(\delta_{a_j}\) being the Dirac measure at \(a_j\))
+\[
+\mu:=\sum_{j=1}^{M} m_j\delta_j\,\delta_{a_j}.
+\]
+Define the scale entropy curve (equivalent representation of the previously defined scale entropy curve \(S_{\mathrm{def}}(t)\) under variable \(a=1+\delta\))
+\[
+S(t):=\sum_{j=1}^{M}\frac{m_j\delta_j}{t+a_j}
+=\int_{[1,\infty)}\frac{1}{t+a}\,\dd\mu(a),
+\qquad t\ge 0.
+\]
+Record linear flux (mass) \(\Phi:=\sum_{j=1}^{M}m_j\delta_j\).
+
+\begin{proposition}[``Shadow Spectrum'' Interlacing Law of Depth Spectrum: Pole--Zero Strict Interlacing of \texorpdfstring{$S(t)$}{S(t)}]\label{con:xi-shadow-spectrum-interlacing}
+Let
+\[
+Q_{\kappa}(t):=\prod_{j=1}^{\kappa}(t+a_j),
+\qquad
+P_{\kappa-1}(t):=\sum_{j=1}^{\kappa} w_j\!\!\prod_{k\ne j}(t+a_k),
+\]
+then \(S(t)=P_{\kappa-1}(t)/Q_{\kappa}(t)\).
+Under condition \(w_j>0\), \(P_{\kappa-1}\) has exactly \(\kappa-1\) distinct real roots
+\[
+-b_1,\dots,-b_{\kappa-1}\subset(-\infty,-1),
+\]
+satisfying strict interlacing
+\[
+\boxed{\;
+a_1<b_1<a_2<b_2<\cdots<b_{\kappa-1}<a_{\kappa}\; }.
+\]
+This interlacing law defines a set of in-regime "shadow depths" \(\{b_j\}\): they are not equal to true depths \(\{a_j\}\), but are intermediate spectra forced by the visible Stieltjes orbit \(S\)'s rational structure between adjacent depths.
+\end{proposition}
+\begin{proof}
+For each interval \(I_j:=(-a_{j+1},-a_j)\) (\(1\le j\le \kappa-1\)), function \(S\) is smooth and strictly decreasing on \(I_j\) (since \(S'(t)=-\sum_i w_i(t+a_i)^{-2}<0\)).
+And as \(t\downarrow -a_{j+1}\), \(\frac{w_{j+1}}{t+a_{j+1}}\to +\infty\), thus \(S(t)\to +\infty\); as \(t\uparrow -a_j\), \(\frac{w_{j}}{t+a_{j}}\to -\infty\), thus \(S(t)\to -\infty\).
+Hence \(S\) has exactly one zero in each \(I_j\), denoted \(-b_j\), satisfying \(-a_j>-b_j>-a_{j+1}\), i.e., \(a_j<b_j<a_{j+1}\).
+Since \(P_{\kappa-1}\) has degree \(\kappa-1\), these zeros already account for all its real roots, each simple. \qed
+\end{proof}
+
+\begin{corollary}[Electrostatic Balance Characterization of Shadow Depths: Zeros Uniquely Determined by ``Splitting Charge'' Equation]\label{cor:xi-shadow-depth-electrostatic-balance}
+Following Conclusion \ref{con:xi-shadow-spectrum-interlacing}, denote shadow depths as \((b_1,\dots,b_{\kappa-1})\).
+Then for each \(m=1,\dots,\kappa-1\), \(b_m\in(a_m,a_{m+1})\) is the unique solution of equation
+\[
+\boxed{\;
+\sum_{j=1}^{\kappa}\frac{w_j}{a_j-b}=0\;}
+\]
+on the open interval \((a_m,a_{m+1})\).
+Therefore shadow depths can be interpreted as "balance points": charge terms to the left and right of \(b\) produce contributions of opposite sign, while strict monotonicity guarantees unique balance point.
+\end{corollary}
+\begin{proof}
+By definition \(S(t)=\sum_{j=1}^{\kappa}\frac{w_j}{t+a_j}\).
+Taking \(t=-b\) yields \(S(-b)=\sum_j \frac{w_j}{a_j-b}\).
+Conclusion \ref{con:xi-shadow-spectrum-interlacing} already knows \(S\) is strictly decreasing on \((-a_{m+1},-a_m)\) from \(+\infty\) to \(-\infty\), so there is a unique zero in this interval; its zero point \(t=-b_m\) is equivalent to the unique solution of the stated balance equation on \((a_m,a_{m+1})\). \qed
+\end{proof}
+
+\begin{proposition}[Shadow Depth Gradient with Respect to Weights: Traction Monotonicity Completely Determined by Interval Position]\label{prop:xi-shadow-depth-gradient-wrt-weights}
+Following Corollary \ref{cor:xi-shadow-depth-electrostatic-balance}.
+For fixed \(m\) denote \(b_m=b_m(w)\) as the shadow depth as a function of weight vector \(w=(w_1,\dots,w_\kappa)\in\RR_{>0}^\kappa\).
+Then \(b_m\) is smooth on the positive cone, satisfying explicit gradient
+\[
+\boxed{\;
+\frac{\partial b_m}{\partial w_k}
+=-\frac{1}{a_k-b_m}\Bigg/\sum_{j=1}^{\kappa}\frac{w_j}{(a_j-b_m)^2}\qquad(1\le k\le \kappa).\;}
+\]
+Thus: if \(a_k<b_m\) (left of shadow point), then \(\partial b_m/\partial w_k>0\); if \(a_k>b_m\) (right of shadow point), then \(\partial b_m/\partial w_k<0\).
+That is, increasing left-side weight pushes shadow point rightward, while increasing right-side weight pulls shadow point leftward; this sign structure does not depend on any inversion algorithm, but is enforced solely by Stieltjes positivity and interlacing structure.
+\end{proposition}
+\begin{proof}
+Let
+\(
+G(b,w):=\sum_{j=1}^{\kappa}\frac{w_j}{a_j-b}
+\).
+By Corollary \ref{cor:xi-shadow-depth-electrostatic-balance}, \(G(b_m(w),w)=0\).
+And for \(b\in(a_m,a_{m+1})\) we have
+\(
+\partial_b G(b,w)=\sum_j\frac{w_j}{(a_j-b)^2}>0
+\),
+so by implicit function theorem differentiating with respect to \(w_k\) yields
+\(
+\partial_{w_k}b_m=-(\partial_{w_k}G)/(\partial_bG)
+\), where \(\partial_{w_k}G(b,w)=\frac{1}{a_k-b}\).
+Substituting yields the stated formula; sign conclusion follows directly from denominator positivity and sign of \(a_k-b_m\). \qed
+\end{proof}
+
+\begin{remark}[Isomorphic ``Shadow Radius'' Structure on Scan Side: Cauchy Balance Point of Hausdorff Moments]\label{rem:xi-scan-shadow-radius-cauchy-balance}
+Suppose scan-side real modulus spectrum is a finite atomic measure \(\nu=\sum_{j=1}^{\kappa}c_j\,\delta_{\rho_j}\) (\(0<\rho_1<\cdots<\rho_\kappa<1\), \(c_j>0\)), and define its Cauchy transform
+\(
+G(x):=\sum_{j=1}^{\kappa}\frac{c_j}{x-\rho_j}
+\) (\(x\in\RR\setminus\{\rho_j\}\)).
+Then similarly to Corollary \ref{cor:xi-shadow-depth-electrostatic-balance}: for each \(m=1,\dots,\kappa-1\), there exists unique \(\widetilde\rho_m\in(\rho_m,\rho_{m+1})\) such that \(G(\widetilde\rho_m)=0\).
+These balance points are numerator zeros of the Hausdorff moment generating function \(U(z)=\sum_{n\ge0}u_n z^n=\sum_j\frac{c_j}{1-\rho_j z}\) projected in the \(x=1/z\) variable, so the scan side is also forced to carry interlacing intermediate nodes isomorphic to depth-side shadow spectrum.
+\end{remark}
+
+\begin{proposition}[Determinant Ratio Representation of Jacobi Certificate: Shadow Spectrum is Principal Minor Spectrum]\label{con:xi-shadow-spectrum-determinant-ratio}
+Let \(J\in\RR^{\kappa\times\kappa}\) be the canonical tridiagonal register given in the conclusion "Jacobi Certificate of Depth Spectrum" (symmetric with strictly positive off-diagonal elements), and let \(J^{(1)}\) denote the leading principal submatrix with first row and column deleted.
+Then for all \(t>0\) there is the identity
+\[
+\boxed{\;
+S(t)=\Phi\,\langle e_1,(tI+J)^{-1}e_1\rangle
+=\Phi\,\frac{\det(tI+J^{(1)})}{\det(tI+J)}\; }.
+\]
+Therefore \( \mathrm{Spec}(J)=\{a_j\}\), \(\mathrm{Spec}(J^{(1)})=\{b_j\}\) (counting multiplicity), and Cauchy interlacing theorem yields the strict interlacing structure of Conclusion \ref{con:xi-shadow-spectrum-interlacing}.
+\end{proposition}
+\begin{proof}
+By adjugate matrix identity \((A^{-1})_{11}=\mathrm{adj}(A)_{11}/\det(A)\) taking \(A=tI+J\),
+\[
+\langle e_1,(tI+J)^{-1}e_1\rangle
+=\frac{\det\bigl((tI+J)_{(1)}\bigr)}{\det(tI+J)}
+=\frac{\det(tI+J^{(1)})}{\det(tI+J)}.
+\]
+Multiplying by \(\Phi\) yields the conclusion. Spectral identification follows from characteristic polynomials, and interlacing between principal minor spectrum and full spectrum follows from Cauchy interlacing theorem. \qed
+\end{proof}
+
+\begin{corollary}[Multiplicative Extraction of Shadow Spectrum--Determinant Ratio: Logarithmic Ratio Invariant of Depths and Shadow Depths at \texorpdfstring{$t=0$}{t=0}]\label{cor:xi-shadow-spectrum-determinant-ratio-at-zero}
+Following Conclusion \ref{con:xi-shadow-spectrum-determinant-ratio}, denote shadow depths as \((b_1,\dots,b_{\kappa-1})\).
+Then at \(t=0\) there is strict multiplicative extraction law
+\[
+\boxed{\;
+S(0)=\Phi\,\frac{\det J^{(1)}}{\det J}
+=\Phi\,\frac{\prod_{j=1}^{\kappa-1}b_j}{\prod_{j=1}^{\kappa}a_j}.\;}
+\]
+Equivalently,
+\(
+\log\frac{\Phi}{S(0)}=\sum_{j=1}^{\kappa}\log a_j-\sum_{j=1}^{\kappa-1}\log b_j
+\)
+is a logarithmic ratio invariant completely determined by the finite certificate: it encodes both true depth and shadow depth two-layer spectral information, appearing as global spectral differential potential induced by deleting the first coordinate (rank-one externalization).
+\end{corollary}
+\begin{proof}
+By Conclusion \ref{con:xi-shadow-spectrum-determinant-ratio} evaluating at \(t=0\) yields
+\(
+S(0)=\Phi\,\det(J^{(1)})/\det(J)
+\).
+Further using \(\det(J)=\prod_{j=1}^{\kappa}a_j\), \(\det(J^{(1)})=\prod_{j=1}^{\kappa-1}b_j\) yields the multiplicative form. \qed
+\end{proof}
+
+\begin{proposition}[Multi-Layer Shadow Spectrum Tower: Principal Minor Chain Gives Strictly Interlacing Hierarchical Horizon Lattice]\label{prop:xi-shadow-spectrum-tower-principal-minors}
+Following the Jacobi certificate \(J\) of Conclusion \ref{con:xi-shadow-spectrum-determinant-ratio}.
+For \(0\le r\le \kappa-1\) let \(J^{(r)}\) denote the leading principal submatrix with first \(r\) rows and columns deleted (thus \(J^{(0)}=J\) and \(J^{(\kappa-1)}\) is \(1\times 1\)).
+Then there exist constants \(\Phi^{(r)}>0\) such that each layer Stieltjes orbit
+\[
+S^{(r)}(t):=\Phi^{(r)}\,\frac{\det(tI+J^{(r+1)})}{\det(tI+J^{(r)})}\qquad (t>0)
+\]
+is a rational Stieltjes function, whose pole set is \(-\mathrm{Spec}(J^{(r)})\), zero set is \(-\mathrm{Spec}(J^{(r+1)})\).
+And by Cauchy interlacing theorem there is a strict hierarchical interlacing chain
+\[
+\boxed{\;
+\mathrm{Spec}(J^{(0)}) \succ \mathrm{Spec}(J^{(1)}) \succ \cdots \succ \mathrm{Spec}(J^{(\kappa-1)}),\;}
+\]
+where "\(\succ\)" denotes layer-by-layer strict interlacing.
+Therefore the depth spectrum not only induces one layer of shadow depths \(\{b_j\}\), but enforces an unavoidable multi-layer horizon lattice sequence; this sequence is a hierarchical invariant necessarily generated by finite register truncation and externalization projection.
+\end{proposition}
+\begin{proof}[Proof outline]
+Applying Conclusion \ref{con:xi-shadow-spectrum-determinant-ratio} to each tail Jacobi certificate \(J^{(r)}\) (equivalent to the \(r\)-th layer tail of terminating \(J\)-fraction) yields the determinant ratio representation and pole--zero identification for each layer.
+And \(J^{(r+1)}\) is a principal submatrix of \(J^{(r)}\), so its spectrum strictly interlaces with \(\mathrm{Spec}(J^{(r)})\) by Cauchy interlacing theorem. \qed
+\end{proof}
+
+\begin{proposition}[Logarithmic Potential Sum Rule: Geometric Mean Uniquely Extracted by Single-Variable Stieltjes Orbit Integral Functional]\label{prop:xi-logpotential-integral-geomean}
+Following the finite-atom setting of Conclusion \ref{con:xi-shadow-spectrum-interlacing}, let total mass \(\Phi:=\sum_{j=1}^{\kappa}w_j\), and take reference orbit
+\(
+S_{\mathrm{ref}}(t):=\Phi/(t+1)
+\).
+Then the difference integral strictly converges and satisfies the identity
+\[
+\boxed{\;
+\int_{0}^{\infty}\Bigl(S(t)-\frac{\Phi}{t+1}\Bigr)\,\dd t
+=-\sum_{j=1}^{\kappa}w_j\log a_j.\;}
+\]
+Equivalently, letting \(p_j:=w_j/\Phi\),
+\[
+\boxed{\;
+\int_{0}^{\infty}\Bigl(\frac{S(t)}{\Phi}-\frac{1}{t+1}\Bigr)\,\dd t
+=-\sum_{j=1}^{\kappa}p_j\log a_j
+=-\log\Bigl(\prod_{j=1}^{\kappa}a_j^{p_j}\Bigr).\;}
+\]
+Therefore the depth spectrum under regime compression still retains a "geometric mean invariant": it can be directly extracted by single-variable integral of \(S\), exhibiting standard logarithmic potential transformation law under additive coarse-graining and scale dilation.
+\end{proposition}
+\begin{proof}
+By \(S(t)=\sum_j\frac{w_j}{t+a_j}\) we get
+\[
+S(t)-\frac{\Phi}{t+1}
+=\sum_{j=1}^{\kappa}w_j\Bigl(\frac{1}{t+a_j}-\frac{1}{t+1}\Bigr),
+\]
+the right-hand side is \(O(t^{-2})\) as \(t\to\infty\), so the integral converges absolutely.
+And for each \(a>1\)
+\[
+\int_0^\infty\Bigl(\frac{1}{t+a}-\frac{1}{t+1}\Bigr)\dd t
+=\Bigl[\log(t+a)-\log(t+1)\Bigr]_{0}^{\infty}
+=-\log a.
+\]
+Summing term by term yields the conclusion. \qed
+\end{proof}
+
+\begin{proposition}[Krein Spectral Shift Function Discretization: Staircase Shift on Shadow Spectrum Interval and Logarithmic Determinant Representation]\label{prop:xi-krein-spectral-shift-staircase-shadow}
+In the setting of Conclusion \ref{con:xi-shadow-spectrum-determinant-ratio}, define normalized determinant ratio
+\[
+R(t):=(t+1)\,\frac{\det(tI+J^{(1)})}{\det(tI+J)}
+=\frac{t+1}{\Phi}\,S(t)\qquad (t>0).
+\]
+Then \(R(t)>0\) and \(R(t)\to 1\) (\(t\to\infty\)).
+Let staircase spectral shift function \(\xi:(1,\infty)\to\{0,1\}\) be defined by
+\[
+\xi(s):=\ind_{(1,a_1)}(s)\ +\ \sum_{j=1}^{\kappa-1}\ind_{(b_j,a_{j+1})}(s).
+\]
+Then for all \(t>0\) there is Stieltjes-type logarithmic representation
+\[
+\boxed{\;
+\log R(t)\ =\ -\int_{(1,\infty)}\frac{\xi(s)}{t+s}\,\dd s\; }.
+\]
+where \(\xi\) is constant on each open interval of the interlacing lattice \(\{1,a_1,b_1,a_2,\dots,b_{\kappa-1},a_\kappa\}\), with jumps occurring only at \(\{a_j,b_j\}\).
+\end{proposition}
+\begin{proof}
+By spectral decomposition
+\(
+\det(tI+J)=\prod_{j=1}^{\kappa}(t+a_j)
+\),
+\(
+\det(tI+J^{(1)})=\prod_{j=1}^{\kappa-1}(t+b_j)
+\)
+we get
+\[
+R(t)=\frac{(t+1)\prod_{j=1}^{\kappa-1}(t+b_j)}{\prod_{j=1}^{\kappa}(t+a_j)}.
+\]
+On the other hand, by
+\(
+\int_{u}^{v}\frac{\dd s}{t+s}=\log\frac{t+v}{t+u}
+\)
+and definition of \(\xi\) we get
+\[
+\int_{(1,\infty)}\frac{\xi(s)}{t+s}\,\dd s
+=\log\frac{t+a_1}{t+1}
+\ +\ \sum_{j=1}^{\kappa-1}\log\frac{t+a_{j+1}}{t+b_j}
+=\log\frac{\prod_{j=1}^{\kappa}(t+a_j)}{(t+1)\prod_{j=1}^{\kappa-1}(t+b_j)}.
+\]
+Taking the negative yields the stated identity. \qed
+\end{proof}
+
+\begin{proposition}[Uniqueness of Terminating \texorpdfstring{$J$}{J}-Fraction: Minimal Register Equivalent to Unique Positive-Coefficient Continued Fraction]\label{con:xi-terminating-jfraction-uniqueness}
+There exists a unique set of coefficients
+\[
+\beta_0,\dots,\beta_{\kappa-1}\in(1,\infty),
+\qquad
+\alpha_0,\dots,\alpha_{\kappa-2}>0,
+\]
+such that for all \(t>0\) there is a terminating \texorpdfstring{$J$}{J}-fraction expansion
+\[
+\boxed{\;
+S(t)
+=\cfrac{\Phi}{t+\beta_0-\cfrac{\alpha_0^2}{t+\beta_1-\cfrac{\alpha_1^2}{\ddots-\cfrac{\alpha_{\kappa-2}^2}{t+\beta_{\kappa-1}}}}}\; }.
+\]
+And this \((\alpha,\beta)\) is termwise consistent with the Jacobi certificate: \(\beta_n=J_{n+1,n+1}\), \(\alpha_n=J_{n+1,n+2}\).
+Furthermore, letting moment chain \(\mu_n:=(-1)^n S^{(n)}(0)/n!\), and defining
+\[
+\Delta_n:=\det(\mu_{i+j})_{0\le i,j\le n},
+\qquad
+\Delta_n^{(1)}:=\det(\mu_{i+j+1})_{0\le i,j\le n},
+\]
+the coefficients have closed-form extraction law
+\[
+\boxed{\;
+\alpha_n^2=\frac{\Delta_{n-1}\Delta_{n+1}}{\Delta_n^2},
+\qquad
+\beta_n=\frac{\Delta_n^{(1)}}{\Delta_n}-\frac{\Delta_{n-1}^{(1)}}{\Delta_{n-1}},
+\quad
+(\Delta_{-1}:=1,\ \Delta_{-1}^{(1)}:=0)\; }.
+\]
+Therefore in the finite-defect case, depth visible orbit \(S\) is not only invertible, but has a unique minimal positive-coefficient register realization.
+\end{proposition}
+\begin{proof}[Proof outline]
+By the tridiagonal structure of \(J\), repeatedly applying Schur complement to \((tI+J)\) yields the stated terminating continued fraction, with coefficient positivity given by strictly positive off-diagonal elements and positive-definiteness from \(t>0\).
+Uniqueness follows from register uniqueness in the conclusion "Jacobi Certificate of Depth Spectrum".
+Hankel determinant closed form is the standard extraction formula for Stieltjes moment problem: \(\Delta_n,\Delta_n^{(1)}\) give three-term recursion coefficients for orthogonal polynomials, thus recovering \((\alpha,\beta)\). \qed
+\end{proof}
+
+\begin{proposition}[Discrete Lévy Embedding of Bernstein Dual: \texorpdfstring{$1/S(t)$}{1/S(t)} has Atomic Lévy Measure Supported on Shadow Spectrum]\label{con:xi-bernstein-dual-levy-shadow-spectrum}
+Let \(B(t):=1/S(t)\).
+Then \(B\) belongs to the complete Bernstein class on \((0,\infty)\), and there exist unique parameters
+\[
+B(0)=\frac{1}{S(0)},
+\qquad
+\mathrm{drift}=\frac{1}{\Phi},
+\]
+and unique discrete Lévy measure
+\(
+\nu=\sum_{j=1}^{\kappa-1} c_j\,\delta_{b_j}
+\)
+(\(c_j>0\)) such that for all \(t>0\)
+\[
+\boxed{\;
+B(t)=B(0)+\frac{t}{\Phi}
+\;+\;\int_{(0,\infty)}\frac{t}{t+s}\,\dd\nu(s)
+=B(0)+\frac{t}{\Phi}+\sum_{j=1}^{\kappa-1}c_j\,\frac{t}{t+b_j}\; }.
+\]
+where \(\{b_j\}\) are precisely the shadow depths (also \(\mathrm{Spec}(J^{(1)})\)) from Conclusion \ref{con:xi-shadow-spectrum-interlacing}, and weights satisfy explicit residue formula
+\[
+\boxed{\;
+c_j=-\frac{Q_{\kappa}(-b_j)}{b_j\,P'_{\kappa-1}(-b_j)}\ >\ 0\; }.
+\]
+This conclusion shows: the dual coarse-graining residual of depth orbit is not supported on true depths \(\{a_j\}\) at external interface, but on shadow spectrum \(\{b_j\}\) forcibly generated by regime.
+\end{proposition}
+\begin{proof}[Proof outline]
+By \(S(t)=P_{\kappa-1}(t)/Q_{\kappa}(t)\) we get \(B(t)=Q_{\kappa}(t)/P_{\kappa-1}(t)\) as rational function.
+Conclusion \ref{con:xi-shadow-spectrum-interlacing} gives zeros of \(P_{\kappa-1}\) as \(\{-b_j\}\) and distinct, so \(B\) has simple poles at \(\{-b_j\}\) and admits partial fraction decomposition.
+As \(t\to\infty\), \(S(t)\sim \Phi/t\), so \(B(t)\sim t/\Phi\) gives drift.
+Rewriting partial fraction in kernel form \(t/(t+b_j)=1-b_j/(t+b_j)\) yields the stated Lévy representation; residue comparison gives explicit formula for \(c_j\). \qed
+\end{proof}
+
+\begin{proposition}[Two-Moment Envelope Theorem: Sharpest Pointwise Bound Given Only \texorpdfstring{$(\Phi,S(0))$}{(Phi,S0)}]\label{con:xi-two-moment-envelope}
+Let \(\Phi=\sum_j w_j\) and \(S(0)=\sum_j w_j/a_j\) be given.
+Then for any finite depth spectrum satisfying these two-moment constraints, for all \(t\ge 0\) there is sharp envelope
+\[
+\boxed{\;
+\frac{S(0)}{1+t}\ \le\ S(t)\ \le\ \frac{\Phi\,S(0)}{\Phi+tS(0)}\; }.
+\]
+Upper bound attains equality if and only if depth spectrum degenerates to single point (all \(a_j\) equal); lower bound is achieved in closure sense by "boundary-layer--deep-layer two-phase" limit.
+\end{proposition}
+\begin{proof}
+Since \(a_j\ge 1\), we have \(t+a_j\le (1+t)a_j\), thus
+\(
+S(t)=\sum_j w_j/(t+a_j)\ge \frac{1}{1+t}\sum_j w_j/a_j=\frac{S(0)}{1+t}
+\).
+On the other hand, Conclusion \ref{con:xi-bernstein-dual-levy-shadow-spectrum} gives
+\(
+B(t)=1/S(t)\ge B(0)+t/\Phi=1/S(0)+t/\Phi
+\);
+taking reciprocal yields upper bound. \qed
+\end{proof}
+
+\begin{proposition}[Scale Cauchy--Schwarz Constraint: Universal Quadratic Inequality of \texorpdfstring{$S(t)$}{S(t)} and \texorpdfstring{$-S'(t)$}{-S'(t)}]\label{con:xi-scale-cauchy-schwarz}
+For any \(t\ge 0\) there holds
+\[
+\boxed{\;
+S(t)^2\ \le\ \Phi\,\bigl(-S'(t)\bigr),
+\qquad
+-S'(t)=\sum_{j=1}^{\kappa}\frac{w_j}{(t+a_j)^2}\; }.
+\]
+Equality holds if and only if depth spectrum degenerates to single point.
+\end{proposition}
+\begin{proof}
+By Cauchy--Schwarz inequality
+\[
+\Bigl(\sum_j \frac{w_j}{t+a_j}\Bigr)^2
+=\Bigl(\sum_j \sqrt{w_j}\cdot\frac{\sqrt{w_j}}{t+a_j}\Bigr)^2
+\le \Bigl(\sum_j w_j\Bigr)\Bigl(\sum_j \frac{w_j}{(t+a_j)^2}\Bigr)
+=\Phi\,(-S'(t)).
+\]
+Equality iff vectors \(\sqrt{w_j}\) and \(\sqrt{w_j}/(t+a_j)\) are proportional, i.e., all \(t+a_j\) equal, thus all \(a_j\) equal. \qed
+\end{proof}
+
+\begin{proposition}[Alternating Bounds of Continued Fraction Convergents: Finite Register Gives Full-Scale Uniform Upper/Lower Certificates]\label{con:xi-jfraction-convergents-alternating-bounds}
+Let convergents of the terminating \texorpdfstring{$J$}{J}-fraction from Conclusion \ref{con:xi-terminating-jfraction-uniqueness} be \(S_n(t)\) (by convention "truncated to \(n\)-th layer"), written in reduced form \(S_n(t)=P_n(t)/Q_n(t)\).
+Then for all \(t>0\) there is strict alternating squeezing chain
+\[
+\boxed{\;
+S_0(t)\ \ge\ S_2(t)\ \ge\ \cdots\ \ge\ S(t)\ \ge\ \cdots\ \ge\ S_3(t)\ \ge\ S_1(t)\; }.
+\]
+And for \(0\le n\le \kappa-2\) there is continuant determinant identity
+\[
+\boxed{\;
+S_{n+1}(t)-S_n(t)=
+\frac{(-1)^n\,\Phi\,\prod_{k=0}^{n}\alpha_k^2}{Q_{n+1}(t)\,Q_{n}(t)}\; }.
+\]
+Therefore, finite \((\alpha_k,\beta_k)\) alone give uniform upper/lower bounds and explicit error width across all scales \(t>0\).
+\end{proposition}
+
+\begin{remark}[``Optimal Compression Node'' Meaning of Shadow Spectrum: Extremal Envelope, Atomic Lévy Measure, and Interlacing Error Lattice]\label{rem:xi-shadow-spectrum-optimal-compression-nodes}
+Conclusion \ref{con:xi-jfraction-convergents-alternating-bounds} shows: under regime allowing access only to finite register coefficients \((\alpha_k,\beta_k)\), continued fraction convergents give full-scale strongest upper/lower certificates for true orbit \(S(t)\); error width is explicitly given by continuant identity, contracting deterministically with register length.
+On the other hand, discrete Lévy measure of Bernstein dual \(B(t)=1/S(t)\) is forcibly pinned on shadow spectrum \(\{b_j\}\) (Conclusion \ref{con:xi-bernstein-dual-levy-shadow-spectrum}), thus "external coarse-graining residual" atomic nodes are unique in algebraic sense.
+\par
+Their combination gives a strict optimality interpretation: shadow spectrum is not an arbitrarily introduced intermediate parameter, but under Stieltjes positivity and interlacing structure, is the minimal node set unavoidable for maintaining order-preserving full-scale certificates (real negative poles, positive residues, alternating errors); any attempt to compress/approximate \(S\) and \(1/S\) without externalizing new continuous degrees of freedom will be forced back to the rational structure generated by interlacing lattice \(\{-a_j,-b_j\}\).
+\end{remark}
+
+\begin{proposition}[Structural Stability of Shadow Spectrum: Regular Response and Unavoidable Collision Ill-Posedness Under Weight Perturbation]\label{con:xi-shadow-spectrum-stability}
+Under condition that \(a_1<\cdots<a_\kappa\) are fixed and distinct, shadow depths \((b_1,\dots,b_{\kappa-1})\) as function of normalized weight vector
+\(
+\tilde w:=w/\Phi\in\{x\in\RR_{>0}^\kappa:\sum x_j=1\}
+\)
+are analytic at interior points of the simplex.
+And denoting
+\(
+\mathrm{sep}:=\min_{1\le j\le \kappa-1}(a_{j+1}-a_j)>0
+\),
+on any fixed compact interior domain there exists constant \(C=C(\{a_j\})>0\) such that
+\[
+\max_{1\le j\le \kappa-1}\bigl|\delta b_j\bigr|
+\ \le\ C\,\bigl|\delta \tilde w\bigr|_1.
+\]
+When \(\mathrm{sep}\downarrow 0\) (adjacent depth collision), the above Lipschitz constant must diverge at rate \(\mathrm{sep}^{-1}\), thus shadow spectrum simultaneously provides "regular response" and "regime ill-posedness zone" necessary/sufficient signals.
+\end{proposition}
+
+\begin{proposition}[Operator Meaning of Shadow Spectrum: External Lévy Atoms are Spectral Flow Carriers of Leading Principal Submatrix]\label{con:xi-shadow-spectrum-operator-meaning}
+Combining Conclusion \ref{con:xi-shadow-spectrum-determinant-ratio} and Conclusion \ref{con:xi-bernstein-dual-levy-shadow-spectrum}, the discrete Lévy measure of \(B(t)=1/S(t)\)
+\(
+\nu=\sum_{j=1}^{\kappa-1}c_j\,\delta_{b_j}
+\)
+satisfies:
+\[
+\mathrm{supp}(\nu)=\{b_j\}=\mathrm{Spec}(J^{(1)}),
+\]
+and taking unit eigenvector \(u_j\) of \(J^{(1)}\) (corresponding to eigenvalue \(b_j\)), then \(c_j\) is proportional to "first-coordinate observation" coupling strength and can be extracted by residue closed form:
+\[
+c_j=-\frac{Q_{\kappa}(-b_j)}{b_j\,P'_{\kappa-1}(-b_j)}.
+\]
+Therefore, dual coarse-graining residual of depth orbit does not directly remember true depths, but forms auditable spectral flow carrier at external interface through leading principal submatrix modes; shadow spectrum thereby obtains strict external operator interpretation.
+\end{proposition}
+
+\begin{proposition}[Support Squeezing: \texorpdfstring{$I(t)=-S(t)/S'(t)$}{I(t)} Squeezes Depth Interval at Every Scale]\label{con:xi-support-squeeze-I}
+Let
+\[
+I(t):=-\frac{S(t)}{S'(t)}=\frac{S(t)}{-S'(t)}\qquad (t>0),
+\]
+and denote \(a_{\min}:=\min_j a_j\), \(a_{\max}:=\max_j a_j\).
+Then for all \(t>0\)
+\[
+\boxed{\;
+t+a_{\min}\ \le\ I(t)\ \le\ t+a_{\max}\; }.
+\]
+and equality holds if and only if depth spectrum degenerates to single point.
+In particular, \(I(t)-t\) as a pure one-dimensional visible quantity gives auditable squeezing of true depth support interval without any phase carrier input.
+\end{proposition}
+\begin{proof}
+Let \(x_j:=t+a_j\), and define probability weight
+\(
+p_j(t):=\frac{w_j x_j^{-2}}{\sum_{k}w_k x_k^{-2}}
+\).
+Then
+\[
+I(t)=\frac{\sum_j w_j x_j^{-1}}{\sum_j w_j x_j^{-2}}
+=\sum_{j}p_j(t)\,x_j,
+\]
+being a convex combination of \(\{x_j\}\), thus lies between \(\min_j x_j=t+a_{\min}\) and \(\max_j x_j=t+a_{\max}\).
+Equality holds iff all \(x_j\) equal, i.e., all \(a_j\) equal. \qed
+\end{proof}
+
+\endinput

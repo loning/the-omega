@@ -1,0 +1,561 @@
+\subsubsection{Exponential invariant system: unification of Pontryagin negative squares, Toeplitz failure patterns, endpoint/basepoint tomography, and Tate/Maslov obstructions}\label{subsubsec:xi-pontryagin-toeplitz-blaschke-tomography-tate}
+This section unifies four classes of "failure/residue" objects appearing in different frameworks as the same integer exponent:
+\emph{off-axis zeros (Blaschke point defects)}, \emph{failure patterns at the Toeplitz--PSD hierarchy}, \emph{invertible tomography via endpoint/basepoint scanning}, and \emph{\(\ZZ/2\)-equivariant uniformization obstructions (Tate/Maslov indices)}.
+The structural point is: under the auditable framework of no singular inner factor and finite defects, all off-critical-slice point information is carried by a finite Blaschke factor \(B_{F_{\zeta}}\); this factor simultaneously controls
+\begin{enumerate}
+  \item Stable negative squares (Pontryagin index) of Toeplitz quadratic forms,
+  \item Point spectrum residual axis in the functional model (model space \(K_{B_{F_\zeta}}\) / compressed shift \(A_{B_{F_\zeta}}\)),
+  \item Pole data from Poisson--Busemann flux at endpoint \(-1\) and basepoint scanning profiles,
+  \item And the point-like (Maslov/Toeplitz) integer part of the equivariant Tate obstruction (Proposition \ref{prop:selfdual-maslov-singular-dichotomy}).
+\end{enumerate}
+
+\paragraph{Setup and notation}
+Following the Hardy/Smirnov conditional framework in Appendix \S\ref{subsec:unit-disk-inner-outer} and the Blaschke defect notation in \S\ref{subsubsec:selfdual-blaschke-defect-fixed-slice}.
+Assume the disk completion readout \(F_{\zeta}\) is of bounded type and has no singular inner factor (\(S_{F_{\zeta}}\equiv 1\)), and its Blaschke factor \(B_{F_{\zeta}}\) is a finite Blaschke product.
+Denote
+\[
+\kappa:=\deg(B_{F_{\zeta}})=\mathfrak d_{\mathrm{Bl}}(F_{\zeta})=\dim K_{B_{F_{\zeta}}}
+\qquad\text{(Definition \ref{def:blaschke-defect-dimension}, Remark \ref{rem:blaschke-defect-finite})}.
+\]
+On the other hand, the horizon Carathéodory logarithmic derivative function \(\mathscr{C}_{\zeta}\) has power series at \(w=0\) written as (Appendix Theorem \ref{thm:app-horizon-toeplitz-lmi})
+\[
+\mathscr{C}_{\zeta}(w)=c_0+2\sum_{n\ge 1}c_n w^n,
+\qquad c_{-n}:=\overline{c_n},
+\]
+and define the Toeplitz principal submatrix
+\(
+\mathbf{T}_N:=(c_{j-k})_{0\le j,k\le N}\in\Mat_{N+1}(\CC)_{\mathrm{Herm}}
+\).
+For a Hermitian matrix \(M\), denote \(\nu_-(M)\) as the multiplicity of its strictly negative eigenvalues (negative inertia index).
+
+\paragraph{Pontryagin indexing: Toeplitz stable negative squares coincide with Blaschke defect}
+From \(\mathscr{C}_{\zeta}\) define the Hermitian kernel
+\begin{equation}\label{eq:xi-pontryagin-carath-kernel}
+\boxed{\;
+K_{\mathscr{C}_{\zeta}}(w,\zeta)
+:=\frac{\mathscr{C}_{\zeta}(w)+\overline{\mathscr{C}_{\zeta}(\zeta)}}{1-w\overline{\zeta}}
+\qquad(w,\zeta\in\mathbb{D}).\;}
+\end{equation}
+
+\begin{theorem}[Toeplitz negative squares index \(=\) Blaschke defect dimension]\label{thm:xi-toeplitz-negative-squares-equals-blaschke-defect}
+Under the above finite defect setting, the kernel \(K_{\mathscr{C}_{\zeta}}\) has \textbf{exactly \(\kappa\) negative squares} on \(\mathbb{D}\) (Pontryagin index is \(\kappa\)).
+Equivalently, the negative inertia index of Toeplitz principal submatrices satisfies
+\[
+\nu_-(\mathbf{T}_N)\le \kappa\qquad(\forall\,N\ge 0),
+\qquad
+\nu_-(\mathbf{T}_N)=\kappa\qquad(N\ge N_0(\kappa)).
+\]
+In particular, RH is equivalent to \(\kappa=0\), i.e., \(K_{\mathscr{C}_{\zeta}}\) is positive definite, and \(\mathbf{T}_N\succeq 0\) for all \(N\) (Appendix Theorem \ref{thm:app-horizon-toeplitz-lmi}).
+\end{theorem}
+
+\begin{proof}[Proof sketch (structural reduction)]
+Under RH, \(\mathscr{C}_{\zeta}\) is a Carathéodory function, \eqref{eq:xi-pontryagin-carath-kernel} is a positive definite kernel and corresponds to \(\mathbf{T}_N\succeq 0\) (Appendix Theorem \ref{thm:app-horizon-toeplitz-lmi}).
+If there exist in-disk point defects, then \(F_{\zeta}\) has \(\kappa\) zeros in \(\mathbb{D}\) (counted with multiplicity), i.e., \(B_{F_{\zeta}}\) is a degree-\(\kappa\) finite Blaschke product;
+since \(\mathscr{C}_{\zeta}(w)=-\Xi'_{\zeta}(s(w))/\Xi_{\zeta}(s(w))\), these zeros induce \(\kappa\) in-disk poles on \(\mathscr{C}_{\zeta}\), thus \(K_{\mathscr{C}_{\zeta}}\) is a positive definite kernel minus a rank-\(\kappa\) modification, generating exactly \(\kappa\) negative squares.
+Taking the Gram matrix of this kernel on the finite-dimensional subspace spanned by \(\{1,w,\dots,w^N\}\) gives a family of Hermitian matrices congruent to \(\mathbf{T}_N\); congruence does not change inertia index, thus yielding the stated stable negative squares conclusion.
+(This "finite poles \(\Leftrightarrow\) finite negative squares" phenomenon is compatible with the finite-order refuter language in \S\ref{subsubsec:xi-verblunsky-cmv-from-local-jet}.)
+\end{proof}
+
+\paragraph{Canonical generation of negative directions: model space gives Toeplitz failure witnesses}
+The finite Blaschke factor not only gives the "number of negative squares," but also provides the \emph{source} of negative directions: they are forced by the point spectrum modes of the model space \(K_{B_{F_\zeta}}\) (Theorem \ref{thm:blaschke-point-spectrum-correspondence}).
+
+\begin{theorem}[Minimal generation of failure witnesses: negative subspace isomorphic to point spectrum residual axis]\label{thm:xi-toeplitz-witness-generated-by-model-space}
+Under the setting of Theorem \ref{thm:xi-toeplitz-negative-squares-equals-blaschke-defect}, there exists a family of linear embeddings stabilizing with \(N\)
+\[
+\iota_N:K_{B_{F_{\zeta}}}\hookrightarrow \CC^{N+1},
+\]
+such that the Toeplitz quadratic form \(x\mapsto x^\ast \mathbf{T}_N x\) restricted to the subspace \(\iota_N(K_{B_{F_{\zeta}}})\) has \textbf{exactly \(\kappa\)-dimensional negative definite part} (when \(N\ge N_0\)).
+Moreover, when \(N\) is sufficiently large, this negative definite part can be generated by the point modes of the point spectrum generating subspace
+\(\mathcal{H}_{\mathrm{pp}}(A_{B_{F_{\zeta}}})\)
+(Theorem \ref{thm:blaschke-point-spectrum-correspondence}) via the image of \(\iota_N\).
+\par
+Therefore, all negative directions of the Toeplitz hierarchy are not diffusely generated, but are forced by \(B_{F_{\zeta}}\); its minimal dimension is exactly \(\deg(B_{F_{\zeta}})=\kappa\), which is the "residual axis minimal orthogonal dimension" in the regime semantics.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+By Theorem \ref{thm:xi-toeplitz-negative-squares-equals-blaschke-defect}, the negative inertia index of \(\mathbf{T}_N\) stabilizes at \(\kappa\).
+On the other hand, \(\kappa=\dim K_{B_{F_\zeta}}=\dim\mathcal H_{\mathrm{pp}}(A_{B_{F_\zeta}})\) (Theorem \ref{thm:blaschke-point-spectrum-correspondence}).
+Take \(\iota_N\) as the truncated coordinate map of \(K_{B_{F_\zeta}}\) on the Hardy basis \(\{1,w,w^2,\dots\}\) (e.g., taking the first \(N{+}1\) Taylor coefficients), which gives a sequence of explicitly auditable embeddings; under these coordinates, the Toeplitz quadratic form coincides with the kernel Gram form, thus its negative subspace can be identified equivalently as the negative direction of the model space image.
+Point mode generation is given by \(\mathcal H_{\mathrm{pp}}(A_B)=K_B\) in the finite-dimensional case and \(\deg B=\dim K_B\). Proven.
+\end{proof}
+
+\paragraph{Operatorization of endpoint coupling strength: Poisson--Busemann weight equals sum of squares of point mode boundary couplings}
+The Poisson kernel weight at endpoint \(-1\), \(P_a(-1)=\frac{1-|a|^2}{|1+a|^2}=\mathcal{B}_{-1}(a)\) (\eqref{eq:app-poisson-kernel-endpoint-minus1}), is not only a geometric characterization but can also be interpreted as the coupling strength of point modes to endpoint readout.
+
+\begin{theorem}[Operatorization of endpoint flux: Julia index, trace identity, and point mode coupling sum of squares]\label{thm:xi-endpoint-flux-pointmode-coupling}
+Let \(B\) be a finite Blaschke product with zero multiset \(\{a_k\}_{k=1}^{\kappa}\subset\mathbb{D}\).
+Denote the endpoint flux (absorption coefficient)
+\[
+\Phi_{-1}(B):=\sum_{k=1}^{\kappa}P_{a_k}(-1)
+\qquad\text{(Proposition \ref{prop:xi-endpoint-absorption-coefficient})}.
+\]
+\par
+Let the model space \(K_B:=H^2\ominus BH^2\), and define the endpoint evaluation functional \(L_{-1}:K_B\to\CC\) as \(L_{-1}(f):=f(-1)\).
+By Theorem \ref{thm:blaschke-point-spectrum-correspondence}, in the finite Blaschke case, \(\mathcal{H}_{\mathrm{pp}}(A_B)=K_B\), thus \(L_{-1}\) can also be viewed as endpoint evaluation on the point spectrum residual axis.
+Since \(K_B\) is finite-dimensional, \(L_{-1}\) is bounded, and its Julia--Carathéodory index
+\(
+\mathcal{J}_{-1}(B):=\lim_{r\uparrow 1}\frac{1-|B(-r)|^2}{1-r^2}
+\)
+satisfies (Theorem \ref{thm:xi-endpoint-julia-indicator-equals-absorption})
+\[
+\boxed{\;
+\Phi_{-1}(B)=\mathcal{J}_{-1}(B)=\mathrm{tr}\!\bigl(L_{-1}^\ast L_{-1}\bigr)\; }.
+\]
+On the other hand, for the Hardy reproducing kernel vector \(k_{a}(w):=(1-\overline a\,w)^{-1}\) (which is also a point mode reproducing kernel of model space \(K_B\) when \(a\) is a zero of \(B\)), there holds the strict identity
+\[
+\boxed{\;
+\Phi_{-1}(B)
+=\sum_{k=1}^{\kappa}\frac{|k_{a_k}(-1)|^2}{\|k_{a_k}\|_{H^2}^{2}}
+=\sum_{k=1}^{\kappa}\frac{|1+\overline{a_k}|^{-2}}{(1-|a_k|^2)^{-1}}
+=\sum_{k=1}^{\kappa}\frac{1-|a_k|^2}{|1+a_k|^2}\; }.
+\]
+Therefore, \(\Phi_{-1}(B)\) equals the sum of squares of coupling strengths from each point mode on the point spectrum residual axis to endpoint readout, thus strictly formalizing "projection of off-axis information to endpoint" as a finite-sum trace-type invariant.
+\end{theorem}
+
+\begin{proof}
+Since \(K_B\) is a finite-dimensional reproducing kernel space, the Riesz representation of endpoint evaluation \(L_{-1}\) coincides with the Julia index: for the model space reproducing kernel at \(\zeta\in\mathbb{D}\)
+\[
+k_\zeta^B(w):=\frac{1-\overline{B(\zeta)}B(w)}{1-\overline{\zeta}w}\in K_B
+\]
+satisfying
+\(
+\|k_\zeta^B\|_{K_B}^2=k_\zeta^B(\zeta)=\frac{1-|B(\zeta)|^2}{1-|\zeta|^2}
+\).
+Taking \(\zeta=-r\uparrow-1\) and using radial continuability of finite Blaschke, we obtain
+\(
+\|k_{-1}^B\|_{K_B}^2=\mathcal{J}_{-1}(B)
+\);
+and \(L_{-1}^\ast L_{-1}\) is a rank-one operator whose trace satisfies
+\(
+\mathrm{tr}(L_{-1}^\ast L_{-1})=\|k_{-1}^B\|_{K_B}^2
+\).
+Again by Theorem \ref{thm:xi-endpoint-julia-indicator-equals-absorption}, \(\mathcal{J}_{-1}(B)=\Phi_{-1}(B)\).
+\par
+For the point mode coupling sum of squares identity, directly compute
+\(
+k_{a}(-1)=\frac{1}{1+\overline a}
+\), and \(\|k_a\|_{H^2}^2=\frac{1}{1-|a|^2}\).
+Substituting and summing over \(a=a_k\) yields the conclusion. Proven.
+\end{proof}
+
+\paragraph{Full-matrix limit of negative spectrum: Pick--Poisson Gram matrix and pseudohyperbolic Vandermonde invariant}
+The previous paragraph interprets endpoint flux \(\Phi_{-1}(B)\) as the sum of squares of point mode coupling strengths to endpoint readout (Theorem \ref{thm:xi-endpoint-flux-pointmode-coupling}), thus only reading out the \emph{diagonal} total quantity (trace invariant) of the negative spectrum.
+This paragraph further indicates: in the semiclassical limit, the entire negative spectrum of the Toeplitz certificate is not encoded only by diagonal Poisson weights but is fully encoded by an explicit Pick--Poisson Gram matrix; its determinant gives a complete invariant that is simultaneously sensitive to "near-boundary/collision."
+
+\begin{proposition}[Full-matrix limit of negative spectrum matrix: lifting from diagonal Poisson weights to Pick--Poisson Gram matrix]\label{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram}
+Let the point defects be given by the finite Blaschke zero multiset \(\{a_j\}_{j=1}^{\kappa}\subset\mathbb{D}\) (expanded by multiplicity), and let \(\mathbf{T}_N\) be the corresponding Carathéodory/Toeplitz principal submatrix (\(\mathbf{T}_N=(c_{j-k})_{0\le j,k\le N}\)).
+For each \(a\in\mathbb{D}\), define the truncated reproducing vector
+\[
+v_a^{(N)}:=(1,\overline a,\overline a^{\,2},\dots,\overline a^{\,N})^{\mathsf T}\in\CC^{N+1},
+\qquad
+\mathcal{K}_N:=\Span\{v_{a_j}^{(N)}:1\le j\le\kappa\}\subset\CC^{N+1}.
+\]
+Then there exists a family of linear isomorphisms \(R_N:\CC^\kappa\to\mathcal{K}_N\) (induced by fixed basis choice) such that as \(N\to\infty\) and \(N(1-|a_j|)\to\infty\) (for all \(j\)), there holds operator norm convergence
+\[
+\boxed{\;
+R_N^\ast\bigl(\mathbf{T}_N|_{\mathcal{K}_N}\bigr)R_N\ \longrightarrow\ -\,\mathsf{P}\;}
+\]
+where the limit matrix \(\mathsf{P}\in\Mat_{\kappa}(\CC)_{\mathrm{Herm}}\) is the Pick--Poisson Gram matrix
+\begin{equation}\label{eq:xi-pick-poisson-gram}
+\boxed{\;
+\mathsf{P}_{jk}
+:=
+\frac{(1-|a_j|^2)(1-|a_k|^2)}{(1+\overline a_j)(1+a_k)(1-\overline a_j a_k)}
+\qquad(1\le j,k\le\kappa).\;}
+\end{equation}
+This matrix is positive semi-definite; when \(\{a_j\}\) are pairwise distinct, it is positive definite.
+Moreover, diagonal entries satisfy
+\[
+\mathsf{P}_{jj}=\frac{1-|a_j|^2}{|1+a_j|^2}=P_{a_j}(-1),
+\]
+thus \(\mathrm{tr}(\mathsf{P})=\sum_{j=1}^{\kappa}P_{a_j}(-1)=\Phi_{-1}(B)\) consistent with the trace identity in Theorem \ref{thm:xi-endpoint-flux-pointmode-coupling}.
+\end{proposition}
+\begin{proof}[Proof sketch]
+By \(\langle k_{a_j},k_{a_k}\rangle_{H^2}=(1-\overline a_j a_k)^{-1}\) and the weight factor
+\(
+u(a):=\frac{1-|a|^2}{1+\overline a}
+\),
+one can write \(\mathsf P\) as the Gram of weighted reproducing kernels:
+\(
+\mathsf P_{jk}=\langle u(a_j)k_{a_j},u(a_k)k_{a_k}\rangle_{H^2}
+\),
+thus positive semi-definiteness is immediate.
+On the other hand, under the finite defect framework, the Toeplitz negative subspace is generated by model space point modes in Hardy basis truncation (Theorem \ref{thm:xi-toeplitz-witness-generated-by-model-space}), and when \(N(1-|a_j|)\to\infty\), truncation error in operator norm sense can be controlled by \(|a_j|^{N}\) and vanishes; restricting the Toeplitz quadratic form to \(\mathcal K_N\) and normalizing under a fixed basis yields the stated limit. Proven.
+\end{proof}
+
+\begin{proposition}[Complete invariant via negative spectrum determinant: factorization law of Poisson weights and pseudohyperbolic Vandermonde]\label{prop:xi-pick-poisson-det-factorization}
+Following the setting of Proposition \ref{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram}.
+Let the pseudohyperbolic distance
+\[
+\rho(a,b):=\left|\frac{a-b}{1-\overline b a}\right|\qquad(a,b\in\mathbb{D}).
+\]
+Then the determinant of the Pick--Poisson Gram matrix \(\mathsf P\) has the closed-form factorization
+\[
+\boxed{\;
+\det\mathsf P
+=\Bigl(\prod_{j=1}^{\kappa}\frac{1-|a_j|^2}{|1+a_j|^2}\Bigr)
+\Bigl(\prod_{1\le j<k\le\kappa}\rho(a_j,a_k)^2\Bigr).\;}
+\]
+Moreover, let \(\{\lambda_1^-(\mathbf{T}_N),\dots,\lambda_\kappa^-(\mathbf{T}_N)\}\) be the \(\kappa\) negative eigenvalues of \(\mathbf{T}_N\) (counted with multiplicity, existing for \(N\gg 1\) and guaranteed by Theorem \ref{thm:xi-toeplitz-negative-squares-equals-blaschke-defect}), then there holds the product limit
+\[
+\boxed{\;
+\lim_{N\to\infty}\ \prod_{j=1}^{\kappa}\bigl(-\lambda_j^{-}(\mathbf{T}_N)\bigr)\ =\ \det\mathsf P. \;}
+\]
+This product law degenerates strictly for both zero collisions (\(\rho(a_j,a_k)\to 0\)) and near-boundary (\(|a_j|\uparrow 1\)), thus giving a global complete invariant of point defects (in the semiclassical limit sense).
+\end{proposition}
+\begin{proof}[Proof sketch]
+Write \(\mathsf P\) as the congruence transformation of diagonal scaling and standard reproducing kernel Gram:
+\[
+\mathsf P
+=D\,G\,D^\ast,
+\qquad
+D:=\mathrm{diag}\!\left(\frac{1-|a_j|^2}{1+\overline a_j}\right)_{j=1}^{\kappa},
+\qquad
+G_{jk}:=\frac{1}{1-\overline a_j a_k}.
+\]
+By the standard formula for Cauchy determinant/kernel Gram, \(\det G=\bigl(\prod_j(1-|a_j|^2)^{-1}\bigr)\prod_{j<k}\rho(a_j,a_k)^2\).
+Combining with \(\det D=\prod_j\frac{1-|a_j|^2}{1+\overline a_j}\) yields the stated factorization.
+The product limit follows from the operator norm convergence in Proposition \ref{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram}: negative spectrum on \(\mathcal K_N\) converges continuously to \(-\mathsf P\), thus the product of negative eigenvalues converges to \(\det\mathsf P\). Proven.
+\end{proof}
+
+\begin{corollary}[Explicit lower bound on Pick--Poisson minimal spectral gap: sealed by endpoint flux and pseudohyperbolic separation]\label{cor:xi-pick-poisson-gap-lower-bound}
+Following the setting of Propositions \ref{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram}--\ref{prop:xi-pick-poisson-det-factorization}, denote
+\[
+p_j:=\mathsf P_{jj}=P_{a_j}(-1)=\frac{1-|a_j|^2}{|1+a_j|^2},
+\qquad
+\rho_{jk}:=\rho(a_j,a_k).
+\]
+Then \(\mathsf P\) is positive definite and its minimal eigenvalue satisfies the auditable lower bound
+\[
+\boxed{\;
+\lambda_{\min}(\mathsf P)\ \ge\ \frac{\det\mathsf P}{\bigl(\mathrm{tr}\,\mathsf P\bigr)^{\kappa-1}}
+\ =\
+\frac{\Bigl(\prod_{j=1}^{\kappa}p_j\Bigr)\Bigl(\prod_{1\le j<k\le\kappa}\rho_{jk}^2\Bigr)}
+{\Bigl(\sum_{j=1}^{\kappa}p_j\Bigr)^{\kappa-1}}\; }.
+\]
+Therefore, as long as endpoint flux does not collapse (\(\sum_j p_j>0\)) and spectrum points remain separated (\(\rho_{jk}>0\)), the spectral gap of \(\mathsf P\) has a strictly positive lower bound; when any \(p_j\to0\) or \(\rho_{jk}\to0\), this lower bound degenerates strictly, giving a quantitative certificate of "near-boundary/collision \(\Rightarrow\) spectral gap collapse."
+\end{corollary}
+\begin{proof}
+Let \(\lambda_1\le\cdots\le\lambda_\kappa\) be the eigenvalues of \(\mathsf P\), then
+\(
+\det\mathsf P=\prod_{i=1}^{\kappa}\lambda_i
+\le \lambda_1\,(\sum_{i=1}^{\kappa}\lambda_i)^{\kappa-1}
+=\lambda_{\min}(\mathsf P)\,(\mathrm{tr}\,\mathsf P)^{\kappa-1}
+\).
+Rearranging gives the first formula; the second follows from the determinant factorization in Proposition \ref{prop:xi-pick-poisson-det-factorization} and \(\mathrm{tr}\,\mathsf P=\sum_j p_j\). Proven.
+\end{proof}
+
+\begin{proposition}[Negative spectrum margin for finite-order certificates: stable visibility threshold of Toeplitz negative eigenvalues]\label{prop:xi-toeplitz-negative-spectrum-margin-threshold}
+Following the notation of Proposition \ref{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram}, let
+\[
+A_N:=R_N^\ast\bigl(\mathbf{T}_N|_{\mathcal K_N}\bigr)R_N\in\Mat_{\kappa}(\CC)_{\mathrm{Herm}},
+\qquad
+\varepsilon_N:=\|A_N+\mathsf P\|_{\mathrm{op}}.
+\]
+If for some \(N\) there holds
+\[
+\varepsilon_N\ <\ \frac12\,\lambda_{\min}(\mathsf P),
+\]
+then the stable margin conclusion holds:
+\[
+\boxed{\;
+\nu_-\!\bigl(\mathbf{T}_N\bigr)=\kappa,
+\qquad
+\lambda_i^{-}(\mathbf{T}_N)\ \le\ -\frac12\,\lambda_{\min}(\mathsf P)\quad(1\le i\le \kappa).\;}
+\]
+Therefore, finite-order Toeplitz certificates not only reveal the defect index \(\kappa\) in dimension but also possess a uniform negative margin in spectral amplitude; this margin is completely sealed by the algebraic lower bound of endpoint Poisson weights and pseudohyperbolic separation (Corollary \ref{cor:xi-pick-poisson-gap-lower-bound}).
+\end{proposition}
+\begin{proof}[Proof sketch]
+By Weyl's inequality, eigenvalues of \(A_N\) differ from those of \(-\mathsf P\) by at most \(\varepsilon_N\) pointwise.
+Therefore, when \(\varepsilon_N<\lambda_{\min}(\mathsf P)/2\), \(A_N\) is negative definite and all its eigenvalues are \(\le-\lambda_{\min}(\mathsf P)/2\).
+This means the quadratic form \(x\mapsto x^\ast\mathbf{T}_N x\) on \(\mathcal K_N\) is strictly negative definite with uniform margin, thus \(\mathbf{T}_N\) has at least \(\kappa\) negative eigenvalues and its \(\kappa\)-th smallest eigenvalue does not exceed \(-\lambda_{\min}(\mathsf P)/2\).
+On the other hand, under finite defect framework, the Toeplitz negative squares index is \(\kappa\), so for any \(N\) we must have \(\nu_-(\mathbf{T}_N)\le \kappa\); combining yields \(\nu_-(\mathbf{T}_N)=\kappa\).
+Thus all \(\kappa\) negative eigenvalues of \(\mathbf{T}_N\) are at most \(-\lambda_{\min}(\mathsf P)/2\). Proven.
+\end{proof}
+
+\begin{corollary}[Closed-form threshold for visibility complexity: minimal order determined jointly by shallowest depth and weakest separation]\label{cor:xi-toeplitz-visibility-complexity-threshold}
+Following the setting of Proposition \ref{prop:xi-toeplitz-negative-spectrum-margin-threshold}, denote the shallowest depth
+\(
+h_{\min}:=\min_j(1-|a_j|).
+\)
+If there exist constants \(c,C_0>0\) such that the error term satisfies
+\[
+\varepsilon_N\ \le\ C_0\,\exp(-cNh_{\min})\qquad(N\ge 1),
+\]
+then there exists a constant \(C>0\) such that when
+\[
+\boxed{\;
+N\ \ge\ \frac{C}{h_{\min}}\Biggl[
+\log(1+C_0)\ +\ (\kappa-1)\log\!\Bigl(\sum_{j=1}^{\kappa}p_j\Bigr)
+\ -\ \sum_{j=1}^{\kappa}\log p_j
+\ -\ 2\!\!\sum_{1\le j<k\le\kappa}\!\!\log\rho_{jk}
+\Biggr]\;}
+\]
+it necessarily holds that \(\nu_-(\mathbf{T}_N)=\kappa\).
+This threshold unifies "closer to horizon harder to reveal" and "spectrum collision harder to reveal" into a single complexity law: depth and separation jointly determine the minimal certificate order in logarithmic potential manner.
+\end{corollary}
+\begin{proof}[Proof sketch]
+By Proposition \ref{prop:xi-toeplitz-negative-spectrum-margin-threshold}, we only need \(\varepsilon_N<\lambda_{\min}(\mathsf P)/2\).
+Substituting the lower bound from Corollary \ref{cor:xi-pick-poisson-gap-lower-bound} for \(\lambda_{\min}(\mathsf P)\), and solving \(N\) from
+\(\varepsilon_N\le C_0e^{-cNh_{\min}}\) yields a sufficient condition; constant \(C\) absorbs fixed terms like \(c^{-1}\) and \(\log 2\). Proven.
+\end{proof}
+
+\begin{proposition}[Scaling law for negative spectrum determinant stability: Poisson--Vandermonde covariance under uniform scaling]\label{prop:xi-pick-poisson-det-scaling-law}
+Let \(\mathcal{C}(z)=\frac{z-\mathrm{i}}{z+\mathrm{i}}\) be the Cayley transform from upper half-plane to unit disk, and \(\mathcal{C}^{-1}(w)=\mathrm{i}\frac{1+w}{1-w}\).
+For any \(m>0\), define the disk automorphism
+\[
+\phi_m(w):=\mathcal{C}\!\bigl(m\,\mathcal{C}^{-1}(w)\bigr),
+\]
+which corresponds to uniform scaling \(z\mapsto mz\) on the upper half-plane and fixes endpoint \(-1=\mathcal{C}(0)\).
+Let \(a_j(m):=\phi_m(a_j)\), and let \(\mathsf P(m)\) be the Pick--Poisson Gram matrix constructed from \(\{a_j(m)\}\) via \eqref{eq:xi-pick-poisson-gram}.
+Denote \(p_j(m):=P_{a_j(m)}(-1)\), \(\rho_{jk}(m):=\rho(a_j(m),a_k(m))\).
+Then for all \(m>0\) there holds the covariant factorization
+\[
+\boxed{\;
+\det\mathsf P(m)
+=\Bigl(\prod_{j=1}^{\kappa}p_j(m)\Bigr)\Bigl(\prod_{1\le j<k\le\kappa}\rho_{jk}(m)^2\Bigr).\;}
+\]
+Moreover, \(\rho_{jk}(m)=\rho_{jk}\) (pseudohyperbolic distance is invariant under disk automorphisms), and
+\[
+\boxed{\;p_j(m)=m^{-1}p_j,\qquad \det\mathsf P(m)=m^{-\kappa}\det\mathsf P.\;}
+\]
+Therefore, the function \(s=\log m\mapsto -\log\det\mathsf P(e^s)\) is affine (hence convex), giving a deterministic dissipation direction for the scaling flow on "negative spectrum volume" (\(\det\mathsf P\)).
+\end{proposition}
+\begin{proof}[Proof sketch]
+The first formula is the pointwise application of the same factorization in Proposition \ref{prop:xi-pick-poisson-det-factorization} on \(\{a_j(m)\}\).
+Disk automorphisms preserve pseudohyperbolic distance is a classical fact, so \(\rho_{jk}(m)=\rho_{jk}\).
+\par
+To prove \(p_j(m)=m^{-1}p_j\), denote \(z=\mathcal{C}^{-1}(w)=x+\mathrm{i}y\).
+Direct calculation gives
+\[
+P_{w}(-1)=\frac{1-|w|^2}{|1+w|^2}
+=\frac{y}{x^2+y^2}
+=\frac{\Im z}{|z|^2}.
+\]
+Under scaling \(z\mapsto mz\), \(\Im(mz)=m\Im z\), \(|mz|^2=m^2|z|^2\), thus
+\(
+P_{\phi_m(w)}(-1)=\Im(mz)/|mz|^2=m^{-1}\Im z/|z|^2
+=m^{-1}P_w(-1)
+\).
+For \(w=a_j\) this gives \(p_j(m)=m^{-1}p_j\), thus \(\det\mathsf P(m)=m^{-\kappa}\det\mathsf P\).
+The last statement follows by taking logarithm. Proven.
+\end{proof}
+
+\begin{definition}[Generalized defect entropy (negative spectrum volume potential)]\label{def:xi-generalized-defect-entropy-logdet}
+Under the finite point defect setting of Proposition \ref{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram}, define the Pick--Poisson negative spectrum volume potential (also called generalized defect entropy)
+\[
+\boxed{\;
+S_{\mathrm{gen}}
+:=\mathcal{E}
+:=-\log\det\mathsf P\; }.
+\]
+\end{definition}
+
+\begin{corollary}[Pick--Poisson negative spectrum volume "Coulomb energy" factorization: self-energy + interaction energy]\label{cor:xi-pick-poisson-energy-coulomb-decomposition}
+Following the notation of \(\mathsf P\), let endpoint Poisson weights \(p_j:=P_{a_j}(-1)\), pseudohyperbolic distance \(\rho_{jk}:=\rho(a_j,a_k)\).
+Then there holds the strict energy factorization
+\[
+\boxed{\;
+\mathcal{E}
+=\sum_{j=1}^{\kappa}\bigl(-\log p_j\bigr)\ +\ 2\sum_{1\le j<k\le\kappa}\bigl(-\log\rho_{jk}\bigr).\;}
+\]
+The first term is endpoint self-energy (single-point Busemann/Poisson cost), the second is interaction energy (pseudohyperbolic mutual interaction).
+Therefore, in the semiclassical limit, the entire logarithmic potential of Toeplitz certificate negative spectrum is strictly sealed by two parts: "endpoint absorption + inter-point interaction," without need for additional continuous parameters.
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:xi-pick-poisson-det-factorization},
+\(
+\det\mathsf P=(\prod_j p_j)(\prod_{j<k}\rho_{jk}^2)
+\);
+taking negative logarithm of both sides yields the result. Proven.
+\end{proof}
+
+\begin{proposition}[Submultiplicativity for unions and cross-interaction terms: strict superadditivity of negative spectrum energy]\label{prop:xi-pick-poisson-union-submultiplicativity-cross-energy}
+Let the defect point multiset decompose into disjoint union \(A\sqcup B\) (counted with multiplicity).
+Denote corresponding Pick--Poisson Gram matrices as \(\mathsf P(A)\), \(\mathsf P(B)\), \(\mathsf P(A\cup B)\).
+Then there holds the exact identity
+\[
+\boxed{\;
+-\log\det\mathsf P(A\cup B)
+=-\log\det\mathsf P(A)-\log\det\mathsf P(B)
+\;+\;2\sum_{a\in A}\sum_{b\in B}\bigl(-\log\rho(a,b)\bigr).\;}
+\]
+Since \(\rho(a,b)\in(0,1)\), the cross term is strictly nonnegative, thus yielding the submultiplicative law
+\[
+\boxed{\;
+\det\mathsf P(A\cup B)\ \le\ \det\mathsf P(A)\,\det\mathsf P(B).\;}
+\]
+Moreover, equality can only be achieved in the limiting sense (\(\rho(a,b)\to 1\) for all cross pairs).
+Therefore, union energy is strictly greater than the sum of component energies, with the gap completely determined by cross pseudohyperbolic separation.
+\end{proposition}
+\begin{proof}
+Apply the factorization in Proposition \ref{prop:xi-pick-poisson-det-factorization} to the set \(A\cup B\), and split the double product into "within-set pairs + cross pairs" to obtain the identity;
+submultiplicativity follows from the cross term being nonnegative. Proven.
+\end{proof}
+
+\begin{corollary}[Extremal upper bound on negative spectrum volume: optimal achievability under fixed endpoint flux]\label{cor:xi-pick-poisson-energy-fixed-flux-extremal}
+Denote total endpoint flux \(p_\Sigma:=\mathrm{tr}(\mathsf P)=\sum_{j=1}^{\kappa}p_j\).
+Then there holds
+\[
+\boxed{\;
+\det\mathsf P\ \le\ \prod_{j=1}^{\kappa}p_j\ \le\ \left(\frac{p_\Sigma}{\kappa}\right)^{\kappa},\;}
+\]
+thus
+\[
+\boxed{\;
+\mathcal{E}=-\log\det\mathsf P\ \ge\ \kappa\log\kappa-\kappa\log p_\Sigma.\;}
+\]
+This lower bound approaches its infimum in the sense of "weights tending to uniformity and points to limiting separation," indicating that under fixed endpoint flux constraint, the optimal achievability of negative spectrum volume is jointly determined by uniformization (weights) and limiting separation (geometry).
+\end{corollary}
+\begin{proof}
+By \(\rho_{jk}\le 1\), \(\det\mathsf P\le \prod_j p_j\).
+Then by AM--GM inequality \(\prod_j p_j\le (p_\Sigma/\kappa)^\kappa\), yielding the stated upper bound;
+taking negative logarithm gives the energy lower bound. Proven.
+\end{proof}
+
+\begin{corollary}[Spectral norm seal and explicit condition number bound: unified pathological fraction for near-boundary/collision]\label{cor:xi-pick-poisson-condition-number-certificate}
+The matrix \(\mathsf P\) is a Gram matrix, and \(|\mathsf P_{jk}|\le \sqrt{p_jp_k}\).
+Therefore, its spectral norm satisfies the uniform upper bound
+\[
+\boxed{\;
+\lambda_{\max}(\mathsf P)\ \le\ \mathrm{tr}(\mathsf P)=p_\Sigma.\;}
+\]
+Combining with the spectral gap lower bound in Corollary \ref{cor:xi-pick-poisson-gap-lower-bound}, we obtain the condition number seal
+\[
+\boxed{\;
+\kappa(\mathsf P):=\frac{\lambda_{\max}(\mathsf P)}{\lambda_{\min}(\mathsf P)}
+\ \le\
+\frac{p_\Sigma^{\kappa}}{\bigl(\prod_{j}p_j\bigr)\bigl(\prod_{j<k}\rho_{jk}^2\bigr)}.\;}
+\]
+Thus, pathology induced by "near-boundary" (\(p_j\downarrow 0\)) and "collision" (\(\rho_{jk}\downarrow 0\)) is strictly captured at the operator level by the same fractional invariant.
+\end{corollary}
+\begin{proof}
+By positive definiteness, \(\lambda_{\max}\le \mathrm{tr}\).
+Using \(\lambda_{\min}\ge \det/(\mathrm{tr})^{\kappa-1}\) (Corollary \ref{cor:xi-pick-poisson-gap-lower-bound}) and substituting the factorization of \(\det\mathsf P\) yields the result. Proven.
+\end{proof}
+
+\begin{corollary}[Logarithmic volume of Toeplitz negative spectrum: existence of limit for finite-order certificate "negative cone capacity"]\label{cor:xi-toeplitz-negative-log-volume-limit}
+Assume \(\mathbf{T}_N\) enters the stable visibility interval, thus having \(\kappa\) negative eigenvalues
+\(\lambda_1^{-}(\mathbf{T}_N)\le\cdots\le\lambda_{\kappa}^{-}(\mathbf{T}_N)<0\).
+Define negative cone capacity (logarithmic volume)
+\[
+\mathcal{V}_N:=\sum_{j=1}^{\kappa}\log\bigl(-\lambda_j^{-}(\mathbf{T}_N)\bigr).
+\]
+Then in the semiclassical limit \(N\to\infty\) and \(N(1-|a_j|)\to\infty\) (for all \(j\)), the limit exists and satisfies
+\[
+\boxed{\;
+\lim_{N\to\infty}\mathcal{V}_N=\log\det\mathsf P.\;}
+\]
+Therefore, \(\log\det\mathsf P\) is not only the limit of the product of negative eigenvalues (Proposition \ref{prop:xi-pick-poisson-det-factorization}) but also the strict limit invariant of "finite-order certificate negative subspace volume"; its degeneracy mechanism is completely classified by the energy factorization in Corollary \ref{cor:xi-pick-poisson-energy-coulomb-decomposition}.
+\end{corollary}
+\begin{proof}[Proof sketch]
+By Proposition \ref{prop:xi-pick-poisson-det-factorization},
+\(
+\prod_{j=1}^{\kappa}(-\lambda_j^{-}(\mathbf{T}_N))\to \det\mathsf P
+\).
+On the other hand, under the margin condition of Proposition \ref{prop:xi-toeplitz-negative-spectrum-margin-threshold},
+\(-\lambda_j^{-}(\mathbf{T}_N)\ge \lambda_{\min}(\mathsf P)/2>0\),
+thus the logarithm is well-defined and continuous with respect to limits; taking logarithm yields the conclusion. Proven.
+\end{proof}
+
+\begin{proposition}[Spectral stability under boundary density perturbation: negative spectrum eigenvalues Lipschitz under \texorpdfstring{$L^1$}{L1} perturbation in separation domain]\label{prop:xi-boundary-density-perturbation-spectral-stability}
+Let basepoint scanning profiles \(H\) be as defined in Definition \ref{def:xi-basepoint-scan-profile}, and assume two groups of finite point defects induce \(H,\widetilde H\).
+Assume both parameter groups are in the separation domain: there exist \(\rho_0>0\), \(p_0>0\) such that
+\(
+\rho_{\min}\ge \rho_0
+\)
+and
+\(
+\sum_j p_j\ge p_0
+\)
+(for both groups).
+Then there exists a constant \(C=C(\kappa,\rho_0,p_0)\) such that the corresponding Pick--Poisson matrices satisfy
+\[
+\boxed{\;
+\|\mathsf P-\widetilde{\mathsf P}\|_{\mathrm{op}}
+\ \le\ C\,\|H-\widetilde H\|_{L^1(\RR)}.\;}
+\]
+Thus in the stable visibility interval, Toeplitz negative eigenvalues satisfy a Weyl-type stability bound
+\[
+\boxed{\;
+\max_{1\le j\le\kappa}\bigl|\lambda_j^{-}(\mathbf{T}_N)-\widetilde\lambda_j^{-}(\widetilde{\mathbf{T}}_N)\bigr|
+\ \le\ C\,\|H-\widetilde H\|_{L^1(\RR)}\ +\ o_N(1),\;}
+\]
+where \(o_N(1)\to 0\) is the certificate truncation error (controlled by \(\varepsilon_N\)).
+This conclusion strictly linearizes "boundary visible perturbation" and "certificate negative spectrum perturbation" in the separation domain, giving an auditable robustness seal.
+\end{proposition}
+\begin{proof}[Proof sketch]
+In the separation domain with fixed \(\kappa\) and away from near-boundary/collision degeneracy, the map \(\{a_j\}\mapsto H\mapsto \mathsf P\) is smooth and has uniformly bounded derivatives on compact domains;
+by compactness and mean value theorem, we obtain Lipschitz constant control for \(L^1\) perturbation, thus deriving the linear upper bound for \(\|\mathsf P-\widetilde{\mathsf P}\|_{\mathrm{op}}\).
+For Toeplitz negative spectrum, first use Proposition \ref{prop:xi-toeplitz-negative-spectrum-pick-poisson-gram} to align its restriction on the negative subspace with \(-\mathsf P\), then use Weyl's inequality and truncation error \(\varepsilon_N=o(1)\) to obtain the second formula. Proven.
+\end{proof}
+
+\input{subsubsec__xi-pick-poisson-image-charge-energy}
+
+\paragraph{Basepoint scanning tomography: shifted Cayley's Cauchy--Poisson profile determines full off-axis zero parameters}
+In fixed charts, off-critical-slice offset undergoes quadratic redshift compression in high-height intervals (Theorem \ref{thm:xi-offcritical-quadratic-radial-compression}), while the comoving chart of shifted Cayley can remove this compression (\S\ref{subsubsec:xi-comoving-defect-delta-bound}).
+The following result elevates this "comoving scanning" to strict inversion: a one-dimensional scanning profile carries all discrete degrees of freedom of two-dimensional zero parameters.
+
+\begin{definition}[Basepoint scanning profile]\label{def:xi-basepoint-scan-profile}
+Let \(\rho_k=\beta_k+\mathrm{i}\gamma_k\) (\(1\le k\le\kappa\)) be a group of off-critical-line zeros (counted with multiplicity), and denote \(\delta_k:=\tfrac12-\beta_k>0\).
+For \(x_0\in\RR\), let its shifted disk image \(w_{\rho_k,x_0}\) be as defined in \eqref{eq:xi-comoving-disk-image}, and let
+\[
+h_{x_0}(\rho_k):=1-|w_{\rho_k,x_0}|^2
+\qquad(\text{comoving depth}).
+\]
+Define the basepoint scanning profile as
+\[
+\boxed{\;
+H(x_0):=\sum_{k=1}^{\kappa}h_{x_0}(\rho_k)\; }.
+\]
+\end{definition}
+
+\begin{proposition}[Closed form of comoving depth]\label{prop:xi-basepoint-depth-closed-form}
+Under the setting of Definition \ref{def:xi-basepoint-scan-profile}, for each \(k\) there holds the strict identity
+\[
+\boxed{\;
+h_{x_0}(\rho_k)=\frac{4\delta_k}{(\gamma_k-x_0)^2+(1+\delta_k)^2}\; }.
+\]
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:xi-comoving-disk-image}, \(w_{\rho_k,x_0}=\mathcal{C}((\gamma_k-x_0)+\mathrm{i}\delta_k)\).
+Applying the modulus gap formula for Cayley compactification \(1-|\,\mathcal{C}(\gamma+\mathrm{i}\delta)\,|^2=\frac{4\delta}{\gamma^2+(1+\delta)^2}\) (closed form part of Theorem \ref{thm:xi-offcritical-quadratic-radial-compression}) to \(\gamma\mapsto \gamma_k-x_0\) yields the result. Proven.
+\end{proof}
+
+\begin{theorem}[Basepoint scanning inversion uniqueness: \texorpdfstring{$H$}{H} determines \texorpdfstring{$\{(\gamma_k,\delta_k)\}$}{(gamma,delta)}]\label{thm:xi-basepoint-scan-inversion-uniqueness}
+Under finite defect setting, \(H\) is a real analytic function of \(x_0\), and has rational meromorphic continuation on the complex plane:
+its pole set (with multiplicity) is exactly
+\[
+x_0=\gamma_k\pm \mathrm{i}(1+\delta_k)\qquad(1\le k\le\kappa).
+\]
+Therefore, given the values of \(H\) on any nontrivial real interval, one can uniquely determine the multiset \(\{(\gamma_k,\delta_k)\}\) (counted with multiplicity).
+In other words, off-axis zeros appear in the scanning variable \(x_0\) as strict Cauchy--Poisson peaks: peak center locates \(\gamma_k\), peak half-width carries \((1+\delta_k)\); the comoving choice \(x_0=\gamma_k\) decouples \(\delta_k\) from quadratic redshift compression and reveals it at linear scale (see \eqref{eq:xi-comoving-pure-delta}).
+\end{theorem}
+
+\begin{proof}
+By Proposition \ref{prop:xi-basepoint-depth-closed-form},
+\(
+H(x_0)=\sum_k \frac{4\delta_k}{(\gamma_k-x_0)^2+(1+\delta_k)^2}
+\).
+Each term is a constant multiple of upper half-plane Poisson kernel, hence is the boundary imaginary part of some rational Herglotz function; viewing \(x_0\) as complex variable gives its meromorphic continuation, with denominator vanishing yielding pole locations \(x_0=\gamma_k\pm \mathrm{i}(1+\delta_k)\).
+If two parameter groups yield the same \(H\) on a real interval, then the difference function vanishes on that interval and is the boundary value of a meromorphic function; by analytic continuation uniqueness, its meromorphic extension is identically zero, thus pole sets (with multiplicity) coincide, whence \(\{(\gamma_k,\delta_k)\}\) coincide. Proven.
+\end{proof}
+
+\paragraph{Equivariant obstruction triangular alignment: unification of \texorpdfstring{$\deg(B)$}{deg(B)}, Maslov index, and Pontryagin negative squares}
+\begin{theorem}[Triple unification of point obstruction]\label{thm:xi-tate-maslov-pontryagin-unification}
+Under the finite defect and no singular inner factor framework of this section, the point equivariant obstruction is the same integer \(\kappa\), and
+\[
+\boxed{\;
+\kappa=\deg(B_{F_{\zeta}})
+=\dim K_{B_{F_{\zeta}}}
+=\dim\mathcal{H}_{\mathrm{pp}}(A_{B_{F_{\zeta}}})
+=\nu_-(\mathbf{T}_N)\ \ (N\gg 1)\;}
+\]
+where \(\dim K_{B_{F_{\zeta}}}=\mathfrak d_{\mathrm{Bl}}(F_{\zeta})\) is given by Definition \ref{def:blaschke-defect-dimension},
+\(\dim\mathcal{H}_{\mathrm{pp}}(A_{B_{F_{\zeta}}})=\deg(B_{F_{\zeta}})\) is given by Theorem \ref{thm:blaschke-point-spectrum-correspondence},
+and the stability \(\nu_-(\mathbf{T}_N)=\kappa\) is given by Theorem \ref{thm:xi-toeplitz-negative-squares-equals-blaschke-defect}.
+In the \(\ZZ/2\)-equivariant uniformization semantics, this \(\kappa\) is exactly the point-like (Maslov/Toeplitz/Fredholm) integer part of the Tate obstruction (Proposition \ref{prop:selfdual-maslov-singular-dichotomy}), while the continuous part is carried by the singular inner factor \(S_{F_{\zeta}}\); under the \(S_{F_{\zeta}}\equiv 1\) regular framework of this section, the continuous part vanishes.
+\end{theorem}
+
+\endinput

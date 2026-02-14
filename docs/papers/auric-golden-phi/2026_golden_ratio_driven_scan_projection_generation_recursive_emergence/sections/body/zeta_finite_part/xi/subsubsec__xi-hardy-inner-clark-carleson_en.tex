@@ -1,0 +1,195 @@
+\subsubsection{Hardy--inner factorization horizon semantics: leakage--offset sum, Poisson phase law, and Clark/Carleson certificates}\label{subsubsec:xi-hardy-inner-clark-carleson}
+This paragraph further compresses the semantic conditions of "horizon zero-knowledge--unitary slice" into inner-outer structural constraints in the Hardy/Smirnov factorization, and provides three classes of auditable consequences:
+\textbf{(i)} critical line pure-phase property forces the completed determinant to be an inner function in the right half-plane, so that the outer factor (amplitude leakage) vanishes;
+\textbf{(ii)} the amplitude leakage of approximate unitarity can quantitatively upper-bound the weighted total offset of off-line zeros, and write the phase derivative as a Poisson (Breit--Wigner) kernel superposition;
+\textbf{(iii)} with Clark measures and Carleson/BMO as intermediaries, elevate "worst-case soundness/recovery rate parametrized by challenge seed" to a geometric measure criterion of zero density.
+\par
+This paragraph does not introduce new empirical assumptions; it merely repurposes the factorization language of Appendix \S\ref{subsec:unit-disk-inner-outer} and Subsubsection \ref{subsubsec:selfdual-blaschke-defect-fixed-slice} under the bounded type (or Smirnov) regime, and switches between half-plane and disk formulations via the Cayley transform.
+
+\paragraph{Half-plane regime and disk notation}
+Denote the right half-plane by
+\[
+\mathbb{H}_{1/2}:=\{s\in\mathbb{C}:\ \Re(s)>\tfrac12\}.
+\]
+Suppose \(D(s)\) is analytic on \(\mathbb{H}_{1/2}\) and of bounded type, and satisfies the reflection symmetry
+\begin{equation}\label{eq:xi-inner-reflection-symmetry}
+\boxed{\;D(s)=\overline{D(1-\overline{s})}\;}
+\end{equation}
+(this form is isomorphic to the determinant reflection symmetry of Proposition \ref{prop:xi-hzom-functional-equation}).
+Let the shifted variable \(w:=s-\tfrac12\) send \(\mathbb{H}_{1/2}\) to the standard right half-plane \(\Re(w)>0\);
+then apply the Cayley transform to send it to the unit disk \(\mathbb{D}\), obtaining the disk-ified function \(\mathfrak{D}\) (defined up to composition isomorphism), and take its nontangential boundary value representative on \(\TT=\partial\mathbb{D}\).
+
+\begin{theorem}[Hardy--inner characterization: horizon zero-knowledge unitarity eliminates outer factor]\label{thm:xi-hardy-inner-characterization}
+Under the above setting, if the "no amplitude leakage" condition of horizon zero-knowledge holds on the critical line, i.e., for almost every \(t\in\mathbb{R}\) we have
+\[
+\boxed{\ |D(\tfrac12+it)|=1\ },
+\]
+then \(D\) is an inner function on \(\mathbb{H}_{1/2}\): its Hardy regular boundary value exists and belongs to \(L^\infty(\mathbb{R})\).
+Equivalently, the disk-ification \(\mathfrak{D}\) is a disk inner function and has the unique (canonical) factorization
+\[
+\boxed{\;
+\mathfrak{D}(z)=e^{i\beta}\,B(z)\,S(z)\;},
+\]
+where \(B\) is the Blaschke product formed by zeros inside the disk, \(S\) is the singular inner factor, and the outer factor degenerates to a constant phase factor of modulus \(1\).
+\end{theorem}
+\begin{proof}[Proof outline]
+A disk-ified function of bounded type has the canonical inner-outer decomposition \(\mathfrak{D}=B\,S\,O\) (Appendix \S\ref{subsec:unit-disk-inner-outer}).
+Critical line pure-phase property is equivalent to \(|\mathfrak{D}(e^{i\theta})|=1\) almost everywhere, so the outer factor \(O\) determined by the boundary modulus must be a constant phase.
+Thus \(\mathfrak{D}\) is an inner function and can be written as \(e^{i\beta}BS\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Leakage--zero offset sum: outer factor logarithmic modulus upper-bounds off-line zero offset]\label{prop:xi-leakage-zero-offset-sum}
+In the generalized case of Theorem \ref{thm:xi-hardy-inner-characterization}, do not assume \(|D(\tfrac12+it)|=1\).
+Let
+\[
+L:=\frac{1}{2\pi}\int_{-\infty}^{\infty}\log |D(\tfrac12+it)|\,\frac{\dd t}{1+t^2},
+\]
+and assume \(\log|D(\tfrac12+it)|\in L^1((1+t^2)^{-1}\dd t)\).
+Then the set of off-line zeros in the right half-plane \(\{\rho\in\mathbb{H}_{1/2}:D(\rho)=0\}\) satisfies the offset sum inequality
+\[
+\boxed{\;
+\sum_{\rho:\Re(\rho)>\frac12}\frac{\Re(\rho)-\frac12}{1+(\Im(\rho))^2}\ \le\ L.\;}
+\]
+Moreover, equality holds if and only if the singular inner factor is trivial and the outer factor is completely determined by the critical line modulus.
+\end{proposition}
+\begin{proof}[Proof outline]
+Disk-ify \(D\) to \(\mathfrak{D}\) and take its inner-outer decomposition \(\mathfrak{D}=BSO\).
+The Poisson integral of the logarithmic modulus at the base point gives the harmonic value of \(\log|O|\); and the Blaschke condition relates the sum of distances from zeros to the boundary to this harmonic value.
+Choosing the base point corresponding to the weight \((1+t^2)^{-1}\) on \(\mathbb{H}_{1/2}\) yields the stated inequality. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Poisson superposition law of critical line phase derivative: zero contributions are Breit--Wigner kernels]\label{prop:xi-phase-derivative-poisson-superposition}
+Still in the bounded type regime, let \(\Theta(t):=\arg D(\tfrac12+it)\) be taken as a differentiable representative (in the almost-everywhere sense).
+Then there exists a non-negative finite measure \(\mu\) (corresponding to the singular inner factor) such that for almost every \(t\) we have
+\[
+\boxed{\;
+\Theta'(t)=
+\sum_{\rho:\Re(\rho)>\frac12}
+\frac{\Re(\rho)-\frac12}{(t-\Im(\rho))^2+(\Re(\rho)-\frac12)^2}
+\ +\ \frac{\dd\mu}{\dd t}(t)\;}
+\]
+where the sum converges by the Blaschke condition, and \(\dd\mu/\dd t\) denotes the absolutely continuous part density of \(\mu\) (if it exists).
+Therefore each off-line zero produces a standard Poisson (Breit--Wigner) kernel profile on the critical line; if the singular inner factor is trivial, then \(\Theta'\) is completely given by the Poisson superposition of off-line zeros.
+\end{proposition}
+\begin{proof}[Proof outline]
+For the disk-ified inner function \(\mathfrak{D}=BS\), differentiate the boundary phase: the Blaschke factor gives the Poisson kernel superposition, and the singular factor gives the boundary derivative term of the singular measure.
+Change variables back to the \(t\)-coordinate to obtain the conclusion. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Horizon semantics of Clark measure: spectral measure parametrized by challenge phase seed]\label{cor:xi-clark-measure-horizon-semantics}
+Let \(\mathfrak{D}\) be the disk-ified inner function of Theorem \ref{thm:xi-hardy-inner-characterization}.
+Then for each \(\alpha\in\TT\) there exists a unique Aleksandrov--Clark measure \(\sigma_\alpha\) such that for all \(z\in\mathbb{D}\) we have
+\[
+\boxed{\;
+\Re\!\left(\frac{\alpha+\mathfrak{D}(z)}{\alpha-\mathfrak{D}(z)}\right)
+=\int_{\TT} P_z(\zeta)\,\dd\sigma_\alpha(\zeta)\;}
+\]
+where \(P_z\) is the Poisson kernel.
+If we interpret \(\alpha\) as the verifier's challenge "phase seed", then:
+\begin{enumerate}
+  \item The singular part of \(\sigma_\alpha\) is non-zero if and only if the singular inner factor is non-trivial (there exists a "spectral spike/zero-measure spike leakage" mechanism);
+  \item Atoms of \(\sigma_\alpha\) correspond to critical-line phase stationary points (equivalent to stable solutions of \(\mathfrak{D}(e^{i\theta})=\alpha\)), which can be viewed as spectralized readout of worst-case soundness situations.
+\end{enumerate}
+\end{corollary}
+
+\begin{theorem}[Conservative system synthesis: inner function \(\Longleftrightarrow\) horizon unitary dilation]\label{thm:xi-inner-iff-conservative-colligation}
+Suppose \(\mathfrak{D}\) is a disk inner function.
+Then there exists a conservative (unitary scattering system in the unitary conjugacy class of a colligation) \(\mathfrak{U}\) such that \(\mathfrak{D}\) is its transfer function; conversely, the transfer function of any conservative system must be an inner function.
+Therefore under the abstract encoding of "horizon interface = scattering, transcription = output", perfect zero-knowledge unitarity is strictly equivalent to "existence of a unified unitary dilation realizing all challenge--response dynamics".
+\end{theorem}
+
+\begin{proposition}[Zero-knowledge entropy production \(\equiv\) outer factor: reversibility forces outer factor to vanish]\label{prop:xi-entropy-production-equals-outer-factor}
+Under the bounded type regime, the disk-ified function has the inner--outer decomposition \(\mathfrak{D}=I\cdot O\).
+Its outer factor satisfies the harmonic extension formula: for almost every boundary point,
+\[
+\boxed{\;
+\log|O(e^{i\theta})|
+=\mathcal{P}\!\bigl(\log|\mathfrak{D}(e^{i\cdot})|\bigr)(\theta)\;}
+\]
+where \(\mathcal{P}\) is the Poisson integral operator.
+If we interpret \(\log|\mathfrak{D}(e^{i\theta})|\) as "entropy production density relative to the visible simulator", then the outer factor is completely equivalent to the harmonic extension of this entropy production;
+in particular, zero entropy production (strict reversibility/detailed balance) holds if and only if the outer factor is constant modulus \(1\), so that \(\mathfrak{D}\) degenerates to a pure inner function and satisfies pure-phase property on the critical line.
+\end{proposition}
+
+\begin{proposition}[Off-critical zeros force transcript length lower bound: resonance offset \(\Rightarrow\) minimum information complexity of near-zero-knowledge]\label{prop:xi-offcritical-zero-forces-transcript-length}
+Suppose \(D\) has an off-line zero \(\rho=\tfrac12+\delta+i\gamma\) (\(\delta>0\)) in \(\mathbb{H}_{1/2}\).
+Assume a family of test statistics on scale parameter \(T\) induced by \(D\) can be realized by transcripts of length at most \(m(T)\),
+and require the protocol family to satisfy total variation \(\varepsilon\)-near-zero-knowledge.
+Then there exists a constant \(c>0\) such that when \(T\asymp|\gamma|\) we must have
+\[
+\boxed{\;
+m(T)\ \ge\ c\,\delta^{-1}\log\!\frac{1}{\varepsilon}\;}
+\]
+otherwise one can construct an amplifiable distinguisher from the Poisson resonance term of Proposition \ref{prop:xi-phase-derivative-poisson-superposition}, making the simulated and real distributions incompatible at the \(\varepsilon\) threshold.
+\end{proposition}
+\begin{proof}[Proof outline]
+The Poisson kernel term induced by the off-line zero on the critical line has an amplifiable structure with peak width \(\asymp\delta\) and peak height \(\asymp\delta^{-1}\);
+if the transcript length is insufficient to resolve this peak at scale \(T\), any simulator will produce incompressible bias in TV distance.
+Aligning this bias with the \(\varepsilon\) constraint yields the \(m(T)\) lower bound of \(\delta^{-1}\log(1/\varepsilon)\) type. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Equivalence of zero density and recovery rate: Carleson/BMO criterion template]\label{thm:xi-carleson-bmo-recovery-template}
+Suppose \(D\) is of bounded type and satisfies the reflection symmetry \eqref{eq:xi-inner-reflection-symmetry}.
+Quantify the near-zero-knowledge recovery rate as: there exists a family of recovery maps such that the error satisfies \(\varepsilon(T)\le e^{-\kappa T}\) (for some \(\kappa>0\)).
+Then the following propositions constitute a standard equivalence template (constants depend only on normalization):
+\begin{enumerate}
+  \item The offset measure of off-line zeros in the right half-plane
+  \[
+  \nu:=\sum_{\rho:\Re(\rho)>\frac12}\bigl(\Re(\rho)-\tfrac12\bigr)\,\delta_{\rho}
+  \]
+  is a Carleson measure, with Carleson norm \(\lesssim \kappa\);
+  \item The critical line logarithmic modulus \(\log|D(\tfrac12+it)|\) belongs to BMO, with BMO norm \(\lesssim \kappa\);
+  \item Zero-free strip width, off-line zero density, and recoverable exponential rate \(\kappa\) mutually control each other on the same scale.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[Protocol interpretation of singular inner factor: zero-measure but amplifiable "information spikes"]\label{rem:xi-singular-inner-factor-information-spikes}
+In the inner function decomposition \(\mathfrak{D}=e^{i\beta}BS\) of Theorem \ref{thm:xi-hardy-inner-characterization},
+the singular inner factor \(S\) is non-trivial if and only if there exists a family of critical-line zero-measure sets \(E\subset\mathbb{R}\) such that the boundary phase of \(\mathfrak{D}\) exhibits spikes/jumps on \(E\) that cannot be approximated by any \(L^2\)-visible statistical smoothing.
+In protocol semantics, this corresponds to "zero-measure but amplifiable" anomalous transcript event families: the simulator cannot uniformly approximate in any operational distance using only horizon data.
+Therefore excluding the singular inner factor can be viewed as a strengthened axiom of zero-knowledge at the zero-measure anomalous event level; once this axiom holds, all non-trivial structure is determined by Blaschke zeros, and the zero--phase relationship is completely characterized by the Poisson superposition law of Proposition \ref{prop:xi-phase-derivative-poisson-superposition}.
+\end{remark}
+
+\begin{proposition}[Analytic discrimination of continuous hair: real analyticity of boundary density \(\Longleftrightarrow\) no singular inner factor (finite point defect regime)]\label{prop:xi-analytic-boundary-density-iff-no-singular-inner}
+Under the setting of Theorem \ref{thm:xi-hardy-inner-characterization}, suppose the disk-ified inner function decomposes as
+\(
+\mathfrak{D}=e^{i\beta}BS
+\).
+Let \(\mu\) be the Herglotz measure corresponding to \(S\), and perform the Lebesgue decomposition
+\(
+\dd\mu=\dd\mu_{\mathrm{ac}}+\dd\mu_{\mathrm{s}}+\sum_j m_j\delta_{\theta_j}
+\).
+Then:
+\begin{enumerate}
+  \item \textbf{(Atoms \(\Rightarrow\) Lorentzian peaks)}
+  The boundary density induced by the Blaschke/atomic part in the Cayley chart is a finite or countable superposition of Lorentzian (Poisson/Breit--Wigner) kernels,
+  thus giving a real analytic function in the "finite point defect" case (see the rational pole--residue inversion of Proposition \ref{prop:xi-phase-derivative-poisson-superposition} and Theorem \ref{thm:xi-offcritical-poisson-herglotz-inversion}).
+  \item \textbf{(Singular inner factor \(\Rightarrow\) singular distribution)}
+  If \(\mu_{\mathrm{s}}\neq 0\), then the boundary phase density (as a distribution) contains an irreducible singular part, and thus cannot be represented by a real analytic function on any non-empty open interval.
+  \item \textbf{(Analyticity discrimination)}
+  Therefore, in the finite point defect regime,
+  "boundary density is a real analytic function on \(\RR\)" is strictly equivalent to "singular inner factor is trivial (\(\mu_{\mathrm{s}}=0\), equivalent to \(S\equiv 1\))";
+  in this case there is a one-to-one correspondence between boundary density and point defect atomic data, which can be unambiguously recovered through the pole--residue structure of rational Herglotz.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof outline]
+The atomic part produces Lorentzian superposition as the discrete terms of the Poisson representation in Proposition \ref{prop:xi-phase-derivative-poisson-superposition};
+for finite point defects this superposition gives rational Herglotz (hence real analytic boundary density) and can be uniquely recovered by pole--residue inversion (Theorem \ref{thm:xi-offcritical-poisson-herglotz-inversion}).
+If \(\mu_{\mathrm{s}}\neq 0\), then its boundary contribution in the measure sense is a singular part, which cannot be identical to any absolutely continuous (let alone real analytic) density;
+thus real analyticity forces \(\mu_{\mathrm{s}}=0\).
+The reverse direction holds directly from the Lorentzian rational representation when \(S\equiv 1\) and finite point defects. This completes the proof.
+\end{proof}
+
+\begin{theorem}["Critical line concentration" and "no singular inner factor" combined criterion: RH-type sufficient condition template]\label{thm:xi-rh-sufficient-template-inner-clark-conservative}
+In the above framework, if the following are satisfied:
+\begin{enumerate}
+  \item \(D\) is of bounded type on \(\mathbb{H}_{1/2}\) and satisfies reflection symmetry \eqref{eq:xi-inner-reflection-symmetry};
+  \item Critical line pure-phase property \(|D(\tfrac12+it)|=1\) holds almost everywhere (thus \(D\) is an inner function, Theorem \ref{thm:xi-hardy-inner-characterization});
+  \item For almost every \(\alpha\in\TT\), the Clark measure \(\sigma_\alpha\) is absolutely continuous (equivalent to trivial singular inner factor);
+\end{enumerate}
+then all non-trivial structure of \(D\) is determined by the Blaschke factor, and off-line zeros and phase velocity satisfy the invertible correspondence of Proposition \ref{prop:xi-phase-derivative-poisson-superposition}.
+Furthermore, if one additionally imposes the right half-plane strict contraction regime induced by "commuting polar decomposition/joint unitary dilation realization of invisible generators" (e.g., Theorem \ref{thm:op-algebra-hzom-commuting-polar-forces-critical-line} or the contraction template of Proposition \ref{prop:xi-hzom-functional-equation}), then the no-zero event of \(D\) in \(\Re(s)>\tfrac12\), so that under reflection symmetry all its non-trivial zeros are forced to compress onto the critical line \(\Re(s)=\tfrac12\).
+\end{theorem}
+
+\endinput

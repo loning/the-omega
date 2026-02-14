@@ -1,0 +1,62 @@
+\begin{corollary}[Derived geometric/probabilistic invariants: conductance lower bound, hypercontractivity, and sub-Gaussian concentration]\label{cor:pom-fold-factor-chain-derived-invariants}
+Adopt Definition \ref{def:pom-fold-factor-chain}, denoting the folding factor chain by \(P^{\mathrm{fac}}_m:=\overline P^{\square}_m\) with stationary distribution \(\pi_m\).
+Define its conductance by
+\[
+\Phi(P^{\mathrm{fac}}_m)
+:=\min_{\substack{A\subseteq X_m\\0<\pi_m(A)\le 1/2}}
+\frac{\sum_{x\in A,\ y\notin A}\pi_m(x)\,P^{\mathrm{fac}}_m(x,y)}{\pi_m(A)}.
+\]
+Then the spectral constant lower bounds given by Theorem \ref{thm:pom-fold-factor-chain-gap-lsi} yield the following three classes of unified invariants:
+\begin{enumerate}
+  \item \textbf{(Conductance lower bound)}
+  \[
+  \Phi(\overline P^{\square}_m)\ \ge\ \frac{1}{m}.
+  \]
+  \item \textbf{(Hypercontractivity)} Let the continuous-time semigroup be
+  \(
+  T_t:=\exp(t(\overline P^{\square}_m-I))
+  \).
+  Then for any \(t\ge 0\) and any \(f\in L^2(\pi_m)\), the following hypercontractivity estimate holds:
+  \[
+  \|T_t f\|_{q(t)}\ \le\ \|f\|_2,
+  \qquad
+  q(t):=1+\exp\!\left(\frac{2t}{m}\right),
+  \]
+  where all norms are with respect to \(\pi_m\).
+  \item \textbf{(Sub-Gaussian concentration)} If an observable \(f:X_m\to\RR\) satisfies
+  \[
+  \sup_{x\in X_m}\sum_{y\in X_m}\overline P^{\square}_m(x,y)\,\bigl(f(x)-f(y)\bigr)^2\ \le\ 1,
+  \]
+  then for any \(t\ge 0\),
+  \[
+  \pi_m\!\left(\bigl|f-\mathbb E_{\pi_m}f\bigr|\ge t\right)
+  \ \le\ 2\exp\!\left(-\frac{t^2}{2m}\right).
+  \]
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+\textbf{(1) Conductance lower bound.}
+For finite reversible Markov chains, the Cheeger inequality gives \(\mathrm{gap}(P)\le 2\Phi(P)\).
+Applying this to \(P=P^{\mathrm{fac}}_m\) and combining with \(\mathrm{gap}(P^{\mathrm{fac}}_m)\ge 2/m\) from Theorem \ref{thm:pom-fold-factor-chain-gap-lsi} yields \(\Phi(P^{\mathrm{fac}}_m)\ge 1/m\).
+\par
+\textbf{(2) Hypercontractivity.}
+The log-Sobolev constant \(\alpha(P)\) controls the Gross hypercontractivity of the continuous-time semigroup \(T_t=\exp(t(P-I))\):
+if \(\alpha(P)\ge \alpha_0\), then \(T_t:L^2\to L^{1+e^{2\alpha_0 t}}\) is a contraction.
+Taking \(P=P^{\mathrm{fac}}_m\) with \(\alpha_0=1/m\) and using \(\alpha(P^{\mathrm{fac}}_m)\ge 1/m\) from Theorem \ref{thm:pom-fold-factor-chain-gap-lsi} gives the conclusion (see \cite{LevinPeresWilmer2009MarkovMixing} for the standard equivalence between LSI and hypercontractivity).
+\par
+\textbf{(3) Sub-Gaussian concentration.}
+From the log-Sobolev inequality \(\alpha(P^{\mathrm{fac}}_m)\ge 1/m\) and the Herbst argument, for any \(f\) satisfying
+\(
+\sup_x\sum_y P^{\mathrm{fac}}_m(x,y)(f(x)-f(y))^2\le 1
+\),
+the sub-Gaussian moment generating function upper bound holds:
+\[
+\log \mathbb E_{\pi_m}\!\left[\exp\!\Bigl(\lambda\bigl(f-\mathbb E_{\pi_m}f\bigr)\Bigr)\right]
+\ \le\ \frac{\lambda^2}{2\alpha(P^{\mathrm{fac}}_m)}
+\ \le\ \frac{m\lambda^2}{2},
+\qquad \lambda\in\RR,
+\]
+and the stated tail bound follows by the Chernoff bound.
+\end{proof}
+

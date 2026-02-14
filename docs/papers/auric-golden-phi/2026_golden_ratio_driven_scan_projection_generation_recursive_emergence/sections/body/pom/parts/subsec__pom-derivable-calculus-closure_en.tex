@@ -1,0 +1,196 @@
+\subsection{Closure of the derivable projection word calculus: generators, relations, normal forms, and fingerprints}\label{subsec:pom-derivable-calculus-closure}
+This section provides only the ``calculus'' layer: tightening projection from an interpretive vocabulary into a \emph{rewritable operator syntax}. Every step is required to land on
+(i) a composable operator,
+(ii) an auditable spectral/constant-level fingerprint,
+(iii) a verifiable commuting diagram/naturality relation.
+Sections \ref{sec:pom} and \ref{sec:zeta-finite-part} of the main text have already supplied the requisite generator interfaces and verification fingerprints; here we package them as a minimal closure, serving as the executable calibration for the subsequent identification ``algorithm equivalence = projection word homomorphism/natural isomorphism.''
+
+\subsubsection{Operator generators: writing projection words as a composable alphabet}
+\begin{definition}[Minimal operator closure of the projection word calculus]\label{def:pom-operator-generators-min}
+Let \(\mathbf{W}\) be the projection word category (Remark \ref{rem:pom-word-category}), and extract from it a set of minimal generators aligned with ``spectral fingerprint/primitive/\(\zeta\)/finite part'' (grouped by function):
+\begin{itemize}
+  \item \textbf{Fiber lifting (space expansion):} \(\texttt{LIFT\_PRIME}\) (and more generally the group expansion \(\texttt{LIFT}_G\), see Section \ref{sec:group-unification}).
+  \item \textbf{Parametrized weight projection:} \(\texttt{PROJ\_TEMP}(u)\) (i.e., \(\mathrm{PROJ}_u\), Definition \ref{def:pom-proj-temp}).
+  \item \textbf{Temporal trace readout:} \(\texttt{EVOLVE(trace)}\) (abstracted as operator \(T\): outputs the periodic trace sequence \(\{\Tr(B(u)^n)\}_{n\ge 1}\), etc.).
+  \item \textbf{Primitive projection:} \(\texttt{PROJ\_PRIM}\) (abstracted as \(P_{\mathrm{prim}}\): Witt/M\"obius inversion projects the trace sequence onto the primitive orbit spectrum; see Definition \ref{def:pom-collision-zeta} and Proposition \ref{prop:time-space-commuting-diagram}).
+  \item \textbf{Euler/\(\zeta\) transform:} \(E\) (reorganizes the primitive spectrum into the Euler product/determinant form of the \(\zeta\) interface; see Section \ref{sec:zeta-finite-part}).
+  \item \textbf{Character/congruence projection:} \(\texttt{PROJ\_CHI}\) (abstracted as \(P_\chi\): slicing by residue/character generates tensor constants and twisted spectra; see Remark \ref{rem:pom-chi-mixing} and \S\ref{subsec:arity-dirichlet-mertens-tensor}).
+  \item \textbf{Finite part/constant term extraction:} \(\texttt{FP}\) (abstracted as \(\mathrm{fp}\): extracts \(\log\mathfrak{M}(\theta)\) and \(M(\theta)\) from \(\zeta\) or the Abel limit, see Definition \ref{def:abel-finite-part} and \S\ref{subsec:logM-analyticity}).
+  \item \textbf{CRT reconstruction:} \(\texttt{CRT\_READOUT}\) (abstracted as \(\mathrm{CRT}\): reconstructs interval integers from multi-modular axis residue data; see Theorem \ref{thm:pom-order-spatialization}).
+\end{itemize}
+Composite words of these generators are called \textbf{projection words}; their semantics is given by the spectral fingerprint functor (see below).
+\end{definition}
+
+\subsubsection{Auditable relations: promoting ``interface concatenation'' to rewrite rules}
+\begin{proposition}[\texorpdfstring{\(\zeta\)}{zeta} three-stage factorization as a rewrite relation]\label{prop:pom-zeta-factorization-rewrite}
+Under the \(\zeta\) interface calibration of this paper, the combinatorial relation corresponding to ``periodic trace \(\Rightarrow\) primitive \(\Rightarrow\) Euler/\(\zeta\)'' can be written as the projection word equation
+$$
+Z \;=\; E\circ P_{\mathrm{prim}}\circ T,
+$$
+and this equation is strictly compatible with the time--space commuting diagram (Proposition \ref{prop:time-space-commuting-diagram}).
+\end{proposition}
+\begin{proof}
+This is merely the functorial notation restatement of Proposition \ref{prop:time-space-commuting-diagram}: \(T\) gives the trace sequence, \(P_{\mathrm{prim}}\) gives the primitive orbit spectrum via M\"obius inversion, and \(E\) reorganizes the primitive spectrum into the Euler product/determinant \(\zeta\) interface.
+\end{proof}
+
+\begin{definition}[Rewrite pattern for order projection elimination (with threshold side condition)]\label{def:pom-order-elimination-rewrite}
+Given an interval bound \(B\ge 1\), take pairwise coprime moduli \(p_1,\dots,p_m\) and let \(P=\prod_{i=1}^m p_i\).
+When \(P>2B\), treat ``order projection/comparison readout within the interval'' as a parametrized projection word primitive \(P_{\le,[-B,B]}\).
+Define the rewrite pattern
+$$
+\text{(RCRT)}\quad
+P_{\le,[-B,B]}
+\ \Longrightarrow\
+\mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}},
+$$
+where \(P_{\chi,\{p_i\}}\) denotes the parallel composition of ``residue/character slice readouts on each modular axis'' (implementable via \(\texttt{LIFT\_PRIME; PROJ\_CHI}\)), and \(\mathrm{CRT}_{\{p_i\}}\) is the CRT reconstruction operator (\(\texttt{CRT\_READOUT}\)).
+\end{definition}
+
+\begin{proposition}[Correctness of RCRT]\label{prop:pom-order-elimination-correct}
+Under the side condition \(P>2B\) of Definition \ref{def:pom-order-elimination-rewrite}, the rewrite pattern (RCRT) preserves order determination and interval constraint readout for integers on \([-B,B]\): for any \(x\in[-B,B]\), its residue data modulo \(\{p_i\}\) is uniquely reconstructed to \(x\) by \(\mathrm{CRT}_{\{p_i\}}\), so \(P_{\le,[-B,B]}\) can be eliminated by \(P_{\chi,\{p_i\}}\) and \(\mathrm{CRT}_{\{p_i\}}\).
+\end{proposition}
+\begin{proof}
+This is a direct translation of Theorem \ref{thm:pom-order-spatialization}: \(P>2B\) ensures that integers in \([-B,B]\) have unique representatives modulo \(P\), and CRT provides unique reconstruction.
+\end{proof}
+
+\begin{remark}[From hard threshold to tail quantile: \texorpdfstring{$\varepsilon$}{eps}-sound order gate elimination]\label{rem:pom-rcrt-epsilon-pointer}
+Definition \ref{def:pom-order-elimination-rewrite} and Proposition \ref{prop:pom-order-elimination-correct} provide the worst-case (hard threshold) calibration: the order gate input is required to be guaranteed to lie in \([-B,B]\).
+When the object acted upon by the order gate only needs to lie in this interval \emph{with high probability}, the tail quantile/Chernoff certificates derived from the moment-kernel (\(\mathrm{MOM}_q\)) can be used to generate an \(\varepsilon\)-sound approximate rewrite certificate (Definition \ref{def:pom-eps-sound-rewrite}), thereby promoting (RCRT) to a compilation law with adjustable error budget; see the \((\mathrm{RCRT}_\varepsilon)\) version in \S\ref{subsec:pom-quantile-budget-law}.
+\end{remark}
+
+\begin{definition}[Rewrite pattern for value projection delay/compression (with fiber invisibility certificate)]\label{def:pom-value-delay-rewrite}
+In a projection word fragment, introduce an ``intrinsic evolution gate'' \(U_t\) (\(t\ge 0\)) and a conditional expectation gate \(E_m\) (equivalent to the operator calibration of the value projection \(P_Z\), see Definition \ref{def:pom-proj-norm}).
+If the intermediate evolution segment \(U_t\) is \textbf{invisible} to the folding fiber at layer \(m\) (i.e., satisfies the fiber indistinguishability condition of Proposition \ref{prop:pom-fiber-invariance}; equivalently, the observation layer no longer distinguishes fibers of \(\Fold_m\)), then the following is taken as a directed rewrite rule:
+$$
+\text{(RDelay)}\quad
+E_m\circ U_t\circ E_m\ \Longrightarrow\ E_m\circ U_t.
+$$
+This rule is precisely the directed form, at the projection word syntax level, of the operator identity in Remark \ref{rem:pom-lazy-fold}: once an evolution segment is invisible to fibers, the repeated intermediate value projection can be compressed to a single application at the end.
+\end{definition}
+
+\begin{remark}[Single value projection normal form: deferring \texorpdfstring{$E_m$}{Em} to the end within invisible evolution segments]\label{rem:pom-value-delay-normal-form}
+Under the side condition of Definition \ref{def:pom-value-delay-rewrite}, the rule (RDelay) combined with the idempotency law \(E_m\circ E_m\Rightarrow E_m\) allows any projection word generated solely by \(U_t\) and \(E_m\) to be reduced to
+$$
+U_{t_1}\circ U_{t_2}\circ\cdots\circ U_{t_r}\circ E_m,
+$$
+i.e., all internal value projection gates are deferred/compressed to a single execution at the end.
+This provides a compilation calibration compatible with ``fixed-delay online normalization'' (Theorem \ref{thm:online-delay-fold}): as long as a fiber invisibility certificate can be given for a segment \(U_t\), the compiler can safely eliminate intermediate value projections at the lexical level without altering the visible readout.
+\end{remark}
+
+\begin{remark}[Reproducible: normalization example for projection words containing \texorpdfstring{$E_m$}{Em}/\texorpdfstring{$\mathrm{LIFT}_G$}{LIFT}/\texorpdfstring{$\mathrm{PROJ}_u$}{PROJ}]\label{rem:pom-projword-lift-proj-normalizer-demo}
+To bring ``\(2\)-morphism = rewrite certificate'' to the executable level, the script \texttt{scripts/exp\_pom\_projword\_lift\_proj\_normalizer\_demo.py} implements a minimal extension example:
+in a sub-fragment of \(\mathbf{PW}\), four classes of rewrites are added---
+(\(P_Z\) idempotency), (\(E_m\) tower contraction), (Beck--Chevalley-type interchange of \(E_m\) with \(\mathrm{LIFT}_G\)), and character decomposition (Artin/character factorization) of \(\mathrm{PROJ}_u\circ \mathrm{LIFT}_{C_n}\).
+The implementation records each \(E_m\)--\(\mathrm{LIFT}_G\) interchange as a composable interchange certificate, thereby allowing holonomy/anomaly labels (Definition \ref{def:pom-anom-accumulation}) to be accumulated along the reduction trajectory; verification of path differences under different reduction priorities is given in Remark \ref{rem:pom-holonomy-cocycle-audit}.
+The script outputs the normal forms and rewrite step counts for several input projection words; see Table \ref{tab:pom_projword_lift_proj_normalizer_demo}.
+\input{sections/generated/tab_pom_projword_lift_proj_normalizer_demo}
+\end{remark}
+
+\begin{remark}[Reproducible: merged normalization of \texorpdfstring{$(P_m,Q_m,K_m)$}{(Pm,Qm,Km)} with \texorpdfstring{$(E_m,\mathrm{LIFT}_G,\mathrm{PROJ}_u)$}{(Em,LIFT,PROJ)}]\label{rem:pom-projword-full-normalizer-demo}
+In the combinatorial fragment closer to the main text's ``projection word closure,'' we simultaneously need the local elimination of the split-epi pair \((P_m,Q_m)\) (and the induced idempotent \(K_m=Q_m\circ P_m\)),
+as well as the tower/Beck--Chevalley/Artin auditable interchange laws.
+The script \texttt{scripts/exp\_pom\_projword\_full\_normalizer\_demo.py} merges the rules of both fragment types into a terminating rewrite engine and outputs the normal forms and certificate step counts for input projection words (containing tokens \(P_Z,E_m,P_m,Q_m,K_m,\mathrm{LIFT}_G,\mathrm{PROJ}_u\), etc.).
+The auditable example table generated in one run is Table \ref{tab:pom_projword_full_normalizer_demo}.
+\input{sections/generated/tab_pom_projword_full_normalizer_demo}
+\end{remark}
+
+\begin{remark}[Reproducible: incorporating \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} into the rewrite closure (with extraction and merging)]\label{rem:pom-projword-mom-twist-normalizer-demo}
+To promote the ``space spectrum readout gate'' \(\mathrm{MOM}_q\) from a semantic-side computation to a first-class rewritable generator at the lexical level,
+the script \texttt{scripts/exp\_pom\_projword\_mom\_twist\_normalizer\_demo.py} adds two extension token types on top of the merged normalizer (Remark \ref{rem:pom-projword-full-normalizer-demo}):
+\(\texttt{MOM[q]}\) (\(q\ge 2\)) and \(\texttt{TWIST[}\chi\texttt{]}\).
+Its directed rules include:
+(i) multiplicative merging of \(\mathrm{MOM}\) (merging adjacent \(\mathrm{MOM}_{q_1}\circ\mathrm{MOM}_{q_2}\) into \(\mathrm{MOM}_{q_1q_2}\)),
+(ii) progressively bubbling \(\mathrm{MOM}_q\) outward to the leftmost position as a prefix structural gate (outputting an auditable ``interchange failure/type promotion'' residual interchange certificate when necessary),
+(iii) fusing \(\mathrm{TWIST}(\chi)\) with adjacent readout gates into \(\mathrm{PROJ}_{u,\chi}\) with character parameter.
+The script outputs the normal forms, rewrite step counts, and certificate counts for several input projection words; see Table \ref{tab:pom_projword_mom_twist_normalizer_demo}.
+\input{sections/generated/tab_pom_projword_mom_twist_normalizer_demo}
+\end{remark}
+
+\subsubsection{Scalar semantics: fiber defect is uniquely determined by \texorpdfstring{$E_m$}{Em}}
+\begin{corollary}[Derivability of space loss: \texorpdfstring{$\kappa_m$}{kappa} as projection word semantics]\label{cor:pom-kappa-derivable}
+Let \(d_m(x)=|\Fold_m^{-1}(x)|\), and for any \(\pi\in\Delta(X_m)\) define the fiber defect functional
+$$
+\kappa_m(\pi):=\mathbb{E}_{\pi}[\log d_m(X)].
+$$
+Let \(\widetilde\pi\) be the maximum entropy lift that is conditionally uniform on each fiber (Theorem \ref{thm:pom-maxent-lift}); then the strict identity holds:
+$$
+\kappa_m(\pi)=H(\widetilde\pi)-H(\pi).
+$$
+Therefore: once two implementations induce isomorphic fiber structures (equivalently, the same conditional expectation/lift operator semantics), their \(\kappa_m\) must agree; \(\kappa_m\) is an auditable scalar fingerprint that can be cross-verified across implementations.
+\end{corollary}
+\begin{proof}
+Immediate from Definition \ref{def:pom-kappa} and Theorem \ref{thm:pom-maxent-lift}.
+\end{proof}
+
+\subsubsection{Symmetry law fingerprint: vanishing linear response of finite-part constant drift}
+\begin{corollary}[Evenness \texorpdfstring{$\Rightarrow$}{=>} vanishing first-order term]\label{cor:pom-logm-linear-response-zero}
+If \(\log\mathfrak{M}(\theta)\) is an even function (Proposition \ref{prop:mertens-even}), then
+$$
+\left.\frac{\dd}{\dd\theta}\log\mathfrak{M}(\theta)\right|_{\theta=0}=0.
+$$
+More generally, in multi-dimensional parameters, the linear-term coefficient along any one-dimensional slice is forced to vanish by evenness.
+\end{corollary}
+\begin{proof}
+The first-order derivative of an even function at the origin is zero; this is an elementary fact of analysis.
+\end{proof}
+
+\subsubsection{Spectral closure interface: from moment-kernel to pressure and multifractal}
+\begin{remark}[The moment-kernel chain as a computable rewrite interface]\label{rem:pom-moment-kernel-chain}
+Section \ref{sec:pom} has promoted the higher-order moments of fiber multiplicity
+\(
+S_q(m)=\sum_{x\in X_m}d_m(x)^q
+\)
+to a family of \emph{finite-dimensional collision kernels} and Hankel minimal realizations (e.g., the three-state kernel \(A_2\) for \(q=2\), Proposition \ref{prop:pom-s2-recurrence}; and the rank/minimal dimension characterization for general \(q\), Theorems \ref{thm:hankel-rank-minimal} and \ref{thm:pom-moment-hankel}).
+Therefore ``higher-order moment \(\Rightarrow\) kernel \(\Rightarrow\) Perron root \(\Rightarrow\) pressure'' can be organized as a computable interface chain:
+$$
+S_q\ \Longrightarrow\ A_q\ \Longrightarrow\ r_q=\rho(A_q)\ \Longrightarrow\ P(q)=\log r_q-q\log 2,
+$$
+followed by the Legendre transform to obtain the multifractal spectrum of fiber multiplicity (see \S\ref{subsec:pom-s3} and its subsequent subsections for auditable tabular outputs).
+The key point of this chain is: starting from a finite segment of \(S_q(m)\), the minimal realization can be recovered (Hankel calibration), thereby turning ``spectrum'' into an object that is rewritable at the projection word syntax level and auditable at the semantic level.
+\end{remark}
+
+\subsubsection{Parry baseline as a complexity certificate: structural separation from low-complexity sources}
+\begin{corollary}[Folding histogram \texorpdfstring{$\Rightarrow$}{=>} complexity certificate]\label{cor:pom-parry-complexity-detector}
+Let \(\hat{\pi}_{m,N}\) be the empirical histogram of folding stable types obtained from some source process, and \(\pi_m\) the Parry baseline cylinder distribution of the golden mean SFT.
+If the source is a Sturmian (rotation scanning) model, then for any \(m,N\) the lower bound holds:
+$$
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)
+\ \ge\
+D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)\ -\ (m+1)D_N^*(\alpha;x_0),
+$$
+where \(\pi_m^{\mathrm{fold}}\) is the model distribution after folding the Sturmian limit distribution, and
+$$
+D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)\ \ge\ 1-(m+1)\pi(0)\varphi^{-(m-1)}
+$$
+(Proposition \ref{prop:parry-baseline-gap-sturmian}).
+Therefore as \(m\) increases, even if the discrepancy certificate term \((m+1)D_N^*\) is small, the overall total variation is still structurally forced toward \(1\) by the gap.
+Conversely, if at some large \(m\) both \(D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\) and the certificate term are observed to be significantly small, then the source process cannot belong to the Sturmian/low-complexity class; ``proximity to the Parry baseline'' logically serves as a complexity certificate.
+\end{corollary}
+\begin{proof}
+By the triangle inequality,
+\(
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ge D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)-D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})
+\).
+Then by the pushforward bound of Theorem \ref{thm:tv-certificate-hist},
+\(
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\le (m+1)D_N^*(\alpha;x_0)
+\)
+yields the first inequality; the second follows from Proposition \ref{prop:parry-baseline-gap-sturmian}.
+\end{proof}
+
+\subsubsection{An executable normal form: compilation order targeting \texorpdfstring{$\zeta$}{zeta}/finite part}
+\begin{remark}[\texorpdfstring{$\zeta$}{zeta}-interface normal form (compilation convention)]\label{rem:pom-zeta-normal-form}
+When the required output is an auditable fingerprint such as \(\zeta\)/primitive/finite-part constants, any projection word can be compiled to the following ``interface normal form'':
+$$
+\boxed{\;
+\texttt{LIFT}\ \to\ \texttt{PROJ\_TEMP}(u)\ \to\ T\ \to\ P_{\mathrm{prim}}\ \to\ E\ \to\ \texttt{FP}\;}
+$$
+where:
+\texttt{LIFT} selects the prime axis/group expansion semantics,
+\texttt{PROJ\_TEMP}(u) handles parametrized weighting,
+\(T,P_{\mathrm{prim}},E\) are guaranteed to align to the same \(\zeta\) language by the factorization of Proposition \ref{prop:pom-zeta-factorization-rewrite},
+and \texttt{FP} extracts the constant-level drift at the \(\zeta\) endpoint as fingerprints such as \(\log\mathfrak{M}(\theta)\) (Proposition \ref{prop:mertens-even} and \S\ref{subsec:logM-analyticity}).
+When an order projection appears in the word, (RCRT) (Definition \ref{def:pom-order-elimination-rewrite}) can be triggered first to rewrite it into the parallel spatialized path of \(P_\chi+\mathrm{CRT}\).
+This normal form is not a narrative calibration but a rewrite target for verification: equality testing is normalized at the lexical level and cross-verified at the semantic level using the fingerprint family.
+\end{remark}
+

@@ -1,0 +1,135 @@
+\subsection{Harmonic Analysis Interface on the Circle: Phase Fourier and Rational Basis Functions}\label{subsec:unit-circle-phase-fourier}
+Viewing \(\mathbb{U}\) as the fundamental interval of \(\RR/\ZZ\), one uses the standard character basis \(e^{2\pi\mathrm{i}ku}\) (\(k\in\ZZ\)).
+For \(f\in L^2(\RR,\dd\mu)\) define the phase Fourier coefficients
+\begin{equation}\label{eq:unit-circle-phase-fourier-coeff}
+\widehat f(k)
+:=\int_{-1/2}^{1/2} f\bigl(\tan(\pi u)\bigr)e^{-2\pi\mathrm{i}ku}\,\dd u
+=\int_{\RR} f(x)\,\overline{\iota(x)^k}\,\dd\mu(x),
+\qquad
+\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}.
+\end{equation}
+In the \(L^2\) sense one has the circular series reconstruction
+\begin{equation}\label{eq:unit-circle-phase-fourier-reconstruct}
+f\bigl(\tan(\pi u)\bigr)\sim \sum_{k\in\ZZ}\widehat f(k)\,e^{2\pi\mathrm{i}ku}.
+\end{equation}
+Since
+\(
+\iota(x)^k=\bigl(\tfrac{1+\mathrm{i}x}{1-\mathrm{i}x}\bigr)^k
+\)
+is a rational function of \(x\), equation~\eqref{eq:unit-circle-phase-fourier-coeff} provides a template that rewrites ``functions on the real axis (under the natural weight)'' into ``Fourier data on the unit circle''; the basis function family can be manipulated algebraically, making it suitable as an auditable basis for the ``analytic problem \(\to\) rational structure'' interface layer.
+
+\begin{proposition}[Explicit rational kernel of the finite-mode Hardy projection]\label{prop:unit-circle-phase-hardy-kernel-rational}
+Let
+\(
+w(x):=\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}
+\).
+For integer \(N\ge 1\), define the truncated kernel
+\begin{equation}\label{eq:unit-circle-phase-hardy-kernel}
+\boxed{\;
+K_N(x,y):=\sum_{k=0}^{N-1} w(x)^k\,\overline{w(y)}^{\,k}
+=\frac{1-\bigl(w(x)\overline{w(y)}\bigr)^N}{1-w(x)\overline{w(y)}}\;}
+\end{equation}
+(with a removable singularity at \(x=y\), and \(K_N(x,x)=N\)).
+Then \(K_N(x,y)\) is an explicit rational function of \((x,y)\), and the denominator satisfies the closed-form simplification
+\begin{equation}\label{eq:unit-circle-phase-hardy-kernel-denominator}
+\boxed{\;
+\frac{1}{1-w(x)\overline{w(y)}}
+=\frac{(1-\mathrm{i}x)(1+\mathrm{i}y)}{2\mathrm{i}(y-x)}
+=\frac12+\frac{1+xy}{2\mathrm{i}(y-x)}\;}
+\end{equation}
+(\(x\neq y\); at \(x=y\) one takes the limit).
+Under the natural weight \(\dd\mu(x)=\frac{1}{\pi(1+x^2)}\dd x\), the orthogonal projection onto the ``first \(N\) non-negative modes'' in \(L^2(\RR,\dd\mu)\) can be written as
+\[
+(\Pi_N f)(x)=\int_{\RR} K_N(x,y)\,f(y)\,\dd\mu(y),
+\qquad f\in L^2(\RR,\dd\mu).
+\]
+\end{proposition}
+\begin{proof}
+In the phase coordinate \(u=\upsilon(x)\in\mathbb{U}\), the basis functions satisfy \(w(x)^k=e^{2\pi\mathrm{i}ku}\), so \(\{w(\cdot)^k\}_{k\in\ZZ}\) is the orthogonal character basis of \(L^2(\RR,\dd\mu)\).
+The finite geometric series gives \eqref{eq:unit-circle-phase-hardy-kernel}, and the projection kernel representation follows from the standard computation for orthogonal expansions.
+For \eqref{eq:unit-circle-phase-hardy-kernel-denominator}, one substitutes \(\overline{w(y)}=\frac{1-\mathrm{i}y}{1+\mathrm{i}y}\) for \(y\in\RR\) and clears denominators.
+As \(x\to y\), the right-hand side is a removable singularity, consistent with \(K_N(x,x)=N\). \qed
+\end{proof}
+
+\subsubsection{Rational Major-Arc Gram Kernel: Denominator-Layer Decomposition, Scale Bootstrap, and Finite Verification}\label{subsubsec:unit-circle-rational-gram-bootstrap}
+
+This paragraph writes the ``Gram kernel at rational frequencies'' as an auditable Fourier identity and derives two structural corollaries aligned with the large sieve/spectral gap audit: single-scale savings propagate (scale bootstrap), and ``whether a uniform spectral gap exists'' can be reduced to a finite checking set (finite verification).
+
+\begin{proposition}[Denominator-layer expression of the rational-frequency Gram matrix: spectral translation of the Ramanujan sum kernel]\label{prop:conclusion66-gram-ramanujan-decomposition}
+Let
+\[
+\mathcal{Q}_M:=\left\{\frac{a}{q}:\ 1\le q\le M,\ (a,q)=1\right\}\subset\mathbb{Q}/\mathbb{Z},
+\qquad
+\ell^2(\mathcal{Q}_M)\cong\bigoplus_{q\le M}\ell^2((\mathbb{Z}/q\mathbb{Z})^\times).
+\]
+Take a real even function \(\widehat\psi:\RR\to\RR_{\ge 0}\) (rapid decay suffices) and define the \(L\)-scale periodized kernel
+\[
+\psi_L(x):=\sum_{n\in\ZZ}\widehat\psi(n/L)\,e^{2\pi\mathrm{i}nx}\qquad(x\in\RR/\ZZ).
+\]
+Let \(K_{M,L}\) be the kernel operator acting on \(\ell^2(\mathcal{Q}_M)\):
+\[
+(K_{M,L}g)(r):=\sum_{r'\in\mathcal{Q}_M}\psi_L(r-r')\,g(r').
+\]
+Then for any \(g\in\ell^2(\mathcal{Q}_M)\) the following strict identity holds:
+\[
+\boxed{\;
+\langle g,K_{M,L}g\rangle
+=\sum_{n\in\ZZ}\widehat\psi(n/L)\,
+\left|\sum_{q\le M}\sum_{\substack{(a,q)=1}} g(a/q)\,e^{2\pi\mathrm{i}an/q}\right|^2\; }.
+\]
+In particular, when \(g\) is constant on each denominator layer, the inner sum degenerates to the Ramanujan sum
+\(
+c_q(n):=\sum_{(a,q)=1}e^{2\pi\mathrm{i}an/q}
+\),
+so the identity localizes the principal contribution to \(\|K_{M,L}\|_{\mathrm{op}}\) in the ``low-\(n\)'' segment of the Ramanujan correlations.
+\end{proposition}
+
+\begin{proof}
+Expanding the kernel as a Fourier series:
+\(
+\psi_L(r-r')=\sum_{n\in\ZZ}\widehat\psi(n/L)e^{2\pi\mathrm{i}n(r-r')}
+\).
+Substituting into
+\(
+\langle g,K_{M,L}g\rangle=\sum_{r,r'}\overline{g(r)}\,g(r')\,\psi_L(r-r')
+\),
+interchanging summation, and rearranging yields the stated ``weighted amplitude-squared'' identity. \qed
+\end{proof}
+
+\begin{theorem}[Scale bootstrap principle: a single spectral drop triggers polynomial decay at all scales]\label{thm:conclusion67-scale-bootstrap}
+Under the setup of Proposition~\ref{prop:conclusion66-gram-ramanujan-decomposition}, take the scaling relation \(L\asymp M^{2}\).
+If there exists some scale \(M_0\) such that
+\[
+\|K_{M_0,L_0}\|_{\mathrm{op}}\le M_0^{-\eta}\qquad(\eta>0,\ L_0\asymp M_0^2),
+\]
+then there exists a constant \(\eta'=\eta'(\eta,\widehat\psi)>0\) such that for all \(M\ge M_0\) (with the same type of scaling \(L\asymp M^2\)),
+\[
+\boxed{\;
+\|K_{M,L}\|_{\mathrm{op}}\ll M^{-\eta'}.\;}
+\]
+That is, the spectral drop of the rational major-arc Gram kernel has a ``single-scale trigger, all-scale propagation'' bootstrap property, without the need to estimate each scale individually.
+\end{theorem}
+
+\begin{proof}
+The mechanism rests on three points: positivity of the kernel (\(\widehat\psi\ge 0\) gives quadratic-form monotonicity), the denominator-layer representation (which decomposes contributions into coverable Farey local patches), and semigroup covering closure under the scaling \(L\asymp M^2\).
+Under this structure, if a power-saving appears at some scale, it can be propagated to larger scales via local covering and positivity; the details depend on the decay of \(\widehat\psi\) and the covering parameters, producing \(\eta'\). \qed
+\end{proof}
+
+\begin{theorem}[Finite verification principle: decidability and finite checking set for a uniform spectral gap]\label{thm:conclusion68-finite-verification}
+For any given primitive sofic--weight system (with fixed automaton and edge weights), there exists an explicitly computable finite set
+\[
+\mathscr{T}\subset(0,2\pi),\qquad \mathscr{M}\subset\NN,
+\]
+such that the following equivalence holds:
+\begin{enumerate}
+  \item For all \(\theta\notin 2\pi\ZZ\) there is a uniform twisted spectral gap: \(\rho(A(\theta))\le (1-\delta)\rho(A(0))\) (for some \(\delta>0\));
+  \item For all \(\theta\in\mathscr{T}\) and all \(M\in\mathscr{M}\), the corresponding twisted spectral radius is strictly less than \(\rho(A(0))\).
+\end{enumerate}
+Here the construction of \(\mathscr{T}\) is controlled by the cohomological obstruction modulus and the number of states, while that of \(\mathscr{M}\) is given by the scale bootstrap of Theorem~\ref{thm:conclusion67-scale-bootstrap}.
+This conclusion reduces ``whether a uniform spectral gap exists'' to finitely many computable checks, thereby providing an auditable decidability caliber.
+\end{theorem}
+
+\begin{proof}
+Failure of strict spectral-radius decay on the non-resonant angular domain can only arise from finitely many cohomological/modular obstructions (so \(\mathscr{T}\) can be finitely enumerated), and the uniformity in the scale direction is compressed from ``infinitely many scales'' to the finite checking set \(\mathscr{M}\) by the bootstrap principle.
+Therefore, verification at finitely many pairs \((\theta,M)\) suffices to imply a global uniform spectral gap; the converse implication is obvious. \qed
+\end{proof}

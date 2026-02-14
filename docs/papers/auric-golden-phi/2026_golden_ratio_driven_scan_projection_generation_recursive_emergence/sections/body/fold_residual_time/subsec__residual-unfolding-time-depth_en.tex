@@ -1,0 +1,94 @@
+\subsection{Residual Unfolding and Time Scale: Analytic Depth of Fiber Degrees of Freedom}\label{subsec:residual-unfolding-time-depth}
+
+This subsection takes the fold quotient structure as its starting point, promotes ``intra-class distinction'' to auditable residual quantities, and interprets online delay, synchronization time tails, and higher-order collision moments in a unified manner as certificates for the temporal unfolding of residuals. Its core anchor is the information ledger identity (Theorem \ref{thm:pom-kl-ledger}) and its fiberwise KL decomposition (Lemma \ref{lem:pom-fiberwise-kl}).\par
+In this section, ``time'' first retains the definition from Section \ref{sec:spg} as the iteration count of the singly generated action; ``time scale/time depth'' refers to the minimum iteration depth (or equivalently, the memory depth / synchronization depth) required to resolve fiber residuals under the fold readout regime. This subsection introduces no new entropy/distance axioms; all notation follows Sections \ref{sec:folding} and \ref{sec:pom}.
+
+\subsubsection{Fold Quotient Structure and Fiber Decomposition}\label{subsubsec:frt-quotient-fibers}
+Fix the resolution \(m\). The window microstate space is \(\Omega_m=\{0,1\}^m\), and the stable type space is the golden mean grammar block
+\[
+X_m:=\{w\in\{0,1\}^m:\text{no subword }11\}
+\]
+(Subsection \ref{subsec:folding-fibonacci-stable-syntax}). The fold operator \(\Fold_m:\Omega_m\to X_m\) is given by ``Fibonacci weighted value \(\to\) Zeckendorf normal form \(\to\) truncation'' (Definition \ref{def:fold-word}), and satisfies canonicity, idempotence, and surjectivity (Proposition \ref{prop:fold-basic}).\par
+This induces the equivalence relation
+\[
+\omega\sim_m\omega'\quad\Longleftrightarrow\quad \Fold_m(\omega)=\Fold_m(\omega'),
+\]
+whose equivalence classes (fibers) are \(\Fold_m^{-1}(x)\ (x\in X_m)\), with fiber multiplicity
+\[
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|
+\]
+quantitatively characterizing the intra-class degrees of freedom (Subsection \ref{subsec:folding-stable-compression-resolution}). Under the uniform microstate baseline, the fold pushforward distribution is
+\[
+w_m(x)=\frac{d_m(x)}{2^m},
+\]
+and the compression ratio \(2^m/|X_m|=2^m/F_{m+2}\) shows that as \(m\) grows, the folding is necessarily many-to-one, and the fiber residual is non-negligible at scale (same subsection).
+
+\subsubsection{Residual: Two Equivalent Readings of the Information Ledger}\label{subsubsec:frt-residual-ledger}
+The information ledger was already fixed as a strict identity in Section \ref{sec:pom}. For the semantic alignment of this section, we recall its interface notation (Subsection \ref{subsec:pom-information-ledger}): for any microscopic distribution \(\mu\in\Delta(\Omega_m)\), let its stable pushforward be \(\pi:=P_m\mu=(\Fold_m)_*\mu\in\Delta(X_m)\), and let \(\mu^e:=Q_m\pi\) be the lift that is ``conditionally uniform on each fiber.'' Then Theorem \ref{thm:pom-kl-ledger} gives
+\[
+\boxed{\;
+H(\mu)=H(\pi)+\mathbb{E}_{\pi}\!\bigl[\log d_m(X)\bigr]\;-\;D_{\mathrm{KL}}(\mu\|\mu^e).
+\;}
+\]
+where (i) \(H(\pi)\) is the visible entropy of the stable types; (ii) \(\mathbb{E}_{\pi}[\log d_m(X)]\) is the fiber scale budget (invisible capacity); (iii) \(D_{\mathrm{KL}}(\mu\|\mu^e)\) is the auditable structural residual measuring how the microscopic distribution under the same macroscopic deviates from the ``fiber-uniform baseline.'' Lemma \ref{lem:pom-fiberwise-kl} further decomposes this KL term into the average of fiberwise KL:
+\[
+D_{\mathrm{KL}}(\mu\|\mu^e)=\sum_{x\in X_m}\pi(x)\,D_{\mathrm{KL}}(\mu_x\|u_x),
+\]
+where \(\mu_x\) is the fiber conditional distribution and \(u_x\) is the uniform distribution on the fiber.\par
+Therefore, ``residual'' in the caliber of this paper naturally admits two complementary readings: on one hand, the conditional entropy difference
+\[
+H(\mu)-H(\pi)
+\]
+characterizes the intra-class uncertainty that macroscopic readout cannot explain; on the other hand, the fiber budget and fiberwise KL give its exact decomposition
+\[
+\boxed{\;
+H(\mu)-H(\pi)=\mathbb{E}_{\pi}\!\bigl[\log d_m(X)\bigr]\;-\;D_{\mathrm{KL}}(\mu\|\mu^e).
+\;}
+\]
+Under the uniform microstate baseline (\(\mu\) conditionally uniform on each fiber), \(D_{\mathrm{KL}}(\mu\|\mu^e)=0\), so the residual is entirely carried by the fiber budget \(\mathbb{E}_{\pi}[\log d_m]\); when the fiber interior still contains structure, the average fiberwise KL precisely characterizes the ``budget deduction.''
+
+\subsubsection{Time as Analytic Depth: Prefix Ultrametric and Resolution Separation}\label{subsubsec:frt-time-as-depth}
+Section \ref{sec:spg} has fixed ``time'' as the iteration count and introduced the prefix ultrametric \(d_{\mathrm{pre}}\) on symbolic cylinder sets (paragraph \ref{par:spg-prefix-ultrametric}), whose balls coincide with cylinder sets, so that ``prefix refinement \(\Leftrightarrow\) radius contraction.'' On the address semantics side, the definition of dyadic prefix compatible depth and address ultrametric \(d_{\mathrm{addr}}\) is given in Definition \ref{def:xi-dyadic-prefix-depth-ultrametric}.\par
+The ``time scale'' in this section is the \emph{separability hierarchy} introduced by fold readout on the above prefix geometry: fiber-internal differences are not visible all at once at a fixed resolution, but are externalized layer by layer as discernible differences as the resolution \(m\) advances. To avoid notational conflict with the automorphism \(\tau\) in the main text, we define the following separation depth.
+\begin{definition}[Fold separation depth]\label{def:frt-fold-separation-depth}
+For any two one-sided microstate streams \(\omega,\omega'\in\{0,1\}^{\mathbb{N}}\), denote their length-\(m\) prefixes as \(\omega|_m,\omega'|_m\in\Omega_m\). Define the fold separation depth
+\[
+m_{\mathrm{sep}}(\omega,\omega')
+:=\inf\{\,m\ge 1:\ \Fold_m(\omega|_m)\ne \Fold_m(\omega'|_m)\,\}\in\NN\cup\{\infty\}.
+\]
+\end{definition}
+This quantity characterizes ``at which resolution two microstates are first distinguished by fold readout.'' The ``hierarchy of intra-class distinction'' can thus be understood as a partition depth scaled by \(m\): a larger \(m_{\mathrm{sep}}\) means the difference emerges later (deeper) in the fold readout. This hierarchy consistently organizes ``cylinder topology---decidability---resolution threshold'' semantics in agreement with the prefix ultrametric, without requiring additional background dimensions.
+
+\subsubsection{Sequence-Level Reversibility: Temporal Externalization of Fiber Residuals}\label{subsubsec:frt-sequence-inversion}
+The window-level folding \(\Fold_m\) is typically many-to-one, but its sliding block code lift \(\Phi_m\) at the sequence level can recover reversibility beyond a threshold: Theorem \ref{thm:Phi_m-conjugacy-threshold} proves that when \(m\ge 3\), \(\Phi_m\) is a topological conjugacy, and there exists an inverse code \(\Psi_m\) such that
+\[
+\Psi_m\circ\Phi_m=\mathrm{id},\qquad \Phi_m\circ\Psi_m=\mathrm{id},
+\]
+with \(\Psi_m\) having memory \(m-1\). This gives a rigorous translation of ``residual \(\Rightarrow\) time depth'': the fiber degrees of freedom compressed away at the window level do not disappear, but are systematically migrated to the finite memory depth required by the sequence-level inverse code.\par
+Under the same caliber, the synchronization time \(T_m\) measures in an online manner ``the shortest readout depth required for the candidate set to contract to a singleton'' (Definition \ref{def:Ym-sync-time}), and its meaning can be expressed as ``the first moment at which statistical-type \(\mathsf{NULL}\) vanishes'' (see the paragraph following the definition in Subsection \ref{subsec:Ym-zeta-spectrum}). Therefore, the finite memory of \(\Psi_m\) and the online contraction depth of \(T_m\) jointly provide two equivalent ``residual unfolding depth'' scales: the former in an offline inverse-code caliber, the latter in an online filtering caliber.
+
+\subsubsection{Minimum Online Delay: The Minimum Time Quantum for Residual Externalization}\label{subsubsec:frt-min-online-delay}
+If folding is required to be realized in the online, causal, and finite-state sense, then the externalization of residuals has an irreducible minimum delay. Theorem \ref{thm:online-delay-fold} gives a delay-3 single-pass online realization of \(\Fold_\infty\); Proposition \ref{prop:pom-delay-min} further proves that this constant is minimal:
+\[
+\delta_{\min}(\Fold_\infty)=3.
+\]
+This conclusion pins ``the minimum quantum of time'' as an auditable mechanistic lower bound: the delay is not an engineering choice but is structurally forced by the cross-bit propagation and synchronization states of Zeckendorf normalization.\par
+Moreover, this ``time defect'' and ``space defect'' (maximum fiber multiplicity) are not interchangeable: increasing space cannot push \(\delta_{\min}\) below \(2\), nor can reducing delay eliminate fiber multiplicity (Remark \ref{rem:pom-space-time-orth}). Under the unified caliber of this paper, these two, together with spectral fingerprints, constitute the ``space---time---spectrum triple fingerprint'' (Definition \ref{def:pom-fingerprint}).
+
+\subsubsection{Synchronization Time Tail and Spectral Certificates}\label{subsubsec:frt-sync-tail-spectrum}
+The synchronization time is not only definable but also possesses auditable tail laws: under the maximum entropy measure, the synchronization tail satisfies the exponential bound
+\[
+\nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}
+\]
+(Theorem \ref{thm:Ym-sync-tail}). This conclusion objectifies ``residual lifetime'' as a temporal statistic, locking its decay rate to the same spectral object as the finite-graph structure of the ambiguity shell (the matrix power expression and limiting rate \(\varepsilon_m\) given by Theorem \ref{thm:Ym-sync-tail}). In the Zeckendorf folding of this paper, the ambiguity shell is empty for \(m\ge 3\) (see the conclusion and remark in Subsection \ref{subsec:Ym-amb-transient}), so the synchronization time truncates at a finite point; this degeneration is retained as a consistency check, emphasizing that ``synchronization cost'' in this model is a finite auditable constant rather than additional entropy loss (same subsection).
+
+\subsubsection{Higher-Order Collision Moments and \texorpdfstring{$\mathrm{MOM}_q$}{MOMq}: An Invariant Family for Intra-Class Structure}\label{subsubsec:frt-moments}
+The entire distribution \(\{d_m(x)\}_{x\in X_m}\) of fiber multiplicities can be uniformly encoded by higher-order collision moments: for integers \(q\ge 2\), define
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q.
+\]
+Its meaning is ``the coincidence count of \(q\) bodies still being folded to the same stable type.'' The POM language promotes this to a compilable gate: \(\mathrm{MOM}_q\) compiles the underlying online kernel into a \(q\)-fold fiber-product moment-kernel, thereby reading off the recursion and Perron principal scale of \(S_q(m)\) on a finite state space (Theorem \ref{thm:pom-collision-kernel-ak}; see also Subsection \ref{subsec:pom-mom-rewrite-normal}). Therefore, higher-order moments are not heuristic features but auditable invariant families of the fiber spectrum: they determine all R\'{e}nyi fingerprint rates \(\sum_x w_m(x)^q=S_q(m)/2^{qm}\) at finite scale, and further align with \(\zeta\)/primitive/spectral objects in the unified closure (Theorem \ref{thm:pom-unified-closure}).
+
+\subsubsection{Frequency-Domain Packaging: \texorpdfstring{$\zeta$}{zeta} Interface and Time--Space Commuting Diagram}\label{subsubsec:frt-zeta-packaging}
+The ``temporal unfolding'' of residuals can not only be directly read off in synchronization tails and online delay but can also be packaged in the frequency domain via the \(\zeta\) form. Proposition \ref{prop:time-space-commuting-diagram} gives the strict commuting diagram \(Z=E\circ M\circ T\): the time side encodes iterative statistics via trace sequences, the space side realizes the Euler product and M\"{o}bius inversion via the primitive orbit spectrum, thereby unifying ``temporal readout'' and ``spatial atomic decomposition'' under the same \(\zeta\)-determinant interface. Combined with Theorem \ref{thm:pom-unified-closure}, the time defect \(\delta_{\min}\) of the online kernel, the Perron root family \(\{r_q\}\) of the collision moment spectrum, and the spectral/finite-part fingerprints of Section \ref{sec:zeta-finite-part} are closed under the same computable interface.\par
+Under this closure caliber, ``time as residual'' can be precisely understood as: the kernel-direction information induced by folding cannot be implicitly erased in the protocol, but can only be externalized in auditable orthogonal channels (memory depth, synchronization tail, or additional register axes), and given verifiable certificates in the form of spectral objects/recursions/tail laws.

@@ -1,0 +1,221 @@
+\subsubsection{Jones Commutator Scalar and Achievability of Delinking Cost: Single-Parameter Fingerprint of the Index Gap and R\'enyi Flatness}\label{subsubsec:op-algebra-jones-scalar-twirl-cost-renyi-flatness}
+This section, building on the index gap framework of Proposition \ref{prop:op-algebra-index-submultiplicativity-commuting-square}--Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap}, further shows that:
+the index gap not only provides a lower bound on conditional mutual information, but can also be equivalently read as a \emph{single scalar obstruction} from the Jones projection sandwich;
+moreover, in the caliber where the relative commutant is finite-dimensional and the index ratio is an integer, this lower bound is achievable---there exists a relative commutant twirl driven by finite randomness that achieves delinking (conditional independence) in the information-theoretic sense, with the required randomness cost exactly equal to the index gap.
+Finally, a parallel ``R\'enyi flatness'' conclusion is given: the worst-case information loss of finite-index conditional expectations is exactly capped and achievable by the same constant \(\log\mathrm{Ind}(E)\) across the entire R\'enyi family.
+
+\begin{proposition}[Jones--commutator scalar of the index gap: single-parameter obstruction of the projection sandwich]\label{prop:op-algebra-jones-scalar-equals-exp-minus-gap}
+Following the setup of Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap}:
+let \(\mathcal{A}\) be a finite von Neumann algebra,
+\(\mathcal{B}_1,\mathcal{B}_2\subseteq\mathcal{A}\) subalgebras,
+\(\mathcal{B}_0:=\mathcal{B}_1\cap\mathcal{B}_2\), with finite-index conditional expectations
+\(
+E_i:\mathcal{A}\to\mathcal{B}_i
+\) (\(i=1,2\)) and
+\(
+E_{12}:\mathcal{A}\to\mathcal{B}_0
+\).
+Write the index gap as
+\[
+\Gamma:=\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}\ \ge\ 0.
+\]
+In the Jones basic construction, let \(e_1,e_2,e_{12}\) be the Jones projections corresponding to \(E_1,E_2,E_{12}\).
+If it is further assumed that the centers of the compressed algebras \(e_1\langle\mathcal{A},e_{12}\rangle e_1\) and \(e_2\langle\mathcal{A},e_{12}\rangle e_2\) are both one-dimensional (equivalently: the relative commutant yields only a scalar in this compressed caliber), then there exists a unique scalar \(\lambda\in(0,1]\) such that
+\[
+\boxed{\;
+e_1e_2e_1=\lambda\,e_1,\qquad e_2e_1e_2=\lambda\,e_2\;}
+\]
+and this scalar satisfies
+\[
+\boxed{\;
+\lambda=\frac{\mathrm{Ind}(E_{12})}{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}
+=\exp(-\Gamma).\;}
+\]
+Therefore, the index gap \(\Gamma\) can be equivalently stated as the commutator scalar obstruction of the Jones projection product; it is strictly additive under tensorization (by the multiplicativity of the index and logarithmic transformation).
+\end{proposition}
+\begin{proof}[Proof sketch]
+The operator \(e_1e_2e_1\) belongs to the commutative part of the compressed algebra \(e_1\langle\mathcal{A},e_{12}\rangle e_1\); under the one-dimensional center assumption, it must be a scalar multiple of \(e_1\), so there exists \(\lambda\) with \(e_1e_2e_1=\lambda e_1\).
+The same argument applies to \(e_2e_1e_2\).
+\par
+Taking the canonical trace on both sides and using the standard relation between traces and indices in the Jones basic construction (e.g., the analogue of \(\tau(e_i)=\mathrm{Ind}(E_i)^{-1}\)) yields
+\(
+\lambda=\mathrm{Ind}(E_{12})/(\mathrm{Ind}(E_1)\mathrm{Ind}(E_2))
+\).
+The last identity follows immediately from the definition of \(\Gamma\). \qedhere
+\end{proof}
+
+\begin{proposition}[Achievability of delinking cost: relative commutant twirl achieves the index gap with exact randomness]\label{prop:op-algebra-twirl-achieves-index-gap}
+Following the setup of Proposition \ref{prop:op-algebra-jones-scalar-equals-exp-minus-gap}, further assume that the relative commutant \((\mathcal{B}_0'\cap\mathcal{A})\) is finite-dimensional.
+If the index ratio
+\[
+\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}
+\]
+is an integer, then there exists a random unitary completely positive map (twirl) driven by finite randomness
+\[
+\mathcal{T}(x):=\sum_{g=1}^{G}p_g\,u_g^\ast x\,u_g,\qquad x\in\mathcal{A},
+\]
+where \(u_g\in(\mathcal{B}_0'\cap\mathcal{A})\) are finitely many unitaries, \((p_g)_{g=1}^{G}\) is a probability distribution, satisfying:
+\begin{enumerate}
+  \item \(\mathcal{T}\) preserves a given faithful normal state \(\varphi\) (which can be chosen to be invariant under conjugation by \(u_g\));
+  \item Under \(\varphi\circ\mathcal{T}\),
+  \[
+  \boxed{\;
+  I_{\varphi\circ\mathcal{T}}(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)=0, \;}
+  \]
+  i.e., the two sources are strictly delinked conditionally on the cross-visible factor \(\mathcal{B}_0\);
+  \item The minimum Shannon entropy of the required randomness exactly equals the index gap:
+  \[
+  \boxed{\;
+  \inf H(R)=\Gamma, \;}
+  \]
+  where \(R\) is the external random variable implementing \(\mathcal{T}\) (the classical register selecting \(g\)).
+\end{enumerate}
+Therefore, the index gap lower bound given by Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap} is achievable in this finite-depth/finite-commutant caliber: the index gap is not only the lower bound on the irreducible linking residual, but also the exact value of the minimum randomness required for ``proper denoising.''
+\end{proposition}
+\begin{proof}[Proof sketch]
+When \((\mathcal{B}_0'\cap\mathcal{A})\) is finite-dimensional and the index ratio is an integer, one can select a finite group (or finite system of units) action on the relative commutant and take \(\mathcal{T}\) as its conjugation average.
+This twirl is bimodular on \(\mathcal{B}_0\) and can be constructed to be \(\varphi\)-preserving, thereby achieving complete decoherence of the ``cross-interface'' in the information-theoretic sense; the delinking conclusion corresponds to the characterization of \(I_\varphi=0\) in the minimal commuting square case (Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap}).
+\par
+For the randomness cost: on one hand, the structural lower bound \(I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)\ge\Gamma\) from Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap}, combined with the chain rule that ``random unitary averaging can only reduce conditional mutual information at the expense of classical entropy,'' gives that any mechanism achieving delinking must satisfy \(H(R)\ge\Gamma\).
+On the other hand, taking a uniform twirl of size \(G=\exp(\Gamma)\) (\(p_g\equiv 1/G\)) yields \(H(R)=\log G=\Gamma\) and achieves \(I=0\);
+hence the lower bound is achieved and the minimum equals \(\Gamma\). \qedhere
+\end{proof}
+
+\begin{theorem}[Optimal ``delinking curve'' of the index gap: strong duality of the randomness budget]\label{thm:op-algebra-optimal-delinking-curve}
+Following the setup of Proposition \ref{prop:op-algebra-jones-scalar-equals-exp-minus-gap}, write the index gap as
+\[
+\Gamma:=\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}\ \ge\ 0.
+\]
+Consider a family of delinking mechanisms \(\mathcal{T}\) (normal u.c.p.\ maps; understood as random unitary averages or their combinations) that are allowed to introduce an external random register \(R\), with protocol complexity constrained by the Shannon randomness budget \(H(R)\le h\).
+Write the conditional mutual information leakage relative to \(\varphi\circ\mathcal{T}\) as
+\[
+\mathcal{L}(\mathcal{T})
+:=
+I_{\varphi\circ\mathcal{T}}(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0).
+\]
+Then an unbreachable lower bound exists:
+\[
+\boxed{\;
+\inf_{\mathcal{T}:\ H(R)\le h}\ \mathcal{L}(\mathcal{T})
+\ \ge\ \max\{\Gamma-h,\,0\}.\;}
+\]
+Moreover, in the finite-depth/finite-relative-commutant case where the index ratio can be quantized to an integer, this lower bound is achievable: there exists a family \(\mathcal{T}_h\) such that
+\[
+\boxed{\;\mathcal{L}(\mathcal{T}_h)=\max\{\Gamma-h,\,0\}.\;}
+\]
+Therefore, \(\Gamma\) is simultaneously the generator of the ``minimum randomness cost'' and the ``minimum leakage curve,'' providing the strict strong duality optimality of delinking.
+\end{theorem}
+\begin{proof}[Proof sketch]
+Incorporating the external random register into the second interface, the chain rule gives
+\[
+I_{\varphi\circ\mathcal{T}}(\mathcal{B}_1:\mathcal{B}_2,R\mid\mathcal{B}_0)
+=\mathcal{L}(\mathcal{T})+I_{\varphi\circ\mathcal{T}}(\mathcal{B}_1:R\mid\mathcal{B}_0,\mathcal{B}_2)
+\le \mathcal{L}(\mathcal{T})+H(R).
+\]
+On the other hand, in the finite-index caliber of this paper, the index gap provides a structural lower bound on the conditional mutual information of the ``extended interface'' (an analogous application of Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap}):
+\(
+I_{\varphi\circ\mathcal{T}}(\mathcal{B}_1:\mathcal{B}_2,R\mid\mathcal{B}_0)\ge\Gamma
+\).
+Combining yields \(\mathcal{L}(\mathcal{T})\ge \Gamma-H(R)\), which together with \(\mathcal{L}(\mathcal{T})\ge 0\) gives the stated lower bound.
+\par
+Achievability comes from the existence of graded conjugation average families on the finite relative commutant: when the index ratio is an integer, one can select nested finite conjugacy classes/subgroups so that ``entropy already paid'' progressively cancels the gap, pushing the residual leakage to \(\Gamma-h\); when \(h\ge\Gamma\), this degenerates to the complete delinking of Proposition \ref{prop:op-algebra-twirl-achieves-index-gap}. \qedhere
+\end{proof}
+
+\begin{theorem}[Multi-round strong converse theorem: strong form of linear cumulative leakage and critical phase transition]\label{thm:op-algebra-multi-round-strong-converse-linear-leakage}
+Following the setup of Theorem \ref{thm:op-algebra-optimal-delinking-curve}, consider an \(n\)-round tensorized system with any protocol family \(\mathcal{T}^{(n)}\) (allowed to use a total randomness register \(R^{(n)}\) satisfying \(H(R^{(n)})\le nh\)).
+Then the strong converse lower bound holds:
+\[
+\boxed{\;
+I\bigl(\mathcal{B}_1^{\otimes n}:\mathcal{B}_2^{\otimes n}\mid \mathcal{B}_0^{\otimes n}\bigr)_{\varphi^{\otimes n}\circ\mathcal{T}^{(n)}}
+\ \ge\ n\max\{\Gamma-h,\,0\}.\;}
+\]
+In particular, if \(h<\Gamma\), then leakage grows linearly at rate at least \(\Gamma-h\); if \(h\ge \Gamma\), then in the achievable case there exist protocols that push leakage to \(0\) (exactly or to arbitrary approximation).
+Hence delinking exhibits a single critical point \(h=\Gamma\), with a strict phase transition structure.
+\end{theorem}
+\begin{proof}[Proof sketch]
+The index gap is strictly additive under tensorization (multiplicativity of the logarithmic index), so the \(n\)-round system has gap \(n\Gamma\), while the randomness budget satisfies \(H(R^{(n)})\le nh\).
+Applying Theorem \ref{thm:op-algebra-optimal-delinking-curve} to the tensorized system gives
+\(
+I\ge \max\{n\Gamma-H(R^{(n)}),0\}\ge n\max\{\Gamma-h,0\}
+\).
+The achievability direction is provided by per-round independent realization \(\mathcal{T}_h^{\otimes n}\) (in the achievable caliber). \qedhere
+\end{proof}
+
+\begin{corollary}[Noncommutative R\'enyi flatness: worst-case R\'enyi loss of finite-index horizons is \texorpdfstring{$\alpha$}{alpha}-invariant]\label{cor:op-algebra-renyi-flatness-sup-equals-log-index}
+Let \(\mathcal{B}\subseteq\mathcal{A}\) be a finite von Neumann algebra inclusion, and \(E:\mathcal{A}\to\mathcal{B}\) a faithful normal finite-index conditional expectation.
+For any \(\alpha\in[1,\infty]\), let \(D_\alpha\) be the sandwiched R\'enyi relative entropy, and define the R\'enyi horizon loss
+\[
+L_\alpha(\rho):=D_\alpha(\rho\|\rho\!\circ\!E).
+\]
+Then the uniform extremal formula
+\[
+\boxed{\;
+\sup_{\rho\in\mathcal{S}(\mathcal{A})}L_\alpha(\rho)=\log\mathrm{Ind}(E)\qquad(\forall \alpha\in[1,\infty])\;}
+\]
+holds.
+Therefore, the ``worst-case information recovery'' is strictly flat across the Shannon, R\'enyi, and min-entropy full spectrum, exactly capped and achievable by the same index constant.
+\end{corollary}
+\begin{proof}[Proof sketch]
+By the Pimsner--Popa inequality, \(\rho\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)\), hence for all \(\alpha\in[1,\infty]\),
+\(
+L_\alpha(\rho)\le \log\mathrm{Ind}(E)
+\)
+(consistent with the cap of Corollary \ref{cor:op-algebra-renyi-loss-spectrum-capped-by-index}).
+\par
+For achievability: by Proposition \ref{prop:op-algebra-dmax-capacity-equals-log-index}, \(\sup_\rho L_\infty(\rho)=\log\mathrm{Ind}(E)\).
+In the finite-dimensional commutative caliber, the single-point state on the maximum fiber simultaneously saturates all R\'enyi orders (Corollary \ref{cor:op-algebra-commutative-dmax-extremizers-maxfiber}), yielding achievability of the lower bound for any fixed \(\alpha\).
+In the general case, near-extremal states can be constructed via the Jones tower/basic construction: for any \(\varepsilon>0\), there exists \(\rho_\varepsilon\) with \(L_\infty(\rho_\varepsilon)\ge \log\mathrm{Ind}(E)-\varepsilon\), and using the monotonicity and continuous approximation of \(\alpha\mapsto L_\alpha(\rho)\), the lower bound is pushed to \(\log\mathrm{Ind}(E)\).
+Hence the supremum takes this value for each \(\alpha\). \qedhere
+\end{proof}
+
+\begin{corollary}[Externalized algebraic curvature: second-order response of the index gap controlled by Jones scalar curvature]\label{cor:op-algebra-index-gap-curvature-second-variation}
+Under the setup of Proposition \ref{prop:op-algebra-jones-scalar-equals-exp-minus-gap}, let \(\lambda\in(0,1]\) be the Jones sandwich scalar and write \(\Gamma=-\log\lambda\).
+Suppose there exists a differentiable one-parameter perturbation family (preserving \(\mathcal{B}_0\) and finite-index feasibility) such that \(\lambda=\lambda(\tau)\), \(\Gamma=\Gamma(\tau)\) are twice differentiable.
+Then for any \(\tau\), the identity
+\[
+\boxed{\;
+\Gamma''(\tau)=\bigl(-\log\lambda(\tau)\bigr)''=\frac{\lambda'(\tau)^2}{\lambda(\tau)^2}-\frac{\lambda''(\tau)}{\lambda(\tau)}\;}
+\]
+holds.
+In particular, if \(\tau=0\) is a local minimum of the index gap (equivalently a local maximum of \(\lambda(\tau)\)), then \(\lambda'(0)=0\) and \(\lambda''(0)\le 0\), hence
+\[
+\boxed{\;\Gamma''(0)\ge 0.\;}
+\]
+Therefore, near a minimal commuting square, the index gap exhibits a strict ``curvature-type'' obstruction: if a first-order perturbation does not increase the gap, then the second order must be nonnegative.
+\end{corollary}
+\begin{proof}
+The identity follows by directly computing the second derivative of \(\Gamma(\tau)=-\log\lambda(\tau)\).
+The derivative sign conditions at a local minimum/maximum are elementary calculus. \qedhere
+\end{proof}
+
+\begin{proposition}[Minimal sufficiency gap of the horizon interface: unified lower bound for recoverability error and index gap]\label{prop:op-algebra-minimal-sufficiency-gap-by-index}
+Let \(\mathcal{B}_0\subset \mathcal{B}_1,\mathcal{B}_2\subset \mathcal{A}\) be a subalgebra chain in a finite von Neumann algebra, with faithful normal finite-index conditional expectations
+\(
+E_i:\mathcal{A}\to\mathcal{B}_i
+\) (\(i=0,1,2\)).
+Write the index gap as
+\[
+\Gamma:=\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_0)}\ \ge\ 0.
+\]
+For any recovery mechanism (normal CPTP) \(R\) (taking \(\mathcal{B}_1\vee\mathcal{B}_2\) as the full visible input and outputting a state on \(\mathcal{A}\)), define the worst-case relative entropy recovery error
+\[
+\epsilon_R:=\sup_{\rho\in\mathcal{S}(\mathcal{A})}
+D\Bigl(\rho\ \Big\|\ R\bigl(\rho\!\upharpoonright_{\mathcal{B}_1\vee\mathcal{B}_2}\bigr)\Bigr),
+\]
+where \(D\) is the Umegaki relative entropy and \(\rho\!\upharpoonright_{\mathcal{B}_1\vee\mathcal{B}_2}\) denotes the restriction of \(\rho\) to the visible composite algebra.
+Then an ineliminable lower bound exists:
+\[
+\boxed{\;
+\inf_R\ \epsilon_R\ \ge\ \Gamma.\;}
+\]
+Equality \(\epsilon_R=0\) (exact recovery in the Petz sufficiency sense, cf.\ \cite{Petz1986SufficientSubalgebrasRelativeEntropy,Petz2003MonotonicityRelativeEntropyRevisited}) holds if and only if \(\Gamma=0\) (index saturation / minimal commuting square caliber).
+Therefore, the index gap \(\Gamma\) simultaneously serves as the lower bound on the randomness cost for delinking (Proposition \ref{prop:op-algebra-twirl-achieves-index-gap}) and as the unified irreversibility potential expressing ``the composite visible interface is insufficient to fully recover the ambient algebra state.''
+\end{proposition}
+\begin{proof}[Proof sketch]
+If an exact recovery \(\epsilon_R=0\) exists, then \(\rho\) can be losslessly recovered from its restriction to \(\mathcal{B}_1\vee\mathcal{B}_2\) via \(R\), while maintaining relative entropy non-increase with equality for all \(\rho\); by Petz's sufficiency theorem, this forces the corresponding visible subalgebra to be sufficient for \(\mathcal{A}\) in the relative entropy sense, which in the finite-index context of this paper is equivalent to index saturation (\(\Gamma=0\)).
+Conversely, when \(\Gamma=0\), the minimal commuting square caliber admits a chain-decomposed state-preserving conditional expectation and a Petz recovery implementation, allowing exact recovery with \(\epsilon_R=0\).
+\par
+For general \(\Gamma>0\), the index gap provides a structural irreversibility lower bound: no recovery depending only on \(\mathcal{B}_1\vee\mathcal{B}_2\) can simultaneously push the relative entropy error below \(\Gamma\) for all states; otherwise it would contradict the index gap lower bound of Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap} and its sufficiency characterization. \qedhere
+\end{proof}
+
+\endinput

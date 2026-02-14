@@ -1,0 +1,467 @@
+\subsection{Jensen Defect: Compressing Disk-Interior Zero Counting into a Family of Finite Circle Averages}\label{subsec:unit-disk-jensen-defect}
+Theorem \ref{thm:app-rh-iff-disk-zero-free} reformulates RH as "no zeros in the open disk."
+This condition can be further fully finitized: the zero information is compressed by the Jensen formula into a family of \textbf{finite circle integral defects} parametrized by the radius \(\varrho\in(0,1)\).
+
+\begin{definition}[Jensen Defect]\label{def:app-jensen-defect}
+Let \(F_{\zeta}\) be as in \eqref{eq:app-Fzeta-disk}.
+For any \(0<\varrho<1\), define the Jensen defect
+\begin{equation}\label{eq:app-jensen-defect}
+\boxed{\;
+D_{\zeta}(\varrho)
+:=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F_{\zeta}(\varrho e^{\mathrm{i}\theta})\bigr|\,\dd\theta
+-\log|F_{\zeta}(0)|\; }.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Jensen Formula and Non-Negative Defect]\label{prop:app-jensen-formula-defect}
+Let \(0<\varrho<1\).
+Let \(\{a_k\}\) be the zeros of \(F_{\zeta}\) in \(|w|<\varrho\) (counted with multiplicity).
+Then the Jensen formula gives
+\begin{equation}\label{eq:app-jensen-sum}
+\boxed{\;
+D_{\zeta}(\varrho)
+=\sum_{|a_k|<\varrho}\log\!\Bigl(\frac{\varrho}{|a_k|}\Bigr)\ \ge\ 0\; }.
+\end{equation}
+Hence \(D_{\zeta}(\varrho)=0\) if and only if \(F_{\zeta}\) has no zeros in \(|w|<\varrho\).
+\end{proposition}
+\begin{proof}
+Since \(F_{\zeta}\) is analytic in \(|w|<1\) and \(F_{\zeta}(0)=\Xi_{\zeta}(-\tfrac12)\neq 0\), the Jensen formula can be applied on the disk \(|w|<\varrho\) for any \(\varrho<1\).
+The conclusion \eqref{eq:app-jensen-sum} and non-negativity are standard consequences (see \cite{Duren1970TheoryHp}). \qed
+\end{proof}
+
+\begin{proposition}[Defect Covariance under Power Substitution: The Power Semigroup Merely Reparametrizes the Radius]\label{prop:app-jensen-defect-power-covariance}
+Let \(F\) be analytic in the unit disk \(\mathbb{D}\) with \(F(0)\neq 0\), and for \(0<\varrho<1\) define the Jensen defect
+\[
+D_F(\varrho):=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F(\varrho e^{\mathrm{i}\theta})\bigr|\,\dd\theta-\log|F(0)|.
+\]
+For an integer \(m\ge 1\), define the power pullback \(F^{(m)}(w):=F(w^m)\).
+Then for any \(0<\varrho<1\), the strict identity
+\begin{equation}\label{eq:app-jensen-defect-power-covariance}
+\boxed{\ D_{F^{(m)}}(\varrho)=D_F(\varrho^m)\ }.
+\end{equation}
+holds. In particular, taking \(F\) to be the diskified completion \(F_{\zeta}\) of this appendix (Definition \ref{def:app-jensen-defect}), the above formula shows that the power semigroup \(w\mapsto w^m\) introduces no new continuous degrees of freedom at the level of the Jensen defect, but merely applies a deterministic reparametrization \(\varrho\mapsto \varrho^m\) to the radius variable.
+\end{proposition}
+\begin{proof}
+By definition,
+\[
+D_{F^{(m)}}(\varrho)
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F\!\bigl((\varrho e^{\mathrm{i}\theta})^m\bigr)\bigr|\,\dd\theta-\log|F(0)|
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F(\varrho^m e^{\mathrm{i}m\theta})\bigr|\,\dd\theta-\log|F(0)|.
+\]
+Setting \(\phi:=m\theta\), so that \(\dd\phi=m\,\dd\theta\), gives
+\[
+D_{F^{(m)}}(\varrho)
+=\frac{1}{2\pi m}\int_{0}^{2\pi m}\log\bigl|F(\varrho^m e^{\mathrm{i}\phi})\bigr|\,\dd\phi-\log|F(0)|.
+\]
+Since the integrand is \(2\pi\)-periodic in \(\phi\),
+\(
+\int_{0}^{2\pi m}\log|F(\varrho^m e^{\mathrm{i}\phi})|\,\dd\phi
+=m\int_{0}^{2\pi}\log|F(\varrho^m e^{\mathrm{i}\phi})|\,\dd\phi
+\).
+Substituting back yields \(D_{F^{(m)}}(\varrho)=D_F(\varrho^m)\). \qed
+\end{proof}
+
+\begin{proposition}[Rigid Lower Bound on the Jensen Defect from a Single Disk-Interior Zero]\label{prop:app-jensen-single-zero-lower-bound}
+If \(F_{\zeta}\) has a zero \(a\) in the open unit disk satisfying \(|a|<1\), then for any \(\varrho\in(|a|,1)\),
+\begin{equation}\label{eq:app-jensen-single-zero-lower-bound}
+\boxed{\;
+D_{\zeta}(\varrho)\ge \log\!\Bigl(\frac{\varrho}{|a|}\Bigr),
+\qquad
+\liminf_{\varrho\uparrow 1}D_{\zeta}(\varrho)\ge \log\!\Bigl(\frac{1}{|a|}\Bigr)>0\; }.
+\end{equation}
+In particular, any disk-interior zero leaves a non-cancellable positive defect lower bound at the boundary layer scale.
+\end{proposition}
+\begin{proof}
+Take any \(\varrho\in(|a|,1)\).
+By the Jensen summation formula \eqref{eq:app-jensen-sum}, for any zero term with \(|a|<\varrho\) the contribution is
+\(
+\log\bigl(\varrho/|a|\bigr)
+\), hence
+\(
+D_{\zeta}(\varrho)=\sum_{|a_k|<\varrho}\log\bigl(\varrho/|a_k|\bigr)\ge \log\bigl(\varrho/|a|\bigr)
+\).
+Letting \(\varrho\uparrow 1\) yields the \(\liminf\) lower bound. \qed
+\end{proof}
+
+\begin{corollary}[Disk Visibility Threshold for Off-Critical-Line Zeros]\label{cor:app-jensen-visible-threshold-offcritical}
+Suppose there exists a zero \(\rho=\beta+\mathrm{i}\gamma\) of \(\Xi_{\zeta}\) with \(\beta<\tfrac12\). Let \(\delta=\tfrac12-\beta>0\) and set
+\(
+w_{\rho}:=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}
+\) (Proposition \ref{prop:app-offcritical-radius-compression}).
+Then for any \(\varrho\in(|w_{\rho}|,1)\),
+\[
+\boxed{\;
+D_{\zeta}(\varrho)\ge \log\!\Bigl(\frac{\varrho}{|w_{\rho}|}\Bigr),
+\qquad
+|w_{\rho}|^{2}=\frac{\gamma^{2}+(\delta-1)^{2}}{\gamma^{2}+(\delta+1)^{2}}\; }.
+\]
+Therefore, given a radius resolution \(1-\varrho\), only off-line zeros satisfying \(1-|w_{\rho}|=O(1-\varrho)\) will produce a resolvable positive contribution to \(D_{\zeta}(\varrho)\);
+and when \(|\gamma|\to\infty\) with \(\delta\) bounded, by Corollary \ref{cor:app-offcritical-radius-high-height} this condition is equivalent to
+\[
+\delta=O\bigl((1-\varrho)\gamma^{2}\bigr).
+\]
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:app-offcritical-radius-compression}, \(F_{\zeta}\) vanishes at the disk-interior zero \(w_{\rho}\).
+For any \(\varrho\in(|w_{\rho}|,1)\), applying Proposition \ref{prop:app-jensen-single-zero-lower-bound} with \(a=w_{\rho}\) yields the stated lower bound.
+The final equivalence follows from the asymptotic \(1-|w_{\rho}|\sim 2\delta/\gamma^{2}\) of Corollary \ref{cor:app-offcritical-radius-high-height}. \qed
+\end{proof}
+
+\begin{corollary}[Finite Sampling Blind Spot: Off-Line Zeros Are Indistinguishable Below the Threshold Radius]\label{cor:app-jensen-finite-sampling-blindspot}
+Take any finite radius sampling set \(\{\varrho_j\}_{j=1}^{M}\subset(0,1)\) and let \(\varrho_{\max}:=\max_j\varrho_j\).
+Then the Jensen defect family \(\{D_{\zeta}(\varrho_j)\}_{j=1}^{M}\) can only reflect the disk-interior zeros satisfying \(|a|<\varrho_{\max}\); any zero satisfying \(|a|>\varrho_{\max}\) is \emph{strictly invisible} to this finite sampling (its contribution to the Jensen summation formula \eqref{eq:app-jensen-sum} is zero at every \(\varrho_j\)).
+\par
+In particular, if there exists an off-critical-line zero \(\rho=\beta+\mathrm{i}\gamma\) (\(\beta<\tfrac12\)) with disk image \(w_{\rho}=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}\), and \(\varrho_{\max}\le |w_{\rho}|\), then the finite sampling \(\{D_{\zeta}(\varrho_j)\}\) alone cannot provide a positive defect certificate excluding that zero; the necessary condition for forcing that zero to manifest in the sampling is
+\[
+\boxed{\ \varrho_{\max}>|w_{\rho}|\ }\qquad\text{equivalently}\qquad
+1-\varrho_{\max}<1-|w_{\rho}|
+\le 1-|w_{\rho}|^{2}
+=\frac{4\delta}{\gamma^{2}+(1+\delta)^{2}}.
+\]
+When \(|\gamma|\to\infty\) with \(\delta\) bounded, this necessary condition reduces to the endpoint boundary layer scaling law \(1-\varrho_{\max}\lesssim \delta/\gamma^{2}\).
+\end{corollary}
+
+\begin{proof}
+By the Jensen summation formula \eqref{eq:app-jensen-sum}, for each \(\varrho\in(0,1)\), the defect \(D_{\zeta}(\varrho)\) sums only over zeros satisfying \(|a|<\varrho\); hence when \(|a|>\varrho_{\max}\), that zero contributes no term at any sampling value \(\varrho_j\le\varrho_{\max}\).
+Therefore finite sampling can only "see" the zero set within radius \(\varrho_{\max}\).
+\par
+For an off-line zero \(\rho\), if \(\varrho_{\max}\le |w_{\rho}|\), then for all sampling radii \(\varrho_j\le |w_{\rho}|\), the visibility threshold condition \(\varrho>|w_{\rho}|\) of Corollary \ref{cor:app-jensen-visible-threshold-offcritical} is not met, so a positive defect lower bound due to this zero cannot be forced from this sampling family.
+To "trigger" the defect contribution from this zero in the sampling, the necessary condition is \(\varrho_{\max}>|w_{\rho}|\).
+The final geometric inequality follows from \(|w_{\rho}|<1\Rightarrow 1-|w_{\rho}|\le 1-|w_{\rho}|^{2}\) and the closed-form identity of Corollary \ref{cor:app-offcritical-horocycle-busemann}; the high-height asymptotic likewise follows from that corollary (or Corollary \ref{cor:app-offcritical-radius-high-height}). \qed
+\end{proof}
+
+\begin{corollary}[Fully Finitized Criterion for RH: Identically Vanishing Defect]\label{cor:app-rh-iff-jensen-defect-zero}
+RH is equivalent to
+\[
+\boxed{\ \forall\,\varrho\in(0,1),\quad D_{\zeta}(\varrho)=0\ }.
+\]
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:app-jensen-formula-defect}, for each fixed \(\varrho\), \(D_{\zeta}(\varrho)=0\iff F_{\zeta}\) has no zeros in \(|w|<\varrho\).
+Letting \(\varrho\uparrow 1\) shows that "defect identically zero for all \(\varrho\in(0,1)\)" is equivalent to "\(F_{\zeta}\) has no zeros in \(|w|<1\)"; combining with Theorem \ref{thm:app-rh-iff-disk-zero-free} gives the result. \qed
+\end{proof}
+
+\begin{theorem}[Boundary-Approaching Defect Vanishing Criterion]\label{thm:app-rh-iff-jensen-defect-vanishing-sequence}
+The following statements are equivalent:
+\begin{enumerate}
+  \item[(i)] RH holds;
+  \item[(ii)] There exists a sequence \(\varrho_n\uparrow 1\) such that \(D_{\zeta}(\varrho_n)\to 0\).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i)\(\Rightarrow\)(ii) follows immediately from Corollary \ref{cor:app-rh-iff-jensen-defect-zero}: if RH holds, then \(D_{\zeta}(\varrho)\equiv 0\), so any choice of \(\varrho_n\uparrow 1\) gives \(D_{\zeta}(\varrho_n)\to 0\).
+\par
+(ii)\(\Rightarrow\)(i): Assume for contradiction that RH fails.
+By Theorem \ref{thm:app-rh-iff-disk-zero-free}, there exists a disk-interior zero \(a\in\mathbb{D}\) with \(F_{\zeta}(a)=0\).
+Then by Proposition \ref{prop:app-jensen-single-zero-lower-bound},
+\(
+\liminf_{\varrho\uparrow 1}D_{\zeta}(\varrho)\ge \log(1/|a|)>0
+\), contradicting \(D_{\zeta}(\varrho_n)\to 0\).
+Hence no disk-interior zero exists, and by Theorem \ref{thm:app-rh-iff-disk-zero-free}, RH holds. \qed
+\end{proof}
+
+\begin{corollary}[Zero-Exclusion Certificate from Defect Upper Bound Sequences]\label{cor:app-jensen-defect-upperbound-certificate}
+If there exist \(\varrho_n\uparrow 1\) and \(\varepsilon_n\downarrow 0\) such that \(D_{\zeta}(\varrho_n)\le \varepsilon_n\), then \(F_{\zeta}\) has no zeros in \(\mathbb{D}\), and hence RH holds.
+More quantitatively, for any disk-interior zero \(a\in\mathbb{D}\), when \(n\) is sufficiently large so that \(|a|<\varrho_n\), we necessarily have
+\[
+|a|\ge \varrho_n e^{-\varepsilon_n}.
+\]
+\end{corollary}
+\begin{proof}
+Fix any disk-interior zero \(a\in\mathbb{D}\).
+When \(n\) is sufficiently large so that \(|a|<\varrho_n\), by \eqref{eq:app-jensen-single-zero-lower-bound},
+\(
+\log(\varrho_n/|a|)\le D_{\zeta}(\varrho_n)\le \varepsilon_n
+\), hence \(|a|\ge \varrho_n e^{-\varepsilon_n}\).
+Letting \(n\to\infty\) gives \(|a|\ge 1\), contradicting \(a\in\mathbb{D}\); hence no disk-interior zero exists.
+By Theorem \ref{thm:app-rh-iff-disk-zero-free} or Corollary \ref{cor:app-rh-iff-jensen-defect-zero}, RH holds. \qed
+\end{proof}
+
+\subsubsection{Derivative Law, Countabilization, and Endpoint Localization}\label{subsubsec:app-jensen-defect-new-cluster}
+
+\paragraph{Notation and Interface (Minimal Recapitulation)}
+For ease of direct reference, this subsection lists only the minimal interface relevant to the subsequent results:
+\begin{enumerate}
+  \item \textbf{Area-phase compactification and phase box arithmetic:} The phase box \(\mathbb{U}:=(-\tfrac12,\tfrac12)\) and compactification gate \(\upsilon(x)=\frac{1}{\pi}\arctan(x)\) are defined in \eqref{eq:unit-circle-phase-upsilon}--\eqref{eq:unit-circle-phase-inverse};
+  structural transport along \(\upsilon\) defines operations \((\boxplus,\boxtimes)\) on \(\mathbb{U}\) that are strictly isomorphic to \((\RR,+,\cdot)\) (Definition \ref{def:unit-circle-phase-transport-arith}).
+  \item \textbf{Diskified completion:} The Cayley transform \(\mathcal{C}:\mathbb{H}\to\mathbb{D}\) and its inverse are given in \eqref{eq:app-cayley-disk};
+  the diskified completion function \(F_{\zeta}(w)=\Xi_{\zeta}(s(w))\) is defined in \eqref{eq:app-s-of-w}--\eqref{eq:app-Fzeta-disk}.
+  \item \textbf{Jensen defect:} For \(\varrho\in(0,1)\), the defect \(D_{\zeta}(\varrho)\) is given by Definition \ref{def:app-jensen-defect} and satisfies the Jensen summation formula \eqref{eq:app-jensen-sum}.
+\end{enumerate}
+
+\begin{proposition}[Logarithmic Radius Derivative Law: The Derivative of the Defect Equals the Disk-Interior Zero Count]\label{prop:app-jensen-defect-log-derivative}
+Let
+\[
+N_{F_{\zeta}}(\varrho)
+:=\#\bigl\{a:\ F_{\zeta}(a)=0,\ |a|<\varrho\bigr\}
+\]
+be the zero count (with multiplicity) of \(F_{\zeta}\) in \(|w|<\varrho\).
+Then for almost every \(\varrho\in(0,1)\),
+\[
+\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)=N_{F_{\zeta}}(\varrho),
+\qquad
+D_{\zeta}'(\varrho)=\frac{1}{\varrho}\,N_{F_{\zeta}}(\varrho).
+\]
+Moreover, \(D_{\zeta}\) is continuous and non-decreasing on \((0,1)\), and if \(D_{\zeta}(\varrho_0)=0\) for some \(\varrho_0\in(0,1)\), then \(D_{\zeta}(\varrho)=0\) for all \(0<\varrho\le \varrho_0\).
+\end{proposition}
+\begin{proof}
+By \eqref{eq:app-jensen-sum}, for each fixed \(\varrho\in(0,1)\) the number of disk-interior zeros is finite, so the sum is a finite sum.
+When \(\varrho\) does not equal any \(|a|\) (where \(a\) ranges over the disk-interior zeros of \(F_{\zeta}\)), the set \(\{a:\ |a|<\varrho\}\) is constant in some neighborhood, so
+\(
+D_{\zeta}(\varrho)=\sum_{|a|<\varrho}\log(\varrho/|a|)
+\)
+may be differentiated with respect to \(\log\varrho\) in that neighborhood to give \(\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)=N_{F_{\zeta}}(\varrho)\).
+When \(\varrho\) crosses some \(|a|\), the additional term \(\log(\varrho/|a|)\) tends to \(0\) as \(\varrho\downarrow |a|\), hence \(D_{\zeta}\) is continuous.
+Non-negativity and monotonicity follow directly from \eqref{eq:app-jensen-sum}.
+Finally, if \(D_{\zeta}(\varrho_0)=0\), then for \(\varrho\le \varrho_0\) we have \(0\le D_{\zeta}(\varrho)\le D_{\zeta}(\varrho_0)=0\). \qed
+\end{proof}
+
+\begin{corollary}[Zero Count Scaling Law for Power Pullbacks (Radial Measure Formula)]\label{cor:app-jensen-zero-count-power-law}
+Using the notation of Proposition \ref{prop:app-jensen-defect-power-covariance},
+let \(N_F(\varrho)\) denote the zero count (with multiplicity) of \(F\) in \(|w|<\varrho\), and let \(N_{F^{(m)}}\) be the corresponding count function for \(F^{(m)}\).
+Then for any integer \(m\ge 1\) and any \(0<\varrho<1\),
+\begin{equation}\label{eq:app-zero-count-power-law}
+\boxed{\ N_{F^{(m)}}(\varrho)=m\,N_F(\varrho^m)\ }.
+\end{equation}
+Equivalently, if we represent the radial distribution of disk-interior zeros by the modulus counting measure
+\[
+\mu_F:=\sum_{a:\,F(a)=0}\mathrm{mult}(a)\,\delta_{|a|},
+\]
+then
+\[
+\mu_{F^{(m)}}=m\,(\varrho\mapsto \varrho^{1/m})_{\ast}\mu_F.
+\]
+\end{corollary}
+\begin{proof}
+By assumption \(F(0)\neq 0\), so \(F\) has no zero at \(w=0\).
+If \(a\neq 0\) is a zero of \(F\) of multiplicity \(r\), then \(F^{(m)}(w)=F(w^m)\) has a zero of the same multiplicity \(r\) at each of the \(m\) roots of \(w^m=a\), all of which have modulus \(|a|^{1/m}\).
+Therefore, for a given \(0<\varrho<1\), the disk-interior condition \(|w|<\varrho\) corresponds to \(|a|<\varrho^m\), and each zero satisfying \(|a|<\varrho^m\) contributes \(m\) disk-interior zeros (counted with multiplicity), yielding \eqref{eq:app-zero-count-power-law}.
+The measure formulation follows directly from the same "take the \(m\)-th root of the modulus and multiply the weight by \(m\)" correspondence. \qed
+\end{proof}
+
+\begin{corollary}[Kink Structure: Disk-Interior Zeros Generate Localizable Jump Atoms in the Defect]\label{cor:app-jensen-defect-kink-structure}
+Let \(r\in(0,1)\) and denote
+\[
+m(r):=\sum_{a:\ F_{\zeta}(a)=0,\ |a|=r}\mathrm{mult}(a)\in\ZZ_{\ge 0}
+\]
+the total multiplicity of disk-interior zeros whose modulus equals exactly \(r\) (a finite sum).
+Then \(D_{\zeta}(\varrho)\) as a function of \(\log\varrho\) has left and right derivatives at \(\varrho=r\), satisfying the slope jump law
+\[
+\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)\Big|_{\varrho=r+0}
+-\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)\Big|_{\varrho=r-0}
+=m(r).
+\]
+Equivalently, the zero count function has a jump at \(\varrho=r\):
+\[
+N_{F_{\zeta}}(r+0)-N_{F_{\zeta}}(r-0)=m(r).
+\]
+Therefore \(D_{\zeta}\) can be viewed as the cumulative function of the "zero radius distribution": each group of disk-interior zeros of modulus \(r\) forces an irremovable kink at \(\varrho=r\).
+\end{corollary}
+\begin{proof}
+By the Jensen summation formula \eqref{eq:app-jensen-sum}, for any fixed \(r\in(0,1)\), in some punctured neighborhood of \(r\) (excluding finitely many threshold radii \(|a|\)),
+the zero set \(\{a:\ |a|<\varrho\}\) is constant, so
+\(
+\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)=N_{F_{\zeta}}(\varrho)
+\)
+(Proposition \ref{prop:app-jensen-defect-log-derivative}).
+When \(\varrho\) increases from \(r-0\) to \(r+0\), precisely those zero terms of modulus \(r\) switch from "not counted" to "counted," each contributing one unit of slope; thus the slope jump equals the total multiplicity \(m(r)\).
+\qed
+\end{proof}
+
+\begin{theorem}[Countabilized Criterion for an Arbitrary Approaching Sequence]\label{thm:app-jensen-countable-criterion}
+Let \((\varrho_n)_{n\ge 1}\subset(0,1)\) be monotonically increasing with \(\varrho_n\uparrow 1\).
+Then the following are equivalent:
+\begin{enumerate}
+  \item[(a)] RH holds;
+  \item[(b)] For all \(n\ge 1\), \(D_{\zeta}(\varrho_n)=0\).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a)\(\Rightarrow\)(b) follows immediately from Corollary \ref{cor:app-rh-iff-jensen-defect-zero}.
+\par
+(b)\(\Rightarrow\)(a): Take any \(\varrho\in(0,1)\).
+Since \(\varrho_n\uparrow 1\), choose \(n\) with \(\varrho\le \varrho_n\).
+By the monotonicity of Proposition \ref{prop:app-jensen-defect-log-derivative}, \(0\le D_{\zeta}(\varrho)\le D_{\zeta}(\varrho_n)=0\), hence \(D_{\zeta}(\varrho)=0\).
+Then Corollary \ref{cor:app-rh-iff-jensen-defect-zero} yields RH. \qed
+\end{proof}
+
+\begin{theorem}[Kink Localization and Horizon Depth for Off-Critical-Line Information]\label{thm:app-jensen-offcritical-kink-localization}
+Suppose there exists a zero \(\rho=\beta+\mathrm{i}\gamma\) of \(\Xi_{\zeta}\) with \(0<\beta<\tfrac12\), and denote \(\delta:=\tfrac12-\beta>0\),
+as well as \(w_{\rho}:=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}\) (Proposition \ref{prop:app-offcritical-radius-compression}).
+Let \(r_{\rho}:=|w_{\rho}|\) and \(m_{\rho}:=\mathrm{mult}(w_{\rho})\) be the multiplicity of the corresponding disk zero.
+Then:
+\begin{enumerate}
+  \item \(F_{\zeta}(w_{\rho})=0\), hence \(r_{\rho}\) is a kink threshold radius of \(D_{\zeta}\);
+  \item There exists \(\varepsilon_0>0\) such that for all \(0<\varepsilon<\varepsilon_0\),
+  \[
+  N_{F_{\zeta}}(r_{\rho}+\varepsilon)=N_{F_{\zeta}}(r_{\rho}-\varepsilon)+m_{\rho},
+  \]
+  equivalently, \(D_{\zeta}(\varrho)\) as a function of \(\log\varrho\) has a kink at \(\varrho=r_{\rho}\) with slope jump \(m_{\rho}\) (Corollary \ref{cor:app-jensen-defect-kink-structure}).
+  \item Define the horizon depth (near-boundary gap)
+  \[
+  h(\rho):=1-|w_{\rho}|^{2},
+  \]
+  then by \eqref{eq:app-offcritical-radius-closed} the fully closed form is
+  \[
+  \boxed{\ h(\rho)=\frac{4\delta}{\gamma^{2}+(\delta+1)^{2}}\ }.
+  \]
+  In particular, when \(|\gamma|\to\infty\) with \(\delta\) bounded, \(h(\rho)\sim 4\delta/\gamma^{2}\), so the off-critical-line information is compressed into the boundary layer within the disk interface.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(1)} By Proposition \ref{prop:app-offcritical-radius-compression}.
+\par
+\textbf{(2)} Since the number of disk-interior zeros is finite for \(\varrho<1\), one can choose \(\varepsilon_0>0\) such that in the annulus
+\(
+r_{\rho}-\varepsilon_0<|w|<r_{\rho}+\varepsilon_0
+\)
+no zero moduli other than \(r_{\rho}\) are present.
+When \(\varrho\) crosses \(r_{\rho}\), the zero count function jumps by exactly the total multiplicity \(m_{\rho}\) at that modulus, yielding the stated equality; the kink conclusion follows equivalently from Corollary \ref{cor:app-jensen-defect-kink-structure}.
+\par
+\textbf{(3)} Direct simplification of \eqref{eq:app-offcritical-radius-closed} gives
+\(
+1-|w_{\rho}|^{2}=\frac{4\delta}{\gamma^{2}+(\delta+1)^{2}}
+\).
+When \(|\gamma|\to\infty\) with \(\delta\) bounded, the dominant term in the denominator is \(\gamma^{2}\), yielding \(h(\rho)\sim 4\delta/\gamma^{2}\).
+\qed
+\end{proof}
+
+\begin{corollary}[Undetectable Boundary Layer under Sampling Radius Truncation]\label{cor:app-jensen-kink-undetectable-threshold}
+Given a finite sampling radius set \(\{\varrho_1,\dots,\varrho_M\}\subset(0,1)\), denote
+\(
+\varrho_{\max}:=\max_{1\le j\le M}\varrho_j
+\)
+and \(\eta:=1-\varrho_{\max}>0\).
+If there exists an off-critical-line zero \(\rho\) such that \(1-|w_{\rho}|<\eta\) (for example \(h(\rho)\ll \eta\)), then its kink threshold radius satisfies \(r_{\rho}=|w_{\rho}|>\varrho_j\) for all \(j\), and hence the finite grid defect sampling \(\{D_{\zeta}(\varrho_j)\}_{j=1}^{M}\) alone cannot exclude that kink atom.
+\end{corollary}
+\begin{proof}
+Since \(r_{\rho}>\varrho_j\) for all \(j\), the zero \(w_{\rho}\) never enters any sampling disk \(|w|<\varrho_j\); therefore the Jensen summation formula \eqref{eq:app-jensen-sum} at these sampling points contains no term from that zero. The kink location cannot be determined from this grid, and hence cannot be excluded. \qed
+\end{proof}
+
+\begin{proposition}[Zero-Repulsion Subdisk Derived from the Defect]\label{prop:app-jensen-zero-repulsion-subdisk}
+For any \(0<\varrho<1\), define
+\[
+r_{\ast}(\varrho):=\varrho\,\exp\!\bigl(-D_{\zeta}(\varrho)\bigr)\in(0,\varrho].
+\]
+Then \(F_{\zeta}\) has no zeros in \(|w|<r_{\ast}(\varrho)\).
+In particular, if \(D_{\zeta}(\varrho)\le \varepsilon\), then the repulsion radius satisfies \(r_{\ast}(\varrho)\ge \varrho e^{-\varepsilon}\).
+\end{proposition}
+\begin{proof}
+Assume for contradiction that there exists a zero \(a\) with \(|a|<r_{\ast}(\varrho)\le \varrho\).
+Then
+\[
+\log\!\Bigl(\frac{\varrho}{|a|}\Bigr)\ >\ \log\!\Bigl(\frac{\varrho}{r_{\ast}(\varrho)}\Bigr)\ =\ D_{\zeta}(\varrho).
+\]
+But \eqref{eq:app-jensen-sum} shows that \(D_{\zeta}(\varrho)\) is a sum of non-negative terms including the term \(\log(\varrho/|a|)\), a contradiction. \qed
+\end{proof}
+
+\begin{corollary}[Sufficient Condition for the Repulsion Radius to Approach \(1\)]\label{cor:app-jensen-repulsion-radius-to-one}
+If there exists a sequence \(\varrho_n\uparrow 1\) such that \(r_{\ast}(\varrho_n)\uparrow 1\), then \(F_{\zeta}\) has no zeros in \(|w|<1\), and hence RH holds.
+\end{corollary}
+\begin{proof}
+If there existed a disk-interior zero \(a\) with \(|a|<1\), one could choose \(n\) so that \(|a|<r_{\ast}(\varrho_n)\), contradicting Proposition \ref{prop:app-jensen-zero-repulsion-subdisk}.
+Hence \(F_{\zeta}\) has no zeros in \(\mathbb{D}\); by Theorem \ref{thm:app-rh-iff-disk-zero-free}, RH holds. \qed
+\end{proof}
+
+\begin{proposition}[Cayley Preimage of \texorpdfstring{$|w|=\varrho$}{|w|=varrho} Is an Explicit Circle]\label{prop:app-cayley-preimage-modulus-circle}
+Let \(0<\varrho<1\).
+Let \(t=x+\mathrm{i}y\in\mathbb{H}\) and \(w=\mathcal{C}(t)\).
+Then \(|w|=\varrho\) is equivalent to
+\[
+x^2+\Bigl(y-\frac{1+\varrho^2}{1-\varrho^2}\Bigr)^2=\Bigl(\frac{2\varrho}{1-\varrho^2}\Bigr)^2.
+\]
+This circle intersects the imaginary axis at the two points
+\[
+y_{\pm}(\varrho)=\frac{1\pm\varrho}{1\mp\varrho}.
+\]
+Moreover, as \(\varrho\uparrow 1\), \(y_{-}(\varrho)\downarrow 0\) and \(y_{+}(\varrho)\uparrow\infty\).
+\end{proposition}
+\begin{proof}
+From \eqref{eq:app-cayley-disk} and \(|\mathcal{C}(t)|^2=\frac{|1+\mathrm{i}t|^2}{|1-\mathrm{i}t|^2}\), for \(t=x+\mathrm{i}y\) compute
+\[
+|1+\mathrm{i}t|^2=x^2+(1-y)^2,
+\qquad
+|1-\mathrm{i}t|^2=x^2+(1+y)^2.
+\]
+Setting their ratio equal to \(\varrho^2\) and completing the square yields the circle equation.
+Setting \(x=0\) gives the intersection formula; the limits follow directly from the explicit expressions. \qed
+\end{proof}
+
+\begin{proposition}[Upper Half-Plane Circle Average Representation and Explicit Parametrization of the Defect]\label{prop:app-jensen-defect-upperhalf-circle-average}
+Let \(0<\varrho<1\).
+Denote
+\[
+t(\varrho,\theta):=\mathcal{C}^{-1}(\varrho e^{\mathrm{i}\theta})\in\mathbb{H}.
+\]
+Then
+\[
+D_{\zeta}(\varrho)
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log\Bigl|\Xi_{\zeta}\!\Bigl(\tfrac12+\mathrm{i}\,t(\varrho,\theta)\Bigr)\Bigr|\,\dd\theta
+-\log\bigl|\Xi_{\zeta}(-\tfrac12)\bigr|.
+\]
+Moreover, \(t(\varrho,\theta)\) admits the explicit decomposition
+\begin{equation}\label{eq:app-t-rho-theta-explicit}
+\boxed{\;
+t(\varrho,\theta)
+=\frac{2\varrho\sin\theta}{1+\varrho^2+2\varrho\cos\theta}
+\;+\;
+\mathrm{i}\,\frac{1-\varrho^2}{1+\varrho^2+2\varrho\cos\theta}\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}
+From \eqref{eq:app-jensen-defect}, \eqref{eq:app-Fzeta-disk}, and \eqref{eq:app-s-of-w}, for \(w=\varrho e^{\mathrm{i}\theta}\) we have
+\(
+\log|F_{\zeta}(w)|=\log|\Xi_{\zeta}(\tfrac12+\mathrm{i}\mathcal{C}^{-1}(w))|
+\), and \(F_{\zeta}(0)=\Xi_{\zeta}(-\tfrac12)\), yielding the first formula.
+\par
+The explicit decomposition is obtained by algebraic simplification of \(t=-\mathrm{i}\frac{w-1}{w+1}\) from \eqref{eq:app-cayley-disk} at \(w=\varrho e^{\mathrm{i}\theta}\). \qed
+\end{proof}
+
+\begin{corollary}[Endpoint Localization: As \texorpdfstring{$\varrho\uparrow 1$}{varrho->1}, High Imaginary Part Contributions Concentrate Near \texorpdfstring{$\theta\approx\pi$}{theta~pi}]\label{cor:app-jensen-endpoint-localization}
+From \eqref{eq:app-t-rho-theta-explicit},
+\[
+\Im\,t(\varrho,\theta)=\frac{1-\varrho^2}{1+\varrho^2+2\varrho\cos\theta},
+\]
+which attains its maximum at \(\theta=\pi\):
+\[
+\Im\,t(\varrho,\pi)=\frac{1+\varrho}{1-\varrho}=y_{+}(\varrho)
+\]
+(Proposition \ref{prop:app-cayley-preimage-modulus-circle}).
+Therefore, as \(\varrho\uparrow 1\), the high imaginary part sampling of the circle average is forced to concentrate in a narrow angular neighborhood of the endpoint \(w=\varrho e^{\mathrm{i}\pi}\approx-1\); this endpoint neighborhood becomes the principal rigidity source controlling \(D_{\zeta}(\varrho)\).
+\end{corollary}
+\begin{proof}
+Direct computation from \eqref{eq:app-t-rho-theta-explicit}.
+At \(\theta=\pi\) the denominator is \((1-\varrho)^2\), yielding the maximum which diverges as \(\varrho\uparrow 1\). \qed
+\end{proof}
+
+\input{prop__app-jensen-endpoint-angle-window}
+\input{par__app-endpoint-arcsine-legendre}
+
+\begin{remark}[Odd Channel Priority Principle of the Endpoint Decomposition (Aligned with the Chebyshev--Adams Bridge)]\label{rem:app-jensen-odd-channel-priority}
+Corollary \ref{cor:app-jensen-endpoint-localization} shows that the principal difficulty as \(\varrho\uparrow 1\) localizes to the endpoint \(w\approx-1\).
+In the completion coordinates \(S=\mathfrak{r}+\mathfrak{r}^{-1}\), the power semigroup \(w\mapsto w^m\) corresponds to \(S\mapsto C_m(S)\) (\S\ref{subsec:unit-disk-witt-chebyshev}).
+By the endpoint derivative law (Proposition \ref{prop:chebyshev-endpoint-derivative-splitting}): the odd-\(m\) channel retains the linear principal scale near \(S=0\), while the even-\(m\) channel has a degenerate first-order jet and contributes only to higher-order residuals.
+Therefore any multiscale peeling aimed at the endpoint neighborhood must structurally take the odd channel as the leading term and the even channel as a higher-order correction.
+\end{remark}
+
+\paragraph{Research Objectives (Strict Contractual Alignment with RH)}\label{par:app-jensen-research-target-chain}
+Synthesizing the above interfaces and results, the unit circle area-phase arithmetic -- diskification -- Jensen defect pathway can be organized into the following closed contractual chain:
+\begin{enumerate}
+  \item \textbf{Countabilization:} Choose any \(\varrho_n\uparrow 1\); by Theorem \ref{thm:app-jensen-countable-criterion}, RH is equivalently compressed to the countable family of constraints \(D_{\zeta}(\varrho_n)=0\).
+  \item \textbf{Geometric Explicitation:} For each \(\varrho\), Proposition \ref{prop:app-jensen-defect-upperhalf-circle-average} interprets \(D_{\zeta}(\varrho)\) as the logarithmic modulus average of \(\Xi_{\zeta}\) on an explicit circle in the upper half-plane; the geometry of this circle is given by Proposition \ref{prop:app-cayley-preimage-modulus-circle}.
+  \item \textbf{Endpoint Localization and Parity Channels:} By Corollary \ref{cor:app-jensen-endpoint-localization}, as \(\varrho\uparrow 1\) the principal difficulty localizes to a narrow angular neighborhood of the endpoint \(w\approx-1\); the odd/even splitting of the endpoint jet (Proposition \ref{prop:chebyshev-endpoint-derivative-splitting}) provides a structural decomposition for endpoint multiscale peeling (Remark \ref{rem:app-jensen-odd-channel-priority}).
+  \item \textbf{Certificated Sufficient Condition:} If on some concrete \(\varrho_n\uparrow 1\) one can construct an auditable upper bound chain such that the zero-repulsion radius \(r_{\ast}(\varrho_n)=\varrho_n e^{-D_{\zeta}(\varrho_n)}\uparrow 1\), then by Corollary \ref{cor:app-jensen-repulsion-radius-to-one} no disk-interior zeros exist, yielding RH.
+\end{enumerate}
+
+\paragraph{Closed Chain with Horizon/Hair Isomorphic Semantics in Pure Mathematics}\label{par:app-jensen-horizon-hair-closed-chain}
+Within the closed interface of "diskified completion \(F_{\zeta}\) -- Jensen defect \(D_{\zeta}\) -- endpoint compactification \(w\to-1\)," the above results can be further organized into a four-segment chain centered on \emph{countable auditing, kink localization, and discrete certificates}:
+\begin{enumerate}
+  \item \textbf{Countable Auditing:} RH is equivalent to the countable constraint \(D_{\zeta}(\varrho_n)=0\) for any approaching sequence \(\varrho_n\uparrow 1\) (Theorem \ref{thm:app-jensen-countable-criterion}).
+  \item \textbf{Kink Localization:} Disk-interior zeros generate localizable kink atoms on the defect function (Corollary \ref{cor:app-jensen-defect-kink-structure});
+  if an off-critical-line zero \(\rho=\beta+\mathrm{i}\gamma\) (\(\beta<\tfrac12\)) exists, its disk image \(w_{\rho}\) yields a near-boundary kink threshold radius \(r_{\rho}=|w_{\rho}|\), with the horizon depth
+  \(h(\rho)=1-|w_{\rho}|^{2}=\frac{4\delta}{\gamma^{2}+(\delta+1)^{2}}\) (Theorem \ref{thm:app-jensen-offcritical-kink-localization})
+  quantitatively characterizing its compression scale within the boundary layer; defect upper bounds further provide explicit upper bounds on the off-line shift (Theorem \ref{thm:app-jensen-defect-controls-offcritical-shift}).
+  \item \textbf{Discrete Certificates (Realization Layer):} When the object is promoted to a finite-sample verifiable realization/transfer expression, the Hankel normal form provides minimal realization dimension and discrete certificates for the denominator/valuation (Definition \ref{def:pom-hankel-normal-form}, Remark \ref{rem:pom-hankel-denominator-stiffness}, and Remark \ref{rem:pom-hankel-stiffness-p5});
+  on the \(p\)-adic side this certificate manifests as a rigidity index threshold, thereby externalizing "the information required for invertibility" as an auditable invariant.
+  \item \textbf{Logarithmic Depth Congruence Chain:} On the dyadic tower, Dwork-type congruences close in the invariant coordinates \(t=u+u^{-1}\) as a Chebyshev--Dwork congruence chain, providing a level-by-level reproducible audit at logarithmic depth (Theorem \ref{thm:chebyshev-dwork-congruence-chain} and Corollary \ref{cor:chebyshev-dwork-matrixfree}).
+\end{enumerate}

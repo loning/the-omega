@@ -1,0 +1,135 @@
+\ifdefined\pdfoutput\pdfoutput=1\fi % pdfTeX only; safe under XeTeX/LuaTeX
+\documentclass[11pt,letterpaper]{article}
+
+% Silence spurious "Missing character … (U+0013)" log noise.
+\tracinglostchars=0\relax
+
+\usepackage{geometry}
+\geometry{letterpaper, margin=1in}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\DeclareMathOperator{\tr}{tr}
+\usepackage{amscd}
+\makeatletter
+\@ifundefined{FASTBUILD}{%
+  \usepackage{graphicx}%
+}{%
+  % Fast build: skip loading external graphics, speed up compilation.
+  \usepackage[draft]{graphicx}%
+}%
+\makeatother
+
+% Keep compilation robust even if some (pipeline-generated) graphics are missing.
+% Replace missing graphics with a small framed placeholder instead of a hard error.
+\makeatletter
+\let\origincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \origincludegraphics[#1]{#2}%
+  }{%
+    \fbox{\ttfamily missing graphic: \detokenize{#2}}%
+  }%
+}%
+\makeatother
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{cite}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{adjustbox}
+\usepackage{etoolbox}
+\usepackage{fvextra}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage{mathrsfs}
+\usepackage{dsfont}
+\usepackage{subfiles}
+
+% Allow line breaks in \url/\path at underscores.
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\_}
+\makeatother
+
+% Scale tabular blocks to fit line width (avoid overfull boxes for wide tables).
+% NOTE: Use *Before/After* hooks to wrap the whole environment; using AtBegin/AtEnd
+% would inject code *inside* tabular and can break alignments (including \maketitle).
+\BeforeBeginEnvironment{tabular}{\begin{adjustbox}{max width=\linewidth}}%
+\AfterEndEnvironment{tabular}{\end{adjustbox}}%
+
+% Theorem environments (English)
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% Common commands
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\FF}{\mathbb{F}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\TT}{\mathbb{T}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Sol}{\Sigma_{\mathrm{sol}}}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\ind}{\mathbf{1}}
+\newcommand{\card}[1]{\left\lvert #1\right\rvert}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\Span}{\mathrm{Span}}
+\newcommand{\Mat}{\mathrm{Mat}}
+
+% Paper-specific
+\newcommand{\Fold}{\mathrm{Fold}}
+
+% Code listings (fvextra / fancyvrb)
+\fvset{breaklines=true,breakanywhere=true,fontsize=\small}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines=true,breakanywhere=true,fontsize=\small}
+
+% Silence underfull box warnings (layout remains visible in PDF).
+\hbadness=10000\relax
+\vbadness=10000\relax
+\hfuzz=60pt\relax
+
+\title{Golden-Ratio-Driven Scan--Projection Generation:\\\large Arithmetic and Conceptual Hierarchies Recursively Emerging\\from Group Actions and Statistical Stability}
+\author{Haobo Ma\\CHRONOAI PTE. LTD.\\\#14-02, Marina Bay Financial Centre Tower 1\\8 Marina Blvd, Singapore 018981}
+\date{}
+
+\begin{document}
+\sloppy
+\hfuzz=60pt\relax
+\maketitle
+\subfile{sections/frontmatter/main_en}
+
+\begingroup
+\tracinglostchars=0\relax
+\makeatletter
+\let\input@path\@empty
+\makeatother
+\tableofcontents
+\endgroup
+\newpage
+
+\subfile{sections/body/main_en}
+
+\FloatBarrier
+\subfile{sections/appendix/main_en}
+
+\FloatBarrier
+\subfile{sections/backmatter/main_en}
+
+\end{document}

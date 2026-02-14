@@ -1,0 +1,95 @@
+\subsection{Precision Potential and Differential Entropy Ledger: Precision as Fiber Cost}\label{subsec:unit-circle-phase-precision-ledger}
+This subsection interprets the Jacobian from \eqref{eq:unit-circle-phase-derivative} as a \textbf{precision potential} and establishes a continuous-version identity of the same type as the ``information ledger'' in the main text: under an invertible compactification, the tail scale of the original variable enters the ledger as the expectation of the ``precision load.''
+
+\begin{definition}[Precision potential]\label{def:unit-circle-phase-precision-potential}
+Define the precision potential of the parameter-free compactification gate \(\upsilon(x)=\frac{1}{\pi}\arctan(x)\) as
+\begin{equation}\label{eq:unit-circle-phase-precision-potential}
+\boxed{\;
+\mathcal{P}(x):=-\log\left|\frac{\dd \upsilon}{\dd x}\right|
+=\log\pi+\log(1+x^2)\; }.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Differential entropy ledger identity: compression \(\Leftrightarrow\) precision load]\label{prop:unit-circle-phase-diff-entropy-ledger}
+Let \(X\) be a random variable on \(\RR\) with a density, and define \(U=\upsilon(X)\in(-\tfrac12,\tfrac12)\).
+Write the differential entropy as
+\[
+h_{\mathrm{diff}}(X):=-\int_{\RR} f_X(x)\log f_X(x)\,\dd x,\qquad
+h_{\mathrm{diff}}(U):=-\int_{\mathbb{U}} f_U(u)\log f_U(u)\,\dd u.
+\]
+Then the following strict identity holds:
+\begin{equation}\label{eq:unit-circle-phase-diff-entropy-ledger}
+\boxed{\;
+h_{\mathrm{diff}}(X)=h_{\mathrm{diff}}(U)+\mathbb{E}\bigl[\mathcal{P}(X)\bigr]\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}
+By the invertibility of \(u=\upsilon(x)\) and the density change-of-variable formula,
+\(
+f_U(u)=f_X(x)\left|\frac{\dd x}{\dd u}\right|
+\)
+where \(x=\upsilon^{-1}(u)\).
+Hence
+\[
+\log f_U(u)=\log f_X(x)-\log\left|\frac{\dd \upsilon}{\dd x}\right|
+=\log f_X(x)+\mathcal{P}(x).
+\]
+Multiplying both sides by \(f_U(u)\dd u=f_X(x)\dd x\) and integrating yields
+\[
+-h_{\mathrm{diff}}(U)
+=\int_{\RR} f_X(x)\log f_X(x)\,\dd x+\mathbb{E}[\mathcal{P}(X)]
+=-h_{\mathrm{diff}}(X)+\mathbb{E}[\mathcal{P}(X)],
+\]
+and rearranging gives \eqref{eq:unit-circle-phase-diff-entropy-ledger}. \qed
+\end{proof}
+
+\begin{remark}[Isomorphism with the information ledger of the main text]\label{rem:unit-circle-phase-precision-ledger-vs-pom}
+The structure of Proposition~\ref{prop:unit-circle-phase-diff-entropy-ledger} is isomorphic to that of the ``folding information ledger'' in the main text: at the window level, the fiber volume defect of the coarse-graining \(\Fold_m\) enters the entropy decomposition as \(\kappa_m(\pi)=\mathbb{E}_\pi[\log d_m(X)]\) (Theorem~\ref{thm:pom-kl-ledger});
+under the continuous compactification gate \(\upsilon\), the corresponding defect term is given by the precision potential \(\mathcal{P}(x)=\log\pi+\log(1+x^2)\).
+In both calibers, ``invertible compression'' does not destroy information but rather migrates invisible degrees of freedom into an auditable cost term: in the discrete case, the logarithmic fiber volume; in the continuous case, the negative logarithm of the Jacobian.
+\end{remark}
+
+\begin{proposition}[Logarithmic condition number identity for phase arithmetic (Jacobian ledger)]\label{prop:unit-circle-phase-log-condition-numbers}
+Take \(u,v\in\mathbb{U}\) and write
+\[
+x:=\tan(\pi u),\qquad y:=\tan(\pi v).
+\]
+Then the input-side derivatives of the phase addition \(u\boxplus v=\upsilon(x+y)\) and phase multiplication \(u\boxtimes v=\upsilon(xy)\) satisfy
+\begin{align}
+\left|\frac{\partial(u\boxplus v)}{\partial u}\right|
+&=\frac{1+x^2}{1+(x+y)^2},
+&
+\left|\frac{\partial(u\boxplus v)}{\partial v}\right|
+&=\frac{1+y^2}{1+(x+y)^2},\label{eq:unit-circle-phase-addition-jacobian}\\[4pt]
+\left|\frac{\partial(u\boxtimes v)}{\partial u}\right|
+&=\frac{|y|\,(1+x^2)}{1+x^2y^2},
+&
+\left|\frac{\partial(u\boxtimes v)}{\partial v}\right|
+&=\frac{|x|\,(1+y^2)}{1+x^2y^2}.\label{eq:unit-circle-phase-multiplication-jacobian}
+\end{align}
+Expressing the logarithmic ledger in terms of the precision potential \(\mathcal{P}(t)=\log\pi+\log(1+t^2)\) from Definition~\ref{def:unit-circle-phase-precision-potential}, one has the strict identities
+\begin{align}
+\log\left|\frac{\partial(u\boxplus v)}{\partial u}\right|
+&=\mathcal{P}(x)-\mathcal{P}(x+y),
+&
+\log\left|\frac{\partial(u\boxplus v)}{\partial v}\right|
+&=\mathcal{P}(y)-\mathcal{P}(x+y),\label{eq:unit-circle-phase-addition-log-ledger}\\[4pt]
+\log\left|\frac{\partial(u\boxtimes v)}{\partial u}\right|
+&=\log|y|+\mathcal{P}(x)-\mathcal{P}(xy),
+&
+\log\left|\frac{\partial(u\boxtimes v)}{\partial v}\right|
+&=\log|x|+\mathcal{P}(y)-\mathcal{P}(xy).\label{eq:unit-circle-phase-mul-log-ledger}
+\end{align}
+\end{proposition}
+\begin{proof}
+By Definition~\ref{def:unit-circle-phase-transport-arith},
+\(
+u\boxplus v=\upsilon(x+y)
+\)
+and
+\(
+u\boxtimes v=\upsilon(xy)
+\).
+Using \(\upsilon'(t)=\bigl(\pi(1+t^2)\bigr)^{-1}\) and \(x=\tan(\pi u)\Rightarrow \frac{\dd x}{\dd u}=\pi(1+x^2)\), the chain rule immediately yields \eqref{eq:unit-circle-phase-addition-jacobian}--\eqref{eq:unit-circle-phase-multiplication-jacobian}.
+Substituting \(\mathcal{P}(t)=\log\pi+\log(1+t^2)\) and taking logarithms gives \eqref{eq:unit-circle-phase-addition-log-ledger}--\eqref{eq:unit-circle-phase-mul-log-ledger}; the constant \(\log\pi\) cancels in the potential differences. \qed
+\end{proof}

@@ -1,0 +1,60 @@
+\section{Statistical Stability: Discrimination Criteria from Data to Concepts}\label{sec:statistical-stability}
+
+This section follows the measure-preserving readout caliber and stable concepts fixed in Section \ref{sec:preliminaries} (\ref{subsec:freq-setting}--\ref{def:stable-concept}), and provides resolution indicators, error decomposition, and reproducible experimental protocols for discrimination and auditing on that caliber.
+
+\subsection{Stability and Finite Resolution}
+
+When the microstate space $\Omega_m$ at finite $m$ is too large, directly using raw microstates as concepts leads to uncontrollable sparsity and instability. To establish a recursively viable concept hierarchy, a mechanism for folding $\Omega_m$ into a smaller stable type space is needed (Section \ref{sec:folding}). The mathematical requirement for this mechanism is that the folded type space exhibits self-similar recursion as $m$ grows, consistent with the golden ratio.
+
+\subsection{Quantitative Fit: Deviation Indicators for Stable Type Distributions}\label{sec:quant-fit}
+Given an observation sequence $\omega_m(x;t)\in\Omega_m$, after folding we obtain the stable type sequence (see Section \ref{sec:folding})
+\[
+w_t:=\Fold_m(\omega_m(x;t))\in X_m.
+\]
+Let $\hat{\pi}_m$ be the empirical distribution (histogram)
+\[
+\hat{\pi}_m(u):=\frac{1}{N}\sum_{t=0}^{N-1}\ind_{\{w_t=u\}},\qquad u\in X_m.
+\]
+On the other hand, the maximum entropy (Parry) equilibrium state of the golden mean constraint $X_\infty$ is given by the Perron--Frobenius eigenstructure (see Section \ref{sec:group-unification} and Remark \ref{prop:parry-measure-golden}; see also \cite{LindMarcus1995}), and its induced cylinder distribution at length $m$ is denoted $\pi_m$. The following two dimensionless deviations can then be used as fitting deviation audit quantities:
+\[
+D_{\mathrm{TV}}(\hat{\pi}_m,\pi_m):=\frac12\sum_{u\in X_m}\abs{\hat{\pi}_m(u)-\pi_m(u)},\qquad
+D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m):=\sum_{u\in X_m}\hat{\pi}_m(u)\log\frac{\hat{\pi}_m(u)}{\pi_m(u)}.
+\]
+For the construction and standard properties of the Parry distribution, see \cite{LindMarcus1995}.
+
+\subsection{Source Model and Fold Output Notation (Object Locating Only)}\label{subsec:histogram-convergence-natural-sources}
+This section fixes the notation for ``source $\Rightarrow$ fold output histogram'' and records the standard convergence/confidence radius forms directly invoked later; derivations can be found in \cite{WaltersErgodicTheory,WeissmanEtAl2003L1Empirical}.
+
+\begin{definition}[General source and fold output process]\label{def:source-and-fold-output}
+Let $S=(S_t)_{t\in\ZZ}$ be a two-sided random process taking values in $\{0,1\}$. Define the length-$m$ window and fold output as
+\[
+W_t^{(m)}:=S_tS_{t+1}\cdots S_{t+m-1}\in\Omega_m,
+\qquad
+Y_t^{(m)}:=\Fold_m(W_t^{(m)})\in X_m.
+\]
+For sample length $N$, define the fold histogram (empirical distribution)
+\[
+\hat{\pi}_{m,N}(u):=\frac{1}{N}\sum_{t=0}^{N-1}\ind_{\{Y_t^{(m)}=u\}},
+\qquad u\in X_m,
+\]
+and denote the true marginal distribution (limiting target) as
+\[
+\pi_m^{\mathrm{fold}}(u):=\mathbb{P}\bigl(Y_0^{(m)}=u\bigr),\qquad u\in X_m.
+\]
+\end{definition}
+
+If $S$ is stationary and ergodic, then for any fixed $m$ and any $u\in X_m$,
+\[
+\hat{\pi}_{m,N}(u)\ \xrightarrow[N\to\infty]{}\ \pi_m^{\mathrm{fold}}(u)
+\quad\text{almost surely}
+\]
+(\cite{WaltersErgodicTheory}).
+
+Suppose $S_t$ is an i.i.d.\ Bernoulli source. For fold histograms from overlapping windows, the effective sample size reduces to $N_{\min}=\lfloor N/m\rfloor$, and an explicit exponential-type certificate can be given by the TV confidence radius from \cite{WeissmanEtAl2003L1Empirical}:
+\[
+\varepsilon_{\mathrm{TV}}(N_{\min},|X_m|;\delta)=\frac12\sqrt{\frac{2}{N_{\min}}\Bigl(|X_m|\log 2+\log(1/\delta)\Bigr)}.
+\]
+
+\begin{remark}[Relationship with IID block sampling experiments]\label{rem:iid-overlap-vs-blocks}
+The IID baseline experiments in Section \ref{sec:experiments} use independent $m$-block sampling (effective sample size $N$); with sliding-window temporal sampling, the effective sample size is $N_{\min}=\lfloor N/m\rfloor$.
+\end{remark}

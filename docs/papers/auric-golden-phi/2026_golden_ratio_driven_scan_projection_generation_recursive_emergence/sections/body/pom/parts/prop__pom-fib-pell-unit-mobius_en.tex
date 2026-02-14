@@ -1,0 +1,139 @@
+\begin{proposition}[Pell-type quadratic form characterization for maximum splitting pairs]\label{prop:pom-fib-pell-quadratic-characterization}
+Suppose $(u,v)\in\NN^2$ with $\gcd(u,v)=1$ and $v>u$.
+Then the following are equivalent:
+\begin{enumerate}
+  \item There exists an integer $k\ge 1$ such that $(u,v)=(F_k,F_{k+1})$;
+  \item The Pell-type quadratic form equation holds:
+  \[
+  \boxed{\;v^2-uv-u^2=\pm 1.\;}
+  \]
+\end{enumerate}
+Moreover, if $(u,v)=(F_k,F_{k+1})$, then the scaled pair $(2u,2v)$ satisfies the same quadratic form with right-hand side becoming $\pm 4$:
+\[
+(2v)^2-(2u)(2v)-(2u)^2=\pm 4.
+\]
+\end{proposition}
+\begin{proof}
+\textbf{(1)$\Rightarrow$(2):}
+Let:
+\(
+S_k:=F_{k+1}^2-F_{k+1}F_k-F_k^2
+\).
+By the recurrence $F_{k+2}=F_{k+1}+F_k$, direct computation yields:
+\[
+S_{k+1}=F_{k+2}^2-F_{k+2}F_{k+1}-F_{k+1}^2=-S_k.
+\]
+Moreover, $S_1=F_2^2-F_2F_1-F_1^2=1-1-1=-1$, thus $S_k=(-1)^k$, hence $v^2-uv-u^2=\pm 1$.
+\par
+\textbf{(2)$\Rightarrow$(1):}
+Let $\varphi=\frac{1+\sqrt5}{2}$ and denote its conjugate $\widehat\varphi=\frac{1-\sqrt5}{2}=-\varphi^{-1}$.
+Define:
+\(
+\alpha:=v-u\varphi\in\mathbb{Z}[\varphi]
+\),
+then its norm is:
+\[
+N(\alpha):=\alpha\,\widehat\alpha=(v-u\varphi)(v-u\widehat\varphi)=v^2-uv-u^2.
+\]
+By (2), $|N(\alpha)|=1$, thus $\alpha$ is a unit in $\mathbb{Z}[\varphi]$.
+Moreover, since:
+\(
+|\alpha|=\frac{|N(\alpha)|}{|v-u\widehat\varphi|}=\frac{1}{v+u/\varphi}<1
+\),
+the unit group structure ($\mathbb{Z}[\varphi]^\times=\{\pm\varphi^n:\ n\in\mathbb{Z}\}$) implies $\alpha=\pm\varphi^{-k}$ for some $k\ge 1$.
+Substituting the Fibonacci expansion of $\varphi^{-k}$ (Corollary~\ref{cor:pom-zphi-unit-certificate-error}) yields $(u,v)=(F_k,F_{k+1})$.
+The scaling conclusion follows directly from the homogeneity of the quadratic form. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Unit certificate in \texorpdfstring{$\mathbb{Z}[\varphi]$}{Z[phi]}: error is a negative power of \texorpdfstring{$\varphi$}{phi}]\label{cor:pom-zphi-unit-certificate-error}
+If $(u,v)=(F_k,F_{k+1})$, then in the quadratic number field $\mathbb{Q}(\sqrt5)$ the exact identity holds:
+\[
+\boxed{\;v-u\varphi=(-1)^k\varphi^{-k}.\;}
+\]
+Equivalently, the element $v-u\varphi\in\mathbb{Z}[\varphi]$ is a unit, and its norm satisfies:
+\[
+\boxed{\;N(v-u\varphi)=v^2-uv-u^2=(-1)^k.\;}
+\]
+This yields the strict rational approximation error formula:
+\[
+\boxed{\;\left|\varphi-\frac{v}{u}\right|=\frac{\varphi^{-k}}{u}.\;}
+\]
+\end{corollary}
+\begin{proof}
+Let $A_k:=F_{k+1}-F_k\varphi$.
+By $\varphi^{-1}=\varphi-1$ and the Fibonacci recurrence:
+\[
+-\varphi^{-1}A_k=-(\varphi-1)(F_{k+1}-F_k\varphi)
+=-F_{k+1}\varphi+F_{k+1}+F_k\varphi^2
+=F_{k+2}-F_{k+1}\varphi
+=A_{k+1}.
+\]
+Moreover, $A_1=F_2-F_1\varphi=1-\varphi=-\varphi^{-1}$, thus:
+\(
+A_k=(-\varphi^{-1})^{k}=(-1)^k\varphi^{-k}
+\),
+yielding the first formula.
+The norm identity follows directly from $N(v-u\varphi)=(v-u\varphi)(v-u\widehat\varphi)$ and $\widehat\varphi=-\varphi^{-1}$ by simplification.
+Finally, taking the absolute value of $v/u-\varphi=(v-u\varphi)/u$ yields the error formula. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Invertible readout for recovering scale exponent from a single splitting pair]\label{cor:pom-recover-k-from-unit-error}
+If an integer pair $(u,v)$ satisfies $v^2-uv-u^2=\pm 1$, then there exists a unique $k\ge 1$ such that $(u,v)=(F_k,F_{k+1})$, and this $k$ can be directly read from the algebraic error magnitude:
+\[
+\boxed{\;k=-\log_\varphi|v-u\varphi|.\;}
+\]
+Therefore, "splitting pair $\mapsto$ scale exponent" is invertible in the arithmetic sense with a closed form.
+\end{corollary}
+\begin{proof}
+By Proposition~\ref{prop:pom-fib-pell-quadratic-characterization}, there exists $k\ge 1$ such that $(u,v)=(F_k,F_{k+1})$.
+By Corollary~\ref{cor:pom-zphi-unit-certificate-error},
+\(
+|v-u\varphi|=\varphi^{-k}
+\);
+taking $-\log_\varphi$ yields the result; uniqueness follows from the monotonicity of the logarithm function. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Automorphism dynamics on Pell cone and projective Möbius recurrence]\label{prop:pom-pell-cone-automorphism-mobius}
+Let:
+\[
+Q:=\begin{pmatrix}0&1\\ 1&1\end{pmatrix},
+\qquad
+(u',v'):=Q(u,v)=(v,u+v).
+\]
+Then $Q$ induces the transformation $(u,v)\mapsto(v,u+v)$ on integer points, and flips the sign of the quadratic form:
+\(
+\mathcal{Q}(u,v):=v^2-uv-u^2
+\).
+If $\mathcal{Q}(u,v)=\epsilon$ ($\epsilon=\pm 1$), then:
+\[
+\boxed{\;\mathcal{Q}(u',v')=-\epsilon.\;}
+\]
+Under projective coordinates:
+\(
+p:=\frac{v}{u+v}\in(0,1)
+\),
+this linear transformation induces a strict Möbius recurrence:
+\[
+\boxed{\;p\ \longmapsto\ \frac{1}{1+p}.\;}
+\]
+Therefore, "scale advancement of maximum splitting pairs" can be unified as the integer-point automorphism flow of the Pell cone and its projective dynamical system;
+this is structurally completely consistent with the renormalization recurrence $p_{k+1}=\frac{1}{1+p_k}$ in Remark~\ref{rem:pom-max-fiber-prob-spectrum-mobius-closure}.
+\end{proposition}
+\begin{proof}
+Substituting $(u',v')=(v,u+v)$ into $\mathcal{Q}$ yields:
+\[
+\mathcal{Q}(u',v')
+=(u+v)^2-v(u+v)-v^2
+=u^2+uv-v^2
+=-(v^2-uv-u^2)
+=-\mathcal{Q}(u,v).
+\]
+For the Möbius recurrence, note that:
+\[
+p'=\frac{v'}{u'+v'}=\frac{u+v}{v+u+v}=\frac{u+v}{u+2v}
+=\frac{1}{1+\frac{v}{u+v}}=\frac{1}{1+p}.
+\]
+This completes the proof.
+\end{proof}
+
+\endinput

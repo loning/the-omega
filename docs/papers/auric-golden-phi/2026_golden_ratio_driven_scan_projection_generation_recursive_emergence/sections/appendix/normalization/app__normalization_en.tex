@@ -1,0 +1,13 @@
+\section{Algorithmic Implementation of Normalization (Value-Layer Arithmetic + Zeckendorf Normal Form)}
+\label{app:normalization}
+
+The arithmetic operations in Section \ref{sec:emergent-arithmetic} are defined via $\mathrm{Val}^{-1}$ and are well-defined by virtue of Zeckendorf uniqueness. Their computable implementation takes the shortest closed loop:
+\begin{itemize}
+  \item \textbf{Addition:} Given $c,d\in X_\infty$, first compute the integer $N=\mathrm{Val}(c)+\mathrm{Val}(d)$, then apply the Zeckendorf greedy algorithm from Appendix C to obtain $Z(N)$, and output $c\oplus d=Z(N)$.
+  \item \textbf{Multiplication:} Analogously, compute $N=\mathrm{Val}(c)\mathrm{Val}(d)$, then take the Zeckendorf normal form.
+\end{itemize}
+This implementation depends on no simulation or auxiliary structure, and both termination and uniqueness are guaranteed by the Zeckendorf theorem (\cite{Zeckendorf1972}).
+
+\begin{remark}[Pure digit-layer (finite-state / local rewriting) implementation]\label{rem:zeckendorf-normalize-fst}
+Online addition and normalization in the Zeckendorf / golden ratio Ostrowski numeration system can be implemented at the pure digit-string level using local rewriting rules or finite-state transducers; see \cite{Frougny1992NumbersAutomata,Frougny1999OnlineAddition,AhlbachUsatineFrougnyPippenger2013,HieronymiTerry2018OstrowskiAddition}.
+\end{remark}

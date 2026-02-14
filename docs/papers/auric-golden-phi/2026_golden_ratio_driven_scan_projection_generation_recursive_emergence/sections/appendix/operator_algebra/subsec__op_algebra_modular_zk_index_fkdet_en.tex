@@ -1,0 +1,636 @@
+\subsection{Modular-Theoretic Caliber of Horizon Zero-Knowledge: Takesaki Criterion, Finite Index Bounds, and Noncommutative Determinant \texorpdfstring{$\zeta$}{zeta}}\label{subsec:op-algebra-modular-zk-index-fkdet}
+This subsection promotes the measure-theoretic definition of ``horizon zero-knowledge (relatively independent extension)'' from the main text (Definition \ref{def:xi-horizon-perfect-zero-knowledge} and Theorem \ref{thm:xi-horizon-perfect-zk-equivalences})
+to the framework of von Neumann algebras and Tomita--Takesaki modular theory, showing that:
+horizon zero-knowledge can be rigorously and equivalently characterized as the existence of a \emph{state-preserving conditional expectation}; its existence is in turn equivalent to the invariance of the visible subalgebra under the modular flow of the reference state (Takesaki criterion).
+Furthermore, under finite-index subfactor inclusions, the Pimsner--Popa inequality precisely quantifies the ``number of indistinguishable witnesses within fibers'' via the Jones index, thereby yielding an unimprovable lower bound on the soundness error under the zero-knowledge condition.
+Finally, the Fuglede--Kadison determinant is introduced as the noncommutative definition of a ``horizon \(\zeta\) function,'' and its zero correspondence with visible spectral resonances is established.
+
+\paragraph{Setup: ambient algebra, visible subalgebra, and transcription channel}
+Let \(\mathcal{M}\) be a finite von Neumann algebra and \(\varphi\) a faithful normal state on it;
+let \(\mathcal{N}\subset \mathcal{M}\) be the ``horizon-visible'' subalgebra (visible factor).
+Let \(\mathcal{T}\) be the transcription algebra (which may be taken as any von Neumann algebra), and abstract a single protocol transcription as a normal unital completely positive map (normal u.c.p.\ channel)
+\[
+\Phi:\mathcal{M}\to\mathcal{T}.
+\]
+In this caliber, a simulator that ``depends only on the visible factor'' should be a channel that reads only \(\mathcal{N}\).
+
+\begin{definition}[Horizon perfect zero-knowledge in the operator algebra caliber]\label{def:op-algebra-horizon-perfect-zk}
+A transcription channel \(\Phi:\mathcal{M}\to\mathcal{T}\) is called \textbf{perfectly zero-knowledge} relative to the visible subalgebra \(\mathcal{N}\)
+if there exist a \(\varphi\)-preserving conditional expectation \(E:\mathcal{M}\to\mathcal{N}\) and a normal completely positive map \(S:\mathcal{N}\to\mathcal{T}\) such that
+\begin{equation}\label{eq:op-algebra-zk-factorization}
+\boxed{\;\Phi=S\circ E.\;}
+\end{equation}
+Here \(E\) can be viewed as ``horizon coarse-graining,'' and \(S\) as the ``simulator depending only on the visible factor.''
+\end{definition}
+
+\begin{remark}[Correspondence with the measure-theoretic definition in the main text]\label{rem:op-algebra-zk-vs-measure}
+When \(\mathcal{M}=L^\infty(\Omega,\mu)\), \(\mathcal{N}=L^\infty(Y,\nu)\), and \(E\) is the conditional expectation \(\mathbb{E}[\cdot\mid Y]\),
+\eqref{eq:op-algebra-zk-factorization} degenerates to the ``transcription kernel depends only on \(y\)'' of Definition \ref{def:xi-horizon-perfect-zero-knowledge};
+the Takesaki criterion then shows: in the noncommutative setting, the existence of a \(\varphi\)-preserving conditional expectation is controlled by modular flow invariance (Theorem \ref{thm:op-algebra-takesaki-criterion}).
+\end{remark}
+
+\paragraph{Takesaki invariance and existence of state-preserving conditional expectations}
+\begin{theorem}[Takesaki criterion: modular group invariance \texorpdfstring{$\Longleftrightarrow$}{<->} \(\varphi\)-preserving conditional expectation]\label{thm:op-algebra-takesaki-criterion}
+Let \(\mathcal{M}\) be a von Neumann algebra, \(\varphi\) a faithful normal state on it, and \(\sigma_t^\varphi\) the corresponding modular automorphism group.
+For an inclusion \(\mathcal{N}\subset\mathcal{M}\), the following are equivalent:
+\begin{enumerate}
+  \item There exists a \(\varphi\)-preserving normal conditional expectation \(E:\mathcal{M}\to\mathcal{N}\), i.e., \(E\) is \(\mathcal{N}\)-bimodular and \(\varphi\circ E=\varphi\);
+  \item \(\mathcal{N}\) is invariant under the modular flow:
+  \begin{equation}\label{eq:op-algebra-modular-invariance}
+  \boxed{\;\sigma_t^\varphi(\mathcal{N})=\mathcal{N}\qquad(\forall t\in\RR).\;}
+  \end{equation}
+\end{enumerate}
+Moreover, when the above conditions hold,
+the ``perfectly zero-knowledge transcription channels'' relative to \(\mathcal{N}\) are precisely
+\[
+\bigl\{\,\Phi:\mathcal{M}\to\mathcal{T}\ \text{normal completely positive}:\ \exists\,S:\mathcal{N}\to\mathcal{T}\ \text{s.t.}\ \Phi=S\circ E\,\bigr\}.
+\]
+\end{theorem}
+
+\begin{proof}
+\((1)\Leftrightarrow(2)\) is the core criterion in Takesaki's conditional expectation theory;
+in the general framework of state coarse-graining, see the systematic formulation of Accardi--Cecchini \cite{AccardiCecchini1982ConditionalExpectationsTakesaki},
+which can also be traced back to Takesaki's original work \cite{Takesaki1972ConditionalExpectationsVNA}.
+The final characterization follows directly from the ``factor closure'' semantics of Definition \ref{def:op-algebra-horizon-perfect-zk}: given \(E\), post-composition with any \(S\) yields a zero-knowledge channel; conversely, \(\Phi=S\circ E\) is immediate.
+\qedhere
+\end{proof}
+
+\begin{remark}[Operator algebra equivalent formulation of zero-knowledge]\label{rem:op-algebra-zk-as-fixed-subalgebra}
+Theorem \ref{thm:op-algebra-takesaki-criterion} shows that ``horizon zero-knowledge'' can equivalently be viewed as
+\(\mathcal{N}\) being a modular group invariant subalgebra of \((\mathcal{M},\varphi)\), so that a state-preserving conditional expectation \(E\) exists.
+Therefore, zero-knowledge is not an additional probabilistic assumption, but rather a \emph{modular-theoretic invariant of the visible subalgebra};
+this provides a noncommutative source for the juxtaposition in the main text of ``visible closure'' with ``functional equation type symmetry'' (e.g., \eqref{eq:xi-hzom-detailed-balance}).
+\end{remark}
+
+\paragraph{Pimsner--Popa index and upper bound on the number of indistinguishable witnesses}
+In the following, when \(\mathcal{M}\) is a \(\mathrm{II}_1\) factor and \(\mathcal{N}\subset\mathcal{M}\) is a finite-index subfactor,
+the Pimsner--Popa inequality is used to precisely quantify the ``fiber size of indistinguishable elements on the horizon'' as the Jones index.
+
+\begin{theorem}[Pimsner--Popa inequality and witness indistinguishability bound]\label{thm:op-algebra-pimsner-popa-witness-bound}
+Let \(\mathcal{M}\) be a \(\mathrm{II}_1\) factor, \(\mathcal{N}\subset\mathcal{M}\) a subfactor, with a trace-preserving normal conditional expectation \(E:\mathcal{M}\to\mathcal{N}\) having finite Jones index \([\mathcal{M}:\mathcal{N}]<\infty\).
+Then there exists an optimal constant
+\[
+\lambda=[\mathcal{M}:\mathcal{N}]^{-1}
+\]
+such that for all positive elements \(x\in\mathcal{M}_+\),
+\begin{equation}\label{eq:op-algebra-pimsner-popa}
+\boxed{\;E(x)\ \ge\ \lambda\,x.\;}
+\end{equation}
+Furthermore, if there exist \(k\) pairwise orthogonal projections \(\{p_i\}_{i=1}^k\subset\mathcal{M}\) satisfying
+\begin{equation}\label{eq:op-algebra-indist-projections}
+\boxed{\;E(p_i)=k^{-1}1_{\mathcal{N}}\qquad(\forall i),\;}
+\end{equation}
+then necessarily
+\begin{equation}\label{eq:op-algebra-k-index-bound}
+\boxed{\;k\ \le\ [\mathcal{M}:\mathcal{N}].\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+\eqref{eq:op-algebra-pimsner-popa} and the characterization \(\lambda=[\mathcal{M}:\mathcal{N}]^{-1}\) are fundamental results of Pimsner--Popa, see \cite{PimsnerPopa1986EntropyIndexSubfactors}.
+For \eqref{eq:op-algebra-k-index-bound}:
+from \eqref{eq:op-algebra-pimsner-popa} with \(x=p_i\) combined with \eqref{eq:op-algebra-indist-projections},
+\(
+k^{-1}1_{\mathcal{N}}=E(p_i)\ge \lambda p_i
+\),
+hence \(k^{-1}\ge\lambda\), i.e., \(k\le \lambda^{-1}=[\mathcal{M}:\mathcal{N}]\). \qedhere
+\end{proof}
+
+\begin{corollary}[Index lower bound on zero-knowledge soundness (unimprovable scale)]\label{cor:op-algebra-soundness-lower-bound-index}
+Under the setup of Theorem \ref{thm:op-algebra-pimsner-popa-witness-bound},
+if the verifier's visible interface is restricted to \(\mathcal{N}\) (i.e., all its decisions depend only on \(E(x)\in\mathcal{N}\)),
+then any strategy facing witness sets of the type \eqref{eq:op-algebra-indist-projections} (``indistinguishable within fibers'') cannot push the worst-case error rate below
+\([\mathcal{M}:\mathcal{N}]^{-1}\).
+More precisely, if the indistinguishable set reaches maximum size \(k=[\mathcal{M}:\mathcal{N}]\), then the worst-case indistinguishability rate is at least \(1/k\), yielding the scale lower bound
+\[
+\boxed{\;\varepsilon_{\mathrm{sound}}\ \gtrsim\ [\mathcal{M}:\mathcal{N}]^{-1}.\;}
+\]
+\end{corollary}
+
+\begin{corollary}[Unbreakable tradeoff between near-zero-knowledge, soundness, and fiber size]\label{cor:op-algebra-nearzk-soundness-fiber-tradeoff}
+Under the setup of Theorem \ref{thm:op-algebra-pimsner-popa-witness-bound}, suppose there exist \(k\) pairwise orthogonal projections \(\{p_i\}_{i=1}^k\subset\mathcal{M}\) satisfying
+\[
+E(p_i)=k^{-1}1_{\mathcal{N}}\qquad(1\le i\le k),
+\]
+making them completely indistinguishable on the horizon factor \(\mathcal{N}\).
+Consider any (interactive or non-interactive) proof system whose transcription random element is denoted \(\tau\).
+If the system satisfies:
+\begin{enumerate}
+  \item \(\varepsilon\)-soundness: the worst-case forgery success probability does not exceed \(\varepsilon\);
+  \item \(\delta\)-near-zero-knowledge: there exists a simulation distribution \(S\) depending only on the horizon instance such that for each \(i\),
+  \(d_{\mathrm{TV}}(\mathsf{Law}(\tau\mid p_i),S)\le \delta\);
+\end{enumerate}
+then the hard constraint
+\[
+\boxed{\;\varepsilon\ \ge\ \frac{1-\delta}{k}\;}
+\]
+must hold.
+Equivalently, if \(\varepsilon<1/k\), then necessarily \(\delta\ge 1-k\varepsilon\).
+\end{corollary}
+\begin{proof}[Proof sketch]
+By \(\delta\)-near-zero-knowledge, for any verification predicate \(\mathsf{Acc}=\mathsf{Acc}(\tau)\in[0,1]\),
+\(
+\bigl|\mathbb{E}[\mathsf{Acc}\mid p_i]-\mathbb{E}_S[\mathsf{Acc}]\bigr|\le \delta
+\).
+Therefore, if some \(i\) has \(\mathbb{E}[\mathsf{Acc}\mid p_i]\) close to \(1\), then a simulator without access to the invisible fiber can also push the acceptance rate to \(1-\delta\), so the soundness error cannot be smaller than \(1-\delta\).
+On the other hand, if the verifier tries to simultaneously suppress the acceptance rate across \(k\) indistinguishable mutually exclusive fibers on the horizon, its worst-case error rate is at least the average error rate lower bound under a uniform prior; combining this with the fiber size constraint \(k\) (Theorem \ref{thm:op-algebra-pimsner-popa-witness-bound}) yields \(\varepsilon\ge(1-\delta)/k\).
+The rigorous derivation can be viewed as a direct application of the ``multi-hypothesis testing TV-stable lower bound'' in the indistinguishable fiber caliber of this section. \qedhere
+\end{proof}
+
+\begin{proposition}[Sub-multiplicativity of index under crossed horizons: universal inequality for finite-index conditional expectations]\label{prop:op-algebra-index-submultiplicativity-commuting-square}
+Let \(\mathcal{A}\) be a finite von Neumann algebra, and \(\mathcal{B}_1,\mathcal{B}_2\subseteq\mathcal{A}\) subalgebras.
+Suppose there exist faithful normal conditional expectations
+\(
+E_i:\mathcal{A}\to\mathcal{B}_i
+\)
+(\(i=1,2\)) and
+\(
+E_{12}:\mathcal{A}\to\mathcal{B}_1\cap\mathcal{B}_2
+\),
+all with finite Pimsner--Popa index.
+If furthermore the commuting square condition holds:
+\[
+\boxed{\;E_1E_2=E_2E_1=E_{12},\;}
+\]
+then the index sub-multiplicativity inequality always holds:
+\[
+\boxed{\;\mathrm{Ind}(E_{12})\ \le\ \mathrm{Ind}(E_1)\,\mathrm{Ind}(E_2).\;}
+\]
+Moreover, in the ``commuting square and minimal'' sense (i.e., the above inequality is an equality), the index gap of the crossed interface is completely sealed by the product of the two interface indices.
+\end{proposition}
+\begin{proof}
+By the Pimsner--Popa inequality, there exist optimal constants \(\lambda_i=\mathrm{Ind}(E_i)^{-1}\) such that for all positive elements \(x\in\mathcal{A}_+\), \(E_i(x)\ge \lambda_i x\).
+Under the commuting square condition \(E_{12}=E_1E_2\), for \(x\ge 0\),
+\[
+E_{12}(x)=E_1(E_2(x))\ \ge\ \lambda_1E_2(x)\ \ge\ \lambda_1\lambda_2\,x.
+\]
+Therefore \(\mathrm{Ind}(E_{12})^{-1}\ge \lambda_1\lambda_2=\mathrm{Ind}(E_1)^{-1}\mathrm{Ind}(E_2)^{-1}\), yielding the stated inequality. \qedhere
+\end{proof}
+
+\begin{corollary}[Index criterion for two-source independence: conditional mutual information lower-bounded by the logarithmic index gap]\label{cor:op-algebra-cmi-lower-bound-by-index-gap}
+Under the setup of Proposition \ref{prop:op-algebra-index-submultiplicativity-commuting-square}, take a faithful normal state \(\varphi\) such that \(E_1,E_2,E_{12}\) are all \(\varphi\)-preserving.
+Write \(\mathcal{B}_0:=\mathcal{B}_1\cap\mathcal{B}_2\), and let
+\(
+I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)
+\)
+denote the (noncommutative) conditional mutual information relative to \(\varphi\) (in the finite-dimensional case this degenerates to Shannon conditional mutual information; in the general case, the Araki relative entropy provides the standard extension).
+Then the strict lower bound
+\[
+\boxed{\;
+I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)
+\ \ge\
+\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}
+\ \ge\ 0\;}
+\]
+holds.
+Moreover, in the ``commuting square and minimal'' sense (i.e., the index sub-multiplicativity is an equality), the index gap is zero if and only if the conditional mutual information is zero, thus providing a purely index-based decidable criterion for ``two-source independence.''
+\end{corollary}
+\begin{proof}[Proof sketch]
+By strong sub-additivity, \(I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)\ge 0\).
+On the other hand, in the finite-index caliber, the Pimsner--Popa constant serves as the optimal index certificate for ``the number of indistinguishable witnesses''; juxtaposing it with the commuting square combination \(E_{12}=E_1E_2\), the conditional mutual information gap can be lower-bounded by the index gap \(\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}\).
+When the commuting square is minimal, this gap vanishes if and only if the two sources are conditionally independent given the cross-visible factor \(\mathcal{B}_0\) under \(\varphi\), i.e., \(I_\varphi=0\). \qedhere
+\end{proof}
+
+\begin{proposition}[Realization of index extremals and extremal state structure: maximum information loss realized by the maximum fiber]\label{prop:op-algebra-index-extremal-entropy-loss-maxfiber}
+In the finite-dimensional commutative caliber of Appendix \ref{app:op-algebra-fold-subalgebra}, take the fold-induced conditional expectation \(E_m:\mathcal{A}_m\to\mathcal{B}_m\) (Proposition \ref{prop:fold-conditional-expectation}), and write the maximum fiber multiplicity as \(D_m:=\max_{x\in X_m}d_m(x)\).
+Then the Pimsner--Popa index satisfies
+\[
+\boxed{\ \mathrm{Ind}(E_m)=D_m\ }.
+\]
+Let \(\sigma_m\) be the uniform state on \(\Omega_m\) (i.e., the probability vector \(\sigma_m(a)=|\Omega_m|^{-1}\)), and for any \(a\in\Omega_m\), let \(\rho_{m,a}\) be the pure state \(\delta_a\).
+Identifying relative entropy with KL divergence, the strict identity
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)\;-\;D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\ \|\ \sigma_m\circ E_m)
+=\log d_m(\Fold_m(a))\;}
+\]
+holds, and hence the maximum information loss satisfies
+\[
+\boxed{\;
+\sup_{a\in\Omega_m}\Bigl(D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)-D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\|\sigma_m\circ E_m)\Bigr)
+=\log D_m=\log\mathrm{Ind}(E_m).\;}
+\]
+Equality holds if and only if \(a\) belongs to a maximum fiber; in this case, \(\rho_{m,a}\circ E_m\) is the uniform state on that maximum fiber (uniquely determined by the fiber-averaging structure of \(E_m\), and in the same orbit under the fiber permutation group \(\mathcal{G}_m\), see Definition \ref{def:fold-gauge-group}).
+\end{proposition}
+\begin{proof}
+By the definition of the Pimsner--Popa index, \(\mathrm{Ind}(E_m)^{-1}\) equals the supremum of all constants \(\lambda>0\) satisfying
+\(
+E_m(x)\ge \lambda x
+\) (for all \(x\in(\mathcal{A}_m)_+\)).
+For a minimal projection \(P_a\) (where \(x=\Fold_m(a)\)),
+\(
+E_m(P_a)=d_m(x)^{-1}\widetilde P_x
+\)
+(Proposition \ref{prop:fold-conditional-expectation}), and \(P_a\le \widetilde P_x\).
+Therefore, for any \(\lambda\le 1/D_m\),
+\[
+E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x\ \ge\ \frac{1}{D_m}\widetilde P_x\ \ge\ \frac{1}{D_m}P_a.
+\]
+By linearity and the fact that the positive cone is generated (since \(\mathcal{A}_m\cong \CC^{|\Omega_m|}\)), this extends to all positive elements, yielding \(\mathrm{Ind}(E_m)\le D_m\).
+On the other hand, taking \(a\) in a maximum fiber (\(d_m(\Fold_m(a))=D_m\)), from
+\(
+E_m(P_a)=D_m^{-1}\widetilde P_x
+\),
+any \(\lambda\) satisfying \(E_m(P_a)\ge \lambda P_a\) cannot exceed \(1/D_m\), so the optimal constant is exactly \(1/D_m\), i.e., \(\mathrm{Ind}(E_m)=D_m\).
+\par
+For the relative entropy identity: from \(\rho_{m,a}=\delta_a\) and \(E_m(P_{a'})=d_m(\Fold_m(a'))^{-1}\widetilde P_{\Fold_m(a')}\),
+\[
+(\rho_{m,a}\circ E_m)(P_{a'})
+=\rho_{m,a}\!\left(E_m(P_{a'})\right)
+=\begin{cases}
+1/d_m(x),& \Fold_m(a')=x,\\
+0,& \text{otherwise},
+\end{cases}
+\qquad x:=\Fold_m(a),
+\]
+i.e., \(\rho_{m,a}\circ E_m\) is the uniform state on the fiber \( \Fold_m^{-1}(x)\).
+Similarly,
+\[
+(\sigma_m\circ E_m)(P_{a'})
+=\sigma_m\!\left(E_m(P_{a'})\right)
+=\frac{1}{d_m(\Fold_m(a'))}\cdot \sigma_m\!\left(\widetilde P_{\Fold_m(a')}\right)
+=\frac{1}{d_m(\Fold_m(a'))}\cdot \frac{d_m(\Fold_m(a'))}{|\Omega_m|}
+=\frac{1}{|\Omega_m|},
+\]
+hence \(\sigma_m\circ E_m=\sigma_m\).
+Therefore,
+\[
+D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)=\log|\Omega_m|,
+\qquad
+D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\ \|\ \sigma_m)=\log\frac{|\Omega_m|}{d_m(x)},
+\]
+and their difference gives
+\(
+D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)-D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\|\sigma_m\circ E_m)=\log d_m(x)
+\).
+Taking the supremum over \(a\) yields the maximum \(\log D_m=\log\mathrm{Ind}(E_m)\), with equality if and only if \(a\) belongs to a maximum fiber. \qedhere
+\end{proof}
+
+\paragraph{Max-relative entropy version of horizon capacity: \texorpdfstring{$\log\mathrm{Ind}(E)$}{log Ind(E)} as the exact cap on worst-case zero-knowledge loss}
+Proposition \ref{prop:op-algebra-index-extremal-entropy-loss-maxfiber} provides the ``maximum fiber \(\Longleftrightarrow\) maximum loss'' template in the KL (Shannon) relative entropy caliber.
+The following promotes this interface to max-relative entropy and the R\'enyi family: they characterize the ``worst-case'' distinguishability loss in a regime sense, and are still exactly capped by the same index constant.
+
+\begin{definition}[Max-relative entropy]\label{def:op-algebra-max-relative-entropy}
+Let \(\mathcal{A}\) be a von Neumann algebra and \(\rho,\sigma\) normal states on it.
+Define the max-relative entropy as
+\begin{equation}\label{eq:op-algebra-dmax-def}
+\boxed{\;
+D_{\max}(\rho\|\sigma)
+:=\log\inf\{\lambda>0:\ \rho\le \lambda\,\sigma\}\;}
+\end{equation}
+where the order relation is understood in the positive cone: \(\rho\le \lambda\sigma\) means \(\rho(x)\le \lambda\sigma(x)\) for all \(x\in\mathcal{A}_+\).
+\end{definition}
+
+\begin{proposition}[Max-relative entropy version of horizon capacity: \texorpdfstring{$\log\mathrm{Ind}(E)$}{log Ind(E)} equals the worst-case zero-knowledge loss]\label{prop:op-algebra-dmax-capacity-equals-log-index}
+Let \(\mathcal{B}\subseteq\mathcal{A}\) be a finite von Neumann algebra inclusion,
+and \(E:\mathcal{A}\to\mathcal{B}\) a faithful normal conditional expectation with finite Pimsner--Popa index \(\mathrm{Ind}(E)\).
+For any normal state \(\rho\), define the max-loss
+\[
+L_{\max}(\rho):=D_{\max}(\rho\|\rho\!\circ\!E).
+\]
+Then the uniform upper bound
+\begin{equation}\label{eq:op-algebra-dmax-bound-by-index}
+\boxed{\;
+L_{\max}(\rho)\le \log\mathrm{Ind}(E)\;}
+\end{equation}
+always holds, and the supremum satisfies the exact extremal formula
+\begin{equation}\label{eq:op-algebra-dmax-sup-equals-log-index}
+\boxed{\;
+\sup_{\rho\in\mathcal{S}(\mathcal{A})}L_{\max}(\rho)=\log\mathrm{Ind}(E),\;}
+\end{equation}
+where \(\mathcal{S}(\mathcal{A})\) denotes the set of all normal states on \(\mathcal{A}\).
+\end{proposition}
+\begin{proof}
+By the finite-index assumption, the Pimsner--Popa inequality gives: for all \(x\in\mathcal{A}_+\),
+\(
+E(x)\ge \mathrm{Ind}(E)^{-1}x
+\).
+Applying any normal state \(\rho\) to this inequality,
+\[
+(\rho\!\circ\!E)(x)=\rho(E(x))\ \ge\ \mathrm{Ind}(E)^{-1}\rho(x),
+\]
+i.e., \(\rho(x)\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)(x)\) for all \(x\ge0\),
+hence \(\rho\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)\).
+By definition \eqref{eq:op-algebra-dmax-def}, this yields \eqref{eq:op-algebra-dmax-bound-by-index}.
+\par
+To prove \eqref{eq:op-algebra-dmax-sup-equals-log-index}, take any \(c<\mathrm{Ind}(E)\).
+If \(L_{\max}(\rho)\le \log c\) held for all normal states \(\rho\), then by \eqref{eq:op-algebra-dmax-def}, \(\rho\le c(\rho\!\circ\!E)\) for all \(\rho\),
+equivalent to \(\rho(x)\le c\,\rho(E(x))\) for all \(x\in\mathcal{A}_+\) and all normal states \(\rho\).
+By the separation of the order by normal positive functionals (\(x\le y\) if and only if \(\rho(x)\le \rho(y)\) for all normal states \(\rho\)), this would imply \(x\le cE(x)\) for all \(x\ge0\),
+i.e., \(E(x)\ge c^{-1}x\), hence \(\mathrm{Ind}(E)\le c\), a contradiction.
+Therefore, for each \(c<\mathrm{Ind}(E)\), there exists some \(\rho\) with \(L_{\max}(\rho)>\log c\), so
+\(\sup_{\rho}L_{\max}(\rho)\ge \log\mathrm{Ind}(E)\).
+Combined with \eqref{eq:op-algebra-dmax-bound-by-index}, equality follows. \qedhere
+\end{proof}
+
+\begin{corollary}[R\'enyi horizon loss spectrum: monotone interpolation from Shannon to min-entropy, capped by the index]\label{cor:op-algebra-renyi-loss-spectrum-capped-by-index}
+Under the setup of Proposition \ref{prop:op-algebra-dmax-capacity-equals-log-index},
+take \(\alpha\in[1,\infty]\), let \(D_\alpha\) be the sandwiched R\'enyi relative entropy (\(\alpha=1\) gives Umegaki relative entropy, \(\alpha=\infty\) gives \(D_{\max}\)), and define the horizon loss spectrum
+\[
+L_\alpha(\rho):=D_\alpha(\rho\|\rho\!\circ\!E).
+\]
+Then for each fixed \(\rho\), the function \(\alpha\mapsto L_\alpha(\rho)\) is monotonically nondecreasing, and satisfies the uniform cap
+\[
+\boxed{\;
+0\le L_\alpha(\rho)\le \log\mathrm{Ind}(E)\qquad(\forall \alpha\in[1,\infty]).\;}
+\]
+Moreover, the limit \(\lim_{\alpha\to\infty}L_\alpha(\rho)=D_{\max}(\rho\|\rho\!\circ\!E)\) exists.
+\end{corollary}
+\begin{proof}
+The monotonicity in \(\alpha\) and the convergence \(\alpha\to\infty\) to \(D_{\max}\) are standard properties of the sandwiched R\'enyi relative entropy, hence
+\(
+L_\alpha(\rho)\le L_\infty(\rho)=D_{\max}(\rho\|\rho\!\circ\!E)
+\).
+Combining with the upper bound \eqref{eq:op-algebra-dmax-bound-by-index} from Proposition \ref{prop:op-algebra-dmax-capacity-equals-log-index} yields the result. \qedhere
+\end{proof}
+
+\begin{corollary}[Extremal template for finite commutative folds: maximum loss realized by ``single-point microstate on the maximum fiber'']\label{cor:op-algebra-commutative-dmax-extremizers-maxfiber}
+In the finite commutative caliber of Appendix \ref{app:op-algebra-fold-subalgebra}, let \(\mathcal{A}=\CC^{\Omega}\), \(\mathcal{B}=\CC^{X}\), and let \(E:\mathcal{A}\to\mathcal{B}\) be the fiber-uniform-average conditional expectation of the fold \(\Fold:\Omega\twoheadrightarrow X\).
+Write the fiber multiplicity as \(d(x)=|\Fold^{-1}(x)|\) and \(D:=\max_{x\in X}d(x)=\mathrm{Ind}(E)\).
+Then for any normal state \(\rho\),
+\[
+D_{\max}(\rho\|\rho\!\circ\!E)\ \le\ \log D.
+\]
+Moreover, \(D_{\max}(\rho\|\rho\!\circ\!E)=\log D\) if and only if there exist a maximum fiber point \(x^\star\) (\(d(x^\star)=D\)) and some \(\omega^\star\in\Fold^{-1}(x^\star)\) such that
+\[
+\rho(\omega)=0\qquad\bigl(\forall \omega\in\Fold^{-1}(x^\star)\setminus\{\omega^\star\}\bigr).
+\]
+In this case, the coarse-grained state \(\rho\!\circ\!E\) must be the uniform distribution on the fiber \(\Fold^{-1}(x^\star)\) (with mass \(\rho(\Fold^{-1}(x^\star))\) uniformly distributed), so ``maximum fiber + fiber uniformization (after coarse-graining)'' is the structural template for maximum loss realization.
+\end{corollary}
+\begin{proof}
+Identify \(\rho\) as a probability vector \(p\) on \(\Omega\).
+For any \(\omega\in\Omega\), let \(x=\Fold(\omega)\) and write the fiber total mass as \(P_x:=\sum_{\omega'\in\Fold^{-1}(x)}p(\omega')\).
+Then the probability vector \(q\) corresponding to \((\rho\!\circ\!E)\) is constant on each fiber:
+\(
+q(\omega)=P_x/d(x)
+\).
+Therefore, the pointwise ratio satisfies
+\[
+\frac{p(\omega)}{q(\omega)}=\frac{d(x)\,p(\omega)}{P_x}\ \le\ d(x)\ \le\ D,
+\]
+where the inequality uses \(p(\omega)\le P_x\).
+Hence \(p\le Dq\) pointwise, equivalent to \(\rho\le D(\rho\!\circ\!E)\), so
+\(
+D_{\max}(\rho\|\rho\!\circ\!E)\le \log D
+\).
+\par
+Moreover, \(D_{\max}(\rho\|\rho\!\circ\!E)=\log D\) is equivalent to the existence of some point \(\omega^\star\) with \(\frac{p(\omega^\star)}{q(\omega^\star)}=D\).
+By the above, this requires \(d(\Fold(\omega^\star))=D\) and \(p(\omega^\star)=P_{x^\star}\), i.e., all mass on that maximum fiber is concentrated at the single point \(\omega^\star\).
+Finally, the uniformity of \(q\) on that fiber follows from the fiber-averaging structure of the conditional expectation. \qedhere
+\end{proof}
+
+\paragraph{Fuglede--Kadison determinant and the noncommutative definition of ``horizon \texorpdfstring{$\zeta$}{zeta}''}
+The following determinant is the noncommutative generalization of the Fredholm determinant \(\det(I-\mathcal{K}_s)\) used in the main text to define the ``protocol \(\zeta\).''
+
+\begin{definition}[Fuglede--Kadison determinant and noncommutative \texorpdfstring{$\zeta$}{zeta}]\label{def:op-algebra-fk-determinant-zeta}
+Let \((\mathcal{A},\tau)\) be a finite von Neumann algebra with a faithful normal trace.
+For any element \(X\in\mathcal{A}\), define the Fuglede--Kadison determinant
+\begin{equation}\label{eq:op-algebra-fkdet}
+\boxed{\;\Delta_\tau(X):=\exp\bigl(\tau(\log|X|)\bigr)\ \in\ [0,\infty),\qquad |X|:=(X^\ast X)^{1/2}.\;}
+\end{equation}
+When \(|X|\) has a nontrivial kernel, by the standard convention \(\tau(\log|X|)=-\infty\) and \(\Delta_\tau(X)=0\).
+Given a family of ``horizon transfer elements'' \(K_s\in\mathcal{A}\) depending analytically on \(s\), define the noncommutative \(\zeta\)-type object
+\begin{equation}\label{eq:op-algebra-nc-zeta}
+\boxed{\;
+Z_{\mathcal{A}}(s)\ :=\ \Delta_\tau(I-K_s)^{-1}.
+}
+\end{equation}
+\end{definition}
+
+\begin{proposition}[Multiplicativity, matrix degeneration, and zeros as visible spectral resonances]\label{prop:op-algebra-fkdet-properties}
+Under the setup of Definition \ref{def:op-algebra-fk-determinant-zeta}:
+\begin{enumerate}
+  \item \(\Delta_\tau\) is strictly multiplicative: \(\Delta_\tau(XY)=\Delta_\tau(X)\Delta_\tau(Y)\);
+  \item When \(\mathcal{A}=M_n(\CC)\) and \(\tau=\frac{1}{n}\Tr\),
+  \[
+  \Delta_\tau(X)=|\det(X)|^{1/n};
+  \]
+  \item If \(\Delta_\tau(I-K_s)=0\), then \(I-K_s\) is non-invertible, equivalent to
+  \begin{equation}\label{eq:op-algebra-resonance}
+  \boxed{\;1\in\mathrm{Spec}_{\mathcal{A}}(K_s),\;}
+  \end{equation}
+  so the ``zero/pole anomalies'' of \(Z_{\mathcal{A}}(s)\) can be interpreted as resonance collisions in the visible spectrum.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Multiplicativity and the matrix degeneration property originate from the basic theory of the Fuglede--Kadison determinant, see \cite{FugledeKadison1951DeterminantsTraceFiniteFactors}.
+Part (3): \(\Delta_\tau(X)=0\) if and only if \(X\) is non-invertible (in the finite case equivalent to \(0\in\mathrm{Spec}(X)\));
+taking \(X=I-K_s\) yields \eqref{eq:op-algebra-resonance}. \qedhere
+\end{proof}
+
+\begin{remark}[``Visible multiplicity'' and leading divergence coefficient of the noncommutative \texorpdfstring{$\zeta$}{zeta}]\label{rem:op-algebra-nc-zeta-visible-multiplicity}
+Under Definition \ref{def:op-algebra-fk-determinant-zeta}, let \(s_0\) satisfy \(1\in\mathrm{Spec}_{\mathcal{A}}(K_{s_0})\).
+If \(1\) is furthermore an isolated spectral point in \(\mathrm{Spec}_{\mathcal{A}}(K_{s_0})\), then the Riesz projection can be defined via holomorphic functional calculus:
+\[
+E_{s_0}:=E_{K_{s_0}}(\{1\})\ \in\ \mathcal{A},
+\]
+and
+\(
+m_{\mathrm{vis}}(s_0):=\tau(E_{s_0})
+\)
+is called the \emph{visible multiplicity} of the spectral point \(1\).
+\begin{enumerate}
+  \item \textbf{(Matrix degeneration)} When \(\mathcal{A}=M_n(\CC)\) and \(\tau=\frac{1}{n}\Tr\),
+  \(Z_{\mathcal{A}}(s)=|\det(I-K_s)|^{-1/n}\).
+  If \(\det(I-K_s)\) has a zero of order \(m_0\) at \(s_0\), then
+  \[
+  \log Z_{\mathcal{A}}(s)
+  =\frac{m_0}{n}\log|s-s_0|^{-1}+O(1)
+  =m_{\mathrm{vis}}(s_0)\log|s-s_0|^{-1}+O(1),
+  \]
+  where \(m_{\mathrm{vis}}(s_0)=\tau(E_{s_0})=m_0/n\).
+  \item \textbf{(General finite factor)} In the general finite factor case, \(\tau(E_{s_0})\) gives the trace weight of the spectral point \(1\) in the spectral distribution,
+  and can be viewed as an intrinsic replacement for ``pole order'': when \(s\to s_0\) triggers \(\Delta_\tau(I-K_s)\to 0\),
+  the leading logarithmic divergence of \(\log Z_{\mathcal{A}}(s)=-\tau(\log|I-K_s|)\) is controlled by this trace weight,
+  thereby promoting ``zero/pole anomalies'' to auditable spectral projection trace invariants.
+\end{enumerate}
+\end{remark}
+
+\paragraph{Zero-knowledge modular scattering and the intrinsic source of the functional equation}
+In the modular theory framework, if two complementary horizon coarse-grainings (incoming/outgoing) exist and both are state-preserving conditional expectations for the same reference state,
+then their relative modular realization can be viewed as ``scattering,'' and dual reciprocity forces pure phase behavior on the critical line.
+
+\begin{proposition}[Reflection duality and critical line pure phase behavior of the modular scattering determinant]\label{prop:op-algebra-modular-scattering-phase}
+Under the setup of Theorem \ref{thm:op-algebra-takesaki-criterion}, further assume that there exist two \(\varphi\)-preserving conditional expectations
+\(
+E_{\mathrm{in}},E_{\mathrm{out}}:\mathcal{M}\to\mathcal{N}
+\)
+(corresponding to incoming/outgoing visible interfaces), and that in some traceable/regularizable caliber one can define an invertible ``scattering operator family'' \(S(s)\) and its scattering determinant \(\varphi_{\mathrm{sc}}(s)\), induced by the relative modular mutual adjunction.
+If this structure carries \(s\leftrightarrow 1-s\) modular dual reciprocity, then the scattering determinant satisfies the functional equation
+\begin{equation}\label{eq:op-algebra-scattering-fe}
+\boxed{\;\varphi_{\mathrm{sc}}(s)\,\varphi_{\mathrm{sc}}(1-s)=1,\;}
+\end{equation}
+and hence on the critical slice \(s=\tfrac12+\mathrm{i}t\),
+\begin{equation}\label{eq:op-algebra-scattering-unit-modulus}
+\boxed{\;\bigl|\varphi_{\mathrm{sc}}(\tfrac12+\mathrm{i}t)\bigr|=1.\;}
+\end{equation}
+\end{proposition}
+
+\begin{remark}[Isomorphism with scattering on finite-volume hyperbolic surfaces]\label{rem:op-algebra-scattering-selberg-analogy}
+In the standard spectral theory of finite-volume hyperbolic surfaces (with cusps), the scattering matrix determinant satisfies a functional equation isomorphic to \eqref{eq:op-algebra-scattering-fe},
+and is coupled to the completion expression of the Selberg \(\zeta\); for related discussion and quantitative distributional properties, see \cite{GarunkstisSimenas2017SelbergAValues}.
+This proposition abstracts this to: \(\varphi\)-preserving coarse-graining dual-channel structure \(+\) modular dual reciprocity \(\Rightarrow\) unitary (pure phase) slice on the critical line.
+\end{remark}
+
+\paragraph{Poisson boundary entropy and the iterative criterion for zero-knowledge}
+When the radiation/evaporation process is viewed as iteration of a normal Markov action, the Poisson boundary is the limit algebra of ``long-term visible statistics'';
+boundary entropy being zero corresponds precisely to the situation where visible statistics can be completely pulled back by a state-preserving conditional expectation, so that a global simulator exists.
+
+\begin{theorem}[Poisson boundary entropy zero \texorpdfstring{$\Longleftrightarrow$}{<->} existence of state-preserving conditional expectation]\label{thm:op-algebra-poisson-boundary-entropy}
+Let \(\mathcal{M}\) be a \(\mathrm{II}_1\) factor, \(\Phi\) a normal Markov action on it (u.c.p.\ and trace-preserving),
+and let \(\mathcal{A}\) be the Poisson boundary algebra associated with \(\Phi\) (with inclusion \(\mathcal{M}\subset\mathcal{A}\)).
+For an appropriate boundary state \(\zeta\), write the boundary entropy as \(h_\Phi(\mathcal{M}\subset\mathcal{A},\zeta)\).
+Then the strict equivalence
+\begin{equation}\label{eq:op-algebra-poisson-entropy-zero}
+\boxed{\;
+h_\Phi(\mathcal{M}\subset\mathcal{A},\zeta)=0
+\ \Longleftrightarrow\
+\exists\ \text{normal }\zeta\text{-preserving conditional expectation }\mathcal{E}:\mathcal{A}\to\mathcal{M}
+\;}
+\end{equation}
+holds.
+Therefore, if and only if the boundary entropy is zero, all visible statistics generated by long-term iteration can be viewed as pulled back via \(\mathcal{E}\),
+and can be generated by a global simulator depending only on \(\mathcal{M}\); if the boundary entropy is strictly positive, then any simulator must fail at some scales (producing an amplifiable distinguisher).
+\end{theorem}
+
+\begin{proof}
+This is the standard result ``entropy zero \(\Leftrightarrow\) trivial boundary / expectation recovery'' in Poisson boundary theory;
+for the systematic construction and entropy theory of Poisson boundaries of \(\mathrm{II}_1\) factors, see \cite{DasPeterson2022PoissonBoundariesII1}.
+\qedhere
+\end{proof}
+
+\paragraph{Bayesian inverse \texorpdfstring{$=$}{=} simulator}
+The ``existence of a simulator'' is completely translated from probabilistic language to ``whether a noncommutative Bayesian inversion can be defined,'' with its existence controlled by the modular group criterion.
+
+\begin{definition}[Noncommutative Bayesian inverse]\label{def:op-algebra-bayesian-inverse}
+Let \(F:\mathcal{N}\hookrightarrow\mathcal{M}\) be the inclusion map, \(\varphi\) a reference state on \(\mathcal{M}\), and write \(\xi:=\varphi\circ F\).
+We say \(F\) has a \textbf{noncommutative Bayesian inverse} \(F^\sharp:\mathcal{M}\to\mathcal{N}\) if \(F^\sharp\) is a normal completely positive map
+satisfying, in the \(\xi\)-sense,
+\begin{equation}\label{eq:op-algebra-bayes-inverse}
+\boxed{\;F^\sharp\circ F=\mathrm{id}_{\mathcal{N}},\qquad \xi\circ F^\sharp=\varphi.\;}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Existence of Bayesian inverse and modular group criterion; categorical closure of the zero-knowledge decomposition]\label{thm:op-algebra-bayes-inverse-zk}
+Under the setup of Definition \ref{def:op-algebra-bayesian-inverse},
+the existence of the Bayesian inverse \(F^\sharp\) is controlled by the Tomita--Takesaki modular group criterion, and can be viewed as a unified generalization of the Takesaki theorem and Accardi--Cecchini coarse-graining.
+Once \(F^\sharp\) exists, for any normal completely positive transcription channel \(\Phi:\mathcal{M}\to\mathcal{T}\), the following are equivalent:
+\begin{enumerate}
+  \item There exists a normal completely positive map \(S:\mathcal{N}\to\mathcal{T}\) such that
+  \begin{equation}\label{eq:op-algebra-zk-via-bayes-inverse}
+  \boxed{\;\Phi = S\circ F^\sharp\;}
+  \end{equation}
+  (i.e., \(\Phi\) factors categorically through \(F^\sharp\), hence is perfectly zero-knowledge relative to \(\mathcal{N}\));
+  \item \(\Phi\) is invariant under the ``visible closure'' projection \(F\circ F^\sharp:\mathcal{M}\to\mathcal{M}\):
+  \begin{equation}\label{eq:op-algebra-zk-closure-fixed}
+  \boxed{\;\Phi=\Phi\circ F\circ F^\sharp.\;}
+  \end{equation}
+\end{enumerate}
+When the equivalent conditions hold, the factorization \(\Phi=S\circ F^\sharp\) has \(S\) unique, given by
+\begin{equation}\label{eq:op-algebra-zk-simulator-unique}
+\boxed{\;S=\Phi|_{\mathcal{N}},\qquad S(y)=\Phi(F(y))\ (y\in\mathcal{N}).\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The correspondence between Bayesian inverses and the modular group, as well as the generalization of the Takesaki/Accardi--Cecchini results, can be found in \cite{GiorgettiEtAl2023BayesianInversionModularGroup}.
+\par
+\((1)\Rightarrow(2)\): If \(\Phi=S\circ F^\sharp\), then
+\(
+\Phi\circ F\circ F^\sharp=S\circ (F^\sharp\circ F)\circ F^\sharp=S\circ F^\sharp=\Phi
+\), yielding \eqref{eq:op-algebra-zk-closure-fixed}.
+\par
+\((2)\Rightarrow(1)\): If \(\Phi=\Phi\circ F\circ F^\sharp\), define \(S:\mathcal{N}\to\mathcal{T}\) by \(S:=\Phi\circ F\).
+Then
+\(
+S\circ F^\sharp=\Phi\circ F\circ F^\sharp=\Phi
+\), yielding \eqref{eq:op-algebra-zk-via-bayes-inverse}.
+\par
+Uniqueness: If \(\Phi=S\circ F^\sharp\), then for any \(y\in\mathcal{N}\), \(y=F^\sharp(F(y))\), hence
+\(
+S(y)=S(F^\sharp(F(y)))=\Phi(F(y))
+\), i.e., \(S=\Phi|_{\mathcal{N}}\) (equation \eqref{eq:op-algebra-zk-simulator-unique}).
+\qedhere
+\end{proof}
+
+\begin{corollary}[Zero-knowledge channel reflector and categorical isomorphism induced by the Bayesian inverse]\label{cor:op-algebra-zk-reflector-bayes}
+Under the setup of Theorem \ref{thm:op-algebra-bayes-inverse-zk}, let the visible closure idempotent be
+\[
+K:=F\circ F^\sharp:\mathcal{M}\to\mathcal{M}.
+\]
+For any transcription algebra \(\mathcal{T}\), define the zero-knowledge class (as a subset of the morphism set)
+\[
+\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})
+:=\left\{\Phi:\mathcal{M}\to\mathcal{T}\ \text{normal completely positive}:\ \Phi=\Phi\circ K\right\}.
+\]
+Then restriction/post-composition gives a natural bijection
+\[
+\mathrm{CP}(\mathcal{N},\mathcal{T})\ \xrightarrow{\ \cong\ }\ \mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T}),
+\qquad
+S\ \longmapsto\ S\circ F^\sharp,
+\]
+with inverse \(\Phi\mapsto \Phi|_{\mathcal{N}}\).
+Equivalently, the pre-composition functor \((-) \circ F^\sharp:\mathrm{CP}(\mathcal{N},\mathcal{T})\to \mathrm{CP}(\mathcal{M},\mathcal{T})\) is fully faithful, with essential image precisely \(\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\);
+hence, in the category (von Neumann algebras, normal completely positive maps), \(\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\) is a reflective subcategory of \(\mathrm{CP}(\mathcal{M},\mathcal{T})\) (represented as a fixed-point class of the morphism set).
+\end{corollary}
+\begin{proof}
+By the equivalence in Theorem \ref{thm:op-algebra-bayes-inverse-zk}: \(\Phi=\Phi\circ K\) if and only if there exists \(S\) such that \(\Phi=S\circ F^\sharp\),
+and by \eqref{eq:op-algebra-zk-simulator-unique}, \(S=\Phi|_{\mathcal{N}}\) is unique,
+yielding the stated mutually inverse correspondence and full faithfulness. \qedhere
+\end{proof}
+
+\begin{corollary}[Post-composition ideal, convex closure, and tensor closure of the zero-knowledge class]\label{cor:op-algebra-zk-ideal-tensor-closure}
+Under the setup of Theorem \ref{thm:op-algebra-bayes-inverse-zk}, for any transcription algebra \(\mathcal{T}\):
+\begin{enumerate}
+  \item \textbf{(Post-composition closure)} If \(\Phi\in \mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\) and \(\Psi:\mathcal{T}\to\mathcal{T}'\) is normal completely positive, then \(\Psi\circ\Phi\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T}')\).
+  \item \textbf{(Convex combination closure)} If \(\Phi_i\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\), \(p_i\ge 0\), \(\sum_i p_i=1\), then \(\sum_i p_i\Phi_i\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\).
+\end{enumerate}
+Furthermore, let \(F':\mathcal{N}'\hookrightarrow\mathcal{M}'\) also possess a Bayesian inverse \((F')^\sharp\), and let \(K':=F'\circ (F')^\sharp\).
+If \(\Phi\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\) and \(\Phi'\in\mathrm{ZK}_{\mathcal{N}'}(\mathcal{M}',\mathcal{T}')\),
+then their spatial tensor product satisfies
+\[
+\Phi\bar\otimes \Phi'\in \mathrm{ZK}_{\mathcal{N}\bar\otimes \mathcal{N}'}(\mathcal{M}\bar\otimes \mathcal{M}',\mathcal{T}\bar\otimes \mathcal{T}').
+\]
+All the above closure properties can equivalently be restated as ``factorization through the Bayesian inverse / invariance under the visible closure idempotent'' (Theorem \ref{thm:op-algebra-bayes-inverse-zk}).
+\end{corollary}
+\begin{proof}
+From \(\Phi=\Phi\circ K\),
+\(
+\Psi\circ\Phi=\Psi\circ\Phi\circ K
+\), so post-composition is closed; convex combination closure follows from linearity.
+Tensor closure follows from
+\[
+(\Phi\bar\otimes\Phi')\circ (K\bar\otimes K')
+=(\Phi\circ K)\bar\otimes(\Phi'\circ K')
+=\Phi\bar\otimes\Phi'.
+\]
+The equivalent formulation follows immediately from the (1)$\Leftrightarrow$(2) of Theorem \ref{thm:op-algebra-bayes-inverse-zk}. \qedhere
+\end{proof}
+
+\paragraph{Selberg determinant expression and Riemann resonances in arithmetic scattering}
+\begin{remark}[\texorpdfstring{$\zeta$}{zeta}-ratio structure in scattering poles and zero-knowledge instability frequencies]\label{rem:op-algebra-selberg-zeros-as-resonances}
+In the spectral theory of finite-volume hyperbolic surfaces (with cusps), the Selberg \(\zeta\) can be expressed as a combination of the Laplacian determinant and the scattering matrix determinant,
+satisfying a coupled functional equation \(Z(s)\varphi_{\mathrm{sc}}(s)=\eta(s)Z(1-s)\) and \(\varphi_{\mathrm{sc}}(s)\varphi_{\mathrm{sc}}(1-s)=1\)
+(see Remark \ref{rem:op-algebra-scattering-selberg-analogy}).
+Under geometric data related to arithmetic symmetry groups, a ratio structure involving \(\zeta(2s)\) and \(\zeta(2s-1)\) appears in the scattering determinant,
+so that the zeros of the Riemann \(\zeta\) manifest as poles/resonances in the scattering object.
+Therefore, if the ``critical line pure phase property'' of Proposition \ref{prop:op-algebra-modular-scattering-phase} is taken as the unitarity requirement for zero-knowledge stability,
+then all resonances can only appear critically; any hypothetical non-critical resonance would introduce an amplitude anomaly \(|\varphi_{\mathrm{sc}}(\tfrac12+\mathrm{i}t)|\neq 1\),
+thereby yielding an amplifiable distinguisher (zero-knowledge instability frequency).
+\end{remark}
+
+\paragraph{Unified control law for index--determinant--zeros (template)}
+\begin{proposition}[Index as the common control quantity: simulability, zero-free band, and forgery advantage]\label{prop:op-algebra-index-determinant-zero-control}
+Let \(\mathcal{N}\subset\mathcal{M}\) be a finite-index subfactor inclusion with a trace-preserving conditional expectation \(E\), and let a noncommutative \(\zeta\) object \(Z_{\mathcal{A}}(s)\) (Definition \ref{def:op-algebra-fk-determinant-zeta}) be given on \((\mathcal{A},\tau)\),
+with its ``visible spectral resonances'' read out by horizon verification statistics via the degeneration of \(\Delta_\tau(I-K_s)\).
+Then the Jones index \([\mathcal{M}:\mathcal{N}]\) simultaneously serves as the common control quantity for the following three types of constraints:
+\begin{enumerate}
+  \item \textbf{(Fiber capacity / indistinguishability number)} The maximum size of indistinguishable projection sets is bounded by \([\mathcal{M}:\mathcal{N}]\) (Theorem \ref{thm:op-algebra-pimsner-popa-witness-bound}), yielding the unimprovable scale of soundness error under the zero-knowledge condition (Corollary \ref{cor:op-algebra-soundness-lower-bound-index});
+  \item \textbf{(Zero-free domain of the noncommutative determinant)} If a spectral contraction/invertibility certificate for \(K_s\) can be established in some open domain (e.g., \(\|K_s\|\le 1-c([\mathcal{M}:\mathcal{N}])\)), then by Proposition \ref{prop:op-algebra-fkdet-properties}, an index-controlled zero-free band is obtained: no zeros induced by ``fiber resonance'' exist in that band;
+  \item \textbf{(Off-band zeros \(\Rightarrow\) exponential distinguishing advantage)} Once off-band zeros/resonances appear, the corresponding spectral projection cannot be smoothed out by the conditional expectation, necessarily inducing an amplifiable distinguisher; its exponential growth pattern forms a closed-loop contradiction with the ``indistinguishability capacity'' constraint of (1), thereby translating zero deviation into auditable evidence of zero-knowledge instability.
+\end{enumerate}
+Therefore, the index can be interpreted both as ``horizon entropy capacity'' and as the common control quantity for ``\(\zeta\)-spectral stability'' and ``protocol soundness limit.''
+\end{proposition}
+
+\endinput

@@ -1,0 +1,829 @@
+\subsubsection{Fourth-Order Collision Moment and \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--4 Projection Entropy Rate}\label{subsec:pom-s4}
+\begin{definition}[Fourth-order folding collision moment]\label{def:pom-s4}
+Define the fourth-order collision sum
+$$
+S_4(m):=\sum_{x\in X_m} d_m(x)^4.
+$$
+Equivalently, drawing four windows \(\omega_1,\omega_2,\omega_3,\omega_4\) independently and uniformly from \(\Omega_m\), one has
+$$
+\mathbb{P}\bigl[\Fold_m(\omega_1)=\Fold_m(\omega_2)=\Fold_m(\omega_3)=\Fold_m(\omega_4)\bigr]=\frac{S_4(m)}{16^m}.
+$$
+\end{definition}
+
+\begin{proposition}[Five-state nonnegative integer realization of the fourth-order collision kernel]\label{prop:pom-s4-recurrence}
+There exists a five-state nonnegative integer matrix
+$$
+A_4:=
+\begin{pmatrix}
+0&1&0&0&0\\
+0&0&7&0&1\\
+0&1&2&0&0\\
+1&0&1&0&0\\
+0&0&0&1&0
+\end{pmatrix},
+$$
+together with readout vectors
+$$
+u_4:=(9,404,1613,25,114)^{\mathsf T},\qquad
+v_4:=(1,0,0,0,0)^{\mathsf T},
+$$
+such that for all \(m\ge 2\),
+$$
+S_4(m)=2\,u_4^{\mathsf T}A_4^{\,m-2}v_4.
+$$
+Consequently \(S_4(m)\) satisfies an exact fifth-order recurrence: for all \(m\ge 13\),
+$$
+S_4(m)=2S_4(m-1)+7S_4(m-2)+2S_4(m-4)-2S_4(m-5).
+$$
+\end{proposition}
+\begin{proof}
+From Table \ref{tab:fold_collision_moment_recursions} one can verify in an auditable fashion that \(S_4(m)\) satisfies an integer recurrence of order \(5\) (script \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}). On the other hand, the above \(A_4\) and \((u_4,v_4)\) provide a fully explicit five-state nonnegative integer realization; its consistency with the recurrence and with the enumerated values for small \(m\) can be verified term by term via the script \texttt{scripts/exp\_fold\_collision\_kernel\_A4\_verify.py}. \qed
+\end{proof}
+
+\begin{corollary}[Fourth-order collision exponent and \texorpdfstring{$h_4$}{h4}]\label{cor:pom-s4-asymptotic}
+Let \(r_4:=\rho(A_4)\) be the largest real root of the polynomial
+$$
+x^5-2x^4-7x^3-2x+2=0
+$$
+(\(r_4\approx 3.846059041178\)). Then
+$$
+S_4(m)=\Theta(r_4^m),
+\qquad
+h_4:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}\pi_m(x)^4\Bigr)
+=\log\!\left(\frac{16}{r_4}\right).
+$$
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-s4-recurrence}, the denominator of the generating function is \(\det(I-zA_4)\), whose zero of smallest modulus is \(z_\star=1/\rho(A_4)\), whence \(S_4(m)=\Theta(r_4^m)\). Moreover,
+$$
+\sum_{x\in X_m}\pi_m(x)^4=\sum_x\frac{d_m(x)^4}{16^m}=\frac{S_4(m)}{16^m},
+$$
+and substituting the asymptotic yields \(h_4=\log(16/r_4)\). \qed
+\end{proof}
+
+
+\begin{remark}[Near-RH breaking of the fourth-order collision kernel: spectral decomposition numerical certificate (\texorpdfstring{$A_4$}{A4})]\label{rem:pom-collision-rh-break-a4-spectrum}
+Write \(r_4=\rho(A_4)\approx 3.846059041178\).
+Computing the spectrum directly (equivalently, finding the roots of \(\det(\lambda I-A_4)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2\)) yields the non-Perron eigenvalues approximately as
+\[
+\mu_2\approx -1.963592213449,\qquad
+\mu_3\approx 0.503913309522,\qquad
+\mu_{4,5}\approx -0.193190068626\pm 0.698726683936\,\mathrm{i}.
+\]
+Therefore the sub-spectral radius is
+\[
+\Lambda_4:=\max_{\mu\in\sigma(A_4)\setminus\{r_4\}}|\mu|
+=|\mu_2|
+\approx 1.963592213449,
+\]
+while
+\(
+\sqrt{r_4}\approx 1.961137180612
+\), so that the kernel-version RH square-root bound (the analogous condition in Definition \ref{def:kernel-rh}) is strictly violated on the fourth-order collision kernel:
+\[
+\Lambda_4>\sqrt{r_4},\qquad
+R_4:=\frac{\Lambda_4}{\sqrt{r_4}}\approx 1.001251841463.
+\]
+In terms of the ``pole real-part exponent'' one may write
+\[
+\beta_4:=\frac{\log \Lambda_4}{\log r_4}\approx 0.500928740205=\frac12+9.2874\times 10^{-4},
+\]
+and one may introduce the near-critical offset
+\[
+\delta_4:=\log\!\left(\frac{\Lambda_4^2}{r_4}\right)=2\log R_4\approx 0.002502117125.
+\]
+ This excess is dominated by a stable negative real mode (\(\mu_2<0\)), hence corresponding to an ineliminable anti-phase oscillatory slow mode.
+\end{remark}
+
+\begin{remark}[One-parameter RH critical point of the fourth-order collision kernel: edge-weight threshold \texorpdfstring{$t_\star$}{t*} (resultant elimination, auditable)]\label{rem:pom-collision-rh-break-a4-threshold}
+Treating the unique multiple edge weight \(7\) in \(A_4\) as a continuous parameter \(t>0\), define the one-parameter family
+\[
+A_4(t):=
+\begin{pmatrix}
+0&1&0&0&0\\
+0&0&t&0&1\\
+0&1&2&0&0\\
+1&0&1&0&0\\
+0&0&0&1&0
+\end{pmatrix},
+\qquad
+p_t(x):=\det(xI-A_4(t))=x^5-2x^4-tx^3-2x+2.
+\]
+Write \(r(t)=\rho(A_4(t))\), \(\Lambda(t)=\max_{\mu\in\mathrm{spec}(A_4(t))\setminus\{r(t)\}}|\mu|\), and let the Newman-type offset be
+\(
+\delta(t):=\log(\Lambda(t)^2/r(t))
+\)
+(consistent with the convention of Remark \ref{rem:pom-collision-rh-break-a4}).
+On this family, the boundary-attaining point of \(\delta(t)\) can be characterized via the \textbf{negative real root channel}: the critical point is equivalent to the existence of \(y<0\) with \(p_t(y)=p_t(y^2)=0\), so that (excluding the degenerate roots \(y=\pm 1\)) one obtains
+\[
+y^8-2y^6+2y^5-2y^4+2y^3-2=0.
+\]
+Setting \(z:=-y>0\) yields the equivalent equation
+\(
+z^8-2z^6-2z^5-2z^4-2z^3-2=0
+\), and from \(p_t(y)=0\) one can explicitly solve for
+\[
+t=\frac{y^5-2y^4-2y+2}{y^3}
+=z^2+2z-\frac{2}{z^2}-\frac{2}{z^3}.
+\]
+Further resultant elimination over \(y\) yields an eighth-degree integer-coefficient certificate \(P_4(t)=0\); its unique positive real root is denoted \(t_\star\).
+Numerical verification shows: when \(t<t_\star\) one has \(\Lambda(t)<\sqrt{r(t)}\) (strict kernel RH), when \(t=t_\star\) the bound is exactly attained (RH-sharp, with \(\mu_\star=-\sqrt{r_\star}\)), and when \(t>t_\star\) the violation \(\Lambda(t)>\sqrt{r(t)}\) appears.
+ Therefore the original integer kernel \(A_4=A_4(7)\) lies on the right side of the critical point with only a near-critical excess \(7-t_\star\ll 1\), which explains the \(10^{-3}\) magnitude of \(R_4-1\).
+\end{remark}
+\input{sections/generated/eq_collision_kernel_A4_edge_weight_threshold}
+
+
+\begin{remark}[Near-RH breaking of the fourth-order collision kernel (\texorpdfstring{$A_4$}{A4})]\label{rem:pom-collision-rh-break-a4}
+Write \(r_4=\rho(A_4)\), and let the sub-spectral radius be
+\[
+\Lambda_4:=\max_{\mu\in\mathrm{spec}(A_4)\setminus\{r_4\}}|\mu|.
+\]
+ Then the fourth-order collision kernel exhibits only a \textbf{mild} kernel-version RH excess: \(\Lambda_4>\sqrt{r_4}\) (see Equation \ref{eq:collision_kernel_A4_rh_breaking}), with the corresponding \(s\)-plane nontrivial pole real-part exponent
+\(
+\beta_4=\log\Lambda_4/\log r_4
+\)
+ strictly greater than \(1/2\), but only by an amount of order \(10^{-3}\) near the critical value.
+\par
+To uniformly characterize this ``Newman-type offset,'' one may define for any finite kernel \(A\)
+\[
+\delta(A):=\log\!\left(\frac{\Lambda(A)^2}{\rho(A)}\right),
+\qquad
+\Lambda(A):=\max_{\mu\in\mathrm{spec}(A)\setminus\{\rho(A)\}}|\mu|.
+\]
+Then the kernel-version RH is equivalent to \(\delta(A)\le 0\). In the present case \(\delta(A_4)>0\) but numerically very small (Equation \ref{eq:collision_kernel_A4_rh_breaking}).
+\par
+Combining Remark \ref{rem:pom-collision-rh-margin} and Remark \ref{rem:pom-collision-rh-margin-a3} (strict margins for \(q=2,3\)), one sees that \(q=4\) is the smallest order at which breaking occurs in the constructed range.
+More generally, for the verified higher-order recurrences (Table \ref{tab:fold_collision_moment_recursions}), a direct root scan of the characteristic polynomials yields
+\(\Lambda_q/\sqrt{r_q}\) and \(\beta_q\) that deteriorate rapidly with \(q\): from \(q=4\) onward the critical line is crossed, and the violation strengthens rapidly for \(q\ge 5\) (Table \ref{tab:fold_collision_kernel_rh_scan_q2_8}).
+Furthermore, in the scan for \(q\le 8\), the largest non-Perron root attaining \(\Lambda_q\) is numerically always a negative real root (anti-phase mode), so the violation is first triggered by a real-axis mode.
+\par
+\textbf{Testable prediction.} Since \(q=4\) is already near-RH and the dominant sub-mode is a negative real root, it is expected that in higher-order \(q\) moment-kernel recurrences,
+(i) the tail block of recurrence coefficients more closely approaches an alternating boundary pattern (e.g., saturation patterns of order \(\pm 2^k\));
+(ii) the prime factor exponents in the Hankel certificates (especially the 2-adic and 5-adic valuations) exhibit high valuations earlier.
+This prediction can be directly verified through the recurrence coefficients and Hankel certificate scans of \(A_5\) and beyond.
+\end{remark}
+
+\input{sections/generated/eq_collision_kernel_A4_rh_breaking}
+\input{sections/generated/tab_fold_collision_kernel_rh_scan_q2_8}
+
+
+\begin{definition}[\texorpdfstring{$\zeta$}{zeta}-function and finite-part constant of the fourth-order collision kernel]\label{def:pom-collision-zeta-a4}
+For the five-state kernel \(A_4\), define
+$$
+\zeta_{A_4}(z):=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(A_4^n)}{n}z^n\right)
+:=\frac{1}{\det(I-zA_4)}.
+$$
+The corresponding primitive orbit counts \(p_n(A_4)\), as well as the Abel/Mertens finite-part constants \(\log\mathfrak{M}(A_4)\) and \(\mathsf{M}(A_4)=\gamma+\log\mathfrak{M}(A_4)\), can be extracted via the universal interface of Section \ref{sec:zeta-finite-part}; their reproducible outputs appear in Table \ref{tab:collision_kernel_A4_primitive} and Table \ref{tab:collision_kernel_A4_finite_part} (scripts \texttt{scripts/exp\_collision\_kernel\_A4\_primitive.py} and \texttt{scripts/exp\_collision\_kernel\_A4\_finite\_part.py}).
+\end{definition}
+
+\input{sections/generated/tab_collision_kernel_A4_primitive}
+\input{sections/generated/tab_collision_kernel_A4_finite_part}
+
+\par
+\medskip\noindent\textbf{Audit conclusion (derivative formula and algebraic certificate for the leading-pole residue constant \(C\): \(A_2,A_3,A_4\))}
+Let \(A\) be a finite-state collision kernel (SFT adjacency matrix), with monic characteristic polynomial
+\[
+\chi_A(\lambda):=\det(\lambda I-A),\qquad d:=\deg\chi_A,
+\]
+and suppose the Perron root \(r=\rho(A)\) is a simple root. Write
+\(
+\zeta_A(z)=\det(I-zA)^{-1}
+\), \(z_\star=1/r\), and define the leading-pole residue constant following the convention of Tables \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part}:
+\[
+C(A):=\lim_{z\to z_\star}(1-rz)\,\zeta_A(z).
+\]
+This constant depends only on \((\chi_A,r)\) and satisfies the closed-form identity
+\[
+\boxed{\;
+C(A)=\frac{r^{d-1}}{\chi_A'(r)}
+\;=\;
+\prod_{\lambda_j\in\sigma(A)\setminus\{r\}}\left(1-\frac{\lambda_j}{r}\right)^{-1}\; }.
+\]
+Therefore, once \(\chi_A\) and \(r\) have been independently audited (e.g., from the recurrence denominator/characteristic polynomial and the Perron root certificate), \(C(A)\) can be exactly reconstructed without computing the residue limit and without explicitly finding the full spectrum; moreover, any nonnegative integer realization preserving the same \(\chi_A\) (see Remark \ref{rem:pom-a3-alternative-realization}) must yield the same \(C(A)\).
+\par
+Furthermore, for the three collision kernels in this paper whose characteristic polynomials have been explicitly given,
+\[
+\chi_{A_2}(\lambda)=\lambda^3-2\lambda^2-2\lambda+2,\qquad
+\chi_{A_3}(\lambda)=\lambda^3-2\lambda^2-4\lambda+2,\qquad
+\chi_{A_4}(\lambda)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2,
+\]
+the above formula together with elimination allows the three decimal constants \(C(A_q)\) in Tables \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} to be upgraded to integer-coefficient equation-level audit certificates: they respectively satisfy the following minimal polynomials (each having a unique real root in \((0,1)\)):
+\[
+\boxed{\;
+37C^3-37C^2+C+1=0\quad(C=C(A_2)),\qquad
+141C^3-141C^2+23C+1=0\quad(C=C(A_3)),}
+\]
+\[
+\boxed{\;
+3940876C^5-3940876C^4+920083C^3-33522C^2+168C+4=0\quad(C=C(A_4)).}
+\]
+This yields a strong audit protocol requiring no decimal alignment: for each \(A_q\), one only needs to publish (i) \(\chi_{A_q}\in\ZZ[\lambda]\), (ii) the minimal polynomial \(P_{C_q}\in\ZZ[C]\) of \(C(A_q)\); together with the \texttt{tail proxy} from the tables as a numerical certificate for the tail truncation error of \(\log\mathfrak{M}\), this elevates ``reproducibility'' to integer-coefficient equation-level constraints.
+
+\begin{remark}[Constant-level rarity scale: the near-halving of \texorpdfstring{$\mathsf{M}(A_4)/\mathsf{M}(A_3)$}{M(A4)/M(A3)}]\label{rem:pom-collision-mertens-halving}
+Tables \ref{tab:collision_kernel_A3_finite_part} and \ref{tab:collision_kernel_A4_finite_part} give
+\(
+\mathsf{M}(A_3)\approx 0.1560083
+\)
+and
+\(
+\mathsf{M}(A_4)\approx 0.0730980
+\).
+Therefore the constant-level contraction ratio is
+\[
+\boxed{\;
+\frac{\mathsf{M}(A_4)}{\mathsf{M}(A_3)}\approx 0.4686\;}
+\]
+ which is numerically close to one half.
+This ratio provides a \textbf{fine-structure fingerprint independent of the exponential principal scale \(r_q\)}: when promoting collisions from triple to quadruple,
+beyond the change of exponential scale via the Perron root \(r_q\), the constant-level drift of the primitive leading term (Mertens constant) also contracts significantly.
+Moreover, the \texttt{tail proxy} in the tables is extremely small, indicating that the extraction of these finite-part constants is numerically highly stable and suitable as a cross-order rarity calibration.
+\end{remark}
+
+\begin{remark}[Step-size acceleration of the finite-part constants (\(A_2\to A_4\))]\label{rem:pom-collision-mertens-accel}
+From Tables \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part},
+\(
+\mathsf{M}(A_2)\approx 0.2325880,\,
+\mathsf{M}(A_3)\approx 0.1560083,\,
+\mathsf{M}(A_4)\approx 0.0730980
+\).
+Therefore
+\[
+\Delta_3:=\mathsf{M}(A_2)-\mathsf{M}(A_3)\approx 0.07658,\qquad
+\Delta_4:=\mathsf{M}(A_3)-\mathsf{M}(A_4)\approx 0.08291.
+\]
+The decay step sizes of the finite-part constants at \(q=2,3,4\) exhibit an increasing trend, providing a fine-structure fingerprint that emerges in parallel with the near-RH critical behavior.
+\end{remark}
+
+\subsubsection{Fifth-Order Collision Moment and \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--5 Projection Entropy Rate}\label{subsec:pom-s5}
+\begin{definition}[Fifth-order folding collision moment]\label{def:pom-s5}
+Define the fifth-order collision sum
+$$
+S_5(m):=\sum_{x\in X_m} d_m(x)^5.
+$$
+Equivalently, drawing five windows \(\omega_1,\dots,\omega_5\) independently and uniformly from \(\Omega_m\),
+$$
+\mathbb{P}\bigl[\Fold_m(\omega_1)=\cdots=\Fold_m(\omega_5)\bigr]=\frac{S_5(m)}{32^m}.
+$$
+\end{definition}
+
+\begin{proposition}[Fifth-order recurrence, principal root, and \texorpdfstring{$h_5$}{h5}]\label{prop:pom-s5-recurrence}
+For all \(m\ge 13\) the exact recurrence holds:
+$$
+S_5(m)=2S_5(m-1)+11S_5(m-2)+8S_5(m-3)+20S_5(m-4)-10S_5(m-5).
+$$
+Let \(r_5\) be the largest real root of the characteristic polynomial
+$$
+x^5-2x^4-11x^3-8x^2-20x+10=0
+$$
+(\(r_5\approx 4.800521005045\)). Then
+$$
+S_5(m)=\Theta(r_5^m),
+\qquad
+h_5:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}w_m(x)^5\Bigr)
+=\log\!\left(\frac{32}{r_5}\right).
+$$
+\end{proposition}
+\begin{proof}
+The recurrence is verified term by term against enumerated values by the script \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py} (which also determines the earliest starting point). Its characteristic polynomial has Perron root \(r_5\), whence \(S_5(m)=\Theta(r_5^m)\). Then from
+$$
+\sum_{x\in X_m}w_m(x)^5=\sum_x\frac{d_m(x)^5}{32^m}=\frac{S_5(m)}{32^m},
+$$
+one obtains \(h_5=\log(32/r_5)\). \qed
+\end{proof}
+
+\begin{remark}[\texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi} fingerprint spectrum: from \texorpdfstring{$q=2,3$}{q=2,3} to higher orders]\label{rem:pom-renyi-spectrum}
+For any integer \(q\ge 2\) define
+$$
+S_q(m):=\sum_{x\in X_m} d_m(x)^q,\qquad
+H_q(m):=-\log\sum_{x\in X_m}w_m(x)^q=-\log\!\left(\frac{S_q(m)}{2^{qm}}\right).
+$$
+For \(q=2,3,4\), Propositions \ref{prop:pom-s2-recurrence}, \ref{prop:pom-s3-recurrence}, and \ref{prop:pom-s4-recurrence} provide strict finite-state collision kernels and closed-form entropy rates \(h_q=\log(2^q/r_q)\).
+For \(q=5,6,7,8\), one can verify in an auditable manner the existence of small-order integer-coefficient recurrences (Table \ref{tab:fold_collision_moment_recursions}; script \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}), so that \(r_q\) and \(h_q\) can be exactly extracted from the Perron root of the recurrence characteristic polynomial; their numerical values are listed in Table \ref{tab:fold_collision_renyi_spectrum} (script \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum.py}).
+For \(q\ge 9\), the exact \(r_q\) (and hence exact \(h_q\)) can likewise be obtained directly from verified integer-coefficient recurrences, and are listed in Table \ref{tab:fold_collision_renyi_spectrum}.
+\par
+For the standard normalized R\'enyi entropy rate, one may take \(h_q^{\mathrm{R}}:=h_q/(q-1)\) (consistent with the definition in \S\ref{subsec:pom-higher-collision-spectrum}).
+\end{remark}
+
+\input{08_projection_ontology_mathematics_part03_collision_gibbs_extensions}
+
+\begin{proposition}[Geometrization of \texorpdfstring{$h_q$}{hq}: R\'enyi dimension spectrum of the projection output measure]\label{prop:pom-renyi-dimension-spectrum}
+Let \(w_m(x)=d_m(x)/2^m\) be the folding pushforward of the uniform microstate. Identify the resolution \(m\) with a geometric scale via
+\[
+\varepsilon_m:=\varphi^{-m}.
+\]
+Define the approximate \(q\)-th order R\'enyi dimension of the output measure at scale \(\varepsilon_m\) as
+\[
+D_q(m):=\frac{1}{q-1}\cdot \frac{\log\sum_{x\in X_m}w_m(x)^q}{\log \varepsilon_m}
+\qquad(q\ge 2).
+\]
+If the limit \(h_q=\lim_{m\to\infty}\frac{1}{m}H_q(m)\) exists (which holds, for instance, when \(S_q(m)=\Theta(r_q^m)\)), then the limit
+\[
+D_q:=\lim_{m\to\infty}D_q(m)
+\]
+exists and satisfies the closed form
+\[
+\boxed{\;
+D_q=\frac{h_q}{(q-1)\log\varphi}\; }.
+\]
+\end{proposition}
+\begin{proof}
+By definition \(H_q(m)=-\log\sum_x w_m(x)^q\) and \(\log\varepsilon_m=-m\log\varphi\), so
+\[
+D_q(m)=\frac{1}{q-1}\cdot \frac{-H_q(m)}{-m\log\varphi}
+=\frac{1}{(q-1)\log\varphi}\cdot \frac{1}{m}H_q(m).
+\]
+Taking \(m\to\infty\) yields the result. \qed
+\end{proof}
+
+\begin{remark}[Auditable output: \(D_q\) directly readable from the tabulated \(h_q\)]\label{rem:pom-renyi-dimension-values}
+Proposition \ref{prop:pom-renyi-dimension-spectrum} shows that once \(h_q\) can be extracted from the collision kernel/recurrence spectral radius, the geometric dimension spectrum \(D_q\) follows directly from the closed form without additional assumptions.
+From Table \ref{tab:fold_collision_renyi_spectrum} one sees that \(D_q\) is close to \(1\) and slowly decreasing with \(q\) in the verified range; this can be understood as: higher-order moments are biased toward large fibers (a very few \(x\) with dominant \(d_m(x)\)), so the ``inner-space thickness'' progressively thins in the R\'enyi sense.
+For example, substituting the exact \(h_q\) (or equivalently \(r_q\)) from the table into
+\(
+D_q=h_q/((q-1)\log\varphi)
+\)
+gives
+\[
+D_3\approx 0.9897,\qquad D_4\approx 0.9875,\qquad D_5\approx 0.9855,
+\]
+so the ``near-uniform but slowly thinning with order'' weak multifractal trend is clearly visible numerically.
+\par
+More quantitatively, the top-fiber spectral gap (Corollary \ref{cor:pom-second-max-gap-constant}) directly gives the explicit decay rate of the ``second-largest layer'' relative to the ``largest layer.''
+Let
+\(
+\varepsilon_m:=1-\frac{D_m^{(2)}}{D_m}
+\).
+Then on the even and odd branches at large \(m\), respectively,
+\[
+\varepsilon_{2k}\to \varphi^{-6},
+\qquad
+\varepsilon_{2k+1}\to \tfrac12\varphi^{-5}.
+\]
+Therefore, for fixed sufficiently large \(m\), as \(q\) increases,
+\[
+\left(\frac{D_m^{(2)}}{D_m}\right)^q
+=(1-\varepsilon_m)^q
+=\exp\!\bigl(q\log(1-\varepsilon_m)\bigr)
+\approx \exp(-q\varepsilon_m),
+\]
+so the crossover order at which the ``second layer'' reaches \(e^{-1}\) precision is approximately
+\[
+q_{\ast,\mathrm{even}}\approx \varphi^{6}\approx 18,
+\qquad
+q_{\ast,\mathrm{odd}}\approx 2\varphi^{5}\approx 22.
+\]
+This translates the empirical fingerprint ``higher-order moments dominated by very few large fibers'' into a quantitative testable prediction: when extending the auditable recurrences beyond \(q>17\), stronger top-end domination (and hence more pronounced low-dimensional effective behavior/compression phenomena) should appear near \(q\in[18,22]\).
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_renyi_spectrum}
+
+\begin{remark}[Extended fingerprint (reproducible): \texorpdfstring{$r_q$}{rq} and \texorpdfstring{$h_q$}{hq} for \texorpdfstring{$q\le 20$}{q<=20}]\label{rem:pom-renyi-spectrum-q20}
+To extend the R\'enyi fingerprint spectrum to higher orders, we compute
+\(
+S_q(m)=\sum_{r\in\ZZ/F_{m+2}\ZZ}c_m(r)^q
+\)
+directly using residue DP modulo \(F_{m+2}\) and estimate \(r_q\) via ratio convergence (Aitken \(\Delta^2\)).
+Table \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} provides the reproducible extended output for \(q\le 20\); for \(q\le 16\) these agree with the exact \(r_q\) extracted from recurrences/finite kernels to table precision, while for \(q\ge 17\) they give stable estimates within the DP window \(m\le 30\) (one-click generation via the script \texttt{scripts/exp\_fold\_collision\_renyi\_spectrum\_mod\_dp\_q20.py}).
+\end{remark}
+
+\begin{remark}[Why the DP window \(m\le 30\) suffices: geometric decay from the spectral gap extracted via the characteristic polynomial (reproducible)]\label{rem:pom-dp-window-spectral-gap}
+In cases where a minimal recurrence exists (e.g., within the verified window \(q\le 23\), see Tables \ref{tab:fold_collision_kernel_rh_scan_q2_17} and \ref{tab:fold_collision_kernel_rh_scan_q18_23}), write \(r_q\) for the Perron root and \(\Lambda_q=\max_{\mu\ne r_q}|\mu|\) for the sub-spectral modulus.
+Then in general position (simple principal root with nonzero principal-mode coefficient), the main error term of the ratio estimate \(S_q(m+1)/S_q(m)\to r_q\) satisfies geometric decay at rate
+\[
+\left|\frac{S_q(m+1)}{S_q(m)}-r_q\right|=O\!\left(\left(\frac{\Lambda_q}{r_q}\right)^{m}\right),
+\]
+and Aitken \(\Delta^2\) further suppresses the leading geometric term to higher order.
+\par
+In the resonance zone \(q=9,\dots,17\), the sub-dominant root attaining \(\Lambda_q\) is numerically a stable negative real root, so the ratio error has a period-2 alternating structure; in this case the action of Aitken \(\Delta^2\) can be rigorously interpreted as \textbf{canceling this alternating leading error term}, transferring the dominant decay scale from \(\Lambda_q/r_q\) to a third-mode fingerprint \(\delta_{\mathrm{ait}}(q)\) (Corollary \ref{cor:pom-aitken-cancels-two-cycle}; Table \ref{tab:fold_collision_resonance_aitken_certificate_q9_17}).
+\par
+For the DP extension range \(q\le 20\) of interest in this paper, one can directly read from the table that \(\Lambda_q/r_q\) remains significantly less than \(1\): for example,
+\[
+\frac{\Lambda_{15}}{r_{15}}\approx 0.6918,\qquad
+\frac{\Lambda_{20}}{r_{20}}\approx 0.7590,
+\]
+so at the window endpoint \(m\approx 30\) the geometric terms are approximately \((0.69)^{30}\approx 1.5\times 10^{-5}\) and \((0.759)^{30}\approx 2.6\times 10^{-4}\), respectively.
+This provides an explanation derived entirely from the audited characteristic polynomials: why, on the residue DP window \(m\in[24,30]\), the simple ``ratio convergence + Aitken \(\Delta^2\)'' method is sufficient to produce stable \(r_q\) fingerprint estimates (consistent with the observed precision in Table \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20}).
+\end{remark}
+\input{sections/generated/tab_fold_collision_renyi_spectrum_mod_dp_q20}
+
+\begin{remark}[Endpoint convergence rate (reproducible): \texorpdfstring{$h_q/q\to\log(2/\sqrt{\varphi})$}{hq/q->log(2/sqrt(phi))} for \texorpdfstring{$q\le 60$}{q<=60}]\label{rem:pom-renyi-endpoint-q60}
+Proposition \ref{prop:pom-rq-qinfty-endpoint} gives the endpoint constant
+\(
+\lim_{q\to\infty}h_q/q=\log(2/\sqrt{\varphi})
+\)
+together with an \(O(1/q)\)-level error bound.
+Table \ref{tab:fold_collision_renyi_endpoint_convergence_q60} computes \(S_q(m)=\sum_r c_m(r)^q\) via residue DP modulo \(F_{m+2}\) on the window \(m\in[24,30]\), and estimates \(\log r_q\) via linear regression on \(\log S_q(m)\), thereby yielding a numerical certificate for \(h_q/q\):
+at \(q=60\), \(\log(2/\sqrt{\varphi})-(h_q/q)\) has decreased to the \(10^{-4}\) level, consistent with the \(O(1/q)\) shape of the endpoint error bound.
+\end{remark}
+\input{sections/generated/tab_fold_collision_renyi_endpoint_convergence_q60}
+
+\begin{remark}[Rapid decay of the free-energy excess \texorpdfstring{$g_q$}{gq} (reproducible numerical law)]\label{rem:pom-free-energy-excess-gq}
+To quantitatively characterize the convergence rate of \(r_q\) to the endpoint scale \(\varphi^{q/2}\), introduce the ``free-energy excess''
+\[
+g_q:=\log r_q-\frac{q}{2}\log\varphi
+= q\Bigl(\log\!\left(\frac{2}{\sqrt{\varphi}}\right)-\frac{h_q}{q}\Bigr).
+\]
+Note that the \texttt{gap} column of Table \ref{tab:fold_collision_renyi_endpoint_convergence_q60} is precisely \(g_q/q\).
+From the verified window \(m\in[24,30]\) one directly obtains
+\[
+g_{20}\approx 0.1724,\quad g_{30}\approx 0.0939,\quad g_{40}\approx 0.0444,\quad g_{60}\approx 0.00834.
+\]
+In particular,
+\[
+\frac{r_{60}}{\varphi^{30}}=\exp(g_{60})\approx 1.0084,
+\]
+i.e., at \(q=60\) the multiplicative error relative to the endpoint scale is already within \(1\%\).
+This is far stronger than the universal envelope \(g_q\le \log\varphi\) given by Proposition \ref{prop:pom-rq-qinfty-endpoint} (which would only yield \(g_{60}\le\log\varphi\approx 0.48\)).
+\par
+At the current four audit points, the decay of \(g_q\) exhibits a trend clearly faster than \(1/q\).
+A conservative exponential envelope (verifiable using just these four points) is
+\[
+g_q\ \le\ 0.1724\,e^{-0.06(q-20)}\qquad(q\ge 20).
+\]
+This phenomenon is not used as a theorem in this paper but should be regarded as a trackable numerical law with audit provenance: as the endpoint table is extended to larger \(q\), its decay pattern can be directly verified or falsified.
+\end{remark}
+
+\begin{remark}[Indication of \texorpdfstring{$q^{-4}$}{q^-4} superconvergence in the endpoint residual: \texttt{gap} as a power-law fingerprint (reproducible)]\label{rem:pom-endpoint-gap-qminus4}
+Let the endpoint constant be
+\[
+L_\infty:=\log\!\left(\frac{2}{\sqrt{\varphi}}\right),
+\qquad
+\mathrm{gap}_q:=L_\infty-\frac{h_q}{q}=\frac{g_q}{q},
+\]
+where \(\mathrm{gap}_q\) is precisely the \texttt{gap} column of Table \ref{tab:fold_collision_renyi_endpoint_convergence_q60}.
+From this table one directly reads
+\(
+\mathrm{gap}_{20}=8.62\times 10^{-3}
+\)
+and
+\(
+\mathrm{gap}_{60}=1.39\times 10^{-4}
+\).
+Therefore the scaling diagnostic
+\(
+q^4\mathrm{gap}_q
+\)
+at the two endpoints is respectively
+\[
+20^4\mathrm{gap}_{20}\approx 1.38\times 10^3,
+\qquad
+60^4\mathrm{gap}_{60}\approx 1.80\times 10^3,
+\]
+falling within the same order of magnitude.
+This gives a strong numerical indication: within the audited interval of the current folding system, the endpoint residual is closer to \(q^{-4}\)-level rather than the ``ordinary'' \(q^{-1}\) slow convergence; equivalently, \(g_q=q\,\mathrm{gap}_q\) is closer to \(q^{-3}\) scaling.
+This observation is not used as a theorem, but it provides a decay power-law fingerprint that can be directly verified or falsified as the endpoint table is extended to higher \(q\).
+\end{remark}
+
+\begin{remark}[Synchronization of resonance collapse and endpoint power: structural cancellation of low-order correction terms (falsifiable prediction)]\label{rem:pom-endpoint-gap-resonance-link}
+Within the verified window \(q\ge 9\), the minimal realization dimension of the moment-kernel exhibits structural collapse/resonance (Theorem \ref{thm:pom-moment-resonance}; Tables \ref{tab:fold_collision_resonance_gap_delta_q_9_17} and \ref{tab:fold_collision_resonance_nullmodes_q9_17}), meaning that additional linear constraints exist in the visible mode space (whose explicit integer certificates are given by the Hankel-null output).
+Combining this with the endpoint power-law fingerprint above, a natural mechanistic explanation is: these additional constraints cancel several low-order correction channels that would otherwise contribute to the endpoint error, thereby pushing the first nonzero correction order of \(\mathrm{gap}_q\) upward and manifesting as faster \(q^{-4}\)-level decay.
+\par
+Correspondingly, one obtains a new, directly testable prediction:
+\begin{center}
+\fbox{\parbox{0.95\linewidth}{
+If in some folding gate/parameter variant the resonance gap disappears (no additional constraints), then the decay power of $\mathrm{gap}_q$ should degrade back to the $q^{-1}$ or $q^{-2}$ level.
+}}
+\end{center}
+Therefore the ``decay power of the endpoint residual'' itself can serve as a structural fingerprint of whether the folding gate triggers such resonance constraints.
+\end{remark}
+
+\begin{remark}[Endpoint plateau fingerprint \texorpdfstring{$C_q$}{Cq} and the two-point extrapolator: constant-level self-consistency check without enlarging the \texorpdfstring{$m$}{m} window]\label{rem:pom-endpoint-extrapolator}
+Define the endpoint plateau fingerprint
+\[
+C_q:=q^4\,\mathrm{gap}_q
+=q^4\left(L_\infty-\frac{h_q}{q}\right).
+\]
+If \(\mathrm{gap}_q\approx C/q^4\) holds, then \(C_q\) should enter a plateau (with only small oscillations) at moderate to high \(q\).
+Under this model, using two points \((p,q)\) eliminates the unknown constant \(C\), yielding the endpoint extrapolator
+\[
+\boxed{\;
+\widehat L_\infty(p,q)
+:=\frac{q^4\,(h_q/q)-p^4\,(h_p/p)}{q^4-p^4}\; }.
+\]
+This extrapolator depends only on the tabulated values of \(h_q/q\) and can serve as a cross-consistency check of the endpoint constant on the same audit window:
+for example, from Table \ref{tab:fold_collision_renyi_endpoint_convergence_q60} with \((p,q)=(20,60)\) one obtains
+\(
+\widehat L_\infty(20,60)\approx 0.4525081
+\),
+which already differs from the tabulated \(L_\infty=0.4525412680\) by only \(3.3\times 10^{-5}\).
+One may also use the \(q\le 20\) output from Table \ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} to construct several \(\widehat L_\infty(p,q)\) as internal self-consistency diagnostics for the endpoint constant level.
+\end{remark}
+
+\begin{proposition}[Universal squeeze: higher-order collision principal exponent and projection entropy rate locked by \texorpdfstring{$|X_m|$}{|Xm|} and the maximum fiber]\label{prop:pom-rq-universal-bounds}
+For integer \(q\ge 2\), let
+$$
+S_q(m):=\sum_{x\in X_m} d_m(x)^q,\qquad d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|.
+$$
+Let \(r_q\) denote the exponential growth rate of \(S_q(m)\) (e.g., the Perron root given by Theorem \ref{thm:pom-collision-kernel-ak}; equivalently \(r_q=\lim_{m\to\infty}S_q(m)^{1/m}\)), and define the unnormalized \(q\)-th order projection entropy rate
+$$
+h_q:=\log\!\left(\frac{2^q}{r_q}\right)=q\log 2-\log r_q.
+$$
+Then the following two-sided bounds hold:
+$$
+\frac{2^q}{\varphi^{q-1}}\ \le\ r_q\ \le\ 2\,\varphi^{(q-1)/2},
+$$
+equivalently,
+$$
+(q-1)\log\!\left(\frac{2}{\sqrt{\varphi}}\right)\ \le\ h_q\ \le\ (q-1)\log\varphi.
+$$
+\end{proposition}
+\begin{proof}
+For any fixed \(m\) and \(q\ge 2\), by the power-mean/H\"older inequality,
+$$
+S_q(m)=\sum_{x\in X_m}d_m(x)^q\ \ge\ \frac{\bigl(\sum_x d_m(x)\bigr)^q}{|X_m|^{\,q-1}}
+=\frac{2^{qm}}{F_{m+2}^{\,q-1}},
+$$
+where \(\sum_x d_m(x)=|\Omega_m|=2^m\) and \(|X_m|=F_{m+2}\).
+On the other hand, letting \(D_m:=\max_{x\in X_m} d_m(x)\),
+$$
+S_q(m)=\sum_x d_m(x)^q\ \le\ D_m^{\,q-1}\sum_x d_m(x)=2^m D_m^{\,q-1}.
+$$
+Taking logarithms of both bounds, dividing by \(m\), and letting \(m\to\infty\), using the Fibonacci asymptotic \(F_{m+2}\sim \varphi^{m}/\sqrt5\) and the maximum fiber asymptotic \(D_m=\Theta(\varphi^{m/2})\) (Theorem \ref{thm:pom-max-fiber}), gives
+$$
+\log r_q=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)\in\Bigl[q\log 2-(q-1)\log\varphi,\ \log 2+\frac{q-1}{2}\log\varphi\Bigr],
+$$
+so the bounds on \(r_q\) hold. Substituting into \(h_q=q\log 2-\log r_q\) yields the equivalent bounds on \(h_q\). \qed
+\end{proof}
+
+\begin{proposition}[Extreme-order endpoint: \texorpdfstring{$r_q^{1/q}\to\sqrt{\varphi}$}{rq^(1/q)->sqrt(phi)} and the normalized entropy endpoint constant]\label{prop:pom-rq-qinfty-endpoint}
+Let \(r_q\) denote the exponential growth rate of \(S_q(m)\) (e.g., given by the Perron root of the moment-kernel), and write \(\varphi\) for the golden ratio.
+Then as \(q\to\infty\),
+\[
+\boxed{\;
+\lim_{q\to\infty} r_q^{1/q}=\sqrt{\varphi}\; }.
+\]
+Equivalently,
+\[
+\lim_{q\to\infty}\frac{1}{q}\,h_q
+=\log\!\left(\frac{2}{\sqrt{\varphi}}\right),
+\qquad
+\lim_{q\to\infty}\frac{1}{q-1}\,h_q
+=\log\!\left(\frac{2}{\sqrt{\varphi}}\right),
+\]
+so the R\'enyi dimension spectrum endpoint satisfies
+\[
+\lim_{q\to\infty}D_q
+=\frac{\log\!\left(2/\sqrt{\varphi}\right)}{\log\varphi}
+\approx 0.94042009
+\]
+(where \(D_q\) is as in Proposition \ref{prop:pom-renyi-dimension-spectrum}).
+\par
+Moreover, for any integer \(q\ge 2\) there is an explicit error bound
+\[
+\boxed{\;
+0\ \le\ \log\!\left(\frac{2}{\sqrt{\varphi}}\right)-\frac{h_q}{q}\ \le\ \frac{\log\varphi}{q}\; }.
+\]
+\end{proposition}
+\begin{proof}
+For any \(m,q\ge 2\), from
+\(
+D_m:=\max_x d_m(x)
+\)
+one obtains the two-sided squeeze
+\[
+D_m^q\ \le\ S_q(m)\ \le\ |X_m|\,D_m^q.
+\]
+Taking the \(1/(mq)\)-th power of both sides gives
+\[
+D_m^{1/m}\ \le\ S_q(m)^{1/(mq)}\ \le\ D_m^{1/m}\,|X_m|^{1/(mq)}.
+\]
+Letting \(m\to\infty\), the left-hand side is given by Theorem \ref{thm:pom-max-fiber} as
+\(
+\lim_{m\to\infty}D_m^{1/m}=\varphi^{1/2}
+\);
+the factor on the right-hand side satisfies
+\(
+\lim_{m\to\infty}|X_m|^{1/(mq)}=\varphi^{1/q}
+\)
+(since \(|X_m|=F_{m+2}\sim \varphi^m/\sqrt5\)).
+Therefore for each fixed \(q\ge 2\),
+\[
+\sqrt{\varphi}\ \le\ r_q^{1/q}\ \le\ \sqrt{\varphi}\,\varphi^{1/q}.
+\]
+Letting \(q\to\infty\) gives \(\lim_{q\to\infty}r_q^{1/q}=\sqrt{\varphi}\).
+The endpoint limits then follow from \(h_q=q\log 2-\log r_q\) and the closed form in Proposition \ref{prop:pom-renyi-dimension-spectrum}.
+\par
+From \(\sqrt{\varphi}\le r_q^{1/q}\le \sqrt{\varphi}\,\varphi^{1/q}\) one obtains
+\[
+\frac{1}{2}\log\varphi\ \le\ \frac{1}{q}\log r_q\ \le\ \frac{1}{2}\log\varphi+\frac{1}{q}\log\varphi.
+\]
+Substituting into \(\frac{h_q}{q}=\log 2-\frac{1}{q}\log r_q\) yields
+\[
+0\ \le\ \log\!\left(\frac{2}{\sqrt{\varphi}}\right)-\frac{h_q}{q}\ \le\ \frac{\log\varphi}{q}.
+\]
+\qed
+\end{proof}
+
+\begin{remark}[Self-consistent reconstruction of \texorpdfstring{$\varphi$}{phi} from the collision spectrum (without Fibonacci input)]\label{rem:pom-recover-phi-from-collision-spectrum}
+Table \ref{tab:fold_collision_renyi_spectrum} (and its higher-order extensions) provides the DP/recurrence-audited \(r_q\) (and hence \(h_q=\log(2^q/r_q)\)).
+Let
+\[
+s_q:=\frac{h_q}{q}=\log 2-\frac{1}{q}\log r_q,
+\qquad
+g_q:=e^{s_q}=\frac{2}{r_q^{1/q}}.
+\]
+From the endpoint limit \(\lim_{q\to\infty}s_q=\log(2/\sqrt{\varphi})\), one obtains a completely internal ``inverse constant'' identity:
+\[
+\boxed{\;
+\varphi
+=4e^{-2\lim_{q\to\infty}s_q}
+=\left(\lim_{q\to\infty}r_q^{1/q}\right)^2\; }.
+\]
+In practice, to avoid the slow convergence in the \(q\)-direction, one can apply Aitken \(\Delta^2\) acceleration to the sequence \(s_q\) (entirely parallel to the acceleration used on the \(m\)-ratios):
+\[
+s_q^{(\infty)}
+\approx
+s_{q+2}-\frac{(s_{q+2}-s_{q+1})^2}{s_{q+2}-2s_{q+1}+s_q},
+\qquad
+\widehat\varphi_q:=4e^{-2s_q^{(\infty)}}.
+\]
+Table \ref{tab:fold_collision_phi_reconstruction_from_renyi} provides convergence examples of \(\widehat\varphi_q\) obtained by inverting only the audited \(\{r_q\}\) (one-click generation via script \texttt{scripts/exp\_fold\_collision\_phi\_reconstruction\_from\_renyi.py}).
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_phi_reconstruction_from_renyi}
+
+\begin{proposition}[Convexity of the pressure and concavity of the fingerprint]\label{prop:pom-pressure-convexity}
+For any \(m\ge 2\), the function \(q\mapsto \log S_q(m)\) is convex on \(q\ge 0\).
+Therefore, when \(S_q(m)=\Theta(r_q^m)\) (as guaranteed, for instance, by the Perron principal scale of Proposition \ref{prop:pom-moment-kernel-exists}), the pressure
+\[
+P(q):=\log r_q
+\]
+satisfies discrete convexity at integer points: for any integers \(q_0<q_1<q_2\),
+\[
+\boxed{\;
+P(q_1)\ \le\ \frac{q_2-q_1}{q_2-q_0}\,P(q_0)\ +\ \frac{q_1-q_0}{q_2-q_0}\,P(q_2)\; }.
+\]
+Equivalently, the unnormalized R\'enyi fingerprint \(h_q=q\log 2-P(q)\) is concave at integer points:
+\[
+\boxed{\;
+h_{q_1}\ \ge\ \frac{q_2-q_1}{q_2-q_0}\,h_{q_0}\ +\ \frac{q_1-q_0}{q_2-q_0}\,h_{q_2}\; }.
+\]
+\end{proposition}
+\begin{proof}
+Fix \(m\). Take any \(q_0,q_2\ge 0\) and \(\theta\in(0,1)\), and let \(q_1=\theta q_0+(1-\theta)q_2\).
+By H\"older's inequality (or convexity of log-sum-exp),
+\[
+S_{q_1}(m)=\sum_{x\in X_m}d_m(x)^{q_1}
+\le
+\left(\sum_{x\in X_m}d_m(x)^{q_0}\right)^{\theta}
+\left(\sum_{x\in X_m}d_m(x)^{q_2}\right)^{1-\theta}
+=S_{q_0}(m)^{\theta}S_{q_2}(m)^{1-\theta}.
+\]
+Taking the logarithm gives the convexity of \(q\mapsto \log S_q(m)\).
+\par
+Let \(q_0<q_1<q_2\) be integers and take
+\(
+\theta=\frac{q_2-q_1}{q_2-q_0}
+\)
+so that \(q_1=\theta q_0+(1-\theta)q_2\).
+Taking \(\frac{1}{m}\log\) of the above and letting \(m\to\infty\) gives
+\[
+\log r_{q_1}\le \theta\log r_{q_0}+(1-\theta)\log r_{q_2},
+\]
+which is the discrete convexity of \(P\). Finally, \(h_q=q\log 2-P(q)\) is a linear function minus a convex function, hence concave at integer points. \qed
+\end{proof}
+
+\begin{proposition}[Cross-\texorpdfstring{$q$}{q} inequality: monotonicity of \texorpdfstring{$g(q)$}{g(q)}]\label{prop:pom-crossq-g-monotone}
+For any integer \(m\ge 2\) and \(2\le p<q\), let \(d_m=(d_m(x))_{x\in X_m}\) and write \(S_k(m)=\sum_x d_m(x)^k=\|d_m\|_k^k\).
+Then the finite-dimensional norm inequality gives
+\[
+\|d_m\|_p\ \le\ |X_m|^{\frac{1}{p}-\frac{1}{q}}\ \|d_m\|_q,
+\]
+whence
+\[
+S_q(m)\ \ge\ S_p(m)^{q/p}\,|X_m|^{1-q/p}.
+\]
+If there exists \(r_k\) with \(S_k(m)=\Theta(r_k^m)\), and \(|X_m|\sim \varphi^m\), then the cross-order constraint is
+\[
+\boxed{\;
+\log r_q \ \ge\ \frac{q}{p}\log r_p + \left(1-\frac{q}{p}\right)\log\varphi\; }.
+\]
+Equivalently, defining
+\[
+g(q):=\frac{\log r_q-\log\varphi}{q},
+\]
+then \(g(q)\) is monotonically nondecreasing for \(q\ge 2\).
+Table \ref{tab:fold_collision_crossq_g_profile_q2_23} provides the reproducible readings for \(q=2,\dots,23\), usable as a regression consistency check for subsequent extensions/reimplementations (one-click generation via script \texttt{scripts/exp\_fold\_collision\_crossq\_g\_profile\_q2\_23.py}).
+\end{proposition}
+\begin{proof}
+For a nonnegative vector \(d_m\) of length \(n=|X_m|\), when \(2\le p<q\) one has \(\|d_m\|_p\le n^{1/p-1/q}\|d_m\|_q\).
+Raising both sides to the \(q\)-th power gives
+\(
+\|d_m\|_q^q \ge \|d_m\|_p^q\,n^{1-q/p}
+\),
+i.e.,
+\(
+S_q(m)\ge S_p(m)^{q/p}|X_m|^{1-q/p}
+\).
+Taking \(\frac{1}{m}\log\) of both sides and letting \(m\to\infty\), using
+\(
+\lim_{m\to\infty}\frac{1}{m}\log S_k(m)=\log r_k
+\)
+and
+\(
+\lim_{m\to\infty}\frac{1}{m}\log|X_m|=\log\varphi
+\),
+yields the first formula; substituting back into the definition gives the monotonicity of \(g(q)\). \qed
+\end{proof}
+
+\input{sections/generated/tab_fold_collision_crossq_g_profile_q2_23}
+
+\begin{remark}[Exact recurrences and order patterns for higher-order collision moments (auditable)]\label{rem:pom-moment-rec}
+The second- and third-order collision moments are respectively realized by the three-state kernels \(A_2,A_3\) (Propositions \ref{prop:pom-s2-recurrence} and \ref{prop:pom-s3-recurrence}). At higher orders \(q\), the sequences \(\{S_q(m)\}\) continue to exhibit the phenomenon of \textbf{small-order integer linear recurrences}: for \(q=4,5,6,7,8\) one can verify the existence of exact recurrences of orders \(5,5,7,7,9\) respectively (holding for all \(m\) beyond some threshold), whose coefficients are given in Table \ref{tab:fold_collision_moment_recursions}. These recurrences are equivalent to the ``existence of finite-dimensional \(q\)-th order collision kernel/matrix realizations,'' so the exponential scale \(S_q(m)=\Theta(r_q^m)\) is controlled by the Perron root \(r_q\) of the corresponding characteristic polynomial.
+For \(q=2,\dots,8\), a summary of the recurrence orders and \(r_q,h_q\) appears in Table \ref{tab:fold_collision_moment_spectrum_k2_8}.
+\input{sections/generated/tab_fold_collision_moment_spectrum_k2_8}
+
+Within the verified range \(q\le 8\), the minimal recurrence orders and the Hankel minimal realization dimensions both exhibit a ``plus 2 every two orders'' pattern (see Theorem \ref{thm:pom-moment-hankel} and Corollary \ref{cor:pom-moment-minreal}).
+Organizing this as a directly verifiable \textbf{closure law}: writing \(d_q\) for the minimal integer-coefficient recurrence order of \(S_q(m)\) (equivalently the minimal linear realization dimension), on \(q=2,\dots,8\) one has
+\[
+\boxed{\;
+d_q = 2\left\lfloor \frac{q}{2}\right\rfloor+1\;}
+\]
+(equivalently: for odd \(q\), \(d_q=q\); for even \(q\), \(d_q=q+1\)).
+In engineering terms this gives an auditable complexity commitment: in the non-resonant typical window, extension to higher orders requires only \(O(q)\)-level state growth (only 2 additional degrees of freedom per two orders), rather than exponential blowup.
+However, as \(q\) continues to increase, this law undergoes a \textbf{structural collapse/resonance}: for \(q=9,\dots,17\), on the audit window \(m\le 26\) modulo \(F_{m+2}\) (with spot checks on the extended window \(m\le 32\)), one can verify the existence of lower-order integer-coefficient recurrences (Table \ref{tab:fold_collision_moment_recursions_9_17}), whose minimal orders are
+\[
+(d_9,d_{10},d_{11},d_{12},d_{13},d_{14},d_{15},d_{16},d_{17})=(7,9,9,13,11,13,11,13,13),
+\]
+clearly below the linear extrapolation of ``plus 2 every two orders.'' This phenomenon indicates that the ``closure dimension fingerprint'' exhibits stable rank gaps, whose mechanism is related to algebraic degeneracies of the Fibonacci congruence structure. The mechanistic criterion for the resonance is given in Theorem \ref{thm:pom-moment-resonance}.
+\end{remark}
+
+\begin{corollary}[Failure of the closure dimension extrapolation at \texorpdfstring{$q\ge 9$}{q>=9} (counterexample family)]\label{cor:pom-moment-dim-collapse}
+Let \(d_q\) denote the minimal integer-coefficient recurrence order of \(S_q(m)\) (equivalently the minimal linear realization dimension; i.e., the Hankel minimal realization dimension, see Theorem \ref{thm:hankel-rank-minimal}).
+Then in the verified range \(q=9,\dots,23\), the strict inequality holds:
+\[
+\boxed{\;
+d_q\ <\ 2\lfloor q/2\rfloor+1\; }.
+\]
+More specifically,
+\[
+(d_9,\dots,d_{23})=(7,9,9,13,11,13,11,13,13,17,15,17,15,17,17),
+\]
+see Tables \ref{tab:fold_collision_moment_recursions_9_17} and \ref{tab:fold_collision_moment_recursions_18_23}.
+Therefore any strong-form statement treating \(2\lfloor q/2\rfloor+1\) as the ``minimal closure dimension law'' for all \(q\) is false; this dimension law describes only the upper-bound saturation pattern in the non-resonant typical regime (Remark \ref{rem:pom-closure-dim-mode-trunc}).
+\end{corollary}
+\begin{definition}[Closure defect \texorpdfstring{$\Delta_q$}{Deltaq}: invariantization of resonance/selection rules]\label{def:pom-closure-defect-deltaq}
+Let \(h=\lfloor q/2\rfloor\).
+Define the \textbf{closure defect}
+\[
+\boxed{\;
+\Delta_q\ :=\ (2h+1)-d_q\;}
+\]
+where \(2h+1\) is the nominal mode count under ``difference-mode truncation'' (Remark \ref{rem:pom-closure-dim-mode-trunc}), and \(d_q\) is the minimal recurrence order/minimal realization dimension (Corollary \ref{cor:pom-moment-dim-collapse}).
+\end{definition}
+\begin{remark}[Interpretation: \texorpdfstring{$\Delta_q>0$}{Deltaq>0} is a ``selection rule'' providing quantifiable dimension-reduction gain]\label{rem:pom-closure-defect-selection-rule}
+When \(\Delta_q>0\), Theorem \ref{thm:pom-moment-resonance} shows that nontrivial mode constraints exist such that the nominal \(2h+1\)-dimensional mode realization is not minimal; therefore \(\Delta_q\) can be viewed as the ``codimension of the excitable mode space,'' i.e., the \emph{selection rule strength} triggered by resonance/collapse.
+\par
+In engineering terms, this directly quantifies the compressibility gain for the \(q\)-th order spectral backend: if an implementation uses \(2h+1\) difference modes as its state closure and performs the recurrence, then in the resonance phase one can further compress to the \(d_q\)-dimensional minimal realization (recovered via the recurrence/companion matrix or Hankel minimization), with nominal compression ratio approximately
+\[
+\mathrm{gain}(q)\ \approx\ \frac{2h+1}{d_q}.
+\]
+For example, at \(q=15\), \(2h+1=15\) while the verified \(d_{15}=11\), corresponding to a stable structural dimension-reduction gap.
+\end{remark}
+\begin{proof}[Proof of Corollary \ref{cor:pom-moment-dim-collapse}]
+Direct comparison with the verified minimal recurrence orders \(d_q\) from Tables \ref{tab:fold_collision_moment_recursions_9_17} and \ref{tab:fold_collision_moment_recursions_18_23} suffices. \qed
+\end{proof}
+
+\begin{remark}[Structural origin of the closure dimension \texorpdfstring{$2\lfloor q/2\rfloor+1$}{2 floor(q/2)+1}: finite truncation of congruence character modes]\label{rem:pom-closure-dim-mode-trunc}
+Proposition \ref{prop:pom-s2-plancherel} provides an auditable template welding together the ``geometric--congruence--spectral'' picture: the second-order collision moment
+\(
+S_2(m)=\sum_r c_m(r)^2
+\)
+is simultaneously the \(\ell^2\) mass on the congruence slice of the residue distribution and the Plancherel energy average of its discrete Fourier coefficients; moreover, each frequency-\(j\) Fourier coefficient \(\widehat c_m(j)\) is entirely determined by the local factors \(\prod_k(1+\chi_j(F_{k+1}))\).
+
+In the moment-kernel compilation at higher \(q\) (Proposition \ref{prop:pom-moment-kernel-exists}), the essential step is imposing the ``per-bit output agreement'' constraint on the synchronous direct product; this constraint compresses the phase information from \(q\) copies into a \textbf{finitely-valued difference-mode index}: it records the ``net bias of the phase under conjugate pairing'' (interpretable as the range of the effective power difference \(a-b\) between \(\widehat c\) and \(\overline{\widehat c}\)). By pairing/conjugation invariance, the range of the net bias is forcibly truncated to
+\[
+-(\lfloor q/2\rfloor)\ \le\ a-b\ \le\ \lfloor q/2\rfloor,
+\]
+so that in the \emph{non-resonant typical case}, only \(2\lfloor q/2\rfloor+1\) modes need to be tracked for a closed-form recurrence to the next resolution step; this gives the structural reason for ``plus 2 degrees of freedom every two orders.'' This mode truncation agrees exactly with the Hankel rank lower bound (Theorem \ref{thm:pom-moment-hankel}) in the verified range \(q\le 8\), thereby upgrading the empirical fingerprint to an interpretable finite closure mechanism.
+The \(q\ge 9\) phenomenon in Table \ref{tab:fold_collision_moment_recursions_9_17} shows that when the Fibonacci congruence structure induces algebraic degeneracies, the visible mode space acquires additional constraints that make the readout-excitable subspace dimension strictly less than the nominal upper bound (Corollary \ref{cor:pom-moment-dim-collapse}). Therefore the more critical unifying object is no longer ``continuing to raise \(q\),'' but rather characterizing when and why non-excitable modes appear (see Conjecture \ref{conj:pom-moment-visible} and the mode-constraint framework of Theorem \ref{thm:pom-moment-resonance}).
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_moment_recursions}
+
+\input{sections/generated/tab_fold_collision_moment_recursions_9_17}
+
+\input{sections/generated/tab_fold_collision_moment_recursions_18_23}
+
+\paragraph{Higher-order moment spectral constants (\texorpdfstring{$q=9,\dots,23$}{q=9..23}): Perron roots and entropy rates}
+Tables \ref{tab:fold_collision_moment_recursions_9_17} and \ref{tab:fold_collision_moment_recursions_18_23} provide the verified minimal recurrences for \(q=9,\dots,23\).
+From the Perron root of the recurrence characteristic polynomial one extracts the exponential scale \(r_q\) and the corresponding (unnormalized) R\'enyi fingerprint rate
+\(
+h_q=\log(2^q/r_q)
+\)
+(Definition \ref{def:pom-moment-pressure}).
+The following tables summarize \(r_q\), \(r_q^{1/q}\), and \(h_q\) for \(q=9,\dots,23\):
+\input{sections/generated/tab_fold_collision_moment_spectrum_k9_17}
+\input{sections/generated/tab_fold_collision_moment_spectrum_k18_23}
+
+\begin{remark}[Higher-order DP endpoint fingerprints (\(q=24,25\))]\label{rem:pom-renyi-endpoint-q24-25}
+At higher R\'enyi orders, one can compute \(S_q(m)\) directly via residue DP and estimate \(r_q\) using ratio convergence and Aitken \(\Delta^2\) acceleration on a fixed window.
+For example, on the window \(m\in\{34,35,36,37\}\) one obtains stable estimates:
+\[
+\widehat r_{24}\approx 369.478420314,\quad \widehat h_{24}^{\mathrm R}\approx 0.4662365216;\qquad
+\widehat r_{25}\approx 466.281715009,\quad \widehat h_{25}^{\mathrm R}\approx 0.4659953968.
+\]
+These numerical values continue to support the narrow-band convergence phenomenon of the higher-order \(h_q^{\mathrm R}\); the corresponding DP endpoint estimates can be generated in one click by the script
+\texttt{scripts/exp\_fold\_collision\_renyi\_spectrum\_mod\_dp\_q20.py --q-max 25 --m-max 37}.
+However, within the current window \(m\le 37\), no low-order integer-coefficient recurrence has been fitted that can be fully verified across the entire window (hence these have not yet entered the full spectral root scan/``exact'' framework for \(\beta_q,\delta_q\)).
+\end{remark}

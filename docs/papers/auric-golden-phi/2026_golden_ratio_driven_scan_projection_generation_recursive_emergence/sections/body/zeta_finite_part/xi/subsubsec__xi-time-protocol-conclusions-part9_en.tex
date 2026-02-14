@@ -1,0 +1,158 @@
+\paragraph{Ap\'ery Reduction of the Tail-Additive Closure: Two-Generator Normal Form, Congruence Truncation Ledger, and Reset Clock Moment Invariants}
+This paragraph, building on the tail-additive mechanism of Theorem \ref{thm:xi-window6-tail-semigroup-frobenius-threshold}, further reduces reachability from a "generating set" to a family of congruence thresholds, and provides the equivalent normal form, a finite truncation partition of the unreachable set, and moment invariants of the reset interval clock.
+\par
+
+\begin{theorem}[Two-Generator Reduction and Canonical Solution of the Tail-Additive Mechanism]\label{thm:xi-window6-tail-semigroup-two-generator-normal-form}
+Under the tail offset additive closure framework of the window-\(6\) uplift, let the additive generating set be \(\{21,34,55\}\).
+Since \(55=21+34\), the corresponding reachable semigroup satisfies
+\[
+S_6=\langle 21,34,55\rangle=\langle 21,34\rangle\subset\mathbb N.
+\]
+For any \(n\in\mathbb N\), let \(r\equiv n\ (\mathrm{mod}\ 21)\).
+Define
+\[
+b_r:=13r\ (\mathrm{mod}\ 21)\in\{0,1,\dots,20\},
+\qquad
+w_r:=34\,b_r,
+\]
+then \(n\in\langle 21,34\rangle\) if and only if \(n\ge w_r\).
+Moreover, in the reachable case, there exists a unique pair
+\(
+(a,b)\in\mathbb N\times\{0,1,\dots,20\}
+\)
+satisfying
+\[
+n=21a+34b,\qquad b=b_r,\qquad a=\frac{n-w_r}{21}.
+\]
+Therefore, reachability admits a constant-time criterion on each congruence class \(r\), and induces a unique "mod \(21\) normal form" (reducing \(b\) to \(\{0,\dots,20\}\)).
+\end{theorem}
+
+\begin{proof}
+The identity \(55=21+34\) implies \(\langle 21,34,55\rangle=\langle 21,34\rangle\).
+Since \(34\equiv 13\ (\mathrm{mod}\ 21)\) and \(13^2\equiv 1\ (\mathrm{mod}\ 21)\), \(13\) is the modular inverse of \(34\) modulo \(21\), so
+\(
+34\,b_r\equiv r\ (\mathrm{mod}\ 21)
+\)
+holds, and \(b_r\) is unique within \(\{0,\dots,20\}\).
+\par
+If \(n=21a+34b\) is reachable, then necessarily \(b\equiv b_r\ (\mathrm{mod}\ 21)\), so \(b=b_r+21k\) (\(k\in\mathbb N\)), which gives
+\(
+n=w_r+21(a+34k)\ge w_r
+\).
+Conversely, if \(n\equiv r\ (\mathrm{mod}\ 21)\) and \(n\ge w_r\), then \(n-w_r\) is a nonnegative multiple of \(21\); setting \(a=(n-w_r)/21\ge 0\) and \(b=b_r\) yields the decomposition.
+Uniqueness is forced by the reduction condition \(b\in\{0,\dots,20\}\): if \(21a+34b=21a'+34b'\) with \(b,b'\in\{0,\dots,20\}\), then \(34(b-b')\) is a multiple of \(21\), and since \(\gcd(34,21)=1\), we get \(b=b'\), hence \(a=a'\).
+\end{proof}
+
+\begin{proposition}[Ap\'ery Threshold Family and Congruence Decomposition of the Unreachable Count]\label{prop:xi-window6-tail-semigroup-apery-thresholds}
+Let \(w_r\) be as in Theorem \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form}.
+Then \(\{w_r\}_{r=0}^{20}\) constitutes the Ap\'ery threshold family of \(\langle 21,34\rangle\) modulo \(21\):
+\[
+w_r=\min\{s\in\langle 21,34\rangle:\ s\equiv r\ (\mathrm{mod}\ 21)\}.
+\]
+The exact count of unreachable points within congruence class \(r\) is
+\[
+g_r:=\frac{w_r-r}{21}\in\mathbb N,
+\]
+so the unreachable set can be written as the finite truncated union
+\(
+\bigcup_{r=0}^{20}\{r,\,r+21,\dots,r+21(g_r-1)\}
+\).
+The complete data is given in Table \ref{tab:window6_tail_semigroup_apery_21_34}, and the total unreachable count satisfies
+\[
+\sum_{r=0}^{20}g_r=330.
+\]
+\end{proposition}
+
+\input{sections/generated/tab_window6_tail_semigroup_apery_21_34}
+
+\begin{proposition}[Complete Congruence-Union Characterization of the Reachable Dimension Set with Finite Truncation]\label{prop:xi-window6-dimension-reachability-congruence-union}
+Write the total dimension as \(D=12+n\) (where \(n\) is the tail-additive increment).
+Then under the framework of Theorem \ref{thm:xi-window6-tail-semigroup-two-generator-normal-form}:
+\begin{enumerate}
+  \item \(D\) is reachable if and only if there exists \(r\in\{0,\dots,20\}\) such that \(n\equiv r\ (\mathrm{mod}\ 21)\) and \(n\in w_r+21\mathbb N\);
+  equivalently,
+  \[
+  D\in\bigcup_{r=0}^{20}\bigl(12+w_r+21\mathbb N\bigr).
+  \]
+  \item \(D\) is unreachable if and only if there exists \(r\) such that \(n=r+21k\) with \(0\le k<g_r\);
+  therefore the unreachable set is a finite truncated union of \(21\) arithmetic progressions, with truncation lengths completely given by \(\{g_r\}\).
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Minimal Reachable Representative and Injective Encoding via Zeckendorf Signature]\label{prop:xi-window6-minrep-zeckendorf-signature-injection}
+For each \(r\in\{0,\dots,20\}\), define the minimal reachable dimension of the congruence class
+\[
+D_r^{\min}:=12+w_r=12+34\,b_r.
+\]
+Let \(S(D)\subset\mathbb N\) denote the Zeckendorf index set of the integer \(D\) (i.e., \(D=\sum_{k\in S(D)}F_k\), with \(S(D)\) containing no adjacent indices).
+Then \(\{S(D_r^{\min})\}_{r=0}^{20}\) are pairwise distinct;
+and for all \(r\), \(2\in S(D_r^{\min})\) and \(3\notin S(D_r^{\min})\).
+The complete data is given in Table \ref{tab:window6_tail_semigroup_minrep_zeckendorf_signatures}.
+Therefore, "congruence class \(r\)" can be unambiguously encoded at the minimal representative level by \(S(D_r^{\min})\).
+\end{proposition}
+
+\input{sections/generated/tab_window6_tail_semigroup_minrep_zeckendorf_signatures}
+
+\begin{proposition}[Self-Duality of the Congruence Permutation: \texorpdfstring{$r\mapsto b_r$}{r->br} Is an Involution]\label{prop:xi-window6-congruence-involution}
+The map \(r\mapsto b_r=13r\ (\mathrm{mod}\ 21)\) satisfies \(13^2\equiv 1\ (\mathrm{mod}\ 21)\), and hence is a self-inverse permutation:
+\[
+b_{b_r}=r.
+\]
+Therefore the Ap\'ery threshold family satisfies the exchange law
+\[
+w_{b_r}=34\,b_{b_r}=34\,r.
+\]
+\end{proposition}
+
+\begin{proposition}[First-Order Conservation of the Threshold Family: Closed Form for the Average Minimal Representative]\label{prop:xi-window6-apery-first-moment}
+Since \(r\mapsto b_r\) is a permutation of \(\{0,\dots,20\}\),
+\[
+\sum_{r=0}^{20}b_r=\sum_{k=0}^{20}k=210,
+\qquad
+\sum_{r=0}^{20}w_r=34\sum_{r=0}^{20}b_r=7140.
+\]
+Hence
+\[
+\frac{1}{21}\sum_{r=0}^{20}w_r=340,
+\qquad
+\frac{1}{21}\sum_{r=0}^{20}D_r^{\min}=12+340=352.
+\]
+\end{proposition}
+
+\begin{proposition}[Explicit Moment Invariants of the Two-Interval Reset Clock]\label{prop:xi-window6-reset-gap-mgf-moments}
+Under the setting of Corollary \ref{cor:xi-window6-reset-clock-gap-frequencies},
+let the reset interval random variable \(G\) take values in \(\{34,55\}\) with
+\[
+\mathbb P(G=55)=\frac{1}{\varphi},\qquad \mathbb P(G=34)=\frac{1}{\varphi^2}.
+\]
+Then its moment generating function is
+\[
+M_G(t):=\mathbb E[e^{tG}]
+=\frac{1}{\varphi}e^{55t}+\frac{1}{\varphi^2}e^{34t},
+\]
+and the mean and variance satisfy the closed forms
+\[
+\mathbb E[G]=\frac{55}{\varphi}+\frac{34}{\varphi^2}=13+21\varphi,
+\qquad
+\mathrm{Var}(G)=441(2\varphi-3).
+\]
+\end{proposition}
+
+\begin{corollary}[Fibonacci Expression of the Drift Coupling]\label{cor:xi-window6-reset-gap-fib-coupling}
+Denote \(F_7=13\), \(F_8=21\).
+Then the drift and fluctuation of Proposition \ref{prop:xi-window6-reset-gap-mgf-moments} can be rewritten as
+\[
+\mathbb E[G]=F_7+F_8\varphi,
+\qquad
+\mathrm{Var}(G)=F_8^2(2\varphi-3),
+\]
+so that the reset drift and fluctuation are completely determined at the integer level by \((F_7,F_8)\) and the same irrational constant \(\varphi\).
+\end{corollary}
+
+\begin{proposition}[Mass Invariants and Second-Order Consistency Ledger of the Unreachable Set]\label{prop:xi-window6-gap-ledger-invariants}
+Let \(\mathcal G\subset\mathbb N\) be the unreachable increment set of \(\langle 21,34\rangle\) (i.e., the point set corresponding to the finite truncated union in Proposition \ref{prop:xi-window6-tail-semigroup-apery-thresholds}).
+Then its cardinality, total weight, and second-order combinatorial quantities derived from the truncation lengths \(\{g_r\}\) satisfy the strict identities
+\input{sections/generated/eq_window6_tail_semigroup_gap_ledger_21_34}
+Therefore, the mean of the dimension-level unreachable point set \(\{12+n:\ n\in\mathcal G\}\) is \(12+\frac{686}{3}=\frac{722}{3}\).
+The above identities, together with the threshold family in Table \ref{tab:window6_tail_semigroup_apery_21_34}, constitute a verifiable consistency ledger; any violation is equivalent to a mismatch in either the congruence threshold family or the "tail-additive" mechanism assumption.
+\end{proposition}

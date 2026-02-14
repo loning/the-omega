@@ -1,0 +1,630 @@
+\subsubsection{Spectrum/\texorpdfstring{$\zeta$}{zeta} of the Sliding Block Factor \texorpdfstring{$Y_m$}{Ym}: Precise Separation of Cover and Intrinsic Objects}\label{subsec:Ym-zeta-spectrum}
+The previous paragraph explained ``why this paper primarily uses the cover \(\zeta\).'' To satisfy the verifiability requirement that ``the spectrum/\(\zeta\) computation of the folding-induced sliding block factor should be made explicit down to the executable level,'' this subsection explicitly lists the computation chains of both types of objects and gives a \textbf{computable} formulation of the intrinsic \(\zeta_{Y_m}\) of \(Y_m\), while emphasizing its definitional difference from the cover SFT determinant \(\det(I-zA_m)\).
+
+\paragraph{Spectrum and \texorpdfstring{$\zeta$}{zeta} of the Cover-SFT}
+Take the right Fischer cover (or any follower-separated right-resolving cover) \(H_m\) of \(Y_m\), and obtain the adjacency matrix \(A_m\) of the edge shift \(X_{A_m}\) by Definition \ref{def:Phi_m-adjacency}. Then:
+\begin{itemize}
+  \item \textbf{Spectrum/entropy:} \(h_{\mathrm{top}}(Y_m)=\log\rho(A_m)\) (Proposition \ref{prop:Phi_m-entropy});
+  \item \textbf{Maximal entropy measure:} The Parry measure is explicitly given by the Perron--Frobenius left/right eigenvectors of \(A_m\) (Proposition \ref{prop:Phi_m-parry}) and can be pushed forward to obtain the maximal entropy measure of \(Y_m\) (Proposition \ref{prop:Phi_m-parry-pushforward});
+  \item \textbf{\(\zeta\):} The Artin--Mazur \(\zeta\) of the cover SFT satisfies
+  \[
+  \zeta_{X_{A_m}}(z)=\frac{1}{\det(I-zA_m)},
+  \qquad
+  \#\mathrm{Fix}(\sigma^n|_{X_{A_m}})=\mathrm{Tr}(A_m^n),
+  \]
+  and consequently
+  \(
+  \#\mathrm{Fix}(\sigma^n|_{X_{A_m}})=\rho(A_m)^n+O(\rho_2^n)
+  \)
+  (\(\rho_2<\rho(A_m)\) is the second-largest spectral radius, valid for irreducible aperiodic components).
+\end{itemize}
+This chain is ``auditable'' because all inputs are finite graphs/matrices: all numerical invariants (entropy, leading eigenvalue, residue constant, primitive orbit spectrum, etc.) can be directly reproduced by linear algebra.
+
+\paragraph{Intrinsic \texorpdfstring{$\zeta_{Y_m}$}{zetaYm} of the Sofic Factor \texorpdfstring{$Y_m$}{Ym}: Computable but Not Equal to the Cover Determinant}
+The intrinsic \(\zeta_{Y_m}\) is defined by periodic point counts:
+\[
+\zeta_{Y_m}(z):=\exp\left(\sum_{n\ge 1}\frac{\#\mathrm{Fix}(\sigma^n|_{Y_m})}{n}z^n\right).
+\]
+Since \(Y_m\) is a sofic shift (finite labeled graph image; see \cite{Weiss1973SFTandSofic,CovenPaul1975SoficSystems,LindMarcus1995,Kitchens1998SymbolicDynamics}), its periodic point set is a regular object, and therefore \(\zeta_{Y_m}\) is a rational function (see \cite{Manning1971RationalZeta}). The key point is: \(\#\mathrm{Fix}(\sigma^n|_{Y_m})\) counts periodic points of \textbf{labeled sequences}, whereas \(\mathrm{Tr}(A_m^n)\) counts periodic points of \textbf{edge sequences} on the cover; when the label factor is not one-to-one, these two differ.
+
+\paragraph{An Executable Counting Caliber (Transfer Semigroup Automaton)}
+Given any right-resolving representation (e.g., $H_m^{\mathrm{det}}$ or the Fischer cover), each letter $a\in X_m$ induces a partial transition $\tau_a$ on the state set, and the reachable partial-map semigroup yields a finite automaton; its adjacency matrix is denoted $B_m$. Then
+\[
+\#\mathrm{Fix}(\sigma^n|_{Y_m})=\mathrm{Tr}(B_m^n),\qquad
+\zeta_{Y_m}(z)=\frac{1}{\det(I-zB_m)}.
+\]
+This caliber is described in \cite{Nasu1995TextileSystems} and in the sofic/cover chapters of \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+
+\begin{proposition}[Leading Pole and Entropy of the Intrinsic \texorpdfstring{$\zeta_{Y_m}$}{zetaYm}: Same Exponential Scale as the Cover]\label{prop:Ym-zeta-leading-pole}
+Assuming \(Y_m\) is irreducible (or taking its maximal entropy essential component), the periodic point growth rate of \(Y_m\) satisfies
+\[
+\limsup_{n\to\infty}\frac{1}{n}\log\#\mathrm{Fix}(\sigma^n|_{Y_m})
+\ =\ h_{\mathrm{top}}(Y_m),
+\]
+so the radius of convergence of the intrinsic \(\zeta_{Y_m}(z)\) is
+\[
+R_{Y_m}=e^{-h_{\mathrm{top}}(Y_m)}.
+\]
+On the other hand, the cover interface gives \(h_{\mathrm{top}}(Y_m)=\log\rho(A_m)\) (Proposition \ref{prop:Phi_m-entropy}), so
+\[
+R_{Y_m}=\rho(A_m)^{-1}.
+\]
+In other words: although \(\zeta_{Y_m}\) and \(\zeta_{X_{A_m}}=1/\det(I-zA_m)\) are generally not equal, they share the same leading pole modulus (i.e., exponential scale), determined by the same entropy.
+\end{proposition}
+
+\begin{proof}
+The exponential growth rate of periodic point counts of a sofic shift equals its topological entropy; see \cite{Weiss1973SFTandSofic,CovenPaul1975SoficSystems,LindMarcus1995,Kitchens1998SymbolicDynamics}.
+On the other hand, by the counting caliber above, \(\#\mathrm{Fix}(\sigma^n|_{Y_m})=\mathrm{Tr}(B_m^n)\), so the radius of convergence is \(\rho(B_m)^{-1}=e^{-h_{\mathrm{top}}(Y_m)}\). Combining with \(h_{\mathrm{top}}(Y_m)=\log\rho(A_m)\) from Proposition \ref{prop:Phi_m-entropy} gives \(R_{Y_m}=\rho(A_m)^{-1}\).
+\end{proof}
+
+\begin{proposition}[Explicit Sandwich for Periodic Point Counts: Cover \texorpdfstring{$\Rightarrow$}{=>} Sofic]\label{prop:periodic-count-sandwich}
+Take a right-resolving labeled graph representation \(H_m=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m)\) of \(Y_m\) (e.g., the \(H_m^{\mathrm{det}}\) of Definition \ref{def:Phi_m-right-resolving}, or its further minimized Fischer cover). Let \(X_{A_m}\) be its edge shift (Definition \ref{def:Phi_m-adjacency}), and let \(\pi_m:X_{A_m}\to Y_m\) be the edge-by-edge label factor map (same definition as Proposition \ref{prop:Phi_m-parry-pushforward}). Then for any \(n\ge 1\),
+\[
+\#\mathrm{Fix}(\sigma^n|_{Y_m})
+\ \le\
+\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})
+\ =\
+\mathrm{Tr}(A_m^n),
+\]
+and there also exists a fully explicit lower bound
+\[
+\#\mathrm{Fix}(\sigma^n|_{Y_m})
+\ \ge\
+\frac{1}{|\mathcal{S}_m|}\,\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})
+\ =\
+\frac{1}{|\mathcal{S}_m|}\,\mathrm{Tr}(A_m^n).
+\]
+Therefore \(\#\mathrm{Fix}(\sigma^n|_{Y_m})\) and \(\mathrm{Tr}(A_m^n)\) agree at the exponential scale (the difference is at most a constant factor), consistent with the ``same leading pole modulus'' conclusion of Proposition \ref{prop:Ym-zeta-leading-pole}.
+\end{proposition}
+
+\begin{proof}
+The upper bound follows because the factor map \(\pi_m\) sends \(n\)-periodic points of \(X_{A_m}\) to \(n\)-periodic points of \(Y_m\), so \(\#\mathrm{Fix}(\sigma^n|_{Y_m})\le \#\mathrm{Fix}(\sigma^n|_{X_{A_m}})\).
+The lower bound follows from right-resolvingness, which gives uniform control of preimage multiplicity: for any $y\in Y_m$, its lift is uniquely determined by ``starting state $S\in\mathcal{S}_m$ + label sequence,'' so $|\pi_m^{-1}(y)|\le |\mathcal{S}_m|$. Summing over $n$-periodic points yields
+\(\#\mathrm{Fix}(X_{A_m})\le |\mathcal{S}_m|\#\mathrm{Fix}(Y_m)\).
+Finally, \(\#\mathrm{Fix}(X_{A_m})=\mathrm{Tr}(A_m^n)\) is given by the SFT periodic point counting identity (\cite{LindMarcus1995}).
+\end{proof}
+
+\begin{corollary}[Length-\texorpdfstring{$n$}{n} Periodic Compression Factor and Constant-Level Defect]\label{cor:Ym-periodic-compression-ratio}
+Using the notation of Proposition \ref{prop:periodic-count-sandwich}, for any \(n\ge 1\) with \(\#\mathrm{Fix}(\sigma^n|_{Y_m})>0\), define the length-\(n\) periodic compression factor
+\[
+R_m(n):=\frac{\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})}{\#\mathrm{Fix}(\sigma^n|_{Y_m})}
+=\frac{\mathrm{Tr}(A_m^n)}{\#\mathrm{Fix}(\sigma^n|_{Y_m})}.
+\]
+Then for all such \(n\) there is a uniform bound
+\[
+\boxed{\ 1\ \le\ R_m(n)\ \le\ |\mathcal{S}_m|\ }.
+\]
+In particular, defining the constant-level ``sofic defect constant''
+\[
+\delta_m:=\limsup_{n\to\infty}\log R_m(n),
+\]
+we have
+\[
+0\ \le\ \delta_m\ \le\ \log|\mathcal{S}_m|.
+\]
+This quantity does not alter the entropy/leading pole modulus at the exponential scale but quantifies the strength of ``cover periodic points being compressed by the factor code'' in a computable constant-level manner.
+\end{corollary}
+
+\begin{proof}
+From Proposition \ref{prop:periodic-count-sandwich},
+\(
+\#\mathrm{Fix}(\sigma^n|_{Y_m})\le \mathrm{Tr}(A_m^n)
+\)
+and
+\(
+\#\mathrm{Fix}(\sigma^n|_{Y_m})\ge |\mathcal{S}_m|^{-1}\mathrm{Tr}(A_m^n)
+\).
+Dividing both inequalities by \(\#\mathrm{Fix}(\sigma^n|_{Y_m})\) yields \(1\le R_m(n)\le |\mathcal{S}_m|\).
+Taking logarithms and \(\limsup_{n\to\infty}\) gives \(0\le \delta_m\le \log|\mathcal{S}_m|\). \qed
+\end{proof}
+
+\begin{remark}[Mechanism: Window-Level Many-to-One Does Not Equal Time-Level Entropy Loss]\label{rem:Ym-no-entropy-loss-mechanism}
+Proposition \ref{prop:periodic-count-sandwich} gives a precise ``constant-factor compression'' law: although the window-level fold \(\Fold_m:\Omega_m\to X_m\) is typically many-to-one, so the sequence-level factor \(\Phi_m\) may also fold multiple cover periodic orbits to the same labeled periodic point, at the time-scale level of periodic point growth this compression is at most a constant factor \(|\mathcal{S}_m|\) and does not change the exponential slope (entropy/leading pole modulus).
+
+More specifically, from
+\[
+\frac{1}{|\mathcal{S}_m|}\Tr(A_m^n)\le \#\mathrm{Fix}(\sigma^n|_{Y_m})\le \Tr(A_m^n)
+\]
+it immediately follows that
+\[
+\limsup_{n\to\infty}\frac{1}{n}\log\#\mathrm{Fix}(\sigma^n|_{Y_m})
+=\limsup_{n\to\infty}\frac{1}{n}\log\Tr(A_m^n)
+=\log\rho(A_m),
+\]
+i.e., \(h_{\mathrm{top}}(Y_m)=\log\rho(A_m)\) (Proposition \ref{prop:Ym-zeta-leading-pole}).
+Therefore the ``lost information'' is not exponentially crushed into entropy loss but rather transferred into the memory structure carried by the right-resolving state set \(\mathcal{S}_m\): the window-level multiplicity corresponds to finite-memory recoding rather than decay of the exponential growth rate.
+
+In the specific model of this paper (Zeckendorf folding), the above mechanism can be further ``sealed off'': Theorem \ref{thm:Ym-ambiguity-shell-dag} shows that for $m\ge 3$ the non-singleton ambiguity layer is a purely transient DAG that carries no periodic points whatsoever; the temporal cost it incurs is not entropy loss but a finite synchronization delay \(D_{\mathrm{sync}}(m)=m-1\) that can be accounted for (Corollary \ref{cor:Ym-sync-delay}).
+\end{remark}
+
+\begin{corollary}[Singleton Essential States \texorpdfstring{$\Rightarrow$}{=>} Finite-Delay Right Decoding]\label{cor:Ym-singleton-essential-finite-delay}
+Using the notation of Definition \ref{def:G_m} and Definition \ref{def:Phi_m-right-resolving}, suppose the right-resolving minimal representation obtained via ``subset determinization + right-language minimization'' (e.g., the right Fischer cover or its equivalent minimal deterministic representation) satisfies the following \textbf{singleton essential state} condition:
+\begin{equation}\label{eq:Ym-singleton-essential-singletons}
+\text{The states of its maximal entropy essential strongly connected component can be identified as all singletons }\ \{\{v\}:v\in V_m\}.
+\end{equation}
+Then on this essential component:
+\begin{enumerate}
+  \item \textbf{(No label collision)} For any \(v\in V_m\), the two outgoing edges \((v,0)\) and \((v,1)\) have distinct labels:
+  \[
+  \Fold_m(v0)\neq \Fold_m(v1).
+  \]
+  \item \textbf{(Step-by-step decoding)} There exists a finite-state right-inverse transducer (decoder) whose states can be taken as \(V_m\). When in state \(v_t\in V_m\) and reading output symbol \(a_t\in X_m\), it uniquely determines \(b_t\in\{0,1\}\) such that
+  \[
+  \Fold_m(v_t b_t)=a_t,
+  \]
+  and updates \(v_{t+1}=v_t\) by dropping the first bit and appending \((b_t)\). Therefore, once the output trajectory enters the above singleton essential component, the input bit sequence can be recovered online with \textbf{zero additional anticipation} from that time onward.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\textbf{(1)} In the right-resolving determinized representation, for any singleton state \(\{v\}\) and output symbol \(a\), the successor is
+\(
+\delta_m(\{v\},a)
+\).
+If \(\Fold_m(v0)=\Fold_m(v1)=a\), then upon reading \(a\) from \(\{v\}\), both different \(b\)-edges would be included, so
+\(
+\delta_m(\{v\},a)
+\)
+would contain at least two vertices, forcing the determinized state to leave the singleton class; this contradicts ``singleton states are closed on the essential strongly connected component'' (condition \eqref{eq:Ym-singleton-essential-singletons}). Hence \(\Fold_m(v0)\neq \Fold_m(v1)\).
+
+\textbf{(2)} By (1), for each \(v_t\) and admissible output \(a_t\), exactly one \(b_t\in\{0,1\}\) satisfies \(\Fold_m(v_t b_t)=a_t\). The update rule \(v_{t+1}=v_t\) with first-bit-drop-and-append is given by the edge structure of Definition \ref{def:G_m}, so the process is closed within the singleton essential component and determines a finite-state transducer; its step-by-step output of \(b_t\) provides a right inverse (label reversal at each time step on this component). \qed
+\end{proof}
+
+\begin{corollary}[Entropy of the Ambiguity Shell Is Strictly Less Than \texorpdfstring{$\log 2$}{log 2}]\label{cor:Ym-ambiguity-shell-low-entropy}
+Under the conditions of Corollary \ref{cor:Ym-singleton-essential-finite-delay}, suppose the state graph of the right-resolving minimal representation is decomposed into strongly connected components, with the maximal entropy essential component being the singleton state component (whose entropy is \(\log 2\); see the numerical certificates in Table \ref{tab:phi_m_sofic_entropy}).
+Let \(Y_m^{\mathrm{amb}}\subset Y_m\) be the sofic subsystem consisting of those labeled sequences that \textbf{never enter} the singleton essential component in the right-resolving minimal representation (equivalently: the current candidate set of its lift remains non-singleton throughout one-sided reading).
+In the Zeckendorf folding model of this paper, when \(m\ge 3\), Theorem \ref{thm:Ym-ambiguity-shell-dag} further yields \(Y_m^{\mathrm{amb}}=\varnothing\); see also Remark \ref{rem:Ym-amb-empty}. The following corollary characterizes the strictly low-entropy structure of the ambiguity shell in the general sofic setting and is retained as a consistency check in this model.
+Then the strict inequality
+\[
+h_{\mathrm{top}}(Y_m^{\mathrm{amb}})<\log 2
+\]
+holds. Therefore ``window-level many-to-one'' does not produce exponential-level entropy loss at the time level; it only corresponds to a \textbf{strictly lower-entropy} ambiguity shell layer, while the maximal entropy part can be right-decoded within finite-state memory.
+\end{corollary}
+\begin{proof}
+By hypothesis, the singleton essential component carries the maximal entropy of \(Y_m\), and its adjacency counting matrix has spectral radius \(2\), giving \(h_{\mathrm{top}}=\log 2\).
+Meanwhile \(Y_m^{\mathrm{amb}}\) is presented by \emph{the remaining strongly connected components after removing that essential component}: the spectral radii of these components are all strictly less than the maximum value \(2\) (otherwise there would be another essential component with the same entropy, contradicting the assumption that ``the maximal entropy component is carried by singleton states'').
+Therefore \(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})<\log 2\). \qed
+\end{proof}
+
+\begin{corollary}[Exponential Sparsity of the Ambiguity Shell: Block Count Ratio Has an Explicit Exponential Gap]\label{cor:Ym-ambiguity-shell-exponentially-thin}
+Let \(N_{\mathrm{amb}}(n)\) denote the number of admissible length-\(n\) blocks of the ambiguity shell subsystem \(Y_m^{\mathrm{amb}}\) (i.e., the number of distinct length-\(n\) subwords in its language). Then
+\[
+N_{\mathrm{amb}}(n)=\exp\!\bigl(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\,n+o(n)\bigr),
+\]
+and since \(h_{\mathrm{top}}(Y_m)=\log 2\), \(Y_m\) has at least \(2^n\) length-\(n\) blocks. Therefore there exists \(\varepsilon_m>0\) such that
+\[
+\frac{N_{\mathrm{amb}}(n)}{2^n}
+=
+\exp\!\bigl(-\varepsilon_m\,n+o(n)\bigr),
+\qquad
+\varepsilon_m:=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})>0.
+\]
+In other words, in the block count sense, the ambiguity shell corresponding to right-decoding failure is not an ``equally complex'' part but rather a sparse layer with an explicit exponential gap.
+\end{corollary}
+
+\begin{proof}
+For any subshift \(Z\), its topological entropy can be defined via block counts as
+\(
+h_{\mathrm{top}}(Z)=\lim_{n\to\infty}\frac{1}{n}\log N_Z(n)
+\)
+(where \(N_Z(n)\) is the number of admissible length-\(n\) blocks), so \(N_Z(n)=\exp(h_{\mathrm{top}}(Z)\,n+o(n))\). For \(Z=Y_m^{\mathrm{amb}}\) this gives the first formula.
+\par
+On the other hand, \(h_{\mathrm{top}}(Y_m)=\log 2\) is equivalent to \(Y_m\) having block growth rate at least \(2^n\) (e.g., by taking the liminf in the entropy definition), so the ratio satisfies the stated exponential decay, where \(\varepsilon_m>0\) is given by Corollary \ref{cor:Ym-ambiguity-shell-low-entropy}. \qed
+\end{proof}
+
+\begin{definition}[Synchronization Time and Synchronization Tail]\label{def:Ym-sync-time}
+For any \(y\in Y_m\), starting from the initial candidate set \(S_0:=V_m\), iterate
+\[
+S_{t+1}:=\delta_m(S_t,y_t)\qquad (t\ge 0).
+\]
+Define the \textbf{synchronization time} (the first time a singleton state is entered):
+\[
+T_m(y):=\inf\{\,t\ge 0:\ |S_t|=1\,\}\in\NN\cup\{\infty\}.
+\]
+If \(T_m(y)=\infty\), then \(y\) is said to never synchronize (corresponding to an ambiguity shell orbit).
+\end{definition}
+
+\begin{remark}[Time-Level Characterization of Statistical \texorpdfstring{$\mathsf{NULL}$}{NULL}: Unsynchronized Means No Address]\label{rem:Ym-stat-null-unsync}
+In the determinized representation \(H_m^{\mathrm{det}}\), the state \(S_t\subseteq V_m\) is ``the set of internal suffixes still possible given the past output prefix.''
+Therefore:
+\(|S_t|=1\) means the internal suffix (and hence the local lift) at this time is \emph{uniquely} determined by the output prefix;
+\(|S_t|>1\) means there exists non-eliminable right-decoding ambiguity.
+Under the ``address precedes concept value'' semantic convention (see Section \ref{sec:spg}), this ambiguity can be equivalently understood as a statistical \(\mathsf{NULL}\) at the time level: the output prefix is insufficient to generate a unique address, so the corresponding readout is undefined at that time.
+The synchronization time \(T_m\) is the ``first time the statistical \(\mathsf{NULL}\) disappears''; Definition \ref{def:eta_m_hat_singleton_rate} of \(\widehat\eta_m\) and Proposition \ref{prop:eta_m_hat_ergodic_limit} of \(\eta_m^{\mathrm{obs}}\) give its online observable frequency.
+\end{remark}
+
+\begin{theorem}[Synchronization Tail Bound: Exponential Synchronization Time Budget Under Maximal Entropy Measure]\label{thm:Ym-sync-tail}
+Let \(\nu_m\) be the maximal entropy measure of \(Y_m\) (Proposition \ref{prop:Phi_m-parry-pushforward}). If the ambiguity shell subsystem \(Y_m^{\mathrm{amb}}\neq\varnothing\), let
+\[
+\varepsilon_m:=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})>0
+\]
+be the entropy gap given by Corollary \ref{cor:Ym-ambiguity-shell-exponentially-thin}. Then there exist a constant \(C_m>0\) and \(n_0\in\NN\) such that for all \(n\ge n_0\),
+\[
+\boxed{\ \nu_m(T_m>n)\ \le\ C_m\,e^{-\varepsilon_m n}\ }.
+\]
+Consequently:
+\begin{enumerate}
+  \item \textbf{Expected synchronization time is finite:} \(\mathbb{E}_{\nu_m}[T_m]<\infty\), of order \(O(1/\varepsilon_m)\).
+  \item \textbf{Synchronization time budget:} For any \(0<\delta<1\), if
+  \[
+  n\ \ge\ \frac{1}{\varepsilon_m}\log\frac{C_m}{\delta},
+  \]
+  then \(\nu_m(T_m>n)\le \delta\).
+\end{enumerate}
+When \(Y_m^{\mathrm{amb}}=\varnothing\), \(T_m(y)\le L_m\) holds for all \(y\in Y_m\), where \(L_m<\infty\) is given by Remark \ref{rem:Ym-amb-empty}, so the synchronization tail truncates at a finite point.
+\end{theorem}
+
+\begin{proof}
+Denote \(H_m^{\mathrm{det}}\) the determinized right-resolving representation (Definition \ref{def:Phi_m-right-resolving}), and let \(S_t\) denote its state trajectory.
+By the forward closure of singleton states (Proposition \ref{prop:det-candidate-set-monotone}), once \(|S_t|=1\) then \(|S_s|=1\) for all \(s\ge t\). Therefore the event \(\{T_m>n\}\) is equivalent to ``still in a non-singleton state after reading the first \(n\) steps,'' and can be written as a union of length-\(n\) cylinder sets:
+\[
+\{T_m>n\}=\bigcup_{w\in\mathcal{W}_{m}^{\mathrm{unsync}}(n)}[w],
+\]
+where \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\subset X_m^n\) is the set of output blocks such that starting from the initial state \(S_0=V_m\) and reading \(w\) yields \(|S_n|>1\).
+\par
+\textbf{(i) Uniform upper bound on cylinder set probabilities.}
+By Proposition \ref{prop:Phi_m-parry-pushforward}, \(\nu_m\) is the pushforward of the Parry measure on the cover SFT. The Parry measure has Gibbs-type bounds \(\asymp e^{-h_{\mathrm{top}}(Y_m)n}=2^{-n}\) for any length-\(n\) lift cylinder set; after pushforward to \(Y_m\), a uniform upper bound is preserved: there exist a constant \(C_m^{\mathrm{cyl}}>0\) and \(n_1\in\NN\) such that for all admissible length-\(n\) output cylinder sets \([w]\) (\(n\ge n_1\)),
+\[
+\nu_m([w])\le C_m^{\mathrm{cyl}}\,2^{-n}.
+\]
+\par
+\textbf{(ii) Exponential bound on the number of unsynchronized prefixes.}
+The set \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) is precisely the set of labels of length-\(n\) labeled paths starting from the initial state in the non-singleton subgraph $H_m^{\mathrm{amb}}$ of $H_m^{\mathrm{det}}$.
+Since $H_m^{\mathrm{amb}}$ is a finite graph, its length-\(n\) label count satisfies
+\[
+|\mathcal{W}_{m}^{\mathrm{unsync}}(n)|
+\ \le\
+C_m^{\mathrm{lang}}\exp\!\bigl(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\,n\bigr)
+\]
+for some constant \(C_m^{\mathrm{lang}}>0\) and all sufficiently large \(n\) (the exponential rate is given by the spectral radius of the ambiguity shell essential component, equaling \(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\)).
+\par
+Substituting (i) and (ii) and using the union bound gives, for sufficiently large \(n\),
+\[
+\begin{aligned}
+\nu_m(T_m>n)
+&\le \sum_{w\in\mathcal{W}_{m}^{\mathrm{unsync}}(n)}\nu_m([w])\\
+&\le |\mathcal{W}_{m}^{\mathrm{unsync}}(n)|\cdot C_m^{\mathrm{cyl}}2^{-n}\\
+&\le (C_m^{\mathrm{cyl}}C_m^{\mathrm{lang}})\exp\!\bigl(-(\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}}))n\bigr),
+\end{aligned}
+\]
+which is the stated tail bound with \(\varepsilon_m=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\).
+\par
+The expected value bound follows from
+\(
+\mathbb{E}[T_m]=\sum_{n\ge 0}\nu_m(T_m>n)
+\)
+and exponential tail convergence; the synchronization budget follows from solving the inequality \(C_m e^{-\varepsilon_m n}\le\delta\). \qed
+\end{proof}
+
+\begin{theorem}[Sharp Perron--Frobenius Asymptotics of the Synchronization Tail]\label{thm:Ym-sync-tail-pf-sharp}
+Using the notation from Definitions \ref{def:Ym-sync-time}--Theorem \ref{thm:Ym-sync-tail}, assume \(Y_m^{\mathrm{amb}}\neq\varnothing\).
+Let \(H_m^{\mathrm{amb}}\) be the non-singleton induced subgraph defined in Theorem \ref{thm:Ym-ambiguity-shell-dag}, with adjacency matrix (counting by number of edges)
+\[
+(A_m^{\mathrm{amb}})_{S,S'}:=\#\{\,a\in X_m:\ \delta_m(S,a)=S'\,\},\qquad
+S,S'\in\mathcal{S}_m^{\mathrm{amb}}.
+\]
+Let the Perron--Frobenius leading eigenvalue of the maximal essential irreducible component of \(H_m^{\mathrm{amb}}\) be \(\rho_{\mathrm{amb}}(m)>1\), so that
+\[
+h_{\mathrm{top}}(Y_m^{\mathrm{amb}})=\log\rho_{\mathrm{amb}}(m),
+\qquad
+\varepsilon_m=\log 2-\log\rho_{\mathrm{amb}}(m).
+\]
+If the period of this essential component is \(p\ge 1\) (the primitive case being \(p=1\)), then there exists a family of constants
+\(\{c_r(m)\}_{r=0}^{p-1}\subset(0,\infty)\)
+such that under the maximal entropy measure \(\nu_m\),
+\[
+\nu_m(T_m>n)=c_{n\bmod p}(m)\,e^{-\varepsilon_m n}\,(1+o(1)),
+\qquad n\to\infty.
+\]
+Hence the limit exponent exists and equals
+\[
+\lim_{n\to\infty}\frac{1}{n}\log \nu_m(T_m>n)=-\varepsilon_m.
+\]
+\end{theorem}
+
+\begin{proof}
+Continue to denote \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) as defined in the proof of Theorem \ref{thm:Ym-sync-tail}.
+By deterministic right-resolvingness (Definition \ref{def:Phi_m-right-resolving}), when the starting point is fixed as \(S_0=V_m\), each labeled word determines a unique determinized filter trajectory, so \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) is in one-to-one correspondence with the set of length-\(n\) labeled paths starting from \(V_m\) in \(H_m^{\mathrm{amb}}\).
+Hence \(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})=\log\rho_{\mathrm{amb}}(m)\) and \(\varepsilon_m=\log 2-\log\rho_{\mathrm{amb}}(m)\).
+\par
+We now express the synchronization tail as a weighted readout of a finite matrix power.
+Take a right-resolving and follower-separated representation
+\(
+H_m=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m)
+\)
+(e.g., the right Fischer cover), let \(X_{A_m}\) be its edge shift, \(\mu_{A_m}^{\mathrm{Parry}}\) the Parry measure of Proposition \ref{prop:Phi_m-parry}, and write \(\nu_m=(\pi_m)_*\mu_{A_m}^{\mathrm{Parry}}\) (Proposition \ref{prop:Phi_m-parry-pushforward}).
+By Proposition \ref{prop:Phi_m-entropy} and \(h_{\mathrm{top}}(Y_m)=\log 2\), one can take \(\rho(A_m)=2\).
+Then for any length-\(n\) lift edge cylinder set \([e_0\cdots e_{n-1}]\subset X_{A_m}\), the Parry formula gives
+\[
+\mu_{A_m}^{\mathrm{Parry}}([e_0\cdots e_{n-1}])=\frac{l_{e_0}r_{e_{n-1}}}{2^{n-1}}.
+\]
+\par
+Construct the synchronization product graph \(\widetilde H_m^{\mathrm{amb}}\): its state set is
+\(
+\widetilde{\mathcal{S}}_m^{\mathrm{amb}}:=\mathcal{E}_m\times\mathcal{S}_m^{\mathrm{amb}}
+\), with an edge from \((e,S)\) to \((e',S')\) if and only if
+\[
+t(e)=s(e'),\qquad S'=\delta_m(S,\lambda_m(e')).
+\]
+Denote its adjacency matrix by \(\widetilde A_m^{\mathrm{amb}}\).
+Take initial/terminal vectors \(\alpha,\beta\) as
+\[
+\alpha_{(e,S)}:=l_e\,\mathbf{1}\{S=\delta_m(V_m,\lambda_m(e))\},
+\qquad
+\beta_{(e,S)}:=r_e.
+\]
+By ``pushforward = sum over lifts'' and the Parry formula above, the synchronization tail can be written as
+\[
+\nu_m(T_m>n)=2^{-(n-1)}\,\alpha^{\mathsf T}(\widetilde A_m^{\mathrm{amb}})^{n-1}\beta.
+\]
+\par
+Since the projection \((e,S)\mapsto S\) descends \(\widetilde H_m^{\mathrm{amb}}\) finite-to-one to \(H_m^{\mathrm{amb}}\), the path counts agree at the exponential scale, so \(\rho(\widetilde A_m^{\mathrm{amb}})=\rho_{\mathrm{amb}}(m)\) and the maximal essential component has the same period \(p\).
+For the Perron--Frobenius asymptotics of an irreducible period-\(p\) matrix, there exist constants \(\{d_r(m)\}_{r=0}^{p-1}\subset(0,\infty)\) such that
+\[
+\alpha^{\mathsf T}(\widetilde A_m^{\mathrm{amb}})^{n-1}\beta
+=d_{n\bmod p}(m)\,\rho_{\mathrm{amb}}(m)^{n-1}(1+o(1)).
+\]
+Substituting back and absorbing the constant factor from \(2^{-(n-1)}\) into \(c_r(m)\) gives
+\[
+\nu_m(T_m>n)
+=c_{n\bmod p}(m)\left(\frac{\rho_{\mathrm{amb}}(m)}{2}\right)^{\!n}(1+o(1))
+=c_{n\bmod p}(m)e^{-\varepsilon_m n}(1+o(1)).
+\]
+Taking \(\frac1n\log\) and letting \(n\to\infty\) yields the limit exponent. \qed
+\end{proof}
+
+\paragraph{From Entropy Gap to Sharpened Curve: Deterministic Counting Law for Unsynchronized Prefixes}
+Theorems \ref{thm:Ym-sync-tail}--\ref{thm:Ym-sync-tail-pf-sharp} convert the time-level semantics of ``unsynchronized means statistical \(\mathsf{NULL}\)'' into an auditable exponential scale and Perron--Frobenius leading term.
+However, under the same determinization mechanism, a more rigid object is not the measure tail probability but rather the \emph{unsynchronized prefix set itself}:
+it constitutes a finite-state regular language, so its block count satisfies sharp asymptotics with a computable leading constant and second-order spectral gap, not merely an entropy gap.
+This result upgrades the qualitative rule ``scanning longer \(\Rightarrow\) clearer'' to an effectively computable ``scan--clarity'' sharpened curve.
+
+\begin{definition}[Unsynchronized Prefix Set and Count]\label{def:Ym-unsync-prefix-count}
+Using the notation of Theorem \ref{thm:Ym-sync-tail},
+for any \(n\in\NN\), define the unsynchronized length-\(n\) prefix set
+\[
+\mathcal{W}_{m}^{\mathrm{unsync}}(n)
+:=\{\,w\in X_m^n:\ \text{starting from }S_0=V_m\text{ and reading }w\text{ yields }|S_n|>1\,\},
+\]
+and denote its count by
+\[
+N_m^{\mathrm{unsync}}(n):=\#\mathcal{W}_{m}^{\mathrm{unsync}}(n).
+\]
+When \(Y_m^{\mathrm{amb}}\neq\varnothing\), \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) is in one-to-one correspondence with the length-\(n\) labeled paths starting from the initial state \(V_m\) and remaining entirely in non-singleton states in \(H_m^{\mathrm{amb}}\).
+\end{definition}
+
+\begin{theorem}[Perron--Frobenius Sharpening Law for Ambiguity Prefix Count: Leading Constant and Second-Order Spectral Gap]\label{thm:Ym-unsync-prefix-pf-sharp}
+Assume \(Y_m^{\mathrm{amb}}\neq\varnothing\).
+Further assume the non-singleton induced subgraph \(H_m^{\mathrm{amb}}\) has a unique maximal spectral radius strongly connected component \(C_m\) that is primitive (aperiodic).
+Let \(A_m^{\mathrm{amb}}\) be the adjacency matrix defined in Theorem \ref{thm:Ym-sync-tail-pf-sharp}, and set
+\[
+\rho_{\mathrm{amb}}(m):=\rho(A_m^{\mathrm{amb}}),\qquad
+\rho_{\mathrm{amb},2}(m):=\max\bigl(\{\,|\lambda|:\ \lambda\in\sigma(A_m^{\mathrm{amb}}),\ |\lambda|<\rho_{\mathrm{amb}}(m)\,\}\cup\{0\}\bigr).
+\]
+Then \(\rho_{\mathrm{amb},2}(m)<\rho_{\mathrm{amb}}(m)\), and there exists an explicit constant \(c_m>0\) such that
+\[
+\boxed{\;
+N_m^{\mathrm{unsync}}(n)
+=c_m\,\rho_{\mathrm{amb}}(m)^{n}\ +\ O\!\bigl(\rho_{\mathrm{amb},2}(m)^{n}\bigr),
+\qquad n\to\infty.\;}
+\]
+Letting \(\varepsilon_m=\log 2-\log\rho_{\mathrm{amb}}(m)\) (see Theorem \ref{thm:Ym-sync-tail-pf-sharp}), the ``sharpened curve'' is
+\[
+\boxed{\;
+\frac{N_m^{\mathrm{unsync}}(n)}{2^n}
+=c_m\,e^{-\varepsilon_m n}\ +\ O\!\Bigl(\bigl(\tfrac{\rho_{\mathrm{amb},2}(m)}{2}\bigr)^{n}\Bigr),
+\qquad n\to\infty.\;}
+\]
+When \(\rho_{\mathrm{amb},2}(m)>0\), define the second-order spectral gap exponent
+\[
+\Delta_{\mathrm{amb}}(m):=\log\!\Bigl(\frac{\rho_{\mathrm{amb}}(m)}{\rho_{\mathrm{amb},2}(m)}\Bigr)>0,
+\]
+and the error term can also be written as \(O\!\bigl(e^{-(\varepsilon_m+\Delta_{\mathrm{amb}}(m))n}\bigr)\).
+The constant \(c_m\) has an auditable closed form: taking the Perron--Frobenius right/left eigenvector pair \((v_m,w_m)\) of \(A_m^{\mathrm{amb}}\) satisfying
+\[
+A_m^{\mathrm{amb}}v_m=\rho_{\mathrm{amb}}(m)v_m,\qquad
+w_m^{\mathsf T}A_m^{\mathrm{amb}}=\rho_{\mathrm{amb}}(m)w_m^{\mathsf T},\qquad
+w_m^{\mathsf T}v_m=1,
+\]
+and letting \(e_{V_m}\) be the coordinate vector of the initial state \(V_m\) and \(\mathbf 1\) the all-ones vector on \(\mathcal{S}_m^{\mathrm{amb}}\), then
+\[
+\boxed{\;
+c_m=(e_{V_m}^{\mathsf T}v_m)\,(w_m^{\mathsf T}\mathbf 1).\;}
+\]
+\end{theorem}
+
+\begin{proof}
+By Definition \ref{def:Ym-unsync-prefix-count} and deterministic right-resolvingness: a length-\(n\) labeled word \(w\) keeps the filter state non-singleton if and only if reading \(w\) from \(V_m\) along \(H_m^{\mathrm{amb}}\) yields a length-\(n\) labeled path.
+By the multiplicity definition of the adjacency matrix \(A_m^{\mathrm{amb}}\) of Theorem \ref{thm:Ym-sync-tail-pf-sharp}, the block count satisfies the matrix power formula
+\[
+N_m^{\mathrm{unsync}}(n)=e_{V_m}^{\mathsf T}(A_m^{\mathrm{amb}})^n\mathbf 1.
+\]
+\par
+Under the assumption of ``unique maximal spectral radius strongly connected component and primitive,'' \(\rho_{\mathrm{amb}}(m)\) is a simple eigenvalue of \(A_m^{\mathrm{amb}}\) and is the only point spectrum on the spectral circle;
+hence there exists \(0\le \rho_{\mathrm{amb},2}(m)<\rho_{\mathrm{amb}}(m)\) such that the matrix power satisfies the Perron--Frobenius sharp decomposition
+\[
+(A_m^{\mathrm{amb}})^n=\rho_{\mathrm{amb}}(m)^n\,v_m w_m^{\mathsf T}\ +\ O\!\bigl(\rho_{\mathrm{amb},2}(m)^n\bigr),
+\qquad n\to\infty,
+\]
+where \((v_m,w_m)\) is the normalized Perron left/right eigenvector pair.
+Left-multiplying by \(e_{V_m}^{\mathsf T}\) and right-multiplying by \(\mathbf 1\) yields
+\[
+N_m^{\mathrm{unsync}}(n)
+=(e_{V_m}^{\mathsf T}v_m)(w_m^{\mathsf T}\mathbf 1)\,\rho_{\mathrm{amb}}(m)^n\ +\ O\!\bigl(\rho_{\mathrm{amb},2}(m)^n\bigr),
+\]
+establishing the leading constant closed form and the first asymptotic formula.
+Substituting \(\rho_{\mathrm{amb}}(m)^n/2^n=e^{-(\log 2-\log\rho_{\mathrm{amb}}(m))n}=e^{-\varepsilon_m n}\) with the same error rescaling yields the ``sharpened curve'' form; the normalized error is controlled by \((\rho_{\mathrm{amb},2}(m)/2)^n\), and when \(\rho_{\mathrm{amb},2}(m)>0\), the exponent difference is \(\Delta_{\mathrm{amb}}(m)\).
+\qed
+\end{proof}
+
+\begin{corollary}[Asymptotically Optimal Scan Length for a Given Clarity Threshold]\label{cor:Ym-scan-length-asymptotic}
+Under the assumptions of Theorem \ref{thm:Ym-unsync-prefix-pf-sharp}, given \(\eta\in(0,1)\), define the minimum scan length
+\[
+n_{\eta}:=\min\Bigl\{\,n\in\NN:\ \frac{N_m^{\mathrm{unsync}}(n)}{2^n}\le \eta\,\Bigr\}.
+\]
+Then as \(\eta\downarrow 0\),
+\[
+n_{\eta}
+=\frac{1}{\varepsilon_m}\log\!\Bigl(\frac{c_m}{\eta}\Bigr)\ +\ O(1).
+\]
+In particular, \(\varepsilon_m^{-1}\) gives the intrinsic ``scan--clarity'' scale at resolution \(m\).
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:Ym-unsync-prefix-pf-sharp},
+\(
+\frac{N_m^{\mathrm{unsync}}(n)}{2^n}
+=c_m e^{-\varepsilon_m n}\Bigl(1+O\!\bigl((\rho_{\mathrm{amb},2}(m)/\rho_{\mathrm{amb}}(m))^{n}\bigr)\Bigr)
+\).
+Letting \(\eta\downarrow 0\) and solving the inequality \(c_m e^{-\varepsilon_m n}\lesssim \eta\) yields
+\(
+n_{\eta}=\varepsilon_m^{-1}\log(c_m/\eta)+O(1)
+\).
+\qed
+\end{proof}
+
+\begin{corollary}[Strict Dichotomy of Finite Delay and Spectral Tail]\label{cor:Ym-finite-delay-spectral-tail}
+Under the notation of Theorem \ref{thm:Ym-sync-tail}, the non-singleton induced subgraph \(H_m^{\mathrm{amb}}\) has no directed cycle if and only if
+\[
+\rho_{\mathrm{amb}}(m)=0.
+\]
+In this case, there exists \(n_0<\infty\) such that \(N_m^{\mathrm{unsync}}(n)=0\) for all \(n\ge n_0\) (finite-delay synchronization).
+Conversely, if \(H_m^{\mathrm{amb}}\) contains a directed cycle (so that \(Y_m^{\mathrm{amb}}\neq\varnothing\)), then \(1\le \rho_{\mathrm{amb}}(m)<2\) and there is a nontrivial exponential spectral tail.
+\end{corollary}
+
+\begin{proof}
+If \(H_m^{\mathrm{amb}}\) is acyclic, then on a finite graph its adjacency matrix \(A_m^{\mathrm{amb}}\) is nilpotent (some power is zero), so \(\rho(A_m^{\mathrm{amb}})=0\), i.e., \(\rho_{\mathrm{amb}}(m)=0\); moreover \((A_m^{\mathrm{amb}})^n=0\) for sufficiently large \(n\), so from
+\(
+N_m^{\mathrm{unsync}}(n)=e_{V_m}^{\mathsf T}(A_m^{\mathrm{amb}})^n\mathbf 1
+\)
+we get \(N_m^{\mathrm{unsync}}(n)=0\) terminating at a finite point.
+\par
+The reverse implication is similar: if \(\rho_{\mathrm{amb}}(m)=0\), then \(A_m^{\mathrm{amb}}\) is nilpotent, so \(H_m^{\mathrm{amb}}\) contains no directed cycle.
+If \(H_m^{\mathrm{amb}}\) contains a directed cycle, then the spectral radius of its maximal strongly connected component is at least \(1\), so \(\rho_{\mathrm{amb}}(m)\ge 1\); on the other hand, by \(h_{\mathrm{top}}(Y_m)=\log 2\) and \(\rho_{\mathrm{amb}}(m)=e^{h_{\mathrm{top}}(Y_m^{\mathrm{amb}})}\le e^{h_{\mathrm{top}}(Y_m)}=2\), we get \(\rho_{\mathrm{amb}}(m)\le 2\), and in the ``strictly lower-entropy shell'' case, \(\rho_{\mathrm{amb}}(m)<2\).
+\qed
+\end{proof}
+
+\paragraph{Stratified Clarity Index: Spectral-Level Decomposition of Residual Ambiguity Grades}
+The above used \(|S_t|>1\) as the criterion for statistical \(\mathsf{NULL}\), treating ``whether synchronized'' as the coarsest granularity of clarity characterization.
+Since the candidate set is monotonically non-increasing under reading (Proposition \ref{prop:det-candidate-set-monotone}), one can further stratify by residual candidate size, yielding a family of strictly computable clarity indices (rather than a single synchronization index).
+
+\begin{definition}[Residual Ambiguity Grade and Induced Counting Graph]\label{def:Ym-ambiguity-level-k}
+For integer \(k\ge 2\), define the threshold state set
+\[
+\mathcal{S}_{m,\ge k}:=\{\,S\in\mathcal{S}_m^{\mathrm{det}}:\ |S|\ge k\,\},
+\]
+and let \(H_{m,\ge k}\) be the induced subgraph of the determinized representation \(H_m^{\mathrm{det}}\) on \(\mathcal{S}_{m,\ge k}\).
+Denote its edge-count adjacency matrix by
+\[
+(A_{m,\ge k})_{S,S'}:=\#\{\,a\in X_m:\ \delta_m(S,a)=S'\,\},\qquad S,S'\in\mathcal{S}_{m,\ge k}.
+\]
+For any \(n\in\NN\), define the length-\(n\) \(k\)-ambiguity prefix set
+\[
+\mathcal{W}_{m,\ge k}(n)
+:=\{\,w\in X_m^n:\ \text{starting from }S_0=V_m\text{ and reading }w\text{ yields }|S_n|\ge k\,\},
+\]
+and denote its count by \(N_{m,\ge k}(n):=\#\mathcal{W}_{m,\ge k}(n)\).
+Clearly, for \(k=2\), \(N_{m,\ge 2}(n)=N_m^{\mathrm{unsync}}(n)\).
+\end{definition}
+
+\begin{theorem}[Ambiguity Spectrum Theorem: Perron--Frobenius Sharpening Law for Residual Ambiguity Grades]\label{thm:Ym-ambiguity-spectrum-law}
+Fix integer \(k\ge 2\) and assume the induced subgraph \(H_{m,\ge k}\) has a unique maximal spectral radius strongly connected component that is primitive.
+Let
+\[
+\rho_{m,\ge k}:=\rho(A_{m,\ge k}),\qquad
+\rho_{m,\ge k,2}:=\max\bigl(\{\,|\lambda|:\ \lambda\in\sigma(A_{m,\ge k}),\ |\lambda|<\rho_{m,\ge k}\,\}\cup\{0\}\bigr).
+\]
+Then there exists an explicit constant \(c_{m,\ge k}>0\) such that
+\[
+N_{m,\ge k}(n)=c_{m,\ge k}\,\rho_{m,\ge k}^{\,n}\ +\ O\!\bigl(\rho_{m,\ge k,2}^{\,n}\bigr),
+\qquad n\to\infty.
+\]
+Setting \(\varepsilon_{m,\ge k}:=\log 2-\log\rho_{m,\ge k}\), the stratified sharpened curve is
+\[
+\frac{N_{m,\ge k}(n)}{2^n}
+=c_{m,\ge k}\,e^{-\varepsilon_{m,\ge k} n}\ +\ O\!\Bigl(\bigl(\tfrac{\rho_{m,\ge k,2}}{2}\bigr)^{n}\Bigr),
+\qquad n\to\infty.
+\]
+When \(\rho_{m,\ge k,2}>0\), define the second-order spectral gap exponent
+\[
+\Delta_{m,\ge k}:=\log\!\Bigl(\frac{\rho_{m,\ge k}}{\rho_{m,\ge k,2}}\Bigr)>0,
+\]
+and the error term can also be written as \(O\!\bigl(e^{-(\varepsilon_{m,\ge k}+\Delta_{m,\ge k})n}\bigr)\).
+Moreover, the exponents satisfy the monotone chain
+\[
+\boxed{\ \varepsilon_{m,\ge 2}\ \le\ \varepsilon_{m,\ge 3}\ \le\ \varepsilon_{m,\ge 4}\ \le\ \cdots\ }.
+\]
+Furthermore, if \((v_{m,\ge k},w_{m,\ge k})\) is the Perron--Frobenius right/left eigenvector pair of \(A_{m,\ge k}\) normalized by \(w_{m,\ge k}^{\mathsf T}v_{m,\ge k}=1\), then the leading constant can be taken in closed form as
+\[
+c_{m,\ge k}=(e_{V_m}^{\mathsf T}v_{m,\ge k})\,(w_{m,\ge k}^{\mathsf T}\mathbf 1),
+\]
+where \(e_{V_m}\) is the initial state coordinate vector and \(\mathbf 1\) is the all-ones vector on \(\mathcal{S}_{m,\ge k}\).
+\end{theorem}
+
+\begin{proof}
+By deterministic right-resolvingness and Definition \ref{def:Ym-ambiguity-level-k}: a length-\(n\) labeled word \(w\) yields \(|S_n|\ge k\) if and only if reading \(w\) from \(V_m\) along the induced subgraph \(H_{m,\ge k}\) produces a length-\(n\) labeled path.
+By the multiplicity definition of the adjacency matrix \(A_{m,\ge k}\), the block count satisfies
+\[
+N_{m,\ge k}(n)=e_{V_m}^{\mathsf T}(A_{m,\ge k})^n\mathbf 1.
+\]
+Under the assumption of ``unique maximal spectral radius strongly connected component and primitive,'' applying the Perron--Frobenius sharp decomposition to \(A_{m,\ge k}\) yields
+\(
+N_{m,\ge k}(n)=c_{m,\ge k}\rho_{m,\ge k}^{\,n}+O(\rho_{m,\ge k,2}^{\,n})
+\)
+and the corresponding normalized sharpened curve; the leading constant closed form follows immediately from left/right multiplication by \(e_{V_m}^{\mathsf T}\) and \(\mathbf 1\).
+\par
+For the monotone chain: from the set inclusion \(\mathcal{S}_{m,\ge k+1}\subseteq\mathcal{S}_{m,\ge k}\), the graph \(H_{m,\ge k+1}\) is induced from \(H_{m,\ge k}\);
+hence (padding missing vertices with zero rows/columns to the same dimension) we have the entrywise inequality \(0\le A_{m,\ge k+1}\le A_{m,\ge k}\).
+By monotonicity of the spectral radius for nonnegative matrices, \(\rho_{m,\ge k+1}\le \rho_{m,\ge k}\), so \(\varepsilon_{m,\ge k}=\log 2-\log\rho_{m,\ge k}\) is monotonically non-decreasing in \(k\), yielding the stated chain inequality.
+\qed
+\end{proof}
+
+\begin{corollary}[Dichotomy of Time-Level Right Invertibility: Finite Delay or Exponentially Sparse Shell]\label{cor:Ym-time-layer-dichotomy}
+Under the ``singleton essential state'' assumption of Corollary \ref{cor:Ym-singleton-essential-finite-delay}, the many-to-one nature of the window level (i.e., the non-injectivity of \(\Fold_m\) on a single window) can manifest in the time-level right invertibility in only one of the following two ways:
+\begin{enumerate}
+  \item \textbf{Strong invertibility (finite-delay synchronization):} If \(Y_m^{\mathrm{amb}}=\varnothing\), then there exists a uniform finite synchronization step count \(L_m<\infty\) (Remark \ref{rem:Ym-amb-empty}), and right decoding holds online after delay \(L_m\).
+  \item \textbf{Weak non-invertibility (exponentially sparse shell):} If \(Y_m^{\mathrm{amb}}\neq\varnothing\), then ambiguity can persist only on a strictly lower-entropy subsystem; under the maximal entropy measure \(\nu_m\), the synchronization time \(T_m\) has an exponential tail bound
+  \(
+  \nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}
+  \)
+  (Theorem \ref{thm:Ym-sync-tail}), so ``long-term non-invertibility'' occurs with exponentially small probability on the maximal entropy part.
+\end{enumerate}
+Therefore, ``window-level many-to-one'' and ``time-level many-to-one'' are strictly distinguished in this model: time-level right non-invertibility either does not exist at all (must synchronize after finite delay) or exists only in the exponentially sparse ambiguity shell layer.
+\end{corollary}
+
+\begin{remark}[Observable Interpretation of \texorpdfstring{$\eta_m$}{eta_m}: Spectral-Level Certificate of ``Invertibility'' at the Maximal Entropy Layer]\label{rem:eta_m_as_reversibility_certificate}
+The \(\eta_m\) introduced in Proposition \ref{prop:Ym-zeta-residue-ratio} is the residue ratio of the cover-\(\zeta\) and intrinsic-\(\zeta\) at their common leading pole.
+It does not change the exponential scale (entropy/leading pole modulus) but quantifies in a constant-level manner the strength of ``periodic structure on the cover being merged under the factor map \(\pi_m:X_{A_m}\to Y_m\).''
+\par
+On the other hand, in the right-resolving determinized representation \(H_m^{\mathrm{det}}\), the subset state \(S_t\subset V_m\) records ``the set of internal suffixes still possible given the past output'';
+\(|S_t|=1\) means the system has entered the right-decodable (locally one-to-one) entropy layer, while \(|S_t|>1\) represents the non-singleton memory of the ambiguity shell.
+Therefore \(\eta_m\) can be viewed as a \textbf{spectral-level fingerprint} of ``maximal-entropy-layer invertibility'': the closer \(\eta_m\) is to \(1\), the closer to ``almost no merging occurs at the entropy leading term'' (a one-to-one factor);
+\(\eta_m<1\) indicates that non-negligible constant-level merging still occurs (although this merging does not cause exponential-level entropy loss; see Proposition \ref{prop:periodic-count-sandwich} and Corollary \ref{cor:Ym-periodic-compression-ratio}).
+\end{remark}
+
+\begin{definition}[Online Estimator of Singleton State Proportion (No Determinant Needed)]\label{def:eta_m_hat_singleton_rate}
+For any output sequence \(y=(y_t)_{t\in\ZZ}\in Y_m\), starting from the initial candidate set \(S_0:=V_m\), iterate
+\[
+S_{t+1}:=\delta_m(S_t,y_t)\qquad (t\ge 0),
+\]
+where \(\delta_m\) is given by Definition \ref{def:Phi_m-right-resolving}.
+Define the length-\(N\) singleton state proportion
+\[
+\widehat\eta_m(N;y):=\frac{1}{N}\#\{\,0\le t<N:\ |S_t|=1\,\}.
+\]
+\end{definition}
+
+\begin{proposition}[Limit of the Singleton State Proportion: Invertibility Constant Under Maximal Entropy Measure]\label{prop:eta_m_hat_ergodic_limit}
+Assuming \(Y_m\) is irreducible, its maximal entropy measure \(\nu_m\) exists and is given by Proposition \ref{prop:Phi_m-parry-pushforward}. Then there exists a constant \(\eta_m^{\mathrm{obs}}\in(0,1]\) such that for \(\nu_m\)-almost every \(y\in Y_m\), the online statistic of Definition \ref{def:eta_m_hat_singleton_rate} satisfies
+\[
+\widehat\eta_m(N;y)\ \xrightarrow[N\to\infty]{}\ \eta_m^{\mathrm{obs}}.
+\]
+Under the ``singleton essential state'' condition of Corollary \ref{cor:Ym-singleton-essential-finite-delay}, and restricting \(\nu_m\) to the maximal entropy essential component, we have \(\eta_m^{\mathrm{obs}}=1\); the degree of departure from \(1\) can be viewed as the observable intensity of ``right-decoding ambiguity still occurring at the maximal entropy layer.''
+\end{proposition}
+\begin{proof}
+Viewing \((y_t,S_t)\) as a finite-state extended shift system and applying the Birkhoff ergodic theorem to \(f(y,S):=\mathbf{1}\{|S|=1\}\) yields
+\(
+\widehat\eta_m(N;y)\to \int f\,d\bar\nu_m=:\eta_m^{\mathrm{obs}}
+\)
+for \(\nu_m\)-almost every point.
+If the ``singleton essential state'' condition of Corollary \ref{cor:Ym-singleton-essential-finite-delay} is satisfied, then on the maximal entropy essential component, \(|S_t|=1\) almost surely, so \(\eta_m^{\mathrm{obs}}=1\). \qed
+\end{proof}

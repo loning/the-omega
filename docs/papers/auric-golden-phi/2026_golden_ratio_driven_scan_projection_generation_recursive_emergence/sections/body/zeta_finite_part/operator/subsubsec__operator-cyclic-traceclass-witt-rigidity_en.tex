@@ -1,0 +1,168 @@
+\subsubsection{Spectral rigidity and Big-Witt compilation closure: realization invariance of atomic Euler data, \texorpdfstring{$\gcd/\mathrm{lcm}$}{gcd/lcm} multiplication, and \texorpdfstring{$p$}{p}-typical scaling}\label{subsec:operator-cyclic-traceclass-witt-rigidity}
+\S\ref{subsec:cyclic-traceclass-lift} and Corollary~\ref{cor:cyclic-euler-product-complex-section} established: for atomic Euler products satisfying the trace-class executability (\(\ell^1\)) condition, there exists an explicit cyclic-block direct-sum operator \(L_{\mathcal D}\) whose Fredholm \(\zeta\)-interface strictly recovers that product.
+This paragraph records three complementary structural consequences:
+(i) the \emph{nonzero spectral multiset} of any realization is rigidly forced by the Euler factors;
+(ii) cyclic blocks are closed under tensor product, and realize Big-Witt multiplication via the discrete \(\gcd/\mathrm{lcm}\) combinatorial law;
+(iii) on the \(p\)-power length family, one can realize Frobenius/Verschiebung scaling, providing a spectral realization template for Dwork-type congruences.
+
+\begin{proposition}[Spectral rigidity of atomic Euler products: the spectral multiset of any Fredholm realization is forced by the zero set]\label{prop:cyclic-euler-spectral-rigidity}
+Let \(\mathcal D=\{(\beta_j,n_j,m_j)\}_{j\in J}\subset \CC\times\NN_{\ge 1}\times\NN\) be an atomic data family, and define the Euler-type product
+\[
+\zeta_{\mathcal D}(r):=\prod_{j\in J}\bigl(1-\beta_j r^{n_j}\bigr)^{-m_j}.
+\]
+Let \(L\in\mathcal{S}_1\) be a trace-class operator such that for some \(r_0>0\),
+\[
+\det(I-rL)^{-1}=\zeta_{\mathcal D}(r)
+\]
+holds on \(|r|<r_0\).
+Then the nonzero eigenvalue multiset of \(L\) (counted with algebraic multiplicity) is forced by the zero structure of \(\zeta_{\mathcal D}\) as follows:
+for each \(j\), choose any \(\alpha_j\in\CC\) satisfying \(\alpha_j^{n_j}=\beta_j\); then every element of the set
+\[
+\{\alpha_j\omega:\ \omega^{n_j}=1\}
+\]
+must appear as a nonzero eigenvalue of \(L\) with algebraic multiplicity at least \(m_j\).
+In particular,
+\[
+\mathrm{rank}(L)\ \ge\ \sum_{j\in J}m_jn_j,
+\]
+and when \(J\) is finite, the nonzero spectrum of \(L\) consists of only finitely many points; hence the image space of the corresponding nonzero spectral Riesz projections is finite-dimensional, with dimension at least \(\sum_{j}m_jn_j\).
+In particular, there exists a finite-rank realization (such as the cyclic-block direct-sum realization) achieving this minimal nonzero spectral dimension.
+If one further assumes that distinct atoms have non-overlapping root sets (i.e., the above root sets are pairwise disjoint), then the nonzero spectrum of \(L\) equals exactly the union of these roots (counted with multiplicity).
+\end{proposition}
+
+\begin{proof}[Proof outline]
+For a trace-class operator \(L\), the Fredholm determinant satisfies the standard spectral factorization: its zeros lie precisely at \(r=\lambda^{-1}\) (where \(\lambda\) ranges over nonzero eigenvalues of \(L\)), with zero multiplicities equal to the corresponding algebraic multiplicities.
+On the other hand, the zero set of
+\(
+\prod_{j}(1-\beta_j r^{n_j})^{m_j}
+\)
+is given by the zeros of each factor \(1-\beta_j r^{n_j}\): choosing any \(\alpha_j^{n_j}=\beta_j\), the zeros are \(r=(\alpha_j\omega)^{-1}\) (\(\omega^{n_j}=1\)), each with multiplicity at least \(m_j\); when root sets are non-overlapping, the multiplicity is exactly \(m_j\).
+Comparing the zeros and multiplicities of both sides yields the spectral rigidity statement.
+The rank lower bound follows from ``the dimension lower bound for generalized eigenspaces of nonzero spectrum \(\ge\) the sum of algebraic multiplicities of nonzero eigenvalues''.
+When \(J\) is finite, the right-hand side is a polynomial, so \(L\) has finitely many nonzero spectral points, and hence the nonzero spectral Riesz projection image space is finite-dimensional;
+the cyclic-block direct-sum realization provides an explicit finite-rank model achieving this minimal nonzero spectral dimension. \qed
+\end{proof}
+
+\begin{corollary}[Closed form and realization invariance of Schatten--\texorpdfstring{$p$}{p} norms (normal realizations)]\label{cor:cyclic-euler-schatten-invariants}
+Under the ``non-overlapping root sets'' caliber of Proposition~\ref{prop:cyclic-euler-spectral-rigidity}, let \(L\) be a \emph{normal} trace-class realization (for example, the cyclic-block direct-sum realization \(L=L_{\mathcal D}\)).
+Then for any \(p>0\), its Schatten--\(p\) (quasi-)norm satisfies the realization-invariant closed form
+\[
+\|L\|_{S_p}^{p}
+=\sum_{\lambda\in\mathrm{Spec}(L)\setminus\{0\}}|\lambda|^{p}
+=\sum_{j\in J} m_j n_j\,|\beta_j|^{p/n_j}.
+\]
+Therefore \(\{\|L\|_{S_p}\}_{p>0}\) constitutes a computable spectral fingerprint family for the atomic Euler data.
+\end{corollary}
+
+\begin{proof}
+For normal operators, singular values equal eigenvalue moduli (counted with multiplicity).
+By the spectral rigidity of Proposition~\ref{prop:cyclic-euler-spectral-rigidity} and the ``non-overlapping root sets'' hypothesis, the nonzero eigenvalues of \(L\) are contributed by each \(j\) as \(n_j\) points all of modulus \(|\beta_j|^{1/n_j}\), each with algebraic multiplicity \(m_j\).
+Hence \(\|L\|_{S_p}^p\) equals the sum of \(|\beta_j|^{p/n_j}\) with multiplicity \(m_jn_j\), yielding the stated closed form. \qed
+\end{proof}
+
+\begin{proposition}[Tensor product decomposition theorem for cyclic blocks: \texorpdfstring{$\gcd/\mathrm{lcm}$}{gcd/lcm}-controlled Witt multiplication realization]\label{prop:cyclic-block-tensor-gcd-lcm}
+Let \(C(n,\alpha)=\alpha\Pi_n\) be the cyclic block of Definition~\ref{def:cyclic-block}.
+For any \(n,n'\ge 1\), set
+\[
+\ell:=\operatorname{lcm}(n,n'),\qquad g:=\gcd(n,n').
+\]
+Then there exists an explicit permutation unitary \(U\) such that on \(\CC^{n}\otimes\CC^{n'}\) the following unitary equivalence holds:
+\[
+\boxed{\;
+C(n,\alpha)\otimes C(n',\alpha')\ \simeq\
+\bigoplus_{i=1}^{g} C(\ell,\alpha\alpha')\; }.
+\]
+\end{proposition}
+
+\begin{proof}[Proof outline]
+The operator \(\Pi_n\otimes\Pi_{n'}\) is the permutation matrix of the ``synchronous shift \((a,b)\mapsto(a+1,b+1)\)'' on the finite set \(\ZZ/n\ZZ\times\ZZ/n'\ZZ\).
+The orbit decomposition of this permutation yields \(g=\gcd(n,n')\) disjoint orbits, each of length \(\ell=\operatorname{lcm}(n,n')\);
+hence there exists a permutation change of basis \(U\) such that
+\(
+U(\Pi_n\otimes\Pi_{n'})U^{-1}=\bigoplus_{i=1}^{g}\Pi_{\ell}
+\).
+Multiplying by the scalar \(\alpha\alpha'\) yields the stated decomposition. \qed
+\end{proof}
+
+\begin{corollary}[Determinant closed form for tensor-product factors]\label{cor:cyclic-block-tensor-determinant}
+Under the setting of Proposition~\ref{prop:cyclic-block-tensor-gcd-lcm}, for any \(r\in\CC\),
+\[
+\det\!\bigl(I-r\,(C(n,\alpha)\otimes C(n',\alpha'))\bigr)
+=\bigl(1-(\alpha\alpha' r)^{\ell}\bigr)^{g}.
+\]
+If one further sets \(\beta=\alpha^n\), \(\beta'=(\alpha')^{n'}\), then equivalently
+\[
+\det\!\bigl(I-r\,(C(n,\alpha)\otimes C(n',\alpha'))\bigr)
+=\bigl(1-\beta^{\ell/n}(\beta')^{\ell/n'}\,r^{\ell}\bigr)^{g}.
+\]
+\end{corollary}
+
+\begin{proof}
+By unitary equivalence and the multiplicativity of determinants over direct sums, together with the identity
+\(
+\det(I-t\Pi_{\ell})=1-t^{\ell}
+\)
+from Proposition~\ref{prop:cycle-permutation-determinant}, the first formula follows immediately; the second formula is obtained by simplifying \((\alpha\alpha')^{\ell}=\alpha^{\ell}(\alpha')^{\ell}=\beta^{\ell/n}(\beta')^{\ell/n'}\) (the exponents being integers). \qed
+\end{proof}
+
+\begin{proposition}[Operator realization of \texorpdfstring{$p$}{p}-typical Frobenius/Verschiebung: cyclic length scaling and ghost compatibility]\label{prop:cyclic-p-typical-frobenius-verschiebung}
+Fix a prime \(p\).
+On the \(p\)-power cyclic block family \(\{C(p^k,\alpha)\}_{k\ge 0}\) define two operations:
+\[
+\mathsf F_p\bigl(C(p^k,\alpha)\bigr):=
+\begin{cases}
+\bigoplus_{i=1}^{p} C(p^{k-1},\alpha^{p}),& k\ge 1,\\
+C(1,\alpha^{p}),& k=0,
+\end{cases}
+\qquad
+\mathsf V_p\bigl(C(p^k,\alpha)\bigr):=C(p^{k+1},\widetilde\alpha)\ \ (\widetilde\alpha^{p}=\alpha),
+\]
+and extend block-wise by direct sum to finite direct-sum operators.
+Then for any operator \(L\) obtained as a finite direct sum of \(p\)-power cyclic blocks, for all \(n\ge 1\) the following ghost compatibility holds:
+\[
+\boxed{\ \Tr\!\bigl(\mathsf F_p(L)^n\bigr)=\Tr\!\bigl(L^{pn}\bigr)\ }.
+\]
+Moreover, up to unitary equivalence class and direct-sum addition,
+\[
+\boxed{\ \mathsf F_p\!\bigl(\mathsf V_p(L)\bigr)\ \simeq\ L^{\oplus p}\ }.
+\]
+Thus \(\mathsf F_p\circ \mathsf V_p\) realizes the ``multiplication by \(p\)'' Verschiebung--Frobenius relation on this \(p\)-typical component.
+\end{proposition}
+
+\begin{proof}[Proof outline]
+For a single block \(C(p^k,\alpha)\), from \(\Tr(\Pi_{p^k}^m)=p^k\mathbf{1}_{p^k\mid m}\) one obtains
+\[
+\Tr\!\bigl(C(p^k,\alpha)^{m}\bigr)=p^k\,\alpha^{m}\,\mathbf{1}_{p^k\mid m}.
+\]
+A direct computation then verifies: for all \(n\ge 1\),
+\(\Tr(\mathsf F_p(C(p^k,\alpha))^n)=\Tr(C(p^k,\alpha)^{pn})\);
+this extends to direct sums by the additivity of traces.
+The second identity follows immediately from \((\widetilde\alpha)^p=\alpha\) and the definition:
+\(\mathsf F_p(C(p^{k+1},\widetilde\alpha))=\bigoplus_{i=1}^{p}C(p^k,\alpha)\).
+\qed
+\end{proof}
+
+\begin{theorem}[Witt--operator functor: Big-Witt operations on atomic Euler data compile into trace-class operator combinations]\label{thm:atomic-witt-into-tc1}
+Let \(\mathrm{TC}_1\) denote the commutative semiring of trace-class operators under ``unitary equivalence classes'': addition is direct sum, multiplication is tensor product.
+Let \(\mathcal{W}_{\mathrm{atom}}\) be the Big-Witt-type semiring generated by atomic data \((\beta,n,m)\), where addition corresponds to Euler product multiplication (multiset union of atoms), and multiplication is given by the \(\gcd/\operatorname{lcm}\) rule.
+Then the map
+\[
+(\beta,n,m)\ \longmapsto\ \bigoplus_{i=1}^{m} C\!\left(n,\alpha\right),
+\qquad \alpha^{n}=\beta,
+\]
+corresponds to direct sum on the additive side, and by Proposition~\ref{prop:cyclic-block-tensor-gcd-lcm} is strictly compatible with the \(\gcd/\operatorname{lcm}\) rule on the multiplicative side;
+hence its extension constitutes a constructive semiring homomorphism
+\[
+\boxed{\ \mathcal{W}_{\mathrm{atom}}\ \longrightarrow\ \mathrm{TC}_1\ }.
+\]
+Consequently, the abstract Big-Witt operations can be compiled into auditable combinatorial operations on trace-class operators (direct sum/tensor product), and are strictly compatible with the Fredholm \(\zeta\)-interface of Corollary~\ref{cor:cyclic-euler-product-complex-section}.
+\end{theorem}
+
+\begin{remark}[Unification of convolution--Fourier diagonalization and Witt--ghost interpretation]\label{rem:operator-fourier-witt-unification}
+Remark~\ref{rem:twist-commuting-cube} already demonstrated: the character twist \(\mathrm{Tw}_\chi\) of folding multiplicities simultaneously aligns Fourier diagonalization and the Witt/Euler commutative diagram.
+Theorem~\ref{thm:atomic-witt-into-tc1} further provides an executable ``operator-level lift'' viewpoint: on the atomic closure subclass, one can view ghost coordinates (trace sequences) as \(\Tr(L^n)\) of a certain trace-class operator,
+thereby unifying ``the product decomposition of convolution--Fourier'' and ``the coordinate transformation of Witt--ghost'' as readouts of the same object under different functors.
+This unified caliber provides the minimal auditable compilation template for connecting the folding counting stream into the Fredholm \(\zeta\) interface.
+\end{remark}
+
+\endinput

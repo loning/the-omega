@@ -1,0 +1,55 @@
+\subsection{Complexity Bounds for Folding and Normalization (Resolution-Based and Bit-Based Calibers)}
+\label{subsec:normalization-complexity-bounds}
+
+This appendix upgrades the ``computable and terminating'' statements in the main text to explicit complexity bounds. To avoid model-dependent disputes, we provide two equivalent calibers simultaneously:
+\begin{itemize}
+  \item \textbf{Resolution caliber:} Treat $m$ as the input length and allow basic arithmetic on integers in the range $\{0,1,\dots,F_{m+3}\}$ in constant time (this is the RAM caliber that absorbs large-integer costs into a constant; suitable for emphasizing ``linear number of steps in the resolution'').
+  \item \textbf{Bit caliber:} Account for integer costs according to their binary length. Since $F_{m+3}\asymp \varphi^{m}$, we have $\log_2 F_{m+3}=\Theta(m)$, so the linear step count under the resolution caliber corresponds to polynomial cost under the bit caliber.
+\end{itemize}
+
+\begin{lemma}[Weights and numerical magnitude]\label{lem:bitlength-fib}
+For any $m\ge 1$, the Fibonacci weights satisfy
+\[
+\sum_{k=1}^m F_{k+1}=F_{m+3}-1,
+\]
+so that for any $\omega\in\Omega_m$, $0\le N(\omega)\le F_{m+3}-1$. Moreover, the binary length satisfies
+\[
+\log_2(F_{m+3})=\Theta(m).
+\]
+\end{lemma}
+
+\begin{proposition}[Complexity of \texorpdfstring{$\Fold_m$}{Fold\_m}]\label{prop:fold-complexity}
+Given a resolution-$m$ microstate $\omega\in\Omega_m$, the fold $\Fold_m(\omega)$ (Definition \ref{def:fold-word}) can be computed within the following complexity bounds:
+\begin{itemize}
+  \item \textbf{Resolution caliber:} Time $O(m)$, space $O(m)$ (optionally, if Fibonacci weights are generated online and the normal form is streamed out, the additional space can be reduced to $O(m)$ for the output with $O(1)$ overhead).
+  \item \textbf{Bit caliber:} Time $O(m^2)$ bit operations, space $O(m)$ integers of $O(m)$ bits each.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+First compute $N(\omega)=\sum_{k=1}^m \omega_k F_{k+1}$: this is a weighted sum of $m$ terms, requiring $O(m)$ steps under the resolution caliber. By Lemma \ref{lem:bitlength-fib}, intermediate values have binary length $\Theta(m)$, so under the bit caliber each addition costs $O(m)$, giving a total of $O(m^2)$.
+
+Then apply Zeckendorf greedy normalization to $N(\omega)$: at each step, select the largest Fibonacci weight not exceeding the remainder and skip the adjacent position. The highest position index does not exceed $m+2$ (Lemma \ref{lem:bitlength-fib}), so the number of iterations is $O(m)$; the resolution caliber cost is $O(m)$ steps. Under the bit caliber, each comparison/subtraction costs $O(m)$, giving a total of $O(m^2)$. Finally, truncating to the first $m$ digits costs $O(m)$.
+\end{proof}
+
+\begin{proposition}[Complexity of stable addition and stable multiplication]\label{prop:stable-arith-complexity}
+Let $c,d\in X_\infty$ have only finitely many $1$'s, and set
+\[
+m:=\max\{k:\ c_k=1\text{ or } d_k=1\}
+\]
+as the effective resolution of the input. Then stable addition $c\oplus d$ and stable multiplication $c\otimes d$ (Definitions \ref{def:stable-add} and \ref{def:stable-mul}) can be implemented via the ``value-layer arithmetic + Zeckendorf normal form'' procedure of Appendix E and satisfy:
+\begin{itemize}
+  \item \textbf{Resolution caliber:} Addition time $O(m)$; multiplication time $O(m)+T_\times$, where $T_\times$ is the value-layer integer multiplication cost (which may be treated as a constant under the unit-cost RAM model or depends on the implementation).
+  \item \textbf{Bit caliber:} Let $b=\Theta(m)$ be the bit length of $\mathrm{Val}(c),\mathrm{Val}(d)$, and let $M(b)$ denote the cost of $b$-bit integer multiplication (e.g., schoolbook multiplication gives $M(b)=O(b^2)$). Then
+  \[
+  \text{addition time }O(m^2),\qquad
+  \text{multiplication time }O(M(m)+m^2).
+  \]
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+Addition: first perform value-layer addition $N=\mathrm{Val}(c)+\mathrm{Val}(d)$, then apply Zeckendorf normalization and output. The normalization cost follows from the analysis of Proposition \ref{prop:fold-complexity} (replacing the input from $\omega\in\Omega_m$ with a finitely supported configuration does not change the order of the highest weight index). Under the bit caliber, the value-layer addition costs $O(b)=O(m)$, and the dominant term comes from normalization at $O(m^2)$.
+
+Multiplication: the value-layer multiplication cost is $M(b)=M(\Theta(m))$, plus Zeckendorf normalization at $O(m^2)$, yielding the stated bound.
+\end{proof}

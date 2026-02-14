@@ -1,0 +1,57 @@
+\section{Starting Point and Principles: Anti-Resonance Baseline and Finite-Sample Certificates}\label{sec:principles}
+
+\paragraph{Self-referential ratio and renormalization fixed point}
+
+This paper fixes the golden ratio \(\varphi=\frac{1+\sqrt5}{2}\), and takes the golden branch \(\alpha=\varphi^{-1}\in(0,1)\) as the canonical parameter in subsequent constructions (serving only as a scale baseline notation).
+
+\paragraph{Anti-resonance baseline}
+
+In the selection of scan parameters, this paper takes the worst-case rational approximation scale from Hurwitz/Markov as the externally auditable anti-resonance baseline (\cite{Cassels1957,KuipersNiederreiter1974}).
+
+\begin{definition}[Markov constant (worst-case approximation lower bound)]\label{def:markov-constant}
+For $\alpha\in\RR\setminus\QQ$, define
+\[
+c(\alpha):=\inf_{(p,q)\in\ZZ\times\NN} q^2\left|\alpha-\frac{p}{q}\right|\in[0,\infty).
+\]
+If $c(\alpha)>0$, then $\alpha$ is called badly approximable (see \cite{Cassels1957,KuipersNiederreiter1974}).
+\end{definition}
+
+The Hurwitz theorem gives \(c(\alpha)\le 1/\sqrt5\), and this upper bound is attained by the golden branch and its \(\mathrm{SL}_2(\ZZ)\) equivalence class (\cite{Cassels1957,KuipersNiederreiter1974}); accordingly, this paper fixes \(\alpha=\varphi^{-1}\) as the anti-resonance canonical baseline.
+\par
+From the protocol perspective, the above canonical choice can be read as a rigidity result of ``single generator---binary window readout---normalization closure'': in the scan--projection generator of this paper, ``time'' is defined as the iteration count of the singly generated action (\S\ref{sec:spg}), the readout is fixed as a binary record of a finite window (also \S\ref{sec:spg}), and the subsequent \(\mathbf{PW}\) normalization closure requires that certificate outputs be auditable via fixed interfaces.
+Under these constraints, the choice of scan parameter is no longer empirical tuning but can be externalized as a purely arithmetic worst-case approximation/anti-resonance problem; the saturation of the Hurwitz upper bound (and the fact that the saturating class is given solely by the \(\mathrm{SL}_2(\ZZ)\) equivalence class of the golden branch) is thus manifested in the semantics of this paper as the ``mathematical rigidity of the golden branch'' (see also the protocol-fixed setting in \cite{Internal2026POMGenerativeAddressThreeRegisterBridgeRH}).
+
+\paragraph{Finite-sample stability certificate}
+
+To connect the above baseline with readout stability, this paper introduces quantitative indicators on the one-dimensional Kronecker scan model, consistent with Section \ref{sec:statistical-stability}.
+
+\begin{definition}[Resonance-induced instability (auditable certificate for Kronecker scans)]\label{def:instability-envelope}
+For irrational $\alpha\in\RR\setminus\QQ$ and initial phase $x_0\in[0,1)$, consider the Kronecker sequence
+\[
+x_t=\{x_0+t\alpha\}\in[0,1),\qquad t=0,1,\dots
+\]
+Its star discrepancy is defined as
+\[
+D_N^*(\alpha;x_0):=\sup_{0\le a\le 1}\left|\frac1N\sum_{t=0}^{N-1}\ind_{[0,a)}(x_t)-a\right|.
+\]
+We regard $D_N^*(\alpha;x_0)$ as the ``resonance-induced instability'' certificate at sample size $N$ in the sense of interval-window binary readout (see \cite{KuipersNiederreiter1974}).
+\end{definition}
+
+From Definition \ref{def:instability-envelope} it follows immediately that for any interval window $W=[0,a)$ with indicator readout $s_t=\ind_W(x_t)$,
+\[
+\left|\frac1N\sum_{t=0}^{N-1}s_t-a\right|\le D_N^*(\alpha;x_0).
+\]
+Moreover, if \(\alpha\) is badly approximable (equivalently, its continued fraction partial quotients are bounded), then there exists a constant \(C_\alpha<\infty\) such that for all \(x_0\) and \(N\ge 2\),
+\[
+D_N^*(\alpha;x_0)\le C_\alpha\frac{\log N}{N}
+\]
+(the constant is controlled by the upper bound on partial quotients; see \cite{KuipersNiederreiter1974}).
+
+\begin{corollary}[Auditability of the star discrepancy certificate for the golden branch]\label{cor:golden-branch-star-discrepancy-audit}
+When \(\alpha=\varphi^{-1}=[0;1,1,1,\dots]\), the continued fraction partial quotients are uniformly bounded (with upper bound \(1\)), so the constant in the above \(O((\log N)/N)\)-type discrepancy upper bound can be explicitly controlled by this bound (\cite{KuipersNiederreiter1974}).
+Furthermore, the convergent denominators on this branch satisfy \(q_n=F_{n+1}\).
+\end{corollary}
+
+\begin{remark}[What this paper does and does not resolve regarding ``optimality'']\label{rem:what-is-optimized}
+The use of ``optimality'' in this paper is limited to the Hurwitz/Markov caliber and the corresponding discrepancy certificate chain. For fold type distributions, or stronger statistical functionals such as relative distance to the Parry baseline, this paper does not claim global optimality or uniqueness.
+\end{remark}

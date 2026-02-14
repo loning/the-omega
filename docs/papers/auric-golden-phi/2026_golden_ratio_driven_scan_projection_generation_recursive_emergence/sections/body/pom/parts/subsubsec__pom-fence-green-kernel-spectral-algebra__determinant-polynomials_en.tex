@@ -1,0 +1,131 @@
+% Determinant-polynomial rigidities for the mixed-boundary discrete Laplacian L_k.
+
+\begin{proposition}[Closed-form coefficients of the determinant polynomial: the \texorpdfstring{$\binom{k+j}{2j}$}{binom(k+j,2j)} formula and positive-coefficient rigidity]\label{prop:pom-Lk-det-coeff-binomial}
+For \(k\ge 0\) define
+\[
+D_k(t):=\det(L_k+tI),
+\qquad
+D_0(t):=1.
+\]
+Then \(D_k(t)\) is a monic polynomial of degree \(k\) with integer coefficients, admitting the fully explicit closed-form coefficient expression
+\[
+\boxed{\;
+D_k(t)=\sum_{j=0}^{k}\binom{k+j}{2j}\,t^{j}\; }.
+\]
+In particular, all coefficients are strictly positive, and the endpoint rigidity conditions hold:
+\[
+[t^0]D_k=1,\qquad [t^{k-1}]D_k=2k-1,\qquad [t^{k}]D_k=1.
+\]
+\end{proposition}
+
+\begin{proof}
+From the hyperbolic form of Corollary \ref{cor:pom-Lk-shifted-det-free-energy} (taking \(t>0\)),
+\[
+D_k(t)=\frac{\cosh((2k+1)\eta(t))}{\cosh(\eta(t))},
+\qquad
+\eta(t)=\mathrm{arsinh}\sqrt{\frac{t}{4}},
+\]
+and using the identity
+\(
+\cosh((n+2)\eta)=2\cosh(2\eta)\cosh(n\eta)-\cosh((n-2)\eta)
+\)
+(\(n\ge 1\)), we obtain the recurrence
+\[
+D_{k+1}(t)=(t+2)D_k(t)-D_{k-1}(t),
+\qquad
+D_0(t)=1,\quad D_1(t)=t+1,
+\]
+where we have used \(2\cosh(2\eta(t))=t+2\).
+Since both sides are polynomials in \(t\), the above recurrence holds for all \(t\in\CC\).
+\par
+Let
+\(
+F_k(t):=\sum_{j=0}^{k}\binom{k+j}{2j}\,t^j
+\).
+Direct computation gives \(F_0=1,F_1=t+1\).
+Moreover, for any \(j\ge 0\) the coefficient identity
+\[
+\binom{k+1+j}{2j}
+\;=\;
+2\binom{k+j}{2j}+\binom{k+j-1}{2j-2}-\binom{k+j-1}{2j}
+\]
+holds, which can be verified by two applications of Pascal's rule:
+\[
+\binom{k+1+j}{2j}
+=\binom{k+j}{2j}+\binom{k+j}{2j-1}
+=\binom{k+j-1}{2j}+2\binom{k+j-1}{2j-1}+\binom{k+j-1}{2j-2}.
+\]
+Therefore \(F_{k+1}=(t+2)F_k-F_{k-1}\).
+By the uniqueness of the recurrence with the same initial values, we conclude \(D_k\equiv F_k\).
+The endpoint coefficients and strict positivity follow directly from the closed form. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Lucas-type closed form and quadratic field unit representation: the structural channel of the \texorpdfstring{$t(4+t)$}{t(4+t)} discriminant]\label{cor:pom-Lk-det-lucas-unit}
+Let the discriminant be \(\Delta(t):=t(4+t)\), and fix the analytic branch of \(\sqrt{\Delta(t)}\) on \(\CC\setminus[-4,0]\) compatible with the positive real branch for \(t>0\).
+Define
+\[
+r(t):=\frac{t+2+\sqrt{\Delta(t)}}{2},
+\qquad
+r(t)^{-1}=\frac{t+2-\sqrt{\Delta(t)}}{2}.
+\]
+Then \(r(t)r(t)^{-1}=1\), \(r(t)+r(t)^{-1}=t+2\), and for all \(k\ge 0\) the closed form holds:
+\[
+\boxed{\;
+D_k(t)=\frac{r(t)^{\,k+1}+r(t)^{-k}}{r(t)+1}\; }.
+\]
+Consequently, \((D_k(t))_{k\ge 0}\) satisfies the second-order Lucas recurrence
+\[
+D_{k+1}(t)=(t+2)D_k(t)-D_{k-1}(t),
+\qquad
+D_0(t)=1,\quad D_1(t)=t+1.
+\]
+\end{corollary}
+
+\begin{proof}
+By Corollary \ref{cor:pom-Lk-area-law-qform}, for \(t>0\) we have
+\(
+D_k(t)=q(t)^{-k}\frac{1+q(t)^{2k+1}}{1+q(t)}
+\)
+with \(q(t)=e^{-2\eta(t)}\in(0,1)\).
+Setting \(r(t):=q(t)^{-1}=e^{2\eta(t)}\) yields
+\[
+D_k(t)=\frac{r(t)^{\,k+1}+r(t)^{-k}}{r(t)+1}.
+\]
+On the other hand, from \(r+r^{-1}=e^{2\eta}+e^{-2\eta}=2\cosh(2\eta)=t+2\) we obtain
+\(
+r(t)=\frac{t+2+\sqrt{t(4+t)}}{2}
+\)
+(taking the square root branch compatible with \(t>0\)), which gives the stated expression.
+The Lucas recurrence follows directly from the first-order elimination using \(r+r^{-1}=t+2\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Cassini--Pell conservation law: determinant Wronskian identity]\label{prop:pom-Lk-det-cassini-pell}
+For all \(k\ge 1\) and all complex parameters \(t\in\CC\), the strict identity
+\[
+\boxed{\;
+D_{k+1}(t)D_{k-1}(t)-D_k(t)^2=t.\;}
+\]
+holds. This identity is equivalent to embedding \((D_{k-1}(t),D_k(t))\) into the integer-point orbit of the quadratic curve
+\(
+X^2-(t+2)XY+Y^2=t
+\);
+at \(t=1\), it degenerates to the Cassini identity for odd-index Fibonacci determinants.
+\end{proposition}
+
+\begin{proof}
+From the recurrence of Corollary \ref{cor:pom-Lk-det-lucas-unit}, define
+\(
+W_k:=D_{k+1}D_{k-1}-D_k^2
+\).
+Substituting \(D_{k+1}=(t+2)D_k-D_{k-1}\) directly gives
+\[
+W_k=\bigl((t+2)D_k-D_{k-1}\bigr)D_{k-1}-D_k^2
+=D_k\bigl((t+2)D_{k-1}-D_{k-2}\bigr)-D_{k-1}^2
+=W_{k-1},
+\]
+so \(W_k\) is independent of \(k\).
+Evaluating at \(k=1\) gives
+\(
+W_1=D_2D_0-D_1^2=((t+2)(t+1)-1)- (t+1)^2=t
+\), so \(W_k=t\) for all \(k\ge 1\). This completes the proof.
+\end{proof}

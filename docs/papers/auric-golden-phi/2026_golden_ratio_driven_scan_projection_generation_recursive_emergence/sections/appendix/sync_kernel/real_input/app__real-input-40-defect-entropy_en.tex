@@ -1,0 +1,277 @@
+\subsubsection{Synchronization Defect Entropy and Reset Statistics: Anomalous Input Sets Avoiding \texorpdfstring{$0^m$}{0m} and the Algebraic Constants \texorpdfstring{$\alpha_m$}{alpha m}}\label{app:real-input-40-defect-entropy}
+Proposition \ref{prop:real-input-40-reset-word} shows that $0^5$ is the shortest synchronizing reset word for the synchronization kernel: once the input digit-wise sum $d_k$ exhibits $5$ consecutive $0$'s, the internal state is forced to reset to $000$.
+Therefore all anomalous phenomena of ``non-unique state / inability to lock the state from a distance'' can only occur on the set of input orbits that \emph{never exhibit} $0^5$.
+This subsection makes the \textbf{topological entropy} and \textbf{statistical scale} of this anomalous set fully explicit.
+
+\paragraph{Defect input subshift: real inputs that never see \texorpdfstring{$0^m$}{0m}}
+Denote the real input system as
+\[
+Y:=X\times X\subset\{0,1\}^{\ZZ}\times\{0,1\}^{\ZZ},
+\]
+where $X$ is the golden mean (Zeckendorf) shift (forbidding the subword $11$), and following Proposition \ref{prop:real-input-40-skeleton-factor}, view $Y$ as a four-letter $1$-step SFT:
+alphabet
+\(
+\mathcal{A}:=\{00,01,10,11\}
+\)
+(corresponding to the bit-wise pairs $(x_k,y_k)$), with adjacency matrix equal to the
+\(
+A=A_0\otimes A_0
+\)
+of Proposition \ref{prop:real-input-40-skeleton-factor}
+(in the order $(00,01,10,11)$).
+Set the special letter
+\[
+\mathbf{0}:=00\in\mathcal{A}.
+\]
+Note: for real arithmetic input, the digit-wise sum $d_k=x_k+y_k$ satisfies
+\(
+d_k=0\iff (x_k,y_k)=\mathbf{0}
+\);
+therefore the synchronizing reset word $0^m$ on the $d$-alphabet and the subword $\mathbf{0}^m$ on the $\mathcal{A}$-alphabet are in one-to-one correspondence (differing only by a shift).
+
+\begin{definition}[Defect subshift avoiding the synchronizing reset word]\label{def:real-input-defect-subshift}
+For an integer $m\ge 2$, define
+\[
+Y^{\neg \mathbf{0}^m}
+:=\bigl\{\,u\in Y:\ \text{for all }k\in\ZZ,\ u_k u_{k+1}\cdots u_{k+m-1}\neq \mathbf{0}^m\,\bigr\}.
+\]
+This is called the \textbf{synchronization defect input set}: it consists of orbits in the real input that \emph{never see} the synchronizing reset word $0^m$.
+\end{definition}
+
+\paragraph{Run-length lift: promoting ``forbid \texorpdfstring{$\mathbf{0}^m$}{0m}'' to a \texorpdfstring{$1$}{1}-step SFT}
+Forbidding a long word can be promoted to a $1$-step SFT via a run-length memory lift. Here, since one only needs to monitor the consecutive length of the letter $\mathbf{0}=00$, the number of states can be compressed to $m+2$.
+
+\begin{proposition}[\texorpdfstring{$(m+2)$}{m+2}-state lift avoiding \texorpdfstring{$\mathbf{0}^m$}{0m}]\label{prop:real-input-defect-runlift}
+For $m\ge 2$, let the state set be
+\[
+\mathcal{V}_m:=\{01,10,11,00^{(1)},00^{(2)},\dots,00^{(m-1)}\},
+\]
+where $00^{(r)}$ denotes ``the current letter is $00$ and the trailing run of consecutive $00$'s has length $r$''.
+Define the directed graph (equivalently, the adjacency matrix) $R_m$ as follows:
+\begin{itemize}
+  \item From $01$, transitions to $10$ or $00^{(1)}$ are allowed;
+  \item From $10$, transitions to $01$ or $00^{(1)}$ are allowed;
+  \item From $11$, only the transition to $00^{(1)}$ is allowed;
+  \item From $00^{(r)}$ ($1\le r\le m-2$), transitions to $01,10,11$ are allowed, as well as to $00^{(r+1)}$;
+  \item From $00^{(m-1)}$, only transitions to $01,10,11$ are allowed (thereby forbidding a further transition to $00$, i.e., forbidding $\mathbf{0}^m$).
+\end{itemize}
+Then $Y^{\neg \mathbf{0}^m}$ is conjugate to the $1$-step SFT defined by the adjacency matrix $R_m$, and hence
+\[
+h_{\mathrm{top}}\!\left(Y^{\neg \mathbf{0}^m}\right)=\log\rho(R_m).
+\]
+\end{proposition}
+
+\paragraph{Defect entropy constants \texorpdfstring{$\alpha_m$}{alpha m}: explicit family of characteristic polynomials}
+\begin{theorem}[Explicit algebraic structure of the synchronization defect entropy]\label{thm:real-input-defect-entropy}
+Let $m\ge 2$ and let $R_m$ be the run-length lift adjacency matrix of Proposition \ref{prop:real-input-defect-runlift}.
+Then its characteristic polynomial factors in $\ZZ[t]$ as
+\[
+\chi_{R_m}(t)=(t+1)\,f_m(t),
+\]
+where
+\[
+\boxed{\;
+f_m(t)=t^{m+1}-t^{m}-3t^{m-1}-2\sum_{k=1}^{m-2}t^k+1\; }.
+\]
+Denoting $\alpha_m:=\rho(R_m)$ as the Perron root (largest real eigenvalue), one has
+\[
+\boxed{\;
+h_{\mathrm{top}}\!\left(Y^{\neg \mathbf{0}^m}\right)=\log\alpha_m\; }.
+\]
+Moreover, as $m\to\infty$ there is monotone convergence
+\[
+\alpha_m\uparrow \rho(A)=\varphi^2,
+\qquad
+h_{\mathrm{top}}\!\left(Y^{\neg \mathbf{0}^m}\right)\uparrow h_{\mathrm{top}}(Y)=\log\varphi^2.
+\]
+\end{theorem}
+
+\begin{proof}
+We write the right eigenvector equation $R_m v=t v$ in the state ordering of Proposition \ref{prop:real-input-defect-runlift}:
+\(
+(01,10,11,00^{(1)},\dots,00^{(m-1)})
+\).
+Set
+\[
+v_{01}=a,\quad v_{10}=b,\quad v_{11}=c,\quad v_{00^{(r)}}=x_r\ (1\le r\le m-1).
+\]
+From the transition rules, the system of equations is
+\[
+ta=b+x_1,\qquad
+tb=a+x_1,\qquad
+tc=x_1,
+\]
+together with
+\[
+tx_r=a+b+c+x_{r+1}\quad(1\le r\le m-2),
+\qquad
+tx_{m-1}=a+b+c.
+\]
+Subtracting the first two equations gives
+\(
+(t+1)(a-b)=0
+\), so $t=-1$ is an eigenvalue (with eigenvector $a=1,b=-1,c=0,x_r=0$), and hence $(t+1)$ is a factor of the characteristic polynomial.
+In the following, assume $t\neq -1$, so that $a=b$.
+
+Under $a=b$, from $ta=a+x_1$ one gets $x_1=(t-1)a$, and from $tc=x_1$ one gets $c=(t-1)a/t$.
+Denote
+\[
+s:=a+b+c=2a+c=\frac{3t-1}{t}\,a.
+\]
+The chain equations can be solved recursively to yield
+\[
+x_{m-1}=\frac{s}{t},\qquad
+x_r=\frac{s+x_{r+1}}{t}\ (1\le r\le m-2),
+\]
+giving
+\[
+x_1=s\sum_{k=1}^{m-1}t^{-k}.
+\]
+Comparing with $x_1=(t-1)a$, eliminating $a$ (which is nonzero, otherwise $v=0$), and simplifying for $t\neq 1$ yields the equivalent equation
+\[
+0=
+\frac{t^m(t-1)^2-(3t-1)(t^{m-1}-1)}{t-1}
+\;=\;
+t^{m+1}-t^{m}-(3t-1)\sum_{k=0}^{m-2}t^k.
+\]
+Expanding the right-hand side gives
+\[
+t^{m+1}-t^{m}-3t^{m-1}-2\sum_{k=1}^{m-2}t^k+1
+=f_m(t),
+\]
+so for $t\notin\{-1,1\}$, the eigenvalue equation is equivalent to $f_m(t)=0$.
+It remains to exclude $t=1$: if $t=1$, then from $ta=b+x_1$ and $tb=a+x_1$ one gets $a=b$, and from $ta=a+x_1$ one gets $x_1=0$, giving $tc=x_1$ hence $c=0$.
+The chain equations then become $x_{m-1}=a+b+c=2a$ and $x_r=a+b+c+x_{r+1}=2a+x_{r+1}$, yielding recursively $x_1=2(m-1)a$, contradicting $x_1=0$, so $a=0$ and thus $v=0$.
+Therefore $t=1$ is not an eigenvalue.
+Hence all eigenvalues of $R_m$ are given by $t=-1$ and $f_m(t)=0$, and the sum of degrees is $1+(m+1)=m+2=\dim R_m$, so
+\(
+\chi_{R_m}(t)=(t+1)f_m(t)
+\).
+
+By Proposition \ref{prop:real-input-defect-runlift} and the Perron--Frobenius theorem, $\alpha_m=\rho(R_m)$ is the largest real eigenvalue, hence
+\(
+h_{\mathrm{top}}(Y^{\neg \mathbf{0}^m})=\log\alpha_m
+\).
+Monotonicity and the limit follow from the inclusion relation
+\(
+Y^{\neg \mathbf{0}^m}\subset Y^{\neg \mathbf{0}^{m+1}}\subset Y
+\)
+and the monotonicity of topological entropy with respect to inclusion; the upper limit is $h_{\mathrm{top}}(Y)=\log\rho(A)=\log\varphi^2$ (Proposition \ref{prop:real-input-40-skeleton-factor}).
+\end{proof}
+
+\begin{corollary}[Synchronization defect entropy constant \texorpdfstring{$\alpha_5$}{alpha\_5} for \texorpdfstring{$m=5$}{m=5}]\label{cor:real-input-defect-entropy-m5}
+When $m=5$,
+\[
+f_5(t)=t^6-t^5-3t^4-2t^3-2t^2-2t+1,
+\]
+whose Perron root is
+\[
+\alpha_5=2.599377117436323935\ldots,
+\qquad
+h_{\mathrm{top}}\!\left(Y^{\neg \mathbf{0}^5}\right)=\log\alpha_5.
+\]
+Therefore the relative defect entropy gap is
+\[
+\log\frac{\varphi^2}{\alpha_5}=0.0071518040100975209\ldots,
+\qquad
+\frac{\alpha_5}{\varphi^2}=0.9928737092819488085\ldots.
+\]
+\end{corollary}
+
+\paragraph{Density of reset words and mean gap under the Parry maximum entropy measure (closed form)}
+\begin{proposition}[Onset intensity and mean gap for the reset word \texorpdfstring{$0^m$}{0^m}]\label{prop:real-input-reset-gap}
+Under the Parry maximum entropy measure on $Y=X\times X$, denote $\lambda:=\rho(A)=\varphi^2$.
+Let $\nu_m$ be the probability of a reset word $0^m$ \emph{starting} at position $0$ (i.e., $(x_k,y_k)=00$ for $m$ consecutive steps). Then for all $m\ge 2$,
+\[
+\boxed{\;
+\nu_m=\frac{1}{5\lambda^{m-2}}\; }.
+\]
+Consequently, in any sufficiently long window, the mean gap between consecutive reset word onsets tends to
+\[
+\boxed{\;
+\mathbb{E}[\mathrm{gap}(0^m)]=\frac{1}{\nu_m}=5\lambda^{m-2}\; }.
+\]
+In particular, for $m=5$:
+\[
+\nu_5=\frac{1}{5\varphi^6},
+\qquad
+\mathbb{E}[\mathrm{gap}(0^5)]=5\varphi^6\approx 89.72135954999579.
+\]
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:real-input-40-input-memory-marginal} (or Proposition \ref{prop:real-input-40-memory-marginal}),
+\(
+\mathbb{P}(00)=\varphi^2/5=\lambda/5
+\).
+On the other hand, the skeleton matrix of $Y$ is $A=A_0\otimes A_0$ (Proposition \ref{prop:real-input-40-A0-tensor-hidden}), and the Parry transition probabilities satisfy the standard formula
+\(
+p_{ij}=A_{ij}r_j/(\lambda r_i)
+\)
+($r$ being the right Perron vector of $A$).
+For the state $00$, $A_{00,00}=1$, hence
+\[
+\mathbb{P}(00\to 00)=\frac{A_{00,00}r_{00}}{\lambda r_{00}}=\frac{1}{\lambda}.
+\]
+Therefore
+\[
+\nu_m
+=\mathbb{P}(00)\cdot \mathbb{P}(00\to 00)^{m-1}
+=\frac{\lambda}{5}\left(\frac{1}{\lambda}\right)^{m-1}
+=\frac{1}{5\lambda^{m-2}}.
+\]
+Finally, $\nu_m$ is the density (intensity) of the ``reset word onset set'' on $\ZZ$. By the ergodic theorem, the number of points in this set within a long window $[-N,N]$ divided by $2N$ tends to $\nu_m$, so the mean gap tends to $1/\nu_m$.
+\end{proof}
+
+\paragraph{Connecting defect entropy to the 40-state kernel: exponential thinning bound for non-reset primitive orbits}
+\begin{theorem}[Exponential thinning of primitive orbits that avoid the reset word]\label{thm:real-input-40-nonreset-primes-thin}
+Fix $m\ge 2$.
+Let $p_n(M)$ be the number of length-$n$ primitive orbits of the real input $40$-state kernel (adjacency matrix $M$) (see the definition preceding \ref{subsec:real-input-40-prime-splitting}),
+and let $p_n^{\neg \mathbf{0}^m}$ be the number of length-$n$ primitive orbits of the defect input subshift $Y^{\neg \mathbf{0}^m}$ (equivalently, the primitive orbit count of $R_m$).
+Define
+\[
+p_n^{\mathrm{noreset}}(M;m)
+:=\#\{\tau\ \text{primitive orbit in }M:\ \pi(\tau)\in Y^{\neg \mathbf{0}^m}\},
+\]
+where $\pi$ is the natural projection that forgets the internal synchronization state and retains only the input pair $(x,y)$.
+Then there exists a constant $C_m>0$ such that for all $n\ge 1$,
+\[
+p_n^{\mathrm{noreset}}(M;m)\le C_m\,\frac{\alpha_m^n}{n},
+\]
+where $\alpha_m$ is the Perron root of Theorem \ref{thm:real-input-defect-entropy}.
+In particular, when $m=5$, the exponential thinning ratio is
+\[
+\boxed{\;
+\frac{p_n^{\mathrm{noreset}}(M;5)}{p_n(M)}
+\ll
+\left(\frac{\alpha_5}{\varphi^2}\right)^n
+=\bigl(0.99287370928\ldots\bigr)^n\; }.
+\]
+\end{theorem}
+\begin{proof}
+Fix $n$.
+For any length-$n$ input periodic orbit, its lift on the synchronization kernel is determined by the initial internal state $s\in Q$, and $|Q|=10$.
+Therefore, for any set $E$ of input periodic points, one has the crude bound
+\[
+|{\rm Fix}_M(\sigma^n)\cap \pi^{-1}(E)|
+\le 10\cdot |{\rm Fix}_Y(\sigma^n)\cap E|.
+\]
+Taking $E=Y^{\neg \mathbf{0}^m}$ yields
+\(
+a_n^{\mathrm{noreset}}(M;m)\le 10\,a_n(R_m)
+\), where $a_n(R_m)=\Tr(R_m^n)$ is the periodic point count of the defect input.
+By the Perron--Frobenius theorem, there exists $\beta_m<\alpha_m$ such that
+\(
+a_n(R_m)=\alpha_m^n+O(\beta_m^n)
+\), hence
+\[
+a_n^{\mathrm{noreset}}(M;m)\le 10\alpha_m^n+O(\beta_m^n).
+\]
+On the other hand, from the general identity $a_n=\sum_{d\mid n} d\,p_d\ge n\,p_n$ one gets
+\(
+p_n^{\mathrm{noreset}}(M;m)\le a_n^{\mathrm{noreset}}(M;m)/n
+\), so there exists a constant $C_m$ such that
+\(
+p_n^{\mathrm{noreset}}(M;m)\le C_m\,\alpha_m^n/n
+\).
+Finally, from $p_n(M)=\varphi^{2n}/n+O(\varphi^n/n)$ (see the estimate following Corollary \ref{cor:real-input-40-primitive-lucas-simplified}), the stated exponential thinning ratio follows.
+\end{proof}

@@ -1,0 +1,309 @@
+\paragraph{Golden coupling and Fisher zeros: Fibonacci arithmetization at \texorpdfstring{\(t=1\)}{t=1}, arcsine law for zeros, and Riccati recursion}
+This paragraph connects the ``golden scale'' of the mass parameter \(t\) to auditable closed forms for discrete determinants and Green kernels:
+on the one hand, at \(t=1\) one obtains a completely arithmetized Fibonacci determinant and two-point correlator;
+on the other hand, the zeros of \(\det(L_k+tI)\) (Fisher zeros) are strictly aligned with the arcsine law on \([-4,0]\), and the uniformization of zeros together with the exact convergence rate of the boundary Riccati recursion are established.
+
+\begin{corollary}[Uniqueness of the ``golden coupling'': equivalent characterizations at \texorpdfstring{\(t=1\)}{t=1}]\label{cor:pom-Lk-golden-coupling-unique}
+Let \(\varphi=\frac{1+\sqrt5}{2}\), and for \(t>0\) define
+\[
+\eta(t):=\mathrm{arsinh}\sqrt{\frac{t}{4}}\qquad(\Re\eta\ge 0).
+\]
+Then the following statements are equivalent and yield the same unique positive solution \(t_\star=1\):
+\[
+\eta(t_\star)=\log\varphi,
+\qquad
+q(t_\star):=e^{-2\eta(t_\star)}=\varphi^{-2},
+\qquad
+\lim_{k\to\infty}\frac{1}{k}\log\det(L_k+t_\star I)=2\log\varphi.
+\]
+Therefore \(t=1\) is the unique positive parameter point at which the spectral free energy density exactly matches the golden shift entropy scale \(2\log\varphi\).
+\end{corollary}
+\begin{proof}
+By definition, \(\eta(t)\) is strictly increasing on \(t>0\), so the equation \(\eta(t)=\log\varphi\) has at most one solution.
+Since
+\(
+\eta(t)=\mathrm{arsinh}(\sqrt{t}/2)
+\)
+is equivalent to \(\sqrt{t}/2=\sinh(\eta)\),
+taking \(\eta=\log\varphi\) and using
+\(
+\sinh(\log\varphi)=\frac{\varphi-\varphi^{-1}}{2}=\frac12
+\)
+yields \(t=1\).
+The second equivalence follows immediately from the definition \(q(t)=e^{-2\eta(t)}\).
+The third equivalence is given by \(f(t)=\lim_{k\to\infty}\frac1k\log\det(L_k+tI)=2\eta(t)\) from Corollary \ref{cor:pom-Lk-surface-free-energy}. \qed
+\end{proof}
+
+\begin{corollary}[Fibonacci determinant and fully explicit Green kernel at the golden coupling: unified denominator \texorpdfstring{\(F_{2k+1}\)}{F_{2k+1}}]\label{cor:pom-Lk-t1-fibonacci-det-green}
+Let \(F_0=0,F_1=1\) denote the Fibonacci numbers as usual. Set \(A_k:=L_k+I\in\ZZ^{k\times k}\).
+Then
+\[
+\det(A_k)=F_{2k+1}.
+\]
+Moreover, the inverse matrix entries for \(1\le i\le j\le k\) satisfy the exact closed form
+\[
+(A_k^{-1})_{ij}
+=\frac{F_{2i}\,F_{2(k-j)+1}}{F_{2k+1}},
+\qquad
+(A_k^{-1})_{ji}=(A_k^{-1})_{ij}.
+\]
+Equivalently, the adjugate matrix admits a separation-of-variables factorization at the entry level:
+\[
+\operatorname{adj}(A_k)_{ij}=F_{2\min(i,j)}\,F_{2(k-\max(i,j))+1}.
+\]
+In particular,
+\[
+(A_k^{-1})_{11}=\frac{F_{2k-1}}{F_{2k+1}},
+\qquad
+(A_k^{-1})_{1k}=\frac{1}{F_{2k+1}}.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:pom-Lk-shifted-det-free-energy}, for \(t=1\) one has
+\[
+\det(A_k)=\det(L_k+I)=\frac{\cosh((2k+1)\eta(1))}{\cosh(\eta(1))}.
+\]
+Since \(\eta(1)=\mathrm{arsinh}(1/2)=\log\varphi\), and noting \(\cosh(\log\varphi)=\frac{\varphi+\varphi^{-1}}{2}=\frac{\sqrt5}{2}\),
+one obtains
+\[
+\det(A_k)=\frac{\cosh((2k+1)\log\varphi)}{\cosh(\log\varphi)}
+=\frac{(\varphi^{2k+1}+\varphi^{-(2k+1)})/2}{\sqrt5/2}
+=\frac{\varphi^{2k+1}+\varphi^{-(2k+1)}}{\sqrt5}
+=F_{2k+1}.
+\]
+The matrix entry closed form is obtained from Proposition \ref{prop:pom-Lk-green-kernel-entries} at \(t=1\):
+\[
+(A_k^{-1})_{ij}
+=\frac{\sinh(2i\log\varphi)\,\cosh((2(k-j)+1)\log\varphi)}{\sinh(2\log\varphi)\,\cosh((2k+1)\log\varphi)}.
+\]
+Using the identities
+\(
+\sinh(2n\log\varphi)=\frac{\sqrt5}{2}F_{2n}
+\)
+and
+\(
+\cosh((2m+1)\log\varphi)=\frac{\sqrt5}{2}F_{2m+1}
+\)
+(which follow directly from the Binet formula) yields the stated Fibonacci ratios.
+The adjugate matrix formula follows from \(\operatorname{adj}(A_k)=\det(A_k)\,A_k^{-1}\). \qed
+\end{proof}
+
+\begin{remark}[Exact realization of ``area term + constant term + exponentially small correction'' for Fibonacci]\label{rem:pom-Lk-fibonacci-area-law-exact}
+At the golden coupling \(t=1\), the exact Binet formula for odd indices gives
+\[
+F_{2k+1}=\frac{\varphi^{2k+1}}{\sqrt5}\Bigl(1+\varphi^{-4k-2}\Bigr),
+\]
+yielding the non-asymptotic exact decomposition
+\[
+\log F_{2k+1}=(2k+1)\log\varphi-\frac12\log 5+\log\bigl(1+\varphi^{-4k-2}\bigr),
+\qquad
+0<\log\bigl(1+\varphi^{-4k-2}\bigr)<\varphi^{-4k-2}.
+\]
+Therefore, ``area law leading term + universal constant term + exponentially small finite-size correction'' can be regarded in this model as a strict algebraic identity for Fibonacci numbers, rather than an empirical-level approximation.
+\end{remark}
+
+\begin{corollary}[Boundary entropy derivative and Parry mass exact coupling: homologous closure at \texorpdfstring{\(t=1\)}{t=1}]\label{cor:pom-Lk-t1-parry-surface-derivative}
+Let the Parry maximal entropy measure of the golden-mean shift assign mass
+\(
+\pi(1)=\frac{1}{\varphi^2+1}
+\)
+to the symbol \(1\) (Remark \ref{prop:parry-measure-golden}).
+On the spectral side, let \(q(t)=e^{-2\eta(t)}\) and take the surface free energy \(g(t)=-\log(1+q(t))\) (Corollary \ref{cor:pom-Lk-surface-free-energy}).
+Then at the golden coupling point \(t=1\) the following strict identity holds:
+\[
+\frac{q(1)}{1+q(1)}=\frac{\varphi^{-2}}{1+\varphi^{-2}}=\frac{1}{\varphi^2+1}=\pi(1),
+\]
+and moreover
+\[
+g'(1)=\pi(1)\cdot\frac{1}{\sqrt{1\cdot(4+1)}}=\frac{\pi(1)}{\sqrt5}.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:pom-Lk-golden-coupling-unique}, \(q(1)=\varphi^{-2}\); substitution gives the first identity.
+The second follows by evaluating
+\(
+g'(t)=\frac{q(t)}{1+q(t)}\cdot \frac{1}{\sqrt{t(4+t)}}
+\)
+from Corollary \ref{cor:pom-Lk-surface-free-energy} at \(t=1\). \qed
+\end{proof}
+
+\begin{theorem}[Limiting distribution of Fisher zeros: the zero measure of \texorpdfstring{\(\det(L_k+tI)\)}{det(L_k+tI)} converges to the arcsine law on \texorpdfstring{\([-4,0]\)}{[-4,0]}]\label{thm:pom-Lk-fisher-zeros-arcsine}
+Regard \(P_k(t):=\det(L_k+tI)\) as a degree \(k\) polynomial in \(t\), with zeros
+\[
+t_p=-4\sin^2\!\Bigl(\frac{(2p-1)\pi}{4k+2}\Bigr)\in(-4,0),
+\qquad p=1,\dots,k.
+\]
+Let the empirical zero measure be
+\(
+\omega_k:=\frac1k\sum_{p=1}^k\delta_{t_p}
+\).
+Then \(\omega_k\) converges in the weak topology to the arcsine distribution \(\omega\) on \([-4,0]\), with density
+\[
+\dd\omega(t)=\frac{1}{\pi\sqrt{(-t)(4+t)}}\,\dd t,\qquad t\in(-4,0).
+\]
+Furthermore, for any \(t\in\CC\setminus[-4,0]\), the normalized logarithmic potential exists and has the closed form
+\[
+\lim_{k\to\infty}\frac{1}{k}\log\bigl|\det(L_k+tI)\bigr|
+=2\,\Re\,\mathrm{arsinh}\sqrt{\frac{t}{4}}.
+\]
+\end{theorem}
+\begin{proof}
+Since \(P_k(t)=\prod_{p=1}^k(\mu_p+t)\) and \(\mu_p\) are the eigenvalues of \(L_k\) (Theorem \ref{thm:pom-Lk-arcsine-law}), the zeros satisfy \(t_p=-\mu_p\).
+Hence \(\omega_k\) is the push-forward of the empirical spectral measure \(\nu_k\) under the map \(t=-\mu\); by Theorem \ref{thm:pom-Lk-arcsine-law} the limiting density is the stated arcsine law.
+
+For the logarithmic potential part, by the Chebyshev form in Corollary \ref{cor:pom-Lk-shifted-det-free-energy},
+\(
+\det(L_k+tI)=T_{2k+1}(\sqrt{1+t/4})/\sqrt{1+t/4}
+\),
+and using \(T_n(z)=\frac12(w^n+w^{-n})\) (where \(w=z+\sqrt{z^2-1}\), analytic on \(\CC\setminus[-1,1]\)), one obtains
+\[
+\frac{1}{k}\log|\det(L_k+tI)|
+=\frac{2k+1}{k}\Re\log w(t)+o(1),
+\]
+where \(w(t)=\sqrt{1+t/4}+\sqrt{t/4}=\exp(\mathrm{arsinh}\sqrt{t/4})\) (choosing the analytic continuation compatible with \(t>0\)).
+Taking \(k\to\infty\) yields the limit \(2\Re\,\mathrm{arsinh}\sqrt{t/4}\). \qed
+\end{proof}
+
+\begin{remark}[Conformal uniformization of zeros: ``odd-root unification'' under the Joukowsky map]\label{rem:pom-Lk-fisher-zeros-uniformization}
+Introduce the uniformization parameter \(w\in\CC^\times\) satisfying
+\[
+w+w^{-1}=t+2
+\qquad\Longleftrightarrow\qquad
+t=w+w^{-1}-2.
+\]
+Then \(P_k(t)=0\) is equivalent to
+\[
+w^{2k+1}=-1.
+\]
+Therefore the zero set consists of the ``odd-order roots of \(-1\)'' mapped under the Joukowsky map \(t=w+w^{-1}-2\);
+when \(|w|=1\), the image domain is exactly the interval \([-4,0]\), and uniformly discrete points on the unit circle are pushed forward to the arcsine law limit of Theorem \ref{thm:pom-Lk-fisher-zeros-arcsine}.
+This uniformization also reveals the geometric origin of the endpoint scales: \([-4,0]\) is the exact image domain of the unit circle under \(w+w^{-1}-2\).
+\end{remark}
+
+\begin{proposition}[Square-root branching at the critical endpoints: Puiseux exponent rigidity at \texorpdfstring{$t=0$}{t=0} and \texorpdfstring{$t=-4$}{t=-4}]\label{prop:pom-Lk-branch-puiseux}
+Regard
+\[
+f(t):=\lim_{k\to\infty}\frac{1}{k}\log\det(L_k+tI)
+=2\,\mathrm{arsinh}\sqrt{\frac{t}{4}}
+\]
+as an analytic function on \(t\in\CC\setminus[-4,0]\) (fixing the \(\sqrt{t(4+t)}\) branch compatible with \(t>0\)).
+Then \(t=0\) and \(t=-4\) are the only square-root type branch points (corresponding to the two zeros of the discriminant \(\Delta(t)=t(4+t)\)).
+Moreover, in the outer-domain limit \(t\to 0\), the Puiseux expansion reads
+\[
+\boxed{\;
+f(t)=\sqrt{t}-\frac{t^{3/2}}{24}+O(t^{5/2})\;}
+\]
+(the branch being determined by the choice of \(\sqrt{t}\)).
+On the other hand, letting the surface free energy be \(g(t):=-\log(1+e^{-2\eta(t)})\) (where \(\eta(t)=\mathrm{arsinh}\sqrt{t/4}\), see Corollary \ref{cor:pom-Lk-surface-free-energy}), in the same limit one has
+\[
+\boxed{\;
+g(t)=-\log 2+\frac{\sqrt{t}}{2}+O(t)\;}
+\]
+so that the non-analyticity of both the bulk and surface terms is controlled by the same Puiseux exponent \(1/2\); the position of the second branch point \(t=-4\) is exactly the other zero of \(\Delta(t)\), equivalently determining the normalization constant \(4\) for the inter-branch-point distance.
+\end{proposition}
+
+\begin{proof}
+Let \(z=\sqrt{t}/2\), then \(\eta(t)=\mathrm{arsinh}(z)\).
+From the series \(\mathrm{arsinh}(z)=z-\frac{z^3}{6}+O(z^5)\) (\(z\to 0\)), one obtains
+\[
+f(t)=2\eta(t)=2z-\frac{2z^3}{6}+O(z^5)
+=\sqrt{t}-\frac{t^{3/2}}{24}+O(t^{5/2}).
+\]
+Moreover, \(q(t)=e^{-2\eta(t)}=e^{-f(t)}=1-\sqrt{t}+O(t)\), so
+\[
+g(t)=-\log(1+q(t))
+=-\log\!\bigl(2-\sqrt{t}+O(t)\bigr)
+=-\log2+\frac{\sqrt{t}}{2}+O(t).
+\]
+The branch point locations arise from the square-root degeneracy of \(\sqrt{t(4+t)}\) at \(t=0,-4\). \qed
+\end{proof}
+
+\begin{proposition}[Schur--Riccati recursion for the boundary reflection coefficient and Fibonacci convergence rate at the golden coupling]\label{prop:pom-Lk-boundary-riccati-recursion}
+Define the finite-scale boundary reflection coefficient
+\[
+q_k(t):=(L_k+tI)^{-1}_{11}\qquad(t>0).
+\]
+Then \((q_k(t))_{k\ge 1}\) satisfies the Schur--Riccati recursion
+\[
+q_{k+1}(t)=\frac{1}{t+2-q_k(t)},\qquad q_1(t)=\frac{1}{1+t},
+\]
+and converges to the fixed point \(q(t)\in(0,1)\) (Corollary \ref{cor:pom-Lk-boundary-fixed-point-riccati}):
+\[
+q(t)=\frac{1}{t+2-q(t)}\qquad\Longleftrightarrow\qquad q(t)^2-(2+t)q(t)+1=0.
+\]
+More precisely, there is an exact error formula
+\[
+0<q_k(t)-q(t)=\frac{(1-q(t)^2)\,q(t)^{2k}}{1+q(t)^{2k+1}}
+< (1-q(t)^2)\,q(t)^{2k},
+\]
+so that \(|q_k(t)-q(t)|=\Theta(q(t)^{2k})\).
+At the golden coupling \(t=1\), this recursion is fully arithmetized:
+\[
+q_k(1)=\frac{F_{2k-1}}{F_{2k+1}}\ \xrightarrow[k\to\infty]{}\ \varphi^{-2},
+\qquad
+0<q_k(1)-\varphi^{-2}=\Theta(\varphi^{-4k}).
+\]
+\end{proposition}
+\begin{proof}
+The recursion is obtained from the stepwise Schur complement of the symmetric tridiagonal matrix \(L_k+tI\) (equivalently, a one-dimensional continued fraction); it can also be directly verified from the closed form \(q_k(t)=\cosh((2k-1)\eta(t))/\cosh((2k+1)\eta(t))\) in Proposition \ref{prop:pom-Lk-green-kernel-entries}.
+
+For the error, let \(q=q(t)=e^{-2\eta(t)}\) (Corollary \ref{cor:pom-Lk-boundary-fixed-point-riccati}), then
+\[
+q_k(t)=\frac{\cosh((2k-1)\eta)}{\cosh((2k+1)\eta)}
+=q\,\frac{1+q^{2k-1}}{1+q^{2k+1}},
+\]
+whence
+\[
+q_k(t)-q=q\,\frac{q^{2k-1}-q^{2k+1}}{1+q^{2k+1}}
+=\frac{(1-q^2)\,q^{2k}}{1+q^{2k+1}},
+\]
+which immediately gives the stated two-sided bound and the \(\Theta(q^{2k})\) rate.
+Finally, the Fibonacci expression at the golden coupling follows from \((A_k^{-1})_{11}=F_{2k-1}/F_{2k+1}\) in Corollary \ref{cor:pom-Lk-t1-fibonacci-det-green}, together with \(\varphi^{-2}=q(1)\).
+The error order \(\Theta(\varphi^{-4k})\) follows from the Binet formula. \qed
+\end{proof}
+
+\begin{corollary}[Exact error decomposition for the Riccati approximation: monotone convergence controlled by \texorpdfstring{$D_k$}{Dk} and series remainder]\label{cor:pom-Lk-riccati-error-by-determinants}
+For \(k\ge 0\), define \(D_k(t):=\det(L_k+tI)\) with the convention \(D_0(t)=1\).
+Then for all \(k\ge 1\) the exact identity holds:
+\[
+\boxed{\;
+q_k(t)=\frac{D_{k-1}(t)}{D_k(t)}\; }.
+\]
+Moreover, by Proposition \ref{prop:pom-Lk-det-cassini-pell}, the difference formula is
+\[
+\boxed{\;
+q_k(t)-q_{k+1}(t)=\frac{t}{D_k(t)\,D_{k+1}(t)}\; }.
+\]
+Therefore, when \(t>0\), the sequence \((q_k(t))_{k\ge 1}\) is strictly monotonically decreasing and converges to the fixed point \(q(t)\in(0,1)\), with a completely explicit series remainder representation for the error:
+\[
+\boxed{\;
+q_k(t)-q(t)=t\sum_{n\ge k}\frac{1}{D_n(t)\,D_{n+1}(t)}\; }.
+\]
+\end{corollary}
+
+\begin{proof}
+Let \(A_k:=L_k+tI\).
+By Cramer's formula,
+\(
+(A_k^{-1})_{11}=\det(A_k^{(1,1)})/\det(A_k)
+\), where \(A_k^{(1,1)}\) is the principal minor obtained by deleting the first row and first column.
+Since \(A_k^{(1,1)}\) is isomorphic in its explicit tridiagonal structure to \(L_{k-1}+tI\), one has \(\det(A_k^{(1,1)})=D_{k-1}(t)\), whence \(q_k=D_{k-1}/D_k\).
+The difference formula follows from
+\[
+q_k-q_{k+1}
+=\frac{D_{k-1}}{D_k}-\frac{D_k}{D_{k+1}}
+=\frac{D_{k-1}D_{k+1}-D_k^2}{D_kD_{k+1}}
+=\frac{t}{D_kD_{k+1}}
+\]
+(Proposition \ref{prop:pom-Lk-det-cassini-pell}).
+For \(t>0\), \(D_k(t)>0\), so \(q_k-q_{k+1}>0\) gives monotonicity; the remainder representation is obtained by summing the difference formula from \(n=k\) to \(\infty\) and using \(q_n\to q\). \qed
+\end{proof}
+
+\begin{remark}[Finite-window audit: golden coupling Fibonacci arithmetization, Fisher zeros, and Riccati convergence]\label{rem:pom-fence-green-kernel-golden-coupling-audit}
+The script verifies on a finite window: the \(t_\star=1\) uniqueness characterization of Corollary \ref{cor:pom-Lk-golden-coupling-unique},
+the Fibonacci determinant and matrix entry closed forms of Corollary \ref{cor:pom-Lk-t1-fibonacci-det-green},
+the zero locations and arcsine law of Theorem \ref{thm:pom-Lk-fisher-zeros-arcsine} (through numerical consistency of the map \(t=-\mu\) and Joukowsky uniformization),
+as well as the Riccati recursion and convergence rate of Proposition \ref{prop:pom-Lk-boundary-riccati-recursion}.
+The audit table is as follows:
+\input{sections/generated/tab_fence_green_kernel_golden_coupling_audit}
+\end{remark}

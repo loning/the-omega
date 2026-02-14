@@ -1,0 +1,594 @@
+\paragraph{Scalar certificates of the scan profile: aliasing threshold, stable inversion, and norm pinching}
+Under the finite defect aperture, the comoving scan profile not only provides exponential spectral fingerprints available for Prony inversion, but also simultaneously induces several auditable certificates depending solely on scalar statistics.
+The following gives the most direct aliasing threshold, stability result, and norm lower bound within the regime semantics.
+
+\begin{proposition}[Aliasing threshold of address discretization: lattice sampling determines only the congruence class of \texorpdfstring{$\gamma$}{gamma}]\label{prop:xi-scan-aliasing-threshold}
+Fix a sampling step size \(\Delta>0\), and observe only the discrete samples \(\{u_n\}_{n\ge 0}\) (\(u_n=\widehat H(n\Delta)\)) of the spectral fingerprint.
+Then for any integer \(k\in\mathbb{Z}\) and any \(j\), translating the height parameter
+\(
+\gamma_j\mapsto \gamma_j+\frac{2\pi k}{\Delta}
+\)
+does not change any sample \(u_n\).
+Therefore, discrete sampling can only determine the congruence class \(\gamma_j\ \mathrm{mod}\ (2\pi/\Delta)\) of the height parameter.
+\par
+If the a priori height window is \(|\gamma_j|\le T\), then a necessary condition for unique lifting (no aliasing) is
+\[
+\boxed{\;\Delta<\frac{\pi}{T}.\;}
+\]
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:xi-comoving-scan-fourier}, for \(n\ge 0\),
+\[
+u_n
+:=4\pi\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{1+\delta_j}\,e^{-(1+\delta_j)n\Delta}\,e^{-\mathrm{i}\gamma_j n\Delta}.
+\]
+If \(\gamma_j\) is replaced by \(\gamma_j+\frac{2\pi k}{\Delta}\), then
+\(
+e^{-\mathrm{i}(\gamma_j+2\pi k/\Delta)n\Delta}
+:=e^{-\mathrm{i}\gamma_j n\Delta}e^{-2\pi\mathrm{i}kn}
+:=e^{-\mathrm{i}\gamma_j n\Delta}
+\),
+so all \(u_n\) remain unchanged, establishing the first part.
+\par
+If \(\Delta\ge \pi/T\), then \(2\pi/\Delta\le 2T\); taking \(\gamma=-T\) gives \(\gamma':=\gamma+2\pi/\Delta\in[-T,T]\),
+but the two are indistinguishable on the discrete samples, so lifting is not unique; hence no-aliasing requires \(\Delta<\pi/T\). \qedhere
+\end{proof}
+
+\begin{theorem}[Minimal completeness of finite sampling: necessity and generic sufficiency of \texorpdfstring{$2\kappa$}{2kappa}-th order spectral fingerprints]\label{thm:xi-scan-minimal-complete-2kappa}
+Under the setting of Theorem \ref{thm:xi-comoving-scan-hankel-rank-defect}, suppose the spectral points \(z_j\) are pairwise distinct.
+Then from the continuous samples
+\[
+\boxed{\;
+(u_0,u_1,\dots,u_{2\kappa-1})\;}
+\]
+one can uniquely recover \(\{(z_j,A_j)\}_{j=1}^{\kappa}\) (up to permutation), and hence, combined with the closed-form inversion of Theorem \ref{thm:xi-comoving-scan-exponential-spectral-separation}, uniquely determine
+\(\{(\gamma_j,\delta_j,m_j)\}_{j=1}^{\kappa}\).
+\par
+Conversely, if only a length-\((N+1)\) prefix sample \((u_0,\dots,u_{N})\) is given with \(N\le 2\kappa-2\),
+then there exist two distinct finite defect parameter sets (of the same defect degree \(\kappa\)) producing the same sample sequence of that length;
+therefore, under a general position assumption, \(2\kappa\) is the minimal complete sampling length.
+\end{theorem}
+
+\begin{proof}
+Since \(\mathrm{rank}(\mathsf H^{(\kappa-1)})=\kappa\) (Theorem \ref{thm:xi-comoving-scan-hankel-rank-defect}), the annihilating polynomial (Prony polynomial) of the Hankel linear system is uniquely determined at general position by a kernel relation of order \(\kappa\), so \(\{z_j\}\) (as roots of this polynomial) can be uniquely recovered from \(u_0,\dots,u_{2\kappa-1}\); subsequently \(A_j\) is uniquely determined by the Vandermonde system.
+Therefore \(\{(z_j,A_j)\}\) is unique, and then \((\delta_j,\gamma_j)\) are separated from \(|z_j|\) and \(\arg(z_j)\), and \(m_j\) is recovered from the amplitude relation of \eqref{eq:xi-comoving-scan-fourier}.
+\par
+Minimality follows from underdeterminacy of parameter versus observation dimensions: the map
+\(
+\{(z_j,A_j)\}_{j=1}^{\kappa}\mapsto (u_0,\dots,u_N)
+\)
+is generically underdetermined when \(N+1<2\kappa\) (unknown dimension strictly exceeds observation dimension), so its fibers generically have positive dimension, hence distinct parameters producing the same prefix sample exist.
+This shows that the \(2\kappa\)-th order sample cannot be further compressed at general position. \qedhere
+\end{proof}
+
+\begin{theorem}[Minimum separation \texorpdfstring{$\Rightarrow$}{=>} inversion stability: tomographic inversion is locally bi-Lipschitz under geometric spacing constraints]\label{thm:xi-scan-min-separation-local-bilipschitz}
+Under the no-aliasing aperture of Theorem \ref{thm:xi-comoving-scan-exponential-spectral-separation},
+suppose there exists a separation constant \(s>0\) such that \(|\gamma_j-\gamma_k|\ge s\) (\(j\ne k\)), and \(\delta_j\in[\delta_{\min},\delta_{\max}]\subset(0,\infty)\).
+Then the map from parameters to finite spectral fingerprints
+\[
+\{(\gamma_j,\delta_j,m_j)\}_{j=1}^{\kappa}\ \longmapsto\ \{u_n\}_{n=0}^{2\kappa-1}
+\]
+is locally bi-Lipschitz on the restricted parameter manifold: there exist constants \(C_1,C_2>0\) (depending only on \(\kappa,s,\delta_{\min},\delta_{\max}\) and the regime-fixed \(\Delta\)) such that for any two parameter sets \(\Theta,\widetilde\Theta\) satisfying the same separation constraint,
+\[
+C_1\,d(\Theta,\widetilde\Theta)
+\ \le\
+\max_{0\le n\le 2\kappa-1}|u_n(\Theta)-u_n(\widetilde\Theta)|
+\ \le\
+C_2\,d(\Theta,\widetilde\Theta),
+\]
+where \(d\) may be taken as the symmetrized optimal matching distance (ignoring point permutations):
+\[
+d(\Theta,\widetilde\Theta)
+:=
+\min_{\sigma\in S_\kappa}\max_{1\le j\le \kappa}\bigl(|\gamma_j-\widetilde\gamma_{\sigma(j)}|+|\delta_j-\widetilde\delta_{\sigma(j)}|\bigr).
+\]
+(In the regime semantics of this paper, \(m_j\) is multiplicity data and may be regarded as discretely known; if continuous perturbation of weights is allowed, the above distance needs an additional weight term.)
+\end{theorem}
+
+\begin{proof}
+By \eqref{eq:xi-comoving-scan-fourier}, the discrete samples satisfy the exponential sum representation \(u_n=\sum_{j=1}^{\kappa}A_j z_j^{\,n}\), where
+\(
+z_j=e^{-(1+\delta_j)\Delta}e^{-\mathrm{i}\gamma_j\Delta}
+\)
+and
+\(
+A_j=4\pi m_j\frac{\delta_j}{1+\delta_j}>0
+\).
+Under the separation and bounded offset constraints, the node set \(\{z_j\}\) lies in a compact set and is pairwise separated, so the corresponding Vandermonde/Prony linear system is locally invertible with a uniform bound on the condition number over this compact set.
+Therefore, local bi-Lipschitz continuity follows from analytic dependence and the inverse function theorem; the constant dependence is given by the aforementioned uniform condition number bound. \qedhere
+\end{proof}
+
+\begin{corollary}[Collision ill-posedness: defect merger causes inevitable blowup of the inversion condition number]\label{cor:xi-scan-collision-illposedness}
+Under the general position setting of Theorem \ref{thm:xi-scan-minimal-complete-2kappa}, denote the minimal spectral separation
+\[
+\boxed{\;
+\mathrm{sep}:=\min_{j\neq k}|z_j-z_k|\;}
+\]
+and let \(L\) denote the Lipschitz constant (error amplification factor) of any local inversion based on the finite sample \((u_n)_{n=0}^{2\kappa-1}\) (including the Prony/Hankel null-space method and its equivalent variants) at the given point.
+Then there exists a constant \(C_\kappa>0\) (depending only on \(\kappa\) and regime-fixed normalization) such that
+\[
+\boxed{\;
+L\ \ge\ C_\kappa\,\mathrm{sep}^{-(\kappa-1)}.\;}
+\]
+In particular, when two defects satisfy \(\delta_j=\delta_k\) and \(|\gamma_j-\gamma_k|\to 0\), one has \(\mathrm{sep}\asymp \Delta|\gamma_j-\gamma_k|\), so the error amplification factor of any stable inversion diverges at least as \(|\gamma_j-\gamma_k|^{-(\kappa-1)}\).
+\end{corollary}
+
+\begin{proof}
+At general position, \(\mathsf H^{(\kappa-1)}\) is full rank and admits the factorization
+\(
+\mathsf H^{(\kappa-1)}=V\,\mathrm{diag}(A_1,\dots,A_\kappa)\,V^{\mathsf T}
+\), where \(V\) is the \(\kappa\times\kappa\) Vandermonde matrix (see the proof of Theorem \ref{thm:xi-comoving-scan-hankel-rank-defect}).
+Therefore
+\[
+\det\mathsf H^{(\kappa-1)}=(\det V)^2\prod_{j=1}^{\kappa}A_j,
+\qquad
+|\det V|=\prod_{1\le j<k\le \kappa}|z_k-z_j|
+\ \le\ \mathrm{sep}^{\kappa(\kappa-1)/2}.
+\]
+Any equivalent inversion must solve the corresponding Hankel/Prony linear system in finitely many steps, and its stability lower bound is controlled by \(\|(\mathsf H^{(\kappa-1)})^{-1}\|\);
+since \(\|(\mathsf H^{(\kappa-1)})^{-1}\|\) is at least of the same order as \(\sigma_{\min}(\mathsf H^{(\kappa-1)})^{-1}\), and can be lower-bounded via the basic inequality between determinant and spectral norm, when \(\mathrm{sep}\downarrow 0\) the error amplification factor necessarily diverges with at least the power \(\mathrm{sep}^{-(\kappa-1)}\) (this exponent comes from the squared Vandermonde factor \((\det V)^2\)).
+The last statement follows from the first-order expansion of \(z_j=e^{-(1+\delta)\Delta}e^{-\mathrm{i}\gamma_j\Delta}\): when \(\delta\) is fixed and \(|\gamma_j-\gamma_k|\) is small, \(|e^{-\mathrm{i}\gamma_j\Delta}-e^{-\mathrm{i}\gamma_k\Delta}|\asymp \Delta|\gamma_j-\gamma_k|\), so \(\mathrm{sep}\asymp \Delta|\gamma_j-\gamma_k|\). \qedhere
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$L^1$--$L^2$--$L^\infty$}{L1-L2-Linfty} unified lower bound for the Cauchy--Poisson profile: defects necessarily produce detectable peaks]\label{prop:xi-scan-profile-lp-peak-witness}
+Let \(H\) be as defined in \eqref{eq:xi-comoving-scan-profile-H} (so \(H\ge 0\)).
+Then the strict identity holds
+\[
+\boxed{\;
+\|H\|_{L^1(\RR)}
+:=
+4\pi\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{1+\delta_j}\;}
+\]
+and there is a square-integral lower bound
+\[
+\boxed{\;
+\|H\|_{L^2(\RR)}^2
+\ \ge\
+\sum_{j=1}^{\kappa}8\pi\,m_j^{2}\,\frac{\delta_j^{2}}{(1+\delta_j)^{3}}\;}
+\]
+whence there exists \(x^\ast\in\RR\) such that
+\[
+\boxed{\;
+\|H\|_{L^\infty(\RR)}
+\ \ge\
+\frac{\|H\|_{L^2(\RR)}^2}{\|H\|_{L^1(\RR)}}
+\ \ge\
+2\cdot
+\frac{\sum_{j=1}^{\kappa} m_j^2\,\dfrac{\delta_j^2}{(1+\delta_j)^3}}
+{\sum_{j=1}^{\kappa} m_j\,\dfrac{\delta_j}{1+\delta_j}}\;}
+\]
+i.e., as long as the pointwise defects are nonempty, the scan profile necessarily exhibits a strictly detectable peak lower bound.
+\end{proposition}
+
+\begin{proof}
+For each peak, apply \(\int_{\RR}\frac{dx}{x^2+a^2}=\frac{\pi}{a}\) (\(a>0\)) with a translation to obtain the \(L^1\) identity.
+For the \(L^2\) quantity, use \(H\ge0\) so that
+\(
+\|H\|_2^2=\int_{\RR}H(x)^2dx\ge \sum_{j}\int_{\RR}(\text{the }j\text{-th peak})^2dx
+\),
+and
+\(
+\int_{\RR}\frac{dx}{(x^2+a^2)^2}=\frac{\pi}{2a^3}
+\)
+gives each peak's square integral as \(8\pi m_j^2 \delta_j^2/(1+\delta_j)^3\).
+Finally, by H\"older's inequality \(\|H\|_2^2\le \|H\|_\infty\|H\|_1\), the peak value lower bound is obtained. \qedhere
+\end{proof}
+
+\begin{corollary}[Two-sided auditable bounds on defect count: \texorpdfstring{$\kappa$}{kappa} is simultaneously pinched by mass and peak value]\label{cor:xi-scan-defect-degree-bounded-by-mass-peak}
+Let \(\delta_{\min}:=\min_j\delta_j\), \(\delta_{\max}:=\max_j\delta_j\).
+Then the total defect multiplicity satisfies two auditable upper bounds:
+\[
+\boxed{\;
+\kappa\ \le\ \frac{1+\delta_{\max}}{4\pi\,\delta_{\min}}\ \|H\|_{L^1(\RR)},\qquad
+\kappa\ \le\ \frac{(1+\delta_{\max})^{2}}{4\,\delta_{\min}}\ \|H\|_{L^\infty(\RR)}\;}
+\]
+\end{corollary}
+
+\begin{proof}
+From the \(L^1\) identity of Proposition \ref{prop:xi-scan-profile-lp-peak-witness} and using
+\(
+\frac{\delta_j}{1+\delta_j}\ge\frac{\delta_{\min}}{1+\delta_{\max}}
+\),
+the first bound follows.
+The second bound is from the pointwise estimate: for any \(j\),
+\[
+H(\gamma_j)\ge m_j\frac{4\delta_j}{(1+\delta_j)^2}\ge m_j\frac{4\delta_{\min}}{(1+\delta_{\max})^2},
+\]
+so \(m_j\le \frac{(1+\delta_{\max})^2}{4\delta_{\min}}\|H\|_\infty\); summing yields the conclusion. \qedhere
+\end{proof}
+
+\begin{proposition}[Lorentzian rigidity: amplitude--half-width algebraic constraint and verifiable consistency test for defect peaks]\label{prop:xi-lorentzian-rigidity-amplitude-halfwidth}
+For a single pointwise defect atom \((\gamma,\delta,m)\), the comoving profile kernel
+\[
+H_{(\gamma,\delta,m)}(x)
+:=m\,\frac{4\delta}{(x-\gamma)^2+(1+\delta)^2},
+\]
+has peak value \(A:=H_{(\gamma,\delta,m)}(\gamma)\) and half-width at half-maximum \(w\) (defined as the positive number satisfying \(H_{(\gamma,\delta,m)}(\gamma\pm w)=\tfrac12A\)) that satisfy the strict rigidity relation
+\[
+\boxed{\;
+w=1+\delta,\qquad
+\frac{A}{m}=\frac{4(w-1)}{w^2}\in(0,1]\; }.
+\]
+Therefore, in the finite defect mixture case, any local structure deemed to be an ``isolated separable peak'' by the regime must satisfy the above amplitude--half-width consistency; this provides an offline-verifiable geometric falsification criterion.
+Moreover, from \(a:=A/m\in(0,1]\) one obtains the closed-form inversion
+\[
+\boxed{\;
+w=\frac{2\bigl(1\mp\sqrt{1-a}\bigr)}{a},\qquad \delta=w-1.\;}
+\]
+Under the endpoint thin-layer/near-critical aperture (e.g., a priori \(\delta\le 1\), equivalently \(w\le 2\)), taking the ``\(-\)'' branch yields unique recovery.
+\end{proposition}
+
+\begin{proof}
+Direct computation gives
+\(
+A=m\frac{4\delta}{(1+\delta)^2}
+\).
+Setting \(H(\gamma\pm w)=\tfrac12A\) and simplifying yields
+\(
+(\gamma\pm w-\gamma)^2+(1+\delta)^2=2(1+\delta)^2
+\), so \(w=1+\delta\).
+Then setting \(a=A/m\) and substituting \(w=1+\delta\) gives the quadratic equation
+\(
+a w^2-4w+4=0
+\); solving yields the two displayed inversion branches; the branch selection is fixed by the a priori aperture (e.g., \(\delta\le 1\)). \qedhere
+\end{proof}
+
+\begin{proposition}[Spectral shift expression of the scan density: absolutization of the weighted inner function phase derivative]\label{prop:xi-scan-density-spectral-shift-phase-derivative}
+Under the finite pointwise defect aperture, define the upper half-plane inner function
+\[
+S_{\mathrm{HP}}(z)
+:=\prod_{j=1}^{\kappa}\left(\frac{z-\gamma_j-\mathrm{i}(1+\delta_j)}{z-\gamma_j+\mathrm{i}(1+\delta_j)}\right)^{m_j},
+\qquad \Im z>0.
+\]
+Then its boundary value satisfies \(|S_{\mathrm{HP}}(x)|=1\) (a.e. \(x\in\RR\)), and has the phase derivative formula
+\[
+\boxed{\;
+\frac{d}{dx}\arg S_{\mathrm{HP}}(x)
+=2\sum_{j=1}^{\kappa}m_j\,\frac{1+\delta_j}{(x-\gamma_j)^2+(1+\delta_j)^2}\; }.
+\]
+Simultaneously, the scan profile \(H\) (\eqref{eq:xi-comoving-scan-profile-H}) satisfies the strict weighted spectral shift representation
+\[
+\boxed{\;
+H(x)
+=\sum_{j=1}^{\kappa}m_j\,\frac{2\delta_j}{1+\delta_j}\,
+\frac{d}{dx}\arg\!\left(\frac{x-\gamma_j-\mathrm{i}(1+\delta_j)}{x-\gamma_j+\mathrm{i}(1+\delta_j)}\right)\; }.
+\]
+In particular, its total mass is
+\[
+\boxed{\;\int_{\RR}H(x)\,\dd x
+=4\pi\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{1+\delta_j}.\;}
+\]
+\end{proposition}
+
+\begin{proof}
+For a single factor \(s_{j}(z):=\frac{z-\gamma_j-\mathrm{i}(1+\delta_j)}{z-\gamma_j+\mathrm{i}(1+\delta_j)}\), on the real axis one has \(|s_j(x)|=1\) and
+\[
+\frac{d}{dx}\log s_j(x)
+=\frac{1}{x-\gamma_j-\mathrm{i}(1+\delta_j)}-\frac{1}{x-\gamma_j+\mathrm{i}(1+\delta_j)}
+=\frac{2\mathrm{i}(1+\delta_j)}{(x-\gamma_j)^2+(1+\delta_j)^2},
+\]
+so \(\frac{d}{dx}\arg s_j(x)=2\frac{1+\delta_j}{(x-\gamma_j)^2+(1+\delta_j)^2}\);
+multiplying by the multiplicity \(m_j\) and summing yields the phase derivative formula.
+The second formula follows from term-by-term comparison with the definition of \(H\).
+The total mass identity follows directly from \(\int_{\RR}\frac{dx}{(x-\gamma)^2+a^2}=\frac{\pi}{a}\). \qedhere
+\end{proof}
+
+\paragraph{Defect entropy functional: normalized area, coordinate invariance, and index--entropy decomposition}
+The above formula writes the scan profile as the weighted density of the phase flow, thereby naturally inducing an invariant that depends solely on defect degrees of freedom and is stable under coordinate normalization: the dimensionless defect entropy (or defect flux).
+
+\begin{definition}[Dimensionless defect entropy / defect flux]\label{def:xi-defect-entropy-functional}
+Under the finite pointwise defect aperture, define the defect entropy (dimensionless defect flux)
+\begin{equation}\label{eq:xi-defect-entropy-functional}
+\boxed{\;
+S_{\mathrm{def}}
+:=\frac{1}{4\pi}\int_{\RR}H(x)\,\dd x\;}
+\end{equation}
+where \(H\) is the comoving scan profile of \eqref{eq:xi-comoving-scan-profile-H}.
+\end{definition}
+
+\begin{proposition}[Closed-form expression and coordinate invariance of defect entropy]\label{prop:xi-defect-entropy-closed-form-invariant}
+Under the above setting,
+\begin{equation}\label{eq:xi-defect-entropy-closed-form}
+\boxed{\;
+S_{\mathrm{def}}
+=\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{1+\delta_j}\ \in\ (0,\kappa_{\mathrm{ind}}),\qquad
+\kappa_{\mathrm{ind}}:=\sum_{j=1}^{\kappa}m_j.\;}
+\end{equation}
+Moreover, under any M\"obius renormalization preserving the endpoint datum (e.g., changing the Cayley gauge, thereby uniformly rescaling the conformal square constant appearing everywhere; see Remark \ref{rem:dephys-cayley-scale-gauge-four}), the overall coefficient of \(H\) and the coordinate scale undergo a common rescaling, while the dimensionless combination \(S_{\mathrm{def}}\) in \eqref{eq:xi-defect-entropy-functional} remains invariant.
+\end{proposition}
+
+\begin{proof}
+By the total mass identity of Proposition \ref{prop:xi-scan-density-spectral-shift-phase-derivative},
+\(
+\int_{\RR}H(x)\,\dd x
+=4\pi\sum_{j}m_j\frac{\delta_j}{1+\delta_j}
+\),
+immediately yielding \eqref{eq:xi-defect-entropy-closed-form}.
+Each term satisfies \(0<\frac{\delta_j}{1+\delta_j}<1\), so \(0<S_{\mathrm{def}}<\sum_j m_j=\kappa_{\mathrm{ind}}\).
+Coordinate invariance follows from the fact that \(S_{\mathrm{def}}\) is given by the closed-form expression \(\sum_j m_j\frac{\delta_j}{1+\delta_j}\), and this ratio is precisely the dimensionless combination of endpoint Poisson/Busemann weights under the normalization gauge; any conformal rescaling preserving the endpoint datum only changes the ``unit choice'' (corresponding to the additive zero of \(b_{-1}=\log\mathcal{B}_{-1}\)) without altering the above dimensionless sum. \qedhere
+\end{proof}
+
+\begin{proposition}[Index--entropy decomposition: strict separation of integer defect index and continuous defect entropy]\label{prop:xi-index-entropy-decomposition}
+Let \(S_{\mathrm{HP}}\) be the upper half-plane inner function of Proposition \ref{prop:xi-scan-density-spectral-shift-phase-derivative}.
+Denote its boundary phase flow density (spectral shift density)
+\begin{equation}\label{eq:xi-spectral-shift-density-W}
+\boxed{\;
+W(x):=\frac{1}{2\pi}\frac{d}{dx}\arg S_{\mathrm{HP}}(x)\qquad(x\in\RR)\;}
+\end{equation}
+(taking any continuous branch; changing the branch does not affect the derivative).
+Then its total mass gives the integer defect index
+\begin{equation}\label{eq:xi-winding-index-kappa-ind}
+\boxed{\;
+\int_{\RR}W(x)\,\dd x=\kappa_{\mathrm{ind}}:=\sum_{j=1}^{\kappa}m_j\ \in\ \NN.\;}
+\end{equation}
+Moreover, the defect entropy satisfies the strict decomposition law
+\begin{equation}\label{eq:xi-defect-entropy-index-decomposition}
+\boxed{\;
+S_{\mathrm{def}}
+=\kappa_{\mathrm{ind}}-\sum_{j=1}^{\kappa}\frac{m_j}{1+\delta_j}\; }.
+\end{equation}
+Therefore, the defect information admissible by the regime naturally splits into two types: \(\kappa_{\mathrm{ind}}\) as a topological counting-type integer index (winding number invariant), and \(S_{\mathrm{def}}\) as an entropy potential varying continuously with \(\delta\) (visible attenuation).
+\end{proposition}
+
+\begin{proof}
+By Proposition \ref{prop:xi-scan-density-spectral-shift-phase-derivative},
+\[
+\frac{d}{dx}\arg S_{\mathrm{HP}}(x)
+=\sum_{j=1}^{\kappa}m_j\frac{d}{dx}\arg s_j(x),
+\qquad
+s_j(x)=\frac{x-\gamma_j-\mathrm{i}(1+\delta_j)}{x-\gamma_j+\mathrm{i}(1+\delta_j)}.
+\]
+The phase variation of \(\arg s_j(x)\) over \(x\in(-\infty,\infty)\) is exactly \(2\pi\) (oriented; taking absolute value gives \(2\pi\)), so
+\(
+\frac{1}{2\pi}\int_{\RR}\frac{d}{dx}\arg s_j(x)\,\dd x=1
+\);
+multiplying by multiplicities and summing yields \eqref{eq:xi-winding-index-kappa-ind}.
+\par
+Equation \eqref{eq:xi-defect-entropy-index-decomposition} follows from substituting
+\(
+\frac{\delta}{1+\delta}=1-\frac{1}{1+\delta}
+\)
+term by term into \eqref{eq:xi-defect-entropy-closed-form}. \qedhere
+\end{proof}
+
+\begin{corollary}[Normalized ``area law'' and the entropy collapse/saturation phase diagram]\label{cor:xi-defect-entropy-area-law-phase-diagram}
+Under the above setting,
+\[
+\boxed{\;
+S_{\mathrm{def}}
+=\int_{\RR}\frac{1}{4\pi}H(x)\,\dd x
+=\int_{\RR}\sum_{j=1}^{\kappa}\frac{\delta_j}{1+\delta_j}\,m_j\,
+\frac{1}{2\pi}\frac{d}{dx}\arg s_j(x)\,\dd x\;}
+\]
+so that \(S_{\mathrm{def}}\) may be viewed as the normalized area of a ``weighted spectral shift density.''
+Furthermore, the single-atom defect contribution is \(m\frac{\delta}{1+\delta}\), so the two endpoint limits of the thin layer and far from the thin layer give a strict two-phase diagram:
+\[
+\boxed{\;
+\delta\downarrow 0\ \Longrightarrow\ S_{\mathrm{def}}\downarrow 0,\qquad
+\delta\uparrow\infty\ \Longrightarrow\ S_{\mathrm{def}}\uparrow \kappa_{\mathrm{ind}}.\;}
+\]
+\end{corollary}
+
+\input{subsubsec__xi-horizon-spectral-measure-tomography__defect-entropy-hyperbolic-laws}
+
+\begin{theorem}[Double Herglotz residue ratio law: a \texorpdfstring{$\delta$}{delta}-identification mechanism without separation assumption]\label{thm:xi-double-herglotz-residue-ratio}
+Under the above setting, define
+\[
+M_H(z):=\int_{\RR}\frac{H(x)}{x-z}\,\dd x,
+\qquad
+M_P(z):=-2\mathrm{i}\,\frac{d}{dz}\log S_{\mathrm{HP}}(z),
+\qquad \Im z>0.
+\]
+Then both admit rational continuation on \(\CC\setminus\RR\), and at the lower half-plane poles
+\[
+z_j^-:=\gamma_j-\mathrm{i}(1+\delta_j)
+\]
+they share the same pole set; and the residues satisfy
+\[
+\operatorname*{Res}_{z=z_j^-} M_H(z)= -4\pi\,m_j\,\frac{\delta_j}{1+\delta_j},
+\qquad
+\operatorname*{Res}_{z=z_j^-} M_P(z)= 2\mathrm{i}\,m_j.
+\]
+Hence the strict residue ratio identification law holds:
+\[
+\boxed{\;
+\frac{\delta_j}{1+\delta_j}
+\ =\
+\frac{1}{2\pi}\left|\frac{\operatorname*{Res}_{z=z_j^-} M_H(z)}{\operatorname*{Res}_{z=z_j^-} M_P(z)}\right|\; }.
+\]
+This formula does not depend on the minimal separation of \(\{\gamma_j\}\): as long as the poles are distinct, \(\delta_j\) can be identified directly from the residues in an analytic sense;
+separation only affects numerical stability (see Corollary \ref{cor:xi-scan-collision-illposedness}).
+\end{theorem}
+
+\begin{proof}
+From \eqref{eq:xi-comoving-scan-profile-H}, write a single peak as
+\(
+H_{(\gamma,\delta,m)}(x)=m\,\frac{4\delta}{(x-\gamma)^2+w^2}
+\)
+(\(w=1+\delta\)); directly computing its Cauchy transform by the residue method gives
+\(
+\int_{\RR}\frac{H_{(\gamma,\delta,m)}(x)}{x-z}\dd x
+=-4\pi m\frac{\delta}{w}\cdot\frac{1}{z-(\gamma-\mathrm{i}w)}
+\),
+so \(M_H\) has a pole at \(z^-=\gamma-\mathrm{i}(1+\delta)\) with the stated residue.
+\par
+On the other hand,
+\(
+\frac{d}{dz}\log S_{\mathrm{HP}}(z)
+:=\sum_{j}m_j\left(\frac{1}{z-(\gamma_j+\mathrm{i}(1+\delta_j))}-\frac{1}{z-(\gamma_j-\mathrm{i}(1+\delta_j))}\right)
+\),
+so the residue at \(z_j^-\) is \(-m_j\), whence the residue of \(M_P\) is \(2\mathrm{i}m_j\).
+Substituting yields the residue ratio identification law. \qedhere
+\end{proof}
+
+\begin{corollary}[Complete reconstruction from a single profile: the comoving density \(H\) uniquely determines the pointwise defect multiset and its inner function encoding]\label{cor:xi-comoving-profile-complete-reconstruction}
+Under the finite pointwise defect aperture, given the comoving scan profile \(H\) (\eqref{eq:xi-comoving-scan-profile-H}), its Cauchy transform
+\(
+M_H(z)=\int_{\RR}\frac{H(x)}{x-z}\dd x
+\)
+admits rational continuation on \(\CC\setminus\RR\), and in the lower half-plane has pole set
+\(
+z_j^-=\gamma_j-\mathrm{i}(1+\delta_j)
+\)
+with closed-form residues (Theorem \ref{thm:xi-double-herglotz-residue-ratio}):
+\[
+\operatorname*{Res}_{z=z_j^-} M_H(z)= -4\pi\,m_j\,\frac{\delta_j}{1+\delta_j}.
+\]
+Therefore \(H\) uniquely determines the multiset \(\{(\gamma_j,\delta_j,m_j)\}_{j=1}^{\kappa}\) in the analytic sense:
+\(\gamma_j=\Re z_j^-\), \(\delta_j=-\Im z_j^- -1\) are given by the pole positions, and
+\begin{equation}\label{eq:xi-comoving-profile-recover-multiplicity-by-residue}
+\boxed{\;
+m_j
+=
+-\frac{1+\delta_j}{4\pi\,\delta_j}\operatorname*{Res}_{z=z_j^-} M_H(z)\ \in\ (0,\infty)\;}
+\end{equation}
+is uniquely recovered from the residue and \(\delta_j\).
+Consequently, the upper half-plane inner function encoding
+\[
+S_{\mathrm{HP}}(z)=\prod_{j=1}^{\kappa}\left(\frac{z-\gamma_j-\mathrm{i}(1+\delta_j)}{z-\gamma_j+\mathrm{i}(1+\delta_j)}\right)^{m_j}
+\]
+is also uniquely determined by \(H\) (with the unit modulus constant fixed by the normalization \(S_{\mathrm{HP}}(\infty)=1\)).
+Under the Cayley inverse image, the disk points
+\(
+a_j=\mathcal{C}(\gamma_j+\mathrm{i}\delta_j)\in\mathbb{D}
+\)
+are uniquely determined by \((\gamma_j,\delta_j)\); hence \(H\) is a complete boundary invariant in the ``pointwise defect'' sense.
+\end{corollary}
+
+\begin{corollary}[Integrality criterion for boundary reconstruction: multiplicity is locked by residue divisibility]\label{cor:xi-comoving-profile-integrality-test}
+Under the setting of Corollary \ref{cor:xi-comoving-profile-complete-reconstruction}, if one is given only \(H\) and requires it to originate from an \emph{integer multiplicity} pointwise defect mechanism (i.e., \(m_j\in\NN\)),
+then the necessary and sufficient condition is: the pole set of \(M_H\) satisfies \(\delta_j=-\Im z_j^- -1>0\), and for each pole \(z_j^-\),
+\[
+\boxed{\;
+-\frac{1+\delta_j}{4\pi\,\delta_j}\operatorname*{Res}_{z=z_j^-} M_H(z)\ \in\ \NN.\;}
+\]
+This condition is a purely analytic decidability criterion for ``whether boundary data can be produced by legitimate pointwise defects'': pole positions give continuous depth, while the divisibility of residues gives discrete multiplicity.
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:xi-comoving-profile-recover-multiplicity-by-residue}, the closed-form recovery of \(m_j\) is necessary; its membership in \(\NN\) is also clearly sufficient. \qedhere
+\end{proof}
+
+\begin{proposition}[Far-field moment expansion: tail coefficients of the scan profile give all algebraic moments of \texorpdfstring{$(\gamma,\delta)$}{(gamma,delta)}]\label{prop:xi-scan-far-field-moment-expansion}
+As \(|x|\to\infty\), the comoving scan profile \(H(x)\) admits the asymptotic expansion
+\[
+H(x)\sim \sum_{n\ge 0}\frac{M_n}{x^{n+2}},
+\]
+where the coefficients \(M_n\) are explicit algebraic moments of the defect parameters.
+The first two terms are
+\[
+\boxed{\;
+M_0=4\sum_{j=1}^{\kappa}m_j\delta_j,\qquad
+M_1=8\sum_{j=1}^{\kappa}m_j\delta_j\,\gamma_j\;}
+\]
+and in general, \(M_n\) can be written as a linear combination of \(\sum_j m_j\delta_j\) and \(\sum_j m_j\delta_j\,\gamma_j^k(1+\delta_j)^\ell\) (\(k+\ell\le n\)).
+Therefore, if one can estimate \(M_0,M_1,\dots,M_{N}\) with sufficient precision on a far-field interval, one obtains a sequence of auditable ``moment chain certificates'' that transcribe two-dimensional offline parameters into scalar algebraic invariants.
+\end{proposition}
+
+\begin{proof}
+Expand each single peak as \(|x|\to\infty\):
+\[
+\frac{4\delta}{(x-\gamma)^2+(1+\delta)^2}
+:=\frac{4\delta}{x^2}\cdot\frac{1}{1-\frac{2\gamma}{x}+\frac{\gamma^2+(1+\delta)^2}{x^2}},
+\]
+then perform a power series expansion of the bracketed term and sum term by term to obtain the \(x^{-(n+2)}\) coefficient as a polynomial in \(\gamma\) and \(1+\delta\).
+Aggregating over all peaks and weighting by multiplicity yields the conclusion; \(M_0,M_1\) are read off directly from the first two terms. \qedhere
+\end{proof}
+
+\begin{proposition}[Far-field moment--pole linkage: tail coefficients satisfy a minimal-order \(2\kappa\) linear recurrence]\label{prop:xi-far-field-moment-recursion-order-2kappa}
+Under the finite pointwise defect aperture, \(H\) is a real rational function and can be written as \(H(x)=P(x)/Q(x)\), where
+\[
+Q(x)=\prod_{j=1}^{\kappa}\bigl((x-\gamma_j)^2+(1+\delta_j)^2\bigr),
+\qquad \deg Q=2\kappa,\ \deg P\le 2\kappa-2.
+\]
+Let the far-field expansion be \(H(x)\sim\sum_{n\ge 0}\frac{M_n}{x^{n+2}}\) (Proposition \ref{prop:xi-scan-far-field-moment-expansion}), and define the reversed polynomial
+\begin{equation}\label{eq:xi-Qsharp-from-Q}
+\boxed{\;
+Q^\sharp(y):=y^{2\kappa}Q(1/y)=\sum_{r=0}^{2\kappa}q_r\,y^{r}\qquad(q_0=1).\;}
+\end{equation}
+Then the tail coefficients satisfy the strict recurrence
+\begin{equation}\label{eq:xi-far-field-moment-recursion}
+\boxed{\;
+\sum_{r=0}^{2\kappa} q_r\,M_{n+r}=0\qquad(\forall n\ge 0).\;}
+\end{equation}
+Moreover, when \(P,Q\) are coprime (equivalently, no pole cancellation in \(H\)), the minimal recurrence order of \eqref{eq:xi-far-field-moment-recursion} is exactly \(2\kappa\);
+therefore \(\kappa\) equals half the minimal recurrence order of the tail moment sequence, and \(Q\) (hence all \((\gamma_j,\delta_j)\)) can be completely recovered from a finite segment of \(\{M_n\}\) via Pad\'e/elimination (or equivalent linear algebra).
+\end{proposition}
+
+\begin{proof}
+Set \(y=1/x\) and let
+\(
+F(y):=y^{-2}H(1/y)=\sum_{n\ge 0}M_ny^n
+\).
+From \(H=P/Q\) one obtains
+\(
+y^{2\kappa-2}P(1/y)=Q^\sharp(y)\,F(y)
+\), where the left-hand side is a polynomial of degree at most \(2\kappa-2\).
+Hence all power series coefficients of \(Q^\sharp(y)F(y)\) at \(y^{2\kappa-1}\) and above are zero, yielding \eqref{eq:xi-far-field-moment-recursion}.
+If the minimal denominator degree of \(H\) is \(2\kappa\), then \(Q^\sharp\) is also minimal; hence the recurrence order cannot be further reduced. \qedhere
+\end{proof}
+
+\begin{proposition}[No-hair limit of Poisson coarse-graining: at large scale \texorpdfstring{$t$}{t}, only finitely many moment invariants remain]\label{prop:xi-poisson-coarsegraining-nohair}
+Define the low-order moments of the defect measure in the height direction:
+\[
+M_0^{\mathrm{def}}:=\sum_{j=1}^{\kappa}m_j\delta_j,\qquad
+M_1^{\mathrm{def}}:=\sum_{j=1}^{\kappa}m_j\delta_j\,\gamma_j,\qquad
+\bar\gamma:=\frac{M_1^{\mathrm{def}}}{M_0^{\mathrm{def}}}\quad(M_0^{\mathrm{def}}>0).
+\]
+Let the Poisson semigroup coarse-grained profile be
+\[
+G_t(x)
+:=\frac{1}{\pi}\sum_{j=1}^{\kappa}m_j\delta_j\,\frac{t}{(x-\gamma_j)^2+t^2},
+\qquad t>0.
+\]
+Then as \(t\to\infty\), the uniform asymptotic formula holds:
+\[
+\boxed{\;
+G_t(x)
+=\frac{M_0^{\mathrm{def}}}{\pi}\,\frac{t}{(x-\bar\gamma)^2+t^2}
+\ +\ O(t^{-2}),\;}
+\]
+where the remainder \(O(t^{-2})\) is uniform in \(x\in\RR\) and is controlled by the second central moment
+\(\sum_j m_j\delta_j(\gamma_j-\bar\gamma)^2\).
+Therefore, under large-scale coarse-graining, all pointwise defects inevitably degenerate within the regime visible domain into a single ``effective Lorentzian,'' whose distinguishable parameters are only the total mass \(M_0^{\mathrm{def}}\) and the centroid \(\bar\gamma\); higher-order geometric information is strictly suppressed to the \(t^{-2}\) level.
+\end{proposition}
+
+\begin{proof}
+Set \(w_j:=m_j\delta_j\) and let \(f_t(x;\gamma):=\frac{t}{(x-\gamma)^2+t^2}\).
+Taylor expand in \(\gamma\) about \(\bar\gamma\):
+\[
+f_t(x;\gamma_j)
+:=f_t(x;\bar\gamma)
++f_t'(x;\bar\gamma)(\gamma_j-\bar\gamma)
++\frac12 f_t''(x;\xi_j)(\gamma_j-\bar\gamma)^2
+\]
+where \(\xi_j\) lies between \(\gamma_j\) and \(\bar\gamma\).
+Taking the weighted sum and using \(\sum_j w_j(\gamma_j-\bar\gamma)=0\) to cancel the first-order term gives
+\[
+\sum_j w_j f_t(x;\gamma_j)
+:=M_0^{\mathrm{def}} f_t(x;\bar\gamma)
++\frac12\sum_j w_j f_t''(x;\xi_j)(\gamma_j-\bar\gamma)^2.
+\]
+For any \(t>0\), the uniform bound \(\sup_{x,\gamma}|f_t''(x;\gamma)|\lesssim t^{-3}\) holds, so the remainder is uniformly \(O(t^{-3})\), hence also \(O(t^{-2})\);
+the constant is controlled by the second central moment. Multiplying by \(1/\pi\) yields the conclusion. \qedhere
+\end{proof}
+
+\begin{proposition}[Unified linear lower bound for two types of certificates: Toeplitz order and scan coverage number]\label{prop:xi-toeplitz-vs-scan-linear-lowerbound}
+Fix an offset lower bound \(\delta\ge\delta_0>0\) and height window \(|\gamma|\le T\).
+If a regime-internal certificate is required to provide uniform detectability for any possible defect position, then:
+\begin{enumerate}
+  \item \textbf{(Linear threshold of scan coverage)} Since the half-width of each peak is \(1+\delta_j\ge 1+\delta_0\), any finite scan set \(\{x_0^{(k)}\}_{k=1}^{K}\subset[-T,T]\) that guarantees the existence of some \(k\) with \(|\gamma-x_0^{(k)}|\le 1+\delta_0\) for any \(\gamma\in[-T,T]\) must satisfy
+  \[
+  \boxed{\;K\ \gtrsim\ \frac{T}{1+\delta_0}\;}
+  \]
+  (the coverage number grows at least linearly).
+  \item \textbf{(Linear necessity of Toeplitz order)} Under the fixed chart (without external comoving addresses) Toeplitz--PSD aperture, the moment order required to uniformly exclude potential off-slice poles within the height window satisfies a stronger necessary lower bound (Corollary \ref{cor:xi-toeplitz-height-phi-calibration}); in particular, \(N=\Omega(T)\) is necessary.
+\end{enumerate}
+Therefore, both types of certificates grow at least linearly in terms of resource lower bounds; the distinction lies not in whether a lower bound exists, but in whether the ``comoving address'' is allowed to externalize the endpoint redshift compression as a coverage resource.
+\end{proposition}
+
+\begin{proof}
+Part (1) is direct counting of interval coverage: covering an interval of length \(2T\) with balls of radius \((1+\delta_0)\) requires \(\Omega(T/(1+\delta_0))\) balls.
+Part (2) follows immediately from Corollary \ref{cor:xi-toeplitz-height-phi-calibration}. \qedhere
+\end{proof}

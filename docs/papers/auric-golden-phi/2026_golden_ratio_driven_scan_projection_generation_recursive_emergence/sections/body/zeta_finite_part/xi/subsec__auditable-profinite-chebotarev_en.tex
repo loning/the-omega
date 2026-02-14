@@ -1,0 +1,296 @@
+\subsubsection{Auditable Profinite Chebotarev: Finite Data Certificates, Optimal Sampling, and Defect Limits}\label{subsec:auditable-profinite-chebotarev}
+
+This paragraph combines three previously established interfaces into a single ``finite \(m\)+finite \(n\)+finite \(N\)'' auditable certificate package:
+\begin{itemize}
+  \item \textbf{Dynamical tail term:} The Chebotarev exponential error at finite layers is controlled by the worst-case twisted spectral radius ratio \(\eta_m\) (the unified framework of Theorem \ref{thm:kernel-chebotarev-exp}; see also the mixing-scale remark in \ref{subsec:pom-order-bottleneck}).
+  \item \textbf{Finite sample term:} The total variation deviation of the folded output histogram \(\hat{\pi}_{m,N}\) from its true marginal \(\pi_m^{\mathrm{fold}}\) has a non-asymptotic confidence envelope (Section \ref{sec:experiments} and the object framework of Definition \ref{def:source-and-fold-output}).
+  \item \textbf{Defect term:} Given any marginal \(\pi\in\Delta(X_m)\), its maximum entropy lift \(\widetilde\pi\) is unique, and the defect scalar \(\kappa_m(\pi)=\mathbb{E}_\pi[\log d_m(X)]\) precisely quantifies the ``fiber degrees of freedom'' (Theorem \ref{thm:pom-maxent-lift} and Definition \ref{def:pom-kappa}).
+\end{itemize}
+
+\paragraph{Objects: cylinder at layer \(m\) and proportion of primitive orbits of length \(n\)}
+Fix a finite congruence layer \(G_m\) (e.g., \(G_m=(\ZZ/m)^d\) for a specific choice), and take a cylinder event \(C\subseteq G_m\).
+Let \(p_{n,g}\) denote the number of primitive orbits of length \(n\) whose Frobenius/congruence label falls in \(g\in G_m\) (counted by orbit), and write \(p_n=\sum_{g\in G_m}p_{n,g}\).
+Define the empirical proportion of the congruence cylinder
+\[
+\Pi_{n,m}(C):=\frac{\sum_{g\in C}p_{n,g}}{p_n}\ \in[0,1].
+\]
+
+\begin{theorem}[TV confidence envelope under a Markov source: pseudo-spectral gap framework]\label{thm:tv-envelope-markov}
+Let \(Y_t^{(m)}=\Fold_m(W_t^{(m)})\in X_m\) be the folded output process (Definition \ref{def:source-and-fold-output}), and assume \((Y_t^{(m)})\) is an irreducible aperiodic finite-state Markov chain.
+Denote its pseudo-spectral gap by \(\gamma_{\mathrm{ps}}^{(m)}\in(0,1]\); for the definition and the corresponding concentration inequality see \cite{Paulin2015MarkovConcentration}.
+Then for any \(\delta\in(0,1)\), there exists a fully explicit confidence radius function \(\eta(N,m,\delta)\) such that with probability at least \(1-\delta\),
+\[
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})
+\ \le\
+\frac12|X_m|\,\eta(N,m,\delta),
+\qquad
+\eta(N,m,\delta)
+:=\sqrt{\frac{2}{\gamma_{\mathrm{ps}}^{(m)}N}\log\frac{2|X_m|}{\delta}}.
+\]
+\end{theorem}
+
+\begin{theorem}[Auditable profinite Chebotarev certificate: finite \texorpdfstring{$(m,n,N)$}{(m,n,N)}]\label{thm:auditable-profinite-chebotarev-finite}
+Fix layer \(m\) and cylinder \(C\subseteq G_m\).
+Let the worst-case nontrivial twisted spectral radius ratio at this layer be
+\[
+\eta_m:=\max_{\chi\in\widehat{G_m}\setminus\{\chi_0\}}\frac{\rho(M_\chi)}{\rho(M)}\in(0,1]
+\]
+where \(\chi_0\) is the trivial character and \(M_\chi\) is the \(\chi\)-twisted channel matrix.
+Assume the uniform spectral gap hypothesis at this layer:
+\(
+\eta_m\le \lambda^{-1/2-\varepsilon}
+\),
+equivalently, for all \(\chi\ne\chi_0\) one has \(\rho(M_\chi)\le \lambda^{1/2-\varepsilon}\), where \(\lambda=\rho(M)\).
+Then there exists a constant \(K_1=K_1(m)\) (depending only on the error constants of nontrivial twisted channels in Theorem \ref{thm:kernel-chebotarev-exp}) such that for all \(n\ge 1\), the following deterministic tail bound holds:
+\[
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}.
+\]
+Furthermore, under Markov source observation, if the empirical readout is performed using \(\hat{\pi}_{m,N}\) in place of \(\pi_m^{\mathrm{fold}}\) for the same cylinder observable, then on the event of Theorem \ref{thm:tv-envelope-markov} there simultaneously holds
+\[
+\boxed{\;
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+K_2\cdot D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})
+\;}
+\]
+where \(K_2\) is the Lipschitz constant of the cylinder readout (indicator function or its bounded linear combination) with respect to TV; for indicator functions one may take \(K_2=2\), and in fact \(K_2=1\) suffices.
+Substituting Theorem \ref{thm:tv-envelope-markov} yields the fully explicit finite-data certificate
+\[
+\boxed{\;
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+K_2\cdot \frac12|X_m|\sqrt{\frac{2}{\gamma_{\mathrm{ps}}^{(m)}N}\log\frac{2|X_m|}{\delta}}
+\;}
+\]
+holding with probability at least \(1-\delta\).
+\end{theorem}
+
+\begin{proof}
+The deterministic tail term follows from the ``character decomposition + worst-case twisted exponential'' framework of Theorem \ref{thm:kernel-chebotarev-exp}: for each congruence class \(g\), the primitive count error is controlled by \(\max_{\chi\ne\chi_0}\rho(M_\chi)^n\); normalizing to the proportion \(\Pi_{n,m}(C)\) under the uniform spectral gap hypothesis yields the stated \(\lambda^{-(1/2+\varepsilon)n}\) exponential bound (absorbing constants into \(K_1\)).
+The second term is a triangle inequality combined with the expectation-difference bound for TV: for any bounded observable \(f\), one has \(|\mathbb{E}_p f-\mathbb{E}_q f|\le 2\|f\|_\infty D_{\mathrm{TV}}(p,q)\); taking \(\|f\|_\infty=1\) for cylinder indicator functions gives the choice of \(K_2\).
+The final step substitutes the explicit envelope from Theorem \ref{thm:tv-envelope-markov}. \qed
+\end{proof}
+
+\begin{corollary}[Optimal trade-off: logarithmic depth and quadratic sample cost frontier curve]\label{cor:auditable-profinite-chebotarev-tradeoff}
+Under the conditions of Theorem \ref{thm:auditable-profinite-chebotarev-finite}, given target precision \(\tau>0\) and confidence level \(\delta\in(0,1)\), balancing the two error terms (equal order) yields a ``frontier curve'':
+\[
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ \approx\
+K_2\cdot \frac12|X_m|\sqrt{\frac{2}{\gamma_{\mathrm{ps}}^{(m)}N}\log\frac{2|X_m|}{\delta}}.
+\]
+Solving gives
+\[
+\boxed{\;
+N\ \approx\
+\frac{K_2^2|X_m|^2}{2\gamma_{\mathrm{ps}}^{(m)}}\log\frac{2|X_m|}{\delta}\cdot
+\left(\frac{\lambda^{(1/2+\varepsilon)n}}{|G_m|}\right)^2
+\;}
+\]
+equivalently,
+\[
+\boxed{\;
+n\ \approx\
+\frac{1}{(1/2+\varepsilon)\log\lambda}\left(\log|G_m|+\frac12\log N+\mathrm{const}(m,\delta)\right).
+\;}
+\]
+Therefore, at fixed \((m,\delta)\), the required readout depth \(n\) grows only logarithmically with \(|G_m|\), while the sample size \(N\) undergoes quadratic amplification along \(\lambda^{(1/2+\varepsilon)n}\).
+\end{corollary}
+
+\begin{corollary}[Deterministic three-budget law: discrepancy \texorpdfstring{$\Rightarrow$}{=>} TV \texorpdfstring{$\Rightarrow$}{=>} Chebotarev]\label{cor:auditable-profinite-chebotarev-three-budget-deterministic}
+Under the uniform spectral gap hypothesis of Theorem \ref{thm:auditable-profinite-chebotarev-finite}, if the folded histogram \(\hat{\pi}_{m,N}\) comes from the push-forward of a rotational scan (Sturmian) model (phase samples \(x_t=\{x_0+t\alpha\}\)) at resolution \(m\), then for any cylinder \(C\subseteq G_m\) and any \(n,N\ge 1\), the following fully deterministic three-budget upper bound holds:
+\[
+\boxed{\;
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+K_2\,(m+1)\,D_N^*(\alpha;x_0)\;}
+\]
+where \(D_N^*(\alpha;x_0)\) is the star discrepancy (Section \ref{sec:statistical-stability}), and \(K_1=K_1(m)\), \(K_2\) have the same meaning as in Theorem \ref{thm:auditable-profinite-chebotarev-finite}.
+\end{corollary}
+\begin{proof}
+From the error decomposition (tail term \(+\) TV term) of Theorem \ref{thm:auditable-profinite-chebotarev-finite},
+\[
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+K_2\cdot D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}}).
+\]
+On the other hand, for the rotational scan model, part (7) of Theorem \ref{thm:fold-suite} gives the push-forward inequality
+\(
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\le (m+1)D_N^*(\alpha;x_0)
+\).
+Substituting yields the conclusion. \qed
+\end{proof}
+
+\begin{remark}[Transport-type audit quantity (\texorpdfstring{$W_1$}{W1}) and coordinate-covariant stability]\label{rem:auditable-profinite-chebotarev-w1-transport}
+Corollary \ref{cor:auditable-profinite-chebotarev-three-budget-deterministic} controls TV via star discrepancy \(D_N^*\), and thus naturally accommodates cylinder event (indicator function) readouts.
+When the readout kernel is Lipschitz in the phase variable, one may instead use the transport discrepancy
+\(
+\mathsf{T}_N(\alpha)=W_1(\mu_N,\lambda)
+\)
+to directly audit empirical mean errors:
+\[
+\left|\frac1N\sum_{t=0}^{N-1}f(x_t)-\int_0^1 f(x)\,dx\right|
+\le
+\mathrm{Lip}(f)\,\mathsf{T}_N(\alpha)
+\]
+(Theorem \ref{thm:kronecker-w1-lipschitz-readout}).
+This audit quantity satisfies explicit covariant rescaling under Lipschitz coordinate transformations:
+\(
+W_1(\Phi_\#\mu,\Phi_\#\nu)\le \mathrm{Lip}(\Phi)\,W_1(\mu,\nu)
+\)
+(Proposition \ref{prop:w1-lipschitz-pushforward}), and admits closed-form constants on continued fraction denominator ticks (Theorem \ref{thm:kronecker-w1-denominator-closed-form}).
+It can therefore serve as a transport-type error pillar orthogonal to the star discrepancy chain (see Appendix \ref{app:kronecker-w1-transport}).
+\end{remark}
+
+\begin{corollary}[\texorpdfstring{$(n,N)$}{(n,N)} balance law and triangle visibility domain]\label{cor:auditable-profinite-chebotarev-balance-triangle}
+Under the setting of Corollary \ref{cor:auditable-profinite-chebotarev-three-budget-deterministic}, given target error \(\tau>0\), if one selects \((n,N)\) such that
+\[
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}\ \le\ \frac{\tau}{2},
+\qquad
+(m+1)D_N^*(\alpha;x_0)\ \le\ \frac{\tau}{2K_2},
+\]
+then for any cylinder \(C\subseteq G_m\),
+\(
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|\le \tau
+\).
+In the ``most economical allocation'' sense, one balances the two error terms to the same order:
+\[
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ \approx\
+K_2\,(m+1)\,D_N^*(\alpha;x_0),
+\]
+thereby organizing the temporal axis \(n\) and the phase sample axis \(N\) into a single auditable budget law: the leading order of \(n\) is controlled by \(\log|G_m|\) and \(\log(1/\tau)\), while the leading order of \(N\) is controlled by the discrepancy decay law and the coefficient \((m+1)\).
+\par
+If one further adopts the scaled-diffusion visibility domain, see Conjecture \ref{conj:scaled-kernel-grh-diffusive}, then the two budgets may be simultaneously written as a ``visibility triangle domain'':
+\[
+\boxed{\;
+m\ \lesssim\ n^{1/2-\varepsilon_0},
+\qquad
+(m+1)D_N^*(\alpha;x_0)\ \lesssim\ \tau\; }.
+\]
+\end{corollary}
+
+\begin{theorem}[Visible limit of thermodynamic defect: TV/KL upper bound on fiber ambiguity]\label{thm:defect-limited-audit}
+Fix layer \(m\) and an arbitrary marginal distribution \(\pi\in\Delta(X_m)\), and let \(\widetilde\pi\) denote its fiber-uniform maximum entropy lift (Definition \ref{def:pom-maxent-lift}).
+Then for any lift \(\mu\in\Delta(\Omega_m)\) satisfying \((\Fold_m)_*\mu=\pi\), the following explicit KL upper bound holds:
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|\widetilde\pi)\ \le\ \kappa_m(\pi)
+\;}
+\]
+where \(\kappa_m(\pi)=\mathbb{E}_\pi[\log d_m(X)]\).
+Hence by Pinsker's inequality,
+\[
+\boxed{\;
+D_{\mathrm{TV}}(\mu,\widetilde\pi)\ \le\ \sqrt{\frac{\kappa_m(\pi)}{2}}.
+\;}
+\]
+Therefore, for any bounded observable \(f:\Omega_m\to\RR\), the systematic deviation of all lifts compatible with \(\pi\) in \(f\) relative to the maximum entropy lift satisfies
+\[
+\boxed{\;
+\bigl|\mathbb{E}_\mu[f]-\mathbb{E}_{\widetilde\pi}[f]\bigr|
+\ \le\ 2\|f\|_\infty\sqrt{\frac{\kappa_m(\pi)}{2}}.
+\;}
+\]
+This provides a purely internal ``auditable limit'' independent of the twisted spectral gap: as \(\kappa_m(\pi)\) increases, the folded marginal \(\pi\) alone cannot compress the error of any lift-level cylinder/congruence observable below the systematic scale \(\Theta(\sqrt{\kappa_m(\pi)})\).
+\end{theorem}
+
+\begin{proof}
+Decomposing by fibers: write \(\mu(a)=\pi(x)\mu(a\mid x)\) and \(\widetilde\pi(a)=\pi(x)\cdot \frac{1}{d_m(x)}\), where \(x=\Fold_m(a)\).
+Then
+\[
+D_{\mathrm{KL}}(\mu\|\widetilde\pi)
+:=\sum_{x\in X_m}\pi(x)\,D_{\mathrm{KL}}\!\left(\mu(\cdot\mid x)\ \Big\|\ \mathrm{Unif}\big(\Fold_m^{-1}(x)\big)\right).
+\]
+For any finite set \(S\) and its uniform distribution \(\mathrm{Unif}(S)\), one has \(D_{\mathrm{KL}}(q\|\mathrm{Unif}(S))\le \log|S|\), with equality if and only if \(q\) is a point mass.
+Applying this upper bound fiberwise and taking the \(\pi\)-expectation yields \(D_{\mathrm{KL}}(\mu\|\widetilde\pi)\le \mathbb{E}_\pi[\log d_m(X)]=\kappa_m(\pi)\).
+Pinsker's inequality and the expectation-difference bound are standard corollaries. \qed
+\end{proof}
+
+\paragraph{Prefix--resolution: four-term orthogonal error budget (terminal citable form)}
+To logically separate ``deepening the scan'' (temporal axis \(n\)) from ``increasing resolution/visibility domain'' (spatial axis \(m\)), the readout error must be decomposed along resource axes into mutually orthogonal budget terms.
+The following theorem combines the dynamical tail term, finite data calibration, fiber ambiguity, and the completeness gap of \(\mathsf{NULL}\) into a single auditable terminal assertion: it deliberately avoids intermediate derivations and presents only the final form that can directly enter main results.
+
+\begin{theorem}[Four-term orthogonal error decomposition for prefix readout (auditable version)]\label{thm:prefix-readout-orthogonal-error-decomposition}
+Fix layer \(m\) and a congruence/character cylinder event \(C\subseteq G_m\).
+Write \(\Pi_{n,m}(C):=\frac{\sum_{g\in C}p_{n,g}}{p_n}\) for the empirical proportion of primitive orbits of length \(n\) on \(C\).
+Under the uniform twisted spectral gap framework, write \(\lambda=\rho(M)\) and take \(\varepsilon>0\) such that for all nontrivial twisted channels \(\rho(M_\chi)\le \lambda^{1/2-\varepsilon}\) (i.e., the uniform spectral gap hypothesis of Theorem \ref{thm:auditable-profinite-chebotarev-finite}).
+Then there exists a constant \(K_1=K_1(m)\) such that for any \(n\ge 1\) the deterministic tail bound holds:
+\begin{equation}\label{eq:prefix-tail-term}
+\boxed{\;
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}\;}
+\end{equation}
+(dynamical tail term; see Theorem \ref{thm:auditable-profinite-chebotarev-finite}).
+\par
+If the folded output histogram \(\hat{\pi}_{m,N}\) is used for empirical calibration of the same cylinder readout, then for indicator readout (cylinder indicator function),
+\begin{equation}\label{eq:prefix-tail-plus-data}
+\boxed{\;
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\;}
+\end{equation}
+(finite data term; again see Theorem \ref{thm:auditable-profinite-chebotarev-finite}, taking \(K_2=1\)).
+Furthermore, if the folded output process is an irreducible aperiodic finite-state Markov chain whose non-reversible mixing is controlled by the pseudo-spectral gap \(\gamma_{\mathrm{ps}}^{(m)}\in(0,1]\), then for any \(\delta_{\mathrm{conf}}\in(0,1)\), with probability at least \(1-\delta_{\mathrm{conf}}\) the explicit confidence envelope holds:
+\begin{equation}\label{eq:prefix-data-envelope}
+\boxed{\;
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})
+\ \le\
+\frac12|X_m|\sqrt{\frac{2}{\gamma_{\mathrm{ps}}^{(m)}N}\log\frac{2|X_m|}{\delta_{\mathrm{conf}}}}\;}
+\end{equation}
+(Theorem \ref{thm:tv-envelope-markov}).
+\par
+Orthogonal to the above ``temporal--data'' two-axis error is the ``fiber ambiguity'' error: for any marginal distribution \(\pi\in\Delta(X_m)\), let \(\widetilde\pi\) be its fiber-uniform maximum entropy lift, and write
+\(
+\kappa_m(\pi):=\mathbb{E}_\pi[\log d_m(X)]
+\).
+Then for any lift \(\mu\in\Delta(\Omega_m)\) satisfying \((\Fold_m)_*\mu=\pi\),
+\begin{equation}\label{eq:prefix-fiber-term}
+\boxed{\;
+D_{\mathrm{TV}}(\mu,\widetilde\pi)\ \le\ \sqrt{\frac{\kappa_m(\pi)}{2}},
+\qquad
+\bigl|\mathbb{E}_\mu[f]-\mathbb{E}_{\widetilde\pi}[f]\bigr|
+\ \le\
+2\|f\|_\infty\sqrt{\frac{\kappa_m(\pi)}{2}}\;}
+\end{equation}
+(Theorem \ref{thm:defect-limited-audit}).
+\par
+Finally, ``\(\mathsf{NULL}\)'' represents a completeness gap rather than a numerical error: under the address-precedes-value semantics, it is equivalent to the structural absence of a certificate object at that address (Proposition \ref{prop:null-as-local-section-obstruction}).
+Under the unitary-slice zero audit framework, this gap can be auditably excluded by two types of back-end certificates: visible-degree-of-freedom stability (ACC-Rank/Hankel-rank stability) and prime-register quantile quota sufficiency; when both are simultaneously satisfied, the source of \(\mathsf{NULL}\) can be excluded within a given confidence framework, thereby compressing the completeness gap to the verification task of these two types of certificates (Proposition \ref{prop:xi-completeness-auditable-decomposition}).
+\par
+In summary, given target error threshold \(\tau>0\), if one selects \((m,n,N)\) such that
+\begin{equation}\label{eq:prefix-audit-budget-sufficient}
+\boxed{\;
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}\le \frac{\tau}{3},
+\qquad
+\frac12|X_m|\sqrt{\frac{2}{\gamma_{\mathrm{ps}}^{(m)}N}\log\frac{2|X_m|}{\delta_{\mathrm{conf}}}}\le \frac{\tau}{3},
+\qquad
+\sqrt{2\,\kappa_m(\pi_m^{\mathrm{fold}})}\le \frac{\tau}{3}\;}
+\end{equation}
+and simultaneously passes both the ACC-Rank and prime-register completeness certificates within the same confidence framework, then the ``prefix readout'' simultaneously obtains, in the audit sense, verifiable upper bounds on all four error terms: temporal tail, finite data, fiber ambiguity, and completeness (\(\mathsf{NULL}\)).
+These four terms are pairwise orthogonal along resource axes: increasing \(n\) only affects \eqref{eq:prefix-tail-term}; increasing \(N\) only affects \eqref{eq:prefix-data-envelope}; fiber ambiguity is controlled solely by \(\kappa_m\); and \(\mathsf{NULL}\) is controlled solely by back-end certificates.
+\end{theorem}
+
+\begin{corollary}[Auditable safe resolution and stopping law]\label{cor:prefix-audit-safe-resolution-stopping}
+Given target threshold \(\tau>0\) and marginal distribution \(\pi\in\Delta(X_m)\).
+Layer \(m\) is said to be \textbf{fiber-safe} at threshold \(\tau\) if
+\begin{equation}\label{eq:prefix-fiber-safe-condition}
+\boxed{\;\kappa_m(\pi)\le \frac{\tau^2}{18}\;}
+\end{equation}
+(equivalently, for all \(\|f\|_\infty\le 1\) and all compatible lifts \(\mu\), one has \(|\mathbb{E}_\mu f-\mathbb{E}_{\widetilde\pi}f|\le \tau/3\), cf.\ \eqref{eq:prefix-fiber-term}).
+\par
+Therefore, when \eqref{eq:prefix-fiber-safe-condition} holds, the fiber ambiguity term is necessarily compressed to within \(\tau/3\) of the total error budget; at that point, the benefit of further increasing scan depth \(n\) or sample size \(N\) is not blocked by the fiber term.
+Conversely, when \(\kappa_m(\pi)>\tau^2/18\), the uniform fiber upper bound given by Theorem \ref{thm:defect-limited-audit} itself already exceeds \(\tau/3\), so any strategy that merely increases \(n\) or \(N\) cannot in the audit sense compress this term below budget; to further reduce the total budget, one must either change the visibility domain to reduce \(\kappa_m\), or introduce additional orthogonal record axes and exclude the structural sources of \(\mathsf{NULL}\) via back-end certificates (Proposition \ref{prop:xi-completeness-auditable-decomposition}).
+\end{corollary}

@@ -1,0 +1,626 @@
+\section{Asymptotics of Fold Multiplicity and ``Insufficient Resolution''}\label{app:fold-multiplicity}
+
+The average fold multiplicity
+\[
+d_m=\frac{|\Omega_m|}{|X_m|}=\frac{2^m}{F_{m+2}}
+\]
+satisfies
+\[
+d_m\sim C\left(\frac{2}{\varphi}\right)^m,\quad C=\frac{\sqrt5}{\varphi^2}.
+\]
+Therefore, for a fixed window length $m$, observation compresses a large number of microstates into the same stable type; as $m$ increases, the number of stable types grows, but the number of microstates grows even faster, so that ``distinguishable detail'' is continuously folded away at finite resolution. This provides a mathematical formulation of ``regularity unreadability attributable to insufficient resolution'': unreadability corresponds to distinct microstates becoming indistinguishable after folding, while stable regularity corresponds to the recursive counting on $X_m$ and invariant distributions remaining auditable.
+
+\subsection{Fold Congruence and Finite-Resolution Semiring}
+To connect fold multiplicity with the finite-resolution arithmetic of Section~\ref{sec:emergent-arithmetic}, we present here the algebraic formulation of fold congruence.
+
+\begin{definition}[Fold congruence and value-modulo map]
+Let $\Omega_m:=\{0,1\}^m$, and define the fold congruence
+\[
+\omega\equiv_m\omega'\quad\Longleftrightarrow\quad\Fold_m(\omega)=\Fold_m(\omega').
+\]
+Set
+\[
+N(\omega):=\sum_{k=1}^m \omega_k F_{k+1},
+\qquad
+\pi_m(\omega):=N(\omega)\bmod F_{m+2}.
+\]
+and denote $w(r):=\pi_m(Z(r))\in X_m\subset\Omega_m$ ($0\le r\le F_{m+2}-1$).
+\end{definition}
+
+\begin{theorem}[Modular semiring representation of fold congruence]
+\label{thm:fold-congruence-mod-semirings}
+The map $\pi_m$ is well-defined on $\equiv_m$ and induces a bijection
+\[
+\overline\pi_m:\Omega_m/\!\equiv_m\;\longrightarrow\;\ZZ/(F_{m+2}\ZZ).
+\]
+Furthermore, if one defines on $\Omega_m/\!\equiv_m$
+\[
+[\omega]\,\boxplus_m\,[\eta]:=[w(\overline\pi_m([\omega])\!+\!\overline\pi_m([\eta])\bmod F_{m+2})],
+\]
+\[
+[\omega]\,\boxtimes_m\,[\eta]:=[w(\overline\pi_m([\omega])\,\overline\pi_m([\eta])\bmod F_{m+2})],
+\]
+then $\overline\pi_m$ yields a semiring isomorphism
+\[
+(\Omega_m/\!\equiv_m,\boxplus_m,\boxtimes_m)\cong\bigl(\ZZ/(F_{m+2}\ZZ),+,\times\bigr).
+\]
+\end{theorem}
+
+\textbf{Proof.}
+If $\omega\equiv_m\omega'$, then $\Fold_m(\omega)=\Fold_m(\omega')=:x\in X_m$.
+By Lemma~\ref{lem:zeckendorf-range-bijection}, $V_m(x)$ uniquely determines the residue class modulo $F_{m+2}$, and
+\(V_m(x)\equiv N(\omega)\equiv N(\omega')\pmod{F_{m+2}}\).
+Hence $\pi_m$ is well-defined on $\equiv_m$ and induces $\overline\pi_m$. Moreover, for any $r$, taking $w(r)\in X_m\subset\Omega_m$ yields
+\(\overline\pi_m([w(r)])=r\), so $\overline\pi_m$ is a bijection. By construction, $\overline\pi_m$ preserves addition and multiplication, hence is a semiring isomorphism. \qed
+
+\subsection{Multiplicity Spectrum and Variance--Energy Identity}
+We view the fold multiplicity as a class function on the modular ring and establish the precise correspondence between its $\ell^2$ energy and its spectrum.
+
+\begin{definition}[Multiplicity spectrum]
+For $r\in\ZZ/(F_{m+2}\ZZ)$, define the multiplicity profile
+\[
+d_m(r):=\bigl|\{\omega\in\Omega_m:\pi_m(\omega)=r\}\bigr|.
+\]
+Denote its discrete Fourier transform by
+\[
+\widehat d_m(k):=\sum_{r\in\ZZ/(F_{m+2}\ZZ)} d_m(r)\,e^{-2\pi i kr/F_{m+2}},
+\qquad k\in\ZZ/(F_{m+2}\ZZ).
+\]
+and denote the mean by
+\(
+\overline d_m:=\frac{1}{F_{m+2}}\sum_r d_m(r)=\frac{2^m}{F_{m+2}}.
+\)
+\end{definition}
+
+\begin{theorem}[Spectral representation of multiplicity energy and variance]
+\label{thm:fold-multiplicity-energy}
+Let $d_m(r)$ be as above. Then the following exact identity holds:
+\[
+\sum_{r} d_m(r)^2=\frac{1}{F_{m+2}}\sum_{k}|\widehat d_m(k)|^2,
+\]
+and the variance satisfies
+\[
+\frac{1}{F_{m+2}}\sum_r\bigl(d_m(r)-\overline d_m\bigr)^2
+=\frac{1}{F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2.
+\]
+where the $k=0$ term gives $\widehat d_m(0)=2^m$.
+\end{theorem}
+
+\textbf{Proof.}
+Applying the discrete Parseval identity on the finite abelian group $\ZZ/(F_{m+2}\ZZ)$ yields
+\(
+\sum_r d_m(r)^2=\frac{1}{F_{m+2}}\sum_k|\widehat d_m(k)|^2
+\).
+Moreover, $\widehat d_m(0)=\sum_r d_m(r)=|\Omega_m|=2^m$; substituting into
+\(
+\sum_r(d_m(r)-\overline d_m)^2=\sum_r d_m(r)^2-F_{m+2}\,\overline d_m^2
+\)
+and simplifying gives the result. \qed
+
+\begin{definition}[Fold collision probability]
+For independent uniform $\omega,\eta\in\Omega_m$, define
+\[
+\mathsf{Col}_m:=\mathbb{P}\bigl(\pi_m(\omega)=\pi_m(\eta)\bigr)
+=\frac{1}{2^{2m}}\sum_r d_m(r)^2.
+\]
+The quantity $\mathsf{Col}_m-1/F_{m+2}$ is called the uniformity gap of the fold, denoted by
+\[
+g_{\mathrm{col}}^2(m):=\mathsf{Col}_m-\frac{1}{F_{m+2}}.
+\]
+\end{definition}
+
+\begin{theorem}[Spectral identity for the collision probability]
+\label{thm:fold-collision-spectrum}
+The fold collision probability satisfies the exact identity
+\[
+\mathsf{Col}_m
+=\frac{1}{2^{2m}F_{m+2}}\sum_{k}|\widehat d_m(k)|^2
+=\frac{1}{F_{m+2}}+\frac{1}{2^{2m}F_{m+2}}\sum_{k\ne 0}|\widehat d_m(k)|^2.
+\]
+Therefore $\mathsf{Col}_m\ge 1/F_{m+2}$, with equality if and only if $d_m(r)\equiv 2^m/F_{m+2}$ is constant.
+\end{theorem}
+
+\textbf{Proof.}
+By the variance identity of Theorem~\ref{thm:fold-multiplicity-energy},
+\(
+\sum_r d_m(r)^2=F_{m+2}\,\overline d_m^2+\frac{1}{F_{m+2}}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\);
+substituting $\overline d_m=2^m/F_{m+2}$ yields the conclusion.
+
+\begin{theorem}[Multiplicative factorization of the multiplicity spectrum]
+\label{thm:fold-spectrum-factorization}
+For any $k\in\ZZ/(F_{m+2}\ZZ)$,
+\[
+\widehat d_m(k)=\prod_{j=1}^m\Bigl(1+e^{-2\pi i k F_{j+1}/F_{m+2}}\Bigr).
+\]
+Consequently,
+\[
+|\widehat d_m(k)|=2^m\prod_{j=1}^m\Bigl|\cos\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr|.
+\]
+\end{theorem}
+
+\textbf{Proof.}
+By definition,
+\(
+\widehat d_m(k)=\sum_{\omega\in\Omega_m}e^{-2\pi i k\pi_m(\omega)/F_{m+2}}
+\).
+Since $\pi_m(\omega)\equiv \sum_{j=1}^m \omega_j F_{j+1}\pmod{F_{m+2}}$, we have
+\[
+\widehat d_m(k)=\sum_{\omega\in\Omega_m}\prod_{j=1}^m e^{-2\pi i k\omega_j F_{j+1}/F_{m+2}}
+=\prod_{j=1}^m\bigl(1+e^{-2\pi i k F_{j+1}/F_{m+2}}\bigr).
+\]
+Using $1+e^{-i\theta}=e^{-i\theta/2}\,2\cos(\theta/2)$ yields the modulus formula. \qed
+
+\begin{corollary}[Multiplicative upper bound on the nontrivial spectrum]
+\label{cor:fold-spectrum-nontrivial-bound}
+For any $k\ne 0$,
+\[
+|\widehat d_m(k)|\le 2^m\prod_{j=1}^m\Bigl|\cos\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr|<2^m.
+\]
+Therefore the collision gap satisfies
+\[
+\mathsf{Col}_m-\frac{1}{F_{m+2}}=\frac{1}{2^{2m}F_{m+2}}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\le\frac{1}{F_{m+2}}\sum_{k\ne 0}\prod_{j=1}^m\cos^2\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr).
+\]
+\end{corollary}
+
+\begin{proposition}[Cyclic subset-sum counting and group algebra generating function identity]\label{prop:fold-multiplicity-group-algebra}
+Let \(M:=F_{m+2}\), and in the group algebra
+\(
+\CC[\ZZ/(M\ZZ)]\cong \CC[x]/(x^{M}-1)
+\)
+define the generating function
+\[
+D_m(x):=\sum_{r=0}^{M-1} d_m(r)\,x^r.
+\]
+Then the following strict identity holds:
+\[
+\boxed{\;
+D_m(x)\ \equiv\ \prod_{j=1}^{m}\left(1+x^{F_{j+1}}\right)\qquad(\mathrm{mod}\ x^{M}-1).\;}
+\]
+Hence \(d_m(r)\) can be interpreted as the count of subset sums from the set \(\{F_{2},F_{3},\dots,F_{m+1}\}\) falling into the residue class \(r\) modulo \(M\).
+\end{proposition}
+
+\begin{proof}
+Expanding the product in \(\CC[x]/(x^{M}-1)\) gives
+\[
+\prod_{j=1}^{m}\left(1+x^{F_{j+1}}\right)
+=\sum_{\omega\in\{0,1\}^m}x^{\sum_{j=1}^m \omega_jF_{j+1}}.
+\]
+Grouping by the residue class \(r\in\ZZ/(M\ZZ)\) of the exponent modulo \(M\), the coefficient is exactly
+\(
+\#\{\omega\in\Omega_m:\ \sum_j \omega_jF_{j+1}\equiv r\ (\mathrm{mod}\ M)\}
+=d_m(r)
+\)
+(Definition~\ref{thm:fold-congruence-mod-semirings}--definition of ``multiplicity profile''). Therefore this product equals the image of \(\sum_r d_m(r)x^r=D_m(x)\) in \(\CC[x]/(x^M-1)\), and the conclusion follows. \qed
+\end{proof}
+
+\begin{algorithm}[Full-vector FFT: computing \(d_m(\cdot)\) and \(\widehat d_m(\cdot)\) in one pass]\label{alg:fold-multiplicity-fft}
+Input: resolution \(m\). Set \(M:=F_{m+2}\) and let \(\omega:=e^{-2\pi i/M}\).
+\begin{enumerate}
+  \item Initialize the frequency-domain vector \(H(k)\equiv 1\) (\(k=0,1,\dots,M-1\)).
+  \item For \(j=1,2,\dots,m\), update iteratively:
+  \[
+  H(k)\leftarrow H(k)\cdot \bigl(1+\omega^{kF_{j+1}}\bigr),\qquad k=0,1,\dots,M-1.
+  \]
+  \item Output \(\widehat d_m(k):=H(k)\) (so that \(\widehat d_m(k)=D_m(\omega^k)\), consistent with Theorem~\ref{thm:fold-spectrum-factorization}).
+  \item Recover the profile via the inverse discrete Fourier transform:
+  \[
+  d_m(r)=\frac{1}{M}\sum_{k=0}^{M-1}\widehat d_m(k)\,\omega^{-kr},
+  \qquad r=0,1,\dots,M-1,
+  \]
+  thereby obtaining the full vector \(d_m(\cdot)\) in one pass (the inverse transform can be implemented via FFT in \(O(M\log M)\) time).
+\end{enumerate}
+This implementation compresses the cost from ``per-frequency \(k\) product sweep'' (cost \(O(m)\) per \(k\), total \(O(mM^2)\) for all frequencies) to ``full-vector pointwise multiplication chain \(O(mM)\) + one inverse FFT \(O(M\log M)\)''.
+\end{algorithm}
+
+\subsubsection{Critical Resonance Modes and Golden Ratio Constants}
+\label{subsubsec:fold-critical-resonance}
+
+Theorem~\ref{thm:fold-spectrum-factorization} expresses the nontrivial spectrum as a cosine product. This subsection identifies a family of ``bulk resonance modes'' located at
+\(
+k/F_{m+2}\to \varphi^{-2}
+\)
+whose normalized amplitude does not decay exponentially with $m$, but instead converges to a strictly positive limit constant \(C_\varphi\).
+
+\begin{definition}[Normalized spectral amplitude]\label{def:fold-normalized-amplitude}
+Define
+\[
+a_m(k):=\frac{|\widehat d_m(k)|}{2^m}
+=\prod_{j=1}^m\Bigl|\cos\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr|.
+\]
+Then by Theorem~\ref{thm:fold-collision-spectrum},
+\[
+\mathsf{Col}_m
+=\frac{1}{2^{2m}}\sum_r d_m(r)^2
+=\frac{1}{F_{m+2}}\sum_{k} a_m(k)^2.
+\]
+\end{definition}
+
+\begin{lemma}[d'Ocagne-type congruence compression identity]\label{lem:fold-resonance-docagne}
+For any integers \(m\ge 1\) and \(1\le j\le m\), the following polynomial identity holds:
+\[
+F_mF_{j+1}-F_{j-1}F_{m+2}=(-1)^{j+1}F_{m+1-j}.
+\]
+Consequently,
+\[
+F_mF_{j+1}\equiv (-1)^{j+1}F_{m+1-j}\pmod{F_{m+2}}.
+\]
+\end{lemma}
+
+\textbf{Proof.}
+Using \(F_{m+2}=F_{m+1}+F_m\) and \(F_{j+1}=F_j+F_{j-1}\), we have
+\[
+F_mF_{j+1}-F_{j-1}F_{m+2}
+=F_m(F_j+F_{j-1})-F_{j-1}(F_{m+1}+F_m)
+=F_mF_j-F_{m+1}F_{j-1}.
+\]
+By d'Ocagne's identity
+\(
+F_aF_{b+1}-F_{a+1}F_b=(-1)^bF_{a-b}
+\)
+with \(a=m\), \(b=j-1\), we obtain
+\(
+F_mF_j-F_{m+1}F_{j-1}=(-1)^{j-1}F_{m-(j-1)}=(-1)^{j+1}F_{m+1-j}
+\), and the conclusion follows. \qed
+
+\begin{theorem}[Critical resonance constant \(C_\varphi\)]\label{thm:fold-critical-resonance-constant}
+Let \(\varphi=(1+\sqrt5)/2\). Define the infinite product
+\[
+C_\varphi:=\prod_{n=2}^{\infty}\bigl|\cos(\pi \varphi^{-n})\bigr|.
+\]
+Then this product converges and \(C_\varphi>0\), and
+\[
+\lim_{m\to\infty}a_m(F_m)=\lim_{m\to\infty}a_m(F_{m+1})=C_\varphi.
+\]
+\end{theorem}
+
+\textbf{Proof.}
+By Definition~\ref{def:fold-normalized-amplitude},
+\(
+a_m(F_m)=\prod_{j=1}^m\bigl|\cos(\pi F_mF_{j+1}/F_{m+2})\bigr|
+\).
+Using Lemma~\ref{lem:fold-resonance-docagne} to compress the numerator modulo \(F_{m+2}\) to \(F_{m+1-j}\), and using the evenness of cosine, we obtain the exact representation
+\[
+a_m(F_m)=\prod_{j=1}^m\Bigl|\cos\Bigl(\pi \frac{F_{m+1-j}}{F_{m+2}}\Bigr)\Bigr|.
+\]
+Fixing \(j\) and letting \(m\to\infty\), the Binet asymptotic \(F_n=\varphi^n/\sqrt5+O(\varphi^{-n})\) gives
+\[
+\frac{F_{m+1-j}}{F_{m+2}}\to \varphi^{-(j+1)}.
+\]
+On the other hand, when \(j\) is sufficiently large, the right-hand side is sufficiently small, and there exists a constant \(C>0\) such that for all sufficiently small \(|x|\),
+\(
+|\log|\cos(\pi x)||\le Cx^2
+\).
+Since \(\sum_{j\ge 1}\varphi^{-2(j+1)}<\infty\), dominated convergence applies to the logarithmic series, yielding that the product limit exists and equals
+\[
+\prod_{j=1}^{\infty}\bigl|\cos(\pi \varphi^{-(j+1)})\bigr|
+=\prod_{n=2}^{\infty}\bigl|\cos(\pi \varphi^{-n})\bigr|
+=C_\varphi.
+\]
+Similarly, \(a_m(F_{m+1})=a_m(-F_m)=a_m(F_m)\) (since \(F_{m+1}\equiv -F_m\pmod{F_{m+2}}\) and \(\cos\) is even), so both converge to \(C_\varphi\). \qed
+
+\begin{corollary}[Irreducible constant-order uniformity gap]\label{cor:fold-critical-resonance-gap}
+The fold collision probability satisfies the lower bound
+\[
+\mathsf{Col}_m
+\ge
+\frac{1}{F_{m+2}}\Bigl(1+a_m(F_m)^2+a_m(F_{m+1})^2\Bigr).
+\]
+Hence
+\[
+\mathsf{Col}_m
+\ge \frac{1+2C_\varphi^2+o(1)}{F_{m+2}},
+\qquad
+\mathsf{Col}_m-\frac{1}{F_{m+2}}
+\ge \frac{2C_\varphi^2+o(1)}{F_{m+2}}.
+\]
+Therefore
+\[
+\boxed{\;
+\liminf_{m\to\infty}F_{m+2}\!\left(\mathsf{Col}_m-\frac{1}{F_{m+2}}\right)\ \ge\ 2C_\varphi^2\; }.
+\]
+The numerical approximation can be reproduced by the script \texttt{scripts/exp\_fold\_critical\_resonance\_constant.py}:
+\input{sections/generated/eq_fold_critical_resonance_constant_numeric}
+Thus the relative factor of \(\mathsf{Col}_m\) over the baseline \(1/F_{m+2}\) is at least \(1+2C_\varphi^2\).
+Furthermore, since \(F_{m+1}=F_{m+2}-F_m\) (i.e., \(F_{m+1}\equiv -F_m\ (\mathrm{mod}\ F_{m+2})\)), this constant-order gap is jointly produced by a pair of conjugate bulk resonance frequencies \(k=F_m\) and \(k=F_{m+1}\); their normalized frequencies respectively satisfy
+\[
+\frac{F_m}{F_{m+2}}\to \varphi^{-2},\qquad
+\frac{F_{m+1}}{F_{m+2}}\to 1-\varphi^{-2}=\varphi^{-1}.
+\]
+\end{corollary}
+
+\textbf{Proof.}
+By Definition~\ref{def:fold-normalized-amplitude},
+\[
+\mathsf{Col}_m=\frac{1}{F_{m+2}}\sum_{k}a_m(k)^2
+\ge \frac{1}{F_{m+2}}\Bigl(a_m(0)^2+a_m(F_m)^2+a_m(F_{m+1})^2\Bigr).
+\]
+where \(a_m(0)=|\widehat d_m(0)|/2^m=1\). Applying Theorem~\ref{thm:fold-critical-resonance-constant} yields the conclusion. \qed
+
+\begin{remark}[Non-decaying limits of edge frequencies]\label{rem:fold-edge-nondecay}
+The above resonance \(k=F_m\) satisfies \(k/F_{m+2}\to \varphi^{-2}\) and belongs to the bulk region of frequency space.
+On the other hand, for any fixed integer \(k\ge 1\) (independent of \(m\)), from
+\(
+a_m(k)=\prod_{j=1}^m|\cos(\pi kF_{j+1}/F_{m+2})|
+\)
+a rearrangement of the tail indices shows that \(a_m(k)\) also has a limit, which can be written as
+\[
+\lim_{m\to\infty}a_m(k)=\prod_{n=1}^{\infty}\bigl|\cos(\pi k\,\varphi^{-n})\bigr|=:C^{\mathrm{edge}}_\varphi(k).
+\]
+Therefore, to discuss ``uniform spectral gap / exponential decay,'' one must decompose frequency space into edge (e.g., \(k=o(F_{m+2})\)) and bulk (e.g., \(k\asymp F_{m+2}\)) classes; ``exponential decay for all \(k\ne 0\)'' across the full frequency range does not hold.
+\end{remark}
+
+\begin{theorem}[Parity-induced spectral zeros]
+\label{thm:fold-spectrum-parity-zero}
+If $F_{m+2}$ is even (equivalently, $m+2\equiv 0\pmod 3$), then
+\[
+\widehat d_m\Bigl(\frac{F_{m+2}}{2}\Bigr)=0.
+\]
+In other words, the frequency $k=F_{m+2}/2$ is a strict zero of the fold multiplicity spectrum.
+\end{theorem}
+
+\textbf{Proof.}
+By Theorem~\ref{thm:fold-spectrum-factorization},
+\[
+\widehat d_m\Bigl(\frac{F_{m+2}}{2}\Bigr)=\prod_{j=1}^m\Bigl(1+e^{-\pi i F_{j+1}}\Bigr)
+=\prod_{j=1}^m\bigl(1+(-1)^{F_{j+1}}\bigr).
+\]
+When $m+2\equiv 0\pmod 3$, $F_{m+2}$ is even, so $k=F_{m+2}/2$ is an integer. Moreover, the parity of Fibonacci numbers has period~3, so there exists $j$ such that $F_{j+1}$ is odd, giving the factor $1+(-1)^{F_{j+1}}=0$, and hence the product vanishes. \qed
+
+\begin{corollary}[Strict even--odd balance law]\label{cor:fold-even-odd-balance}
+When $m+2\equiv 0\pmod 3$,
+\[
+\#\{\omega\in\Omega_m:\ \pi_m(\omega)\equiv 0\ (\mathrm{mod}\ 2)\}
+=
+\#\{\omega\in\Omega_m:\ \pi_m(\omega)\equiv 1\ (\mathrm{mod}\ 2)\}
+=2^{m-1}.
+\]
+\end{corollary}
+
+\textbf{Proof.}
+Let $M=F_{m+2}$. When $M$ is even, the character at frequency $k=M/2$ is
+\(
+\chi_{M/2}(r)=e^{-2\pi i (M/2)r/M}=(-1)^r
+\).
+Therefore
+\[
+\widehat d_m(M/2)=\sum_{r=0}^{M-1} d_m(r)(-1)^r
+=E_m-O_m,
+\]
+where $E_m$ (resp.\ $O_m$) is the total count over even (resp.\ odd) residue classes. By Theorem~\ref{thm:fold-spectrum-parity-zero}, $\widehat d_m(M/2)=0$; combined with $E_m+O_m=|\Omega_m|=2^m$, the conclusion follows. \qed
+
+\begin{theorem}[Congruence criterion for spectral zeros]
+\label{thm:fold-spectrum-zero-criterion}
+For any $k\in\ZZ/(F_{m+2}\ZZ)$,
+\[
+\widehat d_m(k)=0\quad\Longleftrightarrow\quad\exists\,j\in\{1,\dots,m\}\ \text{s.t.}\ 2kF_{j+1}\equiv F_{m+2}\pmod{2F_{m+2}}.
+\]
+Equivalently, there exists $j$ such that
+\(
+e^{-2\pi i k F_{j+1}/F_{m+2}}=-1
+\).
+\end{theorem}
+
+\textbf{Proof.}
+By Theorem~\ref{thm:fold-spectrum-factorization},
+\(
+\widehat d_m(k)=\prod_{j=1}^m(1+e^{-2\pi i k F_{j+1}/F_{m+2}})
+\).
+The product vanishes if and only if there exists some $j$ such that the factor is zero, i.e.,
+\(
+e^{-2\pi i k F_{j+1}/F_{m+2}}=-1
+\).
+Rewriting this as a congruence condition yields the conclusion. \qed
+
+\begin{corollary}[Paired cancellation involution for spectral zeros]\label{cor:fold-spectrum-zero-involution}
+Let $M=F_{m+2}$. If there exists $j$ such that $e^{-2\pi i k F_{j+1}/M}=-1$, then the map
+\[
+\iota_j:\Omega_m\to\Omega_m,\qquad \iota_j(\omega)=\omega\oplus e_j
+\]
+is a fixed-point-free involution satisfying
+\[
+e^{-2\pi i k N(\omega)/M}+e^{-2\pi i k N(\iota_j(\omega))/M}=0.
+\]
+Therefore $\widehat d_m(k)=0$ can be witnessed pointwise by this paired cancellation.
+\end{corollary}
+
+\textbf{Proof.}
+Here $e_j$ denotes the standard basis vector with a $1$ in the $j$-th position, and $\oplus$ denotes componentwise XOR (flipping the $j$-th bit). For any $\omega$,
+\[
+N(\iota_j(\omega))=N(\omega)+(-1)^{\omega_j}F_{j+1},
+\]
+so that
+\[
+e^{-2\pi i k N(\iota_j(\omega))/M}
+=e^{-2\pi i k N(\omega)/M}\cdot e^{-2\pi i k(-1)^{\omega_j}F_{j+1}/M}.
+\]
+By assumption $e^{-2\pi i k F_{j+1}/M}=-1$; both sign choices yield the multiplier $-1$, so the two terms cancel; summing over $\Omega_m$ gives $\widehat d_m(k)=0$. \qed
+
+\begin{definition}[Spectral zero set]\label{def:fold-spectrum-zero-set}
+Let \(M:=F_{m+2}\), and define the spectral zero set
+\[
+\mathcal{Z}_m:=\{k\in\ZZ/(M\ZZ):\widehat d_m(k)=0\}.
+\]
+\end{definition}
+
+\begin{theorem}[Zero-set coset rigidity: the solution set depends only on \texorpdfstring{$\gcd$}{gcd}]\label{thm:fold-zero-coset-rigidity}
+Let \(M\) be even, \(w\in\ZZ\), and set \(g=\gcd(w,M)\).
+Then
+\[
+e^{-2\pi i k w/M}=-1
+\quad\Longleftrightarrow\quad
+wk\equiv \frac{M}{2}\pmod M.
+\]
+The above congruence is solvable in \(\ZZ/(M\ZZ)\) if and only if \(g\mid M/2\) (equivalently, \(M/g\) is even).
+When solvable, the complete solution set forms a rigid arithmetic coset
+\[
+S_g(M):=\left\{\frac{M}{2g}+t\frac{M}{g}\ \ (\bmod M):\ t=0,1,\dots,g-1\right\}.
+\]
+In particular, the solution set depends only on \(g=\gcd(w,M)\) and is independent of the details of \(w\) beyond this greatest common divisor.
+\end{theorem}
+
+\begin{proof}
+Write \(w=gw_1\), \(M=gM_1\) in reduced form so that \(\gcd(w_1,M_1)=1\).
+The congruence \(wk\equiv M/2\pmod M\) is solvable if and only if \(g\mid M/2\), i.e., \(M_1\) is even.
+Under this condition, dividing by \(g\) gives
+\[
+w_1k\equiv \frac{M_1}{2}\pmod{M_1}.
+\]
+Since \(\gcd(w_1,M_1)=1\), the inverse \(w_1^{-1}\pmod{M_1}\) exists. Moreover, \(M_1\) being even implies \(w_1\) must be odd, so \(w_1^{-1}\) is also odd.
+Therefore
+\[
+k\equiv \frac{M_1}{2}\,w_1^{-1}\equiv \frac{M_1}{2}\pmod{M_1},
+\]
+where the last step uses the fact that ``half-modulus times an odd number is congruent to the half-modulus under an even modulus'': \(\frac{M_1}{2}(2r+1)\equiv \frac{M_1}{2}\pmod{M_1}\).
+Lifting the solution modulo \(M_1\) back to modulo \(M=gM_1\) yields
+\[
+k=\frac{M_1}{2}+tM_1=\frac{M}{2g}+t\frac{M}{g},\qquad t=0,1,\dots,g-1,
+\]
+which is precisely the set \(S_g(M)\). \qed
+\end{proof}
+
+\begin{corollary}[Coset-union structure of the zero set under Fibonacci weights]\label{cor:fold-zero-coset-union}
+Let \(M:=F_{m+2}\). If \(M\) is even, then
+\[
+\mathcal{Z}_m=\bigcup_{j=1}^{m}\Bigl\{k\in\ZZ/(M\ZZ):e^{-2\pi i kF_{j+1}/M}=-1\Bigr\}
+=\bigcup_{\substack{1\le j\le m\\ g_j\mid M/2}} S_{g_j}(M),
+\qquad g_j:=\gcd(F_{j+1},M),
+\]
+and by the Fibonacci greatest common divisor identity \(\gcd(F_a,F_b)=F_{\gcd(a,b)}\),
+\[
+g_j=\gcd(F_{j+1},F_{m+2})=F_{\gcd(j+1,m+2)}.
+\]
+Therefore the possible cosets of \(\mathcal{Z}_m\) are controlled entirely by the divisor lattice of \(m+2\): \(g_j\) can only take values of the form \(F_d\) where \(d\mid(m+2)\) and \(d<m+2\).
+\end{corollary}
+
+\begin{proof}
+The first equality follows from Theorem~\ref{thm:fold-spectrum-factorization} and Theorem~\ref{thm:fold-spectrum-zero-criterion}: the product vanishes if and only if some factor \(1+e^{-2\pi i kF_{j+1}/M}\) vanishes.
+For each fixed \(j\), let \(w:=F_{j+1}\). Applying Theorem~\ref{thm:fold-zero-coset-rigidity}, the set of zeros for that factor is precisely \(S_{\gcd(w,M)}(M)\) (or the empty set when unsolvable), yielding the coset-union representation.
+The last identity follows from \(\gcd(F_a,F_b)=F_{\gcd(a,b)}\) with \(a=j+1\), \(b=m+2\). \qed
+\end{proof}
+
+\begin{corollary}[Divisor-driven spectral zero lower bound (auditable source of arithmetic modulation)]\label{cor:fold-zero-divisor-lb}
+Let \(M:=F_{m+2}\). If \(M\) is even, then for any index \(j\in\{1,\dots,m\}\) satisfying \(g_j\mid M/2\),
+\[
+\card{\mathcal{Z}_m}\ \ge\ \card{S_{g_j}(M)}\ =\ g_j.
+\]
+Furthermore, if there exists a proper divisor \(d\mid(m+2)\), \(d<m+2\), satisfying
+\[
+F_d\ \mid\ \frac{F_{m+2}}{2},
+\]
+then necessarily
+\[
+\boxed{\;\card{\mathcal{Z}_m}\ \ge\ F_d.\;}
+\]
+In particular, when \(m+2\equiv 0\pmod 3\), \(F_{m+2}\) is even (Theorem~\ref{thm:fold-spectrum-parity-zero}), so \(\card{\mathcal{Z}_m}\ge 1\); and when these divisibility conditions are triggered for certain \(d\), \(\card{\mathcal{Z}_m}\) exhibits deterministic ``increments'' driven by the divisor lattice of \((m+2)\).
+\end{corollary}
+\begin{proof}
+By Corollary~\ref{cor:fold-zero-coset-union}, when \(g_j\mid M/2\) we have \(S_{g_j}(M)\subseteq \mathcal{Z}_m\). Since \(\card{S_g(M)}=g\), it follows that \(\card{\mathcal{Z}_m}\ge g_j\).
+\par
+For the second part, take \(j=d-1\). Then by the identity in Corollary~\ref{cor:fold-zero-coset-union},
+\(
+g_{d-1}=\gcd(F_d,F_{m+2})=F_{\gcd(d,m+2)}=F_d
+\).
+If we further assume \(F_d\mid F_{m+2}/2\), then \(g_{d-1}\mid M/2\), so \(S_{F_d}(M)\subseteq \mathcal{Z}_m\), i.e., \(\card{\mathcal{Z}_m}\ge F_d\). \qed
+\end{proof}
+
+\begin{corollary}[Half-index large coset zero block for sixfold windows]\label{cor:fold-zero-half-index-multiple6}
+If \(m+2\equiv 0\pmod 6\), let \(d=(m+2)/2\). Then
+\[
+F_d\ \mid\ \frac{F_{m+2}}{2},
+\]
+and consequently
+\[
+\boxed{\;\card{\mathcal{Z}_m}\ \ge\ F_d=F_{(m+2)/2}.\;}
+\]
+More specifically, for \(j=d-1\) we have \(S_{F_d}(F_{m+2})\subseteq \mathcal{Z}_m\).
+\end{corollary}
+\begin{proof}
+Write \(m+2=2d\). Using the identity \(F_{2d}=F_d(F_{d-1}+F_{d+1})=:F_dL_d\) (where \(L_d\) is the Lucas number), it suffices to show that \(L_d\) is even when \(m+2\equiv 0\pmod 6\).
+Since \(m+2\equiv 0\pmod 6\) is equivalent to \(d\equiv 0\pmod 3\), and the Lucas recurrence \(L_{n+2}=L_{n+1}+L_n\) has period~3 modulo~2 (verifiable by direct computation), \(L_n\) is even when \(n\equiv 0\pmod 3\), so \(L_d\) is even.
+Hence \(F_d\mid F_{2d}/2=F_{m+2}/2\). By Corollary~\ref{cor:fold-zero-divisor-lb}, \(\card{\mathcal{Z}_m}\ge F_d\), and the witnessing coset is \(S_{g_{d-1}}(F_{m+2})=S_{F_d}(F_{m+2})\subseteq \mathcal{Z}_m\) (where \(g_{d-1}=F_d\) as shown in the proof of Corollary~\ref{cor:fold-zero-divisor-lb}). \qed
+\end{proof}
+
+\begin{remark}[Zero-set increment at the triaxial window: \texorpdfstring{$m=58$}{m=58} yields \texorpdfstring{$|\mathcal{Z}_{58}|=839415$}{|Z58|=839415}]\label{rem:fold-zero-lb-m58}
+Proposition~\ref{prop:crt-235-min-depth} gives the minimal triaxial window as \(m=58\), with \(m+2=60=2\cdot 30\).
+Using the identity
+\(
+F_{2n}=F_n(F_{n-1}+F_{n+1})
+=F_nL_n
+\)
+(where \(L_n\) is the Lucas number), we obtain
+\(
+F_{60}=F_{30}L_{30}
+\).
+Moreover, the parity of Lucas numbers satisfies: \(L_n\) is even when \(n\equiv 0\pmod 3\)
+(verifiable directly from the recurrence \(L_{n+2}=L_{n+1}+L_n\) modulo~2 with period~3),
+so \(L_{30}\) is even, which implies
+\(
+F_{30}\mid F_{60}/2
+\).
+Therefore, by Corollary~\ref{cor:fold-zero-divisor-lb} (with \(d=30\)),
+\[
+\boxed{\ |\mathcal{Z}_{58}|=839415\ \ (\ge F_{30}=832040)\ }.
+\]
+where the exact value is obtained by the union counting implementation of Remark~\ref{rem:fold-zero-coset-algorithm} (script \texttt{scripts/exp\_fold\_zero\_coset\_union\_count.py}).
+This result shows that the \emph{absolute size} of the zero set at the minimal triaxial window already reaches \( \asymp \varphi^{m/2}\),
+yet its relative density remains \(O(\varphi^{-m/2})\) (consistent with Theorem~\ref{thm:fold-zero-density-sparse}),
+so the true \(O(1/F_{m+2})\) scale of the collision gap still relies on the amplitude distribution rather than solely on zero-set counting (see Remark~\ref{rem:fold-zero-sparse-necessity}).
+\end{remark}
+
+\begin{lemma}[Coset intersection criterion and intersection size]\label{lem:fold-zero-coset-intersection}
+Let \(M\) be even and \(g,h\mid M/2\).
+Then
+\[
+S_g(M)\cap S_h(M)\neq\varnothing
+\quad\Longleftrightarrow\quad
+2\gcd(g,h)\mid (h-g).
+\]
+Moreover, whenever the intersection is nonempty,
+\[
+\card{S_g(M)\cap S_h(M)}=\gcd(g,h).
+\]
+\end{lemma}
+
+\begin{proof}
+By the construction in Theorem~\ref{thm:fold-zero-coset-rigidity}, the set \(S_g(M)\) can equivalently be written as a single congruence class
+\[
+S_g(M)=\left\{k\in\ZZ/(M\ZZ): k\equiv \frac{M}{2g}\pmod{M/g}\right\},
+\]
+and similarly
+\(
+S_h(M)=\{k: k\equiv M/(2h)\pmod{M/h}\}
+\).
+The compatibility condition for the two linear congruences is
+\[
+\frac{M}{2g}-\frac{M}{2h}\equiv 0\pmod{\gcd(M/g,M/h)}.
+\]
+Note that \(\gcd(M/g,M/h)=M/\mathrm{lcm}(g,h)=M\gcd(g,h)/(gh)\); dividing both sides by \(M/(gh)\) gives
+\[
+\frac{h-g}{2}\equiv 0\pmod{\gcd(g,h)},
+\]
+i.e., \(2\gcd(g,h)\mid(h-g)\), yielding the nonemptiness criterion.
+When compatible, the solution modulus is \(\mathrm{lcm}(M/g,M/h)=M/\gcd(g,h)\), so there are \(\gcd(g,h)\) solutions modulo \(M\), i.e., the intersection size is \(\gcd(g,h)\). \qed
+\end{proof}
+
+\begin{theorem}[Exponentially sparse upper bound on spectral zero density]\label{thm:fold-zero-density-sparse}
+Let \(M:=F_{m+2}\). If \(M\) is even, then the spectral zero set satisfies
+\[
+\frac{\card{\mathcal{Z}_m}}{M}
+\le
+\tau(m+2)\,\frac{F_{\lfloor (m+2)/2\rfloor}}{F_{m+2}}
+=\tau(m+2)\,O(\varphi^{-m/2}),
+\]
+where \(\tau(\cdot)\) denotes the divisor counting function.
+\end{theorem}
+
+\begin{proof}
+By Corollary~\ref{cor:fold-zero-coset-union}, \(\mathcal{Z}_m=\bigcup S_{g}(M)\), where \(g=F_d\) with \(d\mid(m+2),\,d<m+2\), so the number of candidate cosets is at most \(\tau(m+2)\).
+Moreover, \(d<m+2\Rightarrow d\le \lfloor (m+2)/2\rfloor\), so \(g\le F_{\lfloor (m+2)/2\rfloor}\).
+Using the trivial union bound and \(\card{S_g(M)}=g\) gives
+\[
+\card{\mathcal{Z}_m}\le \tau(m+2)\,F_{\lfloor (m+2)/2\rfloor}.
+\]
+Dividing both sides by \(M=F_{m+2}\) yields the result; the final bound follows from \(F_n\asymp \varphi^n\). \qed
+\end{proof}

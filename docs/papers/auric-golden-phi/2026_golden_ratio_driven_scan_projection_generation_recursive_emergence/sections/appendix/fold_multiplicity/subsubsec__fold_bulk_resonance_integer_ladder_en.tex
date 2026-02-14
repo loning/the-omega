@@ -1,0 +1,197 @@
+\subsubsection{Full Integer Extension of the Bulk Resonance Ladder and Measure-Theoretic Representation: From Constant Gap to Auditable Closure}\label{subsubsec:fold-bulk-resonance-integer-ladder}
+Without repeating the established results of \S\ref{subsubsec:fold-critical-resonance},
+this section extends the critical bulk resonance constant \(C_\varphi\) to a family of resonance ladder constants \(C_\varphi(u)\) parametrized by integers \(u\),
+and based on this derives progressively strengthened collision gap lower bounds together with a Fourier representation via Pisot--Bernoulli convolution;
+finally, a global limit conjecture targeted at auditable script verification is recorded.
+
+\paragraph{Integer-parametrized resonance limit constants}
+We continue to use the normalized amplitude \(a_m(k)\) from Definition~\ref{def:fold-normalized-amplitude} and the collision expression
+\(
+\mathsf{Col}_m=\frac{1}{F_{m+2}}\sum_{k}a_m(k)^2
+\).
+
+\begin{definition}[Integer resonance ladder constants]\label{def:fold-critical-resonance-ladder}
+Let \(\varphi=(1+\sqrt 5)/2\).
+For each integer \(u\in\ZZ\), define the infinite product
+\[
+C_\varphi(u):=\prod_{n=2}^{\infty}\bigl|\cos(\pi u\,\varphi^{-n})\bigr|.
+\]
+\end{definition}
+
+\begin{theorem}[Full integer extension of the bulk resonance ladder]\label{thm:fold-critical-resonance-constant-integer-ladder}
+For each fixed integer \(u\in\ZZ\), the product \(C_\varphi(u)\) converges and is strictly positive.
+Moreover, if for each \(m\ge 1\) one defines the congruence representative
+\[
+k_m(u)\equiv uF_m\pmod{F_{m+2}},
+\qquad 0\le k_m(u)<F_{m+2},
+\]
+then the limit exists:
+\[
+\lim_{m\to\infty}a_m\!\bigl(k_m(u)\bigr)=C_\varphi(u).
+\]
+Likewise,
+\[
+\lim_{m\to\infty}a_m\!\bigl(uF_{m+1}\bigr)=C_\varphi(u).
+\]
+When \(u=1\), the above reduces to Theorem~\ref{thm:fold-critical-resonance-constant} (i.e., \(C_\varphi(1)=C_\varphi\)).
+\end{theorem}
+
+\begin{proof}
+We first prove convergence and positivity of the product.
+For any fixed \(u\), when \(x\) is sufficiently small with \(|x|\le 1/4\), there exists a constant \(C>0\) such that
+\(
+|\log|\cos(\pi u x)||\le C u^2 x^2
+\).
+Taking \(x=\varphi^{-n}\) gives
+\(
+\sum_{n\ge 2}u^2\varphi^{-2n}<\infty
+\),
+so the logarithmic series converges absolutely, and hence the product converges.
+Since each factor is positive and converges to \(1\), the limit is strictly positive.
+\par
+Next we prove the amplitude limit.
+By Definition~\ref{def:fold-normalized-amplitude},
+\[
+a_m\!\bigl(k_m(u)\bigr)
+=\prod_{j=1}^{m}\Bigl|\cos\Bigl(\pi k_m(u)\,F_{j+1}/F_{m+2}\Bigr)\Bigr|.
+\]
+Substituting \(k_m(u)\equiv uF_m\ (\mathrm{mod}\ F_{m+2})\) and using the congruence compression of Lemma~\ref{lem:fold-resonance-docagne}
+\(
+F_mF_{j+1}\equiv (-1)^{j+1}F_{m+1-j}\ (\mathrm{mod}\ F_{m+2})
+\)
+together with the evenness of cosine, we obtain the exact representation
+\[
+a_m\!\bigl(k_m(u)\bigr)
+=\prod_{j=1}^{m}\Bigl|\cos\Bigl(\pi u\,\frac{F_{m+1-j}}{F_{m+2}}\Bigr)\Bigr|.
+\]
+Fixing \(j\) and letting \(m\to\infty\), the Binet asymptotic \(F_n=\varphi^n/\sqrt 5+O(\varphi^{-n})\) gives
+\(
+F_{m+1-j}/F_{m+2}\to \varphi^{-(j+1)}
+\).
+By the quadratic control established above, dominated convergence applies to the logarithmic series, so the product limit exists and equals
+\(
+\prod_{j=1}^{\infty}|\cos(\pi u\,\varphi^{-(j+1)})|
+=\prod_{n=2}^{\infty}|\cos(\pi u\,\varphi^{-n})|
+=C_\varphi(u)
+\).
+This establishes the first limit.
+\par
+Finally, since \(F_{m+1}\equiv -F_m\pmod{F_{m+2}}\) and cosine is even,
+\(
+a_m(uF_{m+1})=a_m(-uF_m)=a_m(uF_m)=a_m(k_m(u))
+\),
+so the second limit holds as well. \qed
+\end{proof}
+
+\paragraph{Progressive strengthening via finite resonance ladders: collision gap and maximum fiber bias}
+\begin{corollary}[Collision gap lower bound strengthened by finite resonance ladders]\label{cor:fold-collision-gap-resonance-ladder-U}
+For any fixed \(U\in\NN\), there exists \(m_0(U)\) such that for all \(m\ge m_0(U)\) the following deterministic lower bound holds:
+\[
+\mathsf{Col}_m
+\ge
+\frac{1}{F_{m+2}}
+\Bigl(1+2\sum_{u=1}^{U}a_m\!\bigl(k_m(u)\bigr)^2\Bigr).
+\]
+Consequently,
+\[
+\liminf_{m\to\infty}F_{m+2}\,\mathsf{Col}_m
+\ge
+1+2\sum_{u=1}^{U}C_\varphi(u)^2.
+\]
+\end{corollary}
+
+\begin{proof}
+By Definition~\ref{def:fold-normalized-amplitude},
+\(
+\mathsf{Col}_m=\frac{1}{F_{m+2}}\sum_{k}a_m(k)^2
+\).
+For fixed \(U\), when \(m\) is sufficiently large, \(\{k_m(u):1\le u\le U\}\) are pairwise distinct and all nonzero in \(\ZZ/(F_{m+2}\ZZ)\),
+and each \(k_m(u)\) and its negative \(-k_m(u)\) give distinct frequencies; extracting the subset \(\{0,\pm k_m(1),\dots,\pm k_m(U)\}\) from the sum yields the first inequality,
+with the coefficient \(2\) arising from combining via \(a_m(-k)=a_m(k)\).
+Letting \(m\to\infty\) and applying Theorem~\ref{thm:fold-critical-resonance-constant-integer-ladder} gives the second inequality. \qed
+\end{proof}
+
+\begin{corollary}[Multi-resonance \texorpdfstring{$L^\infty$}{L-infinity} bias family for the maximum fiber]\label{cor:fold-maxfiber-bias-resonance-ladder}
+Let \(M_m:=\max_r d_m(r)\) denote the maximum fiber and \(\overline d_m:=2^m/F_{m+2}\) the average fiber.
+Then for each fixed \(u\in\NN\), there exists \(m_0(u)\) such that for all \(m\ge m_0(u)\),
+\[
+M_m\ \ge\ \overline d_m\bigl(1+a_m(k_m(u))\bigr),
+\]
+and consequently
+\[
+\liminf_{m\to\infty}\frac{M_m}{\overline d_m}\ \ge\ 1+C_\varphi(u).
+\]
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:fold-max-fiber-fourier} (or the standard Fourier lower bound in its proof),
+\(
+M_m\ge \overline d_m+\frac{1}{F_{m+2}}\max_{k\ne 0}|\widehat d_m(k)|
+\).
+Therefore, for any specified frequency \(k\ne 0\),
+\(
+M_m\ge \overline d_m+\frac{1}{F_{m+2}}|\widehat d_m(k)|
+\).
+Taking \(k=k_m(u)\) and using \(a_m(k)=|\widehat d_m(k)|/2^m\) gives the first inequality;
+letting \(m\to\infty\) and applying Theorem~\ref{thm:fold-critical-resonance-constant-integer-ladder} gives the second. \qed
+\end{proof}
+
+\paragraph{Pisot--Bernoulli convolution representation: measure-theoretic formulation of resonance constants}
+\begin{theorem}[Fourier sampling representation via Pisot--Bernoulli convolution]\label{thm:fold-pisot-bernoulli-convolution-representation}
+Let \(q=\varphi^{-1}\in(0,1)\).
+Define the random series
+\[
+X=\sum_{n=2}^{\infty}\varepsilon_n q^n,
+\qquad
+\mathbb{P}(\varepsilon_n=1)=\mathbb{P}(\varepsilon_n=-1)=\tfrac12,
+\]
+and let \(\mu_q^{(2)}\) denote the distribution of \(X\) (a shifted version of the Bernoulli convolution with Pisot parameter, starting at index \(n=2\)).
+Then its Fourier--Stieltjes transform satisfies the product formula
+\[
+\widehat{\mu_q^{(2)}}(t)
+=\int_{\RR}e^{\mathrm{i}tx}\,d\mu_q^{(2)}(x)
+=\prod_{n=2}^{\infty}\cos(q^n t).
+\]
+Consequently, for all integers \(u\in\ZZ\),
+\[
+C_\varphi(u)=\Bigl|\widehat{\mu_q^{(2)}}(\pi u)\Bigr|.
+\]
+Moreover, the edge limit constants from \S\ref{subsubsec:fold-critical-resonance},
+\(
+C_\varphi^{\mathrm{edge}}(k)=\prod_{n=1}^{\infty}|\cos(\pi k\varphi^{-n})|
+\),
+can also be viewed as Fourier samples of the same Bernoulli convolution at arithmetic lattice points (differing only in the starting index).
+\end{theorem}
+
+\begin{proof}
+By independence and \(\mathbb{E}(e^{\mathrm{i}t\varepsilon_n q^n})=\cos(tq^n)\),
+\(
+\widehat{\mu_q^{(2)}}(t)=\prod_{n=2}^{\infty}\cos(q^n t)
+\).
+Setting \(t=\pi u\) and taking absolute values gives
+\(
+|\widehat{\mu_q^{(2)}}(\pi u)|=\prod_{n=2}^{\infty}|\cos(\pi u\varphi^{-n})|=C_\varphi(u)
+\).
+The final statement is a direct comparison of index shifts. \qed
+\end{proof}
+
+\paragraph{Auditable limit conjecture for the full resonance closure}
+\begin{conjecture}[Full resonance closure limit of the collision constant]\label{conj:fold-collision-constant-full-resonance-closure}
+Suppose the series
+\[
+\Sigma_\varphi:=1+2\sum_{u=1}^{\infty}C_\varphi(u)^2
+\qquad(\text{if convergent})
+\]
+converges.
+Then the conjecture asserts the existence of the limit
+\[
+\lim_{m\to\infty}F_{m+2}\,\mathsf{Col}_m=\Sigma_\varphi,
+\]
+and more strongly, the leading contribution is fully saturated by the arithmetic resonance closure \(\{\,k\equiv \pm uF_m\ (\mathrm{mod}\ F_{m+2})\,\}_{u\ge 1}\):
+the contribution from frequencies outside this closure to \(\sum_k a_m(k)^2\) is \(o(1)\).
+\end{conjecture}
+
+\begin{remark}[Reproducible numerical audit entry point]\label{rem:fold-sigma-phi-audit-pointer}
+Regarding the partial sums and convergence profile of \(\Sigma_\varphi\), this paper does not use empirical values as premises for reasoning in the main text;
+the numerical audit will be provided via script-generated JSON and \LaTeX\ snippets and integrated into the reproducible pipeline of this paper (see the overall caliber of \S\ref{sec:experiments}).
+\end{remark}

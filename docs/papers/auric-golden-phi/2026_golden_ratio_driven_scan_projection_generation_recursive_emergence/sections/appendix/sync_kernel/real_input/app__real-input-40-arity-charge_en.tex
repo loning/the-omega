@@ -1,0 +1,707 @@
+\subsubsection{Cohomological Non-Negativization of Arity-Charge, Density Upper Bound, and Zero-Charge Subsystem}\label{app:real-input-40-arity-charge}
+\paragraph{Overview}
+This subsection studies the arity-charge observable $\chi$ on the real input essential $20$-state core of Proposition \ref{prop:real-input-40-essential-20}.
+The main conclusions are: (\textup{i}) $\chi$ can be cohomologically gauged to an edge-wise $0/1$ indicator, so that $\chi(\gamma)\ge 0$ on closed orbits and the primitive generating function $P_n(q)$ contains no Laurent negative powers;
+(\textup{ii}) every primitive orbit satisfies the density upper bound $\chi(\gamma)\le \lfloor|\gamma|/2\rfloor$, and this bound is sharp;
+(\textup{iii}) the zero-charge stratum ($\chi(\gamma)=0$) induces a new SFT subsystem whose $\zeta$ and entropy admit low-degree algebraic closed forms;
+(\textup{iv}) the $\chi$-weighted pressure at $\theta\to+\infty$ has the exact asymptotic line $P_\chi(\theta)=\frac12\theta+\frac12\log 3+o(1)$, so that the endpoint slope is explicitly $1/2$ with intercept $\frac12\log 3$.
+
+\paragraph{Definition (arity-charge stratification and generating functions)}
+In the graph representation of the real input kernel, each allowed edge corresponds to one step of legal input $(x,y)\in\{0,1\}^2$ (subject to a one-step memory constraint) and carries edge labels $(d,e)$:
+where $d=x+y\in\{0,1,2\}$ and $e\in\{0,1\}$ is the synchronization kernel output bit.
+Define the one-step arity-charge
+\[
+\chi(s,d):=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
+\]
+and assign weight $q^{\chi}$ to each edge of the real input kernel, yielding the weighted matrix $M(q)$.
+Let
+\[
+c_n(q):=\operatorname{tr}(M(q)^n),
+\qquad
+\zeta(z,q)=\exp\!\left(\sum_{n\ge 1}\frac{c_n(q)}{n}z^n\right)
+=\frac{1}{\det(I-zM(q))}.
+\]
+Define the arity generating polynomial of primitive orbits
+\[
+P_n(q):=\sum_{\substack{\gamma\ \mathrm{primitive}\|\gamma|=n}} q^{\chi(\gamma)},
+\qquad
+\chi(\gamma):=\sum_{e\in\gamma}\chi(e),
+\]
+whose coefficients give stratified counts:
+\[
+[q^k]P_n(q)=\#\{\gamma:\ |\gamma|=n,\ \chi(\gamma)=k\}.
+\]
+The weighted M\"obius inversion then yields
+\[
+c_n(q)=\sum_{d\mid n} d\,P_d\!\left(q^{n/d}\right),
+\qquad
+P_n(q)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,c_{n/d}\!\left(q^{d}\right).
+\]
+
+\begin{theorem}[$0/1$ coboundary normal form of arity-charge (on the essential core)]\label{thm:real-input-40-arity-charge-coboundary}
+On the essential $20$-state core of Proposition \ref{prop:real-input-40-essential-20}, there exists a potential function
+\[
+V:\Sigma_{\mathrm{ess}}\to\{0,1\},
+\]
+such that for every allowed edge $e:u\to v$ on the core,
+\[
+g(e):=\chi(e)+V(v)-V(u)\in\{0,1\}.
+\]
+Moreover, one may take $V=1$ if and only if
+\[
+(s,p_x,p_y)\in\{(1\overline{1}2,1,1),(101,1,1),(002,1,1),(11\overline{1},0,0)\},
+\]
+with $V=0$ on all remaining core states.
+Equivalently, setting $\widehat V:=1-V$, then $\widehat V$ takes the value $0$ on the above $4$ core states and $1$ on the remaining $16$, and
+\(
+g(e)=\chi(e)+\widehat V(u)-\widehat V(v)\in\{0,1\}
+\)
+(fully consistent with the ``edge-wise non-negativization'' finite certificate caliber).
+Therefore, for any periodic orbit (in particular, primitive) $\gamma$,
+\[
+\chi(\gamma)=\sum_{e\in\gamma}\chi(e)=\sum_{e\in\gamma}g(e)\ge 0.
+\]
+\end{theorem}
+
+\begin{proof}
+The core graph is finite and $V$ has been given explicitly; verifying $g(e)\in\{0,1\}$ edge by edge yields a finite certificate.
+For any periodic orbit $\gamma$,
+\[
+\sum_{e\in\gamma}g(e)=\sum_{e\in\gamma}\chi(e)+\sum_{e:u\to v\in\gamma}\bigl(V(v)-V(u)\bigr)=\chi(\gamma),
+\]
+where the potential function terms telescope on a closed loop. Hence $\chi(\gamma)=\sum_{e\in\gamma}g(e)\ge 0$.
+The auditable reproduction script is
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}.
+\end{proof}
+
+\begin{corollary}[Prefix debt depth is $1$ (for any finite path)]\label{cor:real-input-40-arity-charge-prefix-debt}
+For any finite allowed path \(\pi:u\leadsto v\) on the essential core,
+\[
+\sum_{e\in\pi}\chi(e)\ge -1.
+\]
+Equivalently, if one records the partial sums \(S_n:=\sum_{k=0}^{n-1}\chi(e_k)\) along a legal orbit, then for all \(n\) one has \(S_n\ge -1\):
+the arity debt accumulates at most one unit at any time.
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:real-input-40-arity-charge-coboundary}, for each edge \(e:u\to v\) one has
+\(
+\chi(e)=g(e)-V(v)+V(u)
+\)
+with \(g(e)\in\{0,1\}\).
+Summing along the path \(\pi\) gives
+\[
+\sum_{e\in\pi}\chi(e)
+=\sum_{e\in\pi}g(e)+V(u)-V(v)\ \ge\ -1,
+\]
+where \(\sum g(e)\ge 0\) and \(V(u)-V(v)\ge -1\) since \(V\) takes values in \(\{0,1\}\).
+\end{proof}
+
+\begin{remark}[Notation alignment: $0/1$ binarization of \texorpdfstring{$\widetilde\chi$}{chi-tilde}]\label{rem:real-input-40-arity-charge-chi-tilde}
+Set \(H:=V\), and for each edge \(e:u\to v\) define
+\[
+\widetilde\chi(e):=\chi(e)+H(v)-H(u).
+\]
+Then by Theorem \ref{thm:real-input-40-arity-charge-coboundary}, \(\widetilde\chi(e)=g(e)\in\{0,1\}\).
+This formulation is fully equivalent to the ``edge-wise binarized coboundary normal form'': on closed orbits \(\sum\chi=\sum\widetilde\chi\ge 0\), and on finite paths the range of \(H\) directly yields the debt depth bound of Corollary \ref{cor:real-input-40-arity-charge-prefix-debt}.
+\end{remark}
+
+\begin{corollary}[(Originally numbered as Conjecture B.211) Non-negativity of closed orbit arity-charge]\label{cor:real-input-40-arity-charge-conjecture-b211}
+On the essential $20$-state core of Proposition \ref{prop:real-input-40-essential-20}, for any periodic orbit \(\gamma\) (in particular, primitive),
+\[
+\chi(\gamma)\ge 0.
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:real-input-40-arity-charge-coboundary}, for any periodic orbit \(\chi(\gamma)=\sum_{e\in\gamma}g(e)\ge 0\).
+Therefore the original Conjecture B.211 holds; moreover, Theorem \ref{thm:real-input-40-arity-charge-coboundary} provides a stronger edge-wise \(0/1\) coboundary certificate.
+\end{proof}
+
+\begin{corollary}[Collision count does not exceed output count (at the closed orbit level)]\label{cor:real-input-40-arity-charge-collision-le-output}
+On the same core, for any periodic orbit \(\gamma\) denote
+\[
+N_e(\gamma):=\sum_{k=1}^{|\gamma|} e_k,
+\qquad
+N_2(\gamma):=\sum_{k=1}^{|\gamma|}\mathbf{1}_{\{d_k=2\}}.
+\]
+Then \(N_2(\gamma)\le N_e(\gamma)\).
+\end{corollary}
+\begin{proof}
+From \(\chi=e-\mathbf{1}_{\{d=2\}}\) one obtains \(\chi(\gamma)=N_e(\gamma)-N_2(\gamma)\).
+Combining with Corollary \ref{cor:real-input-40-arity-charge-conjecture-b211}, \(\chi(\gamma)\ge 0\), yields \(N_2(\gamma)\le N_e(\gamma)\).
+\end{proof}
+
+\begin{remark}[Finite certificate (edge-by-edge verification table)]\label{rem:real-input-40-arity-charge-coboundary-audit}
+The above proof is strictly equivalent to a finite system of inequalities: verify $g(e)\in\{0,1\}$ edge by edge on the essential $20$-state core.
+The core has a total of $48$ allowed edges; Table \ref{tab:real-input-40-arity-charge-coboundary-audit} provides the complete $(d,e,\chi,V(u),V(v),g)$ for all edges, thus constituting a finite certificate that can be verified line by line.
+\end{remark}
+\input{sections/generated/tab_real_input_40_arity_charge_coboundary_audit}
+
+\begin{remark}[Pure counting semantics of arity-charge]\label{rem:real-input-40-arity-charge-pure-counting}
+From $\chi(\gamma)=\sum_{e\in\gamma}g(e)$ with $g(e)\in\{0,1\}$, for any periodic orbit $\gamma$ one has
+\[
+\chi(\gamma)=\#\{\,e\in\gamma:\ g(e)=1\,\},
+\]
+i.e., arity-charge (in the cohomological sense) equals the number of $g=1$ edges traversed along the orbit; consequently, no ``negative charge cancellation'' leading to Laurent negative powers can occur.
+\end{remark}
+
+\begin{corollary}[Primitive arity-charge polynomials have no Laurent negative powers]\label{cor:real-input-40-arity-charge-no-laurent}
+For all $n\ge 1$,
+\[
+P_n(q)\in\ZZ_{\ge 0}[q].
+\]
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:real-input-40-arity-charge-coboundary}, $\chi$ and $g$ have equal sums on periodic orbits, and $g$ takes values in $\{0,1\}$ on each edge.
+Therefore each primitive orbit weight $q^{\chi(\gamma)}=q^{g(\gamma)}$ is a non-negative integer power, and the coefficients are counts.
+\end{proof}
+
+\begin{theorem}[Density upper bound and sharpness of arity-charge]\label{thm:real-input-40-arity-charge-density-bound}
+For any primitive periodic orbit $\gamma$, let $n=|\gamma|$. Then
+\[
+0\le \chi(\gamma)\le \left\lfloor \frac{n}{2}\right\rfloor.
+\]
+Moreover, there exists a primitive orbit of length $2$ satisfying $\chi(\gamma)=1$, so the upper bound is attainable.
+\end{theorem}
+
+\begin{proof}
+By Theorem \ref{thm:real-input-40-arity-charge-coboundary}, take $g(e)\in\{0,1\}$ such that $\chi(\gamma)=\sum_{e\in\gamma}g(e)$.
+Set
+\[
+w(e):=1-2g(e)\in\{+1,-1\}.
+\]
+One may choose a potential function
+\[
+h:\Sigma_{\mathrm{ess}}\to\{-2,-1,0\}
+\]
+such that for every core edge $e:u\to v$,
+\[
+w(e)+h(u)-h(v)\ge 0.
+\]
+For example, the explicit assignment of $h$ on the $20$ core states may be taken as:
+\[
+\begin{aligned}
+h=-2&\quad\Longleftrightarrow\quad (s,m)\in\{(000,00),(001,01),(001,10)\},\\
+h=-1&\quad\Longleftrightarrow\quad (s,m)\in\{(000,01),(000,10),(010,00),(100,01),(100,10),(002,11),(11\overline{1},00)\},\\
+h=0&\quad\Longleftrightarrow\quad \text{all remaining core states}.
+\end{aligned}
+\]
+Verifying the above inequality edge by edge (there are $48$ edges in the core) yields a finite certificate.
+Summing along a closed orbit gives $\sum_{e\in\gamma}w(e)\ge 0$, i.e., $\sum_{e\in\gamma}g(e)\le n/2$, from which the upper bound follows.
+The attainability at length $2$ is witnessed in Table \ref{tab:real-input-40-rotation-polytope-vertices} by orbits with $\bar\chi=1/2$.
+\end{proof}
+
+\begin{remark}[Finite certificate (edge-by-edge verification table for the density upper bound potential)]\label{rem:real-input-40-arity-charge-density-audit}
+The proof of Theorem \ref{thm:real-input-40-arity-charge-density-bound} is equivalent to a finite system of inequalities:
+verify $w(e)+h(u)-h(v)\ge 0$ edge by edge on the essential $20$-state core (where $w=1-2g$, $g\in\{0,1\}$).
+Table \ref{tab:real-input-40-arity-charge-density-audit} provides the complete edge-by-edge verification values for all $48$ core edges, thus constituting an auditable finite certificate.
+\end{remark}
+\input{sections/generated/tab_real_input_40_arity_charge_density_audit}
+
+\begin{corollary}[Degree upper bound for primitive arity-charge polynomials]\label{cor:real-input-40-arity-charge-degree-bound}
+For all $n\ge 1$,
+\[
+\deg P_n(q)\le \left\lfloor \frac{n}{2}\right\rfloor.
+\]
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:real-input-40-arity-charge-density-bound}, every primitive orbit of length $n$ satisfies $\chi(\gamma)\le \lfloor n/2\rfloor$, so the highest power of $P_n(q)$ does not exceed this bound.
+\end{proof}
+
+\begin{corollary}[$g=1$ subgraph is acyclic and $M_1$ is nilpotent]\label{cor:real-input-40-arity-charge-g1-acyclic}
+The subgraph consisting solely of $g=1$ edges has no directed cycles; consequently $M_1$ is a nilpotent matrix.
+\end{corollary}
+
+\begin{proof}
+If there existed a closed orbit consisting entirely of $g=1$ edges, then $\chi(\gamma)=|\gamma|$, contradicting Theorem \ref{thm:real-input-40-arity-charge-density-bound}.
+\end{proof}
+
+By Corollary \ref{cor:real-input-40-arity-charge-no-laurent}, the first 12 terms are
+\[
+\begin{aligned}
+P_1(q)&=1,\\
+P_2(q)&=6q+1,\\
+P_3(q)&=4q,\\
+P_4(q)&=4q^2+6q+1,\\
+P_5(q)&=12q^2+9q+1,\\
+P_6(q)&=10q^3+22q^2+20q+1,\\
+P_7(q)&=36q^3+50q^2+29q+1,\\
+P_8(q)&=21q^4+92q^3+121q^2+40q+1,\\
+P_9(q)&=108q^4+232q^3+236q^2+54q+2,\\
+P_{10}(q)&=54q^5+334q^4+634q^3+410q^2+79q+2,\\
+P_{11}(q)&=324q^5+1000q^4+1444q^3+698q^2+113q+3,\\
+P_{12}(q)&=125q^6+1220q^5+2946q^4+3002q^3+1181q^2+158q+3.
+\end{aligned}
+\]
+Similarly, the script can continue to compute $P_{13}\sim P_{20}$ (alternatively, from the $z$-denominator degree of $10$ in Theorem \ref{thm:real-input-40-arity-charge-det-closed}, a linear recurrence for $c_n(q)$ can be derived, allowing all $P_n(q)$ to be recovered without further enumeration):
+\[
+\begin{aligned}
+P_{13}(q)&=972q^6+4064q^5+7680q^4+5926q^3+1976q^2+217q+5,\\
+P_{14}(q)&=330q^7+4258q^6+13034q^5+18163q^4+11498q^3+3172q^2+301q+6,\\
+P_{15}(q)&=2916q^7+15900q^6+37524q^5+40566q^4+21582q^3+5019q^2+419q+8,\\
+P_{16}(q)&=840q^8+14708q^7+55064q^6+98698q^5+87496q^4+39216q^3+7811q^2+582q+10,\\
+P_{17}(q)&=8748q^8+60464q^7+173008q^6+243394q^5+182100q^4+69271q^3+12107q^2+804q+14,\\
+P_{18}(q)&=2240q^9+49774q^8+225610q^7+496962q^6+575156q^5+365310q^4\\
+&\qquad\qquad+120040q^3+18505q^2+1110q+17,\\
+P_{19}(q)&=26244q^9+224608q^8+764008q^7+1334990q^6+1304974q^5+710658q^4\\
+&\qquad\qquad+204589q^3+28079q^2+1534q+24,\\
+P_{20}(q)&=5979q^{10}+166724q^9+899324q^8+2370202q^7+3413073q^6+2850282q^5\\
+&\qquad\qquad+1348139q^4+343237q^3+42187q^2+2121q+30.
+\end{aligned}
+\]
+Substituting $q=1$ recovers the unstratified primitive orbit counts $p_n=P_n(1)$. Numerical reproduction is provided by the script
+\path{scripts/exp_sync_kernel_real_input_40_arity.py}.
+
+\paragraph{Zero-charge dynamical subsystem (the $g=0$ skeleton)}
+By Theorem \ref{thm:real-input-40-arity-charge-coboundary}, applying the diagonal conjugation
+\(
+D(q):=\mathrm{diag}\bigl(q^{V(\cdot)}\bigr)
+\)
+to $M(q)$ ($q\neq 0$) gauges the edge weights $q^{\chi}$ to $q^{g}$: set
+\[
+\widetilde M(q):=D(q)^{-1}M(q)D(q),
+\qquad
+\widetilde M(q)=M_0+qM_1,
+\]
+where $M_0$ (resp.\ $M_1$) retains only the $g=0$ (resp.\ $g=1$) edges. Since $M(q)$ and $\widetilde M(q)$ are similar, their spectra and $\det(I-zM(q))$ coincide.
+
+\begin{proposition}[Closed form of $\zeta$ and growth rate for the zero-charge subsystem]\label{prop:real-input-40-arity-charge-zero-zeta}
+Let $M_0$ be the adjacency matrix obtained by retaining only $g=0$ edges on the essential core, and define
+\(
+\zeta_0(z):=\det(I-zM_0)^{-1}
+\).
+Then the explicit factorization and closed form (script-generated) are:
+\input{sections/generated/eq_real_input_40_arity_charge_zero_charge_zeta}
+where $\kappa>1$ is the unique positive real root of $\kappa^4-\kappa^3-1=0$, giving the exponential growth rate of zero-charge primitive orbits (entropy $\log\kappa$).
+\end{proposition}
+
+\begin{proof}
+The result follows by direct factorization of the finite-dimensional determinant of $M_0$; reproduction is available via the script
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}.
+\end{proof}
+
+\begin{proposition}[Abel/Mertens constants of the zero-charge subsystem]\label{prop:real-input-40-arity-charge-zero-constants}
+Denote $z_0=\kappa^{-1}$ and define the dominant pole constant
+\[
+C_0:=\lim_{z\to z_0}(1-\kappa z)\,\zeta_0(z).
+\]
+Following the same Abel finite part formalism as in \S\ref{app:real-input-40-finite-part}, set
+\[
+\log\mathfrak{M}_0:=\log C_0+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_0(z_0^m),
+\qquad
+\mathsf{M}_0:=\log\mathfrak{M}_0+\gamma.
+\]
+Then numerically
+\[
+C_0\approx 0.604848,\quad
+\log\mathfrak{M}_0\approx -1.385549,\quad
+\mathsf{M}_0\approx -0.808334,
+\qquad
+\mathfrak{M}_0\approx 0.2505.
+\]
+\end{proposition}
+
+\begin{corollary}[Minimum periodic average of \texorpdfstring{$\chi$}{chi} is $0$]\label{cor:real-input-40-arity-charge-min-average}
+There exists a periodic orbit $\gamma$ with $\chi(\gamma)=0$; therefore
+\[
+\min_{\gamma}\frac{\chi(\gamma)}{|\gamma|}=0,
+\]
+where the minimum is taken over periodic orbit classes.
+\end{corollary}
+
+\begin{proof}
+By the non-triviality of $\zeta_0$ in Proposition \ref{prop:real-input-40-arity-charge-zero-zeta}, the $M_0$ subgraph contains directed cycles, so there exist periodic orbits with $g=0$ at every step.
+Since Theorem \ref{thm:real-input-40-arity-charge-coboundary} gives $\chi(\gamma)=g(\gamma)$ on periodic orbits, $\chi(\gamma)=0$ is realizable.
+\end{proof}
+
+\paragraph{Complete closed form of the arity-charge weighted $\zeta(z,q)$: explicit bivariate denominator}
+For the arity-charge weight $M(q)$, the dynamical determinant on the essential core can be completely expressed in closed form (script-generated):
+\begin{theorem}[Bivariate determinant closed form and algebraic pressure (degree $7$)]\label{thm:real-input-40-arity-charge-det-closed}
+There is a factorization
+\input{sections/generated/eq_real_input_40_arity_charge_det_closed}
+where $Q_7(z,q)\in\ZZ[z,q]$. Thus when $q>0$, the Perron root $\lambda(q)=\rho(M(q))$ is the largest positive real root of $P_7(\Lambda,q)=0$,
+and hence the pressure function $\log\lambda(q)$ is an analytic algebraic curve branch (of degree $7$).
+\end{theorem}
+
+\begin{remark}[Consistency with the \texorpdfstring{$(z+1)(qz^2-1)\Delta_\chi$}{(z+1)(qz^2-1)Delta} notation]\label{rem:real-input-40-arity-charge-delta-chi}
+The factorization in Theorem \ref{thm:real-input-40-arity-charge-det-closed} is equivalent to the following notational convention: set
+\[
+\Delta_\chi(z,q):=-Q_7(z,q),
+\]
+then
+\[
+\boxed{\ \det(I-zM(q))=(z+1)(qz^2-1)\,\Delta_\chi(z,q)\ }.
+\]
+Moreover, the explicit expansion of \(\Delta_\chi\) can be written as
+\[
+\boxed{
+\begin{aligned}
+\Delta_\chi(z,q)
+={}&q^2z^7-4q^2z^6+4q^2z^5-6q^2z^4\\
+&-qz^7+3qz^6+qz^5+3qz^4-6qz^3+5qz^2\\
+&-z^5+z^4-z^2+2z-1.
+\end{aligned}}
+\]
+Therefore, after removing the trivial factors \((z+1)(qz^2-1)\), all non-trivial eigenvalues (the non-zero part) are governed by a single algebraic equation of degree \(7\), and the denominator contains no Laurent negative powers in \(q\) (\(\Delta_\chi\in\ZZ[z,q]\)).
+\end{remark}
+
+\begin{remark}[Explicit \texorpdfstring{$q$}{q}-cubic denominator]\label{rem:real-input-40-arity-charge-det-q-cubic}
+Let $\Delta(z,q):=\det(I-zM(q))$. By Theorem \ref{thm:real-input-40-arity-charge-det-closed}, $\Delta$ has degree $10$ in $z$ and exactly degree $3$ as a polynomial in $q$.
+Expanding in powers of $q$ yields a completely explicit closed form:
+\input{sections/generated/eq_real_input_40_arity_charge_det_q_cubic}
+Therefore $\zeta(z,q)=\Delta(z,q)^{-1}$ has a denominator of only cubic degree in $q$, and can be directly audited.
+\end{remark}
+
+\begin{remark}[Newton recurrence from the primitive spectrum to recover the denominator (data closure)]\label{rem:real-input-40-arity-charge-newton}
+Let
+\(
+D(z,q):=\det(I-zM(q))=\sum_{n\ge 0}d_n(q)z^n
+\) ($d_0(q)=1$).
+From
+\(
+\log D(z,q)=-\sum_{n\ge 1}\frac{c_n(q)}{n}z^n
+\)
+one obtains the Newton-type identity
+\[
+n\,d_n(q)=-\sum_{k=1}^n c_k(q)\,d_{n-k}(q)\qquad(n\ge 1),
+\]
+where $c_n(q)=\mathrm{tr}(M(q)^n)$ can be recovered from the primitive polynomials via
+\(
+c_n(q)=\sum_{d\mid n} d\,P_d\!\left(q^{n/d}\right)
+\).
+Therefore, the enumerated $P_1,\dots,P_{12}$ alone suffice to recover $d_1,\dots,d_{12}$,
+and one observes that $d_{11}(q)\equiv d_{12}(q)\equiv 0$ while $d_{10}(q)=q^2(q-1)\neq 0$,
+indicating that the effective degree of the denominator in $z$ is $10$ (degenerating to $9$ at $q=1$).
+Theorem \ref{thm:real-input-40-arity-charge-det-closed} provides the rigorous closed form and factorization of this closure.
+\end{remark}
+
+\begin{corollary}[Explicit spectral support \texorpdfstring{$\pm\sqrt q$}{+-sqrt(q)} and even-odd oscillation terms]\label{cor:real-input-40-arity-charge-sqrtq}
+From the factor $(1-qz^2)$ in Theorem \ref{thm:real-input-40-arity-charge-det-closed}, the spectrum of $M(q)$ contains for all $q$ two explicit eigenvalues
+\(
+\lambda_\pm(q)=\pm\sqrt q
+\).
+Therefore for all $n\ge 1$, the trace necessarily contains the fully explicit oscillatory contribution
+\[
+\mathrm{Tr}(M(q)^n)\ \text{contains}\
+\begin{cases}
+2q^{n/2},&n\ \text{even},\\
+0,&n\ \text{odd},
+\end{cases}
+\]
+superimposed with the term $(-1)^n$ from the fixed eigenvalue $\Lambda=-1$.
+\end{corollary}
+
+\begin{proposition}[Algebraic closed form of the dominant pole residue constant]\label{prop:real-input-40-arity-charge-residue}
+Let $\lambda(q)=\rho(M(q))$ and denote the dominant pole $z_\star(q)=\lambda(q)^{-1}$. Define the dominant pole residue constant
+\[
+C_{\mathrm{pole}}(q):=\lim_{z\to z_\star(q)}(1-\lambda(q)z)\,\zeta(z,q).
+\]
+Then by the characteristic polynomial factorization in Theorem \ref{thm:real-input-40-arity-charge-det-closed}, there is an explicit formula
+\[
+\boxed{\
+C_{\mathrm{pole}}(q)=\frac{\lambda(q)^9}{(\lambda(q)+1)(\lambda(q)^2-q)\,\partial_\Lambda P_7(\lambda(q),q)}\ }.
+\]
+Substituting $q=1$ immediately yields the unweighted closed form $C_{\mathrm{pole}}(1)=\frac{47+21\sqrt5}{100}$ (consistent with Appendix \ref{app:real-input-40-finite-part}).
+\end{proposition}
+
+\begin{remark}[Exact alignment with the unweighted determinant at $q=1$]
+Upon substituting $q=1$, the $z^7$ term of $Q_7(z,1)$ vanishes (corresponding to the degeneration of an extra zero eigenvalue), so the degree drops from $10$ to $9$,
+recovering the unweighted factorization of Appendix \ref{app:real-input-40-abel}:
+\(
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)
+\).
+\end{remark}
+
+For the arity class modulo $m$, define
+\[
+N_{n,r}^{(m)}:=\sum_{k\equiv r\ (\mathrm{mod}\ m)}[q^k]P_n(q),
+\qquad r=0,1,\dots,m-1,
+\]
+equivalently expressible via the discrete Fourier transform as
+\[
+N_{n,r}^{(m)}=\frac{1}{m}\sum_{j=0}^{m-1}\zeta_m^{-jr}P_n(\zeta_m^j),
+\qquad \zeta_m=e^{2\pi i/m}.
+\]
+\begin{theorem}[Parseval energy identity for the mean-square deviation of congruence classes]\label{thm:real-input-40-arity-charge-parseval-energy}
+Let \(p_n:=P_n(1)=\sum_{r=0}^{m-1}N_{n,r}^{(m)}\). Then the exact identity holds:
+\[
+\sum_{r=0}^{m-1}\left|N_{n,r}^{(m)}-\frac{p_n}{m}\right|^2
+=\frac{1}{m}\sum_{j=1}^{m-1}\left|P_n(\zeta_m^j)\right|^2.
+\]
+Equivalently, after normalization:
+\[
+\sum_{r=0}^{m-1}\left(\frac{N_{n,r}^{(m)}}{p_n}-\frac{1}{m}\right)^2
+=\frac{1}{m\,p_n^2}\sum_{j=1}^{m-1}\left|P_n(\zeta_m^j)\right|^2.
+\]
+\end{theorem}
+\begin{proof}
+Set \(f(r):=N_{n,r}^{(m)}\) (\(r=0,1,\dots,m-1\)) and define its discrete Fourier transform
+\[
+\widehat f(j):=\sum_{r=0}^{m-1} f(r)\,\zeta_m^{jr}\qquad (j=0,1,\dots,m-1).
+\]
+From \(P_n(q)=\sum_k [q^k]P_n(q)\,q^k\) and the definition of \(f(r)\), one has
+\[
+\widehat f(j)=\sum_{r=0}^{m-1}\sum_{k\equiv r\ (\mathrm{mod}\ m)}[q^k]P_n(q)\,\zeta_m^{jr}
+=\sum_k [q^k]P_n(q)\,\zeta_m^{jk}
+=P_n(\zeta_m^j).
+\]
+Also \(p_n=\sum_r f(r)=\widehat f(0)\). Let \(\overline f:=p_n/m\) and \(g(r):=f(r)-\overline f\).
+For \(j\neq 0\), \(\sum_{r=0}^{m-1}\overline f\,\zeta_m^{jr}=0\), so \(\widehat g(j)=\widehat f(j)=P_n(\zeta_m^j)\) (\(j=1,\dots,m-1\)), while \(\widehat g(0)=0\).
+Applying the discrete Parseval identity to \(g\) yields
+\[
+\sum_{r=0}^{m-1}|g(r)|^2=\frac{1}{m}\sum_{j=0}^{m-1}|\widehat g(j)|^2
+=\frac{1}{m}\sum_{j=1}^{m-1}|P_n(\zeta_m^j)|^2,
+\]
+which is the first identity. Dividing both sides by \(p_n^2\) gives the normalized form.
+\end{proof}
+For example, modulo $2$ (even/odd):
+\[
+N_{n,0}^{(2)}=\frac{P_n(1)+P_n(-1)}{2},\qquad
+N_{n,1}^{(2)}=\frac{P_n(1)-P_n(-1)}{2},
+\]
+and when $n=10$, $(N_{10,0}^{(2)},N_{10,1}^{(2)})=(746,767)$ with $P_{10}(-1)=-21$.
+For modulus $3$ and $n=10$:
+\[
+(N_{10,0}^{(3)},N_{10,1}^{(3)},N_{10,2}^{(3)})=(636,413,464).
+\]
+\paragraph{Theorem (twisted spectral radius decay and exponential equidistribution)}
+Denote
+\[
+\rho_m:=\max_{1\le j\le m-1}\rho(M(\zeta_m^j))<\lambda,
+\]
+and if for all non-trivial characters $q=\zeta_m^j\neq 1$ one has $\rho(M(q))<\lambda$, then
+\[
+N_{n,r}^{(m)}=\frac{1}{m}p_n+O\!\left(\frac{\rho_m^n}{n}\right),
+\qquad p_n=P_n(1),
+\]
+i.e., arity-charge is exponentially equidistributed modulo $m$.
+Since $\rho(M(\zeta_m^j))<\lambda$ (numerically
+$\rho(M(-1))\approx 1.8536691513$,
+$\rho(M(e^{2\pi i/3}))\approx 2.1262298605$,
+$\rho(M(e^{2\pi i/5}))\approx 2.4432116352$),
+the corresponding ratios are
+\[
+\frac{\rho(M(-1))}{\lambda}\approx 0.7080386119,\quad
+\frac{\rho(M(e^{2\pi i/3}))}{\lambda}\approx 0.8121475388,\quad
+\frac{\rho(M(e^{2\pi i/5}))}{\lambda}\approx 0.9332238029,
+\]
+so $P_n(\zeta_m^j)/\lambda^n$ is absolutely summable.
+\paragraph{Corollary (Dirichlet--Mertens constants)}
+Accordingly, define the non-trivial twisted constants
+\[
+C(\zeta_m^j):=\sum_{n\ge 1}\frac{P_n(\zeta_m^j)}{\lambda^n},
+\qquad j=1,\dots,m-1,
+\]
+and denote the Mertens-type constants for congruence classes
+\[
+C_{m,r}:=\frac{\mathsf{M}_{\varphi^2}}{m}
+\ +\ \frac{1}{m}\sum_{j=1}^{m-1}\zeta_m^{-jr}C(\zeta_m^j),
+\]
+then
+\[
+\sum_{n\le N}\frac{N_{n,r}^{(m)}}{\lambda^n}
+=\frac{1}{m}\log N+C_{m,r}+o(1).
+\]
+In particular, the Chebyshev bias of arity
+\[
+B_n:=P_n(-1)=N_{n,0}^{(2)}-N_{n,1}^{(2)}
+\]
+satisfies $B_n=O(\rho(M(-1))^n/n)$, hence
+\[
+\frac{B_n}{p_n}=O\!\left(\left(\frac{\rho(M(-1))}{\lambda}\right)^n\right),
+\qquad
+\frac{\rho(M(-1))}{\lambda}\approx 0.708038612.
+\]
+From this, define the Abel constants for arity classes
+\[
+\log\mathfrak{M}_r^{(m)}
+=\frac{1}{m}\log\mathfrak{M}
++\frac{1}{m}\sum_{j=1}^{m-1}\zeta_m^{-jr}\sum_{n\ge 1}\frac{P_n(\zeta_m^j)}{\lambda^n},
+\]
+with corresponding Mertens constants
+\[
+\mathsf{M}_r^{(m)}=\log\mathfrak{M}_r^{(m)}+\frac{\gamma}{m}.
+\]
+Numerically ($r=0,\dots,m-1$), with $C_{m,r}=\mathsf{M}_r^{(m)}$:
+\[
+C(-1)\approx -0.443931576503,
+\]
+\[
+C(e^{2\pi i/3})\approx -0.181857952811+0.789845233399\,i,
+\qquad
+C(e^{4\pi i/3})=\overline{C(e^{2\pi i/3})},
+\]
+\[
+\begin{aligned}
+C(e^{2\pi i/5})&\approx 0.464143283431+1.303687056130\,i,\\
+C(e^{4\pi i/5})&\approx -0.351306525075+0.483279158585\,i,\\
+C(e^{6\pi i/5})&=\overline{C(e^{4\pi i/5})},\qquad
+C(e^{8\pi i/5})=\overline{C(e^{2\pi i/5})}.
+\end{aligned}
+\]
+\[
+C_{2,\bullet}\approx(-0.060514286752,\ 0.383417289751),
+\]
+\[
+C_{3,\bullet}\approx(-0.013604300874,\ 0.624271010058,\ -0.287763706184),
+\]
+\[
+C_{5,\bullet}\approx(0.109715308488,\ 0.845214817130,\ -0.006378307837,\ -0.251708090802,\ -0.373940723979).
+\]
+\[
+\log\mathfrak{M}^{(2)}\approx(-0.349122119202,\ 0.094809457301),
+\quad
+\mathsf{M}^{(2)}\approx(-0.060514286752,\ 0.383417289751),
+\]
+\[
+\log\mathfrak{M}^{(3)}\approx(-0.206009522508,\ 0.431865788424,\ -0.480168927818),
+\]
+\[
+\mathsf{M}^{(3)}\approx(-0.013604300874,\ 0.624271010058,\ -0.287763706184),
+\]
+\[
+\begin{aligned}
+\log\mathfrak{M}^{(5)}&\approx\bigl(-0.005727824492,\ 0.729771684150,\\
+&\qquad -0.121821440818,\ -0.367151223782,\\
+&\qquad -0.489383856960\bigr),
+\end{aligned}
+\]
+\[
+\begin{aligned}
+\mathsf{M}^{(5)}&\approx\bigl(0.109715308488,\ 0.845214817130,\\
+&\qquad -0.006378307837,\ -0.251708090802,\\
+&\qquad -0.373940723979\bigr).
+\end{aligned}
+\]
+\paragraph{Computation protocol (auditable computation)}
+\begin{itemize}
+  \item Construct the real input kernel states $(s,x_{k-1},y_{k-1})$ and enumerate legal input pairs $(x,y)$;
+  \item Assign weights to obtain the twisted matrix $M(q)$, compute $a_n(q)=\mathrm{tr}(M(q)^n)$;
+  \item Extract $P_n(q)$ via M\"obius inversion and obtain $N_{n,r}^{(m)}$ by discrete Fourier inversion;
+  \item Compute $C(\omega_m^j)=\sum_{n\ge 1}P_n(\omega_m^j)/\lambda^n$ and
+  $M=\gamma+\sum_{n\ge 1}(p_n/\lambda^n-1/n)$;
+  \item Obtain the constant matrix from $C_{m,r}=\frac{M}{m}+\frac{1}{m}\sum_{j=1}^{m-1}\omega_m^{-jr}C(\omega_m^j)$.
+\end{itemize}
+Numerical reproduction is provided by the script \path{scripts/exp_sync_kernel_real_input_40_arity.py}.
+As the raw spectral counts for arity classes, the first $10$ terms of $N_{n,r}^{(m)}$ are
+\[
+N_{n,0}^{(2)}=(1,1,0,5,13,23,51,143,346,746),\quad
+N_{n,1}^{(2)}=(0,6,4,6,9,30,65,132,286,767),
+\]
+\[
+N_{n,0}^{(3)}=(1,1,0,1,1,11,37,93,234,636),\quad
+N_{n,1}^{(3)}=(0,6,4,6,9,20,29,61,162,413),
+\]
+\[
+N_{n,2}^{(3)}=(0,0,0,4,12,22,50,121,236,464),
+\]
+\[
+N_{n,0}^{(5)}=(1,1,0,1,1,1,1,1,2,56),\quad
+N_{n,1}^{(5)}=(0,6,4,6,9,20,29,40,54,79),
+\]
+\[
+N_{n,2}^{(5)}=(0,0,0,4,12,22,50,121,236,410),\quad
+N_{n,3}^{(5)}=(0,0,0,0,0,10,36,92,232,634),
+\]
+\[
+N_{n,4}^{(5)}=(0,0,0,0,0,0,0,21,108,334).
+\]
+When extending the modulus to $m\in\{2,3,5,7,11\}$, the variation of the arity class density $N_{n,r}^{(m)}/p_n$ with $n$ is shown in Figure \ref{fig:arity_class_density},
+and the corresponding Abel constant distribution is shown in Figure \ref{fig:arity_class_logM} (numerically generated by the script).
+\input{sections/generated/fig_arity_class_density}
+\input{sections/generated/fig_arity_class_logM}
+Setting $q=e^\theta$ as a one-dimensional weight, denote
+\[
+P_\chi(\theta):=\log\rho(M(e^\theta)),
+\]
+then $P_\chi^{(k)}(0)$ gives the $k$-th order cumulant density of $\chi$ ($k\ge 1$); in particular,
+$P_\chi'(0)=\mathbb{E}[\chi]$ and $P_\chi''(0)=\mathrm{Var}_\infty(\chi)$.
+By implicit differentiation of the algebraic equation $P_7(\Lambda,q)=0$ from Theorem \ref{thm:real-input-40-arity-charge-det-closed} at $q=1$, one obtains closed-form cumulant densities (script-generated):
+\input{sections/generated/eq_real_input_40_arity_charge_cumulants_closed}
+where $\mathrm{Var}_\infty(\chi)=P_\chi''(0)$.
+Hence the local large deviation rate function satisfies
+\[
+I_\chi(\alpha)\approx \frac{(\alpha-\mathbb{E}[\chi])^2}{2\,\mathrm{Var}_\infty(\chi)}
+\approx 5.9421865040\cdot(\alpha-0.2909830056)^2.
+\]
+Numerical reproduction is provided by the scripts \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity.py} and
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_charge\_closed\_form.py}.
+
+\paragraph{Endpoint thermodynamics ($\theta\to\pm\infty$)}
+\begin{proposition}[Endpoint pressure and extremal charge density]\label{prop:real-input-40-arity-charge-endpoints}
+When $\theta\to-\infty$ (i.e., $q=e^\theta\to 0^+$),
+\[
+P_\chi(\theta)\to \log\kappa,
+\]
+where $\kappa>1$ is the Perron root of $\kappa^4-\kappa^3-1=0$ (same as in Proposition \ref{prop:real-input-40-arity-charge-zero-zeta}).
+When $\theta\to+\infty$ (i.e., $q\to+\infty$),
+\[
+P_\chi(\theta)=\frac12\,\theta+\frac12\log 3+o(1),
+\]
+hence
+\[
+\sup_\mu\int\chi\,d\mu=\lim_{\theta\to+\infty}P_\chi'(\theta)=\frac12.
+\]
+\end{proposition}
+
+\begin{proof}
+Set $q=e^\theta$. When $\theta\to-\infty$, $M(q)=M_0+qM_1\to M_0$, and by continuity of the spectral radius,
+$\rho(M(q))\to\rho(M_0)=\kappa$.
+When $\theta\to+\infty$, the Perron root $\lambda(q)=\rho(M(q))$ satisfies the algebraic equation
+$P_7(\lambda(q),q)=0$ from Theorem \ref{thm:real-input-40-arity-charge-det-closed}.
+Setting $\lambda(q)=s\sqrt q$ and normalizing the equation by $q^{7/2}$, the leading-order balance gives
+$s^3(s^4-5s^2+6)=0$, so the limiting branch satisfies $s\in\{\sqrt2,\sqrt3\}$.
+Since the Perron root selects the largest positive real root branch, one obtains $s\to\sqrt3$, i.e., $\lambda(q)\sim \sqrt{3q}$,
+hence $P_\chi(\theta)=\log\lambda(e^\theta)=\frac12\theta+\frac12\log 3+o(1)$.
+The final identity follows from the endpoint slope.
+\end{proof}
+
+\begin{remark}[Combinatorial mechanism of the large-bias limit]\label{rem:real-input-40-arity-charge-large-bias-mechanism}
+By Corollary \ref{cor:real-input-40-arity-charge-g1-acyclic}, $M_1$ is nilpotent, so $g=1$ edges have no closed loops;
+orbits achieving the maximal density $1/2$ must alternate between $g=0$ and $g=1$.
+Let the two-step mixing matrix be
+\[
+B:=M_0M_1+M_1M_0,
+\]
+whose characteristic polynomial on this kernel admits a complete factorization (script-generated):
+\input{sections/generated/eq_real_input_40_arity_charge_B_charpoly}
+Hence $\rho(B)=3$, and therefore
+\[
+\rho(M(q))\sim\sqrt{q\,\rho(B)}=\sqrt{3q},
+\]
+equivalent to $P_\chi(\theta)=\frac12\theta+\frac12\log 3+o(1)$.
+This provides a structural explanation of Proposition \ref{prop:real-input-40-arity-charge-endpoints}, consistent with the density upper bound of Theorem \ref{thm:real-input-40-arity-charge-density-bound}.
+Furthermore, the same factorization shows that the second largest positive eigenvalue of \(B\) is \(2\) (with multiplicity \(3\)), so the algebraic equation \(P_7(\Lambda,q)=0\) also possesses a positive real branch
+\[
+\lambda_{\mathrm{sub}}(q)=\sqrt{2q}+O(1)\qquad(q\to+\infty),
+\]
+corresponding to the next largest growth rate in the zero-temperature limit (suboptimal phase).
+\end{remark}
+
+\begin{proposition}[Zero-temperature expansion: two-term closed form for \texorpdfstring{$q\to+\infty$}{q->+infty}]\label{prop:real-input-40-arity-charge-zero-temp-expansion}
+When $q\to+\infty$, the Perron root $\lambda(q)=\rho(M(q))$ has the Puiseux asymptotic expansion
+\[
+\lambda(q)=\sqrt{3q}+\frac23+\frac{56}{81}\,q^{-1}+O(q^{-3/2}).
+\]
+Therefore the pressure function $P_\chi(\theta)=\log\lambda(e^\theta)$ satisfies
+\[
+P_\chi(\theta)=\frac12\,\theta+\frac12\log 3+\frac{2}{3\sqrt3}\,e^{-\theta/2}-\frac{2}{27}\,e^{-\theta}+O(e^{-3\theta/2}).
+\]
+\end{proposition}
+
+\begin{proof}
+By Theorem \ref{thm:real-input-40-arity-charge-det-closed}, $\lambda(q)$ is the largest positive real root branch of the algebraic equation $P_7(\lambda(q),q)=0$.
+Set $t:=q^{-1/2}\to 0^+$ and substitute the Puiseux series
+\[
+\lambda(q)=\frac{\sqrt3}{t}+a_0+a_1t+a_2t^2+a_3t^3+\cdots.
+\]
+Substituting back into $P_7(\lambda(q),t^{-2})=0$ and matching coefficients of successive powers of $t$ yields $a_0=\frac23,\ a_1=0,\ a_2=\frac{56}{81}$,
+giving $\lambda(q)=\sqrt{3q}+\frac23+\frac{56}{81}q^{-1}+O(q^{-3/2})$.
+Taking the logarithm of
+\(
+P_\chi(\theta)=\log\lambda(e^\theta)
+\)
+with $\lambda(e^\theta)=\sqrt{3}\,e^{\theta/2}\bigl(1+\frac{2}{3\sqrt3}e^{-\theta/2}+O(e^{-\theta})\bigr)$ and expanding yields the stated pressure asymptotics.
+\end{proof}

@@ -1,0 +1,569 @@
+\subsubsection{``Read Reflector'' and Decision Completeness under the Single-Slice Protocol}\label{subsubsec:xi-read-reflector-completeness}
+Following the protocol setting of Definition \ref{def:xi-visible-read-null}, where the readout \(\mathrm{read}:\Omega\to X_{\mathrm{vis}}\cup\{\mathsf{NULL}\}\) is uniquely determined by ``partial observation \(\operatorname{obs}\) + visible domain filter \(X_{\mathrm{vis}}\) + checker \(\mathrm{Chk}\),'' and in the unitary-slice framework of this chapter takes \(X_{\mathrm{vis}}=\mathsf{Phase}\) (see \S\ref{subsec:xi-pw-type-safety-null}).
+The key point of this protocol is not to force objects to be identified, but to restrict \emph{auditable decisions} to typed operations that are insensitive to the readout fibers: any additional degrees of freedom that are not explicitly externalized as orthogonal recording axes can only collapse to \(\mathsf{NULL}\) at the type level (see Proposition \ref{prop:xi-null-three-way} and Definition \ref{def:multi_axis_address}).
+\par
+The following factorization law expresses this ``closure-type identification'' as a rigorous reflection/quotient space property.
+
+\begin{theorem}[Factorization Law of the Read Reflector]\label{thm:xi-read-reflector-factorization}
+Let
+\(
+R_{\mathrm{read}}:=\mathrm{read}(\Omega)\subseteq X_{\mathrm{vis}}\cup\{\mathsf{NULL}\}
+\)
+be the image of the readout, and define the equivalence relation
+\[
+\omega\sim_{\mathrm{read}}\omega'
+\quad\Longleftrightarrow\quad
+\mathrm{read}(\omega)=\mathrm{read}(\omega').
+\]
+For any predicate \(P:\Omega\to\{0,1\}\), if \(P\) satisfies protocol invariance
+\[
+\omega\sim_{\mathrm{read}}\omega'\ \Longrightarrow\ P(\omega)=P(\omega'),
+\]
+then there exists a unique function \(p:R_{\mathrm{read}}\to\{0,1\}\) such that
+\[
+P=p\circ \mathrm{read}.
+\]
+\end{theorem}
+
+\begin{proof}
+For any \(y\in R_{\mathrm{read}}\), choose \(\omega\in\Omega\) with \(\mathrm{read}(\omega)=y\), and define \(p(y):=P(\omega)\).
+If \(\omega'\) also satisfies \(\mathrm{read}(\omega')=y\), then \(\omega\sim_{\mathrm{read}}\omega'\), and by protocol invariance \(P(\omega)=P(\omega')\), so \(p\) is well-defined.
+Thus for any \(\omega\in\Omega\), \(p(\mathrm{read}(\omega))=P(\omega)\), i.e., \(P=p\circ\mathrm{read}\).
+If \(p_1\circ\mathrm{read}=p_2\circ\mathrm{read}=P\), then for any \(y\in R_{\mathrm{read}}\), choosing \(\omega\) with \(\mathrm{read}(\omega)=y\) gives \(p_1(y)=P(\omega)=p_2(y)\), so \(p_1=p_2\).
+\qed
+\end{proof}
+
+\begin{remark}[Decision Completeness as ``Closure on Visible Fibers'']\label{rem:xi-read-reflector-completeness}
+Theorem \ref{thm:xi-read-reflector-factorization} shows that under the protocol-fixed read reflector, all \emph{auditable} decisions on \(\Omega\) are forced to close on the same interface \(R_{\mathrm{read}}\).
+Therefore, the completeness gap discussed in this chapter (Remark \ref{rem:xi-soundness-vs-completeness}) can be precisely located as: whether the event to be decided can be compiled into a single-valued verifiable function on \(R_{\mathrm{read}}\) under this reflector.
+If not, the discrepancy can only enter the auditable semantics through externalized orthogonal recording axes: typically, disk-interior point data appear with the minimal dimensionality forced by Blaschke/point spectrum defects (Definition \ref{def:blaschke-defect-dimension}; Theorem \ref{thm:blaschke-point-spectrum-correspondence}), while off-slice amplitude information appears via explicit registerization of the endpoint/radial channel (Corollary \ref{cor:xi-null-second-order-radial-channel}).
+\end{remark}
+
+\begin{corollary}[RH Typing Principle for the Single-Slice Protocol]\label{cor:xi-single-slice-rh-typing-principle}
+Under the single-slice protocol with fixed visible domain \(X_{\mathrm{vis}}=\mathsf{Phase}\) (Definition \ref{def:xi-visible-read-null}), any auditable decision satisfying protocol invariance must factorize through the read reflector (Theorem \ref{thm:xi-read-reflector-factorization}).
+If the readout carrier is further restricted to bounded-type analytic objects \(F\) in the unit disk, then the addressability condition ``no externalized discrete orthogonal residual axes'' is equivalent on the analytic side to the Blaschke defect being zero (Definition \ref{def:blaschke-defect-dimension}; Theorem \ref{thm:blaschke-defect-zero-fixed-slice-support}), and can be equivalently compressed on the horizon ledger side into the Jensen defect horizon limit criterion (Definition \ref{def:app-jensen-defect}; Proposition \ref{prop:app-jensen-single-zero-lower-bound}).
+The special case \(F=F_{\zeta}\) yields the RH single-scalar translation stated in Theorem \ref{thm:xi-horizon-purity-criterion}.
+\par
+The same ``disk-interior zero exclusion'' condition can also be equivalently rewritten as a positivity constraint on the horizon logarithmic derivative: RH \(\Longleftrightarrow\) the horizon Carath\'eodory logarithmic derivative function \(\mathscr{C}_{\zeta}\) (Appendix equation \eqref{eq:app-horizon-carath-def}) is analytic on \(\mathbb{D}\) and satisfies \(\Re\mathscr{C}_{\zeta}\ge 0\), which is further equivalent to the Toeplitz--PSD hierarchy \(\mathbf{T}_N\succeq 0\) (Theorem \ref{thm:app-horizon-toeplitz-lmi}).
+In certificate semantics, this provides a failure witness complementary to the Jensen defect chain: finite-level PSD failure can be directly located by negative eigenvalues in finite dimensions (Corollary \ref{cor:app-horizon-toeplitz-z2-cert-split}).
+\par
+When the completion bridge kernel arises from a determinantal bridge kernel with \(B(u)\) being a first-order family, the single-slice constraint can also be equivalently stated on the spectral side as the horizon circle constraint of the quadratic eigenvalue pencil \(\mathcal{P}_L(z)\): the zeros of \(\Xi_{\Delta,L}\) are strictly equivalent to quadratic eigenvalues (Theorem \ref{thm:xi-qep-zero-equivalence}), and the critical line corresponds to the horizon circle \(|z|=L^{-1/2}\) (Corollary \ref{cor:xi-critical-line-horizon-circle}).
+Therefore, off-axis degrees of freedom in this framework are compressed into the ``leakage spectrum'' (\S\ref{subsubsec:xi-quadratic-pencil-leakage-spectrum}), and when horizon circle reciprocal symmetry holds, they are forced to appear in pairs (Theorem \ref{thm:xi-L-reciprocal-implies-critical-pairing}).
+\end{corollary}
+
+\paragraph{Quantitative Interface for Endpoint Certification: A Group of Independently Citable Conclusions}
+The following group of conclusions compresses the interface consequences of ``single-slice decision closure \(\Rightarrow\) endpoint certification task'' into verifiable invariants and resource lower bounds; their proofs and verification entry points are respectively given by the Toeplitz--PSD detection threshold (Appendix Theorem \ref{thm:app-horizon-toeplitz-detection-threshold}), the comoving scan spectral decomposition (Theorem \ref{thm:xi-comoving-horizon-scan-fourier-inversion}), and the endpoint tomography chain (Proposition \ref{prop:xi-endpoint-absorption-coefficient}, Theorem \ref{thm:xi-endpoint-flux-pointmode-coupling}).
+
+\begin{proposition}[Quantitative Duality between Toeplitz Certificate Length and Boundary Layer Depth]\label{con:xi-toeplitz-length-depth-duality}
+Suppose the diskified completion readout \(F_{\zeta}\) has an inner factor containing a finite Blaschke product
+\(
+B=\prod_{j=1}^{\kappa}b_{a_j}^{m_j}
+\)
+(counted with multiplicities), and let
+\[
+h_j:=1-|a_j|
+\qquad(j=1,\dots,\kappa)
+\]
+denote the depth of zeros to the unit circle boundary (note \(1-|a_j|^2\asymp h_j\)).
+Let \(\mathscr{C}_{\zeta}\) be the corresponding horizon Carath\'eodory logarithmic derivative interface (\eqref{eq:app-horizon-carath-def}), and let \(\mathbf{T}_N\) be its Toeplitz principal submatrix (Theorem \ref{thm:app-horizon-toeplitz-lmi}).
+Then for any off-slice zero \(\rho=\beta+\mathrm{i}\gamma\) (\(\beta<\tfrac12\)) inducing the disk-interior pole \(w_\rho\) (i.e., a zero of \(B\)) with endpoint layer remainder
+\(
+h(\rho):=1-|w_\rho|^2
+\)
+(Theorem \ref{thm:xi-offcritical-quadratic-radial-compression}), the endpoint-focused detection threshold for finite-level Toeplitz--PSD verification satisfies
+\[
+N\ \gtrsim\ \frac{1}{h(\rho)}\,\log\!\bigl(1+\delta\,h(\rho)^{-1}\bigr)
+\qquad(\delta:=\tfrac12-\beta>0),
+\]
+and in particular has the coarse lower bound \(N\gtrsim 1/h(\rho)\) (Appendix Theorem \ref{thm:app-horizon-toeplitz-detection-threshold}; see also Proposition \ref{prop:xi-extreme-resonance-toeplitz-threshold} and Corollary \ref{cor:xi-toeplitz-height-phi-calibration} for the height-window form).
+Therefore: the thinner the endpoint boundary layer (\(h(\rho)\downarrow 0\)), the finite-order Toeplitz--PSD certificate length unavoidably diverges as \(1/h(\rho)\) in the complexity sense (up to a logarithmic factor).
+\end{proposition}
+
+\begin{proposition}[Geometric Lower Bound on Negative Spectral Mass: Minimal Negative Eigenvalue Controls Visible Depth]\label{con:xi-toeplitz-negative-eigenvalue-controls-depth}
+Continuing with the setting of Proposition \ref{con:xi-toeplitz-length-depth-duality}.
+Denote \(\lambda_{\min}(\mathbf{T}_N)=-\eta_N<0\) as the minimal eigenvalue of the Toeplitz principal submatrix.
+Then there exists a disk-interior zero \(a\in\mathbb{D}\) (belonging to the zero set of \(B\)) whose depth \(h:=1-|a|\) satisfies
+\[
+h\ \ge\ c\,\frac{\eta_N}{N},
+\]
+where \(c>0\) is an absolute constant.
+Therefore, the ``negative magnitude'' of the finite-order Toeplitz certificate not only provides a binary falsifier for ``point defect existence,'' but also yields an auditable lower bound on the defect depth; in the regime semantics, this is equivalent to a minimum visible scale estimate for ``off-slice leakage'' in the endpoint boundary layer.
+\end{proposition}
+
+\begin{proposition}[Scan Hankel Rank \(=\) Defect Degree: Identification of Tomographic Samples with the Blaschke Index]\label{con:xi-scan-hankel-rank-equals-defect}
+Let the comoving scan profile \(H(x_0)\) be as defined in Theorem \ref{thm:xi-comoving-horizon-scan-fourier-inversion}, and fix a sampling step \(\Delta>0\).
+Take the one-sided exponential spectral samples \(u_n:=\widehat H(n\Delta)\) (\(n\ge 0\)), and for window order \(K\ge 0\) form the Hankel matrix
+\[
+\mathsf{H}^{(K)}:=(u_{p+q})_{0\le p,q\le K}.
+\]
+If the exponential parameters \(\{(1+\delta_j)+\mathrm{i}\gamma_j\}\) in the spectral decomposition \eqref{eq:xi-comoving-horizon-scan-fourier} are pairwise distinct, then there exists \(K_0\) such that for all \(K\ge K_0\),
+\[
+\mathrm{rank}\,\mathsf{H}^{(K)}=M,
+\]
+where \(M\) is the number of atoms in the finite defect multiset (Theorem \ref{thm:xi-comoving-horizon-scan-fourier-inversion}), also equal to the minimal linear realization dimension of the sequence \((u_n)\) (Theorem \ref{thm:hankel-rank-minimal}).
+In particular, under the simple zero assumption (\(m_j\equiv 1\), so \(M=\deg(B)\)), the equivalent characterization
+\[
+\deg(B)<\infty\quad\Longleftrightarrow\quad
+\sup_{K}\mathrm{rank}\,\mathsf{H}^{(K)}<\infty,
+\qquad
+\sup_{K}\mathrm{rank}\,\mathsf{H}^{(K)}=\deg(B)
+\]
+holds.
+\end{proposition}
+
+\begin{proposition}[Exponential Spectral Separation of Single-Scale Profiles: Auditable Three-Decomposition of Height--Offset--Multiplicity]\label{con:xi-scan-exponential-spectrum-separation}
+Under the finite defect setting of Proposition \ref{con:xi-scan-hankel-rank-equals-defect}, \(\widehat H\) has the explicit exponential spectral decomposition (Theorem \ref{thm:xi-comoving-horizon-scan-fourier-inversion}):
+\[
+\widehat H(\xi)
+=4\pi\sum_{j=1}^{M} m_j\,\frac{\delta_j}{1+\delta_j}\,
+e^{-(1+\delta_j)|\xi|}\,e^{-\mathrm{i}\gamma_j\xi}.
+\]
+Therefore \( \xi\mapsto \widehat H(\xi)\,e^{|\xi|}\) (restricted to either side \(\xi\ge 0\) or \(\xi\le 0\)) is a linear combination of finitely many exponentials \(e^{-\delta_j|\xi|}\) and phase factors \(e^{-\mathrm{i}\gamma_j\xi}\), and this representation is unique when the exponential parameters are distinct.
+Consequently, the full parameters of the off-line zeros admit a three-step decomposition auditable within the regime: first, uniquely recover \(\{\delta_j\}\) and the corresponding coefficients \(\{m_j\delta_j/(1+\delta_j)\}\) from the decay spectrum; next, uniquely recover \(\{\gamma_j\}\) from the phase spectrum (e.g., via Prony/matrix pencil/ESPRIT); and the multiplicities \(m_j\) are determined by coefficient ratios.
+\end{proposition}
+
+\begin{proposition}[Computability of Endpoint Flux Reflection Coefficient: Exponential Approximation of \texorpdfstring{$\Phi_{-1}$}{Phi-(-1)} by Finite CMV Certificates]\label{con:xi-endpoint-flux-computable-by-finite-cmv}
+Let \(B\) be the Blaschke factor of \(F_{\zeta}\), and denote the endpoint flux (endpoint absorption coefficient)
+\[
+\Phi_{-1}(B):=\lim_{r\uparrow 1}\frac{-\log|B(-r)|}{1-r}
+\]
+(Proposition \ref{prop:xi-endpoint-absorption-coefficient}; see also Theorem \ref{thm:xi-endpoint-julia-indicator-equals-absorption} for the Julia angular derivative characterization).
+Let \((\alpha_n)_{n\ge 0}\) be the Verblunsky coefficients generated by the Schur algorithm, and let \(U^{(N)}\) be the corresponding finite CMV certificate.
+Then there exists an explicit function family \(\mathcal{F}_N=\mathcal{F}_N(\alpha_0,\dots,\alpha_{N-1})\) such that for certain constants \(C>0\), \(q\in(0,1)\),
+\[
+\bigl|\Phi_{-1}(B)-\mathcal{F}_N\bigr|\ \le\ C\,q^N.
+\]
+Moreover, \(\mathcal{F}_N\) depends only on the finite certificate parameters \((\alpha_0,\dots,\alpha_{N-1})\) and is realizable in pure multiply-add rational arithmetic.
+Therefore, the endpoint flux is not merely an existential invariant but possesses an effectively approximable finite certificate expression: if the defect exists, its endpoint strength can be recovered by finite CMV certificates with exponential precision.
+\end{proposition}
+
+\begin{proposition}[Unified Lower Bound for Two Types of Certificates: Unavoidable Growth of Toeplitz Order and Scan Coverage Number]\label{con:xi-toeplitz-vs-scan-complexity-lower-bounds}
+Fix the offset lower bound \(\delta\ge\delta_0>0\) and height window \(|\gamma|\le T\).
+If uniform detectability for all possible defect locations within this window is required of the regime-internal certificates, then regardless of whether one uses
+\begin{enumerate}
+  \item Toeplitz--PSD order elevation (moment hierarchy), or
+  \item finite coverings of the comoving scan (finite readout families),
+\end{enumerate}
+the resource scale must diverge with \(T\), with explicit lower bounds:
+\[
+N_{\mathrm{Toep}}\ \gtrsim\ Q_{\max}(T,\delta_0)\,\log\!\bigl(1+\delta_0 Q_{\max}(T,\delta_0)\bigr)
+\asymp \frac{T^2}{\delta_0}\,\log(1+T^2)
+\]
+(Corollary \ref{cor:xi-toeplitz-height-phi-calibration}), and for any fixed scale \(t>0\),
+\[
+N_{\mathrm{scan}}\ \gtrsim\ \frac{T}{t+\delta_0}
+\]
+(Theorem \ref{thm:xi-offcritical-poisson-matched-filter-covering}).
+Therefore, both types of certificates grow at least linearly in the height window limit; their difference characterizes the impact of the structural privilege ``whether comoving addresses are permitted'' on the detectable complexity.
+\end{proposition}
+
+\paragraph{Toeplitz--Hankel Mutual Certification and Regime Consequences of Lattice Scanning}
+The following conclusions further connect the ``comoving scan spectral fingerprint'' to the Toeplitz negative subspace and the finite-dimensional falsifier generation mechanism, and provide auditable thresholds induced by the global mass, local peaks, and lattice step size of \(H\).
+
+\begin{proposition}[Isomorphic Splitting of Toeplitz--Scan Hankel: Negative Subspace is Spanned by Tomographic Spectral Fingerprints]\label{con:xi-toeplitz-hankel-isomorphic-split}
+Under the finite point defect and no singular inner factor assumption, let \(F_{\zeta}=B\,O\) with \(B\) a finite Blaschke product (each factor expanded by multiplicity to degree one),
+\[
+B=\prod_{j=1}^{\kappa}b_{a_j},
+\qquad
+a_j=\mathcal{C}(\gamma_j+\mathrm{i}\delta_j)\in\mathbb{D},
+\qquad
+\delta_j>0,
+\]
+where \(\kappa=\deg(B)=\mathfrak d_{\mathrm{Bl}}(F_{\zeta})\) (Definition \ref{def:blaschke-defect-dimension}).
+Let the comoving scan profile \(H(x_0)\) and its Fourier spectrum \(\widehat H\) be as in Theorem \ref{thm:xi-comoving-horizon-scan-fourier-inversion}, and take integer sampling
+\[
+u_n:=\widehat H(n)
+=4\pi\sum_{j=1}^{\kappa}\frac{\delta_j}{1+\delta_j}\,e^{-(1+\delta_j)|n|}e^{-\mathrm{i}\gamma_j n},
+\qquad n\in\ZZ.
+\]
+Denote the Hankel window and Toeplitz certificate matrices respectively as
+\[
+\mathsf H_N:=(u_{p+q})_{0\le p,q\le N},
+\qquad
+\mathbf{T}_N:=(c_{j-k})_{0\le j,k\le N},
+\]
+where \(\mathbf{T}_N\) is generated by the moment data of the horizon Carath\'eodory interface \(\mathscr{C}_{\zeta}\) (Appendix Theorem \ref{thm:app-horizon-toeplitz-lmi}).
+If there exists \(N_0\) such that \(\mathrm{rank}(\mathsf H_N)=\kappa\) for all \(N\ge N_0\) (equivalently: \(\mathsf H_{\kappa-1}\) has full rank), then for all sufficiently large \(N\),
+\[
+\nu_-\!\bigl(\mathbf{T}_N\bigr)=\kappa
+\]
+(Theorem \ref{thm:xi-toeplitz-negative-squares-equals-blaschke-defect}), and there exists an invertible matrix family \(R_N\) such that the Toeplitz quadratic form splits under congruence into a positive block and a negative block generated by the tomographic spectral fingerprint:
+\[
+R_N^{\ast}\mathbf{T}_N R_N
+=
+\begin{pmatrix}
+P_N & 0\\
+0 & -\,\mathbf{G}_{\kappa-1}
+\end{pmatrix},
+\qquad
+P_N\succeq 0,
+\qquad
+\mathbf{G}_{\kappa-1}:=\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1}\succ 0.
+\]
+Therefore, all negative directions of the Toeplitz hierarchy are not diffusely generated in the regime semantics, but can be completely spanned and determined by finitely many scan spectral samples \(\{u_n\}_{0\le n\le 2\kappa-2}\) through the Hankel fingerprint; within the stable interval, both equivalently encode the same set of point defect degrees of freedom.
+\end{proposition}
+
+\begin{proposition}[\(L^1\)--\(L^2\)--\(L^\infty\) Unified Lower Bound for Cauchy--Poisson Profiles: Defects Necessarily Produce Detectable Peaks]\label{con:xi-poisson-profile-l1l2linfty-lower}
+Remaining in the finite defect framework, write the comoving depth profile (expanded by multiplicity) as (Proposition \ref{prop:xi-basepoint-depth-closed-form})
+\[
+H(x)=\sum_{j=1}^{\kappa}\frac{4\delta_j}{(x-\gamma_j)^2+(1+\delta_j)^2}.
+\]
+Then its \(L^1\) mass is a strict closed form (Corollary \ref{cor:xi-comoving-horizon-scan-mass}):
+\[
+\|H\|_{L^1(\RR)}=4\pi\sum_{j=1}^{\kappa}\frac{\delta_j}{1+\delta_j}.
+\]
+Moreover, by non-negative cross terms and the kernel square integral formula
+\(
+\int_{\RR}\frac{\dd x}{(x^2+a^2)^2}=\frac{\pi}{2a^3}
+\),
+the orthogonal lower bound
+\[
+\|H\|_{L^2(\RR)}^2
+\ge
+\sum_{j=1}^{\kappa}
+\int_{\RR}\left(\frac{4\delta_j}{(x-\gamma_j)^2+(1+\delta_j)^2}\right)^2\dd x
+=
+\sum_{j=1}^{\kappa}8\pi\,\frac{\delta_j^2}{(1+\delta_j)^3}
+\]
+holds. Therefore there exists \(x^{\ast}\in\RR\) such that (\(\|H\|_2^2\le \|H\|_\infty\|H\|_1\))
+\[
+\|H\|_{L^\infty(\RR)}
+\ge
+\frac{\|H\|_{L^2(\RR)}^2}{\|H\|_{L^1(\RR)}}
+\ge
+2\cdot
+\frac{\sum_{j=1}^{\kappa}\dfrac{\delta_j^2}{(1+\delta_j)^3}}
+{\sum_{j=1}^{\kappa}\dfrac{\delta_j}{1+\delta_j}}.
+\]
+This inequality provides an irrecoverable peak witness: as long as point defects are nonempty, the scan profile necessarily exhibits a strictly detectable peak lower bound, whose magnitude is controlled by the weighted second moment of \(\{(\gamma_j,\delta_j)\}\).
+\end{proposition}
+
+\begin{proposition}[Auditable Squeeze for Defect Counting: Two-Sided Bounds from Mass and Peak]\label{con:xi-defect-count-mass-peak-sandwich}
+Let \(\delta_{\min}:=\min_j\delta_j\), \(\delta_{\max}:=\max_j\delta_j\), and denote the total defect multiplicity (Blaschke degree) as \(\kappa=\deg(B)\).
+Then from the \(L^1\) closed form of Proposition \ref{con:xi-poisson-profile-l1l2linfty-lower} and the monotonicity of \(x\mapsto \frac{x}{1+x}\),
+\[
+4\pi\,\frac{\delta_{\min}}{1+\delta_{\max}}\,\kappa
+\le
+\|H\|_{L^1(\RR)}
+\le
+4\pi\,\frac{\delta_{\max}}{1+\delta_{\min}}\,\kappa,
+\]
+so the mass statistic provides a two-sided auditable bound on the defect count:
+\[
+\frac{1+\delta_{\min}}{4\pi\,\delta_{\max}}\|H\|_{L^1(\RR)}
+\le
+\kappa
+\le
+\frac{1+\delta_{\max}}{4\pi\,\delta_{\min}}\|H\|_{L^1(\RR)}.
+\]
+On the other hand, from the termwise pointwise upper bound
+\(
+\frac{4\delta_j}{(x-\gamma_j)^2+(1+\delta_j)^2}\le \frac{4\delta_j}{(1+\delta_j)^2}
+\le \frac{4\delta_{\max}}{(1+\delta_{\min})^2}
+\),
+\[
+\|H\|_{L^\infty(\RR)}
+\le
+\frac{4\delta_{\max}}{(1+\delta_{\min})^2}\,\kappa,
+\qquad\text{i.e.,}\qquad
+\kappa\ \ge\ \frac{(1+\delta_{\min})^2}{4\delta_{\max}}\,\|H\|_{L^\infty(\RR)}.
+\]
+Therefore, within the scan channels permitted by the regime, the defect count can be simultaneously squeezed by mass and peak statistics: mass provides upper and lower bounds, while the peak provides an unavoidable lower bound threshold.
+\end{proposition}
+
+\begin{proposition}[Inversion Stability from Minimal Separation: Local Bi-Lipschitz Property of Finite-Sample Spectral Fingerprints]\label{con:xi-min-separation-bilip-prony}
+Under the finite defect framework, let \(u_n:=\widehat H(n)\) as in Proposition \ref{con:xi-toeplitz-hankel-isomorphic-split}, and suppose there exists a separation constant \(s>0\) such that
+\(
+|\gamma_j-\gamma_k|\ge s
+\)
+for all \(j\neq k\), and \(\delta_j\in[\delta_{\min},\delta_{\max}]\subset(0,\infty)\).
+Then the map from parameters to finite spectral fingerprints
+\[
+\{(\gamma_j,\delta_j)\}_{j=1}^{\kappa}\ \longmapsto\ \{u_n\}_{n=0}^{2\kappa-1}
+\]
+is locally bi-Lipschitz on the parameter manifold satisfying this separation constraint:
+there exist constants \(C_1,C_2>0\) (depending only on \(\kappa,s,\delta_{\min},\delta_{\max}\)) such that for any two parameter multisets \(\Theta,\widetilde\Theta\) satisfying the same separation constraint,
+\[
+C_1\,d_{\mathrm{match}}(\Theta,\widetilde\Theta)
+\le
+\max_{0\le n\le 2\kappa-1}|u_n(\Theta)-u_n(\widetilde\Theta)|
+\le
+C_2\,d_{\mathrm{match}}(\Theta,\widetilde\Theta),
+\]
+where \(d_{\mathrm{match}}\) can be taken as the symmetrized matching distance (computing \(|\Delta\gamma|+|\Delta\delta|\) under optimal pairing).
+Therefore, when minimal separation holds, the finite-sample scan spectral fingerprint not only uniquely determines the defect parameters (Theorem \ref{thm:xi-comoving-horizon-scan-fourier-inversion}), but also possesses quantitative stability under noise perturbation; this stability is compatible with the standard inversion framework of Prony/matrix pencil/ESPRIT (see the Nyquist sampling paragraph of \S\ref{subsec:discrete-abel-weil-polar-rigidity}).
+\end{proposition}
+
+\begin{proposition}[Far-Field Moment Expansion: Tail Coefficients of the Scan Profile Yield Algebraic Moments of \texorpdfstring{$(\gamma,\delta)$}{(gamma,delta)}]\label{con:xi-farfield-moment-chain}
+Let \(H\) be as in Proposition \ref{con:xi-poisson-profile-l1l2linfty-lower}.
+Denote its complex pole set as
+\(
+x=\gamma_j\pm \mathrm{i}(1+\delta_j)
+\)
+(counted with multiplicity), and take
+\(
+R:=\max_j\sqrt{\gamma_j^2+(1+\delta_j)^2}.
+\)
+Then \(H\) has a convergent Laurent expansion at infinity for \(|x|>R\):
+\[
+H(x)=\sum_{n\ge 0}\frac{M_n}{x^{n+2}},
+\qquad (|x|>R),
+\]
+where the coefficients \(M_n\) are explicit algebraic moments of the defect parameters.
+In particular, the first two coefficients satisfy
+\[
+M_0=4\sum_{j=1}^{\kappa}\delta_j,
+\qquad
+M_1=8\sum_{j=1}^{\kappa}\delta_j\gamma_j,
+\]
+and more generally, \(M_n\) is a linear combination of \(\sum_j \delta_j\,\gamma_j^{k}(1+\delta_j)^{\ell}\) (\(k+\ell\le n\)).
+Therefore, the far-field tail provides a moment chain certificate in the purely one-dimensional visible channel: if one can estimate \((M_0,\dots,M_N)\) with auditable precision on some far-field interval, then the low-order moments of the defect measure in the \(\gamma\) direction and the mixed moments of \(\delta\) can be recovered, thereby compressing the two-dimensional off-line parameters into a sequence of verifiable algebraic moment invariants.
+\end{proposition}
+
+\begin{proposition}[Aliasing Threshold of Address Discretization: Lattice Scanning Can Only Determine the Congruence Class of \texorpdfstring{$\gamma$}{gamma}]\label{con:xi-grid-scan-aliasing-threshold}
+If the regime only permits reading the comoving scan profile \(H(x_0)\) at lattice points \(x_0=n\Delta\) (\(n\in\ZZ\)), then from the phase factor of the spectral fingerprint
+\(
+e^{-\mathrm{i}\gamma_j n\Delta}
+\),
+one sees that lattice data alone cannot distinguish \(\gamma_j\) from \(\gamma_j+\frac{2\pi k}{\Delta}\) (\(k\in\ZZ\)) producing the same congruence class.
+In particular, if the prior height window is \(\gamma_j\in[-T,T]\), then achieving alias-free unique determination requires the necessary condition
+\[
+\Delta<\frac{\pi}{T}.
+\]
+This threshold provides a regime-level lower bound on address resolution: when addresses are discretized to a fixed-step lattice, height information automatically folds into the congruence class modulo \(2\pi/\Delta\); to avoid this recovery effect, the step size must shrink linearly with the target height window (compatible with the Nyquist sampling scale of \S\ref{subsec:discrete-abel-weil-polar-rigidity}).
+\end{proposition}
+
+\begin{proposition}[Double-Step De-Aliasing Theorem: Phase Carriers from Two Address Grids Compress Height Congruence Classes to the Minimal Intersection]\label{con:xi-grid-scan-two-step-dealiasing}
+Suppose the height phase can only enter the visible spectral fingerprint through the characters \(e^{-\mathrm{i}\gamma n\Delta}\) (\(n\in\ZZ\)) of lattice scanning step \(\Delta>0\); then under a single \(\Delta\), the height can only be determined up to the congruence group
+\[
+\Gamma_{\Delta}:=\frac{2\pi}{\Delta}\ZZ.
+\]
+If a second step size \(\Delta'>0\) is additionally introduced, the visible invariance group contracts to the intersection
+\[
+\Gamma_{\Delta}\cap \Gamma_{\Delta'}.
+\]
+Moreover:
+\begin{enumerate}
+  \item If \(\Delta/\Delta'\notin\QQ\), then \(\Gamma_{\Delta}\cap \Gamma_{\Delta'}=\{0\}\), so the height parameter has no global congruence aliasing in theory;
+  \item If \(\Delta/\Delta'=p/q\in\QQ\) (in lowest terms), then there exists a unique \(d>0\) such that \(\Delta=pd,\ \Delta'=qd\), and
+  \[
+  \Gamma_{\Delta}\cap \Gamma_{\Delta'}=\frac{2\pi}{d}\ZZ,
+  \]
+  i.e., the dual grid contracts the aliasing period to the least common congruence period \(2\pi/d\).
+\end{enumerate}
+\end{proposition}
+
+\input{subsubsec__xi-grid-scan-two-step-dealiasing-diophantine-stability}
+
+\input{subsubsec__xi-depth-height-two-level-extremal-decomposition}
+
+\input{subsubsec__xi-cayley-normalization-factor4}
+
+\paragraph{Local Peak Rigidity, Phase Spectral Shift, and Finite-Sample Ill-Posedness}
+The following conclusions further compress the point defect profile of the comoving scan into a group of mutually aligned auditable interfaces of ``local peak geometry--phase flow density--finite-sample inversion'': on the one hand, the single-atom Lorentzian shape possesses an indestructible amplitude--half-width algebraic constraint; on the other hand, a finite defect family induces an absolutely continuous phase derivative density on the upper half-plane inner function, thereby normalizing the profile \(H\) as a weighted spectral shift; finally, the identifiability and unavoidable ill-posedness explosion of finite sampling can be jointly characterized by the minimum sample threshold and spectral point spacing lower bound of the Hankel/Prony fingerprint.
+
+\begin{proposition}[Lorentzian Rigidity: Amplitude--Half-Width Algebraic Constraint and Consistency Test for Defect Peaks]\label{con:xi-lorentzian-amplitude-width-rigidity}
+For a single point defect atom \((\gamma,\delta,m)\), the comoving profile kernel is
+\[
+H_{(\gamma,\delta,m)}(x)
+:=
+m\,\frac{4\delta}{(x-\gamma)^2+(1+\delta)^2}\qquad(x\in\RR),
+\]
+with peak value
+\(
+A:=H_{(\gamma,\delta,m)}(\gamma)
+\)
+and half-width at half-maximum \(w>0\) (the smallest positive number satisfying \(H_{(\gamma,\delta,m)}(\gamma\pm w)=A/2\)).
+Then the strict rigidity relation
+\[
+\boxed{\;
+w=1+\delta,\qquad
+\frac{A}{m}=\frac{4(w-1)}{w^2}\; }
+\]
+holds. In particular, in the off-critical-line offset regime \(\delta\in(0,1)\) (so \(w\in(1,2)\)), letting \(a:=A/m\in(0,1)\), the quadratic equation \(aw^2-4w+4=0\) yields the closed-form inversion
+\[
+\boxed{\;
+w=\frac{2\bigl(1-\sqrt{1-a}\bigr)}{a},\qquad
+\delta=w-1\;}
+\]
+(taking the branch with \(w\in(1,2)\)).
+Therefore: in the finite defect mixture case, the local structure of any peak identified as ``single-atom dominated isolated'' must satisfy the above amplitude--half-width consistency; this consistency provides a regime-internal geometric falsification criterion, and under this branch framework enables closed-form recovery of \(\delta\) from local geometric quantities of the peak.
+\end{proposition}
+
+\begin{proposition}[Spectral Shift Expression of Scan Density: Absolutely Continuous Phase Derivative of a Weighted Inner Function]\label{con:xi-spectral-shift-phase-density}
+Let the finite point defect family have parameters \(\{(\gamma_j,\delta_j,m_j)\}_{j=1}^{\kappa}\), and define the inner function in the upper half-plane
+\[
+\mathcal{S}(z)
+:=
+\prod_{j=1}^{\kappa}
+\left(
+\frac{z-\gamma_j-\mathrm{i}(1+\delta_j)}{z-\gamma_j+\mathrm{i}(1+\delta_j)}
+\right)^{m_j},
+\qquad \Im z>0.
+\]
+Then its non-tangential boundary values satisfy \(|\mathcal{S}(x)|=1\) (a.e.\ \(x\in\RR\)), with the phase derivative formula
+\[
+\frac{\dd}{\dd x}\arg \mathcal{S}(x)
+=
+2\sum_{j=1}^{\kappa}m_j\,\frac{1+\delta_j}{(x-\gamma_j)^2+(1+\delta_j)^2}
+\qquad\text{(a.e.\ \(x\in\RR\))}.
+\]
+On the other hand, the comoving scan profile (point defect density)
+\[
+H(x)
+=
+\sum_{j=1}^{\kappa}m_j\,\frac{4\delta_j}{(x-\gamma_j)^2+(1+\delta_j)^2}
+\]
+satisfies the strict weighted spectral shift representation
+\[
+\boxed{\;
+H(x)
+=
+\sum_{j=1}^{\kappa}m_j\,\frac{2\delta_j}{1+\delta_j}\,
+\frac{\dd}{\dd x}\arg\!\left(
+\frac{x-\gamma_j-\mathrm{i}(1+\delta_j)}{x-\gamma_j+\mathrm{i}(1+\delta_j)}
+\right)
+\;}
+\]
+so that point defects in the protocol-visible domain are equivalent to a ``weighted spectral shift density'' (the absolutely continuous part of the phase flow).
+Its total mass is
+\[
+\int_{\RR}H(x)\,\dd x
+=
+4\pi\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{1+\delta_j}
+\]
+(consistent with the mass formula of Corollary \ref{cor:xi-comoving-horizon-scan-mass}).
+\end{proposition}
+
+\begin{proposition}[Minimal Completeness of Finite Sampling: Necessity and Generic Sufficiency of \texorpdfstring{$2\kappa$}{2kappa}-Order Spectral Fingerprints]\label{con:xi-2kappa-minimal-complete-samples}
+Fix step size \(\Delta>0\), and take the scan spectral fingerprint
+\(
+u_n:=\widehat H(n\Delta)
+\)
+(\(n\in\ZZ\)), where \(\widehat H\) is given by \eqref{eq:xi-comoving-horizon-scan-fourier}.
+Then for \(n\ge 0\) there exist complex parameters
+\[
+r_j:=e^{-(1+\delta_j)\Delta}\,e^{-\mathrm{i}\gamma_j\Delta}\in\mathbb{D},
+\qquad
+c_j:=4\pi\,m_j\,\frac{\delta_j}{1+\delta_j}>0,
+\]
+such that
+\[
+u_n=\sum_{j=1}^{\kappa}c_j\,r_j^{n}\qquad(n=0,1,2,\dots),
+\qquad
+u_{-n}=\overline{u_n}.
+\]
+Under the ``general position'' assumption (\(r_j\) pairwise distinct, and the Hankel principal block \((u_{i+j})_{0\le i,j\le \kappa-1}\) invertible), the consecutive samples
+\(
+(u_0,u_1,\dots,u_{2\kappa-1})
+\)
+alone suffice to uniquely recover the multiset \(\{(r_j,c_j)\}_{j=1}^{\kappa}\), and thereby uniquely determine \(\{(\gamma_j,\delta_j,m_j)\}\) (combined with the aliasing constraint of Proposition \ref{con:xi-grid-scan-aliasing-threshold}).
+Moreover, this length is incompressible in general position: if the sample length \(N+1\le 2\kappa-1\), there exist two distinct parameter sets producing the same length-\((N+1)\) sample prefix.
+This ``\(2\kappa\)-point lock'' is consistent with the minimal realization characterization of Hankel rank (Theorem \ref{thm:hankel-rank-minimal}) and the \(2d\)-point finite identification principle (Theorem \ref{thm:dephys-hankel-finite-audit}).
+\end{proposition}
+
+\input{subsubsec__xi-scan-fingerprint-caratheodory-schur-realization}
+
+\input{subsubsec__xi-scan-tail-ratio-peeling}
+
+\begin{proposition}[Collision Ill-Posedness: Defect Merging Causes Inevitable Blow-Up of Inversion Condition Number]\label{con:xi-collision-illposedness-sep-blowup}
+Continuing with the parametrization of Proposition \ref{con:xi-2kappa-minimal-complete-samples}, let the spectral point spacing be
+\[
+\mathrm{sep}:=\min_{j\neq k}|r_j-r_k|.
+\]
+Then for any inversion based on finite samples \((u_n)_{n=0}^{2\kappa-1}\) (including Prony/Hankel null space methods and their equivalent variants), the local error amplification factor (local Lipschitz constant of the inverse map) cannot remain uniformly bounded as \(\mathrm{sep}\downarrow 0\); more quantitatively, there exists a constant \(C_\kappa>0\) (depending only on \(\kappa\) and the sampling norm) such that within a general position neighborhood, the following blow-up lower bound holds:
+\[
+L\ \ge\ C_\kappa\,\mathrm{sep}^{-(\kappa-1)}.
+\]
+In particular, when two defects satisfy \(\delta_j=\delta_k\) and \(|\gamma_j-\gamma_k|\to 0\), one has \(|r_j-r_k|\asymp \Delta|\gamma_j-\gamma_k|\), so the error amplification factor of any stable inversion diverges at least as \(|\gamma_j-\gamma_k|^{-(\kappa-1)}\).
+This conclusion characterizes the ``conceptual collision implies recovery'' ill-posedness in the regime semantics: defects approaching each other in visible coordinates inevitably trigger inversion ill-posedness, manifesting as the resource-theoretic consequence of merging/indistinguishability.
+\end{proposition}
+
+\begin{proposition}[Double Residue Ratio Law: \texorpdfstring{$\delta$}{delta} Identification Mechanism without Separation Assumption]\label{con:xi-double-residue-ratio-delta}
+Under the finite defect framework, define the Cauchy transform (\(\Im z>0\))
+\[
+M_H(z):=\int_{\RR}\frac{H(x)}{x-z}\,\dd x,
+\]
+and the ``phase flow generator'' induced by the upper half-plane inner function \(\mathcal{S}\) from Proposition \ref{con:xi-spectral-shift-phase-density}:
+\[
+M_{\mathcal{S}}(z):=-\mathrm{i}\,\frac{\mathcal{S}'(z)}{\mathcal{S}(z)}.
+\]
+Both admit meromorphic continuation to \(\CC\setminus\RR\) and share the same pole set in the lower half-plane:
+\[
+z_j^{\downarrow}:=\gamma_j-\mathrm{i}(1+\delta_j)\qquad(1\le j\le \kappa),
+\]
+with residues given by the explicit closed forms
+\[
+\operatorname*{Res}_{z=z_j^{\downarrow}}M_H(z)
+=-4\pi\,m_j\,\frac{\delta_j}{1+\delta_j},
+\qquad
+\operatorname*{Res}_{z=z_j^{\downarrow}}M_{\mathcal{S}}(z)
+=\mathrm{i}\,m_j.
+\]
+Hence the strict ``residue ratio'' identification law
+\[
+\boxed{\;
+\frac{\delta_j}{1+\delta_j}
+=
+\frac{1}{4\pi}\left|
+\frac{\operatorname*{Res}_{z=z_j^{\downarrow}}M_H(z)}
+{\operatorname*{Res}_{z=z_j^{\downarrow}}M_{\mathcal{S}}(z)}
+\right|\;}
+\]
+holds. This formula does not depend on minimal separation of \(\{\gamma_j\}\): as long as the poles remain distinct (i.e., \((\gamma,\delta)\) are not all identical), \(\delta_j\) can be directly recovered from analytic residues within the protocol-visible domain; separation affects only numerical stability (see Proposition \ref{con:xi-collision-illposedness-sep-blowup}), not analytic identifiability.
+\end{proposition}
+
+\begin{proposition}[No-Hair Limit of Poisson Coarse-Graining: Only Finitely Many Moment Invariants Remain at Large Scales]\label{con:xi-poisson-coarsegraining-nohair}
+Let the low-order moments of the defect measure be
+\[
+M_0:=\sum_{j}m_j\delta_j,
+\qquad
+M_1:=\sum_{j}m_j\delta_j\,\gamma_j,
+\qquad
+\bar\gamma:=\frac{M_1}{M_0}\ \ (M_0>0),
+\]
+and let the Poisson semigroup coarse-grained profile \(G_t\) be as defined in \eqref{eq:xi-offcritical-comoving-poisson-field}.
+Then \(M_0=\int_{\RR}G_t\) and \(M_1=\mathrm{p.v.}\int_{\RR}xG_t\) are strict conservation quantities (Theorem \ref{thm:xi-offcritical-poisson-conservation-dissipation}).
+Moreover, as \(t\to\infty\), there exists a uniform asymptotic expansion
+\[
+G_t(x)
+=
+\frac{M_0}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2}
+\;+\;O(t^{-2}),
+\]
+where the remainder is uniform in \(x\in\RR\) and can be controlled by the second central moment of the defects.
+Therefore, when the observation scale \(t\) is sufficiently large, all point defects in the protocol-visible domain inevitably degenerate into a single ``effective Lorentzian'': the distinguishable parameters are only the total mass \(M_0\) and the centroid \(\bar\gamma\); higher-order geometric information is strictly suppressed at the \(t^{-2}\) level and decays under the coarse-graining flow (consistent with the energy dissipation formula \eqref{eq:xi-offcritical-poisson-energy-dissipation}).
+\end{proposition}
+
+\begin{proposition}[Second-Order Normal Form of Poisson Coarse-Graining: Universal Correction Term Controlled Solely by the Second Central Moment]\label{con:xi-poisson-coarsegraining-second-order-normal-form}
+Under the notation of Proposition \ref{con:xi-poisson-coarsegraining-nohair}, let the normalized weight measure be
+\[
+\tilde\nu:=\frac{1}{M_0}\sum_{j}m_j\delta_j\,\delta_{\gamma_j},
+\qquad
+\bar\gamma:=\int_{\RR}\gamma\,\dd\tilde\nu(\gamma),
+\qquad
+\mathrm{Var}:=\int_{\RR}(\gamma-\bar\gamma)^2\,\dd\tilde\nu(\gamma),
+\]
+and define the large-scale Poisson coarse-grained density
+\[
+h_t(x):=\int_{\RR}\frac{1}{\pi}\frac{t}{(x-\gamma)^2+t^2}\,\dd\tilde\nu(\gamma)
+\qquad (t>0).
+\]
+Then as \(t\to\infty\), there exists a second-order uniform asymptotic expansion (valid uniformly in \(x\in\RR\)):
+\[
+\boxed{\;
+h_t(x)
+=
+\frac{1}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2}
+\;+\;
+\frac{\mathrm{Var}}{\pi}\,
+\frac{t\bigl(3(x-\bar\gamma)^2-t^2\bigr)}{\bigl((x-\bar\gamma)^2+t^2\bigr)^3}
+\;+\;O(t^{-4})\; }.
+\]
+The remainder \(O(t^{-4})\) can be controlled by the third central moment \(\int|\gamma-\bar\gamma|^3\,\dd\tilde\nu(\gamma)\).
+Therefore, under large-scale horizon observation, the visible contribution of all geometric degrees of freedom collapses strictly to a two-parameter family \((\bar\gamma,\mathrm{Var})\) before second order: higher-order shape information is regime-suppressed at progressively higher powers and enters the irrecoverable zone.
+\end{proposition}
+
+\input{subsubsec__xi-poisson-coarsegraining-tv-kl-asymptotics}
+
+\endinput

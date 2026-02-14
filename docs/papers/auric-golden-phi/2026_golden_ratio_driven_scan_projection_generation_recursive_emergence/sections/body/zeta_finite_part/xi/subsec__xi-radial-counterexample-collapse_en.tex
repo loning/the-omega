@@ -1,0 +1,272 @@
+\subsubsection{Counterexample Collapse: Radial Modes Are Not Typable in the \texorpdfstring{$\mathbf{PW}$}{PW} Normalization Closure}\label{subsec:xi-radial-counterexample-collapse}
+The \(\Xi_{\Delta,L}\) mechanism of this chapter internalizes ``critical line geometry'' as the unitary slice on the parameter side: \(\Re(s)=\tfrac12\Longleftrightarrow |u_L(s)|=1\) (Remark \ref{rem:xi-critical-line-unit-circle}), and provides two entirely internal audit/rejection interfaces on this slice:
+\begin{enumerate}
+  \item \textbf{Root interval checker:} After completion compression, \(\Xi\)-RH is equivalent to all roots of \(P_L(S)\) lying in \([-2,2]\) (Proposition \ref{prop:xi-rh-interval-criterion}).
+  \item \textbf{Constant-level strictification checker:} Under the central extension caliber of \(\mathbf{PW}\), the anomaly signature occurs only at the finite part/constant level and can be strictly cancelled by a pure constant counterterm gate \(\mathrm{CT}_\eta\); moreover, this strictification does not alter any exponential-order principal scale (Definition \ref{def:pom-finite-part-counterterm-gate}; Proposition \ref{prop:pom-counterterm-anom-cancel}).
+\end{enumerate}
+This subsection constructs a pseudo-\(\Xi\) object that is ``syntactically writable and still exhibits a self-dual completion form, yet mandatorily requires radial degrees of freedom,'' and demonstrates its simultaneous collapse under both checkers: the rejection point does not arise from ``being unwritable'' but from ``having to introduce \(|u|\neq 1\) radial modes,'' rendering the object not typable under the established closure of this paper (i.e., its readout degenerates to \(\mathsf{NULL}\), Theorem \ref{thm:xi-offset-null-type-safety}).
+
+\paragraph{Construction: planting an out-of-range root at the completion end}
+Along the self-dual Dirichlet section (\S\ref{subsec:xi-from-self-dual}), let
+\[
+w=L^{-1/2},\qquad S_L(s)=L^{s-\tfrac12}+L^{\tfrac12-s}.
+\]
+In the completion representation, define
+\[
+P_L(S):=\widehat\Delta\!\bigl(L^{-1/2},S\bigr)\in\RR[S],
+\qquad
+\Xi_{\Delta,L}(s)=P_L\!\bigl(S_L(s)\bigr)
+\]
+(Proposition \ref{prop:xi-rh-interval-criterion}).
+Take any real number \(S_0>2\), and define the pseudo-polynomial and pseudo-\(\Xi\) at the completion end:
+\[
+P^{\mathrm{fake}}_L(S):=P_L(S)\cdot (S-S_0),
+\qquad
+\Xi^{\mathrm{fake}}_{\Delta,L}(s):=P^{\mathrm{fake}}_L\!\bigl(S_L(s)\bigr)
+=\Xi_{\Delta,L}(s)\cdot\bigl(S_L(s)-S_0\bigr).
+\]
+Since \(S_L(1-s)=S_L(s)\), this construction still satisfies the strict functional equation
+\[
+\Xi^{\mathrm{fake}}_{\Delta,L}(s)=\Xi^{\mathrm{fake}}_{\Delta,L}(1-s),
+\]
+i.e., it formally preserves the ``self-dual completion form.''
+
+\paragraph{Mandatory nature of radial degrees of freedom: out-of-range root \texorpdfstring{$S_0>2$}{S0>2} can only be realized by off-line points}
+Let \(y:=L^{s-\tfrac12}\), so that \(S_L(s)=y+y^{-1}\) (proof of Proposition \ref{prop:xi-rh-interval-criterion}).
+When \(s=\tfrac12+it\), one has \(|y|=1\) and \(S_L(\tfrac12+it)\in[-2,2]\).
+Therefore, the equation
+\(
+S_L(s)=S_0>2
+\)
+cannot hold on the critical line; any zero of \(\Xi^{\mathrm{fake}}_{\Delta,L}(s)=0\) arising from the factor \((S_L(s)-S_0)\) must satisfy
+\[
+|y|\neq 1
+\quad\Longleftrightarrow\quad
+\Re(s)\neq\tfrac12
+\quad\Longleftrightarrow\quad
+|u_L(s)|\neq 1,
+\]
+thereby mandatorily entering the non-unit-circle radius (radial) channel.
+
+\begin{proposition}[Self-duality does not exclude off-line zeros; addressability does]\label{prop:xi-offcritical-constructible-but-null-or-extra-register}
+Following the notation above, take any \(S_0>2\) and construct
+\(
+\Xi^{\mathrm{fake}}_{\Delta,L}(s)=\Xi_{\Delta,L}(s)\bigl(S_L(s)-S_0\bigr)
+\).
+Then:
+\begin{enumerate}
+  \item \textbf{(Self-dual form preserved)}
+  \(\Xi^{\mathrm{fake}}_{\Delta,L}\) still satisfies the strict functional equation \(\Xi^{\mathrm{fake}}_{\Delta,L}(s)=\Xi^{\mathrm{fake}}_{\Delta,L}(1-s)\); therefore, ``functional equation type structure'' by itself does not exclude the appearance of off-line zeros.
+  \item \textbf{(Off-line zero mechanism is explicitly constructible)}
+  The zeros induced by the factor \((S_L(s)-S_0)\) must satisfy \(|u_L(s)|\neq 1\), i.e., they must lie in the radial channel outside the unitary slice.
+  \item \textbf{(Structural degeneration under unitary slice semantics)}
+  Under the visible domain constraint \(X_{\mathrm{vis}}=\mathsf{Phase}\) and the \(\mathbf{PW}\) closure type checking, any object that essentially depends on \(|u|\neq 1\) radial degrees of freedom is not typable, and its readout stably degenerates to \(\mathsf{NULL}\) by protocol (Theorem \ref{thm:xi-offset-null-type-safety}; see also Theorem \ref{thm:xi-pw-no-continuous-hair}).
+  \item \textbf{(Mandatory fourth register/mode axis extension)}
+  If one wishes to make the above off-line zero event into a certifiable single-valued verifiable readout within the system, one must extend the address/certificate type to explicitly carry the radial parameter \(\varrho=\log|u|\), i.e., extend the single phase register to a \((\theta,\varrho)\) dual-parameter mode axis; in register semantics this is equivalent to introducing an additional continuous register (``fourth register'').
+  This extension cannot be absorbed by constant-level strictification (see the boundary analysis of \(\mathrm{CT}_\eta\) below), and under the continuous and locally invertible readout audit caliber it also cannot be compressed back into a single circle register (Theorem \ref{thm:radial-dimension-obstruction}).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Item (1) follows directly from the invariance \(S_L(1-s)=S_L(s)\) (see the functional equation derivation above).
+Item (2) is the analysis of the equation \(S_L(s)=S_0>2\) given in this paragraph, yielding \(|u_L(s)|\neq 1\).
+Item (3) is a direct application of the unitary slice visible domain filter and type safety rejection (Theorem \ref{thm:xi-offset-null-type-safety} and Theorem \ref{thm:xi-pw-no-continuous-hair}).
+Item (4) follows by combining the strictification constraint that ``radial dependence cannot be cancelled by a pure constant gate'' with Theorem \ref{thm:radial-dimension-obstruction} (radial degrees of freedom cannot be compressed to a single phase). \qedhere
+\end{proof}
+
+\paragraph{Compilation/reduction: why this pseudo-object is ``syntactically writable''}
+The above construction merely appends a linear factor at the completion end; in the determinant interface, this corresponds to appending a finite-dimensional block decoupled from the original kernel to the kernel object, so that the overall determinant is multiplied by this factor (the \(\det(I-zB(u))\) caliber of Proposition \ref{prop:xi-unitary-slice-spectral-crossing}).
+On the projection word side, this ``decoupled appending'' falls under the case of independent axis juxtaposition: once this linear factor is realized as an independent block and included in the same compilation target, its lexicon still falls within the existing generator closure and can be reduced by the three-generator normalizer to the interface normal form
+\[
+\mathrm{LIFT}_G\circ \mathrm{PROJ}_u\circ E_m
+\]
+accompanied by anomaly signature output (Proposition \ref{prop:pom-three-gen-interface-normal-form} and Definition \ref{def:pom-anom-signature}).
+Therefore, the key point of this template lies not in ``the construction being unwritable'' but in the structural rejection by subsequent type checking.
+
+\paragraph{Type-check collapse: root interval checker --- immediate rejection at the completion end}
+Since \(P^{\mathrm{fake}}_L\) contains a root \(S_0>2\), its root set is not contained in \([-2,2]\).
+Therefore, the root interval checker (Proposition \ref{prop:xi-rh-interval-criterion}) immediately determines:
+\[
+\mathrm{Roots}\bigl(P^{\mathrm{fake}}_L\bigr)\not\subseteq [-2,2]
+\quad\Longrightarrow\quad
+\Xi^{\mathrm{fake}}_{\Delta,L}\ \text{does not satisfy critical-line purity (off-line zeros exist)}.
+\]
+If one writes this rejection as an engineering-style type-checker output, the canonical form is
+\begin{verbatim}
+TypeError[RootInterval]: root S0>2 detected; requires |u|!=1 (radial mode).
+\end{verbatim}
+The mathematical content is precisely the above formula: an out-of-range root is equivalent to being forced into the \(|u|\neq 1\) radial channel.
+
+\paragraph{Type-check collapse: boundary of constant-level strictification --- radial dependence cannot be absorbed by \texorpdfstring{$\mathrm{CT}_\eta$}{CT}}
+Under the central extension/strictification caliber of this paper, \(\mathrm{CT}_\eta\) is defined as a \emph{pure constant} gate: it preserves all twisted channel poles \(\rho_\chi(\theta)\) and only applies an additive shift to the finite part drift \(\log\mathfrak{M}_\chi(\theta)\) (Definition \ref{def:pom-finite-part-counterterm-gate}).
+Therefore (Proposition \ref{prop:pom-counterterm-anom-cancel}), all strictifiable residuals must close at the ``finite part/constant level,'' and strictification does not alter any exponential-order principal scale.
+\par
+Write \(u=re^{i\theta}\) and let the radial parameter be \(\varrho:=\log r\).
+On the unitary slice (\(r=1\)), \(u=e^{i\theta}\in\TT\) and the phase can also be given by a parameter-free real-axis compactification gate: there exists a bijection
+\[
+x\in\RR\ \longleftrightarrow\ u=\iota(x):=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\in\TT\setminus\{-1\},
+\qquad
+\theta=\vartheta(x):=2\arctan(x),
+\]
+see Appendix \ref{app:unit-circle-phase-gate}. Thus on this slice, the ``phase axis'' can be equivalently read out as a single real-axis coordinate \(x\) (the point at infinity corresponds to the boundary limit \(u=-1\)).
+The radial mode \(|u|\neq 1\), i.e., \(\varrho\neq 0\), does not constitute a constant-level perturbation: it changes the modulus of \(u\), thereby extending the \(\theta\)-single-parameter interface on the unitary slice to a \((\theta,\varrho)\)-dual-parameter object (Proposition \ref{prop:xi-unitary-slice-spectral-crossing}), and in general changes the pole/exponential principal scale of twisted channels (e.g., the range of the spectral radius \(\rho_\chi\) is no longer restricted to the \(|u|=1\) slice).
+Therefore, any attempt to interpret ``radial degrees of freedom'' as residuals cancellable by \(\mathrm{CT}_\eta\) contradicts the definitional constraint that ``\(\mathrm{CT}_\eta\) does not change poles/principal scales'': these degrees of freedom do not belong to the constant-level labels of \(\mathcal{A}_G\) but must be explicitly carried by additional parameters/registers.
+The second type of engineering-style rejection output can be written as:
+\begin{verbatim}
+TypeError[Strictification]: residual depends on radial parameter (|u|!=1);
+no constant CT_eta cancels it without changing poles.
+\end{verbatim}
+
+From the type-theoretic perspective, the above rejection is not a numerical error issue but a precision type mismatch: the unitary slice fixes the interface to a phase-type (single-parameter) visible domain; an off-slice object requires the introduction of radial degrees of freedom, thereby extending the interface to a \((\theta,\varrho)\)-dual-parameter type. This extension changes poles/principal scales and cannot be cancelled at the constant level; hence, without explicitly introducing an additional register to carry the radial parameter, the object is not typable under the established closure and its readout degenerates to \(\mathsf{NULL}\) by protocol.
+
+\begin{theorem}[Dimension obstruction for locally invertible representation: radial degrees of freedom cannot be compressed to a single phase]\label{thm:radial-dimension-obstruction}
+Let \(M=S^{1}\times\RR\) be the phase--radial parameter space, endowed with the power semigroup action
+\[
+d\cdot(\theta,\varrho):=(d\theta,d\varrho)\qquad(d\ge 1).
+\]
+If there exists a continuous map \(\Phi:M\to S^{1}\) simultaneously satisfying:
+\begin{enumerate}
+  \item \textbf{Locally invertible readout:} for each \(x\in M\) there exists a neighborhood \(U\ni x\) and a continuous readout \(\Psi:\Phi(U)\to U\) such that \(\Psi\circ(\Phi|_{U})=\mathrm{id}_{U}\);
+  \item \textbf{Power compatibility:} \(\Phi(d\cdot x)=\Phi(x)^{d}\) for all \(d\ge 1\) and \(x\in M\);
+\end{enumerate}
+then a contradiction arises.
+Therefore, under the audit caliber of continuity and locally invertible readout, the phase--radial state \((\theta,\varrho)\) cannot be compressed to a single circle register; any closed interface must explicitly retain an additional register to carry the radial degrees of freedom.
+\end{theorem}
+\begin{proof}
+By (1), the map \(\Phi|_{U}:U\to \Phi(U)\) possesses a continuous right inverse \(\Psi\), so \(\Phi|_{U}\) is a homeomorphism (with inverse \(\Psi|_{\Phi(U)}\)).
+But \(M=S^{1}\times\RR\) is a two-dimensional manifold, so \(U\) is homeomorphic to an open disk in the plane; while any open subset of \(S^{1}\) is homeomorphic to an open interval.
+An open disk and an open interval cannot be homeomorphic (for example, removing one point from the former still leaves it connected while the latter splits into two segments), a contradiction.
+Therefore (1) alone is impossible, and so (1)--(2) cannot simultaneously hold. \qedhere
+\end{proof}
+
+\paragraph{Minimal realization interface manifests ``radial mode'' as dimension overflow}
+If one further compiles this pseudo-object into a sequence/kernel object and connects it to the ``minimal realization'' interface, then the introduction of radial modes can be seen as additional visible degrees of freedom.
+In the framework of this paper, whether ``additional degrees of freedom must be carried by appended states/registers'' can be given a hard certificate by the Hankel rank and minimal realization dimension (Theorem \ref{thm:hankel-rank-minimal}, \ref{thm:pom-moment-hankel}; see also Remark \ref{rem:two_layer_bridge_package_completed_minH} for the two-layer bridge package organization).
+This pathway provides an additional, fully numerically auditable backend diagnostic port for the two types of type rejection above.
+
+\paragraph{Explicit off-axis zeros and complete classification of the minimal \texorpdfstring{$(2\times2)$}{(2x2)} self-dual bridge kernel}
+The preceding counterexample demonstrated the mandatory nature of radial modes through ``appending an out-of-range root at the completion end'';
+as a complement, the following gives an explicit prototype that derives off-axis zeros directly on a \emph{minimal controllable self-dual kernel}, without relying on pseudo-factor splicing.
+This model is the minimal instance of the self-dual normal form from Appendix \S\ref{app:kernel-self-dual} (Proposition \ref{prop:self-dual-normal-form-1pmu}) at \(\dim V_+=\dim V_-=1\).
+
+\begin{theorem}[Complete zero classification of the minimal self-dual bridge kernel: explicit non-critical-line zero tower]\label{thm:xi-2x2-selfdual-offcritical-template}
+Take integers \(a,b\in\ZZ\), and let
+\[
+  B_0=\begin{pmatrix}a&-b\\-b&a\end{pmatrix},\qquad
+  \Pi=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad
+  B_1=\Pi^{-1}B_0\Pi=\begin{pmatrix}a&b\\b&a\end{pmatrix},
+\]
+define
+\(
+B(u):=B_0+uB_1
+\)
+and
+\(
+\Delta(z,u):=\det(I-zB(u))
+\).
+For any \(L>1\), let the completion slice be
+\[
+  \Xi_{\Delta,L}(s):=\Delta\!\bigl(L^{-s},\,L^{2s-1}\bigr).
+\]
+Then:
+\begin{enumerate}
+  \item \textbf{(Two-channel factorization)}
+  \[
+  \Delta(z,u)
+  =\Bigl(1-z\bigl((a-b)+(a+b)u\bigr)\Bigr)\,
+   \Bigl(1-z\bigl((a+b)+(a-b)u\bigr)\Bigr).
+  \]
+  \item \textbf{(Reduction to quadratic equations and logarithmic lattice)}
+  Let \(r:=L^{s-\tfrac12}\) (so that \(u=L^{2s-1}=r^{2}\), \(L^{-s}=L^{-1/2}r^{-1}\)).
+  Then the zero condition \(\Xi_{\Delta,L}(s)=0\) is equivalent to one of the following two quadratic equations holding:
+  \[
+  (a+b)r^2-\sqrt L\,r+(a-b)=0,
+  \qquad
+  (a-b)r^2-\sqrt L\,r+(a+b)=0.
+  \]
+  Each quadratic equation yields two algebraic roots \(r\), giving four families of zero towers
+  \[
+  s=\frac12+\frac{\log r}{\log L},
+  \qquad
+  \log r=\log|r|+\mathrm{i}\bigl(\arg r+2\pi k\bigr),\quad k\in\ZZ,
+  \]
+  i.e., the imaginary part shifts by arithmetic progression with period \(2\pi/\log L\).
+  \item \textbf{(Explicit off-axis zero criterion)}
+  If \(b\neq 0\), then among the four families above there exists at least one satisfying \(|r|\neq 1\), so the corresponding zeros satisfy \(\Re(s)\neq\tfrac12\).
+  Furthermore, apart from the possible alignment case \(L=4a^2\) (where only \(r=\pm 1\) slice zeros can appear), all algebraic roots satisfy \(|r|\neq 1\), so all zero towers leave the critical line.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Direct computation gives
+\[
+B(u)=\begin{pmatrix}a(1+u)&b(u-1)\\ b(u-1)&a(1+u)\end{pmatrix},
+\qquad
+I-zB(u)=
+\begin{pmatrix}1-za(1+u)&-zb(u-1)\\ -zb(u-1)&1-za(1+u)\end{pmatrix}.
+\]
+Hence
+\[
+\Delta(z,u)
+=\bigl(1-za(1+u)\bigr)^2-\bigl(zb(u-1)\bigr)^2
+=\Bigl(1-z\bigl((a-b)+(a+b)u\bigr)\Bigr)\Bigl(1-z\bigl((a+b)+(a-b)u\bigr)\Bigr),
+\]
+yielding (1).
+For (2), substitute \(u=r^2\), \(L^{-s}=L^{-1/2}r^{-1}\), and set each linear factor to zero to obtain the two quadratic equations;
+the ``logarithmic lattice'' expression of the zero towers comes from the multivaluedness of \(\log r\).
+\par
+For (3), first note that the two quadratic equations are related by the reciprocal variable substitution: if \(r\) satisfies the first, then \(r^{-1}\) satisfies the second.
+If some algebraic root satisfies \(|r|=1\), then \(r^{-1}=\overline r\), and by the real-coefficient property, \(r\) simultaneously satisfies both quadratic equations.
+Subtracting the two gives \(2b(r^2-1)=0\); under \(b\neq 0\) this forces \(r=\pm 1\).
+Substituting \(r=\pm 1\) back into either quadratic equation gives \(2a\mp\sqrt L=0\), hence \(L=4a^2\);
+therefore, if \(L\neq 4a^2\) then no root with \(|r|=1\) can appear, and all roots satisfy \(|r|\neq 1\).
+Even in the alignment case \(L=4a^2\) where \(r=\pm 1\) slice roots appear, the companion root of the same equation satisfies
+\(
+|r|=\bigl|\frac{a-b}{a+b}\bigr|
+\)
+or its reciprocal (by the product-of-roots formula \(r_1r_2=(a-b)/(a+b)\) etc.), which under \(b\neq 0\) is not \(1\), thus still yielding off-axis zero towers.
+\qedhere
+\end{proof}
+
+Table \ref{tab:xi-2x2-selfdual-offcritical-template} presents a set of algebraic roots and zero samples for fixed parameters (generated by a reproducible pipeline).
+\input{sections/generated/tab_xi_2x2_selfdual_offcritical_template.tex}
+
+\begin{corollary}[Necessary and sufficient condition for slice purity of the minimal self-dual bridge kernel]\label{cor:xi-2x2-selfdual-slice-purity-iff}
+Under the setting of Theorem \ref{thm:xi-2x2-selfdual-offcritical-template}, further assume \(a\neq 0\).
+Then the necessary and sufficient condition for all zeros of \(\Xi_{\Delta,L}\) to satisfy \(\Re(s)=\tfrac12\) is
+\[
+b=0\quad\text{and}\quad L\le 4a^2.
+\]
+If this condition is not met, then there necessarily exist zero towers satisfying \(\Re(s)\neq\tfrac12\).
+\end{corollary}
+
+\begin{proof}
+If \(b\neq 0\), then by item (3) of Theorem \ref{thm:xi-2x2-selfdual-offcritical-template}, there necessarily exist algebraic roots satisfying \(|r|\neq 1\), hence the corresponding zero towers satisfy \(\Re(s)\neq\tfrac12\), so slice purity is impossible.
+\par
+Now suppose \(b=0\).
+In this case, the two quadratic equations of Theorem \ref{thm:xi-2x2-selfdual-offcritical-template} reduce to the same equation
+\[
+a r^2-\sqrt L\,r+a=0,
+\]
+whose two roots \(r_1,r_2\) satisfy \(r_1r_2=1\).
+Therefore, ``all roots satisfy \(|r|=1\)'' is equivalent to the discriminant being nonpositive:
+\(
+L-4a^2\le 0
+\).
+When \(L<4a^2\), the two roots are complex conjugates with product \(1\), so \(|r_1|=|r_2|=1\); when \(L=4a^2\), a double root \(r=\sqrt L/(2a)=\pm 1\) appears, which still satisfies \(|r|=1\).
+When \(L>4a^2\), the two roots are real reciprocals not equal to \(\pm 1\), so there must be a root with \(|r|\neq 1\), producing a zero tower with \(\Re(s)\neq\tfrac12\).
+Combining all cases yields the necessary and sufficient condition. \qedhere
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$(\rho,\theta)$}{(rho,theta)} splitting and unitary slice projection forgetting]\label{cor:xi-2x2-selfdual-orthogonal-axis-projection-forget}
+In the explicit model of Theorem \ref{thm:xi-2x2-selfdual-offcritical-template}, the polar decomposition of the parameter
+\(
+u=L^{2s-1}
+\)
+gives \(u=e^{\rho+\mathrm{i}\theta}\) with
+\[
+\rho=(2\Re(s)-1)\log L,\qquad \theta=2\Im(s)\log L\ (\mathrm{mod}\ 2\pi).
+\]
+Therefore \(\Re(s)=\tfrac12\) is equivalent to \(\rho=0\) (unitary slice).
+For any zero tower generated by \(|r|\neq 1\), \(\rho\) is its non-eliminable normal parameter; restricting the readout to the pure phase axis (retaining only \(\theta\)) necessarily forgets \(\rho\), so that in the sense of verifiable addressability, a mode axis extension is required or degeneration to \(\mathsf{NULL}\) occurs (consistent with the general conclusions of Theorem \ref{thm:xi-offset-null-type-safety} and Theorem \ref{thm:radial-dimension-obstruction}).
+\end{corollary}

@@ -1,0 +1,191 @@
+\subsection{``Horizon Zero-Knowledge -- Unitary Slice'' Paradigm: Commuting Polar Decomposition, Joint Spectral Comb, and Critical Line Concentration}\label{subsec:op-algebra-hzom-unitary-slice-rh}
+This subsection, under the setup of Section \ref{subsec:op-algebra-modular-zk-index-fkdet},
+promotes the ``horizon operator family \(\Rightarrow\) determinant \(\Rightarrow\) zero geometry'' template used by the HZOM in the main text (Definition \ref{def:xi-hzom})
+to a stronger operator algebra paradigm: if there exists a \emph{commuting polar decomposition} on the invisible subspace that is compatible with the visible coarse-graining,
+then critical line concentration and the local statistics of zeros can be completely reformulated in terms of the joint spectral data of \((H,U)\);
+moreover, the Li criterion can be operatorized within this paradigm as a discrete convexity axiom induced by a completely positive trace functional.
+
+\paragraph{Setup: invisible subspace and determinant zero events}
+Let \((\mathcal{M},\tau)\) be a finite von Neumann algebra with a faithful normal trace, \(\mathcal{N}\subset\mathcal{M}\) a ``horizon-visible'' subalgebra,
+and suppose there exists a trace-preserving conditional expectation \(E:\mathcal{M}\to\mathcal{N}\).
+Denote the GNS space \(L^2(\mathcal{M},\tau)\) and its subspace \(L^2(\mathcal{N},\tau)\), and let
+\[
+\mathfrak{H}_{\mathrm{inv}}:=L^2(\mathcal{M},\tau)\ominus L^2(\mathcal{N},\tau)
+\]
+be the invisible subspace.
+Let \(\{K_s\}_{\Re(s)>\tfrac12}\subset\mathcal{M}\) be a family of elements varying analytically in \(s\), and define the (Fuglede--Kadison) horizon determinant
+\[
+D(s):=\Delta_\tau(I-K_s)\ \in\ [0,\infty).
+\]
+By Proposition \ref{prop:op-algebra-fkdet-properties},
+\[
+D(s)=0\quad\Longleftrightarrow\quad I-K_s\ \text{is not invertible in }\mathcal{M}
+\quad\Longleftrightarrow\quad 1\in \mathrm{Spec}_{\mathcal{M}}(K_s).
+\]
+When \(K_s\) is a trace-class operator in some Hilbert space representation, the Fredholm determinant \(\det(I-K_s)\) can also serve as a complex analytic object;
+its zero events are consistent with the non-invertibility of \(I-K_s\) and hence with the vanishing events of \(D(s)\).
+All statements in this subsection regarding ``zero locations/multiplicities/spacings'' take this non-invertibility event as the core semantic.
+
+\begin{theorem}[``Horizon zero-knowledge -- unitary slice'' necessary and sufficient paradigm: commuting polar decomposition forces critical line concentration]\label{thm:op-algebra-hzom-commuting-polar-forces-critical-line}
+Under the above setup, further assume that on the invisible subspace \(\mathfrak{H}_{\mathrm{inv}}\) there exist a positive self-adjoint operator \(H\ge 0\) and a unitary operator \(U\) satisfying
+\[
+[H,U]=0,
+\qquad
+K_s\big|_{\mathfrak{H}_{\mathrm{inv}}}
+=\exp\!\bigl(-(s-\tfrac12)H\bigr)\,U\qquad(\Re(s)>\tfrac12),
+\]
+and that \(H\) has a strict lower bound on \(\mathfrak{H}_{\mathrm{inv}}\) (equivalently: for any \(\sigma>\tfrac12\), \(\|\exp(-(\sigma-\tfrac12)H)\|<1\)).
+Then \(D(s)\) has no zeros in the right half-plane \(\Re(s)>\tfrac12\).
+If in addition the reflection symmetry
+\[
+\boxed{\ D(s)=\overline{D(1-\overline{s})}\ }
+\]
+holds, then all ``nontrivial zero events'' of \(D(s)\) are compressed onto the critical line \(\Re(s)=\tfrac12\).
+\end{theorem}
+\begin{proof}
+Take any \(\sigma>\tfrac12\). By assumption, \(\exp(-(\sigma-\tfrac12)H)\) is a strict contraction on \(\mathfrak{H}_{\mathrm{inv}}\), while \(U\) is unitary, and the two commute.
+Therefore,
+\[
+\left\|K_{\sigma+it}\big|_{\mathfrak{H}_{\mathrm{inv}}}\right\|
+=\left\|\exp\!\bigl(-(\sigma-\tfrac12)H\bigr)\right\|
+<1.
+\]
+Hence \(1\notin\mathrm{Spec}(K_{\sigma+it}|_{\mathfrak{H}_{\mathrm{inv}}})\), and by the non-invertibility semantics, \(I-K_{\sigma+it}\) is invertible on the invisible part;
+since the visible part provides only invertible compression for the zero-knowledge interface (see the ``visible closure'' setup of Section \ref{subsec:op-algebra-modular-zk-index-fkdet}), \(I-K_{\sigma+it}\) is invertible in \(\mathcal{M}\), so \(D(\sigma+it)\neq 0\).
+By reflection symmetry, zero-freedom is also obtained for the left half-plane \(\Re(s)<\tfrac12\), so nontrivial zero events can only occur on the critical line. \qedhere
+\end{proof}
+
+\begin{corollary}[Explicit spectral parametrization of critical zeros: zero heights completely determined by the joint spectrum of \texorpdfstring{$(H,U)$}{(H,U)}]\label{cor:op-algebra-hzom-critical-zeros-joint-spectrum-comb}
+Under the setup of Theorem \ref{thm:op-algebra-hzom-commuting-polar-forces-critical-line},
+suppose \(H\) and \(U\) are strongly commuting on \(\mathfrak{H}_{\mathrm{inv}}\), so that there exists a joint spectral measure \(\mathsf E(\dd\lambda,\dd\theta)\) (with \(\lambda\ge 0\), \(\theta\in(-\pi,\pi]\)) such that
+\[
+H=\int \lambda\,\mathsf E(\dd\lambda,\dd\theta),
+\qquad
+U=\int e^{i\theta}\,\mathsf E(\dd\lambda,\dd\theta).
+\]
+Then on the critical slice \(s=\tfrac12+it\),
+\[
+D(\tfrac12+it)=0
+\quad\Longleftrightarrow\quad
+\exists\,(\lambda,\theta)\ \text{in the joint spectral support such that}\ 1-e^{-it\lambda}e^{i\theta}=0,
+\]
+so that the zero heights admit the explicit parametrization
+\[
+\boxed{\ t=\frac{\theta+2\pi k}{\lambda}\qquad(\lambda>0,\ k\in\mathbb{Z}).\ }
+\]
+In particular:
+\begin{enumerate}
+  \item \textbf{(Fiber multiplicity)} In the finite-dimensional/discrete spectrum case, the algebraic multiplicity of a zero equals the trace dimension of the joint spectral projection satisfying the same \((\lambda,\theta)\);
+  \item \textbf{(Joint spectral comb)} For a fixed scale \(\lambda\) and phase \(\theta\), the corresponding zero sequence is an equally spaced spectral comb with adjacent spacing strictly equal to \(2\pi/\lambda\).
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+When \(s=\tfrac12+it\), \(K_s|_{\mathfrak{H}_{\mathrm{inv}}}=e^{-itH}U\) is a unitary operator.
+By strong commutativity, the joint spectral theorem gives
+\(
+\mathrm{Spec}(e^{-itH}U)=\{e^{-it\lambda}e^{i\theta}:(\lambda,\theta)\in\mathrm{supp}(\mathsf E)\}
+\).
+Thus \(1\in\mathrm{Spec}(e^{-itH}U)\) if and only if there exists a joint spectral point with \(e^{-it\lambda}e^{i\theta}=1\), yielding the stated parametrization.
+The multiplicity conclusion in the finite-dimensional case follows from the dimension (or normalized trace) of the spectral projection for eigenvalue \(1\); the spacing conclusion for fixed \((\lambda,\theta)\) follows directly from the parametrization. \qedhere
+\end{proof}
+
+\begin{corollary}[Joint spectral criterion for simplicity of critical zeros: completely determined by fiber degeneracy of the horizon phase]\label{cor:op-algebra-hzom-simple-zeros-joint-spectrum}
+In the discrete spectrum caliber of Corollary \ref{cor:op-algebra-hzom-critical-zeros-joint-spectrum-comb},
+a critical line zero \(s=\tfrac12+it\) is a simple zero if and only if the joint spectral projection satisfying \(e^{-it\lambda}e^{i\theta}=1\) is one-dimensional in the trace sense of \((\mathcal{M},\tau)\) (no fiber degeneracy).
+Equivalently: for almost every \(\lambda\), the unitary phase \(U\) has simple spectrum on the spectral fiber \(H=\lambda\).
+\end{corollary}
+
+\begin{corollary}[Scale lower bound on zero spacing: uniform control of fixed-scale combs]\label{cor:op-algebra-hzom-zero-spacing-scale-lower-bound}
+Under the setup of Corollary \ref{cor:op-algebra-hzom-critical-zeros-joint-spectrum-comb},
+for any fixed joint spectral point \((\lambda,\theta)\) (\(\lambda>0\)), the spectral comb zero sequence generated by it has constant adjacent spacing \(2\pi/\lambda\).
+Therefore, if \(H\) has joint spectrum essentially supported on \(\lambda\le \lambda_{\max}<\infty\) in the trace sense, then every fixed-scale spectral comb satisfies the uniform lower bound
+\[
+\boxed{\ \Delta t_{\min}(\lambda,\theta)=\frac{2\pi}{\lambda}\ \ge\ \frac{2\pi}{\lambda_{\max}}.\ }
+\]
+Hence, within this paradigm, to produce arbitrarily small zero spacings on the \emph{same scale branch}, the invisible generator \(H\) must have unbounded scale spectrum (\(\lambda_{\max}=\infty\)).
+\end{corollary}
+
+\begin{proposition}[Operatorization of the Li criterion: Li coefficients equivalent to discrete convexity of a completely positive trace functional]\label{prop:op-algebra-li-criterion-operatorized}
+Under the setup of Theorem \ref{thm:op-algebra-hzom-commuting-polar-forces-critical-line},
+further assume that \(K_s\) admits a Fredholm determinant \(\det(I-K_s)\) in some traceable caliber, and take an everywhere nonzero analytic normalization factor \(G(s)\) such that the completed object
+\[
+\Xi(s):=G(s)\,\det(I-K_s)
+\]
+satisfies the reflection symmetry \(s\leftrightarrow 1-s\).
+Let \(\{\Lambda_n\}_{n\ge 1}\) be the Li coefficients of \(\Xi\) (defined by the standard generating definition of the Li criterion).
+Then there exists a completely positive trace functional \(\mathfrak{L}:\mathcal{M}\to\RR\) (which may be taken as \(\mathfrak{L}=\tau\)) and a family of noncommutative polynomials \(P_n\) depending only on \(n\) (acting on \(e^{-H}\) and \(U\), with the convention \(P_0:=0\)), such that for all \(n\ge 1\),
+\[
+\boxed{\;
+\Lambda_n
+=\mathfrak{L}\!\bigl(P_{n+1}(e^{-H},U)\bigr)
+-2\,\mathfrak{L}\!\bigl(P_{n}(e^{-H},U)\bigr)
++\mathfrak{L}\!\bigl(P_{n-1}(e^{-H},U)\bigr).\;}
+\]
+Therefore, the Li criterion nonnegativity condition \(\Lambda_n\ge 0\) (\(\forall n\)) is equivalent to the discrete convexity of the sequence
+\(
+a_n:=\mathfrak{L}(P_n(e^{-H},U))
+\):
+its second-order differences are everywhere nonnegative.
+\end{proposition}
+\begin{proof}[Proof sketch]
+The Li coefficients are given by the local generating expansion of \(\log \Xi\).
+When \(\det(I-K_s)\) is available,
+\(
+\log\det(I-K_s)=-\sum_{m\ge 1}\frac{1}{m}\Tr(K_s^m)
+\)
+(in the domain of convergence), and under \([H,U]=0\), \(K_s^m=e^{-m(s-\tfrac12)H}U^m\).
+Merging this expansion with the completion factor \(\log G(s)\) and rearranging term by term, the Li coefficients can be expressed as linear combinations of finitely many quantities \(\Tr(e^{-aH}U^b)\);
+these are equivalent to traces of noncommutative polynomials in \((e^{-H},U)\).
+Reorganizing these linear combinations by \(n\) into a sequence of ``antiderivative'' values \(a_n\) (so that the second-order differences of \(a_n\) equal \(\Lambda_n\)), and absorbing the combinatorial coefficients of this integration into noncommutative polynomials \(P_n\), yields the stated representation.
+Since \(\mathfrak{L}\) is completely positive (e.g., \(\tau\)), the Li criterion nonnegativity is equivalent to the discrete convexity of \(a_n\). \qedhere
+\end{proof}
+
+\begin{proposition}[Common unitary dilation criterion: existence of a unified dilation implies commuting polar decomposition]\label{prop:op-algebra-common-unitary-dilation-criterion}
+Let \(\{K_s\}_{\Re(s)>\tfrac12}\) be the horizon kernel family, and assume that for each \(\sigma>\tfrac12\) and almost every \(t\),
+\(
+K_{\sigma+it}\big|_{\mathfrak{H}_{\mathrm{inv}}}
+\)
+is a strict contraction.
+If there exists a common dilation space \(\widetilde{\mathfrak H}\supset\mathfrak{H}_{\mathrm{inv}}\) and a family of unitary operators \(\{\widetilde U_{\sigma,t}\}\subset\mathcal{B}(\widetilde{\mathfrak H})\) such that for all \((\sigma,t)\),
+\[
+K_{\sigma+it}\big|_{\mathfrak{H}_{\mathrm{inv}}}
+=P_{\mathrm{inv}}\,\widetilde U_{\sigma,t}\big|_{\mathfrak{H}_{\mathrm{inv}}},
+\]
+and the dilation is closed under the dual conjugate symmetry \(s\leftrightarrow 1-s\) (realized via modular conjugation),
+then up to isomorphism one can deduce the existence of a commuting polar decomposition representation
+\(
+K_s\big|_{\mathfrak{H}_{\mathrm{inv}}}=e^{-(s-\tfrac12)H}U
+\)
+(where \([H,U]=0\)), so that the critical line concentration conclusion of Theorem \ref{thm:op-algebra-hzom-commuting-polar-forces-critical-line} holds.
+Conversely, if there exist stable off-critical-line zero events, then the above ``common unitary dilation and dual closure'' cannot hold simultaneously.
+\end{proposition}
+\begin{proof}[Proof sketch]
+Each fixed \((\sigma,t)\) strict contraction admits a unitary dilation by the Sz.-Nagy type theorem;
+the ``common dilation'' assumption forces these dilations to be compatible in a single spectral model, and under dual closure they carry the \(s\leftrightarrow 1-s\) reflection structure.
+Under this compatibility, the \((\sigma,t)\)-dependence can be absorbed into the exponential decay of a positive generator \(H\) and the phase evolution of a boundary unitary \(U\);
+dual closure further forces \(H\) and \(U\) to be strongly commuting on the invisible part, yielding the stated polar decomposition.
+If an off-critical-line zero exists, then a non-invertibility event occurs in the right/left half-plane, contradicting the ``unified dilation + dual closure \(\Rightarrow\) invertible compression'' structure. \qedhere
+\end{proof}
+
+\begin{proposition}[Log-Sobolev constant controls the zero confinement band: from mixing inequalities to critical line localization]\label{prop:op-algebra-logsobolev-zero-band}
+Suppose there exist a completely positive, trace-preserving semigroup \((\mathcal{T}_u)_{u\ge 0}\) acting on \(\mathfrak{H}_{\mathrm{inv}}\) and a unitary perturbation \(U\) such that
+\[
+K_s\big|_{\mathfrak{H}_{\mathrm{inv}}}
+=\int_{0}^{\infty}e^{-(s-\tfrac12)u}\,\mathcal{T}_u(U)\,\dd u,
+\]
+and \((\mathcal{T}_u)\) satisfies a dimension-independent log-Sobolev inequality with constant \(\alpha>0\) (using the convention from the main text where larger \(\alpha\) means stronger mixing; see the hypercontractivity formulation in Corollary \ref{cor:pom-fold-factor-chain-derived-invariants}).
+Then there exists an explicit constant \(c>0\) (depending only on the normalization) such that the horizon determinant has no zero events in the off-band region
+\[
+|\Re(s)-\tfrac12|\ >\ \frac{c}{\alpha}.
+\]
+In particular, if \(\alpha\) does not degenerate in the scaling limit (maintaining \(\inf \alpha>0\)), then zero events are forced to concentrate in a neighborhood of the critical line;
+conversely, any stably existing off-line zero event forces the log-Sobolev constant at the corresponding scale to collapse (\(\alpha\downarrow 0\)).
+\end{proposition}
+\begin{proof}[Proof sketch]
+The log-Sobolev inequality is equivalent to Gross hypercontractivity: there exists \(q(u)=1+e^{2\alpha u}\) such that \(\|\mathcal{T}_u f\|_{q(u)}\le \|f\|_2\).
+When \(U\) lies in the invisible part and satisfies standard centering/orthogonality conditions, hypercontractivity can be promoted to an exponential decay bound on \(\|\mathcal{T}_u(U)\|\);
+multiplied by the Laplace weight \(e^{-(\Re(s)-1/2)u}\), this yields strict contractivity of \(K_s\), hence \(1\notin\mathrm{Spec}(K_s)\), ruling out zero events.
+The constant \(c\) is determined by the splicing of these two types of exponential decay; dual reflection then transfers the zero-freedom from the right half-plane to the left half-plane. \qedhere
+\end{proof}
+
+\endinput

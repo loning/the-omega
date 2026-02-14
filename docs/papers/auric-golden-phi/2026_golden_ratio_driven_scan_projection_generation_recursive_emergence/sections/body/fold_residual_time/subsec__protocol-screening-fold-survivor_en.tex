@@ -1,0 +1,66 @@
+\subsection{Design Space and Protocol Screening: Why Folding Survives}\label{subsec:protocol-screening-fold-survivor}
+
+This subsection consolidates the ``binary readout---normal form---cross-resolution compatibility---symmetry auditing'' calibers that have appeared in Sections \ref{sec:spg}--\ref{sec:group-unification} into a unified protocol screening chain, aligning it with the general Ostrowski design space (Subsection \ref{subsec:ostrowski-generalized-fold}). Its purpose is to clarify: the Zeckendorf folding adopted in this paper is not an arbitrary example chosen from among many possible rules, but is the simplest surviving structure that degenerates endogenously from the design space under the auditable interface conditions fixed in this paper.\par
+To avoid repeating proofs, the statements in this subsection are primarily by reference; necessary derivations are limited to parameter degeneration relations that follow directly from definitions.
+
+\subsubsection{Design space: general Ostrowski counting and the ``evaluation \texorpdfstring{$\to$}{->} normal form \texorpdfstring{$\to$}{->} truncation'' fold family}
+In Subsection \ref{subsec:ostrowski-generalized-fold}, this paper has generalized the binary Zeckendorf folding to the Ostrowski counting system induced by a general irrational number \(\alpha=[0;a_1,a_2,\dots]\): for each resolution \(m\), the raw digit space and the legitimate stable type space are respectively
+\[
+\Omega_m^{(\alpha)}=\prod_{n=1}^{m}\{0,1,\dots,a_n\},\qquad
+X_m^{(\alpha)}\subseteq \Omega_m^{(\alpha)}
+\]
+(Definition \ref{def:ostrowski-entropy-gap}), and the Ostrowski representation theorem gives the unique normal form \(Z_\alpha(N)\) and legitimate set \(X_m^{(\alpha)}\) (Definition \ref{def:Xm-alpha}). The corresponding fold family
+\[
+\Fold_m^{(\alpha)}(\omega):=\pi_m^{(\alpha)}\!\bigl(Z_\alpha(N_\alpha(\omega))\bigr)
+\qquad(\text{Definition \ref{def:fold-alpha}})
+\]
+embodies the constructive paradigm fixed in this paper: ``first evaluate, then take the normal form, finally truncate.'' A direct consequence of this paradigm is cross-resolution functoriality (Proposition \ref{prop:fold-alpha-basic}-(4) and Theorem \ref{thm:normalize-then-truncate-functorial}): in the general Ostrowski setting, ``normal form first, then truncation'' and the truncation projection strictly commute, and the commutative diagram holds by definition rather than as an additional assumption.\par
+The main-line folding \(\Fold_m:\Omega_m\to X_m\) of this paper is the binary degeneration of the above family at the golden endpoint \(\alpha=\varphi^{-1}\) (Proposition \ref{prop:Xm-alpha-cardinality}, see also Definition \ref{def:fold-word}).
+
+\subsubsection{Protocol clauses: six classes of auditable interface conditions}
+The ``protocol'' requirements used repeatedly throughout this paper are abstracted into a set of clauses that constrain only \emph{the allowed fold interfaces}. The following clauses do not depend on specific implementation details, but only require that output objects be closable under finite-window and verifiable semantics:
+\begin{enumerate}
+  \item[\textbf{(P1)}] \textbf{Binary readout:} The macroscopic readout alphabet is fixed as \(\{0,1\}\) (Section \ref{sec:spg}); allowed folding and intermediate gates must not introduce a larger alphabet.
+  \item[\textbf{(P2)}] \textbf{Unique addressability:} Macroscopic addresses must possess unique reference: at each resolution \(m\), the stable type layer should allow verifiable single-valued addressing with finite objects (compatible with the ``address precedes concept value / null \(\mathsf{NULL}\)'' caliber, see Section \ref{sec:recursive-addressing} and the type-theoretic discussion in Section \ref{sec:pom}).
+  \item[\textbf{(P3)}] \textbf{Finite-window completeness:} The macroscopic object at resolution \(m\) should be completely determined by the first \(m\) bits, and its addressable range should have no holes at that scale (a bijection certificate is required to align \(X_m\) to a contiguous interval).
+  \item[\textbf{(P4)}] \textbf{Cross-resolution compatibility:} Folding and truncation/order-reduction should be compatible in the auditable sense: multi-scale readouts of the same object must form a commutative comparison diagram, thereby preventing ``the same object being inconsistent at different resolutions.''
+  \item[\textbf{(P5)}] \textbf{Worst-case totality:} Folding and order-reduction rules must be defined for all inputs, and the verifiability of protocol clauses must be maintained on worst-case inputs; consistency is not allowed to be maintained by ``avoiding bad inputs.''
+  \item[\textbf{(P6)}] \textbf{Symmetry auditing:} Protocol-allowed symmetries must be enumerable and verifiable; unauthorized symmetries induce address collisions or certificate undecidability, and hence must be screened down to an auditable residual stabilizer.
+\end{enumerate}
+
+\subsubsection{Screening chain: binary readout forces Ostrowski to degenerate to the golden endpoint}
+Within the Ostrowski design space, (P1) directly locks the continued fraction parameters to the golden endpoint. The reasoning depends only on definitions: from \(\Omega_m^{(\alpha)}=\prod_{n=1}^{m}\{0,1,\dots,a_n\}\) (Definition \ref{def:fold-alpha}), if \(\Omega_m^{(\alpha)}=\{0,1\}^m\) is required for all \(m\), then necessarily \(a_n=1\) for all \(n\), so that
+\[
+\alpha=[0;1,1,1,\dots]=\varphi^{-1}.
+\]
+Under this degeneration, the legitimate set \(X_m^{(\alpha)}\) also degenerates to the golden mean grammar \(X_m\) that forbids adjacent \(11\) (Proposition \ref{prop:Xm-alpha-cardinality}; see also Subsection \ref{subsec:folding-fibonacci-stable-syntax}). Therefore, the golden endpoint is not a ``preference choice'' but the common intersection of the binary alphabet and Ostrowski legitimacy within the paradigm of this paper.
+
+\begin{remark}[Binary readout is not binary weight]\label{rem:protocol-binary-not-base2}
+(P1) restricts the readout alphabet, not the value weights. The binary folding in this paper evaluates with Fibonacci weights and takes the Zeckendorf normal form (Definition \ref{def:fold-word}), with stable grammar determined by the forbidden word \((11)\) (Subsection \ref{subsec:folding-fibonacci-stable-syntax}). If one instead uses ``binary weights + full shift'' and lets the folding degenerate to the identity, then fiber multiplicity is identically \(1\), and hence no nontrivial fiber statistics, gauge anomaly audit, or information ledger interface can be produced as required in this paper (see Subsection \ref{subsec:pom-information-ledger} and the decomposition caliber in Subsection \ref{subsec:folding-stable-compression-resolution}).
+\end{remark}
+
+\subsubsection{Finite-window completeness: prefix bijection and contiguous range certificate}
+Under the binary grammar at the golden endpoint, the ``hole-free completeness'' of (P3) can be given by a prefix bijection certificate. Lemma \ref{lem:zeckendorf-range-bijection} proves: there exists a bijection
+\[
+V_m:X_m\overset{\sim}{\longrightarrow}\{0,1,\dots,F_{m+2}-1\},
+\]
+so that the address range of \(X_m\) is a contiguous interval completely determined by the first \(m\) bits (see also Section \ref{sec:emergent-arithmetic} for the promotion of this bijection to a value--address isomorphism of the resolution modular structure). This bijection provides an auditable ``scale-\(m\) completeness'' certificate in the semantics of this paper: it rules out any rule that requires distant tail information to determine prefix values.
+
+\subsubsection{Cross-resolution compatibility and worst case: from commutative diagrams to global rewriting}
+In the general Ostrowski folding, the cross-resolution compatibility of (P4) holds by definition (Theorem \ref{thm:normalize-then-truncate-functorial}). In the binary Zeckendorf folding, naive truncation \(r_{m+1\to m}\) corresponds to the order ``truncate first, then normalize,'' so it generally does not commute; the fold-aware restriction
+\[
+\widetilde r_{m+1\to m}:=\pi_{m+1\to m}\circ \Fold_{m+1}
+\]
+is precisely the definitional implementation that corrects the order to ``normal form first, then truncation,'' and is the unique correction under the naturality constraint (Theorem \ref{thm:normalize-then-truncate-functorial}; see also Proposition \ref{prop:fold-omega-commute}).\par
+Combining (P4) with (P5) yields a stronger structural consequence: if one still attempts to restore commutativity using ``local tail patches that modify only terminal constant bits,'' this must fail on worst-case inputs. The auditable evidence is the full-length flip of the gauge anomaly \(G_m\) at the worst-case end (Theorem \ref{thm:fold-gauge-anomaly-max}) and the ``tail patch incompleteness'' corollary (Corollary \ref{cor:fold-tail-patch-incomplete}). Therefore, under the folding paradigm fixed in this paper, ``cross-scale consistency \(\Rightarrow\) global rewriting / cross-bit propagation'' is not an implementation preference but a structural enforcement of protocol clauses under worst-case conditions.
+
+\subsubsection{Symmetry auditing: residual stabilizer at the window-\texorpdfstring{$6$}{6} anchor}
+(P6) is realized in this paper in the form of ``enumerable finite certificates'': the fold label \(F_6:\Omega_6\to X_6\) at window-\(6\) can be viewed as a label function on the vertices of a 6-dimensional hypercube; under the action of the geometric automorphism group \(\mathrm{Aut}(Q_6)\), it induces the geometric stabilizer
+\[
+\mathrm{Stab}_{\mathrm{geo}}(F_6):=\{\sigma\in\mathrm{Aut}(Q_6):F_6\circ\sigma=F_6\}.
+\]
+Theorem \ref{thm:foldbin6-geo-stabilizer-z2} (see also Corollary \ref{cor:terminal-foldbin6-geo-stabilizer-z2}) shows: this stabilizer is a group of order \(2\), containing only the identity and a unique nontrivial involution; moreover, its auditable fingerprint in binary numbering is the mask displacement \(\pm 34\) (Corollary \ref{cor:foldbin6-geo-mask-34}). This result compresses ``allowed symmetry'' to a verifiable \(\ZZ_2\) residual, thereby being compatible with the unique addressability of (P2).
+
+\paragraph{Synthesis (``survival'' in the interface sense)}
+In summary, under the joint constraints of the design space adopted in this paper (general Ostrowski fold family, Definition \ref{def:fold-alpha}) and protocol clauses (P1)--(P6), the binary Zeckendorf folding can be viewed as the simplest model selected by interface closure: binary readout degenerates the parameter to the golden endpoint and locks the stable grammar to the forbidden word \((11)\) (Proposition \ref{prop:Xm-alpha-cardinality} and Subsection \ref{subsec:folding-fibonacci-stable-syntax}), the prefix bijection gives a finite-window-complete contiguous range certificate (Lemma \ref{lem:zeckendorf-range-bijection}), cross-resolution compatibility forces adoption of ``normalize first, then truncate'' order-reduction and enforces global rewriting on the worst case (Theorem \ref{thm:normalize-then-truncate-functorial}, Theorem \ref{thm:fold-gauge-anomaly-max}), and symmetry screening at the window-\(6\) anchor reduces the geometric stabilizer to the auditable unique \(\ZZ_2\) residual (Theorem \ref{thm:foldbin6-geo-stabilizer-z2}).\par
+In this sense, ``why folding survives'' should be understood as a rigidity result of interface closure: any attempt to arbitrarily modify the folding mechanism while maintaining the above protocol interfaces must break verifiability of at least one of binary readout, unique addressability, finite-window completeness, cross-scale compatibility, worst-case totality, or symmetry auditing.

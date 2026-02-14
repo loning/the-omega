@@ -1,0 +1,137 @@
+\begin{proposition}[Subordination principle of Poisson coarse-graining: stochastic time representation via the unique \texorpdfstring{$1/2$}{1/2}-stable subordinator]\label{prop:xi-poisson-subordination-half-stable}
+On \(\RR\), let the heat semigroup and Poisson semigroup be respectively
+\[
+G_s f:=e^{s\Delta}f,
+\qquad
+P_t f:=e^{-t|D|}f
+\qquad(s,t>0),
+\]
+with Fourier multipliers \(\widehat{G_s f}(\xi)=e^{-s\xi^2}\widehat f(\xi)\) and \(\widehat{P_t f}(\xi)=e^{-t|\xi|}\widehat f(\xi)\).
+Then there exists a unique family of probability measures \(\{\eta_t\}_{t>0}\) (the \(1/2\)-stable subordination measure) satisfying
+\[
+\boxed{\;
+P_t f=\int_{0}^{\infty} G_s f\ \dd\eta_t(s)\qquad(t>0)\;}
+\]
+and \(\eta_t\) is uniquely determined by its Laplace exponent:
+\[
+\boxed{\;
+\int_{0}^{\infty}e^{-\lambda s}\,\dd\eta_t(s)=e^{-t\sqrt{\lambda}}
+\qquad(\lambda>0)\; }.
+\]
+In the density sense, one may take
+\[
+\dd\eta_t(s)=\frac{t}{2\sqrt{\pi}}\,s^{-3/2}\exp\!\left(-\frac{t^2}{4s}\right)\dd s.
+\]
+\end{proposition}
+\begin{proof}[Proof sketch]
+From the above Laplace exponent, taking \(\lambda=\xi^2\ge 0\) gives
+\(
+\int_0^\infty e^{-s\xi^2}\dd\eta_t(s)=e^{-t|\xi|}
+\).
+For any \(f\in L^1(\RR)\cap L^2(\RR)\), computing on the Fourier side
+\[
+\widehat{\int_0^\infty G_s f\,\dd\eta_t(s)}(\xi)
+=\widehat f(\xi)\int_0^\infty e^{-s\xi^2}\dd\eta_t(s)
+=e^{-t|\xi|}\widehat f(\xi)
+=\widehat{P_t f}(\xi),
+\]
+thus obtaining the subordination representation; uniqueness is given by the uniqueness of Laplace transforms. Proven.
+\end{proof}
+
+\begin{proposition}[Fractional Fisher identity for relative entropy dissipation: strict dissipation law under Poisson semigroup]\label{prop:xi-poisson-kl-dissipation-fractional-fisher}
+Let \(p,q\) be probability densities on \(\RR\), and define Poisson coarse-graining \(p_t:=P_t*p\), \(q_t:=P_t*q\).
+Then the relative entropy
+\[
+D_{\mathrm{KL}}(p\mid q):=\int_{\RR} p(x)\log\!\frac{p(x)}{q(x)}\,\dd x
+\]
+satisfies the exact dissipation identity along the Poisson flow
+\[
+\boxed{\;
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(p_t\mid q_t)=-\mathcal I_1(p_t\mid q_t)\;}
+\]
+where the fractional Fisher information (dissipation rate) can be taken as the nonlocal Dirichlet form
+\[
+\boxed{\;
+\mathcal I_1(p\mid q)
+:=\frac{1}{2\pi}\iint_{\RR^2}
+\Bigl(\log\frac{p(x)}{q(x)}-\log\frac{p(y)}{q(y)}\Bigr)
+\Bigl(\frac{p(x)}{q(x)}-\frac{p(y)}{q(y)}\Bigr)
+\frac{q(x)q(y)}{(x-y)^2}\,\dd x\,\dd y\ \ge\ 0\;}
+\]
+(understood in principal value; the integral is finite for sufficiently regular \(p,q\) due to the difference structure).
+Moreover, \(\mathcal I_1(p_t\mid q_t)=0\) if and only if \(p_t=q_t\) (a.e.).
+\end{proposition}
+\begin{proof}[Proof sketch]
+Viewing \(|D|\) as the generator of \((-\Delta)^{1/2}\), and using its Lévy--Dirichlet representation (kernel \(\asymp |x-y|^{-2}\)) to perform differencing computation on
+\(
+\frac{\dd}{\dd t}\int p_t\log(p_t/q_t)
+\),
+one can write the derivative as a symmetric double integral form:
+\[
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(p_t\mid q_t)
+=-\frac{1}{2\pi}\iint_{\RR^2}
+\Bigl(\log r_t(x)-\log r_t(y)\Bigr)\Bigl(r_t(x)-r_t(y)\Bigr)\,
+\frac{q_t(x)q_t(y)}{(x-y)^2}\,\dd x\,\dd y,
+\]
+where \(r_t:=p_t/q_t\).
+Since the function \(u\mapsto \log u\) is monotone increasing, \((r(x)-r(y))(\log r(x)-\log r(y))\ge 0\), thus the dissipation rate is nonnegative and vanishes if and only if \(r\) is constant (i.e., \(p_t=q_t\)). Proven.
+\end{proof}
+
+\begin{proposition}[Optimal moment control of total variation and relative entropy: second-order exact term for coarse-graining information loss]\label{prop:xi-poisson-tv-kl-second-order}
+Using the notation of Proposition \ref{con:xi-poisson-coarsegraining-second-order-normal-form}, let
+\[
+g_t(x):=\frac{1}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2}
+\qquad (t>0)
+\]
+be the single Cauchy baseline density with the same barycenter \(\bar\gamma\).
+Assume finite third central moment:
+\(
+\int_{\RR}|\gamma-\bar\gamma|^3\,\dd\tilde\nu(\gamma)<\infty
+\).
+Then as \(t\to\infty\) the second-order scaling law holds:
+\[
+\|h_t-g_t\|_{L^1(\RR)}\ \asymp\ t^{-2}\cdot \mathrm{Var},
+\qquad
+D_{\mathrm{KL}}(h_t\mid g_t)\ \asymp\ t^{-4}\cdot \mathrm{Var}^2,
+\]
+where the relative entropy takes the classical form
+\(
+D_{\mathrm{KL}}(h\mid g):=\int_{\RR} h(x)\log\!\frac{h(x)}{g(x)}\,\dd x
+\).
+In particular, when \(\mathrm{Var}=0\), \(h_t\equiv g_t\) and both are identically \(0\); when \(\mathrm{Var}>0\), the implicit constants in the above can be taken as absolute constants independent of \(\tilde\nu\).
+\end{proposition}
+\begin{proof}[Proof sketch]
+By Proposition \ref{con:xi-poisson-coarsegraining-second-order-normal-form}, write
+\[
+h_t(x)=g_t(x)+\mathrm{Var}\cdot r_t(x)+\varepsilon_t(x),
+\]
+where
+\[
+r_t(x):=\frac{1}{\pi}\,
+\frac{t\bigl(3(x-\bar\gamma)^2-t^2\bigr)}{\bigl((x-\bar\gamma)^2+t^2\bigr)^3},
+\qquad
+\varepsilon_t(x)=O(t^{-4})
+\]
+and the \(L^1\) norm of \(\varepsilon_t\) is controlled by the third central moment as \(O(t^{-3})\) (by Taylor remainder on Poisson kernel with \(\|P_t^{(3)}\|_{L^1}\asymp t^{-3}\)).
+Let \(y=(x-\bar\gamma)/t\), then
+\[
+\|r_t\|_{L^1(\RR)}=\frac{1}{t^2}\int_{\RR}\frac{|3y^2-1|}{\pi(1+y^2)^3}\,\dd y
+\asymp t^{-2},
+\]
+thus obtaining \(\|h_t-g_t\|_{L^1}\asymp \mathrm{Var}\,t^{-2}\).
+\par
+For relative entropy, note that \(h_t/g_t=1+O(\mathrm{Var}\,t^{-2})\) is uniformly bounded for \(t\) sufficiently large;
+performing second-order expansion on \(\log(1+u)\) and using \(\int(h_t-g_t)=0\) to cancel the linear term, one obtains
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac12\int_{\RR}\frac{(h_t-g_t)^2}{g_t}\,\dd x\ +\ o(t^{-4})
+\asymp \mathrm{Var}^2\,t^{-4},
+\]
+where the leading constant is given by
+\(
+\int_{\RR}\frac{(3y^2-1)^2}{\pi(1+y^2)^5}\,\dd y
+\)
+and is strictly positive. Proven.
+\end{proof}
+
+\endinput

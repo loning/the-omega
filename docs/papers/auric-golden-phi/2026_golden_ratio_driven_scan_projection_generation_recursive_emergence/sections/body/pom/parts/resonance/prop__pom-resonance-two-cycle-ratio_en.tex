@@ -1,0 +1,113 @@
+\begin{proposition}[Two-cycle ratio error dominated by the negative real root: alternating approximation of the resonance region \texorpdfstring{$R_m$}{Rm} (verifiable)]\label{prop:pom-resonance-two-cycle-ratio}
+Let \(\{S(m)\}_{m\ge 0}\) satisfy a \(d\)-th order integer-coefficient linear recursion whose characteristic polynomial \(P(\lambda)\) has roots ordered by modulus as
+\[
+|\lambda_1|>|\lambda_2|\ge|\lambda_3|\ge\cdots\ge|\lambda_d|.
+\]
+Assume:
+\begin{enumerate}
+  \item \(\lambda_1>0\) is a simple root;
+  \item \(\lambda_2<0\) is a real root;
+  \item In the spectral decomposition of the solution, the modal coefficients of \(\lambda_1\) and \(\lambda_2\) are both nonzero (general position; numerically verified for the \(S_q\) of this paper).
+\end{enumerate}
+Define the ratio sequence
+\[
+R_m:=\frac{S(m+1)}{S(m)}.
+\]
+Then there exists a constant \(A\neq 0\) such that as \(m\to\infty\) the following asymptotic expansion holds:
+\[
+\boxed{\;
+R_m=\lambda_1\ +\ A\left(\frac{\lambda_2}{\lambda_1}\right)^{m}\ +\ O\!\left(\left(\max\!\left\{\frac{|\lambda_3|}{\lambda_1},\left(\frac{|\lambda_2|}{\lambda_1}\right)^2\right\}\right)^{m}\right)\;}
+\]
+Hence the leading error term carries a \textbf{strong two-cycle alternation}: \(R_m-\lambda_1\) exhibits sign oscillation for large \(m\) (convergence is no longer monotone).
+\end{proposition}
+\begin{proof}
+The general theory of linear recursion solutions gives (when \(\lambda_1\) is a simple root and strictly dominant) the existence of constants \(C_1,C_2\neq 0\) such that
+\[
+S(m)=C_1\lambda_1^m+C_2\lambda_2^m+O(|\lambda_3|^m).
+\]
+Set \(\rho:=\lambda_2/\lambda_1\) and \(\delta:=|\lambda_3|/\lambda_1\), and substitute the above into
+\(
+R_m=S(m+1)/S(m)
+\):
+\[
+\frac{R_m}{\lambda_1}
+=\frac{1+\frac{C_2}{C_1}\rho^{m+1}+O(\delta^{m+1})}{1+\frac{C_2}{C_1}\rho^{m}+O(\delta^{m})}
+=1+\frac{C_2}{C_1}(\rho-1)\rho^{m}+O(\delta^m)+O(\rho^{2m}).
+\]
+Setting \(A:=\lambda_1\frac{C_2}{C_1}(\rho-1)\neq 0\) yields the conclusion, and since \(\rho<0\), \(\rho^m\) alternates in sign, so the leading error is a two-cycle alternating term.
+\end{proof}
+
+\begin{corollary}[Strict action of the Aitken \texorpdfstring{$\Delta^2$}{Delta^2}: cancellation of the two-cycle leading geometric term]\label{cor:pom-aitken-cancels-two-cycle}
+For any sequence \(\{x_m\}\), define the Aitken transform
+\[
+\mathcal{A}(x_m):=x_m-\frac{(x_{m+1}-x_m)^2}{x_{m+2}-2x_{m+1}+x_m}.
+\]
+Under the hypotheses of Proposition \ref{prop:pom-resonance-two-cycle-ratio},
+\[
+\boxed{\;
+\mathcal{A}(R_m)=\lambda_1\ +\ O\!\left(\left(\max\!\left\{\frac{|\lambda_3|}{\lambda_1},\left(\frac{|\lambda_2|}{\lambda_1}\right)^2\right\}\right)^{m}\right)\;}
+\]
+Therefore, when the negative real root \(\lambda_2\) is the subdominant mode, Aitken \(\Delta^2\) is not an empirical trick but rather a \textbf{strict two-cycle error canceller}: it eliminates the alternating leading error term induced by \(\lambda_2\) from the ratio estimate, promoting the convergence order to control by the next spectral scale.
+\end{corollary}
+\begin{proof}
+Write Proposition \ref{prop:pom-resonance-two-cycle-ratio} as
+\(
+R_m=\lambda_1+a\rho^{m}+O(\tau^{m})
+\)
+where \(a\neq 0\), \(\rho=\lambda_2/\lambda_1\), and
+\(
+\tau:=\max\{\delta,|\rho|^2\}<|\rho|<1
+\).
+Direct substitution into the difference operator \(\Delta\) and \(\Delta^2\) gives
+\[
+\Delta R_m=a(\rho-1)\rho^{m}+O(\tau^{m}),
+\qquad
+\Delta^2 R_m=a(\rho-1)^2\rho^{m}+O(\tau^{m}).
+\]
+Hence
+\[
+\frac{(\Delta R_m)^2}{\Delta^2 R_m}
+=a\rho^{m}+O(\tau^{m}),
+\]
+so that
+\(
+\mathcal{A}(R_m)=R_m-a\rho^{m}+O(\tau^{m})
+=\lambda_1+O(\tau^{m})
+\).
+\end{proof}
+
+\begin{definition}[Resonance spectrum--algorithm fingerprints: \texorpdfstring{$\sigma_{\mathrm{osc}}(q)$}{sigma\_osc(q)} and \texorpdfstring{$\delta_{\mathrm{ait}}(q)$}{delta\_ait(q)}]\label{def:pom-resonance-aitken-fingerprints}
+For the roots of the characteristic polynomial \(P_q(\lambda)\) in the resonance region, ordered by modulus as
+\[
+|\lambda_{1,q}|>|\lambda_{2,q}|\ge|\lambda_{3,q}|\ge\cdots,
+\qquad \lambda_{1,q}=r_q,
+\]
+define two resonance fingerprints that are \textbf{directly computable from polynomial root-finding}:
+\[
+\boxed{\;
+\sigma_{\mathrm{osc}}(q):=\frac{|\lambda_{2,q}|}{r_q},
+\qquad
+\delta_{\mathrm{ait}}(q):=\frac{|\lambda_{3,q}|}{r_q}\;}
+\]
+where \(\sigma_{\mathrm{osc}}\) controls the two-cycle leading error intensity of the ratio \(R_m\), and \(\delta_{\mathrm{ait}}\) controls the leading error intensity after Aitken \(\Delta^2\) (Corollary \ref{cor:pom-aitken-cancels-two-cycle}).
+\end{definition}
+
+\begin{remark}[Window length audit certificate: predicting finite-window convergence via \texorpdfstring{$(\sigma_{\mathrm{osc}},\delta_{\mathrm{ait}})$}{(sigma\_osc,delta\_ait)}]\label{rem:pom-aitken-window-audit}
+Under general position, there exist constants \(C,C'>0\) such that for sufficiently large \(m\),
+\[
+\left|R_m-r_q\right|\le C\,\sigma_{\mathrm{osc}}(q)^{m},
+\qquad
+\left|\mathcal{A}(R_m)-r_q\right|\le C'\,\bigl(\max\{\delta_{\mathrm{ait}}(q),\sigma_{\mathrm{osc}}(q)^2\}\bigr)^{m}.
+\]
+Therefore, if the target relative error threshold is \(\mathrm{tol}\in(0,1)\), a direct window length criterion is to choose
+\[
+m\ \gtrsim\ \frac{\log(\mathrm{tol})}{\log \delta_{\mathrm{ait}}(q)}
+\qquad(\text{after Aitken acceleration; replace with }\sigma_{\mathrm{osc}}(q)\text{ if Aitken is not used}).
+\]
+For the resonance polynomials of \(q=9,\dots,17\) in this paper, the subdominant root by modulus is numerically stable as a negative real root, thereby satisfying the two-cycle alternating structure; the corresponding \(\sigma_{\mathrm{osc}}(q)\) and \(\delta_{\mathrm{ait}}(q)\) are generated in one run by the script \texttt{scripts/exp\_fold\_collision\_resonance\_aitken\_certificate\_q9\_17.py}, see Table \ref{tab:fold_collision_resonance_aitken_certificate_q9_17}.
+Moreover, within this range, numerically \(\delta_{\mathrm{ait}}(q)>\sigma_{\mathrm{osc}}(q)^2\), so the \(\max\{\delta_{\mathrm{ait}},\sigma_{\mathrm{osc}}^2\}\) in Corollary \ref{cor:pom-aitken-cancels-two-cycle} simplifies to \(\delta_{\mathrm{ait}}\) within this window.
+Within this range, both quantities exhibit an increasing trend with \(q\), meaning that convergence systematically slows for a fixed \(m\)-window, while the benefit of Aitken acceleration becomes correspondingly more significant.
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_resonance_aitken_certificate_q9_17}
+

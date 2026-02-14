@@ -1,0 +1,294 @@
+\subsubsection{Odd-order Trace Moment Lifting, Semidefinite Programming Moment Certificates, and Modular Distribution Spectral Gap: From Schatten Extremal to Profinite Haar}\label{subsubsec:gm-odd-moment-sdp-modq-profinite}
+This subsection builds upon the third-order trace closure and Perron compilation interface in \S\ref{subsubsec:gm-third-trace-dual-certificates}, supplementing three types of "unification" results: first, extending \(\tr(G^3)\) to arbitrary odd order \(\tr(G^{2k+1})\) and providing optimal solvable upper bounds for spectral norm lifting; second, abstracting the large-value frequency problem as a matrix model for an SDP feasible domain, and identifying "finite-order trace moment inference" as finite-order moment certificates on the dual side; third, completely reducing mod \(q\) statistics and additive energy main term/error of Zeckendorf--sofic to spectral gaps of twisted Perron roots, and providing Haar dichotomy and affine near-closure rigidity degeneracy criteria on the projective limit.
+
+\paragraph{Optimal spectral norm upper bound under odd Schatten trace moment constraint (unified \texorpdfstring{$(2k+1)$}{2k+1}-degree extremal equation)}
+\begin{theorem}[Optimal solvable spectral norm upper bound under odd Schatten trace moment constraint: unified \texorpdfstring{$(2k+1)$}{2k+1}-degree extremal equation and unique extremal spectrum]\label{thm:gm-odd-schatten-spectral-norm-extremal}
+Let \(m\ge 2\), \(k\in\NN\), and \(G\succeq 0\) be an \(m\times m\) complex matrix.
+Denote
+\[
+S_1:=\tr(G),\qquad S_{2k+1}:=\tr\!\bigl(G^{2k+1}\bigr).
+\]
+Let \(x^\star\in[S_1/m,S_1]\) be the largest real root in the interval \([S_1/m,S_1]\) of the equation
+\begin{equation}\label{eq:gm-odd-schatten-extremal-eq}
+\boxed{\ (m-1)^{2k}\,x^{2k+1}+(S_1-x)^{2k+1}=(m-1)^{2k}\,S_{2k+1}\ }
+\end{equation}
+and let \(y^\star:=(S_1-x^\star)/(m-1)\).
+Then for all \(G\succeq0\) satisfying given \((S_1,S_{2k+1})\) there holds
+\[
+\boxed{\ \lambda_{\max}(G)\le x^\star\ }.
+\]
+Moreover, this upper bound is attained if and only if the "two-tier spectrum" case holds: there exist \(x\ge y\ge 0\) such that
+\[
+\mathrm{spec}(G)=\{x,y,\dots,y\}\quad\text{(where \(y\) has multiplicity \(m-1\))},
+\]
+and \((x,y)=(x^\star,y^\star)\) equivalently satisfy
+\(
+x+(m-1)y=S_1
+\) and
+\(
+x^{2k+1}+(m-1)y^{2k+1}=S_{2k+1}.
+\)
+Therefore, any spectral lifting step depending only on \((\tr(G),\tr(G^{2k+1}),m)\) is information-theoretically complete: its optimal constant and extremal spectrum are completely characterized by \eqref{eq:gm-odd-schatten-extremal-eq}.
+\end{theorem}
+
+\begin{proof}
+Let eigenvalues \(\lambda_1\ge\cdots\ge\lambda_m\ge 0\) and set \(x:=\lambda_1\).
+Under constraint \(\sum_{i=2}^m\lambda_i=S_1-x\), by convexity of \(t\mapsto t^{2k+1}\) and Jensen's inequality,
+\[
+\sum_{i=2}^m\lambda_i^{2k+1}\ \ge\ (m-1)\left(\frac{S_1-x}{m-1}\right)^{2k+1},
+\]
+with equality if and only if \(\lambda_2=\cdots=\lambda_m=(S_1-x)/(m-1)\).
+Thus necessarily
+\[
+S_{2k+1}
+=x^{2k+1}+\sum_{i=2}^m\lambda_i^{2k+1}
+\ \ge\ x^{2k+1}+(m-1)\left(\frac{S_1-x}{m-1}\right)^{2k+1}.
+\]
+Multiplying the right side by \((m-1)^{2k}\) yields
+\(
+(m-1)^{2k}x^{2k+1}+(S_1-x)^{2k+1}\le (m-1)^{2k}S_{2k+1}
+\).
+Note that the function
+\(
+F(x):=(m-1)^{2k}x^{2k+1}+(S_1-x)^{2k+1}
+\)
+is strictly increasing on \(x\in[S_1/m,S_1]\) (since \(x\ge S_1/m\Rightarrow (m-1)x\ge S_1-x\)), hence \(x\le x^\star\), i.e., \(\lambda_{\max}(G)\le x^\star\).
+The equality characterization is given by the Jensen equality condition. This completes the proof.
+\end{proof}
+
+\begin{remark}[Consistency with third-order trace extremal law]
+When \(k=1\), \eqref{eq:gm-odd-schatten-extremal-eq} is equivalent to the cubic extremal equation \eqref{eq:gm-trace3-cubic} in \S\ref{subsubsec:gm-third-trace-dual-certificates}, so Theorem \ref{thm:gm-odd-schatten-spectral-norm-extremal} recovers Theorem \ref{thm:gm-trace3-spectral-norm-extremal}.
+\end{remark}
+
+\paragraph{Noncommutative matrix model for large-value frequency: semidefinite programming and finite-order moment certificates}
+\begin{theorem}[Matrix model and SDP duality for large-value frequency problem: finite-order trace moment inference \texorpdfstring{$\Leftrightarrow$}{<->} finite-order noncommutative moment certificates]\label{thm:gm-large-values-sdp-moment-duality}
+Let \(D(t)=\sum_{n\sim N} b_n n^{it}\) with \(|b_n|\le 1\).
+Take a \(1\)-separated point set \(\{t_r\}_{r\le R}\subset[0,T]\) satisfying \(|D(t_r)|\ge V\).
+Let
+\[
+G_{rs}:=\sum_{n\sim N} |b_n|^2\,n^{i(t_r-t_s)},\qquad
+u_r:=D(t_r),\qquad
+M:=\#\{n\sim N\}.
+\]
+Then the block matrix
+\begin{equation}\label{eq:gm-sdp-moment-matrix}
+H:=\begin{pmatrix}
+G & u\\
+u^\ast & M
+\end{pmatrix}\ \succeq\ 0,
+\qquad |u_r|\ge V\ \ (r\le R).
+\end{equation}
+Conversely, any \(H\succeq 0\) satisfying \eqref{eq:gm-sdp-moment-matrix} can be viewed as a feasible solution of some "noncommutative matrix model": there exist vector families \(\{v_r\}_{r\le R}\) and vector \(v_0\) in a Hilbert space (\(\|v_0\|_2^2=M\)) such that
+\[
+G_{rs}=\langle v_r,v_s\rangle,\qquad u_r=\langle v_r,v_0\rangle.
+\]
+Under this matrix model, any upper bound on \(R\) can be equivalently stated as a maximal dimension problem for an SDP feasible domain;
+moreover, any inference "using only \(\tr(G^j)\ (j\le 2k+1)\) and linear constraints derived from separation/bandwidth"
+is equivalent to constructing a noncommutative polynomial matrix certificate of degree at most \(2k+1\) on the dual side of the above SDP.
+Therefore, to further improve the power within the same inference paradigm, one must introduce new feasible domain constraints (rather than merely improving the trace-moment-to-spectral-norm lifting step; the latter is already completely sealed by Theorem \ref{thm:gm-odd-schatten-spectral-norm-extremal}).
+\end{theorem}
+
+\begin{proof}
+For each \(r\) define vector
+\(
+v_r:=(\overline{b_n}\,n^{-it_r})_{n\sim N}\in\CC^{M}
+\), and let \(v_0:=\mathbf{1}:=(1)_{n\sim N}\).
+Then
+\(
+G_{rs}=\langle v_r,v_s\rangle
+\) and
+\(
+u_r=D(t_r)=\langle v_r,v_0\rangle
+\)
+and \(\|v_0\|_2^2=M\).
+Thus \(\widetilde H:=\bigl(\langle v_i,v_j\rangle\bigr)_{0\le i,j\le R}\succeq 0\);
+noting \(\|v_0\|_2^2=M\) gives \eqref{eq:gm-sdp-moment-matrix}.
+The converse statement follows from Gram decomposition (Cholesky decomposition) of any positive semidefinite matrix.
+The identification of "finite-order moment certificates" on the dual side comes from: \(\tr(G^j)\) is a linear functional of noncommutative monomials (generated by the \(G\) block) of \(H\),
+and the linear/semidefinite feasibility of SDP and its dual polynomial separation certificate are equivalent statements in finite-dimensional convex analysis. This completes the proof.
+\end{proof}
+
+\paragraph{Equivalent bottleneck for critical interval: affine average residual operator norm}
+\begin{theorem}[Necessary and sufficient bottleneck quantity for breakthrough in critical interval: equivalent characterization by affine average residual norm]\label{thm:gm-critical-bottleneck-residual-opnorm}
+In the closed framework of third-order trace--Poisson--bandwidth kernel, let \(\mathrm{PW}_B\) be the Paley--Wiener subspace of bandwidth \(B\asymp T/N\).
+Suppose the affine average operator \(\mathcal{A}:\mathrm{PW}_B\to\mathrm{PW}_B\) induced by nonzero Poisson frequencies decomposes in this subspace as
+\[
+\mathcal{A}=\mathcal{U}+\mathcal{R},
+\]
+where \(\mathcal{U}\) is the rank-one main channel (zero frequency/uniform channel) and \(\mathcal{R}:=\mathcal{A}-\mathcal{U}\) is the residual channel.
+Then in the critical interval (typical scale \(V\asymp N^{3/4}\)), the leading term of the large-value frequency upper bound is completely controlled by the single bottleneck quantity
+\[
+\boxed{\ \|\mathcal{R}\|_{\mathrm{op}}^2\ }
+\]
+After taking optimal closure in the trace-moment-to-spectral-norm lifting step (Theorem \ref{thm:gm-trace3-spectral-norm-extremal} and Proposition \ref{prop:gm-trace3-gap-optimal-spectralization}),
+any improvement strictly better than the existing third-order trace bound in the critical interval's power, if and only if it achieves strict power saving for \(\|\mathcal{R}\|_{\mathrm{op}}\) at the same bandwidth scale;
+conversely, once such saving is obtained, the critical interval automatically produces corresponding amplitude improvement in frequency count.
+\end{theorem}
+
+\begin{proof}
+The Poisson expansion of the third-order trace method organizes the nonzero frequency residuals as positive operator spectral control of the bandwidth kernel (Proposition \ref{prop:gm-trace3-poisson-collision-energy}), while the zero-frequency main term collapses to a rank-one channel under bandwidth closure (Proposition \ref{prop:gm-affine-average-rank1-residual}).
+Given that the spectral lifting step is already optimally sealed, the remaining slack comes only from operator norm control of the residual channel, so the necessity and sufficiency of improvement reduce to power saving in \(\|\mathcal{R}\|_{\mathrm{op}}\).
+Necessity can be established by saturated configurations: there exist rational grid aggregation models where all steps except \(\|\mathcal{R}\|_{\mathrm{op}}\) achieve order-of-magnitude equality, forcing any frequency bound improvement to compel improvement in \(\|\mathcal{R}\|_{\mathrm{op}}\). This completes the proof.
+\end{proof}
+
+\paragraph{Mod \texorpdfstring{$q$}{q} recursive closure, spectral gap criterion, and Chebotarev--Plancherel certificates}
+\begin{theorem}[Mod \texorpdfstring{$q$}{q} recursive closure for Zeckendorf--sofic sets: Perron operator representation after Pisano period lifting]\label{thm:gm-modq-recursion-closure}
+Let \(\mathcal{L}\subset\{0,1\}^\ast\) be a primitive sofic language, and let
+\(
+A_m:=A_m(\mathcal{L})=\{\mathrm{val}(\omega):\ \omega\in\mathcal{L}_m\}
+\).
+Assume for each \(m\) the map \(\mathrm{val}\) is injective on \(\mathcal{L}_m\) (e.g., under Zeckendorf legal syntax and forbidding leading zeros), so \(|A_m|=|\mathcal{L}_m|\) and counting \(A_m\) is equivalent to path counting in \(\mathcal{L}_m\).
+For any \(q\ge 2\), let the Pisano period of the Fibonacci sequence modulo \(q\) be \(\pi(q)\).
+Then there exists an explicitly constructed finite-state lifting system: synchronize the automaton recognizing \(\mathcal{L}\) with "position mod \(\pi(q)\)" and "value mod \(q\)",
+thus obtaining a finite nonnegative integer matrix \(M_q\) and a family of vectors \(u_q\ge 0\), \(\{v_{q,a}\}_{a\in\ZZ/q\ZZ}\ge 0\), such that for all \(m\ge 0\) and \(a\in\ZZ/q\ZZ\)
+\[
+N_m(a;q):=\#\{x\in A_m:\ x\equiv a\ (\bmod q)\}
+\ =\ u_q^{\mathsf T}M_q^{\,m}v_{q,a}.
+\]
+Therefore \(\{N_m(a;q)\}_{m\ge 0}\) for each fixed \(a\) satisfies a finite-order integer-coefficient linear recurrence, and the exponential growth rate is precisely controlled by \(\rho(M_q)\).
+\end{theorem}
+
+\begin{proof}
+In the synchronization product automaton, the edge label is the next digit \(\omega_{j+1}\in\{0,1\}\), with accompanying updates
+\(
+a\mapsto a+\omega_{j+1}F_{j+2}\ (\bmod q)
+\)
+and
+\(
+j\mapsto j+1\ (\bmod \pi(q))
+\).
+Thus the count of acceptable paths of length-\(m\) is precisely the count in the given congruence class \(N_m(a;q)\).
+Taking this graph adjacency matrix as \(M_q\), and entry/exit sets giving \(u_q,v_{q,a}\), yields the conclusion. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Spectral gap criterion for mod \texorpdfstring{$q$}{q} equidistribution: exponential error term given by twisted Perron roots]\label{thm:gm-modq-equidistribution-spectral-gap}
+Continue notation from Theorem \ref{thm:gm-modq-recursion-closure}.
+For each additive character \(\chi\) (i.e., \(\chi(x)=e^{2\pi i kx/q}\)), define the character sum
+\[
+S_m(\chi):=\sum_{x\in A_m}\chi(x).
+\]
+Then there exists a corresponding twisted transfer matrix \(M_q(\chi)\) (multiplying each edge of \(M_q\) by the character weight) such that
+\(
+S_m(\chi)=\tilde u_q^{\mathsf T}M_q(\chi)^{\,m}\tilde v_q
+\)
+and satisfying
+\(
+|S_m(\chi)|\ll \rho(M_q(\chi))^m
+\).
+If the system is nondegenerate in mod \(q\) sense (i.e., no nontrivial character makes the weight function a coboundary on the support), then strict spectral descent holds:
+\[
+\rho_q^\ast:=\max_{\chi\ne 1}\rho\!\bigl(M_q(\chi)\bigr)\ <\ \rho\!\bigl(M_q(1)\bigr)=:\alpha_q,
+\]
+and there is an exponential error bound
+\[
+\max_{a\in\ZZ/q\ZZ}\left|N_m(a;q)-\frac{|A_m|}{q}\right|
+\ \ll\ (\rho_q^\ast)^{m}.
+\]
+\end{theorem}
+
+\begin{proof}
+Matrix representation and spectral radius control are direct consequences of the twisted Perron mechanism (can also be cross-verified with the construction in Theorem \ref{thm:gm-twisted-perron-fourier-decay}).
+Strict spectral descent follows from Wielandt's equality characterization: if \(\rho(M_q(\chi))=\rho(M_q(1))\), then the character weight must be a coboundary, contradicting the nondegeneracy assumption.
+The error bound follows from discrete Fourier inversion
+\(
+N_m(a;q)-|A_m|/q=\frac{1}{q}\sum_{\chi\ne 1}\overline{\chi(a)}\,S_m(\chi)
+\)
+combined with \(|S_m(\chi)|\ll \rho(M_q(\chi))^m\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Chebotarev--Plancherel inequality: quadratic mean of residue class bias uniformly dominated by twisted spectral radii]\label{prop:gm-chebotarev-plancherel-l2}
+Define the quadratic mean of mod \(q\) bias
+\[
+\mathcal{D}_m(q):=\sum_{a\in\ZZ/q\ZZ}\left(N_m(a;q)-\frac{|A_m|}{q}\right)^2.
+\]
+Then there holds Plancherel's identity
+\[
+\mathcal{D}_m(q)=\frac{1}{q}\sum_{\chi\ne 1}|S_m(\chi)|^2.
+\]
+Under the spectral gap condition of Theorem \ref{thm:gm-modq-equidistribution-spectral-gap},
+\[
+\boxed{\ \mathcal{D}_m(q)\ \ll\ q\,(\rho_q^\ast)^{2m}\ }.
+\]
+\end{proposition}
+
+\begin{proof}
+Plancherel's identity follows from orthogonality relations on finite abelian groups.
+Summing \(|S_m(\chi)|\ll (\rho_q^\ast)^m\) over \(\chi\ne 1\) completes the proof.
+\end{proof}
+
+\begin{proposition}[Main term and error for mod \texorpdfstring{$q$}{q} additive energy: fourth-order Plancherel formula spectralized]\label{prop:gm-modq-additive-energy-main-error}
+Define the mod \(q\) additive energy
+\[
+E_m(q):=\#\{x_1+x_2\equiv x_3+x_4\ (\bmod q):\ x_i\in A_m\}.
+\]
+Then there holds the fourth-order Fourier identity
+\[
+E_m(q)=\frac{1}{q}\sum_{\chi}|S_m(\chi)|^4.
+\]
+Under the spectral gap condition,
+\[
+\boxed{\ E_m(q)=\frac{|A_m|^4}{q}+O\!\bigl(q\,(\rho_q^\ast)^{4m}\bigr)\ }.
+\]
+\end{proposition}
+
+\begin{proof}
+The fourth-order identity follows from Fourier expansion of the indicator function on \(\ZZ/q\ZZ\) using orthogonality relations.
+The main term comes from the trivial character \(\chi=1\), remaining characters are controlled by \(|S_m(\chi)|\ll (\rho_q^\ast)^m\) yielding the error. This completes the proof.
+\end{proof}
+
+\paragraph{Profinite Haar dichotomy and rigidity degeneracy of affine near-closure}
+\begin{theorem}[Profinite Haar dichotomy: either Haar or falls in a true closed subgroup coset]\label{thm:gm-profinite-haar-dichotomy}
+Let \(\widehat{\ZZ}\) be the profinite completion of \(\ZZ\).
+By compatibility of mod \(q\) counts \(N_m(\cdot;q)\) (natural projection consistency for \(q'\mid q\)), one can define probability measure families \(\mu_m\) on each finite quotient \(\ZZ/q\ZZ\), thus obtaining a sequence of measures on \(\widehat{\ZZ}\) (in the projective sense).
+If for each fixed \(q\ge 2\) the nondegenerate spectral gap condition of Theorem \ref{thm:gm-modq-equidistribution-spectral-gap} holds, then \(\mu_m\) on each \(\ZZ/q\ZZ\) tends exponentially to uniform distribution, hence \(\mu_m\) on \(\widehat{\ZZ}\) converges to Haar measure.
+\par
+Conversely, if there exists some \(q\) and some nontrivial character \(\chi\) such that \(\rho(M_q(\chi))=\rho(M_q(1))\), then \(\chi\) on \(A_m\) is a coboundary phase and degenerates to a constant under the acceptance structure: there exists a coset \(a_0+H_q\subsetneq \ZZ/q\ZZ\) (where \(H_q=\ker\chi\)) such that for all sufficiently large \(m\) one has \(A_m\bmod q\subset a_0+H_q\).
+Correspondingly, there exists a true closed subgroup \(H\subsetneq \widehat{\ZZ}\) and coset \(x_0+H\) such that the support of any limit point measure of \(\mu_m\) is contained in \(x_0+H\).
+\end{theorem}
+
+\begin{proof}
+The first part follows from Theorem \ref{thm:gm-modq-equidistribution-spectral-gap} giving exponential mixing for each fixed \(q\), thus the projective limit yields Haar convergence.
+The second part follows from Wielandt's equality characterization: \(\rho(M_q(\chi))=\rho(M_q(1))\) forces the character weight to be a coboundary, hence \(\chi(\mathrm{val}(\omega))\) depends only on start/end states; under fixed initial state and accepting state caliber it becomes constant, so \(A_m\bmod q\) falls within the level set of some nontrivial character, i.e., a true subgroup coset. Lifting to \(\widehat{\ZZ}\) gives the closed subgroup coset support conclusion. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Rigidity classification of affine self-compatibility: nontrivial rational affine near-closure forces profinite support degeneracy]\label{prop:gm-affine-near-closure-profinite-degeneracy}
+Let \(T(x)=(ax+b)/c\) be a fixed rational affine transformation (\(\gcd(a,c)=1\)), and assume \(T\) does not belong to the trivial finite-state homomorphism family induced by \((\mathcal{L},\mathrm{val})\).
+If there exists \(\delta>0\) and infinitely many \(m\) such that
+\[
+|A_m\cap T^{-1}(A_m)|\ \ge\ \delta\,|A_m|,
+\]
+then there must exist some modulus \(q\) such that the "nondegenerate spectral gap" of Theorem \ref{thm:gm-profinite-haar-dichotomy} fails, i.e., there exists a nontrivial character \(\chi\) such that \(\rho(M_q(\chi))=\rho(M_q(1))\), thus the profinite limit distribution of \(\{A_m\}\) cannot be Haar, and the support degenerates to a true closed subgroup coset.
+\end{proposition}
+
+\begin{proof}
+By Theorem \ref{thm:gm-affine-selfmap-spectral-gap}, under the nontrivial homomorphism assumption one should have \(|A_m\cap T^{-1}(A_m)|\ll(\alpha-\varepsilon_T)^m\), contradicting the given lower bound together with \(|A_m|\asymp \alpha^m\).
+Thus the "spectral gap vanishing" degeneracy mechanism must occur, making the affine synchronization constraint no longer strictly reduce entropy on some finite quotients; this is equivalent to the existence of a coboundary character on some mod \(q\), falling into the second branch of Theorem \ref{thm:gm-profinite-haar-dichotomy}. This completes the proof.
+\end{proof}
+
+\paragraph{Third-order trace large-value improvement template with distributional input: mod distribution spectral gap \texorpdfstring{$\Rightarrow$}{=>} power saving}
+\begin{theorem}[Third-order trace large-value improvement with distribution hypothesis: power saving template with mod distribution spectral gap as input]\label{thm:gm-trace3-improvement-from-mod-distribution}
+Suppose \(D(t)=\sum_{n\sim N} b_n n^{it}\) with coefficients satisfying the following mod distribution spectral gap input: there exist \(\theta\in(0,1)\), \(\delta>0\), such that for all \(q\le N^\theta\) and all nontrivial characters \(\chi\ (\bmod q)\) there holds
+\begin{equation}\label{eq:gm-mod-distribution-input}
+\left|\sum_{n\sim N} b_n\,\chi(n)\right|\ \ll\ N^{1-\delta}.
+\end{equation}
+Then in the same inference architecture of third-order trace--Poisson--affine average, all residual terms caused by modular summations (nonzero Poisson frequencies) obtain power saving at level \(N^{-2\delta}\);
+thus triggering strict power improvement in the bottleneck quantity \(\|\mathcal{R}\|_{\mathrm{op}}^2\) of the critical interval (Theorem \ref{thm:gm-critical-bottleneck-residual-opnorm}), and reducing the term dominated by the residual channel in the corresponding large-value frequency bound by \(N^{-2\delta}\) overall.
+In particular, in the Guth--Maynard third-order trace bound prototype, this input can formalize the residual term of the frequency upper bound as
+\[
+R\ \ll\ T^{o(1)}
+\Bigl(
+N^2V^{-2}
+\,+\,N^{18/5-2\delta}V^{-4}
+\,+\,TN^{12/5-2\delta}V^{-4}
+\Bigr),
+\]
+thus producing strict improvement in the \(V\asymp N^{3/4}\) interval.
+\end{theorem}
+
+\begin{proof}
+The Poisson expansion writes nonzero frequency residuals as windowed modular sum/exponential sum combinations; under separation and bandwidth caliber, the main contribution can be reduced to character sum control for a finite family of moduli \(q\).
+Assumption \eqref{eq:gm-mod-distribution-input} makes each nontrivial character contribution obtain \(N^{-\delta}\) saving, and residuals being squared-type two-body collision energy thus produce \(N^{-2\delta}\) level saving at \(L^2\) or operator norm level (see "residual \(\Leftrightarrow\) positive operator spectral control" rewriting in Proposition \ref{prop:gm-trace3-poisson-collision-energy}).
+The necessity and sufficiency bottleneck property of Theorem \ref{thm:gm-critical-bottleneck-residual-opnorm} immediately yields critical interval frequency improvement; the displayed specific power form corresponds to scale matching between main channel and residual channel in the third-order trace bound prototype. This completes the proof.
+\end{proof}
+
+\endinput

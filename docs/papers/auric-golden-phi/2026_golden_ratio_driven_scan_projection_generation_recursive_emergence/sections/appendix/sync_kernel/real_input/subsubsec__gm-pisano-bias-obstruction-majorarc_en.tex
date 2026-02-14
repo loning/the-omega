@@ -1,0 +1,294 @@
+\subsubsection{Pisano Period Major Arc Suppression and Obstruction Groups: From \texorpdfstring{$\varepsilon$}{epsilon}-Bias to Relative Spectral Gaps and \texorpdfstring{$M^{4-\vartheta}$}{M4-vtheta}}\label{subsubsec:gm-pisano-bias-obstruction-majorarc}
+This subsection organizes the Pisano lifting and twisted Perron representations from \S\ref{subsubsec:gm-odd-moment-sdp-modq-profinite} (Theorems \ref{thm:gm-modq-recursion-closure}--\ref{thm:gm-modq-equidistribution-spectral-gap}), together with the major arc inverse theorems and Gram spectral certificates from \S\ref{subsubsec:gm-affine-inverse-gram-arithmetic-dichotomy} (Theorem \ref{thm:gm-affine-inverse-major-arc}--Corollary \ref{cor:gm-KM-computable-vtheta}), into a single \emph{verifiable closed loop}: controlling modular character decay via the Pisano period \(\pi(q)\), constructing \(\varepsilon\)-bias sets and random walk mixing; translating ``non-uniformity of modular distribution'' into ``near-resonance of twisted Perron roots'' through bias/energy inverse theorems; characterizing all resonant characters via the homological classification of the obstruction group (Smith normal form); and importing modular spectral information into the mid-energy channel of Guth--Maynard through the transfer principle ``major arc suppression \(\Rightarrow\) affine uniformization power saving.''
+
+\paragraph{Pisano Period Lifting and Modular Character Decay: Period-Averaged Spectral Bound}
+Let \((F_n)_{n\ge 0}\) denote the Fibonacci sequence (\(F_0=0,F_1=1\)), and let \(\pi(q)\) be its Pisano period modulo \(q\), i.e., the smallest positive integer such that \(F_{n+\pi(q)}\equiv F_n\pmod q\) for all \(n\).
+Let \(\mathcal{L}\subset\{0,1\}^\ast\) be a primitive sofic language, and write \(\mathcal{L}_m:=\mathcal{L}\cap\{0,1\}^m\).
+Define the Zeckendorf--Fibonacci valuation
+\[
+X(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}\in\ZZ,
+\qquad \omega=(\omega_1,\dots,\omega_m)\in\mathcal{L}_m.
+\]
+For any \(q\ge 2\), \((a,q)=1\), define the additive character \(\chi_{a/q}(x):=e^{2\pi i ax/q}\) and write
+\[
+S_m(a;q):=\sum_{\omega\in\mathcal{L}_m}\chi_{a/q}\!\bigl(X(\omega)\bigr).
+\]
+
+\begin{theorem}[Pisano Period-Controlled Modular Character Decay Law: Period-Averaged Spectral Bound]\label{thm:gm-pisano-period-character-decay}
+There exists a constant \(c(\mathcal{L})>0\) such that for all \(q\ge 2\) and all \((a,q)=1\),
+\[
+\boxed{\
+\frac{|S_m(a;q)|}{|\mathcal{L}_m|}\ \le\ \exp\!\Bigl(-c(\mathcal{L})\,\frac{m}{\pi(q)}\Bigr)\ }.
+\]
+This bound reduces the modular character decay rate to the period scale \(\pi(q)\), independently of any analytic large sieve constant.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Taking the synchronization product of the recognizing automaton of \(\mathcal{L}\) with ``position modulo \(\pi(q)\)'' yields a lifted system of dimension \(|\mathrm{St}(\mathcal{L})|\cdot\pi(q)\); multiplying each edge by the phase factor \(e^{2\pi i a\omega_k F_{k+1}/q}\) produces the twisted transfer matrix \(A_{q,a}\).
+Then \(S_m(a;q)=u^\top A_{q,a}^{\,m}v\), while \(|\mathcal{L}_m|=u^\top A_{q,0}^{\,m}v\) (same entry/exit vectors \(u,v\ge 0\)).
+Since \(F_{k+1}\bmod q\) is periodic with period \(\pi(q)\), the \(\pi(q)\)-th power of \(A_{q,a}\) is equivalent to a fixed ``period-averaged'' operator; for non-trivial characters, this period-averaged operator produces strict phase cancellation relative to the trivial character on some positive term, whence a Wielandt-type strict spectral radius comparison yields
+\(
+\rho(A_{q,a})\le e^{-c(\mathcal{L})/\pi(q)}\rho(A_{q,0})
+\).
+Lifting this spectral radius ratio to length \(m\) gives the conclusion. \qed
+\end{proof}
+
+\paragraph{\texorpdfstring{$\varepsilon$}{epsilon}-Bias Construction and Optimal Mixing of the Cayley Additive Random Walk}
+Let the multiset
+\(
+A_{m,q}:=\{X(\omega)\bmod q:\ \omega\in\mathcal{L}_m\}
+\)
+and let \(\mu_{m,q}\) be its normalized counting measure on \(\ZZ/q\ZZ\).
+
+\begin{proposition}[Explicit Construction of \texorpdfstring{$\varepsilon$}{epsilon}-Bias Sets: \texorpdfstring{$m\asymp \pi(q)\log(1/\varepsilon)$}{m~pi(q)log(1/eps)} Scaling]\label{prop:gm-epsilon-bias-pisano-scale}
+For any \(\varepsilon\in(0,1)\) and any \(q\ge 2\), if
+\[
+m\ \ge\ C(\mathcal{L})\,\pi(q)\,\log(1/\varepsilon),
+\]
+then for all non-trivial characters \(\chi\neq 1\),
+\[
+|\widehat\mu_{m,q}(\chi)|\ \le\ \varepsilon,
+\]
+i.e., \(A_{m,q}\) is an \(\varepsilon\)-bias generating set.
+Conversely, if there exist infinitely many \(q\) with \(m=o(\pi(q))\), then there exists a non-trivial \(\chi\) with \(|\widehat\mu_{m,q}(\chi)|\ge c_0>0\), so that the small-bias property cannot hold at this scale.
+\end{proposition}
+
+\begin{proof}
+By definition \(\widehat\mu_{m,q}(\chi_{a/q})=S_m(a;q)/|\mathcal{L}_m|\). The first part follows directly from Theorem \ref{thm:gm-pisano-period-character-decay}.
+For the reverse direction: when \(m=o(\pi(q))\), the Pisano lifted system has not yet traversed a complete period, so the distribution modulo \(q\) exhibits periodic gaps; by Fourier inversion and orthogonality, some non-trivial character coefficient cannot simultaneously tend to zero, yielding the lower bound. \qed
+\end{proof}
+
+\begin{proposition}[Spectral Mixing of the Normalized Cayley Additive Random Walk: Optimal Mixing Rate with One-Step Distribution \texorpdfstring{$\mu_{m,q}$}{mu}]\label{prop:gm-random-walk-mixing-pisano}
+Let \(\mathsf{P}_{m,q}\) be the random walk transition operator on \(\ZZ/q\ZZ\),
+\[
+(\mathsf{P}_{m,q}f)(x)=\mathbb{E}_{y\sim\mu_{m,q}}f(x+y).
+\]
+Then its non-trivial spectral radius satisfies
+\[
+\lambda_2(\mathsf{P}_{m,q})=\max_{\chi\neq 1}|\widehat\mu_{m,q}(\chi)|
+\ \le\ \exp\!\Bigl(-c(\mathcal{L})\,\frac{m}{\pi(q)}\Bigr).
+\]
+Consequently, the total variation mixing time satisfies
+\[
+t_{\mathrm{mix}}(\varepsilon)\ \le\ C\,\frac{\pi(q)}{m}\,\log\!\frac{q}{\varepsilon},
+\]
+and this mixing rate is optimal in the period-scale sense (it cannot be improved to a universal upper bound of order \(o(\pi(q)/m)\)).
+\end{proposition}
+
+\begin{proof}
+The first identity follows from the Fourier diagonalization of abelian group random walks.
+The second bound follows from \(\|\mu_{m,q}^{\ast t}-\mathrm{Unif}\|_{\mathrm{TV}}\le \tfrac12\sqrt{q}\,\lambda_2^t\).
+Optimality is given by the necessity direction of Proposition \ref{prop:gm-epsilon-bias-pisano-scale}: when \(t=o(\pi(q)/m)\), there still exists a non-trivial Fourier mode retaining constant-level energy. \qed
+\end{proof}
+
+\paragraph{Inverse Theorems for Bias and Energy: Non-Uniformity \texorpdfstring{$\Leftrightarrow$}{<->} Near-Resonant Twisted Perron Roots}
+\begin{proposition}[Inverse Theorem for Modular Bias: Bias Lower Bound \texorpdfstring{$\Rightarrow$}{=>} Near-Resonant Twisted Perron Root]\label{prop:gm-mod-bias-inverse-near-resonance}
+Suppose there exist \(q\ge 2\), \(\delta\in(0,1)\) such that
+\[
+\max_{x\in\ZZ/q\ZZ}\Bigl|\mu_{m,q}(x)-\frac1q\Bigr|\ \ge\ \delta.
+\]
+Then there exists a non-trivial character \(\chi\) with
+\[
+|\widehat\mu_{m,q}(\chi)|\ \ge\ c\,\delta,
+\]
+and there exists a corresponding twisted transfer operator \(A(\chi)\) satisfying
+\[
+\frac{\rho(A(\chi))}{\rho(A(1))}
+\ \ge\
+1-\frac{C}{m}\log\!\frac{1}{\delta},
+\]
+where the constants \(c,C>0\) depend only on the finite-state representation of \(\mathcal{L}\).
+\end{proposition}
+
+\begin{proof}
+By Fourier inversion
+\(
+\mu_{m,q}(x)-q^{-1}=\frac{1}{q}\sum_{\chi\ne 1}\overline{\chi(x)}\,\widehat\mu_{m,q}(\chi)
+\),
+we obtain \(\max_x|\mu_{m,q}(x)-q^{-1}|\le \max_{\chi\ne 1}|\widehat\mu_{m,q}(\chi)|\), so there exists \(\chi\) with \(|\widehat\mu_{m,q}(\chi)|\gg \delta\).
+Moreover, \(\widehat\mu_{m,q}(\chi)=u^\top A(\chi)^m v/u^\top A(1)^m v\), whose \(m\)-th root lower bound differs from the spectral radius ratio by a sub-exponential factor; taking logarithms and using \(\log x\ge - (1-x)\) yields the stated near-resonance lower bound. \qed
+\end{proof}
+
+\begin{proposition}[Inverse Theorem for Modular Additive Energy: Random Main Term Distortion if and only if Single Character Fourth-Power Amplification]\label{prop:gm-mod-additive-energy-inverse}
+Let
+\[
+E_m(q):=\#\{x_1+x_2\equiv x_3+x_4\ (\bmod q):\ x_i\sim\mu_{m,q}\}.
+\]
+Then the quartic Fourier identity holds:
+\[
+E_m(q)=\frac{1}{q}\sum_{\chi}|q\,\widehat\mu_{m,q}(\chi)|^4.
+\]
+If there exists \(\eta>0\) such that
+\[
+E_m(q)\ \ge\ (1+\eta)\frac{|A_{m,q}|^4}{q},
+\]
+then there exists a non-trivial \(\chi\neq 1\) satisfying
+\[
+|\widehat\mu_{m,q}(\chi)|\ \ge\ c\,\eta^{1/4},
+\]
+which in turn triggers the near-resonant spectral radius lower bound of Proposition \ref{prop:gm-mod-bias-inverse-near-resonance}; conversely, if there exists \(\chi\neq 1\) with \(|\widehat\mu_{m,q}(\chi)|\ge \delta\), then necessarily
+\[
+E_m(q)\ \ge\ \frac{|A_{m,q}|^4}{q}\Bigl(1+c\,\delta^4\Bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+By the quartic identity and non-negativity: if the total sum exceeds the trivial character main term \(|A_{m,q}|^4/q\) by a fraction \(\eta\), then some non-trivial character must contribute at least \(\eta/q\), whence \(|\widehat\mu|\gg \eta^{1/4}\).
+The reverse direction follows by isolating a single character term. \qed
+\end{proof}
+
+\paragraph{Continuous Major Arc Control: Modular Resonance Channel \texorpdfstring{$+$}{+} Off-Arc Gaussian Channel}
+\begin{proposition}[Continuous Major Arc Control: Exponential Sum at \texorpdfstring{$\theta$}{theta} Near \texorpdfstring{$2\pi a/q$}{2pi a/q} Governed Jointly by \texorpdfstring{$\pi(q)$}{pi(q)} and the Off-Arc Distance]\label{prop:gm-continuous-major-arc-control}
+Define the continuous exponential sum \(S_m(\theta)=\sum_{\omega\in\mathcal{L}_m}e^{i\theta X(\omega)}\).
+For any major arc representation \(\theta=2\pi a/q+\beta\) (\((a,q)=1\)), there exist constants \(c_1,c_2>0\) such that
+\[
+\frac{|S_m(2\pi a/q+\beta)|}{|\mathcal{L}_m|}
+\ \le\
+\exp\!\Bigl(-c_1\,\frac{m}{\pi(q)}\Bigr)
+\ +\
+\exp\!\bigl(-c_2\,m\,\beta^2\,\mathsf{V}_m(q)\bigr),
+\]
+where \(\mathsf{V}_m(q)\) is the effective variance from the Pisano lifted system, explicitly computable via second-order perturbation of a finite-dimensional matrix (corresponding to the second-order curvature of the twisted Perron branch).
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+In the Pisano lifted system, \(\beta\) enters as a continuous twist parameter in the analytic perturbation of the transfer matrix; the principal eigenvalue branch \(\lambda_{q,a}(\beta)\) admits a second-order expansion at \(\beta=0\):
+\(
+\log|\lambda_{q,a}(\beta)|=\log\lambda_{q,a}(0)-\tfrac12\mathsf{V}_m(q)\beta^2+O(\beta^3)
+\).
+Here \(\lambda_{q,a}(0)\) gives the pure modular resonance channel and is controlled by Theorem \ref{thm:gm-pisano-period-character-decay}; the second-order term gives the off-arc Gaussian decay channel.
+Combining both via the triangle inequality yields the conclusion. \qed
+\end{proof}
+
+\paragraph{Transfer Principle: Major Arc Spectral Suppression \texorpdfstring{$\Rightarrow$}{=>} Affine Uniformization \texorpdfstring{$M^{4-\vartheta}$}{M4-vtheta}}
+\begin{theorem}[Modular Major Arc Spectral Suppression \texorpdfstring{$\Rightarrow$}{=>} Affine Uniformization Power Saving: From Pisano Spectrum to \texorpdfstring{$M^{4-\vartheta}$}{M4-vtheta}]\label{thm:gm-mod-gap-to-affine-saving}
+Let \(f\) be obtained from a sofic--Zeckendorf readout smoothed at bandwidth \(T\), and consider the Guth--Maynard type affine mean residual operator \(\mathcal{R}_M=\mathcal{A}_M-\mathcal{U}_M\).
+If there exists \(\delta_0>0\) such that for all \(q\le M\) and all \((a,q)=1\),
+\[
+\frac{|S_m(2\pi a/q)|}{|\mathcal{L}_m|}\ \le\ M^{-\delta_0},
+\]
+then there exists \(\vartheta=\vartheta(\delta_0)>0\) such that
+\[
+\boxed{\ \|\mathcal{R}_M\|_{\mathrm{op}}^2\ \ll\ M^{4-\vartheta}\ }.
+\]
+This theorem provides a strict transfer principle: as long as polynomial-level spectral suppression is achieved at finitely many rational frequencies (major arc endpoints), the second main term of the affine uniformization is reduced from \(M^4\) to \(M^{4-\vartheta}\).
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+By the rational frequency large sieve decomposition (Theorem \ref{thm:gm-affine-rational-sieve-M4}), the \(M^4\) residual term can be spectralized as the local \(L^2\) mass of \(\widehat f\) near rational grid frequencies.
+Major arc endpoint suppression of the exponential sum provides a uniform upper bound on these local masses (aligning the main mass of \(\widehat f\) with \(S_m(2\pi a/q)\) via the readout construction).
+Substituting this upper bound into Corollary \ref{cor:gm-affine-uniformization-improvement} yields the \(\vartheta\) version. \qed
+\end{proof}
+
+\paragraph{Relative Spectral Gap after Obstruction Stripping: Resonance Occupies Only a Finite-Dimensional Identifiable Subspace}
+\begin{theorem}[Relative Spectral Gap after Obstruction Stripping: Uniform Improvement on the Orthogonal Complement Even When \texorpdfstring{$d>1$}{d>1}]\label{thm:gm-relative-gap-after-obstruction}
+Let \(d\) be the homological obstruction invariant of the finite-state weight function (Proposition \ref{prop:gm-cycle-gcd-mod-obstruction}), and let \(\mathcal{H}\subset\widehat{\ZZ}\) be the corresponding closed subgroup.
+Then for any modulus \(q\) and any character \(\chi\) satisfying \(\chi|_{\mathcal{H}}\neq 1\), there exists a uniform constant \(\delta>0\) such that
+\[
+\rho(A(\chi))\ \le\ (1-\delta)\rho(A(1)).
+\]
+Therefore, even in the presence of finite modular obstructions (\(d>1\)), a uniform twisted spectral gap exists on the orthogonal complement of the subspace spanned by obstruction characters; correspondingly, the affine residual operator on this orthogonal complement satisfies the relative improvement \(\|\mathcal{R}_M\|_{\mathrm{op}}^2\ll M^{4-\vartheta}\).
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+The set of resonant characters is determined by the homology classes of ``coboundary representations'' (Proposition \ref{prop:gm-cycle-gcd-mod-obstruction} and Theorem \ref{thm:gm-twist-equal-radius-arithmetic-factor}); its dual closed subgroup is \(\mathcal{H}\).
+When \(\chi|_{\mathcal{H}}\neq 1\), \(\chi\) must exhibit non-trivial mismatch on the loop space, and phase cancellation is forced within some finite power; a Wielandt-type strict spectral radius comparison then yields a uniform spectral gap.
+The relative affine improvement follows from applying Theorem \ref{thm:gm-mod-gap-to-affine-saving} on the orthogonal complement. \qed
+\end{proof}
+
+\paragraph{Complete Homological Classification and Computability of the Obstruction Group: Smith Normal Form}
+\begin{theorem}[Complete Homological Classification of the Obstruction Group: Finite Generation and Explicit Rank Formula for the Resonant Character Group]\label{thm:gm-resonant-character-group-homology}
+Let the underlying graph \(G=(V,E)\) be primitive, and let the weight function \(w:E\to\ZZ\) define a \(1\)-cocycle with homology class \([w]\in H^1(G,\ZZ)\).
+Let \(\mathcal{X}_{\mathrm{res}}\) denote the set of resonant characters satisfying \(\rho(A(\chi))=\rho(A(1))\). Then \(\mathcal{X}_{\mathrm{res}}\) forms a finite abelian group, characterized by the torsion part of the homological quotient:
+\[
+\mathcal{X}_{\mathrm{res}}\ \cong\ \mathrm{Hom}\!\Bigl(\mathrm{tors}\bigl(H_1(G,\ZZ)/\langle[w]\rangle\bigr),\ \QQ/\ZZ\Bigr).
+\]
+Its invariant factor decomposition and resonance multiplicities are given by the Smith normal form of the corresponding integer matrix.
+\end{theorem}
+
+\begin{proposition}[Polynomial-Time Computability of the Obstruction Invariant: Smith Normal Form Outputs \texorpdfstring{$d$}{d} and the Full Resonant Character Table]\label{prop:gm-smith-compute-obstructions}
+Under the setting of Theorem \ref{thm:gm-resonant-character-group-homology}, there exists a deterministic algorithm running in time \(\mathrm{poly}(|V|,|E|,\log W)\) (\(W=\max_{e\in E}|w(e)|\)) that outputs:
+\begin{enumerate}
+  \item The obstruction invariant \(d\) (the \(\gcd\) of the loop-sum set);
+  \item The invariant factor decomposition of the resonant character group \(\mathcal{X}_{\mathrm{res}}\);
+  \item A generating set of characters at each resonant order.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Choose a fundamental cycle basis, write the weight function values on the loop space as an integer matrix, and compute the Smith normal form of this matrix to read off the \(\gcd\) invariant and torsion decomposition.
+The character group is the Pontryagin dual of the corresponding torsion, and generators can be explicitly constructed from the change-of-basis matrices of the Smith form. \qed
+\end{proof}
+
+\paragraph{Prime Orbit Theorem for the Twisted Ihara--Artin \texorpdfstring{$\zeta$}{zeta} and Major Arc \texorpdfstring{$\zeta$}{zeta}-Criterion}
+\begin{theorem}[Unified Prime Orbit Theorem for the Twisted Ihara--Artin \texorpdfstring{$\zeta$}{zeta}: Exponential Error for Non-Resonant Characters]\label{thm:gm-twisted-zeta-prime-orbit}
+Let \(Z(u,\chi)=\det(I-uA(\chi))^{-1}\) be the twisted Ihara--Artin type \(\zeta\) function (cf.\ the determinant formulation of Theorem \ref{thm:gm-graph-zeta-cyclotomic-classification}), and define the prime orbit counting function
+\[
+\Pi_\chi(n):=\#\{\gamma:\ \gamma\ \text{is a prime cycle of length }n,\ \chi(w(\gamma))=1\}.
+\]
+If \(\chi\notin\mathcal{X}_{\mathrm{res}}\), then there exists \(\delta(\chi)>0\) such that
+\[
+\Pi_\chi(n)
+=\frac{\rho(A(1))^n}{n}\,c_\chi\ +\ O\!\bigl(\rho(A(1))^{(1-\delta(\chi))n}\bigr),
+\]
+where \(c_\chi>0\) can be explicitly given by the left/right Perron eigenvectors; and the error rate \(\delta(\chi)\) is explicitly parameterized by the twisted spectral gap \(\rho(A(\chi))/\rho(A(1))\).
+\end{theorem}
+
+\begin{proof}[Key proof steps]
+From \(\log Z(u,\chi)=\sum_{n\ge 1}\mathrm{tr}(A(\chi)^n)u^n/n\) and the Perron--Frobenius decomposition, the principal pole is at \(u=\rho(A(\chi))^{-1}\).
+When \(\chi\notin\mathcal{X}_{\mathrm{res}}\), we have \(\rho(A(\chi))<\rho(A(1))\), so analyticity is enhanced in a neighborhood of \(|u|<\rho(A(1))^{-1}\), yielding the exponential error term for \(\Pi_\chi(n)\); the main term constant is computed from the eigenprojection. \qed
+\end{proof}
+
+\begin{proposition}[Major Arc Spectral Suppression via the \texorpdfstring{$\zeta$}{zeta}-Criterion: No Cyclotomic Factor \texorpdfstring{$\Rightarrow$}{=>} Uniform Major Arc Decay]\label{prop:gm-zeta-criterion-major-arc}
+If for all non-trivial root-of-unity characters \(\chi\), \(Z(u,\chi)\) contains no cyclotomic factor (equivalently, \(\mathcal{X}_{\mathrm{res}}=\{1\}\)), then there exists a constant \(c>0\) such that for all rational points \(a/q\) (\(q\ge 2\)) and all sufficiently large \(m\),
+\[
+\frac{|S_m(2\pi a/q)|}{|\mathcal{L}_m|}\ \le\ \exp\!\Bigl(-c\,\frac{m}{\pi(q)}\Bigr).
+\]
+Moreover, \(c\) can be explicitly lower-bounded by the minimal non-trivial pole modulus (equivalently, the minimal spectral gap) of the twisted \(\zeta\).
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+\(\mathcal{X}_{\mathrm{res}}=\{1\}\) excludes all equal-radius resonances from root-of-unity twists, so that for each \(q\), the Pisano lifted matrix exhibits a strict spectral drop over one period average; normalizing this spectral drop by \(\pi(q)\) yields the stated major arc decay. \qed
+\end{proof}
+
+\paragraph{Structural Cancellation in the Mid-Energy Channel: Obstruction Stripping \texorpdfstring{$+$}{+} Major Arc Suppression}
+\begin{theorem}[Structural Cancellation in the Guth--Maynard Mid-Energy Channel: Obstruction Stripping and Major Arc Suppression Trigger Critical Term Power Descent]\label{thm:gm-mid-energy-elimination}
+In the third-trace--affine uniformization framework, suppose the coefficients come from a finite-state Zeckendorf family, and orthogonal projection stripping is applied to the obstruction subspace (Theorem \ref{thm:gm-relative-gap-after-obstruction}).
+If additionally the major arc spectral suppression hypothesis holds (the assumptions of Theorem \ref{thm:gm-mod-gap-to-affine-saving}), then the main term coefficient of the mid-energy coupling channel obtains a strict power saving: there exists \(\epsilon>0\) such that the corresponding \(M^4\) contribution is uniformly replaced by \(M^{4-\epsilon}\).
+Therefore, in the critical scaling prototype (\(T=N^{6/5}\), \(V\asymp N^{3/4}\)), the bottleneck term must undergo strict descent, and the descent exponent is explicitly determined by the major arc suppression parameter \(\delta_0\).
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Obstruction stripping removes all finite-dimensional modes explainable by cyclotomic resonance; on its orthogonal complement, major arc suppression translates via Theorem \ref{thm:gm-mod-gap-to-affine-saving} into \(\|\mathcal{R}_M\|_{\mathrm{op}}^2\ll M^{4-\epsilon}\).
+By the channel decomposition of Proposition \ref{prop:gm-S3-upgrade-vtheta}--Corollary \ref{cor:gm-energy-window-saving}, this saving acts only on the energy coupling channel and yields a strict power improvement at the critical scale. \qed
+\end{proof}
+
+\paragraph{Discriminant Closed Loop for Major Arc--Energy--Obstruction and Two-Parameter Reduction}
+\begin{theorem}[Complete Equivalence Chain for Major Arc--Energy--Obstruction: Verifiable Discriminant Closed Loop]\label{thm:gm-majorarc-energy-obstruction-loop}
+For a primitive finite-state Zeckendorf family, the following three conditions are quantitatively equivalent:
+\begin{enumerate}
+  \item There exist infinitely many \((a,q)\) such that \(|S_m(2\pi a/q)|\ge c|\mathcal{L}_m|\) holds for infinitely many \(m\);
+  \item There exist infinitely many \(q\) such that the modular additive energy exhibits random main term distortion: \(E_m(q)\ge (1+c)|A_{m,q}|^4/q\);
+  \item There exists a non-trivial cyclotomic obstruction: \(\mathcal{X}_{\mathrm{res}}\neq\{1\}\) (equivalently, \(d>1\)).
+\end{enumerate}
+This closed loop provides a fully verifiable finite-state discriminant path for determining ``whether the analytic bottleneck can be improved'': it suffices to determine whether the obstruction group is trivial (Proposition \ref{prop:gm-smith-compute-obstructions}).
+\end{theorem}
+
+\begin{proof}[Key proof steps]
+\((1)\Rightarrow(2)\): If major arc resonance exists, then some non-trivial Fourier mode has constant-level coefficients; substituting into the quartic identity for modular energy (Proposition \ref{prop:gm-mod-additive-energy-inverse}) yields the energy inflation.
+\((2)\Rightarrow(1)\): Energy inflation forces some non-trivial character to undergo fourth-power amplification, yielding major arc resonance (same proposition).
+\((1)\Leftrightarrow(3)\): Major arc resonance is equivalent to some root-of-unity twist exhibiting equal-radius behavior, which is equivalent to the twisted \(\zeta\) containing a cyclotomic factor (Theorem \ref{thm:gm-graph-zeta-cyclotomic-classification} and Theorem \ref{thm:gm-resonant-character-group-homology}). \qed
+\end{proof}
+
+\begin{theorem}[Unified Outline: Analytic Large Value Improvement Reduces to Two Finite Objects---Pisano Period and Homological Obstruction]\label{thm:gm-two-finite-objects-outline}
+For all coefficient models generated by sofic--Zeckendorf systems, within the third-trace and any fixed odd-order central moment certificate framework, the full structural dependence of the critical large value improvement reduces to two finite objects:
+\begin{enumerate}
+  \item The resonant obstruction group \(\mathcal{X}_{\mathrm{res}}\) (equivalently, the homological invariant \(d\) and its Smith invariant factors; computable in polynomial time by Proposition \ref{prop:gm-smith-compute-obstructions});
+  \item The Pisano period function \(\pi(q)\) and its upper bound over the finite range \(q\le M\) (the period scale of the major arc endpoint set).
+\end{enumerate}
+More specifically: if \(\mathcal{X}_{\mathrm{res}}=\{1\}\), then the major arc decay rate is controlled by \(m/\pi(q)\) and can be converted into an \(M^{4-\vartheta}\) affine uniformization saving (Theorem \ref{thm:gm-mod-gap-to-affine-saving});
+if \(\mathcal{X}_{\mathrm{res}}\neq\{1\}\), then stripping the obstruction orthogonal complement still recovers the same saving (Theorem \ref{thm:gm-relative-gap-after-obstruction} and Theorem \ref{thm:gm-mid-energy-elimination}).
+Thus the complex analytic chain is compressed into a ``finite-state homology \(+\) period arithmetic'' two-parameter problem, forming a structural reduction theorem that can be directly written into the paper.
+\end{theorem}
+
+\endinput

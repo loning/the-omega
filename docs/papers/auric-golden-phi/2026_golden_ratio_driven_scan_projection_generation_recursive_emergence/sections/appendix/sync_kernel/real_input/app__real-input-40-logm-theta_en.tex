@@ -1,0 +1,232 @@
+\subsubsection{From Scalar to Phase Diagram: Weighted Constant Function logM(theta)}\label{app:real-input-40-logm-theta}
+Let $\Phi$ be the edge function vector (one may take $\varphi_e,\varphi_-,\varphi_2$ from \S\ref{app:vector-potential}, or add further dimensions),
+and define the weighted matrix
+\[
+(M_\theta)_{ij}:=\sum_{i\to j}\exp\bigl(\langle\theta,\Phi(e)\rangle\bigr),\qquad \theta\in\RR^d,
+\]
+and let
+\[
+\lambda(\theta):=\rho(M_\theta),\qquad P(\theta):=\log\lambda(\theta),\qquad z_\star(\theta):=\lambda(\theta)^{-1},
+\qquad
+\zeta_\theta(z):=\frac{1}{\det(I-zM_\theta)}.
+\]
+Define the weighted primitive orbit generating function
+\[
+P_\theta(z):=\sum_{n\ge 1}p_n(\theta)z^n,\qquad
+p_n(\theta):=\sum_{\substack{\tau\ \mathrm{primitive}\\|\tau|=n}}\exp\bigl(\langle\theta,S_\tau\Phi\rangle\bigr).
+\]
+Then as $z\to z_\star(\theta)$ one has
+\[
+P_\theta(z)=-\log(1-\lambda(\theta)z)+\log\mathfrak{M}(\theta)+o(1),
+\]
+and by Abel finite part definition
+\[
+\log\mathfrak{M}(\theta)=\mathrm{fp}_{r=1}\Bigl(\sum_{n\ge 1}\frac{p_n(\theta)}{\lambda(\theta)^n}r^n+\log(1-r)\Bigr).
+\]
+When $z_\star(\theta)$ is a simple pole, the above can also be written as a "main residue + Möbius tail" single series (same caliber as \S\ref{app:real-input-40-finite-part}):
+\[
+\log\mathfrak{M}(\theta)
+=\log C(\theta)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_\theta\bigl(z_\star(\theta)^{\,m}\bigr)
+=\log C(\theta)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_\theta\bigl(\lambda(\theta)^{-m}\bigr).
+\]
+Similarly, if one defines the cumulative count of weighted primitive orbits
+\[
+\Pi_\theta(N):=\sum_{n\le N}p_n(\theta),
+\]
+then from $p_n(\theta)\sim \lambda(\theta)^n/n$ one obtains a discrete "prime theorem shape" with constant correction:
+\[
+\Pi_\theta(N)\sim \frac{\lambda(\theta)}{\lambda(\theta)-1}\cdot\frac{\lambda(\theta)^N}{N}.
+\]
+If one defines $\pi_\theta(x):=\#\{\tau\ \mathrm{primitive}:N(\tau)\le x\}$ with orbit norm $N(\tau)=\lambda(\theta)^{|\tau|}$, then
+\[
+\pi_\theta(x)\sim \frac{\lambda(\theta)\log\lambda(\theta)}{\lambda(\theta)-1}\cdot\frac{x}{\log x}.
+\]
+Further, by primitive decomposition (Euler product/power expansion caliber) and Möbius inversion, one obtains a family of directly numerically evaluable interface formulas:
+\[
+\log\mathfrak{M}(\theta)
+:=\log C(\theta)-\sum_{m\ge 2}\frac{P_\theta(\lambda(\theta)^{-m})}{m},
+\]
+\[
+P_\theta(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_\theta(z^k),
+\]
+thus obtaining double Möbius--Abel series; since $m\ge 2$, $\lambda(\theta)^{-mk}$ tends to zero exponentially, making this double sum highly numerically stable.
+\[
+\log\mathfrak{M}(\theta)
+=\log C(\theta)-\sum_{m\ge 2}\frac{1}{m}\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_\theta\bigl(\lambda(\theta)^{-mk}\bigr).
+\]
+Here $C(\theta)$ is the main pole residue constant
+\[
+C(\theta):=\lim_{z\to z_\star(\theta)}(1-\lambda(\theta)z)\,\zeta_\theta(z).
+\]
+When $z_\star(\theta)$ is a simple pole, one can also write $C(\theta)$ in closed form depending only on $\det(I-zM_\theta)$ using determinant derivative:
+\[
+C(\theta)=\frac{1}{-z_\star(\theta)\,\partial_z\det(I-zM_\theta)\big|_{z=z_\star(\theta)}}.
+\]
+For numerical phase diagram reproduction see script \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_theta.py}.
+
+\paragraph{Linear incorporation of arity-charge (without kernel reconstruction)}
+Take the minimal arity-charge
+\[
+\chi:=\varphi_e-\varphi_2\in\{-1,0,1\},
+\]
+then linear weighting $\exp(\theta_\chi\chi)$ of $\chi$ is equivalent to parameter substitution
+\[
+(\theta_e,\theta_2)\mapsto(\theta_e+\theta_\chi,\ \theta_2-\theta_\chi),
+\]
+equivalently, on the three-parameter pressure $P(\theta_e,\theta_-,\theta_2)=\log\rho(M_\theta)$ this is a one-dimensional tangent
+\[
+P_\chi(t):=P(t,0,-t).
+\]
+Thus the mean/covariance of $\chi$ and $\log\mathfrak{M}(\theta)$ along this direction can be directly read from the same family of weighted kernels $M_\theta$, without introducing new state expansion.
+
+\begin{definition}[Four-dimensional observable vector and $\chi$ dimension]\label{def:real-input-40-observables-4d}
+On the edges of the real-input 40-state kernel, take three basic additive observables
+\[
+\varphi_e=e,\qquad
+\varphi_-=\mathbf{1}_{\{t\in Q_-\}},\qquad
+\varphi_2=\mathbf{1}_{\{d=2\}},
+\]
+and define the minimal arity-charge
+\[
+\chi:=\varphi_e-\varphi_2\in\{-1,0,1\}.
+\]
+Denote the four-dimensional observable vector as
+\(
+\Psi:=(\varphi_e,\varphi_-,\varphi_2,\chi)
+\)
+and for parameter $\vartheta=(\theta_e,\theta_-,\theta_2,\theta_\chi)\in\RR^4$ define the weighted matrix family
+\[
+(M_\vartheta)_{ij}:=\sum_{i\to j}\exp\bigl(\theta_e\varphi_e+\theta_-\varphi_-+\theta_2\varphi_2+\theta_\chi\chi\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[$\chi$ as fourth dimension introduces no new degrees of freedom (linear reparametrization)]\label{prop:chi-reparam-4d}
+For any $\vartheta=(\theta_e,\theta_-,\theta_2,\theta_\chi)$, there holds the identity
+\[
+M_{(\theta_e,\theta_-,\theta_2,\theta_\chi)}\;=\;M_{(\theta_e+\theta_\chi,\ \theta_-,\ \theta_2-\theta_\chi,\ 0)},
+\]
+thus for all "prime shadow" interface quantities (pressure, $\zeta$, Abel finite part constant) the same reparametrization holds:
+\[
+\lambda(\theta_e,\theta_-,\theta_2,\theta_\chi)=\lambda(\theta_e+\theta_\chi,\theta_-,\theta_2-\theta_\chi),
+\]
+\[
+\zeta_{\vartheta}(z)=\frac{1}{\det(I-zM_\vartheta)}=\zeta_{(\theta_e+\theta_\chi,\theta_-,\theta_2-\theta_\chi)}(z),
+\]
+\[
+\log\mathfrak{M}(\vartheta)=\log\mathfrak{M}(\theta_e+\theta_\chi,\theta_-,\theta_2-\theta_\chi).
+\]
+\end{proposition}
+
+\begin{proof}
+By Definition \ref{def:real-input-40-observables-4d}, $\chi=\varphi_e-\varphi_2$, so
+\[
+\theta_e\varphi_e+\theta_2\varphi_2+\theta_\chi\chi
+=(\theta_e+\theta_\chi)\varphi_e+(\theta_2-\theta_\chi)\varphi_2.
+\]
+Substituting this identity into each edge weight definition gives term-by-term equality of $M_\vartheta$; the remaining conclusions follow directly from the functoriality of $\lambda=\rho(M)$, $\zeta=1/\det(I-zM)$ and Abel finite part definition on the same matrix family.
+\end{proof}
+
+\begin{corollary}[$\chi$ introduces gauge symmetry: all-order Ward identity and zero mode of 4D Hessian]\label{cor:chi-gauge-ward-nullmode}
+Let
+$$
+a:=\theta_e+\theta_\chi,\qquad b:=\theta_-,\qquad c:=\theta_2-\theta_\chi.
+$$
+For any scalar interface functional
+$$
+F\in\{P,\ \log\lambda,\ \log\mathfrak{M},\ \log\zeta_\vartheta(z)\ \ (\text{$z$ fixed})\},
+$$
+there exists a three-variable function \(\widetilde F\) such that
+$$
+F(\theta_e,\theta_-,\theta_2,\theta_\chi)=\widetilde F(a,b,c).
+$$
+Thus the following two types of structural identities hold.
+\begin{enumerate}
+  \item \textbf{Ward identity (arbitrary order)}:
+  $$
+  \boxed{\ \partial_{\theta_\chi}F=\partial_{\theta_e}F-\partial_{\theta_2}F\ }
+  $$
+  and for any integer \(m\ge 1\), the stronger high-order form
+  $$
+  \boxed{\ \partial_{\theta_\chi}^{\,m}F
+  =\sum_{j=0}^{m}\binom{m}{j}(-1)^{m-j}\,
+  \partial_{\theta_e}^{\,j}\partial_{\theta_2}^{\,m-j}F\ }.
+  $$
+  \item \textbf{Four-dimensional zero mode (gauge null mode)}: Let
+  $$
+  v_0:=(1,0,-1,-1)\in\RR^4,
+  $$
+  then variation along \(v_0\) preserves \((a,b,c)\) unchanged, hence
+  $$
+  \boxed{\ \nabla_\vartheta F\cdot v_0=0\ }
+  $$
+  and the 4D Hessian \( \nabla_\vartheta^2F \) has exact zero eigendirection
+  $$
+  \boxed{\ (\nabla_\vartheta^2F)\,v_0=0\ }.
+  $$
+  Thus when \(\theta_\chi\) is included, \(\nabla_\vartheta^2F\) has rank at most \(3\).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+By Proposition \ref{prop:chi-reparam-4d}, \(F(\theta_e,\theta_-,\theta_2,\theta_\chi)\) enters only through combined variables \((a,b,c)\).
+For the first-order Ward identity, the chain rule gives
+$$
+\partial_{\theta_\chi}F
+=(\partial_a\widetilde F)\,\partial_{\theta_\chi}a+(\partial_c\widetilde F)\,\partial_{\theta_\chi}c
+=\partial_a\widetilde F-\partial_c\widetilde F
+=\partial_{\theta_e}F-\partial_{\theta_2}F.
+$$
+The higher-order formula follows from repeated application of the operator identity \(\partial_{\theta_\chi}=\partial_{\theta_e}-\partial_{\theta_2}\) and binomial expansion.
+\par
+For the zero mode, take the directional derivative operator
+\(
+D_{v_0}:=\partial_{\theta_e}-\partial_{\theta_2}-\partial_{\theta_\chi}
+\)
+and note that
+$$
+D_{v_0}a=1-0-1=0,\qquad
+D_{v_0}b=0,\qquad
+D_{v_0}c=0-1-(-1)=0,
+$$
+hence \(D_{v_0}F=0\); this is equivalent to \(\nabla_\vartheta F\cdot v_0=0\).
+Differentiating again with respect to any standard basis vector \(e_i\) gives \(D_{e_i}(D_{v_0}F)=0\), i.e., \((\nabla_\vartheta^2F)v_0=0\).
+The rank bound follows immediately from the existence of a nonzero kernel vector.
+\end{proof}
+
+\begin{corollary}[Mean and covariance density of $\chi$ (read from 3D Hessian linear combination)]\label{cor:chi-moments-from-hessian}
+Let $P(\theta_e,\theta_-,\theta_2)=\log\rho(M_\theta)$. Then
+\[
+\mathbb{E}[\chi]=\partial_{\theta_e}P(0)-\partial_{\theta_2}P(0)=\frac{17-5\sqrt5}{20},
+\]
+and the covariance density satisfies
+\[
+\mathrm{Var}_\infty(\chi)=\partial_{\theta_e\theta_e}^2P(0)+\partial_{\theta_2\theta_2}^2P(0)-2\partial_{\theta_e\theta_2}^2P(0),
+\qquad
+\mathrm{Cov}_\infty(\chi,\varphi_-)=\partial_{\theta_e\theta_-}^2P(0)-\partial_{\theta_2\theta_-}^2P(0).
+\]
+\end{corollary}
+
+\begin{corollary}[Second derivative of $\log\mathfrak{M}_\chi$ on $\chi$ slice and a dimensionless coupling ratio]\label{cor:chi-slice-logm-derivatives-and-W}
+Let \(\log\mathfrak{M}(\theta_e,\theta_-,\theta_2)\) be the 3D Abel finite part constant function, and define the \(\chi\) slice
+$$
+\log\mathfrak{M}_\chi(t):=\log\mathfrak{M}(t,0,-t).
+$$
+Then at \(t=0\) there hold derivative projection formulas (let \(v=(1,0,-1)\)):
+$$
+(\log\mathfrak{M}_\chi)'(0)
+=\nabla\log\mathfrak{M}(0)\cdot v
+=\partial_{\theta_e}\log\mathfrak{M}(0)-\partial_{\theta_2}\log\mathfrak{M}(0),
+$$
+$$
+(\log\mathfrak{M}_\chi)''(0)
+=v^{\mathsf T}\bigl(\nabla^2\log\mathfrak{M}(0)\bigr)v
+=\partial_{\theta_e\theta_e}^2\log\mathfrak{M}(0)+\partial_{\theta_2\theta_2}^2\log\mathfrak{M}(0)-2\partial_{\theta_e\theta_2}^2\log\mathfrak{M}(0).
+$$
+Furthermore, define the dimensionless coupling ratio
+$$
+W_\chi:=\frac{(\log\mathfrak{M}_\chi)''(0)}{\mathrm{Var}_\infty(\chi)}.
+$$
+Here \(\mathrm{Var}_\infty(\chi)=P_\chi''(0)\) can be read from the 3D pressure Hessian linear combination in Corollary \ref{cor:chi-moments-from-hessian}.
+\end{corollary}
+
+\input{sections/generated/tab_real_input_40_logM_chi_local_derivatives}

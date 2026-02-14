@@ -1,0 +1,133 @@
+\subsubsection{Third-Order Collision Moment and \texorpdfstring{$\mathrm{R\acute{e}nyi}$}{Renyi}--3 Projection Entropy Rate}\label{subsec:pom-s3}
+The second-order collision moment \(S_2(m)\) describes the \(\ell^2\) mass of ``pairwise fold collisions''; higher-order collision moments decompose the sharpness of the fiber distribution into a family of \(\mathrm{R\acute{e}nyi}\) fingerprints. Below we present the minimal three-state realization for the third order (\(q=3\)), whose structure is completely isomorphic to that of Proposition \ref{prop:pom-s2-recurrence}.
+
+\begin{definition}[Third-order fold collision moment]\label{def:pom-s3}
+Define the third-order collision sum
+$$
+S_3(m):=\sum_{x\in X_m} d_m(x)^3.
+$$
+Equivalently, drawing three windows \(\omega_1,\omega_2,\omega_3\) independently and uniformly from \(\Omega_m\),
+$$
+\mathbb{P}\bigl[\Fold_m(\omega_1)=\Fold_m(\omega_2)=\Fold_m(\omega_3)\bigr]=\frac{S_3(m)}{8^m}.
+$$
+\end{definition}
+
+\begin{proposition}[Three-state representation and third-order recursion for the third-order collision kernel]\label{prop:pom-s3-recurrence}
+There exists a three-state nonnegative integer matrix
+$$
+A_3:=
+\begin{pmatrix}
+0&2&2\\
+1&0&2\\
+0&1&2
+\end{pmatrix},
+$$
+together with readout vectors
+$$
+u_3:=(5,13,34)^{\mathsf T},\qquad v_3:=(1,0,0)^{\mathsf T},
+$$
+such that for all \(m\ge 2\),
+$$
+S_3(m)=2\,u_3^{\mathsf T}A_3^{\,m-2}v_3.
+$$
+Consequently \(S_3(m)\) satisfies the exact recursion (\(m\ge 5\))
+$$
+S_3(m)=2S_3(m-1)+4S_3(m-2)-2S_3(m-3),
+$$
+with initial values \(S_3(2)=10,S_3(3)=26,S_3(4)=88\).
+\end{proposition}
+\begin{proof}
+As in Proposition \ref{prop:pom-s2-recurrence}, this proposition is given via an \textbf{auditable construction}: the three-state nonnegative realization can be recovered from enumeration data at small \(m\), and verified term by term by the script \texttt{scripts/exp\_fold\_collision\_s3.py} (which simultaneously verifies both the recursion and the readout formula). Given \(A_3\) and the readout vectors, the sequence
+\(
+a_n:=u_3^{\mathsf T}A_3^{n}v_3
+\)
+automatically satisfies the third-order linear recursion induced by the Cayley--Hamilton theorem, whose coefficients are determined by the characteristic polynomial of \(A_3\). Direct computation yields
+$$
+\det(\lambda I-A_3)=\lambda^3-2\lambda^2-4\lambda+2,
+$$
+and multiplying by the constant \(2\) with an index shift gives the stated recursion. \qed
+\end{proof}
+
+\begin{corollary}[Third-order collision exponent and \texorpdfstring{$h_3$}{h3}]\label{cor:pom-s3-asymptotic}
+Let \(r_3\) be the largest real root of the polynomial
+$$
+x^3-2x^2-4x+2=0
+$$
+(\(r_3\approx 3.086130197651\)). Then
+$$
+S_3(m)=\Theta(r_3^m),
+\qquad
+\mathbb{P}\bigl[\Fold_m(\omega_1)=\Fold_m(\omega_2)=\Fold_m(\omega_3)\bigr]
+=\Theta\!\left(\left(\frac{r_3}{8}\right)^m\right).
+$$
+Furthermore, letting \(w_m(x):=d_m(x)/2^m\) denote the output distribution of the uniform microstate under folding, its \(\mathrm{R\acute{e}nyi}\)--3 projection entropy rate exists and equals
+$$
+h_3:=\lim_{m\to\infty}\frac{1}{m}\Bigl(-\log\sum_{x\in X_m}w_m(x)^3\Bigr)
+=\log\!\left(\frac{8}{r_3}\right).
+$$
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-s3-recurrence}, the generating function of \(S_3(m)\) has denominator \(1-2z-4z^2+2z^3=\det(I-zA_3)\), whose radius of convergence is determined by the smallest modulus zero of this denominator, equivalently the largest real root \(r_3\) of the characteristic polynomial; hence \(S_3(m)=\Theta(r_3^m)\). Moreover,
+$$
+\sum_{x\in X_m}w_m(x)^3=\sum_x \frac{d_m(x)^3}{8^m}=\frac{S_3(m)}{8^m},
+$$
+and substituting the asymptotics yields \(h_3=\log(8/r_3)\). \qed
+\end{proof}
+
+\begin{remark}[Strict RH margin of the third-order collision kernel (\texorpdfstring{$A_3$}{A3})]\label{rem:pom-collision-rh-margin-a3}
+Write \(\lambda:=\rho(A_3)=r_3\approx 3.086130197651\). From
+\[
+\det(\lambda I-A_3)=\lambda^3-2\lambda^2-4\lambda+2
+\]
+all three eigenvalues are real; besides the Perron root, the other two roots are approximately
+\[
+\mu_2\approx -1.514136929335,\qquad
+\mu_3\approx 0.428006731684.
+\]
+Therefore
+\[
+\max\{|\mu_2|,|\mu_3|\}\approx 1.514137\ <\ \sqrt{r_3}\approx 1.756739,
+\]
+i.e., the third-order collision kernel likewise strictly satisfies the kernel-version RH inequality with margin.
+\end{remark}
+
+\begin{remark}[Equivalent three-state \texorpdfstring{$A_3$}{A3} realization: different nonnegative integer representations of the same recursion]\label{rem:pom-a3-alternative-realization}
+The finite-dimensional realization of the third-order collision moment sequence \(\{S_3(m)\}_{m\ge 1}\) is not unique: as long as the same characteristic polynomial
+\(
+\lambda^3-2\lambda^2-4\lambda+2
+\)
+is maintained and the readout vectors are matched, one obtains the same \(S_3\).
+For example, taking
+$$
+A_3':=
+\begin{pmatrix}
+0&1&0\\
+1&0&1\\
+0&3&2
+\end{pmatrix},
+\qquad
+u_3':=(0,6,2),\qquad
+v_3':=(0,0,1)^{\mathsf T},
+$$
+one has for all \(m\ge 1\)
+$$
+S_3(m)=u_3' \, (A_3')^{\,m-1}\, v_3',
+$$
+and
+$$
+\det(I-zA_3')=1-2z-4z^2+2z^3.
+$$
+Therefore \(A_3'\) and the \(A_3\) adopted in the main text share the same recursion denominator and Perron root \(r_3\); they simply provide different three-state nonnegative integer representations.
+\end{remark}
+
+\begin{definition}[\texorpdfstring{$\zeta$}{zeta} function and finite-part constants of the third-order collision kernel]\label{def:pom-collision-zeta-a3}
+For the three-state kernel \(A_3\), define
+$$
+\zeta_{A_3}(z):=\exp\!\left(\sum_{n\ge 1}\frac{\mathrm{Tr}(A_3^n)}{n}z^n\right)
+:=\frac{1}{\det(I-zA_3)}.
+$$
+The corresponding primitive orbit counts \(p_n(A_3)\), as well as the Abel/Mertens finite-part constants \(\log\mathfrak{M}(A_3)\) and \(\mathsf{M}(A_3)=\gamma+\log\mathfrak{M}(A_3)\), can be extracted via the universal interface of Section \ref{sec:zeta-finite-part}; the reproducible outputs are given in Tables \ref{tab:collision_kernel_A3_primitive} and \ref{tab:collision_kernel_A3_finite_part} (scripts \texttt{scripts/exp\_collision\_kernel\_A3\_primitive.py} and \texttt{scripts/exp\_collision\_kernel\_A3\_finite\_part.py}).
+\end{definition}
+
+\input{sections/generated/tab_collision_kernel_A3_primitive}
+\input{sections/generated/tab_collision_kernel_A3_finite_part}

@@ -1,0 +1,95 @@
+\begin{corollary}[Median/partial-cube/CAT(0) completeness and parity bipartition grading]\label{cor:pom-fiber-reconstruction-median-partialcube-cat0}
+Under the setting of Theorem \ref{thm:pom-fiber-reconstruction-cartesian-product},
+the fiber reconstruction graph \(\mathcal F_x\) is a median graph and, under the natural inclusion
+\(
+\mathcal F_x\subseteq Q_{\sum_i \ell_i}
+\),
+is an isometric embedding (partial cube).
+Therefore \(\mathcal F_x\) is the \(1\)-skeleton of a CAT(0) cube complex (so that its graph distance equals the geodesic distance on the corresponding cube complex).
+Moreover, \(\mathcal F_x\) is a bipartite graph whose bipartition is given by the parity of the number of inverse substitutions (equivalently the size of the independent set):
+identifying a vertex \(S\in\mathsf{Ind}(\Gamma_x)\) with the set of inverse substitution sites activated during a single replay, each edge corresponds to a single toggle,
+so the parity of \(|S|\) flips along every edge and provides a canonical \(\ZZ_2\) grading.
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-fiber-reconstruction-cartesian-product}, we have the Cartesian decomposition \(\mathcal F_x\cong \prod_i \Gamma_{\ell_i}\).
+The Fibonacci cube \(\Gamma_n\) is a standard partial cube (isometric subgraph) of the hypercube \(Q_n\), and is a median graph (hence the \(1\)-skeleton of a CAT(0) cube complex); these properties are preserved under Cartesian products, yielding the conclusions for \(\mathcal F_x\).
+Finally, by definition an edge of \(\mathcal F_x\) applies a single ``toggle'' to an independent set \(S\), changing its symmetric difference size by \(1\), so the parity of \(|S|\) flips along every edge and induces the bipartition.
+\end{proof}
+
+\begin{corollary}[Closed form for the spectral radius of the Fibonacci cube face polynomial and exponential growth constant]\label{cor:pom-fibcube-fpoly-growth-constant}
+Let \(C_n(u)=\sum_{k\ge 0}C(n,k)u^k\) be the \(f\)-polynomial from Definition \ref{def:pom-fibcube-fvector}.
+Then from the rational generating function representation given in Theorem \ref{thm:pom-fibcube-fvector-closed}, we obtain the one-variable recurrence
+\[
+C_n(u)=C_{n-1}(u)+(1+u)\,C_{n-2}(u)\qquad(n\ge 2),
+\]
+with initial values \(C_0(u)=1\), \(C_1(u)=2+u\).
+Therefore, for each fixed \(u\ge 0\), the exponential growth constant is given explicitly by the characteristic root:
+\[
+\lim_{n\to\infty}\frac{1}{n}\log C_n(u)
+=\log\!\left(\frac{1+\sqrt{5+4u}}{2}\right).
+\]
+\end{corollary}
+\begin{proof}
+Multiplying both sides of the generating function identity from Theorem \ref{thm:pom-fibcube-fvector-closed} by \(1-z-(1+u)z^2\) and comparing \(z^n\) coefficients yields the recurrence and initial values.
+For fixed \(u\ge 0\), the characteristic equation of this recurrence is
+\(
+r^2=r+(1+u)
+\), whose Perron root is
+\(
+r_\star=\frac{1+\sqrt{5+4u}}{2}
+\).
+By general theory of linear recurrences (or by writing \(C_n(u)\) as a linear combination of the two roots and noting \(r_\star>|r_-|\)),
+\(
+\lim_{n\to\infty}\frac{1}{n}\log C_n(u)=\log r_\star
+\).
+\end{proof}
+
+\begin{corollary}[Closed form for the edge count and average degree asymptotics of the Fibonacci cube]\label{cor:pom-fibcube-edge-closed-form}
+Let \(F_n\) be the Fibonacci sequence (with convention \(F_0=0,F_1=1\)).
+Then for any \(n\ge 0\), the number of edges of the Fibonacci cube \(\Gamma_n\) (i.e., \(C(n,1)\)) satisfies the closed form
+\[
+|E(\Gamma_n)|=C(n,1)=\frac{nF_{n+1}+2(n+1)F_n}{5},
+\qquad
+|V(\Gamma_n)|=C(n,0)=F_{n+2}.
+\]
+Hence the average degree is
+\[
+\overline{\deg}(\Gamma_n)
+=\frac{2|E(\Gamma_n)|}{|V(\Gamma_n)|}
+=\frac{2}{5}\left(
+n\frac{F_{n+1}}{F_{n+2}}+2(n+1)\frac{F_n}{F_{n+2}}
+\right),
+\]
+and as \(n\to\infty\) it satisfies the linear asymptotic
+\[
+\overline{\deg}(\Gamma_n)
+\sim
+\frac{2}{5}\left(\frac{n}{\varphi}+\frac{2(n+1)}{\varphi^2}\right),
+\qquad
+\varphi=\frac{1+\sqrt5}{2}.
+\]
+Consistent with Table \ref{tab:fibonacci_cube_fvector_small_n} at \(n=6\),
+\(
+(C(6,0),C(6,1),C(6,2),C(6,3))=(21,38,22,4)
+\).
+\end{corollary}
+\begin{proof}
+From the two-dimensional recurrence of Theorem \ref{thm:pom-fibcube-fvector-closed}, taking \(k=1\) yields
+\[
+C(n,1)=C(n-1,1)+C(n-2,1)+C(n-2,0)\qquad(n\ge 2).
+\]
+Since the vertex count of \(\Gamma_n\) is \(C(n,0)=F_{n+2}\), we have \(C(n-2,0)=F_n\), so letting \(e_n:=C(n,1)\) gives
+\[
+e_n=e_{n-1}+e_{n-2}+F_n,\qquad e_0=0,\ e_1=1.
+\]
+Direct verification shows that
+\(
+e_n=\bigl(nF_{n+1}+2(n+1)F_n\bigr)/5
+\)
+satisfies the same recurrence and initial values: substituting the right-hand side into \(e_n-e_{n-1}-e_{n-2}\) and simplifying using the Fibonacci recurrence \(F_n=F_{n-1}+F_{n-2}\)
+yields the difference \(F_n\);
+hence the closed form holds.
+The average degree formula follows directly from the definition; the asymptotic follows from \(F_{n+1}/F_{n+2}\to 1/\varphi\) and \(F_n/F_{n+2}\to 1/\varphi^2\).
+Finally, the numerical value at \(n=6\) is read from Table \ref{tab:fibonacci_cube_fvector_small_n}.
+\end{proof}
+

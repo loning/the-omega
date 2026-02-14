@@ -1,0 +1,174 @@
+\begin{corollary}[Finite conjugacy of unit root twists: reducing "worst mode" to finite algebraic comparison]\label{cor:sync-kernel-weighted-unit-root-finite}
+Let \(\omega_m:=e^{2\pi i/m}\) and take \(u=\omega_m^j\) (\(1\le j\le m-1\)).
+Under completion coordinates \(u=r^2,\ s=r+r^{-1}\), one can take \(r=\omega_{2m}^{\,j}\), thus
+\[
+s=2\cos(\pi j/m)\in K_{2m}^+:=\QQ(\omega_{2m}+\omega_{2m}^{-1}).
+\]
+By Proposition \ref{prop:sync-kernel-weighted-hat-delta}, there exists \(\widehat\Delta(w,s)\in\ZZ[w,s]\) such that
+\(
+\Delta(z,u)=\widehat\Delta(zr,s)
+\);
+hence for fixed \(m\), as \(j\) varies all unit root twist slices \(\Delta(z,\omega_m^j)\) have coefficients in the same real algebraic number field \(K_{2m}^+\), and are closed under its Galois action.
+In particular, the "worst twist mode" (e.g., by minimum pole modulus or spectral radius comparison) can be formulated as a \textbf{finite comparison problem} under finitely many conjugate embeddings of \(K_{2m}^+\); the number of conjugates to compare is at most
+\[
+[K_{2m}^+:\QQ]=\frac{\phi(2m)}{2},
+\]
+where \(\phi\) is Euler's totient. When \(m\) is odd, \(\phi(2m)=\phi(m)\), so this bound degenerates to \(\phi(m)/2\).
+\end{corollary}
+
+\begin{remark}[Computable bridge package: "finite certificate" workflow for Corollary \ref{cor:sync-kernel-weighted-unit-root-finite}]\label{rem:sync-kernel-weighted-unit-root-finite-bridge}
+For fixed modulus \(m\), to give strict certificate for "worst unit root twist," execute the following finite workflow:
+\begin{enumerate}
+  \item \textbf{(Completion parametrization)} List \(s_j:=2\cos(\pi j/m)\) (\(1\le j\le m-1\)), and divide these \(s_j\) into finitely many conjugacy orbits according to Galois action of \(K_{2m}^+\) (equivalent to \(\omega_{2m}\mapsto \omega_{2m}^a,\ a\in(\ZZ/2m\ZZ)^\times\)).
+  \item \textbf{(Algebraic root finding)} For each orbit representative \(s\), solve \(\widehat\Delta(w,s)=0\) over number field \(K_{2m}^+\) for minimum modulus root \(w_\star(s)\) (or equivalently \(\Lambda(s)=1/w_\star(s)\)), and obtain minimum pole modulus and corresponding spectral radius of unit root slice from \(z_\star=w_\star/r\).
+  \item \textbf{(Finite comparison)} Do finite comparisons over all orbit representatives to obtain "worst mode," and can output comparison process (number field used, minimal polynomials, and root precision/tail bounds) as auditable certificate object.
+\end{enumerate}
+This workflow compresses original "scan all \(j\)" to "finite comparison by conjugacy orbits," and naturally adapts symbolic/algebraic certificates (more robust than numerical spectral sorting).
+\end{remark}
+
+\begin{corollary}[Exact mirror symmetry of finite length]\label{cor:primitive-finite-sym}
+Let $\pi_{n,k}:=p_{n,k}/\sum_j p_{n,j}$ be the normalized distribution of primitive orbits of length $n$ on $k$-stratification, then
+\[
+\sum_k k\,\pi_{n,k}=\frac{n}{2},\qquad
+\sum_k\left(k-\frac{n}{2}\right)^{2m+1}\pi_{n,k}=0\quad(m\ge 0).
+\]
+Hence for each finite $n$, the distribution is exactly symmetric about $n/2$, and all odd-order central moments are strictly zero.
+\end{corollary}
+
+Furthermore, from $p_{n,k}=p_{n,n-k}$ one directly obtains
+\[
+p_n(u)=u^n p_n(1/u).
+\]
+
+\begin{corollary}[Divisibility law for odd-length primitives]\label{cor:primitive-odd-div}
+If $n\ge 3$ is odd, then $u^{-1}p_n(u)$ is an odd-degree palindromic polynomial, thus
+\[
+(u+1)\mid u^{-1}p_n(u)\qquad\Longrightarrow\qquad u(u+1)\mid p_n(u).
+\]
+\end{corollary}
+
+\subsubsection{Completed determinant and strict evenness}\label{app:kernel-completion}
+Let $u=e^\theta$, define completed determinant
+\[
+\widetilde{\Delta}(z,\theta):=\Delta(e^{-\theta/2}z,e^\theta),
+\qquad
+\widetilde{\zeta}(z,\theta):=\widetilde{\Delta}(z,\theta)^{-1}.
+\]
+From $\Delta(z,u)=\Delta(uz,1/u)$ one obtains
+\[
+\widetilde{\Delta}(z,-\theta)=\widetilde{\Delta}(z,\theta),
+\qquad
+\widetilde{\zeta}(z,-\theta)=\widetilde{\zeta}(z,\theta),
+\]
+i.e., strict evenness in parameter $\theta$ after completion.
+
+\subsubsection{Self-dual \texorpdfstring{$\Delta(z,u)=\Delta(uz,1/u)$}{Delta(z,u)=Delta(uz,1/u)} functional equation s->1-s}\label{app:kernel-functional-equation}
+This subsection compresses two-variable self-dual symmetry into a single-variable functional equation under Dirichlet variables, thus aligning with the "$\zeta(s)$ narrative" trio "completion/functional equation/critical line."
+
+\begin{proposition}[Functional equation of completed determinant]\label{prop:kernel-xi-functional-equation}
+Suppose synchronization kernel satisfies self-dual identity $\Delta(z,u)=\Delta(uz,1/u)$ (see \S\ref{app:kernel-self-dual}), and take
+\[
+\lambda:=\rho(B(1))>1.
+\]
+Define single-variable function along curve
+\[
+z(s):=\lambda^{-s},\qquad u(s):=\lambda^{2s-1}
+\]
+as
+\[
+\Xi(s):=\Delta(z(s),u(s))=\Delta(\lambda^{-s},\lambda^{2s-1}).
+\]
+Then there holds strict functional equation
+\[
+\boxed{\ \Xi(s)=\Xi(1-s)\ }.
+\]
+Equivalently, defining the same cross-section of $\zeta$
+\[
+\zeta_{\mathrm{sd}}(s):=\zeta(z(s),u(s))=\Delta(\lambda^{-s},\lambda^{2s-1})^{-1},
+\]
+one has $\zeta_{\mathrm{sd}}(s)=\zeta_{\mathrm{sd}}(1-s)$.
+\end{proposition}
+\begin{proof}
+By self-dual identity,
+\[
+\Xi(s)=\Delta(\lambda^{-s},\lambda^{2s-1})
+=\Delta(\lambda^{2s-1}\lambda^{-s},\lambda^{1-2s})
+=\Delta(\lambda^{s-1},\lambda^{1-2s}).
+\]
+For $1-s$ we have
+\(
+z(1-s)=\lambda^{-(1-s)}=\lambda^{s-1}
+\)
+and
+\(
+u(1-s)=\lambda^{2(1-s)-1}=\lambda^{1-2s}
+\),
+so $\Xi(s)=\Delta(z(1-s),u(1-s))=\Xi(1-s)$. This completes the proof.
+\end{proof}
+
+\begin{remark}[Critical line and symmetric fixed point]\label{rem:kernel-critical-line-u1}
+By definition $u(s)=\lambda^{2s-1}$ one sees: line $\Re(s)=\tfrac12$ satisfies $|u(s)|=1$, and $s=\tfrac12$ is symmetric fixed point (corresponding to $u=1$).
+Therefore on this completed cross-section, "critical line" is naturally equivalent to "self-dual symmetric surface/unit circle weight."
+\end{remark}
+
+\begin{remark}[Balanced atomic constantization under Dirichlet compression]\label{rem:dirichlet-balanced-atom-constant}
+Continuing notation from Proposition \ref{prop:kernel-xi-functional-equation}. For any integers \(a,b\), along Dirichlet curve there holds
+\[
+u(s)^a z(s)^b=\lambda^{-a}\lambda^{(2a-b)s}.
+\]
+Thus when \(b=2a\), \(u^a z^{2a}=\lambda^{-a}\) is independent of \(s\), and any factor \((1-u^a z^{2a})\) in \(\Xi(s)\) contributes only constant \((1-\lambda^{-a})\), not affecting zero/pole positions.
+In particular, the atomic factor \((1-uz^2)\) in output potential of real-input 40-state kernel (Proposition \ref{prop:atomic-2-orbit-split-logM}) becomes constant \((1-\lambda^{-1})\) on this cross-section, whose effect only manifests as translation of Abel finite part constant.
+\end{remark}
+
+\begin{definition}[Kernel Hardy function: critical line real-value]\label{def:kernel-hardy-function}
+Continuing notation from Proposition \ref{prop:kernel-xi-functional-equation}. Define
+$$
+Z(t):=\widetilde{\Delta}\!\bigl(\lambda^{-1/2},\,2it\log\lambda\bigr),
+\qquad t\in\RR,
+$$
+and call it Hardy-type real-value of synchronization kernel completed determinant.
+\end{definition}
+
+\begin{proposition}[Hardy reality, evenness, and critical line cross-section identity]\label{prop:kernel-hardy-real-even}
+For all real \(t\in\RR\), there holds
+$$
+\boxed{\ Z(t)\in\RR,\qquad Z(t)=Z(-t)\ }.
+$$
+Moreover, if setting \(s=\tfrac12+it\), then critical line cross-section identity holds:
+$$
+\boxed{\ Z(t)=\Xi\!\left(\tfrac12+it\right)\ }.
+$$
+\end{proposition}
+\begin{proof}
+Take \(\theta:=2it\log\lambda\) and \(u=e^\theta=\lambda^{2it}\), then \(|u|=1\).
+By completion definition (\S\ref{app:kernel-completion})
+\[
+\widetilde{\Delta}(z,\theta)=\Delta(e^{-\theta/2}z,e^\theta)
+\]
+one obtains
+\[
+Z(t)=\widetilde{\Delta}(\lambda^{-1/2},\theta)
+=\Delta\!\bigl(e^{-\theta/2}\lambda^{-1/2},\,u\bigr)
+=\Delta\!\bigl(\lambda^{-1/2-it},\,\lambda^{2it}\bigr)
+=\Delta\!\bigl(\lambda^{-s},\,\lambda^{2s-1}\bigr)
+=\Xi(s),
+\]
+thus obtaining \(Z(t)=\Xi(\tfrac12+it)\).
+\par
+On the other hand, from \(\Delta(z,u)=\sum_{j=0}^{10}c_j(u)z^j\) and completion definition one immediately gets
+\[
+\widetilde{\Delta}(z,\theta)=\sum_{j=0}^{10}c_j(u)\,e^{-j\theta/2}z^j
+=\sum_{j=0}^{10}\bigl(u^{-j/2}c_j(u)\bigr)\,z^j
+=\sum_{j=0}^{10}d_j(u)\,z^j,
+\]
+where \(d_j(u)=u^{-j/2}c_j(u)\).
+By Corollary \ref{cor:completion-real-line}, when \(|u|=1\) we have \(d_j(u)\in\RR\).
+Hence \(\widetilde{\Delta}(z,\theta)\) as polynomial in \(z\) takes real values on \(z\in\RR\), in particular \(Z(t)=\widetilde{\Delta}(\lambda^{-1/2},\theta)\in\RR\).
+\par
+Evenness follows directly from completion evenness \(\widetilde{\Delta}(z,-\theta)=\widetilde{\Delta}(z,\theta)\) (\S\ref{app:kernel-completion}): substituting \(\theta=2it\log\lambda\) gives \(Z(-t)=Z(t)\). This completes the proof.
+\end{proof}
+
+\begin{remark}[Executable core toward RH: spectral boundary and algebraic elimination]\label{rem:rh-core-elimination}
+Propositions \ref{prop:kernel-xi-functional-equation} and \ref{prop:kernel-hardy-real-even} give functional equation and critical line real-value; combined with Remark \ref{rem:dirichlet-balanced-atom-constant}, all balanced atoms under Dirichlet compression become constant, allowing stripping of parts not participating in zero structure.
+Thus RH-type constraints transform to "spectral boundary determination" for remaining spectral supports (kernel RH: non-Perron spectral radius \(\le \sqrt{\lambda}\)), while RH-sharp points can be written as elimination problem of algebraic resultant, as shown in Proposition \ref{prop:real-input-40-collision-rhk-window} and Remark \ref{rem:collision-cubic-rhsharp-quintic}.
+\end{remark}

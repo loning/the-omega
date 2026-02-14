@@ -1,0 +1,346 @@
+\begin{proposition}[\texorpdfstring{$p^k$}{p^k}-sparsification: modulo \texorpdfstring{$p^k$}{p^k}, only the \texorpdfstring{$u^p$}{u^p}-subring survives]\label{prop:witt-pk-sparsification}
+Let \(p\) be a prime and \(k\ge 1\). Expand
+\[
+a_{p^k}(u)=\sum_{j\ge 0}a_{p^k,j}\,u^j\in\ZZ[u]
+\]
+in powers of \(u\). From the congruence
+\(
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)
+\)
+of Corollary~\ref{cor:witt-dwork-congruence}, comparing coefficients term by term gives:
+\begin{enumerate}
+  \item If \(p\nmid j\), then \(a_{p^k,j}\equiv 0\ (\mathrm{mod}\ p^k)\);
+  \item If \(j=p\ell\), then
+  \[
+  a_{p^k,p\ell}\equiv a_{p^{k-1},\ell}\pmod{p^k}.
+  \]
+\end{enumerate}
+Equivalently, in \(\ZZ[u]/(p^k)\),
+\[
+a_{p^k}(u)\equiv \sum_{\ell\ge 0}a_{p^{k-1},\ell}\,u^{p\ell}\in \bigl(\ZZ/p^k\ZZ\bigr)[u^p].
+\]
+\end{proposition}
+\begin{proof}
+By Corollary~\ref{cor:witt-dwork-congruence},
+\(
+a_{p^k}(u)-a_{p^{k-1}}(u^p)\in p^k\ZZ[u]
+\).
+Since
+\(
+a_{p^{k-1}}(u^p)=\sum_{\ell\ge 0}a_{p^{k-1},\ell}\,u^{p\ell}
+\)
+contains only \(u^{p\ell}\) terms, a term-by-term comparison of powers yields the two coefficient congruences. \qed
+\end{proof}
+
+\begin{proposition}[Iterated descent: modulo \texorpdfstring{$p^\ell$}{p^ell}, the Frobenius pushforward depends only on the lower level]\label{prop:witt-frobenius-iterated-descent}
+Let \(p\) be a prime, \(k\ge 1\), and take any \(1\le \ell\le k\).
+Set \(a_{p^0}(u):=a_1(u)\) by convention.
+Under the Dwork-type congruence of Corollary~\ref{cor:witt-dwork-congruence},
+\[
+a_{p^j}(u)\equiv a_{p^{j-1}}(u^p)\pmod{p^j}\qquad(j\ge 1),
+\]
+the following congruence holds in \(\ZZ[u]\):
+\begin{equation}\label{eq:witt-frobenius-iterated-descent}
+\boxed{\ a_{p^k}(u)\equiv a_{p^{\ell-1}}\!\bigl(u^{p^{k-\ell+1}}\bigr)\pmod{p^\ell}\ }.
+\end{equation}
+Therefore, in the quotient ring \((\ZZ/p^\ell\ZZ)[u]\), \(a_{p^k}(u)\) depends only on the variable \(u^{p^{k-\ell+1}}\), i.e.,
+\[
+a_{p^k}(u)\bmod p^\ell\ \in\ (\ZZ/p^\ell\ZZ)\bigl[u^{p^{k-\ell+1}}\bigr].
+\]
+\end{proposition}
+\begin{proof}
+When \(j\ge \ell\), the inclusion \(p^j\ZZ[u]\subset p^\ell\ZZ[u]\) allows the Dwork congruence to be reduced modulo \(p^\ell\):
+\(
+a_{p^j}(u)\equiv a_{p^{j-1}}(u^p)\pmod{p^\ell}
+\).
+Iterating from \(j=k\) down to \(j=\ell\) yields
+\[
+a_{p^k}(u)\equiv a_{p^\ell}\!\bigl(u^{p^{k-\ell}}\bigr)\pmod{p^\ell}.
+\]
+Applying the congruence once more at level \(j=\ell\) (modulo \(p^\ell\)) gives
+\[
+a_{p^\ell}\!\bigl(u^{p^{k-\ell}}\bigr)\equiv a_{p^{\ell-1}}\!\bigl(u^{p^{k-\ell+1}}\bigr)\pmod{p^\ell}.
+\]
+Combining yields \eqref{eq:witt-frobenius-iterated-descent}.
+The subring containment follows immediately since the right-hand side involves only powers of \(u^{p^{k-\ell+1}}\). \qed
+\end{proof}
+
+\begin{lemma}[Invariant decomposition via \texorpdfstring{$t=u+u^{-1}$}{t=u+u^{-1}} for even-length palindromic traces]\label{lem:trace-palindrome-even-invariant}
+Let \(n\ge 2\) be even, and suppose \(a_n(u)\in\ZZ[u]\) satisfies the palindrome symmetry
+\(
+a_n(u)=u^n a_n(1/u)
+\)
+(Proposition~\ref{prop:trace-palindrome}).
+Then there exists a unique polynomial \(A_n(t)\in\ZZ[t]\) such that in the Laurent ring \(\ZZ[u,u^{-1}]\),
+\[
+\boxed{\ a_n(u)=u^{n/2}\,A_n\!\left(u+u^{-1}\right)\ }.
+\]
+\end{lemma}
+\begin{proof}
+Set \(t:=u+u^{-1}\).
+The palindrome symmetry is equivalent to saying that \(u^{-n/2}a_n(u)\) is invariant under \(u\mapsto 1/u\), hence
+\(
+u^{-n/2}a_n(u)\in \ZZ[u,u^{-1}]^{\,u\mapsto 1/u}=\ZZ[u+u^{-1}]=\ZZ[t]
+\).
+Therefore there exists \(A_n(t)\in\ZZ[t]\) with \(u^{-n/2}a_n(u)=A_n(t)\), giving the stated decomposition.
+Uniqueness follows from the injectivity of the embedding \(\ZZ[t]\hookrightarrow \ZZ[u,u^{-1}]\) (viewing \(t\) as an algebraic invariant of \(u\)). \qed
+\end{proof}
+
+\begin{theorem}[Chebyshev--Dwork congruence chain: the \texorpdfstring{$p=2$}{p=2} Frobenius closes in the invariant coordinate]\label{thm:chebyshev-dwork-congruence-chain}
+Let \(a_n(u)=\Tr(B(u)^n)\in\ZZ[u]\) be the periodic trace polynomial, and let \(t:=u+u^{-1}\).
+For each \(k\ge 1\), let \(A_{2^k}(t)\in\ZZ[t]\) be the invariant representation given by Lemma~\ref{lem:trace-palindrome-even-invariant}:
+\[
+a_{2^k}(u)=u^{2^{k-1}}A_{2^k}(t).
+\]
+Then for all \(k\ge 2\), the Dwork-type congruence \(a_{2^k}(u)\equiv a_{2^{k-1}}(u^2)\ (\mathrm{mod}\ 2^k)\) implies a congruence recursion that closes within \(\ZZ[t]\):
+\[
+\boxed{\ A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\pmod{2^k}\qquad\text{in }\ZZ[t].\ }
+\]
+\end{theorem}
+\begin{proof}
+By Corollary~\ref{cor:witt-dwork-congruence} (with \(p=2\)),
+\(
+a_{2^k}(u)\equiv a_{2^{k-1}}(u^2)\ (\mathrm{mod}\ 2^k)
+\) in \(\ZZ[u]\).
+Applying Lemma~\ref{lem:trace-palindrome-even-invariant} for the even-length cases \(n=2^k\) and \(n=2^{k-1}\), write
+\[
+a_{2^k}(u)=u^{2^{k-1}}A_{2^k}(t),\qquad
+a_{2^{k-1}}(u^2)=(u^2)^{2^{k-2}}A_{2^{k-1}}(u^2+u^{-2}).
+\]
+Using the identity
+\(
+u^2+u^{-2}=(u+u^{-1})^2-2=t^2-2
+\), we get
+\(
+a_{2^{k-1}}(u^2)=u^{2^{k-1}}A_{2^{k-1}}(t^2-2)
+\).
+Substituting into the Dwork congruence and canceling the common factor \(u^{2^{k-1}}\) in \(\ZZ[u,u^{-1}]\) yields
+\(
+A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\ (\mathrm{mod}\ 2^k)
+\) in \(\ZZ[t]\).
+\qed
+\end{proof}
+
+\begin{corollary}[Matrix-free congruence recursion on the dyadic tower: single-variable substitution replaces \texorpdfstring{$B(u)^{2^k}$}{B(u)^{2^k}}]\label{cor:chebyshev-dwork-matrixfree}
+Retaining the notation of Theorem~\ref{thm:chebyshev-dwork-congruence-chain}, for any \(k\ge 2\) the following holds in the ring \((\ZZ/2^k\ZZ)[t]\):
+\[
+\boxed{\ A_{2^k}(t)\equiv A_{2^{k-1}}(t^2-2)\ }.
+\]
+Therefore, the ``modulo \(2^k\)'' computation at level \(2^k\) can be reduced from \emph{the \(2^k\)-th power of a \(10\times 10\) polynomial matrix} \(B(u)^{2^k}\) to \emph{single-variable} substitution \(t\mapsto t^2-2\) combined with modular reduction; moreover, this reduction has logarithmic depth on the dyadic tower (in terms of the period length \(n=2^k\), the recursion depth is \(k\)).
+\end{corollary}
+\begin{proof}
+This is a direct restatement of Theorem~\ref{thm:chebyshev-dwork-congruence-chain} in the quotient ring modulo \(2^k\). \qed
+\end{proof}
+
+\begin{remark}[Reproducible audit: the congruence chain for \texorpdfstring{$A_{2^k}(t)$}{A_{2^k}(t)} passes level by level]\label{rem:chebyshev-dwork-audit}
+The script \path{scripts/exp_sync_kernel_weighted_chebyshev_dwork_chain.py} computes
+\(
+a_{2^k}(u)=\Tr(B(u)^{2^k})
+\)
+directly from matrix powers and constructs \(A_{2^k}(t)\), then checks coefficient by coefficient in \(\ZZ[t]\) that
+\(
+A_{2^k}(t)-A_{2^{k-1}}(t^2-2)\in 2^k\ZZ[t]
+\)
+(\(k\ge 2\)). In this paper we audit levels \(k=2,\dots,6\) (i.e., modulo \(4\) through modulo \(64\)); the pass/fail status is summarized in Table~\ref{tab:sync_kernel_weighted_chebyshev_dwork_chain} (serving as a pipeline self-audit guardrail).
+\end{remark}
+\input{sections/generated/tab_sync_kernel_weighted_chebyshev_dwork_chain}
+
+\begin{proposition}[\texorpdfstring{$\theta$}{theta}-derivative \texorpdfstring{$p$}{p}-adic filtering: auditable scaling law at each order]\label{prop:witt-theta-derivative-filter}
+Let \(p\) be a prime and \(k\ge 1\). Let \(a_n(u)\in\ZZ[u]\) be the periodic trace polynomial (unified notation of the main text and appendix), and set \(u=e^\theta\).
+Define the derivative moments at \(\theta=0\) (equivalent to ``power moments'')
+$$
+A_{n}^{(r)}:=\left.\frac{\mathrm{d}^r}{\mathrm{d}\theta^r}\,a_n(e^\theta)\right|_{\theta=0}\in\ZZ,\qquad r\ge 0.
+$$
+Then the Dwork-type congruence \(a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)\) implies the order-by-order scaling congruence
+$$
+\boxed{\ A_{p^k}^{(r)}\equiv p^r\,A_{p^{k-1}}^{(r)}\pmod{p^k}\ }\qquad(r\ge 0).
+$$
+In particular, when \(0\le r<k\), this gives the \(p\)-adic valuation lower bound
+$$
+\boxed{\ p^{\,k-r}\ \big|\ A_{p^k}^{(r)}\ }.
+$$
+\end{proposition}
+\begin{proof}
+Write the Euler derivative operator \(D:=u\,\frac{\mathrm{d}}{\mathrm{d}u}\); then
+\(
+\frac{\mathrm{d}}{\mathrm{d}\theta}f(e^\theta)=(Df)(u)\big|_{u=e^\theta}
+\),
+and by induction
+\(
+A_n^{(r)}=(D^r a_n)(1)\in\ZZ
+\) (since \(D^r a_n\in\ZZ[u]\)).
+\par
+Applying \(D^r\) to the Dwork congruence in \(\ZZ[u]\) preserves the modulus \(p^k\) (since \(D\) is a \(\ZZ\)-linear differential operator).
+On the other hand, for any \(f\) one has the identity
+$$
+D\bigl(f(u^p)\bigr)=p\,(Df)(u^p),
+$$
+and hence \(D^r\bigl(f(u^p)\bigr)=p^r\,(D^r f)(u^p)\).
+Applying this to \(f=a_{p^{k-1}}\) and evaluating at \(u=1\) (where \(u^p=1\)) gives
+$$
+(D^r a_{p^k})(1)\equiv p^r (D^r a_{p^{k-1}})(1)\pmod{p^k},
+$$
+which is the stated congruence on \(A^{(r)}\).
+When \(r<k\), the right-hand side contains the factor \(p^r\), so the left-hand side is divisible by \(p^{k-r}\). \qed
+\end{proof}
+
+\begin{corollary}[Tower-locking at \texorpdfstring{$u^p=1$}{u^p=1}: twisted traces are pushed back to the untwisted level]\label{cor:witt-root-of-unity-tower-lock}
+Let \(p\) be a prime, \(k\ge 1\), and let \(R\) be a commutative ring. If \(u\in R\) satisfies \(u^p=1\), then
+\[
+a_{p^k}(u)\equiv a_{p^{k-1}}(1)\pmod{p^k}\qquad\text{in}\ R.
+\]
+More generally, for any \(1\le \ell\le k\),
+\[
+\boxed{\ a_{p^k}(u)\equiv a_{p^{k-\ell}}(1)\pmod{p^\ell}\ }\qquad\text{in}\ R.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary~\ref{cor:witt-dwork-congruence},
+\(
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)
+\).
+Under \(u^p=1\) one has \(a_{p^{k-1}}(u^p)=a_{p^{k-1}}(1)\), yielding the first identity.
+For the second, iterate the congruence \(\ell\) times along the exponent chain: since \(u^{p^j}=1\) (\(j\ge 1\)), each step degenerates the parameter \(u^{p^j}\) to \(1\), and the modulus decreases by one level each time, ultimately producing the modulo \(p^\ell\) locking congruence. \qed
+\end{proof}
+
+\begin{corollary}[Complete invisibility of order-\texorpdfstring{$p$}{p} cyclotomic twists]\label{cor:witt-cyclotomic-invisibility}
+Let \(p\) be a prime, \(k\ge 1\), and let \(R\) be a commutative ring. If \(u\in R\) satisfies \(u^p=1\), then
+\[
+\boxed{\ a_{p^k}(u)\equiv a_{p^k}(1)\pmod{p^k}\qquad\text{in}\ R\ }.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary~\ref{cor:witt-root-of-unity-tower-lock}, \(a_{p^k}(u)\equiv a_{p^{k-1}}(1)\pmod{p^k}\).
+On the other hand, specializing Corollary~\ref{cor:witt-dwork-congruence} to \(u=1\) gives \(a_{p^k}(1)\equiv a_{p^{k-1}}(1)\pmod{p^k}\).
+Subtracting the two yields the conclusion. \qed
+\end{proof}
+
+\begin{corollary}[Stable leading residue of the \texorpdfstring{$\theta$}{theta}-derivative: \texorpdfstring{$\alpha_{p,r}\in\mathbb{F}_p$}{alpha in F_p}]\label{cor:witt-theta-stable-residue}
+Fix a prime \(p\) and an order \(r\ge 1\). When \(k>r\), Proposition~\ref{prop:witt-theta-derivative-filter} gives \(p^{k-r}\mid A_{p^k}^{(r)}\), and one can define
+\[
+\alpha_{p,r}:=\left[p^{-(k-r)}A_{p^k}^{(r)}\right]\bmod p\ \in \mathbb{Z}/p\mathbb{Z}\cong\mathbb{F}_p.
+\]
+Then \(\alpha_{p,r}\) is independent of the choice of \(k\) (as long as \(k>r\)).
+\end{corollary}
+\begin{proof}
+By the scaling congruence of Proposition~\ref{prop:witt-theta-derivative-filter},
+\(
+A_{p^k}^{(r)}=p^rA_{p^{k-1}}^{(r)}+p^k t
+\)
+for some \(t\in\ZZ\). Dividing both sides by \(p^{k-r}\) gives
+\[
+p^{-(k-r)}A_{p^k}^{(r)}=p^{-(k-1-r)}A_{p^{k-1}}^{(r)}+p^{r}t.
+\]
+Taking the residue modulo \(p\), since \(r\ge 1\) the last term \(p^r t\equiv 0\pmod p\), so
+\(
+p^{-(k-r)}A_{p^k}^{(r)}\equiv p^{-(k-1-r)}A_{p^{k-1}}^{(r)}\pmod p
+\).
+Iterating shows that \(\alpha_{p,r}\) is stable for \(k>r\). \qed
+\end{proof}
+
+\begin{corollary}[Stable parity fingerprint for \texorpdfstring{$p=2$}{p=2}: the \texorpdfstring{$\theta$}{theta}-derivatives generate an infinite family of binary invariants]\label{cor:witt-theta-binary-fingerprint}
+Take \(p=2\) and fix an order \(r\ge 1\). For any \(k\ge r+1\), the valuation lower bound \(2^{k-r}\mid A_{2^k}^{(r)}\) from Proposition~\ref{prop:witt-theta-derivative-filter} allows one to define the integer
+\[
+B_k^{(r)}:=2^{-(k-r)}A_{2^k}^{(r)}\in\ZZ.
+\]
+Then the parity of this integer is permanently stable from level \(k=r+1\) onward:
+\[
+\boxed{\ B_{k+1}^{(r)}\equiv B_{k}^{(r)}\pmod 2\qquad(\forall k\ge r+1)\ }.
+\]
+This yields a family of auditable binary fingerprints
+\[
+\varepsilon_r:=B_{k}^{(r)}\bmod 2\in\{0,1\}\qquad(r\ge 1),
+\]
+independent of the choice of \(k\) (as long as \(k\ge r+1\)).
+\end{corollary}
+\begin{proof}
+By Corollary~\ref{cor:witt-theta-stable-residue}, when \(k>r\),
+\(
+\alpha_{2,r}\equiv 2^{-(k-r)}A_{2^k}^{(r)}\pmod 2
+\)
+and the right-hand side is independent of \(k\).
+Setting \(\varepsilon_r:=\alpha_{2,r}\in\mathbb{F}_2\cong\{0,1\}\) and taking
+\(
+B_k^{(r)}:=2^{-(k-r)}A_{2^k}^{(r)}
+\)
+as its integer representative gives the stated stability and definition.
+\qed
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$p$}{p}-adic flatness ball: \texorpdfstring{$p^k$}{p^k}-insensitivity of \texorpdfstring{$u=e^\theta$}{u=exp(theta)} near \texorpdfstring{$u=1$}{u=1}]\label{cor:witt-padic-flatness-ball}
+Let \(p\) be a prime and \(k\ge 1\). Take \(\theta\in p\ZZ_p\); when \(p=2\), assume further that \(\theta\in 4\ZZ_2\) (equivalently, \(v_2(\theta)\ge 2\), to ensure convergence of \(e^\theta\)), and set \(u=e^\theta\).
+Then in \(\ZZ_p\),
+\[
+\boxed{\ a_{p^k}(e^\theta)\equiv a_{p^k}(1)\pmod{p^k}\ }.
+\]
+\end{corollary}
+\begin{proof}
+When \(k=1\), from \(v_p(\theta)\ge 1\) one has for any \(r\ge 1\)
+\(
+v_p(\theta^r/r!)=r\,v_p(\theta)-v_p(r!)\ge r-v_p(r!)\ge 1
+\),
+so every \(r\ge 1\) term in the Taylor expansion lies in \(p\ZZ_p\), and hence
+\(
+a_p(e^\theta)\equiv a_p(1)\pmod p
+\).
+Now assume \(k\ge 2\).
+
+Expand in Taylor series at \(\theta=0\):
+\[
+a_{p^k}(e^\theta)=\sum_{r\ge 0}\frac{A_{p^k}^{(r)}}{r!}\,\theta^r.
+\]
+The constant term is \(a_{p^k}(1)=A_{p^k}^{(0)}\). For the nonzero-order terms, estimate the valuations in two cases:
+\begin{itemize}
+  \item \textbf{\(r=1\):} By Proposition~\ref{prop:witt-theta-derivative-filter} (taking \(r=1\)), \(p^{k-1}\mid A_{p^k}^{(1)}\), and \(v_p(\theta)\ge 1\), so
+  \(v_p(A_{p^k}^{(1)}\theta)\ge (k-1)+1=k\).
+  \item \textbf{\(r\ge 2\):} From the same scaling congruence at \(k=2\),
+  \(A_{p^2}^{(r)}\equiv p^rA_{p}^{(r)}\equiv 0\pmod{p^2}\), so \(p^2\mid A_{p^2}^{(r)}\).
+  By induction for \(k\ge 3\): if \(p^{k-1}\mid A_{p^{k-1}}^{(r)}\), then
+  \(A_{p^k}^{(r)}\equiv p^rA_{p^{k-1}}^{(r)}\equiv 0\pmod{p^k}\), so \(p^k\mid A_{p^k}^{(r)}\).
+  Thus for all \(k\ge 2\) and \(r\ge 2\), \(A_{p^k}^{(r)}\in p^k\ZZ\). Since \(v_p(\theta)\ge 1\) implies \(v_p(\theta^r/r!)\ge 0\), each term \(\frac{A_{p^k}^{(r)}}{r!}\theta^r\) has \(p\)-adic valuation at least \(k\).
+\end{itemize}
+In summary, all nonzero-order terms are divisible by \(p^k\), so \(a_{p^k}(e^\theta)\equiv a_{p^k}(1)\pmod{p^k}\). \qed
+\end{proof}
+
+\begin{remark}[Computational acceleration law modulo \texorpdfstring{$p^k$}{p^k}]\label{rem:witt-root-of-unity-acceleration}
+Under the condition \(u^p=1\) of Corollary~\ref{cor:witt-root-of-unity-tower-lock}, the value
+\(
+a_{p^k}(u)\bmod p^k
+\)
+is completely locked to
+\(
+a_{p^{k-1}}(1)\bmod p^k
+\):
+therefore, for the \(\bmod p^k\) scan of ``nontrivial character twists'' at the \(p\)-power length level, one need not explicitly compute the high-degree matrix power
+\(
+B(u)^{p^k}
+\);
+instead, it suffices to compute the shorter-length trace \(a_{p^{k-1}}(1)\) at the untwisted point \(u=1\), and use the tower-locking to promote that value back to the \(p^k\) level.
+\end{remark}
+
+\begin{definition}[Frobenius defect polynomial]\label{def:witt-frobenius-defect}
+For a prime \(p\) and \(k\ge 1\), define
+\[
+\Delta_{p,k}(u):=a_{p^k}(u)-a_{p^{k-1}}(u^p)\in\ZZ[u].
+\]
+\end{definition}
+
+\begin{proposition}[Divisibility depth of the Frobenius defect: \texorpdfstring{$\Delta_{p,k}(u)\in p^k\ZZ[u]$}{Delta in p^k Z[u]}]\label{prop:witt-frobenius-defect-divisibility}
+For any prime \(p\) and \(k\ge 1\),
+\[
+\boxed{\ \Delta_{p,k}(u)\in p^k\,\ZZ[u]\ },
+\]
+equivalently, all coefficients of \(\Delta_{p,k}(u)\) are divisible by \(p^k\).
+\end{proposition}
+\begin{proof}
+This is a restatement of Corollary~\ref{cor:witt-dwork-congruence}: the congruence
+\(
+a_{p^k}(u)\equiv a_{p^{k-1}}(u^p)\ (\mathrm{mod}\ p^k)
+\)
+is by definition equivalent to \(\Delta_{p,k}(u)\in p^k\ZZ[u]\). \qed
+\end{proof}
+
+\begin{remark}[Layered audit: integer level vs.\ spectral level]\label{rem:witt-frobenius-defect-audit}
+In any reproducible computation, one can first check the vanishing of \(\Delta_{p,k}(u)\) modulo \(p^k\) (or the divisibility depth of its coefficients) for a set of \((p,k)\), thereby confirming that the ``primitive--periodic Big-Witt bridge package'' has not been corrupted at the implementation level.
+Only after this integer-level audit passes does it become meaningful to discuss the unit-circle twist spectral radius shift (e.g., \(\rho/\lambda\)); otherwise, one should first locate the failure at the implementation/data-pipeline level.
+\end{remark}

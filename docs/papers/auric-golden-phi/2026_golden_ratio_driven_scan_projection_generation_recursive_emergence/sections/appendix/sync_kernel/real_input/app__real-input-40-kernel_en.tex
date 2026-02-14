@@ -1,0 +1,568 @@
+\subsubsection{Synchronization Kernel under Real Arithmetic Input Constraints (40 States)}\label{app:real-input-40-kernel}
+Let $X\subset\{0,1\}^{\ZZ}$ be the Zeckendorf (golden mean) shift: forbids the adjacent subword $11$. It is a $1$-step SFT with adjacency matrix
+\[
+A=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},\qquad \rho(A)=\varphi,
+\]
+hence $h(X\times X)=2\log\varphi$ (see the "grammar SFT" interface in Section \ref{subsec:zeta-online-kernel}).
+Although the input alphabet of the online delay kernel is $\{0,1,2\}$, the real arithmetic input comes from the digit-wise sum $d_k=x_k+y_k$ of two legal Zeckendorf orbits
+$x,y\in X$, where $x_kx_{k+1}=0,\ y_ky_{k+1}=0$.
+Therefore, merging the synchronization kernel state $s\in Q$ with the input memory $(p_x,p_y)\in\{0,1\}^2$, we obtain
+\[
+\Sigma:=Q\times\{0,1\}^2,\qquad |\Sigma|=40.
+\]
+\begin{remark}[Direct product decomposition and deterministic labeling]\label{rem:real-input-40-product-kernel}
+Here \(Q\) is the internal state set of the \(10\)-state synchronization kernel (also viewable as a synchronization surplus kernel) \(K_{\mathrm{sync}}\) from Appendix~\ref{app:sync-kernel-basic}: this kernel is a deterministic Mealy transducer,
+whose state transitions are deterministic given the input digit \(d\in\{0,1,2\}\) ($\delta:Q\times\{0,1,2\}\to Q$), accompanied by an output digit \(e\in\{0,1\}\);
+edges in the synchronization graph can thus be labeled by \(d/e\) (see Figure \ref{fig:sync_kernel_10_state_graph}).
+Thus the state space of the "real input" \(40\)-state kernel is the direct product of the synchronization kernel and the two Zeckendorf input memories \(\{0,1\}^2\):
+\(\Sigma\cong K_{\mathrm{sync}}\times\{0,1\}^2\).
+\end{remark}
+Starting from $(s,p_x,p_y)$, one may choose $(x,y)\in\{0,1\}^2$ subject to $p_xx=0,\ p_yy=0$,
+set $d=x+y$, then update $s$ via the synchronization kernel's deterministic transition, with the next memory being $(x,y)$.
+This yields a 40-state SFT whose adjacency matrix is denoted $M$.
+
+\begin{remark}[Uniqueness of representation for the 40-state kernel]\label{rem:real-input-40-minimal-kernel}
+Under real arithmetic input constraints, any deterministic online normalizer can be compiled into a finite transducer with labeled edges; if two local rule sets implement the same $\Fold_\infty$ map, then deterministic minimization of their transducers yields the same core up to labeled graph isomorphism. Thus different local algorithms are merely different presentations of the same kernel; the 40-state kernel gives an auditable minimal specification.
+\end{remark}
+
+\begin{proposition}[Essential core of the 40-state kernel: unique essential SCC]\label{prop:real-input-40-essential-20}
+View $M$ as a directed graph (vertices $\Sigma$, edges given by allowed transitions). Then its strongly connected component decomposition satisfies:
+\begin{itemize}
+  \item There exists a unique essential strongly connected component (containing bi-infinite sequences/periodic orbits);
+  \item This essential component contains exactly $20$ vertices; the remaining $20$ vertices are all transient (not on any directed cycle), thus contributing no periodic point counting objects (such as $a_n=\Tr(M^n)$, $\zeta_M$, $\det(I-zM)$, etc.).
+\end{itemize}
+Moreover, this $20$-state core can be grouped by memory $m=(x_{k-1},y_{k-1})$ as
+\[
+\begin{array}{ll}
+m=00:& s\in\{000,001,010,100,01\overline{1},11\overline{1}\}\quad(6\ \text{states}),\\
+m=01:& s\in\{000,001,002,100,101\}\quad(5\ \text{states}),\\
+m=10:& s\in\{000,001,002,100,101\}\quad(5\ \text{states}),\\
+m=11:& s\in\{0\overline{1}2,1\overline{1}2,002,101\}\quad(4\ \text{states}),
+\end{array}
+\]
+totaling $6+5+5+4=20$. Therefore, replacing $M$ by the adjacency matrix $M_{\mathrm{ess}}$ induced by this $20$-state core subgraph does not change any periodic orbit counting invariant.
+\end{proposition}
+
+\begin{proposition}[Compressing 40 states to 20 states without changing \texorpdfstring{$\zeta$}{zeta}/periodic orbit objects]\label{prop:real-input-40-essential-reduction}
+Let $M$ be the 40-state adjacency matrix, and $M_{\mathrm{ess}}$ the $20\times 20$ adjacency matrix induced by its unique essential strongly connected component (selected as in Proposition \ref{prop:real-input-40-essential-20}). Then there exists a permutation matrix $P$ and some $20\times 20$ matrix $N$ such that
+\[
+PMP^{-1}=
+\begin{pmatrix}
+M_{\mathrm{ess}} & *\\
+0 & N
+\end{pmatrix},
+\qquad
+N\ \text{is nilpotent}.
+\]
+Therefore, for any $n\ge 1$,
+\[
+\Tr(M^n)=\Tr(M_{\mathrm{ess}}^n),
+\qquad
+\det(I-zM)=\det(I-zM_{\mathrm{ess}}),
+\qquad
+\zeta_M(z)=\zeta_{M_{\mathrm{ess}}}(z),
+\]
+so all objects depending on periodic points/primitive orbits (such as $a_n=\Tr(M^n)$, primitive orbit counts $p_n$, Abel/Mertens constants and their twisted versions) can be computed losslessly on $M_{\mathrm{ess}}$.
+\end{proposition}
+
+\begin{proof}
+Let $G$ be the directed graph defined by $M$. Relabeling vertices in the order "essential component first, remaining vertices second" yields some permutation matrix $P$ such that $PMP^{-1}$ is block upper-triangular, with the upper-left block being $M_{\mathrm{ess}}$ and the lower-right block denoted $N$; the lower-left block is $0$ because: a transient vertex cannot return to the essential component (otherwise the transient vertex would also fall into the same strongly connected component).
+
+Next, prove that $N$ is nilpotent. By definition, transient vertices do not belong to any directed cycle; in particular, there are no directed cycles in the transient subgraph. Therefore the transient subgraph is a DAG, which can be topologically sorted so that its adjacency matrix is strictly upper-triangular, hence $N$ is nilpotent (equivalently: there exists $L$ such that $N^L=0$).
+
+By the block upper-triangular structure, $M^n$ is also block upper-triangular, and its trace satisfies
+\(
+\Tr(M^n)=\Tr(M_{\mathrm{ess}}^n)+\Tr(N^n)
+\); but $N$ being nilpotent gives $\Tr(N^n)=0$ for all $n\ge 1$, so $\Tr(M^n)=\Tr(M_{\mathrm{ess}}^n)$.
+Similarly, for any $z$,
+\[
+\det(I-zM)=\det(I-zM_{\mathrm{ess}})\det(I-zN).
+\]
+But $N$ nilpotent $\Rightarrow$ $I-zN$ is unit upper-triangular (in some basis) with all eigenvalues $1$, so $\det(I-zN)=1$, thus $\det(I-zM)=\det(I-zM_{\mathrm{ess}})$.
+Finally, by the zeta--determinant caliber for finite graphs $\zeta(z)=1/\det(I-zM)$, we have $\zeta_M=\zeta_{M_{\mathrm{ess}}}$. Proof complete.
+\end{proof}
+
+\begin{proposition}[Input skeleton factor of the deterministic block extension]\label{prop:real-input-40-skeleton-factor}
+For each $d\in\{0,1,2\}$, the matrix $B^{(d)}$ is a deterministic (functional) $0$--$1$ matrix: each row has exactly one $1$, hence $B^{(d)}\mathbf{1}=\mathbf{1}$ ($\mathbf{1}$ is the all-ones vector).
+Let
+\(
+U:=\RR^{4}\otimes \mathrm{span}\{\mathbf{1}\}\subset\RR^{40}
+\),
+then $U$ is invariant under $M$, and $M|_U$ is equivalent to the $4\times 4$ memory skeleton matrix obtained by replacing each non-zero block $B^{(d)}$ in the block matrix representation by the scalar $1$:
+\[
+A=\begin{pmatrix}
+1&1&1&1\\
+1&0&1&0\\
+1&1&0&0\\
+1&0&0&0
+\end{pmatrix}.
+\]
+Thus
+\[
+\det(I-zA)\ \mid\ \det(I-zM),
+\qquad
+\rho(M)=\rho(A),
+\]
+and the "vertical residual factor" of $M$ is defined as
+\(
+\det_{\mathrm{vert}}(z):=\det(I-zM)/\det(I-zA)
+\)
+(whose eigenvalues have modulus strictly less than $\rho(A)$).
+For this kernel,
+\[
+\det(I-zA)=(z+1)^2(z^2-3z+1),
+\qquad
+\det_{\mathrm{vert}}(z)=-(z-1)^2(z+1)(z^2-z-1),
+\]
+so the Perron root $\lambda=\rho(M)=\varphi^2$ is completely determined by the input skeleton $A$, while the kernel direction only contributes smaller-modulus spectrum and exponential corrections.
+\end{proposition}
+
+\begin{proposition}[Golden mean tensor square of the skeleton matrix and a hidden \texorpdfstring{$(-A_0)$}{(-A0)} factor]\label{prop:real-input-40-A0-tensor-hidden}
+Define the golden mean (Fibonacci) adjacency matrix
+\[
+A_0:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix}.
+\]
+Under the memory state ordering \((00,01,10,11)\), the $4\times 4$ memory skeleton matrix of Proposition \ref{prop:real-input-40-skeleton-factor} satisfies
+\[
+\boxed{\ A=A_0\otimes A_0\ }.
+\]
+Thus we have the factorization
+\[
+\det(I-zA)=\det\!\bigl(I-z(A_0\otimes A_0)\bigr)
+=(1+z)^2(1-3z+z^2).
+\]
+Furthermore, the vertical residual factor can be rewritten as
+\[
+\boxed{\ \det_{\mathrm{vert}}(z)=(1-z)^2(1+z)\,\det(I+zA_0)\ },
+\qquad
+\det(I+zA_0)=1+z-z^2.
+\]
+Therefore, the determinant decomposition of the 40-state kernel can be lifted to a "three-factor" structure:
+\[
+\boxed{\;
+\det(I-zM)
+=(1-z)^2(1+z)\,
+\det\!\bigl(I-z(A_0\otimes A_0)\bigr)\,
+\det\!\bigl(I-z(-A_0)\bigr)\; }.
+\]
+Equivalently, the corresponding dynamical \(\zeta\) decomposes as
+\[
+\boxed{\;
+\zeta_M(z)=\frac{1}{(1-z)^2(1+z)}\cdot
+\zeta_{A_0\otimes A_0}(z)\cdot
+\zeta_{-A_0}(z),\qquad
+\zeta_T(z):=\det(I-zT)^{-1}\; }.
+\]
+\end{proposition}
+
+\begin{proof}
+First, by the definition of the Kronecker product, under the ordering \((00,01,10,11)\),
+\[
+A_0\otimes A_0=
+\begin{pmatrix}
+1\cdot A_0 & 1\cdot A_0\\
+1\cdot A_0 & 0\cdot A_0
+\end{pmatrix}
+=
+\begin{pmatrix}
+1&1&1&1\\
+1&0&1&0\\
+1&1&0&0\\
+1&0&0&0
+\end{pmatrix}=A,
+\]
+yielding \(A=A_0\otimes A_0\).
+Second, since the spectrum of \(A_0\) is \(\{\varphi,-\varphi^{-1}\}\), the spectrum of \(A_0\otimes A_0\) is the four pairwise products
+\(\{\varphi^2,-1,-1,\varphi^{-2}\}\), thus
+\(\det(I-z(A_0\otimes A_0))=(1-\varphi^2 z)(1+\!z)^2(1-\varphi^{-2}z)\), which simplifies to \((1+z)^2(1-3z+z^2)\).
+Finally, from the explicit formula in Proposition \ref{prop:real-input-40-skeleton-factor}
+\[
+\det_{\mathrm{vert}}(z)=-(z-1)^2(z+1)(z^2-z-1)
+=(1-z)^2(1+z)(1+z-z^2),
+\]
+and \(1+z-z^2=\det(I+zA_0)=\det(I-z(-A_0))\), we obtain the stated three-factor decomposition and \(\zeta\) decomposition. Proof complete.
+\end{proof}
+
+\begin{proposition}[Synchronization reset word: \texorpdfstring{$0^5$}{0^5}]\label{prop:real-input-40-reset-word}
+Let the deterministic transition of the synchronization kernel be $\delta:Q\times\{0,1,2\}\to Q$. Then for any $s\in Q$,
+\[
+\delta(s,\underbrace{0,0,0,0,0}_{5\ \text{times}})=000,
+\]
+and length $5$ is the shortest synchronization length: there does not exist a word $w\in\{0,1,2\}^{<5}$ of length $<5$ such that $\delta(s,w)$ takes the same value for all $s\in Q$.
+\end{proposition}
+
+\begin{proposition}[Input memory marginal distribution under maximal entropy measure (closed form)]\label{prop:real-input-40-input-memory-marginal}
+Let the input system be $X\times X$, where $X$ is the golden mean shift, and take the product of the Parry maximal entropy measures as the maximal entropy measure of $X\times X$.
+Denote the memory state by $m=(x_{k-1},y_{k-1})\in\{00,01,10,11\}$. Then its marginal distribution has closed form
+\[
+\mathbb{P}(00)=\frac{3+\sqrt5}{10},\qquad
+\mathbb{P}(01)=\mathbb{P}(10)=\frac15,\qquad
+\mathbb{P}(11)=\frac{3-\sqrt5}{10}.
+\]
+Hence the single-side $1$-density is
+\[
+\mathbb{P}(x_k=1)=\mathbb{P}(y_k=1)=\frac{5-\sqrt5}{10}=\frac{1}{\varphi^2+1},
+\]
+and the distribution of the sum digit $d_k=x_k+y_k\in\{0,1,2\}$ is
+\[
+\mathbb{P}(d=0)=\frac{3+\sqrt5}{10},\qquad
+\mathbb{P}(d=1)=\frac25,\qquad
+\mathbb{P}(d=2)=\frac{3-\sqrt5}{10},
+\]
+where $\mathbb{P}(d=2)=\mathbb{P}(11)=\frac{3-\sqrt5}{10}$ is exactly the collision trigger density.
+\end{proposition}
+
+\paragraph{Regeneration constant and exponential tail bound induced by reset word (Parry baseline)}
+Under the synchronization reset word $0^5$ of Proposition \ref{prop:real-input-40-reset-word} and the Parry baseline of Proposition \ref{prop:real-input-40-input-memory-marginal}, "the most recent $5$ input digits all equal $0$" gives an atomic regeneration sector.
+From this, one can lift the reset mechanism to a set of \textbf{closed-form regeneration constants} (reset state fraction, Kac return interval, average wait from non-reset starting points) and \textbf{strict exponential tail bounds} (Perron root principal exponent), and derive a \textbf{correlation decay certificate that requires no synchronization kernel spectral gap assumption}.
+The corresponding constants and tail bounds are recalculated in one click by the script \texttt{scripts/exp\_real\_input\_40\_reset\_regeneration\_constants.py}, outputting a \LaTeX{} snippet that can be directly \verb|\input|:
+\input{sections/generated/eq_real_input_40_reset_regeneration_constants}
+
+\begin{proposition}[Rigidity of input projection under maximal entropy measure]\label{prop:real-input-40-input-measure-rigid}
+Let $\pi:\Sigma\to X\times X$ be the factor map that forgets the synchronization kernel internal state $s$. Then for any maximal entropy measure $\mu_\Sigma$ of $\Sigma$,
+its pushforward $\nu:=\pi_\ast\mu_\Sigma$ must equal the maximal entropy measure $\mu_X\otimes\mu_X$ of $X\times X$.
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:real-input-40-reset-word}, the input word $0^5$ is a synchronization reset word: if $0^5$ appears in a bi-infinite input sequence,
+then the internal state at that position is uniquely determined, so the entire state sequence is uniquely determined by the input.
+Since $\nu$ has full support on $X\times X$, $0^5$ appears with positive frequency in $\nu$-almost every input (the "no appearance of $0^5$" exceptional set's topological entropy quantification is given in Theorem \ref{thm:real-input-defect-entropy}),
+so $\pi$ is one-to-one $\nu$-almost everywhere. Thus the relative entropy is $0$, giving
+\(
+h(\mu_\Sigma)=h(\nu).
+\)
+Moreover, $h(\mu_\Sigma)=h_{\mathrm{top}}(\Sigma)=h_{\mathrm{top}}(X\times X)$,
+so $\nu$ achieves the maximal entropy of $X\times X$; since $X\times X$ is a mixing SFT, its maximal entropy measure is unique,
+hence $\nu=\mu_X\otimes\mu_X$. Proof complete.
+\end{proof}
+
+\begin{corollary}[Reduction principle for input potentials]\label{cor:real-input-40-input-potential-reduction}
+If $\psi$ is a Hölder potential depending only on the input $(x,y)$, then
+\[
+P_\Sigma(\psi\circ\pi)=P_{X\times X}(\psi),
+\]
+so one can compute pressure in closed form on the $4\times 4$ memory skeleton: if $A$ is the adjacency matrix of $X\times X$,
+and $D_\psi$ is the diagonal weight matrix encoding $\psi$ (according to states $00,01,10,11$), then
+\(
+P_{X\times X}(\psi)=\log\rho(D_\psi A)
+\).
+Therefore, for any potential that only sees the input, its pressure, CLT variance density, and LDP rate function can all be read out in closed form on the $4\times 4$ skeleton.
+\end{corollary}
+
+\paragraph{Block structure (input constraint $\times$ synchronization kernel skew-product)}
+Denote the deterministic transition of the synchronization kernel by $\delta:Q\times\{0,1,2\}\to Q$. For each $d\in\{0,1,2\}$, define the $10\times 10$ deterministic transition matrix (functional matrix)
+\[
+\bigl(B^{(d)}\bigr)_{s,t}:=\mathbf{1}_{\{\delta(s,d)=t\}},
+\qquad s,t\in Q.
+\]
+Arrange the memory states $(p_x,p_y)\in\{0,1\}^2$ in order
+\[
+00,\ 01,\ 10,\ 11
+\]
+then $M$ can be written as a $4\times 4$ block matrix of $10\times 10$ blocks:
+\[
+M=
+\begin{pmatrix}
+B^{(0)} & B^{(1)} & B^{(1)} & B^{(2)}\\
+B^{(0)} & 0   & B^{(1)} & 0\\
+B^{(0)} & B^{(1)} & 0   & 0\\
+B^{(0)} & 0   & 0   & 0
+\end{pmatrix}.
+\]
+This representation compresses all real input constraints into the $4\times 4$ memory skeleton, while the synchronization kernel only enters through the cocycle $B^{(d)}$ (equivalently: the deterministic map $f_d:q\mapsto\delta(q,d)$).
+
+\begin{remark}[Strict reading of deterministic skew-product: base graph extension rather than permutation lift]\label{rem:real-input-40-deterministic-lift}
+The base graph has vertex set \(V_{\mathrm{base}}=\{00,01,10,11\}\), with adjacency given by the memory skeleton matrix \(A\) (Proposition \ref{prop:real-input-40-skeleton-factor}); the fiber is the synchronization kernel internal state set \(Q\) (\(|Q|=10\)).
+For each allowed base edge \(i\to j\), the input sum digit determines a letter \(d=d(i\to j)\in\{0,1,2\}\), and the deterministic map \(f_d\) (matrix \(B^{(d)}\)) serves as the cocycle over the fiber:
+a lift edge \((i,s)\to(j,t)\) exists if and only if \(\delta(s,d)=t\).
+This gives a finite-state skew-product extension.
+\par
+It should be emphasized that: in general \(f_d\) is not a bijection (for example when $d=0$, \(\delta(000,0)=\delta(100,0)=000\)), so this is \emph{not} a permutation lift, nor does there exist an Artin-type channel decomposition derived from a permutation group representation.
+We only use the fact that "each row has exactly one $1$" to deduce \(B^{(d)}\mathbf{1}=\mathbf{1}\), so the constant fiber subspace
+\(
+U=\RR^{4}\otimes \mathrm{span}\{\mathbf{1}\}
+\)
+is invariant and yields the skeleton factor \(\det(I-zA)\) and vertical residual \(\det_{\mathrm{vert}}\) (Proposition \ref{prop:real-input-40-skeleton-factor}).
+\end{remark}
+
+\input{sections/generated/fig_sync_kernel_real_input_40_matrix}
+
+Define the periodic point count for this SFT:
+\[
+a_n:=|{\rm Fix}(\sigma^n)|=\operatorname{tr}(M^n),
+\]
+whose dynamical $\zeta$-function satisfies
+\[
+\zeta_M(z)=\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)=\frac{1}{\det(I-zM)}.
+\]
+For this 40-state kernel, we can explicitly factorize
+\[
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2),
+\]
+thus
+\[
+\zeta_M(z)=\frac{1}{(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)}.
+\]
+Hence the non-zero eigenvalues (with multiplicity) are
+\[
+\{\varphi^2,-\varphi,1^{(2)},(-1)^{(3)},\varphi^{-2},\varphi^{-1}\},
+\]
+and the remaining $31$ eigenvalues are $0$.
+Equivalently, the characteristic polynomial can be written as
+\[
+\det(tI-M)=t^{31}(t-1)^2(t+1)^3(t^2-3t+1)(t^2+t-1).
+\]
+The relation between primitive orbit counts $p_n$ and $a_n$ is
+\[
+a_n=\sum_{d\mid n} d\,p_d,\qquad
+p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
+\]
+
+\paragraph{Symbolic dynamics and operator algebra invariants: Bowen--Franks group and Cuntz--Krieger \texorpdfstring{$K$}{K}-groups}
+Beyond $\zeta$, primitive spectrum, and finite part constants, an integer adjacency matrix also carries a suite of integer lattice invariants that are highly sensitive to flow equivalence/stable isomorphism classification.
+For any integer matrix $A\in M_N(\ZZ)$, define the Bowen--Franks group
+\[
+\mathrm{BF}(A):=\ZZ^N/(I-A)\ZZ^N.
+\]
+Moreover, for the $K$-groups of the Cuntz--Krieger algebra $\mathcal O_A$ (defined by the graph/adjacency matrix $A$), there are standard isomorphisms
+\[
+K_0(\mathcal O_A)\cong \mathrm{coker}(I-A^\mathsf T),\qquad
+K_1(\mathcal O_A)\cong \ker(I-A^\mathsf T).
+\]
+In the present work, $A$ can be taken as the essential core $M_{\mathrm{ess}}$, or the full matrix $M$; both give the same non-trivial parts for $\mathrm{BF}$ and $K$-groups (transient extensions only contribute unit invariants).
+
+\begin{proposition}[Bowen--Franks group and Cuntz--Krieger \texorpdfstring{$K$}{K}-theory of the real input kernel]\label{prop:real-input-40-bf-ktheory}
+Let $A=M_{\mathrm{ess}}$ be the $20\times 20$ essential adjacency matrix of Proposition \ref{prop:real-input-40-essential-20}. Then
+\[
+\mathrm{SNF}(I-A)=\mathrm{SNF}(I-A^\mathsf T)=\mathrm{diag}(1,\dots,1,2,0,0),
+\]
+where $1$ appears $17$ times. Hence
+\[
+\mathrm{BF}(A)\cong \ZZ^2\oplus \ZZ/2\ZZ,
+\qquad
+K_0(\mathcal O_A)\cong \ZZ^2\oplus \ZZ/2\ZZ,
+\qquad
+K_1(\mathcal O_A)\cong \ZZ^2.
+\]
+\end{proposition}
+
+\begin{remark}[\texorpdfstring{$\ZZ/2$}{Z/2} torsion as "discrete residual gauge" selection principle]\label{rem:bf-z2-residual-gauge}
+Proposition \ref{prop:real-input-40-bf-ktheory} shows that the finite torsion part of $\mathrm{BF}(A)$ contains an irreducible $2$-torsion:
+\(
+\mathrm{Tor}\,\mathrm{BF}(A)\cong \ZZ/2\ZZ
+\).
+Since the Bowen--Franks group is a fundamental invariant of flow equivalence (highly sensitive to stable isomorphism classification of SFTs), this torsion factor is preserved under operations such as "changing presentation / removing transient extension / taking essential core" (see Table \ref{tab:real_input_40_bf_ktheory}).
+\par
+In the unified narrative of this paper, this provides a selection principle completely forced by the discrete kernel: if a continuum unification candidate is viewed as the "continuous completion" of this discrete dynamical system, then after symmetry breaking, it must naturally produce a \(\ZZ_2\)-type discrete residue (a parity/matter parity-type minimal template) to explain the topological origin of this $2$-torsion.
+We emphasize: this \(\ZZ_2\) is not a manually added symmetry assumption, but a \emph{constraint} directly given by the kernel's $K$-theory torsion.
+\end{remark}
+
+\begin{remark}[Reproducible output: Smith normal form and \texorpdfstring{$\mathrm{BF}/K$}{BF/K}-groups]\label{rem:real-input-40-bf-ktheory-repro}
+Table \ref{tab:real_input_40_bf_ktheory} gives the Smith normal form (SNF) of $I-A$ for $A=M_{\mathrm{ess}}$ and the full matrix $M$.
+Reproduction script: \texttt{scripts/exp\_real\_input\_40\_operator\_algebra\_invariants.py}.
+\end{remark}
+\input{sections/generated/tab_real_input_40_bf_ktheory}
+
+\paragraph{Internal carry steady-state distribution under maximal entropy measure (\texorpdfstring{$\mathbb Q(\sqrt5)$}{Q(sqrt5)} closed form)}
+Since $M_{\mathrm{ess}}$ is irreducible, the Parry maximal entropy measure can be explicitly given by the left and right eigenvectors $(\ell,r)$ of the Perron root $\lambda=\rho(M_{\mathrm{ess}})$;
+the vertex marginal satisfies $\pi_i\propto \ell_i r_i$.
+Label the vertices as $(s,p_x,p_y)\in Q\times\{0,1\}^2$, with memory state denoted $m=(p_x,p_y)\in\{00,01,10,11\}$.
+
+\begin{proposition}[Internal synchronization state conditional distribution for the real input kernel (closed form)]\label{prop:real-input-40-parry-internal-distribution}
+Under the Parry maximal entropy measure of $M_{\mathrm{ess}}$, the conditional distribution $\mathbb{P}(s\mid m)$ of the synchronization state $s\in Q$ given memory state $m$ lies in $\mathbb Q(\sqrt5)$,
+and is given by Table \ref{tab:real_input_40_parry_internal_distribution}.
+\end{proposition}
+
+\begin{remark}[Reproducible verification: internal steady-state distribution]\label{rem:real-input-40-parry-internal-distribution-repro}
+Table \ref{tab:real_input_40_parry_internal_distribution} also gives the synchronization state marginal distribution $\mathbb{P}(s)$.
+Reproduction script: \texttt{scripts/exp\_real\_input\_40\_operator\_algebra\_invariants.py}.
+\end{remark}
+\input{sections/generated/tab_real_input_40_parry_internal_distribution}
+
+\paragraph{Backward inference of input memory marginal, Bayesian posterior, and observability indicators from Table \ref{tab:real_input_40_parry_internal_distribution}}
+Table \ref{tab:real_input_40_parry_internal_distribution} provides two types of information: conditional distributions $\mathbb{P}(s\mid m)$ and synchronization state marginal $\mathbb{P}(s)$.
+Using only these two types of data, one can further derive several closed-form conclusions directly usable for "online decoding/observability/information theory" discussions.
+
+\begin{proposition}[Closed-form backward inference of input memory marginal distribution]\label{prop:real-input-40-memory-marginal}
+Under the Parry maximal entropy measure, the marginal distribution of input memory $m=(p_x,p_y)\in\{00,01,10,11\}$ is
+\[
+\mathbb{P}(00)=\frac{3+\sqrt5}{10},\qquad
+\mathbb{P}(01)=\mathbb{P}(10)=\frac15,\qquad
+\mathbb{P}(11)=\frac{3-\sqrt5}{10}.
+\]
+\end{proposition}
+
+\begin{proof}
+From Table \ref{tab:real_input_40_parry_internal_distribution}, synchronization state $010$ only appears when $m=00$, so
+\(
+\mathbb{P}(010)=\mathbb{P}(00)\mathbb{P}(010\mid 00)
+\),
+thus
+\(
+\mathbb{P}(00)=\mathbb{P}(010)/\mathbb{P}(010\mid 00)=\frac{3+\sqrt5}{10}
+\).
+Similarly, $0$-$12$ only appears when $m=11$, so
+\(
+\mathbb{P}(11)=\mathbb{P}(0\text{-}12)/\mathbb{P}(0\text{-}12\mid 11)=\frac{3-\sqrt5}{10}
+\).
+Then by $\sum_m \mathbb{P}(m)=1$ and the $01\leftrightarrow 10$ symmetry, we get $\mathbb{P}(01)=\mathbb{P}(10)=\frac15$.
+\end{proof}
+
+\begin{corollary}[Strict independence of input two-bits under Parry measure]\label{cor:real-input-40-memory-independence}
+Let $m=(p_x,p_y)$, then
+\[
+\mathbb{P}(p_x=1)=\mathbb{P}(p_y=1)=\frac{5-\sqrt5}{10},
+\qquad
+\mathbb{P}(p_x,p_y)=\mathbb{P}(p_x)\mathbb{P}(p_y),
+\]
+i.e., $(p_x,p_y)$ are strictly independent under the Parry measure.
+\end{corollary}
+
+\begin{remark}[Joint distribution of the essential 20-state kernel]\label{rem:real-input-40-parry-essential-20-joint}
+The four rows (memory conditions) of Table \ref{tab:real_input_40_parry_internal_distribution} together allow exactly $20$ combinations of $(s,m)$.
+By $\mathbb{P}(s,m)=\mathbb{P}(m)\mathbb{P}(s\mid m)$, we obtain the complete closed form of its Parry joint distribution (all in $\mathbb{Q}(\sqrt5)$):
+\[
+\begin{aligned}
+&\mathbb{P}(000,00)=\mathbb{P}(010,00)=\frac{1}{20}+\frac{\sqrt5}{20},\quad
+\mathbb{P}(001,00)=\mathbb{P}(01\text{-}1,00)=\frac{3}{20}-\frac{\sqrt5}{20},\\
+&\mathbb{P}(100,00)=\mathbb{P}(11\text{-}1,00)=-\frac{1}{20}+\frac{\sqrt5}{20};\\[2pt]
+&\mathbb{P}(000,01)=\mathbb{P}(000,10)=-\frac{11}{20}+\frac{\sqrt5}{4},\quad
+\mathbb{P}(001,01)=\mathbb{P}(001,10)=\frac{3}{10}-\frac{\sqrt5}{10},\\
+&\mathbb{P}(002,01)=\mathbb{P}(002,10)=-\frac15+\frac{\sqrt5}{10},\quad
+\mathbb{P}(100,01)=\mathbb{P}(100,10)=\frac12-\frac{\sqrt5}{5},\\
+&\mathbb{P}(101,01)=\mathbb{P}(101,10)=\frac{3}{20}-\frac{\sqrt5}{20};\\[2pt]
+&\mathbb{P}(0\text{-}12,11)=-\frac15+\frac{\sqrt5}{10},\quad
+\mathbb{P}(002,11)=-\frac34+\frac{7\sqrt5}{20},\\
+&\mathbb{P}(1\text{-}12,11)=\frac7{20}-\frac{3\sqrt5}{20},\quad
+\mathbb{P}(101,11)=\frac9{10}-\frac{2\sqrt5}{5}.
+\end{aligned}
+\]
+\end{remark}
+
+\begin{remark}[Bayesian backward inference and "hard/soft" decoding stratification]\label{rem:real-input-40-bayes-decode}
+By
+\[
+\mathbb{P}(m\mid s)=\frac{\mathbb{P}(s,m)}{\mathbb{P}(s)}
+\]
+one can directly obtain the posterior distribution of memory bits given the synchronization state. In particular,
+\[
+s\in\{01\text{-}1,010,11\text{-}1\}\Rightarrow \mathbb{P}(m=00\mid s)=1,
+\qquad
+s\in\{0\text{-}12,1\text{-}12\}\Rightarrow \mathbb{P}(m=11\mid s)=1,
+\]
+and the total probability of such "hard-decision" synchronization states is
+\[
+\mathbb{P}(01\text{-}1)+\mathbb{P}(010)+\mathbb{P}(11\text{-}1)+\mathbb{P}(0\text{-}12)+\mathbb{P}(1\text{-}12)=\frac{3}{10}.
+\]
+As an example,
+\[
+\mathbb{P}(00\mid 001)=\frac15,\quad
+\mathbb{P}(01\mid 001)=\mathbb{P}(10\mid 001)=\frac25,\quad
+\mathbb{P}(11\mid 001)=0,
+\]
+while
+\[
+\mathbb{P}(00\mid 000)=\frac{19+8\sqrt5}{41},\quad
+\mathbb{P}(01\mid 000)=\mathbb{P}(10\mid 000)=\frac{11-4\sqrt5}{41},\quad
+\mathbb{P}(11\mid 000)=0.
+\]
+Except for $\pm12$, only $s\in\{002,101\}$ make $\mathbb{P}(11\mid s)\in(0,1)$,
+and
+\(
+\mathbb{P}(11\mid 002)=\frac{10-\sqrt5}{19}
+\),
+\(
+\mathbb{P}(11\mid 101)=\frac{8-3\sqrt5}{19}
+\).
+\end{remark}
+
+\begin{remark}[Mutual information and observability (bits)]\label{rem:real-input-40-mutual-info}
+View $(S,M)$ as an observation channel, using binary logarithms, then
+\[
+H(M)\approx 1.700979,\qquad
+H(S)\approx 2.989758,\qquad
+I(S;M)\approx 0.812300\ \text{bits}.
+\]
+Furthermore, taking the single bits $p_x,p_y$ and the collision indicator $C:=\ind_{\{m=11\}}$ as function variables, we have
+\[
+I(S;p_x)=I(S;p_y)\approx 0.311298,\qquad
+I(S;C)\approx 0.282063\ \text{bits}.
+\]
+\end{remark}
+
+\begin{proposition}[Optimal online discrimination rate (MAP)]\label{prop:real-input-40-map-accuracies}
+Given synchronization state $s$, making a MAP decision (taking the one maximizing $\mathbb{P}(\cdot\mid s)$), the optimal achievable accuracy is
+\[
+\mathrm{Acc}^*(M\leftarrow S)=\sum_s \mathbb{P}(s)\max_m \mathbb{P}(m\mid s)=\frac{3\sqrt5}{10}.
+\]
+For several natural binary functions, we can also obtain simple closed forms:
+\[
+\begin{aligned}
+\mathrm{Acc}^*(p_x\leftarrow S)&=\mathrm{Acc}^*(p_y\leftarrow S)=\frac45,\\
+\mathrm{Acc}^*(C\leftarrow S)&=\frac{17+\sqrt5}{20},\\
+\mathrm{Acc}^*(p_x\oplus p_y\leftarrow S)&=\frac{37-9\sqrt5}{20}.
+\end{aligned}
+\]
+\end{proposition}
+
+\begin{remark}[Two "dynamical flavor" direct corollaries]\label{rem:real-input-40-two-dyn-inferences}
+(i) Half of collision events occur in synchronization states $\pm12$:
+\[
+\mathbb{P}(0\text{-}12)+\mathbb{P}(1\text{-}12)=\frac{3-\sqrt5}{20}=\frac12\,\mathbb{P}(11).
+\]
+(ii) The hard-decision fraction of synchronization state to memory bits is exactly $3/10$ (see Remark \ref{rem:real-input-40-bayes-decode}).
+\end{remark}
+
+\paragraph{Nilpotent exponent of zero eigenvalue: delay and the linear algebra shadow of synchronization reset word}
+The determinant factorization only gives the algebraic multiplicity of the $0$ eigenvalue; its Jordan block size (nilpotent exponent) needs to be identified through the $\dim\ker(A^k)$ chain.
+For this kernel, the "non-diagonalizability" is fully focused at $0$, and directly corresponds to the online synchronization delay/reset structure.
+
+\begin{proposition}[Essential core has exponent \texorpdfstring{$3$}{3}, full core has exponent \texorpdfstring{$5$}{5}]\label{prop:real-input-40-nilpotent-index}
+Let $A=M_{\mathrm{ess}}$ be the $20\times 20$ essential core matrix. Then
+\[
+\dim\ker(A)=7,\qquad
+\dim\ker(A^2)=10,\qquad
+\dim\ker(A^3)=11,
+\]
+and stabilizes from $k=3$ onwards, so the largest Jordan block size at $0$ is $3$.
+
+On the other hand, for the full matrix $M$ (including transient extension) we have
+\[
+\dim\ker(M)=16,\
+\dim\ker(M^2)=24,\
+\dim\ker(M^3)=29,\
+\dim\ker(M^4)=30,\
+\dim\ker(M^5)=31,
+\]
+and stabilizes from $k=5$ onwards, so the largest Jordan block size at $0$ is $5$.
+This corresponds to the online delay $3$ (essential core) and synchronization reset word length $5$ (Proposition \ref{prop:real-input-40-reset-word}) of the synchronization kernel.
+\end{proposition}
+
+\begin{corollary}[Observable consequence of nilpotent exponent: strict upper bound on transient memory depth]\label{cor:real-input-40-nilpotent-memory-depth}
+Let \(V_0(M)\) be the generalized eigenspace of the full matrix \(M\) at eigenvalue \(0\) (i.e., the transient subspace of the \(0\)-spectrum), and denote its nilpotent exponent by
+\(
+r_{\mathrm{full}}:=\max\{\text{Jordan block size at $0$}\}
+\)
+(Proposition \ref{prop:real-input-40-nilpotent-index} gives \(r_{\mathrm{full}}=5\)).
+Then for any fixed vectors \(v,w\), the counting sequence
+\[
+f_m:=v^\ast M^m w
+\]
+satisfies: when \(m\ge r_{\mathrm{full}}\), \(f_m\) is independent of the component of \(w\) in \(V_0(M)\) (equivalently: all transient contributions from the \(0\)-spectrum are completely annihilated by the nilpotent part after \(m\ge r_{\mathrm{full}}\)).
+Similarly, the corresponding conclusion for the essential core \(A=M_{\mathrm{ess}}\) holds with \(r_{\mathrm{ess}}=3\).
+\end{corollary}
+
+\begin{proof}
+Under the generalized eigendecomposition, the operator \(M|_{V_0(M)}\) restricted to \(V_0(M)\) is nilpotent with nilpotent exponent \(r_{\mathrm{full}}\);
+therefore \((M|_{V_0(M)})^{r_{\mathrm{full}}}=0\).
+Decompose \(w=w_0+w_\perp\) into \(w_0\in V_0(M)\) and \(w_\perp\perp V_0(M)\) (taking any complementary space), then when \(m\ge r_{\mathrm{full}}\) we have \(M^m w_0=0\), thus
+\(
+f_m=v^\ast M^m w=v^\ast M^m w_\perp
+\)
+is independent of \(w_0\). The essential case is similar. Proof complete.
+\end{proof}
+
+\begin{remark}[Reproducible output: kernel dimension chain and Jordan block count]\label{rem:real-input-40-nilpotent-index-repro}
+Table \ref{tab:real_input_40_nilpotent_jordan} summarizes the $(\dim\ker A^k)$ chain and gives the count summary of Jordan block sizes at $0$ based on this.
+Reproduction script: \texttt{scripts/exp\_real\_input\_40\_operator\_algebra\_invariants.py}.
+\end{remark}
+\input{sections/generated/tab_real_input_40_nilpotent_jordan}

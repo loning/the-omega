@@ -1,0 +1,254 @@
+\begin{corollary}[Phase--amplitude separation on the unit-circle twist: \texorpdfstring{$P(i\theta)=\frac{i\theta}{2}+\log|\Lambda(s)|$}{P(i theta)=i theta/2 + log|Lambda(s)|}]\label{cor:sync-kernel-weighted-phase-amplitude}
+Take the unit-circle twist \(u=e^{i\theta}\) (\(\theta\in\RR\)), and set
+\[
+r:=e^{i\theta/2},\qquad s:=r+r^{-1}=2\cos(\theta/2)\in[-2,2].
+\]
+Let \(w_\star(s)\) be the root of \(\widehat\Delta(w,s)=0\) with the smallest modulus \(|w|\), and define
+\[
+\Lambda(s):=\frac{1}{w_\star(s)}.
+\]
+Then the smallest pole and the Perron root satisfy
+\[
+\boxed{\ z_\star(e^{i\theta})=\frac{w_\star(s)}{r},\qquad \lambda(e^{i\theta})=\frac{1}{z_\star(e^{i\theta})}=r\cdot \Lambda(s)\ },
+\]
+and consequently the pressure exhibits a strict ``phase--amplitude separation'':
+\[
+\boxed{\ P(i\theta)=\log\lambda(e^{i\theta})=\frac{i\theta}{2}+\log|\Lambda(2\cos(\theta/2))|\ }.
+\]
+\end{corollary}
+\begin{proof}
+By Proposition~\ref{prop:sync-kernel-weighted-hat-delta}, under \(u=r^2\) one has
+\(
+\Delta(z,u)=\widehat\Delta(zr,s)
+\).
+For unit-circle weights \(|u|=1\) one has \(|r|=1\), so for any \(w=zr\), \(|z|=|w|\).
+Hence the zeros of \(\Delta(z,u)=0\) closest to the origin in the \(z\)-plane correspond one-to-one with the zeros of \(\widehat\Delta(w,s)=0\) closest to the origin in the \(w\)-plane, with \(z_\star=w_\star/r\).
+From the definition \(\lambda(u)=1/z_\star(u)\) one obtains \(\lambda(e^{i\theta})=r/w_\star(s)=r\Lambda(s)\). Taking logarithms yields the result. \qed
+\end{proof}
+
+\begin{remark}[Numerical verification (reproducible)]\label{rem:sync-kernel-weighted-phase-amplitude-table}
+Table~\ref{tab:sync_kernel_weighted_phase_amplitude} verifies point-by-point, using matrix eigenvalues and the completed root \(w_\star(s)\), that
+\(\arg\lambda(e^{i\theta})=\theta/2\) and \(\Im(\lambda(e^{i\theta})/e^{i\theta/2})\approx 0\):
+\input{sections/generated/tab_sync_kernel_weighted_phase_amplitude}
+\end{remark}
+Let $z_\star(u)$ be the smallest positive root and $\lambda(u)=1/z_\star(u)$; then
+\[
+\lambda(u)=u\,\lambda(1/u),
+\qquad
+P(\theta)=\theta+P(-\theta).
+\]
+For the primitive orbit counts $p_{n,k}$ stratified by output-$1$ degree,
+\[
+p_{n,k}=p_{n,n-k}\quad(n\ge 2),
+\]
+or equivalently, $u^{-1}p_n(u)$ is a palindromic polynomial of degree $n-2$.
+
+\begin{theorem}[Gallavotti--Cohen fluctuation symmetry forced by self-duality (global form)]\label{thm:sync-kernel-gallavotti-cohen}
+Let \(u=e^{\theta}\) and \(P(\theta)=\log\lambda(e^\theta)\). Define the centered cumulant generating function after completion
+\[
+\Lambda(\theta):=P(\theta)-\frac{\theta}{2}.
+\]
+Then for all real \(\theta\) the following exact identity holds:
+\[
+\boxed{\ \Lambda(\theta)=\Lambda(-\theta)\ }.
+\]
+Equivalently,
+\[
+\boxed{\ P(\theta)=\theta+P(-\theta)\ }.
+\]
+Furthermore:
+\begin{enumerate}
+  \item \textbf{(Finite-length mirror symmetry)} For every \(n\ge 2\), \(p_{n,k}=p_{n,n-k}\);
+  \item \textbf{(Rate-function symmetry)} If \(I(\alpha)\) is the large-deviation rate function for \(\alpha=k/n\), then on its domain
+  \(\boxed{\,I(\alpha)=I(1-\alpha)\,}\);
+  \item \textbf{(Vanishing of odd-order cumulants)} Since \(\Lambda\) is an even function, all odd-order cumulants of the centered current vanish strictly:
+  \(P^{(2j+1)}(0)=0\ (j\ge 1)\) (see Proposition~\ref{prop:fluctuation-even}).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The assertion that \(\Lambda(\theta)\) is even is algebraically equivalent to \(P(\theta)=\theta+P(-\theta)\).
+The identity \(P(\theta)=\theta+P(-\theta)\) is in turn the direct consequence of taking logarithms of the Perron root in the self-dual similarity identity \(\Pi^{-1}B(u)\Pi=uB(1/u)\) established in this section.
+The finite-length mirror symmetry \(p_{n,k}=p_{n,n-k}\) was established above; from the Legendre duality \(I(\alpha)=\sup_{\theta}(\alpha\theta-P(\theta))\) and \(P(\theta)=\theta+P(-\theta)\) one obtains \(I(\alpha)=I(1-\alpha)\).
+Finally, the vanishing of odd-order cumulants follows from the even parity of \(\Lambda\) by taking derivatives at \(\theta=0\), and this is consistent with the statement of Proposition~\ref{prop:fluctuation-even}. \qed
+\end{proof}
+
+\begin{proposition}[Representation-level self-duality: functional equation for one-dimensional character twists]\label{prop:kernel-self-dual-character}
+Retaining the notation of \S\ref{app:kernel-self-dual}, let \(G\) be a finite abelian group, \(\chi:G\to\CC^\times\) a one-dimensional character, and suppose the group labels depend only on the output bit \(e\in\{0,1\}\): for \(e=0\) the label is the identity element, and for \(e=1\) it is a fixed element \(g_1\in G\).
+Then the corresponding character-twisted matrix can be written as
+\[
+B_\chi(u)=B_0+u\,\chi(g_1)\,B_1.
+\]
+Under the self-dual symmetry \(\Pi^{-1}B_0\Pi=B_1,\ \Pi^{-1}B_1\Pi=B_0\), the following similarity identity holds:
+\[
+\boxed{\;
+\Pi^{-1}B_\chi(u)\Pi
+=u\,\chi(g_1)\,B_{\chi^{-1}}(1/u)\; }.
+\]
+Consequently, the determinant and the \(\zeta\)-function satisfy the representation-level functional equation
+\[
+\boxed{\;
+\Delta_\chi(z,u):=\det(I-zB_\chi(u))
+=\Delta_{\chi^{-1}}\!\bigl(u\,\chi(g_1)\,z,\ 1/u\bigr)\; },
+\]
+\[
+\boxed{\;
+\zeta_\chi(z,u):=\Delta_\chi(z,u)^{-1}
+=\zeta_{\chi^{-1}}\!\bigl(u\,\chi(g_1)\,z,\ 1/u\bigr)\; }.
+\]
+\end{proposition}
+\begin{proof}
+From \(\Pi^{-1}B_0\Pi=B_1,\ \Pi^{-1}B_1\Pi=B_0\) one obtains
+\[
+\Pi^{-1}B_\chi(u)\Pi
+=B_1+u\,\chi(g_1)\,B_0
+=u\,\chi(g_1)\Bigl(B_0+\frac{1}{u}\chi(g_1)^{-1}B_1\Bigr)
+=u\,\chi(g_1)\,B_{\chi^{-1}}(1/u).
+\]
+Taking \(\det(I-z\,\cdot)\) on both sides and using \(\det(I-z\alpha A)=\det(I-(\alpha z)A)\) gives the stated determinant functional equation; the \(\zeta\)-version follows by taking reciprocals. \qed
+\end{proof}
+
+\begin{remark}[Functional-equation generator and Ramanujan-type spectral bound: unified master formula for the kernel version of (G)RH]\label{rem:kernel-self-dual-character-ramanujan}
+Proposition~\ref{prop:kernel-self-dual-character} shows that once the ``state-level self-duality'' can be promoted to a representation-level similarity identity, the two-variable functional equation of the channel determinant \(\Delta_\chi\) is automatically generated.
+Therefore, for any base \(L>1\), along the Dirichlet cross-section defined in \S\ref{subsec:xi-from-self-dual},
+\[
+\Xi_{\chi,L}(s):=\Delta_\chi(L^{-s},L^{2s-1}),
+\]
+one obtains a strict functional equation (with \(\chi\mapsto\chi^{-1}\)) together with critical-line real-valuedness.
+At this level, what genuinely requires additional input is no longer the ``functional equation/completion symmetry'' but rather a \textbf{unified spectral bound} of the kernel version of (G)RH:
+let \(\chi_0\) be the trivial character and write \(\lambda:=\rho(B_{\chi_0}(1))\).
+Then for all nontrivial \(\chi\neq\chi_0\), the Ramanujan-type proposition
+\[
+\max_{\mu\in\mathrm{spec}(B_\chi(1))}|\mu|\ \le\ \sqrt{\lambda}
+\]
+(or its unit-circle twist family version) is equivalent to ``the nontrivial zeros/poles of the channel cross-section \(\Xi_{\chi,L}\) satisfy the critical-line constraint,'' and is structurally identical to the kernel version of RH/GRH criterion in Definition~\ref{def:kernel-rh}: it compresses the core of (G)RH into a pure spectral-theoretic inequality (see the spectral \(\leftrightarrow\) pole dictionary in Proposition~\ref{prop:finite-rh-triangle-dict} and the channel-completion criterion in Remark~\ref{rem:xi-artin-channel-pipeline}).
+\end{remark}
+
+\begin{corollary}[Self-dual functional equation for the sign twist \texorpdfstring{$\chi(g_1)=-1$}{chi(g1)=-1} and the ``pure odd part'' readout at \texorpdfstring{$u=1$}{u=1}]\label{cor:kernel-self-dual-sign-twist}
+Under the setup of Proposition~\ref{prop:kernel-self-dual-character}, take \(G=\ZZ/2\ZZ\) and set \(\chi(g_1)=-1\).
+Write the corresponding sign-twisted matrix as
+\[
+B_{-}(u):=B_0-uB_1.
+\]
+Then the following similarity identity holds:
+\[
+\boxed{\ \Pi^{-1}B_{-}(u)\Pi=-u\,B_{-}(1/u)\ },
+\]
+and consequently the determinant and the \(\zeta\)-function satisfy the signed functional equation
+\[
+\boxed{\ \Delta_{-}(z,u):=\det(I-zB_{-}(u))=\Delta_{-}(-uz,1/u)\ },
+\]
+\[
+\boxed{\ \zeta_{-}(z,u):=\Delta_{-}(z,u)^{-1}=\zeta_{-}(-uz,1/u)\ }.
+\]
+Moreover, at \(u=1\),
+\[
+\boxed{\ B_{-}(1)=B_0-B_1=-2B_{\mathrm{asym}}\ },
+\]
+so that the sign twist at the unbiased slice measures only the \(\Pi\)-odd component \(B_{\mathrm{asym}}\).
+\end{corollary}
+
+\begin{proof}
+Setting \(\chi=\chi^{-1}\) and \(\chi(g_1)=-1\) in Proposition~\ref{prop:kernel-self-dual-character} immediately gives
+\(
+\Pi^{-1}B_{-}(u)\Pi=u\chi(g_1)B_{-}(1/u)=-uB_{-}(1/u)
+\)
+together with the corresponding determinant functional equation.
+The final identity follows directly from the definition \(B_{\mathrm{asym}}=(B_1-B_0)/2\) in Lemma~\ref{lem:sync-kernel-even-odd-splitting}. \qed
+\end{proof}
+
+\begin{remark}[Computable bridge package: verification checklist for Corollary~\ref{cor:kernel-self-dual-sign-twist}]\label{rem:kernel-self-dual-sign-twist-bridge}
+Given \((B_0,B_1,\Pi)\):
+\begin{enumerate}
+  \item \textbf{Construct the sign twist:} Compute \(B_{-}(u)=B_0-uB_1\);
+  \item \textbf{Similarity identity:} Sample \(u\) numerically and verify \(\Pi^{-1}B_{-}(u)\Pi=-uB_{-}(1/u)\);
+  \item \textbf{Functional equation:} For a set of sampled \((z,u)\) verify \(\Delta_{-}(z,u)=\Delta_{-}(-uz,1/u)\);
+  \item \textbf{Unbiased slice:} At \(u=1\) verify \(B_{-}(1)=-2B_{\mathrm{asym}}\).
+\end{enumerate}
+One-click verification script: \texttt{scripts/exp\_sync\_kernel\_weighted\_self\_dual\_bridge.py}.
+\end{remark}
+
+\begin{proposition}[Palindrome symmetry of the periodic trace polynomials]\label{prop:trace-palindrome}
+Write
+\[
+a_n(u):=\Tr(B(u)^n)=\sum_{k=0}^{n}a_{n,k}u^k.
+\]
+Then for all $n\ge 1$,
+\[
+a_n(u)=u^n a_n(1/u)
+\quad\Longleftrightarrow\quad
+a_{n,k}=a_{n,n-k}.
+\]
+\end{proposition}
+
+\begin{proof}
+By the self-duality $\Pi^{-1}B(u)\Pi=uB(1/u)$ and the invariance of the trace,
+\[
+a_n(u)=\Tr(B(u)^n)=\Tr\!\bigl((uB(1/u))^n\bigr)=u^n\Tr(B(1/u)^n)=u^n a_n(1/u),
+\]
+and comparing coefficients gives the result. \qed
+\end{proof}
+
+\begin{corollary}[Odd-order vanishing law]\label{cor:trace-odd-vanish}
+If $n$ is odd, then
+\[
+a_n(-1)=0,
+\qquad
+(u+1)\mid a_n(u)\ \ \text{in}\ \mathbb{Z}[u].
+\]
+\end{corollary}
+\begin{proof}
+By Proposition~\ref{prop:trace-palindrome}, $a_n(u)=u^n a_n(1/u)$. Setting $u=-1$ gives $a_n(-1)=(-1)^n a_n(-1)$; for odd $n$ this forces $a_n(-1)=0$, whence $(u+1)\mid a_n(u)$. \qed
+\end{proof}
+
+\begin{corollary}[Central moment identity at the periodic level: odd orders vanish strictly]\label{cor:trace-central-moments-zero}
+Retaining the notation of Proposition~\ref{prop:trace-palindrome}, for every integer \(m\ge 0\) the following central moment identity holds:
+$$
+\boxed{\ \sum_{k=0}^{n}\left(k-\frac{n}{2}\right)^{2m+1}a_{n,k}=0\ }\qquad(\text{in }\QQ).
+$$
+In particular, taking \(m=0\) gives
+$$
+\sum_{k=0}^{n}k\,a_{n,k}=\frac{n}{2}\sum_{k=0}^{n}a_{n,k}=\frac{n}{2}\,a_n(1).
+$$
+If one further normalizes the coefficients as \(\pi^{\mathrm{per}}_{n,k}:=a_{n,k}/a_n(1)\) (when \(a_n(1)\neq 0\)), then the distribution \(\{\pi^{\mathrm{per}}_{n,k}\}_k\) is exactly symmetric about \(n/2\), with all odd-order central moments strictly equal to zero.
+\end{corollary}
+\begin{proof}
+By Proposition~\ref{prop:trace-palindrome}, \(a_{n,k}=a_{n,n-k}\).
+For any function \(f\) satisfying \(f(x)=-f(-x)\) (odd function), pairing the sum by \(k\leftrightarrow n-k\) gives
+$$
+\sum_{k=0}^{n} f\!\left(k-\frac{n}{2}\right)a_{n,k}
+=\frac12\sum_{k=0}^{n}\Bigl(
+f\!\left(k-\frac{n}{2}\right)a_{n,k}
+f\!\left((n-k)-\frac{n}{2}\right)a_{n,n-k}
+\Bigr)=0,
+$$
+since \((n-k)-\frac{n}{2}=-(k-\frac{n}{2})\) and \(a_{n,n-k}=a_{n,k}\).
+Taking \(f(x)=x^{2m+1}\) yields the stated identity; the linear case \(m=0\) is a special case. \qed
+\end{proof}
+
+\begin{corollary}[Palindrome structure of the coefficients of $\Delta(z,u)$]\label{cor:delta-coeff-palindrome}
+Write
+\[
+\Delta(z,u)=\det(I-zB(u))=\sum_{j=0}^{10}c_j(u)\,z^j.
+\]
+Then for each $j$,
+\[
+c_j(u)=u^j c_j(1/u),
+\]
+that is, $c_j(u)$ is a palindromic polynomial of degree $j$ (after completion, equivalent to $u^{j/2}$ times an even function).
+\end{corollary}
+
+\begin{remark}[Invariant-ring representation: the coefficients depend only on $u+u^{-1}$]
+Taking $u=e^\theta$, the function $u^{-j/2}c_j(u)$ is an even function of $\theta$, and hence can be expressed as a polynomial in $u+u^{-1}$; equivalently, after completion, the coefficients of $\widehat{\Delta}(w,u)$ belong to the invariant subring $\QQ[u+u^{-1}]$.
+\end{remark}
+
+\begin{corollary}[Critical-line real-valuedness of the completed coefficients]\label{cor:completion-real-line}
+Take $u=e^{it}$ ($|u|=1$), and define
+\[
+d_j(u):=u^{-j/2}c_j(u).
+\]
+Then
+\[
+\overline{d_j(u)}=d_j(u),
+\]
+that is, the completed coefficients are real on the unit circle.
+\end{corollary}

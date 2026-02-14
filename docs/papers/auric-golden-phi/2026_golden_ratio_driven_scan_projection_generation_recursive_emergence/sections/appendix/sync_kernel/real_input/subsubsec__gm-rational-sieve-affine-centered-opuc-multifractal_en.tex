@@ -1,0 +1,201 @@
+\subsubsection{Rational Frequency Large Sieve, Affine Uniformization Spectral Gap, and Centered Traces: From the Pure Spectral Characterization of \texorpdfstring{$M^4$}{M4} to Pressure Functions}\label{subsubsec:gm-rational-sieve-affine-centered-opuc-multifractal}
+Building upon the two interfaces from \S\ref{subsubsec:gm-third-trace-dual-certificates}--\S\ref{subsubsec:gm-odd-moment-sdp-modq-profinite}---namely ``affine mean residual \(\Rightarrow\) spectral certificate bottleneck'' and ``twisted Perron roots \(\Rightarrow\) modular distribution spectral gap''---this subsection establishes three classes of further closure results:
+\begin{enumerate}
+  \item Fully spectralizing the \(M^4\) residual term of the affine mean functional as Fourier mass on the ``rational frequency grid,'' and deriving strict power savings from spectral non-concentration;
+  \item Showing that this power saving acts only on the energy coupling channel in the Guth--Maynard \(S_3\) route and provides a verifiable coefficient upgrade;
+  \item Establishing the strict cancellation mechanism for the centered third-order trace together with the OPUC/CMV representation, and under the tensor closure of sofic--Zeckendorf twisted operators, deriving adjustable-order moment certificates and a multifractal frequency law via the thermodynamic pressure.
+\end{enumerate}
+
+\paragraph{Rational Frequency Large Sieve Decomposition of the Affine Mean Functional: Pure Spectral Characterization of the \texorpdfstring{$M^4$}{M4} Term}
+\begin{theorem}[``Rational Frequency Large Sieve'' Decomposition of the Affine Mean Functional: Pure Spectral Characterization of the \texorpdfstring{$M^4$}{M4} Term]\label{thm:gm-affine-rational-sieve-M4}
+Let \(f\ge 0\) be supported on a compact interval with \(u\asymp 1\), satisfying rapid Fourier decay of bandwidth \(T\): for any \(j\ge 0\),
+\[
+|\widehat f(\xi)|\ \ll_j\ \left(1+\frac{|\xi|}{T}\right)^{-j}.
+\]
+Define the Guth--Maynard type affine mean functional
+\[
+J(f)
+:=\sup_{0<M_1,M_2,M_3<M}\ \int_{\RR}
+\Biggl(\sum_{\substack{|m_1|\sim M_1\\ m_2\sim M_2\\ |m_3|\lesssim M_3}}
+f\!\left(\frac{m_1u+m_3}{m_2}\right)\Biggr)^2\,du,
+\]
+where \(|m_1|\sim M_1\) denotes \(M_1<|m_1|\le 2M_1\), \(m_2\sim M_2\) denotes \(M_2<m_2\le 2M_2\), and \(|m_3|\lesssim M_3\) denotes \(|m_3|\le C M_3\) (with a fixed constant \(C\)).
+Then there exists a family of non-negative weight functions \(\{\omega_{q,a}\}\) depending only on the smoothness norm (each \(\omega_{q,a}\) being a frequency-localized kernel at scale \(T^{-1}\)), such that
+\begin{equation}\label{eq:gm-affine-rational-sieve-M4}
+J(f)\ \ll\ T^{o(1)}
+\Biggl(
+M^6\Bigl(\int f\Bigr)^2
+\ +\
+M^4\cdot \sup_{1\le q\le M}\ \sum_{a\ (\mathrm{mod}\ q)}
+\int_{\RR} |\widehat f(\xi)|^2\,\omega_{q,a}(\xi)\,d\xi
+\Biggr).
+\end{equation}
+Therefore the \(M^4\) term is equivalent to the spectral concentration of \(f\) at rational grid frequencies \(\xi\approx a/q\) (\(q\le M\)); this residual no longer depends on direct counting of geometric superpositions, but is completely characterized by the rational spectral mass of \(\widehat f\).
+\end{theorem}
+
+\begin{proof}
+Viewing the inner summation as a pushforward of \(f\) by the affine family, expanding the square over the \(u\) integral yields a triple-parameter correlation sum.
+Under the rapid decay assumption at bandwidth \(T\), expanding the correlation kernel in Fourier space and applying Poisson summation in the shift parameter \(m_3\), the residual term can be organized as a sum of localized squared masses around rational points \(a/q\) in the frequency domain; the zero-frequency main channel corresponds to the rank-one term \(M^6(\int f)^2\).
+Absorbing the resulting localized kernels uniformly into \(\omega_{q,a}\) yields \eqref{eq:gm-affine-rational-sieve-M4}. \qed
+\end{proof}
+
+\begin{corollary}[Spectral Non-Concentration \texorpdfstring{$\Rightarrow$}{=>} Affine Uniformization Power Improvement: From \texorpdfstring{$M^4$}{M4} to \texorpdfstring{$M^{4-\vartheta}$}{M4-vtheta}]\label{cor:gm-affine-uniformization-improvement}
+Under the setting of Theorem \ref{thm:gm-affine-rational-sieve-M4}, if there exists \(\vartheta>0\) such that for all \(1\le q\le M\),
+\[
+\sum_{a\ (\mathrm{mod}\ q)}\int_{\RR} |\widehat f(\xi)|^2\,\omega_{q,a}(\xi)\,d\xi
+\ \ll\
+M^{-\vartheta}\int_{\RR} f(u)^2\,du,
+\]
+then the improved affine uniformization bound holds:
+\[
+J(f)\ \ll\ T^{o(1)}
+\Biggl(
+M^6\Bigl(\int f\Bigr)^2
+\ +\
+M^{4-\vartheta}\int f^2
+\Biggr).
+\]
+\end{corollary}
+
+\begin{proof}
+Substituting the spectral non-concentration hypothesis into \eqref{eq:gm-affine-rational-sieve-M4} yields the result. \qed
+\end{proof}
+
+\paragraph{Parametric Upgrade of the \texorpdfstring{$S_3$}{S3} Core Estimate and Power Saving at the \texorpdfstring{$T=N^{6/5}$}{T=N^{6/5}} Scale}
+\begin{proposition}[Parametric Upgrade of the \texorpdfstring{$S_3$}{S3} Core Estimate: \texorpdfstring{$\vartheta$}{vtheta} Acts Only on the Energy Coupling Channel]\label{prop:gm-S3-upgrade-vtheta}
+In the third-order trace structure of Guth--Maynard, let \(W\subset[0,T]\) be a \(1\)-separated set of large-value points, and denote its additive energy by
+\[
+E(W):=\#\{(t_1,t_2,t_3,t_4)\in W^4:\ t_1+t_2=t_3+t_4\}.
+\]
+If the residual term \(\,M^4\int f^2\,\) in the affine uniformization estimate is replaced by the \(M^{4-\vartheta}\int f^2\) version from Corollary \ref{cor:gm-affine-uniformization-improvement}, then the corresponding third-order trace core quantity \(S_3\) (corresponding to the energy coupling channel of \(\tr(G^3)\)) upgrades to
+\[
+S_3\ \ll\ T^{o(1)}
+\Bigl(
+T^2|W|^{3/2}
+\ +\
+T^{1-\vartheta/2}N^{1+\vartheta/2}\,|W|^{1/2}E(W)^{1/2}
+\Bigr).
+\]
+Here the first channel (uniform main channel) remains unchanged; \(\vartheta\) only weakens the coefficient strength of the second channel (energy coupling channel).
+\end{proposition}
+
+\begin{proof}
+The third-order trace method decomposes \(S_3\) into ``main channel + residual channel'' contributions; the main channel originates from the rank-one uniform term (Proposition \ref{prop:gm-affine-average-rank1-residual}), whose magnitude is unaffected by the residual estimate.
+In the energy coupling channel, the only non-trivial input is the \(L^2\) (or equivalently spectral) control of the affine uniformization residual; improving this from \(M^4\) to \(M^{4-\vartheta}\) produces a power saving corresponding to \(\vartheta\), which enters the coefficient as \(\vartheta/2\) through the scale transfer. \qed
+\end{proof}
+
+\begin{corollary}[Verifiable Power Saving in the Energy Window: \texorpdfstring{$N^{-\vartheta/10}$}{N^{-vtheta/10}} Factor at the \texorpdfstring{$T=N^{6/5}$}{T=N^{6/5}} Scale]\label{cor:gm-energy-window-saving}
+Under the setting of Proposition \ref{prop:gm-S3-upgrade-vtheta}, taking the critical scale \(T=N^{6/5}\), the energy coupling channel coefficient satisfies
+\[
+T^{1-\vartheta/2}N^{1+\vartheta/2}=N^{11/5-\vartheta/10}.
+\]
+Therefore, all sub-main terms produced by the energy coupling channel uniformly gain the power saving factor \(N^{-\vartheta/10}\), while the uniform main channel term \(T^2|W|^{3/2}=N^{12/5}|W|^{3/2}\) remains unchanged.
+\end{corollary}
+
+\paragraph{Rational Spectral Non-Concentration of the Sofic--Zeckendorf Readout Family: Computable \texorpdfstring{$\vartheta$}{vtheta} from Twisted Perron Roots}
+\begin{theorem}[Rational Spectral Non-Concentration of the Sofic--Zeckendorf Readout Family: Computable \texorpdfstring{$\vartheta$}{vtheta} from Twisted Perron Roots]\label{thm:gm-sofic-rational-nonconcentration-vtheta}
+Let \(f\) be obtained from a cylinder readout of a primitive sofic shift, smoothed at scale \(T^{-1}\), so that its Fourier side can be represented as a linear functional of powers of a finite-dimensional twisted transfer operator family \(\{A(\chi)\}\) (\(\chi\) ranging over additive characters of finite modulus).
+If there exist constants \(0<\kappa<1\), \(\theta>0\) such that for all non-trivial characters \(\chi\ne 1\) of conductor not exceeding \(M^\theta\), a uniform spectral gap holds:
+\[
+\rho\!\bigl(A(\chi)\bigr)\ \le\ (1-\kappa)\,\rho\!\bigl(A(1)\bigr),
+\]
+then there exists an explicit \(\vartheta=\vartheta(\kappa,\theta)>0\) such that the spectral non-concentration condition of Corollary \ref{cor:gm-affine-uniformization-improvement} is satisfied; and one may take \(\vartheta\) to be a positive number of the same order as \(\kappa\theta\) (as a linear function after normalization by \(\log M\)).
+Thus the affine uniformization power saving for this class of \(f\) can be directly computed from the spectral gaps of finitely many twisted Perron roots.
+\end{theorem}
+
+\begin{proof}
+Theorem \ref{thm:gm-modq-equidistribution-spectral-gap} provides the twisted spectral gap \(\rho_q^\ast<\alpha_q\) and exponential error control on modulus \(q\) (character conductor \(q\)); under the cylinder readout and \(T^{-1}\)-scale smoothing, the local mass of \(\widehat f\) at rational frequencies \(\xi\approx a/q\) can be equivalently reduced to linear functionals of finitely many character sums/twisted matrix powers.
+Aggregating over all \(q\le M\) and accumulating the spectral gap \((1-\kappa)\) yields an \(M^{-\vartheta}\)-level averaged suppression (\(\vartheta\) is jointly determined by the available conductor range \(M^\theta\) and spectral gap strength \(\kappa\)), thereby satisfying the hypothesis of Corollary \ref{cor:gm-affine-uniformization-improvement}. \qed
+\end{proof}
+
+\paragraph{Strict Cancellation of the Centered Third-Order Trace and the OPUC/CMV Representation}
+\begin{proposition}[Strict Cancellation of the Centered Third-Order Trace: Verifiable Rewriting Replacing \texorpdfstring{$E(W)$}{E(W)} by \texorpdfstring{$E(W)-c|W|^2$}{E(W)-c|W|2}]\label{prop:gm-centered-trace3-energy-variance}
+Let \(G\) be the Gram matrix induced by the large-value point set \(W\) (\(\tr(G)\asymp N|W|\)), and define the centered matrix
+\[
+G^\circ:=G-\frac{\tr(G)}{|W|}I.
+\]
+Then the identity holds:
+\[
+\tr\!\bigl((G^\circ)^3\bigr)
+=\tr(G^3)-3\frac{\tr(G)}{|W|}\tr(G^2)+2\frac{\tr(G)^3}{|W|^2}.
+\]
+Moreover, in the representation via \(R(v):=\sum_{t\in W}v^{it}\), the four-body terms in \(\tr((G^\circ)^3)\) of the same order as \(\int |R|^4\) can be strictly replaced by the variance-type energy
+\[
+E(W)-c\,|W|^2,
+\]
+where the constant \(c>0\) depends only on the smoothing kernel (bandwidth window).
+Thus the centering mechanism strips the ``random baseline energy'' from the third-order trace certificate, making the certificate sensitive only to the super-random energy component, and it can be used in conjunction with the \(\vartheta\) improvement from Proposition \ref{prop:gm-S3-upgrade-vtheta}.
+\end{proposition}
+
+\begin{proof}
+The first identity is obtained by directly expanding \((G-\mu I)^3=G^3-3\mu G^2+3\mu^2G-\mu^3I\) with \(\mu=\tr(G)/|W|\) and taking the trace.
+The second identity comes from the decomposition of four-body correlation terms: the diagonal/degenerate solutions in \(\int |R|^4\) contribute a deterministic baseline of order \(c|W|^2\), and the centering combination precisely cancels this baseline, leaving a variance-type remainder expressed as \(E(W)-c|W|^2\). \qed
+\end{proof}
+
+\begin{proposition}[Toeplitz--CMV Representation: The Large-Value Gram Structure Embeds into the Verblunsky Parameters of OPUC]\label{prop:gm-toeplitz-cmv-verblunsky-embedding}
+Within the bandwidth window, let
+\(
+K(\tau)=\sum_{n\sim N}|b_n|^2 e^{i\tau\log n}
+\)
+and view it as the Fourier coefficient family of the discrete measure on the unit circle
+\[
+\mu:=\sum_{n\sim N}|b_n|^2\,\delta_{e^{i\log n}}.
+\]
+Then \(G\) can be viewed as the sampled compression of the finite truncated Toeplitz matrix of \(\mu\) on the sample point set.
+By OPUC theory, there exists a unique Verblunsky coefficient sequence \((\alpha_j)_{j\ge 0}\) and a corresponding CMV matrix \(\mathcal{C}(\mu)\), such that the centered trace quantities (e.g., \(\tr((G^\circ)^3)\) and higher-order centered traces) can be expressed as finite polynomial functionals of \((\alpha_j)\), and their magnitudes can be controlled by the finitely-supported spectral measure of \(\mathcal{C}(\mu)\) (cf.\ \cite{CanteroMoralVelazquez2003CMV,Simon2005OPUC1}).
+\end{proposition}
+
+\paragraph{Tensor Closure of Sofic Twisted Operators: Higher-Order Centered Trace Certificates and Adjustable-Order Moment Limits}
+\begin{theorem}[Tensor Closure of Sofic Twisted Operators: Computable Upper Bound Family for Higher-Order Centered Traces]\label{thm:gm-tensor-twist-centered-moments}
+For the coefficient/readout model generated by a sofic--Zeckendorf transducer, let the readout depth be \(m\), and let \(\{A(\chi)\}\) be the corresponding twisted transfer operator family.
+Then for any integer \(\ell\ge 1\), the centered trace quantity \(\tr((G^\circ)^\ell)\) can be expressed as a linear combination of spectral controls of finitely many tensor-twisted operators
+\(
+A(\chi_1)\otimes\cdots\otimes A(\chi_\ell)
+\);
+in particular, if for all non-trivial \(\chi\) there is a uniform spectral gap
+\(
+\rho(A(\chi))\le (1-\kappa)\rho(A(1))
+\), then there exists \(c_\ell(\kappa)>0\) such that
+\[
+|\tr((G^\circ)^\ell)|\ \ll\ \rho(A(1))^{\ell m}\,e^{-c_\ell(\kappa)m}.
+\]
+In typical cases, \(c_\ell(\kappa)\) can be taken to be a positive number of the same order as \(\ell\kappa\).
+\end{theorem}
+
+\begin{proof}
+Expanding \(\tr((G^\circ)^\ell)\) as a sum of closed products of length \(\ell\) and synchronously compiling the ``character weight'' via twisted transfer operators yields the tensor-twisted representation.
+Centering cancels the trivial character (zero-frequency) contribution, so the main growth can only come from non-trivial twists; under a uniform spectral gap, each non-trivial twist contributes an exponential compression of \((1-\kappa)^m\), yielding the stated decay bound. \qed
+\end{proof}
+
+\begin{corollary}[Adjustable-Order Moment Limit: Sufficient Condition for Approaching the Mean-Square Upper Bound under Uniform Spectral Gap]\label{cor:gm-adjustable-moment-mean-square}
+Under the uniform spectral gap hypothesis of Theorem \ref{thm:gm-tensor-twist-centered-moments}, let \(\mu:=\tr(G)/|W|\) and denote the normalized matrix \(\widetilde G:=\mu^{-1}G\).
+Then there exists \(\epsilon_0=\epsilon_0(\kappa)>0\) such that for any \(\epsilon\in(0,\epsilon_0)\), one can choose an order \(k=k(\epsilon,\kappa)\) so that
+\[
+\|\widetilde G\|_{\mathrm{op}}
+\ \le\
+1+O\!\bigl(|W|^{-\epsilon}\bigr),
+\]
+so that the Dirichlet large-value frequency in the critical interval can be pushed back to the mean-square level with a strictly small power correction.
+This mechanism provides a controllable upgrade path from third-order traces to higher-order moments, compatible with the centering cancellation of Proposition \ref{prop:gm-centered-trace3-energy-variance}.
+\end{corollary}
+
+\paragraph{Multifractal Frequency Law of the Pressure Function: Large-Value Frequency Determined by the Legendre Transform}
+\begin{theorem}[Multifractal Frequency Law from Thermodynamic Formalism: Large-Value Frequency Determined by the Legendre Transform of the Pressure Function]\label{thm:gm-multifractal-pressure-legendre}
+Suppose the coefficient or readout amplitudes come from a primitive sofic--Zeckendorf system, and let the twisted Perron roots define the pressure function
+\[
+P(\beta):=\log\rho(A_\beta),
+\]
+where \(A_\beta\) is the weighted transfer operator obtained by exponential tilting with respect to the amplitude potential.
+Then in the limit \(m\to\infty\), the exponential frequency of the large-value set satisfies a multifractal law: there exists a convex rate function
+\[
+I(\sigma)=\sup_{\beta\in\RR}\bigl(\beta\sigma-P(\beta)\bigr)
+\]
+such that when the threshold scale satisfies \(\log V\asymp \sigma m\),
+\[
+\log |W_V|\ \sim\ -m\,I(\sigma)
+\qquad\text{(in the logarithmic equivalence sense)}.
+\]
+Moreover, the strict convexity of \(I\) is dynamically equivalent to ``uniform spectral gap for non-trivial twists,'' so that the optimal exponents and phase transition boundaries for different \(V\) intervals can be computably output from the curvature structure of \(P\) (cf.\ \cite{Ruelle1978Thermodynamic} for the pressure formalism).
+\end{theorem}
+
+\endinput

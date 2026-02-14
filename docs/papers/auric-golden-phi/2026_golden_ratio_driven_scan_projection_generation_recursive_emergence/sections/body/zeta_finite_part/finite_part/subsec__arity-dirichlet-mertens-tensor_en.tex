@@ -1,0 +1,367 @@
+\subsubsection{The primitive prime spectrum along genuine arity dimensions: Dirichlet stratification and Mertens constant tensor}\label{subsec:arity-dirichlet-mertens-tensor}
+This subsection performs Dirichlet stratification of primitive orbits of the 40-state real input kernel (Appendix \ref{app:real-input-40-abel}) along three additive observables, and compresses each congruence class into an Abel/Hadamard finite-part constant term (Mertens constant drift). The output provides a congruence-class constant tensor together with the worst-case error exponent for equidistribution convergence.
+
+\paragraph{Three stratification quantities (arity-charge + two hidden/trigger dimensions)}
+For a primitive orbit $\gamma$, denote the three types of additive edge counts as
+$$
+\Phi_e(\gamma),\qquad \Phi_-(\gamma),\qquad \Phi_2(\gamma),
+$$
+corresponding respectively to the orbit sums of the three edge potentials $\varphi_e,\varphi_-,\varphi_2$ from Appendix \ref{app:real-input-40-logm-theta}.
+In the three-dimensional Dirichlet stratification adopted in this paper, we take $\chi$ as the arity-charge and $N_-$ and $N_e$ as the two event-counting axes (where $N_e$ is the output-bit count; $N_2$ is retained in the definition only as an auxiliary quantity for constructing $\chi$).
+Define the orbit-level arity-charge and event counts as
+\[
+\begin{aligned}
+\chi(\gamma)&:=\Phi_e(\gamma)-\Phi_2(\gamma)\in\ZZ,\\
+N_-(\gamma)&:=\Phi_-(\gamma)\in\ZZ,\\
+N_e(\gamma)&:=\Phi_e(\gamma)\in\ZZ,\\
+N_2(\gamma)&:=\Phi_2(\gamma)\in\ZZ.
+\end{aligned}
+\]
+Under the synchronous edge labeling $(s,d)\mapsto(e,t)$ of the ``real input 40-state kernel'', the per-step observables can be taken as
+$$
+\chi:=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
+\qquad
+\nu:=\mathbf{1}_{\{t\in Q_-\}}\in\{0,1\},
+\qquad
+e\in\{0,1\},
+\qquad
+\xi:=\mathbf{1}_{\{d=2\}}\in\{0,1\}.
+$$
+Hence
+$$
+\Phi_e(\gamma)=\sum_{k=1}^{|\gamma|} e_k,
+\qquad
+\Phi_-(\gamma)=\sum_{k=1}^{|\gamma|} \nu_k,
+\qquad
+\Phi_2(\gamma)=\sum_{k=1}^{|\gamma|} \xi_k,
+$$
+and therefore $\chi(\gamma)=\sum_{k=1}^{|\gamma|}\chi_k$, $N_-(\gamma)=\sum_{k=1}^{|\gamma|}\nu_k$, $N_e(\gamma)=\sum_{k=1}^{|\gamma|}e_k$, $N_2(\gamma)=\sum_{k=1}^{|\gamma|}\xi_k$.
+Here $\chi(\gamma)$ is the arity-charge (encoding the visible/invisible allocation of binary collisions as an additive charge), $N_-(\gamma)$ records the event count of entering the negative-carry region, and $N_e(\gamma)$ records the output-bit count. The leading growth rate is the Perron--Frobenius leading eigenvalue of the real input kernel:
+$$
+\lambda=\rho(M)=\varphi^2\approx 2.61803398875.
+$$
+
+\paragraph{Multi-observable thermodynamic system: vector potential, rotation polytope, and computable phase diagram}
+The three observables above can not only be used for Dirichlet stratification but can also be unified as a \textbf{vector-valued local constant potential}. Denote the essential graph (essential SCC; see Proposition \ref{prop:real-input-40-essential-20}) of the 40-state kernel by $\Gamma$, and assign to each directed edge $e:i\to j$ a vector-valued observable
+$$
+\Phi(e):=(\chi(e),\nu(e),\xi(e))\in\ZZ^3.
+$$
+For any parameter vector $\mathbf{u}=(u_\chi,u_-,u_2)\in(\CC^\times)^3$, define the multi-parameter weight
+$$
+w_{\mathbf{u}}(e):=\mathbf{u}^{\Phi(e)}:=u_\chi^{\chi(e)}u_-^{\nu(e)}u_2^{\xi(e)},
+$$
+yielding the multi-parameter weighted adjacency matrix family
+$$
+M(\mathbf{u})_{ij}:=\sum_{e:i\to j} w_{\mathbf{u}}(e),
+$$
+whose $\zeta$-determinant and primitive Euler product continue to hold in the SFT framework (\cite{BrinStuck2002,ParryPollicott1990Zeta}). The three-dimensional twisted matrix $M_{j_1,j_2,j_3}$ introduced earlier in this paper is precisely the special case obtained by taking $\mathbf{u}$ to be finite group characters (roots of unity on the unit circle).
+
+More generally, for an edge shift system (SFT) with vector potential $\Phi$, define the rotation set
+$$
+\mathrm{Rot}(\Phi)
+:=
+\left\{\int \Phi\,d\mu:\ \mu\ \text{is a}\ \sigma\text{-invariant probability measure on}\ \Gamma\right\}\subset\RR^3.
+$$
+When $\Gamma$ is a transitive SFT and $\Phi$ depends only on cylinders of length $2$ (i.e., depends only on edge labels), $\mathrm{Rot}(\Phi)$ is a \textbf{convex polytope}, the rotation vectors of periodic points (periodic orbits) are dense therein, and every interior point is realized by an ergodic measure (\cite{Ziemian1995RotationSFT}). Therefore, the long-term averages of ``implicit attribute/operation type ratios'' are not primitive objects but rather \textbf{coordinates in a finite-dimensional convex polytope}.
+
+The support function of the rotation polytope can be computed exactly via \textbf{minimum mean cycle weights}: for any direction $\theta\in\RR^3$, let the scalarized potential be
+$$
+\phi_\theta(e):=\langle\theta,\Phi(e)\rangle,
+$$
+and then (see \cite{Karp1978MinCycleMean} for the minimum mean cycle characterization)
+$$
+h_{\min}(\theta):=\min_{v\in\mathrm{Rot}(\Phi)}\langle\theta,v\rangle
+=\min_{\gamma}\frac{1}{|\gamma|}\sum_{e\in\gamma}\phi_\theta(e),
+$$
+where the right-hand side minimizes over all periodic orbits (cycles) $\gamma$. This allows one to define a ``pure phase'' as the face exposed by some direction $\theta$; the region in $\theta$-space for which the same face is selected forms the normal fan of the rotation polytope, thereby yielding a \textbf{core phase diagram with finitely many phases}. This viewpoint is consistent with the zero-temperature limit ($\beta\to+\infty$) of the local constant potential: the zero-temperature selection concentrates on a finite union of periodic/subshift components (see \cite{ChazottesGambaudoUgalde2011ZeroTempLocConst} for the general theory).
+
+As an auditable example, we take $\Phi=(\chi,\nu,\xi)$ on the essential 20-state core, compute the minimum mean cycle weight and witness periodic orbit for several directions $\theta$, and output their period-averaged rotation vectors:
+\input{sections/generated/tab_real_input_40_rotation_polytope_sample}
+
+\begin{proposition}[Gauge shear: linear homeomorphism between the \texorpdfstring{$(\chi,\nu,\xi)$}{(chi,nu,xi)} rotation polytope and the \texorpdfstring{$(e,\nu,\xi)$}{(e,nu,xi)} rotation polytope]\label{prop:rotation-polytope-shear}
+Under the synchronous edge labeling of the real input 40-state kernel, let
+\[
+\Phi^{(e)}(e):=(e(e),\nu(e),\xi(e))\in\ZZ^3,
+\qquad
+\Phi^{(\chi)}(e):=(\chi(e),\nu(e),\xi(e))\in\ZZ^3,
+\]
+where \(\chi=e-\xi\). Define the linear shear
+\[
+L:\RR^3\to\RR^3,\qquad L(x_e,x_\nu,x_\xi):=(x_e-x_\xi,\ x_\nu,\ x_\xi).
+\]
+Then the rotation sets satisfy
+\[
+\mathrm{Rot}(\Phi^{(\chi)})=L\bigl(\mathrm{Rot}(\Phi^{(e)})\bigr),
+\]
+so that the two rotation polytopes differ only by an invertible linear shear homeomorphism (with inverse \(L^{-1}(x_\chi,x_\nu,x_\xi)=(x_\chi+x_\xi,x_\nu,x_\xi)\)).
+Furthermore, for any direction \(\theta=(\theta_\chi,\theta_-,\theta_2)\in\RR^3\), the minimum support functions satisfy
+\[
+\boxed{\;
+h_{\min}^{(\chi)}(\theta_\chi,\theta_-,\theta_2)
+=h_{\min}^{(e)}(\theta_e,\theta_-,\widetilde\theta_2)\;},
+\qquad
+(\theta_e,\widetilde\theta_2):=(\theta_\chi,\ \theta_2-\theta_\chi),
+\]
+so the normal fan (zero-temperature phase diagram partition) of \((\chi,\nu,\xi)\) is the pullback of the \((e,\nu,\xi)\) phase diagram along the line family \(\theta_2-\theta_e=\mathrm{const}\) in the \((\theta_e,\theta_2)\)-plane.
+\end{proposition}
+\begin{proof}
+Since \(\chi=e-\xi\), for any invariant measure \(\mu\) we have
+\[
+\int \Phi^{(\chi)}\,\dd\mu=\left(\int e\,\dd\mu-\int \xi\,\dd\mu,\ \int \nu\,\dd\mu,\ \int \xi\,\dd\mu\right)
+=L\left(\int \Phi^{(e)}\,\dd\mu\right).
+\]
+Taking images over all invariant measures yields \(\mathrm{Rot}(\Phi^{(\chi)})=L(\mathrm{Rot}(\Phi^{(e)}))\).
+
+For the support function, note that
+\[
+\langle\theta,\Phi^{(\chi)}\rangle
+=\theta_\chi\chi+\theta_-\nu+\theta_2\xi
+=\theta_\chi e+\theta_-\nu+(\theta_2-\theta_\chi)\xi
+=\left\langle(\theta_\chi,\theta_-,\theta_2-\theta_\chi),\,\Phi^{(e)}\right\rangle.
+\]
+Substituting this identity into the characterization of \(h_{\min}(\theta)\) via minimum mean cycle weights given above yields the support function equivalence; the pullback conclusion for the normal fan is a consequence of the linear transformation in dual parameter space. \qed
+\end{proof}
+
+\begin{corollary}[Dimension reduction and parameter redundancy of \texorpdfstring{$\chi$}{chi} twisting]\label{cor:chi-twist-dimension-reduction}
+For any \(\mathbf{u}=(u_\chi,u_-,u_2)\in(\CC^\times)^3\), the weights of the matrix family \(M(\mathbf{u})\) satisfy
+\[
+u_\chi^{\chi(e)}u_-^{\nu(e)}u_2^{\xi(e)}
+=u_\chi^{e(e)}u_-^{\nu(e)}\left(\frac{u_2}{u_\chi}\right)^{\xi(e)}.
+\]
+Therefore, taking \(\chi\) as an additional twist axis does not introduce new degrees of freedom: it is equivalent to a linear reparametrization on the three base potentials \((e,\nu,\xi)\) (see Proposition \ref{prop:chi-reparam-4d} in Appendix \ref{app:real-input-40-logm-theta}).
+In particular, under unit-root Dirichlet twisting (finite group characters), the character twist along \(\chi\) decomposes into a reverse combination of twists along \(e\) and \(\xi\); hence when enumerating three-axis twist parameters of the \(((m,m,p))\) type with one axis taken as \(\chi\), there exists a cancellable linear redundancy direction that reduces the enumeration space by one dimension.
+\end{corollary}
+
+\begin{theorem}[Rotation polytope of the real input 40-state kernel (closed-form with 6 vertices)]\label{thm:real-input-40-rotation-polytope-6v}
+On the essential 20-state core of the real input 40-state kernel, the rotation set of the three observables \((e,\nu,\xi)\) (equivalently \((\chi,\nu,\xi)\)) is a rational polytope with 6 vertices; its vertex representation is:
+\input{sections/generated/eq_real_input_40_rotation_polytope_vertices}
+Moreover, this polytope is equivalently described by 7 sharp facet inequalities:
+\input{sections/generated/eq_real_input_40_rotation_polytope_facets}
+Each vertex is realized by a periodic orbit of period \(\le 6\); the shortest witness periodic orbits can be completely enumerated (see Table \ref{tab:real-input-40-rotation-polytope-vertices}).
+Therefore, for any linear combination potential \(\theta\cdot(\bar e,\bar\nu,\bar\xi)=\theta_e\bar e+\theta_-\bar\nu+\theta_2\bar\xi\), the zero-temperature scaling limit along the ray \(t\theta\) satisfies an explicit piecewise-linear closed form:
+\input{sections/generated/eq_real_input_40_rotation_polytope_zero_temp_support}
+The vertex (equivalently: the exposed face) achieving the maximum determines the ground states of the zero-temperature limit; thus the zero-temperature phase diagram requires only finitely many comparisons among the above 6 short periodic orbits.
+\end{theorem}
+
+\begin{remark}[Alignment with the \texorpdfstring{$(\bar e,\bar c,\bar n)$}{(e,c,n)} notation]\label{rem:real-input-40-rotation-polytope-ecn}
+In Theorem \ref{thm:real-input-40-rotation-polytope-6v}, \(\nu=\mathbf{1}_{\{t\in Q_-\}}\) is the negative-carry event indicator, and \(\xi=\mathbf{1}_{\{d=2\}}\) is the collision event indicator.
+If one instead uses the frequency coordinates
+\[
+(\bar e,\bar c,\bar n)
+:=\bigl(\langle e\rangle,\langle\xi\rangle,\langle\nu\rangle\bigr)
+=\bigl(\langle e\rangle,\langle\mathbf{1}_{\{d=2\}}\rangle,\langle\mathbf{1}_{\{t\in Q_-\}}\rangle\bigr),
+\]
+then the 6 vertices of this rotation polytope are equivalently rewritten as
+\[
+\boxed{
+(0,0,0),\
+\Big(\tfrac12,0,0\Big),\
+\Big(\tfrac12,0,\tfrac12\Big),\
+\Big(\tfrac12,\tfrac12,1\Big),\
+\Big(\tfrac25,\tfrac25,\tfrac25\Big),\
+\Big(\tfrac12,\tfrac13,\tfrac16\Big)
+}
+\]
+and the 7 facet inequalities are equivalently written as
+\[
+\boxed{
+0\le \bar c\le \bar e \le \tfrac12,\qquad
+\bar c \le 2\bar n,\qquad
+2\bar c \le \bar e+\bar n,\qquad
+\bar n \le \bar e+\bar c,\qquad
+\bar e+5\bar c-\bar n \le 2.
+}
+\]
+Here \(\bar c\le\bar e\) is equivalent to \(\bar\chi=\bar e-\bar c\ge 0\);
+the strong form at the periodic-orbit level (per-edge \(0/1\) coboundary certificates) is given in Theorem \ref{thm:real-input-40-arity-charge-coboundary} and Corollary \ref{cor:real-input-40-arity-charge-conjecture-b211} of Appendix \ref{app:real-input-40-arity-charge}.
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_rotation_polytope_vertices}
+
+\begin{corollary}[The two-dimensional rotation set of \texorpdfstring{$(\bar\chi,\bar\nu)$}{(chi,nu)} is a quadrilateral]\label{cor:real-input-40-rotation-set-chi-nu-quad}
+Let \(\pi:\RR^3\to\RR^2\) be the coordinate projection \(\pi(\bar\chi,\bar\nu,\bar\xi)=(\bar\chi,\bar\nu)\), and define
+\[
+\mathrm{Rot}(\chi,\nu):=\pi\!\left(\mathrm{Rot}(\Phi^{(\chi)})\right)\subset\RR^2.
+\]
+Then the following fully explicit closed-form convex body holds:
+\[
+\boxed{\;
+\mathrm{Rot}(\chi,\nu)
+=\mathrm{conv}\Bigl\{(0,0),\ \bigl(\tfrac12,0\bigr),\ \bigl(\tfrac12,\tfrac12\bigr),\ (0,1)\Bigr\}\; }.
+\]
+Equivalently, for any \(\sigma\)-invariant probability measure (and hence for the period-averaged limit of any long periodic orbit) the following two sharp inequalities hold:
+\[
+0\le \bar\chi\le \tfrac12,
+\qquad
+0\le \bar\nu\le 1-\bar\chi.
+\]
+All four vertices above are realized by the short periodic orbits in Table \ref{tab:real-input-40-rotation-polytope-vertices}.
+\end{corollary}
+
+\begin{proof}
+From Theorem \ref{thm:real-input-40-rotation-polytope-6v} (specifically, its facet inequalities in \((\chi,\nu,\xi)\) coordinates), for any
+\((\bar\chi,\bar\nu,\bar\xi)\in\mathrm{Rot}(\Phi^{(\chi)})\) we have
+\[
+\bar\xi\ge 0,\quad
+\bar\chi\ge 0,\quad
+\bar\chi+\bar\xi\le \tfrac12,\quad
+\bar\xi\le 2\bar\nu,\quad
+\bar\nu\le \bar\chi+2\bar\xi.
+\]
+From the first three we obtain \(0\le \bar\chi\le \tfrac12\); from \(\bar\xi\ge 0\) and \(\bar\xi\le 2\bar\nu\) we get \(\bar\nu\ge 0\);
+then from \(\bar\chi+\bar\xi\le \tfrac12\) we get \(\bar\xi\le \tfrac12-\bar\chi\), and substituting into \(\bar\nu\le \bar\chi+2\bar\xi\) yields
+\(\bar\nu\le \bar\chi+2(\tfrac12-\bar\chi)=1-\bar\chi\).
+Hence \(\mathrm{Rot}(\chi,\nu)\subset\{(\bar\chi,\bar\nu):0\le \bar\chi\le \tfrac12,\ 0\le \bar\nu\le 1-\bar\chi\}\), and the right-hand side is precisely the stated quadrilateral.
+
+On the other hand, the four vertices of this quadrilateral correspond to the vertices
+\((0,0,0)\), \((\tfrac12,0,0)\), \((\tfrac12,\tfrac12,0)\), \((0,1,\tfrac12)\) of \(\mathrm{Rot}(\Phi^{(\chi)})\), all realized by periodic orbits in Table \ref{tab:real-input-40-rotation-polytope-vertices}.
+Since the rotation set is convex over invariant measures, it contains the convex hull of these four points; hence its projection must contain the stated quadrilateral.
+Combining both inclusions yields equality. \qed
+\end{proof}
+
+\begin{remark}[Reproducible computation chain: exhaustive enumeration of all simple cycles]\label{rem:real-input-40-rotation-polytope-exact-repro}
+Theorem \ref{thm:real-input-40-rotation-polytope-6v} can be reproduced by the script \texttt{scripts/exp\_real\_input\_40\_rotation\_polytope\_exact.py}: it exhaustively enumerates all simple cycles on the essential 20-state core (the total count for this kernel is \(178\)), computes the rotation vector of each cycle, and verifies the consistency of the above V/H-representations.
+\end{remark}
+
+\begin{remark}[Non-backtracking prime shadow and the \texorpdfstring{$L$}{L}-function decomposition of coverings]\label{rem:rotation-polytope-bartholdi}
+The primitive Euler product above is based on the ``periodic point/closed path'' framework; however, in the kernel context of ``atomic update near-invertibility'', the more natural prime shadow often requires \textbf{excluding backtracking} (actions that are immediately undone). This corresponds to the Ihara--Bass--Hashimoto/Bartholdi non-backtracking primitive cycle framework: for (directed/weighted) graphs one can define a weighted Bartholdi $\zeta$ and corresponding weighted $L$-functions with determinantal expressions; under graph coverings (finite group labelings) there also exists an Artin-type factorization: the $\zeta$ of the covering decomposes into a product of twisted $L$-functions over irreducible representations (see \cite{ChoeKwakParkSato2007Bartholdi,Sato2008WeightedBartholdiCoverings}). Analogous to the Dirichlet twisted spectral radius ratio $\rho/\lambda$ of this section, the spectral radius ratio of the covering/twisted version provides a computable exponential scale for ``congruence class deviation''; in Axiom A/hyperbolic dynamical systems, this analogy further corresponds to Chebotarev-type distribution theorems (see \cite{PollicottSharp2007Chebotarev}).
+This paper provides a collection of fully reproducible instances of this approach on the real input kernel: see the geodesic prime shadow and the Bartholdi backtracking fugacity two-variable determinant closed form in \S\ref{subsec:real-input-40-geodesic-prime-shadow}.
+\end{remark}
+
+\paragraph{\texorpdfstring{$((2,2,2))$}{(2,2,2)}: the arity--Mertens constant tensor}
+Denote the residue vector
+$$
+(r_1,r_2,r_3)=\bigl(\chi(\gamma)\bmod 2,\ N_-(\gamma)\bmod 2,\ N_e(\gamma)\bmod 2\bigr)\in(\ZZ/2)^3.
+$$
+Let $p_{n,r_1r_2r_3}$ denote the number of primitive orbits of length $n$ falling in this residue class (counted by orbit). Define the Mertens partial sum
+$$
+S_{r_1r_2r_3}(N):=\sum_{n\le N}\frac{p_{n,r_1r_2r_3}}{\lambda^n}.
+$$
+Then there exist constants $C_{r_1r_2r_3}$ such that
+$$
+S_{r_1r_2r_3}(N)=\frac{1}{8}\log N + C_{r_1r_2r_3}+o(1),
+\qquad
+\sum_{r_1,r_2,r_3\in\{0,1\}}C_{r_1r_2r_3}=\mathsf{M},
+$$
+where the total Mertens constant satisfies
+$$
+\mathsf{M}\approx 0.322903002999.
+$$
+
+\begin{remark}[Discrete Fourier closed form of the Chebotarev--Mertens constant tensor (character inversion framework)]\label{prop:arity-chebotarev-mertens-fourier}
+Let $G$ be a finite abelian group (in the concrete examples of this section, $G=(\ZZ/m_1)\times(\ZZ/m_2)\times(\ZZ/m_3)$, with elements represented by residue vectors $(a,b,c)$), and denote by $\widehat G$ its character group. For each congruence class $g\in G$, let $p_{n,g}$ denote the primitive orbit count of length $n$ (counted by orbit), and define the Abel generating function
+$$
+P_g(r):=\sum_{n\ge 1}\frac{p_{n,g}}{\lambda^n}r^n,\qquad 0\le r<1.
+$$
+For each character $\chi\in\widehat G$, define the twisted count and its Abel generating function
+$$
+p_{n,\chi}:=\sum_{g\in G}\overline{\chi(g)}\,p_{n,g},
+\qquad
+P_\chi(r):=\sum_{n\ge 1}\frac{p_{n,\chi}}{\lambda^n}r^n.
+$$
+Then the following exact discrete Fourier interchange holds:
+$$
+P_g(r)=\frac{1}{|G|}\sum_{\chi\in\widehat G}\chi(g)\,P_\chi(r).
+$$
+Moreover, as $r\uparrow 1$, there exist constants $\log\mathfrak{M}_g$ such that
+$$
+P_g(r)=-\frac{1}{|G|}\log(1-r)+\log\mathfrak{M}_g+o(1),
+$$
+and $\log\mathfrak{M}_g$ satisfies the closed form
+$$
+\boxed{\
+\log\mathfrak{M}_g
+=\frac{1}{|G|}\log\mathfrak{M}
+\;+\;\frac{1}{|G|}\sum_{\chi\neq \chi_0}\chi(g)\,P_\chi(1)\
+}
+$$
+where $\chi_0$ is the trivial character and $\log\mathfrak{M}$ is the overall (unstratified) primitive Abel finite-part constant (Definition \ref{def:abel-finite-part} and the Dirichlet equivalent framework in Appendix \ref{app:real-input-40-dirichlet}).
+\end{remark}
+
+\begin{remark}[Normalization consistency of the constant tensor]\label{cor:arity-chebotarev-mertens-sum}
+Under the notation above,
+$$
+\sum_{g\in G}\log\mathfrak{M}_g=\log\mathfrak{M}.
+$$
+Hence (translating the Abel finite-part constants back into the partial sum constant framework) the summation identity
+$
+\sum_g C_g=\mathsf{M}
+$
+satisfied by the constant tensors at each level in this section can also be interpreted as a direct projection of character orthogonality at the finite-part constant level.
+\end{remark}
+The corresponding constant tensor values and worst-case error exponent ($\rho/\lambda$) are automatically generated by the script
+\path{scripts/exp_sync_kernel_real_input_40_arity_3d.py}
+and output as \verb|\input|-ready \LaTeX\ fragments:
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_222}
+
+\begin{remark}[Constant-level marginal bias: \texorpdfstring{$\chi\bmod 2$}{chi mod 2} and \texorpdfstring{$N_e\bmod 2$}{Ne mod 2}]\label{cor:real-input-40-mertens-222-marginal-bias}
+Under the \(((2,2,2))\) constant tensor \(C_{abc}\) (\(a=\chi\bmod 2,\ b=N_-\bmod 2,\ c=N_e\bmod 2\)), define the two one-dimensional marginal differences:
+\[
+\Delta_\chi:=\sum_{b,c}\bigl(C_{1bc}-C_{0bc}\bigr),\qquad
+\Delta_{N_e}:=\sum_{a,b}\bigl(C_{ab1}-C_{ab0}\bigr).
+\]
+Then numerically (reproducible output):
+\input{sections/generated/eq_real_input_40_arity_dirichlet_mertens_222_bias}
+Hence in this kernel, the congruence stratification preserves uniformity at the exponential leading scale (\(\tfrac18\log N\)) but exhibits significant net bias at the finite-part constant level;
+moreover, in this example the marginal bias of \(N_e\bmod 2\) is stronger than that of \(\chi\bmod 2\) (\(|\Delta_{N_e}|>|\Delta_\chi|\)).
+\end{remark}
+
+\paragraph{\texorpdfstring{$((3,2,2))$}{(3,2,2)}: upgrading the arity dimension to genuine Dirichlet stratification}
+Upgrade the first dimension to
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 2,\ N_e(\gamma)\bmod 2\bigr)\in(\ZZ/3)\times(\ZZ/2)\times(\ZZ/2),
+$$
+and let $p_{n,a,b,c}$ denote the primitive orbit count in the corresponding congruence class. Define
+$$
+S_{a,b,c}(N):=\sum_{n\le N}\frac{p_{n,a,b,c}}{\lambda^n}.
+$$
+Then similarly
+$$
+S_{a,b,c}(N)=\frac{1}{12}\log N + C_{a,b,c}+o(1),
+\qquad
+\sum_{a\in\{0,1,2\}}\sum_{b,c\in\{0,1\}}C_{a,b,c}=\mathsf{M}.
+$$
+The corresponding constant tensor values and worst-case error exponent ($\rho/\lambda$) are likewise automatically generated by the script
+\path{scripts/exp_sync_kernel_real_input_40_arity_3d.py}
+and output as \verb|\input|-ready \LaTeX\ fragments:
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_322}
+
+\paragraph{\texorpdfstring{$((3,3,3))$}{(3,3,3)}: the three-dimensional Dirichlet--Mertens constant tensor}
+Further upgrade all three observables simultaneously to Dirichlet stratification modulo $3$:
+$$
+(a,b,c)=\bigl(\chi(\gamma)\bmod 3,\ N_-(\gamma)\bmod 3,\ N_e(\gamma)\bmod 3\bigr)\in(\ZZ/3)^3.
+$$
+Let $p_{n,a,b,c}$ denote the number of primitive orbits of length $n$ falling in this residue class (counted by orbit), and define
+$$
+S_{a,b,c}(N):=\sum_{n\le N}\frac{p_{n,a,b,c}}{\lambda^n}.
+$$
+Then there exists a constant tensor $C^{(3,3,3)}_{a,b,c}$ such that
+$$
+S_{a,b,c}(N)=\frac{1}{27}\log N + C^{(3,3,3)}_{a,b,c}+o(1),
+\qquad
+\sum_{a,b,c\in\{0,1,2\}} C^{(3,3,3)}_{a,b,c}=\mathsf{M}.
+$$
+The corresponding constant tensor values (including one-dimensional marginal constants and the worst-case twisted character index) are directly generated by the script
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}
+and output as \verb|\input|-ready \LaTeX\ fragments:
+\input{sections/generated/tab_real_input_40_arity_dirichlet_mertens_333}
+
+\paragraph{Exponential-level error: worst-case twisted spectral radius ratio}
+Let $\omega_3:=e^{2\pi i/3}$. For each nontrivial character $(j_1,j_2,j_3)\in(\ZZ/3)^3\setminus\{(0,0,0)\}$, define the three-variable twisted matrix as
+$$
+M(\omega_3^{j_1},\omega_3^{j_2},\omega_3^{j_3})
+$$
+(i.e., applying character weights to the three additive observables along each edge), and let
+$$
+\rho_{3,3,3}
+:=
+\max_{(j_1,j_2,j_3)\neq(0,0,0)}
+\rho\bigl(M(\omega_3^{j_1},\omega_3^{j_2},\omega_3^{j_3})\bigr).
+$$
+The numerical output is also included in the above \verb|\input| fragment.
+Hence the error in equidistribution over congruence classes is exponential:
+$$
+p_{n,a,b,c}=\frac{p_n}{27}+O\!\left(\frac{\rho_{3,3,3}^n}{n}\right),
+\qquad
+p_n\sim\frac{\lambda^n}{n}.
+$$

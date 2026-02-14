@@ -1,0 +1,749 @@
+\section{Operator Algebra Formulation (Projection as Concept, Readout as \texorpdfstring{$0/1$}{0/1})}
+\label{app:op-algebra}
+
+Let $\mathcal{H}$ be a Hilbert space, $U$ a unitary operator representing a scan step (the representation of a group action generator), and $P$ a projection operator representing the window readout. The readout operator after time translation is
+\[
+P_t=U^{-t}PU^t.
+\]
+An address $a=a_0\cdots a_{m-1}\in\{0,1\}^m$ of length $m$ corresponds to a projection product
+\[
+P_a=\prod_{j=0}^{m-1} Q_{j}(a_j),\quad
+Q_{j}(1)=P_j,\quad Q_{j}(0)=I-P_j,
+\]
+In the commutative case, $P_a$ is the cylinder set indicator projection; for a given state $\rho$ (density operator), the readout probability is $\Tr(\rho P_a)$.
+In this formulation, ``concepts are determined by addresses'' means that the definition of the projection $P_a$ depends on the address; and ``concept values are $0/1$'' corresponds to the fact that in the exact measurement limit of a pure state $\lvert\psi\rangle$, the values belong to the projection spectrum $\{0,1\}$.
+
+\subsection{\texorpdfstring{$\mathrm{HSP}$}{HSP} Noncommutative Trace Realization: Crossed Product Formulation of Kronecker Scan}\label{app:op-algebra-hsp-trace}
+
+This section promotes the readout ``scan protocol $\Rightarrow$ period value'' to a rigorous ``canonical trace on a crossed product algebra'' formula: the time average (period value) equals the canonical trace value; and organizes it as a functor from the protocol category to the period data category.
+
+\begin{definition}[Protocol category \texorpdfstring{$\mathrm{Scanalg}$}{Scanalg}: Kronecker scan objects and morphisms]\label{def:scanalg}
+Let \(\mathrm{Scanalg}\) be the following category:
+\begin{itemize}
+  \item \textbf{Objects} are quadruples
+  \[
+  P=(\TT^d,T_\alpha,x_0,f_R),
+  \qquad
+  T_\alpha(x):=x+\alpha\ (\mathrm{mod}\ 1),
+  \]
+  where \(d\ge 1\), \(x_0\in\TT^d\), \(\alpha\in\TT^d\) (assuming \(T_\alpha\) is uniquely ergodic, so that the Birkhoff average converges to the Haar average for any continuous \(f_R\)), and \(f_R\in C(\TT^d)\) is the readout observable (possibly with regularization parameter \(R\)).
+  \item \textbf{Morphisms} \(P\to P'\) are given by an affine torus isomorphism \(\Phi:\TT^d\overset{\sim}{\to}\TT^{d'}\) (hence \(d=d'\) and \(\Phi\) preserves the normalized Haar measure), satisfying the conjugacy condition
+  \[
+  \Phi\circ T_\alpha = T_{\alpha'}\circ \Phi,\qquad \Phi(x_0)=x_0',\qquad f_R'=f_R\circ \Phi^{-1}.
+  \]
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Period data category \texorpdfstring{$\mathrm{PerDatum}$}{PerDatum}: algebras with traces and observables]\label{def:perdatum}
+Let \(\mathrm{PerDatum}\) be the following category: objects are triples \((A,\tau,a)\), where \(A\) is a unital \(C^\ast\)-algebra, \(\tau\) is a tracial state on \(A\), and \(a\in A\) is a designated observable; morphisms are unit-preserving and trace-preserving \(\ast\)-homomorphisms \(\phi:(A,\tau,a)\to(A',\tau',a')\) satisfying \(\tau' \circ \phi=\tau\) and \(\phi(a)=a'\).
+\end{definition}
+
+\begin{definition}[\texorpdfstring{$\mathrm{HSP}$}{HSP} functor: crossed product and canonical trace]\label{def:hsp-functor}
+For an object \(P=(\TT^d,T_\alpha,x_0,f_R)\in\mathrm{Scanalg}\), define
+\[
+A_P:=C(\TT^d)\rtimes_{T_\alpha}\ZZ,
+\]
+and denote \(\iota_P:C(\TT^d)\hookrightarrow A_P\) the natural inclusion.
+Define the \textbf{canonical trace} \(\tau_P\) on \(A_P\) as follows: for any finite Fourier expansion element
+\(
+\sum_{n\in\ZZ} f_n U^n
+\) (where \(U\) is the unitary implementing \(T_\alpha\)), set
+\[
+\tau_P\!\left(\sum_{n\in\ZZ} f_n U^n\right):=\int_{\TT^d} f_0(x)\,dx,
+\]
+where \(dx\) is the normalized Haar measure. Then define
+\[
+\mathrm{HSP}(P):=\bigl(A_P,\tau_P,\iota_P(f_R)\bigr)\in\mathrm{PerDatum}.
+\]
+For a morphism \(\Phi:P\to P'\) (Definition \ref{def:scanalg}), the conjugacy induces a crossed product isomorphism \(\Phi_\rtimes:A_P\to A_{P'}\) (given on \(C(\TT^d)\) by \(f\mapsto f\circ\Phi^{-1}\), sending the implementing element \(U\) to \(U'\)), and we set \(\mathrm{HSP}(\Phi):=\Phi_\rtimes\).
+\end{definition}
+
+\begin{theorem}[``Period value \(=\) trace value'': noncommutative formulation of uniquely ergodic Birkhoff average]\label{thm:hsp-period-trace}
+Under Definitions \ref{def:scanalg}--\ref{def:hsp-functor}, for any \(P=(\TT^d,T_\alpha,x_0,f_R)\in\mathrm{Scanalg}\),
+\[
+\lim_{N\to\infty}\frac{1}{N}\sum_{t=0}^{N-1} f_R\!\bigl(T_\alpha^t x_0\bigr)
+=\int_{\TT^d} f_R(x)\,dx
+=\tau_P\!\bigl(\iota_P(f_R)\bigr).
+\]
+Moreover, for any morphism \(\Phi:P\to P'\), there is strict trace preservation and period value invariance:
+\[
+\tau_{P'}\!\bigl(\mathrm{HSP}(\Phi)(\iota_P(f_R))\bigr)=\tau_P\!\bigl(\iota_P(f_R)\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Unique ergodicity yields that the Birkhoff average of any continuous \(f_R\) converges to the Haar average, giving the first equality; the second equality follows immediately from the definition of \(\tau_P\).
+For the functorial part: from the action of \(\Phi_\rtimes\) on \(C(\TT^d)\), combined with the fact that \(\Phi\) preserves the normalized Haar measure, we obtain \(\tau_{P'}\circ \Phi_\rtimes=\tau_P\), and \(\Phi_\rtimes(\iota_P(f_R))=\iota_{P'}(f_R')\). Hence the conclusion holds.
+\end{proof}
+
+\subsection{Lapse-Weighted Wish/HSP Readout: Measure Change and Explicit Error Certificates}\label{app:op-algebra-wish-lapse}
+Theorem \ref{thm:hsp-period-trace} provides the limiting realization ``period value \(=\) trace value''; however, in auditable protocol semantics, readouts must not only converge, but must also carry \emph{explicit} error certificates under finite samples and implementation-layer truncation.
+This subsection simultaneously incorporates two types of structure into the same caliber: measure changes implemented via a positive density (computational lapse), and tabulation error/regularization error budgets output by the implementation layer.
+
+\paragraph{Lapse as measure change: weighted periods and weighted readouts}
+Fix \(d\ge 1\), let \(D:=\TT^d\), and denote the normalized Haar measure by \(dx\).
+Given a positive function \(N:D\to(0,\infty)\), viewed as a lapse (which may be taken as the external overhead ratio \(N=\kappa_0/\kappa\), see Remark \ref{rem:lapse-modulated-tau-mix}).
+For any integrable observable \(g\in L^1(D)\), define the \(N\)-weighted target period as
+\begin{equation}\label{eq:op-algebra-perN-def}
+\operatorname{per}_{N}(g)
+~:=~
+\frac{\int_{D} g(x)\,N(x)\,dx}{\int_{D} N(x)\,dx}.
+\end{equation}
+For a protocol object \(P=(D,T_\alpha,x_0,g)\in\mathrm{Scanalg}\) and sample length \(N_{\mathrm{samp}}\ge 1\), denote the orbit points \(x_t:=T_\alpha^t x_0\) and define the weighted finite-sample readout
+\begin{equation}\label{eq:op-algebra-weighted-readout-def}
+A^{(N)}_{N_{\mathrm{samp}}}(P)
+~:=~
+\frac{\sum_{t=0}^{N_{\mathrm{samp}}-1} N(x_t)\,g(x_t)}{\sum_{t=0}^{N_{\mathrm{samp}}-1} N(x_t)}.
+\end{equation}
+
+\begin{definition}[Protocol-stable period datum (Wish)]\label{def:op-algebra-wish}
+Fix a target observable \(f\in L^1(D)\) and write \(W_0:=(D,f,\mathrm{Id})\).
+We call \(W_0\) a \textbf{Wish} if there exists a family of realization protocols
+\[
+P_\lambda=(D,T_\alpha,x_0,f_{R_\lambda})\in\mathrm{Scanalg}\qquad(\lambda\to\infty),
+\]
+and given a lapse density \(N\), there exist two types of auditable budget terms
+\[
+\varepsilon_{\mathrm{reg}}(\lambda;N)
+~:=~
+\bigl|\operatorname{per}_{N}(f_{R_\lambda})-\operatorname{per}_{N}(f)\bigr|,
+\qquad
+\varepsilon_{\mathrm{tab}}(N_{\mathrm{samp}},\lambda)\ge 0,
+\]
+where \(\varepsilon_{\mathrm{reg}}\) captures the finite-part/regularization deviation of the implementation-layer observable \(f_{R_\lambda}\) from the target \(f\), and \(\varepsilon_{\mathrm{tab}}\) covers tabulation truncation/rounding and other implementation errors in the finite-sample evaluation.
+Write the combined budget as
+\begin{equation}\label{eq:op-algebra-wish-eps-def}
+\varepsilon(N_{\mathrm{samp}},\lambda)
+~:=~
+\varepsilon_{\mathrm{tab}}(N_{\mathrm{samp}},\lambda)+\varepsilon_{\mathrm{reg}}(\lambda;N).
+\end{equation}
+\end{definition}
+
+\paragraph{Weighted Koksma closure: explicit finite-sample error certificates}
+Denote the star discrepancy of \(\{x_t\}_{t=0}^{N_{\mathrm{samp}}-1}\subset [0,1)^d\) as
+\begin{equation}\label{eq:op-algebra-star-discrepancy}
+D_{N_{\mathrm{samp}}}^{\ast}(P)
+:=\sup_{a\in[0,1)^d}\left|
+\frac{1}{N_{\mathrm{samp}}}\sum_{t=0}^{N_{\mathrm{samp}}-1}\ind_{[0,a)}(x_t)-\prod_{j=1}^{d} a_j
+\right|.
+\end{equation}
+For the Hardy--Krause bounded variation class (the standard BV class used in the Koksma--Hlawka inequality, see \cite{KuipersNiederreiter1974}), denote the variation by \(V_{\mathrm{HK}}(\cdot)\).
+
+\begin{theorem}[Auditable convergence and explicit error certificates for lapse-weighted Wish]\label{thm:op-algebra-lapse-weighted-wish-koksma}
+Let \(W_0=(D,f,\mathrm{Id})\) be a Wish as in Definition \ref{def:op-algebra-wish}, and let \(P_\lambda=(D,T_\alpha,x_0,f_{R_\lambda})\) be its realization family.
+Fix a lapse density \(N:D\to(0,\infty)\) and sample length \(N_{\mathrm{samp}}\ge 1\).
+Assume that \(N\) and \(N\cdot f_{R_\lambda}\) belong to the Hardy--Krause bounded variation class (so that Koksma--Hlawka applies), and that the denominator positivity condition holds:
+\begin{equation}\label{eq:op-algebra-denominator-positivity}
+\int_D N(x)\,dx\;>\;V_{\mathrm{HK}}(N)\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda).
+\end{equation}
+Then the weighted readout \eqref{eq:op-algebra-weighted-readout-def} admits the following explicit error bound:
+\begin{equation}\label{eq:op-algebra-weighted-koksma-bound}
+\boxed{\;
+\left|
+A^{(N)}_{N_{\mathrm{samp}}}(P_\lambda)-\operatorname{per}_{N}(f)
+\right|
+\ \le\
+\frac{\Bigl(V_{\mathrm{HK}}(N f_{R_\lambda})+|\operatorname{per}_{N}(f)|\,V_{\mathrm{HK}}(N)\Bigr)\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda)}
+{\int_D N\,dx- V_{\mathrm{HK}}(N)\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda)}
+\;+\;\varepsilon(N_{\mathrm{samp}},\lambda)\;}
+\end{equation}
+where \(\varepsilon(N_{\mathrm{samp}},\lambda)\) may be taken as the combined budget \eqref{eq:op-algebra-wish-eps-def} from Definition \ref{def:op-algebra-wish} (tabulation error + regularization error).
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+\widehat I_{N}:=\frac{1}{N_{\mathrm{samp}}}\sum_{t=0}^{N_{\mathrm{samp}}-1}N(x_t),\qquad
+I_{N}:=\int_D N(x)\,dx,
+\]
+\[
+\widehat I_{Nf}:=\frac{1}{N_{\mathrm{samp}}}\sum_{t=0}^{N_{\mathrm{samp}}-1}N(x_t)\,f_{R_\lambda}(x_t),\qquad
+I_{Nf}:=\int_D N(x)\,f_{R_\lambda}(x)\,dx.
+\]
+By the Koksma--Hlawka inequality (\cite{KuipersNiederreiter1974}) and \eqref{eq:op-algebra-star-discrepancy},
+\[
+|\widehat I_{N}-I_{N}|\le V_{\mathrm{HK}}(N)\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda),
+\qquad
+|\widehat I_{Nf}-I_{Nf}|\le V_{\mathrm{HK}}(N f_{R_\lambda})\,D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda).
+\]
+From \eqref{eq:op-algebra-denominator-positivity}, we obtain \(\widehat I_N\ge I_N- V_{\mathrm{HK}}(N)D_{N_{\mathrm{samp}}}^{\ast}(P_\lambda)>0\).
+Hence
+\[
+\left|\frac{\widehat I_{Nf}}{\widehat I_{N}}-\frac{I_{Nf}}{I_{N}}\right|
+\le
+\frac{|\widehat I_{Nf}-I_{Nf}|}{\widehat I_N}
+\;+\;
+\frac{|I_{Nf}|}{I_N}\cdot\frac{|\widehat I_N-I_N|}{\widehat I_N}.
+\]
+Noting that \(|I_{Nf}|/I_N=|\operatorname{per}_N(f_{R_\lambda})|\), and using
+\(
+|\operatorname{per}_N(f_{R_\lambda})-\operatorname{per}_N(f)|\le \varepsilon_{\mathrm{reg}}(\lambda;N)
+\)
+(Definition \ref{def:op-algebra-wish}) to replace it by \(|\operatorname{per}_N(f)|\) and absorb the difference into \(\varepsilon(N_{\mathrm{samp}},\lambda)\), we obtain \eqref{eq:op-algebra-weighted-koksma-bound}.
+Finally, possible finite-sample evaluation errors are incorporated via \(\varepsilon_{\mathrm{tab}}(N_{\mathrm{samp}},\lambda)\) into \(\varepsilon(N_{\mathrm{samp}},\lambda)\) (equation \eqref{eq:op-algebra-wish-eps-def}), and the conclusion follows.
+\end{proof}
+
+\begin{corollary}[Protocol time caliber invariance under lapse measure change]\label{cor:op-algebra-lapse-time-gauge-invariance}
+Let \(\mu\) be a reference measure on \(D\) (here taken to be the Haar measure), and let
+\(
+\mu_N(A):=\frac{\int_A N\,d\mu}{\int_D N\,d\mu}
+\)
+be the absolutely continuous measure change induced by the positive density \(N\).
+If \(N\) is bounded and bounded away from zero---i.e., there exist constants \(0<c\le C<\infty\) such that \(c\le N\le C\) holds \(\mu\)-almost everywhere---then for any measurable set \(A\) (\(\mu(A)>0\)),
+\[
+-\log\mu_N(A)
+~=~
+-\log\mu(A)\;+\;O(1),
+\qquad
+\text{with }|O(1)|\le \log(C/c).
+\]
+Therefore, under the protocol time caliber
+\(
+\tau(t):=-\log\mu\bigl(C(a_0{:}a_{t-1})\bigr)
+\),
+replacing \(\mu\) by \(\mu_N\) introduces only an \(O(1)\) additive modification; hence it does not alter the asymptotic priority ordering defined by \(\tau\to\infty\), nor the discrimination of any \(o(\tau)\) error caliber.
+\end{corollary}
+
+\subsection{Fold-Induced Stabilizer Subalgebra (Auditable Coarse-Graining)}\label{app:op-algebra-fold-subalgebra}
+
+For a fixed resolution $m$, the family $\{P_a\}_{a\in\Omega_m}$ in the commutative case yields a finite partition (mutually exclusive and summing to unity): $P_aP_b=0$ ($a\neq b$) and $\sum_{a\in\Omega_m}P_a=I$. They therefore generate a finite-dimensional commutative C*-algebra
+\[
+\mathcal{A}_m:=\mathrm{span}\{P_a:\ a\in\Omega_m\}\ \cong\ \CC^{|\Omega_m|}.
+\]
+
+The fold $\Fold_m:\Omega_m\to X_m$ induces an equivalence relation: $a\sim b$ if and only if $\Fold_m(a)=\Fold_m(b)$. Correspondingly, for each stable type $x\in X_m$, define the \textbf{fold projection}
+\[
+\widetilde P_x:=\sum_{\substack{a\in\Omega_m\\ \Fold_m(a)=x}} P_a.
+\]
+
+\begin{proposition}[Fold-invariant subalgebra]\label{prop:fold-invariant-subalgebra}
+The family $\{\widetilde P_x\}_{x\in X_m}$ consists of pairwise orthogonal projections with $\sum_{x\in X_m}\widetilde P_x=I$. The subalgebra they generate,
+\[
+\mathcal{B}_m:=\mathrm{span}\{\widetilde P_x:\ x\in X_m\}\ \subset\ \mathcal{A}_m,
+\]
+is isomorphic to $\CC^{|X_m|}$ and can be interpreted as the observables in $\mathcal{A}_m$ that are ``invariant under the fold equivalence relation'': $A\in\mathcal{B}_m$ if and only if $A$ takes a constant value on each fiber $\Fold_m^{-1}(x)$.
+\end{proposition}
+
+\begin{proof}
+The mutual exclusivity of $P_a$ immediately yields $\widetilde P_x\widetilde P_{x'}=0$ ($x\neq x'$) and that each $\widetilde P_x$ is a projection. Since $\Fold_m$ is surjective and the fibers partition $\Omega_m$, summing gives $\sum_{x}\widetilde P_x=\sum_{a}P_a=I$. Therefore $\{\widetilde P_x\}$ forms a finite partition, and the generated algebra is isomorphic to $\CC^{|X_m|}$. Finally, the ``constant on fibers'' characterization is a direct equivalent description in the commutative algebra $\CC^{|\Omega_m|}$, verifiable via the coordinate representation of the minimal projections $P_a$.
+\end{proof}
+
+\begin{remark}[Fold histogram as restriction of a state]
+For any state $\rho$, the mapping $x\mapsto \Tr(\rho\,\widetilde P_x)$ gives a probability vector on $\mathcal{B}_m$; in the experimental setting of this paper, it is precisely the theoretical object underlying the post-fold stable type histogram, while the empirical histogram is obtained by sample frequency estimation (see Section \ref{sec:experiments}).
+\end{remark}
+
+\begin{proposition}[Fold-induced conditional expectation (fiber averaging operator)]\label{prop:fold-conditional-expectation}
+For each $m$, define the fiber multiplicity
+\[
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|\qquad(x\in X_m),
+\]
+and define a linear map $E_m:\mathcal{A}_m\to \mathcal{B}_m$ on the minimal projection basis by
+\[
+E_m(P_a):=\frac{1}{d_m(\Fold_m(a))}\,\widetilde P_{\Fold_m(a)}\qquad(a\in\Omega_m),
+\]
+extended linearly to $\mathcal{A}_m$. Then:
+\begin{enumerate}
+  \item $E_m$ is a positive, unit-preserving idempotent map (i.e., the finite-dimensional commutative algebra version of a conditional expectation);
+  \item $E_m$ acts as the identity on $\mathcal{B}_m$: for any $B\in\mathcal{B}_m$, $E_m(B)=B$;
+  \item $E_m$ is a $\mathcal{B}_m$-bimodule map: for any $B_1,B_2\in\mathcal{B}_m$ and $A\in\mathcal{A}_m$,
+  \[
+  E_m(B_1AB_2)=B_1\,E_m(A)\,B_2.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Since $\mathcal{A}_m$ and $\mathcal{B}_m$ are both finite-dimensional commutative C*-algebras spanned by mutually exclusive minimal projections, verification only needs to be performed on the bases $\{P_a\}$ and $\{\widetilde P_x\}$.
+
+\textbf{(2)} For any $x\in X_m$,
+\[
+E_m(\widetilde P_x)=E_m\!\left(\sum_{\Fold_m(a)=x}P_a\right)
+=\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\,\widetilde P_x
+=\widetilde P_x,
+\]
+so for any linear combination $B$ in $\mathcal{B}_m$, we also have $E_m(B)=B$.
+
+\textbf{(1)} From (2) and $E_m(\mathcal{A}_m)\subset\mathcal{B}_m$, idempotency follows immediately: $E_m(E_m(A))=E_m(A)$. Moreover,
+\[
+E_m(I)=E_m\!\left(\sum_{a\in\Omega_m}P_a\right)
+=\sum_{x\in X_m}\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\widetilde P_x
+=\sum_{x\in X_m}\widetilde P_x
+=I,
+\]
+so $E_m$ is unit-preserving. Positivity follows from the coordinate description: under the isomorphism $\mathcal{A}_m\cong\CC^{|\Omega_m|}$, positive elements correspond to those with all nonnegative coordinates; the action of $E_m$ is to take the arithmetic average over each fiber and copy it to the corresponding block, thus preserving nonnegativity.
+
+\textbf{(3)} For $B_1=\widetilde P_{x_1}$, $B_2=\widetilde P_{x_2}$, and a basis element $A=P_a$,
+\[
+\widetilde P_{x_1}P_a\widetilde P_{x_2}
+=
+\begin{cases}
+P_a,& \Fold_m(a)=x_1=x_2,\\
+0,& \text{otherwise}.
+\end{cases}
+\]
+If $\Fold_m(a)=x_1=x_2=x$, then
+\[
+E_m(\widetilde P_xP_a\widetilde P_x)=E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x
+=\widetilde P_x\,E_m(P_a)\,\widetilde P_x.
+\]
+If $\Fold_m(a)=x_1=x_2$ does not hold, both sides equal $0$. Linear extension to general $A\in\mathcal{A}_m$ and general $B_1,B_2\in\mathcal{B}_m$ yields the result.
+\end{proof}
+
+\begin{definition}[Fold-gauge group (fiber automorphism group)]\label{def:fold-gauge-group}
+Fix a resolution \(m\). Define the fiber automorphism group of the fold \(\Fold_m:\Omega_m\to X_m\) as
+\[
+\mathcal{G}_m
+:=
+\mathrm{Aut}(\Fold_m)
+:=
+\left\{\sigma\in \mathrm{Sym}(\Omega_m):\ \Fold_m\circ \sigma=\Fold_m\right\}.
+\]
+Equivalently, \(\sigma\) may permute elements arbitrarily within each fiber \(\Fold_m^{-1}(x)\), but cannot change the stable type label \(x\in X_m\).
+\end{definition}
+
+\begin{proposition}[Fiber permutation decomposition and Reynolds projection]\label{prop:fold-gauge-reynolds}
+Let \(\mathcal{G}_m\) be as in Definition \ref{def:fold-gauge-group}, and let \(d_m(x)=|\Fold_m^{-1}(x)|\).
+Then:
+\begin{enumerate}
+  \item \textbf{(Direct product decomposition)} There is a natural isomorphism
+  \[
+  \boxed{\ \mathcal{G}_m\ \cong\ \prod_{x\in X_m} S_{d_m(x)}\ }.
+  \]
+  \item \textbf{(Invariant subalgebra)} \(\mathcal{G}_m\) acts naturally on \(\mathcal{A}_m\) via \(\sigma(P_a):=P_{\sigma(a)}\). Its fixed-point subalgebra satisfies
+  \[
+  \boxed{\ \mathcal{A}_m^{\mathcal{G}_m}=\mathcal{B}_m\ }.
+  \]
+  \item \textbf{(Reynolds projection = conditional expectation)} Define the Reynolds averaging operator
+  \[
+  \mathcal{R}_m:\mathcal{A}_m\to\mathcal{A}_m,\qquad
+  \mathcal{R}_m(A):=\frac{1}{|\mathcal{G}_m|}\sum_{\sigma\in\mathcal{G}_m}\sigma(A).
+  \]
+  Then the image of \(\mathcal{R}_m\) is exactly \(\mathcal{B}_m\), and under the identification \(\mathcal{B}_m\subset\mathcal{A}_m\), the strict identity
+  \[
+  \boxed{\ \mathcal{R}_m=E_m\ }
+  \]
+  holds.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\textbf{(1)} From \(\Fold_m\circ\sigma=\Fold_m\), any \(\sigma\in\mathcal{G}_m\) must permute within each fiber; conversely, for each \(x\in X_m\), choosing an arbitrary \(\sigma_x\in S_{d_m(x)}\) and assembling them on the disjoint union \(\Omega_m=\bigsqcup_x \Fold_m^{-1}(x)\) into a global permutation yields an element satisfying \(\Fold_m\circ\sigma=\Fold_m\). This gives the direct product decomposition.
+\par
+\textbf{(2)} Under the isomorphism \(\mathcal{A}_m\cong \CC^{\Omega_m}\), the action of \(\mathcal{G}_m\) permutes coordinates within each fiber. Hence the invariant elements are precisely those functions that are constant on each fiber, consistent with the characterization of \(\mathcal{B}_m\) in Proposition \ref{prop:fold-invariant-subalgebra}.
+\par
+\textbf{(3)} Since \(\mathcal{R}_m\) is the average over a finite group action, its image is contained in the fixed-point subalgebra, hence in \(\mathcal{B}_m\). On a basis element \(P_a\), let \(x=\Fold_m(a)\). The orbit \(\{\sigma(a):\sigma\in\mathcal{G}_m\}\) equals the entire fiber \(\Fold_m^{-1}(x)\), and each \(a'\in \Fold_m^{-1}(x)\) appears the same number of times in that orbit (equal to the stabilizer size). Therefore,
+\[
+\mathcal{R}_m(P_a)
+=\frac{1}{|\mathcal{G}_m|}\sum_{\sigma\in\mathcal{G}_m}P_{\sigma(a)}
+=\frac{1}{d_m(x)}\sum_{\Fold_m(a')=x}P_{a'}
+=\frac{1}{d_m(x)}\,\widetilde P_x
+=E_m(P_a),
+\]
+and by linearity, \(\mathcal{R}_m=E_m\). \qedhere
+\end{proof}
+
+\begin{remark}[Fold-specific auditable ``information loss interface'']
+\label{rem:fold-expectation-interface}
+The operator $E_m$ from Proposition \ref{prop:fold-conditional-expectation} is a fully explicit ``fiber averaging'' operator: it compresses a microstate-layer observable $A\in\mathcal{A}_m$ to its fold-fiber-constant part $E_m(A)\in\mathcal{B}_m$. Its coefficients depend only on the fold multiplicity $d_m(x)$ (see Appendix \ref{app:fold-multiplicity}), and therefore it serves as a structural invariant interface induced by the fold: different folds/normalization rules change the fiber structure, thereby changing the block-averaging behavior of $E_m$.
+\end{remark}
+
+\begin{proposition}[Singular value spectrum of the conditional expectation: completely determined by fiber multiplicities]\label{prop:fold-conditional-expectation-singular-spectrum}
+Identify $E_m$ as a linear operator
+\[
+E_m:\ell^2(\Omega_m)\to \ell^2(X_m),
+\qquad
+(E_m f)(x):=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x} f(a),
+\]
+where both sides carry the standard inner product under the counting measure. Then the adjoint operator satisfies
+\[
+(E_m^\ast g)(a)=\frac{1}{d_m(\Fold_m(a))}\,g(\Fold_m(a)),
+\]
+and \(E_mE_m^\ast\) is a diagonal operator on \(\ell^2(X_m)\):
+\[
+(E_mE_m^\ast g)(x)=\frac{1}{d_m(x)}\,g(x).
+\]
+Therefore, the singular values of \(E_m\) are
+\[
+\boxed{\ \sigma_x(E_m)=d_m(x)^{-1/2}\qquad(x\in X_m).\ }
+\]
+\end{proposition}
+\begin{proof}
+By definition, for any \(f\in\ell^2(\Omega_m)\) and \(g\in\ell^2(X_m)\), compute the pairing:
+\[
+\langle E_m f,\ g\rangle_{\ell^2(X_m)}
+=\sum_{x\in X_m}\left(\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x} f(a)\right)\overline{g(x)}
+=\sum_{a\in\Omega_m} f(a)\,\overline{\left(\frac{1}{d_m(\Fold_m(a))}g(\Fold_m(a))\right)},
+\]
+yielding the coordinate formula for \(E_m^\ast\). Substituting,
+\[
+(E_mE_m^\ast g)(x)
+=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x}(E_m^\ast g)(a)
+=\frac{1}{d_m(x)}\sum_{\Fold_m(a)=x}\frac{1}{d_m(x)}\,g(x)
+=\frac{1}{d_m(x)}\,g(x).
+\]
+Thus the eigenvalues of \(E_mE_m^\ast\) are \(\{1/d_m(x)\}_{x\in X_m}\), and the singular values are their square roots. \qedhere
+\end{proof}
+
+\begin{corollary}[Schatten norm family: negative-moment ``projection cost spectrum'']\label{cor:fold-conditional-expectation-schatten}
+For any \(p\ge 1\), the Schatten norm satisfies
+\[
+\boxed{\ \|E_m\|_{S_p}^p=\sum_{x\in X_m} d_m(x)^{-p/2}\ }.
+\]
+In particular,
+\[
+\|E_m\|_{HS}^2=\sum_{x\in X_m}\frac{1}{d_m(x)},
+\qquad
+\|E_m\|_{op}=\max_{x\in X_m} d_m(x)^{-1/2}=d_{\min}^{-1/2}.
+\]
+Table \ref{tab:fold_conditional_expectation_singular_spectrum} provides reproducible numerical outputs for several values of \(m\).
+\input{sections/generated/tab_fold_conditional_expectation_singular_spectrum}
+\end{corollary}
+
+\begin{definition}[Fiber multiplicity spectrum operator (multiplicity operator)]\label{def:fold-fiber-multiplicity-operator}
+In the \(\ell^2(X_m)\) caliber of Proposition \ref{prop:fold-conditional-expectation-singular-spectrum}, define the positive diagonal operator
+\[
+\mathcal{F}_m:=(E_mE_m^\ast)^{-1}:\ell^2(X_m)\to\ell^2(X_m),
+\qquad
+(\mathcal{F}_m g)(x):=d_m(x)\,g(x).
+\]
+(To avoid confusion with the Fibonacci number \(F_m\), the calligraphic symbol \(\mathcal{F}_m\) is used here.)
+\end{definition}
+
+\begin{proposition}[Trace representation of spatial moments and negative moments]\label{prop:fold-fiber-multiplicity-trace-moments}
+For any real number \(t\in\RR\),
+\[
+\boxed{\;
+\Tr(\mathcal{F}_m^{t})=\sum_{x\in X_m} d_m(x)^{t}\; }.
+\]
+In particular, for any integer \(q\ge 1\), the collision moments in the main text satisfy
+\[
+\boxed{\;
+S_q(m)=\sum_{x\in X_m}d_m(x)^q=\Tr(\mathcal{F}_m^{q})\; }.
+\]
+Moreover, for any \(s>0\), the negative moment sums satisfy
+\[
+\boxed{\;
+\sum_{x\in X_m}d_m(x)^{-s}=\Tr(\mathcal{F}_m^{-s})=\|E_m\|_{S_{2s}}^{2s}\; }.
+\]
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:fold-conditional-expectation-singular-spectrum}, the operator \(E_mE_m^\ast\) is diagonalized in the standard basis \(\{\delta_x\}_{x\in X_m}\) with eigenvalues \(1/d_m(x)\).
+Therefore \(\mathcal{F}_m=(E_mE_m^\ast)^{-1}\) is also a diagonal operator with eigenvalues \(d_m(x)\), and for any \(t\in\RR\), \(\mathcal{F}_m^t\) remains diagonal with eigenvalues \(d_m(x)^t\).
+Taking the trace gives \(\Tr(\mathcal{F}_m^{t})=\sum_x d_m(x)^t\).
+The last identity \(\sum_x d_m(x)^{-s}=\|E_m\|_{S_{2s}}^{2s}\) follows immediately from Corollary \ref{cor:fold-conditional-expectation-schatten}. \qedhere
+\end{proof}
+
+\subsection{Three Direct Consequences of the Negative Moment Spectrum: Left-Tail Free Energy, Visible Effective Support, and Left-Tail Certificates}\label{app:op-algebra-negative-moment-consequences}
+
+Corollary \ref{cor:fold-conditional-expectation-schatten} and Table \ref{tab:fold_conditional_expectation_singular_spectrum} provide more than a list of norm values.
+Since \(\|E_m\|_{S_p}^p\) equals exactly the negative moment sum of the fold fiber multiplicities \(d_m\), they can be directly promoted to three types of auditable derived conclusions: a ``left-tail free energy'' characterizing the growth of the small-multiplicity layer, a conversion of the singular value energy distribution into an interpretable ``effective support size'', and explicit lower bound certificates for the number of moderate/low-multiplicity types.
+
+\begin{definition}[Negative moment sum and left-tail free energy density]\label{def:fold-negative-moment-sum-left-tail}
+For any \(s>0\), define the negative moment sum
+\[
+T_s(m):=\sum_{x\in X_m} d_m(x)^{-s}.
+\]
+By Proposition \ref{prop:fold-fiber-multiplicity-trace-moments} and Corollary \ref{cor:fold-conditional-expectation-schatten}, we immediately obtain
+\[
+\boxed{\ T_s(m)=\Tr(\mathcal{F}_m^{-s})=\|E_m\|_{S_{2s}}^{2s}\ }.
+\]
+Define its exponential scale (left-tail free energy density) as
+\[
+t_s:=\limsup_{m\to\infty}\frac{1}{m}\log T_s(m).
+\]
+\end{definition}
+
+\begin{remark}[Empirical stabilization of the left-tail exponential rate family: base per unit increment of \(m\)]\label{rem:fold-negative-moment-free-energy-bases}
+On the even resolution grid \(m=8,10,\dots,24\), one can use adjacent step-size-\(2\) ratios to obtain the ``per unit \(m\)'' empirical base
+\[
+b_s(m):=\Bigl(\frac{T_s(m)}{T_s(m-2)}\Bigr)^{1/2}\qquad(m\ge 10).
+\]
+From the numerical data in Table \ref{tab:fold_conditional_expectation_singular_spectrum}, one can directly and auditably observe that \(b_s(m)\) quickly stabilizes:
+in particular, for \(s=\tfrac12,1,2\) (corresponding to \(\|E_m\|_{S_1}\), \(\|E_m\|_{HS}^2\), \(\|E_m\|_{S_4}^4\), respectively), at \(m=24\),
+\[
+b_{1/2}(24)\approx 1.4582,\qquad
+b_{1}(24)\approx 1.3167,\qquad
+b_{2}(24)\approx 1.0924,
+\]
+where the base for \(s=2\) is still slowly decreasing.
+If the limit \(b_s:=\lim_{m\to\infty}b_s(m)\) further exists, then \(t_s=\log b_s\), so that \(\{t_s\}_{s>0}\) yields a family of left-tail exponential rate interfaces orthogonal to the positive moment spectrum in the main text (which characterizes the high-multiplicity right tail).
+\end{remark}
+
+\input{sections/generated/tab_fold_conditional_expectation_left_tail_bases}
+
+\begin{definition}[Singular value energy distribution and visible effective support size]\label{def:fold-Em-effective-support}
+Denote the singular values from Proposition \ref{prop:fold-conditional-expectation-singular-spectrum} as
+\(\sigma_x(E_m)=d_m(x)^{-1/2}\) (\(x\in X_m\)).
+Define the singular value ``energy'' distribution (squared normalization) as
+\[
+p_x:=\frac{\sigma_x(E_m)^2}{\sum_{y\in X_m}\sigma_y(E_m)^2}
+=\frac{d_m(x)^{-1}}{\sum_{y\in X_m}d_m(y)^{-1}}
+=\frac{d_m(x)^{-1}}{\|E_m\|_{HS}^2},
+\qquad x\in X_m.
+\]
+From this, define two fully auditable effective support sizes:
+\[
+\begin{aligned}
+N_2(m)&:=\frac{1}{\sum_x p_x^2}
+\quad(\text{R\'enyi-2 / collision effective size}),\\
+N_{1/2}(m)&:=\Bigl(\sum_x\sqrt{p_x}\Bigr)^2
+\quad(\text{R\'enyi-}\tfrac12\text{ effective size}).
+\end{aligned}
+\]
+\end{definition}
+
+\begin{proposition}[Closed-form Schatten readout of effective support]\label{prop:fold-Em-effective-support-schatten}
+Under Definition \ref{def:fold-Em-effective-support},
+\[
+\boxed{\;
+N_2(m)=\frac{\bigl(\sum_x d_m(x)^{-1}\bigr)^2}{\sum_x d_m(x)^{-2}}
+=\frac{\|E_m\|_{HS}^4}{\|E_m\|_{S_4}^4}\;},
+\qquad
+\boxed{\;
+N_{1/2}(m)=\frac{\bigl(\sum_x d_m(x)^{-1/2}\bigr)^2}{\sum_x d_m(x)^{-1}}
+=\left(\frac{\|E_m\|_{S_1}}{\|E_m\|_{S_2}}\right)^2\;}.
+\]
+\end{proposition}
+
+\input{sections/generated/tab_fold_conditional_expectation_effective_support}
+
+\begin{theorem}[Ineliminable lower bound from the negative moment left-tail certificate for ``low-multiplicity heavy tails'']\label{prop:fold-negative-moment-left-tail-certificate}
+Let \(X\sim \mathrm{Unif}(X_m)\), take any \(s>0\), and let the nonnegative random variable
+\[
+Y:=d_m(X)^{-s}.
+\]
+The Paley--Zygmund inequality with threshold \(\theta=\tfrac12\) gives
+\[
+\mathbb P\!\left(Y\ge \tfrac12\,\mathbb EY\right)
+\ \ge\
+\frac{1}{4}\frac{(\mathbb EY)^2}{\mathbb E[Y^2]}
+\ =\
+\frac{1}{4}\frac{T_s(m)^2}{|X_m|\,T_{2s}(m)}.
+\]
+Moreover, the event \(Y\ge \tfrac12\mathbb EY\) is equivalent to an explicit low-multiplicity threshold
+\[
+d_m(X)\ \le\ \left(\frac{2|X_m|}{T_s(m)}\right)^{1/s}.
+\]
+Therefore, the following fully auditable counting lower bound is obtained:
+\[
+\boxed{
+\frac{\#\left\{x\in X_m:\ d_m(x)\le \left(\frac{2|X_m|}{T_s(m)}\right)^{1/s}\right\}}{|X_m|}
+\ \ge\
+\frac{1}{4}\frac{T_s(m)^2}{|X_m|\,T_{2s}(m)}.
+}
+\]
+This certificate depends only on negative moments (equivalently, on the Schatten spectrum of \(E_m\)); hence, under an audit specification given such spectral data, the heavy-tail proportion in the low-multiplicity range has an explicit lower bound that cannot be eliminated by within-fiber relabeling or local rewriting. It simultaneously provides an orthogonal proportional lower bound complementary to the main text's high-multiplicity right tail, which is primarily constrained by the positive moment spectrum.
+\end{theorem}
+
+\input{sections/generated/eq_fold_conditional_expectation_left_tail_m24}
+
+\begin{theorem}[Fold pushforward--uniform lift yields a canonical Markov adjoint projection on the probability simplex]\label{prop:fold-pushforward-lift}
+In the commutative case, $\mathcal{A}_m$ and $\mathcal{B}_m$ can be identified as complex-valued function algebras on finite sets:
+\[
+\mathcal{A}_m\cong \CC^{\Omega_m},\qquad
+\mathcal{B}_m\cong \CC^{X_m}.
+\]
+Under this identification, any state $\rho$ corresponds on $\mathcal{A}_m$ to a probability vector
+\(
+\mu_\rho(a):=\Tr(\rho P_a)
+\)
+($a\in\Omega_m$), and on $\mathcal{B}_m$ to
+\(
+\pi_\rho(x):=\Tr(\rho \widetilde P_x)
+\)
+($x\in X_m$). Then:
+\begin{enumerate}
+  \item \textbf{(Pushforward)} The pushforward distribution of the fold satisfies the explicit formula
+  \[
+  \pi_\rho(x)=\sum_{\substack{a\in\Omega_m\\ \Fold_m(a)=x}}\mu_\rho(a),
+  \qquad x\in X_m,
+  \]
+  i.e., $\pi_\rho=(\Fold_m)_*\mu_\rho$.
+  \item \textbf{(Uniform lift)} Define the Markov kernel from $X_m$ to $\Omega_m$ (uniformly distributing within each fiber):
+  \[
+  Q_m:\ \Delta(X_m)\to\Delta(\Omega_m),\qquad
+  (Q_m\pi)(a):=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))},
+  \]
+  where $\Delta(\cdot)$ denotes the probability simplex. Then $(\Fold_m)_*\circ Q_m=\mathrm{id}_{\Delta(X_m)}$.
+  \item \textbf{(Duality)} Let $P_m=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m)$. Then for any observable $f\in \CC^{\Omega_m}$ and distribution $\mu\in\Delta(\Omega_m)$,
+  \[
+  \langle E_m f,\mu\rangle\ =\ \langle f,(Q_m\circ P_m)\mu\rangle,
+  \]
+  where $\langle f,\mu\rangle:=\sum_{a\in\Omega_m} f(a)\mu(a)$ is the expectation pairing. In other words, $E_m$ on the observable side and the ``first pushforward to $X_m$ then uniformly lift back to $\Omega_m$'' Markov kernel $Q_m\circ P_m$ are adjoint to each other.
+\end{enumerate}
+Therefore, $Q_m\circ P_m$ provides an auditable ``minimal information preimage'' regularization: it erases all non-uniform structure within each fiber, retaining only the fiber volume $d_m$ as the sole carrier of externalized residuals.
+\end{theorem}
+
+\begin{proof}
+\textbf{(1)} By the definition \(\widetilde P_x=\sum_{\Fold_m(a)=x}P_a\),
+\(
+\pi_\rho(x)=\Tr(\rho\widetilde P_x)=\sum_{\Fold_m(a)=x}\Tr(\rho P_a)=\sum_{\Fold_m(a)=x}\mu_\rho(a)
+\).
+
+\textbf{(2)} For any $x\in X_m$,
+\[
+((\Fold_m)_*(Q_m\pi))(x)=\sum_{\Fold_m(a)=x}\frac{\pi(x)}{d_m(x)}=\pi(x).
+\]
+
+\textbf{(3)} Under the function algebra identification $\mathcal{A}_m\cong \CC^{\Omega_m}$, $E_m$ is precisely the operator that takes the arithmetic average over each fiber and copies it back:
+\[
+(E_m f)(a)=\frac{1}{d_m(\Fold_m(a))}\sum_{\Fold_m(b)=\Fold_m(a)} f(b).
+\]
+Therefore,
+\[
+\langle E_m f,\mu\rangle
+=\sum_{a\in\Omega_m}\mu(a)\frac{1}{d_m(\Fold_m(a))}\sum_{\Fold_m(b)=\Fold_m(a)} f(b)
+=\sum_{x\in X_m}\frac{\sum_{\Fold_m(a)=x}\mu(a)}{d_m(x)}\sum_{\Fold_m(b)=x}f(b).
+\]
+Meanwhile, $(P_m\mu)(x)=\sum_{\Fold_m(a)=x}\mu(a)$, and $(Q_m(P_m\mu))(b)=(P_m\mu)(\Fold_m(b))/d_m(\Fold_m(b))$. Substituting,
+\[
+\langle f,(Q_m\circ P_m)\mu\rangle
+=\sum_{b\in\Omega_m} f(b)\frac{(P_m\mu)(\Fold_m(b))}{d_m(\Fold_m(b))}
+=\sum_{x\in X_m}\frac{(P_m\mu)(x)}{d_m(x)}\sum_{\Fold_m(b)=x}f(b),
+\]
+which agrees with the above.
+\end{proof}
+
+\subsection{Projection Word Category: Composable, Rewritable, and Decidably Equivalent}\label{app:op-algebra-projection-word}
+The preceding two subsections of this appendix have provided three types of rigid interfaces: the fold-invariant subalgebra \(\mathcal{B}_m\subset\mathcal{A}_m\) (Proposition \ref{prop:fold-invariant-subalgebra}), the conditional expectation \(E_m:\mathcal{A}_m\to\mathcal{B}_m\) (Proposition \ref{prop:fold-conditional-expectation}), and the pushforward \(P_m=(\Fold_m)_*\) and fiber uniform lift \(Q_m\) on the probability simplex (Theorem \ref{prop:fold-pushforward-lift}).
+This subsection tightens them into a ``projection word calculus'': it allows these interfaces to be freely composed as generators, provides terminating cancellation rules and normal forms, and thereby promotes ``algorithmic equivalence'' to the decidable problem of ``projection word equivalence'' (at the semantic level of fixed resolution \(m\)).
+
+\paragraph{Two-sided objects: observable side and distribution side}
+To avoid conflating states and observables, we introduce two parallel object layers for fixed \(m\):
+\begin{itemize}
+  \item \textbf{Observable side:} \(\mathcal{A}_m\simeq \CC^{\Omega_m}\), \(\mathcal{B}_m\simeq \CC^{X_m}\), and the coarse-graining operator \(E_m:\mathcal{A}_m\to\mathcal{B}_m\);
+  \item \textbf{Distribution side:} \(\Delta(\Omega_m)\), \(\Delta(X_m)\), and the pushforward \(P_m:\Delta(\Omega_m)\to\Delta(X_m)\) together with the maximum-entropy/fiber-uniform lift \(Q_m:\Delta(X_m)\to\Delta(\Omega_m)\).
+\end{itemize}
+The two sides are connected by the natural pairing
+\(
+\langle f,\mu\rangle:=\sum_{a\in\Omega_m} f(a)\mu(a)
+\),
+and Theorem \ref{prop:fold-pushforward-lift} (3) provides the adjunction relation between \(E_m\) and \(Q_m\circ P_m\).
+
+\begin{definition}[Projection word category (fixed resolution)]\label{def:projection-word-category}
+Fix \(m\). Define two endpoint sets
+\[
+\mathrm{Obj}_{\mathrm{obs}}(m):=\{\mathcal{A}_m,\mathcal{B}_m\},\qquad
+\mathrm{Obj}_{\mathrm{mea}}(m):=\{\Delta(\Omega_m),\Delta(X_m)\}.
+\]
+Define two classes of basic morphisms:
+\begin{enumerate}
+  \item \textbf{Observable-side generators:} the conditional expectation \(E_m:\mathcal{A}_m\to\mathcal{B}_m\) and the fold pullback (inclusion) operator
+  \[
+  \iota_m:\mathcal{B}_m\to\mathcal{A}_m,\qquad
+  (\iota_m b)(a):=b(\Fold_m(a)).
+  \]
+  \item \textbf{Distribution-side generators:} the pushforward \(P_m:\Delta(\Omega_m)\to\Delta(X_m)\) and the lift \(Q_m:\Delta(X_m)\to\Delta(\Omega_m)\) (equation \eqref{eq:pom-fiber-uniform-lift} and Theorem \ref{prop:fold-pushforward-lift}).
+\end{enumerate}
+Finite compositions of these generators are called \emph{projection words} at resolution \(m\).
+\end{definition}
+
+\begin{proposition}[Basic cancellation rules and idempotent projections]\label{prop:projection-word-rewrite}
+Under Definition \ref{def:projection-word-category}, there are two strict cancellation identities:
+\[
+\boxed{\ E_m\circ \iota_m=\mathrm{id}_{\mathcal{B}_m}\ },\qquad
+\boxed{\ P_m\circ Q_m=\mathrm{id}_{\Delta(X_m)}\ }.
+\]
+The two resulting ``projection closures'' are both idempotent:
+\[
+\Pi_m:=\iota_m\circ E_m:\mathcal{A}_m\to\mathcal{A}_m,\qquad
+K_m:=Q_m\circ P_m:\Delta(\Omega_m)\to\Delta(\Omega_m),
+\]
+satisfying \(\Pi_m^2=\Pi_m\), \(K_m^2=K_m\); and the image of \(\Pi_m\) (resp.\ \(K_m\)) is precisely the subspace of ``fiber-constant observables'' (resp.\ ``fiber-uniform distributions'').
+\end{proposition}
+\begin{proof}
+The identity \(E_m\circ\iota_m=\mathrm{id}\) follows directly from Proposition \ref{prop:fold-conditional-expectation} part (2) (\(E_m\) acts as the identity on \(\mathcal{B}_m\)) and \(\iota_m(\widetilde P_x)=\widetilde P_x\).
+The identity \(P_m\circ Q_m=\mathrm{id}\) follows from Theorem \ref{prop:fold-pushforward-lift} (2).
+\par
+Idempotency follows immediately from the cancellation identities: \(\Pi_m^2=\iota_m(E_m\iota_m)E_m=\iota_mE_m=\Pi_m\), \(K_m^2=Q_m(P_mQ_m)P_m=Q_mP_m=K_m\).
+The characterization of the image spaces comes from the definitions of \(\Pi_m\) (\(K_m\)): \(\Pi_m f\) takes the average value on each fiber and copies it back, so the image is the fiber-constant subspace; similarly, \(K_m\mu\) becomes uniformly distributed on each fiber, so the image is the fiber-uniform distribution subspace. \qedhere
+\end{proof}
+
+\begin{proposition}[Normal form and decidable equivalence for projection words]\label{prop:projection-word-normal-form}
+Fix \(m\). On the observable side, any projection word \(w:\mathcal{A}_m\to\mathcal{A}_m\) can be reduced in the sense of equality to one of three normal forms:
+\[
+\mathrm{id}_{\mathcal{A}_m},\qquad
+\Pi_m=\iota_m\circ E_m,\qquad
+\iota_m\circ \beta\circ E_m\ \ (\beta\in\mathrm{End}(\mathcal{B}_m)).
+\]
+On the distribution side, any projection word \(w:\Delta(\Omega_m)\to\Delta(\Omega_m)\) can be reduced to
+\[
+\mathrm{id}_{\Delta(\Omega_m)},\qquad
+K_m=Q_m\circ P_m,\qquad
+Q_m\circ \alpha\circ P_m\ \ (\alpha\in\mathrm{End}(\Delta(X_m))).
+\]
+Therefore, in the pure ``projection word language'' at fixed \(m\), word equivalence is decidable via finite reduction using the cancellation rules \(E_m\iota_m\Rightarrow \mathrm{id}\), \(P_mQ_m\Rightarrow \mathrm{id}\).
+\end{proposition}
+\begin{proof}
+Observable side: any composite word consists of alternating \(\iota_m\) and \(E_m\). Using the cancellation rule \(E_m\circ\iota_m=\mathrm{id}_{\mathcal{B}_m}\), all adjacent \(E_m\iota_m\) subwords can be eliminated, yielding a ``no further cancellation possible'' alternating form; if both endpoints are \(\mathcal{A}_m\), the result must be either \(\mathrm{id}\) or \(\iota_m(\cdot)E_m\) sandwiching a \(\mathcal{B}_m\) endomorphism.
+The distribution side is analogous, using \(P_m\circ Q_m=\mathrm{id}_{\Delta(X_m)}\).
+Since each cancellation strictly reduces the word length, the reduction must terminate, yielding decidable equivalence. \qedhere
+\end{proof}
+
+\begin{remark}[Entropy increase as scalar semantics of projection words]\label{rem:projection-word-entropy-defect}
+For the distribution-side lift \(Q_m\), Theorem \ref{thm:pom-maxent-lift} in the main text provides the uniqueness of the strict ``maximum entropy lift'' and defines the fiber defect functional
+\[
+\kappa_m(\pi):=\mathbb{E}_{\pi}\bigl[\log d_m(X)\bigr]\qquad(\pi\in\Delta(X_m)).
+\]
+It can be viewed as a \textbf{scalar semantics} of the projection word \(Q_m\): for any \(\pi\), the entropy after lifting satisfies
+\(
+H(Q_m\pi)=H(\pi)+\kappa_m(\pi)
+\).
+Therefore, at the semantic level of the ``projection word calculus,'' in addition to spectral fingerprints (\(\rho,\log\mathfrak{M},\) the Dirichlet--Mertens tensor, etc.), \(\kappa_m\) provides an auditable scalar invariant interface tightly bound to the resolution \(m\).
+\end{remark}
+
+\subsection{Auditable Certificates for Spectral Radius: Lyapunov Inequality and Semidefinite Feasibility}\label{app:op-algebra-lyapunov}
+In the kernel-version RH/GRH criteria of the main text, both the ``square-root bound'' and the ``worst-case twisted spectral radius bound'' are stated as spectral radius inequalities.
+This section provides an equivalent characterization that is fully rigorous in finite dimensions and can be output as an \textbf{auditable certificate}: it reformulates the spectral radius upper bound as the feasibility of a Lyapunov-type matrix inequality.
+
+\begin{proposition}[Spectral radius bound \texorpdfstring{$\Leftrightarrow$}{<->} Lyapunov inequality]\label{prop:lyapunov-spectral-radius-certificate}
+Let $A\in\CC^{n\times n}$, $r>0$. The following conditions are equivalent:
+\begin{enumerate}
+  \item $\rho(A)<r$;
+  \item There exists a Hermitian positive definite matrix $H\succ 0$ such that
+  \[
+  \boxed{\;
+  A^\ast H A\ \prec\ r^2 H.
+  \;}
+  \]
+\end{enumerate}
+In particular, for any parameterized twist matrix family $M_{K,\rho}(u)$, taking $r=\lambda_1(u)^{1/2}$, the ``kernel-version (G)RH square-root bound''
+\(
+\rho(M_{K,\rho}(u))<\lambda_1(u)^{1/2}
+\)
+is equivalent to the existence of a certificate matrix $H_{\rho,u}\succ 0$ such that
+\[
+M_{K,\rho}(u)^\ast H_{\rho,u} M_{K,\rho}(u)\ \prec\ \lambda_1(u)\,H_{\rho,u}.
+\]
+\end{proposition}
+\begin{proof}
+\textbf{(1)$\Rightarrow$(2)} Let $B:=A/r$; then $\rho(B)<1$. Set
+\[
+H:=\sum_{k\ge 0}(B^\ast)^k B^k.
+\]
+Since $\rho(B^\ast B)<1$, the series converges and yields $H\succ 0$. Direct computation gives
+\[
+B^\ast H B
+=\sum_{k\ge 0}(B^\ast)^{k+1}B^{k+1}
+=H-I\ \prec\ H,
+\]
+hence $A^\ast H A=r^2 B^\ast H B\prec r^2 H$.
+
+\textbf{(2)$\Rightarrow$(1)} If $A^\ast H A\prec r^2 H$, then for any eigenpair $Av=\lambda v$ ($v\neq 0$),
+\[
+v^\ast A^\ast H A v=|\lambda|^2 v^\ast H v\ <\ r^2 v^\ast H v,
+\]
+hence $|\lambda|<r$, so $\rho(A)<r$. \qedhere
+\end{proof}
+
+\begin{remark}[Semidefinite programming caliber: converting spectral bounds into computable certificates]\label{rem:lyapunov-sdp}
+Proposition \ref{prop:lyapunov-spectral-radius-certificate} transforms the spectral radius inequality into a linear matrix inequality (LMI):
+\(
+A^\ast H A\preceq r^2 H
+\)
+is a convex feasibility problem in the variable $H$. Hence, in the finite-dimensional computable caliber, the ``kernel-version (G)RH'' can be organized as a collection of auditable certificate outputs:
+for each nontrivial twist component (character/representation), output a certificate $H_{\rho,u}\succ 0$, together with the residual matrix
+\(
+r^2H_{\rho,u}-A^\ast H_{\rho,u}A
+\)
+for verification.
+\end{remark}

@@ -1,0 +1,550 @@
+\section{Reproducible Experiments: Convergence of Fold Histograms and Quantitative Comparison with the Parry(PF) Baseline}\label{sec:experiments}
+
+This section provides a \textbf{reproducible} quantitative verification pathway. Two caliber points must be emphasized:
+\begin{itemize}
+  \item \textbf{Provable convergence target:} For a given dynamical system and readout, the limiting distribution of the post-fold stable type histogram $\hat{\pi}_{m,N}$ should be $\pi_m^{\mathrm{fold}}=(\Fold_m)_*\mu_m$ (Theorem \ref{thm:tv-certificate-hist}), where $\mu_m$ is the limiting distribution of length-$m$ microstates under the true process.
+  \item \textbf{Parry(PF) serves only as a baseline:} This paper uses the Parry maximum entropy cylinder distribution $\pi_m$ of the golden mean SFT as the ``maximum entropy baseline.'' Under general dynamics (e.g., Sturmian sequences produced by rotation), we do \emph{not} claim that $\pi_m^{\mathrm{fold}}=\pi_m$; rather, the discrepancy between the two is controlled by an auditable error decomposition formula (Corollary \ref{cor:tv-decomposition-parry}).
+\end{itemize}
+
+\subsection{Experiment Manifest and Output Specification: Reproduction Entry}\label{subsec:experiments-manifest}
+To avoid ``providing only an overview without auditability,'' all experiments in this section have their parameters, output fields, and artifact paths consolidated in scripts. \textbf{Each experiment class} is organized according to the same template: \emph{model/data flow} (objects and sampling method)---\emph{indicators} (TV/KL, etc.)---\emph{certificate} (deterministic or probabilistic upper bound)---\emph{output slice} (table/figure)---\emph{reproducibility statement} (script and export files).
+Representative reproduction entry points include:
+\begin{itemize}
+  \item Rotation scan vs.\ Parry baseline: \path{scripts/exp_rotation_fold_vs_parry.py} (exports \texttt{artifacts/export/rotation\_fold\_vs\_parry.csv}).
+  \item Parry endpoint audit: \path{scripts/exp_parry_endpoint_audit.py} (generates Table \ref{tab:parry_endpoint_audit}).
+  \item IID block sampling baseline and 95\% TV certificate: \path{scripts/exp_iid_sources_fold_vs_parry.py} (exports \texttt{artifacts/export/iid\_sources\_fold\_vs\_parry.csv}).
+  \item Primality and finite-window mutual information: \path{scripts/exp_prime_shadow_window_mi.py} (exports \texttt{artifacts/export/prime\_shadow\_window\_mi.json}).
+\end{itemize}
+
+\subsection{Experimental Models, Data Flows, and Deviation Indicators}
+
+\textbf{Model (rotation scan):} Take $X=\TT^1$, $T(x)=x+\alpha\ (\mathrm{mod}\ 1)$, and generate the binary readout $s_t(x)=\ind_W(T^t x)$ with interval window $W=[0,\beta)$. Given length $m$, form the window microstate
+\[
+\omega_m(x;t)=s_t(x)\cdots s_{t+m-1}(x)\in\Omega_m,
+\]
+then fold to obtain the stable type symbol
+\[
+w_t=\Fold_m(\omega_m(x;t))\in X_m,
+\]
+thereby defining the empirical histogram $\hat{\pi}_m$ (same definition as in Section \ref{sec:quant-fit}).
+
+\textbf{Parameter families and grids:} To test the difference of the ``golden branch'' relative to other $\alpha$, this section employs two classes of reproducible comparisons:
+\begin{itemize}
+  \item \textbf{Metallic mean family (constant-type continued fractions):} $\alpha=[0;A,A,A,\dots]$, covering $A=1,2,3,5$ (where $A=1$ is the golden branch);
+  \item \textbf{Strong resonance stress test:} $\alpha=[0;B,1,1,1,\dots]$, covering $B=10,30,100$ (first partial quotient is large, deliberately enhancing low-order rational approximation effects).
+\end{itemize}
+A multi-point grid $(N,m)$ is used for sample size and resolution, and averaging over multiple $(\beta,x_0)$ replication instances is performed with standard deviations reported to quantify sensitivity to window parameters/phase.
+
+\begin{remark}[Script-exact caliber for data and protocol]\label{rem:exp-script-spec}
+To avoid the non-auditable problem of ``providing only an overview,'' the experimental setup of this section is entirely consolidated in the script \verb|scripts/exp_rotation_fold_vs_parry.py|. Its default grid is:
+\[
+m\in\{6,8,10,12,14,16,18\},\qquad
+N\in\{10^4,3\times 10^4,10^5,3\times 10^5\},
+\]
+\[
+\beta\in\{0.2,0.3,0.5,0.6180339887\},\qquad
+x_0\in\{0.123,0.271,0.731\}.
+\]
+Each configuration outputs deviation indicators (TV/KL), the number of stable types \texttt{unique\_types}, and discrepancy certificates (\texttt{DN\_star\_upper\_bound} and the directly sortable and verifiable \texttt{DN\_star\_exact}). Additionally, for certain moderate resolutions (e.g., $m\le 14$), the cross-resolution consistency residual \texttt{tv\_multiscale\_residual} (Definition \ref{def:multiscale-residual}) is also output, used for auditing ``the projection consistency of the same data at adjacent resolutions.''
+\end{remark}
+
+\begin{remark}[Raw data files and field descriptions]\label{rem:exp-data-files}
+\begin{sloppypar}
+The raw per-configuration data is written to \texttt{artifacts/export/rotation\_fold\_vs\_parry.csv}. CSV fields (see header) include
+\begin{center}
+\path{alpha_name,alpha,beta,x0,m,N,tv,kl,unique_types,DN_star_upper_bound,DN_star_exact,tv_multiscale_residual,elapsed_s}
+\end{center}
+etc. The main text presents only two representative slices: fixing $N$ and observing trends over $m$, and fixing $m$ and observing trends over $N$; the complete table can be regenerated from the CSV for any desired slice.
+\end{sloppypar}
+\end{remark}
+
+\textbf{Baseline distribution (Parry/PF):} For the two-state adjacency matrix $A$ of the golden mean constraint, its Parry maximum entropy measure is a two-state Markov chain, and the cylinder distribution at length $m$ satisfies
+\[
+\pi_m(u)=\pi(u_1)\prod_{j=1}^{m-1}P_{u_j u_{j+1}},\qquad u\in X_m,
+\]
+where the explicit forms of $(\pi,P)$ are given in Remark \ref{prop:parry-measure-golden}.
+Theorem \ref{thm:parry-endpoint-collapse}--Proposition \ref{prop:parry-endpoint-mass-matrix} further give a completely auditable endpoint bridge package: under the Parry baseline, cylinder probabilities depend only on endpoints, and there exists an explicit diagonal scaling between the endpoint mass matrix and the normalized power \(A^{m-1}/\varphi^{m-1}\), so that the over-constrained \(\varphi\) self-consistency check can be constructed using low-dimensional endpoint statistics (Corollary \ref{cor:parry-endpoint-phi-estimators}).
+
+\begin{remark}[Endpoint audit (reproducible)]\label{rem:parry-endpoint-audit}
+As a baseline verification, the script \texttt{scripts/exp\_parry\_endpoint\_audit.py} simultaneously reports, under IID block sampling from a Parry source,
+two endpoint ratio estimates \(\widehat\varphi_{00/01}(m),\widehat\varphi_{01/11}(m)\),
+the endpoint intra-fiber flatness residual (span\(_{\max}\)), and the local commuting square residual \(|\hat\pi_3(000)-\hat\pi_3(010)|\);
+its output table is given in Table \ref{tab:parry_endpoint_audit}.
+\end{remark}
+\input{sections/generated/tab_parry_endpoint_audit}
+
+\textbf{Deviation indicators:} The
+\(
+D_{\mathrm{TV}}(\hat{\pi}_m,\pi_m)
+\)
+and
+\(
+D_{\mathrm{KL}}(\hat{\pi}_m\|\pi_m)
+\)
+defined in Section \ref{sec:quant-fit} are used as dimensionless ``goodness-of-fit'' quantities.
+
+\subsection{Finite-Sample Certificate: Auditable}
+
+For the rotation scan model, the one-dimensional star discrepancy $D_N^*$ gives an upper bound certificate for the interval-window frequency error (see \cite{KuipersNiederreiter1974}). For the golden branch $\alpha=\varphi^{-1}$, an explicit $O((\log N)/N)$ upper bound can be taken, thereby providing a unified certificate for the finite-sample decay of ``resonance-induced instability.''
+
+The above certificate not only controls the frequency error of a single window set but can also be directly translated into total variation error bounds for \textbf{window microstate distributions} and \textbf{post-fold stable type histograms}. This translation is a purely combinatorial/measure-theoretic step: in the rotation bisection model, a length-$m$ microstate corresponds to a partition of the circle into $m+1$ intervals, and only $m+1$ factors appear (see \cite{MorseHedlund1940,LindMarcus1995}).
+
+\begin{theorem}[From discrepancy to histogram: auditable finite-sample bound for \texorpdfstring{$D_{\mathrm{TV}}$}{TV}]\label{thm:tv-certificate-hist}
+In the rotation bisection model, let $x_t=\{x_0+t\alpha\}$, let $\hat{\mu}_{m,N}$ be the empirical distribution of length-$m$ microstates (counting windows over $t=0,\dots,N-1$ and normalizing), and let $\mu_m$ be its limiting distribution (induced by Lebesgue measure). Then for any $N\ge 1$,
+\[
+D_{\mathrm{TV}}(\hat{\mu}_{m,N},\mu_m)\ \le\ (m+1)\,D_N^*(\alpha;x_0).
+\]
+Moreover, for the post-fold stable type histogram (empirical distribution) $\hat{\pi}_{m,N}:=(\Fold_m)_*\hat{\mu}_{m,N}$ and its limiting distribution $\pi_m^{\mathrm{fold}}:=(\Fold_m)_*\mu_m$,
+\[
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\ \le\ (m+1)\,D_N^*(\alpha;x_0).
+\]
+\end{theorem}
+
+\subsection{Markov-Source TV Confidence Envelope: Sample Budget and \texorpdfstring{$\kappa_m$}{kappa} Confidence Band}\label{subsec:markov-tv-envelope}
+The certificate in the preceding subsection uses the discrepancy structure of the rotation model to give a completely deterministic TV upper bound.
+Under another common caliber, if the post-fold histogram is viewed as the empirical distribution of a finite-state Markov process, then the ``pseudo spectral gap'' can be used to parameterize the TV deviation as an \textbf{auditable confidence envelope}, directly yielding the experimental budget and confidence bands for \(\kappa_m\).
+
+\begin{definition}[Pseudo spectral gap and empirical histogram]\label{def:markov-pseudo-gap-hist}
+Let \((Z_t)_{t\ge 0}\) be an irreducible ergodic Markov chain on a finite state space \(S\), with transition kernel \(P\) and stationary distribution \(\pi\).
+Write the empirical histogram as
+\[
+\hat{\pi}_N(s):=\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{\{Z_t=s\}},\qquad s\in S.
+\]
+Let \(\gamma_{\mathrm{ps}}\in(0,1]\) denote the pseudo spectral gap of the chain (see \cite{Paulin2015MarkovConcentration} for definition and properties).
+\end{definition}
+
+\begin{theorem}[TV confidence envelope for Markov histograms (pseudo spectral gap parameterization)]\label{thm:markov-tv-envelope}
+Under the setting of Definition \ref{def:markov-pseudo-gap-hist}, if the chain starts from the stationary distribution (\(Z_0\sim\pi\)), then for any \(\delta\in(0,1)\), with probability at least \(1-\delta\),
+\[
+\boxed{\;
+D_{\mathrm{TV}}(\hat{\pi}_N,\pi)\le \frac12|S|\,\eta(N,|S|,\delta)\;},
+\qquad
+\eta(N,|S|,\delta):=\sqrt{\frac{2}{\gamma_{\mathrm{ps}}\,N}\log\frac{2|S|}{\delta}}.
+\]
+\end{theorem}
+
+\begin{corollary}[Closed-form sample complexity: budget given \texorpdfstring{$\tau$}{tau} and \texorpdfstring{$\delta$}{delta}]\label{cor:markov-tv-sample-complexity}
+Following Theorem \ref{thm:markov-tv-envelope}. To achieve
+\(
+D_{\mathrm{TV}}(\hat{\pi}_N,\pi)\le \tau
+\)
+with confidence \(1-\delta\), a sufficient condition is
+\[
+\boxed{\;
+N\ \ge\ \frac{|S|^{2}}{2\,\gamma_{\mathrm{ps}}\,\tau^{2}}
+\log\frac{2|S|}{\delta}\; }.
+\]
+\end{corollary}
+
+\begin{corollary}[Confidence interval for \texorpdfstring{$\kappa_m$}{kappa}: error band directly from the TV envelope]\label{cor:kappa-confidence-from-tv}
+Let \(m\ge 1\) and take \(S=X_m\). For any distribution \(\pi\in\Delta(X_m)\), \(\kappa_m(\pi):=\mathbb{E}_{\pi}[\log d_m(X)]\) (Definition \ref{def:pom-kappa}).
+Then for any empirical histogram \(\hat{\pi}\in\Delta(X_m)\) the following deterministic inequality holds:
+\[
+\boxed{\;
+\bigl|\kappa_m(\hat{\pi})-\kappa_m(\pi)\bigr|
+\le 2\|\log d_m\|_{\infty}\,D_{\mathrm{TV}}(\hat{\pi},\pi)\;}
+\le 2\log D_m\cdot D_{\mathrm{TV}}(\hat{\pi},\pi),
+\]
+where \(D_m=\max_{x\in X_m}d_m(x)\) (Theorem \ref{thm:pom-max-fiber}).
+Substituting the TV envelope from Theorem \ref{thm:markov-tv-envelope} yields the explicit confidence radius for \(\kappa_m\):
+with probability at least \(1-\delta\),
+\[
+\bigl|\kappa_m(\hat{\pi}_N)-\kappa_m(\pi)\bigr|
+\le \log D_m\cdot |X_m|\,
+\sqrt{\frac{2}{\gamma_{\mathrm{ps}}\,N}\log\frac{2|X_m|}{\delta}}.
+\]
+\end{corollary}
+
+\begin{remark}[Reproducible budget table (right-hand side computation only)]\label{rem:fold-kappa-tv-budget-repro}
+The script \texttt{scripts/exp\_fold\_kappa\_tv\_budget.py} computes in closed form
+\[
+|X_m|=F_{m+2},\qquad D_m,\qquad
+N_{\min}=\frac{|X_m|^{2}}{2\,\gamma_{\mathrm{ps}}\,\tau^{2}}\log\frac{2|X_m|}{\delta}
+\]
+as well as the corresponding \(\kappa_m\) confidence radius upper bound \(2\log D_m\cdot\tau\), and outputs Table \ref{tab:fold_kappa_tv_budget} as an experimental budget example (no numerical verification of probabilistic events is performed).
+\input{sections/generated/tab_fold_kappa_tv_budget}
+\end{remark}
+
+\subsection{A New Audit Quantity: Cross-Resolution Consistency Residual}\label{subsec:multiscale-residual}
+
+\begin{definition}[Cross-resolution consistency residual]\label{def:multiscale-residual}
+For the same data stream, let \(\hat{\pi}_{m,N}\in\Delta(X_m)\) and \(\hat{\pi}_{m+1,N}\in\Delta(X_{m+1})\) be the fold stable type histograms at resolutions \(m\) and \(m+1\), respectively (Definition \ref{def:source-and-fold-output}). Let \(\pi_{m+1\to m}:X_{m+1}\to X_m\) be the prefix restriction map (deleting the last symbol), and let \(\pi_{m+1\to m*}\) denote its pushforward on distributions. Define
+\[
+E_{m,N}
+:=
+D_{\mathrm{TV}}\!\left(\hat{\pi}_{m,N},\ \pi_{m+1\to m*}\hat{\pi}_{m+1,N}\right).
+\]
+\end{definition}
+
+\begin{remark}[Semantics and readability]
+The quantity \(E_{m,N}\) does not depend on any external baseline (e.g., Parry/PF), but only measures ``whether empirical distributions at adjacent resolutions can be viewed as compatible marginals on the same inverse system.'' Therefore it can serve as an additional structural audit quantity: when some \(m\) appears to be close to a certain baseline, but adjacent layers are significantly incompatible, \(E_{m,N}\) directly reveals this cross-scale inconsistency.
+\end{remark}
+
+\begin{definition}[Fold boundary perturbation event]\label{def:fold-boundary-event}
+For any $m\ge 1$, let $r_{m+1\to m}:\Omega_{m+1}\to\Omega_m$ be the naive truncation (definition in Subsection \ref{subsec:fold-omega-restriction}), and define two ``resolution-reduction'' outputs induced by the same $(m{+}1)$-window:
+\[
+f_m(\omega):=\Fold_m\bigl(r_{m+1\to m}(\omega)\bigr),\qquad
+g_m(\omega):=\pi_{m+1\to m}\bigl(\Fold_{m+1}(\omega)\bigr),\qquad \omega\in\Omega_{m+1}.
+\]
+Define the fold boundary perturbation event
+\[
+\mathcal{B}_{m+1}:=\{\omega\in\Omega_{m+1}:\ f_m(\omega)\ne g_m(\omega)\}.
+\]
+\end{definition}
+
+\begin{proposition}[Auditable upper bound for the cross-resolution consistency residual (controlled by the boundary perturbation event)]\label{prop:multiscale-residual-by-boundary}
+Let $\hat\mu_{m+1,N}$ be the empirical distribution of length-$(m{+}1)$ microstates $\omega_{m+1}(x;t)=s_t\cdots s_{t+m}\in\Omega_{m+1}$ ($t=0,\dots,N-1$). Then
+\[
+E_{m,N}
+=D_{\mathrm{TV}}\!\left(\hat\pi_{m,N},\ \pi_{m+1\to m*}\hat\pi_{m+1,N}\right)
+\le\ \hat\mu_{m+1,N}(\mathcal{B}_{m+1}).
+\]
+Moreover, $\mathcal{B}_{m+1}$ has a completely computable equivalent characterization: writing $x:=\Fold_m(r_{m+1\to m}(\omega))\in X_m$,
+\[
+\omega\in\mathcal{B}_{m+1}\ \Longleftrightarrow\ \omega_{m+1}=1\ \text{and}\ x_m=1,
+\]
+where $x_m$ is the last symbol of $x$.
+\end{proposition}
+
+\begin{proof}
+Write $\nu:=\hat\mu_{m+1,N}$. By definition, $\hat\pi_{m,N}=(f_m)_*\nu$ and $\pi_{m+1\to m*}\hat\pi_{m+1,N}=(g_m)_*\nu$.
+For any set $A\subset X_m$,
+\[
+\bigl|\nu(f_m\in A)-\nu(g_m\in A)\bigr|\le \nu(f_m\ne g_m)=\nu(\mathcal{B}_{m+1}).
+\]
+Taking the supremum yields $D_{\mathrm{TV}}((f_m)_*\nu,(g_m)_*\nu)\le \nu(\mathcal{B}_{m+1})$.
+
+We now give the equivalent characterization. Take any $\omega\in\Omega_{m+1}$ and write its prefix $\omega^-:=r_{m+1\to m}(\omega)\in\Omega_m$, and $x:=\Fold_m(\omega^-)\in X_m$.
+If $\omega_{m+1}=0$, then $N(\omega)=N(\omega^-)$, so that
+\(
+\Fold_{m+1}(\omega)=\pi_{m+1}(Z(N(\omega^-)))
+\)
+has its first $m$ bits equal to $\pi_m(Z(N(\omega^-)))=x$, i.e., $g_m(\omega)=x=f_m(\omega)$.
+
+If $\omega_{m+1}=1$, then $N(\omega)=N(\omega^-)+F_{m+2}$.
+When $x_m=0$, $(x_1,\dots,x_m,1)$ is a legitimate Zeckendorf digit (no adjacent $11$), and its value is exactly $N(\omega^-)+F_{m+2}$; by Zeckendorf uniqueness,
+\(
+\pi_{m+1}(Z(N(\omega)))=(x_1,\dots,x_m,1)
+\), so $g_m(\omega)=x$.
+When $x_m=1$, $(x_1,\dots,x_m,1)$ contains a terminal adjacent $11$, so it cannot be the length-$(m{+}1)$ prefix of $Z(N(\omega))$; equivalently, normalization must trigger a merge at positions $m,m{+}1$ and change the first $m$ bits, so $g_m(\omega)\ne x$.
+In summary, $f_m(\omega)\ne g_m(\omega)$ if and only if $\omega_{m+1}=1$ and $x_m=1$.
+\end{proof}
+
+\begin{corollary}[Zero residual for stable sources (no boundary perturbation)]\label{cor:multiscale-zero-stable}
+If the observed length-$(m{+}1)$ microstates satisfy almost surely $\omega_{m+1}(x;t)\in X_{m+1}$ (equivalently: the underlying binary sequence has no adjacent $11$, i.e., $s\in X_\infty$), then $\mathcal{B}_{m+1}=\varnothing$, so that for any sample size $N$,
+\[
+E_{m,N}=0.
+\]
+In particular, under a Parry source (golden mean Markov chain)---a baseline where ``the output process itself satisfies the golden mean constraint''---the cross-resolution consistency residual is identically zero.
+\end{corollary}
+
+\begin{proposition}[Deterministic connection to the Parry baseline deviation]\label{prop:multiscale-residual-parry-bound}
+Let \(\pi_m\) be the Parry maximum entropy cylinder distribution of the golden mean SFT; it satisfies projection consistency \(\pi_m=\pi_{m+1\to m*}\pi_{m+1}\). Therefore for any \(m,N\),
+\[
+E_{m,N}\ \le\ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ +\ D_{\mathrm{TV}}(\hat{\pi}_{m+1,N},\pi_{m+1}).
+\]
+\end{proposition}
+
+\input{sections/generated/tab_rotation_multiscale_residual_summary}
+
+\subsection{A New Auditable Conclusion: \texorpdfstring{$D_{\mathrm{KL}}$}{KL} Certificate for Rotation Microstates}
+
+The preceding section gave, under the rotation scan (Sturmian) model, the \(D_{\mathrm{TV}}\) finite-sample certificate derived from star discrepancy.
+Here we supplement with an equally auditable strengthening: at the microstate level (on \(\Omega_m\)), this \(D_{\mathrm{TV}}\) certificate can be further translated into an upper bound certificate for \(D_{\mathrm{KL}}\).
+
+The key observation is: for fixed \(m\), the length-\(m\) microstates produced by the rotation model fall on only \(m{+}1\) Sturmian factors (see \cite{MorseHedlund1940,LindMarcus1995}), so its limiting distribution \(\mu_m\) has a positive minimum atom mass on this finite support:
+\(
+q_{\min}(m):=\min\{\mu_m(u):\ u\in\mathcal{W}_m\}>0
+\). Once a lower bound on \(q_{\min}(m)\) is obtained, the \(D_{\mathrm{TV}}\) control can be converted to \(D_{\mathrm{KL}}\) control.
+
+\begin{lemma}[From TV to KL: explicit upper bound via minimum atom lower bound]\label{lem:kl-from-tv-qmin}
+Let \(p,q\) be two probability distributions on the same finite set \(S\), and assume \(p\ll q\) (i.e., \(p(s)>0\Rightarrow q(s)>0\)). Define
+\(
+q_{\min}:=\min\{q(s):\ p(s)>0\}>0
+\). Then
+\[
+D_{\mathrm{KL}}(p\|q)\ \le\ \ln\!\Bigl(1+\frac{\|p-q\|_1^2}{2q_{\min}}\Bigr)
+\ \le\ \frac{1}{2q_{\min}}\|p-q\|_1^2
+=\frac{2}{q_{\min}}\,D_{\mathrm{TV}}(p,q)^2,
+\]
+where the first inequality follows from \(D_{\mathrm{KL}}\le \ln(1+\chi^2)\) and \(\chi^2\le \|p-q\|_1^2/(2q_{\min})\) (see \cite{SasonVerdu2016fDivergence}).
+\end{lemma}
+
+We next give a completely explicit lower bound on \(q_{\min}(m)\). For simplicity, we take the most commonly used ``canonical window'' \(\beta=\alpha\) of this paper, in which case the endpoint set of the length-\(m\) microstate partition degenerates to \(\{ -k\alpha\}\ (k=0,\dots,m)\) (with duplicate points merged, at most \(m{+}1\) in total), and each atom is a gap induced by these adjacent points.
+
+\begin{proposition}[Microstate minimum atom lower bound: controlled by the Markov constant]\label{prop:qmin-lowerbound-markov}
+In the Kronecker rotation bisection model, take \(\beta=\alpha\), and suppose \(\alpha\) is badly approximable (equivalently \(c(\alpha)>0\), Definition \ref{def:markov-constant}). Then for any \(m\ge 1\),
+\[
+q_{\min}(m)\ \ge\ \min_{1\le k\le m}\|k\alpha\|\ \ge\ \frac{c(\alpha)}{m},
+\]
+where \(\|x\|:=\min_{n\in\ZZ}|x-n|\). In particular, for the golden branch \(\alpha=\varphi^{-1}\), we have \(c(\alpha)=1/\sqrt5\), so that
+\[
+q_{\min}(m)\ \ge\ \frac{1}{\sqrt5\,m}.
+\]
+\end{proposition}
+
+\begin{corollary}[KL certificate for rotation microstates (explicit)]\label{cor:rotation-microstate-kl-certificate}
+Under the rotation bisection model with \(\beta=\alpha\), let \(\hat\mu_{m,N}\) be the empirical distribution of length-\(m\) microstates and \(\mu_m\) its limiting distribution. Then by Theorem \ref{thm:tv-certificate-hist}, Lemma \ref{lem:kl-from-tv-qmin}, and Proposition \ref{prop:qmin-lowerbound-markov},
+\[
+D_{\mathrm{KL}}(\hat\mu_{m,N}\|\mu_m)
+\ \le\ \frac{2\,D_{\mathrm{TV}}(\hat\mu_{m,N},\mu_m)^2}{q_{\min}(m)}
+\ \le\ \frac{2\,(m+1)^2\,D_N^*(\alpha;x_0)^2}{q_{\min}(m)}.
+\]
+In particular, for the golden branch \(\alpha=\varphi^{-1}\) the explicit lower bound \(q_{\min}(m)\ge 1/(\sqrt5\,m)\) holds, yielding a completely explicit KL upper bound certificate controlled only by \((m,N)\).
+\end{corollary}
+
+\input{sections/generated/tab_rotation_microstate_kl_certificate}
+
+\begin{lemma}[Monotonicity of KL under pushforward (coarsening)]\label{lem:kl-monotone-pushforward}
+Let $S,T$ be finite sets, $F:S\to T$ a map, and $p,q$ probability distributions on $S$ with $p\ll q$. Then
+\[
+D_{\mathrm{KL}}(F_*p\|F_*q)\ \le\ D_{\mathrm{KL}}(p\|q).
+\]
+\end{lemma}
+
+\begin{corollary}[KL certificate for post-fold stable types]\label{cor:rotation-folded-kl-certificate}
+Under the conditions of Corollary \ref{cor:rotation-microstate-kl-certificate}, let $\hat\pi_{m,N}=(\Fold_m)_*\hat\mu_{m,N}$, $\pi_m^{\mathrm{fold}}=(\Fold_m)_*\mu_m$. Then
+\[
+D_{\mathrm{KL}}(\hat\pi_{m,N}\|\pi_m^{\mathrm{fold}})\ \le\ D_{\mathrm{KL}}(\hat\mu_{m,N}\|\mu_m)\ \le\ \frac{2(m+1)^2D_N^*(\alpha;x_0)^2}{q_{\min}(m)}.
+\]
+In particular, for the golden branch one can take $q_{\min}(m)\ge 1/(\sqrt5\,m)$, yielding a completely explicit upper bound certificate.
+\end{corollary}
+
+\input{sections/generated/tab_rotation_folded_kl_certificate}
+
+\begin{corollary}[Error decomposition to the Parry baseline (auditable)]\label{cor:tv-decomposition-parry}
+Under the conditions of Theorem \ref{thm:tv-certificate-hist}, let $\pi_m$ be the Parry(PF) baseline cylinder distribution used in the main text. Then
+\[
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)
+\ \le\
+(m+1)\,D_N^*(\alpha;x_0)\ +\ D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m).
+\]
+\end{corollary}
+
+\begin{corollary}[Pure certificate bound when ``true limit equals Parry'']\label{cor:tv-to-parry-when-gap-zero}
+If the data-generating process under study satisfies
+\(
+\pi_m^{\mathrm{fold}}=\pi_m
+\)
+(i.e., the post-fold limiting distribution is exactly the Parry(PF) baseline cylinder distribution of the golden mean SFT), then for any $N\ge 1$ the explicit bound holds:
+\[
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ \le\ (m+1)\,D_N^*(\alpha;x_0).
+\]
+In particular, under a Parry source (golden mean Markov chain)---a baseline where ``the output process itself is $\pi_m$''---this inequality gives a finite-sample TV error bound entirely controlled by the discrepancy certificate.
+\end{corollary}
+
+\begin{proposition}[Structural deviation from the Parry baseline under low-complexity processes]\label{prop:parry-baseline-gap-sturmian}
+In the Sturmian process produced by rotation bisection, for any fixed $m$, the support size of length-$m$ microstates is $m+1$ (see \cite{MorseHedlund1940,LindMarcus1995}). Therefore the support size of the post-fold limiting distribution $\pi_m^{\mathrm{fold}}$ satisfies
+\(
+|\mathrm{supp}(\pi_m^{\mathrm{fold}})|\le m+1
+\).
+Meanwhile, the Parry baseline $\pi_m$ supports all legitimate words on $X_m$ (of which there are $|X_m|=F_{m+2}$). Hence for any $m\ge 2$,
+\[
+D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)\ \ge\ 1-\pi_m\bigl(\mathrm{supp}(\pi_m^{\mathrm{fold}})\bigr)
+\ \ge\ 1-(m+1)\,\pi_m(0^m),
+\]
+where $0^m$ is the all-zero stable word. By the explicit transition probabilities from Remark \ref{prop:parry-measure-golden},
+\(
+\pi_m(0^m)=\pi(0)\,P_{00}^{m-1}=\pi(0)\,\varphi^{-(m-1)}
+\),
+yielding the explicit lower bound
+\[
+D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)\ \ge\ 1-(m+1)\,\pi(0)\,\varphi^{-(m-1)}.
+\]
+In particular, as $m\to\infty$ this lower bound tends to $1$. This explains the experimentally observed phenomenon that $D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)$ rapidly approaches $1$ as $m$ grows: it reflects the structural mismatch between ``Sturmian low complexity $\Rightarrow$ sparse support'' and ``Parry maximum entropy $\Rightarrow$ diffuse support,'' rather than insufficient sample size.
+\end{proposition}
+
+\begin{corollary}[Exponential approach to $1$ in the Sturmian case against Parry]\label{cor:parry-gap-exp}
+Under the conditions of Proposition \ref{prop:parry-baseline-gap-sturmian},
+\[
+1-D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)
+\le (m+1)\,\pi(0)\,\varphi^{-(m-1)}
+=O(m\varphi^{-m}).
+\]
+Therefore $D_{\mathrm{TV}}(\pi_m^{\mathrm{fold}},\pi_m)\to 1$, with exponential convergence rate.
+\end{corollary}
+
+\subsection{Bernoulli/Markov Sources: Reference Caliber for Convergence Guarantees}
+
+\begin{remark}[Limiting and finite-sample bounds for Bernoulli sources: reference caliber]\label{rem:bernoulli-source-guarantee}
+If the input is a Bernoulli i.i.d.\ source (or more generally, a finite-state irreducible aperiodic Markov chain), then the window process can be viewed as a function of a finite-state Markov chain; for such processes, convergence of the empirical histogram to its limiting distribution is given by the ergodic theorem, and exponential-type probability upper bounds on finite-sample deviation can be given by Markov chain concentration inequalities (e.g., \cite{Paulin2015MarkovConcentration}). If sampling is independent (non-overlapping windows or independent symbols), the empirical distribution's $L^1$/TV deviation has exponential tail bounds (e.g., \cite{WeissmanEtAl2003L1Empirical}).
+\end{remark}
+
+\subsection{Baseline Simulation: \texorpdfstring{$\varphi^{-1}$}{phi} Rotation vs.\ IID Source (with 95\% TV Certificate)}\label{subsec:exp-iid-baselines}
+The preceding subsection gave auditable discrepancy certificates for rotation scans, but that model does not satisfy the independence assumption in the ``strong mixing'' sense, making it more suitable as a structural example (and for checking the dimension/trend of discrepancy certificates). If the research goal is ``under reasonable measure assumptions, the fold histogram can indeed approach the Parry baseline,'' then simulation must be conducted under baseline processes satisfying independence/mixing, with finite-sample confidence envelopes reported.
+
+To this end, this paper additionally provides a set of IID block sampling experiments (script \texttt{scripts/exp\_iid\_sources\_fold\_vs\_parry.py}; export \texttt{artifacts/export/iid\_sources\_fold\_vs\_parry.csv}), where each sample is an independent length-$m$ bit block, which after folding yields an independent stable type sample. Under this setup, the $L^1$/TV exponential tail bound from \cite{WeissmanEtAl2003L1Empirical} can be directly used to generate 95\% TV certificates, and the triangle inequality separates ``sampling error'' from ``model discrepancy (gap)'':
+\[
+D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m)\ \le\ D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{true}})\ +\ D_{\mathrm{TV}}(\pi_m^{\mathrm{true}},\pi_m).
+\]
+Here $\pi_m^{\mathrm{true}}$ is the true $m$-block distribution of the baseline process (e.g., Parry source or Bernoulli source) after folding. Under a Parry source, the second term is $0$ (since the output itself satisfies the golden mean constraint and folding acts as the identity), so one obtains direct numerical verification that ``TV approaches 0 as $N$ grows''; under a Bernoulli source, the second term is generally nonzero, so the numerical deviation stabilizes near this gap, consistent with the structural error decomposition of Corollary \ref{cor:tv-decomposition-parry}.
+
+\input{sections/generated/tab_iid_sources_fold_vs_parry_ci}
+\input{sections/generated/fig_iid_tv_vs_n}
+
+\begin{remark}[Regarding the \texorpdfstring{$D_{\mathrm{KL}}$}{KL} certificate]
+The total variation certificate is a ``model-free'' bound valid for any finite partition, and hence is the most robust under the setup of this paper. The relative entropy $D_{\mathrm{KL}}(\hat{\pi}_{m,N}\|\pi_m)$ additionally depends on the lower bound of $\pi_m$ on its support: to obtain an explicit upper bound, a lower bound estimate on $\min_{u\in X_m}\pi_m(u)$ is needed (this quantity decays exponentially with $m$, so the resulting pure upper bound is often loose). Therefore this paper uses $D_{\mathrm{KL}}$ primarily as an empirical discriminant, with $D_{\mathrm{TV}}$ and discrepancy certificates providing auditable convergence control.
+\end{remark}
+
+\subsection{Reproducibility Statement: One-Click Regeneration}
+
+All numerical outputs of this section are generated by scripts. Reproduction method:
+\begin{itemize}
+  \item Install dependencies in the paper directory: \verb|python3 -m pip install -r requirements.txt|;
+  \item Run the one-click pipeline: \verb|python3 scripts/run_all.py|;
+  \item Artifacts: \verb|artifacts/export/*| (CSV/PNG exports) and \verb|sections/generated/*.tex| (table/figure fragments that can be directly \verb|\input|'ed).
+\end{itemize}
+
+\subsection{Systematic Comparison of Fold Histograms with the Parry Baseline}
+
+The table below gives the deviation between the post-fold stable type histogram and the Parry(PF) cylinder distribution under the rotation scan model; the figures show the trend of deviation as a function of resolution $m$, as well as the convergence trend over sample size $N$ at fixed $m$ (averaged over $(\beta,x_0)$; error bars are sample standard deviations, used to quantify sensitivity to phase/window parameters).
+
+\input{sections/generated/tab_rotation_fold_vs_parry_summary}
+\input{sections/generated/fig_rotation_tv_vs_m}
+\input{sections/generated/fig_rotation_kl_vs_m}
+\input{sections/generated/fig_rotation_tv_vs_n}
+\input{sections/generated/fig_rotation_kl_vs_n}
+
+\subsection{Primality and Finite Windows: Zero Evidence from Mutual Information}\label{subsec:prime-shadow-window-mi}
+To quantify the information content of a fixed finite window about ``primality,'' we conduct a directly reproducible experiment: for $n=2,\dots,N$, take the \textbf{lowest $m$ bits window} $W_m$ of the Zeckendorf representation of $n$ (i.e., the local observation at the smallest weight end), and compute the mutual information
+\(
+I(\mathbf{1}_{\mathrm{prime}};W_m)
+\)
+between the prime indicator function $\mathbf{1}_{\mathrm{prime}}(n)$ and $W_m$.
+See Table \ref{tab:prime_shadow_window_mi}: when $m=6$ ($|X_m|=21$), the mutual information is only about $8\times 10^{-3}$ bits; as $m$ grows the mutual information increases, but this corresponds to the window gradually approaching the global representation. This experiment provides auditable numerical evidence that ``a fixed finite kernel cannot equivalently recover the set of integer primes,'' consistent with the main text's hierarchical distinction between prime-like/primitive orbits. Script \texttt{scripts/exp\_prime\_shadow\_window\_mi.py} exports \texttt{artifacts/export/prime\_shadow\_window\_mi.json} and generates the table fragment.
+
+\input{sections/generated/tab_prime_shadow_window_mi}
+
+\begin{remark}[Information-theoretic lower bound: algorithmic constraint on discriminating primality with finite windows]\label{rem:prime-shadow-window-mi-algorithmic-lb}
+Let the random variable \(Y:=\mathbf{1}_{\mathrm{prime}}(n)\in\{0,1\}\), \(X:=W_m\) be the Zeckendorf low-bit window (the experimental caliber of this subsection).
+For any (possibly randomized) discriminator \(\widehat Y=f(X)\) depending only on \(X\), the data processing inequality gives
+\[
+I(Y;\widehat Y)\ \le\ I(Y;X).
+\]
+Therefore the \textbf{usable information gain} of the ``finite-window mechanism'' about primality has a hard upper bound: any algorithm can reduce at most
+\(
+I(\mathbf{1}_{\mathrm{prime}};W_m)
+\)
+bits of Shannon uncertainty.
+Furthermore, in the binary discrimination case, Fano's inequality simplifies to
+\[
+h_b(P_e)\ \ge\ H(Y)-I(Y;X),
+\]
+where \(P_e=\mathbb{P}[\widehat Y\neq Y]\), and \(h_b(p):=-p\log_2 p-(1-p)\log_2(1-p)\).
+In the audit slice of Table \ref{tab:prime_shadow_window_mi} (\(n\le 1000\)), when \(m=6\), \(I(Y;X)\approx 8\times 10^{-3}\) bits,
+so any discriminator reading only \(W_6\) cannot significantly compress \(H(Y)\) toward ``near-certainty'' under this caliber;
+if distinguishing power far exceeding this magnitude is observed, its information source must include global channels beyond the fixed low-bit window (e.g., higher resolution, register side information, or supplementary coordinates from the inverse limit axis bundle).
+\end{remark}
+
+\subsection{Spectral Fingerprint Experimental Protocol: Unified Comparison of Three Parallel Addition Kernels}\label{sec:exp-kernel-fingerprint}
+This subsection provides a reproducible ``kernel comparison'' experimental protocol: compressing the three classes of parallel addition kernels on the golden ratio base $\beta=\varphi$ ($9/13/21$-local; summarized as Algorithm I/II/III in AAMP VIII, with detailed rules Algorithm S/W/G and A/B trigger conditions, see \cite{SvobodovaAAMPVIIIParallelAddition,FrougnyHellerPelantovaSvobodovaParallelAlgorithmsSlides}) onto the same set of objects
+\[
+\bigl(M_K(u),\ \zeta_K(z,u),\ \lambda_K(u),\ B_{K,n}(u)\bigr),
+\]
+thereby enabling systematic comparison of different kernels in terms of ``carry activity'' and ``primitive (prime-class) closure structure'' (definition / endpoint trichotomy in Section \ref{sec:A-kernel-compare-main} and Appendix \ref{app:sync-kernel-A-compare}).
+\par
+As an external baseline: addition in the golden ratio base can be realized by an on-line finite automaton (but does not satisfy parallel/sliding block computability in the non-redundant representation caliber); see \cite{Frougny1999OnlineAddition}.
+
+\subsubsection{Unified input interface: from online synchronization graph to weighted matrix family}
+For each kernel $K$, we first compile its local parallel rules into a \textbf{single-stream} online synchronization graph $\Gamma_K$ (congruence stream decoupling: strong kernel $m=4$ streams, weak kernel $m=2$ streams; see Appendix \ref{app:sync-kernel-A-compare}), and on each synchronization edge $e:i\to j$ define the ``atomic activity''
+\[
+\kappa(e)\in\ZZ_{\ge 0},
+\]
+as the number of nonzero $q$ events newly triggered at that step (e.g., $21$-local takes $\kappa=\mathbf{1}(q^A\neq 0)+\mathbf{1}(q^B\neq 0)$).
+Accordingly, define the weighted adjacency matrix family
+\[
+(M_K(u))_{ij}=\sum_{e:i\to j}u^{\kappa(e)}.
+\]
+Endpoint interpretations:
+\[
+u=0:\ \text{retain only $\kappa=0$ edges (carry-free skeleton)},\qquad
+u=1:\ \text{ignore carry strength (unweighted baseline)}.
+\]
+
+\subsubsection{Two-variable zeta, pressure curve, and primitive stratified spectrum}
+For the weighted adjacency matrix on a finite graph (SFT), define the two-variable $\zeta$ fingerprint (\cite{BrinStuck2002}, see also Section \ref{sec:zeta-finite-part})
+\[
+\zeta_K(z,u)
+=\exp\!\left(\sum_{n\ge 1}\frac{\Tr(M_K(u)^n)}{n}z^n\right)
+=\frac{1}{\det(I-zM_K(u))}.
+\]
+Define the pressure (spectral radius) curve
+\[
+\lambda_K(u)=\rho(M_K(u)),\qquad P_K(u)=\log\lambda_K(u),
+\]
+and define the primitive stratified spectrum polynomial (``prime shadow'')
+\[
+B_{K,n}(u)=\sum_{\substack{\gamma\ \mathrm{primitive}\\|\gamma|=n}}u^{\kappa(\gamma)},
+\qquad \kappa(\gamma)=\sum_{e\in\gamma}\kappa(e).
+\]
+By Witt/M\"{o}bius inversion (Appendix \ref{app:sync-kernel-A-compare}), the completely explicit extraction formula is:
+\[
+B_{K,n}(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,\Tr\!\left(M_K(u^d)^{\,n/d}\right).
+\]
+
+\subsubsection{Endpoint baselines (zero error): carry-free trichotomy and unweighted degeneration}
+The endpoint $u=0$ gives the hard differentiation point for the three-kernel carry-free skeletons: they are conjugate to the $7$-full shift, $3$-full shift, and golden mean shift (forbidding adjacent $11$), respectively, corresponding to
+\[
+\zeta_9(z,0)=\frac{1}{1-7z},\qquad
+\zeta_{13}(z,0)=\frac{1}{1-3z},\qquad
+\zeta_{21}(z,0)=\frac{1}{1-z-z^2},
+\]
+with the proof chain given in Proposition \ref{prop:carry-free-skeleton-three} of Appendix \ref{app:sync-kernel-A-compare}.
+The endpoint $u=1$, under the deterministic complete-readout compilation caliber, degenerates to the ``size-only'' full shift baseline: $\zeta_K(z,1)=1/(1-|B_K|z)$ (Corollary \ref{cor:par-add-u1-degeneracy}).
+
+\subsubsection{Endpoint primitive (prime-class) spectrum table: zero-error baseline for \texorpdfstring{$n\le 20$}{n<=20}}
+The primitive orbit counts (counted by orbits) at endpoints $u\in\{0,1\}$ can be extracted by closed-form M\"{o}bius inversion from $\Tr(M_K(u)^n)$, yielding zero-error, cross-implementation-verifiable ``endpoint spectrum tables'' up to base order $n\le 20$.
+This paper uses this spectrum table as the baseline pedestal for subsequent intermediate $u\in(0,1)$ approximate fingerprints; the single-stream and global block-level versions are given in Table \ref{tab:parallel-addition-kernels-endpoint-primitive} (regenerated by script \path{scripts/exp_parallel_addition_kernels_endpoints_primitive.py}).
+
+\subsubsection{Intermediate weights $u\in(0,1)$: matrix-free stochastic trace estimation + M\"{o}bius inversion}
+When $u\in(0,1)$, $M_K(u)^n$ rapidly becomes dense as $n$ grows, and explicit construction of $M_K(u)^n$ incurs computation and storage costs that are difficult to scale. To ensure scalability, we use \textbf{sparse matrix-vector multiply} and stochastic trace estimation to approximate
+\(
+t_n(u):=\Tr(M_K(u)^n),
+\)
+then extract $\widehat B_{K,n}(u)$ via M\"{o}bius inversion.
+
+\paragraph{Hutchinson trace estimator (unbiased)}
+Take Rademacher random vectors $\mathbf r\in\{\pm1\}^N$ (coordinates i.i.d.), then
+\[
+\mathbb{E}\bigl[\mathbf r^{\mathsf T}A\mathbf r\bigr]=\Tr(A),
+\qquad
+\widehat{\Tr}_S(A):=\frac{1}{S}\sum_{s=1}^{S}\mathbf r_s^{\mathsf T}A\mathbf r_s
+\]
+is an unbiased estimator (\cite{Hutchinson1989ASE}; probabilistic sample complexity analysis in \cite{AvronToledo2011Trace}).
+In this paper we take $A=M_K(u)^n$ and compute via the recursion
+\[
+\mathbf v_0=\mathbf r,\qquad \mathbf v_{k+1}=M_K(u)\mathbf v_k
+\]
+to obtain $\mathbf r^{\mathsf T}M_K(u)^n\mathbf r=\mathbf r^{\mathsf T}\mathbf v_n$, so the entire pipeline requires only $n$ sparse matvecs.
+
+\paragraph{Hutch++ (optimal-order trace estimation for PSD case)}
+When the trace to be estimated is that of a symmetric positive semidefinite (PSD) matrix, Hutch++ improves the sample complexity from $O(\varepsilon^{-2})$ to $O(\varepsilon^{-1})$ (using only matvec; \cite{MeyerMuscoMuscoWoodruff2021Hutchpp}).
+On the kernels of this paper, $M_K(u)$ is generally asymmetric; however, if one instead estimates a PSD object (e.g., $\Tr((M_K(u)^n)^{\mathsf T}M_K(u)^n)$ or the trace after block symmetrization), then Hutch++ can serve as a more efficient alternative implementation.
+
+\paragraph{Approximation of the primitive stratified spectrum}
+For each $u$ and each $n$, substitute $\widehat t_n(u)\approx \Tr(M_K(u)^n)$ into M\"{o}bius inversion:
+\[
+\widehat B_{K,n}(u):=\frac{1}{n}\sum_{d\mid n}\mu(d)\ \widehat t_{n/d}(u^d).
+\]
+In practice, to reduce ``cancellation noise,'' we reuse the same set of random probes $\{\mathbf r_s\}$ for all $u^d$ and all required powers simultaneously, and perform the M\"{o}bius combination at the \textbf{sample level} before taking the mean (common random numbers + correlated combining), to improve stability.
+
+\paragraph{Multi-stream lifting (avoiding direct product of large graphs)}
+The global block-level kernel is assembled as a tensor of $m\in\{4,2\}$ isomorphic congruence streams, satisfying
+\(
+\Tr(M_{\mathrm{glob}}(u)^n)=\Tr(M_{\mathrm{flow}}(u)^n)^m
+\)
+and
+\(
+B_n^{\mathrm{glob}}(u)=\frac1n\sum_{d\mid n}\mu(d)\Tr(M_{\mathrm{flow}}(u^d)^{n/d})^m
+\)
+(Corollary \ref{cor:par-add-global-lift-endpoints}), so all expensive computations can be performed on the single stream.
+
+\subsubsection{Reproduction method and output: table template}
+The reproducible implementation of this protocol is consolidated in scripts:
+\begin{itemize}
+  \item Single-stream BFS compilation + endpoint baseline + pressure curve sampling: \path{scripts/exp_parallel_addition_kernels_bfs.py};
+  \item Endpoint primitive spectrum table (closed-form, zero error): \path{scripts/exp_parallel_addition_kernels_endpoints_primitive.py};
+  \item Intermediate $u$ stochastic trace estimation + M\"{o}bius inversion: \path{scripts/exp_parallel_addition_kernels_trace_hutchinson.py}.
+\end{itemize}
+Table \ref{tab:parallel-addition-kernels-fingerprint-u-samples} provides a minimal usable comparison table template: each row is one kernel, columns include the endpoint $\zeta_K(z,0)$, sampled values of the pressure curve $\lambda_K(u)$, and $\widehat B_{K,n}(u)$ at several $n$ and $u$.
+\input{sections/generated/tab_parallel_addition_kernels_fingerprint_u_samples}

@@ -1,0 +1,261 @@
+\subsubsection{Information Laws and Phase Discrimination of the Hidden Bit in the Maximum Fiber Family: Entropy Gap, Chernoff Exponent, and Sufficient Statistics}\label{subsubsec:pom-max-fiber-hidden-bit-phase-inference}
+
+This paragraph promotes the hidden bit splitting of the maximum fiber achievers given in Remark \ref{rem:pom-max-fiber-achievers-bsplit} and Corollaries
+\ref{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}--\ref{cor:pom-max-fiber-phase-hidden-bit-mi}
+into an \textbf{auditable statistical discrimination model}:
+the phase label \(\Theta\) takes the uniform prior over the achiever phase set, and the observation is solely the hidden bit sample \(B\in\{0,1\}\) (or its independent repetitions).
+The two key points of this model are:
+(i) marginally, \(B\) remains strictly unbiased within the stable threshold interval, yet its correlation with \(\Theta\) manifests as a purely constant-order mutual information gap;
+(ii) under the even stable phase, \(B\) induces a binary hypothesis Bernoulli symmetric complement pair, so that the Chernoff/Bhattacharyya exponent and MAP rule can all be written in closed form.
+
+\subsubsection{Golden Bias Entropy Constant and Relative Entropy Gap (bits)}
+
+\begin{proposition}[Closed form of the golden bias entropy constant and relative entropy gap]\label{prop:pom-max-fiber-hphi-relative-entropy-gap}
+Let \(\varphi=\frac{1+\sqrt5}{2}\), and let the binary entropy (bits) be
+\[
+H_b(p):=-p\log_2 p-(1-p)\log_2(1-p).
+\]
+Define the golden bias entropy constant
+\[
+H_\varphi:=H_b(\varphi^{-1})=H_b(\varphi^{-2}).
+\]
+Then the following strict closed form holds:
+\[
+\boxed{\;
+H_\varphi=(1+\varphi^{-2})\log_2\varphi=(3-\varphi)\log_2\varphi,\qquad
+1-H_\varphi=1-(1+\varphi^{-2})\log_2\varphi.\;}
+\]
+Moreover (in bits), the Bernoulli relative entropy satisfies
+\[
+\boxed{\;
+D\!\left(\mathrm{Bern}(\varphi^{-1})\ \middle\|\ \mathrm{Bern}\!\left(\tfrac12\right)\right)=1-H_\varphi.\;}
+\]
+\end{proposition}
+
+\begin{proof}
+From \(\varphi^{-1}+\varphi^{-2}=1\) and \(\log_2(\varphi^{-a})=-a\log_2\varphi\),
+\[
+H_\varphi
+=-\varphi^{-1}\log_2(\varphi^{-1})-\varphi^{-2}\log_2(\varphi^{-2})
+=(\varphi^{-1}+2\varphi^{-2})\log_2\varphi
+=(1+\varphi^{-2})\log_2\varphi,
+\]
+and using \(\varphi^{-2}=2-\varphi\) yields the equivalent closed form \((3-\varphi)\log_2\varphi\).
+\par
+On the other hand, for any \(p\in(0,1)\),
+\[
+D\!\left(\mathrm{Bern}(p)\ \middle\|\ \mathrm{Bern}\!\left(\tfrac12\right)\right)
+=p\log_2(2p)+(1-p)\log_2(2(1-p))
+=1-H_b(p),
+\]
+and substituting \(p=\varphi^{-1}\) gives the conclusion. \qed
+\end{proof}
+
+\subsubsection{``Marginal Unbiased--Conditional Biased'' Information Law (Stable Threshold Interval)}
+
+\begin{corollary}[Marginal unbiasedness and mutual information gap over the maximum fiber family]\label{cor:pom-max-fiber-hidden-bit-mi-gap}
+Adopt the randomized setting of Corollary \ref{cor:pom-max-fiber-phase-hidden-bit-mi}, and let \(\Theta\) denote the phase label (uniform over the maximum achiever set).
+Then within the stable threshold interval, the marginal distribution of the hidden bit is strictly unbiased (\(H(B)=1\) bit), yet the mutual information admits two limiting constants:
+\[
+\boxed{\;
+\lim_{k\to\infty} I(B;\Theta)\Big|_{m=2k}=1-H_\varphi,\qquad
+\lim_{k\to\infty} I(B;\Theta)\Big|_{m=2k+1}=\frac{1-H_\varphi}{2}. \;}
+\]
+\end{corollary}
+
+\begin{proof}
+This is precisely the even/odd branch limit formula from Corollary \ref{cor:pom-max-fiber-phase-hidden-bit-mi}, combined with the closed form of \(H_\varphi\) from Proposition \ref{prop:pom-max-fiber-hphi-relative-entropy-gap}. \qed
+\end{proof}
+
+\begin{proposition}[Binary spectrum of conditional min-entropy and phase-uniform average]\label{prop:pom-max-fiber-hidden-bit-minentropy-spectrum}
+Define the conditional min-entropy (bits)
+\[
+H_\infty(B\mid \Theta=\theta):=-\log_2\max\{\mathbb{P}(B=1\mid\Theta=\theta),\ \mathbb{P}(B=0\mid\Theta=\theta)\}.
+\]
+Within the stable threshold interval, the hidden bit probability spectrum of the maximum achiever phases exhibits only three accumulation points
+\(
+p_1\in\{1/2,\varphi^{-1},\varphi^{-2}\}
+\)
+(Corollary \ref{cor:pom-max-fiber-achievers-hidden-bit-prob-spectrum}), and hence the limiting spectrum of conditional min-entropy consists of only two values:
+\[
+\boxed{\;
+H_\infty(B\mid \Theta)\in\{1,\ \log_2\varphi\}\quad(\text{in the limiting sense}).\;}
+\]
+Moreover, under the phase-uniform prior:
+\begin{itemize}
+  \item \textbf{Even stable phase \(m=2k\ge 10\):} \(\mathbb{E}[H_\infty(B\mid\Theta)]\to \log_2\varphi\) (the value \(1\) does not appear);
+  \item \textbf{Odd stable phase \(m=2k+1\ge 13\):} \(\mathbb{E}[H_\infty(B\mid\Theta)]\to \frac{1+\log_2\varphi}{2}\) (two phases take \(1\), two phases take \(\log_2\varphi\)).
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+When \(p_1=1/2\), \(\max\{p_1,1-p_1\}=1/2\), so \(H_\infty=1\).
+When \(p_1\in\{\varphi^{-1},\varphi^{-2}\}\), by complementarity \(\varphi^{-2}=1-\varphi^{-1}\), we have
+\(\max\{p_1,1-p_1\}=\varphi^{-1}\), so \(H_\infty=\log_2\varphi\).
+\par
+The even stable phase exhibits only two golden-biased phases (Remark \ref{rem:pom-max-fiber-achievers-bsplit}), so the phase-uniform average takes only \(\log_2\varphi\);
+the odd stable phase family consists of two balanced phases (\(p_1=1/2\)) and two biased phases (\(p_1\to\varphi^{-1}\) or \(\varphi^{-2}\)), so the limiting average is \(\frac12\cdot 1+\frac12\cdot\log_2\varphi\). \qed
+\end{proof}
+
+\subsubsection{Even Stable Phase: MAP Discrimination, Chernoff Exponent, and Majority Vote}
+
+\begin{proposition}[Single-sample phase discrimination (MAP) in the even stable phase]\label{prop:pom-max-fiber-even-single-sample-map}
+Let \(m=2k\ge 10\).
+By Remark \ref{rem:pom-max-fiber-achievers-bsplit}, the maximum phase set contains exactly two phases \(\Theta\in\{\theta_1,\theta_2\}\), satisfying
+\[
+\mathbb{P}(B=1\mid \Theta=\theta_1)=\frac{F_{k+1}}{F_{k+2}}=:p_k,\qquad
+\mathbb{P}(B=1\mid \Theta=\theta_2)=\frac{F_{k}}{F_{k+2}}=1-p_k,
+\]
+with uniform prior.
+Then upon observing a single hidden bit sample \(B\), the MAP rule is
+\[
+\widehat\Theta(B)=
+\begin{cases}
+\theta_1,& B=1,\\
+\theta_2,& B=0,
+\end{cases}
+\]
+with optimal success rate and error rate
+\[
+P(\widehat\Theta=\Theta)=p_k=\frac{F_{k+1}}{F_{k+2}},\qquad
+P(\widehat\Theta\neq\Theta)=1-p_k=\frac{F_{k}}{F_{k+2}}.
+\]
+As \(k\to\infty\), the limiting constants are
+\[
+P(\widehat\Theta=\Theta)\to \varphi^{-1},\qquad
+P(\widehat\Theta\neq\Theta)\to \varphi^{-2}.
+\]
+\end{proposition}
+
+\begin{proof}
+By the uniform prior and Bayes' rule,
+\(
+\widehat\Theta(B)=\arg\max_{\theta\in\{\theta_1,\theta_2\}}\mathbb{P}(B\mid\Theta=\theta)
+\).
+Since \(p_k>1/2\) (for \(k\ge 1\)), when \(B=1\) the choice is \(\theta_1\), and when \(B=0\) it is \(\theta_2\).
+The success rate is
+\(
+\frac12\mathbb{P}(B=1\mid\theta_1)+\frac12\mathbb{P}(B=0\mid\theta_2)=\frac12 p_k+\frac12 p_k=p_k
+\).
+The limit follows from \(F_{k+1}/F_{k+2}\to \varphi^{-1}\). \qed
+\end{proof}
+
+\begin{theorem}[Closed form of the Chernoff exponent for multi-sample phase discrimination]\label{thm:pom-max-fiber-even-chernoff-exponent}
+Adopt the setting of Proposition \ref{prop:pom-max-fiber-even-single-sample-map}.
+Take \(n\) conditionally independent samples \(B_1,\dots,B_n\) (given \(\Theta\)).
+Let \(P_e(n)\) denote the minimum Bayes error probability under the two-phase uniform prior.
+Then the Chernoff information satisfies
+\[
+-\lim_{n\to\infty}\frac{1}{n}\log_2 P_e(n)=C(p_k),
+\qquad
+C(p):=-\log_2\!\Bigl(2\sqrt{p(1-p)}\Bigr),
+\]
+and in the stable limit as \(k\to\infty\),
+\[
+\boxed{\;
+C(p_k)\to C_\varphi:=\frac32\log_2\varphi-1,\qquad
+2\sqrt{\varphi^{-1}\varphi^{-2}}=2\varphi^{-3/2}. \;}
+\]
+\end{theorem}
+
+\begin{proof}
+The two phases correspond to the symmetric complement pair of distributions \(\mathrm{Bern}(p)\) and \(\mathrm{Bern}(1-p)\).
+Symmetry yields the Chernoff minimizer at \(s=\tfrac12\), so the Bhattacharyya coefficient is
+\[
+\min_{0\le s\le 1}\Big(p^s(1-p)^{1-s}+(1-p)^s p^{1-s}\Big)=2\sqrt{p(1-p)}.
+\]
+Hence the Chernoff information is \(C(p)=-\log_2(2\sqrt{p(1-p)})\).
+Substituting \(p=p_k\) gives the first formula; substituting \(p=\varphi^{-1}\) and simplifying yields \(C_\varphi=\frac32\log_2\varphi-1\). \qed
+\end{proof}
+
+\begin{proposition}[Power-law likelihood ratio and ``majority vote'' MAP rule]\label{prop:pom-max-fiber-even-majority-vote}
+Adopt the setting of Proposition \ref{prop:pom-max-fiber-even-single-sample-map}, and let
+\(
+S_n:=\sum_{i=1}^{n}B_i
+\).
+Then the log-likelihood ratio satisfies a strict power law
+\[
+\log\frac{\mathbb{P}(B_1^n\mid\theta_1)}{\mathbb{P}(B_1^n\mid\theta_2)}
+=(2S_n-n)\log\!\left(\frac{p_k}{1-p_k}\right)
+=(2S_n-n)\log\!\left(\frac{F_{k+1}}{F_k}\right).
+\]
+Therefore, under the uniform prior, the MAP discrimination is equivalent to majority vote:
+\[
+\widehat\Theta=
+\begin{cases}
+\theta_1,& S_n>\frac n2,\\
+\theta_2,& S_n<\frac n2,
+\end{cases}
+\qquad(\text{ties broken arbitrarily}).
+\]
+As \(k\to\infty\), \(\log(F_{k+1}/F_k)\to \log\varphi\).
+\end{proposition}
+
+\begin{proof}
+By independence,
+\(
+\mathbb{P}(B_1^n\mid\theta_1)=p_k^{S_n}(1-p_k)^{n-S_n}
+\),
+\(
+\mathbb{P}(B_1^n\mid\theta_2)=(1-p_k)^{S_n}p_k^{n-S_n}
+\).
+Dividing and taking logarithms yields the formula.
+Under the uniform prior, MAP is equivalent to the likelihood ratio \(\ge 1\) criterion, i.e., \(S_n\gtrless n/2\).
+The limit follows from \(F_{k+1}/F_k\to \varphi\). \qed
+\end{proof}
+
+\begin{proposition}[The hidden bit (and its sum) is the minimal sufficient statistic for phase discrimination]\label{prop:pom-max-fiber-hidden-bit-minimal-sufficient}
+Under the two-phase model of the even stable phase (Proposition \ref{prop:pom-max-fiber-even-single-sample-map}),
+for \(n\) conditionally independent samples \(B_1,\dots,B_n\), let \(S_n=\sum_{i=1}^n B_i\).
+Then the statistic \(S_n\) is \textbf{minimal sufficient} for the phase \(\Theta\); in particular, when \(n=1\), \(B\) itself is the minimal sufficient statistic.
+\par
+Moreover, the single-sample likelihood ratio satisfies the closed form
+\[
+\boxed{\;
+\frac{\mathbb{P}(B=b\mid\theta_1)}{\mathbb{P}(B=b\mid\theta_2)}
+=\left(\frac{p_k}{1-p_k}\right)^{2b-1}
+=\left(\frac{F_{k+1}}{F_k}\right)^{2b-1}\qquad(b\in\{0,1\}),\;}
+\]
+so that in the stable limit \(k\to\infty\),
+\(
+\frac{\mathbb{P}(B=b\mid\theta_1)}{\mathbb{P}(B=b\mid\theta_2)}\to \varphi^{2b-1}
+\).
+\end{proposition}
+
+\begin{proof}
+From the likelihood ratio formula in Proposition \ref{prop:pom-max-fiber-even-majority-vote},
+\(
+\mathbb{P}(B_1^n\mid\theta_1)/\mathbb{P}(B_1^n\mid\theta_2)
+\)
+depends only on \(S_n\), so \(S_n\) is sufficient (Neyman--Fisher factorization).
+At the same time, this ratio varies strictly with \(S_n\): if \(S_n\neq S_n'\), then the likelihood ratios differ, so any sufficient statistic must distinguish these two values; hence \(S_n\) induces the finest partition and is therefore the minimal sufficient statistic.
+The single-sample case \(n=1\) gives \(S_1=B\).
+The closed-form likelihood ratio is obtained by substituting \(n=1\) into Proposition \ref{prop:pom-max-fiber-even-majority-vote}; the stable limit follows from \(F_{k+1}/F_k\to\varphi\). \qed
+\end{proof}
+
+\subsubsection{Odd Stable Phase: Indistinguishability Equivalence Classes and Information Bottleneck}
+
+\begin{proposition}[Indistinguishability equivalence classes based solely on the hidden bit in the odd stable phase]\label{prop:pom-max-fiber-odd-indistinguishability}
+Let \(m=2k+1\ge 13\) be in the odd stable phase (Remark \ref{rem:pom-max-fiber-achievers-bsplit}).
+Then the maximum phase set contains four phases, of which two satisfy \(p_1=\mathbb{P}(B=1\mid\Theta=\theta)=1/2\) (balanced splitting).
+Therefore, for any \(n\ge 1\), any statistical discrimination based solely on hidden bit samples \(B_1^n\) cannot distinguish these two phases: they induce the same distribution \(\mathrm{Bern}(\tfrac12)^{\otimes n}\).
+\par
+In other words, the hidden bit observation induces an irreducible equivalence relation on the phase space; the finest identifiable partition collapses the four phases into at most three classes (two balanced phases merged, two golden-biased phases each forming a separate class).
+The corresponding information bottleneck is precisely characterized in the Shannon sense by the limiting constant \(\frac{1-H_\varphi}{2}\) from Corollary \ref{cor:pom-max-fiber-phase-hidden-bit-mi}.
+\end{proposition}
+
+\begin{proof}
+The two balanced phases satisfy \(p_1=1/2\), so for any \(n\),
+\(
+\mathsf{Law}(B_1^n\mid\Theta=\theta)=\mathrm{Bern}(\tfrac12)^{\otimes n}
+\);
+hence any discrimination depending only on \(B_1^n\) cannot distinguish them.
+The two biased phases correspond to complementary nontrivial \(p_1\) (Remark \ref{rem:pom-max-fiber-achievers-bsplit}), hence they differ from the balanced class; and being complementary, they are distinguishable under \(B\)-observation as two separate classes.
+The mutual information constant is from Corollary \ref{cor:pom-max-fiber-phase-hidden-bit-mi}. \qed
+\end{proof}
+
+\input{sections/body/pom/parts/subsubsec__pom-max-fiber-hidden-bit-phase-inference-part2}
+\input{sections/body/pom/parts/subsubsec__pom-max-fiber-hidden-bit-phase-inference-part3}
+\input{sections/body/pom/parts/subsubsec__pom-max-fiber-hidden-bit-phase-inference-part4}
+
+\endinput

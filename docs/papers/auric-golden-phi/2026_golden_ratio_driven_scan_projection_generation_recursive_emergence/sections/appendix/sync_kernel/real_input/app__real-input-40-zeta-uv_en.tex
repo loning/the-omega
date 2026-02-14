@@ -1,0 +1,128 @@
+\subsubsection{Two-dimensional weighted \texorpdfstring{$\zeta(z;u,v)$}{zeta(z;u,v)} of the real input kernel: the \texorpdfstring{$(2+8)$}{(2+8)}-degree closed-form denominator for collision--output}\label{app:real-input-40-zeta-uv}
+By Proposition~\ref{prop:real-input-40-essential-20}, the real input $40$-state kernel can be represented as the direct product of the $10$-state synchronization kernel (state set $Q$) with two Zeckendorf input memory bits $\{0,1\}^2$;
+moreover, the synchronization kernel's transition on the input digit sum $d\in\{0,1,2\}$ is deterministic, with edges carrying labels $(d/e)$ ($e\in\{0,1\}$ being the output bit).
+\par
+This subsection introduces a two-dimensional joint potential on this labeled system: simultaneously counting collision events $d=2$ (equivalently, the input pair $(x,y)=(1,1)$ at that step) and output bit $e=1$.
+
+\paragraph{Definition (two-dimensional weight and weighted matrix)}
+To each admissible edge $(d/e)$ assign the weight
+\[
+w(d/e):=u^{\mathbf{1}_{\{d=2\}}}v^{e},
+\]
+where $u$ counts the number of collisions and $v$ counts the number of output $1$'s.
+Denote the corresponding weighted adjacency matrix by $M_{u,v}$, and define the dynamical determinant and the two-dimensional weighted Artin--Mazur $\zeta$ function
+\[
+\Delta(z;u,v):=\det(I-zM_{u,v}),
+\qquad
+\zeta(z;u,v):=\frac{1}{\Delta(z;u,v)}.
+\]
+
+\begin{theorem}[$(2+8)$-degree closed-form decomposition of the two-dimensional weighted determinant]\label{thm:real-input-40-det-uv-2plus8}
+On the real input $40$-state kernel, $\Delta(z;u,v)$ has an explicit factorization in the formal power series ring (i.e., $\ZZ[u,v][[z]]$):
+\[
+\boxed{\ \Delta(z;u,v)=(vz^{2}-1)\,P_{8}(z;u,v)\ },
+\]
+where $P_{8}$ is a degree-$8$ polynomial in $z$:
+\[
+\boxed{
+\begin{aligned}
+P_8(z;u,v)=\;&(u^2 v^4-u^2 v^3)z^8\\
+&+(-u^2 v^3-3u v^3+3u v^2)z^7\\
+&+(u^2 v^3-u^2 v^2+3u v^2)z^6\\
+&+(u^2 v^2+4u v^2-u v-2v^2)z^5\\
+&+(-3u v^2+u v-6v^2)z^4\\
+&+(-u v-v)z^3\\
+&+(u v+5v)z^2\\
+&+z-1.
+\end{aligned}}
+\]
+Reproducible verification is provided by the script \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_zeta\_uv.py} (included in the \texttt{scripts/run\_all.py} pipeline).
+\end{theorem}
+
+\begin{corollary}[Parameter-rigid spectral support \texorpdfstring{$\pm\sqrt v$}{+-sqrt(v)}]\label{cor:real-input-40-zeta-uv-sqrtv-eigs}
+If $v>0$, then the spectrum of $M_{u,v}$ contains, for any $u$, two explicit eigenvalues
+\[
+\boxed{\ \lambda_\pm=\pm\sqrt v\ }.
+\]
+Therefore for any $n\ge 1$, the trace necessarily contains a completely explicit ``even-period term''
+\[
+\Tr(M_{u,v}^{n})
+=\bigl(\sqrt v\bigr)^n+\bigl(-\sqrt v\bigr)^n+\text{\rm(remaining spectral terms from $P_8$)}
+=
+\begin{cases}
+2v^{n/2}+\cdots,& n\ \text{even},\\
+0+\cdots,& n\ \text{odd}.
+\end{cases}
+\]
+\end{corollary}
+\begin{proof}
+From
+\(
+\Delta(z;u,v)=\prod_i(1-z\nu_i)
+\)
+($\nu_i$ being the eigenvalues of $M_{u,v}$, counted with multiplicity), the factor $vz^2-1=-(1-z\sqrt v)(1+z\sqrt v)$ forces $\pm\sqrt v$ to be spectral points.
+The trace formula follows from the power sums of eigenvalues. \qed
+\end{proof}
+
+\begin{remark}[Effective spectral dimension and zero eigenvalue multiplicity]\label{rem:real-input-40-zeta-uv-effective-spectrum}
+Theorem~\ref{thm:real-input-40-det-uv-2plus8} shows that $\Delta(z;u,v)$ has degree at most $10$ in $z$.
+Therefore $M_{u,v}$ has at most $10$ nonzero eigenvalues (counting algebraic multiplicity); equivalently, $M_{u,v}$ possesses at least $30$ zero eigenvalues.
+On low-dimensional parameter slices such as $v=1$, the leading coefficient of $P_8$ degenerates, the degree can decrease further, corresponding to additional zero-eigenvalue directions (consistent with the ``activated branch'' degeneracy in the one-parameter output potential case $v=1$; see Remark~\ref{rem:real-input-40-zero-activation}).
+\end{remark}
+
+\begin{proposition}[The two-dimensional pressure surface as an $8$-th degree algebraic curve (no need for \texorpdfstring{$40\times 40$}{40x40} eigenvalue computation)]\label{prop:real-input-40-zeta-uv-pressure-degree8}
+Let $u>0,v>0$, and write $\lambda(u,v):=\rho(M_{u,v})$ for the Perron--Frobenius principal eigenvalue.
+Set
+\[
+Q_8(\Lambda;u,v):=-\Lambda^8 P_8(\Lambda^{-1};u,v)\in\ZZ[\Lambda,u,v].
+\]
+Then $\lambda(u,v)$ is the largest positive real root of $Q_8(\Lambda;u,v)=0$, i.e., it satisfies the explicit degree-$8$ equation
+\[
+\boxed{
+\begin{aligned}
+0=;&\Lambda^8-\Lambda^7-(uv+5v)\Lambda^6+(uv+v)\Lambda^5\\
+&+(3uv^2-uv+6v^2)\Lambda^4+(-u^2v^2-4uv^2+uv+2v^2)\Lambda^3\\
+&+(-u^2v^3+u^2v^2-3uv^2)\Lambda^2+(u^2v^3+3uv^3-3uv^2)\Lambda\\
+&-u^2v^4+u^2v^3.
+\end{aligned}}
+\]
+Thus the two-dimensional thermodynamic pressure (free energy) can be written as
+\[
+\boxed{\ \mathcal P(u,v)=\log\lambda(u,v)\ }.
+\]
+Therefore, under this two-dimensional potential family, the typical densities, covariance densities, and higher-order mixed cumulants can all be obtained by implicit differentiation of $Q_8(\lambda(u,v);u,v)=0$ in closed form (with denominators involving only $\partial_\Lambda Q_8$).
+\end{proposition}
+
+\begin{proposition}[Algebraic closed form for the principal pole residue constant]\label{prop:real-input-40-zeta-uv-residue}
+Let $u>0,v>0$ and $\lambda(u,v)^2\neq v$ (i.e., the Perron root does not lie on the rigid branch $\pm\sqrt v$).
+Set the principal pole $z_\star(u,v):=\lambda(u,v)^{-1}$, and define
+\[
+C(u,v):=\lim_{z\to z_\star(u,v)}(1-\lambda(u,v)z)\,\zeta(z;u,v).
+\]
+Then the closed form holds:
+\[
+\boxed{\ C(u,v)=\frac{\lambda(u,v)^9}{\bigl(\lambda(u,v)^2-v\bigr)\,\partial_\Lambda Q_8(\lambda(u,v);u,v)}\ }.
+\]
+\end{proposition}
+
+\begin{proposition}[Finite-order recurrence for traces and primitives: reduction from \texorpdfstring{$40$}{40} to \texorpdfstring{$10$}{10} dimensions]\label{prop:real-input-40-zeta-uv-recurrence}
+For fixed $(u,v)$, let
+\(
+a_n(u,v):=\Tr(M_{u,v}^n)
+\).
+Since $\Delta(z;u,v)$ has degree at most $10$ in $z$ (Theorem~\ref{thm:real-input-40-det-uv-2plus8}), the sequence $\{a_n(u,v)\}_{n\ge 1}$ satisfies a constant-coefficient linear recurrence of order at most $10$.
+Consequently, the weighted primitive orbit coefficients (or polynomials)
+\(
+p_n(u,v)
+\)
+can be recovered by M\"obius inversion in near-linear time.
+\end{proposition}
+
+\begin{remark}[The three-factor decomposition of the arity-charge slice as a special case]\label{rem:real-input-40-zeta-uv-chi-specialization}
+Along the arity-charge one-parameter slice $u=q^{-1},v=q$ (each step weighted by $q^{e-\mathbf{1}_{\{d=2\}}}$),
+the above two-dimensional closed form degenerates to the three-factor decomposition of Theorem~\ref{thm:real-input-40-arity-charge-det-closed}:
+\(
+\det(I-zM(q))=(z+1)(1-qz^2)Q_7(z,q)
+\),
+which thereby gives a degree-$7$ Perron algebraic pressure curve and a principal pole residue closed form (Proposition~\ref{prop:real-input-40-arity-charge-residue}).
+\end{remark}

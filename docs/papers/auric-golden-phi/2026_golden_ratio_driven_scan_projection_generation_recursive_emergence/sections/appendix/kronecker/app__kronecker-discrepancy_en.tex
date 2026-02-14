@@ -1,0 +1,239 @@
+\section{One-Dimensional Star Discrepancy Upper Bound for Kronecker Sequences (Partial Quotient Control)}\label{app:kronecker-discrepancy}
+
+This appendix records the Kronecker star discrepancy certificate caliber used in subsequent sections: for the Kronecker sequence \(x_t=\{x_0+t\alpha\}\), the star discrepancy \(D_N^\ast(\alpha;x_0)\) admits a standard upper bound controlled by the continued fraction partial quotients; the precise form and constant dependence are given in \cite{KuipersNiederreiter1974,Goda2024QuasiUniformKronecker}. In particular, if \(\alpha\) is badly approximable (bounded partial quotients), then there exists \(C_\alpha<\infty\) such that \(D_N^\ast(\alpha;x_0)\le C_\alpha(\log N)/N\) (\cite{KuipersNiederreiter1974}).
+\par
+For the golden branch \(\alpha=\varphi^{-1}\), an explicit upper bound takes the form
+\[
+D_N^*(\varphi^{-1})\ \le\ \frac{3+\left\lceil \frac{\log(\sqrt5\,N)}{\log \varphi}\right\rceil}{N}.
+\]
+
+\subsection{First-Order Wasserstein Distance (\texorpdfstring{$W_1$}{W1}) Transport Discrepancy: Auditable Certificate for Lipschitz Readouts}\label{app:kronecker-w1-transport}
+
+\paragraph{Objects: Empirical Measure and Transport Discrepancy}
+Let \(\alpha\in(0,1)\setminus\QQ\), and consider the Kronecker orbit \(x_t=\{t\alpha\}\in[0,1)\) (for brevity we omit the initial phase; its introduction affects only a translation and does not alter the scaling of the audit quantities below).
+For sample length \(N\ge 1\), define the empirical measure
+\[
+\mu_N:=\frac1N\sum_{t=0}^{N-1}\delta_{x_t},
+\qquad
+\lambda:=\text{Lebesgue measure}.
+\]
+Under the cost \(c(x,y)=|x-y|\), the first-order Wasserstein distance is defined as
+\[
+W_1(\mu,\nu):=\inf_{\pi\in\Pi(\mu,\nu)}\int_{[0,1)^2}|x-y|\,d\pi(x,y),
+\]
+where \(\Pi(\mu,\nu)\) denotes the set of couplings with marginals \((\mu,\nu)\).
+Write
+\[
+\mathsf{T}_N(\alpha):=W_1(\mu_N,\lambda)
+\]
+for the \textbf{transport discrepancy}.
+
+\begin{theorem}[Transport Audit Inequality for Lipschitz Readouts]\label{thm:kronecker-w1-lipschitz-readout}
+If \(f:[0,1)\to\RR\) is a Lipschitz function with Lipschitz constant \(\mathrm{Lip}(f)\), then for any \(N\ge 1\),
+\[
+\left|\frac1N\sum_{t=0}^{N-1}f(x_t)-\int_0^1 f(x)\,dx\right|
+\ \le\
+\mathrm{Lip}(f)\,\mathsf{T}_N(\alpha).
+\]
+\end{theorem}
+\begin{proof}
+Take any \(\pi\in\Pi(\mu_N,\lambda)\). Then
+\[
+\int f\,d\mu_N-\int f\,d\lambda=\int_{[0,1)^2}\bigl(f(x)-f(y)\bigr)\,d\pi(x,y),
+\]
+whence by the Lipschitz property,
+\[
+\left|\int f\,d\mu_N-\int f\,d\lambda\right|
+\le
+\int |f(x)-f(y)|\,d\pi(x,y)
+\le
+\mathrm{Lip}(f)\int |x-y|\,d\pi(x,y).
+\]
+Taking the infimum over \(\pi\) yields the result. \qed
+\end{proof}
+
+\subsubsection{Closed-Form \texorpdfstring{$W_1$}{W1} at Convergent Denominator Lengths with Quadratic Correction}\label{subsec:kronecker-w1-denominator}
+
+\begin{lemma}[Quantile Formula for One-Dimensional Monotone Coupling]\label{lem:w1-quantile-formula-empirical-uniform}
+Let \(0\le x_0\le x_1\le\cdots\le x_{q-1}<1\), and set
+\(
+\mu_q:=\frac1q\sum_{j=0}^{q-1}\delta_{x_j}
+\).
+Then
+\[
+W_1(\mu_q,\lambda)=\sum_{j=0}^{q-1}\int_{j/q}^{(j+1)/q}\bigl|x_j-t\bigr|\,dt.
+\]
+\end{lemma}
+\begin{proof}
+Define the piecewise constant map \(T:[0,1)\to[0,1)\) by \(T(t)=x_j\) for \(t\in[j/q,(j+1)/q)\). Then \(T_\#\lambda=\mu_q\), so the coupling \(\pi:=(T,\mathrm{Id})_\#\lambda\in\Pi(\mu_q,\lambda)\) yields the upper bound
+\(
+W_1(\mu_q,\lambda)\le \int|T(t)-t|\,dt
+\),
+whose right-hand side equals the stated sum.
+\par
+Conversely, under the linear order on the real line, the cost \(c(x,y)=|x-y|\) satisfies the Monge property: if \(t_1<t_2\) and \(x_a>x_b\), then swapping the assignment does not increase the total cost,
+\(
+|x_a-t_1|+|x_b-t_2|\ge |x_a-t_2|+|x_b-t_1|
+\).
+Hence any optimal coupling can be losslessly rewritten as a non-crossing (monotone) coupling; for \((\mu_q,\lambda)\), this monotone coupling corresponds precisely to the piecewise rearrangement form of~\(T\) above, whose total cost is the stated integral sum.
+The equality follows. \qed
+\end{proof}
+
+\begin{theorem}[Exact Closed-Form \texorpdfstring{$W_1$}{W1} at Denominator-Length Ticks]\label{thm:kronecker-w1-denominator-closed-form}
+Let \(p/q\) be a reduced fraction satisfying
+\[
+\left|\alpha-\frac pq\right|<\frac1{q^2}.
+\]
+Set \(\delta:=\alpha-\frac pq\) and consider the point set
+\(
+P_q(\alpha):=\{\{t\alpha\}:t=0,1,\dots,q-1\}\subset[0,1)
+\)
+with empirical measure \(\mu_q:=\frac1q\sum_{x\in P_q(\alpha)}\delta_x\).
+Then \(\mathsf{T}_q(\alpha)=W_1(\mu_q,\lambda)\) satisfies the following closed-form expressions:
+\begin{enumerate}
+  \item If \(\delta<0\) (i.e., \(\alpha<p/q\)), then
+  \begin{equation}\label{eq:kronecker-w1-bad-side-linear}
+  \boxed{\;
+  \mathsf{T}_q(\alpha)=\frac1{2q}+\frac{q-1}{2}\Bigl(\frac pq-\alpha\Bigr)\;}
+  \end{equation}
+  and in this setting the star discrepancy of the point set admits the closed form
+  \(
+  D_q^\ast(P_q(\alpha))=\frac1q+(q-1)\bigl(\frac pq-\alpha\bigr)
+  \),
+  whence
+  \begin{equation}\label{eq:kronecker-w1-half-star}
+  \boxed{\;\mathsf{T}_q(\alpha)=\frac12\,D_q^\ast(P_q(\alpha)).\;}
+  \end{equation}
+  \item If \(\delta>0\) (i.e., \(\alpha>p/q\)), then
+  \begin{equation}\label{eq:kronecker-w1-good-side-quadratic}
+  \boxed{\;
+  \mathsf{T}_q(\alpha)=\frac1{2q}-\frac{q-1}{2}\Bigl(\alpha-\frac pq\Bigr)
+  +\frac{q(q-1)(2q-1)}6\Bigl(\alpha-\frac pq\Bigr)^2\;}
+  \end{equation}
+  and on this side the star discrepancy degenerates to the constant \(D_q^\ast(P_q(\alpha))=1/q\) (each bin \([j/q,(j+1)/q)\) contains exactly one point).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Let \(t(j)\in\{0,1,\dots,q-1\}\) be the unique integer satisfying
+\(
+t(j)p\equiv j\pmod q
+\);
+then \(j\mapsto t(j)\) is a permutation with \(t(0)=0\).
+For any \(j\),
+\[
+\{t(j)\alpha\}
+=\left\{\frac{j}{q}+t(j)\delta\right\}.
+\]
+Since \(|t(j)\delta|\le (q-1)|\delta|<1/q\), the value inside the braces does not cross an adjacent integer, so the fractional part can be evaluated by simply removing the floor.
+\par
+\textbf{(i) \(\delta>0\).}
+In this case \(x_j:=\{t(j)\alpha\}=\frac{j}{q}+t(j)\delta\) satisfies
+\(
+\frac{j}{q}\le x_j<\frac{j+1}{q}
+\)
+(since \(t(j)\delta<1/q\)), so \((x_0,\dots,x_{q-1})\) is already sorted in increasing order of \(j\).
+By Lemma \ref{lem:w1-quantile-formula-empirical-uniform},
+\[
+\mathsf{T}_q(\alpha)=\sum_{j=0}^{q-1}\int_{j/q}^{(j+1)/q}\left|t(j)\delta-(t-j/q)\right|dt
+=\sum_{j=0}^{q-1}\frac12\left((t(j)\delta)^2+\left(\frac1q-t(j)\delta\right)^2\right).
+\]
+Expanding and summing yields
+\[
+\mathsf{T}_q(\alpha)
+=\frac1{2q}-\frac{\delta}{q}\sum_{j=0}^{q-1}t(j)+\delta^2\sum_{j=0}^{q-1}t(j)^2.
+\]
+Using the permutation identities
+\(
+\sum_{j=0}^{q-1}t(j)=\frac{q(q-1)}2
+\),
+\(
+\sum_{j=0}^{q-1}t(j)^2=\frac{q(q-1)(2q-1)}6
+\),
+one obtains \eqref{eq:kronecker-w1-good-side-quadratic}.
+Moreover, each bin \([j/q,(j+1)/q)\) contains exactly one point, so \(D_q^\ast(P_q(\alpha))=1/q\).
+\par
+\textbf{(ii) \(\delta<0\).}
+Write \(\delta':=-\delta=\frac pq-\alpha>0\).
+For \(j\ge 1\),
+\(
+\frac{j-1}{q}<\frac{j}{q}-t(j)\delta'<\frac{j}{q}
+\), and \(x_0=0\);
+hence the ordering is still given by \(j\), and for all \(j\ge 1\) one has \(x_j<j/q\).
+By Lemma \ref{lem:w1-quantile-formula-empirical-uniform},
+for the interval \(t\in[j/q,(j+1)/q)\) with \(j\ge 1\), \(|x_j-t|=t-x_j\), whence
+\[
+\mathsf{T}_q(\alpha)
+=\sum_{j=0}^{q-1}\int_{j/q}^{(j+1)/q}\bigl(t-x_j\bigr)\,dt
+=\frac12-\frac1q\sum_{j=0}^{q-1}x_j.
+\]
+Now
+\(
+\sum_{j=0}^{q-1}x_j
+=\sum_{j=1}^{q-1}\left(\frac{j}{q}-t(j)\delta'\right)
+=\frac{q-1}{2}-\delta'\sum_{j=1}^{q-1}t(j)
+\), and \(\sum_{j=1}^{q-1}t(j)=\frac{q(q-1)}2\).
+Substituting back gives \eqref{eq:kronecker-w1-bad-side-linear}.
+In this setting, the bin occupancy exhibits a deterministic bias of ``first-bin double occupancy / last-bin vacancy''; a direct computation yields
+\(
+D_q^\ast(P_q(\alpha))=\frac1q+(q-1)\delta'
+\), whence \eqref{eq:kronecker-w1-half-star} follows.
+\qed
+\end{proof}
+
+\begin{corollary}[Bad-Side Halving Improvement and Good-Side Intra-Bin Sensitivity]\label{cor:kronecker-w1-two-sided-interpretation}
+Under the setting of Theorem \ref{thm:kronecker-w1-denominator-closed-form}:
+\begin{enumerate}
+  \item On the bad side \(\alpha<p/q\), \(\mathsf{T}_q=\tfrac12 D_q^\ast\) (equation \eqref{eq:kronecker-w1-half-star}); thus for Lipschitz-kernel readout errors, the transport audit quantity yields a strict constant-factor-$2$ improvement over the closed-form error budget based on star discrepancy.
+  \item On the good side \(\alpha>p/q\), the star discrepancy degenerates to the constant \(1/q\), whereas \(\mathsf{T}_q(\alpha)\) still resolves intra-bin displacement as a quadratic polynomial in \(\delta\) (equation \eqref{eq:kronecker-w1-good-side-quadratic}), thereby providing additional auditable information on the ``intra-bin geometry.''
+\end{enumerate}
+\end{corollary}
+
+\subsubsection{Closed-Form Limit Constants for the Golden Branch}\label{subsec:kronecker-w1-golden}
+
+\begin{lemma}[Closed-Form Expression for Golden-Branch Convergent Errors]\label{lem:golden-convergent-error-closed}
+Let \(\alpha=\varphi^{-1}\in(0,1)\), and take \(p=F_{n-1},q=F_n\) (Fibonacci denominators; \(n\ge 2\)).
+Then the error \(\delta_n:=\alpha-\frac pq\) satisfies the exact identity
+\begin{equation}\label{eq:golden-error-exact}
+\boxed{\;
+\delta_n=(-1)^{n-1}\frac{\alpha^n}{F_n}
+=\frac{(-1)^{n-1}}{\sqrt5\,F_n^2}\Bigl(1-(-1)^n\varphi^{-2n}\Bigr)\;}
+\end{equation}
+and hence the asymptotic expansion \(\delta_n=\frac{(-1)^{n-1}}{\sqrt5\,F_n^2}+O(F_n^{-4})\).
+\end{lemma}
+\begin{proof}
+By the Binet formula \(F_n=(\varphi^n-(-1)^n\varphi^{-n})/\sqrt5\) and \(\alpha=\varphi^{-1}\), a direct computation gives
+\(
+\alpha-\frac{F_{n-1}}{F_n}=(-1)^{n-1}\alpha^n/F_n
+\);
+substituting \(F_n\alpha^n=\frac{1}{\sqrt5}(1-(-1)^n\varphi^{-2n})\) yields \eqref{eq:golden-error-exact}. \qed
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$W_1$}{W1} Limit Constants at Fibonacci Lengths]\label{cor:kronecker-w1-fibonacci-limits}
+Let \(\alpha=\varphi^{-1}\) and \(q=F_n,p=F_{n-1}\).
+Then by Theorem \ref{thm:kronecker-w1-denominator-closed-form} and Lemma \ref{lem:golden-convergent-error-closed}, the following limit constants hold along the two alternating subsequences:
+\[
+F_n\,\mathsf{T}_{F_n}(\alpha)\longrightarrow
+\frac12+\frac1{2\sqrt5}
+\qquad(n\to\infty,\ \delta_n<0),
+\]
+\[
+F_n\,\mathsf{T}_{F_n}(\alpha)\longrightarrow
+\frac12-\frac1{2\sqrt5}+\frac1{15}
+\qquad(n\to\infty,\ \delta_n>0).
+\]
+Equivalently, since \(\mathrm{sign}(\delta_n)=(-1)^{n-1}\): when \(n\) is even (\(\delta_n<0\)) the first constant applies; when \(n\) is odd (\(\delta_n>0\)) the second constant applies.
+\end{corollary}
+
+\begin{proposition}[\texorpdfstring{$W_1$}{W1} Covariance under Lipschitz Pushforward]\label{prop:w1-lipschitz-pushforward}
+If \(\Phi:[0,1)\to[0,1)\) is an \(L\)-Lipschitz map, then for any probability measures \(\mu,\nu\),
+\[
+W_1(\Phi_\#\mu,\Phi_\#\nu)\le L\,W_1(\mu,\nu).
+\]
+\end{proposition}
+\begin{proof}
+Take any \(\pi\in\Pi(\mu,\nu)\). Then \((\Phi\times\Phi)_\#\pi\in\Pi(\Phi_\#\mu,\Phi_\#\nu)\), and
+\[
+\int|\Phi(x)-\Phi(y)|\,d\pi(x,y)\le L\int|x-y|\,d\pi(x,y).
+\]
+Taking the infimum over \(\pi\) yields the result. \qed
+\end{proof}

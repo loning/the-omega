@@ -1,0 +1,136 @@
+\subsubsection{Primitive orbits and Dirichlet combs for cyclic lifts: divisibility screening, closed forms, and square-root scaling}\label{subsubsec:zeta-online-kernel-cyclic-lift-primitives}
+This paragraph aligns the cyclic phase lift \(M^{\langle q\rangle}=M\otimes P_q\) from Appendix \ref{app:real-input-40-finite-rh} (Proposition \ref{prop:finite-rh-phase-lift}) with the
+\(s\)-plane pole dictionary (Proposition \ref{prop:s-plane-spectrum-poles}) from the main text
+and the primitive M\"obius inversion template (Remark \ref{prop:finite-dimensional-explicit-formula}),
+thereby obtaining a set of closed-form corollaries that can be cited directly: on the critical-line pole side the cyclic lift realizes a "\(q\)-comb" refinement,
+while on the length/trace side it introduces a strict divisibility gate, and from this one derives the closed form for primitive orbit counts and their error terms.
+
+\begin{corollary}[Closed form for primitive orbit counts under cyclic lift]\label{cor:zeta-cyclic-lift-primitive-orbits}
+Let \(M\) be a finite-dimensional matrix, take an integer \(q\ge 2\), let \(P_q\) denote the \(q\)-cyclic permutation matrix, and set \(M^{\langle q\rangle}:=M\otimes P_q\) (Proposition \ref{prop:finite-rh-phase-lift}).
+Denote the trace sequences by \(a_n:=\Tr(M^n)\), \(a_n^{\langle q\rangle}:=\Tr((M^{\langle q\rangle})^n)\), and the corresponding primitive orbit counts by
+\[
+p_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\qquad
+p_n^{\langle q\rangle}:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a^{\langle q\rangle}_{n/d}
+\]
+(Witt/M\"obius inversion; see Remark \ref{prop:finite-dimensional-explicit-formula}).
+Then:
+\begin{enumerate}
+  \item If \(q\nmid n\), then \(p_n^{\langle q\rangle}=0\).
+  \item If \(n=qm\), then the following closed form holds:
+  \[
+  \boxed{\;
+  p_{qm}^{\langle q\rangle}
+  =\frac{1}{m}\sum_{d\mid m}\mu(d)\,\Tr\!\bigl(M^{qm/d}\bigr)\; }.
+  \]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+By the divisibility screening of Corollary \ref{cor:finite-rh-phase-lift-trace-filter},
+\(
+a_n^{\langle q\rangle}=q a_n
+\)
+if and only if \(q\mid n\), and \(a_n^{\langle q\rangle}=0\) otherwise.
+Substituting into the M\"obius inversion yields the first assertion; when \(n=qm\), only those terms with \(n/d\) still divisible by \(q\) (i.e., \(d\mid m\)) contribute, yielding the second closed form. \qed
+\end{proof}
+
+\begin{corollary}[The \(q\)-comb refinement of Dirichlet poles and RH invariance]\label{cor:zeta-cyclic-lift-dirichlet-comb}
+Let \(M\) be a finite-dimensional matrix with \(\lambda=\rho(M)>1\), and let
+\(
+Z_M(s)=\det(I-\lambda^{-s}M)^{-1}
+\)
+be the Dirichlet-ized \(\zeta\)-interface (Proposition \ref{prop:s-plane-spectrum-poles}).
+For the cyclic lift \(M^{\langle q\rangle}=M\otimes P_q\), the Dirichlet-ized function
+\(
+Z_{M^{\langle q\rangle}}(s)=\det(I-\lambda^{-s}M^{\langle q\rangle})^{-1}
+\)
+satisfies:
+\begin{enumerate}
+  \item \textbf{(Real-part invariance)} The set of real parts of all poles of \(Z_{M^{\langle q\rangle}}\) coincides exactly with that of \(Z_M\).
+  \item \textbf{(Imaginary-part density amplification)} If \(\mu\neq 0\) is a nonzero eigenvalue of \(M\), then the fundamental imaginary spacing of the corresponding pole sequence shrinks from \(2\pi/\log\lambda\) to
+  \[
+  \boxed{\;
+  \frac{2\pi}{q\log\lambda}\; },
+  \]
+  equivalently, the imaginary-part pole density is amplified by exactly a factor of \(q\) (the pole-comb formula of Proposition \ref{prop:finite-rh-phase-lift}).
+  \item \textbf{(Kernel-RH preservation)} The kernel RH / Ramanujan radius bound
+  \(
+  \max_{\mu\neq\lambda}|\mu|\le \sqrt{\lambda}
+  \)
+  is strictly invariant under cyclic lift (Proposition \ref{prop:finite-rh-phase-lift}); its \(s\)-plane formulation---namely that the open half-strip \(\tfrac12<\Re(s)<1\) contains no poles---is preserved (Proposition \ref{prop:s-plane-spectrum-poles}).
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+Proposition \ref{prop:finite-rh-phase-lift} gives the spectral phase subdivision
+\(
+\mathrm{spec}(M^{\langle q\rangle})=\{\mu\,\omega_q^k\}
+\)
+with moduli unchanged; applying the dictionary of Proposition \ref{prop:s-plane-spectrum-poles},
+\(
+s=(\log\mu+2\pi i\mathbb{Z})/\log\lambda
+\),
+immediately yields (1) and (2).
+Assertion (3) involves only moduli, and hence follows directly from \(|\omega_q^k|=1\). \qed
+\end{proof}
+
+\begin{proposition}[``Prime shadow'' leading term and square-root error for cyclic lifts]\label{prop:zeta-cyclic-lift-prime-shadow-asymptotic}
+Let \(M\) be a primitive nonneg integer matrix with \(\lambda=\rho(M)>1\), and denote
+\(
+\Lambda:=\max_{\mu\neq\lambda}|\mu|
+\).
+Let \(p_n^{\langle q\rangle}\) be the primitive orbit counts from Corollary \ref{cor:zeta-cyclic-lift-primitive-orbits}.
+Then for any integer \(m\ge 1\) one has the asymptotic formula
+\[
+\boxed{\;
+p_{qm}^{\langle q\rangle}
+=\frac{\lambda^{qm}}{m}
++O\!\left(\frac{\max\{\Lambda^{qm},\,\lambda^{qm/2}\}}{m}\right),\qquad
+p_n^{\langle q\rangle}=0\ (q\nmid n)\; }.
+\]
+In particular, if the kernel RH holds (\(\Lambda\le\sqrt{\lambda}\)), then
+\[
+\boxed{\;
+p_{qm}^{\langle q\rangle}
+=\frac{\lambda^{qm}}{m}
++O\!\left(\frac{\lambda^{qm/2}}{m}\right).\;}
+\]
+Moreover, when there exists a boundary eigenvalue \(|\mu|=\sqrt{\lambda}\), this square-root scale is in general not improvable (see the parity-gating proposition for RH-sharp oscillations, Proposition \ref{prop:finite-rh-parity-general}, in the appendix).
+\end{proposition}
+\begin{proof}
+Substitute the closed form from Corollary \ref{cor:zeta-cyclic-lift-primitive-orbits} into
+\(
+\Tr(M^n)=\lambda^n+O(\Lambda^n)
+\):
+the leading term comes from the \(d=1\) Perron contribution \(\lambda^{qm}/m\).
+Part of the error arises from \(O(\Lambda^{qm/d})\), whose largest magnitude is \(O(\Lambda^{qm})\);
+another part comes from Perron sub-leading terms at \(d\ge 2\): \(\lambda^{qm/d}\le \lambda^{qm/2}\).
+Combining and dividing by \(m\) gives the stated upper bound; under the RH condition \(\Lambda^{qm}\le \lambda^{qm/2}\), the simplified form follows immediately. \qed
+\end{proof}
+
+\begin{corollary}[Sign-flip modes and the critical-line half-lattice comb]\label{cor:zeta-signflip-half-lattice}
+Let \(M\) be a finite-dimensional matrix with \(\lambda=\rho(M)>1\), and set \(Z_M(s)=\det(I-\lambda^{-s}M)^{-1}\).
+Then the following two assertions are equivalent:
+\begin{enumerate}
+  \item \(M\) has an eigenvalue \(\mu=-\sqrt{\lambda}\);
+  \item \(Z_M\) has a half-lattice pole array on the critical line \(\Re(s)=\tfrac12\):
+  \[
+  \boxed{\;
+  s=\frac12+\frac{(2k+1)\pi i}{\log\lambda}\qquad(k\in\ZZ)\; }.
+  \]
+\end{enumerate}
+More generally, if there exists a boundary eigenvalue \(\mu=\sqrt{\lambda}e^{i\theta}\), then the pole sequence on the critical line is
+\[
+\boxed{\;
+s=\frac12+\frac{(\theta+2\pi k)i}{\log\lambda}\qquad(k\in\ZZ)\; }.
+\]
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:s-plane-spectrum-poles}, \(\lambda^{-s}\mu=1\) if and only if
+\(
+s=(\log\mu+2\pi i k)/\log\lambda
+\).
+When \(\mu=\sqrt{\lambda}e^{i\theta}\), one may take \(\log\mu=\tfrac12\log\lambda+i(\theta+2\pi\ell)\), and substitution yields the general formula;
+setting \(\theta=\pi\) gives the half-lattice case.
+The converse reasoning proceeds identically: a critical-line pole yields \(|\mu|=\sqrt{\lambda}\) with argument \(\theta\) (modulo \(2\pi\)). \qed
+\end{proof}
+

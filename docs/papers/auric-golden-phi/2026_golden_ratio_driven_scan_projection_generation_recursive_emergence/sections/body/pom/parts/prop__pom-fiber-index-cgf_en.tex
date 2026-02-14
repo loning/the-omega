@@ -1,0 +1,645 @@
+For $\gamma\ge 0$ and $\varepsilon>0$, define the "approximate layer" count:
+$$
+N_m(\gamma,\varepsilon):=\Bigl|\bigl\{x\in X_m:\ |\gamma_m(x)-\gamma|\le \varepsilon\bigr\}\Bigr|.
+$$
+Define the (upper) spectral function of fiber multiplicity:
+$$
+f(\gamma):=\lim_{\varepsilon\downarrow 0}\ \limsup_{m\to\infty}\ \frac{1}{m}\log N_m(\gamma,\varepsilon).
+$$
+\end{definition}
+
+\begin{proposition}[Geometric meaning of collision spectrum: exponential moment generating function of fiber index]\label{prop:pom-fiber-index-cgf}
+Following the output distribution notation $\pi_m(x)=d_m(x)/2^m$, treat $\gamma_m(X)$ as a random variable sampled from $X_m$ with $\pi_m$.
+Then for any integer $q\ge 2$ the strict identity holds:
+\[
+\boxed{\;
+\mathbb{E}_{\pi_m}\!\left[\exp\!\bigl((q-1)m\,\gamma_m(X)\bigr)\right]
+=\frac{S_q(m)}{2^m}\; }.
+\]
+Thus:
+\[
+\frac{1}{m}\log \mathbb{E}_{\pi_m}\!\left[\exp\!\bigl((q-1)m\,\gamma_m(X)\bigr)\right]
+=\frac{1}{m}\log S_q(m)-\log 2.
+\]
+In particular, if the Perron leading scale $S_q(m)=\Theta(r_q^m)$ exists (e.g., given by moment-kernel implementation), then the limiting cumulant generating function satisfies at integer points $t=q-1$:
+\[
+\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}_{\pi_m}\!\left[e^{t m\,\gamma_m(X)}\right]
+=\log r_{t+1}-\log 2,
+\qquad
+h_{t+1}=(t+1)\log 2-\log r_{t+1}.
+\]
+\end{proposition}
+\begin{proof}
+Expanding by definition using $\pi_m(x)=d_m(x)/2^m$:
+\[
+\begin{aligned}
+\mathbb{E}_{\pi_m}\!\left[\exp\!\bigl((q-1)m\,\gamma_m(X)\bigr)\right]
+&=\sum_{x\in X_m}\pi_m(x)\,e^{(q-1)\log d_m(x)}\\
+&=\sum_{x\in X_m}\frac{d_m(x)}{2^m}\,d_m(x)^{q-1}\\
+&=\frac{1}{2^m}\sum_{x\in X_m}d_m(x)^q\\
+&=\frac{S_q(m)}{2^m}.
+\end{aligned}
+\]
+Taking logarithm and dividing by $m$ yields the second formula. The last part follows directly from the exponential scale $S_q(m)=\Theta(r_q^m)$ and the definition $h_q=\log(2^q/r_q)$. This completes the proof.
+\end{proof}
+
+\begin{remark}[Large deviation/multifractal inversion (interface + executable construction)]\label{rem:pom-fiber-index-ldp}
+Proposition~\ref{prop:pom-fiber-index-cgf} shows that: the collision spectrum $q\mapsto h_q$ is equivalent to the growth rate of the exponential moment generating function of fiber index $\gamma_m$ at integer points.
+Appendix~\ref{app:pom-projective-pressure-operator} provides a concrete "integer $\to$ real" lift: the projective transfer operator $\mathcal{L}_q$ (Definition~\ref{def:pom-projective-transfer-operator}), and proves that it strictly degenerates to the symmetric power moment-kernel $\widetilde A_q$ at integer points $q\in\ZZ_{\ge 2}$ (Theorem~\ref{thm:pom-projective-operator-degenerates-to-moment-kernel}), thereby aligning the discrete pressure $\log r_q$ to an executable candidate for a continuous pressure curve (Remark~\ref{rem:pom-projective-pressure-route}).
+Under cone contraction/quasi-compactness assumptions, one can take $\lambda(q)$ as the Perron principal eigenvalue of $\mathcal{L}_q$ and define the convex function:
+\(
+\Lambda(t):=\log\lambda(t+1)-\log 2
+\)
+(for Fold main kernel with $|A_{\mathrm{out}}|=2$), yielding integer point consistency:
+\(
+\Lambda(q-1)=\log r_q-\log 2
+\).
+If further satisfying differentiability/essential strict convexity and other standard conditions, the Gärtner-Ellis theorem yields the large deviation rate function for $\gamma_m$:
+\[
+I(\gamma)=\sup_{t\ge 0}\bigl(t\gamma-\Lambda(t)\bigr).
+\]
+In this case, $I$ (and thus the fiber thickness spectrum) can be "inverted" from the collision spectrum, forming a falsifiable computational target for "inferring fiber geometry from the $h_q$ fingerprint".
+\end{remark}
+
+\begin{theorem}[Large deviation principle for fiber index (thermodynamic completion)]\label{thm:pom-fiber-index-ldp-thermo}
+Let $X\sim\pi_m$ (where $\pi_m(x)=d_m(x)/2^m$), and denote:
+\(
+\gamma_m(X)=(1/m)\log d_m(X)
+\).
+Assume the limiting cumulant generating function:
+\[
+\Lambda(t)=\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}_{\pi_m}\!\left[e^{t m\,\gamma_m(X)}\right]
+\]
+exists, is finite on some open interval containing $t=0$, and satisfies the regularity conditions (essential smoothness/strict convexity, etc.) required by the Gärtner-Ellis theorem.
+Then the sequence $(\gamma_m(X))_{m\ge 1}$ satisfies a large deviation principle, with rate function given by the Legendre-Fenchel transform:
+\[
+I(\gamma)=\sup_{t\ge 0}\bigl(t\gamma-\Lambda(t)\bigr).
+\]
+Moreover, $I$ is a good function with unique zero at:
+\(
+\gamma_\ast=\Lambda'(0)
+\);
+$I$ is strictly convex in the interior of its effective domain, and is analytic wherever $\Lambda$ is analytic.
+\end{theorem}
+
+\begin{theorem}[Central limit theorem and auditability of second-order constants]\label{thm:pom-fiber-index-clt-thermo}
+Under the setup of Theorem~\ref{thm:pom-fiber-index-ldp-thermo}, further assume $\Lambda$ is twice differentiable in a neighborhood of $t=0$ and satisfies spectral gap/analytic perturbation conditions allowing interchange of "taking limit/differentiation".
+Then the central limit theorem holds:
+\[
+\frac{\log d_m(X)-m\gamma_\ast}{\sqrt m}\ \Longrightarrow\ \mathcal N(0,\sigma^2),
+\qquad
+\sigma^2=\Lambda''(0).
+\]
+Moreover, $\sigma^2$ can be cross-audited at integer moment spectrum anchor points $(r_q)_{q\ge 2}$: by integer point consistency:
+\(
+\Lambda(q-1)=\log r_q-\log 2
+\)
+(Remark~\ref{rem:pom-fiber-index-ldp}), one can approximate $\Lambda'(0)$, $\Lambda''(0)$ using difference quotients and check interpolation error via convexity/consistency constraints.
+\end{theorem}
+
+\subsubsection{Typical space loss constants: mean rate and variance rate}\label{subsec:pom-fiber-log-moments}
+Treating:
+\[
+L_m:=\log d_m(X),\qquad X\sim \pi_m,\ \ \pi_m(x)=\frac{d_m(x)}{2^m},
+\]
+as the random variable of "log fiber volume", define its low-order cumulant densities as:
+\[
+\mu_m:=\frac{1}{m}\mathbb{E}_{\pi_m}[L_m],
+\qquad
+\sigma_m^2:=\frac{1}{m}\mathrm{Var}_{\pi_m}(L_m).
+\]
+If the limiting cumulant generating function:
+\(
+\Lambda(t)=\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}_{\pi_m}[e^{tL_m}]
+\)
+is twice differentiable in a neighborhood of $t=0$ and allows interchange of "taking limit/differentiation" (common in standard thermodynamic formalism), then:
+\[
+\mu=\Lambda'(0)=\lim_{m\to\infty}\mu_m,\qquad
+\sigma^2=\Lambda''(0)=\lim_{m\to\infty}\sigma_m^2.
+\]
+\begin{remark}[Collision spectrum \texorpdfstring{$\leftrightarrow$}{<->} typical loss: \texorpdfstring{$\Lambda(t)=\tau(t+1)-\log2$}{Lambda(t)=tau(t+1)-log2}]\label{rem:pom-lambda-tau-shift}
+Treating $S_q(m)$ as a partition function with real parameter $q\in\mathbb{R}$:
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q
+\]
+(consistent with the collision moment in this paper when $q\in\mathbb{Z}_{\ge 2}$).
+Then for any fixed $m$ and any $t\in\mathbb{R}$, by directly expanding $\pi_m(x)=d_m(x)/2^m$ we obtain the strict identity:
+\[
+\mathbb{E}_{\pi_m}[e^{tL_m}]
+=\sum_{x\in X_m}\frac{d_m(x)}{2^m}\,d_m(x)^t
+=\frac{S_{t+1}(m)}{2^m}.
+\]
+Therefore, denoting:
+\[
+\tau_m(q):=\frac1m\log S_q(m),
+\qquad
+\tau(q):=\lim_{m\to\infty}\tau_m(q)\quad(\text{where limit exists}),
+\]
+we have:
+\[
+\frac1m\log \mathbb{E}_{\pi_m}[e^{tL_m}]=\tau_m(t+1)-\log2,
+\qquad
+\Lambda(t)=\tau(t+1)-\log2.
+\]
+Moreover, at $q=1$ (without taking limit) we have exact derivative identities:
+\[
+\mu_m=\tau_m'(1),
+\qquad
+\sigma_m^2=\tau_m''(1).
+\]
+Under the assumption of interchanging "taking limit/differentiation", taking $m\to\infty$ in the above yields $\mu=\tau'(1)$ and $\sigma^2=\tau''(1)$.
+\end{remark}
+
+\begin{corollary}[Zero-parameter audit squeeze: \texorpdfstring{$\mu$}{mu} pinned by \texorpdfstring{$(r_0,r_1,r_2)$}{(r0,r1,r2)} on both ends]\label{cor:pom-mu-secant-audit}
+For each fixed $m$, the function $q\mapsto \tau_m(q)=(1/m)\log S_q(m)$ is convex, thus its derivative at $q=1$ satisfies the secant squeeze:
+\[
+\boxed{\;
+\tau_m(1)-\tau_m(0)\ \le\ \mu_m\ \le\ \tau_m(2)-\tau_m(1).\;}
+\]
+Under the Fold calibration with $S_1(m)=\sum_x d_m(x)=2^m$, $S_0(m)=|X_m|=F_{m+2}$, we obtain the directly auditable finite-$m$ squeeze:
+\[
+\boxed{\;
+\log2-\frac1m\log F_{m+2}\ \le\ \mu_m\ \le\ \frac1m\log S_2(m)-\log2.\;}
+\]
+If further $r_2=\lim_{m\to\infty}S_2(m)^{1/m}$ exists (precisely given by the two-body collision kernel $A_2$), and denoting endpoint spectral constants:
+\(
+r_0:=\lim_{m\to\infty}|X_m|^{1/m}=\varphi
+\)
+and:
+\(
+r_1:=2
+\),
+then taking $m\to\infty$ yields the limiting "zero-parameter" audit interval:
+\[
+\boxed{\;
+\log\frac{2}{r_0}\ \le\ \mu\ \le\ \log\frac{r_2}{2}\;}
+\qquad(\text{i.e., }\ \log(2/\varphi)\le\mu\le\log(r_2/2)).
+\]
+\end{corollary}
+\begin{proof}
+Since $S_q(m)=\sum_x e^{q\log d_m(x)}$, the function $q\mapsto \log S_q(m)$ is log-sum-exp, hence convex; dividing by $m$ preserves convexity. Applying secant squeeze to the convex function at point $q=1$ yields the first formula. The remaining statements follow by substituting the endpoint equalities for $S_0,S_1$ and taking limits. This completes the proof.
+\end{proof}
+Table~\ref{tab:fold_fiber_log_moments_mu_sigma} provides numerically exact values of $(\mu_m,\sigma_m^2)$ computed via residue DP modulo $F_{m+2}$, serving as an auditable constant interface for "typical space loss density and thermal fluctuation strength".
+
+\input{sections/generated/tab_fold_fiber_log_moments_mu_sigma}
+
+\begin{proposition}[Legendre upper bound: spectrum controlled by moment pressure]\label{prop:pom-spectrum-legendre-upper}
+For any $q\ge 2$ and any $\gamma\ge 0$, we have the upper bound:
+$$
+f(\gamma)\ \le\ \inf_{q\ge 2}\bigl(\tau(q)-q\gamma\bigr).
+$$
+In particular, in the case $\tau(q)=\log r_q$:
+$$
+f(\gamma)\ \le\ \inf_{q\ge 2}\bigl(\log r_q-q\gamma\bigr).
+$$
+\end{proposition}
+
+\begin{proof}
+Fix $q\ge 2$ and $\gamma,\varepsilon$. For any $x$ satisfying $|\gamma_m(x)-\gamma|\le\varepsilon$, we have:
+$$
+d_m(x)^q=\exp(qm\gamma_m(x))\ \ge\ \exp\bigl(qm(\gamma-\varepsilon)\bigr).
+$$
+Therefore:
+$$
+S_q(m)=\sum_{x\in X_m} d_m(x)^q
+\ \ge\ N_m(\gamma,\varepsilon)\,\exp\bigl(qm(\gamma-\varepsilon)\bigr),
+$$
+i.e.:
+$$
+\frac{1}{m}\log N_m(\gamma,\varepsilon)\ \le\ \frac{1}{m}\log S_q(m)\ -\ q(\gamma-\varepsilon).
+$$
+Taking $\limsup$ as $m\to\infty$ and then letting $\varepsilon\downarrow 0$ yields:
+$$
+f(\gamma)\le \tau(q)-q\gamma.
+$$
+Taking infimum over all $q\ge 2$ yields the conclusion. This completes the proof.
+\end{proof}
+
+\begin{remark}[Multifractal formalism (as testable target)]\label{rem:pom-spectrum-formalism}
+Proposition~\ref{prop:pom-spectrum-legendre-upper} provides a strict upper bound: the convex conjugate of the moment pressure curve $\tau(q)$ controls the (upper) spectrum of fiber multiplicity.
+Under standard thermodynamic formalism conditions (e.g., existence of a Gibbs structure dual to $\tau$ with sufficient quasi-multiplicativity), one often obtains the inequality in the opposite direction to achieve equality, i.e., "spectrum $f$ and pressure $\tau$ are Legendre transforms of each other".
+In this framework, this equality can be viewed as a falsifiable structural target: it translates "space loss is a spectrum" into the computable proposition "$\{r_q\}$ family determines spectral shape".
+\end{remark}
+
+\begin{proposition}[Paley-Zygmund lower envelope: "heavy tail" exponent lower bound from only \texorpdfstring{$(r_q,r_{2q})$}{(rq,r2q)}]\label{prop:pom-spectrum-pz-lower}
+Take any integer $q\ge 2$. Let $X$ be uniformly distributed on $X_m$, and let the non-negative random variable be:
+\[
+Y:=d_m(X)^q.
+\]
+Then the Paley-Zygmund inequality for threshold $\theta=\tfrac12$ yields:
+\[
+\#\Bigl\{x\in X_m:\ d_m(x)\ge \Bigl(\tfrac12\,\frac{S_q(m)}{|X_m|}\Bigr)^{1/q}\Bigr\}
+\ \ge\ \frac14\cdot\frac{S_q(m)^2}{S_{2q}(m)}.
+\]
+Thus if the limits $r_k=\lim_{m\to\infty}S_k(m)^{1/m}$ exist at $k=q,2q$, and $\lim_{m\to\infty}\frac1m\log|X_m|=\log\varphi$, then defining:
+\[
+\gamma_q:=\frac{\log r_q-\log\varphi}{q},
+\qquad
+\underline f(q):=2\log r_q-\log r_{2q},
+\]
+we have the strict lower bound:
+\[
+\boxed{\;
+\lim_{\varepsilon\downarrow 0}\ \liminf_{m\to\infty}\ \frac1m
+\log \#\bigl\{x\in X_m:\ \gamma_m(x)\ge \gamma_q-\varepsilon\bigr\}
+\ \ge\ \underline f(q)\; }.
+\]
+\end{proposition}
+\begin{proof}
+Expanding expectations under uniform sampling $X\sim \mathrm{Unif}(X_m)$:
+\[
+\mathbb{E}[Y]=\frac{1}{|X_m|}\sum_{x\in X_m}d_m(x)^q=\frac{S_q(m)}{|X_m|},
+\qquad
+\mathbb{E}[Y^2]=\frac{S_{2q}(m)}{|X_m|}.
+\]
+For any non-negative $Y$ and $\theta\in(0,1)$, the Paley-Zygmund inequality yields:
+\[
+\mathbb{P}\!\left(Y\ge \theta\,\mathbb{E}Y\right)\ \ge\ (1-\theta)^2\frac{(\mathbb{E}Y)^2}{\mathbb{E}[Y^2]}.
+\]
+Taking $\theta=\tfrac12$ and substituting the above expressions yields:
+\[
+\mathbb{P}\!\left(Y\ge \tfrac12\,\mathbb{E}Y\right)\ \ge\ \frac14\cdot\frac{S_q(m)^2}{|X_m|\,S_{2q}(m)}.
+\]
+Multiplying the probability by $|X_m|$ yields the counting lower bound:
+\[
+\#\Bigl\{x\in X_m:\ d_m(x)^q\ge \tfrac12\,\frac{S_q(m)}{|X_m|}\Bigr\}
+\ \ge\ \frac14\cdot\frac{S_q(m)^2}{S_{2q}(m)},
+\]
+which is equivalent to the first inequality stated in the proposition.
+\par
+For the second part, taking logarithm, dividing by $m$, and letting $m\to\infty$:
+the right-hand side yields:
+\[
+\liminf_{m\to\infty}\frac1m\log\!\left(\frac14\cdot\frac{S_q(m)^2}{S_{2q}(m)}\right)
+=2\log r_q-\log r_{2q}=\underline f(q),
+\]
+while the threshold on the left-hand side satisfies:
+\[
+\frac1m\log\Bigl(\Bigl(\tfrac12\,\frac{S_q(m)}{|X_m|}\Bigr)^{1/q}\Bigr)
+=\frac{1}{q}\Bigl(\frac1m\log S_q(m)-\frac1m\log|X_m|+\frac1m\log\tfrac12\Bigr)
+\to \gamma_q.
+\]
+Therefore, for any $\varepsilon>0$, when $m$ is sufficiently large, the left-hand set is contained in $\{\gamma_m(x)\ge \gamma_q-\varepsilon\}$, yielding the stated $\liminf$ lower bound as $\varepsilon\downarrow 0$. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Intermittency deficit \texorpdfstring{$\delta(q)$}{delta(q)}: directly auditable "tail thinning" indicator from tabular numerics]\label{cor:pom-spectrum-intermittency-deficit}
+Under the setup of Proposition~\ref{prop:pom-spectrum-pz-lower}:
+\[
+\underline f(q)\ \le\ \log\varphi,
+\]
+and one can define the non-negative gap:
+\[
+\boxed{\;
+\delta(q):=\log\varphi-\underline f(q)
+=\log\varphi+\log r_{2q}-2\log r_q\ \ge\ 0.\;}
+\]
+Moreover, the upper bound from Proposition~\ref{prop:pom-spectrum-legendre-upper} at the special point:
+\(
+\gamma=\gamma_q=(\log r_q-\log\varphi)/q
+\)
+reads as:
+\[
+f(\gamma_q)\ \le\ \log r_q-q\gamma_q=\log\varphi,
+\]
+thus $\underline f(q)$ yields a lower bound for the exponential-level stable type class that necessarily contains "high-multiplicity tail near $\gamma_q$", while $\delta(q)$ quantifies the deficit of this lower bound relative to the maximum possible exponent $\log\varphi$.
+\end{corollary}
+\begin{proof}
+By the Cauchy-Schwarz (or Hölder) inequality:
+\[
+\Bigl(\sum_{x\in X_m}d_m(x)^q\Bigr)^2\le |X_m|\sum_{x\in X_m}d_m(x)^{2q}
+\]
+we obtain $S_q(m)^2\le |X_m|S_{2q}(m)$. Taking logarithm, dividing by $m$, and letting $m\to\infty$ yields:
+\(
+2\log r_q-\log r_{2q}\le \log\varphi
+\),
+i.e., $\underline f(q)\le\log\varphi$ and $\delta(q)\ge 0$.
+The remaining statements follow directly from Proposition~\ref{prop:pom-spectrum-pz-lower} and the definition of $\gamma_q$. This completes the proof.
+\end{proof}
+
+\begin{remark}[Reproducible readout: lower envelope points for \texorpdfstring{$q\le 10$}{q<=10} and bilateral envelope diagram]\label{rem:pom-spectrum-pz-numerics}
+For $q\le 10$, from $(r_q,r_{2q})$ in Table~\ref{tab:fold_collision_renyi_spectrum_mod_dp_q20} one can directly compute:
+\(
+(\gamma_q,\underline f(q),\delta(q))
+\)
+(without any new DP).
+Script \texttt{scripts/exp\_fold\_collision\_multifractal\_envelope\_pz\_q10.py} reads $r_q$ from this table fragment and generates derived Table~\ref{tab:fold_collision_multifractal_envelope_pz_q10} and comparison Figure~\ref{fig:fold-collision-multifractal-envelope-pz}.
+For example, from table values $r_2,r_4,r_{10},r_{20}$ one obtains:
+\(
+\delta(2)\approx 0.0108
+\),
+\(
+\delta(10)\approx 0.0804
+\),
+showing that the "heavy tail guarantee exponent" significantly decreases with $q$ under higher-order moment probes.
+\input{sections/generated/tab_fold_collision_multifractal_envelope_pz_q10}
+\input{sections/generated/fig_fold_collision_multifractal_envelope_pz_q10}
+\end{remark}
+
+\begin{proposition}[Finite-\texorpdfstring{$m$}{m} "typical window plateau": exponential-level lower bound from \texorpdfstring{$(\mu_m,\sigma_m^2)$}{(mu,sigma2)}]\label{prop:pom-spectrum-finite-m-plateau}
+Let $w_m(x)=d_m(x)/2^m$ be the folding pushforward of uniform microstates (Definition~\ref{def:pom-wm-baseline}), let $X\sim w_m$, and denote:
+\(
+\gamma_m(X)=(1/m)\log d_m(X)
+\).
+Then for any $\varepsilon>0$, Chebyshev's inequality yields:
+\[
+\boxed{\;
+w_m\!\bigl(|\gamma_m(X)-\mu_m|>\varepsilon\bigr)\ \le\ \frac{\sigma_m^2}{m\varepsilon^2}\; }.
+\]
+Therefore, the set:
+\(
+A_m(\varepsilon):=\{x\in X_m:\ |\gamma_m(x)-\mu_m|\le \varepsilon\}
+\)
+satisfies the counting lower bound:
+\[
+\boxed{\;
+|A_m(\varepsilon)|
+\ \ge\
+\left(1-\frac{\sigma_m^2}{m\varepsilon^2}\right)
+\exp\!\bigl(m(\log 2-\mu_m-\varepsilon)\bigr)\; }.
+\]
+The right-hand side depends only on $(\mu_m,\sigma_m^2)$ from Table~\ref{tab:fold_fiber_log_moments_mu_sigma} (and the constant $\log 2$), thus providing a fully auditable finite-resolution "plateau guarantee": for fixed window width $\varepsilon$, there exist exponentially many stable types whose $\gamma_m$ falls near $\mu_m$.
+\end{proposition}
+\begin{proof}
+By $\mathrm{Var}(\log d_m(X))=m\sigma_m^2$ and Chebyshev we have:
+\[
+w_m\bigl(|\log d_m(X)-\mathbb{E}\log d_m(X)|>m\varepsilon\bigr)
+\le \frac{m\sigma_m^2}{m^2\varepsilon^2}
+=\frac{\sigma_m^2}{m\varepsilon^2},
+\]
+dividing by $m$ yields the first formula.
+\par
+For the second formula, note that for any $x\in A_m(\varepsilon)$:
+\(
+\log d_m(x)\le m(\mu_m+\varepsilon)
+\),
+thus:
+\(
+w_m(x)=d_m(x)/2^m\le \exp(m(\mu_m+\varepsilon))/2^m
+\).
+Hence:
+\[
+w_m(A_m(\varepsilon))
+\le |A_m(\varepsilon)|\cdot \frac{\exp(m(\mu_m+\varepsilon))}{2^m}.
+\]
+Combining with the lower bound $w_m(A_m(\varepsilon))\ge 1-\sigma_m^2/(m\varepsilon^2)$ from the first formula and rearranging yields the result. This completes the proof.
+\end{proof}
+
+\begin{remark}[Two readouts of the same convex conjugate: \texorpdfstring{Legendre spectrum upper bound $\leftrightarrow$ Chernoff tail bound}{Legendre<->Chernoff}]\label{rem:pom-legendre-chernoff-same-dual}
+Proposition~\ref{prop:pom-spectrum-legendre-upper} (geometric spectrum upper bound by counting measure) and Proposition~\ref{prop:pom-quantile-chernoff}--Corollary~\ref{cor:pom-quantile-dual-optimizer} (tail control by output measure $\pi_m$) are essentially given by the same convex duality kernel.
+Let:
+\[
+\Phi(q):=\tau(q)-\log 2,
+\qquad
+\Lambda(t):=\Phi(t+1)=\tau(t+1)-\log 2\quad(t\ge 1),
+\]
+then the Chernoff rate function upper bound is:
+\[
+I(\gamma)=\sup_{t\ge 1}\bigl(t\gamma-\Lambda(t)\bigr)
+\]
+(Corollary~\ref{cor:pom-quantile-dual-optimizer}).
+While the Legendre upper bound can be rewritten as:
+\[
+\begin{aligned}
+\inf_{q\ge 2}\bigl(\tau(q)-q\gamma\bigr)
+&=\log 2-\gamma+\inf_{t\ge 1}\bigl(\Lambda(t)-t\gamma\bigr)\\
+&=\log 2-\gamma-\sup_{t\ge 1}\bigl(t\gamma-\Lambda(t)\bigr)
+=\log 2-\gamma-I(\gamma).
+\end{aligned}
+\]
+Therefore, both share the same convex conjugate $\sup_{t\ge 1}(t\gamma-\Lambda(t))$: the difference arises only from the $-\log 2$ normalization introduced by the base measure (counting vs.\ $\pi_m$) and the shift $q\leftrightarrow t=q-1$.
+\par
+Under the differentiable/strictly convex extension calibration (e.g., treating $q$ as a real parameter and extending $\tau$), the optimal moment order $q^\star(\gamma)$ (whether used for spectrum upper bound or tail bound budget) satisfies the same "support line condition":
+\[
+\gamma\ \in\ \partial \tau\bigl(q^\star(\gamma)\bigr),
+\]
+i.e., the subgradient of $\tau$ at $q^\star$ hits $\gamma$; together with discrete convexity of pressure (Proposition~\ref{prop:pom-pressure-convexity}), this upgrades "selecting $q$" from an empirical knob to a dual coordinate determined by convex geometry.
+\end{remark}
+
+\subsubsection{Irreducible lower bound for online delay}\label{subsec:pom-delay-lb}
+\begin{proposition}[Minimality of single-pass online delay $3$]\label{prop:pom-delay-min}
+Any single-pass online transducer implementing $\Fold_\infty:\{0,1,2\}^{\ZZ}\to X_\infty$ has minimum delay satisfying:
+\[
+\delta_{\min}(\Fold_\infty)\ge 3.
+\]
+Combined with Theorem~\ref{thm:online-delay-fold}, we obtain $\delta_{\min}(\Fold_\infty)=3$.
+\end{proposition}
+\begin{proof}
+In the online kernel of Subsection~\ref{subsec:online-delay}, the output satisfies:
+\(
+e=\lfloor \varphi R(s)+d\varphi^{-3}\rfloor
+\),
+where $s$ is the synchronization state of length $3$, $d\in\{0,1,2\}$ is the current input. Taking state $s=002$ (which belongs to state set $Q$):
+\[
+R(s)=2\varphi^{-3},\qquad
+e=\left\lfloor 2\varphi^{-2}+d\varphi^{-3}\right\rfloor.
+\]
+When $d=0$ then $e=0$, when $d=1$ then $e=1$, thus this bit output indeed depends on the "forward 3rd bit" input. Any single-pass online machine with delay $2$ has not yet read this input when outputting this bit, necessarily producing a conflict, and thus cannot implement $\Fold_\infty$. This completes the proof.
+\end{proof}
+
+\begin{remark}[Orthogonality of space defect and time defect]\label{rem:pom-space-time-orth}
+Maximum fiber multiplicity yields the worst space defect for "value projection" (Theorem~\ref{thm:pom-max-fiber}), while single-pass online delay yields the irreducible time defect for "step projection" (Proposition~\ref{prop:pom-delay-min}). Both arise from different projection gates and are thus mutually irreplaceable: increasing space cannot compress $\delta_{\min}$ to $2$, and reducing delay cannot eliminate the fiber multiplicity of $d_m$.
+\end{remark}
+
+\begin{definition}[Space-time-spectrum triple fingerprint]\label{def:pom-fingerprint}
+For a normalized kernel $K$ implementing canonical projection $P_Z$, denote its resolution truncation as $K_m:\Omega_m\to X_m$, and let:
+\(
+d^{(K)}_m(x):=|K_m^{-1}(x)|
+\).
+Define:
+\[
+S_K(m):=\max_{x}\log d^{(K)}_m(x)\quad(\text{space fingerprint}),
+\qquad
+T_K:=\delta_{\min}(K)\quad(\text{time fingerprint}),
+\]
+and take:
+\[
+\Pi_K:=\{\zeta_K,\ \log\mathfrak{M}_K,\ \rho/\lambda,\ \text{Dirichlet-Mertens constant tensors, etc.}\}
+\]
+as the spectral fingerprint family (see Section~\ref{sec:zeta-finite-part}). The three respectively quantify "value projection loss", "online non-parallelizable delay", and "mechanism spectral details", mutually orthogonal under the same projection framework.
+\end{definition}
+
+\begin{remark}[Fold triple fingerprint]\label{rem:pom-fold-fingerprint}
+For Zeckendorf normalized kernel $K=\Fold_\infty$, by Theorem~\ref{thm:pom-max-fiber} we have $S_K(m)=\log D_m$, by Proposition~\ref{prop:pom-delay-min} we have $T_K=3$, and $\Pi_K$ can be explicitly extracted from the $\zeta$, $\log\mathfrak{M}$ and Dirichlet-Mertens tensors of the 10/40-state synchronization kernels (see Section~\ref{sec:zeta-finite-part} and Appendices~\ref{app:sync-kernel-basic},~\ref{app:real-input-40-abel}). Therefore "space(value)$\times$time(step)$\times$spectrum(mechanism)" forms a unified comparable quantification framework.
+\end{remark}
+
+\begin{theorem}[Unified closure: online kernel-collision moment kernel-\texorpdfstring{$\zeta$/primitive}{zeta/primitive}-geometric dimension spectrum]\label{thm:pom-unified-closure}
+Taking $K=\Fold_\infty$ as the canonical projection kernel. Then the following chain closes under the same interface "finite kernel $\Rightarrow$ spectrum $\Rightarrow$ orbit/finite-part $\Rightarrow$ geometric spectrum":
+\begin{enumerate}
+  \item \textbf{(Online kernel and time defect)} $\Fold_\infty$ admits a single-pass online synchronization implementation (Appendix~\ref{app:sync-kernel-basic} gives explicit 10-state kernel), with minimum delay rigidity $\delta_{\min}=3$ (Proposition~\ref{prop:pom-delay-min}).
+  \item \textbf{(Arbitrary-order moment-kernel and entropy rate existence)} For any integer $q\ge 2$, the $q$-fold collision moment $S_q(m)$ can be counted by finite-state non-negative integer kernel $A_q$ (Proposition~\ref{prop:pom-moment-kernel-exists}), thus $S_q$ is an $\mathbb N$-rational series satisfying a finite-order integer-coefficient recurrence; its Perron root $r_q=\rho(A_q)$ yields the exponential scale $S_q(m)=\Theta(r_q^m)$ and induces existence and closed-form interface for projection entropy rate:
+  \[
+  h_q=\log\!\left(\frac{2^q}{r_q}\right)
+  \]
+  (Definition~\ref{def:pom-moment-pressure}).
+  \item \textbf{(Closed dimension intrinsic invariant)} Within the audited range $q\le 8$, the minimal linear realization dimension of sequence $S_q$ is locked by Hankel rank: $\mathrm{rank}(H)\ge 2\lfloor q/2\rfloor+1$ (Theorem~\ref{thm:pom-moment-hankel}), and agrees with recurrence order thus achieving equality in this range (Corollary~\ref{cor:pom-moment-minreal}).
+  \item \textbf{(Mechanism criterion for resonance/collapse)} When recurrence order falls below $2\lfloor q/2\rfloor+1$, difference modes satisfy linear constraints leading to Hankel rank drop (Theorem~\ref{thm:pom-moment-resonance}); this resonance is triggered in audited recurrences for $q=9,\dots,16$.
+  \item \textbf{(Geometrization: Rényi dimension spectrum)} When $h_q$ exists, the Rényi dimension spectrum of the output measure is determined in closed form by $h_q$:
+  \[
+  D_q=\frac{h_q}{(q-1)\log\varphi}
+  \]
+  (Proposition~\ref{prop:pom-renyi-dimension-spectrum}).
+  \item \textbf{(Mechanism kernel periodic point closed form and primitive extraction)} Under real arithmetic input constraints, the synchronization kernel and input memory compose a 40-state mechanism kernel $M$ (Appendix~\ref{app:real-input-40-abel}; construction from Proposition~\ref{prop:real-input-40-essential-20} onwards), whose $\zeta$-function is an explicit rational expression with spectral factorization (Proposition~\ref{prop:real-input-40-fib-tensor} and Corollary~\ref{cor:real-input-40-spectrum-decomp}). Therefore periodic point count $a_n=\Tr(M^n)$ has closed-form expression (same proof paragraphs), and primitive orbit number is directly extracted by Möbius inversion:
+  \[
+  p_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}
+  \]
+  thus incorporating "prime-orbit/finite-part constants/Dirichlet-Mertens tensors" and other spectral objects into the same computable interface (Section~\ref{sec:zeta-finite-part} and appendix groups).
+\end{enumerate}
+\end{theorem}
+
+\subsubsection{Reproducible commuting package: real input 40-state kernel}\label{subsec:real-input-40-commuting-package}
+\paragraph{Object: deterministic skew-product for real input}
+Let the adjacency matrix of the golden mean shift (forbidden word $(11)$) be:
+\[
+A=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},\qquad \rho(A)=\varphi.
+\]
+Incorporating two legal Zeckendorf input orbits $(x,y)\in X\times X$ into synchronization kernel states, we obtain:
+\(
+\Sigma:=Q\times\{0,1\}^2
+\)
+($|Q|=10,|\Sigma|=40$).
+At each step, read $(x_k,y_k)\in\{0,1\}^2$ (constrained by golden mean guard), let $d_k=x_k+y_k\in\{0,1,2\}$,
+and use the deterministic transition $s_{k+1}=\delta(s_k,d_k)$ of the 10-state kernel to update fiber coordinate $s\in Q$;
+thus obtaining a $40$-state SFT with adjacency matrix denoted $M$ (details in Appendix~\ref{app:real-input-40-abel}).
+
+\begin{proposition}[Deterministic extension does not increase entropy: $\rho(M)=\varphi^2$]\label{prop:real-input-40-entropy}
+The topological entropy of the real input 40-state kernel satisfies:
+\[
+h_{\mathrm{top}}(\Sigma)=h_{\mathrm{top}}(X\times X)=2\log\varphi,
+\qquad
+\rho(M)=e^{h_{\mathrm{top}}(\Sigma)}=\varphi^2.
+\]
+\end{proposition}
+\begin{proof}
+The base system is input pair syntax $X\times X$, with adjacency matrix $A\otimes A$, thus $h_{\mathrm{top}}(X\times X)=\log\rho(A\otimes A)=2\log\varphi$.
+On the other hand, given any base system symbol sequence $\{(x_k,y_k)\}$, then $d_k=x_k+y_k$ is uniquely determined, thus fiber update $s_{k+1}=\delta(s_k,d_k)$ is also uniquely determined.
+Therefore, for any base system path of length $n$, starting from each initial fiber state $s_0$ lifts at most one $\Sigma$-path, total path count only multiplies by constant $|Q|$, exponential growth rate unchanged.
+Thus $h_{\mathrm{top}}(\Sigma)=h_{\mathrm{top}}(X\times X)$, hence $\rho(M)=\varphi^2$. This completes the proof.
+\end{proof}
+
+\paragraph{Closed-form bridge package for spectrum-trace-Euler product}
+Appendices~\ref{app:abel-mertens-universal} and~\ref{app:real-input-40-abel} provide complete factorization for this kernel:
+\[
+\boxed{\;
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2).\;}
+\]
+Therefore, the nonzero spectrum excluding zero eigenvalue (counted with multiplicity) is:
+\[
+\sigma(M)\setminus\{0\}=\{1,1,\,-1,-1,-1,\,\varphi^2,\,\varphi^{-2},\,-\varphi,\,\varphi^{-1}\}.
+\]
+The corresponding periodic trace (periodic point count) has full closed form:
+\[
+\boxed{\;
+a_n:=\Tr(M^n)=
+2+3(-1)^n+\varphi^{2n}+\varphi^{-2n}+\varphi^{-n}+(-\varphi)^n.\;}
+\]
+The primitive orbit number (counted by orbit) is strictly extracted by Witt/Möbius inversion:
+\[
+\boxed{\;
+p_n=\frac1n\sum_{d\mid n}\mu(d)\,a_{n/d}.\;}
+\]
+Moreover, the Euler product (prime-like side) and trace side strictly align:
+\[
+\zeta_M(z)
+=\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)
+=\prod_{\gamma\ \mathrm{primitive}}\frac{1}{1-z^{|\gamma|}}
+=\frac{1}{\det(I-zM)}.
+\]
+
+\paragraph{Abel/finite-part constants: dominant pole and residue closed form}
+By $\rho(M)=\varphi^2$ we have dominant pole:
+\[
+z_\star=\rho(M)^{-1}=\varphi^{-2}.
+\]
+The corresponding residue constant and Abel finite-part constant have closed-form readouts (Appendix~\ref{app:real-input-40-abel}):
+\[
+\boxed{\;
+C=\lim_{z\to z_\star}(1-\varphi^2 z)\,\zeta_M(z)=\frac{47+21\sqrt5}{100}\approx 0.9395742753,\;}
+\]
+\[
+\boxed{\;
+\log\mathfrak{M}=\log C+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_M(z_\star^{\,m})
+\approx -0.2543126619.\;}
+\]
+
+\paragraph{Dirichlet/modular stratification: finite-dimensional Fourier inversion of arity-charge}
+Define arity-charge (Appendix~\ref{app:real-input-40-arity-charge}):
+\[
+\chi(s,d):=e-\mathbf{1}_{\{d=2\}}\in\{-1,0,1\},
+\]
+and weight edges by $q^{\chi}$ to obtain matrix family $M(q)$.
+Let:
+\(
+c_n(q):=\Tr(M(q)^n)
+\)
+and primitive generating polynomial:
+\[
+P_n(q):=\sum_{\substack{\gamma\ \mathrm{primitive}\\|\gamma|=n}}q^{\chi(\gamma)}.
+\]
+Then we have weighted Witt/Möbius inversion:
+\[
+c_n(q)=\sum_{d\mid n}d\,P_d\!\left(q^{n/d}\right),
+\qquad
+P_n(q)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,c_{n/d}\!\left(q^{d}\right).
+\]
+The stratified count modulo $m$:
+\(
+N_{n,r}^{(m)}:=\sum_{k\equiv r\ (\mathrm{mod}\ m)}[q^k]P_n(q)
+\)
+can be directly written by discrete Fourier inversion as:
+\[
+\boxed{\;
+N_{n,r}^{(m)}=\frac{1}{m}\sum_{j=0}^{m-1}\zeta_m^{-jr}P_n(\zeta_m^j),
+\qquad \zeta_m=e^{2\pi i/m}.\;}
+\]
+For example, modulo $2$:
+\(
+N_{n,0}^{(2)}=(P_n(1)+P_n(-1))/2,\,
+N_{n,1}^{(2)}=(P_n(1)-P_n(-1))/2
+\),
+and:
+\[
+P_{10}(q)=54q^5+334q^4+634q^3+410q^2+79q+2,
+\qquad
+(N_{10,0}^{(2)},N_{10,1}^{(2)})=(746,767).
+\]
+
+\paragraph{Time complexity axis: cubic pressure equation for negative carry potential and large deviation endpoints}
+After introducing "serial conflict/carry activity" as observable potential, pressure and large deviation still maintain auditable finite-dimensional closed forms.
+For example, taking negative carry potential (Appendix~\ref{app:vector-potential}):
+\[
+Q_-:=\{0\overline{1}2,\,1\overline{1}2,\,01\overline{1},\,11\overline{1}\},
+\qquad
+\phi(s\to t):=\mathbf{1}_{\{t\in Q_-\}},
+\]
+letting $u=e^\theta$, the principal eigenvalue $\lambda(u)$ satisfies the cubic equation:
+\[
+\boxed{\;
+\lambda^3-(u+2)\lambda^2+(u-2)\lambda+3u=0,\qquad u=e^\theta,\;}
+\]
+thus pressure $P(\theta)=\log\lambda(e^\theta)$ is completely locked by the largest real root of this cubic equation, and:
+\[
+P'(0)=\frac18,\qquad P''(0)=\frac{25}{128},
+\qquad
+I(0)=\log\frac{3}{1+\sqrt3},\quad I(1)=\log 3.
+\]
+
+\paragraph{Multi-dimensional potentials: tensorized observables still maintain "finite matrix-determinant-pressure/large deviation" closed loop}
+For general vector potential:
+\(
+\boldsymbol{\varphi}(e)=(\varphi_1(e),\dots,\varphi_d(e))
+\),
+define weighted matrix family:
+\[
+B(\boldsymbol{\theta})_{ij}=\sum_{e:i\to j}\exp\!\bigl(\langle\boldsymbol{\theta},\boldsymbol{\varphi}(e)\rangle\bigr),
+\qquad
+P(\boldsymbol{\theta})=\log\rho(B(\boldsymbol{\theta})),
+\]
+then:
+\(
+\zeta(z;\boldsymbol{\theta})=\det(I-zB(\boldsymbol{\theta}))^{-1}
+\)
+provides an auditable interface isomorphic to the scalar potential case, with large deviation rate function read from Legendre transform:
+\(
+I(\alpha)=\sup_{\boldsymbol{\theta}}(\langle\boldsymbol{\theta},\alpha\rangle-(P(\boldsymbol{\theta})-P(0)))
+\)
+(see Appendix~\ref{app:vector-potential} for two-dimensional/three-dimensional closed-form examples).

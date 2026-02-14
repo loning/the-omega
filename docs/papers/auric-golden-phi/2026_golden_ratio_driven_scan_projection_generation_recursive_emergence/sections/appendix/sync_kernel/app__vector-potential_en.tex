@@ -1,0 +1,415 @@
+\subsubsection{Vectorized Extension of Multi-Dimensional Potentials}\label{app:vector-potential}
+If one introduces a vector potential
+\[
+\boldsymbol{\varphi}(e)=\bigl(\varphi_1(e),\dots,\varphi_d(e)\bigr),
+\qquad
+B(\boldsymbol{\theta})_{ij}=\sum_{e:i\to j}\exp\!\bigl(\langle\boldsymbol{\theta},\boldsymbol{\varphi}(e)\rangle\bigr),
+\]
+then the pressure
+\[
+P(\boldsymbol{\theta})=\log\rho\bigl(B(\boldsymbol{\theta})\bigr)
+\]
+and the large deviation rate function
+\[
+I(\alpha)=\sup_{\boldsymbol{\theta}\in\RR^d}\bigl(\langle\boldsymbol{\theta},\alpha\rangle-(P(\boldsymbol{\theta})-P(0))\bigr)
+\]
+both remain within the ``finite matrix + determinant'' auditable caliber; two- and three-dimensional instances are given in subsequent subsections.
+
+\subsubsection{Explicit Closed Form of the Negative-Carry Potential (Auditable Instance)}
+Take
+\[
+Q_-:=\{0\overline{1}2,\,1\overline{1}2,\,01\overline{1},\,11\overline{1}\},
+\qquad
+\phi(s\to t):=\mathbf{1}_{\{t\in Q_-\}}.
+\]
+Let $u=e^\theta$. Then $B_\theta$ is equivalent to multiplying all columns landing in $Q_-$ by $u$, and admits the explicit factorization
+\[
+\det(I-zB_\theta)
+\;=\;
+\bigl(u z^3-u z^2+u z+1\bigr)\bigl(3u z^3+u z^2-u z-2z^2-2z+1\bigr).
+\]
+The dominant pole $z_\star(\theta)=\lambda(\theta)^{-1}$ is given by the second factor; substituting $z=1/\lambda$ yields the cubic equation
+\[
+\lambda^3-(u+2)\lambda^2+(u-2)\lambda+3u=0,\qquad u=e^\theta,
+\]
+so the pressure $P(\theta)=\log\lambda(\theta)$ is completely determined by the largest real root of this cubic.
+
+By implicit differentiation or numerical script (\texttt{--phi neg\_state}),
+\[
+P'(0)=\frac{1}{8}\ \ (\approx 0.1250000006),\qquad
+P''(0)=\frac{25}{128}\ \ (\approx 0.1953128548).
+\]
+Furthermore, from the analytic branch of the cubic at \(\theta=0\), higher-order cumulants (skewness, kurtosis, etc.) can be derived in closed form; the following expression is generated in one step by the script \texttt{scripts/exp\_sync\_kernel\_phi\_minus\_cubic\_series.py} and can be regression-tested:
+
+\input{sections/generated/eq_sync_kernel_phi_minus_cubic_series}
+Thus the typical frequency is $\alpha_\star=P'(0)=1/8$, and the local quadratic approximation is
+\[
+I(\alpha)\approx \frac{(\alpha-\frac18)^2}{2P''(0)}=\frac{64}{25}\Bigl(\alpha-\frac18\Bigr)^2,
+\]
+with endpoint costs satisfying
+\[
+I(0)=\log\frac{3}{1+\sqrt3},\qquad I(1)=\log 3.
+\]
+The weighted primitive orbit spectrum $p_n(\theta)$ is again given by M\"obius inversion and satisfies
+\[
+p_n(\theta)\asymp \frac{e^{nP(\theta)}}{n},
+\qquad
+M_{B,\theta}(N):=\sum_{n\le N}\frac{p_n(\theta)}{e^{nP(\theta)}}=\log N+\mathsf{M}_{B,\theta}+o(1),
+\]
+where the constant term $\mathsf{M}_{B,\theta}$ can be read off from the Abel finite part ($z\to 1/\lambda(\theta)$).
+
+\subsubsection{Two-Dimensional Weighted Prime Spectrum (Output Bit + Negative Carry)}
+Define the two-dimensional potential
+\[
+\varphi_e(e)=e,\qquad \varphi_-(s\to t)=\mathbf{1}_{\{t\in Q_-\}},
+\]
+and let
+\[
+u:=e^{\theta_e},\qquad v:=e^{\theta_-}.
+\]
+The weighted adjacency matrix entries are
+\[
+B(u,v)_{ij}=\sum_{e:i\to j}u^{\varphi_e(e)}v^{\varphi_-(e)}.
+\]
+The corresponding determinant reduces to a degree-6 polynomial
+\[
+\begin{aligned}
+\Delta(z;u,v)=&\,1-(u+1)z-u(v^2+2v+2)z^2\\
+&+uv(uv+2u+v+2)z^3+uv^2(-u^2+3u-1)z^4\\
+&+\bigl(u^4v^2-2u^3v^2-u^3v-2u^2v^2-u^2v+uv^2\bigr)z^5\\
+&+u^2v^2(u^2+u+1)z^6,
+\end{aligned}
+\]
+so
+\[
+\zeta(z;u,v)=\frac{1}{\Delta(z;u,v)}.
+\]
+Denoting the smallest positive root by $z_\star(u,v)$ and $\lambda(u,v)=1/z_\star(u,v)$, the pressure is
+\[
+P(\theta_e,\theta_-)=\log\lambda(e^{\theta_e},e^{\theta_-}).
+\]
+At $(\theta_e,\theta_-)=(0,0)$,
+\[
+\partial_{\theta_e}P(0,0)=\frac12\ \ (\approx 0.5000000000),\qquad
+\partial_{\theta_-}P(0,0)=\frac18\ \ (\approx 0.1250000006),
+\]
+\[
+\partial^2_{\theta_e\theta_e}P(0,0)=\frac{11}{102}\ \ (\approx 0.1078436229),\quad
+\partial^2_{\theta_-\theta_-}P(0,0)=\frac{25}{128}\ \ (\approx 0.1953128548),\quad
+\partial^2_{\theta_e\theta_-}P(0,0)=0.
+\]
+The local quadratic approximation is therefore
+\[
+P(\theta_e,\theta_-)=\log 3+\frac12\theta_e+\frac18\theta_-+\frac{11}{204}\theta_e^2+\frac{25}{256}\theta_-^2+O(|\theta|^3).
+\]
+The two-dimensional large deviation rate function
+\[
+I(\alpha_e,\alpha_-)=\sup_{\theta_e,\theta_-}\bigl(\theta_e\alpha_e+\theta_-\alpha_- - (P(\theta_e,\theta_-)-P(0,0))\bigr)
+\]
+near the typical point satisfies
+\[
+I(\alpha_e,\alpha_-)\approx \frac{51}{11}\Bigl(\alpha_e-\frac12\Bigr)^2+\frac{64}{25}\Bigl(\alpha_- -\frac18\Bigr)^2.
+\]
+The weighted primitive orbit count
+\[
+p_n(\theta_e,\theta_-)\asymp \frac{e^{nP(\theta_e,\theta_-)}}{n}
+\]
+is extracted from $a_n(\theta_e,\theta_-)=\mathrm{Tr}(B(u,v)^n)$ via M\"obius inversion. Numerical reproduction is provided by the script \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_2d.py}.
+
+\begin{proposition}[Second-order strict decoupling and first non-Gaussian mixing term of the two-dimensional potential]\label{prop:sync-kernel-2d-exact-decouple}
+For the two-dimensional potential \((\varphi_e,\varphi_-)\) defined in this subsection, the pressure
+\(
+P(\theta_e,\theta_-)=\log\lambda(e^{\theta_e},e^{\theta_-})
+\)
+satisfies the following exact structural conclusions:
+\begin{enumerate}
+  \item \textbf{(Second-order strict decoupling)}
+  \[
+  \boxed{\ \partial^2_{\theta_e\theta_-}P(0,0)=0\ }.
+  \]
+  Thus the quadratic-form approximation near the typical point has \textbf{no cross-term}, and the quadratic part of the two-dimensional local rate function is strictly separable.
+  \item \textbf{(Third-order ``unidirectional coupling'')}
+  \[
+  \boxed{\ \partial^3_{\theta_e\theta_-\theta_-}P(0,0)=0,\qquad
+  \partial^3_{\theta_e\theta_e\theta_-}P(0,0)=-\frac{1453}{36992}<0\ }.
+  \]
+  \item \textbf{(Fourth-order mixed curvature is negative)}
+  \[
+  \boxed{\ \partial^4_{\theta_e\theta_e\theta_-\theta_-}P(0,0)=-\frac{422483}{10061824}<0,\qquad
+  \partial^4_{\theta_e\theta_-\theta_-\theta_-}P(0,0)=0\ }.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+No numerical differentiation is needed here. Since \(\Delta(z;u,v)\) is an explicit integer-coefficient polynomial and
+\(
+z_\star(1,1)=1/3
+\)
+corresponds to \(\lambda(1,1)=3\), one can write the smallest positive root as an analytic branch
+\(
+z_\star(u,v)
+\)
+in a neighborhood of \((u,v)=(1,1)\) and perform implicit differentiation on the implicit equation \(\Delta(z_\star(u,v);u,v)=0\) with respect to \((\theta_e,\theta_-)\) (or equivalently perform power-series elimination) to obtain the stated derivative values.
+The script \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_2d\_exact\_mixed\_derivatives.py} automates this derivation with fully rational arithmetic and outputs a \LaTeX\ fragment that can be directly \verb|\input|:
+\input{sections/generated/eq_sync_kernel_weighted_pressure_2d_exact_mixed_derivatives}
+\qedhere
+\end{proof}
+
+\begin{remark}[``Strictly separable quadratic part'' of the local rate function and a testable non-Gaussian coupling fingerprint]\label{rem:sync-kernel-2d-nongaussian-coupling}
+The first item of Proposition \ref{prop:sync-kernel-2d-exact-decouple} gives the strictly diagonal structure of
+\(
+\nabla^2 P(0,0)
+\)
+in the \((\theta_e,\theta_-)\) coordinates, so that
+\[
+I(\alpha_e,\alpha_-)
+=\frac{(\alpha_e-\frac12)^2}{2\,\partial^2_{\theta_e\theta_e}P(0,0)}
+\;+\;
+\frac{(\alpha_--\frac18)^2}{2\,\partial^2_{\theta_-\theta_-}P(0,0)}
+\;+\;O(|\alpha-\alpha_\star|^3),
+\]
+with the quadratic part having \emph{strictly no cross-term}.
+On the other hand, the third- and fourth-order mixed derivatives provide the first non-Gaussian coupling constants: for instance, the third-order term
+\(
+\partial^3_{\theta_e\theta_e\theta_-}P(0,0)<0
+\)
+predicts that in long samples the centralized average of
+\(
+(\bar\varphi_e-\tfrac12)^2(\bar\varphi_- -\tfrac18)
+\)
+exhibits negative skewness; the negative fourth-order mixed curvature gives the direction of deviation of ``joint tails'' relative to the independent quadratic model.
+\end{remark}
+
+\subsubsection{Three-Dimensional Weighted Prime Spectrum (Output Bit + Negative Carry + Collision)}
+Define the three-dimensional potential
+\[
+\varphi_e(e)=e,\qquad
+\varphi_-(s\to t)=\mathbf{1}_{\{t\in Q_-\}},\qquad
+\varphi_2(d)=\mathbf{1}_{\{d=2\}},
+\]
+and let
+\[
+u:=e^{\theta_e},\qquad v:=e^{\theta_-},\qquad w:=e^{\theta_2}.
+\]
+In the state ordering $Q$, the three-dimensional weighted adjacency matrix is
+\[
+B(u,v,w)=
+\begin{pmatrix}
+1 & 1 & w & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & 1 & w & 0 & 0 & 0 & 0\\
+u & uw & 0 & 0 & 0 & 0 & 0 & 0 & 0 & v\\
+0 & 0 & 0 & 0 & 1 & 1 & uvw & 0 & 0 & 0\\
+u & u & uw & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & u & u & uw & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 1 & w & 0 & 0 & 0 & v & 0\\
+0 & 0 & 0 & u & uw & 0 & 0 & 0 & uv & 0\\
+0 & 1 & 1 & 0 & 0 & 0 & 0 & vw & 0 & 0\\
+0 & u & u & 0 & 0 & 0 & 0 & uvw & 0 & 0
+\end{pmatrix}.
+\]
+The corresponding determinant remains a degree-6 polynomial
+\[
+\Delta(z;u,v,w)=1+c_1z+c_2z^2+c_3z^3+c_4z^4+c_5z^5+c_6z^6,
+\]
+where
+\[
+c_1=-(uw+1),\qquad
+c_2=-u(v^2w+vw+v+2),\qquad
+c_3=uv(uw+1)(vw+w+1),
+\]
+\[
+c_4=-u\bigl(u^2v^2w^3-3uv^2w+uv(w^2+w-2)+u(w^2-w)+v^2w\bigr),
+\]
+\[
+c_5=uvw\bigl(u^3 v w^3-2u^2 v w-u^2 w^3-u v(w+1)-u+v\bigr),
+\]
+\[
+c_6=u^2 v^2 w(2w-1)(u^2w+u+1).
+\]
+Thus the three-observable weighted $\zeta$-function has a rational closed form
+\[
+\zeta(z;u,v,w)=\frac{1}{\Delta(z;u,v,w)}.
+\]
+\begin{proposition}[Internal critical hyperplane \texorpdfstring{$w=\frac12$}{w=1/2}: first-order collapse of the effective spectral dimension]\label{prop:sync-kernel-3d-critical-w-half}
+For any \(u>0,v>0\), when \(w=\tfrac12\) (equivalently \(\theta_2=\log w=-\log 2\)),
+\[
+c_6(u,v,\tfrac12)=0,
+\]
+so
+\(
+\Delta(z;u,v,\tfrac12)
+\)
+drops from degree \(6\) to at most degree \(5\) as a polynomial in \(z\).
+In the caliber of this paper where ``nonzero spectral dimension is \(6\),'' this is equivalent to: \(B(u,v,\tfrac12)\) produces at least one additional structural zero eigenvalue,
+with the nonzero spectral dimension dropping from \(6\) to at most \(5\).
+\end{proposition}
+\begin{proof}
+Substituting \(w=\tfrac12\) into the explicit formula \(c_6=u^2v^2w(2w-1)(u^2w+u+1)\) gives \(c_6=0\). \qedhere
+\end{proof}
+
+\begin{corollary}[Sharp drop of the periodic-trace recurrence order (auditable fingerprint)]\label{cor:sync-kernel-3d-recurrence-drop}
+Let \(a_n(u,v,w):=\Tr(B(u,v,w)^n)\).
+At \(w=\tfrac12\), the sequence \(a_n(u,v,\tfrac12)\) satisfies a linear recurrence of order at most \(5\);
+whereas for a generic positive weight \(w\neq\tfrac12\), this interface yields a recurrence of order \(6\).
+\end{corollary}
+
+\begin{proposition}[Critical quintic fingerprint: \texorpdfstring{$(u,v,w)=(1,1,\tfrac12)$}{(u,v,w)=(1,1,1/2)}]\label{prop:sync-kernel-3d-critical-quintic}
+At \((u,v,w)=(1,1,\tfrac12)\), the \(z^6\) term of \(\Delta(z;1,1,\tfrac12)\) vanishes strictly, with the reproducible quintic output:
+\input{sections/generated/eq_sync_kernel_3d_critical_w_half_delta}
+\end{proposition}
+Denoting $\lambda(u,v,w)=1/z_\star(u,v,w)$, the pressure is
+\[
+P(\theta_e,\theta_-,\theta_2)=\log\lambda(e^{\theta_e},e^{\theta_-},e^{\theta_2}).
+\]
+At $\theta=0$,
+\[
+\nabla P(0)=\left(\frac12,\frac18,\frac13\right)
+\ \ (\approx (0.5000000000,\ 0.1250000006,\ 0.3333333335)),
+\]
+and the Hessian satisfies
+\[
+\nabla^2P(0)=
+\begin{pmatrix}
+\frac{11}{102} & 0 & \frac{181}{1632}\\
+0 & \frac{25}{128} & \frac{5}{128}\\
+\frac{181}{1632} & \frac{5}{128} & \frac{2}{9}
+\end{pmatrix},
+\]
+i.e., $\partial^2_{\theta_e\theta_-}P(0)=0$, while $\partial^2_{\theta_e\theta_2}P(0),\partial^2_{\theta_-\theta_2}P(0)>0$. Therefore
+\[
+P(\theta)=\log 3+\frac12\theta_e+\frac18\theta_-+\frac13\theta_2
++\frac{11}{204}\theta_e^2+\frac{25}{256}\theta_-^2+\frac19\theta_2^2
++\frac{181}{1632}\theta_e\theta_2+\frac{5}{128}\theta_-\theta_2+O(|\theta|^3).
+\]
+This means that at the second-order level, \(\varphi_e\) and \(\varphi_-\) are \textbf{zero-correlated}, but both are positively correlated with \(\varphi_2\); therefore, after conditioning on \(\varphi_2\) as a mediator, \textbf{conditional negative correlation} appears (read off via the Schur complement):
+
+\input{sections/generated/eq_sync_kernel_3d_conditional_covariance}
+
+\noindent
+Thus ``zero correlation yet non-independence'' has a quantitative auditable certificate in this three-potential coupling.
+The three-dimensional large deviation rate function
+\[
+I(\alpha)=\sup_{\theta\in\mathbb{R}^3}\bigl(\theta\cdot\alpha-(P(\theta)-P(0))\bigr)
+\]
+near the typical point $\alpha_\star=(\frac12,\frac18,\frac13)$ satisfies
+\[
+I(\alpha)\approx \tfrac12(\alpha-\alpha_\star)^\top\bigl(\nabla^2P(0)\bigr)^{-1}(\alpha-\alpha_\star),
+\]
+where
+\[
+\bigl(\nabla^2P(0)\bigr)^{-1}\approx
+\begin{pmatrix}
+19.8119 & 2.04960 & -10.2480\\
+2.04960 & 5.51860 & -1.99298\\
+-10.2480 & -1.99298 & 9.96491
+\end{pmatrix}.
+\]
+\begin{proposition}[Exact rational inverse of the three-potential Hessian (rational certificate)]\label{prop:sync-kernel-3d-hessian-inverse-exact}
+The inverse matrix above can be written as a fully exact rational matrix:
+\input{sections/generated/eq_sync_kernel_3d_hessian_inverse_exact}
+\end{proposition}
+
+\begin{corollary}[Second-order decoupled basis: explicit construction of a \texorpdfstring{$(2\!+\!1)$}{2+1} orthogonal decomposition]\label{cor:sync-kernel-3d-orthobasis}
+Let \(\varphi_e,\varphi_-,\varphi_2\) be the three edge potentials in this subsection. From \(\partial^2_{\theta_e\theta_-}P(0)=0\) and the explicit Hessian values,
+one can construct an auditable second-order orthogonal basis \((\eta,\psi',\varphi_2)\):
+\input{sections/generated/eq_sync_kernel_3d_quadratic_orthobasis}
+Under the quadratic approximation at \(\theta=0\), these are pairwise uncorrelated (zero covariance), so the quadratic form can be strictly diagonalized.
+\end{corollary}
+
+\begin{remark}[Three-channel potential--response symplectic phase space and \texorpdfstring{$\mathrm{Sp}(6)$}{Sp(6)} isotropy scan (reproducible)]\label{rem:sync-kernel-3d-sp6-isotropy-scan}
+In the caliber of three-dimensional weighted potentials, the pressure \(P(\theta_e,\theta_-,\theta_2)\) yields natural ``potential--response'' conjugate pairs:
+\[
+J_e:=\partial_{\theta_e}P,\qquad
+J_-:=\partial_{\theta_-}P,\qquad
+J_2:=\partial_{\theta_2}P.
+\]
+Thus the phase-space coordinates \((\theta;J)\in\RR^6\) carry the standard symplectic form
+\[
+\omega=\dd\theta_e\wedge \dd J_e+\dd\theta_-\wedge \dd J_-+\dd\theta_2\wedge \dd J_2,
+\]
+whose preservation group is \(\mathrm{Sp}(6)\) (see Remark \ref{rem:sp6-minimal-continuous-envelope} for the unified explanatory caliber).
+At the quadratic approximation level, fluctuations are governed by the Fisher/covariance matrix
+\(
+\Sigma(\theta):=\nabla^2P(\theta)
+\);
+under the minimal block-diagonal lift \(C=\mathrm{diag}(\Sigma,\Sigma)\), the symplectic eigenvalues of \(C\) degenerate to the three eigenvalues of \(\Sigma\),
+so ``single-scale (isotropic)'' can be measured by a fully auditable scalar fraction:
+\[
+\mathcal{I}(\theta):=\log\frac{\lambda_{\max}(\Sigma(\theta))}{\lambda_{\min}(\Sigma(\theta))}.
+\]
+The script \texttt{\detokenize{scripts/exp_sync_kernel_weighted_sp6_isotropy_scan.py}} performs a grid scan over \((u,v,w)=(e^{\theta_e},e^{\theta_-},e^{\theta_2})\) and outputs the optimal candidate point (minimizing \(\mathcal{I}\)); see Table \ref{tab:sync_kernel_weighted_sp6_isotropy_scan}.
+\end{remark}
+\input{sections/generated/tab_sync_kernel_weighted_sp6_isotropy_scan}
+
+This yields a natural arity-charge
+\[
+\chi:=\varphi_e-\varphi_2\in\{-1,0,1\},
+\]
+whose typical density and variance density are
+\[
+\mathbb{E}[\chi]=\frac12-\frac13=\frac16,\qquad
+\mathrm{Var}_\infty(\chi)=\frac{11}{102}+\frac{2}{9}-2\cdot\frac{181}{1632}=\frac{265}{2448}\ (\approx 0.1082516340).
+\]
+The three-dimensional weighted primitive orbit count
+\[
+p_n(\theta_e,\theta_-,\theta_2)=\sum_{\substack{\tau\ \mathrm{primitive}\|\tau|=n}}
+\exp\!\bigl(\theta_e S_\tau\varphi_e+\theta_-S_\tau\varphi_-+\theta_2S_\tau\varphi_2\bigr)
+\]
+still satisfies $p_n(\theta)\asymp e^{nP(\theta)}/n$ and can be extracted from
+$a_n(\theta)=\mathrm{Tr}(B(u,v,w)^n)$ via M\"obius inversion. Numerical reproduction is provided by the script \texttt{scripts/exp\_sync\_kernel\_weighted\_pressure\_3d.py}.
+In the unweighted case $(u,v,w)=(1,1,1)$,
+\[
+(a_1,\dots,a_{10})=(2,14,20,94,222,770,2116,6694,19442,59494),
+\]
+\[
+(p_1,\dots,p_{10})=(2,6,6,20,44,123,302,825,2158,5926),
+\]
+exhibiting the typical prime-orbit leading term $p_n\sim 3^n/n$.
+
+\subsubsection{Zero-Cost Generalization of Multi-Dimensional Big-Witt Congruence Guardrails: Upgrading the Coefficient Ring Does Not Alter the Divisibility/Congruence Structure}\label{app:multi-dim-witt-guardrails}
+The two- and three-dimensional potentials of this appendix do not alter the primitive--periodic Big-Witt/necklace structure: the only difference is that the coefficient ring is upgraded from \(\ZZ[u]\) to a multivariate polynomial ring.
+Therefore, the divisibility laws and Dwork-type congruences from Appendix \ref{app:witt-bridge-package} can be extended verbatim to multi-dimensional versions, immediately yielding a ``self-auditing guardrail'' that requires no additional computational overhead and can be directly recomputed.
+
+\paragraph{Two-dimensional potential: \texorpdfstring{$R=\ZZ[u,v]$}{R=Z[u,v]}}
+For the two-dimensional weighted matrix \(B(u,v)\) (\S\ref{app:vector-potential}), let
+\[
+a_n(u,v):=\Tr\bigl(B(u,v)^n\bigr)\in\ZZ[u,v],
+\qquad
+\psi^d:\ZZ[u,v]\to\ZZ[u,v],\ \ \psi^d(f)(u,v):=f(u^d,v^d).
+\]
+Then by Proposition \ref{prop:witt-necklace-dwork-R} (taking \(R=\ZZ[u,v]\)), the following hold:
+\begin{enumerate}
+  \item \textbf{(Multi-dimensional necklace divisibility)} For any \(n\ge 1\),
+  \[
+  \boxed{\ \sum_{d\mid n}\mu(d)\,a_{n/d}(u^d,v^d)\in n\,\ZZ[u,v]\ }.
+  \]
+  \item \textbf{(Multi-dimensional Dwork congruence)} For any prime \(p\) and \(k\ge 1\),
+  \[
+  \boxed{\ a_{p^k}(u,v)\equiv a_{p^{k-1}}(u^p,v^p)\pmod{p^k}\quad\text{in}\ \ZZ[u,v]\ }.
+  \]
+\end{enumerate}
+
+\paragraph{Three-dimensional potential: \texorpdfstring{$R=\ZZ[u,v,w]$}{R=Z[u,v,w]}}
+For the three-dimensional weighted matrix \(B(u,v,w)\) (see the explicit \(10\times 10\) matrix given in the three-dimensional potential subsection of this appendix), let
+\[
+a_n(u,v,w):=\Tr\bigl(B(u,v,w)^n\bigr)\in\ZZ[u,v,w],
+\qquad
+\psi^d(f)(u,v,w):=f(u^d,v^d,w^d).
+\]
+Analogously:
+\begin{enumerate}
+  \item \textbf{(Multi-dimensional necklace divisibility)} For any \(n\ge 1\),
+  \[
+  \boxed{\ \sum_{d\mid n}\mu(d)\,a_{n/d}(u^d,v^d,w^d)\in n\,\ZZ[u,v,w]\ }.
+  \]
+  \item \textbf{(Multi-dimensional Dwork congruence)} For any prime \(p\) and \(k\ge 1\),
+  \[
+  \boxed{\ a_{p^k}(u,v,w)\equiv a_{p^{k-1}}(u^p,v^p,w^p)\pmod{p^k}\quad\text{in}\ \ZZ[u,v,w]\ }.
+  \]
+\end{enumerate}
+
+\begin{remark}[Self-auditing key point: congruence checking using only trace sequences]\label{rem:multi-dim-self-audit}
+The above two constraints are necessary conditions for any multi-dimensional kernel that ``claims to arise from an Euler product/primitive decomposition.''
+Therefore, without spectral decomposition and without first computing primitives: as long as one can compute \(a_n(\cdot)=\Tr(B(\cdot)^n)\), one can perform the \(\bmod n\) divisibility audit and the \(\bmod p^k\) Frobenius compatibility audit within the coefficient ring; if either fails, the implementation provably cannot arise from the \(\zeta\)--Euler product framework of this paper.
+\end{remark}

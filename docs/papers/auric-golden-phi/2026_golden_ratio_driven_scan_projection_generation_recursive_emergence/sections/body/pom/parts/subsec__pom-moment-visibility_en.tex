@@ -1,0 +1,180 @@
+\subsubsection{Rank Gap and Representation Visibility}\label{subsec:pom-moment-visibility}
+Starting from the congruence counting caliber \(c_m(r)\), \(S_q(m)=\sum_r c_m(r)^q\) can be understood as the \(L^q\) norm on \(\ZZ/F_{m+2}\ZZ\); its Fourier expansion is equivalent to performing a \(q\)-fold tensor lift on the character space followed by conjugation symmetry and an ``output-consistency'' projection. The difference-modal truncation yields the upper bound \(2\lfloor q/2\rfloor+1\), while the rank gaps in Table \ref{tab:fold_collision_moment_recursions_9_17} demonstrate that for certain \(q\) there exist invisible representation components that reduce the observable subspace dimension, thereby triggering resonance.
+
+\begin{remark}[Hankel minimal realization functor: lifting sequences to minimal linear representations]\label{rem:pom-minh-functor}
+To cast ``rank gap = representation invisibility'' as a composable interface, one views \(R\)-valued sequences as the object category \(\mathbf{Seq}(R)\) and takes linear representation objects as triples \((u,A,v)\) (\(u,v\) vectors, \(A\) a finite-dimensional matrix) with semantics
+\(
+a_n=u^{\mathsf T}A^n v
+\).
+In this caliber, the Hankel method defines a canonical (up to isomorphism) minimal realization assignment
+\[
+\mathsf{MinH}:\mathbf{Seq}(R)\to \mathbf{LinRep}_{\min}(R),
+\]
+sending a sequence to its minimal-dimensional realization (which can be explicitly constructed via the observability/reachability decomposition or the companion matrix realization).
+Theorem \ref{thm:hankel-rank-minimal} shows that this minimal dimension equals the Hankel rank, so that a Hankel rank drop can be interpreted as ``the representation dimension visible to the sequence semantics'' being smaller than the nominal modal space dimension.
+\end{remark}
+
+\begin{conjecture}[Modal visibility and closure dimension]\label{conj:pom-moment-visible}
+Let \(V_q\) be the modal space obtained by tensor lifting of the congruence characters with conjugation symmetry and output-consistency constraints imposed, and let \(V_q^{\mathrm{vis}}\) denote the subspace visible to the collision readout. Then
+\[
+d_q=\dim V_q^{\mathrm{vis}}\ \le\ 2\lfloor q/2\rfloor+1,
+\]
+with equality in the non-resonant case; resonance corresponds to the emergence of additional constraints on \(V_q^{\mathrm{vis}}\) that reduce its dimension.
+\end{conjecture}
+
+\begin{theorem}[Hankel rank lower bound: minimal linear realization dimension of higher-order moments]\label{thm:pom-moment-hankel}
+Write \(S_q(m)=\sum_{x\in X_m} d_m(x)^q\), and let \(a_n:=S_q(n+2)\) (for \(q=2,3\) one may further apply the constant rescaling \(a_n:=S_q(n+2)/2\) without affecting the following conclusions). Then for \(q=2,3,4,5,6,7,8\), the Hankel matrix \(H=(a_{i+j})_{i,j\ge 0}\) satisfies
+\[
+\mathrm{rank}(H)\ \ge\ 2\lfloor q/2\rfloor+1.
+\]
+More specifically, there exists a \((2\lfloor q/2\rfloor+1)\times(2\lfloor q/2\rfloor+1)\) Hankel principal minor with nonzero determinant; see Table \ref{tab:fold_collision_moment_hankel_rank}.
+\end{theorem}
+\begin{proof}
+For each \(q\), one directly constructs the Hankel block \(H_0=(a_{i+j})_{0\le i,j<d}\) (where \(d=2\lfloor q/2\rfloor+1\)) and computes its determinant; if \(\det(H_0)\neq 0\) then \(\mathrm{rank}(H)\ge d\). This computation is carried out term by term by the script \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py} and output as an auditable table. \qed
+\end{proof}
+
+\begin{corollary}[Minimal realization dimension equals recursion order for higher-order moments (within verified range)]\label{cor:pom-moment-minreal}
+For \(q=4,5,6,7,8\), the recursion orders given in Table \ref{tab:fold_collision_moment_recursions} are \(5,5,7,7,9\) respectively, so there exist linear representations of dimensions \(5,5,7,7,9\) (given by the companion realization of the recursion), whence the Hankel rank satisfies \(\mathrm{rank}(H)\le d\). Combined with the lower bound from Theorem \ref{thm:pom-moment-hankel}, one obtains \(\mathrm{rank}(H)=d\) for these values of \(q\), and any linear realization \(a_n=u^{\mathsf T}A^n v\) has dimension at least \(d\) (equivalently, the minimal state count of any weighted automaton/rational series realization is at least \(d\); see Theorem \ref{thm:hankel-rank-minimal}).
+\end{corollary}
+
+\input{sections/generated/tab_fold_collision_moment_hankel_rank}
+
+\begin{remark}[\texorpdfstring{$p$}{p}-adic stiffness fingerprint: \texorpdfstring{$p=5$}{p=5} first appears explicitly in the Hankel certificate at \texorpdfstring{$k=5$}{k=5}]\label{rem:pom-hankel-stiffness-p5}
+The nonzero Hankel principal minor determinants in Table \ref{tab:fold_collision_moment_hankel_rank} not only provide rank lower bounds but also carry a purely internal arithmetic stiffness signal.
+For a prime \(p\), define the ``stiffness index''
+\[
+\mathsf{Stiff}_p(k):=v_p(\det(H_k)),
+\]
+where \(v_p\) denotes the \(p\)-adic valuation and \(H_k\) is the Hankel witness block used for \(S_k\) in the table.
+In the two smallest examples amenable to manual factorization:
+\[
+\det(H_{k=4})=1179648=2^{17}\cdot 3^2,
+\qquad
+\det(H_{k=5})=155520000000=2^{13}\cdot 3^5\cdot 5^7.
+\]
+Therefore \(\mathsf{Stiff}_5(4)=0\) while \(\mathsf{Stiff}_5(5)=7\): the first Hankel stiffness certificate carrying high \(5\)-adic valuation appears precisely at \(k=5\).
+This jump provides a reproducible starting indicator for tracking ``mod \(5\)'' type arithmetic effects in subsequent work (for example, continuing to record the growth of \(\mathsf{Stiff}_5(k)\) with increasing \(k\) and comparing it against the resonance gap \(\Delta(k)\)).
+\end{remark}
+
+\subsubsection{Moment-Kernel Construction for Arbitrary-Order Collision Moments and Multifractal Spectrum}\label{subsec:pom-moment-general}
+
+\paragraph{From \texorpdfstring{$q$}{q}-fold collisions to finite-state moment-kernels}
+The key novelty at orders two and three is that the collision moment is not merely an ``enumerable sequence'' but is generated by a \textbf{finite-state fiber-product kernel}, thereby falling entirely within the unified Perron--Frobenius/\(\zeta\) interface.
+This fact holds for arbitrary \(q\ge 2\): for fixed \(q\), the constraint that ``\(q\) windows fold to the same stable type'' is a finite-memory condition and can therefore be compiled into a finite graph (SFT/sofic) whose adjacency matrix performs the counting.
+
+\begin{definition}[\texorpdfstring{$q$}{q}-fold collision relation and moment sequence]\label{def:pom-moment-q}
+For an integer \(q\ge 2\), define the \(q\)-fold collision relation
+$$
+R_m^{(q)}:=
+\{(\omega^{(1)},\dots,\omega^{(q)})\in\Omega_m^q:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(q)})\},
+$$
+and define the \(q\)-th order collision moment
+$$
+S_q(m):=|R_m^{(q)}|=\sum_{x\in X_m} d_m(x)^q.
+$$
+\end{definition}
+
+\begin{proposition}[Existence and executable construction of the moment-kernel at arbitrary order]\label{prop:pom-moment-kernel-exists}
+For each fixed \(q\ge 2\), there exists a finite-state nonnegative integer kernel (adjacency matrix) \(A_q\) together with integer readout vectors \(u_q,v_q\) such that
+$$
+S_q(m)=u_q^{\mathsf T}A_q^{\,m-m_0}v_q\qquad(m\ge m_0),
+$$
+so that \(\{S_q(m)\}_{m\ge m_0}\) satisfies a \textbf{finite-order integer-coefficient linear recursion}.
+
+Moreover, \(A_q\) can be explicitly constructed via the following ``compilation pipeline'' (and is therefore derivable, rewritable, and computable):
+\begin{enumerate}
+  \item Choose the deterministic online kernel realizing \(\Fold_\infty\) (the synchronizing kernel with delay \(\delta_{\min}=3\), whose explicit finite-state representation is given in the appendix);
+  \item Take \(q\) copies and form the synchronous direct product, extending states to \(q\)-tuples;
+  \item At each step retain only those transitions for which all \(q\) copies produce \textbf{the same output bit}, and project onto the reachable essential strongly connected component;
+  \item The resulting finite graph is a \(q\)-fold collision fiber-product kernel; its adjacency matrix is the desired \(A_q\), and its path count yields \(S_q(m)\).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+View \(\Fold_\infty\) as a deterministic finite transducer: the input alphabet consists of window letters (or input letters induced by two legal input tracks), the output consists of stable address bits; its internal state space is finite and has constant delay (the online kernel of Proposition \ref{prop:pom-delay-min} is a concrete realization).
+For fixed \(q\), the constraint ``\(q\) copies have identical output bit-by-bit'' is a local synchronization constraint: it only needs to compare whether the current output symbols agree at each step, and hence remains finite-state recognizable.
+One can therefore form the synchronous direct product of the transducer and apply the ``output-consistency'' filter, obtaining a finite directed graph \(G^{(q)}\).
+The number of legal paths of length \(m\) equals the count of \(R_m^{(q)}\) (i.e., \(S_q(m)\)), which can thus be written in the matrix-power readout form \(u_q^{\mathsf T}A_q^{m-m_0}v_q\) for some nonnegative integer adjacency matrix.
+The linear recursion follows immediately from the Cayley--Hamilton theorem, and its coefficients are integers (since \(A_q\) is an integer matrix). \qed
+\end{proof}
+
+\begin{remark}[Computable symmetric compression: \texorpdfstring{$O(q^2)$}{O(q^2)} orbit representation of the star fiber-product]\label{rem:pom-star-sympress}
+The general compilation pipeline of Proposition \ref{prop:pom-moment-kernel-exists} encounters exponential blowup of the synchronous direct-product state count as \(q\) increases.
+However, in a class of ``star-coupled'' situations (where the collision constraint can be organized as ``a central track and each leaf track separately satisfy the same pair constraint,'' and this pair constraint admits a \emph{central input symbol} decomposition---for example, the existence of a \(3\)-state pair kernel decomposition \(A_2=B_0+B_1\)),
+the \(q\)-fold collision star kernel naturally possesses leaf permutation symmetry:
+the uncompressed state space can be taken as \(\{1,2,3\}^{q-1}\), while the Perron principal eigenvalue is determined by the symmetric subspace, allowing compression to occupation-count states
+\((n_1,n_2,n_3)\) (satisfying \(n_1+n_2+n_3=q-1\)) and reducing the dimension to
+\(\binom{q+1}{2}\).
+The script \texttt{scripts/exp\_fold\_collision\_star\_kernel\_sympress\_demo.py} provides an executable transition-counting interface for this ``orbit compression \(\Rightarrow\) \(\widetilde A_q\) \(\Rightarrow\) Perron root estimate'' pipeline (with input being the decomposition matrices \(B_0,B_1\)).
+\end{remark}
+
+\begin{remark}[Two-stage compression law: symmetric power quotient kernel \texorpdfstring{$+$}{+} Hankel minimization]\label{rem:pom-sympower-then-minh}
+For fixed \(q\), the moment-kernel compilation reduces the \(q\)-fold collision constraint to a finite kernel \(A_q\) (Proposition \ref{prop:pom-moment-kernel-exists}), whose most naive realization corresponds to an exponential state space from the \(q\)-fold synchronous direct product.
+Remark \ref{rem:pom-star-sympress} (and the more general symmetric power/orbit compression viewpoint, Remark \ref{rem:pom-moment-symmetric-power-substitution-operator}) shows that when the counting target has full leaf permutation symmetry, one can first take the quotient by the symmetric group action, compressing the exponential state space to polynomial-dimensional ``symmetric power quotient kernel'' \(\widetilde A_q\).
+\par
+Subsequently, on the sequence side one applies the Hankel minimal realization functor \(\mathsf{MinH}\) (Remark \ref{rem:pom-minh-functor}) to \(S_q(m)\), obtaining the truly visible minimal dimension \(d_q\) (Table \ref{tab:fold_collision_moment_recursions_9_17}).
+This yields an executable two-stage compression interface:
+\[
+\boxed{\;
+\text{Exponential direct-product kernel}\ \Longrightarrow\ \text{Symmetric power quotient kernel }\widetilde A_q\ \Longrightarrow\ \mathsf{MinH}(S_q)\ \text{minimal dimension }d_q\; }.
+\]
+When \(\Delta(q)=(2\lfloor q/2\rfloor+1)-d_q>0\) (Table \ref{tab:fold_collision_resonance_gap_delta_q_9_17}),
+this gap can be viewed as the irreducible discrepancy between the ``nominal modal dimension of the symmetric power quotient kernel'' and the ``truly visible dimension of the sequence semantics'':
+it corresponds to a set of resonance linear constraints forced by the Hankel rank drop (see Table \ref{tab:fold_collision_resonance_nullmodes_q9_17}), thereby compressing the ``multiplicative \(q\)-fold interaction'' at the auditable level into an integer gap certificate and a set of explicit constraint vectors.
+\end{remark}
+
+\begin{proposition}[Factorized symmetric power upper bound: multiplicative recursive control of minimal realization dimension]\label{prop:pom-factorized-sympower-upper-bound}
+Following the notation of Definition \ref{def:pom-moment-q}, let \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\).
+For an integer \(q\ge 2\), let \(d_q\) denote the minimal integer-coefficient recursion order of the sequence \(\{S_q(m)\}_{m\ge 2}\) (equivalently, the Hankel minimal realization dimension; see Theorem \ref{thm:hankel-rank-minimal} and Corollary \ref{cor:pom-moment-dim-collapse}).
+Take any integers \(q_1,q_2\ge 2\) and write \(q=q_1q_2\).
+Then there is a deterministic upper bound
+\[
+\boxed{\;
+d_{q}\ \le\ \binom{q_2+d_{q_1}-1}{d_{q_1}-1}\; }.
+\]
+Therefore, for any prime factorization \(q=\prod_{i=1}^{k}p_i\), recursive application along any bracketing order yields a family of explicit upper bounds.
+Under the ``prime factor chain + stepwise minimization/compression'' compilation strategy (Remark \ref{rem:pom-mom-prime-factor-compiler}), this upper bound builds the nominal dimension of the subsequent symmetric power quotient upon the already-compressed intermediate realization;
+when intermediate compression genuinely reduces dimension (e.g., when \(d_{q_1}\) is significantly smaller than the nominal symmetric power dimension of a single-pass compilation), one obtains complexity control strictly superior to the ``single-pass symmetric power upper bound.''
+\end{proposition}
+\begin{proof}
+Take some minimal linear realization \((u,A,v)\) for \(q_1\) (Proposition \ref{prop:pom-hankel-realization-protocol}), of dimension \(d_{q_1}\) and satisfying
+\(
+S_{q_1}(m)=u^{\mathsf T}A^{m-m_0}v
+\) (\(m\ge m_0\)).
+View this realization as a finite-dimensional ``back-end kernel'' (weighted automaton/linear representation) and apply the \(q_2\)-fold moment compilation to it: take \(q_2\) synchronous copies and at each step apply the ``output-consistency'' local filter.
+In the counting semantics of fold moments, this compilation is equivalent to taking the \(q_2\)-fold fiber product of the \(q_1\)-fold fiber product; by associativity of fiber products,
+\(
+\mathrm{MOM}_{q_2}\circ \mathrm{MOM}_{q_1}\cong \mathrm{MOM}_{q_1q_2}
+\)
+is strictly faithful in counting semantics, so the above construction indeed realizes \(S_{q_1q_2}(m)\).
+\par
+The \(q_2\)-fold synchronous direct-product kernel has copy permutation symmetry.
+Taking the quotient by this symmetry (symmetric power quotient kernel) reduces the state space to occupation vectors (histograms); its cardinality is at most
+\(\binom{q_2+d_{q_1}-1}{d_{q_1}-1}\), i.e., the symmetric power dimension upper bound at homogeneous degree \(q_2\).
+By the definition of minimality, \(d_{q_1q_2}\) does not exceed the state dimension of any realization, whence the conclusion follows. \qed
+\end{proof}
+
+\paragraph{From \texorpdfstring{$r_q$}{r\_q} to pressure and the ``fiber multiplicity spectrum'': strict convex-conjugate upper bound}
+The verified \(q\)-th order collision kernels satisfy \(S_q(m)=\Theta(r_q^m)\), where \(r_q=\rho(A_q)\) is the Perron root (Corollaries \ref{cor:pom-s2-asymptotic}, \ref{cor:pom-s3-asymptotic}, \ref{cor:pom-s4-asymptotic} and Table \ref{tab:fold_collision_moment_recursions}).
+Therefore the moment fingerprint not only yields the single-point constant \(h_q=\log(2^q/r_q)\) but also induces a ``pressure curve'' amenable to Legendre transformation, thereby promoting ``spatial loss'' to a genuine spectral structure.
+
+\begin{definition}[Moment pressure and normalized log-moment generating function]\label{def:pom-moment-pressure}
+For \(q\ge 2\) define
+$$
+\tau(q):=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m),
+$$
+and define the normalized pressure (i.e., the \(q\)-th order log-moment generating function of the output distribution \(w_m(x)=d_m(x)/2^m\))
+$$
+P(q):=\limsup_{m\to\infty}\frac{1}{m}\log\sum_{x\in X_m}w_m(x)^q
+=\tau(q)-q\log 2.
+$$
+When there exists a Perron root \(r_q\) such that \(S_q(m)=\Theta(r_q^m)\), one has \(\tau(q)=\log r_q\), and \(P(q)=\log(r_q/2^q)=-h_q\).
+\end{definition}
+
+\input{parts/resonance/rem__pom-pressure-multifractal-q60}
+
+\begin{definition}[Log-spectral function of fiber multiplicity]\label{def:pom-fiber-spectrum}
+Let
+$$
+\gamma_m(x):=\frac{1}{m}\log d_m(x)\qquad(x\in X_m).
+$$

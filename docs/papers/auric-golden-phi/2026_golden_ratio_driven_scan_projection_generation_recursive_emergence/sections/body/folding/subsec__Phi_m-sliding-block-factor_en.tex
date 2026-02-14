@@ -1,0 +1,55 @@
+\subsection{Sequence-Level Sliding Block Factor: \texorpdfstring{$\Phi_m$}{Phi\_m} Induced by \texorpdfstring{$\Fold_m$}{Fold\_m}}\label{subsec:Phi_m-sliding-block-factor}
+
+This section addresses the following structural question: $\Fold_m$ is itself a \emph{window-level} map $\Omega_m\to X_m$ and does not directly correspond to a factor map between two-sided subshifts; however, applying it to sliding windows of a two-sided sequence yields a sequence-level operator compatible with the time shift (shift equivariant), thereby allowing discussion of the transition structure of its image space within the framework of symbolic dynamics.
+
+Let $\sigma$ denote the left shift: for $s\in\{0,1\}^{\ZZ}$, define $(\sigma s)_t:=s_{t+1}$. Regarding the finite set $X_m$ as an alphabet, we also denote the left shift on $X_m^{\ZZ}$ by $\sigma$.
+
+\begin{definition}[Sequence-Level Folding (Sliding Block Code)]\label{def:Phi_m}
+For any resolution $m\ge 1$, define the map
+\[
+\Phi_m:\{0,1\}^{\ZZ}\to X_m^{\ZZ},\qquad
+(\Phi_m(s))_t:=\Fold_m\bigl(s_t s_{t+1}\cdots s_{t+m-1}\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Memory/Anticipation (Window Radius)]\label{prop:Phi_m-radius}
+$\Phi_m$ is a sliding block code with \textbf{memory} $0$ and \textbf{anticipation} $m-1$: that is, for each time $t$, the output symbol $(\Phi_m(s))_t$ depends only on the input coordinates
+\(
+s_t,s_{t+1},\dots,s_{t+m-1}
+\).
+\end{proposition}
+
+\begin{proposition}[Shift Equivariance (Time Compatibility)]\label{prop:Phi_m-equivariant}
+For any $m\ge 1$, $\Phi_m\circ\sigma=\sigma\circ\Phi_m$.
+\end{proposition}
+
+\begin{definition}[Image Space]\label{def:Y_m}
+Define the image of $\Phi_m$ as
+\[
+Y_m:=\Phi_m\bigl(\{0,1\}^{\ZZ}\bigr)\ \subset\ X_m^{\ZZ}.
+\]
+\end{definition}
+
+\begin{remark}[Do Not Confuse $Y_m$ with the ``Golden Mean Shift'']\label{rem:Ym-not-golden-mean}
+It should be emphasized that $X_m$ is the set of legal words of length $m$ under the ``forbid adjacent $11$'' syntax (with alphabet $X_m$), whereas $Y_m$ is a subshift over the alphabet $X_m$; therefore $Y_m$ is \emph{not} the golden mean SFT over the alphabet $\{0,1\}$ (the golden mean shift with forbidden word $11$).
+
+More specifically:
+\begin{itemize}
+  \item When $m=1$, $X_1=\{0,1\}$ and $\Fold_1$ is the identity, so $\Phi_1$ is the identity map on $\{0,1\}^{\ZZ}$, whence $Y_1=\{0,1\}^{\ZZ}$ (the full shift), which differs from the golden mean shift.
+  \item When $m\ge 2$, the alphabet size is $|X_m|=F_{m+2}>2$, so the natural alphabet of $Y_m$ is not $\{0,1\}$; its structure must be discussed within $X_m^{\ZZ}$ and is characterized by sofic image theory (see Proposition \ref{prop:Y_m-sofic} and Theorem \ref{thm:Phi_m-sofic-graph}).
+\end{itemize}
+\end{remark}
+
+\begin{proposition}[Factor Property on Subshifts (Minimal Caliber of Sequence-Level Folding)]\label{prop:Phi_m-factor-on-subshift}
+Let $S\subset\{0,1\}^{\ZZ}$ be any subshift (compact, shift-invariant closed set). Then:
+\begin{enumerate}
+  \item $\Phi_m|_S:S\to X_m^{\ZZ}$ is continuous and commutes with the shift;
+  \item Its image $Y_m(S):=\Phi_m(S)$ is a subshift of $X_m^{\ZZ}$;
+  \item The map $\Phi_m|_S:S\twoheadrightarrow Y_m(S)$ is a factor map.
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Image Space Is a Sofic Subshift]\label{prop:Y_m-sofic}
+$Y_m$ is a sofic subshift. More specifically, it can be given by an explicit finite labeled graph.
+\end{proposition}
+The conclusion that the image space is sofic follows from \cite{LindMarcus1995}; the next proposition provides a computable finite graph construction.

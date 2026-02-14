@@ -1,0 +1,727 @@
+
+\begin{remark}[Computable form: explicit budget upper bound via audited \texorpdfstring{$r_q$}{rq}]\label{rem:pom-quantile-budget-computable}
+Within the audited range where $S_q(m)=\Theta(r_q^m)$ (Table~\ref{tab:fold_collision_moment_recursions}), Proposition~\ref{prop:pom-quantile-chernoff} directly yields
+$$
+\mathbb{P}_{w_m}\big[\gamma_m(X)\ge\gamma\big]\ \lesssim\
+\exp\!\Bigl(m\bigl(\log r_q-\log 2-(q-1)\gamma\bigr)\Bigr).
+$$
+Therefore, when taking
+\(
+\gamma>\frac{\log r_q-\log 2+\log(1/\varepsilon)/m}{q-1}
+\),
+the above expression gives an auditable tail control; substituting it into Corollary~\ref{cor:pom-prime-register-quantile-budget} yields a computable quota upper bound
+\(
+\log P_m
+\gtrsim
+m\gamma+\log 2
+\)
+(which is a linear function for fixed $q$).
+This replaces the "prime-register space budget" from "worst fiber" to "tail quantile controlled by $r_q$", fully aligning with the "residue prime carry" semantics in Remark~\ref{rem:pom-prime-carry}.
+
+\medskip\noindent\textbf{Optimization packaging (taking $q$ as an adjustable knob)}
+Taking the lower envelope over $q\ge 2$ in the above formula, one can define a \emph{certifiable} tail quantile upper bound (with audited $r_q$ as input):
+\[
+\gamma^{\mathrm{cert}}_m(\varepsilon)
+:=\inf_{q\in\ZZ_{\ge 2}}
+\frac{\log r_q-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1},
+\qquad
+B^{\mathrm{cert}}_m(\varepsilon):=\exp\!\bigl(m\,\gamma^{\mathrm{cert}}_m(\varepsilon)\bigr).
+\]
+Taking the $q^\star$ that achieves the minimum yields the "most budget-saving" Chernoff certificate.
+Furthermore, if one uses the exact moments $S_q(m)$ for finite $m$ instead of the asymptotic leading scale $r_q$, one obtains a fully finite-scale certificate form:
+\[
+\gamma^{\mathrm{cert,fin}}_m(\varepsilon)
+:=\inf_{q\in\ZZ_{\ge 2}}
+\frac{\frac{1}{m}\log S_q(m)-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1},
+\]
+whose correctness is directly guaranteed by Proposition~\ref{prop:pom-quantile-chernoff} (without requiring asymptotic assumptions).
+
+\medskip\noindent\textbf{Numerical example (using audited exact \texorpdfstring{$r_q$}{rq} truncated to $q\le 17$, Table~\ref{tab:fold_collision_renyi_spectrum})}
+Taking $\varepsilon=10^{-6}$ as an example:
+\begin{itemize}
+  \item When $m=512$, the optimal certificate occurs at $q^\star=8$, yielding $\gamma^{\mathrm{cert}}_{512}(10^{-6})\approx 0.224915$.
+  Thus $\log B^{\mathrm{cert}}\approx 115.156$, and from the condition $P>2B$ one obtains a minimum budget threshold of
+  $\log_2 P\gtrsim (\log 2+\log B^{\mathrm{cert}})/\log 2\approx 167.1$ bits.
+  \item When $m=4096$, the optimal certificate occurs at $q^\star=3$, yielding $\gamma^{\mathrm{cert}}_{4096}(10^{-6})\approx 0.218572$.
+  Thus $\log B^{\mathrm{cert}}\approx 895.27$, giving $\log_2 P\gtrsim 1292.6$ bits order.
+\end{itemize}
+The same duality also provides a readable scale for tail rarity: for instance, taking $\gamma=0.23$, under the discrete supremum over $q\le 17$ one obtains
+$I(0.23)\approx 0.08059$ (with optimum achieved at $q=17$), yielding an upper bound order for $m=512$ of
+$\mathbb{P}_{w_m}[\gamma_m(X)\ge 0.23]\lesssim e^{-m I(0.23)}\approx 10^{-18}$.
+The script module \texttt{scripts/common\_tail\_budget.py} implements the scan optimization for both $\gamma$-certificate types;
+script \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} further verifies the actual tail mass under $w_m$ using residue-DP histograms and outputs JSON certificates.
+\par
+\medskip\noindent\textbf{Unimodality selection (why optimal $q^\star$ is auditably "searchable")}
+By Proposition~\ref{prop:pom-pressure-convexity}, $q\mapsto \log r_q$ is discretely convex at integer points.
+Thus for fixed $(m,\varepsilon)$, the certificate objective
+\[
+q\ \longmapsto\ \gamma^{(q)}_{m}(\varepsilon)
+:=\frac{\log r_q-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1}
+\]
+is a discrete quasi-convex function: for any threshold $\Gamma$, the inequality $\gamma^{(q)}_m(\varepsilon)\le \Gamma$ is equivalent to
+\(
+\log r_q \le (q-1)\Gamma+\log 2-\frac{1}{m}\log(1/\varepsilon)
+\),
+where the right-hand side is an affine function of $q$; and the sub-level set of "discrete convex function $-$ affine function" must be an interval on integers.
+Therefore, the set of optimal $q^\star$ is a (short) continuous integer interval, which can be either exhaustively scanned or located via unimodal search in $O(\log q_{\max})$ evaluations.
+
+\medskip\noindent\textbf{Explicit closed form for prime-register total budget (optimizable over $q$)}
+From the $B_m^{(q)}(\varepsilon)$ form in Corollary~\ref{cor:pom-prime-register-q-quota-family} and the CRT side condition $P_m>2B$, for any $q\ge 2$ one obtains a fully explicit, auditable sufficient budget:
+\[
+\boxed{\;
+\log P_m\ \gtrsim\ \log 2\ +\ \frac{m}{q-1}\bigl(\log r_q-\log 2\bigr)\ +\ \frac{1}{q-1}\log(1/\varepsilon)\;}
+\]
+Therefore, over a given auditable moment order set $\mathcal{Q}\subseteq\ZZ_{\ge 2}$, "selecting moment order" can be directly written as:
+\[
+q^\star(m,\varepsilon)=\arg\min_{q\in\mathcal{Q}}\left(\beta_q+\frac{1}{m(q-1)}\log(1/\varepsilon)\right),
+\qquad
+\beta_q=\frac{\log r_q-\log 2}{q-1}.
+\]
+
+\medskip\noindent\textbf{Phase diagram of optimal moment order selection (exact breakpoint form in Remark~\ref{rem:pom-qstar-phase-diagram-breakpoints})}
+The breakpoint closed form and explicit phase diagram table for $\varepsilon=10^{-6}$ are given in Remark~\ref{rem:pom-qstar-phase-diagram-breakpoints} and Table~\ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}; this rewrites "selecting $q$" from a heuristic to a deterministic selection law uniquely determined by the audit table $\{r_q\}$.
+Let $\alpha:=\frac{1}{m}\log(1/\varepsilon)$.
+
+Moreover, by the discrete convexity in Proposition~\ref{prop:pom-pressure-convexity} and the endpoint identity $r_1=2$ (i.e., $P(1)=\log 2$), the secant slope
+\(
+\beta_q=\frac{P(q)-P(1)}{q-1}
+\)
+is monotonically non-decreasing for $q\ge 2$: applying discrete convexity to $(q_0,q_1,q_2)=(1,q,q+1)$ yields
+\[
+P(q)\ \le\ \frac{1}{q}P(1)+\frac{q-1}{q}P(q+1)
+\quad\Longleftrightarrow\quad
+\beta_q\le \beta_{q+1}.
+\]
+Thus when $\log(1/\varepsilon)=o(m)$ (e.g., $\varepsilon$ fixed and $m\to\infty$),
+\[
+\gamma_m^{(q)}(\varepsilon)=\beta_q+\frac{\alpha}{q-1}=\beta_q+o(1),
+\]
+whose leading exponential term is minimized by $q=2$; the benefit of increasing $q$ mainly comes from the reliability term $\alpha/(q-1)$ for finite $m$ or extremely small $\varepsilon$.
+
+\medskip\noindent\textbf{(Reliability scaling phase transition)}
+Treating $\varepsilon$ as a risk budget varying with $m$: if $\varepsilon_m=e^{-c m}$ (i.e., $\alpha_m\to c>0$), then under the $r_q$ certificate calibration, the optimal exponent is given by:
+\[
+\gamma^{\mathrm{cert}}(c)
+=\inf_{q\ge 2}\left(\beta_q+\frac{c}{q-1}\right).
+\]
+When $c\downarrow 0$, this recovers the "constant failure rate" phase $\beta_2=\log(r_2/2)$;
+while when $c\to\infty$, to suppress $c/(q-1)$ the optimal $q^\star$ is pushed toward large $q$, and by $\lim_{q\to\infty}\beta_q=\log\sqrt{\varphi}$ one obtains:
+\[
+\lim_{c\to\infty}\gamma^{\mathrm{cert}}(c)=\log\sqrt{\varphi},
+\]
+equivalent to gradually approaching the endpoint exponent of "provisioning by maximum fiber": when error tolerance tends to 0, the benefit of replacing worst-case by quantile inevitably vanishes.
+
+\medskip\noindent\textbf{Auditable example ($m=30$, $\varepsilon=10^{-6}$)}
+Within the exact fingerprint range $q\le 17$ (Table~\ref{tab:fold_collision_renyi_spectrum}), exhaustive scan yields optimal moment order $q^\star(30,10^{-6})=17$, corresponding to:
+\[
+\gamma^{\mathrm{cert}}_{30}(10^{-6})\approx 0.253745,\qquad
+B^{\mathrm{cert}}_{30}(10^{-6})\approx 2.02\times 10^3,
+\]
+thus the prime-register product budget only needs to satisfy $P>2B\approx 4.05\times 10^3$.
+The output of script \texttt{scripts/exp\_fold\_tail\_budget\_gamma\_cert.py} also provides a set of directly usable coprime moduli suggestions: for instance, taking $(2,3,5,7,11,13)$ yields product $30030>2B$.
+\par
+If one extends the auditable range to DP extended fingerprints $q\le 20$ (Table~\ref{tab:fold_collision_renyi_spectrum_mod_dp_q20}), the optimal moment order at the same operating point is pushed to $q^\star=20$, further compressing the budget to $B\approx 1.81\times 10^3$ (the same set of primes remains sufficient).
+As a comparison, using only the second-order certificate $q=2$ yields $B\sim 6\times 10^8$, a budget on the order of $10^8$, clearly demonstrating the structural conclusion that "higher-order moments primarily improve the reliability term for extremely small $\varepsilon$".
+
+\medskip\noindent\textbf{Space/time duality Pareto frontier (auditable definition)}
+Quantifying the "time cost" on the certificate side using an auditable realization scale proxy: for instance, take
+\[
+T(q):=\text{realization/recursion order proxy }d_q
+\]
+(in the Fold case, $d_q$ can be read from the audited integer coefficient recursion order; see Tables~\ref{tab:fold_collision_moment_spectrum_k2_8} and~\ref{tab:fold_collision_moment_spectrum_k9_17}).
+Taking the space-side cost as
+\(
+S(q):=\log_2 P_m^{(q)}(\varepsilon)
+\)
+lower bound (directly read from the formula $\log P_m\gtrsim \log2+m\beta_q+\frac{1}{q-1}\log(1/\varepsilon)$),
+then the non-dominated subset of the discrete point set
+\(
+\{(T(q),S(q)):\ q\in\mathcal{Q}_{\mathrm{cert}}\}
+\)
+yields a verifiable Pareto frontier: it quantifies "higher-order moment certificates (larger $T$) $\Rightarrow$ smaller prime-register (smaller $S$)" as a discrete frontier curve.
+Taking the example $(m,\varepsilon)=(30,10^{-6})$ with $\mathcal{Q}_{\mathrm{cert}}=\{2,\dots,17\}$, scanning yields frontier points at:
+\[
+q\in\{3,5,9,11,15,17\},
+\]
+with $(d_q,\log_2 P)$ approximately:
+\[
+(3,20.35),\ (5,15.46),\ (7,13.08),\ (9,12.63),\ (11,12.13),\ (13,11.98),
+\]
+This Pareto frontier characterizes the auditable trade-off rate between "time/realization complexity" and "space/prime-register budget".
+\end{remark}
+
+\begin{remark}[Chernoff quantile certificate $q^\star$ breakpoint phase diagram (design law; final conclusion)]\label{rem:pom-qstar-phase-diagram-breakpoints}
+Under the Chernoff quantile certificate definition in Remark~\ref{rem:pom-quantile-budget-computable}, for each integer $q\ge 2$ denote:
+\[
+\gamma^{(q)}_m(\varepsilon)
+:=
+\frac{\log r_q-\log 2+\frac{1}{m}\log(1/\varepsilon)}{q-1},
+\qquad
+\gamma^{\mathrm{cert}}_m(\varepsilon)=\inf_{q\in\ZZ_{\ge 2}}\gamma^{(q)}_m(\varepsilon),
+\qquad
+q^\star(m,\varepsilon)\in\arg\min_{q\in\ZZ_{\ge 2}}\gamma^{(q)}_m(\varepsilon).
+\]
+Then the following four conclusions provide a fully auditable "select $q$ / select $m$ / set $\varepsilon$" dual-scale design law (with audited $\{r_q\}$ as the only input, involving no empirical fitting):
+\begin{enumerate}
+  \item \textbf{(Exact breakpoints of optimal $q^\star$)}
+  For each $q\ge 2$ (with $r_{q+1}$ audited), define:
+  \[
+  A_q
+  :=
+  (q-1)\bigl(\log r_{q+1}-\log 2\bigr)-q\bigl(\log r_q-\log 2\bigr).
+  \]
+  Then candidates $q$ and $q+1$ are both optimal in the certificate lower envelope (i.e., $\gamma^{(q)}_m(\varepsilon)=\gamma^{(q+1)}_m(\varepsilon)$) if and only if:
+  \[
+  m=m_{q\to q+1}(\varepsilon):=\frac{\log(1/\varepsilon)}{A_q}.
+  \]
+  Therefore, on the $m$ axis, $q^\star(m,\varepsilon)$ decreases monotonically by unit steps as $m$ increases; all transition points are precisely given by $\{m_{q\to q+1}(\varepsilon)\}_q$ (with two-point ties at breakpoints).
+  \item \textbf{(Explicit phase diagram for $\varepsilon=10^{-6}$; DP audit $q\le 20$)}
+  Using the DP extended audit table (Table~\ref{tab:fold_collision_renyi_spectrum_mod_dp_q20}) with $\{r_q\}_{2\le q\le 20}$, the numerical values of breakpoints $m_{q\to q+1}(10^{-6})$ are listed in Table~\ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}.
+  For instance: if $m\in[513.01,643.28)$ then $q^\star=7$; if $m\ge 5344.31$ then $q^\star=2$. These intervals and breakpoints are all directly determined by definition, not by numerical fitting.
+  \item \textbf{(Large-scale limit for fixed $\varepsilon$: \texorpdfstring{$\log(r_2/2)$}{log(r2/2)})}
+  For fixed $\varepsilon\in(0,1)$, when $m\ge m_{2\to 3}(\varepsilon)$ the optimum locks to $q^\star=2$, thus:
+  \[
+  \lim_{m\to\infty}\gamma^{\mathrm{cert}}_m(\varepsilon)=\log\frac{r_2}{2}.
+  \]
+  Using the audited value $r_2=2.481194304092$ from Table~\ref{tab:fold_collision_renyi_spectrum_mod_dp_q20}, we obtain:
+  \[
+  \boxed{\ \gamma_\infty=\log(r_2/2)=0.2155928379\ldots\ }.
+  \]
+  This limit is strictly less than the worst fiber endpoint exponent $\log\sqrt{\varphi}$ (equivalent to $\lim_{q\to\infty}\beta_q$, see Remark~\ref{rem:pom-betaq-isa}), indicating that the quantile certificate indeed escapes the worst-case scaling in the fixed failure rate regime; the gap is the explicit constant $\log\sqrt{\varphi}-\log(r_2/2)$.
+  \item \textbf{(Certificate envelope as lower envelope of hyperbolas: space–time frontier must exhibit kinks)}
+  For each fixed $q\ge 2$, we can write:
+  \[
+  \gamma^{(q)}_m(\varepsilon)=\beta_q+\frac{1}{m(q-1)}\log(1/\varepsilon),
+  \qquad
+  \beta_q=\frac{\log r_q-\log 2}{q-1},
+  \]
+  hence $\gamma^{(q)}_m(\varepsilon)$ as a function of $m$ is a family of $1/m$-type hyperbolas. Thus:
+  \[
+  \gamma^{\mathrm{cert}}_m(\varepsilon)=\min_{q\in\ZZ_{\ge 2}}\gamma^{(q)}_m(\varepsilon)
+  \]
+  is the piecewise lower envelope of these hyperbolas, with kinks precisely at the breakpoint set $\{m_{q\to q+1}(\varepsilon)\}$.
+  Therefore, any space–time feasibility band / Pareto frontier with the constraint
+  \(
+  \log P_m\gtrsim \log 2+m\,\gamma^{\mathrm{cert}}_m(\varepsilon)
+  \)
+  (space-side budget form in Table~\ref{tab:pom-space-time-duality-prime-register}) automatically inherits these kinks: when $m$ crosses any breakpoint, the optimal design regime (i.e., optimal $q^\star$) undergoes a discrete jump.
+\end{enumerate}
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_qstar_breakpoints_eps1e6_q2_20}
+
+\begin{remark}[Ternary Pareto boundary of time–space–anomaly]\label{rem:pom-pareto-ts-omega}
+\medskip\noindent\textbf{Ternary Pareto boundary of time–space–anomaly}
+For projection words $w$ with the same semantic target, let:
+\[
+\begin{aligned}
+\mathsf T(w)&:=\text{number of non-parallelizable layers/gates in interface normal form},\\
+\mathsf S(w)&:=\text{space spectral budget curve (such as }I_w(\gamma)\text{ or }\Sigma_{\mathrm{space}}(w)\text{)},\\
+\Omega(w)&:=\mathrm{anom}(\eta_w)
+\end{aligned}
+\]
+(anomaly accumulation Definition~\ref{def:pom-anom-accumulation}).
+Then within equivalence rewrite classes, rewrite paths yield a family of triples $(\mathsf T,\mathsf S,\Omega)$; their non-dominated subset forms the "time–space–anomaly" Pareto frontier, characterizing the auditable boundary where parallelization transfers cost to space or anomaly.
+Here $\Omega=0$ corresponds to zero-curvature parallelization (strict naturality); if $\Omega\neq 0$ but the spectral gap bound from kernel GRH holds (Corollary~\ref{cor:pom-grh-mix-upper}), then the length-dependent part of the commutation error decays exponentially, leaving only a constant-level residue, which can be viewed as "near-naturality"; when the spectral gap is weak or $\Omega$ is large, one enters the strong coupling regime, requiring the anomaly certificate to accompany.
+\end{remark}
+
+\begin{proposition}[Quantile-CRT compilation law: \texorpdfstring{$\varepsilon$}{eps}-sound order projection elimination]\label{prop:pom-rcrt-epsilon}
+Fix resolution $m$ and error budget $\varepsilon\in(0,1)$, under the folding readout calibration with $X\sim w_m$.
+Suppose the order projection gate $P_{\le}$ acts on an internal integer label that is a random variable $Y$, satisfying the crude bound:
+\[
+|Y|\ \le\ d_m(X)
+\qquad(\text{e.g., prime-register carrying fiber-index, or any register value upper-bounded by fiber size}).
+\]
+Take any $B\ge 1$ such that:
+\[
+\mathbb{P}_{w_m}\big[d_m(X)>B\big]\ \le\ \varepsilon,
+\]
+and select pairwise coprime moduli $p_1,\dots,p_r$ such that their product $P=\prod_i p_i$ satisfies $P>2B$.
+Then under the error enrichment calibration (Definition~\ref{def:pom-eps-sound-rewrite}), there exists an $\varepsilon$-sound rewrite certificate:
+\[
+(\mathrm{RCRT}_\varepsilon)\qquad
+P_{\le}\ \Longrightarrow_{\varepsilon}\ \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}.
+\]
+Here the right-hand side is precisely the spatialized implementation of the hard threshold version (RCRT) (Definition~\ref{def:pom-order-elimination-rewrite}): first parallel residue readout along moduli axes ($P_{\chi,\{p_i\}}$), then CRT reconstruction ($\mathrm{CRT}_{\{p_i\}}$).
+\end{proposition}
+\begin{proof}
+Let the bad event be $E:=\{|Y|>B\}$.
+By assumption $|Y|\le d_m(X)$, we have $E\subseteq\{d_m(X)>B\}$, thus
+\(
+\mathbb{P}_{w_m}[E]\le \varepsilon
+\).
+On the good event $E^c$, $Y\in[-B,B]$, so the order/interval judgment of $P_{\le}$ can be viewed as the restricted gate $P_{\le,[-B,B]}$.
+Under the side condition $P>2B$, the hard threshold version (RCRT) maintains correctness for integer readout on $[-B,B]$ (Proposition~\ref{prop:pom-order-elimination-correct}), so on $E^c$ we have:
+\(
+P_{\le}= \mathrm{CRT}_{\{p_i\}}\circ P_{\chi,\{p_i\}}
+\)
+(as visible readout).
+Therefore by Definition~\ref{def:pom-eps-sound-rewrite}, the above rewrite holds in the sense of failure probability at most $\varepsilon$. This completes the proof.
+\end{proof}
+\begin{remark}[Two hardening paths and \texorpdfstring{$(u,q,\varepsilon)$}{(u,q,eps)} scheduling]\label{rem:pom-hardening-u-vs-q}
+"Hardening" of the order gate has at least two executable paths in this framework:
+\begin{itemize}
+  \item \textbf{Temperature path:} Lowering $u$ (Remark~\ref{rem:pom-order-as-zero-temp}) hardens the soft order gate $\mathrm{PROJ}_u$ to $P_{\le}$, with time-side cost mainly manifested in the twisted spectral gap/mixing scale $\tau_{\mathrm{mix}}(u)$ (Proposition~\ref{prop:pom-rewrite-audit-loop}).
+  \item \textbf{Moment-quantile path:} Fixing (or not extremely lowering) $u$, by increasing $q$ and using the moment-kernel ($\mathrm{MOM}_q$) to provide a tail certificate, thereby triggering $(\mathrm{RCRT}_\varepsilon)$ (Proposition~\ref{prop:pom-rcrt-epsilon}) to compile the order gate into spatialized residue+CRT readout; its space-side cost is mainly manifested in the prime-register quota $\log P$ (Corollary~\ref{cor:pom-prime-register-quantile-budget} and the $\gamma$-certificate in Remark~\ref{rem:pom-quantile-budget-computable}).
+\end{itemize}
+Therefore, the compiler can use $(u,q,\varepsilon)$ as three knobs: $u$ primarily controls the time scale, $q$ primarily controls tail amplification and space quota, $\varepsilon$ primarily controls risk budget; and use the addition law in Proposition~\ref{prop:pom-eps-sound-compose} to account for the total failure probability of multiple approximate order gate eliminations.
+The two-dimensional pressure surface $P(q,u)$ provides a unified coordinate for placing both paths in the same "spectral phase diagram" (\S\ref{subsec:pom-pressure-surface-qu}).
+\end{remark}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\caption{Space–time duality diagram: closed-form budget for the same prime-register capacity variable on two types of readout tasks. The first row gives the space quota for "unique fiber label reconstruction" (controlled by collision moment spectrum $\{r_q\}$); the second row gives the time budget for "cylinder congruence equidistribution" (controlled by the worst twisted spectral gap ratio $\Lambda_m/\lambda_m$ from profinite Chebotarev). Under online readout semantics, the time side charges with the available depth after synchronization deduction $n_{\mathrm{eff}}=(n-n_{\mathrm{sync}})_+$ (Theorem~\ref{thm:pom-sync-subtracted-chebotarev-capacity}); ignoring synchronization deduction takes $n_{\mathrm{eff}}=n$ and degenerates to Corollary~\ref{cor:pom-profinite-cylinder-effective-n} and inverse Corollary~\ref{cor:pom-profinite-cylinder-capacity}.}
+\label{tab:pom-space-time-duality-prime-register}
+\begin{tabular}{p{0.25\linewidth} p{0.60\linewidth} p{0.12\linewidth}}
+\toprule
+Readout task & Sufficient budget (closed-form inequality family) & Fingerprint input\\
+\midrule
+Quantile-CRT (fiber label overflow failure $\le\varepsilon$) &
+\(
+P_m>2B_m^{(q)}(\varepsilon),
+\ \
+B_m^{(q)}(\varepsilon)=\varepsilon^{-1/(q-1)}(r_q/2)^{m/(q-1)}
+\)
+(Corollary~\ref{cor:pom-prime-register-q-quota-family}; finite-scale version uses $S_q(m)$ to get $B_{m,q}^{\mathrm{fin}}$) &
+\(\{r_q\}\)\\
+
+Chebotarev cylinder (relative error $\le\delta$) &
+If $\Lambda_m\le \lambda_m^{1/2-\varepsilon_{\mathrm{gap}}}$, then
+\(
+n_{\mathrm{eff}}\gtrsim \log(|G_m|/\delta)/((1/2+\varepsilon_{\mathrm{gap}})\log\lambda_m)
+\)
+(Theorem~\ref{thm:pom-sync-subtracted-chebotarev-capacity}), equivalently
+\(
+\log|G_m|\lesssim (1/2+\varepsilon_{\mathrm{gap}})n_{\mathrm{eff}}\log\lambda_m-\log(1/\delta)
+\)
+(same as above) &
+\(\Lambda_m/\lambda_m\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Joining into the same "space–time linear band"}
+Taking $G_m=\ZZ/P_m\ZZ$ on the prime-register axis (thus $|G_m|=P_m$).
+Then the two budget rows in Table~\ref{tab:pom-space-time-duality-prime-register} directly join via the same capacity variable $\log P_m$: the space side gives
+\(
+\log P_m\gtrsim \log 2+m\beta_q+\frac{1}{q-1}\log(1/\varepsilon)
+\)
+(Corollary~\ref{cor:pom-prime-register-q-quota-family}), the time side gives
+\(
+\log P_m\lesssim (1/2+\varepsilon_{\mathrm{gap}})n_{\mathrm{eff}}\log\lambda_m-\log(1/\delta)
+\);
+thus forming an auditable feasibility band in the $(n_{\mathrm{eff}},\log P_m)$ plane: the same register is simultaneously constrained by both spectral fingerprints $\{r_q\}$ and $\Lambda_m/\lambda_m$.
+
+\begin{remark}[Space–time–confidence one-line law (prime-register feasibility band)]\label{rem:pom-space-time-confidence-law}
+Under the same $\gtrsim/\lesssim$ constant calibration, the above two budgets can be simultaneously satisfied (i.e., there exists some $P_m$ such that Quantile-CRT failure probability $\le\varepsilon$ and Chebotarev cylinder relative error $\le\delta$) if and only if their endpoints are compatible; equivalently, for any $q\ge 2$ we have:
+\[
+\boxed{
+\log 2+m\beta_q+\frac{1}{q-1}\log\frac{1}{\varepsilon}+\log\frac{1}{\delta}
+\ \lesssim\
+(1/2+\varepsilon_{\mathrm{gap}})\,n_{\mathrm{eff}}\log\lambda_m
+}
+\]
+where $\beta_q=(\log r_q-\log 2)/(q-1)$.
+This formula compresses "space quota (given by $\{r_q\}$)" and "time quota (given by $\Lambda_m/\lambda_m$)" along with both confidence knobs $(\varepsilon,\delta)$ into a single verifiable one-line criterion; here $n_{\mathrm{eff}}=(n-n_{\mathrm{sync}})_+$ with synchronization deduction given by Theorem~\ref{thm:pom-sync-subtracted-chebotarev-capacity}.
+\par
+If we further calibrate cylinder readout with empirical histogram $\hat{\pi}_{m,N}$ under a Markov source (confidence level $1-\delta_{\mathrm{conf}}$), then Theorem~\ref{thm:auditable-profinite-chebotarev-finite}'s "dynamical tail term + TV estimation term" decomposition and Corollary~\ref{cor:auditable-profinite-chebotarev-tradeoff}'s balance boundary curve yield:
+\[
+n_{\mathrm{eff}}\ \approx\
+\frac{1}{(1/2+\varepsilon_{\mathrm{gap}})\log\lambda_m}\left(\log|G_m|+\frac12\log N+\mathrm{const}(m,\delta_{\mathrm{conf}})\right),
+\]
+thus an irreducible calibration additional term $\tfrac12\log N$ appears in the time budget.
+\end{remark}
+
+\begin{remark}[Spectral-tax calibration and "adding axes does not necessarily accelerate"]\label{rem:pom-spectral-tax-workload}
+The explicit relative error bound in Corollary~\ref{cor:pom-profinite-cylinder-effective-n} can be read in the worst case ($|A|=1$) as:
+\[
+\mathrm{Err}_m(n_{\mathrm{eff}})\ \lesssim\ |G_m|\left(\frac{\Lambda_m}{\lambda_m}\right)^{n_{\mathrm{eff}}}.
+\]
+Let
+\(
+r_m:=\Lambda_m/\lambda_m\in(0,1]
+\)
+and the spectral tax rate
+\(
+\Delta_m:=-\log r_m
+\)
+(i.e., the step mixing scale $\tau_{\mathrm{mix}}(m):=1/\Delta_m$).
+Then as long as:
+\[
+n_{\mathrm{eff}}\ \gtrsim\ \frac{\log|G_m|+\log(1/\delta)}{\Delta_m},
+\]
+one can compress the relative error to $O(\delta)$ scale (absorbing constants into $\gtrsim$).
+Therefore, "using more congruence/character axes (space) to replace longer primitive length (time)" is not free: each deepening layer simultaneously changes both
+$|G_m|$ and $r_m$, whose net effect can be directly audited by the workload fingerprint:
+\[
+W(m):=\frac{\log|G_m|}{\Delta_m}=\log|G_m|\cdot\tau_{\mathrm{mix}}(m).
+\]
+If adding axes increases $|G_m|$ but $r_m\to 1$ (spectral gap becomes smaller, $\Delta_m\downarrow$), then $W(m)$ may increase, becoming "slower".
+The scan Table~\ref{tab:real-input-40-spectral-tax-workload} for the real input 40-state kernel on discrete prime moduli axes provides a directly reproducible concrete example (e.g., comparison of $p=3$ versus $p=5$).
+\end{remark}
+\input{sections/generated/tab_real_input_40_spectral_tax_workload}
+
+\begin{remark}[Maximum modulus control law: multiplicative space, quadratic time (near-coboundary + falsifiable selection law)]\label{rem:pom-max-modulus-control-law}
+This paragraph further joins Table~\ref{tab:pom-space-time-duality-prime-register}'s "space multiplicative budget" and "time spectral tax" into a testable engineering law: on separable residue direct-product axes, the \emph{space capacity} of the prime-register is determined by the product $P=|G|$, but the \emph{time diffusion} leading order is determined by the "worst small angle/maximum modulus", not by $P$ itself.
+\par
+\medskip\noindent\textbf{Setup (direct product residue axis)}
+Take pairwise coprime moduli set $\{p_1,\dots,p_k\}$ and let:
+\[
+G:=\prod_{i=1}^k\ZZ/p_i\ZZ,
+\qquad
+P:=|G|=\prod_{i=1}^k p_i,
+\qquad
+L:=\max_i p_i.
+\]
+By CRT we have $G\cong \ZZ/P\ZZ$, but the direct product coordinates make the audit of "minimum nontrivial angle on each axis" $2\pi/p_i$ and the statement of "single-axis slow-modulus selection law" more direct.
+Denote the worst twist ratio for "cylinder congruence equidistribution" as
+\(
+r_G:=\max_{\chi\neq\chi_0}\rho(M_\chi)/\lambda
+\)
+and let the spectral tax rate be
+\(
+\Delta_G:=-\log r_G
+\)
+(consistent with notation in Remark~\ref{rem:pom-spectral-tax-workload}).
+\par
+\medskip\noindent\textbf{(Small-angle quadratic law)}
+In the near-coboundary small-angle regime, the twist gap is controlled by variance density: for any one-dimensional direction $F$ and minimum nontrivial angle $2\pi/m$, we have:
+\[
+\log\frac{\rho(M_{it_mF})}{\lambda}
+=-\frac{\sigma_F^2}{2}\left(\frac{2\pi}{m}\right)^2+O(m^{-4})
+\]
+(Corollary~\ref{cor:dirichlet-modulus-diffusion-barrier}; where $\sigma_F^2=a^{\mathsf T}\Sigma a$, $\Sigma=\nabla^2P(0)$).
+Thus the "pure axis twist" along the $i$-th axis (taking $j=\pm1$ only on $\ZZ/p_i$) has spectral gap leading order:
+\[
+\Delta_i\ \approx\ 2\pi^2\,\sigma_i^2/p_i^2
+=4\pi^2\,\kappa_i/p_i^2,
+\qquad \kappa_i:=\sigma_i^2/2.
+\]
+\par
+\medskip\noindent\textbf{(Falsifiable selection law $\Rightarrow$ maximum modulus control)}
+If on this direct product axis the "single-axis slow-modulus selection law" holds:
+\[
+\arg\max_{\chi\neq\chi_0}\frac{\rho(M_\chi)}{\lambda}
+\ \text{is achieved by some pure-axis character (nontrivial on only one axis), and occurs at maximum modulus }p_{i^\star}=L,
+\]
+then $\Delta_G$ is locked to leading order by this worst small angle, thus:
+\[
+n\ \gtrsim\ \frac{\log|G|+\log(1/\delta)}{\Delta_G}
+\ \approx\
+\frac{L^2}{4\pi^2\,\kappa_{i^\star}}\Bigl(\log P+\log\tfrac{1}{\delta}\Bigr).
+\]
+This shows: under the above auditable premise, \textbf{the space budget of the prime-register is multiplicative $P$, but the time budget leading order is quadratic $L^2$, and enters only as $\log P$}.
+\par
+This "single-axis slow-modulus selection law" itself is falsifiable/auditable: for instance, in the $((3,3,p))$ pure collision axis scan of the real input 40-state kernel, the worst character index is stably $(0,0,\pm1)$ (Table~\ref{tab:real_input_40_arity_335_n2_selection_law_primes}), consistent with the near-coboundary small-angle mechanism; more generally, the selection law under quadratic approximation is equivalent to a shortest vector problem with a metric (Theorem~\ref{thm:real-input-40-near-coboundary-svp}).
+\end{remark}
+
+\begin{remark}[Primorial modulus selection and \texorpdfstring{$\mathrm{poly}(\log P)$}{poly(log P)} time closed loop (external number-theoretic fact)]\label{rem:pom-primorial-polylog-time}
+Under the space constraint
+\(
+P>2B_m(\varepsilon)=2\exp(m\gamma_m(\varepsilon))
+\)
+given in Corollary~\ref{cor:pom-prime-register-quantile-budget}, the capacity leading scale satisfies $\log P\asymp m\gamma_m(\varepsilon)$.
+\par
+If one wishes to satisfy $\prod_i p_i\ge P$ while minimizing the maximum modulus $L=\max_i p_i$, number theory (linear order growth of Chebyshev $\vartheta$ function) shows: for a given cutoff $L$, the product $\prod_{p\le L}p$ is maximal; and:
+\[
+\log\!\left(\prod_{p\le L}p\right)=\vartheta(L)=\Theta(L).
+\]
+Therefore, when adopting the "take all primes $\le L$" primorial scheme, we have:
+\[
+L\ =\ \Theta(\log P)\ =\ \Theta(m\gamma_m(\varepsilon)).
+\]
+Substituting this back into the time budget in Remark~\ref{rem:pom-max-modulus-control-law} (and treating $\kappa_{i^\star}$ as a constant extractable from spectral scan/Poisson equation interface; see Remark~\ref{rem:arity-335-kappa-poisson}), we obtain the leading order complexity law:
+\[
+n\ \gtrsim\ \frac{(\log P)^2}{4\pi^2\kappa_{i^\star}}\Bigl(\log P+\log\tfrac{1}{\delta}\Bigr).
+\]
+In particular, when $\delta$ is a constant-level (or polynomial-level) target accuracy, the time cost exhibits an explicit $\,O\big((\log P)^3\big)\,$ order: \textbf{space exponential (Euler product), time only polynomial in $\log P$}.
+\end{remark}
+
+\begin{remark}[Variance-matched modulus allocation: turning \texorpdfstring{$\Sigma$}{Sigma} into register design law]\label{rem:pom-variance-matched-moduli}
+The near-coboundary quadratic law transforms "which moduli to select" into a discrete geometric problem with a metric.
+Under the notation of Corollary~\ref{cor:dirichlet-modulus-diffusion-barrier}, for each independently twistable axis (or readout direction) $F_i$, denote its variance density as $\sigma_i^2=\mathrm{Var}_\infty(F_i)$ (more generally $\sigma_F^2=a^{\mathsf T}\Sigma a$, where $\Sigma=\nabla^2P(0)$).
+Then in the pure-axis small-angle regime, the gap leading order for the $i$-th axis modulus $p_i$ is $\Delta_i\approx 2\pi^2\sigma_i^2/p_i^2$.
+\par
+Thus if the overall slow modulus is dominated by the "worst axis" (single-axis selection law holds), then the dominant factor of mixing time is:
+\[
+\max_i\frac{p_i^2}{\sigma_i^2}.
+\]
+Under a continuous approximation to the capacity constraint $\prod_i p_i\ge P$, a minimax impedance-matching principle is to make gaps on all axes of the same order:
+\[
+\frac{\sigma_1^2}{p_1^2}\ \approx\ \frac{\sigma_2^2}{p_2^2}\ \approx\ \cdots\ \approx\ \frac{\sigma_k^2}{p_k^2},
+\qquad\text{i.e.,}\qquad
+p_i\ \propto\ \sigma_i.
+\]
+This allocation law directly couples the pressure Hessian/covariance density $\Sigma$ into the discrete modulus selection problem for prime-register: assign larger moduli to "harder" (higher variance density) directions to suppress the diffusion time upper bound brought by the worst axis.
+\end{remark}
+
+\subsubsection{Multi-axis budget barrier: geometric number theory lower bound from shortest vector mechanism}\label{subsubsec:pom-multi-axis-budget-barrier}
+Remark~\ref{rem:pom-variance-matched-moduli} provides an impedance-matching-style design law: if the slow modulus is indeed dominated by some "worst axis", one can suppress the upper bound by making gaps on all axes of the same order.
+However, when allowing $d\ge 1$ independent twist axes to coexist, a more fundamental limit comes from the geometric number-theoretic structure of the angle lattice itself: in the regime where the near-coboundary small-angle quadratic law is valid, the worst twist gap approximately equals a shortest vector problem with a metric;
+by Minkowski's convex body theorem, one obtains an unavoidable budget exponent barrier (exponent $2/d$) for any modulus selection strategy, and this barrier can be translated via Dirichlet normalization to a near-$1$ dominant pole proximity law; combined with the space–time conversion law, proximity and finite-part drift can be linearly locked at second-order accuracy.
+Finally, if one allows unimodular reparametrization on residue axes ($GL_d(\ZZ)$ transformations) and optimizes angle lattice shape within the same covolume class, the limiting constant is controlled by the Hermite constant; simultaneously yielding a leading order counting law for proximity poles.
+
+\paragraph{Multi-axis twist and near-coboundary quadratic law}
+Let $d\ge 1$.
+Consider a family of unit circle twist matrices $M_{i\vartheta}$ ($\vartheta\in\RR^d$), denote:
+\[
+P(\vartheta):=\log\rho(M_{i\vartheta}),\qquad \lambda:=\rho(M_{0}),\qquad \Sigma:=\nabla^2P(0)\succ 0.
+\]
+In three-dimensional observations of the real input 40-state kernel, the above $\Sigma$ and small-angle quadratic law are given in "boxed" form by Appendix Theorem~\ref{thm:real-input-40-near-coboundary-svp}; on general finite-dimensional primitive kernels, their isomorphic form can be obtained from analytic perturbation of the Perron branch and taking the real part (same proof framework see proof of~\ref{thm:real-input-40-near-coboundary-svp}).
+This work operates in this small-angle regime: assume there exists $\delta_0>0$ such that when $\|\vartheta\|\le \delta_0$ the following holds:
+\begin{equation}\label{eq:pom-multi-axis-near-coboundary}
+\log\frac{\rho(M_{i\vartheta})}{\lambda}
+\;=\;
+-\frac12\,\vartheta^{\mathsf T}\Sigma\,\vartheta\ +\ O(\|\vartheta\|^4).
+\end{equation}
+
+\paragraph{Angle lattice and budget}
+Given moduli tuple $m=(m_1,\dots,m_d)\in(\ZZ_{\ge 2})^d$, introduce the unwrapped angle lattice:
+\[
+L(m):=\frac{2\pi}{m_1}\ZZ\times\cdots\times\frac{2\pi}{m_d}\ZZ\subset\RR^d,
+\qquad
+\det L(m)=\frac{(2\pi)^d}{B},
+\qquad
+B:=\prod_{k=1}^d m_k.
+\]
+Here $\det L(m)$ denotes the covolume of the lattice, and $B$ is the multiplicative budget of the prime-register (modulus product).
+Wrapping the angle lattice by taking principal value representatives modulo $2\pi$ (coordinate-wise $\mathrm{wrap}(\cdot)$ to $[-\pi,\pi]$), we obtain the finite wrapped angle lattice:
+\[
+\Lambda(m):=\Bigl\{\vartheta(j)
+=\bigl(\mathrm{wrap}(2\pi j_1/m_1),\dots,\mathrm{wrap}(2\pi j_d/m_d)\bigr)\in[-\pi,\pi]^d:\ j\in(\ZZ/m_1)\times\cdots\times(\ZZ/m_d)\Bigr\}.
+\]
+(Below we abbreviate $\ZZ/m_k\ZZ$ as $\ZZ/m_k$).
+Thus $\Lambda(m)\setminus\{0\}$ corresponds precisely to all reachable small-angle twists of nontrivial character channels ($\vartheta=0$ corresponds to the trivial character).
+Under quadratic approximation, the worst twist corresponds to minimizing the quadratic form $\vartheta^{\mathsf T}\Sigma\vartheta$ over $\Lambda(m)\setminus\{0\}$.
+Denote:
+\begin{equation}\label{eq:pom-multi-axis-qm}
+q(m):=\min_{\vartheta\in\Lambda(m)\setminus\{0\}}\ \vartheta^{\mathsf T}\Sigma\,\vartheta.
+\end{equation}
+When $B$ is sufficiently large so that the shortest vector achieving the minimum falls within the effective domain $\|\vartheta\|\le\delta_0$, \eqref{eq:pom-multi-axis-near-coboundary} can be directly applied to this shortest vector.
+
+\begin{theorem}[Minkowski budget barrier: universal upper bound on shortest energy]\label{thm:pom-minkowski-budget-barrier}
+Let $V_d:=\mathrm{vol}\{x\in\RR^d:\ |x|\le 1\}=\pi^{d/2}/\Gamma(d/2+1)$, and let:
+\[
+C_d:=\Bigl(\frac{2^{d}}{V_d}\Bigr)^{2/d}.
+\]
+Then for any $m\in(\ZZ_{\ge 2})^d$, when $B=\prod_k m_k$ is sufficiently large to ensure that the shortest vector of $q(m)$ falls within the small-angle effective domain, we have:
+\begin{equation}\label{eq:pom-minkowski-qm-upper}
+q(m)\ \le\ (2\pi)^2\,C_d\,(\det\Sigma)^{1/d}\,B^{-2/d}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Let $E_r:=\{x\in\RR^d:\ x^{\mathsf T}\Sigma x\le r^2\}$.
+This set is centrally symmetric and convex, satisfying the volume formula:
+\[
+\mathrm{vol}(E_r)=\frac{V_d\,r^d}{\sqrt{\det\Sigma}}.
+\]
+By Minkowski's convex body theorem (see e.g., \cite{Cassels1957}), when $\mathrm{vol}(E_r)>2^d\det L(m)$, there exists a nonzero vector $x\in L(m)\cap E_r$, thus $x^{\mathsf T}\Sigma x\le r^2$.
+When $B$ is sufficiently large, the above $r=r(B)\to 0$, so the reachable $x$ falls within the wrapped angle domain and represents some nontrivial character channel, i.e., $x\in\Lambda(m)\setminus\{0\}$;
+thus $q(m)\le x^{\mathsf T}\Sigma x\le r^2$.
+Taking $r$ such that
+\(
+V_d r^d/\sqrt{\det\Sigma}=2^d\det L(m)
+\)
+and taking strictly greater yields:
+\[
+q(m)
+\le r^2
+=\Bigl(\frac{2^d\,\det L(m)\,\sqrt{\det\Sigma}}{V_d}\Bigr)^{2/d}
+=(2\pi)^2\Bigl(\frac{2^d}{V_d}\Bigr)^{2/d}(\det\Sigma)^{1/d}B^{-2/d},
+\]
+yielding \eqref{eq:pom-minkowski-qm-upper}.
+\end{proof}
+
+\begin{corollary}[Budget exponent barrier for spectral gap and mixing time]\label{cor:pom-multi-axis-mixing-budget-barrier}
+Under the setup of Theorem~\ref{thm:pom-minkowski-budget-barrier}, define the worst twist spectral ratio and gap:
+\[
+r_{\max}(m):=\max_{\vartheta\in \Lambda(m)\setminus\{0\}}\frac{\rho(M_{i\vartheta})}{\lambda},
+\qquad
+\Delta_{\mathrm{spec}}(m):=-\log r_{\max}(m),
+\qquad
+\tau_{\mathrm{mix}}(m):=\frac{1}{\Delta_{\mathrm{spec}}(m)}
+\]
+($\tau_{\mathrm{mix}}$ calibration consistent with \S\ref{subsec:xi-near1-diffusive}).
+Then when $B\to\infty$ and in the small-angle effective domain, we have:
+\begin{equation}\label{eq:pom-multi-axis-gap-qm}
+\Delta_{\mathrm{spec}}(m)=\frac12\,q(m)\ +\ O\!\bigl(q(m)^2\bigr),
+\end{equation}
+and:
+\begin{equation}\label{eq:pom-multi-axis-taumix-lb}
+\tau_{\mathrm{mix}}(m)\ \ge\ \frac{B^{2/d}}{2\pi^2\,C_d\,(\det\Sigma)^{1/d}}\,(1+o(1)).
+\end{equation}
+Thus: \emph{under any modulus selection strategy, the optimal budget exponent for time cost must be $2/d$}; if one wishes to suppress $\tau_{\mathrm{mix}}$ to constant order, the budget $B$ must satisfy at least $B=\Omega(\tau_{\mathrm{mix}}^{d/2})$.
+\end{corollary}
+
+\begin{proof}
+In the small-angle domain, by \eqref{eq:pom-multi-axis-near-coboundary} we have:
+\(
+-\log(\rho(M_{i\vartheta})/\lambda)=\frac12\vartheta^{\mathsf T}\Sigma\vartheta+O(\|\vartheta\|^4)
+\).
+Taking the maximum spectral ratio (equivalently minimum gap) for the shortest vector satisfying $\vartheta^{\mathsf T}\Sigma\vartheta=q(m)$ yields \eqref{eq:pom-multi-axis-gap-qm}, and substituting Theorem~\ref{thm:pom-minkowski-budget-barrier}'s \eqref{eq:pom-minkowski-qm-upper} yields \eqref{eq:pom-multi-axis-taumix-lb}.
+\end{proof}
+
+\begin{corollary}[Multi-dimensional Siegel-like barrier: near-\texorpdfstring{$1$}{1} dominant pole proximity law]\label{cor:pom-multi-axis-near1-pole-barrier}
+Under Dirichlet normalization $z=\lambda^{-s}$, define:
+\[
+s(\vartheta):=\frac{P(\vartheta)}{\log\lambda}
+=\frac{\log\rho(M_{i\vartheta})}{\log\lambda},
+\qquad
+\Delta(\vartheta):=-\log\frac{\rho(M_{i\vartheta})}{\lambda}.
+\]
+Then in the small-angle domain we have:
+\begin{equation}\label{eq:pom-multi-axis-near1-pole-translate}
+1-\Re s(\vartheta)=\frac{\Delta(\vartheta)}{\log\lambda}
+=\frac{1}{2\log\lambda}\,\vartheta^{\mathsf T}\Sigma\vartheta+O(\|\vartheta\|^4).
+\end{equation}
+Moreover, for any moduli tuple $m$ ($B$ sufficiently large), there must exist some nontrivial twist $\vartheta_\star\in \Lambda(m)\setminus\{0\}$ such that:
+\begin{equation}\label{eq:pom-multi-axis-near1-pole-budget}
+1-\Re s(\vartheta_\star)
+\ \le\
+\frac{(2\pi)^2\,C_d}{2\log\lambda}\,(\det\Sigma)^{1/d}\,B^{-2/d}\ +\ o(B^{-2/d}).
+\end{equation}
+That is: when the number of independently twistable axes is $d$, the optimal proximity rate of near-$1$ poles is characterized by $B^{-2/d}$ and cannot be surpassed by any modulus selection strategy.
+\end{corollary}
+
+\begin{proof}
+Equation \eqref{eq:pom-multi-axis-near1-pole-translate} is a direct rewriting of \eqref{eq:pom-multi-axis-near-coboundary}.
+Taking $\vartheta_\star$ to be the shortest vector achieving $q(m)$ and controlling its quadratic form using \eqref{eq:pom-minkowski-qm-upper} yields \eqref{eq:pom-multi-axis-near1-pole-budget}.
+\end{proof}
+
+\begin{corollary}[Pole–drift budget binding: proximity poles carry same-order finite-part drift]\label{cor:pom-multi-axis-pole-drift-binding}
+Under the setup of Corollary~\ref{cor:pom-multi-axis-near1-pole-barrier}, further assume that the Abel finite-part constant $\log\mathfrak{M}(\theta)$ is real-analytic in a neighborhood of $\theta=0$ (Remark~\ref{prop:logM-analytic}), and let
+\(
+H:=\nabla^2\log\mathfrak{M}(0)
+\).
+For any direction $v\neq 0$, define the directional coupling ratio:
+\[
+\mathcal{W}(v):=\frac{v^{\mathsf T}Hv}{v^{\mathsf T}\Sigma v},
+\]
+and for $\vartheta\neq 0$ denote $v(\vartheta):=\vartheta/\|\vartheta\|$, $\Delta_{\mathfrak{M}}(\vartheta):=\log\mathfrak{M}(0)-\Re\log\mathfrak{M}(i\vartheta)$.
+Then by the space–time conversion law (isomorphic reading of Appendix Proposition~\ref{prop:real-input-40-space-time-conversion-law}), as $\|\vartheta\|\to 0$ we have:
+\begin{equation}\label{eq:pom-multi-axis-pole-drift-conversion}
+\Delta_{\mathfrak{M}}(\vartheta)
+=(\log\lambda)\,\mathcal{W}\bigl(v(\vartheta)\bigr)\,\bigl(1-\Re s(\vartheta)\bigr)\ +\ O(\|\vartheta\|^4).
+\end{equation}
+In particular, for the unavoidable $\vartheta_\star$ in Corollary~\ref{cor:pom-multi-axis-near1-pole-barrier}, we have:
+\[
+|\Delta_{\mathfrak{M}}(\vartheta_\star)|=O(B^{-2/d}),
+\]
+i.e., budget proximity of near-$1$ poles at constant level must simultaneously accompany same-order finite-part drift.
+\end{corollary}
+
+\begin{proof}
+Equation \eqref{eq:pom-multi-axis-pole-drift-conversion} is a notation substitution of Proposition~\ref{prop:real-input-40-space-time-conversion-law}: under second-order approximation,
+\(
+\Delta_{\mathfrak{M}}(\vartheta)=\frac12\vartheta^{\mathsf T}H\vartheta+O(\|\vartheta\|^4)
+\)
+and
+\(
+1-\Re s(\vartheta)=\frac{1}{2\log\lambda}\vartheta^{\mathsf T}\Sigma\vartheta+O(\|\vartheta\|^4)
+\)
+can be divided to yield the stated conversion law.
+Substituting \eqref{eq:pom-multi-axis-near1-pole-budget} and noting the boundedness of $\mathcal{W}(v)$ on the unit sphere (e.g., controlled by $\mu_{\max}:=\|\Sigma^{-1/2}H\Sigma^{-1/2}\|_{\mathrm{op}}$) yields $|\Delta_{\mathfrak{M}}(\vartheta_\star)|=O(B^{-2/d})$.
+\end{proof}
+
+\paragraph{Limiting constant: Hermite constant characterizes optimal lattice density}
+The above three corollaries establish the insurmountability of the budget exponent $2/d$.
+Further, if one allows invertible integer-coefficient reparametrization on residue axes ($GL_d(\ZZ)$ transformations) and treats the angle lattice within the same covolume class as realizable general lattices, then "maximizing worst twist energy" (thus fastest mixing) can be elevated to the lattice density extremal problem in geometric number theory.
+
+\begin{theorem}[Hermite constant characterization: optimal constant within same covolume class]\label{thm:pom-hermite-constant-characterization}
+Let $\mathcal{L}(V)$ denote all lattices in $\RR^d$ with covolume $V$.
+For $\Sigma\succ 0$ and $\Lambda\in\mathcal{L}(V)$, define the first minimum:
+\[
+\lambda_1(\Lambda,\Sigma):=\min_{0\neq x\in\Lambda}x^{\mathsf T}\Sigma x.
+\]
+Denote the Euclidean Hermite constant:
+\[
+\gamma_d:=\sup_{\Lambda}\ \frac{\min_{0\neq x\in\Lambda}|x|^{2}}{(\det\Lambda)^{2/d}}\quad(<\infty).
+\]
+Then for any $\Sigma\succ 0$ and $V>0$, we have:
+\begin{equation}\label{eq:pom-hermite-sup}
+\sup_{\Lambda\in\mathcal{L}(V)}\ \lambda_1(\Lambda,\Sigma)
+\ =\ \gamma_d\,(\det\Sigma)^{1/d}\,V^{2/d}.
+\end{equation}
+In particular, when $\det L(m)=(2\pi)^d/B$, if one allows optimization of lattice shape within the same covolume class, the optimal spectral gap constant satisfies:
+\[
+\Delta_{\mathrm{spec}}^{\mathrm{opt}}(B)\ \sim\ \frac12(2\pi)^2\gamma_d(\det\Sigma)^{1/d}B^{-2/d},
+\qquad
+\tau_{\mathrm{mix}}^{\mathrm{opt}}(B)\ \sim\ \frac{B^{2/d}}{2\pi^2\gamma_d(\det\Sigma)^{1/d}}.
+\]
+\end{theorem}
+
+\begin{proof}
+Apply linear transformation $y=\Sigma^{1/2}x$, then $x^{\mathsf T}\Sigma x=|y|^2$, while the lattice covolume satisfies:
+\(
+\det(\Sigma^{1/2}\Lambda)=(\det\Sigma)^{1/2}\det\Lambda
+\).
+Thus:
+\[
+\lambda_1(\Lambda,\Sigma)
+=\min_{0\neq y\in\Sigma^{1/2}\Lambda}|y|^2.
+\]
+Applying the definition of Hermite constant and scale invariance to the Euclidean case, for any covolume $W$ we have:
+\(
+\sup_{\Omega:\det\Omega=W}\min_{0\neq y\in\Omega}|y|^2=\gamma_d\,W^{2/d}
+\).
+Taking $W=(\det\Sigma)^{1/2}V$ yields \eqref{eq:pom-hermite-sup}.
+Substituting $V=(2\pi)^d/B$ and combining with \eqref{eq:pom-multi-axis-gap-qm} yields the last two formulas.
+\end{proof}
+
+\begin{remark}[Minkowski constant versus Hermite constant]\label{rem:pom-minkowski-vs-hermite}
+The constant $C_d$ in Theorem~\ref{thm:pom-minkowski-budget-barrier} provides an unconditional upper bound for the Hermite constant: $\gamma_d\le C_d$.
+Thus \eqref{eq:pom-multi-axis-taumix-lb} provides a universal budget lower bound independent of lattice optimization assumptions; while Theorem~\ref{thm:pom-hermite-constant-characterization} characterizes its optimal constant when optimizing lattice shape is allowed.
+\end{remark}
+
+\paragraph{Proximity pole density law: volume ratio leading term}
+Theorem~\ref{thm:pom-minkowski-budget-barrier} and Corollary~\ref{cor:pom-multi-axis-near1-pole-barrier} establish "at least one" proximity pole channel.
+In the small-angle effective domain, one can also obtain a leading order counting law for proximity pole numbers: for $\varepsilon>0$, define:
+\[
+N_\varepsilon(m):=\#\Bigl\{\vartheta\in \Lambda(m)\setminus\{0\}:\ 1-\Re s(\vartheta)\le \varepsilon\Bigr\}.
+\]
+
+\begin{proposition}[Proximity pole counting leading term]\label{prop:pom-multi-axis-near1-density}
+In the small-angle effective domain, if $\varepsilon\downarrow 0$, $B\to\infty$ and $B\,\varepsilon^{d/2}\to\infty$ (to ensure volume ratio approximation stability), then asymptotically:
+\begin{equation}\label{eq:pom-multi-axis-near1-density}
+N_{\varepsilon}(m)
+\ =\
+\frac{B}{(2\pi)^{d}}\cdot\frac{V_{d}}{\sqrt{\det\Sigma}}\cdot(2\log\lambda\cdot\varepsilon)^{d/2}
+\ +\ o\!\bigl(B\varepsilon^{d/2}\bigr).
+\end{equation}
+In particular, at the natural proximity scale $\varepsilon\asymp B^{-2/d}$, $N_\varepsilon(m)=O(1)$: the pole family closest to $1$ remains sparse under budget enlargement, without macroscopic-level multiple proximity.
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:pom-multi-axis-near1-pole-translate}, ignoring higher-order terms,
+\(
+1-\Re s(\vartheta)\le \varepsilon
+\)
+is equivalent to
+\(
+\vartheta^{\mathsf T}\Sigma\vartheta\le 2\log\lambda\cdot\varepsilon
+\).
+Let $R:=\sqrt{2\log\lambda\cdot\varepsilon}$ and denote the ellipsoid $E_R=\{x:\ x^{\mathsf T}\Sigma x\le R^2\}$.
+When the angle lattice is sufficiently fine (guaranteed by $B\,\varepsilon^{d/2}\to\infty$), lattice point counting approximates by volume ratio:
+\[
+N_\varepsilon(m)
+\sim
+\frac{\mathrm{vol}(E_R)}{\det L(m)}
+=\frac{V_d R^d}{\sqrt{\det\Sigma}}\cdot\frac{B}{(2\pi)^d},
+\]
+substituting $R^d=(2\log\lambda\cdot\varepsilon)^{d/2}$ yields \eqref{eq:pom-multi-axis-near1-density}.
+The last sentence follows by substituting $\varepsilon\asymp B^{-2/d}$ back into the leading term.
+\end{proof}
+
+\paragraph{Closed inference chain (resource–spectrum–pole–finite-part)}
+On the foundation of the near-coboundary quadratic law \eqref{eq:pom-multi-axis-near-coboundary} and the space–time conversion law (isomorphic reading of Proposition~\ref{prop:real-input-40-space-time-conversion-law}), one obtains a closed auditable inference chain:
+\begin{itemize}
+  \item \textbf{Budget $\Rightarrow$ spectrum:} Minkowski budget barrier yields $q(m)=O(B^{-2/d})$ (Theorem~\ref{thm:pom-minkowski-budget-barrier}), thus worst spectral gap satisfies $\Delta_{\mathrm{spec}}(m)=O(B^{-2/d})$ and forces $\tau_{\mathrm{mix}}(m)=\Omega(B^{2/d})$ (Corollary~\ref{cor:pom-multi-axis-mixing-budget-barrier}).
+  \item \textbf{Spectrum $\Rightarrow$ pole:} Dirichlet normalization translates the same gap into near-$1$ dominant pole proximity law $1-\Re s=O(B^{-2/d})$ (Corollary~\ref{cor:pom-multi-axis-near1-pole-barrier}).
+  \item \textbf{Pole $\Rightarrow$ finite-part:} Space–time conversion linearly locks proximity and finite-part drift at second-order accuracy, thus unavoidable proximity channels must carry same-order finite-part drift magnitude (Corollary~\ref{cor:pom-multi-axis-pole-drift-binding}).
+  \item \textbf{Constant optimization and density:} When optimizing lattice shape within the same covolume class is allowed, the limiting constant is controlled by the Hermite constant (Theorem~\ref{thm:pom-hermite-constant-characterization}); simultaneously proximity pole number satisfies volume ratio leading term $N_\varepsilon\sim B\varepsilon^{d/2}$ (Proposition~\ref{prop:pom-multi-axis-near1-density}).
+\end{itemize}
+
+\input{08_projection_ontology_mathematics_part07b}

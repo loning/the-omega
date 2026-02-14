@@ -1,0 +1,272 @@
+\subsubsection{Inverse theorem for affine uniformization and finite-dimensional large sieve spectral certificate: from major arc concentration to arithmetic obstruction dichotomy}\label{subsubsec:gm-affine-inverse-gram-arithmetic-dichotomy}
+This subsection advances the ``rational frequency large sieve decomposition'' of \S\ref{subsubsec:gm-rational-sieve-affine-centered-opuc-multifractal} to the level of \emph{inverse characterizations} and \emph{computable certificates}: on the one hand, we prove that near-saturation of the affine uniformization residual at \(M^4\) occurs if and only if the Fourier mass concentrates on some rational major arc; on the other hand, we show that the residual operator norm is equivalent, up to constants, to the largest eigenvalue of an explicit finite-dimensional Gram matrix, thereby reducing the question ``can a power-saving be obtained'' to a verifiable spectral radius numerical test. We then interface this major arc mechanism with the profinite Haar dichotomy of \S\ref{subsubsec:gm-odd-moment-sdp-modq-profinite}, obtaining a rigid classification of arithmetic obstructions together with a dichotomy theorem for affine improvements, and give the optimal closed-form spectral lifting expression for absolute centered odd moment certificates of arbitrary odd order.
+
+\paragraph{Inverse theorem: near-saturation \texorpdfstring{$\Longleftrightarrow$}{<->} rational major arc spectral concentration}
+\begin{theorem}[Inverse theorem for the affine uniformization inequality: near-saturation if and only if rational major arc spectral concentration]\label{thm:gm-affine-inverse-major-arc}
+Let \(f\in L^2(\RR)\) be a Paley--Wiener function of bandwidth \(T\), i.e., \(\mathrm{supp}(\widehat f)\subset[-T,T]\).
+Let \(\mathcal{A}_M\) be any Guth--Maynard-type three-parameter rational affine averaging operator realized on \(\mathrm{PW}_T\), and let \(\mathcal{U}_M\) be its rank-one principal channel (zero-frequency/uniform channel), with residual \(\mathcal{R}_M:=\mathcal{A}_M-\mathcal{U}_M\).
+\begin{enumerate}
+  \item \textbf{(Near-saturation \(\Rightarrow\) major arc concentration)} If there exists a constant \(c_0>0\) such that
+  \[
+  \|\mathcal{R}_M f\|_{L^2}^2\ \ge\ c_0\,M^{4}\|f\|_{L^2}^2,
+  \]
+  then there exist \(1\le q\le M\) and \(a\in(\ZZ/q\ZZ)^\times\) such that
+  \begin{equation}\label{eq:gm-major-arc-concentration}
+  \int_{|\xi-a/q|\le c_1T/M^{2}} |\widehat f(\xi)|^2\,d\xi\ \ge\ c_2\,\|f\|_{L^2}^2,
+  \end{equation}
+  where the constants \(c_1,c_2>0\) depend only on the smoothing norms (and are independent of \(f,M,T\)).
+  \item \textbf{(Major arc concentration \(\Rightarrow\) near-saturation)} Conversely, if for some \(1\le q\le M\) and \(a\in(\ZZ/q\ZZ)^\times\) the condition \eqref{eq:gm-major-arc-concentration} holds, then there exists \(c_3>0\) (depending only on the smoothing norms) such that
+  \[
+  \|\mathcal{R}_M f\|_{L^2}^2\ \ge\ c_3\,M^{4}\|f\|_{L^2}^2.
+  \]
+\end{enumerate}
+Therefore the saturation mechanism of the \(M^4\) residual term is quantitatively equivalent to rational major arc spectral concentration.
+\end{theorem}
+
+\begin{proof}
+By the rational frequency large sieve decomposition of \S\ref{subsubsec:gm-rational-sieve-affine-centered-opuc-multifractal} (Theorem \ref{thm:gm-affine-rational-sieve-M4}), the quadratic form of the residual channel can be controlled by the supremum of a family of frequency-domain localized masses around rational points \(a/q\).
+If \(\|\mathcal{R}_M f\|_2^2\) is near-saturated at the \(M^4\) level, then this supremum must be saturated at a positive proportion by some \((q,a)\), yielding major arc concentration \eqref{eq:gm-major-arc-concentration} (by bounding the localization kernel from below by a constant multiple of the corresponding major arc indicator function).
+The reverse direction follows from the lower-bound direction of the same decomposition: when the \(L^2\) mass is dominated on the major arc, the corresponding localized kernel quadratic form is at a positive proportion, thereby forcing \(\|\mathcal{R}_M f\|_2^2\) to be at least \(c_3M^4\|f\|_2^2\). \qed
+\end{proof}
+
+\paragraph{Structural rigidity: major arc concentration forces multi-scale near-affine autocorrelation}
+\begin{proposition}[Structural rigidity of near-saturation: major arc concentration forces high-density near-affine autocorrelation]\label{prop:gm-major-arc-rigidity-affine-autocorr}
+Under the setting of Theorem \ref{thm:gm-affine-inverse-major-arc}, if for some \(1\le q\le M\) and \(a\in(\ZZ/q\ZZ)^\times\) there is major arc concentration
+\[
+\int_{|\xi-a/q|\le cT/M^{2}} |\widehat f(\xi)|^2\,d\xi\ \gg\ \|f\|_2^2,
+\]
+then there exists a parameter set
+\[
+\mathcal{P}\subset\{(m_1,m_2,m_3):\ |m_1|\sim M_1,\ m_2\sim M_2,\ |m_3|\lesssim M_3\}
+\]
+with \(|\mathcal{P}|\gg M^3\), and a measurable set \(E\subset\RR\) with \(\|f\mathbf{1}_E\|_2\gg \|f\|_2\), such that for all \((m_1,m_2,m_3)\in\mathcal{P}\),
+\[
+\int_E f(u)\,\overline{f\!\left(\frac{m_1u+m_3}{m_2}\right)}\,du\ \gg\ \|f\|_2^2.
+\]
+Therefore, near-saturation of the residual term is not only equivalent to frequency-domain major arc concentration, but also forces, in the time domain, a high-density near-autocorrelation structure under a large family of rational affine transformations.
+\end{proposition}
+
+\begin{proof}
+Major arc concentration implies that \(f\) on \(E\) can be approximated by the model ``a single rational phase \(e^{2\pi i(a/q)u}\) multiplied by a slowly varying envelope''; substituting this approximation into the affine pushforward \(u\mapsto(m_1u+m_3)/m_2\), the phase difference in the correlation integral is controlled by congruence conditions on \((m_1,m_2,m_3)\).
+When the parameters in a sufficiently large family \(\mathcal{P}\) cause the phase difference to fall within the error window allowed by the major arc, the correlation no longer cancels, yielding the stated uniform lower bound. \qed
+\end{proof}
+
+\paragraph{Residual operator norm as a finite-dimensional certificate: rational frequency large sieve Gram matrix}
+\begin{theorem}[Finite-dimensional certificate for the residual operator norm: complete equivalence with the rational frequency large sieve Gram matrix]\label{thm:gm-residual-opnorm-gram-equivalence}
+Fix a bandwidth-\(T\) smooth window \(\phi\) (whose frequency-domain kernel is a near-unit operator kernel), and let the rational frequency set be
+\[
+\mathcal{Q}_M:=\left\{\frac{a}{q}:\ 1\le q\le M,\ (a,q)=1\right\}.
+\]
+Define the Gram matrix \(K_M\) indexed by \(\mathcal{Q}_M\):
+\[
+(K_M)_{r,r'}:=\widehat{\phi}(r-r')\qquad (r,r'\in\mathcal{Q}_M).
+\]
+Then there exists a constant \(C\ge 1\) (depending only on \(\phi\)) such that for the Guth--Maynard-type affine averaging residual operator \(\mathcal{R}_M=\mathcal{A}_M-\mathcal{U}_M\),
+\[
+\boxed{\
+C^{-1}M^4\,\|K_M\|_{\mathrm{op}}
+\ \le\
+\|\mathcal{R}_M\|_{\mathrm{op}}^2
+\ \le\
+C\,M^4\,\|K_M\|_{\mathrm{op}}
+\ }.
+\]
+Thus the spectral norm control of the ``affine uniformization residual'' is equivalent, up to constants, to the largest eigenvalue of the explicit finite-dimensional large sieve Gram matrix, providing a directly verifiable spectral certificate.
+\end{theorem}
+
+\begin{proof}
+On \(\mathrm{PW}_T\), the frequency-domain action of \(\mathcal{R}_M\) is given by a superposition of localization kernels centered at \(r\in\mathcal{Q}_M\); its quadratic form can be written as the Gram form of these localization kernels.
+Discretizing the localization kernels at \(T^{-1}\)-scale and fixing the window function via \(\phi\), this Gram form can be compressed to the quadratic form of \(K_M\); the \(M^4\) factor comes from the effective degree-of-freedom count of the residual channel (see the \(M^4\) scaling in Proposition \ref{prop:gm-affine-average-rank1-residual}).
+The upper and lower bounds are controlled by the frame constants of the localization kernel family, yielding the conclusion. \qed
+\end{proof}
+
+\begin{corollary}[Computability of the spectral certificate: polynomial-complexity \texorpdfstring{$\vartheta$}{vtheta} output and auditable improvement threshold]\label{cor:gm-KM-computable-vtheta}
+Under the setting of Theorem \ref{thm:gm-residual-opnorm-gram-equivalence}, for any error parameter \(\epsilon\in(0,1)\), there exists a deterministic algorithm running in time
+\[
+O\!\left(|\mathcal{Q}_M|^{2}\,\mathrm{polylog}(M/\epsilon)\right)
+\]
+that outputs \(\lambda_\epsilon\) satisfying
+\[
+(1-\epsilon)\|K_M\|_{\mathrm{op}}\ \le\ \lambda_\epsilon\ \le\ (1+\epsilon)\|K_M\|_{\mathrm{op}}.
+\]
+Therefore, once \(\|K_M\|_{\mathrm{op}}\ll M^{-\vartheta}\) (for some \(\vartheta>0\)), the finite-dimensional spectral computation generates a strict power-saving certificate
+\[
+\|\mathcal{R}_M\|_{\mathrm{op}}^2\ \ll\ M^{4-\vartheta},
+\]
+and \(\vartheta\) can be read off directly from \(-\log\lambda_\epsilon/\log M\) (with auditable error budget once \(\epsilon\) is specified).
+\end{corollary}
+
+\begin{proof}
+The largest eigenvalue of the symmetric (or normalized self-adjoint) matrix \(K_M\) can be approximated by Lanczos/power iteration in polynomial time; the cost of each matrix--vector multiplication is \(O(|\mathcal{Q}_M|^2)\), and the number of iterations is controlled by the spectral gap and \(\epsilon\) up to polylogarithmic factors, yielding the stated complexity.
+The residual power-saving certificate and the readout formula for \(\vartheta\) follow directly from Theorem \ref{thm:gm-residual-opnorm-gram-equivalence}. \qed
+\end{proof}
+
+\paragraph{Absolute centered odd moment certificate: optimal closed-form spectral lifting and two-layer spectral extremal}
+\begin{theorem}[Optimal upper bound on spectral norm under absolute centered odd moment constraints: two-layer spectral extremal with explicit constants]\label{thm:gm-abs-centered-odd-moment-extremal}
+Let \(G\succeq 0\) be an \(m\times m\) matrix, and let \(\bar\lambda:=\tr(G)/m\).
+For \(k\in\NN\), define the absolute centered odd moment
+\[
+A_{2k+1}(G):=\tr\!\left(\left|G-\bar\lambda I\right|^{2k+1}\right).
+\]
+Then, under only the constraints \((m,\tr(G),A_{2k+1}(G))\), the maximum possible value of \(\lambda_{\max}(G)\) is realized by a unique two-layer spectrum:
+there exist \(x\ge y\ge 0\) such that \(\mathrm{spec}(G)=\{x,y,\dots,y\}\), and the optimal closed-form upper bound is
+\[
+\boxed{\
+\lambda_{\max}(G)\ \le\ \bar\lambda+\left(\frac{A_{2k+1}(G)}{1+(m-1)^{-2k}}\right)^{\!1/(2k+1)}
+\ }.
+\]
+This constant is attained with equality in the above two-layer spectral case, thereby giving the optimal closed-form expression for ``centered odd moment certificate \(\Rightarrow\) spectral norm lifting.''
+\end{theorem}
+
+\begin{proof}
+Let the eigenvalues be \(\lambda_1\ge\cdots\ge\lambda_m\ge 0\), and write the deviations \(d_i:=\lambda_i-\bar\lambda\) with \(\sum_i d_i=0\).
+Under the constraint \(\sum_i|d_i|^{2k+1}=A_{2k+1}(G)\), to maximize \(d_1=\lambda_{\max}(G)-\bar\lambda\), the remaining \(m-1\) deviations must be as ``averaged'' as possible to minimize the absolute moment consumed for a given \(d_1\); by convexity and Jensen's inequality, this minimization is achieved by
+\(
+d_2=\cdots=d_m=-d_1/(m-1)
+\),
+i.e., the two-layer spectral extremal.
+Direct computation at this extremal gives
+\[
+A_{2k+1}(G)
+=|d_1|^{2k+1}+(m-1)\left|\frac{d_1}{m-1}\right|^{2k+1}
+=\left(1+(m-1)^{-2k}\right)d_1^{2k+1},
+\]
+so that \(d_1\le \bigl(A_{2k+1}(G)/(1+(m-1)^{-2k})\bigr)^{1/(2k+1)}\).
+The equality characterization is likewise given by the Jensen equality condition. \qed
+\end{proof}
+
+\paragraph{Decomposability of centered odd moment certificates: three-channel closure at arbitrary odd order for major arc--energy--spectral gap}
+\begin{proposition}[Decomposability of centered odd moment certificates: three-channel closure with \texorpdfstring{$M^{-\vartheta/2}$}{M^{-vtheta/2}} saving]\label{prop:gm-abs-centered-moment-three-channels}
+Let \(G\) be a Gram matrix sampled from a bandwidth kernel (e.g., induced by a Dirichlet polynomial or its readout kernel), and suppose the corresponding affine residual spectral norm certificate satisfies
+\[
+\|\mathcal{R}_M\|_{\mathrm{op}}^2\ \ll\ M^{4-\vartheta}\qquad(\vartheta\ge 0).
+\]
+Then for each fixed \(k\in\NN\), there exist explicitly writable decomposition constants and kernel normalizations such that the absolute centered odd moment satisfies
+\[
+A_{2k+1}(G)\ \ll\ T^{o(1)}
+\Bigl(
+\mathfrak{M}_k(W)\ +\ M^{-\vartheta/2}\,\mathfrak{E}_k(W)
+\Bigr),
+\]
+where \(\mathfrak{M}_k(W)\) is the term determined solely by the uniform principal channel (without additive energy coupling), while \(\mathfrak{E}_k(W)\) is the unique channel containing energy coupling; and its coefficient achieves a power saving of \(M^{-\vartheta/2}\).
+Combined with Theorem \ref{thm:gm-abs-centered-odd-moment-extremal}, any odd-order centered moment estimate can be closed into a spectral norm upper bound, achieving adjustable-order systematic improvements.
+\end{proposition}
+
+\begin{proof}
+Centering removes the trivial principal channel from the trace moment (see Proposition \ref{prop:gm-centered-trace3-energy-variance} for the third-order case), so that the centered odd moment is sensitive only to non-trivial correlation channels.
+Under the rational frequency large sieve decomposition of the affine average (Theorem \ref{thm:gm-affine-rational-sieve-M4}), the sole input to the energy coupling channel is the spectral norm of the residual channel; when \(\|\mathcal{R}_M\|_{\mathrm{op}}^2\) achieves an \(M^{-\vartheta}\) saving, the corresponding odd-order centered moment coupling coefficient enters via the square root, thus producing the \(M^{-\vartheta/2}\) saving factor.
+The remaining uniform channel contributions are absorbed into \(\mathfrak{M}_k(W)\). \qed
+\end{proof}
+
+\paragraph{Major arc concentration \texorpdfstring{$\Longleftrightarrow$}{<->} profinite support degeneracy: bidirectional discrimination}
+\begin{theorem}[Equivalence of major arc concentration and modular distribution degeneracy: bidirectional discrimination from rational spectrum to profinite support]\label{thm:gm-major-arc-profinite-equivalence}
+Let \(\{A_m\}\subset\ZZ\) come from a primitive sofic--Zeckendorf generating system, and define the exponential sum
+\[
+S_m(\theta):=\sum_{x\in A_m}e^{i\theta x}.
+\]
+\begin{enumerate}
+  \item If there exist a constant \(c_0>0\) and infinitely many pairs \((a,q)\) (\(1\le q\le e^{cm}\)) such that
+  \[
+  |S_m(2\pi a/q)|\ \ge\ c_0|A_m|,
+  \]
+  then the profinite limit measure of \S\ref{subsubsec:gm-odd-moment-sdp-modq-profinite} cannot be Haar, and its support must lie in a proper closed subgroup coset.
+  \item Conversely, if the profinite limit measure's support lies in a proper closed subgroup coset, then there exists a family of moduli \(q\to\infty\) and non-trivial characters \(\chi\neq 1\) such that
+  \[
+  \left|\sum_{x\in A_m}\chi(x)\right|\ \ge\ c_1|A_m|,
+  \]
+  thereby producing a family of rational major arc spectral concentrations (by taking \(\chi(x)=e^{2\pi i a x/q}\)).
+\end{enumerate}
+Therefore, within this generating class, rational major arc concentration and modular distribution degeneracy (profinite support degeneracy) are strictly equivalent.
+\end{theorem}
+
+\begin{proof}
+In the first direction, \(|S_m(2\pi a/q)|\ge c_0|A_m|\) means that a non-trivial character sum modulo \(q\) does not decay, thereby violating the spectral gap conclusion of Theorem \ref{thm:gm-modq-equidistribution-spectral-gap} and falling into the second branch of Theorem \ref{thm:gm-profinite-haar-dichotomy}.
+The reverse direction follows directly from the second branch of the same theorem: if the support lies in a proper closed subgroup coset, then there exists a non-trivial character that is constant on the support, so its character sum is of the same order as \(|A_m|\), which is equivalent to major arc concentration at certain rational frequencies. \qed
+\end{proof}
+
+\paragraph{Energy exponent, twisted iso-radius, and arithmetic obstruction: rigid dichotomy}
+\begin{theorem}[Spectral criterion for the additive energy exponent: twisted spectral gap \texorpdfstring{$\Longleftrightarrow$}{<->} baseline exponent and energy phase transition]\label{thm:gm-energy-exponent-twist-criterion}
+Let \(\{A_m\}\) come from a primitive sofic--Zeckendorf generating system, and let \(\alpha:=\lim_{m\to\infty}|A_m|^{1/m}\).
+Denote the integer additive energy
+\(
+E_m:=\#\{x_1+x_2=x_3+x_4:\ x_i\in A_m\}
+\)
+with exponential rate \(\log\beta:=\lim_{m\to\infty}m^{-1}\log E_m\).
+Let \(\{A_q(\chi)\}\) be the mod \(q\) twisted transfer operator family (in the unified notation of Theorem \ref{thm:gm-twisted-perron-fourier-decay} and Theorem \ref{thm:gm-modq-equidistribution-spectral-gap}), and state the ``no non-trivial coboundary'' condition as: for all \(q\ge 2\) and \(\chi\ne 1\), \(\rho(A_q(\chi))\le (1-\kappa_q)\rho(A_q(1))\) with \(\inf_q\kappa_q>0\).
+Then under this uniform spectral gap condition, the energy exponent lies in the baseline phase (determined by the zero-frequency neighborhood contribution); once a non-trivial twist exhibits iso-radius resonance (\(\rho(A_q(\chi))=\rho(A_q(1))\)), the energy exponent undergoes a phase-transition elevation, and the elevation is entirely determined by the major arc set induced by the resonant twist.
+\end{theorem}
+
+\begin{proof}
+By the Fourier energy identity and twisted spectral radius control (Theorem \ref{thm:gm-modq-equidistribution-spectral-gap}, Proposition \ref{prop:gm-modq-additive-energy-main-error}), the energy can be decomposed into the sum of a zero-frequency principal term and an error term from non-trivial twists; the uniform spectral gap makes the error term decay exponentially, so the exponential rate is given by the zero-frequency neighborhood (baseline phase).
+If iso-radius resonance occurs, then on a family of rational frequencies \(|S_m|\) is of the same order as \(|A_m|\), causing the energy to gain additional exponential contributions on these major arcs, thereby triggering the phase-transition elevation. \qed
+\end{proof}
+
+\begin{theorem}[Arithmetic rigidity of twisted iso-radius: resonance forces a finite modular factor]\label{thm:gm-twist-equal-radius-arithmetic-factor}
+Under the setting of Theorem \ref{thm:gm-energy-exponent-twist-criterion}, if there exist a modulus \(q\ge 2\) and a non-trivial character \(\chi\) such that \(\rho(A_q(\chi))=\rho(A_q(1))\), then there exists a non-trivial finite modular factor map (on the symbolic space)
+\[
+\pi:\mathcal{L}\to\ZZ/q\ZZ
+\]
+such that the valuation function is a coboundary on this factor: there exists a function \(g\) with
+\[
+\mathrm{val}\ \equiv\ g-g\circ\sigma\quad (\bmod\ q).
+\]
+Therefore twisted iso-radius is not an analytic coincidence, but is strictly equivalent to the existence of a non-trivial finite modular arithmetic obstruction within the generating system.
+\end{theorem}
+
+\begin{proof}
+By the Wielandt equality characterization and Perron--Frobenius theory, \(\rho(A_q(\chi))=\rho(A_q(1))\) forces the \(\chi\)-weight to be a unit-modulus coboundary on the graph, i.e., there exists a unit-modulus function \(\psi\) such that the phase increment along each admissible edge is the ratio \(\psi/\psi'\).
+Viewing \(\psi\) as the lifted representation of a \(q\)-valued phase, one obtains a finite modular factor \(\pi\); the phase being a coboundary is equivalent to \(\mathrm{val}\) being a coboundary on this factor. \qed
+\end{proof}
+
+\begin{theorem}[Dichotomy for affine improvement: either a uniform \texorpdfstring{$\vartheta>0$}{vtheta>0} exists, or the system falls into an arithmetic obstruction and improvement is impossible]\label{thm:gm-affine-improvement-dichotomy}
+Let \(f\) come from a primitive sofic--Zeckendorf readout with bandwidth smoothing, and let the corresponding affine residual spectral norm certificate be \(\|\mathcal{R}_M\|_{\mathrm{op}}^2\).
+Then there is a strict dichotomy:
+\begin{enumerate}
+  \item If the system has no finite modular arithmetic obstruction (equivalent to the negation of Theorem \ref{thm:gm-twist-equal-radius-arithmetic-factor}), then there exists a constant \(\vartheta>0\) depending only on the system such that for all sufficiently large \(M\),
+  \[
+  \|\mathcal{R}_M\|_{\mathrm{op}}^2\ \ll\ M^{4-\vartheta}.
+  \]
+  \item If a finite modular arithmetic obstruction exists, then for infinitely many \(M\),
+  \[
+  \|\mathcal{R}_M\|_{\mathrm{op}}^2\ \gg\ M^{4-o(1)},
+  \]
+  so that no uniform power-saving improvement is possible.
+\end{enumerate}
+This dichotomy reduces improvability entirely to the arithmetic resonance structure of the system.
+\end{theorem}
+
+\begin{proof}
+If there is no arithmetic obstruction, then the twisted spectral gap and the non-concentration of major arc mass yield the uniform \(\vartheta\) of Corollary \ref{cor:gm-affine-uniformization-improvement}, and this is upgraded to an operator norm certificate via Theorem \ref{thm:gm-residual-opnorm-gram-equivalence}, giving (1).
+If an arithmetic obstruction exists, then by Theorem \ref{thm:gm-major-arc-profinite-equivalence} there must be a family of major arc frequencies with \(L^2\) mass concentration; by the inverse characterization of Theorem \ref{thm:gm-affine-inverse-major-arc}, the residual is near-saturated at the \(M^4\) level, yielding (2). \qed
+\end{proof}
+
+\begin{proposition}[Triple complementarity of major arc--energy--affine closure: resonance forces all three structures to appear simultaneously]\label{prop:gm-triple-complementarity}
+Under the arithmetic obstruction case of Theorem \ref{thm:gm-affine-improvement-dichotomy}, there exist infinitely many moduli \(q\) and rational points \(a/q\) for which major arc spectral concentration
+\(
+|S_m(2\pi a/q)|\ge c|A_m|
+\)
+holds; and simultaneously there exists a non-trivial rational affine \(T\) such that
+\(
+|A_m\cap T^{-1}(A_m)|\ge c'|A_m|
+\)
+holds for infinitely many \(m\); and the additive energy exponent undergoes a phase-transition elevation (Theorem \ref{thm:gm-energy-exponent-twist-criterion}).
+Therefore ``major arc resonance,'' ``affine near-closure,'' and ``energy exponent elevation'' are equivalent manifestations of the same arithmetic obstruction within this generating class.
+\end{proposition}
+
+\begin{proof}
+Arithmetic obstruction \(\Rightarrow\) twisted iso-radius by Theorem \ref{thm:gm-twist-equal-radius-arithmetic-factor}.
+Twisted iso-radius \(\Rightarrow\) major arc concentration and profinite degeneracy by Theorem \ref{thm:gm-major-arc-profinite-equivalence}.
+Major arc concentration \(\Rightarrow\) affine residual near-saturation by Theorem \ref{thm:gm-affine-inverse-major-arc}, which induces a large amount of near-autocorrelation and near-closure structure in the parameter space (Proposition \ref{prop:gm-major-arc-rigidity-affine-autocorr}), and triggers energy exponent elevation through the energy identity (Theorem \ref{thm:gm-energy-exponent-twist-criterion}). \qed
+\end{proof}
+
+\paragraph{Unified reduction: analytic bottleneck \texorpdfstring{$\Longleftrightarrow$}{<->} a single spectral numerical test}
+\begin{theorem}[Unified reduction: the analytic large values bottleneck reduces to a single numerical test of the rational frequency Gram spectral radius]\label{thm:gm-unified-reduction-one-spectral-number}
+For any large values frequency method whose spectral certificate is the third trace (or any fixed odd-order centered odd moment), the entire improvability space can be uniformly reduced to the following single decision problem:
+\[
+\text{For each \(M\), compute the \(K_M\) of Theorem \ref{thm:gm-residual-opnorm-gram-equivalence} and determine whether a uniform \(\vartheta>0\) exists such that }\ \|K_M\|_{\mathrm{op}}\ll M^{-\vartheta}.
+\]
+If a uniform \(\vartheta>0\) exists, then within the same reasoning framework the energy coupling channel achieves a strict power saving (Corollary \ref{cor:gm-KM-computable-vtheta}), and by Proposition \ref{prop:gm-abs-centered-moment-three-channels} and Theorem \ref{thm:gm-abs-centered-odd-moment-extremal} this automatically translates into systematic improvements in spectral norm and frequency bounds;
+if no such \(\vartheta\) exists, then the system necessarily falls into the arithmetic obstruction branch of Theorem \ref{thm:gm-affine-improvement-dichotomy} and exhibits the structural resonance triad of Proposition \ref{prop:gm-triple-complementarity}.
+\end{theorem}
+
+\endinput

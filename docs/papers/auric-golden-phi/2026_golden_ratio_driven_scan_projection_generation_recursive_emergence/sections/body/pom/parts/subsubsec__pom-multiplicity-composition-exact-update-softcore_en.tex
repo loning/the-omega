@@ -1,0 +1,430 @@
+% Auto-split: keep each TeX source comfortably below ~600 lines.
+%
+% This subsubsection supplements the multiplicity-composition thermodynamics with:
+% - exact finite-volume conditional i.i.d. representations,
+% - a soft-core chain (transfer-matrix) realization for integer replica index q,
+% - explicit S_q symmetry reduction and an auditable φ-power eigen-spectrum,
+% - Palm size-bias limits and exponential mixing constants.
+%
+
+\subsubsection{Exact Update and Soft-Core Chain Equivalence for Fiber-Weight Ordered Compositions: Conditional Independence, Spectral Gap, and \texorpdfstring{$\varphi$}{phi}-Power Eigen-Spectrum}\label{subsec:pom-multiplicity-composition-exact-update-softcore}
+We adopt the notation of Definitions \ref{def:pom-multiplicity-composition-partition}--\ref{def:pom-multiplicity-real-q-pressure}:
+\(\mathcal{C}_L\) denotes the set of all ordered compositions of total length \(L\),
+\(
+w_q(\boldsymbol{\ell})=\prod_i F_{\ell_i+2}^{\,q}
+\),
+\(
+Z_L^{(q)}=\sum_{\boldsymbol{\ell}\in\mathcal{C}_L}w_q(\boldsymbol{\ell})
+\),
+\(
+P_L^{(q)}(\boldsymbol{\ell})=w_q(\boldsymbol{\ell})/Z_L^{(q)}
+\)
+(when \(q=1\), \(P_L^{(1)}=P_L=\mathbb{P}_L\), and \(\lambda(1)=\lambda_1=\frac{3+\sqrt{17}}{2}\), \(\rho_\star=\lambda(1)^{-1}=\frac{\sqrt{17}-3}{4}\)).
+This section provides two complementary classes of rigorous equivalence representations: the first is an exact conditional i.i.d.\ update chain for each finite \(L\);
+the second is a \(\{0,1\}^q\) soft-core chain transfer matrix representation and its symmetry reduction for integer \(q\),
+from which auditable spectral gap constants, Palm size-bias limits, and exponential mixing are derived.
+
+\begin{theorem}[Exact conditional i.i.d.\ update representation for fiber-weight compositions: finite-volume rigorous equivalence]\label{thm:pom-multiplicity-composition-exact-conditional-iid}
+Fix a real number \(q\ge 0\).
+Let \(\rho(q)\in(0,1)\) be the unique solution of
+\(
+\sum_{k\ge 1}F_{k+2}^{\,q}\rho(q)^k=1
+\)
+from Definition \ref{def:pom-multiplicity-real-q-pressure}, and define the update distribution
+\[
+p_q(k):=F_{k+2}^{\,q}\rho(q)^k\qquad(k\ge 1),
+\qquad
+\sum_{k\ge 1}p_q(k)=1.
+\]
+Let \((\ell_1,\ell_2,\dots)\) be i.i.d.\ increments with \(\ell_i\sim p_q\), and denote the partial sums \(S_n=\sum_{i=1}^n\ell_i\) and the first hitting time
+\[
+\tau_L:=\inf\{n\ge 1:\ S_n=L\}.
+\]
+Then for each \(L\ge 1\) and any \(\boldsymbol{\ell}=(\ell_1,\dots,\ell_r)\in\mathcal{C}_L\), the following rigorous identity holds:
+\begin{equation}\label{eq:pom-multiplicity-composition-exact-conditional-iid}
+\boxed{\;
+\mathbb{P}\Bigl((\ell_1,\dots,\ell_{\tau_L})=\boldsymbol{\ell}\ \Big|\ \tau_L<\infty\Bigr)
+=P_L^{(q)}(\boldsymbol{\ell})
+=\frac{w_q(\boldsymbol{\ell})}{Z_L^{(q)}}\; }.
+\end{equation}
+Moreover, the hitting probability admits the complete closed form
+\begin{equation}\label{eq:pom-multiplicity-composition-hit-prob}
+\boxed{\;
+\mathbb{P}(\tau_L<\infty)=\rho(q)^{L}\,Z_L^{(q)}\; }.
+\end{equation}
+Therefore, \(P_L^{(q)}\) is not merely ``locally i.i.d.'' in the bulk limit, but for each finite \(L\) is rigorously equivalent to the conditional distribution of an i.i.d.\ renewal chain on the event \(\{S_{\tau_L}=L\}\).
+\end{theorem}
+\begin{proof}
+For any \(\boldsymbol{\ell}=(\ell_1,\dots,\ell_r)\in\mathcal{C}_L\), by independence and \(p_q(k)=F_{k+2}^{\,q}\rho(q)^k\),
+\[
+\mathbb{P}\bigl((\ell_1,\dots,\ell_r)=\boldsymbol{\ell}\bigr)
+=\prod_{i=1}^r F_{\ell_i+2}^{\,q}\rho(q)^{\ell_i}
+=w_q(\boldsymbol{\ell})\,\rho(q)^L.
+\]
+Since the increments are strictly positive, the event \(\{\tau_L<\infty\}\) is equivalent to ``some prefix sum equals \(L\) exactly,'' and is partitioned into disjoint events by all ordered compositions:
+\(
+\{\tau_L<\infty\}=\bigsqcup_{\boldsymbol{\ell}\in\mathcal{C}_L}\{(\ell_1,\dots,\ell_{\tau_L})=\boldsymbol{\ell}\}
+\).
+Summing the above probabilities yields \eqref{eq:pom-multiplicity-composition-hit-prob}.
+Applying the conditional probability formula then gives
+\[
+\mathbb{P}\Bigl((\ell_1,\dots,\ell_{\tau_L})=\boldsymbol{\ell}\ \Big|\ \tau_L<\infty\Bigr)
+=\frac{w_q(\boldsymbol{\ell})\,\rho(q)^L}{\rho(q)^L Z_L^{(q)}}
+=\frac{w_q(\boldsymbol{\ell})}{Z_L^{(q)}}
+=P_L^{(q)}(\boldsymbol{\ell}),
+\]
+which is precisely \eqref{eq:pom-multiplicity-composition-exact-conditional-iid}. \qed
+\end{proof}
+
+\begin{proposition}[Exact formula and exponential convergence rate for the first part length in a finite window]\label{prop:pom-multiplicity-composition-first-part-exact-and-rate}
+Fix \(q\ge 0\). For any \(L\ge 1\) and \(1\le k\le L\), the first part length under \(P_L^{(q)}\) satisfies the rigorous identity
+\begin{equation}\label{eq:pom-multiplicity-composition-first-part-exact}
+\boxed{\;
+P_L^{(q)}(\ell_1=k)=\frac{F_{k+2}^{\,q}\,Z_{L-k}^{(q)}}{Z_L^{(q)}}\; }.
+\end{equation}
+Furthermore, when \(q=1\), there exists a constant \(C_k<\infty\) such that the exponential bound holds for all \(L\ge 1\):
+\begin{equation}\label{eq:pom-multiplicity-composition-first-part-exp-rate}
+\boxed{\;
+\Bigl|P_L(\ell_1=k)-F_{k+2}\rho_\star^{k}\Bigr|
+\le C_k\Bigl(\frac{2}{\lambda(1)^2}\Bigr)^{L}\; } ,
+\qquad
+\rho_\star=\lambda(1)^{-1}.
+\end{equation}
+Here \(\frac{2}{\lambda(1)^2}=\frac{4}{13+3\sqrt{17}}\in(0,1)\) is an explicit algebraic spectral gap constant.
+\end{proposition}
+\begin{proof}
+The identity \eqref{eq:pom-multiplicity-composition-first-part-exact} follows directly from ``first part length \(k\) + tail is an arbitrary composition of \(L-k\)'' together with the multiplicative concatenation property of the weight.
+\par
+For the exponential bound, it suffices to use the closed form from Proposition \ref{prop:pom-multiplicity-composition-partition-rational}:
+\(
+Z_L=a\lambda_+^L+b\lambda_-^L
+\)
+(where \(\lambda_+=\lambda(1)\), \(a=\frac{17+\sqrt{17}}{34}>0\), \(b=\frac{17-\sqrt{17}}{34}>0\), \(\lambda_-=\frac{3-\sqrt{17}}{2}\))
+and compare the ratio \(Z_{L-k}/Z_L\) with \(\lambda_+^{-k}=\rho_\star^{k}\):
+let \(r:=\lambda_-/\lambda_+\), then \(|r|=\frac{2}{\lambda(1)^2}\) and for all \(L\ge 1\),
+\[
+\frac{Z_{L-k}}{Z_L}
+=\lambda_+^{-k}\cdot\frac{a+br^{L-k}}{a+br^L},
+\qquad
+\frac{Z_{L-k}}{Z_L}-\lambda_+^{-k}
+=\lambda_+^{-k}\cdot\frac{b(r^{L-k}-r^L)}{a+br^L}.
+\]
+Using the lower bound \(a+br^L\ge a-b|r|\) (for \(L\ge 1\)) and \(|r^{L-k}-r^L|\le |r|^{L-k}(1+|r|^k)\) yields
+\[
+\Bigl|\frac{Z_{L-k}}{Z_L}-\lambda_+^{-k}\Bigr|
+\le
+\lambda_+^{-k}\cdot \frac{b(1+|r|^k)}{a-b|r|}\,|r|^{L-k}
+\le
+\lambda_+^{-k}\cdot \frac{b(1+|r|^k)}{a-b|r|}\,|r|^{-k}\,|r|^L.
+\]
+Multiplying by \(F_{k+2}\) and setting
+\(
+C_k:=F_{k+2}\lambda_+^{-k}\frac{b(1+|r|^k)}{a-b|r|}|r|^{-k}
+\)
+yields \eqref{eq:pom-multiplicity-composition-first-part-exp-rate}. \qed
+\end{proof}
+
+\begin{algorithm}[Exact sequential generation via the Doob--renewal kernel: residual-length Markov chain and absorption sampling]\label{alg:pom-multiplicity-composition-doob-update-sampler}
+Fix \(q\ge 0\) and \(L\ge 1\). Define the residual-length process \(N_0=L\), and for any \(N\ge 1\) define the one-step kernel
+\begin{equation}\label{eq:pom-multiplicity-composition-doob-kernel}
+\boxed{\;
+\mathbb{P}(N\to N-k)=\frac{F_{k+2}^{\,q}\,Z_{N-k}^{(q)}}{Z_N^{(q)}},
+\qquad 1\le k\le N\; }.
+\end{equation}
+Let the process absorb at \(N=0\), and record the jump lengths at each step as \(k_1,k_2,\dots,k_{\tau}\) (where \(\tau\) is the absorption time).
+Then \((k_1,\dots,k_\tau)\in\mathcal{C}_L\) and its distribution is rigorously equal to \(P_L^{(q)}\):
+\[
+(k_1,\dots,k_\tau)\ \sim\ P_L^{(q)}.
+\]
+\end{algorithm}
+\begin{proof}
+From \eqref{eq:pom-multiplicity-composition-doob-kernel},
+for any \(\boldsymbol{k}=(k_1,\dots,k_r)\in\mathcal{C}_L\),
+\[
+\mathbb{P}\bigl((k_1,\dots,k_\tau)=\boldsymbol{k}\bigr)
+=\prod_{i=1}^{r}\frac{F_{k_i+2}^{\,q}Z_{L-\sum_{j\le i}k_j}^{(q)}}{Z_{L-\sum_{j<i}k_j}^{(q)}}
+=\frac{\prod_{i=1}^{r}F_{k_i+2}^{\,q}}{Z_L^{(q)}}
+=P_L^{(q)}(\boldsymbol{k}),
+\]
+where the telescoping product simplifies the chain of fractions. \qed
+\end{proof}
+
+\begin{proposition}[Replica soft-core chain representation of integer-order moment partition functions: transfer matrix characterization on the state space \texorpdfstring{$\{0,1\}^q$}{\{0,1\}^q}]\label{prop:pom-multiplicity-composition-replica-softcore-transfer}
+Take an integer \(q\ge 1\).
+Let \(U_q:=\{0,1\}^q\) and write \(u\wedge v\in\{0,1\}^q\) for the coordinate-wise AND.
+Define the transfer matrix \(T^{(q)}\in\RR^{U_q\times U_q}\) by
+\[
+T^{(q)}_{u,v}:=2^{-\mathbf{1}_{\{u\wedge v\neq 0\}}}
+\qquad(u,v\in U_q).
+\]
+Then for any \(L\ge 1\) the following rigorous equivalence holds:
+\begin{equation}\label{eq:pom-multiplicity-composition-replica-transfer}
+\boxed{\;
+Z_L^{(q)}=2^{L-1}\sum_{(u_1,\dots,u_L)\in U_q^{L}}\ 2^{-\sum_{i=1}^{L-1}\mathbf{1}_{\{u_i\wedge u_{i+1}\neq 0\}}}
+=2^{L-1}\,\mathbf{1}^{\mathsf T}\bigl(T^{(q)}\bigr)^{L-1}\mathbf{1}\; } ,
+\end{equation}
+where \(\mathbf{1}\) is the all-ones vector in \(\RR^{U_q}\).
+Consequently, the integer consistency growth constant satisfies
+\begin{equation}\label{eq:pom-multiplicity-composition-lambdaq-transfer-radius}
+\boxed{\;
+\lambda(q)=\lambda_q=2\,\rho\!\bigl(T^{(q)}\bigr)\qquad(q\in\ZZ_{\ge 1}),\;}
+\end{equation}
+where \(\rho(\cdot)\) denotes the spectral radius.
+\end{proposition}
+\begin{proof}
+View \(\boldsymbol{\ell}\in\mathcal{C}_L\) as a cut-edge set \(C(\boldsymbol{\ell})\subseteq\{1,\dots,L-1\}\) on \(\{1,\dots,L-1\}\):
+\(i\in C(\boldsymbol{\ell})\) if \(i\) is the right endpoint of some part (so that \(|C|=R(\boldsymbol{\ell})-1\)).
+\par
+On the other hand, \(F_{\ell+2}\) counts binary strings of length \(\ell\) with no two adjacent \(1\)'s;
+therefore \(F_{\ell+2}^{\,q}\) counts \(q\) independent copies of such strings, equivalently counting vector strings \((u_1,\dots,u_\ell)\in U_q^\ell\) satisfying \(u_i\wedge u_{i+1}=0\) for each adjacent pair (coordinate-wise non-overlap).
+Accordingly, given a cut-edge set \(C\), the component-wise multiplication gives
+\[
+w_q(\boldsymbol{\ell})
+=\prod_{\text{parts}}F_{\ell_i+2}^{\,q}
+=\#\Bigl\{(u_1,\dots,u_L)\in U_q^L:\ \forall i\notin C,\ u_i\wedge u_{i+1}=0\Bigr\}.
+\]
+For a fixed \((u_1,\dots,u_L)\), let the violation edge set be
+\(
+S(u):=\{i:\ u_i\wedge u_{i+1}\neq 0\}
+\).
+Then the above condition is equivalent to \(C\supseteq S(u)\), and the number of cut-edge sets satisfying \(C\supseteq S(u)\) is \(2^{(L-1)-|S(u)|}\).
+Exchanging the order of summation yields
+\[
+Z_L^{(q)}
+=\sum_{C\subseteq\{1,\dots,L-1\}}\#\{u:\ C\supseteq S(u)\}
+=\sum_{u\in U_q^L}2^{(L-1)-|S(u)|}
+=2^{L-1}\sum_{u\in U_q^L}2^{-\sum_{i=1}^{L-1}\mathbf{1}_{\{u_i\wedge u_{i+1}\neq 0\}}},
+\]
+establishing \eqref{eq:pom-multiplicity-composition-replica-transfer}.
+Finally, the exponential growth rate of \(Z_L^{(q)}=2^{L-1}\mathbf{1}^{\mathsf T}(T^{(q)})^{L-1}\mathbf{1}\) is given by Perron--Frobenius as
+\(
+\log 2+\log\rho(T^{(q)})=\log(2\rho(T^{(q)}))
+\), yielding \eqref{eq:pom-multiplicity-composition-lambdaq-transfer-radius}. \qed
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$S_q$}{Sq}-symmetry reduction: \(\rho(T^{(q)})\) as the Perron root of an explicit \texorpdfstring{$(q+1)\times(q+1)$}{(q+1)x(q+1)} matrix]\label{prop:pom-multiplicity-composition-sq-symmetry-reduction}
+Under the integer \(q\ge 1\) setting of Proposition \ref{prop:pom-multiplicity-composition-replica-softcore-transfer},
+let \(|u|\) denote the Hamming weight.
+Define the explicit matrix \(A^{(q)}\in\RR^{(q+1)\times(q+1)}\) by
+\begin{equation}\label{eq:pom-multiplicity-composition-Aq-def}
+\boxed{\;
+A^{(q)}_{k,l}:=\frac12\Bigl(\binom{q}{l}+\binom{q-k}{l}\Bigr),
+\qquad 0\le k,l\le q.\;}
+\end{equation}
+Then the Perron root satisfies the rigorous identity
+\begin{equation}\label{eq:pom-multiplicity-composition-sq-reduction}
+\boxed{\;
+\rho\!\bigl(T^{(q)}\bigr)=\rho\!\bigl(A^{(q)}\bigr),\qquad
+\lambda_q=2\,\rho\!\bigl(A^{(q)}\bigr).\;}
+\end{equation}
+Therefore, for each integer \(q\ge 1\), the growth constant \(\lambda_q\) is an algebraic number of degree at most \(q+1\) (given by \(\det(\rho(A^{(q)})I-A^{(q)})=0\)).
+\end{proposition}
+\begin{proof}
+The matrix \(T^{(q)}\) is invariant under the coordinate permutation group \(S_q\), so its Perron eigenvector can be taken as an \(S_q\)-invariant class function:
+there exists a positive function \(f:U_q\to\RR_+\) depending only on \(k=|u|\).
+Substituting \(f(u)\equiv g(|u|)\) into \((T^{(q)}f)(u)=\sum_{v\in U_q}T^{(q)}_{u,v}f(v)\) and grouping over \(v\) by weight \(l=|v|\):
+for fixed \(u\) (with \(|u|=k\)) and fixed \(l\), the number of \(v\) satisfying \(|v|=l\) and \(u\wedge v=0\) is \(\binom{q-k}{l}\), while the total number with weight \(l\) is \(\binom{q}{l}\).
+Therefore
+\[
+\sum_{\substack{v\in U_q\\ |v|=l}}T^{(q)}_{u,v}
+=\binom{q-k}{l}\cdot 1 + \bigl(\binom{q}{l}-\binom{q-k}{l}\bigr)\cdot \frac12
+=\frac12\Bigl(\binom{q}{l}+\binom{q-k}{l}\Bigr)
+=A^{(q)}_{k,l}.
+\]
+This shows that the matrix representation of \(T^{(q)}\) on the \(S_q\)-invariant subspace (of dimension \(q+1\)) is precisely \(A^{(q)}\), and the Perron eigenvalue lies in this subspace and equals \(\rho(A^{(q)})\).
+Since \(T^{(q)}\) is entry-wise positive, the Perron root is unique and must be realized by the \(S_q\)-invariant Perron vector, hence \(\rho(T^{(q)})=\rho(A^{(q)})\).
+Combined with \(\lambda_q=2\rho(T^{(q)})\), this yields \eqref{eq:pom-multiplicity-composition-sq-reduction}. \qed
+\end{proof}
+
+\begin{proposition}[Complete solvability of the \texorpdfstring{$q=1$}{q=1} Markov chain: stationary distribution, transition kernel, and alternating correlation length]\label{prop:pom-multiplicity-composition-q1-markov}
+For \(q=1\), let
+\[
+T:=T^{(1)}=\begin{pmatrix}1&1\\[2pt]1&\tfrac12\end{pmatrix},
+\qquad
+\alpha:=\rho(T)=\frac{3+\sqrt{17}}{4},
+\qquad
+\rho_\star:=\lambda(1)^{-1}=\frac{1}{2\alpha}.
+\]
+Consider the one-dimensional Gibbs weight
+\(
+\pi_L(\sigma)\propto \prod_{i=1}^{L-1}T_{\sigma_i,\sigma_{i+1}}
+\)
+(\(\sigma\in\{0,1\}^L\)).
+Then its bulk limit exists and is unique, and is equivalent to a two-state translation-invariant Markov chain \((\sigma_i)_{i\in\ZZ}\) whose transition kernel satisfies
+\[
+\boxed{\;
+\mathbb{P}(\sigma_{i+1}=1\mid\sigma_i=1)=\rho_\star,\qquad
+\mathbb{P}(\sigma_{i+1}=1\mid\sigma_i=0)=1-2\rho_\star.\;}
+\]
+This chain has a closed-form stationary distribution
+\[
+\boxed{\;
+\mathbb{P}(\sigma_i=1)=\frac{17-\sqrt{17}}{34},\qquad
+\mathbb{P}(\sigma_i=0)=\frac{17+\sqrt{17}}{34}.\;}
+\]
+Moreover, two-point correlations decay strictly exponentially with alternating sign: for any bounded functions \(f,g\) depending on a single site, there exists a constant \(C(f,g)\) such that
+\[
+\mathrm{Cov}\bigl(f(\sigma_0),g(\sigma_n)\bigr)
+=C(f,g)\Bigl(-\frac{2}{\lambda(1)^2}\Bigr)^{n}\qquad(n\ge 0).
+\]
+Therefore the correlation length is given by \(\xi^{-1}=\log(\lambda(1)^2/2)\).
+\end{proposition}
+\begin{proof}[Proof outline]
+By Perron--Frobenius theory for the symmetric transfer matrix \(T\), the bulk-limit Gibbs state is given by the Perron eigenvector \(r\), and can be written as a Markov chain:
+\(
+P(a\to b)=T_{ab}r_b/(\alpha r_a)
+\).
+Solving \(Tr=\alpha r\) directly yields \(r\propto(1,\alpha-1)\); substituting back gives the closed-form transition kernel.
+The stationary distribution follows from reversibility \(\pi(a)\propto r_a^2\).
+Correlation decay is given by the second eigenvalue ratio of the \(2\times 2\) chain;
+since the eigenvalues of \(2T\) are \(\lambda_\pm=\frac{3\pm\sqrt{17}}{2}\) and \(\lambda_+\lambda_-=-2\), the decay factor is
+\(
+\lambda_-/\lambda_+=-2/\lambda(1)^2
+\)
+with alternating sign. \qed
+\end{proof}
+
+\begin{corollary}[Algebraic closed form for cut-edge density: average of composition density and ``soft-core overlap'' forced cuts]\label{cor:pom-multiplicity-composition-cut-density}
+For \(L\ge 2\), identify \(\boldsymbol{\ell}\in\mathcal{C}_L\) with cut-edge variables \(C_i\in\{0,1\}\) (\(1\le i\le L-1\)):
+\(C_i=1\) if and only if \(i\) is the right endpoint of some part.
+Then in the bulk limit the cut-edge density satisfies the closed form
+\[
+\boxed{\;
+\lim_{L\to\infty}\frac{1}{L-1}\mathbb{E}_{P_L}\Bigl[\sum_{i=1}^{L-1}C_i\Bigr]
+=\frac{17+5\sqrt{17}}{68}\; }.
+\]
+Consequently, the limiting typical part length is its reciprocal:
+\[
+\boxed{\;
+\lim_{L\to\infty}\frac{L}{\mathbb{E}_{P_L}[R_L]}
+=\frac{5\sqrt{17}-17}{2}\; } ,
+\]
+where \(R_L\) denotes the number of parts (Definition \ref{def:pom-multiplicity-induced-composition-measure}).
+\end{corollary}
+\begin{proof}
+By the representation of Proposition \ref{prop:pom-multiplicity-composition-replica-softcore-transfer} at \(q=1\),
+\(Z_L\) can also be viewed as a uniform counting over dual variables \((\sigma,C)\): for each edge \(i\), if \(\sigma_i=\sigma_{i+1}=1\) then \(C_i=1\) is forced; otherwise \(C_i\) is free.
+Therefore, in the Gibbs limit,
+\[
+\mathbb{E}[C_i]=\frac12+\frac12\,\mathbb{P}(\sigma_i=\sigma_{i+1}=1).
+\]
+By the stationary distribution and transition kernel of Proposition \ref{prop:pom-multiplicity-composition-q1-markov},
+\(
+\mathbb{P}(\sigma_i=\sigma_{i+1}=1)=\mathbb{P}(\sigma_i=1)\mathbb{P}(\sigma_{i+1}=1\mid\sigma_i=1)
+=\frac{17-\sqrt{17}}{34}\cdot \frac{\sqrt{17}-3}{4}
+=\frac{5\sqrt{17}-17}{34}
+\).
+Substituting gives
+\(
+\mathbb{E}[C_i]=\frac12+\frac{5\sqrt{17}-17}{68}=\frac{17+5\sqrt{17}}{68}
+\).
+Since \(R_L=1+\sum_{i=1}^{L-1}C_i\), dividing by \(L\) and taking the limit yields the second formula. \qed
+\end{proof}
+
+\begin{proposition}[Palm size-biased part length distribution: the length seen from a uniform position is the rigorous size-bias]\label{prop:pom-multiplicity-composition-palm-size-bias}
+Under \(P_L\), let \(V_L\) be a random position drawn uniformly from \(\{1,\dots,L\}\), and denote by \(\mathcal{L}_L\) the length of the part containing \(V_L\).
+Let \(p(k)=F_{k+2}\rho_\star^k\) be the update distribution of Theorem \ref{thm:pom-multiplicity-composition-exact-conditional-iid} at \(q=1\), and write
+\(
+\mathbb{E}[\ell]=\sum_{k\ge 1}k\,p(k)=\frac{5\sqrt{17}-17}{2}
+\) (Proposition \ref{prop:pom-multiplicity-composition-part-length-iid-limit}).
+Then as \(L\to\infty\), \(\mathcal{L}_L\) converges to the size-biased limit
+\begin{equation}\label{eq:pom-multiplicity-composition-palm-size-bias-law}
+\boxed{\;
+\mathbb{P}(\mathcal{L}=k)=\frac{k\,p(k)}{\mathbb{E}[\ell]}
+=\frac{k\,F_{k+2}\rho_\star^k}{\mathbb{E}[\ell]}\qquad(k\ge 1).\;}
+\end{equation}
+Moreover, its mean has the closed form
+\[
+\boxed{\;
+\mathbb{E}[\mathcal{L}]
+=\frac{\mathbb{E}[\ell^2]}{\mathbb{E}[\ell]}
+=\frac{(393-93\sqrt{17})/2}{(5\sqrt{17}-17)/2}
+=\frac{393-93\sqrt{17}}{5\sqrt{17}-17}\; } .
+\]
+\end{proposition}
+\begin{proof}[Proof outline]
+View the composition as a renewal partition generated by a renewal process, and adopt the Palm perspective induced by a ``uniform position'':
+in the translation-invariant renewal limit, the probability of falling within a part of length \(k\) is proportional to its length, so the limiting distribution is the size-bias \(\propto k\,p(k)\).
+The mean identity \(\mathbb{E}[\mathcal{L}]=\mathbb{E}[\ell^2]/\mathbb{E}[\ell]\) is the standard Palm calculation;
+here
+\(
+\mathbb{E}[\ell^2]=\mathrm{Var}(\ell)+\mathbb{E}[\ell]^2
+=(18-4\sqrt{17})+\bigl(\frac{5\sqrt{17}-17}{2}\bigr)^2
+=(393-93\sqrt{17})/2
+\)
+follows immediately from Proposition \ref{prop:pom-multiplicity-composition-part-length-iid-limit}. \qed
+\end{proof}
+
+\begin{theorem}[Exponential mixing: long-range independence of macroscopic compositions controlled by the spectral gap \texorpdfstring{$2/\lambda(1)^2$}{2/lambda(1)^2}]\label{thm:pom-multiplicity-composition-exponential-mixing}
+Let \(A,B\) be arbitrary cylinder events depending only on the cut-edge variables \((C_i)\) within two finite windows separated by at least \(n\) edges.
+Then in the bulk limit \(L\to\infty\), there exists a constant \(C(A,B)<\infty\) such that
+\[
+\boxed{\;
+\bigl|\mathbb{P}(A\cap B)-\mathbb{P}(A)\mathbb{P}(B)\bigr|
+\le C(A,B)\Bigl(\frac{2}{\lambda(1)^2}\Bigr)^{n}\; } .
+\]
+\end{theorem}
+\begin{proof}[Proof outline]
+By the soft-core chain representation at \(q=1\), \((C_i)\) can be generated by a hidden Markov chain \((\sigma_i)\): if \((\sigma_i,\sigma_{i+1})=(1,1)\) then \(C_i\equiv 1\); otherwise \(C_i\) is conditionally independent with \(\mathbb{P}(C_i=1\mid \sigma_i\sigma_{i+1}=0)=1/2\).
+Proposition \ref{prop:pom-multiplicity-composition-q1-markov} provides the spectral gap and correlation decay factor \(|-2/\lambda(1)^2|<1\) of \((\sigma_i)\);
+for given window events \(A,B\), first conditioning on \(\sigma\) and applying the exponential mixing of the Markov chain, then using the conditional independence of \(C\) given \(\sigma\) on each edge, transfers the same decay rate to cylinder events of \(C\). \qed
+\end{proof}
+
+\begin{proposition}[Explicit asymmetric eigen-sequence of the \texorpdfstring{$q$}{q}-replica spectrum: a large number of eigenvalues form an auditable \texorpdfstring{$(-\varphi^{-1})$}{-phi^{-1}}-power structure]\label{prop:pom-multiplicity-composition-replica-explicit-eigs}
+Under the integer \(q\ge 1\) setting of Proposition \ref{prop:pom-multiplicity-composition-replica-softcore-transfer},
+let
+\[
+K=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},
+\qquad
+\text{with eigenvalues }\ \varphi=\frac{1+\sqrt5}{2}\ \text{and}\ -\varphi^{-1}.
+\]
+Let \(D:=K^{\otimes q}\) (identified as a \(U_q\times U_q\) matrix under the natural tensor basis). Then the following rigorous identity holds:
+\[
+\boxed{\;
+T^{(q)}=\frac12\bigl(\mathbf{1}\mathbf{1}^{\mathsf T}+D\bigr),\qquad
+D_{u,v}=\mathbf{1}_{\{u\wedge v=0\}}\; } .
+\]
+Therefore, for each \(0\le j\le q\), the number
+\begin{equation}\label{eq:pom-multiplicity-composition-replica-explicit-eigs}
+\boxed{\;
+\frac{(-1)^j\varphi^{\,q-2j}}{2}\;}
+\end{equation}
+is an eigenvalue of \(T^{(q)}\) with multiplicity at least \(\binom{q}{j}-1\) (in the part orthogonal to \(\mathbf{1}\)).
+The remaining at most \(q+1\) eigenvalues all lie in the \(S_q\)-symmetric subspace and are given by the explicit matrix \(A^{(q)}\) from Proposition \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction}.
+\end{proposition}
+\begin{proof}
+For \(u,v\in\{0,1\}\), we have
+\(
+K_{u,v}=\mathbf{1}_{\{uv=0\}}
+\).
+By the coordinate-wise multiplicativity of the tensor product,
+\(
+D_{u,v}=\prod_{a=1}^q \mathbf{1}_{\{u_av_a=0\}}=\mathbf{1}_{\{u\wedge v=0\}}
+\);
+hence
+\(
+T^{(q)}_{u,v}=1\) if and only if \(u\wedge v=0\), otherwise \(T^{(q)}_{u,v}=1/2\), i.e., \(T^{(q)}=\frac12(\mathbf{1}\mathbf{1}^{\mathsf T}+D)\).
+\par
+The eigenvalues of \(D=K^{\otimes q}\) are the tensor products of the spectrum:
+for each \(j\), taking \(j\) factors with eigenvalue \(-\varphi^{-1}\) and the remaining \(q-j\) factors with eigenvalue \(\varphi\) gives the eigenvalue \((-1)^j\varphi^{q-2j}\), with algebraic multiplicity \(\binom{q}{j}\).
+On the other hand, \(\mathbf{1}\mathbf{1}^{\mathsf T}\) vanishes on \(\mathbf{1}^\perp\), so on \(\mathbf{1}^\perp\) we have \(T^{(q)}|_{\mathbf{1}^\perp}=\frac12 D|_{\mathbf{1}^\perp}\).
+Each \(\binom{q}{j}\)-dimensional eigenspace intersects \(\mathbf{1}^\perp\) (of codimension \(1\)) in dimension at least \(\binom{q}{j}-1\), yielding the multiplicity lower bound in \eqref{eq:pom-multiplicity-composition-replica-explicit-eigs}.
+The remaining eigenvalues lie in the \(S_q\)-symmetric subspace (of dimension \(q+1\)) and are given by the reduction of Proposition \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction}. \qed
+\end{proof}
+
+\input{sections/body/pom/parts/subsubsec__pom-multiplicity-composition-exact-update-softcore-part2}
+
+\begin{remark}[Finite-window tensorization and exponential decoupling for general \texorpdfstring{$q\ge 0$}{q>=0}]\label{rem:pom-multiplicity-composition-window-tensorization}
+Theorem \ref{thm:pom-multiplicity-composition-exact-conditional-iid} provides an exact finite-volume conditional i.i.d.\ representation for arbitrary real \(q\ge 0\).
+From the positive-coefficient analytic structure of \(G_q(t)=1/(1-W_q(t))\) (where \(W_q\) is strictly increasing on \((0,1)\) and \(W_q(\rho(q))=1\) is a simple root; Theorem \ref{thm:pom-multiplicity-real-q-pressure}),
+one obtains that for each fixed window length \(m\) there exist constants \(C_{m,q}<\infty\) and \(\eta(q)\in(0,1)\) such that
+\[
+\Bigl\|\ \mathcal{L}_{P_L^{(q)}}(\ell_1,\dots,\ell_m)-p_q^{\otimes m}\ \Bigr\|_{\mathrm{TV}}
+\le C_{m,q}\,\eta(q)^{L}
+\qquad(L\to\infty),
+\]
+where \(\eta(q)\) can be taken as the spectral radius ratio of the corresponding renewal/transfer operator (the modulus ratio between the dominant and next-to-dominant singularities).
+This exponential decoupling quantifies the effect of ``boundary sampling'' on finite windows as exponentially small, and is consistent with the explicit spectral gap constant \(2/\lambda(1)^2\) at \(q=1\) (Theorem \ref{thm:pom-multiplicity-composition-exponential-mixing} and Proposition \ref{prop:pom-multiplicity-composition-first-part-exact-and-rate}).
+\end{remark}
+
+\endinput

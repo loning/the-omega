@@ -1,0 +1,738 @@
+\begin{remark}[Necessity of transitioning from ``zero-set geometry'' to ``amplitude distribution'']\label{rem:fold-zero-sparse-necessity}
+Theorem~\ref{thm:fold-zero-density-sparse} shows that as \(m\to\infty\), the relative density of zero frequencies within the full frequency space \(\ZZ/(F_{m+2}\ZZ)\) decays exponentially.
+Therefore, any limit quantity centered on frequency averaging (e.g., the nontrivial spectral energy average in Theorem~\ref{thm:fold-collision-spectrum}) cannot be dominated by the ``zero-set scale'';
+to obtain genuine asymptotic information, one must understand the product-type amplitude distribution at nonzero frequencies:
+\(
+|\widehat d_m(k)|=2^m\prod_{j=1}^m\bigl|\cos(\pi kF_{j+1}/F_{m+2})\bigr|
+\).
+Equivalently,
+\[
+\frac{|\widehat d_m(k)|^2}{2^{2m}}
+=\prod_{j=1}^m\cos^2\Bigl(\pi k\,F_{j+1}/F_{m+2}\Bigr)
+=2^{-m}\prod_{j=1}^m\Bigl(1+\cos\Bigl(2\pi k\,F_{j+1}/F_{m+2}\Bigr)\Bigr),
+\]
+so this normalized energy profile can be viewed as a finite Riesz product driven by Fibonacci frequencies; the extremal behavior and large deviation control of such products constitute precisely the entry point for upgrading ``zero-set geometry'' to ``oscillation statistics.''
+\end{remark}
+
+\begin{theorem}[Zero-set reduction collision upper bound]
+\label{thm:fold-collision-zero-reduction}
+Let $\mathcal{Z}_m$ be as in Definition~\ref{def:fold-spectrum-zero-set}. Then
+\[
+\mathsf{Col}_m\le 1-\frac{|\mathcal{Z}_m|}{F_{m+2}}.
+\]
+In particular, when $|\mathcal{Z}_m|\ge 1$,
+\[
+\mathsf{Col}_m\le 1-\frac{1}{F_{m+2}}.
+\]
+\end{theorem}
+
+\textbf{Proof.}
+By Theorem~\ref{thm:fold-collision-spectrum},
+\(
+\mathsf{Col}_m-\frac{1}{F_{m+2}}=\frac{1}{2^{2m}F_{m+2}}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\).
+Since $|\widehat d_m(k)|\le\sum_r d_m(r)=2^m$ and vanishes for $k\in\mathcal{Z}_m$,
+\(
+\sum_{k\ne 0}|\widehat d_m(k)|^2\le (F_{m+2}-1-|\mathcal{Z}_m|)\,2^{2m}
+\).
+Substituting yields
+\[
+\mathsf{Col}_m
+\le
+\frac{1}{F_{m+2}}+\frac{F_{m+2}-1-|\mathcal{Z}_m|}{F_{m+2}}
+=1-\frac{|\mathcal{Z}_m|}{F_{m+2}}.
+\]
+\qed
+
+\begin{remark}[Implementable scheme for exact computation of \texorpdfstring{$\card{\mathcal{Z}_m}$}{|Z_m|} via divisor structure]\label{rem:fold-zero-coset-algorithm}
+When \(F_{m+2}\) is even, Corollary~\ref{cor:fold-zero-coset-union} represents \(\mathcal{Z}_m\) as a union of arithmetic cosets \(S_g(F_{m+2})\).
+Therefore, instead of scanning all frequencies \(k\), one can perform exact counting at the ``divisor scale'':
+\begin{enumerate}
+  \item Enumerate \(d\mid(m+2)\) with \(d<m+2\), set \(g=F_d\), and filter out those not satisfying \(g\mid F_{m+2}/2\);
+  \item For the retained \(g\), construct the congruence \(k\equiv F_{m+2}/(2g)\pmod{F_{m+2}/g}\), and use Lemma~\ref{lem:fold-zero-coset-intersection} (or more generally, the multi-congruence compatibility criterion) to compute the size of any finite intersection;
+  \item Use inclusion--exclusion or an equivalent union counting implementation to obtain the exact value of \(\card{\mathcal{Z}_m}\).
+\end{enumerate}
+This procedure reduces ``scanning over \(k\)'' to ``scanning the few divisors of \(m+2\) + finitely many \(\gcd\)/divisibility tests,'' which can be directly integrated into the numerical audit pipeline.
+The reproducible script is available at \texttt{scripts/exp\_fold\_zero\_coset\_union\_count.py}.
+\end{remark}
+
+\begin{theorem}[Maximum fiber and spectral energy]
+\label{thm:fold-max-fiber-spectrum}
+Let
+\[
+M_m:=\max_{r\in\ZZ/(F_{m+2}\ZZ)} d_m(r).
+\]
+Then the following lower bound holds:
+\[
+M_m\ge \overline d_m+\frac{1}{F_{m+2}}\Biggl(\sum_{k\ne 0}|\widehat d_m(k)|^2\Biggr)^{1/2}.
+\]
+That is, the maximum fold fiber is quantitatively driven by the nontrivial spectral energy.
+\end{theorem}
+
+\textbf{Proof.}
+By the variance identity
+\(
+\frac{1}{F_{m+2}}\sum_r(d_m(r)-\overline d_m)^2=\frac{1}{F_{m+2}^2}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\).
+Taking the maximizing $r_*$ gives
+\(
+\sum_r(d_m(r)-\overline d_m)^2\ge (M_m-\overline d_m)^2
+\).
+Combining yields the conclusion. \qed
+
+\begin{theorem}[Collision lower bound from the maximum fiber]
+\label{thm:fold-collision-max-fiber}
+Let $M_m:=\max_r d_m(r)$. Then the fold collision probability satisfies
+\[
+\mathsf{Col}_m\ge \frac{M_m^2}{2^{2m}}.
+\]
+Therefore any non-uniform fiber concentration necessarily leads to an explicit lower bound on the collision gap.
+\end{theorem}
+
+\textbf{Proof.}
+By definition,
+\(
+\mathsf{Col}_m=2^{-2m}\sum_r d_m(r)^2
+\).
+Since $\sum_r d_m(r)^2\ge M_m^2$, substitution gives the conclusion. \qed
+
+\begin{theorem}[Fourier lower bound on the maximum fiber]
+\label{thm:fold-max-fiber-fourier}
+Let
+\(
+S_m:=\max_{k\ne 0}|\widehat d_m(k)|
+\).
+Then
+\[
+M_m\ge \overline d_m+\frac{S_m}{F_{m+2}}.
+\]
+In particular, any nontrivial spectral amplitude linearly inflates the maximum fiber.
+\end{theorem}
+
+\textbf{Proof.}
+By the Fourier inversion formula,
+\(
+d_m(r)=\frac{1}{F_{m+2}}\sum_k \widehat d_m(k)\,e^{2\pi i kr/F_{m+2}}
+\).
+Choose $k_*$ such that $|\widehat d_m(k_*)|=S_m$, and select $r$ so that the phase aligns; then
+\(
+d_m(r)\ge \overline d_m+\frac{S_m}{F_{m+2}}
+\).
+The conclusion follows from the definition of the maximum. \qed
+
+\begin{corollary}[Constant-order \(L^\infty\) bias lower bound on the maximum fiber]\label{cor:fold-max-fiber-constant-bias}
+For any \(m\ge 1\), there is a deterministic lower bound
+\[
+M_m\ge \overline d_m+\frac{|\widehat d_m(F_m)|}{F_{m+2}}
+=\overline d_m\bigl(1+a_m(F_m)\bigr).
+\]
+Therefore, by Theorem~\ref{thm:fold-critical-resonance-constant},
+\[
+\liminf_{m\to\infty}\frac{M_m}{\overline d_m}\ \ge\ 1+C_\varphi
+\approx 1.2244178274047294.
+\]
+In other words, as the resolution tends to infinity, the maximum fiber exceeds the mean by at least approximately \(22.44\%\).
+\end{corollary}
+
+\textbf{Proof.}
+By Theorem~\ref{thm:fold-max-fiber-fourier} and \(S_m\ge |\widehat d_m(F_m)|\), the first inequality follows.
+Using \(\overline d_m=2^m/F_{m+2}\) and \(a_m(F_m)=|\widehat d_m(F_m)|/2^m\) to simplify gives the multiplicative form.
+The limiting lower bound follows from \(a_m(F_m)\to C_\varphi\) by Theorem~\ref{thm:fold-critical-resonance-constant}. \qed
+
+\begin{conjecture}[Fibonacci extremal mode (testable)]\label{conj:fold-fourier-fibonacci-extremizer}
+For all \(m\ge 4\), the nontrivial maximum spectral amplitude
+\(
+S_m=\max_{k\ne 0}|\widehat d_m(k)|
+\)
+is always attained by the Fibonacci complementary frequency pair:
+\[
+S_m=|\widehat d_m(F_m)|=|\widehat d_m(F_{m+1})|.
+\]
+Equivalently, the strongest nontrivial mode always occurs on the same conjugate orbit
+\(
+k\equiv\pm F_m\pmod{F_{m+2}}
+\)
+(where \(F_{m+1}\equiv -F_m\ (\mathrm{mod}\ F_{m+2})\)).
+Consequently,
+\[
+\frac{S_m}{2^m}=a_m(F_m)\longrightarrow C_\varphi.
+\]
+This conjecture has been numerically verified via full-frequency scanning for \(m\le 29\) (script \path{scripts/exp_fold_multiplicity_fourier_extremal_mode_scan.py}).
+\end{conjecture}
+
+\begin{theorem}[Two-sided squeeze on the collision gap]
+\label{thm:fold-collision-sandwich}
+Let $M_m:=\max_r d_m(r)$ and the zero set $\mathcal{Z}_m$ be as before. Then
+\[
+\frac{M_m^2}{2^{2m}}-\frac{1}{F_{m+2}}
+\le
+\mathsf{Col}_m-\frac{1}{F_{m+2}}
+\le
+\frac{F_{m+2}-1-|\mathcal{Z}_m|}{F_{m+2}}.
+\]
+Thus the fold uniformity gap is simultaneously controlled from both sides by the maximum fiber and the spectral zero count.
+\end{theorem}
+
+\textbf{Proof.}
+The left inequality follows directly from Theorem~\ref{thm:fold-collision-max-fiber}.
+The right inequality follows from Theorem~\ref{thm:fold-collision-zero-reduction}. \qed
+
+\begin{theorem}[Uncertainty chain: zeros--uniformity--information gap]\label{thm:fold-zero-uncertainty}
+Let \(M:=F_{m+2}\), and define the normalized fold distribution
+\[
+p_m(r):=\frac{d_m(r)}{2^m}\in[0,1],\qquad r\in\ZZ/(M\ZZ),
+\qquad
+u(r):=\frac{1}{M}.
+\]
+Then:
+\begin{enumerate}
+  \item \textbf{(Collision gap = \(\ell^2\) distance)}
+  \[
+  \boxed{\;\sum_{r}\bigl(p_m(r)-u(r)\bigr)^2=\mathsf{Col}_m-\frac{1}{M}.\;}
+  \]
+  \item \textbf{(Maximum fiber excess controlled by the collision gap)}
+  \[
+  \max_r\left|p_m(r)-\frac1M\right|
+  \le \sqrt{\mathsf{Col}_m-\frac{1}{M}},
+  \qquad
+  \boxed{\;
+  M_m-\overline d_m\ \le\ 2^m\sqrt{\mathsf{Col}_m-\frac{1}{M}}.\;}
+  \]
+  Combining with the right-hand upper bound of Theorem~\ref{thm:fold-collision-sandwich} further yields the structural upper bound controlled solely by the zero set:
+  \[
+  \boxed{\;
+  M_m-\overline d_m\ \le\ 2^m\sqrt{\frac{M-1-|\mathcal{Z}_m|}{M}}. \;}
+  \]
+  \item \textbf{(Entropy gap upper bound: collision \(\Rightarrow\) KL)}
+  If the Shannon entropy is defined using natural logarithms, \(H(p_m):=-\sum_r p_m(r)\log p_m(r)\), then the KL gap to uniformity satisfies
+  \[
+  D_{\mathrm{KL}}(p_m\|u)=\log M-H(p_m)\ \le\ \log\!\bigl(M\,\mathsf{Col}_m\bigr)\ \le\ \log\!\bigl(M-|\mathcal{Z}_m|\bigr).
+  \]
+  \item \textbf{(Upper bound on the nontrivial Fourier peak: from collision energy)}
+  Let \(S_m=\max_{k\ne 0}|\widehat d_m(k)|\) (Theorem~\ref{thm:fold-max-fiber-fourier}). Then
+  \[
+  \boxed{\;
+  S_m\ \le\ 2^m\sqrt{M\left(\mathsf{Col}_m-\frac{1}{M}\right)}\ \le\ 2^m\sqrt{M-1-|\mathcal{Z}_m|}. \;}
+  \]
+\end{enumerate}
+Therefore, when \(|\mathcal{Z}_m|\) exhibits deterministic increments at certain congruence classes / divisor structures (e.g., the \(m+2\equiv 0\pmod 3\) case of Theorem~\ref{thm:fold-spectrum-parity-zero}, and the more general divisibility-triggered case of Corollary~\ref{cor:fold-zero-divisor-lb}), the above upper bounds on maximum fiber excess and information gap also exhibit corresponding deterministic ``reductions,'' yielding arithmetic modulation predictions directly auditable via DP/Fourier pipelines.
+\end{theorem}
+\begin{proof}
+(1) By definition \(p_m=d_m/2^m\) and \(\mathsf{Col}_m=\sum_r p_m(r)^2\), and using \(\sum_r p_m(r)=1\), direct computation gives
+\[
+\sum_r\left(p_m(r)-\frac{1}{M}\right)^2
+=\sum_r p_m(r)^2-\frac{2}{M}\sum_r p_m(r)+\sum_r\frac{1}{M^2}
+=\mathsf{Col}_m-\frac{1}{M}.
+\]
+(2) By \(\ell^\infty\le \ell^2\), \(\max_r|p_m(r)-1/M|\le \sqrt{\sum_r(p_m(r)-1/M)^2}\); applying (1) gives the first inequality.
+Multiplying by \(2^m\) and noting that \(M_m=\max_r d_m(r)=2^m\max_r p_m(r)\), \(\overline d_m=2^m/M\) yields the bound on \(M_m-\overline d_m\). The last bound follows by substituting the right-hand upper bound of Theorem~\ref{thm:fold-collision-sandwich}.
+\par
+(3) Monotonicity of R\'enyi entropy gives \(H(p_m)\ge H_2(p_m):=-\log\sum_r p_m(r)^2=-\log \mathsf{Col}_m\), hence
+\(
+D_{\mathrm{KL}}(p_m\|u)=\log M-H(p_m)\le \log M-H_2(p_m)=\log(M\mathsf{Col}_m)
+\).
+Applying \(\mathsf{Col}_m\le 1-|\mathcal{Z}_m|/M\) from Theorem~\ref{thm:fold-collision-zero-reduction} gives \(\log(M\mathsf{Col}_m)\le \log(M-|\mathcal{Z}_m|)\).
+\par
+(4) By Theorem~\ref{thm:fold-collision-spectrum},
+\(
+\mathsf{Col}_m-\frac{1}{M}=\frac{1}{2^{2m}M}\sum_{k\ne 0}|\widehat d_m(k)|^2
+\).
+Hence \(S_m^2\le \sum_{k\ne 0}|\widehat d_m(k)|^2=2^{2m}M(\mathsf{Col}_m-1/M)\); taking the square root gives the first inequality;
+applying the right-hand upper bound \(\mathsf{Col}_m-1/M\le (M-1-|\mathcal{Z}_m|)/M\) from Theorem~\ref{thm:fold-collision-sandwich} gives the last bound. \qed
+\end{proof}
+
+\begin{corollary}[Relative exponential smallness of the zero-set reduction term]
+\label{cor:fold-collision-zero-sparsity-impact}
+Let \(M:=F_{m+2}\). If \(M\) is even, then the ``zero-set reduction'' improvement of Theorem~\ref{thm:fold-collision-zero-reduction} satisfies
+\[
+0\le \frac{\card{\mathcal{Z}_m}}{M}
+\le
+\tau(m+2)\,\frac{F_{\lfloor (m+2)/2\rfloor}}{F_{m+2}}
+=\tau(m+2)\,O(\varphi^{-m/2}).
+\]
+Therefore, on the \(m\to\infty\) scale, the zero set can only improve the trivial upper bound \(\mathsf{Col}_m\le 1\) by an exponentially small amount; to obtain the true \(O(1/M)\) scale and refined asymptotics of the collision gap, the key lies in controlling the product amplitude distribution at nonzero frequencies (see Remark~\ref{rem:fold-zero-sparse-necessity} and the resonance constant \(C_\varphi\) in this section).
+\end{corollary}
+
+\textbf{Proof.}
+By Theorem~\ref{thm:fold-zero-density-sparse}, \(\card{\mathcal{Z}_m}\le \tau(m+2)\,F_{\lfloor (m+2)/2\rfloor}\); dividing both sides by \(M=F_{m+2}\) and using \(F_{\lfloor (m+2)/2\rfloor}/F_{m+2}=O(\varphi^{-m/2})\) yields the result. \qed
+
+\input{sections/generated/tab_fold_multiplicity_histogram}
+
+\subsection{Folding from Binary Intervals to Zeckendorf Prefixes: Maximum Fiber and Saturation Criterion}\label{app:fold-binary-prefix}
+
+The preceding discussion primarily concerns the fold multiplicity induced by \(\Fold_m:\Omega_m=\{0,1\}^m\to X_m\) (Fibonacci-weight caliber).
+To characterize ``the projection compression of \(2^m\) binary addresses within the Zeckendorf (\(\varphi\)-base) stratification,'' we introduce here a fold projection that takes \emph{integer intervals} as input while maintaining the same scale as \(|\Omega_m|=2^m\).
+
+\begin{definition}[Binary interval fold \(\mathrm{Fold}^{\mathrm{bin}}_m\)]\label{def:fold-bin}
+Let \(Z:\ZZ_{\ge 0}\to\{0,1\}^{\NN}\) denote the Zeckendorf encoding: for each \(n\ge 0\), there exists a unique legal bit string
+\[
+Z(n)=(z_1,z_2,\dots),\qquad z_k\in\{0,1\},\quad z_k z_{k+1}=0,
+\]
+such that
+\[
+n=\sum_{k\ge 1} z_k F_{k+1}.
+\]
+Denote the truncation operator by \(\pi_m(z_1,z_2,\dots):=(z_1,\dots,z_m)\in X_m\). Define
+\[
+\mathrm{Fold}^{\mathrm{bin}}_m:\{0,1,\dots,2^m-1\}\to X_m,\qquad
+\mathrm{Fold}^{\mathrm{bin}}_m(n):=\pi_m(Z(n)).
+\]
+\end{definition}
+
+\begin{definition}[\(K(m)\) and Zeckendorf value]\label{def:K-of-m}
+Let \(K(m)\) be the unique integer satisfying
+\begin{equation}\label{eq:K-of-m}
+F_{K(m)+1}\le 2^m-1 < F_{K(m)+2}
+\end{equation}
+For \(w=(w_1,\dots,w_m)\in X_m\), define its Zeckendorf value
+\[
+V_m(w):=\sum_{k=1}^m w_k F_{k+1}.
+\]
+\end{definition}
+
+\begin{proposition}[Tail representation of fibers]\label{prop:fold-bin-fiber-tail}
+Let \(m\ge 1\), \(w\in X_m\), and set \(K=K(m)\). Let the tail length be \(L:=K-m\ge 0\).
+Then \(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\) is in bijection with tail bit strings \((c_{m+1},\dots,c_K)\in\{0,1\}^{L}\) satisfying the following constraints:
+\[
+n
+=V_m(w)+\sum_{k=m+1}^{K} c_k F_{k+1},
+\]
+where
+\begin{enumerate}
+  \item \textbf{Adjacency constraint:}\quad \(c_k c_{k+1}=0\) (for \(m+1\le k\le K-1\));
+  \item \textbf{Boundary constraint:}\quad \(w_m\,c_{m+1}=0\);
+  \item \textbf{Threshold constraint:}\quad \(V_m(w)+\sum_{k=m+1}^{K} c_k F_{k+1}\le 2^m-1\).
+\end{enumerate}
+Consequently, the fiber multiplicity
+\(
+d^{\mathrm{bin}}_m(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\bigr|
+\)
+depends only on \((V_m(w),w_m)\).
+\end{proposition}
+
+\begin{corollary}[Explicit fiber classification and rigid histogram for \texorpdfstring{$m=6$}{m=6}]\label{cor:fold-bin-m6-fiber-hist}
+Take \(m=6\), so that \(K(6)=9\). For any \(w\in X_6\), let \(V:=V_6(w)\).
+Then the binary interval fold \(\mathrm{Fold}^{\mathrm{bin}}_6:\{0,\dots,63\}\to X_6\) has fibers satisfying:
+\[
+\mathrm{Fold}^{\mathrm{bin}}_6{}^{-1}(w)=
+\begin{cases}
+\{V,\ V+F_{9}\}, & w_6=1,\\[4pt]
+\{V,\ V+F_{8},\ V+F_{9},\ V+F_{10}\}, & w_6=0\ \text{and}\ V\le 8,\\[4pt]
+\{V,\ V+F_{8},\ V+F_{9}\}, & w_6=0\ \text{and}\ V> 8.
+\end{cases}
+\]
+Therefore \(d^{\mathrm{bin}}_6(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_6{}^{-1}(w)\bigr|\in\{2,3,4\}\), and the size histogram is
+\[
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=2\}=8,\qquad
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=3\}=4,\qquad
+\#\{w\in X_6:\ d^{\mathrm{bin}}_6(w)=4\}=9.
+\]
+\end{corollary}
+\begin{proof}
+From \eqref{eq:K-of-m} and \(2^6-1=63\), we have \(F_{10}=55\le 63<F_{11}=89\), so \(K(6)=9\), and the tail involves only three bits \((c_7,c_8,c_9)\) (with weights \(F_8,F_9,F_{10}\)).
+By Proposition~\ref{prop:fold-bin-fiber-tail},
+\[
+n=V+F_8c_7+F_9c_8+F_{10}c_9
+=V+21c_7+34c_8+55c_9,
+\]
+subject to the adjacency constraint \(c_7c_8=0\), \(c_8c_9=0\), the boundary constraint \(w_6c_7=0\), and the threshold \(n\le 63\).
+\par
+\noindent\textbf{(1) Case \(w_6=1\).} Then \(c_7=0\).
+The admissible \((c_8,c_9)\) are \((0,0),(1,0),(0,1)\), but since \(V\ge F_7=13\), we have \(V+55>63\), ruling out \(c_9=1\).
+Thus only \(n\in\{V,V+34\}=\{V,V+F_9\}\) remain.
+\par
+\noindent\textbf{(2) Case \(w_6=0\).} Here \(c_7=1\) is allowed (but \(c_7c_8=0\) must still hold).
+If \(c_9=1\), then \(c_8=0\) and \(n\ge V+55\le 63\) forces \(V\le 8\); moreover, \(c_7=1\) would give \(V+21+55>63\), which is infeasible, so \(c_7=0\) is required.
+Therefore, when \(V\le 8\) all four offsets \(0,F_8,F_9,F_{10}\) are feasible, yielding a fiber of size~\(4\);
+when \(V>8\) the offset \(F_{10}\) is infeasible, yielding a fiber of size~\(3\): \(\{V,V+F_8,V+F_9\}\).
+\par
+\noindent\textbf{(3) Histogram count.}
+When \(w_6=1\), necessarily \(w_5=0\), and the prefix \(w_1\cdots w_4\) can be any element of \(X_4\), so the number of such outputs is \(|X_4|=F_6=8\), corresponding to \(d^{\mathrm{bin}}_6=2\).
+When \(w_6=0\) and \(V>8\), this is equivalent to \(w_5=1\) and \((w_1,w_2,w_3)\in X_3\setminus\{000\}\) (since \(w_4=0\) is forced by legality), giving exactly \(|X_3|-1=F_5-1=4\) outputs, corresponding to \(d^{\mathrm{bin}}_6=3\).
+The remaining \(21-8-4=9\) outputs correspond to \(V\le 8\), yielding \(d^{\mathrm{bin}}_6=4\).
+\end{proof}
+
+\begin{remark}[Numerical anchor for the uniformity gap at \texorpdfstring{$m=6$}{m=6} (bin-fold)]\label{rem:fold-bin-m6-col-gap}
+For the binary interval fold \(\mathrm{Fold}^{\mathrm{bin}}_m:\{0,\dots,2^m-1\}\to X_m\), one can similarly define the collision probability
+\[
+\mathsf{Col}^{\mathrm{bin}}_m:=\mathbb{P}\bigl(\mathrm{Fold}^{\mathrm{bin}}_m(U)=\mathrm{Fold}^{\mathrm{bin}}_m(V)\bigr)
+=\frac{1}{2^{2m}}\sum_{w\in X_m}\bigl(d^{\mathrm{bin}}_m(w)\bigr)^2,
+\]
+and the uniformity gap
+\(
+g_{\mathrm{col}}^{2,\mathrm{bin}}(m):=\mathsf{Col}^{\mathrm{bin}}_m-1/|X_m|
+\).
+From the histogram of Corollary~\ref{cor:fold-bin-m6-fiber-hist} (\(2:8,3:4,4:9\)),
+\[
+\sum_{w\in X_6}\bigl(d^{\mathrm{bin}}_6(w)\bigr)^2
+=8\cdot 2^2+4\cdot 3^2+9\cdot 4^2
+=212,
+\qquad
+\mathsf{Col}^{\mathrm{bin}}_6=\frac{212}{2^{12}}=\frac{53}{1024}.
+\]
+Since \(|X_6|=F_8=21\),
+\[
+\boxed{\;
+g_{\mathrm{col}}^{2,\mathrm{bin}}(6)=\frac{53}{1024}-\frac{1}{21}
+=\frac{89}{21504}\approx 0.0041388\; }.
+\]
+\end{remark}
+
+\begin{proposition}[\texorpdfstring{$\chi^2$}{chi-squared} divergence and collision gap identity (bin-fold)]\label{prop:fold-bin-chi2-col}
+Let
+\[
+p^{\mathrm{bin}}_m(w):=\frac{d^{\mathrm{bin}}_m(w)}{2^m}\qquad (w\in X_m),
+\qquad
+u_m(w):=\frac{1}{|X_m|}.
+\]
+Then the following identities hold:
+\[
+\mathsf{Col}^{\mathrm{bin}}_m=\sum_{w\in X_m}\bigl(p^{\mathrm{bin}}_m(w)\bigr)^2,
+\qquad
+g_{\mathrm{col}}^{2,\mathrm{bin}}(m)=\sum_{w\in X_m}\bigl(p^{\mathrm{bin}}_m(w)-u_m(w)\bigr)^2,
+\]
+and the \(\chi^2\) divergence satisfies
+\[
+\chi^2\!\bigl(p^{\mathrm{bin}}_m\|u_m\bigr)
+:=\sum_{w\in X_m}\frac{\bigl(p^{\mathrm{bin}}_m(w)-u_m(w)\bigr)^2}{u_m(w)}
+=|X_m|\,g_{\mathrm{col}}^{2,\mathrm{bin}}(m)
+=|X_m|\,\mathsf{Col}^{\mathrm{bin}}_m-1.
+\]
+Therefore \(g_{\mathrm{col}}^{2,\mathrm{bin}}(m)\) is the ``standard deviation from uniformity under second-order information geometry,'' rather than an empirical indicator.
+\end{proposition}
+\begin{proof}
+From the definition \(p^{\mathrm{bin}}_m(w)=d^{\mathrm{bin}}_m(w)/2^m\) and
+\(
+\mathsf{Col}^{\mathrm{bin}}_m
+=2^{-2m}\sum_{w}(d^{\mathrm{bin}}_m(w))^2
+\),
+the first identity follows.
+\par
+Note that \(\sum_w p^{\mathrm{bin}}_m(w)=1\) and \(\sum_w u_m(w)=1\). Expanding gives
+\[
+\sum_w\bigl(p^{\mathrm{bin}}_m(w)-u_m(w)\bigr)^2
+=\sum_w \bigl(p^{\mathrm{bin}}_m(w)\bigr)^2-\frac{1}{|X_m|}
+=\mathsf{Col}^{\mathrm{bin}}_m-\frac{1}{|X_m|}
+=g_{\mathrm{col}}^{2,\mathrm{bin}}(m).
+\]
+Finally, using \(u_m(w)=1/|X_m|\) gives
+\(
+\chi^2(p^{\mathrm{bin}}_m\|u_m)=|X_m|\sum_w(p^{\mathrm{bin}}_m(w)-u_m(w))^2
+\),
+yielding the stated chain of equalities. \qed
+\end{proof}
+
+\begin{definition}[Bin-fold degeneracy spectral sectors and minimum degeneracy]\label{def:fold-bin-degeneracy-sectors}
+For the binary interval fold \(\mathrm{Fold}^{\mathrm{bin}}_m:\{0,\dots,2^m-1\}\to X_m\),
+define the minimum degeneracy
+\[
+d_{\min}(m):=\min_{w\in X_m} d^{\mathrm{bin}}_m(w),
+\]
+and for each integer \(d\ge 1\), define the degeneracy spectral sector
+\[
+\mathcal{S}_{m,d}:=\{w\in X_m:\ d^{\mathrm{bin}}_m(w)=d\}.
+\]
+\end{definition}
+
+\begin{theorem}[Fibonacci law for the minimum degeneracy at audited even windows]\label{thm:fold-bin-min-degeneracy-fib-audited}
+Over the audit windows \(m\in\{6,8,10,12\}\), the bin-fold degeneracy spectrum satisfies
+\[
+d_{\min}(m)=F_{m/2},
+\qquad
+\bigl|\mathcal{S}_{m,d_{\min}(m)}\bigr|=F_m=|X_{m-2}|.
+\]
+This conclusion is entirely given by the \((d_{\min},\#\{d=d_{\min}\})\) columns of Table~\ref{tab:fold_bin_degeneracy_spectrum_m6_m12} and can be verified entry by entry.
+\end{theorem}
+\begin{proof}
+Reading row by row from Table~\ref{tab:fold_bin_degeneracy_spectrum_m6_m12}:
+\[
+(d_{\min}(6),|\mathcal{S}_{6,d_{\min}}|)=(2,8),\quad
+(d_{\min}(8),|\mathcal{S}_{8,d_{\min}}|)=(3,21),
+\]
+\[
+(d_{\min}(10),|\mathcal{S}_{10,d_{\min}}|)=(5,55),\quad
+(d_{\min}(12),|\mathcal{S}_{12,d_{\min}}|)=(8,144),
+\]
+while \((F_{3},F_{6})=(2,8)\), \((F_{4},F_{8})=(3,21)\), \((F_{5},F_{10})=(5,55)\), \((F_{6},F_{12})=(8,144)\), giving \(d_{\min}(m)=F_{m/2}\) and \(|\mathcal{S}_{m,d_{\min}(m)}|=F_m\).
+Finally, by the stable type counting law \(|X_n|=F_{n+2}\), we obtain \(|X_{m-2}|=F_m\). \qed
+\end{proof}
+
+\begin{remark}[Regular sub-cover candidate for the minimum degeneracy sector (falsifiable)]\label{rem:fold-bin-min-sector-cover-candidate}
+Proposition~\ref{prop:fold-bin-fiber-tail} shows that \(d^{\mathrm{bin}}_m(w)\) depends only on \((V_m(w),w_m)\).
+Over the audit windows \(m\in\{6,8,10,12\}\), Theorem~\ref{thm:fold-bin-min-degeneracy-fib-audited} gives
+\(
+|\mathcal{S}_{m,d_{\min}(m)}|=|X_{m-2}|
+\).
+This equicardinality rigidity suggests that the minimum degeneracy sector can potentially be described as a regular image characterized by a short suffix constraint; equivalently, there exists a canonical injection
+\(\iota_{m-2}:X_{m-2}\hookrightarrow X_m\) such that
+\(
+\mathcal{S}_{m,d_{\min}(m)}=\iota_{m-2}(X_{m-2})
+\).
+For example, the candidate map
+\[
+\iota_{m-2}(v):=(v,0,1)\qquad (v\in X_{m-2})
+\]
+lifts any legal word of length \(m-2\) to a word of length \(m\) with the tail fixed to \(01\).
+This candidate is not an interpretive choice: its truth or falsity can be directly confirmed or refuted by digit DP / degeneracy spectrum enumeration under the same protocol.
+\end{remark}
+
+\begin{definition}[Fold-gauge group of binary interval fold]\label{def:fold-bin-gauge-group}
+Fix \(m\ge 1\). Define the fiber automorphism group of the binary interval fold:
+\[
+\mathcal{G}^{\mathrm{bin}}_m
+:=
+\mathrm{Aut}\!\bigl(\mathrm{Fold}^{\mathrm{bin}}_m\bigr)
+:=
+\left\{\sigma\in \mathrm{Sym}(\{0,\dots,2^m-1\}):\ \mathrm{Fold}^{\mathrm{bin}}_m\circ\sigma=\mathrm{Fold}^{\mathrm{bin}}_m\right\}.
+\]
+Equivalently, \(\sigma\) may permute arbitrarily within each fiber \(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\) but may not alter the stable type label \(w\in X_m\).
+\end{definition}
+
+\begin{proposition}[Fiber permutation decomposition]\label{prop:fold-bin-gauge-decomposition}
+Let \(d^{\mathrm{bin}}_m(w):=\bigl|\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\bigr|\).
+Then there is a natural isomorphism
+\[
+\mathcal{G}^{\mathrm{bin}}_m\ \cong\ \prod_{w\in X_m} S_{d^{\mathrm{bin}}_m(w)}.
+\]
+\end{proposition}
+\begin{proof}
+The fibers \(\{\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\}_{w\in X_m}\) of \(\mathrm{Fold}^{\mathrm{bin}}_m\) form a disjoint partition of \(\{0,\dots,2^m-1\}\).
+For any \(\sigma\in\mathrm{Aut}(\mathrm{Fold}^{\mathrm{bin}}_m)\) and any \(n\in \mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\),
+\(\mathrm{Fold}^{\mathrm{bin}}_m(\sigma(n))=\mathrm{Fold}^{\mathrm{bin}}_m(n)=w\), so \(\sigma\) must permute within each fiber.
+Conversely, for each \(w\in X_m\), choosing an arbitrary fiber-internal permutation \(\sigma_w\in S_{d^{\mathrm{bin}}_m(w)}\) and assembling them into a permutation \(\sigma=\prod_w\sigma_w\) on all of \(\{0,\dots,2^m-1\}\), we have by construction \(\mathrm{Fold}^{\mathrm{bin}}_m(\sigma(n))=\mathrm{Fold}^{\mathrm{bin}}_m(n)\) for any \(n\), hence \(\mathrm{Fold}^{\mathrm{bin}}_m\circ\sigma=\mathrm{Fold}^{\mathrm{bin}}_m\).
+This yields the stated direct product decomposition isomorphism.
+\end{proof}
+
+\begin{definition}[Fiber equivalence relation groupoid of the bin-fold]\label{def:fold-bin-fiber-groupoid}
+Define the groupoid \(\mathcal{R}^{\mathrm{bin}}_m\rightrightarrows \{0,\dots,2^m-1\}\) as follows: objects are the integer points \(\{0,\dots,2^m-1\}\);
+a unique morphism \(n\to n'\) exists if and only if \(\mathrm{Fold}^{\mathrm{bin}}_m(n)=\mathrm{Fold}^{\mathrm{bin}}_m(n')\);
+composition is given by the transitivity of reachability within the same fiber.
+Equivalently,
+\[
+\mathcal{R}^{\mathrm{bin}}_m
+=\bigsqcup_{w\in X_m}\Bigl(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\times \mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\Bigr)
+\]
+is the disjoint union of fiber pair groupoids.
+\end{definition}
+
+\begin{proposition}[Wedderburn decomposition of the fiber groupoid algebra]\label{prop:fold-bin-groupoid-algebra-wedderburn}
+Let \(\CC[\mathcal{R}^{\mathrm{bin}}_m]\) be the complex groupoid algebra of \(\mathcal{R}^{\mathrm{bin}}_m\) (with finitely supported functions on the arrow set as basis and convolution as multiplication).
+Then there is a natural algebra isomorphism
+\[
+\CC[\mathcal{R}^{\mathrm{bin}}_m]\ \cong\ \bigoplus_{w\in X_m} M_{d^{\mathrm{bin}}_m(w)}(\CC).
+\]
+Therefore \(\CC[\mathcal{R}^{\mathrm{bin}}_m]\) is a finite-dimensional semisimple algebra, and its Wedderburn block decomposition is completely determined by the degeneracy spectral histogram \(\{d:\#\mathcal{S}_{m,d}\}\).
+\end{proposition}
+\begin{proof}
+For each \(w\in X_m\), let \(F_w:=\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\).
+In \(\CC[F_w\times F_w]\), take the basis
+\(
+E_{ab}:=\mathbf{1}_{(a\to b)}
+\) (\(a,b\in F_w\)).
+By direct computation of the convolution,
+\(
+E_{ab}*E_{cd}=\delta_{bc}\,E_{ad}
+\),
+hence \(\CC[F_w\times F_w]\cong M_{|F_w|}(\CC)=M_{d^{\mathrm{bin}}_m(w)}(\CC)\).
+The arrow sets for different \(w\) are disjoint and produce no cross terms under convolution, so the full algebra is a direct sum. \qed
+\end{proof}
+
+\begin{corollary}[Gauge group and \texorpdfstring{$(\ZZ_2)^{21}$}{(Z2)\^21} charge lattice at \texorpdfstring{$m=6$}{m=6}]\label{cor:fold-bin-gauge-m6}
+Under the \(m=6\) binary interval fold caliber,
+\[
+\mathcal{G}^{\mathrm{bin}}_6
+\ \cong\
+S_{2}^{\,8}\times S_{3}^{\,4}\times S_{4}^{\,9}.
+\]
+and its abelianization is
+\[
+\bigl(\mathcal{G}^{\mathrm{bin}}_6\bigr)^{\mathrm{ab}}
+\ \cong\
+(\ZZ_2)^{21}.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary~\ref{cor:fold-bin-m6-fiber-hist}, the fiber size histogram at \(m=6\) is
+\(
+2:8,\ 3:4,\ 4:9
+\).
+Substituting into Proposition~\ref{prop:fold-bin-gauge-decomposition} gives
+\(
+\mathcal{G}^{\mathrm{bin}}_6\cong S_2^{8}\times S_3^{4}\times S_4^{9}
+\).
+\par
+For \(n\ge 2\), the abelianization of the symmetric group is given by the sign map:
+\(
+S_n^{\mathrm{ab}}\cong \ZZ_2
+\).
+Therefore
+\[
+\bigl(\mathcal{G}^{\mathrm{bin}}_6\bigr)^{\mathrm{ab}}
+\cong (\ZZ_2)^{8+4+9}=(\ZZ_2)^{21}.
+\]
+\end{proof}
+
+\begin{definition}[Fiber parity charge and sign map]\label{def:fold-bin-gauge-sign}
+For any \(m\ge 1\), under the direct product decomposition of Proposition~\ref{prop:fold-bin-gauge-decomposition}, define
+\[
+\mathrm{sgn}_m:\ \mathcal{G}^{\mathrm{bin}}_m\to (\ZZ_2)^{X_m},
+\qquad
+\mathrm{sgn}_m\bigl((\sigma_w)_{w\in X_m}\bigr):=\bigl(\mathrm{sgn}(\sigma_w)\bigr)_{w\in X_m}.
+\]
+This map records only the parity of each fiber's permutation, and can be regarded as the ``fiber parity charge.''
+\par
+If one wishes to write \((\ZZ_2)^{X_m}\) explicitly as a binary vector space of length \(|X_m|\), one may fix the lexicographic order of \(X_m\) (by binary string \(w_1\cdots w_m\)), thereby obtaining an explicit coordinate identification
+\[
+(\ZZ_2)^{X_m}\ \cong\ (\ZZ_2)^{|X_m|}.
+\]
+\end{definition}
+
+\begin{corollary}[Canonicity of the fiber parity charge and the \(21\)-bit signature at \texorpdfstring{$m=6$}{m=6}]\label{cor:fold-bin-gauge-sign}
+\(\mathrm{sgn}_m\) is a canonical group homomorphism and induces a canonical isomorphism
+\[
+(\mathcal{G}^{\mathrm{bin}}_m)^{\mathrm{ab}}
+\ \cong\
+\mathrm{Im}(\mathrm{sgn}_m)
+\ \cong\
+(\ZZ_2)^{\{w\in X_m:\ d^{\mathrm{bin}}_m(w)\ge 2\}},
+\]
+where the last term can be viewed as a coordinate subgroup of \((\ZZ_2)^{X_m}\) (with coordinates zeroed out for fibers where \(d^{\mathrm{bin}}_m(w)=1\)).
+When \(m=6\), all fiber sizes lie in \(\{2,3,4\}\), so
+\[
+\mathrm{Im}(\mathrm{sgn}_6)\cong (\ZZ_2)^{X_6}\cong (\ZZ_2)^{21},
+\]
+and hence any ``anomaly/label visible only at the abelianization quotient'' is equivalent to a \(21\)-bit vector.
+\end{corollary}
+
+\begin{remark}[Coordinate ordering of the fiber parity charge at \texorpdfstring{$m=6$}{m=6} (auditable)]\label{rem:fold-bin-gauge-sign-coordinates}
+At the implementation/audit level, if the image of \(\mathrm{sgn}_6\) is viewed as an explicit \(21\)-bit vector, one can enumerate \(X_6\) in the lexicographic order of Table~\ref{tab:fold_bin_gauge_m6_fibers} and number the coordinates accordingly; the \(i\)-th bit corresponds to the stable type \(w\) of the \(i\)-th row.
+\input{sections/generated/tab_fold_bin_gauge_m6_fibers}
+\end{remark}
+
+\begin{corollary}[Boundary sheet-flip induces a canonical central \texorpdfstring{$(\ZZ_2)^3$}{(Z2)\^3} in \texorpdfstring{$\mathcal{G}^{\mathrm{bin}}_6$}{G6bin}]\label{cor:fold-bin-boundary-center-z2}
+The window-\(6\) boundary sector from \S\ref{subsec:bdry-tower-zeck-gut} is
+\[
+X^{\mathrm{bdry}}_6=\{\texttt{100001},\ \texttt{100101},\ \texttt{101001}\}.
+\]
+Its dyadic two-layer preimage pairs are given by Table~\ref{tab:fold6_boundary_sheet_pairs}, and satisfy the fixed difference \(34=F_9\) (so that each boundary word carries a canonical sheet parity).
+From Table~\ref{tab:fold_bin_gauge_m6_fibers} (rows \(15,18,20\)), for each \(w\in X^{\mathrm{bdry}}_6\) we have \(d^{\mathrm{bin}}_6(w)=2\);
+therefore, under the direct product decomposition of Proposition~\ref{prop:fold-bin-gauge-decomposition}
+\(
+\mathcal{G}^{\mathrm{bin}}_6\cong \prod_{w\in X_6}S_{d^{\mathrm{bin}}_6(w)}
+\),
+for each \(w\in X^{\mathrm{bdry}}_6\) there exists a canonical involution \(\tau_w\in \mathcal{G}^{\mathrm{bin}}_6\),
+which is the nontrivial element in the corresponding factor \(S_{d^{\mathrm{bin}}_6(w)}=S_2\) and the identity on all other factors.
+Note: when \(d\ge 3\), the center of \(S_d\) is trivial, so ``single-fiber swaps'' cannot produce central elements; the center \((\ZZ_2)^3\) of this corollary is contributed precisely and independently by the three boundary fibers with \(d^{\mathrm{bin}}_6(w)=2\).
+Then \(\{\tau_w:w\in X^{\mathrm{bdry}}_6\}\) pairwise commute and lie in the center, thereby generating a canonical embedding
+\[
+(\ZZ_2)^{X^{\mathrm{bdry}}_6}\cong (\ZZ_2)^3\hookrightarrow Z(\mathcal{G}^{\mathrm{bin}}_6)\subset \mathcal{G}^{\mathrm{bin}}_6.
+\]
+Moreover, via the sign map \(\mathrm{sgn}_6\) (Definition~\ref{def:fold-bin-gauge-sign}), this central subgroup determines a canonical three-dimensional coordinate sublattice within the abelianized charge lattice
+\(
+(\mathcal{G}^{\mathrm{bin}}_6)^{\mathrm{ab}}\cong (\ZZ_2)^{21}
+\),
+which can be viewed as the ``flip primitives'' of the boundary sheet parity.
+\end{corollary}
+\begin{proof}
+Since \(S_2\) is abelian, \(\tau_w\) commutes with every element in its factor; and the direct product structure ensures it commutes with all other factors as well, so \(\tau_w\in Z(\mathcal{G}^{\mathrm{bin}}_6)\).
+The \(\tau_w\) for different \(w\) act on disjoint factors, so they pairwise commute and generate \((\ZZ_2)^3\).
+Concretely, one may take \(\tau_w\) to be the transposition of the two points in \((\mathrm{Fold}^{\mathrm{bin}}_6)^{-1}(w)\) from Table~\ref{tab:fold6_boundary_sheet_pairs}.
+Finally, by Definition~\ref{def:fold-bin-gauge-sign}, \(\mathrm{sgn}_6(\tau_w)\) is \(1\) at precisely the coordinate \(w\), so this subgroup gives a canonical coordinate embedding in \((\ZZ_2)^{21}\). \qed
+\end{proof}
+
+\begin{proposition}[Gauge volume density and \texorpdfstring{$\kappa_m$}{kappa} squeeze]\label{prop:fold-bin-gauge-volume}
+By Proposition~\ref{prop:fold-bin-gauge-decomposition},
+\[
+|\mathcal{G}^{\mathrm{bin}}_m|
+=\prod_{w\in X_m}\bigl(d^{\mathrm{bin}}_m(w)!\bigr).
+\]
+Define the gauge volume density
+\[
+g_m:=\frac{1}{2^m}\log|\mathcal{G}^{\mathrm{bin}}_m|,
+\]
+and set
+\[
+\kappa_m:=\frac{1}{2^m}\sum_{w\in X_m}d^{\mathrm{bin}}_m(w)\log d^{\mathrm{bin}}_m(w)
+=\mathbb{E}_{\pi_m}[\log d^{\mathrm{bin}}_m(X)],
+\qquad
+\pi_m(w):=\frac{d^{\mathrm{bin}}_m(w)}{2^m}.
+\]
+Then for all \(m\ge 1\),
+\[
+\boxed{\ \kappa_m-1\ \le\ g_m\ \le\ \kappa_m\ },
+\]
+where the inequalities come from the elementary factorial squeeze
+\(
+d\log d-d\le \log(d!)\le d\log d
+\)
+together with \(\sum_w d^{\mathrm{bin}}_m(w)=2^m\).
+\end{proposition}
+
+\begin{remark}[Auditable invariants of the degeneracy spectral histogram (bin-fold)]\label{rem:fold-bin-auditable-invariants}
+Over the audit windows \(m\in\{6,8,10,12\}\), the degeneracy spectral histogram (Table~\ref{tab:fold_bin_degeneracy_spectrum_m6_m12}) determines not only the collision probability
+\(\mathsf{Col}^{\mathrm{bin}}_m\) and the \(\chi^2\) divergence (Proposition~\ref{prop:fold-bin-chi2-col}), but also the gauge group volume
+\(
+|\mathcal{G}^{\mathrm{bin}}_m|
+=\prod_{w\in X_m}\bigl(d^{\mathrm{bin}}_m(w)!\bigr)
+\).
+The script \texttt{\detokenize{scripts/exp_fold_bin_auditable_invariants_m6_m12.py}} outputs the corresponding exact fractions and \(\log_{10}|\mathcal{G}^{\mathrm{bin}}_m|\) (to avoid astronomical integers), and generates Table~\ref{tab:fold_bin_auditable_invariants_m6_m12}:
+\input{sections/generated/tab_fold_bin_auditable_invariants_m6_m12}
+\end{remark}
+
+\begin{theorem}[Stirling leading term at exponential precision: linear difference between \texorpdfstring{$g_m$}{gm} and \texorpdfstring{$\kappa_m$}{kappa}]\label{thm:fold-bin-gauge-volume-stirling}
+Under the setting of Proposition~\ref{prop:fold-bin-gauge-volume},
+\[
+g_m=\kappa_m-1+O\!\left(\frac{|X_m|\,m}{2^m}\right)\qquad(m\to\infty).
+\]
+In particular,
+\[
+\kappa_m-g_m
+=1+O\!\left(\frac{|X_m|\,m}{2^m}\right)
+=1+O\!\left(m\left(\frac{\varphi}{2}\right)^m\right),
+\]
+so that \(\kappa_m-g_m=1+o(1)\).
+\end{theorem}
+\begin{proof}
+For any integer \(d\ge 1\), the Stirling-type remainder bound gives
+\(
+\log(d!)=d\log d-d+O(\log d)
+\).
+Substituting into
+\(
+\log|\mathcal{G}^{\mathrm{bin}}_m|
+=\sum_{w\in X_m}\log(d^{\mathrm{bin}}_m(w)!)
+\)
+and dividing by \(2^m\) yields
+\[
+g_m
+=\frac{1}{2^m}\sum_{w\in X_m}d^{\mathrm{bin}}_m(w)\log d^{\mathrm{bin}}_m(w)
+-\frac{1}{2^m}\sum_{w\in X_m}d^{\mathrm{bin}}_m(w)
+ +O\!\left(\frac{1}{2^m}\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)\right).
+\]
+The first term is \(\kappa_m\) and the second is \(-1\) by \(\sum_w d^{\mathrm{bin}}_m(w)=2^m\).
+For the error term, using \(d^{\mathrm{bin}}_m(w)\le 2^m\Rightarrow \log d^{\mathrm{bin}}_m(w)\le m\log 2\),
+\(
+\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)\le |X_m|\,m\log 2
+\),
+giving \(O(|X_m|m/2^m)\).
+Finally, \(|X_m|=F_{m+2}=\Theta(\varphi^m)\), so \(|X_m|/2^m=\Theta((\varphi/2)^m)\); substituting back gives the second line. \qed
+\end{proof}
+
+\begin{remark}[Numerical anchor for the gauge volume at \texorpdfstring{$m=6$}{m=6}]\label{rem:fold-bin-gauge-volume-m6}
+For the \(m=6\) histogram \(2:8,3:4,4:9\),
+\(
+|\mathcal{G}^{\mathrm{bin}}_6|=(2!)^{8}(3!)^{4}(4!)^{9}
+\).
+The script \texttt{\detokenize{scripts/exp_fold_bin_gauge_m6_invariants.py}} outputs
+\(\log|\mathcal{G}^{\mathrm{bin}}_6|\), \(g_6\), \(\kappa_6\) with exact numerical values and squeeze verification (Table~\ref{tab:fold_bin_gauge_m6_invariants}):
+\input{sections/generated/tab_fold_bin_gauge_m6_invariants}
+This anchors the ``gauge volume density \(\leftrightarrow\) fold defect \(\kappa_m\)'' squeeze relation to auditable numerical objects.
+\end{remark}
+
+\begin{remark}[Incompressibility of the anomaly signature dimension (\texorpdfstring{$m=6$}{m=6})]\label{rem:fold-bin-gauge-rigidity}
+At \(m=6\), every fiber satisfies \(d^{\mathrm{bin}}_6(w)\ge 2\),
+so the dimension of \((\mathcal{G}^{\mathrm{bin}}_6)^{\mathrm{ab}}\) equals exactly the number of fibers \(|X_6|=21\).
+If the fold-gauge definition of ``fiber-independent permutation'' is kept intact, then any scheme compressing the observable anomaly to fewer than \(21\) independent bits
+must introduce cross-fiber relations, thereby breaking the direct product structure;
+therefore \((\ZZ_2)^{21}\) is the minimal complete dimension of the anomaly signature space at this caliber.
+\end{remark}

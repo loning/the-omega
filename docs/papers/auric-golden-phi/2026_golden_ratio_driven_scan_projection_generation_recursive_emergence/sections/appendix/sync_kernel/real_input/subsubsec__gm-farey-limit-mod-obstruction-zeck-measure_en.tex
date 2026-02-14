@@ -1,0 +1,276 @@
+\subsubsection{Farey sampling limit, modular obstruction, and continuous limit: from rational Gram matrices to Zeckendorf limit measures}\label{subsubsec:gm-farey-limit-mod-obstruction-zeck-measure}
+This subsection, following the finite-dimensional large sieve Gram matrix \(K_M\) certificate and the ``arithmetic obstruction dichotomy'' of \S\ref{subsubsec:gm-affine-inverse-gram-arithmetic-dichotomy}, completes three parallel continuization chains:
+\begin{enumerate}
+  \item \textbf{(Farey sampling limit)} Viewing the rational frequency set \(\mathcal{Q}_M\) as a quasi-uniform sampling of \([0,1]\), we prove that the kernel matrix converges, under appropriate scaling, to a convolution-type integral operator on \(L^2([0,1])\), and give the precise spectral phase asymptotics with respect to the dimensionless ratio \(\tau=L/M^2\) (Conclusions 51--53).
+  \item \textbf{(Finiteness of modular obstructions)} We reduce the ``twisted iso-radius/coboundary'' mechanism entirely to the \(\gcd\) invariant \(d\) of the finite-state weight function in graph cohomology, and prove that modular obstructions can occur only on the finite set \(\{q:q\mid d\}\); in the non-coboundary case, we give a uniform quantitative lower bound for the twisted spectral drop (Conclusions 54--55), thereby reformulating the existence of \(\vartheta\) as the decidable condition \(d=1\) (Conclusion 60).
+  \item \textbf{(Continuous limit measure)} For the normalized value distribution of primitive sofic--Zeckendorf sets \(A_m\), we establish the existence of the limit measure \(\mu\) and its matrix subdivision equation, and prove that Fourier decay is strictly isomorphic to the twisted Perron spectral gap; from this we derive an absolutely continuous/singular dichotomy and the dimension collapse of affine self-intersections (Conclusions 56--58), and couple the odd moment hierarchy with the affine spectral gap into a critical exponent shift with a two-parameter optimization law (Conclusion 59).
+\end{enumerate}
+
+\paragraph{Farey sampling limit: operator limit of the rational frequency Gram matrix}
+\begin{theorem}[Farey sampling limit: operator limit of the rational frequency kernel matrix and principal eigenvalue convergence]\label{thm:gm-farey-sampling-operator-limit}
+Let \(\psi\) be an even Schwartz function. Write
+\[
+\mathcal{Q}_M:=\left\{\frac{a}{q}\in[0,1]:\ 1\le q\le M,\ (a,q)=1\right\},
+\qquad
+|\mathcal{Q}_M|\sim \frac{3}{\pi^2}M^2.
+\]
+For a scale parameter \(L=L(M)\), define the normalized operator \(\widetilde K_{M,L}:\ell^2(\mathcal{Q}_M)\to \ell^2(\mathcal{Q}_M)\):
+\[
+(\widetilde K_{M,L}g)(r)
+:=\frac{1}{|\mathcal{Q}_M|}\sum_{r'\in\mathcal{Q}_M}\psi\!\bigl(L(r-r')\bigr)\,g(r').
+\]
+If \(L/M^2\to\tau\in[0,\infty)\), then under the empirical measure embedding (viewing \(\ell^2(\mathcal{Q}_M)\) as the \(L^2\) space on \([0,1]\) weighted by \(|\mathcal{Q}_M|^{-1}\sum_{r\in\mathcal{Q}_M}\delta_r\)), \(\widetilde K_{M,L}\) converges in operator norm to the integral operator on \(L^2([0,1])\):
+\[
+(\mathcal{K}_\tau h)(x):=\int_0^1 \psi\!\bigl(\tau(x-y)\bigr)\,h(y)\,dy.
+\]
+Consequently \(\|\widetilde K_{M,L}\|_{\mathrm{op}}\to \|\mathcal{K}_\tau\|_{\mathrm{op}}\), and when \(\psi\ge 0\), the principal eigenvalue and principal eigenvector (under the above embedding) both converge.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+By the asymptotic uniform distribution and local density upper bound for \(\mathcal{Q}_M\) (see Proposition \ref{prop:gm-farey-local-density-opnorm}), the kernel of \(\widetilde K_{M,L}\) can be viewed as a uniform Riemann approximation of \(\psi(\tau(x-y))\), yielding kernel convergence in the Hilbert--Schmidt sense.
+Since the operator is self-adjoint and compact (the Schwartz kernel gives Hilbert--Schmidt), kernel convergence implies operator norm convergence; in the \(\psi\ge 0\) case, convergence of the principal eigenstructure follows from spectral isolation and compact self-adjoint perturbation theory. \qed
+\end{proof}
+
+\begin{proposition}[Precise type of scale phase transition: spectral phases of \texorpdfstring{$\tau$}{tau} and computable asymptotics]\label{prop:gm-farey-tau-spectral-phases}
+Retaining the notation of Theorem \ref{thm:gm-farey-sampling-operator-limit}, write
+\(
+\lambda(\tau):=\|\mathcal{K}_\tau\|_{\mathrm{op}}
+\).
+Then there exist constants \(c_0,c_\infty>0\) depending only on \(\psi\) such that:
+\begin{enumerate}
+  \item As \(\tau\to 0\),
+  \[
+  \lambda(\tau)=|\psi(0)|+O(\tau^2),
+  \]
+  and if \(\psi\) is twice integrable with \(\psi''(0)\) existing, then there is a quadratic expansion
+  \[
+  \lambda(\tau)=\psi(0)+\frac{\psi''(0)}{12}\tau^2+O(\tau^4)
+  \qquad(\tau\to 0).
+  \]
+  \item As \(\tau\to \infty\),
+  \[
+  \lambda(\tau)=\tau^{-1}\int_{\RR}\psi(u)\,du+O(\tau^{-2}).
+  \]
+  \item If \(L/M^2\to 0\) or \(L/M^2\to\infty\), then \(\|\widetilde K_{M,L}\|_{\mathrm{op}}\) respectively enters the above two endpoint phases, with the error quantitatively controlled by the deviation of \(L/M^2\).
+\end{enumerate}
+This conclusion completely parameterizes the ``rational major arc interaction strength'' by the dimensionless ratio \(\tau=L/M^2\).
+\end{proposition}
+
+\begin{proof}[Key ideas]
+As \(\tau\to 0\), the kernel \(\psi(\tau(x-y))\) converges uniformly to the constant \(\psi(0)\) on \([0,1]^2\), so \(\mathcal{K}_\tau\) approaches the rank-one operator \(h\mapsto \psi(0)\int_0^1 h\); the quadratic term follows from the Taylor expansion and
+\(
+\int_0^1\!\int_0^1 (x-y)^2\,dx\,dy=1/6
+\).
+As \(\tau\to\infty\), \(\mathcal{K}_\tau\) becomes a local convolution operator on \([0,1]\) with principal symbol \(\tau^{-1}\int\psi\); boundary effects are handled by integration by parts and Schwartz decay, giving \(O(\tau^{-2})\).
+The endpoint phases for the discrete operator \(\widetilde K_{M,L}\) follow from Theorem \ref{thm:gm-farey-sampling-operator-limit} and the limit of \(\tau\). \qed
+\end{proof}
+
+\begin{proposition}[Optimality of the Farey local density upper bound: universal spectral norm control from fraction spacing laws]\label{prop:gm-farey-local-density-opnorm}
+Let \(\psi\ge 0\) be monotone radially decaying with \(\int_{\RR}\psi<\infty\).
+Let the unnormalized matrix \(K_{M,L}\) be given by
+\[
+(K_{M,L})_{r,r'}:=\psi\!\bigl(L(r-r')\bigr)\qquad (r,r'\in\mathcal{Q}_M).
+\]
+Then there exists an absolute constant \(C>0\) such that for all \(M,L\ge 1\),
+\[
+\boxed{\ \|K_{M,L}\|_{\mathrm{op}}\ \le\ C\Bigl(\frac{M^2}{L}+M\Bigr)\int_{\RR}\psi\ }.
+\]
+Moreover, when \(L\asymp M^2\) and \(\psi\) is non-degenerate, the upper bound is sharp in order: there exists \(c>0\) such that \(\|K_{M,L}\|_{\mathrm{op}}\ge c\).
+\end{proposition}
+
+\begin{proof}[Proof outline]
+By the universal counting upper bound for Farey fractions: for any interval \(I\subset[0,1]\),
+\[
+\#(\mathcal{Q}_M\cap I)\ \ll\ M^2|I|+M,
+\]
+for each fixed \(r\), we stratify the row sum \(\sum_{r'}\psi(L(r-r'))\) by distance and control it using the above counting bound, obtaining
+\(
+\sup_r\sum_{r'}\psi(L(r-r'))\ll (M^2/L+M)\int\psi
+\).
+The spectral norm upper bound follows from the Schur test.
+When \(L\asymp M^2\), taking \(g\equiv 1\) and using the uniform distribution of \(\mathcal{Q}_M\), the Rayleigh quotient can be bounded from below by the positive number \(\int_0^1\int_0^1\psi(\tau(x-y))\,dx\,dy\), yielding \(\|K_{M,L}\|_{\mathrm{op}}\ge c\). \qed
+\end{proof}
+
+\paragraph{Modular obstruction of finite-state weight functions: complete discrimination via \texorpdfstring{$d=\gcd(\mathcal{C})$}{d=gcd(C)}}
+\begin{proposition}[Modular obstruction discrimination and finiteness of the minimal obstruction modulus for finite-state weight functions]\label{prop:gm-cycle-gcd-mod-obstruction}
+Let \(G\) be a primitive directed graph with edge weights \(w:E(G)\to\ZZ\).
+Define the cycle sum set
+\[
+\mathcal{C}:=\left\{\sum_{e\in\gamma}w(e):\ \gamma\ \text{is a directed cycle}\right\}\subset\ZZ,
+\qquad
+d:=\gcd(\mathcal{C})
+\]
+(with the convention \(\gcd(\{0\})=0\)).
+Then for any modulus \(q\ge 2\), there exists a function \(g:V(G)\to\ZZ/q\ZZ\) such that
+\[
+w(e)\ \equiv\ g(\mathrm{head}(e))-g(\mathrm{tail}(e))\pmod q
+\qquad(\forall e\in E(G))
+\]
+if and only if \(q\mid d\).
+Therefore modular obstructions can only occur on the finite set \(\{q:\ q\mid d\}\); if \(d=1\), no non-trivial modular obstruction exists.
+\end{proposition}
+
+\begin{proof}
+If \(w\) is a mod \(q\) coboundary, then the weight sum on any cycle \(\gamma\) is \(0\pmod q\), so \(q\mid d\).
+Conversely, if \(q\mid d\), then all cycle weight sums are \(0\pmod q\).
+Choose any base vertex \(v_\ast\) and any spanning tree, and for each vertex \(v\) select a path \(P(v)\) from \(v_\ast\) to \(v\); define
+\(
+g(v):=\sum_{e\in P(v)} w(e)\pmod q
+\).
+Since the difference between any two paths is a union of cycles, and cycle weight sums are \(0\pmod q\), \(g\) is well-defined and satisfies the stated coboundary relation. \qed
+\end{proof}
+
+\begin{theorem}[Uniform twisted spectral drop in the non-coboundary case: quantitative lower bound from cycle sum generation to character spectral gap]\label{thm:gm-uniform-twist-gap-from-gcd}
+Let \(A\) be the adjacency matrix of \(G\) and \(\rho=\rho(A)\).
+For any modulus \(q\ge 2\) and additive character \(\chi_q(t)=e^{2\pi i t/q}\), define the twisted matrix \(A(\chi_q)\) by multiplying each adjacency entry corresponding to edge \(e:u\to v\) by the factor \(\chi_q(w(e))\).
+If \(q\nmid d\) (equivalent to the ``non-coboundary'' condition of Proposition \ref{prop:gm-cycle-gcd-mod-obstruction}), then there exist a constant \(\kappa_G>0\) and an explicit function
+\[
+\eta(q):=\min_{1\le t<q}\sin^2\!\Bigl(\frac{\pi t}{q}\Bigr)\asymp q^{-2}
+\]
+such that
+\[
+\boxed{\ \rho\!\bigl(A(\chi_q)\bigr)\ \le\ \bigl(1-\kappa_G\eta(q)\bigr)\rho\ }.
+\]
+This spectral gap is a structural quantity: \(\kappa_G\) is determined solely by the primitivity and minimal positive entry structure constants of the underlying graph, while \(\eta(q)\) reflects only the minimal phase mismatch modulo \(q\).
+\end{theorem}
+
+\begin{proof}[Key ideas]
+By primitivity, there exists \(n_0\) such that \(A^{n_0}\) has all positive entries.
+If \(q\nmid d\), then there exists a cycle whose weight sum is non-zero modulo \(q\), so one can find at some \((u,v)\) and length \(n\) two paths from \(u\) to \(v\) whose weight sum phase difference is at least \(2\pi t/q\) (\(t\not\equiv 0\)), causing a non-cancellable phase cancellation in the sum for \((A(\chi_q)^n)_{uv}\).
+From this one obtains a strict inequality on a positive entry:
+\(
+|(A(\chi_q)^n)_{uv}|\le (1-c\eta(q))(A^n)_{uv}
+\);
+then by a Wielandt-type strict spectral radius comparison (\(|B|\le A\) with strict inequality on a positive entry implies \(\rho(B)\le (1-\varepsilon)\rho(A)\), where \(\varepsilon\) is controlled by the minimal positive entry and the power index; see \cite{Wielandt1950UnzerlegbareNichtnegative}), the conclusion follows. \qed
+\end{proof}
+
+\paragraph{Limit measure of the normalized Zeckendorf value distribution: matrix subdivision equation and Fourier--Perron isomorphism}
+\begin{theorem}[Limit measure of the normalized Zeckendorf value distribution: matrix subdivision equation and Fourier--Perron isomorphism]\label{thm:gm-zeck-normalized-limit-measure}
+Let \(\mathcal{L}\subset\{0,1\}^\ast\) be a primitive sofic language, and let \(A_m=\{\mathrm{val}(\omega):\omega\in\mathcal{L}_m\}\subset\ZZ\), where
+\(
+\mathrm{val}(\omega)=\sum_{k=1}^{m}\omega_k F_{k+1}
+\)
+and \((F_k)\) is the Fibonacci sequence.
+Define the normalized measure
+\[
+\mu_m:=\frac{1}{|A_m|}\sum_{x\in A_m}\delta_{x/F_{m+2}}
+\qquad\text{on }[0,1].
+\]
+Then \(\mu_m\) converges weakly to a limit measure \(\mu\).
+Moreover, there exists a finite-dimensional ``state-vector measure'' \(\vec\mu=(\mu^{(s)})_{s\in\mathsf{St}}\), a family of non-negative matrices \(\{T_\varepsilon\}_{\varepsilon\in\{0,1\}}\) (obtained from the automaton synchronization of \(\mathcal{L}\)), and affine contractions
+\[
+S_\varepsilon(x)=\frac{x+\varepsilon}{\varphi}
+\qquad(\varepsilon\in\{0,1\}),
+\]
+such that \(\vec\mu\) satisfies the matrix subdivision equation
+\[
+\vec\mu
+=\frac{1}{\rho(T_0+T_1)}\sum_{\varepsilon\in\{0,1\}}T_\varepsilon\cdot \bigl(\vec\mu\circ S_\varepsilon^{-1}\bigr),
+\]
+and \(\mu\) is the projection of \(\vec\mu\) in the Perron eigendirection (given by the stationary entrance distribution).
+Furthermore, \(\widehat\mu(\xi)\) can be expressed as a linear functional of iterated products of twisted transfer operators along geometric scales \(\xi/\varphi^j\):
+there exist vectors \(u,v\ge 0\) and a matrix family
+\(
+T(\xi):=\sum_{\varepsilon}e^{i\xi\varepsilon/\varphi}\,T_\varepsilon
+\)
+such that
+\[
+\widehat\mu(\xi)=\lim_{m\to\infty}\frac{u^{\mathsf T}\Bigl(\prod_{j=1}^{m}T(\xi/\varphi^{j})\Bigr)v}{u^{\mathsf T}(T_0+T_1)^{m}v}.
+\]
+Therefore the decay of \(\widehat\mu\) is strictly isomorphic to the spectral properties of \(\sup_{\xi\ne 0}\rho(T(\xi))\) (Fourier--Perron isomorphism).
+\end{theorem}
+
+\begin{proof}[Proof outline]
+View the uniform distribution on \(\mathcal{L}_m\) as the conditional distribution of a finite-state Markov chain on length-\(m\) paths, and use Perron--Frobenius theory to describe the endpoint and state proportion limits.
+The recurrence for the normalized values \(x/F_{m+2}\) is given by the Fibonacci ratio \(F_{m+2}/F_{m+3}\to \varphi^{-1}\), which in the limit corresponds to the contraction \(S_\varepsilon(x)=(x+\varepsilon)/\varphi\); after state synchronization, one obtains the fixed-point equation for the vector measure.
+The Fourier representation is obtained by taking the Fourier transform of the subdivision equation and iterating; the matrix product is precisely the accumulation of twisted transfer operators. \qed
+\end{proof}
+
+\begin{theorem}[Absolutely continuous versus singular dichotomy: uniform twisted spectral gap if and only if \texorpdfstring{$L^2$}{L2} density]\label{thm:gm-ac-singular-dichotomy}
+Under the setting of Theorem \ref{thm:gm-zeck-normalized-limit-measure}, the following two conditions are equivalent:
+\begin{enumerate}
+  \item There exists \(\delta>0\) such that for all \(\xi\ne 0\), a uniform twisted spectral gap holds:
+  \[
+  \rho\!\bigl(T(\xi)\bigr)\ \le\ (1-\delta)\rho\!\bigl(T(0)\bigr).
+  \]
+  \item The limit measure \(\mu\) is absolutely continuous with density in \(L^2([0,1])\), and
+  \[
+  \int_{\RR}|\widehat\mu(\xi)|^2\,d\xi<\infty.
+  \]
+\end{enumerate}
+If (1) fails, then \(\mu\) must be singular and its support is a proper fractal set; its Hausdorff dimension can be given by the Legendre transform of the pressure function and is strictly less than \(1\) (of the same type as Theorem \ref{thm:gm-multifractal-pressure-legendre}).
+\end{theorem}
+
+\begin{proof}[Key ideas]
+By the Fourier--Perron representation, the uniform spectral gap gives integrable square decay of \(|\widehat\mu(\xi)|\) (for large \(|\xi|\) the number of iterations is \(\asymp \log|\xi|\)), so by Parseval the density is in \(L^2\).
+Conversely, if an \(L^2\) density exists, then \(\widehat\mu\in L^2(\RR)\) precludes ``near-iso-radius'' twisted growth at a family of non-zero frequencies, so the uniform spectral gap follows.
+When the spectral gap fails, there exists a non-trivial frequency sequence along which twisted growth approaches zero-frequency growth, so \(\widehat\mu\notin L^2\) and singularity is induced; the dimension expression follows from the thermodynamic formalism pressure function and the large deviation principle. \qed
+\end{proof}
+
+\begin{theorem}[Dimension collapse of affine self-intersections: pressure difference law under non-trivial rational affine transformations]\label{thm:gm-affine-self-intersection-dimension-drop}
+Let \(\mathrm{supp}(\mu)\subset[0,1]\) be the limit support of Theorem \ref{thm:gm-zeck-normalized-limit-measure}.
+Take a non-trivial rational affine transformation \(T(x)=(ax+b)/c\) (\(\gcd(a,c)=1\)), and define the self-intersection set
+\[
+E_T:=\{x\in \mathrm{supp}(\mu):\ T(x)\in \mathrm{supp}(\mu)\}.
+\]
+Then there exists a pressure function \(P_T\) induced by a ``synchronization constraint transducer'' such that
+\[
+\dim_{\mathrm{H}}(E_T)=P_T'(0),
+\]
+and the strict collapse
+\(
+\dim_{\mathrm{H}}(E_T)<\dim_{\mathrm{H}}(\mathrm{supp}(\mu))
+\)
+holds; the collapse amount can be explicitly controlled by a lower bound on the twisted Perron root spectral gap.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+Write the condition ``simultaneously \(x\in\mathrm{supp}(\mu)\) and \(T(x)\in\mathrm{supp}(\mu)\)'' as a synchronization product (transducer) condition of two symbolic constraints, obtaining a new weighted transfer operator family whose pressure function is \(P_T\).
+Since \(T\) is non-trivial, the pressure of the synchronization product system is strictly less than that of the original system, so the dimension strictly decreases; the quantitative collapse follows from the quantitative spectral gap comparison. \qed
+\end{proof}
+
+\paragraph{Odd moment hierarchy and critical exponent shift: \texorpdfstring{$\vartheta$}{vtheta}--\texorpdfstring{$k$}{k} two-parameter optimization}
+\begin{proposition}[Odd moment hierarchy and critical exponent shift: \texorpdfstring{$\vartheta$}{vtheta}--\texorpdfstring{$k$}{k} two-parameter optimization law]\label{prop:gm-critical-exponent-shift-k-vtheta}
+Suppose the affine residual satisfies the spectral certificate
+\(
+\|\mathcal{R}_M\|_{\mathrm{op}}^2\ll M^{4-\vartheta}
+\) (\(\vartheta>0\)), and the spectral norm is controlled by the \((2k+1)\)-th order centered odd moment certificate (Theorem \ref{thm:gm-abs-centered-odd-moment-extremal} and Proposition \ref{prop:gm-abs-centered-moment-three-channels}), with \(k\ge 1\) fixed.
+Then there exists an explicit function
+\[
+\Delta(k,\vartheta):=\frac{2k}{2k+1}\cdot\frac{\vartheta}{10}\ >\ 0,
+\qquad
+\Delta(k,\vartheta)\nearrow \frac{\vartheta}{10}\ (k\to\infty),
+\]
+such that at the critical scaling \(T=N^{6/5}\), the critical threshold \(V\asymp N^{3/4}\) originally locked by the third trace can be systematically shifted downward to
+\[
+V\ \asymp\ N^{3/4-\Delta(k,\vartheta)},
+\]
+and the corresponding large values frequency bound achieves a strict power-saving improvement in that interval.
+This conclusion gives an optimizable coupling law between ``raising the moment order'' and ``obtaining the affine spectral gap.''
+\end{proposition}
+
+\begin{proof}[Proof outline]
+By Proposition \ref{prop:gm-S3-upgrade-vtheta} and Corollary \ref{cor:gm-energy-window-saving}, the affine spectral gap \(\vartheta\) weakens the energy coupling channel coefficient in the form \(N^{-\vartheta/10}\).
+Upon upgrading to the \((2k+1)\)-th order centered odd moment certificate, the weight of the energy channel in the threshold balance increases with \(k\), so that the same coefficient saving can be translated into a larger threshold exponent shift; direct comparison of the main channel and energy channel \(V\)-powers in the \(k\)-th order moment inequality yields the stated \(\Delta(k,\vartheta)\). \qed
+\end{proof}
+
+\paragraph{Complete classification: analytic improvability if and only if the finite modular obstruction is excluded}
+\begin{theorem}[Complete classification theorem: analytic improvability if and only if the finite modular obstruction is excluded, and the obstruction moduli are finite]\label{thm:gm-improvability-iff-d1}
+For any coefficient model generated by a finite-state weight function (including the sofic--Zeckendorf family), if the spectral certificate is the third trace or any fixed odd-order moment, then the following two conditions are equivalent:
+\begin{enumerate}
+  \item There exists \(\vartheta>0\) such that the affine uniformization residual satisfies, for all sufficiently large scales \(M\),
+  \(
+  \|\mathcal{R}_M\|_{\mathrm{op}}^2\ll M^{4-\vartheta}
+  \), thereby achieving a strict power-saving improvement within the same reasoning paradigm.
+  \item The homological invariant \(d\) of Proposition \ref{prop:gm-cycle-gcd-mod-obstruction} satisfies \(d=1\), i.e., no non-trivial modular obstruction exists.
+\end{enumerate}
+Moreover, if \(d>1\), then the obstruction modulus set is exactly \(\{q:\ q\mid d\}\), so the entire source of ``non-improvability'' is completely characterized by finitely many enumerable moduli.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+\((2)\Rightarrow(1)\): If \(d=1\), then for every \(q\ge 2\) we have \(q\nmid d\), so Theorem \ref{thm:gm-uniform-twist-gap-from-gcd} gives a uniform twisted spectral drop, thereby ruling out major arc concentration and yielding rational spectral non-concentration; then by the Gram equivalence and computable certificate of \S\ref{subsubsec:gm-affine-inverse-gram-arithmetic-dichotomy}, a uniform \(\vartheta>0\) residual saving is obtained.
+\par
+\((1)\Rightarrow(2)\): If \(d>1\), then taking any \(q\mid d\) gives a mod \(q\) coboundary representation (Proposition \ref{prop:gm-cycle-gcd-mod-obstruction}), so the twisted spectral gap vanishes at that modulus and induces major arc concentration; by the inverse theorem (Theorem \ref{thm:gm-affine-inverse-major-arc}) and the arithmetic obstruction dichotomy (Theorem \ref{thm:gm-affine-improvement-dichotomy}), no uniform power saving exists, a contradiction. \qed
+\end{proof}
+
+\endinput

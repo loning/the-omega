@@ -1,0 +1,162 @@
+\label{subsec:xi-certificate-coherence-orthogonal-axis-capacity-part2}
+
+\begin{remark}[Quadratic compression gap between unitary slice and off-critical direction]\label{rem:xi-unitary-vs-offcritical-bit-gap}
+On the unitary slice, the relationship between the height parameter \(x\in\RR\) and the phase box coordinate \(u=\upsilon(x)=\frac{1}{\pi}\arctan(x)\) satisfies
+\(
+\frac{\dd u}{\dd x}=\frac{1}{\pi(1+x^2)}
+\)
+(equation \eqref{eq:unit-circle-phase-derivative}), so when \(|x|\asymp T\), distinguishing ``height scale \(\asymp T\)'' requires only phase resolution \(\Delta u\asymp 1/T\), corresponding to a bit budget of \(\Theta(\log T)\).
+In contrast, Theorem \ref{thm:xi-offcritical-endpoint-resolution-lower-bound} yields: to exclude off-critical zeros with fixed offset lower bound \(\delta\ge\delta_0\) within the same height window, one must pay a bit budget of \(p=\Theta(2\log T)\) at the endpoint layer.
+This transition concretizes the information projection of ``leaving the slice'' as an insurmountable resolution--bit-complexity barrier.
+\end{remark}
+
+\paragraph{Addresses as ``legal readout prefixes'': two verifiable quantitative laws}\label{par:xi-legal-readout-prefix-two-laws}
+Under the present ``address precedes value'' auditable semantics, a prefix qualifies as a \emph{legal address} not solely by its formal length, but is simultaneously constrained by two mutually irreplaceable thresholds: the first is a synchronization gate at the temporal layer (unsynchronized implies statistical-type \(\mathsf{NULL}\), Remark \ref{rem:Ym-stat-null-unsync}); the second is a precision gate under endpoint compactification (the compactification Jacobian compresses dynamic range into the least-significant-bit precision, see Appendix equation \eqref{eq:app-precision-amplification} and Theorem \ref{thm:xi-radial-information-projection-lower-bound} below).
+The two thresholds respectively answer ``when is the prefix syntactically referrable'' as an address and ``when does that address geometrically suffice to carry resolvable differences,'' and thus yield two verifiable quantitative laws governing ``scan budget \(\Rightarrow\) resolution.''
+\begin{enumerate}
+  \item \textbf{Syntax/decoding layer: spectral law for legal prefix density.}
+  Let \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\subset X_m^n\) denote the set of unsynchronized output prefixes of length \(n\) (Definition \ref{def:Ym-unsync-prefix-count}), and write \(N_m^{\mathrm{unsync}}(n):=\#\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) for its count.
+  Under the ``unsynchronized implies no address'' regime, \(\mathcal{W}_{m}^{\mathrm{unsync}}(n)\) precisely characterizes the object-level density of statistical-type \(\mathsf{NULL}\) at length-\(n\) prefixes: its elements correspond to those prefixes for which the deterministic filtering state remains non-singleton (\(|S_n|>1\)) after readout, and hence do not suffice at the type level to generate a referrable address object.
+  Under the hypotheses of Theorem \ref{thm:Ym-unsync-prefix-pf-sharp}, there exist a constant \(c_m>0\) and a second spectral radius \(\rho_{\mathrm{amb},2}(m)<\rho_{\mathrm{amb}}(m)<2\) such that the unsynchronized density admits the auditable sharp Perron--Frobenius asymptotic
+  \begin{equation}\label{eq:xi-unsync-prefix-density-pf-law}
+  \boxed{\;
+  \frac{N_m^{\mathrm{unsync}}(n)}{2^n}
+  =c_m\,e^{-\varepsilon_m n}\ +\ O\!\Bigl(\bigl(\tfrac{\rho_{\mathrm{amb},2}(m)}{2}\bigr)^n\Bigr),
+  \qquad
+  \varepsilon_m=\log 2-\log\rho_{\mathrm{amb}}(m)>0,\quad n\to\infty\; }.
+  \end{equation}
+  Hence the scan complexity for ``legal address emergence'' is locked at the exponential scale by the Perron root \(\rho_{\mathrm{amb}}(m)\) of the ambiguity subgraph: each additional readout prefix bit reduces the illegal prefix density by the fixed ratio \(e^{-\varepsilon_m}\), with a leading constant and spectral gap error term.
+  The corresponding threshold-type minimal scan length is given by Corollary \ref{cor:Ym-scan-length-asymptotic}.
+  \item \textbf{Geometry/precision layer: bit-complexity lower bound from endpoint compactification.}
+  For the parameter-free compactification \(u=\upsilon(x)=\pi^{-1}\arctan(x)\), from \(\frac{\dd x}{\dd u}=\pi(1+x^2)\) (equation \eqref{eq:app-precision-amplification}) one sees that when \(|x|\) is large, a small phase box error is amplified into a non-negligible amplitude-domain error.
+  In the certificate semantics of the present work, this amplification law is rigorously compiled into a hard lower bound on ``bit complexity \(\Rightarrow\) verifiable precision'': if the protocol only allows providing a dyadic bracket for \(u\) and requires offline verification to yield a single-valued verifiable readout for \(x\), then the required number of certificate bits must grow with \(\log(1+x^2)\) (Theorem \ref{thm:xi-radial-information-projection-lower-bound}).
+\end{enumerate}
+
+\begin{corollary}[Double-threshold lower bound on scan budget: syntactic synchronization and endpoint precision]\label{cor:xi-legal-readout-prefix-double-budget}
+Fix resolution \(m\) and assume the hypotheses of Theorem \ref{thm:Ym-unsync-prefix-pf-sharp}.
+Given thresholds \(\eta\in(0,1)\) and amplitude window \(X\ge 1\).
+Then:
+\begin{enumerate}
+  \item \textbf{(Syntactic budget)}
+  Let \(n_{\eta}\) be the minimal scan length defined in Corollary \ref{cor:Ym-scan-length-asymptotic} such that
+  \(\frac{N_m^{\mathrm{unsync}}(n)}{2^n}\le \eta\).
+  Then as \(\eta\downarrow 0\) one has the asymptotic law
+  \[
+  n_{\eta}
+  =\frac{1}{\varepsilon_m}\log\!\Bigl(\frac{c_m}{\eta}\Bigr)\ +\ O(1),
+  \]
+  where \(\varepsilon_m\) and \(c_m\) are respectively the entropy gap and the Perron leading-term constant of Theorem \ref{thm:Ym-unsync-prefix-pf-sharp}.
+  \item \textbf{(Precision budget)}
+  Denote by \(b\in\NN\) the dyadic depth of the phase box (corresponding to \(n\) in Theorem \ref{thm:xi-radial-information-projection-lower-bound}).
+  Suppose a certificate protocol only allows outputting a dyadic bracket \(J\) for \(u=\upsilon(x)\) with \(|J|\lesssim 2^{-b}\), and requires that for all inputs satisfying \(|x|\le X\), offline verification produces a single-valued verifiable readout for \(x\) with absolute error at most \(1\).
+  Then by Theorem \ref{thm:xi-radial-information-projection-lower-bound} (taking \(\varepsilon=1\) and the worst case over \(|x|\le X\)) one must have
+  \[
+  b\ \ge\ \log_2\!\bigl(\pi(1+X^2)\bigr)\ +\ O(1).
+  \]
+  \item \textbf{(Composite lower bound)}
+  If an implementation uses a single scan budget \(N\) simultaneously as both the temporal-layer prefix length and the dyadic depth (for example, each scan step simultaneously extends the readout prefix by one bit and refines the dyadic bracket once, so that both types of depth equal \(N\)), and requires simultaneously meeting both types of thresholds,
+  then asymptotically one must have
+  \begin{equation}\label{eq:xi-legal-readout-prefix-max-budget}
+  \boxed{\;
+  N\ \ge\ \max\Bigl\{\ \frac{1}{\varepsilon_m}\log\!\Bigl(\frac{c_m}{\eta}\Bigr),\ \log_2\!\bigl(\pi(1+X^2)\bigr)\Bigr\}\ +\ O(1)\; }.
+  \end{equation}
+\end{enumerate}
+Moreover, the two types of budgets are orthogonal in the type semantics of the present work: increasing one side's budget cannot substitute for the other side's threshold violation (cf.\ the non-substitutability assertion of Theorem \ref{thm:xi-null-complete-trichotomy-offline}).
+\end{corollary}
+
+\begin{theorem}[Information projection lower bound for radial offset: certifiable bit complexity of compactified readout]\label{thm:xi-radial-information-projection-lower-bound}
+Let \(x\in\RR\), and let the parameter-free compactification
+\[
+u=\upsilon(x):=\frac{1}{\pi}\arctan(x)
+\]
+map the non-compact real-axis coordinate to a phase box coordinate (equation \eqref{eq:unit-circle-phase-derivative}).
+Suppose a protocol attempts to certify \(x\) solely through an \(n\)-bit dyadic approximation of \(u\):
+namely, the readout/certificate at the object level only allows providing a dyadic bracket \(J=[u_-,u_+]\) satisfying
+\(
+u\in J,\ |J|\lesssim 2^{-n}
+\);
+and requires the existence of a deterministic offline verification rule that recovers from \(J\) a single-valued verifiable readout for \(x\) with absolute error at most \(\varepsilon\in(0,1]\).
+Then the following bit-complexity lower bound must hold:
+\begin{equation}\label{eq:xi-radial-info-projection-lb}
+\boxed{\;
+n\ \ge\ \log_2\!\Bigl(\frac{1}{\varepsilon}\Bigr)\ +\ \log_2(1+x^2)\ +\ \log_2\pi\ +\ O(1)\; }.
+\end{equation}
+\par
+Applying this to the radial parameter of the completed interface
+\[
+u_L(s)=L^{2s-1}=e^{x+\mathrm{i}\theta},
+\qquad
+x=\log|u_L(s)|=(2\Re(s)-1)\log L,
+\]
+one obtains: any regime claiming to give a verifiable single-valued readout for \(x\) at fixed precision \(\varepsilon\), if \(L\to\infty\) is allowed, must have unbounded certificate bit count \(n\) when \(\Re(s)\neq\tfrac12\), growing at least as \(\log_2(1+x^2)\asymp 2\log_2\log L\).
+\end{theorem}
+
+\begin{proof}
+By the precision amplification law \eqref{eq:app-precision-amplification} from the appendix,
+\(
+\frac{\dd x}{\dd u}=\pi(1+x^2)
+\)
+and \(x=\tan(\pi u)\) is strictly monotone on the \(u\)-box.
+Hence if \(J=[u_-,u_+]\) has width \(|J|\), then the width of its preimage interval satisfies
+\[
+|\,\upsilon^{-1}(J)\,|
+:=|\,\tan(\pi u_+)-\tan(\pi u_-)\,|
+\gtrsim \pi(1+x^2)\,|J|
+\]
+(the constant depends only on the bracket convention and the local range constraint \(\varepsilon\le 1\); it originates from the local Jacobian lower bound of \(\tan\) on the compactification box).
+To require from \(J\) a single-valued verifiable readout for \(x\) with absolute error \(\le\varepsilon\), one must have
+\(
+|\,\upsilon^{-1}(J)\,|\lesssim \varepsilon
+\), whence
+\(
+|J|\lesssim \varepsilon/(\pi(1+x^2))
+\).
+Substituting \(|J|\lesssim 2^{-n}\) and taking the binary logarithm yields \eqref{eq:xi-radial-info-projection-lb}. \qed
+\end{proof}
+
+\begin{corollary}[Error threshold bit budgets for compactified readout (absolute/relative)]\label{cor:xi-radial-info-projection-thresholds}
+Under the setting of Theorem \ref{thm:xi-radial-information-projection-lower-bound}:
+\begin{enumerate}
+  \item \textbf{(Fixed absolute error threshold)}
+  To obtain from an \(n\)-bit dyadic bracket a single-valued verifiable readout for \(x\) with absolute error \(\le 1\), one must have
+  \[
+  n\ \ge\ \log_2\!\bigl(\pi(1+x^2)\bigr)\ +\ O(1)
+  =2\log_2|x|\ +\ O(1)\qquad(|x|\to\infty).
+  \]
+  \item \textbf{(Fixed relative error threshold)}
+  Given \(\eta\in(0,1)\) and \(x\neq 0\).
+  To achieve relative error \(|\widehat x-x|\le \eta|x|\), one must have
+  \[
+  n\ \ge\ \log_2\!\Bigl(\frac{\pi(1+x^2)}{\eta|x|}\Bigr)\ +\ O(1)
+  =\log_2(\pi|x|)\ +\ \log_2\!\Bigl(\frac{1}{\eta}\Bigr)\ +\ O(1)\qquad(|x|\to\infty),
+  \]
+  where the constant term depends only on the dyadic bracket convention and may have bounded dependence on \(\eta\) (but is independent of \(x\)).
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Part (1) follows by setting \(\varepsilon=1\) in \eqref{eq:xi-radial-info-projection-lb}.
+Part (2) is obtained by replacing the ``error threshold \(\varepsilon\)'' in the proof of Theorem \ref{thm:xi-radial-information-projection-lower-bound} with \(\eta|x|\) and repeating the same estimate to get
+\(
+n\ge \log_2(\pi(1+x^2)/(\eta|x|))+O(1)
+\);
+as \(|x|\to\infty\), \(\log_2(1+x^2)=2\log_2|x|+O(1)\), yielding the stated leading-order expansion. \qed
+\end{proof}
+
+\begin{corollary}[Scale consistency rigidity: \texorpdfstring{$\Re(s)=\tfrac12$}{Re(s)=1/2} as the unique low-complexity slice]\label{cor:xi-critical-line-unique-low-complexity-slice}
+Under the unitary slice verification semantics (Definition \ref{def:xi-visible-read-null}, with \(X_{\mathrm{vis}}=\mathsf{Phase}\)) and the three-register closure of the present work,
+if a ``zero verifiability protocol'' requires that when the scale \(L\) is allowed to grow arbitrarily, the certificate length remains uniformly bounded in \(L\) (growing only with the required error \(\varepsilon\)),
+then any addressable continuous zero event must satisfy
+\[
+\Re(s)=\tfrac12.
+\]
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:xi-radial-information-projection-lower-bound},
+if one attempts within the verifiable semantics to produce a single-valued readout for the radial parameter \(x=\log|u_L(s)|=(2\Re(s)-1)\log L\) while maintaining absolute error \(\varepsilon\) (fixed), then the required bit count \(n\) includes at least a term \(\log_2(1+x^2)\).
+When \(\Re(s)\neq\tfrac12\), one has \(|x|\sim |\Re(s)-\tfrac12|\,\log L\to\infty\) (\(L\to\infty\)), whence \(\log_2(1+x^2)\to\infty\), contradicting the ``uniformly bounded in \(L\)'' complexity requirement.
+Hence one must have \(x\equiv 0\), i.e., \(|u_L(s)|=1\), equivalent to \(\Re(s)=\tfrac12\). \qed
+\end{proof}
+
+\endinput

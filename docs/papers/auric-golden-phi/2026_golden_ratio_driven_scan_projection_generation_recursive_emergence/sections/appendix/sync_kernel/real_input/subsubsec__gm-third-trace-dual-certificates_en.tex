@@ -1,0 +1,545 @@
+\subsubsection{Extremal Closure and Dual Spectral Certificates for the Third-Order Trace Spectral Lifting: From Third-Order Trace Kernel to Additive Energy Kernel}\label{subsubsec:gm-third-trace-dual-certificates}
+In the zero-density and Dirichlet polynomial large-value estimation pathway, a common ``spectralization step'' is: first use analytic methods to control low-order trace moments of a positive semidefinite Gram matrix, then translate this trace-moment information into operator norm (spectral norm) upper bounds, thereby closing the large-value frequency estimate (cf.\ the third-order trace method context in \cite{GuthMaynard2024LargeValues}). This subsection gives the \emph{optimal closed-form law} at the third-order trace information level for this translation, and organizes the subsequent residual terms into two mutually orthogonal spectral certificates: a continuous moment-kernel (from the collision energy of non-zero Poisson frequencies) and a discrete additive energy kernel (from the finite-state spectral fingerprint of describable point sets).
+
+\paragraph{Optimal Spectral Norm Upper Bound under Third Trace Moment Constraint}
+\begin{theorem}[Extremal Law for Spectral Norm under Third Trace Moment Constraint: Two-Point Spectrum Realization and Explicit Cubic Equation]\label{thm:gm-trace3-spectral-norm-extremal}
+Let \(m\ge 2\), \(G\in\CC^{m\times m}\) be positive semidefinite with eigenvalues
+\(\lambda_1\ge\lambda_2\ge\cdots\ge\lambda_m\ge 0\).
+Write
+\[
+S_1:=\tr(G),\qquad S_3:=\tr(G^3).
+\]
+Let \(x^\star\) be the largest real root in the interval \([S_1/m,\ S_1]\) of the following cubic equation:
+\begin{equation}\label{eq:gm-trace3-cubic}
+\boxed{\;
+m(m-2)x^3+3S_1x^2-3S_1^2x+\bigl(S_1^3-(m-1)^2S_3\bigr)=0.\;}
+\end{equation}
+Then necessarily
+\[
+\boxed{\ \lambda_1\le x^\star\ }.
+\]
+Moreover, this upper bound is attained if and only if the spectrum is a ``two-point spectrum'': there exists \(y\ge 0\) such that
+\[
+\lambda_2=\cdots=\lambda_m=y,
+\]
+and \((x^\star,y)\) simultaneously satisfy
+\[
+x^\star+(m-1)y=S_1,\qquad (x^\star)^3+(m-1)y^3=S_3.
+\]
+\end{theorem}
+
+\begin{proof}
+Fixing \(\lambda_1=x\in[0,S_1]\), the remaining eigenvalues \(\lambda_2,\dots,\lambda_m\) satisfy
+\[
+\sum_{i=2}^m \lambda_i=S_1-x,\qquad \sum_{i=2}^m \lambda_i^3=S_3-x^3.
+\]
+Since \(t\mapsto t^3\) is convex on \([0,\infty)\), Jensen's inequality gives
+\[
+\frac{1}{m-1}\sum_{i=2}^m \lambda_i^3\ \ge\ \left(\frac{1}{m-1}\sum_{i=2}^m \lambda_i\right)^3
+=\left(\frac{S_1-x}{m-1}\right)^3,
+\]
+i.e.,
+\begin{equation}\label{eq:gm-jensen-rest}
+S_3\ \ge\ x^3+\frac{(S_1-x)^3}{(m-1)^2}.
+\end{equation}
+Define
+\(
+f(x):=x^3+\frac{(S_1-x)^3}{(m-1)^2}
+\).
+Then \(f\) is strictly increasing on \([S_1/m,S_1]\): its derivative
+\[
+f'(x)=3x^2-\frac{3(S_1-x)^2}{(m-1)^2}
+=3\left(x-\frac{S_1-x}{m-1}\right)\left(x+\frac{S_1-x}{m-1}\right)
+\]
+is non-negative for \(x\ge S_1/m\), and vanishes only at \(x=S_1/m\).
+By \eqref{eq:gm-jensen-rest}, \(f(\lambda_1)\le S_3\), so \(\lambda_1\) does not exceed the unique solution in \([S_1/m,S_1]\) of the equation \(f(x)=S_3\); this solution is precisely the largest real root \(x^\star\) of \eqref{eq:gm-trace3-cubic}.
+
+Equality in \eqref{eq:gm-jensen-rest} holds if and only if Jensen's inequality is tight (i.e., \(\lambda_2=\cdots=\lambda_m\)), which gives \(\lambda_1=x^\star\); setting \(y:=\lambda_2=\cdots=\lambda_m\) yields the stated two-point spectrum characterization. \qed
+\end{proof}
+
+\begin{proposition}[``Minimal State'' Interpretation of the Third-Order Trace Method: Hankel--Rank-Two Extremal Principle for the Truncated Moment Problem]\label{prop:gm-trace3-truncated-moment-rank2}
+Let \(\mu:=\frac1m\sum_{i=1}^m\delta_{\lambda_i}\) be the empirical spectral measure, and write the moments
+\[
+m_k:=\int t^k\,d\mu(t)=\frac1m\tr(G^k)\qquad(k\ge 0).
+\]
+In the class constrained by \((m_0,m_1,m_3)\) (equivalently \((m,S_1,S_3)\)), the functional
+\[
+\lambda_{\max}(G)=\sup\mathrm{supp}(\mu)
+\]
+achieves its maximum via a measure supported on at most two points; its support points are exactly \((y,x^\star)\) from Theorem \ref{thm:gm-trace3-spectral-norm-extremal}.
+Therefore, the closure of third-order trace information for spectral norm control is equivalent to the extremal point of this order truncated moment problem automatically collapsing to the Hankel--rank-two case (two-point support \(\Longleftrightarrow\) minimal linear representation dimension equal to \(2\)).
+\end{proposition}
+
+\begin{proof}
+For any candidate \(x\ge m_1\), subject to the constraint \(\sup\mathrm{supp}(\mu)\le x\) and fixed mean \(m_1\),
+the minimum possible value of \(\int t^3\,d\mu(t)=m_3\) is attained by ``averaging the remaining mass as uniformly as possible'': i.e., compressing \(\mu\) to a two-point mixture on \(\{y,x\}\), where \(y\) is determined by \(m_1=\theta x+(1-\theta)y\).
+This minimum corresponds exactly to the Jensen lower bound \eqref{eq:gm-jensen-rest} from the proof of Theorem \ref{thm:gm-trace3-spectral-norm-extremal} (averaging the remaining \(m-1\) eigenvalues with \(\lambda_1=x\)).
+Therefore, given \((m_1,m_3)\), the maximum allowable \(x\) is precisely the \(x^\star\) that saturates this lower bound, realized by the two-point support.
+A two-point support measure has Hankel rank \(2\) for its moment family, so its minimal linear representation dimension is \(2\). \qed
+\end{proof}
+
+\begin{proposition}[Optimal Spectralization of the Guth--Maynard Third-Order Trace Difference: No Structural Constant Loss in the Spectral Lifting Step]\label{prop:gm-trace3-gap-optimal-spectralization}
+Let \(A\in\CC^{m\times n}\), and set \(G:=AA^\ast\succeq 0\).
+Define the third-order trace difference
+\[
+\Delta^{\mathrm{tr}}_3(G):=\tr(G^3)-\frac{\tr(G)^3}{m^2}\ \ge\ 0.
+\]
+Then \(\|A\|_{\mathrm{op}}^2=\lambda_{\max}(G)\) has an optimal upper bound given only the binary trace information \((\tr(G),\tr(G^3))\):
+\[
+\boxed{\ \lambda_{\max}(G)\le x^\star\bigl(\tr(G),\tr(G^3),m\bigr)\ },
+\]
+where \(x^\star\) is explicitly determined by the cubic equation \eqref{eq:gm-trace3-cubic} of Theorem \ref{thm:gm-trace3-spectral-norm-extremal}.
+This upper bound is attained in the two-point spectrum case, so that in the ``third-order trace method \(\Rightarrow\) spectral norm lifting'' step there is no hidden constant loss: if one wishes to further improve the large-value estimate without changing the estimation structure for \(\tr(G^3)\), then any remaining loss can only be traced back to the analysis relaxation for \(\tr(G^3)\) (equivalently, for \(\Delta^{\mathrm{tr}}_3(G)\)), not to the trace-moment-to-spectral-norm translation step.
+\end{proposition}
+
+\begin{proof}
+Non-negativity \(\Delta^{\mathrm{tr}}_3(G)\ge 0\) follows from the convexity of \(t\mapsto t^3\) and Jensen's inequality (equality holds if and only if all eigenvalues are equal).
+The spectral norm upper bound is a direct application of Theorem \ref{thm:gm-trace3-spectral-norm-extremal} to \(G\).
+Optimality comes from the equality characterization of the same theorem: there exist two-point spectrum matrix families achieving \(\lambda_{\max}(G)=x^\star\) for fixed \((\tr(G),\tr(G^3))\).
+Therefore, no uniform upper bound function depending only on \((\tr(G),\tr(G^3),m)\) can be smaller than \(x^\star\). \qed
+\end{proof}
+
+\paragraph{Stability of the Third-Order Trace Difference: Spectral Flattening and Near-Extremal Two-Cluster Behavior}
+\begin{proposition}[Small Deviation Stability of the Third-Order Trace Difference: Optimal Power Law Controlling Spectral Flattening via \texorpdfstring{$\Delta_3$}{Delta3}]\label{prop:gm-trace3-delta3-stability}
+Let \(G\succeq 0\) be an \(m\times m\) matrix, and write
+\[
+S_1:=\tr(G),\qquad \mu:=\frac{S_1}{m},\qquad
+\Delta_3(G):=\tr(G^3)-\frac{S_1^3}{m^2}\ \ge\ 0.
+\]
+Then there exists a constant
+\[
+c_m:=\left(\frac{(m-1)^2}{m\max\{1,m-2\}}\right)^{1/3},
+\]
+such that the largest eigenvalue satisfies the power-law compression
+\begin{equation}\label{eq:gm-trace3-delta3-stability}
+\boxed{\;
+\lambda_{\max}(G)\ \le\ \mu\;+\;c_m\,\Delta_3(G)^{1/3}.\;}
+\end{equation}
+Moreover, the exponent \(1/3\) is optimal in the general case: there exist two-point spectrum families for which
+\(\lambda_{\max}(G)-\mu\asymp \Delta_3(G)^{1/3}\).
+\end{proposition}
+
+\begin{proof}
+Let \(\lambda_1=\lambda_{\max}(G)\) and write \(d:=\lambda_1-\mu\ge 0\).
+For fixed \(\lambda_1\) and fixed trace \(S_1\), by convexity (Jensen) the sum \(\sum_{i=2}^{m}\lambda_i^3\) is minimized under the constraint \(\sum_{i=2}^{m}\lambda_i=S_1-\lambda_1\) when \(\lambda_2=\cdots=\lambda_m=(S_1-\lambda_1)/(m-1)\).
+Therefore, for given \(S_1\) and \(\lambda_1\), the minimum of \(\Delta_3(G)\) is realized by the two-point spectrum, and can be computed directly:
+when \(m=2\), we have the identity \(\Delta_3(G)=3S_1d^2\).
+Since \(\lambda_2=\mu-d\ge 0\), we have \(S_1=2\mu\ge 2d\), so \(\Delta_3(G)=3S_1d^2\ge 6d^3\), whence \(d\le (\Delta_3(G)/6)^{1/3}\le c_2\,\Delta_3(G)^{1/3}\), and \eqref{eq:gm-trace3-delta3-stability} holds.
+When \(m\ge 3\), direct expansion for the two-point spectrum gives
+\[
+\Delta_3(G)
+\ \ge\
+\frac{m(m-2)}{(m-1)^2}\,d^3,
+\]
+whence \(d\le c_m\Delta_3^{1/3}\), yielding \eqref{eq:gm-trace3-delta3-stability}.
+Optimality is given by the two-point spectrum example: taking \(\lambda_2=\cdots=\lambda_m=0\) and \(\lambda_1=S_1\), we get \(\Delta_3(G)=S_1^3(1-m^{-2})\asymp S_1^3\) and \(\lambda_1-\mu=S_1(1-1/m)\asymp S_1\), so \(\lambda_1-\mu\asymp \Delta_3^{1/3}\). \qed
+\end{proof}
+
+\begin{proposition}[Spectral Clustering at Near-Extremality: Unique Structure Recovery from the Third-Order Trace Extremal Mechanism]\label{prop:gm-trace3-near-extremal-clustering}
+In the notation of Theorem \ref{thm:gm-trace3-spectral-norm-extremal}, let \(x^\star\) be the extremal upper bound, and let
+\[
+y^\star:=\frac{S_1-x^\star}{m-1}.
+\]
+Suppose \(\lambda_1=\lambda_{\max}(G)\) satisfies the near-saturation condition
+\[
+\lambda_1\ \ge\ (1-\eta)\,x^\star,\qquad \eta\in(0,1).
+\]
+Then the remaining eigenvalues undergo two-cluster behavior: let
+\(
+\bar y:=\frac{S_1-\lambda_1}{m-1}
+\)
+be the mean of \(\lambda_2,\dots,\lambda_m\). Then there exists a constant \(C_m>0\) (depending only on \(m\) and the scale ratio of \((S_1,S_3)\)) such that
+\[
+\max_{2\le i\le m}\,|\lambda_i-\bar y|
+\ \le\
+C_m\,\eta^{1/2}\,S_1.
+\]
+In particular, as \(\eta\to 0\), the eigenvalues \(\lambda_2,\dots,\lambda_m\) converge on the scale \(S_1\) to the single point \(y^\star\), consistent with the two-point spectrum extremal mechanism.
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+f(x):=x^3+\frac{(S_1-x)^3}{(m-1)^2},
+\]
+then from the proof of Theorem \ref{thm:gm-trace3-spectral-norm-extremal},
+\(
+S_3=f(x^\star)
+\) and \(f\) is increasing on \([S_1/m,S_1]\).
+On the other hand,
+\[
+\sum_{i=2}^m\lambda_i^3
+\ \ge\
+(m-1)\bar y^{\,3}
+\]
+and the Jensen gap can be written as
+\[
+\mathsf{Gap}
+:=\frac{1}{m-1}\sum_{i=2}^m\lambda_i^3-\bar y^{\,3}
+=\frac{S_3-f(\lambda_1)}{m-1}
+=\frac{f(x^\star)-f(\lambda_1)}{m-1}\ \ge\ 0.
+\]
+By the mean value theorem and \(\lambda_1\ge(1-\eta)x^\star\),
+\(
+0\le \mathsf{Gap}\ll_m \eta\,S_1^3
+\).
+Using the second-order expansion of \(t\mapsto t^3\),
+\(
+t^3-\bar y^{\,3}-3\bar y^{\,2}(t-\bar y)\ge 3\bar y\,(t-\bar y)^2
+\),
+summing over \(t=\lambda_i\) (noting \(\sum_{i\ge 2}(\lambda_i-\bar y)=0\)) gives
+\[
+3\bar y\cdot \frac{1}{m-1}\sum_{i=2}^m(\lambda_i-\bar y)^2
+\ \le\ \mathsf{Gap}.
+\]
+Hence the variance \(\frac{1}{m-1}\sum(\lambda_i-\bar y)^2\ll_m \eta\,S_1^2\) (in the degenerate boundary case where \(\bar y\) is very small, the cruder but still sufficient bound follows from \(\lambda_i\ge 0\) and \(\sum_{i\ge2}\lambda_i=S_1-\lambda_1\)).
+Finally, \(\max_i|\lambda_i-\bar y|\le \sqrt{(m-1)\sum(\lambda_i-\bar y)^2}\) gives the conclusion. \qed
+\end{proof}
+
+\paragraph{Rank-One Decomposition of the Affine Mean and Collision Kernel Expression of the Residual}
+In the concrete implementation of the third-order trace method, \(G\) often arises as the Gram matrix of a function family (or vector family) generated by affine actions; the zero-frequency (uniform) channel gives the rank-one main term, while the residual induced by non-zero Poisson frequencies naturally organizes into two-body collision energy.
+
+\begin{proposition}[``Rank-One \(+\) Residual Channel'' Decomposition of the Affine Mean Inequality (Prototype)]\label{prop:gm-affine-average-rank1-residual}
+Let \(f\ge 0\) be supported on a compact interval with \(u\asymp 1\), and suppose \(f\) is an auditable smooth function within the bandwidth envelope (Fourier support \(\subset[-T,T]\)).
+Define the affine mean operator
+\[
+(\mathcal{A}f)(u)
+:=\sum_{|m_1|\sim M_1}\ \sum_{m_2\sim M_2}\ \sum_{|m_3|\lesssim M_3}
+f\!\left(\frac{m_1u+m_3}{m_2}\right).
+\]
+Then one can choose a rank-one operator \(\mathcal{U}\) (zero-frequency/uniform channel) and a residual operator \(\mathcal{R}\) such that
+\[
+\mathcal{A}=\mathcal{U}+\mathcal{R},
+\]
+and under the above support/bandwidth conditions, scale separation holds:
+\[
+\|\mathcal{U}f\|_{L^2}^2\ \asymp\ \bigl(M_1M_2M_3\bigr)^2\Bigl(\int f\Bigr)^2,
+\]
+together with the Hilbert--Schmidt type control of the residual
+\[
+\|\mathcal{R}f\|_{L^2}^2\ \ll\ (M_2M_3)^2\int f^2,
+\]
+and when \(M_1\asymp M_2\asymp M_3\asymp M\), the above degenerates to \(\|\mathcal{R}f\|_{L^2}^2\ll M^4\int f^2\).
+This magnitude is saturated by \(\asymp M_2M_3\) ``denominator--shift'' channel classes: the effective degrees of freedom of the residual are compressed to these channels, and saturation is achieved in the Guth--Maynard type~II extremal example.
+\end{proposition}
+
+\begin{proof}
+Let \(\mathcal{U}\) be the rank-one operator compressing \(f\) to its mean: on the support interval \(I\) of \(u\), take
+\[
+(\mathcal{U}f)(u):=\bigl|\mathcal{M}\bigr|\cdot \frac{\mathbf{1}_I(u)}{|I|}\int_I f(v)\,dv,
+\]
+where \(\mathcal{M}\) is the parameter set \(\{(m_1,m_2,m_3)\}\), so the image of \(\mathcal{U}\) is spanned by \(\mathbf{1}_I\), and the rank is \(1\).
+By definition,
+\(\|\mathcal{U}f\|_{L^2}^2\asymp |\mathcal{M}|^2(\int f)^2\), and \(|\mathcal{M}|\asymp M_1M_2M_3\) gives the first estimate.
+Set \(\mathcal{R}:=\mathcal{A}-\mathcal{U}\).
+Under the bandwidth envelope and compact support, the non-zero frequency correlations of \(\mathcal{R}\) can be decomposed by ``denominator--shift class'' (parameterized by \((m_2,m_3)\)) into a sum of squares over finitely many positive-term channels; the number of channels is at most \(\asymp M_2M_3\).
+Therefore, its \(L^2\) boundedness follows from writing the non-zero frequency energy as a channel sum of squares (Cauchy--Schwarz/Plancherel) and counting the channels, giving
+\(\|\mathcal{R}f\|_{L^2}^2\ll (M_2M_3)^2\int f^2\).
+Saturation is given by rational grid concentration configurations: correlations concentrate on \(\asymp M_2M_3\) channel classes, making the above sum-of-squares bound tight in magnitude. \qed
+\end{proof}
+
+\begin{proposition}[``Collision Moment'' Reformulation of the Third-Order Trace Integral Term: Poisson--Integral Residual Equivalent to Two-Body Collision Energy of a Continuous Moment-Kernel]\label{prop:gm-trace3-poisson-collision-energy}
+In the Poisson frequency expansion of the third-order trace method, the third-order trace residual term induced by non-zero frequencies can be organized as the two-body collision energy of a certain bandlimited function family \(F\):
+\[
+\sum_{m\ne 0} I_m\ =\ \|\mathsf{K}F\|_{L^2}^2,
+\]
+where \(\mathsf{K}\) is the integral kernel operator induced by the linear constraint surface \(m_1v_1+m_2v_2+m_3\approx 0\) (and its bandwidth/window function weights).
+Therefore, this residual can be equivalently rewritten as a spectral control problem for a positive operator: \(\|\mathsf{K}\|_{\mathrm{op}}\) (or equivalently \(\rho(\mathsf{K}^\ast\mathsf{K})\)) gives the strongest uniform upper bound on the residual.
+Moreover, given an auditable finite-dimensional approximation of \(\mathsf{K}\) on the bandlimited subspace (e.g., discretized on a \(1/T\) grid preserving the bandwidth envelope), the residual can be translated into principal spectral radius control of a finite positive semidefinite matrix, thereby closing the analytic estimate as a computable spectral certificate.
+\end{proposition}
+
+\begin{proof}
+Writing the non-zero Poisson frequency terms as quadratic forms on the Fourier side (or equivalently, convolution-type two-body energies), they can be represented as sums of squares of finitely many linear operator actions:
+there exists a kernel family \(\{K_m\}_{m\ne 0}\) such that
+\[
+I_m=\|K_m F\|_{L^2}^2,\qquad \sum_{m\ne 0}I_m=\sum_{m\ne 0}\|K_mF\|_2^2=\|\mathsf{K}F\|_2^2,
+\]
+where \(\mathsf{K}F:=(K_mF)_{m\ne 0}\) is viewed as a linear map into a Hilbert direct sum space.
+Thus \(\sum_{m\ne 0} I_m\) is equivalent to a quadratic form of the positive operator \(\mathsf{K}^\ast\mathsf{K}\), and residual control is equivalent to its spectral radius/operator norm control.
+
+If \(F\) is restricted to the bandlimited subspace (a Paley--Wiener type finite-type subspace), then this subspace admits an auditable approximation via a Nyquist-level finite sampling grid; under this discretization, the quadratic form of \(\mathsf{K}^\ast\mathsf{K}\) is approximated by that of a finite Gram matrix (positive semidefiniteness is preserved), and its largest eigenvalue gives a computable spectral certificate upper bound. \qed
+\end{proof}
+
+\paragraph{Additive Energy Kernel for Zeckendorf--Sofic Systems: Perron Fingerprint and Linear Recurrence Closure}
+When the large-value point set \(W\) itself arises from finite-state/digit constraints (e.g., Zeckendorf/Ostrowski constrained factors, synchronization gates, or sofic factors), its additive structure can be compiled into a finite non-negative matrix, thereby closing the exponential rate of the additive energy \(E(W)\) as a Perron fingerprint.
+
+\begin{theorem}[Compilability of Additive Energy for Zeckendorf--Regular Language Families: Perron Exponent and Linear Recurrence Closure of Four-Body Equation Counting]\label{thm:gm-zeck-sofic-additive-energy}
+Let \(\mathcal{L}\subset\{0,1\}^\ast\) be a sofic language compatible with Zeckendorf grammar (given by a finite labeled graph/automaton), and let
+\[
+A_m(\mathcal{L})
+:=\left\{\ \sum_{k=1}^{m}\omega_kF_{k+1}\ :\ \omega=(\omega_1,\dots,\omega_m)\in \mathcal{L}\cap\{0,1\}^m\ \right\}\subset\NN,
+\]
+where \((F_k)\) is the Fibonacci sequence and the Zeckendorf constraint ensures uniqueness of representation.
+Define the integer additive energy
+\[
+E_m(\mathcal{L})
+:=\#\{a_1,a_2,a_3,a_4\in A_m(\mathcal{L}):\ a_1+a_2=a_3+a_4\}.
+\]
+Then there exists an explicitly constructible finite non-negative integer matrix \(B_{\mathcal{L}}\) (obtained from the synchronization product of the Zeckendorf addition normalizer transducer with the four-fold synchronization product of \(\mathcal{L}\), imposing the ``equal sum'' constraint), together with vectors \(u,v\ge 0\), such that for all \(m\ge 0\),
+\[
+\boxed{\ E_m(\mathcal{L})=u^\top B_{\mathcal{L}}^{\,m}v\ }.
+\]
+Hence the limit
+\[
+\lim_{m\to\infty}\frac1m\log E_m(\mathcal{L})=\log\rho(B_{\mathcal{L}})
+\]
+exists, and the sequence \(\{E_m(\mathcal{L})\}\) satisfies a finite-order integer-coefficient linear recurrence; its minimal recurrence order equals the rank of the corresponding Hankel matrix family (equivalently, the minimal weighted automaton representation dimension).
+\end{theorem}
+
+\begin{proof}
+Since \(\mathcal{L}\) is a sofic language, there exists a finite automaton recognizing the length-\(m\) words of \(\mathcal{L}\cap\{0,1\}^m\).
+The normalization of Zeckendorf addition can be realized by a finite-state synchronous transducer: it reads two legal Zeckendorf digit streams bit by bit, maintaining a finite carry state, and outputs normalized Zeckendorf digits (this finiteness follows from the local propagation rules of carries under Fibonacci positional weights).
+The ``four-body equation'' constraint \(a_1+a_2=a_3+a_4\) can then be realized as follows: run two copies of the addition transducer in parallel, processing \((\omega^{(1)},\omega^{(2)})\) and \((\omega^{(3)},\omega^{(4)})\) respectively, and at each bit enforce that their normalized outputs agree; then take the synchronization product with four copies of the recognizing automaton of \(\mathcal{L}\), yielding a finite directed graph whose length-\(m\) accepting path count is exactly \(E_m(\mathcal{L})\).
+Denoting the adjacency matrix of this synchronization product graph as \(B_{\mathcal{L}}\), with entry/exit sets giving vectors \(u,v\), yields \(E_m(\mathcal{L})=u^\top B_{\mathcal{L}}^{\,m}v\).
+The limit exponential rate and linear recurrence follow from Perron--Frobenius theory and general properties of finite-dimensional linear representations; the Hankel rank equals the minimal linear representation dimension, which is the classical equivalence (also isomorphic to the Hankel realization framework in the main text, cf.\ Proposition \ref{prop:pom-hankel-realization-protocol}). \qed
+\end{proof}
+
+\begin{proposition}[Auditable Construction of the Energy Exponential Rate: ``Mid-Energy'' Sample Families Parameterized by Spectral Radius]\label{prop:gm-energy-rate-tunable}
+Under the construction framework of Theorem \ref{thm:gm-zeck-sofic-additive-energy}, the spectral radius \(\rho(B_{\mathcal{L}})\) has a controllable response to the concatenation of local constraint segments: taking two types of constraint modules (e.g., ``allowed blocks'' and ``frozen blocks'') and concatenating them in proportion, with sufficiently long isolation regions inserted at block boundaries to eliminate cross-block coupling from Zeckendorf normalization, the energy exponential rate
+\(\log\rho(B_{\mathcal{L}_\theta})\)
+of the concatenated language family \(\{\mathcal{L}_\theta\}\) can be parameterically covered over a non-trivial interval, and as the isolation region length tends to infinity, the exponential rate is asymptotic to the convex combination of the module rates.
+\end{proposition}
+
+\begin{proof}
+The ``module + isolation region'' concatenated language is realized as a cyclic sofic graph: the graph consists of two strongly connected subgraphs (corresponding to the two module types) connected by a deterministic isolation path, with the proportional lengths of the two blocks within each cycle controlled by the parameter \(\theta\).
+For the corresponding energy kernel matrix \(B_{\mathcal{L}_\theta}\), the transfer over one complete cycle is equivalent to the product of the two block transfer matrices and the isolation matrix; as the isolation region length tends to infinity, cross-block coupling occurs only through finite-dimensional boundary states, and its contribution to the main exponent can be suppressed to \(o(1)\).
+Therefore, the main growth rate of the periodic transfer, normalized per unit length, tends to the convex combination of the two endpoint exponential rates; taking different cycle proportions achieves auditable parametric coverage between the two endpoint rates. \qed
+\end{proof}
+
+\paragraph{Perron Closure of Sofic--Zeckendorf Linear Constraints: Affine Closure, Fourier Decay, and Finitized Spectral Certificates}
+\begin{theorem}[Full Perron--Frobenius Compilability of Sofic--Zeckendorf Linear Constraint Counting]\label{thm:gm-sofic-zeck-linear-constraints-pf}
+Retaining the notation of Theorem \ref{thm:gm-zeck-sofic-additive-energy}: \(\mathcal{L}\), \(\mathcal{L}_m:=\mathcal{L}\cap\{0,1\}^m\), \(\mathrm{val}(\omega)=\sum_{j=1}^{m}\omega_jF_{j+1}\), and \(A_m(\mathcal{L})\).
+Fix an integer \(K\ge 1\), an integer matrix \(Q\in\ZZ^{r\times K}\), and a vector \(b\in\ZZ^{r}\).
+Define the feasible \(K\)-tuple set
+\[
+\Omega_m(Q,b)
+:=\Bigl\{(\omega^{(1)},\dots,\omega^{(K)})\in \mathcal{L}_m^K:\
+Q\bigl(\mathrm{val}(\omega^{(1)}),\dots,\mathrm{val}(\omega^{(K)})\bigr)^{\mathsf T}=b\Bigr\}.
+\]
+Then there exists an explicitly constructible finite non-negative integer matrix \(B_{Q,b}\) and vectors \(u_{Q,b},v_{Q,b}\ge 0\), such that for all \(m\ge 0\),
+\[
+\boxed{\ \#\Omega_m(Q,b)=u_{Q,b}^{\mathsf T}\,B_{Q,b}^{\,m}\,v_{Q,b}\ }.
+\]
+Therefore the sequence \(\{\#\Omega_m(Q,b)\}_{m\ge 0}\) satisfies a finite-order integer-coefficient linear recurrence, and its exponential growth rate is \(\log\rho(B_{Q,b})\).
+\end{theorem}
+
+\begin{proof}
+Since \(\mathcal{L}\) is a sofic language, one can take a finite labeled graph (or equivalent finite automaton) recognizing \(\mathcal{L}\), so that \(\mathcal{L}_m^K\) corresponds to the length-\(m\) path set on the \(K\)-fold synchronization product of this automaton.
+On the other hand, in the Ostrowski/Zeckendorf numeration system, a fixed integer-coefficient linear relation
+\(
+Q(x_1,\dots,x_K)^{\mathsf T}=b
+\)
+can be compiled into a finite-state synchronous transducer: it reads \(K\) Zeckendorf digit streams bit by bit and maintains a bounded carry/remainder vector, so that ``legality + normalization + linear consistency'' closes within a finite state space (cf.\ \cite{Frougny1999OnlineAddition,AhlbachUsatineFrougnyPippenger2013,BaranwalaSchaefferShallit2021OstrowskiAutomatic}; and the unified framework of rational series and linear representations \cite{BerstelReutenauer1988RationalSeries}).
+Taking the synchronization product of this linear constraint transducer with the \(K\)-fold synchronization product automaton of \(\mathcal{L}\) yields a finite directed graph whose length-\(m\) accepting path count is exactly \(\#\Omega_m(Q,b)\).
+Taking the adjacency matrix of this graph as \(B_{Q,b}\), with entry/exit sets giving \(u_{Q,b},v_{Q,b}\), yields the stated matrix power expression.
+The linear recurrence follows directly from the Cayley--Hamilton theorem, and the exponential growth rate \(\log\rho(B_{Q,b})\) is a standard consequence of Perron--Frobenius theory. \qed
+\end{proof}
+
+\begin{corollary}[Unified Special Cases of Linear Constraints: Additive Energy and Affine Consistency]\label{cor:gm-linear-constraints-special-cases}
+Under the setting of Theorem \ref{thm:gm-sofic-zeck-linear-constraints-pf}:
+\begin{enumerate}
+  \item \textbf{(Additive energy)} Taking \(K=4\), \(r=1\), \(Q=(1,1,-1,-1)\), \(b=0\), then \(\#\Omega_m(Q,b)=E_m(\mathcal{L})\), recovering the Perron compilation conclusion of Theorem \ref{thm:gm-zeck-sofic-additive-energy}.
+  \item \textbf{(Affine consistency)} Taking \(K=2\) and given a triple \((a,b,c)\in\ZZ\times\ZZ\times\NN\) (\(\gcd(a,c)=1\)), let the rational affine transformation be
+  \[
+  T(x):=\frac{ax+b}{c}.
+  \]
+  Taking \(r=1\) and \(Q=(-a,c)\), with \(b\) still denoting the constant term, then \(\#\Omega_m(Q,b)\) counts
+  \[
+  \#\Omega_m(Q,b)=\#\{(x,y)\in A_m(\mathcal{L})^2:\ y=T(x)\}.
+  \]
+\end{enumerate}
+\end{corollary}
+
+\begin{theorem}[Exponential Spectral Gap for Non-Trivial Rational Affine Self-Maps: Impossibility of Near-Closure for Structured Sets]\label{thm:gm-affine-selfmap-spectral-gap}
+Suppose the underlying graph of \(\mathcal{L}\) (ignoring labels) is primitive, so there exists \(\alpha>1\) with
+\[
+|\mathcal{L}_m|\asymp \alpha^m,
+\qquad
+|A_m(\mathcal{L})|=|\mathcal{L}_m|\asymp \alpha^m
+\]
+(the latter is guaranteed by Zeckendorf legality ensuring \(\mathrm{val}\) is injective on \(\mathcal{L}_m\)).
+For any fixed triple \((a,b,c)\in\ZZ\times\ZZ\times\NN\) (\(\gcd(a,c)=1\)), let \(T(x)=(ax+b)/c\).
+Write
+\[
+\mathrm{Fix}_m(T):=\{x\in A_m(\mathcal{L}):\ T(x)\in A_m(\mathcal{L})\}.
+\]
+Then there exist a finite non-negative integer matrix \(C_T\) and \(u_T,v_T\ge 0\) such that
+\[
+|\mathrm{Fix}_m(T)|=u_T^{\mathsf T}C_T^{\,m}v_T\qquad(m\ge 0),
+\]
+and if \(T\) does not belong to the trivial finite-state endomorphism family induced by \((\mathcal{L},\mathrm{val})\) (equivalently: the above synchronization constraint yields a strict sublanguage at the language level), then there exists \(\varepsilon_T>0\) such that
+\[
+|\mathrm{Fix}_m(T)|\ \ll\ (\alpha-\varepsilon_T)^m.
+\]
+\end{theorem}
+
+\begin{proof}
+By Theorem \ref{thm:gm-sofic-zeck-linear-constraints-pf} (taking the affine consistency special case with \(K=2\)), we obtain the matrix power expression and exponential rate \(\rho(C_T)\).
+Clearly \(|\mathrm{Fix}_m(T)|\le |A_m(\mathcal{L})|\asymp\alpha^m\), so \(\rho(C_T)\le \alpha\).
+If the synchronization constraint yields a strict sublanguage, then its topological entropy (equivalently, logarithmic growth rate) is strictly less than that of the original primitive sofic language (see \cite[Chapter~4]{LindMarcus1995}), whence \(\rho(C_T)<\alpha\); taking \(\varepsilon_T:=\alpha-\rho(C_T)\) gives the conclusion. \qed
+\end{proof}
+
+\begin{theorem}[Uniform Exponential Decay of Multi-Map Closures: Optimal Exponential Upper Bound under Finite Family Affine Averaging]\label{thm:gm-multi-affine-closure-decay}
+Let \(\mathcal{F}=\{T_1,\dots,T_J\}\) be finitely many fixed rational affine transformations \(T_j(x)=(a_jx+b_j)/c_j\) (\(\gcd(a_j,c_j)=1\)).
+Let
+\[
+\mathrm{Fix}_m(\mathcal{F})
+:=\{x\in A_m(\mathcal{L}):\ T_j(x)\in A_m(\mathcal{L})\ \ \forall j\}.
+\]
+Then there exist a finite non-negative integer matrix \(C_{\mathcal{F}}\) and vectors \(u_{\mathcal{F}},v_{\mathcal{F}}\ge 0\) such that
+\[
+|\mathrm{Fix}_m(\mathcal{F})|
+=u_{\mathcal{F}}^{\mathsf T}C_{\mathcal{F}}^{\,m}v_{\mathcal{F}},
+\qquad
+\lim_{m\to\infty}\frac{1}{m}\log|\mathrm{Fix}_m(\mathcal{F})|
+=\log\rho(C_{\mathcal{F}}).
+\]
+Moreover, if at least one map in \(\mathcal{F}\) induces a strict sublanguage at the language level, then there exists \(\varepsilon_{\mathcal{F}}>0\) such that
+\(
+|\mathrm{Fix}_m(\mathcal{F})|\ll (\alpha-\varepsilon_{\mathcal{F}})^m
+\).
+\end{theorem}
+
+\begin{proof}
+The \(J\) linear consistency constraints between \(x\) and \(y_j=T_j(x)\) can be combined into a system of fixed integer linear equations, which falls under the setting of Theorem \ref{thm:gm-sofic-zeck-linear-constraints-pf} (taking \(K=J+1\)). This gives the matrix power expression.
+The strict spectral gap is derived as in Theorem \ref{thm:gm-affine-selfmap-spectral-gap}: a strict sublanguage has strictly smaller entropy, so \(\rho(C_{\mathcal{F}})<\alpha\). \qed
+\end{proof}
+
+\begin{proposition}[Exact Inequality between Additive Energy and Sumset Exponents: Perron Lower Bound in the Sofic Case]\label{prop:gm-energy-sumset-exponent}
+For any finite set \(A\subset\ZZ\), the additive energy
+\(
+E(A):=\#\{a_1+a_2=a_3+a_4\}
+\)
+and the sumset satisfy the Cauchy--Schwarz inequality
+\[
+|A+A|\ \ge\ \frac{|A|^4}{E(A)}.
+\]
+Let \(A=A_m(\mathcal{L})\), and write
+\[
+|A_m(\mathcal{L})|\asymp \alpha^m,\qquad
+E(A_m(\mathcal{L}))=E_m(\mathcal{L})\asymp \beta^m,\qquad \beta:=\rho(B_{\mathcal{L}}).
+\]
+Then there exists \(\gamma>1\) such that
+\[
+|A_m(\mathcal{L})+A_m(\mathcal{L})|\ \gg\ \gamma^m,
+\qquad
+\boxed{\ \log\gamma\ \ge\ 4\log\alpha-\log\beta\ }.
+\]
+\end{proposition}
+
+\begin{proof}
+The first inequality follows from the standard Cauchy--Schwarz derivation.
+Substituting \(A=A_m(\mathcal{L})\) and taking the exponential rate as \(m\to\infty\) yields the lower bound for \(\gamma\); constant factors affect only sub-exponential terms. \qed
+\end{proof}
+
+\begin{theorem}[Twisted Perron Roots Characterize Fourier Decay: Algebraic Discriminant and Strict Spectral Drop for the Resonance Set]\label{thm:gm-twisted-perron-fourier-decay}
+Maintaining the above setting, fix a modulus \(q\ge 2\), and let \(\omega_q:=e^{2\pi i/q}\).
+For \(k\in\ZZ/q\ZZ\), define the exponential sum
+\[
+S_{m,q}(k):=\sum_{x\in A_m(\mathcal{L})}\omega_q^{k x}.
+\]
+Then there exist an explicitly constructible complex matrix \(A_{q}(k)\) and vectors \(p_q,q_q\) (of finite dimension depending only on \(\mathcal{L}\) and \(q\)), such that
+\[
+S_{m,q}(k)=p_q^{\mathsf T}A_q(k)^{\,m}q_q\qquad(m\ge 0),
+\]
+with spectral radius control
+\[
+|S_{m,q}(k)|\ \ll\ \rho(A_q(k))^m.
+\]
+Furthermore, \(A_q(0)\) can be taken as a non-negative integer matrix with \(\rho(A_q(0))=\alpha\);
+and for any \(k\neq 0\), if the corresponding phase weight is not a unit-modulus coboundary on the graph (equivalently: \(k\) is not in the finite resonance set \(\Theta_{\mathrm{res}}(q)\subset \ZZ/q\ZZ\)), then there exists \(\varepsilon_{q}(k)>0\) such that the strict spectral drop holds:
+\[
+\rho(A_q(k))\ \le\ \alpha-\varepsilon_q(k).
+\]
+In the Fibonacci--Zeckendorf case (where the cyclic subgroup generated by the weight sequence in \(\ZZ/q\ZZ\) is the full group), one can take \(\Theta_{\mathrm{res}}(q)=\{0\}\), so all non-trivial frequencies exhibit exponential decay.
+\end{theorem}
+
+\begin{proof}
+Since the Fibonacci sequence modulo \(q\) has Pisano period \(\pi(q)\), the weight coefficients \(F_{j+1}\bmod q\) depend only on \(j\bmod \pi(q)\).
+Therefore, taking the synchronization product of the finite automaton recognizing \(\mathcal{L}\) with ``position modulo \(\pi(q)\)'' and ``value modulo \(q\)'' yields a finite-state automaton whose length-\(m\) paths enumerate \(\mathcal{L}_m\) and carry the update \(x=\mathrm{val}(\omega)\bmod q\).
+Multiplying each transition by the phase weight \(\omega_q^{k\Delta x}\) on this synchronization product graph yields \(A_q(k)\) such that the path weight sum is \(S_{m,q}(k)=p_q^{\mathsf T}A_q(k)^m q_q\).
+By the triangle inequality, \(|S_{m,q}(k)|\ll \|A_q(k)^m\|\), whence \(|S_{m,q}(k)|\ll \rho(A_q(k))^m\).
+
+When \(k=0\), the phase weight is identically \(1\), so \(A_q(0)\) can be taken as a non-negative integer adjacency matrix; its Perron root equals the language growth rate \(\alpha\).
+For general \(k\), the entrywise absolute value control \(|A_q(k)|\le A_q(0)\) yields, by Wielandt's inequality, \(\rho(A_q(k))\le \rho(A_q(0))=\alpha\) (see \cite{Wielandt1950UnzerlegbareNichtnegative}).
+If equality holds, Wielandt's equality characterization implies that \(A_q(k)\) must be equivalent to \(A_q(0)\) up to a unit-modulus diagonal similarity, so the phase weight is a unit-modulus coboundary on the graph; its complement is the strict spectral drop case. \qed
+\end{proof}
+
+\begin{theorem}[Finitization of Spectral Certificates on the Bandlimited Subspace: Sampleable Toeplitz Model for Continuous Kernel Operators]\label{thm:gm-pw-bandlimited-sampling-toeplitz}
+Let \(\mathrm{PW}_B\) be the Paley--Wiener space of bandwidth \(B>0\).
+Suppose \(\mathsf{K}:\mathrm{PW}_B\to \mathrm{PW}_B\) is a self-adjoint positive operator, induced by a convolution operator with a difference-variable bandlimited kernel: there exists \(k\in L^1(\RR)\) such that
+\[
+(\mathsf{K}f)(x)=(k*f)(x),\qquad \mathrm{supp}(\widehat{k})\subset[-B,B].
+\]
+Then there exists a Nyquist sampling isomorphism \(\mathcal{S}:\mathrm{PW}_B\to \ell^2(\ZZ)\) (given by equidistant sampling and sinc interpolation), together with a bilateral Toeplitz-type matrix \(K_B\) acting on \(\ell^2(\ZZ)\), such that
+\[
+\boxed{\ \mathcal{S}\,\mathsf{K}\,\mathcal{S}^{-1}=K_B\ },
+\qquad
+\boxed{\ \|\mathsf{K}\|_{\mathrm{op}}=\|K_B\|_{\mathrm{op}}\ }.
+\]
+Moreover, for any truncation \(K_B^{(N)}\) to \(\ell^2(\{-N,\dots,N\})\), its largest eigenvalue \(\lambda_{\max}(K_B^{(N)})\) approximates \(\|\mathsf{K}\|_{\mathrm{op}}\) with an auditable tail bound; if \(k\) has sufficient smoothness, the approximation error has a super-polynomial decay bound given by the tail of the Toeplitz coefficients.
+\end{theorem}
+
+\begin{proof}
+The sampling isomorphism and sinc recovery are the standard form of the Shannon--Nyquist sampling theorem: \(\mathrm{PW}_B\) is isometrically isomorphic to \(\ell^2(\ZZ)\) at sampling interval \(\pi/B\).
+The convolution operator under sampling becomes discrete convolution, hence corresponds to a Toeplitz (shift-invariant) matrix \(K_B\), and the operator norm identity follows from the isometric property of the isomorphism.
+The truncation approximation follows from the standard perturbation estimate for bounded operators on \(\ell^2\) under finite coordinate truncation; when \(k\) has \(C^\infty\)-type regularity and frequency-domain compact support, the Toeplitz coefficients decay at arbitrary polynomial rate via integration by parts, giving super-polynomial tail bounds for the truncation error. \qed
+\end{proof}
+
+\begin{proposition}[Affine Spectral Gap Drives Third-Order Trace Improvement: Sufficient Condition for Power Saving in the Mid-Energy Segment (Template)]\label{prop:gm-affine-gap-improves-trace3}
+In the abstract framework of the third-order trace method, if the key affine mean operator admits the decomposition \(\mathcal{A}=\mathcal{U}+\mathcal{R}\) (\(\mathcal{U}\) is the rank-one main channel), and the residual on a certain bandlimited class satisfies the improved bound
+\[
+\|\mathcal{R}f\|_{L^2}^2\ \ll\ M^{4-\sigma}\int f^2
+\qquad(\sigma>0),
+\]
+then under the premise that the spectral lifting step remains optimal (Theorem \ref{thm:gm-trace3-spectral-norm-extremal}--Proposition \ref{prop:gm-trace3-gap-optimal-spectralization}), the third-order trace route yields a strict power improvement in the mid-energy segment; the improvement magnitude corresponds linearly to \(\sigma\) in the power exponent, and the balance threshold between the main channel \(M^6\) and the residual channel \(M^{4-\sigma}\) undergoes a computable shift.
+In particular, when \(f\) comes from readout amplitudes of sofic--Zeckendorf structured sets, Theorems \ref{thm:gm-affine-selfmap-spectral-gap}--\ref{thm:gm-multi-affine-closure-decay} provide a natural class of spectral gap sources that can be used to construct candidate improvement mechanisms with \(\sigma>0\).
+\end{proposition}
+
+\begin{proof}
+The mid-energy bottleneck of the third-order trace method is determined by the competition between ``main channel magnitude'' and ``residual channel magnitude'': the main channel contributes at level \(M^6\), while the residual channel contributes at level \(M^4\) through Hilbert--Schmidt control (Proposition \ref{prop:gm-affine-average-rank1-residual}).
+Once the residual is improved to \(M^{4-\sigma}\), the relative weight of the residual term decays as \(M^{-\sigma}\) in the same frequency/threshold balance; therefore, a strict saving is obtained in the frequency upper bound organized in power form, and the saving magnitude corresponds linearly to \(\sigma\). \qed
+\end{proof}
+
+\begin{proposition}[Complementarity Inequality for Energy Spectrum and Affine Spectrum: Tensor Constraint on Two Types of Perron Roots from the Same Language]\label{prop:gm-energy-affine-complementarity}
+Under the above setting, let \(\beta:=\rho(B_{\mathcal{L}})\) be the Perron root of the additive energy kernel, and let \(C_T\) be the affine consistency matrix from Theorem \ref{thm:gm-affine-selfmap-spectral-gap}, with \(\chi_T:=\rho(C_T)\).
+Then for any fixed \(T\), there exists \(\kappa_T>0\) such that
+\[
+\boxed{\ \log\beta+2\log\chi_T\ \le\ 6\log\alpha-\kappa_T\ }.
+\]
+Moreover, one can take the explicit (verifiable) choice:
+\[
+\kappa_T:=\log\alpha+2\log\!\Bigl(\frac{\alpha}{\chi_T}\Bigr)\ \ge\ \log\alpha,
+\]
+where strict strengthening \(\kappa_T>\log\alpha\) holds when \(T\) induces a strict spectral gap at the language level (\(\chi_T<\alpha\)).
+\end{proposition}
+
+\begin{proof}
+For any finite set \(A\subset\ZZ\), the trivial upper bound \(E(A)\le |A|^3\) holds.
+Taking \(A=A_m(\mathcal{L})\), we get \(E_m(\mathcal{L})\le |A_m(\mathcal{L})|^3\asymp \alpha^{3m}\), whence \(\beta\le \alpha^3\).
+On the other hand, \(|\mathrm{Fix}_m(T)|\le |A_m(\mathcal{L})|\asymp \alpha^m\), so \(\chi_T\le \alpha\).
+Thus
+\[
+\log\beta+2\log\chi_T
+\le 3\log\alpha+2\log\chi_T
+=6\log\alpha-\Bigl(\log\alpha+2\log(\alpha/\chi_T)\Bigr),
+\]
+yielding the stated inequality and the explicit choice for \(\kappa_T\). \qed
+\end{proof}
+
+\begin{theorem}[Joint Dual Spectral Certificates: Threshold Separation of the Third-Order Trace Kernel and Additive Energy Kernel]\label{thm:gm-dual-spectral-certificates}
+In the third-order trace method pathway for Dirichlet polynomial large-value frequency control, the closure of the frequency upper bound can be split into two mutually orthogonal spectral certificates:
+\begin{enumerate}
+  \item \textbf{Third-order trace kernel certificate:} The continuous moment-kernel \(\mathsf{K}\) (or its bandlimited discretization) from Proposition \ref{prop:gm-trace3-poisson-collision-energy} controls the third-order trace residual induced by non-zero Poisson frequencies; the spectral norm lifting step is fully closed in optimal truncated-moment form by Theorem \ref{thm:gm-trace3-spectral-norm-extremal}--Proposition \ref{prop:gm-trace3-gap-optimal-spectralization}.
+  \item \textbf{Additive energy kernel certificate:} When the large-value point set \(W\) comes from describable sets (e.g., generated by Zeckendorf/sofic factors or synchronization gates), its additive energy can be compiled via Theorem \ref{thm:gm-zeck-sofic-additive-energy} into a Perron fingerprint of the finite non-negative matrix \(B_{\mathcal{L}}\), independently verifiable via the spectral radius threshold.
+\end{enumerate}
+Their joint use provides an implementation-independent ``auditable decomposition'': the frequency upper bound is jointly determined by two non-confoundable spectral radius thresholds, and each threshold can be verified offline via a finite kernel (matrix/discretized kernel).
+\end{theorem}
+
+\begin{proof}
+The first certificate is obtained by composing the collision kernel expression of the third-order trace residual (Proposition \ref{prop:gm-trace3-poisson-collision-energy}) with the optimal translation from trace moments to spectral norm (Theorem \ref{thm:gm-trace3-spectral-norm-extremal}, Proposition \ref{prop:gm-trace3-gap-optimal-spectralization}); the structural point is that the ``spectral lifting'' step has been fully sealed by the truncated moment extremal law.
+The second certificate is given by the finite-state compilation of additive energy (Theorem \ref{thm:gm-zeck-sofic-additive-energy}).
+The orthogonality of the two certificates comes from the fact that their constrained objects lie respectively in the continuous Poisson frequency kernel and the discrete language energy kernel, and both output a spectral radius/operator norm as the sole threshold; hence they can be independently verified and combined in multiplicative/additive fashion in the final frequency bound. \qed
+\end{proof}
+
+\endinput

@@ -1,0 +1,89 @@
+\subsubsection{Global Overflow Bit Count: \texorpdfstring{$\#\{b=1\}=\lfloor 2^m/3\rfloor$}{b=1 count = floor(2^m/3)}}\label{subsec:pom-overflow-global}
+Lemma \ref{lem:pom-one-bit} shows that for any window \(\omega\in\Omega_m\), the ``hidden information'' beyond the first \(m\) bits is at most a single bit \(b(\omega)\in\{0,1\}\) (i.e., whether an overflow bit of weight \(F_{m+2}\) occurs). This hidden bit explains, within each individual fiber, the structural origin of ``two-branch splitting / frozen top candidate sites'' (Remark \ref{rem:pom-overflow-rec}). The following provides a stronger global closed form: over \emph{all} microstates, the occurrence rate of \(b=1\) satisfies an exact geometric series formula.
+
+\begin{definition}[Global overflow count]\label{def:pom-overflow-global-count}
+Define
+\[
+B_m:=\#\{\omega\in\Omega_m:\ b(\omega)=1\}.
+\]
+\end{definition}
+
+\begin{theorem}[Exact closed form for the global overflow bit count]\label{thm:pom-overflow-global-count}
+For all \(m\ge 1\),
+\[
+\boxed{\;
+B_m=\left\lfloor\frac{2^m}{3}\right\rfloor\;}
+\]
+so that for a uniform window \(\omega\sim\mathrm{Unif}(\Omega_m)\),
+\[
+\mathbb{P}[b(\omega)=1]=\frac{1}{3}+O(2^{-m}),
+\qquad
+\left|\mathbb{P}[b(\omega)=1]-\frac{1}{3}\right|\le 2^{-m}.
+\]
+\end{theorem}
+\begin{proof}
+By Lemma \ref{lem:pom-one-bit}, and using \(0\le V_m(\Fold_m(\omega))<F_{m+2}\), one obtains
+\[
+b(\omega)=1
+\quad\Longleftrightarrow\quad
+N(\omega)\ge F_{m+2}.
+\]
+Let \(\omega=\omega_1\cdots\omega_m\).
+
+\textbf{(1) Necessarily \(\omega_m=1\).}
+If \(\omega_m=0\), then
+\(
+N(\omega)\le \sum_{k=1}^{m-1}F_{k+1}=F_{m+2}-2<F_{m+2}
+\), so overflow is impossible.
+
+\textbf{(2) Recursion: \(B_m=2^{m-2}+B_{m-2}\).}
+Now let \(\omega_m=1\).
+If \(\omega_{m-1}=1\), then
+\(
+N(\omega)\ge F_{m+1}+F_m=F_{m+2}
+\)
+so overflow necessarily occurs; the first \(m-2\) bits are arbitrary, contributing \(2^{m-2}\).
+If \(\omega_{m-1}=0\), then
+\[
+N(\omega)\ge F_{m+2}
+\ \Longleftrightarrow\
+\sum_{k=1}^{m-2}\omega_kF_{k+1}\ge F_m.
+\]
+The right-hand condition involves only a window of length \(m-2\) and threshold \(F_m=F_{(m-2)+2}\), so the count is exactly \(B_{m-2}\).
+Combining yields \(B_m=2^{m-2}+B_{m-2}\), with initial values \(B_1=0,B_2=1\) obtained by direct enumeration.
+
+\textbf{(3) Solving the closed form and taking the floor.}
+For even \(m=2k\), iteration gives
+\[
+B_{2k}=\sum_{j=0}^{k-1}4^j=\frac{4^k-1}{3}=\frac{2^{2k}-1}{3}.
+\]
+For odd \(m=2k+1\), iteration gives
+\[
+B_{2k+1}=2\sum_{j=0}^{k-1}4^j=\frac{2^{2k+1}-2}{3}.
+\]
+Both expressions are equivalent to \(B_m=\lfloor 2^m/3\rfloor\) (note that \(2^m\bmod 3\in\{1,2\}\)).
+The probability estimate follows from
+\(
+\bigl|B_m/2^m-1/3\bigr|\le 1/2^m
+\). \qed
+\end{proof}
+
+\begin{corollary}[Limiting density and the ``non-uniform single bit'']\label{cor:pom-hidden-bit-entropy}
+Under the uniform distribution on $\Omega_m$,
+$$
+\mathbb{P}[b(\omega)=1]=\frac{|B_m|}{2^m}
+=\frac{1}{3}-\frac{\varepsilon_m}{3\cdot 2^m},
+$$
+where $\varepsilon_m=1$ when $m$ is even and $\varepsilon_m=2$ when $m$ is odd. Therefore
+$$
+\lim_{m\to\infty}\mathbb{P}[b(\omega)=1]=\frac{1}{3},\qquad
+\lim_{m\to\infty}\mathbb{P}[b(\omega)=0]=\frac{2}{3}.
+$$
+Furthermore, the binary entropy (in bits) converges to
+$$
+H_2(b)
+:=-\frac{1}{3}\log_2\frac{1}{3}-\frac{2}{3}\log_2\frac{2}{3}
+\approx 0.9183.
+$$
+\end{corollary}
+

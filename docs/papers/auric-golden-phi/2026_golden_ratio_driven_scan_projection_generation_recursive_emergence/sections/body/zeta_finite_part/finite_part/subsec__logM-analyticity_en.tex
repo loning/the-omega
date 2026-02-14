@@ -1,0 +1,70 @@
+\subsubsection{Analyticity and differentiable characteristic quantities of \texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)}}\label{subsec:logM-analyticity}
+This subsection records the differentiable tools for the Abel finite-part constant interface: under the finite-dimensional matrix family framework, the local analyticity and first derivative of $\theta\mapsto\log\mathfrak{M}(\theta)$ are provided by analytic perturbation theory and the resolvent identity. This paper uses these results solely as implementation interfaces.
+
+\begin{remark}[Real analyticity of \texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)} (local)]\label{prop:logM-analytic}
+Let $M_\theta$ be a finite-dimensional nonnegative matrix family, with weights on each edge given by a finite sum of $\exp\langle\theta,\Phi(e)\rangle$, so that $\theta\mapsto M_\theta$ is a real analytic matrix function.
+Assume that at $\theta=0$ the matrix $M_0$ is primitive (the Perron--Frobenius leading eigenvalue $\lambda(0)$ is a simple eigenvalue), and let $\lambda(\theta)=\rho(M_\theta)$, $z_\star(\theta)=\lambda(\theta)^{-1}$.
+Then there exists a neighborhood $\mathcal{U}$ of $\theta=0$ such that $\theta\mapsto\log\mathfrak{M}(\theta)$ is a real analytic function on $\mathcal{U}$.
+\end{remark}
+
+\begin{remark}[Resolvent expression for the derivative (implementation interface)]\label{prop:logM-derivative-resolvent}
+For $\theta\in\mathcal{U}$, write $R_\theta(z):=(I-zM_\theta)^{-1}$.
+Then for any parameter direction $v$ (viewing $\partial_v$ as a directional derivative),
+\[
+\partial_v\log\zeta_\theta(z)=\mathrm{Tr}\!\left(R_\theta(z)\,z\,\partial_v M_\theta\right),
+\qquad
+\partial_z\log\zeta_\theta(z)=\mathrm{Tr}\!\left(R_\theta(z)\,M_\theta\right).
+\]
+Therefore on $\theta\in\mathcal{U}$,
+\[
+\partial_v\log\mathfrak{M}(\theta)
+=
+\partial_v\log C(\theta)
+\;+\;
+\sum_{k\ge 2}\frac{\mu(k)}{k}\left[
+\mathrm{Tr}\!\left(R_\theta(z_k)\,z_k\,\partial_v M_\theta\right)
+\;+\;
+\mathrm{Tr}\!\left(R_\theta(z_k)\,M_\theta\right)\,\partial_v z_k
+\right],
+\]
+where $z_k:=z_\star(\theta)^k$ and $\partial_v z_k = k z_\star(\theta)^k\,\partial_v\log z_\star(\theta)=-k z_k\,\partial_v P(\theta)$ ($P(\theta)=\log\lambda(\theta)$).
+\end{remark}
+
+\begin{remark}[Maxwell-type consistency: mixed partial derivative symmetry as numerical self-verification]\label{cor:logM-maxwell}
+Under the conditions of Proposition \ref{prop:logM-derivative-resolvent}, $\log\mathfrak{M}(\theta)$ is real analytic on $\mathcal{U}$,
+so for any coordinate directions $\theta_i,\theta_j$,
+\[
+\partial_{\theta_i}\partial_{\theta_j}\log\mathfrak{M}(\theta)=\partial_{\theta_j}\partial_{\theta_i}\log\mathfrak{M}(\theta).
+\]
+Equivalently, $d\log\mathfrak{M}$ is an exact (integrable) one-form; viewing the right-hand side of Proposition \ref{prop:logM-derivative-resolvent} as the explicit expression for $d\log\mathfrak{M}$ yields a set of Maxwell-type consistency constraints.
+Therefore, in the numerical generation of multi-dimensional parameter phase diagrams, the ``discrete mixed partial difference'' can serve as a strong self-verification indicator: if
+\(
+\partial_{\theta_i}\partial_{\theta_j}\log\mathfrak{M}
+\)
+and
+\(
+\partial_{\theta_j}\partial_{\theta_i}\log\mathfrak{M}
+\)
+deviate significantly in their numerical values beyond the error bar, this indicates systematic error in the resolvent series truncation, the residue constant differentiation, or the perturbation computation of $\lambda(\theta)$.
+\end{remark}
+
+\begin{remark}[Two-scale coupling: the constant-drift response along one-dimensional slices is driven by the pressure derivative]\label{cor:logM-two-scale-coupling}
+Take any $C^1$ slice $t\mapsto \theta(t)\in\mathcal{U}$, and write
+\[
+\dot{M}_t:=\frac{d}{dt}M_{\theta(t)},\qquad
+\dot{P}_t:=\frac{d}{dt}P(\theta(t)),\qquad
+z_k(t):=z_\star(\theta(t))^k.
+\]
+Then
+\[
+\begin{aligned}
+\frac{d}{dt}\log\mathfrak{M}(\theta(t))
+&=\frac{d}{dt}\log C(\theta(t))
+\;+\;\sum_{k\ge 2}\frac{\mu(k)}{k}\Bigl[
+\mathrm{Tr}\!\bigl(R_{\theta(t)}(z_k(t))\,z_k(t)\,\dot{M}_t\bigr)\\
+&\qquad -k z_k(t)\,\mathrm{Tr}\!\bigl(R_{\theta(t)}(z_k(t))\,M_{\theta(t)}\bigr)\dot{P}_t
+\Bigr].
+\end{aligned}
+\]
+This identity places the ``exponential scale'' $P(\theta)$ and the ``constant-level drift'' $\log\mathfrak{M}(\theta)$ within the same computable response equation: the variation of the latter is jointly driven by the resolvent--trace terms and the pressure derivative $\dot P_t$.
+\end{remark}

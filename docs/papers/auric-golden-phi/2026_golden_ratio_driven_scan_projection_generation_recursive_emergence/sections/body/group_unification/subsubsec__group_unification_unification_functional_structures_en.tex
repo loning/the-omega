@@ -1,0 +1,219 @@
+\paragraph{Structural Consequences of the Unification Functional \texorpdfstring{$\mathcal{A}(u)$}{A(u)}: Exact Cancellation, Local Optimality, and Algebraic Certificates}\label{par:gut-unification-functional-structures}
+This paragraph, without repeating the premises defined in Remark \ref{rem:spec-gap-minimax-unification},
+extracts within its existing notation framework several conclusions that have nontrivial consequences for the unification functional \(\mathcal{A}(u)\) itself;
+these conclusions are independent of the ``trivial sector'' of \(\lambda_1(u)\) and are suitable as independent mathematical citation units.
+
+\paragraph{Geometric Mean Coordinates and Exact Cancellation of the Trivial Sector}
+Following the notation of Remark \ref{rem:spec-gap-minimax-unification}, let
+\(
+\mathcal{R}:=\mathcal{R}_{\mathrm{obs}}
+\)
+and
+\(
+R:=|\mathcal{R}|
+\).
+Define the geometric mean and extrema of the twisted spectral radii
+\[
+\eta_{\mathrm{geo}}(u):=\Bigl(\prod_{\varrho\in\mathcal{R}}\eta_\varrho(u)\Bigr)^{1/R},
+\qquad
+\eta_{\min}(u):=\min_{\varrho\in\mathcal{R}}\eta_\varrho(u),
+\qquad
+\eta_{\max}(u):=\max_{\varrho\in\mathcal{R}}\eta_\varrho(u).
+\]
+
+\begin{proposition}[Exact Cancellation and Intrinsic Form]\label{prop:gut-A-cancels-lambda1}
+For each \(u\in(0,1]\), the following identity holds:
+\[
+\mathcal{A}(u)
+=\max_{\varrho\in\mathcal{R}}\Bigl|\log\eta_{\mathrm{geo}}(u)-\log\eta_\varrho(u)\Bigr|
+=\log\max\Bigl\{\frac{\eta_{\mathrm{geo}}(u)}{\eta_{\min}(u)},\ \frac{\eta_{\max}(u)}{\eta_{\mathrm{geo}}(u)}\Bigr\}.
+\]
+In particular, \(\mathcal{A}(u)\) and its minimizer are completely \emph{insensitive} to \(\lambda_1(u)\): although each \(g_\varrho(u)\) contains \(\lambda_1(u)\), its contribution cancels exactly after centering.
+\end{proposition}
+
+\begin{proof}
+By definition \(g_\varrho(u)=\log\lambda_1(u)-\log\eta_\varrho(u)\), hence
+\[
+\bar g(u)=\log\lambda_1(u)-\frac{1}{R}\sum_{\sigma\in\mathcal{R}}\log\eta_\sigma(u),
+\]
+so that
+\[
+g_\varrho(u)-\bar g(u)
+=\frac{1}{R}\sum_{\sigma\in\mathcal{R}}\log\eta_\sigma(u)-\log\eta_\varrho(u)
+=\log\eta_{\mathrm{geo}}(u)-\log\eta_\varrho(u).
+\]
+Taking the absolute value and maximizing over \(\varrho\) yields the first expression.
+The second expression follows immediately from \(\eta_{\min}\le \eta_{\mathrm{geo}}\le \eta_{\max}\). \qed
+\end{proof}
+
+\begin{corollary}[Two-Channel Collapse]\label{cor:gut-A-two-channel}
+If \(R=2\), then
+\[
+\mathcal{A}(u)=\frac12\log\frac{\eta_{\max}(u)}{\eta_{\min}(u)}.
+\]
+Therefore in the two-channel case, minimizing \(\mathcal{A}(u)\) is completely equivalent to minimizing the logarithmic spread \(\log(\eta_{\max}/\eta_{\min})\).
+\end{corollary}
+
+\begin{corollary}[Spread Equivalence (up to a Constant Factor)]\label{cor:gut-A-spread-equivalence}
+For all \(R\ge 2\) and \(u\in(0,1]\), the following two-sided bound holds:
+\[
+\frac12\log\frac{\eta_{\max}(u)}{\eta_{\min}(u)}
+\le
+\mathcal{A}(u)
+\le
+\log\frac{\eta_{\max}(u)}{\eta_{\min}(u)}.
+\]
+Therefore \(\mathcal{A}(u)\) is equivalent to the logarithmic condition number of the multiset \(\{\eta_\varrho(u)\}_{\varrho\in\mathcal{R}}\) (up to a factor of \(2\)).
+\end{corollary}
+
+\paragraph{Intrinsic \texorpdfstring{$\beta$}{beta}-Field and Necessary and Sufficient Criteria for Local Optimality}
+On the scale \(\theta=\log u\), let (where the derivative exists)
+\[
+b_\varrho(u):=\frac{\dd}{\dd\log u}\log\eta_\varrho(u),
+\qquad
+b_{\mathrm{geo}}(u):=\frac{1}{R}\sum_{\sigma\in\mathcal{R}}b_\sigma(u)
+=\frac{\dd}{\dd\log u}\log\eta_{\mathrm{geo}}(u).
+\]
+Define also
+\[
+h_\varrho(u):=\log\eta_{\mathrm{geo}}(u)-\log\eta_\varrho(u),
+\qquad
+\mathcal{A}(u)=\max_{\varrho\in\mathcal{R}}|h_\varrho(u)|
+\]
+(by Proposition \ref{prop:gut-A-cancels-lambda1}).
+Furthermore, let \(b_1(u):=\frac{\dd}{\dd\log u}\log\lambda_1(u)\), then
+\(
+\beta_\varrho(u)=b_1(u)-b_\varrho(u)
+\)
+and after centering
+\(
+\beta_\varrho(u)-\bar\beta(u)=-(b_\varrho(u)-b_{\mathrm{geo}}(u))
+\);
+hence the first-order variation of \(\mathcal{A}(u)\) depends only on the intrinsic centered quantities \(b_\varrho-b_{\mathrm{geo}}\).
+
+\begin{theorem}[Necessary and Sufficient Conditions for Local Minimum (One-Dimensional KKT/Clarke Conditions for Finite Maxima)]\label{thm:gut-A-local-optimality}
+Suppose each \(u\mapsto \log\eta_\varrho(u)\) is differentiable at \(u_\star\in(0,1]\).
+Define the active set and signs
+\[
+\mathcal{A}_{\mathrm{act}}(u_\star):=\Bigl\{\varrho\in\mathcal{R}:\ |h_\varrho(u_\star)|=\mathcal{A}(u_\star)\Bigr\},
+\qquad
+\sigma_\varrho:=\operatorname{sgn}\bigl(h_\varrho(u_\star)\bigr)\in\{\pm 1\}.
+\]
+Then \(u_\star\) is a local minimum of \(\mathcal{A}\) if and only if
+\[
+0\in
+\operatorname{conv}\Bigl\{\sigma_\varrho\bigl(b_{\mathrm{geo}}(u_\star)-b_\varrho(u_\star)\bigr):\ \varrho\in\mathcal{A}_{\mathrm{act}}(u_\star)\Bigr\}.
+\]
+Equivalently, there exist coefficients \(\alpha_\varrho\ge 0\) (\(\varrho\in\mathcal{A}_{\mathrm{act}}(u_\star)\)) satisfying
+\(
+\sum_{\varrho\in\mathcal{A}_{\mathrm{act}}(u_\star)}\alpha_\varrho=1
+\)
+and
+\[
+\sum_{\varrho\in\mathcal{A}_{\mathrm{act}}(u_\star)}
+\alpha_\varrho\,\sigma_\varrho\,\bigl(b_{\mathrm{geo}}(u_\star)-b_\varrho(u_\star)\bigr)=0.
+\]
+In the typical ``dual active channel'' case (\(\mathcal{A}_{\mathrm{act}}(u_\star)=\{\varrho_+,\varrho_-\}\) with \(h_{\varrho_+}(u_\star)=\mathcal{A}(u_\star)\) and \(h_{\varrho_-}(u_\star)=-\mathcal{A}(u_\star)\)), the above condition is equivalent to
+\[
+\bigl(b_{\mathrm{geo}}(u_\star)-b_{\varrho_+}(u_\star)\bigr)\cdot
+\bigl(b_{\mathrm{geo}}(u_\star)-b_{\varrho_-}(u_\star)\bigr)\le 0.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(\theta=\log u\) and write \(F(\theta):=\mathcal{A}(e^\theta)\).
+By the definition of \(h_\varrho\), \(F\) can be expressed in a neighborhood of \(\theta_\star=\log u_\star\) as the maximum of finitely many differentiable functions:
+\(
+F(\theta)=\max_{\varrho\in\mathcal{R}}\max\{h_\varrho(e^\theta),-h_\varrho(e^\theta)\}.
+\)
+In the one-dimensional case, a finite maximum function has a local minimum at \(\theta_\star\) if and only if \(0\) belongs to the convex hull of the derivatives of its active branches (the KKT criterion for the Clarke subdifferential).
+Computing the derivative of the active branch \(\sigma_\varrho h_\varrho(e^\theta)\) gives
+\[
+\frac{\dd}{\dd\theta}\bigl(\sigma_\varrho h_\varrho(e^\theta)\bigr)\Big|_{\theta=\theta_\star}
+=\sigma_\varrho\Bigl(\frac{\dd}{\dd\log u}\log\eta_{\mathrm{geo}}(u)-\frac{\dd}{\dd\log u}\log\eta_\varrho(u)\Bigr)\Big|_{u=u_\star}
+=\sigma_\varrho\bigl(b_{\mathrm{geo}}(u_\star)-b_\varrho(u_\star)\bigr),
+\]
+yielding the stated necessary and sufficient condition. In the dual active channel case, the convex hull condition is equivalent to the two numbers having opposite signs or containing zero, i.e., their product being non-positive. \qed
+\end{proof}
+
+\paragraph{Stability of the Unification Point under Uniform Error: From \texorpdfstring{$\|\widetilde{\mathcal A}-\mathcal A\|_\infty$}{sup} to Argmin Error Bounds}
+\begin{theorem}[Minimizer Stability under Uniform Error]\label{thm:gut-argmin-stability}
+Let \(I\subset\RR\) be a compact interval (with variable \(\theta=\log u\)), and write \(F(\theta):=\mathcal{A}(e^\theta)\).
+Assume \(F\) has a unique minimizer \(\theta_\star\) on \(I\), satisfying the sharpness inequality
+\[
+F(\theta)\ge F(\theta_\star)+\kappa|\theta-\theta_\star|\qquad(\forall\,\theta\in I)
+\]
+where \(\kappa>0\).
+If an approximate function \(\widetilde F\) satisfies \(\|\widetilde F-F\|_{L^\infty(I)}\le \varepsilon\), then any minimizer \(\widetilde\theta_\star\) of \(\widetilde F\) on \(I\) satisfies
+\[
+|\widetilde\theta_\star-\theta_\star|\le \frac{2\varepsilon}{\kappa},
+\qquad
+F(\widetilde\theta_\star)\le F(\theta_\star)+2\varepsilon.
+\]
+\end{theorem}
+
+\begin{proof}
+By the optimality of \(\widetilde\theta_\star\) and the uniform error bound,
+\[
+F(\widetilde\theta_\star)\le \widetilde F(\widetilde\theta_\star)+\varepsilon
+\le \widetilde F(\theta_\star)+\varepsilon
+\le F(\theta_\star)+2\varepsilon.
+\]
+Applying the sharpness inequality at \(\theta=\widetilde\theta_\star\) yields
+\(
+\kappa|\widetilde\theta_\star-\theta_\star|\le F(\widetilde\theta_\star)-F(\theta_\star)\le 2\varepsilon
+\),
+and the conclusion follows. \qed
+\end{proof}
+
+\paragraph{Determinant Elimination Certificate: Replacing Numerical Differentiation with \texorpdfstring{$\det(I-zM(u))$}{det}}
+In the core audit caliber of this paper, many channel spectral radii arise from the Perron root of finite-dimensional matrix families \(M_{K,\varrho}(u)\);
+therefore the intrinsic \(\beta\)-field \(b_\varrho(u)=\frac{\dd}{\dd\log u}\log\eta_\varrho(u)\) can be fully algebraized via partial derivative ratios of the determinant.
+
+\begin{proposition}[Logarithmic Derivative of the Spectral Radius via Partial Derivative Ratio]\label{prop:gut-beta-determinant-ratio}
+Let \(M(u)\) be a finite matrix whose entries are rational functions of \(u\), and suppose on some connected open interval \(U\subset(0,1]\) there exists a differentiable function \(z_\star(u)\in\RR_{>0}\) such that
+\[
+\Delta(z,u):=\det(I-zM(u))=0\quad\text{at}\quad z=z_\star(u)
+\]
+with \(z_\star(u)^{-1}=\rho(M(u))\), and this root is simple on \(U\) (i.e., \(\partial_z\Delta(z_\star(u),u)\neq 0\)).
+Let \(\eta(u):=\rho(M(u))=z_\star(u)^{-1}\) and define
+\(
+b(u):=\frac{\dd}{\dd\log u}\log\eta(u)
+\).
+Then for all \(u\in U\) the following identity holds:
+\[
+b(u)=\frac{u}{z_\star(u)}\,
+\frac{\partial_u\Delta(z_\star(u),u)}{\partial_z\Delta(z_\star(u),u)}.
+\]
+Moreover, after clearing denominators of \(\Delta\) (so that it lies in some \(\ZZ[u^{\pm1},z]\)), \((b,u)\) satisfies an elimination relation in \(z\): there exists a nonzero polynomial
+\(
+\mathcal{R}(b,u)\in\ZZ[u^{\pm1},b]
+\)
+such that \(\mathcal{R}(b(u),u)=0\) (which can be taken as the resultant with respect to \(z\)).
+\end{proposition}
+
+\begin{proof}
+Differentiating the identity \(\Delta(z_\star(u),u)=0\) with respect to \(u\) yields
+\[
+\partial_z\Delta(z_\star(u),u)\,z_\star'(u)+\partial_u\Delta(z_\star(u),u)=0,
+\]
+and by the simple root condition,
+\(
+z_\star'(u)=-\partial_u\Delta/\partial_z\Delta
+\)
+(evaluated at \(z=z_\star(u)\)).
+Since
+\(
+b(u)=\frac{\dd}{\dd\log u}\log(z_\star(u)^{-1})=-\frac{u\,z_\star'(u)}{z_\star(u)}
+\),
+substitution gives the first formula.
+The second part is a direct consequence of elimination: at \(z=z_\star(u)\), both
+\(
+\Delta(z,u)=0
+\)
+and
+\(
+b\,z\,\partial_z\Delta(z,u)-u\,\partial_u\Delta(z,u)=0
+\)
+hold simultaneously, and taking the resultant with respect to \(z\) yields an algebraic relation involving only \((b,u)\). \qed
+\end{proof}

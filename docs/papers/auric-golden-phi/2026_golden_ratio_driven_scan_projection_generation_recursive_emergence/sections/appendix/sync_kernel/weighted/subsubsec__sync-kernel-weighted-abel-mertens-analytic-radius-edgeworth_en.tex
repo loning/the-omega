@@ -1,0 +1,198 @@
+% Addendum: analytic family / Abel--Mertens / branch-radius / Edgeworth certificates
+% for the weighted self-dual sync-kernel pressure interface.
+
+\subsubsection{Abel--Mertens Asymptotics, Branch-Point Radius, and Unified Certificates for Local Expansions}\label{app:sync-kernel-weighted-abel-mertens-analytic-radius-edgeworth}
+In \S\ref{app:mertens-weighted} we have already given the leading term for the weighted primitive counting and the definitions of the Mertens/Abel finite-part constants,
+and in Proposition~\ref{prop:pressure-branchpoints-discriminant}--Corollary~\ref{cor:pressure-analytic-radius} we pinned the true analytic radius \(R_\theta\) of the pressure branch to the geometric distance to the discriminant branch point.
+This subsection supplements three ``analytic-family closure'' results: they uniformly reduce (i) the constant term of the primitive count, (ii) the convergence threshold for unit-root twists, and (iii) the truncation error of Edgeworth/moderate-deviation expansions, to the analytic continuation of the Perron branch and the uniformity of the spectral gap.
+
+\begin{proposition}[Unified Abel--Mertens asymptotics for the twisted primitive count: analytic dependence of the finite-part constant]\label{prop:sync-kernel-abel-mertens-analytic-family}
+Retaining the notation of \S\ref{app:witt-weighted}, let \(B(u)\) be the polynomial matrix family in \(u\),
+\(
+a_n(u)=\Tr(B(u)^n)
+\)
+and \(p_n(u)\) given by the Witt/M\"obius inversion (\S\ref{app:witt-weighted}).
+Suppose there exist an open simply-connected domain \(\mathcal U\subset\CC^\times\) and a constant \(\eta\in(0,1)\) such that the analytically continued spectral branches over \(\mathcal U\) satisfy:
+\begin{enumerate}
+  \item \(u\mapsto \lambda(u)\) is a single-valued analytic eigenvalue branch of \(B(u)\) (taking the Perron root \(\lambda(1)=3\) at \(u=1\));
+  \item the largest modulus of the remaining eigenvalues, \(\rho(u)\), satisfies the uniform spectral gap
+  \[
+  \boxed{\ |\rho(u)|\le \eta\,|\lambda(u)|\qquad(u\in\mathcal U).\ }
+  \]
+\end{enumerate}
+Then:
+\begin{enumerate}
+  \item \textbf{(Spectral-gap leading term from Witt inversion)} For all \(n\ge 1\) the following uniform estimate holds:
+  \begin{equation}\label{eq:sync-kernel-witt-gap-pn}
+  \boxed{\;
+  p_n(u)=\frac{\lambda(u)^n}{n}+O\!\left(\frac{\rho(u)^n}{n}\right)
+  =\frac{\lambda(u)^n}{n}+O\!\left(\frac{\eta^n|\lambda(u)|^n}{n}\right),\qquad u\in\mathcal U.\;}
+  \end{equation}
+  \item \textbf{(Abel--Mertens asymptotics of the primitive counting curve)}
+  Take \(\theta=\log u\) as any analytic logarithmic coordinate on \(\mathcal U\) (i.e., choose a branch of \(\log\) on \(\mathcal U\)), and write
+  \[
+  \Pi_\theta(N):=\sum_{n\le N}p_n(e^\theta).
+  \]
+  Then there exists a complex-analytic function \(\mathcal M(\theta)\) on \(\mathcal U\) such that as \(N\to\infty\) one has the uniform asymptotic expansion
+  \begin{equation}\label{eq:sync-kernel-abel-mertens-Pi}
+  \boxed{\;
+  \Pi_\theta(N)
+  =\frac{\lambda(\theta)}{\lambda(\theta)-1}\cdot\frac{\lambda(\theta)^N}{N}\;+\;\mathcal M(\theta)\;+\;O\!\left(\frac{\eta^N}{N}\right),\qquad
+  \lambda(\theta):=\lambda(e^\theta).\;}
+  \end{equation}
+  \item \textbf{(Analyticity of the finite-part constant family)}
+  \(\mathcal M(\theta)\) is complex-analytic on \(\{\theta:\ e^\theta\in\mathcal U\}\);
+  likewise, the Abel finite-part \(\log\mathfrak{M}(\theta)\) defined in \S\ref{app:mertens-weighted} and \(M(\theta)=\gamma+\log\mathfrak{M}(\theta)\) (the normalized version of \eqref{eq:sync-kernel-witt-gap-pn}) are also complex-analytic on the same domain.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof outline]
+(1) By the assumed spectral gap, the trace satisfies
+\(
+a_n(u)=\lambda(u)^n+O(\rho(u)^n)
+\)
+with the error uniform over \(u\in\mathcal U\).
+Substituting into the Witt/M\"obius inversion
+\(
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\)
+and using the uniformity of \(u\mapsto u^d\) on compact subsets yields \eqref{eq:sync-kernel-witt-gap-pn}.
+\par
+(2) Summing the leading term and the error of \eqref{eq:sync-kernel-witt-gap-pn} separately: the leading term satisfies the classical Abel-type estimate
+\(
+\sum_{n\le N}\lambda^n/n
+=
+\frac{\lambda}{\lambda-1}\cdot\frac{\lambda^N}{N}+C(\lambda)+O(\lambda^N/N^2)
+\)
+(\(|\lambda|>1\); here \(\lambda=\lambda(\theta)\)), while the error term is
+\(
+O(\sum_{n\le N}\eta^n|\lambda|^n/n)=O(\eta^N/N)
+\)
+(uniform over compact subsets of \(\theta\)).
+Collecting all \(N\)-independent terms into \(\mathcal M(\theta)\) yields \eqref{eq:sync-kernel-abel-mertens-Pi}.
+\par
+(3) By \eqref{eq:sync-kernel-abel-mertens-Pi}, the function
+\(
+\mathcal M_N(\theta):=\Pi_\theta(N)-\frac{\lambda(\theta)}{\lambda(\theta)-1}\frac{\lambda(\theta)^N}{N}
+\)
+is analytic on \(\mathcal U\), and the error bound \(\mathcal M_{N+1}-\mathcal M_N=O(\eta^N/N)\) shows that
+\(\{\mathcal M_N\}\) is uniformly Cauchy on compact sets.
+Hence \(\mathcal M(\theta)=\lim_{N\to\infty}\mathcal M_N(\theta)\) is a compact-uniform limit and therefore complex-analytic.
+The analyticity of \(\log\mathfrak{M}(\theta)\) and \(M(\theta)\) follows by the same argument from the compact-uniform convergence of their Abel finite-part/series representations. \qed
+\end{proof}
+
+\begin{corollary}[Discriminant formula for the analytic radius: true singularities of the pressure branch are characterized uniquely by the multiple-root condition]\label{cor:sync-kernel-analytic-radius-discriminant-formula}
+Let \(F(\lambda,u)\in\ZZ[u][\lambda]\) give the algebraic equation for the Perron branch \(\lambda(u)\) (\S\ref{app:pressure-analytic}).
+Taking \(\theta=\log u\) as the local parameter and selecting the analytic germ at \(\theta=0\) that is continuous with \(\lambda(1)=3\), the true analytic radius satisfies
+\[
+\boxed{\;
+R_\theta=\inf\Bigl\{|\theta|:\ \exists(\lambda,u)\in\CC\times\CC^\times,\ u=e^\theta,\ F(\lambda,u)=0,\ \partial_\lambda F(\lambda,u)=0\Bigr\}.}
+\]
+For the degree-six \(F\) of this kernel, the discriminant characterization of the branch points and the numerical certificate for the nearest branch point are given in Proposition~\ref{prop:pressure-branchpoints-discriminant} and Corollary~\ref{cor:pressure-analytic-radius}.
+\end{corollary}
+
+\begin{corollary}[Convergence threshold for unit-root twists: auditability of the \texorpdfstring{$p$}{p}-th order twist is determined by \texorpdfstring{$2\pi/p<R_\theta$}{2pi/p < Rtheta}]\label{cor:sync-kernel-unit-root-twist-threshold}
+For the unit-root twist \(u=\omega_p=e^{2\pi i/p}\), take \(\theta=\log u\) with the minimal-modulus \(2\pi i\ZZ\)-lift; then \(|\theta|=2\pi/p\).
+Therefore, the necessary and sufficient condition for the local Taylor/cumulant expansion centered at \(\theta=0\) to serve as a convergent algorithm at \(u=\omega_p\) is
+\[
+\boxed{\ \frac{2\pi}{p}<R_\theta\ }.
+\]
+The corresponding minimal threshold
+\(
+p_\star:=\min\{p\in\NN:\ 2\pi/p<R_\theta\}
+\)
+is given by Corollary~\ref{cor:pressure-unit-root-modulus-threshold} as \(p_\star=6\) for this kernel.
+\end{corollary}
+
+\begin{theorem}[Even-cumulant Edgeworth law: closed-form coefficient for the first non-Gaussian correction term]\label{thm:sync-kernel-even-edgeworth-c4}
+Under the self-dual completion symmetry (Theorem~\ref{thm:sync-kernel-gallavotti-cohen}), let
+\(
+\sigma^2=P''(0)=\frac{11}{102}
+\)
+and
+\(
+\kappa_4=P^{(4)}(0)=\frac{1559}{58956}
+\)
+(see Corollary~\ref{cor:edgeworth-fourth}), and set
+\[
+c_4:=\frac{\kappa_4}{24\sigma^4}=\frac{1559}{16456}.
+\]
+For the primitive stratified count \(p_{n,k}\) (\S\ref{app:witt-weighted}), adopt the centered scaling
+\[
+k=\frac{n}{2}+x\sqrt{n\sigma^2}\qquad(x\ \text{bounded}).
+\]
+Then the normalized distribution \(\pi_{n,k}:=p_{n,k}/\sum_j p_{n,j}\) admits a first-order Edgeworth correction, and by the even symmetry only even Hermite terms appear:
+\begin{equation}\label{eq:sync-kernel-edgeworth-even}
+\boxed{\;
+\pi_{n,k}
+=\frac{1}{\sqrt{2\pi n\sigma^2}}\,e^{-x^2/2}\left(1+\frac{c_4}{n}\,(x^4-6x^2+3)+O(n^{-3/2})\right).\;}
+\end{equation}
+Equivalently, substituting back \(p_{n,k}=\frac{3^n}{n}\pi_{n,k}\cdot(1+o(1))\), the explicit even-order correction to \(\log p_{n,k}\) has its first non-Gaussian term coefficient uniquely determined by \(c_4\).
+\end{theorem}
+
+\begin{proof}[Proof outline]
+Corollary~\ref{cor:primitive-finite-sym} gives the mirror symmetry, so that all odd-order central moments vanish strictly; hence the first-order Edgeworth term is determined solely by the fourth-order cumulant.
+The coefficient \(c_4=\kappa_4/(24\sigma^4)\) and the polynomial \(x^4-6x^2+3\) constitute the standard first-order Edgeworth term (corresponding to the fourth-order Hermite polynomial);
+the closed-form values for this kernel are obtained directly from Corollary~\ref{cor:edgeworth-fourth}. \qed
+\end{proof}
+
+\begin{remark}[Corresponding \texorpdfstring{$\log p_{n,k}$}{log p} form (separating the polynomial prefactor)]\label{rem:sync-kernel-edgeworth-log-form}
+From \eqref{eq:sync-kernel-edgeworth-even} and the total primitive count satisfying
+\(
+\sum_k p_{n,k}=p_n(1)=\frac{3^n}{n}\cdot(1+o(1))
+\)
+(\S\ref{app:mertens-weighted}), one obtains in the same centered scaling
+\[
+\log p_{n,k}
+=n\log 3-\log n-\frac12\log(2\pi n\sigma^2)-\frac{x^2}{2}
+\;+\;\frac{c_4}{n}(x^4-6x^2+3)+O(n^{-3/2}).
+\]
+Hence, after separating the polynomial prefactors (including \(\log n\) and \(\log(n\sigma^2)\)) from the exponential profile, the first non-Gaussian correction term has its coefficient uniquely determined by \(c_4\).
+\end{remark}
+
+\begin{proposition}[Certifiable expansion in the moderate-deviation regime: even-order closure of the rate-function jet with error uniformly controlled by \texorpdfstring{$R_\theta$}{Rtheta}]\label{prop:sync-kernel-moderate-deviation-cauchy-certified}
+Retaining the notation of \S\ref{app:rate-param}, let \(\alpha(\theta)=P'(\theta)\), \(\alpha_\star=\alpha(0)=\tfrac12\), and let
+\(
+I(\alpha)=\sup_{\theta}(\theta\alpha-P(\theta)+P(0))
+\)
+be the large-deviation rate function.
+Then:
+\begin{enumerate}
+  \item Since \(\Lambda(\theta):=P(\theta)-\theta/2\) is an even function (Theorem~\ref{thm:sync-kernel-gallavotti-cohen}),
+  the rate function satisfies \(I(\alpha)=I(1-\alpha)\) about the center point, so that
+  \[
+  I\!\left(\tfrac12+\delta\right)\ \text{has a Taylor expansion containing only even powers}\ \delta^{2j}.
+  \]
+  The explicit jet (through \(\delta^8\)) is given in Corollary~\ref{cor:moderate-deviation}.
+  \item Let \(R_\theta\) be the true analytic radius at \(\theta=0\) (Corollary~\ref{cor:pressure-analytic-radius}), and take any \(0<r<R_\theta\).
+  Then \(P\) is bounded on the closed disk \(|\theta|\le r\), and the Cauchy estimate gives uniform derivative bounds; consequently \(P\) (and hence \(\alpha(\theta)\) and \(I(\alpha)\)) possesses an \emph{auditable} truncation remainder closure in the corresponding \(\alpha\)-window, with constants depending only on the ratio \(|\theta|/r\) (equivalently, \(|\theta|/R_\theta\)).
+  In particular, Corollary~\ref{cor:pressure-taylor-remainder-cauchy} provides a directly substitutable truncation remainder upper bound for \(P\), thereby uniformly reducing the moderate-deviation jet error to a geometric comparison of branch-point radii.
+  \item On the moderate-deviation scale \(|k-n/2|\le n^{2/3}\), one has \(\delta=k/n-1/2=O(n^{-1/3})\),
+  so that when approximating \(I(1/2+\delta)\) by a finite even-order jet, its error on the exponential scale \(nI(\cdot)\) can be uniformly closed off by the Cauchy certificate described above (without introducing any additional free parameters).
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Curvature bilipschitz bounds \texorpdfstring{$\Rightarrow$}{=>} bilipschitz \texorpdfstring{$(\theta\leftrightarrow\alpha)$}{theta<->alpha} and strong-convexity constants for the rate function]\label{prop:sync-kernel-curvature-bilipschitz}
+Suppose that on an interval \(\Theta\subset\RR\) one has
+\[
+0<m\le P''(\theta)\le M<\infty.
+\]
+Let \(\alpha(\theta):=P'(\theta)\). Then \(\alpha\) is a bilipschitz homeomorphism on \(\Theta\), and for any \(\theta_1,\theta_2\in\Theta\),
+\[
+\boxed{\ m|\theta_1-\theta_2|\le |\alpha(\theta_1)-\alpha(\theta_2)|\le M|\theta_1-\theta_2|\ }.
+\]
+Correspondingly, on \(\alpha(\Theta)\) the rate function satisfies the strong-convexity bounds
+\[
+\boxed{\ \frac{1}{M}\le I''(\alpha)\le \frac{1}{m}\ }.
+\]
+For this kernel, the reproducible curvature scan certificate in the ``energy direction'' is given in Remark~\ref{rem:rate-curvature-bounds} and Table~\ref{tab:sync_kernel_rate_curve_curvature_bounds}.
+\end{proposition}
+
+\begin{proof}
+By the mean value theorem,
+\(
+\alpha(\theta_1)-\alpha(\theta_2)=P''(\xi)\,(\theta_1-\theta_2)
+\)
+for some \(\xi\); combined with \(m\le P''(\xi)\le M\) this yields the bilipschitz bound.
+The identity \(I''(\alpha(\theta))=1/P''(\theta)\) (Proposition~\ref{prop:einstein-legendre}) gives the strong-convexity constant bounds. \qed
+\end{proof}

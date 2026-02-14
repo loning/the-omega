@@ -1,0 +1,357 @@
+\label{subsec:chi-ldp-part2}
+
+\input{sections/generated/tab_real_input_40_time_correlation_decay_certificate}
+The table above provides the numerical values of $C_N$ and the positions at which they are attained, thereby concretizing the ``existence of a constant $C(0)$'' in Proposition \ref{prop:chi-slice-time-correlation} into an auditable upper bound candidate.
+
+\paragraph{Tail envelope certificate (excluding $n=0$)}
+To avoid the trivial maximum ratio induced by $n=0$ ($\mathrm{Corr}(0)=1$), define the tail certificate
+\[
+C_N^{(1)}:=\max_{1\le n\le N}\frac{|\mathrm{Corr}(n)|}{r^n}.
+\]
+By definition, it follows immediately that for all $1\le n\le N$,
+\[
+|\mathrm{Corr}(n)|\le C_N^{(1)} r^n.
+\]
+The table below provides $C_N^{(1)}$ and the positions at which it is attained on the discrete sample, serving as an auditable certificate for the tail exponential envelope for $n\ge 1$.
+\input{sections/generated/tab_real_input_40_time_correlation_decay_certificate_tail}
+
+\paragraph{Intrinsic phase and oscillation period of the subleading mode (auditable)}
+Proposition \ref{prop:chi-slice-time-correlation} provides the exponential envelope scale of the correlation $\rho_{\mathrm{corr}}(t)=\Lambda(t)/\lambda_1(t)$. In the finite-dimensional case, this exponential decay is dominated by one or a pair of subleading eigenvalues: if $\lambda_2(t)$ is not a positive real number, then the correlation function, in addition to the decay envelope, also carries an oscillation factor controlled by $\arg(\lambda_2(t))$.
+
+\begin{remark}[Subleading phase and intrinsic oscillation period]
+\label{prop:chi-slice-subleading-phase}
+Under the setup of Proposition \ref{prop:chi-slice-time-correlation}, let
+\[
+\lambda_1(t):=\rho\bigl(M_{\theta(t)}\bigr)>0,
+\qquad
+\lambda_2(t)\in\mathrm{spec}(M_{\theta(t)})\setminus\{\lambda_1(t)\}
+\]
+be the subleading eigenvalue satisfying $|\lambda_2(t)|=\Lambda(t)$ (if a conjugate pair appears, choose either one). Define
+\[
+\rho_2(t):=\frac{|\lambda_2(t)|}{\lambda_1(t)}\in[0,1),
+\qquad
+\omega(t):=\arg\bigl(\lambda_2(t)\bigr)\in(-\pi,\pi],
+\]
+and when $\omega(t)\ne 0$, define the intrinsic oscillation period
+\[
+T_{\mathrm{osc}}(t):=\frac{2\pi}{|\omega(t)|}.
+\]
+Then for any centered finite-state observable $f$, the spectral representation of its correlation function contains a subleading term
+\[
+\left(\frac{\lambda_2(t)}{\lambda_1(t)}\right)^n
+=\rho_2(t)^n\,e^{i n\omega(t)},
+\]
+so that when $\omega(t)\ne 0$, the correlation decay is superimposed with an intrinsic phase frequency $\omega(t)$ on the exponential envelope $\rho_2(t)^n$; when $\omega(t)=\pi$ (i.e., $\lambda_2(t)<0$), a two-step alternating oscillation emerges.
+\end{remark}
+
+\input{sections/generated/fig_real_input_40_time_correlation_phase}
+\input{sections/generated/tab_real_input_40_time_correlation_phase}
+
+\begin{remark}[Discrete phase regime certificate: subleading mode from negative real to complex oscillation]
+\label{prop:chi-slice-phase-windows-certificate}
+Along the $\chi$ slice, take a discrete grid $t_0<t_1<\cdots<t_N$, and for each $t_i$ record the real and imaginary parts of the subleading eigenvalue $\lambda_2(t_i)$ satisfying $|\lambda_2(t_i)|=\Lambda(t_i)$.
+Fix a threshold $\varepsilon>0$ and define the discrete phase regime label
+\(
+\kappa(t_i)\in\{\texttt{neg\_real},\texttt{pos\_real},\texttt{complex}\}
+\)
+as follows: if $|\Im\lambda_2(t_i)|>\varepsilon$ then $\kappa(t_i)=\texttt{complex}$; otherwise assign $\texttt{neg\_real}$ or $\texttt{pos\_real}$ according to the sign of $\Re\lambda_2(t_i)$.
+Then the maximal constant-value grid segments of the discrete sequence $\{\kappa(t_i)\}$ yield a fully reproducible ``intrinsic phase regime'' certificate: the range of $\omega(t)=\arg\lambda_2(t)$ and $T_{\mathrm{osc}}(t)=2\pi/|\omega(t)|$ on each segment is directly determined by the finite-dimensional spectral readout.
+Table \ref{tab:real-input-40-time-corr-phase-windows} provides the phase regime decomposition of the real-input 40-state kernel on the default grid of this paper.
+\end{remark}
+
+\input{sections/generated/tab_real_input_40_time_correlation_phase_windows}
+
+\paragraph{Separation between correlation time and character-twisted mixing time (auditable comparison)}
+The $\tau_{\mathrm{corr}}(t)$ from the preceding paragraph arises from the correlation decay within the equilibrium state of the same slice; whereas the $\tau_{\mathrm{mix}}$ in Remark \ref{rem:pom-chi-mixing} arises from the exponential decay of the ``readout bias'' controlled by the spectral radius ratio $\rho/\lambda$ after character twisting.
+Table \ref{tab:real-input-40-tau-corr-vs-tau-mix} juxtaposes both at $t=0$ and at the $((3,3,5))$ worst twist, and further provides three reproducible ``alignment'' readouts: the nearest discrete grid point $t_\star$, the grid bracket $[t_-,t_+]$ for linear interpolation, and the linear root estimate $t_0$ on that bracket (reproducible).
+Furthermore, if one views $y(t):=\tau_{\mathrm{corr}}(t)-\tau_{\mathrm{mix}}(3,3,5)$ as a continuous function of $t$, then the sign-change count and root interval count of its discrete samples (Table \ref{tab:real-input-40-tau-corr-monotonicity}) provide a coarse certificate for the ``intersection multiplicity'', which can be verified for stability through grid refinement in Table \ref{tab:real-input-40-tau-corr-monotonicity-refinement}.
+
+\begin{remark}[Discrete sign-change certificate: existence and multiplicity lower bound of intersections (auditable)]\label{prop:chi-slice-sign-change-certificate}
+Let
+\[
+y(t):=\tau_{\mathrm{corr}}(t)-\tau_{\mathrm{mix}}(3,3,5),
+\]
+and take a strictly increasing discrete grid $t_0<t_1<\cdots<t_N$.
+Assume that on each interval $[t_i,t_{i+1}]$, the map $t\mapsto \tau_{\mathrm{corr}}(t)$ is continuous (so that $y$ is continuous).
+Then:
+\begin{enumerate}
+  \item If there exists $i$ such that $y(t_i)\,y(t_{i+1})<0$, then by the intermediate value theorem there exists $t\in(t_i,t_{i+1})$ with $y(t)=0$, i.e., $\tau_{\mathrm{corr}}(t)=\tau_{\mathrm{mix}}(3,3,5)$.
+  \item If in the discrete sequence $\{y(t_i)\}_{i=0}^N$ there appear $K$ pairwise disjoint root intervals (each root interval either corresponds to a strict sign change $y(t_i)\,y(t_{i+1})<0$, or to a contiguous block of discrete zeros $y(t_i)=\cdots=y(t_j)=0$), then the continuous function $y$ contains at least one zero in each of the corresponding $K$ disjoint intervals; hence the zero set of $y(t)=0$ has at least $K$ pairwise disjoint connected components.
+\end{enumerate}
+The sign-change count and root interval count of $y(t)$ reported in Table \ref{tab:real-input-40-tau-corr-monotonicity} provide a reproducible ``certificated summary'' of the above conclusions; Table \ref{tab:real-input-40-tau-corr-monotonicity-refinement} performs a consistency check on these discrete certificates under grid refinement.
+\end{remark}
+\input{sections/generated/tab_real_input_40_tau_corr_vs_tau_mix}
+\input{sections/generated/tab_real_input_40_tau_corr_monotonicity}
+\input{sections/generated/tab_real_input_40_tau_corr_monotonicity_refinement}
+\input{sections/generated/fig_real_input_40_tau_corr_vs_tau_mix}
+
+\paragraph{Fully aligning \texorpdfstring{$\log\mathfrak{M}$}{logM} to the explicit \texorpdfstring{$\zeta_M$}{zeta\_M} (closed-form constants + numerics)}
+For the 40-state real-input kernel, Appendix \ref{app:real-input-40-abel} gives
+\[
+\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2),
+\]
+so the leading pole is $z_\star=\varphi^{-2}$ (corresponding to $\lambda=\varphi^2$). Moreover, the residue constant at the leading pole admits an algebraic closed form
+\[
+C=\lim_{z\to z_\star}(1-\lambda z)\,\zeta_M(z)=\frac{47+21\sqrt5}{100}\approx 0.9395742753.
+\]
+Substituting this $C$ into the M\"{o}bius--Abel closed form above yields the Abel/Hadamard finite-part constant and the derived Mertens constant (numerical values in Appendix \ref{app:real-input-40-finite-part}):
+\[
+\begin{aligned}
+\log\mathfrak{M}&\approx -0.254312661901716,\\
+\mathfrak{M}&\approx 0.7754493106833835,\\
+\mathsf{M}&=\gamma+\log\mathfrak{M}\approx 0.3229030029998169.
+\end{aligned}
+\]
+
+\paragraph{Trivial-layer collapse \texorpdfstring{$+$}{+} mechanism purity constant (genuine mechanism invariant)}
+For this kernel,
+\[
+\Delta(z)=\det(I-zM)=(1-z)^2(1+z)^3(1-3z+z^2)(1+z-z^2)
+\]
+yields a natural ``trivial layer/mechanism layer'' separation: \((1-z)^2(1+z)^3\) corresponds to boundary fixed points and sign-trivial modes, while the two quadratic factors carry the genuine mechanism blocks.
+Accordingly, one can define a ``mechanism purity constant'' after stripping the trivial drift, for cross-kernel/cross-twist comparable alignment.
+
+\begin{definition}[Mechanism purity constant: stripping trivial factors]\label{def:real-input-40-mechanism-purity-constant}
+Let \(z_\star=\lambda^{-1}=\varphi^{-2}\), and write
+\[
+\Delta_{\mathrm{triv}}(z):=(1-z)^2(1+z)^3,\qquad
+\Delta_{\mathrm{mech}}(z):=(1-3z+z^2)(1+z-z^2).
+\]
+Define the \textbf{genuine mechanism contribution (mechanism purity constant)} as
+\[
+\boxed{\;
+\log\mathfrak{M}_{\mathrm{mech}}
+:=
+-\sum_{m\ge 2}\frac{\mu(m)}{m}\log \Delta_{\mathrm{mech}}(z_\star^{\,m})
+\; }.
+\]
+And define the \textbf{trivial-layer contribution} as
+\[
+\boxed{\;
+\log\mathfrak{M}_{\mathrm{triv}}
+:=\log\mathfrak{M}-\log\mathfrak{M}_{\mathrm{mech}}.\;}
+\]
+\end{definition}
+
+\begin{proposition}[Explicit trivial-layer collapse and two-kernel mechanism constant]\label{prop:real-input-40-triv-mech-split}
+Under the notation of Definition \ref{def:real-input-40-mechanism-purity-constant}, the following strict decomposition holds:
+\[
+\boxed{\ \log\mathfrak{M}=\log\mathfrak{M}_{\mathrm{triv}}+\log\mathfrak{M}_{\mathrm{mech}}\ }.
+\]
+The trivial-layer contribution can be written entirely in closed form as
+\[
+\boxed{\;
+\log\mathfrak{M}_{\mathrm{triv}}
+=\log C-z_\star+3z_\star^2+2\log(1-z_\star)+3\log(1+z_\star)\; }.
+\]
+Equivalently, \(\mathfrak{M}_{\mathrm{mech}}:=\exp(\log\mathfrak{M}_{\mathrm{mech}})\) agrees with the quadratic carry constant in the appendix (Theorem \ref{thm:real-input-40-carry-constant}), and the above decomposition is precisely the ``two-kernel compression'' identity (Proposition \ref{prop:real-input-40-mertens-two-series}).
+\end{proposition}
+
+\paragraph{Computable procedure (isomorphic to ``discretization--regularization--finite part'')}
+Given an adjacency matrix $M$ of a finite graph shift (or a weighted matrix family $M_\theta$), and fixing a truncation order $K\ge 2$, the finite-part constant can be computed by the following steps:
+\begin{enumerate}
+  \item \textbf{Discretization:} Obtain the matrix $M$ (or $M_\theta$) from the graph/transducer, and define $\zeta(z)=1/\det(I-zM)$ (or $\zeta_\theta(z)=1/\det(I-zM_\theta)$).
+  \item \textbf{Leading scale:} Compute the Perron--Frobenius leading eigenvalue $\lambda=\rho(M)$ (or $\lambda(\theta)=\rho(M_\theta)$), and set $z_\star=1/\lambda$ (or $z_\star(\theta)=1/\lambda(\theta)$).
+  \item \textbf{Residue constant:} Compute the leading-pole residue constant
+  \[
+  C:=\lim_{z\to z_\star}(1-\lambda z)\zeta(z)
+  \qquad
+  (\text{or }C(\theta):=\lim_{z\to z_\star(\theta)}(1-\lambda(\theta)z)\zeta_\theta(z)).
+  \]
+  In the ``simple pole'' case, $C$ can also be expressed in closed form via the determinant derivative or eigenvalue product (see Appendix \ref{app:real-input-40-finite-part}).
+  \item \textbf{Regularization (Abel sampling):} For $k=2,\dots,K$, sample $\log\zeta(z_\star^k)$ (or $\log\zeta_\theta(z_\star(\theta)^k)$) within the convergence disk.
+  \item \textbf{Finite part:} Approximate using the truncated M\"{o}bius tail sum
+  \[
+  \log\mathfrak{M}\approx \log C+\sum_{k=2}^{K}\frac{\mu(k)}{k}\log\zeta(z_\star^k)
+  \quad
+  (\text{or }\log\mathfrak{M}(\theta)\approx \log C(\theta)+\sum_{k=2}^{K}\frac{\mu(k)}{k}\log\zeta_\theta(z_\star(\theta)^k)).
+  \]
+  \item \textbf{Mertens constant output:} Define
+  \[
+  \mathsf{M}:=\gamma+\log\mathfrak{M},
+  \qquad
+  \mathsf{M}(\theta):=\gamma+\log\mathfrak{M}(\theta).
+  \]
+\end{enumerate}
+Since $|z_\star|<1$, $z_\star^k$ decays exponentially, and $\log\zeta(z)=O(z)$ ($z\to 0$) ensures that $\log\zeta(z_\star^k)$ tends to zero rapidly in $k$, so this procedure enjoys strong numerical stability and rapid convergence.
+
+\paragraph{Orbit--Mertens product (turning $\mathsf{M}$ into a comparable scalar)}
+Define the length-truncated prime-orbit Mertens product
+\[
+\mathcal{P}(N):=\prod_{\substack{\tau\ \mathrm{primitive}\\|\tau|\le N}}\left(1-\lambda^{-|\tau|}\right)^{-1}.
+\]
+Taking logarithms and using $-\log(1-x)=x+O(x^2)$ yields
+\[
+\log\mathcal{P}(N)=\sum_{n\le N}\frac{p_n}{\lambda^n}+O(1)
+=\log N+\mathsf{M}+o(1),
+\]
+and therefore
+\[
+\mathcal{P}(N)\sim e^{\mathsf{M}}\,N=e^{\gamma}\mathfrak{M}\,N.
+\]
+If one rewrites using the ``orbit norm'' $N(\tau):=\lambda^{|\tau|}$ and sets $x=\lambda^N$ (equivalently $N=\log x/\log\lambda$), one obtains the equivalent $\log x$-type leading term
+\[
+\prod_{N(\tau)\le x}\left(1-\frac{1}{N(\tau)}\right)^{-1}
+\sim \frac{e^{\gamma}\mathfrak{M}}{\log\lambda}\,\log x.
+\]
+
+\paragraph{Weighted interface and \texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)} phase diagram}
+For the edge potential vector $\Phi$ (e.g., $\varphi_e,\varphi_-,\varphi_2$ in Appendix \ref{app:real-input-40-logm-theta}), define the weighted matrix family $M_\theta$ and
+\(
+\zeta_\theta(z)=1/\det(I-zM_\theta)
+\).
+Let $\lambda(\theta)=\rho(M_\theta)$, $z_\star(\theta)=\lambda(\theta)^{-1}$. In the same calibration as above, define
+\[
+P_\theta(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_\theta(z^k).
+\]
+\begin{definition}[Abel/Hadamard finite-part constant]\label{def:abel-finite-part}
+For the weighted matrix family $M_\theta$ of a finite graph shift, define the Abel/Hadamard finite-part constant as
+\[
+\log\mathfrak{M}(\theta):=\mathrm{fp}_{r=1}\Bigl(P_\theta(r/\lambda(\theta))+\log(1-r)\Bigr),
+\]
+where $P_\theta(z)=\sum_{k\ge 1}\frac{\mu(k)}{k}\log\zeta_\theta(z^k)$ is the M\"{o}bius--$\log\zeta$ transform, $\lambda(\theta)=\rho(M_\theta)$ is the Perron--Frobenius leading eigenvalue, and $\mathrm{fp}_{r=1}$ denotes the finite part (Laurent constant term) at $r=1$.
+\end{definition}
+\begin{proposition}[M\"{o}bius--$\zeta$ closed form of the Abel finite part]\label{prop:abel-finite-part-mobius-zeta}
+Under the setup of Definition \ref{def:abel-finite-part}, the Abel finite-part constant admits the computable closed form
+\[
+\log\mathfrak{M}(\theta)
+=\log C(\theta)+\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta_\theta\bigl(z_\star(\theta)^k\bigr),
+\qquad
+C(\theta):=\lim_{z\to z_\star(\theta)}(1-\lambda(\theta)z)\,\zeta_\theta(z),
+\]
+where $C(\theta)$ is the leading-pole residue constant and $z_\star(\theta)=\lambda(\theta)^{-1}$ is the leading pole location.
+\end{proposition}
+Equivalently (in the same calibration as Appendix \ref{app:real-input-40-logm-theta}), this can also be written in a single-line M\"{o}bius--Abel form
+\[
+\log\mathfrak{M}(\theta)=\log C(\theta)-\sum_{m\ge 2}\frac{P_\theta(\lambda(\theta)^{-m})}{m}.
+\]
+Accordingly, define the weighted Mertens constant
+\(
+\mathsf{M}(\theta):=\gamma+\log\mathfrak{M}(\theta)
+\), thereby implementing ``discretization--regularization--finite part'' as a parameter-sweepable phase diagram interface; the numerical phase diagram entry script is
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_theta.py}.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{Sample points of the $\log\mathfrak{M}(\theta)$ phase diagram (real-input 40-state kernel; $\theta_-=0$ fixed; M\"{o}bius tail truncation $k_{\max}=250$).}
+\label{tab:real-input-40-logM-theta-sample}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$\theta_e$ & $\theta_2$ & $\lambda(\theta)$ & $\log\mathfrak{M}(\theta)$ & $\mathsf{M}(\theta)=\gamma+\log\mathfrak{M}(\theta)$ \\
+\midrule
+$-1.0$ & $-1.0$ & $1.793239048961$ & $-0.495016484263$ & $0.082199180638$ \\
+$\ \ 0.0$ & $-1.0$ & $2.490012563421$ & $-0.184629246340$ & $0.392586418561$ \\
+$\ \ 1.0$ & $-1.0$ & $3.646591323038$ & $\ \ 0.072379237963$ & $0.649594902864$ \\
+$-1.0$ & $\ \ 0.0$ & $1.863254840922$ & $-0.515448376051$ & $0.061767288851$ \\
+$\ \ 0.0$ & $\ \ 0.0$ & $2.618033988750$ & $-0.254312661902$ & $0.322903003000$ \\
+$\ \ 1.0$ & $\ \ 0.0$ & $3.864122715327$ & $-0.040498237636$ & $0.536717427266$ \\
+$-1.0$ & $\ \ 1.0$ & $2.040720410275$ & $-0.542620915409$ & $0.034594749493$ \\
+$\ \ 0.0$ & $\ \ 1.0$ & $2.948418905502$ & $-0.375618148304$ & $0.201597516597$ \\
+$\ \ 1.0$ & $\ \ 1.0$ & $4.451463505733$ & $-0.259640526249$ & $0.317575138652$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Typical densities and covariance densities of the three latent attributes (\texorpdfstring{$\theta=0$}{theta=0})}
+Under the three-potential $\theta=(\theta_e,\theta_-,\theta_2)$, the gradient and Hessian of $P(\theta)=\log\rho(M_\theta)$ yield the typical densities and covariance densities of the three observables (see the reproduction paragraph of Appendix \ref{app:real-input-40-logm-theta}):
+\[
+\nabla P(0)=\left(\frac{23-7\sqrt5}{20},\frac{5-\sqrt5}{20},\frac{3-\sqrt5}{10}\right)\approx(0.367376,\ 0.138197,\ 0.076393),
+\]
+\[
+\nabla^2P(0)\approx
+\begin{pmatrix}
+0.048741 & 0.032574 & 0.015964\\
+0.032574 & 0.275035 & 0.115735\\
+0.015964 & 0.115735 & 0.067331
+\end{pmatrix}.
+\]
+\begin{remark}[``Mediating structure'' of the three-channel second-order coupling]
+From the off-diagonal entries of the Hessian, the second-order coupling exhibits a clear hierarchy:
+\[
+H_{-2}>H_{e-}>H_{e2}.
+\]
+This means that the ``negative-carry--collision'' coupling is strongest, while the ``output--collision'' coupling is weakest; the correlation between output and negative carry can be understood as being amplified and redistributed through the collision channel. This hierarchical relationship is numerically auditable (see the reproduction script output in Appendix \ref{app:real-input-40-logm-theta}).
+\end{remark}
+
+\paragraph{Second-order expansion of \texorpdfstring{$\log\mathfrak{M}(\theta)$}{logM(theta)} (constant-level fingerprint)}
+Under the same weighted family, $\log\mathfrak{M}(\theta)$ captures the constant-level drift in the prime-orbit Mertens leading term (the shift relative to $\log N$), serving as a fine-grained fingerprint independent of the pressure leading scale $P(\theta)$.
+Table \ref{tab:real-input-40-logM-theta-taylor} provides the reproducible numerical values of the gradient and Hessian of $\log\mathfrak{M}(\theta)$ at $\theta=0$ (second-order finite differences; M\"{o}bius tail truncation fixed), for side-by-side comparison with $\nabla P(0),\nabla^2P(0)$.
+\input{sections/generated/tab_real_input_40_logM_theta_taylor}
+
+\paragraph{Incorporating the arity-charge into the same interface}
+Define the arity-charge
+\[
+\chi:=\varphi_e-\varphi_2\in\{-1,0,1\}.
+\]
+More generally, if $\chi$ is incorporated as an additional potential into the weighting, it only introduces a linear reparametrization (without expanding the state space):
+\[
+P(\theta_e,\theta_-,\theta_2,\theta_\chi)=P(\theta_e+\theta_\chi,\theta_-,\theta_2-\theta_\chi).
+\]
+Under the three-parameter pressure $P(\theta_e,\theta_-,\theta_2)=\log\rho(M_\theta)$, the linear weighting with respect to $\chi$ corresponds to the one-dimensional tangent line
+\[
+P_\chi(t):=P(t,0,-t).
+\]
+Therefore the typical density and variance density of $\chi$ are read off from
+\(
+P_\chi'(0),P_\chi''(0)
+\),
+and can be compared alongside the slice of $\log\mathfrak{M}(\theta)$ in the same direction as a ``prime shadow'' bifurcation dimension; specific numerical values and reproducible computations are given in Appendix \ref{app:real-input-40-logm-theta} and
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}.
+
+\paragraph{One-dimensional slice phase diagram of \texorpdfstring{$\chi$}{chi} (computable procedure)}
+Fix
+\(
+\theta(t)=(t,0,-t)
+\)
+and let
+\[
+P_\chi(t):=P(\theta(t))=\log\rho(M_{\theta(t)}),
+\qquad
+\log\mathfrak{M}_\chi(t):=\log\mathfrak{M}(\theta(t)).
+\]
+For each $t$, compute $\lambda(t)=e^{P_\chi(t)}$, $z_\star(t)=\lambda(t)^{-1}$, $C(t)$ following the ``computable procedure'' steps above, and approximate using the truncated M\"{o}bius tail
+\[
+\log\mathfrak{M}_\chi(t)\approx \log C(t)+\sum_{k=2}^{K}\frac{\mu(k)}{k}\log\zeta_{\theta(t)}(z_\star(t)^k).
+\]
+The statistics of this one-dimensional slice at $t=0$ are given by pressure derivatives:
+\[
+\mathbb{E}[\chi]=P_\chi'(0),\qquad \mathrm{Var}_\infty(\chi)=P_\chi''(0),
+\]
+and on the real-input kernel (Appendix \ref{app:real-input-40-logm-theta}) the closed forms and numerical values are
+\[
+\mathbb{E}[\chi]=\frac{17-5\sqrt5}{20}\approx 0.2909830056,
+\qquad
+\mathrm{Var}_\infty(\chi)\approx 0.0841438530.
+\]
+If we write the three-dimensional Hessian (covariance density) as $H=\nabla^2P(0)$, then
+\[
+\mathrm{Var}_\infty(\chi)=H_{ee}+H_{22}-2H_{e2},
+\qquad
+\mathrm{Cov}_\infty(\chi,\varphi_-)=H_{e-}-H_{-2}\approx -0.0831619.
+\]
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.15}
+\caption{Sample points of the $\chi$-slice phase diagram: $t\mapsto(\lambda_\chi(t),\log\mathfrak{M}_\chi(t),\mathsf{M}_\chi(t))$ (real-input 40-state kernel, $\theta(t)=(t,0,-t)$; M\"{o}bius tail truncation $k_{\max}=250$).}
+\label{tab:real-input-40-logM-chi-sample}
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$t$ & $\lambda_\chi(t)$ & $\log\mathfrak{M}_\chi(t)$ & $\mathsf{M}_\chi(t)=\gamma+\log\mathfrak{M}_\chi(t)$ \\
+\midrule
+$-1.0$ & $2.040720410275$ & $-0.542620915409$ & $0.034594749493$ \\
+$-0.5$ & $2.287538746528$ & $-0.410414288994$ & $0.166801375907$ \\
+$\ \ 0.0$ & $2.618033988750$ & $-0.254312661902$ & $0.322903003000$ \\
+$\ \ 0.5$ & $3.059600073602$ & $-0.087974328977$ & $0.489241335925$ \\
+$\ \ 1.0$ & $3.646591323038$ & $\ \ 0.072379237963$ & $0.649594902864$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+% figure generated by scripts/exp_sync_kernel_real_input_40_logM_chi.py
+\input{sections/generated/fig_real_input_40_logM_chi}
+This places the typical density/fluctuations of ``operand inconsistency'' and the Abel finite-part constant curve $\log\mathfrak{M}_\chi(t)$ on the same slice in the same phase diagram coordinates for comparison. The numerical generation entry script for this curve is
+\texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}.

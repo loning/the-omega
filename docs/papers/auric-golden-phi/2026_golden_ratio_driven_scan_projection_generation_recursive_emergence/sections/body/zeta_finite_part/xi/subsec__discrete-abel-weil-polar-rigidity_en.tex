@@ -1,0 +1,179 @@
+\subsubsection{Discrete Abel--Weil Explicit Formula and Polar Rigidity: Characterizing RH via Prime-End Generating Functions}\label{subsec:discrete-abel-weil-polar-rigidity}
+This section presents a collection of results that can be verified line by line: starting from the Chebyshev function on the prime end, via ``logarithmic sampling + discrete Abel transform'' one constructs an analytic/meromorphic generating function on the unit disk, whose pole positions in the \(r\)-plane are in strict one-to-one correspondence with the zeros of \(\zeta\), thereby yielding a ``unit disk holomorphy \(\Leftrightarrow\) RH'' equivalence criterion and casting the ``scan readout'' as a Hardy boundary problem and discrete spectral inversion framework.
+
+\paragraph{Chebyshev function and logarithmic sampling error sequence}
+Denote the von Mangoldt function by \(\Lambda(n)\) and define
+\[
+\psi(x):=\sum_{n\le x}\Lambda(n).
+\]
+To avoid technical issues at jump discontinuities, take the standard half-weight version \(\psi_0(x)\) (averaging left and right limits at prime powers); its difference from \(\psi(x)\) occurs only on a discrete point set and does not affect the ``analytic domain/pole position'' conclusions below.
+Fix an arbitrary base \(b>1\). Define the logarithmically sampled and \(1/2\)-normalized error sequence
+\[
+\boxed{\ E_b(n):=b^{-n/2}\bigl(\psi_0(b^n)-b^n\bigr),\qquad n=0,1,2,\dots\ }
+\]
+together with its Abel generating function
+\[
+\boxed{\ \mathcal A_b(r):=\sum_{n\ge 0}E_b(n)\,r^n.\ }
+\]
+
+\paragraph{Minimal-input form of the explicit formula}
+This section uses only the following standard decomposition of the explicit formula (available in any analytic number theory textbook; only its structure is needed here, not the sharpest error term):
+there exists a function \(G(x)\) composed of trivial zeros and a constant term (e.g., one may take \(G(x)=-\log(2\pi)-\tfrac12\log(1-x^{-2})\) in a suitably interpreted version) such that for all \(x>1\),
+\begin{equation}\label{eq:psi0-explicit-schematic}
+\boxed{\ \psi_0(x)=x-\sum_{\rho}\frac{x^\rho}{\rho}+G(x)\ },
+\end{equation}
+where \(\rho\) runs over all nontrivial zeros of \(\zeta(s)\), counted with multiplicity and paired with conjugates. Moreover, \(G(x)=O(1)\) (more precisely, \(G(x)=-\log(2\pi)+O(x^{-2})\)).
+
+\begin{theorem}[Discrete Abel--Weil expansion: zeros \(\to\) \(r\)-plane poles]\label{thm:discrete-abel-weil-expansion}
+In the region where \(|r|\) is sufficiently small for the exchange of summation to be justified, one has the decomposition
+\begin{equation}\label{eq:Abel-Weil-decomposition}
+\boxed{\ \mathcal A_b(r)
+=-\sum_{\rho}\frac{1}{\rho}\cdot\frac{1}{1-r\,b^{\rho-\frac12}}
+\;+\;H_b(r)\ },
+\end{equation}
+where the remainder
+\[
+H_b(r):=\sum_{n\ge 0}b^{-n/2}G(b^n)\,r^n
+\]
+is analytic at least in the disk \(|r|<b^{1/2}\) (in fact its power series convergence radius is \(\ge b^{1/2}\)).
+Therefore each nontrivial zero \(\rho\) induces a pole orbit
+\[
+1-r\,b^{\rho-\frac12}=0
+\quad\Longleftrightarrow\quad
+\boxed{\ r_\rho=b^{-(\rho-\frac12)}\ },
+\]
+with modulus
+\[
+\boxed{\ |r_\rho|=b^{-(\Re\rho-\frac12)}\ }.
+\]
+\end{theorem}
+\begin{proof}
+From \eqref{eq:psi0-explicit-schematic} with \(x=b^n\), multiplied by \(b^{-n/2}\), one obtains
+\[
+E_b(n)
+=-\sum_\rho \frac{b^{(\rho-\frac12)n}}{\rho}
+\;+\;b^{-n/2}G(b^n).
+\]
+In the disk \(|r|\) sufficiently small, the summation over \(n\) and \(\rho\) may be exchanged via locally uniform convergence (first exchange for a fixed truncation of the zero set, then remove the truncation using zero-counting and summation by parts; only locally uniform convergence on \(|r|<R\) is needed). Thus
+\[
+\sum_{n\ge 0}E_b(n)r^n
+=-\sum_\rho \frac{1}{\rho}\sum_{n\ge 0}\bigl(r\,b^{\rho-\frac12}\bigr)^n
+\;+\;\sum_{n\ge 0}b^{-n/2}G(b^n)r^n.
+\]
+The inner sum in the first term is a geometric series \(\sum_{n\ge 0}(r\,b^{\rho-\frac12})^n=1/(1-r\,b^{\rho-\frac12})\), yielding \eqref{eq:Abel-Weil-decomposition}.
+For the remainder, since \(G(b^n)=O(1)\), one has \(b^{-n/2}G(b^n)=O(b^{-n/2})\), so \(H_b(r)\) is analytic in \(|r|<b^{1/2}\).
+\end{proof}
+
+\paragraph{Polar rigidity and the geometric criterion for RH (unit disk holomorphy)}
+Let
+\[
+\sigma_*:=\sup_{\rho}\Re\rho
+\]
+denote the supremum of the real parts of nontrivial zeros (RH is equivalent to \(\sigma_*=\tfrac12\)).
+
+\begin{theorem}[Analytic radius captures the rightmost zero real part]\label{thm:radius-captures-sigma-star}
+Let \(R_b\) denote the maximal radius of the ``pole-free disk'' centered at \(r=0\) for the power series expansion of \(\mathcal A_b(r)\). Then
+\[
+\boxed{\ R_b=b^{-(\sigma_*-\frac12)}\ }.
+\]
+More specifically:
+\begin{itemize}
+\item If \(|r|<R_b\), then no pole induced by nontrivial zeros lies in this disk, so \(\mathcal A_b(r)\) is holomorphic on \(|r|<R_b\);
+\item For any \(\varepsilon>0\), in the larger disk \(|r|<R_b+\varepsilon\), one generally encounters poles induced by the ``rightmost zeros'' (at least in the meromorphic sense, holomorphy fails).
+\end{itemize}
+In particular,
+\[
+\boxed{\ \mathrm{RH}\ \Longleftrightarrow\ \mathcal A_b(r)\ \text{is holomorphic on}\ |r|<1.\ }
+\]
+The quantified version is: for any \(\delta\ge 0\),
+\[
+\boxed{\ \bigl(\forall\rho,\ \Re\rho\le\tfrac12+\delta\bigr)
+\Longleftrightarrow
+\mathcal A_b(r)\ \text{is holomorphic on}\ |r|<b^{-\delta}.\ }
+\]
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:discrete-abel-weil-expansion}, each nontrivial zero \(\rho\) induces a pole \(r_\rho=b^{-(\rho-\frac12)}\), so the set of all pole-to-origin distances is \(\{|r_\rho|\}_\rho=\{b^{-(\Re\rho-\frac12)}\}_\rho\). The maximal ``pole-free disk'' radius for the holomorphic continuation from the center \(0\) equals the infimum of all pole moduli, i.e.,
+\[
+R_b=\inf_\rho |r_\rho|=\inf_\rho b^{-(\Re\rho-\frac12)}=b^{-(\sup_\rho \Re\rho-\frac12)}=b^{-(\sigma_*-\frac12)}.
+\]
+The quantified version follows by the same argument.
+\end{proof}
+
+\paragraph{Hardy boundary problem and the regularization framework for ``unitary scan''}
+Under RH, the poles of \(\mathcal A_b\) lie on the boundary \(|r|=1\), making ``boundary integrability/finite energy'' require regularization. To this end, introduce an exponential damping parameter \(\delta>0\) that pushes the unit circle boundary singularities outside the disk.
+
+\begin{definition}[Damped Abel generating function]\label{def:Abel-damped}
+For any \(\delta\ge 0\), define
+\[
+\boxed{\ \mathcal A_{b,\delta}(r):=\mathcal A_b(b^{-\delta}r)=\sum_{n\ge 0}E_b(n)\,b^{-\delta n}\,r^n.\ }
+\]
+\end{definition}
+
+\begin{proposition}[Pole positions after damping]\label{prop:damped-poles}
+One has the decomposition
+\[
+\mathcal A_{b,\delta}(r)
+=-\sum_{\rho}\frac{1}{\rho}\cdot\frac{1}{1-r\,b^{\rho-(\frac12+\delta)}}\;+\;H_{b,\delta}(r),
+\]
+where \(H_{b,\delta}(r)=H_b(b^{-\delta}r)\) is analytic at least on \(|r|<b^{1/2+\delta}\). The corresponding poles are
+\[
+\boxed{\ r_{\rho,\delta}=b^{\delta}r_\rho=b^{-(\rho-(\frac12+\delta))}\ },\qquad
+|r_{\rho,\delta}|=b^{-(\Re\rho-(\frac12+\delta))}.
+\]
+Therefore
+\[
+\bigl(\forall\rho,\ \Re\rho\le\tfrac12+\delta\bigr)
+\Longleftrightarrow
+\mathcal A_{b,\delta}\ \text{is holomorphic on}\ |r|<1.
+\]
+\end{proposition}
+
+\begin{theorem}[Hardy energy criterion \(\Leftrightarrow\) strict surplus beyond the rightmost zero]\label{thm:hardy-criterion-delta}
+Fix \(\delta\ge 0\). The following two conditions are strictly equivalent:
+\begin{enumerate}
+\item There exists \(\varepsilon>0\) such that \(\forall\rho,\ \Re\rho\le \tfrac12+\delta-\varepsilon\);
+\item \(\mathcal A_{b,\delta}\) is holomorphic on some disk \(|r|<1+\eta\) (\(\eta>0\)) (equivalently, it has no pole near the unit circle), so that \(\mathcal A_{b,\delta}\in H^2(\mathbb D)\) and its radial limit belongs to \(L^2\) on \(\TT\).
+\end{enumerate}
+In particular, RH can be equivalently restated as an ``arbitrarily small damping Hardy finite energy'' criterion:
+\[
+\boxed{\ \mathrm{RH}\ \Longleftrightarrow\ \forall\delta>0,\ \mathcal A_{b,\delta}\in H^2(\mathbb D).\ }
+\]
+\end{theorem}
+\begin{proof}
+\((1)\Rightarrow(2)\): By Proposition \ref{prop:damped-poles}, the pole moduli satisfy
+\[
+|r_{\rho,\delta}|=b^{-(\Re\rho-(\frac12+\delta))}\ge b^{\varepsilon}>1,
+\]
+so there exists \(\eta>0\) such that all poles lie outside \(|r|\ge 1+\eta\), and thus \(\mathcal A_{b,\delta}\) is holomorphic on \(|r|<1+\eta\). By Cauchy estimates for analytic functions on the larger disk, its Taylor coefficients decay geometrically, whence \(\sum_{n\ge 0}|E_b(n)b^{-\delta n}|^2<\infty\), equivalent to \(\mathcal A_{b,\delta}\in H^2(\mathbb D)\).
+
+\((2)\Rightarrow(1)\): If some zero satisfies \(\Re\rho\ge \tfrac12+\delta\), then by Proposition \ref{prop:damped-poles}, \(\mathcal A_{b,\delta}\) has a pole within the closed disk \(|r|\le 1\) (inside the open disk when \(\Re\rho>\tfrac12+\delta\); on the boundary when equality holds). However, an \(H^2(\mathbb D)\) function must be holomorphic on the open disk, and its \(L^2\) boundary values exclude first-order polar singularities on the unit circle (otherwise \(\sup_{0<r<1}\int_0^{2\pi}|f(re^{i\theta})|^2\,\dd\theta=\infty\)). Therefore \(\mathcal A_{b,\delta}\in H^2\) implies no zero satisfies \(\Re\rho\ge \tfrac12+\delta\); by compactness of the surplus, some \(\varepsilon>0\) exists such that \(\Re\rho\le\tfrac12+\delta-\varepsilon\).
+
+The final ``RH \(\Leftrightarrow\) \(\forall\delta>0\), \(H^2\) regularity'' statement follows from \((1)\Leftrightarrow(2)\) by taking \(\delta>0\) arbitrarily small and setting \(\varepsilon=\delta/2\).
+\end{proof}
+
+\paragraph{Boundary angular frequency and imaginary-part encoding of zeros (scan readout)}
+Viewing \(\mathcal A_b(r)\) as a function first defined on \(|r|<1\), then taking the radial limit \(r=e^{i\theta}\) (understanding boundary singularities in the distributional sense): if RH holds and \(\rho=\tfrac12+i\gamma\), then
+\[
+b^{\rho-\frac12}=b^{i\gamma}=e^{i\gamma\log b},
+\qquad
+r_\rho=e^{-i\gamma\log b}\in\TT,
+\]
+and the pole angular position satisfies
+\[
+\boxed{\ \theta\equiv -\gamma\log b\pmod{2\pi}\ }.
+\]
+This rigorously encodes the ``zero imaginary part \(\gamma\)'' as an angular frequency on the unit circle boundary, thereby casting the ``scan readout'' as a Hardy-type boundary spectral problem.
+
+\paragraph{Discrete spectral inversion: approximate recovery of zeros from prime block data}
+From the coefficient representation of Theorem \ref{thm:discrete-abel-weil-expansion} one sees (under RH) that
+\[
+E_b(n)=-\sum_{\rho}\frac{b^{i\gamma n}}{\rho}+O(b^{-n/2}),
+\]
+i.e., \(E_b(n)\) is a sum of complex exponentials with a geometrically decaying tail. Therefore, to recover zeros with \(|\gamma|\le T\), it suffices to take the sampling length \(N\) at the Nyquist scale
+\[
+N\ \gtrsim\ \frac{T\log b}{2\pi}
+\]
+and use \(\{E_b(0),\dots,E_b(N-1)\}\) as input to standard frequency estimation tools (Prony, matrix pencil, ESPRIT, etc.) to approximately recover the frequency set \(\{\gamma\log b\}\), then divide by \(\log b\) to obtain estimates of \(\gamma\). The remainder \(O(b^{-n/2})\) provides a natural noise floor that decays geometrically with \(n\).
+
+\endinput

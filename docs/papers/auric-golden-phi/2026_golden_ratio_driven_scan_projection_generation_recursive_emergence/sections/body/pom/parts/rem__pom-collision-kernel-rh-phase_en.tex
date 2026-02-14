@@ -1,0 +1,495 @@
+
+Furthermore, transplanting the square-root bound of the kernel-level RH/GRH (Definition \ref{def:kernel-rh}) to the collision kernel \(A_q\): let
+\[
+\Lambda_q:=\max_{\mu\in\sigma(A_q)\setminus\{r_q\}}|\mu|,
+\qquad
+R_q:=\frac{\Lambda_q}{\sqrt{r_q}},
+\qquad
+\beta_q:=\frac{\log \Lambda_q}{\log r_q},
+\qquad
+\delta_q:=\log\!\left(\frac{\Lambda_q^2}{r_q}\right)=2\log R_q.
+\]
+Table \ref{tab:fold_collision_kernel_rh_scan_q2_17} provides the reproducible output for \(q=2,\dots,17\) (generated in one pass by the script \path{scripts/exp_fold_collision_kernel_rh_scan_q2_17.py}).
+Table \ref{tab:fold_collision_kernel_rh_scan_q18_23} provides the extended output for \(q=18,\dots,23\) (data exportable from the script \path{scripts/exp_fold_collision_moment_signature_q18_25.py}).
+\input{sections/generated/tab_fold_collision_kernel_rh_scan_q2_17}
+\input{sections/generated/tab_fold_collision_kernel_rh_scan_q18_23}
+
+\begin{remark}[Systematic violation starting from \texorpdfstring{$q=4$}{q=4} and rapid degradation]\label{rem:pom-collision-kernel-rh-phase}
+From Tables \ref{tab:fold_collision_kernel_rh_scan_q2_17} and \ref{tab:fold_collision_kernel_rh_scan_q18_23}, the following is observed: within the verified range, \(\delta_q<0\) occurs only at \(q=2,3\), and from \(q=4\) onward a strict violation \(\delta_q>0\) appears (\(q=4\) being at the borderline level).
+Moreover, \(\beta_q\) and \(\delta_q\) are monotonically increasing in the verified range \(q\le 23\), exhibiting a spectral phase transition in which the ``error exponent'' rapidly degrades from the square-root phase (\(\beta\le\frac12\)) toward the leading-term scale (\(\beta\to 1\)).
+Furthermore, within the \(q\le 17\) range, the dominant non-Perron root achieving \(\Lambda_q\) is consistently a negative real root, so that there exists a stable anti-phase slow mode dominating the violation.
+\end{remark}
+
+\begin{remark}[Near-linear law of high-order \texorpdfstring{$\delta_q$}{deltaq} (\(q=18,\dots,23\))]\label{rem:pom-collision-kernel-rh-linear}
+From Table \ref{tab:fold_collision_kernel_rh_scan_q18_23}, the increments
+\(\delta_{q+1}-\delta_q\) over \(q=18,\dots,23\) are approximately constant (roughly \(0.26\) and slowly decreasing), exhibiting near-linear growth.
+Performing a least-squares fit to \((q,\delta_q)\) yields the reproducible approximate law (output given in Equation \eqref{eq:fold-collision-delta-linear-fit-q18-23}):
+\input{sections/generated/eq_fold_collision_delta_linear_fit_q18_23}
+Equivalently,
+\[
+\frac{\Lambda_{q+1}^2/r_{q+1}}{\Lambda_q^2/r_q}\approx e^{0.263694}\approx 1.30174,
+\qquad
+\frac{R_{q+1}}{R_q}\approx e^{0.131847}\approx 1.14094,
+\]
+i.e., the ``violation intensity'' grows at an approximately fixed multiplicative rate within this high-order interval.
+\par
+This empirical law suggests that if \(q\to\infty\) is taken as a limit route to approach more complex objects, then without introducing additional renormalization/symmetry constraints to suppress the stable slow mode, the family \(A_q\) will diverge from the square-root phase at an exponential rate (\(\delta_q\) moving far from \(0\)).
+\end{remark}
+
+\input{parts/resonance/rem__pom-shadow-spectral-packet-q9-17}
+
+\begin{remark}[Shortest initial values for the high-order recursion (\(q=9,10,11,12\))]\label{rem:pom-moment-init-9-12}
+For ease of verification, the shortest initial values \((S_q(2),\dots,S_q(1+d_q))\) are listed below:
+$$
+\begin{aligned}
+&(S_9(2),\dots,S_9(8))=(514,1538,41416,382292,5376484,54810488,707836456),\\
+&(S_{10}(2),\dots,S_{10}(10))=(1026,3074,122196,1406968,25250620,\\
+&\qquad 311420704,5187436232,72412721272,1102141254640),\\
+&(S_{11}(2),\dots,S_{11}(10))=(2050,6146,362488,5265380,120053140,\\
+&\qquad 1787525384,38572713688,667461412712,12816890401888),\\
+&(S_{12}(2),\dots,S_{12}(14))=(4098,12290,1079268,19982248,576435244,10344013168,\\
+&\qquad 290291967800,6227618870536,150911581885024,3397767385301568,\\
+&\qquad 81304379149198128,1859608501854266944,43678793149065441920).
+\end{aligned}
+$$
+The initial values and coefficients for \(q=13,14,15,16,17\) are exported from the \texttt{--precomputed} records of the script \path{scripts/exp_fold_collision_moment_recursions_mod_dp.py}.
+\end{remark}
+
+\begin{theorem}[Collapse/resonance criterion: modal constraints cause Hankel rank deficiency]\label{thm:pom-moment-resonance}
+Let \(q\ge 2\) and write \(h=\lfloor q/2\rfloor\). Under the difference-modal truncation (Remark \ref{rem:pom-closure-dim-mode-trunc}), let \(M_{q,\ell}(m)\) denote the modal contribution at net bias \(\ell=a-b\); then
+$$
+S_q(m)=\sum_{\ell=-h}^{h} M_{q,\ell}(m).
+$$
+Assume that these modal contributions can be organized into a \(2h+1\)-dimensional linear realization with coordinates \(\{M_{q,\ell}\}\) (which in the non-resonant case is precisely the standard realization of the ``modal closed recursion'').
+Suppose there exists an integer-coefficient linear recursion valid from some \(m_0\) onward:
+$$
+S_q(m)=\sum_{i=1}^{d} c_i S_q(m-i)\qquad(m\ge m_0),
+$$
+with characteristic polynomial
+$$
+P_q(\lambda)=\lambda^d-\sum_{i=1}^d c_i\lambda^{d-i}.
+$$
+If \(d<2h+1\), then:
+\begin{enumerate}
+  \item The Hankel rank of \(S_q\) satisfies \(\mathrm{rank}(H)\le d<2h+1\);
+  \item The \(2h+1\)-dimensional linear realization is necessarily non-minimal, and there exist nonzero coefficients \(\alpha_{-h},\dots,\alpha_h\) such that
+  $$
+  \sum_{\ell=-h}^{h}\alpha_\ell M_{q,\ell}(m)=0\qquad(m\ge m_0),
+  $$
+  i.e., a \textbf{modal constraint} arises, triggering ``collapse/resonance.''
+\end{enumerate}
+For the verified recursions at \(q=9,\dots,17\) (Table \ref{tab:fold_collision_moment_recursions_9_17}), the characteristic polynomials for \(q=9,\dots,15\) are
+$$
+\begin{aligned}
+P_9(\lambda)&=\lambda^7-2\lambda^6-62\lambda^5-386\lambda^4-2819\lambda^3-62\lambda^2-900\lambda+450,\\
+P_{10}(\lambda)&=\lambda^9-2\lambda^8-96\lambda^7-830\lambda^6-7945\lambda^5-2\lambda^4-1852\lambda^3+830\lambda^2-4\lambda+4,\\
+P_{11}(\lambda)&=\lambda^9-2\lambda^8-153\lambda^7-1740\lambda^6-21249\lambda^5+9432\lambda^4+86213\lambda^3+1484\lambda^2+18348\lambda-9174,
+\\
+P_{12}(\lambda)&=\lambda^{13}-2\lambda^{12}-243\lambda^{11}-3608\lambda^{10}-56447\lambda^9+61236\lambda^8+667319\lambda^7-3608\lambda^6\\
+&\quad+9582\lambda^5-61242\lambda^4-15404\lambda^3+7216\lambda^2-8\lambda+8,\\
+P_{13}(\lambda)&=\lambda^{11}-2\lambda^{10}-388\lambda^9-7414\lambda^8-148038\lambda^7+317916\lambda^6+4165856\lambda^5\\
+&\quad-136252\lambda^4-1565891\lambda^3-318938\lambda^2-289380\lambda+144690,\\
+P_{14}(\lambda)&=\lambda^{13}-2\lambda^{12}-621\lambda^{11}-15140\lambda^{10}-385463\lambda^9+1443744\lambda^8+22761161\lambda^7\\
+&\quad-15140\lambda^6+2116566\lambda^5-1443750\lambda^4-63044\lambda^3+30280\lambda^2-8\lambda+8,\\
+P_{15}(\lambda)&=\lambda^{11}-2\lambda^{10}-1000\lambda^9-30766\lambda^8-994458\lambda^7+6188172\lambda^6+119408756\lambda^5\\
+&\quad-8289820\lambda^4-134208623\lambda^3-6186122\lambda^2-16637076\lambda+8318538,
+\end{aligned}
+$$
+and the recursion orders for \(q=16,17\) are both \(d=13<2\lfloor q/2\rfloor+1\) (coefficients given in Table \ref{tab:fold_collision_moment_recursions_9_17}). Hence all \(q=9,\dots,17\) satisfy \(d<2h+1\), exhibiting Hankel rank deficiency and triggering modal constraints.
+\end{theorem}
+\begin{proof}
+From the recursion, the Hankel rank of \(S_q\) does not exceed the recursion order \(d\) (Theorem \ref{thm:hankel-rank-minimal}); if \(d<2h+1\), rank deficiency occurs.
+On the other hand, the difference-modal truncation provides a \(2h+1\)-dimensional linear representation with coordinates \(\{M_{q,\ell}\}\); since the minimal linear representation dimension is at most \(d\), this representation is necessarily non-minimal, so a nonzero linear relation \(\sum_{\ell}\alpha_\ell M_{q,\ell}(m)\equiv 0\) exists.
+The final paragraph directly reads off the characteristic polynomials from the recursion coefficients in the table and compares orders. \qed
+\end{proof}
+
+\input{parts/resonance/prop__pom-resonance-two-cycle-ratio}
+
+\begin{remark}[\(2\)-adic shadow law: \texorpdfstring{$P_q(\lambda)$}{Pq} collapses to \texorpdfstring{$\lambda^a(\lambda+1)^b$}{lambda^a(lambda+1)^b} modulo \texorpdfstring{$2$}{2} (auditable)]\label{rem:pom-charpoly-mod2-shadow}
+For the resonance window \(q=9,\dots,17\) with verified minimal recursions (Table \ref{tab:fold_collision_moment_recursions_9_17}; Theorem \ref{thm:pom-moment-resonance}), reducing the coefficients of the characteristic polynomial \(P_q(\lambda)\) to \(\mathbb{F}_2\) by parity reveals a completely internal ``\(2\)-adic shadow collapse'':
+\[
+P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\pmod 2,
+\qquad a_q+b_q=d_q.
+\]
+The specific \((a_q,b_q)\) values and corresponding sparse modulo \(2\) expressions are given in Table \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17} (generated in one pass by the script \texttt{scripts/exp\_fold\_collision\_charpoly\_mod2\_shadow\_q9\_17.py}).
+In particular, from the coefficients listed in Theorem \ref{thm:pom-moment-resonance} one can directly read off
+\[
+P_{13}(\lambda)\equiv \lambda^3(\lambda+1)^8,\qquad
+P_{14}(\lambda)\equiv \lambda^7(\lambda+1)^6,\qquad
+P_{15}(\lambda)\equiv \lambda^3(\lambda+1)^8\pmod 2.
+\]
+\par
+Mechanistically, this means that in the characteristic-\(2\) world, the spectrum of the recursion operator falls only on \(0\) and \(-1\) (note that \(-1\equiv 1\in\mathbb{F}_2\)): the companion matrix over \(\mathbb{F}_2\) exhibits the extremal rigidity of a ``nilpotent + unipotent'' form.
+Equivalently, letting the forward shift operator \(E\) act on sequence \(S\) as \((ES)(m):=S(m+1)\), the recursion modulo \(2\) satisfies the fully explicit difference annihilation law:
+\[
+P_q(E)S_q\equiv 0\pmod 2
+\qquad\Longrightarrow\qquad
+E^{a_q}(E+1)^{b_q}S_q\equiv 0\pmod 2.
+\]
+Writing the difference operator as \(\mathsf{D}:=E+1\) (which coincides with the forward difference in characteristic \(2\)), one obtains an ``intrinsic parity selection rule'': for each \(q=9,\dots,17\),
+\[
+\mathsf{D}^{b_q}S_q(m+a_q)\equiv 0\pmod 2.
+\]
+\par
+\textbf{Corollary (parity sequence as a finite-order difference polynomial with period upper bound).}
+Over \(\mathbb{F}_2\), \(\mathsf{D}^{b_q}f\equiv 0\) is equivalent to \(f(m)\) being a discrete polynomial of degree \(<b_q\) (with basis \(\binom{m}{k}\)), so \(S_q(m+a_q)\bmod 2\) is completely determined by its first \(b_q\) values.
+Moreover, by Lucas' theorem, \(\binom{m}{k}\bmod 2\) depends only on the low-order binary digits of \(m\), hence
+\[
+S_q(m+a_q)\bmod 2\ \text{has period}\ \mid\ T_q:=2^{\lceil\log_2 b_q\rceil}.
+\]
+From Table \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17},
+\[
+T_q\mid 4\ (q=9,10),\qquad
+T_q\mid 8\ (q=11,\dots,16),\qquad
+T_q\mid 16\ (q=17).
+\]
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_charpoly_mod2_shadow_q9_17}
+
+\input{parts/resonance/rem__pom-charpoly-mod3-selection}
+\input{parts/resonance/prop__pom-charpoly-modp-a2-embedding}
+
+\begin{remark}[Endpoint rigidity of the minimal recursion: leading coefficient \(2\) and the \texorpdfstring{$\pm 8$}{+-8} tail difference block at even orders]\label{rem:pom-recurrence-endpoint-rigidity}
+In the verified minimal integer-coefficient recursions (Tables \ref{tab:fold_collision_moment_recursions}, \ref{tab:fold_collision_moment_recursions_9_17}, \ref{tab:fold_collision_moment_recursions_18_23}), invariably
+\[
+c_1=2,
+\qquad\text{i.e.,}\qquad
+P_q(\lambda)=\lambda^{d_q}-2\lambda^{d_q-1}+\cdots.
+\]
+This indicates that the ``one-step backward'' coefficient retains a rigid binary stepping structure even after fiber-product constraints and minimization.
+\par
+Moreover, in the even-order polynomials \(P_{12},P_{14}\) listed in Theorem \ref{thm:pom-moment-resonance} (as well as the \(q=16\) minimal recursion coefficients in Table \ref{tab:fold_collision_moment_recursions_9_17}), the last two coefficients are fixed at
+\[
+(c_{d_q-1},c_{d_q})=(8,-8),
+\qquad\text{equivalently}\qquad
+P_q(\lambda)=\cdots+(\cdots)\lambda^2-8\lambda+8.
+\]
+Thus the deepest lag appears only as a ``tail difference block'':
+\[
+8\bigl(S_q(m-d_q+1)-S_q(m-d_q)\bigr).
+\]
+If we write the backward difference as \(T_q(m):=S_q(m)-S_q(m-1)\), the even-order recursion can be rewritten as
+\[
+S_q(m)=\sum_{i=1}^{d_q-2}c_i\,S_q(m-i)\ +\ 8\,T_q(m-d_q+1),
+\]
+compressing the entry point of the deepest historical layer into a difference channel.
+This endpoint block is not inevitable in general linear recursions, and therefore can serve as a structural handle for subsequent rewriting of the realization/extraction of hidden modal constraints.
+\end{remark}
+
+\begin{proposition}[Odd-lag neutrality (auditable)]\label{prop:pom-moment-odd-lag-neutrality}
+In the verified range \(q=2,\dots,23\) (Tables \ref{tab:fold_collision_moment_recursions}, \ref{tab:fold_collision_moment_recursions_9_17}, and \ref{tab:fold_collision_moment_recursions_18_23}), the minimal integer-coefficient recursion for \(S_q(m)\) can be written as
+\[
+S_q(m)=\sum_{i=1}^{d_q} c_i\,S_q(m-i)\qquad(m\ge m_0),
+\]
+where the order \(d_q\) is always odd, and the \textbf{odd-lag coefficient zero-sum} property holds:
+\[
+\sum_{\substack{1\le i\le d_q\\ i\ \mathrm{odd}}} c_i=0.
+\]
+Equivalently, under the convention
+\[
+P_q(\lambda)=\lambda^{d_q}-\sum_{i=1}^{d_q}c_i\,\lambda^{d_q-i},
+\]
+we have
+\[
+P_q(1)+P_q(-1)=0.
+\]
+That is, the \textbf{sum of even-power coefficients of \(P_q\) equals \(0\)} (since when \(d_q\) is odd, even-power terms correspond precisely to odd-lag terms in the recursion).
+\end{proposition}
+
+\begin{proof}
+Since \(d_q\) is odd, \(1^{d_q}+(-1)^{d_q}=0\), so
+\[
+P_q(1)+P_q(-1)
+= -\sum_{i=1}^{d_q} c_i\bigl(1^{d_q-i}+(-1)^{d_q-i}\bigr)
+= -2\sum_{\substack{1\le i\le d_q\\ i\ \mathrm{odd}}}c_i,
+\]
+hence \(\sum_{i\ \mathrm{odd}}c_i=0\iff P_q(1)+P_q(-1)=0\).
+In the three tables above, \((c_1,\dots,c_{d_q})\) are given explicitly term by term; for each \(q\), directly summing the odd-index terms yields the zero-sum identity, establishing the proposition. \qed
+\end{proof}
+
+\begin{remark}[Mechanistic interpretation: ``DC neutrality'' of the odd channel and difference-type projection gate]\label{rem:pom-moment-odd-lag-neutrality-gate}
+Splitting the recursion by odd and even lags:
+\[
+S_q(m)=\sum_{i\ \mathrm{even}}c_i\,S_q(m-i)\ +\ \sum_{i\ \mathrm{odd}}c_i\,S_q(m-i).
+\]
+By the zero-sum condition of Proposition \ref{prop:pom-moment-odd-lag-neutrality}, and noting that \(d_q\) is odd (hence \(d_q\) itself belongs to the odd-lag set), the odd-lag part can be rewritten as ``anchored differences'':
+\[
+\sum_{i\ \mathrm{odd}}c_i\,S_q(m-i)
+=\sum_{\substack{i\ \mathrm{odd}\\ i<d_q}}c_i\bigl(S_q(m-i)-S_q(m-d_q)\bigr).
+\]
+Therefore, the \textbf{odd-lag channel is completely neutral to the constant mode (DC)}, and can only read relative differences within the historical window.
+Equivalently, decomposing \(P_q\) into even/odd parts
+\(
+E_q(\lambda):=\frac{P_q(\lambda)+P_q(-\lambda)}{2}=Q_q(\lambda^2)
+\)
+and
+\(
+O_q(\lambda):=\frac{P_q(\lambda)-P_q(-\lambda)}{2}
+\),
+the odd-lag neutrality \(P_q(1)+P_q(-1)=0\) becomes \(E_q(1)=0\), which implies \(Q_q(1)=0\) and hence \((\lambda^2-1)\mid E_q(\lambda)\).
+The interpretive construction of ``two-step scale (\(\lambda^2\)) dimension-raising and projection gate elimination'' is rigorously formalized here as a purely algebraic, auditable factor divisibility constraint.
+Under the ``lift then project'' framework, this is equivalent to the recursion operator intrinsically carrying a difference-type projection gate on the odd-lag subchannel (eliminating one invisible direction), thereby providing a consistency audit handle that introduces no additional computational overhead and possesses deterministic reproducibility: within the verified range, one need only check whether \(\sum_{i\ \mathrm{odd}}c_i\) equals \(0\).
+\end{remark}
+
+\begin{conjecture}[Fourier zero-set-driven Hankel resonance (falsifiable mechanistic hypothesis)]\label{conj:pom-fourier-zero-driven-resonance}
+Appendix \ref{app:fold-multiplicity} writes the fold multiplicity profile \(d_m(r)\) as a Riesz product and defines the spectral zero set
+\(
+\mathcal{Z}_m=\{k:\widehat d_m(k)=0\}
+\)
+(Definition \ref{def:fold-spectrum-zero-set}). When \(m+2\equiv 0\pmod 3\), a forced zero \(k=F_{m+2}/2\in\mathcal{Z}_m\) exists (Theorem \ref{thm:fold-spectrum-parity-zero}), and more generally \(\mathcal{Z}_m\) has a rigid structure determined by \(\gcd\)/coset unions (Corollary \ref{cor:fold-zero-coset-union}).
+\par
+\textbf{Hypothesis:} These ``localizable spectral deletions'' (especially the arithmetic beat points at \(m+2\equiv 0\pmod 3\)) induce additional linear constraints in the modal recursion of the moment kernel, producing more stable/stronger rank gaps in the visible modal space, thereby triggering (or amplifying) the Hankel resonance collapse of Theorem \ref{thm:pom-moment-resonance} in the \(q\ge 9\) window.
+\par
+\textbf{Falsifiable test:} Within the \(m\)-window used to audit \(d_q\), compute the numerical condition number/singular value profile of the local Hankel block for each \(m\), and mark the \(m+2\equiv 0\pmod 3\) points; if these points do not exhibit systematic ``easier collapse/more stable gaps,'' the mechanism explanation should be rejected. The corresponding alignment output can be generated by the script \texttt{scripts/exp\_fold\_collision\_col\_hankel\_alignment.py} (see implementation notes).
+\end{conjecture}
+
+\input{parts/resonance/rem__pom-moment-charpoly-16-17}
+
+\begin{corollary}[Dimension gap of modal constraints]\label{cor:pom-resonance-deficit}
+Under the hypotheses of Theorem \ref{thm:pom-moment-resonance}, there exist at least
+\(
+2h+1-d
+\)
+linearly independent coefficient vectors $\alpha$ such that
+\[
+\sum_{\ell=-h}^{h}\alpha_\ell M_{q,\ell}(m)=0\qquad(m\ge m_0).
+\]
+Therefore the ``constraint dimension gap'' of the resonance is $2h+1-d$.
+\end{corollary}
+\begin{proof}
+The image space of the linear representation with coordinates $\{M_{q,\ell}\}$ has dimension at most equal to the minimal realization dimension $d$; therefore, in the $2h+1$-dimensional coordinate space, the kernel space of linear combinations producing the zero sequence has dimension at least $2h+1-d$. Taking a basis thereof yields the linearly independent constraint family. \qed
+\end{proof}
+
+\begin{definition}[Resonance gap function \texorpdfstring{$\Delta(q)$}{Delta(q)}]\label{def:pom-resonance-gap-delta}
+For integer \(q\ge 2\), let \(h=\lfloor q/2\rfloor\), and let \(d_q\) denote the minimal integer-coefficient recursion order of \(S_q(m)\) (equivalently, the minimal linear realization dimension). Define the resonance gap function
+$$
+\Delta(q):=\bigl(2\lfloor q/2\rfloor+1\bigr)-d_q.
+$$
+\end{definition}
+
+\begin{proposition}[Gap equals constraint dimension: \texorpdfstring{$\Delta(q)$}{Delta(q)} linearly independent non-excitable constraints]\label{prop:pom-delta-counts-constraints}
+Under the hypotheses of Theorem \ref{thm:pom-moment-resonance}, if the recursion order is \(d=d_q\), then there exist at least \(\Delta(q)\) linearly independent coefficient vectors \(\alpha\) such that
+\[
+\sum_{\ell=-h}^{h}\alpha_\ell M_{q,\ell}(m)=0\qquad(m\ge m_0).
+\]
+Therefore \(\Delta(q)\) can serve as an integer fingerprint of ``resonance strength'': its numerical value equals a lower bound on the dimension of visibly non-excitable modal constraints.
+\end{proposition}
+
+\begin{proof}
+This follows immediately from Corollary \ref{cor:pom-resonance-deficit}: the gap is \(2h+1-d_q=\Delta(q)\). \qed
+\end{proof}
+
+\begin{corollary}[Gap as lower bound on the minimal number of extra readout axes/fibers]\label{cor:pom-delta-min-extra-readouts}
+Adopt the notation of Proposition \ref{prop:pom-delta-counts-constraints}. Viewing
+\[
+M_q(m):=\bigl(M_{q,-h}(m),\ldots,M_{q,h}(m)\bigr)\in\RR^{2h+1}
+\]
+as the nominal ``modal coordinate vector,'' if the minimal linear realization dimension of \(S_q\) under the current readout/compilation interface is \(d_q\), then
+there exists a linear image space of rank at most \(d_q\) such that all modal vectors \(M_q(m)\) for \(m\ge m_0\) lie in a visible subspace of dimension at most \(d_q\).
+Therefore the invisible kernel has dimension at least
+\(
+\Delta(q)=2h+1-d_q
+\), and to distinguish these kernel directions within the same time-side data budget, at least \(\Delta(q)\) additional linearly independent readout functions are needed
+(equivalently: \(\Delta(q)\) additional independent projection axes/fiber coordinates).
+\end{corollary}
+
+\begin{proof}
+A standard fact from linear algebra: if a linear map \(\Phi:\RR^{2h+1}\to\RR^{d_q}\) has rank \(\le d_q\), then \(\ker(\Phi)\) has dimension \(\ge 2h+1-d_q\).
+For the extended readout \((\Phi,\psi_1,\ldots,\psi_k)\) to make the kernel directions of \(\Phi\) distinguishable on \(\RR^{2h+1}\), a necessary condition is
+that \(\{\psi_i\}_{i=1}^k\) restricted to \(\ker(\Phi)\) span its dual space, hence \(k\ge \dim\ker(\Phi)\ge \Delta(q)\).
+Interpreting \(\psi_i\) as additional independent linear observables/readout axes (or, in ontological semantics, additional fiber coordinates) yields the conclusion.
+\end{proof}
+
+\begin{definition}[Resonance syndrome (check vector)]\label{def:pom-resonance-syndrome}
+Adopt the modal vector
+\(
+M_q(m)\in\RR^{2h+1}
+\)
+from Corollary \ref{cor:pom-delta-min-extra-readouts}.
+Under the resonance hypothesis, there exists a visible subspace \(V_q^{\mathrm{vis}}\subseteq\RR^{2h+1}\) of dimension at most \(d_q\) such that for all \(m\ge m_0\), \(M_q(m)\in V_q^{\mathrm{vis}}\), with the remaining dimension gap being \(\Delta(q)=2h+1-d_q\) (Definition \ref{def:pom-resonance-gap-delta}).
+\par
+Take a set of \textbf{linearly independent} linear functionals \(L_{q,1},\dots,L_{q,\Delta(q)}\in(\RR^{2h+1})^\ast\) that all vanish on \(V_q^{\mathrm{vis}}\) (i.e., \(L_{q,j}(v)=0\) for all \(v\in V_q^{\mathrm{vis}}\)), and define the linear map
+\[
+L_q:\RR^{2h+1}\to\RR^{\Delta(q)},\qquad
+L_q(v):=\bigl(L_{q,1}(v),\dots,L_{q,\Delta(q)}(v)\bigr).
+\]
+Define the \textbf{syndrome} as the vector-valued sequence
+\[
+R_q(m):=L_q\bigl(M_q(m)\bigr)\in\RR^{\Delta(q)},
+\qquad
+R_{q,j}(m):=\bigl(R_q(m)\bigr)_j.
+\]
+\end{definition}
+
+\begin{corollary}[Self-consistent zero law and falsifiable audit of the syndrome]\label{cor:pom-resonance-syndrome-audit}
+Under the setting of Definition \ref{def:pom-resonance-syndrome}, for all \(m\ge m_0\),
+\[
+\boxed{\;R_q(m)\equiv 0\;}
+\qquad\text{(i.e., }R_{q,j}(m)=0,\ j=1,\dots,\Delta(q)\text{)}.
+\]
+Therefore: for any modal observation \(\widehat M_q(m)\in\RR^{2h+1}\) from simulation or real input, if there exists some \(m\) with \(L_q(\widehat M_q(m))\neq 0\), then that observation does not satisfy the modal constraints within the resonance window (in the sense of Theorem \ref{thm:pom-moment-resonance} and Proposition \ref{prop:pom-delta-counts-constraints}), and hence cannot be produced by the visible realization of the same projection gate in a strict sense.
+\end{corollary}
+\begin{proof}
+Since \(M_q(m)\in V_q^{\mathrm{vis}}\) and \(L_{q,j}|_{V_q^{\mathrm{vis}}}\equiv 0\), it follows immediately that \(R_q(m)=L_q(M_q(m))=0\).
+The reverse ``falsifiable'' statement is simply the contrapositive of this zero law. \qed
+\end{proof}
+
+\begin{corollary}[Register interpretation: resonance gap \texorpdfstring{$\Delta(q)$}{Delta(q)} equals the number of saveable registers]\label{cor:pom-resonance-register-savings}
+Under the resonance hypothesis, there exists an invertible linear transformation \(T_q\in\mathrm{GL}_{2h+1}(\RR)\) such that for all \(m\ge m_0\),
+\[
+\boxed{\;
+T_q\,M_q(m)=\bigl(\widetilde M_q(m),\,0_{\Delta(q)}\bigr),\qquad
+\widetilde M_q(m)\in\RR^{d_q}\; }.
+\]
+Therefore:
+\begin{itemize}
+  \item If non-resonant (\(d_q=2h+1\)), the recursion/storage of the modal vector generally requires \(2h+1\) free registers;
+  \item If resonant with \(d_q<2h+1\), the modal recursion can be compressed to \(d_q\) dimensions, and the extra \(\Delta(q)=2h+1-d_q\) registers among the nominal coordinates are forced to zero under the strict model (and can be used as syndrome check vectors).
+\end{itemize}
+\end{corollary}
+\begin{proof}
+By Definition \ref{def:pom-resonance-syndrome}, there exists a linear map \(L_q:\RR^{2h+1}\to\RR^{\Delta(q)}\) with \(\ker(L_q)\supseteq V_q^{\mathrm{vis}}\) and \(\mathrm{rank}(L_q)=\Delta(q)\).
+Take the \(\Delta(q)\) linearly independent row vectors as the rows of \(L_q\), and supplement with \(d_q\) additional linearly independent row vectors to form a basis of \((\RR^{2h+1})^\ast\); stacking these \(2h+1=d_q+\Delta(q)\) row vectors into a matrix yields the invertible \(T_q\in\mathrm{GL}_{2h+1}(\RR)\).
+Since for all \(m\ge m_0\) we have \(M_q(m)\in V_q^{\mathrm{vis}}\subseteq\ker(L_q)\),
+\(
+L_q(M_q(m))=0
+\), which means the last \(\Delta(q)\) coordinates of \(T_q M_q(m)\) are identically zero; the first \(d_q\) coordinates are denoted \(\widetilde M_q(m)\), giving the stated form.
+The register formulation is a direct translation of this coordinate compression. \qed
+\end{proof}
+
+\begin{remark}[Resonance as a resource: constraint gap \texorpdfstring{$\Delta(q)$}{Delta(q)} enhances auditability]\label{rem:pom-resonance-as-resource}
+When \(\Delta(q)>0\), resonance not only means ``too many nominal modes'' but also means there exist \(\Delta(q)\) independent linear check laws available for consistency audit: the syndrome \(R_q(m)=L_q(M_q(m))\) is identically zero under the strict model (Corollary \ref{cor:pom-resonance-syndrome-audit}).
+Therefore, given the known minimal recursion/minimal realization, higher-order moments are not necessarily more ``expensive'': on one hand their evolution can be carried out by the low-dimensional recursion (dimension \(d_q\)), and on the other hand the extra gap \(\Delta(q)\) provides more falsifiable self-consistency constraint directions.
+This converts resonance from an ``observed phenomenon'' into a ``usable check code'': the larger the gap, the more syndrome equations are available.
+\end{remark}
+
+\begin{remark}[Readings of \texorpdfstring{$\Delta(q)$}{Delta(q)} in the verified window (\(q=9,\dots,17\))]\label{rem:pom-delta-q9-17}
+From the verified minimal recursion orders \(d_q\) (Table \ref{tab:fold_collision_moment_recursions_9_17}), one can directly compute \(\Delta(q)\) and obtain an integer fingerprint sequence that can be compared across versions.
+The table below is generated in one pass by the script \texttt{scripts/exp\_fold\_collision\_resonance\_nullmodes\_hankel.py}:
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_resonance_gap_delta_q_9_17}
+
+\begin{conjecture}[Rank gap staircase: staircase pattern and parity of \texorpdfstring{$\Delta(q)$}{Delta(q)}]\label{conj:pom-delta-staircase}
+Under the notation of Definition \ref{def:pom-resonance-gap-delta}, as \(q\) increases, the resonance gap \(\Delta(q)\) (the rank gap between the nominal modal upper bound and the minimal realization dimension) should exhibit a stable staircase structure:
+\begin{enumerate}
+  \item \textbf{Parity:} \(\Delta(q)\in 2\mathbb{Z}_{\ge 0}\);
+  \item \textbf{Staircase pattern:} \(\Delta(q)\) remains constant over wide \(q\)-intervals, with occasional jumps of step size \(2\) (or multiples thereof).
+\end{enumerate}
+In the verified range \(q\le 23\), the readings of \(\Delta(q)\) indeed only take values in \(\{0,2,4,6\}\), and show stable signs of ``long plateaus + even jumps'' (see Table \ref{tab:fold_collision_resonance_gap_delta_q_9_17} and the \(d_q\) listing of Corollary \ref{cor:pom-moment-dim-collapse}).
+\end{conjecture}
+
+\begin{remark}[Two-layer dimension reduction framework: symmetry reduction and Fibonacci resonance collapse have decomposable sources]\label{rem:pom-two-layer-dim-reduction}
+For a fixed \(q\)-fold moment kernel, there exist two mutually non-confounding dimension reduction mechanisms:
+\begin{itemize}
+  \item \textbf{Universal layer (group symmetry):} by \(S_q\)-permutation symmetry, the symmetric quotient kernel \(\widetilde A_q\) has dimension satisfying
+  \(
+  \dim(\widetilde A_q)\le \binom{q+9}{9}=O(q^9)
+  \)
+  while preserving the same Perron leading scale \(r_q\) (Proposition \ref{prop:pom-ak-symmetric-compression});
+  \item \textbf{Particular layer (arithmetic resonance):} when \(d_q<2\lfloor q/2\rfloor+1\), the difference-modal framework exhibits additional linear constraints, whose strength is quantified by the gap \(\Delta(q)\) (Definition \ref{def:pom-resonance-gap-delta} and Proposition \ref{prop:pom-delta-counts-constraints}).
+\end{itemize}
+Therefore the compression ``from \(Q^q\) to polynomial size'' can be decomposed as: first, the universal histogram-reduction via group symmetry, then additional arithmetic collapse triggered by algebraic degeneracy induced by the Fibonacci congruence structure (whose auditable fingerprint is \(\Delta(q)\) together with the corresponding linear certificates).
+\end{remark}
+
+\begin{remark}[Executable resonance certificate: the \texorpdfstring{$\mathrm{NullModes}(q)$}{NullModes(q)} output from Hankel-null]\label{rem:pom-nullmodes-algorithm}
+For fixed \(q\) (e.g., \(q=9,\dots,17\)), the script \texttt{scripts/exp\_fold\_collision\_resonance\_nullmodes\_hankel.py} computes the sequence \(a_n:=S_q(n+2)\) within the audit window and constructs the \((2h+1)\times L\) Hankel truncation block \(H=(a_{i+j})\).
+When \(d_q<2h+1\), the dimension of \(\ker(H^{\mathsf T})\) is at least \(\Delta(q)\), and any basis thereof
+\[
+\mathrm{NullModes}(q)=\{\alpha^{(j)}\}_{j=1}^{\Delta(q)}\subset\ZZ^{2h+1}
+\]
+yields a family of machine-readable ``resonance certificates'': for all available shifts \(t\) within the audit window,
+\(
+\sum_{i=0}^{2h}\alpha^{(j)}_i\,a_{i+t}=0
+\).
+This output upgrades ``order reduction/rank gap'' into explicit, reproducible linear combination certificates, and can serve as comparison objects across implementations/versions.
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_resonance_nullmodes_q9_17}
+
+\input{sections/generated/tab_fold_collision_resonance_nullmodes_primitive_quotient_q9_17}
+
+\begin{remark}[Hankel-null recursion vector and multiplicative redundancy: the primitive quotient space \texorpdfstring{$\Delta_{\mathrm{prim}}(q)$}{Delta\_prim(q)} (reproducible)]\label{rem:pom-nullmodes-recurrence-plus-signature}
+In the resonance window where \(\Delta(q)>0\), Table \ref{tab:fold_collision_resonance_nullmodes_q9_17} provides the integer basis
+\(
+\mathrm{NullModes}(q)\subset\ZZ^{2\lfloor q/2\rfloor+1}
+\)
+of a set of Hankel-null certificates, with dimension \(\Delta(q)\).
+Among these, there exists a naturally identifiable ``recursion vector'' direction: arranging the coefficients of the minimal recursion's characteristic polynomial
+\[
+P_q(\lambda)=p_0+p_1\lambda+\cdots+p_{d_q}\lambda^{d_q}\qquad(p_{d_q}=1)
+\]
+from lowest to highest degree, and zero-padding to length \(2\lfloor q/2\rfloor+1\),
+\[
+\alpha^{\mathrm{rec}}_q:=(p_0,p_1,\ldots,p_{d_q},0,\ldots,0),
+\]
+this vector must lie in the Hankel-null space (for the algebraic mechanism involving polynomial multiplication structure, see Remark \ref{rem:pom-nullmodes-q14-poly-alignment}).
+In the audited output, this alignment can even be verified \emph{term by term}: for example, at \(q=9\), Theorem \ref{thm:pom-moment-resonance} gives
+\(
+P_9(\lambda)=\lambda^7-2\lambda^6-\cdots-900\lambda+450
+\), and the first certificate vector in Table \ref{tab:fold_collision_resonance_nullmodes_q9_17} is precisely
+\(
+\alpha^{(1)}=(450,-900,-62,-2819,-386,-62,-2,1,0)
+\)
+(i.e., \(\alpha^{\mathrm{rec}}_9\)).
+\par
+However, the remaining Hankel-null vectors beyond \(\alpha^{\mathrm{rec}}_q\) often do not correspond to new ``non-excitable modal'' independent constraints: as noted in Remark \ref{rem:pom-nullmodes-q14-poly-alignment}, low-degree multiples \(Q(\lambda)P_q(\lambda)\) automatically generate additional Hankel-null certificates (as long as the window row count permits).
+Therefore, to interpret the ``extra vectors'' of the Hankel-null as structural information, one must first strip away this multiplicative redundancy.
+Let \(\mathcal{M}(P_q)\subseteq\ker(H^{\mathsf T})\) denote the subspace generated by all coefficient vectors of multiples \(Q(\lambda)P_q(\lambda)\) that fit within the window length (i.e., satisfying \(\deg(QP_q)\le 2\lfloor q/2\rfloor\)), and define the primitive gap (primitive quotient)
+\[
+\boxed{
+\Delta_{\mathrm{prim}}(q):=\dim\Bigl(\ker(H^{\mathsf T})\ \big/\ \mathcal{M}(P_q)\Bigr).
+}
+\]
+In the currently audited resonance window \(q=9,\dots,17\), we obtain \(\Delta_{\mathrm{prim}}(q)=0\), and every NullMode in Table \ref{tab:fold_collision_resonance_nullmodes_q9_17} can be explicitly decomposed as
+\(
+A^{(j)}(\lambda)=Q^{(j)}(\lambda)P_q(\lambda)
+\);
+the multiplier coefficient vectors \(Q^{(j)}\) are listed in Table \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}.
+Therefore, within this window, the multiple ``extra vectors'' of the Hankel-null should be understood as multiplicative expansion certificates of the same minimal recursion at a fixed length, rather than additional independent constraints.
+\end{remark}
+
+\begin{remark}[Alignment of Hankel-null with the characteristic polynomial: example \texorpdfstring{$q=14$}{q=14}]\label{rem:pom-nullmodes-q14-poly-alignment}
+For any sequence \(a_n\) satisfying an integer-coefficient linear recursion, if its characteristic polynomial is written as
+\[
+P(\lambda)=p_0+p_1\lambda+\cdots+p_d\lambda^d\qquad(p_d=1),
+\]
+then for all available shifts \(t\), the linear relation
+\(
+\sum_{j=0}^{d} p_j\,a_{t+j}=0
+\)
+holds.
+Therefore, when the number of rows in the Hankel block is \(\ge d+1\), the coefficient vector \((p_0,\dots,p_d,0,\dots,0)\) necessarily belongs to \(\ker(H^{\mathsf T})\);
+more generally, any low-degree polynomial multiple \(Q(\lambda)P(\lambda)\) also yields an additional Hankel-null vector (as long as the row count permits).
+\par
+In the resonance example \(q=14\), the nominal row count is \(2h+1=15\) while the minimal order is \(d_{14}=13\), giving \(\Delta(14)=2\).
+Writing
+\(
+P_{14}(\lambda)=\sum_{j=0}^{13}p_j\lambda^j
+\)
+and
+\(
+(\lambda+2)P_{14}(\lambda)=\sum_{j=0}^{14}\widetilde p_j\lambda^j
+\),
+the two \(\mathrm{NullModes}(14)\) given in Table \ref{tab:fold_collision_resonance_nullmodes_q9_17} can be directly aligned as
+\[
+\alpha^{(1)}=(p_0,p_1,\ldots,p_{13},0),
+\qquad
+\alpha^{(2)}=(\widetilde p_0,\widetilde p_1,\ldots,\widetilde p_{14}),
+\]
+thereby providing an extremely low-cost audit consistency check: one need only compare the \(P_{14}\) coefficients from Theorem \ref{thm:pom-moment-resonance} with the table vectors term by term.
+At the same time, this suggests that certain ``shape features'' of \(\mathrm{NullModes}(q)\) often reflect the coefficient profile of the minimal recursion polynomial rather than localization effects along the difference-modal index \(\ell\);
+to study support/concentration in the \(\ell\)-direction, one must return to the specific modal realization and solve the constraints directly.
+\end{remark}
+
+\begin{remark}[Arithmetic beat marking: \texorpdfstring{$m+2\equiv 0\pmod 3$}{m+2=0 mod 3} points and Hankel certificate alignment (falsifiable)]\label{rem:pom-mod3-beat-alignment}
+Theorem \ref{thm:fold-spectrum-parity-zero} in Appendix \ref{app:fold-multiplicity} shows that when \(m+2\equiv 0\pmod 3\) (equivalently, when \(F_{m+2}\) is even), the fold multiplicity spectrum possesses a strict Fourier zero (so that the zero set \(\mathcal{Z}_m\) is nonempty).
+This yields a purely arithmetic, fitting-free ``beat point set.''
+To test the mechanistic hypothesis that ``Fourier zero-set clusters drive resonance collapse/recursion order reduction,'' we align on the same \(m\)-axis
+\(\,F_{m+2}\mathrm{Col}_m\) (collision constant proxy; Appendix \ref{app:fold-multiplicity}) with
+the Hankel certificate proxy for the resonance zone \(q=9\) (the determinant scale of a fixed \(d_q\times d_q\) Hankel minor), and mark the aforementioned beat points with red dots (Figure \ref{fig:fold_collision_col_hankel_mod3_alignment_q9}; generated in one pass by the script \texttt{scripts/exp\_fold\_collision\_col\_hankel\_mod3\_alignment.py}).
+If the beat points systematically correspond to concavities/condition number degradation in the minor scale, the mechanism is supported; otherwise, this provides a direct falsification signal.
+\end{remark}
+
+\input{sections/generated/fig_fold_collision_col_hankel_mod3_alignment_q9}

@@ -1,0 +1,475 @@
+\subsection{Corollary Cluster V: Order Projection as Structural Boundary}\label{subsec:pom-order-bottleneck}
+\begin{corollary}[Irreducibility of Order Projection Readout]\label{cor:pom-order-bottleneck}
+Under fixed resolution $m$ without introducing additional fiber coordinates, if a readout quantity $g:\Omega_m\to\mathbb{R}$ does not belong to the fold-invariant subalgebra $\mathcal{B}_m$, then gauge projection $P_Z$ alone cannot determine $g$; to obtain this readout, one must either increase resolution or introduce order projection $P_{\le}$ (or an equivalent global aggregation mechanism). This conclusion is a direct structural corollary of Proposition \ref{prop:pom-fiber-invariance}.
+\end{corollary}
+
+\begin{corollary}[Mixed Time Scales of Order Projection]\label{cor:pom-order-mixing}
+Let the classification readout be given by finite group mark extension, and let $\lambda_1(u)$ denote the principal spectral radius and $\Lambda(u)$ the worst-case non-trivial twisted spectral radius (Theorem \ref{thm:kernel-chebotarev-exp}). Then the error in classification counting decays at exponential rate $(\Lambda(u)/\lambda_1(u))^n$, so that iteration depth to reach precision $\varepsilon$ satisfies
+\[
+n\ \gtrsim\ \frac{\log(1/\varepsilon)}{\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)}.
+\]
+Therefore the time cost of order projection can be explicitly quantified by the twisted spectral gap.
+\end{corollary}
+
+\begin{remark}[Spectral Gauge Calibration of Order Projection (Spectral Gap = Ontological Time Scale)]\label{rem:pom-order-mixing-scale}
+This conclusion indicates that the time cost of $P_{\le}$ should not be characterized solely by input size, but rather by the "worst-case twist ratio"
+\[
+\eta_\infty(u):=\frac{\Lambda(u)}{\lambda_1(u)}
+=\sup_{\chi\neq 1}\frac{\rho(M_\chi(u))}{\rho(M_1(u))}
+\in(0,1)
+\]
+as the fundamental scale (twist block caliber in Theorem \ref{thm:kernel-chebotarev-exp}; or the profinite character diagonalization form in Proposition \ref{prop:pom-profinite-artin-hilbert}).
+Equivalently, one can take
+\[
+\tau_{\mathrm{mix}}(u):=\frac{1}{-\log \eta_\infty(u)}=\frac{1}{\log(\lambda_1(u)/\Lambda(u))}
+\]
+as the intrinsic time unit of the order projection gate, and logarithmically scale with error threshold $\varepsilon$:
+\(
+n\gtrsim \tau_{\mathrm{mix}}(u)\log(1/\varepsilon)
+\)
+(by Corollary \ref{cor:pom-order-mixing}).
+\end{remark}
+
+\begin{remark}[Mixing Scale and Numerical Anchor of Character Projection]\label{rem:pom-chi-mixing}
+For character projection $P_\chi$, one can define mixing scale
+\[
+\tau_{\mathrm{mix}}:=\frac{1}{-\log(\rho/\lambda)},
+\]
+where $\rho$ is the spectral radius of the worst non-trivial character and $\lambda$ is the Perron root. For the $(2,2,2)$ stratification of the 40-state real input kernel, the generating table gives
+\(
+\rho_{2,2,2}/\lambda\approx 0.927372804879
+\)
+(see \ref{subsec:arity-dirichlet-mertens-tensor}), yielding $\tau_{\mathrm{mix}}\approx 13.2$. This scale provides the intrinsic readout time scale for $P_\chi$, forming a time projection quantity orthogonal to the constant delay of $P_Z$.
+For more complete prime-modulo scan and running diagnostics, see Table \ref{tab:real-input-40-rho-ppp-prime-scan}.
+\end{remark}
+
+\begin{remark}[Sum Conservation of Stratification Constants]\label{rem:pom-chi-sum}
+For the Dirichlet--Mertens constant tensor $C_{r_1r_2r_3}$ under residue stratification, one has
+\[
+\sum_{r_1,r_2,r_3} C_{r_1r_2r_3}=\mathsf{M}.
+\]
+This is not an accidental numerical phenomenon, but a consistency constraint of character projection $P_\chi$: stratification slice merging must recover the global finite-part constant. The sum error in the generating table has reached $10^{-16}$ order (see \ref{subsec:arity-dirichlet-mertens-tensor}).
+\end{remark}
+
+\begin{remark}[Prime Shadows of Finite Kernels and the Boundary with Arithmetic Primes]
+In the finite kernel framework, the prime-like objects yielded by Euler product and Möbius inversion are primitive orbit spectra (Proposition \ref{prop:time-space-commuting-diagram}). This primality differs from integer primes (see Remark \ref{rem:prime-shadow-vs-primes}), and their difference suggests the necessity of "order projection/extra fiber" as a structural boundary: to express \emph{arithmetic primes} at the ontological layer requires introducing additional fiber bundles or new projection mechanisms. An extreme but clean example is Conway's FRACTRAN: it literally makes "primes=registers" and implements deterministic evolution via first-fit order gate control; see Subsection \ref{subsec:pom-fractran}.
+\end{remark}
+
+\subsection{Spatialization of Order Projection}\label{subsec:pom-order-spatialization}
+\begin{theorem}[Spatialization Law of Order Projection]\label{thm:pom-order-spatialization}
+Let $B\ge 1$, take pairwise coprime moduli $p_1,\dots,p_m$, and let $P=\prod_{i=1}^m p_i$. If $P>2B$, then any $x\in[-B,B]$ is uniquely determined by its residue classes modulo $p_i$. Therefore order projections such as comparison, sign, and interval constraints can be computed pointwise on each modulo axis, then completed via CRT reconstruction (cf. \cite{Apostol1976}).
+\end{theorem}
+\begin{proof}
+By the Chinese Remainder Theorem, residue classes modulo $P$ and residue classes modulo $\{p_i\}$ are in one-to-one correspondence. If $P>2B$, then integers in $[-B,B]$ have unique representatives modulo $P$, so $x$ can be recovered from modulo axis information and order determination can be completed. This completes the proof.
+\end{proof}
+
+\begin{remark}[Structural Consequences of Time–Space Transfer]
+Theorem \ref{thm:pom-order-spatialization} shows that the time bottleneck of order projection can be transferred to parallelizable spatial cost by adding modulo axis bundles. Under parallel CRT caliber, the depth of order determination is determined by reconstruction circuits, rather than linear growth with bit length; therefore the "non-parallelizable growth" of $P_{\le}$ can be viewed as a structural symptom \emph{when insufficient modulo axes are activated}.
+\end{remark}
+
+\begin{remark}[Prime Support Count: Natural Factorization of Modulo Register Occupation]\label{rem:pom-mod-support-count}
+Let \(m=\prod_{p\mid m}p^{k_p}\).
+Truncating the congruence axis \(\widehat{\ZZ}\cong\prod_p\ZZ_p\) (Definition \ref{def:pom-profinite}) to modulo \(m\) is equivalent to: touching only finitely many \(p\)-axes, and on each axis requiring only \(k_p\) bits of \(p\)-adic depth.
+Therefore one can decompose "modulo register occupation" into two auditable counts:
+\[
+S_{\mathrm{mod}}(m):=\#\{p:\ p\mid m\},\qquad
+R_{\mathrm{mod}}(m):=\sum_{p\mid m}k_p.
+\]
+The former characterizes how many prime axes need to be activated in parallel, while the latter characterizes total depth on these axes (isomorphic to finite support caliber of prime-fiber; Definition \ref{def:pom-prime-fiber}).
+Under ISA resource caliber, the spatial overhead of \(P_\chi(\bmod m)\) is structurally controlled by \((S_{\mathrm{mod}}(m),R_{\mathrm{mod}}(m))\);
+once one needs to select the \emph{canonical representative} from congruence classes (such as minimal non-negative residue), the problem returns to irreducible readout of order projection \(P_{\le}\) (Corollary \ref{cor:pom-order-bottleneck}).
+\end{remark}
+
+\subsection{Structural Conjecture of Entropy–Delay Complementarity}\label{subsec:pom-entropy-delay}
+\begin{conjecture}[Complementarity of Delay and Carry-Free Complexity]\label{conj:pom-entropy-delay}
+For fixed radix and the same value-invariant template (zero-pattern $+$ $q$-field), if the delay $\delta_Z$ of the online normalization kernel is suppressed, then the branching complexity of its carry-free skeleton (e.g., $\rho(A_0)$ or corresponding $\zeta$ spectral fingerprint) must increase; conversely, if one requires a tighter carry-free skeleton (low entropy), one must pay a longer delay. This trend is consistent with the carry-free $\zeta$ trichotomy classification of the $9/13/21$-local three kernels (Theorem \ref{thm:carry-free-zeta-trichotomy}).
+\end{conjecture}
+
+\subsection{Closed-Loop Summary: Three Core Conclusions}\label{subsec:pom-summary}
+The following three conclusions constitute the core convergence of this paper in the POM context:
+\begin{enumerate}
+  \item \textbf{Projection entropy rate locked by $\varphi$:} The spatial cost of gauge projection is controlled by fold index $I_m$, and the entropy rate per unit resolution is
+  \[
+  h_Z=\log\!\left(\frac{2}{\varphi}\right)
+  \]
+  (Proposition \ref{prop:pom-projection-entropy}).
+  \item \textbf{One-fold normal form for semiring closure:} Any term generated by $\oplus,\otimes$ can be written as a value-layer polynomial followed by a single $P_Z$ back to stable address (Theorem \ref{thm:pom-one-fold-normal-form}).
+  \item \textbf{Growth boundary at order projection:} Once the readout quantity is no longer a fold-fiber invariant, one must introduce $P_{\le}$ or increase fiber/resolution (Corollary \ref{cor:pom-order-bottleneck}); its time bottleneck can be transferred via modulo axis bundle spatialization (Theorem \ref{thm:pom-order-spatialization}).
+\end{enumerate}
+\paragraph{Structural Reduction (Summary)}
+The ontological structure of mathematics is "local evolution $U$ + three projection gates": $P_Z$ projects value-fiber groupoid orbits to Zeckendorf transversal, whose spatial defect is described by $d_m$ and $E_m$ and renormalized at primitive cycle scale to $\log\mathfrak{M}$ and Dirichlet--Mertens constant tensor; $P_{\mathrm{prim}}$ projects time traces to primitive atomic layer and strictly aligns with the commutative diagram $Z=E\circ M\circ T$; $P_{\le,b}$ projects translation fiber orbits to fundamental domain transversal and yields quotient-remainder, while character/congruence readout is uniformly encoded by $P_\chi$ (twist matrices and constant tensor implementation), whose time scale is given by $\rho/\lambda$. Differences among addition, subtraction, multiplication, division, quotient, and remainder are only manifested in projection word combination mode and linearization depth (prime-fiber or phase-fiber route) choices.
+
+\paragraph{Non-Parallel Overhead of Addition, Subtraction, Multiplication, Division, Quotient, and Remainder Is the Irreducible Cost of the Same Class of Projection Gates}
+In the cost model
+\(
+T_I(n;m)=k_Z\delta_Z+k_{\le}T_{\le}(n)+k_{\downarrow}T_{\downarrow}(m)+D_U(n)
+\)
+(Definition \ref{def:pom-cost}), the difference among "six arithmetic operations" does not come from new ontological primitives, but from two points:
+\begin{enumerate}
+  \item \textbf{Which prior fiber linearization is placed on:} The same semantics can choose to complete linearization on scale-fiber/phase-fiber/prime-register/congruence-axis (\(\mathcal{S}_\varphi,\mathcal{T},\mathcal{P},\widehat{\ZZ}\); Definition \ref{def:pom-fiber-kernel-choice}), thereby leaving growth terms in evolution depth \(D_U\), or externalizing as spatial occupation of axis bundles (e.g., \((S_{\mathrm{mod}},R_{\mathrm{mod}})\), Remark \ref{rem:pom-mod-support-count}).
+  \item \textbf{Whether order gate appears unavoidably in projection word:} Once semantics includes minimality/uniqueness/inequality and other global constraints, order projection \(P_{\le}\) (or its softening \(\mathrm{PROJ}_u\)) appears irreducibly (Corollary \ref{cor:pom-order-bottleneck}), and introduces ontological time scale \(\tau_{\mathrm{mix}}(u)\) controlled by worst-case twisted spectral gap (Corollary \ref{cor:pom-order-mixing} and Remark \ref{rem:pom-order-mixing-scale}).
+\end{enumerate}
+In particular: if \(k_{\le}=0\), then non-parallel delay contains only constant-level \(\delta_Z\) (gauge projection gate), independent of input size; if \(k_{\le}>0\), one must pay time cost calibrated by \(\tau_{\mathrm{mix}}(u)\), and can spatialize this time bottleneck by transfer via modulo axis bundle according to Theorem \ref{thm:pom-order-spatialization}.
+
+\begin{remark}[Order Gate's \texorpdfstring{$(m,n,N)$}{(m,n,N)} Three-Budget Certificate (Time Tail Term \texorpdfstring{$+$}{+} Sampling Projection Term)]\label{rem:pom-order-three-budget}
+When implementing order projection \(P_{\le}\) (or its character/congruence readout \(P_\chi\)) as "uniform distribution determination on layer \(m\) congruence cylinder", its finite precision certificate can be decomposed into two orthogonal budget axes: dynamical tail term of primitive depth \(n\), and projection/sampling term of sample size \(N\).
+Specifically, for any cylinder \(C\subseteq G_m\), the finite error satisfies (Theorem \ref{thm:auditable-profinite-chebotarev-finite}; for deterministic version under rotation scan see Corollary \ref{cor:auditable-profinite-chebotarev-three-budget-deterministic})
+\[
+\left|\Pi_{n,m}(C)-\frac{|C|}{|G_m|}\right|
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+K_2\cdot D_{\mathrm{TV}}(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})
+\ \le\
+K_1\,\frac{|G_m|}{\lambda^{(1/2+\varepsilon)n}}
+\ +\
+K_2(m+1)D_N^*(\alpha;x_0).
+\]
+Therefore when semantics must include order gate (such as division/quotient-remainder's \(0\le r<b\) constraint), non-parallel overhead is irreducibly constrained by both \(n\) (time tail term) and \(N\) (sampling projection term), which are structurally non-interchangeable.
+\end{remark}
+Prime axes play a common index role here: they are both the coordinate axis for multiplication linearization (prime-register fiber \(\mathcal{P}\), Definition \ref{def:pom-prime-fiber}), and the completion axis for congruence/character readout (\(\widehat{\ZZ}\cong\prod_p\ZZ_p\), Definition \ref{def:pom-profinite}); phase/character coordinatization necessarily introduces exponential weight \(u=e^\theta\) and normalization constant \(e^{2\pi i\langle k,x\rangle}\) (Remark \ref{rem:pom-congruence-invlimit}).
+Table \ref{tab:pom-isa-minsig} implements this principle as an ISA-level minimal signature table: as long as \(P_{\le}\) appears, mixing time calibrated by spectral gap necessarily appears; as long as \(\mathrm{RESCALE}\downarrow\) is explicitly called, support writeback budget calibrated by gauge difference \(G_m\) necessarily appears; all other non-parallel terms are constant online delay of gauge projection gate.
+
+\subsection{ISA and Microcode: Abstract Layer Implementation of Projection Words}\label{subsec:pom-isa}
+\paragraph{Visible Registers (External Face)}
+The abstract layer can take countably infinite registers $\{Z_i\}_{i\in\mathbb N}$; concrete implementation can truncate to finite set (e.g., $Z_0,\dots,Z_{31}$). Visible register contents always remain on canonical address of $X_\infty$; writeback triggers $P_Z$ by default.
+
+\begin{remark}[Reproducible: 32-bit ISA/Microcode Reference Simulator]\label{rem:pom-isa-sim}
+To bring the ISA/microcode caliber of this section to the \emph{executable} level, the repository provides reference script under this paper's directory
+\texttt{scripts/pom\_isa\_sim\_v2.py} (experimental layer version; this paper retains only this latest version):
+It implements 32 visible registers $Z0\ldots Z31$ (writeback triggers $P_Z\equiv\Fold_\infty$ by default and counts $k_Z$), and provides two classes of program-invisible microstate registers:
+window registers $W0\ldots W31$ (save $\Omega_m$ original bit strings, for $\Fold_m$, fold-aware restriction
+\(\widetilde r_{m+1\to m}=\pi_{m+1\to m}\circ \Fold_{m+1}\)
+and gauge difference \(G_m=|r_{m+1\to m}\oplus \widetilde r_{m+1\to m}|_0\))
+and prime exponent registers $P0\ldots P31$ (optional, for linearizing multiplication/division to coordinate-wise addition/subtraction of exponent vectors; aligned with \(\mathcal P\) fiber caliber).
+\par
+The script adopts fixed 32-bit encoding, and maintains cost counters during execution
+\((k_Z,k_{\le},k_\chi,D_U)\),
+and cross-resolution downgrade writeback support budget
+\(\mathrm{support}:=\sum G_m\)
+(corresponding to the independent spatial term \(k_{\downarrow}T_{\downarrow}(m)\) in the cost model).
+\par
+In addition, the script introduces multiplication linearization depth model \texttt{--mulmode} (\texttt{const|log|serial}), for implementing the "prime-fiber pointwise / phase-fiber FFT-ish / serial worst-case" three multiplication depth calibers as comparable counts of \(D_U\).
+\par
+Encoding format and running examples are as follows:
+\begin{verbatim}
+32-bit formats:
+  R: opcode(6) | rd(5) | rs1(5) | rs2(5) | imm11(11)
+  I: opcode(6) | rd(5) | rs1(5) | imm16(16)
+  J: opcode(6) | imm26(26)
+
+python3 scripts/pom_isa_sim_v2.py --demo --capbits 32 --mulmode log
+python3 scripts/pom_isa_sim_v2.py --bench-div --bits-a 1024 --bits-b 256 --iters 120 --mulmode log
+python3 scripts/pom_isa_sim_v2.py --bench-div --bits-a 1024 --bits-b 256 --iters 120 --mulmode const
+python3 scripts/pom_isa_sim_v2.py --gauge --m 10 --trials 20000
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --mulmode log --divmode mixed
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --mulmode log --divmode ld
+python3 scripts/pom_isa_sim_v2.py --workload --len 6000 --seed 7 --capbits 32 --mulmode log --divmode rec
+python3 scripts/pom_isa_sim_v2.py --chi-bench 5000 --tauMix 200
+python3 scripts/pom_isa_sim_v2.py --support-bench 1000 --m-support 15 --capbits 32 --mulmode log
+\end{verbatim}
+where \texttt{--gauge} samples \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) and estimates \(\mathbb{E}[G_m]/m\), for verifying
+the \(4/9\) density constant of Theorem \ref{thm:fold-gauge-anomaly-density} (can also cross-check with Monte Carlo audit in Table \ref{tab:fold_gauge_anomaly_mc}).
+\par
+In the script, \texttt{ZDIVMOD\_LD} and \texttt{ZDIVMOD\_REC} both implement \(\mathrm{divmod}(a,b)\) at truth value layer, but differ in microcode route:
+\texttt{LD} is binary long division (each quotient bit decision triggers one \(P_{\le}\), so \(k_{\le}^{LD}\sim \mathrm{qbits}\)),
+\texttt{REC} is fixed-point reciprocal Newton iteration (\(P_{\le}\) used only for constant-time terminal interval correction, so \(k_{\le}^{REC}=O(1)\), growth transferred to \(D_U\); its constant factor calibrated by \texttt{--mulmode}), and can output an auditable cost decomposition according to
+\[
+T\;=\;k_Z\delta_Z\;+\;k_{\le}T_{\le}\;+\;k_\chi\,\tau_{\mathrm{mix}}\;+\;D_U\;+\;w_{\mathrm{sup}}\cdot \mathrm{support}
+\]
+(each scale parameter can be overridden from command line).
+\par
+From this, two routes for the same semantics yield a boundary that can be written as compilation/scheduling law:
+\[
+\mathrm{qbits}\cdot T_{\le}\ \gtrsim\ C_{\times}\log \max\bigl(\mathrm{bitlen}(a),\mathrm{bitlen}(b)\bigr)\quad\Longrightarrow\quad \text{choose REC; otherwise choose LD.}
+\]
+where \(\mathrm{qbits}:=\max(0,\mathrm{bitlen}(a)-\mathrm{bitlen}(b))\), \(C_{\times}\) is the multiplication depth constant calibrated by \texttt{mulmode}.
+\par
+Under this executable caliber, three reproducible conclusions for DIVMOD route (aligned with structural propositions in main text "growth boundary at order projection") can be directly obtained:
+\begin{itemize}
+  \item \textbf{When \(\mathrm{bitlen}(a)\approx \mathrm{bitlen}(b)\), long division is better; when \(\mathrm{qbits}\) becomes large, reciprocal route dominates.}
+  \item \textbf{\(k_{\le}^{LD}\sim \mathrm{qbits}\), while \(k_{\le}^{REC}=O(1)\):} Growth term indeed falls on order gate call count.
+  \item \textbf{\texttt{mulmode} only changes the \(D_U\) constant factor of REC, without changing the dominant factor of boundary:} Route phase diagram is mainly determined by the exchange between \(k_{\le}T_{\le}\) and \(D_U\).
+\end{itemize}
+The script also retains two orthogonal audit axes \texttt{PROJ\_CHI} (\(k_\chi\)) and \(\mathrm{support}=\sum G_m\), which can be directly observed via \texttt{--chi-bench}/\texttt{--support-bench} for \(\tau_{\mathrm{mix}}\) and linear scaling of touched scale terms.
+\end{remark}
+
+\paragraph{Hidden Fibers (Program-Invisible)}
+Hidden fibers include scale fiber $\mathcal{S}_\varphi$, phase fiber $\mathcal{T}$, prime fiber $\mathcal{P}$, and sync kernel state and margin (e.g., real input kernel with $|\Sigma|=40$, see Appendix on real input kernel construction).
+The single-pass online normalization kernel implementing gauge projection \(P_Z\) carries a finite-state sync variable (Theorem \ref{thm:online-delay-fold}), which can be abstracted as program-invisible sync register \(Q\); its minimal online delay rigidity is \(\delta_{\min}(\Fold_\infty)=3\) (Proposition \ref{prop:pom-delay-min}).
+\par
+\begin{remark}[Time Defect Dichotomy: Sync Delay and Spatializable Order Depth]\label{rem:pom-time-defect-dichotomy}
+In this paper's framework, "time complexity" splits into at least two non-equivalent sources:
+\begin{enumerate}
+  \item \textbf{Sync delay class (non-spatializable time):} Represented by \(\delta_{\min}(\Fold_\infty)=3\), it is forced by local dependencies (margin conservation/sync state), and is orthogonal to expansion of prime-register / modulo axis bundle; therefore simply adding modulo axes cannot eliminate this class of delay, but can only change the \emph{spatial} allocation of parallel deployment.
+  \item \textbf{Order projection class (spatializable time):} The serial bottleneck brought by comparison, sign, and interval constraints and other total-order aggregation can be compiled into spatialized residue parallel readout and CRT reconstruction according to Theorem \ref{thm:pom-order-spatialization} and rewrite pattern (RCRT) (Definition \ref{def:pom-order-elimination-rewrite}; Proposition \ref{prop:pom-rcrt-epsilon}); its cost is transferred to prime-register capacity budget \(\log P_m\), and calibrated by quantile quota law (Corollary \ref{cor:pom-prime-register-quantile-budget}).
+\end{enumerate}
+Therefore, "space/time duality" does not hold globally: what holds is only spatialization transfer of order projection class time; sync delay constitutes an independent and non-spatializable time invariant.
+At abstract ISA layer, one can also make the "coordinate ledger" of prior fibers explicit as two optional register file groups: prime exponent registers \texttt{P[i]} (\(\mathcal{P}\) finitely supported exponent vector, for linearizing multiplication/division to coordinate-wise addition/subtraction), and phase/character registers \texttt{T[i]} (\(\mathcal{T}\) phase/character coordinates, for diagonalizing linear parts and phase/character readout). Under this paper's caliber, they only change the allocation of spatial budget \(S(n)\) and linearization depth \(D_U(n)\), without introducing new non-parallel readout gates: non-parallel overhead is still completely locked by the three fingerprints of \(P_Z,P_{\le}\) and \(\mathrm{RESCALE}\downarrow\).
+\end{remark}
+
+\paragraph{Instruction Layer (Projection Word Annotation)}
+\begin{itemize}
+  \item \texttt{ZADD rd,ra,rb}: $W=(1,0)$.
+  \item \texttt{ZMUL rd,ra,rb}: $W=(1,0)$ ($D_U$ determined by linearization fiber choice).
+  \item \texttt{ZSUB rd,ra,rb} (comparison route): $W=(1,1)$.
+  \item \texttt{ZSUBR rd,ra,rb} (sign internalization route): $W=(1,0)$ but $\delta_Z$ increased.
+  \item \texttt{ZCMP rt,ra,rb}: $W=(0,1)$.
+  \item \texttt{ZMOD rt,ra,m} (pure residue readout): $W=(0,0)$, but activates $\widehat{\ZZ}$; its spatial occupation counted by $(S_{\mathrm{mod}}(m),R_{\mathrm{mod}}(m))$ (Remark \ref{rem:pom-mod-support-count}).
+  \item \texttt{ZMODN rd,ra,m} (canonical representative/minimal non-negative residue): $W=(0,1)$ (requires $P_{\le}$).
+  \item \texttt{ZDIVMOD rq,rr,ra,rb}: depending on implementation can take $W\approx(2,\Theta(n))$ or $W\approx(2,2)$.
+  \item \texttt{ZNORM rd,rs}: explicit $P_Z$, $W=(1,0)$.
+  \item \texttt{ZRESCALE rd,rs}: explicit $\mathrm{RESCALE}\downarrow$, $W=(0,0)$ but $k_{\downarrow}=1$.
+  \item \texttt{ZPRIM rs}: atomic layer readout, $W^{\mathrm{full}}=(0,1,0)$.
+  \item \texttt{FSTEP rs,prog} (FRACTRAN one step): $W=(0,1)$ (prime-core first-fit update; see Subsection \ref{subsec:pom-fractran}).
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{6pt}
+\caption{Minimal projection gate signature of arithmetic ISA: Under the caliber "linearization within fiber can be parallelized", scale-dependent and non-parallelizable readout overhead only comes from projection gates themselves, which can be audited by three orthogonal fingerprints (Remark \ref{rem:pom-nonparallel-three-meters}): constant online delay \(\delta_Z\) of gauge gate \(P_Z\), mixing scale \(\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)\) of order gate \(P_{\le}\) (Corollary \ref{cor:pom-order-mixing}), and support scale \(T_{\downarrow}(m)\asymp (4/9)m\) of cross-resolution downgrade gate \(\mathrm{RESCALE}\downarrow\) (Remark \ref{rem:pom-rescale-space-constant}). The table records \(W_{\min}=(k_Z,k_{\le})\) as minimal call counts of the first two classes of gates; if instruction explicitly involves \(\mathrm{RESCALE}\downarrow\), then \(k_{\downarrow}\) and support budget \(\sum G_m\) need to be separately recorded.}
+\label{tab:pom-isa-minsig}
+\begin{tabular}{p{0.18\linewidth} p{0.20\linewidth} p{0.12\linewidth} p{0.18\linewidth} p{0.26\linewidth}}
+\toprule
+Semantic Instruction & Typical Fiber Route & $W_{\min}=(k_Z,k_{\le})$ & Activated Fiber $\mathcal{F}$ & Irreducible Time Scale (Non-Parallel)\\
+\midrule
+\texttt{ZADD} (ADD) & scale-route & $(1,0)$ & $\{\mathcal{S}_\varphi\}$ & $\delta_Z$\\
+\texttt{ZSUB} (SUB, cmp) & chi/CRT-route & $(1,1)$ & $\{\widehat{\ZZ}\}$ & $\delta_Z+\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)$\\
+\texttt{ZSUBR} (SUB, signed) & scale-route & $(1,0)$ & $\{\mathcal{S}_\varphi\}$ & constant (larger $\delta_Z$, to represent order gate exchange)\\
+\texttt{ZMUL} (MUL) & phase/prime-route & $(1,0)$ & $\{\mathcal{T}\}$ or $\{\mathcal{P}\}$ & $\delta_Z + D_U(n)$ (growth term left in $D_U$)\\
+\texttt{ZDIVMOD} (DIVMOD) & order-hard/annealing & $(2,1)$ & implementation-dependent (often contains $\widehat{\ZZ}$) & $\ge 2\delta_Z+\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)$\\
+\texttt{ZMOD} (MOD, residue) & profinite readout & $(0,0)$ & $\{\widehat{\ZZ}\}$ & constant time; spatial occupation $(S_{\mathrm{mod}},R_{\mathrm{mod}})$\\
+\texttt{ZMODN} (MOD, norm) & canonical rep & $(0,1)$ & $\{\widehat{\ZZ}\}$ & $\tau_{\mathrm{mix}}(u)\log(1/\varepsilon)$\\
+\texttt{ZRESCALE} (RESCALE$\downarrow$) & fold-aware restriction & $(0,0)$; $k_{\downarrow}=1$ & $\emptyset$ & support scale $T_{\downarrow}(m)\asymp (4/9)m$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Resonance/Collision Readout Instruction: \texttt{MOM} Coprocessor}
+Besides "addition, subtraction, multiplication, division, quotient, remainder" value-layer instructions, this paper's higher-order collision moments \(S_q(m)\) (Theorem \ref{thm:pom-moment-resonance}) provide a class of \textbf{independent auditable readout operations}: their interface is completely determined by "verified minimal recursion + Hankel certificate extraction" and can serve as an executable backend for resonance mechanism.
+\begin{itemize}
+  \item \texttt{MOM.SET(q)}: Select order \(q\), load its verified minimal recursion \((d_q,m_0,(c_i)_{i=1}^{d_q})\) and shortest initial value window \((S_q(2),\dots,S_q(1+d_q))\) (e.g., Remark \ref{rem:pom-moment-init-9-12} and Table \ref{tab:fold_collision_moment_recursions_9_17}).
+  \item \texttt{MOM.STEP}: Execute one recursion update
+  \(
+  S_q(m)\leftarrow \sum_{i=1}^{d_q} c_i S_q(m-i)
+  \), and left-shift history window of length \(d_q\).
+  \item \texttt{MOM.ODDNEU.CHECK}: Check and assert odd lag neutrality
+  \(
+  \sum_{i\ \mathrm{odd}} c_i=0
+  \)
+  (Proposition \ref{prop:pom-moment-odd-lag-neutrality}); within verified range, this is a consistency audit of coefficient table and "minimal recursion" claim requiring no additional computation overhead and can be directly recomputed.
+  \item \texttt{RESO.EXTRACT(q)} (offline/batch microcode): Construct Hankel blocks from sufficiently long \(S_q\) samples and recover minimal realization; if \(d_q<2\lfloor q/2\rfloor+1\), output modal constraint certificate (Theorem \ref{thm:pom-moment-resonance}) or Hankel-null certificate (Remark \ref{rem:pom-nullmodes-algorithm}).
+\end{itemize}
+
+\paragraph{Microcode Primitives (English Labels for Auditability)}
+\begin{itemize}
+  \item \texttt{LIFT\_SCALE}: enter $\mathcal{S}_\varphi$;
+  \item \texttt{LIFT\_PHASE}: enter $\mathcal{T}$;
+  \item \texttt{LIFT\_PRIME}: enter $\mathcal{P}$;
+  \item \texttt{LIFT\_PRIME\_TRACE}: externalize $P_Z$ rewrite residual trace to $\mathcal{P}$ (lossless gauge projection gate; Definition \ref{def:pom-fold-prime-lift} and Proposition \ref{prop:pom-fold-prime-lift-injective});
+  \item \texttt{UNLIFT\_PRIME\_TRACE}: from $(x,r)\in X_m\times\mathcal{P}$ replay inverse rewrite to recover input microstate (Proposition \ref{prop:pom-fold-prime-lift-injective});
+  \item \texttt{EVOLVE(op)}: execute one step of ontological evolution $U$;
+  \item \texttt{PROJ\_NORM} (also \texttt{FOLDZ}): execute $P_Z$;
+  \item \texttt{PROJ\_RESCALE\_DOWN}: execute cross-resolution downgrade gate $\mathrm{RESCALE}\downarrow$;
+  \item \texttt{PROJ\_PRIM}: execute $P_{\mathrm{prim}}$ (trace $\Rightarrow$ primitive);
+  \item \texttt{PROJ\_ORDER} (also \texttt{ORDER}): execute $P_{\le}$;
+  \item \texttt{PROJ\_TEMP($u$)}: execute temperatured order projection $\mathrm{PROJ}_u$ (Definition \ref{def:pom-proj-temp}; $u\to 0$ is zero-temperature hardening limit);
+  \item \texttt{PROJ\_CHI}: execute $P_\chi$ (congruence/character stratification projection);
+  \item \texttt{TWIST($\chi$)}: twisted readout for character/congruence class;
+  \item \texttt{CLEAN}: drain finite margin and write back to stable address.
+\end{itemize}
+
+\begin{remark}[Typical External Face Rewrite Constant of Cross-Resolution \texttt{RESCALE}$\downarrow$]\label{rem:pom-rescale-space-constant}
+When implementation needs to explicitly downgrade resolution (e.g., projecting \(m{+}1\)-bit register to \(m\)-bit register), naive "discard last bit" truncation generally does not satisfy cross-scale consistency (see Subsection \ref{subsec:fold-gauge-anomaly}), and must use fold-aware restriction \(\widetilde r_{m+1\to m}\) as Gauge condition.
+At this point, the minimal external face change support from naive truncation correction to \(\widetilde r_{m+1\to m}\) is precisely characterized by gauge difference \(G_m\) (Definition \ref{def:fold-gauge-anomaly}).
+Under uniform microstate baseline, its typical density exists and locks to \(4/9\) (Theorem \ref{thm:fold-gauge-anomaly-density}), therefore any microcode frequently executing \texttt{RESCALE}$\downarrow$ unavoidably has a new irreducible spatial term
+\[
+T_{\downarrow}(m)\ \asymp\ \frac{4}{9}m,
+\]
+which characterizes \emph{how many register bits to write back}, and is counted in the unified cost model as independent spatial term $k_{\downarrow}(I)\,T_{\downarrow}(m)$ (Definition \ref{def:pom-cost}); this term is orthogonal to online delay constants (e.g., \(\delta_{\min}(\Fold_\infty)=3\), Proposition \ref{prop:pom-delay-min}).
+\end{remark}
+
+\subsubsection{FRACTRAN Compatibility Layer: First-Fit Zero-Temperature Order Gate for Prime Registers}\label{subsec:pom-fractran}
+Conway's FRACTRAN language makes "primes=registers" literally equivalent: machine configuration is an integer \(N\), whose prime factorization exponent vector \((v_p(N))_{p\in\mathbb{P}}\) is precisely the coordinate of prime-register fiber \(\mathcal{P}\) (Definition \ref{def:pom-prime-fiber}; Remark \ref{rem:two-coordinate-monoids}). Its execution rule is: given an ordered string of fractions, always take the \emph{first} fraction that can make \(N\cdot f\) remain an integer to multiply \cite{Conway1987FRACTRAN}.
+
+\begin{definition}[FRACTRAN Program and One-Step Semantics]\label{def:pom-fractran}
+A FRACTRAN program is a sequence of reduced positive fractions
+\(
+f_1,\dots,f_k
+ \)
+(\(f_i=a_i/b_i\), \(\gcd(a_i,b_i)=1\)).
+Given state integer \(N\in\NN_{\ge 1}\), if there exists minimal \(i\) such that \(Nf_i\in\NN_{\ge 1}\), then update \(N\leftarrow Nf_i\); if none exists then halt.
+\end{definition}
+
+\begin{proposition}[FRACTRAN = Order-Gated Translation on \texorpdfstring{$\mathcal{P}$}{P}]\label{prop:pom-fractran-prime-translation}
+Let \(r=v(N)\in\mathcal{P}\) denote the prime exponent vector of \(N\) (i.e., \(r(p)=v_p(N)\)).
+For each instruction \(f_i=a_i/b_i\) define
+\[
+\beta_i:=v(b_i)\in\mathcal{P},\qquad
+\Delta_i:=v(a_i)-v(b_i)\in \ZZ^{(\mathbb{P})}.
+\]
+Then \(Nf_i\in\NN_{\ge 1}\) if and only if \(r\ge \beta_i\) (coordinate-wise partial order over primes), and this step update is equivalent to
+\[
+r\ \longleftarrow\ r+\Delta_i.
+\]
+Let
+\[
+i^\ast(r):=\min\{\,i:\ r\ge \beta_i\,\},
+\]
+if set is empty then halt; otherwise FRACTRAN one step is equivalent to deterministic transition
+\[
+T(r)=r+\Delta_{i^\ast(r)}.
+\]
+\end{proposition}
+\begin{proof}
+By \(\gcd(a_i,b_i)=1\), have \(Nf_i\in\NN\iff b_i\mid N\). In exponent vector caliber, this is equivalent to \(v_p(N)\ge v_p(b_i)\) for all \(p\), i.e., \(r\ge \beta_i\). When executable,
+\(
+v_p(Nf_i)=v_p(N)+v_p(a_i)-v_p(b_i)
+\)
+holds coordinate-wise, thus \(r\leftarrow r+\Delta_i\). First-fit's "take minimal \(i\)" corresponds to definition of \(i^\ast(r)\). This completes the proof.
+\end{proof}
+
+\begin{remark}[First-Fit Is \texorpdfstring{$u\to 0$}{u->0} Zero-Temperature Hardening Limit]\label{rem:pom-fractran-zero-temp}
+For fixed \(r\), let feasible set \(I(r):=\{i:\ r\ge \beta_i\}\). Define a "soft first-fit" distribution
+\[
+\Pr_u(i\mid r)\ \propto\ u^{i}\,\ind\!\left[i\in I(r)\right],\qquad u\in(0,1].
+\]
+Then as \(u\to 0\), mass concentrates to \(\min I(r)\), and recovers the hard first-fit rule of Definition \ref{def:pom-fractran} (deterministic selection \(i^\ast(r)\)).
+This provides a minimal example: deterministic priority selection can be viewed as zero-temperature hardening of temperatured order projection \(\mathrm{PROJ}_u\) (Definition \ref{def:pom-proj-temp}, Remark \ref{rem:pom-order-as-zero-temp}).
+\end{remark}
+
+\begin{remark}[Control Flow Externalization: State Machine as Order Projection Selection]\label{rem:pom-fractran-controlflow}
+In FRACTRAN, "state machine" need not be additionally understood as graph-theoretic object: feasibility predicate \(r\ge \beta_i\) yields a family of piecewise linear reachability regions, and first-fit rule is precisely the \emph{selection projection} on this decomposition (mapping \(r\) to index \(i^\ast(r)\) and selecting update accordingly).
+FRACTRAN can also externalize program counter and finite control state to \(\mathcal{P}\)'s coordinate ledger by introducing dedicated prime axes (using exponents of these primes to carry current instruction segment/branch state), thereby compiling control flow also as addressable coordinates of prime registers.
+In POM language, this is equivalent to moving control structure of projection words to \(\mathcal{P}\) fiber, while non-parallel overhead is still dominated by selection depth of order gate.
+\end{remark}
+
+\begin{remark}[Cost Lower Bound: Scan Depth \texorpdfstring{$\times$}{x} Support Scale]\label{rem:pom-fractran-cost}
+Within prime-core, \(r\mapsto r+\Delta_i\) is linear update on \(\mathcal{P}\), so evolution depth \(D_U\) can be viewed as constant-level; non-parallel term comes entirely from order gate.
+Implementing one \texttt{FSTEP} as one "priority selection" type \texttt{PROJ\_ORDER(first-fit)} call, its projection word can take \(W=(0,1)\), but its one order projection aggregation depth \(T_{\le}\) contains at least priority scan over instruction table (worst-case \(k\)).
+Meanwhile, feasibility test touches only \(|\mathrm{supp}(b_i)|\) coordinates of denominator \(b_i\)'s prime support (coordinate-wise comparison), so "how many register axes to read per step" and "how deep to scan" are structurally orthogonal.
+If output must be explicitly written back to external face \(X_\infty\), an additional \texttt{PROJ\_NORM} is needed, corresponding to \(k_Z\) increasing \(1\) (Definition \ref{def:pom-cost}).
+\end{remark}
+
+\paragraph{Prime-Core Microcode Primitives (FRACTRAN Compatibility Layer)}
+In this paper's ISA abstract layer, FRACTRAN's core one step can be encapsulated as three prime-core primitives (they introduce no new mathematical structure, only writing the \(\mathcal{P}\)+\(P_{\le}\) combination as auditable interface):
+\begin{itemize}
+  \item \texttt{PTEST(b)}: Input \(b\in\NN_{\ge 1}\), return certificate \(\ind\!\left[r\ge v(b)\right]\) (coordinate-wise prime comparison).
+  \item \texttt{PUPD($\Delta$)}: Execute exponent update \(r\leftarrow r+\Delta\) (where \(\Delta\in\ZZ^{(\mathbb{P})}\) and maintains \(r\in\mathcal{P}\) when \texttt{PTEST} is feasible).
+  \item \texttt{FIRSTFIT($\{(b_i,\Delta_i)\}_{i=1}^k$)}: Return \(i^\ast(r)=\min\{i:\ r\ge v(b_i)\}\) and execute \(r\leftarrow r+\Delta_{i^\ast(r)}\); if none exists then halt.
+\end{itemize}
+where \texttt{FIRSTFIT}'s determinism comes precisely from order projection (priority selection), not from linear update on \(\mathcal{P}\); this is precisely an executable example of "growth boundary at order projection".
+
+\paragraph{Mechanism Audit Interface}
+The implementation kernel of gauge projection $P_Z$ can use $\zeta$, $\log\mathfrak{M}$, Dirichlet--Mertens constant tensor, and $\rho/\lambda$ as audit fingerprints (see Section \ref{sec:zeta-finite-part}). Atomic projection $P_{\mathrm{prim}}$ and twisted readout \texttt{TWIST} convert prime-like orbit spectra and Chebotarev-type deviation into computable fingerprints. Order projection $P_{\le,b}$ and character projection $P_\chi$ can also be compiled into finite sync kernels according to the same procedure and extract similar fingerprints, thereby realizing cross-kernel comparison.
+
+\paragraph{Instruction Signature and Audit Equivalence}
+At this abstract layer, the auditable classification object of an instruction/microcode $I$ is not the projection word $W(I)$ alone, but its instruction signature
+$$
+\Sigma(I)=\bigl(W(I),\ k_{\downarrow}(I),\ \mathfrak{F}(K_Z(I)),\ \mathfrak{F}(K_{\le}(I)),\ \mathcal{F}(I)\bigr)
+$$
+(Definition \ref{def:pom-instruction-signature}). Where $K_Z(I),K_{\le}(I)$ are specific kernel choices of projection gates, $\mathcal{F}(I)$ is fiber choice, $k_{\downarrow}(I)$ records call count of cross-resolution downgrade gate (Definition \ref{def:pom-rescale-count}). Proposition \ref{prop:pom-signature-audit} gives direct consequence of signature consistency: if $\Sigma(I)=\Sigma(J)$, then their $\zeta$/primitive/finite-part constants/twisted spectral gap and other fingerprints are consistent, and the projection gate part of cost model is isomorphic; difference can only manifest in $D_U$ term carried by fiber choice and evolution orchestration.
+
+\begin{remark}[Projection Word Category and Caliber of "Algorithmic Equivalence = Natural Isomorphism"]\label{rem:pom-word-category}
+Viewing microcode primitive set
+\(
+\{\texttt{LIFT\_*},\texttt{EVOLVE},\texttt{PROJ\_*},\texttt{TWIST},\texttt{CLEAN}\}
+\)
+as generators, all "algorithms/implementations" can be represented as finite composite words of these generators.
+Formally, one can organize this as a free (strict) monoidal category \(\mathbf{W}\): objects are "current fiber configuration/readout level", morphisms are projection words, tensor product corresponds to parallel assembly.
+
+On the other hand, given concrete kernel choice and potential/group extension choice, one can define a "spectral semantics" functor
+\[
+\mathcal{S}:\mathbf{W}\to \mathbf{Kern},
+\]
+sending a word to an auditable kernel object (weighted adjacency operator, \(\zeta\)/primitive, finite-part constants and twisted spectral gap and other fingerprints naturally carried in \(\mathbf{Kern}\)).
+Then "algorithmic equivalence" of two projection words \(w_1,w_2\) can be stated via natural isomorphism: if there exists isomorphism \(\mathcal{S}(w_1)\simeq \mathcal{S}(w_2)\) (manifested under this paper's auditable caliber as fingerprint family consistency, or stronger conjugacy/isospectral isomorphism), then they are two presentations of the same ontological readout.
+This provides an abstract boundary for "derivable, rewritable, computable" calculus: rewrite system closes at word level, while verification completes at fingerprint level.
+\end{remark}
+
+\begin{remark}[Semantic Functor Closed Loop: From Projection Words to Matrix Families and Signatures]\label{rem:pom-sem-functor-loop}
+At executable layer, one can concretize spectral semantics functor as a matrix family semantics
+\[
+\mathsf{Sem}_\theta:\mathbf{PW}\to \mathbf{Mat}_{\ge 0},
+\]
+where \(\mathrm{PROJ}_u\) corresponds to weight/temperature injection \(M\mapsto M(u)\), \(E_m\) corresponds to conditional expectation on fold fiber (Markov kernel average), \(\mathrm{LIFT}_G\) corresponds to character decomposition and twisted channel family \(M\mapsto (M_\chi)_\chi\) of group extension.
+Thus auditable output of any projection word is extracted through the same closed loop:
+\[
+\text{Finite kernel/matrix family}\ \Rightarrow\ \zeta(z)=\det(I-zM)^{-1}\ \Rightarrow\ (\text{twist})\ \Rightarrow\ \log\mathfrak{M}\ \Rightarrow\ \text{signature},
+\]
+thus "word rewrite—semantic kernel check—certificate output" closes on the same interface.
+\end{remark}
+
+\subsubsection{Projection Word Rewriting: Termination and Normal Form}\label{subsec:pom-rewriting-calculus}
+This subsection elevates "interface concatenation" to derivable calculus: at word level giving a terminating rewrite system, making "eliminability of online gauge projection" and "spatialization of order projection" land in rule form; their correctness is guaranteed by structural theorems already proved in this paper (especially one-fold normal form and CRT spatialization law).
+
+\begin{definition}[Value-Layer Projection Word Language and Normalization Rewriting]\label{def:pom-rewriting-val}
+Consider sublanguage \(\mathbf{W}_{\mathrm{val}}\) of value-layer microcode words, whose generators include ontological evolution step \texttt{EVOLVE(op)} (where \texttt{op} belongs to local combinations expressible by value-layer semiring closure \(\oplus,\otimes\)) and gauge projection \texttt{PROJ\_NORM} (i.e., \(P_Z\)), and allows finite composition with \texttt{CLEAN}.
+Define rewrite relation \(\Rightarrow\) as minimal compatible closure (closed for any context) generated by the following two rules:
+\[
+\text{(RZ)}\quad
+\texttt{PROJ\_NORM;\ PROJ\_NORM}\ \Rightarrow\ \texttt{PROJ\_NORM},
+\]
+\[
+\text{(RNF)}\quad
+\texttt{PROJ\_NORM;\ w;\ PROJ\_NORM}\ \Rightarrow\ \texttt{w;\ PROJ\_NORM}
+\quad (\text{where }w\in\mathbf{W}_{\mathrm{val}}\text{ does not contain }\texttt{PROJ\_NORM}).
+\]
+Here (RNF) semantically corresponds to the "one-fold normal form" of Theorem \ref{thm:pom-one-fold-normal-form}: intermediate normalization of value-layer semiring closure can be pushed to one completion at the end.
+\end{definition}
+
+\begin{proposition}[Termination and Normal Form Existence (Value Layer)]\label{prop:pom-rewriting-terminating}
+On \(\mathbf{W}_{\mathrm{val}}\) of Definition \ref{def:pom-rewriting-val}, rewrite system \((\mathbf{W}_{\mathrm{val}},\Rightarrow)\) terminates; and each word can be reduced to a normal form
+\[
+w\ \Rightarrow^\ast\ \widetilde w\cdot \texttt{PROJ\_NORM},
+\]
+where \(\widetilde w\) does not contain \texttt{PROJ\_NORM}, and terminal \texttt{PROJ\_NORM} appears at most once.
+\end{proposition}
+\begin{proof}
+Take descending measure as binary order
+\(
+\big(\#(\texttt{PROJ\_NORM}),\ \text{number of }\texttt{PROJ\_NORM}\text{ occurrences outside terminal}\big)
+\)
+by lexicographic order comparison.
+Rule (RZ) strictly decreases first component; rule (RNF) does not increase first component but strictly decreases second component.
+Thus there exists no infinite descending chain, system terminates. After termination, if \texttt{PROJ\_NORM} still exists not at terminal, then (RNF) can be applied again, contradiction; therefore normal form must be of stated form. This completes the proof.
+\end{proof}
+
+\begin{remark}[Reproducible: Rewrite Engine Example Output]\label{rem:pom-rewriting-engine-demo}
+To prevent "calculus" from remaining at verbal level, script \texttt{scripts/exp\_pom\_rewriting\_engine\_demo.py} implements value-layer rewrite rules (RZ,RNF) of Definition \ref{def:pom-rewriting-val}, and generates an auditable example table showing normal forms of typical microcode words under rewriting (intermediate \texttt{PROJ\_NORM} completely eliminated and pushed to one at terminal).
+\input{sections/generated/tab_pom_rewriting_engine_demo}
+\end{remark}
+
+\begin{remark}[Spatialization of Order Projection as Compilation Rewrite Pattern]\label{rem:pom-rewriting-order-spatialize}
+Theorem \ref{thm:pom-order-spatialization} gives a compilation pattern isomorphic to "word rewriting": replacing order projection \texttt{PROJ\_ORDER} (i.e., \(P_{\le}\)) with "pointwise computation on modulo axis bundle + CRT reconstruction" parallel path.
+Under typed caliber, it is not an equation closed on the same object, but a natural transformation changing fiber configuration:
+\[
+\texttt{PROJ\_ORDER}
+\ \Longrightarrow\
+\texttt{LIFT\_PRIME; (pointwise);\ CRT\_READOUT; PROJ\_NORM},
+\]
+whose correctness is guaranteed by CRT unique reconstruction; its cost semantics transfers time bottleneck to parallelizable modulo axis spatial budget.
+\end{remark}
+
+\paragraph{Unified Microcode Template}
+\begin{itemize}
+  \item \texttt{ZADD}: \texttt{LIFT\_SCALE; EVOLVE(add); PROJ\_NORM; CLEAN}.
+  \item \texttt{ZMUL} (phase-route): \texttt{LIFT\_PHASE; EVOLVE(phase-linearize); EVOLVE(pointwise-mul); PROJ\_NORM; CLEAN}.
+  \item \texttt{ZMUL} (prime-route): \texttt{LIFT\_PRIME; EVOLVE(pointwise-mul); PROJ\_NORM; CLEAN}.
+  \item \texttt{ZSUB}: \texttt{PROJ\_ORDER(cmp); EVOLVE(sub); PROJ\_NORM; CLEAN}.
+  \item \texttt{ZSUBR}: \texttt{LIFT\_SCALE; EVOLVE(signed-digit-sub); PROJ\_NORM(strong); CLEAN}.
+  \item \texttt{ZDIVMOD} (reciprocal-route): \texttt{EVOLVE(recip-iterate); PROJ\_ORDER(q); EVOLVE(r=a-bq); PROJ\_ORDER(fix); PROJ\_NORM(q); PROJ\_NORM(r); CLEAN}.
+  \item \texttt{FSTEP} (FRACTRAN-step): \texttt{LIFT\_PRIME; PROJ\_ORDER(first-fit); EVOLVE(fractran-update); CLEAN}. (If writeback to external face needed, append \texttt{PROJ\_NORM}; see Subsection \ref{subsec:pom-fractran}.)
+  \item \texttt{ZPRIM}: \texttt{EVOLVE(trace); PROJ\_PRIM; CLEAN}.
+\end{itemize}
+
+\begin{remark}[Order Readout Adopting $P_\chi$ Caliber]
+When order readout is implemented by character projection $P_\chi$, one can replace \texttt{PROJ\_ORDER} in above microcode with \texttt{PROJ\_CHI}; its non-parallel time scale is given by $\tau_{\mathrm{mix}}$ (Remark \ref{rem:pom-chi-mixing}).
+\end{remark}
+
+\begin{remark}[\texorpdfstring{$p$}{p}-Local and Online Delay Correspondence]\label{rem:pom-plocal-delay}
+Section \ref{sec:A-kernel-compare-main} establishes correspondence between sliding window range of parallel normalization kernel ($p$-local) and MSDF online delay, and gives minimal state specification of single-flow online machine (Proposition \ref{prop:min-state-spec-flow}). Therefore $\delta_Z$ is not an external constant, but determined by locality and online compilation structure of selected normalization kernel.
+\end{remark}
+
+The above ISA/microcode introduces no new arithmetic primitives, but organizes differences of "same evolution + three classes of projection + linearization depth" as auditable projection words. This abstract layer is compatible with the folding interface of Section \ref{sec:folding} and kernel fingerprint system of Section \ref{sec:A-kernel-compare-main}.

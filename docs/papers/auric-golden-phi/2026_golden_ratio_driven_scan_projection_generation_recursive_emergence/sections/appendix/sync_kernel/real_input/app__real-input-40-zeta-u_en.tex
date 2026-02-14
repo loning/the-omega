@@ -1,0 +1,559 @@
+\subsubsection{One-parameter weighted zeta(z,u) of the real input kernel (output potential)}\label{app:real-input-40-zeta-u}
+Weighting only the output potential $\varphi_e=e$, let $u=e^{\theta_e}$, denote the corresponding weighted matrix by $M(u)$, and define
+\[
+\zeta(z,u)=\frac{1}{\Delta(z,u)},\qquad \Delta(z,u):=\det(I-zM(u)).
+\]
+On the real input 40-state kernel, $\Delta(z,u)$ can still be compressed into a low-degree polynomial and explicitly factored:
+\[
+\begin{aligned}
+\Delta(z,u)&=(1-uz^2)\Bigl(
+1-z-6uz^2+2uz^3+(9u^2-u)z^4\\
+&\qquad +(u-3u^2)z^5-(u^3+2u^2)z^6\\
+&\qquad +(4u^3-3u^2)z^7+(u^3-u^4)z^8
+\Bigr).
+\end{aligned}
+\]
+The factor $1-uz^2$ is not an ``accidental algebraic factorization'': it corresponds to an atomic component that can be \textbf{exactly stripped} at the primitive (Big-Witt) level (equivalently yielding the explicit spectral support \(\pm\sqrt u\)), and thereby provides the precise shift of the Abel finite-part constant.
+
+\begin{proposition}[Atomic Witt component of the factor \texorpdfstring{$(1-uz^2)$}{(1-uz^2)} and exact stripping of the finite-part constant]\label{prop:atomic-2-orbit-split-logM}
+For the weighted matrix family \(M(u)\), define
+\(
+\zeta(z,u)=\det(I-zM(u))^{-1}
+\)
+and let \(P(z,u)=\sum_{n\ge 1}p_n(u)z^n\) be its primitive generating function (given by the Witt/M\"obius transform, see \S\ref{app:witt-weighted}):
+\[
+P(z,u)=\sum_{m\ge 1}\frac{\mu(m)}{m}\log\zeta(z^m,u^m).
+\]
+If \(\Delta(z,u)=\det(I-zM(u))\) explicitly decomposes as
+\(
+\Delta(z,u)=(1-uz^2)\,F(z,u)
+\), and one defines \(\zeta_{\mathrm{core}}(z,u):=F(z,u)^{-1}\) together with its primitive generating function \(P_{\mathrm{core}}(z,u)\), then the exact ``atomic stripping'' identity holds:
+\[
+\boxed{\ P(z,u)=u z^2+P_{\mathrm{core}}(z,u)\ }.
+\]
+In particular, setting \(u=1\) yields the decomposition of the unweighted primitive generating function:
+\[
+P(z)=z^2+P_{\mathrm{core}}(z),
+\]
+where the coefficients \(p_n\) of \(P(z)=\sum_{n\ge 1}p_n z^n\) agree with Table~\ref{tab:sync-kernel-A-compare}.
+
+Moreover, the script can also enumerate all two-step loops satisfying \((|\tau|,E)=(2,1)\) at the ``\((x,y)\) branch layer'' for auditing purposes:
+
+\input{sections/generated/eq_real_input_40_atomic_2cycle_states}
+
+Furthermore, define the ``core part after removing the atomic Witt component'':
+\[
+P_{\mathrm{core}}(z):=P(z)-z^2.
+\]
+Then as $z\to z_\star=\lambda^{-1}$,
+\[
+P_{\mathrm{core}}(z)=-\log(1-\lambda z)+\log\mathfrak{M}_{\mathrm{core}}+o(1),
+\]
+and the constant satisfies the exact decomposition
+\[
+\boxed{\ \log\mathfrak{M}=\log\mathfrak{M}_{\mathrm{core}}+z_\star^2\ }.
+\]
+For this kernel, $z_\star=\varphi^{-2}$, so
+\[
+z_\star^2=\varphi^{-4}=\frac{7-3\sqrt5}{2}\approx 0.145898033750315.
+\]
+Therefore, from the numerical value $\log\mathfrak{M}\approx -0.254312661901716$ given above, one obtains
+\[
+\log\mathfrak{M}_{\mathrm{core}}\approx -0.400210695652031,
+\qquad
+\mathsf{M}_{\mathrm{core}}:=\gamma+\log\mathfrak{M}_{\mathrm{core}}\approx 0.177004969249501.
+\]
+\end{proposition}
+
+\begin{remark}[Strippable individual Euler factor]\label{rem:real-input-40-single-euler}
+The factor $(1-uz^2)^{-1}$ corresponds to a strippable atomic Witt component whose primitive coordinates satisfy
+\[
+p^{\mathrm{cycle}}_2(u)=u,\qquad p^{\mathrm{cycle}}_n(u)=0\ (n\neq 2),
+\]
+which at the ghost level yields
+\[
+a^{\mathrm{cycle}}_n(u)=
+\begin{cases}
+2u^{n/2},& n\ \text{even},\\
+0,& n\ \text{odd}.
+\end{cases}
+\]
+This ``individual Euler factor'' can be completely stripped from the total $\zeta(z,u)$, with the remaining part carried by the primitive spectrum of $F(z,u)$.
+\end{remark}
+
+\begin{proposition}[Primitive orbit surgery: exact constant correction from a strippable Euler factor]\label{prop:primitive-orbit-surgery}
+Suppose the \(\zeta\)-function of some weighted SFT/finite matrix family decomposes in the formal power series ring as
+\[
+\zeta(z,u)=\frac{1}{(1-u^{E}z^{\ell})^{m}}\cdot \zeta_{\mathrm{core}}(z,u),
+\qquad m\in\ZZ_{\ge 1},\ \ell\ge 1,\ E\ge 0,
+\]
+and the factor \(1-u^{E}z^{\ell}\) is analytic and nonzero at the principal pole \(z=z_\star(u)\) (so that the principal growth rate \(\lambda(u)=z_\star(u)^{-1}\) is determined by the pole of \(\zeta_{\mathrm{core}}\)).
+Then:
+\begin{enumerate}
+  \item In the Euler product, exactly \(m\) primitive orbits satisfy \((|\tau|,E(\tau))=(\ell,E)\);
+  \item The primitive generating function satisfies the exact ``surgery'' decomposition
+  \[
+  P(z,u)=P_{\mathrm{core}}(z,u)+m\,u^{E}z^{\ell},
+  \]
+  where \(P(z,u)=\sum_{n\ge 1}p_n(u)z^n\) and \(P_{\mathrm{core}}\) corresponds to the primitive series of \(\zeta_{\mathrm{core}}\);
+  \item If one defines the Abel finite-part constant (for fixed \(u>0\))
+  \[
+  \log\mathfrak{M}(u):=\sum_{n\ge 1}\left(\frac{p_n(u)}{\lambda(u)^n}-\frac{1}{n}\right),
+  \]
+  then the exact constant correction holds:
+  \[
+  \boxed{\ \log\mathfrak{M}(u)=\log\mathfrak{M}_{\mathrm{core}}(u)+m\,u^{E}\,z_\star(u)^{\ell}\ }.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Taking logarithms of the decomposition yields
+\(
+\log\zeta(z,u)=m\sum_{k\ge 1}\frac{u^{kE}}{k}z^{k\ell}+\log\zeta_{\mathrm{core}}(z,u)
+\).
+Comparing coefficients with the Witt decomposition \(\log\zeta=\sum_{r\ge 1}\frac{1}{r}P(z^{r},u^{r})\), one sees that the primitive series gains only \(m\) atoms at \((\ell,E)\), i.e.,
+\(
+P(z,u)=P_{\mathrm{core}}(z,u)+m u^{E}z^{\ell}
+\), so that the number of primitive orbits with \((\ell,E)\) in the Euler product is \(m\).
+Finally, substituting the change in \(P\) into the series definition of \(\log\mathfrak{M}(u)\), the constant term receives an increment only at \(n=\ell\) equal to \(m u^{E}/\lambda(u)^{\ell}=m u^{E}z_\star(u)^{\ell}\), yielding the stated identity.
+\end{proof}
+
+\begin{corollary}[Spectral interpretation of the factor \texorpdfstring{$(1-uz^2)$}{(1-uz^2)}: \texorpdfstring{$\pm\sqrt u$}{+-sqrt(u)}]\label{cor:real-input-40-factor-sqrtu-eigs}
+If for some weighted matrix family \(M(u)\) one has
+\(
+\Delta(z,u)=\det(I-zM(u))=(1-uz^2)F(z,u)
+\)
+and \(u>0\), then the spectrum of \(M(u)\) necessarily contains two explicit eigenvalues
+\[
+\boxed{\ \lambda_\pm(u)=\pm\sqrt u\ }.
+\]
+Therefore, for any \(n\ge 1\), there is a completely explicit trace contribution
+\[
+\mathrm{Tr}(M(u)^n)
+=\bigl(\sqrt u\bigr)^n+\bigl(-\sqrt u\bigr)^n+\text{\rm(remaining spectral terms)}
+=
+\begin{cases}
+2u^{n/2}+\cdots,& n\ \text{even},\\
+0+\cdots,& n\ \text{odd}.
+\end{cases}
+\]
+\end{corollary}
+\begin{proof}
+From
+\(
+\det(I-zM(u))=\prod_i(1-z\nu_i(u))
+\)
+(\(\nu_i(u)\) being the eigenvalues of \(M(u)\), counted with multiplicity), the factor \(1-uz^2\) must decompose as
+\((1-z\sqrt u)(1+z\sqrt u)\), so \(\pm\sqrt u\) must be eigenvalues of \(M(u)\). The trace formula follows from the power sums of eigenvalues. \qed
+\end{proof}
+
+\paragraph{Sub-spectral near-degeneracy and the third scale of explicit branches}
+The factor \((1-uz^2)\) yields two explicit eigenvalues \(\lambda_\pm(u)=\pm\sqrt u\) (Corollary~\ref{cor:real-input-40-factor-sqrtu-eigs}).
+They do not become the Perron principal root (Proposition~\ref{prop:real-input-40-pressure-freezing} gives \(\lambda(u)\sim c\sqrt u\) with \(c>1\)),
+and at the saturation endpoint \(u\to+\infty\) of this kernel, the dominant sub-spectrum does \emph{not} come from the \(\sqrt u\) branch but rather from the ``mirror Perron branch'' inside the \(F\)-block:
+
+\begin{proposition}[Mirror Perron branch and sub-spectral near-degeneracy]\label{prop:real-input-40-output-mirror-branch}
+Following the notation of Proposition~\ref{prop:real-input-40-pressure-freezing}, let \(G(\lambda,u)=\lambda^8F(\lambda^{-1},u)\).
+Then as \(u\to+\infty\), besides the Perron branch, the equation \(G(\lambda,u)=0\) admits a negative real branch \(\lambda_{\mathrm{mir}}(u)<0\), and the two branches form a strict pair of Puiseux jets:
+\[
+\boxed{\ \lambda_1(u)=c\sqrt u+d+\frac{e}{\sqrt u}+\frac{f}{u}+O\!\left(u^{-3/2}\right)\ },
+\qquad
+\boxed{\ \lambda_{\mathrm{mir}}(u)=-c\sqrt u+d-\frac{e}{\sqrt u}+\frac{f}{u}+O\!\left(u^{-3/2}\right)\ }.
+\]
+Therefore the largest non-principal modulus eigenvalue satisfies
+\[
+\boxed{\ \Lambda_2(u)=|\lambda_{\mathrm{mir}}(u)|\sim c\sqrt u\ },
+\qquad\text{so that}\qquad
+\boxed{\ \lim_{u\to+\infty}\frac{\Lambda_2(u)}{\lambda_1(u)}=1\ }.
+\]
+Moreover, the relative spectral gap has the explicit leading order
+\[
+\boxed{\ 1-\frac{\Lambda_2(u)}{\lambda_1(u)}=\frac{2d}{c}\,u^{-1/2}+O(u^{-1})\ }.
+\]
+On the other hand, the explicit branch satisfies a strictly sub-leading scale
+\[
+\boxed{\ \frac{\sqrt u}{\lambda_1(u)}\longrightarrow \frac{1}{c}\in(0,1)\qquad(u\to+\infty)\ }.
+\]
+\end{proposition}
+\begin{proof}
+Under the rescaling \(\lambda=\sqrt u\,x\) as \(u\to+\infty\), the argument from Proposition~\ref{prop:real-input-40-pressure-freezing} shows that the limiting principal equation can be written as a quartic in \(y=x^2\):
+\(
+y^4-6y^3+9y^2-y-1=0
+\),
+whose largest positive root is \(y_{\max}=c^2\).
+Thus at the saturation endpoint \(u\to+\infty\), the equation \(G(\lambda,u)=0\) must produce two branches at the principal scale related by sign reversal:
+\(
+\lambda\approx \pm\sqrt{y_{\max}}\,\sqrt u=\pm c\sqrt u
+\).
+The positive branch is the Perron root (by non-negativity and Perron--Frobenius uniqueness), while the negative branch is \(\lambda_{\mathrm{mir}}(u)\), yielding the stated near-degeneracy conclusion.
+For the higher-order terms, set \(t:=u^{-1/2}\to 0^+\) and use the Laurent/Puiseux ansatz
+\(\lambda_1(t)=c\,t^{-1}+d+e\,t+f\,t^2+\cdots\), \(\lambda_{\mathrm{mir}}(t)=-c\,t^{-1}+d-e\,t+f\,t^2+\cdots\), substitute into \(G(\lambda,t^{-2})=0\), and compare coefficients order by order to solve for \(d,e,f\) (see the script \texttt{scripts/exp\_real\_input\_40\_output\_potential\_puiseux\_asymptotics.py}). \qed
+\end{proof}
+
+\begin{remark}[Interpretation: mixing time divergence at the saturation endpoint is driven by the mirror branch]\label{rem:real-input-40-output-mirror-mixing}
+Proposition~\ref{prop:real-input-40-output-mirror-branch} shows that as \(u\to+\infty\), the sub-spectral ratio \(\Lambda_2(u)/\lambda_1(u)\to 1\), and
+\(
+1-\Lambda_2(u)/\lambda_1(u)=\Theta(u^{-1/2})
+\).
+Therefore any mixing scale controlled by the spectral gap ratio
+\(
+\tau_{\mathrm{mix}}(u)\asymp 1/\bigl(-\log(\Lambda_2(u)/\lambda_1(u))\bigr)
+\)
+diverges at rate \(\sqrt u\) with \(u\); the dominant mechanism comes from the mirror branch of the \(F\)-block, not from the explicit \(\sqrt u\) branch.
+The latter still provides an independent, traceable third-scale candidate \(\sqrt u/\lambda_1(u)\to 1/c\), which can be used to separate the residual spectral layers beyond the ``near-degenerate slow mode.''
+\end{remark}
+
+\begin{proof}
+From
+\(
+\zeta(z,u)=\Delta(z,u)^{-1}=(1-uz^2)^{-1}\zeta_{\mathrm{core}}(z,u)
+\),
+taking logarithms yields
+\[
+\log\zeta(z,u)=-\log(1-uz^2)+\log\zeta_{\mathrm{core}}(z,u)
+=\sum_{k\ge 1}\frac{u^k}{k}z^{2k}+\log\zeta_{\mathrm{core}}(z,u).
+\]
+On the other hand, by the Witt decomposition \(\log\zeta=\sum_{r\ge 1}\frac{1}{r}P(z^{r},u^{r})\) (see \S\ref{app:witt-weighted}), and similarly for \(\zeta_{\mathrm{core}}\). Comparing shows that the atomic term \(\sum_{k\ge 1}\frac{u^k}{k}z^{2k}\) corresponds precisely to \(u z^2\) in \(P(z,u)\), giving
+\(
+P(z,u)=u z^2+P_{\mathrm{core}}(z,u)
+\).
+Setting \(u=1\) yields \(P(z)=z^2+P_{\mathrm{core}}(z)\).
+Finally, by the series definition of the Abel finite-part constant, adding the analytic term \(z^2\) produces an increment of \(z_\star^2=\lambda^{-2}\) in the constant term only, giving
+\(
+\log\mathfrak{M}=\log\mathfrak{M}_{\mathrm{core}}+z_\star^2
+\).
+\end{proof}
+
+\begin{proposition}[Freezing endpoint of the output pressure and the \texorpdfstring{$\sqrt u$}{sqrt(u)} scaling]\label{prop:real-input-40-pressure-freezing}
+Let $u=e^{\theta}$ and write
+\[
+\lambda(u):=\rho(M(u)),\qquad P(\theta):=\log\lambda(e^{\theta}).
+\]
+Writing $F$ from $\Delta(z,u)=(1-uz^2)F(z,u)$ as a $\lambda$-polynomial:
+\[
+\begin{aligned}
+G(\lambda,u)
+&:=\lambda^8\,F(\lambda^{-1},u)\\
+&=\lambda^8-\lambda^7-6u\lambda^6+2u\lambda^5+(9u^2-u)\lambda^4\\
+&\qquad +(u-3u^2)\lambda^3-(u^3+2u^2)\lambda^2\\
+&\qquad +(4u^3-3u^2)\lambda+(u^3-u^4).
+\end{aligned}
+\]
+Then $\lambda(u)$ is the largest positive real root of $G(\lambda,u)=0$, and:
+\begin{enumerate}
+  \item \textbf{$u\to 0$ ($\theta\to-\infty$) freezing:} One has $\lambda(u)\to 1$, and regular perturbation at $u=0$ gives
+  \[
+  \lambda(u)=1+4u-5u^2-115u^3+2317u^4+O(u^5),
+  \]
+  so that
+  \(
+  P(\theta)=4e^{\theta}+O(e^{2\theta})
+  \).
+  \item \textbf{$u\to\infty$ ($\theta\to+\infty$) saturation:} There exist a constant $c>0$ and algebraic constants $d,e,f\in\RR$ such that
+  \[
+  \lambda(u)=c\sqrt u+d+\frac{e}{\sqrt u}+\frac{f}{u}+O\!\left(u^{-3/2}\right),
+  \]
+  where $y:=c^2$ is the largest positive root of the quartic
+  \[
+  y^4-6y^3+9y^2-y-1=0
+  \]
+  and
+  \[
+  d=\frac{y^3-2y^2+3y-4}{8y^3-36y^2+36y-2}\Bigg|_{y=c^2}.
+  \]
+  Numerically $c\approx 1.89635299351377,\ d\approx 0.807943317323508$,
+  and $e\approx -0.245317935748073,\ f\approx 0.511186364773580$
+  (derived by order-by-order coefficient comparison in the script \texttt{scripts/exp\_real\_input\_40\_output\_potential\_puiseux\_asymptotics.py}), giving
+  \[
+  P(\theta)=\frac{\theta}{2}+\log c+\frac{d}{c}e^{-\theta/2}
+  +\Bigl(\frac{e}{c}-\frac{d^2}{2c^2}\Bigr)e^{-\theta}+O(e^{-3\theta/2}).
+  \]
+\end{enumerate}
+Therefore
+\[
+\lim_{\theta\to-\infty}P'(\theta)=0,\qquad \lim_{\theta\to+\infty}P'(\theta)=\frac12,
+\]
+i.e., the typical density of output $1$ freezes in the interval $[0,\tfrac12]$ under extreme biasing.
+\end{proposition}
+
+\input{sections/generated/eq_real_input_40_output_potential_zero_temp_ground_sft}
+
+\input{cor__real-input-40-ground-entropy_en}
+
+\begin{corollary}[Combinatorial certificate of the saturation endpoint: \texorpdfstring{$\alpha_{\max}$}{alpha_max} as the maximum average energy density]\label{cor:real-input-40-alpha-max}
+For a general finite-state weighting (with edge potential \(\varphi_e=e\in\{0,1\}\)), let the average energy density of each directed cycle \(\gamma\) be
+\[
+\bar e(\gamma):=\frac{1}{|\gamma|}\sum_{e\in\gamma} e.
+\]
+Then the limit
+\[
+\alpha_{\max}:=\lim_{\theta\to+\infty}P'(\theta)=\max_{\gamma}\bar e(\gamma)
+\]
+exists, and this maximum can be computed in polynomial time by a maximum mean cycle weight algorithm (Karp-type).
+For the output potential weighting of the real input 40-state kernel, Proposition~\ref{prop:real-input-40-pressure-freezing} already gives
+\(\lim_{\theta\to+\infty}P'(\theta)=1/2\), so the extreme saturation density of this kernel is
+\[
+\boxed{\ \alpha_{\max}=\frac12\ }.
+\]
+\end{corollary}
+
+\begin{proposition}[Closed-form local cumulants of the output potential: \texorpdfstring{$P^{(k)}(0)\in\mathbb Q(\sqrt5)$}{P(k)(0) in Q(sqrt5)}]\label{prop:real-input-40-output-cumulants-closed}
+Under the one-parameter output potential weighting \(\varphi_e=e\), let \(u=e^\theta\) and write the pressure as
+\(
+P(\theta)=\log\lambda(e^\theta)
+\)
+(notation as in Proposition~\ref{prop:real-input-40-pressure-freezing}).
+Then the derivatives of all orders (cumulant densities) at \(\theta=0\) lie in the quadratic number field \(\mathbb Q(\sqrt5)\); in particular, the first four orders satisfy the closed-form expressions in Table~\ref{tab:real_input_40_output_potential_cumulants_closed}.
+\end{proposition}
+\begin{remark}[Auditable input constants for CLT/Edgeworth]\label{rem:real-input-40-output-cumulants-clt}
+From \(P''(0)>0\) one obtains a central limit theorem for periodic points/primitive orbits in the output counting direction; and from \(P^{(3)}(0),P^{(4)}(0)\) one can give the first-order Edgeworth-type correction coefficient (of the same type as the treatment in Appendix~\ref{app:pressure-analytic}).
+The closed forms in Table~\ref{tab:real_input_40_output_potential_cumulants_closed} are derived by the script \texttt{scripts/exp\_real\_input\_40\_output\_potential\_cumulants\_closed.py} via implicit series solving from \(G(\lambda,u)=0\), and can be verified by numerical differentiation near \(\theta=0\).
+\end{remark}
+\input{sections/generated/tab_real_input_40_output_potential_cumulants_closed}
+
+\begin{proposition}[Dirichlet twist spectrum for output $1$ counting modulo $m$: systematic failure of the square-root error]\label{prop:real-input-40-output-dirichlet-nonrh}
+Fix an integer \(m\ge 2\). Let \(\omega_m:=e^{2\pi i/m}\), and for each \(1\le j\le m-1\) define the complex weight matrix
+\[
+M(\omega_m^j):=M(u)\big|_{u=\omega_m^j},
+\qquad
+\rho_{m,j}:=\rho\!\bigl(M(\omega_m^j)\bigr).
+\]
+Equivalently, from \(\Delta(z,u)=\det(I-zM(u))\),
+\[
+\rho_{m,j}=\frac{1}{\min\{|z|:\Delta(z,\omega_m^j)=0\}}.
+\]
+Let \(\lambda:=\rho(M(1))=\varphi^2\), and define the corresponding ``error exponent''
+\[
+\theta_{m,j}:=\frac{\log \rho_{m,j}}{\log \lambda},
+\qquad
+\rho_m:=\max_{1\le j\le m-1}\rho_{m,j},\quad
+\theta_m:=\max_{1\le j\le m-1}\theta_{m,j}.
+\]
+Then the nontrivial Fourier components of the output $1$ count modulo $m$ (at both the periodic and primitive levels) decay at the exponential rate \(O(\rho_m^n)\); and on this kernel there exist explicit values of \(m\) such that
+\[
+\theta_m>\frac12,
+\]
+so that the corresponding Dirichlet/twist error does not possess the ``RH-form'' square-root exponent.
+\end{proposition}
+\begin{proof}
+At the periodic level, \(a_n(u)=\Tr(M(u)^n)\) satisfies
+\(
+a_n(\omega_m^j)=\sum_{\gamma:\,|\gamma|=n}\omega_m^{jE(\gamma)}
+\),
+which is the Fourier component of the energy \(E(\gamma)\bmod m\). By spectral radius and bounded matrix powers, there exists a constant \(C_{m,j}>0\) such that
+\(
+|a_n(\omega_m^j)|\le C_{m,j}\,\rho_{m,j}^n
+\)
+for all \(n\ge 1\).
+The primitive level follows from the Witt/M\"obius inversion
+\(
+p_n(u)=\frac1n\sum_{d\mid n}\mu(d)a_{n/d}(u^d)
+\),
+giving the same-order exponential upper bound; hence the worst-case mode is controlled by \(\rho_m\).
+Finally, the script \texttt{scripts/exp\_real\_input\_40\_output\_potential\_dirichlet\_twists.py} directly computes roots from the explicit closed form \(\Delta(z,u)=(1-uz^2)F(z,u)\) at \(u=\omega_m^j\) and takes the minimum-modulus root, producing the numerical certificates in Table~\ref{tab:real_input_40_output_potential_dirichlet_twists}; for instance, \(m=2\) already satisfies \(\theta_2>1/2\). \qed
+\end{proof}
+
+\begin{corollary}[Even-order cumulants control large-modulus twists: \texorpdfstring{$\rho_{m,1}/\lambda$}{rho/lambda} asymptotics in \(m^{-2},m^{-4}\)]\label{cor:real-input-40-output-dirichlet-cumulant-bridge}
+Let \(\kappa_2:=P''(0)\), \(\kappa_4:=P^{(4)}(0)\) be the even-order cumulants of the output potential pressure \(P(\theta)=\log\lambda(e^\theta)\) at \(0\) (Table~\ref{tab:real_input_40_output_potential_cumulants_closed}).
+As \(m\to\infty\), taking \(u=\omega_m=e^{2\pi i/m}\) gives
+\[
+\log\frac{\rho_{m,1}}{\lambda}
+\;=\;
+\Re\bigl(P(i\,2\pi/m)-P(0)\bigr)
+\;=\;
+-\frac{\kappa_2}{2}\Bigl(\frac{2\pi}{m}\Bigr)^2
++\frac{\kappa_4}{24}\Bigl(\frac{2\pi}{m}\Bigr)^4
++O(m^{-6}),
+\]
+so that
+\[
+\frac{\rho_{m,1}}{\lambda}
+=\exp\!\Bigl(
+-\frac{\kappa_2}{2}\Bigl(\frac{2\pi}{m}\Bigr)^2
++\frac{\kappa_4}{24}\Bigl(\frac{2\pi}{m}\Bigr)^4
++O(m^{-6})
+\Bigr).
+\]
+\end{corollary}
+\begin{proof}
+Since the principal eigenvalue \(\lambda(u)\) is a simple root at \(u=1\), there exists an analytic eigenvalue branch in a complex neighborhood of \(u\), and one can define the analytic pressure \(P(\theta)=\log\lambda(e^\theta)\).
+Setting \(\theta=i t\) with \(t\) sufficiently small, one has
+\(
+\log|\lambda(e^{it})|=\Re P(it)
+\),
+and the Taylor expansion yields
+\(
+\Re(P(it)-P(0))=-\kappa_2 t^2/2+\kappa_4 t^4/24+O(t^6)
+\)
+(odd-order terms contribute purely imaginary parts when \(t\in\RR\), so the real part is controlled by even-order terms only).
+Setting \(t=2\pi/m\) yields the conclusion. \qed
+\end{proof}
+
+\input{sections/generated/tab_real_input_40_output_potential_dirichlet_twists}
+
+\begin{remark}[Error certificates and empirical order from the fourth-order cumulant prediction (auditable)]\label{rem:real-input-40-dirichlet-cumulant-error-order}
+Table~\ref{tab:real_input_40_output_potential_dirichlet_twists} records the worst-case spectral radius ratio \(\rho_m/\lambda\) for unit-root twists \(u=\omega_m^j\) and the fourth-order cumulant prediction for the \(j=1\) channel (``pred.'' column).
+At the verification points listed in the table, \(j_{\mathrm{worst}}=1\), so the measured worst-case ratio is precisely the \(j=1\) channel: \(\rho_m/\lambda=\rho_{m,1}/\lambda\).
+\par
+\noindent Denote the absolute error of the fourth-order prediction by
+\[
+\varepsilon_m^{(4)}:=\left\lvert\frac{\rho_m}{\lambda}-\Bigl(\frac{\rho_{m,1}}{\lambda}\Bigr)_{\mathrm{pred}}\right\rvert.
+\]
+Then from the table one can directly read off
+\[
+\varepsilon_{5}^{(4)}\approx 1.08\times 10^{-6},\qquad
+\varepsilon_{10}^{(4)}\approx 2.78\times 10^{-8},\qquad
+\varepsilon_{20}^{(4)}\approx 6.21\times 10^{-10}.
+\]
+A logarithmic fit over these three points yields, within this auditable window, the empirical order
+\[
+\varepsilon_m^{(4)}\ \approx\ C\,m^{-5.38}.
+\]
+This fit is consistent with the \(O(m^{-6})\) remainder of Corollary~\ref{cor:real-input-40-output-dirichlet-cumulant-bridge} (the effective order may be slightly below \(6\) in the small-\(m\) transitional regime).
+\par
+\noindent If only the second-order term is retained (Gaussian approximation)
+\[
+\Bigl(\frac{\rho_{m,1}}{\lambda}\Bigr)^{(2)}
+:=\exp\!\Bigl(
+-\frac{\kappa_2}{2}\Bigl(\frac{2\pi}{m}\Bigr)^2
+\Bigr),
+\]
+with the corresponding error \(\varepsilon_m^{(2)}:=\left\lvert\frac{\rho_m}{\lambda}-\Bigl(\frac{\rho_{m,1}}{\lambda}\Bigr)^{(2)}\right\rvert\), then at \(m=5,10,20\) one respectively obtains
+\[
+\varepsilon_{5}^{(2)}\approx 5.67\times 10^{-4},\qquad
+\varepsilon_{10}^{(2)}\approx 3.66\times 10^{-5},\qquad
+\varepsilon_{20}^{(2)}\approx 2.30\times 10^{-6},
+\]
+which empirically decays as approximately \(m^{-4}\).
+Thus within this window, the fourth-order correction further compresses the error relative to the second-order approximation by factors of approximately \(5.3\times10^2\), \(1.3\times10^3\), and \(3.7\times10^3\) (for \(m=5,10,20\), respectively).
+\par
+\noindent Furthermore, the fact that \(j_{\mathrm{worst}}\) is consistently \(1\) in the table suggests a reusable algorithmic rule: when performing large-modulus sweeps, one can prioritize computing only the \(j=1\) channel (with a small number of spot checks to verify whether it remains the worst-case mode), thereby reducing ``full \(j\) sweep'' to ``prediction + sparse verification''---an auditable workflow.
+\end{remark}
+
+\begin{remark}[Zero eigenvalue branch activated by the weight]\label{rem:real-input-40-zero-activation}
+In $\Delta(z,u)=(1-uz^2)F(z,u)$, the leading coefficient of $F$ is $(u^3-u^4)z^8=u^3(1-u)z^8$. Therefore when $u=1$ this term vanishes and the degree of $F$ drops from $8$ to $7$; when $u\neq 1$ the degree is restored to $8$. This means that one zero-eigenvalue direction in the unweighted kernel is ``activated'' into a nonzero eigenvalue branch under weight twisting, and this branch degenerates back to $0$ as $u\to 1$.
+\end{remark}
+
+\begin{proposition}[Critical exponent of the activated branch: \texorpdfstring{$\lambda_{\mathrm{act}}(u)\sim u-1$}{lambda_act(u) ~ u-1}]\label{prop:real-input-40-activated-branch-linear}
+Following the polynomial from Proposition~\ref{prop:real-input-40-pressure-freezing},
+\[
+G(\lambda,u)=\lambda^8\,F(\lambda^{-1},u).
+\]
+There exists a unique (simple) small-eigenvalue branch \(\lambda_{\mathrm{act}}(u)\) at \(u=1\) satisfying
+\[
+G(\lambda_{\mathrm{act}}(u),u)=0,\qquad \lambda_{\mathrm{act}}(1)=0,
+\]
+and it has linear asymptotics as \(u\to 1\):
+\[
+\boxed{\ \lambda_{\mathrm{act}}(u)=(u-1)+O\!\bigl((u-1)^2\bigr)\ }.
+\]
+Therefore the critical exponent of this branch is \(1\): \(\lambda_{\mathrm{act}}(u)=\Theta(u-1)\).
+\end{proposition}
+\begin{proof}
+From the explicit form of \(G(\lambda,u)\) (given in \eqref{prop:real-input-40-pressure-freezing}), its constant term is
+\(
+G(0,u)=u^3-u^4=u^3(1-u)
+\), so \(G(0,1)=0\), i.e., \(\lambda=0\) is a root when \(u=1\).
+Meanwhile the coefficient of the first-order term is \((4u^3-3u^2)\lambda\), so
+\(
+\partial_\lambda G(0,1)=4-3=1\neq 0
+\), and thus \(\lambda=0\) is a simple root at \(u=1\).
+By the implicit function theorem, there exists an analytic function \(\lambda_{\mathrm{act}}(u)\) satisfying \(G(\lambda_{\mathrm{act}}(u),u)=0\) and \(\lambda_{\mathrm{act}}(1)=0\), with
+\[
+\lambda_{\mathrm{act}}'(1)=-\frac{\partial_u G(0,1)}{\partial_\lambda G(0,1)}.
+\]
+Since \(\partial_u G(0,u)=\frac{d}{du}(u^3-u^4)=3u^2-4u^3\), one has \(\partial_u G(0,1)=-1\). Therefore \(\lambda'_{\mathrm{act}}(1)=1\), giving
+\(
+\lambda_{\mathrm{act}}(u)=(u-1)+O((u-1)^2)
+\).
+\qed
+\end{proof}
+
+\input{sections/generated/eq_real_input_40_output_potential_activated_branch_series}
+
+\begin{remark}[Algorithmic selection rule: first deflate \texorpdfstring{$\lambda_{\mathrm{act}}$}{lambda_act}, then eliminate/root-find]\label{rem:real-input-40-deflate-activated-branch}
+The activated branch \(\lambda_{\mathrm{act}}(u)\) satisfies \(\lambda_{\mathrm{act}}(u)=\Theta(u-1)\) near \(u\approx 1\) (Proposition~\ref{prop:real-input-40-activated-branch-linear}), with a higher-order Taylor expansion (Remark~\ref{rem:real-input-40-activated-branch-series}).
+Numerically, this means that when \(u\) is close to \(1\), the root scales of the algebraic curve \(G(\lambda,u)=0\) exhibit strong separation---one root tends to \(0\) while the others remain at \(O(1)\)---thereby introducing significant scale mismatch and coefficient cancellation in root-finding/elimination.
+\par
+\noindent Therefore, in any elimination or numerical root-finding task involving \(u\approx 1\) (e.g., tracking spectral branches in a complex neighborhood of \(u\), or performing stable root computation for \(\Delta(z,u)\)), one should first perform an \emph{explicit deflation} of the activated branch:
+\begin{itemize}
+  \item Use the expansion from Remark~\ref{rem:real-input-40-activated-branch-series} to evaluate \(\lambda_{\mathrm{act}}(u)\) at a given \(u\) (the second-order coefficient is \(0\); truncating to sixth order already significantly stabilizes the numerical scale);
+  \item View \(G(\lambda,u)\) as a univariate polynomial in \(\lambda\) and perform one factor deflation
+  \(
+  G(\lambda,u)=(\lambda-\lambda_{\mathrm{act}}(u))\,\widetilde G(\lambda,u)
+  \)
+  (implementable via synthetic division or companion matrix deflation);
+  \item Perform subsequent root-finding, resultant computation, or branch tracking on \(\widetilde G\).
+\end{itemize}
+After deflation, the pathological scaling near \(u\to 1\) is substantially mitigated, bringing subsequent computations back to the condition number level of standard polynomial problems; this also condenses the hint that ``this expansion can be used for branch deflation'' into a reusable algorithmic selection rule: \textbf{first deflate the activated branch, then perform elimination/root-finding}.
+\end{remark}
+
+\begin{corollary}[Large deviation cost at the endpoints]\label{cor:real-input-40-rate-endpoints}
+Let $I(\alpha)$ be the (normalized) large deviation rate function of the output potential $\varphi_e=e$ (defined via the Legendre transform of $P(\theta)$). Then the endpoints satisfy
+\[
+I(0)=P(0)=\log\lambda(1)=\log(\varphi^2)\approx 0.962423650119207,
+\]
+\[
+I(1/2)=P(0)-\log c=\log\!\left(\frac{\varphi^2}{c}\right)\approx 0.322491085601762.
+\]
+\end{corollary}
+
+\input{sections/generated/eq_real_input_40_output_potential_ldp_algebraic_param}
+
+\begin{proposition}[Finite-part constant limit under extreme biasing]\label{prop:real-input-40-logM-infty}
+Let $z_\star(u)=\lambda(u)^{-1}$, and define
+\[
+b:=\lim_{u\to\infty}u\,z_\star(u)^2=\frac{1}{c^2}.
+\]
+Then $b$ is the largest positive root of the equation
+\[
+1-6b+9b^2-b^3-b^4=0
+\]
+with numerical value $b\approx 0.27807480214113$. Write
+\[
+C(u):=\lim_{z\to z_\star(u)}(1-\lambda(u)z)\,\zeta(z,u),
+\]
+then the limit
+\[
+C_\infty:=\lim_{u\to\infty}C(u)=\frac{1}{2b(1-b)(6-18b+3b^2+4b^3)}\approx 1.89745149363
+\]
+exists. Moreover, the Abel finite-part constant satisfies the limit
+\[
+\log\mathfrak{M}_\infty:=\lim_{u\to\infty}\log\mathfrak{M}(u),
+\]
+with the rapidly convergent M\"obius--Euler expression
+\[
+\log\mathfrak{M}_\infty
+=\log C_\infty
+-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Bigl[(1-b^m)\bigl(1-6b^m+9b^{2m}-b^{3m}-b^{4m}\bigr)\Bigr].
+\]
+Numerically,
+\[
+\log\mathfrak{M}_\infty\approx 0.282290255262,\qquad
+\mathfrak{M}_\infty\approx 1.32616359009.
+\]
+\end{proposition}
+This closed-form object's principal pole yields the one-dimensional pressure curve $P(\theta_e)=\log\rho(M(e^{\theta_e}))$ under the output potential, and can be directly used for spectral branch switching/phase transition checks (the factor $1-uz^2$ corresponds to a traceable spectral branch).
+
+\input{sections/generated/eq_real_input_40_output_potential_spectral_collision_identities}
+\input{sections/generated/tab_real_input_40_output_potential_spectral_collision_roots}
+
+\begin{remark}[Phase diagram intervals and real parameter radius of positive real degeneracy points]\label{rem:real-input-40-output-potential-degeneracy-phase}
+By Proposition~\ref{prop:real-input-40-output-spectral-collisions} and Table~\ref{tab:real_input_40_output_potential_spectral_collision_roots}, on \(u>0\) excluding \(u=1\), \(Q(z,u)\) has repeated roots if and only if
+\[
+u\in\{0.008460\ldots,\ 0.745534\ldots,\ 0.932837\ldots,\ 1.054796\ldots,\ 2.090392\ldots,\ 15.522820\ldots\}.
+\]
+Therefore the positive real \(u\)-axis is partitioned by these points and \(u=1\) into open intervals; within each interval, the ordering and sub-modal type of real spectral supports remain unchanged (no spectral support collisions or exchanges occur), which can serve as a segmented parameter skeleton for ``avoiding negative real slow modes.''
+\par
+Meanwhile, the degeneracy points closest to \(u=1\) are
+\[
+u=1.054796\ldots\quad\text{and}\quad u=0.932837\ldots,
+\]
+so the upper bound on the real parameter ``degeneracy-free radius'' around \(u=1\) is
+\[
+R_u^{\mathrm{real}}\le \min(1.054796\ldots-1,\,1-0.932837\ldots)=0.054796\ldots\,.
+\]
+This bound provides a conservative analytic domain scale for local fitting/expansion on the real \(u\)-axis.
+\end{remark}
+
+Numerical verification and reproducibility are provided by the script \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_zeta\_u.py}; algebraic auditing of spectral support collisions and degeneracy points (resultant/irreducible polynomial $D(u)$/root table) is provided by the script \texttt{scripts/exp\_real\_input\_40\_output\_potential\_spectral\_collisions.py}.

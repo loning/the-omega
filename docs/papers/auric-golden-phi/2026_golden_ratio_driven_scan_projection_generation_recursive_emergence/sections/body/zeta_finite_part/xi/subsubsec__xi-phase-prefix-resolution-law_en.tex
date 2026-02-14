@@ -1,0 +1,116 @@
+\subsubsection{Phase prefix filtering and quadratic resolution threshold: forced collision law induced by endpoint compression}\label{subsubsec:xi-phase-prefix-resolution-law}
+This paragraph concretizes the "unitary slice / legal address / scan-to-clarify" single-parameter readout semantics as: under premise of visible axis only allowing phase compactification coordinates, readout refinement is measured by discrete \emph{resolution depth} (prefix length), not provided by additional continuous coordinate axes; any off-slice information, if not externalized to orthogonal register, is forced to collapse at object level to non-uniquely readable (manifesting as collision-type \(\mathsf{NULL}\) in this paper's semantics, see Definition \ref{def:xi-visible-read-null} and Proposition \ref{prop:xi-null-three-way}).
+\par
+Key structural fact: phase compactification compresses high-height intervals into endpoint neighborhood producing quadratic compression; when zero density grows as \(T\log T\) with height, this quadratic compression forces an unavoidable "quadratic resolution barrier". This paragraph provides verifiable form of this barrier, explaining so-called "one zero being address of another zero" can only be rigidified as "columnar event clustering induced by shared prefix", not point-to-point addressing.
+
+\paragraph{Phase box and dyadic column prefix}
+Take parameter-free phase box compactification gate (Appendix \ref{app:unit-circle-phase-gate})
+\[
+u=\upsilon(t):=\frac{1}{\pi}\arctan(t)\in\Bigl(-\tfrac12,\tfrac12\Bigr),
+\qquad
+\widetilde u(t):=u+\tfrac12\in(0,1).
+\]
+For integer \(m\ge 1\), define \textbf{\(m\)-bit phase address (legal readout prefix)} as dyadic column cell
+\[
+I_m(t):=\Bigl[\frac{\lfloor 2^m\widetilde u(t)\rfloor}{2^m},\frac{\lfloor 2^m\widetilde u(t)\rfloor+1}{2^m}\Bigr)\subset(0,1),
+\]
+and denote address value
+\(
+A_m(t):=\lfloor 2^m\widetilde u(t)\rfloor\in\{0,1,\dots,2^m-1\}.
+\)
+Under "address before value" semantics, \(m\) is \textbf{resolution depth}: readout interface introduces no new continuous degrees of freedom, only allowing column filter refinement along \(m\uparrow\).
+
+\paragraph{Address collision enforcement law under endpoint compression}
+Denote \(N_\zeta(T)\) as count of nontrivial zeros of \(\zeta\) in critical strip \(0<\Re(s)<1\) satisfying \(0<\Im(s)\le T\) (counting multiplicity). Its classical main term satisfies
+\[
+N_\zeta(T)=\frac{T}{2\pi}\log\Bigl(\frac{T}{2\pi}\Bigr)-\frac{T}{2\pi}+O(\log T),
+\qquad(T\to\infty).
+\]
+
+\begin{theorem}[Address collision lower bound of endpoint compression: quadratic resolution threshold]\label{thm:xi-phase-prefix-collision-lower-bound}
+There exist constants \(T_0>0\) and \(c>0\), such that for all \(T\ge T_0\) and any integer \(m\ge 1\), in height band
+\[
+\Gamma(T):=\{\gamma>0:\ \exists\,\rho=\beta+\mathrm{i}\gamma\ \text{is nontrivial zero}\ \text{and}\ T<\gamma\le 2T\}
+\]
+there necessarily exists some phase address value \(a\in\{0,1,\dots,2^m-1\}\) satisfying
+\[
+\#\{\gamma\in\Gamma(T):A_m(\gamma)=a\}\ \ge\ c\,\frac{T^2\log T}{2^m}.
+\]
+In particular, if wishing phase address mapping \(\gamma\mapsto A_m(\gamma)\) on height band \((T,2T]\) to be collision-free (injective), must satisfy
+\[
+2^m\ \gtrsim\ T^2\log T,
+\qquad\text{equivalently}\qquad
+m\ \ge\ 2\log_2 T+\log_2\log T+O(1).
+\]
+\end{theorem}
+
+\begin{proof}
+First, image length of band \([T,2T]\) on \(\upsilon\)-axis satisfies
+\[
+\upsilon(2T)-\upsilon(T)=\frac{1}{\pi}\int_T^{2T}\frac{\dd t}{1+t^2}
+\le \frac{1}{\pi}\int_T^{2T}\frac{\dd t}{t^2}
+=\frac{1}{2\pi T}.
+\]
+Therefore number of distinct address cells that depth-\(m\) dyadic partition can provide within this image band is at most
+\[
+M_m(T)\le 2^m\bigl(\upsilon(2T)-\upsilon(T)\bigr)+2\ \le\ \frac{2^m}{2\pi T}+2.
+\]
+On the other hand, from zero counting main term we get \(N_\zeta(2T)-N_\zeta(T)\asymp T\log T\) (\(T\to\infty\)).
+Distributing \(\#\Gamma(T)=N_\zeta(2T)-N_\zeta(T)\) zero heights into at most \(M_m(T)\) address boxes, pigeonhole principle gives some box occupation at least
+\[
+\frac{\#\Gamma(T)}{M_m(T)}\ \gtrsim\ \frac{T\log T}{2^m/T}\ =\ \frac{T^2\log T}{2^m},
+\]
+yielding first formula. Injectivity necessary condition follows from "maximum occupation \(\le 1\)" immediately.
+\end{proof}
+
+\begin{corollary}[Clarity horizon: resolvable height scale at fixed resolution depth]\label{cor:xi-phase-prefix-clarity-horizon}
+Fix \(m\ge 1\). If requiring phase address collision-free in height band \((T,2T]\), then necessarily
+\[
+T^2\log T\ \lesssim\ 2^m.
+\]
+Therefore at main scale ignoring logarithmic corrections, resolvable height horizon satisfies \(T\approx 2^{m/2}\) (with \(1/\sqrt{\log T}\) order correction).
+\end{corollary}
+
+\paragraph{Rigidification of "zeros mutually addressing": shared prefix not point-to-point addressing}
+For \(u,v\in(0,1)\) define dyadic prefix sharing length
+\[
+L(u,v):=\max\{m\ge 0:\ \lfloor 2^m u\rfloor=\lfloor 2^m v\rfloor\}.
+\]
+Let \((\gamma_n)_{n\ge 1}\) be positive imaginary parts of nontrivial zeros in increasing order (counting multiplicity), and write \(u_n:=\widetilde u(\gamma_n)\in(0,1)\).
+
+\begin{proposition}[Quadratic threshold of shared prefix: adjacent zeros form stable clusters at endpoint layer]\label{prop:xi-phase-adjacent-prefix-sharing}
+There exist constants \(T_1>0\) and \(C>0\), such that for all \(T\ge T_1\), among adjacent zero pairs \((\gamma_n,\gamma_{n+1})\) satisfying \(T<\gamma_n\le 2T\), at least half satisfy
+\[
+L(u_n,u_{n+1})\ \ge\ 2\log_2 T+\log_2\log T - C.
+\]
+\end{proposition}
+
+\begin{proof}
+Consider phase window \([\upsilon(T),\upsilon(2T)]\).
+Its total length from above proof is \(\upsilon(2T)-\upsilon(T)\ll 1/T\).
+While sum of phase intervals of adjacent pairs within window is exactly this total length, hence average phase interval satisfies
+\[
+\overline{\Delta u}(T)\ :=\ \frac{\upsilon(2T)-\upsilon(T)}{N_\zeta(2T)-N_\zeta(T)}\ \ll\ \frac{1/T}{T\log T}\ =\ \frac{1}{T^2\log T}.
+\]
+If more than half of adjacent pairs satisfy \(|u_{n+1}-u_n|>2\overline{\Delta u}(T)\), total sum would exceed phase window length, contradiction.
+Therefore at least half of adjacent pairs satisfy \(|u_{n+1}-u_n|\ll (T^2\log T)^{-1}\).
+For such \(u\neq v\), from dyadic prefix definition we have \(L(u,v)\ge \lfloor \log_2(1/|u-v|)\rfloor -1\), substituting yields conclusion.
+\end{proof}
+
+\begin{remark}[Shared prefix \(\neq\) mutual addressing: address object is columnar event not point pointer]\label{rem:xi-phase-prefix-not-pointer}
+For fixed depth \(m\), relation
+\[
+\gamma\sim_m\gamma'\quad:\Longleftrightarrow\quad A_m(\gamma)=A_m(\gamma')
+\]
+characterizes "same columnar event (same dyadic address box)", not "point-to-point pointer".
+Theorem \ref{thm:xi-phase-prefix-collision-lower-bound} shows: when \(m<2\log_2T+\log_2\log T-O(1)\), this equivalence class within height band \((T,2T]\) structurally has high multiplicity; therefore any proposition interpreting "one zero can be address of another zero" as \emph{finite-prefix deterministic addressing} is ill-defined.
+\par
+In this paper's multi-axis prefix packing \(a=(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}})\) (Definition \ref{def:multi_axis_address}), above conclusion can be interpreted as: when visible axis \(a_{\mathrm{vis}}\) only takes phase prefix with insufficient depth, minimal budget of residual axis \(a_{\mathrm{res}}\) is forced to \(\Theta(2\log T)\) order (otherwise collision-type \(\mathsf{NULL}\) necessarily occurs); this is same order as offline direction endpoint quadratic radial channel threshold (Corollary \ref{cor:xi-null-second-order-radial-channel}).
+\end{remark}
+
+\begin{remark}[Interpretive narrative (not reasoning premise): structural negation of cross-window addressing under strong mixing limit]\label{rem:xi-phase-mixing-no-addressing}
+If normalizing zero point process (normalized to unit mean spacing) is hypothesized to tend toward some translation-invariant and mixing limiting point process in finite-dimensional distribution sense (e.g., \(\operatorname{Sine}_2\) or more general \(\operatorname{Sine}_\beta\) process; see related limit frameworks in \cite{AriasDeReynaRodgers2024ConvergencePointsZetaZeros,ChhaibiNajnudel2018RigiditySineBeta}), then any "address function" depending only on finite local window configuration has conditional information gain on distant window configuration vanishing as distance \(R\to\infty\).
+This mixing semantically corresponds to: cross-scale, cross-window deterministic "zero mutual addressing" incompatible with strong random mixing paradigm; what can stably exist are only local clustering induced by finite resolution prefix (Proposition \ref{prop:xi-phase-adjacent-prefix-sharing}) and visible/invisible stratification induced by endpoint channel threshold (Theorem \ref{thm:app-jensen-offcritical-kink-localization} and Corollary \ref{cor:xi-null-second-order-radial-channel}).
+\end{remark}
+
+\endinput

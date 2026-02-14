@@ -1,0 +1,148 @@
+\subsubsection{Closed-Form Computation Using Only \texorpdfstring{$\Delta$}{Delta}}\label{app:delta-only}
+Let $z_\star(u)=\lambda(u)^{-1}$ be the smallest positive root of $\Delta(z,u)$, and define
+\[
+C(u):=\lim_{z\to z_\star}(1-z/z_\star)\zeta(z,u)=\frac{1}{-z_\star\,\partial_z\Delta(z_\star,u)}.
+\]
+By Witt inversion and $\zeta=1/\Delta$, one obtains
+\[
+\log\mathfrak{M}(\theta)
+=\log C(u)+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta(z_\star^m,u^m)
+=\log C(u)-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Delta(z_\star^m,u^m),
+\]
+where the series converges at an exponential rate.
+
+\begin{corollary}[Real-algebraic reduction of \texorpdfstring{$\Delta(z_\star^m,u^m)$}{Delta(z*^m,u^m)} on the unit circle via completion]\label{cor:sync-kernel-weighted-logM-completed-real}
+Take \(u=e^{i\theta}\) and let \(r=e^{i\theta/2}\), \(s=r+r^{-1}=2\cos(\theta/2)\in[-2,2]\). Write \(w_\star(s)\) for the smallest-modulus root of \(\widehat\Delta(w,s)=0\); then \(z_\star(u)=w_\star(s)/r\).
+For any \(m\ge 1\), let
+\[
+S_m(s):=r^m+r^{-m}=2\cos(m\theta/2)=:C_m(s)\in\ZZ[s]
+\]
+(\(C_m\) is the Chebyshev--Adams operation; see Corollary~\ref{cor:primitive-completion-hatp}).
+Then the following identity holds:
+\[
+\boxed{\ \Delta(z_\star(u)^m,u^m)=\widehat\Delta\!\bigl(w_\star(s)^m,\ S_m(s)\bigr)\ }.
+\]
+Therefore, on the unit-circle twist, every term of the \(\Delta\)-only series for \(\log\mathfrak{M}(\theta)\) can be evaluated in the real domain: the only inputs are the real parameter \(s\in[-2,2]\), the real number \(w_\star(s)\), and its powers.
+\end{corollary}
+
+\subsubsection{The First 10 Weighted Primitive Spectral Polynomials}\label{app:weighted-primitive-table}
+The first 10 terms $p_n(u)=\sum_{\tau\ \mathrm{primitive},\,|\tau|=n}u^{S_\tau\varphi}$ are computed rigorously from
+\(
+p_n(u)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}(u^d)
+\)
+using the trace polynomials \(a_n(u)=\Tr(B(u)^n)\) of the matrix \(B(u)\); the one-click generated output is as follows (script \texttt{scripts/exp\_sync\_kernel\_weighted\_primitive\_completed.py}):
+
+\input{sections/generated/eq_sync_kernel_weighted_primitive_pn_first10}
+For $n\ge 2$, the $u^0$ and $u^n$ terms vanish, and the coefficients satisfy $p_{n,k}=p_{n,n-k}$.
+
+\begin{corollary}[Completion of the primitive polynomials: \texorpdfstring{$\widehat p_n(s)\in\ZZ[s]$}{hat p in Z[s]} and the Chebyshev--Adams operation]\label{cor:primitive-completion-hatp}
+Take
+\[
+u=r^2,\qquad s:=r+r^{-1},
+\]
+and for \(n\ge 1\) define the completed primitive polynomial
+\[
+\widehat p_n(s):=r^{-n}p_n(r^2).
+\]
+Then for all \(n\ge 1\) one has \(\widehat p_n(s)\in\ZZ[s]\). Moreover:
+\begin{enumerate}
+  \item If \(n\) is even, then \(\widehat p_n(s)\) is an even polynomial in \(s\);
+  \item If \(n\) is odd, then \(\widehat p_n(s)\) is an odd polynomial in \(s\).
+\end{enumerate}
+Furthermore, for any integer \(d\ge 1\) define
+\[
+C_d(s):=r^d+r^{-d}\in\ZZ[s],
+\qquad
+C_d(s)=2T_d(s/2)
+\]
+(\(T_d\) is the Chebyshev polynomial of the first kind). Then the power substitution in the completed coordinate satisfies the following strict ``angle-doubling law'':
+\[
+r^{-dn}\,p_n(r^{2d})=\widehat p_n\!\bigl(C_d(s)\bigr),
+\]
+that is, the substitution \(u\mapsto u^d\) in the Witt/M\"obius inversion becomes, after completion, the Chebyshev--Adams operation \(s\mapsto C_d(s)\).
+\end{corollary}
+
+\begin{corollary}[Strict parity balance for odd lengths: \texorpdfstring{$p_n(-1)=0$}{p_n(-1)=0}]\label{cor:primitive-odd-parity-balance}
+If \(n\ge 3\) is odd, then by the divisibility law \(u(u+1)\mid p_n(u)\) of Corollary~\ref{cor:primitive-odd-div},
+\[
+\boxed{\ p_n(-1)=\sum_{k\ge 0}(-1)^k p_{n,k}=0\ }.
+\]
+Hence, for odd-length primitive orbits, the counts on the two ``energy parity'' sides are strictly equal (in the signed-weight sense).
+\end{corollary}
+\begin{proof}
+By the coefficient mirror symmetry \(p_{n,k}=p_{n,n-k}\) (see above),
+\(
+p_n(u)=u^n p_n(1/u)
+\).
+Setting \(u=r^2\) gives
+\(
+p_n(r^2)=r^{2n}p_n(r^{-2})
+\),
+so that \(r^{-n}p_n(r^2)\) is invariant under \(r\mapsto r^{-1}\). By the invariant subring identity
+\(
+\ZZ[r,r^{-1}]^{\,r\mapsto r^{-1}}=\ZZ[r+r^{-1}]=\ZZ[s]
+\)
+one obtains \(\widehat p_n(s)\in\ZZ[s]\).
+\par
+The parity assertion follows from the exponent parity: \(p_n(r^2)\) contains only powers \(r^{2k}\); after multiplication by \(r^{-n}\), the power indices share the same parity as \(n\). Since the even/odd decomposition of \(\ZZ[s]\) under \(s\mapsto -s\) agrees with the power parity under \(r\mapsto -r\), the stated parity of \(\widehat p_n\) follows.
+\par
+Finally, setting \(s=r+r^{-1}\) gives
+\(
+C_d(s)=r^d+r^{-d}
+\),
+which satisfies the recurrence \(C_{d+1}=sC_d-C_{d-1}\) and hence \(C_d\in\ZZ[s]\), equivalent to the Chebyshev polynomial relation \(C_d(s)=2T_d(s/2)\). Substituting \(u=r^2\) and \(u^d=r^{2d}\) yields
+\[
+r^{-dn}p_n(r^{2d})=\widehat p_n(r^d+r^{-d})=\widehat p_n(C_d(s)),
+\]
+which is the stated angle-doubling law. \qed
+\end{proof}
+
+\begin{corollary}[Completed Chebyshev--Witt transform: \texorpdfstring{$\widehat a\leftrightarrow \widehat p$}{hat a <-> hat p}]\label{cor:chebyshev-witt-completed}
+In the same completed coordinate \(u=r^2,s=r+r^{-1}\), define the completed ghost (trace) polynomial
+\[
+\widehat a_n(s):=r^{-n}a_n(r^2)=r^{-n}\Tr(B(r^2)^n)\in\ZZ[s].
+\]
+Then for all \(n\ge 1\) the following strict identities hold:
+\[
+\boxed{\
+\widehat p_n(s)=\frac1n\sum_{d\mid n}\mu(d)\,\widehat a_{n/d}\!\bigl(C_d(s)\bigr),
+\qquad
+\widehat a_n(s)=\sum_{d\mid n}d\,\widehat p_d\!\bigl(C_{n/d}(s)\bigr)
+\ }.
+\]
+\end{corollary}
+\begin{proof}
+Apply the Witt/M\"obius inversion for \(u=r^2\),
+\(
+p_n(u)=\frac1n\sum_{d\mid n}\mu(d)a_{n/d}(u^d)
+\),
+multiply both sides by \(r^{-n}\), and use the completed angle-doubling law
+\(
+r^{-dn}f(r^{2d})=\widehat f(C_d(s))
+\)
+(applied to \(f=a_{n/d}\) and \(f=p_d\) respectively) to obtain the first identity; the second follows similarly from
+\(
+a_n(u)=\sum_{d\mid n} d\,p_d(u^{n/d})
+\)
+upon completion.
+\end{proof}
+
+\begin{corollary}[Prime-length congruence: \texorpdfstring{$\widehat a_p(s)\equiv C_p(s)\ (\mathrm{mod}\ p)$}{hat a_p congruent Cp mod p}]\label{cor:completed-prime-congruence}
+Retaining the completed notation of Corollary~\ref{cor:chebyshev-witt-completed}, if \(p\) is prime then
+\[
+\boxed{\ \widehat a_p(s)\equiv C_p(s)\pmod p\ }.
+\]
+\end{corollary}
+\begin{proof}
+For a prime \(p\), from \(\widehat p_p(s)=\frac1p\bigl(\widehat a_p(s)-\widehat a_1(C_p(s))\bigr)\) (the first identity of Corollary~\ref{cor:chebyshev-witt-completed}, with only the divisors \(d=1,p\)) one sees that
+\[
+\widehat a_p(s)-\widehat a_1(C_p(s))\in p\,\ZZ[s].
+\]
+For this kernel, \(a_1(u)=\Tr(B(u))=p_1(u)=1+u\), so
+\(
+\widehat a_1(s)=r^{-1}(1+r^2)=r+r^{-1}=s
+\), and hence \(\widehat a_1(C_p(s))=C_p(s)\).
+Substituting back yields the congruence. \qed
+\end{proof}
+
+\input{sections/generated/tab_sync_kernel_weighted_primitive_completed}

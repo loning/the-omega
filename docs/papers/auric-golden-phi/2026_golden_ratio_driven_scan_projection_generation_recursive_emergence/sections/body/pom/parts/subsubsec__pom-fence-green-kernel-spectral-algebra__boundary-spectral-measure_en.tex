@@ -1,0 +1,111 @@
+% Boundary spectral measure for L_k: exact weights and Beta(3/2,3/2) limit.
+
+\begin{theorem}[Exact weights and \texorpdfstring{Beta\((\tfrac32,\tfrac32)\)}{Beta(3/2,3/2)} limit of the boundary spectral measure]\label{thm:pom-Lk-boundary-spectral-measure-beta32}
+Adopting the characteristic angle and eigenvalue notation from Theorem \ref{thm:pom-Lk-arcsine-law},
+\[
+\theta_p=\frac{(2p-1)\pi}{2k+1},
+\qquad
+\mu_p=2(1-\cos\theta_p)=4\sin^2\!\Bigl(\frac{\theta_p}{2}\Bigr),
+\qquad p=1,\dots,k.
+\]
+Define the spectral measure with respect to the boundary vector \(e_1\in\RR^k\) by
+\[
+\rho_k:=\sum_{p=1}^{k} w_{p,k}\,\delta_{\mu_p},
+\qquad
+w_{p,k}:=\bigl|\langle e_1,v_p\rangle\bigr|^2,
+\]
+where \(v_p\) denotes the unit eigenvector of \(L_k\).
+Then the weights admit a strict closed form
+\[
+\boxed{\;
+w_{p,k}=\frac{4}{2k+1}\sin^2\theta_p,
+\qquad \sum_{p=1}^{k} w_{p,k}=1\; }.
+\]
+Moreover, \(\rho_k\) converges in the weak topology to the limiting measure \(\rho\) on \([0,4]\), whose density is given by
+\[
+\boxed{\;
+\dd\rho(\mu)=\frac{\sqrt{\mu(4-\mu)}}{2\pi}\,\dd\mu,\qquad \mu\in(0,4)\; }.
+\]
+Equivalently, letting \((a)_n\) denote the Pochhammer symbol, for any integer \(n\ge 0\) the moments satisfy the closed form
+\[
+\int_{0}^{4}\mu^{n}\,\dd\rho(\mu)=4^{n}\,\frac{(\tfrac32)_n}{(3)_n}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(\theta\in(0,\pi)\) and \(\mu=2(1-\cos\theta)\).
+Consider the vector \(u(\theta)\in\RR^k\) defined by
+\(
+u(\theta)_i:=\sin(i\theta)
+\)
+(\(1\le i\le k\)).
+For \(1<i<k\), the difference identity yields
+\[
+-(u_{i-1})+2u_i-(u_{i+1})
+=2(1-\cos\theta)\,u_i=\mu\,u_i.
+\]
+The terminal row satisfies
+\[
+-(u_{k-1})+u_k
+=\bigl(2u_k-u_{k+1}\bigr)-u_{k-1}
+=\mu\,u_k\quad\Longleftrightarrow\quad u_{k+1}=u_k.
+\]
+This boundary condition is equivalent to \(\sin((k+1)\theta)=\sin(k\theta)\), which in turn is equivalent to \(\cos\!\bigl(\tfrac{2k+1}{2}\theta\bigr)=0\), i.e.,
+\(\theta=\theta_p=\frac{(2p-1)\pi}{2k+1}\).
+Therefore \(u(\theta_p)\) provides an eigenvector of \(L_k\) with eigenvalue \(\mu_p\).
+\par
+By discrete orthogonality of the half-odd-integer quantized discrete sine basis (a standard identity), for \(p\neq q\) we have
+\(
+\sum_{i=1}^{k}\sin(i\theta_p)\sin(i\theta_q)=0
+\), and
+\[
+\sum_{i=1}^{k}\sin^2(i\theta_p)=\frac{2k+1}{4}.
+\]
+Hence the unit eigenvectors may be taken as
+\[
+v_p(i)=\sqrt{\frac{4}{2k+1}}\,\sin(i\theta_p),
+\]
+so the closed-form weight is
+\(
+w_{p,k}=|v_p(1)|^2=\frac{4}{2k+1}\sin^2\theta_p
+\).
+Furthermore, \(\sum_{p}w_{p,k}=\sum_{p}|\langle e_1,v_p\rangle|^2=\|e_1\|^2=1\).
+\par
+For any \(f\in C([0,4])\),
+\[
+\int f(\mu)\,\dd\rho_k(\mu)
+=\frac{4}{2k+1}\sum_{p=1}^{k}\sin^2(\theta_p)\,f\!\bigl(2(1-\cos\theta_p)\bigr).
+\]
+Note that \(\{\theta_p\}\) forms a half-odd-integer grid on \((0,\pi)\) with step size \(2\pi/(2k+1)\).
+Rewriting the above as a Riemann sum and taking the limit yields
+\[
+\lim_{k\to\infty}\int f\,\dd\rho_k
+=\frac{2}{\pi}\int_0^\pi \sin^2(\theta)\,f\!\bigl(2(1-\cos\theta)\bigr)\,\dd\theta.
+\]
+Substituting \(\mu=2(1-\cos\theta)\) (so that \(\dd\mu=\sqrt{\mu(4-\mu)}\,\dd\theta\) and \(\sin^2\theta=\mu(4-\mu)/4\)), we obtain the limiting measure density
+\(
+\dd\rho(\mu)=\frac{\sqrt{\mu(4-\mu)}}{2\pi}\dd\mu
+\).
+The moment formula follows by setting \(\mu=4x\) (\(x\in(0,1)\)) and identifying \(\rho\) as the pushforward of the Beta\((\tfrac32,\tfrac32)\) distribution in \(x\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Exact Radon--Nikodym relation between boundary and bulk measures]\label{cor:pom-Lk-boundary-bulk-radon-nikodym}
+Let \(\nu\) denote the bulk limiting measure from Theorem \ref{thm:pom-Lk-arcsine-law}.
+Then the boundary limiting measure \(\rho\) from Theorem \ref{thm:pom-Lk-boundary-spectral-measure-beta32} satisfies the exact absolute continuity relation
+\[
+\boxed{\;
+\dd\rho(\mu)=\frac{\mu(4-\mu)}{2}\,\dd\nu(\mu)\; }.
+\]
+Consequently, for any integrable function \(f\), the strict change-of-measure formula holds:
+\[
+\int f(\mu)\,\dd\rho(\mu)=\frac12\int \mu(4-\mu)\,f(\mu)\,\dd\nu(\mu).
+\]
+\end{corollary}
+
+\begin{proof}
+This follows immediately from the ratio of the two measure densities:
+\(
+\frac{\sqrt{\mu(4-\mu)}/(2\pi)}{1/(\pi\sqrt{\mu(4-\mu)})}=\mu(4-\mu)/2
+\).
+This completes the proof.
+\end{proof}

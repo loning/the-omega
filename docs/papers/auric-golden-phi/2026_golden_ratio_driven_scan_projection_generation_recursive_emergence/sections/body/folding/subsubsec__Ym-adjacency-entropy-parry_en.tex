@@ -1,0 +1,74 @@
+\subsubsection{Adjacency Relations, Topological Entropy, and the Parry (Maximal Entropy) Measure}\label{subsubsec:Ym-adjacency-entropy-parry}
+Take a right-resolving and follower-separated representation (e.g., the Fischer cover above), denoted
+\[
+H_m=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m),
+\]
+where each edge $e\in\mathcal{E}_m$ has source $s(e)\in\mathcal{S}_m$, target $t(e)\in\mathcal{S}_m$, and label $\lambda_m(e)\in X_m$.
+
+\begin{definition}[Adjacency Matrix of the Cover SFT (Edge Shift)]\label{def:Phi_m-adjacency}
+Let $X_{A_m}$ be the \textbf{edge shift} of the graph $H_m$ (the SFT with edges as letters). Its adjacency matrix $A_m$ is a $0$--$1$ matrix indexed by $\mathcal{E}_m$, given by
+\[
+(A_m)_{e,e'}:=\mathbf{1}\{\,t(e)=s(e')\,\}.
+\]
+This adjacency relation is fully explicit: it depends only on the endpoint compatibility of $H_m$.
+\end{definition}
+
+\begin{proposition}[Computable Formula for Topological Entropy]\label{prop:Phi_m-entropy}
+Assuming $H_m$ is irreducible (or taking its maximal entropy irreducible component),
+\[
+h_{\mathrm{top}}(Y_m)=h_{\mathrm{top}}(X_{A_m})=\log\rho(A_m).
+\]
+\end{proposition}
+
+\begin{proof}
+$X_{A_m}$ maps to $Y_m$ via the edge-by-edge label map (sliding block factor). On the Fischer cover this factor code is finite-to-one, so entropy is preserved; the entropy of an SFT equals $\log\rho(A_m)$. See \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+\end{proof}
+
+\begin{proposition}[Parry Maximal Entropy Measure (on the Cover \texorpdfstring{$X_{A_m}$}{XAm})]\label{prop:Phi_m-parry}
+Let $\lambda=\rho(A_m)$, and take Perron--Frobenius left/right eigenvectors $l,r>0$ satisfying
+\(
+l^{\mathsf T}A_m=\lambda l^{\mathsf T},\ A_m r=\lambda r
+\)
+and normalized so that $l^{\mathsf T}r=1$. Define the state weights
+\[
+\pi(e):=l_e r_e\qquad (e\in\mathcal{E}_m),
+\]
+and the transition probabilities
+\[
+P_{e\to e'}:=\frac{(A_m)_{e,e'}\,r_{e'}}{\lambda\, r_e}.
+\]
+Then the stationary Markov measure given by $(\pi,P)$ is the unique maximal entropy measure on $X_{A_m}$ (the Parry measure), denoted $\mu_{A_m}^{\mathrm{Parry}}$.
+Its probability on edge cylinder sets $[e_0e_1\cdots e_{n-1}]$ satisfies
+\[
+\mu_{A_m}^{\mathrm{Parry}}([e_0\cdots e_{n-1}])=\pi(e_0)\prod_{j=0}^{n-2} P_{e_j\to e_{j+1}}.
+\]
+\end{proposition}
+
+\begin{proposition}[Pushing Forward the Parry Measure to \texorpdfstring{$Y_m$}{Ym}]\label{prop:Phi_m-parry-pushforward}
+Let $\pi_m:X_{A_m}\to Y_m$ be the factor map taking edge-by-edge labels:
+\[
+(\pi_m((e_t)_{t\in\ZZ}))_t:=\lambda_m(e_t)\in X_m.
+\]
+Then $\nu_m:=({\pi_m})_*\mu_{A_m}^{\mathrm{Parry}}$ is the maximal entropy measure of $Y_m$ (unique when $Y_m$ is irreducible). For any output cylinder set $[a_0\cdots a_{n-1}]$ ($a_j\in X_m$), there is a fully explicit summation formula
+\[
+\nu_m([a_0\cdots a_{n-1}])
+=
+\sum_{\substack{e_0,\dots,e_{n-1}\in\mathcal{E}_m\\ \lambda_m(e_j)=a_j}}
+\mu_{A_m}^{\mathrm{Parry}}([e_0\cdots e_{n-1}]),
+\]
+where $\mu_{A_m}^{\mathrm{Parry}}([e_0\cdots e_{n-1}])$ is given by the PF data of Proposition \ref{prop:Phi_m-parry}.
+\end{proposition}
+
+\begin{proof}
+The pushforward of the Parry measure on the Fischer cover yields the maximal entropy measure of the sofic shift; the cylinder set formula is simply the expansion of ``pushforward measure = sum over lifts.'' See \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+\end{proof}
+
+\begin{remark}[Reproducible Adjacency Relations and Entropy Computation (Script)]\label{rem:phi_m_entropy_script}
+The above provides the abstract interface for ``how to obtain adjacency relations/entropy/Parry measure from the right-resolving representation.'' To address the auditing requirement of ``needing computable adjacency relations and explicit entropy values,'' the repository provides the script \texttt{scripts/exp\_phi\_m\_sofic\_entropy.py}: starting from the labeled graph $G_m$ of Definition \ref{def:G_m}, it performs subset determinization and right-language minimization to construct a right-resolving representation and outputs the spectral radius of the adjacency counting matrix on its maximal entropy essential component, thereby obtaining the numerical value of $h_{\mathrm{top}}(Y_m)$. Table \ref{tab:phi_m_sofic_entropy} is the default output summary of this script (see \texttt{artifacts/export/phi\_m\_sofic\_entropy.csv} and \texttt{sections/generated/tab\_phi\_m\_sofic\_entropy.tex}).
+\end{remark}
+
+\input{sections/generated/tab_phi_m_sofic_entropy}
+
+\begin{remark}[Why This Paper Uses the ``Cover \texorpdfstring{$\zeta$}{zeta}'' as Interface]\label{rem:sofic-zeta-vs-cover}
+It should be emphasized that the \emph{intrinsic} Artin--Mazur \(\zeta_{Y_m}\) of a sofic shift, although a rational function (computable via automaton/cover theory), is \textbf{not} preserved under finite-to-one factors, and therefore cannot be simply given by \(\det(I-zA_m)\). When this paper uses \(\det(I-zA)\) and Fredholm determinants as ``syntax-level computable interfaces,'' the corresponding object is the \(\zeta\) of the cover SFT (i.e., the Fischer cover), which is also the docking object for Cuntz--Krieger/groupoid C*-algebra and PF/Parry theory.
+\end{remark}

@@ -1,0 +1,175 @@
+\subsubsection{\texorpdfstring{$\mathbf{PW}$}{PW} Type Safety: Addressability of Unitary Slice and NULL}\label{subsec:xi-pw-type-safety-null}
+This chapter's \(\Xi_{\Delta,L}\) zero auditing criterion is built upon the fixed geometry of the unitary slice (\(|u|=1\); Remark \ref{rem:xi-critical-line-unit-circle}), using spectral crossing on the \(\theta\)-axis as an auditable interface (Proposition \ref{prop:xi-unitary-slice-spectral-crossing} and Remark \ref{rem:xi-unitary-slice-operator-audit}).
+On the other hand, in the projection ontology semantics, concepts are \emph{address-first} (Section \ref{sec:recursive-addressing}): without address, readout is undefined (null); with address, readout becomes a verifiable projection/certificate.
+This subsection compiles "reading out points off \(\Re(s)=\tfrac12\) as NULL (no address)" into a soundness proposition of the \(\mathbf{PW}\) type system, explicitly distinguishing it from the completeness bridge required for RH.
+
+\paragraph{Visible Domain and Projection Gate in Unit Circle Phase Arithmetic}
+Appendix \ref{app:unit-circle-phase-gate} provides the parameter-free compactification gate
+\(\upsilon(x)=\pi^{-1}\arctan(x)\in(-\tfrac12,\tfrac12)\)
+and its unit circle equivalent embedding
+\(\iota(x)=\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\in\TT\)
+which can be extended to a homeomorphism \(\iota:\widehat{\RR}\to\TT\) on the projective compactification \(\widehat{\RR}:=\RR\cup\{\infty\}\) (\S\ref{subsec:unit-circle-phase-lift}).
+Thus, \emph{at the coordinate gate level alone} there is no mandatory appearance of null values: the compactification gate itself is a well-defined invertible map, and any non-invertibility arises from subsequent "partial observation/projection readout" (Appendix \S\ref{subsec:unit-circle-phase-information}) and the \(\mathsf{NULL}\) convention of address semantics (Section \ref{sec:spg}).
+\par
+The key point of this section is: when fixing the verification interface of \(\Xi\) to the unitary slice, the verifiable continuous parameter axis is further compressed to a \emph{visible slice}; objects deviating from this slice, even though formally writable at the analytic level, have no address under our closure and their readout degenerates to \(\mathsf{NULL}\) under null value semantics.
+In the gauge groupoid caliber, this visible slice can be viewed as a gauge section, and degrees of freedom deviating from the slice belong to gauge fibers; without externalizing record axes, they are treated as \(\mathsf{NULL}\) at the type layer (see subsection \ref{subsec:pom-gauge-groupoid}).
+
+\paragraph{Phase-Type Parameter Domain (unitary slice)}
+Let
+\[
+\mathsf{Phase}:=\{u\in\CC:\ |u|=1\}=\{e^{i\theta}:\ \theta\in\RR\}.
+\]
+For any \(L>1\), from the definition \(u_L(s)=L^{2s-1}\) we obtain
+\[
+\Re(s)=\tfrac12\quad\Longleftrightarrow\quad |u_L(s)|=1\quad\Longleftrightarrow\quad u_L(s)\in \mathsf{Phase}
+\]
+(Remark \ref{rem:xi-critical-line-unit-circle}).
+
+\begin{definition}[Readout with Visible Domain Constraint and \texorpdfstring{$\mathsf{NULL}$}{NULL}]\label{def:xi-visible-read-null}
+Given a state space \(\Omega\), an observation map \(\operatorname{obs}:\Omega\rightharpoonup X\) (allowing partial maps), and a visible domain \(X_{\mathrm{vis}}\subseteq X\).
+Fix a closure/checker \(\mathrm{Chk}\) (in our context, take the combination of "\(\mathbf{PW}\) normalization closure + unitary-slice audit interface": its output is \(\mathsf{pass}/\mathsf{fail}\)).
+Define the visible readout with visible domain constraint
+\[
+\mathrm{read}(\omega)=
+\begin{cases}
+\operatorname{obs}(\omega), &
+\omega\in\mathrm{Dom}(\operatorname{obs}),\ \operatorname{obs}(\omega)\in X_{\mathrm{vis}},\ \mathrm{Chk}(\omega)=\mathsf{pass},\\
+\mathsf{NULL}, & \text{otherwise}.
+\end{cases}
+\]
+where \(\mathrm{read}(\omega)=\mathsf{NULL}\) indicates the readout is undefined (not addressable).
+This "otherwise" can be decomposed into three structural sources (all occurring at the \emph{denotational/type layer} rather than numerical layer):
+\begin{enumerate}
+  \item \textbf{Semantic null (address missing):} Address precedes value; if the address is not given, the corresponding concept value is undefined, denoted \(\mathsf{NULL}\), and is not equivalent to the numerical value \(0\) (see Section \ref{sec:spg}; also Section \ref{sec:recursive-addressing}).
+  \item \textbf{Protocol null (type system prohibition):} Interpretation of the object requires degrees of freedom beyond \(X_{\mathrm{vis}}\), or requires coordinate axes explicitly prohibited by interface protocol (typically: requiring radial mode with \(|u|\neq 1\), while the visible domain only allows unitary slice), thus cannot be typed under the given closure/checker and is rejected.
+  \item \textbf{Collision null (insufficient side information):} When \(\operatorname{obs}\) is a many-to-one compression and one wishes to lift the readout to (approximately) invertible with a given confidence caliber, record axes must be externalized to make the extended readout injective; if the record axis budget is insufficient, different preimages cannot be uniquely reconstructed in the error/confidence sense allowed by protocol, thus the readout degenerates equivalently to \(\mathsf{NULL}\) (see Proposition \ref{prop:xi-null-three-way}).
+\end{enumerate}
+In the \(\Xi\)-interface of this subsection, one can take \(\Omega=\CC\), \(\operatorname{obs}(s)=u_L(s)=L^{2s-1}\), and let \(X_{\mathrm{vis}}=\mathsf{Phase}\); thus \(\Re(s)\neq\tfrac12\Rightarrow \operatorname{obs}(s)\notin X_{\mathrm{vis}}\), and its readout directly degenerates to \(\mathsf{NULL}\) by definition.
+\end{definition}
+
+\begin{definition}[Visible Symmetry (Readout Automorphism)]\label{def:xi-read-visible-symmetry}
+Continue with the notation from Definition \ref{def:xi-visible-read-null}.
+A bijection \(g:\Omega\to\Omega\) is called a \textbf{visible symmetry} if for any \(\omega\in\Omega\) we have
+\[
+\mathrm{read}(g\omega)=\mathrm{read}(\omega).
+\]
+Denote the set of all visible symmetries by \(\mathrm{Aut}_{\mathrm{read}}(\Omega)\).
+\end{definition}
+
+\begin{proposition}[Orbits of Visible Symmetry and Readout Fibers]\label{prop:xi-read-fiber-orbits}
+Continue with the notation from Definition \ref{def:xi-read-visible-symmetry}.
+Then the action orbits of \(\mathrm{Aut}_{\mathrm{read}}(\Omega)\) on \(\Omega\) are precisely the fibers of \(\mathrm{read}\): for any \(\omega\in\Omega\) we have
+\[
+\mathrm{Aut}_{\mathrm{read}}(\Omega)\cdot\omega
+=\{\omega'\in\Omega:\ \mathrm{read}(\omega')=\mathrm{read}(\omega)\}.
+\]
+In particular, under projection ontology semantics, "symmetry" can be understood as automorphism degrees of freedom within readout fibers; this is consistent with the gauge groupoid caliber in \S\ref{subsec:pom-gauge-groupoid}.
+\end{proposition}
+
+\begin{proof}
+By Definition \ref{def:xi-read-visible-symmetry}, for any \(g\in\mathrm{Aut}_{\mathrm{read}}(\Omega)\) and any \(\omega\in\Omega\), we have \(\mathrm{read}(g\omega)=\mathrm{read}(\omega)\), so the orbit \(\mathrm{Aut}_{\mathrm{read}}(\Omega)\cdot\omega\subseteq \mathrm{read}^{-1}(\mathrm{read}(\omega))\).
+Conversely, if \(\omega'\) satisfies \(\mathrm{read}(\omega')=\mathrm{read}(\omega)\), define a bijection \(g\) swapping \(\omega\) with \(\omega'\) (identity elsewhere), then \(g\in\mathrm{Aut}_{\mathrm{read}}(\Omega)\) and \(g\omega=\omega'\).
+This completes the proof.
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\mathsf{NULL}$}{NULL} Three-way Decomposition and Injectivization Principle]\label{prop:xi-null-three-way}
+Let \(\pi:\Omega\to Y\) be a readout (allowing many-to-one compression), and by the "address-before-value" convention take "verifiable single-valued readout" as a definitional premise at the type layer (see Section \ref{sec:spg}).
+If a record axis \(r\) making the extended readout \(\pi^{\mathrm e}=(\pi,r):\Omega\to Y\times R\) injective is not provided, then the readout degenerates to \(\mathsf{NULL}\) at the type layer.
+Moreover, this \(\mathsf{NULL}\) can be decomposed into three sources according to the status of record axis \(r\):
+\begin{enumerate}
+  \item \textbf{Semantic null:} The record axis is empty (address not given), hence readout is undefined;
+  \item \textbf{Protocol null:} The record axis is prohibited by interface protocol/type system (e.g., under unitary slice caliber, radial modes with \(|u|\neq 1\) are rejected), hence the object cannot be typed;
+  \item \textbf{Collision null:} The record axis exists but the budget is insufficient to achieve injectivization; under the interval readout/CRT externalization protocol (Definition \ref{def:pom-order-elimination-rewrite}), if one wishes to lift the folded many-to-one compression to approximately invertible in the sense of failure probability \(\le\varepsilon\), then the modulus-product budget of the prime-register must satisfy
+  \[
+  P_m>2B_m(\varepsilon),
+  \qquad
+  B_m(\varepsilon):=\exp(m\gamma_m(\varepsilon)),
+  \]
+  where \(\gamma_m(\varepsilon)\) is the tail quantile of the fiber exponent (Definition \ref{def:pom-gamma-quantile}).
+  When \(P_m>2B_m(\varepsilon)\), the failure probability of "label overflow leading to non-unique reconstruction" can be compressed to \(\le\varepsilon\); and this threshold is sharp in the sense of this protocol (Corollary \ref{cor:pom-prime-register-quantile-budget}).
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[Register Minimality and "Tail Patch" Incompleteness]\label{rem:xi-register-minimality-no-tail-patch}
+Repairing collision null is not a local patch that can be completed by "appending a few bits at the end": in resolution downgrading, the difference between naive truncation and fold-aware restriction can reach full-length flip in the worst-case input (Theorem \ref{thm:fold-gauge-anomaly-max}), and any patch that "only modifies constant end bits" is incomplete (Corollary \ref{cor:fold-tail-patch-incomplete}).
+Therefore, once certain information must be externalized as side information to ensure invertibility or verifiability, its record axis is structurally necessarily \emph{globally non-local}: it can only fall on the residue/inverse limit axis carried by prime-register (and finite-state memory consistent with folding), and cannot appear within our \(\mathbf{PW}\) closure interface as an additional continuous coordinate register decoupled from phase \(\theta\).
+\end{remark}
+
+\begin{theorem}[\texorpdfstring{$\mathbf{PW}$}{PW} Closure's No-Continuous-Hair Principle (Type—Register Minimality)]\label{thm:xi-pw-no-continuous-hair}
+Under the visible domain constraint of Definition \ref{def:xi-visible-read-null} (\(X_{\mathrm{vis}}=\mathsf{Phase}\)) and the \(\mathbf{PW}\) normalization closure audit interface adopted in this paper, the following two structural assertions hold:
+\begin{enumerate}
+  \item \textbf{(Radial Non-Absorbability)}
+  If the denotation/verification of an object structurally requires radial data with \(|u|\neq 1\) (equivalently requires radial–phase dual structure) to preserve its pole/main scale invariant, then under pure phase regime this object has no address within the closure, and its readout degenerates to \(\mathsf{NULL}\) by protocol; moreover, without introducing additional record axes, any constant-layer strictification cannot eliminate this radial dependence while keeping the pole/main scale invariant.
+  \item \textbf{(Non-Locality and Minimality of Externalization)}
+  If one allows externalizing side information to achieve injectivization of extended readout with the goal of reducing \(\mathsf{NULL}\), then this externalized axis is structurally necessarily globally non-local residue/inverse limit axis (prime-register and its consistency constraints), and cannot be realized by an additional continuous coordinate register decoupled from phase \(\theta\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(1)} By Definition \ref{def:xi-visible-read-null}, under the visible domain \(X_{\mathrm{vis}}=\mathsf{Phase}\), any object requiring \(|u|\neq 1\) does not satisfy the visible domain filter condition, so its readout degenerates to \(\mathsf{NULL}\) by definition.
+On the other hand, local invertible readout of radial–phase state \((\theta,\varrho)\) cannot be continuously compressed to a single circle register (Theorem \ref{thm:radial-dimension-obstruction}), thus under the regime that refuses externalized record axes, "eliminating radial degrees of freedom at constant layer" cannot hold while keeping pole/main scale invariant; its semantic consequence is non-addressability (\(\mathsf{NULL}\)).
+\par
+\textbf{(2)} By Proposition \ref{prop:xi-null-three-way}, if the readout has folding/many-to-one compression, record axes making the extended readout injective must be externalized, otherwise it degenerates to \(\mathsf{NULL}\) at the type layer; and the prime-register budget provides an auditable threshold for achieving injectivization.
+Furthermore, register minimality and "tail patch" incompleteness show: any record axis sufficient to repair collision null is structurally globally non-local and can only fall on residue/inverse limit axis (Remark \ref{rem:xi-register-minimality-no-tail-patch}).
+Combining the above yields the two assertions. This completes the proof.
+\end{proof}
+
+\paragraph{\(\mathbf{PW}\) Closure and "Visible" Form of Interface Parameters}
+On the three-generator fragment \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\), any projection word can be reduced to the interface normal form \(\mathrm{LIFT}_G\circ\mathrm{PROJ}_u\circ E_m\), and non-commutative residuals are completely bundled as anomaly signature \(\mathsf{Anom}_G(K;\theta)\) (Proposition \ref{prop:pom-three-gen-interface-normal-form} and Definition \ref{def:pom-anom-signature}).
+When connecting this normal form to the \(\Xi\)-audit interface of this chapter, the verifiable continuous parameter axis is the phase \(\theta\) of the unitary slice (i.e., \(u=e^{i\theta}\)), rather than the general radial–phase decomposition \(u=re^{i\theta}\).
+Therefore, "addressable \(\Xi\) zero certificates" can only be presented in \(\theta\)-caliber within our closure.
+
+\begin{theorem}[\(\mathbf{PW}\) Type Safety: Non-Addressability of Offset Points (unitary slice caliber)]\label{thm:xi-offset-null-type-safety}
+Fix \(L>1\) and consider \(\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})\) (definition see \S\ref{subsec:xi-from-self-dual}).
+In the closure adopted in this paper of "three-generator normalizer + anomaly signature interface + unitary slice zero audit", if \(s_0\in\CC\) satisfies \(\Re(s_0)\neq \tfrac12\), then \(s_0\) is not addressable under this closure; equivalently, the corresponding readout is null value (denoted \(\mathsf{NULL}\)).
+In particular, any \(\Xi_{\Delta,L}\) zero \(s\) that is addressable and verifiable within this closure must satisfy \(\Re(s)=\tfrac12\).
+\end{theorem}
+
+\begin{proof}
+From \(u_L(s)=L^{2s-1}\) we get
+\[
+|u_L(s_0)|=L^{2\Re(s_0)-1}\neq 1,
+\]
+so \(u_L(s_0)\notin\mathsf{Phase}\).
+\par
+On the other hand, the zero audit interface of this chapter parametrizes on the unitary slice as \(u=e^{i\theta}\) (\(\theta\in\RR\)) (Proposition \ref{prop:xi-unitary-slice-spectral-crossing}), and rewrites zero detection as an auditable spectral crossing criterion (Remark \ref{rem:xi-unitary-slice-operator-audit}).
+On the projection word side, three-generator normalization bundles any candidate compilation word to the interface normal form and compresses residuals as \(\theta\)-parametrized anomaly signature (Proposition \ref{prop:pom-three-gen-interface-normal-form} and Definition \ref{def:pom-anom-signature}), thus the visible continuous parameter axis of "verifiable certificate" aligns with the \(\theta\)-caliber of the above unitary slice.
+\par
+Therefore, within our closure, if a point \(s_0\) can be addressed as a \(\Xi\) audit object, then its parameter \(u_L(s_0)\) must fall in the visible parameter domain \(\mathsf{Phase}\); but the above formula shows \(u_L(s_0)\notin\mathsf{Phase}\), contradiction.
+Hence \(s_0\) has no address under this closure; by the null value semantics of Section \ref{sec:recursive-addressing}, its readout is undefined, i.e., null value \(\mathsf{NULL}\).
+\par
+Finally, "addressable zero must be on critical line" follows from the contrapositive: if \(s\) is addressable as zero within the closure, it cannot satisfy \(\Re(s)\neq\tfrac12\), thus \(\Re(s)=\tfrac12\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Critical Line Property of Visible Zeros (\(\Xi\)'s Internal RH)]\label{cor:xi-visible-zeros-on-critical-line}
+Under the closure setting of Theorem \ref{thm:xi-offset-null-type-safety}, all \(\Xi_{\Delta,L}\) zeros that are addressable and verifiable within \(\mathbf{PW}\) satisfy \(\Re(s)=\tfrac12\).
+\end{corollary}
+
+\begin{remark}[Distinction of soundness vs completeness]\label{rem:xi-soundness-vs-completeness}
+Theorem \ref{thm:xi-offset-null-type-safety} belongs to the soundness direction of type safety: \emph{addressable/auditable} \(\Rightarrow\) \emph{critical line property}.
+The proposition
+\[
+\Xi_{\Delta,L}(s)=0\ \Longrightarrow\ s\ \text{is addressable (not}\ \mathsf{NULL}\text{) in}\ \mathbf{PW}
+\]
+is the completeness direction, whose content is not equivalent to "all visible concepts are non-null" (the latter is a definitional statement in the semantics of Section \ref{sec:recursive-addressing}).
+When lifting the internal caliber to \(\Xi\)-RH, the completeness gap must be filled: provide auditable certificate conditions guaranteeing that zero events are addressable (do not trigger \(\mathsf{NULL}\)) under the closure.
+\par
+Under unit circle phase semantics, the above two can also be understood as the distinction of two "\(\mathsf{NULL}\)---conservation" regimes.
+\emph{Pure phase regime} takes \(X_{\mathrm{vis}}=\mathsf{Phase}\) and maintains type safety with \(\mathsf{NULL}\): any object requiring radial degrees of freedom with \(|u|\neq 1\) is judged non-addressable, thus rejected within visible semantics (corresponding to the soundness of this section).
+If reducing the occurrence of \(\mathsf{NULL}\) is the goal, then by the "extension-preserving" principle, the flattened degrees of freedom must be externalized (Proposition \ref{prop:unit-circle-phase-extension-preserving}): write \(u=re^{i\theta}\) and take
+\[
+\operatorname{proj}_{\mathsf{Phase}}(u)=\frac{u}{|u|}=e^{i\theta}\in\mathsf{Phase},
+\qquad
+\varrho(u)=\log|u|\in\RR,
+\qquad
+\operatorname{proj}^{\mathrm{e}}(u):=\bigl(\operatorname{proj}_{\mathsf{Phase}}(u),\varrho(u)\bigr).
+\]
+Then \(\operatorname{proj}^{\mathrm{e}}\) is injective on \(\CC^\times\), and the unitary slice is merely the section \(\varrho(u)=0\); at this point \(|u|\neq 1\) no longer necessarily triggers \(\mathsf{NULL}\), but manifests as a non-degenerate extended readout of "phase readout + radial record".
+When record axes are allowed to grow unboundedly, the above externalized degrees of freedom can be carried by additional orthogonal modes of a separable Hilbert space in the limit representation of "tight phase tower" (Proposition \ref{prop:phase-tower-principal-u1}).
+Therefore, the completeness gap required by RH can be located as: \emph{whether there exists a zero event that can only be explained by introducing a radial channel (or other additional visible degrees of freedom, such as minimal realization dimension exceeding bounds)}; if so, it must read out as \(\mathsf{NULL}\) under pure phase regime, while under extended regime it requires explicit carrying of its radial residual by additional record axes.
+\end{remark}
+
+\input{sections/body/zeta_finite_part/xi/subsubsec__xi-phase-prefix-resolution-law_en}
+\input{sections/body/zeta_finite_part/xi/subsubsec__xi-addressability-resolution-law_en}
+
+\endinput

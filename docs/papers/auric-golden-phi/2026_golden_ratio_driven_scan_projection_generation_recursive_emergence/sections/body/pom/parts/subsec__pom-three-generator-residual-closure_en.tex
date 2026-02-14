@@ -1,0 +1,613 @@
+\subsection{Residual closure of three generators: from commutation certificates to computable anomaly signatures}\label{subsec:pom-three-generator-residual-closure}
+
+This subsection tightens the three generators
+$$
+\mathrm{PROJ}_u,\qquad E_m,\qquad \mathrm{LIFT}_G
+$$
+into a complete framework of ``parameterized projection word syntax + auditable residual fingerprints''.
+Subsection \ref{subsec:pom-derivable-calculus-closure} has already provided the interface-level definition of the projection word $2$-category $\mathbf{PW}$ (Definition \ref{def:pom-projword-2cat}) and demonstrated executable normalization examples involving \(E_m,\mathrm{LIFT}_G,\mathrm{PROJ}_u\) (Remark \ref{rem:pom-projword-lift-proj-normalizer-demo}).
+The key point here is: instead of treating ``\(E_m\) and \(\mathrm{LIFT}_G\) commute'' as an unconditional syntactic assertion, we compress the \emph{failure of commutativity} into a computable ``twisted finite-part anomaly signature'', thereby upgrading ``algorithmic equivalence'' from narrative to decidable naturality conditions.
+
+\subsubsection{Anomaly signature: carrying residuals via finite-part constants of non-trivial twisted channels}\label{subsec:pom-anom-signature}
+
+\paragraph{Motivation}
+At the core interface level, the semantics of \(\mathrm{LIFT}_G\) are given by group extensions/character decomposition: for a finite abelian label group \(G\), its \(\zeta\) (or determinant) can be decomposed into a family of twisted channels according to character families (see Section \ref{sec:zeta-finite-part}, especially the DFT/inversion framework in Remark \ref{prop:arity-chebotarev-mertens-fourier}).
+On the other hand, \(E_m\) is the conditional expectation induced by folding (Definition \ref{def:pom-proj-norm} and Proposition \ref{prop:fold-conditional-expectation}), which averages along fibers and satisfies idempotent/tower properties on the resolution tower.
+In the ``pure product fiber'' case, they can commute strictly (Beck--Chevalley type squares), but in the general ``label-folding fiber coupling'' case, commutation breaking pushes information into non-trivial twisted channels; and this paper already has an auditable constant-level interface to carry this breaking: the Abel/Hadamard finite-part constant \(\log\mathfrak{M}(\theta)\) (Definition \ref{def:abel-finite-part}).
+
+\begin{definition}[Twisted finite-part anomaly signature]\label{def:pom-anom-signature}
+Take a potential kernel \(K\) (or equivalently a weighted matrix family \(M_\theta\)), and a lift semantics for a finite abelian label group \(G\).
+For each character \(\chi\in\widehat G\), denote by \(\zeta_{\theta,\chi}\) the \(\zeta\) interface of the \(\chi\)-twisted channel (determinant factor in the character decomposition sense), and define its Abel/Hadamard finite-part constant \(\log\mathfrak{M}_\chi(\theta)\) following Definition \ref{def:abel-finite-part}.
+Define the \textbf{anomaly signature} as the family of finite-part constants for non-trivial characters
+$$
+\mathsf{Anom}_{G}(K;\theta)
+:=\Bigl(\log\mathfrak{M}_\chi(\theta)\Bigr)_{\chi\in\widehat G\setminus\{\chi_0\}},
+$$
+where \(\chi_0\) is the trivial character.
+\end{definition}
+
+\begin{remark}[Why choose finite-part rather than just spectral radius ratio]\label{rem:pom-anom-why-finite-part}
+The spectral radius ratio \(\rho_\chi/\lambda\) quantifies the exponential gap of ``slow modes'' and is the main-scale certificate for twist breaking; but it is insensitive to differences among different twisted channels at the same exponential level.
+The finite-part constant \(\log\mathfrak{M}_\chi(\theta)\) captures constant-level drift in the prime-orbit Mertens main term (Proposition \ref{prop:abel-finite-part-mobius-zeta}), and can stably carry the constant-level residual output of ``commutation failure''; this is precisely the minimal supplement needed to transform ``non-commutativity'' from metaphysics to auditable signature.
+\end{remark}
+
+\subsubsection{Commutation with residuals: upgrading rewrite certificates to auditable anomaly terms}\label{subsec:pom-residual-swap}
+
+\begin{proposition}[Exchange certificate with anomaly for \texorpdfstring{$E_m$}{Em}--\texorpdfstring{$\mathrm{LIFT}_G$}{LIFT} (interface version)]\label{prop:pom-em-lift-residual-swap}
+In the projection word $2$-category \(\mathbf{PW}\) (Definition \ref{def:pom-projword-2cat}), there exists a class of ``commutation certificates'' that rewrite the composition
+\(
+E_m\circ \mathrm{LIFT}_G
+\)
+into
+\(
+\mathrm{LIFT}_G\circ E_m
+\)
+with an auditable residual signature \(\mathsf{Anom}_G(K;\theta)\):
+for any object \(\mathcal{I}(m;K;\kappa)\), if lift labels and folding fibers are mechanistically decoupled (equivalently: satisfy a Beck--Chevalley type pullback square condition), then the anomaly signature of this commutation certificate is zero (all non-trivial twisted channels have finite-part constants consistent with the trivial channel up to zero drift); in the general case, the residual of commutation failure is completely carried by the finite-part constant family \(\mathsf{Anom}_G(K;\theta)\) of non-trivial twisted channels.
+\end{proposition}
+
+\begin{proof}
+This proposition is an interface-level encapsulation: the character decomposition of \(\mathrm{LIFT}_G\) splits the post-lift \(\zeta\)/finite-part output into twisted factor families on \(\widehat G\) (Remark \ref{prop:arity-chebotarev-mertens-fourier}), while the semantics of \(E_m\) is the conditional expectation along folding fibers (Proposition \ref{prop:fold-conditional-expectation}).
+When they satisfy the Beck--Chevalley type pullback condition, conditional expectation and label lift are in direct product structure, thus strictly commute on each twisted channel, with zero anomaly signature.
+In the general case, commutation is no longer a strict equality; but since all auditable outputs in this paper are ultimately extracted through the same \(\zeta_\theta=1/\det(I-zM_\theta)\) and finite-part interface (Definition \ref{def:abel-finite-part}), the \emph{observable part} of commutation breaking must fall into the finite-part difference of ``non-trivial twisted channels relative to the trivial channel'', i.e., \(\mathsf{Anom}_G(K;\theta)\).
+\end{proof}
+
+\begin{corollary}[Zero anomaly \texorpdfstring{$\Longleftrightarrow$}{<->} Beck--Chevalley pullback (closed-loop interface version)]\label{cor:pom-zero-anom-pullback-exactness}
+Under the setting of Proposition \ref{prop:pom-em-lift-residual-swap}, interpret ``strict commutation'' as: for each twisted character channel \(\chi\in\widehat G\), on the closed-loop interface adopted in this paper
+\[
+\text{finite kernel/matrix family}\Rightarrow \zeta \Rightarrow \log\mathfrak{M}
+\]
+the compositions \(E_m\circ \mathrm{LIFT}_G\) and \(\mathrm{LIFT}_G\circ E_m\) yield the same channel output (equivalently: the square is a discrete Beck--Chevalley type pullback square).
+Then the following equivalent characterization holds:
+\[
+\boxed{\;
+\mathsf{Anom}_G(K;\theta)=0
+\quad\Longleftrightarrow\quad
+E_m\ \text{and}\ \mathrm{LIFT}_G\ \text{strictly commute on all twisted channels (in interface sense)}.}
+\]
+\end{corollary}
+
+\begin{proof}
+Proposition \ref{prop:pom-em-lift-residual-swap} has compressed the entire observable residual of commutation failure into \(\mathsf{Anom}_G(K;\theta)\);
+therefore ``residual is zero'' and ``strict commutation on closed-loop interface'' are mutually equivalent.
+\end{proof}
+
+\subsubsection{Universal commutative quotient: lifting residuals from ``numerical signature'' to ``group direction erased by folding''}\label{subsec:pom-bc-quotient}
+Proposition \ref{prop:pom-em-lift-residual-swap} and Corollary \ref{cor:pom-zero-anom-pullback-exactness} compress commutation failure of \(E_m\) and \(\mathrm{LIFT}_G\) into the constant-level anomaly signature \(\mathsf{Anom}_G(K;\theta)\).
+At the level of ``derivable calculus'', numerical residuals alone are insufficient to form a computable structural object: we still need to ontologize ``from which part of group information the commutation failure comes'' into a constructible object.
+\par
+This paragraph gives a pure group-theoretic strictification: for a fixed resolution \(m\), construct a \textbf{universal group quotient} \(G\twoheadrightarrow G^{\mathrm{BC}}_m\) such that commutation becomes \emph{strict} in the interface sense on \(G^{\mathrm{BC}}_m\); and this group quotient is maximal (universal), thus characterizing ``the maximal group register still visible from the \(E_m\) perspective'', while its kernel is ``the group direction erased by folding''.
+
+\begin{definition}[Fiber-visible equivalence and Beck--Chevalley commutative quotient]\label{def:pom-bc-quotient}
+Fix object \(\mathcal{I}(m;K;\kappa)\) and resolution \(m\).
+Let folding be \(\Fold_m:\Omega_m\to X_m\), and denote by \(E_m\) its induced conditional expectation/fiber averaging interface (Proposition \ref{prop:fold-conditional-expectation}).
+Let lift semantics be given by a finite abelian group \(G\) and a (one-step or length-\(m\)) group label function
+\[
+\ell:\Omega_m\to G
+\]
+(its origin can be the cocycle along length-\(m\) paths accumulated on kernel edges; in fiber Fourier framework also written as \(\ell\), see Definition \ref{def:pom-fiber-fourier-coeff}).
+\par
+Define the ``fiber indistinguishable'' relation as
+\[
+a\sim_m b\quad\Longleftrightarrow\quad \Fold_m(a)=\Fold_m(b)\qquad(a,b\in\Omega_m),
+\]
+and define the \textbf{fiber-invariant subgroup} (group direction erased by folding) as
+\[
+N^{\mathrm{BC}}_m
+:=\left\langle\ \ell(a)\ell(b)^{-1}\ :\ a,b\in\Omega_m,\ a\sim_m b\ \right\rangle\ \le\ G.
+\]
+Let \(\pi_m:G\twoheadrightarrow G^{\mathrm{BC}}_m:=G/N^{\mathrm{BC}}_m\) be the quotient map, and denote \(\bar\ell_m:=\pi_m\circ \ell:\Omega_m\to G^{\mathrm{BC}}_m\).
+Then \(\bar\ell_m\) is constant on each folding fiber, thus inducing a well-defined \textbf{visible label}
+\[
+\ell^{\mathrm{vis}}_m:X_m\to G^{\mathrm{BC}}_m,
+\qquad
+\ell^{\mathrm{vis}}_m\bigl(\Fold_m(a)\bigr)=\bar\ell_m(a).
+\]
+\end{definition}
+
+\begin{proposition}[Strict commutativization: anomaly is zero on \(G^{\mathrm{BC}}_m\)]\label{prop:pom-bc-quotient-strictify}
+Following the notation in Definition \ref{def:pom-bc-quotient}.
+Replace the group axis of \(\mathrm{LIFT}_G\) with \(G^{\mathrm{BC}}_m\) (i.e., use \(\bar\ell_m\) as lift label), then \(E_m\) and \(\mathrm{LIFT}_{G^{\mathrm{BC}}_m}\) strictly commute in the closed-loop interface sense; equivalently,
+\[
+\mathsf{Anom}_{G^{\mathrm{BC}}_m}(K;\theta)=0
+\]
+holds (for all considered potential parameters \(\theta\) and all non-trivial twisted channels).
+\end{proposition}
+\begin{proof}
+By construction, \(\bar\ell_m\) depends only on \(\Fold_m(a)\), i.e., there exists \(\ell^{\mathrm{vis}}_m\) such that \(\bar\ell_m=\ell^{\mathrm{vis}}_m\circ \Fold_m\).
+Therefore for any character \(\overline\chi\in\widehat{G^{\mathrm{BC}}_m}\), the function
+\(
+f_{\overline\chi}:=\overline\chi\circ \bar\ell_m
+=
+\overline\chi\circ \ell^{\mathrm{vis}}_m\circ \Fold_m
+\)
+is \(\sigma(\Fold_m)\)-measurable, hence satisfies \(E_m f_{\overline\chi}=f_{\overline\chi}\).
+This is precisely the strict version of Beck--Chevalley type ``label-folding fiber decoupling'': on each visible twisted channel, conditional expectation no longer introduces cross-channel mixing, thus the commutation square of \(E_m\) and \(\mathrm{LIFT}_{G^{\mathrm{BC}}_m}\) strictly closes on the closed-loop interface.
+By Corollary \ref{cor:pom-zero-anom-pullback-exactness}, \(\mathsf{Anom}_{G^{\mathrm{BC}}_m}(K;\theta)=0\). $\qed$
+\end{proof}
+
+\begin{proposition}[Universality (maximality): any strictly commuting group quotient must factorize]\label{prop:pom-bc-quotient-universal}
+Following the setting in Definition \ref{def:pom-bc-quotient}.
+Let \(\phi:G\twoheadrightarrow H\) be any surjective homomorphism.
+If \(\phi\circ \ell\) is invariant on folding fibers (equivalently: there exists \(\ell_H^{\mathrm{vis}}:X_m\to H\) such that \(\phi\circ\ell=\ell_H^{\mathrm{vis}}\circ\Fold_m\), also equivalent to \(E_m\) and \(\mathrm{LIFT}_H\) strictly commuting in closed-loop interface sense), then necessarily
+\[
+N^{\mathrm{BC}}_m\ \le\ \ker(\phi),
+\]
+thus there exists a unique surjective homomorphism \(\bar\phi:G^{\mathrm{BC}}_m\twoheadrightarrow H\) such that \(\phi=\bar\phi\circ \pi_m\).
+\end{proposition}
+\begin{proof}
+For any \(a\sim_m b\), by hypothesis \(\phi\circ\ell\) is invariant on fibers, so \(\phi(\ell(a))=\phi(\ell(b))\), i.e., \(\phi(\ell(a)\ell(b)^{-1})=1\).
+Therefore \(\ell(a)\ell(b)^{-1}\in\ker(\phi)\).
+By the generating definition of \(N^{\mathrm{BC}}_m\), we get \(N^{\mathrm{BC}}_m\le \ker(\phi)\).
+Hence \(\phi\) induces a unique \(\bar\phi\) on the quotient group \(G/N^{\mathrm{BC}}_m\), satisfying \(\phi=\bar\phi\circ\pi_m\). $\qed$
+\end{proof}
+
+\begin{remark}[Computability: from fiber enumeration to standard form of quotient group]\label{rem:pom-bc-quotient-computable}
+The construction in Definition \ref{def:pom-bc-quotient} is directly computable on finite resolutions: given computable folding \(\Fold_m:\Omega_m\to X_m\) and computable label \(\ell:\Omega_m\to G\), enumerate each fiber \(\Fold_m^{-1}(x)\) and collect generators
+\(
+\ell(a)\ell(b)^{-1}
+\)
+to obtain a finitely generated set for \(N^{\mathrm{BC}}_m\).
+When \(G\) is a finite abelian group, one can represent \(G\) as a direct product of finite cyclic groups, and compute Smith normal form on the generator matrix, thus obtaining the invariant decomposition and character domain \(\widehat{G^{\mathrm{BC}}_m}\) of the quotient group \(G^{\mathrm{BC}}_m=G/N^{\mathrm{BC}}_m\) in polynomial time.
+Therefore the ``strict commutative quotient'' not only exists, but can be directly audited as a discrete output in the audit pipeline.
+\end{remark}
+
+\begin{corollary}[Support of anomaly: only from \texorpdfstring{$\widehat{N^{\mathrm{BC}}_m}$}{N^BC_m}-direction]\label{cor:pom-anom-supported-on-bc-kernel}
+Following the setting in Definition \ref{def:pom-bc-quotient}.
+Identify \(\widehat{G^{\mathrm{BC}}_m}\) as a subgroup of \(\widehat G\) (i.e., \(\widehat{G^{\mathrm{BC}}_m}\cong\{\chi\in\widehat G:\chi|_{N^{\mathrm{BC}}_m}=1\}\)).
+Then for any \(\chi\in\widehat G\), if \(\chi|_{N^{\mathrm{BC}}_m}=1\), then the commutation residual of the corresponding twisted channel is zero:
+\[
+\chi|_{N^{\mathrm{BC}}_m}=1
+\quad\Longrightarrow\quad
+\bigl(\mathsf{Anom}_G(K;\theta)\bigr)_{\chi}=0.
+\]
+Therefore any nonzero anomaly coordinate can only appear in the \(\widehat G\setminus \widehat{G^{\mathrm{BC}}_m}\) direction (i.e., characters non-trivial on \(N^{\mathrm{BC}}_m\)).
+\end{corollary}
+\begin{proof}
+If \(\chi|_{N^{\mathrm{BC}}_m}=1\), then \(\chi\) factorizes through some \(\overline\chi\in\widehat{G^{\mathrm{BC}}_m}\) and quotient map \(\pi_m\).
+Therefore the \(\chi\)-twisted channel is equivalent to a visible twisted channel on \(G^{\mathrm{BC}}_m\).
+By Proposition \ref{prop:pom-bc-quotient-strictify}, all visible twisted channels have zero anomaly, thus the corresponding coordinate \(\bigl(\mathsf{Anom}_G(K;\theta)\bigr)_{\chi}=0\). $\qed$
+\end{proof}
+
+\begin{corollary}[Visible register inverse system on resolution tower]\label{cor:pom-bc-inverse-system}
+For any \(m_2\ge m_1\), since conditional expectations satisfy tower property \(E_{m_1}\circ E_{m_2}=E_{m_1}\) (see \S\ref{subsec:pom-conditional-expectation}), the fiber indistinguishable relation at layer \(m_2\) refines that at layer \(m_1\), hence
+\[
+N^{\mathrm{BC}}_{m_2}\ \le\ N^{\mathrm{BC}}_{m_1},
+\qquad\text{thus}\qquad
+G^{\mathrm{BC}}_{m_2}\twoheadrightarrow G^{\mathrm{BC}}_{m_1}.
+\]
+Therefore \(\{G^{\mathrm{BC}}_m\}_{m\ge 1}\) forms an inverse system, and we can define its inverse limit
+\[
+G^{\mathrm{BC}}_\infty:=\varprojlim_m G^{\mathrm{BC}}_m.
+\]
+This limit object can be interpreted as: the visible group register skeleton that strictly commutes with folding under ``infinite-resolution readout''.
+\end{corollary}
+
+\subsubsection{Composition law of anomaly signatures: as \texorpdfstring{$2$}{2}-cohomology class of \texorpdfstring{$\mathbf{PW}$}{PW}}\label{subsec:pom-anom-cohomology}
+Viewing the ``labeled commutation certificate'' of Proposition \ref{prop:pom-em-lift-residual-swap} as a \(2\)-morphism generator of \(\mathbf{PW}\), the key benefit is: anomaly is no longer an afterthought patch, but a residual class that can be composed at the rewrite level and only undergoes boundary transformation when changing reduction paths.
+
+\begin{definition}[Anomaly accumulation and normalized anomaly]\label{def:pom-anom-accumulation}
+Fix a parameterized object \(\mathcal{I}(m;K;\kappa)\), a finite abelian lift group \(G\), and potential parameter \(\theta\).
+In the subfragment generated solely by \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\), let
+\[
+\mathcal{A}_G:=\RR^{\widehat G\setminus\{\chi_0\}}
+\]
+with componentwise addition as group operation.
+For any rewrite certificate (\(2\)-morphism) \(\alpha:w\Rightarrow w'\), define its \textbf{anomaly accumulation}
+\(\mathrm{anom}(\alpha)\in\mathcal{A}_G\)
+as follows: after decomposing \(\alpha\) into a sequence of local rewrite steps, take the label of each step and sum them, where
+(i) idempotent/tower collapses/strictly commutative steps have label \(0\);
+(ii) each \(E_m\)--\(\mathrm{LIFT}_G\) commutation step with residual has label \(\mathsf{Anom}_G(K;\theta)\) (Definition \ref{def:pom-anom-signature}).
+Given a normal form selection operator \(N\) and its normalization certificate family \(\eta_w:w\Rightarrow N(w)\), define the \textbf{normalized anomaly} of word as
+\[
+\mathrm{Anom}(w):=\mathrm{anom}(\eta_w).
+\]
+\end{definition}
+
+\begin{proposition}[Additive composition law and boundary term]\label{prop:pom-anom-additive-up-to-boundary}
+Under the setting of Definition \ref{def:pom-anom-accumulation}, \(\mathrm{anom}\) is strictly additive for vertical composition of \(2\)-morphisms: if \(\alpha:w\Rightarrow w'\) and \(\beta:w'\Rightarrow w''\) are composable, then
+\[
+\mathrm{anom}(\beta\circ\alpha)=\mathrm{anom}(\beta)+\mathrm{anom}(\alpha).
+\]
+Furthermore, for any composable \(1\)-morphisms \(w_1,w_2\), there exists a \(2\)-cochain \(B(w_2,w_1)\in\mathcal{A}_G\) depending only on the normal form selection, such that
+\[
+\mathrm{Anom}(w_2\circ w_1)
+=
+\mathrm{Anom}(w_2)+\mathrm{Anom}(w_1)+\partial B(w_2,w_1),
+\]
+where \(\partial B\) denotes the boundary term arising from comparing the two normalization paths ``first normalize separately then merge'' vs ``directly normalize'' (equivalently: changing normalization certificate family \(\{\eta_w\}\) changes \(\mathrm{Anom}\) only by a coboundary).
+\end{proposition}
+
+\begin{corollary}[Zero anomaly is path-invariant]\label{cor:pom-anom-cohomology-class}
+``Whether anomaly is zero'' is independent of reduction path/reduction gauge: if \(\mathrm{Anom}(w)=0\) under some normalization choice, then \(\mathrm{Anom}'(w)\) obtained under any other normalization choice is also zero.
+Equivalently, \(\mathrm{Anom}\) defines a computable (\(2\)-)cohomology class, whose vanishing characterizes whether commutation failure can be completely eliminated by rewriting.
+\end{corollary}
+
+\begin{corollary}[Strict additivity of anomaly class (horizontal composition)]\label{cor:pom-anom-class-additive}
+Under the notation of Proposition \ref{prop:pom-anom-additive-up-to-boundary}, for any composable \(1\)-morphisms \(w_1,w_2\), their anomaly cohomology class satisfies strict additive law
+\[
+\boxed{\;
+[\mathrm{Anom}(w_2\circ w_1)]
+=
+[\mathrm{Anom}(w_2)]
++
+[\mathrm{Anom}(w_1)]\;}
+\]
+(because the boundary term \(\partial B(w_2,w_1)\) vanishes when taking cohomology class).
+\end{corollary}
+
+\begin{remark}[\(2\)-confluence with residuals: internalizing ``non-commutativity'' as central label]\label{rem:pom-residual-2confluence}
+In the three-generator fragment, we do not require \(E_m\) and \(\mathrm{LIFT}_G\) to commute \emph{strictly}, but rather require their commutation failure to be completely carried by an additive central label group \(\mathcal{A}_G\) (Definition \ref{def:pom-anom-accumulation}).
+Thus ``confluence'' should be understood as a \(2\)-confluence framework with residuals: within a fixed complexity bound, any two rewrite paths can join to the same interface normal form (Proposition \ref{prop:pom-three-gen-interface-normal-form}), while their residual difference (if any) must fall into the boundary term of Proposition \ref{prop:pom-anom-additive-up-to-boundary}; therefore \(\bigl(\mathrm{NF}(w),[\mathrm{Anom}(w)]\bigr)\) (normal form + anomaly cohomology class) becomes a path invariant.
+This is precisely the encapsulation at calculus level of Corollary \ref{cor:pom-three-gen-normal-form-decidable}'s ``normal form equality + finite signature audit'': non-commutativity no longer breaks derivability, but is elevated to composable, auditable \(2\)-morphism data.
+\end{remark}
+
+\begin{remark}[Discrete connection viewpoint: anomaly as curvature (closed-layer gauge field strength)]\label{rem:pom-anom-as-curvature}
+Viewing the parameter pair \((m,G)\) of object \(\mathcal{I}(m;K;\kappa)\) as two axes of a discrete ``base plane'':
+resolution/modulus axis \(m\) (with conditional expectation \(E_m\) providing coarse-graining parallel transport), and internal label axis \(G\) (with \(\mathrm{LIFT}_G\) providing label lift parallel transport).
+Then the certificate
+\[
+E_m\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ E_m
+\]
+given by Proposition \ref{prop:pom-em-lift-residual-swap}
+can be understood as the \emph{curvature \(2\)-cell} of this discrete connection on a fundamental square:
+when lift and folding fibers decouple (Beck--Chevalley type square pullback), this curvature degenerates to identity \(2\)-morphism; in general, the ``square not closing'' pushes observable residuals into non-trivial twisted channels, and is minimally compressed into the finite-part constant family \(\mathsf{Anom}_G(K;\theta)\) (Definition \ref{def:pom-anom-signature}).
+Therefore in this paper's closed-layer primitives framework, gauge field can be defined without a priori continuous fiber bundles/Lie groups: it is minimally given by discrete parallel transports \((E_m,\mathrm{LIFT}_G)\) and their curvature certificate \(\mathsf{Anom}_G\).
+The cohomology invariance of Corollary \ref{cor:pom-anom-cohomology-class} corresponds to the fact that ``changing reduction gauge (discrete gauge choice) changes only a coboundary, not whether curvature is zero''.
+\end{remark}
+
+\begin{remark}[Toward completion: critical pairs determine additional anomaly generators]\label{rem:pom-anom-completion}
+The engineering implication of Corollary \ref{cor:pom-anom-cohomology-class} is: when extending the projection word fragment (e.g., adding \(\mathrm{MOM}_q\) or more general lift/cocycle), one only needs to enumerate critical pairs between new and old generators and perform completion on the rewrite system; newly appearing ``non-strict commutativity'' will automatically manifest as \(\mathcal{A}\)-valued labels; anomaly signature thus becomes a composable residual cluster, rather than ad hoc patches for individual rules.
+For example, in the four-generator extension, the new coupling of \(\mathrm{MOM}_q\) and \(\mathrm{LIFT}_G\) is uniformly reduced by \((\mathrm{RMOML})\) (Proposition \ref{prop:pom-rmoml-sound}), while its constant-layer auditable fingerprint is organized by the higher-order anomaly signature tower \(\mathsf{Anom}^{(q)}_G\) (Definition \ref{def:pom-anom-signature-tower}).
+Bounded critical pair enumeration and completion audit on the three-generator fragment see Remark \ref{rem:pom-threegen-kb-completion-audit}.
+\end{remark}
+
+\begin{proposition}[Moment anomaly amplification law (\texorpdfstring{$q$}{q}-fold gap amplification)]\label{prop:pom-anom-moment-amplification}
+In the four-generator extension fragment (Definition \ref{def:pom-four-gen-rewrite-rules}), take any three-generator projection word \(w\).
+Extend the ``central label accumulation'' framework of Definition \ref{def:pom-anom-accumulation} canonically to reduction trajectories involving \(\mathrm{MOM}_q\) according to the same reduction certificate norm (i.e., still accumulate \(\mathsf{Anom}_G\) label only at each \(E_m\)--\(\mathrm{LIFT}_G\) residual exchange step, and take quotient by coboundary).
+Then for any integer \(q\ge 2\), the anomaly cohomology class satisfies linear amplification law:
+\[
+\boxed{\;
+[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]
+=
+q\cdot [\mathrm{Anom}(w)].\;}
+\]
+Therefore, if the anomaly class difference of two words is too small at constant level to be numerically verified, one can choose higher-order moment gates to linearly amplify this difference by \(q\), while remaining within the semantic domain of finite-core compilable/auditable.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+According to the fiber-product semantics of \(\mathrm{MOM}_q\), it lifts the underlying orbit constraint to \(q\) parallel synchronized worlds; therefore any reduction certificate trajectory for \(w\) corresponds to ``lift by copy'' \(q\) parallel certificate trajectories on \(\mathrm{MOM}_q\circ w\).
+Since anomaly label group \(\mathcal{A}_G\) has componentwise addition as central operation in Definition \ref{def:pom-anom-accumulation}, and \(\mathrm{anom}\) is strictly additive for vertical composition (Proposition \ref{prop:pom-anom-additive-up-to-boundary}), accumulated labels grow linearly with the number of parallel copies, yielding the stated \(q\)-fold amplification; taking cohomology class eliminates boundary terms, conclusion is independent of reduction path choice. $\qed$
+\end{proof}
+
+\begin{remark}[Reproducible: holonomy/path difference automatic audit]\label{rem:pom-holonomy-cocycle-audit}
+To implement the framework of ``anomaly as \(2\)-cohomology class'' into executable certificates, we provide a minimal holonomy audit script:
+\texttt{scripts/exp\_pom\_holonomy\_cocycle\_audit.py}.
+This script randomly generates several projection words containing \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\), and uses two different rewrite priorities to reduce each to the same normal form candidate;
+then compares
+(i) whether word-level normal forms are consistent,
+and
+(ii) under the selected certificate gauge, whether the holonomy count accumulated by commutation certificates (each \(E_m\)--\(\mathrm{LIFT}_G\) swap) is consistent.
+When detecting discrepancies, the script writes counterexample words, two reduction trajectories, and their holonomy statistics to
+\texttt{artifacts/export/pom\_holonomy\_cocycle\_audit.json},
+for locating critical pairs/boundary corrections needed for completion (Proposition \ref{prop:pom-anom-additive-up-to-boundary}).
+\end{remark}
+
+\begin{remark}[Reproducible: critical pair enumeration and completion audit for three-generator fragment]\label{rem:pom-threegen-kb-completion-audit}
+Remark \ref{rem:pom-holonomy-cocycle-audit} provides ``random words + two reduction priorities'' path difference audit.
+For a more Knuth--Bendix completion-like \emph{exhaustive} audit, we provide script
+\texttt{scripts/exp\_pom\_projword\_three\_gen\_kb\_completion\_audit.py}:
+under fixed complexity bounds (limit \(m\), limit lift group list, limit temperature parameter sampling set) enumerate all length-\(3\) overlap contexts,
+and for each critical pair compare interface normal forms and residual counts of the two local reduction branches.
+Script outputs JSON summary and counterexample trajectories to
+\texttt{artifacts/export/pom\_projword\_three\_gen\_kb\_completion\_audit.json},
+and generates Table \ref{tab:pom_projword_three_gen_kb_completion_audit} as reproducible witness:
+\input{sections/generated/tab_pom_projword_three_gen_kb_completion_audit}
+\noindent Table's \(\#\)NF mismatch being zero means this bounded fragment passes local confluence audit at word level;
+while residual mismatch occurrences correspond to boundary terms in Proposition \ref{prop:pom-anom-additive-up-to-boundary},
+script provides clustered completion candidate corrections by critical pair type in JSON.
+\end{remark}
+
+\begin{proposition}[Confluence is not absolute confluence, but confluence modulo anomaly (bounded audit version)]\label{prop:pom-confluence-mod-anom-audited}
+Within the same complexity bound as Remark \ref{rem:pom-threegen-kb-completion-audit}, the three-generator fragment \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\) satisfies:
+\begin{enumerate}
+  \item \textbf{(Normal form unique)} For any audited overlap critical pair, both local reduction branches can join to the same interface normal form, thus normal form is a path invariant within this complexity class (Table \ref{tab:pom_projword_three_gen_kb_completion_audit}'s \(\#\mathrm{NF\ mismatch}=0\)).
+  \item \textbf{(Residuals differ only by boundary)} Reduction paths may produce different residual labels (Table \ref{tab:pom_projword_three_gen_kb_completion_audit}'s residual mismatch), but their difference must fall into the boundary term (coboundary) of Proposition \ref{prop:pom-anom-additive-up-to-boundary}; therefore the anomaly cohomology class \([\mathrm{Anom}(w)]\) and ``whether anomaly is zero'' are both path invariants (Corollary \ref{cor:pom-anom-cohomology-class}).
+\end{enumerate}
+Therefore, taking the equality relation of projection words as ``normal form consistent + anomaly class consistent'' is natural: changing reduction priority changes only a coboundary, not whether anomaly class is zero.
+\end{proposition}
+
+\begin{definition}[Algorithmic equivalence (normal form + anomaly class)]\label{def:pom-algorithmic-equivalence-nf-anom}
+Within the above complexity bounds, for any two projection words \(w_1,w_2\), define
+\[
+w_1\sim w_2
+\iff
+\mathrm{NF}(w_1)=\mathrm{NF}(w_2)
+\ \text{and}\
+[\mathrm{Anom}(w_1)]=[\mathrm{Anom}(w_2)].
+\]
+Here \(\mathrm{NF}\) can take the interface normal form representative of Proposition \ref{prop:pom-three-gen-interface-normal-form}, while \([\mathrm{Anom}(w)]\) is the anomaly cohomology class determined by Proposition \ref{prop:pom-anom-additive-up-to-boundary} (representative computed under any fixed reduction certificate gauge, quotiented by coboundary).
+In this paper's implementation we fix one normalizer and certificate gauge, thus this equivalence relation can be directly decided by Corollary \ref{cor:pom-three-gen-normal-form-decidable}'s ``normal form parameters + finite anomaly signature audit''.
+\end{definition}
+
+\begin{corollary}[Normal form and finite signature equality for \texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)}]\label{cor:pom-three-gen-normal-form-decidable}
+Fix word complexity bound (e.g., limit \(m\), limit lift group size, limit temperature parameter sampling set).
+Then any projection word generated solely by \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) can be reduced to a class of interface normal forms (see Remark \ref{rem:pom-zeta-normal-form}'s compilation order) with attached finite anomaly signature
+\(
+\mathsf{Anom}_G(K;\theta)
+\)
+finite sampling set.
+Therefore within this complexity class, ``algorithmic equivalence'' (naturality-sense commutativity/isomorphism) reduces to:
+comparing normal form parameters \((u,m,G)\) and comparing whether anomaly signatures are consistent at finitely many sampling points.
+\end{corollary}
+
+\begin{definition}[Conservative semantic functor \texorpdfstring{$\mathsf{Sem}$}{Sem} (bounded complexity slice)]\label{def:pom-conservative-sem-functor}
+Let \(\Theta\) denote a \emph{finite audit slice} of interface parameters in this paper: e.g., fix resolution bound \(m\le m_{\max}\), fix lift group list \(\mathcal{G}_{\max}\) (thus \(|G|\le G_{\max}\)), fix moment order window \(q\le q_{\max}\), and for temperature \(u\in(0,1]\) and potential parameter \(\theta\) take a finite sampling grid.
+Viewing each generator as a \(\Theta\)-family, obtain parameterized projection word \(2\)-category denoted \(\mathbf{PW}*\Theta\).
+\par
+On this slice, define two computable semantic output domains:
+\begin{enumerate}
+  \item \textbf{Signature domain \(\mathbf{Sig}*\Theta\):} Records constant-layer and normal-form-layer auditable fingerprints. For word \(w\) take
+  \[
+  \mathsf{Sig}(w):=\Bigl(\mathrm{NF}(w),\ G^{\mathrm{BC}}_m(w),\ [\mathrm{Anom}(w)],\ \{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\Bigr),
+  \]
+  where \(\mathrm{NF}(w)\) is interface normal form representative (Proposition \ref{prop:pom-three-gen-interface-normal-form}),
+  \(G^{\mathrm{BC}}_m(w)\) is the universal commutative quotient of Definition \ref{def:pom-bc-quotient} (recording ``the maximal group register still visible from \(E_m\) perspective''),
+  \([\mathrm{Anom}(w)]\) is anomaly \(2\)-cohomology class (Proposition \ref{prop:pom-anom-additive-up-to-boundary}),
+  while \(\{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\) is finite sampling signature family (Definition \ref{def:pom-anom-signature}).
+  \item \textbf{Spectral domain \(\mathbf{Spec}*\Theta\):} Records exponential main-scale spectral resource readout. Typical choice is: for each channel parameter \((\chi,u)\) and integer \(q\) output the Perron root of weighted collision moment-kernel
+  \(r^{(w)}_{q,\chi}(u)\), or equivalently the pressure/budget curve \(\Sigma_{\mathrm{space}}(w)(q;\chi,u)\) and its discrete convex closure type normal form \(\mathrm{Ty}_{\mathrm{space}}(w;\chi,u)\) (\S\ref{subsec:pom-spectral-resource-type}).
+\end{enumerate}
+Thus obtain compositional semantic assignment (computable functor on slice)
+\[
+\boxed{\;
+\mathsf{Sem}:\mathbf{PW}*\Theta\longrightarrow \mathbf{Sig}*\Theta\times \mathbf{Spec}*\Theta,\qquad
+\mathsf{Sem}(w):=(\mathsf{Sig}(w),\mathsf{Spec}(w)).\;}
+\]
+\end{definition}
+
+\begin{theorem}[Semantic conservativity on bounded slice (decidable core of natural isomorphism)]\label{thm:pom-sem-conservative-on-slice}
+Within the same complexity bounds as Corollary \ref{cor:pom-three-gen-normal-form-decidable}, \(\mathsf{Sem}\) is conservative: if two words \(w_1,w_2\) satisfy
+\(
+\mathsf{Sem}(w_1)=\mathsf{Sem}(w_2)
+\),
+then there exists invertible \(2\)-morphism (natural isomorphism) such that \(w_1\simeq w_2\); equivalently \(w_1\sim w_2\) (Definition \ref{def:pom-algorithmic-equivalence-nf-anom}).
+\end{theorem}
+
+\begin{proof}
+\(\mathsf{Sem}(w_1)=\mathsf{Sem}(w_2)\) implies signature components equal, in particular \(\mathrm{NF}(w_1)=\mathrm{NF}(w_2)\) and \([\mathrm{Anom}(w_1)]=[\mathrm{Anom}(w_2)]\).
+By Definition \ref{def:pom-algorithmic-equivalence-nf-anom} get \(w_1\sim w_2\), and by decidability framework of Corollary \ref{cor:pom-three-gen-normal-form-decidable} obtain corresponding invertible certificate.
+Spectral component can be viewed as redundant audit in this conclusion (but provides additional discriminating power in subsequent type-directed rewriting and multiscale budget comparison). $\qed$
+\end{proof}
+
+\begin{remark}[Symbolic certificate upgrade: replacing finite sampling with twisted characteristic polynomial]\label{rem:pom-anom-symbolic-certificate}
+The ``finite sampling signature'' of Corollary \ref{cor:pom-three-gen-normal-form-decidable} is engineering-friendly auditable framework;
+if one wishes to further upgrade equivalence to \emph{fully formalized} algebraic equality certificate, one can symbolize twisted channels under fixed complexity bounds:
+for each non-trivial character \(\chi\in\widehat G\setminus\{\chi_0\}\), compile projection word \(w\) (with \(\mathrm{PROJ}_u\) temperature parameter) into finite-dimensional twisted matrix \(M_{\chi}^{(w)}(u)\), and define
+\[
+\Delta_\chi(w;z,u):=\det\bigl(I-z\,M_{\chi}^{(w)}(u)\bigr).
+\]
+In this paper's interface setting, matrix entries are generated by finite graph kernel edge weights (typically powers of \(u\) or finitely generated analytic functions), thus within given complexity class \(\Delta_\chi\) is computable symbolic object (polynomial in \(z\), coefficients in computable algebraic field over \(u\)).
+Once two implementations have completely identical \(\Delta_\chi\) for all non-trivial \(\chi\), the corresponding twisted \(\zeta\) and finite-part constants are identical, thus anomaly signatures identical; at this point ``auditable'' equivalence is upgraded to ``provable'' equivalence.
+\end{remark}
+
+\subsubsection{Computable rewrite system and interface normal form for three generators}\label{subsec:pom-three-gen-rewrite-normal}
+
+This paragraph brings ``semantic interface'' back to word level: gives a suite of rewrite rules depending only on parameters, reducing any projection word generated by
+\(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\)
+to an executable interface normal form, and explicitly collecting non-commutative residuals as anomaly signature (Definition \ref{def:pom-anom-signature}).
+
+\begin{definition}[Rewrite rule family on three-generator fragment]\label{def:pom-three-gen-rewrite-rules}
+In $\mathbf{PW}$ take the subfragment generated solely by \(\mathrm{PROJ}_u\), \(\mathrm{LIFT}_G\), \(E_m\).
+Define rewrite rule family on it as follows (all $2$-morphism certificates, omitting unit and associator isomorphisms):
+\begin{enumerate}
+  \item \textbf{Temperature gate merging (power semigroup):}
+  $$
+  (\mathrm{RPROJ})\quad
+  \mathrm{PROJ}_u\circ \mathrm{PROJ}_v\ \Rightarrow\ \mathrm{PROJ}_{uv}.
+  $$
+  \item \textbf{Lift merging (direct product lift):}
+  $$
+  (\mathrm{RLIFT})\quad
+  \mathrm{LIFT}_G\circ \mathrm{LIFT}_H\ \Rightarrow\ \mathrm{LIFT}_{G\times H}.
+  $$
+  \item \textbf{Conditional expectation tower collapse:}
+  $$
+  (\mathrm{RE})\quad
+  E_{m_1}\circ E_{m_2}\ \Rightarrow\ E_{\min(m_1,m_2)}.
+  $$
+  \item \textbf{Temperature gate and lift commute (weight pullback):}
+  $$
+  (\mathrm{RPL})\quad
+  \mathrm{PROJ}_u\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ \mathrm{PROJ}_u.
+  $$
+  \item \textbf{\(E_m\)--lift exchange with residual:}
+  Using Proposition \ref{prop:pom-em-lift-residual-swap} as certificate framework, reduce \(E_m\circ\mathrm{LIFT}_G\) to \(\mathrm{LIFT}_G\circ E_m\) and output anomaly signature \(\mathsf{Anom}_G(K;\theta)\) as auditable residual.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}[Termination of three-generator rewriting (inverse order measure)]\label{prop:pom-three-gen-termination}
+Take normal order
+\(
+\mathrm{LIFT}\prec \mathrm{PROJ}\prec E
+\).
+For any three-generator projection word \(W\), let \(\ell(W)\) be word length (number of generators), and define \textbf{inverse order measure}
+\[
+\mu(W):=\#\{(i,j):i<j,\ \text{position }i\text{ and position }j\text{'s generators violate order }\prec\}.
+\]
+Then under rule family \ref{def:pom-three-gen-rewrite-rules}, each rewrite strictly decreases lexicographic measure
+\(
+(\ell(W),\mu(W))
+\).
+Therefore rewriting in this fragment necessarily terminates; residual anomaly is recorded as \(2\)-morphism label, not affecting \(1\)-morphism descent measure.
+\end{proposition}
+\begin{proof}
+Rules \((\mathrm{RPROJ}),(\mathrm{RLIFT}),(\mathrm{RE})\) collapse same-type gate compositions into one gate, thus strictly decrease \(\ell(W)\).
+Rule \((\mathrm{RPL})\) and \(E_m\)--\(\mathrm{LIFT}_G\) exchange with residual only change relative order of gates without increasing word length; since they exchange ``inverse pairs'' into proper order, \(\mu(W)\) strictly decreases.
+Therefore each step strictly decreases lexicographic measure \((\ell,\mu)\), no infinite rewrite chain exists. $\qed$
+\end{proof}
+
+\begin{remark}[Reproducible: three-generator normalizer and anomaly signature certificate]\label{rem:pom-projword-threegen-anom-normalizer-demo}
+Script \texttt{scripts/exp\_pom\_projword\_three\_gen\_anom\_normalizer.py} implements minimal three-generator rewrite fragment of Definition \ref{def:pom-three-gen-rewrite-rules}:
+it reduces any projection word generated by \texttt{E[m]}, \texttt{PROJ[u]}, \texttt{LIFT[G]} to interface normal form
+\(\mathrm{LIFT}\circ\mathrm{PROJ}\circ E\) (Proposition \ref{prop:pom-three-gen-interface-normal-form}),
+and at each \(E_m\)--\(\mathrm{LIFT}_G\) exchange outputs a commutation certificate with residual term
+(interface \(\mathsf{Anom}_G(K;\theta)\), Definition \ref{def:pom-anom-signature}).
+This script writes normal form, rewrite trajectory, and certificate list to
+\texttt{artifacts/export/pom\_projword\_three\_gen\_anom\_normalizer\_demo.json},
+as executable witness for ``anomaly signature entering reduction trajectory''.
+\end{remark}
+
+\begin{remark}[On scope of \texorpdfstring{$(\mathrm{RLIFT})$}{RLIFT}]\label{rem:pom-rlift-scope}
+Rule \((\mathrm{RLIFT})\) reflects ``juxtaposed lift of independent axes'': merging two mutually independent finite label lifts into one lift to direct product group.
+In more general group extensions (e.g., non-trivial semidirect products or cocycle twists), corresponding merger law should replace direct product with fiber product/composition of extension data; this paper's auditable implementation mainly uses finite abelian labels and their character decomposition, thus the above formulation suffices to cover numerical interfaces and rewrite examples in this paper.
+\end{remark}
+
+\begin{remark}[Cross anomaly: an auditable condition for \texorpdfstring{$(\mathrm{RLIFT})$}{RLIFT} independence]\label{rem:pom-rlift-cross-anom-test}
+Let \(G,H\) be finite abelian groups, then \(\widehat{G\times H}\cong\widehat G\times\widehat H\).
+For any \((\chi,\psi)\in\widehat G\times\widehat H\), denote by \(\chi\otimes\psi\) the product character on \(G\times H\)
+\((g,h)\mapsto \chi(g)\psi(h)\), and denote \(\chi_0,\psi_0\) the trivial characters.
+Under anomaly signature framework (Definition \ref{def:pom-anom-signature}), define \textbf{cross anomaly} as
+\[
+\Delta^{\mathrm{sep}}_{\chi,\psi}(\theta)
+:=
+\log\mathfrak{M}_{\chi\otimes\psi}(\theta)
+-\log\mathfrak{M}_{\chi\otimes\psi_0}(\theta)
+-\log\mathfrak{M}_{\chi_0\otimes\psi}(\theta),
+\qquad
+\chi\neq\chi_0,\ \psi\neq\psi_0.
+\]
+If semantics of two lifts are truly independent axis juxtaposition (corresponding to \((\mathrm{RLIFT})\)'s direct product lift), then for each sampling parameter \(\theta\) should have
+\(\Delta^{\mathrm{sep}}_{\chi,\psi}(\theta)=0\): equivalently there exists auditable factorization
+\(\zeta_{\theta,\chi\otimes\psi}=\zeta_{\theta,\chi\otimes\psi_0}\cdot \zeta_{\theta,\chi_0\otimes\psi}\)
+on twisted channels,
+thus strict additivity at finite-part constant level.
+Therefore nonzero \(\Delta^{\mathrm{sep}}\) provides an auditable ``cross-axis coupling fingerprint'', indicating lift merger should not be simplified to direct product, but requires introducing extension data (e.g., cocycle/semidirect product) or explicitly leaving coupling in residual term.
+\end{remark}
+
+\begin{proposition}[Interface normal form: reducible order for \texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)}]\label{prop:pom-three-gen-interface-normal-form}
+Under rule family \ref{def:pom-three-gen-rewrite-rules}, any three-generator projection word can be rewritten to the following ``interface normal form'':
+$$
+\boxed{\;
+\mathrm{LIFT}_G\ \circ\ \mathrm{PROJ}_u\ \circ\ E_m
+\;}
+$$
+with accompanying anomaly signature output \(\mathsf{Anom}_G(K;\theta)\) (nonzero when non-commutative residuals exist).
+Furthermore, plugging this normal form into Remark \ref{rem:pom-zeta-normal-form}'s \(\zeta\)/primitive/finite-part compilation convention yields an executable equality-testing procedure from word-level normalization to spectral fingerprint audit.
+\end{proposition}
+
+\begin{proof}
+Rules \((\mathrm{RPROJ}),(\mathrm{RLIFT}),(\mathrm{RE})\) eliminate redundant compositions of same-type gates; rule \((\mathrm{RPL})\) exchanges \(\mathrm{PROJ}_u\) to the right of lift; while exchange of \(E_m\) and lift is given by Proposition \ref{prop:pom-em-lift-residual-swap} (strict commutation when zero anomaly, otherwise output anomaly signature carrying residual).
+Therefore any word can be ordered into \(\mathrm{LIFT}\to \mathrm{PROJ}\to E\) form; then use merger laws to compress multiple occurrences of same-type gates, yielding stated normal form and accompanying anomaly signature. $\qed$
+\end{proof}
+
+\subsubsection{Higher-order cross anomaly and axis factorizability strictification: Möbius complete decomposition}\label{subsec:pom-rlift-higher-cross-anom}
+
+Remark \ref{rem:pom-rlift-cross-anom-test} gives two-body cross anomaly \(\Delta^{\mathrm{sep}}\) as necessary audit condition for \((\mathrm{RLIFT})\) independence.
+When number of juxtaposed lift axes \(k\ge 3\), to obtain \emph{sufficient and necessary} computable discrimination, one needs to introduce full-order anomaly family \(\{\Delta_S\}_{|S|\ge 2}\) on boolean sublattice, and strictify ``Euler/direct product factorizability'' into a Möbius inversion identity.
+
+\begin{definition}[Higher-order cross anomaly family \texorpdfstring{$\Delta_S$}{DeltaS}]\label{def:pom-higher-cross-anomaly}
+Take \(k\ge 2\), let \(G_1,\dots,G_k\) be finite abelian groups, denote
+\[
+G:=\prod_{i=1}^k G_i,
+\qquad
+\widehat G\cong \prod_{i=1}^k \widehat{G_i}.
+\]
+For each sampling parameter \(\theta\) and each \(\chi\in\widehat G\), suppose given Abel/Hadamard finite-part constant \(\log\mathfrak{M}_{\chi}(\theta)\in\RR\), and stipulate normalization
+\[
+\log\mathfrak{M}_{\chi^0}(\theta)=0,
+\qquad
+\chi^0:=(\chi_{1,0},\dots,\chi_{k,0})
+\]
+(trivial characters in each coordinate).
+Let \([k]:=\{1,\dots,k\}\).
+For any nonempty subset \(S\subseteq[k]\) and any sub-tuple \(\chi_S=(\chi_i)_{i\in S}\in\prod_{i\in S}\widehat{G_i}\), define \(S\)-order cross anomaly as
+\[
+\Delta_S(\chi_S;\theta)
+:=\sum_{T\subseteq S}(-1)^{|S|-|T|}\,\log\mathfrak{M}_{\chi^{(T)}}(\theta),
+\]
+where \(\chi^{(T)}\in\widehat G\) denotes: coordinate \(i\in T\) takes \(\chi_i\), coordinate \(i\notin T\) takes trivial character \(\chi_{i,0}\).
+When \(|S|=2\), this definition agrees with \(\Delta^{\mathrm{sep}}\) of Remark \ref{rem:pom-rlift-cross-anom-test} (under normalization \(\log\mathfrak{M}_{\chi^0}=0\)).
+\end{definition}
+
+\begin{theorem}[Möbius complete decomposition]\label{thm:pom-mobius-complete-decomposition}
+Under setting of Definition \ref{def:pom-higher-cross-anomaly}, for any \(\chi=(\chi_1,\dots,\chi_k)\in\widehat G\) and any \(\theta\), the identity holds
+\[
+\boxed{\;
+\log\mathfrak{M}_\chi(\theta)
+=\sum_{\varnothing\neq S\subseteq[k]}\Delta_S(\chi_S;\theta)\; }.
+\]
+\end{theorem}
+\begin{proof}
+This identity is equivalent to Möbius inversion on boolean lattice points.
+Let \(f(\chi):=\log\mathfrak{M}_\chi(\theta)\) (fix \(\theta\)).
+For each coordinate \(i\in[k]\) define difference operator
+\[
+(\delta_i f)(\chi):=f(\chi)-f(\chi^{(i\mapsto 0)}),
+\]
+and for any nonempty \(S\subseteq[k]\) let \(\delta_S:=\prod_{i\in S}\delta_i\) (operators commute).
+Expanding gives
+\(
+(\delta_S f)(\chi^{(S)})=\sum_{T\subseteq S}(-1)^{|S|-|T|}f(\chi^{(T)})
+\),
+thus \(\Delta_S(\chi_S;\theta)=(\delta_S f)(\chi^{(S)})\).
+On other hand,
+\[
+\mathrm{Id}=\prod_{i=1}^k\bigl((\mathrm{Id}-\delta_i)+\delta_i\bigr)
+=\sum_{S\subseteq[k]}\delta_S\prod_{i\notin S}(\mathrm{Id}-\delta_i).
+\]
+Apply to \(f\) and evaluate at \(\chi\); using \(f(\chi^0)=0\) and coordinatewise annihilation effect of \(\prod_{i\notin S}(\mathrm{Id}-\delta_i)\), get
+\(
+f(\chi)=\sum_{\varnothing\neq S\subseteq[k]}(\delta_S f)(\chi^{(S)})
+\),
+i.e., stated decomposition. $\qed$
+\end{proof}
+
+\begin{theorem}[Sufficient and necessary condition for axis factorizability strictification]\label{thm:pom-axis-decomposability-iff}
+Under above setting, the following two conditions are equivalent:
+\begin{enumerate}
+  \item \textbf{(Axis factorizability)} There exist function families \(L_i:\widehat{G_i}\to\RR\) (satisfying \(L_i(\chi_{i,0})=0\)), such that for all \(\chi\in\widehat G\)
+  \[
+  \log\mathfrak{M}_{\chi}(\theta)=\sum_{i=1}^k L_i(\chi_i).
+  \]
+  \item \textbf{(All higher-order cross anomalies vanish)} For all \(|S|\ge 2\) and all \(\chi_S\),
+  \[
+  \Delta_S(\chi_S;\theta)=0.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\((1)\Rightarrow(2)\): If \(\log\mathfrak{M}_\chi(\theta)=\sum_i L_i(\chi_i)\), then when \(|S|\ge 2\),
+\(\Delta_S\) is difference over at least two coordinates, must be zero.
+\par
+\((2)\Rightarrow(1)\): By Theorem \ref{thm:pom-mobius-complete-decomposition},
+\[
+\log\mathfrak{M}_\chi(\theta)=\sum_{i=1}^k\Delta_{\{i\}}(\chi_i;\theta)+\sum_{|S|\ge 2}\Delta_S(\chi_S;\theta).
+\]
+Under (2) second term vanishes, let \(L_i(\chi_i):=\Delta_{\{i\}}(\chi_i;\theta)\) yields (1). $\qed$
+\end{proof}
+
+\begin{proposition}[Pairwise audit insufficient: existence of pure three-body coupling]\label{prop:pom-pairwise-cross-anom-insufficient}
+When \(k\ge 3\), verifying all two-body cross anomalies \(\Delta_{\{i,j\}}\equiv 0\) cannot imply axis factorizability.
+\end{proposition}
+\begin{proof}
+Take each \(\widehat{G_i}\) containing one non-trivial element \(a_i\), and under fixed \(\theta\) define function
+\[
+\log\mathfrak{M}_{\chi}(\theta):=
+\begin{cases}
+1, & \chi=(a_1,a_2,a_3,\chi_{4,0},\dots,\chi_{k,0}),\\
+0, & \text{otherwise}.
+\end{cases}
+\]
+Then any two-body section (remaining coordinates trivial) has function identically \(0\), thus \(\Delta_{\{i,j\}}\equiv 0\);
+but \(\Delta_{\{1,2,3\}}(a_1,a_2,a_3;\theta)=1\neq 0\), so by Theorem \ref{thm:pom-axis-decomposability-iff} not factorizable. $\qed$
+\end{proof}
+
+\begin{remark}[Alignment with prime-register limit: auditable discrimination of Euler factorizability]\label{rem:pom-higher-cross-anom-euler}
+Under prime-register limit framework \(\widehat{\ZZ}\cong\prod_p\ZZ_p\) (Definition \ref{def:pom-profinite}),
+if \(\log\mathfrak{M}\) is viewed as constant-level payload of multi-axis (multi-prime or multi-direct-product component) juxtaposed lift,
+then Theorem \ref{thm:pom-axis-decomposability-iff}'s ``all-order cross anomalies vanish''
+is precisely the sufficient and necessary condition to strictify merger law to direct product (Euler type restricted product factorization) \emph{without introducing} cocycle/semidirect product extension data;
+Proposition \ref{prop:pom-pairwise-cross-anom-insufficient} shows two-body audit \(\Delta^{\mathrm{sep}}\) is only necessary condition in multi-axis case.
+\end{remark}
+\input{parts/subsec__pom-mom-rewrite-normal}

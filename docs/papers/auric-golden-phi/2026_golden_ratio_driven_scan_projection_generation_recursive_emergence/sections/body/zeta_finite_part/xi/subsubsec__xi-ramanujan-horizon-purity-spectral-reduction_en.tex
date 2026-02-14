@@ -1,0 +1,178 @@
+\subsubsection{Ramanujan--Horizon Symmetry Framework: Zero ``Horizon Purity'' Criterion and an Executable Spectral Reduction}\label{subsubsec:xi-ramanujan-horizon-purity-spectral-reduction}
+This paragraph corresponds to the structural reduction on ``horizon purity criterion and spectral reduction'' in the overview subsection \ref{subsubsec:xi-ramanujan-horizon-ledger-framework}: on top of two existing interfaces, it extracts three complementary structural conclusions and organizes them into a directly citable closed loop: the first reduces RH entirely to the vanishing of a single scalar Jensen defect at the horizon limit; the second translates the ``unit circle root/Ramanujan'' condition for finite-dimensional self-inversive completion polynomials into the same defect vanishing criterion; the third uses the Hurwitz zero theorem in the sense of complex analysis to reduce ``constructing a sequence of horizon-pure approximating objects'' to a sufficient condition for RH. The above conclusions are all closed within the existing numbered chain of the manuscript: the diskified completion and Jensen defect appear in Appendix \ref{app:unit-circle-phase-gate}, \S\ref{subsec:unit-disk-jensen-defect}; the Ramanujan phase lift principle appears in \S\ref{subsubsec:ramanujan-phase-lift-symmetry}; and the fixed-slice support and Blaschke/point spectrum defect appear in \S\ref{subsubsec:selfdual-blaschke-defect-fixed-slice}.
+\par
+To avoid ambiguity, the Hurwitz/Markov approximation framework used in Section \ref{sec:principles} and the Hurwitz \emph{zero theorem} (complex analysis) used in this paragraph belong to different contexts; ``Hurwitz'' in this paragraph always refers to the latter.
+
+\paragraph{Notation and Horizon Compactification}
+Following the diskified completion interface of Appendix \ref{app:unit-circle-phase-gate}: the Cayley compactification \(\mathcal{C}:\mathbb{H}\to\mathbb{D}\) and its inverse are given by \eqref{eq:app-cayley-disk},
+and let
+\begin{equation}\label{eq:xi-ramanujan-horizon-s-of-w}
+s(w):=\frac12+\mathrm{i}\,\mathcal{C}^{-1}(w)\qquad(w\in\mathbb{D}),
+\end{equation}
+so that the diskified completion function
+\begin{equation}\label{eq:xi-ramanujan-horizon-Fzeta}
+F_{\zeta}(w):=\Xi_{\zeta}\!\bigl(s(w)\bigr)\qquad(w\in\mathbb{D})
+\end{equation}
+is analytic in \(\mathbb{D}\) (Appendix equation \eqref{eq:app-Fzeta-disk}).
+For \(0<\varrho<1\), the Jensen defect (Definition \ref{def:app-jensen-defect}) is
+\begin{equation}\label{eq:xi-ramanujan-horizon-jensen-defect}
+D_{\zeta}(\varrho)
+:=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|F_{\zeta}(\varrho e^{\mathrm{i}\theta})\bigr|\,\dd\theta-\log|F_{\zeta}(0)|\ \in\RR_{\ge 0}.
+\end{equation}
+In the terminology of this paper, \(D_{\zeta}(\varrho)\) can be understood as the ``horizon entropy defect'' at the horizon layer \(|w|=\varrho\); this terminology is used solely for aligning the expository language and is not involved in the proofs.
+
+\begin{theorem}[Single-Scalar ``Horizon Purity'' Criterion for RH]\label{thm:xi-horizon-purity-criterion}
+The following statements are equivalent:
+\begin{enumerate}
+  \item[(i)] RH holds;
+  \item[(ii)] \(\displaystyle \lim_{\varrho\uparrow 1}D_{\zeta}(\varrho)=0\);
+  \item[(iii)] \(\displaystyle \limsup_{\varrho\uparrow 1}D_{\zeta}(\varrho)=0\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(i)\(\Rightarrow\)(ii).}
+By Corollary \ref{cor:app-rh-iff-jensen-defect-zero}, RH holds if and only if \(D_{\zeta}(\varrho)\equiv 0\) on \((0,1)\), whence \(\lim_{\varrho\uparrow 1}D_{\zeta}(\varrho)=0\).
+\par
+\textbf{(ii)\(\Rightarrow\)(iii).}
+Obvious.
+\par
+\textbf{(iii)\(\Rightarrow\)(i).}
+Suppose, toward a contradiction, that RH fails. By Theorem \ref{thm:app-rh-iff-disk-zero-free}, there exists a disk-interior zero \(a\in\mathbb{D}\) with \(F_{\zeta}(a)=0\).
+Then by Proposition \ref{prop:app-jensen-single-zero-lower-bound} (single-zero Jensen lower bound),
+\[
+\liminf_{\varrho\uparrow 1}D_{\zeta}(\varrho)\ \ge\ \log(1/|a|)\ >\ 0,
+\]
+contradicting \(\limsup_{\varrho\uparrow 1}D_{\zeta}(\varrho)=0\).
+Therefore no disk-interior zeros exist, i.e., \(F_{\zeta}\) has no zeros in \(\mathbb{D}\); by Theorem \ref{thm:app-rh-iff-disk-zero-free}, RH holds. \qed
+\end{proof}
+
+\begin{remark}[Alignment with the Auditable Certificate Chain]\label{rem:xi-horizon-purity-audit-alignment}
+The content of Theorem \ref{thm:xi-horizon-purity-criterion} is equivalent to Appendix Theorem \ref{thm:app-rh-iff-jensen-defect-vanishing-sequence}; its utility lies in: compressing ``disk-interior zero events'' entirely into the boundary limit behavior of the single-parameter scalar \(D_{\zeta}(\varrho)\), and being formally isomorphic to the certificate chain ``defect upper bound sequence \(\Rightarrow\) repulsion radius tending to one \(\Rightarrow\) RH'' (Theorem \ref{thm:dephys-defect-repulsion-radius}) in the main text.
+\end{remark}
+
+\paragraph{Horizon Entropy Form of the Ramanujan Spectral Bound: Jensen Criterion for Self-Inversive Polynomials}
+To align the finite-dimensional Ramanujan/RH-sharp ``unit circle root'' condition with the defect criterion, we introduce the polynomial-level Jensen defect.
+
+\begin{definition}[Jensen Defect of a Polynomial]\label{def:xi-poly-jensen-defect}
+Let \(P(y)\in\CC[y]\) be a nonzero polynomial with \(P(0)\neq 0\).
+For \(0<\varrho<1\) define
+\[
+D_{P}(\varrho)
+:=\frac{1}{2\pi}\int_{0}^{2\pi}\log\bigl|P(\varrho e^{\mathrm{i}\theta})\bigr|\,\dd\theta-\log|P(0)|.
+\]
+\end{definition}
+
+\begin{theorem}[``Horizon Entropy'' Criterion for Self-Inversive Completion Polynomials]\label{thm:xi-selfinversive-jensen-criterion}
+Let \(P(y)\in\CC[y]\) be a self-inversive polynomial: there exist \(\phi\in\RR\) and \(d=\deg P\) such that
+\begin{equation}\label{eq:xi-selfinversive}
+y^{d}\overline{P(1/\overline{y})}=e^{\mathrm{i}\phi}P(y).
+\end{equation}
+Assume \(P(0)\neq 0\).
+Let \(D_P(\varrho)\) be as in Definition \ref{def:xi-poly-jensen-defect}.
+Then the following are equivalent:
+\begin{enumerate}
+  \item[(i)] All zeros of \(P\) satisfy \(|y|=1\);
+  \item[(ii)] \(D_{P}(\varrho)\equiv 0\) for all \(0<\varrho<1\);
+  \item[(iii)] \(\displaystyle \lim_{\varrho\uparrow 1}D_{P}(\varrho)=0\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(i)\(\Rightarrow\)(ii).}
+If all zeros of \(P\) lie on \(|y|=1\), then for any \(\varrho<1\), the disk \(|y|<\varrho\) contains no zeros.
+By the Jensen summation formula of Proposition \ref{prop:app-jensen-formula-defect} (applied to the analytic function \(P\) in \(|y|<\varrho\)), \(D_P(\varrho)=0\).
+\par
+\textbf{(ii)\(\Rightarrow\)(iii).} Obvious.
+\par
+\textbf{(iii)\(\Rightarrow\)(i).}
+If there exists a zero \(a\) with \(|a|<1\), then by Proposition \ref{prop:app-jensen-single-zero-lower-bound} (applied to \(F=P\)), for any \(\varrho\in(|a|,1)\),
+\(
+D_P(\varrho)\ge \log(\varrho/|a|)
+\), whence
+\(
+\liminf_{\varrho\uparrow 1}D_P(\varrho)\ge \log(1/|a|)>0
+\), contradicting (iii); hence \(P\) has no zeros in \(|y|<1\).
+\par
+By the self-inversive condition \eqref{eq:xi-selfinversive}, if \(b\) is a zero with \(|b|>1\), then \(1/\overline{b}\) is also a zero with \(|1/\overline{b}|<1\), contradicting ``no zeros inside the disk''; hence there are also no zeros with \(|y|>1\).
+Therefore all zeros of \(P\) must satisfy \(|y|=1\). \qed
+\end{proof}
+
+\begin{corollary}[Defect Translation for Finite-Dimensional Toy-RH/Ramanujan]\label{cor:xi-finite-ramanujan-defect-translation}
+In the completion framework of \S\ref{subsec:xi-completion-audit}, the completion polynomial \(\Phi_L\) is self-inversive (Proposition \ref{prop:xi-rh-cohn-derivative}).
+Therefore, the ``unit circle root criterion'' for \(\Xi\)-RH (Corollary \ref{cor:xi-rh-unit-circle-reciprocal}) can be equivalently rewritten as \(\Phi_L\) having Jensen defect \(D_{\Phi_L}(\varrho)\equiv 0\) (or \(\lim_{\varrho\uparrow 1}D_{\Phi_L}(\varrho)=0\)).
+This equivalence is isomorphic to the ``Ramanujan spectral bound \(\Leftrightarrow\) phase closure'' of \S\ref{subsubsec:ramanujan-phase-lift-symmetry}: both translate spectral-side constraints into verifiable criteria of ``no radial/amplitude leakage,'' rather than coordinate axis permutations.
+\end{corollary}
+
+\paragraph{Spectral Approximation to RH: Reduction via the Hurwitz Zero Theorem}
+The following reduction reformulates ``proving RH'' as an actionable constructive problem: in the disk completion framework, construct a sequence of objects with no zeros in \(\mathbb{D}\) and prove that they converge uniformly on compact subsets to \(F_{\zeta}\).
+
+\begin{theorem}[Ramanujan--Horizon Approximation Principle: Hurwitz Zero Theorem Reduction]\label{thm:xi-hurwitz-horizon-reduction}
+Let \(\{F_N\}_{N\ge 1}\) be a sequence of analytic functions \(F_N:\mathbb{D}\to\CC\) satisfying:
+\begin{enumerate}
+  \item \textbf{(Horizon purity)} For each \(N\), \(F_N\) has no zeros in \(\mathbb{D}\);
+  \item \textbf{(Self-dual completion consistency)} Each \(F_N\) arises from a self-dual completion determinant/kernel object (so that its duality involution and boundary reality are compatible with the unitary slice framework of this paper; see \S\ref{subsec:xi-completion-audit});
+  \item \textbf{(Locally uniform convergence)} \(F_N\to F_{\zeta}\) uniformly on every compact subset of \(\mathbb{D}\), where \(F_{\zeta}\) is defined by \eqref{eq:xi-ramanujan-horizon-Fzeta}.
+\end{enumerate}
+Then RH holds.
+\end{theorem}
+
+\begin{proof}
+By the Hurwitz zero theorem (complex analysis; see \cite[Chapter~4]{Ahlfors1979ComplexAnalysis}): if a sequence of analytic functions converges locally uniformly in a domain and each function has no zeros in that domain, then the limit function is either identically zero or also has no zeros.
+By Appendix \ref{app:unit-circle-phase-gate}, \(F_{\zeta}(0)=\Xi_{\zeta}(-\tfrac12)\neq 0\), so \(F_{\zeta}\not\equiv 0\).
+Therefore \(F_{\zeta}\) has no zeros in \(\mathbb{D}\).
+By Theorem \ref{thm:app-rh-iff-disk-zero-free}, RH holds. \qed
+\end{proof}
+
+\paragraph{Positivity Closure to RH: Limit Transfer of the Carath\'eodory Class}
+Appendix \ref{subsubsec:app-horizon-weyl-carath-toeplitz} establishes: RH is equivalent to the horizon Carath\'eodory logarithmic derivative function \(\mathscr{C}_{\zeta}\) (defined by \eqref{eq:app-horizon-carath-def}) having positive real part in the unit disk (Corollary \ref{cor:app-horizon-carath-rh}).
+Therefore, if one can construct a sequence of Carath\'eodory functions in the finite-dimensional Ramanujan (finite atomic/finite-dimensional unitary spectrum) framework that approximates \(\mathscr{C}_{\zeta}\), then RH follows directly from positivity closure.
+The following theorem provides the rigorous form of this closure principle.
+
+\begin{theorem}[Ramanujan--Horizon Limit Closure Principle: Locally Uniform Closure of the Carath\'eodory Class]\label{thm:xi-horizon-carath-closure}
+Let \(\{\mathscr{C}_N\}_{N\ge 1}\) be a sequence of functions analytic on \(\mathbb{D}\) satisfying
+\[
+\Re \mathscr{C}_N(w)\ge 0,\qquad w\in\mathbb{D}\quad(\forall N\ge 1).
+\]
+If \(\mathscr{C}_N\to \mathscr{C}\) uniformly on every compact subset of \(\mathbb{D}\), then \(\mathscr{C}\) is also analytic on \(\mathbb{D}\) and satisfies \(\Re \mathscr{C}(w)\ge 0\) (\(w\in\mathbb{D}\)), so \(\mathscr{C}\) is a Carath\'eodory function.
+\end{theorem}
+
+\begin{proof}
+By compact uniform convergence, \(\mathscr{C}\) is analytic in \(\mathbb{D}\) (Weierstrass theorem).
+For any fixed \(w\in\mathbb{D}\), from \(\Re \mathscr{C}_N(w)\ge 0\) and \(\mathscr{C}_N(w)\to \mathscr{C}(w)\), we obtain \(\Re \mathscr{C}(w)=\lim_{N\to\infty}\Re \mathscr{C}_N(w)\ge 0\).
+\qed
+\end{proof}
+
+\begin{corollary}[Finite-Dimensional Ramanujan Certificate Sequence \texorpdfstring{$\Rightarrow$}{=>} RH: An Auditable Route]\label{cor:xi-finite-ramanujan-carath-implies-rh}
+If there exists a sequence of finite positive atomic measures \(\mu_N\) (\(N\ge 1\)) satisfying the self-dual symmetry
+\[
+\mu_N\circ(\xi\mapsto\xi^{-1})^{-1}=\mu_N,
+\]
+and defining their Carath\'eodory transforms
+\[
+\mathscr{C}_N(w):=\int_{\TT}\frac{\xi+w}{\xi-w}\,\dd\mu_N(\xi),\qquad w\in\mathbb{D},
+\]
+with \(\mathscr{C}_N\to \mathscr{C}_{\zeta}\) uniformly on every compact subset of \(\mathbb{D}\), then RH holds.
+\end{corollary}
+
+\begin{proof}
+By the general theory of \eqref{eq:app-horizon-herglotz-disk} (or directly from the positive real part of the kernel \(\frac{\xi+w}{\xi-w}\)), each \(\mathscr{C}_N\) is a Carath\'eodory function.
+By Theorem \ref{thm:xi-horizon-carath-closure}, \(\mathscr{C}_{\zeta}\) is also Carath\'eodory; by Corollary \ref{cor:app-horizon-carath-rh}, RH follows. \qed
+\end{proof}
+
+\paragraph{Closed-Loop Summary (Structural Equivalence, Not Rhetoric)}
+Theorem \ref{thm:xi-horizon-purity-criterion} compresses RH into a single-scalar limit criterion for the Jensen defect;
+Theorem \ref{thm:xi-selfinversive-jensen-criterion} provides the isomorphic defect criterion for finite-dimensional self-inversive completion objects, aligned with the toy-RH/Ramanujan unit circle root criterion in Corollary \ref{cor:xi-finite-ramanujan-defect-translation};
+Theorem \ref{thm:xi-hurwitz-horizon-reduction} upgrades ``constructing horizon-pure Ramanujan approximations'' to a sufficient condition for RH;
+Theorem \ref{thm:xi-horizon-carath-closure} provides a parallel limit transfer principle via positivity closure: if one can construct a sequence of finite-dimensional Carath\'eodory/Ramanujan objects converging compact-uniformly to \(\mathscr{C}_{\zeta}\) in \(\mathbb{D}\), then RH follows directly from Corollary \ref{cor:app-horizon-carath-rh}.
+In the protocol-semantic language of this paper, these conclusions together yield an auditable closed loop:
+\[
+\text{Self-dual (fixed slice)}\ +\ \text{Ramanujan phase lift (spectral bound)}
+\ \Longrightarrow\
+\text{Horizon purity (defect vanishing)}
+\ \Longrightarrow\
+\text{No disk-interior zeros}
+\ \Longrightarrow\
+\text{RH}.
+\]
+\endinput
