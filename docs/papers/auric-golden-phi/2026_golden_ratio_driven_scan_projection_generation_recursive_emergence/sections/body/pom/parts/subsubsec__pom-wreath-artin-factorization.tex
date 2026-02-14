@@ -100,6 +100,52 @@ e_\lambda=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\sigma
 均可在不构造高维并行自动机的前提下由低阶碰撞矩直接恢复。
 \end{corollary}
 
+\input{subsubsec__pom-schur-character-sieve-thermodynamic}
+
+\begin{theorem}[Schur--Chebotarev：非平凡 Schur 通道的 prime-shadow 偏差由角色断层成像锁定]\label{thm:pom-schur-chebotarev-prime-deviation}
+固定整数 \(q\ge2\)，并沿用定理 \ref{thm:pom-schur-cycle-index-tomography} 的 Schur 分解
+\(
+A_q\cong\bigoplus_{\lambda\vdash q}(B_{q,\lambda}\otimes I_{f^\lambda})
+\)。
+对每个通道定义 primitive 轨道数
+\[
+p_{n,\lambda}:=\frac{1}{n}\sum_{m\mid n}\mu(m)\,\Tr\!\bigl(B_{q,\lambda}^{\,n/m}\bigr),
+\qquad
+\Pi_\lambda(N):=\sum_{n\le N}p_{n,\lambda}.
+\]
+令 \(\rho_q:=\rho(B_{q,(q)})\) 为平凡通道的 Perron 根，并令
+\[
+\Lambda_{q,\lambda}:=
+\begin{cases}
+\max\{|\mu|:\ \mu\in\mathrm{spec}(B_{q,(q)}),\ \mu\neq \rho_q\}, & \lambda=(q),\\[2pt]
+\rho(B_{q,\lambda}), & \lambda\neq(q).
+\end{cases}
+\]
+则对每个 \(\lambda\vdash q\) 存在常数 \(C_{q,\lambda}>0\) 使对所有 \(N\ge2\) 有
+\[
+\boxed{\;
+\Pi_\lambda(N)
+=\mathbf 1_{\{\lambda=(q)\}}\sum_{n\le N}\frac{\rho_q^{\,n}}{n}
++O\!\left(\frac{C_{q,\lambda}\,\Lambda_{q,\lambda}^{\,N}}{N}\right)\; }.
+\]
+并且误差项中的指数率 \(\Lambda_{q,\lambda}\) 与通道迹序列 \(\{T_{q,\lambda}(m)\}_{m\ge1}\)（从而与 \(\{S_r(m)\}_{1\le r\le q}\)）在原则上可相互恢复（命题 \ref{prop:pom-moment-genfunc-jordan} 与定理 \ref{thm:pom-schur-cycle-index-tomography}）。
+因此非平凡 Schur 通道的 prime-shadow 计数本质上是“纯误差项”，其指数率完全由 \(\rho(B_{q,\lambda})\) 决定；特别地，near-RH 过临界事件
+\(
+\rho(B_{q,\lambda})>\sqrt{\rho_q}
+\)
+等价于某一非平凡通道的 prime-shadow 偏差穿越平方根门槛。
+\end{theorem}
+\begin{proof}
+由有限维显式公式模板（注 \ref{prop:finite-dimensional-explicit-formula}），\(p_{n,\lambda}\) 是 \(\Tr(B_{q,\lambda}^n)\) 的 Möbius 线性组合。
+当 \(\lambda=(q)\) 时，\(B_{q,(q)}\) 为 primitive 非负通道块，故
+\(
+\Tr(B_{q,(q)}^n)=\rho_q^{\,n}+O(\Lambda_{q,(q)}^{\,n})
+\)
+并由 \(p_{n,(q)}=\rho_q^{\,n}/n+O(\Lambda_{q,(q)}^{\,n}/n)\) 得到累积式。
+当 \(\lambda\neq(q)\) 时，\(B_{q,\lambda}\) 的谱半径为 \(\rho(B_{q,\lambda})=\Lambda_{q,\lambda}\)，从而 \(|\Tr(B_{q,\lambda}^n)|\ll \Lambda_{q,\lambda}^{\,n}\) 并给出 \(|p_{n,\lambda}|\ll \Lambda_{q,\lambda}^{\,n}/n\) 与所示上界。
+最后一条“由低阶碰撞矩输入恢复通道 prime-shadow”的可计算性来自定理 \ref{thm:pom-schur-cycle-index-tomography}（迹的角色加权显式式）与命题 \ref{prop:pom-moment-genfunc-jordan}（有限阶递推/谱包络可由有限数据核验与恢复）。证毕。
+\end{proof}
+
 \paragraph{冻结熵与 Schur 包络的可验证分离}
 最大纤维达到者的熵率 \(h_\ast\)（定义 \ref{def:pom-max-fiber-entropy-rate}）刻画零温截距与最大集合的指数复杂度（定理 \ref{thm:pom-zero-temperature-two-term-expansion-maxfiber-entropy}），
 而 \(S_q\) 的非平凡 Schur 通道则控制“置换通道的外周谱”。
@@ -151,4 +197,59 @@ e_\lambda=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\sigma
 则对应通道的 \(\zeta\) 函数、极点/零点结构与约化行列式常数均可由有限个 \(m\) 值完全恢复（生成函数有理性；参见命题 \ref{prop:pom-moment-genfunc-jordan} 的同型论证）。
 因此在有限矩阶窗内，near-RH 判别（\(\Delta_q\) 的符号）与常数层异常审计都可还原为有限计算问题。
 \end{corollary}
+
+\begin{conjecture}[Schur 断层的有限支撑原则（稳定尾形）]\label{conj:pom-schur-finite-support}
+在定理 \ref{thm:pom-schur-cycle-index-tomography} 的 \(S_q\)-等变 Schur 分解设定下，
+进一步假设该 \(q\)-并行编译族来自固定隐藏维数 \(s\) 的有限态机制，并满足一种\emph{表示稳定/有限生成}制度：
+存在仅依赖于 \(s\) 的有限分拆族 \(\mathcal{P}_s\)（以“去掉第一行长度”的稳定尾形分类），使得对所有 \(q\ge2\) 与所有 \(\lambda\vdash q\)，若 \(\lambda\) 的稳定尾形不属于 \(\mathcal{P}_s\)，则对应通道块必为零：
+\[
+B_{q,\lambda}=0.
+\]
+因此所有非平凡 Schur 通道的谱半径、\(\zeta\)-型零极结构与 near-RH 判别，皆由 \(\mathcal{P}_s\) 这一有限形状族所控制。
+\end{conjecture}
+
+\begin{corollary}[near-RH 的有限检查原则（在有限支撑假设下）]\label{cor:pom-schur-near-rh-finite-check}
+在猜想 \ref{conj:pom-schur-finite-support} 成立且 near-RH 过临界只能发生在非零 Schur 通道的前提下，
+固定隐藏维数 \(s\) 的类中，“存在某个 \(q\) 使 Schur 包络过临界（\(\Delta_q>0\)）”这一命题在原则上可归约为有限检查：
+只需在某个有限窗内对有限形状族 \(\mathcal{P}_s\) 的通道逐一核验平方根界，即可决定对所有更大 \(q\) 是否仍保持平方根界。
+\end{corollary}
+
+\begin{theorem}[扭点—Schur 双显微镜：单层扭点表决定通道约化常数]\label{thm:pom-torsion-schur-dual-microscope}
+固定整数 \(q\ge2\)，并沿用 Schur 分解
+\(
+A_q\cong\bigoplus_{\lambda\vdash q}(B_{q,\lambda}\otimes I_{f^\lambda})
+\)。
+记 \(\rho_q:=\rho(B_{q,(q)})\) 为平凡通道 Perron 根，并假设 \(\rho_q\) 仅出现在平凡通道（即对一切 \(\lambda\neq(q)\) 有 \(\rho(B_{q,\lambda})<\rho_q\)）。
+对 \(\lambda\vdash q\) 定义通道约化常数
+\[
+\mathcal{M}_{q,\lambda}
+:=
+\det\!\left(I-\frac{B_{q,\lambda}}{\rho_q}\right)^{-1}\qquad(\lambda\neq(q)),
+\qquad
+\mathcal{M}_{q,(q)}
+:=
+\det\nolimits'\!\left(I-\frac{B_{q,(q)}}{\rho_q}\right)^{-1}.
+\]
+并定义单层扭点取值表（\(j=1,\dots,q-1\)）
+\[
+\mathcal{T}_q(j)
+:=
+\zeta_{A_q}\!\left(\frac{\omega_q^j}{\rho_q}\right)
+=
+\det\!\Bigl(I-\frac{\omega_q^{\,j}}{\rho_q}A_q\Bigr)^{-1}.
+\]
+则在以上假设下，数据 \(\{\mathcal{T}_q(j)\}_{j=1}^{q-1}\) 与 \(\mathcal{M}_{q,(q)}\) 共同决定全部非平凡通道常数 \(\{\mathcal{M}_{q,\lambda}\}_{\lambda\neq(q)}\)：
+存在一个显式的有限代数消元程序（仅涉及有限次特征标加权与有限次行列式/系数运算），可将扭点取值表分解为各 Schur 扇区的因子，并逐扇区恢复 \(\mathcal{M}_{q,\lambda}\)。
+\end{theorem}
+\begin{proof}
+由 Schur 分解与行列式的乘法性，有
+\[
+\zeta_{A_q}(z)
+=\prod_{\lambda\vdash q}\det(I-zB_{q,\lambda})^{-f^\lambda}.
+\]
+在 \(z=\omega_q^j/\rho_q\ (j\neq0)\) 处各通道均为解析点（由 \(|\omega_q^j|=1\) 与假设 \(\rho(B_{q,\lambda})<\rho_q\)），从而得到 \(\mathcal{T}_q(j)\) 的通道乘积分解。
+平凡通道在 \(z=1/\rho_q\) 处的简单极点由 \(\det'\) 约化为有限常数 \(\mathcal{M}_{q,(q)}\)，其余通道在该点的取值即为 \(\mathcal{M}_{q,\lambda}\)。
+因此，一旦把 \(\{\mathcal{T}_q(j)\}_{j=1}^{q-1}\) 视作对通道因子在一组单位根点上的采样，并结合特征标加权的 Schur 断层成像（定理 \ref{thm:pom-schur-cycle-index-tomography}）所提供的通道可分解性，便可在有限步内对通道因子作代数消元并恢复 \(\mathcal{M}_{q,\lambda}\)。
+证毕。
+\end{proof}
 
