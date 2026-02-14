@@ -637,6 +637,135 @@ theorem G4C0_nonneg_of_B_bounds
 
 end Problem4QuarticOdd
 
+namespace Problem4QuarticNormalized
+
+/-- Dimensionless odd-mode parameter (same as the quartic `c=0` section). -/
+noncomputable def xNorm (u B : ℝ) : ℝ := Problem4QuarticOdd.xParam u B
+
+/-- Dimensionless even-mode parameter. -/
+noncomputable def yNorm (u c : ℝ) : ℝ := c / (6 * u ^ 2)
+
+/-- Dimensionless quartic Route-1 profile in `(x,y)` coordinates. -/
+noncomputable def psi4 (x y : ℝ) : ℝ :=
+  (x ^ 2 + x * (5 * y + 1) + 2 * y ^ 2 * (1 - y)) / ((1 + y) * (1 - x - y))
+
+theorem xNorm_nonneg (u B : ℝ) (hu : 0 < u) : 0 ≤ xNorm u B := by
+  simpa [xNorm] using Problem4QuarticOdd.xParam_nonneg u B hu
+
+theorem xNorm_add_le_weighted
+    (u1 B1 u2 B2 : ℝ) (hu1 : 0 < u1) (hu2 : 0 < u2) :
+    xNorm (u1 + u2) (B1 + B2)
+      ≤ (u1 / (u1 + u2)) * xNorm u1 B1 + (u2 / (u1 + u2)) * xNorm u2 B2 := by
+  simpa [xNorm] using Problem4QuarticOdd.xParam_add_le_weighted u1 B1 u2 B2 hu1 hu2
+
+theorem yNorm_nonneg_of_nonneg
+    (u c : ℝ) (hu : 0 < u) (hc : 0 ≤ c) :
+    0 ≤ yNorm u c := by
+  unfold yNorm
+  exact div_nonneg hc (by positivity)
+
+theorem yNorm_add_le_weighted
+    (u1 c1 u2 c2 : ℝ)
+    (hu1 : 0 < u1) (hu2 : 0 < u2)
+    (hc1 : 0 ≤ c1) (hc2 : 0 ≤ c2) :
+    yNorm (u1 + u2) (c1 + c2)
+      ≤ (u1 / (u1 + u2)) * yNorm u1 c1
+          + (u2 / (u1 + u2)) * yNorm u2 c2 := by
+  have hu12 : 0 < u1 + u2 := add_pos hu1 hu2
+  have hmain :
+      (c1 + c2) / (u1 + u2) ^ 2
+        ≤ (u1 / (u1 + u2)) * (c1 / u1 ^ 2)
+            + (u2 / (u1 + u2)) * (c2 / u2 ^ 2) := by
+    have haux : 0 ≤ c1 * (u2 / u1) + c2 * (u1 / u2) := by
+      have hA : 0 ≤ c1 * (u2 / u1) := mul_nonneg hc1 (div_nonneg hu2.le hu1.le)
+      have hB : 0 ≤ c2 * (u1 / u2) := mul_nonneg hc2 (div_nonneg hu1.le hu2.le)
+      linarith
+    have hiden :
+        (u1 / (u1 + u2)) * (c1 / u1 ^ 2)
+          + (u2 / (u1 + u2)) * (c2 / u2 ^ 2)
+          - (c1 + c2) / (u1 + u2) ^ 2
+        =
+        (c1 * (u2 / u1) + c2 * (u1 / u2)) / (u1 + u2) ^ 2 := by
+      field_simp [hu1.ne', hu2.ne', hu12.ne']
+      ring
+    have hsq : 0 < (u1 + u2) ^ 2 := sq_pos_of_ne_zero hu12.ne'
+    have hdiff_nonneg :
+        0 ≤
+          (u1 / (u1 + u2)) * (c1 / u1 ^ 2)
+            + (u2 / (u1 + u2)) * (c2 / u2 ^ 2)
+            - (c1 + c2) / (u1 + u2) ^ 2 := by
+      rw [hiden]
+      exact div_nonneg haux hsq.le
+    linarith
+  unfold yNorm
+  have hscale :
+      ((c1 + c2) / (u1 + u2) ^ 2) * (1 / (6 : ℝ))
+        ≤
+      (((u1 / (u1 + u2)) * (c1 / u1 ^ 2)
+          + (u2 / (u1 + u2)) * (c2 / u2 ^ 2)) * (1 / (6 : ℝ))) := by
+    exact mul_le_mul_of_nonneg_right hmain (by norm_num)
+  have hrewrite :
+      (((u1 / (u1 + u2)) * (c1 / u1 ^ 2)
+          + (u2 / (u1 + u2)) * (c2 / u2 ^ 2)) * (1 / (6 : ℝ))) =
+      (u1 / (u1 + u2)) * (c1 / (6 * u1 ^ 2))
+        + (u2 / (u1 + u2)) * (c2 / (6 * u2 ^ 2)) := by
+    ring
+  have hleft :
+      ((c1 + c2) / (u1 + u2) ^ 2) * (1 / (6 : ℝ))
+        = (c1 + c2) / (6 * (u1 + u2) ^ 2) := by
+    field_simp [hu12.ne']
+  calc
+    (c1 + c2) / (6 * (u1 + u2) ^ 2)
+        = ((c1 + c2) / (u1 + u2) ^ 2) * (1 / (6 : ℝ)) := by
+          exact hleft.symm
+    _ ≤
+      (((u1 / (u1 + u2)) * (c1 / u1 ^ 2)
+        + (u2 / (u1 + u2)) * (c2 / u2 ^ 2)) * (1 / (6 : ℝ))) := hscale
+    _ = (u1 / (u1 + u2)) * (c1 / (6 * u1 ^ 2))
+          + (u2 / (u1 + u2)) * (c2 / (6 * u2 ^ 2)) := hrewrite
+
+theorem yNorm_gt_neg_one_of_lFac_pos
+    (u c : ℝ) (hu : 0 < u)
+    (hL : 0 < Problem4QuarticBridge.lFac u c) :
+    -1 < yNorm u c := by
+  have hden : 0 < 6 * u ^ 2 := by positivity
+  have hL' : 0 < 6 * u ^ 2 + c := by
+    simpa [Problem4QuarticBridge.lFac] using hL
+  have hdiv : 0 < (6 * u ^ 2 + c) / (6 * u ^ 2) := div_pos hL' hden
+  have hrew : (6 * u ^ 2 + c) / (6 * u ^ 2) = 1 + c / (6 * u ^ 2) := by
+    field_simp [hden.ne']
+  have hone : 0 < 1 + c / (6 * u ^ 2) := by simpa [hrew] using hdiv
+  unfold yNorm
+  linarith
+
+theorem xNorm_add_yNorm_lt_one_of_qFac_pos
+    (u B c : ℝ) (hu : 0 < u)
+    (hQ : 0 < Problem4QuarticBridge.qFac u B c) :
+    xNorm u B + yNorm u c < 1 := by
+  have hden : 0 < 96 * u ^ 3 := by positivity
+  have hdiv :
+      0 < (96 * u ^ 3 - 16 * u * c - 3 * B ^ 2) / (96 * u ^ 3) := by
+    simpa [Problem4QuarticBridge.qFac] using (div_pos hQ hden)
+  have hrew :
+      (96 * u ^ 3 - 16 * u * c - 3 * B ^ 2) / (96 * u ^ 3)
+        = 1 - yNorm u c - xNorm u B := by
+    unfold yNorm xNorm Problem4QuarticOdd.xParam
+    field_simp [hu.ne']
+    ring
+  have hpos : 0 < 1 - yNorm u c - xNorm u B := by
+    simpa [hrew] using hdiv
+  nlinarith
+
+theorem normalized_bounds_of_chamberPlus
+    (u B c : ℝ) (hu : 0 < u)
+    (hC : Problem4QuarticBridge.chamberPlus u B c) :
+    -1 < yNorm u c ∧ xNorm u B + yNorm u c < 1 := by
+  constructor
+  · exact yNorm_gt_neg_one_of_lFac_pos u c hu hC.1
+  · exact xNorm_add_yNorm_lt_one_of_qFac_pos u B c hu hC.2
+
+end Problem4QuarticNormalized
+
 /-!
   ## Problem 4 (reduction layer): one-gap closure template
 
