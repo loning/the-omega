@@ -1,0 +1,262 @@
+% (User input window)
+% 时间：2026-02-16 01:12:09（Asia/Singapore）
+%
+% 本段将 Hellinger 二体核 \(A(\Delta)\) 由闭式亲和度提升为一条完全谱确定的几何对象：
+% 其 Fourier 密度为 \(\cosh^{-2}(\pi\xi)\)，并诱导一个显式 RKHS 与行列式体积势；
+% 在等距谱下进一步 Toeplitz 化并给出 Szeg\H{o} 极限与 CUE 表示。
+
+\begin{proposition}[Hellinger 平移核的 Fourier 完全闭式：\texorpdfstring{$\cosh^{-2}$}{cosh^{-2}} 为深度二体几何的谱密度]\label{prop:xi-hellinger-kernel-fourier-sech2}
+令尺度单峰核
+\[
+\phi(s)=\frac{1}{4\cosh^{2}(s/2)}\qquad(s\in\RR),
+\]
+并定义 Hellinger 亲和核
+\[
+A(\Delta):=\int_{\RR}\sqrt{\phi(s)\phi(s-\Delta)}\,\dd s
+=\frac{|\Delta|}{2\sinh(|\Delta|/2)}\qquad(\Delta\in\RR).
+\]
+则 \(A\in L^{1}(\RR)\cap C^\infty(\RR)\) 为偶函数。
+在 Fourier 变换约定
+\(
+\widehat f(\xi):=\int_{\RR}e^{-\mathrm{i}\xi x}f(x)\,\dd x
+\)
+下，有严格恒等式
+\[
+\boxed{\;
+\widehat A(\xi)=\int_{\RR}A(\Delta)e^{-\mathrm{i}\xi\Delta}\,\dd\Delta
+=\frac{\pi^{2}}{\cosh^{2}(\pi\xi)}\;}
+\qquad(\xi\in\RR).
+\]
+特别地
+\(
+\int_{\RR}A(\Delta)\,\dd\Delta=\widehat A(0)=\pi^{2}
+\)。
+\end{proposition}
+\begin{proof}
+令
+\(
+f(s):=\sqrt{\phi(s)}=\frac{1}{2\cosh(s/2)}
+\)。
+则
+\(
+A(\Delta)=\int_{\RR}f(s)f(s-\Delta)\,\dd s
+\)
+为 \(f\) 的自相关，因而 \(\widehat A(\xi)=|\widehat f(\xi)|^{2}\)。
+作代换 \(s=2u\) 得
+\[
+\widehat f(\xi)
+=\int_{\RR}\frac{1}{2\cosh(s/2)}e^{-\mathrm{i}\xi s}\,\dd s
+=\int_{\RR}\frac{1}{\cosh u}\,e^{-2\mathrm{i}\xi u}\,\dd u
+=\frac{\pi}{\cosh(\pi\xi)},
+\]
+其中最后一步为 \(\cosh^{-1}\) 的 Fourier 闭式。
+故 \(\widehat A(\xi)=\pi^{2}/\cosh^{2}(\pi\xi)\)。证毕。
+\end{proof}
+
+\begin{proposition}[深度谱的 RKHS 化：\texorpdfstring{$A$}{A} 为严格再生核且 \texorpdfstring{$\det G$}{det G} 为评价函子体积]\label{prop:xi-hellinger-kernel-rkhs-volume}
+沿用命题 \ref{prop:xi-hellinger-kernel-fourier-sech2} 的记号，并记谱密度
+\[
+w(\xi):=\widehat A(\xi)=\frac{\pi^2}{\cosh^2(\pi\xi)}.
+\]
+定义 Hilbert 空间
+\[
+\mathcal H_{A}
+:=\Bigl\{f\in\mathcal S'(\RR):\ \|f\|_{\mathcal H_A}^{2}
+:=\frac{1}{2\pi}\int_{\RR}\frac{|\widehat f(\xi)|^{2}}{w(\xi)}\,\dd\xi
+=\frac{1}{2\pi}\int_{\RR}|\widehat f(\xi)|^{2}\frac{\cosh^{2}(\pi\xi)}{\pi^{2}}\,\dd\xi<\infty\Bigr\}.
+\]
+则对任意 \(x\in\RR\)，评价泛函 \(f\mapsto f(x)\) 在 \(\mathcal H_A\) 上连续。
+令 \(k_x(\cdot):=A(\cdot-x)\)，则 \(k_x\in\mathcal H_A\) 且对所有 \(f\in\mathcal H_A\) 有再生性质
+\[
+\boxed{\;f(x)=\langle f,k_x\rangle_{\mathcal H_A}\;},
+\qquad
+\langle k_x,k_y\rangle_{\mathcal H_A}=A(x-y).
+\]
+给定深度对数谱 \(\boldsymbol{\sigma}=(\sigma_1,\dots,\sigma_\kappa)\)，定义 Gram 矩阵
+\[
+G(\boldsymbol{\sigma})_{jk}:=A(\sigma_j-\sigma_k)\qquad(1\le j,k\le\kappa).
+\]
+则
+\[
+\boxed{\;
+\det G(\boldsymbol{\sigma})
+=\mathrm{Vol}^{2}\bigl(\mathrm{span}\{k_{\sigma_1},\dots,k_{\sigma_\kappa}\}\bigr),\qquad
+S_{1/2}(\boldsymbol{\sigma}):=-\log\det G(\boldsymbol{\sigma}).\;}
+\]
+\end{proposition}
+\begin{proof}
+在 \(\mathcal H_A\) 上定义内积
+\(
+\langle f,g\rangle_{\mathcal H_A}:=\frac{1}{2\pi}\int \widehat f(\xi)\overline{\widehat g(\xi)}\,w(\xi)^{-1}\dd\xi
+\)。
+对 \(k_x(\cdot)=A(\cdot-x)\)，由 Fourier 平移得 \(\widehat{k_x}(\xi)=w(\xi)e^{-\mathrm{i}\xi x}\)，从而 \(k_x\in\mathcal H_A\) 且
+\[
+\langle f,k_x\rangle_{\mathcal H_A}
+=\frac{1}{2\pi}\int_{\RR}\widehat f(\xi)\,e^{\mathrm{i}\xi x}\,\dd\xi
+=f(x),
+\]
+其中最后一步为 Schwartz 分布的 Fourier 反演公式。
+取 \(f=k_x\) 得 \(\langle k_x,k_y\rangle_{\mathcal H_A}=A(x-y)\)。
+最后一式为 Hilbert 空间中 Gram 行列式的几何解释：\(\det(\langle v_j,v_k\rangle)=\mathrm{Vol}^{2}(\mathrm{span}\{v_j\})\)。证毕。
+\end{proof}
+
+\begin{proposition}[Andreief 表示与频域对数气体：\texorpdfstring{$S_{1/2}$}{S_{1/2}} 为外势自由能]\label{prop:xi-hellinger-kernel-andreief-loggas}
+在命题 \ref{prop:xi-hellinger-kernel-rkhs-volume} 的设定下，有严格积分表示
+\[
+\boxed{\;
+\det G(\boldsymbol{\sigma})
+=\frac{1}{\kappa!(2\pi)^{\kappa}}
+\int_{\RR^\kappa}
+\Bigl(\prod_{r=1}^{\kappa} w(\xi_r)\Bigr)\,
+\bigl|\det(e^{-\mathrm{i}\xi_r\sigma_j})_{1\le r,j\le\kappa}\bigr|^{2}
+\ \dd\xi_1\cdots \dd\xi_\kappa.\;}
+\]
+因此 \(S_{1/2}(\boldsymbol{\sigma})\) 等价于一维 \(\beta=2\) 对数相互作用体系在外势
+\(
+V(\xi):=-\log w(\xi)=2\log\cosh(\pi\xi)-\log\pi^{2}
+\)
+下的配分函数自由能；深度谱 \(\boldsymbol{\sigma}\) 以外部相位插值进入 Vandermonde 型体积因子。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:xi-hellinger-kernel-fourier-sech2} 的 Fourier 表示，
+\[
+A(x-y)=\frac{1}{2\pi}\int_{\RR}w(\xi)\,e^{\mathrm{i}\xi(x-y)}\,\dd\xi.
+\]
+令测度 \(\dd\mu(\xi):=w(\xi)\dd\xi/(2\pi)\)，并置
+\(
+F_j(\xi):=e^{-\mathrm{i}\xi\sigma_j}
+\)。
+则 \(G_{jk}=\int F_j(\xi)\overline{F_k(\xi)}\,\dd\mu(\xi)\)。
+由 Andreief 恒等式（亦即 Gram 行列式的积分化）得到
+\[
+\det(G_{jk})
+=\frac{1}{\kappa!}\int_{\RR^\kappa}\bigl|\det(F_j(\xi_r))_{1\le r,j\le\kappa}\bigr|^{2}\,\dd\mu(\xi_1)\cdots\dd\mu(\xi_\kappa),
+\]
+化为所示形式。自由能表述由对数取负得到。证毕。
+\end{proof}
+
+\begin{proposition}[等距深度的 Toeplitz 化：\texorpdfstring{$\cosh^{-2}$}{cosh^{-2}} 的 Poisson 周期和符号]\label{prop:xi-hellinger-toeplitz-symbol-poisson}
+若 \(\sigma_j=\sigma_0+(j-1)\Delta\)（\(\Delta>0\)），则 \(G(\boldsymbol{\sigma})\) 为 Toeplitz 矩阵
+\(
+G_{jk}=A((j-k)\Delta)
+\)。
+其 Toeplitz 符号 \(\sigma_\Delta:[-\pi,\pi]\to(0,\infty)\) 可写为
+\[
+\boxed{\;
+\sigma_\Delta(\theta)
+:=\sum_{n\in\ZZ}A(n\Delta)e^{\mathrm{i}n\theta}
+=\frac{1}{\Delta}\sum_{k\in\ZZ}\frac{\pi^{2}}{\cosh^{2}\!\Bigl(\pi\frac{\theta+2\pi k}{\Delta}\Bigr)}\;}
+\qquad(\theta\in[-\pi,\pi]).
+\]
+\end{proposition}
+\begin{proof}
+Toeplitz 性由 \(G_{jk}=A(\sigma_j-\sigma_k)=A((j-k)\Delta)\) 直接得到。
+Poisson 求和公式在本 Fourier 约定下给出
+\(
+\sum_{n\in\ZZ}A(n\Delta)e^{\mathrm{i}n\theta}
+=\Delta^{-1}\sum_{k\in\ZZ}\widehat A((\theta+2\pi k)/\Delta)
+\)。
+代入命题 \ref{prop:xi-hellinger-kernel-fourier-sech2} 的 \(\widehat A=w\) 即得。证毕。
+\end{proof}
+
+\begin{theorem}[Toeplitz 热力学极限：等距体积熵密度由单一符号积分封口]\label{thm:xi-hellinger-toeplitz-szego-thermo-limit}
+在命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson} 的设定下，令
+\(
+D_\kappa(\Delta):=\det(G_{jk})_{1\le j,k\le\kappa}
+\)。
+则存在极限
+\[
+\boxed{\;
+\lim_{\kappa\to\infty}\frac{1}{\kappa}\log D_\kappa(\Delta)
+=\frac{1}{2\pi}\int_{-\pi}^{\pi}\log\sigma_\Delta(\theta)\,\dd\theta\;}
+\]
+并因此
+\[
+\boxed{\;
+\lim_{\kappa\to\infty}\frac{1}{\kappa}S_{1/2}(\boldsymbol{\sigma})
+=-\frac{1}{2\pi}\int_{-\pi}^{\pi}\log\sigma_\Delta(\theta)\,\dd\theta\;}
+\qquad(\sigma_j=\sigma_0+(j-1)\Delta).
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson}，\(\sigma_\Delta\) 在 \([-\pi,\pi]\) 上严格正且解析。
+因此 Szeg\H{o} 定理适用，给出 Toeplitz 行列式的线性极限式；第二式由 \(S_{1/2}=-\log D_\kappa\) 直接推出。证毕。
+\end{proof}
+
+\begin{proposition}[Heine--Szeg\H{o} 幺正矩阵模型：等距深度体积即 CUE 外势配分函数]\label{prop:xi-hellinger-toeplitz-heine-szego-cue}
+在命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson} 的设定下，有幺正积分表示
+\[
+\boxed{\;
+D_\kappa(\Delta)
+=\frac{1}{(2\pi)^\kappa\kappa!}
+\int_{[-\pi,\pi]^\kappa}
+\Bigl(\prod_{r=1}^{\kappa}\sigma_\Delta(\theta_r)\Bigr)
+\prod_{1\le r<\ell\le\kappa}\bigl|e^{\mathrm{i}\theta_r}-e^{\mathrm{i}\theta_\ell}\bigr|^2\,
+\dd\theta_1\cdots\dd\theta_\kappa.\;}
+\]
+从而等距构型下的 \(S_{1/2}\) 等价于 CUE（\(\beta=2\)）模型在外势 \(-\log\sigma_\Delta\) 下的自由能增量。
+\end{proposition}
+\begin{proof}
+这是 Toeplitz 行列式与幺正本征角积分之间的 Heine--Szeg\H{o} 恒等式。证毕。
+\end{proof}
+
+\begin{proposition}[大分离簇展开：\texorpdfstring{$S_{1/2}$}{S_{1/2}} 的主项为二体指数能量]\label{prop:xi-hellinger-cluster-expansion-large-separation}
+对一般深度谱 \(\boldsymbol{\sigma}=(\sigma_1,\dots,\sigma_\kappa)\)，记最小分离
+\(
+\Delta_{\min}:=\min_{j\neq k}|\sigma_j-\sigma_k|
+\)。
+当 \(\Delta_{\min}\to\infty\) 时，存在一致展开
+\[
+\boxed{\;
+S_{1/2}(\boldsymbol{\sigma})
+=\frac12\sum_{j\neq k}A(\sigma_j-\sigma_k)^{2}
++O\!\Bigl(\kappa^{3}(1+\Delta_{\min})^{3}e^{-3\Delta_{\min}/2}\Bigr).\;}
+\]
+并且
+\(
+A(\Delta)\sim |\Delta|e^{-|\Delta|/2}
+\)，从而主项满足
+\[
+\frac12\sum_{j\neq k}A(\sigma_j-\sigma_k)^2
+\sim \frac12\sum_{j\neq k}|\sigma_j-\sigma_k|^2e^{-|\sigma_j-\sigma_k|}
+\qquad(\Delta_{\min}\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+写 \(G(\boldsymbol{\sigma})=I+E\)，其中 \(E_{jj}=0\)、\(E_{jk}=A(\sigma_j-\sigma_k)\)（\(j\neq k\)）。
+由 \(A(\Delta)=|\Delta|/(2\sinh(|\Delta|/2))\) 得上界
+\(
+0<A(\Delta)\le C(1+|\Delta|)e^{-|\Delta|/2}
+\)
+（\(|\Delta|\to\infty\) 的双曲函数渐近给出）。
+因此 \(\|E\|_{\max}\le C(1+\Delta_{\min})e^{-\Delta_{\min}/2}\)，并在 \(\Delta_{\min}\) 足够大时 \(\|E\|\) 可取小。
+由对数行列式展开
+\(
+-\log\det(I+E)=\sum_{m\ge 1}\frac{(-1)^m}{m}\tr(E^m)
+\)
+与 \(\tr(E)=0\) 得首项为 \(\tr(E^2)/2=\frac12\sum_{j\neq k}E_{jk}^2\)。
+余项由 \(|\tr(E^m)|\le \kappa^m\|E\|_{\max}^m\) 估计，得到所示误差界。证毕。
+\end{proof}
+
+\begin{remark}[等距符号的跨域分辨率常数：周期化尾项以 \texorpdfstring{$\exp(-2\pi^2/\Delta)$}{exp(-2pi^2/Delta)} 控制]\label{rem:xi-hellinger-toeplitz-periodization-constant-2pi2}
+令 \(\sigma_\Delta^{(0)}(\theta):=\frac{\pi^2}{\Delta}\cosh^{-2}(\pi\theta/\Delta)\) 为命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson} 中 Poisson 周期和的 \(k=0\) 主项。
+则对任意 \(\theta\in[-\pi,\pi]\) 有
+\[
+0\le \sigma_\Delta(\theta)-\sigma_\Delta^{(0)}(\theta)
+=\frac{1}{\Delta}\sum_{k\neq 0}\frac{\pi^{2}}{\cosh^{2}\!\Bigl(\pi\frac{\theta+2\pi k}{\Delta}\Bigr)}
+\le C\,\frac{\pi^{2}}{\Delta}\,e^{-2\pi^{2}/\Delta},
+\]
+其中 \(C>0\) 与 \(\Delta\) 无关。
+因此周期化效应的最小跨域常数为 \(2\pi^2\)：其既控制小 \(\Delta\) 时的单胞主导，也给出尾部周期项进入的统一指数门槛。
+\end{remark}
+
+\begin{remark}[\texorpdfstring{$\zeta(4)$}{zeta(4)} 的首入侵律：频域外势的四阶系数强制出现]\label{rem:xi-hellinger-logw-zeta4-entry}
+令 \(w(\xi)=\pi^2/\cosh^2(\pi\xi)\)，则在 \(\xi=0\) 处有 Taylor 展开
+\[
+\log w(\xi)=\log\pi^2-\pi^2\xi^2+\frac{\pi^4}{6}\xi^4+O(\xi^6)
+=\log\pi^2-\pi^2\xi^2+15\,\zeta(4)\,\xi^4+O(\xi^6).
+\]
+因此以二次外势（高斯近似）为基底的任何制度，其首个不可消去的系统性修正必出现在四阶，并由 \(\zeta(4)\) 精确封口；
+该谱侧四阶首入侵与注 \ref{rem:xi-scale-q4-threshold-principle} 的四阶闭合阈值相容。
+\end{remark}
+

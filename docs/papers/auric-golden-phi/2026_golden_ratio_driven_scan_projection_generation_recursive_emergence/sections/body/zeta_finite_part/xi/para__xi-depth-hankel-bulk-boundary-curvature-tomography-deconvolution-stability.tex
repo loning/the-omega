@@ -53,6 +53,37 @@ p=\phi*\nu.
 与 Fourier 侧替换 \(z^{2}\mapsto \xi^{2}\)（等价于物理侧 \(1+z^{2}/n^{2}\mapsto 1-\partial_{s}^{2}/n^{2}\)）得到。证毕。
 \end{proof}
 
+% (User input window)
+% 时间：2026-02-15 23:09:12（Asia/Singapore）
+
+\begin{corollary}[尺度形状因子的模平方全息：深度差分多重集的加权计数]\label{cor:xi-bulk-curvature-modsquare-holography}
+令
+\(
+\widehat p(\xi)=\int_{\RR}e^{-i\xi s}p(s)\,\dd s
+\)。
+则有严格恒等式
+\[
+\boxed{\;
+\Bigl|\frac{\sinh(\pi\xi)}{\pi\xi}\widehat p(\xi)\Bigr|^2
+=|\widehat\nu(\xi)|^2
+=\frac{1}{\kappa^2}\sum_{j,k=1}^{\kappa}e^{-i\xi(\sigma_j-\sigma_k)}
+=\frac{1}{\kappa^2}\sum_{\Delta\in\mathcal D}m(\Delta)e^{-i\xi\Delta}\; }.
+\]
+其中 \(\mathcal D:=\{\sigma_j-\sigma_k\}_{j,k}\) 为差分多重集，\(m(\Delta)\) 为其重数。
+因此在剥离通用乘子 \(\widehat\phi(\xi)=\pi\xi/\sinh(\pi\xi)\) 后，模平方数据 \(|\widehat p(\xi)|^2\) 等价于深度差分谱的特征函数，从而二体几何可在不恢复相位的条件下被直接审计。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} 得
+\(
+\widehat\nu(\xi)=\frac{\sinh(\pi\xi)}{\pi\xi}\widehat p(\xi)
+\)。
+取模平方并用
+\(
+\widehat\nu(\xi)=\kappa^{-1}\sum_{j=1}^{\kappa}e^{-i\xi\sigma_j}
+\)
+展开即得。证毕。
+\end{proof}
+
 \begin{corollary}[超分辨率屏障常数 \texorpdfstring{$\pi$}{pi}：深度分离的稳定阈值为 \texorpdfstring{$\exp(-\pi/\Delta)$}{exp(-pi/Delta)}]\label{cor:xi-bulk-curvature-superresolution-pi-barrier}
 设观测到的曲率概率密度为 \(\widetilde p=p+\eta\)，并假定 Fourier 噪声在带宽 \(|\xi|\le\Omega\) 内满足
 \[
@@ -122,6 +153,17 @@ M_p(t)=\int_{\RR}\int_{\RR}e^{t(s+u)}\phi(s)\,\dd s\,\dd\nu(u)
 从而得到所示因子化。证毕。
 \end{proof}
 
+\begin{remark}[尺度 \texorpdfstring{$\zeta$}{zeta} 接口的记号：母函数即尺度 \texorpdfstring{$\zeta$}{zeta} 函数]\label{rem:xi-bulk-curvature-scale-zeta-notation}
+母函数 \(M_p(t)\) 亦可记为尺度 \(\zeta\) 接口
+\[
+\zeta_{\mathrm{scale}}(t):=\int_{\RR}e^{ts}p(s)\,\dd s=M_p(t),
+\qquad
+|\Re t|<1.
+\]
+由命题 \ref{prop:xi-bulk-curvature-moment-generating-factorization}，\(\zeta_{\mathrm{scale}}\) 具有唯一的亚纯延拓；
+其全部整数晶格极点由通用因子 \(\pi t/\sin(\pi t)\) 承载，而深度信息完全由整函数 \(E(t)\) 承载。
+\end{remark}
+
 \begin{corollary}[整数极点留数的深度 Dirichlet 数据：有限个局部数据的代数重建]\label{cor:xi-bulk-curvature-residue-dirichlet-data}
 在命题 \ref{prop:xi-bulk-curvature-moment-generating-factorization} 的设定下，对任意 \(n\in\NN\) 有显式留数公式
 \[
@@ -144,6 +186,67 @@ E(n)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}y_j^{n}.
 在 \(t=n\) 的留数为 \((-1)^n n\)，与因子化式相乘即得留数公式。
 第二部分为经典幂和反演：\(\{y_j\}\) 两两不同下，幂和序列满足阶数为 \(\kappa\) 的线性递推；
 由 \(\{E(n)\}_{n=1}^{2\kappa}\) 可构造 Hankel 系统解出递推系数，从而得到以 \(\{y_j\}\) 为根的首一多项式并恢复 \(\{y_j\}\)，进而恢复 \(\{\delta_j=y_j^{-1}\}\)。证毕。
+\end{proof}
+
+\begin{remark}[尺度 Euler--Möbius 原语账本：幂和矩与 primitive 序列的互换]\label{rem:xi-bulk-curvature-euler-mobius-ledger}
+令 \(y_j:=e^{\sigma_j}=\delta_j^{-1}\)，并记幂和
+\(
+p_n:=\sum_{j=1}^{\kappa}y_j^{n}=\kappa E(n)
+\)（\(n\in\NN\)）。
+引入形式幂级数
+\[
+\mathfrak Z_{\mathrm{scale}}(z)
+:=\prod_{j=1}^{\kappa}\frac{1}{1-y_j z}
+=\exp\Bigl(\sum_{n\ge 1}\frac{p_n}{n}z^{n}\Bigr)
+\qquad(\text{形式意义}).
+\]
+并定义其 primitive 系数（Möbius 反演）
+\[
+\pi^{\mathrm{prim}}_n
+:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,p_{n/d}
+=\frac{1}{n}\sum_{d\mid n}\mu(d)\sum_{j=1}^{\kappa}y_j^{n/d}.
+\]
+则有等价 Euler 分解
+\[
+\mathfrak Z_{\mathrm{scale}}(z)=\prod_{n\ge 1}\frac{1}{(1-z^{n})^{\pi^{\mathrm{prim}}_n}}
+\qquad(\text{形式意义}),
+\]
+从而 \(\{E(n)\}\)（或 \(\{p_n\}\)）给出“总量矩”账本，而 \(\{\pi^{\mathrm{prim}}_n\}\) 给出其 Euler--Möbius 的原语分解；二者互相可由有限步代数运算转写。
+\end{remark}
+
+\begin{proposition}[原语账本的指数主导律：最大深度锁定 primitive 指数率]\label{prop:xi-bulk-curvature-primitive-max-depth-dominance}
+沿用注 \ref{rem:xi-bulk-curvature-euler-mobius-ledger} 的记号，并设
+\[
+\Lambda:=\max_{1\le j\le\kappa}y_j,\qquad
+r:=\card{\{j:\ y_j=\Lambda\}},
+\qquad
+\Lambda_2:=\max\{y_j:\ y_j<\Lambda\}\ \ (\text{若存在}).
+\]
+若 \(\Lambda>1\)，则对 \(n\to\infty\) 有
+\[
+\boxed{\;
+\pi^{\mathrm{prim}}_n=\frac{r}{n}\Lambda^n
++O\!\Bigl(\frac{1}{n}\Lambda^{n/2}\Bigr)
++O\!\Bigl(\frac{1}{n}\Lambda_2^{\,n}\Bigr)\;}
+\]
+（第二项仅在 \(n\) 含非平凡因子时出现，且以 \(\Lambda^{n/2}\) 为最坏情形量级）。
+从而指数率由最大深度唯一锁定：
+\[
+\boxed{\;\lim_{n\to\infty}\frac{1}{n}\log\bigl|n\pi^{\mathrm{prim}}_n\bigr|=\log\Lambda.\;}
+\]
+\end{proposition}
+\begin{proof}
+由定义 \(n\pi^{\mathrm{prim}}_n=\sum_{d\mid n}\mu(d)\,p_{n/d}\) 且 \(p_m=\sum_{j}y_j^m\)，得
+\[
+p_n=r\Lambda^n+O(\Lambda_2^{\,n}),
+\]
+其中 \(\Lambda_2\) 不存在时可将 \(O(\Lambda_2^{\,n})\) 理解为 \(0\)。
+另一方面，对任意 \(d\mid n\) 且 \(d\ge 2\) 有 \(n/d\le n/2\)，从而
+\[
+|p_{n/d}|\le \sum_{j=1}^{\kappa}y_j^{n/d}\le \kappa\,\Lambda^{n/d}\le \kappa\,\Lambda^{n/2}.
+\]
+将 \(d=1\) 项与其余项分离即可得到所示展开。
+最后，由 \(\Lambda>1\) 可知 \(\Lambda^{n/2}=o(\Lambda^n)\) 且 \(\Lambda_2^{\,n}=o(\Lambda^n)\)，故 \(n\pi^{\mathrm{prim}}_n\) 的指数增长率为 \(\log\Lambda\)。证毕。
 \end{proof}
 
 \begin{remark}[隐藏圆谱几何：反卷积乘子与圆 Laplacian 的 \texorpdfstring{$\zeta$}{zeta}-行列式比]\label{rem:xi-bulk-curvature-circle-zeta-determinant}
@@ -276,4 +379,22 @@ L:=\max_j\sigma_j-\min_j\sigma_j
 对噪声约束选择相位对齐的 \(\widehat\eta\) 可达到最坏情形放大因子 \(\sinh(\pi\Omega)/(\pi\Omega)\)。
 再以 \(\Omega\gtrsim 1/\Delta\) 换算即可得到位数阈值。证毕。
 \end{proof}
+
+\begin{remark}[屏障常数的同阶可达性：粗反卷积与 Prony 重构给出一条可执行链]\label{rem:xi-bulk-curvature-superresolution-achievability}
+在有限原子口径下，一旦噪声预算满足推论 \ref{cor:xi-bulk-curvature-bit-complexity-lower-bound} 的线性位数阈值，
+即可将反演实现为一条显式的可执行链：先在带宽 \(|\xi|\le \Omega\) 内施加反卷积乘子（命题 \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} 或其有限阶截断版本，结论 \ref{con:xi-terminal-scale-kernel-partial-deconvolution-resolution}），
+得到 \(\widehat\nu\) 的带限近似；
+随后在一般位置与最小分离假设下，可用标准 Prony/矩阵铅笔/ESPRIT 等低秩谱反演由有限采样稳定恢复原子位置（与结论 \ref{con:xi-terminal-atomic-defect-hankel-prony} 的 Hankel--Prony 口径同型）。
+因此常数 \(\pi/(\ln 2)\) 所给出的线性斜率不仅给出必要屏障，也在同阶上可由构造链达到（差异仅出现在对数次级项中）。
+\end{remark}
+
+\begin{remark}[\texorpdfstring{$(q=4)$}{(q=4)} 的统一阈值：涨落、反卷积与二体体积的首个可见校正阶]\label{rem:xi-scale-q4-threshold-principle}
+注 \ref{rem:xi-bulk-entropy-fermi-grand-canonical} 将 bulk 熵曲率写为 Bernoulli 方差和；
+在以二阶累积量（高斯近似）为基底的制度中，其首个系统性偏离由四阶累积量支配。
+另一方面，结论 \ref{con:xi-terminal-scale-kernel-gamma-closed-form} 的小频率展开显示反卷积乘子 \(\log M_N(\xi)\) 的首修正项由 \(\zeta(4)\) 给出，
+从而在带宽受控的粗反卷积制度中，四阶亦为最小非线性校正阶。
+再者，logistic 平移族的散度字典满足 \(D_{\mathrm{KL}}=4H^2+O(\Delta^4)\)（注 \ref{rem:xi-logistic-fourth-order-closure}），
+而 Hellinger--Gram 体积势的短程展开亦以 \(O(\Delta^4)\) 项给出首个超二次偏离（命题 \ref{prop:xi-logistic-hellinger-gram-determinant}）。
+因此在本文的尺度全息接口中，四阶构成“首次不可忽略结构偏离”的共同闭合层级。
+\end{remark}
 

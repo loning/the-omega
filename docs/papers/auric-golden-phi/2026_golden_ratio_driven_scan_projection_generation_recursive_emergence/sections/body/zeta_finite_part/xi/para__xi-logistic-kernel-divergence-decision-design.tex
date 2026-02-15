@@ -138,6 +138,57 @@ D_{\mathrm{KL}}(\phi\|\phi_{\Delta})
 局部展开由 \(\tanh\)、\(\sinh\)、\(\coth\) 的 Taylor 展开直接得到。证毕。
 \end{proof}
 
+% (User input window)
+% 时间：2026-02-15 23:09:12（Asia/Singapore）
+
+\begin{proposition}[Hellinger--Gram 体积势：平方根嵌入的闭式核与碰撞发散律]\label{prop:xi-logistic-hellinger-gram-determinant}
+沿用命题 \ref{prop:xi-logistic-divergence-dictionary} 的记号并取深度谱 \(\sigma_1,\dots,\sigma_\kappa\in\RR\) 两两不同。
+令
+\[
+\psi_j(s):=\sqrt{\phi(s-\sigma_j)}\in L^2(\RR),
+\qquad
+G^{(1/2)}_{jk}:=\langle \psi_j,\psi_k\rangle=\int_{\RR}\sqrt{\phi(s-\sigma_j)\phi(s-\sigma_k)}\,\dd s.
+\]
+则 \(G^{(1/2)}\) 正定，并且其核具有完全闭式
+\[
+\boxed{\;
+G^{(1/2)}_{jk}=\frac{|\sigma_j-\sigma_k|}{2\sinh\!\bigl(|\sigma_j-\sigma_k|/2\bigr)}\;}
+\qquad(1\le j,k\le\kappa),
+\]
+其中对角线取连续延拓值 \(G^{(1/2)}_{jj}=1\)。
+定义体积与熵势
+\[
+V_{1/2}:=\sqrt{\det G^{(1/2)}},
+\qquad
+S_{1/2}:=-\log\det G^{(1/2)}.
+\]
+当发生尺度碰撞 \(\sigma_j=\sigma_\star+\varepsilon t_j\) 且 \(\varepsilon\downarrow 0\)（\(t_j\) 两两不同）时，有普适 Vandermonde 发散律
+\[
+\boxed{\;
+S_{1/2}(\boldsymbol{\sigma})
+=\kappa(\kappa-1)\log\frac{1}{\varepsilon}
++2\sum_{1\le j<k\le \kappa}\log\frac{1}{|t_k-t_j|}
++O(1).\;}
+\]
+其中二体对数项系数恒为 \(2\)，与谱点权重及其余构型细节无关。
+\end{proposition}
+\begin{proof}
+正定性由 \(G^{(1/2)}\) 的 Gram 表示直接得到。
+闭式由命题 \ref{prop:xi-logistic-divergence-dictionary} 第 \textup{(3)} 条（Hellinger 亲和度闭式）取 \(a=\sigma_j\)、\(b=\sigma_k\) 立即推出。
+\par
+对碰撞渐近，记 \(f(s):=\sqrt{\phi(s)}\)，则 \(\psi_j(s)=f(s-\sigma_\star-\varepsilon t_j)\)。
+由 \(f\in C^\infty(\RR)\cap L^2(\RR)\) 与 Taylor 展开，\(\{\psi_j\}_{j=1}^\kappa\) 在 \(L^2\) 中的张成在 \(\varepsilon\to 0\) 时收敛到导数塔
+\(\{f^{(r)}(\cdot-\sigma_\star)\}_{r=0}^{\kappa-1}\) 的张成；
+相应 Gram 行列式的首阶非零项由 confluent Vandermonde 结构给出，因而出现
+\(
+\det G^{(1/2)}=C\cdot \varepsilon^{\kappa(\kappa-1)}\prod_{j<k}(t_k-t_j)^2\cdot(1+o(1))
+\)
+（其中 \(C>0\) 仅依赖于 \(\kappa\) 与核 \(f\)）。
+取负对数即得所示展开。证毕。
+\end{proof}
+
+\input{para__xi-hellinger-kernel-spectral-rkhs-loggas-toeplitz}
+
 \begin{proposition}[logistic 噪声下的多类别最优判决：最近邻规则与显式平均错误率]\label{prop:xi-logistic-multiclass-map-error}
 令 \(\kappa\ge 2\)，并取有序深度对数谱
 \(
