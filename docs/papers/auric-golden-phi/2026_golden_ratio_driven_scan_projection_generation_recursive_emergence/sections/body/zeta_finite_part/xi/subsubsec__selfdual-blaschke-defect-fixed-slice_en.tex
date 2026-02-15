@@ -48,4 +48,363 @@ Under phase closure verification regime (excluding continuous residual \(S_F\)),
 If resonance/zero anomaly is further encoded in determinant caliber (e.g., the Fuglede–Kadison determinant interface in Appendix \S\ref{subsec:op-algebra-modular-zk-index-fkdet}, Definition \ref{def:op-algebra-fk-determinant-zeta}), Kramers degeneracy similarly forces algebraic multiplicity of isolated resonance spectral points (e.g., \(1\in\mathrm{Spec}(K_{s_0})\)) to be even; therefore in matrix degeneration cases, the zero order of \(\det(I-K_s)\) at \(s_0\) (equivalently the pole order of corresponding \(\zeta\)-type object) can only be even.
 \end{remark}
 
+\paragraph{Involutive Automorphism and Fixed Slice (Self-Dual Readout)}
+
+On disk readout variable \(w\in\CC^\times\), take inversion involution
+\[
+\boxed{\;\sigma(w):=\frac{1}{\overline{w}}\;}
+\]
+whose fixed slice is the unit circle \(\TT=\{w:|w|=1\}\) (can also be viewed as an equivalent statement of unitary-slice, see Remark \ref{rem:xi-critical-line-unit-circle} and Appendix \ref{subsec:unit-circle-phase-lift}).
+Given a class of verifiable readout functions \(F\) (typically from auditable transfer/determinant expressions in our context), define reflection operator
+\[
+F^\sharp(w):=\overline{F(\sigma(w))}.
+\]
+We say \(F\) satisfies \textbf{self-dual constraint} if \(F=F^\sharp\) holds in its analytic continuation sense.
+This constraint forces zeros/poles divisor to close under \(\sigma\): if \(w_0\) is a zero (or pole), then \(\sigma(w_0)\) is also a zero (or pole) of the same order.
+Therefore, any discrete singularity deviating from fixed slice \(|w|=1\) must appear in pairs as two-point orbits; this precisely corresponds to the minimal divergence structure of "fixed-slice visible readout insufficient to distinguish two branches of realization" (and see Proposition \ref{prop:xi-read-fiber-orbits} for general caliber of "readout fiber = visible symmetry orbit").
+
+\paragraph{Krein Spectral Shift Function and Scattering Winding: Integer Index of Point Off-Slice Defect}\label{par:selfdual-krein-wind}
+
+To give an indexing source for "Blaschke defect," consider the caliber of standard trace-class perturbation scattering theory: let \(\mathcal H\) be a complex Hilbert space, \((H_0,H)\) be a self-adjoint operator pair, and assume perturbation \(H-H_0\in\mathfrak S_1\) is trace-class so that Krein spectral shift function \(\xi(\lambda)\) (defined up to additive constant ambiguity) exists. If we further assume wave operator completeness so scattering matrix \(\mathcal S(\lambda)\) exists almost everywhere on absolute continuous spectrum, then its determinant satisfies Birman–Krein formula (see \cite{Simon2005TraceIdeals,Yafaev1992ScatteringGeneralTheory})
+\begin{equation}\label{eq:birman-krein-detS-ssf}
+\boxed{\;\det\mathcal S(\lambda)=\exp\!\bigl(-2\pi\mathrm{i}\,\xi(\lambda)\bigr)\qquad(\text{a.e. }\lambda\in\RR)\;}
+\end{equation}
+and accordingly one can choose scattering phase branch \(\vartheta(\lambda)\) such that
+\(\vartheta(\lambda)=-2\pi\xi(\lambda)\) (modulo \(2\pi\)).
+\par
+Under this caliber, point defect is measured by "winding/spectral flow" index: if there exists continuous branch \(\widetilde\vartheta\) such that for any \(R>0\) define
+\begin{equation}\label{eq:scattering-wind-def}
+\mathrm{Wind}_R(\det\mathcal S)
+:=\frac{1}{2\pi}\bigl(\widetilde\vartheta(R)-\widetilde\vartheta(-R)\bigr),
+\end{equation}
+and the limit \(\mathrm{Wind}(\det\mathcal S):=\lim_{R\to\infty}\mathrm{Wind}_R(\det\mathcal S)\) exists, then under standard regularity conditions this limit is an integer and equivalent to Levinson-type point spectral counting/spectral flow (also see \cite{Yafaev1992ScatteringGeneralTheory,Simon2005TraceIdeals} for trace-class scattering and determinant theory).
+
+\begin{definition}[Self-Dual (Antilinear) Scattering Symmetry: Semantic Axiom of Spectral Shift Parity]\label{def:selfdual-scattering-symmetry-ssf}
+Under the above scattering caliber, we say \(\det\mathcal S\) satisfies \textbf{self-dual (antilinear) scattering symmetry} if there exists an antilinear isometry \(C:\mathcal H\to\mathcal H\) (\(C^2=I\)) such that for almost all \(\lambda\in\RR\)
+\begin{equation}\label{eq:selfdual-scattering-det-sym}
+\boxed{\;\det\mathcal S(-\lambda)=\overline{\det\mathcal S(\lambda)}\;}
+\end{equation}
+and high-energy normalization can be chosen so \(\lim_{|\lambda|\to\infty}\det\mathcal S(\lambda)=1\) (equivalently \(\vartheta(\lambda)\to 0\)).
+This assumption expresses: scattering data mirror-matches under antilinear involution by \(\lambda\mapsto-\lambda\), thereby compressing allowed global phase freedom to "odd function phase."
+\end{definition}
+
+\begin{proposition}[Spectral Shift Parity Enforcement]\label{prop:selfdual-ssf-odd}
+Under assumptions of Definition \ref{def:selfdual-scattering-symmetry-ssf}, one can gauge-choose spectral shift function so
+\[
+\boxed{\;\xi(-\lambda)=-\xi(\lambda)\qquad(\text{a.e. }\lambda\in\RR)\;}
+\]
+equivalently, one can take scattering phase satisfying \(\vartheta(-\lambda)=-\vartheta(\lambda)\) (modulo consistent \(2\pi\) gauge).
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:birman-krein-detS-ssf} and \eqref{eq:selfdual-scattering-det-sym} we have
+\(
+e^{-2\pi\mathrm{i}\xi(-\lambda)}=\overline{e^{-2\pi\mathrm{i}\xi(\lambda)}}=e^{2\pi\mathrm{i}\xi(\lambda)}
+\)
+almost everywhere, so \(\xi(-\lambda)\equiv-\xi(\lambda)\pmod{\ZZ}\).
+Using spectral shift function's "defined up to additive constant" ambiguity and combining high-energy normalization (making \(\xi(\lambda)\to 0\) at infinity), one can choose consistent gauge eliminating this integer-valued ambiguity, thereby obtaining stated parity. QED.
+\end{proof}
+
+\begin{proposition}[Parity \(\Rightarrow\) Winding Vanish]\label{prop:selfdual-wind-vanish}
+Under gauge of Proposition \ref{prop:selfdual-ssf-odd}, if winding index \(\mathrm{Wind}(\det\mathcal S)\) exists, then necessarily
+\[
+\boxed{\;\mathrm{Wind}(\det\mathcal S)=0\;}
+\]
+\end{proposition}
+
+\begin{proof}
+By \eqref{eq:scattering-wind-def} and \(\widetilde\vartheta(-\lambda)=-\widetilde\vartheta(\lambda)\) we have \(\mathrm{Wind}_R(\det\mathcal S)=\widetilde\vartheta(R)/\pi\).
+By high-energy normalization \(\widetilde\vartheta(R)\to 0\) (\(R\to\infty\)) we immediately get \(\mathrm{Wind}(\det\mathcal S)=0\). QED.
+\end{proof}
+
+\paragraph{Hardy/Smirnov Factorization and Blaschke Defect Dimension}
+Under Hardy/Smirnov condition caliber, zero-point information of disk compactification object can be strictly separated by inner-outer factorization (Appendix \S\ref{subsec:unit-disk-inner-outer}):
+if \(F\) is bounded type in unit disk \(\mathbb{D}=\{w:|w|<1\}\) (e.g., \(F\in N^+(\mathbb{D})\) or some \(H^p\) quotient), then there exists canonical decomposition
+\[
+\boxed{\;F(w)=B_F(w)\,S_F(w)\,O_F(w)\;}
+\]
+where \(B_F\) is Blaschke factor (encoding zeros in \(\mathbb{D}\)), \(S_F\) is singular inner factor, \(O_F\) is outer factor; and boundary modulus \(|F(e^{\mathrm{i}\theta})|\) determines only \(O_F\), while disk zero data is completely carried by \(B_F\) \cite{Duren1970TheoryHp,Garnett2007BoundedAnalyticFunctions}.
+\par
+If further satisfying boundary unitarization (e.g., boundary condition \(|\det\mathcal S(\lambda)|=1\) in scattering realization rewrites to \(|F(e^{\mathrm{i}\theta})|=1\) after Cayley disk transformation), then \(F\) is inner function and outer factor \(O_F\) degenerates to constant phase; disk point defects are therefore completely carried by Blaschke data. At this point "point defect index" can be aligned with winding and Blaschke degree as a pure topological invariant.
+
+\begin{proposition}[Winding=\texorpdfstring{$\deg(B_F)$}{deg(B)} (Finite Blaschke/No Singular Inner Factor Caliber)]\label{prop:winding-equals-blaschke-degree}
+Let \(F\) be inner function on \(\mathbb{D}\) with no singular inner factor (\(S_F\equiv 1\)), and its Blaschke factor \(B_F\) is finite Blaschke product.
+Define boundary winding
+\[
+\mathrm{Wind}(F):=\frac{1}{2\pi\mathrm{i}}\int_{|w|=1}\frac{F'(w)}{F(w)}\,dw\in\ZZ.
+\]
+Then the identity holds
+\[
+\boxed{\;\mathrm{Wind}(F)=\deg(B_F)=\mathfrak d_{\mathrm{Bl}}(F)\;}
+\]
+where the last step uses Remark \ref{rem:blaschke-defect-finite}.
+\end{proposition}
+
+\begin{proof}
+Since \(F\) is inner function and \(S_F\equiv 1\), its outer factor is constant phase and \(F=c\,B_F\) (\(|c|=1\)).
+Constant phase does not affect \(\mathrm{Wind}(F)\), thus
+\[
+\mathrm{Wind}(F)=\frac{1}{2\pi\mathrm{i}}\int_{|w|=1}\frac{B_F'(w)}{B_F(w)}\,dw.
+\]
+By argument principle, right side equals total count of disk zeros counted with multiplicity, namely \(\deg(B_F)\).
+Finally by Remark \ref{rem:blaschke-defect-finite} we get \(\deg(B_F)=\mathfrak d_{\mathrm{Bl}}(F)\). QED.
+\end{proof}
+\par
+To rewrite "discrete orthogonal residual axis needing externalization" as a pure analytic invariant, introduce model space
+\[
+K_B:=H^2\ominus BH^2
+\]
+and accordingly define Blaschke defect dimension.
+
+\begin{definition}[Blaschke Defect Dimension (Disk Point Spectral Residual)]\label{def:blaschke-defect-dimension}
+Let \(F\) be bounded type in \(\mathbb{D}\) and denote its Blaschke factor as \(B_F\).
+Define the \textbf{Blaschke defect dimension} of \(F\) as
+\[
+\boxed{\;\mathfrak{d}_{\mathrm{Bl}}(F):=\dim K_{B_F}\in\{0,1,2,\dots,\infty\}\;}
+\]
+where \(K_{B_F}:=H^2\ominus B_FH^2\).
+\end{definition}
+
+\begin{remark}[Finite Blaschke Case: Defect Dimension Equals Total Zero Multiplicity]\label{rem:blaschke-defect-finite}
+If \(B_F\) is finite Blaschke product, then \(K_{B_F}\) is finite-dimensional and \(\mathfrak{d}_{\mathrm{Bl}}(F)\) equals total count of zeros in \(\mathbb{D}\) with multiplicity.
+Therefore under auditable finite-dimensional/rational realization caliber, \(\mathfrak{d}_{\mathrm{Bl}}(F)\) can be directly verified by root counting/algebraic certificate.
+\end{remark}
+
+\begin{corollary}[Index Vanish \(\Rightarrow\) Blaschke Defect Zero]\label{cor:selfdual-index-vanish-implies-dbl0}
+When scattering caliber of Proposition \ref{prop:selfdual-wind-vanish} and finite inner function caliber of Proposition \ref{prop:winding-equals-blaschke-degree} both hold, we have
+\[
+\boxed{\;\mathfrak d_{\mathrm{Bl}}(F)=0\qquad(\text{equivalent to }B_F\equiv 1)\;}
+\]
+thus no point zero data in disk.
+\end{corollary}
+
+\begin{proof}
+By Proposition \ref{prop:selfdual-wind-vanish} we get \(\mathrm{Wind}(F)=0\) (identifying disk readout of scattering determinant as \(F\)), then by Proposition \ref{prop:winding-equals-blaschke-degree} we get \(\mathfrak d_{\mathrm{Bl}}(F)=\mathrm{Wind}(F)=0\). QED.
+\end{proof}
+
+\paragraph{Blaschke Defect \texorpdfstring{$\Leftrightarrow$}{<->} Point Spectral Residual: Minimal Realization of Functional Model}
+Blaschke data is not just "zero counting," it is equivalent in functional model to point spectral residual of minimal realization: disk zeros correspond to discrete eigenmodes, while singular support on fixed slice corresponds to continuous/boundary spectral load.
+In verifiable semantics of this section, this gives a stronger interpretive statement: the so-called "orthogonal residual axis" is not arbitrarily added but forced out as minimal point spectral defect by Blaschke factor of readout function itself.
+
+\begin{theorem}[Blaschke–Point Spectrum Correspondence (Finite Defect Caliber)]\label{thm:blaschke-point-spectrum-correspondence}
+Let \(B\) be finite Blaschke product and \(K_B:=H^2\ominus BH^2\).
+Denote \(S\) as unilateral shift on \(H^2\) \((Sf)(w)=wf(w)\), and let compressed shift
+\[
+S_B:=P_{K_B}\,S|_{K_B},
+\qquad
+A_B:=S_B^\ast.
+\]
+Then:
+\begin{enumerate}
+  \item \(A_B\) is contraction, and its point spectrum (by algebraic multiplicity) coincides with zeros of \(B\) (by multiplicity);
+  \item Dimension of point spectral generating subspace \(\mathcal{H}_{\mathrm{pp}}(A_B)\) satisfies
+  \[
+  \boxed{\;\dim\mathcal{H}_{\mathrm{pp}}(A_B)=\dim K_B=\deg B\;}
+  \]
+  thus \(\deg B\) gives minimal orthogonal dimension of "point spectral residual axis."
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[Alignment with Characteristic Function/Minimal Realization]\label{rem:blaschke-characteristic-function-alignment}
+Theorem \ref{thm:blaschke-point-spectrum-correspondence} is a verifiable instance of Sz.-Nagy–Foia\c{s} functional model in scalar finite inner function case: \(B\) can be viewed as characteristic function of some minimal contraction realization, and its disk zeros precisely correspond to discrete eigenmodes of realization; corresponding general theory and de Branges–Rovnyak/model space framework can be seen in \cite{SzNagyFoiasBercoviciKerchy2010HarmonicAnalysis,Sarason1994SubHardyHilbertSpaces}.
+\par
+In our semantics, meaning of this alignment is: if readout object is required on fixed slice to have "no extra orthogonal residual axis," then its realization does not allow above point spectral residual to appear; this constraint on analytic side is precisely \(B_F\equiv 1\).
+\end{remark}
+
+\begin{corollary}[CMV Limit Point Spectrum Characterization: Blaschke Defect Degree Equals CMV Unitary Operator's Point Spectral Dimension (Finite Defect Caliber)]\label{cor:xi-cmv-point-spectrum-dimension-equals-blaschke-degree}
+Let \(B\) be finite Blaschke product, denote its Schur/Verblunsky parameters as \((\alpha_n)_{n\ge 0}\).
+Let \(U_\infty(B)\) be CMV unitary object determined by \((\alpha_n)\) (in finite Blaschke case its Schur recursion terminates in finite steps, so \(U_\infty(B)\) degenerates to finite-dimensional block; see \cite{Simon2005OPUC1}).
+Then point spectral generating subspace dimension satisfies
+\[
+\boxed{\;\dim\mathcal H_{\mathrm{pp}}\!\bigl(U_\infty(B)\bigr)=\deg(B)=\mathfrak d_{\mathrm{Bl}}(B).\;}
+\]
+In particular, \(\deg(B)=0\) if and only if this CMV model has no point spectrum (equivalently: spectral measure has no atomic part).
+\par
+For general bounded type readout \(F\), if its inner factor satisfies finite defect caliber of "finite Blaschke and no singular inner factor," then above formula gives operator characterization fully isomorphic to Theorem \ref{thm:blaschke-point-spectrum-correspondence}: \(\mathfrak d_{\mathrm{Bl}}(F)\) equals minimal point spectral residual axis dimension.
+For disk compactification object \(F_\zeta\), by Appendix Theorem \ref{thm:app-rh-iff-disk-zero-free} (RH \(\Longleftrightarrow\) disk zero forbidden) we obtain
+\[
+\mathrm{RH}
+\ \Longleftrightarrow\
+\mathfrak d_{\mathrm{Bl}}(F_\zeta)=0
+\ \Longleftrightarrow\
+\dim\mathcal H_{\mathrm{pp}}\!\bigl(U_\infty(B_{F_\zeta})\bigr)=0.
+\]
+\end{corollary}
+
+\begin{proof}[Proof sketch]
+Finite Blaschke product's Schur recursion terminates in finite steps: if \(\deg(B)=\kappa\), then \(B\) can be completely recovered by finite segment \((\alpha_0,\dots,\alpha_{\kappa-1})\), and corresponding CMV model contains only \(\kappa\) discrete modes (see \cite{Simon2005OPUC1}).
+Therefore point spectral subspace dimension is \(\kappa\).
+Then by \(\mathfrak d_{\mathrm{Bl}}(B)=\deg(B)\) (Remark \ref{rem:blaschke-defect-finite}) we get shown equality; remaining equivalence directly follows from \(\kappa=0\iff B\equiv 1\) and Appendix Theorem \ref{thm:app-rh-iff-disk-zero-free}. QED.
+\end{proof}
+
+\paragraph{Fixed Slice Support Principle: Blaschke Defect Zero Forces Boundary Support}
+\begin{theorem}[Blaschke Defect Zero \(\Rightarrow\) Singularity Supported on Fixed Slice]\label{thm:blaschke-defect-zero-fixed-slice-support}
+Let \(F\) be bounded type in \(\mathbb{D}\) and satisfy self-dual \(F=F^\sharp\).
+If \(\mathfrak{d}_{\mathrm{Bl}}(F)=0\) (equivalent to \(B_F\equiv 1\)), then \(F\) has no zeros in \(\mathbb{D}\).
+Furthermore, under self-dual constraint, zeros of \(F\) in exterior domain \(|w|>1\) are also excluded; therefore all zeros/poles of \(F\) can only appear on fixed slice \(|w|=1\) in form of boundary singular support (if existing then determined by \(S_F\) and boundary measure, see Appendix \S\ref{subsec:unit-disk-inner-outer}).
+\end{theorem}
+
+\begin{proof}
+\(\mathfrak{d}_{\mathrm{Bl}}(F)=0\) equivalent to \(K_{B_F}=\{0\}\), thus \(B_F\equiv 1\); so \(F\) has no zeros in \(\mathbb{D}\).
+Self-dual \(F=F^\sharp\) forces disk interior-exterior zeros to pair correspond under \(\sigma\): if exterior zero \(w_0\) exists (\(|w_0|>1\)), then \(\sigma(w_0)=1/\overline{w_0}\in\mathbb{D}\) must be disk zero, contradiction.
+Therefore both disk interior and exterior have no zeros.
+Under bounded type caliber, remaining possible singularities can only be supported on \(|w|=1\) as boundary singular inner factor \(S_F\) or boundary limit.
+QED.
+\end{proof}
+
+\paragraph{Structural Translation of Ramanujan-Type Symmetry: Excluding Point Spectral Defect Rather Than Swapping Coordinate Axes}
+Under caliber of this section, "Ramanujan-type symmetry" should more precisely be translated as \textbf{local sufficient condition for boundary unitarization/inner-functionalization}: it requires that after compactification and normalization, readout object on fixed slice boundary does not introduce amplitude defect, thereby making \(F\) fall into inner function category and making winding/index become definable, auditable invariant. Subsequently, self-dual (antilinear) symmetry forces this index to zero through spectral shift parity (Proposition \ref{prop:selfdual-wind-vanish}), and in finite defect caliber derives \(B_F\equiv 1\) (Corollary \ref{cor:selfdual-index-vanish-implies-dbl0}), thereby forcing all point singularity support to concentrate on involution fixed slice \(|w|=1\) boundary.
+This translation is isomorphic to "phase-ification symmetry" narrative in \S\ref{subsubsec:ramanujan-phase-lift-symmetry}: both understand symmetry as fixed slice and defect repulsion forced by projection system automorphism, rather than viewing "axis swapping" as symmetry ontology.
+Juxtaposing above translation with disk horizon–multipole moment interface (Appendix \ref{subsubsec:app-horizon-weyl-carath-toeplitz}) and kernel-RH/Ramanujan square-root spectral bound dictionary (Definition \ref{def:kernel-rh}), one can further see: structural role of this symmetry is not in geometric axis swapping, but in excluding disk point spectral defect (i.e., Blaschke data) by boundary unitarization/inner-functionalization; in contrast, if off-critical-line zero \(\rho=\beta+\mathrm{i}\gamma\) exists (\(\beta<\tfrac12\), \(\delta:=\tfrac12-\beta>0\)), then its disk image \(w_\rho=\mathcal{C}(\gamma+\mathrm{i}\delta)\) must be compressed by endpoint \(w=-1\)'s Busemann/Poisson coordinates into ultra-thin boundary layer, satisfying closed-form compression law \(\delta=\mathcal{B}_{-1}(w_\rho)=\frac{1-|w_\rho|^2}{|1+w_\rho|^2}\), \(1-|w_\rho|^2=\frac{4\delta}{\gamma^2+(1+\delta)^2}\) (Corollary \ref{cor:app-offcritical-horocycle-busemann}; Theorem \ref{thm:xi-offcritical-quadratic-radial-compression}).
+
+\paragraph{Unified Statement of Critical Slice Proposition (Verifiable Sufficient Condition)}
+If there exists disk compactification isomorphism \(w=w(s)\) mapping critical line \(\Re(s)=\tfrac12\) to fixed slice \(|w|=1\), and compactification object can be written as self-dual readout function \(F(w(s))\) (e.g., disk interface in Appendix \ref{app:unit-circle-phase-gate}),
+then once proving \(\mathfrak{d}_{\mathrm{Bl}}(F)=0\) in verifiable regime, by Theorem \ref{thm:blaschke-defect-zero-fixed-slice-support} we immediately get: all point zero events can only satisfy \(|w|=1\), thus corresponding \(s\) must fall on \(\Re(s)=\tfrac12\).
+Therefore, critical slice problem can be rewritten as a purely structural, auditable discrimination task: construct (or verify) a self-dual bounded type readout function \(F\) and verify its Blaschke defect vanishing.
+
+\paragraph{Scattering Determinant–Blaschke Defect–Negative Square Index: Mutually Exclusive Invariant Chain of True Resonance and Threshold Resonance}\label{par:selfdual-scattering-blaschke-neg-square-chain}
+This section already has two complementary decompositions strictly dichotomizing "extreme resonance" into two mutually exclusive supports:
+\begin{itemize}
+  \item \textbf{True resonance (point singularity in stable domain)} is carried by disk point data and completely encoded by Blaschke factor \(B_F\) in bounded type factorization (Proposition \ref{prop:selfdual-maslov-singular-dichotomy});
+  \item \textbf{Threshold resonance (boundary support)} is carried by singular inner factor \(S_F\) and boundary singular measure (same Proposition \ref{prop:selfdual-maslov-singular-dichotomy}).
+\end{itemize}
+If further in caliber of "finite-type point resonance, and no point pole on boundary," then true resonance counting can be compressed into a set of mutually equivalent, realization-independent, auditable invariants: scattering determinant winding, Blaschke degree, model space dimension, and generalized Carathéodory/Schur negative square index (Pontryagin index).
+
+\paragraph{Birman–Krein–Blaschke Identity: Fourfold Equivalence of Resonance Counting}
+Let \(F\) be bounded type readout function on \(\mathbb{D}\), and its canonical decomposition satisfies \(F=B_FO_F\) (omitting singular inner factor to highlight point resonance; and assume \(B_F\) is finite Blaschke product).
+Let \(\det\mathcal S(\lambda)\) be unitary-slice scattering determinant compatible with this readout (boundary value of \(\lambda\in\RR\)), and let \(\xi_F(\lambda)\) be Krein spectral shift function making Birman–Krein relation \eqref{eq:birman-krein-detS-ssf} hold.
+\par
+To align "negative square index" with point resonance on same object, introduce logarithmic derivative induced by \(F\) (horizon impedance/generalized Carathéodory logarithmic derivative)
+\begin{equation}\label{eq:selfdual-CF-log-derivative}
+\boxed{\;
+\mathscr{C}_F(w):=-\frac{F'(w)}{F(w)}\qquad(w\in\mathbb{D}\setminus F^{-1}(0))\;}
+\end{equation}
+which has poles at disk zeros; in finite-type case of "finite disk zeros and no boundary zeros," \(\mathscr{C}_F\) is meromorphic function on \(\mathbb{D}\) with only finitely many disk poles.
+Denote total algebraic multiplicity of these disk poles as
+\begin{equation}\label{eq:selfdual-kappaF-polecount}
+\boxed{\;
+\kappa(F):=\sum_{a\in\mathbb{D}}\operatorname{ord}_{a}\!\bigl(\mathscr{C}_F\bigr)\ \in\ \NN\cup\{0\},\;}
+\end{equation}
+where \(\operatorname{ord}_{a}(\mathscr{C}_F)\) denotes pole order of \(\mathscr{C}_F\) at \(a\).
+In generalized Carathéodory/Schur theory, this pole count can equivalently be understood as negative square index (Pontryagin index) of \(\mathscr{C}_F\) (or its Cayley–Schur transform); this section only uses its auditable caliber of "equal to total disk pole multiplicity under finite type."
+\par
+For core definition of negative square index, Pontryagin minimal realization, and strict alignment with Toeplitz truncation inertia stable readout, see \S\ref{subsubsec:xi-negative-square-index-pontryagin-realization}.
+
+\begin{theorem}[Fourfold Identity: \texorpdfstring{$\mathrm{Wind}$}{Wind}--\texorpdfstring{$\deg(B_F)$}{deg(B)}--\texorpdfstring{$\mathfrak d_{\mathrm{Bl}}$}{d_Bl}--\texorpdfstring{$\kappa(F)$}{kappa(F)}]\label{thm:selfdual-wind-deg-dbl-kappa-identity}
+Under above finite-type setting, counted with multiplicity
+\begin{equation}\label{eq:selfdual-fourfold-identity}
+\boxed{\;
+\mathrm{Wind}\bigl(\det\mathcal S\bigr)
+\;=\;
+\deg(B_F)
+\;=\;
+\mathfrak d_{\mathrm{Bl}}(F)
+\;=\;
+\kappa(F)\; }.
+\end{equation}
+Therefore true resonance counting does not depend on specific positions of zeros/poles: it can be completely characterized by any equivalent index among topological winding of scattering determinant, inner factor Blaschke degree, model space dimension, or negative square index of logarithmic derivative.
+\end{theorem}
+
+\begin{proof}
+By boundary unitarization of scattering realization and disk readout identification (proof caliber of above in this section and Corollary \ref{cor:selfdual-index-vanish-implies-dbl0}), \(\mathrm{Wind}(\det\mathcal S)\) can be equivalently aligned with boundary winding of \(F\).
+In finite Blaschke and no singular inner factor case, Proposition \ref{prop:winding-equals-blaschke-degree} gives
+\(\mathrm{Wind}(F)=\deg(B_F)=\mathfrak d_{\mathrm{Bl}}(F)\).
+\par
+On the other hand, by \eqref{eq:selfdual-CF-log-derivative},
+poles of \(\mathscr{C}_F\) are precisely disk zeros of \(F\), and pole order equals corresponding zero multiplicity; therefore \(\kappa(F)\) (definition \eqref{eq:selfdual-kappaF-polecount}) equals total disk zero multiplicity, i.e., \(\kappa(F)=\deg(B_F)\).
+Combining yields \eqref{eq:selfdual-fourfold-identity}. QED.
+\end{proof}
+
+\paragraph{No-Hair Theorem of Self-Dual Scattering: Symmetry Forces True Resonance Index to Zero}
+Under self-dual scattering symmetry gauge (Definition \ref{def:selfdual-scattering-symmetry-ssf}), spectral shift parity forces winding vanishing (Proposition \ref{prop:selfdual-wind-vanish}).
+Combining Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity}, we get true resonance counting zeroing conclusion.
+
+\begin{corollary}[Self-Dual \(\Rightarrow\) True Resonance Index Zero]\label{cor:selfdual-implies-kappa0}
+Under finite-type setting of Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity}, if scattering determinant satisfies self-dual gauge (Definition \ref{def:selfdual-scattering-symmetry-ssf}), then
+\[
+\boxed{\;
+\deg(B_F)=\mathfrak d_{\mathrm{Bl}}(F)=\kappa(F)=0\;}
+\]
+thus \(F\) has no point zero/pole data in \(\mathbb{D}\) (no true resonance); singularities allowed in system can only appear as boundary spectral support (threshold resonance) mode (determined by \(S_F\) and boundary singular measure).
+\end{corollary}
+
+\begin{proof}
+By Proposition \ref{prop:selfdual-wind-vanish} we get \(\mathrm{Wind}(\det\mathcal S)=0\).
+Then by Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity} we get \(\deg(B_F)=\mathfrak d_{\mathrm{Bl}}(F)=\kappa(F)=0\). QED.
+\end{proof}
+
+\paragraph{Conditional Reduction to \texorpdfstring{$F_{\zeta}$}{Fzeta}: Self-Dual Scattering Realization Gives Sufficient Criterion for RH}
+Applying above chain to disk compactification object \(F_{\zeta}\) (Appendix Theorem \ref{thm:app-rh-iff-disk-zero-free}), we immediately get a completely realization-independent sufficient criterion: if one can construct a unitary-slice scattering realization compatible with closed-loop interface and satisfying self-dual gauge, then disk point resonance index zeros, thereby excluding disk zeros and deriving RH.
+
+\begin{theorem}[Self-Dual Hilbert–P{\'o}lya Sufficient Condition]\label{thm:xi-selfdual-scattering-sufficient-rh}
+Assume \(F_{\zeta}\) (disk compactification object) satisfies Hardy/Smirnov condition caliber so it has canonical decomposition \(F_{\zeta}=B_{\zeta}S_{\zeta}O_{\zeta}\) (Appendix \S\ref{subsec:unit-disk-inner-outer}).
+If there exists a unitary-slice scattering realization compatible with closed-loop interface of \(F_{\zeta}\) such that corresponding scattering determinant \(\det\mathcal S_{\zeta}\) satisfies self-dual gauge (Definition \ref{def:selfdual-scattering-symmetry-ssf}) and is in finite-type point resonance caliber of Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity} (i.e., \(B_{\zeta}\) is finite Blaschke and \(S_{\zeta}\equiv 1\)), then
+\[
+\mathfrak d_{\mathrm{Bl}}(F_{\zeta})=\deg(B_{\zeta})=0,
+\]
+thus \(F_{\zeta}\) has no zeros in \(\mathbb{D}\), hence RH holds.
+\end{theorem}
+
+\begin{proof}
+By Corollary \ref{cor:selfdual-implies-kappa0} we get \(\deg(B_{\zeta})=0\), so \(F_{\zeta}\) has no zeros in \(\mathbb{D}\).
+Then by Appendix Theorem \ref{thm:app-rh-iff-disk-zero-free} (disk equivalence of RH) we derive RH. QED.
+\end{proof}
+
+\paragraph{Anomaly Strictification and Winding Obstruction: From Discrete Curvature to True Resonance Topological Index}
+In closed-loop interface of this paper's projection calculus, commutation failure residual is completely carried by anomaly signature/anomaly cohomology class \([\mathrm{Anom}]\) (\S\ref{subsec:pom-three-generator-residual-closure}, especially Definition \ref{def:pom-anom-accumulation} and Theorem \ref{thm:dephys-offline-hair-curvature-reduction}).
+On the other hand, scattering determinant winding \(\mathrm{Wind}(\det\mathcal S)\) is homotopy invariant of \(U(1)\) loop.
+The following proposition aligns the two in "endpoint closed-loop interface" semantics as same class of auditable obstruction: if strictification can completely eliminate residual, then corresponding scattering loop can necessarily be gauge-normalized to zero winding; conversely if zero winding can be realized as normalization, then anomaly class must vanish and factor through universal strictification quotient.
+
+\begin{theorem}[Anomaly Class \texorpdfstring{$\Longleftrightarrow$}{<->} Winding Obstruction (Visible Channel Caliber)]\label{thm:xi-anom-winding-obstruction}
+Fix resolution \(m\) and lift group \(G\), and in closed-loop interface consider family of unitary-slice scattering determinant loops \(\{\det\mathcal S_{\overline\chi}\}_{\overline\chi\in\widehat{G^{\mathrm{BC}}_m}}\) induced by visible twist channels (where \(G^{\mathrm{BC}}_m\) is universal strictification quotient, Definition \ref{def:pom-bc-quotient}).
+If anomaly is strictly zero on visible channels (Proposition \ref{prop:pom-bc-quotient-strictify}, Theorem \ref{thm:dephys-offline-hair-curvature-reduction}), then each visible channel's scattering loop can take high-energy normalization \(\det\mathcal S_{\overline\chi}(\infty)=1\) and satisfy
+\[
+\boxed{\;
+\mathrm{Wind}\bigl(\det\mathcal S_{\overline\chi}\bigr)=0\qquad(\forall\,\overline\chi\in\widehat{G^{\mathrm{BC}}_m})\;}
+\]
+thus under finite-type point resonance caliber, true resonance index of all visible channels is zero (Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity}).
+\par
+Conversely, if all visible channels of some group quotient \(G\twoheadrightarrow H\) can realize above normalization and zero winding, then this group quotient must uniquely factor through \(G^{\mathrm{BC}}_m\) and make anomaly strictly zero on \(H\) (Proposition \ref{prop:pom-bc-quotient-universal}).
+\end{theorem}
+
+\begin{proof}
+By Proposition \ref{prop:pom-bc-quotient-strictify}, anomaly signature is zero on \(G^{\mathrm{BC}}_m\), i.e., discrete curvature on closed-loop interface is zero (Theorem \ref{thm:dephys-offline-hair-curvature-reduction} points (2)–(3)).
+In unitary-slice readout, this means one can choose consistent gauge in homotopy class normalizing scattering phase to zero at high-energy endpoint; and on \(U(1)\), existence of consistent phase lift and endpoint normalization hold if and only if loop winding is zero.
+Thus we get first paragraph conclusion; then by Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity} translate zero winding to true resonance index zeroing.
+\par
+Reverse direction by universality of \(G^{\mathrm{BC}}_m\) Proposition \ref{prop:pom-bc-quotient-universal}: any group quotient that can strictify closed-loop interface (i.e., realize consistent normalization on all visible channels) must factor through \(G^{\mathrm{BC}}_m\). QED.
+\end{proof}
+
+\begin{corollary}[Integer Invariant Unification of Point Resonance: Winding＝Blaschke Degree＝Model Space Dimension＝Toeplitz Negative Inertia Stable Value＝Maslov/Spectral Flow]\label{cor:xi-kappa-invariant-unification}
+Under caliber of "finite-type point resonance, and no point pole on boundary" in this section, there exists a realization-independent canonical integer \(\kappa\ge 0\) which can be defined by any of following and are mutually consistent:
+\begin{enumerate}
+  \item \(\kappa:=\mathrm{Wind}(\det\mathcal S)=\deg(B_F)=\mathfrak d_{\mathrm{Bl}}(F)=\kappa(F)\) (Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity});
+  \item \(\kappa:=\dim K_{B_F}=\nu_-(\mathbf{T}_N)\ (N\gg 1)\) (Theorem \ref{thm:xi-tate-maslov-pontryagin-unification}; and see Theorem \ref{thm:xi-toeplitz-negative-squares-equals-blaschke-defect} for Toeplitz–negative square alignment);
+  \item \(\kappa\) is equivalent to integer part of point equivariant obstruction (Maslov/Toeplitz/Fredholm/spectral flow caliber; see Proposition \ref{prop:selfdual-maslov-singular-dichotomy} and Theorem \ref{thm:xi-tate-maslov-pontryagin-unification} for semantic alignment).
+\end{enumerate}
+And this \(\kappa\) is strictly orthogonal to constant layer strictification: pure constant counterterm does not change Toeplitz negative inertia, thus does not change \(\kappa\) (Theorem \ref{thm:xi-counterterm-invariance-kappa}).
+On visible channel strictification quotient \(G^{\mathrm{BC}}_m\), anomaly zero implies visible channel scattering loop winding zero, thus under finite-type caliber visible channel true resonance index zeros (Theorem \ref{thm:xi-anom-winding-obstruction} combined with Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity}).
+\end{corollary}
+\begin{proof}
+First two items are direct combination of cited theorems; third item is existing alignment statement of "point equivariant obstruction＝Maslov/Toeplitz integer part."
+Counterterm invariance given by Theorem \ref{thm:xi-counterterm-invariance-kappa}.
+Last paragraph is direct corollary of Theorem \ref{thm:xi-anom-winding-obstruction} and Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity}. QED.
+\end{proof}
+
+\paragraph{MOM\texorpdfstring{$(q)$}{(q)} Amplification and Finite Disproof: Nonzero True Resonance Index Can Necessarily Be Detected in Finite Dimension}
+On calculus side, MOM\((q)\) has linear amplification law for anomaly cohomology class (Proposition \ref{prop:pom-anom-moment-amplification}).
+On spectral side, true resonance index is winding/pole-counting type invariant (Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity}), and can be given finite disprover by finite-order Toeplitz truncation negative inertia (see Theorem \ref{thm:xi-finite-window-true-resonance-index} and subsequent construction chain in \S\ref{subsubsec:xi-extreme-resonance-orthogonal-audit-chains}).
+Combining both sides yields "amplification detectability": if true resonance exists, then through MOM\((q)\) amplification one can force its residual to manifest as finite-dimensional failure witness.
+
+\begin{theorem}[Amplification Detectability: True Resonance \texorpdfstring{$\Rightarrow$}{=>} Finite-Dimensional Disprover]\label{thm:xi-mom-amplify-detect-true-resonance}
+Under finite-type point resonance caliber, if \(\kappa(F)>0\), then there exists integer \(q\ge 2\) such that for object amplified by MOM\((q)\), some level finite-order Toeplitz truncation must exhibit negative inertia witness (thus giving finite-dimensional disprover).
+Conversely, if for infinitely many \(q\) one can strictify on visible channels and all finite truncations maintain complete positivity (no negative inertia witness), then necessarily \(\kappa(F)=0\).
+\end{theorem}
+
+\begin{proof}
+By Proposition \ref{prop:pom-anom-moment-amplification}, MOM\((q)\) amplifies anomaly class linearly by factor \(q\); and true resonance index under caliber of this section is given by winding/pole counting (Theorem \ref{thm:selfdual-wind-deg-dbl-kappa-identity}), whose disprover can be captured by Toeplitz negative inertia at finite order (Theorem \ref{thm:xi-finite-window-true-resonance-index}).
+Therefore when \(\kappa(F)>0\), taking sufficiently large \(q\) makes amplified residual exceed any fixed finite verification threshold, thus forcing some level truncation to exhibit negative inertia witness.
+Reverse direction similarly follows from nonexistence of disprover deriving index zeroing. QED.
+\end{proof}
+
 \endinput

@@ -121,6 +121,409 @@ Therefore, if one first applies the two-cycle canceller (e.g., Aitken \(\Delta^2
 
 \input{sections/generated/tab_fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17_en}
 
+\textbf{Two-step enclosure of kernel-RH deviation.}
+Under the same ``shadow spectral packet'' reference-scale calibration, the crossing strength of the kernel RH can also be enclosed by the two-step scale.
+Denote
+\[
+\delta_q:=\log\!\left(\frac{\Lambda_q^2}{r_q}\right),
+\qquad
+\Lambda_q:=|\lambda_q^-|,
+\]
+and write the ``shadow packet shape correction'' from Table \ref{tab:fold_collision_shadow_spectral_packet_q9_17} as
+\[
+c_q^{(\mathrm{sh})}:=\frac{|\lambda_q^-|}{r_{q-2}}.
+\]
+Then the identity
+\[
+\delta_q
+=\log\!\left(\frac{r_{q-2}^2}{r_q}\right)+2\log c_q^{(\mathrm{sh})}
+\]
+decomposes \(\delta_q\) into a leading term dominated by the two-step scale \(r_{q-2}\) and a correction term controlled solely by the packet-shape deviation.
+Within the resonance window \(q=9,\dots,17\), the numerical readings of \(c_q^{(\mathrm{sh})}\) stabilize in a narrow \(O(1)\) interval and drift gently with \(q\) (same table); therefore, under the assumption ``reference scale stable/packet correction subordinate,'' one can write the two-step approximation
+\[
+\delta_q=\log\!\left(\frac{r_{q-2}^2}{r_q}\right)+o(1)
+\qquad(q=9,\dots,17).
+\]
+This shows: within this resonance interval, the dominant quantity of \(\delta_q\) is not the single-step geometric scale of \(\sqrt{r_q}\), but rather the two-step shadow scale pinned by \(r_{q-2}\) and its drift relative to \(r_q\).
+In the kernel-(G)RH semantics, this means: if one attempts to treat the raw higher-order moment Hankel minimal realizations of the resonance region as candidate objects for ``square-root spectral bound \(\Rightarrow\) square-root error,'' the visible spectral structure already systematically produces slow modes at \(\sigma\gg 1/2\), which is structurally incompatible with the design goal of square-root bounds.
+\par
+Moreover, \(\arg(\mu_q)\) in this range is stably near \(-1.83\) rad, indicating that the shadow spectral packet carries an approximately fixed complex oscillation angular frequency: the subdominant terms will exhibit damped oscillations with quasi-periodic frequency superimposed (the total sum remains positive, arising from the synthesis of multi-mode contributions).
+\par
+\paragraph{Reverse design constraint for kernel-GRH (protocol)}
+The spectral packet's crossing of the threshold is first triggered by the real-axis channel (the negative real root dominates \(\Lambda_q\); see Table \ref{tab:fold_collision_kernel_rh_scan_q2_17} and Remark \ref{rem:pom-collision-kernel-rh-phase}), which is isomorphic to the empirical pattern in GRH that ``real characters/self-conjugate channels are more likely to produce near-\(1\) obstructions.''
+Therefore, when constructing kernel families closer to the square-root spectral bound, the spectral radius of the ``real twist channel'' should be the primary suppression target.
+An implementable compilation protocol is: starting from the symmetrically compressed equivalent counting kernel \(A_{\mathrm{eq}}^{(q)}\) (the isomorphic object of Proposition \ref{prop:pom-ak-symmetric-compression}), adjoin a minimal real-character register to explicitly separate the ``trivial/real twist'' channel types, denoting
+\(
+\rho_1(u)=\rho(\text{trivial channel}),\ \rho_{\mathrm{real}}(u)=\rho(\text{real twist channel})
+\);
+then introduce a locally adjustable weight parameter \(u\) (temperature-weighted on the locally degenerate edges that trigger resonance), and define the threshold
+\[
+u_q^\star:=\inf\{u:\ \rho_{\mathrm{real}}(u)\le \rho_1(u)^{1/2}\}.
+\]
+This threshold translates the goal of ``suppress the bad real-twist spectrum \(\Rightarrow\) enter the square-root interval'' into a numerically trackable phase transition parameter, whose meaning is isomorphic to the kernel Newman threshold (Definition \ref{def:kernel-newman-threshold}); it can be audited via Hankel/recursion certificates as a regression test on finite-window outputs.
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_shadow_spectral_packet_q9_17_en}
+
+\input{sections/generated/tab_fold_collision_shadow_spectral_packet_two_step_renormalization_q9_17_en}
+
+\begin{remark}[Trimodal packet and complex phase locking: complex modal gap exponent \texorpdfstring{$g_q^{(c)}$}{gq(c)} (reproducible/falsifiable prediction)]\label{rem:pom-resonance-trimodal-phase-lock}
+In the resonance window \(q=9,\dots,17\) of Table \ref{tab:fold_collision_shadow_spectral_packet_q9_17}, apart from the Perron dominant root \(r_q\), the outer non-dominant spectrum is numerically stable as a trimodal packet
+\[
+(\lambda_q^-,\ \mu_q,\ \overline{\mu_q})
+\]
+where \(\lambda_q^-<0\) is the outermost negative real root and \(\mu_q\) is the non-real root of largest modulus (so \(\overline{\mu_q}\) appears simultaneously).
+The complex phase is approximately locked:
+\[
+\arg(\mu_q)\in[-1.8408,-1.8085],
+\qquad
+\mathrm{width}\approx 0.0323\ \mathrm{rad}\approx 1.85^\circ,
+\]
+so the oscillatory term induced by \(\mu_q^m\) primarily changes its \textbf{decay rate} rather than its frequency as \(q\) varies.
+\par
+More precisely, write the unit complex phase as
+\[
+\zeta_q:=\frac{\mu_q}{|\mu_q|}\in\mathbb{S}^1.
+\]
+Within this window, the central angle of \(\zeta_q\) approximately hits the quadratic algebraic root on the unit circle
+\[
+z_\ast:=\frac{-1-\mathrm{i}\sqrt{15}}{4},
+\qquad
+2z_\ast^2+z_\ast+2=0.
+\]
+This promotes the ``nearly constant phase'' to a falsifiable algebraic candidate: directly computing the residual certificate
+\[
+\rho_q:=\bigl|2\zeta_q^2+\zeta_q+2\bigr|
+\]
+should remain at a small order of magnitude. The reproducible readings are given in Table \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}.
+\par
+For the convenience of interpreting this residual certificate, note that for any \(\zeta\in\mathbb{S}^1\) there is a strict identity
+\begin{equation}\label{eq:pom-phase-lock-residual-trace-equivalence}
+\rho(\zeta):=\bigl|2\zeta^{2}+\zeta+2\bigr|
+=\bigl|2(\zeta+\zeta^{-1})+1\bigr|
+=\bigl|4\Re(\zeta)+1\bigr|,
+\qquad
+\left|(\zeta+\zeta^{-1})+\tfrac12\right|=\frac{\rho(\zeta)}{2}.
+\end{equation}
+This is because when \(|\zeta|=1\), \(2\zeta^2+\zeta+2=\zeta\bigl(2(\zeta+\zeta^{-1})+1\bigr)\), and \(\zeta+\zeta^{-1}=2\Re(\zeta)\).
+In particular, \(\rho_q=\rho(\zeta_q)\) equivalently characterizes the magnitude of the ``trace deviation'' \(\zeta_q+\zeta_q^{-1}\) from \(-\tfrac12\);
+therefore the locking strength under this calibration is not a two-dimensional complex quantity, but can be compressed into a single real scalar.
+\par
+To quantify the decay of the complex mode, introduce the ``complex modal gap exponent''
+\[
+g_q^{(c)}:=1-\sigma_q(\mu_q)
+=1-\frac{\log|\mu_q|}{\log r_q}.
+\]
+From Table \ref{tab:fold_collision_shadow_spectral_packet_q9_17} one directly reads: \(\sigma_q(\mu_q)\) monotonically increases (\(0.7133\to 0.8920\)), hence
+\(
+g_q^{(c)}
+\)
+monotonically decreases (\(0.2867\to 0.1080\)), meaning the complex conjugate pair increasingly approaches the dominant scale \(r_q\) (decay becomes progressively slower).
+\par
+\textbf{Falsifiable prediction:}
+Under general position (simple roots with nonzero corresponding coefficients), the linear recursion solution can be written as
+\[
+S_q(m)=C_1 r_q^m + C_- (\lambda_q^-)^m + 2|C_c|\,|\mu_q|^m\cos\!\bigl(m\arg(\mu_q)+\phi\bigr)+\cdots.
+\]
+Therefore, if one first applies the two-cycle canceller (e.g., Aitken \(\Delta^2\) on the ratio/residual; Corollary \ref{cor:pom-aitken-cancels-two-cycle}) to suppress the leading alternating error induced by \((\lambda_q^-)^m\), and then normalizes the remaining residual by \(r_q^{-\sigma_q(\mu_q)m}\), a cosine waveform of approximately fixed frequency should appear; moreover, as \(q\) increases, the decay envelope of this waveform should become significantly slower in proportion to the decrease of \(g_q^{(c)}\).
+\end{remark}
+
+\begin{proposition}[``Fixed-point law'' of the two-step rescaling: if \texorpdfstring{$|\mu_q|/r_{q-2}\to 1$}{|mu|/r->1}, then the complex gap closes at \texorpdfstring{$1/\log r_q$}{1/log r_q} rate]\label{prop:pom-two-step-renorm-fixed-point-loglaw}
+Following the two-step renormalization ratio \(R_q:=r_q/r_{q-2}\) of Remark \ref{rem:pom-shadow-spectral-packet-q9-17} and the complex modal gap exponent of Remark \ref{rem:pom-resonance-trimodal-phase-lock}
+\[
+g_q^{(c)}:=1-\frac{\log|\mu_q|}{\log r_q}.
+\]
+Then there is an identity
+\[
+\frac{|\mu_q|}{r_{q-2}}\ =\ R_q\,r_q^{-g_q^{(c)}}.
+\]
+If further there exists a limit \(R_\infty:=\lim_{q\to\infty}R_q\in(1,\infty)\) and \(|\mu_q|/r_{q-2}\to 1\), then necessarily
+\[
+g_q^{(c)}\log r_q\ \longrightarrow\ \log R_\infty,
+\qquad
+g_q^{(c)}\sim \frac{\log R_\infty}{\log r_q}.
+\]
+Equivalently, defining the Aitken post-error intensity
+\[
+\delta_{\mathrm{ait}}(q):=\frac{|\mu_q|}{r_q}=r_q^{-g_q^{(c)}},
+\]
+then \(\delta_{\mathrm{ait}}(q)=(|\mu_q|/r_{q-2})/R_q\to 1/R_\infty\).
+In the verified window, the readings \(R_{17}=1.5831\) from Table \ref{tab:fold_collision_shadow_spectral_packet_two_step_renormalization_q9_17} and \(|\mu_{17}|/r_{15}=0.9960\) from Table \ref{tab:fold_collision_shadow_spectral_packet_q9_17} together give
+\(\delta_{\mathrm{ait}}(17)=|\mu_{17}|/r_{17}\approx 0.6291\), in close numerical agreement with the fixed-point law.
+\end{proposition}
+\begin{proof}%
+From the definition \(g_q^{(c)}=1-\frac{\log|\mu_q|}{\log r_q}\) one has
+\(
+r_q^{-g_q^{(c)}}=|\mu_q|/r_q
+\);
+multiplying by \(R_q=r_q/r_{q-2}\) yields the identity.
+Under the limiting assumptions, the left-hand side \(|\mu_q|/r_{q-2}\to 1\), hence \(r_q^{-g_q^{(c)}}\to 1/R_\infty\), taking logarithms yields \(g_q^{(c)}\log r_q\to \log R_\infty\) and implies the asymptotic formula.
+Finally \(\delta_{\mathrm{ait}}(q)=|\mu_q|/r_q=(|\mu_q|/r_{q-2})/R_q\) is an algebraic identity. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Golden limit: \texorpdfstring{$\varphi^{-1}$}{phi^{-1}} convergence law of the Aitken leading error intensity]\label{cor:pom-aitken-golden-limit}
+Following the two-step renormalization ratio \(R_q:=r_q/r_{q-2}\) of Remark \ref{rem:pom-shadow-spectral-packet-q9-17} and the two-step modulus
+\(
+\eta_q:=|\mu_q|/r_{q-2}
+\)
+of Remark \ref{rem:pom-resonance-poisson-lorentz-prelimit}.
+If the following hold:
+\begin{enumerate}
+  \item[(i)] \(\lim_{q\to\infty} r_q^{1/q}=\sqrt{\varphi}\) (equivalent to \(\frac{1}{q}\log r_q\to \tfrac12\log\varphi\));
+  \item[(ii)] \(\eta_q\to 1\) (two-step saturation: complex root modulus approaches the two-step scale).
+\end{enumerate}
+Then the leading error intensity defined by the Aitken certificate (Definition \ref{def:pom-resonance-aitken-fingerprints}; in the resonance window \(|\lambda_{3,q}|=|\mu_q|\))
+\[
+\delta_{\mathrm{ait}}(q):=\frac{|\lambda_{3,q}|}{r_q}=\frac{|\mu_q|}{r_q}=\frac{\eta_q}{R_q}
+\]
+satisfies the strict limit
+\[
+\lim_{q\to\infty}\delta_{\mathrm{ait}}(q)=\varphi^{-1}.
+\]
+\end{corollary}
+\begin{proof}
+From (i) one has
+\[
+\log R_q=\log r_q-\log r_{q-2}
+=q\cdot\frac{\log r_q}{q}-(q-2)\cdot\frac{\log r_{q-2}}{q-2}\ \longrightarrow\ \log\varphi,
+\]
+hence \(R_q\to\varphi\).
+Then by the identity \(\delta_{\mathrm{ait}}(q)=\eta_q/R_q\) and (ii), \(\delta_{\mathrm{ait}}(q)\to 1/\varphi\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Resonance saturation \texorpdfstring{$\Rightarrow$}{=>} \texorpdfstring{$2/q$}{2/q} scaling law of the complex gap exponent]\label{cor:pom-resonance-complex-gap-2overq}
+Under the assumptions of Corollary \ref{cor:pom-aitken-golden-limit}, denote the complex gap exponent (Remark \ref{rem:pom-resonance-trimodal-phase-lock})
+\[
+g_q^{(c)}:=1-\sigma_q(\mu_q)=1-\frac{\log|\mu_q|}{\log r_q}.
+\]
+Then necessarily
+\[
+\lim_{q\to\infty}q\,g_q^{(c)}=2.
+\]
+\end{corollary}
+\begin{proof}
+From \(\eta_q=|\mu_q|/r_{q-2}\) and \(|\mu_q|=r_q^{1-g_q^{(c)}}\) one obtains the identity
+\[
+\log\eta_q=\log R_q-g_q^{(c)}\log r_q,
+\qquad R_q:=r_q/r_{q-2}.
+\]
+From (ii) of Corollary \ref{cor:pom-aitken-golden-limit}, \(\log\eta_q\to 0\); from (i), \(\log R_q\to\log\varphi\), hence
+\(
+g_q^{(c)}\log r_q\to\log\varphi
+\).
+Again by (i), \(\log r_q\sim \frac{q}{2}\log\varphi\), hence \(qg_q^{(c)}\to 2\). This completes the proof.
+\end{proof}
+
+\input{sections/generated/tab_fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17_en}
+
+\begin{proposition}[Linearization constant of the phase residual certificate: \texorpdfstring{$\rho\sim\sqrt{15}\,|\delta\theta|$}{rho~sqrt15|dtheta|} with unified quadratic error bound]\label{prop:pom-phase-residual-linearization-sqrt15}
+Let \(z_\ast:=(-1-\mathrm{i}\sqrt{15})/4\in\mathbb{S}^1\) be the unit circle root (satisfying \(2z_\ast^2+z_\ast+2=0\)).
+For any \(\zeta\in\mathbb{S}^1\), set
+\[
+\delta\theta:=\arg(\zeta/z_\ast)\in(-\pi,\pi],
+\qquad
+\rho(\zeta):=\bigl|2\zeta^2+\zeta+2\bigr|.
+\]
+Then when \(|\delta\theta|\le \tfrac{1}{10}\), the uniform estimate holds:
+\[
+\boxed{\;
+\bigl|\rho(\zeta)-\sqrt{15}\,|\delta\theta|\bigr|\ \le\ 2\,\delta\theta^{2}\; }.
+\]
+Therefore within this small-phase interval, \(\rho(\zeta)\) and \(|\delta\theta|\) are first-order equivalent:
+\(
+\rho(\zeta)/|\delta\theta|=\sqrt{15}+O(|\delta\theta|)
+\).
+\end{proposition}
+\begin{proof}
+Denote \(x:=\delta\theta\), then \(\zeta=z_\ast e^{\mathrm{i}x}\).
+By \eqref{eq:pom-phase-lock-residual-trace-equivalence}, \(\rho(\zeta)=|4\Re(\zeta)+1|\).
+Writing \(z_\ast=a+\mathrm{i}b\) (\(a=-\tfrac14\), \(b=-\tfrac{\sqrt{15}}{4}\)), one has
+\[
+\Re(\zeta)=\Re\bigl((a+\mathrm{i}b)(\cos x+\mathrm{i}\sin x)\bigr)=a\cos x-b\sin x
+=-\frac14\cos x+\frac{\sqrt{15}}{4}\sin x.
+\]
+Hence
+\[
+4\Re(\zeta)+1=1-\cos x+\sqrt{15}\sin x.
+\]
+\par
+\textbf{If \(x\ge 0\)}, then
+\[
+\rho(\zeta)=1-\cos x+\sqrt{15}\sin x,
+\]
+and one has
+\[
+\bigl|\rho(\zeta)-\sqrt{15}\,x\bigr|
+\le |1-\cos x|+\sqrt{15}\,|\sin x-x|
+\le \frac{x^2}{2}+\sqrt{15}\cdot\frac{x^3}{6}
+\le 2x^2,
+\]
+using the standard remainder bounds \(|1-\cos x|\le x^2/2\), \(|\sin x-x|\le x^3/6\), and \(x\le 1/10\).
+\par
+\textbf{If \(x<0\)}, let \(u:=-x>0\). Then
+\[
+4\Re(\zeta)+1=1-\cos u-\sqrt{15}\sin u<0\qquad(0<u\le\tfrac{1}{10}),
+\]
+hence \(\rho(\zeta)=-(1-\cos u-\sqrt{15}\sin u)=\sqrt{15}\sin u-(1-\cos u)\).
+Then
+\[
+\bigl|\rho(\zeta)-\sqrt{15}\,u\bigr|
+\le |1-\cos u|+\sqrt{15}\,|\sin u-u|
+\le \frac{u^2}{2}+\sqrt{15}\cdot\frac{u^3}{6}
+\le 2u^2.
+\]
+Combining both cases and using \(u=|x|\) yields the conclusion. This completes the proof.
+\end{proof}
+
+\begin{remark}[CM phase-locking-induced ``second-order oscillator'' annihilator: \texorpdfstring{$2T^2+T+2$}{2T^2+T+2} (implementable three-step de-oscillation interface)]\label{rem:pom-cm-annihilator}
+Following the above \(\mu_q\) and \(r_{q-2}\), set the normalized complex root
+\[
+\nu_q:=\frac{\mu_q}{r_{q-2}}.
+\]
+Let the forward shift operator \(E\) act on any sequence \(f:\NN\to\CC\) by \((Ef)(m):=f(m+1)\), and define the scale-normalized shift
+\[
+T:=r_{q-2}^{-1}E.
+\]
+Then for the exponential mode \(f_\nu(m):=\nu^{m}\) there is an identity
+\[
+\bigl(2T^2+T+2\bigr)f_\nu
+\equiv
+\bigl(2\nu^2+\nu+2\bigr)f_\nu,
+\]
+hence when \(\nu\in\{z_\ast,\overline{z_\ast}\}\) (where \(z_\ast\) is the quadratic algebraic root \(2z^2+z+2=0\); see Table \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}),
+\[
+\boxed{\ (2T^2+T+2)\,f_\nu\equiv 0\ }.
+\]
+Within the resonance window, due to the phase locking of \(\zeta_q=\mu_q/|\mu_q|\) to \(z_\ast\) and the magnitude approach \(|\mu_q|/r_{q-2}\to 1^{-}\) (Table \ref{tab:fold_collision_shadow_spectral_packet_q9_17}), \(\nu_q\) is numerically in the neighborhood of \(\{z_\ast,\overline{z_\ast}\}\);
+therefore the operator
+\[
+\boxed{\ \mathcal L_{\mathrm{CM}}(T):=2T^2+T+2\ }
+\]
+can be viewed as a ``phase-aware'' second-order de-oscillator: after first applying the two-cycle canceller to suppress the alternating error triggered by the negative real slow mode \((\lambda_q^-)^m\) (Corollary \ref{cor:pom-aitken-cancels-two-cycle}), applying \(\mathcal L_{\mathrm{CM}}(T)\) to the remaining residual can further suppress the quasi-periodic oscillatory term dominated by the complex conjugate pair \(\mu_q^m,\overline{\mu_q}^m\).
+This interface provides a \(q\)-independent annihilator template determined solely by the imaginary quadratic field root \(z_\ast\); its effectiveness can be directly audited by comparing the decay rate of
+\(
+\bigl|\mathcal L_{\mathrm{CM}}(T)\,S_q\bigr|
+\)
+before and after de-oscillation (independent of additional DP data).
+\par
+Furthermore, let \(\mu\ne 0\) and write \(\mu=|\mu|\,\zeta\) (\(\zeta\in\mathbb{S}^1\)), and define the normalized real oscillator
+\[
+u(m):=\frac{\mu^{m}}{|\mu|^{m}}+\frac{\overline{\mu}^{m}}{|\mu|^{m}}
+=\zeta^{m}+\zeta^{-m}\in\mathbb{R}.
+\]
+Then for all \(m\ge 0\) there is a strict recursion
+\[
+u(m+2)-(\zeta+\zeta^{-1})u(m+1)+u(m)=0.
+\]
+Therefore
+\[
+2u(m+2)+u(m+1)+2u(m)=\bigl(2(\zeta+\zeta^{-1})+1\bigr)\,u(m+1),
+\]
+hence one obtains the pointwise identity
+\[
+\bigl|2u(m+2)+u(m+1)+2u(m)\bigr|
+=\rho(\zeta)\,|u(m+1)|\qquad(\forall m\ge 0),
+\]
+where \(\rho(\zeta)\) is as in \eqref{eq:pom-phase-lock-residual-trace-equivalence}.
+Under the locked-trace condition \(\zeta+\zeta^{-1}=-\tfrac12\) (equivalent to \(\rho(\zeta)=0\)), the above degenerates to a fixed small-coefficient annihilator
+\(
+2u(m+2)+u(m+1)+2u(m)\equiv 0
+\).
+Therefore, for resonance-window data, if one first uses the two-cycle canceller to suppress the alternating term triggered by the negative real slow mode \((\lambda_q^-)^m\), and then normalizes the remaining oscillatory residual by \(|\mu_q|^m\), the above ``second-order syndrome'' can be directly verified in the time domain to be near-zero, thereby translating phase locking into an auditable interface without complex root-finding; its deviation is precisely quantified by \(\rho_q=\rho(\zeta_q)\).
+\end{remark}
+
+\begin{proposition}[Quadratic CM rigidity of the resonance locking window: intrinsic emergence of \texorpdfstring{$\QQ(\sqrt{-15})$}{Q(sqrt(-15))}]\label{prop:pom-cm-rigidity-qsqrtm15}
+Suppose \(\zeta\in\mathbb{S}^1\) satisfies the phase-locking residual \(\rho(\zeta)=|2\zeta^2+\zeta+2|=0\) (equivalently: \(\zeta\in\{z_\ast,\overline{z_\ast}\}\)).
+Let \(f_\nu(m):=\nu^m\), and take the same normalized shift operator \(T=r_{q-2}^{-1}E\) as in Remark \ref{rem:pom-cm-annihilator}.
+Then the two-dimensional subspace
+\[
+V_\zeta:=\mathrm{span}_{\QQ}\{f_\zeta,\ f_{\overline{\zeta}}\}
+\]
+is invariant under \(T\), and the commutative \(\QQ\)-algebra generated by \(T\) on it is isomorphic to the quadratic field
+\[
+\QQ[T]\big|_{V_\zeta}\ \cong\ \QQ(\zeta)\ \cong\ \QQ(\sqrt{-15}).
+\]
+More specifically, the integer subring \(\ZZ[\zeta]\subset \QQ(\sqrt{-15})\) provides an intrinsic commutative subalgebra action on this two-dimensional submode; writing \(\zeta=e^{\mathrm{i}\theta^\ast}\), one has
+\[
+\cos\theta^\ast=\Re(\zeta)=-\frac14.
+\]
+\end{proposition}
+\begin{proof}
+Since \(Tf_\nu=\nu f_\nu\), the subspace \(V_\zeta\) is invariant under \(T\), and \(T\) is represented in the basis \(\{f_\zeta,f_{\overline{\zeta}}\}\) as \(\mathrm{diag}(\zeta,\overline{\zeta})\).
+When \(\rho(\zeta)=0\), \(\zeta\) satisfies the irreducible quadratic polynomial \(2z^2+z+2=0\) with discriminant \(-15\), hence \(\QQ(\zeta)\cong \QQ(\sqrt{-15})\).
+Therefore \(\QQ[T]\big|_{V_\zeta}\) is isomorphic to \(\QQ(\zeta)\), inducing the commutative action of the integer subring \(\ZZ[\zeta]\).
+Finally, from \(\zeta+\zeta^{-1}=-\tfrac12\) (the form of \eqref{eq:pom-phase-lock-residual-trace-equivalence} when \(\rho(\zeta)=0\)), one has
+\(
+2\cos\theta^\ast=\zeta+\zeta^{-1}=-\tfrac12
+\),
+hence \(\cos\theta^\ast=-\tfrac14\). This completes the proof.
+\end{proof}
+
+\begin{remark}[Stable perturbation model of near-CM (explanatory semantics; not used as inference premise)]\label{rem:pom-near-cm-stable-perturbation}
+In the general case when \(\rho_q=\rho(\zeta_q)>0\) but is small, \(\zeta_q\) is a controlled perturbation of the pair of conjugate roots \(\{z_\ast,\overline{z_\ast}\}\) of the quadratic equation \(2z^2+z+2=0\): the phase-locking residual \(\rho_q\) can be viewed as a one-dimensional intensity coordinate ``deviating from the CM normal form'' (\eqref{eq:pom-phase-lock-residual-trace-equivalence} gives its trace-deviation version).
+Under this calibration, the two-dimensional complex-conjugate submode of the resonance window can be interpreted as a stable phenomenon ``near \(\QQ(\sqrt{-15})\)-linear'' in the operator-norm sense; its \(q\)-dependence enters primarily through the real dilation (the margining width of \(|\mu_q|/r_{q-2}\uparrow 1\)) and higher-order shifts (see the two-step rescaling and width readout in Remark \ref{rem:pom-resonance-poisson-lorentz-prelimit}).
+This remark is only used to align with traditional CM/nearly-multiplicative semantics and is not used as a premise in any proof.
+\end{remark}
+
+\begin{remark}[Poisson peak at the two-step rescaling point \texorpdfstring{$\Rightarrow$}{=>} Lorentz limit: Breit--Wigner discrete prelimit of the resonance-window shadow spectral packet]\label{rem:pom-resonance-poisson-lorentz-prelimit}
+In the resonance window \(q=9,\dots,17\), define the two-step rescaling modulus and phase
+\[
+\eta_q:=\frac{|\mu_q|}{r_{q-2}}\in(0,1),\qquad \theta_q:=\arg(\mu_q),
+\qquad a_q:=\eta_q e^{i\theta_q}=\frac{\mu_q}{r_{q-2}}\in\mathbb{D},
+\]
+where the numerical certificate of \(\eta_q\uparrow 1\) is given by Table \ref{tab:fold_collision_shadow_spectral_packet_q9_17}.
+Consider the corresponding finite Blaschke factor
+\[
+B_q(z):=\frac{z-a_q}{1-\overline{a_q}z}.
+\]
+Then its boundary phase derivative satisfies the standard Poisson kernel identity
+\[
+\frac{d}{dt}\arg B_q(e^{it})
+=\frac{1-\eta_q^{2}}{1-2\eta_q\cos(t-\theta_q)+\eta_q^{2}}
+ \;=:\; P_{\eta_q}(t-\theta_q).
+\]
+Let \(\varepsilon_q:=1-\eta_q\downarrow 0\). Then in the scaled window \(t=\theta_q+\varepsilon_q u\) there is a strict limit
+\[
+\lim_{\varepsilon_q\downarrow 0}\ \varepsilon_q\,P_{1-\varepsilon_q}(\varepsilon_q u)=\frac{2}{1+u^{2}}
+\qquad(\forall u\in\mathbb{R}),
+\]
+obtained by substituting \(\eta_q=1-\varepsilon_q\) and performing second-order expansion for the small angle \(\varepsilon_q u\): numerator \(1-\eta_q^2=2\varepsilon_q+O(\varepsilon_q^2)\), denominator \(1-2\eta_q\cos(\varepsilon_q u)+\eta_q^2=\varepsilon_q^2(1+u^2)+O(\varepsilon_q^3)\).
+The right-hand side is the standard Lorentz (Cauchy) kernel; therefore the two-step shadow spectral packet of the resonance window yields in the strict analytical sense a discrete prelimit of the Lorentz/Breit--Wigner profile, whose ``resonance width'' naturally equals \(\varepsilon_q=1-|\mu_q|/r_{q-2}\), with peak position \(\theta_q\).
+\par
+Furthermore, the Poisson kernel satisfies exact normalization
+\(
+\int_{-\pi}^{\pi}P_{\eta}(t)\,dt=2\pi
+\)
+(for any \(\eta\in(0,1)\)), hence as \(\eta_q\uparrow 1\) the peak shape sharpens but the total strength (area) remains constant; and the peak height satisfies the explicit formula
+\[
+P_{\eta_q}(0)=\frac{1+\eta_q}{1-\eta_q}=\frac{2}{\varepsilon_q}+O(1).
+\]
+Hence one obtains ``height-width reciprocity'': the peak height is of order \(\varepsilon_q^{-1}\), the peak width is of order \(\varepsilon_q\), while the area is constantly \(2\pi\); this normalization provides a natural scale for comparing spectral locking aggregation with the Lorentz peak on the same gauge.
+\par
+Moreover, under the same two-step rescaling calibration, the order-by-order drift of the complex phase peak position can be linearly dominated by the width parameter.
+Let
+\(
+\varepsilon_q:=1-\eta_q
+\)
+and define
+\(
+\Delta\theta_q:=|\theta_{q+1}-\theta_q|
+\)
+(\(q=9,\dots,16\); taking the principal value of \(\theta_q=\arg(\mu_q)\)).
+Direct calculation from the audit readings in Table \ref{tab:fold_collision_shadow_spectral_packet_q9_17} yields
+\[
+\max_{9\le q\le 16}\frac{\Delta\theta_q}{\varepsilon_q}
+\;=\;\frac{0.0029}{0.0204}\;<\;0.143,
+\]
+hence the uniform inequality holds over the full window \(q=9,\dots,16\):
+\[
+\Delta\theta_q\ \le\ 0.143\,\varepsilon_q.
+\]
+Therefore in the natural scaling coordinate \(t=\theta_q+\varepsilon_q u\), the migration of the peak position with \(q\) is a quasi-conformal slow translation rather than discrete jumps.
+\end{remark}
+
+\input{sections/body/pom/parts/resonance/subsubsec__pom-resonance-cayley-breitwigner_en}
+
 \begin{remark}[Threshold coupling between the integer gap and the continuous fingerprint: \texorpdfstring{$\Delta(q)$}{Delta(q)} vs \texorpdfstring{$c_q$}{cq} (reproducible/falsifiable prediction)]\label{rem:pom-delta-cq-threshold}
 Define a purely internal continuous spectral fingerprint
 \[
@@ -215,10 +618,13 @@ Therefore, within this window, the oscillatory term induced by \(\mu_q^m\) can b
 \paragraph{Two-phase-transition phase diagram: pivot point \(q=12\) and plateau transition \(q=15\)}
 Synthesizing the above three structural conclusions yields the resonance phase diagram characterized jointly by three fingerprints:
 \begin{itemize}
-\item Pivot point \(q=12\): simultaneously satisfying \(\Delta(12)=0\), \(|\lambda_{12}^-|/r_{10}>1\) (channel threshold crossing), and \(\rho_{12}\) attaining the window minimum;
+\item Pivot point \(q=12\): simultaneously satisfying \(\Delta(12)=0\), \(|\lambda_{12}^-|/r_{10}>1\) (channel threshold crossing), and \(\rho_{12}\) attaining the window minimum; moreover, in the modulo-\(11\) embedding slice, the embedding flag \(\chi_{A_2}\mid P_{12}\ (\mathrm{mod}\ 11)\) appears (Proposition \ref{prop:pom-charpoly-modp-a2-embedding}; in Table \ref{tab:fold_collision_charpoly_mod11_fingerprint_q12_15}, the embedding column for \(q=13,15\) is \(0\)).
 \item Plateau transition \(q=15\): first entry into the \(\Delta(q)=4\) plateau, synchronized with the crossing of \(c_q\) (\(c_{14}<c_\star<c_{15}\)).
 \end{itemize}
 The two points respectively mark the pivot mechanism of channel rearrangement/strongest phase locking and the plateau mechanism of integer gap step-up, and together they organize the observable structure of the trimodal packet \((\lambda_q^-,\mu_q,\overline{\mu_q})\) within the window.
+\par
+The synchronicity of the above pivot point arises from four independent audit pipelines: the two-step rescaling channel switching, the algebraic phase residual full-window minimum, the zero-gap isolated point derived from the minimal recursion order, and the modulo-\(11\) embedding fingerprint from the finite-field factorization.
+Its juxtaposition at a single \(q\) provides the unique ``confluence point'' characterization within the resonance window: in the currently verified window, \(q=12\) is the common landing point of these audit invariants.
 \par
 In summary, the outer spectral phenomena within the resonance window can be compressed into four classes of testable structures---monotone product law, threshold interval law, quadratic algebraic phase constraint, and two-phase-transition phase diagram---all of which can be verified term-by-term from the audit outputs of the above tables and remarks.
 \end{remark}

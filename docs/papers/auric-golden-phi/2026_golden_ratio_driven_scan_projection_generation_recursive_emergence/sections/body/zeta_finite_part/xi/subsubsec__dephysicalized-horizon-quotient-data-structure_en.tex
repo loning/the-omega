@@ -51,4 +51,546 @@ When \(\mathcal{A}_{\mathrm{ext}}\) is commutative and can be identified as the 
 At this point, \(\pi_{\mathrm{ext}}\) degenerates to a pushforward operator "microscopic distribution \(\mapsto\) macroscopic distribution", which is completely isomorphic to the readout operator \(P_m=(\Fold_m)_*\) in Section \ref{subsec:pom-information-ledger}: external equivalence class fibers correspond to microscopic configurations under the same macroscopic readout, and the ledger three-term decomposition yields the strict identity "visible entropy + fiber capacity \(-\) residual information" (Theorem \ref{thm:pom-kl-ledger}).
 \end{remark}
 
+\begin{proposition}[Capacity Law of Area Saturation: Logarithmic Scale of Horizon Fiber Controlled by Boundary Area]\label{prop:dephys-horizon-fiber-capacity-area-law}
+Interpreting the amount of externally inaccessible information as the logarithm of the "effective number of states" of external equivalence class fibers,
+the area law of semiclassical black hole thermodynamics
+\(
+S_{\mathrm{BH}}\propto A
+\)
+can be understood as: under a given external interface \(\mathcal{A}_{\mathrm{ext}}\) and given boundary geometry (area \(A\)), typical fibers of \(\pi_{\mathrm{ext}}\) possess the maximum allowed logarithmic scale, and black holes achieve the saturation upper bound under this constraint (maximal entropy objects).
+In Planck units (\(G=\hbar=c=k_{\mathrm B}=1\)), the Bekenstein--Hawking entropy formula gives the normalized saturation bound
+\begin{equation}\label{eq:dephys-bh-entropy-area-quarter}
+\boxed{\;
+S_{\mathrm{BH}}=\frac{A}{4}\;}
+\end{equation}
+(see \cite{Bekenstein1973BlackHolesEntropy,Hawking1975ParticleCreation}).
+\end{proposition}
+
+\begin{theorem}[Structural Statement of Holographic Principle: Horizon as Boundary Encoding of Minimal Sufficient Statistic]\label{thm:dephys-holography-sufficient-statistic}
+Suppose there exists a boundary Hilbert space \(\mathcal{H}_{\partial}\) and an encoding isometric embedding
+\(
+\mathcal{E}:\mathcal{H}_{\mathrm{code}}\hookrightarrow \mathcal{H}_{\partial}
+\)
+(\(\mathcal{H}_{\mathrm{code}}\subseteq\mathcal{H}_{\mathrm{bulk}}\) is some code subspace), such that for any externally visible operator \(A\in\mathcal{A}_{\mathrm{ext}}\):
+there exists a boundary operator \(A_{\partial}\in\mathcal{B}(\mathcal{H}_{\partial})\) satisfying
+\begin{equation}\label{eq:dephys-holography-reconstruction}
+\boxed{\;
+\langle\psi, A\psi\rangle_{\mathcal{H}_{\mathrm{bulk}}}
+=
+\langle\mathcal{E}\psi, A_{\partial}\mathcal{E}\psi\rangle_{\mathcal{H}_{\partial}}
+\qquad(\forall\,\psi\in\mathcal{H}_{\mathrm{code}}).\;}
+\end{equation}
+Then \(\mathcal{E}\) realizes under the code subspace caliber the holographic structure that "the boundary is sufficient to reconstruct externally computable physical quantities":
+externally observable data is not an approximate summary in principle, but rather boundary encoding as a minimal sufficient statistic.
+Under the intuition of "one degree of freedom per Planck area", equation \eqref{eq:dephys-bh-entropy-area-quarter} indicates that the maximum encodable information is proportional to the boundary area (see \cite{tHooft1993DimensionalReductionQuantumGravity,Susskind1995WorldAsHologram}).
+\end{theorem}
+
+\begin{remark}[Verifiable Model of AdS/CFT: Boundary Theory as Explicit Encoder]\label{rem:dephys-adscft-explicit-encoder}
+In the AdS/CFT duality, the boundary conformal field theory is equivalent to bulk gravitational theory in the relevant limits, so that boundary states can be viewed as complete encoders of bulk states (\cite{Maldacena1999LargeN}).
+This framework further fixes the "area/4" constant in the form of geometrization of entanglement entropy:
+for entanglement entropy of a boundary subregion \(A\), in the classical limit it is given by the area of an extremal surface in the bulk
+\[
+S(A)=\frac{\mathrm{Area}(\gamma_A)}{4G_N},
+\]
+the Ryu--Takayanagi formula (\cite{RyuTakayanagi2006HolographicEntanglementEntropy}).
+Therefore, the meaning of "horizon as data structure" obtains clear realization in such theories, rather than merely analogical wording.
+\end{remark}
+
+\begin{proposition}[Rigorous Formulation of Zero-Knowledge Analogy: External Verification Equivalent to Predicate Judgment on Quotient Space]\label{prop:dephys-zero-knowledge-quotient-factorization}
+Let external verification program \(V\) only access \(\mathcal{A}_{\mathrm{ext}}\), and output boolean value \(V(\rho)\in\{0,1\}\);
+that is, suppose \(V\) is constant on external equivalence classes:
+\[
+\rho\sim_{\mathrm{ext}}\tilde\rho\ \Longrightarrow\ V(\rho)=V(\tilde\rho).
+\]
+Then \(V\) must factor through the quotient map \(\pi_{\mathrm{ext}}\): there exists a predicate
+\(
+v:\mathrm{St}(\mathcal{A}_{\mathrm{ext}})\to\{0,1\}
+\)
+such that
+\begin{equation}\label{eq:dephys-verification-factorization}
+\boxed{\;
+V=v\circ \pi_{\mathrm{ext}}.\;}
+\end{equation}
+Therefore any external "verifiable statement" is essentially a predicate on external equivalence classes, and cannot distinguish microscopic states within the same fiber;
+if microscopic states are viewed as witnesses \(w\) and externally visible data as statements \(x\), then \eqref{eq:dephys-verification-factorization} gives the physical counterpart of zero-knowledge-style semantics.
+\end{proposition}
+
+\begin{proof}
+Define function \(\overline V([\rho]) := V(\rho)\) on the quotient set \(\mathcal{D}(\mathcal{H}_{\mathrm{bulk}})/{\sim_{\mathrm{ext}}}\);
+this definition is well-defined by the "external equivalence class constancy" assumption.
+By Proposition \ref{prop:dephys-horizon-quotient-data-structure}, the quotient set can be identified as the image of \(\pi_{\mathrm{ext}}\),
+\(\mathrm{St}(\mathcal{A}_{\mathrm{ext}})\), and the fibers of \(\pi_{\mathrm{ext}}\) are precisely the equivalence classes.
+Thus let \(v(\sigma):=\overline V([\rho])\) (where \(\sigma=\pi_{\mathrm{ext}}(\rho)\)) and obtain \(V=v\circ\pi_{\mathrm{ext}}\).
+This completes the proof.
+\end{proof}
+
+\begin{remark}[Dynamic Data Structure Perspective: Horizon as Random Encoder/Scrambler and Information Recovery Threshold]\label{rem:dephys-horizon-scrambler-recovery-threshold}
+If we further assume that black hole internal dynamics approximates rapid mixing, then infalling information is quickly spread non-locally to degrees of freedom in the horizon and radiation;
+after the evaporation process proceeds sufficiently deep, externally one can rapidly recover newly injected information from the radiation.
+This phenomenon can be precisely formulated as: under the assumption of "rapid mixing + unitary evolution", black holes realize near-optimal quantum erasure channel encoding,
+and exhibit "first hide, then reveal" information release threshold behavior (Hayden--Preskill mirror mechanism; see \cite{HaydenPreskill2007BlackHolesMirrors}).
+\end{remark}
+
+\begin{proposition}[On the Position of Coefficient \texorpdfstring{$1/4$}{1/4}: Normalization Constant of Boundary—Thermodynamic Consistency]\label{prop:dephys-one-quarter-normalization}
+The coefficient \(1/4\) in semiclassical black hole thermodynamics is not an adjustable parameter.
+In the first law of black hole mechanics (\cite{BardeenCarterHawking1973FourLaws})
+\[
+dM=\frac{\kappa}{8\pi G}\,\dd A+\Omega\,\dd J+\Phi\,\dd Q
+\]
+and Hawking temperature (\cite{Hawking1975ParticleCreation})
+\(
+T=\frac{\hbar\kappa}{2\pi}
+\)
+the compatible thermodynamic identification
+\(
+dM=T\,\dd S+\Omega\,\dd J+\Phi\,\dd Q
+\)
+jointly forces
+\[
+\boxed{\;
+\dd S=\frac{1}{4G\hbar}\,\dd A,\qquad
+S=\frac{A}{4G\hbar}+(\text{constant})\;}
+\]
+thus obtaining \(S_{\mathrm{BH}}=A/4\) in \eqref{eq:dephys-bh-entropy-area-quarter} in Planck units.
+Its mathematical position is isomorphic to the role of endpoint/horizon normalization constants in this paper: constants undertake the sealing of units and normalization, aligning boundary geometric quantities with additive logarithmic potentials without introducing new internal degrees of freedom
+(see Remark \ref{rem:dephys-cayley-scale-gauge-four} on "normalization only changes additive zero point" and Proposition \ref{prop:xi-defect-entropy-hyperbolic-area-law-4pi} for the complete analogy of the \(4\pi\) alignment mechanism).
+\end{proposition}
+
+\paragraph{Horizon Sufficiency and Exponential Capacity: Recoverability Criterion Under Conditional Expectation Caliber}
+To lift the above "quotient data structure" from set-theoretic level equivalence class characterization to auditable operator algebra caliber,
+the following adopts the setting of \(\sigma\)-finite von Neumann algebra embedding and faithful normal conditional expectation,
+and measures "external compression" information loss by Araki--Umegaki relative entropy (\cite{Araki1976RelativeEntropyVonNeumann}).
+This caliber makes "external verification = zero-knowledge predicate" strictly equivalent to recoverability in the sense of sufficient statistics (Petz sufficiency theorem; \cite{Petz1986SufficientSubalgebrasRelativeEntropy,Petz2003MonotonicityRelativeEntropyRevisited}),
+and locks the "fiber capacity" worst-case logarithmic scale to the logarithm of finite index (\cite{PimsnerPopa1986EntropyIndexSubfactors,Hiai1991MinimumIndexSubfactorsEntropyII}).
+
+\begin{definition}[Externalization Channel and Fixed-Point State Space]\label{def:dephys-conditional-expectation-externalization-map}
+Suppose \(\mathcal{A}_{\mathrm{ext}}\subseteq \mathcal{A}_{\mathrm{bulk}}\) is a \(\sigma\)-finite von Neumann algebra embedding,
+and let \(E:\mathcal{A}_{\mathrm{bulk}}\to\mathcal{A}_{\mathrm{ext}}\) be a faithful normal conditional expectation (thus \(E\) is a unit-preserving, completely positive and idempotent normal map, and is the identity on \(\mathcal{A}_{\mathrm{ext}}\)).
+Denote by \(\mathcal{S}(\mathcal{A})\) all normal states on \(\mathcal{A}\).
+\par
+Define the externalization operator (idempotent projection) on the state space
+\begin{equation}\label{eq:dephys-ext-externalization-Pi}
+\boxed{\;
+\Pi:\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\to \mathcal{S}(\mathcal{A}_{\mathrm{bulk}}),
+\qquad
+\Pi(\rho):=\rho\circ E.\;}
+\end{equation}
+and define its fixed-point set
+\[
+\mathrm{Fix}(\Pi):=\{\rho\in\mathcal{S}(\mathcal{A}_{\mathrm{bulk}}):\ \Pi(\rho)=\rho\}.
+\]
+Since \(E\) is the identity on \(\mathcal{A}_{\mathrm{ext}}\), the restriction map \(\rho\mapsto \rho|_{\mathcal{A}_{\mathrm{ext}}}\) is naturally identified with \(\mathcal{S}(\mathcal{A}_{\mathrm{ext}})\) on \(\mathrm{Fix}(\Pi)\).
+\end{definition}
+
+\begin{proposition}[Horizon Sufficiency Theorem: "Zero-Knowledge-Type" Necessary and Sufficient Condition for External Verification]\label{prop:dephys-horizon-sufficiency-zero-knowledge}
+Under the setting of Definition \ref{def:dephys-conditional-expectation-externalization-map},
+let predicate \(V:\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\to\{0,1\}\) satisfy external invariance:
+\[
+\rho|_{\mathcal{A}_{\mathrm{ext}}}=\rho'|_{\mathcal{A}_{\mathrm{ext}}}
+\ \Longrightarrow\
+V(\rho)=V(\rho').
+\]
+Then there exists a unique predicate \(v:\mathrm{Fix}(\Pi)\to\{0,1\}\) such that
+\begin{equation}\label{eq:dephys-zero-knowledge-factorization-by-Pi}
+\boxed{\;
+V=v\circ\Pi.\;}
+\end{equation}
+In particular, any external "verifiable statement" can only depend on the externalized state \(\Pi(\rho)\) (equivalently depend on \(\rho|_{\mathcal{A}_{\mathrm{ext}}}\)), and cannot distinguish microscopic states within the same external equivalence class fiber.
+\end{proposition}
+
+\begin{proof}
+Note that for any \(\rho\in\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\) and any \(A\in\mathcal{A}_{\mathrm{ext}}\), we have
+\(
+\Pi(\rho)(A)=\rho(E(A))=\rho(A)
+\), so \(\Pi(\rho)|_{\mathcal{A}_{\mathrm{ext}}}=\rho|_{\mathcal{A}_{\mathrm{ext}}}\).
+Therefore external invariance is equivalent to \(V\) being constant on fibers of \(\Pi\).
+Let \(v(\sigma):=V(\rho)\), where \(\sigma=\Pi(\rho)\in\mathrm{Fix}(\Pi)\);
+this definition is well-defined by constancy, and clearly satisfies \(V=v\circ\Pi\).
+Uniqueness comes from \(\Pi\) being the identity on its image: if \(V=v_1\circ\Pi=v_2\circ\Pi\), then for any \(\sigma\in\mathrm{Fix}(\Pi)\) take \(\rho=\sigma\) to get \(v_1(\sigma)=v_2(\sigma)\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Horizon Sufficiency: Relative Entropy Fidelity \(\Longleftrightarrow\) Recoverability]\label{thm:dephys-petz-sufficiency-equivalences}
+Under the setting of Definition \ref{def:dephys-conditional-expectation-externalization-map},
+let \(\mathcal{F}\subset\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\) be a family of normal states.
+The following are equivalent:
+\begin{enumerate}
+  \item[(i)] \(E\) is sufficient for \(\mathcal{F}\): externalization \(\rho\mapsto \rho|_{\mathcal{A}_{\mathrm{ext}}}\) is a lossless characterization on \(\mathcal{F}\) (i.e., there exists an external state family \(\mathcal{F}_{\mathrm{ext}}\subset\mathcal{S}(\mathcal{A}_{\mathrm{ext}})\) and a bijective correspondence, such that statistical discrimination in \(\mathcal{F}\) remains recoverable after externalization);
+  \item[(ii)] For any \(\rho,\sigma\in\mathcal{F}\), Araki--Umegaki relative entropy satisfies the fidelity equality
+  \begin{equation}\label{eq:dephys-relative-entropy-sufficiency-equality}
+  \boxed{\;
+  D(\rho\|\sigma)=D(\rho\circ E\ \|\ \sigma\circ E)\;}
+  \end{equation}
+  (where \(D\) is relative entropy on von Neumann algebras; \cite{Araki1976RelativeEntropyVonNeumann});
+  \item[(iii)] There exists a completely positive unital map (recovery operator) \(R:\mathcal{A}_{\mathrm{ext}}\to\mathcal{A}_{\mathrm{bulk}}\), such that for all \(\rho\in\mathcal{F}\)
+  \begin{equation}\label{eq:dephys-recovery-map-identity-on-family}
+  \boxed{\;
+  \rho=\rho\circ R\circ E.\;}
+  \end{equation}
+\end{enumerate}
+This equivalence makes "horizon as verification interface" rigorous as a recoverability criterion in the sense of sufficient statistics (Petz sufficiency theorem).
+\end{theorem}
+
+\begin{proof}[Proof outline]
+By the data processing inequality for relative entropy (\cite{Petz2003MonotonicityRelativeEntropyRevisited}), for any \(\rho,\sigma\) we always have
+\(
+D(\rho\|\sigma)\ge D(\rho\circ E\|\sigma\circ E)
+\).
+Petz theory characterizes the equality condition, and gives the necessary and sufficient condition that equality holds if and only if there exists a recovery operator such that \(\rho=\rho\circ R\circ E\) (\cite{Petz1986SufficientSubalgebrasRelativeEntropy}).
+Therefore \((ii)\Longleftrightarrow(iii)\) holds; and "sufficiency" in the statistical sense is synonymous with "relative entropy full fidelity/recoverability" under this setting, so it is equivalent to (i). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Sufficient Statistic \(\Rightarrow\) Universal Zero-Knowledge Simulation: Channel Factorization Induced by Recovery]\label{cor:dephys-universal-zk-simulation-factorization}
+Under the setting of Theorem \ref{thm:dephys-petz-sufficiency-equivalences},
+if there exists a recovery operator \(R:\mathcal{A}_{\mathrm{ext}}\to\mathcal{A}_{\mathrm{bulk}}\) such that
+\(\rho=\rho\circ R\circ E\) holds for all \(\rho\in\mathcal{F}\),
+then for any output von Neumann algebra \(\mathcal{C}\) and any normal quantum channel
+\(\Gamma_*:\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\to\mathcal{S}(\mathcal{C})\)
+(i.e., normal, affine and induced by some normal completely positive trace-preserving map in the Schr\"odinger picture),
+there exists a normal quantum channel
+\(\widetilde\Gamma_*:\mathcal{S}(\mathcal{A}_{\mathrm{ext}})\to\mathcal{S}(\mathcal{C})\)
+such that the universal factorization identity holds on the state family \(\mathcal{F}\)
+\begin{equation}\label{eq:dephys-universal-zk-factorization-on-family}
+\boxed{\;
+\Gamma_*(\rho)=\widetilde\Gamma_*(\rho\circ E)\qquad(\forall\,\rho\in\mathcal{F}).\;}
+\end{equation}
+And an explicit simulator construction can be taken:
+\[
+\boxed{\;
+\widetilde\Gamma_*(\sigma):=\Gamma_*(\sigma\circ R)\qquad(\sigma\in\mathcal{S}(\mathcal{A}_{\mathrm{ext}})).\;}
+\]
+Therefore, "externally verifiable output on \(\mathcal{F}\) is completely determined by external image \(\rho\circ E\)" is not only a set-theoretic level quotient space predicate closure,
+but is a universal zero-knowledge simulation law strictly aligned with Petz-type recovery (sufficient statistics) in the completely positive category.
+\end{corollary}
+
+\begin{proof}
+For any \(\rho\in\mathcal{F}\), by assumption \(\rho=\rho\circ R\circ E\) we get
+\[
+\widetilde\Gamma_*(\rho\circ E)
+=\Gamma_*\bigl((\rho\circ E)\circ R\bigr)
+=\Gamma_*(\rho),
+\]
+which gives \eqref{eq:dephys-universal-zk-factorization-on-family}.
+By normality and affinity of \(\sigma\mapsto \sigma\circ R\) and \(\Gamma_*\), \(\widetilde\Gamma_*\) remains a normal quantum channel. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Full State Family Recoverability \(\Rightarrow\) Trivial Horizon: \(\mathrm{Ind}(E)=1\)]\label{cor:dephys-full-state-recovery-forces-trivial-index1}
+Suppose there exists a normal completely positive unital map \(R:\mathcal{A}_{\mathrm{ext}}\to\mathcal{A}_{\mathrm{bulk}}\) such that
+\begin{equation}\label{eq:dephys-left-inverse-recovery-map}
+\boxed{\;R\circ E=\mathrm{id}_{\mathcal{A}_{\mathrm{bulk}}}.\;}
+\end{equation}
+Then we must have \(\mathcal{A}_{\mathrm{bulk}}=\mathcal{A}_{\mathrm{ext}}\) and \(E\) is the identity map;
+in particular, \(\mathrm{Ind}(E)=1\).
+\end{corollary}
+
+\begin{proof}
+By \eqref{eq:dephys-left-inverse-recovery-map}, \(E\) is injective.
+But \(E\) is a conditional expectation, thus it is the identity on its image \(\mathcal{A}_{\mathrm{ext}}\) and is an idempotent projection; if \(\mathcal{A}_{\mathrm{ext}}\subsetneq \mathcal{A}_{\mathrm{bulk}}\), then \(E\) must have a nonzero kernel direction, so it cannot be injective.
+Thus we can only have \(\mathcal{A}_{\mathrm{bulk}}=\mathcal{A}_{\mathrm{ext}}\) and \(E=\mathrm{id}\).
+By Definition \ref{def:dephys-pimsner-popa-index}, \(\mathrm{Ind}(\mathrm{id})=1\). This completes the proof.
+\end{proof}
+
+\begin{definition}[Pimsner--Popa Finite Index]\label{def:dephys-pimsner-popa-index}
+Under the above setting, the conditional expectation \(E\) is said to have finite Pimsner--Popa index if there exists a constant \(\Lambda\in(1,\infty)\) such that for all \(x\in\mathcal{A}_{\mathrm{bulk}}\)
+\begin{equation}\label{eq:dephys-pimsner-popa-inequality}
+\boxed{\;
+E(x^\ast x)\ \ge\ \Lambda^{-1}\,x^\ast x.\;}
+\end{equation}
+Define its index as
+\[
+\boxed{\;
+\mathrm{Ind}(E):=\inf\{\Lambda:\ \eqref{eq:dephys-pimsner-popa-inequality}\ \text{holds}\}\ \in\ (1,\infty].\;}
+\]
+\end{definition}
+
+\begin{theorem}[Horizon Index Formula: Maximum Information Loss Equals Logarithm of Finite Index]\label{thm:dephys-index-max-relative-entropy-loss}
+Under the setting of Definition \ref{def:dephys-pimsner-popa-index}, if \(E\) has finite index \(\mathrm{Ind}(E)\in(1,\infty)\),
+then the maximum relative entropy loss that externalization can cause satisfies the exact extremal formula
+\begin{equation}\label{eq:dephys-index-max-entropy-loss}
+\boxed{\;
+\sup_{\rho,\sigma\in\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})}
+\Bigl[D(\rho\|\sigma)-D(\rho\circ E\ \|\ \sigma\circ E)\Bigr]
+=\log \mathrm{Ind}(E).\;}
+\end{equation}
+Therefore \(\log\mathrm{Ind}(E)\) gives the normalized logarithmic scale of "horizon fiber capacity": it does not depend on specific states, but is uniquely determined by the external interface and embedding structure.
+\end{theorem}
+
+\begin{proof}[Proof outline]
+Monotonicity of relative entropy gives the integrand expression is non-negative.
+For the finite index case, the upper bound and attainability of the above formula are given by Pimsner--Popa's indexed relative entropy estimate and its extremal construction;
+see \cite{PimsnerPopa1986EntropyIndexSubfactors,Hiai1991MinimumIndexSubfactorsEntropyII} for the "index \(\leftrightarrow\) relative entropy" theorem chain. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Hard Upper Bound on Hidden Label Capacity: Relative Commutant Dimension Capped by Index]\label{prop:dephys-relative-commutant-dimension-index-cap}
+Suppose \(N\subset M\) is a finite index subfactor inclusion, and let \(E:M\to N\) be the canonical (trace-preserving) conditional expectation.
+If the Jones index is finite \([M:N]=\mathrm{Ind}(E)<\infty\), then the relative commutant \(N'\cap M\) is a finite-dimensional \(C^\ast\)-algebra and satisfies the dimension upper bound
+\begin{equation}\label{eq:dephys-relative-commutant-dimension-bound}
+\boxed{\;\dim(N'\cap M)\ \le\ \mathrm{Ind}(E).\;}
+\end{equation}
+Thus any family of mutually orthogonal nonzero projections \(\{p_j\}\subset N'\cap M\) has cardinality satisfying
+\(
+|\{p_j\}|\le \mathrm{Ind}(E)
+\).
+Under the semantics of "external interface being \(N\)", this conclusion compresses the number of discrete labels that are externally indistinguishable but internally distinguishable to a hard upper bound uniquely controlled by the horizon index.
+\end{proposition}
+
+\begin{proof}[Proof outline]
+Finite index inclusion gives \(L^2(M)\) as an \(N\)-module with finite Jones dimension, and \(N'\cap M\) can be identified as part of the intertwining algebra on this finite module;
+its dimension upper bound is derived from the Pimsner--Popa basis and dimension estimates in the basic construction (see \cite{PimsnerPopa1986EntropyIndexSubfactors} for the index/basis construction chain).
+The cardinality of orthogonal projection families does not exceed the algebra dimension, so the corollary holds. This completes the proof.
+\end{proof}
+
+\input{subsubsec__dephysicalized-horizon-quotient-data-structure__fold-hidden-label-cap-sqrt}
+
+\begin{proposition}[Operator Version of Zero-Knowledge Simulation Theorem: Exact Simulability of Conditional Expectation and Index Lower Bound]\label{prop:dephys-operator-zk-simulation-index-lower-bound}
+Under the setting of Definition \ref{def:dephys-conditional-expectation-externalization-map},
+for any externally measurable process (i.e., any POVM/test depending only on \(\mathcal{A}_{\mathrm{ext}}\)), there exists an \textbf{exact simulator}: its input is only the externally visible state
+\(
+\sigma:=\rho|_{\mathcal{A}_{\mathrm{ext}}}\equiv \Pi(\rho)|_{\mathcal{A}_{\mathrm{ext}}}
+\),
+and the output external statistical distribution is completely consistent with real \(\rho\).
+\par
+Furthermore, if \(\mathrm{Ind}(E)<\infty\), and we require implementation of conditional expectation \(E\) (equivalently implementation of externalization \(\Pi\)) with some finite-dimensional Stinespring dilation,
+then its minimal ancillary dimension \(d_{\min}\) satisfies
+\[
+\boxed{\;d_{\min}^2\ \ge\ \mathrm{Ind}(E)\;}
+\]
+thus the logarithmic scale of minimal ancillary resources has an insurmountable lower bound \(\tfrac12\log\mathrm{Ind}(E)\).
+\end{proposition}
+\begin{proof}[Proof outline]
+The first part is a definitional level equivalent reformulation: for any \(M\in\mathcal{A}_{\mathrm{ext}}\) the expectation satisfies
+\(
+\rho(M)=\rho(E(M))=\Pi(\rho)(M)
+\), so external statistics only depend on \(\sigma=\rho|_{\mathcal{A}_{\mathrm{ext}}}\).
+\par
+The second part can be given by "quasi-basis/certificate element" counting in finite-dimensional realization: if \(E\) has a Stinespring representation realized with a \(d\)-dimensional ancillary system, then at most \(d^2\) operator elements can be constructed to form a finite certificate basis implementing \(E\);
+and finite index \(\mathrm{Ind}(E)\) as the minimized scale of the Pimsner--Popa constant cannot exceed the "square scale" of any such finite certificate.
+Therefore \(\mathrm{Ind}(E)\le d^2\), taking minimal \(d=d_{\min}\) gives the conclusion. This completes the proof.
+\end{proof}
+
+\input{subsubsec__dephysicalized-horizon-quotient-data-structure__fold-stinespring-sqrt-law}
+
+\begin{corollary}[Chain Rule: Index Additivity and Information Loss Additivity for Nested Horizons]\label{cor:dephys-index-chain-rule}
+Suppose \(\mathcal{A}_0\subseteq \mathcal{A}_1\subseteq \mathcal{A}_2\) and there exist conditional expectations
+\(
+E_{21}:\mathcal{A}_2\to\mathcal{A}_1
+\), \(
+E_{10}:\mathcal{A}_1\to\mathcal{A}_0
+\), and let \(E_{20}:=E_{10}\circ E_{21}\).
+If all three have finite index, then
+\[
+\boxed{\;
+\mathrm{Ind}(E_{20})=\mathrm{Ind}(E_{21})\,\mathrm{Ind}(E_{10}),\qquad
+\log\mathrm{Ind}(E_{20})=\log\mathrm{Ind}(E_{21})+\log\mathrm{Ind}(E_{10}).\;}
+\]
+And for any \(\rho,\sigma\in\mathcal{S}(\mathcal{A}_2)\) we have the chain identity for relative entropy loss
+\[
+\boxed{\;
+D(\rho\|\sigma)-D(\rho\circ E_{20}\ \|\ \sigma\circ E_{20})
+=\Delta_{21}(\rho,\sigma)+\Delta_{10}(\rho\circ E_{21},\sigma\circ E_{21}),\;}
+\]
+where \(\Delta_{ab}(\cdot,\cdot):=D(\cdot\|\cdot)-D(\cdot\circ E_{ab}\ \|\ \cdot\circ E_{ab})\).
+\end{corollary}
+
+\begin{proof}
+Index multiplicativity is a standard property of finite index conditional expectations (see \cite{PimsnerPopa1986EntropyIndexSubfactors,Hiai1991MinimumIndexSubfactorsEntropyII}).
+The chain identity is obtained directly by substituting \(E_{20}=E_{10}\circ E_{21}\) and expanding term by term with successive cancellation. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Commuting Square and Mutual Information Defect: Decidable Compatibility of Two Externalization Processes]\label{prop:dephys-commuting-square-mutual-information-defect}
+Suppose \(\mathcal{A}_{\mathrm{ext}}^{(1)},\mathcal{A}_{\mathrm{ext}}^{(2)}\subseteq\mathcal{A}_{\mathrm{bulk}}\) are two external subalgebras,
+and let \(E_1,E_2\) be the corresponding faithful normal conditional expectations.
+If the commuting square compatibility is satisfied
+\[
+E_1E_2=E_2E_1=:E_{12},
+\]
+then for any \(\rho,\sigma\in\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\) we have the non-negative defect identity
+\begin{equation}\label{eq:dephys-mutual-information-defect}
+\boxed{\;
+\Delta_{1}(\rho,\sigma)+\Delta_{2}(\rho,\sigma)-\Delta_{12}(\rho,\sigma)\ \ge\ 0,\;}
+\end{equation}
+where \(\Delta_i(\rho,\sigma):=D(\rho\|\sigma)-D(\rho\circ E_i\ \|\ \sigma\circ E_i)\).
+Equality holds if and only if the two externalization processes do not introduce additional unrecoverable loss on \((\rho,\sigma)\) (equivalently: relative entropy attains equality for both two-step externalizations simultaneously; see \cite{Petz2003MonotonicityRelativeEntropyRevisited} for characterization of equality conditions).
+\end{proposition}
+
+\begin{proof}[Proof outline]
+This inequality is an equivalent statement of monotonicity and strong subadditivity structure of relative entropy under commuting-square constraints;
+\(E_{12}\) can be viewed as the common refinement of two-step coarse-graining, and Petz's equality condition can be used to translate "no additional loss" into recoverability conditions. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Möbius--Markov Uniqueness: Poisson Semigroup is the Unique Covariant Flow for Horizon Coarse-Graining]\label{thm:dephys-mobius-markov-unique-poisson}
+Suppose \((T_t)_{t\ge 0}\) is a strongly continuous Markov semigroup acting on integrable densities on \(\RR\), satisfying:
+\begin{enumerate}
+  \item[(i)] Covariance with boundary affine Möbius automorphisms of \(\mathbb{H}\) (\(x\mapsto ax+b\), \(a>0\));
+  \item[(ii)] Preserves Lebesgue measure and satisfies the strong maximum principle;
+  \item[(iii)] The generator in frequency domain is a radially isotropic homogeneous first-order operator: there exists constant \(c>0\) such that its Fourier symbol is \(c|\xi|\).
+\end{enumerate}
+Then \(T_t\) agrees with the Poisson semigroup: for any \(f\in L^1(\RR)\)
+\begin{equation}\label{eq:dephys-poisson-semigroup-fourier}
+\boxed{\;
+\widehat{T_t f}(\xi)=e^{-t|\xi|}\,\widehat f(\xi)\qquad(\xi\in\RR),\;}
+\end{equation}
+thus \(T_t f=P_t*f\), where \(P_t(x)=\frac{1}{\pi}\frac{t}{x^2+t^2}\) is the Poisson kernel.
+Therefore under the constraint of "horizon as the unique continuous interface", coarse-graining dynamics under covariance and Markov requirements is unique.
+\end{theorem}
+
+\begin{proof}
+By strongly continuous Markov semigroup and the homogeneous symbol assumption in (iii), \(T_t\) in Fourier representation must be a multiplier semigroup
+\(
+\widehat{T_t f}(\xi)=e^{-t c|\xi|}\widehat f(\xi)
+\).
+By normalization of (i)–(ii) (preserving measure/probability kernel mass) we can take \(c=1\), thus obtaining \eqref{eq:dephys-poisson-semigroup-fourier}.
+Taking inverse Fourier transform of \(e^{-t|\xi|}\) gives the Poisson kernel \(P_t\), so \(T_t f=P_t*f\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Stieltjes Inversion of Scale Entropy Curve: Depth Spectrum Can Be Uniquely Recovered on Single-Variable Orbit]\label{cor:dephys-stieltjes-inversion-scale-entropy}
+Under finite point defect caliber, the scale entropy curve
+\[
+S_{\mathrm{def}}(t):=\sum_j m_j\,\frac{\delta_j}{t+1+\delta_j}\qquad(t>0)
+\]
+is a Stieltjes function, and its complex analytic continuation has simple poles at \(t=-1-\delta_j\) with residue \(m_j\delta_j\);
+therefore \(S_{\mathrm{def}}(t)\) on any set containing infinitely many points in \(t>0\) uniquely determines the multiset \(\{(\delta_j,m_j)\}\) (merging atoms of the same depth, ignoring permutation).
+Moreover, its derivative chain gives a completely positive moment chain
+\[
+\boxed{\;
+\frac{(-1)^n}{n!}\,S_{\mathrm{def}}^{(n)}(0)
+=\sum_j m_j\,\delta_j(1+\delta_j)^{-n-1}\qquad(n\ge 0).\;}
+\]
+This conclusion is consistent with the complete monotonicity/pole identification of Proposition \ref{prop:xi-defect-entropy-scale-fingerprint-stieltjes}, and lifts it to a unique recovery statement in the sense of Stieltjes inversion.
+\end{corollary}
+
+\begin{corollary}[Distinguishability Lower Bound for Coarse-Graining: \texorpdfstring{$L^1$}{L1} Convergence Under Poisson Flow Controlled by Second-Order Central Moment]\label{cor:dephys-poisson-tv-bound-variance}
+Suppose normalized profile density \(h:=H/\|H\|_{L^1(\RR)}\) is a finite Cauchy--Poisson mixture, and let \(h_t:=P_t*h\) (\(P_t\) is the Poisson kernel).
+Denote the center of mass of \(h\) by \(\bar\gamma\), and give the second-order central moment with depth weight as
+\(
+\mathrm{Var}(\gamma)
+\).
+Then there exists an absolute constant \(C>0\) such that as \(t\to\infty\)
+\[
+\boxed{\;
+\|h_t-\mathrm{Cauchy}(\bar\gamma,t)\|_{L^1(\RR)}
+\ \le\ C\,\frac{\mathrm{Var}(\gamma)}{t^2}\;}
+\]
+where \(\mathrm{Cauchy}(\bar\gamma,t)(x)=\frac{1}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2}\).
+This inequality is compatible with the consistent \(O(t^{-2})\) asymptotics of Proposition \ref{prop:xi-poisson-coarsegraining-nohair}, and lifts the regime conclusion of "large-scale information collapse to two-parameter family" to a quantitative lower bound in total variation sense.
+\end{corollary}
+
+\begin{proof}[Proof outline]
+By Taylor expansion in Proposition \ref{prop:xi-poisson-coarsegraining-nohair}, the difference between \(h_t\) and the single Cauchy kernel determined by \((\|H\|_1,\bar\gamma)\) is uniformly \(O(t^{-2})\) over \(x\), with constant controlled by the second-order central moment;
+integrating over \(x\in\RR\) and using \(\int_{\RR}\frac{t}{(x^2+t^2)}\,dx=\pi\) and the \(t^{-3}\) uniform bound of the second derivative gives the \(L^1\) estimate. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Idempotent Monad Characterization of Horizon Data Structure: Recycling Closure is Information Projection]\label{thm:dephys-idempotent-monad-i-projection}
+Under the setting of Definition \ref{def:dephys-conditional-expectation-externalization-map}, \(\Pi(\rho)=\rho\circ E\) satisfies \(\Pi^2=\Pi\), thus defining an idempotent projection on the state space;
+its fixed-point set \(\mathrm{Fix}(\Pi)\) is precisely all "externally visible states".
+And for any \(\rho\in\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\) and any \(\sigma\in\mathrm{Fix}(\Pi)\), relative entropy satisfies the strict Pythagorean decomposition
+\begin{equation}\label{eq:dephys-relative-entropy-pythagoras}
+\boxed{\;
+D(\rho\|\sigma)=D(\rho\|\Pi(\rho)) + D(\Pi(\rho)\|\sigma).\;}
+\end{equation}
+Therefore \(\Pi(\rho)\) is the unique information projection (\(I\)-projection) of \(\rho\) onto the set \(\mathrm{Fix}(\Pi)\):
+invisible degrees of freedom are precisely encapsulated as the logarithmic potential \(D(\rho\|\Pi(\rho))\), while all externally verifiable predicates only depend on quotient class data \(\Pi(\rho)\).
+\end{theorem}
+
+\begin{proof}[Proof outline]
+From \(E^2=E\) we get \(\Pi^2=\Pi\), and \(\sigma\in\mathrm{Fix}(\Pi)\) is equivalent to \(\sigma=\sigma\circ E\).
+The Pythagorean decomposition \eqref{eq:dephys-relative-entropy-pythagoras} can be viewed as the orthogonal decomposition of relative entropy on "information projection" induced by conditional expectation:
+its essence is equivalent to the chain formula of relative entropy and the "sufficient statistics/recoverability" structure of \(E\) (see \cite{Petz2003MonotonicityRelativeEntropyRevisited} for equality conditions and quantum Markov structure discussions).
+In the finite-dimensional (density matrix) case, this decomposition can also be directly verified by orthogonal decomposition of log-likelihood; the general von Neumann algebra case is given by the modular operator representation of Araki relative entropy. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Unique Entropy of Idempotent Recycling Monad: Axiomatic Characterization of \texorpdfstring{$D(\rho\|\Pi(\rho))$}{D(rho||Pi(rho))}]\label{prop:dephys-idempotent-monad-entropy-axiomatic-uniqueness}
+Let \(\Pi\) be the externalization idempotent projection defined in \eqref{eq:dephys-ext-externalization-Pi}.
+Suppose recycling cost functional \(C:\mathcal{S}(\mathcal{A}_{\mathrm{bulk}})\to[0,\infty)\) satisfies the following axiom family:
+\begin{enumerate}
+  \item \textbf{Monad invariance:} \(C(\rho)=0\iff \rho\in\mathrm{Fix}(\Pi)\);
+  \item \textbf{Additivity:} for tensor product externalization \(\Pi_{12}:=\Pi_1\otimes\Pi_2\) we have \(C(\rho_1\otimes\rho_2)=C(\rho_1)+C(\rho_2)\);
+  \item \textbf{Monotonicity:} for any quantum channel \(\mathcal{N}\) commuting with \(\Pi\) we have \(C(\mathcal{N}\rho)\le C(\rho)\);
+  \item \textbf{\(I\)-projection decomposition:} there exists constant \(c>0\) such that for any \(\sigma\in\mathrm{Fix}(\Pi)\)
+  \[
+  \boxed{\;
+  D(\rho\|\sigma)=c^{-1}C(\rho)+D(\Pi(\rho)\|\sigma)\;}
+  \]
+  (isomorphic to \eqref{eq:dephys-relative-entropy-pythagoras}).
+\end{enumerate}
+Then \(C\) must be the unique scaling of relative entropy projection potential:
+\[
+\boxed{\;
+C(\rho)=c\,D\bigl(\rho\ \|\ \Pi(\rho)\bigr)\;}
+\]
+where the proportionality constant \(c\) only reflects logarithm base/unit choice.
+\end{proposition}
+\begin{proof}[Proof outline]
+By taking \(\sigma=\Pi(\rho)\in\mathrm{Fix}(\Pi)\) in the fourth condition we get
+\(
+D(\rho\|\Pi(\rho))=c^{-1}C(\rho)
+\), i.e., \(C(\rho)=cD(\rho\|\Pi(\rho))\).
+Compatibility of other axioms with the structure of Theorem \ref{thm:dephys-idempotent-monad-i-projection} (monotonicity, additivity) is given by standard properties of relative entropy. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Exponential Lower Bound for Multi-Period Accumulation: Two-Source Linkable Residual Linear Growth]\label{cor:dephys-multiplicity-index-gap-linear-cmi}
+Under the setting of Proposition \ref{prop:dephys-commuting-square-mutual-information-defect},
+suppose there exist finite index conditional expectations \(E_i:\mathcal{A}_{\mathrm{bulk}}\to \mathcal{A}_{\mathrm{ext}}^{(i)}\) (\(i=1,2\)) and finite index expectation \(E_0\) on their intersection \(\mathcal{A}_{\mathrm{ext}}^{(0)}:=\mathcal{A}_{\mathrm{ext}}^{(1)}\cap\mathcal{A}_{\mathrm{ext}}^{(2)}\), and let the index gap be
+\[
+\Gamma:=\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_0)}\ \ge\ 0.
+\]
+Consider the \(n\)-period independent repetition (tensorization) system \(\mathcal{A}_{\mathrm{bulk}}^{\otimes n}\) and \((\mathcal{A}_{\mathrm{ext}}^{(i)})^{\otimes n}\).
+Then by multiplicativity of index
+\(
+\mathrm{Ind}(E_i^{\otimes n})=\mathrm{Ind}(E_i)^n
+\)
+the gap amplifies to \(n\Gamma\).
+Furthermore, under the conditional mutual information caliber of Appendix \S\ref{subsec:op-algebra-modular-zk-index-fkdet} (Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap}), for any \(\varphi\)-preserving state family the conditional mutual information has linear lower bound
+\[
+\boxed{\;
+I\bigl((\mathcal{A}_{\mathrm{ext}}^{(1)})^{\otimes n}:(\mathcal{A}_{\mathrm{ext}}^{(2)})^{\otimes n}\,\big|\,(\mathcal{A}_{\mathrm{ext}}^{(0)})^{\otimes n}\bigr)
+\ \ge\ n\Gamma.\;}
+\]
+Therefore, as long as \(\Gamma>0\), any externalization attempting to simultaneously achieve "two-source complete unlinkability" and "interface complete recovery" in multi-period accumulation will encounter inerasable linear cumulative leakage; the only evasion channel is index saturation \(\Gamma=0\).
+\end{corollary}
+
+\begin{corollary}[Index Discrimination Template for Anonymous Two-Source Completeness: Index Saturation \texorpdfstring{$\Longleftrightarrow$}{<->} Conditional Independence \texorpdfstring{$\Longleftrightarrow$}{<->} Recoverability]\label{cor:dephys-two-source-anonymy-completeness-template}
+Following the setting of Corollary \ref{cor:dephys-multiplicity-index-gap-linear-cmi}, and additionally assuming two-source externalization satisfies commuting square compatibility
+\(
+E_0=E_1E_2=E_2E_1
+\)
+and all three are \(\varphi\)-preserving conditional expectations for some faithful normal state \(\varphi\).
+Then by Appendix Corollary \ref{cor:op-algebra-cmi-lower-bound-by-index-gap} we obtain the equivalence template:
+\[
+\boxed{\;
+\Gamma=0
+\quad\Longleftrightarrow\quad
+I_\varphi(\mathcal{A}^{(1)}_{\mathrm{ext}}:\mathcal{A}^{(2)}_{\mathrm{ext}}\mid\mathcal{A}^{(0)}_{\mathrm{ext}})=0.\;}
+\]
+When the above equivalence holds, "conditional independence of two-source interfaces under cross-visible factor \(\mathcal{A}^{(0)}_{\mathrm{ext}}\)" in the Petz sufficiency sense is equivalent to recoverability: there exists a normal completely positive unital recovery map such that externalization of relevant state families is lossless (equality caliber of Theorem \ref{thm:dephys-petz-sufficiency-equivalences}).
+Thus for any external channel depending only on external images on that state family, its output can be universally factorized and simulated by external images (Corollary \ref{cor:dephys-universal-zk-simulation-factorization}), which can be viewed as a strict zero-knowledge-type statement of "anonymous two-source completeness".
+\end{corollary}
+
+\begin{corollary}[Rényi Flatness: Worst-Case Loss Under Finite Folding Horizon Independent of Order \texorpdfstring{$\alpha$}{alpha}]\label{cor:dephys-renyi-flatness-fold-commutative}
+Suppose \(\Omega\twoheadrightarrow X\) is a finite commutative folding, and let \(E:\CC^{\Omega}\to\CC^{X}\) be the conditional expectation of uniform averaging over fibers.
+Denote the maximum fiber multiplicity as \(M:=\max_{x\in X}d(x)\), then \(\mathrm{Ind}(E)=M\) (commutative caliber of Proposition/Corollary \ref{prop:op-algebra-index-extremal-entropy-loss-maxfiber}).
+For any \(\alpha\in[1,\infty]\), let \(D_\alpha\) be the sandwiched Rényi relative entropy (in the commutative case), then the flat extremal law holds
+\[
+\boxed{\;
+\sup_{\rho}D_\alpha(\rho\mid\rho\circ E)=\log M=\log\mathrm{Ind}(E),\qquad(\forall\,\alpha\in[1,\infty]).\;}
+\]
+And the supremum is achieved by "point mass on maximum fiber": take \(a\in\Omega\) such that \(d(\Fold(a))=M\), then for \(\rho=\delta_a\)
+\(
+D_\alpha(\rho\mid\rho\circ E)=\log M
+\)
+holds simultaneously for all \(\alpha\in[1,\infty]\).
+\end{corollary}
+
+\begin{proof}
+By Appendix Corollary \ref{cor:op-algebra-renyi-loss-spectrum-capped-by-index}, for any \(\rho\) and any \(\alpha\) we have
+\(
+D_\alpha(\rho\mid\rho\circ E)\le \log\mathrm{Ind}(E)=\log M
+\).
+On the other hand, for \(a\) belonging to a maximum fiber, when \(\rho=\delta_a\), \(\rho\circ E\) is the uniform state on that fiber;
+in the commutative case, directly substituting into the Rényi divergence definition gives
+\(
+D_\alpha(\delta_a\mid \mathrm{Unif}_{F^\star})=\log M
+\)
+(independent of \(\alpha\)), thus the upper bound is attained and gives the supremum. This completes the proof.
+\end{proof}
+
 \endinput

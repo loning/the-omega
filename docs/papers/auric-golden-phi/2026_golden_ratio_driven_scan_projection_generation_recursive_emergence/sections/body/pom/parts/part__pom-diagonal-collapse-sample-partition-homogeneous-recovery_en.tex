@@ -136,7 +136,265 @@ q_m(\log M_m-\alpha_\ast m)=o(m)
 which does not change the \((1/m)\)-scale limit. \qed
 \end{proof}
 
-[Continued with partition Möbius inversion and complete homogeneous polynomial sections as in the original Chinese file - these sections translate similarly to the completed portions]
+\paragraph{Partition Möbius completeness for equality patterns: invariant characterization of finite-sample equality modes via power sums}
+Fix a finite set \(X\) and distribution \(w\in\Delta(X)\).
+Let \(X_1,\dots,X_t\stackrel{\mathrm{i.i.d.}}{\sim} w\), and let \(\Pi_t\) be the random partition of \([t]\): \(i,j\) lie in the same block if and only if \(X_i=X_j\).
+Equip partitions with the refinement partial order: \(\sigma\preceq\pi\) means \(\sigma\) is finer than \(\pi\) (i.e., \(\pi\) is a coarsening of \(\sigma\)).
+Denote by \(\mathcal{P}_t\) the partition lattice, and by \(\mu(\sigma,\pi)\) its Möbius function.
+
+\begin{theorem}[Event--partition Möbius inversion]\label{thm:pom-partition-mobius-event-inversion}
+For any \(\sigma\in\mathcal{P}_t\) define the event
+\[
+E_\sigma:=\{X_i=X_j\ \forall i,j\in B,\ \forall B\in\sigma\},
+\]
+and define the power sums
+\(
+p_k(w):=\sum_{x\in X}w(x)^k
+\)
+and the function
+\[
+G(\sigma):=\prod_{B\in\sigma}p_{|B|}(w).
+\]
+Then for any \(\sigma\in\mathcal{P}_t\) we have the strict identities
+\[
+\boxed{\;
+\mathbb{P}(E_\sigma)=G(\sigma),\qquad
+\mathbb{P}(E_\sigma)=\sum_{\pi\succeq\sigma}\mathbb{P}(\Pi_t=\pi)\; }.
+\]
+Thus there is an exact Möbius inversion on the partition lattice
+\[
+\boxed{\;
+\mathbb{P}(\Pi_t=\pi)=\sum_{\sigma\preceq\pi}\mu(\sigma,\pi)\,G(\sigma),\qquad \pi\in\mathcal{P}_t\; }.
+\]
+\end{theorem}
+\begin{proof}
+The event \(E_\sigma\) means "within each block all samples are equal".
+For each block \(B\) (of size \(|B|\)), independence gives probability \(\sum_{x}w(x)^{|B|}=p_{|B|}(w)\);
+blocks are disjoint, so \(\mathbb{P}(E_\sigma)=\prod_{B\in\sigma}p_{|B|}(w)=G(\sigma)\).
+\par
+On the other hand, \(E_\sigma\) holds if and only if the true equality partition \(\Pi_t\) is a coarsening of \(\sigma\) (i.e., \(\Pi_t\succeq\sigma\));
+hence \(\mathbb{P}(E_\sigma)=\sum_{\pi\succeq\sigma}\mathbb{P}(\Pi_t=\pi)\).
+Applying Möbius inversion on the lattice \((\mathcal{P}_t,\preceq)\) to this relation yields the conclusion. \qed
+\end{proof}
+
+\begin{corollary}[Explicit extraction of power sums from equality modes]\label{cor:pom-partition-extract-power-sums}
+Let \((u)_k:=u(u-1)\cdots(u-k+1)\) be the falling factorial.
+Then for any integer \(k\le t\) we have the identity
+\[
+\boxed{\;
+p_k(w)=\mathbb{E}\left[\frac{1}{(t)_k}\sum_{B\in\Pi_t}(|B|)_k\right]\; }.
+\]
+Therefore the distribution of \(\Pi_t\) uniquely determines \(\bigl(p_2(w),\dots,p_t(w)\bigr)\).
+\end{corollary}
+\begin{proof}
+Draw \(k\) distinct indices uniformly at random from \([t]\); the probability they are all equal is \(p_k(w)\).
+Given partition \(\Pi_t\), this probability equals the probability of "drawing from the same block":
+\(
+\sum_{B\in\Pi_t}\binom{|B|}{k}/\binom{t}{k}
+=\frac{1}{(t)_k}\sum_{B}(|B|)_k
+\).
+Taking expectation over \(\Pi_t\) yields the result. \qed
+\end{proof}
+
+\begin{theorem}[Finite-sample indistinguishability: complete invariants of fully-symmetric statistics]\label{thm:pom-finite-sample-indistinguishability-power-sums}
+Let \(\mathfrak{S}_t\) act by index permutations on \([t]\), and \(\mathfrak{S}_X\) by label permutations on \(X\).
+Call a statistic \(\Phi(X_1,\dots,X_t)\) \emph{fully symmetric} if for any \(\sigma\in\mathfrak{S}_t\), \(\pi\in\mathfrak{S}_X\) we have
+\[
+\Phi(X_{\sigma(1)},\dots,X_{\sigma(t)})=\Phi(X_1,\dots,X_t),
+\qquad
+\Phi(\pi(X_1),\dots,\pi(X_t))=\Phi(X_1,\dots,X_t).
+\]
+Then for any two distributions \(w,w'\in\Delta(X)\), the following are equivalent:
+\begin{enumerate}
+  \item \(p_k(w)=p_k(w')\) for all \(k=2,\dots,t\);
+  \item \(\Pi_t\) has the same distribution under \(w\) and \(w'\);
+  \item For any fully-symmetric statistic \(\Phi\), \(\Phi(X_1,\dots,X_t)\) has the same distribution under \(w\) and \(w'\).
+\end{enumerate}
+Moreover, if there exists \(k\le t\) with \(p_k(w)\neq p_k(w')\), then there exists a fully-symmetric test with positive advantage distinguishing them, e.g., \(\mathbf{1}_{\{X_1=\cdots=X_k\}}\).
+\end{theorem}
+\begin{proof}
+\textbf{(1)\(\Rightarrow\)(2).}
+By Theorem \ref{thm:pom-partition-mobius-event-inversion}, all atomic probabilities of \(\Pi_t\) are linear combinations of \(\{G(\sigma)\}_{\sigma\in\mathcal{P}_t}\);
+and \(G(\sigma)\) depends only on \(\{p_{|B|}(w)\}_{|B|\le t}\).
+Thus (1) implies (2).
+\par
+\textbf{(2)\(\Rightarrow\)(3).}
+If \(\Phi\) is invariant under both index and label permutations, then \(\Phi\) can only depend on equality relations among samples,
+which are precisely encoded by the random partition \(\Pi_t\); thus \(\Phi\) is a measurable function of \(\Pi_t\).
+Identical distribution of \(\Pi_t\) implies identical distribution of \(\Phi\).
+\par
+\textbf{(3)\(\Rightarrow\)(1).}
+Take \(\Phi=\mathbf 1_{\{X_1=\cdots=X_k\}}\) (clearly fully symmetric), then
+\(
+\EE[\Phi]=p_k(w)
+\)
+and
+\(
+\EE[\Phi]=p_k(w')
+\)
+yield \(p_k(w)=p_k(w')\) (for \(2\le k\le t\)). \qed
+\end{proof}
+
+\paragraph{Complete homogeneous polynomial sequences: PF\texorpdfstring{$_\infty$}{∞} property, recurrence, and finite inversion}
+Let \(w\in\Delta(X)\) with \(|X|=n\), and write coordinates as \(w=(w_1,\dots,w_n)\) (with multiplicity, reordering allowed).
+Define the complete homogeneous symmetric polynomial
+\[
+h_t(w):=\sum_{\substack{r_1,\dots,r_n\in\NN_0\\ \sum_i r_i=t}}\prod_{i=1}^n w_i^{r_i}\qquad(t\ge0),
+\]
+and denote the generating function
+\[
+H_w(z):=\sum_{t\ge0}h_t(w)\,z^t=\prod_{i=1}^n\frac{1}{1-w_i z}.
+\]
+
+\begin{theorem}[PF\texorpdfstring{$_\infty$}{∞} and total positivity]\label{thm:pom-complete-homogeneous-pf-infty}
+The sequence \(\{h_t(w)\}_{t\ge0}\) is a Pólya frequency sequence (PF\(_\infty\)):
+its Toeplitz matrix \(\bigl[h_{j-i}(w)\bigr]_{i,j\ge0}\) (with convention \(h_k=0\) if \(k<0\)) is totally positive (all finite minors are non-negative).
+Therefore \(\{h_t(w)\}\) is log-convex and satisfies ratio monotonicity:
+\[
+h_t(w)^2\le h_{t-1}(w)\,h_{t+1}(w)\quad(t\ge1),
+\qquad
+\frac{h_{t+1}(w)}{h_t(w)}\ \ \text{is non-decreasing in \(t\)}.
+\]
+\end{theorem}
+\begin{proof}
+Each geometric factor \((1-w_i z)^{-1}=\sum_{t\ge0} w_i^t z^t\) has coefficient sequence that is PF\(_\infty\) (its generating function has standard PF\(_\infty\) structure).
+PF\(_\infty\) is closed under Cauchy product (convolution), so the finite product \(H_w(z)=\prod_i(1-w_i z)^{-1}\) has coefficient sequence that remains PF\(_\infty\), yielding total positivity.
+Log-convexity and ratio monotonicity are direct corollaries of PF\(_\infty\) (e.g., \(2\times2\) principal minor non-negativity implies \(h_t^2\le h_{t-1}h_{t+1}\)). \qed
+\end{proof}
+
+\begin{corollary}[Bayes full recovery limit for \(t\) unqueried points and hazard rate monotonicity]\label{cor:pom-bayes-full-recovery-hazard-monotone}
+In the microcanonical fold semantics (Definition \ref{def:pom-microcanonical-fold-class}),
+fix finite alphabet \(X\) and distribution \(w\in\Delta(X)\) (full support, taking a subsequence \(N\to\infty\) with \(Nw(x)\in\NN\) for all \(x\)).
+Let \(d_N(x):=Nw(x)\), and under prior \(F\sim\mathrm{Unif}(\mathfrak{Fold}(d_N))\) query \(k=N-t\) points (leaving exactly \(t\) unqueried points).
+Then the overall Bayes exact recovery success rate satisfies the limit
+\[
+\boxed{\;
+\lim_{N\to\infty}\mathrm{Succ}^{\mathrm{Bayes}}_t(N)=h_t(w)\; }.
+\]
+Thus in this "fixed remaining point count" Bayes full recovery limit, the success rate curve is \(\{h_t(w)\}_{t\ge0}\).
+\par
+Moreover, if we define the log-hazard rate
+\[
+\Delta_t:=-\log\frac{h_{t+1}(w)}{h_t(w)},
+\]
+then \(\Delta_t\) is non-increasing in \(t\).
+If we denote the maximum mass \(w_\star:=\max_i w_i\), then
+\[
+\lim_{t\to\infty}\frac{h_{t+1}(w)}{h_t(w)}=w_\star,
+\]
+and this limit is approached from below by the monotone sequence \(h_{t+1}(w)/h_t(w)\).
+\end{corollary}
+\begin{proof}
+By posterior uniformity of Theorem \ref{thm:pom-microcanonical-count-sufficient-statistic-posterior-uniform},
+when \(k=N-t\) the Bayes optimal conditional success rate equals the reciprocal of the posterior moduli space size (see parallel argument in Corollary \ref{cor:pom-microcanonical-posterior-map-success-double-exponential});
+this depends only on the residual count vector \(R=(R(x))_{x\in X}\) of the unqueried part:
+if \(R(x)\) denotes the number of occurrences of label \(x\) in the \(t\) unqueried points, then
+\[
+\mathrm{Succ}^{\mathrm{Bayes}}\bigl(F\mid T_{1:N-t}\bigr)=\frac{\prod_{x\in X}R(x)!}{t!}.
+\]
+Under the microcanonical prior, the unqueried points are equivalent to sampling \(t\) times without replacement from the multiset \(\{x^{\times d_N(x)}\}\),
+so \(R\) follows a multivariate hypergeometric distribution satisfying
+\[
+\mathbb{P}(R=r)=\frac{\prod_{x\in X}\binom{d_N(x)}{r(x)}}{\binom{N}{t}}
+\qquad\Bigl(\sum_x r(x)=t\Bigr).
+\]
+Thus the overall success rate is
+\[
+\mathrm{Succ}^{\mathrm{Bayes}}_t(N)
+=\EE\!\left[\frac{\prod_x R(x)!}{t!}\right]
+=\frac{1}{(N)_t}\sum_{\substack{r(x)\in\NN_0\\ \sum_x r(x)=t}}\ \prod_{x\in X}\bigl(d_N(x)\bigr)_{r(x)},
+\]
+where \((u)_r=u(u-1)\cdots(u-r+1)\) and \((N)_t=N(N-1)\cdots(N-t+1)\).
+For fixed \(t\) and fixed \(x\), we have \((d_N(x))_{r}=d_N(x)^{r}+O(N^{r-1})\), so
+\[
+\prod_x (d_N(x))_{r(x)}
+=N^{t}\prod_x w(x)^{r(x)}+O(N^{t-1}),
+\qquad
+(N)_t=N^{t}+O(N^{t-1}).
+\]
+Substituting back and dividing by \((N)_t\), we get
+\[
+\mathrm{Succ}^{\mathrm{Bayes}}_t(N)
+=\sum_{\substack{r(x)\in\NN_0\\ \sum_x r(x)=t}}\ \prod_{x\in X} w(x)^{r(x)}\ +\ O(N^{-1})
+=h_t(w)+O(N^{-1}),
+\]
+thus \(\mathrm{Succ}^{\mathrm{Bayes}}_t(N)\to h_t(w)\).
+\par
+Finally, by Theorem \ref{thm:pom-complete-homogeneous-pf-infty}, the ratio \(h_{t+1}/h_t\) is non-decreasing, so \(\Delta_t\) is non-increasing.
+Also \(H_w(z)=\prod_i(1-w_i z)^{-1}\) has radius of convergence \(1/w_\star\), so by coefficient ratio test \(\lim_{t\to\infty}h_{t+1}/h_t=w_\star\);
+monotone convergence follows from ratio monotonicity. \qed
+\end{proof}
+
+\begin{theorem}[Finite-order recurrence: linear recurrence and Newton computability of \texorpdfstring{$h_t(w)$}{h_t(w)}]\label{thm:pom-complete-homogeneous-linear-recurrence}
+Let \(e_j(w)\) be the elementary symmetric polynomial of \(w\) (\(e_0=1\), and since \(w\in\Delta\) we have \(e_1=\sum_i w_i=1\)).
+Then for all \(t\ge1\) the following recurrence holds
+\[
+\boxed{\;
+h_t(w)=\sum_{j=1}^{\min(n,t)}(-1)^{j-1}e_j(w)\,h_{t-j}(w),\qquad h_0(w)=1\; }.
+\]
+Equivalently,
+\[
+\left(\sum_{j=0}^{n}(-1)^j e_j(w)\,z^j\right)\left(\sum_{t\ge0}h_t(w)\,z^t\right)=1.
+\]
+Moreover, \(\{e_j(w)\}_{j\le n}\) can be determined from power sums \(\{p_k(w)\}_{k\le n}\) via Newton's identities;
+combined with Corollary \ref{cor:pom-partition-extract-power-sums}, \(\{h_t(w)\}\) can be computed via \(O(n)\)-state constant-memory recursion from finite-sample equality modes.
+\end{theorem}
+\begin{proof}
+From the generating function identity
+\(
+H_w(z)=\prod_{i=1}^n(1-w_i z)^{-1}
+\)
+we get its denominator
+\(
+\prod_{i=1}^n(1-w_i z)=\sum_{j=0}^n(-1)^j e_j(w)\,z^j
+\).
+Multiplying both sides gives \(1\); comparing coefficients of \(z^t\) yields the recurrence.
+Newton's identities are the standard relations for symmetric polynomials: \(\{p_k\}\) determines \(\{e_j\}\).
+The last statement concatenates the observability of \(\{p_k\}\) (Corollary \ref{cor:pom-partition-extract-power-sums}) with the recurrence. \qed
+\end{proof}
+
+\begin{theorem}[Inverting the probability spectrum from the "full recovery curve"]\label{thm:pom-invert-w-from-homogeneous-curve}
+Let \(w\in\Delta(X)\) satisfy full support (\(w_i>0\)) with \(|X|=n\) known.
+Then knowing the finite segment \(\{h_t(w)\}_{t=0}^{n}\) uniquely determines the polynomial
+\[
+Q_w(z):=\prod_{i=1}^n(1-w_i z)=\sum_{j=0}^n(-1)^j e_j(w)\,z^j,
+\]
+and thus uniquely determines the multiset \(\{w_i\}_{i=1}^n\) (with multiplicity).
+Therefore the values of the "full recovery curve" at \(t=0,\dots,n\) constitute a complete invariant of \(w\).
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-complete-homogeneous-linear-recurrence}, the recurrence relations for \(t=1,\dots,n\) give an upper-triangular linear system in the unknowns \(e_1,\dots,e_t\);
+the diagonal entries are \(h_0=1\), so we can uniquely solve successively for all \(e_j(w)\ (1\le j\le n)\), thus recovering \(Q_w\).
+By full support, the root set of \(Q_w\) is \(\{1/w_i\}\), so \(\{w_i\}\) (with multiplicity) is uniquely determined by \(Q_w\). \qed
+\end{proof}
+
+\paragraph{Triangular closure of diagonal moments--sample patterns--full recovery (auditable closed loop)}
+In the fold semantics of this paper, the pushforward distribution \(w_m\in\Delta(X_m)\) is defined as \(w_m(x)=d_m(x)/2^m\), and power sums and collision moments satisfy
+\(
+p_q(w_m)=2^{-mq}S_q(m)
+\)
+(see the identity preceding Theorem \ref{thm:pom-mom-symmetric-observables-stone-weierstrass}).
+
+\begin{theorem}[Closed loop 1: finite-sample equality modes \texorpdfstring{$\Rightarrow$}{=>} full recovery curve]\label{thm:pom-closure-partition-to-full-recovery-curve}
+For fixed resolution \(m\), let \(n_m:=|X_m|\).
+If one can observe the exact distribution of the equality mode \(\Pi_t\) of \(t=n_m\) independent samples \(X_1,\dots,X_t\sim w_m\),
+then this finite data uniquely determines the coordinate multiset \(\{w_m(x):x\in X_m\}\), and hence uniquely determines all \(\{h_t(w_m)\}_{t\ge0}\).
+\end{theorem}
+\begin{proof}
+By Corollary \ref{cor:pom-partition-extract-power-sums}, the distribution of \(\Pi_t\) determines power sums \(\{p_k(w_m)\}_{2\le k\le t}\), while \(p_1(w_m)=1\) is known.
+When \(t=n_m\) we get \(\{p_k(w_m)\}_{1\le k\le n_m}\); by Newton's identities we recover all elementary symmetric polynomials \(\{e_j(w_m)\}_{j\le n_m}\), thus recovering \(Q_{w_m}(z)=\prod_{x\in X_m}(1-w_m(x)z)\).
+Its root set gives the multiset \(\{w_m(x)\}\), and then Theorem \ref{thm:pom-complete-homogeneous-linear-recurrence} recursively yields all \(h_t(w_m)\). \qed
+\end{proof}
+
+\begin{theorem}[Closed loop 2: diagonal moments \texorpdfstring{$\Rightarrow$}{=>} top spectrum]\label{thm:pom-closure-diagonal-to-top-spectrum}
+If one furthermore possesses the diagonal moment sequence \(m\mapsto S_{\lfloor\tau m\rfloor}(m)\) for any fixed \(\tau>0\),
+then by Theorem \ref{thm:pom-diagonal-collapse-quadratic-free-energy}--Corollary \ref{cor:pom-diagonal-extract-alpha-star} one can extract the top exponent \(\alpha_\ast\).
+If furthermore in the gapped regime of Theorem \ref{thm:pom-diagonal-subleading-top-degeneracy} (\(\delta>0\) and \(f(\alpha_\ast)\) limit exists), and satisfying \(\log M_m=\alpha_\ast m+o(1)\),
+then the \(m\)-order term of the same diagonal
+\[
+\frac{1}{m}\Bigl(\log S_{\lfloor\tau m\rfloor}(m)-\lfloor\tau m\rfloor\,\alpha_\ast m\Bigr)
+\]
+converges to the top degeneracy exponent \(f(\alpha_\ast)\).
+\end{theorem}
 
 \endinput
-

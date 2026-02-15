@@ -81,7 +81,469 @@ N\log N-\sum_x d(x)\log d(x)
 This yields the first formula; if \(n\log N=o(N)\) then dividing the error by \(N\) gives the second formula. \qed
 \end{proof}
 
-[The file continues with corollaries on description length lower bounds, singleton rarity, section counting, spectrum-induced section impossibility, query lower bounds, worst-case query rigidity, posterior moduli space counting, and Bayes success rates - all following similar translation patterns to preserve mathematical rigor while converting to academic English]
+\begin{corollary}[Description length lower bound: minimal information required to specify folding given only fiber spectrum]\label{cor:pom-microcanonical-fold-description-length-lower-bound}
+Under the premise of only given fiber spectrum \(d\), any encoding that can uniquely specify some \(F\in\mathfrak{Fold}_m(d)\) requires number of bits \(L_m(d)\) satisfying
+\[
+\boxed{\;
+L_m(d)\ \ge\ \log_2\card{\mathfrak{Fold}_m(d)}
+=\frac{1}{\log 2}\log\card{\mathfrak{Fold}_m(d)}\; } .
+\]
+In particular, under the condition of Theorem \ref{thm:pom-microcanonical-fold-entropy},
+\[
+L_m(d)\ \ge\ \frac{N}{\log 2}H(w)+o(N).
+\]
+\end{corollary}
+\begin{proof}
+If the total number of available codewords is less than \(\card{\mathfrak{Fold}_m(d)}\), then it is impossible to give an injective encoding to all objects in \(\mathfrak{Fold}_m(d)\); by the pigeonhole principle we obtain a contradiction. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Singleton rarity and doubly-exponential sparsity of low-complexity classes]\label{cor:pom-microcanonical-fold-singleton-and-low-complexity-rarity}
+Under the setting of Definition \ref{def:pom-microcanonical-fold-class}, let \(F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d))\).
+Then:
+\begin{enumerate}
+  \item For any fixed \(F_0\in\mathfrak{Fold}_m(d)\), we have
+  \[
+  \mathbb P(F=F_0)=\frac{1}{\card{\mathfrak{Fold}_m(d)}},
+  \qquad
+  \log\mathbb P(F=F_0)=-N H(w)+O(n\log N).
+  \]
+  In particular, as long as \(H(w)\) does not tend to \(0\) as \(m\to\infty\) and \(n\log N=o(N)\), this singleton probability is a doubly-exponential small quantity of order \(\exp(-\Theta(N))=\exp(-\Theta(2^m))\).
+  \item For any function class \(\mathcal C_m\subseteq\mathfrak{Fold}_m(d)\) satisfying \(\log\card{\mathcal C_m}\le L(m)\),
+  \[
+  \mathbb P(F\in\mathcal C_m)\le \exp\!\bigl(L(m)-N H(w)+O(n\log N)\bigr).
+  \]
+  Thus when \(L(m)=\mathrm{poly}(m)\) and \(n\log N=o(N)\), we have \(\mathbb P(F\in\mathcal C_m)\le \exp(-\Theta(2^m))\).
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+By uniform prior, the first formula of (1) is by definition; taking logarithm and substituting Theorem \ref{thm:pom-microcanonical-fold-entropy} gives the second formula; the subsequent doubly-exponential conclusion follows directly from \(N=2^m\) and \(n\log N=o(N)\).
+\par
+(2) follows immediately from \(\mathbb P(F\in\mathcal C_m)=\card{\mathcal C_m}/\card{\mathfrak{Fold}_m(d)}\) by substituting Theorem \ref{thm:pom-microcanonical-fold-entropy}. This completes the proof.
+\end{proof}
+
+\input{sections/body/pom/parts/part__pom-microcanonical-fold-streaming-program-rarity}
+
+\begin{theorem}[Exponential degrees of freedom in section selection: exact counting of right-inverse space]\label{thm:pom-microcanonical-section-count}
+For any \(F\in\mathfrak{Fold}_m(d)\), define its right-inverse (section) set as
+\[
+\mathfrak{S}(F):=\Bigl\{s:X_m\to \Omega_m:\ F\circ s=\mathrm{id}_{X_m}\Bigr\}.
+\]
+Then we have the closed form
+\[
+\boxed{\;
+\card{\mathfrak{S}(F)}=\prod_{x\in X_m} d(x)\; } ,
+\qquad
+\boxed{\;
+\log\card{\mathfrak{S}(F)}=\sum_{x\in X_m}\log d(x)\; } .
+\]
+If we denote \(\nu:=\mathrm{Unif}(X_m)\), and define
+\(
+\kappa_\nu(d):=\mathbb{E}_{\nu}[\log d(X)]=\frac{1}{n}\sum_x\log d(x)
+\), then
+\[
+\boxed{\;
+\log\card{\mathfrak{S}(F)}=n\,\kappa_\nu(d).\;}
+\]
+\end{theorem}
+\begin{proof}
+Constructing \(s\in\mathfrak{S}(F)\) is equivalent to choosing a representative element from fiber \(F^{-1}(x)\) for each \(x\in X_m\); the choices for each fiber are independent, so the count is the product \(\prod_x d(x)\).
+Taking logarithm and rewriting as the mean under \(\nu\) gives the result. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Spectrum cannot induce section: fiber spectrum alone cannot produce universally effective canonical right-inverse]\label{thm:pom-spectrum-cannot-induce-universal-section}
+Suppose there exists a "spectrum \(\to\) section" rule \(\mathcal{A}\), whose input is only the fiber spectrum \(d\), and output is a mapping \(s_d:X_m\to\Omega_m\).
+Call \(\mathcal{A}\) \emph{universally effective} if for all \(F\in\mathfrak{Fold}_m(d)\) we have \(F\circ s_d=\mathrm{id}_{X_m}\).
+If \(n=\card{X_m}\ge 2\) and there exists some \(x_0\in X_m\) with \(d(x_0)\ge 2\), then no universally effective \(\mathcal{A}\) exists.
+\end{theorem}
+\begin{proof}
+Assume by contradiction that there exists universally effective \(s_d\).
+Take any \(F\in\mathfrak{Fold}_m(d)\) and take \(x_0\in X_m\) with \(d(x_0)\ge 2\).
+Let \(\omega_0:=s_d(x_0)\in\Omega_m\), then by universal effectiveness we have \(F(\omega_0)=x_0\).
+\par
+Since \(n\ge 2\) and \(d(x)\ge 1\) for all \(x\), there exists some \(x_1\neq x_0\) and \(\omega_1\in\Omega_m\) such that \(F(\omega_1)=x_1\neq x_0\).
+Take permutation \(\sigma\) swapping \(\omega_0\) and \(\omega_1\), and let \(F':=F\circ\sigma^{-1}\).
+Then \(\card{(F')^{-1}(x)}=\card{F^{-1}(x)}=d(x)\) for all \(x\), i.e., \(F'\in\mathfrak{Fold}_m(d)\).
+But
+\[
+F'(s_d(x_0))=F'(\omega_0)=F(\sigma^{-1}(\omega_0))=F(\omega_1)\neq x_0,
+\]
+thus \(F'\circ s_d\neq \mathrm{id}_{X_m}\), contradicting universal effectiveness. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Query lower bound for learning/auditing: number of queries required to identify same-spectrum folding]\label{thm:pom-microcanonical-fold-query-lower-bound}
+In the black-box query model, unknown \(F\in\mathfrak{Fold}_m(d)\) is given as oracle; the algorithm can adaptively choose
+\(\omega^{(1)},\dots,\omega^{(k)}\in\Omega_m\), and observe responses \(F(\omega^{(i)})\in X_m\).
+If the algorithm in deterministic sense can uniquely determine \(F\) for all \(F\in\mathfrak{Fold}_m(d)\), then its query count must satisfy
+\[
+\boxed{\;
+k\ \ge\ \left\lceil \frac{\log\card{\mathfrak{Fold}_m(d)}}{\log\card{X_m}}\right\rceil\; } .
+\]
+Combined with Theorem \ref{thm:pom-microcanonical-fold-entropy}, under \(n\log N=o(N)\) we have
+\[
+k\ \ge\ \frac{N\,H(w)}{\log n}+o\!\left(\frac{N}{\log n}\right).
+\]
+In the main line of this paper with \(n\asymp\varphi^m\), \(\log n=\Theta(m)\), thus \(k=\Omega(2^m/m)\).
+\end{theorem}
+\begin{proof}
+Any \(k\) queries produce response trajectories with at most \(n^k=\card{X_m}^k\) possibilities.
+If \(n^k<\card{\mathfrak{Fold}_m(d)}\), then there exist \(F\neq F'\) producing the same trajectory (pigeonhole principle), and the algorithm cannot distinguish them, thus cannot identify exactly.
+Therefore we must have \(n^k\ge \card{\mathfrak{Fold}_m(d)}\), taking logarithm gives the first formula.
+The remaining conclusions follow from substituting Theorem \ref{thm:pom-microcanonical-fold-entropy} and using \(\log n=\Theta(m)\). This completes the proof.
+\end{proof}
+
+\begin{remark}[Counting lower bound and query rigidity]
+Theorem \ref{thm:pom-microcanonical-fold-query-lower-bound} only uses the coarse information that "response alphabet size is \(n\)",
+and does not exploit the without-replacement structure induced by same-spectrum constraint \(\card{F^{-1}(x)}=d(x)\).
+Under microcanonical semantics, exact identification satisfies even stronger rigidity: as long as at least two unqueried points remain, one can swap their labels while maintaining counting constraints without changing all observed responses.
+\end{remark}
+
+\begin{theorem}[Worst-case query rigidity: exact identification under non-trivial fiber spectrum requires \(N-1\) queries]\label{thm:pom-microcanonical-fold-worstcase-query-rigidity}
+Suppose \(n=\card{X_m}\ge 2\).
+Consider deterministic adaptive query algorithm: each time choose unqueried \(\omega\in\Omega_m\) and observe \(F(\omega)\), output estimate \(\widehat F\) after \(k\) queries.
+If the algorithm satisfies \(\widehat F=F\) for all \(F\in\mathfrak{Fold}_m(d)\), then necessarily
+\[
+\boxed{\;k\ge N-1\;}
+\qquad(N=\card{\Omega_m}=2^m).
+\]
+\end{theorem}
+\begin{proof}
+Take any deterministic algorithm \(\mathcal{A}\), assume by contradiction that in worst case it only queries \(k\le N-2\) times.
+By \(n\ge 2\) and \(d(x)\ge 1\) (for all \(x\)) we can take different labels \(x_\star\neq y_\star\in X_m\) with \(d(x_\star),d(y_\star)\ge 1\).
+\par
+Generate answers adversarially: in the first \(k\) queries, sequentially draw answers from the multiset with each label \(x\) having \(d(x)\) "available counts", and reserve one unit each of \(x_\star\) and \(y_\star\) not to be used.
+Since removing these two units still leaves \(N-2\) counts available, and \(k\le N-2\), this strategy is feasible and does not violate the count upper limit of any label.
+This yields query point set \(Q\subset\Omega_m\) (\(\card{Q}=k\)) and its response trajectory on \(Q\).
+\par
+Let \(U:=\Omega_m\setminus Q\), then \(\card{U}=N-k\ge 2\).
+Choose any \(\omega_1\neq\omega_2\) in \(U\).
+Construct two mappings \(F_0,F_1\in\mathfrak{Fold}_m(d)\) while maintaining the response trajectory on \(Q\) unchanged:
+let
+\[
+F_0(\omega_1)=x_\star,\quad F_0(\omega_2)=y_\star,\qquad
+F_1(\omega_1)=y_\star,\quad F_1(\omega_2)=x_\star,
+\]
+and arbitrarily complete the values at \(U\setminus\{\omega_1,\omega_2\}\) according to remaining counts (total sum \(\card{U}-2\)).
+This completion is feasible because the above answering strategy guarantees that one unit each of \(x_\star,y_\star\) remains unused, and the total unused count of other labels is exactly \(\card{U}-2\).
+\par
+Since \(\mathcal{A}\) did not query \(\omega_1,\omega_2\), on \(Q\) both \(F_0\) and \(F_1\) give identical observation trajectories, thus \(\mathcal{A}\)'s output must be the same;
+but \(F_0\neq F_1\), contradicting "exact identification for all \(F\)". This completes the proof.
+\end{proof}
+
+\paragraph{Posterior moduli space under microcanonical prior: counting closed form, trajectory probability and Bayes identification rate}
+The following endows "same-spectrum folding realization moduli space" with uniform prior, and writes the posterior size and Bayes optimal exact identification rate for any finite query trajectory as completely explicit combinatorial closed forms.
+
+\begin{theorem}[Exact counting and trajectory probability of posterior moduli space]\label{thm:pom-microcanonical-fold-posterior-count-and-prob}
+Let \(F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d))\).
+For any distinct query point set \(Q=\{\omega_1,\dots,\omega_k\}\subset\Omega_m\) and any response sequence \(\mathbf{a}=(a_1,\dots,a_k)\in X_m^k\), denote its count vector
+\[
+c_{\mathbf{a}}(x):=\card{\{i\in\{1,\dots,k\}:\ a_i=x\}},\qquad x\in X_m,\qquad \sum_{x}c_{\mathbf{a}}(x)=k.
+\]
+Then the number of realizations satisfying \(F(\omega_i)=a_i\ (1\le i\le k)\) is
+\[
+\boxed{\;
+\card{\Bigl\{F\in\mathfrak{Fold}_m(d):\ F(\omega_i)=a_i,\ 1\le i\le k\Bigr\}}
+=\frac{(N-k)!}{\prod_{x\in X_m}\bigl(d(x)-c_{\mathbf{a}}(x)\bigr)!}\;},
+\]
+where if there exists \(x\) such that \(c_{\mathbf{a}}(x)>d(x)\), the right side is interpreted as \(0\).
+Correspondingly, the probability of this trajectory appearing under uniform prior is
+\[
+\boxed{\;
+\mathbb{P}(\mathbf{a})
+=\frac{(N-k)!}{N!}\prod_{x\in X_m}\frac{d(x)!}{\bigl(d(x)-c_{\mathbf{a}}(x)\bigr)!}
+=\frac{1}{(N)_k}\prod_{x\in X_m}\bigl(d(x)\bigr)_{c_{\mathbf{a}}(x)}\;},
+\]
+where \((u)_r:=u(u-1)\cdots(u-r+1)\) is the falling factorial with \((u)_0:=1\), and we denote \((N)_k:=N(N-1)\cdots(N-k+1)\).
+Therefore \(\mathbb{P}(\mathbf{a})\) and compatible realization count only depend on count vector \(c_{\mathbf{a}}\) and query count \(k\), independent of the specific positions of \(Q\).
+\end{theorem}
+\begin{proof}
+After fixing responses on \(Q\), the remaining \(N-k\) microstates must be distributed to each label (\(x\in X_m\)) according to remaining counts
+\(
+d(x)-c_{\mathbf{a}}(x)
+\),
+and this distribution count is the labeled multinomial coefficient
+\(
+(N-k)!/\prod_x(d(x)-c_{\mathbf{a}}(x))!
+\);
+if some \(x\) has \(c_{\mathbf{a}}(x)>d(x)\), then no feasible distribution exists, and the count is \(0\).
+\par
+Trajectory probability is obtained by taking ratio with
+\(
+\card{\mathfrak{Fold}_m(d)}=N!/\prod_x d(x)!
+\)
+from Theorem \ref{thm:pom-microcanonical-fold-class-count}, and simplifying using identities
+\(
+d(x)!/(d(x)-r)!= (d(x))_{r}
+\)
+and
+\(
+N!/(N-k)!=(N)_k
+\).
+The last conclusion "only depends on counts" follows directly from the formula not containing specific structure of \(Q\). This completes the proof.
+\end{proof}
+
+\input{sections/body/pom/parts/part__pom-microcanonical-fold-adaptive-no-gain-sufficient-statistic}
+
+\input{sections/body/pom/parts/part__pom-microcanonical-fold-section-coverage-cutoff}
+
+\begin{theorem}[Bayes optimal exact identification rate for remaining \(t\) points: hypergeometric residual count closed form]\label{thm:pom-microcanonical-fold-bayes-success-Nminus-t}
+Let \(F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d))\).
+Consider any query protocol that queries \(k=N-t\) points without repetition and observes all responses; denote the unqueried set \(U\) with size \(\card{U}=t\).
+Let the residual count vector \(R=(R_x)_{x\in X_m}\) be defined as
+\[
+R_x:=\card{\{\omega\in U:\ F(\omega)=x\}},\qquad \sum_{x\in X_m}R_x=t.
+\]
+Then given all observations, all label assignments on \(U\) satisfying residual count \(R\) are equally likely under posterior, with count \(t!/\prod_x R_x!\).
+Therefore any algorithm's optimal success probability for exactly outputting the entire mapping \(F\) on this trajectory is \(\prod_x R_x!/t!\), thus
+\[
+\boxed{\;
+\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)
+=\EE\Bigl[\frac{\prod_{x\in X_m}R_x!}{t!}\Bigr]\;},
+\]
+where \(R\) follows the multivariate hypergeometric distribution parameterized by population counts \(d\) and sample size \(t\).
+And there exists an equivalent closed form
+\[
+\boxed{\;
+\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)
+=\frac{1}{(N)_t}\sum_{\substack{r_x\in\ZZ_{\ge 0}\\ \sum_x r_x=t}}\ \prod_{x\in X_m}\bigl(d(x)\bigr)_{r_x}\; } .
+\]
+\end{theorem}
+\begin{proof}
+After fixing all responses on \(Q=\Omega_m\setminus U\), the only thing not yet determined on \(U\) is "assigning the multiset \(\{x^{\times R_x}\}\) to \(t\) named positions" as a permutation;
+the count of feasible assignments is \(t!/\prod_x R_x!\).
+Since the prior is uniform on \(\mathfrak{Fold}_m(d)\), and remains invariant under any permutation within \(U\), given observations and \(R\), the above \(t!/\prod_x R_x!\) assignments are equally likely under posterior;
+thus the optimal (MAP) success probability is its reciprocal \(\prod_x R_x!/t!\), giving the first formula.
+\par
+For the closed form: for any \((r_x)_x\) satisfying \(\sum_x r_x=t\), by hypergeometric distribution
+\[
+\mathbb{P}(R=r)=\frac{\prod_{x\in X_m}\binom{d(x)}{r_x}}{\binom{N}{t}}
+\]
+we get
+\[
+\EE\Bigl[\frac{\prod_x R_x!}{t!}\Bigr]
+=\sum_{r:\ \sum r_x=t}\frac{\prod_x r_x!}{t!}\cdot \frac{\prod_x\binom{d(x)}{r_x}}{\binom{N}{t}}
+=\frac{1}{t!\binom{N}{t}}\sum_{r:\ \sum r_x=t}\ \prod_x\Bigl(r_x!\binom{d(x)}{r_x}\Bigr).
+\]
+Using identities \(r!\binom{d}{r}=(d)_r\) and \(t!\binom{N}{t}=(N)_t\) simplifies to the result. This completes the proof.
+\end{proof}
+
+\input{sections/body/pom/parts/part__pom-microcanonical-fold-posterior-entropy-linear-law}
+
+\input{sections/body/pom/parts/part__pom-microcanonical-fold-information-linear-law-ldp-sidebits}
+
+\begin{theorem}[Thermodynamic limit for fixed \(t\): complete homogeneous symmetric polynomial]\label{thm:pom-microcanonical-fold-bayes-success-thermo-limit}
+Let \(w(x):=d(x)/N\).
+If \(t\) is fixed and \(N\to\infty\), then
+\[
+\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)\ \longrightarrow\ \mathsf{h}_t(w)
+:=\sum_{\substack{r_x\in\ZZ_{\ge 0}\\ \sum_x r_x=t}}\ \prod_{x\in X_m} w(x)^{r_x}.
+\]
+And the generating function of \(\mathsf{h}_t(w)\) is
+\[
+\boxed{\;
+\sum_{t\ge 0}\mathsf{h}_t(w)\,z^t=\prod_{x\in X_m}\frac{1}{1-w(x)z}\; } .
+\]
+\end{theorem}
+\begin{proof}
+For fixed \(t\), we have
+\(
+(d(x))_{r_x}=d(x)^{r_x}+O(d(x)^{r_x-1})
+\)
+and \((N)_t=N^t+O(N^{t-1})\).
+Dividing the closed form of Theorem \ref{thm:pom-microcanonical-fold-bayes-success-Nminus-t} by \(N^t\) and expanding with \(d(x)=Nw(x)\),
+the limit is \(\mathsf{h}_t(w)\).
+\par
+The generating function is given by the standard definition of complete homogeneous symmetric polynomial:
+for each \(x\) we have \((1-w(x)z)^{-1}=\sum_{r\ge 0}w(x)^r z^r\), multiplying over all \(x\) and taking the \(z^t\) coefficient gives the result. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Uniform minimum principle: \texorpdfstring{$\mathsf{h}_t$}{h\_t} attains minimum at uniform distribution for any \(t\)]\label{thm:pom-microcanonical-fold-ht-uniform-min}
+Suppose \(n=\card{X_m}\ge 1\), let \(U\in\Delta(X_m)\) be the uniform distribution \(U(x)=1/n\).
+Then for any \(w\in\Delta(X_m)\) and any integer \(t\ge 0\),
+\[
+\boxed{\;
+\mathsf{h}_t(w)\ \ge\ \mathsf{h}_t(U)=\frac{\binom{n+t-1}{t}}{n^t}\; } ,
+\]
+with equality if and only if \(w\equiv U\).
+\end{theorem}
+\begin{proof}
+Take any \(z\in(0,1)\), let \(\phi_z(x):=-\log(1-zx)\).
+Then \(\phi_z\) is strictly convex on \(x\in[0,1]\), and by Jensen's inequality
+\[
+\sum_{x\in X_m}\phi_z(w(x))
+\ \ge\
+n\,\phi_z\!\left(\frac{1}{n}\sum_x w(x)\right)
+= -n\log\!\left(1-\frac{z}{n}\right).
+\]
+Exponentiating gives
+\(
+\prod_x(1-w(x)z)^{-1}\ge (1-z/n)^{-n}
+\).
+Both sides expand as power series with non-negative coefficients; comparing \(z^t\) coefficients term by term gives \(\mathsf{h}_t(w)\ge \mathsf{h}_t(U)\);
+and
+\(
+(1-z/n)^{-n}=\sum_{t\ge 0}\binom{n+t-1}{t}(z/n)^t
+\)
+gives the closed form value.
+Strict convexity implies equality holds if and only if \(w\equiv U\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Collision moment completeness: \texorpdfstring{$\mathsf{h}_t(w)$}{h\_t(w)} is explicitly generated by finite power sums]\label{thm:pom-microcanonical-fold-ht-from-power-sums}
+For distribution \(w\in\Delta(X_m)\) define power sums
+\(
+p_k(w):=\sum_{x\in X_m}w(x)^k
+\)
+(where \(p_1(w)=1\)).
+Let
+\[
+\mathcal{H}_w(z):=\sum_{t\ge 0}\mathsf{h}_t(w)\,z^t=\prod_{x\in X_m}(1-w(x)z)^{-1}.
+\]
+Then as formal power series we have the strict identity
+\[
+\boxed{\;
+\log \mathcal{H}_w(z)=\sum_{k\ge 1}\frac{p_k(w)}{k}\,z^k\; } .
+\]
+Thus for any fixed \(t\), \(\mathsf{h}_t(w)\) only depends on \(\{p_2(w),\dots,p_t(w)\}\), and can be uniquely determined by the \(z^t\) coefficient of the truncated exponential series.
+\end{theorem}
+\begin{proof}
+By identity \(-\log(1-u)=\sum_{k\ge 1}u^k/k\) (as formal power series) with \(u=w(x)z\), we have
+\[
+\log \mathcal{H}_w(z)
+=-\sum_{x}\log(1-w(x)z)
+=\sum_{x}\sum_{k\ge 1}\frac{w(x)^k}{k}z^k
+=\sum_{k\ge 1}\frac{p_k(w)}{k}z^k.
+\]
+Since \(p_1(w)=1\) is fixed, the \(z^t\) coefficient only depends on \(p_2,\dots,p_t\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Low-order explicit formulas]\label{cor:pom-microcanonical-fold-ht-low-order}
+Denoting \(p_k:=p_k(w)\), we have
+\[
+\mathsf{h}_2=\frac{1+p_2}{2},\qquad
+\mathsf{h}_3=\frac{1+3p_2+2p_3}{6},
+\]
+\[
+\mathsf{h}_4=\frac{1+6p_2+3p_2^2+8p_3+6p_4}{24},
+\]
+\[
+\mathsf{h}_5=\frac{1+10p_2+15p_2^2+20p_3+20p_2p_3+30p_4+24p_5}{120}.
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-fold-ht-from-power-sums}, truncate
+\(
+\mathcal{H}_w(z)=\exp(\sum_{k\ge 1}p_k z^k/k)
+\)
+to the corresponding order and directly expand, then take coefficients. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Compilation from folding moment spectrum to microscopic reversibility: \texorpdfstring{$(N-t)$}{N-t} query Bayes identification rate as finite polynomial]\label{thm:pom-microcanonical-fold-bayes-success-polynomial-in-moments}
+In the folding semantics, take \(d=d_m\), \(N=2^m\), \(w=w_m\), and denote collision moments
+\(
+S_k(m):=\sum_{x\in X_m}d_m(x)^k
+\).
+Then for each fixed integer \(t\ge 0\), as \(m\to\infty\)
+\[
+\boxed{\;
+\mathrm{Succ}^{\mathrm{Bayes}}_{2^m-t}(d_m)=\mathsf{h}_t(w_m)+o(1)\;}
+\]
+and since \(\,p_k(w_m)=\sum_x w_m(x)^k=2^{-mk}S_k(m)\), \(\mathsf{h}_t(w_m)\) can be explicitly computed from
+\(\{S_2(m),\dots,S_t(m)\}\) via the polynomial formulas of Corollary \ref{cor:pom-microcanonical-fold-ht-low-order}.
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-fold-bayes-success-thermo-limit},
+\(
+\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)=\mathsf{h}_t(w)+o(1)
+\)
+(fixed \(t\), let \(N=2^m\to\infty\)).
+In the Fold caliber \(w=w_m\) and \(p_k(w_m)=2^{-mk}S_k(m)\) (see \S\ref{subsubsec:pom-real-q-pressure-thermo-frontier}), then by Theorem \ref{thm:pom-microcanonical-fold-ht-from-power-sums} and Corollary \ref{cor:pom-microcanonical-fold-ht-low-order} we obtain "finite polynomial computability". This completes the proof.
+\end{proof}
+
+\begin{corollary}[Second and third order example formulas]\label{cor:pom-microcanonical-fold-bayes-success-examples-t2-t3}
+Under the setting of Theorem \ref{thm:pom-microcanonical-fold-bayes-success-polynomial-in-moments}, we have
+\[
+\mathrm{Succ}^{\mathrm{Bayes}}_{2^m-2}(d_m)
+=\frac{1+p_2(w_m)}{2}+o(1)
+=\frac{1+2^{-2m}S_2(m)}{2}+o(1),
+\]
+\[
+\mathrm{Succ}^{\mathrm{Bayes}}_{2^m-3}(d_m)
+=\frac{1+3p_2(w_m)+2p_3(w_m)}{6}+o(1)
+=\frac{1+3\cdot 2^{-2m}S_2(m)+2\cdot 2^{-3m}S_3(m)}{6}+o(1).
+\]
+\end{corollary}
+
+\begin{theorem}[Residual permutation entropy: \texorpdfstring{$(N-t)$}{N-t} query ineliminable uncertainty quantified by \texorpdfstring{$\mathsf{h}_t(w)$}{h\_t(w)}]\label{thm:pom-microcanonical-fold-residual-min-entropy}
+Under uniform microcanonical prior, the only degree of freedom not yet observed after querying \(N-t\) points is the label permutation on unqueried set \(U\);
+its posterior maximum probability is the Bayes optimal exact identification rate.
+Let
+\[
+\mathcal{R}_t(w):=-\log \mathsf{h}_t(w).
+\]
+Then when \(t\) is fixed and \(N\to\infty\), the optimal min-entropy limit of "residual eliminable uncertainty" after \(N-t\) queries equals \(\mathcal{R}_t(w)\).
+And \(\mathcal{R}_t(w)=0\) if and only if \(w\) degenerates to a point distribution;
+and \(\mathcal{R}_t(w)\) attains maximum at uniform distribution
+\[
+\boxed{\;
+\mathcal{R}_t(U)= -\log\!\left(\frac{\binom{n+t-1}{t}}{n^t}\right)\; } .
+\]
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-microcanonical-fold-bayes-success-thermo-limit},
+\(
+\mathrm{Succ}^{\mathrm{Bayes}}_{N-t}(d)\to \mathsf{h}_t(w)
+\), taking negative logarithm gives \(\mathcal{R}_t(w)\).
+If \(w\) is a point distribution, then \(\mathsf{h}_t(w)=1\) thus \(\mathcal{R}_t(w)=0\);
+conversely if \(\mathsf{h}_t(w)=1\) then \(p_2(w)=1\) (by \(\mathsf{h}_2\) in Corollary \ref{cor:pom-microcanonical-fold-ht-low-order}) thus \(w\) must be a point distribution.
+Maximality at uniform distribution follows immediately from Theorem \ref{thm:pom-microcanonical-fold-ht-uniform-min} (uniform minimum \(\mathsf{h}_t\)). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Dominant pole theorem: exponential rate and reduction constant of \texorpdfstring{$\mathsf{h}_t(w)$}{h\_t(w)} as \texorpdfstring{$t\to\infty$}{t->infty}]\label{thm:pom-microcanonical-fold-dominant-pole-asymptotics}
+Let
+\[
+w_\star:=\max_{x\in X_m} w(x),
+\qquad
+r:=\card{\{x\in X_m:\ w(x)=w_\star\}}\ge 1,
+\qquad
+C(w):=\prod_{x:\ w(x)<w_\star}\left(1-\frac{w(x)}{w_\star}\right)^{-1}.
+\]
+Then the generating function \(\mathcal{H}_w(z)=\prod_x(1-w(x)z)^{-1}\) has a pole of order \(r\) at \(z=1/w_\star\), and as \(t\to\infty\)
+\[
+\boxed{\;
+\mathsf{h}_t(w)=\frac{C(w)}{(r-1)!}\,t^{\,r-1}\,w_\star^{\,t}\,(1+o(1))\; } .
+\]
+Therefore
+\[
+\boxed{\;
+\lim_{t\to\infty}\frac{1}{t}\log \mathsf{h}_t(w)=\log w_\star\; } ,
+\]
+and the polynomial prefactor is completely determined by the reduction product constant \(C(w)\) and pole order \(r\).
+\end{theorem}
+\begin{proof}
+Extract the \(r\) factors achieving maximum mass, writing
+\[
+\mathcal{H}_w(z)=(1-w_\star z)^{-r}\cdot G_w(z),
+\qquad
+G_w(z):=\prod_{x:\ w(x)<w_\star}(1-w(x)z)^{-1}.
+\]
+Then \(G_w\) is analytic at \(z=1/w_\star\) and \(G_w(1/w_\star)=C(w)\).
+And
+\[
+(1-w_\star z)^{-r}=\sum_{t\ge 0}\binom{t+r-1}{r-1}w_\star^{\,t}z^t.
+\]
+By coefficient extraction and analytic dominant term estimate (nearest singularity dominance)
+\[
+\mathsf{h}_t(w)=\binom{t+r-1}{r-1}w_\star^{\,t}C(w)+o\!\left(t^{r-1}w_\star^{\,t}\right),
+\]
+then using \(\binom{t+r-1}{r-1}\sim t^{r-1}/(r-1)!\) gives the stated asymptotics.
+For the limit \(\frac{1}{t}\log \mathsf{h}_t(w)\), taking logarithm and dividing by \(t\) gives \(\log w_\star\). This completes the proof.
+\end{proof}
+
+\input{sections/body/pom/parts/part__pom-microcanonical-fold-near-complete-uniform-asymptotics-phase}
+
+In summary, the microcanonical prior for fixed fiber spectrum compresses the relationship between "macroscopic fiber distribution \(w\)" and "microscopic reversibility" into a completely computable symmetric function chain:
+in the thermodynamic limit of \(N-t\) queries, the Bayes optimal exact identification rate is given by \(\mathsf{h}_t(w)\);
+its low order only depends on finite collision moments \(p_2(w),\dots,p_t(w)\) (in Fold caliber equivalent to \(S_2(m),\dots,S_t(m)\)),
+while its large order asymptotics is governed by dominant fiber mass \(w_\star\) and reduction constant \(C(w)\).
+Within the unified scale of near-complete queries \(t=o(N^{2/3})\), this description remains effective, thereby inducing a three-stage scaling of constant/power-law/exponential controlled by \(w_\star\).
 
 \endinput
-

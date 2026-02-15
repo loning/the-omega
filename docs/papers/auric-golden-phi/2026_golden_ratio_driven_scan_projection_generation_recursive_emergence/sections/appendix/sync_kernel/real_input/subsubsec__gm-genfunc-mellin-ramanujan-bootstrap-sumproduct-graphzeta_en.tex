@@ -69,6 +69,131 @@ Moving all \(t_j=0\) branch terms to the left-hand side yields \eqref{eq:gm-mell
 Meromorphicity and the pole set follow from the matrix resolvent \((I-P(z))^{-1}\); the pole order is determined by the Jordan structure. \qed
 \end{proof}
 
+\begin{corollary}[Mellin pole golden comb cluster: finitely many arithmetic vertical lines]\label{cor:gm-mellin-pole-golden-comb}
+Under the setting of Theorem \ref{thm:gm-mellin-meromorphic-fingerprint}, let
+\(
+D(z):=\det(I-P(z))\in\CC[z]
+\).
+If \(z_0\neq 0\) satisfies \(D(z_0)=0\), then all solutions to \(\varphi^{-s}=z_0\) form a candidate pole tower
+\[
+s=-\frac{\log z_0}{\log\varphi}+\frac{2\pi i}{\log\varphi}\,k,\qquad k\in\ZZ,
+\]
+where \(\log\) denotes any branch.
+Moreover, all poles of \(\mathbf{M}(s)\) (and thus of \(M(s)\)) can only lie on the union of all such towers; the pole order is determined by the Jordan structure of \(P(z)\) at \(z_0\) (equivalently, by the principal part of \((I-P(z))^{-1}\) at \(z_0\)).
+\end{corollary}
+
+\begin{proof}
+By Theorem \ref{thm:gm-mellin-meromorphic-fingerprint}, \(\mathbf{M}(s)\) as a function of \(z=\varphi^{-s}\) can only have poles at \(D(z)=0\).
+For a given \(z_0\neq 0\), solving \(\varphi^{-s}=z_0\) is equivalent to
+\(
+-s\log\varphi=\log z_0-2\pi i k
+\)
+(multivaluedness of the complex logarithm), yielding the stated arithmetic vertical tower.
+\end{proof}
+
+\begin{corollary}[Linear upper bound on Mellin pole count: explicit constant controlled by \texorpdfstring{$\deg D$}{deg D}]\label{cor:gm-mellin-pole-count-linear}
+Retaining the notation of Corollary \ref{cor:gm-mellin-pole-golden-comb}, write \(d:=\deg D\).
+Let \(N_{\mathrm{pole}}(T;\sigma_1,\sigma_2)\) denote the total number of poles (counted with multiplicity) in the vertical strip \(\sigma_1\le \Re(s)\le \sigma_2\) satisfying \(|\Im(s)|\le T\).
+Then
+\[
+N_{\mathrm{pole}}(T;\sigma_1,\sigma_2)\le \frac{d\,\log\varphi}{\pi}\,T+O(1).
+\]
+\end{corollary}
+
+\begin{proof}
+\(D\) has at most \(d\) roots (counted with multiplicity).
+Each root \(z_0\neq 0\) induces an arithmetic vertical tower with imaginary spacing \(2\pi/\log\varphi\); within the height window \(|\Im(s)|\le T\) there are \(\frac{\log\varphi}{\pi}T+O(1)\) points.
+Summing over all roots and counting with algebraic multiplicity gives the upper bound.
+\end{proof}
+
+\paragraph{Jensen profile and pole skeleton: convex encoding and residue visualization via radial average of the determinant}
+\begin{proposition}[Jensen profile of the matrix Mellin fingerprint: \texorpdfstring{$\det(I-P(z))$}{det(I-P(z))} radial average is completely solvable]\label{prop:gm-mellin-jensen-profile-det}
+Under the setting of Theorem \ref{thm:gm-mellin-meromorphic-fingerprint}, let
+\[
+D(z):=\det(I-P(z))\in\CC[z]
+\]
+be the polynomial, and write its zeros (with multiplicity) as \(\{z_j\}_{j=1}^{J}\subset\CC\), with leading coefficient \(c\neq 0\) (i.e., \(D(z)=c\prod_{j=1}^{J}(z-z_j)\)).
+Define the Jensen profile (vertical line average) as
+\[
+\mathcal{M}(\sigma)
+:=\frac{\log\varphi}{2\pi}\int_{0}^{2\pi/\log\varphi}
+\log\Bigl|D\bigl(\varphi^{-(\sigma+\mathrm{i}t)}\bigr)\Bigr|\,\dd t,
+\qquad \sigma\in\RR.
+\]
+Then there is a complete closed form
+\[
+\boxed{\;
+\mathcal{M}(\sigma)=\log|c|+\sum_{j=1}^{J}\log\max\!\bigl\{\varphi^{-\sigma},|z_j|\bigr\}\; }.
+\]
+In particular, \(\mathcal{M}\) is a convex piecewise affine function with breakpoint set exactly
+\(
+\{\,-\log|z_j|/\log\varphi\,\}_{j=1}^{J}
+\)
+(counted with multiplicity).
+Therefore the breakpoint spectrum of \(\mathcal{M}\) on the \(\sigma\)-axis precisely encodes the (real-part set of) Mellin pole vertical towers induced by
+\(\det(I-P(\varphi^{-s}))\).
+\end{proposition}
+\begin{proof}
+Let \(r:=\varphi^{-\sigma}\).
+As \(t\) varies over \([0,2\pi/\log\varphi]\),
+\(
+z=\varphi^{-(\sigma+\mathrm{i}t)}=r\,e^{-\mathrm{i}t\log\varphi}
+\)
+traces the circle \(|z|=r\) once.
+Thus \(\mathcal{M}(\sigma)\) equals \(\frac{1}{2\pi}\int_{0}^{2\pi}\log|D(re^{\mathrm{i}\theta})|\,\dd\theta\).
+Applying Jensen's formula for polynomials (equivalently, computing the circular average of \(\log|z-z_j|\) term by term) yields
+\[
+\frac{1}{2\pi}\int_{0}^{2\pi}\log|D(re^{\mathrm{i}\theta})|\,\dd\theta
+=\log|c|+\sum_{j=1}^{J}\log\max\{r,|z_j|\},
+\]
+giving the stated closed form.
+Convexity and breakpoint locations follow from the piecewise linear structure of \(\log\max\{r,|z_j|\}=\max\{-\sigma\log\varphi,\log|z_j|\}\). \qed
+\end{proof}
+
+\begin{proposition}[Pole vertical tower skeleton and residue closed form: explicit partial fraction visualization via adjugate matrix for \texorpdfstring{$\mathbf{M}(s)$}{M(s)}]\label{prop:gm-mellin-pole-skeleton-residue-adjugate}
+Under the setting of Theorem \ref{thm:gm-mellin-meromorphic-fingerprint}, still write \(D(z)=\det(I-P(z))\).
+If all zeros of \(D\) in \(\CC^\times\) are simple roots \(z_1,\dots,z_J\) (counted with multiplicity), then for each \(j\), any choice of logarithm branch yields some \(s_{j,0}\) satisfying \(\varphi^{-s_{j,0}}=z_j\), with all solutions given by
+\[
+s_{j,k}:=s_{j,0}+\frac{2\pi\mathrm{i}}{\log\varphi}\,k\qquad(k\in\ZZ),
+\]
+and \(\mathbf{M}(s)\) can only have poles at \(\{s_{j,k}\}_{j,k}\) (except possibly removable singularities).
+In the non-cancellation case, \(\mathbf{M}(s)\) has a simple pole at each \(s_{j,k}\), with residue closed form
+\[
+\boxed{\;
+\operatorname*{Res}_{s=s_{j,k}}\mathbf{M}(s)
+=-\frac{1}{\log\varphi}\cdot
+\frac{\operatorname{adj}(I-P(z_j))}{z_j\,D'(z_j)}\,
+\mathbf{H}(s_{j,k})\; }.
+\]
+Equivalently, writing \(\partial_{\log z}D(z):=zD'(z)\) for the logarithmic derivative,
+\[
+\operatorname*{Res}_{s=s_{j,k}}\mathbf{M}(s)
+=-\frac{1}{\log\varphi}\cdot
+\frac{\operatorname{adj}(I-P(z_j))}{\partial_{\log z}D(z_j)}\,
+\mathbf{H}(s_{j,k}).
+\]
+\end{proposition>
+\begin{proof}
+By \eqref{eq:gm-mellin-linear-system},
+\[
+\mathbf{M}(s)=(I-P(z))^{-1}\mathbf{H}(s)=\frac{\operatorname{adj}(I-P(z))}{D(z)}\,\mathbf{H}(s),
+\qquad z=\varphi^{-s}.
+\]
+When \(D(z_j)=0\) is a simple root, \(D(z)=D'(z_j)(z-z_j)+O((z-z_j)^2)\), and \(\operatorname{adj}(I-P(z))\) is analytic at \(z_j\).
+Hence in the \(z\)-variable,
+\(
+(I-P(z))^{-1}
+\)
+has a simple pole at \(z=z_j\) with principal part coefficient \(\operatorname{adj}(I-P(z_j))/D'(z_j)\).
+\par
+Substituting \(z=\varphi^{-s}\) and expanding near \(s_{j,k}\):
+\(
+\varphi^{-s}-z_j=-(\log\varphi)z_j\,(s-s_{j,k})+o(s-s_{j,k})
+\).
+This yields the residue coefficient in the \(s\)-variable as \(-1/(\log\varphi\,z_j)\), which when multiplied by the \(z\)-variable principal part coefficient gives the stated closed form.
+If at some \(s_{j,k}\) we have exactly \(\operatorname{adj}(I-P(z_j))\mathbf{H}(s_{j,k})=0\), then that pole is removable; otherwise it is a simple pole. \qed
+\end{proof}
+
 \paragraph{Statistical inferences from the spectral gap: central limit theorem and H\"older regularity (finite-state spectral data \texorpdfstring{$\Rightarrow$}{=>} real-analytic properties)}
 \begin{theorem}[Spectral gap CLT for finite-state weight functions: limit theorem with auditable error budget]\label{thm:gm-sofic-spectral-clt}
 Let \(\omega=(\omega_k)_{k\ge 1}\) be the stationary Markov chain output under a primitive sofic shift, and let \(w\) be a bounded integer-valued weight function (viewed as an edge weight or local potential).

@@ -252,3 +252,237 @@ Here \(\beta=\log\varphi\), and \(d_{\max}^{\mathrm{bin}}(m):=\max_{x\in X_m}d_m
 \(\lim_{m\to\infty}m^{-1}\log d_{\max}^{\mathrm{bin}}(m)=\log(2/\varphi)\) (Theorem \ref{thm:fold-bin-max-fiber-exponent}).
 Therefore, "the exponential rate of information loss under folding," "the critical auxiliary information rate required for invertibilization," and "the gap of the modular scale relative to the microscopic entropy rate" are forced to collapse into the same numerical invariant \(\log(2/\varphi)\), forming an externally citable three-domain equivalence chain: information-theoretic threshold = modular-theoretic entropy gap = combinatorial maximal degeneracy exponent.
 \end{theorem}
+
+\paragraph{Two-Atom Limit Ledger of Fold Pushforward Relative to Stable Layer Uniform Baseline}
+Let
+\[
+p^{\mathrm{bin}}_m(w):=\frac{d^{\mathrm{bin}}_m(w)}{2^m}\qquad(w\in X_m)
+\]
+be the pushforward distribution of bin-fold on stable type layer \(X_m\) (also \(\mu_m\) of Corollary \ref{cor:fold-bin-two-point-limit-law}), and let
+\[
+u_m(w):=\frac{1}{|X_m|}
+\qquad(w\in X_m)
+\]
+be the uniform distribution on stable layer.
+Denote the relative density
+\[
+R_m(w):=\frac{p^{\mathrm{bin}}_m(w)}{u_m(w)}=|X_m|\,p^{\mathrm{bin}}_m(w),
+\]
+and adopt the standard convention of total variation distance
+\[
+D_{\mathrm{TV}}(p\Vert q):=\frac12\sum_{w}\bigl|p(w)-q(w)\bigr|.
+\]
+
+\begin{theorem}[Two-Atom Limit of bin-fold Pushforward Distribution Relative to Uniform Baseline: TV Constant, Arbitrary \(f\)-Divergence, and \texorpdfstring{$L^p$}{Lp} Spectrum]\label{thm:xi-foldbin-pushforward-uniform-two-atom-ledger}
+Under the two-state uniform asymptotic caliber of Theorem \ref{thm:fold-bin-two-state-asymptotic}, let
+\[
+r_0:=\frac{\varphi^2}{\sqrt5},\qquad r_1:=\frac{\varphi}{\sqrt5}.
+\]
+Then:
+\begin{enumerate}
+  \item \textbf{(Total Variation Limit Constant)} The limit exists and equals
+  \[
+  \lim_{m\to\infty}D_{\mathrm{TV}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+  =\frac12\Bigl(\frac{1}{\sqrt5}-\frac{1}{\varphi^3}\Bigr),
+  \]
+  with error \(O\bigl((\varphi/2)^m\bigr)\).
+  \item \textbf{(Two-Atom Closed Form for Arbitrary \(f\)-Divergence)} For any convex function \(f:(0,\infty)\to\mathbb R\) with \(f(1)=0\), define
+  \[
+  D_f\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+  :=\sum_{w\in X_m}u_m(w)\,f\!\left(\frac{p^{\mathrm{bin}}_m(w)}{u_m(w)}\right)
+  =\sum_{w\in X_m}u_m(w)\,f\!\bigl(R_m(w)\bigr).
+  \]
+  Then the limit exists and satisfies the two-atom closed form
+  \[
+  \lim_{m\to\infty}D_f\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+  =\frac{1}{\varphi}\,f(r_0)+\frac{1}{\varphi^2}\,f(r_1),
+  \]
+  with error \(O\bigl((\varphi/2)^m\bigr)\).
+  \item \textbf{(\(L^p\) Limit Spectrum and Dynamic Range of Relative Density)} For any \(p\in[1,\infty)\),
+  \[
+  \lim_{m\to\infty}\norm{R_m-1}_{L^p(u_m)}
+  =
+  \Bigl[\frac{1}{\varphi}\bigl|r_0-1\bigr|^p+\frac{1}{\varphi^2}\bigl|1-r_1\bigr|^p\Bigr]^{1/p}.
+  \]
+  Moreover
+  \[
+  \lim_{m\to\infty}\norm{R_m}_{L^\infty(u_m)}=r_0,\qquad
+  \lim_{m\to\infty}\operatorname*{ess\,inf}_{u_m}R_m=r_1,
+  \qquad
+  \frac{r_0}{r_1}=\varphi.
+  \]
+  \item \textbf{(Constantification of Pinsker Gap)} Let
+  \(
+  C_{\mathrm{TV}}:=\frac12(\frac{1}{\sqrt5}-\varphi^{-3})
+  \)
+  and let
+  \(
+  C_{\mathrm{KL}}:=\lim_{m\to\infty}D_{\mathrm{KL}}(p^{\mathrm{bin}}_m\Vert u_m)
+  \)
+  (closed form in Proposition \ref{prop:fold-bin-kl-constant}).
+  Then
+  \[
+  \lim_{m\to\infty}\frac{2\,D_{\mathrm{TV}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)^2}{D_{\mathrm{KL}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)}
+  =\frac{2\,C_{\mathrm{TV}}^2}{C_{\mathrm{KL}}}\in(0,1),
+  \]
+  so the Pinsker inequality is strictly not saturated in this bin-fold limit.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By Theorem \ref{thm:fold-bin-two-state-asymptotic},
+\(
+d^{\mathrm{bin}}_m(w)=\varphi^{-w_m}(2/\varphi)^m+O(1)
+\)
+with error uniform over \(w\in X_m\).
+Also \(|X_m|=F_{m+2}=\varphi^{m+2}/\sqrt5+O(\varphi^{-m})\) (Binet formula), so for all \(w\in X_m\) we have uniform expansion
+\[
+R_m(w)
+=\frac{|X_m|}{2^m}\,d^{\mathrm{bin}}_m(w)
+=\frac{\varphi^{m+2}}{\sqrt5}\cdot\frac{1}{\varphi^m}\cdot\varphi^{-w_m}+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right)
+=\varphi^{-w_m}\,r_0+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right),
+\]
+thus \(R_m(w)=r_{w_m}+O((\varphi/2)^m)\) (where \(r_{0}=r_0,r_{1}=r_1\)) uniformly in \(w\).
+On the other hand, under stable layer uniform distribution the last-bit marginal satisfies
+\[
+u_m(w_m=0)=\frac{F_{m+1}}{F_{m+2}}=\frac{1}{\varphi}+O(\varphi^{-m}),
+\qquad
+u_m(w_m=1)=\frac{F_{m}}{F_{m+2}}=\frac{1}{\varphi^2}+O(\varphi^{-m}).
+\]
+Thus for any continuous function \(g\) (e.g., \(g(t)=|t-1|\), \(g(t)=f(t)\), \(g(t)=|t-1|^p\), \(g(t)=t\log t\) appearing in various items of this theorem) we get
+\[
+\sum_{w\in X_m}u_m(w)\,g\!\bigl(R_m(w)\bigr)
+=\frac{1}{\varphi}\,g(r_0)+\frac{1}{\varphi^2}\,g(r_1)+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right),
+\]
+so (2)(3) hold.
+(1) takes \(g(t)=\frac12|t-1|\) and uses \(r_0>1>r_1\) to get stated constant; simplification uses identities
+\(
+\varphi-\varphi^{-1}=1
+\)
+and
+\(
+\varphi^{-2}-\varphi^{-1}=-\varphi^{-3}
+\).
+(4) from (2) taking \(f(t)=t\log t\) gets \(C_{\mathrm{KL}}>0\), then by Pinsker inequality and \(p^{\mathrm{bin}}_m\neq u_m\) (sufficiently large \(m\)) the limiting ratio strictly falls in \((0,1)\).
+QED.
+\end{proof}
+
+\begin{corollary}[Closed Form of bin-fold Pushforward Distribution Shannon Deficit Constant: Rigidly Locked by \texorpdfstring{$\varphi$}{phi} and \texorpdfstring{$\sqrt5$}{sqrt5}]\label{cor:xi-foldbin-shannon-deficit-constant-closed-form}
+Under setting of Theorem \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger}, the KL divergence (relative entropy) limit constant is
+\[
+C_{\mathrm{KL}}
+:=\lim_{m\to\infty}D_{\mathrm{KL}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+=\frac{3\varphi-1}{\sqrt5}\log\varphi-\frac12\log 5\ >\ 0,
+\]
+with convergence error \(O((\varphi/2)^m)\).
+Since \(u_m\) is uniform distribution, we also have
+\[
+D_{\mathrm{KL}}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)=\log|X_m|-H\bigl(p^{\mathrm{bin}}_m\bigr),
+\]
+so the Shannon deficit \(\log|X_m|-H(p^{\mathrm{bin}}_m)\) converges to the same closed-form constant \(C_{\mathrm{KL}}\).
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} (2) taking \(f(t)=t\log t\),
+\[
+C_{\mathrm{KL}}
+=\frac{1}{\varphi}\,r_0\log r_0+\frac{1}{\varphi^2}\,r_1\log r_1,
+\qquad
+r_0=\frac{\varphi^2}{\sqrt5},\ r_1=\frac{\varphi}{\sqrt5}.
+\]
+Substituting \(\log(\varphi^k/\sqrt5)=k\log\varphi-\tfrac12\log 5\) and simplifying using identities
+\(\varphi^{-1}=\varphi-1\) and \(\varphi+\varphi^{-1}=\sqrt5\) yields stated closed form.
+Error term same as Theorem \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} (2).
+Finally, from \(u_m(w)=1/|X_m|\) we get
+\(
+D_{\mathrm{KL}}(p\Vert u_m)=-H(p)-\sum_w p(w)\log u_m(w)=\log|X_m|-H(p)
+\). QED.
+\end{proof}
+
+\begin{proposition}[Closed Form of Full Rényi Deficit Spectrum: \texorpdfstring{$\alpha$}{alpha}-Family Divergence Completely Solvable in Limit]\label{prop:xi-foldbin-renyi-deficit-spectrum-closed-form}
+Under setting of Theorem \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger}, for any \(\alpha>0\), \(\alpha\neq 1\), define Rényi divergence
+\[
+D_{\alpha}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+:=\frac{1}{\alpha-1}\log\sum_{w\in X_m}u_m(w)\,R_m(w)^{\alpha}
+\qquad\bigl(R_m=p^{\mathrm{bin}}_m/u_m\bigr).
+\]
+Then the limit exists and satisfies complete closed form
+\[
+\lim_{m\to\infty}D_{\alpha}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+=\frac{1}{\alpha-1}\log\Bigl(\frac{1}{\varphi}r_0^\alpha+\frac{1}{\varphi^2}r_1^\alpha\Bigr)
+=\frac{1}{\alpha-1}\left(
+\log(\varphi^{2\alpha-1}+\varphi^{\alpha-2})-\frac{\alpha}{2}\log 5
+\right),
+\]
+where \(r_0=\varphi^2/\sqrt5\), \(r_1=\varphi/\sqrt5\).
+Moreover endpoint orders satisfy
+\[
+\lim_{\alpha\to\infty}\ \lim_{m\to\infty} D_{\alpha}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+=\log r_0
+=2\log\varphi-\frac12\log 5,
+\qquad
+\lim_{\alpha\to 1}\ \lim_{m\to\infty} D_{\alpha}\bigl(p^{\mathrm{bin}}_m\Vert u_m\bigr)
+=C_{\mathrm{KL}}.
+\]
+\end{proposition}
+\begin{proof}
+By proof of Theorem \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger}, \(R_m(w)=r_{w_m}+O((\varphi/2)^m)\) uniformly in \(w\), and \(u_m(w_m=0)=\varphi^{-1}+o(1)\), \(u_m(w_m=1)=\varphi^{-2}+o(1)\).
+Therefore
+\[
+\sum_{w}u_m(w)\,R_m(w)^\alpha
+=\frac{1}{\varphi}r_0^\alpha+\frac{1}{\varphi^2}r_1^\alpha+o(1),
+\]
+substituting into definition yields first limit formula.
+Further substituting \(r_0=\varphi^2/\sqrt5\), \(r_1=\varphi/\sqrt5\) and simplifying to
+\[
+\frac{1}{\varphi}\Bigl(\frac{\varphi^2}{\sqrt5}\Bigr)^\alpha+\frac{1}{\varphi^2}\Bigl(\frac{\varphi}{\sqrt5}\Bigr)^\alpha
+=\frac{\varphi^{2\alpha-1}+\varphi^{\alpha-2}}{5^{\alpha/2}},
+\]
+yields stated closed form.
+\(\alpha\to\infty\) limit gives essential supremum divergence \(\log\max\{r_0,r_1\}=\log r_0\);
+\(\alpha\to 1\) continuity gives KL limit consistent with Corollary \ref{cor:xi-foldbin-shannon-deficit-constant-closed-form}. QED.
+\end{proof}
+
+\begin{corollary}[Rigidity of bin-fold Entropy Rate: Per-Step Entropy Tends to \texorpdfstring{$\log\varphi$}{log phi}, Deficit Only Constant-Order and Exponentially Convergent]\label{cor:xi-foldbin-entropy-rate-rigidity}
+Under setting of Theorem \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger},
+\[
+\frac{1}{m}H\bigl(p^{\mathrm{bin}}_m\bigr)\ \longrightarrow\ \log\varphi,
+\qquad
+\log|X_m|-H\bigl(p^{\mathrm{bin}}_m\bigr)=C_{\mathrm{KL}}+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right).
+\]
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:xi-foldbin-shannon-deficit-constant-closed-form},
+\(
+H(p^{\mathrm{bin}}_m)=\log|X_m|-D_{\mathrm{KL}}(p^{\mathrm{bin}}_m\Vert u_m)
+\).
+Then using \(\log|X_m|=\log F_{m+2}=m\log\varphi+O(1)\) and \(D_{\mathrm{KL}}(p^{\mathrm{bin}}_m\Vert u_m)=C_{\mathrm{KL}}+O((\varphi/2)^m)\), we get both conclusions. QED.
+\end{proof}
+
+\begin{proposition}[Exact Piecewise Law of Invertible Reconstruction Success Probability Curve: Discrete Derivative Equals Fiber Tail Distribution]\label{prop:xi-reconstruction-success-curve-discrete-derivative}
+Fix \(m\).
+For any register size \(M\in\mathbb N\) define optimal average success probability
+\[
+P_m^\star(M):=\sup\mathbb P[\widehat\omega=U_m],
+\]
+where supremum is over all encoding/decoding schemes allowing use of \(M\)-valued auxiliary register (same as Theorem \ref{thm:xi-optimal-reconstruction-success-probability-constant-bias}, but here \(M\) is viewed as independent variable).
+Then closed form holds
+\[
+P_m^\star(M)=\frac{1}{2^m}\sum_{x\in X_m}\min\!\bigl\{d^{\mathrm{bin}}_m(x),\,M\bigr\}.
+\]
+Therefore \(M\mapsto P_m^\star(M)\) is discrete concave piecewise-linear, and its discrete derivative satisfies
+\[
+P_m^\star(M+1)-P_m^\star(M)=\frac{1}{2^m}\#\{x\in X_m:\ d^{\mathrm{bin}}_m(x)\ge M+1\}.
+\]
+\end{proposition}
+
+\begin{proof}
+Closed form is first paragraph of Theorem \ref{thm:xi-optimal-reconstruction-success-probability-constant-bias} (viewing \(M_m\) as arbitrary integer parameter \(M\)).
+Difference identity follows from
+\(
+\min\{d,M+1\}-\min\{d,M\}=\ind_{\{d\ge M+1\}}
+\)
+summed termwise.
+Derivative term monotonically nonincreasing in \(M\), so \(P_m^\star\) is discretely concave. QED.
+\end{proof}
+
+\endinput

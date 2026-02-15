@@ -488,6 +488,103 @@ Numerically, this means that when \(u\) is close to \(1\), the root scales of th
 After deflation, the pathological scaling near \(u\to 1\) is substantially mitigated, bringing subsequent computations back to the condition number level of standard polynomial problems; this also condenses the hint that ``this expansion can be used for branch deflation'' into a reusable algorithmic selection rule: \textbf{first deflate the activated branch, then perform elimination/root-finding}.
 \end{remark}
 
+\begin{corollary}[Endpoint large deviation costs]\label{cor:real-input-40-rate-endpoints}
+Let $I(\alpha)$ be the (normalized) large deviation rate function of the output potential $\varphi_e=e$ (defined via the Legendre form of $P(\theta)$). Then the endpoints satisfy
+\[
+I(0)=P(0)=\log\lambda(1)=\log(\varphi^2)\approx 0.962423650119207,
+\]
+\[
+I(1/2)=P(0)-\log c=\log\!\left(\frac{\varphi^2}{c}\right)\approx 0.322491085601762.
+\]
+\end{corollary}
+
+\input{sections/generated/eq_real_input_40_output_potential_ldp_algebraic_param_en}
+
+\begin{proposition}[Finite-part constant limit at extreme bias]\label{prop:real-input-40-logM-infty}
+Let $z_\star(u)=\lambda(u)^{-1}$ and define
+\[
+b:=\lim_{u\to\infty}u\,z_\star(u)^2=\frac{1}{c^2}.
+\]
+Then $b$ is the largest positive root of the equation
+\[
+1-6b+9b^2-b^3-b^4=0
+\]
+with numerical value $b\approx 0.27807480214113$. Write
+\[
+C(u):=\lim_{z\to z_\star(u)}(1-\lambda(u)z)\,\zeta(z,u),
+\]
+then the limit
+\[
+C_\infty:=\lim_{u\to\infty}C(u)=\frac{1}{2b(1-b)(6-18b+3b^2+4b^3)}\approx 1.89745149363
+\]
+exists. Moreover, the Abel finite-part constant satisfies the limit
+\[
+\log\mathfrak{M}_\infty:=\lim_{u\to\infty}\log\mathfrak{M}(u),
+\]
+with the rapidly convergent M\"obius--Euler expression
+\[
+\log\mathfrak{M}_\infty
+=\log C_\infty
+-\sum_{m\ge 2}\frac{\mu(m)}{m}\log\Bigl[(1-b^m)\bigl(1-6b^m+9b^{2m}-b^{3m}-b^{4m}\bigr)\Bigr].
+\]
+Numerically,
+\[
+\log\mathfrak{M}_\infty\approx 0.282290255262,\qquad
+\mathfrak{M}_\infty\approx 1.32616359009.
+\]
+\end{proposition}
+This closed-form object's principal pole yields the one-dimensional pressure curve $P(\theta_e)=\log\rho(M(e^{\theta_e}))$ under the output potential, and can be directly used for spectral branch switching/phase transition checks (the factor $1-uz^2$ corresponds to a traceable spectral branch).
+
+\input{sections/generated/eq_real_input_40_output_potential_spectral_collision_identities_en}
+\begin{corollary}[Integer-level resonance points of the synchronization kernel parameter family provide algebraic calibration: isolated points with exact \texorpdfstring{$\lambda=\pm1$}{lambda=±1} exist in the positive parameter domain (230)]\label{cor:real-input-40-integer-resonance-calibration}
+Following the characteristic factorization \(\Delta(z,u)=(1-uz^2)Q(z,u)\).
+From the factor decomposition at \(z=\pm1\),
+\[
+Q(1,u)=-u(u-4)(u-1)(u+1),\qquad Q(-1,u)=-(u-1)^2(u^2+6u-2),
+\]
+one sees that in the positive parameter domain, excluding the structural degeneracy point \(u=1\), there exist two completely algebraic calibration points
+\[
+u_+=4,\qquad u_-=-3+\sqrt{11},
+\]
+such that \(z=1\) (corresponding to \(\lambda=1\)) and \(z=-1\) (corresponding to \(\lambda=-1\)) respectively become zeros of \(\Delta(\cdot,u_\pm)\).
+Therefore these two points provide natural algebraic anchors for degenerate root isolation, spectral branch collisions, and numerical elimination workflows: if an implementation cannot reproduce exact adjacency to \(\pm1\) in neighborhoods of these two points, its spectral computation or elimination chain must contain structural errors.
+\end{corollary}
+\begin{proof}
+The factorization immediately yields \(Q(1,4)=0\) and \(Q(-1,-3+\sqrt{11})=0\).
+When \(u\neq 1\), \(\Delta(\pm 1,u)=(1-u)Q(\pm 1,u)\), so \(\Delta(1,4)=0\) and \(\Delta(-1,-3+\sqrt{11})=0\).
+By definition \(\Delta(z,u)=\det(I-zM(u))\), so \(z=\pm1\) is a zero if and only if \(M(u)\) has eigenvalue \(\lambda=1/z=\pm1\). \qed
+\end{proof}
+\input{sections/generated/tab_real_input_40_output_potential_spectral_collision_roots_en}
+
+\begin{remark}[Phase diagram intervals and real parameter radius of positive real degeneracy points]\label{rem:real-input-40-output-potential-degeneracy-phase}
+By Proposition~\ref{prop:real-input-40-output-spectral-collisions} and Table~\ref{tab:real_input_40_output_potential_spectral_collision_roots}, on \(u>0\) excluding \(u=1\), \(Q(z,u)\) has repeated roots if and only if
+\[
+u\in\{0.008460\ldots,\ 0.745534\ldots,\ 0.932837\ldots,\ 1.054796\ldots,\ 2.090392\ldots,\ 15.522820\ldots\}.
+\]
+Therefore the positive real \(u\)-axis is partitioned by these points and \(u=1\) into open intervals; within each interval, the ordering and sub-modal type of real spectral supports remain unchanged (no spectral support collisions or exchanges occur), which can serve as a segmented parameter skeleton for ``avoiding negative real slow modes.''
+\par
+Meanwhile, the degeneracy points closest to \(u=1\) are
+\[
+u=1.054796\ldots\quad\text{and}\quad u=0.932837\ldots,
+\]
+so the upper bound on the real parameter ``degeneracy-free radius'' around \(u=1\) is
+\[
+R_u^{\mathrm{real}}\le \min(1.054796\ldots-1,\,1-0.932837\ldots)=0.054796\ldots\,.
+\]
+This bound provides a conservative analytic domain scale for local fitting/expansion on the real \(u\)-axis.
+\par
+Further parametrizing by \(\theta=\log u\) and writing
+\[
+\theta_0:=\min\{\log(1.054796\ldots),\,-\log(0.932837\ldots)\}
+=0.0533477827\ldots.
+\]
+Then when \(|\theta|<\theta_0\) one has \(u=e^\theta\in(0.932837\ldots,\,1.054796\ldots)\),
+so that one does not cross positive real degeneracy points along the real parameter direction.
+This constant can therefore serve as a unified conservative threshold for local fitting/expansion based at \(\theta=0\) in the real parameter direction (e.g., for auditable effective domain closure in CLT/Edgeworth/moderate deviation jets).
+\end{remark}
+
+Numerical verification and reproducibility are provided by the script \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_zeta\_u.py}; algebraic auditing of spectral support collisions and degeneracy points (resultant/irreducible polynomial $D(u)$/root table) is provided by the script \texttt{scripts/exp\_real\_input\_40\_output\_potential\_spectral\_collisions.py}.
+
 \begin{corollary}[Large deviation cost at the endpoints]\label{cor:real-input-40-rate-endpoints}
 Let $I(\alpha)$ be the (normalized) large deviation rate function of the output potential $\varphi_e=e$ (defined via the Legendre transform of $P(\theta)$). Then the endpoints satisfy
 \[

@@ -98,4 +98,467 @@ contradicting \(\delta>0\).
 Hence off-critical-line zeros do not exist, i.e., RH holds. This completes the proof.
 \end{proof}
 
+\paragraph{Fourier Completeness of Comoving Horizon Scan: Invertible Tomography via One-Dimensional Profile Under Finite Defect Caliber}
+The previous paragraph used "comoving translation family" as a chart selection tool to lift off-line offset from quadratic redshift channel to first-order visible quantity.
+Further, under the \emph{finite defect} (finite off-line zero family) caliber, the same comoving parameter \(x_0\) can also provide a completely invertible tomographic encoding: the two-dimensional parameters \((\gamma,\delta)\) of off-line zeros can be equivalently compressed to the exponential spectrum of a one-dimensional profile \(x_0\mapsto H(x_0)\).
+
+\begin{theorem}[Fourier--Laplace Fingerprint of Scan Profile: Finite Exponential Mixture and Identifiability (49)]\label{thm:xi-comoving-horizon-scan-fourier-inversion}
+Suppose there exists a finite off-critical-line zero multiset \(\{\rho_j\}_{j=1}^{M}\) (counted with multiplicity), where
+\(
+\rho_j=\beta_j+\mathrm{i}\gamma_j
+\)
+with \(\beta_j<\tfrac12\).
+Let \(\delta_j:=\tfrac12-\beta_j>0\), and denote their multiplicity as \(m_j\in\ZZ_{\ge 1}\).
+For any \(x_0\in\RR\), let
+\[
+w_{\rho_j,x_0}:=\mathcal{C}\bigl((\gamma_j-x_0)+\mathrm{i}\delta_j\bigr)\in\mathbb{D},
+\qquad
+h_{x_0}(\rho_j):=1-\bigl|w_{\rho_j,x_0}\bigr|^2
+\]
+(see \eqref{eq:xi-comoving-disk-image} and Appendix Theorem \ref{thm:app-comoving-horizon-localization}).
+Define the aggregated profile function
+\[
+H(x_0):=\sum_{j=1}^{M} m_j\,h_{x_0}(\rho_j).
+\]
+Then:
+\begin{enumerate}
+  \item \(H\in L^1(\RR)\cap C^{\omega}(\RR)\);
+  \item Its Fourier transform has an explicit spectral decomposition: for any \(\xi\in\RR\),
+  \begin{equation}\label{eq:xi-comoving-horizon-scan-fourier}
+  \boxed{\;
+  \widehat H(\xi)
+  :=\int_{\RR}e^{-\mathrm{i}\xi x_0}\,H(x_0)\,\dd x_0
+  ~=~
+  4\pi\sum_{j=1}^{M} m_j\,\frac{\delta_j}{1+\delta_j}\,
+  e^{-(1+\delta_j)|\xi|}\,e^{-\mathrm{i}\gamma_j\xi}\; }.
+  \end{equation}
+  \item (Unique inversion) If two finite off-line zero multisets yield the same profile \(H\) (agreement on any non-trivial open interval suffices), then the two multisets must coincide:
+  \[
+  \{(\gamma_j,\delta_j,m_j)\}_{j=1}^{M}\ \text{agree with multiplicity}.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By Appendix Theorem \ref{thm:app-comoving-horizon-localization},
+\[
+h_{x_0}(\rho_j)=\frac{4\delta_j}{(\gamma_j-x_0)^2+(1+\delta_j)^2}.
+\]
+Thus \(h_{x_0}(\rho_j)=O(x_0^{-2})\) as \(|x_0|\to\infty\), hence \(h_{x_0}(\rho_j)\in L^1(\RR)\); and its poles are located at \(x_0=\gamma_j\pm \mathrm{i}(1+\delta_j)\), so it is real-analytic on the real axis. Finite summation yields (1).
+\par
+To compute the Fourier transform, use the standard integral identity (Fourier transform of Cauchy/Lorentz kernel): for any \(a>0\),
+\[
+\int_{\RR}e^{-\mathrm{i}\xi x}\,\frac{a}{x^2+a^2}\,\dd x
+=\pi e^{-a|\xi|}\qquad(\xi\in\RR).
+\]
+Translate to center \(\gamma_j\) and take \(a=1+\delta_j\), we get
+\[
+\int_{\RR}e^{-\mathrm{i}\xi x_0}\,\frac{1+\delta_j}{(\gamma_j-x_0)^2+(1+\delta_j)^2}\,\dd x_0
+=\pi e^{-(1+\delta_j)|\xi|}e^{-\mathrm{i}\gamma_j\xi}.
+\]
+Multiply by coefficient \(4\delta_j/(1+\delta_j)\) and sum over \(j\), yielding \eqref{eq:xi-comoving-horizon-scan-fourier}, thus (2) holds.
+\par
+Finally prove uniqueness (3). If two profiles agree on some open interval, by real analyticity they agree everywhere on \(\RR\); hence their Fourier transforms \(\widehat H\) also agree everywhere.
+Subtracting the spectral decompositions on both sides yields an exponential sum identity valid on \(\xi>0\)
+\[
+\sum_{\ell=1}^{N}c_{\ell}\,e^{-\lambda_{\ell}\xi}=0\qquad(\forall\,\xi>0),
+\]
+where \(\lambda_{\ell}=1+\delta_{\ell}+\mathrm{i}\gamma_{\ell}\) (\(\Re\lambda_{\ell}>0\)) are pairwise distinct, and coefficients \(c_{\ell}\) are real (given by multiplicity and \(\delta\)).
+The left side as an entire function in \(\xi\) vanishes identically on the open interval \((0,\infty)\), hence vanishes everywhere; taking successive derivatives at \(\xi=0\) yields a Vandermonde-type linear system
+\(
+\sum_{\ell}c_{\ell}(-\lambda_{\ell})^{k}=0
+\)
+(\(k=0,\dots,N-1\)); since \(\{\lambda_{\ell}\}\) are distinct, the Vandermonde matrix is invertible, thus all \(c_{\ell}=0\).
+Hence the exponential terms \((\lambda_{\ell},c_{\ell})\) on both sides agree with multiplicity, thus \((\gamma,\delta)\) and corresponding multiplicity \(m\) agree (since \(c=4\pi m\,\delta/(1+\delta)\)).
+This completes the proof.
+\end{proof}
+
+\begin{corollary}[Conserved Trace of Comoving Scan: Weighted Total Quantity of Offset]\label{cor:xi-comoving-horizon-scan-mass}
+Under the setting of Theorem \ref{thm:xi-comoving-horizon-scan-fourier-inversion},
+\[
+\boxed{\ \int_{\RR}H(x_0)\,\dd x_0
+=4\pi\sum_{j=1}^{M} m_j\,\frac{\delta_j}{1+\delta_j}\ }.
+\]
+This quantity is independent of heights \(\gamma_j\), and provides an auditable weighted total quantity of off-line offset.
+\end{corollary}
+
+\begin{proof}
+Take \(\xi=0\) in \eqref{eq:xi-comoving-horizon-scan-fourier}; alternatively, integrate each term directly using
+\(\int_{\RR}\frac{1}{x^2+a^2}\dd x=\pi/a\).
+\end{proof}
+
+\begin{proposition}[Choquet Completeness of Defect Boundary Density Cone: Dirac Rays as Unique Extreme Elements]\label{prop:xi-defect-density-cone-choquet-extreme}
+Let
+\[
+K_{\gamma,\delta}(x):=\frac{4\delta}{(x-\gamma)^2+(1+\delta)^2}\qquad\bigl((\gamma,\delta)\in\RR\times(0,\infty)\bigr),
+\]
+and let \(\nu^{\mathrm{bdry}}\) be a finite positive Borel measure on \(\RR\times(0,\infty)\), define
+\begin{equation}\label{eq:xi-defect-density-Hnu}
+\boxed{\;
+H_{\nu^{\mathrm{bdry}}}(x):=\int_{\RR\times(0,\infty)}K_{\gamma,\delta}(x)\,\dd\nu^{\mathrm{bdry}}(\gamma,\delta).\;}
+\end{equation}
+Denote the closed convex cone of visible defect density
+\[
+\mathfrak{C}:=\{H_{\nu^{\mathrm{bdry}}}:\ \nu^{\mathrm{bdry}}\ge 0\}.
+\]
+Then:
+\begin{enumerate}
+  \item \textbf{(Injectivity)} The map \(\nu^{\mathrm{bdry}}\mapsto H_{\nu^{\mathrm{bdry}}}\) is injective on \(\mathfrak{C}\subset L^1(\RR)\cap C^{\omega}(\RR)\);
+  \item \textbf{(Extreme rays)} The extreme rays of \(\mathfrak{C}\) are precisely generated by Dirac measures: for \(H\in\mathfrak{C}\),
+  \[
+  H\ \text{generates an extreme ray}
+  \quad\Longleftrightarrow\quad
+  \exists(\gamma,\delta),\,c>0\ \text{such that}\ H=c\,K_{\gamma,\delta};
+  \]
+  \item \textbf{(Integralization/multiplicity constraint)} If further requiring defect multiplicity to be integers, this corresponds to \(\nu^{\mathrm{bdry}}\) being a discrete integer-weighted atomic measure
+  \(
+  \nu^{\mathrm{bdry}}=\sum_j m_j\,\delta_{(\gamma_j,\delta_j)}
+  \)
+  with \(m_j\in\NN\), thus identifying legitimate defects as an integer point cone lattice structure within \(\mathfrak{C}\).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+By the single-peak Fourier transform formula \eqref{eq:xi-comoving-horizon-scan-fourier} and linearity, the Fourier transform of \(H_{\nu^{\mathrm{bdry}}}\) is
+\[
+\widehat H_{\nu^{\mathrm{bdry}}}(\xi)
+=4\pi\int_{\RR\times(0,\infty)}\frac{\delta}{1+\delta}\,e^{-(1+\delta)|\xi|}\,e^{-\mathrm{i}\gamma\xi}\,\dd\nu^{\mathrm{bdry}}(\gamma,\delta).
+\]
+The right side is a Fourier--Laplace transform on \((\gamma,\delta)\); by its uniqueness for finite positive measures, we get injectivity.
+Extreme ray part: \(\nu^{\mathrm{bdry}}\mapsto H_{\nu^{\mathrm{bdry}}}\) is a linear embedding, so \(\mathfrak{C}\) is cone-isomorphic to the finite positive measure cone; the extreme rays of the positive measure cone are precisely positive multiples of Dirac measures, yielding the conclusion.
+The integralization statement is a direct translation of "measure weights taking \(\NN\)". This completes the proof.
+\end{proof}
+
+\paragraph{Defect Measure of Off-Axis Zeros and Comoving Poisson Field}
+The above comoving depth profile \(H(x_0)\) uses the "endpoint margin" in fixed chart
+\(
+h_{x_0}(\rho)=1-|w_{\rho,x_0}|^2
+\)
+as the basic observable.
+Under finite defect caliber, the off-slice degrees of freedom can also be organized as an object closer to harmonic analysis/semigroup language: view \((\gamma,\delta)\) as discrete "off-line charges" at upper half-plane point \(\gamma+\mathrm{i}\delta\), and perform scaled scanning with Poisson kernel.
+\par
+Suppose there exists a finite family of off-critical-line zeros (counted with multiplicity)
+\[
+\rho_j=\frac12-\delta_j+\mathrm{i}\gamma_j,\qquad
+\delta_j>0,\ \gamma_j\in\RR,\ m_j\in\NN\qquad(1\le j\le M).
+\]
+Define defect measure (off-line charge)
+\begin{equation}\label{eq:xi-offcritical-defect-measure-nu}
+\boxed{\;
+\nu:=\sum_{j=1}^{M} m_j\,\delta_j\,\delta_{(\gamma_j,\delta_j)}
+\qquad\text{on}\ \RR\times(0,\infty).\;}
+\end{equation}
+Let Poisson kernel
+\[
+P_s(x):=\frac{1}{\pi}\frac{s}{x^2+s^2}\qquad(s>0),
+\]
+and for scale parameter \(t\ge 0\) define comoving Poisson field (auditable profile)
+\begin{equation}\label{eq:xi-offcritical-comoving-poisson-field}
+\boxed{\;
+G_t(x)
+:=\int_{\RR\times(0,\infty)}P_{t+\delta}(x-\gamma)\,\dd\nu(\gamma,\delta)
+=\sum_{j=1}^{M}m_j\delta_j\cdot \frac{1}{\pi}\frac{t+\delta_j}{(x-\gamma_j)^2+(t+\delta_j)^2}\; }.
+\end{equation}
+This family \(\{G_t\}_{t\ge 0}\) is a one-dimensional profile, carrying all off-line parameters and allowing scale scanning \(t\mapsto G_t\); the relation with \(\{h_{x_0}\}\) is in Remark \ref{rem:xi-poisson-field-vs-depth-profile} below.
+
+\begin{theorem}[Poisson Semigroup Homomorphism: Strict Commutativity Law of Scale Scanning]\label{thm:xi-offcritical-poisson-semigroup-homomorphism}
+Let \(G_t\) be defined as in \eqref{eq:xi-offcritical-comoving-poisson-field}.
+Then for any \(s,t\ge 0\) we have strict commutation
+\begin{equation}\label{eq:xi-offcritical-poisson-semigroup-convolution}
+\boxed{\;G_{t+s}=P_s*G_t\; }.
+\end{equation}
+Equivalently, with Fourier transform convention \(\widehat f(\xi)=\int_{\RR}e^{-\mathrm{i}\xi x}f(x)\,\dd x\), then
+\begin{equation}\label{eq:xi-offcritical-poisson-semigroup-fourier}
+\boxed{\;
+\widehat G_t(\xi)=e^{-t|\xi|}\,\widehat G_0(\xi)\qquad(\xi\in\RR)\;}
+\end{equation}
+where \(\widehat G_0(\xi)=\sum_{j}m_j\delta_j\,e^{-\delta_j|\xi|}e^{-\mathrm{i}\gamma_j\xi}\).
+Thus \(t\mapsto G_t\) is a \(|D|\)-generated Poisson semigroup orbit: in the distributional sense
+\begin{equation}\label{eq:xi-offcritical-poisson-semigroup-pde}
+\boxed{\;\partial_tG_t=-|D|\,G_t,\qquad
+\widehat{(|D|f)}(\xi)=|\xi|\,\widehat f(\xi).\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+For a single atom \(P_{t+\delta}(x-\gamma)\), the Poisson kernel satisfies semigroup law \(P_s*P_{t+\delta}=P_{t+s+\delta}\) (verifiable directly via Fourier transform \(\widehat P_s(\xi)=e^{-s|\xi|}\)).
+Thus convolving each atom of \(\nu\) term-by-term and summing yields \eqref{eq:xi-offcritical-poisson-semigroup-convolution}.
+\eqref{eq:xi-offcritical-poisson-semigroup-fourier} follows from taking Fourier transform of \eqref{eq:xi-offcritical-poisson-semigroup-convolution}; differentiating \eqref{eq:xi-offcritical-poisson-semigroup-fourier} with respect to \(t\) yields \eqref{eq:xi-offcritical-poisson-semigroup-pde}. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Relative Entropy Contraction: Monotonic Decrease of Distinguishability "Relative to Cauchy Background" Under Poisson Coarse-Graining]\label{prop:xi-poisson-relative-entropy-contraction}
+Let \(P_t(x)=\frac{1}{\pi}\frac{t}{x^2+t^2}\) be the Poisson kernel, and let baseline density
+\[
+c_0(x):=\frac{1}{\pi}\frac{1}{x^2+1}.
+\]
+For any probability density \(h\) define coarse-graining
+\[
+h_t:=P_t*h,\qquad c_t:=P_t*c_0=\frac{1}{\pi}\frac{t+1}{x^2+(t+1)^2}\qquad(t\ge 0).
+\]
+Denote classical relative entropy
+\(
+D_{\mathrm{KL}}(f\mid g):=\int_{\RR} f(x)\log\!\frac{f(x)}{g(x)}\,\dd x
+\).
+If \(D_{\mathrm{KL}}(h\mid c_0)<\infty\), then for any \(s,t\ge 0\) the data processing inequality chain holds
+\begin{equation}\label{eq:xi-poisson-kl-monotone}
+\boxed{\;
+D_{\mathrm{KL}}(h_{t+s}\mid c_{t+s})\ \le\ D_{\mathrm{KL}}(h_t\mid c_t)\ \le\ D_{\mathrm{KL}}(h\mid c_0).\;}
+\end{equation}
+Moreover, if equality holds for some \(t>0\) as \(D_{\mathrm{KL}}(h_t\mid c_t)=D_{\mathrm{KL}}(h\mid c_0)\), then necessarily \(h=c_0\) (almost everywhere), thus \(D_{\mathrm{KL}}(h_u\mid c_u)\equiv 0\) (\(\forall u\ge 0\)).
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+Convolution operator \(T_s:f\mapsto P_s*f\) is a random map induced by Markov kernel, so classical relative entropy satisfies data processing inequality
+\(
+D_{\mathrm{KL}}(T_s f\mid T_s g)\le D_{\mathrm{KL}}(f\mid g)
+\).
+Taking \((f,g)=(h_t,c_t)\) yields
+\(
+D_{\mathrm{KL}}(h_{t+s}\mid c_{t+s})\le D_{\mathrm{KL}}(h_t\mid c_t)
+\), then taking \((t,s)=(0,t)\) yields the right inequality.
+Strictness follows from the dissipation identity of Proposition \ref{prop:xi-poisson-relative-entropy-fisher-krein}: if equality holds at some \(t>0\), then the dissipation functional vanishes on \([0,t]\), thus \(h=c_0\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Non-Local Fisher--Krein Dissipation: Dirichlet Form of Relative Entropy Derivative]\label{prop:xi-poisson-relative-entropy-fisher-krein}
+Continue with the notation of Proposition \ref{prop:xi-poisson-relative-entropy-contraction}, and assume \(D_{\mathrm{KL}}(h\mid c_0)<\infty\).
+Then the function
+\(
+t\mapsto D_{\mathrm{KL}}(h_t\mid c_t)
+\)
+is absolutely continuous, and there exists an explicit non-negative dissipation functional \(\mathcal{I}(t)\ge 0\) such that for almost all \(t>0\)
+\begin{equation}\label{eq:xi-fisher-krein-dissipation}
+\boxed{\;
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid c_t)=-\,\mathcal{I}(t).\;}
+\end{equation}
+where one can take (equivalently) a class of non-local Dirichlet form representation:
+\begin{equation}\label{eq:xi-fisher-krein-dirichlet-form}
+\boxed{\;
+\mathcal I(t)=\frac{1}{2\pi}\int_{\RR}\int_{\RR}
+\frac{\Bigl(\log\frac{h_t(x)}{c_t(x)}-\log\frac{h_t(y)}{c_t(y)}\Bigr)^2}{(x-y)^2}\,
+\frac{h_t(x)c_t(y)+h_t(y)c_t(x)}{2}\,\dd x\,\dd y.\;}
+\end{equation}
+Moreover, \(\mathcal{I}(t)=0\) if and only if \(h_t=c_t\) (almost everywhere), thus implying \(h=c_0\).
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The generator of Poisson semigroup is \(-|D|\) (\eqref{eq:xi-offcritical-poisson-semigroup-pde}), whose symmetric Dirichlet form satisfies
+\[
+\langle f,|D|f\rangle_{L^2(\RR)}
+=\frac{1}{2\pi}\iint_{\RR^2}\frac{(f(x)-f(y))^2}{(x-y)^2}\,\dd x\,\dd y.
+\]
+Advancing both ends of relative entropy along the same Markov semigroup and differentiating with respect to \(t\), one can write the derivative as the above form of non-local energy in \(\log(h_t/c_t)\); polarization and symmetrization yield \eqref{eq:xi-fisher-krein-dirichlet-form}.
+Zero dissipation is equivalent to \(\log(h_t/c_t)\) being constant, thus \(h_t=c_t\).
+Since the Poisson multiplier \(e^{-t|\xi|}\) is non-zero, we get \(h=c_0\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Conserved Quantities and High-Frequency Dissipation: Strict Separation of Invariants and Dissipation]\label{thm:xi-offcritical-poisson-conservation-dissipation}
+Under the setting of Theorem \ref{thm:xi-offcritical-poisson-semigroup-homomorphism}:
+\begin{enumerate}
+  \item \textbf{(Mass conservation)} For all \(t\ge 0\),
+  \begin{equation}\label{eq:xi-offcritical-poisson-mass-conservation}
+  \boxed{\;\int_{\RR}G_t(x)\,\dd x=\sum_{j=1}^{M}m_j\delta_j\; }.
+  \end{equation}
+  \item \textbf{(First moment: principal value conservation)} As Cauchy principal value integral
+  \begin{equation}\label{eq:xi-offcritical-poisson-first-moment-pv}
+  \boxed{\;\mathrm{p.v.}\!\int_{\RR}x\,G_t(x)\,\dd x=\sum_{j=1}^{M}m_j\delta_j\,\gamma_j\; }.
+  \end{equation}
+  \item \textbf{(Spectral energy and strict dissipation)} For any \(\sigma\ge 0\) define
+  \[
+  E_\sigma(t):=\int_{\RR}|\xi|^{2\sigma}\,\bigl|\widehat G_t(\xi)\bigr|^2\,\dd\xi,
+  \]
+  then \(E_\sigma\in C^1([0,\infty))\) and satisfies the strict monotonicity formula
+  \begin{equation}\label{eq:xi-offcritical-poisson-energy-dissipation}
+  \boxed{\;
+  \frac{\dd}{\dd t}E_\sigma(t)
+  =-2\int_{\RR}|\xi|^{2\sigma+1}\,\bigl|\widehat G_t(\xi)\bigr|^2\,\dd\xi
+  \ \le\ 0\; }.
+  \end{equation}
+  And equality holds for some (thus for all) \(t\) if and only if \(G_t\equiv 0\) (equivalent to \(\nu=0\)).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) By \(\int_{\RR}P_{t+\delta}(x-\gamma)\dd x=1\) and \eqref{eq:xi-offcritical-comoving-poisson-field}, integrating term-by-term yields the result.
+\par
+(2) Note that \(P_{t+\delta}(x-\gamma)\) has \(x^{-2}\) tail, so \(\int xP_{t+\delta}(x-\gamma)\dd x\) does not converge absolutely as Lebesgue integral; but as symmetric truncated principal value integral
+\(
+\mathrm{p.v.}\int xP_{t+\delta}(x-\gamma)\dd x=\gamma
+\) holds.
+Multiplying this identity by weight \(m_j\delta_j\) and summing yields \eqref{eq:xi-offcritical-poisson-first-moment-pv}.
+\par
+(3) By \eqref{eq:xi-offcritical-poisson-semigroup-fourier}, \(\widehat G_t(\xi)=e^{-t|\xi|}\widehat G_0(\xi)\), where \(\widehat G_0\) is a finite exponential sum with exponential decay, so for any \(\sigma\ge 0\) we have \(E_\sigma(t)<\infty\) and can differentiate under the integral sign:
+\[
+\frac{\dd}{\dd t}E_\sigma(t)
+=\int |\xi|^{2\sigma}\frac{\dd}{\dd t}\bigl(e^{-2t|\xi|}|\widehat G_0(\xi)|^2\bigr)\dd\xi
+=-2\int |\xi|^{2\sigma+1}\,|\widehat G_t(\xi)|^2\,\dd\xi,
+\]
+yielding \eqref{eq:xi-offcritical-poisson-energy-dissipation}.
+If the right side vanishes, then \( |\xi|^{\sigma+1/2}\widehat G_t(\xi)=0\) a.e., thus \(\widehat G_t=0\) on \(\RR\setminus\{0\}\).
+But \(\widehat G_t\in L^2(\RR)\) (exponential decay), so we must have \(\widehat G_t\equiv 0\), i.e., \(G_t\equiv 0\).
+The converse is obvious. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Rational Herglotz Inversion for Finite Defect: Single Scale Profile Recovers All Off-Line Zeros]\label{thm:xi-offcritical-poisson-herglotz-inversion}
+Fix any \(t>0\) and let \(G_t\) be as in \eqref{eq:xi-offcritical-comoving-poisson-field}.
+For \(\Im z>0\) define the upper half-plane Herglotz function (Cauchy transform)
+\[
+M_t(z):=\int_{\RR}\frac{G_t(x)}{x-z}\,\dd x.
+\]
+Then \(M_t\) is a rational Herglotz function with explicit pole expansion
+\begin{equation}\label{eq:xi-offcritical-poisson-herglotz-poles}
+\boxed{\;
+M_t(z)
+=\sum_{j=1}^{M}\frac{m_j\delta_j}{\gamma_j-\mathrm{i}(t+\delta_j)-z}
+\; }.
+\end{equation}
+Therefore, the profile function \(G_t(\cdot)\) at a single scale \(t\) (equivalently \(M_t\)) uniquely determines the multiset \(\{(\gamma_j,\delta_j,m_j)\}\): if two finite off-line zero sets yield the same \(G_t\) (agreement on any non-trivial interval suffices), then the two multisets must coincide.
+\end{theorem}
+
+\begin{proof}
+By the finite atomic decomposition of \eqref{eq:xi-offcritical-comoving-poisson-field}, linearity reduces to computing a single term
+\(
+I(z)=\int_{\RR}\frac{P_a(x-\gamma)}{x-z}\dd x
+\)
+(\(a>0,\Im z>0\)).
+This integral converges absolutely (integrand \(O(|x|^{-3})\)), and can be computed via residue to obtain the standard identity
+\[
+\int_{\RR}\frac{1}{\pi}\frac{a}{(x-\gamma)^2+a^2}\cdot \frac{1}{x-z}\,\dd x
+=\frac{1}{\gamma-\mathrm{i}a-z}\qquad(\Im z>0),
+\]
+whose right side is obviously a Herglotz function (\(\Im z>0\Rightarrow \Im(\gamma-\mathrm{i}a-z)<0\)).
+Taking \(a=t+\delta_j\) and multiplying by weight \(m_j\delta_j\) then summing yields \eqref{eq:xi-offcritical-poisson-herglotz-poles}.
+\par
+If two profiles agree on some open interval, by real analyticity (each term is Cauchy kernel) they agree on \(\RR\), so \(M_t\) agrees on \(\Im z>0\).
+Rational function agreement \(\Rightarrow\) poles and residues agree with multiplicity; each pole position \(z_j=\gamma_j-\mathrm{i}(t+\delta_j)\) directly gives \(\gamma_j\) and \(\delta_j=-\Im z_j-t\), residue gives \(m_j\delta_j\), thus recovering \(m_j\).
+Hence the multiset is unique. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Matched Filter Optimality and Covering Complexity Lower Bound: Comoving Kernel Optimal in Order of Magnitude]\label{thm:xi-offcritical-poisson-matched-filter-covering}
+Let single-atom signal
+\[
+S_{t;\gamma,\delta}(x):=\delta\,P_{t+\delta}(x-\gamma)
+=\delta\cdot\frac{1}{\pi}\frac{t+\delta}{(x-\gamma)^2+(t+\delta)^2}.
+\]
+Consider all unit-norm linear readouts \(\varphi\in L^2(\RR)\) (\(\|\varphi\|_2=1\)), with response \(\langle \varphi,S_{t;\gamma,\delta}\rangle\).
+Then:
+\begin{enumerate}
+  \item \textbf{(Optimality)} For any \((\gamma,\delta)\)
+  \begin{equation}\label{eq:xi-offcritical-poisson-matched-filter-opt}
+  \boxed{\;
+  \sup_{\|\varphi\|_2=1}\bigl|\langle \varphi,S_{t;\gamma,\delta}\rangle\bigr|
+  =\|S_{t;\gamma,\delta}\|_2
+  =\frac{\delta}{\sqrt{2\pi(t+\delta)}}\; }.
+  \end{equation}
+  And equality holds if and only if \(\varphi\) is proportional to \(x\mapsto P_{t+\delta}(x-\gamma)\) in \(L^2\) (matched filtering).
+  \item \textbf{(Covering complexity lower bound)} Fix \(\delta_0>0,t>0\), write \(s:=t+\delta_0\), and let \(\Gamma_T:=[-T,T]\).
+  Take any finite set \(\{\varphi_k\}_{k=1}^{N}\subset L^2(\RR)\) with \(\|\varphi_k\|_2=1\), and define worst-case detectability
+  \[
+  \mathcal D
+  :=\inf_{\gamma\in\Gamma_T}\ \max_{1\le k\le N}
+  \bigl|\langle \varphi_k,S_{t;\gamma,\delta_0}\rangle\bigr|.
+  \]
+  Then if
+  \begin{equation}\label{eq:xi-offcritical-poisson-covering-lb}
+  \boxed{\;
+  N<\frac{1}{4\pi}\cdot\frac{T}{t+\delta_0}\; },
+  \end{equation}
+  then necessarily
+  \[
+  \boxed{\ \mathcal D\le \frac12\,\|S_{t;\gamma,\delta_0}\|_2\ }.
+  \]
+  In other words: achieving uniform detection over unknown height window \(\Gamma_T\), the size of unit-norm linear readout family must grow at least linearly in \(T/(t+\delta_0)\); and matched filter families achieve this unavoidable covering complexity order in order of magnitude.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) By Cauchy--Schwarz inequality,
+\(
+|\langle \varphi,S\rangle|\le \|\varphi\|_2\|S\|_2=\|S\|_2
+\), equality when taking \(\varphi=S/\|S\|_2\). And
+\[
+\|S_{t;\gamma,\delta}\|_2^2
+=\delta^2\int_{\RR}\Bigl(\frac{1}{\pi}\frac{t+\delta}{(x-\gamma)^2+(t+\delta)^2}\Bigr)^2\dd x
+=\delta^2\cdot\frac{1}{2\pi(t+\delta)},
+\]
+where the last step uses standard integral \(\int_{\RR}\frac{(t+\delta)^2}{((x-\gamma)^2+(t+\delta)^2)^2}\dd x=\frac{\pi}{2(t+\delta)}\).
+Taking square root yields \eqref{eq:xi-offcritical-poisson-matched-filter-opt}.
+\par
+(2) Write \(S_\gamma:=S_{t;\gamma,\delta_0}\).
+For each \(k\) define response function \(f_k(\gamma):=\langle \varphi_k,S_\gamma\rangle\).
+By convolution/correlation Plancherel identity
+\[
+\int_{\RR}|f_k(\gamma)|^2\,\dd\gamma
+=\frac{1}{2\pi}\int_{\RR}|\widehat{\varphi_k}(\xi)|^2\,|\widehat S_0(\xi)|^2\,\dd\xi
+\le \delta_0^2,
+\]
+where \(\widehat S_0(\xi)=\delta_0 e^{-s|\xi|}\) and \((2\pi)^{-1}\int|\widehat{\varphi_k}|^2=\|\varphi_k\|_2^2=1\).
+\par
+Let threshold \(\alpha:=\frac12\|S_\gamma\|_2=\frac{\delta_0}{2\sqrt{2\pi s}}\).
+By Chebyshev inequality,
+\[
+\mathrm{meas}\{\gamma:\ |f_k(\gamma)|\ge \alpha\}
+\le \frac{\|f_k\|_2^2}{\alpha^2}
+\le \frac{\delta_0^2}{\delta_0^2/(8\pi s)}
+=8\pi s.
+\]
+Thus
+\[
+\mathrm{meas}\Bigl(\bigcup_{k=1}^{N}\{\gamma:\ |f_k(\gamma)|\ge \alpha\}\Bigr)
+\le 8\pi s\,N.
+\]
+If \(8\pi s\,N<2T\), then there exists some \(\gamma\in[-T,T]\) such that for all \(k\) we have \(|f_k(\gamma)|<\alpha\), thus \(\mathcal D\le \alpha=\frac12\|S_\gamma\|_2\).
+From \(s=t+\delta_0\) we get \eqref{eq:xi-offcritical-poisson-covering-lb}. This completes the proof.
+\end{proof}
+
+\begin{remark}[Consistency with Depth Profile \texorpdfstring{$H(x_0)$}{H(x0)}: A Charge Renormalization]\label{rem:xi-poisson-field-vs-depth-profile}
+The comoving depth profile \(H(x_0)=\sum_j m_j h_{x_0}(\rho_j)\) (Theorem \ref{thm:xi-comoving-horizon-scan-fourier-inversion}) can be viewed as a special case of the above Poisson field at a certain fixed scale, but its "charge" uses a natural renormalization.
+Specifically, let
+\(
+\nu^{\flat}:=\sum_j m_j\frac{\delta_j}{1+\delta_j}\delta_{(\gamma_j,\delta_j)}
+\)
+and let \(G^{\flat}_t\) be defined by \eqref{eq:xi-offcritical-comoving-poisson-field} (with \(\nu^{\flat}\) replacing \(\nu\)).
+Then at \(t=1\) we have strict identity
+\[
+H(x_0)=4\pi\,G^{\flat}_1(x_0).
+\]
+Therefore, the Fourier completeness in the previous paragraph can be understood as: under finite defect caliber, one-dimensional Poisson field profile also has invertible tomography under appropriate charge normalization.
+\end{remark}
+
+\begin{corollary}[Consolidation Proposition: Closed Characterization of Poisson Semigroup Defect Source Term and Visible Anomaly (Finite Defect Caliber)]\label{cor:xi-offcritical-poisson-field-classification}
+Let comoving Poisson field \(G_t\) be generated by defect measure \(\nu\) (\eqref{eq:xi-offcritical-defect-measure-nu}--\eqref{eq:xi-offcritical-comoving-poisson-field}).
+Then under finite defect caliber:
+\begin{enumerate}
+  \item \textbf{(Zero defect \(\Leftrightarrow\) full-scale invisibility)} \(\nu=0\) if and only if \(G_t\equiv 0\) for some (thus for all) \(t>0\).
+  \item \textbf{(Unique semigroup orbit of scale evolution)} \(t\mapsto G_t\) is strictly determined by Poisson semigroup (Theorem \ref{thm:xi-offcritical-poisson-semigroup-homomorphism}), its non-recyclable low-order invariants are mass \(\int G_t\) (and principal value first moment \(\mathrm{p.v.}\int xG_t\)), while all identifiable high-frequency geometric information strictly dissipates according to \(|D|\) law (Theorem \ref{thm:xi-offcritical-poisson-conservation-dissipation}).
+  \item \textbf{(Single-scale invertible tomography \(\times\) detection complexity)} At any fixed scale \(t>0\), profile \(G_t(\cdot)\) can completely invert all off-line parameters \((\gamma_j,\delta_j,m_j)\) via rational Herglotz poles (Theorem \ref{thm:xi-offcritical-poisson-herglotz-inversion}); if height \(\gamma\) is unknown but restricted to window \([-T,T]\), then the size of linear readout family required for uniform detection grows at least linearly in \(T/(t+\delta_0)\) (Theorem \ref{thm:xi-offcritical-poisson-matched-filter-covering}).
+\end{enumerate}
+Therefore, under "fixed slice/auditable readout" regime, off-line zeros of finite defect need not be presented directly as two-dimensional scatter, but can be equivalently encoded as discrete source term \(\nu\) of Poisson semigroup; their scale behavior forms verifiable orthogonal separation between conserved quantities and strict dissipation, and both invertible tomography and unavoidable covering complexity can be precisely quantified by semigroup scale \(t+\delta\).
+\end{corollary}
+
+\begin{proof}
+(1) If \(\nu=0\) then \(G_t\equiv 0\) follows directly from definition. Conversely if \(G_t\equiv 0\) for some \(t>0\), then by \eqref{eq:xi-offcritical-poisson-semigroup-fourier} we get \(\widehat G_0(\xi)=e^{t|\xi|}\widehat G_t(\xi)\equiv 0\), thus \(\widehat G_0\equiv 0\), and \(\widehat G_0\) is a finite exponential sum \(\sum_j m_j\delta_j e^{-\delta_j|\xi|}e^{-\mathrm{i}\gamma_j\xi}\), which can only vanish identically when all coefficients are zero, i.e., \(\nu=0\).
+\par
+(2) Follows directly from Theorem \ref{thm:xi-offcritical-poisson-semigroup-homomorphism} and Theorem \ref{thm:xi-offcritical-poisson-conservation-dissipation}.
+\par
+(3) From Theorem \ref{thm:xi-offcritical-poisson-herglotz-inversion} and Theorem \ref{thm:xi-offcritical-poisson-matched-filter-covering}. This completes the proof.
+\end{proof}
+
 \endinput
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -18,6 +18,51 @@ On the other hand, the rank-\(4\) irreducible Cartan matrices of finite type cor
 hence none can be compatible with \(\det(E)=10350\); therefore \(E\) cannot be \(\mathrm{GL}_4(\ZZ)\)-equivalent to any of them. \qed
 \end{proof}
 
+\begin{corollary}[Edge--flux arithmetic fingerprint as a protocol absolute invariant under labeling rigidity]\label{cor:window6-edge-flux-arithmetic-protocol-invariant}
+Under the setting of Theorem \ref{thm:terminal-window6-edge-flux-skeleton},
+the Smith form, cokernel decomposition, and determinant among other integer fingerprints of the four-block interaction matrix \(E\) remain invariant under protocol equivalence that ``preserves pushforward counts.''
+More precisely: if another realization is consistent with this protocol in pushforward adjacency multiplicity data, so that its corresponding matrix \(E'\) differs from \(E\) at most by a block label permutation-induced permutation similarity \(E'=PEP^{-1}\) (\(P\) is a permutation matrix),
+then \(E\) and \(E'\) are equivalent in the \(\ZZ\)-congruence sense, hence \(\mathrm{SNF}(E)\), \(\mathrm{coker}(E)\), and \(\det(E)\) coincide.
+Under the labeling rigidity caliber (Corollary \ref{cor:terminal-gamma6-multiplicity-rigidity}; see also Remark \ref{rem:terminal-window6-structure-defined-uniqueness}), this permutation must be the identity, hence \(E'=E\).
+\end{corollary}
+\begin{proof}
+A block label permutation corresponds to simultaneous row-column reordering by a permutation matrix \(P\in\mathrm{GL}_4(\ZZ)\), i.e., \(E\mapsto PEP^{-1}\);
+this transformation belongs to \(\ZZ\)-congruence transformations, and the Smith form, cokernel decomposition, and determinant are all congruence invariants, so the first part holds.
+If we further impose Corollary \ref{cor:terminal-gamma6-multiplicity-rigidity} (see Remark \ref{rem:terminal-window6-structure-defined-uniqueness}), then the data preserving pushforward counts does not allow any nontrivial relabeling, hence \(P=I\), and the conclusion is proved. \qed
+\end{proof}
+
+\begin{corollary}[Uniqueness of the maximum entropy coarse-graining kernel of the edge--flux skeleton]\label{cor:window6-edge-flux-max-entropy-kernel-uniqueness}
+Following the notation of Theorem \ref{thm:terminal-window6-edge-flux-skeleton}, let \(\pi_\alpha:=|U_\alpha|/64\).
+Let \(K\) be a Markov kernel (row-stochastic matrix) on the four-state space \(\{2,1,L,R\}\) satisfying the edge flux constraints for all \(\alpha\neq\beta\):
+\[
+\pi_\alpha K_{\alpha\beta}=\frac{E_{\alpha\beta}}{6|\Omega_6|}=\frac{E_{\alpha\beta}}{6\cdot 64}.
+\]
+Then \(K\) is uniquely determined by the above constraints and must coincide with the coarse-grained kernel \(T\) defined by Theorem \ref{thm:terminal-window6-edge-flux-skeleton}.
+In particular, from \(E_{\alpha\beta}=E_{\beta\alpha}\) one obtains detailed balance
+\(
+\pi_\alpha T_{\alpha\beta}=\pi_\beta T_{\beta\alpha}
+\), so \(T\) is a reversible kernel; and under the caliber of ``flux fixed + detailed balance,'' the feasible set is a singleton \(\{T\}\), hence \(T\) is also the maximum entropy rate kernel (and unique).
+\end{corollary}
+\begin{proof}
+For \(\alpha\neq\beta\), from the constraint we immediately get
+\[
+K_{\alpha\beta}=\frac{E_{\alpha\beta}}{6|\Omega_6|}\cdot\frac{1}{\pi_\alpha}
+=\frac{E_{\alpha\beta}}{6|U_\alpha|},
+\]
+consistent with the definition of \(T_{\alpha\beta}\) in Theorem \ref{thm:terminal-window6-edge-flux-skeleton}.
+Since \(K\) is row-stochastic,
+\(
+K_{\alpha\alpha}=1-\sum_{\beta\neq\alpha}K_{\alpha\beta}
+\)
+is also uniquely determined; and this diagonal element equals \(T_{\alpha\alpha}\) precisely (equivalent to counting the intra-block undirected edge number \(E_{\alpha\alpha}\) as two directed edges staying within the block).
+Therefore \(K=T\).
+For reversibility and detailed balance, from \(E_{\alpha\beta}=E_{\beta\alpha}\) one directly derives
+\(
+\pi_\alpha T_{\alpha\beta}=E_{\alpha\beta}/(6|\Omega_6|)=\pi_\beta T_{\beta\alpha}
+\).
+Finally, since the feasible set is a singleton, any entropy rate maximization problem defined on this feasible set is uniquely realized by \(T\). \qed
+\end{proof}
+
 \begin{corollary}[Kirchhoff Complexity and Cyclicity of the Critical Group for the 6D Four-Block Skeleton]\label{cor:window6-edge-flux-critical-group-cyclic}
 Again under the notation of Theorem \ref{thm:terminal-window6-edge-flux-skeleton},
 let \(\mathcal{G}_E\) be the weighted multigraph obtained by ignoring intra-block self-loops: vertices are the four blocks \(\{2,1,L,R\}\), and when \(\alpha\neq\beta\), the edge multiplicity is \(E_{\alpha\beta}\).
@@ -40,6 +85,24 @@ From \eqref{eq:window6_edge_flux_skeleton_arithmetic},
 \(\mathrm{SNF}(L_E^{\mathrm{red}})=\mathrm{diag}(1,1,123336)\),
 hence \(K(\mathcal{G}_E)\cong \ZZ/123336\ZZ\). \qed
 \end{proof}
+
+\begin{remark}[``Kirchhoff new prime'' \texorpdfstring{$571$}{571}: invisible prime factor introduced by global spanning tree complexity]\label{rem:window6-kirchhoff-prime-571}
+From \eqref{eq:window6_edge_flux_skeleton_arithmetic},
+\(
+\tau(\mathcal{G}_E)=123336=2^3\cdot 3^3\cdot 571
+\),
+so the critical group \(K(\mathcal{G}_E)\cong \ZZ/123336\ZZ\) contains a unique \(571\)-primary torsion component.
+On the other hand, the same equation gives
+\(
+\det(E)=10350=2\cdot 3^2\cdot 5^2\cdot 23
+\)
+and
+\(
+\Delta(f)=2^2\cdot 3^6\cdot 5^2\cdot 11\cdot 23\cdot 5894101
+\),
+neither of which contains the prime factor \(571\).
+Therefore \(571\) can be viewed as a purely Kirchhoff-type arithmetic evidence: it is invisible in both the Smith discriminant of the local skeleton and the ramification support of the cubic spectral domain, yet forced to appear in the global spanning tree complexity (equivalently the critical group), embodying the hierarchical separation from local skeleton to global graph complex.
+\end{remark}
 
 \begin{corollary}[Algebraic Number-Theoretic Fingerprint of the Four-State Coarse-Grained Kernel: \texorpdfstring{$\mathrm{Gal}\cong S_3$}{Gal=S3} with Discriminant Containing \texorpdfstring{$23$}{23}]\label{cor:window6-edge-flux-coarse-markov-galois}
 Under the notation of Theorem \ref{thm:terminal-window6-edge-flux-skeleton},
@@ -102,6 +165,46 @@ Therefore, within the audit interface of window-\(6\), the prime \(23\) simultan
 The first part follows from the standard property of discriminants: for a splitting field \(L\), any prime factor of the discriminant of an integer-coefficient separable polynomial is a ramified prime of \(L/\QQ\) (i.e., a prime at which the reduced polynomial acquires repeated roots).
 The second part is from Corollary \ref{cor:terminal-window6-coupling-response-group-23-torsion}.
 Juxtaposing the two completes the proof. \qed
+\end{proof}
+
+\begin{remark}[``Common singular prime'' \texorpdfstring{$23$}{23}: integer skeleton torsion and cubic spectral domain ramification as a common sensitivity caliber]\label{rem:window6-common-singular-prime-23}
+By Corollary~\ref{cor:window6-edge-flux-skeleton-smith-nonsimple},
+\(\mathrm{coker}(E)\cong \ZZ/3\ZZ\oplus \ZZ/3450\ZZ\), and \(23\mid 3450\), so the \(23\)-primary component of \(\mathrm{coker}(E)\) is nontrivial.
+On the other hand, Corollary~\ref{cor:window6-edge-flux-coarse-markov-galois} gives \(23\mid \Delta(f)\), so \(f\) is inseparable modulo \(23\), equivalently the splitting field of the cubic spectral domain necessarily ramifies at the prime \(p=23\).
+Therefore, modulus \(23\) is simultaneously a common sensitivity caliber for the block-level integer skeleton (\(\mathrm{coker}(E)\)) and the cubic spectral domain ramification (\(\Delta(f)\)): any local rewrite/equivalence claiming to ``preserve the cubic spectral fingerprint'' or ``preserve skeleton torsion'' can be directly exposed in modulo-\(23\) reduction audit if its assertion fails on the other side.
+\end{remark}
+
+\begin{corollary}[Natural \texorpdfstring{$12$}{12}-degree Galois audit covering: \texorpdfstring{$S_3\times C_2$}{S3xC2} as a unified carrier for ``golden scale + cubic spectral fingerprint'']\label{cor:window6-golden-s3c2-audit-cover-degree12}
+Continuing the notation of Corollary~\ref{cor:window6-edge-flux-coarse-markov-galois}, let \(L\) be the splitting field of the cubic polynomial \(f\).
+Also let the golden field \(K_\varphi=\QQ(\sqrt5)\).
+Then the compositum
+\[
+\widehat K:=L\cdot K_\varphi
+\]
+is a \(12\)-degree Galois extension, and its Galois group satisfies
+\[
+\mathrm{Gal}(\widehat K/\QQ)\cong S_3\times C_2.
+\]
+\end{corollary}
+\begin{proof}
+By Corollary~\ref{cor:window6-edge-flux-coarse-markov-galois}, \(f\) is irreducible over \(\QQ\) and \(\mathrm{Gal}(f/\QQ)\cong S_3\), so \(L/\QQ\) is a degree-\(6\) Galois extension.
+In \(S_3\), the unique index-\(2\) subgroup is \(A_3\), so \(L\) contains a unique quadratic subfield \(L^{A_3}\).
+For an irreducible cubic polynomial, \(L^{A_3}=\QQ(\sqrt{\Delta_{\mathrm{sf}}})\), where \(\Delta_{\mathrm{sf}}\) is the square-free part of the discriminant \(\Delta(f)\).
+\par
+From \eqref{eq:window6_edge_flux_skeleton_arithmetic},
+\(
+\Delta(f)=2^2\cdot 3^6\cdot 5^2\cdot 11\cdot 23\cdot 5894101
+\),
+so \(\Delta_{\mathrm{sf}}=11\cdot 23\cdot 5894101\), in particular \(\QQ(\sqrt{\Delta_{\mathrm{sf}}})\neq \QQ(\sqrt5)\).
+Therefore \(K_\varphi\) does not embed in \(L\), i.e., \(K_\varphi\cap L=\QQ\).
+\par
+Since \(L/\QQ\) and \(K_\varphi/\QQ\) are both Galois extensions with intersection \(\QQ\), they are linearly disjoint, so
+\[
+[\widehat K:\QQ]=[L:\QQ]\,[K_\varphi:\QQ]=6\cdot 2=12,
+\qquad
+\mathrm{Gal}(\widehat K/\QQ)\cong \mathrm{Gal}(L/\QQ)\times \mathrm{Gal}(K_\varphi/\QQ)\cong S_3\times C_2.
+\]
+\qed
 \end{proof}
 
 \begin{conjecture}[\texorpdfstring{$23$}{23}-Primary Obstruction Class: Common Prime Factor Hypothesis for Block-Level and Type-Level Discriminant Groups]\label{conj:window6-23-primary-obstruction-class}

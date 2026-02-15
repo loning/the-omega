@@ -69,6 +69,337 @@ Therefore
 \]
 \end{theorem}
 
+\begin{theorem}[Local rigidity of Coxeter relations: hexagonal Coxeterization of path components]\label{thm:pom-toggle-coxeter-relations-path}
+Suppose some connected component of \(\Gamma_x\) isomorphic to path \(P_{\ell}\), and label its vertices in path order as \(1,\dots,\ell\).
+Then corresponding generators \(\tau_1,\dots,\tau_{\ell}\) satisfy relations
+\[
+\tau_j^2=1,\qquad
+\tau_i\tau_j=\tau_j\tau_i\ (|i-j|>1),\qquad
+(\tau_i\tau_{i+1})^{6}=1\quad(1\le i<\ell).
+\]
+Let \(W^{(6)}(P_\ell)\) be the Coxeter group given by generators \(s_1,\dots,s_\ell\) and above relations.
+Then natural surjection exists
+\[
+W^{(6)}(P_\ell)\twoheadrightarrow \langle \tau_1,\dots,\tau_{\ell}\rangle\ \le\ \mathrm{Sym}(F_x),
+\]
+i.e., fiber toggle group on path component is quotient image of an ``edge-labeled-6'' path-type Coxeter group.
+\end{theorem}
+\begin{proof}
+By Definition \ref{def:pom-fiber-toggle-group}, each \(\tau_j\) is a symmetric-difference flip or identity, so \(\tau_j^2=1\).
+When \(|i-j|>1\), the two vertices are non-adjacent, so the legality tests for \(\tau_i\) and \(\tau_j\) do not interfere, hence they commute.
+For an adjacent pair \((i,i+1)\), notice that the toggle legality tests for \(\tau_i,\tau_{i+1}\) depend only on the local neighborhood
+\(\{i-1,i,i+1,i+2\}\), and \(\tau_i,\tau_{i+1}\) do not change the values at \(i-1\) and \(i+2\).
+Therefore after fixing the boundary state \(\mathbf b=(\mathbf 1_{i-1\in S},\mathbf 1_{i+2\in S})\in\{0,1\}^2\),
+the feasible local independent-set states for \((i,i+1)\) are at most three, and the action of \(\tau_i,\tau_{i+1}\) closes on this finite set.
+Enumerating the four cases for \(\mathbf b\) one obtains that the order of \(\tau_i\tau_{i+1}\) divides \(6\), i.e., \((\tau_i\tau_{i+1})^6=1\).
+Thus \(\tau_1,\dots,\tau_\ell\) satisfy the defining relations of \(W^{(6)}(P_\ell)\), inducing a surjection. \qed
+\end{proof}
+
+\begin{proposition}[Minimality of the hexagon exponent: exact order of adjacent toggle product]\label{prop:pom-toggle-adjacent-order-exact}
+On the independent-set system \(\mathsf{Ind}(P_\ell)\) of path \(P_{\ell}\), take adjacent generators \(\tau_i,\tau_{i+1}\).
+Then when \(\ell\ge 3\),
+\[
+\mathrm{ord}(\tau_i\tau_{i+1})=6\qquad(1\le i<\ell),
+\]
+and no \(p<6\) exists such that \((\tau_i\tau_{i+1})^p=1\).
+When \(\ell=2\), the unique adjacent pair satisfies \(\mathrm{ord}(\tau_1\tau_2)=3\).
+\end{proposition}
+\begin{proof}
+Fix \(1\le i<\ell\) and consider the permutation \(\tau_i\tau_{i+1}\) acting on \(\mathsf{Ind}(P_\ell)\).
+Notice that \(\tau_i,\tau_{i+1}\) can only change the occupation states at vertices \(i,i+1\), and independence forbids both taking value \(1\).
+Hence any orbit contains at most the three states \(S\), \(S\cup\{i\}\), \(S\cup\{i+1\}\) (some cases degenerate), so orbit length is at most \(3\).
+
+First, the empty-set orbit gives length \(3\):
+\(
+\varnothing\mapsto \{i+1\}\mapsto \{i\}\mapsto \varnothing
+\).
+Second, when \(\ell\ge 3\) there exist orbits of length \(2\): if \(i\ge 2\), take \(S=\{i-1\}\);
+if \(i=1\), take \(S=\{3\}\).
+Direct computation shows \(\tau_i\tau_{i+1}(S)=S\cup\{i+1\}\) and \(\tau_i\tau_{i+1}(S\cup\{i+1\})=S\), so it is a \(2\)-cycle.
+Therefore when \(\ell\ge 3\), \(\mathrm{ord}(\tau_i\tau_{i+1})=\mathrm{lcm}(2,3)=6\), and minimality of the hexagon exponent follows.
+
+When \(\ell=2\), \(\mathsf{Ind}(P_2)=\{\varnothing,\{1\},\{2\}\}\) and \(\tau_1\tau_2\) is a \(3\)-cycle, so its order is \(3\). \qed
+\end{proof}
+
+\begin{corollary}[Component decomposition: direct product structure of toggle group]\label{cor:pom-toggle-product-components}
+If \(\Gamma_x=\bigsqcup_{i=1}^r P_{\ell_i}\), then generators on different components commute pairwise, and \(\mathcal T_x\) contains (and in the natural representation equals) the direct product of component subgroups:
+\[
+\mathcal T_x\ \cong\ \prod_{i=1}^r \mathcal T_{\ell_i},
+\qquad
+\mathcal T_{\ell}:=\langle \tau_1,\dots,\tau_{\ell}\rangle.
+\]
+Therefore \((\ell_i)\) directly gives the rank decomposition of the ``reflection-type gauge freedom'' internal to the fiber.
+\end{corollary}
+\begin{proof}
+For disjoint-union graphs, independent sets and symmetric-difference toggles separate on components: \(\mathsf{Ind}(\bigsqcup_i G_i)\cong\prod_i\mathsf{Ind}(G_i)\), and each \(\tau_v\) acts only on the coordinate in its component.
+Hence the overall group is the direct product of component groups. \qed
+\end{proof}
+
+\begin{remark}[Finite-window audit]\label{rem:pom-toggle-coxeter-audit}
+On \(\Gamma_n\) (vertex set of Fibonacci cube \(\Gamma_n\)) implementing toggle operators following Definition \ref{def:pom-fiber-toggle-group}'s ``toggle if legal, otherwise do nothing'' rule,
+one can term-by-term verify the Coxeter relations of Theorem \ref{thm:pom-toggle-coxeter-relations-path} in the range \(n\le 12\), and for the scan element \(c_n=\tau_1\cdots\tau_n\), one can provide an offline-auditable table for its permutation order \(T(n)\), maximal orbit length \(L_{\max}(n)\), and cycle decomposition.
+The corresponding audit table is generated by script as follows:
+\input{sections/generated/tab_fibonacci_cube_toggle_coxeter_audit_en}
+\end{remark}
+
+\paragraph{Scan progression and intrinsic period}
+
+\begin{definition}[Scan element and intrinsic period invariant]\label{def:pom-toggle-coxeter-element}
+On path component \(P_{\ell}\), define the scan (time-progression) element
+\[
+c_{\ell}:=\tau_1\tau_2\cdots\tau_{\ell}.
+\]
+For general \(x\), define the component-product scan element
+\(
+c_x:=\prod_{i=1}^r c_{\ell_i}
+\)
+(components commute).
+\noindent Write
+\[
+T(\ell):=\mathrm{ord}(c_\ell)\ \ \text{(order of permutation \(c_\ell\in\mathrm{Sym}(\mathsf{Ind}(P_\ell))\))},
+\qquad
+T(x):=\mathrm{lcm}_{i} T(\ell_i).
+\]
+\end{definition}
+
+\begin{theorem}[Intrinsic period invariant: componentization and computable upper bound]\label{thm:pom-toggle-coxeter-order-bound}
+Following Definition \ref{def:pom-toggle-coxeter-element}.
+Then scan element separates on component coordinates, and satisfies
+\[
+\mathrm{ord}(c_x)=\mathrm{lcm}_{i}\,\mathrm{ord}(c_{\ell_i})=T(x).
+\]
+\noindent Moreover, since \(|V(\Gamma_\ell)|=|\mathsf{Ind}(P_\ell)|=F_{\ell+2}\), there is a crude upper bound
+\[
+T(\ell)\ \mid\ \mathrm{lcm}\{1,2,\dots,F_{\ell+2}\}.
+\]
+\end{theorem}
+\begin{proof}
+By Corollary \ref{cor:pom-toggle-product-components}, under component coordinatization \(F_x\cong \prod_i \mathsf{Ind}(P_{\ell_i})\),
+each \(c_{\ell_i}\) acts only on the \(i\)-th component and they pairwise commute, so the order of their product \(c_x\) is the lcm of component orders.
+The upper bound follows from the general fact: \(c_\ell\) is a permutation on a set of \(F_{\ell+2}\) elements, so its order must divide \(\mathrm{lcm}\{1,\dots,F_{\ell+2}\}\). \qed
+\end{proof}
+
+\begin{corollary}[Dihedral core of time reversal]\label{cor:pom-toggle-dihedral-time-reversal}
+Let \(\iota_{\ell}\) be the permutation on \(\mathsf{Ind}(P_\ell)\) induced by the index reversal \(j\mapsto \ell+1-j\) of path \(P_{\ell}\).
+Then \(\iota_{\ell}\) is an involution, and satisfies the conjugacy relation
+\[
+\iota_{\ell}\,c_{\ell}\,\iota_{\ell}=c_{\ell}^{-1}.
+\]
+Therefore the subgroup generated by \(c_\ell\) and \(\iota_\ell\) is a quotient image of a dihedral group, with order dividing \(2\,\mathrm{ord}(c_\ell)=2T(\ell)\).
+\end{corollary}
+\begin{proof}
+\(\iota_\ell\) as a path automorphism induces a permutation on independent sets, clearly an involution.
+Moreover \(\iota_\ell\tau_j\iota_\ell=\tau_{\ell+1-j}\), whence
+\(
+\iota_\ell c_\ell \iota_\ell
+=\tau_\ell\cdots\tau_1
+=c_\ell^{-1}
+\)
+(since \(\tau_j^2=1\)).
+By the standard presentation of the dihedral group, \(\langle c_\ell,\iota_\ell\rangle\) is a dihedral quotient with order dividing \(2\,\mathrm{ord}(c_\ell)=2T(\ell)\). \qed
+\end{proof}
+
+\paragraph{Sequential-scan dynamics: linear law for maximal orbit}
+
+\begin{definition}[Maximal time-circle length]\label{def:pom-toggle-scan-max-orbit}
+Treating scan element \(c_\ell\in\mathrm{Sym}(\mathsf{Ind}(P_\ell))\) as the ``one-step operator'' of discrete-time dynamics.
+For any state \(S\in\mathsf{Ind}(P_\ell)\), write its period (orbit length) as
+\[
+\mathrm{per}_\ell(S):=|\mathrm{Orb}_{c_\ell}(S)|.
+\]
+Define the \textbf{maximal time-circle length} of scan dynamics as
+\[
+L_{\max}(\ell):=\max_{S\in\mathsf{Ind}(P_\ell)} \mathrm{per}_\ell(S).
+\]
+\end{definition}
+
+\begin{theorem}[Linear maximal-period law: closed formula for maximal time-circle length]\label{thm:pom-toggle-scan-linear-max-orbit}
+For all \(\ell\ge 4\), the maximal time-circle length of scan element \(c_\ell\in\mathrm{Sym}(\mathsf{Ind}(P_\ell))\) satisfies
+\[
+L_{\max}(\ell)=3\ell-7.
+\]
+\end{theorem}
+\begin{proof}
+Let \(\varphi_\ell:=\tau_\ell\cdots\tau_1\) be the ``left-to-right scan'' operator; then \(c_\ell=\varphi_\ell^{-1}\), so the two have the same set of orbit lengths, in particular the same \(L_{\max}(\ell)\).
+
+By \cite[Def.~4.1 \& Prop.~4.3]{JosephRoby2018TogglingIndependentSetsPath}, any \(\varphi_\ell\)-orbit corresponds to a snake composition \(c\) partitioning \(\ell-1\) into \(1/2\)'s, and satisfies the orbit-length formula
+\[
+|\mathcal O|
+\ =\
+\frac{3N_1(c)+2N_2(c)}{\psi(c)},
+\qquad
+N_1(c)+2N_2(c)=\ell-1,
+\]
+where \(N_1,N_2\) are respectively the number of \(1\)'s and \(2\)'s in \(c\), and \(\psi(c)\ge 1\) is the repetition count of the minimal period (\(\psi(c)=1\) if and only if \(c\) is aperiodic).
+
+If \(N_2(c)=0\), then \(c=1^{\ell-1}\) and \(\psi(c)=\ell-1\), whence \(|\mathcal O|=3\).
+Therefore for any orbit in \(\ell\ge 4\) to exceed constant size, one must have \(N_2(c)\ge 1\), and
+\[
+|\mathcal O|
+\le\
+3(\ell-1)-4
+\ =\
+3\ell-7.
+\]
+On the other hand, taking \(c=2\,1^{\ell-3}\) (the aperiodic composition containing exactly one \(2\)) gives \(\psi(c)=1\), whence there exists an orbit satisfying
+\(
+|\mathcal O|=3(\ell-3)+2=3\ell-7
+\).
+Hence \(L_{\max}(\ell)=3\ell-7\). \qed
+\end{proof}
+
+\begin{remark}[Explicit principal time-circle representative (finite-window audit)]\label{rem:pom-toggle-scan-explicit-long-orbit}
+For \(\ell\ge 4\), define
+\[
+a_\ell:=((\ell+1)\bmod 3)+1,
+\qquad
+S_\ell^\star:=\{\,a_\ell+3j:\ 0\le j,\ a_\ell+3j\le \ell-4\,\}\ \in\ \mathsf{Ind}(P_\ell).
+\]
+In the finite-window offline audit range \(4\le \ell\le 12\), this representative satisfies
+\(
+|\mathrm{Orb}_{c_\ell}(S_\ell^\star)|=3\ell-7
+\)
+and attains the maximum in Theorem \ref{thm:pom-toggle-scan-linear-max-orbit}.
+For any fixed \(\ell\), \(|\mathrm{Orb}_{c_\ell}(S_\ell^\star)|\) can be verified in finitely many steps by successive iteration.
+\end{remark}
+
+\begin{theorem}[Time spectrum of general fiber: component tensorization and \(\mathrm{lcm}\) law]\label{thm:pom-toggle-scan-lcm-tensorization}
+Suppose the candidate-site induced graph of stable type \(x\in X_m\) decomposes as \(\Gamma_x=\bigsqcup_{i=1}^r P_{\ell_i}\), whence
+\(
+F_x\cong \prod_{i=1}^r \mathsf{Ind}(P_{\ell_i})
+\)
+and \(c_x=\prod_i c_{\ell_i}\) (Definition \ref{def:pom-toggle-coxeter-element}).
+For any \(\omega=(\omega_1,\dots,\omega_r)\in F_x\),
+\[
+|\mathrm{Orb}_{c_x}(\omega)|
+\ =\
+\mathrm{lcm}_{i}\Bigl(|\mathrm{Orb}_{c_{\ell_i}}(\omega_i)|\Bigr).
+\]
+Moreover, maximal time-circle length satisfies
+\[
+L_{\max}(x):=\max_{\omega\in F_x} |\mathrm{Orb}_{c_x}(\omega)|
+\ =\
+\mathrm{lcm}_{i}\bigl(L_{\max}(\ell_i)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+By Corollary \ref{cor:pom-toggle-product-components}, scan element in component coordinates is a commuting direct-product permutation.
+General fact: if \(f=\prod_i f_i\) acts on direct product set \(\prod_i S_i\) with each \(f_i\) acting only on the \(i\)-th coordinate, then the period of any point is the lcm of component periods.
+Taking each coordinate independently to achieve its maximal period yields \(L_{\max}(x)=\mathrm{lcm}_i(L_{\max}(\ell_i))\). \qed
+\end{proof}
+
+\begin{corollary}[Arithmetic-combinatorial law for maximal time-circle]\label{cor:pom-toggle-scan-max-orbit-arithmetic}
+If all components satisfy \(\ell_i\ge 4\), then by Theorem \ref{thm:pom-toggle-scan-linear-max-orbit},
+\[
+L_{\max}(x)=\mathrm{lcm}_{i}\bigl(3\ell_i-7\bigr).
+\]
+In the general case, for components with \(\ell_i\le 3\), replace with their actual maximal value \(L_{\max}(\ell_i)\).
+\end{corollary}
+
+\begin{remark}[Absolute upper bound for Fold\(_6\): \(\mathrm{lcm}\) generation of small-component time-circles]\label{rem:pom-toggle-fold6-lmax}
+In the minimal window of Fold\(_6\), path component lengths satisfy \(\ell_i\le 6\).
+From Table \ref{tab:fibonacci_cube_toggle_coxeter_audit} one reads
+\(
+(L_{\max}(1),\dots,L_{\max}(6))=(2,3,3,5,8,11)
+\).
+Therefore the time-circle length set (and maximal time-circle length) of any \(m=6\) fiber is completely controlled by \(\mathrm{lcm}\) combinations of these small numbers, independent of uplift/boundary coverage and other external structure.
+\end{remark}
+
+\paragraph{Integer-lattice monodromy: cyclotomic spectral fingerprint}
+
+\begin{definition}[Permutation monodromy matrix]\label{def:pom-coxeter-monodromy}
+For each \(\ell\ge 0\), treat scan element \(c_\ell\) as a permutation of finite set \(\mathsf{Ind}(P_\ell)\cong V(\Gamma_\ell)\).
+Let \(M_\ell\in GL_{F_{\ell+2}}(\ZZ)\) be its permutation matrix in the standard basis.
+For general \(x\), define the block-diagonal matrix of component fingerprints
+\[
+M_x:=\bigoplus_{i=1}^r M_{\ell_i}.
+\]
+\end{definition}
+
+\begin{theorem}[Cyclotomic fingerprint and spectral rigidity]\label{thm:pom-coxeter-monodromy-cyclotomic}
+Suppose the cycle decomposition of \(c_\ell\) is given by lengths \((d_1,\dots,d_s)\); then
+\[
+\chi_\ell(\lambda):=\det(\lambda I-M_\ell)=\prod_{j=1}^s (\lambda^{d_j}-1),
+\]
+whence \(\chi_\ell\) factors as a product of cyclotomic polynomials, with spectrum a finite multiset of roots of unity.
+Moreover,
+\[
+\det M_\ell=\mathrm{sgn}(c_\ell)\in\{\pm 1\},\qquad
+\mathrm{tr}(M_\ell)=\#\{u\in \mathsf{Ind}(P_\ell): c_\ell(u)=u\}.
+\]
+For general \(x\), one has \(\chi_x(\lambda)=\prod_{i=1}^r \chi_{\ell_i}(\lambda)\) and \(\det M_x=\prod_{i=1}^r \det M_{\ell_i}\).
+\end{theorem}
+\begin{proof}
+A permutation matrix block-decomposes into cyclic permutation blocks by cycle decomposition; each block of length \(d\) has characteristic polynomial \(\lambda^d-1\).
+Hence \(\chi_\ell(\lambda)=\prod_j(\lambda^{d_j}-1)\), and since \(\lambda^d-1=\prod_{k\mid d}\Phi_k(\lambda)\), one obtains cyclotomic factorization.
+\(\det M_\ell\) is the permutation sign; \(\mathrm{tr}(M_\ell)\) is the number of fixed points.
+For \(M_x\), the conclusion follows immediately from block-diagonal decomposition. \qed
+\end{proof}
+
+\begin{corollary}[Top-dimensional sign invariant: \(\pm 1\) from permutation linearization]\label{cor:pom-coxeter-top-sign}
+Under the permutation linearization of Definition \ref{def:pom-coxeter-monodromy}, the action of scan element on the top exterior power is multiplication by
+\[
+\mathrm{sgn}(c_x)=\det M_x\in\{\pm 1\}.
+\]
+This binary fingerprint can be offline-audited via cycle decomposition (equivalently via the cyclotomic factorization type of \(\chi_x\)).
+\end{corollary}
+
+\begin{remark}[\(A\)-type Coxeter shadow: explicit cyclotomic monodromy and Coxeter-number scale]\label{rem:pom-Ashadow-coxeter-monodromy}
+The permutation monodromy \(\{c_\ell\}\) above comes directly from the actual scan dynamics under ``toggle if legal''; its period \(T(\ell)\) generally does not equal \(\ell+1\) (see Table \ref{tab:fibonacci_cube_toggle_coxeter_audit}).
+On the other hand, path component \(P_\ell\) as the \(A_\ell\) Dynkin diagram can be canonically equipped with the abstract Coxeter group \(W(A_\ell)\) and its standard geometric representation
+\(\rho_\ell:W(A_\ell)\to GL_\ell(\ZZ)\);
+let \(\mathbf c_\ell:=s_1\cdots s_\ell\) be the Coxeter element in \(W(A_\ell)\), and define
+\[
+\widetilde M_\ell:=\rho_\ell(\mathbf c_\ell),
+\qquad
+\widetilde M_x:=\bigoplus_{i=1}^r \widetilde M_{\ell_i}.
+\]
+Then the characteristic polynomial of \(\widetilde M_\ell\) has completely explicit cyclotomic form
+\[
+\det(\lambda I-\widetilde M_\ell)=\frac{\lambda^{\ell+1}-1}{\lambda-1},
+\qquad
+\det(\widetilde M_\ell)=(-1)^\ell,\qquad \mathrm{tr}(\widetilde M_\ell)=-1,
+\]
+whence \(\det(\widetilde M_x)=(-1)^{\sum_i \ell_i}\).
+Accordingly one may define the purely \((\ell_i)\)-determined Coxeter-number scale
+\[
+T_{\mathrm A}(x):=\mathrm{lcm}_i(\ell_i+1),
+\]
+which encodes the root-of-unity period structure in this \(A\)-type monodromy shadow, and serves as a linearization audit reference decoupled from implementation details.
+\end{remark}
+
+\paragraph{Parallelism: shortest rewrite sequences and linear extensions}
+
+\begin{definition}[Interval hyperplane poset and linear extension number]\label{def:pom-fiber-geodesic-poset}
+On fiber reconstruction graph \(\mathcal F_x\), take two points \(\omega\to \omega'\) (Definition \ref{def:pom-fiber-reconstruction-graph}).
+Let \(\mathcal H(\omega,\omega')\) be set of all hyperplanes separating \(\omega,\omega'\) (equivalent to \(\Theta\)-class set of coordinate differences between two points in partial-cube embedding).
+For any two disjoint hyperplanes \(H,H'\in\mathcal H(\omega,\omega')\), define poset by half-space containment relation
+\[
+H\preceq H'\quad:\Longleftrightarrow\quad
+\text{\(H\) and \(H'\) disjoint and \(H\)'s half-space on \(\omega\) side strictly contained in \(H'\)'s half-space on \(\omega\) side}.
+\]
+Denote \(\mathrm{LE}(\mathcal H(\omega,\omega'),\preceq)\) as linear extension number of this poset.
+\end{definition}
+
+\begin{theorem}[Shortest rewrite sequence count: linear extension characterization]\label{thm:pom-fiber-geodesic-linear-extension}
+Following Definition \ref{def:pom-fiber-geodesic-poset}.
+Then all shortest rewrite sequences from \(\omega\) to \(\omega'\) (equivalent to all geodesic paths on \(\mathcal F_x\)) bijectively correspond to linear extensions of poset \((\mathcal H(\omega,\omega'),\preceq)\).
+Therefore
+\[
+\#\{\text{shortest rewrite sequences } \omega\to \omega'\}
+\ =\
+\mathrm{LE}(\mathcal H(\omega,\omega'),\preceq).
+\]
+\end{theorem}
+\begin{proof}
+By Corollary \ref{cor:pom-fiber-reconstruction-median-partialcube-cat0}, \(\mathcal F_x\) is the \(1\)-skeleton of a CAT(0) cubical complex.
+In this case, any geodesic path crosses each separating hyperplane exactly once, and for disjoint hyperplanes the crossing order must respect half-space nesting;
+intersecting hyperplanes allow exchanging crossing order.
+Therefore geodesic paths are equivalent to choosing a total order on \(\mathcal H(\omega,\omega')\) compatible with nesting poset, i.e., a linear extension.
+Conversely, any linear extension yields a geodesic path by crossing hyperplanes in order.
+Hence the bijection and counting identity. \qed
+\end{proof}
+
 \begin{corollary}[Auditable bounds for parallel depth and parallel width]\label{cor:pom-fiber-parallelism-poset}
 Denote \(N:=|\mathcal H(\omega,\omega')|\), and denote poset height and width respectively as \(\mathrm{ht}\), \(\mathrm{wd}\).
 Under parallel semantics of ``each layer can simultaneously execute set of pairwise intersecting (commutable) hyperplane crossings'',
@@ -81,3 +412,21 @@ minimal layer count (parallel depth) of any parallel implementation satisfies lo
 where first term is critical chain lower bound, while second term obtained from at most \(\mathrm{wd}\) incomparable events can be processed in parallel per layer.
 Therefore poset structure simultaneously provides ``shortest time implementation'' critical chain certificate and ``maximal parallelism'' antichain certificate.
 \end{corollary}
+
+\begin{corollary}[Shortest replay entropy density under zigzag hyperplane poset: \texorpdfstring{\(\log(2/\pi)\)}{log(2/pi)}]\label{cor:pom-fiber-geodesic-log2pi}
+Following notation of Theorem \ref{thm:pom-fiber-geodesic-linear-extension}, and write \(N:=|\mathcal H(\omega,\omega')|\).
+If interval hyperplane poset \((\mathcal H(\omega,\omega'),\preceq)\) is isomorphic to zigzag poset \(Z_N\), then
+\[
+\#\{\text{shortest rewrite sequences } \omega\to \omega'\}=e(Z_N)=E_N,
+\]
+and
+\[
+\lim_{N\to\infty}\frac{1}{N}\log\frac{\#\{\text{shortest rewrite sequences } \omega\to \omega'\}}{N!}
+=\log\frac{2}{\pi}.
+\]
+where \(E_N\) is the Euler alternating number, and constant \(\log(2/\pi)\) has analytic origin from nearest singularity of \(\sec z+\tan z\) at \(z=\pm\pi/2\) (Theorem \ref{thm:pom-fence-volume-log2pi}; Remark \ref{rem:pom-quarter-turn-pi2-scale}).
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-fiber-geodesic-linear-extension}, shortest rewrite sequence count equals linear extension number; for zigzag poset, \(e(Z_N)=E_N\) (Theorem \ref{thm:pom-fence-maxchains-euler}).
+Then by Theorem \ref{thm:pom-fence-volume-log2pi}, one obtains the stated entropy density limit. \qed
+\end{proof}

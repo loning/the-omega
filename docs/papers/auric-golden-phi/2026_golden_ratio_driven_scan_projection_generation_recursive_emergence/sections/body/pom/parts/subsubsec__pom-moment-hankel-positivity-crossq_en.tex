@@ -67,6 +67,121 @@ S_{q+1}(m)/S_q(m)\ge S_q(m)/S_{q-1}(m)
 i.e., \(R_q(m)\ge R_{q-1}(m)\). \qed
 \end{proof}
 
+\paragraph{Prony--Hankel reconstruction: the fiber spectrum at fixed \(m\) is completely determined by finitely many \(q\)-moments}
+Fix a resolution \(m\) and consider the value set of fiber multiplicities
+\[
+\mathcal{D}_m:=\{d_m(x):\ x\in X_m\}=\{a_1<\cdots<a_{r_m}\}\subset\NN,
+\qquad
+n_i:=\#\{x\in X_m:\ d_m(x)=a_i\}.
+\]
+Then for all integers \(q\ge 0\), there is a finite exponential-sum representation
+\[
+S_q(m)=\sum_{i=1}^{r_m} n_i\,a_i^{\,q}.
+\]
+
+\begin{theorem}[Minimal order and Hankel rank]\label{thm:pom-fiber-spectrum-prony-hankel-rank}
+In the above setting, \(r_m\) equals the rank of the infinite Hankel matrix \(\bigl[S_{i+j}(m)\bigr]_{i,j\ge 0}\).
+Equivalently, \(r_m\) is the order of the minimal-order linear recurrence satisfied by the sequence \(q\mapsto S_q(m)\) (with \(q\) as the time variable):
+there exist a unique minimal integer \(r=r_m\) and constants \(c_0,\dots,c_{r-1}\) such that for all \(q\ge 0\),
+\[
+\boxed{\;
+S_{q+r}(m)+c_{r-1}S_{q+r-1}(m)+\cdots+c_0 S_q(m)=0\; }.
+\]
+\end{theorem}
+\begin{proof}
+From the representation \(S_q(m)=\sum_{i=1}^{r_m}n_i a_i^q\) (with \(a_i\) pairwise distinct and nonzero), the sequence \((S_q(m))_{q\ge 0}\) is a finite sum of \(r_m\) exponential terms,
+hence satisfies a linear recurrence of order at most \(r_m\): take
+\(
+Q_m(t):=\prod_{i=1}^{r_m}(t-a_i)=t^{r_m}+c_{r_m-1}t^{r_m-1}+\cdots+c_0
+\),
+then for each \(i\), \(a_i^{q+r_m}+c_{r_m-1}a_i^{q+r_m-1}+\cdots+c_0 a_i^q=0\);
+multiplying by \(n_i\) and summing over \(i\) yields the recurrence.
+\par
+Conversely, if there exists a recurrence of order \(r\), then the column vectors of the Hankel matrix satisfy a linear dependence relation of length \(r\), so its rank is at most \(r\);
+hence the minimal recurrence order equals the Hankel rank.
+For a finite exponential sum, the Hankel rank equals precisely the number of exponential terms \(r_m\) (classical Prony/Hankel theory). \qed
+\end{proof}
+
+\begin{theorem}[Complete reconstruction from \texorpdfstring{$2r_m$}{2rm} moments]\label{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction}
+The finite data \(\{S_q(m)\}_{q=0}^{2r_m-1}\) alone uniquely determines all atoms \(\{a_i\}_{i=1}^{r_m}\) and their multiplicities \(\{n_i\}_{i=1}^{r_m}\).
+More specifically, there exists a unique monic polynomial
+\[
+Q_m(t)=t^{r_m}+c_{r_m-1}t^{r_m-1}+\cdots+c_0=\prod_{i=1}^{r_m}(t-a_i)
+\]
+such that for all \(q\ge 0\), the recurrence identity
+\(
+S_{q+r_m}(m)+c_{r_m-1}S_{q+r_m-1}(m)+\cdots+c_0S_q(m)=0
+\)
+holds.
+The coefficients \((c_j)\) are uniquely solved from the linear system
+\[
+\sum_{j=0}^{r_m} c_j\,S_{q+j}(m)=0,\qquad q=0,\dots,r_m-1,\qquad c_{r_m}=1;
+\]
+subsequently, \(\{a_i\}\) are the roots of \(Q_m\) (counted with multiplicity), and \(\{n_i\}\) are uniquely recovered from the Vandermonde system
+\[
+\sum_{i=1}^{r_m} n_i\,a_i^{\,q}=S_q(m),\qquad q=0,\dots,r_m-1.
+\]
+\end{theorem}
+\begin{proof}
+From the minimal recurrence characterization of Theorem \ref{thm:pom-fiber-spectrum-prony-hankel-rank},
+\((c_0,\dots,c_{r_m-1})\) satisfies the stated linear system.
+When \(r_m\) is taken as the minimal order, the corresponding Hankel principal minor \(\det H^{(m)}_{r_m-1}>0\), so this linear system is invertible and yields a unique solution.
+After constructing \(Q_m\) from the recurrence, the roots of \(Q_m\) are precisely the base set \(\{a_i\}\) of the exponential sum;
+when the roots are distinct, the Vandermonde matrix is invertible, hence the multiplicities \(\{n_i\}\) are uniquely determined.
+(If multiple roots appear, the corresponding exponential terms must be multiplied by polynomial factors and enter the Jordan-type generalized Prony; in the fiber counting framework of this paper, \(a_i\) are distinct integer values, so there are no multiple roots.) \qed
+\end{proof}
+
+\begin{theorem}[Sharpness of the information completeness threshold: in general, \texorpdfstring{$2r$}{2r} moments cannot be reduced]\label{thm:pom-fiber-spectrum-prony-hankel-threshold-sharp}
+For any integer \(r\ge 2\), there exist two distinct finite atomic spectra
+\[
+\{(a_i,n_i)\}_{i=1}^{r}\ \neq\ \{(a'_i,n'_i)\}_{i=1}^{r}
+\]
+(where \(a_i,a'_i\in\NN_{\ge 1}\) are pairwise distinct and \(n_i,n'_i\in\NN_{\ge 1}\)), such that their power-sum moments satisfy
+\[
+\sum_{i=1}^{r}n_i a_i^{\,k}
+\;=\;
+\sum_{i=1}^{r}n'_i (a'_i)^{\,k}
+\qquad(0\le k\le 2r-2),
+\]
+but are unequal at \(k=2r-1\).
+Therefore, without additional structural assumptions, any method relying solely on \(\{S_k\}_{k=0}^{2r-2}\) cannot uniquely determine the \(r\)-atomic spectrum;
+in other words, the \(2r\)-moment threshold of Theorem \ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction} is sharp in the general sense.
+\end{theorem}
+\begin{proof}
+Take \(n:=2r-1\), and consider the binomial coefficient weights \(w_j:=\binom{n}{j}\) (\(0\le j\le n\)).
+Define two atomic spectra (each containing \(r\) distinct atoms):
+\[
+a_i:=2i-1,\quad n_i:=\binom{n}{2i-2}\qquad(1\le i\le r),
+\]
+\[
+a'_i:=2i,\quad n'_i:=\binom{n}{2i-1}\qquad(1\le i\le r).
+\]
+For each integer \(k\ge 0\), consider the alternating sum
+\[
+\Delta_k:=\sum_{j=0}^{n}(-1)^j\binom{n}{j}(j+1)^k.
+\]
+This is the value of the \(n\)-th order finite difference of the polynomial \(p(x)=x^k\) at the point \(x=1\) (the difference operator acting on a polynomial reduces its degree), hence when \(k\le n-1\), \(\Delta_k=0\).
+From \(\Delta_k=0\) we immediately deduce
+\[
+\sum_{j\ \mathrm{even}}\binom{n}{j}(j+1)^k
+\;=\;
+\sum_{j\ \mathrm{odd}}\binom{n}{j}(j+1)^k
+\qquad(0\le k\le n-1),
+\]
+which is precisely the moment equality for the two spectra at \(k\le 2r-2\).
+\par
+When \(k=n\), \(\Delta_n\) equals the action of the \(n\)-th order difference on the leading term \(x^n\), satisfying \(\Delta_n=(-1)^n n!\neq 0\),
+so the two spectra must have unequal moments at \(k=2r-1\).
+This yields the stated family of counterexamples, and the conclusion holds. \qed
+\end{proof}
+
+\begin{corollary}[Finite discrimination in the two-spectrum case]\label{cor:pom-fiber-spectrum-two-atom-complete-invariant}
+If the fiber multiplicity at fixed \(m\) takes only two values (\(r_m=2\)),
+then four moment data \(\{S_q(m)\}_{q=0}^{3}\) suffice to completely recover the fiber spectrum \(\{(a_1,n_1),(a_2,n_2)\}\) at this resolution.
+Therefore, in two-spectrum solvable models (such as the bin-fold solvable framework in the appendix; see Remark \ref{rem:fold-bin-solvable-model}),
+the ``two-spectrum data'' at each fixed \(m\) constitutes a complete invariant.
+\end{corollary}
+
 \begin{corollary}[Discrete convexity of the pressure and Perron root inequality]\label{cor:pom-crossq-pressure-convexity}
 Let \(\tau(q):=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m)\) be the moment pressure from Definition \ref{def:pom-moment-pressure}.
 Then for all integers \(q\ge 1\) the discrete convexity inequality holds:
@@ -126,6 +241,72 @@ u_q^{\mathsf T}(I-zA_q)^{-1}v_q=\sum_{n\ge 0}u_q^{\mathsf T}A_q^n v_q\,z^n
 The Jordan expansion is a standard result from finite-dimensional linear algebra: placing \(A_q\) in Jordan normal form and expanding \(u_q^{\mathsf T}A_q^{n}v_q\) gives the polynomial-times-exponential sum;
 the primitive and periodic cases follow from the Perron--Frobenius characterization of the peripheral spectrum. \qed
 \end{proof}
+
+\paragraph{Finite-state compression of the bivariate \texorpdfstring{$\zeta$}{zeta} and commutative spectral surface}
+For each fixed moment order \(q\), Proposition \ref{prop:pom-moment-genfunc-jordan} yields a rational-type generating function in the \(m\)-direction;
+for each fixed resolution \(m\), Theorems \ref{thm:pom-fiber-spectrum-prony-hankel-rank}--\ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction} yield a finite exponential-sum structure in the \(q\)-direction.
+When there exists a \emph{unified finite-state bivariate compilation} that compresses the entire table \(\{S_q(m)\}_{q,m}\) into a fixed finite-dimensional kernel family, both axes can be simultaneously packaged into a single Fredholm determinant object.
+
+\begin{definition}[Bivariate moment-\texorpdfstring{$\zeta$}{zeta} (encapsulation of the full collision-moment table)]\label{def:pom-bivariate-moment-zeta}
+Define the formal power series (bivariate generating function)
+\[
+\mathfrak{Z}(z,u)
+:=\exp\!\Bigl(\sum_{m\ge 1}\sum_{q\ge 1}\frac{S_q(m)}{m}\,u^{q}z^{m}\Bigr)
+\in \QQ[[z,u]].
+\]
+By coefficient extraction identity,
+\[
+[z^m][u^q]\ \log\mathfrak{Z}(z,u)=\frac{S_q(m)}{m}\qquad(m,q\ge 1).
+\]
+\end{definition}
+
+\begin{theorem}[Bivariate Fredholm determinant representation and rationality]\label{thm:pom-bivariate-moment-zeta-fredholm}
+Suppose there exists a matrix family \(\mathcal{A}(u)\in\Mat_{D\times D}(\QQ(u))\) of fixed dimension \(D\), analytic at \(u=0\) with \(\mathcal{A}(0)=0\), satisfying the trace identity for all \(m\ge 1\):
+\[
+\Tr\!\bigl(\mathcal{A}(u)^m\bigr)=\sum_{q\ge 1} S_q(m)\,u^{q}\ \in\ \QQ[[u]].
+\]
+Then the \(\mathfrak{Z}(z,u)\) of Definition \ref{def:pom-bivariate-moment-zeta} satisfies the strict identity
+\[
+\boxed{\;
+\mathfrak{Z}(z,u)=\det\bigl(I-z\,\mathcal{A}(u)\bigr)^{-1}\; }.
+\]
+Consequently, \(\mathfrak{Z}\) is a rational function in \((z,u)\) in the formal sense; and \(\{S_q(m)\}\) can be strictly recovered by coefficient extraction from \(\log\mathfrak{Z}\).
+\end{theorem}
+\begin{proof}
+By the definition of the Fredholm determinant (see the finite-dimensional analogue in Definition \ref{def:fredholm-determinant}), for any matrix \(T\) we have the identity
+\[
+\det(I-zT)=\exp\!\left(-\sum_{m\ge 1}\frac{\Tr(T^m)}{m}z^m\right).
+\]
+Taking \(T=\mathcal{A}(u)\) and substituting the assumed trace expansion yields
+\[
+\det(I-z\mathcal{A}(u))^{-1}
+=\exp\!\Bigl(\sum_{m\ge 1}\frac{\Tr(\mathcal{A}(u)^m)}{m}z^m\Bigr)
+=\exp\!\Bigl(\sum_{m\ge 1}\sum_{q\ge 1}\frac{S_q(m)}{m}u^q z^m\Bigr)
+=\mathfrak{Z}(z,u).
+\]
+\qed
+\end{proof}
+
+\begin{theorem}[Commutative spectral surface of the two-dimensional recurrence algebra]\label{thm:pom-commutative-spectral-surface}
+Under the hypotheses of Theorem \ref{thm:pom-bivariate-moment-zeta-fredholm}, let
+\[
+D(z,u):=\det(I-z\,\mathcal{A}(u))\in\QQ(z,u),
+\]
+and take a monic polynomial representative \(\widetilde D(z,u)\in\ZZ[z,u]\) after clearing denominators (removing overall common factors).
+Define the algebraic set
+\[
+\mathcal{V}:=\{(z,u)\in\CC^{2}:\ \widetilde D(z,u)=0\}.
+\]
+Then \(\mathcal{V}\) can be viewed as the \textbf{commutative spectral surface} of this bivariate compilation: it compresses the poles/spectrum in the \(m\)-direction (controlled by \(z\)) and the algebraic singularities/recurrence in the \(q\)-direction (controlled by \(u\)) onto the same algebraic certificate \(\widetilde D=0\);
+correspondingly, the shift operators along \(m\) and along \(q\) commute in the coordinate algebra generated by this certificate, thereby collapsing the degrees of freedom of the seemingly ``two-dimensional noncommutative recurrence'' into a commutative finitely-generated algebraic object.
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-bivariate-moment-zeta-fredholm}, \(\mathfrak{Z}=1/D\) is a bivariate rational function, whose zero-pole structure (and thereby the induced two-dimensional linear constraints/elimination relations) is completely characterized by the cleared-denominator polynomial \(\widetilde D\).
+Viewing the shifts along \(m\) and along \(q\) as algebraic actions induced by multiplication and coefficient extraction on \(\QQ[[z,u]]\), the two actions arise from the multiplication action of the commuting variables \(z,u\), and hence remain commutative in the quotient algebra defined by \(\widetilde D\); the maximal spectrum of this quotient algebra is naturally contained in \(\mathcal{V}\).
+\qed
+\end{proof}
+
+\input{sections/body/pom/parts/subsubsec__pom-bivariate-system-identification}
 
 \begin{proposition}[Chernoff-type threshold upper bounds: unified form for counting and pushforward measures]\label{prop:pom-chernoff-threshold-bounds}
 Fix a resolution \(m\) and define the threshold set

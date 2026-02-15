@@ -30,14 +30,14 @@ Write \(S_q(m)=\sum_{x\in X_m} d_m(x)^q\), and let \(a_n:=S_q(n+2)\) (for \(q=2,
 More specifically, there exists a \((2\lfloor q/2\rfloor+1)\times(2\lfloor q/2\rfloor+1)\) Hankel principal minor with nonzero determinant; see Table \ref{tab:fold_collision_moment_hankel_rank}.
 \end{theorem}
 \begin{proof}
-For each \(q\), one directly constructs the Hankel block \(H_0=(a_{i+j})_{0\le i,j<d}\) (where \(d=2\lfloor q/2\rfloor+1\)) and computes its determinant; if \(\det(H_0)\neq 0\) then \(\mathrm{rank}(H)\ge d\). This computation is carried out term by term by the script \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py} and output as an auditable table. \qed
+For each \(q\), one directly constructs the Hankel block \(H_0=(a_{i+j})_{0\le i,j<d}\) (where \(d=2\lfloor q/2\rfloor+1\)) and computes its determinant; if \(\det(H_0)\neq 0\) then \(\mathrm{rank}(H)\ge d\). This computation is carried out term by term by the script \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py} and output as an auditable table. This completes the proof.
 \end{proof}
 
 \begin{corollary}[Minimal realization dimension equals recursion order for higher-order moments (within verified range)]\label{cor:pom-moment-minreal}
 For \(q=4,5,6,7,8\), the recursion orders given in Table \ref{tab:fold_collision_moment_recursions} are \(5,5,7,7,9\) respectively, so there exist linear representations of dimensions \(5,5,7,7,9\) (given by the companion realization of the recursion), whence the Hankel rank satisfies \(\mathrm{rank}(H)\le d\). Combined with the lower bound from Theorem \ref{thm:pom-moment-hankel}, one obtains \(\mathrm{rank}(H)=d\) for these values of \(q\), and any linear realization \(a_n=u^{\mathsf T}A^n v\) has dimension at least \(d\) (equivalently, the minimal state count of any weighted automaton/rational series realization is at least \(d\); see Theorem \ref{thm:hankel-rank-minimal}).
 \end{corollary}
 
-\input{sections/generated/tab_fold_collision_moment_hankel_rank_en}
+\input{sections/generated/tab_fold_collision_moment_hankel_rank}
 
 \begin{remark}[\texorpdfstring{$p$}{p}-adic stiffness fingerprint: \texorpdfstring{$p=5$}{p=5} first appears explicitly in the Hankel certificate at \texorpdfstring{$k=5$}{k=5}]\label{rem:pom-hankel-stiffness-p5}
 The nonzero Hankel principal minor determinants in Table \ref{tab:fold_collision_moment_hankel_rank} not only provide rank lower bounds but also carry a purely internal arithmetic stiffness signal.
@@ -95,8 +95,46 @@ View \(\Fold_\infty\) as a deterministic finite transducer: the input alphabet c
 For fixed \(q\), the constraint ``\(q\) copies have identical output bit-by-bit'' is a local synchronization constraint: it only needs to compare whether the current output symbols agree at each step, and hence remains finite-state recognizable.
 One can therefore form the synchronous direct product of the transducer and apply the ``output-consistency'' filter, obtaining a finite directed graph \(G^{(q)}\).
 The number of legal paths of length \(m\) equals the count of \(R_m^{(q)}\) (i.e., \(S_q(m)\)), which can thus be written in the matrix-power readout form \(u_q^{\mathsf T}A_q^{m-m_0}v_q\) for some nonnegative integer adjacency matrix.
-The linear recursion follows immediately from the Cayley--Hamilton theorem, and its coefficients are integers (since \(A_q\) is an integer matrix). \qed
+The linear recursion follows immediately from the Cayley--Hamilton theorem, and its coefficients are integers (since \(A_q\) is an integer matrix). This completes the proof.
 \end{proof}
+
+\begin{proposition}[Finite-state integrability for fixed \texorpdfstring{$q$}{q}: minimal integer-coefficient recursion and Hankel rank]\label{prop:pom-moment-minrecurrence-hankel}
+For each integer \(q\ge 2\), the sequence \(m\mapsto S_q(m)\) satisfies from some \(m_0\) onward a homogeneous integer-coefficient linear recursion
+\[
+S_q(m)=\sum_{j=1}^{d_q} c_{q,j}\,S_q(m-j)\qquad(m\ge m_0),
+\]
+where \((c_{q,j})\subset\ZZ\) and the order \(d_q\) can be taken to be minimal.
+This minimal order \(d_q\) equals the Hankel rank of the sequence (equivalently, equals the dimension of the minimal linear representation \(a_n=u^{\mathsf T}A^n v\); Theorem \ref{thm:hankel-rank-minimal}), and the minimal recursion is uniquely determined under the ``monic'' convention.
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:pom-moment-kernel-exists}, for fixed \(q\) there exists an integer-matrix realization \(S_q(m)=u_q^{\mathsf T}A_q^{\,m-m_0}v_q\);
+by the Cayley--Hamilton theorem, \(\{S_q(m)\}_{m\ge m_0}\) necessarily satisfies some integer-coefficient constant-coefficient recursion, whence the existence of \(d_q\) is established.
+The equivalence of minimal order with Hankel rank/minimal realization dimension is given by Theorem \ref{thm:hankel-rank-minimal}; the uniqueness of the minimal recursion is a direct consequence of that equivalence characterization (minimal realizations are unique up to isomorphism, hence their annihilator polynomials are unique). This completes the proof.
+\end{proof}
+
+\begin{remark}[Order collapse and \texorpdfstring{$q$}{q}-axis ``non-complexity'']\label{rem:pom-moment-order-collapse-nonmonotone}
+Within the verified range, the minimal order \(d_q\) does not grow monotonically with \(q\): for example \(d_9=7\) (Table \ref{tab:fold_collision_moment_recursions_9_17}), and moreover \(d_{13}=11<d_{12}=13\), \(d_{15}=11<d_{14}=13\) (same table).
+This non-monotonic collapse is consistent with the modal constraint framework of Theorem \ref{thm:pom-moment-resonance}: raising the moment order does not necessarily introduce an equivalent number of new exponential modes; hidden symmetries and algebraic cancellations can force modal mergers, thereby reducing the Hankel-visible dimension.
+Thus in the collision statistics of Fold, the Rényi order \(q\) and the minimal state complexity \(d_q\) are conceptually separable: higher-order moments may expose structural fingerprints of dimension reduction, rather than monotonically raising the ``state count.''
+\end{remark}
+
+\begin{algorithm}[Recursion polynomial as primitive spectral interface of moment-kernel (no matrix extraction)]\label{alg:pom-recurrence-polynomial-spectral-extraction}
+For fixed \(q\ge 2\), given a finite sample \(\{S_q(m)\}\) (of length satisfying \(>\!2d_q\) redundancy), one can recover spectral fingerprints without constructing any realization matrix:
+\begin{enumerate}
+  \item Use the Hankel null-space/Prony--Padé equivalent interface to recover the minimal order \(d_q\) and the recursion coefficients \((c_{q,1},\dots,c_{q,d_q})\);
+  \item Construct the recursion characteristic polynomial
+  \[
+  P_q(\lambda):=\lambda^{d_q}-\sum_{j=1}^{d_q}c_{q,j}\lambda^{d_q-j};
+  \]
+  \item Let \(r_q\) be the Perron root of \(P_q\), and let
+  \(
+  \Lambda_q:=\max\{|\mu|:\ \mu\in\mathrm{Roots}(P_q),\ \mu\ne r_q\}
+  \),
+  then \((r_q,\Lambda_q)\) yields the kernel-version RH fingerprint (\(\beta_q,\delta_q\), etc.; see Remark \ref{rem:pom-collision-kernel-rh-phase});
+  \item For any prime \(p\), the factorization of \(\,P_q(\lambda)\bmod p\) yields a mod \(p\) fingerprint orthogonal to the real spectrum (e.g., the multiplicity staircase law for \((\lambda+1)\); see Remarks \ref{rem:pom-charpoly-mod2-staircase-q2-10} and \ref{rem:pom-charpoly-mod2-shadow}).
+\end{enumerate}
+Thus the recursion polynomial \(P_q\) can be viewed as a more primitive spectral carrier object: the matrix \(A_q\) is merely one realization thereof, not a necessary structure.
+\end{algorithm}
 
 \begin{remark}[Computable symmetric compression: \texorpdfstring{$O(q^2)$}{O(q^2)} orbit representation of the star fiber-product]\label{rem:pom-star-sympress}
 The general compilation pipeline of Proposition \ref{prop:pom-moment-kernel-exists} encounters exponential blowup of the synchronous direct-product state count as \(q\) increases.
@@ -151,7 +189,190 @@ is strictly faithful in counting semantics, so the above construction indeed rea
 The \(q_2\)-fold synchronous direct-product kernel has copy permutation symmetry.
 Taking the quotient by this symmetry (symmetric power quotient kernel) reduces the state space to occupation vectors (histograms); its cardinality is at most
 \(\binom{q_2+d_{q_1}-1}{d_{q_1}-1}\), i.e., the symmetric power dimension upper bound at homogeneous degree \(q_2\).
-By the definition of minimality, \(d_{q_1q_2}\) does not exceed the state dimension of any realization, whence the conclusion follows. \qed
+By the definition of minimality, \(d_{q_1q_2}\) does not exceed the state dimension of any realization, whence the conclusion follows. This completes the proof.
+\end{proof}
+
+\paragraph{Symmetric power lifting and structural instability of kernel-version RH: first-variation amplification and excitation filtering thresholds}
+Proposition \ref{prop:pom-factorized-sympower-upper-bound} provides a natural route of ``factorwise compilation \(\Rightarrow\) symmetric power quotient compression'': it is benign in dimension (polynomial states) but not conservative in spectral bounds.
+The following result shows that, except in the spectral-rank-one degenerate case, the symmetric power lifting \(\mathrm{Sym}^b\) will amplify any non-Perron mode to eventually cross the square-root bound; thus if high-order moment-kernel construction relies solely on ``occupation-number symmetric power quotient,'' the kernel-version RH cannot be maintained under the multiplicative lifting \(b\to\infty\).
+
+\begin{theorem}[Instability of the square-root spectral bound under symmetric power: eventual violation of kernel-version RH except for spectral rank one]\label{thm:pom-sympower-sqrt-bound-instability}
+Let \(A\) be a primitive nonnegative matrix with Perron root \(\rho:=\rho(A)>1\), and write the non-Perron spectral radius
+\[
+\eta:=\max\bigl\{|\mu|:\ \mu\in\mathrm{spec}(A),\ \mu\ne \rho\bigr\}.
+\]
+For an integer \(b\ge 2\), write \(\mathrm{Sym}^b(A)\) for the induced operator on the \(b\)-th symmetric power representation (whose Perron root is \(\rho^b\)).
+If \(\eta>0\), then there exists an integer \(b_0\ge 2\) such that for all \(b\ge b_0\),
+\[
+\max\bigl\{|\lambda|:\ \lambda\in\mathrm{spec}(\mathrm{Sym}^b(A)),\ \lambda\ne\rho^b\bigr\}\ >\ \sqrt{\rho^b},
+\]
+i.e., the symmetric power eventually violates the square-root spectral bound of kernel-version RH (the homologous condition of Definition \ref{def:kernel-rh}).
+\end{theorem}
+\begin{proof}
+Take the Perron eigenvector \(u\) of \(A\) and an eigenvector \(v\) for an eigenvalue \(\mu\ne\rho\) satisfying \(|\mu|=\eta\).
+Then on the tensor power \(A^{\otimes b}\), the vector \(u^{\otimes(b-1)}\otimes v\) is an eigenvector with eigenvalue \(\rho^{b-1}\mu\).
+Symmetrizing it yields \(u^{\odot(b-1)}\odot v\), which is nonzero and belongs to the symmetric power subrepresentation, whence
+\(\rho^{b-1}\mu\in\mathrm{spec}(\mathrm{Sym}^b(A))\).
+Thus
+\[
+\max_{\lambda\ne\rho^b}|\lambda|\ \ge\ \rho^{b-1}\eta.
+\]
+On the other hand, \(\sqrt{\rho^b}=\rho^{b/2}\).
+If \(\eta>0\), then \(\rho^{b-1}\eta>\rho^{b/2}\) is equivalent to \(\eta\,\rho^{b/2-1}>1\), which holds for sufficiently large \(b\), whence the conclusion follows. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Sole stable class: kernel-version RH holds on all symmetric powers if and only if spectral rank-one degeneration]\label{cor:pom-sympower-sqrt-bound-stable-iff-spectral-rankone}
+Under the setup of Theorem \ref{thm:pom-sympower-sqrt-bound-instability}, the following statements are equivalent:
+\begin{enumerate}
+  \item For all \(b\ge 2\), \(\mathrm{Sym}^b(A)\) satisfies the square-root spectral bound;
+  \item \(\eta=0\);
+  \item \(\mathrm{spec}(A)\subseteq\{\rho,0\}\) (the nonzero spectrum contains only the Perron root, spectral rank-one degeneration).
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\((2)\Leftrightarrow(3)\) follows by definition.
+For \((2)\Rightarrow(1)\), when \(\eta=0\), the non-Perron spectrum of \(\mathrm{Sym}^b(A)\) is entirely zero, so the square-root spectral bound holds trivially.
+For \((1)\Rightarrow(2)\), taking the contrapositive is given by Theorem \ref{thm:pom-sympower-sqrt-bound-instability}. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Functorial kernel-version RH impossibility: multiplicatively closed Perron-faithful subchains have finite-order rupture except for spectral rank one]\label{thm:pom-functorial-kernel-rh-impossibility}
+Let \(A\in\RR^{d\times d}\) be a primitive nonnegative matrix with Perron root \(\rho>1\), and take a Perron eigenvector \(u\succ0\).
+For each integer \(b\ge 1\), let \(V_b\subseteq \mathrm{Sym}^b(\RR^d)\) be a subspace satisfying:
+\begin{enumerate}
+  \item \textbf{(Perron line fidelity)} \(u^{\odot b}\in V_b\);
+  \item \textbf{(Multiplicative closure)} For all \(b\ge 2\) and all \(v\in V_1\), \(u^{\odot(b-1)}\odot v\in V_b\);
+  \item \textbf{(Invariance)} \(V_b\) is invariant under \(\mathrm{Sym}^b(A)\). Write the restriction operator \(B_b:=\mathrm{Sym}^b(A)|_{V_b}\), and write
+  \[
+  \eta(B_b):=\max\bigl\{|\lambda|:\ \lambda\in\mathrm{spec}(B_b),\ \lambda\ne \rho(B_b)\bigr\}.
+  \]
+\end{enumerate}
+Then if \(\eta(B_1)>0\) (i.e., \(B_1\) is not spectral-rank-one degenerate), there exists a finite \(b_0\) such that \(B_{b_0}\) violates the square-root spectral bound of kernel-version RH:
+\[
+\eta(B_{b_0})\ >\ \rho(B_{b_0})^{1/2}=\rho^{b_0/2}.
+\]
+Equivalently: if for all \(b\ge 1\) we have \(\eta(B_b)\le \rho(B_b)^{1/2}\), then necessarily \(\eta(B_1)=0\), whence \(B_1\) spectrally degenerates to Perron line \(\oplus\) zero spectrum.
+\end{theorem}
+\begin{proof}
+From \(u^{\odot b}\in V_b\) and the invariance of \(V_b\), we know \(u^{\odot b}\) is an eigenvector of \(B_b\) with eigenvalue \(\rho^b\), hence \(\rho(B_b)=\rho^b\).
+\par
+If \(\eta(B_1)>0\), take some eigenvalue \(\mu\ne\rho\) of \(B_1\) satisfying \(|\mu|=\eta(B_1)\), with corresponding eigenvector \(v\in V_1\).
+By multiplicative closure, \(u^{\odot(b-1)}\odot v\in V_b\).
+Moreover,
+\[
+\mathrm{Sym}^b(A)\bigl(u^{\odot(b-1)}\odot v\bigr)
+=(Au)^{\odot(b-1)}\odot(Av)
+=(\rho u)^{\odot(b-1)}\odot(\mu v)
+=\rho^{b-1}\mu\,(u^{\odot(b-1)}\odot v),
+\]
+whence \(\rho^{b-1}\mu\in\mathrm{spec}(B_b)\).
+Thus
+\[
+\eta(B_b)\ \ge\ \rho^{b-1}|\mu|=\rho^{b-1}\eta(B_1).
+\]
+Comparing with \(\rho(B_b)^{1/2}=\rho^{b/2}\), we see
+\(
+\eta(B_b)>\rho^{b/2}
+\)
+if and only if \(\eta(B_1)\rho^{b/2-1}>1\), which holds for sufficiently large \(b\).
+Taking any \(b_0\) satisfying this inequality yields the conclusion. This completes the proof.
+\end{proof}
+
+\begin{definition}[First-variation sector and faithful compilation]\label{def:pom-first-variation-sector}
+Let \(A\) be a primitive nonnegative matrix with Perron root \(\rho\), and take a Perron eigenvector \(u\).
+For an integer \(b\ge 2\), define the \textbf{first-variation sector} in the symmetric power:
+\[
+\mathcal{E}^{(1)}_{b}(A):=
+\mathrm{span}\Bigl\{u^{\odot(b-1)}\odot v:\ v\in \ker(A-\mu I),\ \mu\in\mathrm{spec}(A)\setminus\{\rho\}\Bigr\}.
+\]
+Here \(\odot\) denotes the symmetric tensor product (equivalently: the product after taking the symmetrization projection on the tensor product).
+If there exists a surjective intertwiner \(\Pi:\mathrm{Sym}^b(A)\twoheadrightarrow B\) such that \(\Pi\circ \mathrm{Sym}^b(A)=B\circ\Pi\),
+then this compilation is called \textbf{first-variation faithful} at order \(b\) if \(\Pi\) is not identically zero on \(\mathcal{E}^{(1)}_{b}(A)\).
+\end{definition}
+
+\begin{theorem}[First-variation fidelity \texorpdfstring{$\Rightarrow$}{=>} high-order kernel-version RH impossibility: fatal amplification under MOM multiplicative lifting]\label{thm:pom-first-variation-fidelity-rh-breaking}
+Fix an integer \(a\ge 1\).
+Let \(A_a\) be a primitive nonnegative matrix, write \(\rho_a:=\rho(A_a)>1\) and \(\eta_a:=\max_{\mu\ne\rho_a}|\mu|>0\).
+For each integer \(b\ge 2\), suppose there exists a surjective intertwiner
+\[
+\Pi_{a,b}:\mathrm{Sym}^b(A_a)\twoheadrightarrow A_{ab}
+\]
+satisfying \(\Pi_{a,b}\circ \mathrm{Sym}^b(A_a)=A_{ab}\circ \Pi_{a,b}\), and suppose this compilation is first-variation faithful at order \(b\) (Definition \ref{def:pom-first-variation-sector}).
+Then there exists an integer \(b_0\ge 2\) such that for all \(b\ge b_0\) (satisfying fidelity), we have
+\[
+\max\bigl\{|\lambda|:\ \lambda\in\mathrm{spec}(A_{ab}),\ \lambda\ne\rho(A_{ab})\bigr\}\ >\ \sqrt{\rho(A_{ab})},
+\]
+i.e., the \(ab\)-body kernel necessarily violates the square-root spectral bound of kernel-version RH.
+\end{theorem}
+\begin{proof}
+Take the Perron eigenvector \(u_a\) of \(A_a\). By first-variation fidelity, there exists an eigenvector \(v\) for \(\mu\in\mathrm{spec}(A_a)\setminus\{\rho_a\}\) such that
+\(\Pi_{a,b}(u_a^{\odot(b-1)}\odot v)\ne 0\).
+By the intertwiner relation, this image vector is an eigenvector of \(A_{ab}\) with eigenvalue \(\rho_a^{b-1}\mu\).
+Thus
+\[
+\max_{\lambda\ne\rho(A_{ab})}|\lambda|
+\ \ge\
+|\rho_a^{b-1}\mu|
+\ \ge\
+\rho_a^{b-1}\eta_a.
+\]
+On the other hand, in the moment-counting framework of this paper, we always have \(S_{ab}(m)\le S_a(m)^b\), whence the exponential rate satisfies
+\(\rho(A_{ab})\le \rho(A_a)^b=\rho_a^b\).
+Thus
+\(
+\sqrt{\rho(A_{ab})}\le \rho_a^{b/2}
+\).
+Altogether,
+\[
+\frac{\max_{\lambda\ne\rho(A_{ab})}|\lambda|}{\sqrt{\rho(A_{ab})}}
+\ \ge\
+\eta_a\,\rho_a^{b/2-1}\ \xrightarrow[b\to\infty]{}\ +\infty,
+\]
+hence for sufficiently large \(b\) this is necessarily greater than \(1\), yielding the stated crossing. This completes the proof.
+\end{proof}
+
+\begin{theorem}[Linear excitation filtering lower bound: to maintain kernel-version RH on symmetric power subquotients, one must eliminate a linear proportion of low-excitation sectors]\label{thm:pom-excitation-filter-linear-bound}
+Fix a primitive nonnegative \(A\), write \(\rho=\rho(A)>1\), \(\eta=\max_{\mu\ne\rho}|\mu|\in(0,\rho)\).
+For each \(b\ge 2\), let \(B_b\) be some nonzero subquotient of \(\mathrm{Sym}^b(A)\), and write \(\rho(B_b)\le \rho^b\).
+Define the ``minimal surviving excitation count'' \(k_b\) to be the smallest integer satisfying the property: the spectrum of \(B_b\) contains an eigenvalue \(\lambda\) such that
+\[
+|\lambda|\ \ge\ \rho^{\,b-k_b}\eta^{\,k_b}.
+\]
+If \(B_b\) satisfies kernel-version RH (i.e., its non-Perron spectral radius \(\le \sqrt{\rho(B_b)}\)), then necessarily
+\[
+\boxed{\;
+k_b\ \ge\ \frac{b}{2}\cdot \frac{\log\rho}{\log(\rho/\eta)}\; }.
+\]
+In particular, \(k_b=\Omega(b)\).
+Moreover, in the RH-sharp case \(\eta=\sqrt{\rho}\), the above formula forces \(k_b\ge b\), i.e., one must eliminate all non-Perron excitations (leaving only the Perron line).
+\end{theorem}
+\begin{proof}
+By the definition of \(k_b\), there exists a surviving mode satisfying \(|\lambda|\ge \rho^{b-k_b}\eta^{k_b}\).
+Kernel-version RH requires \(|\lambda|\le \sqrt{\rho(B_b)}\le \rho^{b/2}\), hence
+\[
+\rho^{b-k_b}\eta^{k_b}\ \le\ \rho^{b/2}.
+\]
+Simplifying yields \((\eta/\rho)^{k_b}\le \rho^{-b/2}\).
+Taking logarithms and noting \(\log(\eta/\rho)=-\log(\rho/\eta)<0\), we obtain the stated lower bound.
+The RH-sharp case substitutes \(\log(\rho/\eta)=\tfrac12\log\rho\) to get \(k_b\ge b\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Occupation-number symmetric power quotient alone \texorpdfstring{$\Rightarrow$}{=>} high-order RH necessarily ruptures; infinite kernel RH \texorpdfstring{$\Rightarrow$}{=>} linear excitation filtering selector family]\label{thm:pom-occupancy-symquotient-rh-obstruction}
+Fix \(a\ge 1\) and suppose \(A_a\) is primitive, \(\rho(A_a)>1\) and \(\eta(A_a)>0\).
+\begin{enumerate}
+  \item \textbf{(Occupation-number symmetric power quotient alone \(\Rightarrow\) high-order RH necessarily ruptures)}
+  If the realization of \(A_{ab}\) is given solely by the ``occupation-number symmetric power quotient'' (i.e., only taking quotient by permutation symmetry, without introducing additional \(b\)-dependent projection/selector subfamilies to eliminate low-excitation sectors),
+  then there exists \(b_0\) such that for all \(b\ge b_0\), \(A_{ab}\) necessarily violates the square-root spectral bound of kernel-version RH.
+  \item \textbf{(Infinite kernel RH \(\Rightarrow\) linear excitation filtering selector family)}
+  If kernel-version RH is required to hold simultaneously for all \(b\ge 2\) with fixed \(a\), then unless \(\eta(A_a)=0\) (spectral rank-one degeneration), one must introduce a family of selectors/projections \(P_{a,b}\) growing with \(b\), such that in \(\mathrm{Sym}^b(A_a)\) at least all sectors with excitation count \(<k_b\) are eliminated, where \(k_b\) satisfies the linear lower bound of Theorem \ref{thm:pom-excitation-filter-linear-bound}.
+  In protocol semantics, this is equivalent to appending an external ``selector axis'' specifying \(b\)-dependent filtering thresholds and retained components (i.e., an oracle-ized compilation layer).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Point 1: In an implementation using only the occupation-number symmetric power quotient, \(A_{ab}\) is given by the standard quotient representation (occupation-number/histogram state space) of \(\mathrm{Sym}^b(A_a)\), hence there exists a natural quotient map as a surjective intertwiner.
+This quotient map is nonzero on the first-variation vector \(u_a^{\odot(b-1)}\odot v\) (for \(v\) any non-Perron eigenvector), so first-variation fidelity holds for infinitely many (in fact, for all) \(b\). By Theorem \ref{thm:pom-first-variation-fidelity-rh-breaking}, high-order crossing occurs.
+\par
+Point 2: If kernel-version RH holds simultaneously for all \(b\), then any visible/surviving non-Perron mode must satisfy the linear threshold of Theorem \ref{thm:pom-excitation-filter-linear-bound}; hence one must introduce filtering projections growing with \(b\) to eliminate all low-excitation sectors.
+When \(b\) is unbounded, the threshold \(k_b\) grows without bound, so this projection family carries external selector information growing with scale; in the audit protocol language of this paper, it can be viewed as an oracle-ized compilation layer. This completes the proof.
 \end{proof}
 
 \paragraph{From \texorpdfstring{$r_q$}{r\_q} to pressure and the ``fiber multiplicity spectrum'': strict convex-conjugate upper bound}

@@ -85,3 +85,274 @@ Apply Proposition \ref{prop:finite-part-residue-reduced-determinant} separately 
 then take logarithms and subtract. \qed
 \end{proof}
 
+When the moment-kernel realization possesses a natural permutation symmetry induced by the \(q\)-fold fiber-product semantics (the factor permutation \(\mathfrak{S}_q\) action),
+the reduced determinant can be further decomposed in the representation-theoretic sense as a product of irreducible channel factors, thereby lifting the constant-level drift to auditable coordinates channel by channel.
+
+\begin{proposition}[\texorpdfstring{$(\mathfrak{S}_q)$}{(Sq)}-equivariant reduced determinant channel factorization]\label{prop:finite-part-reduced-determinant-sq-channel-factorization}
+Fix an integer \(q\ge 2\) and parameter \(\theta\).
+Suppose the state space of \(A^{(q)}_\theta\) carries a linear \(\mathfrak{S}_q\)-action that commutes with \(A^{(q)}_\theta\); equivalently, there exists an \(\mathfrak{S}_q\)-equivariant decomposition
+\[
+A^{(q)}_\theta\ \cong\ \bigoplus_{\lambda\vdash q}\bigl(B_{q,\lambda}\otimes I_{f^\lambda}\bigr),
+\qquad f^\lambda:=\dim S^\lambda,
+\]
+where \(\lambda\) runs over partitions of \(q\), \(S^\lambda\) is the corresponding Specht module, and \(B_{q,\lambda}\) acts on the \(\lambda\)-equivariant multiplicity space.
+Write \(\rho_q:=\rho(A^{(q)}_\theta)\).
+Then the following strict identity holds:
+\[
+\det\!\left(I-\frac{A^{(q)}_\theta}{\rho_q}\right)
+\;=\;
+\prod_{\lambda\vdash q}\det\!\left(I-\frac{B_{q,\lambda}}{\rho_q}\right)^{f^\lambda}.
+\]
+Furthermore, by primitivity the Perron eigenvalue \(\rho_q\) is simple and its eigenvector is \(\mathfrak{S}_q\)-invariant,
+so the normalized spectral point \(1\) occurs only in the trivial partition \(\lambda=(q)\) channel; hence the reduced determinant satisfies
+\[
+\det\nolimits'\!\left(I-\frac{A^{(q)}_\theta}{\rho_q}\right)
+=
+\det\nolimits'\!\left(I-\frac{B_{q,(q)}}{\rho_q}\right)\cdot
+\prod_{\lambda\vdash q,\ \lambda\neq(q)}
+\det\!\left(I-\frac{B_{q,\lambda}}{\rho_q}\right)^{f^\lambda}.
+\]
+Correspondingly, the leading-pole residue constant decomposes as
+\[
+\log C_q(\theta)
+=
+\log C_{q,(q)}(\theta)
+\;+\;
+\sum_{\lambda\vdash q,\ \lambda\neq(q)}
+f^\lambda\,\log\det\!\left(I-\frac{B_{q,\lambda}}{\rho_q}\right)^{-1},
+\]
+where
+\(
+C_{q,(q)}(\theta):=\det\nolimits'\!\left(I-\frac{B_{q,(q)}}{\rho_q}\right)^{-1}
+\).
+\end{proposition}
+\begin{proof}
+By equivariant decomposition and multiplicativity of the determinant under direct sums/tensor products,
+\[
+\det(I-zA^{(q)}_\theta)=\prod_{\lambda\vdash q}\det(I-zB_{q,\lambda})^{f^\lambda},
+\]
+taking \(z=\rho_q^{-1}\) yields the first identity.
+Since \(A^{(q)}_\theta\) is primitive, the Perron eigenvalue is simple and the corresponding eigenvector is strictly positive everywhere, hence remains invariant under permutation action;
+thus \(1\) (in the spectrum of \(A^{(q)}_\theta/\rho_q\)) appears only in the trivial channel, and all nontrivial channels satisfy \(\rho(B_{q,\lambda})<\rho_q\), so \(\det(I-B_{q,\lambda}/\rho_q)\neq 0\).
+Hence reduction occurs only in the \(\lambda=(q)\) factor, yielding the reduced determinant decomposition; taking logarithms gives the expression for \(\log C_q(\theta)\). \qed
+\end{proof}
+
+\begin{corollary}[Additive decomposition of constant-level moment anomaly into irreducible channels]\label{cor:finite-part-moment-anomaly-channel-additivity}
+Under the setting of Proposition \ref{prop:finite-part-reduced-determinant-sq-channel-factorization},
+for each nontrivial channel \(\lambda\vdash q\), \(\lambda\neq(q)\) define
+\[
+\Phi_{q,\lambda}(\theta)
+:=
+\log\det\!\left(I-\frac{B_{q,\lambda}}{\rho_q}\right)^{-1}.
+\]
+Then the constant-level moment anomaly (Definition \ref{cor:finite-part-moment-anomaly-reduced-determinant-ratio}) satisfies
+\[
+\mathsf{Anom}^{(q)}_{\mathrm{res}}(\theta)
+=
+\Bigl(\log C_{q,(q)}(\theta)-q\log C_1(\theta)\Bigr)
+\;+\;
+\sum_{\lambda\vdash q,\ \lambda\neq(q)} f^\lambda\,\Phi_{q,\lambda}(\theta).
+\]
+Hence the constant-level drift can be strictly decomposed into the scale-difference term of the trivial channel plus the auditable contributions from each nontrivial \(\mathfrak{S}_q\) channel.
+\end{corollary}
+\begin{proof}
+Substitute the decomposition of \(\log C_q(\theta)\) from Proposition \ref{prop:finite-part-reduced-determinant-sq-channel-factorization} into
+\(
+\mathsf{Anom}^{(q)}_{\mathrm{res}}(\theta)=\log C_q(\theta)-q\log C_1(\theta)
+\). \qed
+\end{proof}
+
+\begin{theorem}[Constant-level gradient audit formula via reduced resolvent (group inverse)]\label{thm:finite-part-reduced-determinant-group-inverse-gradient}
+Let \(A(\theta)\) be a family of primitive nonnegative matrices, \(\theta\in\RR^k\) smooth, with Perron root denoted \(\rho(\theta)\).
+Take left and right Perron vectors \(r(\theta),\ell(\theta)\) satisfying
+\(
+A(\theta)r(\theta)=\rho(\theta)r(\theta)
+\),
+\(
+\ell(\theta)^\top A(\theta)=\rho(\theta)\ell(\theta)^\top
+\)
+and normalized so that \(\ell(\theta)^\top r(\theta)=1\).
+Write the spectral projection \(P(\theta):=r(\theta)\ell(\theta)^\top\), and define the reduced resolvent (group inverse/Drazin inverse)
+\[
+R(\theta):=\Bigl(I-\frac{A(\theta)}{\rho(\theta)}\Bigr)^{\#},
+\qquad
+\Bigl(I-\frac{A}{\rho}\Bigr)R=R\Bigl(I-\frac{A}{\rho}\Bigr)=I-P,\quad RP=PR=0.
+\]
+Define the constant-level function
+\[
+\Phi(\theta):=\log C(A(\theta))
+=
+-\log\det\nolimits'\!\Bigl(I-\frac{A(\theta)}{\rho(\theta)}\Bigr).
+\]
+Then for any directional derivative \(\partial_\theta\) the following holds:
+\[
+\boxed{\;
+\partial_\theta \Phi(\theta)
+=
+\mathrm{Tr}\!\left(
+R(\theta)\left(
+\frac{\partial_\theta A(\theta)}{\rho(\theta)}
+-\frac{\partial_\theta\rho(\theta)}{\rho(\theta)^2}A(\theta)
+\right)\right),\qquad
+\partial_\theta\rho(\theta)=\ell(\theta)^\top(\partial_\theta A(\theta))\,r(\theta)\; }.
+\]
+If furthermore \(A(\theta)=A_0+\sum_{j=1}^{k}\theta_jE_j\) is linear in edge weights, then
+\[
+\boxed{\;
+\partial_{\theta_j}\Phi(\theta)
+=
+\frac{1}{\rho(\theta)}\,\mathrm{Tr}\!\bigl(R(\theta)E_j\bigr)
+-\frac{\ell(\theta)^\top E_j r(\theta)}{\rho(\theta)^2}\,
+\mathrm{Tr}\!\bigl(R(\theta)A(\theta)\bigr)\; }.
+\]
+\end{theorem}
+\begin{proof}
+Write \(B(\theta):=I-A(\theta)/\rho(\theta)\).
+Since \(A(\theta)\) is primitive, \(B(\theta)\) has a single zero eigenvalue in the Perron direction and all other spectral points are nonzero, so the group inverse \(B(\theta)^{\#}=R(\theta)\) exists and satisfies the stated identities.
+On the reduced subspace \((I-P)\RR^d\), \(\det\nolimits'(B(\theta))\) equals the product of nonzero spectrum of \(B(\theta)\); its logarithmic derivative satisfies
+\(
+\partial_\theta\log\det\nolimits'(B)=\mathrm{Tr}(B^{\#}\partial_\theta B)
+\).
+Differentiate \(\Phi(\theta)=-\log\det\nolimits'(B(\theta))\) and substitute
+\(
+\partial_\theta B=-(\partial_\theta A)/\rho+(\partial_\theta\rho)A/\rho^2
+\)
+to obtain the first formula; the second formula is just the expansion after substituting \(\partial_{\theta_j}A=E_j\). \qed
+\end{proof}
+
+\begin{corollary}[Componentwise elimination of channelized constant terms and minimal elimination order]\label{cor:finite-part-channel-elimination-lcm}
+Under the setting of Proposition \ref{prop:finite-part-reduced-determinant-sq-channel-factorization},
+one can lift the constant-level drift to a channel-wise vector
+\[
+\boldsymbol{\Phi}_q(\theta):=\bigl(\Phi_{q,\lambda}(\theta)\bigr)_{\lambda\vdash q,\ \lambda\neq(q)}.
+\]
+Then \(\boldsymbol{\Phi}_q(\theta)=0\) if and only if \(\Phi_{q,\lambda}(\theta)=0\) for all \(\lambda\neq(q)\).
+If these channel quantities take values in some torus-type abelian group (e.g., coordinate components of \((\RR/2\pi\ZZ)^r\)), and for each channel one defines its order \(\mathrm{ord}(\Phi_{q,\lambda}(\theta))\) (if it exists), then the minimal positive integer that simultaneously eliminates all channels is
+\[
+\boxed{\;
+q_\star=\mathrm{lcm}_{\lambda\vdash q,\ \lambda\neq(q)}\ \mathrm{ord}\bigl(\Phi_{q,\lambda}(\theta)\bigr)\; }.
+\]
+\end{corollary}
+\begin{proof}
+The first statement is componentwise criterion in direct product groups.
+The second is the standard least common multiple law for the common elimination order of finitely many torsion elements in an abelian group. \qed
+\end{proof}
+
+\begin{theorem}[Local separability of exponential defect and constant defect: double audit axes on the same kernel]\label{thm:finite-part-exp-fin-double-threshold-separation}
+Let \(A(\theta)\) be a family of primitive nonnegative matrices, \(\rho(\theta)\) the Perron root, and write
+\[
+\Lambda(\theta):=\max\{|\mu|:\ \mu\in\mathrm{spec}(A(\theta)),\ \mu\neq \rho(\theta)\}.
+\]
+Define two types of audit quantities:
+\[
+\Delta(\theta):=\log\!\Bigl(\frac{\Lambda(\theta)^2}{\rho(\theta)}\Bigr),
+\qquad
+\Phi(\theta):=\log C(A(\theta)).
+\]
+Assume that near some point \(\theta_0\), \(\Lambda(\theta)\) is realized by a simple non-Perron eigenvalue (or a simple conjugate pair), so that \(\Delta\) and \(\Phi\) are differentiable at \(\theta_0\).
+Then the following two statements are equivalent:
+\begin{enumerate}
+  \item There exist directions \(v_{\mathrm{exp}},v_{\mathrm{fin}}\in T_{\theta_0}\RR^k\) such that
+  \[
+  D\Delta(\theta_0)[v_{\mathrm{fin}}]=0,\ \ D\Phi(\theta_0)[v_{\mathrm{fin}}]\neq 0;
+  \qquad
+  D\Phi(\theta_0)[v_{\mathrm{exp}}]=0,\ \ D\Delta(\theta_0)[v_{\mathrm{exp}}]\neq 0.
+  \]
+  \item The linear functionals \(D\Delta(\theta_0)\) and \(D\Phi(\theta_0)\) are not collinear in the dual space \((T_{\theta_0}\RR^k)^\ast\).
+\end{enumerate}
+Hence under generic parametrization, the ``square-root bound/near-RH exponential threshold'' (measured by \(\Delta\)) and the ``finite-part constant drift'' (measured by \(\Phi\)) are two independently controllable audit axes on the same kernel;
+moreover \(D\Phi\) can be completely finite-dimensionalized via the reduced resolvent trace-type formula of Theorem \ref{thm:finite-part-reduced-determinant-group-inverse-gradient}.
+\end{theorem}
+\begin{proof}
+If \(D\Delta(\theta_0)\) and \(D\Phi(\theta_0)\) are not collinear, then \(\ker D\Delta(\theta_0)\not\subseteq \ker D\Phi(\theta_0)\) and \(\ker D\Phi(\theta_0)\not\subseteq \ker D\Delta(\theta_0)\);
+taking \(v_{\mathrm{fin}}\in \ker D\Delta(\theta_0)\setminus \ker D\Phi(\theta_0)\) and \(v_{\mathrm{exp}}\in \ker D\Phi(\theta_0)\setminus \ker D\Delta(\theta_0)\) yields (1).
+Conversely if (1) holds, the two kernels do not contain each other, so the two linear functionals are not collinear. \qed
+\end{proof}
+
+\begin{corollary}[Design principle: exponential threshold and constant drift require simultaneous control of two sets of spectral data]\label{cor:finite-part-double-threshold-design-principle}
+Under the setting of Theorem \ref{thm:finite-part-exp-fin-double-threshold-separation},
+if the goal is to simultaneously achieve \(\Delta(\theta)\le 0\) (square-root bound) and \(\Phi(\theta)=0\) (constant level without drift),
+then one must simultaneously control two sets of non-equivalent spectral sensitivity data: one set determined by perturbations of the boundary-achieving non-Perron modes (controlling the first-order term of \(\Delta\)), the other set determined by the reduced resolvent trace-type functional (controlling the first-order term of \(\Phi\)).
+When \(\mathfrak{S}_q\) channelization is available, the latter further reduces to elimination of the channel-wise \(\Phi_{q,\lambda}\) (Corollary \ref{cor:finite-part-channel-elimination-lcm}).
+\end{corollary}
+
+\begin{proposition}[Kernel-RH-imposed residue constant squeeze bound: dimension \texorpdfstring{$\times$}{x} square-root gap]\label{prop:finite-part-residue-constant-rh-squeeze}
+Let \(A\) be a primitive nonnegative matrix, \(\rho=\rho(A)>1\), dimension \(d:=\dim A\), and define the leading-pole residue constant \(C(A)\) using the notation of Proposition \ref{prop:finite-part-residue-reduced-determinant}.
+If the kernel-RH (square-root bound) holds, i.e., for all non-Perron eigenvalues \(\mu\neq\rho\) we have \(|\mu|\le \rho^{1/2}\), then there is a two-sided bound
+\[
+(1+\rho^{-1/2})^{-(d-1)}\ \le\ C(A)\ \le\ (1-\rho^{-1/2})^{-(d-1)}.
+\]
+In particular, when \(\rho\ge 4\) (so \(\rho^{-1/2}\le \tfrac12\)), we have the crude bound
+\[
+|\log C(A)|\ \le\ 2(d-1)\rho^{-1/2}.
+\]
+\end{proposition}
+
+\begin{proof}
+By Proposition \ref{prop:finite-part-residue-reduced-determinant},
+\(
+C(A)=\prod_{j=2}^{d}(1-\mu_j/\rho)^{-1}
+\) (\(\mu_1=\rho\)).
+The spectrum of a primitive nonnegative matrix is closed under conjugation, so \(C(A)>0\) and
+\(
+C(A)=\prod_{j=2}^{d}|1-\mu_j/\rho|^{-1}
+\).
+Under \(|\mu_j|/\rho\le \rho^{-1/2}\) we have
+\(
+1-\rho^{-1/2}\le |1-\mu_j/\rho|\le 1+\rho^{-1/2}
+\), multiplying term by term yields the two-sided bound.
+When \(\rho^{-1/2}\le\tfrac12\), using \(\log(1-x)^{-1}\le 2x\) (\(0<x\le\tfrac12\)) and \(\log(1+x)\le x\le 2x\) yields
+\[
+-(d-1)\log(1+\rho^{-1/2})
+\ \le\ \log C(A)\ \le\ (d-1)\log(1-\rho^{-1/2})^{-1},
+\]
+hence \(|\log C(A)|\le 2(d-1)\rho^{-1/2}\). \qed
+\end{proof}
+
+\begin{theorem}[Anomaly--RH--dimension trichotomy: linear residue drift forces RH breakdown or dimension explosion]\label{thm:finite-part-residue-drift-trichotomy}
+For some moment-kernel family \(\{A^{(q)}_\theta\}_{q\ge 2}\) (\(\theta\) fixed), write
+\(\rho_q:=\rho(A^{(q)}_\theta)\), \(d_q:=\dim A^{(q)}_\theta\) and \(C_q(\theta):=C(A^{(q)}_\theta)\).
+Assume there exists a constant \(c>1\) such that \(\rho_q\ge c^q\) for all sufficiently large \(q\), and assume subexponential dimension growth
+\[
+\log d_q=o(q)\qquad(q\to\infty).
+\]
+If the kernel-RH holds for all sufficiently large \(q\), then necessarily
+\[
+\log C_q(\theta)=o(q)\qquad(q\to\infty).
+\]
+Hence, any ``linear residue drift'' phenomenon satisfying
+\[
+\liminf_{q\to\infty}\frac{1}{q}\,|\log C_q(\theta)|>0
+\]
+necessarily forces one of the following two to occur:
+\begin{enumerate}
+  \item There exists some finite \(q\) for which the kernel-RH fails;
+  \item \(d_q\) cannot maintain subexponential growth and must enter the exponential growth regime.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By Proposition \ref{prop:finite-part-residue-constant-rh-squeeze}, when \(q\) is sufficiently large so that \(\rho_q\ge 4\) we have
+\(
+|\log C_q(\theta)|\le 2(d_q-1)\rho_q^{-1/2}
+\le 2d_q\,c^{-q/2}
+\).
+Under \(\log d_q=o(q)\), the right side is \(o(q)\), so \(\log C_q(\theta)=o(q)\).
+If \(\liminf_{q\to\infty}\frac{1}{q}|\log C_q(\theta)|>0\) still holds, this contradicts the \(o(q)\) conclusion; hence only (1) or (2) can occur. \qed
+\end{proof}
+
+\begin{corollary}[Oracle--anomaly equivalence: nonzero anomaly must appear via ``finite witness'' or ``dimension explosion'']\label{cor:finite-part-oracle-anomaly-equivalence}
+In the present \(\mathbf{PW}\) semantics, suppose some ``anomaly quantity'' exhibits linear scaling under \(q\)-fold moment amplification, and its spectral-side witness can be reduced to a linear lower bound on residue constant drift, i.e., there exists a constant \(\alpha>0\) such that
+\[
+|\mathsf{Anom}(q)|\not\equiv 0
+\quad\Longrightarrow\quad
+\liminf_{q\to\infty}\frac{1}{q}\,|\log C_q(\theta)|\ge \alpha.
+\]
+Then if this anomaly quantity is nonzero, one and only one of the following must occur: there exists a finite-order \(q\) kernel-RH counterexample witness; or \(d_q\) must grow at least exponentially, so the infinite-kernel property can only be expressed via oracle-like infinite family checks (or external mode axes).
+\end{corollary}
+
+\begin{proof}
+By hypothesis, nonzero anomaly forces \(|\log C_q(\theta)|\) to exhibit linear drift.
+Under the standard scale assumptions of \(\rho_q\ge c^q\) and \(d_q\) subexponential growth, Theorem \ref{thm:finite-part-residue-drift-trichotomy} immediately yields the dichotomy. \qed
+\end{proof}
+

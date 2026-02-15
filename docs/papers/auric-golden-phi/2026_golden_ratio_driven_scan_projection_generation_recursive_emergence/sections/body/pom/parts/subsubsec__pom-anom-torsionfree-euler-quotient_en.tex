@@ -21,8 +21,115 @@ If \([\mathrm{Anom}(w)]=0\) then the right-hand side is zero, hence \([\mathrm{A
 Conversely, if \([\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=0\), then \(q\,[\mathrm{Anom}(w)]=0\), and the torsion-free property yields \([\mathrm{Anom}(w)]=0\). \qed
 \end{proof}
 
-\begin{corollary}[Unbounded amplification of nonzero anomalies and threshold crossing]\label{cor:pom-anom-unbounded-amplification}
-Under the setting of Corollary \ref{cor:pom-anom-one-point-zero-test}, if \([\mathrm{Anom}(w)]\neq 0\), then the set
+\begin{theorem}[Coprime Moment Order Zero Vanishing Principle: Two-Point Completeness of Anomaly Verification (Without Torsion-Free Assumption)]\label{thm:pom-anom-coprime-two-point-test}
+Suppose that the anomaly class under the PW semantics lies in some abelian group \(H\) and satisfies the moment amplification law: for any integer \(q\ge 2\),
+\[
+[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=q\cdot[\mathrm{Anom}(w)]\in H
+\]
+(Proposition \ref{prop:pom-anom-moment-amplification}).
+If there exist coprime integers \(q_1,q_2\ge 2\) such that
+\[
+[\mathrm{Anom}(\mathrm{MOM}_{q_1}\circ w)]=0,\qquad
+[\mathrm{Anom}(\mathrm{MOM}_{q_2}\circ w)]=0,
+\]
+then necessarily \([\mathrm{Anom}(w)]=0\).
+Consequently, for all \(q\ge 2\) we have \([\mathrm{Anom}(\mathrm{MOM}_{q}\circ w)]=0\).
+\end{theorem}
+\begin{proof}
+Let \(a:=[\mathrm{Anom}(w)]\in H\). By the amplification law, \(q_1 a=0\) and \(q_2 a=0\).
+Take integers \(u,v\) such that \(u q_1+v q_2=1\) (B\'ezout's identity), then
+\[
+a=(u q_1+v q_2)a=u(q_1 a)+v(q_2 a)=0.
+\]
+Substituting back into the amplification law yields the conclusion for all \(q\ge 2\). \qed
+\end{proof}
+
+\begin{theorem}[Anomaly--Oracle Collapse: Infinite Moment Order Audit \texorpdfstring{$\Longleftrightarrow$}{<->} Two Coprime Moment Order Audits]\label{thm:pom-anom-all-moments-collapse-to-two}
+Let the proposition
+\[
+\mathcal P(w):\quad \forall q\ge 2,\;[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=0
+\]
+denote ``anomaly vanishes at all moment orders.''
+Then \(\mathcal P(w)\) is equivalent to the existence of coprime integers \(q_1,q_2\ge 2\) such that
+\(
+[\mathrm{Anom}(\mathrm{MOM}_{q_1}\circ w)]=[\mathrm{Anom}(\mathrm{MOM}_{q_2}\circ w)]=0
+\).
+\end{theorem}
+\begin{proof}
+``\(\Rightarrow\)'' is obvious (e.g., take \((q_1,q_2)=(2,3)\)).
+``\(\Leftarrow\)'' follows immediately from Theorem \ref{thm:pom-anom-coprime-two-point-test}. \qed
+\end{proof}
+
+\begin{corollary}[Auditable Trigger Condition for Oracle Collapse: Two-Point Finite Certificate for All-Moment Zero Anomaly]\label{cor:pom-anom-oracle-collapse-two-point-trigger}
+Any condition that relies logically on proposition \(\mathcal P(w)\) as a sufficient condition—thereby depending on ``infinite audit over all moment orders \(q\ge 2\)''—can be compressed to verifying only two coprime moment orders; in other words, the audit complexity of the ``all-moment anomaly axis'' collapses logically to two points.
+\end{corollary}
+
+\begin{theorem}[Torsion Eliminability Test and Minimal Elimination Order]\label{thm:pom-anom-torsion-eliminability-min-order}
+Under the setting of Theorem \ref{thm:pom-anom-coprime-two-point-test}, let \(a:=[\mathrm{Anom}(w)]\in H\), and denote
+\[
+H_{\mathrm{tor}}:=\{x\in H:\ \exists\,n\ge 1\ \text{such that}\ nx=0\}
+\]
+as the torsion subgroup of \(H\).
+Then:
+\begin{enumerate}
+  \item There exists an integer \(q\ge 2\) such that \([\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=0\) if and only if \(a\in H_{\mathrm{tor}}\).
+  \item If \(a\notin H_{\mathrm{tor}}\) and \(H\) can be embedded as an additive subgroup of some normed real linear space \((V,\|\cdot\|)\), then
+  \[
+  \bigl\|[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]\bigr\|
+  =\|qa\|\xrightarrow[q\to\infty]{}\infty.
+  \]
+  \item If \(a\in H_{\mathrm{tor}}\) with order \(\mathrm{ord}(a)\in\NN\), then for any integer \(q\ge 2\) the following strict equivalence holds:
+  \[
+  \boxed{\;
+  [\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=0\quad\Longleftrightarrow\quad \mathrm{ord}(a)\mid q\; }.
+  \]
+  In particular, \(\mathrm{ord}(a)\) is the minimal positive integer (minimal elimination order) for which the anomaly can be eliminated by moment compilation.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:pom-anom-moment-amplification},
+\(
+[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=qa
+\).
+Hence there exists \(q\ge 2\) making this zero if and only if there exists \(q\ge 2\) such that \(qa=0\), which is equivalent to \(a\in H_{\mathrm{tor}}\).
+If \(a\notin H_{\mathrm{tor}}\) and \(H\hookrightarrow (V,\|\cdot\|)\), then \(a\neq 0\) and \(\|qa\|=q\|a\|\to\infty\).
+If \(a\in H_{\mathrm{tor}}\) with \(\mathrm{ord}(a)=n\), then \(qa=0\) if and only if \(n\mid q\), so the minimal positive integer is precisely \(n\). \qed
+\end{proof}
+
+\begin{corollary}[Finite Covering Elimination and Least Common Multiple Law for Torus Phase Anomalies]\label{cor:pom-anom-torus-phase-elimination}
+Suppose the anomaly takes values in the compact torus
+\(
+H=(\RR/2\pi\ZZ)^r
+\), and write \(a=(a_1,\dots,a_r)\in H\).
+Then there exists an integer \(q\ge 2\) such that \(qa=0\) in \(H\) if and only if for each \(1\le j\le r\),
+\[
+a_j\in 2\pi\QQ/2\pi\ZZ.
+\]
+In this case, if each \(j\) admits the reduced representation
+\(
+a_j\equiv 2\pi\,u_j/v_j\pmod{2\pi}
+\) (with \(\gcd(u_j,v_j)=1\)), then the minimal elimination order is
+\[
+\boxed{\;
+q_\star=\mathrm{lcm}(v_1,\dots,v_r)\; },
+\]
+and for any integer \(q\ge 1\), \(qa=0\) if and only if \(q_\star\mid q\).
+\end{corollary}
+\begin{proof}
+In \(H\), \(qa=0\) if and only if for each \(j\), \(q a_j\equiv 0\ (\mathrm{mod}\ 2\pi)\), i.e., \(a_j/(2\pi)\in \QQ/\ZZ\) and its denominator divides \(q\).
+The minimal positive integer is given by the least common multiple of the denominators. \qed
+\end{proof}
+
+\begin{corollary}[Torsion Sufficient Condition for Roots-of-Unity Phases]\label{cor:pom-anom-cyclotomic-phase-torsion}
+Under the setting of Corollary \ref{cor:pom-anom-torus-phase-elimination}, if there exists a positive integer \(N\) such that for each coordinate \(a_j\), \(N a_j\equiv 0\ (\mathrm{mod}\ 2\pi)\) (equivalently, \(e^{\mathrm{i}a_j}\) is a finite-order root of unity), then \(a\in H_{\mathrm{tor}}\), so there exists a finite order \(q\ge 2\) such that \([\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=0\).
+\end{corollary}
+\begin{proof}
+By hypothesis, one can take the same \(N\) such that \(Na=0\) in \(H\), hence \(a\) is a torsion element.
+The conclusion then follows from Theorem \ref{thm:pom-anom-torsion-eliminability-min-order}. \qed
+\end{proof}
+
+\begin{corollary}[Unbounded Amplification and Threshold Crossing for Non-Torsion Anomalies]\label{cor:pom-anom-unbounded-amplification}
+Under the setting of Theorem \ref{thm:pom-anom-torsion-eliminability-min-order}, if the anomaly class \(a=[\mathrm{Anom}(w)]\) is not a torsion element, then the set
 \(
 \{[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]:q\ge 2\}
 \)
@@ -36,9 +143,9 @@ Furthermore, if \(H\) can be viewed as an additive subgroup of some normed real 
 \begin{proof}
 By Proposition \ref{prop:pom-anom-moment-amplification}, for \(q\ge 2\) we have
 \(
-[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=q\,[\mathrm{Anom}(w)]
+[\mathrm{Anom}(\mathrm{MOM}_q\circ w)]=qa
 \).
-If \(q_1\neq q_2\) and \(q_1a=q_2a\) (where \(a=[\mathrm{Anom}(w)]\neq 0\)), then \((q_1-q_2)a=0\), contradicting the torsion-free property; hence \(\{qa:q\ge 2\}\) is infinite.
+If there exist \(q_1\neq q_2\) such that \(q_1a=q_2a\), then \((q_1-q_2)a=0\), forcing \(a\in H_{\mathrm{tor}}\), contradicting the hypothesis; hence \(\{qa:q\ge 2\}\) is infinite.
 Under the normed embedding, homogeneity gives \(|qa|=q|a|\to\infty\), so one may take \(q>\tau/|a|\) to achieve threshold crossing. \qed
 \end{proof}
 
@@ -137,4 +244,83 @@ The final identity follows from
 \prod_i(1+(n_i-1))=\sum_{S\subseteq[k]}\prod_{i\in S}(n_i-1)
 \)
 after removing the \(S=\varnothing\) and singleton terms. \qed
+\end{proof}
+
+\begin{theorem}[Orthogonal Decomposition of the Euler Defect: Pythagoras Identity for Cross-Term Energy]\label{thm:pom-euler-defect-orthogonal-pythagoras}
+Under the setting of Theorem \ref{thm:pom-euler-defect-quotient-coordinate}, endow \(\widehat G=\prod_{i=1}^k\widehat{G_i}\) with the uniform measure, and view \(\mathcal F\subset L^2(\widehat G)\) as a Hilbert subspace.
+For any \(f\in\mathcal F\), define the coordinate averaging operator
+\[
+(E_i f)(\chi):=\mathbb{E}_{\xi_i\sim \mathrm{Unif}(\widehat{G_i})} f(\chi_1,\dots,\chi_{i-1},\xi_i,\chi_{i+1},\dots,\chi_k),
+\qquad
+D_i:=I-E_i.
+\]
+For any subset \(S\subseteq[k]\), define
+\(
+D_S:=\prod_{i\in S}D_i
+\),
+\(
+E_{S^c}:=\prod_{i\notin S}E_i
+\), and set
+\[
+f_S:=E_{S^c}D_S f.
+\]
+Then:
+\begin{enumerate}
+  \item There exists a strict orthogonal decomposition
+  \[
+  \boxed{\;
+  f=\sum_{S\subseteq[k]} f_S,\qquad
+  \langle f_S,f_T\rangle_{L^2}=0\ (S\ne T)\;}
+  \]
+  satisfying the Pythagoras identity
+  \[
+  \|f\|_{L^2}^2=\sum_{S\subseteq[k]}\|f_S\|_{L^2}^2.
+  \]
+  \item For each \(\emptyset\ne S\subseteq[k]\) and each \(i\in S\), the zero-mean condition \(E_i f_S=0\) holds; moreover, \(f_{\varnothing}=E_{[k]}f\) is a constant function (equal to the global mean of \(f\)).
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Since \(E_i\) is the \(L^2\) conditional expectation projection onto the subspace ``independent of the \(i\)-th axis,'' the \(E_i\) operators pairwise commute and are self-adjoint idempotents; hence \(D_i=I-E_i\) also pairwise commutes and is self-adjoint.
+Expanding the identity
+\[
+I=\prod_{i=1}^k(E_i+D_i)=\sum_{S\subseteq[k]}E_{S^c}D_S
+\]
+and applying to \(f\) yields the decomposition formula.
+If \(S\ne T\), take some \(i\in S\triangle T\); then \(f_S\) can be written as the image of \(D_i(\cdot)\), while \(f_T\) as the image of \(E_i(\cdot)\); since \(E_i\) is an orthogonal projection (equivalently, \(\langle D_i g, E_i h\rangle_{L^2}=0\)), we obtain \(\langle f_S,f_T\rangle_{L^2}=0\), yielding orthogonality and the Pythagoras identity.
+For \(i\in S\), by definition \(f_S\) contains the factor \(D_i\), so \(E_i f_S=E_iD_i(\cdot)=0\). \qed
+\end{proof}
+
+\begin{theorem}[Minimal Action Gauge: Cross-Term Energy Equals Minimal Distance to Additive Subspace]\label{thm:pom-euler-defect-min-action-gauge}
+Following the notation of Theorem \ref{thm:pom-euler-defect-orthogonal-pythagoras}, define the additive (axis-decomposable) subspace
+\[
+\mathcal S_{\mathrm{add}}
+:=
+\Bigl\{g\in L^2(\widehat G):\ \exists\,c\in\RR,\ \exists\,g_i:\widehat{G_i}\to\RR,\ g_i(\chi_{i,0})=0,\ g(\chi)=c+\sum_{i=1}^k g_i(\chi_i)\Bigr\}.
+\]
+Then the \(L^2\) orthogonal projection onto \(\mathcal S_{\mathrm{add}}\) is
+\[
+\boxed{\ \Pi_{\mathcal S_{\mathrm{add}}} f=f_{\varnothing}+\sum_{|S|=1} f_S\ }.
+\]
+Moreover, the minimal residual energy satisfies
+\[
+\boxed{\ \inf_{g\in\mathcal S_{\mathrm{add}}}\|f-g\|_{L^2}^2=\sum_{|S|\ge 2}\|f_S\|_{L^2}^2\ }.
+\]
+The right-hand side therefore provides a canonical ``Euler defect energy'': it vanishes if and only if \(f\in\mathcal S_{\mathrm{add}}\) (no cross-terms).
+Furthermore, the axis-decomposable subspace of Theorem \ref{thm:pom-euler-defect-quotient-coordinate} satisfies \(\mathcal S=\mathcal S_{\mathrm{add}}\cap\mathcal F\).
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-euler-defect-orthogonal-pythagoras}, the Hoeffding components \(\{f_S\}_{S\subseteq[k]}\) of \(f\) are pairwise orthogonal.
+Denote
+\[
+\mathcal H_{\le 1}
+:=\mathrm{Im}(E_{[k]})\ \oplus\ \bigoplus_{i=1}^k \mathrm{Im}(E_{[k]\setminus\{i\}}D_i),
+\]
+where \(\mathrm{Im}(E_{[k]})\) is the constant function subspace.
+By definition, \(\mathcal H_{\le 1}\subseteq \mathcal S_{\mathrm{add}}\), and for any \(g\in\mathcal S_{\mathrm{add}}\), its second-order and higher cross-components must vanish (i.e., for all \(|S|\ge 2\), \(g_S=0\)), so \(g=\sum_{|S|\le 1} g_S\in \mathcal H_{\le 1}\).
+Therefore, \(\mathcal S_{\mathrm{add}}=\mathcal H_{\le 1}\).
+Hence \(f_{\varnothing}+\sum_{|S|=1}f_S\) is precisely the orthogonal projection of \(f\) onto the closed subspace \(\mathcal S_{\mathrm{add}}\), and the minimal distance squared is given by the orthogonal complement energy sum, namely
+\(
+\sum_{|S|\ge 2}\|f_S\|_{L^2}^2
+\).
+Finally, ``energy is zero'' if and only if all \(|S|\ge 2\) components vanish, i.e., \(f\in\mathcal S_{\mathrm{add}}\). \qed
 \end{proof}

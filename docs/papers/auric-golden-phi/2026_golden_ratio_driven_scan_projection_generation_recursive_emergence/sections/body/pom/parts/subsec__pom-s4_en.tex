@@ -40,6 +40,18 @@ $$
 By Table \ref{tab:fold_collision_moment_recursions}, one can verify in an auditable manner that \(S_4(m)\) satisfies an integer recurrence of order \(5\) (script \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}). On the other hand, the above \(A_4\) and \((u_4,v_4)\) provide a completely explicit five-state nonnegative integer realization; its consistency with the recurrence and the enumerated values for small \(m\) can be verified entry by entry via the script \texttt{scripts/exp\_fold\_collision\_kernel\_A4\_verify.py}. \qed
 \end{proof}
 
+\begin{remark}[Zero-coefficient lock: strict missing term in the fourth-order minimal recurrence]\label{rem:pom-s4-zero-coefficient-lock}
+The fifth-order recurrence given in Proposition \ref{prop:pom-s4-recurrence} exhibits a strict internal gap in its lag structure: the coefficient of \(S_4(m-3)\) is identically \(0\).
+Equivalently, its characteristic polynomial (i.e., \(\det(\lambda I-A_4)\))
+\[
+\chi_{A_4}(\lambda)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2
+\]
+strictly lacks the \(\lambda^2\) term.
+Among the minimal integer-coefficient recurrences verified in the range \(q=2,\dots,23\) (Tables \ref{tab:fold_collision_moment_recursions}, \ref{tab:fold_collision_moment_recursions_9_17}, \ref{tab:fold_collision_moment_recursions_18_23}), such structural ``mid-order zero coefficient'' appears only at \(q=4\).
+Moreover, this gap is consistent with the spectral self-duality freezing identity of the fourth-order kernel family: for a one-parameter family \(A_4(t)\) with characteristic polynomial \(P_t\), its even part is completely independent of \(t\), as shown in Proposition \ref{prop:pom-a4t-spectral-selfduality-invariants}.
+Therefore, beyond the near-RH critical-line margin and crossing order, \(q=4\) carries an even finer auditable fingerprint: it is the smallest integer matrix order where the minimal recurrence exhibits a strict coefficient gap at the integer-coefficient level.
+\end{remark}
+
 \begin{corollary}[Fourth-order collision exponent and \texorpdfstring{$h_4$}{h4}]\label{cor:pom-s4-asymptotic}
 Let \(r_4:=\rho(A_4)\) be the largest real root of the polynomial
 $$
@@ -95,6 +107,41 @@ and one may introduce the near-critical offset
  This excess is dominated by a stable negative real mode (\(\mu_2<0\)), corresponding to an irremovable anti-phase oscillation slow mode.
 \end{remark}
 
+\begin{proposition}[Negative real sub-spectrum induces Chebyshev-type deviation leading term: two-term expansion of trace and primitive orbits]\label{prop:pom-a4-trace-primitive-two-term}
+Following the notation in Remark \ref{rem:pom-collision-rh-break-a4-spectrum}, let \(r_4=\rho(A_4)\), and let \(\mu_-<0\) be the unique negative real eigenvalue satisfying \(|\mu_-|=\Lambda_4\) (numerically, \(\mu_-=\mu_2\)).
+Define
+\[
+\rho_4:=\max\!\left\{\sqrt{r_4},\ \max_{\mu\in\sigma(A_4)\setminus\{r_4,\mu_-\}}|\mu|\right\}.
+\]
+Then \(\rho_4<\Lambda_4\), and for all \(n\ge 1\) the two-term expansion holds
+\[
+\Tr(A_4^n)=r_4^n+\mu_-^n+O(\rho_4^n)
+=r_4^n+(-\Lambda_4)^n+O(\rho_4^n).
+\]
+Correspondingly, the primitive orbit count \(p_n(A_4)\) (Definition \ref{def:pom-proj-prim}) satisfies
+\[
+p_n(A_4)=\frac{r_4^n}{n}+\frac{\mu_-^n}{n}+O\!\Bigl(\frac{\rho_4^n}{n}\Bigr).
+\]
+Therefore the even/odd length discrepancy in \(p_n(A_4)\) is exponentially dominated by \(\Lambda_4^n/n\) and exhibits strict alternating sign.
+\end{proposition}
+\begin{proof}
+Since \(\mathrm{Disc}_x(p_7)\neq 0\) (Proposition \ref{prop:pom-a4-galois-s5}), \(A_4\)'s characteristic polynomial has no repeated roots, hence \(A_4\) is diagonalizable over \(\CC\), and
+\[
+\Tr(A_4^n)=\sum_{\mu\in\sigma(A_4)}\mu^n.
+\]
+Decompose the spectrum as \(\{r_4,\mu_-\}\cup(\sigma(A_4)\setminus\{r_4,\mu_-\})\), and control the remaining terms by \(\rho_4\) to obtain the trace expansion.
+Note that \(\rho_4<\Lambda_4\) follows from \(\Lambda_4>\sqrt{r_4}\) (Remark \ref{rem:pom-collision-rh-break-a4-spectrum}).
+\par
+The Möbius inversion for primitive orbit counts gives
+\(
+p_n(A_4)=\frac{1}{n}\sum_{d\mid n}\mu(d)\Tr(A_4^{n/d})
+\).
+Substituting the trace expansion: the leading term comes from \(d=1\);
+while terms with \(d\ge 2\) satisfy \(|\Tr(A_4^{n/d})|\ll r_4^{n/d}\le r_4^{n/2}=(\sqrt{r_4})^n\le \rho_4^n\),
+so their total contribution is \(O(\rho_4^n/n)\).
+Meanwhile \(\mu_-^n=(-\Lambda_4)^n\) provides the alternating-sign sub-leading term. \qed
+\end{proof}
+
 \begin{remark}[Single-parameter RH critical point of the fourth-order collision kernel: edge-weight threshold \texorpdfstring{$t_\star$}{t*} (resultant elimination, auditable)]\label{rem:pom-collision-rh-break-a4-threshold}
 Treating the unique multi-edge weight \(7\) in \(A_4\) as a continuous parameter \(t>0\), define the one-parameter family
 \[
@@ -129,8 +176,176 @@ t=\frac{y^5-2y^4-2y+2}{y^3}
 Further resultant elimination in \(y\) yields an eighth-degree integer-coefficient certificate \(P_4(t)=0\); its unique positive real root is denoted \(t_\star\).
 Numerical verification shows: when \(t<t_\star\) one has \(\Lambda(t)<\sqrt{r(t)}\) (strict kernel RH); when \(t=t_\star\) the bound is exactly attained (RH-sharp, with \(\mu_\star=-\sqrt{r_\star}\)); and when \(t>t_\star\) the violation \(\Lambda(t)>\sqrt{r(t)}\) occurs.
  Therefore the integer kernel \(A_4=A_4(7)\) lies on the supercritical side with only a near-critical excess \(7-t_\star\ll 1\), which explains the \(10^{-3}\) magnitude of \(R_4-1\).
+\par
+Note that \(A_4(t)\)'s dependence on the parameter \(t\) occurs only in a single matrix entry, hence
+\[
+A_4(7)-A_4(t_\star)=(7-t_\star)\,e_2e_3^{\mathsf T}
+\]
+is a rank-one perturbation (\(e_i\) denoting standard basis vectors).
+Thus the fourth-order near-RH excess can be understood as: upon a critical-attaining five-state base, introducing a single interface degree of freedom induces a rank-one spectral shift.
 \end{remark}
+
+\begin{remark}[Fourth-order criticality on the disjoint-graph tensor hardcore base and the a priori occurrence of integer \(7\)]\label{rem:pom-q4-disjointness-base-critical}
+The Ramanujan ratio of the disjoint-graph tensor base \(\mathcal{D}_q\) satisfies the exact closed form
+\(
+\Lambda_q^{\mathrm{disj}}/\sqrt{r_q^{\mathrm{disj}}}=\varphi^{q/2-2}
+\), whence \(q=4\) is the unique integer critical point (Corollary \ref{cor:pom-disjointness-ramanujan-q4-critical}).
+Meanwhile, in the fourth-order characteristic polynomial of the \(S_q\) symmetric compression \(B_q\), the coefficient \(7\) already appears as a spectral invariant (Proposition \ref{prop:pom-disjointness-symmetric-compression-bq}).
+Therefore, the near-RH critical-line behavior of the fourth-order kernel family and the occurrence of the integer edge weight \(7\) can be understood as structural fingerprints inherited from finite-dimensional compression/perturbation of an already-critical tensor base, rather than arbitrary generation from local Fold details.
+\par
+More specifically, the fourth-order symmetric compression \(B_4\) itself satisfies strict attainment: by the spectral closed form in Proposition \ref{prop:pom-disjointness-symmetric-compression-bq}, \(B_4\)'s non-Perron maximal-modulus eigenvalue is \(-\varphi^2\), while \(\sqrt{\rho(B_4)}=\varphi^2\), hence \(\Lambda(B_4)=\sqrt{\rho(B_4)}\).
+On the other hand, the deviation in the fourth-order collision kernel family \(A_4(t)\) occurs only along the single edge-weight parameter \(t\), and is realized by the rank-one difference \(A_4(7)-A_4(t_\star)\) in Remark \ref{rem:pom-collision-rh-break-a4-threshold};
+therefore the near-RH excess can be interpreted as a rank-one spectral shift from a single interface degree of freedom upon the critical base.
+\end{remark}
+
+\begin{proposition}[One-parameter Perron exponent curve of the fourth-order kernel family and Jones index intersections with \texorpdfstring{$E_6/E_7/E_8$}{E6/E7/E8}]\label{prop:pom-a4t-jones-ade-intersections}
+Following Remark \ref{rem:pom-collision-rh-break-a4-threshold}, let
+\(
+p_t(x)=x^5-2x^4-tx^3-2x+2
+\), and let
+\(
+r_4(t):=\rho(A_4(t))
+\)
+be the largest positive root of \(p_t\).
+For any real \(I>1\), define
+\[
+\boxed{\;
+t(I):=\frac{I^5-2I^4-2I+2}{I^3}\; }.
+\]
+If \(t(I)\ge 0\), then
+\[
+\boxed{\ r_4(t(I))=I\ }.
+\]
+In particular, taking the Jones index discrete spectrum values for ADE:
+\[
+I_{E_6}=4\cos^2\!\Bigl(\frac{\pi}{12}\Bigr),\quad
+I_{E_7}=4\cos^2\!\Bigl(\frac{\pi}{18}\Bigr),\quad
+I_{E_8}=4\cos^2\!\Bigl(\frac{\pi}{30}\Bigr),
+\]
+and setting \(t_{E_k}:=t(I_{E_k})\), the fourth-order kernel family exactly intersects this discrete spectrum at three explicit parameter points:
+\[
+\boxed{\ r_4(t_{E_6})=I_{E_6},\qquad r_4(t_{E_7})=I_{E_7},\qquad r_4(t_{E_8})=I_{E_8}\ }.
+\]
+Moreover, numerically
+\[
+t_{E_6}\approx 6.3589838486,\qquad
+t_{E_7}\approx 7.1922220997,\qquad
+t_{E_8}\approx 7.6442014686.
+\]
+\end{proposition}
+\begin{proof}
+By definition,
+\[
+p_{t(I)}(I)=I^5-2I^4-t(I)I^3-2I+2=0,
+\]
+so \(I\) is a positive root of \(p_{t(I)}\).
+When \(t\ge 0\), by Descartes' rule of signs \(p_t\) has at most \(2\) positive roots;
+and \(p_t(0)=2>0>p_t(1)=-1-t\) shows one root falls in \((0,1)\).
+Therefore any positive root \(>1\) must be the unique ``other root'', hence equals the largest positive root \(r_4(t)\).
+Substituting \(I=I_{E_6},I_{E_7},I_{E_8}\) yields the result; numerical approximations are obtained by direct substitution into \(t(I)\). \qed
+\end{proof}
+
+\begin{proposition}[Extremely low-degree minimal polynomials and discriminant fingerprints of the \texorpdfstring{$E_6/E_7/E_8$}{E6/E7/E8} intersection parameters]\label{prop:pom-a4t-ade-intersection-t-minpoly-discriminant}
+Following the notation of Proposition \ref{prop:pom-a4t-jones-ade-intersections}, let \(t_{E_k}:=t(I_{E_k})\).
+Then the three points' minimal polynomial degrees exhibit a \((2,3,4)\) low-order ladder; their integer-coefficient certificates and discriminant factorizations are given in Equation \eqref{eq:collision_kernel_A4_ade_intersection_t_minpoly_discriminant}.
+In particular, \(\mathrm{Disc}(P_{E_7})\) is a perfect square, whence the corresponding irreducible cubic field is a cyclic cubic extension;
+and \(\mathrm{Disc}(P_{E_8})\)'s square-free part is \(5\), hence \(t_{E_8}\)'s splitting field contains the canonical discriminant quadratic subfield \(\QQ(\sqrt5)\).
+\end{proposition}
+\begin{proof}
+Substitute the algebraic numbers \(I_{E_6},I_{E_7},I_{E_8}\) into the rational parametrization \(t(I)\), and compute the \(\QQ\)-minimal polynomial and discriminant of each \(t_{E_k}\) to obtain the integer-coefficient certificates and factorizations in Equation \eqref{eq:collision_kernel_A4_ade_intersection_t_minpoly_discriminant}.
+The cyclicity conclusion comes from the perfect-square discriminant criterion for irreducible cubics; the quadratic subfield conclusion comes from the discriminant quadratic subfield identification via \(\QQ(\sqrt{\mathrm{Disc}})\).
+Reproducible script: \texttt{scripts/exp\_collision\_kernel\_A4\_ade\_intersection\_t\_minpoly\_discriminant.py}. \qed
+\end{proof}
+
+\input{sections/generated/eq_collision_kernel_A4_ade_intersection_t_minpoly_discriminant_en}
+
 \input{sections/generated/eq_collision_kernel_A4_edge_weight_threshold_en}
+
+\input{parts/prop__pom-a4t-even-zeta-elimination_en}
+
+\begin{corollary}[Strict relative ordering of the Newman threshold and \texorpdfstring{$E_6/E_7/E_8$}{E6/E7/E8} index points]\label{cor:pom-a4t-newman-threshold-ade-ordering}
+Write \(t_\star\) for the unique positive real root of Equation \eqref{eq:collision_kernel_A4_edge_weight_threshold} (i.e., the fourth-order Newman critical threshold), and let \(t_{E_6},t_{E_7},t_{E_8}\) be as in Proposition \ref{prop:pom-a4t-jones-ade-intersections}.
+Then a strict order chain exists on the parameter axis:
+\[
+\boxed{\;t_{E_6}<t_\star<7<t_{E_7}<t_{E_8}\;}
+\]
+with numerical values
+\[
+t_{E_6}\approx 6.3589838486,\qquad
+t_\star\approx 6.9757658955,\qquad
+t_{E_7}\approx 7.1922220997,\qquad
+t_{E_8}\approx 7.6442014686.
+\]
+Therefore the integer kernel \(t=7\) already lies within the Newman violation phase (\(\Lambda>\sqrt r\)), but still strictly before reaching the \(E_7\) index crossing; in other words, the fourth-order kernel family undergoes spectral crossing before touching \(E_7\).
+\end{corollary}
+\begin{proof}
+Direct comparison of the numerical approximations of \(t_{E_k}\) from Proposition \ref{prop:pom-a4t-jones-ade-intersections} and \(t_\star\) from Equation \eqref{eq:collision_kernel_A4_edge_weight_threshold} yields the result; all adjacent differences are positive, so the order chain holds strictly. \qed
+\end{proof}
+
+\input{parts/para__pom-s4-e8-square-spectrum-collapse_en}
+
+\begin{remark}[Closed-form discriminant and root-type rigidity of the fourth-order kernel family]\label{rem:pom-a4t-discriminant-root-type}
+Following the notation in Remark \ref{rem:pom-collision-rh-break-a4-threshold}, the fourth-order kernel family's characteristic polynomial is
+\[
+p_t(x)=\det(xI-A_4(t))=x^5-2x^4-tx^3-2x+2.
+\]
+Its discriminant with respect to the variable \(x\) can be explicitly written as
+\[
+\mathrm{Disc}_x(p_t)
+=-16\Bigl(27t^5+35t^4+434t^3+4394t^2+10832t+7403\Bigr).
+\]
+Therefore for all real parameters \(t\ge 0\), the bracketed polynomial is strictly positive, whence \(\mathrm{Disc}_x(p_t)<0\).
+This implies: for each \(t\ge 0\), \(p_t\) has no repeated roots; and its root type remains invariant over this interval, consisting of exactly three real roots and one pair of conjugate non-real roots.
+This conclusion shows that the fourth-order kernel family's ``non-real spectrum'' is not triggered by algebraic root collision/spectral tangency, but rather exists structurally in a stable manner over the parameter range \(t\ge 0\).
+\end{remark}
+
+\begin{proposition}[Discriminant quadratic subfield and class group prime order of the Newman critical certificate: \texorpdfstring{$\QQ(\sqrt{-1151})$}{Q(sqrt(-1151))}]\label{prop:pom-a4t-newman-k2-class-number}
+Let \(P_4(t)\in\ZZ[t]\) be the eighth-degree certificate polynomial in Equation \eqref{eq:collision_kernel_A4_edge_weight_threshold}, and let \(L_\star\) be the splitting field of \(P_4\).
+Then \(\mathrm{Disc}_t(P_4)\)'s square-free part is \(-1151\), whence \(L_\star\) contains the canonical discriminant quadratic subfield
+\[
+K_2:=\QQ\!\bigl(\sqrt{\mathrm{Disc}_t(P_4)}\bigr)=\QQ(\sqrt{-1151}).
+\]
+Moreover, this imaginary quadratic number field has class number
+\[
+h(K_2)=41.
+\]
+Therefore \(\mathrm{Cl}(K_2)\) must be a cyclic group, and its Hilbert class field \(H/K_2\) satisfies
+\[
+[H:K_2]=41,\qquad \mathrm{Gal}(H/K_2)\cong \ZZ/41\ZZ.
+\]
+\end{proposition}
+\begin{proof}
+Discriminant part: compute \(\mathrm{Disc}_t(P_4)\in\ZZ\) by definition and perform integer factorization to read off its square-free part as \(-1151\), whence \( \QQ(\sqrt{\mathrm{Disc}_t(P_4)})=\QQ(\sqrt{-1151}) \).
+\par
+Class number part: Since \(1151\equiv 3\pmod 4\) and \(1151\) is square-free, \(K_2=\QQ(\sqrt{-1151})\)'s fundamental discriminant is \(-1151\).
+By Gauss's theory of binary quadratic forms, \(h(K_2)\) equals the number of reduced primitive positive definite binary quadratic forms of discriminant \(-1151\); enumerating this finite set yields cardinality \(41\).
+\par
+When the class number is prime, the finite abelian group \(\mathrm{Cl}(K_2)\) can only be cyclic; the Hilbert class field conclusion follows from class field theory's standard correspondence.
+Reproducible script: \texttt{scripts/exp\_collision\_kernel\_A4\_newman\_critical\_quadratic\_subfield.py}. \qed
+\end{proof}
+
+\begin{proposition}[Splitting field and full symmetric Galois group of the fourth-order collision kernel]\label{prop:pom-a4-galois-s5}
+Let \(A_4=A_4(7)\), and take its characteristic polynomial
+\[
+p_7(x)=\det(xI-A_4)=x^5-2x^4-7x^3-2x+2.
+\]
+Then \(p_7\) is irreducible over \(\QQ[x]\), and its Galois group is isomorphic to the full symmetric group:
+\[
+\mathrm{Gal}\bigl(p_7/\QQ\bigr)\cong S_5.
+\]
+Moreover its discriminant is
+\[
+\mathrm{Disc}_x(p_7)=-2^4\cdot 985219,
+\]
+whence not a square in \(\QQ\).
+\end{proposition}
+\begin{proof}
+When reduced modulo \(5\), \(p_7\) is irreducible over \(\FF_5[x]\), hence its Frobenius permutation contains a \(5\)-cycle; when reduced modulo \(29\), \(p_7\) factors over \(\FF_{29}[x]\) into one irreducible quadratic and three linear factors, hence its Frobenius permutation contains a transposition (\(2\)-cycle).
+Therefore \(\mathrm{Gal}(p_7/\QQ)\) as a transitive subgroup of \(S_5\) containing both a \(5\)-cycle and a transposition must be \(S_5\).
+The explicit discriminant value can be obtained by direct elimination (reproducible script: \texttt{scripts/exp\_collision\_kernel\_A234\_operator\_algebra\_flow\_invariants.py}). \qed
+\end{proof}
+
+\input{parts/prop__pom-a4-discriminant-quadratic-field-class-number_en}
 
 
 \begin{remark}[Near-RH violation of the fourth-order collision kernel (\texorpdfstring{$A_4$}{A4})]\label{rem:pom-collision-rh-break-a4}
@@ -219,6 +434,114 @@ the above formula together with elimination allows one to upgrade the three deci
 \]
 This yields a strong audit protocol requiring no decimal alignment: for each \(A_q\), one only needs to publish (i) \(\chi_{A_q}\in\ZZ[\lambda]\), (ii) the minimal polynomial \(P_{C_q}\in\ZZ[C]\) of \(C(A_q)\); together with the \texttt{tail proxy} from the tables as a numerical certificate for the tail truncation error of \(\log\mathfrak{M}\), this upgrades ``reproducibility'' to integer-coefficient equation-level constraints.
 
+\paragraph{Symbolic dynamics and operator algebra invariants: Bowen--Franks group, flow equivalence, and Cuntz--Krieger \texorpdfstring{$K$}{K}-theory}
+Besides \(\zeta\), primitive spectra, and finite-part constants, integer adjacency matrices carry a suite of integer lattice invariants highly sensitive to flow equivalence and stable isomorphism classification (see Appendix \ref{app:op-algebra} and corresponding discussions in the real-input kernel appendix).
+For any integer matrix \(A\in M_n(\ZZ)\), define the Bowen--Franks group
+\[
+\mathrm{BF}(A):=\ZZ^n/(I-A)\ZZ^n,
+\]
+(see \cite{BowenFranks1977HomologyZeroDim})
+and for the Cuntz--Krieger algebra \(\mathcal O_A\) defined by \(A\), take the standard isomorphisms
+\[
+K_0(\mathcal O_A)\cong \mathrm{coker}(I-A^\mathsf T),\qquad
+K_1(\mathcal O_A)\cong \ker(I-A^\mathsf T)
+\]
+(see \cite{CuntzKrieger1980}).
+
+\begin{proposition}[Smith normal form and Bowen--Franks group of low-order collision kernels]\label{prop:pom-collision-bf-snf-q234}
+Let \(A_2,A_3,A_4(t)\) be the low-order collision kernels from Proposition \ref{prop:pom-s2-recurrence}, Proposition \ref{prop:pom-s3-recurrence}, and Remark \ref{rem:pom-collision-rh-break-a4-threshold} respectively (where \(t\in\ZZ_{\ge 0}\)).
+Then
+\[
+\det(I-A_2)=-1,\qquad \det(I-A_3)=-3,\qquad \det(I-A_4(t))=-(t+1),
+\]
+and the corresponding Smith normal forms satisfy
+\[
+\mathrm{SNF}(I-A_2)=\mathrm{diag}(1,1,1),\qquad
+\mathrm{SNF}(I-A_3)=\mathrm{diag}(1,1,3),\qquad
+\mathrm{SNF}(I-A_4(t))=\mathrm{diag}(1,1,1,1,t+1).
+\]
+Therefore
+\[
+\mathrm{BF}(A_2)=0,\qquad
+\mathrm{BF}(A_3)\cong \ZZ/3\ZZ,\qquad
+\mathrm{BF}(A_4(t))\cong \ZZ/(t+1)\ZZ.
+\]
+\end{proposition}
+\begin{proof}
+For \(A_2,A_3\), directly compute \(I-A_q\) and perform Smith reduction to read off the invariant factors; for \(A_4(t)\), perform the same reduction for integer \(t\) and verify its diagonal form's stable pattern as a function of \(t\) (consistent with \(\det(I-A_4(t))=-(t+1)\)).
+Reproducible script: \texttt{scripts/exp\_collision\_kernel\_A234\_operator\_algebra\_flow\_invariants.py}. \qed
+\end{proof}
+
+\begin{corollary}[Flow equivalence types of low-order collision kernels]\label{cor:pom-collision-flow-equivalence-full-shift}
+For the three kernel classes in Proposition \ref{prop:pom-collision-bf-snf-q234}, all satisfy \(\det(I-A_q)<0\), and the corresponding edge shifts are irreducible shifts of finite type.
+Therefore by Franks's flow equivalence classification theorem (with \(\mathrm{BF}(A)\) and \(\mathrm{sgn}\det(I-A)\) as complete invariants; see \cite{Franks1984FlowEquivalenceSFT}) one has:
+\[
+(X_{A_2},\sigma)\ \sim_{\mathrm{flow}}\ \text{full }2\text{-shift},\qquad
+(X_{A_3},\sigma)\ \sim_{\mathrm{flow}}\ \text{full }4\text{-shift},
+\]
+\[
+(X_{A_4(t)},\sigma)\ \sim_{\mathrm{flow}}\ \text{full }(t+2)\text{-shift}\qquad(t\in\ZZ_{\ge 0}).
+\]
+\end{corollary}
+
+\begin{remark}[Flow equivalence invariant collapse and fine spectral information invisibility]\label{rem:pom-collision-flow-collapse}
+Corollary \ref{cor:pom-collision-flow-equivalence-full-shift} shows: despite the low-order collision kernels exhibiting nontrivial fine structure at the spectral decomposition and arithmetic certificate level (e.g., anti-phase slow oscillations triggered by negative real modes, stable existence of non-real spectrum in the fourth-order kernel family, and near-RH critical-line behavior), the Franks invariant recognizes only a full shift flow equivalence type on a single vertex.
+Therefore, to capture the fine spectral/arithmetic information of collision kernels, one must appeal to dynamical invariants finer than flow equivalence or higher operator-algebra hierarchy structures.
+\end{remark}
+
+\begin{conjecture}[Fibonacci twist law for collision kernels]\label{conj:pom-collision-fibonacci-twist}
+Let \(A_q\) be the \(q\)-th order collision kernel induced by the Fold collision system (\(q\ge 2\)).
+Then the conjecture holds:
+\[
+\det(I-A_q)=-F_{2q-2},
+\qquad
+\mathrm{BF}(A_q)\cong \ZZ/F_{2q-2}\ZZ,
+\]
+where \(F_n\) is the Fibonacci sequence (\(F_0=0,F_1=1\)).
+This conjecture is consistent with the explicit calculations in Proposition \ref{prop:pom-collision-bf-snf-q234} at \(q=2,3,4\) (\(-1=-F_2\), \(-3=-F_4\), \(-8=-F_6\)).
+If it holds, then \((X_{A_q},\sigma)\) is flow equivalent to the full \((F_{2q-2}+1)\)-shift.
+\end{conjecture}
+
+\begin{proposition}[Cuntz--Krieger algebras of low-order collision kernels: complete identification with Cuntz algebra families]\label{prop:pom-collision-ck-classification-q234}
+For the three kernel classes in Proposition \ref{prop:pom-collision-bf-snf-q234}, their Cuntz--Krieger algebra \(K\)-groups satisfy
+\[
+K_0(\mathcal O_{A_2})=0,\ K_1(\mathcal O_{A_2})=0;\qquad
+K_0(\mathcal O_{A_3})\cong \ZZ/3\ZZ,\ K_1(\mathcal O_{A_3})=0;\qquad
+K_0(\mathcal O_{A_4(t)})\cong \ZZ/(t+1)\ZZ,\ K_1(\mathcal O_{A_4(t)})=0.
+\]
+Moreover, the unit classes satisfy: \([1_{\mathcal O_{A_3}}]=0\in K_0(\mathcal O_{A_3})\), while \([1_{\mathcal O_{A_4(t)}}]\) is a generator in \(K_0(\mathcal O_{A_4(t)})\).
+Hence in the Kirchberg--Phillips classification sense (with \(K\)-theory invariants plus unit class; see \cite{Phillips2000ClassificationPurelyInfinite}) one has isomorphic identifications
+\[
+\mathcal O_{A_2}\cong \mathcal O_2,\qquad
+\mathcal O_{A_3}\cong M_3(\mathcal O_4),\qquad
+\mathcal O_{A_4(t)}\cong \mathcal O_{t+2}\ \ (t\in\ZZ_{\ge 0}),
+\]
+in particular \(\mathcal O_{A_4}\cong \mathcal O_9\).
+\end{proposition}
+\begin{proof}
+Since \(\det(I-A_q)\neq 0\), \(I-A_q^\mathsf T\) is invertible over \(\QQ\), hence \(K_1(\mathcal O_{A_q})\cong\ker(I-A_q^\mathsf T)=0\).
+On the other hand, Proposition \ref{prop:pom-collision-bf-snf-q234}'s Smith form gives
+\(
+K_0(\mathcal O_{A_q})\cong\mathrm{coker}(I-A_q^\mathsf T)\cong\mathrm{coker}(I-A_q)
+\)'s cyclic decomposition.
+The unit class corresponds to the image of \((1,\dots,1)^{\mathsf T}\) in the cokernel: for \(A_3\), take \(x=(1,0,-3)^{\mathsf T}\) satisfying
+\(
+(I-A_3^\mathsf T)x=(1,1,1)^{\mathsf T}
+\), hence \([1_{\mathcal O_{A_3}}]=0\).
+For \(A_4(t)\), let \(M:=I-A_4(t)^\mathsf T\), \(v:=(1,1,1,1,1)^{\mathsf T}\), then
+\[
+\operatorname{adj}(M)\,v=\bigl(-(3t+4),\ -1,\ 4(t+1),\ -(2t+3),\ -(t+2)\bigr)^{\mathsf T},
+\]
+whose coordinate gcd is \(1\). If there exists \(x\in\ZZ^{5}\) with \(Mx=kv\), then by \(\operatorname{adj}(M)Mx=\det(M)x\) we get \((t+1)\mid k\).
+On the other hand, by the identity \(M\,\operatorname{adj}(M)=\det(M)I\) we know \(x=\operatorname{adj}(M)v\) gives \(Mx=\det(M)v\), whence \(v\)'s order in \(\mathrm{coker}(M)\cong \ZZ/(t+1)\ZZ\) is exactly \(t+1\), i.e., \([1_{\mathcal O_{A_4(t)}}]\) is a generator.
+Finally, \(\mathcal O_n\)'s invariants are \((K_0,K_1,[1])=(\ZZ/(n-1)\ZZ,0,1)\), and \(M_k(\mathcal O_n)\)'s unit class is \(k\cdot [1]\); according to this one obtains the stated isomorphic identifications. \qed
+\end{proof}
+
+\begin{remark}[Standardization collapse in operator algebra classification]\label{rem:pom-collision-ck-standardization}
+Proposition \ref{prop:pom-collision-ck-classification-q234} shows: despite the low-order collision kernels' spectral phenomena and integer certificates possessing nontrivial fine structure, their associated Cuntz--Krieger algebras fall into the most standard Cuntz algebra families (or their matrix amplifications) in the isomorphism classification sense.
+Therefore, collision kernel dynamics can be directly placed in the UCT Kirchberg algebra category, and achieve complete identification via \(K\)-theory data with unit class.
+\end{remark}
+
 \begin{remark}[Constant-level rarity scale: near-halving of \texorpdfstring{$\mathsf{M}(A_4)/\mathsf{M}(A_3)$}{M(A4)/M(A3)}]\label{rem:pom-collision-mertens-halving}
 Tables \ref{tab:collision_kernel_A3_finite_part} and \ref{tab:collision_kernel_A4_finite_part} give
 \(
@@ -253,3 +576,4 @@ Therefore
 \]
 One sees that at \(q=2,3,4\) the decay step size of the finite-part constant exhibits an increasing trend, providing a fine-structure fingerprint that appears in parallel with the near-RH critical line behavior.
 \end{remark}
+

@@ -29,10 +29,308 @@ applying this general result to the group \(H=G\wr S_q\) and the lifted operator
 Proposition \ref{prop:pom-mom-lift-wreath-exchange} ensures that, under the moment semantics of ``unlabeled replication + permutation symmetry,'' the type-correct object for the lift axis is precisely \(G\wr S_q\), so the above decomposition provides a label-channelized fingerprint strictly consistent with the moment compilation. \qed
 \end{proof}
 
+\paragraph{Rigid collapse of infinite torsion symmetry and coprime closure: symmetric factorial closure \texorpdfstring{$\Rightarrow$}{=>} rank-one spectral degeneration}
+This paragraph elevates the extreme symmetry of the ``twisted point table'' into a rigidity constraint on the non-Perron spectrum: if the non-Perron part exhibits torsion symmetry simultaneously at infinitely many coprime orders, then no nontrivial spectral points other than zero are allowed.
+
+\begin{theorem}[Rigid collapse of infinite coprime torsion symmetry: forcing non-Perron spectrum to vanish at infinitely many coprime symmetric orders]\label{thm:pom-infinite-coprime-torsion-symmetry-rankone}
+Let \(F(t)=\prod_{k=2}^{d}(1-\lambda_k t)\) be the non-Perron characteristic polynomial of a primitive kernel (or its Perron-normalized channel block), where \(|\lambda_k|<1\).
+Write
+\[
+-\log F(t)=\sum_{n\ge 1}\frac{u_n}{n}t^n,
+\qquad
+u_n:=\sum_{k=2}^{d}\lambda_k^n.
+\]
+For an integer \(q\ge 2\), we say \textbf{mod \(q\) torsion symmetry} holds if there exists an analytic function \(G_q\) such that
+\[
+\boxed{\;F(t)=G_q(t^q)\;}
+\]
+(equivalently: the power series of \(-\log F(t)\) contains only terms with powers divisible by \(q\), i.e., \(u_n=0\) whenever \(q\nmid n\)).
+\par
+If there exists an infinite set \(\mathcal Q\subseteq\{2,3,\dots\}\) whose elements are pairwise coprime, and for each \(q\in\mathcal Q\) the mod \(q\) torsion symmetry holds,
+then we must have
+\[
+u_n=0\quad(\forall n\ge 1),
+\qquad\text{and hence}\qquad
+F(t)\equiv 1,\ \lambda_k=0\ (k\ge 2).
+\]
+Equivalently, the kernel degenerates spectrally to Perron line \(\oplus\) zero spectrum (rank-one spectral degeneration).
+\end{theorem}
+\begin{proof}
+By the coefficient characterization of ``mod \(q\) torsion symmetry,'' for each \(q\in\mathcal Q\) we have \(u_n=0\) whenever \(q\nmid n\).
+For any fixed \(n\ge 1\), only finitely many \(q\) can divide \(n\); since \(\mathcal Q\) is infinite and pairwise coprime, we can always find some \(q\in\mathcal Q\) with \(q\nmid n\), forcing \(u_n=0\).
+Thus \(u_n\equiv 0\), hence \(-\log F(t)\equiv 0\), i.e., \(F(t)\equiv 1\), from which all \(\lambda_k=0\). \qed
+\end{proof}
+
+\begin{corollary}[Coprime multiplicative closure of finite torsion symmetry: two coprime symmetries simultaneously \texorpdfstring{$\Rightarrow$}{=>} product symmetry]\label{cor:pom-torsion-symmetry-coprime-closure}
+Using the notation of Theorem \ref{thm:pom-infinite-coprime-torsion-symmetry-rankone}.
+If both mod \(q_1\) and mod \(q_2\) torsion symmetries hold, and \(\gcd(q_1,q_2)=1\), then mod \(q_1q_2\) torsion symmetry also holds;
+equivalently, there exists an analytic function \(H\) such that
+\[
+F(t)=H\!\left(t^{q_1q_2}\right).
+\]
+\end{corollary}
+\begin{proof}
+Mod \(q_i\) torsion symmetry implies \(u_n=0\) whenever \(q_i\nmid n\).
+If both hold and \(\gcd(q_1,q_2)=1\), then \(u_n\) can only be nonzero when \(q_1q_2\mid n\).
+Hence the power series of \(-\log F(t)\) contains only terms with powers divisible by \(q_1q_2\), so there exists an analytic \(H\) such that \(F(t)=H(t^{q_1q_2})\).
+\qed
+\end{proof}
+
+\begin{remark}[Observable necessity condition on the character side: torsion symmetry \texorpdfstring{$\Rightarrow$}{=>} all nonprincipal character coefficients vanish]\label{rem:pom-torsion-symmetry-implies-no-nonprincipal-character}
+If mod \(q\) torsion symmetry holds, i.e., \(F(t)=G_q(t^q)\), then for any \(a\in(\ZZ/q\ZZ)^\times\) we have
+\(
+F(\omega_q^{\,a})=G_q(1)
+\)
+as a constant.
+Therefore, the twisted point logarithmic table \(g_q(a):=-\log F(\omega_q^{\,a})\) is constant on the unit group, and for any nontrivial Dirichlet character \(\chi\neq\mathbf 1\) we have
+\[
+\sum_{a\in(\ZZ/q\ZZ)^\times}\chi(a)\,g_q(a)=0.
+\]
+In other words, strong torsion symmetry necessarily causes the root-of-unity point table not to activate any nonprincipal channel in the character decomposition.
+\end{remark}
+
 \begin{remark}[Computable shadow: character channelization and \texorpdfstring{$(\mathrm{RMOML})$}{RMOML}]\label{rem:pom-wreath-artin-computable-shadow}
 The irreducible channel decomposition of Corollary \ref{cor:pom-wreath-artin-factorization} requires a complete representation classification for a general wreath product \(G\wr S_q\).
 In the executable regime where \(G\) is a finite abelian group and only one-dimensional character channels are tracked,
 the \((\mathrm{RMOML})\) rule given by Proposition \ref{prop:pom-rmoml-sound} and Remark \ref{rem:pom-wreath-shadow-rmoml} can be viewed as a computable shadow of this Artin decomposition:
 it compresses the required twisted block readouts onto an enumerable character family, thereby forming an auditable ``label--spectral'' channel.
 \end{remark}
+
+\paragraph{Schur--cycle index tomography: explicit recovery of nontrivial Schur channels from low-order collision moments}
+Following the \(q\)-parallel moment semantics, the factor permutation group \(S_q\) naturally acts on the unquotiented \(q\)-parallel kernel; in the minimal realization the corresponding moment kernel commutes with this action,
+so one can perform an equivariant Schur decomposition with respect to \(S_q\) and explicitly recover the spectral fingerprint of ``nontrivial permutation channels'' as character-weighted combinations of low-order collision moments.
+
+\begin{theorem}[Character-weighted Schur tomography formula]\label{thm:pom-schur-cycle-index-tomography}
+Fix an integer \(q\ge 2\).
+Suppose that some unquotiented \(q\)-parallel moment-kernel realization (one may take a minimized realization of the tensorized moment-kernel \(A_q^{\mathrm{ten}}\)) carries a linear \(S_q\)-action that commutes with the moment kernel,
+so there exists an \(S_q\)-equivariant decomposition
+\[
+A_q\ \cong\ \bigoplus_{\lambda\vdash q}\bigl(B_{q,\lambda}\otimes I_{f^\lambda}\bigr),
+\qquad f^\lambda:=\dim S^\lambda,
+\]
+where \(\lambda\) runs over partitions of \(q\) and \(S^\lambda\) is the corresponding Specht module.
+For any \(m\ge 1\) define the channel trace sequence
+\[
+T_{q,\lambda}(m):=\mathrm{Tr}\!\left(B_{q,\lambda}^{\,m}\right).
+\]
+On the other hand, for any permutation \(\sigma\in S_q\) write its cycle type as \(1^{c_1}2^{c_2}\cdots\) (where \(c_r\) is the number of cycles of length \(r\)), and define the cycle-type collision polynomial
+\[
+\mathcal{C}_\sigma(m):=\prod_{r\ge 1} S_r(m)^{\,c_r},
+\qquad
+S_r(m):=\sum_{x\in X_m} d_m(x)^r.
+\]
+Then for each partition \(\lambda\vdash q\) the explicit formula holds:
+\[
+\boxed{\;
+T_{q,\lambda}(m)
+=
+\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\mathcal{C}_\sigma(m)\; },
+\]
+where \(\chi^\lambda\) is the character of the Specht module \(S^\lambda\).
+Moreover, the sum depends only on cycle type, so it can be compressed to a sum over conjugacy classes, i.e., partitions of \(q\).
+\end{theorem}
+\begin{proof}
+Let \(\rho_\lambda\) be the representation of \(S^\lambda\); then the central idempotent
+\(
+e_\lambda=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\sigma
+\)
+gives the \(\lambda\)-equivariant projection (by character orthogonality).
+Since \(A_q\) commutes with \(S_q\), we have \(e_\lambda\) commuting with \(A_q\), and under the equivariant decomposition \(e_\lambda\) acts only on the Specht factor, so
+\[
+\mathrm{Tr}(e_\lambda A_q^{\,m})=\mathrm{Tr}(B_{q,\lambda}^{\,m})\,\mathrm{Tr}(\mathrm{Id}_{S^\lambda})
+=f^\lambda\,T_{q,\lambda}(m).
+\]
+On the other hand,
+\[
+\mathrm{Tr}(e_\lambda A_q^{\,m})
+=\frac{f^\lambda}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\,\mathrm{Tr}(\sigma A_q^{\,m}).
+\]
+Finally, for the unquotiented \(q\)-parallel kernel, \(\mathrm{Tr}(\sigma A_q^{\,m})\) depends only on the cycle type of \(\sigma\):
+a cycle of length \(r\) constrains \(q\) parallel copies to \(r\) identified ones, contributing a power-sum moment \(S_r(m)\); cycles are mutually independent, yielding the product
+\(
+\mathrm{Tr}(\sigma A_q^{\,m})=\mathcal{C}_\sigma(m)
+\).
+Substituting back and canceling \(f^\lambda\) yields the formula. \qed
+\end{proof}
+
+\begin{corollary}[Schur spectral auditing without explicit compilation of high-dimensional \texorpdfstring{$\mathrm{MOM}_q$}{MOMq} kernels]\label{cor:pom-schur-spectrum-audit-from-low-moments}
+For fixed \(q\ge 2\), all Schur channel trace sequences \(\{T_{q,\lambda}(m)\}_{m\ge 1,\ \lambda\vdash q}\)
+are explicitly computed from the finite set \(\{S_r(m)\}_{1\le r\le q,\ m\ge 1}\) through one character-weighting pass (Theorem \ref{thm:pom-schur-cycle-index-tomography}).
+Therefore, any auditing quantity that depends only on channel traces/characteristic polynomials (such as zero-pole structures of channel \(\zeta\)-functions, Schur envelope radii, and channel reduced determinant constants)
+can be directly recovered from low-order collision moments without constructing the high-dimensional parallel automaton.
+\end{corollary}
+
+\input{sections/body/pom/parts/subsubsec__pom-schur-frobenius-primitive-fiber-coordinates}
+\input{sections/body/pom/parts/subsubsec__pom-schur-character-sieve-thermodynamic}
+\input{sections/body/pom/parts/subsubsec__pom-schur-variance-spectroscopy}
+\input{sections/body/pom/parts/subsubsec__pom-schur-near-rh-linear-inequalities}
+\input{sections/body/pom/parts/subsubsec__pom-schur-dirichlet-torsion-factorization}
+
+\begin{theorem}[Schur--Chebotarev: the prime-shadow deviation of nontrivial Schur channels is locked by character tomography]\label{thm:pom-schur-chebotarev-prime-deviation}
+Fix an integer \(q\ge2\), and use the Schur decomposition of Theorem \ref{thm:pom-schur-cycle-index-tomography}
+\(
+A_q\cong\bigoplus_{\lambda\vdash q}(B_{q,\lambda}\otimes I_{f^\lambda})
+\).
+For each channel, define the primitive orbit count
+\[
+p_{n,\lambda}:=\frac{1}{n}\sum_{m\mid n}\mu(m)\,\Tr\!\bigl(B_{q,\lambda}^{\,n/m}\bigr),
+\qquad
+\Pi_\lambda(N):=\sum_{n\le N}p_{n,\lambda}.
+\]
+Let \(\rho_q:=\rho(B_{q,(q)})\) be the Perron root of the trivial channel, and let
+\[
+\Lambda_{q,\lambda}:=
+\begin{cases}
+\max\{|\mu|:\ \mu\in\mathrm{spec}(B_{q,(q)}),\ \mu\neq \rho_q\}, & \lambda=(q),\\[2pt]
+\rho(B_{q,\lambda}), & \lambda\neq(q).
+\end{cases}
+\]
+Then for each \(\lambda\vdash q\) there exists a constant \(C_{q,\lambda}>0\) such that for all \(N\ge2\)
+\[
+\boxed{\;
+\Pi_\lambda(N)
+=\mathbf 1_{\{\lambda=(q)\}}\sum_{n\le N}\frac{\rho_q^{\,n}}{n}
++O\!\left(\frac{C_{q,\lambda}\,\Lambda_{q,\lambda}^{\,N}}{N}\right)\; }.
+\]
+Moreover, the exponential rate \(\Lambda_{q,\lambda}\) in the error term can in principle be mutually recovered with the channel trace sequence \(\{T_{q,\lambda}(m)\}_{m\ge1}\) (and hence with \(\{S_r(m)\}_{1\le r\le q}\)) (Proposition \ref{prop:pom-moment-genfunc-jordan} and Theorem \ref{thm:pom-schur-cycle-index-tomography}).
+Therefore, the prime-shadow count of a nontrivial Schur channel is essentially a ``pure error term,'' whose exponential rate is completely determined by \(\rho(B_{q,\lambda})\); in particular, the near-RH overcritical event
+\(
+\rho(B_{q,\lambda})>\sqrt{\rho_q}
+\)
+is equivalent to a nontrivial channel's prime-shadow deviation crossing the square-root threshold.
+\end{theorem}
+\begin{proof}
+By the finite-dimensional explicit formula template (Remark \ref{prop:finite-dimensional-explicit-formula}), \(p_{n,\lambda}\) is a Möbius linear combination of \(\Tr(B_{q,\lambda}^n)\).
+When \(\lambda=(q)\), \(B_{q,(q)}\) is a primitive nonnegative channel block, so
+\(
+\Tr(B_{q,(q)}^n)=\rho_q^{\,n}+O(\Lambda_{q,(q)}^{\,n})
+\)
+and from \(p_{n,(q)}=\rho_q^{\,n}/n+O(\Lambda_{q,(q)}^{\,n}/n)\) we obtain the cumulative form.
+When \(\lambda\neq(q)\), the spectral radius of \(B_{q,\lambda}\) is \(\rho(B_{q,\lambda})=\Lambda_{q,\lambda}\), so \(|\Tr(B_{q,\lambda}^n)|\ll \Lambda_{q,\lambda}^{\,n}\) and yields \(|p_{n,\lambda}|\ll \Lambda_{q,\lambda}^{\,n}/n\) with the stated bound.
+The final statement on ``recovering channel prime-shadow from low-order collision moment inputs'' follows from Theorem \ref{thm:pom-schur-cycle-index-tomography} (character-weighted explicit formula for traces) and Proposition \ref{prop:pom-moment-genfunc-jordan} (finite-order recurrence/spectral envelope can be verified and recovered from finite data). \qed
+\end{proof}
+
+\paragraph{Verifiable separation of freezing entropy and Schur envelope}
+The entropy rate \(h_\ast\) of max-fiber achievers (Definition \ref{def:pom-max-fiber-entropy-rate}) characterizes the zero-temperature intercept and the exponential complexity of the max-set (Theorem \ref{thm:pom-zero-temperature-two-term-expansion-maxfiber-entropy}),
+while nontrivial Schur channels of \(S_q\) control the ``peripheral spectrum of permutation channels.''
+To align both types of certificates within the same notation system, we use
+\(\Lambda_q^{\mathrm{Schur}}\) (nontrivial Schur envelope radius) and \(\Delta_q\) (square-root defect) as introduced in Theorem \ref{thm:pom-schur-variance-growth-rate-spectral-identity}.
+
+\begin{proposition}[Freezing certificate and near-RH certificate do not imply each other]\label{prop:pom-freezing-vs-schur-envelope-separation}
+Under the above setting, the ``max-fiber entropy'' certificate \(h_\ast>0\) and the ``Schur envelope overcritical'' certificate \(\Delta_q>0\) belong to two essentially different auditing axes:
+\begin{enumerate}
+  \item \(h_\ast\) is controlled by the zero-temperature intercept as \(q\to\infty\) (Theorem \ref{thm:pom-zero-temperature-two-term-expansion-maxfiber-entropy}), and can be machine-verified by \(\rho(A^{\max})\) when the max-set is a finite-type subshift (Corollary \ref{cor:pom-max-fiber-subshift-spectral-entropy}).
+  \item For each fixed \(q\), \(\Delta_q\) depends only on power-sum moment data of order \(\le q\): by Theorem \ref{thm:pom-schur-cycle-index-tomography},
+  all nontrivial channel trace sequences (and hence their spectral envelopes) can be explicitly recovered from \(\{S_r(m)\}_{1\le r\le q}\).
+\end{enumerate}
+Therefore, in the absence of an additional coupling law ``max-set structure \(\Rightarrow\) nontrivial channel spectral gap,''
+any attempt to deduce one class of certificate from the other must explicitly invoke extra constraints;
+at the auditable protocol level, the two should be regarded as independent variables requiring separate verification.
+\end{proposition}
+
+\paragraph{Bidirectional reversible compilation across resolutions and moment orders}
+Juxtaposing the Prony--Hankel reconstruction at fixed \(m\) (Theorem \ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction})
+with the Schur tomography at fixed \(q\) (Theorem \ref{thm:pom-schur-cycle-index-tomography}), we obtain a bidirectional compilation bridge fully algebraized within a finite moment-order window.
+
+\begin{theorem}[Bidirectional reversibility of fiber spectrum and Schur spectrum (finite moment-order window)]\label{thm:pom-fiber-schur-bidirectional-compilation}
+Given an integer \(Q\ge 2\), and for all resolutions \(m\ge 1\) the collision moment data \(\{S_q(m)\}_{1\le q\le Q}\).
+Let \(r_m:=|\mathcal{D}_m|\) be the number of distinct values in the fiber spectrum at layer \(m\) (see \S\ref{subsubsec:pom-moment-hankel-positivity-crossq}).
+Under the following two auditable conditions:
+\begin{enumerate}
+  \item \textbf{(Fiber-side reversibility)} For each \(m\) we have \(Q\ge 2r_m-1\);
+  \item \textbf{(Schur-side reversibility)} For each \(q\le Q\) the parallel kernel satisfies the \(S_q\)-equivariant realization assumption of Theorem \ref{thm:pom-schur-cycle-index-tomography};
+\end{enumerate}
+the data \(\{S_q(m)\}_{1\le q\le Q,\ m\ge 1}\) simultaneously determines:
+\[
+\text{(Fiber side)}\ \{(a_i(m),n_i(m))\}_{i=1}^{r_m}\ \text{for each }m;\qquad
+\text{(Schur side)}\ \{T_{q,\lambda}(m)\}_{m\ge 1,\ \lambda\vdash q}\ \text{for each }q\le Q.
+\]
+Thus, within a finite moment-order window, \(\{S_q(m)\}\) is both a ``fiber-spectrum tomographic scan'' and a ``Schur-spectrum tomographic scan,'' and there exists a fully reversible pure-algebraic compilation bridge between the two ends.
+\end{theorem}
+
+\begin{theorem}[``Information completeness'' of a single moment order: when \(q\) is large enough, Schur traces determine the complete fiber spectrum progressively in \(m\)]\label{thm:pom-single-q-schur-traces-complete-fiber-spectrum}
+Fix a resolution \(m\), and write the value set of fiber multiplicity as
+\[
+\mathcal{D}_m=\{a_1<\cdots<a_{r_m}\}\subset\NN,
+\qquad
+n_i:=\#\{x\in X_m:\ d_m(x)=a_i\}.
+\]
+If given an integer \(q\ge 2r_m-1\), and the full channel trace vector at this \(q\)
+\(
+\mathbf T_q(m)=(T_{q,\lambda}(m))_{\lambda\vdash q}
+\),
+then one can uniquely recover \(\{(a_i,n_i)\}_{i=1}^{r_m}\), and hence uniquely recover the pushforward distribution
+\(
+w_m(x)=d_m(x)/2^m
+\)
+with its complete histogram structure (including multiplicities) on \(X_m\).
+Moreover, this threshold is in general sharp: if only single-order Schur trace data at \(q\le 2r_m-2\) is available, uniqueness recovery cannot be guaranteed without additional structural assumptions (Theorem \ref{thm:pom-fiber-spectrum-prony-hankel-threshold-sharp}).
+\end{theorem}
+\begin{proof}
+By Corollary \ref{cor:pom-schur-traces-determine-low-moments}, \(\mathbf T_q(m)\) (together with the known \(S_1(m)=2^m\)) can explicitly recover all power-sum moments \(\{S_k(m)\}_{1\le k\le q}\).
+Also \(S_0(m)=|X_m|\) is uniquely determined by resolution \(m\) under the Fold protocol, so when \(q\ge 2r_m-1\) we obtain the moment sequence \(\{S_k(m)\}_{k=0}^{2r_m-1}\).
+By the Prony--Hankel complete reconstruction theorem \ref{thm:pom-fiber-spectrum-prony-hankel-2r-reconstruction}, this finite moment sequence uniquely determines all atoms \(\{a_i\}\) and their multiplicities \(\{n_i\}\), yielding the stated fiber spectrum and pushforward histogram.
+The sharpness of the threshold follows from Theorem \ref{thm:pom-fiber-spectrum-prony-hankel-threshold-sharp}. \qed
+\end{proof}
+
+\begin{corollary}[Full-spectrum audit decidability within a finite moment-order window]\label{cor:pom-finite-q-window-decidable-full-audit}
+Under the setting of Theorem \ref{thm:pom-fiber-schur-bidirectional-compilation}, if for each \(q\le Q\) and each \(\lambda\vdash q\) the trace sequence \(m\mapsto T_{q,\lambda}(m)\) comes from a finite-dimensional matrix power readout (equivalently: satisfies a finite-order linear recurrence),
+then the corresponding channel's \(\zeta\)-function, pole/zero structure, and reduced determinant constant can all be completely recovered from finitely many \(m\) values (generating function rationality; cf.\ the analogous argument in Proposition \ref{prop:pom-moment-genfunc-jordan}).
+Therefore, within a finite moment-order window, near-RH discrimination (the sign of \(\Delta_q\)) and constant-layer anomaly auditing both reduce to finite computational problems.
+\end{corollary}
+
+\begin{conjecture}[Finite support principle of Schur tomography (stable tail shapes)]\label{conj:pom-schur-finite-support}
+Under the \(S_q\)-equivariant Schur decomposition setting of Theorem \ref{thm:pom-schur-cycle-index-tomography},
+further assume that the \(q\)-parallel compilation family comes from a finite-state mechanism with fixed hidden dimension \(s\), satisfying a kind of \emph{representation-stable/finitely-generated} regime:
+there exists a finite partition family \(\mathcal{P}_s\) depending only on \(s\) (classified by ``stable tail shape after removing the first row length''), such that for all \(q\ge2\) and all \(\lambda\vdash q\), if the stable tail shape of \(\lambda\) does not belong to \(\mathcal{P}_s\), then the corresponding channel block must vanish:
+\[
+B_{q,\lambda}=0.
+\]
+Thus, all nontrivial Schur channels' spectral radii, \(\zeta\)-type zero-pole structures, and near-RH discrimination are controlled by this finite shape family \(\mathcal{P}_s\).
+\end{conjecture}
+
+\begin{corollary}[Finite-check principle for near-RH (under the finite-support assumption)]\label{cor:pom-schur-near-rh-finite-check}
+Under Conjecture \ref{conj:pom-schur-finite-support} and the premise that near-RH overcriticality can only occur in nonzero Schur channels,
+within the class of fixed hidden dimension \(s\), the proposition ``there exists some \(q\) such that the Schur envelope is overcritical (\(\Delta_q>0\))'' can in principle be reduced to a finite check:
+one only needs to verify the square-root bound channel-by-channel for the finite shape family \(\mathcal{P}_s\) within some finite window, to decide whether the square-root bound persists for all larger \(q\).
+\end{corollary}
+
+\begin{theorem}[Twisted point--Schur dual microscope: single-layer twisted point table determines channel reduced constants]\label{thm:pom-torsion-schur-dual-microscope}
+Fix an integer \(q\ge2\), and use the Schur decomposition
+\(
+A_q\cong\bigoplus_{\lambda\vdash q}(B_{q,\lambda}\otimes I_{f^\lambda})
+\).
+Write \(\rho_q:=\rho(B_{q,(q)})\) for the Perron root of the trivial channel, and assume \(\rho_q\) appears only in the trivial channel (i.e., for all \(\lambda\neq(q)\) we have \(\rho(B_{q,\lambda})<\rho_q\)).
+For \(\lambda\vdash q\), define the channel reduced constant
+\[
+\mathcal{M}_{q,\lambda}
+:=
+\det\!\left(I-\frac{B_{q,\lambda}}{\rho_q}\right)^{-1}\qquad(\lambda\neq(q)),
+\qquad
+\mathcal{M}_{q,(q)}
+:=
+\det\nolimits'\!\left(I-\frac{B_{q,(q)}}{\rho_q}\right)^{-1}.
+\]
+Also define the single-layer twisted point value table (\(j=1,\dots,q-1\))
+\[
+\mathcal{T}_q(j)
+:=
+\zeta_{A_q}\!\left(\frac{\omega_q^j}{\rho_q}\right)
+=
+\det\!\Bigl(I-\frac{\omega_q^{\,j}}{\rho_q}A_q\Bigr)^{-1}.
+\]
+Then under the above assumptions, the data \(\{\mathcal{T}_q(j)\}_{j=1}^{q-1}\) together with \(\mathcal{M}_{q,(q)}\) jointly determine all nontrivial channel constants \(\{\mathcal{M}_{q,\lambda}\}_{\lambda\neq(q)}\):
+there exists an explicit finite-algebraic elimination procedure (involving only finitely many character-weighting and finitely many determinant/coefficient operations), which can decompose the twisted point value table into factors of each Schur sector and recover \(\mathcal{M}_{q,\lambda}\) sector-by-sector.
+\end{theorem}
+\begin{proof}
+By Schur decomposition and multiplicativity of the determinant,
+\[
+\zeta_{A_q}(z)
+=\prod_{\lambda\vdash q}\det(I-zB_{q,\lambda})^{-f^\lambda}.
+\]
+At \(z=\omega_q^j/\rho_q\ (j\neq0)\) each channel is analytic (by \(|\omega_q^j|=1\) and assumption \(\rho(B_{q,\lambda})<\rho_q\)), yielding a channel product decomposition of \(\mathcal{T}_q(j)\).
+The simple pole of the trivial channel at \(z=1/\rho_q\) is reduced by \(\det'\) to a finite constant \(\mathcal{M}_{q,(q)}\), while the values of the remaining channels at that point are precisely \(\mathcal{M}_{q,\lambda}\).
+Thus, once \(\{\mathcal{T}_q(j)\}_{j=1}^{q-1}\) is viewed as sampling channel factors at a set of root-of-unity points, combined with the channel decomposability provided by character-weighted Schur tomography (Theorem \ref{thm:pom-schur-cycle-index-tomography}), one can perform algebraic elimination on the channel factors in finitely many steps and recover \(\mathcal{M}_{q,\lambda}\).
+\qed
+\end{proof}
 

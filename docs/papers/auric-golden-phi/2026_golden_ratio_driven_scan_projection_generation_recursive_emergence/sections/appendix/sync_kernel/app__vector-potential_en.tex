@@ -34,6 +34,67 @@ The dominant pole $z_\star(\theta)=\lambda(\theta)^{-1}$ is given by the second 
 \]
 so the pressure $P(\theta)=\log\lambda(\theta)$ is completely determined by the largest real root of this cubic.
 
+\begin{proposition}[Algebraic large deviation of the negative-carry potential: rational parametrization of the slope and closed-form rate function]\label{prop:vector-potential-phi-minus-ldp-param}
+Retaining the notation of this subsection, let \(u=e^{\theta}>0\), and let \(\lambda(u)\) be the Perron branch (largest positive real root) of the cubic equation
+\[
+F(\lambda,u):=\lambda^3-(u+2)\lambda^2+(u-2)\lambda+3u=0
+\]
+for \(u>0\).
+Define the pressure \(P(\theta)=\log\lambda(e^\theta)\) and the slope \(\alpha(\theta):=P'(\theta)\), and define the rate function via Legendre transform:
+\[
+I(\alpha):=\sup_{\theta\in\RR}\bigl(\theta\alpha-(P(\theta)-P(0))\bigr).
+\]
+Then there exists an explicit rational parametrization in \(\lambda\in(1+\sqrt3,\infty)\) such that
+\[
+u(\lambda)=\frac{\lambda(\lambda^{2}-2\lambda-2)}{\lambda^{2}-\lambda-3},
+\qquad
+\alpha(\lambda)=\frac{\lambda^{4}-3\lambda^{3}-3\lambda^{2}+8\lambda+6}{\lambda^{4}-2\lambda^{3}-5\lambda^{2}+12\lambda+6},
+\]
+and in this parametric representation the rate function has the closed form
+\[
+I(\alpha(\lambda))=\alpha(\lambda)\log u(\lambda)-\log\lambda+\log 3.
+\]
+\end{proposition}
+\begin{proof}
+By viewing \(F(\lambda,u)=0\) as a linear equation in \(u\), we directly solve
+\[
+u=\frac{\lambda^{3}-2\lambda^{2}-2\lambda}{\lambda^{2}-\lambda-3}
+=\frac{\lambda(\lambda^{2}-2\lambda-2)}{\lambda^{2}-\lambda-3}
+=:u(\lambda).
+\]
+Taking \(u=e^{\theta}\) and applying implicit differentiation,
+\[
+\lambda_u=-\frac{\partial_u F}{\partial_\lambda F},
+\qquad
+\alpha(\theta)=\frac{\dd}{\dd\theta}\log\lambda(e^\theta)=\frac{u\,\lambda_u}{\lambda}
+=-\frac{u\,\partial_u F(\lambda,u)}{\lambda\,\partial_\lambda F(\lambda,u)}\Bigg|_{\lambda=\lambda(u)}.
+\]
+For this example,
+\(
+\partial_u F(\lambda,u)=-(\lambda^2-\lambda-3)
+\)
+and
+\(
+\partial_\lambda F(\lambda,u)=3\lambda^2-2(u+2)\lambda+(u-2)
+\).
+Substituting and simplifying using \(u=u(\lambda)\) yields the stated rational expression for \(\alpha(\lambda)\).
+\par
+For the rate function, at an extremal point satisfying \(\alpha=P'(\theta)\) under the caliber,
+\[
+I(\alpha)=\theta\alpha-P(\theta)+P(0).
+\]
+Here \(\theta=\log u(\lambda)\) and \(P(\theta)=\log\lambda\). Moreover, when \(u=1\),
+\(
+F(\lambda,1)=\lambda^{3}-3\lambda^{2}-\lambda+3=(\lambda-3)(\lambda^{2}-1)
+\),
+so the Perron root is \(\lambda(1)=3\), whence \(P(0)=\log 3\).
+Substituting yields
+\(
+I(\alpha(\lambda))=\alpha(\lambda)\log u(\lambda)-\log\lambda+\log 3
+\).
+\qed
+\end{proof}
+
 By implicit differentiation or numerical script (\texttt{--phi neg\_state}),
 \[
 P'(0)=\frac{1}{8}\ \ (\approx 0.1250000006),\qquad
