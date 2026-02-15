@@ -1,5 +1,6 @@
 % (User input window)
 % 时间：2026-02-16 01:12:09（Asia/Singapore）
+% 时间：2026-02-16 02:34:12（Asia/Singapore）
 %
 % 本段将 Hellinger 二体核 \(A(\Delta)\) 由闭式亲和度提升为一条完全谱确定的几何对象：
 % 其 Fourier 密度为 \(\cosh^{-2}(\pi\xi)\)，并诱导一个显式 RKHS 与行列式体积势；
@@ -100,6 +101,267 @@ S_{1/2}(\boldsymbol{\sigma}):=-\log\det G(\boldsymbol{\sigma}).\;}
 最后一式为 Hilbert 空间中 Gram 行列式的几何解释：\(\det(\langle v_j,v_k\rangle)=\mathrm{Vol}^{2}(\mathrm{span}\{v_j\})\)。证毕。
 \end{proof}
 
+\begin{proposition}[行列式熵势的高斯信息同一：\texorpdfstring{$S_{1/2}$}{S(1/2)} 精确等于两倍的相对熵与总相关]\label{prop:xi-hellinger-det-entropy-gaussian-kl-tc}
+沿用命题 \ref{prop:xi-hellinger-kernel-rkhs-volume} 的记号，并记 \(G:=G(\boldsymbol{\sigma})\in\RR^{\kappa\times\kappa}\)。
+令 \(X\sim\mathcal N(0,G)\)、\(Z\sim\mathcal N(0,I_\kappa)\)。
+则严格有
+\[
+\boxed{\;
+D_{\mathrm{KL}}\bigl(\mathcal N(0,G)\Vert \mathcal N(0,I_\kappa)\bigr)
+=\frac12\bigl(\tr(G)-\log\det G-\kappa\bigr)
+=\frac12S_{1/2}(\boldsymbol{\sigma})\;}
+\]
+并且高斯总相关（multi-information）
+\[
+\mathrm{TC}(X):=\sum_{j=1}^{\kappa}h(X_j)-h(X)=\frac12S_{1/2}(\boldsymbol{\sigma}),
+\]
+其中 \(h(\cdot)\) 为微分熵。
+因此 \(S_{1/2}\) 并非类比性的“几何熵”，而是从独立基态到相关结构的精确信息代价的两倍。
+\end{proposition}
+\begin{proof}
+零均值高斯族的 KL 闭式给出
+\[
+D_{\mathrm{KL}}\bigl(\mathcal N(0,G)\Vert \mathcal N(0,I_\kappa)\bigr)
+=\frac12\bigl(\tr(G)-\log\det G-\kappa\bigr).
+\]
+由 \(G_{jj}=A(0)=1\) 得 \(\tr(G)=\kappa\)，从而该式化为 \(-\frac12\log\det G=\frac12S_{1/2}(\boldsymbol{\sigma})\)。
+\par
+另一方面，高斯微分熵公式 \(h(\mathcal N(0,\Sigma))=\frac12\log\bigl((2\pi e)^{d}\det\Sigma\bigr)\) 给出
+\[
+h(X)=\frac12\log\bigl((2\pi e)^\kappa\det G\bigr),\qquad
+h(X_j)=\frac12\log(2\pi e\,G_{jj})=\frac12\log(2\pi e).
+\]
+故
+\(
+\mathrm{TC}(X)=\sum_j h(X_j)-h(X)=-\frac12\log\det G=\frac12S_{1/2}(\boldsymbol{\sigma})
+\)。
+证毕。
+\end{proof}
+
+\begin{proposition}[主子式 \texorpdfstring{$-\log\det$}{-log det} 的超模性：集合论强次可分与块互信息证书]\label{prop:xi-hellinger-det-entropy-supermodular}
+设 \(G\succ0\) 为命题 \ref{prop:xi-hellinger-kernel-rkhs-volume} 的 Gram 相关矩阵，并令 \([\kappa]:=\{1,\dots,\kappa\}\)。
+对任意指标子集 \(A\subseteq[\kappa]\)，记 \(G_A\) 为 \(G\) 的主子矩阵，并定义集合函数
+\[
+S(A):=-\log\det G_A.
+\]
+则对任意 \(A,B\subseteq[\kappa]\) 恒有超模不等式
+\[
+\boxed{\;S(A)+S(B)\ \le\ S(A\cap B)+S(A\cup B).\;}
+\]
+等价地，\(A\mapsto\log\det G_A\) 为次模函数。
+当 \(I,J\subseteq[\kappa]\) 互不相交时，定义块互信息
+\[
+I_G(I;J):=\frac12\Bigl(S(I\cup J)-S(I)-S(J)\Bigr)
+=\frac12\log\frac{\det G_I\,\det G_J}{\det G_{I\cup J}}
+\ \ge\ 0,
+\]
+它由主子式完全刻画，并在本体系中可作为“边界—体积耦合”的纯行列式证书。
+\end{proposition}
+\begin{proof}
+令 \(X\sim\mathcal N(0,G)\)。
+对任意 \(A\subseteq[\kappa]\)，高斯熵闭式给出
+\[
+h(X_A)=\frac{|A|}{2}\log(2\pi e)+\frac12\log\det G_A.
+\]
+另一方面，对任意 \(A,B\) 的分解
+\(
+A=(A\cap B)\cup(A\setminus B)
+\)、
+\(
+B=(A\cap B)\cup(B\setminus A)
+\)
+有恒等式
+\[
+h(X_A)+h(X_B)-h(X_{A\cap B})-h(X_{A\cup B})
+=I\bigl(X_{A\setminus B};X_{B\setminus A}\mid X_{A\cap B}\bigr)\ \ge\ 0,
+\]
+其中 \(I(\cdot;\cdot\mid\cdot)\) 为条件互信息。
+代入上式并消去模函数项 \(|A|\log(2\pi e)/2\) 即得
+\[
+\log\det G_A+\log\det G_B\ \ge\ \log\det G_{A\cap B}+\log\det G_{A\cup B},
+\]
+从而 \(S(A)=-\log\det G_A\) 满足所示超模不等式。
+当 \(I\cap J=\varnothing\) 时，\(I_G(I;J)\ge0\) 亦可视为上述不等式在 \(A=I\)、\(B=J\) 下的特例（取 \(\det G_\varnothing=1\)）。证毕。
+\end{proof}
+
+\begin{proposition}[块互信息的 Schur 补表示与远距衰减：跨簇耦合以 \texorpdfstring{$e^{-L}$}{e^{-L}} 锁定]\label{prop:xi-hellinger-block-mi-schur-decay}
+令 \(I,J\subseteq[\kappa]\) 互不相交，并设 \(|I|=\kappa_1\)、\(|J|=\kappa_2\)。
+将 \(G\) 依此分块写为
+\[
+G=\begin{pmatrix}G_I & C\\[2pt] C^{\mathsf T} & G_J\end{pmatrix}.
+\]
+则块互信息 \(I_G(I;J)\) 具有严格恒等式
+\[
+\boxed{\;
+I_G(I;J)=\frac12\log\frac{\det G_I\,\det G_J}{\det G}
+=-\frac12\log\det\!\bigl(I_{\kappa_2}-M\bigr)\;}
+\]
+其中
+\[
+M:=G_J^{-1/2}C^{\mathsf T}G_I^{-1}C\,G_J^{-1/2}\succeq0,
+\qquad
+\sigma(M)\subset[0,1).
+\]
+若两簇在深度轴上的最小间隙为
+\[
+L:=\min\bigl\{|\sigma_i-\sigma_j|:\ i\in I,\ j\in J\bigr\},
+\]
+则由 \(A(\Delta)=|\Delta|/(2\sinh(|\Delta|/2))\) 得一致上界
+\[
+|C_{ij}|=A(\sigma_i-\sigma_j)\le (1+L)e^{-L/2}\qquad(i\in I,\ j\in J),
+\]
+从而在块内可逆性受控（例如 \(\|G_I^{-1}\|_{\mathrm{op}},\|G_J^{-1}\|_{\mathrm{op}}\) 有界）的假设下，
+当 \(L\to\infty\) 有一阶可审计展开
+\[
+I_G(I;J)=\frac12\,\tr(M)+O\!\bigl(\|M\|_{\mathrm{F}}^{2}\bigr)
+\ \le\ C\,\kappa_1\kappa_2(1+L)^{2}e^{-L},
+\]
+其中常数 \(C\) 仅依赖于 \(\|G_I^{-1}\|_{\mathrm{op}}\)、\(\|G_J^{-1}\|_{\mathrm{op}}\) 的上界。
+\end{proposition}
+\begin{proof}
+由高斯互信息的行列式公式（或由微分熵差）得
+\(
+I_G(I;J)=\frac12\log\frac{\det G_I\det G_J}{\det G}
+\)。
+用 Schur 补分解
+\(
+\det G=\det G_I\cdot\det(G_J-C^{\mathsf T}G_I^{-1}C)
+\)
+得到
+\[
+I_G(I;J)=\frac12\log\frac{\det G_J}{\det(G_J-C^{\mathsf T}G_I^{-1}C)}
+=-\frac12\log\det\!\Bigl(I_{\kappa_2}-G_J^{-1/2}C^{\mathsf T}G_I^{-1}C\,G_J^{-1/2}\Bigr),
+\]
+即所示表示；正定性给出 \(0\preceq M\prec I\)。
+\par
+对衰减界，注意
+\[
+A(\Delta)=\frac{|\Delta|}{e^{|\Delta|/2}-e^{-|\Delta|/2}}
+=\frac{|\Delta|e^{-|\Delta|/2}}{1-e^{-|\Delta|}}
+\le (1+|\Delta|)e^{-|\Delta|/2},
+\]
+从而 \(\|C\|_{\mathrm{F}}^{2}\le \kappa_1\kappa_2(1+L)^2e^{-L}\)。
+并且
+\(
+\tr(M)=\tr(G_I^{-1}C\,G_J^{-1}C^{\mathsf T})
+\le \|G_I^{-1}\|_{\mathrm{op}}\|G_J^{-1}\|_{\mathrm{op}}\|C\|_{\mathrm{F}}^{2}
+\)。
+当 \(L\) 足够大时 \(\|M\|_{\mathrm{op}}<1\)，由级数
+\(
+-\log\det(I-M)=\sum_{m\ge1}\tr(M^m)/m
+\)
+得
+\(
+-\log\det(I-M)=\tr(M)+O(\|M\|_{\mathrm{F}}^{2})
+\)，
+于是 \(I_G(I;J)=\frac12\tr(M)+O(\|M\|_{\mathrm{F}}^{2})\) 并得到所示上界。证毕。
+\end{proof}
+
+\begin{proposition}[深度参数的高斯 Fisher 信息：PSD、平移零模与商空间正定]\label{prop:xi-hellinger-fisher-information-translation-null}
+将深度谱 \(\boldsymbol{\sigma}=(\sigma_1,\dots,\sigma_\kappa)\) 视为协方差参数，并考虑高斯族 \(\{\mathcal N(0,G(\boldsymbol{\sigma}))\}\)。
+其 Fisher 信息矩阵定义为
+\[
+\mathcal I_{ab}(\boldsymbol{\sigma})
+:=\frac12\,\tr\!\Bigl(G^{-1}\,(\partial_{\sigma_a}G)\,G^{-1}\,(\partial_{\sigma_b}G)\Bigr),
+\qquad 1\le a,b\le\kappa.
+\]
+则 \(\mathcal I(\boldsymbol{\sigma})\succeq0\) 恒成立。
+由于 \(G_{ij}=A(\sigma_i-\sigma_j)\) 仅依赖差分，整体平移 \(\boldsymbol{\sigma}\mapsto \boldsymbol{\sigma}+t\mathbf 1\) 不改变 \(G\)，故
+\[
+\boxed{\;\mathcal I(\boldsymbol{\sigma})\,\mathbf 1=\mathbf 0.\;}
+\]
+若 \(A\) 在 \((0,\infty)\) 上严格单调且 \(\sigma_j\) 两两不同，则 \(\ker\mathcal I(\boldsymbol{\sigma})=\mathrm{span}\{\mathbf 1\}\)，从而在商空间 \(\mathbf 1^\perp\) 上 \(\mathcal I(\boldsymbol{\sigma})\) 正定；因此“可辨识度”的全部退化自由度仅来自全局平移对称。
+\end{proposition}
+\begin{proof}
+令 \(H_a:=G^{-1/2}(\partial_{\sigma_a}G)G^{-1/2}\)，则
+\[
+\mathcal I_{ab}(\boldsymbol{\sigma})=\frac12\,\tr(H_aH_b)=\frac12\langle H_a,H_b\rangle_{\mathrm{F}},
+\]
+从而 \(\mathcal I\) 是一组矩阵在 Frobenius 内积下的 Gram 矩阵，故半正定。
+\par
+对平移零模，注意 \(G(\boldsymbol{\sigma}+t\mathbf 1)\equiv G(\boldsymbol{\sigma})\)，对 \(t\) 求导并取 \(t=0\) 得
+\(
+\sum_{a=1}^{\kappa}\partial_{\sigma_a}G=0
+\)，
+于是对任意 \(b\) 有
+\(
+(\mathcal I\,\mathbf 1)_b=\sum_a \mathcal I_{ab}
+=\frac12\tr\bigl(G^{-1}(\sum_a\partial_{\sigma_a}G)G^{-1}(\partial_{\sigma_b}G)\bigr)=0
+\)。
+\par
+若 \(v\in\ker\mathcal I\)，则
+\[
+0=v^{\mathsf T}\mathcal I v=\frac12\,\Bigl\|\sum_{a=1}^{\kappa}v_aH_a\Bigr\|_{\mathrm{F}}^{2},
+\]
+从而 \(\sum_a v_a\partial_{\sigma_a}G=0\)。
+逐项计算得对 \(j\neq k\),
+\[
+\Bigl(\sum_a v_a\partial_{\sigma_a}G\Bigr)_{jk}
+=A'(\sigma_j-\sigma_k)\,(v_j-v_k).
+\]
+当 \(\sigma_j\neq\sigma_k\) 时 \(A'(\sigma_j-\sigma_k)\neq0\)，故 \(v_j=v_k\) 对所有 \(j,k\) 成立，即 \(v\in\mathrm{span}\{\mathbf 1\}\)。
+结合已知 \(\mathbf 1\in\ker\mathcal I\) 即得 \(\ker\mathcal I=\mathrm{span}\{\mathbf 1\}\)。证毕。
+\end{proof}
+
+\begin{proposition}[Shearer 覆盖下界：行列式熵势由平均两体互信息强制]\label{prop:xi-hellinger-shearer-average-mi-lower-bound}
+仍设 \(G=G(\boldsymbol{\sigma})\) 为相关矩阵（对角为 \(1\)），并令 \(X\sim\mathcal N(0,G)\)。
+对任意两点边 \((i,j)\) 的两体高斯互信息为
+\[
+I_{ij}:=I(X_i;X_j)=-\frac12\log(1-G_{ij}^{2})
+=-\frac12\log\bigl(1-A(\sigma_i-\sigma_j)^{2}\bigr).
+\]
+则由高斯熵的次模性与 Shearer 覆盖不等式推出下界
+\[
+\boxed{\;
+S_{1/2}(\boldsymbol{\sigma})=-\log\det G
+\ \ge\ \frac{2}{\kappa-1}\sum_{1\le i<j\le\kappa} I_{ij}
+=\frac{1}{\kappa-1}\sum_{i<j}-\log\bigl(1-A(\sigma_i-\sigma_j)^2\bigr).\;}
+\]
+该式给出一种“平均边界律”：总体行列式熵势至少等于平均两体互信息的 \(2/(\kappa-1)\) 倍；因此只要存在大规模两体相干，整体 \(\det\)-体积必不可避免地塌缩。
+\end{proposition}
+\begin{proof}
+对高斯向量 \(X\)，由命题 \ref{prop:xi-hellinger-det-entropy-gaussian-kl-tc} 得 \(S_{1/2}=2\,\mathrm{TC}(X)\)，其中 \(\mathrm{TC}(X)=\sum_i h(X_i)-h(X)\)。
+令 \(\mathcal S=\{\{i,j\}:1\le i<j\le\kappa\}\) 为全体二元子集，则每个指标 \(i\) 在 \(\mathcal S\) 中恰出现 \(\kappa-1\) 次。
+Shearer 覆盖不等式给出
+\[
+h(X)\ \le\ \frac{1}{\kappa-1}\sum_{i<j}h(X_i,X_j).
+\]
+故
+\[
+\mathrm{TC}(X)
+=\sum_i h(X_i)-h(X)
+\ge \sum_i h(X_i)-\frac{1}{\kappa-1}\sum_{i<j}h(X_i,X_j)
+=\frac{1}{\kappa-1}\sum_{i<j}I(X_i;X_j).
+\]
+再乘以 \(2\) 即得所示不等式；而二元高斯互信息闭式
+\(
+I(X_i;X_j)=-\frac12\log(1-G_{ij}^2)
+\)
+由二维相关高斯的行列式公式给出。证毕。
+\end{proof}
+
+\begin{corollary}[平方相干证书：\texorpdfstring{$\sum A^2$}{sum A^2} 作为可计算的熵下界]\label{cor:xi-hellinger-squared-coherence-lower-bound}
+在命题 \ref{prop:xi-hellinger-shearer-average-mi-lower-bound} 的设定下，由不等式 \(-\log(1-x)\ge x\)（\(x\in[0,1)\)）立得
+\[
+\boxed{\;
+S_{1/2}(\boldsymbol{\sigma})
+\ \ge\ \frac{1}{\kappa-1}\sum_{1\le i<j\le\kappa}A(\sigma_i-\sigma_j)^{2}.\;}
+\]
+并且当 \(|\Delta|\to\infty\) 时 \(A(\Delta)\sim |\Delta|e^{-|\Delta|/2}\)，故该下界在大分离相中具体化为
+\[
+S_{1/2}(\boldsymbol{\sigma})
+\ \gtrsim\ \frac{1}{\kappa-1}\sum_{i<j}|\sigma_i-\sigma_j|^{2}e^{-|\sigma_i-\sigma_j|}.
+\]
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:xi-hellinger-shearer-average-mi-lower-bound} 的最后一式，
+\[
+S_{1/2}(\boldsymbol{\sigma})\ge \frac{1}{\kappa-1}\sum_{i<j}-\log\bigl(1-A(\sigma_i-\sigma_j)^{2}\bigr)
+\ge \frac{1}{\kappa-1}\sum_{i<j}A(\sigma_i-\sigma_j)^{2},
+\]
+即得第一式；第二式由 \(A(\Delta)\sim|\Delta|e^{-|\Delta|/2}\) 直接推出。证毕。
+\end{proof}
+
 \begin{proposition}[Andreief 表示与频域对数气体：\texorpdfstring{$S_{1/2}$}{S_{1/2}} 为外势自由能]\label{prop:xi-hellinger-kernel-andreief-loggas}
 在命题 \ref{prop:xi-hellinger-kernel-rkhs-volume} 的设定下，有严格积分表示
 \[
@@ -182,6 +444,8 @@ D_\kappa(\Delta):=\det(G_{jk})_{1\le j,k\le\kappa}
 由命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson}，\(\sigma_\Delta\) 在 \([-\pi,\pi]\) 上严格正且解析。
 因此 Szeg\H{o} 定理适用，给出 Toeplitz 行列式的线性极限式；第二式由 \(S_{1/2}=-\log D_\kappa\) 直接推出。证毕。
 \end{proof}
+
+\input{cor__xi-hellinger-toeplitz-dense-2x-law}
 
 \begin{proposition}[Heine--Szeg\H{o} 幺正矩阵模型：等距深度体积即 CUE 外势配分函数]\label{prop:xi-hellinger-toeplitz-heine-szego-cue}
 在命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson} 的设定下，有幺正积分表示
