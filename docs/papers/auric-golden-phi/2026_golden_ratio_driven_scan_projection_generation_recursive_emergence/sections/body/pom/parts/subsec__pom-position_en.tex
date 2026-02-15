@@ -293,4 +293,117 @@ Phase fiber $\mathcal{T}$ refers to the spectral coordinate layer induced by thi
 \begin{definition}[Prime-register fiber $\mathcal{P}$]\label{def:pom-prime-fiber}
 Let $\mathbb{P}$ be the set of primes, define finite-support exponent vector space
 \[
-\mathcal{P}:=\mathbb{N}^{(\mathbb{P})}=\{\mathbf{r}:\mathbb
+\mathcal{P}:=\mathbb{N}^{(\mathbb{P})}=\{\mathbf{r}:\mathbb{P}\to\mathbb{N}\mid \mathbf{r}(p)=0\ \text{except for finitely many }p\}.
+\]
+Define the valuation map
+\[
+N(\mathbf{r})=\prod_{p\in\mathbb{P}} p^{\mathbf{r}(p)}.
+\]
+By the fundamental theorem of arithmetic (see \cite{Apostol1976}), $N(\cdot)$ yields an isomorphism between $\mathcal{P}$ and $\mathbb{N}_{\ge 1}$, thereby linearizing multiplication into coordinate addition. Since each state activates only finitely many prime axes, this fiber satisfies the ``infinite coordinate system + local triggering'' realizability caliber.
+\end{definition}
+
+\begin{remark}[Coexistence of two free commutative monoid coordinate systems]\label{rem:pom-two-monoids}
+Zeckendorf coordinates and prime-exponent coordinates linearize addition and multiplication, respectively; the same integer object possesses two free commutative monoid coordinate systems (see Remark \ref{rem:two-coordinate-monoids}). The prime fiber added in this section is the explicit realization of this coordinate system at the ontological layer.
+\end{remark}
+
+\begin{remark}[Prime-carrying of folding residuals]\label{rem:pom-prime-carry}
+Each $P_Z$ folding produces ``invisible difference labels'' within the fiber (counted by $d_m$). Since any finite set can be embedded into finite-support prime-power coordinates, the prime-register fiber can be viewed as a universal carrier axis: it transfers the residual labels produced by folding into addressable ontological coordinates, thereby rewriting ``information loss'' as ``cross-fiber storage.''
+\end{remark}
+
+\begin{definition}[Lossless folding lift with prime-register residual]\label{def:pom-fold-prime-lift}
+Fix a \textbf{deterministic} folding normalization strategy \(\mathsf{S}\): for any input microstate \(\omega\in\Omega_m\), its embedded configuration \(a_0:=\iota_m(\omega)\) (Definition \ref{def:fold-word}) is processed by \(\mathsf{S}\) to produce a finite rewriting trajectory
+\[
+a_0\ \to\ a_1\ \to\ \cdots\ \to\ a_T=\mathrm{NF}(a_0),
+\]
+where each step is a local atomic rewrite (e.g., applying a rule to a window position; see Definition \ref{def:fold-word}).
+Denote the \(t\)-th atomic event by \(e_t(\omega)\), and take an auditable injective encoding
+\(
+\mathrm{code}:\{e\}\hookrightarrow\NN_{\ge 1}
+\)
+(the encoding includes rule type, position, and sufficient information to uniquely determine the inverse operation during replay).
+\par
+Let \(p_1<p_2<\cdots\) be the prime sequence, and define the prime-register residual vector \(r_{\mathsf S}(\omega)\in\mathcal P\) by
+\[
+r_{\mathsf S}(\omega)(p_t):=\mathrm{code}\bigl(e_t(\omega)\bigr)\quad(1\le t\le T),
+\qquad
+r_{\mathsf S}(\omega)(p)=0\ \text{for other }p.
+\]
+Finally, define the \textbf{lossless folding lift} as
+\[
+\widetilde{\Fold}^{\mathsf S}_m:\Omega_m\to X_m\times\mathcal P,
+\qquad
+\widetilde{\Fold}^{\mathsf S}_m(\omega):=\bigl(\Fold_m(\omega),\,r_{\mathsf S}(\omega)\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Reversibility: lifting makes folding injective]\label{prop:pom-fold-prime-lift-injective}
+For any resolution \(m\) and any deterministic strategy \(\mathsf S\), the map \(\widetilde{\Fold}^{\mathsf S}_m\) is injective.
+Equivalently, there exists a constructible inverse process \(\mathrm{UNLIFT}^{\mathsf S}_m\) such that
+\[
+\mathrm{UNLIFT}^{\mathsf S}_m\bigl(\widetilde{\Fold}^{\mathsf S}_m(\omega)\bigr)=\omega,\qquad \forall\,\omega\in\Omega_m.
+\]
+\end{proposition}
+\begin{proof}
+Given output pair \((x,r)\in X_m\times\mathcal P\).
+By the fundamental theorem of arithmetic, the finite-support coordinates \(\{r(p_t)\}_{t\le T}\) of vector \(r\) uniquely determine a finite sequence \((\mathrm{code}(e_1),\dots,\mathrm{code}(e_T))\), thereby uniquely determining the event sequence \((e_1,\dots,e_T)\).
+By the encoding convention, each \(e_t\) carries sufficient information to apply the corresponding inverse atomic rewrite on a configuration.
+Therefore, starting from the normal form \(\iota_m(x)\) and replaying these inverse atomic rewrites in reverse order \(t=T,T{-}1,\dots,1\), we uniquely recover the initial configuration \(a_0=\iota_m(\omega)\), and thereby recover \(\omega\).
+Thus \((x,r)\) corresponds to at most one \(\omega\), i.e., \(\widetilde{\Fold}^{\mathsf S}_m\) is injective. \qed
+\end{proof}
+
+\begin{remark}[Strict version of ``no information loss'': loss externalized as addressable residual]\label{rem:pom-fold-lossless}
+Proposition \ref{prop:pom-fold-prime-lift-injective} gives one of the cleanest forms of ``space-for-time trade-off'': folding as the gauge projection gate \(P_Z\) is intrinsically many-to-one, but as long as one is willing to externalize a sparse residual ledger on \(\mathcal P\) (prime-register), it can be lifted to a reversible gate.
+Therefore, ``information loss'' is not uncontrolled annihilation, but compiled into an addressable, replayable external certificate; its space overhead is counted by the residual support size (number of atomic events), and its replayability is guaranteed by unique factorization and the deterministic strategy.
+\end{remark}
+
+\begin{corollary}[Reversibility is not free: linear lower bound on prime-register residual (uniform baseline)]\label{cor:pom-prime-residual-linear-lb}
+Continue Definition \ref{def:pom-fold-prime-lift}: for input $\omega\in\Omega_{m+1}$, let $T_{m+1}^{\mathsf S}(\omega)$ be the number of atomic rewriting event steps produced by strategy $\mathsf S$, and let $r_{\mathsf S}(\omega)\in\mathcal P$ be the corresponding prime-register residual vector.
+Under the local rewriting rules of Definition \ref{def:fold-word}, each step modifies at most $3$ coordinates, hence for any $\omega\in\Omega_{m+1}$ we have the pure combinatorial lower bound
+\[
+T_{m+1}^{\mathsf S}(\omega)\ \ge\ \left\lceil \frac{G_m(\omega)}{3}\right\rceil ,
+\]
+where $G_m(\omega)$ is the gauge anomaly (Definition \ref{def:fold-gauge-anomaly}).
+Thus under the uniform baseline $\omega\sim\mathrm{Unif}(\Omega_{m+1})$,
+\[
+\liminf_{m\to\infty}\frac{1}{m}\,\mathbb E\!\left[T_{m+1}^{\mathsf S}(\omega)\right]\ \ge\ \frac{4}{27}.
+\]
+In particular, to lift folding to a reversible gate via prime-register residual, the number of nonzero coordinates of the residual vector (whose value equals $T_{m+1}^{\mathsf S}(\omega)$) must be $\Theta(m)$ under unstructured input baseline, and cannot be $o(m)$.
+\end{corollary}
+\begin{proof}
+By Definition \ref{def:fold-word}, each atomic rewriting rule touches at most $3$ coordinates (e.g., rule (\ref{rule:fold:adj}) touches $(k,k{+}1,k{+}2)$, rule (\ref{rule:fold:dedupk}) touches $(k{-}2,k,k{+}1)$).
+Therefore any rewriting trajectory $a_0\to a_1\to\cdots\to a_T$ satisfies
+\(
+\#\{k\le m:\ (a_0)_k\neq (a_T)_k\}\le 3T
+\).
+For $a_0=\iota_{m+1}(\omega)$ and $a_T=\mathrm{NF}(a_0)$, the left-hand side is precisely
+\(
+|r_{m+1\to m}(\omega)\oplus \widetilde r_{m+1\to m}(\omega)|_0=G_m(\omega)
+\),
+whence $G_m(\omega)\le 3T_{m+1}^{\mathsf S}(\omega)$, yielding the stated lower bound.
+\par
+Taking expectations and dividing by $m$, then using Theorem \ref{thm:fold-gauge-anomaly-density}'s
+\(
+\lim_{m\to\infty}\mathbb E[G_m(\omega)]/m=4/9
+\),
+we obtain $\liminf_{m\to\infty}\mathbb E[T_{m+1}^{\mathsf S}(\omega)]/m\ge 4/27$.
+Finally, by Definition \ref{def:pom-fold-prime-lift}, for $1\le t\le T$ we have $r_{\mathsf S}(\omega)(p_t)=\mathrm{code}(e_t(\omega))\in\NN_{\ge 1}$, so the number of nonzero coordinates of the residual vector is exactly $T_{m+1}^{\mathsf S}(\omega)$. \qed
+\end{proof}
+
+\begin{remark}[Growth without information loss: conservative refinement and residual externalization]\label{rem:pom-growth-no-loss}
+In this paper, the rigorous counterpart of ``the system is growing'' is not ``never make projections,'' but to rewrite information loss from uncontrolled discarding into \emph{countable, transportable, recoverable} residual coordinates, while realizing growth as conservative refinement of resolution and semantics. The essence can be fixed by three normalization interface constraints:
+\begin{enumerate}
+  \item \textbf{Object layer (resolution-conservative refinement):} the stable address space forms an inverse system under truncation maps \(\pi_{m+1\to m}:X_{m+1}\to X_m\), satisfying
+  \[
+  X_\infty\ \cong\ \varprojlim_m X_m
+  \]
+  (Theorem \ref{thm:pom-inverse-limit}). Therefore, increasing resolution merely extends the visible prefix on the same object \(X_\infty\), without replacing the ontological object.
+  \item \textbf{Semantic layer (conservative extension):} new concepts arise only via cylinder-set refinements and algebraic combinations of existing observable events; in algebraic language, this is embodied by the inclusion tower of cylinder events
+  \(
+  \mathcal{A}_{m_1}\subseteq\mathcal{A}_{m_2},\
+  \mathcal{B}_{m_1}\subseteq\mathcal{B}_{m_2}
+  \)
+  and the conditional expectation tower \(E_{m_1}\circ E_{m_2}=E_{m_1}\). Therefore, events decidable at the old layer remain decidable at the new layer; the new layer only adds addressable combinations and refinements, without erasing old truth values.
+  \item \textbf{Mechanism layer (forgetting made explicit as fiber residual):} the ``loss'' of projection \(P_Z\) occurs at finite resolution: \(\Fold_m:\Omega_m\to X_m\) is necessarily many-to-one, and its fiber multiplicity \(d_m(x)\) and conditional expectation \(E_m\) give the coarse-graining interface of averaging along fibers. Thus loss is no longer a black box, but explicitly quantified by countable fiber degrees of freedom; and this residual can be externalized via additional axis bundles (e.g., prime-register fiber \(\mathcal{P}\); Remark \ref{rem:pom-prime-carry}), thereby achieving an auditable version of ``information conservation'' in a higher state space.
+\end{enumerate}
+The above three points make ``growth without information loss'' precise: the main scale (ontological object and entropy rate) remains invariant, differences are transcribed as traceable residual coordinates; growth of the system is embodied in conservative refinement of resolution and semantic expression, not in overwriting old structures.
+\end{remark}

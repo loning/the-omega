@@ -113,6 +113,44 @@ The second identity follows from the Fibonacci identity \(F_n=F_iF_{n-i+1}+F_{i-
 This completes the proof.
 \end{proof}
 
+\begin{corollary}[Fibonacci ratio closed form and boundary layer exponential decay for coordinate marginals]\label{cor:pom-fibcube-marginal-boundary-layer}
+Let \(\varphi=\frac{1+\sqrt5}{2}\).
+Under the uniform counting measure on \(\Gamma_n\), for any \(1\le i\le n\) we have the strict closed form
+\[
+\mathbb P(v_i=1)=\frac{|\Theta_i|}{|V(\Gamma_n)|}
+=\frac{F_iF_{n-i+1}}{F_{n+2}}.
+\]
+Moreover, when \(n\to\infty\) with \(i\to\infty\) and \(n-i\to\infty\), the marginal probability converges to the Parry bulk constant
+\[
+\mathbb P(v_i=1)\ \longrightarrow\ \pi(1)=\frac{1}{\varphi^2+1}=\frac{1}{\varphi\sqrt5}
+\qquad\text{(see Theorem \ref{thm:pom-parry-limit-chain-explicit})},
+\]
+with exponentially decaying deviation
+\[
+\mathbb P(v_i=1)-\frac{1}{\varphi^2+1}
+=O\!\left(\varphi^{-2i}+\varphi^{-2(n-i+1)}\right)
+\qquad(n\to\infty).
+\]
+More generally, if \(\mathcal F_x\cong\prod_{j=1}^r\Gamma_{\ell_j}\), then for any coordinate \((j,a)\) we have
+\[
+\mathbb P(v_{j,a}=1)=\frac{F_aF_{\ell_j-a+1}}{F_{\ell_j+2}},
+\]
+with the same exponential boundary layer decay
+\(
+O(\varphi^{-2a}+\varphi^{-2(\ell_j-a+1)})
+\)
+in the bulk window \(a\to\infty\), \(\ell_j-a\to\infty\).
+\end{corollary}
+\begin{proof}
+The first identity follows immediately from Theorem \ref{thm:pom-fibcube-theta-class-size} and \(|V(\Gamma_n)|=F_{n+2}\).
+The limit and error bound follow by substituting the Binet expansion
+\(
+F_k=\frac{\varphi^k}{\sqrt5}\bigl(1+O(\varphi^{-2k})\bigr)
+\)
+into the closed form and simplifying.
+The product fiber case reduces to single-factor estimates via the tensorization of Proposition \ref{prop:pom-fiber-hyperplane-tensorization}. \qed
+\end{proof}
+
 \begin{theorem}[Exact count of coordinates equal to \(1\) and the general \(k\)-point function]\label{thm:pom-fibcube-kpoint-count}
 Let \(V(\Gamma_n)=X_n\) denote the set of valid words of length \(n\), equipped with uniform counting.
 For any index set \(S=\{i_1<\cdots<i_k\}\subseteq\{1,\dots,n\}\), if there exists \(j\) such that \(i_{j+1}-i_j=1\), then
@@ -277,6 +315,55 @@ for a fixed factor and coordinate direction, the \(\Theta\)-class edge count equ
 applying Theorem \ref{thm:pom-fibcube-theta-class-size} to each factor yields the result.
 Part (2) follows directly from the Cartesian product of vertex sets and the product structure of the uniform measure; the bulk limit is given by Theorem \ref{thm:pom-parry-limit-chain-explicit} and local window convergence.
 Part (3) follows from the central limit theorem under independent tensor products and the per-component constants from Theorem \ref{thm:pom-parry-ones-clt}. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Invertibility of hyperplane counting: reconstructing component length spectrum from \texorpdfstring{$|V|$}{|V|} and \texorpdfstring{$\{|\Theta|\}$}{|Theta|}]\label{cor:pom-fiber-hyperplane-spectrum-invertibility}
+Let \(\mathcal F_x\cong\prod_{i=1}^r\Gamma_{\ell_i}\), and denote \(V_x:=|V(\mathcal F_x)|\) and \(\mathcal M_x:=\{|\Theta|\}\) the multiset of edge counts of all \(\Theta\)-classes of \(\mathcal F_x\).
+Then \((V_x,\mathcal M_x)\) uniquely determines the length spectrum multiset
+\(
+\mathsf{Spec}_{\square}(x)=\{\ell_1,\dots,\ell_r\}
+\);
+thus on this fiber class, the hyperplane statistics \(\mathcal M_x\) (together with the cardinality \(V_x\)) determine the Cartesian prime factorization and graph isomorphism class of \(\mathcal F_x\) in an implementation-independent sense (Corollary \ref{cor:pom-fiber-reconstruction-spectrum-complete}).
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-fiber-hyperplane-tensorization}, for any factor \(j\) and coordinate \(a\in\{1,\dots,\ell_j\}\) we have
+\[
+\frac{|\Theta_{j,a}|}{V_x}=\frac{F_aF_{\ell_j-a+1}}{F_{\ell_j+2}}.
+\]
+Therefore the normalized multiset
+\(
+\mathcal P_x:=\{|\Theta|/V_x:\ |\Theta|\in\mathcal M_x\}
+\)
+decomposes as the multiset union of the profiles of each factor:
+\[
+\mathcal P_x=\bigsqcup_{j=1}^r \left\{\frac{F_aF_{\ell_j-a+1}}{F_{\ell_j+2}}:\ 1\le a\le \ell_j\right\}.
+\]
+For fixed length \(\ell\), the endpoint value
+\(
+p^{\mathrm{end}}(\ell):=F_{\ell}/F_{\ell+2}
+\)
+is by Theorem \ref{thm:pom-fibcube-theta-class-size} the unique maximal element of that profile and appears exactly twice (corresponding to \(a=1,\ell\)).
+Let \(p_{\max}:=\max\mathcal P_x\); then \(p_{\max}=p^{\mathrm{end}}(\ell)\) for some \(\ell\), and its multiplicity must be \(2m_\ell\), where \(m_\ell:=\#\{j:\ell_j=\ell\}\).
+\par
+To invert \(p_{\max}\) to obtain \(\ell\), let \(u_n:=F_{n+2}/F_n\) (\(n\ge 1\)).
+By the identity
+\(
+F_{n+3}F_n-F_{n+2}F_{n+1}=(-1)^{n+1}
+\),
+we have
+\[
+u_{n+2}-u_n=\frac{(-1)^{n+1}}{F_{n+2}F_n},
+\]
+so \(u_{2k}\) is strictly decreasing while \(u_{2k+1}\) is strictly increasing, both converging to \(\varphi^2\) from above and below respectively.
+Therefore the endpoint ratio \(p^{\mathrm{end}}(n)=1/u_n\) is strictly identifiable as a function of \(n\) (and its parity is determined by comparison with \(\varphi^{-2}\)).
+Hence \(\ell\) and \(m_\ell\) are uniquely determined by \(p_{\max}\) and its multiplicity.
+\par
+After removing \(m_\ell\) copies of the complete length-\(\ell\) profile
+\(
+\{F_aF_{\ell-a+1}/F_{\ell+2}\}_{a=1}^{\ell}
+\)
+from \(\mathcal P_x\), the remaining multiset is still the normalized profile union of the remaining factors and can be processed recursively; recursion terminates upon recovering the full length multiset \(\{\ell_i\}\).
+Finally, by Corollary \ref{cor:pom-fiber-reconstruction-spectrum-complete}, the graph isomorphism class is determined. \qed
 \end{proof}
 
 \begin{remark}[Instantiation at the minimal window \(m=6\)]\label{rem:pom-fiber-hyperplane-m6}
