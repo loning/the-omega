@@ -709,12 +709,49 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_unit_circle_branchpoints",
+            script="exp_collision_kernel_A4_unit_circle_branchpoints.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_unit_circle_branchpoints.json",
+                "sections/generated/eq_collision_kernel_A4_unit_circle_branchpoints.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_sparse_generator",
+            script="exp_collision_kernel_A4_newman_sparse_generator.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_sparse_generator.json",
+                "sections/generated/eq_collision_kernel_A4_newman_sparse_generator.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_sparse_generator_arithmetic",
+            script="exp_collision_kernel_A4_newman_sparse_generator_arithmetic.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_sparse_generator_arithmetic.json",
+                "sections/generated/eq_collision_kernel_A4_newman_sparse_generator_arithmetic.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_ade_intersection_t_minpoly_discriminant",
             script="exp_collision_kernel_A4_ade_intersection_t_minpoly_discriminant.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/collision_kernel_A4_ade_intersection_t_minpoly_discriminant.json",
                 "sections/generated/eq_collision_kernel_A4_ade_intersection_t_minpoly_discriminant.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_pole_quadratic_resonance_and_cyclotomic_adjacency_injection",
+            script="exp_collision_kernel_A4_pole_quadratic_resonance_and_cyclotomic_adjacency_injection.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_pole_quadratic_resonance_and_cyclotomic_adjacency_injection.json",
+                "sections/generated/eq_collision_kernel_A4_newman_pole_quadratic_resonance.tex",
+                "sections/generated/eq_collision_kernel_A4_cyclotomic_adjacency_injection.tex",
             ],
         ),
         Step(
@@ -732,6 +769,14 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/collision_kernel_A4_newman_critical_quadratic_subfield.json",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_octic_field_arithmetic",
+            script="exp_collision_kernel_A4_newman_octic_field_arithmetic.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_octic_field_arithmetic.json",
             ],
         ),
         Step(
@@ -863,6 +908,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_recursions_moddp_9_17.json",
                 "sections/generated/tab_fold_collision_moment_recursions_9_17.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_moment_order_lower_bound_q12_14_16_m25",
+            script="exp_fold_collision_moment_order_lower_bound_q12_14_16.py",
+            args=["--k-list", "12,14,16", "--m-fit", "24", "--m-break", "25", "--order-max", "12"],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_order_lower_bound_q12_14_16.json",
             ],
         ),
         Step(
@@ -2565,6 +2618,24 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "sections/generated/tab_fold_output_gibbs_markov_fit.tex",
                 "sections/generated/eq_fold_output_gibbs_entropy_gap.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_bivariate_partition_audit",
+            script="exp_fold_zm_bivariate_partition_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_bivariate_partition_audit.json",
+                "sections/generated/eq_fold_zm_bivariate_partition_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zq_weight_collision_partition_audit",
+            script="exp_fold_zq_weight_collision_partition_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zq_weight_collision_partition_audit.json",
+                "sections/generated/eq_fold_zq_weight_collision_partition_audit.tex",
             ],
         ),
         Step(

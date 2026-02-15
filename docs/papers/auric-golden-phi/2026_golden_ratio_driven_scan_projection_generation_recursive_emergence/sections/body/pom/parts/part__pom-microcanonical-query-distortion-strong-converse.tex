@@ -1,5 +1,6 @@
 % (User input window)
 % 2026-02-14 15:43:49（Asia/Singapore）
+% 2026-02-15 06:02:21（Asia/Singapore）
 
 \paragraph{查询—失真任务：剩余类型上的均匀定型源、强逆平面与零比特碰撞阈值}
 在微正则先验 \(F\sim\mathrm{Unif}(\mathfrak{Fold}_m(d))\) 下，\(k\) 次互异查询只揭示计数信息；
@@ -336,6 +337,94 @@ P^\star_\delta(x,y)\propto a_x b_y\exp(\lambda\mathbf 1_{\{x=y\}})
 而 \(p_2(w_m)=\sum_x w_m(x)^2=\mathrm{Col}_m=2^{-2m}S_2(m)\)，代入即得闭式。
 极限结论由连续性立即推出。证毕。
 \end{proof}
+
+\begin{theorem}[双边缘对角约束速率的 Fr\'echet 导数：由缩放势给出显式梯度]\label{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}
+设 \(X\) 为有限字母表（\(|X|\ge 2\)），取全支撑分布 \(w\in\Delta(X)\)，并令 \(\delta\in(0,1-p_2(w))\)。
+令 \(P^\star_\delta\) 为定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的唯一最优耦合，并取其指数族表示
+\[
+P^\star_\delta(x,y)=\frac{u_\delta(x)u_\delta(y)\,\exp\!\bigl(\lambda_\delta\,\mathbf 1_{\{x=y\}}\bigr)}{Z_\delta},
+\qquad
+u_\delta\in\RR_{>0}^{X},\ \lambda_\delta>0,
+\]
+其中 \(u_\delta\) 在整体伸缩下唯一（伸缩吸收进 \(Z_\delta\)）。
+定义缩放势
+\[
+\psi_\delta(x):=\log\frac{u_\delta(x)}{w(x)}\qquad(x\in X),
+\]
+其在加常数意义下唯一。\footnote{据 2026 年 2 月 14 日主文档（main.pdf）于 2026-02-14 20:14:01（Asia/Singapore，UTC+08）处的版本记录整理。}
+则映射 \(w\mapsto R_w(\delta)\) 在单纯形内点处 Fr\'echet 可微；对任意切向扰动 \(\dot w\)（满足 \(\sum_{x\in X}\dot w(x)=0\)）成立
+\[
+DR_w(\delta)[\dot w]=2\sum_{x\in X}\dot w(x)\,\psi_\delta(x).
+\]
+因此 \(R_w(\delta)\) 的梯度（切空间意义下）可取为
+\[
+\nabla R_w(\delta)\equiv 2\psi_\delta\pmod{\RR\mathbf 1}.
+\]
+\end{theorem}
+\begin{proof}
+当 \(P_X=P_Y=w\) 时，互信息满足恒等式
+\(
+I_P(X;Y)=H(w)+H(w)-H(P)
+=2H(w)-H(P)
+\)。
+因此
+\[
+R_w(\delta)
+=2H(w)-\sup\Bigl\{H(P):\ P_X=P_Y=w,\ \mathbb P_P(X=Y)\ge 1-\delta\Bigr\}.
+\]
+上确界问题对 \(P\) 为严格凹规划，且在 \(\delta<1-p_2(w)\) 时满足 Slater 条件；故极大元 \(P^\star_\delta\) 唯一，且 KKT 乘子在加常数规约下唯一。
+\par
+对极大问题写拉格朗日函数（以 \(\alpha,\beta\) 为两条边缘约束乘子、以 \(\lambda\) 为对角约束乘子）并对 \(P(x,y)\) 作驻点条件，可得
+\[
+P^\star_\delta(x,y)\propto \exp\!\bigl(-\alpha_x-\beta_y+\lambda\,\mathbf 1_{\{x=y\}}\bigr).
+\]
+令 \(u_\delta(x):=\exp(-\alpha_x)\) 且由交换对称性取 \(\alpha=\beta\)（相差常数吸收进 \(Z_\delta\)），即得到定理陈述中的指数族表示。
+\par
+记
+\(
+F(w):=\sup\{H(P):P_X=P_Y=w,\ \mathbb P(X=Y)\ge 1-\delta\}
+\)。
+由于极大元唯一且满足常规正则性，包络定理给出
+\[
+DF(w)[\dot w]=\sum_{x\in X}(\alpha_x+\beta_x)\,\dot w(x)
+=-2\sum_{x\in X}\dot w(x)\,\log u_\delta(x),
+\]
+其中最后一步使用 \(\alpha_x=\beta_x=-\log u_\delta(x)\)（加常数不影响切向配对）。
+又因 \(H(w)=-\sum_x w(x)\log w(x)\)，对切向扰动有 \(DH(w)[\dot w]=-\sum_x\dot w(x)\log w(x)\)。
+代回 \(R_w(\delta)=2H(w)-F(w)\) 得
+\[
+DR_w(\delta)[\dot w]
+=2DH(w)[\dot w]-DF(w)[\dot w]
+=2\sum_{x\in X}\dot w(x)\Bigl(\log u_\delta(x)-\log w(x)\Bigr)
+=2\sum_{x\in X}\dot w(x)\,\psi_\delta(x),
+\]
+即所示。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\sqrt N$}{sqrtN} 比特窗的显式方差常数]\label{cor:pom-microcanonical-query-distortion-critical-window-variance-psi}
+在定理 \ref{thm:pom-microcanonical-query-distortion-critical-window-clt} 的设定下，若 \(\delta\in(0,1-p_2(w))\) 且 \(w\) 全支撑，则可取
+\(
+g_\delta\equiv 2\psi_\delta\pmod{\RR\mathbf 1}
+\)
+（\(\psi_\delta\) 见定理 \ref{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}）。
+从而临界窗的方差常数具有闭式
+\[
+\sigma_{\beta,\delta}^2
+=\beta(1-\beta)\ \Var_{X\sim w}\!\bigl(2\psi_\delta(X)\bigr)
+=4\beta(1-\beta)\Bigl(\EE_w[\psi_\delta(X)^2]-\EE_w[\psi_\delta(X)]^2\Bigr).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}，\(w\mapsto R_w(\delta)\) 的梯度在切空间意义下可取 \(g_\delta=2\psi_\delta\)。
+将其代入定理 \ref{thm:pom-microcanonical-query-distortion-critical-window-clt} 的
+\(
+\sigma_{\beta,\delta}^2=\beta(1-\beta)\ \widetilde g_\delta^{\mathsf T}(\mathrm{diag}(w)-ww^{\mathsf T})\widetilde g_\delta
+\)
+并注意 \(\widetilde g_\delta\) 即为对 \(w\) 去均值后的 \(2\psi_\delta\)，从而二次型等于 \(\Var_w(2\psi_\delta(X))\)。
+证毕。
+\end{proof}
+
+\input{sections/body/pom/parts/part__pom-microcanonical-query-distortion-strong-converse-solvable-cases}
 
 \input{sections/body/pom/parts/part__pom-microcanonical-query-distortion-strong-converse-part2}
 \endinput

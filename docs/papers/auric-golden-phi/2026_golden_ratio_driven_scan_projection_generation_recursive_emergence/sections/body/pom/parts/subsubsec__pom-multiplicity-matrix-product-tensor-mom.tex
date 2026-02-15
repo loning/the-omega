@@ -169,6 +169,47 @@ T:=\mathrm{Proj}_W(M^{\otimes q})\mathrm{Proj}_W
 \end{proof}
 
 % (User input window)
+% 2026-02-15 01:48:02（Asia/Singapore）
+
+\begin{proposition}[二项权内积下的严格对称化：\texorpdfstring{$B_q$}{Bq} 的带权自伴随性]\label{prop:pom-bq-weighted-selfadjoint-binomial}
+沿命题 \ref{prop:pom-disjointness-symmetric-compression-bq} 的记号，令 \(B_q\in M_{q+1}(\ZZ)\) 为满足 \(B_q(i,j)=\binom{q-j}{i}\) 的矩阵。
+定义对角权矩阵
+\[
+W_q:=\mathrm{diag}\Bigl(\binom{q}{0}^{-1},\binom{q}{1}^{-1},\dots,\binom{q}{q}^{-1}\Bigr).
+\]
+则成立严格恒等式
+\[
+\boxed{\;W_qB_q=B_q^{\mathsf T}W_q\;}
+\]
+从而 \(B_q\) 在加权内积 \(\langle u,v\rangle_{W_q}:=u^{\mathsf T}W_qv\) 下自伴随。
+等价地，令
+\[
+D_q:=\mathrm{diag}\Bigl(\sqrt{\binom{q}{0}},\dots,\sqrt{\binom{q}{q}}\Bigr),
+\qquad
+J_q:=D_q^{-1}B_qD_q,
+\]
+则 \(J_q\) 为实对称矩阵。
+因此 \(B_q\) 的全部谱为实数，并可取一组 \(W_q\)-正交特征向量基。
+\end{proposition}
+\begin{proof}
+对任意 \(0\le i,j\le q\)，由 \(B_q(i,j)=\binom{q-j}{i}\) 得
+\[
+(W_qB_q)(i,j)=\binom{q}{i}^{-1}\binom{q-j}{i},
+\qquad
+(B_q^{\mathsf T}W_q)(i,j)=\binom{q-i}{j}\binom{q}{j}^{-1}.
+\]
+当 \(i+j>q\) 时两者皆为 \(0\)。
+当 \(i+j\le q\) 时直接化简得
+\[
+\binom{q}{i}^{-1}\binom{q-j}{i}
+=\frac{(q-i)!(q-j)!}{q!(q-i-j)!}
+=\binom{q}{j}^{-1}\binom{q-i}{j},
+\]
+故 \(W_qB_q=B_q^{\mathsf T}W_q\)。
+另一方面，由 \(W_q=D_q^{-2}\)，上式等价于 \(J_q^{\mathsf T}=J_q\)，从而 \(J_q\) 可被正交对角化；回到相似变换即可得到 \(B_q\) 的谱实性与 \(W_q\)-正交特征基的存在性。证毕。
+\end{proof}
+
+% (User input window)
 % 2026-02-14 13:41:27（Asia/Singapore）
 
 \paragraph{Lucas 平方谱分解与闭式迹公式：\texorpdfstring{$B_q$}{Bq} 的完全可计算周期动力学}
@@ -198,6 +239,54 @@ M=\bigl(\begin{smallmatrix}1&1\\[2pt]1&0\end{smallmatrix}\bigr)
 从而 \(\mathrm{Sym}^q(M)\) 的矩阵系数与命题 \ref{prop:pom-disjointness-symmetric-compression-bq} 的闭式一致，得到 \(B_q\cong\mathrm{Sym}^q(M)\)。
 \par
 由于 \(M\) 的特征值为 \(\varphi\) 与 \(-\varphi^{-1}\)，对称幂的谱为所有乘积 \(\varphi^{q-k}(-\varphi^{-1})^{k}=(-1)^k\varphi^{q-2k}\ (0\le k\le q)\)，且次数为 \(q+1\)，故重数均为 \(1\)。证毕。
+\end{proof}
+
+\begin{proposition}[两条本征线性形式生成全谱：\texorpdfstring{$B_q$}{Bq} 的闭式特征向量]\label{prop:pom-bq-explicit-diagonalization-linear-forms}
+令 \(\varphi=(1+\sqrt5)/2\)、\(\psi=-\varphi^{-1}\)，并定义线性形式
+\[
+\ell_+(x,y)=\varphi x+y,\qquad \ell_-(x,y)=\psi x+y.
+\]
+则在代入作用 \((x,y)\mapsto(x+y,x)\) 下有
+\(
+\ell_\pm(x+y,x)=\lambda_\pm\,\ell_\pm(x,y)
+\)，其中 \(\lambda_+=\varphi\)、\(\lambda_-=\psi\)。
+对每个 \(k\in\{0,1,\dots,q\}\)，令
+\[
+P_{q,k}(x,y):=\ell_+(x,y)^{\,q-k}\,\ell_-(x,y)^{\,k}\in\QQ(\sqrt5)[x,y]_q.
+\]
+则 \(P_{q,k}\) 为 \(B_q\) 的本征向量，并满足严格本征关系
+\[
+\boxed{\;P_{q,k}(x+y,x)=(-1)^k\varphi^{\,q-2k}\,P_{q,k}(x,y)\;}
+\]
+其本征值与命题 \ref{prop:pom-bq-is-symq-and-spectrum} 的 \(\mu_k\) 一致。
+在基 \(e_j=x^{q-j}y^j\) 下写 \(P_{q,k}=\sum_{j=0}^{q} v^{(k)}_j\,e_j\)，则坐标分量具有闭式
+\[
+\boxed{\;
+v^{(k)}_j
+=\sum_{a=0}^{j}
+\binom{q-k}{a}\binom{k}{j-a}\,
+\varphi^{\,q-k-a}\,
+\psi^{\,k-j+a}\qquad(0\le j\le q)\; } .
+\]
+并且由于命题 \ref{prop:pom-bq-weighted-selfadjoint-binomial} 的 \(W_q\)-自伴随性与谱的单重性，向量族 \(\{v^{(k)}\}_{k=0}^{q}\) 可取为 \(\langle\cdot,\cdot\rangle_{W_q}\) 下两两正交的一组本征基。
+\end{proposition}
+\begin{proof}
+由定义，
+\[
+\ell_\pm(x+y,x)=\lambda_\pm(x+y)+x=(\lambda_\pm+1)x+\lambda_\pm y=\lambda_\pm^2 x+\lambda_\pm y=\lambda_\pm(\lambda_\pm x+y)=\lambda_\pm\,\ell_\pm(x,y),
+\]
+其中 \(\lambda_\pm\) 满足 \(\lambda_\pm^2=\lambda_\pm+1\)，故 \(\lambda_+=\varphi\)、\(\lambda_-=\psi\)。
+于是
+\[
+P_{q,k}(x+y,x)=\lambda_+^{\,q-k}\lambda_-^{\,k}\,P_{q,k}(x,y)=\varphi^{\,q-k}\psi^{\,k}\,P_{q,k}(x,y)=(-1)^k\varphi^{\,q-2k}P_{q,k}(x,y),
+\]
+给出本征关系与本征值。
+再将
+\(
+(\varphi x+y)^{q-k}(\psi x+y)^k
+\)
+作二项式展开并按 \(y\) 的幂次收集，即得到 \(v^{(k)}_j\) 的所示闭式。
+最后，由命题 \ref{prop:pom-bq-weighted-selfadjoint-binomial}，\(B_q\) 在 \(\langle\cdot,\cdot\rangle_{W_q}\) 下自伴随；由于本征值两两不同（命题 \ref{prop:pom-bq-is-symq-and-spectrum}），不同本征值对应的本征向量必两两正交，从而可取为 \(W_q\)-正交本征基。证毕。
 \end{proof}
 
 \begin{theorem}[Lucas 平方谱分解：\texorpdfstring{$\det(I-uB_q^2)$}{det(I-uBq^2)} 的完全因式分解]\label{thm:pom-bq-lucas-square-spectrum-factorization}

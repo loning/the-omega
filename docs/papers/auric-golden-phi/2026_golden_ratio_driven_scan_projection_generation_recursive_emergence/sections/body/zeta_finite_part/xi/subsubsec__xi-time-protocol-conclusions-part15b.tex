@@ -1,0 +1,212 @@
+% (User input window)
+% 2026-02-15 05:06:58（Asia/Singapore）
+
+\begin{conclusion}[纤维—重量双变量配分函数的四阶可积性：有理生成函数与常系数递推]\label{con:xi-terminal-zm-order4-rational}
+令
+\[
+X_m:=\{x\in\{0,1\}^m:\ \forall i,\ x_ix_{i+1}=0\},
+\qquad
+\Fold_m:\Omega_m=\{0,1\}^m\to X_m
+\]
+为标准折叠映射，并记纤维多重度 \(d_m(x)=|\Fold_m^{-1}(x)|\)。
+对任意复参数 \(y\in\CC\)，定义纤维—重量双变量配分函数
+\[
+Z_m(y):=\sum_{x\in X_m} y^{|x|_1}\,d_m(x)
+=\sum_{a\in\Omega_m} y^{|\Fold_m(a)|_1}.
+\]
+则对一切 \(m\ge 4\) 成立严格四阶递推
+\[
+\boxed{\;
+Z_m(y)=Z_{m-1}(y)+(2y+1)Z_{m-2}(y)-Z_{m-3}(y)-y(y+1)Z_{m-4}(y)\;}
+\]
+并且生成函数在 \(\ZZ[y][[t]]\) 中具有显式有理闭式
+\[
+\boxed{\;
+\sum_{m\ge 0} Z_m(y)\,t^m
+=\frac{1+yt-yt^2-y^2t^3}{1-t-(2y+1)t^2+t^3+y(y+1)t^4}\; }.
+\]
+因此，对固定 \(y\) 而言，序列 \(m\mapsto Z_m(y)\) 的全部指数模态由四次特征方程
+\[
+\Pi(\lambda,y)=0,
+\qquad
+\Pi(\lambda,y):=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1)
+\]
+完全控制。
+\end{conclusion}
+\begin{proof}[证明要点]
+由定义 \(Z_m(y)\) 是长度 \(m\) 的微态路径权重和，其中每个微态 \(a\in\Omega_m\) 的权重仅通过其稳定输出 \(\Fold_m(a)\) 的 \(1\)-计数进入。
+由于 \(\Fold_m\) 可由有限状态规约器实现（全文对 Zeckendorf/窗口折叠的固定口径），
+\(Z_m(y)\) 可写为某个固定维数带权转移矩阵 \(T(y)\) 的矩阵系数；
+从而 \(\sum_{m\ge 0}Z_m(y)t^m\) 为有理函数，分母次数等于最小状态数。
+对本 Fold 实例，约分后的分母次数稳定为 \(4\)，从而得到四阶递推；
+将 \(t\)-生成函数在 \(t=0\) 处展开并与初值匹配，即得到所示闭式分子与分母；
+上述恒等式与后续的判别式/统计常数可由脚本 \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py} 一键复核。证毕。
+\end{proof}
+
+\begin{conclusion}[最小状态复杂度与退化点：除 \(y\in\{0,-1,1\}\) 外 Hankel 秩恰为 \(4\)]\label{con:xi-terminal-zm-hankel-rank4}
+沿用结论 \ref{con:xi-terminal-zm-order4-rational} 的记号，并记
+\(
+\Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1)
+\)。
+若 \(y\in\CC\setminus\{0,-1,1\}\)，则
+序列 \(\{Z_m(y)\}_{m\ge 0}\) 的最小湮灭多项式恰为 \(\Pi(\lambda,y)\)；
+等价地，\(\{Z_m(y)\}\) 的 Hankel 秩为 \(4\)，不存在三阶及以下的常系数递推能够对所有 \(m\) 成立。
+\par
+当 \(y\in\{0,-1\}\) 时，系数 \(y(y+1)=0\) 使四阶递推在结构上退化为三阶递推，最小阶严格下降；
+当 \(y=1\) 时，归一化恒等式 \(Z_m(1)=\sum_x d_m(x)=2^m\) 使生成函数发生完全抵消，从而 Hankel 秩塌缩为 \(1\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-order4-rational}，\(\sum_{m\ge 0}Z_m(y)t^m\) 的分母为
+\(
+D(t)=1-t-(2y+1)t^2+t^3+y(y+1)t^4
+\)。
+当 \(y\in\{0,-1\}\) 时，\(D(t)\) 的四次项消失，递推阶数相应降低。
+当 \(y=1\) 时，分子与分母共享因子 \((1-t)(1+t)^2\)，从而生成函数约化为 \(\sum_{m\ge 0}2^m t^m=(1-2t)^{-1}\)，最小阶降为 \(1\)。
+对任意 \(y\in\CC\setminus\{0,-1,1\}\)，\(\deg_t D=4\) 且分子分母无非平凡公因子，
+故约分后分母次数仍为 \(4\)，从而最小递推阶数为 \(4\)；Hankel 秩表述与之等价。证毕。
+\end{proof}
+
+\begin{conclusion}[谱分歧轨迹的完全因式分解：Lee--Yang 边界由一元三次给出]\label{con:xi-terminal-zm-discriminant-leyang}
+视 \(\Pi(\lambda,y)\) 为关于 \(\lambda\) 的四次多项式，则其判别式在 \(\ZZ[y]\) 中精确分解为
+\[
+\boxed{\;
+\mathrm{Disc}_{\lambda}\bigl(\Pi(\lambda,y)\bigr)
+=-y\,(y-1)\,\bigl(256y^3+411y^2+165y+32\bigr)\; }.
+\]
+因此，\(\lambda\)-谱作为 \(y\) 的代数函数仅在
+\(
+y\in\{0,1\}
+\)
+与三次方程
+\(
+256y^3+411y^2+165y+32=0
+\)
+的根处发生分歧。
+其中该三次多项式恰有一个实根
+\[
+y_{\mathrm{LY}}\approx-1.1344520030,
+\]
+并给出双变量自由能
+\[
+f(y):=\lim_{m\to\infty}\frac{1}{m}\log Z_m(y)
+\]
+在实轴上的最近边界奇点；从而 \(y\) 作为复变量时，\(f\) 的最小非平凡解析半径由 \(y_{\mathrm{LY}}\) 所决定（Lee--Yang 型边界机制）。
+\end{conclusion}
+\begin{proof}[证明要点]
+对四次多项式 \(\Pi(\lambda,y)\) 计算 \(\lambda\)-判别式并在 \(\ZZ[y]\) 中因式分解即可得到所示公式。
+判别式为零当且仅当存在重根，亦即代数分支在该参数处发生分歧；三次因子的实根可由标准数值求根获得。证毕。
+\end{proof}
+
+\begin{conclusion}[推前分布下的重量大数律与中心极限定律：均值与方差为有理常数]\label{con:xi-terminal-zm-lln-clt}
+令 \(w_m(x)=d_m(x)/2^m\) 为均匀微态推前分布，并令 \(X\sim w_m\)。
+记 \(H_m:=|X|_1\)，则对一切 \(y\in\CC\) 有概率母函数恒等式
+\[
+\EE\!\left[y^{H_m}\right]=\frac{Z_m(y)}{2^m}.
+\]
+令 \(\lambda_+(y)\) 表示 \(\Pi(\lambda,y)=0\) 在 \(y=1\) 的邻域内、满足 \(\lambda_+(1)=2\) 的解析特征支，则存在极限对数母函数
+\[
+\lim_{m\to\infty}\frac{1}{m}\log \EE\!\left(e^{sH_m}\right)
+=\log\lambda_+(e^s)-\log 2.
+\]
+由此推出：
+\begin{enumerate}
+  \item \(m^{-1}H_m\to 5/18\)（依概率收敛）；
+  \item \(\frac{H_m-\frac{5}{18}m}{\sqrt{m}}\Rightarrow \mathcal N\!\bigl(0,\frac{67}{972}\bigr)\)。
+\end{enumerate}
+上述常数由 \(\Pi(\lambda,y)\) 在点 \((\lambda,y)=(2,1)\) 的隐式微分唯一确定，并不依赖任何外部输入或额外归一化选择。
+\end{conclusion}
+\begin{proof}[证明要点（隐式微分）]
+由定义
+\(
+\EE[y^{H_m}]
+=\sum_{x\in X_m}y^{|x|_1}w_m(x)
+=2^{-m}Z_m(y)
+\)。
+又由于 \(\Pi(\lambda,y)\) 在 \((2,1)\) 处满足 \(\partial_\lambda\Pi(2,1)\neq 0\)，
+由隐函数定理得 \(\lambda_+(y)\) 在 \(y=1\) 的邻域内解析。
+记 \(y=e^s\) 并令 \(\psi(s)=\log\lambda_+(e^s)-\log 2\)，则 \(\psi'(0)\) 与 \(\psi''(0)\) 分别给出线性漂移与方差率。
+\par
+对 \(\Pi(\lambda_+(y),y)=0\) 作一次与二次隐式微分，在点 \((\lambda,y)=(2,1)\) 代入可得
+\[
+\lambda_+'(1)=\frac{5}{9},
+\qquad
+\lambda_+''(1)=-\frac{64}{243}.
+\]
+于是
+\(
+\psi'(0)=\lambda_+'(1)/\lambda_+(1)=5/18
+\)，并且
+\[
+\psi''(0)=\frac{\lambda_+'(1)}{\lambda_+(1)}+\frac{\lambda_+''(1)}{\lambda_+(1)}-\frac{\lambda_+'(1)^2}{\lambda_+(1)^2}
+=\frac{67}{972}.
+\]
+大数律与中心极限定律由有限状态加权转移矩阵的解析谱扰动与标准准幂型定理推出。证毕。
+\end{proof}
+
+\begin{conclusion}[重量分布的全局大偏差：速率函数为四次代数谱的 Legendre 变换]\label{con:xi-terminal-zm-ldp}
+定义压力函数
+\[
+\psi(s):=\log\lambda_+(e^s)-\log 2.
+\]
+则 \(H_m/m\) 满足大偏差原理，其速率函数为
+\[
+I(\alpha)=\sup_{s\in\RR}\bigl(s\alpha-\psi(s)\bigr).
+\]
+其中 \(\psi\) 在实轴上严格凸且实解析；
+其复解析延拓的最近实轴障碍由结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的 \(y_{\mathrm{LY}}\) 所决定（经 \(y=e^s\) 的复对数支提升）。
+因此重量统计的多分形谱可在不引入任何额外热力学形式体系的前提下，直接由 \(\Pi(\lambda,y)\) 的主特征支给出。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-lln-clt}，\(\psi\) 给出极限对数矩母函数。
+在 \(\psi\) 的可微与严格凸条件下，G\"artner--Ellis 定理推出大偏差原理及其 Legendre 变换形式。
+最近解析障碍由 \(\lambda_+(y)\) 的分歧点决定，而分歧点由判别式为零刻画，见结论 \ref{con:xi-terminal-zm-discriminant-leyang}。证毕。
+\end{proof}
+
+\begin{conclusion}[自反型同余通道的唯一性：仅 \(y^2+y+1=0\) 触发单位圆对称]\label{con:xi-terminal-zm-self-inversive-unique}
+对 \(|y|=1\)，称 \(\Pi(\lambda,y)\) 为自反（self-inversive）多项式，
+若存在常数 \(c\in\CC\)（\(|c|=1\)）使得
+\[
+\lambda^4\,\overline{\Pi\!\left(\frac{1}{\overline{\lambda}},y\right)}=c\,\Pi(\lambda,y).
+\]
+则当且仅当 \(y(y+1)=-1\)，亦即 \(y\) 为本原三次单位根（满足 \(y^2+y+1=0\)），\(\Pi(\lambda,y)\) 才具有该自反性。
+在且仅在此情形，\(\Pi(\lambda,y)\) 的根集关于单位圆满足严格对称：要么位于单位圆上，要么以
+\(\lambda\mapsto 1/\overline{\lambda}\) 成对出现；并且必存在一对互为倒共轭的根，其模长严格大于 \(1\)。
+因此“同余权重的单位圆对称”在该体系中是严格量子化的：模 \(3\) 为唯一触发自反对称的非平凡同余通道。
+\end{conclusion}
+\begin{proof}[证明要点]
+写
+\(
+\Pi(\lambda,y)=\sum_{k=0}^{4}a_k(y)\lambda^k
+\)，其中
+\(
+a_4=1,\ a_3=-1,\ a_2=-(2y+1),\ a_1=1,\ a_0=y(y+1)
+\)。
+自反性等价于存在 \(|c|=1\) 使 \(a_k(y)=c\,\overline{a_{4-k}(y)}\) 对所有 \(k\) 成立。
+由 \(a_3=-1=c\,\overline{a_1}=c\) 得 \(c=-1\)。
+再由 \(a_4=1=c\,\overline{a_0}=-\overline{y(y+1)}\) 得 \(\overline{y(y+1)}=-1\)；
+当 \(|y|=1\) 时 \(\overline{y(y+1)}=(1+y)/y^2\)，故等价于 \(y^2+y+1=0\)。
+根集的单位圆对称为自反多项式的标准结论。证毕。
+\end{proof}
+
+\begin{conclusion}[重量细分系数的二维线性动力：\((m,k)\) 平面上的有限邻域闭合递推]\label{con:xi-terminal-zm-2d-recurrence-amk}
+令
+\[
+a_{m,k}:=\sum_{\substack{x\in X_m\\ |x|_1=k}} d_m(x),
+\qquad
+Z_m(y)=\sum_{k\in\ZZ} a_{m,k}y^k .
+\]
+则由结论 \ref{con:xi-terminal-zm-order4-rational} 的四阶递推在 \(y\) 上的多项式结构，得到 \(a_{m,k}\) 的闭合二维递推：
+对一切 \(m\ge 4\) 与 \(k\in\ZZ\)，
+\[
+\boxed{\;
+a_{m,k}=a_{m-1,k}+a_{m-2,k}+2a_{m-2,k-1}-a_{m-3,k}-a_{m-4,k-1}-a_{m-4,k-2}\;}
+\]
+并以边界条件 \(a_{m,k}=0\)（当 \(k<0\) 或 \(k>\lceil m/2\rceil\)）封闭。
+该二维递推把“推前分布的重量剖分”转写为一个完全局域的线性动力系统，使得重量层（固定 \(k\)）与长度层（固定 \(m\)）之间的耦合仅通过有限邻域发生；
+因此重量分布的全体精细信息可在不显式构造任何高维碰撞核的前提下，由 \((m,k)\) 层级递推直接生成并审计。
+\end{conclusion}
+\begin{proof}
+将结论 \ref{con:xi-terminal-zm-order4-rational} 的递推式写成 \(y\)-幂级数，并比较 \(y^k\) 的系数即可得到所示二维递推；
+边界条件由黄金均值合法语法的最大 \(1\)-计数 \(\max_{x\in X_m}|x|_1=\lceil m/2\rceil\) 直接给出。证毕。
+\end{proof}
+
