@@ -7,6 +7,60 @@ S_q(m):=\sum_{x\in X_m}d_m(x)^q
 \]
 where \(q=2\) is pairwise collision, \(q=3\) is triple collision, and so on; thus \(S_q(m)\) describes a counting object on a ``\(q\)-fold fiber product'', not a simple power function of some fixed kernel.
 \par
+\input{parts/subsubsec__pom-collision-moment-hardcore-homomorphization_en}
+
+\begin{theorem}[Rational structure of fiber spectrum resolvent: power-sum moments for fixed \(m\) characterize all multiplicity poles]\label{thm:pom-fiber-spectrum-resolvent-rational}
+Fix resolution \(m\ge 1\), and extend power-sum moment definition as
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q\qquad(q\in\ZZ_{\ge 0}).
+\]
+Let \(\{a_1<\cdots<a_R\}\) be distinct values of multiplicity set \(\{d_m(x):x\in X_m\}\), and denote
+\(
+c_j:=|\{x\in X_m:\ d_m(x)=a_j\}|
+\).
+Define formal power series (fiber spectrum resolvent)
+\[
+H_m(u):=\sum_{q=0}^{\infty} S_q(m)\,u^q.
+\]
+Then \(H_m\) is a rational function with strict partial fraction expansion
+\[
+\boxed{\;
+H_m(u)=\sum_{j=1}^{R}\frac{c_j}{1-a_j u}\; }.
+\]
+Therefore the complete pole set of \(H_m\) is precisely \(\{1/a_j\}_{j=1}^{R}\), with corresponding residues precisely \(c_j\).
+\end{theorem}
+\begin{proof}
+By identity \(\sum_{q\ge 0}(au)^q=(1-au)^{-1}\) (in formal power series sense),
+\[
+H_m(u)=\sum_{x\in X_m}\sum_{q\ge 0}(d_m(x)u)^q
+=\sum_{x\in X_m}\frac{1}{1-d_m(x)u}
+=\sum_{j=1}^{R}\frac{c_j}{1-a_j u}.
+\]
+$\qed$
+\end{proof}
+
+\begin{theorem}[Complete reconstruction and sharpness from finite data: at most \(2R\) power sums determine fiber spectrum for fixed \(m\)]\label{thm:pom-fiber-spectrum-finite-reconstruction-sharp}
+Continue notation of Theorem \ref{thm:pom-fiber-spectrum-resolvent-rational}.
+Then given finite data
+\(
+\{S_q(m)\}_{q=0}^{2R-1}
+\)
+uniquely determines rational function \(H_m\), thus uniquely determines fiber spectrum multiset \(\{(a_j,c_j)\}_{j=1}^{R}\).
+Moreover, in generic case, if only given \(\{S_q(m)\}_{q=0}^{2R-2}\) (one term less), then this fiber spectrum is no longer uniquely decidable.
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-fiber-spectrum-resolvent-rational} can write \(H_m(u)=P_m(u)/Q_m(u)\), where
+\(
+Q_m(u)=\prod_{j=1}^{R}(1-a_j u)
+\)
+is monic polynomial of degree \(R\), and \(\deg P_m\le R-1\).
+Expanding identity \(Q_m(u)H_m(u)=P_m(u)\) at \(u=0\) and comparing coefficients: coefficient sequence \(q\mapsto S_q(m)\) satisfies linear recursion of order \(\le R\); conversely, from \(\{S_q(m)\}_{q=0}^{2R-1}\) can uniquely solve \(Q_m\) through standard Pad\'e/Prony equations (equivalently solving minimal characteristic polynomial of this recursion).
+Once \(Q_m\) determined, its zeros give all \(a_j\);
+then by Vandermonde invertibility of first \(R\) moment equations \(S_q(m)=\sum_{j=1}^{R}c_j a_j^q\ (0\le q\le R-1)\), multiplicities \(c_j\) are also uniquely determined.
+\par
+Sharpness follows from parameter counting: partial fraction family with \(R\) simple poles is determined by \(R\) pole positions and \(R\) residues, hence \(2R\) free parameters; one order fewer coefficients generically insufficient to exclude non-isomorphic solutions. $\qed$
+\end{proof}
+\par
 For \(q=2,3,4\), this paper has constructed low-dimensional non-negative integer collision kernels \(A_q\), and incorporated their Perron roots \(r_q=\rho(A_q)\) and projection entropy rates \(h_q=\log(2^q/r_q)\) into the same \(\zeta\)/primitive/finite-part interface (see \S\ref{subsec:pom-s2}--\S\ref{subsec:pom-s4} and Table \ref{tab:fold_collision_renyi_spectrum}).
 On the other hand, for \(q\ge 5\) small-order integer-coefficient recursions have been verified (Table \ref{tab:fold_collision_moment_recursions}), thus \(r_q\) and \(h_q\) can be precisely extracted, but recursion itself does not automatically give ``non-negative integer graph kernel'' realization.
 This raises a natural upgrade research line: further elevate ``known recursion'' to ``interpretable finite-state collision kernel family''.
@@ -77,6 +131,26 @@ q\Lambda_\infty\le \log r_q\le q\Lambda_\infty+\sup_m\frac{1}{m}\log|X_m|.
 \]
 Divide both sides by \(q\) and let \(q\to\infty\) yields conclusion. $\qed$
 \end{proof}
+
+\begin{corollary}[Double limit commutativity: \texorpdfstring{$q\to\infty$}{q->infty} and \texorpdfstring{$m\to\infty$}{m->infty} both converge to \texorpdfstring{$\tfrac12\log\varphi$}{(1/2)logphi} at principal exponent level]\label{cor:pom-double-limit-commute-principal-exponent}
+For collision moment \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\), two limit routes are strictly consistent at principal exponent level:
+\[
+\lim_{q\to\infty}\ \lim_{m\to\infty}\ \frac{1}{mq}\log S_q(m)
+\;=\;
+\lim_{m\to\infty}\ \lim_{q\to\infty}\ \frac{1}{mq}\log S_q(m)
+\;=\;\frac12\log\varphi.
+\]
+More concretely, fixing \(q\), by \(r_q=\lim_{m\to\infty}S_q(m)^{1/m}\) get
+\(
+\lim_{m\to\infty}\frac{1}{mq}\log S_q(m)=\frac{1}{q}\log r_q
+\), then by endpoint theorem \ref{prop:pom-rq-qinfty-endpoint} get \(\lim_{q\to\infty}\frac{1}{q}\log r_q=\frac12\log\varphi\);
+fixing \(m\), by maximal term domination \(\lim_{q\to\infty}S_q(m)^{1/q}=D_m\), thus
+\(
+\lim_{q\to\infty}\frac{1}{mq}\log S_q(m)=\frac{1}{m}\log D_m
+\), then by joint Propositions \ref{prop:pom-maxfiber-exponent-equals-renyi-endpoint} and \ref{prop:pom-rq-qinfty-endpoint} derive \(\lim_{m\to\infty}\frac{1}{m}\log D_m=\frac12\log\varphi\).
+\par
+Therefore discrepancy between two routes can only appear in lower-order correction terms: one type is \(q\)-direction endpoint residual (e.g., constant-level free energy surplus in \(\log r_q\)), another type is \(m\)-direction finite-resolution phase/endpoint correction; no mixing occurs at principal exponent \(\tfrac12\log\varphi\).
+\end{corollary}
 
 \begin{proposition}[From recursion to minimal linear realization: Hankel realization]\label{prop:pom-hankel-realization-protocol}
 Fix \(q\ge 2\), suppose sequence \(S_q(m)\) satisfies some minimal-order constant-coefficient linear recursion (equivalent to finite Hankel rank).

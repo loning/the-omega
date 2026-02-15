@@ -170,6 +170,12 @@ Furthermore, the trace moments of \(K_k\) satisfy
 \mathrm{tr}(K_k^{\,r})=\sum_{p=1}^{k}\lambda_p^{\,r}=\frac{1}{4^{\,r}}\,S_r(k),
 \]
 where \(\lambda_p=(4\sin^2\phi_p)^{-1}\) are the eigenvalues of \(K_k\) (Lemma \ref{lem:pom-Kk-eigenvalues}).
+In particular, taking \(r\in\NN\) and normalizing by the principal scale \(n=2k+1\), by Corollary \ref{cor:pom-Lk-normalized-zeta-odd-projection} (noting that \(\zeta_k(r)=\sum_p\mu_p^{-r}=\sum_p\lambda_p^{\,r}=\mathrm{tr}(K_k^{\,r})\)), the strict limit exists:
+\[
+\lim_{k\to\infty}\Bigl(\frac{\pi}{n}\Bigr)^{2r}\mathrm{tr}(K_k^{\,r})
+=(1-2^{-2r})\zeta(2r)
+=\sum_{\substack{q\ge 1\\ q\ \mathrm{odd}}}\frac{1}{q^{2r}}.
+\]
 \end{proposition}
 \begin{proof}
 Let
@@ -206,6 +212,7 @@ S_2(k)=\frac{n^4}{6}+\frac{n^2}{3}-\frac12,\qquad
 S_3(k)=\frac{n^6}{15}+\frac{n^4}{6}+\frac{4n^2}{15}-\frac12.
 \]
 Hence \(\mathrm{tr}(K_k^{\,r})=\frac{1}{4^{\,r}}S_r(k)\) can be verified term by term on a finite window for \(r=1,2,3\) (Table \ref{tab:fence_green_kernel_spectral_algebra_audit}).
+Since \(K_k\succeq 0\), the above closed forms also provide definitive inputs for \(\|K_k\|_{S_r}^r=\mathrm{tr}(K_k^{\,r})\) (\(r=1,2,3\)) without requiring numerical diagonalization.
 \end{remark}
 
 \begin{remark}[Finite-window audit: Gram/determinantal rigidity, Chebyshev identification, and higher moments]\label{rem:pom-fence-green-kernel-spectral-algebra-audit}
@@ -359,6 +366,34 @@ Since \(\sum_{p=1}^{k}(2p-1)^{-2s}=(1-2^{-2s})\zeta(2s)+O(k^{1-2\Re(s)})\);
 multiplying the tail by \(n^{2\Re(s)}\) gives \(O(k)\), and the conclusion follows. \qed
 \end{proof}
 
+\begin{corollary}[Limit of the normalized spectral \texorpdfstring{\(\zeta\)}{zeta} and odd-frequency Dirichlet projection]\label{cor:pom-Lk-normalized-zeta-odd-projection}
+For \(\Re(s)>\tfrac12\), define the normalized spectral function
+\[
+\widetilde\zeta_k(s):=\Bigl(\frac{\pi}{2k+1}\Bigr)^{2s}\zeta_k(s).
+\]
+Then for each \(\Re(s)>\tfrac12\), the limit exists:
+\[
+\lim_{k\to\infty}\widetilde\zeta_k(s)
+=\Bigl(1-2^{-2s}\Bigr)\zeta(2s)
+=\sum_{\substack{n\ge 1\\ n\ \mathrm{odd}}}\frac{1}{n^{2s}}.
+\]
+\end{corollary}
+\begin{proof}
+Multiplying both sides of the asymptotic formula from Proposition \ref{prop:pom-Lk-spectral-zeta-dirichlet} by \(\bigl(\pi/(2k+1)\bigr)^{2s}\) gives
+\[
+\widetilde\zeta_k(s)
+=\Bigl(1-2^{-2s}\Bigr)\zeta(2s)
+\;+\;
+O(k)\Bigl(\frac{\pi}{2k+1}\Bigr)^{2s}.
+\]
+When \(\Re(s)>\tfrac12\), the error term is \(O(k^{1-2\Re(s)})\to 0\), so the limit holds.
+The last expression follows from the identity
+\(
+(1-2^{-2s})\zeta(2s)=\sum_{n\ \mathrm{odd}} n^{-2s}
+\).
+\qed
+\end{proof}
+
 \begin{corollary}[Strict continuum limit matching: ND determinant limit and the unique scale \texorpdfstring{\(t/4\)}{t/4}]\label{cor:pom-Lk-continuum-ND-det-cosh}
 Let the continuous operator \(\mathcal L:=-\frac{\dd^2}{\dd x^2}\) act on the interval \([0,1]\) with Neumann--Dirichlet boundary conditions \(u'(0)=0,\ u(1)=0\).
 Its spectrum is \(\{((2p-1)\pi/2)^2\}_{p\ge 1}\), and its mass-shifted determinant satisfies
@@ -392,6 +427,52 @@ Hence
 \longrightarrow \cosh(\sqrt{s}).
 \]
 The small-mode eigenvalue asymptotics follow directly from \(\sin x=x+O(x^3)\). \qed
+\end{proof}
+
+\begin{corollary}[Locally uniform convergence of the ND determinant limit: order-by-order derivative exchange for spectral invariants]\label{cor:pom-Lk-continuum-ND-det-cosh-locally-uniform}
+Following the notation of Corollary \ref{cor:pom-Lk-continuum-ND-det-cosh}, set
+\[
+D_k(s):=\det\!\Bigl(L_k+\frac{4s}{(2k+1)^2}I\Bigr).
+\]
+Then for any compact set \(K\subset\CC\), the locally uniform convergence holds:
+\[
+\sup_{s\in K}\bigl|D_k(s)-\cosh(\sqrt{s})\bigr|\longrightarrow 0,
+\]
+where \(\cosh(\sqrt{s})\) is viewed as the entire function
+\(
+\sum_{n\ge 0}s^n/(2n)!
+\).
+Therefore derivatives and limits can be exchanged order by order: for any \(n\ge 0\),
+\[
+\lim_{k\to\infty}D_k^{(n)}(0)=\frac{n!}{(2n)!}.
+\]
+\end{corollary}
+\begin{proof}
+Set \(n:=2k+1\). By Corollary \ref{cor:pom-Lk-shifted-det-free-energy},
+\[
+D_k(s)=\frac{T_{n}\!\bigl(\sqrt{1+s/n^2}\bigr)}{\sqrt{1+s/n^2}}.
+\]
+Fix a compact set \(K\subset\CC\), and let \(R:=\max_{s\in K}|s|\).
+When \(n\) is sufficiently large, \(|s|/n^2\le R/n^2\) is small enough that
+\(\sqrt{1+s/n^2}=1+O_K(n^{-2})\) holds uniformly.
+Moreover, from \(\mathrm{arsinh}(z)=z+O(|z|^3)\),
+\[
+n\,\mathrm{arsinh}\!\Bigl(\frac{\sqrt{s}}{n}\Bigr)=\sqrt{s}+O_K(n^{-2}),
+\]
+where the error bound depends only on \(|s|\), hence is uniform over \(K\).
+Using the identity \(T_n(\sqrt{1+z^2})=\cosh(n\,\mathrm{arsinh}(z))\) (first valid for \(z\in\RR_{\ge 0}\), then extended by analytic continuation), we obtain
+\[
+T_n(\sqrt{1+s/n^2})=\cosh(\sqrt{s}+O_K(n^{-2})).
+\]
+Since \(\cosh\) is uniformly Lipschitz on bounded sets and the denominator \(\sqrt{1+s/n^2}=1+O_K(n^{-2})\),
+\(
+\sup_{s\in K}|D_k(s)-\cosh(\sqrt{s})|\to 0
+\).
+Finally, locally uniform convergence implies by the Weierstrass theorem that derivatives can be exchanged order by order, hence
+\(
+\lim_{k\to\infty}D_k^{(n)}(0)=\bigl(\cosh(\sqrt{s})\bigr)^{(n)}|_{s=0}=n!/(2n)!
+\).
+\qed
 \end{proof}
 
 \begin{remark}[Finite-window audit: empirical spectral law, heat kernel, and ND determinant limit]\label{rem:pom-fence-green-kernel-spectral-limit-laws-audit}

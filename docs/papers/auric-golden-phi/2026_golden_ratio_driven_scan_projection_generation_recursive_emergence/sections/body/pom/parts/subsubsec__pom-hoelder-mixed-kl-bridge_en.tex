@@ -65,6 +65,14 @@ In particular, when \(q=2\) denoting
 \mathfrak{D}_m\ \ge\ \frac{1}{\sqrt{|X_m|\,\mathrm{Col}_m}}\; }.
 \]
 \end{corollary}
+\begin{proof}
+By definition \(\|w_m\|_q^q=\sum_x (d_m(x)/2^m)^q=S_q(m)/2^{qm}\).
+Substitute lower bound from Proposition \ref{prop:pom-hoelder-bridge-dispersion-from-Sq}
+\(
+\mathfrak{D}_m \ge 2^m/(|X_m|^{1-1/q}S_q(m)^{1/q})
+\)
+and simplify to get first formula; second formula takes \(q=2\) and notes \(\|w_m\|_2=\sqrt{\mathrm{Col}_m}\). $\qed$
+\end{proof}
 
 \begin{definition}[Mixed collision collision probability]\label{def:pom-mixed-collision-probability}
 Suppose on same stable type set \(X_m\) given two distributions \(w_m^{(0)},w_m^{(1)}\in\Delta(X_m)\) everywhere positive.
@@ -83,6 +91,15 @@ If both distributions \(w_m^{(0)},w_m^{(1)}\) produced by some finite-state onli
 then for each fixed integer \(q\ge 1\), sequence \(\{\mathrm{Col}^{(0,1)}_q(m)\}_{m\ge m_0}\) can be compiled as some finite-dimensional non-negative matrix power readout,
 thus satisfying finite-order integer-coefficient linear recursion; and its exponential growth main scale given by Perron root.
 \end{proposition}
+\begin{proof}
+View screening of ``all copies have bitwise identical outputs'' as local synchronization constraint.
+Take \(q\) copies from mechanism \((0)\) and \(q\) copies from mechanism \((1)\), total \(2q\) synchronized direct product,
+and at each step keep only those transitions making all \(2q\) output symbols identical.
+By finite-state closure, resulting synchronized kernel remains finite graph, its length-\(m\) admissible path count grouped by output type \(x\in X_m\) is exactly
+\(\sum_x d_m^{(0)}(x)^q d_m^{(1)}(x)^q\).
+Then use \(w_m^{(i)}(x)=d_m^{(i)}(x)/2^m\) (or corresponding normalization) to get \(\mathrm{Col}^{(0,1)}_q(m)\).
+Matrix power readout \(\Rightarrow\) linear recursion follows immediately from Cayley--Hamilton theorem; Perron main scale given by Perron--Frobenius theory. $\qed$
+\end{proof}
 
 \begin{corollary}[Hilbert feature embedding and positive definite kernel]\label{cor:pom-mixed-collision-pd-kernel}
 For fixed \(m\) and fixed \(q\ge 1\), mapping
@@ -148,6 +165,25 @@ Thus \(w_{\max}\) controlled by explicit quadratic constraint upper bound; and (
 w_{\max}\ \le\ 1-\frac{(|X|-1)^2}{|X|^2\,\mathfrak{D}(w)}\; }.
 \]
 \end{corollary}
+\begin{proof}
+Take \(x_\ast\) such that \(w(x_\ast)=w_{\max}\), and denote \(X':=X\setminus\{x_\ast\}\) (\(|X'|=|X|-1\)).
+By Cauchy--Schwarz inequality for vectors \(\bigl(\sqrt{w(x)}\bigr)_{x\in X'}\) and \(\bigl(1/\sqrt{w(x)}\bigr)_{x\in X'}\) get
+\[
+\left(\sum_{x\in X'}1\right)^2
+\le
+\left(\sum_{x\in X'}w(x)\right)\left(\sum_{x\in X'}\frac{1}{w(x)}\right),
+\]
+i.e.,
+\(
+\sum_{x\in X'}\frac{1}{w(x)}\ge \frac{(|X|-1)^2}{1-w_{\max}}
+\).
+Thus
+\(
+\sum_{x\in X}\frac{1}{w(x)}\ge \frac{1}{w_{\max}}+\frac{(|X|-1)^2}{1-w_{\max}}
+\),
+divide both sides by \(|X|^2\) to get first formula.
+Discard positive term \(|X|^{-2}w_{\max}^{-1}\) yields second formula. $\qed$
+\end{proof}
 
 \begin{lemma}[Bounded multiplicative perturbation invariance]\label{lem:pom-bounded-multiplicative-perturbation-invariance}
 Suppose \((a_m)_{m\ge 1}\), \((b_m)_{m\ge 1}\) are positive sequences.
@@ -163,6 +199,19 @@ then
 \]
 If further both \(m\)-th root limits \(\lim_{m\to\infty}a_m^{1/m}\), \(\lim_{m\to\infty}b_m^{1/m}\) exist, then both limits equal.
 \end{lemma}
+\begin{proof}
+By sandwich
+\[
+\frac{1}{m}\log c+\frac{1}{m}\log a_m
+\le
+\frac{1}{m}\log b_m
+\le
+\frac{1}{m}\log C+\frac{1}{m}\log a_m
+
+\]
+take \(\limsup\) as \(m\to\infty\) yields first conclusion.
+Limit case: take \(m\)-th root of inequalities and let \(m\to\infty\). $\qed$
+\end{proof}
 
 \begin{corollary}[Stability principle for pressure spectrum and large deviation spectrum]\label{cor:pom-pressure-stability-under-bounded-perturbation}
 Under collision moment/pressure spectrum framework, if some rewriting/strictification/counterterm changes counting sequence only at constant or bounded multiplicative scale (i.e., satisfies hypothesis of Lemma \ref{lem:pom-bounded-multiplicative-perturbation-invariance}),

@@ -349,11 +349,15 @@ r_{\mathsf S}(\omega)(p)=0\ \text{对其余 }p.
 由算术基本定理，向量 \(r\) 的有限支撑坐标 \(\{r(p_t)\}_{t\le T}\) 唯一确定一个有限序列 \((\mathrm{code}(e_1),\dots,\mathrm{code}(e_T))\)，从而唯一确定事件序列 \((e_1,\dots,e_T)\)。
 又由编码约定，每个 \(e_t\) 都携带足够信息以在配置上施加对应的逆原子重写。
 因此从正规形 \(\iota_m(x)\) 出发，按 \(t=T,T{-}1,\dots,1\) 逆序回放这些逆原子重写，唯一恢复初始配置 \(a_0=\iota_m(\omega)\)，从而恢复 \(\omega\)。
-故 \((x,r)\) 至多对应一个 \(\omega\)，即 \(\widetilde{\Fold}^{\mathsf S}_m\) 为单射。证毕。
-\end{proof}\begin{remark}[“不丢信息”的严格版本：丢失被外置为可寻址残差]\label{rem:pom-fold-lossless}
+故 \((x,r)\) 至多对应一个 \(\omega\)，即 \(\widetilde{\Fold}^{\mathsf S}_m\) 为单射。
+\end{proof}
+
+\begin{remark}["不丢信息"的严格版本：丢失被外置为可寻址残差]\label{rem:pom-fold-lossless}
 命题 \ref{prop:pom-fold-prime-lift-injective} 给出“空间换时间”的最干净形式之一：折叠作为规范投影门 \(P_Z\) 本身多对一，但只要愿意在 \(\mathcal P\) 上外置一份稀疏残差账本（prime-register），就能把它提升为可逆门。
 因此“信息丢失”不是不可控的湮灭，而是被编译为一份可寻址、可回放的外置证书；其空间占用由残差支撑大小（原子事件条数）计数，而其可回放性由唯一分解与确定性策略保证。
-\end{remark}\begin{corollary}[可逆化不免费：prime-register 残差的线性下界（均匀基线）]\label{cor:pom-prime-residual-linear-lb}
+\end{remark}
+
+\begin{corollary}[可逆化不免费：prime-register 残差的线性下界（均匀基线）]\label{cor:pom-prime-residual-linear-lb}
 沿用定义 \ref{def:pom-fold-prime-lift}：对输入 $\omega\in\Omega_{m+1}$，令 $T_{m+1}^{\mathsf S}(\omega)$ 为策略 $\mathsf S$ 产生的原子重写事件步数，并令 $r_{\mathsf S}(\omega)\in\mathcal P$ 为对应 prime-register 残差向量。
 则在定义 \ref{def:fold-word} 的局部重写规则下，每一步最多改动 $3$ 个坐标，因此对任意 $\omega\in\Omega_{m+1}$ 都有纯组合下界
 \[
@@ -383,8 +387,10 @@ T_{m+1}^{\mathsf S}(\omega)\ \ge\ \left\lceil \frac{G_m(\omega)}{3}\right\rceil 
 \lim_{m\to\infty}\mathbb E[G_m(\omega)]/m=4/9
 \)，
 得 $\liminf_{m\to\infty}\mathbb E[T_{m+1}^{\mathsf S}(\omega)]/m\ge 4/27$。
-最后，由定义 \ref{def:pom-fold-prime-lift}，对 $1\le t\le T$ 有 $r_{\mathsf S}(\omega)(p_t)=\mathrm{code}(e_t(\omega))\in\NN_{\ge 1}$，因此残差向量的非零坐标数恰为 $T_{m+1}^{\mathsf S}(\omega)$。证毕。
-\end{proof}\begin{remark}[生长但不丢信息：保守细化与残差外置]\label{rem:pom-growth-no-loss}
+最后，由定义 \ref{def:pom-fold-prime-lift}，对 $1\le t\le T$ 有 $r_{\mathsf S}(\omega)(p_t)=\mathrm{code}(e_t(\omega))\in\NN_{\ge 1}$，因此残差向量的非零坐标数恰为 $T_{m+1}^{\mathsf S}(\omega)$。
+\end{proof}
+
+\begin{remark}[生长但不丢信息：保守细化与残差外置]\label{rem:pom-growth-no-loss}
 本文中“体系在生长”的严格对应物不是“永远不做投影”，而是把信息损失从不可控的丢弃改写为\emph{可计数、可搬运、可回收}的残差坐标，同时把生长落实为分辨率与语义的保守细化。其要点可由三条规范化接口约束固定：
 \begin{enumerate}
   \item \textbf{对象层（分辨率保守细化）：}稳定地址空间在截断映射 \(\pi_{m+1\to m}:X_{m+1}\to X_m\) 下形成逆系统，并满足
@@ -394,7 +400,7 @@ T_{m+1}^{\mathsf S}(\omega)\ \ge\ \left\lceil \frac{G_m(\omega)}{3}\right\rceil 
   （定理 \ref{thm:pom-inverse-limit}）。因此增加分辨率只是在同一对象 \(X_\infty\) 上延长可见前缀，并不更换本体对象。
   \item \textbf{语义层（保守扩张）：}新概念只通过既有可观测事件的柱集细化与代数组合产生；在代数语言下，这体现为柱事件延拓导致的包含塔
   \(
-  \mathcal{A}_{m_1}\subseteq\mathcal{A}_{m_2},\ 
+  \mathcal{A}_{m_1}\subseteq\mathcal{A}_{m_2},\
   \mathcal{B}_{m_1}\subseteq\mathcal{B}_{m_2}
   \)
   以及条件期望塔 \(E_{m_1}\circ E_{m_2}=E_{m_1}\)。因此旧层可判定的事件在新层仍保持可判定性，新层仅增加可寻址的组合与细化，而不抹除旧真值。

@@ -339,6 +339,43 @@ Then as \(u\to 0\), mass concentrates to \(\min I(r)\), and recovers the hard fi
 This provides a minimal example: deterministic priority selection can be viewed as zero-temperature hardening of temperatured order projection \(\mathrm{PROJ}_u\) (Definition \ref{def:pom-proj-temp}, Remark \ref{rem:pom-order-as-zero-temp}).
 \end{remark}
 
+\begin{proposition}[Thermal Deformation of Order Projection: Analytic Semantics Family and Stochastic Dominance of Soft First-Fit]\label{prop:pom-fractran-soft-firstfit-analytic-dominance}
+For fixed \(r\) with \(I(r)\neq\varnothing\), let
+\[
+Z_r(u):=\sum_{j\in I(r)}u^{j}\qquad(u\in(0,1])
+\]
+and normalize the distribution of Remark \ref{rem:pom-fractran-zero-temp} as
+\[
+\Pr_u(i\mid r):=\frac{u^{i}}{Z_r(u)}\,\ind[i\in I(r)].
+\]
+Then:
+\begin{enumerate}
+  \item \textbf{(Analyticity)} The map \(u\mapsto (\Pr_u(i\mid r))_{i=1}^{k}\) is a real-analytic probability simplex curve on \(u\in(0,1]\);
+  \item \textbf{(Zero-temperature limit)} \(\Pr_u(\cdot\mid r)\) converges to \(\delta_{i^\ast(r)}\) as \(u\downarrow 0\) (recovering hard first-fit);
+  \item \textbf{(Stochastic dominance monotonically strengthens as \(u\downarrow 0\))} If \(0<u_1<u_2\le 1\), then for any threshold \(t\in\{1,\dots,k\}\) we have
+  \[
+  \sum_{i\le t}\Pr_{u_1}(i\mid r)\ \ge\ \sum_{i\le t}\Pr_{u_2}(i\mid r),
+  \]
+  i.e., mass monotonically concentrates toward smaller indices as \(u\downarrow 0\) (first-order stochastic dominance in index order).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Since \(I(r)\subseteq\{1,\dots,k\}\) is a finite set, \(Z_r(u)\) is a nonzero polynomial strictly positive on \(u\in(0,1]\), so each \(\Pr_u(i\mid r)\) is a ratio of polynomials, hence real-analytic on \(u\in(0,1]\), yielding (1).
+Let \(i_\ast:=\min I(r)=i^\ast(r)\). Writing \(Z_r(u)\) as \(u^{i_\ast}\bigl(1+\sum_{j\in I(r)\setminus\{i_\ast\}}u^{j-i_\ast}\bigr)\) immediately gives \(\Pr_u(i_\ast\mid r)\to 1\) and other coordinates tend to \(0\) as \(u\downarrow 0\), yielding (2).
+\par
+For (3), note that for any \(u\) and \(i\in I(r)\) we have \(\Pr_u(i\mid r)\propto u^{i}\), so when \(0<u_1<u_2\),
+\[
+\frac{\Pr_{u_1}(i\mid r)}{\Pr_{u_2}(i\mid r)}
+=
+\frac{Z_r(u_2)}{Z_r(u_1)}\left(\frac{u_1}{u_2}\right)^{i}
+\]
+is monotonically decreasing in \(i\); therefore this family satisfies monotone likelihood ratio (MLR) order, and by standard corollary yields first-order stochastic dominance in index order:
+\(
+\Pr_{u_1}(i\ge t\mid r)\le \Pr_{u_2}(i\ge t\mid r)
+\),
+equivalent to the shown cumulative distribution inequality. This completes the proof.
+\end{proof}
+
 \begin{remark}[Control Flow Externalization: State Machine as Order Projection Selection]\label{rem:pom-fractran-controlflow}
 In FRACTRAN, "state machine" need not be additionally understood as graph-theoretic object: feasibility predicate \(r\ge \beta_i\) yields a family of piecewise linear reachability regions, and first-fit rule is precisely the \emph{selection projection} on this decomposition (mapping \(r\) to index \(i^\ast(r)\) and selecting update accordingly).
 FRACTRAN can also externalize program counter and finite control state to \(\mathcal{P}\)'s coordinate ledger by introducing dedicated prime axes (using exponents of these primes to carry current instruction segment/branch state), thereby compiling control flow also as addressable coordinates of prime registers.
@@ -351,6 +388,21 @@ Implementing one \texttt{FSTEP} as one "priority selection" type \texttt{PROJ\_O
 Meanwhile, feasibility test touches only \(|\mathrm{supp}(b_i)|\) coordinates of denominator \(b_i\)'s prime support (coordinate-wise comparison), so "how many register axes to read per step" and "how deep to scan" are structurally orthogonal.
 If output must be explicitly written back to external face \(X_\infty\), an additional \texttt{PROJ\_NORM} is needed, corresponding to \(k_Z\) increasing \(1\) (Definition \ref{def:pom-cost}).
 \end{remark}
+
+\begin{proposition}[Intrinsic Seriality of Turing Completeness: Ineliminable Lower Bound for First-Fit Priority Selection Depth]\label{prop:pom-fractran-firstfit-serial-depth}
+Fix a FRACTRAN program \(f_1,\dots,f_k\) of length \(k\) (Definition \ref{def:pom-fractran}).
+In a PW/ISA semantic model that only allows implementing priority selection via order gate \(\mathrm{PROJ\_ORDER}(\text{first-fit})\), any one-step implementation consistent with hard first-fit semantics satisfies worst-case order projection aggregation depth
+\[
+T_{\le}\ =\ \Omega(k).
+\]
+Moreover, this lower bound does not change when control flow is externalized to \(\mathcal{P}\) fiber or normalization rewriting is imposed: non-parallel overhead remains locked in priority selection depth.
+\end{proposition}
+\begin{proof}
+Take state \(r\) such that feasible set \(I(r)=\{k\}\) (e.g., make \(r\ge \beta_k\) and \(r\not\ge \beta_i\) for all \(i<k\); under finite instruction table this can always be realized via coordinate-wise prime selection).
+Then hard first-fit must output \(i^\ast(r)=k\).
+In a model that only allows determining \(i^\ast(r)\) through priority selection order gate, to exclude feasibility of all \(i<k\) and confirm \(k\) as the minimal feasible index, worst-case requires priority scan over \(k\) instructions; therefore \(T_{\le}\) is at least linearly controlled by \(k\).
+Control flow externalization and normalization rewriting only change implementation's fiber bearing and constant layer organization (Remark \ref{rem:pom-fractran-controlflow}), without changing the selection semantics itself that "output must equal \(\min I(r)\)"; thus this lower bound is ineliminable. This completes the proof.
+\end{proof}
 
 \paragraph{Prime-Core Microcode Primitives (FRACTRAN Compatibility Layer)}
 In this paper's ISA abstract layer, FRACTRAN's core one step can be encapsulated as three prime-core primitives (they introduce no new mathematical structure, only writing the \(\mathcal{P}\)+\(P_{\le}\) combination as auditable interface):

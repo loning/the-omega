@@ -144,6 +144,44 @@ If \(\mathcal{A}_{B_1}=\mathcal{A}_{B_2}\) on an interval, then the correspondin
 Conclusion (2) follows from \(\mathcal{A}_B=-\frac{\dd}{\dd r}\log|B(-r)|\) and integration to recover \(|B(-r)|\) (combined with the normalization \(B(0)\neq 0\)). \qed
 \end{proof}
 
+\begin{corollary}[C-Finite Rigidity of Endpoint Profile Coefficients: Constant-Coefficient Recurrence and Hankel Rank Certificate]\label{cor:xi-endpoint-profile-cfinite-hankel-rank}
+Under the setting of Theorem \ref{thm:xi-endpoint-absorption-inversion-uniqueness}, let
+\[
+F(q):=\mathcal{A}_B\!\Bigl(\frac{1-q}{1+q}\Bigr)=\sum_{n\ge 0}c_n q^n\qquad(|q|\ \text{sufficiently small}).
+\]
+Then \(F\) is a rational function with denominator given by
+\[
+\boxed{\ D(q):=\prod_{k=1}^{N}\bigl((\delta_k^2+\gamma_k^2)q^2+2\delta_k q+1\bigr)\in\ZZ[q]\ }.
+\]
+Therefore the coefficient sequence \(\{c_n\}_{n\ge 0}\) is a strict C-finite sequence: there exists a linear recurrence of order \(2N\) with constant coefficients such that for all sufficiently large \(n\),
+\[
+c_{n+2N}=\sum_{j=0}^{2N-1}\alpha_j\,c_{n+j}\qquad(\alpha_j\in\QQ).
+\]
+If we further assume that the pole pairs \(\{q_{k,\pm}\}\) are pairwise distinct (equivalent to the condition that \(\{t_k=\gamma_k+\mathrm{i}\delta_k\}\) are distinct in \(\mathbb{H}\) with multiplicity), then the above order is minimal; equivalently, the Hankel matrix
+\(
+\mathsf{H}=(c_{i+j})_{0\le i,j\le 2N}
+\)
+has rank exactly \(2N\), so that \(N\) can be read off precisely via finite-truncation linear algebra certificates.
+\end{corollary}
+\begin{proof}
+By the rational expression in Theorem \ref{thm:xi-endpoint-absorption-inversion-uniqueness}, the poles of \(F\) are precisely the roots of the quadratic factors
+\(
+(\delta_k^2+\gamma_k^2)q^2+2\delta_k q+1
+\),
+namely \(q_{k,\pm}\). Taking \(D(q)\) to be the product of these quadratic factors ensures that \(D(q)F(q)\) is a polynomial, so \(F\) is a rational function and its Taylor coefficients satisfy a constant-coefficient linear recurrence given by the coefficients of \(D\) (obtained by comparing coefficients term-by-term in the power series \(D(q)F(q)\)).
+\par
+When the poles are pairwise distinct and no factors cancel, \(D\) is the minimal denominator (up to scalar), whose degree \(2N\) is the minimal recurrence order; and the minimal recurrence order is equivalent to the Hankel rank characterization. \qed
+\end{proof}
+
+\begin{corollary}[Prony Invertibility of Endpoint Data: \texorpdfstring{$4N$}{4N} Coefficients Recover All \texorpdfstring{$(\gamma_k,\delta_k)$}{(gamma,delta)}]\label{cor:xi-endpoint-profile-prony-invertibility}
+Under the setting of Theorem \ref{thm:xi-endpoint-absorption-inversion-uniqueness}, if we further assume that the pole pairs \(\{q_{k,\pm}\}\) are pairwise distinct, then given any \(4N\) consecutive Taylor coefficients \(c_0,c_1,\dots,c_{4N-1}\) of \(F(q)\) at \(q=0\), one can in principle uniquely recover the parameter multiset \(\{(\gamma_k,\delta_k)\}_{k=1}^{N}\) (up to the natural indistinguishability due to conjugate pairing and permutations).
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:xi-endpoint-profile-cfinite-hankel-rank}, the minimal denominator \(D(q)\) of \(F\) has degree \(2N\), so \(\{c_n\}\) satisfies a minimal recurrence of order \(2N\); this recurrence (equivalently, the annihilating polynomial) can be uniquely recovered from \(c_0,\dots,c_{4N-1}\) via Hankel linear systems/Prony null-space methods (or equivalently, the Berlekamp--Massey algorithm), thereby yielding \(D(q)\) (normalized to have leading coefficient \(1\)).
+Factoring \(D\) into quadratic factors recovers all poles \(q_{k,\pm}\); then by the sum-product relations in \eqref{eq:xi-endpoint-absorption-q-poles} one can solve for \((\gamma_k,\delta_k)\).
+Finally, the residues (equivalently, the individual term coefficients) can be uniquely determined by writing \(F\) in partial fraction form and matching the first \(2N\) coefficients via a linear system. \qed
+\end{proof}
+
 \begin{corollary}[Endpoint Certificate Chain for \texorpdfstring{$F_\zeta$}{F\_zeta}: From a Single Radial Profile to Off-Line Zero Existence]\label{cor:xi-endpoint-tomography-certificate-chain}
 Under the factorization regime of Appendix \S\ref{subsec:unit-disk-inner-outer}, if one further assumes \(S\equiv 1\) (no singular inner factor), then the endpoint radial profile \(r\mapsto |B(-r)|\) is jointly determined by the endpoint radial modulus profile of \(F_\zeta\) and the outer factor profile:
 \[

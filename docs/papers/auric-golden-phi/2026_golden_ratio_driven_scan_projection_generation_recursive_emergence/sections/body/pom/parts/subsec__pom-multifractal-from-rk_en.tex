@@ -125,6 +125,74 @@ This provides a direct auditable experimental protocol: within the computable wi
 at exponential rate, and verify whether this rate stabilizes to $0$ in the interval as $\theta$ approaches $1$; if so, then no nontrivial phase transition point \(\alpha_\ast>0\) exists in the double-limit scale (``freezing'' occurs immediately at any positive slope).
 \end{remark}
 
+\begin{theorem}[The \(m^2\) degeneracy of diagonal moment free energy: \texorpdfstring{$S_{\lfloor\tau m\rfloor}$}{S_{floor(tau m)}} determines only the top exponent]\label{thm:pom-diagonal-moment-free-energy-degeneracy}
+Let \(|X_m|=\exp(O(m))\), and define
+\(
+D_m:=\max_{x\in X_m} d_m(x)
+\)
+and
+\(
+S_q(m)=\sum_{x\in X_m} d_m(x)^q
+\)
+as above.
+Assume the limit
+\[
+\alpha_*:=\lim_{m\to\infty}\frac{1}{m}\log D_m
+\]
+exists.
+For any \(\tau>0\), let \(q_m(\tau):=\lfloor\tau m\rfloor\); then the limit
+\[
+F(\tau):=\lim_{m\to\infty}\frac{1}{m^2}\log S_{q_m(\tau)}(m)
+\]
+exists and satisfies
+\[
+\boxed{\;F(\tau)=\tau\,\alpha_*.\;}
+\]
+Therefore the diagonal scale family \(\{F(\tau):\tau>0\}\) is equivalent to the single constant \(\alpha_*\) and is completely blind to middle-layer spectrum information at the \(m^2\) exponential scale.
+\end{theorem}
+\begin{proof}
+From \(D_m^{q}\le S_q(m)\le |X_m|D_m^q\) one has
+\[
+\frac{q_m(\tau)}{m^2}\log D_m
+\ \le\
+\frac{1}{m^2}\log S_{q_m(\tau)}(m)
+\ \le\
+\frac{\log|X_m|}{m^2}+\frac{q_m(\tau)}{m^2}\log D_m.
+\]
+Since \(\log|X_m|=O(m)\), we have \(\log|X_m|/m^2\to 0\), and since \(q_m(\tau)/m\to\tau\) and \(\frac{1}{m}\log D_m\to\alpha_*\), the squeeze theorem yields the result. \qed
+\end{proof}
+
+\begin{corollary}[Strong unidentifiability of diagonal observation: middle-layer pressure can vary while fixing the top]\label{cor:pom-diagonal-observation-strong-unidentifiability}
+Under the setup of Theorem \ref{thm:pom-diagonal-moment-free-energy-degeneracy}, if another fiber spectrum family \(\tilde d_m\) satisfies
+\(
+\lim_{m\to\infty}\frac{1}{m}\log \tilde D_m=\alpha_*
+\)
+and \(|\tilde X_m|=\exp(O(m))\), then for each \(\tau>0\),
+\[
+\frac{1}{m^2}\log \tilde S_{q_m(\tau)}(m)-\frac{1}{m^2}\log S_{q_m(\tau)}(m)\to 0,
+\]
+where \(\tilde D_m:=\max_x \tilde d_m(x)\) and \(\tilde S_q(m):=\sum_x \tilde d_m(x)^q\).
+However, even under the constraint of keeping \(D_m\) (and even \(\kappa_m^{\mathrm{max}}\)) fixed, fixed-order collision moments (e.g., \(S_2(m)\)) can still undergo observable changes at exponential scale by redistributing non-maximum layer mass, so that the diagonal moments cannot determine any fixed-order pressure spectrum.
+\end{corollary}
+\begin{proof}
+The first statement follows immediately from applying Theorem \ref{thm:pom-diagonal-moment-free-energy-degeneracy} separately to the two spectrum families.
+\par
+For the second statement, fix \(m\) and write \(N=2^m\), \(n=|X_m|\), \(D=D_m\).
+Take some \(x_\star\) with \(d_m(x_\star)=D\), and let the remaining mass be \(R:=N-D\).
+Under the constraint that the maximum remains \(D\), one can construct two allocations:
+\begin{enumerate}
+  \item \emph{Diffusive type}: distribute \(R\) as uniformly as possible over \(n-1\) non-maximum types (with integer corrections), yielding
+  \(
+  S_2(m)=D^2+\Theta\!\bigl(R^2/(n-1)\bigr)
+  \);
+  \item \emph{Concentrated type}: concentrate \(R\) into as few types as possible while keeping each term \(<D\) (e.g., filling with several \(D-1\) and a remainder), yielding
+  \(
+  S_2(m)=D^2+\Theta(RD)
+  \).
+\end{enumerate}
+When \(n=\exp(\Theta(m))\) and \(D=\exp(\Theta(m))\), the above two expressions yield different constants in the limit of \(\frac1m\log S_2(m)\); thus the fixed-order pressure spectrum can still undergo positive-amplitude change under the constraint of keeping the top \(D_m\) fixed. \qed
+\end{proof}
+
 \begin{proposition}[Multifractal upper envelope from the moment spectrum (Legendre--Fenchel framework)]\label{prop:pom-fold-multifractal-envelope}
 Suppose $P$ is given only at integer $q\ge 2$. Let $\widetilde P:\RR_{\ge 2}\to\RR\cup\{+\infty\}$ be the \emph{lower-closed convex extension} of the point set $\{(q,P(q)):\ q\in\ZZ_{\ge 2}\}$ (i.e., the smallest lower-semicontinuous convex function satisfying $\widetilde P(q)\le P(q)$ for all integers $q\ge2$).
 Define

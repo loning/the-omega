@@ -82,6 +82,39 @@ and therefore \(B(m)\equiv (-1)^m\sum_{j=0}^4 b_j\binom{m}{j}\).
 Combining yields the conclusion.
 \end{proof}
 
+\begin{corollary}[Extremely short period compression modulo \texorpdfstring{$6$}{6}: the eventual period of \texorpdfstring{$q\in\{13,15\}$}{q in {13,15}} divides \texorpdfstring{$72$}{72}]\label{cor:pom-mod6-period-collapse-72-q13-15}
+Within the effective range of the recursion from Theorem \ref{thm:pom-moment-resonance}, for \(q\in\{13,15\}\), consider the image of the sequence \(S_q(m)\) modulo \(6\).
+Then after aligning the finite transient, \(S_q(m)\ (\mathrm{mod}\ 6)\) falls into a purely periodic class of length at most \(72\); more precisely,
+\[
+\mathrm{Per}_2(S_q)\mid 8,\qquad \mathrm{Per}_3(S_q)\mid 18,\qquad \mathrm{Per}_6(S_q)\mid \mathrm{lcm}(8,18)=72.
+\]
+\end{corollary}
+\begin{proof}
+\textbf{Modulo \(2\).} By Remark \ref{rem:pom-charpoly-mod2-shadow} (and see Table \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17}), for \(q\in\{13,15\}\) we have
+\(
+P_q(\lambda)\equiv \lambda^3(\lambda+1)^8\ (\mathrm{mod}\ 2)
+\).
+Hence for \(\widehat S_q:=E^3S_q\) we have \((E+1)^8\widehat S_q\equiv 0\ (\mathrm{mod}\ 2)\).
+Over \(\mathbb{F}_2\), \((E+1)^8=E^8+1\), so \(\widehat S_q(m+8)=\widehat S_q(m)\), yielding eventual period dividing \(8\).
+\par
+\textbf{Modulo \(3\).} By Proposition \ref{prop:pom-moment-mod3-two-phase}, for \(\widetilde S_q:=E^2S_q\) we have
+\(
+(E-1)^4(E+1)^5\widetilde S_q\equiv 0\ (\mathrm{mod}\ 3)
+\), and in its proof we constructed the decomposition \(\widetilde S_q=A+B\) satisfying
+\(
+(E-1)^4A\equiv 0
+\)
+and
+\(
+(E+1)^5B\equiv 0
+\).
+Multiplying the first equation on the right by \((E-1)^5\) yields \((E-1)^9A\equiv 0\); over \(\mathbb{F}_3\), \((E-1)^9=E^9-1\), so the eventual period of \(A\) divides \(9\).
+Similarly, multiplying the second equation on the right by \((E+1)^4\) yields \((E+1)^9B\equiv 0\), and \((E+1)^9=E^9+1\), so \(B(m+9)\equiv -B(m)\), hence the eventual period of \(B\) divides \(18\).
+Therefore the eventual period of \(\widetilde S_q=A+B\) (and thus \(S_q\)) divides \(18\).
+\par
+Finally, by the Chinese remainder decomposition \(\ZZ/6\ZZ\cong \ZZ/2\ZZ\times \ZZ/3\ZZ\), after aligning the common transient, the eventual period modulo \(6\) divides \(\mathrm{lcm}(8,18)=72\).
+\end{proof}
+
 \begin{conjecture}[Odd--even partition selection law modulo \texorpdfstring{$3$}{3} (falsifiable)]\label{conj:pom-charpoly-mod3-odd-even}
 Within the resonance window of Theorem \ref{thm:pom-moment-resonance}, the characteristic polynomial \(P_q(\lambda)\) for odd-order \(q\) should tend to support only the linear spectrum \(\{0,\pm 1\}\) over \(\mathbb{F}_3[\lambda]\) (containing no nontrivial irreducible factors), while for even-order \(q\) it should tend to contain nontrivial irreducible factors that introduce extension field modes.
 This selection law holds on the verified slices \(q=13,14,15\) (Table \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}), and its falsification method is to continue computing the modulo \(3\) factorization for recursions at larger verified windows and check whether counterexamples arise.
@@ -91,6 +124,27 @@ This selection law holds on the verified slices \(q=13,14,15\) (Table \ref{tab:f
 Under reduction modulo \(5\), even within the fixed odd-order class, the characteristic polynomial undergoes an auditable structural bifurcation.
 For \(q=13,15\), Table \ref{tab:fold_collision_charpoly_mod5_branch_q13_15} provides the \(\mathbb{F}_5[\lambda]\) factorization and explicitly reads off the multiplicity \(a_0\) of the zero eigenvalue: \(q=13\) contains the factor \(\lambda^2\) while \(q=15\) does not.
 Therefore, reduction modulo \(5\) provides a computationally inexpensive ``transient vs.\ eigenvalue'' diagnostic interface: checking \(P_q(0)\equiv 0\ (\mathrm{mod}\ 5)\) (equivalently, \(5\)-divisibility of the constant term) suffices to determine whether the zero mode is present.
+\end{remark}
+
+\begin{proposition}[Finite field splitting selection law for discriminant \texorpdfstring{$-15$}{-15}: modulo \texorpdfstring{$p$}{p} fingerprint of the phase-locked quadratic \texorpdfstring{$2z^2+z+2$}{2z^2+z+2}]\label{prop:pom-phase-lock-discriminant-minus15-splitting}
+The discriminant of the quadratic \(2z^2+z+2\) is \(\Delta=1-16=-15\).
+For any odd prime \(p\nmid 30\), this polynomial splits over \(\mathbb{F}_p\) if and only if the Kronecker (Legendre) symbol \(\bigl(\frac{-15}{p}\bigr)=1\);
+if \(\bigl(\frac{-15}{p}\bigr)=-1\), then it is irreducible over \(\mathbb{F}_p\) and splits over \(\mathbb{F}_{p^{2}}\).
+At the ramification primes \(p\in\{3,5\}\), we have \(\Delta\equiv 0\pmod p\), so repeated root degeneration occurs over \(\mathbb{F}_p\).
+\end{proposition}
+\begin{proof}
+When \(p\ne 2\), the quadratic \(az^2+bz+c\) has a root over \(\mathbb{F}_p\) if and only if the discriminant \(b^2-4ac\) is a quadratic residue.
+For \(2z^2+z+2\) we have \(\Delta=-15\), and when \(p\nmid 2\), \(2\) is invertible, so the splitting property is equivalent to \(\Delta\) being a square in \(\mathbb{F}_p\),
+i.e., \(\bigl(\frac{\Delta}{p}\bigr)=\bigl(\frac{-15}{p}\bigr)=1\).
+When \(\bigl(\frac{-15}{p}\bigr)=-1\), the polynomial has no roots and is therefore irreducible, but its roots must exist in the quadratic extension, so it splits over \(\mathbb{F}_{p^2}\).
+If \(p\mid 15\), then \(\Delta\equiv 0\pmod p\), corresponding to repeated root degeneration.
+\end{proof}
+
+\begin{remark}[Conditional falsifiable prediction: the splitting/inert dichotomy should manifest in cross-prime modulo \texorpdfstring{$p$}{p} fingerprints]\label{rem:pom-phase-lock-discriminant-minus15-prediction}
+If the complex phase-locked two-dimensional invariant block that emerges stably under the two-step rescaling calibration is indeed controlled by \(2z^2+z+2\),
+then in the cross-prime modulo \(p\) factorization fingerprints, whether a necessary quadratic extension field mode appears should exhibit a systematic splitting/inert dichotomy following \(\bigl(\frac{-15}{p}\bigr)\):
+when \(\bigl(\frac{-15}{p}\bigr)=1\), this block should be realizable over \(\mathbb{F}_p\), while when \(\bigl(\frac{-15}{p}\bigr)=-1\), its realization requires entering \(\mathbb{F}_{p^2}\).
+The degeneration at the ramification primes \(p\in\{3,5\}\) and the modulo \(3\) partition, modulo \(5\) bifurcation in this section structurally belong together to the ``priority sensitivity at discriminant divisibility.''
 \end{remark}
 
 \input{sections/generated/tab_fold_collision_charpoly_mod5_branch_q13_15_en}

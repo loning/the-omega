@@ -1,350 +1,150 @@
-\subsubsection{Rank Deficiency, Moment Visibility, and Hankel Theory}
+\subsubsection{Rank Deficiency and Representation Visibility}\label{subsec:pom-moment-visibility}
+Starting from the congruence counting gauge \(c_m(r)\), \(S_q(m)=\sum_r c_m(r)^q\) can be understood as an \(L^q\) quantity over the module \(F_{m+2}\); its Fourier expansion is equivalent to performing a \(q\)-fold tensor lift on the character space followed by applying conjugate symmetry and ``output-consistent'' projection. The differential modal truncation gives an upper bound of \(2\lfloor q/2\rfloor+1\), while the rank deficiency in Table \ref{tab:fold_collision_moment_recursions_9_17} indicates that at certain \(q\) values, there exist invisible representation components, causing the observable subspace dimension to decrease and thereby triggering resonance.
 
-We now turn to the structural constraints imposed by the fiber multiplicity distribution on the associated moment matrices and Hankel operators.
-
-\begin{definition}[Moment sequence and truncated Hankel matrix]
-\label{def:pom-moment-hankel}
-Given the fiber multiplicity function $\nu_m:k\mapsto|\{x\in X_m:d_m(x)=k\}|$, define the \emph{normalized moment sequence}:
+\begin{remark}[Hankel Minimal Realization Functor: Lifting Sequences to Minimal Linear Representations]\label{rem:pom-minh-functor}
+To formulate ``rank deficiency = representation invisibility'' as a composable interface, one can view \(R\)-valued sequences as the object category \(\mathbf{Seq}(R)\), and take linear representation objects to be triples \((u,A,v)\) (where \(u,v\) are vectors and \(A\) is a finite-dimensional matrix), with semantics
+\(
+a_n=u^{\mathsf T}A^n v
+\).
+Under this gauge, the Hankel method defines a canonical minimal realization assignment (up to isomorphism)
 \[
-\mu_r:=\frac{1}{N_m}\sum_{k}\nu_m(k)\cdot k^r,
-\qquad
-r=0,1,2,\ldots,
+\mathsf{MinH}:\mathbf{Seq}(R)\to \mathbf{LinRep}_{\min}(R),
 \]
-where $N_m=|X_m|=F_{m+2}$. The \emph{truncated Hankel matrix} of order $L$ is:
-\[
-H_L:=
-\begin{pmatrix}
-\mu_0 & \mu_1 & \mu_2 & \cdots & \mu_L \\
-\mu_1 & \mu_2 & \mu_3 & \cdots & \mu_{L+1} \\
-\mu_2 & \mu_3 & \mu_4 & \cdots & \mu_{L+2} \\
-\vdots & \vdots & \vdots & \ddots & \vdots \\
-\mu_L & \mu_{L+1} & \mu_{L+2} & \cdots & \mu_{2L}
-\end{pmatrix}.
-\]
-\end{definition}
-
-\begin{proposition}[Hankel rank bound from value set complexity]
-\label{prop:pom-hankel-rank-bound}
-Under the notation of Definition~\ref{def:pom-moment-hankel}, let $\mathcal{V}_m:=\{d_m(x):x\in X_m\}$ denote the value set of the fiber index function. Then, for any $L\ge0$, the Hankel matrix $H_L$ satisfies:
-\[
-\mathrm{rank}(H_L)
-\le
-|\mathcal{V}_m|
-=
-\exp(O(\sqrt m)).
-\]
-In particular, $H_L$ is \emph{severely rank-deficient} when $L\gg\sqrt m$, with the rank-to-size ratio decaying as:
-\[
-\frac{\mathrm{rank}(H_L)}{L+1}
-=
-O\!\left(
-\frac{\exp(\sqrt m)}{L}
-\right).
-\]
-\end{proposition}
-
-\begin{proof}
-The moment sequence $\{\mu_r\}$ is supported on the finite set $\mathcal{V}_m$, i.e., it can be written as:
-\[
-\mu_r
-=
-\frac{1}{N_m}\sum_{k\in\mathcal{V}_m}\nu_m(k)\cdot k^r
-=
-\sum_{k\in\mathcal{V}_m}w_k\cdot k^r,
-\]
-where $w_k:=\nu_m(k)/N_m\ge0$ and $\sum_k w_k=1$.
-
-This is precisely the $r$-th moment of a discrete probability measure supported on $\mathcal{V}_m$. By the classical theory of moment problems (see~\cite{Akhiezer1965ClassicalMomentProblem}), the Hankel matrix $H_L$ associated with such a measure has rank at most $|\mathcal{V}_m|$, regardless of the order $L$.
-
-From Remark~\ref{rem:pom-fiber-value-set-complexity}, we have $|\mathcal{V}_m|=\exp(\Theta(\sqrt m))$. Therefore:
-\[
-\mathrm{rank}(H_L)
-\le
-|\mathcal{V}_m|
-=
-\exp(O(\sqrt m)).
-\]
-
-When $L$ is chosen to be polynomial in $m$ (e.g., $L=\Theta(m)$), the Hankel matrix $H_L$ is a square matrix of size $(L+1)\times(L+1)=\Theta(m^2)$, while its rank is only $\exp(O(\sqrt m))$. The rank-to-size ratio is:
-\[
-\frac{\mathrm{rank}(H_L)}{L+1}
-\sim
-\frac{\exp(c\sqrt m)}{m}
-\to0
-\quad\text{as }m\to\infty,
-\]
-demonstrating severe rank deficiency.
-\end{proof}
-
-\begin{remark}[Geometric interpretation: moment variety collapse]
-\label{rem:pom-hankel-collapse}
-The rank deficiency of $H_L$ can be interpreted geometrically as a \emph{moment variety collapse}. In the language of algebraic statistics, the moment sequence $\{\mu_r\}$ defines a point in the infinite-dimensional space of all moment sequences. The Hankel rank bound implies that this point lies on a variety of dimension at most $|\mathcal{V}_m|=\exp(O(\sqrt m))$, which is exponentially smaller than the ambient dimension.
-
-This collapse is a direct consequence of the Fibonacci factorization structure: the fiber index $d_m(x)$ can only take values in a restricted subset of $\mathbb{N}$ (namely, products of Fibonacci numbers), and this restriction propagates through to the moment sequence, forcing it to lie on a low-rank subvariety.
-
-From the perspective of projection ontology, this phenomenon represents a \emph{structural bottleneck}: the type space $X_m$ has exponential size $F_{m+2}$, but the moment structure is constrained by the subexponential value set $\mathcal{V}_m$. This bottleneck is a manifestation of the \emph{projection principle}: high-dimensional combinatorial structures (Zeckendorf types) collapse onto low-dimensional algebraic objects (moment varieties) when projected through the fiber index map $x\mapsto d_m(x)$.
+sending sequences to their minimal-dimension realization (which can be explicitly constructed via observable/reachable decomposition or companion matrix implementation).
+Theorem \ref{thm:hankel-rank-minimal} shows that this minimal dimension equals precisely the Hankel rank, so a drop in Hankel rank can be interpreted as ``the representation dimension visible to the sequence semantics'' being less than the nominal modal space dimension.
 \end{remark}
 
-\begin{proposition}[Moment visibility threshold]
-\label{prop:pom-moment-visibility}
-Define the \emph{normalized $r$-th central moment}:
+\begin{conjecture}[Modal Visibility and Closed Dimension]\label{conj:pom-moment-visible}
+Let \(V_q\) be the modal space obtained by tensor lifting the congruence character roles and applying conjugate symmetry and output-consistent constraints, and let \(V_q^{\mathrm{vis}}\) denote the subspace visible to collision readout. Then
 \[
-\sigma_r:=\frac{1}{N_m}\sum_{k\in\mathcal{V}_m}\nu_m(k)\cdot(k-\mu_1)^r,
+d_q=\dim V_q^{\mathrm{vis}}\ \le\ 2\lfloor q/2\rfloor+1,
 \]
-where $\mu_1$ is the first moment (mean fiber index). Then, for $r\ge2$, we have:
+with equality in the non-resonant case; resonance corresponds to \(V_q^{\mathrm{vis}}\) acquiring additional constraints and thus reducing dimension.
+\end{conjecture}
+
+\begin{theorem}[Hankel Rank Lower Bound: Minimal Linear Realization Dimension of Higher-Order Moments]\label{thm:pom-moment-hankel}
+Let \(S_q(m)=\sum_{x\in X_m} d_m(x)^q\), and set \(a_n:=S_q(n+2)\) (for \(q=2,3\) one may rescale by \(a_n:=S_q(n+2)/2\) without affecting the following conclusion). Then for \(q=2,3,4,5,6,7,8\), the Hankel matrix \(H=(a_{i+j})_{i,j\ge 0}\) satisfies
 \[
-\sigma_r
-=
-\Theta\!\left(
-\phi^{r\cdot m}
-\right),
+\mathrm{rank}(H)\ \ge\ 2\lfloor q/2\rfloor+1.
 \]
-i.e., the central moments grow exponentially with the moment order and the type space size.
-
-Moreover, there exists a \emph{visibility threshold} $r_*(m)=\Theta(\sqrt m/\log m)$ such that:
-\begin{itemize}
-\item For $r\le r_*(m)$: the moment $\sigma_r$ is \emph{statistically visible}, i.e., it can be reliably estimated from a polynomial number of samples.
-\item For $r>r_*(m)$: the moment $\sigma_r$ is \emph{statistically invisible}, i.e., it requires exponentially many samples to estimate accurately.
-\end{itemize}
-\end{proposition}
-
+More specifically, there exists a nonzero \((2\lfloor q/2\rfloor+1)\times(2\lfloor q/2\rfloor+1)\) Hankel principal minor determinant, see Table \ref{tab:fold_collision_moment_hankel_rank}.
+\end{theorem}
 \begin{proof}
-From Theorem~\ref{thm:pom-fiber-indset-factorization}, each fiber index value $k\in\mathcal{V}_m$ is a product of Fibonacci numbers:
-\[
-k=\prod_{i=1}^rF_{\ell_i+2},
-\qquad
-\sum_{i=1}^r\ell_i\le\left\lceil\frac{m}{2}\right\rceil.
-\]
-The asymptotic formula $F_n\sim\phi^n/\sqrt5$ implies:
-\[
-k
-\sim
-\phi^{\sum_i(\ell_i+2)}/5^{r/2}
-\le
-\phi^{m/2+2r}.
-\]
-The maximum fiber index $k_{\max}$ is achieved when the partition $\{\ell_i\}$ is maximally concentrated, yielding:
-\[
-k_{\max}
-\sim
-\phi^{m/2+O(1)}.
-\]
-
-The first moment $\mu_1$ is the average fiber index:
-\[
-\mu_1
-=
-\frac{1}{N_m}\sum_{x\in X_m}d_m(x)
-=
-\Theta(\phi^{m/2}),
-\]
-as verified numerically in Figure~\ref{fig:pom-fiber-mean-asymptotic}.
-
-For the $r$-th central moment, the dominant contribution comes from values $k$ near $k_{\max}$:
-\[
-\sigma_r
-\sim
-\frac{1}{N_m}\sum_{k\sim k_{\max}}\nu_m(k)\cdot k^r
-\sim
-\frac{\exp(O(\sqrt m))}{F_{m+2}}\cdot(\phi^{m/2})^r
-=
-\Theta(\phi^{rm/2}).
-\]
-
-To estimate $\sigma_r$ from $n$ i.i.d.\ samples $\{x_1,\ldots,x_n\}$ drawn uniformly from $X_m$, the standard error is:
-\[
-\mathrm{SE}(\hat\sigma_r)
-\sim
-\frac{\sqrt{\mathrm{Var}(\sigma_r)}}{\sqrt n}
-\sim
-\frac{\phi^{rm/2}}{\sqrt n}.
-\]
-For the estimate to be \emph{statistically visible} (i.e., signal-to-noise ratio $\ge1$), we require:
-\[
-n
-\ge
-\phi^{rm}
-\sim
-\exp(r\cdot m\log\phi).
-\]
-
-When $r\le r_*(m):=\Theta(\sqrt m/\log m)$, the required sample size is:
-\[
-n
-\sim
-\exp\!\left(
-\frac{\sqrt m}{\log m}\cdot m\log\phi
-\right)
-=
-\exp(o(m))
-=
-\mathrm{poly}(F_m),
-\]
-which is polynomial in the type space size. For $r>r_*(m)$, the required sample size becomes superpolynomial, rendering the moment statistically invisible.
+For each \(q\) we directly construct the Hankel block \(H_0=(a_{i+j})_{0\le i,j<d}\) (where \(d=2\lfloor q/2\rfloor+1\)) and compute its determinant; if \(\det(H_0)\neq 0\) then \(\mathrm{rank}(H)\ge d\). This computation is performed item-by-item by the script \texttt{scripts/exp\_fold\_collision\_moment\_hankel\_rank.py} and output as an auditable table. \qed
 \end{proof}
 
-\begin{remark}[Information-theoretic interpretation]
-\label{rem:pom-moment-information}
-The visibility threshold $r_*(m)=\Theta(\sqrt m/\log m)$ defines a \emph{statistical horizon} for the moment sequence: moments beyond this threshold carry exponentially less information (per sample) than moments below it. This horizon is intimately connected to the subexponential value set complexity $|\mathcal{V}_m|=\exp(\Theta(\sqrt m))$.
-
-Specifically, the total information content of the moment sequence is bounded by the entropy of the fiber multiplicity distribution:
-\[
-I_{\mathrm{total}}
-\le
-\log|\mathcal{V}_m|
-=
-\Theta(\sqrt m).
-\]
-Since each moment up to order $r$ contributes $\Theta(1)$ bits of information, the number of \emph{informationally independent} moments is at most $O(\sqrt m)$. The visibility threshold $r_*(m)$ marks the boundary where the cumulative information content saturates.
-
-This observation has implications for \emph{compressed sensing} of the fiber distribution: one can reconstruct $\nu_m(k)$ for all $k\in\mathcal{V}_m$ using only $O(\sqrt m)$ moment measurements, despite the fact that $|\mathcal{V}_m|=\exp(\Theta(\sqrt m))$. The compression factor is exponential:
-\[
-\frac{\text{measurements required}}{\text{values reconstructed}}
-=
-\frac{O(\sqrt m)}{\exp(\Theta(\sqrt m))}
-=
-\exp(-\Theta(\sqrt m)).
-\]
-This exponential compression is a signature of the projection ontology structure.
-\end{remark}
-
-\begin{corollary}[Hankel positivity and moment determinacy]
-\label{cor:pom-hankel-positivity}
-The Hankel matrix $H_L$ defined in Definition~\ref{def:pom-moment-hankel} is \emph{positive semidefinite} for all $L\ge0$, and the moment sequence $\{\mu_r\}$ is \emph{determinate}, i.e., it uniquely determines the fiber multiplicity measure $\{\nu_m(k)\}_{k\in\mathcal{V}_m}$.
+\begin{corollary}[Minimal Realization Dimension of Higher-Order Moments Equals Recurrence Order (Within Verified Range)]\label{cor:pom-moment-minreal}
+For \(q=4,5,6,7,8\), Table \ref{tab:fold_collision_moment_recursions} gives recurrence orders of \(5,5,7,7,9\) respectively, so there exists a linear representation (given by the companion realization of the recurrence) of dimensions \(5,5,7,7,9\), whence the Hankel rank satisfies \(\mathrm{rank}(H)\le d\). Combining with the lower bound from Theorem \ref{thm:pom-moment-hankel}, we obtain \(\mathrm{rank}(H)=d\) for these \(q\), and any linear realization \(a_n=u^{\mathsf T}A^n v\) has dimension at least \(d\) (equivalently, any weighted automaton/rational series realization has minimal state count at least \(d\), see Theorem \ref{thm:hankel-rank-minimal}).
 \end{corollary}
 
-\begin{proof}
-Positive semidefiniteness follows from the fact that $\{\mu_r\}$ is a moment sequence of a probability measure (the normalized fiber multiplicity distribution). For any vector $\mathbf{v}=(v_0,v_1,\ldots,v_L)^\top$, we have:
+\input{sections/generated/tab_fold_collision_moment_hankel_rank}
+
+\begin{remark}[\texorpdfstring{$p$}{p}-adic Rigidity Fingerprint: \texorpdfstring{$p=5$}{p=5} First Appears Explicitly in the Hankel Certificate at \texorpdfstring{$k=5$}{k=5}]\label{rem:pom-hankel-stiffness-p5}
+The nonzero Hankel principal minor determinants in Table \ref{tab:fold_collision_moment_hankel_rank} not only provide rank lower bounds but also carry a completely internal arithmetic rigidity signal.
+For a prime \(p\), define the ``rigidity index''
 \[
-\mathbf{v}^\top H_L\mathbf{v}
-=
-\sum_{i,j=0}^L v_i\mu_{i+j}v_j
-=
-\sum_{k\in\mathcal{V}_m}w_k\left(\sum_{i=0}^Lv_i k^i\right)^2
-\ge0.
+\mathsf{Stiff}_p(k):=v_p(\det(H_k)),
 \]
-
-Determinacy follows from the Carleman condition: since the support $\mathcal{V}_m$ is finite, the moment sequence has exponential growth rate at most $\max_{k\in\mathcal{V}_m}k<\infty$, which implies:
+where \(v_p\) is the \(p\)-adic valuation and \(H_k\) is the Hankel witness block used for \(S_k\) in the table.
+In the two smallest manually factorizable examples:
 \[
-\sum_{r=1}^{\infty}\mu_r^{-1/(2r)}
-=\infty.
+\det(H_{k=4})=1179648=2^{17}\cdot 3^2,
+\qquad
+\det(H_{k=5})=155520000000=2^{13}\cdot 3^5\cdot 5^7.
 \]
-By the Carleman criterion (see~\cite{Akhiezer1965ClassicalMomentProblem}), the measure is uniquely determined by its moments.
-\end{proof}
-
-\begin{proposition}[Cross-moment Hankel structure]
-\label{prop:pom-cross-moment-hankel}
-Consider the \emph{cross-moment} between fiber indices and Fibonacci partition lengths. For $x\in X_m$ with Zeckendorf decomposition $x=\sum_i F_{\ell_i+2}$, define:
-\[
-\ell_{\mathrm{avg}}(x):=\frac{1}{|I_m(x)|}\sum_{i\in I_m(x)}\ell_i,
-\]
-where $I_m(x)$ is the index set of the Zeckendorf expansion. The cross-moment sequence is:
-\[
-\mu_{r,s}:=\frac{1}{N_m}\sum_{x\in X_m}d_m(x)^r\cdot\ell_{\mathrm{avg}}(x)^s.
-\]
-
-Then the \emph{cross-Hankel matrix} $H_{L,M}^{\mathrm{cross}}$ with entries $[H_{L,M}^{\mathrm{cross}}]_{ij}=\mu_{i,j}$ satisfies:
-\[
-\mathrm{rank}(H_{L,M}^{\mathrm{cross}})
-\le
-|\mathcal{V}_m|\cdot p_{\mathrm{part}}\!\left(\left\lceil\frac{m}{2}\right\rceil\right)
-=
-\exp(O(\sqrt m)),
-\]
-where $p_{\mathrm{part}}(n)$ is the integer partition function.
-\end{proposition}
-
-\begin{proof}
-The cross-moment $\mu_{r,s}$ is a polynomial in $(d_m(x),\ell_{\mathrm{avg}}(x))$ of bidegree $(r,s)$. By Theorem~\ref{thm:pom-fiber-indset-factorization}, each $x\in X_m$ is uniquely determined by its Fibonacci factorization type $(d_m(x),\{\ell_i\})$, where $d_m(x)\in\mathcal{V}_m$ and $\{\ell_i\}$ is a partition of at most $\lceil m/2\rceil$.
-
-The number of distinct pairs $(d_m(x),\ell_{\mathrm{avg}}(x))$ is at most:
-\[
-|\mathcal{V}_m|\times\#\{\text{partitions of }\le\lceil m/2\rceil\}
-\le
-\exp(O(\sqrt m))\times\exp(O(\sqrt m))
-=
-\exp(O(\sqrt m)).
-\]
-
-By the multivariate moment rank theorem (analogous to the univariate case in Proposition~\ref{prop:pom-hankel-rank-bound}), the rank of $H_{L,M}^{\mathrm{cross}}$ is bounded by the size of the joint support, yielding the stated bound.
-\end{proof}
-
-\begin{remark}[Tensor moment decomposition]
-\label{rem:pom-tensor-moment}
-Proposition~\ref{prop:pom-cross-moment-hankel} suggests a \emph{tensor moment decomposition} structure for the POM framework. Specifically, the full moment tensor of order $(r,s,t,\ldots)$ over multiple observables (fiber index, partition length, partition multiplicity, etc.) can be decomposed as a low-rank tensor:
-\[
-\mathcal{M}_{r_1,r_2,\ldots,r_d}
-=
-\sum_{\alpha=1}^{R}\lambda_\alpha\,\mathbf{v}_\alpha^{(1)}_{r_1}\otimes\mathbf{v}_\alpha^{(2)}_{r_2}\otimes\cdots\otimes\mathbf{v}_\alpha^{(d)}_{r_d},
-\]
-where $R=\exp(O(\sqrt m))$ is the tensor rank, controlled by the subexponential value set complexity.
-
-This decomposition provides a \emph{compressed representation} of the moment structure, analogous to the canonical polyadic (CP) decomposition in tensor algebra. From the projection ontology perspective, each rank-1 component $\lambda_\alpha\,\mathbf{v}_\alpha^{(1)}\otimes\cdots\otimes\mathbf{v}_\alpha^{(d)}$ corresponds to a \emph{primitive projection mode}: a fundamental pattern in the Fibonacci-indexed type space that cannot be further factorized.
-
-We conjecture that these primitive modes are in one-to-one correspondence with the \emph{irreducible partition types} enumerated in Theorem~\ref{thm:pom-fiber-indset-factorization}, and that their spectral properties (eigenvalues $\lambda_\alpha$, eigenvectors $\mathbf{v}_\alpha$) encode the golden ratio structure. A detailed study of this tensor decomposition is deferred to future work.
+Thus \(\mathsf{Stiff}_5(4)=0\) while \(\mathsf{Stiff}_5(5)=7\): the first Hankel rigidity certificate carrying high \(5\)-adic valuation appears precisely at \(k=5\).
+This jump provides a reproducible starting-point indicator for subsequent tracking of ``mod \(5\)'' class arithmetic effects (e.g., continuing to record the growth of \(\mathsf{Stiff}_5(k)\) versus the resonance gap \(\Delta(k)\) as \(k\) increases).
 \end{remark}
 
-\begin{proposition}[Moment generating function and Hankel determinant asymptotics]
-\label{prop:pom-moment-mgf-hankel-det}
-Define the \emph{moment generating function}:
-\[
-M(\theta):=\sum_{r=0}^{\infty}\mu_r\frac{\theta^r}{r!}
-=
-\frac{1}{N_m}\sum_{k\in\mathcal{V}_m}\nu_m(k)\cdot e^{\theta k}.
-\]
-Then:
+\subsubsection{Moment-Kernel Construction and Multifractal Spectrum for Arbitrary Order Collision Moments}\label{subsec:pom-moment-general}
+
+\paragraph{From \texorpdfstring{$q$}{q}-fold Collision to Finite-State Moment-Kernel}
+The core new point for second- and third-order is that collision moments are not merely ``enumerable sequences'' but are generated by a \textbf{finite-state fiber-product kernel}, thus falling entirely into the unified Perron--Frobenius/\(\zeta\) interface.
+This fact holds for arbitrary \(q\ge 2\): after fixing \(q\), the constraint ``\(q\) windows fold to the same stable type'' is a finite-memory condition and can thus be compiled into a finite graph (SFT/sofic) and counted by an integer adjacency matrix.
+
+\begin{definition}[\texorpdfstring{$q$}{q}-fold Collision Relation and Moment Sequence]\label{def:pom-moment-q}
+For an integer \(q\ge 2\), define the \(q\)-fold collision relation
+$$
+R_m^{(q)}:=
+\{(\omega^{(1)},\dots,\omega^{(q)})\in\Omega_m^q:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(q)})\},
+$$
+and define the \(q\)-th order collision moment
+$$
+S_q(m):=|R_m^{(q)}|=\sum_{x\in X_m} d_m(x)^q.
+$$
+\end{definition}
+
+\begin{proposition}[Existence and Executable Construction of Arbitrary-Order Moment-Kernels]\label{prop:pom-moment-kernel-exists}
+For each fixed \(q\ge 2\), there exists a finite-state non-negative integer kernel (adjacency matrix) \(A_q\) with integer readout vectors \(u_q,v_q\) such that
+$$
+S_q(m)=u_q^{\mathsf T}A_q^{\,m-m_0}v_q\qquad(m\ge m_0),
+$$
+so \(\{S_q(m)\}_{m\ge m_0}\) satisfies some \textbf{finite-order integer-coefficient linear recurrence}.
+
+Moreover, \(A_q\) can be explicitly constructed following the ``compilation route'' below (hence deducible, rewritable, and computable):
 \begin{enumerate}
-\item $M(\theta)$ has a finite radius of convergence $\rho_m=\Theta(\phi^{-m/2})$.
-\item The Hankel determinant $D_L:=\det(H_L)$ satisfies:
-\[
-D_L
-\le
-\exp\!\left(
--c\cdot L^2/|\mathcal{V}_m|
-\right)
-=
-\exp\!\left(
--\Theta\!\left(\frac{L^2}{\exp(\sqrt m)}\right)
-\right),
-\]
-for some constant $c>0$, provided $L\gg|\mathcal{V}_m|$.
+  \item Choose an implementation of the deterministic online kernel realizing \(\Fold_\infty\) (the synchronizing kernel with delay \(\delta_{\min}=3\), whose explicit finite-state representation is given in the appendix);
+  \item Take \(q\) copies and form their synchronous direct product, expanding the state to a \(q\)-tuple;
+  \item At each step retain only those transitions for which the \(q\) copies produce \textbf{identical output bits}, and project to the reachable essential strongly connected component;
+  \item The resulting finite graph is a \(q\)-fold collision fiber-product kernel, whose adjacency matrix is the desired \(A_q\), and whose path count yields \(S_q(m)\).
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-\textbf{(1)} The moment generating function is a finite sum over $|\mathcal{V}_m|$ terms:
-\[
-M(\theta)
-=
-\sum_{k\in\mathcal{V}_m}w_k\,e^{\theta k},
-\]
-where $w_k=\nu_m(k)/N_m\ge0$ and $\sum_k w_k=1$. The largest $k$ in $\mathcal{V}_m$ is $k_{\max}\sim\phi^{m/2}$ (from the proof of Proposition~\ref{prop:pom-moment-visibility}). Hence, $M(\theta)$ converges for $|\theta|<\rho_m:=1/k_{\max}=\Theta(\phi^{-m/2})$.
-
-\textbf{(2)} By Proposition~\ref{prop:pom-hankel-rank-bound}, $\mathrm{rank}(H_L)\le|\mathcal{V}_m|$. When $L+1>|\mathcal{V}_m|$, the matrix $H_L$ has at least $(L+1)-|\mathcal{V}_m|$ zero eigenvalues. The Hankel determinant is the product of all eigenvalues, so:
-\[
-D_L
-=
-\prod_{i=1}^{L+1}\lambda_i(H_L)
-=
-0
-\quad\text{if }L+1>|\mathcal{V}_m|.
-\]
-
-For $L+1\le|\mathcal{V}_m|$, we use the Hadamard inequality combined with the spectral decay rate of $H_L$. The eigenvalues $\{\lambda_i\}$ decay exponentially with $i$ due to the rank deficiency, yielding the stated exponential bound. A detailed asymptotic analysis using the Carathéodory-Fejér theorem (see~\cite{Simon2005OPUC}) gives the precise exponent $-c L^2/|\mathcal{V}_m|$.
+View \(\Fold_\infty\) as a deterministic finite transducer: input is window alphabet (or its input alphabet induced by two legal input orbits), output is stable address bits; its internal state space is finite and has constant delay (the online kernel of Proposition \ref{prop:pom-delay-min} is a concrete realization).
+After fixing \(q\), the constraint ``\(q\) outputs match bitwise'' is a local synchronization constraint: it only requires comparing current output symbols for consistency at each step, hence remains finitely-state recognizable.
+One can thus perform synchronous direct product on this transducer and apply the ``output-consistent'' filter to obtain a finite directed graph \(G^{(q)}\).
+The count of legal paths of length \(m\) equals the count of \(R_m^{(q)}\) (i.e., \(S_q(m)\)), and can thus be written in the form \(u_q^{\mathsf T}A_q^{m-m_0}v_q\) for some non-negative integer adjacency matrix readout.
+The linear recurrence follows immediately from the Cayley--Hamilton theorem, with integer coefficients (since \(A_q\) is an integer matrix). \qed
 \end{proof}
 
-\begin{remark}[Connection to orthogonal polynomials]
-\label{rem:pom-hankel-opuc}
-The Hankel determinant $D_L=\det(H_L)$ is intimately connected to the theory of \emph{orthogonal polynomials on the unit circle} (OPUC). Specifically, the moment sequence $\{\mu_r\}$ determines a probability measure $\nu$ on $\mathbb{R}_+$ (the fiber multiplicity distribution), and the Hankel determinants $\{D_L\}$ control the normalization constants of the orthogonal polynomials $\{P_L(x)\}$ associated with $\nu$.
-
-The exponential decay of $D_L$ in Proposition~\ref{prop:pom-moment-mgf-hankel-det} implies that the orthogonal polynomials exhibit \emph{strong recurrence relations} with rapidly decaying reflection coefficients. In the OPUC framework, this corresponds to a measure $\nu$ that is \emph{nearly supported} on a sparse subset (here, $\mathcal{V}_m$), with exponentially small leakage outside this support.
-
-This connection opens a pathway to apply OPUC techniques (e.g., Verblunsky coefficients, CMV matrices, see~\cite{Simon2005OPUC}) to analyze the fiber multiplicity distribution. In particular, the \emph{Schur parameters} associated with the moment sequence $\{\mu_r\}$ encode information about the Fibonacci factorization structure, and their asymptotic behavior is governed by the golden ratio $\phi$. We conjecture that the Verblunsky coefficients $\{\alpha_n\}$ satisfy:
-\[
-\alpha_n
-\sim
-\phi^{-n}
-\quad\text{as }n\to\infty,
-\]
-reflecting the exponential decay of information in the moment sequence beyond the visibility threshold. A rigorous proof is left for future investigation.
+\begin{remark}[Computable Symmetric Compression: \texorpdfstring{$O(q^2)$}{O(q^2)} Orbit Representation of the Star Fiber-Product]\label{rem:pom-star-sympress}
+The general compilation route in Proposition \ref{prop:pom-moment-kernel-exists} encounters exponential explosion of synchronous direct product state count as \(q\) increases.
+However, in a class of ``star coupling'' cases (i.e., the collision constraint can be organized as ``central orbit and each leaf orbit separately satisfy the same pair constraint'', and this pair constraint admits a \emph{central input symbol} decomposition, e.g., existence of a \(3\)-state pair kernel decomposition \(A_2=B_0+B_1\)),
+the star kernel of \(q\)-fold collision naturally has leaf permutation symmetry:
+the uncompressed state space can be taken as \(\{1,2,3\}^{q-1}\), while the Perron dominant eigenvalue is determined by the symmetric subspace, and thus can be compressed to orbit-count states
+\((n_1,n_2,n_3)\) (satisfying \(n_1+n_2+n_3=q-1\)) and dimension reduced to
+\(\binom{q+1}{2}\).
+The script \texttt{scripts/exp\_fold\_collision\_star\_kernel\_sympress\_demo.py} provides this executable ``orbit compression \(\Rightarrow\) \(\widetilde A_q\) \(\Rightarrow\) Perron root estimation'' transition-counting interface (with input being the decomposition matrices \(B_0,B_1\)).
 \end{remark}
+
+\begin{remark}[Two-Stage Compression Law: Symmetric Power Quotient Kernel \texorpdfstring{$+$}{+} Hankel Minimization]\label{rem:pom-sympower-then-minh}
+For fixed \(q\), moment-kernel compilation reduces the \(q\)-fold collision constraint to a finite kernel \(A_q\) (Proposition \ref{prop:pom-moment-kernel-exists}), whose most naive implementation corresponds to an exponential state space of \(q\)-fold synchronous direct product.
+Remark \ref{rem:pom-star-sympress} (and more generally the symmetric power/orbit compression viewpoint, Remark \ref{rem:pom-moment-symmetric-power-substitution-operator}) shows that when the counting target has complete leaf permutation symmetry, one can first take the quotient by the symmetric group action, compressing the exponential state space to polynomial-dimensional ``symmetric power quotient kernel'' \(\widetilde A_q\).
+\par
+Subsequently, on the sequence side, apply the Hankel minimal realization functor \(\mathsf{MinH}\) (Remark \ref{rem:pom-minh-functor}) to \(S_q(m)\), obtaining the true visible minimal dimension \(d_q\) (Table \ref{tab:fold_collision_moment_recursions_9_17}).
+Thus we obtain an executable two-stage compression interface:
+\[
+\boxed{\;
+\text{exponential direct-product kernel}\ \Longrightarrow\ \text{symmetric power quotient kernel }\widetilde A_q\ \Longrightarrow\ \mathsf{MinH}(S_q)\ \text{ minimal dimension }d_q\; }.
+\]
+When \(\Delta(q)=(2\lfloor q/2\rfloor+1)-d_q>0\) appears (Table \ref{tab:fold_collision_resonance_gap_delta_q_9_17}),
+this gap can be viewed as an irreducible difference between ``the nominal modal dimension of the symmetric power quotient kernel'' and ``the true visible dimension of the sequence semantics'':
+it corresponds to a set of resonant linear constraints forced by Hankel rank drop (see Table \ref{tab:fold_collision_resonance_nullmodes_q9_17}), thus compressing ``multiplicative \(q\)-fold interaction'' at the auditable level into an integer gap certificate and a set of explicit constraint vectors.
+\end{remark}
+
+\paragraph{From \texorpdfstring{$r_q$}{r\_q} to Pressure and ``Fiber Multiplicity Spectrum'': Convex Conjugate Upper Bound (Strict)}
+The verified \(q\)-order collision kernels satisfy \(S_q(m)=\Theta(r_q^m)\), where \(r_q=\rho(A_q)\) is the Perron root (Corollaries \ref{cor:pom-s2-asymptotic}, \ref{cor:pom-s3-asymptotic}, \ref{cor:pom-s4-asymptotic} and Table \ref{tab:fold_collision_moment_recursions}).
+Thus the moment fingerprint not only yields single-point constants \(h_q=\log(2^q/r_q)\), but also induces a ``pressure curve'' amenable to Legendre transform, thereby lifting ``space loss'' into genuine spectral structure.
+
+\begin{definition}[Moment Pressure and Normalized Logarithmic Moment Generating Function]\label{def:pom-moment-pressure}
+For \(q\ge 2\) define
+$$
+\tau(q):=\limsup_{m\to\infty}\frac{1}{m}\log S_q(m),
+$$
+and define the normalized pressure (i.e., the \(q\)-th order logarithmic moment generating function of the output distribution \(w_m(x)=d_m(x)/2^m\))
+$$
+P(q):=\limsup_{m\to\infty}\frac{1}{m}\log\sum_{x\in X_m}w_m(x)^q
+=\tau(q)-q\log 2.
+$$
+When there exists a Perron root \(r_q\) such that \(S_q(m)=\Theta(r_q^m)\), we have \(\tau(q)=\log r_q\) and \(P(q)=\log(r_q/2^q)=-h_q\).
+\end{definition}
+
+\input{08_projection_ontology_mathematics_part03c_pressure_multifractal_q60}
+
+\begin{definition}[Logarithmic Spectrum Function of Fiber Multiplicity]\label{def:pom-fiber-spectrum}
+Let
+$$
+\gamma_m(x):=\frac{1}{m}\log d_m(x)\qquad(x\in X_m).
+$$
+
