@@ -85,6 +85,15 @@ Taking modulus squared and using
 by expansion yields the result.
 \end{proof}
 
+\begin{corollary}[Depth spectrum uniqueness in general position: rigid inversion of point set from difference multiset]\label{cor:xi-bulk-curvature-difference-multiset-rigid-inversion}
+Assume depth spectrum \(\{\sigma_j\}_{j=1}^{\kappa}\subset\RR\) satisfies a general position condition: except \(0\), the difference multiset \(\mathcal D=\{\sigma_j-\sigma_k\}_{j,k}\) contains no repeated elements, i.e., for any \(\Delta\neq 0\) we have \(m(\Delta)\in\{0,1\}\).
+Then the difference multiset \((\mathcal D,m)\) uniquely determines the unordered multiset \(\{\sigma_j\}\) up to global translation and reflection; and this inversion can be implemented by a finite-step combinatorial algorithm.
+Combined with Corollary \ref{cor:xi-bulk-curvature-modsquare-holography}, under this general position assumption, modulus-squared data \(|\widehat p(\xi)|^{2}\) suffices to lock the depth spectrum to only the \(\RR\rtimes\ZZ_2\) global symmetry degrees of freedom.
+\end{corollary}
+\begin{proof}[Proof sketch]
+This is the standard rigidity conclusion of the classical turnpike/Golomb ruler inversion problem: the maximum difference yields the distance between endpoints; recursively strip differences compatible with endpoints from the difference multiset, and under the general position assumption eliminate branching to obtain a unique solution; translation and reflection are the only residual symmetries.
+\end{proof}
+
 \begin{corollary}[Superresolution barrier constant \texorpdfstring{$\pi$}{pi}: stability threshold for depth separation is \texorpdfstring{$\exp(-\pi/\Delta)$}{exp(-pi/Delta)}]\label{cor:xi-bulk-curvature-superresolution-pi-barrier}
 Assume the observed curvature probability density is \(\widetilde p=p+\eta\), and assume Fourier noise within bandwidth \(|\xi|\le\Omega\) satisfies
 \[
@@ -116,6 +125,30 @@ By \(\widetilde\nu-\nu=\mathcal D\eta\) and multiplier definition,
 Under noise constraint, choosing phase-aligned \(\widehat\eta\) can achieve worst-case amplification factor \(\sinh(\pi\Omega)/(\pi\Omega)\).
 Combining with the resolution--bandwidth reciprocal scale \(\Omega\gtrsim 1/\Delta\) yields the result.
 \end{proof}
+
+% (User input window)
+% Time: 2026-02-16 02:05:41 (Asia/Singapore)
+
+\begin{remark}[Double insurmountable barrier: joint limit of atom number--separation--precision]\label{rem:xi-bulk-curvature-double-barrier-kappa-separation-precision}
+In the depth spectrum recovery problem, the separation \(\Delta_{\min}\) is simultaneously constrained by two non-substitutable regime-level thresholds:
+\begin{itemize}
+\item \textbf{Volume stability threshold (Gram side)}:
+If wishing Hellinger--Gram volume to avoid clustering collapse, one must enter the separation threshold of the quasi-orthogonal phase (Corollary \ref{cor:xi-hellinger-quasi-orthogonal-phase}).
+Conversely, once \(\Delta_{\min}\) is forced to shrink with \(\kappa\), the clustering condition number explodes with regime exponent \(\kappa(\kappa-1)\) (Corollary \ref{cor:xi-hellinger-gram-cluster-conditioning-exponent}).
+\item \textbf{Identifiability threshold (deconvolution side)}:
+To stably distinguish atoms at separation \(\Delta_{\min}\), the noise budget must satisfy
+\(
+\varepsilon\lesssim \exp(-\pi/\Delta_{\min})
+\)
+(Corollary \ref{cor:xi-bulk-curvature-superresolution-pi-barrier}).
+Under the constraint of fixed span \(L=\sigma_\kappa-\sigma_1\), we have \(\Delta_{\min}\le L/(\kappa-1)\), so the noise threshold is further compressed to
+\[
+\varepsilon\lesssim \exp\!\Bigl(-\frac{\pi(\kappa-1)}{L}\Bigr),
+\]
+i.e., precision cost grows exponentially in \(\kappa\).
+\end{itemize}
+Hence under any budget calibration restricting \(\Delta_{\min}\) to shrink with \(\kappa\), atom number enhancement and stable recovery cannot simultaneously enter the double limit of arbitrary high rank and arbitrary small error; the feasible domain is jointly truncated by the double threshold of \(\Delta_{\min}\).
+\end{remark}
 
 \begin{proposition}[Pole--entire function dichotomy: universal lattice singularities and depth factor of scale curvature moment generating function]\label{prop:xi-bulk-curvature-moment-generating-factorization}
 Define moment generating function (bilateral Laplace transform)
@@ -187,6 +220,38 @@ Since
 has residue \((-1)^n n\) at \(t=n\), multiplying with the factorization formula yields the residue formulas.
 The second part is classical power-sum inversion: when \(\{y_j\}\) are pairwise distinct, the power sum sequence satisfies a linear recurrence of order \(\kappa\);
 from \(\{E(n)\}_{n=1}^{2\kappa}\) one can construct a Hankel system to solve for the recurrence coefficients, thereby obtaining the monic polynomial with roots \(\{y_j\}\) and recovering \(\{y_j\}\), hence recovering \(\{\delta_j=y_j^{-1}\}\).
+\end{proof}
+
+% (User input window)
+% Time: 2026-02-16 02:18:37 (Asia/Singapore)
+
+\begin{corollary}[Extremal reconstruction from integer residues: lossless readout of maximum depth and multiplicity]\label{cor:xi-bulk-curvature-residue-extremal-recovery}
+Under the setting of Corollary \ref{cor:xi-bulk-curvature-residue-dirichlet-data}, let
+\[
+R_n:=(-1)^n\,\frac{1}{n}\operatorname*{Res}_{t=n}\zeta_{\mathrm{scale}}(t)=E(n)\qquad(n\in\NN).
+\]
+Denote the maximum depth and its multiplicity as
+\[
+\sigma_{\max}:=\max_{1\le j\le\kappa}\sigma_j,
+\qquad
+r_{\max}:=\card\{j:\ \sigma_j=\sigma_{\max}\}.
+\]
+Then there are strict limiting formulas
+\[
+\boxed{\;
+\sigma_{\max}=\lim_{n\to\infty}\frac{1}{n}\log\bigl(\kappa R_n\bigr),\qquad
+r_{\max}=\lim_{n\to\infty}\kappa R_n\,e^{-n\sigma_{\max}}\in\NN.\;}
+\]
+Hence "deepest defect" and its multiplicity can be directly certified from the residue sequence at integer poles without full-spectrum inversion.
+\end{corollary}
+\begin{proof}[Proof sketch]
+From \(R_n=E(n)=\kappa^{-1}\sum_{j=1}^{\kappa}e^{n\sigma_j}\), separating the maximum depth term yields
+\[
+\kappa R_n=r_{\max}e^{n\sigma_{\max}}+\sum_{\sigma_j<\sigma_{\max}}e^{n\sigma_j}
+=r_{\max}e^{n\sigma_{\max}}\Bigl(1+O(e^{-n(\sigma_{\max}-\sigma_2)})\Bigr),
+\]
+where \(\sigma_2\) is the second-largest depth (if it does not exist the error is understood as \(0\)).
+Taking logarithm of both sides and dividing by \(n\) yields the limit for \(\sigma_{\max}\); multiplying the above by \(e^{-n\sigma_{\max}}\) and taking the limit yields \(r_{\max}\).
 \end{proof}
 
 \begin{remark}[Scale Euler--Möbius primitive ledger: interchange of power sum moments and primitive sequence]\label{rem:xi-bulk-curvature-euler-mobius-ledger}

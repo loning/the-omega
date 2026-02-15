@@ -2,10 +2,14 @@
 from pathlib import Path
 
 def count_lines(filepath):
-    """Count lines in a file"""
+    """Count lines in a file, ignoring trailing blank lines"""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
-            return len(f.readlines())
+            lines = f.readlines()
+            # Strip trailing blank lines
+            while lines and lines[-1].strip() == '':
+                lines.pop()
+            return len(lines)
     except:
         return -1
 

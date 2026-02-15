@@ -1,0 +1,77 @@
+% (User input window)
+% Time: 2026-02-16 02:18:37 (Asia/Singapore)
+%
+% This file provides the Green operator characterization of the Hellinger kernel and point-source energy/potential duality.
+
+\begin{proposition}[Green operator characterization of the Hellinger kernel: infinite-order ellipticity of \texorpdfstring{$\cosh^{2}(\pi\sqrt{-\partial^{2}})$}{cosh^2(pi sqrt(-d^2))}]\label{prop:xi-hellinger-green-operator-cosh2}
+Let the continuous convolution kernel be
+\(
+A(\Delta)=\frac{|\Delta|}{2\sinh(|\Delta|/2)}
+\)
+and use the Fourier multiplier from Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2}
+\[
+\widehat A(\xi)=\frac{\pi^2}{\cosh^2(\pi\xi)}.
+\]
+Define the infinite-order operator
+\[
+\mathcal L:=\frac{1}{\pi^2}\cosh^{2}\!\bigl(\pi\sqrt{-\partial_s^{2}}\bigr)
+\quad\Longleftrightarrow\quad
+\widehat{(\mathcal L f)}(\xi)=\frac{\cosh^{2}(\pi\xi)}{\pi^2}\,\widehat f(\xi).
+\]
+Then in the tempered distribution sense we have strictly
+\[
+\boxed{\;\mathcal L(A)=\delta_0\;},
+\]
+i.e., \(A\) is the Green kernel of \(\mathcal L^{-1}\).
+Moreover, \(\cosh^{2}(\pi\xi)\sim \tfrac14 e^{2\pi|\xi|}\) (\(|\xi|\to\infty\)) yields an exponential amplification law at high frequencies, which is the analytic source for the exponential explosion of the invertibility budget in subsequent analysis.
+\end{proposition}
+\begin{proof}
+By the Fourier multiplier definition,
+\[
+\widehat{(\mathcal L A)}(\xi)
+=\frac{\cosh^{2}(\pi\xi)}{\pi^2}\,\widehat A(\xi)
+=\frac{\cosh^{2}(\pi\xi)}{\pi^2}\cdot\frac{\pi^2}{\cosh^{2}(\pi\xi)}
+=1.
+\]
+Since \(\widehat{\delta_0}\equiv 1\), we have \(\mathcal L(A)=\delta_0\) in \(\mathcal S'(\RR)\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Charge-potential duality: \texorpdfstring{$G$}{G} and \texorpdfstring{$G^{-1}$}{G^{-1}} are energy and Dirichlet-to-Neumann matrices respectively]\label{prop:xi-hellinger-charge-potential-duality-dtn}
+Let \(\{s_j\}_{j=1}^\kappa\subset\RR\) be distinct depth points, and let \(G\in\RR^{\kappa\times\kappa}\) be the Hellinger-Gram matrix
+\[
+G_{ij}=A(s_i-s_j).
+\]
+For any charge distribution \(c\in\RR^\kappa\), define the potential function
+\[
+u_c(s):=\sum_{j=1}^{\kappa}c_j\,A(s-s_j).
+\]
+Then under the Green structure of Proposition \ref{prop:xi-hellinger-green-operator-cosh2},
+\[
+\mathcal L u_c=\sum_{j=1}^{\kappa}c_j\,\delta_{s_j}
+\]
+(in the distributional sense), and the energy strictly satisfies
+\[
+\boxed{\;
+\langle u_c,\mathcal L u_c\rangle
+=\sum_{i=1}^{\kappa}c_i\,u_c(s_i)
+=c^{\mathsf T}G\,c\;}
+\]
+where \(\langle\cdot,\cdot\rangle\) is the natural pairing of \(\mathcal S'(\RR)\times\mathcal S(\RR)\).
+Conversely, if nodal potentials \(v\in\RR^\kappa\) (\(v_i=u(s_i)\)) are given, then the unique charge distribution is \(c=G^{-1}v\), and the corresponding energy is
+\[
+\boxed{\;v^{\mathsf T}G^{-1}v\;}
+\]
+thus \(G\) and \(G^{-1}\) characterize the point-source energy and the point-set Dirichlet-to-Neumann map respectively.
+\end{proposition}
+\begin{proof}
+By the translation invariance of Proposition \ref{prop:xi-hellinger-green-operator-cosh2}, \(\mathcal L(A(\cdot-s_j))=\delta_{s_j}\); linear superposition yields \(\mathcal L u_c=\sum_j c_j\delta_{s_j}\).
+Hence
+\[
+\langle u_c,\mathcal L u_c\rangle
+=\sum_{i=1}^{\kappa}c_i\,u_c(s_i)
+=\sum_{i,j=1}^{\kappa}c_i c_j\,A(s_i-s_j)
+=c^{\mathsf T}G\,c.
+\]
+If \(v_i=u(s_i)\), then \(v=Gc\); since \(G\succ0\) (all points distinct and kernel strictly positive definite), the solution is unique with \(c=G^{-1}v\).
+Substituting into the energy equation yields \(c^{\mathsf T}G c=v^{\mathsf T}G^{-1}v\). This completes the proof.
+\end{proof}

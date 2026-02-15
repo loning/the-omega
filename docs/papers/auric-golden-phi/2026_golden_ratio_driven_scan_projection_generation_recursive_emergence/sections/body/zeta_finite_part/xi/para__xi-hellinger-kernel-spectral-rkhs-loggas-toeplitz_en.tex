@@ -100,6 +100,313 @@ Taking \(f=k_x\) gives \(\langle k_x,k_y\rangle_{\mathcal H_A}=A(x-y)\).
 The last identity is the geometric interpretation of the Gram determinant in Hilbert space: \(\det(\langle v_j,v_k\rangle)=\mathrm{Vol}^{2}(\mathrm{span}\{v_j\})\). The proof is complete.
 \end{proof}
 
+\begin{proposition}[Green operator characterization of Hellinger kernel: infinite-order ellipticity of \texorpdfstring{$\cosh^{2}(\pi\sqrt{-\partial^{2}})$}{cosh^2(pi sqrt(-d^2))}]\label{prop:xi-hellinger-green-operator-cosh2}
+Let the continuous convolution kernel
+\(
+A(\Delta)=\frac{|\Delta|}{2\sinh(|\Delta|/2)}
+\)
+and use the Fourier multiplier from Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2}
+\[
+\widehat A(\xi)=\frac{\pi^2}{\cosh^2(\pi\xi)}.
+\]
+Define the infinite-order operator
+\[
+\mathcal L:=\frac{1}{\pi^2}\cosh^{2}\!\bigl(\pi\sqrt{-\partial_s^{2}}\bigr)
+\quad\Longleftrightarrow\quad
+\widehat{(\mathcal L f)}(\xi)=\frac{\cosh^{2}(\pi\xi)}{\pi^2}\,\widehat f(\xi).
+\]
+Then in the tempered distribution sense we have strictly
+\[
+\boxed{\;\mathcal L(A)=\delta_0\;},
+\]
+that is, \(A\) is the Green kernel of \(\mathcal L^{-1}\).
+Moreover \(\cosh^{2}(\pi\xi)\sim \tfrac14 e^{2\pi|\xi|}\) (as \(|\xi|\to\infty\)) gives the high-frequency exponential amplification law, which is the analytic source of the exponential explosion in the subsequent invertibility budget.
+\end{proposition}
+\begin{proof}
+By the Fourier multiplier definition,
+\[
+\widehat{(\mathcal L A)}(\xi)
+=\frac{\cosh^{2}(\pi\xi)}{\pi^2}\,\widehat A(\xi)
+=\frac{\cosh^{2}(\pi\xi)}{\pi^2}\cdot\frac{\pi^2}{\cosh^{2}(\pi\xi)}
+=1.
+\]
+Since \(\widehat{\delta_0}\equiv 1\), we have \(\mathcal L(A)=\delta_0\) (in \(\mathcal S'(\RR)\)). The proof is complete.
+\end{proof}
+
+\begin{proposition}[Charge-potential duality: \texorpdfstring{$G$}{G} and \texorpdfstring{$G^{-1}$}{G^{-1}} are respectively the energy and Dirichlet-to-Neumann matrices]\label{prop:xi-hellinger-charge-potential-duality-dtn}
+Take distinct depth points \(\{s_j\}_{j=1}^\kappa\subset\RR\), and let \(G\in\RR^{\kappa\times\kappa}\) be the Hellinger--Gram matrix
+\[
+G_{ij}=A(s_i-s_j).
+\]
+For any charge \(c\in\RR^\kappa\), define the potential function
+\[
+u_c(s):=\sum_{j=1}^{\kappa}c_j\,A(s-s_j).
+\]
+Then under the Green structure of Proposition \ref{prop:xi-hellinger-green-operator-cosh2},
+\[
+\mathcal L u_c=\sum_{j=1}^{\kappa}c_j\,\delta_{s_j}
+\]
+(in the distributional sense), and the energy strictly satisfies
+\[
+\boxed{\;
+\langle u_c,\mathcal L u_c\rangle
+=\sum_{i=1}^{\kappa}c_i\,u_c(s_i)
+=c^{\mathsf T}G\,c\;}
+\]
+where \(\langle\cdot,\cdot\rangle\) is the natural pairing of \(\mathcal S'(\RR)\times\mathcal S(\RR)\).
+Conversely, if given node potentials \(v\in\RR^\kappa\) (\(v_i=u(s_i)\)), then the unique charge is \(c=G^{-1}v\), with corresponding energy
+\[
+\boxed{\;v^{\mathsf T}G^{-1}v\;}
+\]
+so that \(G\) and \(G^{-1}\) respectively characterize the "point-source energy" and "point-set Dirichlet-to-Neumann" mappings.
+\end{proposition}
+\begin{proof}
+By the translation invariance of Proposition \ref{prop:xi-hellinger-green-operator-cosh2}, \(\mathcal L(A(\cdot-s_j))=\delta_{s_j}\), linear superposition gives \(\mathcal L u_c=\sum_j c_j\delta_{s_j}\).
+Hence
+\[
+\langle u_c,\mathcal L u_c\rangle
+=\sum_{i=1}^{\kappa}c_i\,u_c(s_i)
+=\sum_{i,j=1}^{\kappa}c_i c_j\,A(s_i-s_j)
+=c^{\mathsf T}G\,c.
+\]
+If \(v_i=u(s_i)\), then \(v=Gc\); since \(G\succ0\) (the point set is distinct and the kernel is strictly positive definite), the solution is unique and \(c=G^{-1}v\).
+Substituting back into the energy equation yields \(c^{\mathsf T}G c=v^{\mathsf T}G^{-1}v\). The proof is complete.
+\end{proof}
+
+\begin{proposition}[Volume monotonicity law for linear observations: Gram-det entropy increases strictly under contraction operators]\label{prop:xi-gram-det-entropy-monotone-under-contraction}
+Let \(H\) be a complex Hilbert space, \(\psi_1,\dots,\psi_\kappa\in H\) linearly independent, and denote the Gram matrix
+\[
+G=(\langle\psi_i,\psi_j\rangle)_{1\le i,j\le\kappa}\succ0,
+\qquad
+S:=-\log\det G.
+\]
+For any bounded linear operator \(T:H\to H\) satisfying \(T^\ast T\preceq I\), let
+\[
+G_T:=(\langle T\psi_i,T\psi_j\rangle)_{1\le i,j\le\kappa}.
+\]
+Then we have
+\[
+\boxed{\;
+0\prec G_T\preceq G,\qquad
+\det G_T\le \det G,\qquad
+S_T:=-\log\det G_T\ge S.\;}
+\]
+Equality holds if and only if \(T\) is an isometry on the subspace \(\mathrm{span}\{\psi_1,\dots,\psi_\kappa\}\) (equivalently, \(T^\ast T=I\) restricted to that subspace).
+Therefore any linear contraction observation such as bandwidth truncation, noise smoothing, or subspace projection is uniformly subject to a strict volume irreversibility law.
+\end{proposition}
+\begin{proof}
+For any \(c=(c_1,\dots,c_\kappa)\in\CC^\kappa\), set \(v=\sum_{j=1}^\kappa c_j\psi_j\).
+Then
+\[
+c^\ast G_T c=\|Tv\|^2\le \|v\|^2=c^\ast G c,
+\]
+hence \(G_T\preceq G\), and since \(\{\psi_j\}\) are linearly independent, \(G_T\succ0\).
+By eigenvalue monotonicity under Loewner order (hence determinant monotonicity), \(\det G_T\le \det G\), thus \(S_T\ge S\).
+If \(\det G_T=\det G\), then \(G_T\preceq G\) with equal determinants forces \(G_T=G\), hence \(\|Tv\|=\|v\|\) for all \(v\in\mathrm{span}\{\psi_j\}\), i.e., \(T\) is an isometry on that subspace. The proof is complete.
+\end{proof}
+
+\begin{proposition}[Coherence energy lower bound: volume entropy forced by square coherence]\label{prop:xi-gram-entropy-lower-bound-by-coherence}
+Continue the notation of Proposition \ref{prop:xi-gram-det-entropy-monotone-under-contraction}, and further assume \(\|\psi_j\|=1\) (\(1\le j\le\kappa\)).
+Then \(G=I+E\) with \(E\) Hermitian, \(\mathrm{diag}(E)=0\).
+We have the strict lower bound
+\[
+\boxed{\;
+S=-\log\det(I+E)\ \ge\ \frac{\|E\|_{\mathrm F}^{2}}{2\,(1+\|E\|_{2})}\;}
+\]
+where \(\|E\|_{\mathrm F}^{2}=\sum_{i\neq j}|\langle\psi_i,\psi_j\rangle|^2\), \(\|E\|_2\) is the spectral norm.
+In particular, when \(\|E\|_2=o(1)\),
+\[
+S=\frac12\sum_{i\neq j}|\langle\psi_i,\psi_j\rangle|^2+o\!\Bigl(\sum_{i\neq j}|\langle\psi_i,\psi_j\rangle|^2\Bigr),
+\]
+so that volume entropy in the "weak coherence phase" is completely dominated by two-body square coherence.
+\end{proposition}
+\begin{proof}[Proof outline]
+Let \(\{\lambda_r\}_{r=1}^\kappa\) be the real eigenvalues of \(E\), then \(\lambda_r>-1\) (since \(I+E\succ0\)), and \(\sum_r\lambda_r=\mathrm{tr}(E)=0\).
+Thus
+\[
+S=-\sum_{r=1}^\kappa\log(1+\lambda_r)=\sum_{r=1}^\kappa\bigl(\lambda_r-\log(1+\lambda_r)\bigr).
+\]
+For any \(x>-1\) we have the scalar inequality
+\[
+x-\log(1+x)\ge \frac{x^2}{2(1+|x|)}\ge \frac{x^2}{2(1+\|E\|_2)}.
+\]
+Summing and using \(\sum_r\lambda_r^2=\|E\|_{\mathrm F}^2\) yields the stated lower bound.
+The weak coherence expansion follows from the matrix logarithm series
+\(
+\log\det(I+E)=\mathrm{tr}(E)-\frac12\mathrm{tr}(E^2)+O(\|E\|_2\|E\|_{\mathrm F}^2)
+\)
+and \(\mathrm{tr}(E)=0\). The proof is complete.
+\end{proof}
+
+\begin{proposition}[Nearest-neighbor product upper bound: volume entropy strictly closed by adjacent two-body degeneracy]\label{prop:xi-gram-det-nearest-neighbor-product-upper-bound}
+Let \(\psi_1,\dots,\psi_\kappa\in H\) satisfy \(\|\psi_j\|=1\), with Gram matrix \(G=(\langle\psi_i,\psi_j\rangle)\).
+Then we have the strict inequality
+\[
+\boxed{\;
+\det G\ \le\ \prod_{j=1}^{\kappa-1}\bigl(1-|\langle\psi_{j+1},\psi_j\rangle|^2\bigr)\;}
+\qquad
+\Longrightarrow\qquad
+S=-\log\det G\ \ge\ \sum_{j=1}^{\kappa-1}-\log\bigl(1-|\langle\psi_{j+1},\psi_j\rangle|^2\bigr).
+\]
+In the present Hellinger--RKHS setting, take \(\psi_j=k_{s_j}\) with \(s_1<\cdots<s_\kappa\), then \(|\langle\psi_{j+1},\psi_j\rangle|=A(\Delta_j)\) (\(\Delta_j=s_{j+1}-s_j\)), so that the volume entropy potential is strictly closed by a one-dimensional nearest-neighbor ledger on adjacent gaps; any gap collapse (\(A(\Delta_j)\uparrow 1\)) forces the right-hand logarithm to diverge, giving the minimal auditable certificate of clustering pathology.
+\end{proposition}
+\begin{proof}
+Apply Gram--Schmidt orthogonalization to \(\{\psi_j\}\) sequentially: let
+\(
+v_1:=\psi_1
+\), and for \(j\ge 2\),
+\(
+v_j:=\psi_j-\mathrm{Proj}_{\mathrm{span}\{\psi_1,\dots,\psi_{j-1}\}}\psi_j
+\).
+Then the volume interpretation of the Gram determinant gives
+\[
+\det G=\prod_{j=1}^{\kappa}\|v_j\|^2.
+\]
+And for \(j\ge 2\),
+\[
+\|v_j\|^2=1-\bigl\|\mathrm{Proj}_{\mathrm{span}\{\psi_1,\dots,\psi_{j-1}\}}\psi_j\bigr\|^2
+\le 1-|\langle\psi_j,\psi_{j-1}\rangle|^2,
+\]
+because the norm of the projection onto \(\mathrm{span}\{\psi_1,\dots,\psi_{j-1}\}\) is at least as large as the component along the unit vector \(\psi_{j-1}\).
+Multiplying yields the stated inequality; taking negative logarithm gives the entropy lower bound. The proof is complete.
+\end{proof}
+
+\begin{proposition}[Exact first variation of depth volume entropy potential and equilibrium equation]\label{prop:xi-hellinger-gram-first-variation-equilibrium}
+Let the depth logarithmic spectrum \(\mathbf s=(s_1,\dots,s_\kappa)\) be distinct, and let the Hellinger--Gram matrix
+\[
+G(\mathbf s)_{jk}=A(s_j-s_k)\qquad(1\le j,k\le \kappa),
+\]
+where the kernel \(A\) is as in Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2}.
+Define the depth volume entropy potential
+\[
+S_{1/2}(\mathbf s):=-\log\det G(\mathbf s).
+\]
+Then for each \(1\le j\le \kappa\) we have the strict gradient formula
+\[
+\boxed{\;
+\partial_{s_j}S_{1/2}(\mathbf s)
+=-2\sum_{k=1}^{\kappa}\bigl(G(\mathbf s)^{-1}\bigr)_{jk}\,A'(s_j-s_k)\;}
+\]
+where \(A'(0):=0\), and for \(\Delta\neq 0\),
+\[
+\boxed{\;
+A'(\Delta)
+=A(\Delta)\Bigl(\frac{1}{\Delta}-\frac12\coth(\Delta/2)\Bigr)\; }.
+\]
+Since \(S_{1/2}\) is invariant under global translation \(\mathbf s\mapsto \mathbf s+c\mathbf 1\), any stationary point after fixing the translation degree of freedom must satisfy the equilibrium equation
+\[
+\sum_{k=1}^{\kappa}\bigl(G(\mathbf s)^{-1}\bigr)_{jk}\,A'(s_j-s_k)=0,\qquad j=1,\dots,\kappa.
+\]
+Moreover the force kernel \(\frac{1}{\Delta}-\frac12\coth(\Delta/2)\) satisfies at both ends \(|\Delta|\to\infty\) and \(\Delta\to 0\)
+\[
+\frac{1}{\Delta}-\frac12\coth(\Delta/2)= -\frac12\,\mathrm{sgn}(\Delta)+O(|\Delta|^{-1}),
+\qquad
+\frac{1}{\Delta}-\frac12\coth(\Delta/2)=-\frac{\Delta}{12}+O(\Delta^3).
+\]
+\end{proposition}
+\begin{proof}
+By the matrix differentiation identity \(\partial\log\det G=\mathrm{tr}(G^{-1}\partial G)\), we have
+\[
+\partial_{s_j}\log\det G(\mathbf s)=\mathrm{tr}\bigl(G(\mathbf s)^{-1}\,\partial_{s_j}G(\mathbf s)\bigr).
+\]
+Note that \(\partial_{s_j}G_{ab}=\delta_{aj}A'(s_j-s_b)-\delta_{bj}A'(s_a-s_j)\), and \(A'\) is an odd function.
+Thus
+\[
+\partial_{s_j}\log\det G(\mathbf s)
+=\sum_{k=1}^{\kappa}\bigl(G^{-1}\bigr)_{jk}A'(s_j-s_k)
++\sum_{k=1}^{\kappa}\bigl(G^{-1}\bigr)_{kj}A'(s_j-s_k)
+=2\sum_{k=1}^{\kappa}\bigl(G^{-1}\bigr)_{jk}A'(s_j-s_k),
+\]
+thus yielding the stated formula for \(\partial_{s_j}S_{1/2}=-\partial_{s_j}\log\det G\).
+For \(\Delta\neq 0\), directly differentiate \(A(\Delta)=\Delta/(2\sinh(\Delta/2))\) and simplify to get
+\(
+A'(\Delta)=A(\Delta)\bigl(\Delta^{-1}-\tfrac12\coth(\Delta/2)\bigr)
+\); by odd symmetry set \(A'(0)=0\).
+The equilibrium equation comes from the stationarity condition and translation invariance (equivalent to taking the stationary point under the constraint \(\sum_j s_j=0\) or fixing any base point).
+The two-end expansions follow from \(\coth x=1+O(e^{-2x})\) (as \(x\to\infty\)) and
+\(\coth x=x^{-1}+x/3+O(x^3)\) (as \(x\to 0\)) by substitution. The proof is complete.
+\end{proof}
+
+\begin{remark}[Area law and logarithmic correction of two-body potential: long-range reproduction of \texorpdfstring{$1/4$}{1/4}]\label{rem:xi-hellinger-two-body-potential-area-log}
+Let the two-body potential \(V(\Delta):=-\log A(\Delta)\) (\(\Delta\ge 0\)).
+Then for \(\Delta>0\) we have the strict identity
+\[
+\boxed{\;
+V(\Delta)=\frac{\Delta}{2}-\log\Delta+\log\bigl(1-e^{-\Delta}\bigr)\;}
+\]
+and therefore
+\[
+V(\Delta)=\frac{\Delta}{2}-\log\Delta+O(e^{-\Delta})\qquad(\Delta\to\infty).
+\]
+If we use the physical distance variable \(d:=2\Delta\), then
+\[
+V(d/2)=\frac{d}{4}-\log d+\log 2+O(e^{-d/2})\qquad(d\to\infty),
+\]
+where the linear term coefficient \(1/4\) appears in strict form in the long-range potential of this kernel, while the logarithmic term provides an irreducible secondary correction.
+\end{remark}
+
+\begin{proposition}[Strict convexity of depth energy functional: conditional negative definiteness of \texorpdfstring{$-\log A$}{-log A}]\label{prop:xi-hellinger-energy-functional-strict-convexity}
+Define the continuous energy functional
+\[
+\mathcal E(\nu):=\frac12\iint_{\RR\times\RR} -\log A(x-y)\,\dd\nu(x)\dd\nu(y),
+\]
+where \(\nu\) is a probability measure with finite energy.
+Then the kernel \(\psi(\Delta):=-\log A(\Delta)\) is a (strictly) conditionally negative definite function: for any real coefficients \(c_1,\dots,c_m\) satisfying \(\sum_i c_i=0\) and any points \(x_1,\dots,x_m\in\RR\) we have
+\[
+\sum_{i,j=1}^{m}c_ic_j\,\psi(x_i-x_j)\le 0,
+\]
+and therefore \(\mathcal E\) is a (strictly) convex functional on the convex set of probability measures.
+Under any affine constraint that eliminates the global translation degree of freedom (e.g., fixing the mean), the minimizing measure of \(\mathcal E\) is unique.
+\end{proposition}
+\begin{proof}[Proof outline]
+By the Weierstrass product
+\(
+2\sinh(\Delta/2)=\Delta\prod_{n\ge 1}\bigl(1+\Delta^2/(4\pi^2n^2)\bigr)
+\)
+we obtain
+\[
+A(\Delta)=\prod_{n\ge 1}\Bigl(1+\frac{\Delta^2}{4\pi^2n^2}\Bigr)^{-1}.
+\]
+Each factor \((1+b^2\Delta^2)^{-1}\) is the characteristic function of a centered Laplace distribution, hence \(A\) is the characteristic function of a sum of independent Laplace variables, thus infinitely divisible; by L\'evy--Khintchine theory, \(\psi=-\log A\) is a continuous negative definite function (equivalent to the stated conditional negative definite inequality).
+For \(\nu_t=(1-t)\nu_0+t\nu_1\), expanding \(\mathcal E(\nu_t)\) gives
+\(
+\mathcal E(\nu_t)=(1-t)\mathcal E(\nu_0)+t\mathcal E(\nu_1)-\frac{t(1-t)}{2}\iint \psi\,\dd(\nu_1-\nu_0)\dd(\nu_1-\nu_0)
+\);
+conditional negative definiteness makes the last term non-negative, thus yielding convexity. Strictness and uniqueness under constraints follow from the equality case forcing \(\nu_0=\nu_1\) (or differing only by a global translation). The proof is complete.
+\end{proof}
+
+\begin{theorem}[Strict total positivity of depth Hellinger--Gram and spectral oscillation law]\label{thm:xi-hellinger-gram-strict-total-positivity}
+For strictly increasing depths \(s_1<\cdots<s_\kappa\), the matrix \(G(\mathbf s)=(A(s_j-s_k))_{1\le j,k\le\kappa}\) is strictly totally positive.
+Therefore:
+\begin{itemize}
+\item All eigenvalues are simple;
+\item The eigenvector corresponding to the \(r\)-th largest eigenvalue has exactly \(r-1\) strict sign changes in index order;
+\item Any nonzero vector, after being acted upon by \(G(\mathbf s)\), has its sign variation count strictly non-increasing (variation diminishing).
+\end{itemize}
+\end{theorem}
+\begin{proof}[Proof outline]
+By Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2}, the normalized characteristic function satisfies
+\[
+\frac{\widehat A(\xi)}{\widehat A(0)}=\mathrm{sech}^{2}(\pi\xi)
+=\prod_{n\ge 1}\Bigl(1+\frac{\xi^{2}}{(n-\tfrac12)^{2}}\Bigr)^{-2},
+\]
+where we use the Weierstrass product \(\cosh(\pi z)=\prod_{n\ge 1}(1+z^{2}/(n-\tfrac12)^{2})\).
+Therefore \(A/\widehat A(0)\) is a PF\(_\infty\) (P\'olya frequency) density; by Schoenberg's theorem that PF\(_\infty\)\(\Rightarrow\)strictly totally positive shift kernel, we know that the kernel \((x,y)\mapsto A(x-y)\) is strictly totally positive.
+Setting \((x_i)=(y_i)=(s_i)\) yields the strict total positivity of \(G(\mathbf s)\).
+Spectral simplicity, eigenvector oscillation law, and variation diminishing property are direct consequences of the fundamental theorem for totally positive matrices (Gantmacher--Kre\u{\i}n variation diminishing/oscillation theorem). The proof is complete.
+\end{proof}
+
+\begin{corollary}[Checkerboard sign law for inverse matrix: algebraic certificate of alternating coupling]\label{cor:xi-hellinger-gram-inverse-checkerboard}
+Under the conditions of Theorem \ref{thm:xi-hellinger-gram-strict-total-positivity}, \(G(\mathbf s)^{-1}\) has strict checkerboard sign:
+\[
+\boxed{\;
+(-1)^{i+j}\bigl(G(\mathbf s)^{-1}\bigr)_{ij}>0\qquad(1\le i,j\le \kappa).\;}
+\]
+\end{corollary}
+\begin{proof}
+This is the sign-regularity result for inverses of totally positive matrices: the inverse of a nonsingular totally positive matrix is a strictly checkerboard sign matrix. The proof is complete.
+\end{proof}
+
 \begin{proposition}[Andreief representation and frequency-domain log-gas: \texorpdfstring{$S_{1/2}$}{S_{1/2}} as external potential free energy]\label{prop:xi-hellinger-kernel-andreief-loggas}
 Under the setting of Proposition \ref{prop:xi-hellinger-kernel-rkhs-volume}, we have the strict integral representation
 \[
@@ -135,6 +442,129 @@ By the Andreief identity (i.e., the integralization of the Gram determinant) we 
 which yields the stated form. The free energy formulation is obtained by taking the negative logarithm. The proof is complete.
 \end{proof}
 
+\begin{theorem}[Hankel closure of collision constant: confluent Vandermonde factorization of \texorpdfstring{$\det G$}{det G} under cluster scaling]\label{thm:xi-hellinger-gram-collision-hankel-constant}
+Continue the notation of Proposition \ref{prop:xi-hellinger-kernel-andreief-loggas}, and take any \(\kappa\ge 1\).
+Given distinct \(t_1,\dots,t_\kappa\in\RR\) and any \(s_0\in\RR\), consider the cluster scaling
+\[
+\sigma_j=s_0+\varepsilon t_j\qquad(1\le j\le \kappa),\qquad \varepsilon\downarrow 0,
+\]
+and let \(G(\boldsymbol{\sigma})=(A(\sigma_j-\sigma_k))_{1\le j,k\le\kappa}\).
+Then there exists a strict asymptotic
+\[
+\boxed{\;
+\det G(\boldsymbol{\sigma})
+=\varepsilon^{\kappa(\kappa-1)}
+\Bigl(\prod_{j=0}^{\kappa-1}\frac{1}{(j!)^{2}}\Bigr)\,
+\mathfrak H_\kappa\,
+\prod_{1\le j<k\le\kappa}(t_k-t_j)^{2}\,\bigl(1+o(1)\bigr)\;}
+\]
+where the universal constant \(\mathfrak H_\kappa\) is the normalized Hankel determinant of the weight function \(w(\xi)=\pi^{2}\mathrm{sech}^{2}(\pi\xi)\):
+\[
+\mathfrak H_\kappa:=\det(\mu_{p+q})_{p,q=0}^{\kappa-1},\qquad
+\mu_n:=\frac{1}{2\pi}\int_{\RR}\xi^{n}w(\xi)\,\dd\xi.
+\]
+Therefore beyond the Vandermonde power-law divergence at collision, there remains an irreducible volume constant \(\mathfrak H_\kappa\) depending only on \(\kappa\).
+\end{theorem}
+\begin{proof}
+By the Andreief representation of Proposition \ref{prop:xi-hellinger-kernel-andreief-loggas} and translation invariance, \(\det G(\boldsymbol{\sigma})\) depends only on the differences \(\sigma_j-\sigma_k=\varepsilon(t_j-t_k)\), and
+\[
+\det G(\boldsymbol{\sigma})
+=\frac{1}{\kappa!(2\pi)^{\kappa}}
+\int_{\RR^\kappa}\Bigl(\prod_{r=1}^{\kappa}w(\xi_r)\Bigr)\,
+\bigl|\det(e^{-\mathrm{i}\varepsilon\xi_r t_j})_{1\le r,j\le\kappa}\bigr|^{2}\,\dd\xi_1\cdots\dd\xi_\kappa.
+\]
+As \(\varepsilon\downarrow 0\), the classical confluent Vandermonde asymptotic gives
+\[
+\det(e^{-\mathrm{i}\varepsilon\xi_r t_j})_{r,j}
+=\varepsilon^{\kappa(\kappa-1)/2}\Bigl(\prod_{j=0}^{\kappa-1}\frac{1}{j!}\Bigr)
+\Delta(\boldsymbol{\xi})\,\Delta(\mathbf t)\,\bigl(1+o(1)\bigr),
+\]
+where \(\Delta(\boldsymbol{\xi})=\prod_{1\le r<\ell\le\kappa}(\xi_\ell-\xi_r)\), \(\Delta(\mathbf t)=\prod_{1\le j<k\le\kappa}(t_k-t_j)\).
+Taking the modulus square and substituting back yields
+\[
+\det G(\boldsymbol{\sigma})
+=\varepsilon^{\kappa(\kappa-1)}\Bigl(\prod_{j=0}^{\kappa-1}\frac{1}{(j!)^{2}}\Bigr)\,
+\Delta(\mathbf t)^{2}\cdot
+\frac{1}{\kappa!}\int_{\RR^\kappa}\Delta(\boldsymbol{\xi})^{2}\,\dd\mu(\xi_1)\cdots\dd\mu(\xi_\kappa)\,\bigl(1+o(1)\bigr),
+\]
+where \(\dd\mu(\xi)=w(\xi)\dd\xi/(2\pi)\).
+Finally, by the Andreief identity (matrix integral of squared Vandermonde) we have
+\[
+\frac{1}{\kappa!}\int_{\RR^\kappa}\Delta(\boldsymbol{\xi})^{2}\,\dd\mu(\xi_1)\cdots\dd\mu(\xi_\kappa)
+=\det(\mu_{p+q})_{p,q=0}^{\kappa-1}=\mathfrak H_\kappa,
+\]
+thus yielding the stated asymptotic. The proof is complete.
+\end{proof}
+
+\begin{corollary}[Minimal singular exponent of cluster phase: regime power-law explosion of condition number]\label{cor:xi-hellinger-gram-cluster-conditioning-exponent}
+Under the cluster scaling of Theorem \ref{thm:xi-hellinger-gram-collision-hankel-constant},
+there exists a constant \(c(\mathbf t)>0\) such that
+\[
+\det G(\boldsymbol{\sigma})=c(\mathbf t)\,\varepsilon^{\kappa(\kappa-1)}\bigl(1+o(1)\bigr).
+\]
+Moreover, since \(\mathrm{tr}(G)=\kappa\), the largest eigenvalue satisfies \(\lambda_{\max}(G)\le \kappa\).
+Therefore the smallest eigenvalue has a hard upper bound
+\[
+\lambda_{\min}(G)\le \frac{\det G}{\lambda_{\max}(G)^{\kappa-1}}
+\le \kappa^{1-\kappa}\,c(\mathbf t)\,\varepsilon^{\kappa(\kappa-1)}\bigl(1+o(1)\bigr),
+\]
+so that the spectral condition number satisfies
+\[
+\boxed{\;
+\mathrm{cond}_2(G)=\frac{\lambda_{\max}(G)}{\lambda_{\min}(G)}
+\ \ge\ C(\mathbf t)\,\varepsilon^{-\kappa(\kappa-1)}\bigl(1+o(1)\bigr)\;}
+\qquad(\varepsilon\downarrow 0),
+\]
+where \(C(\mathbf t)>0\) is a constant.
+Therefore the numerical ill-posedness of the cluster phase is strictly locked by the exponent \(\kappa(\kappa-1)\).
+\end{corollary}
+\begin{proof}
+The determinant and spectral product give
+\(
+\det G=\lambda_{\min}\prod_{r\neq\min}\lambda_r\ge \lambda_{\min}\lambda_{\max}^{\kappa-1}
+\),
+hence \(\lambda_{\min}\le \det G/\lambda_{\max}^{\kappa-1}\).
+Also \(\lambda_{\max}\le \mathrm{tr}(G)=\kappa\), and substituting the asymptotic of Theorem \ref{thm:xi-hellinger-gram-collision-hankel-constant} yields the stated condition number lower bound. The proof is complete.
+\end{proof}
+
+\begin{proposition}[Arithmeticity of universal Hankel constant: \texorpdfstring{$\mathfrak H_\kappa\in\QQ$}{H_k in Q} and explicit closure by even \texorpdfstring{$\zeta$}{zeta} values]\label{prop:xi-hellinger-hankel-constant-rationality}
+Continue the notation of Theorem \ref{thm:xi-hellinger-gram-collision-hankel-constant}.
+Then the moments \(\mu_n\) satisfy \(\mu_{2n+1}=0\), and for any \(n\ge 0\) we have the strict closed form
+\[
+\boxed{\;
+\mu_{2n}
+=2^{1-2n}\pi^{-2n}(2n)!\,\bigl(1-2^{1-2n}\bigr)\zeta(2n)\in\QQ\; }.
+\]
+Thus for any \(\kappa\ge 1\), \(\mathfrak H_\kappa=\det(\mu_{p+q})_{p,q=0}^{\kappa-1}\in\QQ\).
+For example
+\[
+\boxed{\;
+\mathfrak H_1=1,\quad
+\mathfrak H_2=\frac{1}{12},\quad
+\mathfrak H_3=\frac{1}{540},\quad
+\mathfrak H_4=\frac{1}{42000},\quad
+\mathfrak H_5=\frac{1}{3215625}.\;}
+\]
+\end{proposition}
+\begin{proof}[Proof outline]
+Odd moments vanish from the even symmetry of \(w(\xi)\).
+For even moments, by partial fraction/residue expansion of \(\mathrm{sech}^2\) (equivalently, from the lattice pole structure of \(\tanh\)), we can express
+\(\int_{\RR}\xi^{2n}\mathrm{sech}^{2}(\pi\xi)\dd\xi\)
+as a difference of Hurwitz \(\zeta\) values, thus yielding the stated \(\zeta(2n)\) closed form; then by
+\(\zeta(2n)\in \pi^{2n}\QQ\)
+we deduce \(\mu_{2n}\in\QQ\).
+By the polynomial nature of the Hankel determinant in the moments, we get \(\mathfrak H_\kappa\in\QQ\).
+The listed numerical values follow directly from this closed form. The proof is complete.
+\end{proof}
+
+\begin{remark}[Arithmetic bandwidth law: \texorpdfstring{$p$}{p}-adic rigidity of \texorpdfstring{$\mathfrak H_\kappa$}{H_k} supported only on \texorpdfstring{$p\le 2\kappa-1$}{p<=2k-1}]\label{rem:xi-hellinger-hankel-padic-bandwidth}
+Let \(\nu_p(\cdot)\) be the \(p\)-adic valuation.
+From the Bernoulli--von Staudt--Clausen denominator structure of \(\mu_{2n}\) in Proposition \ref{prop:xi-hellinger-hankel-constant-rationality}, we know:
+for any prime \(p>2\kappa-1\), we have \(\nu_p(\mu_0),\dots,\nu_p(\mu_{2\kappa-2})\ge 0\).
+Therefore \(\nu_p(\mathfrak H_\kappa)=0\) (\(p>2\kappa-1\)).
+In other words, all the \(p\)-adic "pathology/rigidity" of \(\mathfrak H_\kappa\) can only be contributed by the finite prime set \(\{p:\ p\le 2\kappa-1\}\).
+\end{remark}
+
 \begin{proposition}[Toeplitzification for equidistant depth: \texorpdfstring{$\cosh^{-2}$}{cosh^{-2}} Poisson periodic sum symbol]\label{prop:xi-hellinger-toeplitz-symbol-poisson}
 If \(\sigma_j=\sigma_0+(j-1)\Delta\) (\(\Delta>0\)), then \(G(\boldsymbol{\sigma})\) is a Toeplitz matrix
 \(
@@ -148,6 +578,17 @@ Its Toeplitz symbol \(\sigma_\Delta:[-\pi,\pi]\to(0,\infty)\) can be written as
 =\frac{1}{\Delta}\sum_{k\in\ZZ}\frac{\pi^{2}}{\cosh^{2}\!\Bigl(\pi\frac{\theta+2\pi k}{\Delta}\Bigr)}\;}
 \qquad(\theta\in[-\pi,\pi]).
 \]
+Equivalently, let \(q:=e^{-\Delta/2}\) and take the Jacobi \(\vartheta_4\) function (nome \(q\))
+\[
+\vartheta_4(z,q):=\sum_{m\in\ZZ}(-1)^m q^{m^2}e^{2\mathrm{i}mz},
+\]
+then for all \(\theta\in[-\pi,\pi]\) we have the strict identity
+\[
+\boxed{\;
+\sigma_\Delta(\theta)
+=1+\Delta\,\partial_\theta^{2}\log\vartheta_4\!\Bigl(\frac{\theta}{2},q\Bigr)
+=1+2\Delta\sum_{n\ge 1}\frac{nq^{n}}{1-q^{2n}}\cos(n\theta).\;}
+\]
 \end{proposition}
 \begin{proof}
 The Toeplitz property follows directly from \(G_{jk}=A(\sigma_j-\sigma_k)=A((j-k)\Delta)\).
@@ -156,7 +597,56 @@ The Poisson summation formula under the present Fourier convention gives
 \sum_{n\in\ZZ}A(n\Delta)e^{\mathrm{i}n\theta}
 =\Delta^{-1}\sum_{k\in\ZZ}\widehat A((\theta+2\pi k)/\Delta)
 \).
-Substituting \(\widehat A=w\) from Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2} yields the result. The proof is complete.
+Substituting \(\widehat A=w\) from Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2} yields the Poisson periodic sum representation.
+On the other hand, from
+\(
+A(n\Delta)=\frac{n\Delta}{2\sinh(n\Delta/2)}
+=n\Delta\,\frac{q^n}{1-q^{2n}}
+\)
+(\(n\ge 1\), \(q=e^{-\Delta/2}\)) we obtain the Fourier series representation
+\[
+\sigma_\Delta(\theta)=1+2\sum_{n\ge 1}A(n\Delta)\cos(n\theta)
+=1+2\Delta\sum_{n\ge 1}\frac{nq^{n}}{1-q^{2n}}\cos(n\theta).
+\]
+Then by the Jacobi product formula for \(\vartheta_4\) we deduce the standard identity
+\[
+\partial_z^{2}\log\vartheta_4(z,q)
+=8\sum_{n\ge 1}\frac{nq^{n}}{1-q^{2n}}\cos(2nz),
+\]
+taking \(z=\theta/2\) and using \(\partial_\theta^{2}=(1/4)\partial_z^{2}\) yields the derivative closed form. The proof is complete.
+\end{proof}
+
+\begin{remark}[Modular dual scale \texorpdfstring{$\Delta\leftrightarrow 2\pi^{2}/\Delta$}{Delta <-> 2pi^2/Delta}: forced equivalence of Poisson spike and Fourier decay]\label{rem:xi-hellinger-toeplitz-modular-duality-scale}
+In Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson} let \(\tau:=\mathrm{i}\Delta/(2\pi)\), then nome \(q=e^{\mathrm{i}\pi\tau}=e^{-\Delta/2}\).
+The Jacobi transformation \(\tau\mapsto -1/\tau\) induces the dual nome
+\[
+q_\star:=e^{\mathrm{i}\pi(-1/\tau)}=e^{-2\pi^{2}/\Delta}.
+\]
+Under this transformation, the Fourier series representation and the Poisson periodic sum representation of \(\sigma_\Delta\) are two equivalent manifestations of the same \(\theta\)-structure;
+the scale constant \(2\pi^{2}/\Delta\) is not an approximation technique, but is forced to appear by the modular duality of the \(\theta\)-function.
+\end{remark}
+
+\begin{proposition}[Inverse matrix localization in equidistant Toeplitz phase: exponential decay of inversion operator closed by bandwidth]\label{prop:xi-hellinger-toeplitz-inverse-localization}
+Under the equidistant setting of Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson}, let
+\(
+G_\kappa(\Delta)=(A((j-k)\Delta))_{1\le j,k\le \kappa}
+\)
+and denote its symbol by \(\sigma_\Delta\).
+Then \(\sigma_\Delta\) is analytic in the strip domain \(|\Im\theta|<\Delta/2\).
+Moreover for any \(0<\varepsilon<\Delta/2\), there exists a constant \(C_{\Delta,\varepsilon}>0\) such that for all \(\kappa\) and \(1\le j,k\le\kappa\) we have
+\[
+\boxed{\;
+\bigl|\bigl(G_\kappa(\Delta)^{-1}\bigr)_{jk}\bigr|
+\le C_{\Delta,\varepsilon}\,e^{-(\Delta/2-\varepsilon)|j-k|}\;}
+\]
+so that equidistant depth encoding has strict "local invertibility".
+The exponential threshold \(\Delta/2\) is closed by the nearest complex singularity distance of \(\sigma_\Delta\) (see the Fourier coefficient decay rate in Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson}).
+\end{proposition}
+\begin{proof}[Proof outline]
+From \(A(n\Delta)=O(n\Delta\,e^{-n\Delta/2})\) we get exponential decay of the Fourier coefficients of \(\sigma_\Delta\), hence \(\sigma_\Delta\) is analytic in \(|\Im\theta|<\Delta/2\).
+Moreover, since \(\sigma_\Delta(\theta)>0\) (\(\theta\in[-\pi,\pi]\)) and analytic functions are continuous, for any \(0<\varepsilon<\Delta/2\), on the closed strip \(|\Im\theta|\le \Delta/2-\varepsilon\) we have a uniform lower bound \(\inf|\sigma_\Delta|>0\).
+Therefore \(1/\sigma_\Delta\) is analytic and bounded in that closed strip, and its Fourier coefficients decay at rate \(e^{-(\Delta/2-\varepsilon)|n|}\).
+For the infinite Toeplitz operator, the inverse kernel's Toeplitz coefficients are precisely the Fourier coefficients of \(1/\sigma_\Delta\); the decay of the matrix elements of the finite truncation \(G_\kappa(\Delta)^{-1}\) is deduced from the same Wiener algebra closure and finite truncation stability. The proof is complete.
 \end{proof}
 
 \begin{theorem}[Toeplitz thermodynamic limit: equidistant volume entropy density closed by single symbol integral]\label{thm:xi-hellinger-toeplitz-szego-thermo-limit}
@@ -260,3 +750,5 @@ Let \(w(\xi)=\pi^2/\cosh^2(\pi\xi)\), then at \(\xi=0\) we have the Taylor expan
 Therefore any regime using quadratic external potential (Gaussian approximation) as baseline has its first non-removable systematic correction appearing at quartic order and precisely closed by \(\zeta(4)\);
 this spectral-side quartic first entry is compatible with the quartic closure threshold of Remark \ref{rem:xi-scale-q4-threshold-principle}.
 \end{remark}
+
+\input{para__xi-hellinger-toeplitz-tail-asymptotics}

@@ -1,0 +1,102 @@
+% (User input window)
+% Time: 2026-02-16 02:18:37 (Asia/Singapore)
+%
+% This file advances the Gram determinant volume interpretation to three auditable laws: observational contraction, coherence energy, and nearest-neighbor closure.
+
+\begin{proposition}[Volume monotonicity law for linear observations: Gram-det entropy strictly increases under contraction operators]\label{prop:xi-gram-det-entropy-monotone-under-contraction}
+Let \(H\) be a complex Hilbert space, \(\psi_1,\dots,\psi_\kappa\in H\) linearly independent, and denote the Gram matrix
+\[
+G=(\langle\psi_i,\psi_j\rangle)_{1\le i,j\le\kappa}\succ0,
+\qquad
+S:=-\log\det G.
+\]
+For any bounded linear operator \(T:H\to H\) satisfying \(T^\ast T\preceq I\), let
+\[
+G_T:=(\langle T\psi_i,T\psi_j\rangle)_{1\le i,j\le\kappa}.
+\]
+Then
+\[
+\boxed{\;
+0\prec G_T\preceq G,\qquad
+\det G_T\le \det G,\qquad
+S_T:=-\log\det G_T\ge S.\;}
+\]
+Equality holds if and only if \(T\) is an isometry on the subspace \(\mathrm{span}\{\psi_1,\dots,\psi_\kappa\}\) (equivalently, \(T^\ast T=I\) when restricted to this subspace).
+Therefore any linear contractive observation such as bandwidth truncation, noise smoothing, or subspace projection is uniformly subject to a strict volume irreversibility law.
+\end{proposition}
+\begin{proof}
+For any \(c=(c_1,\dots,c_\kappa)\in\CC^\kappa\), set \(v=\sum_{j=1}^\kappa c_j\psi_j\).
+Then
+\[
+c^\ast G_T c=\|Tv\|^2\le \|v\|^2=c^\ast G c,
+\]
+hence \(G_T\preceq G\), and since \(\{\psi_j\}\) are linearly independent, \(G_T\succ0\).
+By monotonicity of eigenvalues (and thus determinants) under the Loewner order, \(\det G_T\le \det G\), hence \(S_T\ge S\).
+If \(\det G_T=\det G\), then \(G_T\preceq G\) with equal determinants forces \(G_T=G\), thus \(\|Tv\|=\|v\|\) for all \(v\in\mathrm{span}\{\psi_j\}\), i.e., \(T\) is an isometry on this subspace. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Coherence energy lower bound: volume entropy forced by squared coherence]\label{prop:xi-gram-entropy-lower-bound-by-coherence}
+Using the notation of Proposition \ref{prop:xi-gram-det-entropy-monotone-under-contraction}, assume further that \(\|\psi_j\|=1\) (\(1\le j\le\kappa\)).
+Then \(G=I+E\) with \(E\) Hermitian and \(\mathrm{diag}(E)=0\).
+We have the strict lower bound
+\[
+\boxed{\;
+S=-\log\det(I+E)\ \ge\ \frac{\|E\|_{\mathrm F}^{2}}{2\,(1+\|E\|_{2})}\;}
+\]
+where \(\|E\|_{\mathrm F}^{2}=\sum_{i\neq j}|\langle\psi_i,\psi_j\rangle|^2\) and \(\|E\|_2\) is the spectral norm.
+In particular, when \(\|E\|_2=o(1)\),
+\[
+S=\frac12\sum_{i\neq j}|\langle\psi_i,\psi_j\rangle|^2+o\!\Bigl(\sum_{i\neq j}|\langle\psi_i,\psi_j\rangle|^2\Bigr),
+\]
+thus in the weak coherence phase the volume entropy is completely dominated by two-body squared coherence.
+\end{proposition}
+\begin{proof}[Proof sketch]
+Let \(\{\lambda_r\}_{r=1}^\kappa\) be the real eigenvalues of \(E\), then \(\lambda_r>-1\) (since \(I+E\succ0\)), and \(\sum_r\lambda_r=\mathrm{tr}(E)=0\).
+Therefore
+\[
+S=-\sum_{r=1}^\kappa\log(1+\lambda_r)=\sum_{r=1}^\kappa\bigl(\lambda_r-\log(1+\lambda_r)\bigr).
+\]
+For any \(x>-1\) we have the scalar inequality
+\[
+x-\log(1+x)\ge \frac{x^2}{2(1+|x|)}\ge \frac{x^2}{2(1+\|E\|_2)}.
+\]
+Summing and using \(\sum_r\lambda_r^2=\|E\|_{\mathrm F}^2\) yields the stated lower bound.
+The weak coherence expansion follows from the matrix logarithm series
+\(
+\log\det(I+E)=\mathrm{tr}(E)-\frac12\mathrm{tr}(E^2)+O(\|E\|_2\|E\|_{\mathrm F}^2)
+\)
+and \(\mathrm{tr}(E)=0\). This completes the proof.
+\end{proof}
+
+\begin{proposition}[Nearest-neighbor product upper bound: volume entropy strictly capped by adjacent two-body degeneracy]\label{prop:xi-gram-det-nearest-neighbor-product-upper-bound}
+Let \(\psi_1,\dots,\psi_\kappa\in H\) satisfy \(\|\psi_j\|=1\), with Gram matrix \(G=(\langle\psi_i,\psi_j\rangle)\).
+Then we have the strict inequality
+\[
+\boxed{\;
+\det G\ \le\ \prod_{j=1}^{\kappa-1}\bigl(1-|\langle\psi_{j+1},\psi_j\rangle|^2\bigr)\;}
+\qquad
+\Longrightarrow\qquad
+S=-\log\det G\ \ge\ \sum_{j=1}^{\kappa-1}-\log\bigl(1-|\langle\psi_{j+1},\psi_j\rangle|^2\bigr).
+\]
+In the present Hellinger-RKHS setting with \(\psi_j=k_{s_j}\) and \(s_1<\cdots<s_\kappa\), we have \(|\langle\psi_{j+1},\psi_j\rangle|=A(\Delta_j)\) (\(\Delta_j=s_{j+1}-s_j\)), thus the volume entropy potential is strictly capped by a one-dimensional nearest-neighbor ledger on adjacent intervals; any interval collapse (\(A(\Delta_j)\uparrow 1\)) forces the right-hand side logarithm to diverge, providing the minimal auditable certificate for clustering pathology.
+\end{proposition}
+\begin{proof}
+Apply Gram-Schmidt orthogonalization to \(\{\psi_j\}\) sequentially: set
+\(
+v_1:=\psi_1
+\), and for \(j\ge 2\),
+\(
+v_j:=\psi_j-\mathrm{Proj}_{\mathrm{span}\{\psi_1,\dots,\psi_{j-1}\}}\psi_j
+\).
+The volume interpretation of the Gram determinant yields
+\[
+\det G=\prod_{j=1}^{\kappa}\|v_j\|^2.
+\]
+For \(j\ge 2\),
+\[
+\|v_j\|^2=1-\bigl\|\mathrm{Proj}_{\mathrm{span}\{\psi_1,\dots,\psi_{j-1}\}}\psi_j\bigr\|^2
+\le 1-|\langle\psi_j,\psi_{j-1}\rangle|^2,
+\]
+since the projection onto \(\mathrm{span}\{\psi_1,\dots,\psi_{j-1}\}\) has norm at least as large as the component along the unit vector \(\psi_{j-1}\).
+Multiplying yields the stated inequality; taking negative logarithms gives the entropy lower bound. This completes the proof.
+\end{proof}

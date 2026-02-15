@@ -1,0 +1,95 @@
+% (User input window)
+% Time: 2026-02-16 02:34:12 (Asia/Singapore)
+%
+% Dense Toeplitz limit: entropy density asymptotics, condition number exponent, and the two-fold law for bit budget.
+
+\begin{corollary}[Two-fold law in the dense Toeplitz regime: condition number exponent and volume entropy density exponent are congruent with ratio approaching \texorpdfstring{$2$}{2}]\label{cor:xi-hellinger-toeplitz-dense-2x-law}
+Under equispaced depth \(\sigma_j=\sigma_0+(j-1)\Delta\), let \(G_\kappa(\Delta)\) be the corresponding Toeplitz principal block, and define the volume entropy density
+\[
+e(\Delta):=\lim_{\kappa\to\infty}-\frac1\kappa\log\det G_\kappa(\Delta)
+=-\frac{1}{2\pi}\int_{-\pi}^{\pi}\log\sigma_\Delta(\theta)\,\dd\theta.
+\]
+Let the bi-infinite Toeplitz convolution operator \(T_\Delta:\ell^2(\ZZ)\to\ell^2(\ZZ)\) be given by
+\[
+(T_\Delta x)_n:=\sum_{m\in\ZZ}A((n-m)\Delta)\,x_m
+\]
+with symbol \(\sigma_\Delta\) and condition number
+\[
+\mathrm{cond}(T_\Delta)=\frac{\max_{\theta\in[-\pi,\pi]}\sigma_\Delta(\theta)}{\min_{\theta\in[-\pi,\pi]}\sigma_\Delta(\theta)},
+\qquad
+c(\Delta):=\log\mathrm{cond}(T_\Delta).
+\]
+As \(\Delta\downarrow0\), we have the asymptotics
+\[
+\boxed{\;
+e(\Delta)=\frac{\pi^2}{\Delta}+O\!\Bigl(\log\frac1\Delta\Bigr),\qquad
+c(\Delta)=\frac{2\pi^2}{\Delta}+O\!\Bigl(\log\frac1\Delta\Bigr),\qquad
+\frac{c(\Delta)}{e(\Delta)}\to 2.\;}
+\]
+Therefore the exponential threshold for stable invertibility and the bulk logarithmic volume (entropy density) are controlled by the same constant \(2\pi^2/\Delta\), with the boundary exponent being exactly twice the bulk exponent.
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson},
+\[
+\sigma_\Delta(\theta)=\frac{1}{\Delta}\sum_{k\in\ZZ}\frac{\pi^{2}}{\cosh^{2}\!\Bigl(\pi\frac{\theta+2\pi k}{\Delta}\Bigr)}.
+\]
+Denote the principal term
+\(
+\sigma_\Delta^{(0)}(\theta):=\frac{\pi^{2}}{\Delta}\cosh^{-2}(\pi\theta/\Delta)
+\).
+For \(\theta\in[-\pi,\pi]\), when \(k\neq0\) we have \(|\theta+2\pi k|\ge\pi\), and using \(\cosh t\ge \tfrac12 e^{|t|}\) we obtain
+\[
+0\le \sigma_\Delta(\theta)-\sigma_\Delta^{(0)}(\theta)
+\le \frac{1}{\Delta}\sum_{k\neq0}4\pi^{2}\exp\!\Bigl(-2\pi\frac{|\theta+2\pi k|}{\Delta}\Bigr)
+\le C\,\frac{\pi^{2}}{\Delta}\,e^{-2\pi^{2}/\Delta},
+\]
+where \(C>0\) is independent of \(\Delta\).
+By monotonicity of \(\cosh^{-2}\),
+\(
+\sigma_\Delta^{(0)}(\theta)\ge \sigma_\Delta^{(0)}(\pi)=\frac{\pi^{2}}{\Delta}\cosh^{-2}(\pi^{2}/\Delta)
+\asymp \frac{\pi^{2}}{\Delta}e^{-2\pi^{2}/\Delta}
+\),
+hence \(\log\sigma_\Delta(\theta)=\log\sigma_\Delta^{(0)}(\theta)+O(1)\) holds uniformly, thus \(e(\Delta)=e_0(\Delta)+O(1)\), where
+\[
+e_0(\Delta):=-\frac{1}{2\pi}\int_{-\pi}^{\pi}\log\sigma_\Delta^{(0)}(\theta)\,\dd\theta
+=-\log\frac{\pi^{2}}{\Delta}+\frac{1}{\pi}\int_{-\pi}^{\pi}\log\cosh\!\Bigl(\pi\frac{\theta}{\Delta}\Bigr)\,\dd\theta.
+\]
+Using the inequalities \(x-\log2\le \log\cosh x\le x\) (\(x\ge0\)), we get
+\[
+\frac{1}{\Delta}\int_{-\pi}^{\pi}|\theta|\,\dd\theta-\log\frac{4\pi^{2}}{\Delta}
+\ \le\ e_0(\Delta)\ \le\
+\frac{1}{\Delta}\int_{-\pi}^{\pi}|\theta|\,\dd\theta-\log\frac{\pi^{2}}{\Delta},
+\]
+and since \(\int_{-\pi}^{\pi}|\theta|\,\dd\theta=\pi^{2}\), we have \(e(\Delta)=\pi^{2}/\Delta+O(\log(1/\Delta))\).
+\par
+For the condition number, note that \(T_\Delta\) is a Fourier multiplier with symbol \(\sigma_\Delta(\theta)\), hence \(\mathrm{cond}(T_\Delta)=\max\sigma_\Delta/\min\sigma_\Delta\).
+From \(\sigma_\Delta(0)=\frac{\pi^{2}}{\Delta}+O\!\bigl(\frac{\pi^{2}}{\Delta}e^{-4\pi^{2}/\Delta}\bigr)\) and
+\(
+\sigma_\Delta(\pi)\asymp \frac{\pi^{2}}{\Delta}e^{-2\pi^{2}/\Delta}
+\)
+we obtain
+\(
+c(\Delta)=\log\frac{\max\sigma_\Delta}{\min\sigma_\Delta}
+=\frac{2\pi^{2}}{\Delta}+O(\log(1/\Delta))
+\),
+thus \(c(\Delta)/e(\Delta)\to2\). This completes the proof.
+\end{proof}
+
+\begin{corollary}[Linear law for bit budget versus volume entropy density: minimum effective precision for stable inversion]\label{cor:xi-hellinger-toeplitz-bit-budget-linear-law}
+Under the setting of Corollary \ref{cor:xi-hellinger-toeplitz-dense-2x-law}, if stable numerical inversion in the sense of relative error is required and measured by \(B\) bits of effective precision, then the necessary condition is
+\[
+\boxed{\;
+B\ \gtrsim\ \log_2\mathrm{cond}(T_\Delta)=\frac{c(\Delta)}{\ln 2}
+\ \sim\ \frac{2\pi^{2}}{\Delta\ln 2}\qquad(\Delta\downarrow0).\;}
+\]
+Combined with \(c(\Delta)\sim 2e(\Delta)\), we obtain the parameter-free linear law
+\[
+B\ \gtrsim\ \frac{2}{\ln 2}\,e(\Delta).
+\]
+Therefore in the dense limit, any scheme attempting to increase resolution at fixed precision must necessarily trigger an exponential explosion of the condition number.
+\end{corollary}
+\begin{proof}
+The classical necessary condition for stable inversion is that the machine precision \(\varepsilon_{\mathrm{mach}}\) must satisfy \(\varepsilon_{\mathrm{mach}}\lesssim \mathrm{cond}(T_\Delta)^{-1}\);
+with \(B\) bits of effective precision we have \(\varepsilon_{\mathrm{mach}}\asymp 2^{-B}\), hence \(B\gtrsim \log_2\mathrm{cond}(T_\Delta)=c(\Delta)/\ln 2\).
+The conclusion follows from the asymptotic formula in Corollary \ref{cor:xi-hellinger-toeplitz-dense-2x-law}.
+\end{proof}

@@ -1,0 +1,347 @@
+% (User input window)
+% 2026-02-16 02:34:12 (Asia/Singapore)
+%
+% (Source tag) /killo-golden
+
+\paragraph{Tree/loop stratification of determinant volume entropy: Chow-Liu projection, conditional mutual information, and fourth-order emergence}
+In the regime where Gram/correlation matrices carry the volume potential, \(-\log\det\) naturally yields a many-body volume entropy potential;
+this paragraph compresses the auditable lower bound of this potential to the Chow-Liu tree projection, and interprets the remaining gap as the irreversible volume deficit carried by loop structures.
+In the one-dimensional sorted regime with monotone distance kernels, the optimal tree selection rigidly degenerates to the adjacent chain, thus externalizing the tree-carried volume entropy to an adjacent interval ledger;
+in the weak coherence region, the first systematic contribution of loop entropy is controlled by conditional mutual information and emerges from fourth order onward, congruent with the \(q=4\) first-trigger structure appearing repeatedly in this work.
+
+\begin{conclusion}[\texorpdfstring{$(\det)$}{(det)}-entropy potential Chow-Liu tree lower bound: determinant volume controlled by maximum spanning tree]\label{con:xi-det-entropy-chow-liu-tree-lower-bound}
+Let \(R\in\RR^{\kappa\times\kappa}\) be a correlation matrix (\(R\succ0\), \(\mathrm{diag}(R)=\mathbf 1\)), and define the determinant volume entropy potential
+\[
+S_{\det}(R):=-\log\det R.
+\]
+For each undirected edge \((i,j)\), define the two-body mutual information weight
+\[
+w_{ij}:=-\log(1-R_{ij}^2).
+\]
+Then for any spanning tree \(T\) we have
+\[
+S_{\det}(R)\ \ge\ \sum_{(i,j)\in T} w_{ij},
+\qquad\text{thus}\qquad
+S_{\det}(R)\ \ge\ \max_{T}\sum_{(i,j)\in T} w_{ij}.
+\]
+Equality holds for a given \(T\) if and only if the nondiagonal nonzero support of \(R^{-1}\) is contained in \(T\) (equivalently, \(\mathcal N(0,R)\) is a tree-structured Gaussian Markov field on graph \(T\)).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Let \(X\sim\mathcal N(0,R)\).
+For a fixed tree \(T\), the Chow-Liu tree projection \(\mathcal N_T\) (see the setup in Conclusion \ref{con:xi-det-entropy-loop-entropy-kl-gap}) satisfies
+\(
+2D_{\mathrm{KL}}(\mathcal N(0,R)\,\|\,\mathcal N_T)
+=S_{\det}(R)-\sum_{(i,j)\in T}w_{ij}\ge 0
+\),
+yielding the lower bound.
+Equality is equivalent to \(D_{\mathrm{KL}}=0\), i.e., \(\mathcal N(0,R)=\mathcal N_T\);
+for Gaussian families this is equivalent to the precision matrix having nonzero entries only on edges of \(T\). This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Loop entropy as \texorpdfstring{$D_{\mathrm{KL}}$}{DKL} gap to tree approximation: exact tree decomposition of volume deficit]\label{con:xi-det-entropy-loop-entropy-kl-gap}
+Using the setup of Conclusion \ref{con:xi-det-entropy-chow-liu-tree-lower-bound}, for a given spanning tree \(T\), define the tree-loop entropy
+\[
+\mathcal L_T(R):=S_{\det}(R)-\sum_{(i,j)\in T}w_{ij}
+=-\log\det R+\sum_{(i,j)\in T}\log(1-R_{ij}^2).
+\]
+Then \(\mathcal L_T(R)\ge 0\) holds identically.
+If \(X\sim\mathcal N(0,R)\), and let \(\mathcal N_T\) be the Chow-Liu tree-structured Gaussian projection with graph \(T\) (whose univariate marginals and tree-edge bivariate marginals match those of \(\mathcal N(0,R)\)), then the strict identity holds
+\[
+\mathcal L_T(R)=2D_{\mathrm{KL}}\!\bigl(\mathcal N(0,R)\,\|\,\mathcal N_T\bigr).
+\]
+Therefore
+\(
+\arg\min_T\mathcal L_T(R)=\arg\max_T\sum_{(i,j)\in T}w_{ij}
+\)
+yields the optimal tree approximation.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Let \(R_T\) be the correlation matrix of \(\mathcal N_T\).
+The covariance of the tree projection \(\mathcal N_T\) is uniquely determined by the tree-edge correlations, and satisfies
+\[
+\det R_T=\prod_{(i,j)\in T}(1-R_{ij}^2)
+\]
+(product formula for conditional variances in tree-structured Gaussians).
+On the other hand, the KL divergence for zero-mean Gaussian families yields the closed form
+\[
+2D_{\mathrm{KL}}(\mathcal N(0,R)\,\|\,\mathcal N(0,R_T))
+=\tr(R_T^{-1}R)-\kappa+\log\frac{\det R_T}{\det R}.
+\]
+Since the nondiagonal support of \(R_T^{-1}\) is contained in \(T\), and \(R\) and \(R_T\) coincide on the diagonal and tree edges,
+\(
+\tr(R_T^{-1}R)=\tr(R_T^{-1}R_T)=\kappa
+\),
+thus
+\(
+2D_{\mathrm{KL}}=\log\frac{\det R_T}{\det R}
+\).
+Substituting the determinant factorization yields the stated identity. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Rigidity of tree selection for monotone distance kernels: optimal tree for one-dimensionally sorted points must be the adjacent chain]\label{con:xi-det-entropy-monotone-kernel-chain-mst}
+Assume there exists a strictly monotone decreasing function \(A:(0,\infty)\to(0,1)\) such that
+\[
+R_{ij}=A(|s_i-s_j|),
+\qquad
+s_1<\cdots<s_\kappa.
+\]
+Then the edge weight \(w_{ij}=-\log(1-A(|s_i-s_j|)^2)\) also strictly decreases with distance.
+Therefore the maximum spanning tree is uniquely the path graph (adjacent chain)
+\[
+T_{\mathrm{chain}}:=\{(1,2),(2,3),\dots,(\kappa-1,\kappa)\},
+\]
+yielding the strongest tree lower bound
+\[
+S_{\det}(R)\ \ge\ \sum_{j=1}^{\kappa-1}-\log\!\bigl(1-A(\Delta_j)^2\bigr),
+\qquad
+\Delta_j:=s_{j+1}-s_j.
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch]
+For any cut \(\{1,\dots,j\}\,\cup\,\{j+1,\dots,\kappa\}\), the unique minimum-distance cross-cut edge is \((j,j+1)\), with maximum weight.
+By the cut property of maximum spanning trees, each \((j,j+1)\) must belong to the maximum spanning tree; combining all \(j\) yields uniqueness and the chain structure. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Closed form for three-point local loop entropy: chain gap equals conditional mutual information, a logarithmic potential of partial correlation]\label{con:xi-det-entropy-three-point-loop-entropy-partial-corr}
+For any \(a<b<c\), denote \(\rho_{ab}=R_{ab}\), \(\rho_{bc}=R_{bc}\), \(\rho_{ac}=R_{ac}\), and let \(R_{abc}\) be the corresponding ternary correlation submatrix.
+Relative to the chain tree \((a,b)\)--\((b,c)\), define the three-point local loop entropy
+\[
+\mathcal L^{(3)}_{a,b,c}
+:=-\log\det R_{abc}+\log(1-\rho_{ab}^2)+\log(1-\rho_{bc}^2).
+\]
+Then we have the identity
+\[
+\mathcal L^{(3)}_{a,b,c}
+=-\log\bigl(1-\rho_{ac\mid b}^2\bigr),
+\qquad
+\rho_{ac\mid b}:=\frac{\rho_{ac}-\rho_{ab}\rho_{bc}}{\sqrt{(1-\rho_{ab}^2)(1-\rho_{bc}^2)}}.
+\]
+Moreover, if \(X\sim\mathcal N(0,R)\), then
+\[
+\mathcal L^{(3)}_{a,b,c}=2I(X_a;X_c\mid X_b).
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch]
+From the standard identity for ternary correlation determinants and partial correlation,
+\(
+1-\rho_{ac\mid b}^2=\det R_{abc}/((1-\rho_{ab}^2)(1-\rho_{bc}^2))
+\),
+we obtain the first formula.
+For Gaussian families, the conditional mutual information satisfies
+\(
+2I(X_a;X_c\mid X_b)=-\log(1-\rho_{ac\mid b}^2)
+\),
+yielding the second formula. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Fourth-order first-trigger law: loop entropy in the long-range decay weak coherence regime emerges from fourth order onward]\label{con:xi-det-entropy-q4-trigger-weak-coherence}
+In the three-point setting of Conclusion \ref{con:xi-det-entropy-three-point-loop-entropy-partial-corr}, if
+\(
+|\rho_{ab}|,|\rho_{bc}|,|\rho_{ac}|\le\varepsilon\ll1
+\),
+then we have the uniform expansion
+\[
+\rho_{ac\mid b}=(\rho_{ac}-\rho_{ab}\rho_{bc})+O(\varepsilon^3),
+\qquad
+\mathcal L^{(3)}_{a,b,c}=\rho_{ac\mid b}^2+O(\varepsilon^4).
+\]
+In particular, when the long-range decay relation \(\rho_{ac}=\rho_{ab}\rho_{bc}+O(\varepsilon^3)\) holds, we have \(\rho_{ac\mid b}=O(\varepsilon^2)\) and
+\[
+\mathcal L^{(3)}_{a,b,c}=O(\varepsilon^4),
+\]
+i.e., the local loop entropy has minimal fourth-order visibility: two-body correlation \(O(\varepsilon)\) is insufficient to trigger the chain gap in this regime; the first systematic order of the gap must be fourth order.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+The denominator \(\sqrt{(1-\rho_{ab}^2)(1-\rho_{bc}^2)}=1+O(\varepsilon^2)\), hence the partial correlation can be linearized from the numerator.
+Using \(-\log(1-x)=x+O(x^2)\) (\(x\to0\)) with \(x=\rho_{ac\mid b}^2=O(\varepsilon^2)\) yields the stated expansion. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Explicit fourth-order scaling under exponential tail scale kernels: auditable asymptotics of \texorpdfstring{$\mathcal L^{(3)}$}{L(3)}]\label{con:xi-det-entropy-exp-tail-kernel-audit-asymptotics}
+Take the specific monotone distance kernel
+\[
+A(\Delta):=\frac{\Delta}{2\sinh(\Delta/2)}\qquad(\Delta\ge0),
+\qquad
+A(0):=1,
+\]
+and let \(\Delta_1=s_b-s_a\), \(\Delta_2=s_c-s_b\).
+As \(\Delta_1,\Delta_2\to\infty\), we have
+\[
+\rho_{ab}\sim \Delta_1e^{-\Delta_1/2},\quad
+\rho_{bc}\sim \Delta_2e^{-\Delta_2/2},\quad
+\rho_{ac}\sim (\Delta_1+\Delta_2)e^{-(\Delta_1+\Delta_2)/2}.
+\]
+Thus
+\[
+\rho_{ac}-\rho_{ab}\rho_{bc}
+=e^{-(\Delta_1+\Delta_2)/2}\Bigl((\Delta_1+\Delta_2)-\Delta_1\Delta_2+o(\Delta_1\Delta_2)\Bigr),
+\]
+and in the weak coherence regime we obtain the auditable fourth-order dominant term
+\[
+\mathcal L^{(3)}_{a,b,c}
+=\bigl(\rho_{ac}-\rho_{ab}\rho_{bc}\bigr)^2\,(1+o(1))
+\asymp (\Delta_1\Delta_2)^2\,e^{-(\Delta_1+\Delta_2)}.
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch]
+From \(A(\Delta)\sim \Delta e^{-\Delta/2}\) (\(\Delta\to\infty\)), we obtain the three correlation asymptotics.
+Using Conclusion \ref{con:xi-det-entropy-q4-trigger-weak-coherence} to linearize \(\mathcal L^{(3)}\) as \(\rho_{ac\mid b}^2\), and noting the denominator is \(1+o(1)\), we obtain the dominant term and scaling. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Chain rule decomposition of chain tree loop entropy: global gap equals sum of conditional mutual informations to the far past]\label{con:xi-det-entropy-chain-loop-entropy-chain-rule}
+Let \(X=(X_1,\dots,X_\kappa)\sim\mathcal N(0,R)\), and take the adjacent chain tree
+\(
+T_{\mathrm{chain}}=\{(1,2),\dots,(\kappa-1,\kappa)\}
+\).
+Define the global chain loop entropy
+\[
+\mathcal L_{\mathrm{chain}}(R):=\mathcal L_{T_{\mathrm{chain}}}(R)
+=-\log\det R+\sum_{j=1}^{\kappa-1}\log(1-R_{j,j+1}^2).
+\]
+Then there exists an exact chain rule decomposition
+\[
+\mathcal L_{\mathrm{chain}}(R)
+=2\sum_{j=3}^{\kappa} I\!\bigl(X_j;X_{1:j-2}\mid X_{j-1}\bigr),
+\]
+thus
+\[
+\mathcal L_{\mathrm{chain}}(R)\ \ge\ 2\sum_{j=3}^{\kappa} I\!\bigl(X_j;X_{j-2}\mid X_{j-1}\bigr)
+=\sum_{j=3}^{\kappa}\mathcal L^{(3)}_{j-2,j-1,j}.
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-det-entropy-loop-entropy-kl-gap}, \(\mathcal L_{\mathrm{chain}}/2\) equals the KL gap from \(\mathcal N(0,R)\) to the chain-structured Chow-Liu projection;
+for chain graphs this gap equals a sum of conditional mutual informations (chain rule).
+The lower bound follows from the term-by-term nonnegative decomposition
+\(
+I(X_j;X_{1:j-2}\mid X_{j-1})=\sum_{i=1}^{j-2}I(X_j;X_i\mid X_{i+1:j-1})\ge I(X_j;X_{j-2}\mid X_{j-1})
+\). This completes the proof.
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$q=4$}{q=4} volume law for weak coherence chains: loop entropy dominant term is sum of squared second-order difference deviations]\label{con:xi-det-entropy-weak-coherence-chain-q4-law}
+In the adjacent sorted setting of Conclusion \ref{con:xi-det-entropy-monotone-kernel-chain-mst}, denote \(\rho_{j,j+1}=R_{j,j+1}\) and define the second-order difference deviation
+\[
+\eta_j:=R_{j-2,j}-R_{j-2,j-1}R_{j-1,j}\qquad(3\le j\le\kappa).
+\]
+If the system is globally in the weak coherence regime (e.g., for exponential tail kernels with all adjacent spacings \(\Delta_j\) sufficiently large, making all \(|R_{ij}|\) uniformly sufficiently small), then we have the uniform approximation
+\[
+\mathcal L_{\mathrm{chain}}(R)
+=\sum_{j=3}^{\kappa}\frac{\eta_j^2}{(1-\rho_{j-2,j-1}^2)(1-\rho_{j-1,j}^2)}
+\ +\ o\!\Bigl(\sum_{j=3}^{\kappa}\eta_j^2\Bigr).
+\]
+Therefore the first systematic contribution to chain loop entropy is controlled by the sum of squares of second-order difference deviations, exhibiting fourth-order dominant scaling in the long-range decay regime.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-det-entropy-chain-loop-entropy-chain-rule}, the leading term of \(\mathcal L_{\mathrm{chain}}\) is given by a sum of conditional mutual informations.
+In the weak coherence regime, the conditional influence of the far past on \(X_j\) is negligible at higher order, with the dominant term given by \(I(X_j;X_{j-2}\mid X_{j-1})\);
+from Conclusion \ref{con:xi-det-entropy-three-point-loop-entropy-partial-corr} we have
+\(
+\mathcal L^{(3)}_{j-2,j-1,j}=-\log(1-\rho_{j-2,j\mid j-1}^2)
+\)
+and
+\(
+\rho_{j-2,j\mid j-1}^2=\eta_j^2/((1-\rho_{j-2,j-1}^2)(1-\rho_{j-1,j}^2))
+\).
+Linearizing using \(-\log(1-x)=x+o(x)\) yields the result. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Markov volume to true volume ratio: chain loop entropy is the exact logarithmic volume deficit]\label{con:xi-det-entropy-markov-volume-ratio}
+Define the chain Markov correlation matrix \(R^{\mathrm{MC}}\) as the unique correlation matrix satisfying
+\[
+R^{\mathrm{MC}}_{jj}=1,\qquad
+R^{\mathrm{MC}}_{j,j+1}=R_{j,j+1},
+\qquad
+(R^{\mathrm{MC}})^{-1}\ \text{is tridiagonal},
+\]
+(i.e., the tree-structured Gaussian projection compatible with \(T_{\mathrm{chain}}\)).
+Then the determinant closed form holds
+\[
+\det R^{\mathrm{MC}}=\prod_{j=1}^{\kappa-1}\bigl(1-R_{j,j+1}^2\bigr),
+\qquad
+\mathcal L_{\mathrm{chain}}(R)= -\log\frac{\det R}{\det R^{\mathrm{MC}}}.
+\]
+Therefore chain loop entropy is the exact logarithmic deficit of true volume relative to Markov volume, providing a volume comparison yardstick requiring no external fitting.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+The chain tree projection corresponds to a sequence of successive regression representations
+\(
+X_{j+1}=R_{j,j+1}X_j+\sqrt{1-R_{j,j+1}^2}\,\varepsilon_{j+1}
+\)
+(\(\varepsilon_{j+1}\) independent standard Gaussian), hence the covariance determinant is the product of conditional variances, yielding the factorization of \(\det R^{\mathrm{MC}}\);
+applying Conclusion \ref{con:xi-det-entropy-loop-entropy-kl-gap} with \(T=T_{\mathrm{chain}}\) yields the volume ratio identity. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Base-cycle conditional mutual information certificate for arbitrary trees: cost of non-tree edges dominated by global loop entropy]\label{con:xi-det-entropy-tree-basecycle-cmi-certificate}
+For any spanning tree \(T\) and any non-tree edge \(e=(u,v)\notin T\), let \(P_T(u,v)\) be the unique path vertex set connecting \(u\) and \(v\) in the tree, and denote the separating set
+\(
+S_e:=P_T(u,v)\setminus\{u,v\}
+\).
+Define the base-cycle conditional mutual information potential
+\[
+\mathcal I_e:=2I\!\bigl(X_u;X_v\mid X_{S_e}\bigr)
+=-\log\bigl(1-\rho_{uv\mid S_e}^2\bigr),
+\]
+where \(\rho_{uv\mid S_e}\) is the partial correlation coefficient conditioned on \(S_e\) under the Gaussian family.
+Then for Gaussian families we have the edge-wise domination
+\[
+\mathcal I_e\ \le\ \mathcal L_T(R)\qquad\text{for all }e\notin T.
+\]
+Therefore the conditional correlation strength of any non-tree edge is controlled by the same global loop entropy; in the weak coherence regime (where non-tree edge correlations are dominated by path correlation products), each \(\mathcal I_e\) has its leading term at fourth order, thus the minimal visible order of \(\mathcal L_T\) is structurally locked to \(4\) in this regime.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+The tree projection \(\mathcal N_T\) satisfies separation on graph \(T\): for any \(e=(u,v)\notin T\), we have \(X_u\perp X_v\mid X_{S_e}\) under \(\mathcal N_T\).
+Let \(\mathcal Q_e\) be the family of all distributions satisfying this conditional independence, then
+\(
+\mathcal N_T\in\mathcal Q_e
+\).
+On the other hand, the minimum of \(D_{\mathrm{KL}}(\mathcal N(0,R)\,\|\,\mathcal Q_e)\) is exactly \(I(X_u;X_v\mid X_{S_e})\);
+thus
+\(
+D_{\mathrm{KL}}(\mathcal N(0,R)\,\|\,\mathcal N_T)\ge I(X_u;X_v\mid X_{S_e})
+\).
+Multiplying by \(2\) and using the identity in Conclusion \ref{con:xi-det-entropy-loop-entropy-kl-gap} yields the stated domination. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Per-step loop entropy scaling in the equispaced weak coherence phase: explicit decay of \texorpdfstring{$\mathcal L_{\mathrm{chain}}/\kappa$}{L_chain/kappa} as \texorpdfstring{$\Delta\to\infty$}{Delta->inf}]\label{con:xi-det-entropy-equispaced-loop-entropy-scaling}
+Take equispaced depth \(s_j=s_0+(j-1)\Delta\) and let \(\Delta\to\infty\).
+Denote
+\(
+a:=A(\Delta)\sim \Delta e^{-\Delta/2}
+\),
+\(
+b:=A(2\Delta)\sim 2\Delta e^{-\Delta}
+\),
+then each adjacent triple's second-order difference deviation satisfies
+\[
+\eta=b-a^2\sim-\Delta^2e^{-\Delta}.
+\]
+Thus the per-step chain loop entropy intensity satisfies
+\[
+\frac{1}{\kappa}\mathcal L_{\mathrm{chain}}(R)
+\sim \eta^2
+\asymp \Delta^{4}e^{-2\Delta},
+\qquad (\Delta\to\infty,\ \kappa\ \text{large}).
+\]
+This formula externalizes the non-Markovianity in weak coherence as a completely explicit exponential law: exponential rate \(2\Delta\) with polynomial pre-factor \(\Delta^4\).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+From the kernel asymptotics in Conclusion \ref{con:xi-det-entropy-exp-tail-kernel-audit-asymptotics}, we obtain the exponential tail scaling of \(a\) and \(b\), and compute \(\eta=b-a^2\).
+From Conclusion \ref{con:xi-det-entropy-weak-coherence-chain-q4-law}, in the weak coherence regime the dominant term of \(\mathcal L_{\mathrm{chain}}\) is \(\sum \eta_j^2\); in the equispaced case all terms have the same order, dividing by \(\kappa\) yields the per-step scaling. This completes the proof.
+\end{proof}
+
+\begin{conclusion}[Tree/loop stratification of volume-dimension-entropy: boundary dimension given by tree term, fractal roughness given by loop term]\label{con:xi-det-entropy-tree-loop-stratification}
+For any correlation matrix \(R\), define
+\[
+S_{\mathrm{tree}}(R):=\max_{T}\sum_{(i,j)\in T}-\log(1-R_{ij}^2),
+\qquad
+S_{\mathrm{loop}}(R):=S_{\det}(R)-S_{\mathrm{tree}}(R)\ (\ge0).
+\]
+Then \(S_{\mathrm{tree}}\) yields the strongest volume entropy that can be carried by tree structure, while \(S_{\mathrm{loop}}\) yields the additional volume entropy that must be carried by loop structure.
+In the one-dimensional sorted case with monotone distance kernels, \(S_{\mathrm{tree}}\) rigidly degenerates to the adjacent interval ledger by Conclusion \ref{con:xi-det-entropy-monotone-kernel-chain-mst}, yielding the dominant volume entropy contribution on the boundary side;
+while \(S_{\mathrm{loop}}\) emerges from fourth order onward in the weak coherence regime by Conclusions \ref{con:xi-det-entropy-q4-trigger-weak-coherence}--\ref{con:xi-det-entropy-weak-coherence-chain-q4-law}, thus can be viewed as the minimal visible volume indicator characterizing fractal roughness/critical phase transitions.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Nonnegativity follows immediately from Conclusion \ref{con:xi-det-entropy-chow-liu-tree-lower-bound}.
+Chain rigidity in the one-dimensional sorted case is given by Conclusion \ref{con:xi-det-entropy-monotone-kernel-chain-mst};
+fourth-order emergence in the weak coherence regime is given by Conclusions \ref{con:xi-det-entropy-q4-trigger-weak-coherence} and \ref{con:xi-det-entropy-weak-coherence-chain-q4-law}.
+Therefore the tree and loop terms correspond to two classes of structural carriers respectively. This completes the proof.
+\end{proof}

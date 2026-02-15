@@ -171,22 +171,24 @@ Under scale collision \(\sigma_j=\sigma_\star+\varepsilon t_j\) with \(\varepsil
 S_{1/2}(\boldsymbol{\sigma})
 =\kappa(\kappa-1)\log\frac{1}{\varepsilon}
 +2\sum_{1\le j<k\le \kappa}\log\frac{1}{|t_k-t_j|}
-+O(1).\;}
+-\log\Bigl(\mathfrak H_\kappa\prod_{j=0}^{\kappa-1}\frac{1}{(j!)^{2}}\Bigr)
++o(1).\;}
 \]
+Here \(\mathfrak H_\kappa\) is the universal Hankel constant defined in Theorem \ref{thm:xi-hellinger-gram-collision-hankel-constant} (depending only on \(\kappa\) and spectral density \(w(\xi)=\pi^2\mathrm{sech}^2(\pi\xi)\)).
 The two-body logarithmic coefficient is identically \(2\), independent of spectral point weights and other configuration details.
 \end{proposition}
 \begin{proof}
 Positive definiteness follows directly from the Gram representation of \(G^{(1/2)}\).
 The closed form follows immediately from item \textup{(3)} of Proposition \ref{prop:xi-logistic-divergence-dictionary} (Hellinger affinity closed form) by taking \(a=\sigma_j\), \(b=\sigma_k\).
 \par
-For the collision asymptotic, let \(f(s):=\sqrt{\phi(s)}\), then \(\psi_j(s)=f(s-\sigma_\star-\varepsilon t_j)\).
-By \(f\in C^\infty(\RR)\cap L^2(\RR)\) and Taylor expansion, the span of \(\{\psi_j\}_{j=1}^\kappa\) in \(L^2\) converges as \(\varepsilon\to 0\) to the span of the derivative tower
-\(\{f^{(r)}(\cdot-\sigma_\star)\}_{r=0}^{\kappa-1}\);
-the leading nonzero term of the corresponding Gram determinant is given by the confluent Vandermonde structure, hence
-\(
-\det G^{(1/2)}=C\cdot \varepsilon^{\kappa(\kappa-1)}\prod_{j<k}(t_k-t_j)^2\cdot(1+o(1))
-\)
-(where \(C>0\) depends only on \(\kappa\) and kernel \(f\)).
+For the collision asymptotic, Theorem \ref{thm:xi-hellinger-gram-collision-hankel-constant} gives the more precise determinant asymptotic:
+\[
+\det G^{(1/2)}
+=\varepsilon^{\kappa(\kappa-1)}
+\Bigl(\prod_{j=0}^{\kappa-1}\frac{1}{(j!)^{2}}\Bigr)\,
+\mathfrak H_\kappa\,
+\prod_{1\le j<k\le\kappa}(t_k-t_j)^{2}\,\bigl(1+o(1)\bigr).
+\]
 Taking negative logarithm yields the stated expansion.
 \end{proof}
 
@@ -236,6 +238,31 @@ Symmetry gives
 \mathbb P(U\le -x)=\mathbb P(U\ge x)=1/(1+e^{x})
 \) (\(x\ge 0\)),
 averaging over \(j\) and counting each gap's tail contribution twice yields the stated closed form.
+\end{proof}
+
+% (User input window)
+% Time: 2026-02-16 02:05:41 (Asia/Singapore)
+
+\begin{corollary}[Invertible reconstruction of depth spacing from local boundary mass: one-to-one correspondence between error profile and spacing profile]\label{cor:xi-logistic-boundary-mass-inverts-spacing}
+Under the setting of Proposition \ref{prop:xi-logistic-multiclass-map-error}, let adjacent gap \(\Delta_j:=\sigma_{j+1}-\sigma_j>0\).
+Define local boundary mass (one-sided tail probability)
+\[
+e_j:=\mathbb P\bigl(U\ge \Delta_j/2\bigr)=\frac{1}{1+e^{\Delta_j/2}}\in(0,1/2).
+\]
+Then the map \(\Delta_j\mapsto e_j\) is strictly monotone and explicitly invertible:
+\[
+\boxed{\;
+\Delta_j=2\log\Bigl(\frac{1-e_j}{e_j}\Bigr).\;}
+\]
+Hence once the tail mass \((e_j)_{j=1}^{\kappa-1}\) of each adjacent cut can be observed, the depth gap sequence \((\Delta_j)\) can be recovered pointwise without loss; and
+\(
+P_{\mathrm e}^{(\kappa)}=\frac{2}{\kappa}\sum_{j=1}^{\kappa-1}e_j
+\)
+gives the total error rate as a linear aggregation of local boundary masses.
+\end{corollary}
+\begin{proof}
+By \(\mathbb P(U\ge x)=1/(1+e^{x})\) (\(x\ge 0\)) we directly obtain \(e_j=(1+e^{\Delta_j/2})^{-1}\), and by algebraic manipulation obtain the inversion formula.
+The last identity is a rewriting of the error closed form in Proposition \ref{prop:xi-logistic-multiclass-map-error} under the notation \(e_j\).
 \end{proof}
 
 \begin{corollary}[Optimal depth layout for fixed span: equal spacing is the unique error-minimizing solution and necessary span law]\label{cor:xi-logistic-optimal-spacing-span-law}

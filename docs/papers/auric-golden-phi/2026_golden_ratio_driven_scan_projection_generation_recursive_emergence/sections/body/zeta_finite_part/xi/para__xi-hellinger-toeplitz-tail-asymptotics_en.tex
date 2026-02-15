@@ -1,0 +1,240 @@
+% (User input window)
+% Time: 2026-02-16 02:05:41 (Asia/Singapore)
+% Time: 2026-02-16 02:18:37 (Asia/Singapore)
+%
+% This file carries the tail asymptotics of equispaced Toeplitz volume: large separation cluster expansion, quasi-orthogonal phase threshold, and periodization constants.
+
+\begin{proposition}[Large separation cluster expansion: principal term of \texorpdfstring{$S_{1/2}$}{S_{1/2}} is two-body exponential energy]\label{prop:xi-hellinger-cluster-expansion-large-separation}
+For a general depth spectrum \(\boldsymbol{\sigma}=(\sigma_1,\dots,\sigma_\kappa)\), denote the minimal separation
+\(
+\Delta_{\min}:=\min_{j\neq k}|\sigma_j-\sigma_k|
+\).
+As \(\Delta_{\min}\to\infty\), there exists a uniform expansion
+\[
+\boxed{\;
+S_{1/2}(\boldsymbol{\sigma})
+=\frac12\sum_{j\neq k}A(\sigma_j-\sigma_k)^{2}
++O\!\Bigl(\kappa^{3}(1+\Delta_{\min})^{3}e^{-3\Delta_{\min}/2}\Bigr).\;}
+\]
+Moreover,
+\(
+A(\Delta)\sim |\Delta|e^{-|\Delta|/2}
+\), thus the principal term satisfies
+\[
+\frac12\sum_{j\neq k}A(\sigma_j-\sigma_k)^2
+\sim \frac12\sum_{j\neq k}|\sigma_j-\sigma_k|^2e^{-|\sigma_j-\sigma_k|}
+\qquad(\Delta_{\min}\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+Write \(G(\boldsymbol{\sigma})=I+E\), where \(E_{jj}=0\), \(E_{jk}=A(\sigma_j-\sigma_k)\) (\(j\neq k\)).
+From \(A(\Delta)=|\Delta|/(2\sinh(|\Delta|/2))\) we obtain the upper bound
+\(
+0<A(\Delta)\le C(1+|\Delta|)e^{-|\Delta|/2}
+\)
+(from hyperbolic function asymptotics as \(|\Delta|\to\infty\)).
+Therefore \(\|E\|_{\max}\le C(1+\Delta_{\min})e^{-\Delta_{\min}/2}\), and \(\|E\|\) can be made small when \(\Delta_{\min}\) is sufficiently large.
+From the logarithmic determinant expansion
+\(
+-\log\det(I+E)=\sum_{m\ge 1}\frac{(-1)^m}{m}\tr(E^m)
+\)
+and \(\tr(E)=0\), the leading term is \(\tr(E^2)/2=\frac12\sum_{j\neq k}E_{jk}^2\).
+The remainder is estimated by \(|\tr(E^m)|\le \kappa^m\|E\|_{\max}^m\), yielding the stated error bound. This completes the proof.
+\end{proof}
+
+\begin{corollary}[Orthogonalization threshold and volume saturation phase: \texorpdfstring{$\Delta_{\min}\gtrsim 2\log\kappa$}{Delta_min ~ 2 log kappa} forces \texorpdfstring{$\det G\to 1$}{det G -> 1}]\label{cor:xi-hellinger-quasi-orthogonal-phase}
+Using the notation of Proposition \ref{prop:xi-hellinger-cluster-expansion-large-separation}, there exists a constant \(C>0\) such that
+\[
+\max_{1\le j\le \kappa}\sum_{k\neq j}\bigl|G(\boldsymbol{\sigma})_{jk}\bigr|
+\le C\,\kappa(1+\Delta_{\min})e^{-\Delta_{\min}/2}.
+\]
+Therefore if the configuration varies with \(\kappa\) and satisfies \(\kappa(1+\Delta_{\min})e^{-\Delta_{\min}/2}\to 0\), then
+\[
+\lambda_{\min}(G(\boldsymbol{\sigma}))\to 1,\qquad
+\lambda_{\max}(G(\boldsymbol{\sigma}))\to 1,\qquad
+\det G(\boldsymbol{\sigma})\to 1,\qquad
+S_{1/2}(\boldsymbol{\sigma})\to 0.
+\]
+In particular, the sufficient condition
+\[
+\Delta_{\min}\ge 2\log\kappa+\omega(1)
+\]
+forces entry into the quasi-orthogonal phase (volume saturation phase): once the growth in particle number is suppressed by the exponential tail \(e^{-\Delta/2}\), the volume entropy potential collapses to the zero-entropy limit.
+\end{corollary}
+\begin{proof}
+From \(G=I+E\) with \(E_{jk}=A(\sigma_j-\sigma_k)\) (\(j\neq k\)), and the upper bound
+\(
+A(\Delta)\le C(1+|\Delta|)e^{-|\Delta|/2}
+\)
+from the proof of Proposition \ref{prop:xi-hellinger-cluster-expansion-large-separation},
+for each \(j\) we have
+\[
+\sum_{k\neq j}|G_{jk}|=\sum_{k\neq j}A(\sigma_j-\sigma_k)\le (\kappa-1)\,C(1+\Delta_{\min})e^{-\Delta_{\min}/2},
+\]
+yielding the first formula.
+When the right-hand side tends to \(0\), the matrix norm satisfies \(\|E\|_2\le \|E\|_\infty\to 0\), hence the spectrum \(\mathrm{Spec}(G)\subset [1-\|E\|_2,1+\|E\|_2]\).
+Thus \(\lambda_{\min},\lambda_{\max}\to 1\), and from \(\det G=\prod_r\lambda_r\) we deduce \(\det G\to 1\), hence \(S_{1/2}=-\log\det G\to 0\).
+The sufficient condition follows immediately from \(e^{-\Delta_{\min}/2}\le \kappa^{-1}e^{-\omega(1)/2}\). This completes the proof.
+\end{proof}
+
+\begin{remark}[Cross-domain resolution constant for equispaced symbol: periodization tail controlled by \texorpdfstring{$\exp(-2\pi^2/\Delta)$}{exp(-2pi^2/Delta)}]\label{rem:xi-hellinger-toeplitz-periodization-constant-2pi2}
+Let \(\sigma_\Delta^{(0)}(\theta):=\frac{\pi^2}{\Delta}\cosh^{-2}(\pi\theta/\Delta)\) be the \(k=0\) principal term in the Poisson sum of Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson}.
+Then for any \(\theta\in[-\pi,\pi]\) we have
+\[
+0\le \sigma_\Delta(\theta)-\sigma_\Delta^{(0)}(\theta)
+:=\frac{1}{\Delta}\sum_{k\neq 0}\frac{\pi^{2}}{\cosh^{2}\!\Bigl(\pi\frac{\theta+2\pi k}{\Delta}\Bigr)}
+\le C\,\frac{\pi^{2}}{\Delta}\,e^{-2\pi^{2}/\Delta},
+\]
+where \(C>0\) is independent of \(\Delta\).
+Therefore the minimal cross-domain constant for the periodization effect is \(2\pi^2\): it controls both the single-cell dominance at small \(\Delta\) and provides the uniform exponential threshold for tail periodization terms to enter.
+\par
+In particular at \(\theta=0\), we have the exact identity
+\[
+\sigma_\Delta(0)=\sum_{n\in\ZZ}A(n\Delta)
+=\frac{\pi^{2}}{\Delta}\sum_{k\in\ZZ}\mathrm{sech}^{2}\!\Bigl(\frac{2\pi^{2}k}{\Delta}\Bigr),
+\]
+thus as \(\Delta\downarrow 0\),
+\[
+\sigma_\Delta(0)=\frac{\pi^{2}}{\Delta}\Bigl(1+O(e^{-4\pi^{2}/\Delta})\Bigr),
+\qquad
+\log\sigma_\Delta(0)=\log\frac{\pi^{2}}{\Delta}+O(e^{-4\pi^{2}/\Delta}),
+\]
+where the cross-cell correction is capped by the dual nome \(q_\star=e^{-2\pi^{2}/\Delta}\) as \(O(q_\star^{2})\).
+\end{remark}
+
+\begin{remark}[\texorpdfstring{$\zeta(4)$}{zeta(4)} entry law: the fourth-order coefficient in the frequency-domain exterior potential is forced to appear]\label{rem:xi-hellinger-logw-zeta4-entry}
+Let \(w(\xi)=\pi^2/\cosh^2(\pi\xi)\), then near \(\xi=0\) we have the Taylor expansion
+\[
+\log w(\xi)=\log\pi^2-\pi^2\xi^2+\frac{\pi^4}{6}\xi^4+O(\xi^6)
+=\log\pi^2-\pi^2\xi^2+15\,\zeta(4)\,\xi^4+O(\xi^6).
+\]
+Therefore any regime based on a quadratic exterior potential (Gaussian approximation) has its first irreducible systematic correction appearing at fourth order, precisely capped by \(\zeta(4)\);
+this spectral-side fourth-order entry is compatible with the fourth-order closure threshold in Remark \ref{rem:xi-scale-q4-threshold-principle}.
+\end{remark}
+
+\begin{proposition}[Extrema and modular exponent of equispaced depth Toeplitz symbol: \texorpdfstring{$\inf\sigma_\Delta$}{inf sigma} scaling at \texorpdfstring{$e^{-2\pi^2/\Delta}$}{exp(-2pi^2/Delta)}]\label{prop:xi-hellinger-toeplitz-symbol-extrema-qstar}
+Using the notation of Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson}, \(\sigma_\Delta\) attains its global maximum at \(\theta=0\) and global minimum at \(\theta=\pi\):
+\[
+\sigma_\Delta(0)=\sup_{\theta\in[-\pi,\pi]}\sigma_\Delta(\theta),
+\qquad
+\sigma_\Delta(\pi)=\inf_{\theta\in[-\pi,\pi]}\sigma_\Delta(\theta).
+\]
+As \(\Delta\downarrow 0\) (with dual nome \(q_\star:=e^{-2\pi^2/\Delta}\)), we have uniform asymptotics
+\[
+\sigma_\Delta(0)=\frac{\pi^2}{\Delta}\Bigl(1+O(q_\star^{2})\Bigr),
+\qquad
+\sigma_\Delta(\pi)=\frac{8\pi^2}{\Delta}\,q_\star\Bigl(1+O(q_\star^{2})\Bigr).
+\]
+Therefore the minimal spectral height is precisely capped by the modular dual scale \(2\pi^2/\Delta\) with regime exponent \(q_\star\).
+\end{proposition}
+\begin{proof}[Proof sketch]
+The maximality at \(\theta=0\) follows directly from the Fourier representation
+\(
+\sigma_\Delta(\theta)=1+2\sum_{n\ge 1}A(n\Delta)\cos(n\theta)
+\)
+with \(A(n\Delta)>0\) and \(\cos(n\theta)\le 1\).
+The minimality at \(\theta=\pi\) follows from the Poisson representation
+\(
+\sigma_\Delta(\theta)=\frac{\pi^2}{\Delta}\sum_{k\in\ZZ}\mathrm{sech}^2\!\bigl(\pi(\theta+2\pi k)/\Delta\bigr)
+\)
+combined with the strict unimodality of \(\mathrm{sech}^2\) and lattice symmetry: \(\theta=\pi\) is the farthest point from \(2\pi\ZZ\), thus the periodized unimodal sum attains its minimum at this point.
+\par
+For \(\theta=\pi\), the Poisson form gives the exact identity
+\[
+\sigma_\Delta(\pi)=\frac{\pi^2}{\Delta}\sum_{k\in\ZZ}\mathrm{sech}^2\!\Bigl(\frac{(2k+1)\pi^2}{\Delta}\Bigr).
+\]
+As \(\Delta\downarrow 0\), the dominant contributions come from the \(k=0,-1\) terms; using
+\(
+\mathrm{sech}^2(x)=4e^{-2x}(1+O(e^{-2x}))
+\)
+we obtain
+\(
+\sigma_\Delta(\pi)=\frac{8\pi^2}{\Delta}e^{-2\pi^2/\Delta}(1+O(e^{-4\pi^2/\Delta}))
+\).
+The asymptotics for \(\sigma_\Delta(0)\) were already given in Remark \ref{rem:xi-hellinger-toeplitz-periodization-constant-2pi2}. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Condition number exponential law for equispaced depth: invertibility budget linearly locked by \texorpdfstring{$2\pi^2/\Delta$}{2pi^2/Delta}]\label{prop:xi-hellinger-toeplitz-conditioning-exponential-law}
+Let \(T_\Delta\) be the bi-infinite Toeplitz convolution operator
+\[
+(T_\Delta x)_j=\sum_{n\in\ZZ}A((j-n)\Delta)\,x_n,
+\]
+with symbol \(\sigma_\Delta\).
+Then \(\mathrm{Spec}(T_\Delta)=\sigma_\Delta([-\pi,\pi])\), hence the condition number is
+\[
+\mathrm{cond}(T_\Delta)=\frac{\sup_\theta\sigma_\Delta(\theta)}{\inf_\theta\sigma_\Delta(\theta)}
+=\frac{\sigma_\Delta(0)}{\sigma_\Delta(\pi)}
+\sim \frac18\,e^{2\pi^2/\Delta}\qquad(\Delta\downarrow 0).
+\]
+For the finite-dimensional Toeplitz principal block \(G_\kappa(\Delta)=(A((j-k)\Delta))_{1\le j,k\le\kappa}\), its extreme eigenvalues converge to \(\sup\sigma_\Delta,\inf\sigma_\Delta\) as \(\kappa\to\infty\), hence for large \(\kappa\), \(\mathrm{cond}(G_\kappa(\Delta))\) inherits the same exponential scale.
+Thus any stable inversion requiring relative error \(\le\varepsilon\) must satisfy the precision bit lower bound
+\[
+B\ \gtrsim\ \frac{2\pi^2}{\Delta\ln 2}\ +\ O\bigl(1+\log(1/\varepsilon)\bigr),
+\]
+where the leading slope \(2\pi^2/\ln2\) is an irreducible constant.
+\end{proposition}
+\begin{proof}[Proof sketch]
+The spectral conclusion is a standard fact for Toeplitz operators: \(T_\Delta\) is a Fourier multiplier with symbol \(\sigma_\Delta\), hence its spectrum is the range of \(\sigma_\Delta\).
+The condition number asymptotics follow from the asymptotics of \(\sigma_\Delta(0)\) and \(\sigma_\Delta(\pi)\) in Proposition \ref{prop:xi-hellinger-toeplitz-symbol-extrema-qstar}.
+Finite block extreme spectral convergence is a Grenander-Szeg\H{o} type result; the precision bit lower bound comes from the necessity of \(\log_2\mathrm{cond}\). This completes the proof.
+\end{proof}
+
+\begin{theorem}[Area law free energy in the dense limit: auditable modular exponent principal term for \texorpdfstring{$f(\Delta)$}{f(Delta)}]\label{thm:xi-hellinger-toeplitz-free-energy-area-law}
+Let \(\Delta>0\) be fixed, and define the Toeplitz free energy density
+\[
+f(\Delta):=\lim_{\kappa\to\infty}\frac{1}{\kappa}\log\det G_\kappa(\Delta)
+=\frac{1}{2\pi}\int_{-\pi}^{\pi}\log\sigma_\Delta(\theta)\,\dd\theta
+\]
+(existence of the limit follows from Theorem \ref{thm:xi-hellinger-toeplitz-szego-thermo-limit}).
+As \(\Delta\downarrow0\), there exists an auditable modular exponent expansion
+\[
+\boxed{\;
+f(\Delta)= -\frac{\pi^{2}}{\Delta}\ +\ \log\!\Bigl(\frac{\pi^{2}}{\Delta}\Bigr)\ +\ 2\log 2\ -\ \frac{\Delta}{16}\ +\ O\!\bigl(e^{-2\pi^{2}/\Delta}\bigr).\;}
+\]
+Thus the volume entropy density \(-f(\Delta)\) has the dominant term \(\pi^2/\Delta\) (area law term), accompanied by the boundary logarithmic correction \(\log(\pi^2/\Delta)\) and a strict linear micro-correction \(\Delta/16\).
+\end{theorem}
+\begin{proof}[Proof sketch]
+From the \(\vartheta_4\) closed form in Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson} and the modular dual scale in Remark \ref{rem:xi-hellinger-toeplitz-modular-duality-scale},
+the mean value of \(\log\sigma_\Delta\) can be rewritten via Jacobi products and the \(\tau\mapsto-1/\tau\) transformation as a series in the dual nome \(q_\star=e^{-2\pi^2/\Delta}\).
+Explicit expansion of this series in the composite scale of \(q_\star\) and \(\Delta\) yields the stated principal terms and error cap. This completes the proof.
+\end{proof}
+
+\begin{proposition}[Exponential additivity of cluster decomposition: depth volume entropy exhibits block addition law at large gaps]\label{prop:xi-hellinger-gram-cluster-additivity-exp}
+Partition the depth point set into two clusters \(S^{(1)}\sqcup S^{(2)}\), denote \(|S^{(\ell)}|=\kappa_\ell\), and let the minimal inter-cluster gap be
+\[
+L:=\min\{|x-y|:\ x\in S^{(1)},\ y\in S^{(2)}\}.
+\]
+The corresponding Gram block decomposition is
+\[
+G=\begin{pmatrix}G_1 & C\\ C^{\mathsf T}& G_2\end{pmatrix},
+\qquad
+|C_{ij}|\le A(L)\le L\,e^{-L/2}.
+\]
+If \(G_1,G_2\succ0\), then there exists a constant \(K\) (depending only on \(\|G_1^{-1}\|_2,\|G_2^{-1}\|_2\) and \(\kappa_1,\kappa_2\)) such that
+\[
+\bigl|\log\det G-\log\det G_1-\log\det G_2\bigr|
+\le K\,\|C\|_{\mathrm F}^{2}
+\le K\,\kappa_1\kappa_2\,L^{2}e^{-L}.
+\]
+Therefore the depth volume entropy \(S_{1/2}=-\log\det G\) has strict exponential additivity at inter-cluster distance \(L\): the interaction term has natural scale \(e^{-L}\).
+\end{proposition}
+\begin{proof}[Proof sketch]
+By the Schur complement formula,
+\[
+\det G=\det G_1\cdot \det(G_2-C^{\mathsf T}G_1^{-1}C)
+=\det G_1\det G_2\cdot \det(I-X),
+\]
+where \(X:=G_2^{-1/2}C^{\mathsf T}G_1^{-1}C\,G_2^{-1/2}\succeq 0\).
+When \(\|X\|_2<1\),
+\(
+|\log\det(I-X)|\le \mathrm{tr}(X)/(1-\|X\|_2)
+\).
+Moreover,
+\[
+\mathrm{tr}(X)=\|G_1^{-1/2}C\,G_2^{-1/2}\|_{\mathrm F}^2
+\le \|G_1^{-1}\|_2\,\|G_2^{-1}\|_2\,\|C\|_{\mathrm F}^2,
+\]
+and \(\|X\|_2\le \|G_1^{-1}\|_2\|G_2^{-1}\|_2\|C\|_2^2\).
+Absorbing these bounds into the constant \(K\) yields the first formula.
+The final formula follows from \(\|C\|_{\mathrm F}^2\le \kappa_1\kappa_2\,\max_{i,j}|C_{ij}|^2\) and \(A(L)\le L e^{-L/2}\). This completes the proof.
+\end{proof}
