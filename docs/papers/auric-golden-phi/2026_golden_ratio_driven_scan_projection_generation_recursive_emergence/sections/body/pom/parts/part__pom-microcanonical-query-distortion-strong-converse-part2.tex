@@ -1,5 +1,6 @@
 % (User input window)
 % 2026-02-14 17:56:07（Asia/Singapore）
+% 2026-02-15 06:02:21（Asia/Singapore）
 
 \paragraph{端点展开、曲率审计与 Hellinger 普适极限}
 沿用定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的最优耦合结构与对偶敏感性公式。
@@ -60,6 +61,54 @@ u_x=\frac{1}{\sqrt{\kappa}}\sqrt{w(x)}+o(\kappa^{-1/2}),
 \lambda(\delta)=\log(1+\kappa)=\log\frac{A_{1/2}(w)^2-1}{\delta}+o(1)
 \)。
 由 \(R'_w(\delta)=-\lambda(\delta)\) 在 \(\delta\downarrow 0\) 的积分并用 \(R_w(0)=H(w)\)（见正文中的端点说明）即得所示展开。证毕。
+\end{proof}
+
+\begin{theorem}[缩放势的两端点渐近]\label{thm:pom-diagonal-rate-scaling-potential-endpoints}
+令有限字母表 \(X\)（\(|X|\ge 2\)），取全支撑分布 \(w\in\Delta(X)\)。
+对 \(\delta\in(0,\delta_0)\)（\(\delta_0:=1-p_2(w)\)），令 \(\psi_\delta\) 为定理 \ref{thm:pom-diagonal-rate-frechet-derivative-scaling-potential} 的缩放势。
+则当 \(\delta\downarrow 0\) 时存在标量 \(c(\delta)\) 使
+\[
+\psi_\delta(x)= -\frac12\log w(x)+c(\delta)+o(1),\qquad x\in X,
+\]
+并且对任意 \(x,y\in X\) 有
+\[
+\psi_\delta(x)-\psi_\delta(y)\ \longrightarrow\ -\frac12\log\frac{w(x)}{w(y)}.
+\]
+另一方面，令 \(\varepsilon:=\delta_0-\delta\downarrow 0^+\)，并记
+\[
+C(w):=p_2(w)+p_2(w)^2-2p_3(w),\qquad p_3(w):=\sum_{x\in X}w(x)^3.
+\]
+则存在标量 \(c_\varepsilon\) 使
+\[
+\psi_\delta(x)=\frac{\varepsilon}{C(w)}\Bigl(\frac{p_2(w)}{2}-w(x)\Bigr)+c_\varepsilon+O(\varepsilon^2),
+\qquad x\in X.
+\]
+\end{theorem}
+\begin{proof}
+当 \(\delta\downarrow 0\) 时，由定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 的证明可取规范使 \(u_x=\kappa^{-1/2}\sqrt{w(x)}+o(\kappa^{-1/2})\)，从而
+\[
+\psi_\delta(x)=\log\frac{u_x}{w(x)}=-\frac12\log w(x)-\frac12\log\kappa+o(1).
+\]
+取 \(c(\delta):=-(1/2)\log\kappa\) 即得第一式；差分极限由常数项抵消直接推出。
+\par
+当 \(\delta\uparrow\delta_0\) 时，定理 \ref{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature} 的证明在规范 \(\sum_x u_x=1\) 下给出展开
+\(
+u_x=w(x)+\kappa w(x)\bigl(p_2(w)-w(x)\bigr)+O(\kappa^2)
+\)
+以及
+\(
+\varepsilon=\delta_0-\delta=\kappa C(w)+O(\kappa^2)
+\)。
+因此
+\[
+\psi_\delta(x)=\log\Bigl(1+\kappa\bigl(p_2(w)-w(x)\bigr)+O(\kappa^2)\Bigr)
+=\kappa\bigl(p_2(w)-w(x)\bigr)+O(\kappa^2).
+\]
+消去 \(\kappa=\varepsilon/C(w)+O(\varepsilon^2)\) 得
+\(
+\psi_\delta(x)=\frac{\varepsilon}{C(w)}\bigl(p_2(w)-w(x)\bigr)+O(\varepsilon^2)
+\)。
+最后将常数项 \(\frac{\varepsilon}{C(w)}\frac{p_2(w)}{2}\) 吸收进 \(c_\varepsilon\) 即得所示形式。证毕。
 \end{proof}
 
 \begin{theorem}[零速率端点的二次起跳：\texorpdfstring{$\delta\uparrow(1-p_2(w))$}{delta->delta0} 时曲率仅依赖 \texorpdfstring{$p_2,p_3$}{p2,p3}]\label{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature}
@@ -349,4 +398,13 @@ w\mapsto u_x/w(x)
 据此对 \(0<\delta_1<\delta_2<\delta_0\) 得 \(\pi_{\delta_1}\prec \pi_{\delta_2}\)，并由端点极限推出 \(\pi_{1/2}\prec \pi_\delta\)。
 证毕。
 \end{proof}
+
+\begin{conjecture}[Schur--凹性与均匀极大原理]\label{conj:pom-diagonal-rate-schur-concavity}
+固定 \(\delta\in[0,1)\)，映射 \(w\mapsto R_w(\delta)\) 在单纯形内点上为 Schur--凹：若 \(v\prec w\)，则
+\[
+R_v(\delta)\ \ge\ R_w(\delta).
+\]
+等价地，在固定支撑大小 \(n\) 下，\(R_w(\delta)\) 的最大值由均匀分布 \(U_n\) 取得。
+该猜想与端点恒等式 \(R_w(0)=H(w)\)、二点字母表的闭式解（定理 \ref{thm:pom-diagonal-rate-binary-closed-form}）以及均匀分布的显式公式（定理 \ref{thm:pom-diagonal-rate-uniform-closed-form}）相容，并与缩放分布的主序插值（定理 \ref{thm:pom-diagonal-rate-pi-majorization-chain}）所揭示的单调结构一致。
+\end{conjecture}
 

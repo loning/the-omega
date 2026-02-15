@@ -1,5 +1,6 @@
 % (User input window)
 % 2026-02-15 05:21:32（Asia/Singapore）
+% 2026-02-15 05:42:10（Asia/Singapore）
 
 \begin{conclusion}[\texorpdfstring{$(q=2)$}{(q=2)} 的重量—碰撞配分函数：六阶常系数递推与有理生成函数]\label{con:xi-terminal-zm2-order6-rational}
 令
@@ -219,6 +220,227 @@ Z_m^{(q)}(0)=d_m(0^m)^q=\Bigl\lfloor\frac{m+2}{2}\Bigr\rfloor^q,
 d_m(0^m)=1+r_m=\lfloor (m+2)/2\rfloor
 \)。
 代回 \(Z_m^{(q)}(0)\) 即得结论。证毕。
+\end{proof}
+
+\begin{conclusion}[最大重量层的稳定词分类与纤维谱闭式：\texorpdfstring{$|x|_1=\lceil m/2\rceil$}{|x|=ceil(m/2)}]\label{con:xi-terminal-max-weight-layer-fiber-spectrum-closed}
+定义最大重量层
+\[
+X_m^{\max}:=\Bigl\{x\in X_m:\ |x|_1=\Bigl\lceil\frac{m}{2}\Bigr\rceil\Bigr\}.
+\]
+则：
+\begin{enumerate}
+  \item 若 \(m=2k+1\) 为奇数，则 \(X_{2k+1}^{\max}=\{(10)^k1\}\)，并且
+  \[
+  d_{2k+1}\bigl((10)^k1\bigr)=1.
+  \]
+  \item 若 \(m=2k\) 为偶数，则 \(|X_{2k}^{\max}|=k+1\)，且可取显式参数化
+  \[
+  x^{(r)}:=(10)^r(01)^{k-r}\qquad(0\le r\le k),
+  \]
+  其中 \((10)^r\) 表示长度 \(2r\) 的交替前缀 \(10\cdots10\)。
+  该层上的纤维多重度满足
+  \[
+  d_{2k}\bigl(x^{(0)}\bigr)=1,\qquad
+  d_{2k}\bigl(x^{(r)}\bigr)=k-r+1\ \ (1\le r\le k),
+  \]
+  等价地，
+  \[
+  \{d_{2k}(x):x\in X_{2k}^{\max}\}=\{1,1,2,3,\dots,k\}.
+  \]
+\end{enumerate}
+\end{conclusion}
+\begin{proof}
+关于 \(X_m^{\max}\) 的分类仅依赖合法语法约束 \(x_ix_{i+1}=0\)：为达到 \(\lceil m/2\rceil\) 的最大 \(1\)-计数，除边界外每个 \(1\) 必被 \(0\) 隔开，故词必须为交替结构；当 \(m\) 为奇数时交替词唯一，偶数时恰允许出现一次 \(00\) 缺陷，从而得到上述 \(x^{(r)}\) 族。
+\par
+纤维多重度闭式使用 Zeckendorf 值函数 \(V_m(x)=\sum_{i=1}^m x_iF_{i+1}\) 与微态值 \(N(\omega)=\sum_{i=1}^m\omega_iF_{i+1}\)（见脚本 \texttt{scripts/common\_phi\_fold.py} 的口径）。当 \(x\in X_m\) 时，
+\(\Fold_m(\omega)=x\) 当且仅当 \(N(\omega)\) 的 Zeckendorf 数码在长度 \(m\) 上与 \(x\) 相同；因此在本结论所述的最大重量词上（均满足 \(V_m(x)<F_{m+2}\)），纤维大小等于
+\[
+d_m(x)=\#\Bigl\{\omega\in\{0,1\}^m:\ N(\omega)=V_m(x)\Bigr\}.
+\]
+下证偶数情形的闭式；奇数情形可由同一“表示唯一性”论证推出 \(d_{2k+1}((10)^k1)=1\)。
+\par
+令 \(m=2k\) 且 \(0\le r\le k\)。由 \(x^{(r)}\) 的交替结构与两类求和恒等式
+\[
+\sum_{j=1}^{r}F_{2j}=F_{2r+1}-1,\qquad
+\sum_{j=r+1}^{k}F_{2j+1}=F_{2k+2}-F_{2r+2},
+\]
+得到其 Zeckendorf 值的闭式
+\[
+V_{2k}\bigl(x^{(r)}\bigr)=\sum_{j=1}^{r}F_{2j}+\sum_{j=r+1}^{k}F_{2j+1}
+=F_{2k+2}-F_{2r}-1.
+\]
+因此，若令
+\[
+\mathcal{R}_{k,r}:=\Bigl\{S\subseteq\{2,3,\dots,2k+1\}:\ \sum_{n\in S}F_n=F_{2k+2}-F_{2r}-1\Bigr\},
+\]
+则 \(d_{2k}(x^{(r)})=\card{\mathcal{R}_{k,r}}\)。
+\par
+\noindent\textbf{(1) \(r=0\) 时的唯一性。}
+此时目标和为 \(F_{2k+2}-1\)。若不取最大项 \(F_{2k+1}\)，则最大可得和为
+\(\sum_{n=2}^{2k}F_n=F_{2k+2}-2\)，不足以达到目标；故每个表示都必须取用 \(F_{2k+1}\)。
+从而表示集合与 \(\mathcal{R}_{k-1,0}\) 一一对应，且以 \(k=1\) 为初值知 \(\card{\mathcal{R}_{k,0}}=1\)。
+\par
+\noindent\textbf{(2) \(1\le r\le k\) 时的递推与闭式。}
+把 \(\mathcal{R}_{k,r}\) 按是否取用最大项 \(F_{2k+1}\) 分解。若 \(F_{2k+1}\in S\)，则余项必须表示
+\[
+F_{2k+2}-F_{2r}-1-F_{2k+1}=F_{2k}-F_{2r}-1,
+\]
+并且由于 \(F_{2k}-F_{2r}-1<F_{2k}\)，该表示不可能再取用 \(F_{2k}\)，从而与 \(\mathcal{R}_{k-1,r}\)（在权集合 \(\{2,\dots,2k-1\}\) 上）严格一一对应。
+\par
+若 \(F_{2k+1}\notin S\)，则 \(S\subseteq\{2,\dots,2k\}\)，而此时目标和相对于全取用之最大和的缺口为
+\[
+\Bigl(\sum_{n=2}^{2k}F_n\Bigr)-\bigl(F_{2k+2}-F_{2r}-1\bigr)=F_{2r}-1.
+\]
+因此不取用 \(F_{2k+1}\) 的表示与对缺口 \(F_{2r}-1\) 的“删去子集”一一对应。又由贪心强制律：
+若 \(T\subseteq\{2,\dots,2r-1\}\) 满足 \(\sum_{n\in T}F_n=F_{2r}-1\)，则必须有 \(F_{2r-1}\in T\)，并递归推出
+\(
+T=\{3,5,\dots,2r-1\}
+\) 唯一。
+从而 \(\mathcal{R}_{k,r}\) 中恰存在唯一一个不含 \(F_{2k+1}\) 的表示。
+\par
+综上，对 \(1\le r\le k\) 有递推
+\(
+\card{\mathcal{R}_{k,r}}=\card{\mathcal{R}_{k-1,r}}+1
+\)
+并以边界初值 \(\card{\mathcal{R}_{r,r}}=1\)（对应 \(F_{2r+1}-1\) 的唯一表示）解得
+\(
+\card{\mathcal{R}_{k,r}}=k-r+1
+\)。
+这与 \(d_{2k}(x^{(r)})=\card{\mathcal{R}_{k,r}}\) 合并即得结论。
+\end{proof}
+
+\begin{conclusion}[重量—碰撞配分函数的顶层系数：最大重量层强制 Faulhaber 幂和]\label{con:xi-terminal-zq-top-coefficient-faulhaber}
+对整数 \(q\ge 1\) 定义重量—碰撞配分函数
+\[
+Z_m^{(q)}(y):=\sum_{x\in X_m}y^{|x|_1}\,d_m(x)^q\in\ZZ[y].
+\]
+则其顶层系数（即 \(y^{\lceil m/2\rceil}\) 的系数）具有完全闭式：
+\begin{enumerate}
+  \item 若 \(m=2k+1\)，则 \([y^{k+1}]Z_{2k+1}^{(q)}(y)=1\)。
+  \item 若 \(m=2k\)，则
+  \[
+  [y^{k}]Z_{2k}^{(q)}(y)=1+\sum_{j=1}^{k}j^{q}.
+  \]
+\end{enumerate}
+\end{conclusion}
+\begin{proof}
+顶层系数等于最大重量层上幂和 \(\sum_{x\in X_m^{\max}}d_m(x)^q\)。由结论 \ref{con:xi-terminal-max-weight-layer-fiber-spectrum-closed} 的谱 \(\{1\}\)（奇数）与 \(\{1,1,2,\dots,k\}\)（偶数）直接得到两式。证毕。
+\end{proof}
+
+\begin{conclusion}[顶层扇区的生成函数：分母阶为 \texorpdfstring{$(1-t)^{q+2}$}{(1-t)^{q+2}}]\label{con:xi-terminal-max-weight-top-sector-ogf}
+令
+\(
+b_k^{(q)}:=[y^{k}]Z_{2k}^{(q)}(y)=1+\sum_{j=1}^{k}j^{q}
+\)
+（\(q\ge 1\) 固定）。
+则其普通生成函数满足严格恒等式
+\[
+\sum_{k\ge 0} b_k^{(q)}t^{k}
+=\frac{1}{1-t}+\frac{1}{1-t}\sum_{j\ge 1}j^{q}t^{j}.
+\]
+从而 \(\sum_{k\ge 0} b_k^{(q)}t^{k}\) 为有理函数，且在 \(t=1\) 处具有阶恰为 \(q+2\) 的极点（因此分母可取为 \((1-t)^{q+2}\)）。
+\end{conclusion}
+\begin{proof}
+由 \(b_k^{(q)}=1+\sum_{j=1}^k j^q\) 作求和交换：
+\[
+\sum_{k\ge 0}b_k^{(q)}t^k=\sum_{k\ge 0}t^k+\sum_{k\ge 0}\sum_{j=1}^{k}j^q t^k
+=\frac{1}{1-t}+\sum_{j\ge 1}j^q\sum_{k\ge j}t^k,
+\]
+而 \(\sum_{k\ge j}t^k=t^j/(1-t)\) 得所示恒等式。
+又 \(\sum_{j\ge 1}j^q t^j\) 为负整数阶 polylog，等价于一个以 \((1-t)^{-(q+1)}\) 为分母的有理函数；
+乘以 \((1-t)^{-1}\) 后得到分母阶至多 \(q+2\)。
+另一方面 \(b_k^{(q)}\sim k^{q+1}/(q+1)\)，故生成函数在 \(t=1\) 处的极点阶不能小于 \(q+2\)，从而阶恰为 \(q+2\)。证毕。
+\end{proof}
+
+\begin{conclusion}[硬边界事件的精确概率：\texorpdfstring{$H_m=\lceil m/2\rceil$}{H_m=ceil(m/2)} 的多项式前因子]\label{con:xi-terminal-hard-boundary-event-probability}
+令 \(w_m(x)=d_m(x)/2^m\) 为均匀微态推前分布，取 \(X\sim w_m\)，并记 \(H_m:=|X|_1\)。
+则最大重量事件 \(H_m=\lceil m/2\rceil\) 的概率具有闭式：
+\begin{enumerate}
+  \item \(m=2k+1\)：\(\mathbb{P}(H_m=k+1)=2^{-(2k+1)}\)；
+  \item \(m=2k\)：\(\mathbb{P}(H_m=k)=\bigl(1+\tfrac{k(k+1)}{2}\bigr)\,2^{-2k}\)。
+\end{enumerate}
+并且当 \(k\to\infty\) 时
+\[
+\log \mathbb{P}(H_{2k}=k)= -2k\log 2 +2\log k +O(1),
+\]
+表明该硬边界处的指数速率固定为 \(\log 2\)，而前因子具有可计算的多项式阶 \(k^2\) 修正。
+\end{conclusion}
+\begin{proof}
+由定义 \(\mathbb{P}(H_m=\ell)=2^{-m}\sum_{|x|_1=\ell}d_m(x)\)，右端即为 \(Z_m(y)\) 的 \(y^\ell\) 系数除以 \(2^m\)。
+对 \(\ell=\lceil m/2\rceil\)，该系数等于结论 \ref{con:xi-terminal-zq-top-coefficient-faulhaber} 在 \(q=1\) 的顶层系数，代回即得两条闭式；渐近式由 \(\log(1+k(k+1)/2)=2\log k+O(1)\) 得到。证毕。
+\end{proof}
+
+\begin{conclusion}[最大重量层上的 \texorpdfstring{$q$}{q}-倾斜极限：\texorpdfstring{$J_k/k\Rightarrow \mathrm{Beta}(q+1,1)$}{Jk/k -> Beta(q+1,1)}]\label{con:xi-terminal-max-weight-escort-beta-limit}
+在偶数长度 \(m=2k\) 上，考虑最大重量层条件下的 \(q\)-倾斜测度
+\[
+\mathbb{P}_{k,q}(x\in\cdot):=\frac{\sum_{x\in X_{2k}^{\max}} d_{2k}(x)^{q}\,\mathbf 1_{\{x\in\cdot\}}}{\sum_{x\in X_{2k}^{\max}} d_{2k}(x)^{q}}
+\qquad(q\ge 1).
+\]
+令 \(X\sim\mathbb{P}_{k,q}\)，并设 \(J_k:=d_{2k}(X)\)。
+则由结论 \ref{con:xi-terminal-max-weight-layer-fiber-spectrum-closed} 的谱 \(\{1,1,2,\dots,k\}\) 有
+\[
+\mathbb{P}(J_k=j)=\frac{j^{q}}{1+\sum_{i=1}^{k} i^{q}}\ (2\le j\le k),\qquad
+\mathbb{P}(J_k=1)=\frac{2}{1+\sum_{i=1}^{k} i^{q}}.
+\]
+并且在尺度极限下有弱收敛
+\[
+\frac{J_k}{k}\ \Rightarrow\ \mathrm{Beta}(q+1,1),
+\qquad \text{密度为 }(q+1)x^{q}\mathbf 1_{[0,1]}(x).
+\]
+\end{conclusion}
+\begin{proof}
+概率质量函数由谱的计数（\(j=1\) 出现两次，其余 \(j=2,\dots,k\) 各出现一次）直接得到。
+对弱收敛，令 \(f\) 为 \([0,1]\) 上连续函数，则
+\[
+\mathbb{E}\Bigl[f\Bigl(\frac{J_k}{k}\Bigr)\Bigr]
+=\frac{2\cdot f(1/k)\cdot 1^{q}+\sum_{j=2}^{k} f(j/k)\,j^{q}}{1+\sum_{i=1}^{k} i^{q}}
+=\frac{\sum_{j=1}^{k} f(j/k)\,j^{q}}{\sum_{i=1}^{k} i^{q}}+o(1),
+\]
+其中 \(o(1)\) 来自 \(j=1\) 的双重计数在归一化下的可忽略性。
+将分子分母同除以 \(k^{q+1}\)，并把和式视为 Riemann 和，即得极限
+\(
+\int_{0}^{1}f(x)x^{q}\,\dd x\,/\,\int_0^1 x^{q}\dd x
+\)
+对应的 \(\mathrm{Beta}(q+1,1)\) 分布。证毕。
+\end{proof}
+
+\begin{conclusion}[缺陷位置的尺度极限：\texorpdfstring{$R_k/k\Rightarrow \mathrm{Beta}(1,q+1)$}{Rk/k -> Beta(1,q+1)} 与重心比例]\label{con:xi-terminal-max-weight-defect-localization}
+沿结论 \ref{con:xi-terminal-max-weight-layer-fiber-spectrum-closed} 的参数化 \(x^{(r)}=(10)^r(01)^{k-r}\)，令 \(R_k\) 为随机缺陷参数（即 \(X=x^{(R_k)}\) 的指标）。
+则在结论 \ref{con:xi-terminal-max-weight-escort-beta-limit} 的 \(\mathbb{P}_{k,q}\) 下，有
+\[
+\frac{R_k}{k}\ \Rightarrow\ \mathrm{Beta}(1,q+1),
+\qquad \text{密度为 }(q+1)(1-x)^q\mathbf 1_{[0,1]}(x).
+\]
+特别地其重心比例满足
+\[
+\frac{1}{k}\mathbb{E}[R_k]\to \frac{1}{q+2},
+\qquad
+\frac{1}{k}\mathbb{E}[d_{2k}(X)]\to \frac{q+1}{q+2}.
+\]
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-terminal-max-weight-layer-fiber-spectrum-closed}，在 \(r\ge 1\) 上有确定关系
+\(
+J_k=d_{2k}(x^{(R_k)})=k-R_k+1
+\)。
+并且
+\(
+\mathbb{P}_{k,q}(R_k=0)=\frac{1}{1+\sum_{i=1}^{k}i^q}\to 0
+\)。
+因此对任意连续函数 \(f:[0,1]\to\RR\)，可作变量代换 \(j=k-r+1\) 得
+\[
+\mathbb{E}_{k,q}\Bigl[f\Bigl(\frac{R_k}{k}\Bigr)\Bigr]
+=\frac{f(0)+\sum_{r=1}^{k} f(r/k)\,(k-r+1)^q}{1+\sum_{i=1}^{k}i^q}
+=\frac{\sum_{j=1}^{k} f\!\bigl(1-j/k+1/k\bigr)\,j^q}{\sum_{i=1}^{k}i^q}+o(1).
+\]
+将分子分母同除以 \(k^{q+1}\) 并取 Riemann 和极限，得到
+\[
+\lim_{k\to\infty}\mathbb{E}_{k,q}\Bigl[f\Bigl(\frac{R_k}{k}\Bigr)\Bigr]
+=\frac{\int_{0}^{1} f(1-x)\,x^q\,\dd x}{\int_{0}^{1}x^q\,\dd x}
+=\int_{0}^{1} f(u)\,(q+1)(1-u)^q\,\dd u,
+\]
+即 \(R_k/k\Rightarrow \mathrm{Beta}(1,q+1)\)。
+由于 \(R_k/k\) 与 \(J_k/k\) 均一致有界于 \([0,1]\)，重心比例由弱收敛与 Beta 分布均值公式直接推出。证毕。
 \end{proof}
 
 \begin{conclusion}[\texorpdfstring{$t=\pm1$}{t=±1} 直线的零轨迹：重量参数的代数曲线量子化]\label{con:xi-terminal-zq-line-tpm1-zeros}
