@@ -1262,6 +1262,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="hellinger_toeplitz_theta_hankel_certificate",
+            script="exp_hellinger_toeplitz_theta_hankel_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/hellinger_toeplitz_theta_hankel_certificate.json",
+            ],
+        ),
+        Step(
+            name="hellinger_gram_mechanics_total_positivity_certificate",
+            script="exp_hellinger_gram_mechanics_total_positivity_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/hellinger_gram_mechanics_total_positivity_certificate.json",
+            ],
+        ),
+        Step(
+            name="hellinger_volume_monotonicity_toeplitz_extrema_free_energy_certificate",
+            script="exp_hellinger_volume_monotonicity_toeplitz_extrema_free_energy_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/hellinger_volume_monotonicity_toeplitz_extrema_free_energy_certificate.json",
+            ],
+        ),
+        Step(
             name="phi_m_sofic_entropy",
             script="exp_phi_m_sofic_entropy.py",
             args=[],

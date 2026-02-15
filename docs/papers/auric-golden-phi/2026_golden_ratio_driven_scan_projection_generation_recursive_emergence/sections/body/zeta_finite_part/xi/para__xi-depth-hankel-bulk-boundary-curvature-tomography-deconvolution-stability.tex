@@ -84,6 +84,15 @@ p=\phi*\nu.
 展开即得。证毕。
 \end{proof}
 
+\begin{corollary}[一般位置下的深度谱唯一性：由差分多重集刚性反演点集]\label{cor:xi-bulk-curvature-difference-multiset-rigid-inversion}
+设深度谱 \(\{\sigma_j\}_{j=1}^{\kappa}\subset\RR\) 满足一般位置条件：除 \(0\) 外，差分多重集 \(\mathcal D=\{\sigma_j-\sigma_k\}_{j,k}\) 不含重元，即对任意 \(\Delta\neq 0\) 有 \(m(\Delta)\in\{0,1\}\)。
+则差分多重集 \((\mathcal D,m)\) 唯一确定无序多重集 \(\{\sigma_j\}\) 于整体平移与反射不变换之下；并且该反演可由有限步组合算法实现。
+结合推论 \ref{cor:xi-bulk-curvature-modsquare-holography}，在该一般位置假设下，模平方数据 \(|\widehat p(\xi)|^{2}\) 已足以将深度谱锁定到仅剩 \(\RR\rtimes\ZZ_2\) 的全局对称自由度。
+\end{corollary}
+\begin{proof}[证明要点]
+这是经典 turnpike/Golomb ruler 反演问题的标准刚性结论：最大差分给出两端点间距，递归地从差分多重集中剥离与端点兼容的差分，并在一般位置假设下消除分支，从而得到唯一解；平移与反射为唯一残余对称。证毕。
+\end{proof}
+
 \begin{corollary}[超分辨率屏障常数 \texorpdfstring{$\pi$}{pi}：深度分离的稳定阈值为 \texorpdfstring{$\exp(-\pi/\Delta)$}{exp(-pi/Delta)}]\label{cor:xi-bulk-curvature-superresolution-pi-barrier}
 设观测到的曲率概率密度为 \(\widetilde p=p+\eta\)，并假定 Fourier 噪声在带宽 \(|\xi|\le\Omega\) 内满足
 \[
@@ -115,6 +124,30 @@ p=\phi*\nu.
 在噪声约束下选择相位对齐的 \(\widehat\eta\) 可达到最坏情形放大因子 \(\sinh(\pi\Omega)/(\pi\Omega)\)。
 再与分辨率--带宽互反标尺 \(\Omega\gtrsim 1/\Delta\) 合并即可。证毕。
 \end{proof}
+
+% (User input window)
+% 时间：2026-02-16 02:05:41（Asia/Singapore）
+
+\begin{remark}[双重不可逾越界：原子数—分离度—精度的联合极限]\label{rem:xi-bulk-curvature-double-barrier-kappa-separation-precision}
+在深度谱恢复问题中，分离度 \(\Delta_{\min}\) 同时受到两条互不替代的制度性门槛约束：
+\begin{itemize}
+\item \textbf{体积稳定门槛（Gram 侧）}：
+若希望 Hellinger--Gram 体积不发生簇化塌缩，则需进入准正交相的分离阈值（推论 \ref{cor:xi-hellinger-quasi-orthogonal-phase}）。
+反之，一旦 \(\Delta_{\min}\) 被迫随 \(\kappa\) 缩小，则簇化条件数以 \(\kappa(\kappa-1)\) 次幂制度爆炸（推论 \ref{cor:xi-hellinger-gram-cluster-conditioning-exponent}）。
+\item \textbf{可辨识门槛（反卷积侧）}：
+要在分离度 \(\Delta_{\min}\) 下稳定区分原子，噪声预算必须满足
+\(
+\varepsilon\lesssim \exp(-\pi/\Delta_{\min})
+\)
+（推论 \ref{cor:xi-bulk-curvature-superresolution-pi-barrier}）。
+在固定跨度 \(L=\sigma_\kappa-\sigma_1\) 的约束下有 \(\Delta_{\min}\le L/(\kappa-1)\)，从而噪声门槛进一步压缩为
+\[
+\varepsilon\lesssim \exp\!\Bigl(-\frac{\pi(\kappa-1)}{L}\Bigr),
+\]
+即精度成本对 \(\kappa\) 呈指数级增长。
+\end{itemize}
+因此在任何限制 \(\Delta_{\min}\) 随 \(\kappa\) 缩小的预算口径下，原子数提升与稳定恢复不可同时进入任意高秩与任意小误差的双极限；可行域由 \(\Delta_{\min}\) 的双重门槛共同截断。
+\end{remark}
 
 \begin{proposition}[极点--整函数二分解：尺度曲率母函数的通用晶格奇性与深度因子]\label{prop:xi-bulk-curvature-moment-generating-factorization}
 定义母函数（双侧 Laplace 变换）
@@ -186,6 +219,38 @@ E(n)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}y_j^{n}.
 在 \(t=n\) 的留数为 \((-1)^n n\)，与因子化式相乘即得留数公式。
 第二部分为经典幂和反演：\(\{y_j\}\) 两两不同下，幂和序列满足阶数为 \(\kappa\) 的线性递推；
 由 \(\{E(n)\}_{n=1}^{2\kappa}\) 可构造 Hankel 系统解出递推系数，从而得到以 \(\{y_j\}\) 为根的首一多项式并恢复 \(\{y_j\}\)，进而恢复 \(\{\delta_j=y_j^{-1}\}\)。证毕。
+\end{proof}
+
+% (User input window)
+% 时间：2026-02-16 02:18:37（Asia/Singapore）
+
+\begin{corollary}[整数留数的极值重建：最大深度与重数的无损读出]\label{cor:xi-bulk-curvature-residue-extremal-recovery}
+在推论 \ref{cor:xi-bulk-curvature-residue-dirichlet-data} 的设定下，令
+\[
+R_n:=(-1)^n\,\frac{1}{n}\operatorname*{Res}_{t=n}\zeta_{\mathrm{scale}}(t)=E(n)\qquad(n\in\NN).
+\]
+记最大深度与其重数为
+\[
+\sigma_{\max}:=\max_{1\le j\le\kappa}\sigma_j,
+\qquad
+r_{\max}:=\card\{j:\ \sigma_j=\sigma_{\max}\}.
+\]
+则有严格极限公式
+\[
+\boxed{\;
+\sigma_{\max}=\lim_{n\to\infty}\frac{1}{n}\log\bigl(\kappa R_n\bigr),\qquad
+r_{\max}=\lim_{n\to\infty}\kappa R_n\,e^{-n\sigma_{\max}}\in\NN.\;}
+\]
+因此“最深缺陷”及其重数无需全谱反演即可由整数极点的留数序列直接证书化。
+\end{corollary}
+\begin{proof}[证明要点]
+由 \(R_n=E(n)=\kappa^{-1}\sum_{j=1}^{\kappa}e^{n\sigma_j}\)，将最大深度项分离得
+\[
+\kappa R_n=r_{\max}e^{n\sigma_{\max}}+\sum_{\sigma_j<\sigma_{\max}}e^{n\sigma_j}
+=r_{\max}e^{n\sigma_{\max}}\Bigl(1+O(e^{-n(\sigma_{\max}-\sigma_2)})\Bigr),
+\]
+其中 \(\sigma_2\) 为次大深度（若不存在则误差视为 \(0\)）。
+两端取对数并除以 \(n\) 即得 \(\sigma_{\max}\) 的极限；再将上式乘以 \(e^{-n\sigma_{\max}}\) 取极限即得 \(r_{\max}\)。证毕。
 \end{proof}
 
 \begin{remark}[尺度 Euler--Möbius 原语账本：幂和矩与 primitive 序列的互换]\label{rem:xi-bulk-curvature-euler-mobius-ledger}
