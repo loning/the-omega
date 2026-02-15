@@ -1,0 +1,187 @@
+% (User input window)
+% 2026-02-15 22:04:06（Asia/Singapore）
+% According to an internal note dated 2026-02-14.
+
+推论 \ref{cor:xi-bulk-entropy-strict-convexity} 给出的二阶尺度响应具有固定核形状，从而 bulk 熵的曲率在尺度轴上形成一条可层析、可归一并可识别的深度谱接口。
+
+\begin{proposition}[尺度熵曲率的 logistic 核分解：临界尺度 \texorpdfstring{$\sigma_j=-\log\delta_j$}{sigma_j=-log delta_j}]\label{prop:xi-bulk-curvature-logistic-kernel-decomposition}
+在推论 \ref{cor:xi-bulk-entropy-strict-convexity} 的有限原子设定下，定义 bulk 尺度熵曲率密度
+\[
+\mathcal{K}_{\mathrm{bulk}}(s):=\frac{\dd^{2}}{\dd s^{2}}S_{\mathrm{bulk}}(e^{s})\qquad(s\in\RR),
+\]
+并引入标准 logistic 密度
+\[
+\phi(t):=\frac{e^{t}}{(1+e^{t})^{2}}\qquad(t\in\RR),
+\]
+以及临界尺度 \(\sigma_j:=-\log\delta_j\)。
+则有严格分解
+\[
+\boxed{\;
+\frac{1}{2\kappa-1}\mathcal{K}_{\mathrm{bulk}}(s)=\sum_{j=1}^{\kappa}\phi(s-\sigma_j).\;}
+\]
+并且 \(\phi\) 在 \(\RR\) 上单峰：其唯一最大值为 \(\phi(0)=\tfrac14\)，且对任意 \(t\neq 0\) 有 \(\phi(t)<\tfrac14\)。
+因此 \(\{\sigma_j\}\) 给出曲率核族在尺度轴上的平移中心，对应统一伸缩 \(m=e^s\) 下的临界尺度 \(m\asymp \delta_j^{-1}\)。
+\end{proposition}
+\begin{proof}
+由推论 \ref{cor:xi-bulk-entropy-strict-convexity}，
+\[
+\mathcal{K}_{\mathrm{bulk}}(s)
+=(2\kappa-1)\sum_{j=1}^{\kappa}\frac{e^{s}\delta_j}{(1+e^{s}\delta_j)^{2}}.
+\]
+记 \(\delta_j=e^{-\sigma_j}\)，则 \(\frac{e^{s}\delta_j}{(1+e^{s}\delta_j)^{2}}=\phi(s-\sigma_j)\)，得到所示分解。
+另一方面，
+\[
+\phi'(t)=\frac{e^{t}(1-e^{t})}{(1+e^{t})^{3}},
+\]
+故 \(\phi'(t)>0\) 当 \(t<0\)、\(\phi'(t)<0\) 当 \(t>0\)，从而 \(\phi\) 单峰且最大值在 \(t=0\) 唯一取得；\(\phi(0)=\tfrac14\) 由代入得到。证毕。
+\end{proof}
+
+\begin{corollary}[熵曲率的总质量量子化：\texorpdfstring{$\int\mathcal{K}_{\mathrm{bulk}}=\kappa(2\kappa-1)$}{int K_bulk = k(2k-1)}]\label{cor:xi-bulk-curvature-mass-quantization}
+在命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition} 的记号下，有
+\[
+\boxed{\;
+\int_{-\infty}^{\infty}\mathcal{K}_{\mathrm{bulk}}(s)\,\dd s=\kappa(2\kappa-1),
+\qquad
+\int_{-\infty}^{\infty}\phi(s-\sigma_j)\,\dd s=1\ \ (1\le j\le\kappa).\;}
+\]
+\end{corollary}
+\begin{proof}
+对任意固定 \(j\)，令 \(u=e^{s-\sigma_j}\)，则 \(\dd s=\dd u/u\)，并且
+\[
+\int_{-\infty}^{\infty}\phi(s-\sigma_j)\,\dd s
+=\int_{0}^{\infty}\frac{u}{(1+u)^2}\frac{\dd u}{u}
+=\int_{0}^{\infty}\frac{\dd u}{(1+u)^2}
+=1.
+\]
+将其代入命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition} 的分解式即得曲率总质量公式。证毕。
+\end{proof}
+
+\begin{proposition}[熵曲率层析的可识别性：由 \texorpdfstring{$\mathcal{K}_{\mathrm{bulk}}$}{K_bulk} 唯一重建深度谱]\label{prop:xi-bulk-curvature-tomography-identifiability}
+固定 \(\kappa\) 并设 \(\mathcal{K}_{\mathrm{bulk}}:\RR\to\RR\) 已知为连续函数，且满足命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition} 的有限原子分解。
+则多重集 \(\{\sigma_j\}_{j=1}^{\kappa}\)（从而 \(\{\delta_j=e^{-\sigma_j}\}_{j=1}^{\kappa}\)）由 \(\mathcal{K}_{\mathrm{bulk}}\) 唯一确定（忽略排列）。
+\end{proposition}
+\begin{proof}
+取 Fourier 变换
+\[
+\widehat f(\xi):=\int_{\RR}e^{-\mathrm{i}\xi s}f(s)\,\dd s.
+\]
+记 \(\widehat\phi(0)=1\) 为连续延拓值，则 \(\phi\) 的 Fourier 变换具有经典闭式
+\[
+\widehat\phi(\xi)=\frac{\pi\xi}{\sinh(\pi\xi)}\qquad(\xi\in\RR),
+\qquad
+\widehat\phi(\xi)\neq 0\quad(\xi\in\RR).
+\]
+对命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition} 两边取 Fourier 变换得
+\[
+\sum_{j=1}^{\kappa}e^{-\mathrm{i}\xi\sigma_j}
+=\frac{1}{\widehat\phi(\xi)}\cdot
+\widehat{\Bigl(\frac{1}{2\kappa-1}\mathcal{K}_{\mathrm{bulk}}\Bigr)}(\xi)
+\qquad(\xi\in\RR).
+\]
+右端由 \(\mathcal{K}_{\mathrm{bulk}}\) 决定，故得到离散测度 \(\nu:=\sum_{j=1}^{\kappa}\delta_{\sigma_j}\) 的 Fourier 变换 \(\widehat\nu(\xi)=\sum_j e^{-\mathrm{i}\xi\sigma_j}\)。
+Fourier 变换在有限 Radon 测度上为单射，因此 \(\nu\)（等价多重集 \(\{\sigma_j\}\)）唯一确定；从而 \(\delta_j=e^{-\sigma_j}\) 唯一确定。证毕。
+\end{proof}
+
+\begin{remark}[全息差额的闭式尺度轨迹：\texorpdfstring{$\Xi(e^s)$}{Xi(e^s)} 的等价表达]\label{rem:xi-holographic-gap-closed-trajectory}
+推论 \ref{cor:xi-bulk-boundary-holographic-gap-dissipation} 的闭式可在对数尺度变量 \(s=\log m\) 下改写为
+\[
+\Xi(e^s)
+=\Xi(1)-(2\kappa-1)\sum_{j=1}^{\kappa}\log\!\Bigl(\frac{e^{s}(1+\delta_j)}{1+e^{s}\delta_j}\Bigr),
+\]
+从而 \(\Xi(e^s)\) 的全部尺度依赖由 \(\{\delta_j\}\) 的 logistic 尾项封闭。
+\end{remark}
+
+\begin{proposition}[伸缩流的速度匹配：bulk 与 boundary 的熵增长率在唯一尺度相交]\label{prop:xi-bulk-boundary-speed-matching}
+设 \(\kappa\ge 2\)。
+定义
+\[
+v_{\mathrm{bulk}}(s):=\frac{\dd}{\dd s}S_{\mathrm{bulk}}(e^s),
+\qquad
+v_{\mathrm{gen}}(s):=\frac{\dd}{\dd s}S_{\mathrm{gen}}(e^s)=\kappa
+\]
+（其中等号由推论 \ref{cor:xi-pick-poisson-entropy-derivative-visible-dimension} 给出）。
+则存在唯一 \(s_\star\in\RR\) 使 \(v_{\mathrm{bulk}}(s_\star)=v_{\mathrm{gen}}(s_\star)\)。
+该唯一尺度满足显式方程
+\[
+\boxed{\;
+\sum_{j=1}^{\kappa}\frac{1}{1+e^{s_\star}\delta_j}=\frac{\kappa(\kappa-1)}{2\kappa-1}.\;}
+\]
+\end{proposition}
+\begin{proof}
+由推论 \ref{cor:xi-bulk-entropy-strict-convexity}，\(v_{\mathrm{bulk}}'(s)=\mathcal{K}_{\mathrm{bulk}}(s)>0\)，故 \(v_{\mathrm{bulk}}\) 在 \(\RR\) 上严格递增。
+由推论 \ref{cor:xi-bulk-entropy-rg-staircase} 的闭式，
+\[
+\lim_{s\to-\infty}v_{\mathrm{bulk}}(s)=\kappa^2-(2\kappa-1)\kappa=-\kappa(\kappa-1),
+\qquad
+\lim_{s\to\infty}v_{\mathrm{bulk}}(s)=\kappa^2.
+\]
+当 \(\kappa\ge 2\) 时有 \(-\kappa(\kappa-1)<\kappa<\kappa^2\)，故由介值定理存在 \(s_\star\) 使 \(v_{\mathrm{bulk}}(s_\star)=\kappa\)；严格递增性给出唯一性。
+将 \(v_{\mathrm{bulk}}(s_\star)=\kappa\) 代入推论 \ref{cor:xi-bulk-entropy-rg-staircase} 的闭式并整理即得所示方程。证毕。
+\end{proof}
+
+\begin{corollary}[曲率概率化：归一曲率给出尺度分布，其矩分解为普适项与深度谱项]\label{cor:xi-bulk-curvature-probability-moments}
+在命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition} 的记号下，令
+\[
+p(s):=\frac{1}{\kappa(2\kappa-1)}\mathcal{K}_{\mathrm{bulk}}(s).
+\]
+则 \(p\) 为 \(\RR\) 上概率密度，并具有等权混合表示
+\[
+\boxed{\;
+p(s)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}\phi(s-\sigma_j).\;}
+\]
+记 \(\bar\sigma:=\frac{1}{\kappa}\sum_{j=1}^\kappa\sigma_j\) 并定义离散方差
+\[
+\Var(\sigma):=\frac{1}{\kappa}\sum_{j=1}^{\kappa}(\sigma_j-\bar\sigma)^2.
+\]
+则一阶矩与二阶中心矩满足分解
+\[
+\boxed{\;
+\int_{\RR}s\,p(s)\,\dd s=\bar\sigma,\qquad
+\int_{\RR}(s-\bar\sigma)^2\,p(s)\,\dd s=\frac{\pi^2}{3}+\Var(\sigma).\;}
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:xi-bulk-curvature-mass-quantization} 得 \(\int_{\RR}p(s)\dd s=1\)，故 \(p\) 为概率密度；混合表示由命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition} 直接得到。
+由于 \(\phi\) 为中心 logistic 分布密度，满足 \(\int_{\RR} t\,\phi(t)\dd t=0\) 与 \(\int_{\RR} t^2\,\phi(t)\dd t=\pi^2/3\)。
+对混合分布把变量平移 \(s=t+\sigma_j\) 后逐项积分即可得到均值与方差分解。证毕。
+\end{proof}
+
+\begin{corollary}[曲率上界与 Lipschitz 速度极限：bulk 尺度响应的统一封口]\label{cor:xi-bulk-curvature-max-lipschitz}
+在命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition} 的记号下，有点态上界
+\[
+\boxed{\;
+0<\mathcal{K}_{\mathrm{bulk}}(s)\le \frac{(2\kappa-1)\kappa}{4}\qquad(s\in\RR).\;}
+\]
+从而 \(v_{\mathrm{bulk}}(s)=\frac{\dd}{\dd s}S_{\mathrm{bulk}}(e^s)\) 在 \(\RR\) 上满足统一 Lipschitz 约束
+\[
+\boxed{\;
+|v_{\mathrm{bulk}}(s_2)-v_{\mathrm{bulk}}(s_1)|
+\le \frac{(2\kappa-1)\kappa}{4}\,|s_2-s_1|\qquad(s_1,s_2\in\RR).\;}
+\]
+该上界与 \(\{\delta_j\}\) 无关，仅由 \(\kappa\) 与系数 \((2\kappa-1)\) 决定。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition}，
+\(
+\mathcal{K}_{\mathrm{bulk}}(s)=(2\kappa-1)\sum_{j=1}^{\kappa}\phi(s-\sigma_j)
+\)；
+而 \(\phi(t)\le \tfrac14\)，故得点态上界。
+由于 \(v_{\mathrm{bulk}}'(s)=\mathcal{K}_{\mathrm{bulk}}(s)\) 且 \(\mathcal{K}_{\mathrm{bulk}}\) 有界，积分估计即得 Lipschitz 约束。证毕。
+\end{proof}
+
+\begin{remark}[尺度峰的可分辨性：分离深度谱给出曲率层析的稳定分解]\label{rem:xi-bulk-curvature-peak-resolution}
+对 \(\phi\) 记其分布函数 \(F(t)=\frac{1}{1+e^{-t}}\)。则对任意 \(T>0\),
+\[
+\int_{|t|\le T}\phi(t)\,\dd t
+=F(T)-F(-T)
+=1-\frac{2}{1+e^{T}}.
+\]
+因此在固定容差 \(\varepsilon\in(0,1)\) 下，取 \(T_\varepsilon:=\log\!\bigl(\frac{2}{\varepsilon}-1\bigr)\) 有
+\(
+\int_{|t|>T_\varepsilon}\phi(t)\dd t\le \varepsilon
+\)。
+若最小尺度分离度满足 \(\min_{j\neq k}|\sigma_j-\sigma_k|\ge 2T_\varepsilon\)，则区间 \([\sigma_j-T_\varepsilon,\sigma_j+T_\varepsilon]\) 两两不交，
+且每个区间承载 \(\phi(s-\sigma_j)\) 的至少 \(1-\varepsilon\) 质量，从而 \(\mathcal{K}_{\mathrm{bulk}}\) 在制度精度 \(\varepsilon\) 下分解为 \(\kappa\) 个互不混叠的局部峰包络。
+反之，若存在一族 \(\sigma_j\) 在尺度窗内簇化，则对应核在该窗内发生线性叠加并抬升峰高（重数 \(r\) 的极限峰值为 \(r(2\kappa-1)/4\)），体现为可观测的峰合并。
+\end{remark}
+
