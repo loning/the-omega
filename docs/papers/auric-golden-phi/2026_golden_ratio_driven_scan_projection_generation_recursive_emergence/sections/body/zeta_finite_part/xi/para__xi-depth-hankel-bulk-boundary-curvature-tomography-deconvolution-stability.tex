@@ -1,0 +1,279 @@
+% (User input window)
+% 时间：2026-02-15 22:41:09（Asia/Singapore）
+%
+% 在 logistic 核层析口径下，曲率概率密度 \(p\) 的反演不仅是可识别的，而且具有全显式算子表达；
+% 同一乘子结构同时强制噪声放大、零点密度与比特复杂度的普适阈值。
+
+命题 \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition}--\ref{prop:xi-bulk-curvature-tomography-identifiability} 给出曲率核的有限原子分解与可识别性；
+在同一记号下，可进一步将反演写成显式算子，并由同一乘子结构推出稳定性、零点密度与精度预算的普适封口。
+
+\begin{proposition}[尺度曲率的精确反卷积：logistic 平滑的显式逆算子]\label{prop:xi-bulk-curvature-exact-deconvolution-operator}
+在推论 \ref{cor:xi-bulk-curvature-probability-moments} 的设定下，记
+\[
+\nu:=\frac{1}{\kappa}\sum_{j=1}^{\kappa}\delta_{\sigma_j},
+\qquad
+\phi(s)=\frac{e^{s}}{(1+e^{s})^{2}}=\frac{1}{4\cosh^{2}(s/2)},
+\qquad
+p=\phi*\nu.
+\]
+令 \(\mathcal D\) 为 \(\mathcal S'(\RR)\) 上的 Fourier 乘子算子（在 \(\xi=0\) 处取连续延拓值）
+\[
+\widehat{(\mathcal D f)}(\xi):=\frac{\sinh(\pi\xi)}{\pi\xi}\,\widehat f(\xi).
+\]
+则在温和分布意义下有严格恒等式
+\[
+\boxed{\;\mathcal D p=\nu.\;}
+\]
+并且 \(\mathcal D\) 具有 Weierstrass 乘积表示（作为 Fourier 乘子算子作用于 \(\mathcal S(\RR)\)）
+\[
+\boxed{\;
+\mathcal D=\prod_{n\ge1}\Bigl(1-\frac{1}{n^{2}}\partial_{s}^{2}\Bigr)
+=\frac{\sinh\!\bigl(\pi\sqrt{-\partial_{s}^{2}}\bigr)}{\pi\sqrt{-\partial_{s}^{2}}}\; }.
+\]
+因此“尺度平滑 \(p=\phi*\nu\)”在该体系内并非不可逆噪声通道，而是由一条全显式的整函数型无限阶算子精确可逆。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:xi-bulk-curvature-tomography-identifiability} 中的闭式 Fourier 变换
+\(
+\widehat\phi(\xi)=\pi\xi/\sinh(\pi\xi)
+\)
+与卷积定理，得
+\(
+\widehat p(\xi)=\widehat\phi(\xi)\widehat\nu(\xi)
+\)。
+两边同乘 \(\sinh(\pi\xi)/(\pi\xi)\) 即得
+\(
+\widehat\nu(\xi)=\frac{\sinh(\pi\xi)}{\pi\xi}\widehat p(\xi)
+=\widehat{(\mathcal D p)}(\xi)
+\)，从而 \(\mathcal Dp=\nu\)。
+乘积表示由经典整函数恒等式
+\(
+\sinh(\pi z)/(\pi z)=\prod_{n\ge1}(1+z^{2}/n^{2})
+\)
+与 Fourier 侧替换 \(z^{2}\mapsto \xi^{2}\)（等价于物理侧 \(1+z^{2}/n^{2}\mapsto 1-\partial_{s}^{2}/n^{2}\)）得到。证毕。
+\end{proof}
+
+\begin{corollary}[超分辨率屏障常数 \texorpdfstring{$\pi$}{pi}：深度分离的稳定阈值为 \texorpdfstring{$\exp(-\pi/\Delta)$}{exp(-pi/Delta)}]\label{cor:xi-bulk-curvature-superresolution-pi-barrier}
+设观测到的曲率概率密度为 \(\widetilde p=p+\eta\)，并假定 Fourier 噪声在带宽 \(|\xi|\le\Omega\) 内满足
+\[
+\sup_{|\xi|\le\Omega}|\widehat\eta(\xi)|\le\varepsilon.
+\]
+令线性反卷积输出为 \(\widetilde\nu:=\mathcal D\widetilde p\)。
+由命题 \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} 的反卷积乘子可知，在最坏情形噪声下，
+\[
+\sup_{|\xi|\le\Omega}\bigl|\widehat{(\widetilde\nu-\nu)}(\xi)\bigr|
+\ \gtrsim\
+\varepsilon\cdot \frac{\sinh(\pi\Omega)}{\pi\Omega}
+\ \asymp\
+\varepsilon\,e^{\pi\Omega}.
+\]
+因此若希望在尺度轴上以分离度 \(\Delta\) 稳定地区分原子（通常需要使用 \(\Omega\gtrsim 1/\Delta\) 的频率），则噪声预算必须在量级上满足
+\[
+\varepsilon \lesssim \exp\!\Bigl(-\frac{\pi}{\Delta}\Bigr),
+\qquad\text{等价地}\qquad
+\Delta \gtrsim \frac{\pi}{\log(1/\varepsilon)}.
+\]
+该阈值不依赖于 \(\kappa\) 与 \(\{\sigma_j\}\) 的几何细节，常数 \(\pi\) 为普适屏障常数。
+\end{corollary}
+\begin{proof}[证明要点]
+由 \(\widetilde\nu-\nu=\mathcal D\eta\) 与乘子定义，
+\(
+|\widehat{(\widetilde\nu-\nu)}(\xi)|
+=\frac{\sinh(\pi|\xi|)}{\pi|\xi|}\,|\widehat\eta(\xi)|
+\)。
+在噪声约束下选择相位对齐的 \(\widehat\eta\) 可达到最坏情形放大因子 \(\sinh(\pi\Omega)/(\pi\Omega)\)。
+再与分辨率--带宽互反标尺 \(\Omega\gtrsim 1/\Delta\) 合并即可。证毕。
+\end{proof}
+
+\begin{proposition}[极点--整函数二分解：尺度曲率母函数的通用晶格奇性与深度因子]\label{prop:xi-bulk-curvature-moment-generating-factorization}
+定义母函数（双侧 Laplace 变换）
+\[
+M_p(t):=\int_{\RR}e^{ts}p(s)\,\dd s,
+\qquad |\Re t|<1.
+\]
+则存在严格因子化
+\[
+\boxed{\;
+M_p(t)=\frac{\pi t}{\sin(\pi t)}\,E(t),\qquad
+E(t):=\int_{\RR}e^{ts}\,\dd\nu(s)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}e^{t\sigma_j}.\;}
+\]
+其中 \(\frac{\pi t}{\sin(\pi t)}\) 给出全部通用奇性：在每个非零整数 \(n\in\ZZ\setminus\{0\}\) 处具有简单极点；
+而 \(E\) 为整函数并携带全部深度信息。
+特别地，
+\[
+\boxed{\;\frac{\sin(\pi t)}{\pi t}\,M_p(t)=E(t)\;}
+\]
+是有限指数和，构成深度谱的解析指纹。
+\end{proposition}
+\begin{proof}
+由 \(p=\phi*\nu\) 与 Fubini 定理（\(|\Re t|<1\) 保障绝对可积），得
+\[
+M_p(t)=\int_{\RR}\int_{\RR}e^{t(s+u)}\phi(s)\,\dd s\,\dd\nu(u)
+=\Bigl(\int_{\RR}e^{ts}\phi(s)\,\dd s\Bigr)\cdot\Bigl(\int_{\RR}e^{tu}\,\dd\nu(u)\Bigr).
+\]
+对 \(\phi(s)=e^{s}(1+e^{s})^{-2}\)，作代换 \(x=e^{s}\)（\(\dd s=\dd x/x\)）得
+\[
+\int_{\RR}e^{ts}\phi(s)\,\dd s
+=\int_{0}^{\infty}\frac{x^{t}}{(1+x)^{2}}\,\dd x
+=\mathrm{B}(t+1,1-t)
+=\Gamma(t+1)\Gamma(1-t)
+=\frac{\pi t}{\sin(\pi t)}.
+\]
+从而得到所示因子化。证毕。
+\end{proof}
+
+\begin{corollary}[整数极点留数的深度 Dirichlet 数据：有限个局部数据的代数重建]\label{cor:xi-bulk-curvature-residue-dirichlet-data}
+在命题 \ref{prop:xi-bulk-curvature-moment-generating-factorization} 的设定下，对任意 \(n\in\NN\) 有显式留数公式
+\[
+\boxed{\;
+\operatorname*{Res}_{t=n}M_p(t)=(-1)^n\,n\,E(n),\qquad
+\operatorname*{Res}_{t=-n}M_p(t)=(-1)^n\,(-n)\,E(-n).\;}
+\]
+令 \(y_j:=e^{\sigma_j}=\delta_j^{-1}\)。
+则
+\[
+E(n)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}y_j^{n}.
+\]
+若 \(\{y_j\}\) 两两不同，则有限序列 \(\{E(n)\}_{n=1}^{2\kappa}\)（等价地，\(\{\operatorname*{Res}_{t=\pm n}M_p(t)\}_{n=1}^{2\kappa}\)）唯一确定无序多重集 \(\{y_j\}\)，从而唯一确定 \(\{\delta_j\}\)。
+\end{corollary}
+\begin{proof}
+由
+\(
+\frac{\pi t}{\sin(\pi t)}
+\)
+在 \(t=n\) 的留数为 \((-1)^n n\)，与因子化式相乘即得留数公式。
+第二部分为经典幂和反演：\(\{y_j\}\) 两两不同下，幂和序列满足阶数为 \(\kappa\) 的线性递推；
+由 \(\{E(n)\}_{n=1}^{2\kappa}\) 可构造 Hankel 系统解出递推系数，从而得到以 \(\{y_j\}\) 为根的首一多项式并恢复 \(\{y_j\}\)，进而恢复 \(\{\delta_j=y_j^{-1}\}\)。证毕。
+\end{proof}
+
+\begin{remark}[隐藏圆谱几何：反卷积乘子与圆 Laplacian 的 \texorpdfstring{$\zeta$}{zeta}-行列式比]\label{rem:xi-bulk-curvature-circle-zeta-determinant}
+令 \(L=-\partial_\theta^2\) 为圆 \(S^1\) 上 Laplacian，其正谱为 \(\{n^2\}_{n\ge1}\)。
+其 \(\zeta\)-正规化行列式比满足
+\[
+\frac{\det_\zeta(L+\xi^{2})}{\det_\zeta(L)}
+=\prod_{n\ge1}\Bigl(1+\frac{\xi^{2}}{n^{2}}\Bigr)
+=\frac{\sinh(\pi|\xi|)}{\pi|\xi|}.
+\]
+因此命题 \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} 的反卷积乘子精确等同于圆 Laplacian 的 \(\zeta\)-行列式比；
+常数 \(\pi\) 的出现对应于该隐藏圆谱几何在尺度轴上的投影。
+\end{remark}
+
+\begin{proposition}[尺度相干核与尺度体积势：短程 Vandermonde 排斥与长程指数正交化]\label{prop:xi-bulk-curvature-scale-gram-two-phase}
+在推论 \ref{cor:xi-bulk-curvature-probability-moments} 的设定下，定义尺度相干核
+\[
+K(\Delta):=\int_{\RR}\phi(s)\phi(s-\Delta)\,\dd s=(\phi*\phi)(\Delta).
+\]
+则 \(K\) 为偶函数且具有闭式
+\[
+\boxed{\;
+K(\Delta)=\frac{|\Delta|\coth\!\bigl(|\Delta|/2\bigr)-2}{4\sinh^{2}\!\bigl(|\Delta|/2\bigr)}\; } ,
+\qquad
+K(0)=\frac{1}{6}.
+\]
+对尺度谱 \(\{\sigma_j\}_{j=1}^{\kappa}\) 定义 Gram 矩阵
+\(
+G^{\mathrm{scale}}_{jk}:=K(\sigma_j-\sigma_k)
+\)
+与尺度体积势
+\(
+S_{\mathrm{scale}}:=-\log\det G^{\mathrm{scale}}
+\)。
+则存在两端极限结构：
+当最小分离 \(\Delta_{\min}:=\min_{j\neq k}|\sigma_j-\sigma_k|\to\infty\) 时，
+\[
+\det G^{\mathrm{scale}}=(K(0))^{\kappa}\bigl(1+o(1)\bigr)=\Bigl(\frac16\Bigr)^{\kappa}\bigl(1+o(1)\bigr),
+\qquad
+S_{\mathrm{scale}}=\kappa\log 6+o(1),
+\]
+且核尾部满足 \(K(\Delta)\sim (|\Delta|-2)e^{-|\Delta|}\)，从而非对角耦合以 \(e^{-|\Delta|}\) 指数湮灭。
+另一方面，当 \(\sigma_j=\sigma_\star+\varepsilon t_j\) 且 \(\varepsilon\downarrow0\)（\(t_j\) 两两不同）时，
+\[
+S_{\mathrm{scale}}
+=\kappa(\kappa-1)\log\frac{1}{\varepsilon}
++2\sum_{1\le j<k\le \kappa}\log\frac{1}{|t_k-t_j|}
++O(1),
+\]
+表现出 Vandermonde 型对数排斥。
+\end{proposition}
+\begin{proof}
+闭式由直接积分计算得到：对 \(\phi(s)=\frac{1}{4\cosh^{2}(s/2)}\) 令 \(s=2u\)，化为
+\(
+K(\Delta)=\frac18\int_{\RR}\frac{1}{\cosh^{2}(u)\cosh^{2}(u-\Delta/2)}\,\dd u
+\)，再用双曲函数恒等式积分可得所示表达；\(K(0)=\int \phi^2=\frac16\) 由 \(\int_{\RR}\cosh(u)^{-4}\dd u=\frac43\) 得到。
+\par
+长程相由 \(G^{\mathrm{scale}}=K(0)I+O(\max_{j\neq k}K(\sigma_j-\sigma_k))\) 与行列式连续性推出；尾项渐近由闭式在 \(|\Delta|\to\infty\) 时展开得到。
+\par
+短程相可由平移族 \(\phi(\cdot-\sigma_\star-\varepsilon t_j)\) 在 \(L^2\) 中对 \(\varepsilon\) 的 Taylor 展开得到：该族在 \(\varepsilon\to0\) 时收敛到导数塔 \(\{\phi^{(r)}(\cdot-\sigma_\star)\}_{r=0}^{\kappa-1}\) 的张成；
+Gram 行列式的首阶非零项由 confluent Vandermonde 结构给出，因而出现 \(\varepsilon^{\kappa(\kappa-1)}\prod_{j<k}(t_k-t_j)^2\) 的尺度律。
+取对数即得所示展开。证毕。
+\end{proof}
+
+\begin{proposition}[深度跨度的解析指纹：去极点后的整函数零点密度给出跨度]\label{prop:xi-bulk-curvature-depth-span-zero-density}
+在命题 \ref{prop:xi-bulk-curvature-moment-generating-factorization} 的设定下，记
+\[
+E(t)=\frac{\sin(\pi t)}{\pi t}\,M_p(t)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}e^{t\sigma_j}.
+\]
+令深度跨度
+\(
+L:=\max_j\sigma_j-\min_j\sigma_j
+\)。
+设 \(N_E(R)\) 为 \(E\) 在圆盘 \(\{t\in\CC:\ |t|\le R\}\) 内的零点计数函数（按重数计），则存在极限
+\[
+\boxed{\;\lim_{R\to\infty}\frac{N_E(R)}{R}=\frac{L}{\pi}.\;}
+\]
+因此 \(L\) 可由母函数 \(M_p\) 去除通用晶格因子后、仅凭整函数 \(E\) 的零点密度无损读出。
+\end{proposition}
+\begin{proof}[证明要点]
+因子 \(e^{t\min_j\sigma_j}\) 不改变零点集合，可将 \(E\) 化为形如 \(\sum_{j}c_j e^{a_j t}\) 的指数多项式（\(0=a_1<\cdots<a_\kappa=L\)）。
+该类函数属 Cartwright 型整函数，其指示图为实轴上的线段 \([0,L]\)，由 Cartwright 密度定理可得零点计数满足 \(N_E(R)\sim (L/\pi)R\)。证毕。
+\end{proof}
+
+\begin{corollary}[稳定反演的高斯正则化：最小可辨尺度的普适门槛]\label{cor:xi-bulk-curvature-gaussian-regularization-threshold}
+引入高斯正则化 \(\nu_\sigma:=G_\sigma*\nu\)（Fourier 乘子 \(e^{-\sigma^{2}\xi^{2}/2}\)）。
+则由命题 \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} 得到线性恢复算子
+\[
+\widehat{\nu_\sigma}(\xi)=e^{-\sigma^{2}\xi^{2}/2}\frac{\sinh(\pi\xi)}{\pi\xi}\,\widehat p(\xi).
+\]
+其噪声放大因子满足
+\[
+\mathcal A_\sigma(\xi):=e^{-\sigma^{2}\xi^{2}/2}\frac{\sinh(\pi|\xi|)}{\pi|\xi|}
+\asymp
+\exp\!\Bigl(\pi|\xi|-\frac{\sigma^{2}\xi^{2}}{2}\Bigr),
+\]
+并在 \(|\xi|\approx \pi/\sigma^{2}\) 处达到最大值 \(\asymp \exp(\pi^{2}/(2\sigma^{2}))\)。
+因此在最坏情形 Fourier 噪声预算 \(\varepsilon\) 下，若希望输出噪声保持在常数级（同量级预算），则必须选取
+\[
+\boxed{\;\sigma\ \gtrsim\ \frac{\pi}{\sqrt{2\log(1/\varepsilon)}}.\;}
+\]
+\end{corollary}
+\begin{proof}
+由乘子表示可知输出噪声上界为 \(\sup_\xi \mathcal A_\sigma(\xi)\cdot\varepsilon\)。
+指数项的最大值由一元函数 \(\pi|\xi|-\sigma^{2}\xi^{2}/2\) 的极大点 \(|\xi|=\pi/\sigma^{2}\) 给出，对应指数增益 \(\exp(\pi^{2}/(2\sigma^{2}))\)；
+令 \(\varepsilon\exp(\pi^{2}/(2\sigma^{2}))\lesssim 1\) 得所示门槛。证毕。
+\end{proof}
+
+\begin{corollary}[比特复杂度下界：分辨率与精度位数的线性阈值]\label{cor:xi-bulk-curvature-bit-complexity-lower-bound}
+设观测到的曲率概率密度为 \(\widetilde p=p+\eta\)，并假定其在频域带宽 \(|\xi|\le \Omega\) 上具有 \(B\) 比特精度，即
+\(
+\sup_{|\xi|\le\Omega}|\widehat\eta(\xi)|\le 2^{-B}
+\)。
+令 \(\widetilde\nu:=\mathcal D\widetilde p\)。
+则由命题 \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} 的乘子增长可知，在最坏情形噪声下
+\[
+\sup_{|\xi|\le\Omega}\bigl|\widehat{(\widetilde\nu-\nu)}(\xi)\bigr|
+\ \gtrsim\
+2^{-B}\,\frac{\sinh(\pi\Omega)}{\pi\Omega}
+\ \asymp\
+2^{-B}e^{\pi\Omega}.
+\]
+若要实现尺度分辨率 \(\Delta\)（通常需要 \(\Omega\gtrsim 1/\Delta\)），则必要的精度位数在量级上满足
+\[
+\boxed{\;B\ \gtrsim\ \frac{\pi}{\Delta\ln 2}\;}
+\qquad(\text{忽略对数次级项}).
+\]
+\end{corollary}
+\begin{proof}[证明要点]
+对噪声约束选择相位对齐的 \(\widehat\eta\) 可达到最坏情形放大因子 \(\sinh(\pi\Omega)/(\pi\Omega)\)。
+再以 \(\Omega\gtrsim 1/\Delta\) 换算即可得到位数阈值。证毕。
+\end{proof}
+
