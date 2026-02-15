@@ -168,22 +168,24 @@ S_{1/2}:=-\log\det G^{(1/2)}.
 S_{1/2}(\boldsymbol{\sigma})
 =\kappa(\kappa-1)\log\frac{1}{\varepsilon}
 +2\sum_{1\le j<k\le \kappa}\log\frac{1}{|t_k-t_j|}
-+O(1).\;}
+-\log\Bigl(\mathfrak H_\kappa\prod_{j=0}^{\kappa-1}\frac{1}{(j!)^{2}}\Bigr)
++o(1).\;}
 \]
+其中 \(\mathfrak H_\kappa\) 为定理 \ref{thm:xi-hellinger-gram-collision-hankel-constant} 所定义的普适 Hankel 常数（仅依赖于 \(\kappa\) 与谱密度 \(w(\xi)=\pi^2\mathrm{sech}^2(\pi\xi)\)）。
 其中二体对数项系数恒为 \(2\)，与谱点权重及其余构型细节无关。
 \end{proposition}
 \begin{proof}
 正定性由 \(G^{(1/2)}\) 的 Gram 表示直接得到。
 闭式由命题 \ref{prop:xi-logistic-divergence-dictionary} 第 \textup{(3)} 条（Hellinger 亲和度闭式）取 \(a=\sigma_j\)、\(b=\sigma_k\) 立即推出。
 \par
-对碰撞渐近，记 \(f(s):=\sqrt{\phi(s)}\)，则 \(\psi_j(s)=f(s-\sigma_\star-\varepsilon t_j)\)。
-由 \(f\in C^\infty(\RR)\cap L^2(\RR)\) 与 Taylor 展开，\(\{\psi_j\}_{j=1}^\kappa\) 在 \(L^2\) 中的张成在 \(\varepsilon\to 0\) 时收敛到导数塔
-\(\{f^{(r)}(\cdot-\sigma_\star)\}_{r=0}^{\kappa-1}\) 的张成；
-相应 Gram 行列式的首阶非零项由 confluent Vandermonde 结构给出，因而出现
-\(
-\det G^{(1/2)}=C\cdot \varepsilon^{\kappa(\kappa-1)}\prod_{j<k}(t_k-t_j)^2\cdot(1+o(1))
-\)
-（其中 \(C>0\) 仅依赖于 \(\kappa\) 与核 \(f\)）。
+对碰撞渐近，定理 \ref{thm:xi-hellinger-gram-collision-hankel-constant} 给出更精确的行列式渐近：
+\[
+\det G^{(1/2)}
+=\varepsilon^{\kappa(\kappa-1)}
+\Bigl(\prod_{j=0}^{\kappa-1}\frac{1}{(j!)^{2}}\Bigr)\,
+\mathfrak H_\kappa\,
+\prod_{1\le j<k\le\kappa}(t_k-t_j)^{2}\,\bigl(1+o(1)\bigr).
+\]
 取负对数即得所示展开。证毕。
 \end{proof}
 
@@ -232,6 +234,31 @@ U\le -\Delta_{j-1}/2
 \mathbb P(U\le -x)=\mathbb P(U\ge x)=1/(1+e^{x})
 \)（\(x\ge 0\)），
 对 \(j\) 求平均并将每个间隔的尾部贡献计数两次，即得所示闭式。证毕。
+\end{proof}
+
+% (User input window)
+% 时间：2026-02-16 02:05:41（Asia/Singapore）
+
+\begin{corollary}[由局部边界质量可逆重建深度间隔：错误剖面与间隔剖面一一对应]\label{cor:xi-logistic-boundary-mass-inverts-spacing}
+在命题 \ref{prop:xi-logistic-multiclass-map-error} 的设定下，令相邻间隔 \(\Delta_j:=\sigma_{j+1}-\sigma_j>0\)。
+定义局部边界质量（单侧尾概率）
+\[
+e_j:=\mathbb P\bigl(U\ge \Delta_j/2\bigr)=\frac{1}{1+e^{\Delta_j/2}}\in(0,1/2).
+\]
+则映射 \(\Delta_j\mapsto e_j\) 严格单调且显式可逆：
+\[
+\boxed{\;
+\Delta_j=2\log\Bigl(\frac{1-e_j}{e_j}\Bigr).\;}
+\]
+因此一旦可观测到每个相邻切割的尾质量 \((e_j)_{j=1}^{\kappa-1}\)，深度间隔序列 \((\Delta_j)\) 可逐点无损恢复；并且
+\(
+P_{\mathrm e}^{(\kappa)}=\frac{2}{\kappa}\sum_{j=1}^{\kappa-1}e_j
+\)
+给出总错误率作为局部边界质量的线性汇总。
+\end{corollary}
+\begin{proof}
+由 \(\mathbb P(U\ge x)=1/(1+e^{x})\)（\(x\ge 0\)）直接得到 \(e_j=(1+e^{\Delta_j/2})^{-1}\)，并由代数变形得到反演公式。
+最后一式是命题 \ref{prop:xi-logistic-multiclass-map-error} 的误差闭式在记号 \(e_j\) 下的重写。证毕。
 \end{proof}
 
 \begin{corollary}[固定跨度下的最优深度布局：等距为误差极小解与必要跨度律]\label{cor:xi-logistic-optimal-spacing-span-law}
