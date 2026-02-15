@@ -1,0 +1,220 @@
+% (User input window)
+% 2026-02-15 22:58:45 (Asia/Singapore)
+% According to an internal note dated 2026-02-14.
+
+\paragraph{Mass tower decomposition and coarse deconvolution of scale kernel: finite-order local operators, tail kernel moments, and bandwidth well-definedness}
+The following entries realize the \(\sinh\) product structure on the Fourier side of the logistic scale kernel as an executable mass tower convolution model,
+and thereby derive a family of finite-order local deconvolution operators and their stability certificates under bandwidth-controlled regimes;
+computable moments and fourth-order cumulant of tail kernel give the observable calibration of minimal non-Gaussian deviation, promoting the \(q=4\) first-trigger mechanism to structural necessity.
+
+\begin{conclusion}[Infinite mass tower decomposition of scale kernel: logistic kernel equivalent to independent Laplace cascade system]\label{con:xi-terminal-scale-kernel-mass-tower-laplace}
+Let the scale unimodal kernel be
+\[
+\phi(s):=\frac{1}{4\cosh^{2}(s/2)}=\frac{e^{s}}{(1+e^{s})^{2}}\qquad(s\in\RR).
+\]
+For each integer \(n\ge 1\) define Laplace kernel
+\[
+g_n(s):=\frac{n}{2}e^{-n|s|},
+\qquad
+\widehat g_n(\xi)=\frac{1}{1+\xi^{2}/n^{2}}.
+\]
+Then there exists a family of independent random variables \((X_n)_{n\ge 1}\) (density of \(X_n\) is \(g_n\)), such that the series
+\[
+Y:=\sum_{n\ge 1}X_n
+\]
+converges in \(L^{2}\) and almost surely, and the density of the sum equals strictly \(\phi\).
+Equivalently, letting \(\phi_{\le N}:=g_1*\cdots*g_N\), then \(\phi_{\le N}\to\phi\) (\(L^2\) and weak convergence), so in distributional sense we can write
+\[
+\phi=g_1*g_2*\cdots .
+\]
+This decomposition interprets \(\phi\) as layer-by-layer convolution closure of an "integer mass spectrum" \(\{n\}_{n\ge 1}\): each layer \(g_n\) is the Green kernel of one-dimensional local operator \((1-\frac{1}{n^{2}}\partial_s^{2})^{-1}\), and the product spectrum of the entire mass tower closes exactly to \(\phi\).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Fourier closed form \(\widehat\phi(\xi)=\pi\xi/\sinh(\pi\xi)\) of Proposition \ref{prop:xi-bulk-curvature-tomography-identifiability} and Hadamard product of \(\sinh\)
+\(
+\sinh(\pi\xi)=\pi\xi\prod_{n\ge 1}(1+\xi^{2}/n^{2})
+\)
+we get
+\(
+\widehat\phi(\xi)=\prod_{n\ge 1}\widehat g_n(\xi)
+\).
+Take independent random variables \(X_n\) (density \(g_n\)), then their characteristic function is \(\widehat g_n\).
+Let partial sum \(Y_N=\sum_{n=1}^{N}X_n\), then characteristic function of \(Y_N\) is \(\prod_{n=1}^{N}\widehat g_n\), so density of \(Y_N\) is \(\phi_{\le N}\).
+Since \(\sum_{n\ge 1}\Var(X_n)=2\sum_{n\ge 1}n^{-2}<\infty\), \((Y_N)\) is Cauchy in \(L^2\), and by Kolmogorov criterion we get almost sure convergence.
+Limiting variable \(Y\) has characteristic function \(\widehat\phi\), hence density \(\phi\). \qed
+\end{proof}
+
+\begin{conclusion}[Partial deconvolution as resolution knob: finite-order local operator reduces infinite deconvolution to tail kernel convolution]\label{con:xi-terminal-scale-kernel-partial-deconvolution-resolution}
+For \(N\ge 1\) define finite-order local operator (understood as Fourier multiplier)
+\[
+\mathcal D_N:=\prod_{n=1}^{N}\Bigl(1-\frac{1}{n^2}\partial_s^2\Bigr),
+\qquad
+\widehat{(\mathcal D_N f)}(\xi)=M_N(\xi)\,\widehat f(\xi),
+\qquad
+M_N(\xi):=\prod_{n=1}^{N}(1+\xi^{2}/n^{2}).
+\]
+Let tail kernel \(\phi_{>N}\) be the density of tail sum
+\(
+Y_{>N}:=\sum_{n>N}X_n
+\)
+from Conclusion \ref{con:xi-terminal-scale-kernel-mass-tower-laplace} (i.e., \(\widehat{\phi_{>N}}(\xi)=\prod_{n>N}(1+\xi^{2}/n^{2})^{-1}\)).
+Then for any finite signed measure \(\nu\), if \(p=\phi*\nu\), then there holds a strict identity
+\[
+\boxed{\;
+\mathcal D_N p=\phi_{>N}*\nu.\;}
+\]
+Hence \(\mathcal D_N\) implements regimewise "removing first \(N\) mass shells" coarse deconvolution: as \(N\to\infty\), \(\phi_{>N}\Rightarrow\delta_0\), so \(\mathcal D_N p\Rightarrow \nu\) in distributional sense.
+This conclusion gives an executable continuous family: deconvolution is replaced by a resolution flow explicitly controlled by \(N\), instead of the "either exact or collapse" binary mechanism.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-terminal-scale-kernel-mass-tower-laplace}, \(\widehat\phi(\xi)=M_N(\xi)^{-1}\widehat{\phi_{>N}}(\xi)\).
+Taking Fourier transform of \(p=\phi*\nu\) gives \(\widehat p=\widehat\phi\cdot\widehat\nu\), hence
+\[
+\widehat{(\mathcal D_N p)}(\xi)=M_N(\xi)\widehat p(\xi)=\widehat{\phi_{>N}}(\xi)\widehat\nu(\xi)=\widehat{(\phi_{>N}*\nu)}(\xi),
+\]
+giving the identity.
+Since \(\Var(Y_{>N})\to 0\), \(\phi_{>N}\Rightarrow\delta_0\), hence \(\phi_{>N}*\nu\Rightarrow\nu\). \qed
+\end{proof}
+
+\begin{conclusion}[Tail kernel moments fully computable: resolution scale \texorpdfstring{$\sigma_N\sim \sqrt{2/N}$}{sigma_N ~ sqrt(2/N)} and Wasserstein control]\label{con:xi-terminal-scale-kernel-tail-moments-w2}
+Using random variables \(X_n\) from Conclusion \ref{con:xi-terminal-scale-kernel-mass-tower-laplace}, let \(Y_{>N}:=\sum_{n>N}X_n\) with density \(\phi_{>N}\).
+Then there are additive moment certificates
+\[
+\Var(Y_{>N})=\sum_{n>N}\Var(X_n)=2\sum_{n>N}\frac{1}{n^2}=: \sigma_N^2,
+\qquad
+\kappa_4(Y_{>N})=\sum_{n>N}\kappa_4(X_n)=12\sum_{n>N}\frac{1}{n^4}.
+\]
+Moreover for any probability measure \(\nu\) with finite second moment there is a certificatable \(W_2\) upper bound
+\[
+\boxed{\;
+W_2\bigl(\phi_{>N}*\nu,\nu\bigr)\ \le\ \sigma_N
+\ =\ \sqrt{2\sum_{n>N}n^{-2}}
+\ \sim\ \sqrt{\frac{2}{N}}\quad(N\to\infty).\;}
+\]
+Therefore if allowing resolution \(\sigma>0\), taking \(N\asymp 2/\sigma^{2}\) guarantees \(W_2\)-error \(\le \sigma\);
+in this regime, resolution cost drops from exponential to power-law.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Direct computation for \(X_n\sim g_n\) gives \(\Var(X_n)=2/n^2\), \(\kappa_4(X_n)=12/n^4\), cumulants are additive for independent sums, yielding moment certificates.
+For \(W_2\) upper bound, take coupling: let \(U\sim \nu\), let \(V\sim \phi_{>N}\) independent, then \((U+V,U)\) is a coupling of \((\phi_{>N}*\nu,\nu)\), so
+\(
+W_2^2(\phi_{>N}*\nu,\nu)\le \EE[|V|^2]=\Var(V)=\sigma_N^2
+\).
+Asymptotics \(\sum_{n>N}n^{-2}\sim 1/N\) from integral test. \qed
+\end{proof}
+
+\begin{conclusion}[Gaussianization of tail kernel and fourth-order first breaking: non-Gaussianity uniquely dominated by \texorpdfstring{$q=4$}{q=4} magnitude]\label{con:xi-terminal-scale-kernel-tail-gaussianization-kurtosis}
+Let \(\sigma_N^2=\Var(Y_{>N})\), and define standardized tail variable \(Z_N:=Y_{>N}/\sigma_N\).
+Then there is weak convergence \(Z_N\Rightarrow \mathcal N(0,1)\), and its standardized excess kurtosis has closed form
+\[
+\boxed{\;
+\gamma_2(N):=\frac{\kappa_4(Y_{>N})}{\sigma_N^4}
+=3\,\frac{\sum_{n>N}n^{-4}}{\bigl(\sum_{n>N}n^{-2}\bigr)^2}
+\sim \frac{1}{N}\quad(N\to\infty).\;}
+\]
+Moreover all odd-order cumulants are strictly zero.
+Therefore the first non-Gaussian deviation of tail kernel unavoidably occurs at fourth order: in observable corrections of scale flow, minimal breaking order is structurally locked at \(4\), entering with strength \(N^{-1}\).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Since \(X_n\) is symmetric, all odd-order cumulants are zero and remain zero under independent sum.
+Central limit theorem for \(Z_N\) follows from Lindeberg condition: \(\max_{n>N}\Var(X_n)/\sigma_N^2\to 0\) and \(\sum_{n>N}\Var(X_n)=\sigma_N^2\).
+Kurtosis formula by substituting cumulant certificates from Conclusion \ref{con:xi-terminal-scale-kernel-tail-moments-w2} and simplifying;
+asymptotics from \(\sum_{n>N}n^{-4}\sim (3N^3)^{-1}\), \(\sum_{n>N}n^{-2}\sim N^{-1}\). \qed
+\end{proof}
+
+\begin{conclusion}[Condition number upper bound under bandwidth constraint: coarse deconvolution uniformly well-posed in any fixed bandwidth]\label{con:xi-terminal-scale-kernel-bandwidth-conditioned}
+Assume observation \(\widetilde p=p+\eta\), and noise in frequency band \(|\xi|\le\Omega\) satisfies
+\[
+\sup_{|\xi|\le\Omega}|\widehat\eta(\xi)|\le\varepsilon.
+\]
+Then for any \(N\ge 1\), finite-order operator output error in same frequency band satisfies
+\[
+\sup_{|\xi|\le\Omega}\bigl|\widehat{(\mathcal D_N\eta)}(\xi)\bigr|
+\le
+\varepsilon\cdot \sup_{|\xi|\le\Omega}M_N(\xi)
+\le
+\varepsilon\cdot \exp\!\Bigl(\Omega^2\sum_{n=1}^{\infty}\frac{1}{n^2}\Bigr)
+=\varepsilon\cdot \exp\!\Bigl(\frac{\pi^2}{6}\Omega^2\Bigr).
+\]
+Therefore in any fixed bandwidth \(\Omega\), noise amplification factor of \(\mathcal D_N\) is uniformly bounded in \(N\);
+ill-posedness of coarse deconvolution does not come from "order increase" but from "attempting \(\delta_0\) limit on infinite bandwidth".
+This conclusion provides rigorous foundation for computable phase diagram of scale flow: in bandwidth-controlled regime, resolution can be upgraded power-law as \(N\sim\sigma^{-2}\) without triggering exponential condition number explosion.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Fourier multiplier representation of Conclusion \ref{con:xi-terminal-scale-kernel-partial-deconvolution-resolution},
+\(
+\widehat{(\mathcal D_N\eta)}=M_N\widehat\eta
+\)
+on \(|\xi|\le\Omega\).
+For \(x\ge 0\) we have \(\log(1+x)\le x\), so
+\[
+\log M_N(\xi)=\sum_{n=1}^{N}\log\Bigl(1+\frac{\xi^2}{n^2}\Bigr)\le \xi^2\sum_{n=1}^{N}\frac{1}{n^2}
+\le \Omega^2\sum_{n=1}^{\infty}\frac{1}{n^2}=\frac{\pi^2}{6}\Omega^2,
+\]
+giving stated uniform upper bound. \qed
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$\Gamma$}{Gamma}-closed form and small-frequency expansion of finite-order spectral multiplier: analytic completeness of local operators]\label{con:xi-terminal-scale-kernel-gamma-closed-form}
+Denote finite-order spectral multiplier
+\[
+M_N(\xi):=\prod_{n=1}^{N}(1+\xi^2/n^2).
+\]
+Then \(M_N\) has a strict \(\Gamma\)-ratio closed form
+\[
+\boxed{\;
+M_N(\xi)=\frac{\Gamma(N+1+\mathrm{i}\xi)\Gamma(N+1-\mathrm{i}\xi)}{(N!)^2\,\Gamma(1+\mathrm{i}\xi)\Gamma(1-\mathrm{i}\xi)}.\;}
+\]
+Hence for \(|\xi|=o(N)\) there is an auditable expansion
+\[
+\log M_N(\xi)=\xi^2\sum_{n=1}^{N}\frac{1}{n^2}-\frac{\xi^4}{2}\sum_{n=1}^{N}\frac{1}{n^4}+O\!\Bigl(\xi^6\sum_{n=1}^{N}\frac{1}{n^6}\Bigr),
+\]
+revealing strict hierarchy "second order (\(\zeta(2)\)) determines main amplification, fourth order (\(\zeta(4)\)) determines first correction".
+This closed form makes analytic structure of \(\mathcal D_N\) finitely computable, and allows falsifiable optimal truncation for \(N\) given bandwidth and precision.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Write \(M_N(\xi)=\prod_{n=1}^{N}(n^2+\xi^2)/n^2=\prod_{n=1}^{N}(n+\mathrm{i}\xi)(n-\mathrm{i}\xi)/(N!)^2\), then use finite product identity
+\(
+\prod_{n=1}^{N}(n+z)=\Gamma(N+1+z)/\Gamma(1+z)
+\)
+to get \(\Gamma\)-ratio closed form.
+For small-frequency expansion, use \(\log(1+u)=u-\frac{u^2}{2}+O(u^3)\) and sum over \(u=\xi^2/n^2\). \qed
+\end{proof}
+
+\begin{conclusion}[Two-regime recoverability of scale flow: regime separation of power-law resolution and exponential exactness]\label{con:xi-terminal-scale-kernel-two-regime-recoverability}
+For any \(\sigma>0\), take \(N(\sigma)\) such that \(\sigma_{N(\sigma)}\le\sigma\) (where \(\sigma_N\) as in Conclusion \ref{con:xi-terminal-scale-kernel-tail-moments-w2}).
+Then by Conclusion \ref{con:xi-terminal-scale-kernel-partial-deconvolution-resolution}
+\[
+\mathcal D_{N(\sigma)}p=\phi_{>N(\sigma)}*\nu,
+\]
+gives a stable reconstruction with resolution \(\sigma\); its cost is local operator order \(2N(\sigma)\asymp\sigma^{-2}\), and condition number is uniformly controllable in fixed bandwidth (Conclusion \ref{con:xi-terminal-scale-kernel-bandwidth-conditioned}).
+\par
+Conversely, if requiring exact limit \(\sigma\downarrow 0\) (i.e., unbounded-bandwidth limit \(\phi_{>N}\Rightarrow\delta_0\)), one inevitably enters exponentially ill-posed zone: tail kernel approaching \(\delta_0\) requires simultaneous control of arbitrarily high frequencies, regimewise must allow bandwidth \(\Omega\to\infty\).
+More precisely, from \(\sinh(\pi\xi)=\pi\xi\prod_{n\ge 1}(1+\xi^2/n^2)\) we get limiting multiplier
+\[
+M_\infty(\xi):=\lim_{N\to\infty}M_N(\xi)=\frac{\sinh(\pi\xi)}{\pi\xi},
+\qquad
+M_\infty(\xi)\sim \frac{1}{2\pi|\xi|}\,e^{\pi|\xi|}\quad(|\xi|\to\infty).
+\]
+Therefore if "exact" means needing to approximate \(\delta_0\) on \(|\xi|\lesssim \Omega\), noise amplification grows exponentially with \(\Omega\);
+if further viewing regime resolution \(\sigma\) as requiring visible bandwidth \(\Omega\asymp \sigma^{-1}\), amplification factor magnitude is \(\exp(\pi/\sigma)\) (up to polynomial factors), so precision digits grow linearly with \(1/\sigma\).
+Therefore "power-law controllable" and "exponentially uncontrollable" are not contradictory but separated into two regimes by scale choice (whether accepting \(\sigma\)-resolution).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Stable reconstruction part from identity of Conclusion \ref{con:xi-terminal-scale-kernel-partial-deconvolution-resolution} and \(\sigma_N\) control of Conclusion \ref{con:xi-terminal-scale-kernel-tail-moments-w2};
+well-posedness in bandwidth-controlled regime from Conclusion \ref{con:xi-terminal-scale-kernel-bandwidth-conditioned}.
+Exact limit requires \(\Omega\) unbounded, hence noise amplification must diverge with \(\Omega\), giving exponentially ill-posed zone. \qed
+\end{proof}
+
+\begin{conclusion}[Regularization status of \texorpdfstring{$(q=4)$}{(q=4)}: fourth-order breaking determines minimal moment order of visible phase transition]\label{con:xi-terminal-scale-kernel-q4-minimal-visible-order}
+In mass tower model of Conclusions \ref{con:xi-terminal-scale-kernel-mass-tower-laplace}--\ref{con:xi-terminal-scale-kernel-tail-gaussianization-kurtosis}, all odd-order cumulants of tail kernel are strictly zero, while first non-Gaussian term is given by fourth-order cumulant \(\kappa_4\) and controlled by
+\(\gamma_2(N)\sim N^{-1}\).
+Thus any auditable inference system based on "second-order approximation (Gaussian) + bandwidth-controlled coarse deconvolution", its minimal systematic bias must appear at fourth order;
+in other words, if allowing only finite moment orders as statistically visible interface, minimal moment order capable of detecting "non-Gaussian boundary/critical phase transition" must be \(4\).
+This fact provides completely structural explanation for \(q=4\) first-crossing phenomenon: it is not accidental numerics but minimal breaking order jointly forced by tail symmetry of scale kernel and mass tower superposition.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-terminal-scale-kernel-tail-gaussianization-kurtosis}, odd-order cumulants of standardized tail variable are zero, fourth-order cumulant gives first non-Gaussian deviation decaying with magnitude \(N^{-1}\).
+In regime with second-order Gaussian approximation as baseline, systematic bias of any finite-order moment statistic is determined by lowest nonzero cumulant order, so minimal visible moment order is \(4\). \qed
+\end{proof}
+
+

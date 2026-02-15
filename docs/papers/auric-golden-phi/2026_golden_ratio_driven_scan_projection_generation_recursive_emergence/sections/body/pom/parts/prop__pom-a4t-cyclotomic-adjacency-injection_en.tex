@@ -1,0 +1,111 @@
+% Auto-split to keep each TeX source < 600 lines.
+%
+% (User input window)
+% 2026-02-14 20:22:37（Asia/Singapore）
+%
+
+\begin{proposition}[Cyclotomic injection family from ADE adjacency spectra: \texorpdfstring{$A_4(t)$}{A4(t)} possesses eigenvalue \texorpdfstring{$-2\cos(\pi/h)$}{-2cos(pi/h)} precisely along a cyclotomic parameter curve]\label{prop:pom-a4t-cyclotomic-adjacency-injection}
+For any integer \(h\ge 4\), denote
+\[
+c_h:=2\cos\!\Bigl(\frac{\pi}{h}\Bigr),\qquad v_h:=\frac{1}{c_h}.
+\]
+Define the parameter
+\[
+t_h^{\mathrm{adj}}
+:=-2v_h^2+\frac{1}{v_h^2}-2\Bigl(v_h^3-\frac{1}{v_h}\Bigr)
+=c_h^2+2c_h-\frac{2}{c_h^2}-\frac{2}{c_h^3}.
+\]
+Then the spectral determinant \(D_t(z)=\det(I-zA_4(t))\) of the order-four kernel family satisfies
+\[
+D_{t_h^{\mathrm{adj}}}(-v_h)=0,
+\qquad\text{hence}\qquad
+-c_h\in\mathrm{spec}\bigl(A_4(t_h^{\mathrm{adj}})\bigr).
+\]
+In particular, when \(h\in\{12,18,30\}\) (corresponding to the Coxeter numbers of \((E_6,E_7,E_8)\)), the minimal polynomial over \(\ZZ\) of \(t_h^{\mathrm{adj}}\) is given by equation~\eqref{eq:collision_kernel_A4_cyclotomic_adjacency_injection}.
+\end{proposition}
+\begin{proof}
+By the identity \(D_t(z)=z^5p_t(1/z)\) (where \(p_t(x)=\det(xI-A_4(t))\)), we have \(D_t(z)=0\) if and only if \(1/z\in\mathrm{spec}(A_4(t))\).
+By definition,
+\[
+D_t(-v)=1+2v-tv^2-2v^4-2v^5
+\]
+(see equation~\eqref{eq:collision_kernel_A4_newman_pole_quadratic_resonance}).
+Setting \(t=t_h^{\mathrm{adj}}=\frac{1+2v_h-2v_h^4-2v_h^5}{v_h^2}\) yields \(D_t(-v_h)=0\) directly.
+Hence \(1/(-v_h)=-c_h\) is an eigenvalue of \(A_4(t_h^{\mathrm{adj}})\).
+\par
+For \(h\in\{12,18,30\}\), the minimal polynomial over \(\QQ\) is computed directly and scaled to a primitive integral certificate; reproducible output is given by equation~\eqref{eq:collision_kernel_A4_cyclotomic_adjacency_injection} (script \texttt{scripts/exp\_collision\_kernel\_A4\_pole\_quadratic\_resonance\_and\_cyclotomic\_adjacency\_injection.py}).
+\end{proof}
+
+\input{sections/generated/eq_collision_kernel_A4_cyclotomic_adjacency_injection}
+
+\begin{corollary}[Cyclotomic injection points, Newman threshold, and the strict ordering chain with integer kernels]\label{cor:pom-a4t-cyclotomic-adj-ordering-chain}
+Following the notation of Propositions~\ref{prop:pom-a4t-jones-ade-intersections} and~\ref{prop:pom-a4t-cyclotomic-adjacency-injection}, denote by \(t_{E_6},t_{E_7},t_{E_8}\) the intersection parameters of the order-four Perron exponent curve with the Jones indices \((E_6,E_7,E_8)\), and by \(t_\star\) the order-four Newman critical threshold.
+Then the following strict ordering chain holds on the parameter axis:
+\[
+\boxed{\;
+t_{E_6}
+<
+t_{12}^{\mathrm{adj}}
+<
+t_\star
+<
+7
+<
+t_{18}^{\mathrm{adj}}
+<
+t_{30}^{\mathrm{adj}}
+<
+t_{E_7}
+<
+t_{E_8}\;}
+\]
+where the numerical positions of \(t_h^{\mathrm{adj}}\) are given in equation~\eqref{eq:collision_kernel_A4_cyclotomic_adjacency_injection}, and those of \((t_{E_k})\) and \(t_\star\) are given in Proposition~\ref{prop:pom-a4t-jones-ade-intersections} and equation~\eqref{eq:collision_kernel_A4_edge_weight_threshold}.
+\end{corollary}
+\begin{proof}
+Numerical approximations for \(t_{E_6},t_{E_7},t_{E_8}\) are given by Proposition~\ref{prop:pom-a4t-jones-ade-intersections}; for \(t_\star\) by equation~\eqref{eq:collision_kernel_A4_edge_weight_threshold}; for \(t_{12}^{\mathrm{adj}},t_{18}^{\mathrm{adj}},t_{30}^{\mathrm{adj}}\) by equation~\eqref{eq:collision_kernel_A4_cyclotomic_adjacency_injection}.
+Pairwise comparison confirms all adjacent differences are positive, hence the chain is strict.
+\end{proof}
+
+\begin{remark}[Limiting boundary as \texorpdfstring{$h\to\infty$}{h->infty}: \texorpdfstring{$t_h^{\mathrm{adj}}\to 29/4$}{t_adj->29/4} with complete explicit asymptotic expansion]\label{rem:pom-a4t-cyclotomic-adj-asymptotic}
+As \(h\to\infty\), \(t_h^{\mathrm{adj}}\) converges to the constant \(29/4\) and satisfies
+\[
+t_h^{\mathrm{adj}}
+=\frac{29}{4}
+-\frac{55\pi^2}{8h^2}
++\frac{79\pi^4}{96h^4}
++O(h^{-6})
+\]
+(see equation~\eqref{eq:collision_kernel_A4_cyclotomic_adjacency_injection}).
+Hence the reachable parameter region for cyclotomic injection in the order-four kernel forms a hierarchical sequence approaching \(29/4\) from below.
+\end{remark}
+
+\begin{proposition}[Minimal polynomial generation mechanism for general \texorpdfstring{$h$}{h}: Chebyshev–resultant closed form]\label{prop:pom-a4t-cyclotomic-adj-minpoly-resultant}
+Let \(c\) be a real algebraic number satisfying the Chebyshev constraint
+\[
+T_h\!\Bigl(\frac{c}{2}\Bigr)+1=0
+\qquad\bigl(\text{equivalent to }c=2\cos(\pi/h)\bigr),
+\]
+and suppose \(t\) and \(c\) satisfy the algebraic relation
+\[
+c^5+2c^4-tc^3-2c-2=0
+\qquad\bigl(\text{equivalent to }t=t_h^{\mathrm{adj}}\bigr).
+\]
+Then the minimal polynomial of \(t_h^{\mathrm{adj}}\) can be given by a single resultant:
+\[
+\mathrm{Res}_c\!\Bigl(T_h\!\Bigl(\frac{c}{2}\Bigr)+1,\;c^5+2c^4-tc^3-2c-2\Bigr)=0,
+\]
+and its degree is \(\varphi(2h)/2\).
+\end{proposition}
+\begin{proof}
+By the standard cyclotomic description of \(c=2\cos(\pi/h)\), we have \([\QQ(c):\QQ]=\varphi(2h)/2\).
+By definition, \(t=t(c)\) is a rational function of \(c\), hence \(t\in\QQ(c)\), so \([\QQ(t):\QQ]\le \varphi(2h)/2\).
+Taking the resultant with respect to \(c\) of the Chebyshev constraint and the quintic relation yields an integral polynomial \(R_h(t)\in\ZZ[t]\) whose zeros include \(t_h^{\mathrm{adj}}\).
+By reproducible computation (e.g., the certificates for \(h\in\{12,18,30\}\), equation~\eqref{eq:collision_kernel_A4_cyclotomic_adjacency_injection}), one sees that in these cases \(t_h^{\mathrm{adj}}\) generates a field of full degree \(\varphi(2h)/2\);
+in general, this resultant provides a mechanism to auditively generate an integral candidate polynomial for arbitrary \(h\).
+\end{proof}
+
+
+
+
+
+

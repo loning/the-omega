@@ -1,0 +1,168 @@
+% Auto-split to keep each TeX source < 600 lines.
+%
+% (User input window)
+% 2026-02-15 02:24:44 (Asia/Singapore)
+%
+
+\begin{proposition}[Unique real spectral bifurcation point of quartic parametric kernel: quintic discriminant factor and spectral topological phase transition]\label{prop:pom-a4t-real-ep-branchpoint}
+Using notation from Remark \ref{rem:pom-collision-rh-break-a4-threshold}, let
+\[
+p_t(\lambda):=\det(\lambda I-A_4(t))=\lambda^{5}-2\lambda^{4}-t\lambda^{3}-2\lambda+2,
+\qquad t\in\RR.
+\]
+Then the discriminant with respect to variable \(\lambda\) satisfies
+\[
+\mathrm{Disc}_\lambda(p_t)=-16\,Q(t),
+\qquad
+Q(t):=27t^5+35t^4+434t^3+4394t^2+10832t+7403.
+\]
+Moreover the quintic polynomial \(Q(t)\) has only one zero \(t_{\mathrm{ep}}\in\RR\) on the real line (formula \eqref{eq:collision_kernel_A4_unit_circle_branchpoints}).
+Therefore \(t=t_{\mathrm{ep}}\) is the unique spectral bifurcation point of this one-parameter family on the real line: if and only if \(t=t_{\mathrm{ep}}\), \(p_t\) has a double eigenvalue on \(\RR\).
+Moreover, the real/complex root type of spectrum jumps at this point:
+\[
+t>t_{\mathrm{ep}}
+\ \Longrightarrow\
+p_t\ \text{has exactly three real roots and one pair of conjugate non-real roots},
+\qquad
+t<t_{\mathrm{ep}}
+\ \Longrightarrow\
+p_t\ \text{has exactly one real root and two pairs of conjugate non-real roots}.
+\]
+\end{proposition}
+\begin{proof}
+Discriminant closed form already given in Remark \ref{rem:pom-a4t-discriminant-root-type}; here we only denote its nontrivial factor as \(Q(t)\).
+Sturm discriminant method shows \(Q(t)\) has exactly one zero \(t_{\mathrm{ep}}\) on \(\RR\), hence spectral bifurcation point on real line is unique (reproducible script: \texttt{scripts/exp\_collision\_kernel\_A4\_unit\_circle\_branchpoints.py}).
+\par
+When \(t>t_{\mathrm{ep}}\), \(Q(t)>0\), hence \(\mathrm{Disc}_\lambda(p_t)<0\) and \(p_t\) has no multiple roots.
+For quintic real-coefficient polynomials, discriminant sign characterizes parity of number of non-real conjugate pairs; from \(\mathrm{Disc}_\lambda(p_t)<0\) we know number of non-real conjugate pairs is \(1\), hence root type is \(3\) real \(+\) \(1\) pair of non-real conjugate roots.
+\par
+When \(t<t_{\mathrm{ep}}\), \(\mathrm{Disc}_\lambda(p_t)>0\) and \(p_t\) has no multiple roots, hence number of non-real conjugate pairs is even.
+Taking a point \(t=-2<t_{\mathrm{ep}}\), Sturm counting verifies \(p_{-2}\) has only one real root; root type remains constant on connected interval \((-\infty,t_{\mathrm{ep}})\), thus obtaining \(1\) real \(+\) \(2\) pairs of non-real conjugate roots. \qed
+\end{proof}
+
+\input{sections/generated/eq_collision_kernel_A4_unit_circle_branchpoints}
+
+\begin{proposition}[Complete classification of unit circle spectral points: only three real parameters touch \texorpdfstring{$|\lambda|=1$}{|lambda|=1}]\label{prop:pom-a4t-unit-circle-spectrum-classification}
+For real parameter \(t\), equation \(p_t(\lambda)=0\) has roots satisfying \(|\lambda|=1\), if and only if
+\[
+t\in\Bigl\{-\frac{11}{4},-1,1\Bigr\}.
+\]
+Moreover corresponding unit circle roots are completely explicit:
+\[
+t=-1\ \Longleftrightarrow\ \lambda\in\{1,-1\},
+\qquad
+t=1\ \Longleftrightarrow\ \lambda\in\{\mathrm{i},-\mathrm{i}\},
+\]
+\[
+t=-\frac{11}{4}
+\ \Longleftrightarrow\
+\lambda\in\left\{\frac{3\pm \mathrm{i}\sqrt7}{4}\right\}.
+\]
+Here \(t=-\frac{11}{4}\) gives the unique "non-cyclotomic" unit circle touchpoint: unit circle roots generate quadratic imaginary field \(\QQ(\sqrt{-7})\) and appear as conjugate pair in spectrum.
+\end{proposition}
+\begin{proof}
+Assume \(t\in\RR\) and \(|\lambda|=1\) satisfies \(p_t(\lambda)=0\).
+Since \(p_t\) has all real coefficients, \(0=\overline{p_t(\lambda)}=p_t(\overline\lambda)\); also since \(|\lambda|=1\), \(\overline\lambda=\lambda^{-1}\), hence also \(p_t(1/\lambda)=0\).
+\par
+Viewing \(p_t(\lambda)=0\) and \(\lambda^5p_t(1/\lambda)=0\) as two equations in \(t\) and eliminating yields
+\[
+(\lambda^4-1)\,(2\lambda^2-3\lambda+2)=0.
+\]
+Therefore possible values with \(|\lambda|=1\) are only \(\lambda\in\{\pm1,\pm\mathrm{i}\}\) or a conjugate pair of roots satisfying \(2\lambda^2-3\lambda+2=0\), which are \(\lambda=(3\pm \mathrm{i}\sqrt7)/4\).
+Substituting back into
+\(
+t=\frac{\lambda^5-2\lambda^4-2\lambda+2}{\lambda^3}
+\)
+gives \(t=-1,1,-11/4\) respectively.
+Reverse implication verified by direct substitution. \qed
+\end{proof}
+
+\begin{corollary}[Unit circle touchpoints of even spectrum: three classes of unit modulus zeros of \texorpdfstring{$\det(I-uA_4(t)^2)$}{det(I-uA4(t)^2)}]\label{cor:pom-a4t-even-spectrum-unit-circle-touchpoints}
+Let \(E_t(u):=\det(I-uA_4(t)^2)\) as in Proposition \ref{prop:pom-a4t-even-zeta-quintic}.
+Then for \(t\in\RR\), equation \(E_t(u)=0\) has zeros on unit circle \(|u|=1\), if and only if
+\[
+t\in\Bigl\{-\frac{11}{4},-1,1\Bigr\}.
+\]
+Moreover corresponding zeros can be taken as
+\[
+t=-1\Rightarrow u=1,
+\qquad
+t=1\Rightarrow u=-1,
+\qquad
+t=-\frac{11}{4}\Rightarrow 4u^{2}-u+4=0,
+\]
+i.e., \(u=(1\pm 3\mathrm{i}\sqrt7)/8\in\QQ(\sqrt{-7})\) gives a pair of unit modulus even spectrum zeros.
+\end{corollary}
+\begin{proof}
+By spectral mapping theorem,
+\(
+E_t(u)=0
+\)
+if and only if there exists \(\lambda\in\mathrm{spec}(A_4(t))\) such that \(u=\lambda^{-2}\).
+Therefore \(|u|=1\) if and only if there exists eigenvalue \(|\lambda|=1\).
+Combining with Proposition \ref{prop:pom-a4t-unit-circle-spectrum-classification} gives parameter set \(\{-11/4,-1,1\}\).
+Explicit values of three classes of \(u\) computed directly from \(u=\lambda^{-2}\), and for \(t=-11/4\) case reduced to quadratic \(4u^2-u+4=0\). \qed
+\end{proof}
+
+\begin{proposition}[Unified rational expression for double roots of even spectrum: three degeneracies share same linear subresultant]\label{prop:pom-a4t-even-spectrum-double-root-ustar}
+Let \(E_t(u)\) as in Proposition \ref{prop:pom-a4t-even-zeta-quintic}, and let \(t_{\mathrm{ep}}\) be the unique real bifurcation point from Proposition \ref{prop:pom-a4t-real-ep-branchpoint}.
+Then there exists an explicit rational function \(u_\ast(t)\) (formula \eqref{eq:collision_kernel_A4_unit_circle_branchpoints}), satisfying the following equivalent characterization:
+\[
+\text{For }t\in\RR,\qquad
+\Bigl(\exists\,u\in\CC:\ E_t(u)=0\ \text{and}\ \partial_uE_t(u)=0\Bigr)
+\quad\Longleftrightarrow\quad
+t\in\{-1,1,t_{\mathrm{ep}}\},
+\]
+and at these degenerate parameters, \(u=u_\ast(t)\) is a double root of \(E_t(u)\), satisfying
+\[
+u_\ast(-1)=1,\qquad u_\ast(1)=-1,\qquad u_\ast(t_{\mathrm{ep}})=:u_{\mathrm{ep}}\approx 0.6585687696.
+\]
+Therefore at the unique real spectral bifurcation point \(t=t_{\mathrm{ep}}\), \(A_4(t)\) has a double eigenvalue \(\lambda_{\mathrm{ep}}\in\RR_{>0}\) such that
+\(
+u_{\mathrm{ep}}=\lambda_{\mathrm{ep}}^{-2}
+\)
+(numerically \(\lambda_{\mathrm{ep}}\approx 1.2322517229\), see formula \eqref{eq:collision_kernel_A4_unit_circle_branchpoints}).
+\end{proposition}
+\begin{proof}
+From formula \eqref{eq:collision_kernel_A4_even_zeta_quintic},
+\(\mathrm{Disc}_u(E_t)=-256(t-1)^2(t+1)^2Q(t)\).
+Therefore \(E_t\) has repeated root in \(u\)-variable if and only if \(t=\pm1\) or \(Q(t)=0\).
+While Proposition \ref{prop:pom-a4t-real-ep-branchpoint} shows \(Q(t)=0\) on real line corresponds only to \(t=t_{\mathrm{ep}}\), hence degenerate parameter set is \(\{-1,1,t_{\mathrm{ep}}\}\).
+\par
+In \(\ZZ[t]\) coefficient field, performing Euclidean/subresultant elimination on \((E_t,\partial_uE_t)\), the subresultant of degree \(1\) gives a linear factor
+\(
+(\text{polynomial}(t))\cdot u-(\text{polynomial}(t))
+\);
+corresponding solution is \(u_\ast(t)\) in formula \eqref{eq:collision_kernel_A4_unit_circle_branchpoints}, satisfying
+\(
+E_t(u_\ast(t))=\partial_uE_t(u_\ast(t))=0
+\)
+simultaneously at above degenerate parameters (reproducible script same as Proposition \ref{prop:pom-a4t-real-ep-branchpoint}).
+\par
+Finally, for \(t=t_{\mathrm{ep}}\) case, double root at \(\lambda\)-layer given by discriminant vanishing;
+from \(E_t(u)=\prod_{\lambda\in\mathrm{spec}(A_4(t))}(1-u\lambda^2)\) we get \(u_{\mathrm{ep}}=\lambda_{\mathrm{ep}}^{-2}\).
+Numerical approximation given by formula \eqref{eq:collision_kernel_A4_unit_circle_branchpoints}. \qed
+\end{proof}
+
+\begin{remark}[Newman critical strictly separated from unit circle geometry: RH crossing occurs in unit circle interior phase]\label{rem:pom-a4t-newman-unit-circle-separation}
+By Proposition \ref{prop:pom-a4t-real-ep-branchpoint} and formula \eqref{eq:collision_kernel_A4_unit_circle_branchpoints},
+\(
+-\frac{11}{4}<t_{\mathrm{ep}}<-1<1
+\);
+on the other hand, Remark \ref{rem:pom-collision-rh-break-a4-threshold} gives fourth-order Newman critical threshold \(t_\star\) as unique positive real solution, with \(t_\star\approx 6.9757>1\) (formula \eqref{eq:collision_kernel_A4_edge_weight_threshold}).
+Therefore strict order chain holds:
+\[
+\boxed{\;-\frac{11}{4}<t_{\mathrm{ep}}<-1<1<t_\star\;}
+\]
+hence \(t_\star\) kernel-version RH crossing occurs inside analytic branch where full spectral root type is already fixed (\(3\) real \(+\) \(1\) pair of non-real conjugate), and lies to right of unit circle touchpoint \(t=1\).
+In other words, critical crossing can be characterized within framework of modulus competition in purely real spectral channels (Perron root vs main negative real root), geometrically strictly orthogonal to \(|\lambda|=1\) touching and spectral bifurcation mechanisms.
+\end{remark}
+
+\begin{conclusion}[Bifurcation layered structure of quartic kernel family: unique real anomaly point of full spectrum and three double-root degeneracies of even spectrum]\label{con:pom-a4t-branching-layered-structure}
+For real parameter \(t\), real-line spectral bifurcation of full spectrum polynomial \(p_t(\lambda)=\det(\lambda I-A_4(t))\) occurs only at \(t=t_{\mathrm{ep}}\) (Proposition \ref{prop:pom-a4t-real-ep-branchpoint}), hence except this point all five eigenvalue branches are real-analytic functions of \(t\).
+While discriminant of even spectrum polynomial \(E_t(u)=\det(I-uA_4(t)^2)\) degenerates simultaneously at \(t=\pm1\) and \(t=t_{\mathrm{ep}}\) (formula \eqref{eq:collision_kernel_A4_even_zeta_quintic} and Proposition \ref{prop:pom-a4t-even-spectrum-double-root-ustar}):
+where double roots at \(t=\pm1\) come from identification degeneration of squaring map \(\lambda\mapsto \lambda^2\),
+while double root at \(t=t_{\mathrm{ep}}\) corresponds to genuine spectral bifurcation (\(\lambda\)-layer double eigenvalue).
+Moreover, Newman critical \(t_\star\) lies inside bifurcation-free analytic branch (Remark \ref{rem:pom-collision-rh-break-a4-threshold}), belonging to pure modulus competition phase transition rather than spectral bifurcation phase transition.
+\end{conclusion}
+

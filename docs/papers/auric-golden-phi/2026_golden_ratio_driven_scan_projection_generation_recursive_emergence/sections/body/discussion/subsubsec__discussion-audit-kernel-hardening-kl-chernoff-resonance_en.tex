@@ -1,0 +1,80 @@
+% Auto-split to keep each TeX source < 600 lines.
+
+\subsubsection{Audit Kernel Hardening: KL Orthogonal Decomposition, Chernoff Breakpoint Phase Diagram, and Resonance Spectrum Ontology}\label{subsubsec:discussion-audit-kernel-hardening-kl-chernoff-resonance}
+Beyond the closed loop in \S\ref{subsubsec:discussion-audit-kernel-closed-loop}, the manuscript contains three additional structural threads leaning more toward hard constraints:
+they respectively objectify the intuitive notion of "orthogonal recording axes/no information leakage" into strict identities, solidify budget design into a discrete-curvature-driven breakpoint phase diagram, and pin the resonance window ontology to spectral root geometry rather than auxiliary Hankel primitive constraints.
+The following statements all directly cite numbered conclusions and generated tables from the main text/appendices, introducing no new proof premises.
+
+\paragraph{KL Pythagorean Decomposition: Strictly Externalizing Microscopic Residuals into Verifiable Fields}
+At fixed resolution \(m\), the readout operator \(P_m\) and the fiber uniform lift \(Q_m\) constitute an auditable "macroscopic–microscopic" interface (\S\ref{subsec:pom-information-ledger}).
+Taking the uniform distribution \(u_{\Omega_m}\) over \(\Omega_m\) as the microstate baseline, its stable pushforward is
+\(
+w_m:=P_m u_{\Omega_m}
+\)
+with \(w_m(x)=d_m(x)/2^m\) (Theorem \ref{thm:pom-kl-pythagoras-uniform}).
+For any microscopic distribution \(\mu\in\Delta(\Omega_m)\), let its macroscopic histogram be \(\pi:=P_m\mu\), and let \(\mu^e:=Q_m\pi\) be the fiber-wise conditional uniform lift under the same macroscopic constraint, then the KL divergence to the uniform baseline satisfies the exact three-term identity
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
+=D_{\mathrm{KL}}(\pi\|w_m)\;+\;D_{\mathrm{KL}}(\mu\|\mu^e)\;}
+\]
+(Theorem \ref{thm:pom-kl-pythagoras-uniform}).
+This strictly splits the cost of "deviation from uniform microstate" into:
+\begin{itemize}
+  \item \textbf{Macroscopic cost} \(D_{\mathrm{KL}}(\pi\|w_m)\): depends only on the stable-layer distribution \(\pi\) relative to the uniform-microstate pushforward \(w_m\);
+  \item \textbf{Microscopic residual} \(D_{\mathrm{KL}}(\mu\|\mu^e)\): deviation of \(\mu\) relative to its fiber-wise uniformization version within the constraint class fixing \(\pi\) (average of fiber-wise non-uniformity; Lemma \ref{lem:pom-fiberwise-kl}).
+\end{itemize}
+Moreover, \(\mu^e\) admits simultaneous strict characterizations as both maximum entropy and I-projection:
+it is the unique maximum-entropy element in the constraint set \(\mathcal{C}_\pi=\{\nu:P_m\nu=\pi\}\), equivalently the KL-nearest point to \(u_{\Omega_m}\) (Corollary \ref{cor:pom-Iproj-maxent}).
+Thus the KL Pythagorean decomposition serves as the minimal verifiable definition of "orthogonal recording axes": orthogonal axes are not additional narrative coordinates, but the residual term \(D_{\mathrm{KL}}(\mu\|\mu^e)\) under the projection \(\mu\mapsto\mu^e\), whose gap characterization is also exact:
+\[
+D_{\mathrm{KL}}(\mu\|u_{\Omega_m})-D_{\mathrm{KL}}(\mu^e\|u_{\Omega_m})
+=D_{\mathrm{KL}}(\mu\|\mu^e)
+\]
+(Corollary \ref{cor:pom-Iproj-gap-exact}).
+
+\paragraph{Chernoff Quantile Certificate: Breakpoint Phase Diagram Driven by Discrete Curvature \texorpdfstring{$A_q$}{Aq}}
+Writing the optimal design of tail failure rate \(\varepsilon\), resolution \(m\), and moment order \(q\) as an auditable certificate, the lower-envelope structure forces breakpoints to appear.
+Specifically, for audited \(r_q\), define the secant slope \(\beta_q=(\log r_q-\log2)/(q-1)\) and certificate family
+\(
+\gamma_m^{(q)}(\varepsilon)=\beta_q+\frac{1}{m(q-1)}\log\frac{1}{\varepsilon}
+\),
+whose lower envelope
+\(
+\gamma_m^{\mathrm{cert}}(\varepsilon)=\inf_{q\ge 2}\gamma_m^{(q)}(\varepsilon)
+\)
+is a piecewise lower envelope of \(1/m\)-type hyperbolic families (Remark \ref{rem:pom-qstar-phase-diagram-breakpoints}).
+Proposition \ref{prop:pom-breakpoint-curvature-law-Aq} shows: the jump of optimal moment order is completely controlled by a discrete curvature increment scalar \(A_q\),
+with breakpoint closed form
+\[
+m_{q\to q+1}(\varepsilon)=\frac{\log(1/\varepsilon)}{A_q},
+\qquad
+A_q=(q-1)(\log r_{q+1}-\log2)-q(\log r_q-\log2),
+\]
+thus \(q^\star(m,\varepsilon)\) decreases monotonically in unit steps as \(m\) increases, with two-point simultaneous optimality at breakpoints (Remark \ref{rem:pom-qstar-phase-diagram-breakpoints}).
+Within the range \(\varepsilon=10^{-6}\) and DP-extended audit \(q\le 20\), all breakpoints can be uniquely computed from \(\{r_q\}\) and tabulated in Table \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20};
+e.g., \(q^\star=7\) for \(m\in[513.01,643.28)\), while \(q^\star=2\) for \(m\ge 5344.31\) (same remark and table).
+Under the continuous interpolation regime of pressure geometry, \(A_q\) can also be interpreted as a discrete curvature sample of the analytic convex pressure surface (Remark \ref{rem:pom-breakpoint-curvature-thermo-realization}), thereby fixing the kink mechanism of the "budget design phase diagram" as a geometric consequence of curvature.
+
+\paragraph{Resonance Window Ontology: Spectral Near-Degeneracy Rather than Hankel Primitive Degeneracy}
+In the audited setting of resonance window \(q=9,\dots,17\), although Hankel-null certificates are non-empty (Table \ref{tab:fold_collision_resonance_nullmodes_q9_17}),
+their "primitive quotient space dimension" is identically zero:
+\[
+\Delta_{\mathrm{prim}}(q)=0
+\]
+(Corollary \ref{cor:pom-hankel-null-no-primitive-residual}; see also Remark \ref{rem:pom-nullmodes-recurrence-plus-signature} and Table \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17} for explicit factorization decomposition).
+Equivalently, any annihilating polynomial induced by a NullMode can be written as \(A^{(j)}(\lambda)=Q^{(j)}(\lambda)P_q(\lambda)\) (zero remainder), with no "primitive" null mode not explained by the minimal recurrence characteristic polynomial \(P_q\).
+Thus within this window, resonance should not be understood as the appearance of "extra Hankel constraint directions", but should revert to the near-degeneracy mechanism of spectral root geometry:
+the shadow spectral packet yields \(|\mu_q|/r_{q-2}\uparrow 1\) with narrow-angle window phase drift (Remarks \ref{rem:pom-shadow-spectral-packet-q9-17}, \ref{rem:pom-resonance-trimodal-phase-lock}), forming a computably one-dimensional intensity coordinate via the algebraic phase-lock residual \((\delta\theta_q,\rho_q)\) (Table \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}; see also linearization constant and quadratic error bound: Proposition \ref{prop:pom-phase-residual-linearization-sqrt15}).
+This path is conceptually consistent with the summary in Remark \ref{rem:pom-resonance-spectral-not-hankel-degeneracy}: strong resonance can manifest on the spectral side as edge-hugging slow modes and locked phases, but within the current window does not produce new Hankel primitive constraints;
+thus if one wishes to "resolve resonance", one can only do so by changing the generating kernel to alter \(P_q\), or by explicitly externalizing new channels, rather than relying on excavating additional Hankel degeneracy under the same \(P_q\).
+
+\paragraph{Minimal Field-ized Output of Audit Kernel (Hard Interface)}
+The above three threads can be organized alongside the curvature error bars, Hankel normal forms, and arithmetic rigidity fields in \S\ref{subsubsec:discussion-audit-kernel-closed-loop} into a harder audit kernel output:
+\begin{itemize}
+  \item \textbf{Information orthogonal decomposition field:} Output \(\bigl(D_{\mathrm{KL}}(\mu\|u_{\Omega_m}),D_{\mathrm{KL}}(\pi\|w_m),D_{\mathrm{KL}}(\mu\|\mu^e)\bigr)\) enforcing the Pythagorean identity (Theorem \ref{thm:pom-kl-pythagoras-uniform}), while outputting I-projection/maximum-entropy criterion (Corollary \ref{cor:pom-Iproj-maxent}).
+  \item \textbf{Moment order design field:} Taking audited \(\{r_q\}\) as input, output discrete curvature \(A_q\), breakpoints \(m_{q\to q+1}(\varepsilon)\), and phase diagram \(q^\star(m,\varepsilon)\) (Proposition \ref{prop:pom-breakpoint-curvature-law-Aq}; Remark \ref{rem:pom-qstar-phase-diagram-breakpoints}; Table \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}).
+  \item \textbf{Resonance spectrum field and primitivity field:} Output \(\Delta_{\mathrm{prim}}(q)\) and factorization verification (Corollary \ref{cor:pom-hankel-null-no-primitive-residual}; Table \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}), while outputting spectral packet geometry and phase residual certificates in parallel (Remark \ref{rem:pom-shadow-spectral-packet-q9-17}; Table \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}).
+\end{itemize}
+Any stable mismatch of a single field provides an implementation-neutral refutation interface, thereby rewriting the narrative descriptions of "externalization/no-leakage/budget-design/resonance-origin" as verifiable certificate consistency criteria.
+

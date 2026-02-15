@@ -334,8 +334,97 @@ By Proposition \ref{prop:pom-diagonal-rate-zero-threshold-collision},
 And \(p_2(w_m)=\sum_x w_m(x)^2=\mathrm{Col}_m=2^{-2m}S_2(m)\), substituting gives the closed form.
 The limit statement follows immediately from continuity.
 \end{proof}
+
+\begin{theorem}[Fr\'echet Derivative of the Two-Marginal Diagonal Constraint Rate: Explicit Gradient Given by Scaling Potential]\label{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}
+Let \(X\) be a finite alphabet (\(|X|\ge 2\)), take a full support distribution \(w\in\Delta(X)\), and let \(\delta\in(0,1-p_2(w))\).
+Let \(P^\star_\delta\) be the unique optimal coupling from Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}, and take its exponential family representation
+\[
+P^\star_\delta(x,y)=\frac{u_\delta(x)u_\delta(y)\,\exp\!\bigl(\lambda_\delta\,\mathbf 1_{\{x=y\}}\bigr)}{Z_\delta},
+\qquad
+u_\delta\in\RR_{>0}^{X},\ \lambda_\delta>0,
+\]
+where \(u_\delta\) is unique up to overall scaling (scaling absorbed into \(Z_\delta\)).
+Define the scaling potential
+\[
+\psi_\delta(x):=\log\frac{u_\delta(x)}{w(x)}\qquad(x\in X),
+\]
+which is unique up to additive constant.\footnote{Compiled according to the version record of the main document (main.pdf) at 2026-02-14 20:14:01 (Asia/Singapore, UTC+08) on February 14, 2026.}
+Then the mapping \(w\mapsto R_w(\delta)\) is Fr\'echet differentiable at the interior points of the simplex; for any tangent perturbation \(\dot w\) (satisfying \(\sum_{x\in X}\dot w(x)=0\)) we have
+\[
+DR_w(\delta)[\dot w]=2\sum_{x\in X}\dot w(x)\,\psi_\delta(x).
+\]
+Therefore the gradient of \(R_w(\delta)\) (in the tangent space sense) can be taken as
+\[
+\nabla R_w(\delta)\equiv 2\psi_\delta\pmod{\RR\mathbf 1}.
+\]
+\end{theorem}
+\begin{proof}
+When \(P_X=P_Y=w\), the mutual information satisfies the identity
+\(
+I_P(X;Y)=H(w)+H(w)-H(P)
+=2H(w)-H(P)
+\).
+Thus
+\[
+R_w(\delta)
+=2H(w)-\sup\Bigl\{H(P):\ P_X=P_Y=w,\ \mathbb P_P(X=Y)\ge 1-\delta\Bigr\}.
+\]
+The supremum problem is a strictly concave program in \(P\), and satisfies Slater condition when \(\delta<1-p_2(w)\); hence the maximizer \(P^\star_\delta\) is unique, and the KKT multipliers are unique up to additive constant normalization.
+\par
+Write the Lagrangian for the maximization problem (with \(\alpha,\beta\) as the two marginal constraint multipliers, and \(\lambda\) as the diagonal constraint multiplier) and apply the stationarity condition with respect to \(P(x,y)\), we get
+\[
+P^\star_\delta(x,y)\propto \exp\!\bigl(-\alpha_x-\beta_y+\lambda\,\mathbf 1_{\{x=y\}}\bigr).
+\]
+Let \(u_\delta(x):=\exp(-\alpha_x)\) and by exchange symmetry take \(\alpha=\beta\) (difference of constants absorbed into \(Z_\delta\)), yielding the exponential family representation stated in the theorem.
+\par
+Write
+\(
+F(w):=\sup\{H(P):P_X=P_Y=w,\ \mathbb P(X=Y)\ge 1-\delta\}
+\).
+Since the maximizer is unique and satisfies standard regularity, the envelope theorem gives
+\[
+DF(w)[\dot w]=\sum_{x\in X}(\alpha_x+\beta_x)\,\dot w(x)
+=-2\sum_{x\in X}\dot w(x)\,\log u_\delta(x),
+\]
+where the last step uses \(\alpha_x=\beta_x=-\log u_\delta(x)\) (additive constant does not affect tangent pairing).
+Since \(H(w)=-\sum_x w(x)\log w(x)\), for tangent perturbation we have \(DH(w)[\dot w]=-\sum_x\dot w(x)\log w(x)\).
+Substituting back into \(R_w(\delta)=2H(w)-F(w)\) gives
+\[
+DR_w(\delta)[\dot w]
+=2DH(w)[\dot w]-DF(w)[\dot w]
+=2\sum_{x\in X}\dot w(x)\Bigl(\log u_\delta(x)-\log w(x)\Bigr)
+=2\sum_{x\in X}\dot w(x)\,\psi_\delta(x),
+\]
+as stated.
+\end{proof}
+
+\begin{corollary}[Explicit Variance Constant for the \texorpdfstring{$\sqrt N$}{sqrtN} Bit Window]\label{cor:pom-microcanonical-query-distortion-critical-window-variance-psi}
+Under the setup of Theorem \ref{thm:pom-microcanonical-query-distortion-critical-window-clt}, if \(\delta\in(0,1-p_2(w))\) and \(w\) is full support, then we can take
+\(
+g_\delta\equiv 2\psi_\delta\pmod{\RR\mathbf 1}
+\)
+(\(\psi_\delta\) as in Theorem \ref{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}).
+Thus the variance constant of the critical window has the closed form
+\[
+\sigma_{\beta,\delta}^2
+=\beta(1-\beta)\ \Var_{X\sim w}\!\bigl(2\psi_\delta(X)\bigr)
+=4\beta(1-\beta)\Bigl(\EE_w[\psi_\delta(X)^2]-\EE_w[\psi_\delta(X)]^2\Bigr).
+\]
+\end{corollary}
+\begin{proof}
+By Theorem \ref{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}, the gradient of \(w\mapsto R_w(\delta)\) in the tangent space sense can be taken as \(g_\delta=2\psi_\delta\).
+Substituting this into the formula
+\(
+\sigma_{\beta,\delta}^2=\beta(1-\beta)\ \widetilde g_\delta^{\mathsf T}(\mathrm{diag}(w)-ww^{\mathsf T})\widetilde g_\delta
+\)
+from Theorem \ref{thm:pom-microcanonical-query-distortion-critical-window-clt},
+and noting that \(\widetilde g_\delta\) is precisely \(2\psi_\delta\) after mean-centering over \(w\), the quadratic form equals \(\Var_w(2\psi_\delta(X))\).
+\end{proof}
+
 \input{sections/body/pom/parts/part__pom-microcanonical-query-distortion-strong-converse-part2_en}
 \endinput
+
+
 
 
 

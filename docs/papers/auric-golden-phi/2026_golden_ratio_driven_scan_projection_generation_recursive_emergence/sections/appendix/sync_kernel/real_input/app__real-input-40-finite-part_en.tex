@@ -122,6 +122,51 @@ For the tail sum, using monotonicity:
 \]
 \end{proof}
 
+% 2026-02-15 21:32:10 (Asia/Singapore)
+% According to a document from 2026-02-14.
+\begin{remark}[Logarithmic-precision truncation depth: the constant layer can be certified within \texorpdfstring{$O(\log(1/\varepsilon))$}{O(log(1/eps))} samples]\label{rem:real-input-40-logM-logeps-truncation}
+From the tail bound of Proposition \ref{prop:real-input-40-logM-trunc-bound}, given \(\varepsilon\in(0,1)\), taking \(K\ge 2\) such that
+\[
+\frac{A}{(K+1)(\lambda-1)}\,\lambda^{-K}\le \varepsilon
+\]
+ensures \(|\log\mathfrak{M}-\log\mathfrak{M}^{(K)}|\le \varepsilon\).
+Therefore, in the setting with fixed \(\lambda>1\), the number of samples required to achieve logarithmic precision \(\varepsilon\) satisfies \(K\asymp \log(1/\varepsilon)\), and each term involves only sampling \(\log\zeta_M\) at points \(\lambda^{-m}\) inside the convergence disk.
+\end{remark}
+
+\begin{proposition}[Stability functional of the finite-part constant: sampling errors aggregate linearly only via M\"obius weights]\label{prop:real-input-40-logM-stability-functional}
+Following the setup of Proposition \ref{prop:real-input-40-logM-trunc-bound}, suppose for each \(m\ge 2\) the sampling admits an additive error \(\epsilon_m\) such that
+\[
+\log\zeta_M(\lambda^{-m})\ \longmapsto\ \log\zeta_M(\lambda^{-m})+\epsilon_m,
+\]
+then the drift of the finite-part constant satisfies the strict upper bound
+\[
+\boxed{\;
+|\Delta\log\mathfrak{M}|\le \sum_{m\ge 2}\frac{|\epsilon_m|}{m}\; }.
+\]
+In particular, if there exists \(\varepsilon>0\) such that \(|\epsilon_m|\le \varepsilon\,\lambda^{-m}\) for all \(m\ge 2\), then
+\[
+|\Delta\log\mathfrak{M}|
+\le
+\varepsilon\sum_{m\ge 2}\frac{\lambda^{-m}}{m}
+\le
+\frac{\varepsilon\,\lambda^{-2}}{2(1-\lambda^{-1})}.
+\]
+\end{proposition}
+\begin{proof}
+From the M\"obius--Abel representation \(\log\mathfrak{M}=\log C+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_M(\lambda^{-m})\), one has
+\(
+\Delta\log\mathfrak{M}=\sum_{m\ge 2}\frac{\mu(m)}{m}\epsilon_m
+\);
+combining with \(|\mu(m)|\le 1\) and taking absolute values yields the first formula.
+If \(|\epsilon_m|\le \varepsilon\lambda^{-m}\), then
+\[
+|\Delta\log\mathfrak{M}|
+\le \varepsilon\sum_{m\ge 2}\frac{\lambda^{-m}}{m}
+\le \frac{\varepsilon}{2}\sum_{m\ge 2}\lambda^{-m}
+=\frac{\varepsilon\,\lambda^{-2}}{2(1-\lambda^{-1})}.
+\]
+\end{proof}
+
 \paragraph{Double M\"obius--Abel series aligned with the primitive decomposition}
 From the decomposition identity
 \[
@@ -279,6 +324,7 @@ Moreover, the algebraic correction term simplifies completely to
 -z_\star+3z_\star^2=-\varphi^{-2}+3\varphi^{-4}=9-4\sqrt5.
 \]
 \end{corollary}
+
 
 
 

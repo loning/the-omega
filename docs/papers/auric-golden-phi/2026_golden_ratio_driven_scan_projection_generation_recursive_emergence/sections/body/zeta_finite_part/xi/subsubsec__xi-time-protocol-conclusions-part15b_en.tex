@@ -1,0 +1,212 @@
+% (User input window)
+% 2026-02-15 05:06:58 (Asia/Singapore)
+
+\begin{conclusion}[Fourth-order integrability of the fiber-weight bivariate partition function: rational generating function and constant-coefficient recurrence]\label{con:xi-terminal-zm-order4-rational}
+Let
+\[
+X_m:=\{x\in\{0,1\}^m:\ \forall i,\ x_ix_{i+1}=0\},
+\qquad
+\Fold_m:\Omega_m=\{0,1\}^m\to X_m
+\]
+be the standard folding map, and denote the fiber multiplicity \(d_m(x)=|\Fold_m^{-1}(x)|\).
+For any complex parameter \(y\in\CC\), define the fiber-weight bivariate partition function
+\[
+Z_m(y):=\sum_{x\in X_m} y^{|x|_1}\,d_m(x)
+=\sum_{a\in\Omega_m} y^{|\Fold_m(a)|_1}.
+\]
+Then for all \(m\ge 4\) there holds a strict fourth-order recurrence
+\[
+\boxed{\;
+Z_m(y)=Z_{m-1}(y)+(2y+1)Z_{m-2}(y)-Z_{m-3}(y)-y(y+1)Z_{m-4}(y)\;}
+\]
+and the generating function has an explicit rational closed form in \(\ZZ[y][[t]]\)
+\[
+\boxed{\;
+\sum_{m\ge 0} Z_m(y)\,t^m
+=\frac{1+yt-yt^2-y^2t^3}{1-t-(2y+1)t^2+t^3+y(y+1)t^4}\; }.
+\]
+Consequently, for fixed \(y\), the entire exponential modal structure of the sequence \(m\mapsto Z_m(y)\) is completely controlled by the quartic characteristic equation
+\[
+\Pi(\lambda,y)=0,
+\qquad
+\Pi(\lambda,y):=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1).
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By definition \(Z_m(y)\) is the weight sum of microstate paths of length \(m\), where each microstate \(a\in\Omega_m\) enters only through the \(1\)-count of its stable output \(\Fold_m(a)\).
+Since \(\Fold_m\) can be implemented by a finite-state reducer (fixed caliber for Zeckendorf/window folding throughout the text),
+\(Z_m(y)\) can be written as a matrix coefficient of some fixed-dimensional weighted transfer matrix \(T(y)\);
+hence \(\sum_{m\ge 0}Z_m(y)t^m\) is a rational function, with denominator degree equal to the minimal state count.
+For the present Fold instance, the reduced denominator degree stabilizes at \(4\), yielding the fourth-order recurrence;
+expanding the \(t\)-generating function at \(t=0\) and matching initial values yields the stated closed-form numerator and denominator;
+the above identities and subsequent discriminant/statistical constants can be verified with one click via script \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py}. \qed
+\end{proof}
+
+\begin{conclusion}[Minimal state complexity and degenerate points: Hankel rank is exactly \(4\) except at \(y\in\{0,-1,1\}\)]\label{con:xi-terminal-zm-hankel-rank4}
+Using the notation of Conclusion \ref{con:xi-terminal-zm-order4-rational}, and denoting
+\(
+\Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1)
+\).
+If \(y\in\CC\setminus\{0,-1,1\}\), then
+the minimal annihilating polynomial of the sequence \(\{Z_m(y)\}_{m\ge 0}\) is exactly \(\Pi(\lambda,y)\);
+equivalently, the Hankel rank of \(\{Z_m(y)\}\) is \(4\), and no constant-coefficient recurrence of order three or below can hold for all \(m\).
+\par
+When \(y\in\{0,-1\}\), the coefficient \(y(y+1)=0\) causes structural degeneration of the fourth-order recurrence to third order, with minimal order strictly dropping;
+when \(y=1\), the normalization identity \(Z_m(1)=\sum_x d_m(x)=2^m\) induces complete cancellation in the generating function, causing Hankel rank to collapse to \(1\).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-terminal-zm-order4-rational}, the denominator of \(\sum_{m\ge 0}Z_m(y)t^m\) is
+\(
+D(t)=1-t-(2y+1)t^2+t^3+y(y+1)t^4
+\).
+When \(y\in\{0,-1\}\), the quartic term of \(D(t)\) vanishes, reducing the recurrence order.
+When \(y=1\), numerator and denominator share the factor \((1-t)(1+t)^2\), reducing the generating function to \(\sum_{m\ge 0}2^m t^m=(1-2t)^{-1}\), lowering minimal order to \(1\).
+For any \(y\in\CC\setminus\{0,-1,1\}\), \(\deg_t D=4\) and numerator and denominator have no nontrivial common factor,
+so the reduced denominator degree remains \(4\), yielding minimal recurrence order \(4\); Hankel rank statement is equivalent. \qed
+\end{proof}
+
+\begin{conclusion}[Complete factorization of spectral bifurcation loci: Lee-Yang boundary given by a cubic univariate equation]\label{con:xi-terminal-zm-discriminant-leyang}
+Viewing \(\Pi(\lambda,y)\) as a quartic polynomial in \(\lambda\), its discriminant factors precisely in \(\ZZ[y]\) as
+\[
+\boxed{\;
+\mathrm{Disc}_{\lambda}\bigl(\Pi(\lambda,y)\bigr)
+=-y\,(y-1)\,\bigl(256y^3+411y^2+165y+32\bigr)\; }.
+\]
+Therefore, the \(\lambda\)-spectrum as an algebraic function of \(y\) bifurcates only at
+\(
+y\in\{0,1\}
+\)
+and at roots of the cubic equation
+\(
+256y^3+411y^2+165y+32=0
+\).
+This cubic polynomial has exactly one real root
+\[
+y_{\mathrm{LY}}\approx-1.1344520030,
+\]
+which gives the nearest boundary singularity of the bivariate free energy
+\[
+f(y):=\lim_{m\to\infty}\frac{1}{m}\log Z_m(y)
+\]
+on the real axis; thus when \(y\) is treated as a complex variable, the minimal nontrivial analytic radius of \(f\) is determined by \(y_{\mathrm{LY}}\) (Lee-Yang type boundary mechanism).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Computing the \(\lambda\)-discriminant of the quartic polynomial \(\Pi(\lambda,y)\) and factoring in \(\ZZ[y]\) yields the stated formula.
+Discriminant vanishes if and only if there is a repeated root, i.e., the algebraic branch bifurcates at that parameter; the real root of the cubic factor can be obtained by standard numerical root-finding. \qed
+\end{proof}
+
+\begin{conclusion}[Weight large deviations law and central limit theorem under pushforward distribution: mean and variance are rational constants]\label{con:xi-terminal-zm-lln-clt}
+Let \(w_m(x)=d_m(x)/2^m\) be the uniform microstate pushforward distribution, and let \(X\sim w_m\).
+Denote \(H_m:=|X|_1\), then for all \(y\in\CC\) we have the probability generating function identity
+\[
+\EE\!\left[y^{H_m}\right]=\frac{Z_m(y)}{2^m}.
+\]
+Let \(\lambda_+(y)\) denote the solution branch of \(\Pi(\lambda,y)=0\) in a neighborhood of \(y=1\) satisfying \(\lambda_+(1)=2\), then there exists a limiting log-moment generating function
+\[
+\lim_{m\to\infty}\frac{1}{m}\log \EE\!\left(e^{sH_m}\right)
+=\log\lambda_+(e^s)-\log 2.
+\]
+From this we derive:
+\begin{enumerate}
+  \item \(m^{-1}H_m\to 5/18\) (convergence in probability);
+  \item \(\frac{H_m-\frac{5}{18}m}{\sqrt{m}}\Rightarrow \mathcal N\!\bigl(0,\frac{67}{972}\bigr)\).
+\end{enumerate}
+The above constants are uniquely determined by implicit differentiation of \(\Pi(\lambda,y)\) at the point \((\lambda,y)=(2,1)\), and do not depend on any external input or additional normalization choice.
+\end{conclusion}
+\begin{proof}[Proof sketch (implicit differentiation)]
+By definition
+\(
+\EE[y^{H_m}]
+=\sum_{x\in X_m}y^{|x|_1}w_m(x)
+=2^{-m}Z_m(y)
+\).
+Since \(\Pi(\lambda,y)\) at \((2,1)\) satisfies \(\partial_\lambda\Pi(2,1)\neq 0\),
+the implicit function theorem gives \(\lambda_+(y)\) analytic in a neighborhood of \(y=1\).
+Setting \(y=e^s\) and \(\psi(s)=\log\lambda_+(e^s)-\log 2\), \(\psi'(0)\) and \(\psi''(0)\) give the linear drift and variance rate respectively.
+\par
+Taking first and second implicit derivatives of \(\Pi(\lambda_+(y),y)=0\) and substituting at point \((\lambda,y)=(2,1)\) yields
+\[
+\lambda_+'(1)=\frac{5}{9},
+\qquad
+\lambda_+''(1)=-\frac{64}{243}.
+\]
+Thus
+\(
+\psi'(0)=\lambda_+'(1)/\lambda_+(1)=5/18
+\), and
+\[
+\psi''(0)=\frac{\lambda_+'(1)}{\lambda_+(1)}+\frac{\lambda_+''(1)}{\lambda_+(1)}-\frac{\lambda_+'(1)^2}{\lambda_+(1)^2}
+=\frac{67}{972}.
+\]
+Large deviations law and central limit theorem follow from analytic spectral perturbation and standard quasi-power theorems for finite-state weighted transfer matrices. \qed
+\end{proof}
+
+\begin{conclusion}[Global large deviations for weight distribution: rate function is the Legendre transform of quartic algebraic spectrum]\label{con:xi-terminal-zm-ldp}
+Define the pressure function
+\[
+\psi(s):=\log\lambda_+(e^s)-\log 2.
+\]
+Then \(H_m/m\) satisfies a large deviation principle, with rate function
+\[
+I(\alpha)=\sup_{s\in\RR}\bigl(s\alpha-\psi(s)\bigr).
+\]
+Here \(\psi\) is strictly convex and real-analytic on the real line;
+its complex analytic continuation has nearest real-axis barrier determined by \(y_{\mathrm{LY}}\) from Conclusion \ref{con:xi-terminal-zm-discriminant-leyang} (via the complex logarithm branch lift of \(y=e^s\)).
+Therefore the multifractal spectrum of weight statistics can be given directly by the principal characteristic branch of \(\Pi(\lambda,y)\), without introducing any additional thermodynamic formalism.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-terminal-zm-lln-clt}, \(\psi\) gives the limiting log-moment generating function.
+Under differentiability and strict convexity conditions on \(\psi\), the G\"artner-Ellis theorem yields the large deviation principle and its Legendre transform form.
+Nearest analytic barrier is determined by bifurcation points of \(\lambda_+(y)\), which are characterized by vanishing discriminant, see Conclusion \ref{con:xi-terminal-zm-discriminant-leyang}. \qed
+\end{proof}
+
+\begin{conclusion}[Uniqueness of self-inversive congruence channel: only \(y^2+y+1=0\) triggers unit circle symmetry]\label{con:xi-terminal-zm-self-inversive-unique}
+For \(|y|=1\), we call \(\Pi(\lambda,y)\) a self-inversive polynomial
+if there exists a constant \(c\in\CC\) (\(|c|=1\)) such that
+\[
+\lambda^4\,\overline{\Pi\!\left(\frac{1}{\overline{\lambda}},y\right)}=c\,\Pi(\lambda,y).
+\]
+Then if and only if \(y(y+1)=-1\), i.e., \(y\) is a primitive third root of unity (satisfying \(y^2+y+1=0\)), \(\Pi(\lambda,y)\) possesses this self-inversivity.
+If and only if in this case, the root set of \(\Pi(\lambda,y)\) satisfies strict symmetry with respect to the unit circle: either on the unit circle or appearing in pairs via
+\(\lambda\mapsto 1/\overline{\lambda}\); and there must exist a pair of reciprocal conjugate roots with modulus strictly greater than \(1\).
+Therefore "unit circle symmetry of congruence weights" is strictly quantized in this system: modulo \(3\) is the unique nontrivial congruence channel triggering self-inversive symmetry.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Write
+\(
+\Pi(\lambda,y)=\sum_{k=0}^{4}a_k(y)\lambda^k
+\), where
+\(
+a_4=1,\ a_3=-1,\ a_2=-(2y+1),\ a_1=1,\ a_0=y(y+1)
+\).
+Self-inversivity is equivalent to existence of \(|c|=1\) such that \(a_k(y)=c\,\overline{a_{4-k}(y)}\) for all \(k\).
+From \(a_3=-1=c\,\overline{a_1}=c\) we get \(c=-1\).
+Then from \(a_4=1=c\,\overline{a_0}=-\overline{y(y+1)}\) we get \(\overline{y(y+1)}=-1\);
+when \(|y|=1\), \(\overline{y(y+1)}=(1+y)/y^2\), so this is equivalent to \(y^2+y+1=0\).
+Unit circle symmetry of root set is standard for self-inversive polynomials. \qed
+\end{proof}
+
+\begin{conclusion}[Two-dimensional linear dynamics of weight subdivision coefficients: finite-neighborhood closed recurrence on \((m,k)\)-plane]\label{con:xi-terminal-zm-2d-recurrence-amk}
+Let
+\[
+a_{m,k}:=\sum_{\substack{x\in X_m\\ |x|_1=k}} d_m(x),
+\qquad
+Z_m(y)=\sum_{k\in\ZZ} a_{m,k}y^k .
+\]
+Then by the polynomial structure in \(y\) of the fourth-order recurrence from Conclusion \ref{con:xi-terminal-zm-order4-rational}, we obtain a closed two-dimensional recurrence for \(a_{m,k}\):
+for all \(m\ge 4\) and \(k\in\ZZ\),
+\[
+\boxed{\;
+a_{m,k}=a_{m-1,k}+a_{m-2,k}+2a_{m-2,k-1}-a_{m-3,k}-a_{m-4,k-1}-a_{m-4,k-2}\;}
+\]
+closed by boundary conditions \(a_{m,k}=0\) (when \(k<0\) or \(k>\lceil m/2\rceil\)).
+This two-dimensional recurrence rewrites the "weight partition of pushforward distribution" as a completely local linear dynamical system, so that coupling between weight layers (fixed \(k\)) and length layers (fixed \(m\)) occurs only through finite neighborhoods;
+therefore the complete fine structure of weight distribution can be generated and audited directly by \((m,k)\)-level recurrence without explicitly constructing any high-dimensional collision kernel.
+\end{conclusion}
+\begin{proof}
+Write the recurrence from Conclusion \ref{con:xi-terminal-zm-order4-rational} as a \(y\)-power series and compare coefficients of \(y^k\) to obtain the stated two-dimensional recurrence;
+boundary conditions are given directly by the maximum \(1\)-count \(\max_{x\in X_m}|x|_1=\lceil m/2\rceil\) for golden mean legal syntax. \qed
+\end{proof}
+
+
+

@@ -63,6 +63,56 @@ and thus
 Integrating \(R'_w(\delta)=-\lambda(\delta)\) from \(\delta\downarrow 0\) and using \(R_w(0)=H(w)\) (see endpoint discussion in the main text) yields the stated expansion.
 \end{proof}
 
+\input{sections/body/pom/parts/part__pom-diagonal-rate-half-moment-critical-slope_en}
+
+\begin{theorem}[Two-Endpoint Asymptotics of the Scaling Potential]\label{thm:pom-diagonal-rate-scaling-potential-endpoints}
+Let \(X\) be a finite alphabet (\(|X|\ge 2\)), and take a full support distribution \(w\in\Delta(X)\).
+For \(\delta\in(0,\delta_0)\) (\(\delta_0:=1-p_2(w)\)), let \(\psi_\delta\) be the scaling potential from Theorem \ref{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}.
+Then as \(\delta\downarrow 0\) there exists a scalar \(c(\delta)\) such that
+\[
+\psi_\delta(x)= -\frac12\log w(x)+c(\delta)+o(1),\qquad x\in X,
+\]
+and for any \(x,y\in X\) we have
+\[
+\psi_\delta(x)-\psi_\delta(y)\ \longrightarrow\ -\frac12\log\frac{w(x)}{w(y)}.
+\]
+On the other hand, let \(\varepsilon:=\delta_0-\delta\downarrow 0^+\), and write
+\[
+C(w):=p_2(w)+p_2(w)^2-2p_3(w),\qquad p_3(w):=\sum_{x\in X}w(x)^3.
+\]
+Then there exists a scalar \(c_\varepsilon\) such that
+\[
+\psi_\delta(x)=\frac{\varepsilon}{C(w)}\Bigl(\frac{p_2(w)}{2}-w(x)\Bigr)+c_\varepsilon+O(\varepsilon^2),
+\qquad x\in X.
+\]
+\end{theorem}
+\begin{proof}
+As \(\delta\downarrow 0\), by the proof of Theorem \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} we can choose a gauge such that \(u_x=\kappa^{-1/2}\sqrt{w(x)}+o(\kappa^{-1/2})\), thus
+\[
+\psi_\delta(x)=\log\frac{u_x}{w(x)}=-\frac12\log w(x)-\frac12\log\kappa+o(1).
+\]
+Taking \(c(\delta):=-(1/2)\log\kappa\) gives the first formula; the difference limit follows directly by constant term cancellation.
+\par
+As \(\delta\uparrow\delta_0\), the proof of Theorem \ref{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature} under the gauge \(\sum_x u_x=1\) gives the expansion
+\(
+u_x=w(x)+\kappa w(x)\bigl(p_2(w)-w(x)\bigr)+O(\kappa^2)
+\)
+and
+\(
+\varepsilon=\delta_0-\delta=\kappa C(w)+O(\kappa^2)
+\).
+Therefore
+\[
+\psi_\delta(x)=\log\Bigl(1+\kappa\bigl(p_2(w)-w(x)\bigr)+O(\kappa^2)\Bigr)
+=\kappa\bigl(p_2(w)-w(x)\bigr)+O(\kappa^2).
+\]
+Eliminating \(\kappa=\varepsilon/C(w)+O(\varepsilon^2)\) we get
+\(
+\psi_\delta(x)=\frac{\varepsilon}{C(w)}\bigl(p_2(w)-w(x)\bigr)+O(\varepsilon^2)
+\).
+Finally, absorbing the constant term \(\frac{\varepsilon}{C(w)}\frac{p_2(w)}{2}\) into \(c_\varepsilon\) yields the stated form.
+\end{proof}
+
 \begin{theorem}[Quadratic Lift-Off at Zero Rate Endpoint: Curvature Depending Only on \texorpdfstring{$p_2,p_3$}{p2,p3} as \texorpdfstring{$\delta\uparrow(1-p_2(w))$}{delta->delta0}]\label{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature}
 Write the power sums \(p_k(w):=\sum_{x\in X}w(x)^k\), and let
 \[
@@ -189,6 +239,8 @@ In particular, the curvature constant \(C_m\) depends only on \(\{S_2(m),S_3(m)\
 For fixed \(m\), apply Theorem \ref{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature} to \(w=w_m\), and substitute \(p_k(w_m)=2^{-mk}S_k(m)\).
 \end{proof}
 
+\input{sections/body/pom/parts/part__pom-diagonal-rate-endpoint-three-kernel-half-moment-nonreplacement_en}
+
 \begin{theorem}[Hellinger Universality of Rare Mismatch: Non-Diagonal Limit Shape of Optimal Coupling as \texorpdfstring{$\delta\downarrow0$}{delta->0}]\label{thm:pom-diagonal-rate-rare-mismatch-hellinger-universality}
 Let \(P^\star_\delta\) be the unique optimal coupling achieving \(R_w(\delta)\), and write \(A_{1/2}(w)=\sum_x\sqrt{w(x)}\).
 As \(\delta\downarrow 0\), for any \(x\ne y\) we have
@@ -244,4 +296,109 @@ p_x(\delta)=P^\star_\delta(x,x)/w(x)
 \),
 substituting the diagonal expansion yields the preservation rate expansion.
 \end{proof}
+
+\input{sections/body/pom/parts/part__pom-diagonal-rate-keep-resample-channel_en}
+
+\begin{proposition}[Comonotonicity of Optimal Scaling and Preservation Rate]\label{prop:pom-diagonal-rate-scaling-keep-comonotone}
+Take a full support distribution \(w\in\Delta(X)\) and \(\delta\in(0,\delta_0)\) (\(\delta_0:=1-p_2(w)\)).
+Let \(P^\star_\delta\) be the unique optimal coupling achieving \(R_w(\delta)\), and write it in the form of Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}
+\[
+P^\star_\delta(x,y)=\frac{u_xu_y\bigl(1+\kappa\,\mathbf 1_{\{x=y\}}\bigr)}{Z},
+\qquad
+\kappa>0,\ u\in\RR_{>0}^X.
+\]
+Define the conditional kernel \(K_\delta(y\mid x):=P^\star_\delta(x,y)/w(x)\), the preservation rate
+\[
+p_\delta(x):=K_\delta(x\mid x)=\mathbb P(Y=x\mid X=x),
+\]
+and the background distribution (scaling normalization)
+\[
+\pi_\delta(x):=\frac{u_x}{\sum_{z\in X}u_z}.
+\]
+If \(w(x)\ge w(y)\), then we must have
+\[
+u_x\ge u_y,\qquad \pi_\delta(x)\ge \pi_\delta(y),\qquad p_\delta(x)\ge p_\delta(y).
+\]
+Moreover, when \(w\) is non-uniform, the above inequalities are strict for at least one pair \((x,y)\).
+\end{proposition}
+\begin{proof}
+Let \(A:=\sum_z u_z\).
+From the marginal self-consistency relation \(w(x)=u_x(A+\kappa u_x)/Z\) we obtain the quadratic equation for each \(x\)
+\[
+\kappa u_x^2+A u_x=Zw(x).
+\]
+The right side varies only with \(w(x)\) while the coefficients \((\kappa,A,Z)\) are the same for all \(x\), so its positive root \(u_x=f(w(x))\) (\(f\) strictly increasing) directly gives \(w(x)\ge w(y)\Rightarrow u_x\ge u_y\);
+normalization gives \(\pi_\delta\) with the same order.
+On the other hand,
+\[
+p_\delta(x)
+=\frac{P^\star_\delta(x,x)}{w(x)}
+=\frac{(1+\kappa)u_x^2/Z}{u_x(A+\kappa u_x)/Z}
+=\frac{(1+\kappa)u_x}{A+\kappa u_x},
+\]
+which is strictly increasing in \(u_x\), thus \(u_x\ge u_y\Rightarrow p_\delta(x)\ge p_\delta(y)\).
+If \(w\) is non-uniform, there exist \(x,y\) such that \(w(x)>w(y)\), and by strict increasingness of \(f\) we get strictness.
+\end{proof}
+
+\begin{theorem}[Majorization Interpolation of Scaling Distribution: \texorpdfstring{$\pi_\delta$}{pi} Monotone Chain from \texorpdfstring{$\pi_{1/2}$}{pi1/2} to \(w\)]\label{thm:pom-diagonal-rate-pi-majorization-chain}
+Let \(w\in\Delta(X)\) be full support and write \(\delta_0:=1-p_2(w)\).
+For \(\delta\in(0,\delta_0)\) let \(\pi_\delta\) be the background distribution from Proposition \ref{prop:pom-diagonal-rate-scaling-keep-comonotone}, and define
+\[
+\pi_{1/2}(x):=\frac{\sqrt{w(x)}}{\sum_{z\in X}\sqrt{w(z)}}.
+\]
+Then as \(\delta\downarrow 0\) we have \(\pi_\delta\to \pi_{1/2}\), and as \(\delta\uparrow\delta_0\) we have \(\pi_\delta\to w\).
+Moreover, for each \(\delta\in(0,\delta_0)\) the majorization sandwich holds
+\[
+\pi_{1/2}\ \prec\ \pi_\delta\ \prec\ w,
+\]
+where \(\prec\) denotes Hardy-Littlewood-P\'olya majorization; if \(w\) is non-uniform the above inequalities are strict.
+Furthermore, if \(0<\delta_1<\delta_2<\delta_0\), then we have the monotone majorization chain
+\[
+\pi_{\delta_1}\ \prec\ \pi_{\delta_2}.
+\]
+\end{theorem}
+\begin{proof}
+The endpoint limits follow from Theorem \ref{thm:pom-diagonal-rate-rare-mismatch-hellinger-universality} (\(\delta\downarrow 0\)) and
+the \(\kappa\downarrow 0\) expansion of Theorem \ref{thm:pom-diagonal-rate-zero-rate-endpoint-quadratic-curvature} (under the gauge \(\sum_x u_x=1\), \(u\to w\), thus \(\pi_\delta\to w\)).
+\par
+To prove the majorization relation, arrange the alphabet in non-increasing order of \(w\), so that \(w_{(1)}\ge\cdots\ge w_{(n)}\), and arrange \(\pi_\delta\) correspondingly.
+By the quadratic relation of Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} we can write
+\(
+\kappa u_x^2+A u_x=Zw(x)
+\),
+thus
+\(
+u_x/w(x)=\frac{2Z}{A+\sqrt{A^2+4\kappa Zw(x)}}
+\)
+is strictly decreasing in \(w(x)\).
+Therefore the sequence \(\bigl(\pi_{\delta,(i)}/w_{(i)}\bigr)_{i=1}^n\) is strictly increasing (the constant \(\sum_z u_z\) only acts as overall scaling).
+By this, for any \(k\in\{1,\dots,n\}\), the initial segment weighted average satisfies
+\[
+\frac{\sum_{i=1}^k \pi_{\delta,(i)}}{\sum_{i=1}^k w_{(i)}}
+=\frac{\sum_{i=1}^k w_{(i)}\cdot(\pi_{\delta,(i)}/w_{(i)})}{\sum_{i=1}^k w_{(i)}}
+\le \frac{\sum_{i=1}^n w_{(i)}\cdot(\pi_{\delta,(i)}/w_{(i)})}{\sum_{i=1}^n w_{(i)}}
+=1,
+\]
+where the inequality follows from the basic fact "adding a new term not smaller than the current average to an increasing sequence increases the average".
+Thus \(\sum_{i=1}^k \pi_{\delta,(i)}\le \sum_{i=1}^k w_{(i)}\) (\(k=1,\dots,n-1\)), i.e., \(\pi_\delta\prec w\).
+If \(w\) is non-uniform, then \(\pi_{\delta,(i)}/w_{(i)}\) is non-constant, so at least for some \(k\) the inequality is strict, giving strict majorization.
+\par
+For the monotone chain, note that \(\delta\mapsto \kappa(\delta)\) is strictly decreasing (Proposition \ref{prop:pom-diagonal-rate-analytic-strict-convexity-curvature}), while for fixed \(w\) the above ratio spectrum
+\(
+w\mapsto u_x/w(x)
+\)
+exhibits strictly monotone flattening in \(\kappa\): larger \(\kappa\) gives stronger relative compression of high-weight coordinates, thus \(\pi_\delta\) approaches the uniform endpoint \(\pi_{1/2}\) more in the majorization sense.
+Accordingly, for \(0<\delta_1<\delta_2<\delta_0\) we get \(\pi_{\delta_1}\prec \pi_{\delta_2}\), and from the endpoint limits we deduce \(\pi_{1/2}\prec \pi_\delta\).
+\end{proof}
+
+\begin{conjecture}[Schur Concavity and Uniform Maximality Principle]\label{conj:pom-diagonal-rate-schur-concavity}
+Fix \(\delta\in[0,1)\), the mapping \(w\mapsto R_w(\delta)\) is Schur concave on the interior of the simplex: if \(v\prec w\), then
+\[
+R_v(\delta)\ \ge\ R_w(\delta).
+\]
+Equivalently, for fixed support size \(n\), the maximum of \(R_w(\delta)\) is attained by the uniform distribution \(U_n\).
+This conjecture is compatible with the endpoint identity \(R_w(0)=H(w)\), the closed-form solution for binary alphabet (Theorem \ref{thm:pom-diagonal-rate-binary-closed-form}), the explicit formula for uniform distribution (Theorem \ref{thm:pom-diagonal-rate-uniform-closed-form}), and is consistent with the monotone structure revealed by the majorization interpolation of scaling distributions (Theorem \ref{thm:pom-diagonal-rate-pi-majorization-chain}).
+\end{conjecture}
+
+
 

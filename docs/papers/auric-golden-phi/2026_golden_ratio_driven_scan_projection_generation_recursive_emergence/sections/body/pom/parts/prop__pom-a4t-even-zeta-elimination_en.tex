@@ -150,6 +150,92 @@ Finally expanding \(G_{t_\star}(r_\star)=0\) gives the shown reciprocal locking 
 \end{proof}
 
 % (User input window)
+% 2026-02-14 20:22:37 (Asia/Singapore)
+%
+\begin{proposition}[Newman Critical Pole Quadratic Resonance Characterization: \texorpdfstring{$D_t(v^2)=D_t(-v)=0$}{Dt(v^2)=Dt(-v)=0}]\label{prop:pom-a4t-newman-pole-quadratic-resonance}
+Following Remark \ref{rem:pom-collision-rh-break-a4-threshold}, let
+\(
+D_t(z):=\det(I-zA_4(t))
+\)
+be the spectral determinant of the fourth-order kernel family (its explicit closed form is in equation \eqref{eq:collision_kernel_A4_newman_pole_quadratic_resonance}).
+Then the fourth-order Newman critical parameter \(t_\star\) is equivalent to the existence of a unique \(v_\star\in(0,1)\) such that
+\[
+D_{t_\star}(v_\star^2)=0,\qquad D_{t_\star}(-v_\star)=0.
+\]
+Equivalently, denoting \(z_+(t)\in(0,1)\) as the smallest positive real root of \(D_t\) and \(z_-(t)\in(-1,0)\) as its negative real root branch, we have
+\[
+z_+(t_\star)=z_-(t_\star)^2.
+\]
+After eliminating \(t\), \(v_\star\) satisfies an irreducible octic constraint, and \(t_\star\) can be explicitly given from \(v_\star\) (equation \eqref{eq:collision_kernel_A4_newman_pole_quadratic_resonance}).
+\end{proposition}
+\begin{proof}
+By definition,
+\(
+D_t(z)=\det(I-zA_4(t))=z^5\det(z^{-1}I-A_4(t))=z^5p_t(1/z)
+\);
+hence \(D_t(z)=0\) if and only if \(1/z\in\mathrm{spec}(A_4(t))\).
+On the other hand, Remark \ref{rem:pom-collision-rh-break-a4-threshold} gives the negative real root channel characterization of Newman threshold attainment: \(t=t_\star\) if and only if there exists \(y<0\) such that \(p_{t_\star}(y)=p_{t_\star}(y^2)=0\).
+Let \(v:=-1/y\in(0,1)\), then \(p_{t_\star}(y)=0\iff D_{t_\star}(-v)=0\), and \(p_{t_\star}(y^2)=0\iff D_{t_\star}(v^2)=0\), thereby obtaining the shown equivalent characterization.
+\par
+The octic constraint and two explicit closed forms for \(t_\star\) are given by direct elimination and substitution expansion; their reproducible output is in equation \eqref{eq:collision_kernel_A4_newman_pole_quadratic_resonance} (script \texttt{scripts/exp\_collision\_kernel\_A4\_pole\_quadratic\_resonance\_and\_cyclotomic\_adjacency\_injection.py}). \qed
+\end{proof}
+
+\input{sections/generated/eq_collision_kernel_A4_newman_pole_quadratic_resonance}
+
+\begin{proposition}[Kernel-Version Newman Offset Pole Geometry Criterion: \texorpdfstring{$\delta(t)=\log(z_+(t)/z_-(t)^2)$}{delta(t)=log(z+/z-^2)}]\label{prop:pom-a4t-newman-offset-pole-geometry}
+Following Remark \ref{rem:pom-collision-rh-break-a4-threshold}, let \(t\ge 0\) and denote
+\(
+D_t(z):=\det(I-zA_4(t))
+\).
+Let \(z_+(t)\in(0,1)\) be the smallest positive real root of \(D_t\), and let \(z_-(t)\in(-1,0)\) be the unique negative real root of \(D_t\).
+Define
+\[
+r(t):=\rho(A_4(t))=\frac{1}{z_+(t)},\qquad
+\mu_-(t):=\frac{1}{z_-(t)}<0,\qquad
+\Lambda(t):=|\mu_-(t)|=-\frac{1}{z_-(t)}.
+\]
+Then the Newman-type offset \(\delta(t):=\log(\Lambda(t)^2/r(t))\) satisfies the identity
+\[
+\delta(t)=\log\!\Bigl(\frac{z_+(t)}{z_-(t)^2}\Bigr),
+\]
+whence
+\[
+\delta(t)\begin{cases}
+<0 &\Longleftrightarrow z_+(t)<z_-(t)^2,\\
+=0 &\Longleftrightarrow z_+(t)=z_-(t)^2,\\
+>0 &\Longleftrightarrow z_+(t)>z_-(t)^2.
+\end{cases}
+\]
+Moreover \(\delta(t)=0\) if and only if \(t=t_\star\).
+\end{proposition}
+\begin{proof}
+By \(D_t(z)=0\iff 1/z\in\mathrm{spec}(A_4(t))\) we know \(z_+(t)=1/r(t)\).
+On the other hand, Remark \ref{rem:pom-a4t-discriminant-root-type} gives: for each \(t\ge 0\), \(p_t\) has exactly three real roots and one pair of conjugate non-real roots; and \(A_4(t)\) is a non-negative matrix, so its spectral radius \(r(t)\) is a real positive eigenvalue.
+Therefore the remaining two real roots are one positive and one negative, where the pole corresponding to the negative real root is exactly \(z_-(t)\in(-1,0)\), and uniqueness holds.
+By definition
+\(
+\delta(t)=\log(\Lambda(t)^2/r(t))
+\)
+and
+\(
+\Lambda(t)=-1/z_-(t),\ r(t)=1/z_+(t)
+\)
+immediately yields \(\delta(t)=\log(z_+(t)/z_-(t)^2)\) and its sign equivalence.
+\par
+Finally, \(\delta(t)=0\iff z_+(t)=z_-(t)^2\), and the equivalence of this quadratic resonance condition with \(t=t_\star\) is given by Proposition \ref{prop:pom-a4t-newman-pole-quadratic-resonance}. \qed
+\end{proof}
+
+\begin{remark}[Pole Ratio Single-Threshold Geometry: Audit Monotone Window of \texorpdfstring{$z_+(t)/z_-(t)^2$}{z+(t)/z-(t)^2}]\label{rem:pom-a4t-pole-ratio-monotone-window}
+Under the notation of Proposition \ref{prop:pom-a4t-newman-offset-pole-geometry}, let
+\(
+g(t):=z_+(t)/z_-(t)^2
+\).
+The script \texttt{scripts/exp\_collision\_kernel\_A4\_pole\_quadratic\_resonance\_and\_cyclotomic\_adjacency\_injection.py}
+performs grid audit of \(g(t)\) on the interval \([t_{E_6},t_{E_8}]\) containing the Newman critical and \((E_6,E_7,E_8)\) exponent intersection points,
+yielding that \(g\) is strictly increasing in this window; combined with the uniqueness of \(g(t_\star)=1\), this makes the fourth-order phase transition equivalent to the geometric criterion "whether the positive pole lies to the left/right of the square of the negative pole."
+\end{remark}
+
+% (User input window)
 % 2026-02-14 18:04:07 (Asia/Singapore)
 %
 \paragraph{Even Spectrum Curve Quadratic Solvability, Lucas Elimination, and Golden Ratio Resonance Tower}
@@ -272,6 +358,228 @@ Therefore
 t_\star\notin \bigcup_{a\in\ZZ}\ \QQ(\sqrt{a^2-4})\;}
 \]
 i.e., the Newman critical mechanism is strictly disjoint in algebraic degree from all the above Lucas/golden ratio resonance towers; the two types of phenomena belong to different arithmetic resolution levels.
+\end{conclusion}
+
+% (User input window)
+% 2026-02-14 20:46:17 (Asia/Singapore)
+%
+\paragraph{Newman Octic Critical Field Sparse Generator and Local Arithmetic Fingerprint}
+At the same octic resolution level, the Newman critical field can not only be characterized by the \(t\)-coordinate octic certificate \(P_4(t)=0\) (equation \eqref{eq:collision_kernel_A4_edge_weight_threshold});
+following the negative real root channel in Remark \ref{rem:pom-collision-rh-break-a4-threshold}, one can also select a sparse integer-coefficient generator with significantly smaller discriminant, thereby compressing the local modulo \(p\) fingerprint and ramification portrait into a shorter auditable certificate.
+
+\begin{conclusion}[Newman Octic Field Sparse Generator and Linear-Quintic Elimination Constraint]\label{con:pom-a4-newman-sparse-generator-elimination}
+Let the two polynomials \(\mathcal Z(z)\in\ZZ[z]\) and \(\mathcal C(t,z)\in\ZZ[t,z]\) be as in equation \eqref{eq:collision_kernel_A4_newman_sparse_generator}.
+Then there exists the strict elimination identity
+\[
+\boxed{\;
+\mathrm{Res}_z\!\bigl(\mathcal Z(z),\mathcal C(t,z)\bigr)=-8\,P_4(t)\;}
+\]
+where \(P_4(t)\) is the fourth-order Newman threshold octic integer-coefficient certificate (equation \eqref{eq:collision_kernel_A4_edge_weight_threshold}).
+Therefore for any root \(z\) satisfying \(\mathcal Z(z)=0\), since \(\mathcal Z\) has no zero root, the equation \(\mathcal C(t,z)=0\) gives a unique solution in \(t\)
+\[
+t=t(z)=\frac{z^5+2z^4-2z-2}{z^3}\in\QQ(z),
+\]
+and this \(t(z)\) must satisfy \(P_4(t(z))=0\).
+Since \(P_4\) is irreducible over \(\QQ[t]\) (Conclusion \ref{con:pom-a4-even-spectrum-resonance-vs-newman-separation}), we have \([\QQ(t(z)):\QQ]=8\);
+on the other hand \(\QQ(t(z))\subseteq \QQ(z)\) and \(\deg\mathcal Z=8\) force \([\QQ(z):\QQ]\le 8\), whence \([\QQ(z):\QQ]=8\) and
+\[
+\boxed{\;\QQ(t(z))=\QQ(z)\;}
+\]
+i.e., the Newman critical octic field can be equivalently understood as: the same number field generated by one linear-quintic constraint \(\mathcal C(t,z)=0\) and one six-term sparse octic constraint \(\mathcal Z(z)=0\).
+Reproducible script: \texttt{scripts/exp\_collision\_kernel\_A4\_newman\_sparse\_generator.py}.
+\end{conclusion}
+
+\input{sections/generated/eq_collision_kernel_A4_newman_sparse_generator}
+
+\begin{conclusion}[Discriminant Square Difference and Power-Integral Index: Extra Bad Primes of \(t\)-Generator Come from Index Contribution]\label{con:pom-a4-newman-discriminant-index-artifact}
+Denote \(\mathrm{Disc}(\cdot)\) for polynomial discriminant.
+Then equation \eqref{eq:collision_kernel_A4_newman_sparse_generator} gives \(\mathrm{Disc}_z(\mathcal Z)\) and \(\mathrm{Disc}_t(P_4)\) complete factor decompositions, satisfying the strict square ratio relation
+\[
+\boxed{\;
+\frac{\mathrm{Disc}_t(P_4)}{\mathrm{Disc}_z(\mathcal Z)}
+=\Bigl(2^{5}\cdot 5\cdot 109^{2}\cdot 4139873\Bigr)^2\;}
+\]
+thus the primes \(5,109,4139873\) do not appear in the discriminant support of the sparse generator \(\mathcal Z\), but only appear with perfect square exponent in the discriminant of the \(t\)-generator.
+In the arithmetic sense, this is equivalent to: they do not carry the quadratic resolution information of the octic field, but only record the power-integral index contribution of \(\ZZ[t]\) relative to the same number field ring of integers (cf. the discriminant-index identity calibration in Proposition \ref{prop:pom-e8-intersection-field-discriminant-index}).
+\end{conclusion}
+
+\begin{conclusion}[Common Quadratic Spine: \texorpdfstring{$\QQ(\sqrt{-1151})$}{Q(sqrt(-1151))} Controls Frobenius Parity of Both Generators]\label{con:pom-a4-newman-common-quadratic-spine}
+By the discriminant decomposition in equation \eqref{eq:collision_kernel_A4_newman_sparse_generator}, the square-free parts of \(\mathrm{Disc}_z(\mathcal Z)\) and \(\mathrm{Disc}_t(P_4)\) are consistent, both equal to \(-1151\);
+\par
+Let \(L_\star\) be the splitting field of \(P_4(t)\) (equivalently, also the splitting field of \(\mathcal Z(z)\)).
+Then \(L_\star\) contains the unique discriminant quadratic subfield
+\[
+K_2=\QQ(\sqrt{-1151})
+\]
+(consistent with the \(t_\star\)-calibration of Proposition \ref{prop:pom-a4t-newman-k2-class-number}).
+For any prime \(p\nmid 2\cdot 7\cdot 23\cdot 1151\), under the natural permutation representation of the group \(\mathrm{Gal}(L_\star/\QQ)\subseteq S_8\), the parity of the Frobenius permutation is strictly given by the same Kronecker symbol:
+\[
+\mathrm{sgn}(\mathrm{Frob}_p)=\left(\frac{-1151}{p}\right).
+\]
+Therefore all local parity diagnostics of the fourth-order Newman critical can be losslessly transferred under any generator representation, and \(\QQ(\sqrt{-1151})\) constitutes the non-eliminable quadratic spine of this critical arithmetic.
+\end{conclusion}
+
+\begin{conclusion}[Sparse Generator Galois Group is \texorpdfstring{$S_8$}{S8}: Three Splitting-Type Certificates Exclude Primitive Small Groups]\label{con:pom-a4-newman-sparse-galois-s8}
+Let \(G=\mathrm{Gal}(\mathcal Z/\QQ)\).
+By the modulo \(p\) splitting certificates from script \texttt{scripts/exp\_collision\_kernel\_A4\_newman\_sparse\_generator.py}:
+\begin{itemize}
+  \item Modulo \(13\): \(\mathcal Z\bmod 13\) is irreducible (Frobenius contains an \(8\)-cycle);
+  \item Modulo \(3\): \(\mathcal Z\bmod 3\) has factor degree pattern \((7,1)\) (Frobenius contains a \(7\)-cycle, hence primitive);
+  \item Modulo \(5\): \(\mathcal Z\bmod 5\) has factor degree pattern \((6,2)\) (Frobenius contains \((6)(2)\) cycle type).
+\end{itemize}
+Moreover, since \(\mathrm{Disc}_z(\mathcal Z)\) is non-square, \(G\nsubseteq A_8\).
+Combined with the classification of degree \(8\) primitive subgroups: primitive candidates containing a \(7\)-cycle are only \(S_8,A_8,\mathrm{AGL}(1,8),\mathrm{PGL}_2(7)\);
+the latter two do not contain \((6,2)\) cycle type, so they are excluded.
+Therefore
+\[
+\boxed{\;G=S_8\;}
+\]
+and by the field isomorphism in Conclusion \ref{con:pom-a4-newman-sparse-generator-elimination}, the splitting field of \(P_4(t)\) is the same as \(\mathcal Z\), so \(P_4\) also has the same full symmetric Galois group \(S_8\).
+\end{conclusion}
+
+\begin{conclusion}[Local Ramification Portrait of Discriminant Support Primes: Two Triple Roots and One Double Root]\label{con:pom-a4-newman-ramification-portrait}
+At discriminant support primes, the reduction decomposition of the sparse generator \(\mathcal Z\) exhibits stable multiple root structures:
+\[
+\mathcal Z(z)\equiv (z-2)^3\cdot Q_7(z)\pmod 7\quad(\deg Q_7=5),
+\]
+\[
+\mathcal Z(z)\equiv (z-6)^3\cdot(z-7)\cdot Q_{23}^{(1)}(z)\cdot Q_{23}^{(2)}(z)\pmod{23}\quad(\deg Q_{23}^{(i)}=2),
+\]
+\[
+\mathcal Z(z)\equiv (z+499)^2\cdot\prod_{i=1}^{3}Q_{1151}^{(i)}(z)\pmod{1151}\quad(\deg Q_{1151}^{(i)}=2).
+\]
+And modulo \(2\) there is complete collapse \(\mathcal Z(z)\equiv z^8\pmod 2\).
+Therefore this octic field exhibits triple root fingerprints at \(7\) and \(23\), double root fingerprint at \(1151\), and full wild ramification root fingerprint at \(2\);
+this gives a directly verifiable local ramification portrait: two triple cores, one double core, and one full wild core.
+\end{conclusion}
+
+\begin{conclusion}[\texorpdfstring{$E_8$}{E8} Index Shadow: After Removing Quadratic Spine, the Unique Odd Prime Support is \(\{7,23\}\)]\label{con:pom-a4-newman-e8-exponent-shadow}
+By equation \eqref{eq:collision_kernel_A4_newman_sparse_generator}, the odd prime support of \(\mathrm{Disc}_z(\mathcal Z)\) after removing the quadratic spine \(1151\) leaves only
+\[
+\{7,23\}.
+\]
+The \(E_8\) Coxeter exponent set is \(\{1,7,11,13,17,19,23,29\}\), which contains exactly the prime exponents \(7\) and \(23\).
+Therefore in the sparse generator coordinates of the fourth-order Newman critical, there appears a strictly statable index projection: after removing the quadratic spine, all odd prime ramification of this octic field is compressed into the two prime exponents of \(E_8\).
+\end{conclusion}
+
+\begin{conclusion}[Lossless Transfer of Local Fingerprints: Using Sparse Generator to Replace Threshold Polynomial for Modulo \texorpdfstring{$p$}{p} Decoding]\label{con:pom-a4-newman-local-fingerprint-transfer}
+By the field isomorphism in Conclusion \ref{con:pom-a4-newman-sparse-generator-elimination} and the index square ratio in Conclusion \ref{con:pom-a4-newman-discriminant-index-artifact},
+for any prime
+\[
+p\nmid 2\cdot 5\cdot 7\cdot 23\cdot 109\cdot 1151\cdot 4139873,
+\]
+the two generators give the same finite \(\FF_p\)-algebra (isomorphic to the direct product of decomposition homomorphisms), thus
+\[
+\boxed{\;
+\mathcal Z(z)\bmod p\ \text{and}\ P_4(t)\bmod p\ \text{have the same factor degree multiset}\;}
+\]
+i.e., they induce the same Frobenius cycle type.
+Therefore the modulo \(p\) local fingerprint (splitting type and parity layer determined by the quadratic spine) of the fourth-order Newman critical field can be computationally transferred to the six-term sparse polynomial \(\mathcal Z\), thereby compressing the high-coefficient octic threshold polynomial modular decomposition problem into a fast decomposition problem of sparse octic polynomials.
+\end{conclusion}
+
+% (User input window)
+% 2026-02-15 00:29:25 (Asia/Singapore)
+%
+\paragraph{Sparse Generator Field Integral Ring and Localizations: Power-Integral Basis, Ramification Index, and Residue Algebra Thickness}
+In the sparse generator coordinates, the Newman octic critical field not only exhibits compressible structure at the discriminant and modular splitting type level,
+its power-integral basis, localizations at four ramification primes, and residue algebras can also be written as completely explicit and verifiable arithmetic interfaces.
+
+\begin{conclusion}[Newman Sparse Generator Field Power-Integral Basis and 2-Eisenstein Structure]\label{con:pom-a4-newman-integral-basis-2eisenstein}
+Let \(K=\QQ(\theta)\), where \(\theta\) is any root of the sparse octic polynomial \(\mathcal Z(z)\in\ZZ[z]\) (equation \eqref{eq:collision_kernel_A4_newman_sparse_generator}).
+Then \(\mathcal Z\) is Eisenstein at prime \(2\), whence it is irreducible over \(\QQ\) and \(2\) is totally ramified in \(K/\QQ\).
+Moreover \(K\) is a monogenic octic field:
+\[
+\mathcal O_K=\ZZ[\theta],
+\qquad
+\{1,\theta,\theta^2,\dots,\theta^7\}\ \text{is an integral basis of}\ \mathcal O_K.
+\]
+Therefore its field discriminant satisfies
+\[
+\mathrm{Disc}(K)=\mathrm{Disc}_z(\mathcal Z)=-2^{10}\cdot 7^{2}\cdot 23^{2}\cdot 1151,
+\]
+and the discriminant of \(\mathcal Z\) equals the discriminant of this power-integral basis (no extra index artifact).
+Moreover, \(\mathcal Z\) has exactly two real roots, so \(K\) has signature \((r_1,r_2)=(2,3)\), whence unit rank is \(r_1+r_2-1=4\).
+Reproducible script: \texttt{scripts/exp\_collision\_kernel\_A4\_newman\_sparse\_generator\_arithmetic.py}.
+\end{conclusion}
+
+\input{sections/generated/eq_collision_kernel_A4_newman_sparse_generator_arithmetic}
+
+\begin{conclusion}[Complete Prime Ideal Decomposition of Four Ramification Primes: \(2\) Totally Wild Ramified, \(\{7,23,1151\}\) Purely Tame Ramified]\label{con:pom-a4-newman-prime-ideal-decomposition-ramified}
+In the number field \(K\) of Conclusion \ref{con:pom-a4-newman-integral-basis-2eisenstein},
+\(2,7,23,1151\) are all ramification primes; their prime ideal decompositions are as listed in equation \eqref{eq:collision_kernel_A4_newman_sparse_generator_arithmetic}.
+In particular:
+\begin{itemize}
+  \item At \(2\): there is only one prime ideal \(\mathfrak p_2\) with \(e(\mathfrak p_2\mid 2)=8,f(\mathfrak p_2\mid 2)=1\), so \((2)=\mathfrak p_2^{8}\);
+  \item At \(7\): decomposes into two branches: \(\mathfrak p_7\) satisfies \(e=3,f=1\), while \(\mathfrak q_7\) satisfies \(e=1,f=5\), so \((7)=\mathfrak p_7^{3}\mathfrak q_7\);
+  \item At \(23\): decomposes into four branches: \(\mathfrak p_{23}\) satisfies \(e=3,f=1\), \(\mathfrak a_{23}\) satisfies \(e=1,f=1\), \(\mathfrak b_{23},\mathfrak c_{23}\) satisfy \(e=1,f=2\), so \((23)=\mathfrak p_{23}^{3}\mathfrak a_{23}\mathfrak b_{23}\mathfrak c_{23}\);
+  \item At \(1151\): decomposes into four branches: \(\mathfrak p_{1151}\) satisfies \(e=2,f=1\), the other three satisfy \(e=1,f=2\), so \((1151)=\mathfrak p_{1151}^{2}\mathfrak b_{1151}\mathfrak c_{1151}\mathfrak d_{1151}\).
+\end{itemize}
+\end{conclusion}
+
+\begin{conclusion}[Tame Ramification Minimal Formula for Discriminant Index and Local Inertia Group Order]\label{con:pom-a4-newman-tame-discriminant-inertia}
+For each odd ramification prime \(p\in\{7,23,1151\}\), by the decomposition in Conclusion \ref{con:pom-a4-newman-prime-ideal-decomposition-ramified} we know \(p\nmid e(\mathfrak p\mid p)\), so \(K/\QQ\) is purely tamely ramified at all odd ramification places.
+Therefore the \(p\)-adic index of the field discriminant satisfies the strict identity
+\[
+\boxed{\;
+v_p(\mathrm{Disc}(K))=\sum_{\mathfrak p\mid p} f(\mathfrak p\mid p)\,\bigl(e(\mathfrak p\mid p)-1\bigr)\;}
+\]
+whence
+\[
+v_7(\mathrm{Disc}(K))=2,\qquad v_{23}(\mathrm{Disc}(K))=2,\qquad v_{1151}(\mathrm{Disc}(K))=1.
+\]
+Moreover in the tame ramification case the inertia subgroup must be cyclic: at \(p=7,23\) the inertia group order is \(3\), at \(p=1151\) the inertia group order is \(2\).
+Furthermore, by \(\mathcal O_K=\ZZ[\theta]\) in Conclusion \ref{con:pom-a4-newman-integral-basis-2eisenstein}, there is no extra square term from generator index in the discriminant index.
+\end{conclusion}
+
+\begin{conclusion}["Two-Prime Certificate" Forces \texorpdfstring{$S_8$}{S8}: Generated by \((3)(5)\) at \(p=7\) and \(8\)-Cycle at \(p=13\)]\label{con:pom-a4-newman-two-prime-s8}
+Let \(L\) be the splitting field of \(\mathcal Z\), and denote \(G=\mathrm{Gal}(L/\QQ)\le S_8\) acting on the eight roots of \(\mathcal Z\).
+Since \(13\nmid \mathrm{Disc}(K)\), prime \(13\) is unramified in \(L/\QQ\); and \(\mathcal Z\bmod 13\) is irreducible (script \texttt{scripts/exp\_collision\_kernel\_A4\_newman\_sparse\_generator.py}), so there exists a Frobenius element whose cycle type is an \(8\)-cycle.
+\par
+On the other hand, Conclusion \ref{con:pom-a4-newman-prime-ideal-decomposition-ramified} shows that \(7\) exhibits one branch with \(e=3\) tame ramification in \(K/\QQ\) and simultaneously one decomposition branch with residue degree \(5\);
+therefore in some decomposition group of the splitting field \(L\), the inertia group contains an element of order \(3\), while the residue field Frobenius (in the quotient group \(D/I\)) contains an element of order divisible by \(5\).
+Since \(7\equiv 1\pmod 3\), in the tame ramification case the Frobenius conjugation action on the inertia group is \(x\mapsto x^{7}\), so this action is trivial on inertia of order \(3\);
+thus the decomposition group contains an element of order \(15\).
+Under the natural permutation representation in \(S_8\), an element of order \(15\) can only have cycle type \((3)(5)\), whence \(G\) contains a \((3)(5)\)-type element.
+\par
+Therefore \(G\) contains both an \(8\)-cycle and a \((3)(5)\).
+Group-theoretically, a transitive subgroup containing a \(5\)-cycle must be primitive; by Jordan's theorem, a primitive subgroup once containing a prime-length cycle (here \(5\)) must contain \(A_8\);
+but an \(8\)-cycle is an odd permutation, so \(G\) cannot be contained in \(A_8\).
+Thus \(G=S_8\).
+\end{conclusion}
+
+\begin{conclusion}[Residue Algebra Decomposition at Four Ramification Points: Nilpotency Thickness of \(\mathcal O_K/p\mathcal O_K\)]\label{con:pom-a4-newman-residue-algebra-decomposition}
+By \(\mathcal O_K=\ZZ[\theta]\) in Conclusion \ref{con:pom-a4-newman-integral-basis-2eisenstein} and the local decomposition in Conclusion \ref{con:pom-a4-newman-prime-ideal-decomposition-ramified},
+the residue algebras at the four ramification primes can be written as explicit direct product isomorphisms:
+\[
+\mathcal O_K/2\mathcal O_K \cong \FF_2[\varepsilon]/(\varepsilon^8),
+\]
+\[
+\mathcal O_K/7\mathcal O_K \cong \FF_7[\varepsilon]/(\varepsilon^3)\times \FF_{7^5},
+\]
+\[
+\mathcal O_K/23\mathcal O_K \cong \FF_{23}\times \FF_{23}[\varepsilon]/(\varepsilon^3)\times \FF_{23^2}\times \FF_{23^2},
+\]
+\[
+\mathcal O_K/1151\mathcal O_K \cong \FF_{1151}[\varepsilon]/(\varepsilon^2)\times (\FF_{1151^2})^{3}.
+\]
+Therefore this octic field has nilpotency thickness parameters \((8;3;3;2)\) at the four ramification points, corresponding to residue field degree spectrum
+\[
+(1;\,5;\,1,2,2;\,2,2,2).
+\]
+\end{conclusion}
+
+\begin{conclusion}[Four Normalized Local Coordinates: \(\theta\) and \(\theta-a\) Give Unified Valuation Scale]\label{con:pom-a4-newman-normalized-local-parameters}
+At the ramification prime ideals in Conclusion \ref{con:pom-a4-newman-prime-ideal-decomposition-ramified}, there exists natural "coordinate-valuation" locking.
+Denote \(v_{\mathfrak p}\) for the discrete valuation associated with \(\mathfrak p\mid p\), normalized by \(v_{\mathfrak p}(p)=1\).
+Then \(\theta\) gives local parameters at the four ramification points respectively:
+\[
+v_{\mathfrak p_2}(\theta)=\frac{1}{8},\qquad
+v_{\mathfrak p_7}(\theta-2)=\frac{1}{3},\qquad
+v_{\mathfrak p_{23}}(\theta-6)=\frac{1}{3},\qquad
+v_{\mathfrak p_{1151}}(\theta+499)=\frac{1}{2}.
+\]
+This normalization allows any algebraic quantity related to criticality to have its \(p\)-adic sensitivity directly projected onto the valuation constants locked by the ramification indices \((8,3,3,2)\).
+Reproducible script: \texttt{scripts/exp\_collision\_kernel\_A4\_newman\_sparse\_generator\_arithmetic.py}.
 \end{conclusion}
 
 

@@ -1,0 +1,43 @@
+% (User input window)
+% 2026-02-15 14:39:13 (Asia/Singapore)
+
+\begin{proposition}[Keep-Resample Channel Representation]\label{prop:pom-diagonal-rate-keep-resample-channel}
+Let \(P^\star_\delta\) be the optimal coupling achieving \(R_w(\delta)\), and write it in the exponential family form of Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}
+\[
+P^\star_\delta(x,y)=\frac{u_xu_y\bigl(1+\kappa\,\mathbf 1_{\{x=y\}}\bigr)}{Z},
+\qquad
+u\in\RR_{>0}^X,\ \kappa>0.
+\]
+Define the conditional kernel \(K_\delta(y\mid x):=P^\star_\delta(x,y)/w(x)\) and the background distribution
+\[
+\pi_\delta(x):=\frac{u_x}{\sum_{z\in X}u_z}.
+\]
+Then for each \(x\in X\) there exists a preservation rate \(p_\delta(x)\in(0,1)\) such that
+\[
+K_\delta(x\mid x)=p_\delta(x),\qquad
+K_\delta(y\mid x,\ y\ne x)=(1-p_\delta(x))\,\frac{\pi_\delta(y)}{1-\pi_\delta(x)}.
+\]
+Therefore the optimal channel can be expressed as a "keep-resample" mechanism: with probability \(p_\delta(x)\) keep \(y=x\), otherwise resample from the conditionalized distribution of the background \(\pi_\delta\) on \(X\setminus\{x\}\).
+\end{proposition}
+\begin{proof}
+Write \(A:=\sum_{z\in X}u_z\).
+By the exponential family representation, for \(y\ne x\) we have \(P^\star_\delta(x,y)=u_xu_y/Z\), thus
+\[
+K_\delta(y\mid x)=\frac{u_y}{A+\kappa u_x}\qquad(y\ne x),
+\]
+where we use the marginal self-consistency identity \(w(x)=\sum_y P^\star_\delta(x,y)=u_x(A+\kappa u_x)/Z\).
+On the other hand,
+\[
+p_\delta(x):=K_\delta(x\mid x)
+=\frac{(1+\kappa)u_x}{A+\kappa u_x}\in(0,1),
+\]
+and
+\[
+\sum_{y\ne x}K_\delta(y\mid x)=\frac{A-u_x}{A+\kappa u_x}=1-p_\delta(x).
+\]
+Writing \(u_y/(A+\kappa u_x)\) as \((1-p_\delta(x))\,u_y/(A-u_x)\), and using \(\pi_\delta(y)=u_y/A\) we get
+\(
+u_y/(A-u_x)=\pi_\delta(y)/(1-\pi_\delta(x))
+\),
+yielding the stated decomposition.
+\end{proof}

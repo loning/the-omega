@@ -1,0 +1,225 @@
+% (User input window)
+% 2026-02-15 06:02:21 (Asia/Singapore)
+
+\paragraph{Solvable cases, bilateral squeezing, and synergy inequalities}
+This paragraph fully explicates the general exponential family structure of Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} in several symmetric scenarios, and provides universal lower bounds and achievable upper bounds depending only on finite statistics; finally we characterize the optimality conditions for linear mixture coupling and the synergy strict inequality on uniform alphabets.
+
+\begin{theorem}[Closed form and unique optimal coupling for binary alphabet]\label{thm:pom-diagonal-rate-binary-closed-form}
+Let \(X=\{0,1\}\), take \(w(0)=p\in(0,1)\), \(w(1)=1-p\).
+Denote
+\[
+p_2(w)=p^2+(1-p)^2,\qquad \delta_0:=1-p_2(w)=2p(1-p).
+\]
+Then for any \(\delta\in[0,1]\) we have
+\[
+R_w(\delta)=
+\begin{cases}
+0, & \delta\ge \delta_0,\\[4pt]
+\displaystyle (p-\tfrac{\delta}{2})\log\frac{p-\delta/2}{p^2}
++\bigl((1-p)-\tfrac{\delta}{2}\bigr)\log\frac{(1-p)-\delta/2}{(1-p)^2}
++\delta\log\frac{\delta/2}{p(1-p)}, & 0\le \delta<\delta_0,
+\end{cases}
+\]
+and when \(0\le\delta<\delta_0\) the optimal coupling is unique and given by
+\[
+P^\star_\delta=
+\begin{pmatrix}
+p-\delta/2 & \delta/2\\
+\delta/2 & (1-p)-\delta/2
+\end{pmatrix}.
+\]
+\end{theorem}
+\begin{proof}
+In the \(2\times 2\) case, the coupling set with marginal constraints \(P_X=P_Y=w\) is a one-parameter family:
+let \(a:=P(0,0)\), then
+\[
+P(a)=
+\begin{pmatrix}
+a & p-a\\
+p-a & 1-2p+a
+\end{pmatrix}.
+\]
+Its diagonal mass is \(\mathbb P(X=Y)=1-2p+2a\), so the constraint \(\mathbb P(X=Y)\ge 1-\delta\) is equivalent to \(a\ge p-\delta/2\).
+Since the marginals are fixed, the mutual information satisfies \(I_{P(a)}(X;Y)=D_{\mathrm{KL}}(P(a)\,\|\,w\otimes w)\), and as a function of \(a\) is strictly convex with unique minimum \(0\) at the independent coupling \(a=p^2\).
+When \(\delta\ge \delta_0\) we have \(p-\delta/2\le p^2\), the independent coupling is feasible, hence \(R_w(\delta)=0\).
+When \(0\le \delta<\delta_0\), the left endpoint of the feasible interval satisfies \(p-\delta/2>p^2\), strict convexity forces the unique minimum point to fall on the boundary \(a=p-\delta/2\), thus yielding \(P^\star_\delta\).
+Substituting \(P^\star_\delta\) into \(D_{\mathrm{KL}}(P^\star_\delta\,\|\,w\otimes w)=\sum_{x,y}P^\star_\delta(x,y)\log\frac{P^\star_\delta(x,y)}{w(x)w(y)}\) yields the closed form. The proof is complete.
+\end{proof}
+
+\begin{corollary}[Linear mixture structure for binary alphabet]\label{cor:pom-diagonal-rate-binary-linear-mixture}
+Under the setting of Theorem \ref{thm:pom-diagonal-rate-binary-closed-form}, if \(0\le\delta<\delta_0\), then the optimal coupling can be uniquely written as
+\[
+P^\star_\delta(x,y)=(1-\varepsilon)\,w(x)w(y)+\varepsilon\,w(x)\mathbf 1_{\{x=y\}},
+\qquad
+\varepsilon:=1-\frac{\delta}{\delta_0}\in(0,1].
+\]
+\end{corollary}
+\begin{proof}
+Direct calculation from the matrix form in Theorem \ref{thm:pom-diagonal-rate-binary-closed-form} gives
+\(
+P^\star_\delta(0,1)=P^\star_\delta(1,0)=\delta/2
+\).
+On the other hand, the off-diagonal term of the linear mixture right-hand side is \((1-\varepsilon)p(1-p)\), setting it equal to \(\delta/2\) gives \(\varepsilon=1-\delta/(2p(1-p))=1-\delta/\delta_0\).
+Substituting this \(\varepsilon\) back into the diagonal terms yields consistency with \(P^\star_\delta\).
+If there exists another set of coefficients giving the same decomposition, then the off-diagonal term immediately implies uniqueness of \(\varepsilon\). The proof is complete.
+\end{proof}
+
+\begin{theorem}[Closed form and unique symmetric optimal coupling for uniform distribution]\label{thm:pom-diagonal-rate-uniform-closed-form}
+Let the finite set \(X\) satisfy \(|X|=n\ge 2\), take the uniform distribution \(U_n(x)=1/n\).
+Denote \(\delta_0:=1-1/n\).
+Then for any \(\delta\in[0,1]\) we have
+\[
+R_{U_n}(\delta)=
+\begin{cases}
+0, & \delta\ge 1-\frac{1}{n},\\[6pt]
+(1-\delta)\log\bigl(n(1-\delta)\bigr)+\delta\log\!\Bigl(\dfrac{\delta n}{n-1}\Bigr), & 0\le\delta<1-\frac{1}{n},
+\end{cases}
+\]
+and when \(0\le\delta<1-\frac1n\) the optimal coupling is unique and satisfies
+\[
+P^\star_\delta(x,x)=\frac{1-\delta}{n},\qquad
+P^\star_\delta(x,y)=\frac{\delta}{n(n-1)}\quad(x\ne y).
+\]
+\end{theorem}
+\begin{proof}
+For fixed \(\delta\), the feasible set is invariant under the permutation group action on \(X\), while \(P\mapsto I_P(X;Y)\) is strictly convex on this convex set.
+For any feasible \(P\), taking the permutation average \(\bar P\) preserves marginals and diagonal mass, and makes mutual information non-increasing; therefore the optimal solution must be a permutation-invariant coupling.
+In the permutation-invariant class, bilateral uniform marginals force diagonal entries to be constant and off-diagonal entries to be constant, and from \(\sum_x P(x,x)=1-\delta\) uniquely determines \(P^\star_\delta\).
+Substituting into
+\(
+I_{P^\star_\delta}(X;Y)=\sum_{x,y}P^\star_\delta(x,y)\log\frac{P^\star_\delta(x,y)}{1/n^2}
+\)
+yields the stated closed form. The proof is complete.
+\end{proof}
+
+\begin{corollary}[Entropy-type rewriting]\label{cor:pom-diagonal-rate-uniform-entropy-rewrite}
+Under the setting of Theorem \ref{thm:pom-diagonal-rate-uniform-closed-form}, let the binary entropy
+\[
+H_2(\delta):=-(1-\delta)\log(1-\delta)-\delta\log\delta.
+\]
+Then for \(0\le\delta<1-\tfrac1n\) we have
+\[
+R_{U_n}(\delta)=\log n-H_2(\delta)-\delta\log(n-1).
+\]
+\end{corollary}
+\begin{proof}
+Expanding the closed form of Theorem \ref{thm:pom-diagonal-rate-uniform-closed-form} and rearranging yields the result. The proof is complete.
+\end{proof}
+
+\begin{theorem}[Synergy strict inequality on uniform alphabets]\label{thm:pom-diagonal-rate-uniform-synergy-inequality}
+Let \(n\ge 2\), \(k\ge 2\), and view \(U_{n^k}\) as the uniform distribution on \(n^k\) elements.
+For any \(\delta\in\bigl(0,1-1/n^k\bigr)\) we have the strict inequality
+\[
+R_{U_{n^k}}(\delta)\ <\ k\,R_{U_n}(\delta).
+\]
+\end{theorem}
+\begin{proof}
+By Corollary \ref{cor:pom-diagonal-rate-uniform-entropy-rewrite},
+\[
+R_{U_{n^k}}(\delta)=k\log n-H_2(\delta)-\delta\log(n^k-1),
+\qquad
+kR_{U_n}(\delta)=k\log n-kH_2(\delta)-k\delta\log(n-1).
+\]
+Thus the difference is
+\[
+kR_{U_n}(\delta)-R_{U_{n^k}}(\delta)
+=(k-1)H_2(\delta)+\delta\bigl(\log(n^k-1)-k\log(n-1)\bigr).
+\]
+Here \((k-1)H_2(\delta)>0\), and \(n^k-1>(n-1)^k\) implies \(\log(n^k-1)-k\log(n-1)>0\), hence the difference is strictly positive. The proof is complete.
+\end{proof}
+
+\begin{theorem}[Diagonal coarse-graining lower bound and linear achievable upper bound]\label{thm:pom-diagonal-rate-bernoulli-lower-and-mixture-upper}
+Let \(X\) be a finite alphabet, take a full-support distribution \(w\in\Delta(X)\), and denote
+\[
+p_2(w):=\sum_{x\in X}w(x)^2,\qquad \delta_0:=1-p_2(w),\qquad H(w):=-\sum_{x\in X}w(x)\log w(x).
+\]
+Then for any \(\delta\in[0,1]\) the lower bound holds
+\[
+R_w(\delta)\ \ge\ D_{\mathrm{KL}}\!\bigl(\mathrm{Bern}(1-\delta)\,\|\,\mathrm{Bern}(p_2(w))\bigr),
+\]
+where \(D_{\mathrm{KL}}(\mathrm{Bern}(a)\|\mathrm{Bern}(b)):=a\log\frac{a}{b}+(1-a)\log\frac{1-a}{1-b}\).
+\par
+Moreover, for any \(\delta\in[0,\delta_0]\), let
+\[
+\varepsilon(\delta):=1-\frac{\delta}{\delta_0}\in[0,1],\qquad
+P_\delta(x,y):=(1-\varepsilon(\delta))\,w(x)w(y)+\varepsilon(\delta)\,w(x)\mathbf 1_{\{x=y\}},
+\]
+then \(P_\delta\) is feasible and satisfies
+\[
+R_w(\delta)\ \le\ I_{P_\delta}(X;Y)\ \le\ \varepsilon(\delta)\,H(w)
+=\Bigl(1-\frac{\delta}{1-p_2(w)}\Bigr)H(w).
+\]
+When \(\delta\ge\delta_0\) we have \(R_w(\delta)=0\).
+\end{theorem}
+\begin{proof}
+For the lower bound, let \(f(x,y)=\mathbf 1_{\{x=y\}}\) and denote \(Z=f(X,Y)\).
+For any coupling \(P\) satisfying \(P_X=P_Y=w\), we have
+\(
+I_P(X;Y)=D_{\mathrm{KL}}(P\|w\otimes w)
+\);
+by the data processing inequality
+\[
+D_{\mathrm{KL}}(P\|w\otimes w)\ \ge\ D_{\mathrm{KL}}\!\bigl(\mathrm{Law}_P(Z)\,\|\,\mathrm{Law}_{w\otimes w}(Z)\bigr).
+\]
+We have \(\mathrm{Law}_{w\otimes w}(Z)=\mathrm{Bern}(p_2(w))\), and feasibility gives \(\mathbb P_P(Z=1)=\mathbb P_P(X=Y)\ge 1-\delta\).
+When \(1-\delta\le p_2(w)\) the right-hand side can be taken as \(0\); when \(1-\delta>p_2(w)\), the infimum over \(\mathbb P_P(Z=1)\ge 1-\delta\) is attained at the boundary, yielding the stated lower bound.
+\par
+For the upper bound, direct calculation shows \(P_\delta\) has marginals still \(w\), and its diagonal mass is
+\(
+\sum_x P_\delta(x,x)=(1-\varepsilon)p_2(w)+\varepsilon=1-\delta
+\)
+, hence feasible.
+Since
+\(
+I_{P_\delta}(X;Y)=D_{\mathrm{KL}}(P_\delta\|w\otimes w)
+\)
+and \(D_{\mathrm{KL}}(\cdot\|w\otimes w)\) is convex in the first variable, we have
+\[
+D_{\mathrm{KL}}\!\bigl((1-\varepsilon)(w\otimes w)+\varepsilon\,\mathrm{Diag}(w)\,\big\|\,w\otimes w\bigr)
+\le \varepsilon\,D_{\mathrm{KL}}\!\bigl(\mathrm{Diag}(w)\,\|\,w\otimes w\bigr),
+\]
+where \(\mathrm{Diag}(w)(x,y):=w(x)\mathbf 1_{\{x=y\}}\).
+We have
+\(
+D_{\mathrm{KL}}(\mathrm{Diag}(w)\|w\otimes w)=\sum_x w(x)\log\frac{w(x)}{w(x)^2}=H(w)
+\),
+thus \(I_{P_\delta}(X;Y)\le \varepsilon H(w)\).
+The last statement follows immediately from Proposition \ref{prop:pom-diagonal-rate-zero-threshold-collision}. The proof is complete.
+\end{proof}
+
+\begin{theorem}[Optimality criterion for linear mixture coupling]\label{thm:pom-diagonal-rate-mixture-optimality-criterion}
+Let \(X\) be a finite set (\(|X|\ge 2\)), take a full-support distribution \(w\in\Delta(X)\), and let \(\delta\in(0,\delta_0)\) (\(\delta_0:=1-p_2(w)\)).
+Let \(P_\delta\) be the linear mixture coupling of Theorem \ref{thm:pom-diagonal-rate-bernoulli-lower-and-mixture-upper}.
+Then \(P_\delta\) is an optimal coupling for \(R_w(\delta)\) if and only if one of the following holds:
+\[
+|X|=2,\qquad\text{or}\qquad w\ \text{is the uniform distribution}.
+\]
+In all other cases (i.e., \(|X|\ge 3\) and \(w\) non-uniform) we have the strict inequality \(I_{P_\delta}(X;Y)>R_w(\delta)\).
+\end{theorem}
+\begin{proof}
+By Theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}, when \(\delta\in(0,\delta_0)\) the optimal coupling is unique and must have the structure
+\[
+P^\star_\delta(x,y)=\frac{u_xu_y\bigl(1+\kappa\,\mathbf 1_{\{x=y\}}\bigr)}{Z}
+\qquad(\kappa>0,\ u\in\RR_{>0}^X).
+\]
+If \(P_\delta\) is optimal, then by uniqueness we must have \(P_\delta=P^\star_\delta\).
+In particular, for any \(x\ne y\) we have \(P_\delta(x,y)=(1-\varepsilon)w(x)w(y)\), while the structural form gives \(P^\star_\delta(x,y)=u_xu_y/Z\), thus
+\[
+u_xu_y\ \propto\ w(x)w(y)\qquad(x\ne y).
+\]
+When \(|X|\ge 3\), taking distinct \(x,y,z\) gives
+\(
+u_x^2\propto w(x)^2
+\)
+, so there exists a constant \(c>0\) such that \(u_x=c\,w(x)\) holds for all \(x\).
+Substituting back into the diagonal terms, the structural form requires
+\[
+\frac{P_\delta(x,x)}{w(x)^2}=\frac{(1-\varepsilon)w(x)^2+\varepsilon w(x)}{w(x)^2}
+\]
+to be invariant in \(x\); this is equivalent to \(w(x)\) being constant, hence \(w\) must be the uniform distribution.
+Conversely, when \(w\) is the uniform distribution, the unique optimal coupling given by Theorem \ref{thm:pom-diagonal-rate-uniform-closed-form} is precisely in this linear mixture form, hence \(P_\delta\) is optimal.
+\par
+When \(|X|=2\), by Theorem \ref{thm:pom-diagonal-rate-binary-closed-form} and Corollary \ref{cor:pom-diagonal-rate-binary-linear-mixture} the linear mixture coupling coincides with the optimal family.
+Combining the above yields the necessary and sufficient condition; in all other cases uniqueness immediately implies strict suboptimality. The proof is complete.
+\end{proof}
+\endinput

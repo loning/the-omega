@@ -1,0 +1,448 @@
+% (User input window)
+% Time: 2026-02-15 22:45:58 (Asia/Singapore)
+%
+% This section organizes the translation family of the logistic scale kernel into a closed-form dictionary
+% that can be directly embedded into tomography and decision theory:
+% First, complete explicit expressions for several core f-divergences and their local constant chains are presented;
+% Subsequently, the multiclass MAP decision, optimal layout, mutual information, and Fisher deficit induced by this kernel
+% are written as auditable formulas.
+
+In the scale curvature interface of Proposition \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition}, depth atoms appear as translation families of the logistic kernel.
+Therefore, the divergences, decision errors, and information-geometric constants of the translation family \(\{\phi_a\}_{a\in\RR}\) can be viewed as the prototype ledger for "scale visibility thresholds."
+
+\begin{proposition}[Divergence dictionary for scale curvature kernel: homologous seal by \texorpdfstring{$1/4$}{1/4}, \texorpdfstring{$4$}{4}, \texorpdfstring{$1/3$}{1/3}]\label{prop:xi-logistic-divergence-dictionary}
+Let
+\[
+\phi(s)=\frac{1}{4\cosh^{2}(s/2)}=\frac{e^{s}}{(1+e^{s})^{2}},
+\qquad
+\phi_a(s):=\phi(s-a),
+\qquad
+\Delta:=b-a.
+\]
+Then for any \(a,b\in\RR\) the following divergences all exist in complete closed form:
+\begin{enumerate}
+  \item \textup{(Total variation distance)}
+  \[
+  \|\phi_a-\phi_b\|_{\mathrm{TV}}
+  :=\frac12\int_{\RR}|\phi_a(s)-\phi_b(s)|\,\dd s
+  =\tanh\!\Bigl(\frac{|\Delta|}{4}\Bigr).
+  \]
+  \item \textup{(Binary equal-prior Bayes minimum error rate)}
+  \[
+  P_{\mathrm e}(\Delta)
+  =\frac{1-\|\phi_a-\phi_b\|_{\mathrm{TV}}}{2}
+  =\frac{1}{1+e^{|\Delta|/2}}.
+  \]
+  \item \textup{(Hellinger affinity and squared Hellinger distance)}
+  \[
+  \int_{\RR}\sqrt{\phi_a(s)\phi_b(s)}\,\dd s
+  =\frac{|\Delta|}{2\sinh(|\Delta|/2)},
+  \qquad
+  H^{2}(\phi_a,\phi_b)
+  :=1-\int_{\RR}\sqrt{\phi_a\phi_b}
+  =1-\frac{|\Delta|}{2\sinh(|\Delta|/2)}.
+  \]
+  \item \textup{(Strict symmetry of Kullback--Leibler divergence)}
+  \[
+  D_{\mathrm{KL}}(\phi_a\|\phi_b)
+  :=\int_{\RR}\phi_a(s)\log\frac{\phi_a(s)}{\phi_b(s)}\,\dd s
+  =|\Delta|\coth(|\Delta|/2)-2,
+  \qquad
+  D_{\mathrm{KL}}(\phi_a\|\phi_b)=D_{\mathrm{KL}}(\phi_b\|\phi_a).
+  \]
+  \item \textup{(\(\chi^2\) divergence and Rényi-\(2\) divergence)}
+  \[
+  \chi^2(\phi_a\|\phi_b)
+  :=\int_{\RR}\frac{(\phi_a-\phi_b)^2}{\phi_b}\,\dd s
+  =\frac{4}{3}\sinh^{2}(|\Delta|/2),
+  \qquad
+  D_2(\phi_a\|\phi_b)
+  :=\log\!\int_{\RR}\frac{\phi_a(s)^2}{\phi_b(s)}\,\dd s
+  =\log\!\Bigl(\frac{2\cosh|\Delta|+1}{3}\Bigr).
+  \]
+\end{enumerate}
+Moreover, as \(|\Delta|\downarrow 0\) there exist universal local quantization expansions
+\[
+\|\phi_a-\phi_b\|_{\mathrm{TV}}=\frac{|\Delta|}{4}+O(|\Delta|^{3}),
+\qquad
+H^{2}(\phi_a,\phi_b)=\frac{\Delta^{2}}{24}+O(\Delta^{4}),
+\qquad
+D_{\mathrm{KL}}(\phi_a\|\phi_b)=\frac{\Delta^{2}}{6}+O(\Delta^{4}),
+\]
+yielding strict local scaling laws
+\[
+D_{\mathrm{KL}}(\phi_a\|\phi_b)=4\,H^{2}(\phi_a,\phi_b)+O(\Delta^{4}),
+\qquad
+\|\phi_a-\phi_b\|_{\mathrm{TV}}\sim\frac{|\Delta|}{4}.
+\]
+This constant chain locks subsequent scale visibility thresholds onto the same set of irreducible universal constants.
+\end{proposition}
+\begin{proof}
+By translation invariance, we need only take \(a=0\), \(b=\Delta>0\).
+Let \(F(s)=\int_{-\infty}^{s}\phi(u)\dd u=(1+e^{-s})^{-1}\) be the logistic distribution function.
+Since \(\phi\) is an even function and unimodal about \(0\), \(\phi(s)\) and \(\phi(s-\Delta)\) have a unique crossing point at \(s=\Delta/2\), hence
+\[
+\|\phi-\phi_{\Delta}\|_{\mathrm{TV}}
+=\int_{\Delta/2}^{\infty}\bigl(\phi(s-\Delta)-\phi(s)\bigr)\dd s
+=F(\Delta/2)-F(-\Delta/2)
+=\tanh(\Delta/4),
+\]
+and the binary Bayes formula yields \(P_{\mathrm e}(\Delta)\).
+\par
+For Hellinger affinity, writing \(\phi(s)=e^{s}(1+e^{s})^{-2}\) and substituting \(x=e^{s}\) (\(\dd s=\dd x/x\)),
+\[
+\int_{\RR}\sqrt{\phi(s)\phi(s-\Delta)}\,\dd s
+=e^{-\Delta/2}\int_{0}^{\infty}\frac{1}{(1+x)(1+e^{-\Delta}x)}\,\dd x
+=\frac{\Delta}{2\sinh(\Delta/2)}.
+\]
+For \(D_{\mathrm{KL}}\), the same substitution gives
+\[
+D_{\mathrm{KL}}(\phi\|\phi_{\Delta})
+=\int_{0}^{\infty}\frac{\Delta+2\log(1+e^{-\Delta}x)-2\log(1+x)}{(1+x)^{2}}\,\dd x.
+\]
+For
+\(
+I(\alpha):=\int_{0}^{\infty}\frac{\log(1+\alpha x)}{(1+x)^{2}}\,\dd x
+\),
+integration by parts yields
+\(
+I(\alpha)=\alpha\int_{0}^{\infty}\frac{1}{(1+x)(1+\alpha x)}\dd x
+=\frac{\alpha\log(1/\alpha)}{1-\alpha}
+\);
+taking \(\alpha=e^{-\Delta}\) and using \(I(1)=1\) gives
+\[
+D_{\mathrm{KL}}(\phi\|\phi_{\Delta})
+=\Delta+2(I(e^{-\Delta})-I(1))
+=\Delta\coth(\Delta/2)-2,
+\]
+hence symmetry follows from the evenness under \(\Delta\mapsto-\Delta\).
+\par
+For \(\chi^2\) and \(D_2\), using
+\(
+\chi^2(\phi\|\phi_{\Delta})=\int \phi^2/\phi_{\Delta}-1
+\),
+the same substitution yields
+\[
+\int_{\RR}\frac{\phi(s)^2}{\phi(s-\Delta)}\,\dd s
+=e^{\Delta}\int_{0}^{\infty}\frac{(1+e^{-\Delta}x)^{2}}{(1+x)^{4}}\,\dd x
+=\frac{e^{\Delta}+1+e^{-\Delta}}{3}
+=\frac{2\cosh\Delta+1}{3},
+\]
+where the last step uses the Beta integral
+\(
+\int_{0}^{\infty}\frac{x^{m}}{(1+x)^{4}}\dd x=B(m+1,3-m)
+\)
+(\(m=0,1,2\)).
+Therefore
+\(
+\chi^2(\phi\|\phi_{\Delta})=\frac{2}{3}(\cosh\Delta-1)=\frac{4}{3}\sinh^{2}(\Delta/2)
+\)
+and \(D_2=\log(1+\chi^2)\).
+Local expansions follow directly from the Taylor expansions of \(\tanh\), \(\sinh\), \(\coth\).
+\end{proof}
+
+% (User input window)
+% Time: 2026-02-15 23:09:12 (Asia/Singapore)
+
+\begin{proposition}[Hellinger--Gram volume potential: closed-form kernel and collision divergence law for square-root embedding]\label{prop:xi-logistic-hellinger-gram-determinant}
+Along the notation of Proposition \ref{prop:xi-logistic-divergence-dictionary}, take depth spectra \(\sigma_1,\dots,\sigma_\kappa\in\RR\) pairwise distinct.
+Let
+\[
+\psi_j(s):=\sqrt{\phi(s-\sigma_j)}\in L^2(\RR),
+\qquad
+G^{(1/2)}_{jk}:=\langle \psi_j,\psi_k\rangle=\int_{\RR}\sqrt{\phi(s-\sigma_j)\phi(s-\sigma_k)}\,\dd s.
+\]
+Then \(G^{(1/2)}\) is positive definite, with kernel in complete closed form
+\[
+\boxed{\;
+G^{(1/2)}_{jk}=\frac{|\sigma_j-\sigma_k|}{2\sinh\!\bigl(|\sigma_j-\sigma_k|/2\bigr)}\;}
+\qquad(1\le j,k\le\kappa),
+\]
+where the diagonal takes continuous extension value \(G^{(1/2)}_{jj}=1\).
+Define volume and entropy potential
+\[
+V_{1/2}:=\sqrt{\det G^{(1/2)}},
+\qquad
+S_{1/2}:=-\log\det G^{(1/2)}.
+\]
+Under scale collision \(\sigma_j=\sigma_\star+\varepsilon t_j\) with \(\varepsilon\downarrow 0\) (\(t_j\) pairwise distinct), there is a universal Vandermonde divergence law
+\[
+\boxed{\;
+S_{1/2}(\boldsymbol{\sigma})
+=\kappa(\kappa-1)\log\frac{1}{\varepsilon}
++2\sum_{1\le j<k\le \kappa}\log\frac{1}{|t_k-t_j|}
++O(1).\;}
+\]
+The two-body logarithmic coefficient is identically \(2\), independent of spectral point weights and other configuration details.
+\end{proposition}
+\begin{proof}
+Positive definiteness follows directly from the Gram representation of \(G^{(1/2)}\).
+The closed form follows immediately from item \textup{(3)} of Proposition \ref{prop:xi-logistic-divergence-dictionary} (Hellinger affinity closed form) by taking \(a=\sigma_j\), \(b=\sigma_k\).
+\par
+For the collision asymptotic, let \(f(s):=\sqrt{\phi(s)}\), then \(\psi_j(s)=f(s-\sigma_\star-\varepsilon t_j)\).
+By \(f\in C^\infty(\RR)\cap L^2(\RR)\) and Taylor expansion, the span of \(\{\psi_j\}_{j=1}^\kappa\) in \(L^2\) converges as \(\varepsilon\to 0\) to the span of the derivative tower
+\(\{f^{(r)}(\cdot-\sigma_\star)\}_{r=0}^{\kappa-1}\);
+the leading nonzero term of the corresponding Gram determinant is given by the confluent Vandermonde structure, hence
+\(
+\det G^{(1/2)}=C\cdot \varepsilon^{\kappa(\kappa-1)}\prod_{j<k}(t_k-t_j)^2\cdot(1+o(1))
+\)
+(where \(C>0\) depends only on \(\kappa\) and kernel \(f\)).
+Taking negative logarithm yields the stated expansion.
+\end{proof}
+
+\input{para__xi-hellinger-kernel-spectral-rkhs-loggas-toeplitz}
+
+\begin{proposition}[Optimal multiclass decision under logistic noise: nearest-neighbor rule and explicit average error rate]\label{prop:xi-logistic-multiclass-map-error}
+Let \(\kappa\ge 2\), and take ordered depth logarithmic spectrum
+\(
+\sigma_1<\sigma_2<\cdots<\sigma_\kappa
+\).
+Let discrete input \(J\sim\mathrm{Unif}\{1,\dots,\kappa\}\), observation channel
+\[
+S=\sigma_J+U,
+\qquad
+U\sim\phi.
+\]
+Then under equal priors the optimal MAP (equivalent to maximum likelihood) decision is the nearest-neighbor rule
+\[
+\widehat J(S)\in\arg\min_{1\le j\le\kappa}|S-\sigma_j|,
+\]
+with decision boundaries at adjacent midpoints \((\sigma_j+\sigma_{j+1})/2\).
+Moreover, the equal-prior average Bayes minimum error rate has strict closed form
+\[
+\boxed{\;
+P_{\mathrm e}^{(\kappa)}
+=\mathbb P(\widehat J(S)\neq J)
+=\frac{2}{\kappa}\sum_{j=1}^{\kappa-1}\frac{1}{1+\exp\!\bigl((\sigma_{j+1}-\sigma_j)/2\bigr)}\; }.
+\]
+Hence multiclass separability is completely determined by the logistic tail terms of the adjacent gaps \(\Delta_j:=\sigma_{j+1}-\sigma_j\).
+\end{proposition}
+\begin{proof}
+By translation invariance, we need only take \(a=0\), \(b=\Delta>0\).
+Since \(\phi\) is an even function and strictly decreasing on \([0,\infty)\), for fixed \(s\) maximizing \(j\mapsto \phi(s-\sigma_j)\) is equivalent to minimizing \(j\mapsto |s-\sigma_j|\), yielding the nearest-neighbor decision and midpoint boundaries.
+\par
+Let \(\Delta_j=\sigma_{j+1}-\sigma_j\).
+When \(J=j\) (\(1<j<\kappa\)), misclassification event is equivalent to
+\(
+U\ge \Delta_j/2
+\)
+or
+\(
+U\le -\Delta_{j-1}/2
+\);
+the endpoint classes \(j=1,\kappa\) have only one-sided tails.
+Symmetry gives
+\(
+\mathbb P(U\le -x)=\mathbb P(U\ge x)=1/(1+e^{x})
+\) (\(x\ge 0\)),
+averaging over \(j\) and counting each gap's tail contribution twice yields the stated closed form.
+\end{proof}
+
+\begin{corollary}[Optimal depth layout for fixed span: equal spacing is the unique error-minimizing solution and necessary span law]\label{cor:xi-logistic-optimal-spacing-span-law}
+Under the setting of Proposition \ref{prop:xi-logistic-multiclass-map-error}, let total span
+\[
+L:=\sigma_\kappa-\sigma_1=\sum_{j=1}^{\kappa-1}\Delta_j.
+\]
+Then there is a strict lower bound
+\[
+\boxed{\;
+P_{\mathrm e}^{(\kappa)}
+\ \ge\
+\frac{2(\kappa-1)}{\kappa}\cdot\frac{1}{1+\exp\!\bigl(L/(2(\kappa-1))\bigr)}\; }.
+\]
+And equality holds if and only if
+\(
+\Delta_1=\cdots=\Delta_{\kappa-1}=L/(\kappa-1)
+\), i.e., equally-spaced depth logarithmic spectrum is the unique error-minimizing solution.
+Hence if requiring \(P_{\mathrm e}^{(\kappa)}\le \varepsilon\in(0,1)\), then necessarily
+\[
+\boxed{\;
+L\ \ge\ 2(\kappa-1)\log\!\Bigl(\frac{2(\kappa-1)}{\kappa\varepsilon}-1\Bigr)
+=2(\kappa-1)\log\frac{1}{\varepsilon}+O(\kappa)\qquad(\varepsilon\downarrow0).\;}
+\]
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:xi-logistic-multiclass-map-error},
+\(
+P_{\mathrm e}^{(\kappa)}=\frac{2}{\kappa}\sum_{j=1}^{\kappa-1}g(\Delta_j)
+\)
+where \(g(x)=(1+e^{x/2})^{-1}\).
+For \(x>0\), the function \(g\) can be written as \(g(x)=\bigl(1+e^{x/2}\bigr)^{-1}\) satisfying \(g''(x)>0\), hence strictly convex.
+By Jensen's inequality
+\(
+\frac{1}{\kappa-1}\sum_{j}g(\Delta_j)\ge g(L/(\kappa-1))
+\),
+yielding the error lower bound; strictness and equality condition give uniqueness.
+The span law follows by solving the lower bound for \(L\).
+\end{proof}
+
+\begin{proposition}[Entropy difference representation and low-resolution quadratic law of mutual information: rigid appearance of constant \texorpdfstring{$1/6$}{1/6}]\label{prop:xi-logistic-mutual-information-low-resolution}
+Under the setting of Proposition \ref{prop:xi-logistic-multiclass-map-error}, let output mixture density
+\[
+p(s)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}\phi(s-\sigma_j),
+\]
+and define differential entropy \(h(f):=-\int_{\RR}f\log f\) with natural logarithm.
+Then mutual information satisfies the strict identity
+\[
+\boxed{\;I(J;S)=h(p)-h(\phi)=h(p)-2.\;}
+\]
+And in the low-resolution regime (e.g., let centered input \(X:=\sigma_J-\frac{1}{\kappa}\sum_{j}\sigma_j\) and \(\mathbb E[X^{2}]\) sufficiently small) there exists a quadratic approximation law
+\[
+\boxed{\;
+I(J;S)=\frac{1}{6}\,\Var(\sigma_J)+O\!\bigl(\mathbb E[|X|^{4}]\bigr).\;}
+\]
+Here the coefficient \(1/6\) is rigidly determined by the location Fisher information constant \(\mathcal I_{\mathrm{loc}}(\phi)=1/3\) of kernel \(\phi\), independent of \(\kappa\) and specific configuration.
+\end{proposition}
+\begin{proof}
+Additive noise channel gives \(I(J;S)=h(S)-h(U)=h(p)-h(\phi)\).
+For \(h(\phi)\), substituting \(x=e^{s}\) gives \(\phi(s)\dd s=\dd x/(1+x)^{2}\) and
+\(
+\log\phi(s)=\log x-2\log(1+x)
+\);
+by the symmetry of \(x\mapsto 1/x\),
+\(
+\int_{0}^{\infty}\frac{\log x}{(1+x)^{2}}\dd x=0
+\), and
+\(
+\int_{0}^{\infty}\frac{\log(1+x)}{(1+x)^{2}}\dd x=1
+\), hence \(h(\phi)=2\).
+\par
+The quadratic approximation law belongs to small perturbation expansion of additive noise channels: when input scale tends to zero,
+\(
+I(J;S)=\frac{\mathcal I_{\mathrm{loc}}(\phi)}{2}\Var(\sigma_J)+O(\mathbb E[|X|^4])
+\).
+For the logistic kernel, \(\phi'(u)/\phi(u)=-\tanh(u/2)\), hence
+\(
+\mathcal I_{\mathrm{loc}}(\phi)=\mathbb E[\tanh^{2}(U/2)]
+\).
+Let \(T=\tanh(U/2)\in(-1,1)\), then substitution \(u=2\,\operatorname{artanh}(t)\) gives
+\[
+\phi(u)\,\dd u=\frac{1}{4\cosh^{2}(u/2)}\,\dd u=\frac12\,\dd t,
+\]
+hence \(T\sim\mathrm{Unif}(-1,1)\) and \(\mathcal I_{\mathrm{loc}}(\phi)=\mathbb E[T^{2}]=1/3\), yielding coefficient \(1/6\).
+\end{proof}
+
+\begin{corollary}[Computable Fano-type lower bound derived from explicit average error rate]\label{cor:xi-logistic-fano-lower-bound-from-error}
+Under the setting of Proposition \ref{prop:xi-logistic-multiclass-map-error},
+\[
+I(J;S)\ \ge\ \log\kappa\ -\ h_{\mathrm b}\!\bigl(P_{\mathrm e}^{(\kappa)}\bigr)\ -\ P_{\mathrm e}^{(\kappa)}\log(\kappa-1),
+\]
+where \(h_{\mathrm b}(u)=-u\log u-(1-u)\log(1-u)\) is the binary entropy function.
+\end{corollary}
+\begin{proof}
+By Fano's inequality.
+\end{proof}
+
+\begin{proposition}[Strict deficit of location Fisher information: depth dispersion certificate from posterior variance]\label{prop:xi-logistic-fisher-information-deficit}
+Still take
+\(
+p(s)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}\phi(s-\sigma_j)
+\), and define Fisher information of the location family \(p_\theta(s)=p(s-\theta)\)
+\[
+\mathcal I_{\mathrm{loc}}(p):=\int_{\RR}\frac{(p'(s))^{2}}{p(s)}\,\dd s.
+\]
+Let \(J\sim\mathrm{Unif}\{1,\dots,\kappa\}\), \(S=\sigma_J+U\) (\(U\sim\phi\)), and denote
+\[
+T:=\tanh\!\Bigl(\frac{S-\sigma_J}{2}\Bigr),
+\qquad
+m(S):=\mathbb E[T\mid S].
+\]
+Then there exists a strict identity
+\[
+\boxed{\;
+\mathcal I_{\mathrm{loc}}(p)=\mathbb E[m(S)^{2}]
+=\frac{1}{3}-\mathbb E\!\bigl[\Var(T\mid S)\bigr]
+\ \le\ \frac{1}{3}\; }.
+\]
+And equality holds if and only if \(\sigma_1=\cdots=\sigma_\kappa\).
+Therefore \( \frac{1}{3}-\mathcal I_{\mathrm{loc}}(p)\) is the irreversible information deficit introduced by scale curvature mixing, providing an auditable dispersion certificate in conditional variance form without fitting.
+\end{proposition}
+\begin{proof}
+By \(\phi'(x)=-\tanh(x/2)\phi(x)\),
+\[
+p'(s)=-\frac{1}{\kappa}\sum_{j=1}^{\kappa}\tanh\!\Bigl(\frac{s-\sigma_j}{2}\Bigr)\phi(s-\sigma_j).
+\]
+Hence
+\(
+-p'(s)/p(s)=\mathbb E[T\mid S=s]=m(s)
+\), so
+\(
+\mathcal I_{\mathrm{loc}}(p)=\mathbb E[m(S)^{2}]
+\).
+Also since \(T=\tanh(U/2)\), by the same substitution \(u=2\,\operatorname{artanh}(t)\) as above, \(T\sim\mathrm{Unif}(-1,1)\), hence \(\mathbb E[T^{2}]=1/3\) (i.e., \(\mathcal I_{\mathrm{loc}}(\phi)=1/3\)),
+by total variance decomposition
+\(
+\mathbb E[T^{2}]=\mathbb E[m(S)^{2}]+\mathbb E[\Var(T\mid S)]
+\)
+we obtain the stated identity and upper bound.
+If equality holds, then \(\Var(T\mid S)=0\) almost surely, forcing \(T\) to be a deterministic function of \(S\);
+under uniform prior finite mixture, this is equivalent to all translation parameters being equal.
+\end{proof}
+
+\begin{remark}[One-dimensional collapse of information geometry: elementary parametrization with \(\mathrm{TV}\) as coordinate]\label{rem:xi-logistic-tv-coordinate-parametrization}
+Let \(v:=\|\phi_a-\phi_b\|_{\mathrm{TV}}\in[0,1)\).
+By Proposition \ref{prop:xi-logistic-divergence-dictionary} there is strict inversion
+\[
+|\Delta|=4\,\operatorname{artanh}(v)=2\log\!\Bigl(\frac{1+v}{1-v}\Bigr).
+\]
+And
+\[
+H^{2}(\phi_a,\phi_b)
+=1-\frac{(1-v^{2})\,\operatorname{artanh}(v)}{v},
+\qquad
+D_{\mathrm{KL}}(\phi_a\|\phi_b)
+=2\frac{1+v^{2}}{v}\operatorname{artanh}(v)-2,
+\]
+\[
+\chi^{2}(\phi_a\|\phi_b)
+=\frac{16}{3}\frac{v^{2}}{(1-v^{2})^{2}},
+\qquad
+D_{2}(\phi_a\|\phi_b)
+=\log\!\bigl(1+\chi^{2}(\phi_a\|\phi_b)\bigr).
+\]
+Hence several core divergences of this translation family can be completely parametrized by the single scalar coordinate \(v\).
+\end{remark}
+
+\begin{remark}[Explicitization of Fisher--Rao metric and quadratic deviation function]\label{rem:xi-logistic-fisher-rao-and-curvature}
+The location Fisher information of scale kernel translation family \(\{\phi_a\}\) is constant \(\mathcal I_{\mathrm{loc}}(\phi)=1/3\), hence the Fisher--Rao metric has constant coefficient in parameter \(a\),
+the Fisher--Rao distance between any two points satisfies
+\[
+d_{\mathrm{FR}}(\phi_a,\phi_b)=\sqrt{\mathcal I_{\mathrm{loc}}(\phi)}\,|a-b|=\frac{|\Delta|}{\sqrt3}.
+\]
+And by the closed form of Proposition \ref{prop:xi-logistic-divergence-dictionary}, the deviation function can be defined
+\[
+\Psi(\Delta):=D_{\mathrm{KL}}(\phi_a\|\phi_b)-\frac{1}{2}d_{\mathrm{FR}}(\phi_a,\phi_b)^{2}
+=|\Delta|\coth(|\Delta|/2)-2-\frac{\Delta^{2}}{6},
+\]
+which satisfies \(\Psi(\Delta)=O(\Delta^{4})\) as \(\Delta\to 0\), characterizing the deviation of KL from the Fisher--Rao quadratic form on nonlinear visible scales.
+\end{remark}
+\begin{corollary}[Boundary mass representation of multi-depth discrimination: adjacent cut decomposition of average error rate]\label{cor:xi-logistic-boundary-mass-error}
+Under the setting of Proposition \ref{prop:xi-logistic-multiclass-map-error}, let \(\Delta_j=\sigma_{j+1}-\sigma_j\).
+Then the average error rate has strict boundary mass form
+\[
+P_{\mathrm e}^{(\kappa)}
+=\frac{2}{\kappa}\sum_{j=1}^{\kappa-1}\mathbb P\!\Bigl(U\ge \frac{\Delta_j}{2}\Bigr),
+\qquad
+\mathbb P(U\ge x)=\frac{1}{1+e^{x}}\quad(x\ge 0).
+\]
+Hence multiclass error under logistic scale kernel has no high-dimensional interference terms, given only by linear superposition of boundary tail masses induced by adjacent gaps.
+\end{corollary}
+\begin{proof}
+By the derivation of Proposition \ref{prop:xi-logistic-multiclass-map-error}, misclassification is equivalent to noise falling into the two outer tails of adjacent midpoint cuts, and by symmetry reduces to a sum of one-sided tail probabilities.
+\end{proof}
+\begin{remark}[\texorpdfstring{$4$}{4}-th order closure threshold in divergence characterization]\label{rem:xi-logistic-fourth-order-closure}
+The small-gap expansion of Proposition \ref{prop:xi-logistic-divergence-dictionary} shows: \(\mathrm{TV}\) leading term is linear (coefficient \(1/4\)), while the first nontrivial terms of \(H^{2}\) and \(D_{\mathrm{KL}}\) are quadratic;
+and \(D_{\mathrm{KL}}=4H^{2}+O(\Delta^{4})\) locks both within fourth-order precision into the same local geometry.
+Hence when simultaneously caring about boundary cuts (controlled by the linear tail of \(\mathrm{TV}\)) and entropy potential fluctuations (controlled by the quadratic terms of \(H^{2}\), \(D_{\mathrm{KL}}\)), the fourth-order term becomes the minimal closure order.
+\end{remark}
+\begin{corollary}[Design law for depth spectra with information visibility as objective: optimal configuration contracts to equal-spacing family]\label{cor:xi-logistic-depth-design-law}
+Under fixed \(\kappa\) and total span \(L\) constraints, the configuration minimizing the average error rate \(P_{\mathrm e}^{(\kappa)}\) of Proposition \ref{prop:xi-logistic-multiclass-map-error} is uniquely realized by the equal-spacing spectrum:
+\[
+\sigma_j=\sigma_1+\frac{j-1}{\kappa-1}L\qquad(1\le j\le\kappa).
+\]
+And this configuration also maximizes the mutual information lower bound given by Corollary \ref{cor:xi-logistic-fano-lower-bound-from-error}.
+\end{corollary}
+\begin{proof}
+By Corollary \ref{cor:xi-logistic-optimal-spacing-span-law}, under fixed span the lower bound of \(P_{\mathrm e}^{(\kappa)}\) is uniquely realized by the Jensen equality condition;
+and the Fano lower bound is monotone decreasing in \(P_{\mathrm e}^{(\kappa)}\), hence the same configuration also maximizes this lower bound.
+\end{proof}

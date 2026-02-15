@@ -112,6 +112,305 @@ Finally, \(y'/y=\sum_j(z-x_j)^{-1}\) substituted at \(z=p_k\) yields \(r_k=-\sum
 Multiplying both sides of the partial fraction expansion by \(A\) yields the reconstruction formula. QED.
 \end{proof}
 
+% (User input window)
+% 2026-02-14 17:58:21 (Asia/Singapore)
+
+\paragraph{Wronskian Completion and de Branges Positive Definite Kernel: Finite-Dimensional Pick/RKHS-ification from Pole-Pair Data}
+Following the notation of Conclusion \ref{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium} with pole pairs \(p_k=\gamma_k-\mathrm{i}a_k\in\CC_{-}\) (\(a_k>0\)) and monic polynomial \(A(z)=\prod_k(z-p_k)(z-\overline{p_k})\).
+Suppose there exist monic polynomials \(y\in\RR[z]\) (\(\deg y=\kappa\), distinct real roots) and \(y_{+}\in\RR[z]\) (\(\deg y_{+}=\kappa+1\)) satisfying the strict Wronskian identity
+\[
+\boxed{\;A(z)=y(z)y_{+}'(z)-y'(z)y_{+}(z)\;}
+\]
+and denote \(y(z)=\prod_{j=1}^{\kappa}(z-x_j)\) (\(x_j\in\RR\)).
+
+\begin{conclusion}[Centroid Identity: Wronskian Data Locks Anchor Centroid to Sum of Pole Real Parts]\label{con:xi-terminal-wronskian-centroid-identity}
+Under the above setting, the strict identity must hold
+\[
+\boxed{\;\sum_{j=1}^{\kappa}x_j=\sum_{k=1}^{\kappa}\gamma_k\;}
+\]
+i.e., the sum of all real roots of \(y\) equals the sum of real parts of the pole pairs \(\{p_k,\overline{p_k}\}\).
+\end{conclusion}
+\begin{proof}
+Write
+\[
+A(z)=z^{2\kappa}+A_1z^{2\kappa-1}+O(z^{2\kappa-2}),\qquad
+y(z)=z^{\kappa}+y_1z^{\kappa-1}+O(z^{\kappa-2}),\qquad
+y_{+}(z)=z^{\kappa+1}+y_{+1}z^{\kappa}+O(z^{\kappa-1}).
+\]
+Direct expansion of the coefficient of \(z^{2\kappa-1}\) in \(yy_{+}'-y'y_{+}\) gives exactly \(2y_1\), so \(A_1=2y_1\).
+On the other hand,
+\(
+A_1=-\sum_{k=1}^{\kappa}(p_k+\overline{p_k})=-2\sum_k\gamma_k
+\), while \(y_1=-\sum_j x_j\).
+Substituting back yields \(\sum_j x_j=\sum_k\gamma_k\). \qed
+\end{proof}
+
+\begin{conclusion}[Second Symmetric Sum Constraint: Sub-Leading Coefficient of \texorpdfstring{$A$}{A} Gives Second-Order Coupling of \texorpdfstring{$y$}{y} and \texorpdfstring{$y_{+}$}{y+}]\label{con:xi-terminal-wronskian-second-symmetric-sum-coupling}
+Under the above setting, expand
+\[
+y(z)=z^{\kappa}+y_1z^{\kappa-1}+y_2z^{\kappa-2}+O(z^{\kappa-3}),\qquad
+y_{+}(z)=z^{\kappa+1}+y_{+1}z^{\kappa}+y_{+2}z^{\kappa-1}+O(z^{\kappa-2}),
+\]
+\[
+A(z)=z^{2\kappa}+A_1z^{2\kappa-1}+A_2z^{2\kappa-2}+O(z^{2\kappa-3}),
+\]
+then the exact identity holds
+\[
+\boxed{\;A_2=-y_{+2}+y_1y_{+1}+3y_2.\;}
+\]
+If furthermore we decompose \(y_{+}\) as
+\(
+y_{+}(z)=\prod_{m=0}^{\kappa}(z-b_m)
+\)
+and denote elementary symmetric sums
+\[
+e_1(x):=\sum_{j=1}^{\kappa}x_j,\quad e_2(x):=\sum_{1\le i<j\le \kappa}x_ix_j,\qquad
+e_1(b):=\sum_{m=0}^{\kappa}b_m,\quad e_2(b):=\sum_{0\le i<j\le \kappa}b_ib_j,
+\]
+then the same identity can be written as
+\[
+\boxed{\;A_2=-e_2(b)+e_1(x)e_1(b)+3e_2(x).\;}
+\]
+\end{conclusion}
+\begin{proof}
+Expanding \(yy_{+}'-y'y_{+}\) to degree \(z^{2\kappa-2}\) and comparing term-by-term yields
+\(
+A_2=-y_{+2}+y_1y_{+1}+3y_2
+\).
+Then substituting
+\(
+y_1=-e_1(x),\ y_2=e_2(x),\ y_{+1}=-e_1(b),\ y_{+2}=e_2(b)
+\)
+yields the root form. \qed
+\end{proof}
+
+\begin{conclusion}[Hermite--Biehler-ification: Wronskian Data Equivalent to a Class of Polynomial Pick Maps]\label{con:xi-terminal-wronskian-hermite-biehler-pick-map}
+Under the above setting, define the rational function
+\[
+w(z):=\frac{y_{+}(z)}{y(z)}.
+\]
+Define polynomials
+\[
+E(z):=y(z)-\mathrm{i}\,y_{+}(z)\in\CC[z],\qquad
+E^\sharp(z):=\overline{E(\overline z)}.
+\]
+Then we have:
+\begin{enumerate}
+  \item \(w\) is a Pick function (upper half-plane self-map): for all \(z\in\CC_{+}\), \(\Im w(z)>0\);
+  \item \(E\) is a Hermite--Biehler polynomial: for all \(z\in\CC_{+}\), \(|E(z)|>|E^\sharp(z)|\);
+  \item The two satisfy the Cayley-type equivalence relations
+  \[
+  \boxed{\;
+  \frac{E^\sharp(z)}{E(z)}=\frac{1+\mathrm{i}\,w(z)}{1-\mathrm{i}\,w(z)},
+  \qquad
+  w(z)=\mathrm{i}\,\frac{E(z)-E^\sharp(z)}{E(z)+E^\sharp(z)}\; } .
+  \]
+\end{enumerate}
+\end{conclusion}
+\begin{proof}
+By the Wronskian identity we get
+\[
+w'(z)=\frac{y(z)y_{+}'(z)-y'(z)y_{+}(z)}{y(z)^2}=\frac{A(z)}{y(z)^2}.
+\]
+For real \(x\notin\{x_j\}\), we have \(A(x)=\prod_k|x-p_k|^2>0\) and \(y(x)^2>0\), so \(w'(x)>0\).
+Thus \(w\) is strictly increasing on each real axis connected component, and has simple poles at each \(x_j\); and by \(\deg y_{+}=\deg y+1\) we get \(w(z)=z+O(1)\) as \(z\to\infty\).
+\par
+For each \(x_j\) we have \(A(x_j)=-y'(x_j)\,y_{+}(x_j)>0\), whence
+\(
+\operatorname*{Res}_{z=x_j}w(z)=y_{+}(x_j)/y'(x_j)<0
+\).
+Denote \(\mu_j:=-y_{+}(x_j)/y'(x_j)>0\).
+Thus the partial fraction of \(w\) can be written as
+\[
+w(z)=z+c-\sum_{j=1}^{\kappa}\frac{\mu_j}{z-x_j},\qquad c\in\RR.
+\]
+Thus for \(z=x+\mathrm{i}y\in\CC_{+}\) we have
+\[
+\Im w(z)=y+\sum_{j=1}^{\kappa}\mu_j\,\frac{y}{(x-x_j)^2+y^2}>0,
+\]
+obtaining (1).
+\par
+Moreover by
+\[
+\frac{E^\sharp(z)}{E(z)}
+=\frac{y(z)+\mathrm{i}y_{+}(z)}{y(z)-\mathrm{i}y_{+}(z)}
+=\frac{1+\mathrm{i}w(z)}{1-\mathrm{i}w(z)},
+\]
+and writing \(w(z)=u+\mathrm{i}v\) (\(v>0\)), we have
+\[
+\left|\frac{1+\mathrm{i}w(z)}{1-\mathrm{i}w(z)}\right|^2
+=\frac{(1-v)^2+u^2}{(1+v)^2+u^2}<1,
+\]
+whence \(|E^\sharp(z)|<|E(z)|\), obtaining (2).
+Finally (3) are algebraic identities and their inverses. \qed
+\end{proof}
+
+\begin{conclusion}[Wronskian Kernel Positive Definiteness and Discrete Mercer Decomposition: Zeros of \texorpdfstring{$y_{+}$}{y+} Give Complete Orthogonal Sampling]\label{con:xi-terminal-wronskian-kernel-discrete-mercer-parseval}
+Under the setting of Conclusion \ref{con:xi-terminal-wronskian-hermite-biehler-pick-map}, define the real kernel (for \(s\neq t\))
+\[
+K(s,t):=\frac{y_{+}(s)y(t)-y(s)y_{+}(t)}{\pi(s-t)},\qquad
+K(x,x):=\frac{y(x)y_{+}'(x)-y'(x)y_{+}(x)}{\pi}=\frac{A(x)}{\pi}.
+\]
+Then:
+\begin{enumerate}
+  \item \(K\) is a positive definite kernel;
+  \item If \(x_1,\dots,x_{\kappa}\) are the zeros of \(y\), then for \(i\neq j\) we have \(K(x_i,x_j)=0\), and
+  \[
+  K(x_i,x_i)=\frac{A(x_i)}{\pi}=\frac{-y'(x_i)\,y_{+}(x_i)}{\pi}>0;
+  \]
+  \item \(y_{+}\) has \(\kappa+1\) distinct real roots \(b_0<\cdots<b_{\kappa}\);
+  under this notation, for \(i\neq j\) we have \(K(b_i,b_j)=0\), and
+  \[
+  K(b_j,b_j)=\frac{A(b_j)}{\pi}=\frac{y(b_j)\,y_{+}'(b_j)}{\pi}>0.
+  \]
+  \item (Discrete Mercer decomposition) For all \(x,y\in\RR\) the strict identity holds
+  \[
+  \boxed{\;
+  K(x,y)=\sum_{m=0}^{\kappa}\frac{K(x,b_m)\,K(b_m,y)}{K(b_m,b_m)}\; }.
+  \]
+  \item Let \(\mathcal{H}_K\) be the reproducing kernel Hilbert space generated by \(K\), then
+  \(\{K(\cdot,b_m)\}_{m=0}^{\kappa}\) form an orthogonal basis of \(\mathcal{H}_K\), and for any \(f\in\mathcal{H}_K\) the interpolation expansion and Parseval identity hold
+  \[
+  \boxed{\;
+  f(x)=\sum_{m=0}^{\kappa} f(b_m)\,\frac{K(x,b_m)}{K(b_m,b_m)},
+  \qquad
+  \|f\|_{\mathcal{H}_K}^{2}=\sum_{m=0}^{\kappa}\frac{|f(b_m)|^{2}}{K(b_m,b_m)}\; }.
+  \]
+\end{enumerate}
+\end{conclusion}
+\begin{proof}
+By Conclusion \ref{con:xi-terminal-wronskian-hermite-biehler-pick-map}, \(w\) is strictly increasing on each interval \((x_j,x_{j+1})\) and diverges at endpoints, and at infinity satisfies \(w(x)\sim x\).
+Therefore on each interval \((-\infty,x_1),(x_1,x_2),\dots,(x_\kappa,\infty)\), \(w\) is a bijection to \(\RR\), thus has exactly one zero on each segment; this gives the \(\kappa+1\) distinct real roots \(b_0<\cdots<b_\kappa\) of \(y_{+}\).
+The corresponding diagonal and off-diagonal degeneracy formulas follow by substituting \(y(x_i)=0\) or \(y_{+}(b_j)=0\) into the definitions.
+\par
+To prove the Mercer decomposition, fix \(t\in\RR\), the function \(x\mapsto K(x,t)\) is a polynomial of degree \(\le \kappa\): the numerator has degree \(\kappa+1\) in \(x\) and is divisible by \(x-t\) at \(x=t\).
+The right side is also a polynomial of degree \(\le \kappa\), and for each \(\ell\in\{0,\dots,\kappa\}\) we have
+\[
+\text{RHS}(b_\ell,t)=\sum_{m=0}^{\kappa}\frac{K(b_\ell,b_m)K(b_m,t)}{K(b_m,b_m)}=K(b_\ell,t),
+\]
+because when \(\ell\neq m\), \(K(b_\ell,b_m)=0\), and \(K(b_\ell,b_\ell)\neq 0\).
+Both sides as polynomials of degree \(\le\kappa\) agree at \(\kappa+1\) distinct points \(\{b_\ell\}\), hence are identical.
+\par
+Substituting the Mercer decomposition into any finite quadratic form yields the positive definiteness of \(K\).
+Finally, the Gram matrix \((K(b_i,b_j))\) is diagonal with positive diagonal entries, so \(\{K(\cdot,b_m)\}\) are orthogonal and linearly independent; by the Mercer identity they span the entire \(\mathcal{H}_K\), hence form an orthogonal basis.
+Then by the reproducing property \(f(b_m)=\langle f,K(\cdot,b_m)\rangle\) we obtain the interpolation expansion and Parseval identity. \qed
+\end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part23_wronskian_compressed_multiplication_weyl}
+
+\begin{conclusion}[Wronskian-Resultant Decomposition: Discriminant Product Formula for \texorpdfstring{$\operatorname{Res}(A,y_{+})$}{Res(A,y+)}]\label{con:xi-terminal-wronskian-resultant-discriminant-factorization}
+Following the above setting, suppose \(y_{+}\) has real roots \(b_0,\dots,b_\kappa\) all distinct.
+Then the strict identity holds
+\[
+\boxed{\;
+\operatorname{Res}(A,y_{+})
+=\prod_{m=0}^{\kappa}A(b_m)
+=\prod_{k=1}^{\kappa}y_{+}(p_k)\,y_{+}(\overline{p_k})
+=\prod_{k=1}^{\kappa}|y_{+}(p_k)|^{2}\ >\ 0\; }.
+\]
+Moreover we have the decomposition
+\[
+\boxed{\;
+\operatorname{Res}(A,y_{+})
+=\operatorname{Res}(y,y_{+})\cdot
+\Bigl((-1)^{\frac{\kappa(\kappa+1)}{2}}\mathrm{Disc}(y_{+})\Bigr)\; },
+\]
+where
+\(
+\mathrm{Disc}(y_{+})=\prod_{0\le i<j\le \kappa}(b_i-b_j)^2>0
+\).
+\end{conclusion}
+\begin{proof}
+The first group of equalities follows directly from the definition of resultant and the root set \(\{p_k,\overline{p_k}\}\) of \(A\); and since \(\deg A\cdot\deg y_{+}=2\kappa(\kappa+1)\) is even, the resultant has no extra sign from parameter exchange.
+\par
+For the second group of equalities, note that substituting \(y_{+}(b_m)=0\) into the Wronskian gives
+\[
+A(b_m)=y(b_m)\,y_{+}'(b_m).
+\]
+Therefore
+\(
+\prod_m A(b_m)
+=\bigl(\prod_m y(b_m)\bigr)\bigl(\prod_m y_{+}'(b_m)\bigr)
+=\operatorname{Res}(y,y_{+})\cdot\prod_m y_{+}'(b_m)
+\).
+For monic polynomial \(y_{+}\) we have the identity
+\[
+\prod_{m=0}^{\kappa} y_{+}'(b_m)=(-1)^{\frac{\kappa(\kappa+1)}{2}}\mathrm{Disc}(y_{+}),
+\]
+substituting back yields the result. \qed
+\end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part23_wronskian_sampling_identities}
+
+\begin{conclusion}[Phase Quantization: \texorpdfstring{$\int_{\RR}\frac{A}{y^2+y_{+}^2}=\pi(\kappa+1)$}{int A/(y^2+y+^2)=pi(k+1)} and \texorpdfstring{$\pi$}{pi}-Step Segmentation]\label{con:xi-terminal-wronskian-phase-quantization}
+Following the above setting, let \(w=y_{+}/y\).
+Then on the real axis minus the pole set \(\RR\setminus\{x_j\}\) we have
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\arctan w(x)
+=\frac{w'(x)}{1+w(x)^2}
+=\frac{A(x)}{y(x)^2+y_{+}(x)^2}.
+\]
+Thus the integral identity holds:
+\[
+\boxed{\;\int_{\RR}\frac{A(x)}{y(x)^2+y_{+}(x)^2}\,\mathrm{d}x=\pi(\kappa+1).\;}
+\]
+More strongly, if we decompose the real axis by real poles into \(\kappa+1\) intervals
+\[
+(-\infty,x_1),\ (x_1,x_2),\ \dots,\ (x_\kappa,\infty),
+\]
+then on each segment we have exact quantization
+\[
+\boxed{\;\int_{x_j}^{x_{j+1}}\frac{A(x)}{y(x)^2+y_{+}(x)^2}\,\mathrm{d}x=\pi\;}
+\qquad(0\le j\le \kappa),
+\]
+where we set \(x_0=-\infty\), \(x_{\kappa+1}=+\infty\).
+\end{conclusion}
+\begin{proof}
+By Conclusion \ref{con:xi-terminal-wronskian-hermite-biehler-pick-map}, \(w'(x)>0\) for \(x\notin\{x_j\}\), so \(w\) is strictly increasing on each interval.
+And at the two sides of each pole \(x_j\), \(w(x)\) diverges with opposite signs; at infinity \(w(x)\sim x\).
+Therefore for any adjacent endpoint interval \((x_j,x_{j+1})\), the map \(w:(x_j,x_{j+1})\to\RR\) is a bijection.
+Making the substitution \(t=w(x)\) yields
+\[
+\int_{x_j}^{x_{j+1}}\frac{A(x)}{y(x)^2+y_{+}(x)^2}\,\mathrm{d}x
+=\int_{x_j}^{x_{j+1}}\frac{w'(x)}{1+w(x)^2}\,\mathrm{d}x
+=\int_{-\infty}^{+\infty}\frac{\mathrm{d}t}{1+t^2}
+=\pi.
+\]
+Summing over \(j=0,\dots,\kappa\) yields the global integral \(\pi(\kappa+1)\). \qed
+\end{proof}
+
+\begin{conclusion}[Pure Residue Representation of Van Vleck Ratio: Complete Explicit Partial Fraction and Polynomial Reconstruction of \texorpdfstring{$B/A$}{B/A}]\label{con:xi-terminal-van-vleck-ratio-residue-partial-fraction-reconstruction}
+When the equivalent conditions of Conclusion \ref{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium} hold, let
+\[
+r_k:=\operatorname*{Res}_{z=p_k}\frac{B(z)}{A(z)}=\frac{B(p_k)}{A'(p_k)}\in\CC.
+\]
+Then there is a strict identity
+\[
+\frac{B(z)}{A(z)}=\sum_{k=1}^{\kappa}\left(\frac{r_k}{z-p_k}+\frac{\overline{r_k}}{z-\overline{p_k}}\right),
+\qquad
+r_k=-\frac{y'(p_k)}{y(p_k)}=-\sum_{j=1}^{\kappa}\frac{1}{p_k-x_j}.
+\]
+Thus \(B\) can be explicitly reconstructed from anchor-point data as
+\[
+B(z)=
+-\sum_{k=1}^{\kappa}A(z)\left(
+\frac{y'(p_k)}{y(p_k)}\cdot\frac{1}{z-p_k}
+\;+\;
+\frac{\overline{y'(p_k)}}{\overline{y(p_k)}}\cdot\frac{1}{z-\overline{p_k}}
+\right).
+\]
+\end{conclusion}
+\begin{proof}
+By Conclusion \ref{con:xi-terminal-riccati-pole-cancellation-bethe-equilibrium}, \(\deg B\le 2\kappa-2\) and \(\deg A=2\kappa\) imply \(B/A=O(z^{-2})\).
+Thus its partial fraction expansion contains no constant term and only simple poles, uniquely written as the sum of residues at each pole; reality of coefficients guarantees \(\overline{r_k}\) is the residue at \(\overline{p_k}\).
+From the equation \(Ay''-A'y'=By\) evaluated at \(z=p_k\) (\(A(p_k)=0\), \(A'(p_k)\neq 0\)),
+\[
+-A'(p_k)y'(p_k)=B(p_k)y(p_k)\quad\Longrightarrow\quad r_k=\frac{B(p_k)}{A'(p_k)}=-\frac{y'(p_k)}{y(p_k)}.
+\]
+Finally, \(y'/y=\sum_j(z-x_j)^{-1}\) substituted at \(z=p_k\) yields \(r_k=-\sum_j(p_k-x_j)^{-1}\).
+Multiplying both sides of the partial fraction expansion by \(A\) yields the reconstruction formula. \qed
+\end{proof}
+
 \begin{conclusion}[Resultant--Vandermonde representation of first-order potential coefficient: \texorpdfstring{$\tau$}{tau}-gradient identity]\label{con:xi-terminal-potential-tau-gradient-resultant-vandermonde}
 Use the notation of Conclusion \ref{con:xi-terminal-heine-stieltjes-schrodinger-reduction-local-exponent-rigidity} and
 Conclusion \ref{con:xi-terminal-heine-stieltjes-pole-expansion-renormalization-sum-rules}.
@@ -139,7 +438,7 @@ Then for each \(k\) (treating \(\overline{p_1},\dots,\overline{p_\kappa}\) as co
 c_k=\frac{\partial}{\partial p_k}\left(\log \operatorname{Res}(y,A)-\log|\Delta(\mathcal P)|\right). \;}
 \]
 \end{conclusion}
-\begin{proof}[Proof]
+\begin{proof}
 By Conclusion \ref{con:xi-terminal-heine-stieltjes-pole-expansion-renormalization-sum-rules},
 \(
 c_k=-r_k-\tfrac12 s_k
@@ -169,6 +468,6 @@ Hence
 \frac{\partial}{\partial p_k}\log|\Delta(\mathcal P)|
 =\tfrac12 s_k
 \),
-substituting back yields the conclusion. QED.
+substituting back yields the conclusion. \qed
 \end{proof}
 

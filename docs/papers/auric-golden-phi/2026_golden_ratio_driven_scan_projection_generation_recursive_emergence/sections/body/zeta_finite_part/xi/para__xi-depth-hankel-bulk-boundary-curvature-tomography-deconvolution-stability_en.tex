@@ -1,0 +1,400 @@
+% (User input window)
+% Time: 2026-02-15 22:41:09 (Asia/Singapore)
+%
+% Under the logistic kernel tomography calibration, the inversion of curvature probability density \(p\) is not only identifiable,
+% but also possesses a fully explicit operator representation;
+% the same multiplier structure simultaneously enforces universal thresholds for noise amplification, zero density, and bit complexity.
+
+Propositions \ref{prop:xi-bulk-curvature-logistic-kernel-decomposition}--\ref{prop:xi-bulk-curvature-tomography-identifiability} provide finite-atom decomposition and identifiability of the curvature kernel;
+under the same notation, the inversion can be further written as an explicit operator, and from the same multiplier structure derive universal seals for stability, zero density, and precision budget.
+
+\begin{proposition}[Exact deconvolution of scale curvature: explicit inverse operator of logistic smoothing]\label{prop:xi-bulk-curvature-exact-deconvolution-operator}
+Under the setting of Corollary \ref{cor:xi-bulk-curvature-probability-moments}, denote
+\[
+\nu:=\frac{1}{\kappa}\sum_{j=1}^{\kappa}\delta_{\sigma_j},
+\qquad
+\phi(s)=\frac{e^{s}}{(1+e^{s})^{2}}=\frac{1}{4\cosh^{2}(s/2)},
+\qquad
+p=\phi*\nu.
+\]
+Let \(\mathcal D\) be the Fourier multiplier operator on \(\mathcal S'(\RR)\) (taking continuous extension value at \(\xi=0\))
+\[
+\widehat{(\mathcal D f)}(\xi):=\frac{\sinh(\pi\xi)}{\pi\xi}\,\widehat f(\xi).
+\]
+Then in the tempered distribution sense there is a strict identity
+\[
+\boxed{\;\mathcal D p=\nu.\;}
+\]
+Moreover, \(\mathcal D\) admits a Weierstrass product representation (as a Fourier multiplier operator acting on \(\mathcal S(\RR)\))
+\[
+\boxed{\;
+\mathcal D=\prod_{n\ge1}\Bigl(1-\frac{1}{n^{2}}\partial_{s}^{2}\Bigr)
+=\frac{\sinh\!\bigl(\pi\sqrt{-\partial_{s}^{2}}\bigr)}{\pi\sqrt{-\partial_{s}^{2}}}\; }.
+\]
+Therefore "scale smoothing \(p=\phi*\nu\)" within this system is not an irreversible noise channel, but is exactly invertible by a fully explicit entire-function-type infinite-order operator.
+\end{proposition}
+\begin{proof}
+By the closed-form Fourier transform in Proposition \ref{prop:xi-bulk-curvature-tomography-identifiability}
+\(
+\widehat\phi(\xi)=\pi\xi/\sinh(\pi\xi)
+\)
+and the convolution theorem,
+\(
+\widehat p(\xi)=\widehat\phi(\xi)\widehat\nu(\xi)
+\).
+Multiplying both sides by \(\sinh(\pi\xi)/(\pi\xi)\) yields
+\(
+\widehat\nu(\xi)=\frac{\sinh(\pi\xi)}{\pi\xi}\widehat p(\xi)
+=\widehat{(\mathcal D p)}(\xi)
+\), hence \(\mathcal Dp=\nu\).
+The product representation follows from the classical entire function identity
+\(
+\sinh(\pi z)/(\pi z)=\prod_{n\ge1}(1+z^{2}/n^{2})
+\)
+and Fourier-side substitution \(z^{2}\mapsto \xi^{2}\) (equivalent to physical-side \(1+z^{2}/n^{2}\mapsto 1-\partial_{s}^{2}/n^{2}\)).
+\end{proof}
+
+% (User input window)
+% Time: 2026-02-15 23:09:12 (Asia/Singapore)
+
+\begin{corollary}[Modulus-squared holography of scale shape factor: weighted counting of depth difference multiset]\label{cor:xi-bulk-curvature-modsquare-holography}
+Let
+\(
+\widehat p(\xi)=\int_{\RR}e^{-i\xi s}p(s)\,\dd s
+\).
+Then there is a strict identity
+\[
+\boxed{\;
+\Bigl|\frac{\sinh(\pi\xi)}{\pi\xi}\widehat p(\xi)\Bigr|^2
+=|\widehat\nu(\xi)|^2
+=\frac{1}{\kappa^2}\sum_{j,k=1}^{\kappa}e^{-i\xi(\sigma_j-\sigma_k)}
+=\frac{1}{\kappa^2}\sum_{\Delta\in\mathcal D}m(\Delta)e^{-i\xi\Delta}\; }.
+\]
+Here \(\mathcal D:=\{\sigma_j-\sigma_k\}_{j,k}\) is the difference multiset, \(m(\Delta)\) its multiplicity.
+Hence after stripping the universal multiplier \(\widehat\phi(\xi)=\pi\xi/\sinh(\pi\xi)\), the modulus-squared data \(|\widehat p(\xi)|^2\) is equivalent to the characteristic function of the depth difference spectrum, so that two-body geometry can be directly audited without recovering the phase.
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:xi-bulk-curvature-exact-deconvolution-operator},
+\(
+\widehat\nu(\xi)=\frac{\sinh(\pi\xi)}{\pi\xi}\widehat p(\xi)
+\).
+Taking modulus squared and using
+\(
+\widehat\nu(\xi)=\kappa^{-1}\sum_{j=1}^{\kappa}e^{-i\xi\sigma_j}
+\)
+by expansion yields the result.
+\end{proof}
+
+\begin{corollary}[Superresolution barrier constant \texorpdfstring{$\pi$}{pi}: stability threshold for depth separation is \texorpdfstring{$\exp(-\pi/\Delta)$}{exp(-pi/Delta)}]\label{cor:xi-bulk-curvature-superresolution-pi-barrier}
+Assume the observed curvature probability density is \(\widetilde p=p+\eta\), and assume Fourier noise within bandwidth \(|\xi|\le\Omega\) satisfies
+\[
+\sup_{|\xi|\le\Omega}|\widehat\eta(\xi)|\le\varepsilon.
+\]
+Let the linear deconvolution output be \(\widetilde\nu:=\mathcal D\widetilde p\).
+From the deconvolution multiplier of Proposition \ref{prop:xi-bulk-curvature-exact-deconvolution-operator}, under worst-case noise,
+\[
+\sup_{|\xi|\le\Omega}\bigl|\widehat{(\widetilde\nu-\nu)}(\xi)\bigr|
+\ \gtrsim\
+\varepsilon\cdot \frac{\sinh(\pi\Omega)}{\pi\Omega}
+\ \asymp\
+\varepsilon\,e^{\pi\Omega}.
+\]
+Hence if wishing to stably distinguish atoms on the scale axis with separation \(\Delta\) (typically requiring use of frequency \(\Omega\gtrsim 1/\Delta\)), then the noise budget must satisfy at the order
+\[
+\varepsilon \lesssim \exp\!\Bigl(-\frac{\pi}{\Delta}\Bigr),
+\qquad\text{equivalently}\qquad
+\Delta \gtrsim \frac{\pi}{\log(1/\varepsilon)}.
+\]
+This threshold is independent of \(\kappa\) and geometric details of \(\{\sigma_j\}\); the constant \(\pi\) is the universal barrier constant.
+\end{corollary}
+\begin{proof}[Proof sketch]
+By \(\widetilde\nu-\nu=\mathcal D\eta\) and multiplier definition,
+\(
+|\widehat{(\widetilde\nu-\nu)}(\xi)|
+=\frac{\sinh(\pi|\xi|)}{\pi|\xi|}\,|\widehat\eta(\xi)|
+\).
+Under noise constraint, choosing phase-aligned \(\widehat\eta\) can achieve worst-case amplification factor \(\sinh(\pi\Omega)/(\pi\Omega)\).
+Combining with the resolution--bandwidth reciprocal scale \(\Omega\gtrsim 1/\Delta\) yields the result.
+\end{proof}
+
+\begin{proposition}[Pole--entire function dichotomy: universal lattice singularities and depth factor of scale curvature moment generating function]\label{prop:xi-bulk-curvature-moment-generating-factorization}
+Define moment generating function (bilateral Laplace transform)
+\[
+M_p(t):=\int_{\RR}e^{ts}p(s)\,\dd s,
+\qquad |\Re t|<1.
+\]
+Then there exists strict factorization
+\[
+\boxed{\;
+M_p(t)=\frac{\pi t}{\sin(\pi t)}\,E(t),\qquad
+E(t):=\int_{\RR}e^{ts}\,\dd\nu(s)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}e^{t\sigma_j}.\;}
+\]
+Here \(\frac{\pi t}{\sin(\pi t)}\) yields all universal singularities: simple poles at each nonzero integer \(n\in\ZZ\setminus\{0\}\);
+while \(E\) is an entire function carrying all depth information.
+In particular,
+\[
+\boxed{\;\frac{\sin(\pi t)}{\pi t}\,M_p(t)=E(t)\;}
+\]
+is a finite exponential sum, constituting the analytic fingerprint of the depth spectrum.
+\end{proposition}
+\begin{proof}
+By \(p=\phi*\nu\) and Fubini's theorem (\(|\Re t|<1\) guarantees absolute integrability),
+\[
+M_p(t)=\int_{\RR}\int_{\RR}e^{t(s+u)}\phi(s)\,\dd s\,\dd\nu(u)
+=\Bigl(\int_{\RR}e^{ts}\phi(s)\,\dd s\Bigr)\cdot\Bigl(\int_{\RR}e^{tu}\,\dd\nu(u)\Bigr).
+\]
+For \(\phi(s)=e^{s}(1+e^{s})^{-2}\), substituting \(x=e^{s}\) (\(\dd s=\dd x/x\)),
+\[
+\int_{\RR}e^{ts}\phi(s)\,\dd s
+=\int_{0}^{\infty}\frac{x^{t}}{(1+x)^{2}}\,\dd x
+=\mathrm{B}(t+1,1-t)
+=\Gamma(t+1)\Gamma(1-t)
+=\frac{\pi t}{\sin(\pi t)}.
+\]
+Hence we obtain the stated factorization.
+\end{proof}
+
+\begin{remark}[Scale \texorpdfstring{$\zeta$}{zeta} interface notation: moment generating function is scale \texorpdfstring{$\zeta$}{zeta} function]\label{rem:xi-bulk-curvature-scale-zeta-notation}
+The moment generating function \(M_p(t)\) can also be denoted as the scale \(\zeta\) interface
+\[
+\zeta_{\mathrm{scale}}(t):=\int_{\RR}e^{ts}p(s)\,\dd s=M_p(t),
+\qquad
+|\Re t|<1.
+\]
+By Proposition \ref{prop:xi-bulk-curvature-moment-generating-factorization}, \(\zeta_{\mathrm{scale}}\) has a unique meromorphic continuation;
+all integer lattice poles are carried by the universal factor \(\pi t/\sin(\pi t)\), while depth information is completely carried by the entire function \(E(t)\).
+\end{remark}
+
+\begin{corollary}[Depth Dirichlet data from integer pole residues: algebraic reconstruction from finite local data]\label{cor:xi-bulk-curvature-residue-dirichlet-data}
+Under the setting of Proposition \ref{prop:xi-bulk-curvature-moment-generating-factorization}, for any \(n\in\NN\) there are explicit residue formulas
+\[
+\boxed{\;
+\operatorname*{Res}_{t=n}M_p(t)=(-1)^n\,n\,E(n),\qquad
+\operatorname*{Res}_{t=-n}M_p(t)=(-1)^n\,(-n)\,E(-n).\;}
+\]
+Let \(y_j:=e^{\sigma_j}=\delta_j^{-1}\).
+Then
+\[
+E(n)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}y_j^{n}.
+\]
+If \(\{y_j\}\) are pairwise distinct, then the finite sequence \(\{E(n)\}_{n=1}^{2\kappa}\) (equivalently, \(\{\operatorname*{Res}_{t=\pm n}M_p(t)\}_{n=1}^{2\kappa}\)) uniquely determines the unordered multiset \(\{y_j\}\), hence uniquely determines \(\{\delta_j\}\).
+\end{corollary}
+\begin{proof}
+Since
+\(
+\frac{\pi t}{\sin(\pi t)}
+\)
+has residue \((-1)^n n\) at \(t=n\), multiplying with the factorization formula yields the residue formulas.
+The second part is classical power-sum inversion: when \(\{y_j\}\) are pairwise distinct, the power sum sequence satisfies a linear recurrence of order \(\kappa\);
+from \(\{E(n)\}_{n=1}^{2\kappa}\) one can construct a Hankel system to solve for the recurrence coefficients, thereby obtaining the monic polynomial with roots \(\{y_j\}\) and recovering \(\{y_j\}\), hence recovering \(\{\delta_j=y_j^{-1}\}\).
+\end{proof}
+
+\begin{remark}[Scale Euler--Möbius primitive ledger: interchange of power sum moments and primitive sequence]\label{rem:xi-bulk-curvature-euler-mobius-ledger}
+Let \(y_j:=e^{\sigma_j}=\delta_j^{-1}\), and denote power sums
+\(
+p_n:=\sum_{j=1}^{\kappa}y_j^{n}=\kappa E(n)
+\) (\(n\in\NN\)).
+Introduce formal power series
+\[
+\mathfrak Z_{\mathrm{scale}}(z)
+:=\prod_{j=1}^{\kappa}\frac{1}{1-y_j z}
+=\exp\Bigl(\sum_{n\ge 1}\frac{p_n}{n}z^{n}\Bigr)
+\qquad(\text{formal sense}).
+\]
+And define its primitive coefficients (Möbius inversion)
+\[
+\pi^{\mathrm{prim}}_n
+:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,p_{n/d}
+=\frac{1}{n}\sum_{d\mid n}\mu(d)\sum_{j=1}^{\kappa}y_j^{n/d}.
+\]
+Then there is an equivalent Euler decomposition
+\[
+\mathfrak Z_{\mathrm{scale}}(z)=\prod_{n\ge 1}\frac{1}{(1-z^{n})^{\pi^{\mathrm{prim}}_n}}
+\qquad(\text{formal sense}),
+\]
+hence \(\{E(n)\}\) (or \(\{p_n\}\)) yields the "total moment" ledger, while \(\{\pi^{\mathrm{prim}}_n\}\) yields its Euler--Möbius primitive decomposition; the two are mutually translatable by finitely many algebraic operations.
+\end{remark}
+
+\begin{proposition}[Exponential dominance law of primitive ledger: maximum depth locks primitive exponential rate]\label{prop:xi-bulk-curvature-primitive-max-depth-dominance}
+Along the notation of Remark \ref{rem:xi-bulk-curvature-euler-mobius-ledger}, assume
+\[
+\Lambda:=\max_{1\le j\le\kappa}y_j,\qquad
+r:=\card{\{j:\ y_j=\Lambda\}},
+\qquad
+\Lambda_2:=\max\{y_j:\ y_j<\Lambda\}\ \ (\text{if exists}).
+\]
+If \(\Lambda>1\), then as \(n\to\infty\)
+\[
+\boxed{\;
+\pi^{\mathrm{prim}}_n=\frac{r}{n}\Lambda^n
++O\!\Bigl(\frac{1}{n}\Lambda^{n/2}\Bigr)
++O\!\Bigl(\frac{1}{n}\Lambda_2^{\,n}\Bigr)\;}
+\]
+(the second term appears only when \(n\) has nontrivial divisors, with worst-case order \(\Lambda^{n/2}\)).
+Hence the exponential rate is uniquely locked by the maximum depth:
+\[
+\boxed{\;\lim_{n\to\infty}\frac{1}{n}\log\bigl|n\pi^{\mathrm{prim}}_n\bigr|=\log\Lambda.\;}
+\]
+\end{proposition}
+\begin{proof}
+By definition \(n\pi^{\mathrm{prim}}_n=\sum_{d\mid n}\mu(d)\,p_{n/d}\) and \(p_m=\sum_{j}y_j^m\),
+\[
+p_n=r\Lambda^n+O(\Lambda_2^{\,n}),
+\]
+where when \(\Lambda_2\) does not exist, \(O(\Lambda_2^{\,n})\) is understood as \(0\).
+On the other hand, for any \(d\mid n\) and \(d\ge 2\), we have \(n/d\le n/2\), hence
+\[
+|p_{n/d}|\le \sum_{j=1}^{\kappa}y_j^{n/d}\le \kappa\,\Lambda^{n/d}\le \kappa\,\Lambda^{n/2}.
+\]
+Separating the \(d=1\) term from the rest yields the stated expansion.
+Finally, since \(\Lambda>1\), we have \(\Lambda^{n/2}=o(\Lambda^n)\) and \(\Lambda_2^{\,n}=o(\Lambda^n)\), hence the exponential growth rate of \(n\pi^{\mathrm{prim}}_n\) is \(\log\Lambda\).
+\end{proof}
+
+\begin{remark}[Hidden circle spectral geometry: deconvolution multiplier and \texorpdfstring{$\zeta$}{zeta}-determinant ratio of circle Laplacian]\label{rem:xi-bulk-curvature-circle-zeta-determinant}
+Let \(L=-\partial_\theta^2\) be the Laplacian on the circle \(S^1\); its positive spectrum is \(\{n^2\}_{n\ge1}\).
+Its \(\zeta\)-regularized determinant ratio satisfies
+\[
+\frac{\det_\zeta(L+\xi^{2})}{\det_\zeta(L)}
+=\prod_{n\ge1}\Bigl(1+\frac{\xi^{2}}{n^{2}}\Bigr)
+=\frac{\sinh(\pi|\xi|)}{\pi|\xi|}.
+\]
+Hence the deconvolution multiplier of Proposition \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} is exactly equal to the \(\zeta\)-determinant ratio of the circle Laplacian;
+the appearance of constant \(\pi\) corresponds to the projection of this hidden circle spectral geometry onto the scale axis.
+\end{remark}
+
+\begin{proposition}[Scale coherence kernel and scale volume potential: short-range Vandermonde repulsion and long-range exponential orthogonalization]\label{prop:xi-bulk-curvature-scale-gram-two-phase}
+Under the setting of Corollary \ref{cor:xi-bulk-curvature-probability-moments}, define the scale coherence kernel
+\[
+K(\Delta):=\int_{\RR}\phi(s)\phi(s-\Delta)\,\dd s=(\phi*\phi)(\Delta).
+\]
+Then \(K\) is an even function with closed form
+\[
+\boxed{\;
+K(\Delta)=\frac{|\Delta|\coth\!\bigl(|\Delta|/2\bigr)-2}{4\sinh^{2}\!\bigl(|\Delta|/2\bigr)}\; } ,
+\qquad
+K(0)=\frac{1}{6}.
+\]
+For scale spectrum \(\{\sigma_j\}_{j=1}^{\kappa}\) define Gram matrix
+\(
+G^{\mathrm{scale}}_{jk}:=K(\sigma_j-\sigma_k)
+\)
+and scale volume potential
+\(
+S_{\mathrm{scale}}:=-\log\det G^{\mathrm{scale}}
+\).
+Then there exists two-end limiting structure:
+As minimum separation \(\Delta_{\min}:=\min_{j\neq k}|\sigma_j-\sigma_k|\to\infty\),
+\[
+\det G^{\mathrm{scale}}=(K(0))^{\kappa}\bigl(1+o(1)\bigr)=\Bigl(\frac16\Bigr)^{\kappa}\bigl(1+o(1)\bigr),
+\qquad
+S_{\mathrm{scale}}=\kappa\log 6+o(1),
+\]
+and the kernel tail satisfies \(K(\Delta)\sim (|\Delta|-2)e^{-|\Delta|}\), so off-diagonal coupling exponentially vanishes as \(e^{-|\Delta|}\).
+On the other hand, when \(\sigma_j=\sigma_\star+\varepsilon t_j\) and \(\varepsilon\downarrow0\) (\(t_j\) pairwise distinct),
+\[
+S_{\mathrm{scale}}
+=\kappa(\kappa-1)\log\frac{1}{\varepsilon}
++2\sum_{1\le j<k\le \kappa}\log\frac{1}{|t_k-t_j|}
++O(1),
+\]
+exhibiting Vandermonde-type logarithmic repulsion.
+\end{proposition}
+\begin{proof}
+The closed form follows from direct integral calculation: for \(\phi(s)=\frac{1}{4\cosh^{2}(s/2)}\) let \(s=2u\), reducing to
+\(
+K(\Delta)=\frac18\int_{\RR}\frac{1}{\cosh^{2}(u)\cosh^{2}(u-\Delta/2)}\,\dd u
+\),
+then using hyperbolic function identities to integrate yields the stated expression; \(K(0)=\int \phi^2=\frac16\) follows from \(\int_{\RR}\cosh(u)^{-4}\dd u=\frac43\).
+\par
+The long-range phase follows from \(G^{\mathrm{scale}}=K(0)I+O(\max_{j\neq k}K(\sigma_j-\sigma_k))\) and determinant continuity; tail asymptotics follow from expanding the closed form as \(|\Delta|\to\infty\).
+\par
+The short-range phase can be obtained from the Taylor expansion in \(L^2\) of the translation family \(\phi(\cdot-\sigma_\star-\varepsilon t_j)\) with respect to \(\varepsilon\): this family converges as \(\varepsilon\to0\) to the span of the derivative tower \(\{\phi^{(r)}(\cdot-\sigma_\star)\}_{r=0}^{\kappa-1}\);
+the leading nonzero term of the Gram determinant is given by the confluent Vandermonde structure, hence exhibiting the scaling law \(\varepsilon^{\kappa(\kappa-1)}\prod_{j<k}(t_k-t_j)^2\).
+Taking logarithm yields the stated expansion.
+\end{proof}
+
+\begin{proposition}[Analytic fingerprint of depth span: zero density after pole removal yields span]\label{prop:xi-bulk-curvature-depth-span-zero-density}
+Under the setting of Proposition \ref{prop:xi-bulk-curvature-moment-generating-factorization}, denote
+\[
+E(t)=\frac{\sin(\pi t)}{\pi t}\,M_p(t)=\frac{1}{\kappa}\sum_{j=1}^{\kappa}e^{t\sigma_j}.
+\]
+Let depth span
+\(
+L:=\max_j\sigma_j-\min_j\sigma_j
+\).
+Let \(N_E(R)\) be the zero counting function of \(E\) in the disk \(\{t\in\CC:\ |t|\le R\}\) (counted with multiplicity), then there exists a limit
+\[
+\boxed{\;\lim_{R\to\infty}\frac{N_E(R)}{R}=\frac{L}{\pi}.\;}
+\]
+Hence \(L\) can be losslessly read from the zero density of the entire function \(E\) after removing the universal lattice factor from the moment generating function \(M_p\).
+\end{proposition}
+\begin{proof}[Proof sketch]
+The factor \(e^{t\min_j\sigma_j}\) does not change the zero set, so \(E\) can be reduced to the form \(\sum_{j}c_j e^{a_j t}\) as an exponential polynomial (\(0=a_1<\cdots<a_\kappa=L\)).
+Such functions belong to Cartwright-type entire functions, whose indicator diagram is the line segment \([0,L]\) on the real axis; by Cartwright's density theorem the zero counting satisfies \(N_E(R)\sim (L/\pi)R\).
+\end{proof}
+
+\begin{corollary}[Gaussian regularization for stable inversion: universal threshold for minimum resolvable scale]\label{cor:xi-bulk-curvature-gaussian-regularization-threshold}
+Introduce Gaussian regularization \(\nu_\sigma:=G_\sigma*\nu\) (Fourier multiplier \(e^{-\sigma^{2}\xi^{2}/2}\)).
+Then by Proposition \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} we obtain a linear recovery operator
+\[
+\widehat{\nu_\sigma}(\xi)=e^{-\sigma^{2}\xi^{2}/2}\frac{\sinh(\pi\xi)}{\pi\xi}\,\widehat p(\xi).
+\]
+Its noise amplification factor satisfies
+\[
+\mathcal A_\sigma(\xi):=e^{-\sigma^{2}\xi^{2}/2}\frac{\sinh(\pi|\xi|)}{\pi|\xi|}
+\asymp
+\exp\!\Bigl(\pi|\xi|-\frac{\sigma^{2}\xi^{2}}{2}\Bigr),
+\]
+and reaches maximum at \(|\xi|\approx \pi/\sigma^{2}\) of order \(\asymp \exp(\pi^{2}/(2\sigma^{2}))\).
+Hence under worst-case Fourier noise budget \(\varepsilon\), if wishing to keep output noise at constant level (same order budget), one must choose
+\[
+\boxed{\;\sigma\ \gtrsim\ \frac{\pi}{\sqrt{2\log(1/\varepsilon)}}.\;}
+\]
+\end{corollary}
+\begin{proof}
+By multiplier representation, output noise upper bound is \(\sup_\xi \mathcal A_\sigma(\xi)\cdot\varepsilon\).
+Maximum of the exponential term is given by the extremum point \(|\xi|=\pi/\sigma^{2}\) of the univariate function \(\pi|\xi|-\sigma^{2}\xi^{2}/2\), corresponding to exponential gain \(\exp(\pi^{2}/(2\sigma^{2}))\);
+setting \(\varepsilon\exp(\pi^{2}/(2\sigma^{2}))\lesssim 1\) yields the stated threshold.
+\end{proof}
+
+\begin{corollary}[Bit complexity lower bound: linear threshold between resolution and precision bits]\label{cor:xi-bulk-curvature-bit-complexity-lower-bound}
+Assume the observed curvature probability density is \(\widetilde p=p+\eta\), with \(B\)-bit precision in frequency-domain bandwidth \(|\xi|\le \Omega\), i.e.,
+\(
+\sup_{|\xi|\le\Omega}|\widehat\eta(\xi)|\le 2^{-B}
+\).
+Let \(\widetilde\nu:=\mathcal D\widetilde p\).
+Then from the multiplier growth of Proposition \ref{prop:xi-bulk-curvature-exact-deconvolution-operator}, under worst-case noise
+\[
+\sup_{|\xi|\le\Omega}\bigl|\widehat{(\widetilde\nu-\nu)}(\xi)\bigr|
+\ \gtrsim\
+2^{-B}\,\frac{\sinh(\pi\Omega)}{\pi\Omega}
+\ \asymp\
+2^{-B}e^{\pi\Omega}.
+\]
+If wishing to achieve scale resolution \(\Delta\) (typically requiring \(\Omega\gtrsim 1/\Delta\)), then the necessary precision bits at the order satisfy
+\[
+\boxed{\;B\ \gtrsim\ \frac{\pi}{\Delta\ln 2}\;}
+\qquad(\text{ignoring logarithmic subleading terms}).
+\]
+\end{corollary}
+\begin{proof}[Proof sketch]
+For noise constraint, choosing phase-aligned \(\widehat\eta\) can achieve worst-case amplification factor \(\sinh(\pi\Omega)/(\pi\Omega)\).
+Converting with \(\Omega\gtrsim 1/\Delta\) yields the bit threshold.
+\end{proof}
+
+\begin{remark}[Same-order achievability of barrier constant: coarse deconvolution and Prony reconstruction yield an executable chain]\label{rem:xi-bulk-curvature-superresolution-achievability}
+Under the finite-atom calibration, once the noise budget satisfies the linear bit threshold of Corollary \ref{cor:xi-bulk-curvature-bit-complexity-lower-bound},
+the inversion can be realized as an explicit executable chain: first apply the deconvolution multiplier (Proposition \ref{prop:xi-bulk-curvature-exact-deconvolution-operator} or its finite-order truncation version, Conclusion \ref{con:xi-terminal-scale-kernel-partial-deconvolution-resolution}) within bandwidth \(|\xi|\le \Omega\),
+obtaining a band-limited approximation of \(\widehat\nu\);
+subsequently under generic position and minimum separation assumptions, standard Prony/matrix pencil/ESPRIT and other low-rank spectral inversions can stably recover atom locations from finite sampling (isomorphic to the Hankel--Prony calibration of Conclusion \ref{con:xi-terminal-atomic-defect-hankel-prony}).
+Hence the linear slope given by constant \(\pi/(\ln 2)\) not only provides the necessary barrier, but is also achievable at the same order by construction chains (differences appear only in logarithmic subleading terms).
+\end{remark}
+\begin{remark}[\texorpdfstring{$(q=4)$}{(q=4)} universal threshold: first visible correction order for fluctuation, deconvolution, and two-body volume]\label{rem:xi-scale-q4-threshold-principle}
+Remark \ref{rem:xi-bulk-entropy-fermi-grand-canonical} writes bulk entropy curvature as a Bernoulli variance sum;
+in regimes with second-order cumulants (Gaussian approximation) as baseline, the first systematic deviation is governed by fourth-order cumulants.
+On the other hand, the small-frequency expansion of Conclusion \ref{con:xi-terminal-scale-kernel-gamma-closed-form} shows the first correction term of the deconvolution multiplier \(\log M_N(\xi)\) is given by \(\zeta(4)\),
+hence in coarse deconvolution regimes with controlled bandwidth, fourth order is also the minimal nonlinear correction order.
+Moreover, the divergence dictionary of logistic translation families satisfies \(D_{\mathrm{KL}}=4H^2+O(\Delta^4)\) (Remark \ref{rem:xi-logistic-fourth-order-closure}),
+and the short-range expansion of Hellinger--Gram volume potential also gives the first super-quadratic deviation at the \(O(\Delta^4)\) term (Proposition \ref{prop:xi-logistic-hellinger-gram-determinant}).
+Hence in the scale holographic interface of this paper, fourth order constitutes the common closure level for "first non-negligible structural deviation."
+\end{remark}

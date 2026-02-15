@@ -1,0 +1,201 @@
+% (User input window)
+% 2026-02-15 18:50:21 (Asia/Singapore)
+% According to an internal note dated 2026-02-14.
+
+\paragraph{Variational unification formula for dimension-volume-entropy: pressure completely determined by "volume weighting" of level set spectrum}
+Using notation \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\), level set counting \(N_m(\gamma,\varepsilon)\), and spectral function \(f(\gamma)\) (Definition \ref{def:pom-fiber-spectrum}), together with moment pressure
+\(\tau(q)=\limsup_{m\to\infty}\frac1m\log S_q(m)\) (Definition \ref{def:pom-moment-pressure}).
+This paragraph unifies \(q\)-moment pressure, level set volume growth, and fiber exponents into the same "Laplace principle for logarithmic volume", and gives conservation lines, gap minimization, and phase coexistence criteria derived therefrom.
+
+\begin{proposition}[Variational unification formula: \texorpdfstring{$\tau(q)=\sup_\gamma(f(\gamma)+q\gamma)$}{tau(q)=sup(f+qg)}]\label{prop:pom-variational-unity-tau-from-f}
+For each integer \(q\ge 1\), stipulate \(\tau(1):=\log 2\) (from \(S_1(m)=2^m\)), and for \(q\ge 2\) still take \(\tau(q)\) from Definition \ref{def:pom-moment-pressure}.
+Then there holds a strict identity
+\[
+\boxed{\;
+\tau(q)=\sup_{\gamma\in[0,\log 2]}\bigl(f(\gamma)+q\gamma\bigr).\;}
+\]
+\end{proposition}
+\begin{proof}
+Denote \(\gamma_m(x)=\frac1m\log d_m(x)\in[0,\log 2]\).
+Fix \(\varepsilon\in(0,1)\) and take grid points \(\gamma_k:=k\varepsilon\) (\(k=0,1,\dots,K\), where \(K:=\lceil \log 2/\varepsilon\rceil\)).
+Then interval covering \([0,\log 2]\subseteq\bigcup_{k=0}^{K}[\gamma_k-\varepsilon,\gamma_k+\varepsilon]\) gives
+\[
+X_m\subseteq \bigcup_{k=0}^{K}\{x\in X_m:\ |\gamma_m(x)-\gamma_k|\le \varepsilon\}.
+\]
+Hence
+\[
+S_q(m)=\sum_{x\in X_m}e^{qm\gamma_m(x)}
+\le
+\sum_{k=0}^{K}N_m(\gamma_k,\varepsilon)\,e^{qm(\gamma_k+\varepsilon)}.
+\]
+Taking logarithm and dividing by \(m\) yields
+\[
+\frac1m\log S_q(m)
+\le
+\frac{\log(K+1)}{m}+q\varepsilon+\max_{0\le k\le K}\left(\frac1m\log N_m(\gamma_k,\varepsilon)+q\gamma_k\right).
+\]
+Taking \(\limsup\) as \(m\to\infty\) and using \(\log(K+1)=O(\log(1/\varepsilon))\) gives
+\[
+\tau(q)\le q\varepsilon+\sup_{\gamma\in[0,\log 2]}\left(\limsup_{m\to\infty}\frac1m\log N_m(\gamma,\varepsilon)+q\gamma\right).
+\]
+Letting \(\varepsilon\downarrow 0\) and using definition of \(f(\gamma)\) yields upper bound
+\(\tau(q)\le \sup_{\gamma}(f(\gamma)+q\gamma)\).
+\par
+On the other hand, for any \(\gamma\in[0,\log 2]\) and \(\varepsilon>0\), from \(|\gamma_m(x)-\gamma|\le\varepsilon\Rightarrow \gamma_m(x)\ge \gamma-\varepsilon\) we get
+\[
+S_q(m)\ge N_m(\gamma,\varepsilon)\,e^{qm(\gamma-\varepsilon)}.
+\]
+Hence
+\[
+\tau(q)\ge \limsup_{m\to\infty}\frac1m\log N_m(\gamma,\varepsilon)+q(\gamma-\varepsilon).
+\]
+Letting \(\varepsilon\downarrow 0\) gives \(\tau(q)\ge f(\gamma)+q\gamma\), then taking supremum over \(\gamma\) yields lower bound
+\(\tau(q)\ge \sup_\gamma(f(\gamma)+q\gamma)\).
+Combining gives stated identity. \qed
+\end{proof}
+
+\begin{corollary}[Holographic conservation law: \texorpdfstring{$\log 2=\sup_\gamma(f(\gamma)+\gamma)$}{log2=sup(f+g)}]\label{cor:pom-holographic-conservation-f-plus-gamma}
+There is a strict identity
+\[
+\boxed{\;\sup_{\gamma\in[0,\log 2]}\bigl(f(\gamma)+\gamma\bigr)=\log 2\;}
+\qquad\text{and}\qquad
+\boxed{\;f(\gamma)\le \log 2-\gamma\ \ (\forall\gamma).\;}
+\]
+\end{corollary}
+\begin{proof}
+From \(S_1(m)=\sum_x d_m(x)=2^m\) we get \(\tau(1)=\log 2\).
+Substituting \(q=1\) into Proposition \ref{prop:pom-variational-unity-tau-from-f} gives first formula; second follows by rearranging. \qed
+\end{proof}
+
+\begin{corollary}[Rényi entropy rate as "volume gap" representation: entropy is minimal penalty functional of level set spectrum]\label{cor:pom-renyi-entropy-gap-as-inf}
+Using normalized pressure \(P(q)=\tau(q)-q\log 2\) from Definition \ref{def:pom-moment-pressure}, define Rényi entropy rate
+\[
+h_q:=-P(q)=q\log 2-\tau(q)\qquad(q\ge 2).
+\]
+Then for each integer \(q\ge 2\) there is an equivalent minimization representation
+\[
+\boxed{\;
+h_q
+=q\log 2-\sup_{\gamma\in[0,\log 2]}\bigl(f(\gamma)+q\gamma\bigr)
+=\inf_{\gamma\in[0,\log 2]}\Bigl(q(\log 2-\gamma)-f(\gamma)\Bigr).\;}
+\]
+\end{corollary}
+\begin{proof}
+By Proposition \ref{prop:pom-variational-unity-tau-from-f},
+\(
+\tau(q)=\sup_{\gamma}(f(\gamma)+q\gamma)
+\);
+substituting into \(h_q=q\log 2-\tau(q)\) and using \(\,a-\sup b=\inf(a-b)\,\) yields the result. \qed
+\end{proof}
+
+\begin{corollary}[Minimal principle for dimension spectrum: dimension as scaling of "conservation gap"]\label{cor:pom-dimension-spectrum-gap-min-principle}
+Under geometric scaling \(\varepsilon_m=\varphi^{-m}\), Rényi dimension spectrum satisfies
+\[
+D_q=\frac{h_q}{(q-1)\log\varphi}\qquad(q\ge 2)
+\]
+(see Proposition \ref{prop:pom-renyi-dimension-spectrum}).
+Therefore combining with Corollary \ref{cor:pom-renyi-entropy-gap-as-inf} gives equivalent minimization representation
+\[
+\boxed{\;
+D_q
+=\frac{1}{(q-1)\log\varphi}\inf_{\gamma\in[0,\log 2]}
+\Bigl(q(\log 2-\gamma)-f(\gamma)\Bigr).\;}
+\]
+\end{corollary}
+
+\begin{proposition}[Spectral geometric characterization of phase transition: pressure kink \texorpdfstring{$\Longleftrightarrow$}{<->} linear face of level set spectrum]\label{prop:pom-phase-transition-kink-vs-linear-face}
+Under spectral equality/Legendre duality regime of Theorem \ref{thm:pom-ldp-uniform-and-wm-exact-spectrum},
+for any \(q\ge 1\) define phase set
+\[
+\Gamma_q:=\arg\max_{\gamma\in[0,\log 2]}\bigl(f(\gamma)+q\gamma\bigr).
+\]
+Then the following assertions are pairwise equivalent:
+\begin{enumerate}
+  \item \(|\Gamma_q|\ge 2\) (at least two distinct fiber exponent classes jointly dominate \(q\)-moment volume);
+  \item \(\tau\) is non-differentiable at \(q\) (equivalently: its convex extension has a kink/subdifferential interval there);
+  \item \(f\) has a nontrivial linear face with slope \(-q\): there exist \(\gamma_-<\gamma_+\) such that
+  \(
+  f(\gamma)=f(\gamma_-)-q(\gamma-\gamma_-)
+  \)
+  for all \(\gamma\in[\gamma_-,\gamma_+]\).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+By Proposition \ref{prop:pom-variational-unity-tau-from-f}, the function \(q\mapsto\tau(q)\) can be viewed as upper envelope of a family of affine functions \(q\mapsto q\gamma+f(\gamma)\), so its subdifferential set is determined by slopes \(\gamma\) achieving supremum: \(\partial\tau(q)\) is the convex hull of \(\gamma\) achieving supremum.
+Therefore \(\tau\) is differentiable at \(q\) if and only if the \(\gamma\) achieving supremum is unique, i.e., (1) and (2) are equivalent.
+\par
+Under duality regime of Theorem \ref{thm:pom-ldp-uniform-and-wm-exact-spectrum},
+there is Fenchel equality: \(\gamma\in\partial\tau(q)\) if and only if \(f(\gamma)=\tau(q)-q\gamma\) and \(q\in\partial(-f)(\gamma)\).
+Therefore if \(\partial\tau(q)\) is a non-degenerate interval \([\gamma_-,\gamma_+]\), then for all \(\gamma\in[\gamma_-,\gamma_+]\)
+\(
+f(\gamma)=\tau(q)-q\gamma
+\), so \(f\) is a linear face with slope \(-q\) on that interval, giving (2)\(\Rightarrow\)(3).
+Conversely, if \(f\) has a linear face with slope \(-q\), then any \(\gamma\) in that interval makes \(f(\gamma)+q\gamma\) take the same maximum value, hence \(|\Gamma_q|\ge 2\) and \(\tau\) is non-differentiable at \(q\), giving (3)\(\Rightarrow\)(1)(2). \qed
+\end{proof}
+
+\begin{corollary}[Holographic "dimension sum" upper bound: boundary dimension + fiber dimension cannot exceed microscopic total dimension]\label{cor:pom-holographic-dimension-sum-bound}
+Under \(\varphi\)-scaling define boundary dimension and fiber dimension of level set
+\[
+d_{\partial}(\gamma):=\frac{f(\gamma)}{\log\varphi},\qquad
+d_{\mathrm{fib}}(\gamma):=\frac{\gamma}{\log\varphi}.
+\]
+Then by Corollary \ref{cor:pom-holographic-conservation-f-plus-gamma} we get strict upper bound
+\[
+\boxed{\;
+\sup_{\gamma\in[0,\log 2]}\bigl(d_{\partial}(\gamma)+d_{\mathrm{fib}}(\gamma)\bigr)=\frac{\log 2}{\log\varphi}.\;}
+\]
+\end{corollary}
+
+\begin{remark}[Matrixization equivalence: spectral density, Schatten volume, and determinant potential]\label{rem:pom-matrixization-spectrum-density-schatten-det}
+For each \(m\) we can take a positive operator (e.g., diagonal matrix)
+\(
+\mathsf F_m:=\mathrm{diag}\bigl(d_m(x)\bigr)_{x\in X_m}
+\)
+such that its power sum satisfies
+\(
+\mathrm{Tr}(\mathsf F_m^q)=\sum_x d_m(x)^q=S_q(m)
+\).
+Therefore \(q\)-moment pressure \(\tau(q)\) is the exponential growth rate of Schatten-\(q\) volume \(\|\mathsf F_m\|_q^q=\mathrm{Tr}(\mathsf F_m^q)\);
+while logarithmic spectrum
+\(
+\frac{1}{m}\log\mathrm{Spec}(\mathsf F_m)=\{\gamma_m(x)\}_{x\in X_m}
+\)
+has level set counting exponential rate exactly \(f(\gamma)\).
+On the other hand, completeness of power sum coordinates \(\{p_q\}\) for commutative symmetric statistics (Theorem \ref{thm:pom-mom-symmetric-observables-stone-weierstrass}) and Newton identities (proof of Theorem \ref{thm:pom-power-sum-vandermonde-jacobian}) show: finite power sums in general position suffice to recover spectral multiset, thus reducing "multifractal geometry" to finite-dimensional linear algebra auditable objects.
+\end{remark}
+
+\begin{remark}["Computable phase transition": \texorpdfstring{$\delta_q$}{deltaq} crossing and recoverability fracture of pressure/spectral skeleton]\label{rem:pom-computational-phase-transition-deltaq}
+Proposition \ref{prop:pom-phase-transition-kink-vs-linear-face} internalizes geometric phase transition as "optimal level set non-unique";
+under sampling caliber, Corollary \ref{cor:pom-deltaq-sample-complexity-threshold} gives quadratic channel crossing exponent
+\(\delta_q=\log(\Lambda_q^2/r_q)\) algorithmic meaning: when \(\delta_q>0\), sample size needed to maintain relative mean-square error \(o(1)\) satisfies \(N\gtrsim \exp(m\delta_q)\).
+Therefore in the audited near-RH window, \(q=4\) as minimal crossing order (Remark \ref{rem:pom-deltaq-minimal-visible-order-auditability}) simultaneously marks a \emph{computable phase transition} onset: from this order onward, quadratic channel enters dominant competition, making stable inversion of \(\tau(q)\) (and spectral skeleton induced by it) from finite \(m\) data unavoidably encounter exponential budget fracture.
+\end{remark}
+
+\begin{remark}[Entropically holographic entropy window: Shannon volume of layer set is \texorpdfstring{$f(\gamma)+\gamma$}{f+g}]\label{rem:pom-layer-set-shannon-holography}
+Fix \(\gamma\in[0,\log 2]\) and \(\varepsilon>0\), let layer set
+\[
+L_{m}(\gamma,\varepsilon):=\{x\in X_m:\ |\gamma_m(x)-\gamma|\le \varepsilon\},
+\qquad
+\pi_{m,\gamma,\varepsilon}:=\mathrm{Unif}\bigl(L_m(\gamma,\varepsilon)\bigr)\in\Delta(X_m).
+\]
+Let \(\mu^{e}_{m,\gamma,\varepsilon}:=Q_m\pi_{m,\gamma,\varepsilon}\in\Delta(\Omega_m)\) be fiber uniform lift (see \S\ref{subsec:pom-information-ledger} and Theorem \ref{thm:pom-kl-ledger}).
+Since \(D_{\mathrm{KL}}(\mu^{e}\|\mu^{e})=0\), by ledger identity we get strict decomposition
+\[
+H(\mu^{e}_{m,\gamma,\varepsilon})
+=H(\pi_{m,\gamma,\varepsilon})+\mathbb{E}_{\pi_{m,\gamma,\varepsilon}}[\log d_m(X)].
+\]
+Here \(H(\pi_{m,\gamma,\varepsilon})=\log|L_m(\gamma,\varepsilon)|=\log N_m(\gamma,\varepsilon)\), and
+\(
+\frac1m\mathbb{E}_{\pi_{m,\gamma,\varepsilon}}[\log d_m(X)]\in[\gamma-\varepsilon,\gamma+\varepsilon]
+\).
+Therefore taking \(\limsup\) as \(m\to\infty\) first, then letting \(\varepsilon\downarrow 0\), we get
+\[
+\lim_{\varepsilon\downarrow 0}\ \limsup_{m\to\infty}\frac{1}{m}H(\mu^{e}_{m,\gamma,\varepsilon})
+=f(\gamma)+\gamma.
+\]
+On the other hand \(H(\mu^{e})\le \log|\Omega_m|=m\log 2\) forces
+\(
+f(\gamma)+\gamma\le \log 2
+\), which is of same type as conservation line from Corollary \ref{cor:pom-holographic-conservation-f-plus-gamma}: "boundary volume" and "fiber entropy" of layer set are additive in Shannon sense, precisely capped by microscopic limit entropy \(\log 2\).
+\end{remark}
+

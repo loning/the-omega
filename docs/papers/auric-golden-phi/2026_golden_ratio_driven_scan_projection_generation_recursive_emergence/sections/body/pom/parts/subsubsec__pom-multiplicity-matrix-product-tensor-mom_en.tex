@@ -172,6 +172,50 @@ For fixed \(T\subseteq[q]\) with \(|T|=j\), the number of \(i\)-element subsets 
 When \(q=4\), directly computing and factoring the characteristic polynomial of this \(5\times 5\) matrix yields the stated closed form. \qed
 \end{proof}
 
+% (User input window)
+% 2026-02-15 01:48:02 (Asia/Singapore)
+
+\begin{proposition}[Strict Symmetrization under Binomial Weight Inner Product: Weighted Self-Adjointness of \texorpdfstring{$B_q$}{Bq}]\label{prop:pom-bq-weighted-selfadjoint-binomial}
+Following the notation of Proposition \ref{prop:pom-disjointness-symmetric-compression-bq}, let \(B_q\in M_{q+1}(\ZZ)\) be the matrix satisfying \(B_q(i,j)=\binom{q-j}{i}\).
+Define the diagonal weight matrix
+\[
+W_q:=\mathrm{diag}\Bigl(\binom{q}{0}^{-1},\binom{q}{1}^{-1},\dots,\binom{q}{q}^{-1}\Bigr).
+\]
+Then the strict identity holds
+\[
+\boxed{\;W_qB_q=B_q^{\mathsf T}W_q\;}
+\]
+so \(B_q\) is self-adjoint under the weighted inner product \(\langle u,v\rangle_{W_q}:=u^{\mathsf T}W_qv\).
+Equivalently, let
+\[
+D_q:=\mathrm{diag}\Bigl(\sqrt{\binom{q}{0}},\dots,\sqrt{\binom{q}{q}}\Bigr),
+\qquad
+J_q:=D_q^{-1}B_qD_q,
+\]
+then \(J_q\) is a real symmetric matrix.
+Therefore all spectrum of \(B_q\) are real numbers, and we can take a set of \(W_q\)-orthogonal eigenvector basis.
+\end{proposition}
+\begin{proof}
+For any \(0\le i,j\le q\), from \(B_q(i,j)=\binom{q-j}{i}\) we obtain
+\[
+(W_qB_q)(i,j)=\binom{q}{i}^{-1}\binom{q-j}{i},
+\qquad
+(B_q^{\mathsf T}W_q)(i,j)=\binom{q-i}{j}\binom{q}{j}^{-1}.
+\]
+When \(i+j>q\) both are \(0\).
+When \(i+j\le q\) direct simplification gives
+\[
+\binom{q}{i}^{-1}\binom{q-j}{i}
+=\frac{(q-i)!(q-j)!}{q!(q-i-j)!}
+=\binom{q}{j}^{-1}\binom{q-i}{j},
+\]
+so \(W_qB_q=B_q^{\mathsf T}W_q\).
+On the other hand, from \(W_q=D_q^{-2}\), the above formula is equivalent to \(J_q^{\mathsf T}=J_q\), thus \(J_q\) can be orthogonally diagonalized; returning to similarity transformation yields the reality of the spectrum of \(B_q\) and the existence of a \(W_q\)-orthogonal eigenbasis.
+\end{proof}
+
+% (User input window)
+% 2026-02-14 13:41:27 (Asia/Singapore)
+
 \paragraph{Lucas square spectral decomposition and closed-form trace formula: completely computable periodic dynamics of \texorpdfstring{$B_q$}{Bq}}
 Let
 \(
@@ -199,6 +243,54 @@ Hence the image of \(x^{q-j}y^j\) is \((x+y)^{q-j}x^{j}\), whose expansion coeff
 thus the matrix entries of \(\mathrm{Sym}^q(M)\) coincide with the closed form of Proposition \ref{prop:pom-disjointness-symmetric-compression-bq}, yielding \(B_q\cong\mathrm{Sym}^q(M)\).
 \par
 Since the eigenvalues of \(M\) are \(\varphi\) and \(-\varphi^{-1}\), the spectrum of the symmetric power consists of all products \(\varphi^{q-k}(-\varphi^{-1})^{k}=(-1)^k\varphi^{q-2k}\ (0\le k\le q)\), and the degree is \(q+1\), so all multiplicities are \(1\). \qed
+\end{proof}
+
+\begin{proposition}[Two Eigenlinear Forms Generate the Full Spectrum: Closed-Form Eigenvectors of \texorpdfstring{$B_q$}{Bq}]\label{prop:pom-bq-explicit-diagonalization-linear-forms}
+Let \(\varphi=(1+\sqrt5)/2\), \(\psi=-\varphi^{-1}\), and define the linear forms
+\[
+\ell_+(x,y)=\varphi x+y,\qquad \ell_-(x,y)=\psi x+y.
+\]
+Then under the substitution action \((x,y)\mapsto(x+y,x)\) we have
+\(
+\ell_\pm(x+y,x)=\lambda_\pm\,\ell_\pm(x,y)
+\), where \(\lambda_+=\varphi\), \(\lambda_-=\psi\).
+For each \(k\in\{0,1,\dots,q\}\), let
+\[
+P_{q,k}(x,y):=\ell_+(x,y)^{\,q-k}\,\ell_-(x,y)^{\,k}\in\QQ(\sqrt5)[x,y]_q.
+\]
+Then \(P_{q,k}\) is an eigenvector of \(B_q\), and satisfies the strict eigenrelation
+\[
+\boxed{\;P_{q,k}(x+y,x)=(-1)^k\varphi^{\,q-2k}\,P_{q,k}(x,y)\;}
+\]
+with eigenvalue consistent with \(\mu_k\) of Proposition \ref{prop:pom-bq-is-symq-and-spectrum}.
+Writing \(P_{q,k}=\sum_{j=0}^{q} v^{(k)}_j\,e_j\) in the basis \(e_j=x^{q-j}y^j\), the coordinate components have the closed form
+\[
+\boxed{\;
+v^{(k)}_j
+=\sum_{a=0}^{j}
+\binom{q-k}{a}\binom{k}{j-a}\,
+\varphi^{\,q-k-a}\,
+\psi^{\,k-j+a}\qquad(0\le j\le q)\; } .
+\]
+Moreover, by the \(W_q\)-self-adjointness of Proposition \ref{prop:pom-bq-weighted-selfadjoint-binomial} and the simplicity of the spectrum, the vector family \(\{v^{(k)}\}_{k=0}^{q}\) can be taken as a set of pairwise orthogonal eigenbasis under \(\langle\cdot,\cdot\rangle_{W_q}\).
+\end{proposition}
+\begin{proof}
+By definition,
+\[
+\ell_\pm(x+y,x)=\lambda_\pm(x+y)+x=(\lambda_\pm+1)x+\lambda_\pm y=\lambda_\pm^2 x+\lambda_\pm y=\lambda_\pm(\lambda_\pm x+y)=\lambda_\pm\,\ell_\pm(x,y),
+\]
+where \(\lambda_\pm\) satisfies \(\lambda_\pm^2=\lambda_\pm+1\), so \(\lambda_+=\varphi\), \(\lambda_-=\psi\).
+Thus
+\[
+P_{q,k}(x+y,x)=\lambda_+^{\,q-k}\lambda_-^{\,k}\,P_{q,k}(x,y)=\varphi^{\,q-k}\psi^{\,k}\,P_{q,k}(x,y)=(-1)^k\varphi^{\,q-2k}P_{q,k}(x,y),
+\]
+giving the eigenrelation and eigenvalue.
+Expanding
+\(
+(\varphi x+y)^{q-k}(\psi x+y)^k
+\)
+binomially and collecting by powers of \(y\) yields the stated closed form of \(v^{(k)}_j\).
+Finally, by Proposition \ref{prop:pom-bq-weighted-selfadjoint-binomial}, \(B_q\) is self-adjoint under \(\langle\cdot,\cdot\rangle_{W_q}\); since the eigenvalues are pairwise distinct (Proposition \ref{prop:pom-bq-is-symq-and-spectrum}), eigenvectors corresponding to different eigenvalues must be pairwise orthogonal, thus can be taken as a \(W_q\)-orthogonal eigenbasis.
 \end{proof}
 
 \begin{theorem}[Lucas square spectral decomposition: complete factorization of \texorpdfstring{$\det(I-uB_q^2)$}{det(I-uBq^2)}]\label{thm:pom-bq-lucas-square-spectrum-factorization}
@@ -315,7 +407,6 @@ after removing \(\det(I-zD)\).
 Since ``synchronized states'' are preserved under the deterministic inverse-code update (once the candidate set becomes a singleton, it never splits again), the subspace spanned by synchronized states is an invariant subspace, yielding the block upper-triangular decomposition.
 The determinant of a block triangular matrix equals the product of the diagonal block determinants, hence the factorization formula follows; the pole inversion conclusion is immediate. \qed
 \end{proof}
-
 \paragraph{Quadratic characteristic equation induced by the golden two-state skeleton: fixed-point characterization of \texorpdfstring{$\rho(A_q)$}{rho(Aq)}}
 \begin{proposition}[Fixed-point equation and monotone root-finding for the Perron root]\label{prop:pom-golden-grammar-fixed-point-rho-aq}
 Under the setting of Proposition \ref{prop:pom-momq-tensor-kernel-construction}, \(A_q^{\mathrm{ten}}\) can be written as a \(2\times 2\) block matrix:
@@ -355,7 +446,6 @@ The converse direction is analogous: if there exists \(\lambda>0\) for which the
 \par
 Monotonicity follows from the monotonicity of the spectral radius with respect to entries of a nonneg\-ative matrix: as \(\lambda\) increases, both terms \(\lambda^{-1}\) and \(\lambda^{-2}\) strictly decrease, so \(F_q\) is strictly decreasing. \qed
 \end{proof}
-
 \paragraph{Spectral formula for R\'enyi entropy rates and discrete concavity of the collision index}
 \begin{corollary}[Concavity of the collision index and the R\'enyi entropy rate spectral formula]\label{cor:pom-renyi-rate-spectral-formula-discrete-concavity}
 For integer \(q\ge 2\), define the unseparated tail
@@ -390,4 +480,3 @@ h_q^{\mathrm R}
 The spectral closed form follows directly from \(\Pi_q(m)=S_q(m)/2^{mq}\) and \(\tau(q)=\log\rho(A_q^{\mathrm{ten}})\), and is consistent with the definition \(h_q=\log(2^q/r_q)\) (Definition \ref{def:pom-moment-pressure}).
 Discrete concavity follows from the discrete convexity of \(\tau_q\) (the non-strict version of Corollary \ref{cor:pom-integer-pressure-discrete-convexity-strict-bound}) via the identity transformation \(E_q=q\log2-\tau_q\). \qed
 \end{proof}
-

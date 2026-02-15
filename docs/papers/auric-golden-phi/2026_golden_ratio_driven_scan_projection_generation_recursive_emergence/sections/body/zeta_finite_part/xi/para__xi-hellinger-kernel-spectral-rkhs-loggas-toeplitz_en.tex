@@ -1,0 +1,262 @@
+% (User input window)
+% Time: 2026-02-16 01:12:09 (Asia/Singapore)
+%
+% This paragraph elevates the Hellinger two-body kernel \(A(\Delta)\) from a closed-form affinity to a fully spectrally determined geometric object:
+% its Fourier density is \(\cosh^{-2}(\pi\xi)\), and it induces an explicit RKHS and determinantal volume potential;
+% under equidistant spectrum it is further Toeplitzified and we provide Szeg\H{o} limit and CUE representation.
+
+\begin{proposition}[Fourier complete closed form of Hellinger shift kernel: \texorpdfstring{$\cosh^{-2}$}{cosh^{-2}} as spectral density for depth two-body geometry]\label{prop:xi-hellinger-kernel-fourier-sech2}
+Let the scaled unimodal kernel be
+\[
+\phi(s)=\frac{1}{4\cosh^{2}(s/2)}\qquad(s\in\RR),
+\]
+and define the Hellinger affinity kernel
+\[
+A(\Delta):=\int_{\RR}\sqrt{\phi(s)\phi(s-\Delta)}\,\dd s
+=\frac{|\Delta|}{2\sinh(|\Delta|/2)}\qquad(\Delta\in\RR).
+\]
+Then \(A\in L^{1}(\RR)\cap C^\infty(\RR)\) is an even function.
+Under the Fourier transform convention
+\(
+\widehat f(\xi):=\int_{\RR}e^{-\mathrm{i}\xi x}f(x)\,\dd x
+\)
+we have the strict identity
+\[
+\boxed{\;
+\widehat A(\xi)=\int_{\RR}A(\Delta)e^{-\mathrm{i}\xi\Delta}\,\dd\Delta
+=\frac{\pi^{2}}{\cosh^{2}(\pi\xi)}\;}
+\qquad(\xi\in\RR).
+\]
+In particular
+\(
+\int_{\RR}A(\Delta)\,\dd\Delta=\widehat A(0)=\pi^{2}
+\).
+\end{proposition}
+\begin{proof}
+Let
+\(
+f(s):=\sqrt{\phi(s)}=\frac{1}{2\cosh(s/2)}
+\).
+Then
+\(
+A(\Delta)=\int_{\RR}f(s)f(s-\Delta)\,\dd s
+\)
+is the autocorrelation of \(f\), hence \(\widehat A(\xi)=|\widehat f(\xi)|^{2}\).
+Making the substitution \(s=2u\) gives
+\[
+\widehat f(\xi)
+=\int_{\RR}\frac{1}{2\cosh(s/2)}e^{-\mathrm{i}\xi s}\,\dd s
+=\int_{\RR}\frac{1}{\cosh u}\,e^{-2\mathrm{i}\xi u}\,\dd u
+=\frac{\pi}{\cosh(\pi\xi)},
+\]
+where the last step is the Fourier closed form of \(\cosh^{-1}\).
+Thus \(\widehat A(\xi)=\pi^{2}/\cosh^{2}(\pi\xi)\). The proof is complete.
+\end{proof}
+
+\begin{proposition}[RKHS-ification of depth spectrum: \texorpdfstring{$A$}{A} as strict reproducing kernel and \texorpdfstring{$\det G$}{det G} as evaluation functor volume]\label{prop:xi-hellinger-kernel-rkhs-volume}
+Continuing the notation of Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2}, denote the spectral density
+\[
+w(\xi):=\widehat A(\xi)=\frac{\pi^2}{\cosh^2(\pi\xi)}.
+\]
+Define the Hilbert space
+\[
+\mathcal H_{A}
+:=\Bigl\{f\in\mathcal S'(\RR):\ \|f\|_{\mathcal H_A}^{2}
+:=\frac{1}{2\pi}\int_{\RR}\frac{|\widehat f(\xi)|^{2}}{w(\xi)}\,\dd\xi
+=\frac{1}{2\pi}\int_{\RR}|\widehat f(\xi)|^{2}\frac{\cosh^{2}(\pi\xi)}{\pi^{2}}\,\dd\xi<\infty\Bigr\}.
+\]
+Then for any \(x\in\RR\), the evaluation functional \(f\mapsto f(x)\) is continuous on \(\mathcal H_A\).
+Let \(k_x(\cdot):=A(\cdot-x)\), then \(k_x\in\mathcal H_A\) and for all \(f\in\mathcal H_A\) we have the reproducing property
+\[
+\boxed{\;f(x)=\langle f,k_x\rangle_{\mathcal H_A}\;},
+\qquad
+\langle k_x,k_y\rangle_{\mathcal H_A}=A(x-y).
+\]
+Given a depth logarithmic spectrum \(\boldsymbol{\sigma}=(\sigma_1,\dots,\sigma_\kappa)\), define the Gram matrix
+\[
+G(\boldsymbol{\sigma})_{jk}:=A(\sigma_j-\sigma_k)\qquad(1\le j,k\le\kappa).
+\]
+Then
+\[
+\boxed{\;
+\det G(\boldsymbol{\sigma})
+=\mathrm{Vol}^{2}\bigl(\mathrm{span}\{k_{\sigma_1},\dots,k_{\sigma_\kappa}\}\bigr),\qquad
+S_{1/2}(\boldsymbol{\sigma}):=-\log\det G(\boldsymbol{\sigma}).\;}
+\]
+\end{proposition}
+\begin{proof}
+On \(\mathcal H_A\) define the inner product
+\(
+\langle f,g\rangle_{\mathcal H_A}:=\frac{1}{2\pi}\int \widehat f(\xi)\overline{\widehat g(\xi)}\,w(\xi)^{-1}\dd\xi
+\).
+For \(k_x(\cdot)=A(\cdot-x)\), by Fourier shift we have \(\widehat{k_x}(\xi)=w(\xi)e^{-\mathrm{i}\xi x}\), thus \(k_x\in\mathcal H_A\) and
+\[
+\langle f,k_x\rangle_{\mathcal H_A}
+=\frac{1}{2\pi}\int_{\RR}\widehat f(\xi)\,e^{\mathrm{i}\xi x}\,\dd\xi
+=f(x),
+\]
+where the last step is the Fourier inversion formula for Schwartz distributions.
+Taking \(f=k_x\) gives \(\langle k_x,k_y\rangle_{\mathcal H_A}=A(x-y)\).
+The last identity is the geometric interpretation of the Gram determinant in Hilbert space: \(\det(\langle v_j,v_k\rangle)=\mathrm{Vol}^{2}(\mathrm{span}\{v_j\})\). The proof is complete.
+\end{proof}
+
+\begin{proposition}[Andreief representation and frequency-domain log-gas: \texorpdfstring{$S_{1/2}$}{S_{1/2}} as external potential free energy]\label{prop:xi-hellinger-kernel-andreief-loggas}
+Under the setting of Proposition \ref{prop:xi-hellinger-kernel-rkhs-volume}, we have the strict integral representation
+\[
+\boxed{\;
+\det G(\boldsymbol{\sigma})
+=\frac{1}{\kappa!(2\pi)^{\kappa}}
+\int_{\RR^\kappa}
+\Bigl(\prod_{r=1}^{\kappa} w(\xi_r)\Bigr)\,
+\bigl|\det(e^{-\mathrm{i}\xi_r\sigma_j})_{1\le r,j\le\kappa}\bigr|^{2}
+\ \dd\xi_1\cdots \dd\xi_\kappa.\;}
+\]
+Therefore \(S_{1/2}(\boldsymbol{\sigma})\) is equivalent to the partition function free energy of a one-dimensional \(\beta=2\) logarithmic interaction system under the external potential
+\(
+V(\xi):=-\log w(\xi)=2\log\cosh(\pi\xi)-\log\pi^{2}
+\)
+; the depth spectrum \(\boldsymbol{\sigma}\) enters via external phase interpolation into the Vandermonde-type volume factor.
+\end{proposition}
+\begin{proof}
+By the Fourier representation of Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2},
+\[
+A(x-y)=\frac{1}{2\pi}\int_{\RR}w(\xi)\,e^{\mathrm{i}\xi(x-y)}\,\dd\xi.
+\]
+Let the measure \(\dd\mu(\xi):=w(\xi)\dd\xi/(2\pi)\), and set
+\(
+F_j(\xi):=e^{-\mathrm{i}\xi\sigma_j}
+\).
+Then \(G_{jk}=\int F_j(\xi)\overline{F_k(\xi)}\,\dd\mu(\xi)\).
+By the Andreief identity (i.e., the integralization of the Gram determinant) we obtain
+\[
+\det(G_{jk})
+=\frac{1}{\kappa!}\int_{\RR^\kappa}\bigl|\det(F_j(\xi_r))_{1\le r,j\le\kappa}\bigr|^{2}\,\dd\mu(\xi_1)\cdots\dd\mu(\xi_\kappa),
+\]
+which yields the stated form. The free energy formulation is obtained by taking the negative logarithm. The proof is complete.
+\end{proof}
+
+\begin{proposition}[Toeplitzification for equidistant depth: \texorpdfstring{$\cosh^{-2}$}{cosh^{-2}} Poisson periodic sum symbol]\label{prop:xi-hellinger-toeplitz-symbol-poisson}
+If \(\sigma_j=\sigma_0+(j-1)\Delta\) (\(\Delta>0\)), then \(G(\boldsymbol{\sigma})\) is a Toeplitz matrix
+\(
+G_{jk}=A((j-k)\Delta)
+\).
+Its Toeplitz symbol \(\sigma_\Delta:[-\pi,\pi]\to(0,\infty)\) can be written as
+\[
+\boxed{\;
+\sigma_\Delta(\theta)
+:=\sum_{n\in\ZZ}A(n\Delta)e^{\mathrm{i}n\theta}
+=\frac{1}{\Delta}\sum_{k\in\ZZ}\frac{\pi^{2}}{\cosh^{2}\!\Bigl(\pi\frac{\theta+2\pi k}{\Delta}\Bigr)}\;}
+\qquad(\theta\in[-\pi,\pi]).
+\]
+\end{proposition}
+\begin{proof}
+The Toeplitz property follows directly from \(G_{jk}=A(\sigma_j-\sigma_k)=A((j-k)\Delta)\).
+The Poisson summation formula under the present Fourier convention gives
+\(
+\sum_{n\in\ZZ}A(n\Delta)e^{\mathrm{i}n\theta}
+=\Delta^{-1}\sum_{k\in\ZZ}\widehat A((\theta+2\pi k)/\Delta)
+\).
+Substituting \(\widehat A=w\) from Proposition \ref{prop:xi-hellinger-kernel-fourier-sech2} yields the result. The proof is complete.
+\end{proof}
+
+\begin{theorem}[Toeplitz thermodynamic limit: equidistant volume entropy density closed by single symbol integral]\label{thm:xi-hellinger-toeplitz-szego-thermo-limit}
+Under the setting of Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson}, let
+\(
+D_\kappa(\Delta):=\det(G_{jk})_{1\le j,k\le\kappa}
+\).
+Then there exists the limit
+\[
+\boxed{\;
+\lim_{\kappa\to\infty}\frac{1}{\kappa}\log D_\kappa(\Delta)
+=\frac{1}{2\pi}\int_{-\pi}^{\pi}\log\sigma_\Delta(\theta)\,\dd\theta\;}
+\]
+and therefore
+\[
+\boxed{\;
+\lim_{\kappa\to\infty}\frac{1}{\kappa}S_{1/2}(\boldsymbol{\sigma})
+=-\frac{1}{2\pi}\int_{-\pi}^{\pi}\log\sigma_\Delta(\theta)\,\dd\theta\;}
+\qquad(\sigma_j=\sigma_0+(j-1)\Delta).
+\]
+\end{theorem}
+\begin{proof}
+By Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson}, \(\sigma_\Delta\) is strictly positive and analytic on \([-\pi,\pi]\).
+Therefore the Szeg\H{o} theorem applies, giving the linear limit formula for the Toeplitz determinant; the second identity follows directly from \(S_{1/2}=-\log D_\kappa\). The proof is complete.
+\end{proof}
+
+\begin{proposition}[Heine--Szeg\H{o} unitary matrix model: equidistant depth volume as CUE external potential partition function]\label{prop:xi-hellinger-toeplitz-heine-szego-cue}
+Under the setting of Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson}, we have the unitary integral representation
+\[
+\boxed{\;
+D_\kappa(\Delta)
+=\frac{1}{(2\pi)^\kappa\kappa!}
+\int_{[-\pi,\pi]^\kappa}
+\Bigl(\prod_{r=1}^{\kappa}\sigma_\Delta(\theta_r)\Bigr)
+\prod_{1\le r<\ell\le\kappa}\bigl|e^{\mathrm{i}\theta_r}-e^{\mathrm{i}\theta_\ell}\bigr|^2\,
+\dd\theta_1\cdots\dd\theta_\kappa.\;}
+\]
+Thus under equidistant configuration, \(S_{1/2}\) is equivalent to the free energy increment of the CUE (\(\beta=2\)) model under external potential \(-\log\sigma_\Delta\).
+\end{proposition}
+\begin{proof}
+This is the Heine--Szeg\H{o} identity between Toeplitz determinants and unitary eigenangle integrals. The proof is complete.
+\end{proof}
+
+\begin{proposition}[Large-separation cluster expansion: \texorpdfstring{$S_{1/2}$}{S_{1/2}} leading term as two-body exponential energy]\label{prop:xi-hellinger-cluster-expansion-large-separation}
+For a general depth spectrum \(\boldsymbol{\sigma}=(\sigma_1,\dots,\sigma_\kappa)\), denote the minimum separation
+\(
+\Delta_{\min}:=\min_{j\neq k}|\sigma_j-\sigma_k|
+\).
+As \(\Delta_{\min}\to\infty\), there exists a uniform expansion
+\[
+\boxed{\;
+S_{1/2}(\boldsymbol{\sigma})
+=\frac12\sum_{j\neq k}A(\sigma_j-\sigma_k)^{2}
++O\!\Bigl(\kappa^{3}(1+\Delta_{\min})^{3}e^{-3\Delta_{\min}/2}\Bigr).\;}
+\]
+Moreover
+\(
+A(\Delta)\sim |\Delta|e^{-|\Delta|/2}
+\)
+, so the leading term satisfies
+\[
+\frac12\sum_{j\neq k}A(\sigma_j-\sigma_k)^2
+\sim \frac12\sum_{j\neq k}|\sigma_j-\sigma_k|^2e^{-|\sigma_j-\sigma_k|}
+\qquad(\Delta_{\min}\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+Write \(G(\boldsymbol{\sigma})=I+E\), where \(E_{jj}=0\), \(E_{jk}=A(\sigma_j-\sigma_k)\) (\(j\neq k\)).
+From \(A(\Delta)=|\Delta|/(2\sinh(|\Delta|/2))\) we obtain the upper bound
+\(
+0<A(\Delta)\le C(1+|\Delta|)e^{-|\Delta|/2}
+\)
+(from hyperbolic function asymptotics as \(|\Delta|\to\infty\)).
+Therefore \(\|E\|_{\max}\le C(1+\Delta_{\min})e^{-\Delta_{\min}/2}\), and for sufficiently large \(\Delta_{\min}\), \(\|E\|\) can be made small.
+By the logarithmic determinant expansion
+\(
+-\log\det(I+E)=\sum_{m\ge 1}\frac{(-1)^m}{m}\tr(E^m)
+\)
+and \(\tr(E)=0\), the leading term is \(\tr(E^2)/2=\frac12\sum_{j\neq k}E_{jk}^2\).
+The remainder is estimated by \(|\tr(E^m)|\le \kappa^m\|E\|_{\max}^m\), yielding the stated error bound. The proof is complete.
+\end{proof}
+
+\begin{remark}[Cross-domain resolution constant of equidistant symbol: periodization tail controlled by \texorpdfstring{$\exp(-2\pi^2/\Delta)$}{exp(-2pi^2/Delta)}]\label{rem:xi-hellinger-toeplitz-periodization-constant-2pi2}
+Let \(\sigma_\Delta^{(0)}(\theta):=\frac{\pi^2}{\Delta}\cosh^{-2}(\pi\theta/\Delta)\) be the \(k=0\) leading term of the Poisson periodic sum in Proposition \ref{prop:xi-hellinger-toeplitz-symbol-poisson}.
+Then for any \(\theta\in[-\pi,\pi]\) we have
+\[
+0\le \sigma_\Delta(\theta)-\sigma_\Delta^{(0)}(\theta)
+=\frac{1}{\Delta}\sum_{k\neq 0}\frac{\pi^{2}}{\cosh^{2}\!\Bigl(\pi\frac{\theta+2\pi k}{\Delta}\Bigr)}
+\le C\,\frac{\pi^{2}}{\Delta}\,e^{-2\pi^{2}/\Delta},
+\]
+where \(C>0\) is independent of \(\Delta\).
+Thus the minimal cross-domain constant of the periodization effect is \(2\pi^2\): it controls both the single-cell dominance at small \(\Delta\) and provides a uniform exponential threshold for the entry of tail periodic terms.
+\end{remark}
+
+\begin{remark}[\texorpdfstring{$\zeta(4)$}{zeta(4)} first entry law: quartic coefficient of frequency-domain external potential forced to appear]\label{rem:xi-hellinger-logw-zeta4-entry}
+Let \(w(\xi)=\pi^2/\cosh^2(\pi\xi)\), then at \(\xi=0\) we have the Taylor expansion
+\[
+\log w(\xi)=\log\pi^2-\pi^2\xi^2+\frac{\pi^4}{6}\xi^4+O(\xi^6)
+=\log\pi^2-\pi^2\xi^2+15\,\zeta(4)\,\xi^4+O(\xi^6).
+\]
+Therefore any regime using quadratic external potential (Gaussian approximation) as baseline has its first non-removable systematic correction appearing at quartic order and precisely closed by \(\zeta(4)\);
+this spectral-side quartic first entry is compatible with the quartic closure threshold of Remark \ref{rem:xi-scale-q4-threshold-principle}.
+\end{remark}

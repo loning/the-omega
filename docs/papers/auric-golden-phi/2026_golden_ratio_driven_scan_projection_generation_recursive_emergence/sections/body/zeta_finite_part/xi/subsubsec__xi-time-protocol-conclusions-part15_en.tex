@@ -1,11 +1,19 @@
 % (User input window)
 % 2026-02-14 10:47:42 (Asia/Singapore)
-\paragraph{Cross-interface terminal conclusions: Parity weight modality, sign fiber partition, and full explicit closure of the disjoint symmetric power kernel}
+% 2026-02-15 04:43:34 (Asia/Singapore)
+% 2026-02-15 05:06:58 (Asia/Singapore)
+% 2026-02-15 05:21:32 (Asia/Singapore)
+
+\paragraph{Cross-interface terminal conclusions: Parity weight modality, congruence Fourier twist, and full explicit closure of the symmetric power disjoint kernel}
 This paragraph collects three classes of directly verifiable ``constant/closed-form'' entries:
 first, we record the parity weight alternating count of the golden mean stable words \(X_m\),
 which corresponds to an implicit \(6\)-th cyclotomic modality;
-second, we decompose the fold fiber multiplicity by parity weight into a sign partition,
-yielding a third-order linear recurrence completely orthogonal to the \(q\)-collision moment, along with its complex conjugate dominant mode constant;
+second, we lift the fold fiber multiplicity by root-of-unity twist of \(|x|_1\) to a bivariate partition function \(Z_m(y)\),
+from whose fourth-order integrable recurrence and explicit rational generating function we extract the Tribonacci dominant oscillatory mode, Lee--Yang-type spectral bifurcation boundary, large deviations profile for pushforward weight statistics,
+and law of large numbers/central limit theorem;
+we further lift the fiber power-sum moments to weight-collision partition functions \(Z_m^{(q)}(y)\) (\(q=2,3,4\)),
+giving their low-order constant-coefficient recurrences and rational generating functions, strict cancellation of ghost modes at \(y=1\) projection, and spectral bifurcation quantization induced by discriminant decomposition;
+in parallel we also present spectral radii and mixing hierarchy for congruence channels modulo \(2,3,4\);
 third, we identify the \(S_q\)-symmetric compression matrix \(B_q\) of the disjoint graph \(\mathcal D_q\) as \(\mathrm{Sym}^q(M)\),
 and thereby obtain unimodularity, an explicit inverse matrix, and a Fibonacci--binomial closed form for \(n\)-step transfer coefficients.
 
@@ -46,30 +54,240 @@ the residue class values modulo \(6\) follow immediately by direct expansion.
 The generating function is obtained by standard recurrence summation (or by directly expanding \((1-t+t^2)\sum_{m\ge 0}A_m^{\mathrm{par}}t^m\) and substituting the initial values).
 \end{proof}
 
-\begin{conclusion}[Third-order recurrence of the sign fiber partition function: a complex conjugate dominant mode constant independent of \(q\)]\label{con:xi-terminal-signed-fiber-partition-recurrence}
+\input{subsubsec__xi-time-protocol-conclusions-part15b}
+\input{subsubsec__xi-time-protocol-conclusions-part15c}
+
+\begin{conclusion}[Third-order recurrence of the sign fiber partition function: Tribonacci constant gives modulus-squared of dominant oscillatory mode]\label{con:xi-terminal-signed-fiber-partition-recurrence}
 Let \(\Fold_m:\Omega_m=\{0,1\}^m\to X_m\) be the standard folding map, and let the fiber multiplicity be \(d_m(x):=|\Fold_m^{-1}(x)|\).
 Define the sign fiber partition function
 \[
 B_m^{\mathrm{sgn}}:=\sum_{x\in X_m}(-1)^{|x|_1}\,d_m(x)
-=\sum_{\omega\in\Omega_m}(-1)^{|\Fold_m(\omega)|_1}.
+=\sum_{a\in\Omega_m}(-1)^{|\Fold_m(a)|_1}.
 \]
+By Conclusion \ref{con:xi-terminal-zm-order4-rational} taking \(y=-1\) we get \(B_m^{\mathrm{sgn}}=Z_m(-1)\),
+and \(y(y+1)=0\) causes the fourth-order integrable recurrence to degenerate to a third-order recurrence at this point (see Conclusion \ref{con:xi-terminal-zm-hankel-rank4}).
 Then \(B_m^{\mathrm{sgn}}\) satisfies the third-order linear recurrence
 \[
 B_m^{\mathrm{sgn}}=B_{m-1}^{\mathrm{sgn}}-B_{m-2}^{\mathrm{sgn}}-B_{m-3}^{\mathrm{sgn}}\qquad(m\ge 4),
 \]
 with initial values \(B_1^{\mathrm{sgn}}=0,B_2^{\mathrm{sgn}}=0,B_3^{\mathrm{sgn}}=-2\).
-The corresponding characteristic polynomial is \( \lambda^3-\lambda^2+\lambda+1\), whose complex conjugate roots have modulus
+The corresponding characteristic polynomial is
 \[
-\rho:=1.3562030656262951\ldots .
+P(\lambda):=\lambda^3-\lambda^2+\lambda+1.
 \]
-Therefore, the exponential growth and sign oscillation of this sign channel are controlled by the complex conjugate dominant mode (rather than the Perron positive root), and yield a verifiable oscillatory fingerprint orthogonal to the positive partition moment family \(\{S_q(m)\}_q\).
+Let \(\alpha,\overline{\alpha}\) be its non-real conjugate roots, and let \(\tau\) be the Tribonacci constant (i.e., the unique positive real root of \(\tau^3-\tau^2-\tau-1=0\)).
+Then
+\[
+\abs{\alpha}^2=\tau,
+\qquad
+\rho_2:=\abs{\alpha}=\sqrt{\tau}=1.3562030656262951\ldots .
+\]
+Writing \(\alpha=\rho_2 e^{i\vartheta}\) (\(\vartheta\in(0,\pi)\)), the phase satisfies
+\[
+\cos\vartheta=\frac{\tau+1}{2\tau^{3/2}}.
+\]
+Therefore there exist constants \(C\neq 0\) and \(\psi\in\RR\) such that
+\[
+B_m^{\mathrm{sgn}}=C\,\tau^{m/2}\cos(m\vartheta+\psi)+O(\tau^{-m})\qquad(m\to\infty),
+\]
+whence this sign channel grows exponentially at scale \(\tau^{m/2}\) and carries non-trivial rotation phase; this oscillatory mode is completely orthogonal to the positive partition moment family \(\{S_q(m)\}_q\), constituting an auditable frequency-domain fingerprint.
 \end{conclusion}
 \begin{proof}
-Since \(\Fold_m\) is the deterministic readout of the finite-state Zeckendorf reduction kernel (see Definition \ref{def:source-and-fold-output} and Appendix for the reduction kernel construction), the path sum of the weight function \(\omega\mapsto(-1)^{|\Fold_m(\omega)|_1}\) can express \(B_m^{\mathrm{sgn}}\) as a matrix coefficient of a fixed finite-dimensional signed transfer matrix,
-whence \(\bigl(B_m^{\mathrm{sgn}}\bigr)\) satisfies a finite-order constant-coefficient linear recurrence.
-In this fold instance, the recurrence can be recovered via exact enumeration for \(m=1,2,\dots\) and minimal recurrence reconstruction, stabilizing to the indicated third-order form;
-the initial values are likewise obtained by direct enumeration for \(m\le 3\).
-The characteristic polynomial and \(\rho\) are given by explicit root computation of this third-order recurrence.
+By the fourth-order recurrence in Conclusion \ref{con:xi-terminal-zm-order4-rational} evaluated at \(y=-1\), and noting that \(y(y+1)=0\) cancels the fourth-order term,
+we obtain the indicated third-order recurrence; initial values are obtained by direct verification for \(m\le 3\).
+The characteristic polynomial is \(P(\lambda)=\lambda^3-\lambda^2+\lambda+1\).
+Let \(r\) be its unique real root, then \(r=-1/\tau\): substituting \(\lambda=-1/t\) gives \(P(-1/t)=-(t^3-t^2-t-1)/t^3\), so \(t=\tau\).
+By root product \(r\,\alpha\,\overline{\alpha}=-1\) we get \(\abs{\alpha}^2=\tau\), whence \(\rho_2=\sqrt{\tau}\);
+moreover by root sum \(r+\alpha+\overline{\alpha}=1\) we get \(2\rho_2\cos\vartheta=1-r\), i.e., \(\cos\vartheta=(\tau+1)/(2\tau^{3/2})\).
+The general term's dominant oscillatory expansion follows directly from root decomposition. \qed
+\end{proof}
+
+\begin{remark}[Discriminant and Quadratic Resolution Subfield]\label{rem:xi-terminal-signed-fiber-partition-discriminant}
+The cubic characteristic polynomial \(P(\lambda)=\lambda^3-\lambda^2+\lambda+1\) has discriminant \(-44\),
+so the unique quadratic subfield of its splitting field is \(\QQ(\sqrt{-11})\).
+This imaginary quadratic field is the class number \(1\) case corresponding to Heegner number \(11\), therefore the minimal arithmetic extension of the parity twist channel is constrained over \(\QQ(\sqrt{-11})\).
+\end{remark}
+
+\begin{conclusion}[Exponential Decay of Parity Gap: \texorpdfstring{$\kappa_2=\log(2/\sqrt{\tau})$}{kappa2=log(2/sqrt(tau))}]\label{con:xi-terminal-parity-gap-kappa2}
+Let \(w_m(x):=d_m(x)/2^m\) be the uniform microstate pushforward distribution, and let \(X\sim w_m\).
+Denote \(H_m:=|X|_1\) as the \(1\)-count random variable of stable type.
+Then the parity gap satisfies the strict identity
+\[
+\boxed{\;
+\mathbb P(H_m\equiv 0\!\!\!\pmod 2)-\mathbb P(H_m\equiv 1\!\!\!\pmod 2)
+=\EE\bigl[(-1)^{H_m}\bigr]
+=\frac{B_m^{\mathrm{sgn}}}{2^m}\; }.
+\]
+In particular there exists a constant \(\kappa_2>0\) such that
+\[
+\abs{\mathbb P(H_m\equiv 0\!\!\!\pmod 2)-\mathbb P(H_m\equiv 1\!\!\!\pmod 2)}
+=\exp\!\bigl(-m(\kappa_2+o(1))\bigr),
+\qquad
+\kappa_2=\log\!\Bigl(\frac{2}{\rho_2}\Bigr)=\log\!\Bigl(\frac{2}{\sqrt{\tau}}\Bigr)\approx 0.3884582488.
+\]
+\end{conclusion}
+\begin{proof}
+By definition
+\(
+\EE[(-1)^{H_m}]=\sum_{x\in X_m}(-1)^{|x|_1}w_m(x)=2^{-m}B_m^{\mathrm{sgn}}
+\)
+yields the identity.
+Then by the explicit expansion in Conclusion \ref{con:xi-terminal-signed-fiber-partition-recurrence} we get
+\(
+\abs{B_m^{\mathrm{sgn}}}=\exp(m\log\rho_2+o(m))
+\),
+whence
+\(
+\abs{B_m^{\mathrm{sgn}}}/2^m=\exp(-m(\log(2/\rho_2)+o(1)))
+\), and by \(\rho_2=\sqrt{\tau}\) we obtain the closed form and numerical value of \(\kappa_2\). \qed
+\end{proof}
+
+\begin{conclusion}[Modulo \(3\) Fourier Channel Order-\(8\) Reversible Recurrence: Self-Reciprocal Characteristic Polynomial]\label{con:xi-terminal-mod3-fourier-order8-recurrence}
+Let \(\omega=e^{2\pi i/3}\), and define the root-of-unity twisted partition
+\[
+C_m^{(3)}:=\sum_{x\in X_m}\omega^{|x|_1}\,d_m(x)
+=2^m\,\EE\!\left[\omega^{H_m}\right].
+\]
+Then the integer sequences
+\[
+a_m:=2\Re C_m^{(3)},\qquad b_m:=\frac{2}{\sqrt3}\Im C_m^{(3)}
+\]
+satisfy the same order-\(8\) homogeneous integer-coefficient recurrence
+\[
+\boxed{\;
+s_m
+=2s_{m-1}-s_{m-2}-2s_{m-3}+s_{m-4}-2s_{m-5}-s_{m-6}+2s_{m-7}-s_{m-8}\;}
+\]
+whose characteristic polynomial is
+\[
+\Pi^{(3)}(\lambda)=\lambda^8-2\lambda^7+\lambda^6+2\lambda^5-\lambda^4+2\lambda^3+\lambda^2-2\lambda+1,
+\]
+satisfying strict self-reciprocity \(\lambda^8\Pi^{(3)}(1/\lambda)=\Pi^{(3)}(\lambda)\).
+Let \(\rho_3\) be the spectral radius of \(\Pi^{(3)}\), then \(\rho_3\approx 1.7030650701\), whence there exists constant \(c_3>0\) such that
+\[
+\abs{\EE\!\left[\omega^{H_m}\right]}\le c_3\Bigl(\frac{\rho_3}{2}\Bigr)^m,
+\qquad
+\abs{\EE\!\left[\omega^{2H_m}\right]}\le c_3\Bigl(\frac{\rho_3}{2}\Bigr)^m.
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Similar to Conclusion \ref{con:xi-terminal-signed-fiber-partition-recurrence},
+\(C_m^{(3)}\) is a matrix coefficient of a finite-state weighted transfer matrix, hence satisfies some finite-order constant-coefficient linear recurrence;
+this recurrence can be recovered by exact enumeration over a finite window and minimal recurrence reconstruction, stabilizing to the indicated order-\(8\) form in this instance.
+Self-reciprocity can be derived from the integral symplectic structure in Conclusion \ref{con:xi-terminal-mod3-integral-symplectic} (or directly verified by coefficient palindrome).
+The spectral radius \(\rho_3\) controls the exponential growth of \(\abs{C_m^{(3)}}\), thereby giving the decay bound for \(\abs{\EE[\omega^{H_m}]}\). \qed
+\end{proof}
+
+\begin{conclusion}[Modulo \(4\) Fourier Channel Order-\(8\) Recurrence and Slower Mixing]\label{con:xi-terminal-mod4-fourier-order8-recurrence}
+Let \(i=\sqrt{-1}\), and define
+\[
+C_m^{(4)}:=\sum_{x\in X_m} i^{|x|_1}\,d_m(x)
+=2^m\,\EE\!\left[i^{H_m}\right].
+\]
+Then \(\Re C_m^{(4)}\) and \(\Im C_m^{(4)}\) also satisfy an order-\(8\) homogeneous integer-coefficient recurrence, whose characteristic polynomial is
+\[
+\Pi^{(4)}(\lambda)=\lambda^8-2\lambda^7-\lambda^6+4\lambda^5+\lambda^4-\lambda^2-2\lambda+2.
+\]
+Let \(\rho_4\) be the spectral radius of \(\Pi^{(4)}\), then \(\rho_4\approx 1.8315468016\), whence there exists constant \(c_4>0\) such that
+\[
+\abs{\EE\!\left[i^{H_m}\right]}\le c_4\Bigl(\frac{\rho_4}{2}\Bigr)^m,
+\qquad
+\abs{\EE\!\left[(-i)^{H_m}\right]}\le c_4\Bigl(\frac{\rho_4}{2}\Bigr)^m.
+\]
+The decay rate of this channel is strictly slower than the parity channel (since \(\rho_4>\rho_2\)).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Same as above: the root-of-unity twisted partition is a matrix coefficient of a finite-dimensional weighted transfer matrix, hence satisfies a finite-order integer-coefficient recurrence;
+in this instance its minimal recurrence stabilizes to order \(8\).
+The spectral radius \(\rho_4\) gives the exponential bound for \(\abs{C_m^{(4)}}\), thereby yielding decay rates for non-trivial Fourier coefficients. \qed
+\end{proof}
+
+\begin{conclusion}[Congruence Classes Exponentially Approach Uniformity: Total Variation Bound from Non-Trivial Spectral Radius]\label{con:xi-terminal-congruence-mixing-tv-bound}
+For \(k\in\{2,3,4\}\), denote \(\mu_{m,k}\) as the distribution of \(H_m\bmod k\), and denote its Fourier coefficients
+\[
+\widehat{\mu}_{m,k}(j):=\EE\!\left[e^{2\pi i j H_m/k}\right]\qquad(1\le j\le k-1).
+\]
+Let \(\rho_2=\sqrt{\tau}\), and let \(\rho_3,\rho_4\) be as in Conclusions \ref{con:xi-terminal-mod3-fourier-order8-recurrence} and \ref{con:xi-terminal-mod4-fourier-order8-recurrence}.
+Then there exist constants \(c_k>0\) such that for all \(m\ge 1\) and all \(1\le j\le k-1\),
+\[
+\abs{\widehat{\mu}_{m,k}(j)}\le c_k\Bigl(\frac{\rho_k}{2}\Bigr)^m.
+\]
+Thus the total variation distance to the uniform distribution \(U_k\) satisfies
+\[
+\boxed{\;
+\norm{\mu_{m,k}-U_k}_{\mathrm{TV}}
+\le \frac12\sum_{j=1}^{k-1}\abs{\widehat{\mu}_{m,k}(j)}
+\le C_k\Bigl(\frac{\rho_k}{2}\Bigr)^m\;}
+\]
+where the constant \(C_k>0\) depends only on \(k\) and finite initial data.
+\end{conclusion}
+\begin{proof}
+By Fourier inversion on the finite abelian group \(\ZZ/k\ZZ\) and triangle inequality we get
+\(
+\norm{\mu_{m,k}-U_k}_{\mathrm{TV}}\le \frac12\sum_{j\ne 0}\abs{\widehat{\mu}_{m,k}(j)}
+\).
+When \(k=2,3,4\), each non-trivial coefficient is respectively given by
+\(\EE[(-1)^{H_m}]\), \(\EE[\omega^{H_m}]\), \(\EE[i^{H_m}]\) and their conjugates,
+whose exponential decay is given by Conclusions \ref{con:xi-terminal-parity-gap-kappa2},
+\ref{con:xi-terminal-mod3-fourier-order8-recurrence},
+\ref{con:xi-terminal-mod4-fourier-order8-recurrence}. \qed
+\end{proof}
+
+\begin{conclusion}[Strict Hierarchy of Congruence Mixing: Deepening Modulus Causes Main Fourier Gap Contraction]\label{con:xi-terminal-congruence-mixing-hierarchy}
+The above three channels satisfy the strict ordering
+\[
+\rho_2<\rho_3<\rho_4<2,
+\]
+whence the corresponding main Fourier gaps (mixing exponents) strictly decrease:
+\[
+\log\Bigl(\frac{2}{\rho_2}\Bigr)\approx 0.3884582488\;>\;
+\log\Bigl(\frac{2}{\rho_3}\Bigr)\approx 0.1607175705\;>\;
+\log\Bigl(\frac{2}{\rho_4}\Bigr)\approx 0.0879863239.
+\]
+Therefore, the uniform microstate pushforward of the Fold exhibits rigid spectral hierarchy on congruence observables: parity classes equilibrate first, followed by modulo \(3\), with modulo \(4\) slowest.
+\end{conclusion}
+
+\begin{conclusion}[Integral Symplectic Structure of Modulo \(3\) Channel: Companion Matrix is Symplectic and Forces Spectral Reciprocal Pairing]\label{con:xi-terminal-mod3-integral-symplectic}
+Let \(s_m\) denote the integer sequence in Conclusion \ref{con:xi-terminal-mod3-fourier-order8-recurrence} (can take \(s_m=a_m\) or \(s_m=b_m\)), and define its companion matrix
+\[
+C=
+\begin{pmatrix}
+2&-1&-2&1&-2&-1&2&-1\\
+1&0&0&0&0&0&0&0\\
+0&1&0&0&0&0&0&0\\
+0&0&1&0&0&0&0&0\\
+0&0&0&1&0&0&0&0\\
+0&0&0&0&1&0&0&0\\
+0&0&0&0&0&1&0&0\\
+0&0&0&0&0&0&1&0
+\end{pmatrix},
+\qquad \det C=1.
+\]
+Then there exists an integral full-rank skew-symmetric form \(\Omega\in \Mat_{8}(\ZZ)\) (\(\det\Omega=1\)) such that
+\[
+C^{\mathsf T}\Omega C=\Omega.
+\]
+One can take
+\(
+\Omega=\begin{psmallmatrix}0&J\\ -J^{\mathsf T}&0\end{psmallmatrix}
+\)
+where
+\[
+J=
+\begin{pmatrix}
+1&0&0&0\\
+-2&1&0&0\\
+1&-2&1&0\\
+2&1&-2&1
+\end{pmatrix}.
+\]
+Therefore \(C\) is an element of some integral symplectic group \(\mathrm{Sp}(8,\ZZ;\Omega)\); its eigenvalues must pair under \(\lambda\mapsto 1/\lambda\),
+whence the characteristic polynomial \(\Pi^{(3)}\) must be a self-reciprocal polynomial (consistent with Conclusion \ref{con:xi-terminal-mod3-fourier-order8-recurrence}).
+At the generating function level, this is equivalent to the corresponding denominator polynomial satisfying strict \(z\mapsto 1/z\) inversion symmetry.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Direct substitution of the indicated \(\Omega\) verifies \(C^{\mathsf T}\Omega C=\Omega\).
+Symplectic preservation implies eigenvalues of \(C\) pair under inversion, so characteristic polynomial coefficients are palindromic, i.e., \(\lambda^8\Pi^{(3)}(1/\lambda)=\Pi^{(3)}(\lambda)\). \qed
 \end{proof}
 
 \begin{conclusion}[Stable phase of the top three fiber spectrum: gap Fibonacci closure and even branch achiever count plateau]\label{con:xi-terminal-top3-fiber-spectrum-stable-multiplicity-phase}
@@ -144,7 +362,6 @@ The factorization \(B_q=\mathbf{P}_q\mathbf{J}_q\) follows immediately from
 \(\mathbf{P}_q\) is lower triangular with all diagonal entries \(1\), hence \(\det(\mathbf{P}_q)=1\), so \(\det(B_q)=\det(\mathbf{J}_q)=(-1)^{q(q+1)/2}\).
 The explicit inverse matrix follows by composition of the standard closed form for \(\mathbf{P}_q^{-1}\) and \(\mathbf{J}_q^{-1}=\mathbf{J}_q\), and can be directly verified entry-wise via \(B_qB_q^{-1}=I\).
 \end{proof}
-
 \begin{conclusion}[Fully explicit closed form for \texorpdfstring{$B_q^n$}{Bq^n}: all layer-to-layer transfer coefficients are nonnegative integer combinations of Fibonacci powers]\label{con:xi-terminal-bq-power-fibonacci-nonnegative-sum}
 For any integer \(n\ge 1\), we have the strict identity
 \[
@@ -173,7 +390,6 @@ e_j\longmapsto (F_{n+1}x+F_ny)^{q-j}(F_nx+F_{n-1}y)^j,
 \]
 separately expand binomially and collect the coefficient of \(y^i\) to obtain the summation formula; each term coefficient is a nonnegative integer and contains only Fibonacci power monomials.
 \end{proof}
-
 \begin{conclusion}[Boundary layer no-mixing law: the first row and last column of \texorpdfstring{$B_q^n$}{Bq^n} directly reconstruct the Fibonacci power spectrum]\label{con:xi-terminal-bq-boundary-nonmixing-law}
 In the entry formula of Conclusion \ref{con:xi-terminal-bq-power-fibonacci-nonnegative-sum}, the boundary layers exhibit a completely degenerate no-mixing structure:
 for any \(0\le j\le q\) we have
