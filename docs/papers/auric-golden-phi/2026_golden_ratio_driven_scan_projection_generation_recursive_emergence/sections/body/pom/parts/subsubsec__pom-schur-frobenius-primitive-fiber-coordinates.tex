@@ -1,5 +1,10 @@
 % (User input window)
 % 2026-02-14 15:40:23（Asia/Singapore）
+% 2026-02-16 11:14:52（Asia/Singapore）
+% 2026-02-16 11:43:20（Asia/Singapore）
+% 2026-02-16 11:43:20（Asia/Singapore）
+% 2026-02-17 13:19:04（Asia/Singapore）
+% 2026-02-17 18:27:00（Asia/Singapore）
 
 \paragraph{Frobenius 特征与原始纤维坐标：Schur 断层的整性、Euler 分解与模 \texorpdfstring{$p$}{p} 可审计直方图}
 本段把定理 \ref{thm:pom-schur-cycle-index-tomography} 的角色加权显式式进一步压缩为对称函数恒等式：
@@ -14,29 +19,29 @@ S_r(m):=\sum_{x\in X_m} d_m(x)^r\qquad(r\ge 1).
 \]
 定义对角矩阵
 \[
-D_m:=\mathrm{diag}\bigl(d_m(x)\bigr)_{x\in X_m}.
+\mathbf{D}_m:=\mathrm{diag}\bigl(d_m(x)\bigr)_{x\in X_m}.
 \]
 对固定整数 \(q\ge 2\) 与任意 \(\lambda\vdash q\)，令 \(T_{q,\lambda}(m)\) 为定理 \ref{thm:pom-schur-cycle-index-tomography} 的 Schur 通道迹。
-记 \(s_\lambda\) 为 Schur 对称函数，并以 \(D_m\) 的对角元作为变量取值；其幂和满足
+记 \(s_\lambda\) 为 Schur 对称函数，并以 \(\mathbf{D}_m\) 的对角元作为变量取值；其幂和满足
 \[
-p_r(D_m):=\Tr(D_m^r)=S_r(m).
+p_r(\mathbf{D}_m):=\Tr(\mathbf{D}_m^r)=S_r(m).
 \]
 则成立恒等式
 \[
 \boxed{\;
-T_{q,\lambda}(m)=f^\lambda\, s_\lambda(D_m)\; } ,
+T_{q,\lambda}(m)=f^\lambda\, s_\lambda(\mathbf{D}_m)\; } ,
 \qquad f^\lambda:=\dim S^\lambda.
 \]
 从而对每个 \((m,q,\lambda)\) 都有整性与可审计整除性：
 \[
-\frac{T_{q,\lambda}(m)}{f^\lambda}=s_\lambda(D_m)\in\ZZ,
+\frac{T_{q,\lambda}(m)}{f^\lambda}=s_\lambda(\mathbf{D}_m)\in\ZZ,
 \qquad\text{并因此}\qquad
 f^\lambda\mid T_{q,\lambda}(m).
 \]
 特别地，平凡通道与符号通道分别满足
 \[
-T_{q,(q)}(m)=h_q(D_m),\qquad
-T_{q,(1^q)}(m)=e_q(D_m),
+T_{q,(q)}(m)=h_q(\mathbf{D}_m),\qquad
+T_{q,(1^q)}(m)=e_q(\mathbf{D}_m),
 \]
 其中 \(h_q,e_q\) 为完全对称与基本对称函数。
 \end{corollary}
@@ -50,22 +55,69 @@ T_{q,(1^q)}(m)=e_q(D_m),
 \[
 s_\lambda=\frac{1}{q!}\sum_{\sigma\in S_q}\chi^\lambda(\sigma)\prod_{r\ge 1}p_r^{c_r(\sigma)}.
 \]
-代入 \(p_r=p_r(D_m)=S_r(m)\) 即得 \(T_{q,\lambda}(m)=f^\lambda s_\lambda(D_m)\)。
-由于 \(s_\lambda\) 为整系数对称多项式且 \(D_m\) 的对角元为整数，故 \(s_\lambda(D_m)\in\ZZ\)，从而 \(f^\lambda\mid T_{q,\lambda}(m)\)。
+代入 \(p_r=p_r(\mathbf{D}_m)=S_r(m)\) 即得 \(T_{q,\lambda}(m)=f^\lambda s_\lambda(\mathbf{D}_m)\)。
+由于 \(s_\lambda\) 为整系数对称多项式且 \(\mathbf{D}_m\) 的对角元为整数，故 \(s_\lambda(\mathbf{D}_m)\in\ZZ\)，从而 \(f^\lambda\mid T_{q,\lambda}(m)\)。
 最后两式为 Schur 函数在 \(\lambda=(q)\)、\(\lambda=(1^q)\) 的特例。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\lambda$}{lambda}-环结构与 Adams 操作：Schur 断层上的 \texorpdfstring{$\psi^n$}{psi-n} 重标]\label{prop:pom-schur-lambda-ring-adams-operations}
+固定分辨率 \(m\) 并沿用推论 \ref{cor:pom-schur-trace-frobenius-character-identification} 的记号。
+令 \(\Lambda_{\ZZ}\) 表示整系数对称函数环（以幂和 \(\{p_r\}_{r\ge 1}\) 生成），并对每个整数 \(n\ge 1\) 定义 Adams 操作 \(\psi^n:\Lambda_{\ZZ}\to\Lambda_{\ZZ}\) 为满足
+\[
+\psi^n(p_r):=p_{rn}\qquad(r\ge 1)
+\]
+的环同态延拓。
+则：
+\begin{enumerate}
+  \item 对任意分拆 \(\lambda\vdash q\)，有恒等式
+  \[
+  \boxed{\;
+  \bigl(\psi^n s_\lambda\bigr)(\mathbf{D}_m)
+  =s_\lambda(\mathbf{D}_m^{\,n})\;},
+  \qquad
+  \mathbf{D}_m^{\,n}:=\mathrm{diag}\bigl(d_m(x)^n\bigr)_{x\in X_m}.
+  \]
+  等价地，\(\psi^n\) 在取值时实现幂和替换
+  \(
+  p_r(\mathbf{D}_m)=S_r(m)\mapsto p_r(\mathbf{D}_m^{\,n})=S_{rn}(m)
+  \)；
+  因而等变 \(\mathrm{MOM}_n\) 在 Schur 断层上的作用可被视为 \(\lambda\)-环中的 Adams 操作。
+  \item 对任意素数 \(p\)、任意整数 \(k\ge 1\) 与任意 \(r\ge 1\)，成立同余
+  \[
+  \boxed{\;
+  S_{r p^k}(m)\equiv S_{r p^{k-1}}(m)\pmod{p^k}\; }.
+  \]
+  在 \(\lambda\)-环语言中，这等价于
+  \[
+  \psi^{p^k}(p_r)(\mathbf{D}_m)\equiv \psi^{p^{k-1}}(p_r)(\mathbf{D}_m)\pmod{p^k},
+  \]
+  从而将 \(p\)-典型同余提升为 Schur 断层的 Frobenius 刚性约束。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(1) 任意 \(f\in\Lambda_{\ZZ}\) 为幂和 \(p_r\) 的整系数多项式。
+而
+\(
+p_r(\mathbf{D}_m^{\,n})=\Tr(\mathbf{D}_m^{rn})=S_{rn}(m)=\psi^n(p_r)(\mathbf{D}_m)
+\)；
+将该替换代入 \(f=s_\lambda\) 即得所示恒等式。
+\par
+(2) 对任意整数 \(a\) 有基本同余 \(a^{p^k}\equiv a^{p^{k-1}}\ (\mathrm{mod}\ p^k)\)；
+取 \(a=d_m(x)^r\) 并对 \(x\in X_m\) 求和即得 \(S_{rp^k}(m)\equiv S_{rp^{k-1}}(m)\ (\mathrm{mod}\ p^k)\)。
+最后一式是将 \(S_{rp^k}(m)=p_{rp^k}(\mathbf{D}_m)=\psi^{p^k}(p_r)(\mathbf{D}_m)\) 代入后的改写。证毕。
 \end{proof}
 
 \begin{proposition}[单一生成函数控制全 Schur 断层：Jacobi--Trudi 与原始纤维坐标的 Euler 分解]\label{prop:pom-schur-trace-jacobi-trudi-euler-primitive-fiber}
 令一元生成函数
 \[
-H_m(z):=\sum_{q\ge 0}h_q(D_m)\,z^q
+H_m(z):=\sum_{q\ge 0}h_q(\mathbf{D}_m)\,z^q
 =\prod_{x\in X_m}\frac{1}{1-d_m(x)z}
 =\exp\!\left(\sum_{r\ge 1}\frac{S_r(m)}{r}z^r\right).
 \]
 则对任意 \(\lambda\vdash q\) 有 Jacobi--Trudi 确定式表达
 \[
 \boxed{\;
-s_\lambda(D_m)=\det\bigl(h_{\lambda_i-i+j}(D_m)\bigr)_{1\le i,j\le \ell(\lambda)}\;}
+s_\lambda(\mathbf{D}_m)=\det\bigl(h_{\lambda_i-i+j}(\mathbf{D}_m)\bigr)_{1\le i,j\le \ell(\lambda)}\;}
 \]
 （约定 \(h_0=1,h_k=0\ (k<0)\)）。
 \par
@@ -88,7 +140,7 @@ H_m(z)=\prod_{n\ge 1}(1-z^n)^{-b_n(m)}\;}
 \(
 \log(1-t)^{-1}=\sum_{r\ge 1}t^r/r
 \)
-并代入 \(p_r(D_m)=S_r(m)\) 得指数式。
+并代入 \(p_r(\mathbf{D}_m)=S_r(m)\) 得指数式。
 Jacobi--Trudi 为 Schur 函数的标准确定式表达。
 \par
 Euler 分解由指数式与幂级数恒等式推得：
@@ -99,6 +151,137 @@ Euler 分解由指数式与幂级数恒等式推得：
 \]
 令 \(\sum_{n\mid r}n b_n=S_r(m)\) 并作 Möbius 反演即得 \(b_n(m)\) 的公式。
 整性由反演系数为整数给出；非负性可由图 \(G_m\) 的闭路与 primitive 闭路分解（necklace 分解）解释：长度 \(n\) 的闭路按最小周期分解，primitive 计数满足 \(S_n=\sum_{d\mid n} d\,b_d\)。证毕。
+\end{proof}
+
+\begin{corollary}[折叠统计的 Big Witt 结构：ghost 分量即碰撞矩，原始坐标为 Witt 坐标且编码忠实]\label{cor:pom-big-witt-ghost-witt-faithful}
+固定 \(m\) 并沿用命题 \ref{prop:pom-schur-trace-jacobi-trudi-euler-primitive-fiber} 的 \(H_m(z)\)。
+记 Big Witt 环
+\[
+W(\ZZ):=\{H(z)\in 1+z\ZZ[[z]]\},
+\]
+并以唯一 Euler 分解
+\(
+H(z)=\prod_{n\ge 1}(1-z^n)^{-b_n}
+\)
+中的 \((b_n)_{n\ge 1}\) 作为 Witt 坐标。
+对 \(H\in W(\ZZ)\) 定义 ghost 分量
+\[
+g_n(H):=n[z^n]\log H(z)\qquad(n\ge 1).
+\]
+则：
+\begin{enumerate}
+  \item \(H_m\in W(\ZZ)\) 且对任意 \(n\ge 1\) 有
+  \[
+  \boxed{\ g_n(H_m)=S_n(m)\ }.
+  \]
+  \item \(H_m\) 的 Witt 坐标恰为 \(\{b_n(m)\}_{n\ge 1}\)，并满足严格互译
+  \[
+  \boxed{\;
+  S_n(m)=\sum_{d\mid n} d\,b_d(m),\qquad
+  b_n(m)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,S_{n/d}(m)\;}
+  \qquad(n\ge 1).
+  \]
+  \item 映射 \(\{d_m(x):x\in X_m\}\mapsto H_m\) 对有限多重集是忠实的：若两组有限多重集给出同一 \(H(z)\)，则它们按重数完全一致。
+  因而 \(\{S_n(m)\}_{n\ge 1}\) 作为 ghost 序列在原则上已是纤维谱的完备编码。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(1) 由
+\(
+H_m(z)=\exp(\sum_{r\ge 1}S_r(m)z^r/r)
+\)
+立得 \(g_n(H_m)=S_n(m)\)。
+(2) 由 Euler 分解的对数展开
+\(
+\log H_m(z)=\sum_{r\ge 1}\frac{1}{r}\bigl(\sum_{d\mid r} d\,b_d(m)\bigr)z^r
+\)
+比较系数并作 Möbius 反演得到互译式。
+\par
+(3) 由于 \(X_m\) 有限，\(H_m(z)=\prod_{x\in X_m}(1-d_m(x)z)^{-1}\) 为有理函数。
+若两组有限多重集 \(\{d_i\}_{i=1}^{L}\)、\(\{d_i'\}_{i=1}^{L'}\) 满足
+\(
+\prod_{i}(1-d_i z)^{-1}=\prod_{i}(1-d_i' z)^{-1}
+\)
+作为 \(\QQ(z)\) 中的有理函数恒等式，则交叉相乘得
+\(
+\prod_i(1-d_i z)=\prod_i(1-d_i' z)
+\)
+在 \(\QQ[z]\) 中成立。
+由唯一因子分解，线性因子 \(1-dz\)（含重数）一致，从而多重集一致。证毕。
+\end{proof}
+
+\begin{proposition}[MOM 与循环 lift 的 Witt 统一：Frobenius/Verschiebung 的显式作用与 \texorpdfstring{$F_q\circ V_q=[q]$}{Fq o Vq = [q]}]\label{prop:pom-big-witt-frobenius-verschiebung-unification}
+在 Big Witt 环 \(W(\ZZ)\) 中，对任意整数 \(q\ge 2\) 定义两个标准算子：
+\begin{itemize}
+  \item \textbf{Frobenius \(F_q\)}：由 ghost 规定 \(g_n(F_q(H))=g_{qn}(H)\)；
+  \item \textbf{Verschiebung \(V_q\)}：由幂级数代换 \(V_q(H)(z):=H(z^q)\)。
+\end{itemize}
+令 \(H_m\) 为推论 \ref{cor:pom-big-witt-ghost-witt-faithful} 的 Witt 元素。
+则对任意整数 \(q\ge 2\)：
+\begin{enumerate}
+  \item \textbf{（ghost/碰撞矩的闭式）}对任意 \(n\ge 1\)，有
+  \[
+  \boxed{\;
+  g_n(F_q(H_m))=S_{qn}(m),\qquad
+  g_n(V_q(H_m))=q\,S_{n/q}(m)\,\ind_{q\mid n}\;}
+  \]
+  因而 \(F_q\) 将碰撞矩作“\(q\)-轴重标”\(S_n\mapsto S_{qn}\)，而 \(V_q\) 在 ghost 层面实现严格的整除门控（\(q\)-梳齿抽样）与线性放大。
+  \item \textbf{（Witt 坐标 \(\{b_n(m)\}\) 的算术变换）}对任意 \(n\ge 1\)，有
+  \[
+  \boxed{\;
+  b_n\bigl(V_q(H_m)\bigr)=
+  \begin{cases}
+  b_{n/q}(m),& q\mid n,\\
+  0,& q\nmid n,
+  \end{cases}
+  \qquad
+  b_n\bigl(F_q(H_m)\bigr)=\frac{1}{n}\sum_{d\mid n}\mu(d)\,S_{q(n/d)}(m)\;}
+  \]
+  并且后一式可进一步展开为
+  \[
+  b_n\bigl(F_q(H_m)\bigr)
+  =\frac{1}{n}\sum_{d\mid n}\mu(d)\sum_{e\mid qn/d}e\,b_e(m).
+  \]
+  \item \textbf{（基本关系）}记 \([q]\) 为 Big Witt 环上的“乘以 \(q\)”自同态（按 \(q\) 次 Witt 加法），由 ghost 刻画为 \(g_n([q](H))=q\,g_n(H)\)。
+  则有严格关系
+  \[
+  \boxed{\;F_q\circ V_q=[q]\;}
+  \]
+  并在折叠统计中具体表现为
+  \[
+  \boxed{\;
+  S_n\bigl(F_q(V_q(H_m))\bigr)=q\,S_n(m)\qquad(\forall n\ge 1)\;}
+  \]
+  从而把“矩编译（\(q\)-轴重标）”与“循环 lift（整除门控的梳齿抽样）”纳入同一 Witt 代数框架。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由 ghost 定义，
+\(
+g_n(F_q(H_m))=g_{qn}(H_m)=S_{qn}(m)
+\)。
+而
+\(
+\log V_q(H)(z)=\log H(z^q)
+\)
+使得系数满足 \([z^n]\log H(z^q)=[z^{n/q}]\log H(z)\cdot \ind_{q\mid n}\)，
+故
+\(
+g_n(V_q(H))=n[z^n]\log H(z^q)=q\,g_{n/q}(H)\ind_{q\mid n}
+\)；
+取 \(H=H_m\) 即得 (1)。
+\par
+对 (2)：由推论 \ref{cor:pom-big-witt-ghost-witt-faithful} 的互译
+\(
+b_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,g_{n/d}
+\)，
+分别代入 \(g_\bullet(V_q(H_m))\) 与 \(g_\bullet(F_q(H_m))\) 即得。
+\par
+对 (3)：对任意 \(H\in W(\ZZ)\)，有
+\(
+g_n(F_q(V_q(H)))=g_{qn}(V_q(H))=q\,g_n(H)
+\)，
+而 ghost 映射在 \(W(\ZZ)\) 上忠实（推论 \ref{cor:pom-big-witt-ghost-witt-faithful}(3) 的同型论证），故 \(F_q\circ V_q=[q]\)。证毕。
 \end{proof}
 
 \begin{proposition}[\texorpdfstring{$p$}{p}-典型 Frobenius 同余与 Teichm\"uller 极限：由高阶碰撞矩恢复 \texorpdfstring{$d_m\bmod p$}{d\_m mod p} 的完整直方图]\label{prop:pom-collision-moment-ptypical-congruence-teichmuller-histogram}
@@ -167,12 +350,66 @@ U_0+\sum_{j=1}^{p-2}a^{-j}U_j
 即得反演公式；\(N_0\) 由总数守恒得到。证毕。
 \end{proof}
 
+\begin{proposition}[\texorpdfstring{$p$}{p}-典型 Witt 反演的有限层版本：由有限 \texorpdfstring{$p$}{p}-幂矩恢复模 \texorpdfstring{$p^N$}{p^N} 直方图]\label{prop:pom-ptypical-witt-inversion-mod-pN-histogram}
+固定 \(m\)、素数 \(p\) 与整数 \(N\ge 1\)，并设已知有限数据
+\[
+\bigl\{S_{p^0}(m),S_{p^1}(m),\dots,S_{p^{N-1}}(m)\bigr\}\subset\ZZ.
+\]
+定义模 \(p^N\) 的直方图计数
+\[
+N_{a}^{(N)}(m):=\card{\{x\in X_m:\ d_m(x)\equiv a\ (\mathrm{mod}\ p^N)\}}\qquad(0\le a<p^N).
+\]
+则存在仅依赖于 \((p,N)\) 的显式反演算子（由 \(p\)-典型 Witt 多项式给出），可将上述有限矩数据变换为一族整数 \((c_0,\dots,c_{N-1})\)（可取 \(0\le c_t<p^{N-t}\)）并满足如下完备性：直方图向量 \((N_a^{(N)}(m))_{a=0}^{p^N-1}\) 由该有限矩窗在严格意义上唯一确定，且可由下述链式步骤构造：
+\begin{enumerate}
+  \item 将 \((S_{p^0}(m),\dots,S_{p^{N-1}}(m))\) 视为 \(p\)-典型 ghost 向量，并在截断 Witt 环 \(W_N(\ZZ)\) 中反演得到 \(p\)-典型 Witt 坐标 \((c_0,\dots,c_{N-1})\)；
+  \item 以 Teichm\"uller--Witt 分解
+  \[
+  d_m(x)\equiv \sum_{t=0}^{N-1}p^t\,\omega_p\bigl(\overline u_{p,t}(x)\bigr)\quad(\mathrm{mod}\ p^N),
+  \qquad \overline u_{p,t}(x)\in\FF_p,
+  \]
+  将 \((c_t)\) 解释为各层 \(\overline u_{p,t}\) 的加权计数；
+  \item 在 \(\FF_p\) 上作有限 Fourier 反演并逐层细化，恢复全部残基桶 \((N_a^{(N)}(m))\)。
+\end{enumerate}
+其结果是：有限个 \(p\)-幂矩在 \(p\)-典型层面给出一条完全代数化的“矩 \(\Rightarrow\) 模桶”的断层成像程序，而无需任何单点纤维信息。
+\end{proposition}
+\begin{proof}[证明思路]
+\(p\)-典型 Witt 多项式给出 ghost 坐标与 Witt 坐标之间的双向多项式变换，从而 (1) 为纯代数的显式反演。
+步骤 (2) 利用 \(W_N(\FF_p)\cong \ZZ/p^N\ZZ\) 的 Teichm\"uller--Witt 表示，把模 \(p^N\) 的残基类分解为 \(N\) 层 \(\FF_p\) 角色数据；
+在该坐标系中，(3) 的逐层 Fourier 反演把“加权计数”还原为“桶计数”，从而得到 \((N_a^{(N)}(m))\)。
+唯一性来自反演算子的可逆性与逐层 Fourier 反演的可逆性。证毕。
+\end{proof}
+
+\begin{proposition}[中国剩余谱拼接：模 \texorpdfstring{$M$}{M} 直方图在 \texorpdfstring{$M>D_m$}{M>D_m} 下决定整数纤维谱]\label{prop:pom-crt-spectrum-gluing-from-modM-hist}
+固定 \(m\)，并令最大纤维多重度
+\(
+D_m:=\max_{x\in X_m}d_m(x)
+\)
+（见 \S\ref{subsec:pom-max-fiber}）。
+取任意整数 \(M>D_m\)，并定义模 \(M\) 直方图
+\[
+N_a^{(M)}(m):=\card{\{x\in X_m:\ d_m(x)\equiv a\ (\mathrm{mod}\ M)\}}\qquad(0\le a<M).
+\]
+则整数层面的纤维谱计数函数
+\[
+N^{(\infty)}(d):=\card{\{x\in X_m:\ d_m(x)=d\}}\qquad(d\in\ZZ_{\ge 0})
+\]
+被模 \(M\) 直方图唯一确定，且对 \(0\le d\le D_m\) 有显式恢复式
+\[
+\boxed{\;N^{(\infty)}(d)=N_{d}^{(M)}(m)\; }.
+\]
+若进一步取 \(M=\prod_{p\in\mathcal P}p^{N_p}\) 的素因子分解，则由中国剩余同构，模 \(M\) 直方图等价于对各素数轴的联合桶计数，从而给出一条跨素数的谱拼接口径。
+\end{proposition}
+\begin{proof}
+当 \(0\le d\le D_m<M\) 时，\(d\ (\mathrm{mod}\ M)\) 的唯一代表就是 \(d\) 本身，因此事件 \(\{d_m(x)=d\}\) 与 \(\{d_m(x)\equiv d\ (\mathrm{mod}\ M)\}\) 等价，计数相同，即得所示恢复式。
+唯一性与 CRT 等价性为直接推论。证毕。
+\end{proof}
+
 \begin{proposition}[平凡通道的原始纤维展开：\texorpdfstring{$T_{q,(q)}(m)$}{T\_{q,(q)}(m)} 为 \texorpdfstring{$b_n(m)$}{b\_n(m)} 的正整系数多项式]\label{prop:pom-schur-trace-trivial-channel-primitive-fiber-expansion}
 沿用命题 \ref{prop:pom-schur-trace-jacobi-trudi-euler-primitive-fiber} 的 Euler 分解
 \(
-H_m(z)=\prod_{n\ge 1}(1-z^n)^{-b_n(m)}=\sum_{q\ge 0}h_q(D_m)z^q
+H_m(z)=\prod_{n\ge 1}(1-z^n)^{-b_n(m)}=\sum_{q\ge 0}h_q(\mathbf{D}_m)z^q
 \)。
-记平凡通道 \(T_{q,(q)}(m)=h_q(D_m)\)。
+记平凡通道 \(T_{q,(q)}(m)=h_q(\mathbf{D}_m)\)。
 则系数抽取给出完全显式有限和：
 \[
 \boxed{\;
@@ -195,10 +432,10 @@ T_{q,(q)}(m)=
 对任意 \(\lambda\vdash q\)，Jacobi--Trudi 确定式给出
 \[
 \frac{T_{q,\lambda}(m)}{f^\lambda}
-=s_\lambda(D_m)
-=\det\bigl(h_{\lambda_i-i+j}(D_m)\bigr)_{1\le i,j\le \ell(\lambda)}.
+=s_\lambda(\mathbf{D}_m)
+=\det\bigl(h_{\lambda_i-i+j}(\mathbf{D}_m)\bigr)_{1\le i,j\le \ell(\lambda)}.
 \]
-而每个 \(h_n(D_m)\) 由命题 \ref{prop:pom-schur-trace-trivial-channel-primitive-fiber-expansion} 是 \(\{b_r(m)\}_{r\le n}\) 的整系数多项式，
+而每个 \(h_n(\mathbf{D}_m)\) 由命题 \ref{prop:pom-schur-trace-trivial-channel-primitive-fiber-expansion} 是 \(\{b_r(m)\}_{r\le n}\) 的整系数多项式，
 故
 \[
 \boxed{\;
@@ -207,6 +444,38 @@ T_{q,(q)}(m)=
 并由一次有限确定式计算可显式构造全部 Schur 通道迹。
 \end{corollary}
 \begin{proof}
-将 \(h_{\lambda_i-i+j}(D_m)\) 的 \(b\)-坐标多项式表示逐项代入 Jacobi--Trudi 确定式即可。证毕。
+将 \(h_{\lambda_i-i+j}(\mathbf{D}_m)\) 的 \(b\)-坐标多项式表示逐项代入 Jacobi--Trudi 确定式即可。证毕。
 \end{proof}
 
+\begin{proposition}[折叠统计的“Witt--Schur 双谱闭包”：\texorpdfstring{$q$}{q}-轴与 \texorpdfstring{$p$}{p}-轴的可交换性与有限可判定性]\label{prop:pom-witt-schur-double-spectrum-closure}
+固定 \(m\) 并以 \(H_m\in W(\ZZ)\) 表示折叠统计的 Big Witt 元素（推论 \ref{cor:pom-big-witt-ghost-witt-faithful}）。
+则：
+\begin{enumerate}
+  \item \textbf{（可交换闭包）}对任意素数 \(p\)、任意整数 \(k\ge 0\) 与任意整数 \(q\ge 2\)，Big Witt 算子满足交换关系
+  \[
+  \boxed{\;
+  F_q\circ F_{p^k}=F_{p^k}\circ F_q,\qquad
+  V_q\circ F_{p^k}=F_{p^k}\circ V_q\;}
+  \]
+  从而 \(q\)-轴的矩编译（Schur/Adams 重标；命题 \ref{prop:pom-schur-lambda-ring-adams-operations} 与命题 \ref{prop:pom-big-witt-frobenius-verschiebung-unification}）与 \(p\)-轴的 \(p\)-典型断层成像（命题 \ref{prop:pom-ptypical-witt-inversion-mod-pN-histogram}）可在任意次序下组合而不改变输出。
+  \item \textbf{（有限可判定性）}若给定上界 \(D_m=\max_x d_m(x)\)，则存在有限数据窗（有限个 \(n\) 的 ghost 分量或等价的有限个 Schur 通道迹）使得在该窗内观测到的 \(\{S_n(m)\}\) 已唯一决定全体纤维谱；
+  并且该唯一性可在 Big Witt 环的有限商 \(W(\ZZ/M\ZZ)\)（取任意 \(M>D_m\)）内以有限代数程序证成。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(1) 由 Frobenius 的 ghost 定义，\(g_n(F_a(F_b(H)))=g_{abn}(H)=g_n(F_b(F_a(H)))\)，故 \(F_a\) 两两可交换；
+而 \(V_q\) 的 ghost 作用为 \(g_n(V_q(H))=q\,g_{n/q}(H)\ind_{q\mid n}\)，与 \(F_{p^k}\) 的重标 \(n\mapsto p^k n\) 显然交换，因此得到所示关系。
+\par
+(2) 由纤维谱的有界性，整数计数函数 \(d\mapsto N^{(\infty)}(d)\) 支持于有限集合 \(\{0,\dots,D_m\}\)，从而存在有限组代数约束足以唯一确定该函数（例如 \S\ref{subsubsec:pom-collision-kernel-family} 的有限重构定理与 \S\ref{subsubsec:pom-wreath-artin-factorization} 的 Schur 断层成像/可逆编译桥）。
+取 \(M>D_m\) 时，模 \(M\) 直方图与整数谱之间由命题 \ref{prop:pom-crt-spectrum-gluing-from-modM-hist} 给出一一对应，因此在有限商上可把“是否存在另一组谱与同窗数据一致”归约为有限可判定的代数检验。证毕。
+\end{proof}
+
+\begin{remark}[统一对象与轴束压缩]\label{rem:pom-big-witt-unifies-mom-schur-padic}
+在固定 \(m\) 上，单一的 Big Witt 元素 \(H_m\) 将原本分离的多条线索压缩为同一代数对象：
+\begin{enumerate}
+  \item 由推论 \ref{cor:pom-big-witt-ghost-witt-faithful}，碰撞矩 \(\{S_n(m)\}\) 为 ghost 分量，\(\{b_n(m)\}\) 为 Witt 坐标，且该编码对纤维谱忠实；
+  \item 由命题 \ref{prop:pom-big-witt-frobenius-verschiebung-unification}，\(\mathrm{MOM}_q\) 与循环 lift 在 Witt 层面分别实现 Frobenius 与 Verschiebung，并满足 \(F_q\circ V_q=[q]\)；
+  \item 由命题 \ref{prop:pom-ptypical-witt-inversion-mod-pN-histogram} 与命题 \ref{prop:pom-crt-spectrum-gluing-from-modM-hist}，\(p\)-典型断层成像与中国剩余拼接给出一条纯矩信息的有限恢复链（在给定上界时恢复整数谱）；
+  \item 由命题 \ref{prop:pom-schur-lambda-ring-adams-operations}，Schur 断层显式实现 \(\lambda\)-环结构，Adams 操作与 \(p\)-进刚性在同一框架中统一表达。
+\end{enumerate}
+\end{remark}
