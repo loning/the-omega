@@ -1,0 +1,161 @@
+% (User input window)
+% 2026-02-16 23:49:51（Asia/Singapore）
+
+\paragraph{重量坐标下的倍乘对应：四值动力学闭包与 Lee--Yang 判别式核的层级保持}
+沿用结论 \ref{con:xi-terminal-zm-lattes-4division-certificate} 与结论 \ref{con:xi-terminal-zm-elliptic-quadratic-discriminant} 的记号，
+在椭圆曲线 \(\mathcal{E}:Y^{2}=\lambda^{3}-\lambda+\tfrac14\) 上取重量函数
+\(
+y:=\lambda^{2}+Y-\tfrac12
+\)。
+由于 \(y:\mathcal{E}\to\mathbb{P}^{1}\) 为次数 \(4\) 的覆盖，
+倍点映射 \([2]\) 在 \(y\)-坐标上不诱导单值有理自映射，
+而是给出一个由显式消元方程编码的四值对应。
+该对应的分歧核在平方类意义下与结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的 Lee--Yang 判别式核完全一致，
+并可进一步通过一条范数/结式恒等式与切线锁定函数直接对齐。
+
+\begin{conclusion}[倍乘在重量坐标上的四值动力学闭包：\texorpdfstring{$y([2]P)$}{y([2]P)} 的四次消元方程]\label{con:xi-terminal-zm-weight-doubling-quartic-closure}
+对任意点 \(P\in\mathcal{E}(\overline{\QQ})\) 记
+\[
+y_0:=y(P),\qquad y_1:=y([2]P).
+\]
+则存在显式多项式 \(\mathcal H\in\ZZ[y_0,y_1]\)，其关于 \(y_1\) 的次数为 \(4\)、关于 \(y_0\) 的次数为 \(16\)，满足
+\[
+\boxed{\;\mathcal H(y_0,y_1)=0\;}
+\qquad\text{于所有 \(P\in\mathcal{E}(\overline{\QQ})\) 上成立。}
+\]
+更精确地，\(\mathcal H\) 可写作
+\[
+\mathcal H(y_0,y_1)=A_4(y_0)y_1^{4}+A_3(y_0)y_1^{3}+A_2(y_0)y_1^{2}+A_1(y_0)y_1+A_0(y_0),
+\]
+其中系数多项式 \(A_i\in\ZZ[y]\) 如下所示（闭式证书）：
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_H}
+因此，对固定的 \(y_0\) 而言，\(y_1\) 由一条四次整方程所决定，从而倍点在重量坐标上给出四值对应。
+\end{conclusion}
+\begin{proof}[证明要点]
+由定义 \(y=\lambda^{2}+Y-\tfrac12\)，并由倍点公式
+\(
+\lambda([2]P)=\Phi(\lambda)
+\)（结论 \ref{con:xi-terminal-zm-lattes-4division-certificate}）与
+\(
+Y([2]P)=m\,(\lambda-\Phi(\lambda))-Y
+\)，其中切线斜率 \(m=(3\lambda^{2}-1)/(2Y)\)。
+因此 \(y_0,y_1\) 均可写为 \(\QQ(\lambda,Y)\) 中的显式有理函数。
+在 \(\ZZ[\lambda,Y,y_0,y_1]\) 中联立三条关系
+\[
+Y^{2}-\bigl(\lambda^{3}-\lambda+\tfrac14\bigr)=0,\qquad
+y_0-\bigl(\lambda^{2}+Y-\tfrac12\bigr)=0,\qquad
+y_1-\bigl(\Phi(\lambda)^{2}+Y([2]P)-\tfrac12\bigr)=0,
+\]
+并对 \(\lambda,Y\) 作消元（例如用关于 \(Y\) 与 \(\lambda\) 的逐次结式），即可得到 \((y_0,y_1)\) 的平面消元关系；
+取其在 \(\ZZ[y_0,y_1]\) 中的既约本原部分即为 \(\mathcal H\)。
+上述等式的逐项代入核验可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 完成。证毕。
+\end{proof}
+
+\begin{conclusion}[Lee--Yang 判别式核的迭代不变性：\texorpdfstring{$\mathrm{Disc}_{y_1}(\mathcal H)$}{Disc} 的平方类]\label{con:xi-terminal-zm-weight-doubling-disc-squareclass}
+记 Lee--Yang 三次因子
+\(
+P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32
+\)。
+则 \(\mathcal H(y,y_1)\) 视为关于 \(y_1\) 的四次多项式时，其判别式满足严格分解恒等式
+\[
+\boxed{\;
+\mathrm{Disc}_{y_1}\bigl(\mathcal H(y,y_1)\bigr)
+=-\,y(y-1)P_{\mathrm{LY}}(y)\,Q_{12}(y)^{2}\,Q_{26}(y)^{2}\;}
+\]
+其中 \(Q_{12},Q_{26}\in\ZZ[y]\) 为显式多项式（见下式）。
+特别地，
+\(
+\mathrm{Disc}_{y_1}(\mathcal H)
+\)
+在 \(\QQ(y)^{\times}/(\QQ(y)^{\times})^{2}\) 中的平方类严格等于 \(-y(y-1)P_{\mathrm{LY}}(y)\)。
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant}
+\end{conclusion}
+\begin{proof}[证明要点]
+把 \(\mathcal H\) 作为关于 \(y_1\) 的四次多项式，按定义计算其判别式并在 \(\ZZ[y]\) 中因式分解即可得到所示恒等式；
+由于 \(Q_{12}^{2}Q_{26}^{2}\) 为完全平方，平方类陈述随即成立。
+上述分解可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 复核。证毕。
+\end{proof}
+
+\begin{conclusion}[倍乘对应图曲线的椭圆化：\texorpdfstring{$\mathcal H(y_0,y_1)=0$}{H=0} 的归一化同构于 \texorpdfstring{$\mathcal{E}$}{E}]\label{con:xi-terminal-zm-weight-doubling-elliptic-normalization}
+令 \(\Gamma\subset\mathbb{A}^{2}_{(y_0,y_1)}\) 为平面代数曲线 \(\mathcal H(y_0,y_1)=0\)。
+则有理映射
+\[
+\mathcal{E}\dashrightarrow\Gamma,\qquad
+P\longmapsto \bigl(y(P),\,y([2]P)\bigr)
+\]
+在泛型上为双有理同构。
+其逆映射可在 \(\Gamma\) 的 Zariski 开集 \(\{\alpha(y_0,y_1)\neq 0\}\) 上用显式有理式给出：
+\[
+\lambda=\frac{\beta(y_0,y_1)}{\alpha(y_0,y_1)},\qquad
+Y=y_0-\lambda^{2}+\tfrac12,
+\]
+其中 \(\alpha,\beta\in\ZZ[y_0,y_1]\) 如下所示（闭式证书）：
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_inverse}
+从而 \((\lambda,Y)\) 满足 \(Y^{2}=\lambda^{3}-\lambda+\tfrac14\)，并且 \(y_0=\lambda^{2}+Y-\tfrac12\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-weight-doubling-quartic-closure}，映射 \(P\mapsto(y(P),y([2]P))\) 的像落在 \(\Gamma\) 上。
+另一方面，把 \(\alpha,\beta\) 视为 \(\Gamma\) 上的函数并取 \(\lambda=\beta/\alpha\)，
+只需在 \(\mathcal{E}\) 的泛型点上验证
+\(
+\beta\bigl(y(P),y([2]P)\bigr)=\lambda(P)\,\alpha\bigl(y(P),y([2]P)\bigr)
+\)，
+即可得到 \(\lambda\) 的重构；
+继而 \(Y=y_0-\lambda^{2}+\tfrac12\) 由 \(y_0\) 的定义直接推出并重构原 \(Y\)。
+该核验为有限代数恒等式检验，可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 逐项复核。证毕。
+\end{proof}
+
+\begin{conclusion}[倍乘重量塔的二次脊柱保持：一切一步扩张的唯一平方障碍恒等于 \texorpdfstring{$-y(y-1)P_{\mathrm{LY}}(y)$}{-y(y-1)P}]\label{con:xi-terminal-zm-weight-doubling-spine-invariance}
+对任意 \(P\in\mathcal{E}(\overline{\QQ})\) 定义
+\(
+y_n:=y([2^{n}]P)
+\)。
+则对每个 \(n\ge 0\) 有递推约束
+\[
+\mathcal H(y_n,y_{n+1})=0.
+\]
+并且在泛型意义下，域扩张 \(\QQ(y_n,y_{n+1})/\QQ(y_n)\) 的分裂域之唯一二次分辨率子域恒等于
+\[
+\QQ(y_n)\Bigl(\sqrt{-y_n(y_n-1)P_{\mathrm{LY}}(y_n)}\Bigr),
+\]
+亦即 Lee--Yang 判别式核在倍乘重量塔上逐层保持，不随 \(n\) 漂移。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-weight-doubling-disc-squareclass}，四次多项式 \(\mathcal H(y,y_1)\) 的判别式在 \(\QQ(y)\) 中的平方自由部分恰为 \(-y(y-1)P_{\mathrm{LY}}(y)\)。
+对固定 \(n\) 令 \(y=y_n\) 并视 \(\mathcal H(y_n,\cdot)\) 为 \(\QQ(y_n)\) 上的四次多项式，判别式平方类不变即给出该一步扩张分裂域的唯一二次分辨率子域。
+对每层重复应用即得结论。证毕。
+\end{proof}
+
+\begin{conclusion}[Lee--Yang 集合的范数证书：\texorpdfstring{$-y(y-1)P_{\mathrm{LY}}(y)$}{-y(y-1)P} 为切线锁定函数的函数域范数]\label{con:xi-terminal-zm-leyang-norm-certificate}
+记
+\[
+\Pi(\lambda,y):=\lambda^{4}-\lambda^{3}-(2y+1)\lambda^{2}+\lambda+y(y+1)\in\ZZ[\lambda,y],
+\]
+并在 \(\mathcal{E}\) 上定义切线锁定函数
+\[
+h:=4\lambda Y+3\lambda^{2}-1\in\QQ(\mathcal{E}).
+\]
+则在次数为 \(4\) 的函数域扩张 \(\QQ(\mathcal{E})/\QQ(y)\) 中满足严格范数恒等式
+\[
+\boxed{\;
+\mathrm{N}_{\QQ(\mathcal{E})/\QQ(y)}(h)=-\,y(y-1)P_{\mathrm{LY}}(y)\;}
+\]
+并且等价地存在完全显式的消元证书
+\[
+\boxed{\;
+\mathrm{Res}_{\lambda}\!\Bigl(\Pi(\lambda,y),\ 4\lambda\bigl(y-\lambda^{2}+\tfrac12\bigr)+3\lambda^{2}-1\Bigr)=-\,y(y-1)P_{\mathrm{LY}}(y)\;}
+\]
+（其中用 \(Y=y-\lambda^{2}+\tfrac12\) 消去 \(Y\)）。
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_norm}
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-elliptic-quadratic-discriminant}，在 \(\QQ(\mathcal{E})\) 中有
+\(
+Y=y-\lambda^{2}+\tfrac12
+\)，并且 \(\lambda\) 在 \(\QQ(y)\) 上满足四次方程 \(\Pi(\lambda,y)=0\)，故 \(\QQ(\mathcal{E})=\QQ(y)(\lambda,Y)\) 为次数 \(4\) 扩张。
+对任意 \(g(\lambda)\in\QQ(y)[\lambda]\)，其在该扩张中的范数等于 \(\mathrm{Res}_{\lambda}(\Pi(\lambda,y),g(\lambda))\)（结式刻画范数为标准结论）。
+取 \(g(\lambda)=4\lambda(y-\lambda^{2}+\tfrac12)+3\lambda^{2}-1\) 即为 \(h\) 在消去 \(Y\) 后的表达，
+从而范数恒等式等价于所示结式恒等式；右端 \(-y(y-1)P_{\mathrm{LY}}(y)\) 与结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的判别式核对齐。
+该结式恒等式可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 复核。证毕。
+\end{proof}
+

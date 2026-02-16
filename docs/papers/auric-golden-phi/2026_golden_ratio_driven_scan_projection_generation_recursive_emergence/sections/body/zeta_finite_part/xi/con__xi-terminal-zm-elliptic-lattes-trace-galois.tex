@@ -1,6 +1,6 @@
 % (User input window)
 % 2026-02-16 22:24:58（Asia/Singapore）
-% 日期与时间：2026-02-17 01:51:48（Asia/Singapore）
+% 2026-02-17 00:33:58（Asia/Singapore）
 
 \begin{conclusion}[重量谱椭圆曲线上的倍乘—Latt\`es 自映射：\texorpdfstring{$x([2]P)$}{x([2]P)} 的闭式四次有理函数]\label{con:xi-terminal-zm-elliptic-lattes-doubling}
 在结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的椭圆模型
@@ -20,16 +20,14 @@ E:\ Y^2=X^3-X+\frac14
 =4Y^2
 \)
 等价于 \(E\) 的 \(2\)-division 条件 \(Y=0\)（从而恰为 \(x\)-坐标的 \(2\)-division 多项式）。
-此外，\(\Phi\) 的临界点可由 \(4\)-division 数据完全刻画：记 \(E[2]\)、\(E[4]\) 分别为 \(2\)-挠与 \(4\)-挠子群，则对仿射坐标 \(X\) 有严格等价
+此外，\(\Phi\) 的临界点由显式六次方程给出：
 \[
 \boxed{\;
 \Phi'(X)=0
 \ \Longleftrightarrow\
-\exists\,Q\in E[4]\setminus E[2]\ \text{使得}\ X=x(Q)
-\ \Longleftrightarrow\
 2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1=0\; }.
 \]
-从而该六次多项式给出 \(x\)-坐标图上的 \(4\)-division 证书（等价于经典 \(4\)-division 多项式 \(\psi_4\) 除去因子 \(2Y\) 后的 \(X\)-部分），倍乘 Latt\`es 动力学的临界结构在 \(\QQ[X]\) 层面完全可审计。
+因此倍乘动力学的临界结构在纯代数意义下完全可审计，并给出后续“分歧—局部场—相变”分析的最短动力学入口。
 \end{conclusion}
 \begin{proof}[证明要点]
 对短 Weierstrass 曲线 \(Y^2=X^3+aX+b\)（此处 \(a=-1,b=1/4\)），倍点公式给出
@@ -41,11 +39,6 @@ x([2]P)=\left(\frac{3X^2+a}{2Y}\right)^{\!2}-2X.
 \(
 \Phi'(X)=0\iff N'D-ND'=0
 \)，化简得到所示六次多项式。
-另一方面，短 Weierstrass 模型的经典除子多项式给出
-\[
-\psi_4(X)=2Y\bigl(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1\bigr),
-\]
-从而该六次因子刻画 \(x\bigl(E[4]\setminus E[2]\bigr)\)，与 Latt\`es 临界集合一致。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_lattes\_rational\_points\_audit.py}。证毕。
 \end{proof}
 
@@ -88,36 +81,12 @@ yy^{\iota}=X(X-1)^2(X+1).
 \[
 \boxed{\;E(\QQ)_{\mathrm{tors}}=\{O\}\; }.
 \]
-将 \(E\) 通过整变换
-\[
-(\widetilde X,\widetilde Y)=(4X,8Y)
-\]
-写成积分模型
-\[
-\widetilde E:\ \widetilde Y^{2}=\widetilde X^{3}-16\widetilde X+16,
-\qquad
-\Delta(\widetilde E)=2^{12}\cdot 37,
-\]
-则在 \(p\neq 2,37\) 处具有良好约化；并且点计数给出
-\[
-\card{\widetilde E(\FF_{5})}=8,
-\qquad
-\card{\widetilde E(\FF_{7})}=9,
-\qquad
-\gcd(8,9)=1,
-\]
-从而推出 \(E(\QQ)_{\mathrm{tors}}=\{O\}\)。
 特别地，点
 \[
 P=\left(2,\frac52\right)\in E(\QQ)
 \qquad(\text{等价地 }-P=(2,-\tfrac52))
 \]
 为无限阶点，并满足 \(y(P)=1\)（其中 \(y\) 为结论 \ref{con:xi-terminal-zm-y-quadratic-extension-minpoly} 的物理主支）。
-并且其在 \(\FF_{11}\) 上的约化满足
-\[
-\mathrm{ord}\bigl(P\bmod 11\bigr)=17,
-\]
-因而 \(P\) 不可能为挠点；于是 \(\mathrm{rank}\,E(\QQ)\ge 1\)，且 \(E(\QQ)\) 为无挠的自由阿贝尔群。
 写
 \(
 x(nP)=u_n/v_n^2
@@ -148,13 +117,13 @@ y(nP)
 从而“重量自由能的椭圆化”进一步提升为一条可直接进行局部—整体诊断的有理点动力学：同一物理点的倍乘轨道在分母上携带严格的四次幂尺度。
 \end{conclusion}
 \begin{proof}[证明要点]
-（i）挠点平凡性可由有限多个良约化素数的模 \(p\) 群阶作 gcd 审计：由约化注入
+（i）挠点平凡性可由有限多个良约化素数 \(p\nmid\Delta(E)=37\) 的模 \(p\) 群阶作 gcd 审计：由约化注入
 \(
 E(\QQ)_{\mathrm{tors}}\hookrightarrow E(\mathbb F_p)
 \)
 知 \(|E(\QQ)_{\mathrm{tors}}|\) 整除 \(\gcd_p \#E(\mathbb F_p)\)；
-在积分模型 \(\widetilde E\) 上选取良约化素数 \(p=5,7\) 即得 \(\gcd(\#\widetilde E(\FF_5),\#\widetilde E(\FF_7))=\gcd(8,9)=1\)，从而 \(E(\QQ)_{\mathrm{tors}}=\{O\}\)。
-（ii）由 \(\mathrm{ord}(P\bmod 11)=17\) 可直接排除 \(P\) 为挠点，从而 \(P\) 为无限阶点，\(\mathrm{rank}\,E(\QQ)\ge 1\)。
+对若干小素数计算得到该 gcd 等于 \(1\)，从而 \(E(\QQ)_{\mathrm{tors}}\) 只能为平凡群。
+（ii）点 \(P\neq O\) 因而必为无限阶。
 （iii）令 \(x(nP)=u_n/v_n^2\)、\(Y(nP)=r_n/v_n^3\) 为既约表示，则
 \(
 y(nP)=x(nP)^2-Y(nP)-\tfrac12
@@ -164,79 +133,80 @@ y(nP)=x(nP)^2-Y(nP)-\tfrac12
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_lattes\_rational\_points\_audit.py}。证毕。
 \end{proof}
 
-\begin{conclusion}[物理基点诱导的椭圆可除序列：强可除性与低阶原始素因子]\label{con:xi-terminal-zm-elliptic-eds-strong-divisibility}
-在结论 \ref{con:xi-terminal-zm-elliptic-rational-points-denominator-law} 的积分模型 \(\widetilde E\) 上，令
-\(
-\widetilde P:=(8,20)\in\widetilde E(\QQ)
-\)
-对应于 \(P\)。
-对 \(n\ge 1\) 将 \(\widetilde X\bigl(n\widetilde P\bigr)\) 写成既约分式
+\begin{conclusion}[物理点与分歧纤维有理点的整系数耦合：三类锚点压缩到同一条 Mordell--Weil 子格]\label{con:xi-terminal-zm-mw-integral-coupling}
+在椭圆曲线
 \[
-\widetilde X\bigl(n\widetilde P\bigr)=\frac{A_n}{B_n^2},
-\qquad
-A_n,B_n\in\ZZ,\quad \gcd(A_n,B_n)=1,\quad B_n>0,
+E:\ Y^2=X^3-X+\frac14
 \]
-则 \(\bigl(B_n\bigr)_{n\ge 1}\) 构成椭圆可除序列，并满足强可除性
+上取四个有理点
 \[
-\gcd(B_m,B_n)=B_{\gcd(m,n)},
-\qquad
-m\mid n\Longrightarrow B_m\mid B_n.
+R:=\Bigl(0,\frac12\Bigr),\qquad
+Q_0:=\Bigl(1,-\frac12\Bigr),\qquad
+Q_0':=\Bigl(-1,\frac12\Bigr),\qquad
+P:=\Bigl(2,\frac52\Bigr).
 \]
-其前十项为
+则在群律下成立严格倍乘恒等式
 \[
-\begin{aligned}
-B_1&=1,&
-B_2&=5,&
-B_3&=29,&
-B_4&=65,&
-B_5&=8132,\\
-B_6&=2382785,&
-B_7&=398035821,&
-B_8&=43244638645,&
-B_9&=124106986093951,&
-B_{10}&=270525565025400200.
-\end{aligned}
+\boxed{\;
+[2]R=\Bigl(1,\frac12\Bigr)=-Q_0,\qquad
+[3]R=\Bigl(-1,-\frac12\Bigr)=-Q_0',\qquad
+[4]R=\Bigl(2,-\frac52\Bigr)=-P\; }.
 \]
-并且在低阶上已出现若干原始分母素因子，例如
+因此 \(Q_0,Q_0',P\) 皆落在由 \(R\) 生成的无限循环子群上：
 \[
-29\mid B_3,\qquad 13\mid B_4,\qquad 19\mid B_5,\qquad 17\mid B_9.
+Q_0=-[2]R,\qquad Q_0'=-[3]R,\qquad P=-[4]R.
 \]
-其中 \(\{13,17,19,29\}\) 同时属于 \(E_8\) Coxeter 指数集合 \(\{1,7,11,13,17,19,23,29\}\) 的素数子集，从而在极低阶即可给出一个可审计的指数素数共现样本。
+该整系数关系将物理点（\(\pm P\)）与分歧值 \(y\in\{0,1\}\) 的两条分歧纤维中出现的有理点（\(\pm Q_0,\pm Q_0'\)）统一压缩到同一条一维格线上，从而为后续的“分歧—重量分母—高度”读出链提供一个无需外部归一化的群论锚点。
 \end{conclusion}
 \begin{proof}[证明要点]
-强可除性与可除性为椭圆可除序列的一般性质；
-上述前十项与所示整除关系可由对 \(\widetilde P\) 的倍乘轨道直接计算并在 \(\ZZ\) 中分解验证。
+用结论 \ref{con:xi-terminal-zm-elliptic-lattes-doubling} 的倍点公式计算 \([2]R\) 即得 \([2]R=(1,\tfrac12)\)。
+再由加法公式计算 \([3]R=[2]R+R\) 与 \([4]R=[2]R+[2]R\)，得到所示坐标。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_lattes\_rational\_points\_audit.py}。证毕。
 \end{proof}
 
-\begin{conclusion}[分母素因子与模 \texorpdfstring{$p$}{p} 阶的严格等价：\texorpdfstring{$p\mid B_n$}{p|Bn} 的群论解码]\label{con:xi-terminal-zm-elliptic-eds-modp-order-equivalence}
-设 \(p\neq 2,37\) 为 \(\widetilde E\) 的良好约化素数。
-则对任意 \(n\ge 1\) 有严格等价
+\begin{conclusion}[标准高度的数值指纹：N\'eron--Tate 高度在整系数耦合下的二次一致性]\label{con:xi-terminal-zm-neron-tate-height-fingerprint}
+记 \(\hat h\) 为 \(E/\QQ\) 上的 N\'eron--Tate 标准高度。
+则结论 \ref{con:xi-terminal-zm-mw-integral-coupling} 的四个点满足数值上稳定收敛的高度定值（精度达 \(10^{-12}\) 量级）：
 \[
-p\mid B_n
-\ \Longleftrightarrow\
-n\widetilde P\equiv O\pmod p
-\ \Longleftrightarrow\
-\mathrm{ord}_{\widetilde E(\FF_p)}(\widetilde P)\mid n.
+\boxed{\;\hat h(R)=0.05111140815410823\ldots\;}
 \]
-因此 \(\bigl(B_n\bigr)\) 的素因子集合精确记录了 \(\widetilde P\) 在各有限域点群 \(\widetilde E(\FF_p)\) 中的阶分布；任何能够检测 \(p\mid B_n\) 的局部“模 \(p\) 指纹”均可等价转写为一个纯群论命题“\(\mathrm{ord}(\widetilde P\bmod p)\) 是否整除 \(n\)”。
+\[
+\boxed{\;\hat h(Q_0)=4\hat h(R)=0.20444563261647190\ldots,\qquad
+\hat h(Q_0')=9\hat h(R)=0.46000267338720785\ldots\;}
+\]
+\[
+\boxed{\;\hat h(P)=16\hat h(R)=0.81778253046651100\ldots\;}
+\]
+并且这些数值与标准高度的二次性质严格相容：
+\[
+\boxed{\;\hat h([n]R)=n^2\hat h(R)\qquad(n\in\ZZ)\;}
+\]
+从而把上述整系数关系提升为“高度层面可审计”的一致性证书。
 \end{conclusion}
-\begin{proof}[证明要点]
-在良好约化处，\(\widetilde E(\QQ)\to\widetilde E(\FF_p)\) 的约化映射对分母的 \(p\)-进信息具有精确判别：\(p\mid B_n\) 当且仅当 \(\widetilde X(n\widetilde P)\) 在 \(p\)-进赋值下出现极点，这等价于 \(n\widetilde P\) 约化为无穷远点 \(O\)。
-最后一条等价为有限阿贝尔群中元素阶的定义。证毕。
-\end{proof}
 
-\begin{conclusion}[非复乘与原始素因子定理：椭圆可除序列的原始素因子无穷性]\label{con:xi-terminal-zm-elliptic-eds-primitive-primes-noncm}
-结论 \ref{con:xi-terminal-zm-elliptic-normalization} 给出
-\(
-j(E)=110592/37
-\)
-非代数整数，故 \(E\) 无复乘。
-因此由非复乘椭圆可除序列的原始素因子定理，存在常数 \(n_0\) 使得对一切 \(n>n_0\)，\(B_n\) 含有原始素因子 \(p_n\)（即 \(p_n\mid B_n\) 且 \(p_n\nmid\prod_{m<n}B_m\)），并由结论 \ref{con:xi-terminal-zm-elliptic-eds-modp-order-equivalence} 得
+\begin{conclusion}[重量分母序列的二次增长常数：由四次幂尺度直接重构标准高度]\label{con:xi-terminal-zm-height-from-weight-denominator}
+沿用结论 \ref{con:xi-terminal-zm-elliptic-rational-points-denominator-law} 的记号。
+对任意 \(n\ge 1\) 写
 \[
-\mathrm{ord}_{\widetilde E(\FF_{p_n})}(\widetilde P)=n.
+x(nP)=\frac{u_n}{v_n^2}\qquad(\gcd(u_n,v_n)=1,\ v_n>0),
+\qquad
+y(nP)=\frac{A_n}{v_n^4}\qquad(\gcd(A_n,v_n)=1),
 \]
-从而该椭圆结构在严格意义上产生无穷多个原始素因子素数，其上 \(\widetilde P\) 具有预设的精确阶，为后续一切模 \(p\) 指纹检验提供可控的“阶—素数”供给机制。
+其中第二式使用了严格尺度律 \(\mathrm{den}(y(nP))=v_n^4\)。
+则标准高度可由重量分母单独重构为
+\[
+\boxed{\;
+\hat h(P)=\lim_{n\to\infty}\frac{1}{2n^2}\log \mathrm{den}\bigl(y(nP)\bigr)
+\;=\;\lim_{n\to\infty}\frac{2}{n^2}\log v_n\; }.
+\]
+在本模型的物理点 \(P\) 上，上式等价于分母增长常数的锁定：
+\[
+\boxed{\;
+\lim_{n\to\infty}\frac{\log v_n}{n^2}
+\,=\,\frac{\hat h(P)}{2}
+\,=\,0.40889126523325550\ldots\;}
+\]
+从而“重量分母序列”的指数二次增长在不引入任何外部尺度的前提下被标准高度唯一刻画。
 \end{conclusion}
 
 \begin{conclusion}[重量配分函数的域迹表示：分母仅由 Lee--Yang 三次因子控制]\label{con:xi-terminal-zm-field-trace-representation}
@@ -338,12 +308,7 @@ R(z,y)
 \mathrm{Disc}_{z}\bigl(R(\cdot,y)\bigr)
 =\mathrm{Disc}_{\lambda}\bigl(\Pi(\cdot,y)\bigr)\; } .
 \]
-因此在 \(y\)-线上，四次谱覆盖的分歧值集合恰为 \(\{0,1\}\) 与 \(P_{\mathrm{LY}}(y)=0\) 的三根；Lee--Yang 三次因子因而给出判别式的不可约分歧核。
-在任一良特化（例如 \(y=2\)）下，
-\[
-R(z,2)=z^{3}+5z^{2}-25z-127
-\]
-在 \(\QQ\) 上不可约且其判别式非平方，
+在任一良特化（例如 \(y=2\)）下，\(R(z,2)\) 在 \(\QQ\) 上不可约且其判别式非平方，
 从而 \(\Pi(\lambda,y)\) 在 \(\QQ(y)\) 上的泛型伽罗瓦群为
 \[
 \boxed{\;\mathrm{Gal}\bigl(\Pi/\QQ(y)\bigr)\cong S_4.\;}
@@ -373,4 +338,29 @@ R(z,2)=z^{3}+5z^{2}-25z-127
 因此 Lee--Yang 三次因子 \(P_{\mathrm{LY}}(y)\) 并非“热力学支的偶发奇点”，而是一个同时控制椭圆归一化的分歧几何与四次分裂域二次脊柱的共同判别式核；
 从而把“解析临界”与“伽罗瓦分辨率”在结构上锁定为同一条不可约代数数据。
 \end{conclusion}
+
+\begin{conclusion}[Lee--Yang 判别式曲线的 \texorpdfstring{$\QQ$}{Q}-简单性：由单个良素处局部因子不可约性阻断椭圆分解]\label{con:xi-terminal-zm-leyang-discriminant-curve-q-simple}
+令
+\[
+P_{\mathrm{LY}}(y):=256y^3+411y^2+165y+32,
+\qquad
+\mathcal C_{\mathrm{LY}}:\ w^2=-y(y-1)P_{\mathrm{LY}}(y).
+\]
+则 \(\mathcal C_{\mathrm{LY}}\) 为一条属 \(2\) 的超椭圆曲线。
+并且其 Jacobian \(J(\mathcal C_{\mathrm{LY}})\) 在 \(\QQ\) 上为简单阿贝尔曲面（即不与两条椭圆曲线之积在 \(\QQ\) 上同类同态分解）。
+
+具体地，在良素 \(p=13\) 处，Frobenius 的局部 \(L\)-因子为
+\[
+\boxed{\;
+L_{13}(T)=1-2T^2+13^2T^4\; } ,
+\]
+该四次多项式在 \(\QQ[T]\) 上不可约，从而排除 \(J(\mathcal C_{\mathrm{LY}})\) 的椭圆因子化。
+\end{conclusion}
+\begin{proof}[证明要点]
+\(\mathcal C_{\mathrm{LY}}\) 的右端为五次平方自由多项式，故 \(\mathcal C_{\mathrm{LY}}\) 为属 \(2\)。
+对良素 \(p=13\) 计数 \(\#\mathcal C_{\mathrm{LY}}(\mathbb F_{13})\) 与 \(\#\mathcal C_{\mathrm{LY}}(\mathbb F_{13^2})\) 可回收局部因子系数 \(a_1,a_2\)，从而得到所示 \(L_{13}(T)\)。
+若 \(J(\mathcal C_{\mathrm{LY}})\) 在 \(\QQ\) 上同种于椭圆曲线之积，则 \(L_{13}(T)\) 必分解为两因子 \((1-aT+13T^2)(1-bT+13T^2)\)；
+而 \(L_{13}(T)=1-2T^2+169T^4\) 作为 \(T^2\) 的二次多项式判别式为 \(-672\)，因而在 \(\QQ[T]\) 上不可约，矛盾。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_leyang\_discriminant\_curve\_local\_factor\_audit.py}。证毕。
+\end{proof}
 

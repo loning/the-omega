@@ -1,0 +1,340 @@
+% (User input window)
+% 2026-02-16 23:16:42（Asia/Singapore）
+
+\paragraph{最大熵马尔可夫链、对称化谱与小失真协同}
+沿用定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 与定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 的记号。
+本段把对角质量约束的最优耦合 \(P^\star_\delta\) 等价重写为“给定平稳分布与全局自环率的最大熵马尔可夫链”，
+并进一步给出其可逆化对称谱的“对角 \(+\) 秩一”结构、世俗方程与端点协同的张量同态律。
+
+\begin{theorem}[最大熵马尔可夫链：给定平稳分布与全局自环率时的唯一最优核]\label{thm:pom-maxent-markov-unique-optimal-kernel}
+令 \(X\) 为有限集，取全支撑分布 \(w\in\Delta(X)\)。
+对任意马尔可夫核 \(K(\cdot\mid x)\)（\(x\in X\)）考虑约束
+\[
+\sum_{x\in X}w(x)K(y\mid x)=w(y)\quad(\forall y\in X),
+\qquad
+\sum_{x\in X}w(x)K(x\mid x)\ge 1-\delta,\qquad \delta\in[0,1].
+\]
+定义熵率
+\[
+h(K):=\sum_{x\in X}w(x)\,H\!\bigl(K(\cdot\mid x)\bigr),
+\qquad
+H\!\bigl(K(\cdot\mid x)\bigr):=-\sum_{y\in X}K(y\mid x)\log K(y\mid x).
+\]
+则在上述可行集合上，\(h(K)\) 存在唯一最大化解 \(K^\star_\delta\)。
+令耦合
+\[
+P^\star_\delta(x,y):=w(x)K^\star_\delta(y\mid x),
+\]
+则 \(P^\star_\delta\) 恰为
+\[
+R_w(\delta)=\inf\{I_P(X;Y):\ P_X=P_Y=w,\ \mathbb P_P(X=Y)\ge 1-\delta\}
+\]
+的唯一极小耦合，并满足恒等式
+\[
+\boxed{\;
+R_w(\delta)=H(w)-h\!\bigl(K^\star_\delta\bigr)\; }.
+\]
+\end{theorem}
+\begin{proof}
+在平稳性约束下，\(P(x,y):=w(x)K(y\mid x)\) 满足 \(P_X=w\) 且
+\(
+P_Y(y)=\sum_x w(x)K(y\mid x)=w(y)
+\)，故 \(P_X=P_Y=w\)。
+同时
+\(
+\mathbb P_P(X=Y)=\sum_x w(x)K(x\mid x)
+\)。
+并且
+\(
+h(K)=H_P(Y\mid X)
+\)。
+因此最大化 \(h(K)\) 等价于在 \(\{P_X=P_Y=w,\ \mathbb P(X=Y)\ge 1-\delta\}\) 上最大化 \(H_P(Y\mid X)\)。
+又由恒等式
+\(
+I_P(X;Y)=H(w)-H_P(Y\mid X)
+\)，该最大化等价于最小化互信息 \(I_P(X;Y)\)，其最优值即为 \(R_w(\delta)\)。
+由于 \(K\mapsto h(K)\) 在每个行向量上严格凹、且约束为线性，最大化器唯一；
+等价地，\(P\mapsto I_P(X;Y)\) 在可行凸集上严格凸，极小化器亦唯一。
+两者互为同一对象，从而得到结论。证毕。
+\end{proof}
+
+\begin{theorem}[对称化谱的“对角 \(+\) 秩一”结构与世俗方程]\label{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum}
+令 \(P^\star_\delta\) 与 \(K^\star_\delta\) 如定理 \ref{thm:pom-maxent-markov-unique-optimal-kernel}，
+并记 \(D:=\mathrm{diag}(w)\)。
+则存在唯一参数 \(\kappa_\delta\ge 0\) 与向量 \(u_\delta\in\RR_{>0}^{X}\)（唯一到整体符号，且可取 \(u_\delta\succ0\)）
+使得
+\[
+\boxed{\;
+P^\star_\delta=u_\delta u_\delta^{\mathsf T}+\kappa_\delta\,\mathrm{diag}(u_\delta^2)\;}
+\]
+亦即对 \(x\ne y\) 有 \(P^\star_\delta(x,y)=u_\delta(x)u_\delta(y)\)，并且
+\(
+P^\star_\delta(x,x)=(1+\kappa_\delta)u_\delta(x)^2
+\)。
+定义对称化算子
+\[
+S_\delta:=D^{-1/2}P^\star_\delta D^{-1/2},
+\qquad
+a_\delta:=D^{-1/2}u_\delta,
+\qquad
+d_x:=\kappa_\delta\,a_\delta(x)^2,
+\]
+则有严格分解
+\[
+\boxed{\;
+S_\delta=a_\delta a_\delta^{\mathsf T}+\kappa_\delta\,\mathrm{diag}(a_\delta^2)
+=a_\delta a_\delta^{\mathsf T}+\mathrm{diag}(d_x)\;}
+\]
+从而 \(S_\delta\succeq 0\) 且其全部特征值为非负实数。
+并且 \(S_\delta\) 与 \(K^\star_\delta\) 在 \(\ell^2(w)\) 上相似，故二者具有相同实谱；
+其中最大特征值为 \(\lambda_1=1\)。
+\par
+设 \(\lambda\in\CC\)。则 \(S_\delta\) 的特征多项式满足闭式
+\[
+\boxed{\;
+\det(S_\delta-\lambda I)
+=\Bigl(\prod_{x\in X}(d_x-\lambda)\Bigr)\Bigl(1+\sum_{x\in X}\frac{a_\delta(x)^2}{d_x-\lambda}\Bigr)\;}
+\]
+从而除去对角极点 \(d_x\) 外，全部特征值由一维世俗方程
+\[
+\boxed{\;
+1+\sum_{x\in X}\frac{a_\delta(x)^2}{d_x-\lambda}=0\;}
+\]
+刻画，并满足标准的 interlacing 交错性质。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的指数族形式，
+对某组 \((\widehat u_\delta,\kappa_\delta,\widehat Z_\delta)\) 有
+\(
+P^\star_\delta(x,y)=\widehat u_\delta(x)\widehat u_\delta(y)\bigl(1+\kappa_\delta\mathbf 1_{\{x=y\}}\bigr)/\widehat Z_\delta
+\)。
+将 \(\widehat Z_\delta^{-1/2}\) 吸收进 \(\widehat u_\delta\) 得到 \(u_\delta:=\widehat u_\delta/\sqrt{\widehat Z_\delta}\)，即可写成
+\(
+P^\star_\delta=u_\delta u_\delta^{\mathsf T}+\kappa_\delta\mathrm{diag}(u_\delta^2)
+\)；
+由最优解唯一性可知 \(\kappa_\delta\) 与 \(u_\delta\)（取 \(u_\delta\succ0\)）唯一。
+对称化分解由左右乘 \(D^{-1/2}\) 直接得到；两项均为正半定，故 \(S_\delta\succeq 0\)。
+\par
+由于 \(P^\star_\delta\mathbf 1=w\)，有
+\[
+S_\delta\sqrt w
+=D^{-1/2}P^\star_\delta D^{-1/2}\sqrt w
+=D^{-1/2}P^\star_\delta\mathbf 1
+=D^{-1/2}w
+=\sqrt w,
+\]
+从而 \(\lambda_1=1\)。
+又 \(P^\star_\delta=D K^\star_\delta\)，故
+\(
+S_\delta=D^{1/2}K^\star_\delta D^{-1/2}
+\)，给出相似与谱一致。
+\par
+最后，对 \(\mathrm{diag}(d_x)+a_\delta a_\delta^{\mathsf T}\) 应用矩阵行列式引理
+\(
+\det(A+uv^{\mathsf T})=\det(A)\bigl(1+v^{\mathsf T}A^{-1}u\bigr)
+\)
+即可得到特征多项式闭式与世俗方程。证毕。
+\end{proof}
+
+\begin{corollary}[无振荡性与两端谱塌缩]\label{cor:pom-maxent-markov-no-oscillation-endpoints}
+令 \(\delta_0:=1-p_2(w)=1-\sum_{x\in X}w(x)^2\)。
+则对任意 \(\delta\in[0,\delta_0]\)，最优核 \(K^\star_\delta\) 在 \(\ell^2(w)\) 上的全部特征值均属于区间 \([0,1]\)。
+特别地，\(K^\star_\delta\) 不存在负谱模态，因而在谱意义下不携带周期振荡成分。
+\par
+当 \(\delta=\delta_0\) 时，独立耦合 \(P=w\otimes w\) 可行且最优，因而
+\[
+\mathrm{Spec}(K^\star_{\delta_0})=\{1,0,\dots,0\}.
+\]
+当 \(\delta=0\) 时，对角耦合 \(P=\mathrm{Diag}(w)\) 最优，因而
+\[
+\mathrm{Spec}(K^\star_0)=\{1,1,\dots,1\}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum}，\(S_\delta\succeq0\) 且与 \(K^\star_\delta\) 相似，故 \(\mathrm{Spec}(K^\star_\delta)\subseteq[0,\infty)\)。
+另一方面，\(K^\star_\delta\) 为马尔可夫核，算子范数满足 \(\|K^\star_\delta\|_{\ell^2(w)\to \ell^2(w)}\le 1\)，且 \(\lambda_1=1\)；
+故全部特征值属于 \([0,1]\)。
+\par
+端点情形：当 \(\delta=\delta_0\) 时独立耦合满足 \(\mathbb P(X=Y)=p_2(w)=1-\delta_0\) 且互信息为零，故最优且
+\(
+K(y\mid x)=w(y)
+\) 为秩一投影，谱为 \(\{1,0,\dots,0\}\)。
+当 \(\delta=0\) 时约束强制 \(\mathbb P(X=Y)=1\)，唯一可行耦合为 \(\mathrm{Diag}(w)\)，相应 \(K\) 为恒等算子，谱为全 \(1\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[小失真谱门槛：第二特征值的线性起跳由一维世俗常数刻画]\label{thm:pom-maxent-markov-small-distortion-lambda2-slope}
+令 \(|X|\ge 2\) 且 \(w\) 全支撑。
+记
+\[
+A_{1/2}(w)=\sum_{x\in X}\sqrt{w(x)},\qquad
+C_{1/2}(w):=A_{1/2}(w)^2-1.
+\]
+令 \(\lambda_2(\delta)\) 为 \(K^\star_\delta\) 在 \(\ell^2(w)\) 上的第二特征值（等价地为 \(S_\delta\) 的第二特征值）。
+定义对称“半阶端点拉普拉斯”矩阵
+\[
+L_{1/2}(w):=A_{1/2}(w)\,\mathrm{diag}\bigl(w^{-1/2}\bigr)-\mathbf 1\mathbf 1^{\mathsf T}\ \in\RR^{X\times X},
+\]
+并令 \(\nu_2(w)\) 为其最小正特征值（\(L_{1/2}(w)\) 在 \(\sqrt w\) 方向上有零特征值）。
+则当 \(\delta\downarrow 0\) 时成立线性起跳
+\[
+\boxed{\;
+1-\lambda_2(\delta)=\frac{\nu_2(w)}{C_{1/2}(w)}\,\delta\,(1+o(1)).\;}
+\]
+并且 \(\nu_2(w)\) 由对角 \(+\) 秩一结构的世俗方程显式刻画：
+设 \(r_x:=A_{1/2}(w)/\sqrt{w(x)}\)，则 \(\nu_2(w)\) 为方程
+\[
+1-\sum_{x\in X}\frac{1}{r_x-\nu}=0
+\]
+在区间 \((0,\min_x r_x)\) 内的最小正根（亦即 interlacing 中紧邻零根的下一根）。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-rare-mismatch-hellinger-universality}（或其更弱的端点一阶展开），当 \(\delta\downarrow 0\) 时有
+\[
+P^\star_\delta(x,y)=
+\begin{cases}
+\displaystyle \delta\,\frac{\sqrt{w(x)w(y)}}{C_{1/2}(w)}\,(1+o(1)), & x\ne y,\\[8pt]
+\displaystyle w(x)-\delta\,\frac{\sqrt{w(x)}\bigl(A_{1/2}(w)-\sqrt{w(x)}\bigr)}{C_{1/2}(w)}+o(\delta), & x=y.
+\end{cases}
+\]
+令 \(S_\delta=D^{-1/2}P^\star_\delta D^{-1/2}\)（\(D=\mathrm{diag}(w)\)）。
+逐项代入并化简得到在欧氏算子范数意义下的展开
+\[
+S_\delta=I-\frac{\delta}{C_{1/2}(w)}\,L_{1/2}(w)+o(\delta).
+\]
+由于 \(S_\delta\) 对称，标准对称谱微扰（有限维情形可直接用 Weyl 不等式）推出
+\(
+\lambda_i(S_\delta)=1-\frac{\delta}{C_{1/2}(w)}\,\nu_i(w)+o(\delta)
+\)，其中 \(\{\nu_i(w)\}\) 为 \(L_{1/2}(w)\) 的特征值并按非降序排列；
+特别地得到第二特征值的线性起跳式。
+\par
+最后，\(L_{1/2}(w)=\mathrm{diag}(r_x)-\mathbf 1\mathbf 1^{\mathsf T}\) 为对角加秩一更新，
+对其应用矩阵行列式引理即可得到
+\(
+\det(L_{1/2}(w)-\nu I)=\prod_x (r_x-\nu)\bigl(1-\sum_x (r_x-\nu)^{-1}\bigr)
+\)，
+从而 \(\nu_2(w)\) 由所示一维世俗方程与 interlacing 唯一刻画。证毕。
+\end{proof}
+
+\begin{theorem}[小失真协同：乘积分布下的最优率严格优于任意坐标分离策略]\label{thm:pom-diagonal-rate-small-distortion-synergy-product}
+取两有限集 \(X_1,X_2\)，分布 \(w\in\Delta(X_1)\)、\(v\in\Delta(X_2)\)，并令乘积分布 \(\omega:=w\otimes v\in\Delta(X_1\times X_2)\)。
+记
+\[
+C_{1/2}(w):=A_{1/2}(w)^2-1,\qquad C_{1/2}(v):=A_{1/2}(v)^2-1,\qquad
+C_{1/2}(\omega):=A_{1/2}(\omega)^2-1.
+\]
+则当 \(\delta\downarrow 0\) 时有小失真展开
+\[
+R_{\omega}(\delta)=H(w)+H(v)-\delta\log\frac{C_{1/2}(\omega)}{\delta}+O(\delta).
+\]
+\par
+称“坐标分离策略”为取两耦合 \(P_1,P_2\) 分别作用于 \(X_1,X_2\)，并用乘积耦合 \(P=P_1\otimes P_2\) 生成 \(X_1\times X_2\) 的耦合。
+若
+\(
+\mathbb P(X_1=Y_1)\ge 1-\delta_1
+\)、
+\(
+\mathbb P(X_2=Y_2)\ge 1-\delta_2
+\)，
+则
+\(
+\mathbb P(Z=Z')\ge (1-\delta_1)(1-\delta_2)=1-(\delta_1\oplus\delta_2)
+\)，其中 \(\delta_1\oplus\delta_2:=\delta_1+\delta_2-\delta_1\delta_2\)。
+在该类策略中达到对角质量 \(1-\delta\) 的最优互信息满足
+\[
+\inf_{\delta_1\oplus\delta_2=\delta}\bigl(R_w(\delta_1)+R_v(\delta_2)\bigr)
+=H(w)+H(v)-\delta\log\frac{C_{1/2}(w)+C_{1/2}(v)}{\delta}+O(\delta).
+\]
+并且存在严格协同增益：只要 \(C_{1/2}(w),C_{1/2}(v)>0\)（等价于两分布均非单点），就有
+\[
+\inf_{\delta_1\oplus\delta_2=\delta}\bigl(R_w(\delta_1)+R_v(\delta_2)\bigr)-R_{w\otimes v}(\delta)
+=\delta\log\Bigl(1+\frac{C_{1/2}(w)C_{1/2}(v)}{C_{1/2}(w)+C_{1/2}(v)}\Bigr)+o(\delta)\;>\;0.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint}，
+\(
+R_w(\delta)=H(w)-\delta\log\frac{C_{1/2}(w)}{\delta}+O(\delta)
+\)，同理对 \(v\) 与 \(\omega\) 成立。
+又 \(H(\omega)=H(w)+H(v)\) 且
+\(
+A_{1/2}(\omega)=A_{1/2}(w)A_{1/2}(v)
+\)，故
+\[
+C_{1/2}(\omega)
+=A_{1/2}(\omega)^2-1
+=(1+C_{1/2}(w))(1+C_{1/2}(v))-1
+=C_{1/2}(w)+C_{1/2}(v)+C_{1/2}(w)C_{1/2}(v).
+\]
+第一式由此立即得到。
+\par
+对分离类，约束 \(\delta_1\oplus\delta_2=\delta\) 等价于 \(\delta_1+\delta_2=\delta+O(\delta^2)\)，
+故在 \(\delta\downarrow 0\) 的首阶上可将其替换为 \(\delta_1+\delta_2=\delta\)。
+将端点展开代入并用拉格朗日乘子最大化
+\(
+\delta_1\log(C_{1/2}(w)/\delta_1)+\delta_2\log(C_{1/2}(v)/\delta_2)
+\)
+得到最优配比 \(\delta_1:\delta_2=C_{1/2}(w):C_{1/2}(v)\) 与系数 \(C_{1/2}(w)+C_{1/2}(v)\)，从而给出分离最优展开。
+最后将 \(C_{1/2}(\omega)=C_{1/2}(w)+C_{1/2}(v)+C_{1/2}(w)C_{1/2}(v)\) 与上述系数比较即可得到严格差距公式。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$k$}{k} 重协同放大：小失真端点的首阶系数按乘法增长]\label{thm:pom-diagonal-rate-small-distortion-synergy-k}
+取 \(k\ge 2\) 个全支撑分布 \(w^{(1)},\dots,w^{(k)}\)，并令 \(\omega=\bigotimes_{i=1}^k w^{(i)}\)。
+记 \(C_i:=C_{1/2}(w^{(i)})\) 以及
+\[
+C_{\mathrm{joint}}:=C_{1/2}(\omega)=\prod_{i=1}^k(1+C_i)-1,\qquad
+C_{\mathrm{sep}}:=\sum_{i=1}^k C_i.
+\]
+则当 \(\delta\downarrow 0\) 时成立
+\[
+R_{\omega}(\delta)=\sum_{i=1}^k H\!\bigl(w^{(i)}\bigr)-\delta\log\frac{C_{\mathrm{joint}}}{\delta}+O(\delta),
+\]
+而任意坐标分离策略的最优首阶系数至多为 \(C_{\mathrm{sep}}\)，即
+\[
+\inf_{\delta_1\oplus\cdots\oplus\delta_k=\delta}\ \sum_{i=1}^k R_{w^{(i)}}(\delta_i)
+=\sum_{i=1}^k H\!\bigl(w^{(i)}\bigr)-\delta\log\frac{C_{\mathrm{sep}}}{\delta}+O(\delta).
+\]
+因此首阶协同增益为
+\[
+\delta\log\frac{C_{\mathrm{joint}}}{C_{\mathrm{sep}}}+o(\delta),
+\]
+其在 \(C_i\) 为常数阶时随 \(k\) 可呈指数级增长。
+\end{theorem}
+\begin{proof}
+由 \(A_{1/2}(\omega)=\prod_i A_{1/2}(w^{(i)})\) 得
+\(
+1+C_{1/2}(\omega)=\prod_i (1+C_{1/2}(w^{(i)}))
+\)，
+从而 \(C_{\mathrm{joint}}=\prod_i(1+C_i)-1\)。
+其余与定理 \ref{thm:pom-diagonal-rate-small-distortion-synergy-product} 相同：对每个因子使用端点展开并用多元拉格朗日乘子得到分离最优配比 \(\delta_i\propto C_i\)，从而首阶系数为 \(C_{\mathrm{sep}}\)。
+比较 \(C_{\mathrm{joint}}\) 与 \(C_{\mathrm{sep}}\) 即得增益。证毕。
+\end{proof}
+
+\begin{corollary}[端点协同生成元的张量同态]\label{cor:pom-diagonal-rate-small-distortion-synergy-generator-homomorphism}
+对任意全支撑分布 \(w\) 定义
+\[
+\mathcal J(w):=\log\bigl(1+C_{1/2}(w)\bigr)=2\log A_{1/2}(w).
+\]
+则对任意两分布 \(w,v\) 成立严格等式
+\[
+\boxed{\;
+\mathcal J(w\otimes v)=\mathcal J(w)+\mathcal J(v)\;}
+\]
+等价地，
+\(
+1+C_{1/2}(w\otimes v)=(1+C_{1/2}(w))(1+C_{1/2}(v))
+\)。
+并且在小失真极限 \(\delta\downarrow 0\) 下，
+\[
+H(w)-R_w(\delta)=\delta\log\frac{e^{\mathcal J(w)}-1}{\delta}+O(\delta),
+\]
+因此 \(\mathcal J\) 给出端点协同系数的可加生成元。
+\end{corollary}
+\begin{proof}
+由 \(A_{1/2}(w\otimes v)=A_{1/2}(w)A_{1/2}(v)\) 得
+\(
+\mathcal J(w\otimes v)=2\log A_{1/2}(w\otimes v)=2\log A_{1/2}(w)+2\log A_{1/2}(v)
+\)。
+最后一式由定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 的端点展开重写得到。证毕。
+\end{proof}
+

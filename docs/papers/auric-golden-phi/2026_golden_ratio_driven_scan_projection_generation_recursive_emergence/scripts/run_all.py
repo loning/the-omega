@@ -1236,6 +1236,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_diagonal_rate_maxent_markov_spectrum_audit",
+            script="exp_pom_diagonal_rate_maxent_markov_spectrum_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_maxent_markov_spectrum_audit.json",
+            ],
+        ),
+        Step(
             name="pom_projword_three_gen_kb_completion_audit",
             script="exp_pom_projword_three_gen_kb_completion_audit.py",
             args=[],
@@ -2690,6 +2698,27 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_audit",
+            script="exp_fold_zm_elliptic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_weight_doubling_audit",
+            script="exp_fold_zm_elliptic_weight_doubling_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_weight_doubling_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_H.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_inverse.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_norm.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_leyang_arithmetic_audit",
             script="exp_fold_zm_elliptic_leyang_arithmetic_audit.py",
             args=[],
@@ -2705,6 +2734,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_elliptic_lattes_rational_points_audit.json",
                 "sections/generated/eq_fold_zm_elliptic_lattes_rational_points_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_discriminant_curve_local_factor_audit",
+            script="exp_fold_zm_leyang_discriminant_curve_local_factor_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_discriminant_curve_local_factor_audit.json",
+                "sections/generated/eq_fold_zm_leyang_discriminant_curve_local_factor_audit.tex",
             ],
         ),
         Step(
