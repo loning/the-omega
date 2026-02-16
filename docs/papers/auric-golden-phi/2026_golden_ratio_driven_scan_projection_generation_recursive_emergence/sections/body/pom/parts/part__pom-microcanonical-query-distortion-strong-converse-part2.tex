@@ -2,6 +2,7 @@
 % 2026-02-14 17:56:07（Asia/Singapore）
 % 2026-02-15 06:02:21（Asia/Singapore）
 % 2026-02-15 14:39:13（Asia/Singapore）
+% 2026-02-17 13:19:04（Asia/Singapore）
 
 \paragraph{端点展开、曲率审计与 Hellinger 普适极限}
 沿用定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的最优耦合结构与对偶敏感性公式。
@@ -62,6 +63,127 @@ u_x=\frac{1}{\sqrt{\kappa}}\sqrt{w(x)}+o(\kappa^{-1/2}),
 \lambda(\delta)=\log(1+\kappa)=\log\frac{A_{1/2}(w)^2-1}{\delta}+o(1)
 \)。
 由 \(R'_w(\delta)=-\lambda(\delta)\) 在 \(\delta\downarrow 0\) 的积分并用 \(R_w(0)=H(w)\)（见正文中的端点说明）即得所示展开。证毕。
+\end{proof}
+
+\begin{proposition}[Rényi-\texorpdfstring{$\tfrac12$}{1/2} 熵与 Hellinger 量：严格恒等式与张量可加性]\label{prop:pom-renyi-half-hellinger-identity-tensor-additivity}
+令有限字母表 \(X\)（\(|X|\ge 2\)），取全支撑分布 \(w\in\Delta(X)\)，并沿用
+\[
+A_{1/2}(w):=\sum_{x\in X}\sqrt{w(x)}.
+\]
+定义 Rényi-\(\tfrac12\) 熵（取自然对数）为
+\[
+H_{1/2}(w):=\frac{1}{1-\tfrac12}\log\sum_{x\in X}w(x)^{1/2}.
+\]
+则有严格恒等式
+\[
+H_{1/2}(w)=2\log A_{1/2}(w).
+\]
+并且对任意有限字母表 \(Y\) 与全支撑分布 \(v\in\Delta(Y)\) 成立张量可加性
+\[
+H_{1/2}(w\otimes v)=H_{1/2}(w)+H_{1/2}(v).
+\]
+\end{proposition}
+\begin{proof}
+由定义
+\(
+H_{1/2}(w)=2\log\sum_x w(x)^{1/2}=2\log A_{1/2}(w)
+\)。
+另一方面，
+\[
+A_{1/2}(w\otimes v)
+=\sum_{(x,y)\in X\times Y}\sqrt{w(x)v(y)}
+=\Bigl(\sum_{x\in X}\sqrt{w(x)}\Bigr)\Bigl(\sum_{y\in Y}\sqrt{v(y)}\Bigr)
+=A_{1/2}(w)\,A_{1/2}(v),
+\]
+代回 \(H_{1/2}=2\log A_{1/2}\) 得张量可加性。证毕。
+\end{proof}
+
+\begin{corollary}[小失真端点常数的严格乘法律：由 \texorpdfstring{$H_{1/2}$}{H1/2} 生成]\label{cor:pom-small-distortion-constant-tensor-multiplicative}
+在定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 的设定下，定义端点常数
+\[
+C_{1/2}(w):=\lim_{\delta\downarrow 0}\ \delta\,e^{\lambda(\delta)}
+=A_{1/2}(w)^2-1
+=e^{H_{1/2}(w)}-1\ >0.
+\]
+则对任意两全支撑分布 \(w,v\) 有严格恒等式
+\[
+C_{1/2}(w\otimes v)=C_{1/2}(w)+C_{1/2}(v)+C_{1/2}(w)C_{1/2}(v),
+\qquad
+1+C_{1/2}(w\otimes v)=(1+C_{1/2}(w))(1+C_{1/2}(v)).
+\]
+并且令小失真节省量 \(\Delta_w(\delta):=H(w)-R_w(\delta)\)，则当 \(\delta\downarrow 0\) 时
+\[
+\Delta_w(\delta)=\delta\log\frac{C_{1/2}(w)}{\delta}+O(\delta).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 的对偶展开 \(\lambda(\delta)=\log\frac{A_{1/2}(w)^2-1}{\delta}+o(1)\)，取指数并乘以 \(\delta\) 得
+\(
+\delta e^{\lambda(\delta)}\to A_{1/2}(w)^2-1
+\)，从而 \(C_{1/2}(w)=A_{1/2}(w)^2-1\)。
+再由命题 \ref{prop:pom-renyi-half-hellinger-identity-tensor-additivity} 的乘法恒等式 \(A_{1/2}(w\otimes v)=A_{1/2}(w)A_{1/2}(v)\)，得
+\[
+1+C_{1/2}(w\otimes v)=A_{1/2}(w\otimes v)^2=A_{1/2}(w)^2A_{1/2}(v)^2=(1+C_{1/2}(w))(1+C_{1/2}(v)),
+\]
+展开即为所示乘法律。
+最后一式由定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 取差 \(\Delta_w=H-R_w\) 直接得到。证毕。
+\end{proof}
+
+\begin{theorem}[小失真协同常数的唯一张量生成元]\label{thm:pom-small-distortion-synergy-unique-additive-generator}
+设 \(F\) 为定义在全体有限字母表的全支撑分布上的函数族，满足：
+\begin{enumerate}
+  \item \textup{（置换不变性）}对任意有限集 \(X\) 与任意置换 \(\pi:X\to X\)，有 \(F(w\circ\pi^{-1})=F(w)\)；
+  \item \textup{（张量可加性）}对任意有限集 \(X,Y\) 与全支撑 \(w\in\Delta(X),v\in\Delta(Y)\)，有 \(F(w\otimes v)=F(w)+F(v)\)；
+  \item \textup{（连续性）}在每个 \(\Delta(X)\) 的内点上连续。
+\end{enumerate}
+若存在连续函数 \(g:\mathrm{Im}(F)\to\RR_{>0}\) 使对一切全支撑 \(w\) 成立
+\[
+C_{1/2}(w)=g(F(w)),
+\]
+其中 \(C_{1/2}\) 为推论 \ref{cor:pom-small-distortion-constant-tensor-multiplicative} 的端点常数，
+则存在常数 \(c>0\) 使得对所有 \(w\) 有
+\[
+F(w)=\frac{1}{c}\,H_{1/2}(w),
+\qquad
+g(z)=e^{cz}-1.
+\]
+\end{theorem}
+\begin{proof}
+由张量可加性与推论 \ref{cor:pom-small-distortion-constant-tensor-multiplicative} 的乘法律，对任意全支撑 \(w,v\) 有
+\[
+1+g\!\bigl(F(w)+F(v)\bigr)
+=1+g\!\bigl(F(w\otimes v)\bigr)
+=1+C_{1/2}(w\otimes v)
+=(1+C_{1/2}(w))(1+C_{1/2}(v))
+=\bigl(1+g(F(w))\bigr)\bigl(1+g(F(v))\bigr).
+\]
+令 \(h(z):=\log\bigl(1+g(z)\bigr)\)（其在 \(\mathrm{Im}(F)\) 上有意义且连续），则 \(h\) 在加法半群 \(\mathrm{Im}(F)\) 上满足 Cauchy 型方程
+\[
+h(z_1+z_2)=h(z_1)+h(z_2).
+\]
+连续性迫使 \(h\) 为线性：存在常数 \(c>0\) 使 \(h(z)=cz\)，从而 \(g(z)=e^{cz}-1\)。
+另一方面，由 \(C_{1/2}(w)=g(F(w))\) 得
+\[
+H_{1/2}(w)=\log\bigl(1+C_{1/2}(w)\bigr)=\log\bigl(1+g(F(w))\bigr)=h(F(w))=cF(w),
+\]
+即 \(F(w)=H_{1/2}(w)/c\)。证毕。
+\end{proof}
+
+\begin{corollary}[临界比特密度在小失真端的局部展开]\label{cor:pom-bcrit-small-distortion-expansion}
+沿用临界比特密度的定义
+\(
+b_{\mathrm{crit}}(\beta,\delta)=(1-\beta)R_w(\delta)/\log 2
+\)。
+在定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 的设定下，当 \(\delta\downarrow 0\) 时
+\[
+b_{\mathrm{crit}}(\beta,\delta)
+=\frac{1-\beta}{\log 2}\Bigl(H(w)-\delta\log\frac{C_{1/2}(w)}{\delta}+O(\delta)\Bigr),
+\]
+其中端点常数 \(C_{1/2}(w)=e^{H_{1/2}(w)}-1\)。
+因此在 \(\delta=0\) 的局部尺度上，截距由 \(H(w)\) 给出，而首阶协同项由 \(H_{1/2}(w)\)（等价地 \(C_{1/2}(w)\)）唯一生成。
+\end{corollary}
+\begin{proof}
+由定义 \(b_{\mathrm{crit}}(\beta,\delta)=(1-\beta)R_w(\delta)/\log 2\)，直接代入定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 的端点展开并用 \(C_{1/2}(w)=A_{1/2}(w)^2-1\) 即得。证毕。
 \end{proof}
 
 \input{sections/body/pom/parts/part__pom-diagonal-rate-half-moment-critical-slope}
