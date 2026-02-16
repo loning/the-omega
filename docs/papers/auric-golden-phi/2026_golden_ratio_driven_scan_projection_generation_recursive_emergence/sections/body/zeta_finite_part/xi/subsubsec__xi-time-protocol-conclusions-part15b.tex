@@ -1,6 +1,7 @@
 % (User input window)
 % 2026-02-15 05:06:58（Asia/Singapore）
 % 2026-02-16 11:14:52（Asia/Singapore）
+% 2026-02-16 11:43:20（Asia/Singapore）
 
 \begin{conclusion}[纤维—重量双变量配分函数的四阶可积性：有理生成函数与常系数递推]\label{con:xi-terminal-zm-order4-rational}
 令
@@ -144,6 +145,163 @@ f(y):=\lim_{m\to\infty}\frac{1}{m}\log Z_m(y)
 大数律与中心极限定律由有限状态加权转移矩阵的解析谱扰动与标准准幂型定理推出。证毕。
 \end{proof}
 
+\begin{conclusion}[推前重量的一阶矩闭式：线性主项、常数漂移与交替相位]\label{con:xi-terminal-zm-m1-closed}
+沿用结论 \ref{con:xi-terminal-zm-lln-clt} 的记号，并定义一阶矩分子
+\[
+M_1(m):=\sum_{x\in X_m}|x|_1\,d_m(x)=Z_m'(1).
+\]
+则对一切整数 \(m\ge 1\) 有严格恒等式
+\[
+\boxed{\;
+M_1(m)=\Bigl(\frac{5}{18}m-\frac{1}{27}\Bigr)2^m+\frac14-\Bigl(\frac{m}{18}+\frac{23}{108}\Bigr)(-1)^m\;}
+\]
+从而均值具有精确展开
+\[
+\boxed{\;
+\EE[H_m]=\frac{M_1(m)}{2^m}
+=\frac{5}{18}m-\frac{1}{27}
++2^{-m}\Bigl(\frac14-\Bigl(\frac{m}{18}+\frac{23}{108}\Bigr)(-1)^m\Bigr)\;}
+\]
+其中有限尺寸偏离同时包含一个非零常数漂移与携带严格交替相位的 \(2^{-m}\) 层修正。
+\end{conclusion}
+\begin{proof}[证明要点（对 \(Z_m(y)\) 递推作一次微分）]
+由结论 \ref{con:xi-terminal-zm-order4-rational}，\(Z_m(y)\) 满足四阶递推。
+对该递推关于 \(y\) 微分并在 \(y=1\) 处取值，结合恒等式 \(Z_m(1)=2^m\)，得到 \(M_1(m)=Z_m'(1)\) 的常系数递推；
+其特征多项式由 \(\Pi(\lambda,1)=(\lambda-2)(\lambda-1)(\lambda+1)^2\) 决定，从而解必可写为 \(2^m\) 通道与 \(\pm 1\) 通道的有限阶 Jordan 叠加。
+用小 \(m\) 初值定出系数即可得到所示闭式；可由脚本 \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py} 复核。证毕。
+\end{proof}
+
+\begin{conclusion}[推前重量的二阶矩与方差闭式：线性涨落系数、常数项与双尺度交替修正]\label{con:xi-terminal-zm-m2-var-closed}
+沿用结论 \ref{con:xi-terminal-zm-lln-clt} 的记号，并定义二阶矩分子
+\[
+M_2(m):=\sum_{x\in X_m}|x|_1^2\,d_m(x).
+\]
+则对一切整数 \(m\ge 1\) 有严格恒等式
+\[
+\boxed{\;
+M_2(m)=\Bigl(\frac{25}{324}m^2+\frac{47}{972}m+\frac{113}{729}\Bigr)2^m+\frac{m}{8}
++\Bigl(\frac{m^3}{324}-\frac{m^2}{54}-\frac{31m}{216}-\frac{113}{729}\Bigr)(-1)^m\;}
+\]
+并因此得到方差的全量闭式分解
+\[
+\Var(H_m)=\frac{67}{972}m+\frac{112}{729}
++2^{-m}\Bigl(\frac{1}{54}-\frac{m}{72}+\Bigl(\frac{m^3}{324}+\frac{m^2}{81}-\frac{19m}{648}-\frac{83}{486}\Bigr)(-1)^m\Bigr)
+\]
+\[
+\qquad\qquad
+-2^{-2m}\Bigl(\frac{1}{16}-\Bigl(\frac{m}{36}+\frac{23}{216}\Bigr)(-1)^m+\Bigl(\frac{m}{18}+\frac{23}{108}\Bigr)^2\Bigr),
+\]
+其中主导涨落项为 \(\frac{67}{972}m+\frac{112}{729}\)，而全部有限尺寸偏离被压缩为两条严格指数尺度 \(2^{-m}\) 与 \(2^{-2m}\) 并携带交替相位。
+\end{conclusion}
+\begin{proof}[证明要点（对 \(Z_m(y)\) 递推作二次微分）]
+注意 \(M_2(m)=Z_m''(1)+Z_m'(1)\)。
+对结论 \ref{con:xi-terminal-zm-order4-rational} 的递推作二次微分并在 \(y=1\) 处取值，即得到 \(Z_m''(1)\) 的常系数递推；
+再结合结论 \ref{con:xi-terminal-zm-m1-closed} 给出的 \(Z_m'(1)\) 闭式，可推出 \(M_2(m)\) 与 \(\Var(H_m)\) 的所示表达。
+上述恒等式可由脚本 \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py} 复核。证毕。
+\end{proof}
+
+\begin{conclusion}[任意阶原始矩的湮灭律：\texorpdfstring{$(E-2)^{r+1}(E-1)^r(E+1)^{2r}$}{(E-2)^{r+1}(E-1)^r(E+1)^{2r}}]\label{con:xi-terminal-zm-mr-annihilator}
+对整数 \(r\ge 0\)，定义原始矩分子
+\[
+M_r(m):=\sum_{x\in X_m}|x|_1^r\,d_m(x)\in\ZZ\qquad(m\ge 0).
+\]
+则序列 \(m\mapsto M_r(m)\) 满足常系数齐次递推，其最小湮灭多项式整除
+\[
+(E-2)^{r+1}(E-1)^r(E+1)^{2r},
+\]
+其中 \(E\) 为右移算子 \((Ea)(m)=a(m+1)\)。
+等价地，存在多项式 \(P_r,Q_r,R_r\in\QQ[m]\) 使得对所有 \(m\ge 0\)
+\[
+M_r(m)=2^m P_r(m)+Q_r(m)+(-1)^m R_r(m),
+\]
+并且次数界为
+\[
+\deg P_r=r,\qquad \deg Q_r\le r-1,\qquad \deg R_r\le 2r-1.
+\]
+该结构把全部有限尺寸复杂性压缩为三条谱通道 \(2,1,-1\) 的有限阶 Jordan 叠加，从而任意阶矩在 \(m\) 上不仅存在极限律，而且具有全阶有限闭式展开。
+\end{conclusion}
+\begin{proof}[证明要点（谱通道与有限维扰动）]
+由结论 \ref{con:xi-terminal-zm-order4-rational} 的“有限维带权转移矩阵”表示，
+\(\{Z_m(y)\}\) 可写为固定维数矩阵 \(T(y)\) 的矩阵元；于是 \(M_r(m)\) 是该表示在 \(y=1\) 的有限阶导数所产生的线性组合。
+在 \(y=1\) 时主多项式分解 \(\Pi(\lambda,1)=(\lambda-2)(\lambda-1)(\lambda+1)^2\) 给出三条谱通道；
+有限阶导数仅提升相应 Jordan 阶数，从而得到所示湮灭多项式整除关系与三通道分解。
+对 \(r\le 3\) 的直接代入核验与符号回归可由脚本 \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py} 完成。证毕。
+\end{proof}
+
+\begin{conclusion}[单位长度累积量的有理累积塔：所有极限累积量皆属 \texorpdfstring{$\QQ$}{Q}]\label{con:xi-terminal-zm-cumulant-rational}
+令 \(\kappa_r(H_m)\) 为 \(H_m\) 的第 \(r\) 阶累积量（cumulant）。
+则极限
+\[
+\kappa_r^\infty:=\lim_{m\to\infty}\frac{1}{m}\kappa_r(H_m)
+\]
+对每个整数 \(r\ge 1\) 存在，且满足 \(\kappa_r^\infty\in\QQ\)。
+其生成机制可取为：令 \(\lambda_+(y)\) 表示特征方程 \(\Pi(\lambda,y)=0\) 在 \(y=1\) 的邻域内满足 \(\lambda_+(1)=2\) 的解析特征支，
+并定义
+\[
+\psi(s):=\log\lambda_+(e^s)-\log 2.
+\]
+则 \(\psi\) 在 \(s=0\) 的泰勒系数全为有理数，且
+\(
+\kappa_r^\infty=\psi^{(r)}(0)
+\)。
+前四阶显式为
+\[
+\kappa_1^\infty=\frac{5}{18},\qquad
+\kappa_2^\infty=\frac{67}{972},\qquad
+\kappa_3^\infty=-\frac{22}{2187},\qquad
+\kappa_4^\infty=-\frac{1763}{157464}.
+\]
+因此标准化极限偏度与超额峰度分别为
+\[
+\gamma_1=\frac{\kappa_3^\infty}{(\kappa_2^\infty)^{3/2}}\approx -0.5558544555,\qquad
+\gamma_2=\frac{\kappa_4^\infty}{(\kappa_2^\infty)^2}\approx -2.3564268211.
+\]
+\end{conclusion}
+\begin{proof}[证明要点（隐函数定理与系数域闭合）]
+由结论 \ref{con:xi-terminal-zm-lln-clt}，极限对数矩母函数为 \(\psi(s)\)。
+由于 \(\Pi(\lambda,y)\in\ZZ[\lambda,y]\) 且 \(\partial_\lambda\Pi(2,1)\neq 0\)，隐函数定理给出 \(\lambda_+(y)\) 在 \(y=1\) 邻域的解析展开；
+逐阶比较系数可知其系数落在 \(\QQ\) 中，进而 \(\psi(s)=\log\lambda_+(e^s)-\log 2\) 的泰勒系数同属 \(\QQ\)。
+累积量密度 \(\kappa_r^\infty\) 等于 \(\psi^{(r)}(0)\) 为标准结论；显式分数可由符号微分回收，
+并可由脚本 \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py} 复核。证毕。
+\end{proof}
+
+\begin{conclusion}[三阶累积量的有限尺寸闭式：仿射主项与三层指数修正]\label{con:xi-terminal-zm-kappa3-finite-closed}
+令 \(\kappa_3(H_m)\) 为 \(H_m\) 的第三阶累积量，则对一切整数 \(m\ge 1\) 有精确分解
+\[
+\kappa_3(H_m)= -\frac{22}{2187}m+\frac{52}{19683}
++2^{-m}\mathcal P_1\!\bigl(m,(-1)^m\bigr)
++2^{-2m}\mathcal P_2\!\bigl(m,(-1)^m\bigr)
++2^{-3m}\mathcal P_3\!\bigl(m,(-1)^m\bigr),
+\]
+其中每个 \(\mathcal P_j(\cdot,\cdot)\) 都可写成“偶/奇”二扇区可分离的形式
+\(
+\mathcal P_j(m,\varepsilon)=A_j(m)+\varepsilon B_j(m)
+\)
+（\(A_j,B_j\) 为有理系数多项式）。
+三层修正可取为
+\[
+\mathcal P_1(m,\varepsilon)=\Bigl(\frac{m^2}{1728}+\frac{151m}{1728}-\frac{293}{10368}\Bigr)
++\varepsilon\Bigl(-\frac{m^5}{12960}+\frac{7m^4}{15552}+\frac{41m^3}{11664}-\frac{487m^2}{46656}-\frac{2699m}{77760}+\frac{2407}{279936}\Bigr),
+\]
+\[
+\mathcal P_2(m,\varepsilon)=\Bigl(\frac{m^4}{1944}+\frac{47m^3}{11664}+\frac{35m^2}{11664}-\frac{143m}{3888}-\frac{269}{2187}\Bigr)
++\varepsilon\Bigl(-\frac{m^3}{432}-\frac{5m^2}{432}+\frac{7m}{432}+\frac{34}{243}\Bigr),
+\]
+\[
+\mathcal P_3(m,\varepsilon)=\Bigl(\frac{m^2}{216}+\frac{23m}{648}+\frac{193}{1944}\Bigr)
++\varepsilon\Bigl(-\frac{m^3}{2916}-\frac{23m^2}{5832}-\frac{629m}{17496}-\frac{15617}{157464}\Bigr).
+\]
+因此三阶非高斯性在单位长度尺度上呈严格线性斜率 \(-22/2187\)，且其全部有限尺寸偏离被压缩为三层指数尺度 \(2^{-m},2^{-2m},2^{-3m}\) 的代数可审计修正。
+\end{conclusion}
+\begin{proof}[证明要点（由闭式矩回收累积量并分层收集）]
+由结论 \ref{con:xi-terminal-zm-m1-closed} 与结论 \ref{con:xi-terminal-zm-m2-var-closed} 得到 \(\EE[H_m]\) 与 \(\EE[H_m^2]\) 的闭式；
+并由结论 \ref{con:xi-terminal-zm-mr-annihilator} 在 \(r=3\) 的特例得到 \(\EE[H_m^3]\) 的三通道闭式。
+将三者代入
+\(\kappa_3(H_m)=\EE[H_m^3]-3\EE[H_m^2]\EE[H_m]+2\EE[H_m]^3\)，
+并把 \(2^{-m}\) 的幂次与 \((-1)^m\) 的相位逐层收集，即得到所示分解与多项式系数。
+恒等式可由脚本 \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py} 复核。证毕。
+\end{proof}
+
 \begin{conclusion}[重量分布的全局大偏差：速率函数为四次代数谱的 Legendre 变换]\label{con:xi-terminal-zm-ldp}
 定义压力函数
 \[
@@ -161,6 +319,36 @@ I(\alpha)=\sup_{s\in\RR}\bigl(s\alpha-\psi(s)\bigr).
 由结论 \ref{con:xi-terminal-zm-lln-clt}，\(\psi\) 给出极限对数矩母函数。
 在 \(\psi\) 的可微与严格凸条件下，G\"artner--Ellis 定理推出大偏差原理及其 Legendre 变换形式。
 最近解析障碍由 \(\lambda_+(y)\) 的分歧点决定，而分歧点由判别式为零刻画，见结论 \ref{con:xi-terminal-zm-discriminant-leyang}。证毕。
+\end{proof}
+
+\begin{conclusion}[重量大偏差的代数鞍点方程：倾斜参数的五次消元证书]\label{con:xi-terminal-zm-ldp-saddle-quintic}
+对 \(\alpha\in(0,\tfrac12)\)，令 \(y(\alpha)>0\) 为满足鞍点条件
+\[
+\alpha=\frac{y\,\lambda_+'(y)}{\lambda_+(y)}
+\]
+的唯一正解（\(\lambda_+\) 为结论 \ref{con:xi-terminal-zm-lln-clt} 中 \(\Pi(\lambda,y)=0\) 的主特征支）。
+则 \(y(\alpha)\) 必满足关于 \((\alpha,y)\) 的显式五次代数方程
+\[
+\begin{aligned}
+0=&\ 256\alpha^4y^5+411\alpha^4y^4-91\alpha^4y^3-379\alpha^4y^2-165\alpha^4y-32\alpha^4\\
+&-512\alpha^3y^5-566\alpha^3y^4+337\alpha^3y^3+512\alpha^3y^2+197\alpha^3y+32\alpha^3\\
+&+384\alpha^2y^5+228\alpha^2y^4-298\alpha^2y^3-214\alpha^2y^2-28\alpha^2y\\
+&-128\alpha y^5-8\alpha y^4+86\alpha y^3+16\alpha y^2-4\alpha y\\
+&+16y^5-8y^4-4y^3+y^2,
+\end{aligned}
+\]
+并且速率函数在该支上可写为
+\[
+I(\alpha)=\alpha\log y(\alpha)-\log \lambda_+\!\bigl(y(\alpha)\bigr)+\log 2.
+\]
+因此该 LDP 的鞍点求解与速率函数评估在严格意义下为有限代数可计算对象。
+\end{conclusion}
+\begin{proof}[证明要点（隐式微分 + 消元）]
+鞍点条件等价于 \(\alpha=\psi'(s)\) 与 \(y=e^s\) 的联立，从而可写为
+\(\alpha=-y\,\partial_y\Pi(\lambda,y)/(\lambda\,\partial_\lambda\Pi(\lambda,y))\) 与 \(\Pi(\lambda,y)=0\) 的共同解（其中 \(\lambda=\lambda_+(y)\)）。
+对变量 \(\lambda\) 作消元（例如取关于 \(\lambda\) 的 resultant）即可得到所示五次多项式；
+并由结论 \ref{con:xi-terminal-zm-ldp} 的 Legendre 形式推出 \(I(\alpha)\) 的鞍点表达。
+上述消元证书可由脚本 \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py} 复核。证毕。
 \end{proof}
 
 \begin{conclusion}[自反型同余通道的唯一性：仅 \(y^2+y+1=0\) 触发单位圆对称]\label{con:xi-terminal-zm-self-inversive-unique}

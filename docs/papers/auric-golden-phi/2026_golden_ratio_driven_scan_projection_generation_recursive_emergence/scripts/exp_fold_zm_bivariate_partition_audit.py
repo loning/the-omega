@@ -8,8 +8,10 @@ We verify, by exact small-m enumeration and symbolic algebra:
   - The order-4 recurrence and rational t-generating function for Z_m(y)
   - The characteristic quartic Pi(lambda,y)
   - Discriminant factorization and the real Lee–Yang boundary root
-  - LLN/CLT constants (mean and variance rate) via implicit differentiation at (lambda,y)=(2,1)
+  - LLN/CLT constants (mean/variance rates) and higher cumulant rates via the analytic branch at (lambda,y)=(2,1)
   - The local (m,k) 2D recurrence for coefficients a_{m,k}
+  - Exact finite-m closed forms for M1(m), M2(m), Var(H_m), and kappa_3(H_m)
+  - The quintic elimination certificate for the LDP saddlepoint y(alpha)
 
 Outputs (default):
   - artifacts/export/fold_zm_bivariate_partition_audit.json
@@ -22,6 +24,7 @@ import argparse
 import json
 import math
 import time
+from fractions import Fraction
 from itertools import product
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -71,6 +74,12 @@ def build_Z_polys(m_max: int, prog: Progress) -> Tuple[sp.Symbol, List[sp.Expr],
 def main() -> None:
     parser = argparse.ArgumentParser(description="Audit Z_m(y) recurrence, discriminant, and LLN/CLT constants")
     parser.add_argument("--m-max", type=int, default=12, help="Max m for exact enumeration checks (default: 12)")
+    parser.add_argument(
+        "--m-closed-max",
+        type=int,
+        default=80,
+        help="Max m for closed-form checks via differentiated recurrences (default: 80)",
+    )
     parser.add_argument("--no-output", action="store_true", help="Skip writing outputs")
     args = parser.parse_args()
 
@@ -170,6 +179,27 @@ def main() -> None:
     mean_ok = sp.simplify(mean - sp.Rational(5, 18)) == 0
     var_ok = sp.simplify(var - sp.Rational(67, 972)) == 0
 
+    # --- Higher cumulant rates via local series at y=1 ---
+    u = sp.Symbol("u")
+    c1, c2, c3, c4 = sp.symbols("c1 c2 c3 c4")
+    y_ser = y0 + u
+    lam_ser = lam0 + c1 * u + c2 * u**2 + c3 * u**3 + c4 * u**4
+    Pi_u = sp.expand(Pi.subs({lam: lam_ser, y: y_ser}).series(u, 0, 5).removeO())
+    eqs = [sp.Eq(sp.expand(Pi_u).coeff(u, k), 0) for k in range(1, 5)]
+    sol = sp.solve(eqs, [c1, c2, c3, c4], dict=True)[0]
+    lam_ser_u = sp.expand(lam_ser.subs(sol))
+
+    s = sp.Symbol("s")
+    lam_ser_s = sp.expand(lam_ser_u.subs({u: sp.exp(s) - 1}).series(s, 0, 5).removeO())
+    psi_ser = sp.expand((sp.log(lam_ser_s) - sp.log(2)).series(s, 0, 5).removeO())
+    kappa1 = sp.simplify(sp.diff(psi_ser, s, 1).subs({s: 0}))
+    kappa2 = sp.simplify(sp.diff(psi_ser, s, 2).subs({s: 0}))
+    kappa3 = sp.simplify(sp.diff(psi_ser, s, 3).subs({s: 0}))
+    kappa4 = sp.simplify(sp.diff(psi_ser, s, 4).subs({s: 0}))
+
+    kappa3_ok = sp.simplify(kappa3 + sp.Rational(22, 2187)) == 0
+    kappa4_ok = sp.simplify(kappa4 + sp.Rational(1763, 157464)) == 0
+
     # Self-inversive spot check at primitive cube root y = exp(2pi i/3)
     omega = complex(-0.5, math.sqrt(3) / 2.0)
     coeffs = [
@@ -187,13 +217,240 @@ def main() -> None:
             self_inv_ok = False
             break
 
+    # --- Exact finite-m closed forms (checked against differentiated recurrences) ---
+    if args.m_max < 3:
+        raise ValueError("--m-max must be >= 3 to seed differentiated recurrences from enumeration")
+    m_closed_max = int(max(4, args.m_closed_max))
+
+    # A_m = Z_m(1) = 2^m
+    A_m = [1 << mm for mm in range(m_closed_max + 1)]
+    B_m = [0] * (m_closed_max + 1)  # Z_m'(1)
+    C_m = [0] * (m_closed_max + 1)  # Z_m''(1)
+    D_m = [0] * (m_closed_max + 1)  # Z_m'''(1)
+
+    for mm in range(0, 4):
+        B_m[mm] = int(sp.diff(Zm[mm], y).subs({y: 1}))
+        C_m[mm] = int(sp.diff(Zm[mm], y, 2).subs({y: 1}))
+        D_m[mm] = int(sp.diff(Zm[mm], y, 3).subs({y: 1}))
+
+    for mm in range(4, m_closed_max + 1):
+        # Differentiate the order-4 recurrence at y=1 (Z_m(1)=2^m).
+        B_m[mm] = (
+            B_m[mm - 1]
+            + 3 * B_m[mm - 2]
+            + 2 * A_m[mm - 2]
+            - B_m[mm - 3]
+            - 2 * B_m[mm - 4]
+            - 3 * A_m[mm - 4]
+        )
+        C_m[mm] = (
+            C_m[mm - 1]
+            + 3 * C_m[mm - 2]
+            + 4 * B_m[mm - 2]
+            - C_m[mm - 3]
+            - 2 * C_m[mm - 4]
+            - 6 * B_m[mm - 4]
+            - 2 * A_m[mm - 4]
+        )
+        D_m[mm] = (
+            D_m[mm - 1]
+            + 3 * D_m[mm - 2]
+            + 6 * C_m[mm - 2]
+            - D_m[mm - 3]
+            - 2 * D_m[mm - 4]
+            - 9 * C_m[mm - 4]
+            - 6 * B_m[mm - 4]
+        )
+
+    def _M1_closed(mm: int) -> Fraction:
+        eps = -1 if (mm % 2 == 1) else 1
+        return (
+            (Fraction(5, 18) * mm - Fraction(1, 27)) * (1 << mm)
+            + Fraction(1, 4)
+            - (Fraction(mm, 18) + Fraction(23, 108)) * eps
+        )
+
+    def _M2_closed(mm: int) -> Fraction:
+        eps = -1 if (mm % 2 == 1) else 1
+        return (
+            (Fraction(25, 324) * mm * mm + Fraction(47, 972) * mm + Fraction(113, 729)) * (1 << mm)
+            + Fraction(mm, 8)
+            + (Fraction(mm**3, 324) - Fraction(mm * mm, 54) - Fraction(31 * mm, 216) - Fraction(113, 729)) * eps
+        )
+
+    def _Var_closed(mm: int) -> Fraction:
+        eps = -1 if (mm % 2 == 1) else 1
+        term0 = Fraction(67, 972) * mm + Fraction(112, 729)
+        term1 = Fraction(1, 2**mm) * (
+            Fraction(1, 54)
+            - Fraction(mm, 72)
+            + (Fraction(mm**3, 324) + Fraction(mm * mm, 81) - Fraction(19 * mm, 648) - Fraction(83, 486)) * eps
+        )
+        term2 = Fraction(1, 2 ** (2 * mm)) * (
+            Fraction(1, 16)
+            - (Fraction(mm, 36) + Fraction(23, 216)) * eps
+            + (Fraction(mm, 18) + Fraction(23, 108)) ** 2
+        )
+        return term0 + term1 - term2
+
+    def _kappa3_closed(mm: int) -> Fraction:
+        eps = -1 if (mm % 2 == 1) else 1
+        q1 = Fraction(1, 2**mm)
+        q2 = Fraction(1, 2 ** (2 * mm))
+        q3 = Fraction(1, 2 ** (3 * mm))
+
+        base = -Fraction(22, 2187) * mm + Fraction(52, 19683)
+        P1 = (
+            Fraction(mm * mm, 1728)
+            + Fraction(151 * mm, 1728)
+            - Fraction(293, 10368)
+            + eps
+            * (
+                -Fraction(mm**5, 12960)
+                + Fraction(7 * mm**4, 15552)
+                + Fraction(41 * mm**3, 11664)
+                - Fraction(487 * mm * mm, 46656)
+                - Fraction(2699 * mm, 77760)
+                + Fraction(2407, 279936)
+            )
+        )
+        P2 = (
+            Fraction(mm**4, 1944)
+            + Fraction(47 * mm**3, 11664)
+            + Fraction(35 * mm * mm, 11664)
+            - Fraction(143 * mm, 3888)
+            - Fraction(269, 2187)
+            + eps * (-Fraction(mm**3, 432) - Fraction(5 * mm * mm, 432) + Fraction(7 * mm, 432) + Fraction(34, 243))
+        )
+        P3 = (
+            Fraction(mm * mm, 216)
+            + Fraction(23 * mm, 648)
+            + Fraction(193, 1944)
+            + eps
+            * (
+                -Fraction(mm**3, 2916)
+                - Fraction(23 * mm * mm, 5832)
+                - Fraction(629 * mm, 17496)
+                - Fraction(15617, 157464)
+            )
+        )
+        return base + q1 * P1 + q2 * P2 + q3 * P3
+
+    def _check_closed_forms() -> Tuple[bool, List[Dict[str, object]]]:
+        fails: List[Dict[str, object]] = []
+        for mm in range(1, m_closed_max + 1):
+            M1 = Fraction(B_m[mm], 1)
+            M2 = Fraction(C_m[mm] + B_m[mm], 1)
+            E1 = Fraction(B_m[mm], A_m[mm])
+            E2 = Fraction(C_m[mm] + B_m[mm], A_m[mm])
+            Var = E2 - E1 * E1
+            M3 = Fraction(D_m[mm] + 3 * C_m[mm] + B_m[mm], 1)
+            E3 = M3 / A_m[mm]
+            k3 = E3 - 3 * E2 * E1 + 2 * E1 * E1 * E1
+
+            ok = True
+            if M1 != _M1_closed(mm):
+                ok = False
+            if M2 != _M2_closed(mm):
+                ok = False
+            if Var != _Var_closed(mm):
+                ok = False
+            if k3 != _kappa3_closed(mm):
+                ok = False
+            if not ok:
+                fails.append({"m": int(mm)})
+                if len(fails) >= 5:
+                    break
+        return (len(fails) == 0), fails
+
+    closed_ok, closed_fail_head = _check_closed_forms()
+
+    # --- Annihilator spot checks for raw moments M_r (r<=3) ---
+    def _annihilator_coeffs(r: int) -> List[int]:
+        # (E-2)^{r+1}(E-1)^r(E+1)^{2r} with integer coefficients in E^k.
+        from math import comb
+
+        def factor(c: int, n: int) -> List[int]:
+            return [comb(n, j) * ((-c) ** (n - j)) for j in range(n + 1)]
+
+        def conv(a: List[int], b: List[int]) -> List[int]:
+            out = [0] * (len(a) + len(b) - 1)
+            for i, ai in enumerate(a):
+                for j, bj in enumerate(b):
+                    out[i + j] += ai * bj
+            return out
+
+        coeff = [1]
+        coeff = conv(coeff, factor(2, r + 1))
+        coeff = conv(coeff, factor(1, r))
+        coeff = conv(coeff, factor(-1, 2 * r))
+        return coeff
+
+    def _annihilator_holds(seq: List[int], coeff: List[int]) -> bool:
+        deg = len(coeff) - 1
+        for i in range(0, len(seq) - deg):
+            s = 0
+            for k, ck in enumerate(coeff):
+                s += ck * seq[i + k]
+            if s != 0:
+                return False
+        return True
+
+    M0_seq = A_m
+    M1_seq = B_m
+    M2_seq = [C_m[mm] + B_m[mm] for mm in range(m_closed_max + 1)]
+    M3_seq = [D_m[mm] + 3 * C_m[mm] + B_m[mm] for mm in range(m_closed_max + 1)]
+    ann_ok = (
+        _annihilator_holds(M0_seq, _annihilator_coeffs(0))
+        and _annihilator_holds(M1_seq, _annihilator_coeffs(1))
+        and _annihilator_holds(M2_seq, _annihilator_coeffs(2))
+        and _annihilator_holds(M3_seq, _annihilator_coeffs(3))
+    )
+
+    # --- Quintic elimination certificate for y(alpha) ---
+    alpha = sp.Symbol("alpha")
+    Eq = alpha * lam * sp.diff(Pi, lam) + y * sp.diff(Pi, y)
+    Res = sp.resultant(Pi, Eq, lam)
+    F = (
+        256 * alpha**4 * y**5
+        + 411 * alpha**4 * y**4
+        - 91 * alpha**4 * y**3
+        - 379 * alpha**4 * y**2
+        - 165 * alpha**4 * y
+        - 32 * alpha**4
+        - 512 * alpha**3 * y**5
+        - 566 * alpha**3 * y**4
+        + 337 * alpha**3 * y**3
+        + 512 * alpha**3 * y**2
+        + 197 * alpha**3 * y
+        + 32 * alpha**3
+        + 384 * alpha**2 * y**5
+        + 228 * alpha**2 * y**4
+        - 298 * alpha**2 * y**3
+        - 214 * alpha**2 * y**2
+        - 28 * alpha**2 * y
+        - 128 * alpha * y**5
+        - 8 * alpha * y**4
+        + 86 * alpha * y**3
+        + 16 * alpha * y**2
+        - 4 * alpha * y
+        + 16 * y**5
+        - 8 * y**4
+        - 4 * y**3
+        + y**2
+    )
+    Res_poly = sp.Poly(Res, y, alpha)
+    F_poly = sp.Poly(F, y, alpha)
+    q_poly, r_poly = sp.div(Res_poly, F_poly)
+    ldp_quintic_ok = bool(r_poly.is_zero and sp.factor(q_poly.as_expr()) == -y**2)
+
     payload: Dict[str, object] = {
         "meta": {
             "script": Path(__file__).name,
             "generated_at_unix_s": float(time.time()),
             "seconds": float(time.time() - t0),
         },
-        "params": {"m_max": int(args.m_max)},
+        "params": {"m_max": int(args.m_max), "m_closed_max": int(m_closed_max)},
         "checks": {
             "recurrence_order4_polynomial_ok": rec_ok,
             "recurrence_order4_fail_head": rec_fail[:5],
@@ -204,18 +461,27 @@ def main() -> None:
             "discriminant_factorization_ok": bool(disc_ok),
             "mean_ok_5_over_18": bool(mean_ok),
             "var_ok_67_over_972": bool(var_ok),
+            "kappa3_rate_ok_neg_22_over_2187": bool(kappa3_ok),
+            "kappa4_rate_ok_neg_1763_over_157464": bool(kappa4_ok),
             "self_inversive_check_at_omega_ok": bool(self_inv_ok),
+            "closed_forms_moments_var_kappa3_ok": bool(closed_ok),
+            "closed_forms_fail_head": closed_fail_head,
+            "raw_moment_annihilators_r_le_3_ok": bool(ann_ok),
+            "ldp_saddle_quintic_resultant_ok": bool(ldp_quintic_ok),
         },
         "polynomials": {
             "Pi_lambda_y": str(Pi),
             "Disc_lambda_factor": str(disc),
             "Disc_lambda_expected": str(disc_expected),
             "cubic_branch_factor": str(cubic),
+            "ldp_saddle_quintic_F_alpha_y": str(F),
         },
         "numeric": {
             "y_LY_real_root": None if y_ly is None else float(y_ly),
             "mean": {"exact": str(mean), "float": float(sp.N(mean))},
             "var": {"exact": str(var), "float": float(sp.N(var))},
+            "kappa3_rate": {"exact": str(kappa3), "float": float(sp.N(kappa3))},
+            "kappa4_rate": {"exact": str(kappa4), "float": float(sp.N(kappa4))},
         },
         "Z_m_coeffs_a_mk_head": [
             {"m": m, "a_mk": a_mk[m][: (m + 1)]} for m in range(min(args.m_max, 8) + 1)
@@ -240,6 +506,9 @@ def main() -> None:
                 "\\[",
                 "\\psi'(0)=\\frac{5}{18},\\qquad \\psi''(0)=\\frac{67}{972}.",
                 "\\]",
+                "\\[",
+                "\\psi^{(3)}(0)=-\\frac{22}{2187},\\qquad \\psi^{(4)}(0)=-\\frac{1763}{157464}.",
+                "\\]",
                 "",
             ]
         )
@@ -250,7 +519,7 @@ def main() -> None:
         print(f"[fold-zm-audit] wrote {out_tex}", flush=True)
 
     print(
-        f"[fold-zm-audit] checks: rec={rec_ok} gen={gen_ok} disc={disc_ok} mean_ok={mean_ok} var_ok={var_ok} y_LY={y_ly}",
+        f"[fold-zm-audit] checks: rec={rec_ok} gen={gen_ok} disc={disc_ok} mean_ok={mean_ok} var_ok={var_ok} k3_ok={kappa3_ok} k4_ok={kappa4_ok} closed_ok={closed_ok} quintic_ok={ldp_quintic_ok} y_LY={y_ly}",
         flush=True,
     )
     print("[fold-zm-audit] done", flush=True)
