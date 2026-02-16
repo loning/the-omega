@@ -1,5 +1,6 @@
 % (User input window)
 % 2026-02-15 05:06:58（Asia/Singapore）
+% 2026-02-16 11:14:52（Asia/Singapore）
 
 \begin{conclusion}[纤维—重量双变量配分函数的四阶可积性：有理生成函数与常系数递推]\label{con:xi-terminal-zm-order4-rational}
 令
@@ -209,4 +210,114 @@ a_{m,k}=a_{m-1,k}+a_{m-2,k}+2a_{m-2,k-1}-a_{m-3,k}-a_{m-4,k-1}-a_{m-4,k-2}\;}
 将结论 \ref{con:xi-terminal-zm-order4-rational} 的递推式写成 \(y\)-幂级数，并比较 \(y^k\) 的系数即可得到所示二维递推；
 边界条件由黄金均值合法语法的最大 \(1\)-计数 \(\max_{x\in X_m}|x|_1=\lceil m/2\rceil\) 直接给出。证毕。
 \end{proof}
+
+\paragraph{硬边界层的精确层级：二项式基整数证书与纯极点生成函数}
+结论 \ref{con:xi-terminal-zm-2d-recurrence-amk} 的二维递推在硬边界方向（\(k\) 贴近 \(\lceil m/2\rceil\)）发生进一步的差分退化：
+固定层深 \(j\) 后，偶长与奇长的边界系数在长度参数 \(k\) 上不仅具有渐近展开，
+而是给出\emph{逐点成立}的精确多项式结构；并且其 Newton 二项式基展开自动产生可审计的整系数证书。
+
+\begin{conclusion}[硬边界系数的精确多项式化：偶长 \texorpdfstring{$m=2k$}{m=2k} 的近最大重量层仅呈代数级增长]\label{con:xi-terminal-zm-hard-boundary-even-polynomial}
+沿用结论 \ref{con:xi-terminal-zm-order4-rational} 的 \(Z_m(y)\) 记号。
+对固定整数 \(j\ge 0\)，定义偶长硬边界系数
+\[
+A_j(k):=[y^{k-j}]\,Z_{2k}(y)\qquad(k\ge 0),
+\]
+其中约定当 \(k<j\) 时 \(A_j(k)=0\)。
+则 \(A_j(k)\) 在所有整数 \(k\ge 0\) 上为精确多项式，其次数恰为 \(4j+2\)，且首项系数严格为 \(1/(4j+2)!\)。
+更进一步，\(A_j(k)\) 存在唯一的二项式基展开
+\[
+A_j(k)=\sum_{r=j}^{4j+2}c_{j,r}\binom{k}{r},\qquad c_{j,r}\in\ZZ,\ \ c_{j,4j+2}=1,
+\]
+其中约定 \(\binom{k}{r}=0\)（当 \(r>k\)）。
+因此在硬边界方向 \(k-j\) 处，推前重量剖分的每一固定层深 \(j\) 仅携带代数级前因子；
+并且当 \(j\mapsto j+1\) 时，多项式次数严格增加 \(4\)。
+\end{conclusion}
+
+\begin{conclusion}[偶长硬边界系数的前三层闭式：二项式基展开给出完全可审计的整系数证书]\label{con:xi-terminal-zm-hard-boundary-even-first3}
+在结论 \ref{con:xi-terminal-zm-hard-boundary-even-polynomial} 的记号下，前三个非平凡层（\(j=1,2,3\)）满足下列逐点恒等式（对所有整数 \(k\ge 0\) 成立）：
+\[
+\boxed{\ A_1(k)=2\binom{k}{1}+5\binom{k}{2}+9\binom{k}{3}+7\binom{k}{4}+4\binom{k}{5}+\binom{k}{6}\ }
+\]
+等价地，
+\[
+A_1(k)=\frac{k^6+9k^5+55k^4+435k^3-56k^2+996k}{720}.
+\]
+\[
+\boxed{\ A_2(k)=3\binom{k}{2}+14\binom{k}{3}+39\binom{k}{4}+59\binom{k}{5}+63\binom{k}{6}+45\binom{k}{7}+22\binom{k}{8}+7\binom{k}{9}+\binom{k}{10}\ }
+\]
+\[
+\boxed{\ A_3(k)=4\binom{k}{3}+30\binom{k}{4}+119\binom{k}{5}+273\binom{k}{6}+439\binom{k}{7}+507\binom{k}{8}+437\binom{k}{9}+283\binom{k}{10}+135\binom{k}{11}+46\binom{k}{12}+10\binom{k}{13}+\binom{k}{14}\ }.
+\]
+上述二项式基系数可由 forward-difference（Newton 级数）直接回收，因而给出无需谱计算的整数证书；
+并可由脚本 \texttt{scripts/exp\_fold\_zm\_hard\_boundary\_coeffs\_audit.py} 一键复核。
+\end{conclusion}
+
+\begin{conclusion}[硬边界系数的精确多项式化：奇长 \texorpdfstring{$m=2k+1$}{m=2k+1} 的层次数严格量子化为 \texorpdfstring{$4j$}{4j}]\label{con:xi-terminal-zm-hard-boundary-odd-polynomial}
+沿用结论 \ref{con:xi-terminal-zm-order4-rational} 的 \(Z_m(y)\) 记号。
+对固定整数 \(j\ge 0\)，定义奇长硬边界系数
+\[
+B_j(k):=[y^{k+1-j}]\,Z_{2k+1}(y)\qquad(k\ge 0),
+\]
+其中约定当 \(k<j-1\) 时 \(B_j(k)=0\)。
+则 \(B_j(k)\) 在所有整数 \(k\ge 0\) 上为精确多项式，其次数恰为 \(4j\)，且首项系数严格为 \(1/(4j)!\)。
+并且存在唯一的二项式基展开
+\[
+B_j(k)=\sum_{r=j-1}^{4j}d_{j,r}\binom{k}{r},\qquad d_{j,r}\in\ZZ,\ \ d_{j,4j}=1,
+\]
+其中约定 \(\binom{k}{r}=0\)（当 \(r>k\)）。
+在 \(j=1,2\) 时可给出完全闭式：
+\[
+\boxed{\ B_1(k)=\binom{k}{0}+4\binom{k}{1}+4\binom{k}{2}+3\binom{k}{3}+\binom{k}{4}
+=\frac{k^4+6k^3+23k^2+66k+24}{24}\ }
+\]
+\[
+\boxed{\ B_2(k)=2\binom{k}{1}+11\binom{k}{2}+23\binom{k}{3}+32\binom{k}{4}+28\binom{k}{5}+16\binom{k}{6}+6\binom{k}{7}+\binom{k}{8}\ }.
+\]
+\end{conclusion}
+
+\begin{conclusion}[硬边界大偏差的闭式前因子：边界层概率质量的严格多项式—指数分解]\label{con:xi-terminal-zm-hard-boundary-ldp-prefactor}
+令 \(w_m(x)=d_m(x)/2^m\) 为均匀微态推前分布，并令 \(X\sim w_m\)、\(H_m:=|X|_1\)。
+对固定整数 \(j\ge 1\)，存在严格闭式：
+\begin{itemize}
+  \item 偶长 \(m=2k\)：
+  \[
+  \mathbb{P}(H_{2k}=k-j)=\frac{A_j(k)}{4^k},
+  \]
+  其中 \(A_j(k)\) 为结论 \ref{con:xi-terminal-zm-hard-boundary-even-polynomial} 的次数 \(4j+2\) 多项式。
+  因而
+  \[
+  \mathbb{P}(H_{2k}=k-j)=\frac{k^{4j+2}}{(4j+2)!\,4^k}\Bigl(1+O(k^{-1})\Bigr).
+  \]
+  \item 奇长 \(m=2k+1\)：
+  \[
+  \mathbb{P}(H_{2k+1}=k+1-j)=\frac{B_j(k)}{2^{2k+1}},
+  \]
+  其中 \(B_j(k)\) 为结论 \ref{con:xi-terminal-zm-hard-boundary-odd-polynomial} 的次数 \(4j\) 多项式。
+  因而
+  \[
+  \mathbb{P}(H_{2k+1}=k+1-j)=\frac{k^{4j}}{(4j)!\,2^{2k+1}}\Bigl(1+O(k^{-1})\Bigr).
+  \]
+\end{itemize}
+上述分解表明：在最大密度边界附近，推前重量分布的指数速率保持为纯几何项 \(4^{-k}\)（或 \(2^{-(2k+1)}\)），
+而全部非平凡算术结构被压缩到一个阶乘归一化的多项式前因子之中。
+\end{conclusion}
+
+\begin{conclusion}[硬边界层生成函数的纯极点结构：极点阶恰为 \texorpdfstring{$4j+3$}{4j+3} 与 \texorpdfstring{$4j+1$}{4j+1}]\label{con:xi-terminal-zm-hard-boundary-pure-pole}
+令 \(A_j(k)\)、\(B_j(k)\) 如结论 \ref{con:xi-terminal-zm-hard-boundary-even-polynomial} 与结论 \ref{con:xi-terminal-zm-hard-boundary-odd-polynomial}，
+并记其普通生成函数
+\[
+\mathcal A_j(t):=\sum_{k\ge 0}A_j(k)t^k,\qquad \mathcal B_j(t):=\sum_{k\ge 0}B_j(k)t^k.
+\]
+则二者均为有理函数，且极点阶严格量子化为
+\[
+\mathcal A_j(t)=\frac{P_j(t)}{(1-t)^{4j+3}},\qquad
+\mathcal B_j(t)=\frac{Q_j(t)}{(1-t)^{4j+1}},
+\]
+其中 \(P_j,Q_j\in\ZZ[t]\)。
+例如对 \(j=1\)（偶长第一硬边界层）有完全闭式
+\[
+\boxed{\ \mathcal A_1(t)=\frac{2t-5t^2+9t^3-10t^4+7t^5-2t^6}{(1-t)^7}\ }.
+\]
+因此硬边界层不仅在系数层面为精确多项式，其整生成函数亦呈现单一纯极点的最简解析结构。
+\end{conclusion}
 
