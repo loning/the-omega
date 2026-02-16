@@ -1,0 +1,108 @@
+% (User input window)
+% 日期与时间：2026-02-17 02:25:40（Asia/Singapore）
+
+\begin{conclusion}[分支点倍乘的 Lee--Yang 近平方特化：\texorpdfstring{$y=6,21$}{y=6,21} 的平方因子与四次谱方程线性裂解]\label{con:xi-terminal-zm-branchpoint-doubling-leyang-nearsquare-specializations}
+令 Lee--Yang 三次因子
+\[
+P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32.
+\]
+沿用结论 \ref{con:xi-terminal-zm-elliptic-mw-generator-alignment} 的记号（\(Q_0=[2]R\)、\(Q_0'=[3]R\) 为 \(y=0,1\) 上的有理分支点），则其倍点在重量坐标上的取值满足
+\[
+y([2]Q_0)=6,\qquad y([2]Q_0')=21.
+\]
+并且出现完全显式的“近平方”特化
+\[
+P_{\mathrm{LY}}(6)=2\cdot 37\cdot 31^{2},\qquad P_{\mathrm{LY}}(21)=4\cdot 11\cdot 241^{2}.
+\]
+等价地，判别式核在这两点处可抽出完整平方因子：
+\[
+-6\cdot 5\cdot P_{\mathrm{LY}}(6)= -555\cdot(2\cdot 31)^{2},\qquad
+-21\cdot 20\cdot P_{\mathrm{LY}}(21)= -1155\cdot(4\cdot 241)^{2}.
+\]
+同时，四次谱方程 \(\Pi(\lambda,y)=0\) 在对应纤维上发生一次线性裂解：
+\[
+\Pi(\lambda,6)=(\lambda-2)(\lambda^{3}+\lambda^{2}-11\lambda-21),\qquad
+\Pi(\lambda,21)=(\lambda-6)(\lambda^{3}+5\lambda^{2}-13\lambda-77).
+\]
+上述恒等式把“分支点倍乘”与“Lee--Yang 判别式核的平方分解”以两组完全显式整数分解连接起来，为后续局部域分析（尤其是坏素数与平方类控制）提供最短算术入口。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-elliptic-mw-generator-alignment} 的低倍点坐标直接计算 \(y([4]R)\)、\(y([6]R)\) 即得 \(6,21\)；其余分解由在 \(\ZZ\) 中代入并因式分解得到。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_mw\_height\_denominator\_growth\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[判别式二次脊曲线的雅可比簇在 \texorpdfstring{$\QQ$}{Q} 上为简单阿贝尔曲面：不可约 Frobenius 多项式证书]\label{con:xi-terminal-zm-discriminant-ridge-jacobian-qsimple}
+考虑属 \(2\) 曲线
+\[
+C:\ w^{2}=-y(y-1)P_{\mathrm{LY}}(y).
+\]
+对好素数 \(p\notin\{2,3,31,37\}\) 记其局部 \(L\)-多项式为
+\[
+L_{p}(T)=1-a_{1}T+a_{2}T^{2}-a_{1}pT^{3}+p^{2}T^{4}.
+\]
+则以下局部数据成立（给出 \(\#C(\FF_p)\)、\(\#C(\FF_{p^{2}})\) 与分解形态）：
+\begin{itemize}
+  \item \(p=5\)：\(\#C(\FF_{5})=5\)、\(\#C(\FF_{25})=33\)，且 \(L_{5}(T)=(5T^{2}-3T+1)(5T^{2}+2T+1)\)；
+  \item \(p=7\)：\(\#C(\FF_{7})=5\)、\(\#C(\FF_{49})=61\)，且 \(L_{7}(T)=(7T^{2}-4T+1)(7T^{2}+T+1)\)；
+  \item \(p=11\)：\(\#C(\FF_{11})=6\)、\(\#C(\FF_{121})=130\)，且 \(L_{11}(T)=(11T^{2}+1)(11T^{2}-6T+1)\)；
+  \item \(p=13\)：\(\#C(\FF_{13})=14\)、\(\#C(\FF_{169})=166\)，且 \(L_{13}(T)=169T^{4}-2T^{2}+1\) 在 \(\ZZ[T]\) 中不可约；
+  \item \(p=17\)：\(\#C(\FF_{17})=15\)、\(\#C(\FF_{289})=337\)，且 \(L_{17}(T)=289T^{4}-51T^{3}+28T^{2}-3T+1\) 在 \(\ZZ[T]\) 中不可约。
+\end{itemize}
+由 \(p=13\)（亦可取 \(p=17\)）处 \(L_{p}(T)\) 在 \(\ZZ[T]\) 不可约可推出：
+雅可比簇 \(J(C)\) 在 \(\QQ\) 上不存在非平凡分解（不含任何 \(\QQ\)-椭圆因子），即 \(J(C)\) 为 \(\QQ\)-简单阿贝尔曲面。
+\end{conclusion}
+\begin{proof}[证明要点]
+由点数关系
+\(
+a_1=p+1-\#C(\FF_p)
+\)
+与
+\(
+\#C(\FF_{p^2})=p^2+1-(a_1^2-2a_2)
+\)
+可由 \(\#C(\FF_p)\)、\(\#C(\FF_{p^2})\) 唯一回收 \(L_p(T)\)；
+若 \(J(C)\) 在 \(\QQ\) 上分解，则对几乎所有好素数 \(p\) 其约化的 Frobenius 多项式必相应分解，故任一好素数处出现不可约 \(L_p(T)\) 即排除 \(\QQ\)-分解。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_discriminant\_ridge\_jacobian\_frobenius\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$S_4$}{S4} 伽罗瓦闭包曲线的属、子群塔与全纯微分的表示分解：\texorpdfstring{$g=16$}{g=16} 与 \texorpdfstring{$H^{0}(\Omega^{1})$}{H0(Omega1)} 的不可约谱]\label{con:xi-terminal-zm-s4-galois-closure-genus-tower-holomorphic-differentials}
+设 \(\widetilde{X}\to\mathbb{P}^{1}_{y}\) 为四次覆盖 \(\Pi(\lambda,y)=0\) 的 \(S_{4}\) 伽罗瓦闭包（\(|S_{4}|=24\)）。
+其分歧循环类型为：在 \(y=\infty\) 处惯性阶 \(4\)，在 \(y=0,1\) 及 \(P_{\mathrm{LY}}(y)=0\) 的三根处惯性阶均为 \(2\)。
+由 Riemann--Hurwitz 公式得到闭式属数
+\[
+g(\widetilde{X})=16.
+\]
+并且存在三条结构刚性的中间商曲线
+\[
+\widetilde{X}/A_{4}=C\ \ (g=2),\qquad \widetilde{X}/V_{4}=C_{6}\ \ (g=4),\qquad \widetilde{X}/S_{3}=E\ \ (g=1),
+\]
+其中 \(C\) 的函数域即为 \(\QQ\bigl(y,\sqrt{-y(y-1)P_{\mathrm{LY}}(y)}\bigr)\)，可取为上式判别式二次脊曲线；
+而 \(E\) 正是结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的椭圆归一化曲线。
+由于全部惯性阶均与 \(3\) 互素，诱导出一条无分歧的循环三次覆盖
+\[
+\pi:\ C_{6}\longrightarrow C,\qquad \mathrm{Gal}(C_{6}/C)\cong C_{3}.
+\]
+进一步地，\(\widetilde{X}\) 的全纯微分空间作为 \(S_{4}\)-表示具有完全显式分解
+\[
+H^{0}(\widetilde{X},\Omega^{1})\ \cong\ 2\cdot \mathrm{sgn}\ \oplus\ V_{2}\ \oplus\ V_{3}\ \oplus\ 3V_{3}',
+\]
+其中 \(\mathrm{sgn}\) 为符号表示，\(V_{2}\) 为唯一二维不可约表示，\(V_{3},V_{3}'\) 为两条三维不可约表示。
+于是雅可比簇在 \(\QQ\) 上诱导出分解（至 \(\QQ\)-同源意义）
+\[
+J(\widetilde{X})\ \sim\ A_{\mathrm{sgn}}\times A_{2}\times A_{3}\times A_{3'},
+\]
+其维数分别为 \((2,2,3,9)\)（总维数 \(16\)）。
+并且 \(\mathrm{sgn}\)-等型因子满足 \(A_{\mathrm{sgn}}\sim J(C)\)，同时 \(J(C_{6})\sim J(C)\times A_{2}\)。
+从而“判别式二次脊的简单阿贝尔曲面”被结构性嵌入到 \(S_{4}\) 伽罗瓦闭包的表示谱之中，给出从 Lee--Yang 判别核通向高属 \(S_{4}\) 动力学闭包的全局算术通道。
+\end{conclusion}
+\begin{proof}[证明要点]
+属数由
+\(
+g=1+\frac{|S_4|}{2}\bigl(-2+\sum(1-1/e_i)\bigr)
+\)
+直接代入惯性阶集合 \(e_\infty=4\)、其余五点 \(e_i=2\) 得到。
+中间商的函数域由 \(S_4\) 的标准子群格（\(A_4\lhd S_4\)、\(V_4\lhd A_4\)）与判别式二次子域的唯一性给出，且 \(C_6\to C\) 的无分歧性由惯性阶与 \(3\) 互素推出。
+表示分解可由等式 \(\dim H^{0}(\widetilde{X},\Omega^{1})^{H}=g(\widetilde{X}/H)\)（对 \(H=S_4,A_4,V_4,S_3\)）结合 \(S_4\) 角色表解出不可约重数，因而完全刚性。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_s4\_galois\_closure\_representation\_audit.py}。证毕。
+\end{proof}
+

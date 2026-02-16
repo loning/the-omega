@@ -1,0 +1,86 @@
+% (User input window)
+% 日期与时间：2026-02-17 02:25:40（Asia/Singapore）
+
+\begin{conclusion}[最小模型的 Mordell--Weil 自由生成元与分支纤维的低倍点对齐：\texorpdfstring{$(R,Q_0,Q_0',P)$}{(R,Q0,Q0',P)} 的统一表示]\label{con:xi-terminal-zm-elliptic-mw-generator-alignment}
+考虑最小整 Weierstrass 模型
+\[
+E_0:\ y_0^2+y_0=x^3-x,
+\]
+其与结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的短模型 \(E\) 由 \(X=x\)、\(Y=y_0+\tfrac12\) 互相对应。
+由该曲线的标准 Mordell--Weil 数据（Cremona 标记 \(37\mathrm{a}1\)，见 \url{https://www.lmfdb.org/EllipticCurve/Q/37/a/1}），
+\(E_0(\QQ)\) 无挠且 \(\mathrm{rank}=1\)，可取自由生成元 \(R_0=(0,0)\)。
+记其在 \(E(\QQ)\) 中对应点为
+\[
+R=(0,\tfrac12).
+\]
+则存在完全显式的低倍关系
+\[
+[2]R=\left(1,\tfrac12\right)=:Q_0,\qquad
+[3]R=\left(-1,-\tfrac12\right)=:Q_0',\qquad
+[4]R=\left(2,-\tfrac52\right)=-P,
+\]
+其中 \(P=(2,\tfrac52)\) 为结论 \ref{con:xi-terminal-zm-elliptic-rational-points-denominator-law} 的物理基点。
+并且
+\(
+y(Q_0)=0,\ y(Q_0')=1
+\)，
+且 \(-Q_0=(1,-\tfrac12)\)、\(-Q_0'=(-1,\tfrac12)\) 分别给出 \(y=1\) 与 \(y=0\) 纤维上的另一条有理点。
+结合结论 \ref{con:xi-terminal-zm-elliptic-normalization} 中 \(\mathrm{div}(y)\)、\(\mathrm{div}(y-1)\) 的二重纤维点可见，
+\(Q_0\) 与 \(Q_0'\) 正是覆盖 \(y:E\to\mathbb P^1_y\) 在 \(y=0,1\) 处的有理分支点。
+因此 \((R,Q_0,Q_0',P)\) 作为同一自由生成元轨道上的低倍点组，给出“生成元—分支纤维—物理基点”的统一表示。
+\end{conclusion}
+\begin{proof}[证明要点]
+倍点与加法公式可直接核对所示坐标恒等式；分支点身份由结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的除子证书（\(y=0\) 在 \(X=1\) 处二重、\(y=1\) 在 \(X=-1\) 处二重）给出。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_mw\_height\_denominator\_growth\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[标准 N\'eron--Tate 高度的高精度常数与严格倍乘标度：可引用的数值证书]\label{con:xi-terminal-zm-elliptic-nt-height-scaling}
+沿用结论 \ref{con:xi-terminal-zm-elliptic-mw-generator-alignment} 的记号。
+在 LMFDB 的标准 N\'eron--Tate 规范化下（同一曲线 \(37\mathrm{a}1\) 的高度/调节子页面：\url{https://www.lmfdb.org/EllipticCurve/Q/37a1/}），生成元 \(R_0=(0,0)\) 的标准高度为
+\[
+\hat h(R)=\hat h(R_0)=0.05111140815411797\ldots,
+\]
+并与该曲线秩一调节子一致。
+由二次性 \(\hat h([n]P)=n^2\hat h(P)\) 及 \(Q_0=[2]R\)、\(Q_0'=[3]R\)、\(P=-[4]R\) 得
+\[
+\hat h(Q_0)=4\hat h(R)=0.2044456326164719\ldots,
+\]
+\[
+\hat h(Q_0')=9\hat h(R)=0.46000267338706174\ldots,
+\]
+\[
+\hat h(P)=16\hat h(R)=0.8177825304658876\ldots.
+\]
+上述常数为后续分母增长、局部高度与轨道尺度化计算提供统一标尺。
+\end{conclusion}
+
+\begin{conclusion}[分母序列的二次标度与重量分母的四次提升：以 \texorpdfstring{$\hat h(P)$}{hhat(P)} 为极限常数的增长律]\label{con:xi-terminal-zm-elliptic-denominator-growth-nt-height}
+对任意 \(n\ge 1\) 将
+\(
+x(nP)=u_n/v_n^2
+\)
+写为既约形式（\(v_n\in\ZZ_{>0}\)），并沿用结论 \ref{con:xi-terminal-zm-elliptic-rational-points-denominator-law} 的重量坐标 \(y(nP)\)。
+则仍有严格同位
+\[
+\mathrm{den}\bigl(y(nP)\bigr)=v_n^4.
+\]
+并且由标准高度与对数高度的比较理论，分母增长满足二次尺度律（以自然对数计）
+\[
+\lim_{n\to\infty}\frac{1}{n^{2}}\log\bigl(v_n^{2}\bigr)=\hat h(P),\qquad
+\lim_{n\to\infty}\frac{1}{n^{2}}\log\bigl(\mathrm{den}(y(nP))\bigr)=2\hat h(P).
+\]
+在 \(n=1,\dots,12\) 时，\(v_n\) 的显式值为
+\[
+( v_n )_{n=1}^{12}=(1,\ 5,\ 29,\ 65,\ 16264,\ 2382785,\ 398035821,\ 43244638645,\ 124106986093951,\ 541051130050800400,\ 2591758672670554328449,\ 10358960321661880987253845),
+\]
+并且 \(\log(v_n)/n^2\) 在 \(n=8,9,10,11,12\) 上分别为
+\[
+0.3826584234\ldots,\ 0.4006440135\ldots,\ 0.4083229017\ldots,\ 0.4074927572\ldots,\ 0.3999992646\ldots,
+\]
+已围绕极限常数 \(\hat h(P)/2=0.4088912652329438\ldots\) 振荡收敛，形成“标准高度—分母增长”的可审计数值证书。
+\end{conclusion}
+\begin{proof}[证明要点]
+极限律来自 N\'eron--Tate 高度与对数 Weil 高度的二次等价；显式分母与比值可由倍乘轨道直接计算并复核。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_mw\_height\_denominator\_growth\_audit.py}。证毕。
+\end{proof}
+
