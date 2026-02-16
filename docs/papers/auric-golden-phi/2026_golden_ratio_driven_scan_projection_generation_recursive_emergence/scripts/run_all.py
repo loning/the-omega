@@ -780,6 +780,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_newman_linear_response_constant",
+            script="exp_collision_kernel_A4_newman_linear_response_constant.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_linear_response_constant.json",
+                "sections/generated/eq_collision_kernel_A4_newman_linear_response_constant.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_charpoly_quadratic_field_class_number",
             script="exp_collision_kernel_A4_charpoly_quadratic_field_class_number.py",
             args=[],
@@ -1242,6 +1251,33 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/pom_multiplicity_lambdaq_taylor_q0_constants.json",
                 "sections/generated/eq_pom_multiplicity_lambdaq_taylor_q0_constants.tex",
+            ],
+        ),
+        Step(
+            name="pom_diagonal_rate_scalar_collapse_audit",
+            script="exp_pom_diagonal_rate_scalar_collapse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_scalar_collapse_audit.json",
+                "sections/generated/eq_pom_diagonal_rate_scalar_collapse_audit.tex",
+            ],
+        ),
+        Step(
+            name="pom_diagonal_rate_two_orbit_cubic_audit",
+            script="exp_pom_diagonal_rate_two_orbit_cubic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_two_orbit_cubic_audit.json",
+                "sections/generated/eq_pom_diagonal_rate_two_orbit_cubic_audit.tex",
+            ],
+        ),
+        Step(
+            name="pom_diagonal_rate_coarsegrain_tensor_bounds_audit",
+            script="exp_pom_diagonal_rate_coarsegrain_tensor_bounds_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_coarsegrain_tensor_bounds_audit.json",
+                "sections/generated/eq_pom_diagonal_rate_coarsegrain_tensor_bounds_audit.tex",
             ],
         ),
         Step(
@@ -2651,6 +2687,33 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_bivariate_partition_audit.json",
                 "sections/generated/eq_fold_zm_bivariate_partition_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_leyang_arithmetic_audit",
+            script="exp_fold_zm_elliptic_leyang_arithmetic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_leyang_arithmetic_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_leyang_arithmetic_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_lattes_rational_points_audit",
+            script="exp_fold_zm_elliptic_lattes_rational_points_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_lattes_rational_points_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_lattes_rational_points_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_trace_galois_audit",
+            script="exp_fold_zm_trace_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_trace_galois_audit.json",
+                "sections/generated/eq_fold_zm_trace_galois_audit.tex",
             ],
         ),
         Step(

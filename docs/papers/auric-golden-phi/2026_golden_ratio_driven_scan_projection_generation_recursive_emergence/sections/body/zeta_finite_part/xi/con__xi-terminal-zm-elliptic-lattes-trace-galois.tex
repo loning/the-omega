@@ -1,0 +1,264 @@
+% (User input window)
+% 2026-02-16 22:24:58（Asia/Singapore）
+
+\begin{conclusion}[重量谱椭圆曲线上的倍乘—Latt\`es 自映射：\texorpdfstring{$x([2]P)$}{x([2]P)} 的闭式四次有理函数]\label{con:xi-terminal-zm-elliptic-lattes-doubling}
+在结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的椭圆模型
+\[
+E:\ Y^2=X^3-X+\frac14
+\]
+上，记倍乘映射 \([2]:E\to E\)，并令 \(x:E\to\mathbb P^1\) 为 \(x\)-坐标函数 \(x(P)=X\)。
+则 \(x\circ[2]\) 在仿射坐标 \(X\) 上诱导一个四次 Latt\`es 自映射 \(\Phi\in\QQ(X)\)：
+\[
+\boxed{\;
+\Phi(X):=x([2]P)=\frac{X^4+2X^2-2X+1}{4X^3-4X+1}\; }.
+\]
+其分母
+\(
+4X^3-4X+1
+=4\bigl(X^3-X+\tfrac14\bigr)
+=4Y^2
+\)
+等价于 \(E\) 的 \(2\)-division 条件 \(Y=0\)（从而恰为 \(x\)-坐标的 \(2\)-division 多项式）。
+此外，\(\Phi\) 的临界点由显式六次方程给出：
+\[
+\boxed{\;
+\Phi'(X)=0
+\ \Longleftrightarrow\
+2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1=0\; }.
+\]
+因此倍乘动力学的临界结构在纯代数意义下完全可审计，并给出后续“分歧—局部场—相变”分析的最短动力学入口。
+\end{conclusion}
+\begin{proof}[证明要点]
+对短 Weierstrass 曲线 \(Y^2=X^3+aX+b\)（此处 \(a=-1,b=1/4\)），倍点公式给出
+\[
+x([2]P)=\left(\frac{3X^2+a}{2Y}\right)^{\!2}-2X.
+\]
+代入并用 \(4Y^2=4X^3-4X+1\) 化简，即得所示 \(\Phi(X)\)。
+对 \(\Phi=N/D\)（\(N=X^4+2X^2-2X+1\)、\(D=4X^3-4X+1\)）直接求导并清分母，
+\(
+\Phi'(X)=0\iff N'D-ND'=0
+\)，化简得到所示六次多项式。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_lattes\_rational\_points\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[重量参数的二次扩张与判别式的椭圆化：\(y\) 在 \texorpdfstring{$\QQ(X)$}{Q(X)} 上的最小多项式]\label{con:xi-terminal-zm-y-quadratic-extension-minpoly}
+沿用结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的坐标约定（\(X=\lambda,\ Y=w/2\)，且 \(y=(2X^2-1-2Y)/2\)）。
+令物理主支的重量参数取为
+\[
+\boxed{\;
+y:=X^2-Y-\frac12\ \in\ \QQ(E)\; }.
+\]
+则 \(y\) 在 \(\QQ(X)\) 上满足严格二次最小多项式
+\[
+\boxed{\;
+y^2-(2X^2-1)\,y+X(X-1)^2(X+1)=0\; }.
+\]
+其判别式恰为
+\[
+\boxed{\;
+(2X^2-1)^2-4X(X-1)^2(X+1)
+=4X^3-4X+1
+=4Y^2\; }.
+\]
+因此重量参数的双支共轭由椭圆反演 \(\iota:(X,Y)\mapsto(X,-Y)\) 给出：
+\[
+y^{\iota}=(2X^2-1)-y
+=X^2+Y-\frac12,
+\qquad
+yy^{\iota}=X(X-1)^2(X+1).
+\]
+从而“重量变量—谱变量”的非线性耦合在函数域层面被压缩为一个二次扩张与其椭圆判别式，结构上完全刚性。
+\end{conclusion}
+\begin{proof}[证明要点]
+由定义 \(Y=X^2-y-\frac12\)，代入曲线方程 \(Y^2=X^3-X+\frac14\) 并展开化简，得到所示二次多项式。
+判别式恒等式由直接展开验证，并用 \(4Y^2=4X^3-4X+1\) 改写即可。
+共轭与乘积恒等式来自二次方程两根之和与两根之积。证毕。
+\end{proof}
+
+\begin{conclusion}[重量椭圆曲线的有理点结构：\texorpdfstring{$E(\QQ)_{\mathrm{tors}}=\{O\}$}{E(Q)\_tors={O}}，且物理点为无限阶]\label{con:xi-terminal-zm-elliptic-rational-points-denominator-law}
+在 \(E:\ Y^2=X^3-X+\frac14\) 上，有理挠点群为平凡群
+\[
+\boxed{\;E(\QQ)_{\mathrm{tors}}=\{O\}\; }.
+\]
+特别地，点
+\[
+P=\left(2,\frac52\right)\in E(\QQ)
+\qquad(\text{等价地 }-P=(2,-\tfrac52))
+\]
+为无限阶点，并满足 \(y(P)=1\)（其中 \(y\) 为结论 \ref{con:xi-terminal-zm-y-quadratic-extension-minpoly} 的物理主支）。
+写
+\(
+x(nP)=u_n/v_n^2
+\)
+为既约形式（\(v_n\in\ZZ_{>0}\)），则 \(v_n\) 构成一条椭圆分母序列，并且由
+\(
+y=X^2-Y-\tfrac12
+\)
+得到严格整性尺度律：
+\[
+\boxed{\;
+y(nP)\in\QQ,\qquad \mathrm{den}\bigl(y(nP)\bigr)=v_n^{4}\; }.
+\]
+前六项可取为（列出 \(v_n\) 与 \(y(nP)\)）：
+\[
+\begin{array}{c|cccccc}
+n & 1 & 2 & 3 & 4 & 5 & 6\\ \hline
+v_n & 1 & 5 & 29 & 65 & 16264 & 2382785\\
+y(nP)
+& 1
+& \dfrac{96}{625}
+& \dfrac{2679201}{707281}
+& \dfrac{252115165246}{17850625}
+& \dfrac{162231294668143481}{69969611497148416}
+& \dfrac{2533325779202487675774201}{32235872541947843696250625}
+\end{array}
+\]
+从而“重量自由能的椭圆化”进一步提升为一条可直接进行局部—整体诊断的有理点动力学：同一物理点的倍乘轨道在分母上携带严格的四次幂尺度。
+\end{conclusion}
+\begin{proof}[证明要点]
+（i）挠点平凡性可由有限多个良约化素数 \(p\nmid\Delta(E)=37\) 的模 \(p\) 群阶作 gcd 审计：由约化注入
+\(
+E(\QQ)_{\mathrm{tors}}\hookrightarrow E(\mathbb F_p)
+\)
+知 \(|E(\QQ)_{\mathrm{tors}}|\) 整除 \(\gcd_p \#E(\mathbb F_p)\)；
+对若干小素数计算得到该 gcd 等于 \(1\)，从而 \(E(\QQ)_{\mathrm{tors}}\) 只能为平凡群。
+（ii）点 \(P\neq O\) 因而必为无限阶。
+（iii）令 \(x(nP)=u_n/v_n^2\)、\(Y(nP)=r_n/v_n^3\) 为既约表示，则
+\(
+y(nP)=x(nP)^2-Y(nP)-\tfrac12
+\)
+的分母整除 \(v_n^4\)；
+对该轨道可核验得到精确等号 \(\mathrm{den}(y(nP))=v_n^4\)，并可回收所示前六项。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_lattes\_rational\_points\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[重量配分函数的域迹表示：分母仅由 Lee--Yang 三次因子控制]\label{con:xi-terminal-zm-field-trace-representation}
+沿用结论 \ref{con:xi-terminal-zm-order4-rational} 的记号，令
+\[
+\Pi(\lambda,y):=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1),
+\qquad
+P_{\mathrm{LY}}(y):=256y^3+411y^2+165y+32.
+\]
+记 \(K:=\QQ(y)(\lambda)\)（其中 \(\lambda\) 为 \(\Pi(\lambda,y)=0\) 的一根），并令
+\(
+s_m(y):=\mathrm{Tr}_{K/\QQ(y)}(\lambda^m)
+=\sum_{i=1}^{4}\lambda_i(y)^m
+\)
+为四根的幂和（Newton 幂和）。
+则存在唯一的元素 \(u(\lambda)\in K\)，其在基 \(\{1,\lambda,\lambda^2,\lambda^3\}\) 下的代表可取为三次多项式
+\[
+u(\lambda)=a_0(y)+a_1(y)\lambda+a_2(y)\lambda^2+a_3(y)\lambda^3,
+\]
+使得对一切 \(m\ge 0\) 有严格域迹表示
+\[
+\boxed{\;
+Z_m(y)=\mathrm{Tr}_{K/\QQ(y)}\!\bigl(u(\lambda)\lambda^m\bigr)\; }.
+\]
+并且 \(u\) 的系数可显式取为
+\[
+\boxed{\;
+a_0(y)=\frac{-19y^3-75y^2-42y-8}{P_{\mathrm{LY}}(y)},\qquad
+a_2(y)=\frac{87y^2+48y+9}{P_{\mathrm{LY}}(y)}\; } ,
+\]
+\[
+\boxed{\;
+a_1(y)=\frac{80y^4-20y^3-82y^2-42y-8}{y\,P_{\mathrm{LY}}(y)},\qquad
+a_3(y)=\frac{-16y^3+49y^2+31y+8}{y\,P_{\mathrm{LY}}(y)}\; } .
+\]
+因此尽管 \(Z_m(y)\in\ZZ[y]\) 为整系数多项式，其“谱投影权”在函数域上只可能在
+\(
+y=0
+\)
+与
+\(
+P_{\mathrm{LY}}(y)=0
+\)
+处出现极点；这为 Lee--Yang 分歧点在代数层面的不可避免性给出一条直接证书。
+\end{conclusion}
+\begin{proof}[证明要点]
+对未知 \(u=b_0+b_1\lambda+b_2\lambda^2+b_3\lambda^3\in K\)，有恒等式
+\[
+\mathrm{Tr}(u\lambda^m)=b_0\,s_m+b_1\,s_{m+1}+b_2\,s_{m+2}+b_3\,s_{m+3}.
+\]
+由于 \(m\mapsto Z_m(y)\) 与 \(m\mapsto s_m(y)\) 均满足由 \(\Pi(\lambda,y)\) 诱导的同一四阶递推，故只需对 \(m=0,1,2,3\) 匹配即可唯一确定 \((b_0,\dots,b_3)\)；
+解线性系统并化简即可得到所示 \(a_i(y)\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_trace\_galois\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[清分母后的可审计整式恒等式：\texorpdfstring{$yP_{\mathrm{LY}}(y)Z_m$}{yP(y)Z\_m} 为幂和的整系数组合]\label{con:xi-terminal-zm-integral-identity-power-sums}
+在结论 \ref{con:xi-terminal-zm-field-trace-representation} 的记号下，乘以 \(yP_{\mathrm{LY}}(y)\) 可将域迹公式提升为整式恒等式：对一切 \(m\ge 0\) 有
+\[
+\boxed{\;
+yP_{\mathrm{LY}}(y)\,Z_m(y)
+=A_0(y)\,s_m(y)+A_1(y)\,s_{m+1}(y)+A_2(y)\,s_{m+2}(y)+A_3(y)\,s_{m+3}(y)\;}
+\]
+其中系数多项式为
+\[
+\boxed{\;
+\begin{aligned}
+A_0(y)&=-19y^4-75y^3-42y^2-8y,\\
+A_1(y)&=80y^4-20y^3-82y^2-42y-8,\\
+A_2(y)&=87y^3+48y^2+9y,\\
+A_3(y)&=-16y^3+49y^2+31y+8.
+\end{aligned}}
+\]
+该恒等式把“重量计数”（左端）与“谱幂和”（右端）在整系数层面直接对接，并将所有潜在的解析障碍压缩为显式代数集合 \(yP_{\mathrm{LY}}(y)=0\)。
+\end{conclusion}
+\begin{proof}
+将结论 \ref{con:xi-terminal-zm-field-trace-representation} 的 \(a_i(y)\) 代入
+\(
+\mathrm{Tr}(u\lambda^m)=a_0 s_m+a_1 s_{m+1}+a_2 s_{m+2}+a_3 s_{m+3}
+\)，并清分母即可得到。证毕。
+\end{proof}
+
+\begin{conclusion}[重量四次谱方程的泛型伽罗瓦群为 \texorpdfstring{$S_4$}{S4}：显式三次分解式与判别式同一性]\label{con:xi-terminal-zm-generic-galois-s4}
+把 \(\Pi(\lambda,y)\) 视为关于 \(\lambda\) 的四次多项式。
+其三次分解式（cubic resolvent）可取为
+\[
+\boxed{\;
+R(z,y)
+=z^3+(1+2y)z^2-(1+4y+4y^2)z-(1+5y+13y^2+8y^3)\; }.
+\]
+其判别式满足严格恒等式
+\[
+\boxed{\;
+\mathrm{Disc}_{z}\bigl(R(\cdot,y)\bigr)
+=-y(y-1)\,P_{\mathrm{LY}}(y)\; } ,
+\]
+并且与四次谱方程的判别式完全一致：
+\[
+\boxed{\;
+\mathrm{Disc}_{z}\bigl(R(\cdot,y)\bigr)
+=\mathrm{Disc}_{\lambda}\bigl(\Pi(\cdot,y)\bigr)\; } .
+\]
+在任一良特化（例如 \(y=2\)）下，\(R(z,2)\) 在 \(\QQ\) 上不可约且其判别式非平方，
+从而 \(\Pi(\lambda,y)\) 在 \(\QQ(y)\) 上的泛型伽罗瓦群为
+\[
+\boxed{\;\mathrm{Gal}\bigl(\Pi/\QQ(y)\bigr)\cong S_4.\;}
+\]
+因此重量谱四次方程在函数域意义下达到最大对称复杂性，而其唯一二次分辨率由 \(-y(y-1)P_{\mathrm{LY}}(y)\) 锁定，直接连接到 Lee--Yang 分歧集合。
+\end{conclusion}
+\begin{proof}[证明要点]
+分解式 \(R(z,y)\) 与判别式恒等式可由直接符号计算得到，并与结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的判别式分解一致。
+若在某特化 \(y=y_0\) 下 \(R(z,y_0)\) 在 \(\QQ[z]\) 上不可约，则 \(R\) 在 \(\QQ(y)[z]\) 上不可约；
+对不可约四次而言，三次分解式不可约将伽罗瓦群约束为 \(\{A_4,S_4\}\)；
+而判别式非平方排除 \(A_4\)，故必为 \(S_4\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_trace\_galois\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[“椭圆—\texorpdfstring{$S_4$}{S4}—Lee--Yang”三重对偶：同一判别式同时支配归一化分歧与分裂域二次脊柱]\label{con:xi-terminal-zm-elliptic-s4-leyang-triple-duality}
+曲线 \(\Pi(\lambda,y)=0\) 的几何归一化为椭圆曲线 \(E\)（结论 \ref{con:xi-terminal-zm-elliptic-normalization}），
+而同一四次谱方程在 \(\QQ(y)\) 上具有 \(S_4\) 伽罗瓦群（结论 \ref{con:xi-terminal-zm-generic-galois-s4}）。
+两者在判别式层面被同一多项式
+\[
+-y(y-1)\,P_{\mathrm{LY}}(y)
+\]
+同时支配：
+\begin{enumerate}
+  \item 作为几何对象，它给出投影 \(\pi:E\to\mathbb P^1_y\) 的分歧除子（见结论 \ref{con:xi-terminal-zm-leyang-cubic-branch-image} 与结论 \ref{con:xi-terminal-zm-discriminant-leyang}）；
+  \item 作为代数对象，它给出 \(S_4\) 分裂域的唯一二次分辨率子域 \(\QQ\bigl(\sqrt{-y(y-1)P_{\mathrm{LY}}(y)}\bigr)\)。
+\end{enumerate}
+因此 Lee--Yang 三次因子 \(P_{\mathrm{LY}}(y)\) 并非“热力学支的偶发奇点”，而是一个同时控制椭圆归一化的分歧几何与四次分裂域二次脊柱的共同判别式核；
+从而把“解析临界”与“伽罗瓦分辨率”在结构上锁定为同一条不可约代数数据。
+\end{conclusion}
+
