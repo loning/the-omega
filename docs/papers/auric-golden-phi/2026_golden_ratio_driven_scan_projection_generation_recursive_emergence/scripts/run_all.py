@@ -2728,6 +2728,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_leyang_cover_geometry_audit",
+            script="exp_fold_zm_elliptic_leyang_cover_geometry_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_leyang_cover_geometry_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_lattes_rational_points_audit",
             script="exp_fold_zm_elliptic_lattes_rational_points_audit.py",
             args=[],
