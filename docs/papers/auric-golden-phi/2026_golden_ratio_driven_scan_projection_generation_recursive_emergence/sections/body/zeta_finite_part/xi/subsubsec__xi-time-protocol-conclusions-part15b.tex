@@ -3,6 +3,7 @@
 % 2026-02-16 11:14:52（Asia/Singapore）
 % 2026-02-16 11:43:20（Asia/Singapore）
 % 日期与时间：2026-02-17 01:52:00（Asia/Singapore）
+% 日期与时间：2026-02-17 02:25:40（Asia/Singapore）
 
 \begin{conclusion}[纤维—重量双变量配分函数的四阶可积性：有理生成函数与常系数递推]\label{con:xi-terminal-zm-order4-rational}
 令
@@ -45,6 +46,34 @@ Z_m(y)=Z_{m-1}(y)+(2y+1)Z_{m-2}(y)-Z_{m-3}(y)-y(y+1)Z_{m-4}(y)\;}
 将 \(t\)-生成函数在 \(t=0\) 处展开并与初值匹配，即得到所示闭式分子与分母；
 上述恒等式与后续的判别式/统计常数可由脚本 \texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py} 一键复核。证毕。
 \end{proof}
+
+\begin{conclusion}[有限窗 Sturm 实根交错：\texorpdfstring{$m\le 60$}{m<=60} 时 \texorpdfstring{$Z_m(y)$}{Z_m(y)} 的负实根性]\label{con:xi-terminal-zm-sturm-real-roots-interlacing-m60}
+对每个整数 \(1\le m\le 60\)，多项式 \(Z_m(y)\in\ZZ[y]\) 具有 \(\lceil m/2\rceil\) 个互异实根，且全部位于 \((-\infty,0)\)。
+并且对每个 \(0\le m\le 58\)，\(Z_m\) 与 \(Z_{m+2}\) 的零点集合严格交错；因此固定奇偶类的两条子序列 \(\{Z_{2k}\}_{k\ge 0}\) 与 \(\{Z_{2k+1}\}_{k\ge 0}\)（在该核验窗内）各自形成一条 Sturm 实根链。
+\par
+上述核验可由脚本 \texttt{scripts/exp\_fold\_zm\_sturm\_real\_roots\_audit.py} 复算，其输出证书为 \texttt{artifacts/export/fold\_zm\_sturm\_real\_roots\_audit.json}。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-order4-rational} 的四阶递推可在 \(\ZZ[y]\) 中逐步生成 \(Z_m(y)\)。
+脚本对核验窗内每个 \(Z_m\) 作高精度求根并检查：
+（i）全部根的虚部在数值容许阈值内消失，从而根全为实数；
+（ii）由于系数非负且常数项非零，实根必落在 \((-\infty,0)\)，并进一步核验互异性；
+（iii）对同奇偶类的 \(m\mapsto m+2\) 根集逐项检验严格交错不等式链。证毕。
+\end{proof}
+
+\begin{conjecture}[全尺度 Sturm 实根交错]\label{conj:xi-terminal-zm-sturm-real-roots-interlacing}
+对任意 \(m\ge 1\)，多项式 \(Z_m(y)\) 的零点全部为互异负实根，并且对任意 \(m\ge 0\)，\(Z_m\) 与 \(Z_{m+2}\) 的零点集合严格交错。
+\end{conjecture}
+
+\begin{remark}[一种结构性证明路线]\label{rem:xi-terminal-zm-sturm-proof-route}
+记系数表 \(a_{m,k}:=[y^k]Z_m(y)\)。
+若能把 \(\{Z_m(y)\}\) 实现为某个平面网络的路径权和（等价地，某个带状全正矩阵/振荡矩阵的主子式链），则全正性与 Sturm 理论可推出负实根性与交错。
+本体系中已核验的二维局域递推
+\[
+a_{m,k}=a_{m-1,k}+a_{m-2,k}+2a_{m-2,k-1}-a_{m-3,k}-a_{m-4,k-1}-a_{m-4,k-2}
+\]
+为构造上述网络/矩阵实现提供直接代数入口。
+\end{remark}
 
 \begin{conclusion}[最小状态复杂度与退化点：除 \(y\in\{0,-1,1\}\) 外 Hankel 秩恰为 \(4\)]\label{con:xi-terminal-zm-hankel-rank4}
 沿用结论 \ref{con:xi-terminal-zm-order4-rational} 的记号，并记

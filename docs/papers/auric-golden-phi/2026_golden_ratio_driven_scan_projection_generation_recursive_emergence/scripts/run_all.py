@@ -2698,6 +2698,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_sturm_real_roots_audit",
+            script="exp_fold_zm_sturm_real_roots_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_sturm_real_roots_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_audit",
             script="exp_fold_zm_elliptic_audit.py",
             args=[],
