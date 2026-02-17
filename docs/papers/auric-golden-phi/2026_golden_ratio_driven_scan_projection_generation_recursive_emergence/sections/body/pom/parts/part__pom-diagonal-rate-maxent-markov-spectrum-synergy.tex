@@ -183,6 +183,169 @@ u_\delta u_\delta^{\mathsf T}=A_\delta^2(\pi_\delta\otimes\pi_\delta)
 将两部分视作对 \(J\) 的条件分布并按权重边缘化即可得到潜变量生成模型。证毕。
 \end{proof}
 
+\paragraph{Laguerre--世俗谱压缩与谱侧反演}
+当 \(\delta\in(0,\delta_0)\)（\(\delta_0:=1-\sum_{x\in X}w(x)^2\)）时，最优对偶参数满足 \(\kappa_\delta>0\)。
+在定理 \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum} 的规范下（即 \(P^\star_\delta=u_\delta u_\delta^{\mathsf T}+\kappa_\delta\mathrm{diag}(u_\delta^2)\) 且 \(\sum_{x,y}P^\star_\delta(x,y)=1\)），
+由边缘自洽关系
+\(
+w(x)=u_\delta(x)\bigl(A_\delta+\kappa_\delta u_\delta(x)\bigr)
+\)
+（其中 \(A_\delta:=\sum_{y\in X}u_\delta(y)\)）
+可引入一组等价的正参数
+\[
+t_x:=\kappa_\delta+\frac{A_\delta}{u_\delta(x)}
+=\frac{A_\delta+\kappa_\delta u_\delta(x)}{u_\delta(x)}
+=\frac{w(x)}{u_\delta(x)^2}\qquad(x\in X),
+\]
+使得世俗方程可进一步压缩为单个次数 \(n:=|X|\) 的多项式。
+
+\begin{theorem}[Laguerre--世俗谱定理：最优核谱由 \(z\mathcal P_\delta'(z)+\kappa_\delta\mathcal P_\delta(z)\) 的实根刻画]\label{thm:pom-maxent-markov-laguerre-secular-spectrum}
+取全支撑分布 \(w\in\Delta(X)\)（\(n:=|X|\ge 2\)）并固定 \(\delta\in(0,\delta_0)\)。
+令 \(P^\star_\delta,K^\star_\delta,u_\delta,\kappa_\delta,A_\delta\) 与 \(t_x\) 如上定义，并记
+\[
+\mathcal P_\delta(z):=\prod_{x\in X}(t_x-z),\qquad
+\mathcal Q_\delta(z):=z\,\mathcal P_\delta'(z)+\kappa_\delta\,\mathcal P_\delta(z).
+\]
+则成立：
+\begin{enumerate}
+  \item 对任意 \(\lambda\in\CC\setminus\{0\}\)，\(\lambda\) 是 \(K^\star_\delta\)（等价地 \(S_\delta\)）的特征值当且仅当
+  \(
+  z:=\kappa_\delta/\lambda
+  \)
+  是 \(\mathcal Q_\delta\) 的零点；对应关系为 \(\lambda=\kappa_\delta/z\)。
+  特别地，平凡特征值 \(\lambda_1=1\) 对应零点 \(z=\kappa_\delta\)，并满足恒等式
+  \[
+  \mathcal P_\delta(\kappa_\delta)+\mathcal P_\delta'(\kappa_\delta)=0
+  \qquad\Longleftrightarrow\qquad
+  \sum_{x\in X}\frac{1}{t_x-\kappa_\delta}=1.
+  \]
+  \item 若 \(t_x\) 两两不同并按升序排列为 \(t_{(1)}<\cdots<t_{(n)}\)，则 \(\mathcal Q_\delta\) 的全部零点均为实数且严格落在 \((0,\max_x t_x)\) 内，并与 \(\{t_{(k)}\}_{k=1}^{n}\) 严格交错：\(\mathcal Q_\delta\) 在 \((0,t_{(1)})\) 与每个 \((t_{(k)},t_{(k+1)})\)（\(k=1,\dots,n-1\)）内各恰有一个零点。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 \(w(x)=t_xu_\delta(x)^2\) 得 \(a_\delta(x)^2=u_\delta(x)^2/w(x)=1/t_x\)，并且
+\(
+d_x=\kappa_\delta a_\delta(x)^2=\kappa_\delta/t_x
+\)。
+将其代入定理 \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum} 的世俗方程
+\(
+1+\sum_x a_\delta(x)^2/(d_x-\lambda)=0
+\)
+可化为
+\[
+1+\sum_{x\in X}\frac{1}{\kappa_\delta-\lambda t_x}=0.
+\]
+令 \(z:=\kappa_\delta/\lambda\)（\(\lambda\ne 0\)），则 \(\kappa_\delta-\lambda t_x=\lambda(z-t_x)\)，从而上式等价于
+\[
+\sum_{x\in X}\frac{1}{t_x-z}=\frac{\kappa_\delta}{z}.
+\]
+注意 \(\mathcal P_\delta'(z)/\mathcal P_\delta(z)=-\sum_x\frac{1}{t_x-z}\)，遂得到
+\(
+z\mathcal P_\delta'(z)+\kappa_\delta\mathcal P_\delta(z)=0
+\)，即所述谱--根对应。
+由于 \(K^\star_\delta\) 为马尔可夫核，\(\lambda_1=1\) 必为特征值；代入 \(z=\kappa_\delta\) 即得 \(\sum_x (t_x-\kappa_\delta)^{-1}=1\)，而由 \(t_x-\kappa_\delta=A_\delta/u_\delta(x)\) 直接验证该恒等式成立。
+\par
+为证明实根性与交错性，设 \(t_x\) 两两不同并按升序排列为 \(t_{(1)}<\cdots<t_{(n)}\)，考虑函数 \(F(z):=\sum_x (t_x-z)^{-1}\)。
+其在每个开区间 \((0,t_{(1)})\) 与 \((t_{(k)},t_{(k+1)})\)（\(k=1,\dots,n-1\)）上连续且严格递增，并在端点处发散；
+右端函数 \(G(z):=\kappa_\delta/z\) 在 \((0,\infty)\) 上严格递减。
+因此方程 \(F(z)=G(z)\) 在上述每个区间内恰有一个解，且解不可能落在 \((-\infty,0]\) 或 \([\max t_x,\infty)\)（符号相反）。
+合计得到 \(n\) 个互异实根，从而 \(\mathcal Q_\delta\) 的零点全实且逐区间唯一，并与 \(\{t_{(k)}\}\) 严格交错。证毕。
+\end{proof}
+
+\begin{corollary}[\(\zeta_\delta\) 行列式的单多项式缩放]\label{cor:pom-maxent-markov-zeta-determinant-single-polynomial}
+在定理 \ref{thm:pom-maxent-markov-laguerre-secular-spectrum} 的设定下，定义
+\[
+\zeta_\delta(z):=\det(I-zK^\star_\delta)^{-1}.
+\]
+则对任意 \(z\in\CC\) 成立严格恒等式
+\[
+\det(I-zK^\star_\delta)=\frac{1}{\kappa_\delta\,\mathcal P_\delta(0)}\,\mathcal Q_\delta(\kappa_\delta z),
+\qquad
+\mathcal P_\delta(0)=\prod_{x\in X}t_x.
+\]
+因此 \(\zeta_\delta\) 为有理函数，其全部极点皆为实数且非负，并且零点集合恰为 \(\{\kappa_\delta^{-1}z_i\}\)，其中 \(\{z_i\}\) 为 \(\mathcal Q_\delta\) 的零点。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-maxent-markov-laguerre-secular-spectrum}，设 \(\{z_i\}_{i=1}^n\) 为 \(\mathcal Q_\delta\) 的零点（含重数），则 \(K^\star_\delta\) 的特征值为 \(\lambda_i=\kappa_\delta/z_i\)。
+因此
+\[
+\det(I-zK^\star_\delta)=\prod_{i=1}^n\Bigl(1-z\frac{\kappa_\delta}{z_i}\Bigr)=\frac{\prod_i(z_i-\kappa_\delta z)}{\prod_i z_i}.
+\]
+另一方面，\(\mathcal Q_\delta\) 的常数项为 \(\mathcal Q_\delta(0)=\kappa_\delta\mathcal P_\delta(0)\)，并且 \(\mathcal Q_\delta(0)=\mathrm{lc}(\mathcal Q_\delta)\prod_i(-z_i)\)；
+据此得到 \(\prod_i z_i=\kappa_\delta\mathcal P_\delta(0)/(n+\kappa_\delta)\) 与
+\(
+\mathcal Q_\delta(\kappa_\delta z)=(n+\kappa_\delta)\prod_i(z_i-\kappa_\delta z)
+\)。
+合并即得 \(\det(I-zK^\star_\delta)=\mathcal Q_\delta(\kappa_\delta z)/(\kappa_\delta\mathcal P_\delta(0))\)；在 \(z=0\) 处两边均为 \(1\)，故恒等式无额外符号。
+极点与零点陈述由有限维谱分解 \(\det(I-zK^\star_\delta)=\prod_i(1-z\lambda_i)\) 直接推出。证毕。
+\end{proof}
+
+\begin{theorem}[单次谱观测的反演：由 \((\kappa_\delta,\mathrm{Spec}(K^\star_\delta))\) 重构 \(w\)]\label{thm:pom-maxent-markov-spectrum-single-shot-inversion}
+固定 \(\delta\in(0,\delta_0)\)，并设已知该 \(\delta\) 的对偶参数 \(\kappa_\delta>0\) 以及最优核的特征值多重集
+\(
+\mathrm{Spec}(K^\star_\delta)=\{1=\lambda_1,\lambda_2,\dots,\lambda_n\}
+\)。
+令
+\[
+\mathcal Q(z):=(-1)^n(n+\kappa_\delta)\prod_{i=1}^{n}\Bigl(z-\frac{\kappa_\delta}{\lambda_i}\Bigr)
+=:\sum_{m=0}^{n}q_m z^m.
+\]
+定义次数 \(n\) 多项式
+\[
+\mathcal P(z):=\sum_{m=0}^{n}\frac{q_m}{m+\kappa_\delta}\,z^m,
+\]
+则 \(\mathcal P\) 唯一满足 Euler--Cauchy 方程
+\[
+z\mathcal P'(z)+\kappa_\delta \mathcal P(z)=\mathcal Q(z),
+\]
+并且 \(\mathcal P\) 的根多重集恰为定理 \ref{thm:pom-maxent-markov-laguerre-secular-spectrum} 的 \(\{t_x\}_{x\in X}\)（至重排）。
+在此基础上，分布 \(w\)（至标签置换）由闭式有理公式唯一确定：
+\[
+w(x)=\frac{\dfrac{t_x}{(t_x-\kappa_\delta)^2}}{\sum_{y\in X}\dfrac{t_y}{(t_y-\kappa_\delta)^2}}.
+\]
+并且若 \(w(x)\ge w(y)\)，则必有 \(t_x\le t_y\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-maxent-markov-laguerre-secular-spectrum}，\(\mathcal Q_\delta\) 的零点集合恰为 \(\{\kappa_\delta/\lambda_i\}\)。
+因此以该根集合构造的多项式 \(\prod_i(z-\kappa_\delta/\lambda_i)\) 与 \(\mathcal Q_\delta\) 仅差一个首项系数；
+而 \(\mathcal Q_\delta\) 的首项系数为 \((-1)^n(n+\kappa_\delta)\)，故所定义的 \(\mathcal Q\) 与 \(\mathcal Q_\delta\) 一致。
+\par
+对 Euler--Cauchy 方程，若写 \(\mathcal P(z)=\sum_{m=0}^{n}p_m z^m\)，则
+\(
+z\mathcal P'(z)+\kappa_\delta\mathcal P(z)=\sum_{m=0}^{n}(m+\kappa_\delta)p_m z^m
+\)。
+因此系数逐项解唯一给出 \(p_m=q_m/(m+\kappa_\delta)\)，即所示 \(\mathcal P\)；
+由唯一性知该 \(\mathcal P\) 必等于定理 \ref{thm:pom-maxent-markov-laguerre-secular-spectrum} 的 \(\mathcal P_\delta\)，从而其根多重集即为 \(\{t_x\}\)（至重排）。
+\par
+最后，由 \(t_x-\kappa_\delta=A_\delta/u_\delta(x)\) 得 \(u_\delta(x)=A_\delta/(t_x-\kappa_\delta)\)，并由边缘关系
+\(
+w(x)=u_\delta(x)\bigl(A_\delta+\kappa_\delta u_\delta(x)\bigr)
+=t_xu_\delta(x)^2
+\)
+得到
+\[
+w(x)=A_\delta^2\,\frac{t_x}{(t_x-\kappa_\delta)^2}.
+\]
+对 \(x\) 求和并用 \(\sum_x w(x)=1\) 得 \(A_\delta^2=\Bigl(\sum_y \frac{t_y}{(t_y-\kappa_\delta)^2}\Bigr)^{-1}\)，代回即得闭式重构公式。
+若 \(w(x)\ge w(y)\)，由命题 \ref{prop:pom-diagonal-rate-scaling-keep-comonotone} 可知 \(u_\delta(x)\ge u_\delta(y)\)，从而 \(t_x-\kappa_\delta=A_\delta/u_\delta(x)\le A_\delta/u_\delta(y)=t_y-\kappa_\delta\)，即 \(t_x\le t_y\)。证毕。
+\end{proof}
+
+\begin{corollary}[谱--信息不变量的完备性]\label{cor:pom-maxent-markov-spectrum-rate-complete-invariant}
+对任意两全支撑分布 \(w,v\in\Delta(X)\)，若存在某个 \(\delta\in(0,\min\{\delta_0(w),\delta_0(v)\})\) 使得
+\[
+R_w'(\delta)=R_v'(\delta),
+\qquad
+\mathrm{Spec}\bigl(K_{\delta}^{\star,w}\bigr)=\mathrm{Spec}\bigl(K_{\delta}^{\star,v}\bigr)
+\]
+（两谱作为多重集相同），则 \(w=v\)（至标签置换）。
+反之，若 \(w=v\)，则对任意 \(\delta\) 上述两者恒相同。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的敏感性公式 \(R_w'(\delta)=-\log(1+\kappa_\delta)\) 可由 \(R_w'(\delta)\) 唯一恢复 \(\kappa_\delta\)。
+再由定理 \ref{thm:pom-maxent-markov-spectrum-single-shot-inversion}，\((\kappa_\delta,\mathrm{Spec}(K^\star_\delta))\) 唯一确定 \(w\)（至标签置换），从而得到完备性。
+反向命题由定义与最优解唯一性直接推出。证毕。
+\end{proof}
+
 \begin{corollary}[无振荡性与两端谱塌缩]\label{cor:pom-maxent-markov-no-oscillation-endpoints}
 令 \(\delta_0:=1-p_2(w)=1-\sum_{x\in X}w(x)^2\)。
 则对任意 \(\delta\in[0,\delta_0]\)，最优核 \(K^\star_\delta\) 在 \(\ell^2(w)\) 上的全部特征值均属于区间 \([0,1]\)。
