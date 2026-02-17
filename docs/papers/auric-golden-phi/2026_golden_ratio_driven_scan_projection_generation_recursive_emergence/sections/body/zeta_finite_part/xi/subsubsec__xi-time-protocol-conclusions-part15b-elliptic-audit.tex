@@ -1,6 +1,7 @@
 % (User input window)
 % 2026-02-16 23:01:42（Asia/Singapore）
 % 2026-02-16 23:49:51（Asia/Singapore）
+% 日期与时间：2026-02-17 04:02:34（Asia/Singapore）
 
 \paragraph{椭圆统一化的可审计推导骨架：倍点 Latt\`es、二次扩张判别式与四次谱分裂域}
 结论 \ref{con:xi-terminal-zm-order4-rational}--\ref{con:xi-terminal-zm-discriminant-leyang} 给出的四次谱方程、判别式分解与域迹实现，
@@ -94,6 +95,60 @@ N'D-ND'
 故 \(\psi_{4}/(2Y)=0\) 等价于 \(P\in\mathcal{E}[4]\setminus\mathcal{E}[2]\)，从而得到 \(\mathrm{Crit}(\Phi)\) 的 \(4\)-division 证书；
 临界值陈述来自 \([2](\mathcal{E}[4])=\mathcal{E}[2]\)。
 以上恒等式均可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_audit.py} 逐项复核。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$\Phi$}{Phi} 的临界纤维在二分点域上的完全平方分解：四分点范数公式与临界像的配对律]\label{con:xi-terminal-zm-lattes-critical-fiber-square-splitting}
+令
+\[
+D(X):=4X^{3}-4X+1,
+\]
+并取 \(\alpha\) 为 \(D\) 的任一根（于是 \((\alpha,0)\in\mathcal{E}[2]\setminus\{O\}\)）。
+定义
+\[
+q_{\alpha}(X):=X^{2}-2\alpha X+(1-2\alpha^{2})\in \QQ(\alpha)[X].
+\]
+则在 \(\QQ(\alpha)[X]\) 中存在严格恒等式
+\[
+\bigl(X^{4}+2X^{2}-2X+1\bigr)-\alpha\bigl(4X^{3}-4X+1\bigr)=q_{\alpha}(X)^{2}.
+\]
+从而 \(\Phi^{-1}(\alpha)\subset\mathbb{P}^{1}\) 恰由 \(q_{\alpha}\) 的两根给出，并且两根均为临界点（在 \(\alpha\) 上的局部分歧指标皆为 \(2\)）；
+亦即 \(\alpha\) 的全前像为“二个临界点、各重 \(2\)”的完全分歧纤维。
+\par
+进一步，记临界六次多项式
+\[
+C_{\Phi}(X):=2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1.
+\]
+则在 \(\QQ[X]\) 中满足范数恒等式
+\[
+\boxed{\;
+C_{\Phi}(X)=2\,\operatorname{Norm}_{\QQ(\alpha)/\QQ}\!\bigl(q_{\alpha}(X)\bigr)\;}
+\]
+（右端对任一 \(\alpha\) 的选择均成立）。
+因此 \(C_{\Phi}(X)/2\) 在 \(\overline{\QQ}\) 中分解为三组二次因子，每一组对应某一非平凡二分点 \((\alpha,0)\)；
+且该组的两根恰为映至 \(\alpha\) 的那一对临界点。
+等价地，\(C_{\Phi}(X)/2\) 与结论 \ref{con:xi-terminal-zm-lattes-4division-certificate} 的 \(\psi_{4}/(2Y)\) 一致，
+从而 \(\mathrm{Crit}(\Phi)\) 与 \(\mathcal{E}[4]\setminus\mathcal{E}[2]\) 在 \(\pm 1\) 商下严格对应。
+\end{conclusion}
+\begin{proof}[证明要点]
+写 \(\Phi=N/D\)，其中
+\(
+N(X)=X^{4}+2X^{2}-2X+1
+\)
+与
+\(
+D(X)=4X^{3}-4X+1
+\)。
+对任意 \(\alpha\) 满足 \(D(\alpha)=0\)，将 \(q_{\alpha}(X)^{2}\) 展开并对系数中出现的 \(\alpha^{3}\) 用恒等式 \(4\alpha^{3}=4\alpha-1\)（即 \(D(\alpha)=0\)）消元，即得所示平方分解。
+由 \(N(X)-\alpha D(X)=q_{\alpha}(X)^{2}\) 可知 \(\Phi(X)-\alpha=(q_{\alpha}(X)/D(X))^{2}\)，故 \(q_{\alpha}\) 的零点皆为 \(\Phi\) 在 \(\alpha\) 上的二重前像点，从而为临界点且分歧指标为 \(2\)。
+\par
+范数恒等式来自对三次扩张 \(\QQ(\alpha)/\QQ\) 取范数：
+\(
+\operatorname{Norm}_{\QQ(\alpha)/\QQ}(q_{\alpha}(X))=\prod_{\alpha'}q_{\alpha'}(X)
+\),
+其中乘积遍历 \(D(\alpha')=0\) 的三根。
+将该乘积视为关于参数 \(\alpha\) 的结式即可在 \(\QQ[X]\) 中得到一个六次整式；
+与结论 \ref{con:xi-terminal-zm-lattes-4division-certificate} 的临界六次 \(C_{\Phi}(X)\) 对齐并核对首项，得到系数常数为 \(2\)。
+上述恒等式可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_audit.py} 逐项复核。证毕。
 \end{proof}
 
 \begin{conclusion}[重量坐标的二次扩张判别式与四次谱方程的函数域实现]\label{con:xi-terminal-zm-elliptic-quadratic-discriminant}
@@ -403,6 +458,21 @@ P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32\in\ZZ[y].
   \]
   其中第二个多项式来自在分歧约束 \(4\lambda Y+3\lambda^{2}-1=0\) 下的恒等式 \(4\lambda y=4\lambda^{3}-3\lambda^{2}-2\lambda+1\)。
 \end{enumerate}
+\par
+由 \(\deg(y)=4\) 与 \(g(\mathcal{E})=1\) 的 Riemann--Hurwitz 恒等式知总分歧度必须为 \(8\)。
+其中 \(O\) 在 \(\infty\) 上方全分歧贡献 \(e_O-1=3\)，其余五个有限分歧值因此必为单分歧（各贡献 \(1\)），
+从而该覆盖的 Hurwitz 分歧签名为 \((2,2,2,2,2,4)\)。
+\par
+此外，两个有理分歧值的纤维在 \(\QQ\) 上完全显式：
+\[
+y^{-1}(0)=\Bigl\{(0,\tfrac12),\ (-1,-\tfrac12),\ \underbrace{(1,-\tfrac12)}_{e=2}\Bigr\},
+\qquad
+y^{-1}(1)=\Bigl\{(2,-\tfrac52),\ (1,\tfrac12),\ \underbrace{(-1,\tfrac12)}_{e=2}\Bigr\},
+\]
+并且
+\(
+y^{-1}(\infty)=\{\underbrace{O}_{e=4}\}
+\)。
 \end{conclusion}
 \begin{proof}[证明要点]
 由 \(y=\lambda^{2}+Y-\tfrac12\) 得

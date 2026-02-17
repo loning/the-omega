@@ -2721,6 +2721,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_elliptic_weight_doubling_audit.json",
                 "sections/generated/eq_fold_zm_elliptic_weight_doubling_H.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_Rminus.tex",
                 "sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant.tex",
                 "sections/generated/eq_fold_zm_elliptic_weight_doubling_inverse.tex",
                 "sections/generated/eq_fold_zm_elliptic_weight_doubling_norm.tex",
