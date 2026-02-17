@@ -2755,6 +2755,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_collision_s2_e2_field_isomorphism_audit",
+            script="exp_fold_zm_collision_s2_e2_field_isomorphism_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_collision_s2_e2_field_isomorphism_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_leyang_cubic_modp_splitting_audit",
             script="exp_fold_zm_elliptic_leyang_cubic_modp_splitting_audit.py",
             args=[],
