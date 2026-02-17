@@ -118,6 +118,18 @@ a_p=p+1-\#E(\FF_p)
 X_0^+(37):=X_0(37)/\langle w_{37}\rangle
 \)
 的一条模型。
+\par
+在本文的覆盖口径下，重量参数 \(y\in\QQ(E)\) 作为次数 \(4\) 的谱投影坐标满足
+\(
+(y)_\infty=4O
+\)
+（见结论 \ref{con:xi-terminal-zm-elliptic-y-hurwitz-passport}），
+从而在模曲线模型 \(X_0^+(37)\cong E\) 上可解释为一条仅在尖点 \(\infty\)（对应 \(O\)）处具有四阶极点的模函数。
+进一步地，结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values} 的微分恒等式
+\(
+\dd y=(4XY-3X^2+1)\,\omega
+\)
+（\(\omega\) 为 Néron 微分）把重量坐标的分歧结构与相应 weight \(2\) 微分结构在同一模型上同时锁定。
 \end{remark}
 
 \begin{conclusion}[模素纤维根数恒等式：由 \texorpdfstring{$\Pi(\lambda,y)$}{Pi(lambda,y)} 的分解统计恢复 \texorpdfstring{$a_p$}{a\_p}]\label{con:xi-terminal-zm-fiber-root-counting-hecke}
@@ -165,6 +177,53 @@ a_p=p-\sum_{y\in\FF_p}N_p(y)\;}
 将其代入 \(a_p:=p+1-\card{E(\FF_p)}\) 立得 \(a_p=p-\sum_{y\in\FF_p} N_p(y)\)。
 最后一式由 Hasse 界 \(|a_p|\le 2\sqrt p\) 给出。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_fiber\_root\_counting\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[函数域 Chebotarev 的有效分裂型分布：四次谱在 \texorpdfstring{$\FF_p$}{Fp} 上的根数统计]\label{con:xi-terminal-zm-s4-chebotarev-splitting-type}
+设 \(\Pi(\lambda,y)\) 在 \(\QQ(y)\) 上的泛型伽罗瓦群为 \(S_{4}\)（结论 \ref{con:xi-terminal-zm-generic-galois-s4}），并记
+\[
+P_{\mathrm{LY}}(y):=256y^3+411y^2+165y+32,
+\qquad
+B(y):=y(y-1)P_{\mathrm{LY}}(y)\in\ZZ[y].
+\]
+对素数 \(p\notin\{2,3,31,37\}\) 定义未分歧参数集合
+\[
+U_p:=\{y\in\FF_p:\ B(y)\not\equiv 0\ (\mathrm{mod}\ p)\},
+\]
+并对 \(y\in U_p\) 仍记
+\(
+N_p(y)=\card{\{\lambda\in\FF_p:\ \Pi(\lambda,y)=0\}}
+\)。
+则对任意共轭类 \(\mathcal C\subset S_{4}\)，满足 \(\mathrm{Frob}_y\in\mathcal C\) 的 \(y\in U_p\) 的个数满足有效计数
+\[
+\card{\{y\in U_p:\ \mathrm{Frob}_y\in\mathcal C\}}
+=\frac{|\mathcal C|}{|S_4|}\,\card{U_p}+O(\sqrt p),
+\]
+其中误差常数仅依赖该 \(S_{4}\)-伽罗瓦闭包覆盖的几何数据而与 \(p\) 无关。
+特别地，当 \(p\to\infty\) 时，随机变量 \(N_p(y)\)（在 \(U_p\) 上均匀取样）收敛到由 \(S_4\) 循环型诱导的极限分布：
+\[
+\mathbb P(N_p(y)=4)=\frac1{24},\qquad
+\mathbb P(N_p(y)=2)=\frac14,\qquad
+\mathbb P(N_p(y)=1)=\frac13,\qquad
+\mathbb P(N_p(y)=0)=\frac38,
+\]
+并且上述收敛在计数意义下具有 \(O(p^{-1/2})\) 的有效误差级别。
+\end{conclusion}
+\begin{proof}[证明要点]
+在 \(p\notin\{2,3,31,37\}\) 时，分歧集合在 \(\FF_p\) 上由 \(B(y)=0\) 给出（结论 \ref{con:xi-terminal-zm-discriminant-leyang}），
+故对 \(y\in U_p\)，四次方程 \(\Pi(\lambda,y)=0\) 在 \(\overline{\FF}_p\) 上给出四点纤维且无重根；
+其 Frobenius 在四根上的作用定义一个共轭类 \(\mathrm{Frob}_y\subset S_4\)。
+对相应的 \(S_{4}\)-伽罗瓦闭包覆盖在开曲线 \(U:=\mathbb P^1_y\setminus\{B=0,\infty\}\) 上应用函数域 Chebotarev 定理并结合曲线的 Riemann 假设，
+得到对任意共轭类的有效计数公式与 \(O(\sqrt p)\) 误差。
+\par
+最后，\(N_p(y)\) 等于 \(\mathrm{Frob}_y\) 在自然四点作用中的不动点数。
+按 \(S_4\) 的循环型计数：恒等元给出 \(4\) 个不动点，换位给出 \(2\)，三循环给出 \(1\)，而四循环与双换位给出 \(0\)，
+从而极限概率由各循环型在 \(S_4\) 中的基数
+\(
+1,6,8,6,3
+\)
+除以 \(24\) 得到。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_s4\_chebotarev\_splitting\_distribution\_audit.py}。证毕。
 \end{proof}
 
 \begin{conclusion}[Lee--Yang 三次多项式的分歧像刻画：结果式给出的最小整系数证书]\label{con:xi-terminal-zm-leyang-cubic-branch-image}
