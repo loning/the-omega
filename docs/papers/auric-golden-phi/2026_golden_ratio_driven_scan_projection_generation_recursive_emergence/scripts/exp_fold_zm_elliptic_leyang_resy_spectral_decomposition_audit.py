@@ -24,6 +24,11 @@ We also verify the refined double-root branch rigidity on the Lee–Yang locus:
         lambda = -(512 y^2 + 518 y + 5)/279,
         Y      =  (512 y^2 + 1262 y + 377)/558,
     and satisfies the ramification equation 4 lambda Y + 3 lambda^2 - 1 = 0.
+  - The same Y-coordinate admits the equivalent "ramification-symmetric" closed form
+        Y = ((512 y^2 + 518 y + 5)^2 - 25947) / (372 (512 y^2 + 518 y + 5))
+    in K (i.e. modulo P_LY(y)).
+  - The specialized spectral quartic Pi(lambda,y0) at any Lee–Yang branch value y0 (P_LY(y0)=0)
+    factors in K[lambda] as a perfect square times a residual quadratic, with explicit coefficients.
   - A hidden square identity holds in K:
         ((-512 y^2 + 226 y + 367)/93)^2 = 64 y^2 + 64 y + 25.
 
@@ -78,8 +83,11 @@ class Payload:
     groebner_linear_prim: str
     cubic_reduces_ok: bool
     branch_Y_formula_ok: bool
+    branch_Y_alt_formula_ok: bool
     branch_ramification_ok: bool
     branch_curve_eq_ok: bool
+    spectral_quartic_factorization_ok: bool
+    spectral_quartic_multiplicity2_ok: bool
     hidden_square_ok: bool
 
 
@@ -140,12 +148,36 @@ def main() -> None:
     Y_target = sp.Rational(1, 558) * (512 * y**2 + 1262 * y + 377)
     branch_Y_formula_ok = _is_zero_mod_univariate(Y_branch - Y_target, y=y, modulus=P_LY)
 
+    A = 512 * y**2 + 518 * y + 5
+    Y_alt = sp.Rational(1, 372) * (A**2 - 25947) / A
+    branch_Y_alt_formula_ok = _is_zero_mod_univariate(Y_branch - Y_alt, y=y, modulus=P_LY)
+
     branch_ramification_ok = _is_zero_mod_univariate(
         4 * lam_branch * Y_branch + 3 * lam_branch**2 - 1, y=y, modulus=P_LY
     )
     branch_curve_eq_ok = _is_zero_mod_univariate(
         Y_branch**2 - (lam_branch**3 - lam_branch + sp.Rational(1, 4)), y=y, modulus=P_LY
     )
+
+    # --- Exact double-root factorization of the specialized spectral quartic on the Lee–Yang locus ---
+    Q2_target = (
+        lam**2
+        - sp.Rational(1, 279) * (1024 * y**2 + 1036 * y + 289) * lam
+        + sp.Rational(1, 279) * (256 * y**2 - 578 * y - 416)
+    )
+
+    # In K[lam], Pi(lam,y) = (lam - lam_branch)^2 * Q2_target(lam) (mod P_LY(y)).
+    diff_fac = sp.expand(Pi - (lam - lam_branch) ** 2 * Q2_target)
+    spectral_quartic_factorization_ok = True
+    poly_diff = sp.Poly(diff_fac, lam, domain="EX")
+    for c in poly_diff.all_coeffs():
+        if not _is_zero_mod_univariate(c, y=y, modulus=P_LY):
+            spectral_quartic_factorization_ok = False
+            break
+
+    # Confirm multiplicity is exactly 2 (the residual quadratic does not vanish at the branch root).
+    Q2_at_branch = sp.simplify(Q2_target.subs({lam: lam_branch}))
+    spectral_quartic_multiplicity2_ok = not _is_zero_mod_univariate(Q2_at_branch, y=y, modulus=P_LY)
 
     s = sp.Rational(1, 93) * (-512 * y**2 + 226 * y + 367)
     hidden_square_ok = _is_zero_mod_univariate(s**2 - (64 * y**2 + 64 * y + 25), y=y, modulus=P_LY)
@@ -157,8 +189,11 @@ def main() -> None:
         groebner_linear_prim=groebner_linear_prim,
         cubic_reduces_ok=cubic_reduces_ok,
         branch_Y_formula_ok=branch_Y_formula_ok,
+        branch_Y_alt_formula_ok=branch_Y_alt_formula_ok,
         branch_ramification_ok=branch_ramification_ok,
         branch_curve_eq_ok=branch_curve_eq_ok,
+        spectral_quartic_factorization_ok=spectral_quartic_factorization_ok,
+        spectral_quartic_multiplicity2_ok=spectral_quartic_multiplicity2_ok,
         hidden_square_ok=hidden_square_ok,
     )
 
@@ -180,6 +215,11 @@ def main() -> None:
             "Y=\\frac{512y^{2}+1262y+377}{558}\\quad(\\mathrm{mod}\\ P_{\\mathrm{LY}}(y)).",
             "\\]",
             "\\[",
+            "\\Pi(\\lambda,y)=\\left(\\lambda+\\frac{512y^{2}+518y+5}{279}\\right)^{2}"
+            "\\left(\\lambda^{2}-\\frac{1024y^{2}+1036y+289}{279}\\,\\lambda+\\frac{256y^{2}-578y-416}{279}\\right)"
+            "\\quad(\\mathrm{mod}\\ P_{\\mathrm{LY}}(y)).",
+            "\\]",
+            "\\[",
             "\\left(\\frac{-512y^{2}+226y+367}{93}\\right)^{2}=64y^{2}+64y+25\\quad(\\mathrm{mod}\\ P_{\\mathrm{LY}}(y)).",
             "\\]",
             "",
@@ -194,7 +234,9 @@ def main() -> None:
     print(
         "[fold-zm-elliptic-leyang-resy] checks:"
         f" res={resultant_ok} deg={resultant_degree} lin={groebner_linear_ok} cubic_red={cubic_reduces_ok}"
-        f" Y={branch_Y_formula_ok} ram={branch_ramification_ok} curve={branch_curve_eq_ok} sq={hidden_square_ok}"
+        f" Y={branch_Y_formula_ok} Yalt={branch_Y_alt_formula_ok}"
+        f" ram={branch_ramification_ok} curve={branch_curve_eq_ok}"
+        f" fac={spectral_quartic_factorization_ok} mult2={spectral_quartic_multiplicity2_ok} sq={hidden_square_ok}"
         f" seconds={dt:.3f}",
         flush=True,
     )

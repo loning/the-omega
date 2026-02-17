@@ -189,7 +189,9 @@ y^{\iota}(Q)=y_0,\qquad \dd y^{\iota}(Q)=0.
 \[
 \boxed{\;
 X(Q)=\frac{-512y_0^{2}-518y_0-5}{279},\qquad
-Y(Q)=\frac{512y_0^{2}+1262y_0+377}{558}\; }.
+Y(Q)=\frac{512y_0^{2}+1262y_0+377}{558}
+=\frac{(512y_0^{2}+518y_0+5)^{2}-25947}{372\,\bigl(512y_0^{2}+518y_0+5\bigr)}\; }.
+\qquad (25947=3^{3}\cdot 31^{2})
 \]
 特别地，\(X(Q)\) 满足立方证书 \(g(X(Q))=0\)，其中 \(g(X)=16X^{3}-9X^{2}+1\)（见结论 \ref{con:xi-terminal-zm-leyang-branch-elimination-origin-y-iota}）。
 \par
@@ -210,6 +212,38 @@ s:=\frac{-512y_0^{2}+226y_0+367}{93}\in K,
 \)，从而给出 \(X(Q)\) 的显式表达；
 再由 \(y^{\iota}=X^{2}+Y-\tfrac12\) 回代得到 \(Y(Q)\)。
 隐藏平方恒等式为同一三次商环中的代数恒等式检验。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_resy\_spectral\_decomposition\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[Lee--Yang 分歧值处谱四次的精确退化：二重根与剩余二次因子的闭式分解]\label{con:xi-terminal-zm-leyang-branch-spectral-quartic-double-root-factorization}
+令 \(y_0\) 为 \(P_{\mathrm{LY}}(y)=0\) 的任一根，并记 \(K:=\QQ(y_0)\)。
+考虑专门化谱四次
+\[
+\Pi(\lambda,y_0)
+=\lambda^{4}-\lambda^{3}-(2y_0+1)\lambda^{2}+\lambda+y_0(y_0+1)\ \in\ K[\lambda].
+\]
+则存在严格分解
+\[
+\boxed{\;
+\Pi(\lambda,y_0)=\bigl(\lambda-X(Q)\bigr)^{2}\cdot Q_{y_0}^{(2)}(\lambda)\; },
+\]
+其中 \(Q\in E(K)\) 为结论 \ref{con:xi-terminal-zm-leyang-branchpoint-explicit-coordinates-hidden-square} 的唯一分歧点，且剩余二次因子可取为
+\[
+\boxed{\;
+Q_{y_0}^{(2)}(\lambda)=\lambda^{2}
+-\frac{1024y_0^{2}+1036y_0+289}{279}\,\lambda
++\frac{256y_0^{2}-578y_0-416}{279}\; }.
+\]
+该分解把 Lee--Yang 分歧值处 \(\Pi(\lambda,y_0)=0\) 的谱退化精确量化为：一处由分歧点给出的二重根与两条非分歧谱支所决定的剩余二次片。
+\end{conclusion}
+\begin{proof}[证明要点]
+在 \(P_{\mathrm{LY}}(y_0)=0\) 的 Lee--Yang 立方域上，系统
+\(
+\Pi(\lambda,y_0)=\partial_{\lambda}\Pi(\lambda,y_0)=0
+\)
+在 \(K\) 中具有唯一解 \(\lambda=X(Q)\)，其中 \(Q\) 为结论 \ref{con:xi-terminal-zm-leyang-branchpoint-explicit-coordinates-hidden-square} 的分歧点。
+因此 \(\lambda=X(Q)\) 为 \(\Pi(\lambda,y_0)\) 的二重根；并且由单分歧性可知其重数恰为 \(2\)。
+将 \(\Pi(\lambda,y_0)\) 除以 \((\lambda-X(Q))^{2}\) 并在 \(K\) 中化简即可得到剩余二次因子的闭式系数。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_resy\_spectral\_decomposition\_audit.py}。证毕。
 \end{proof}
 
