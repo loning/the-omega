@@ -2762,6 +2762,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_leyang_discriminant_ridge_difference_square_audit",
+            script="exp_fold_zm_leyang_discriminant_ridge_difference_square_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_discriminant_ridge_difference_square_audit.json",
+                "sections/generated/eq_fold_zm_leyang_discriminant_ridge_difference_square_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_mw_height_denominator_growth_audit",
             script="exp_fold_zm_elliptic_mw_height_denominator_growth_audit.py",
             args=[],

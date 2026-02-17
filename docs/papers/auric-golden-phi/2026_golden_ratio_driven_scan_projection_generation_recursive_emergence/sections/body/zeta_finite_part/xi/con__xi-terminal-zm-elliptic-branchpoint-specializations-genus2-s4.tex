@@ -31,11 +31,64 @@ P_{\mathrm{LY}}(6)=2\cdot 37\cdot 31^{2},\qquad P_{\mathrm{LY}}(21)=4\cdot 11\cd
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_mw\_height\_denominator\_growth\_audit.py}。证毕。
 \end{proof}
 
-\begin{conclusion}[判别式二次脊曲线的雅可比簇在 \texorpdfstring{$\QQ$}{Q} 上为简单阿贝尔曲面：不可约 Frobenius 多项式证书]\label{con:xi-terminal-zm-discriminant-ridge-jacobian-qsimple}
-考虑属 \(2\) 曲线
+\begin{conclusion}[判别式二次脊曲线的五次判别式与坏约化素集：\texorpdfstring{$\{2,3,31,37\}$}{\{2,3,31,37\}} 的严格分解]\label{con:xi-terminal-zm-leyang-discriminant-ridge-polydisc-badprimes}
+令
 \[
-C:\ w^{2}=-y(y-1)P_{\mathrm{LY}}(y).
+P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32,\qquad
+f(y):=-y(y-1)P_{\mathrm{LY}}(y)\in\ZZ[y],
 \]
+并考虑属 \(2\) 超椭圆曲线
+\[
+C:\ w^{2}=f(y).
+\]
+则多项式判别式满足严格分解
+\[
+\boxed{\ \mathrm{Disc}_{y}(f)=-2^{20}\cdot 3^{15}\cdot 31^{2}\cdot 37\ }.
+\]
+因此对任意素数 \(p\notin\{2,3,31,37\}\)，右端 \(f(y)\) 在 \(\FF_p[y]\) 中为平方自由多项式，曲线 \(C\) 在 \(p\) 处良好约化。
+\end{conclusion}
+\begin{proof}[证明要点]
+多项式判别式的因式分解由直接符号计算得到。
+对奇素数 \(p\)，模型 \(w^2=f(y)\) 在 \(\FF_p\) 上光滑当且仅当 \(f\) 在 \(\FF_p\) 上无重根，等价于 \(\gcd(f,f')=1\)，亦等价于 \(p\nmid \mathrm{Disc}_{y}(f)\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_leyang\_discriminant\_ridge\_difference\_square\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[判别式二次脊上的差平方范数证书：\texorpdfstring{$Q(y)^2+27w^2=(16A(y)^3)^2$}{Q(y)^2+27w^2=(16A(y)^3)^2}]\label{con:xi-terminal-zm-leyang-discriminant-ridge-diff-square-norm}
+沿用结论 \ref{con:xi-terminal-zm-leyang-discriminant-ridge-polydisc-badprimes} 的曲线 \(C\) 及其仿射坐标 \((y,w)\)。
+令
+\[
+A(y):=1+2y,\qquad Q(y):=16+69y+219y^{2}+128y^{3}.
+\]
+则在 \(\ZZ[y]\) 中有严格恒等式
+\[
+\boxed{\ Q(y)^2-256A(y)^6=27y(y-1)P_{\mathrm{LY}}(y)\ }.
+\]
+等价地，在函数域 \(\QQ(C)=\QQ(y,w)\) 中成立范数形式
+\[
+\boxed{\ Q(y)^2+27w^2=(16A(y)^3)^2\ }.
+\]
+从而在二次扩张 \(\QQ(C)(\sqrt{-3})/\QQ(C)\) 上，元素
+\[
+U:=\frac{Q(y)+3w\sqrt{-3}}{16A(y)^3}
+\]
+满足严格范数恒等式
+\[
+\operatorname{N}_{\QQ(C)(\sqrt{-3})/\QQ(C)}(U)=1.
+\]
+该范数--\(1\) 证书把判别式核 \(-y(y-1)P_{\mathrm{LY}}(y)\) 结构化为 \(\QQ(\sqrt{-3})\) 上的二次范数表达，从而为结论 \ref{con:xi-terminal-zm-s4-galois-closure-genus-tower-holomorphic-differentials} 的循环三次无分歧覆盖给出一条 Kummer 型描述的显式代数入口。
+\end{conclusion}
+\begin{proof}[证明要点]
+差平方恒等式由在 \(\ZZ[y]\) 中直接展开化简得到；将 \(w^2=-y(y-1)P_{\mathrm{LY}}(y)\) 代入即得范数形式。
+范数恒等式由
+\(
+\operatorname{N}(Q+3w\sqrt{-3})=Q^2+27w^2
+\)
+与分母 \((16A^3)^2\) 的显式平方性立即推出。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_leyang\_discriminant\_ridge\_difference\_square\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[判别式二次脊曲线的雅可比簇在 \texorpdfstring{$\QQ$}{Q} 上为简单阿贝尔曲面：不可约 Frobenius 多项式证书]\label{con:xi-terminal-zm-discriminant-ridge-jacobian-qsimple}
+沿用结论 \ref{con:xi-terminal-zm-leyang-discriminant-ridge-polydisc-badprimes} 的属 \(2\) 曲线 \(C\)。
 对好素数 \(p\notin\{2,3,31,37\}\) 记其局部 \(L\)-多项式为
 \[
 L_{p}(T)=1-a_{1}T+a_{2}T^{2}-a_{1}pT^{3}+p^{2}T^{4}.
