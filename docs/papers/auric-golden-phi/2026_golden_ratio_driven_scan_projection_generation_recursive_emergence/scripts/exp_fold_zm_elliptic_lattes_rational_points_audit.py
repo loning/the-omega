@@ -13,6 +13,11 @@ We verify:
       Phi(X) = x([2]P) = (X^4 + 2 X^2 - 2 X + 1) / (4 X^3 - 4 X + 1).
   - Critical polynomial of Phi:
       Phi'(X)=0  <=>  2X^6 - 10X^4 + 10X^3 - 10X^2 + 2X + 1 = 0.
+  - Arithmetic closure of the critical sextic:
+      Disc(C) = -2^8 * 37^5, and Gal(Split(C)/Q) has order 48 (octahedral type S4 x C2).
+  - Weight pullback under doubling is linear in y with critical coefficient:
+      [2]^*(y) = (C(X) y + B(X)) / (4X^3 - 4X + 1)^2,
+    for an explicit B(X) in Q[X].
   - An integral coupling of special rational points on E(Q):
       R=(0,1/2), Q0=(1,-1/2), Q0'=(-1,1/2), P=(2,5/2) satisfy
       [2]R=(1,1/2)=-Q0, [3]R=(-1,-1/2)=-Q0', [4]R=(2,-5/2)=-P.
@@ -157,6 +162,15 @@ class TableRow:
 class Payload:
     phi_formula_ok: bool
     phi_prime_critical_poly_ok: bool
+    critical_poly_disc: int
+    critical_poly_disc_factorization: Dict[str, int]
+    critical_poly_galois_degree: int
+    critical_poly_galois_order: int
+    critical_poly_galois_is_transitive: bool
+    critical_poly_galois_center_order: int
+    critical_poly_galois_derived_order: int
+    critical_poly_galois_derived_order_hist: Dict[str, int]
+    y_doubling_pullback_linear_ok: bool
     y_minpoly_ok: bool
     y_discriminant_ok: bool
     torsion_primes: List[int]
@@ -202,6 +216,23 @@ def main() -> None:
     nump_prim = sp.factor(prim_nump.as_expr())
     crit_ok = bool(sp.factor(nump_prim - crit_expected) == 0 or sp.factor(nump_prim + crit_expected) == 0)
 
+    # --- Discriminant and Galois group of the critical sextic ---
+    crit_disc = int(sp.discriminant(crit_expected, X))
+    crit_disc_fac = sp.factorint(crit_disc)
+    G, _meta = sp.Poly(crit_expected, X, domain=sp.QQ).galois_group()
+    G_order = int(G.order())
+    G_degree = int(G.degree)
+    G_trans = bool(G.is_transitive())
+    Z = G.center()
+    Dsub = G.derived_subgroup()
+    # Derived subgroup histogram (should match A4: 1, three 2s, eight 3s).
+    from collections import Counter
+
+    hist = Counter()
+    for g in list(Dsub.generate_schreier_sims()):
+        hist[g.order()] += 1
+    hist_json = {str(int(k)): int(v) for k, v in sorted(hist.items())}
+
     # --- y quadratic minimal polynomial over Q(X) ---
     y = sp.Symbol("y")
     y_def = X**2 - Y - sp.Rational(1, 2)
@@ -214,6 +245,41 @@ def main() -> None:
     disc = sp.factor(sp.discriminant(minpoly_expected, y))
     disc_expected = 4 * X**3 - 4 * X + 1
     y_disc_ok = bool(sp.factor(disc - disc_expected) == 0)
+
+    # --- [2]^*(y) is linear in y with critical coefficient ---
+    # Work in Q(X,Y) first, reduce modulo Y^2-(X^3+aX+b), then eliminate Y using Y=X^2-y-1/2
+    # and reduce modulo the quartic certificate F(X,y)=0.
+    a = sp.Integer(-1)
+    b = sp.Rational(1, 4)
+    fX = X**3 + a * X + b
+
+    m = sp.together((3 * X**2 + a) / (2 * Y))
+    X2 = sp.together(m * m - 2 * X)
+    Y2 = sp.together(m * (X - X2) - Y)
+    y2 = sp.together(X2**2 - Y2 - sp.Rational(1, 2))
+    num_y2, den_y2 = y2.as_numer_denom()
+
+    modY = sp.Poly(Y**2 - fX, Y)
+    num_y2_red = sp.rem(sp.Poly(sp.expand(num_y2), Y), modY).as_expr()
+    den_y2_red = sp.rem(sp.Poly(sp.expand(den_y2), Y), modY).as_expr()
+
+    Y_sub = X**2 - y - sp.Rational(1, 2)
+    expr_xy = sp.together(num_y2_red.subs({Y: Y_sub}) / den_y2_red.subs({Y: Y_sub}))
+    num_xy, den_xy = expr_xy.as_numer_denom()
+
+    F = X**4 - X**3 - (2 * y + 1) * X**2 + X + y * (y + 1)
+    Pnum = sp.Poly(sp.expand(num_xy), y, domain=sp.QQ[X])
+    Pmod = sp.Poly(sp.expand(F), y, domain=sp.QQ[X])
+    rem = sp.rem(Pnum, Pmod).as_expr()
+
+    Bpoly = -X**8 + 7 * X**6 - 14 * X**5 + 27 * X**4 - 9 * X**3 - 6 * X**2 + X + 1
+    D2 = (4 * X**3 - 4 * X + 1) ** 2
+    rhs = sp.together((crit_expected * y + Bpoly) / D2)
+    diff = sp.together(expr_xy - rhs)
+    nd, _dd = diff.as_numer_denom()
+    Pnd = sp.Poly(sp.expand(nd), y, domain=sp.QQ[X])
+    nd_rem = sp.rem(Pnd, Pmod).as_expr()
+    y_pullback_ok = bool(sp.simplify(nd_rem) == 0)
 
     # --- Torsion audit via reduction mod p ---
     primes = [3, 5, 7, 11, 13, 17, 19]
@@ -281,6 +347,15 @@ def main() -> None:
     payload = Payload(
         phi_formula_ok=bool(phi_ok),
         phi_prime_critical_poly_ok=bool(crit_ok),
+        critical_poly_disc=int(crit_disc),
+        critical_poly_disc_factorization={str(int(p)): int(e) for p, e in crit_disc_fac.items()},
+        critical_poly_galois_degree=G_degree,
+        critical_poly_galois_order=G_order,
+        critical_poly_galois_is_transitive=G_trans,
+        critical_poly_galois_center_order=int(Z.order()),
+        critical_poly_galois_derived_order=int(Dsub.order()),
+        critical_poly_galois_derived_order_hist=hist_json,
+        y_doubling_pullback_linear_ok=bool(y_pullback_ok),
         y_minpoly_ok=bool(y_minpoly_ok),
         y_discriminant_ok=bool(y_disc_ok),
         torsion_primes=[int(p) for p in good_primes],
@@ -311,6 +386,12 @@ def main() -> None:
         "\\Phi(X)=\\frac{X^{4}+2X^{2}-2X+1}{4X^{3}-4X+1},\\qquad \\Phi'(X)=0\\iff 2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1=0.",
         "\\]",
         "\\[",
+        "[2]^*(y)=\\frac{(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1)\\,y+(-X^{8}+7X^{6}-14X^{5}+27X^{4}-9X^{3}-6X^{2}+X+1)}{(4X^{3}-4X+1)^{2}}.",
+        "\\]",
+        "\\[",
+        "\\mathrm{Disc}(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1)=-2^{8}\\cdot 37^{5},\\qquad |\\mathrm{Gal}|=48.",
+        "\\]",
+        "\\[",
         "y:=X^{2}-Y-\\frac12,\\qquad y^{2}-(2X^{2}-1)y+X(X-1)^{2}(X+1)=0,\\qquad \\Delta=4X^{3}-4X+1=4Y^{2}.",
         "\\]",
         "\\[",
@@ -328,7 +409,8 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-lattes] checks:"
-        f" phi={phi_ok} crit={crit_ok} mw={mw_ok} minpoly={y_minpoly_ok} disc={y_disc_ok} tors_gcd={g} denlaw={all(r.den_law_ok for r in rows)}"
+        f" phi={phi_ok} crit={crit_ok} galois48={(G_order == 48)} y2lin={y_pullback_ok}"
+        f" mw={mw_ok} minpoly={y_minpoly_ok} disc={y_disc_ok} tors_gcd={g} denlaw={all(r.den_law_ok for r in rows)}"
         f" seconds={dt:.3f}",
         flush=True,
     )

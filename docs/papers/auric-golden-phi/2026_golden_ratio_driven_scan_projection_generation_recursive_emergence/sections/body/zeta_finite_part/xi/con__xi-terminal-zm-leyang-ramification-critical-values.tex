@@ -1,5 +1,6 @@
 % (User input window)
 % 日期与时间：2026-02-17 01:52:00（Asia/Singapore）
+% 日期与时间：2026-02-17 02:46:37（Asia/Singapore）
 
 \begin{conclusion}[Lee--Yang 三次因子的几何起源：重量映射 \texorpdfstring{$\pi_y$}{pi\_y} 的临界值消元与切触包络]\label{con:xi-terminal-zm-leyang-ramification-critical-values}
 在结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的椭圆模型
@@ -34,11 +35,12 @@ y=0,\qquad y=1,\qquad \text{以及 }P_{\mathrm{LY}}(y)=0\text{ 的三根},
 \[
 P_{\mathrm{LY}}(y):=256y^3+411y^2+165y+32
 \]
-可由纯消元证书刻画为
+可由纯消元证书刻画为严格结果式恒等式
 \[
-P_{\mathrm{LY}}(y)\ \doteq\ \mathrm{Res}_X\!\left(16X^3-9X^2+1,\ 4Xy-\bigl(4X^3-3X^2-2X+1\bigr)\right),
+\boxed{\;
+\mathrm{Res}_X\!\left(16X^3-9X^2+1,\ 4Xy-\bigl(4X^3-3X^2-2X+1\bigr)\right)
+=-64\,P_{\mathrm{LY}}(y)\; }.
 \]
-其中 \(\doteq\) 表示相差一个非零有理常数因子。
 因而 Lee--Yang 三次因子不仅是谱四次的判别式核（结论 \ref{con:xi-terminal-zm-discriminant-leyang}），亦可等价解释为 \(\pi_y\) 的临界值集合在 \(\QQ[y]\) 中的不可约部分；
 在几何上，这等价于一族抛物线
 \[
@@ -65,7 +67,11 @@ Y=(3X^2-1)/(4X)
 \[
 4Xy=4X^3-3X^2-2X+1.
 \]
-对变量 \(X\) 作消元（结果式）即得到 \(P_{\mathrm{LY}}(y)=0\)（差一个非零常数因子），与结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的判别式分解一致。
+对变量 \(X\) 作消元（结果式）得到严格恒等式
+\(
+\mathrm{Res}_X(16X^3-9X^2+1,\ 4Xy-(4X^3-3X^2-2X+1))=-64\,P_{\mathrm{LY}}(y)
+\)，
+从而非平凡有限分歧值由 \(P_{\mathrm{LY}}(y)=0\) 精确刻画，并与结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的判别式分解一致。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}。证毕。
 \end{proof}
 
@@ -158,6 +164,38 @@ F(X,y)=X^4-X^3-(2y+1)X^2+X+y(y+1)=0,
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}。证毕。
 \end{proof}
 
+\begin{conclusion}[\texorpdfstring{$2$}{2}-division 多项式在 \texorpdfstring{$y$}{y}-投影下的范数平方化：隐藏三次控制多项式]\label{con:xi-terminal-zm-2division-norm-square}
+沿用结论 \ref{con:xi-terminal-zm-leyang-discriminant-norm-identity} 的记号，仍令 \(k=\QQ(y)\)、\(K=\QQ(E)\)。
+记 \(2\)-division 三次
+\[
+D(X):=4X^3-4X+1=4Y^2\in K.
+\]
+则其在扩张 \(K/k\) 下的相对范数满足严格恒等式
+\[
+\boxed{\;
+\operatorname{N}_{K/k}\bigl(D(X)\bigr)=(16y^3-8y^2-4y+1)^2\; }.
+\]
+等价地，由 \(2Y=2X^2-2y-1\)（见结论 \ref{con:xi-terminal-zm-y-quadratic-extension-minpoly}）得到
+\[
+\boxed{\;
+\operatorname{N}_{K/k}(2Y)=-(16y^3-8y^2-4y+1)\; }.
+\]
+因此三次多项式 \(16y^3-8y^2-4y+1\) 精确刻画 \(E[2]\setminus\{O\}\) 在 \(\pi_y\) 下的像；并且由于 \(D(X)=(2Y)^2\) 在 \(K\) 中为平方，其相对范数在 \(k\) 中必为完全平方，上式给出该平方化的最小整系数证书。
+\end{conclusion}
+\begin{proof}[证明要点]
+仍以四次方程 \(F(X,y)=0\)（见结论 \ref{con:xi-terminal-zm-leyang-discriminant-norm-identity}）作为 \(K/k\) 的首一表示，则
+\(
+\operatorname{N}_{K/k}(D(X))=\mathrm{Res}_X(F,D)
+\)
+与
+\(
+\operatorname{N}_{K/k}(2Y)=\mathrm{Res}_X(F,2X^2-2y-1)
+\)
+为标准结果式计算；
+直接化简即得到所示恒等式。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}。证毕。
+\end{proof}
+
 \begin{conclusion}[Lee--Yang 三次域与临界三次域同构：显式生成元对应与判别式的 \texorpdfstring{$37$}{37} 不可消性]\label{con:xi-terminal-zm-leyang-cubic-field-isomorphism}
 令 \(\alpha\) 为三次方程
 \[
@@ -176,6 +214,10 @@ F(X,y)=X^4-X^3-(2y+1)X^2+X+y(y+1)=0,
   \boxed{\ \mathrm{Disc}(16X^3-9X^2+1)=-2^2\cdot 3^3\cdot 37\ },
   \qquad
   \boxed{\ \mathrm{Disc}(P_{\mathrm{LY}})=-3^9\cdot 31^2\cdot 37\ }.
+  \]
+  并且二者严格相差一个平方因子：
+  \[
+  \boxed{\ \mathrm{Disc}(P_{\mathrm{LY}})=\mathrm{Disc}(16X^3-9X^2+1)\cdot\Bigl(\frac{837}{2}\Bigr)^{2}\ }.
   \]
   因而在该三次域中，素数 \(37\) 必然分歧（其在上述判别式中以奇数次幂出现，无法被整数指标平方消去），从而 Lee--Yang 立方域在算术上被椭圆判别式素数 \(37\) 牢固锚定。
 \end{enumerate}

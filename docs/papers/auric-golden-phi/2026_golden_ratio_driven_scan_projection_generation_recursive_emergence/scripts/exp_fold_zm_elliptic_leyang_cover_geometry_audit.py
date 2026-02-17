@@ -13,10 +13,14 @@ We verify (symbolically, with SymPy):
       (X-1)(X+1)(16X^3 - 9X^2 + 1) = 0.
   - The nontrivial ramification images satisfy the Lee–Yang cubic
       P_LY(y) = 256 y^3 + 411 y^2 + 165 y + 32
-    via a pure elimination certificate (resultant).
+    via a pure elimination certificate (resultant), with the exact constant:
+      Res_X(16X^3-9X^2+1, 4Xy-(4X^3-3X^2-2X+1)) = -64 * P_LY(y).
   - Norm / different bridge: for F(X,y)=X^4-X^3-(2y+1)X^2+X+y(y+1) and
       delta = 4Xy - (4X^3 - 3X^2 - 2X + 1) = -dF/dX,
     we have Res_X(F, delta) = -y(y-1)P_LY(y).
+  - 2-division norm square compression:
+      Res_X(F, 4X^3-4X+1) = (16y^3 - 8y^2 - 4y + 1)^2,
+      Res_X(F, 2X^2-2y-1) = -(16y^3 - 8y^2 - 4y + 1).
   - Cubic-field generator mapping: if alpha solves 16X^3-9X^2+1=0, then
       beta=(4alpha^3-3alpha^2-2alpha+1)/(4alpha) solves P_LY(beta)=0,
     and Disc(16X^3-9X^2+1)=-2^2*3^3*37.
@@ -77,7 +81,11 @@ class Payload:
     dy_identity_ok: bool
     critical_x_factor_ok: bool
     leyang_resultant_ok: bool
+    leyang_resultant_constant: int
+    leyang_resultant_exact_ok: bool
     norm_identity_ok: bool
+    norm_2division_ok: bool
+    norm_2Y_ok: bool
     disc_cubic_x: int
     disc_cubic_x_factorization: Dict[str, int]
     disc_leyang: int
@@ -121,6 +129,8 @@ def main() -> None:
     P_LY = 256 * y**3 + 411 * y**2 + 165 * y + 32
     q2 = sp.together(res_y / P_LY)
     leyang_resultant_ok = _is_constant_in(q2, y)
+    leyang_resultant_constant = int(sp.factor(q2))
+    leyang_resultant_exact_ok = bool(sp.factor(res_y - leyang_resultant_constant * P_LY) == 0)
 
     # Norm identity via resultant of F and delta=-dF/dX
     F = X**4 - X**3 - (2 * y + 1) * X**2 + X + y * (y + 1)
@@ -130,6 +140,16 @@ def main() -> None:
     Res_norm = sp.factor(sp.resultant(F, delta, X))
     norm_expected = -y * (y - 1) * P_LY
     norm_identity_ok = bool(sp.factor(Res_norm - norm_expected) == 0)
+
+    # 2-division norm square compression.
+    D2 = 4 * X**3 - 4 * X + 1
+    Res_D2 = sp.factor(sp.resultant(F, D2, X))
+    ctrl = 16 * y**3 - 8 * y**2 - 4 * y + 1
+    norm_2division_ok = bool(sp.factor(Res_D2 - ctrl**2) == 0)
+
+    twoY = 2 * X**2 - 2 * y - 1  # since Y = X^2 - y - 1/2
+    Res_twoY = sp.factor(sp.resultant(F, twoY, X))
+    norm_2Y_ok = bool(sp.factor(Res_twoY + ctrl) == 0)
 
     # Discriminants
     disc_cubic_x = int(sp.discriminant(cubicX, X))
@@ -205,7 +225,11 @@ def main() -> None:
         dy_identity_ok=dy_identity_ok,
         critical_x_factor_ok=critical_x_factor_ok,
         leyang_resultant_ok=leyang_resultant_ok,
+        leyang_resultant_constant=leyang_resultant_constant,
+        leyang_resultant_exact_ok=leyang_resultant_exact_ok,
         norm_identity_ok=norm_identity_ok,
+        norm_2division_ok=norm_2division_ok,
+        norm_2Y_ok=norm_2Y_ok,
         disc_cubic_x=int(disc_cubic_x),
         disc_cubic_x_factorization={str(int(p)): int(e) for p, e in disc_cubic_x_fac.items()},
         disc_leyang=int(disc_leyang),
@@ -226,7 +250,9 @@ def main() -> None:
     print(
         "[fold-zm-elliptic-leyang-cover-geom] checks:"
         f" dy={dy_identity_ok} critX={critical_x_factor_ok} leyang_res={leyang_resultant_ok}"
-        f" norm={norm_identity_ok} puiseux0={puiseux_y0_0_ok} puiseux1={puiseux_y0_1_ok}"
+        f" leyang_c={leyang_resultant_constant} leyang_exact={leyang_resultant_exact_ok}"
+        f" norm={norm_identity_ok} norm2div={norm_2division_ok} norm2Y={norm_2Y_ok}"
+        f" puiseux0={puiseux_y0_0_ok} puiseux1={puiseux_y0_1_ok}"
         f" c0sq={c0_sq_formula_ok} genusS4={genus_s4} genus2={genus2} genus6={genus6} seconds={dt:.3f}",
         flush=True,
     )
