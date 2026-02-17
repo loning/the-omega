@@ -1,0 +1,97 @@
+% (User input window)
+% 日期与时间：2026-02-17 14:25:12（Asia/Singapore）
+
+\begin{conclusion}[重量坐标下的倍乘“模方程”：\(y([2]P)\) 在 \texorpdfstring{$\QQ(y)$}{Q(y)} 上的严格四次最小多项式]\label{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}
+在椭圆曲线
+\[
+E:\ Y^{2}=X^{3}-X+\frac14,
+\qquad
+y:=X^{2}+Y-\frac12
+\]
+上令 \(y_{2}:=y([2]P)\)。
+则 \(y_{2}\) 在 \(\QQ(y)\) 上满足不可约四次代数方程
+\[
+H(y_{2},y)=0,
+\qquad
+H(T,y)\in\ZZ[y][T],
+\]
+并且 \(H(T,y)\) 可取为对 \((X,Y)\) 作消元得到的平面模曲线证书 \(\mathcal H(y,T)\)：
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_H}
+此外，其首项系数满足严格恒等式
+\[
+A_{4}(y)=S(y)^{4},
+\qquad
+S(y):=16y^{3}-8y^{2}-4y+1
+\]
+（其中 \(S\) 给出 \(E[2]\setminus\{O\}\) 的 \(y\)-像，见结论 \ref{con:xi-terminal-zm-2division-norm-square}）。
+\par
+并且该四次方程来自对 \(X\) 的纯代数消元：把 \(y([2]P)\) 以倍点公式写成 \(X,Y\) 的有理函数并消去 \(X\)，可得到结果式的严格分解
+\[
+\mathrm{Res}_{X}\bigl(\Pi(X,y),\,T-y([2]P)\bigr)
+=-16\cdot S(y)^{3}\cdot H(T,y),
+\]
+其中 \(\Pi(X,y)=X^{4}-X^{3}-(2y+1)X^{2}+X+y(y+1)\) 为谱四次平面曲线方程。
+\end{conclusion}
+\begin{proof}[证明要点]
+由倍点公式将 \([2](X,Y)=(X_{2},Y_{2})\) 写成闭式有理表达，进而把 \(y_{2}=X_{2}^{2}+Y_{2}-\tfrac12\) 表为 \(\QQ(X)\)-线性函数于 \(\{1,y\}\)；
+再在四次证书 \(\Pi(X,y)=0\) 下化简并对 \(X\) 作消元即可得到所示四次方程与结果式分解。
+不可约性与系数核验可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 复核。证毕。
+\end{proof}
+
+\begin{conclusion}[倍乘模方程的判别式平方类与 Lee--Yang 分歧核完全一致]\label{con:xi-terminal-zm-elliptic-weight-doubling-disc-squareclass}
+把结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation} 的 \(H(T,y)\) 视为关于 \(T\) 的四次多项式，则其判别式在 \(\QQ(y)^{\times}/(\QQ(y)^{\times})^{2}\) 中的平方类满足
+\[
+\mathrm{Disc}_{T}\bigl(H(\cdot,y)\bigr)\equiv -y(y-1)P_{\mathrm{LY}}(y)\pmod{(\QQ(y)^{\times})^{2}},
+\]
+其中 \(P_{\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32\) 为 Lee--Yang 三次因子（结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values}）。
+更强地，存在 \(Q_{12}(y),Q_{26}(y)\in\ZZ[y]\)（\(\deg Q_{12}=12,\deg Q_{26}=26\)）使得严格恒等式成立：
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant}
+因此倍乘诱导的重量四次模方程之唯一二次分辨率子域由
+\[
+\QQ(y)\Bigl(\sqrt{-y(y-1)P_{\mathrm{LY}}(y)}\Bigr)
+\]
+锁定；Lee--Yang 三次因子在平方类意义下对倍乘动力学保持刚性不变。
+\end{conclusion}
+\begin{proof}[证明要点]
+按定义计算 \(\mathrm{Disc}_{T}(H)\) 并在 \(\ZZ[y]\) 中因式分解即可得到所示恒等式；平方类结论随即推出。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[倍乘模方程的泛型伽罗瓦群为 \texorpdfstring{$S_{4}$}{S4}]\label{con:xi-terminal-zm-elliptic-weight-doubling-galois-s4}
+设 \(K:=\QQ(y)\)，令 \(L\) 为结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation} 的四次多项式 \(H(T,y)\) 在 \(K\) 上的分裂域。
+则泛型情形下
+\[
+\mathrm{Gal}(L/K)\cong S_{4}.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}，\(H(T,y)\) 在 \(K\) 上不可约；
+而结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-disc-squareclass} 给出 \(\mathrm{Disc}_{T}(H)\) 的平方类为 \(-y(y-1)P_{\mathrm{LY}}(y)\)，因而在 \(K\) 中非平方，排除 \(\mathrm{Gal}\subset A_{4}\)。
+再对 \(y=2\) 作一次专门化，得到
+\[
+H(T,2)=62742241T^{4}-225603363T^{3}+534557358T^{2}-28061748T+235224\in\QQ[T],
+\]
+其专门化伽罗瓦群可由可审计算法判定为 \(S_{4}\)；
+由 Hilbert 不可约性定理，泛型伽罗瓦群亦为 \(S_{4}\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[用 \texorpdfstring{$(y,y\circ[2])$}{(y,y∘[2])} 重构函数域：倍乘模曲线的归一化双有理同构于 \(E\)]\label{con:xi-terminal-zm-elliptic-weight-doubling-function-field-reconstruction}
+设 \(C_{2}\subset\mathbb P^{1}_{y}\times\mathbb P^{1}_{y_{2}}\) 为由方程 \(H(y_{2},y)=0\) 定义的平面代数曲线。
+则：
+\begin{enumerate}
+  \item \(\QQ(E)=\QQ(y,y_{2})\)，即 \(y\) 与 \(y_{2}=y\circ[2]\) 共同生成 \(E\) 的函数域；
+  \item \(C_{2}\) 的归一化与 \(E\) 双有理同构；等价地，态射
+  \[
+  E\longrightarrow \mathbb P^{1}_{y}\times\mathbb P^{1}_{y_{2}},\qquad
+  P\longmapsto\bigl(y(P),y([2]P)\bigr)
+  \]
+  在几何泛型点处为一一对应。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}，\(y([2]P)\) 在 \(\QQ(y)\) 上满足四次最小多项式，
+故 \([\QQ(y,y_{2}):\QQ(y)]=4=[\QQ(E):\QQ(y)]\)，从而 \(\QQ(E)=\QQ(y,y_{2})\)。
+双有理同构可由显式逆映射证书（重构 \(X,Y\)）给出，见脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 的输出。证毕。
+\end{proof}
+

@@ -7,9 +7,9 @@ of the Fold fiber-weight spectral curve Pi(lambda,y)=0.
 This script is English-only by repository convention.
 
 We verify (symbolically, with SymPy):
-  - On E: Y^2 = X^3 - X + 1/4, for y = X^2 - Y - 1/2 and omega = dX/(2Y),
-      dy = (4 X Y - 3 X^2 + 1) * omega.
-  - Finite ramification points satisfy 4XY - 3X^2 + 1 = 0; eliminating Y yields
+  - On E: Y^2 = X^3 - X + 1/4, for y = X^2 + Y - 1/2 and omega = dX/(2Y),
+      dy = (4 X Y + 3 X^2 - 1) * omega.
+  - Finite ramification points satisfy 4XY + 3X^2 - 1 = 0; eliminating Y yields
       (X-1)(X+1)(16X^3 - 9X^2 + 1) = 0.
   - The nontrivial ramification images satisfy the Lee–Yang cubic
       P_LY(y) = 256 y^3 + 411 y^2 + 165 y + 32
@@ -20,7 +20,7 @@ We verify (symbolically, with SymPy):
     we have Res_X(F, delta) = -y(y-1)P_LY(y).
   - 2-division norm square compression:
       Res_X(F, 4X^3-4X+1) = (16y^3 - 8y^2 - 4y + 1)^2,
-      Res_X(F, 2X^2-2y-1) = -(16y^3 - 8y^2 - 4y + 1).
+      Res_X(F, 2y-2X^2+1) = -(16y^3 - 8y^2 - 4y + 1).
   - Cubic-field generator mapping: if alpha solves 16X^3-9X^2+1=0, then
       beta=(4alpha^3-3alpha^2-2alpha+1)/(4alpha) solves P_LY(beta)=0,
     and Disc(16X^3-9X^2+1)=-2^2*3^3*37.
@@ -109,14 +109,14 @@ def main() -> None:
 
     # Elliptic curve E and weight function y(X,Y)
     E = Y**2 - (X**3 - X + sp.Rational(1, 4))
-    y_map = X**2 - Y - sp.Rational(1, 2)
+    y_map = X**2 + Y - sp.Rational(1, 2)
 
-    # Differential identity: dy = (4XY - 3X^2 + 1) * (dX/(2Y))
-    dy_dx = sp.simplify(2 * X - (3 * X**2 - 1) / (2 * Y))
-    dy_identity_ok = bool(sp.simplify(dy_dx - (4 * X * Y - 3 * X**2 + 1) / (2 * Y)) == 0)
+    # Differential identity: dy = (4XY + 3X^2 - 1) * (dX/(2Y))
+    dy_dx = sp.simplify(2 * X + (3 * X**2 - 1) / (2 * Y))
+    dy_identity_ok = bool(sp.simplify(dy_dx - (4 * X * Y + 3 * X**2 - 1) / (2 * Y)) == 0)
 
-    # Critical locus in affine chart: 4XY - 3X^2 + 1 = 0
-    crit = 4 * X * Y - 3 * X**2 + 1
+    # Critical locus in affine chart: 4XY + 3X^2 - 1 = 0
+    crit = 4 * X * Y + 3 * X**2 - 1
     res_X = sp.factor(sp.resultant(E, crit, Y))
     target_X = (X - 1) * (X + 1) * (16 * X**3 - 9 * X**2 + 1)
     q = sp.together(res_X / target_X)
@@ -147,7 +147,7 @@ def main() -> None:
     ctrl = 16 * y**3 - 8 * y**2 - 4 * y + 1
     norm_2division_ok = bool(sp.factor(Res_D2 - ctrl**2) == 0)
 
-    twoY = 2 * X**2 - 2 * y - 1  # since Y = X^2 - y - 1/2
+    twoY = 2 * y - 2 * X**2 + 1  # since Y = y - X^2 + 1/2
     Res_twoY = sp.factor(sp.resultant(F, twoY, X))
     norm_2Y_ok = bool(sp.factor(Res_twoY + ctrl) == 0)
 

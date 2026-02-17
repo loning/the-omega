@@ -1,0 +1,239 @@
+% (User input window)
+% 日期与时间：2026-02-17 14:57:32（Asia/Singapore）
+
+\paragraph{共轭重量支下的闭式审计链：临界域、分歧域与倍乘对应的算术分解}
+本段在既有椭圆统一化（结论 \ref{con:xi-terminal-zm-elliptic-normalization}）与 Lee--Yang 分歧刻画（结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values}）的基础上，
+将 Latt\`es 临界多项式、共轭重量覆盖的分歧几何与倍乘诱导的四值对应统一为一组可直接引用的闭式证书。
+
+\begin{conclusion}[临界六次的 \(4\)-分点解释与分裂域刻画]\label{con:xi-terminal-zm-lattes-critical-sextic-4division-splitting-field}
+沿用结论 \ref{con:xi-terminal-zm-elliptic-lattes-doubling} 的椭圆曲线
+\(
+E/\QQ:\ Y^{2}=X^{3}-X+\tfrac14
+\)
+与倍点 Latt\`es 自映射
+\(
+\Phi(X)=\frac{X^{4}+2X^{2}-2X+1}{4X^{3}-4X+1}
+\)。
+令
+\[
+\Psi(X):=2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1\in\ZZ[X].
+\]
+则：
+\begin{enumerate}
+  \item \(\Psi\) 恰为 \(4\)-division 多项式 \(\psi_{4}\) 去除 \(2\)-division 因子后的本原因子；等价地，有限临界集合满足
+  \[
+  \Phi'(X)=0
+  \ \Longleftrightarrow\
+  \exists\,Q\in E[4]\setminus E[2]\ \text{使得}\ X=x(Q)
+  \ \Longleftrightarrow\
+  \Psi(X)=0.
+  \]
+  因而 \(\Phi\) 的六个有限临界点正是 \(x\bigl(E[4]\setminus E[2]\bigr)\)（在 \(\pm\) 识别下）的像。
+  \item \(\Psi\) 在 \(\QQ\) 上不可约，且其判别式满足严格恒等式
+  \[
+  \mathrm{Disc}(\Psi)=-2^{8}\cdot 37^{5}.
+  \]
+  从而 \(\Psi\) 的分裂域 \(K_{4}/\QQ\) 的分歧素数集合包含于 \(\{2,37\}\)。
+  \item 伽罗瓦群为阶 \(48\) 的传递群，且同构于
+  \[
+  \mathrm{Gal}(K_{4}/\QQ)\cong S_{4}\times C_{2}.
+  \]
+  特别地，六个有限临界点在 \(\mathrm{Gal}(\overline{\QQ}/\QQ)\) 作用下构成单一轨道。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+第一点由结论 \ref{con:xi-terminal-zm-elliptic-lattes-doubling} 的 \(\psi_{4}/(2Y)\) 恒等式给出；
+第二、三点由结论 \ref{con:xi-terminal-zm-elliptic-lattes-critical-sextic-galois} 的不可约性、判别式与伽罗瓦群计算推出；
+传递性等价于“临界点构成单一伽罗瓦轨道”。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_lattes\_rational\_points\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[谱四次的显式椭圆化与共轭重量覆盖的分歧剖面]\label{con:xi-terminal-zm-elliptic-normalization-y-iota-ramification-portrait}
+令平面曲线
+\[
+C:\quad \Pi(\lambda,y)=\lambda^{4}-\lambda^{3}-(2y+1)\lambda^{2}+\lambda+y(y+1)=0.
+\]
+在结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的椭圆统一化下，\(C\) 与
+\(
+E:\ Y^{2}=X^{3}-X+\tfrac14
+\)
+之间存在完全显式的坐标同一（在仿射开集上为同构）：
+\[
+E\dashrightarrow C,\qquad (X,Y)\longmapsto (\lambda,y)=(X,\ X^{2}+Y-\tfrac12),
+\]
+\[
+C\dashrightarrow E,\qquad (\lambda,y)\longmapsto (X,Y)=(\lambda,\ y+\tfrac12-\lambda^{2}).
+\]
+记共轭重量函数
+\[
+y^{\iota}:=X^{2}+Y-\frac12\in\QQ(E),
+\qquad
+P_{\mathrm{LY}}(t):=256t^{3}+411t^{2}+165t+32\in\ZZ[t].
+\]
+则 \(y^{\iota}:E\to\mathbb P^{1}\) 为次数 \(4\) 的覆盖，并满足以下全分歧剖面：
+\begin{enumerate}
+  \item 在无穷远点 \(O\) 处，\(y^{\iota}\) 具有唯一极点且极点阶为 \(4\)，从而在 \(y^{\iota}=\infty\) 处全分歧（\(e_{O}=4\)）。
+  \item 有限分歧值集合恰为
+  \[
+  y^{\iota}\in\{0,1\}\ \cup\ V\!\bigl(P_{\mathrm{LY}}\bigr),
+  \]
+  并且每个有限分歧值均为单分歧（上方存在唯一分歧点，分歧指标 \(2\)）。
+  \item 两个有理分歧值的纤维分解完全显式：
+  \[
+  (y^{\iota})^{-1}(0)=\Bigl\{\Bigl(0,\frac12\Bigr),\ \Bigl(-1,-\frac12\Bigr),\ \underbrace{\Bigl(1,-\frac12\Bigr)}_{e=2}\Bigr\},
+  \qquad
+  (y^{\iota})^{-1}(1)=\Bigl\{\Bigl(1,\frac12\Bigr),\ \Bigl(2,-\frac52\Bigr),\ \underbrace{\Bigl(-1,\frac12\Bigr)}_{e=2}\Bigr\}.
+  \]
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-y-quadratic-extension-minpoly}，\(y^{\iota}\) 与物理主支 \(y=X^{2}-Y-\tfrac12\) 互为共轭，且由椭圆反演 \(\iota:(X,Y)\mapsto(X,-Y)\) 交换。
+结论 \ref{con:xi-terminal-zm-elliptic-y-hurwitz-passport} 给出 \(y\) 的 Hurwitz 护照与两个有理分歧纤维；
+对其施加 \(\iota\) 即得到 \(y^{\iota}\) 的分歧剖面与两条纤维分解。
+有限分歧值集合与 \(P_{\mathrm{LY}}\) 的出现由判别式分解（结论 \ref{con:xi-terminal-zm-discriminant-leyang}，等价地见结论 \ref{con:xi-terminal-zm-leyang-cubic-branch-image}）决定。证毕。
+\end{proof}
+
+\begin{conclusion}[Lee--Yang 三次因子的分歧消元产生式：共轭重量支的临界点立方刻画]\label{con:xi-terminal-zm-leyang-branch-elimination-origin-y-iota}
+在结论 \ref{con:xi-terminal-zm-elliptic-normalization-y-iota-ramification-portrait} 的记号下，令
+\[
+g(X):=16X^{3}-9X^{2}+1.
+\]
+则 \(y^{\iota}:E\to\mathbb P^{1}\) 在 \(V\!\bigl(P_{\mathrm{LY}}\bigr)\) 上方的三条非有理分歧点恰为满足
+\[
+4XY+3X^{2}-1=0,\qquad X\neq \pm 1
+\]
+的三点；等价地可由
+\[
+g(X)=0,\qquad Y=\frac{1-3X^{2}}{4X}
+\]
+刻画。
+更进一步，分歧值与上述立方分歧点之间存在严格消元恒等式：在分歧约束下有线性关系
+\[
+4Xy^{\iota}=4X^{3}-3X^{2}-2X+1,
+\]
+并且满足结果式证书
+\[
+\mathrm{Res}_{X}\!\Bigl(g(X),\ 4Xy^{\iota}-\bigl(4X^{3}-3X^{2}-2X+1\bigr)\Bigr)=-64\,P_{\mathrm{LY}}(y^{\iota}).
+\]
+因此 \(P_{\mathrm{LY}}\)（除去单位因子）可被解释为共轭重量覆盖的“非有理分歧值集合”在基底上的最小整系数消元像。
+\end{conclusion}
+\begin{proof}[证明要点]
+与结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values} 的推导同理：由
+\(
+y^{\iota}=X^{2}+Y-\tfrac12
+\)
+与曲线微分关系 \(2Y\,\dd Y=(3X^{2}-1)\dd X\) 得
+\(
+\dd y^{\iota}=(4XY+3X^{2}-1)\,\omega
+\)（\(\omega=\dd X/(2Y)\)）。
+因此有限分歧点满足 \(4XY+3X^{2}-1=0\)；
+消去 \(Y\) 得
+\(
+(X-1)(X+1)g(X)=0
+\)，其中 \(X=\pm 1\) 对应有理分歧值 \(0,1\)，其余三点由 \(g(X)=0\) 给出。
+线性关系 \(4Xy^{\iota}=4X^{3}-3X^{2}-2X+1\) 由代回 \(Y=(1-3X^{2})/(4X)\) 得到；
+对变量 \(X\) 作消元即得结果式恒等式。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[重量坐标下的倍乘对应：四次消元方程与判别式平方自由核的刚性坍缩]\label{con:xi-terminal-zm-elliptic-weight-doubling-quartic-elimination-disc}
+沿用结论 \ref{con:xi-terminal-zm-elliptic-normalization-y-iota-ramification-portrait} 的共轭重量函数 \(y^{\iota}\)，并令
+\[
+y^{\iota}_0:=y^{\iota}(P),\qquad y^{\iota}_1:=y^{\iota}([2]P)\qquad(P\in E(\overline{\QQ})).
+\]
+则 \([2]\) 在重量坐标上的推送不诱导单值有理自映射，而给出一个由不可约四次整系数消元方程编码的四值对应：
+存在 \(\mathcal H\in\ZZ[y^{\iota}_0,y^{\iota}_1]\)（关于 \(y^{\iota}_1\) 为四次）使得对所有 \(P\) 有
+\[
+\mathcal H\bigl(y^{\iota}_0,y^{\iota}_1\bigr)=0,
+\]
+并且 \(\mathcal H\) 的显式系数证书为：
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_H}
+其首项系数为完全四次幂
+\[
+A_{4}(y^{\iota}_0)=\bigl(16(y^{\iota}_0)^{3}-8(y^{\iota}_0)^{2}-4y^{\iota}_0+1\bigr)^{4},
+\]
+而常数项具有非平凡因式分解
+\[
+\boxed{\;
+A_{0}(y^{\iota}_0)
+=(y^{\iota}_0+1)^{2}\bigl((y^{\iota}_0)^{3}-7(y^{\iota}_0)^{2}+13y^{\iota}_0-5\bigr)^{2}
+\bigl((y^{\iota}_0)^{4}-6(y^{\iota}_0)^{3}+66(y^{\iota}_0)^{2}+28y^{\iota}_0+9\bigr)
+\bigl((y^{\iota}_0)^{4}+2(y^{\iota}_0)^{3}+8(y^{\iota}_0)^{2}+8y^{\iota}_0+8\bigr)\; }.
+\]
+最关键者在于判别式的平方自由核出现刚性坍缩：将 \(\mathcal H(y,v)\) 视为关于 \(v\) 的四次多项式，则其判别式满足严格分解
+\[
+\mathrm{Disc}_{v}\bigl(\mathcal H(y,v)\bigr)=-y(y-1)P_{\mathrm{LY}}(y)\cdot(\text{完全平方}),
+\]
+并且对共轭重量支亦存在另一条不可约四次对应 \(R_{-}\)，其判别式平方自由核与 \(\mathcal H\) 一致；
+判别式分解的闭式证书（同时列出 \(R_{\pm}\)，其中 \(R_{+}=\mathcal H\)）为：
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant}
+因此在 \(\QQ(y)^{\times}/(\QQ(y)^{\times})^{2}\) 中，
+\(
+\mathrm{Disc}_{v}(\mathcal H)
+\)
+的平方类严格等于 \(-y(y-1)P_{\mathrm{LY}}(y)\)；
+所有额外分歧贡献均以平方形式出现，不产生新的二次障碍。
+\end{conclusion}
+\begin{proof}[证明要点]
+该四次对应由在函数域 \(\QQ(E)\) 中联立倍点公式与 \(y^{\iota}=X^{2}+Y-\tfrac12\) 并对 \((X,Y)\) 消元得到；
+不可约性与判别式分解均可在 \(\ZZ[y,v]\) 与 \(\ZZ[y]\) 内逐项核验。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[Lee--Yang 立方域上分歧点的显式坐标化与隐藏平方结构]\label{con:xi-terminal-zm-leyang-branchpoint-explicit-coordinates-hidden-square}
+令 \(y_0\) 为 \(P_{\mathrm{LY}}(y)=0\) 的任一根，并记 \(K:=\QQ(y_0)\)。
+则在 \(K\) 上存在唯一分歧点 \(Q\in E(K)\) 满足
+\[
+y^{\iota}(Q)=y_0,\qquad \dd y^{\iota}(Q)=0.
+\]
+其坐标可由 \(y_0\) 显式表示为
+\[
+\boxed{\;
+X(Q)=\frac{-512y_0^{2}-518y_0-5}{279},\qquad
+Y(Q)=\frac{512y_0^{2}+1262y_0+377}{558}\; }.
+\]
+特别地，\(X(Q)\) 满足立方证书 \(g(X(Q))=0\)，其中 \(g(X)=16X^{3}-9X^{2}+1\)（见结论 \ref{con:xi-terminal-zm-leyang-branch-elimination-origin-y-iota}）。
+\par
+此外，域 \(K\) 中存在一条非显然的“平方”恒等式：定义
+\[
+s:=\frac{-512y_0^{2}+226y_0+367}{93}\in K,
+\]
+则严格成立
+\[
+\boxed{\;s^{2}=64y_0^{2}+64y_0+25\ \text{于 }K\text{ 中}\; }.
+\]
+该恒等式给出一条显式平方证书，表明 Lee--Yang 立方域中出现的分歧点坐标可在不引入额外二次扩张的前提下完成闭式表达。
+\end{conclusion}
+\begin{proof}[证明要点]
+在商环 \(\QQ[y,X]/(P_{\mathrm{LY}}(y))\) 中，对系统 \(\Pi(X,y)=0\)、\(\partial_{X}\Pi(X,y)=0\) 作 Gröbner 消元可得到一次消元子
+\(
+279X+512y^{2}+518y+5=0
+\)，从而给出 \(X(Q)\) 的显式表达；
+再由 \(y^{\iota}=X^{2}+Y-\tfrac12\) 回代得到 \(Y(Q)\)。
+隐藏平方恒等式为同一三次商环中的代数恒等式检验。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_resy\_spectral\_decomposition\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[两类二次伴随场的分化：临界域与 Lee--Yang 分歧域的算术阴影]\label{con:xi-terminal-zm-quadratic-companion-fields-separation}
+该模型中出现两条彼此不同但同由椭圆判别式素数 \(37=\Delta(E)\) 驱动的二次伴随场：
+\begin{enumerate}
+  \item 对临界六次多项式 \(\Psi\)，其判别式平方自由核为 \(-37\)（结论 \ref{con:xi-terminal-zm-lattes-critical-sextic-4division-splitting-field}），因此
+  \[
+  \QQ(\sqrt{-37})\ \subset\ K_4
+  \]
+  必嵌入临界点分裂域 \(K_4/\QQ\)。
+  \item 对 Lee--Yang 三次分歧（等价地，对 \(P_{\mathrm{LY}}\) 或结论 \ref{con:xi-terminal-zm-leyang-cubic-arithmetic} 的 \(S_3\) 分裂域），其判别式平方自由核为 \(-111=-3\cdot 37\)，因此
+  \[
+  \QQ(\sqrt{-111})\ \subset\ L_{\mathrm{LY}}
+  \]
+  必嵌入 Lee--Yang 分歧域的伽罗瓦闭包 \(L_{\mathrm{LY}}/\QQ\)。
+\end{enumerate}
+两者分别对应 \(-\Delta(E)\) 与 \(-3\Delta(E)\) 的二次阴影，
+从而在最低阶二次信息上，动力学临界域（由 \(\Phi\) 的临界点控制）与分歧/Lee--Yang 域（由 \(y:E\to\mathbb P^{1}\) 的分歧控制）已发生不可约的算术分化。
+\end{conclusion}
+\begin{proof}[证明要点]
+第一点由结论 \ref{con:xi-terminal-zm-elliptic-lattes-critical-sextic-galois} 的判别式平方类立即推出；
+第二点由结论 \ref{con:xi-terminal-zm-leyang-cubic-arithmetic} 的判别式平方自由部分与不可约性推出，并由不可约三次的标准结构得到其唯一二次子域。
+二次阴影的对比仅为代入 \(\Delta(E)=37\) 的算术重写。证毕。
+\end{proof}
+

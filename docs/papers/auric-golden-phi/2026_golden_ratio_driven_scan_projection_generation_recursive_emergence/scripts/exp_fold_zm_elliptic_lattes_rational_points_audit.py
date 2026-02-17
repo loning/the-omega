@@ -19,13 +19,13 @@ We verify:
       [2]^*(y) = (C(X) y + B(X)) / (4X^3 - 4X + 1)^2,
     for an explicit B(X) in Q[X].
   - An integral coupling of special rational points on E(Q):
-      R=(0,1/2), Q0=(1,-1/2), Q0'=(-1,1/2), P=(2,5/2) satisfy
-      [2]R=(1,1/2)=-Q0, [3]R=(-1,-1/2)=-Q0', [4]R=(2,-5/2)=-P.
+      R=(0,1/2), Q0=(1,-1/2), Q0'=(-1,1/2), P=(2,-5/2) satisfy
+      [2]R=(1,1/2)=-Q0, [3]R=(-1,-1/2)=-Q0', [4]R=(2,-5/2)=P.
   - Quadratic minimal polynomial of the physical weight parameter
-      y = X^2 - Y - 1/2
+      y = X^2 + Y - 1/2
     over Q(X), with discriminant 4X^3 - 4X + 1 = 4Y^2.
   - Torsion triviality via gcd of #E(F_p) over several good primes p.
-  - For the physical point P = (2, 5/2), the denominator law:
+  - For the physical point P = (2, -5/2), the denominator law:
       if x(nP) = u_n / v_n^2 in lowest terms with v_n>0, then
       den(y(nP)) = v_n^4,
     and we reproduce the first six terms.
@@ -235,9 +235,9 @@ def main() -> None:
 
     # --- y quadratic minimal polynomial over Q(X) ---
     y = sp.Symbol("y")
-    y_def = X**2 - Y - sp.Rational(1, 2)
-    # Eliminate Y using Y = X^2 - y - 1/2.
-    elim = sp.expand((X**2 - y - sp.Rational(1, 2)) ** 2 - (X**3 + a * X + b))
+    y_def = X**2 + Y - sp.Rational(1, 2)
+    # Eliminate Y using Y = y - X^2 + 1/2.
+    elim = sp.expand((y - X**2 + sp.Rational(1, 2)) ** 2 - (X**3 + a * X + b))
     minpoly = sp.factor(elim)
     minpoly_expected = y**2 - (2 * X**2 - 1) * y + X * (X - 1) ** 2 * (X + 1)
     y_minpoly_ok = bool(sp.factor(minpoly - minpoly_expected) == 0)
@@ -247,7 +247,7 @@ def main() -> None:
     y_disc_ok = bool(sp.factor(disc - disc_expected) == 0)
 
     # --- [2]^*(y) is linear in y with critical coefficient ---
-    # Work in Q(X,Y) first, reduce modulo Y^2-(X^3+aX+b), then eliminate Y using Y=X^2-y-1/2
+    # Work in Q(X,Y) first, reduce modulo Y^2-(X^3+aX+b), then eliminate Y using Y=y-X^2+1/2
     # and reduce modulo the quartic certificate F(X,y)=0.
     a = sp.Integer(-1)
     b = sp.Rational(1, 4)
@@ -256,14 +256,14 @@ def main() -> None:
     m = sp.together((3 * X**2 + a) / (2 * Y))
     X2 = sp.together(m * m - 2 * X)
     Y2 = sp.together(m * (X - X2) - Y)
-    y2 = sp.together(X2**2 - Y2 - sp.Rational(1, 2))
+    y2 = sp.together(X2**2 + Y2 - sp.Rational(1, 2))
     num_y2, den_y2 = y2.as_numer_denom()
 
     modY = sp.Poly(Y**2 - fX, Y)
     num_y2_red = sp.rem(sp.Poly(sp.expand(num_y2), Y), modY).as_expr()
     den_y2_red = sp.rem(sp.Poly(sp.expand(den_y2), Y), modY).as_expr()
 
-    Y_sub = X**2 - y - sp.Rational(1, 2)
+    Y_sub = y - X**2 + sp.Rational(1, 2)
     expr_xy = sp.together(num_y2_red.subs({Y: Y_sub}) / den_y2_red.subs({Y: Y_sub}))
     num_xy, den_xy = expr_xy.as_numer_denom()
 
@@ -291,7 +291,7 @@ def main() -> None:
     torsion_trivial = bool(g == 1)
 
     # --- Rational point orbit and denominator law ---
-    P: Point = (sp.Integer(2), sp.Rational(5, 2))
+    P: Point = (sp.Integer(2), -sp.Rational(5, 2))
     # sanity check P on curve
     if sp.simplify(P[1] ** 2 - (P[0] ** 3 + a * P[0] + b)) != 0:
         raise RuntimeError("Base point P is not on the curve.")
@@ -309,14 +309,14 @@ def main() -> None:
         and threeR == (-sp.Integer(1), -sp.Rational(1, 2))
         and threeR == (Q0p[0], -Q0p[1])
         and fourR == (sp.Integer(2), -sp.Rational(5, 2))
-        and fourR == (P[0], -P[1])
+        and fourR == P
     )
 
     def y_weight(pt: Point) -> sp.Rational:
         if pt is None:
             raise ValueError("y(weight) undefined at O.")
         xpt, ypt = pt
-        return sp.together(xpt**2 - ypt - sp.Rational(1, 2))
+        return sp.together(xpt**2 + ypt - sp.Rational(1, 2))
 
     rows: List[TableRow] = []
     for n in range(1, 7):
@@ -362,12 +362,12 @@ def main() -> None:
         torsion_group_orders=[int(n) for n in orders],
         torsion_gcd=int(g),
         torsion_trivial=bool(torsion_trivial),
-        base_point={"P": "(2,5/2)", "minus_P": "(2,-5/2)", "y(P)": sp.sstr(y_weight(P))},
+        base_point={"P": "(2,-5/2)", "minus_P": "(2,5/2)", "y(P)": sp.sstr(y_weight(P))},
         mw_anchor_points={
             "R": "(0,1/2)",
             "Q0": "(1,-1/2)",
             "Q0_prime": "(-1,1/2)",
-            "P": "(2,5/2)",
+            "P": "(2,-5/2)",
             "2R": sp.sstr(twoR),
             "3R": sp.sstr(threeR),
             "4R": sp.sstr(fourR),
@@ -392,14 +392,14 @@ def main() -> None:
         "\\mathrm{Disc}(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1)=-2^{8}\\cdot 37^{5},\\qquad |\\mathrm{Gal}|=48.",
         "\\]",
         "\\[",
-        "y:=X^{2}-Y-\\frac12,\\qquad y^{2}-(2X^{2}-1)y+X(X-1)^{2}(X+1)=0,\\qquad \\Delta=4X^{3}-4X+1=4Y^{2}.",
+        "y:=X^{2}+Y-\\frac12,\\qquad y^{2}-(2X^{2}-1)y+X(X-1)^{2}(X+1)=0,\\qquad \\Delta=4X^{3}-4X+1=4Y^{2}.",
         "\\]",
         "\\[",
         "E(\\mathbb{Q})_{\\mathrm{tors}}=\\{O\\}\\ \\text{(gcd of }\\#E(\\mathbb{F}_p)\\text{ over small good primes equals }1).",
         "\\]",
         "\\[",
-        "R:=(0,\\tfrac12),\\ Q_0:=(1,-\\tfrac12),\\ Q_0':=(-1,\\tfrac12),\\ P:=(2,\\tfrac52),\\ "
-        "[2]R=(1,\\tfrac12)=-Q_0,\\ [3]R=(-1,-\\tfrac12)=-Q_0',\\ [4]R=(2,-\\tfrac52)=-P.",
+        "R:=(0,\\tfrac12),\\ Q_0:=(1,-\\tfrac12),\\ Q_0':=(-1,\\tfrac12),\\ P:=(2,-\\tfrac52),\\ "
+        "[2]R=(1,\\tfrac12)=-Q_0,\\ [3]R=(-1,-\\tfrac12)=-Q_0',\\ [4]R=(2,-\\tfrac52)=P.",
         "\\]",
         "",
     ]

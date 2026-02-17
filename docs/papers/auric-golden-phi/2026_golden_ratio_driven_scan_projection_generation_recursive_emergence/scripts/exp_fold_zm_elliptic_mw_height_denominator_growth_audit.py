@@ -12,17 +12,17 @@ Minimal integral model (LMFDB / Cremona 37a1):
 
 We verify (exact, auditable):
   - Low multiples for R=(0,1/2) (the image of R0=(0,0) under Y=y0+1/2):
-      2R = (1,  1/2) =: Q0,
-      3R = (-1,-1/2) =: Q0',
-      4R = (2, -5/2) = -P where P=(2, 5/2).
-  - Weight map (physical branch): y = X^2 - Y - 1/2:
+      2R = (1,  1/2) = -Q0,
+      3R = (-1,-1/2) = -Q0',
+      4R = (2, -5/2) = P where P=(2, -5/2).
+  - Weight map (physical branch): y = X^2 + Y - 1/2:
       y(2Q0)=y(4R)=6,  y(2Q0')=y(6R)=21.
   - Lee–Yang cubic P_LY(y)=256 y^3+411 y^2+165 y+32:
       P_LY(6)=2*37*31^2,  P_LY(21)=4*11*241^2.
   - Quartic characteristic polynomial Pi(lambda,y):
       Pi(lambda,6)  = (lambda-2)(lambda^3 + lambda^2 - 11 lambda - 21),
       Pi(lambda,21) = (lambda-6)(lambda^3 + 5 lambda^2 - 13 lambda - 77).
-  - Denominator sequence v_n for x(nP)=u_n/v_n^2 (P=(2,5/2)) for n=1..12,
+  - Denominator sequence v_n for x(nP)=u_n/v_n^2 (P=(2,-5/2)) for n=1..12,
     and log(v_n)/n^2 for n=8..12 (natural log).
   - Bad prime p=37 on minimal model:
       c6=-216,  (-c6 mod 37)=31,  (31/37)=-1 (nonsplit multiplicative),
@@ -105,7 +105,7 @@ def _y_weight(P: Point) -> Fraction:
     if P is None:
         raise ValueError("y-weight undefined at O.")
     x, y = P
-    return x * x - y - Fraction(1, 2)
+    return x * x + y - Fraction(1, 2)
 
 
 def _v_p(n: int, p: int) -> int:
@@ -163,7 +163,7 @@ def main() -> None:
 
     # Base points
     R: Point = (Fraction(0, 1), Fraction(1, 2))
-    P: Point = (Fraction(2, 1), Fraction(5, 2))  # physical base point (y(P)=1)
+    P: Point = (Fraction(2, 1), Fraction(-5, 2))  # physical base point (y(P)=1)
 
     # Sanity: curve equation
     for name, pt in [("R", R), ("P", P)]:
@@ -174,14 +174,27 @@ def main() -> None:
             raise RuntimeError(f"{name} not on curve.")
 
     # --- Low multiples
-    Q0 = _mul(2, R, a=a)
-    Q0p = _mul(3, R, a=a)
+    twoR = _mul(2, R, a=a)
+    threeR = _mul(3, R, a=a)
     m4 = _mul(4, R, a=a)
+    if twoR is None or threeR is None:
+        raise RuntimeError("Unexpected: low multiple hit O.")
+    Q0: Point = (twoR[0], -twoR[1])
+    Q0p: Point = (threeR[0], -threeR[1])
 
-    expected_Q0 = (Fraction(1, 1), Fraction(1, 2))
-    expected_Q0p = (Fraction(-1, 1), Fraction(-1, 2))
+    expected_twoR = (Fraction(1, 1), Fraction(1, 2))
+    expected_threeR = (Fraction(-1, 1), Fraction(-1, 2))
+    expected_Q0 = (Fraction(1, 1), Fraction(-1, 2))
+    expected_Q0p = (Fraction(-1, 1), Fraction(1, 2))
     expected_m4 = (Fraction(2, 1), Fraction(-5, 2))
-    low_ok = (Q0 == expected_Q0) and (Q0p == expected_Q0p) and (m4 == expected_m4)
+    low_ok = (
+        twoR == expected_twoR
+        and threeR == expected_threeR
+        and Q0 == expected_Q0
+        and Q0p == expected_Q0p
+        and m4 == expected_m4
+        and m4 == P
+    )
 
     # --- Branchpoint doubling y-values
     y_2Q0 = int(_y_weight(_mul(2, Q0, a=a)))
@@ -325,8 +338,8 @@ def main() -> None:
         low_multiples_ok=bool(low_ok),
         points={
             "R": str(R),
-            "Q0=2R": str(Q0),
-            "Q0'=3R": str(Q0p),
+            "Q0=-2R": str(Q0),
+            "Q0'=-3R": str(Q0p),
             "4R": str(m4),
             "P": str(P),
             "-P": str((P[0], -P[1])),

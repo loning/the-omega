@@ -2737,6 +2737,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_4division_weight_image_audit",
+            script="exp_fold_zm_elliptic_4division_weight_image_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_4division_weight_image_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_4division_weight_image_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_leyang_arithmetic_audit",
             script="exp_fold_zm_elliptic_leyang_arithmetic_audit.py",
             args=[],

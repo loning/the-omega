@@ -19,6 +19,13 @@ We also verify the refined double-root branch rigidity on the Lee–Yang locus:
     implies the linear relation
         279 lambda + 512 y^2 + 518 y + 5 = 0,
     and the Lee–Yang cubic factor 16 lambda^3 - 9 lambda^2 + 1 reduces to 0.
+  - Under the elliptic weight convention y = lambda^2 + Y - 1/2 (so Y = y - lambda^2 + 1/2),
+    the ramification point over the Lee–Yang cubic field K=Q(y) admits the closed coordinates
+        lambda = -(512 y^2 + 518 y + 5)/279,
+        Y      =  (512 y^2 + 1262 y + 377)/558,
+    and satisfies the ramification equation 4 lambda Y + 3 lambda^2 - 1 = 0.
+  - A hidden square identity holds in K:
+        ((-512 y^2 + 226 y + 367)/93)^2 = 64 y^2 + 64 y + 25.
 
 Outputs:
   - artifacts/export/fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.json
@@ -70,6 +77,18 @@ class Payload:
     groebner_linear_ok: bool
     groebner_linear_prim: str
     cubic_reduces_ok: bool
+    branch_Y_formula_ok: bool
+    branch_ramification_ok: bool
+    branch_curve_eq_ok: bool
+    hidden_square_ok: bool
+
+
+def _is_zero_mod_univariate(expr: sp.Expr, *, y: sp.Symbol, modulus: sp.Expr) -> bool:
+    """Return True iff expr == 0 in QQ[y]/(modulus)."""
+    num = sp.together(expr).as_numer_denom()[0]
+    P = sp.Poly(modulus, y, domain=sp.QQ)
+    rem = sp.Poly(sp.expand(num), y, domain=sp.QQ).rem(P)
+    return bool(rem.is_zero)
 
 
 def main() -> None:
@@ -115,12 +134,32 @@ def main() -> None:
     rem = G.reduce(cubic)[1]
     cubic_reduces_ok = bool(sp.simplify(rem) == 0)
 
+    # --- Closed coordinate formulas on the Lee–Yang cubic field K=Q(y)/(P_LY) ---
+    lam_branch = -sp.Rational(1, 279) * (512 * y**2 + 518 * y + 5)
+    Y_branch = sp.simplify(y - lam_branch**2 + sp.Rational(1, 2))
+    Y_target = sp.Rational(1, 558) * (512 * y**2 + 1262 * y + 377)
+    branch_Y_formula_ok = _is_zero_mod_univariate(Y_branch - Y_target, y=y, modulus=P_LY)
+
+    branch_ramification_ok = _is_zero_mod_univariate(
+        4 * lam_branch * Y_branch + 3 * lam_branch**2 - 1, y=y, modulus=P_LY
+    )
+    branch_curve_eq_ok = _is_zero_mod_univariate(
+        Y_branch**2 - (lam_branch**3 - lam_branch + sp.Rational(1, 4)), y=y, modulus=P_LY
+    )
+
+    s = sp.Rational(1, 93) * (-512 * y**2 + 226 * y + 367)
+    hidden_square_ok = _is_zero_mod_univariate(s**2 - (64 * y**2 + 64 * y + 25), y=y, modulus=P_LY)
+
     payload = Payload(
         resultant_ok=resultant_ok,
         resultant_degree=resultant_degree,
         groebner_linear_ok=groebner_linear_ok,
         groebner_linear_prim=groebner_linear_prim,
         cubic_reduces_ok=cubic_reduces_ok,
+        branch_Y_formula_ok=branch_Y_formula_ok,
+        branch_ramification_ok=branch_ramification_ok,
+        branch_curve_eq_ok=branch_curve_eq_ok,
+        hidden_square_ok=hidden_square_ok,
     )
 
     if not args.no_output:
@@ -137,6 +176,12 @@ def main() -> None:
             "\\[",
             "279\\lambda+512y^{2}+518y+5=0\\quad(\\mathrm{mod}\\ P_{\\mathrm{LY}}(y)).",
             "\\]",
+            "\\[",
+            "Y=\\frac{512y^{2}+1262y+377}{558}\\quad(\\mathrm{mod}\\ P_{\\mathrm{LY}}(y)).",
+            "\\]",
+            "\\[",
+            "\\left(\\frac{-512y^{2}+226y+367}{93}\\right)^{2}=64y^{2}+64y+25\\quad(\\mathrm{mod}\\ P_{\\mathrm{LY}}(y)).",
+            "\\]",
             "",
         ]
         out_tex = generated_dir() / "eq_fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.tex"
@@ -148,7 +193,9 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-leyang-resy] checks:"
-        f" res={resultant_ok} deg={resultant_degree} lin={groebner_linear_ok} cubic_red={cubic_reduces_ok} seconds={dt:.3f}",
+        f" res={resultant_ok} deg={resultant_degree} lin={groebner_linear_ok} cubic_red={cubic_reduces_ok}"
+        f" Y={branch_Y_formula_ok} ram={branch_ramification_ok} curve={branch_curve_eq_ok} sq={hidden_square_ok}"
+        f" seconds={dt:.3f}",
         flush=True,
     )
     print("[fold-zm-elliptic-leyang-resy] done", flush=True)
