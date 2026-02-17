@@ -12,6 +12,10 @@ Policy implemented here:
       * contains "日期与时间" or "当前时间", OR
       * contains an ISO date pattern (YYYY-MM-DD), with or without a time-of-day.
   - Do not touch non-comment content.
+  - Additionally, for LaTeX sources, remove editorial timestamp notes inside
+    `\\footnote{...}` when they are clearly provenance metadata, e.g.:
+      * contains "版本记录"  -> drop the whole footnote
+      * contains "归档时间戳" -> drop the timestamp clause (or the whole footnote if empty)
 
 The script edits files in place and writes a small JSON report under:
   artifacts/export/strip_comment_timestamps_report.json
@@ -71,6 +75,116 @@ def _should_strip_comment_line(line: str) -> bool:
     return False
 
 
+def _strip_latex_editorial_timestamp_footnotes(text: str) -> Tuple[str, int]:
+    """Strip timestamp provenance footnotes from LaTeX text.
+
+    We only target editorial metadata markers that should not appear in the manuscript
+    (e.g. internal version-record timestamps). We do NOT remove general footnotes.
+    """
+
+    def parse_bracket_group(s: str, start: int) -> int:
+        # start points at '['; return index just after matching ']'
+        i = start + 1
+        while i < len(s):
+            if s[i] == "]" and s[i - 1] != "\\":
+                return i + 1
+            i += 1
+        return start  # malformed; signal failure
+
+    def parse_brace_group(s: str, start: int) -> int:
+        # start points at '{'; return index of matching '}' (position), or -1
+        depth = 1
+        i = start + 1
+        while i < len(s):
+            ch = s[i]
+            if ch == "{" and s[i - 1] != "\\":
+                depth += 1
+            elif ch == "}" and s[i - 1] != "\\":
+                depth -= 1
+                if depth == 0:
+                    return i
+            i += 1
+        return -1
+
+    def strip_one(content: str) -> str | None:
+        frag = content.strip()
+        if frag in {"本段条目链的", "本段条目链的。", "本段条目链的．", "本段条目链的."}:
+            return None
+        if "版本记录" in content:
+            return None
+        if "归档时间戳" in content:
+            before = content.split("归档时间戳", 1)[0].rstrip()
+            before_clean = before.strip()
+            if before_clean in {"本段条目链的", "本段条目链"}:
+                return None
+            # Heuristic: if we would leave a dangling possessive like "...的", drop the note.
+            if before_clean.endswith("的") and len(before_clean) <= 12:
+                return None
+            if before == "":
+                return None
+            return before
+        return content
+
+    edits = 0
+    i = 0
+    out: List[str] = []
+    while True:
+        idx = text.find("\\footnote", i)
+        if idx < 0:
+            out.append(text[i:])
+            break
+
+        out.append(text[i:idx])
+        j = idx + len("\\footnote")
+
+        # Optional star
+        if j < len(text) and text[j] == "*":
+            j += 1
+
+        # Skip whitespace
+        while j < len(text) and text[j].isspace():
+            j += 1
+
+        # Optional [..] groups
+        while j < len(text) and text[j] == "[":
+            j2 = parse_bracket_group(text, j)
+            if j2 == j:
+                break
+            j = j2
+            while j < len(text) and text[j].isspace():
+                j += 1
+
+        if j >= len(text) or text[j] != "{":
+            # Not a standard \footnote{...}; keep verbatim and continue.
+            out.append(text[idx : idx + len("\\footnote")])
+            i = idx + len("\\footnote")
+            continue
+
+        brace_open = j
+        brace_close = parse_brace_group(text, brace_open)
+        if brace_close < 0:
+            # Malformed; keep verbatim.
+            out.append(text[idx:])
+            break
+
+        content = text[brace_open + 1 : brace_close]
+        new_content = strip_one(content)
+
+        if new_content is None:
+            edits += 1
+            i = brace_close + 1
+            continue
+
+        if new_content != content:
+            edits += 1
+        out.append(text[idx : brace_open + 1])
+        out.append(new_content)
+        out.append("}")
+        i = brace_close + 1
+
+    return ("".join(out), edits)
+
+
 def _process_file(path: Path) -> Tuple[bool, int]:
     prefix = _comment_prefix_for_suffix(path.suffix)
     if prefix is None:
@@ -88,11 +202,15 @@ def _process_file(path: Path) -> Tuple[bool, int]:
             continue
         out_lines.append(ln)
 
-    if removed == 0:
-        return (False, 0)
-
     new_text = "".join(out_lines)
-    if new_text == original:
+
+    # Strip timestamp provenance inside LaTeX footnotes (editorial only).
+    if path.suffix == ".tex":
+        new_text2, footnote_edits = _strip_latex_editorial_timestamp_footnotes(new_text)
+        new_text = new_text2
+        removed += footnote_edits  # count as "removed items" for reporting
+
+    if removed == 0 and new_text == original:
         return (False, 0)
 
     path.write_text(new_text, encoding="utf-8")
@@ -157,12 +275,24 @@ def main() -> None:
             if prefix is None:
                 continue
             text = p.read_text(encoding="utf-8")
+            lines = text.splitlines(keepends=True)
+
             removed = 0
-            for ln in text.splitlines():
+            out_lines: List[str] = []
+            for ln in lines:
                 s = ln.lstrip()
                 if s.startswith(prefix) and _should_strip_comment_line(s):
                     removed += 1
-            if removed > 0:
+                    continue
+                out_lines.append(ln)
+
+            new_text = "".join(out_lines)
+            if p.suffix == ".tex":
+                new_text2, footnote_edits = _strip_latex_editorial_timestamp_footnotes(new_text)
+                new_text = new_text2
+                removed += footnote_edits
+
+            if removed > 0 or new_text != text:
                 changed.append(Change(path=str(p.relative_to(root)), removed_lines=removed))
                 removed_total += removed
             continue
