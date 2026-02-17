@@ -485,6 +485,47 @@ T_m(y)=T_{m-1}(y)+(2y+1)T_{m-2}(y)-T_{m-3}(y)-y(y+1)T_{m-4}(y)\qquad(m\ge 4).
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_trace\_galois\_audit.py}。证毕。
 \end{proof}
 
+\begin{conclusion}[有理参数特化的四次整式模型与判别式：分歧素集的显式上界]\label{con:xi-terminal-zm-specialization-discriminant-ab}
+取有理参数 \(y_0=a/b\in\QQ\)（\(\gcd(a,b)=1,\ b>0\)），并考虑清分母后的四次整式
+\[
+P_{a,b}(\lambda):=b^{2}\Pi(\lambda,a/b)
+=b^{2}\lambda^{4}-b^{2}\lambda^{3}-(2ab+b^{2})\lambda^{2}+b^{2}\lambda+a(a+b)\in\ZZ[\lambda].
+\]
+则其关于 \(\lambda\) 的判别式满足严格闭式
+\[
+\boxed{\;
+\mathrm{Disc}_{\lambda}\bigl(P_{a,b}\bigr)
+=-a(a-b)\bigl(256a^{3}+411a^{2}b+165ab^{2}+32b^{3}\bigr)\,b^{7}\; }.
+\]
+因而当且仅当 \(a=0\)、\(a=b\) 或 \(256a^{3}+411a^{2}b+165ab^{2}+32b^{3}=0\) 时出现重根；
+在其余情形，\(P_{a,b}\) 在 \(\overline\QQ\) 上可分（等价地：特化覆叠在该参数处 \'{e}tale）。
+此外，若素数 \(p\) 在 \(P_{a,b}\) 的分裂域中分歧，则必整除
+\[
+2ab(a-b)\bigl(256a^{3}+411a^{2}b+165ab^{2}+32b^{3}\bigr),
+\]
+从而分歧素集被上述显式整数所包含。
+结合结论 \ref{con:xi-terminal-zm-generic-galois-s4} 的泛型 \(S_4\) 性，由 Hilbert 不可约定理可知：除去薄集参数外，特化多项式 \(P_{a,b}\) 的分裂域伽罗瓦群仍为 \(S_4\)，
+从而得到一族由 \(y_0\in\QQ\) 参数化的 \(S_4\) 数域族，其分歧由同一 Lee--Yang 三次核在清分母后完全控制。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-discriminant-leyang}，
+\(
+\mathrm{Disc}_{\lambda}\bigl(\Pi(\cdot,y)\bigr)=-y(y-1)P_{\mathrm{LY}}(y)
+\)。
+代入 \(y=a/b\) 并利用四次情形的齐次性
+\(
+\mathrm{Disc}_{\lambda}(c\cdot f)=c^{6}\mathrm{Disc}_{\lambda}(f)
+\)
+得到
+\(
+\mathrm{Disc}_{\lambda}\bigl(P_{a,b}\bigr)=b^{12}\mathrm{Disc}_{\lambda}\bigl(\Pi(\cdot,a/b)\bigr)
+\)，
+化简即得闭式公式。
+分歧素集包含性来自一般判据“分裂域的分歧素数必整除多项式判别式”。
+薄集断言由泛型伽罗瓦群与 Hilbert 不可约定理推出。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_pi\_specialization\_discriminant\_ab\_audit.py}。证毕。
+\end{proof}
+
 \begin{conclusion}[“椭圆—\texorpdfstring{$S_4$}{S4}—Lee--Yang”三重对偶：同一判别式同时支配归一化分歧与分裂域二次脊柱]\label{con:xi-terminal-zm-elliptic-s4-leyang-triple-duality}
 曲线 \(\Pi(\lambda,y)=0\) 的几何归一化为椭圆曲线 \(E\)（结论 \ref{con:xi-terminal-zm-elliptic-normalization}），
 而同一四次谱方程在 \(\QQ(y)\) 上具有 \(S_4\) 伽罗瓦群（结论 \ref{con:xi-terminal-zm-generic-galois-s4}）。
