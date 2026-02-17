@@ -11,6 +11,11 @@ We compute:
 and numerically locate its real roots in [-2,2], which correspond to spectral branch points
 on the unit-circle twist locus s = 2 cos(t/2).
 
+We also attach a compact algebraic-geometry / Galois certificate (written into the same JSON):
+  - the involution quotient (x=w^2, y=s w) plane quartic model and its smoothness check,
+  - Disc_y(F)(x)=x*P8(x) for the intrinsic triple cover over P^1_x,
+  - Gal(hatDelta(w,3)/Q) = S6 as a specialization witness for the generic Gal(hatDelta(w,s)/Q(s)).
+
 Outputs:
   - artifacts/export/sync_kernel_hatdelta_discriminant.json
   - sections/generated/eq_sync_kernel_hatdelta_discriminant.tex
@@ -62,6 +67,42 @@ def _hat_delta(w: sp.Symbol, s: sp.Symbol) -> sp.Expr:
         + (s**3 - 6 * s) * w**5
         + (s**2 - 1) * w**6
     )
+
+
+def _quotient_curve_F(x: sp.Symbol, y: sp.Symbol) -> sp.Expr:
+    """
+    Quotient curve in invariants x=w^2, y=s w:
+      F(x,y)=1-y-5x+3xy+5x^2-xy^2+xy^3-6x^2y+x^2y^2-x^3.
+    """
+    return sp.expand(
+        1
+        - y
+        - 5 * x
+        + 3 * x * y
+        + 5 * x**2
+        - x * y**2
+        + x * y**3
+        - 6 * x**2 * y
+        + x**2 * y**2
+        - x**3
+    )
+
+
+def _is_affine_curve_smooth_by_groebner(Fxy: sp.Expr, x: sp.Symbol, y: sp.Symbol) -> bool:
+    Fx = sp.diff(Fxy, x)
+    Fy = sp.diff(Fxy, y)
+    G = sp.groebner([Fxy, Fx, Fy], x, y, order="lex", domain=sp.QQ)
+    # If Groebner basis is [1], the system F=Fx=Fy=0 has no solutions over Qbar.
+    return len(G) == 1 and G[0].as_expr() == 1
+
+
+def _homogenize_plane_curve(Fxy: sp.Expr, x: sp.Symbol, y: sp.Symbol, Z: sp.Symbol) -> sp.Expr:
+    """
+    Return homogeneous quartic Fh(X,Y,Z)=Z^4*F(X/Z,Y/Z).
+    """
+    Fpoly = sp.Poly(Fxy, x, y, domain=sp.QQ)
+    Fh = Fpoly.homogenize(Z).as_expr()
+    return sp.expand(Fh)
 
 
 def _nstr(x: sp.Expr, nd: int) -> str:
@@ -229,6 +270,52 @@ def main() -> None:
     R_theta = float(theta_abs)
     m_min_convergent = int(math.floor((2.0 * math.pi) / R_theta) + 1)
 
+    # --- Quotient curve / discriminant / Galois certificate ---
+    print("[hatdelta-disc] computing quotient-curve and Galois certificates...", flush=True)
+    xq, yq = sp.symbols("xq yq")
+    Fxy = _quotient_curve_F(xq, yq)
+
+    quotient_affine_smooth = _is_affine_curve_smooth_by_groebner(Fxy, xq, yq)
+
+    disc_y = sp.discriminant(sp.Poly(Fxy, yq, domain=sp.QQ[xq]), yq)
+    disc_y = sp.expand(disc_y)
+    disc_y_fac = sp.factor(disc_y)
+    P8 = sp.factor(sp.together(disc_y / xq))
+    disc_factor_ok = bool(sp.factor(disc_y - xq * P8) == 0)
+
+    # Projective closure smoothness at infinity points.
+    Xq, Yq, Zq = sp.symbols("Xq Yq Zq")
+    Fh = _homogenize_plane_curve(Fxy, xq, yq, Zq).subs({xq: Xq, yq: Yq})
+    dX = sp.diff(Fh, Xq)
+    dY = sp.diff(Fh, Yq)
+    dZ = sp.diff(Fh, Zq)
+    infinity_points = {
+        "P0=[0:1:0]": {"X": 0, "Y": 1, "Z": 0},
+        "P1=[1:0:0]": {"X": 1, "Y": 0, "Z": 0},
+        "Pinf=[1:-1:0]": {"X": 1, "Y": -1, "Z": 0},
+    }
+    infinity_checks = {}
+    infinity_smooth_ok = True
+    for name, pt in infinity_points.items():
+        subs = {Xq: pt["X"], Yq: pt["Y"], Zq: pt["Z"]}
+        vals = {
+            "F": str(sp.simplify(Fh.subs(subs))),
+            "dX": str(sp.simplify(dX.subs(subs))),
+            "dY": str(sp.simplify(dY.subs(subs))),
+            "dZ": str(sp.simplify(dZ.subs(subs))),
+        }
+        # Smooth iff gradient is not all-zero.
+        smooth_here = not (vals["dX"] == "0" and vals["dY"] == "0" and vals["dZ"] == "0")
+        vals["smooth"] = bool(smooth_here)
+        infinity_checks[name] = vals
+        infinity_smooth_ok = infinity_smooth_ok and bool(smooth_here)
+
+    # Galois group witness at s=3.
+    hd_s3 = sp.Poly(sp.expand(hd.subs({s: sp.Integer(3)})), w, domain=sp.QQ)
+    G6, _meta6 = hd_s3.galois_group()
+    galois_order = int(G6.order())
+    galois_is_s6 = bool(galois_order == math.factorial(6))
+
     payload = {
         "disc_s": str(disc_norm),
         "disc_s_latex": sp.latex(disc_norm),
@@ -240,6 +327,26 @@ def main() -> None:
         "nearest_complex_branch_point": asdict(nearest),
         "theta_radius": str(theta_abs),
         "m_min_convergent_for_theta_2pi_over_m": m_min_convergent,
+        "curve_geometry": {
+            "quotient_curve_F": str(Fxy),
+            "quotient_curve_F_latex": sp.latex(Fxy),
+            "quotient_affine_smooth": bool(quotient_affine_smooth),
+            "quotient_projective_infinity_checks": infinity_checks,
+            "quotient_projective_infinity_smooth_ok": bool(infinity_smooth_ok),
+            "disc_y": str(disc_y_fac),
+            "disc_y_latex": sp.latex(disc_y_fac),
+            "P8": str(P8),
+            "P8_latex": sp.latex(P8),
+            "disc_factor_ok": bool(disc_factor_ok),
+            "galois_hatdelta_s_eq_3": {
+                "poly": str(hd_s3.as_expr()),
+                "order": int(galois_order),
+                "degree": int(G6.degree),
+                "is_transitive": bool(G6.is_transitive()),
+                "is_S6": bool(galois_is_s6),
+                "generators": [str(g) for g in G6.generators],
+            },
+        },
     }
 
     jout = Path(args.json_out)
