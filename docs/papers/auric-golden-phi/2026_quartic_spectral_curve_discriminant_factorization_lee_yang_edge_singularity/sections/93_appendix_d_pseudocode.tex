@@ -1,0 +1,37 @@
+\section{Pseudocode templates}\label{app:pseudocode}
+
+\subsection{Single-point evaluation of \texorpdfstring{\(Z_m(y)\)}{Z\_m(y)}}
+
+\begin{verbatim}
+Input: m in N, y in C.
+
+Initialize:
+  Z0 = 1
+  Z1 = y + 1
+  Z2 = (y + 1)^2
+  Z3 = (y + 1)^3
+
+For k = 4,5,...,m:
+  Zk = Z{k-1} + (2y+1) Z{k-2} - Z{k-3} - y(y+1) Z{k-4}
+
+Output: Zm.
+\end{verbatim}
+
+\subsection{Certified isolation of the Lee--Yang edge point \texorpdfstring{\(\yLY\)}{yLY}}
+
+Let \(c(y)=256y^3+411y^2+165y+32\). Since \(c\) has exactly one real root, any rational interval \((\alpha,\beta)\) with
+\(c(\alpha)c(\beta)<0\) certifies \(\yLY\in(\alpha,\beta)\).
+
+\begin{verbatim}
+Input: rationals alpha < beta.
+Compute c(alpha), c(beta).
+If c(alpha)c(beta) < 0:
+  (alpha, beta) is a certified enclosure of y_LY.
+  Repeat bisection to refine to desired precision.
+\end{verbatim}
+
+\subsection{Zero counting by contour sampling (argument principle)}
+
+For a fixed m, one may estimate the number of zeros of \(Z_m(y)\) inside a closed contour \(\Gamma\subset\CC\) by sampling \(Z_m\) along \(\Gamma\) and accumulating the change in argument.
+Refining \(\Gamma\) (or subdividing the domain) localizes zero clusters and allows consistency checks against the certified branch locus \(\Branch\).
+
