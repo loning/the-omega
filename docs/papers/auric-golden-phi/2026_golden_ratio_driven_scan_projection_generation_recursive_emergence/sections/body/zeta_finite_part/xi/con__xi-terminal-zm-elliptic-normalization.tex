@@ -120,6 +120,53 @@ X_0^+(37):=X_0(37)/\langle w_{37}\rangle
 的一条模型。
 \end{remark}
 
+\begin{conclusion}[模素纤维根数恒等式：由 \texorpdfstring{$\Pi(\lambda,y)$}{Pi(lambda,y)} 的分解统计恢复 \texorpdfstring{$a_p$}{a\_p}]\label{con:xi-terminal-zm-fiber-root-counting-hecke}
+取素数 \(p\notin\{2,37\}\)，并在 \(\FF_p\) 上考虑仿射曲线
+\[
+\mathcal C_p:=\{(\lambda,y)\in\FF_p^2:\ \Pi(\lambda,y)=0\}.
+\]
+对每个 \(y\in\FF_p\) 定义纤维根数
+\[
+N_p(y):=\card{\{\lambda\in\FF_p:\ \Pi(\lambda,y)=0\}}.
+\]
+则有严格点计数恒等式
+\[
+\boxed{\;
+\card{E(\FF_p)}=1+\sum_{y\in\FF_p}N_p(y)\;}
+\]
+其中右端的 \(1\) 对应无穷远点 \(O\)。
+令 \(a_p:=p+1-\card{E(\FF_p)}\) 为 Frobenius 迹（见注记 \ref{rem:xi-terminal-elliptic-37a1-modular-anchor}），则等价地
+\[
+\boxed{\;
+a_p=p-\sum_{y\in\FF_p}N_p(y)\;}
+\]
+并由 Hasse 界得到有效估计
+\[
+\left|\frac{1}{p}\sum_{y\in\FF_p}N_p(y)-1\right|
+=\left|\frac{a_p}{p}\right|
+\le \frac{2}{\sqrt p}.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+当 \(p\notin\{2,37\}\) 时，结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的双有理变换
+\[
+(\lambda,y)\longmapsto (\lambda,w),\qquad w:=2\lambda^{2}-1-2y
+\]
+在 \(\FF_p\) 上仍可逆（因为 \(2\) 可逆），并把 \(\mathcal C_p\) 双射到仿射椭圆曲线
+\(
+\mathcal E_p:\ w^2=4\lambda^3-4\lambda+1
+\)
+的 \(\FF_p\)-点集；该仿射模型与射影椭圆曲线 \(E\) 的差别仅为无穷远点 \(O\)。
+因此
+\[
+\sum_{y\in\FF_p}N_p(y)=\card{\mathcal C_p}=\card{E(\FF_p)}-1,
+\]
+从而得到所示恒等式。
+将其代入 \(a_p:=p+1-\card{E(\FF_p)}\) 立得 \(a_p=p-\sum_{y\in\FF_p} N_p(y)\)。
+最后一式由 Hasse 界 \(|a_p|\le 2\sqrt p\) 给出。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_fiber\_root\_counting\_audit.py}。证毕。
+\end{proof}
+
 \begin{conclusion}[Lee--Yang 三次多项式的分歧像刻画：结果式给出的最小整系数证书]\label{con:xi-terminal-zm-leyang-cubic-branch-image}
 把 \(\Pi(\lambda,y)=0\) 视为关于 \(\lambda\) 的四次方程，并令投影
 \(
