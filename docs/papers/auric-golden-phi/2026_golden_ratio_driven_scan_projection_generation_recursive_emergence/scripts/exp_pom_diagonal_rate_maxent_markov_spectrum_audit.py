@@ -14,9 +14,12 @@ This audit script numerically (finite-dimensional, no black-box solvers) verifie
   - The coupling constraints, diagonal mass, and KL / entropy identities.
   - The symmetrization S = D^{-1/2} P* D^{-1/2} is symmetric PSD and shares spectrum with K*.
   - The "diagonal + rank-one" secular determinant identity for S.
+  - The rank-one refresh decomposition of K*, the 1D collapse of det(I-zK*), and the closed form det'(I-K*).
   - The small-distortion (delta -> 0) slope of 1-lambda_2(delta) matches the
     predicted coefficient nu_2(w) / (A_{1/2}(w)^2 - 1), where nu_2(w) is the
     smallest positive eigenvalue of L_{1/2}(w)=A_{1/2}(w)diag(w^{-1/2})-11^T.
+  - The critical-line Laplacian L_w=L_{1/2}(w)/(A_{1/2}(w)^2-1), its pseudodeterminant,
+    the explicit Xi_w(s)=det'(L_w+sI), and the zeta-scaling limit from det(I-e^{-s delta}K*).
 
 Outputs:
   - artifacts/export/pom_diagonal_rate_maxent_markov_spectrum_audit.json
@@ -197,6 +200,11 @@ def _secular_det_identity_error(S: np.ndarray, a: np.ndarray, d: np.ndarray, lam
     return abs(left - right) / denom
 
 
+def _rel_err(a: complex, b: complex) -> float:
+    denom = max(1.0, abs(a), abs(b))
+    return float(abs(a - b) / denom)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Audit diagonal-rate maxent Markov kernel spectrum")
     parser.add_argument("--no-output", action="store_true", help="Skip writing outputs")
@@ -223,13 +231,54 @@ def main() -> None:
         A = float(np.sqrt(w).sum())
         C12 = float(A * A - 1.0)
         ones = np.ones(n)
-        L = A * np.diag(1.0 / np.sqrt(w)) - np.outer(ones, ones)
-        # L is PSD with one zero eigenvalue.
-        nu = np.linalg.eigvalsh(L)
+        sqrt_w = np.sqrt(w)
+        L12 = A * np.diag(1.0 / sqrt_w) - np.outer(ones, ones)
+        # L12 is PSD with one zero eigenvalue.
+        nu = np.linalg.eigvalsh(L12)
         # Smallest positive eigenvalue (tolerate numerical noise).
         nu_pos = [float(x) for x in nu if x > 1e-12]
         nu2 = min(nu_pos) if nu_pos else 0.0
         slope_th = nu2 / C12
+
+        # Critical-line Laplacian: L_w = L12 / C12.
+        Lw = L12 / C12
+        mu = np.linalg.eigvalsh(Lw)
+        mu_pos = np.array([float(x) for x in mu if x > 1e-12], dtype=float)
+        pdet_eig = float(np.prod(mu_pos)) if mu_pos.size else 0.0
+        pdet_formula = float(A ** (n - 2) / (C12 ** (n - 1) * math.sqrt(float(np.prod(w)))))
+        pdet_rel_err = _rel_err(pdet_eig, pdet_formula)
+
+        B = float(np.sum(1.0 / sqrt_w))
+        p_minus1 = float(np.sum(1.0 / w))
+        tr_formula = float((A * B - n) / C12)
+        tr2_formula = float((A * A * p_minus1 - 2.0 * A * B + n * n) / (C12 * C12))
+        tr_eig = float(mu.sum())
+        tr2_eig = float((mu * mu).sum())
+        tr_rel_err = _rel_err(tr_eig, tr_formula)
+        tr2_rel_err = _rel_err(tr2_eig, tr2_formula)
+
+        prod_inv_sqrt_w = float(np.prod(1.0 / sqrt_w))
+
+        def xi_formula(s: float) -> float:
+            # Xi_w(s) = det'(L_w + sI) with explicit closed form.
+            arr = A + (s * C12) * sqrt_w
+            total_prod = float(np.prod(arr))
+            sum_term = float(np.sum(w / arr))
+            pref = prod_inv_sqrt_w / (A * (C12 ** (n - 1)))
+            return float(pref * total_prod * sum_term)
+
+        xi_tests = [0.3, 1.0]
+        xi_checks: List[Dict[str, object]] = []
+        xi_all_ok = True
+        for s in xi_tests:
+            xi_eig = float(np.prod(mu_pos + float(s)))
+            xi_form = float(xi_formula(float(s)))
+            rel = _rel_err(xi_eig, xi_form)
+            ok = rel <= 5e-10
+            xi_all_ok = xi_all_ok and ok
+            xi_checks.append({"s": float(s), "xi_eig": xi_eig, "xi_formula": xi_form, "rel_err": rel, "ok": bool(ok)})
+
+        critical_ok = (pdet_rel_err <= 5e-10) and (tr_rel_err <= 5e-10) and (tr2_rel_err <= 5e-10) and xi_all_ok
 
         case_entry: Dict[str, object] = {
             "w": [float(x) for x in w],
@@ -240,6 +289,19 @@ def main() -> None:
             "C12": C12,
             "nu2": nu2,
             "slope_th": slope_th,
+            "critical": {
+                "pdet_eig": pdet_eig,
+                "pdet_formula": pdet_formula,
+                "pdet_rel_err": pdet_rel_err,
+                "tr_eig": tr_eig,
+                "tr_formula": tr_formula,
+                "tr_rel_err": tr_rel_err,
+                "tr2_eig": tr2_eig,
+                "tr2_formula": tr2_formula,
+                "tr2_rel_err": tr2_rel_err,
+                "xi_tests": xi_checks,
+                "ok": bool(critical_ok),
+            },
             "deltas": [],
         }
 
@@ -298,7 +360,64 @@ def main() -> None:
             # Numerical slope check (asymptotic, so allow a modest tolerance).
             slope_ok = slope_rel_err <= 5e-2
 
-            this_ok = coupling_ok and info_ok and spec_ok and bounds_ok and det_ok and slope_ok
+            # Rank-one refresh decomposition for K.
+            A_u = float(oc.u.sum())
+            pi = oc.u / A_u
+            r = A_u / (A_u + oc.kappa * oc.u)
+            K_refresh = np.outer(r, pi)
+            K_refresh[np.diag_indices_from(K_refresh)] += (1.0 - r)
+            refresh_err_max = float(np.max(np.abs(oc.K - K_refresh)))
+            refresh_ok = refresh_err_max <= 5e-10
+
+            # Determinant collapse for det(I - zK) (compare via spectrum).
+            z_tests = [0.0, 0.3, -0.6, 0.9]
+            det_collapse_errs: List[float] = []
+            for z in z_tests:
+                left_det = float(np.prod(1.0 - float(z) * eigS_sorted))
+                diag_fac = float(np.prod(1.0 - float(z) * (1.0 - r)))
+                denom = 1.0 - float(z) * (1.0 - r)
+                secular = float(1.0 - float(z) * float(np.sum(pi * r / denom)))
+                right_det = diag_fac * secular
+                det_collapse_errs.append(_rel_err(left_det, right_det))
+            det_collapse_err_max = float(max(det_collapse_errs) if det_collapse_errs else 0.0)
+            det_collapse_ok = det_collapse_err_max <= 5e-8
+
+            # Reduced determinant det'(I-K) closed form.
+            detprime_eig = float(np.prod(1.0 - eig_desc[1:]))
+            detprime_formula = float(np.prod(r) * float(np.sum(pi / r)))
+            detprime_rel_err = _rel_err(detprime_eig, detprime_formula)
+            detprime_ok = detprime_rel_err <= 5e-8
+
+            # First-order critical Laplacian expansion: (I-S)/delta -> Lw.
+            approx_Lw = (np.eye(n) - oc.S) / float(delta)
+            Lw_first_order_rel_err = float(
+                np.linalg.norm(approx_Lw - Lw, ord="fro") / max(1e-12, np.linalg.norm(Lw, ord="fro"))
+            )
+            Lw_first_order_ok = Lw_first_order_rel_err <= 5e-4
+
+            # Zeta-scaling limit from det(I - e^{-s delta}K) (computed via S spectrum).
+            s_scale = 0.7
+            z_scale = math.exp(-s_scale * float(delta))
+            det_scale = float(np.prod(1.0 - z_scale * eigS_sorted))
+            scaled = det_scale / (1.0 - z_scale) / (float(delta) ** (n - 1))
+            xi_target = float(np.prod(mu_pos + float(s_scale)))
+            xi_scaling_rel_err = _rel_err(scaled, xi_target)
+            xi_scaling_ok = xi_scaling_rel_err <= 2e-2
+
+            this_ok = (
+                critical_ok
+                and coupling_ok
+                and info_ok
+                and spec_ok
+                and bounds_ok
+                and det_ok
+                and refresh_ok
+                and det_collapse_ok
+                and detprime_ok
+                and Lw_first_order_ok
+                and slope_ok
+                and xi_scaling_ok
+            )
             all_ok = all_ok and this_ok
 
             case_entry["deltas"].append(
@@ -315,6 +434,21 @@ def main() -> None:
                     "slope_rel_err": float(slope_rel_err),
                     "slope_ok": bool(slope_ok),
                     "det_err_max": float(max(det_errs) if det_errs else 0.0),
+                    "refresh_err_max": float(refresh_err_max),
+                    "refresh_ok": bool(refresh_ok),
+                    "det_collapse_err_max": float(det_collapse_err_max),
+                    "det_collapse_ok": bool(det_collapse_ok),
+                    "detprime_eig": float(detprime_eig),
+                    "detprime_formula": float(detprime_formula),
+                    "detprime_rel_err": float(detprime_rel_err),
+                    "detprime_ok": bool(detprime_ok),
+                    "Lw_first_order_rel_err": float(Lw_first_order_rel_err),
+                    "Lw_first_order_ok": bool(Lw_first_order_ok),
+                    "xi_scaling_s": float(s_scale),
+                    "xi_scaling_est": float(scaled),
+                    "xi_scaling_target": float(xi_target),
+                    "xi_scaling_rel_err": float(xi_scaling_rel_err),
+                    "xi_scaling_ok": bool(xi_scaling_ok),
                     "ok": bool(this_ok),
                 }
             )

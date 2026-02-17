@@ -163,57 +163,27 @@ K(y\mid x)=w(y)
 证毕。
 \end{proof}
 
-\begin{theorem}[小失真谱门槛：第二特征值的线性起跳由一维世俗常数刻画]\label{thm:pom-maxent-markov-small-distortion-lambda2-slope}
-令 \(|X|\ge 2\) 且 \(w\) 全支撑。
-记
-\[
-A_{1/2}(w)=\sum_{x\in X}\sqrt{w(x)},\qquad
-C_{1/2}(w):=A_{1/2}(w)^2-1.
-\]
-令 \(\lambda_2(\delta)\) 为 \(K^\star_\delta\) 在 \(\ell^2(w)\) 上的第二特征值（等价地为 \(S_\delta\) 的第二特征值）。
-定义对称“半阶端点拉普拉斯”矩阵
-\[
-L_{1/2}(w):=A_{1/2}(w)\,\mathrm{diag}\bigl(w^{-1/2}\bigr)-\mathbf 1\mathbf 1^{\mathsf T}\ \in\RR^{X\times X},
-\]
-并令 \(\nu_2(w)\) 为其最小正特征值（\(L_{1/2}(w)\) 在 \(\sqrt w\) 方向上有零特征值）。
-则当 \(\delta\downarrow 0\) 时成立线性起跳
+\begin{corollary}[小失真谱门槛：第二特征值的首阶系数]\label{thm:pom-maxent-markov-small-distortion-lambda2-slope}
+取全支撑分布 \(w\in\Delta(X)\) 且 \(|X|=n\ge 2\)。
+令 \(K^\star_\delta\) 为定理 \ref{thm:pom-maxent-markov-unique-optimal-kernel} 的唯一最优核，并令
+\(
+0=\mu_1<\mu_2\le\cdots\le\mu_n
+\)
+为定理 \ref{thm:pom-diagonal-rate-critical-line-laplacian-first-order} 所定义之临界线拉普拉斯 \(L_w\) 的特征值。
+则当 \(\delta\downarrow 0\) 时有
 \[
 \boxed{\;
-1-\lambda_2(\delta)=\frac{\nu_2(w)}{C_{1/2}(w)}\,\delta\,(1+o(1)).\;}
+1-\lambda_2(K^\star_\delta)=\mu_2\,\delta+o(\delta)\; }.
 \]
-并且 \(\nu_2(w)\) 由对角 \(+\) 秩一结构的世俗方程显式刻画：
-设 \(r_x:=A_{1/2}(w)/\sqrt{w(x)}\)，则 \(\nu_2(w)\) 为方程
-\[
-1-\sum_{x\in X}\frac{1}{r_x-\nu}=0
-\]
-在区间 \((0,\min_x r_x)\) 内的最小正根（亦即 interlacing 中紧邻零根的下一根）。
-\end{theorem}
+并且 \(\mu_2\) 由定理 \ref{thm:pom-diagonal-rate-critical-spectrum-secular-interlacing} 的世俗方程与交错定位唯一确定。
+\end{corollary}
 \begin{proof}
-由定理 \ref{thm:pom-diagonal-rate-rare-mismatch-hellinger-universality}（或其更弱的端点一阶展开），当 \(\delta\downarrow 0\) 时有
-\[
-P^\star_\delta(x,y)=
-\begin{cases}
-\displaystyle \delta\,\frac{\sqrt{w(x)w(y)}}{C_{1/2}(w)}\,(1+o(1)), & x\ne y,\\[8pt]
-\displaystyle w(x)-\delta\,\frac{\sqrt{w(x)}\bigl(A_{1/2}(w)-\sqrt{w(x)}\bigr)}{C_{1/2}(w)}+o(\delta), & x=y.
-\end{cases}
-\]
-令 \(S_\delta=D^{-1/2}P^\star_\delta D^{-1/2}\)（\(D=\mathrm{diag}(w)\)）。
-逐项代入并化简得到在欧氏算子范数意义下的展开
-\[
-S_\delta=I-\frac{\delta}{C_{1/2}(w)}\,L_{1/2}(w)+o(\delta).
-\]
-由于 \(S_\delta\) 对称，标准对称谱微扰（有限维情形可直接用 Weyl 不等式）推出
+由定理 \ref{thm:pom-diagonal-rate-critical-line-laplacian-first-order} 得到全谱首阶展开
 \(
-\lambda_i(S_\delta)=1-\frac{\delta}{C_{1/2}(w)}\,\nu_i(w)+o(\delta)
-\)，其中 \(\{\nu_i(w)\}\) 为 \(L_{1/2}(w)\) 的特征值并按非降序排列；
-特别地得到第二特征值的线性起跳式。
-\par
-最后，\(L_{1/2}(w)=\mathrm{diag}(r_x)-\mathbf 1\mathbf 1^{\mathsf T}\) 为对角加秩一更新，
-对其应用矩阵行列式引理即可得到
-\(
-\det(L_{1/2}(w)-\nu I)=\prod_x (r_x-\nu)\bigl(1-\sum_x (r_x-\nu)^{-1}\bigr)
-\)，
-从而 \(\nu_2(w)\) 由所示一维世俗方程与 interlacing 唯一刻画。证毕。
+\lambda_i(K^\star_\delta)=1-\delta\mu_i+o(\delta)
+\)
+（其中 \(\lambda_1\equiv 1\)），取 \(i=2\) 即得。
+世俗方程与定位为定理 \ref{thm:pom-diagonal-rate-critical-spectrum-secular-interlacing} 的直接推论。证毕。
 \end{proof}
 
 \begin{theorem}[小失真协同：乘积分布下的最优率严格优于任意坐标分离策略]\label{thm:pom-diagonal-rate-small-distortion-synergy-product}
