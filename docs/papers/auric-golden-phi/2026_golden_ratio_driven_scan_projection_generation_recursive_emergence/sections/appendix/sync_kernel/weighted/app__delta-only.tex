@@ -192,3 +192,132 @@ C_p(s)\equiv s^p\ (\mathrm{mod}\ p)
 \end{proof}
 
 \input{sections/generated/tab_sync_kernel_weighted_primitive_completed}
+
+\begin{corollary}[半转端点的严格符号律：\texorpdfstring{$p_n(-1)$}{p_n(-1)} 由 \texorpdfstring{$\widehat p_n(0)$}{hat p_n(0)} 交替编码]\label{cor:primitive-halfturn-sign-law}
+在完成化坐标 \(u=r^2,s=r+r^{-1}\) 下，半转端点 \(s=0\) 对应于 \(r=\mathrm{i}\)（从而 \(u=-1\)）。
+因此对任意整数 \(m\ge 1\)，偶长 primitive 满足严格恒等式
+\[
+\boxed{\ p_{2m}(-1)=(-1)^m\,\widehat p_{2m}(0)\ }.
+\]
+特别地，由表 \ref{tab:sync_kernel_weighted_primitive_completed} 可读出
+\[
+\bigl(\widehat p_2(0),\widehat p_4(0),\widehat p_6(0),\widehat p_8(0),\widehat p_{10}(0)\bigr)=(6,4,19,37,166),
+\]
+从而
+\[
+\bigl(p_2(-1),p_4(-1),p_6(-1),p_8(-1),p_{10}(-1)\bigr)=(-6,4,-19,37,-166).
+\]
+\end{corollary}
+\begin{proof}
+由定义 \(\widehat p_n(s)=r^{-n}p_n(r^2)\)。
+在 \(s=0\) 处取 \(r=\mathrm{i}\)，则 \(r^2=-1\)，且对 \(n=2m\) 有
+\[
+\widehat p_{2m}(0)=\mathrm{i}^{-2m}\,p_{2m}(-1)=(-1)^m p_{2m}(-1),
+\]
+移项即得所述恒等式。
+表 \ref{tab:sync_kernel_weighted_primitive_completed} 的数值代入给出末两式。证毕。
+\end{proof}
+
+\begin{remark}[二次分辨率与半转端点的对角锁定：\texorpdfstring{$\Delta_2^{\mathrm{disc}}=\widehat p_8(0)=37$}{Delta2disc=hatp8(0)=37}]\label{rem:delta2disc-hatp8-diagonal-lock}
+由注 \ref{rem:pom-discriminant-quadratic-field-tower}，二阶最小递推特征多项式 \(P_2\) 的判别式平方自由部分为 \(\Delta_2^{\mathrm{disc}}=37\)。
+另一方面，表 \ref{tab:sync_kernel_weighted_primitive_completed} 给出 \(\widehat p_8(0)=37\)，并由推论 \ref{cor:primitive-halfturn-sign-law} 得 \(p_8(-1)=\widehat p_8(0)\)。
+因此在整数层面出现严格同一
+\[
+\boxed{\ \Delta_2^{\mathrm{disc}}=\widehat p_8(0)=p_8(-1)=37\ }.
+\]
+\end{remark}
+
+\begin{proposition}[半转端点零化素因子必进入 completed primitive 判别式]\label{prop:halfturn-prime-divides-discriminant}
+设 \(m\ge 1\)，并令 \(n=2m\) 为偶数。
+由于 \(\widehat p_n(s)\) 为偶多项式（推论 \ref{cor:primitive-completion-hatp}），存在 \(f_n\in\ZZ[t]\) 使
+\(\widehat p_n(s)=f_n(s^2)\)。
+若奇素数 \(p\mid \widehat p_n(0)=f_n(0)\)，则
+\(\widehat p_n(s)\bmod p\) 在 \((\ZZ/p\ZZ)[s]\) 中至少含因子 \(s^2\)，从而在模 \(p\) 意义下非平方自由。
+等价地，
+\[
+\boxed{\ p\mid \mathrm{Disc}_s\!\bigl(\widehat p_n\bigr)\ }.
+\]
+\end{proposition}
+\begin{proof}
+由 \(p\mid f_n(0)\) 得 \(f_n(t)\equiv t\,g(t)\ (\mathrm{mod}\ p)\)，故
+\(\widehat p_n(s)=f_n(s^2)\equiv s^2 g(s^2)\ (\mathrm{mod}\ p)\)。
+因此 \(s=0\) 为重根，判别式在模 \(p\) 下为零，从而 \(p\mid \mathrm{Disc}_s(\widehat p_n)\)。证毕。
+\end{proof}
+
+\begin{lemma}[平方代换的判别式裂解：内部判别式以平方进入]\label{lem:disc-square-substitution-split}
+设 \(f(t)=a\prod_{j=1}^{d}(t-\alpha_j)\in\CC[t]\) 为次数 \(d\ge 1\) 的多项式，且 \(c:=f(0)\neq 0\)。
+定义 \(g(s):=f(s^2)\in\CC[s]\)（次数 \(2d\) 的偶多项式）。
+则判别式满足严格恒等式
+\[
+\boxed{\ \mathrm{Disc}_s(g)=(-1)^d\,4^d\,a\,c\cdot \mathrm{Disc}_t(f)^2\ }.
+\]
+\end{lemma}
+\begin{proof}
+写 \(f(t)=a\prod_{j=1}^{d}(t-\alpha_j)\)，则
+\(
+g(s)=a\prod_{j=1}^{d}(s^2-\alpha_j)
+=a\prod_{j=1}^{d}(s-\sqrt{\alpha_j})(s+\sqrt{\alpha_j})
+\)。
+对每个 \(j\) 的同根对有差 \(2\sqrt{\alpha_j}\)，贡献
+\(\prod_{j}(2\sqrt{\alpha_j})^2=4^d\prod_j \alpha_j\)；
+而对不同 \(i\neq j\)，四对差的乘积满足
+\[
+\prod_{\varepsilon,\varepsilon'\in\{\pm 1\}}\bigl(\varepsilon\sqrt{\alpha_i}-\varepsilon'\sqrt{\alpha_j}\bigr)^2
+=\bigl(\alpha_i-\alpha_j\bigr)^4,
+\]
+故跨对贡献为 \(\prod_{i<j}(\alpha_i-\alpha_j)^4=\mathrm{Disc}_t(f)^2/a^{4d-4}\)。
+由判别式的根表示（\(g\) 为次数 \(2d\) 的多项式）得
+\[
+\mathrm{Disc}_s(g)=a^{4d-2}\cdot 4^d\prod_{j=1}^{d}\alpha_j\cdot\prod_{i<j}(\alpha_i-\alpha_j)^4.
+\]
+代入上一式，并用
+\(
+c=f(0)=a(-1)^d\prod_{j=1}^{d}\alpha_j
+\)
+消去 \(\prod_j\alpha_j\)，即得所述恒等式。证毕。
+\end{proof}
+
+\begin{corollary}[completed primitive 的二次指纹由首项与常数项决定]\label{cor:completed-primitive-quadratic-fingerprint-by-const}
+设 \(n\) 为偶数，并写 \(\widehat p_n(s)=f_n(s^2)\)（\(f_n\in\ZZ[t]\)）。
+令 \(d=\deg f_n\)、\(a\) 为 \(f_n\) 首项系数、\(c=\widehat p_n(0)=f_n(0)\)。
+则由引理 \ref{lem:disc-square-substitution-split} 可得
+\[
+\mathrm{sqf}\!\Bigl(\mathrm{Disc}_s\bigl(\widehat p_n\bigr)\Bigr)
+=\mathrm{sqf}\bigl((-1)^d\,a\,c\bigr),
+\]
+从而 completed primitive 的判别式平方自由核与 \(f_n\) 的内部系数无关，仅由首项系数与常数项决定。
+在表 \ref{tab:sync_kernel_weighted_primitive_completed} 的 \(n\in\{6,8,10\}\) 上（首项系数皆为 \(a=3\)），二次指纹分别为
+\[
+\QQ(\sqrt{57}),\qquad \QQ(\sqrt{-111}),\qquad \QQ(\sqrt{498}),
+\]
+其中各自新增的奇分歧素数依次为 \(19,37,83\)。
+\end{corollary}
+
+\begin{remark}[\texorpdfstring{$\widehat p_8$}{hat p8} 的分裂域内生出现双二次轴与 Klein 四闭合]\label{rem:hatp8-klein-four-quadratic-axes}
+由表 \ref{tab:sync_kernel_weighted_primitive_completed}，
+\(\widehat p_8(s)=3s^6+14s^4+93s^2+37=f_8(t)|_{t=s^2}\)，其中
+\(
+f_8(t)=3t^3+14t^2+93t+37
+\)。
+由于 \(f_8\) 为三次且其判别式非平方，其分裂域包含二次子域 \(\QQ(\sqrt{\mathrm{Disc}(f_8)})=\QQ(\sqrt{-6094463})\)，而
+\(-6094463=-389\cdot 15667\)。
+另一方面，推论 \ref{cor:completed-primitive-quadratic-fingerprint-by-const} 给出 \(\mathrm{sqf}(\mathrm{Disc}_s(\widehat p_8))=-111=-3\cdot 37\)，从而 \(\widehat p_8\) 的分裂域亦包含独立二次子域 \(\QQ(\sqrt{-111})\)。
+两条二次轴的奇分歧素数集合分别为 \(\{389,15667\}\) 与 \(\{3,37\}\)，互不相交；
+因此在 \(\widehat p_8\) 的分裂域中内生出现秩 \(2\) 的二次子域格（Klein 四闭合），并诱导四组互异的局部奇偶通道。
+\end{remark}
+
+\begin{corollary}[\texorpdfstring{$K_2^{\mathrm{disc}}$}{K2disc} 与 \texorpdfstring{$\QQ(\sqrt{-111})$}{Q(sqrt(-111))} 的共享奇分歧仅为 \texorpdfstring{$37$}{37}]\label{cor:disc2-prim8-shared-ramified-37}
+二次域 \(K_2^{\mathrm{disc}}=\QQ(\sqrt{37})\) 的唯一奇分歧素数为 \(37\)（注 \ref{rem:pom-discriminant-quadratic-field-tower}）。
+而由推论 \ref{cor:completed-primitive-quadratic-fingerprint-by-const}，\(\widehat p_8\) 的二次指纹 \(\QQ(\sqrt{-111})\) 的奇分歧素数集合为 \(\{3,37\}\)。
+因此二者的奇分歧交集精确为 \(\{37\}\)，从而 \(37\) 是“递推判别式二次轴”与“completed primitive 判别式二次轴”之间唯一共享的奇分歧门槛。
+\end{corollary}
+
+\begin{remark}[局部重根的唯一可能处：completed primitive 的判别式素支撑门槛]\label{rem:hatp-local-double-root-prime-support}
+对固定的偶数 \(n\)，若奇素数 \(p\nmid \mathrm{Disc}_s(\widehat p_n)\)，则 \(\widehat p_n(s)\bmod p\) 在 \((\ZZ/p\ZZ)[s]\) 上必为平方自由，
+从而在该素数处严格排除“模 \(p\) 重根/局部谱退化”的可能。
+因此 \(\mathrm{Disc}_s(\widehat p_n)\) 的素支撑提供一个完全离散的局部分歧门槛集合：只有落在该有限集合内的素数才允许 completed primitive 在模 \(p\) 层面出现同根塌缩。
+表 \ref{tab:sync_kernel_weighted_primitive_completed_discriminant_fingerprint} 给出 \(n\in\{6,8,10\}\) 的奇素支撑；
+其中 \(389,15667,186303348019\) 作为“唯一允许发生局部退化的高素数门槛”与常数项素数（如 \(37\)）在操作意义上同阶。
+\end{remark}
+
+\input{sections/generated/tab_sync_kernel_weighted_primitive_completed_discriminant_fingerprint}
