@@ -81,6 +81,8 @@ class Payload:
     q4_matches_expected: bool
     q4_factor_degrees_over_Q: List[int]
     q4_irreducible_over_Q: bool
+    q4_factor_mod37: str
+    q4_mod37_matches_expected: bool
     disc_q4: int
     disc_q4_sign: int
     disc_q4_factorization: Dict[str, int]
@@ -130,6 +132,13 @@ def main() -> None:
     factor_degrees = sorted([int(f.degree()) for (f, _e) in factors])
     irreducible = len(factors) == 1 and factor_degrees == [12]
 
+    # Mod-37 factorization (bad prime collapse diagnostic).
+    Q4_mod37 = sp.Poly(Q4.as_expr(), y, modulus=37)
+    q4_factor_mod37 = str(sp.factor(Q4_mod37.as_expr(), modulus=37))
+    expected_mod37 = 16 * (y - 6) ** 10 * (y**2 + 9 * y + 6)
+    expected_mod37_poly = sp.Poly(expected_mod37, y, modulus=37)
+    mod37_matches_expected = Q4_mod37 == expected_mod37_poly
+
     # Discriminant and its integer factorization.
     disc = int(sp.discriminant(Q4.as_expr(), y))
     disc_sign = -1 if disc < 0 else 1
@@ -147,6 +156,8 @@ def main() -> None:
         q4_matches_expected=bool(matches_expected),
         q4_factor_degrees_over_Q=factor_degrees,
         q4_irreducible_over_Q=bool(irreducible),
+        q4_factor_mod37=q4_factor_mod37,
+        q4_mod37_matches_expected=bool(mod37_matches_expected),
         disc_q4=int(disc),
         disc_q4_sign=int(disc_sign),
         disc_q4_factorization={str(int(p)): int(e) for p, e in fac.items()},
@@ -173,6 +184,13 @@ def main() -> None:
                 "\\]",
                 "\\[",
                 f"\\operatorname{{Disc}}\\!\\bigl(Q_{{4}}\\bigr)={disc_latex}.",
+                "\\]",
+                "\\[",
+                (
+                    r"Q_{4}(y)\equiv 16\,(y-6)^{10}\,(y^{2}+9y+6)\ (\mathrm{mod}\ 37)."
+                    if mod37_matches_expected
+                    else rf"Q_{{4}}(y)\equiv {sp.latex(sp.factor(Q4_mod37.as_expr(), modulus=37))}\ (\mathrm{{mod}}\ 37)."
+                ),
                 "\\]",
                 "",
             ]

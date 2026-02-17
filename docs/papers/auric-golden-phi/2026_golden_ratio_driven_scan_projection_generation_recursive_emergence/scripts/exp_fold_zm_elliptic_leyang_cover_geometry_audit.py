@@ -80,12 +80,24 @@ def _reduce_mod(poly_expr: sp.Expr, var: sp.Symbol, modulus: sp.Expr) -> sp.Expr
 class Payload:
     dy_identity_ok: bool
     critical_x_factor_ok: bool
+    resy_F_Fx_factor_ok: bool
+    resy_F_Fx_constant: str
+    res_F_cubicx_factor_ok: bool
+    res_F_cubicx_constant: str
     leyang_resultant_ok: bool
     leyang_resultant_constant: int
     leyang_resultant_exact_ok: bool
     norm_identity_ok: bool
     norm_2division_ok: bool
     norm_2Y_ok: bool
+    disc_ctrl_cubic_y: int
+    disc_ctrl_cubic_y_factorization: Dict[str, int]
+    disc_conj_cubic_y: int
+    disc_conj_cubic_y_factorization: Dict[str, int]
+    mod37_ctrl_cubic_y: str
+    mod37_leyang_cubic_y: str
+    mod37_conj_cubic_y: str
+    y_of_minus_P: int
     disc_cubic_x: int
     disc_cubic_x_factorization: Dict[str, int]
     disc_leyang: int
@@ -156,6 +168,42 @@ def main() -> None:
     disc_cubic_x_fac = sp.factorint(disc_cubic_x)
     disc_leyang = int(sp.discriminant(P_LY, y))
 
+    # --- Additional eliminations used in the manuscript text ---
+    # 1) Ramification in the (X,y)-plane quartic model: Res_y(F, dF/dX).
+    Fx = sp.diff(F, X)
+    resy_F_Fx = sp.factor(sp.resultant(F, Fx, y))
+    target_resy = -(X - 1) * (X + 1) * cubicX
+    q_resy = sp.together(resy_F_Fx / target_resy)
+    resy_F_Fx_factor_ok = _is_constant_in(q_resy, X)
+    resy_F_Fx_constant = str(sp.factor(q_resy)) if resy_F_Fx_factor_ok else "nan"
+
+    # 2) Conjugate cubic factor from eliminating X between F and cubicX.
+    res_F_cubicx = sp.factor(sp.resultant(F, cubicX, X))
+    Q_LY = 256 * y**3 + 195 * y**2 + 93 * y - 48
+    target_res_F = P_LY * Q_LY
+    q_res_F = sp.together(res_F_cubicx / target_res_F)
+    res_F_cubicx_factor_ok = _is_constant_in(q_res_F, y)
+    res_F_cubicx_constant = str(sp.factor(q_res_F)) if res_F_cubicx_factor_ok else "nan"
+
+    # Discriminants and mod-37 factorizations for the three cubic controls.
+    ctrl_cubic_y = 16 * y**3 - 8 * y**2 - 4 * y + 1
+    disc_ctrl_cubic_y = int(sp.discriminant(ctrl_cubic_y, y))
+    disc_ctrl_cubic_y_fac = sp.factorint(disc_ctrl_cubic_y)
+
+    disc_conj_cubic_y = int(sp.discriminant(Q_LY, y))
+    disc_conj_cubic_y_fac = sp.factorint(disc_conj_cubic_y)
+
+    def _factor_mod(expr: sp.Expr, modulus: int) -> str:
+        Pm = sp.Poly(sp.expand(expr), y, modulus=modulus)
+        return str(sp.factor(Pm.as_expr(), modulus=modulus))
+
+    mod37_ctrl = _factor_mod(ctrl_cubic_y, 37)
+    mod37_leyang = _factor_mod(P_LY, 37)
+    mod37_conj = _factor_mod(Q_LY, 37)
+
+    # Special rational point label: y(-P)=6 for P=(2,-5/2).
+    y_of_minus_P = int(sp.together(y_map.subs({X: sp.Integer(2), Y: sp.Rational(5, 2)})))
+
     # Puiseux checks near y0=0 and y0=1 (to O(t^4))
     X_series_0_plus = (
         1
@@ -224,12 +272,24 @@ def main() -> None:
     payload = Payload(
         dy_identity_ok=dy_identity_ok,
         critical_x_factor_ok=critical_x_factor_ok,
+        resy_F_Fx_factor_ok=resy_F_Fx_factor_ok,
+        resy_F_Fx_constant=resy_F_Fx_constant,
+        res_F_cubicx_factor_ok=res_F_cubicx_factor_ok,
+        res_F_cubicx_constant=res_F_cubicx_constant,
         leyang_resultant_ok=leyang_resultant_ok,
         leyang_resultant_constant=leyang_resultant_constant,
         leyang_resultant_exact_ok=leyang_resultant_exact_ok,
         norm_identity_ok=norm_identity_ok,
         norm_2division_ok=norm_2division_ok,
         norm_2Y_ok=norm_2Y_ok,
+        disc_ctrl_cubic_y=disc_ctrl_cubic_y,
+        disc_ctrl_cubic_y_factorization={str(int(p)): int(e) for p, e in disc_ctrl_cubic_y_fac.items()},
+        disc_conj_cubic_y=disc_conj_cubic_y,
+        disc_conj_cubic_y_factorization={str(int(p)): int(e) for p, e in disc_conj_cubic_y_fac.items()},
+        mod37_ctrl_cubic_y=mod37_ctrl,
+        mod37_leyang_cubic_y=mod37_leyang,
+        mod37_conj_cubic_y=mod37_conj,
+        y_of_minus_P=y_of_minus_P,
         disc_cubic_x=int(disc_cubic_x),
         disc_cubic_x_factorization={str(int(p)): int(e) for p, e in disc_cubic_x_fac.items()},
         disc_leyang=int(disc_leyang),
@@ -252,6 +312,7 @@ def main() -> None:
         f" dy={dy_identity_ok} critX={critical_x_factor_ok} leyang_res={leyang_resultant_ok}"
         f" leyang_c={leyang_resultant_constant} leyang_exact={leyang_resultant_exact_ok}"
         f" norm={norm_identity_ok} norm2div={norm_2division_ok} norm2Y={norm_2Y_ok}"
+        f" resy={resy_F_Fx_factor_ok} resFg={res_F_cubicx_factor_ok} y(-P)={y_of_minus_P}"
         f" puiseux0={puiseux_y0_0_ok} puiseux1={puiseux_y0_1_ok}"
         f" c0sq={c0_sq_formula_ok} genusS4={genus_s4} genus2={genus2} genus6={genus6} seconds={dt:.3f}",
         flush=True,

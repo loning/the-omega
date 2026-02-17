@@ -171,6 +171,7 @@ class Payload:
     critical_poly_galois_derived_order: int
     critical_poly_galois_derived_order_hist: Dict[str, int]
     y_doubling_pullback_linear_ok: bool
+    y_doubling_pullback_cubic_fraction_ok: bool
     y_minpoly_ok: bool
     y_discriminant_ok: bool
     torsion_primes: List[int]
@@ -281,6 +282,25 @@ def main() -> None:
     nd_rem = sp.rem(Pnd, Pmod).as_expr()
     y_pullback_ok = bool(sp.simplify(nd_rem) == 0)
 
+    # --- Cubic/cubic representation in Q(y)(X)/(F): verify the manuscript form ---
+    N_cubic = (
+        (-2 * y**2 - 10 * y + 1) * X**3
+        + (2 * y**3 - 6 * y**2 + 34 * y + 27) * X**2
+        + (2 * y**3 + 10 * y**2 + 12 * y - 23) * X
+        - (y**4 + 23 * y**2 + 23 * y - 1)
+    )
+    D_cubic = (
+        (64 * y + 8) * X**3
+        + (48 * y**2 + 16 * y) * X**2
+        - (16 * y**2 + 48 * y + 8) * X
+        - (32 * y**3 + 32 * y**2 - 1)
+    )
+    diff_cubic = sp.together(expr_xy - sp.together(N_cubic / D_cubic))
+    nd2, _dd2 = diff_cubic.as_numer_denom()
+    Pnd2 = sp.Poly(sp.expand(nd2), y, domain=sp.QQ[X])
+    nd2_rem = sp.rem(Pnd2, Pmod).as_expr()
+    y_pullback_cubic_ok = bool(sp.simplify(nd2_rem) == 0)
+
     # --- Torsion audit via reduction mod p ---
     primes = [3, 5, 7, 11, 13, 17, 19]
     good_primes = [p for p in primes if p not in (2, 37)]
@@ -356,6 +376,7 @@ def main() -> None:
         critical_poly_galois_derived_order=int(Dsub.order()),
         critical_poly_galois_derived_order_hist=hist_json,
         y_doubling_pullback_linear_ok=bool(y_pullback_ok),
+        y_doubling_pullback_cubic_fraction_ok=bool(y_pullback_cubic_ok),
         y_minpoly_ok=bool(y_minpoly_ok),
         y_discriminant_ok=bool(y_disc_ok),
         torsion_primes=[int(p) for p in good_primes],
@@ -409,7 +430,7 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-lattes] checks:"
-        f" phi={phi_ok} crit={crit_ok} galois48={(G_order == 48)} y2lin={y_pullback_ok}"
+        f" phi={phi_ok} crit={crit_ok} galois48={(G_order == 48)} y2lin={y_pullback_ok} y2cubic={y_pullback_cubic_ok}"
         f" mw={mw_ok} minpoly={y_minpoly_ok} disc={y_disc_ok} tors_gcd={g} denlaw={all(r.den_law_ok for r in rows)}"
         f" seconds={dt:.3f}",
         flush=True,
