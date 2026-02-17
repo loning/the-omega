@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Time (Asia/Singapore): 2026-02-17 13:13:46
 """Audit fixed-k low-weight coefficient quasipolynomials for Z_m(y).
 
 This script is English-only by repository convention.

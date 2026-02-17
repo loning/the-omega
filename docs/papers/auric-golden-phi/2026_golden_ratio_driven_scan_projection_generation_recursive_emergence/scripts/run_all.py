@@ -3004,6 +3004,25 @@ def build_steps() -> List[Step]:
     ]
 
 
+def _postprocess_strip_comment_timestamps() -> float:
+    """Always run the timestamp-comment stripping pass.
+
+    This is intentionally outside the step cache because upstream steps may be
+    skipped by cache while manuscript sources could still contain (or regain)
+    auto-inserted timestamp comments.
+    """
+    script_path = scripts_dir() / "util_strip_comment_timestamps.py"
+    if not script_path.is_file():
+        print(f"[run_all] WARN missing postprocess script: {script_path}", flush=True)
+        return 0.0
+
+    cmd = [sys.executable, str(script_path), "--root", str(paper_root())]
+    print(f"[run_all] POST strip_comment_timestamps: {' '.join(cmd)}", flush=True)
+    t0 = time.time()
+    subprocess.check_call(cmd, cwd=str(paper_root()))
+    return float(time.time() - t0)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run reproducible experiment pipeline (with step cache)."
@@ -3077,6 +3096,9 @@ def main() -> None:
         steps_cache[st.name] = sig
         cache["steps"] = steps_cache
         _write_cache(cache)
+
+    dt_post = _postprocess_strip_comment_timestamps()
+    step_times["post_strip_comment_timestamps"] = float(dt_post)
 
     dt_all = time.time() - t0_all
     print(f"[run_all] ALL DONE elapsed_s={dt_all:.3f}", flush=True)
