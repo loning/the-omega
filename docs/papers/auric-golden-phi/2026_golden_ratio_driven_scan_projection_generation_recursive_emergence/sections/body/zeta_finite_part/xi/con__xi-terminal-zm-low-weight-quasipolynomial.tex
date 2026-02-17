@@ -1,5 +1,61 @@
 % (User input window)
 
+\begin{conclusion}[固定重量层系数生成函数的分母刚性：统一闭式与二阶递推]\label{con:xi-terminal-zm-fixed-weight-generating-function-rigidity}
+沿用结论 \ref{con:xi-terminal-zm-order4-rational} 与结论 \ref{con:xi-terminal-zm-2d-recurrence-amk} 的记号，并记
+\[
+a_{m,k}:=[y^k]\,Z_m(y),\qquad
+A_k(t):=\sum_{m\ge 0}a_{m,k}t^m=[y^k]F(t,y),
+\]
+其中
+\[
+F(t,y)=\sum_{m\ge 0}Z_m(y)t^m
+=\frac{1+yt-yt^2-y^2t^3}{1-t-(2y+1)t^2+t^3+y(y+1)t^4}.
+\]
+则对每个固定整数 \(k\ge 0\)，存在唯一多项式 \(\mathcal{P}_k(t)\in\ZZ[t]\) 使得
+\[
+\boxed{\;
+A_k(t)=\frac{\mathcal{P}_k(t)}{(1-t)^{2k+2}(1+t)^{k+1}}\;}
+\]
+并且 \(\mathcal{P}_k\) 可由显式二阶递推唯一确定：令
+\[
+\mathcal{P}_0(t)=1,\qquad
+\mathcal{P}_1(t)=-t\bigl(t^4-t^3-1\bigr),\qquad
+\mathcal{P}_2(t)=t^3\bigl(t^5-2t^4-t^3+t^2+t+1\bigr),
+\]
+则对一切 \(k\ge 3\) 有
+\[
+\boxed{\;
+\mathcal{P}_k(t)=(2t^2-t^4)\mathcal{P}_{k-1}(t)-t^4(1-t)^2(1+t)\mathcal{P}_{k-2}(t)\; }.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+将分母记为
+\[
+D(t,y):=1-t-(2y+1)t^2+t^3+y(y+1)t^4=D_0(t)+yD_1(t)+y^2D_2(t),
+\]
+其中
+\[
+D_0(t)=(1-t)^2(1+t),\qquad D_1(t)=-2t^2+t^4,\qquad D_2(t)=t^4,
+\]
+并将分子记为
+\(
+N(t,y)=1+y(t-t^2)-y^2t^3
+\)。
+写 \(F(t,y)=\sum_{k\ge 0}A_k(t)y^k\)，则由恒等式 \(D(t,y)F(t,y)=N(t,y)\) 比较 \(y^k\) 系数得
+\[
+D_0(t)A_k(t)+D_1(t)A_{k-1}(t)+D_2(t)A_{k-2}(t)=N_k(t),
+\]
+其中 \(N_0(t)=1\)、\(N_1(t)=t-t^2\)、\(N_2(t)=-t^3\)、且 \(N_k(t)=0\)（当 \(k\ge 3\)），并约定 \(A_{-1}=A_{-2}=0\)。
+令 \(\mathcal{P}_k(t):=D_0(t)^{k+1}A_k(t)\)，则上式等价于
+\[
+\mathcal{P}_k(t)=\bigl(2t^2-t^4\bigr)\mathcal{P}_{k-1}(t)-t^4D_0(t)\mathcal{P}_{k-2}(t)+N_k(t)D_0(t)^k.
+\]
+对 \(k\ge 3\) 时 \(N_k\equiv 0\)，得到所示齐次二阶递推；
+\(k=0,1,2\) 的显式初值由上式直接化简得到。
+由于 \(D_0,D_1,D_2,N_k\in\ZZ[t]\) 且初值整系数，递推给出 \(\mathcal{P}_k\in\ZZ[t]\)。
+最后由 \(D_0(t)^{k+1}=(1-t)^{2k+2}(1+t)^{k+1}\) 得到分母结构。证毕。
+\end{proof}
+
 \begin{conclusion}[固定重量层系数的准多项式性：周期 \(2\)、次数量子化与首项系数闭式]\label{con:xi-terminal-zm-fixed-weight-quasipolynomial}
 沿用结论 \ref{con:xi-terminal-zm-order4-rational} 与结论 \ref{con:xi-terminal-zm-2d-recurrence-amk} 的记号，并记
 \[
@@ -22,28 +78,19 @@ a_{m,k}:=[y^k]\,Z_m(y)\qquad(m\ge 0,\ k\ge 0).
 等价地，令 \(m=2n+\varepsilon\)（\(\varepsilon\in\{0,1\}\)），则两条奇偶子序列 \(n\mapsto a_{2n,k}\) 与 \(n\mapsto a_{2n+1,k}\) 均为 \(n\) 的次数 \(2k+1\) 多项式。
 \end{conclusion}
 \begin{proof}[证明要点]
-由结论 \ref{con:xi-terminal-zm-order4-rational} 的有理生成函数
+由结论 \ref{con:xi-terminal-zm-fixed-weight-generating-function-rigidity}，
+对每个固定 \(k\ge 0\) 有显式闭式
 \[
-F(t,y):=\sum_{m\ge 0}Z_m(y)t^m=\frac{1+yt-yt^2-y^2t^3}{1-t-(2y+1)t^2+t^3+y(y+1)t^4}
+A_k(t)=\frac{\mathcal{P}_k(t)}{(1-t)^{2k+2}(1+t)^{k+1}}\in\QQ(t),
 \]
-与系数抽取恒等式 \(A_k(t):=\sum_{m\ge 0}a_{m,k}t^m=[y^k]F(t,y)\)，可将 \(A_k\) 视为关于 \(y\) 的形式幂级数系数。
-注意 \(y=0\) 时分母退化为
-\[
-D(t,0)=1-t-t^2+t^3=(1-t)^2(1+t),
-\]
-从而 \(t=1\) 为二重零点而 \(t=-1\) 为单零点。
-将 \(1/D(t,y)\) 在 \(y=0\) 处作幂级数展开可知：对固定 \(k\)，有
-\(
-A_k(t)\in\QQ(t)
-\)，并且其分母整除 \((1-t)^{2k+2}(1+t)^{k+1}\)；
-因此 \(A_k\) 仅在 \(t=\pm1\) 处出现极点，且 \(t=1\) 的极点阶恰为 \(2k+2\)、\(t=-1\) 的极点阶不超过 \(k+1\)。
+从而 \(A_k(t)\) 仅在 \(t=\pm 1\) 处出现极点，且在 \(t=1\) 与 \(t=-1\) 处的极点阶分别恰为 \(2k+2\) 与 \(k+1\)。
 对 \(A_k\) 作部分分式并逐项取系数即可得到对所有 \(m\ge 0\) 成立的分解
 \(
 a_{m,k}=P_k(m)+(-1)^mQ_k(m)
 \)
 及次数界；唯一性来自于：若 \(P(m)+(-1)^mQ(m)\equiv 0\) 对所有整数 \(m\ge 0\) 成立，则必有 \(P\equiv 0\) 且 \(Q\equiv 0\)。
 \par
-首项系数由 \(t=1\) 处的最高阶极点给出：由于 \(D(t,0)\sim 2(1-t)^2\)（\(t\to 1\)），且 \(y\)-展开中产生的最高阶极点系数在 \(t=1\) 处不发生抵消，故
+首项系数由 \(t=1\) 处的最高阶极点给出：由结论 \ref{con:xi-terminal-zm-fixed-weight-generating-function-rigidity} 的递推在 \(t=1\) 处代入可归纳得 \(\mathcal{P}_k(1)=1\)；并且 \((1+t)^{-(k+1)}\sim 2^{-(k+1)}\)（\(t\to 1\)），故
 \(
 A_k(t)\sim 2^{-(k+1)}(1-t)^{-(2k+2)}
 \)，从而
@@ -84,6 +131,52 @@ A_k(t)=\frac{1}{4^{k+1}}(1+t)^{-(k+1)}+O\!\bigl((1+t)^{-k}\bigr)\qquad(t\to-1),
 [m^k]Q_k(m)=4^{-(k+1)}/k!=2^{-(2k+2)}/k!
 \)。
 上述分解与后续低阶闭式可由脚本 \texttt{scripts/exp\_fold\_zm\_low\_weight\_quasipolynomial\_audit.py} 复核。证毕。
+\end{proof}
+
+\begin{conclusion}[两项主部的显式化：多项式主增长与交替振荡的阶分离]\label{con:xi-terminal-zm-fixed-weight-two-term-asymptotic}
+沿用结论 \ref{con:xi-terminal-zm-fixed-weight-generating-function-rigidity} 的记号，并记 \(\mathcal{P}_k(t)\in\ZZ[t]\) 为 \(A_k(t)\) 的分子。
+则对一切 \(k\ge 0\) 有
+\[
+\boxed{\;
+\mathcal{P}_k(1)=\mathcal{P}_k(-1)=1,\qquad \mathcal{P}_k'(1)=0\;}
+\]
+并且当 \(k\ge 1\) 时成立二阶与三阶导数的一次律：
+\[
+\boxed{\;
+\mathcal{P}_k''(1)=4-12k,\qquad \mathcal{P}_k^{(3)}(1)=42-78k\; }.
+\]
+因此，对每个固定 \(k\)（令 \(m\to\infty\)）有两项显式主部展开
+\[
+\boxed{\;
+a_{m,k}
+=\frac{1}{2^{k+1}}\binom{m+2k+1}{2k+1}
+\frac{k+1}{2^{k+2}}\binom{m+2k}{2k}
+O_k(m^{2k-1})
+(-1)^m O_k(m^{k})\; }.
+\]
+其中 \(O_k(m^{2k-1})\) 来自 \(t=1\) 的次高阶极点，而交替项 \((-1)^mO_k(m^k)\) 来自 \(t=-1\) 的极点。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-fixed-weight-generating-function-rigidity} 的递推
+\[
+\mathcal{P}_k(t)=(2t^2-t^4)\mathcal{P}_{k-1}(t)-t^4(1-t)^2(1+t)\mathcal{P}_{k-2}(t)
+\]
+在 \(t=\pm 1\) 处代入即可得 \(\mathcal{P}_k(\pm1)=\mathcal{P}_{k-1}(\pm1)=1\)。
+对该递推在 \(t=1\) 处作导数并注意 \((2t^2-t^4)'|_{t=1}=0\) 且 \(t^4(1-t)^2(1+t)\) 在 \(t=1\) 处至少二阶消失，得到 \(\mathcal{P}_k'(1)=\mathcal{P}_{k-1}'(1)=0\)。
+二阶与三阶导数律同理由在 \(t=1\) 处对递推作二次与三次微分并归纳得到（以 \(k=1,2\) 的直接核验作为起始）。
+\par
+最后由
+\[
+A_k(t)=\frac{\mathcal{P}_k(t)}{(1-t)^{2k+2}(1+t)^{k+1}}
+\]
+在 \(t=1\) 与 \(t=-1\) 处的局部展开作系数抽取：
+在 \(t=1\) 处，
+\(
+(1+t)^{-(k+1)}=2^{-(k+1)}\bigl(1+\frac{k+1}{2}(1-t)+O((1-t)^2)\bigr)
+\)
+并结合 \(\mathcal{P}_k(1)=1\)、\(\mathcal{P}_k'(1)=0\) 得到所示两项主部；
+而在 \(t=-1\) 处由极点阶 \(k+1\) 得到交替项的阶为 \(O_k(m^k)\)。
+证毕。
 \end{proof}
 
 \begin{conclusion}[低重量层系数的全量闭式：\(k\le 3\) 时对所有 \(m\ge 0\) 逐点成立]\label{con:xi-terminal-zm-fixed-weight-kle3-closed}

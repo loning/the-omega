@@ -2780,6 +2780,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_modular_y_qexp_audit",
+            script="exp_fold_zm_elliptic_modular_y_qexp_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_modular_y_qexp_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_modular_y_qexp_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_s4_chebotarev_splitting_distribution_audit",
             script="exp_fold_zm_s4_chebotarev_splitting_distribution_audit.py",
             args=[],
