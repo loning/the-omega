@@ -136,6 +136,54 @@ S_\delta=D^{1/2}K^\star_\delta D^{-1/2}
 即可得到特征多项式闭式与世俗方程。证毕。
 \end{proof}
 
+\begin{corollary}[最优耦合的二元潜变量表示]\label{cor:pom-maxent-markov-optimal-coupling-latent-binary-mixture}
+沿用定理 \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum} 的 \(u_\delta,\kappa_\delta\)。
+记
+\[
+A_\delta:=\sum_{x\in X}u_\delta(x),
+\qquad
+\theta_\delta:=\kappa_\delta\sum_{x\in X}u_\delta(x)^2,
+\qquad
+\pi_\delta(x):=\frac{u_\delta(x)}{A_\delta},
+\qquad
+\rho_\delta(x):=\frac{u_\delta(x)^2}{\sum_{y\in X}u_\delta(y)^2}.
+\]
+则由概率归一化恒等式 \(\sum_{x,y}P^\star_\delta(x,y)=1\) 推出
+\[
+A_\delta^2+\theta_\delta=1.
+\]
+并且最优耦合 \(P^\star_\delta\) 可写为两端混合：
+\[
+\boxed{\;
+P^\star_\delta
+=A_\delta^2\,(\pi_\delta\otimes\pi_\delta)
+\;+\;\theta_\delta\,\mathrm{Diag}(\rho_\delta)\;}
+\]
+其中 \(\mathrm{Diag}(\rho_\delta)\) 表示集中在对角集合 \(\{(x,x)\}\) 的分布。
+等价地，存在二元潜变量 \(J\in\{0,1\}\) 使得在 \(J=0\) 时 \((X,Y)\sim\pi_\delta\otimes\pi_\delta\) 独立同分布，在 \(J=1\) 时 \(X=Y\) 且 \(X\sim\rho_\delta\)，并且
+\[
+\mathbb P(J=0)=A_\delta^2,\qquad \mathbb P(J=1)=\theta_\delta,
+\qquad
+{\rm Law}(X,Y)=P^\star_\delta.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum} 的分解 \(P^\star_\delta=u_\delta u_\delta^{\mathsf T}+\kappa_\delta\,\mathrm{diag}(u_\delta^2)\)，对总质量求和得
+\[
+1=\sum_{x,y}P^\star_\delta(x,y)=\Bigl(\sum_x u_\delta(x)\Bigr)^2+\kappa_\delta\sum_x u_\delta(x)^2=A_\delta^2+\theta_\delta.
+\]
+另一方面，
+\(
+u_\delta u_\delta^{\mathsf T}=A_\delta^2(\pi_\delta\otimes\pi_\delta)
+\)
+且
+\(
+\kappa_\delta\,\mathrm{diag}(u_\delta^2)=\theta_\delta\,\mathrm{Diag}(\rho_\delta)
+\)，
+从而得到混合表示。
+将两部分视作对 \(J\) 的条件分布并按权重边缘化即可得到潜变量生成模型。证毕。
+\end{proof}
+
 \begin{corollary}[无振荡性与两端谱塌缩]\label{cor:pom-maxent-markov-no-oscillation-endpoints}
 令 \(\delta_0:=1-p_2(w)=1-\sum_{x\in X}w(x)^2\)。
 则对任意 \(\delta\in[0,\delta_0]\)，最优核 \(K^\star_\delta\) 在 \(\ell^2(w)\) 上的全部特征值均属于区间 \([0,1]\)。

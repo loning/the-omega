@@ -1,9 +1,3 @@
-% (User input window)
-% 2026-02-16 22:24:58（Asia/Singapore）
-% 日期与时间：2026-02-17 01:51:48（Asia/Singapore）
-% 日期与时间：2026-02-17 02:25:40（Asia/Singapore）
-% 日期与时间：2026-02-17 02:46:37（Asia/Singapore）
-
 \begin{conclusion}[重量谱椭圆曲线上的倍乘—Latt\`es 自映射：\texorpdfstring{$x([2]P)$}{x([2]P)} 的闭式四次有理函数]\label{con:xi-terminal-zm-elliptic-lattes-doubling}
 在结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的椭圆模型
 \[
@@ -381,6 +375,29 @@ A_3(y)&=-16y^3+49y^2+31y+8.
 \(
 \mathrm{Tr}(u\lambda^m)=a_0 s_m+a_1 s_{m+1}+a_2 s_{m+2}+a_3 s_{m+3}
 \)，并清分母即可得到。证毕。
+\end{proof}
+
+\begin{conclusion}[迹函数解释：四阶递推的几何来源与奇点集合的约束]\label{con:xi-terminal-zm-trace-pushforward-origin}
+在结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的椭圆化识别下，函数域扩张 \(\QQ(E)/\QQ(y)\) 为次数 \(4\) 的有限可分扩张，其原始元可取为 \(X=\lambda\in\QQ(E)\)。
+对每个整数 \(m\ge 0\) 定义迹函数
+\[
+T_m(y):=\Tr_{\QQ(E)/\QQ(y)}(X^m)\in\QQ(y).
+\]
+则 \((T_m)_{m\ge 0}\) 满足由 \(\Pi(\lambda,y)\) 决定的四阶线性递推（其特征多项式即为 \(\Pi\)）：
+\[
+T_m(y)=T_{m-1}(y)+(2y+1)T_{m-2}(y)-T_{m-3}(y)-y(y+1)T_{m-4}(y)\qquad(m\ge 4).
+\]
+此外，作为 \(\mathbb P^1_y\) 上的有理函数，\(T_m\) 的可能极点仅位于 \(y=\infty\)；
+因而其奇点集合包含于分歧值集合
+\(
+\{\infty,0,1\}\cup\{P_{\mathrm{LY}}(y)=0\}
+\)（见结论 \ref{con:xi-terminal-zm-elliptic-y-hurwitz-passport}）。
+结合结论 \ref{con:xi-terminal-zm-field-trace-representation} 的域迹表示，四阶递推可解释为次数 \(4\) 覆叠 \(\pi_y:E\to\mathbb P^1_y\) 上的迹推送结构，而 Lee--Yang 三次因子则在该覆叠的分歧几何中被内在锁定。
+\end{conclusion}
+\begin{proof}[证明要点]
+由 \(\Pi(X,y)=0\) 在 \(\QQ(E)\) 中成立，乘以 \(X^{m-4}\) 并取 \(\Tr_{\QQ(E)/\QQ(y)}\) 得到所示递推。
+又由于 \(X\) 在 \(E\) 上仅在无穷远点 \(O\) 处有极点，而 \(y\) 在 \(O\) 处具有四阶极点（结论 \ref{con:xi-terminal-zm-elliptic-normalization}），故 \(T_m\) 在有限 \(y\)-点处不出现极点，从而其可能极点仅在 \(y=\infty\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_audit.py}。证毕。
 \end{proof}
 
 \begin{conclusion}[重量四次谱方程的泛型伽罗瓦群为 \texorpdfstring{$S_4$}{S4}：显式三次分解式与判别式同一性]\label{con:xi-terminal-zm-generic-galois-s4}
