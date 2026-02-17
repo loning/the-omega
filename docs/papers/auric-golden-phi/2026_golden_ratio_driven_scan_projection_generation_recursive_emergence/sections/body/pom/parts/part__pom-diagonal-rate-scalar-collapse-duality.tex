@@ -169,3 +169,105 @@ D(P\|w\otimes w)=2H(w)-\mathcal G_\kappa(w)+\mathbb P_P(X=Y)\log(1+\kappa).
 把 \(\kappa^\star\) 与任一对应极小点 \(u^\star\) 回代即可回收唯一最优耦合。证毕。
 \end{proof}
 
+\paragraph{速率曲线的指纹化与分布可识别性}
+定理 \ref{thm:pom-diagonal-rate-scalar-collapse} 与定理 \ref{thm:pom-diagonal-rate-scaling-duality} 表明：在 \(\delta\in(0,\delta_0)\) 上，最优耦合由单一对偶标量 \(\kappa(\delta)\) 及其规范化缩放向量 \(u_\delta\) 完全刻画。
+以下给出一个更强的结论：若把 \(\delta\mapsto R_w(\delta)\) 视为函数级观测，则它本身已构成 \(w\) 的完备指纹（除去标签置换的不变性）。
+
+\begin{theorem}[单曲线可识别性：\texorpdfstring{$\delta\mapsto R_w(\delta)$}{R(delta)} 唯一决定 \texorpdfstring{$w$}{w}（至置换）]\label{thm:pom-diagonal-rate-rate-curve-identifiability}
+令 \(X\) 为有限集，\(|X|=n\ge 2\)，并取全支撑分布 \(w\in\Delta(X)\)。
+记 \(\delta_0(w):=1-\sum_{x\in X}w(x)^2\)。
+若另一全支撑分布 \(v\in\Delta(X)\) 满足：存在 \((0,\delta_1)\subset\bigl(0,\min\{\delta_0(w),\delta_0(v)\}\bigr)\) 使
+\[
+R_w(\delta)=R_v(\delta)\qquad(\forall \delta\in(0,\delta_1)),
+\]
+则两分布的权重多重集一致：
+\[
+\{w(x):x\in X\}=\{v(x):x\in X\},
+\]
+从而 \(w=v\)（至标签置换）。
+\end{theorem}
+\begin{proof}[证明要点]
+由命题 \ref{prop:pom-diagonal-rate-analytic-strict-convexity-curvature}，\(\delta\mapsto R_w(\delta)\) 与 \(\delta\mapsto R_v(\delta)\) 在各自的 \((0,\delta_0)\) 上实解析。
+因此在含聚点区间 \((0,\delta_1)\) 上的恒等式迫使二者在公共定义域上处处相等。
+\par
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 的对偶敏感性，
+\[
+R_w'(\delta)=-\log\bigl(1+\kappa_w(\delta)\bigr),
+\qquad
+R_v'(\delta)=-\log\bigl(1+\kappa_v(\delta)\bigr),
+\]
+从而由 \(R_w\equiv R_v\) 得 \(\kappa_w(\delta)\equiv \kappa_v(\delta)\)。
+再由定理 \ref{thm:pom-diagonal-rate-scalar-collapse}，映射 \(\kappa\mapsto\delta(\kappa)\) 严格递减并在 \((0,\infty)\) 与 \((0,\delta_0)\) 间成双射，
+故其反函数 \(\delta\mapsto \kappa(\delta)\) 唯一；于是两者诱导的 \(\delta(\kappa)\) 在 \(\kappa>0\) 上一致。
+\par
+令 \(A(\kappa)\) 为定理 \ref{thm:pom-diagonal-rate-scalar-collapse} 的唯一不动点解，并取规范化缩放 \(Z\equiv 1\)（同定理）。
+由推论 \ref{cor:pom-diagonal-rate-scalar-collapse-rate} 的代数关系可得
+\[
+A(\kappa)^2=\frac{1+\kappa\,\delta(\kappa)}{1+\kappa}\qquad(\kappa>0),
+\]
+从而由已知的 \(\delta(\kappa)\) 唯一确定函数 \(\kappa\mapsto A(\kappa)\)。
+\par
+在 \(\kappa\downarrow 0\) 时有 \(A(\kappa)\uparrow 1\) 且 \(A\) 可解析延拓到 \(\kappa=0\) 的邻域。
+将定理 \ref{thm:pom-diagonal-rate-scalar-collapse} 的不动点方程
+\(
+A=\Phi_\kappa(A)=\sum_x u_{\kappa,A}(x)
+\)
+视为关于 \(\kappa\) 的解析恒等式，并对
+\(
+u_{\kappa,A}(x)=(\sqrt{A^2+4\kappa w(x)}-A)/(2\kappa)
+\)
+在 \(\kappa=0\) 处作 Taylor 展开，可得到
+\[
+\Phi_\kappa(A)=\frac{1}{A}-\kappa\,\frac{p_2(w)}{A^3}+O(\kappa^2),
+\qquad p_2(w):=\sum_x w(x)^2,
+\]
+从而由系数比较给出 \(p_2(w)=-2A'(0)\)。
+更一般地，\(\Phi_\kappa(A)\) 的 \(\kappa^{q-1}\) 系数线性包含幂和 \(p_q(w)=\sum_x w(x)^q\) 且仅依赖于 \(A\) 的低阶导数与 \(\{p_j(w)\}_{2\le j\le q-1}\)；
+因此由归纳可从 \(\kappa\mapsto A(\kappa)\) 在 \(\kappa=0\) 的 Taylor jet 逐阶恢复 \(\{p_q(w)\}_{q=2}^{n}\)。
+\par
+最后，由 Newton 恒等式，已知幂和 \(\{p_q(w)\}_{q=1}^{n}\)（其中 \(p_1\equiv 1\)）等价于已知基本对称多项式 \(\{e_k(w)\}_{k=1}^{n}\)，从而确定一元多项式
+\(
+t^n-e_1 t^{n-1}+\cdots+(-1)^n e_n
+\)
+的全部根；该根多重集恰为 \(\{w(x):x\in X\}\)。
+因此 \(R_w\) 唯一决定 \(w\) 的权重多重集（至置换）。证毕。
+\end{proof}
+
+\begin{corollary}[两标量证书的完备性：\texorpdfstring{$R_w(\delta)$}{R(delta)} 与 \texorpdfstring{$\lambda_2(K^\star_\delta)$}{lambda2}]\label{cor:pom-diagonal-rate-two-curve-identifiability}
+令 \(X\) 为有限集，\(w\in\Delta(X)\) 全支撑。
+对 \(\delta\in(0,\delta_0(w))\) 令 \(K^\star_\delta\) 为定理 \ref{thm:pom-maxent-markov-unique-optimal-kernel} 的唯一最优核，并令 \(\lambda_2(K^\star_\delta)\) 为其第二特征值（按 \(\lambda_1=1\ge \lambda_2\ge\cdots\ge \lambda_n\) 排序）。
+若已知两条曲线
+\(
+\delta\mapsto R_w(\delta)
+\)
+与
+\(
+\delta\mapsto \lambda_2(K^\star_\delta)
+\)
+在某个含聚点区间上的全部值，则可唯一确定 \(\{w(x)\}\)（至置换）。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-rate-curve-identifiability}，\(\delta\mapsto R_w(\delta)\) 已足以唯一确定 \(\{w(x)\}\)；
+因此在此基础上再给出 \(\lambda_2(K^\star_\delta)\) 不会引入额外歧义。证毕。
+\end{proof}
+
+\begin{proposition}[从速率曲线回收权重多重集：幂和--Newton 重构]\label{prop:pom-diagonal-rate-reconstruct-w-from-rate-curve}
+在定理 \ref{thm:pom-diagonal-rate-rate-curve-identifiability} 的设定下，给定 \(n=|X|\) 与函数 \(\delta\mapsto R_w(\delta)\) 在任意含聚点区间上的全部值，可按如下程序回收权重多重集 \(\{w(x)\}\)：
+\begin{enumerate}
+  \item 由实解析性将 \(R_w\) 延拓到 \((0,\delta_0)\) 的全域，并由对偶敏感性计算
+  \[
+  \kappa(\delta):=\exp\bigl(-R_w'(\delta)\bigr)-1.
+  \]
+  \item 反解 \(\delta\mapsto\kappa(\delta)\) 得到 \(\delta(\kappa)\)（\(\kappa\downarrow 0\) 对应 \(\delta\uparrow\delta_0\)），并定义
+  \[
+  A(\kappa):=\sqrt{\frac{1+\kappa\,\delta(\kappa)}{1+\kappa}}.
+  \]
+  \item 由不动点方程 \(A(\kappa)=\Phi_\kappa(A(\kappa))\) 在 \(\kappa=0\) 的 Taylor 展开逐阶恢复幂和 \(\{p_q(w)\}_{q=2}^{n}\)（例如 \(p_2(w)=-2A'(0)\)）。
+  \item 由 Newton 恒等式由 \(\{p_q(w)\}_{q=1}^{n}\) 计算基本对称多项式 \(\{e_k(w)\}_{k=1}^{n}\)，并以
+  \[
+  t^n-e_1 t^{n-1}+\cdots+(-1)^n e_n
+  \]
+  的根多重集作为 \(\{w(x)\}\) 的输出。
+\end{enumerate}
+该过程仅依赖于 \(\delta\mapsto R_w(\delta)\) 作为函数输入，并在理论上实现对 \(w\) 的排序谱回收。
+\end{proposition}

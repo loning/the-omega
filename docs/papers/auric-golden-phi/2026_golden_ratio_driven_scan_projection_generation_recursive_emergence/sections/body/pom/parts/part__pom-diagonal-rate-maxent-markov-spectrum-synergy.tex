@@ -210,6 +210,42 @@ K(y\mid x)=w(y)
 证毕。
 \end{proof}
 
+\begin{theorem}[谱支的单调性：非平凡特征值随失真严格下降]\label{thm:pom-maxent-markov-spectrum-monotone-in-delta}
+取全支撑分布 \(w\in\Delta(X)\)，并记 \(\delta_0:=1-\sum_{x\in X}w(x)^2\)。
+对 \(\delta\in(0,\delta_0)\) 令 \(K^\star_\delta\) 为定理 \ref{thm:pom-maxent-markov-unique-optimal-kernel} 的唯一最优核，
+并令
+\[
+1=\lambda_1(\delta)\ \ge\ \lambda_2(\delta)\ \ge\ \cdots\ \ge\ \lambda_n(\delta)\ \ge\ 0
+\]
+为其在 \(\ell^2(w)\) 上的特征值（含重数）。
+则对每个 \(i\ge 2\)，函数 \(\delta\mapsto \lambda_i(\delta)\) 在 \((0,\delta_0)\) 上严格递减且连续；
+并且存在一组实解析的谱支 \(\{\widetilde\lambda_i(\delta)\}_{i=1}^n\)（重排后与 \(\{\lambda_i(\delta)\}\) 逐点一致）覆盖整个谱族。
+端点行为满足
+\[
+\lambda_i(\delta)\xrightarrow[\delta\downarrow 0]{}1,
+\qquad
+\lambda_i(\delta)\xrightarrow[\delta\uparrow \delta_0]{}0
+\qquad(i\ge 2).
+\]
+\end{theorem}
+\begin{proof}[证明要点]
+由命题 \ref{prop:pom-diagonal-rate-analytic-strict-convexity-curvature} 与定理 \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum}，
+存在对偶参数 \(\kappa_\delta>0\) 与缩放向量 \(u_\delta\succ0\) 随 \(\delta\in(0,\delta_0)\) 实解析变化，
+从而对称化算子
+\(
+S_\delta:=D^{1/2}K^\star_\delta D^{-1/2}
+\)
+构成一族实解析的对称矩阵；由 Kato 解析扰动理论，可选取实解析谱支覆盖该谱族。
+\par
+对严格单调性：\(\delta\) 增大等价于约束 \(\sum_x w(x)K(x\mid x)\ge 1-\delta\) 的放松，
+其对偶乘子 \(\log(1+\kappa_\delta)\) 严格递减。
+在该对偶参数下，最优核对应于对角奖励的指数族缩放（定理 \ref{thm:pom-diagonal-rate-scaling-duality} 的同型结构），
+并诱导可逆核族在 Peskun/Dirichlet 预序上随 \(\delta\) 严格增强混合；
+将其转译到对称化算子 \(S_\delta\) 的 Rayleigh 商单调性，再用 Courant--Fischer 变分刻画即可推出全部非平凡特征值随 \(\delta\) 严格递减。
+\par
+端点由推论 \ref{cor:pom-maxent-markov-no-oscillation-endpoints} 给出（\(\delta=0\) 时为恒等核，\(\delta=\delta_0\) 时为秩一投影核），从而得到所示极限行为。证毕。
+\end{proof}
+
 \begin{corollary}[小失真谱门槛：第二特征值的首阶系数]\label{thm:pom-maxent-markov-small-distortion-lambda2-slope}
 取全支撑分布 \(w\in\Delta(X)\) 且 \(|X|=n\ge 2\)。
 令 \(K^\star_\delta\) 为定理 \ref{thm:pom-maxent-markov-unique-optimal-kernel} 的唯一最优核，并令
@@ -231,6 +267,37 @@ K(y\mid x)=w(y)
 \)
 （其中 \(\lambda_1\equiv 1\)），取 \(i=2\) 即得。
 世俗方程与定位为定理 \ref{thm:pom-diagonal-rate-critical-spectrum-secular-interlacing} 的直接推论。证毕。
+\end{proof}
+
+\begin{corollary}[端点耦合：谱隙与信息斜率指数同阶]\label{cor:pom-maxent-markov-gap-vs-rate-slope-coupling}
+沿用推论 \ref{thm:pom-maxent-markov-small-distortion-lambda2-slope} 的记号，并令
+\(
+C_{1/2}(w):=A_{1/2}(w)^2-1
+\)。
+则当 \(\delta\downarrow 0\) 时成立
+\[
+\lim_{\delta\downarrow 0}\ \frac{1-\lambda_2(K^\star_\delta)}{\exp\bigl(-R_w'(\delta)\bigr)}
+=\mu_2\,C_{1/2}(w).
+\]
+等价地，
+\[
+1-\lambda_2(K^\star_\delta)=\mu_2\,\delta\,(1+o(1)),
+\qquad
+\exp\bigl(-R_w'(\delta)\bigr)=\frac{\delta}{C_{1/2}(w)}\,(1+o(1)).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 得
+\(
+\exp(-R_w'(\delta))=(1+\kappa_\delta)^{-1}
+\)；
+又由定理 \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} 有 \(\kappa_\delta\sim C_{1/2}(w)/\delta\)，
+从而 \(\exp(-R_w'(\delta))=\delta/C_{1/2}(w)\cdot(1+o(1))\)。
+另一方面，推论 \ref{thm:pom-maxent-markov-small-distortion-lambda2-slope} 给出
+\(
+1-\lambda_2(K^\star_\delta)=\mu_2\delta+o(\delta)
+\)。
+两式相除即得极限。证毕。
 \end{proof}
 
 \begin{theorem}[小失真协同：乘积分布下的最优率严格优于任意坐标分离策略]\label{thm:pom-diagonal-rate-small-distortion-synergy-product}
