@@ -2715,6 +2715,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_double_root_diffusive_sinc_limit_audit",
+            script="exp_fold_zm_double_root_diffusive_sinc_limit_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_double_root_diffusive_sinc_limit_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_audit",
             script="exp_fold_zm_elliptic_audit.py",
             args=[],

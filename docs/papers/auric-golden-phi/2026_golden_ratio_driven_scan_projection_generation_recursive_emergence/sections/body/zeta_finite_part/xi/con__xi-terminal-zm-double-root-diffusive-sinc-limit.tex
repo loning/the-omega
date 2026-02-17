@@ -1,0 +1,90 @@
+% (User input window)
+
+\begin{conclusion}[双重特征根的扩散标度与 \texorpdfstring{$\operatorname{sinc}$}{sinc} 极限律]\label{con:xi-terminal-zm-double-root-diffusive-sinc-limit}
+沿用结论 \ref{con:xi-terminal-zm-order4-rational} 的多项式族 \(Z_m(y)\)。
+等价地，\(\{Z_m(y)\}_{m\ge 0}\) 可由初值
+\[
+Z_0(y)=1,\quad
+Z_1(y)=1+y,\quad
+Z_2(y)=2+2y,\quad
+Z_3(y)=2+5y+y^2
+\]
+及四阶递推
+\[
+Z_m(y)
+=Z_{m-1}(y)+(2y+1)Z_{m-2}(y)-Z_{m-3}(y)-y(y+1)Z_{m-4}(y)
+\qquad(m\ge 4)
+\]
+唯一确定。
+定义
+\[
+\operatorname{sinc}(z):=
+\begin{cases}
+\dfrac{\sin z}{z}, & z\neq 0,\\[1mm]
+1, & z=0.
+\end{cases}
+\]
+则对任意紧集 \(K\subset\CC\)，当 \(m\to\infty\) 时成立一致收敛
+\[
+\boxed{\;
+\sup_{u\in K}\left\lvert
+\frac{2}{m}\,Z_m\!\left(-\frac{u}{m^{2}}\right)
+-\operatorname{sinc}\!\left(\sqrt{\frac{u}{2}}\right)
+\right\rvert\longrightarrow 0\;}
+\]
+其中函数 \(u\mapsto \operatorname{sinc}\!\left(\sqrt{u/2}\right)\) 由其幂级数展开唯一确定，
+因而作为 \(u\) 的整函数无需选择平方根分支。
+
+特别地，令 \(j\ge 1\) 固定。
+当 \(m\) 足够大时，\(Z_m\) 在邻域 \((-\delta/m^2,0)\) 内存在至少 \(j\) 个互异实根；
+按从 \(0\) 向 \(-\infty\) 的顺序记为
+\(
+r_{m,1}>r_{m,2}>\cdots>r_{m,j}
+\)。
+则有极限量子化
+\[
+\boxed{\;
+-m^{2}\,r_{m,j}\longrightarrow 2\pi^{2}j^{2}\;}
+\qquad(m\to\infty),
+\]
+从而
+\(
+r_{m,j}=-\dfrac{2\pi^{2}j^{2}}{m^{2}}+o(m^{-2})
+\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-order4-rational} 的有理生成函数，
+在 \(y=0\) 处分母因式分解为 \(D(t,0)=(1-t)^2(1+t)\)，故 \(t=1\) 为二重极点，
+对应于递推特征方程在 \(\lambda=1\) 的二重特征根退化。
+当 \(y=-u/m^2\) 时，与该二重极点相邻的两条简单极点对以间距 \(O(m^{-1})\) 分裂；
+对其作局部留数展开并利用极限
+\(
+(1\pm i\alpha/m)^{-m}\to e^{\mp i\alpha}
+\)
+得到主项为 \(\operatorname{sinc}(\sqrt{u/2})\) 的尺度极限；
+一致性来自于对 \(u\) 在紧集上的统一估计。
+零点定标由 Hurwitz 定理对上述一致收敛与
+\(\operatorname{sinc}(\sqrt{u/2})\) 的简单零点
+\(
+u=2\pi^{2}j^{2}
+\)
+应用而得。
+可复现审计脚本：\texttt{scripts/exp\_fold\_zm\_double\_root\_diffusive\_sinc\_limit\_audit.py}。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$y=0$}{y=0} 的临界窗宽为 \texorpdfstring{$m^{-2}$}{m^{-2}}：线性增长与指数增长之间的唯一尺度]\label{con:xi-terminal-zm-critical-window-m2}
+在 \(y=0\) 处，结论 \ref{con:xi-terminal-zm-hankel-rank4} 所述二重特征根使 \(Z_m(0)\) 仅呈线性增长；
+而对任意固定 \(y>0\)，谱半径严格大于 \(1\)，故 \(Z_m(y)\) 具有严格指数增长率。
+结论 \ref{con:xi-terminal-zm-double-root-diffusive-sinc-limit} 的扩散标度极限表明，
+两种增长机制之间的非平凡过渡被刚性锁定在唯一临界窗
+\[
+y=-\frac{u}{m^{2}},
+\qquad
+u\asymp 1,
+\]
+并在该窗内由整函数 \(u\mapsto \operatorname{sinc}(\sqrt{u/2})\) 统一控制。
+相应地，靠近 \(0\) 的零点簇在该窗内呈现 \(m^{-2}\) 级别的量子化定标
+（结论 \ref{con:xi-terminal-zm-double-root-diffusive-sinc-limit}），
+其主阶间距由 \(\sin\) 的整数倍零点完全决定。
+\end{conclusion}
+
