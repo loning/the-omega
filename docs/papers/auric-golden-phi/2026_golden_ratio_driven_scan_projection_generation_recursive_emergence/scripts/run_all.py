@@ -2534,6 +2534,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_bulk_resonance_fibonacci_directional_limits",
+            script="exp_fold_bulk_resonance_fibonacci_directional_limits.py",
+            args=["--k-max", "200"],
+            expected_outputs=[
+                "artifacts/export/fold_bulk_resonance_fibonacci_directional_limits.json",
+                "sections/generated/eq_fold_bulk_resonance_fibonacci_directional_limits_numeric.tex",
+            ],
+        ),
+        Step(
             name="fold_multiplicity_histogram",
             script="exp_fold_multiplicity_histogram.py",
             args=[],
