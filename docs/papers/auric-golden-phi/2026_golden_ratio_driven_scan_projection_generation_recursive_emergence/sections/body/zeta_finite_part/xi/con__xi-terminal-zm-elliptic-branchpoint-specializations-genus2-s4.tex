@@ -122,7 +122,7 @@ U:=\frac{Q(y)+3w\sqrt{-3}}{16A(y)^3}
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_leyang\_discriminant\_ridge\_difference\_square\_audit.py}。证毕。
 \end{proof}
 
-\begin{conclusion}[循环三次无分歧覆盖的 Kummer 正规形与二面体提升：显式生成元]\label{con:xi-terminal-zm-discriminant-ridge-kummer-dihedral}
+\begin{conclusion}[循环三次无分歧覆盖的 Kummer--Cardano 正规形与二面体提升：显式生成元与分解式同构]\label{con:xi-terminal-zm-discriminant-ridge-kummer-dihedral}
 令 \(K:=\QQ(\sqrt{-3})\)，并取
 \[
 \zeta_{3}:=\frac{-1+\sqrt{-3}}{2}.
@@ -136,9 +136,31 @@ u:=\frac{Q(y)+3w\sqrt{-3}}{16A(y)^3}\in K(C)^{\times}.
 C_{6,K}:\quad t^{3}=u,
 \]
 其阶 \(3\) 的 deck 变换由 \(t\mapsto \zeta_{3}t\) 给出。
+进一步地，置
+\[
+t_{0}:=\frac{2A(y)}{3}\,t
+\qquad
+\Bigl(\text{从而 }t_{0}^{3}=\frac{Q(y)+3w\sqrt{-3}}{54}\Bigr),
+\]
+并定义
+\[
+z:=t_{0}+\frac{4A(y)^{2}}{9t_{0}}-\frac{A(y)}{3}\ \in\ K(C_{6,K}).
+\]
+则 \(z\) 满足分解式方程 \(\mathscr R(z,y)=0\)，从而给出函数域的显式同构
+\[
+K(C_{6})\otimes_{\QQ}K
+=K(y,w,t)\ \cong\ K(y,w,z),
+\]
+并与结论 \ref{con:xi-terminal-zm-discriminant-ridge-etale-c3-explicit-model} 中由 \(\mathscr R(z,y)=0\) 定义的 \(C_{6}\) 模型一致。
 此外，超椭圆反演 \(\iota:(y,w)\mapsto(y,-w)\) 在该 Kummer 模型上提升为
 \[
 (y,w,t)\longmapsto (y,-w,t^{-1}),
+\]
+其对 \(t_0\) 的作用等价写为 \(t_{0}\mapsto \frac{4A(y)^{2}}{9t_{0}}\)，并使 \(z\) 不变；因此
+\[
+K(C_{6,K})^{\langle t\mapsto \zeta_{3}t\rangle}=K(y,w)=K(C)\otimes_{\QQ}K,
+\qquad
+K(C_{6,K})^{\langle \iota\rangle}=K(y,z).
 \]
 从而在 \(K\) 上得到一个显式的半直积作用
 \[
@@ -155,6 +177,8 @@ C_{6,K}:\quad t^{3}=u,
 u\mapsto u^{-1}
 \)，
 故 \(t\mapsto t^{-1}\) 给出其提升。
+对 \(t_0=\frac{2A(y)}{3}t\) 与 \(z=t_0+\frac{4A(y)^2}{9t_0}-\frac{A(y)}{3}\) 的陈述由 Cardano 三次解式的直接代入核验得到，且该构造把 Kummer 立方根与分解式根 \(z\) 的同构显式化。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_trace\_galois\_audit.py}。
 令
 \(
 \sigma:t\mapsto \zeta_3 t
@@ -165,6 +189,94 @@ u\mapsto u^{-1}
 \)，
 则满足关系 \(\tau\sigma\tau=\sigma^{-1}\)，从而生成二面体群 \(D_6\)（阶 \(6\)）。
 证毕。
+\end{proof}
+
+\begin{conclusion}[Kummer 生成元的除子完全局部化与显式 \(3\)-扭结类]\label{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion}
+在结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-dihedral} 的记号下，令
+\[
+P_{\pm}:=\left(y=-\frac12,\ w=\pm\frac{9}{4}\sqrt{-3}\right)\in C(K),
+\qquad
+v:=\frac{Q(y)+3w\sqrt{-3}}{Q(y)-3w\sqrt{-3}}\in K(C)^{\times}.
+\]
+则 \(v=u^{2}\)，并且主除子满足严格恒等式
+\[
+\operatorname{div}(u)=3(P_{+}-P_{-}),
+\qquad
+\operatorname{div}(v)=6(P_{+}-P_{-}),
+\]
+从而 \(u\) 与 \(v\) 的零点与极点均仅支撑在 \(\{P_{+},P_{-}\}\) 上。
+因此
+\[
+D:=2(P_{+}-P_{-})\in \mathrm{Pic}^{0}(C_{K})\simeq J(C)(K)
+\]
+为一个非平凡的 \(3\)-扭结类（即 \(3D=0\) 且 \(D\neq 0\)）。
+并且由于 \(\gcd(2,3)=1\)，Kummer 扩张 \(t^{3}=u\) 与 \(s^{3}=v\) 给出同一 \(\mu_{3}\)-扭子，因而与结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-dihedral} 的循环三次覆盖在函数域意义下相同。
+上述除子局部化据 \(2026\text{-}02\text{-}17\ 18{:}42{:}01\)（Asia/Singapore）文档整理。
+\end{conclusion}
+\begin{proof}[证明要点]
+由 \(P_{\mathrm{LY}}(-\tfrac12)=\tfrac{81}{4}\) 得
+\(
+w^{2}\bigl\vert_{y=-1/2}=-(-\tfrac12)(-\tfrac32)\cdot\tfrac{81}{4}=-\tfrac{243}{16}
+\)，
+故在 \(K=\QQ(\sqrt{-3})\) 上纤维 \(y=-\tfrac12\) 含两点 \(P_{\pm}\) 且 \(w(P_{\pm})=\pm\frac{9}{4}\sqrt{-3}\)。
+另一方面，由结论 \ref{con:xi-terminal-zm-leyang-discriminant-ridge-diff-square-norm} 的范数恒等式可得
+\[
+\bigl(Q(y)+3w\sqrt{-3}\bigr)\bigl(Q(y)-3w\sqrt{-3}\bigr)=(16A(y)^{3})^{2}.
+\]
+在点 \(P_{+}\) 处有 \(Q(P_{+})+3w(P_{+})\sqrt{-3}=0\) 而 \(Q(P_{+})-3w(P_{+})\sqrt{-3}\neq 0\)，
+从而后者在局部环 \(\mathcal O_{C,P_{+}}\) 中为单位，遂
+\(
+\mathrm{ord}_{P_{+}}(Q+3w\sqrt{-3})=\mathrm{ord}_{P_{+}}\!\bigl((16A(y)^{3})^{2}\bigr)=6
+\)
+（因 \(A(y)=1+2y\) 在 \(y=-\tfrac12\) 处为单零且该纤维不分歧）。
+同理在 \(P_{-}\) 处得 \(\mathrm{ord}_{P_{-}}(Q-3w\sqrt{-3})=6\) 且 \(\mathrm{ord}_{P_{-}}(Q+3w\sqrt{-3})=0\)。
+又 \(u=(Q+3w\sqrt{-3})/(16A(y)^{3})\)，而 \(\mathrm{ord}_{P_{\pm}}(A(y))=1\)，故
+\(
+\operatorname{div}(u)=3(P_{+}-P_{-})
+\)；
+由 \(v=(Q+3w\sqrt{-3})/(Q-3w\sqrt{-3})=u^{2}\) 得 \(\operatorname{div}(v)=6(P_{+}-P_{-})\)。
+于是 \(6(P_{+}-P_{-})\) 为主除子，故 \(3D=0\)。
+若 \(D=0\)，则 \(P_{+}-P_{-}\) 为 \(2\)-挠点；但 \(y=-\tfrac12\) 为非分歧纤维，\(P_{\pm}\) 非 Weierstrass 点，从而不可能落在 \(J(C)[2]\) 的分支点差结构中，故 \(D\neq 0\)。
+最后，因 \(v=u^{2}\) 且 \(\gcd(2,3)=1\)，Kummer 扩张由 \(t^{3}=u\) 与 \(s^{3}=v\) 生成同一次数 \(3\) 的循环子扩张。证毕。
+\end{proof}
+
+\begin{conclusion}[显式 \(3\)-循环子群的下降与 \texorpdfstring{$\QQ$}{Q}-定义 \(3\)-同源]\label{con:xi-terminal-zm-discriminant-ridge-3isogeny-descent}
+令 \(K=\QQ(\sqrt{-3})\)，并取结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion} 的 \(3\)-扭结类 \(D\in J(C)(K)[3]\) 与循环子群
+\[
+G:=\langle D\rangle=\{0,\pm D\}\subset J(C)[3].
+\]
+由于 \(\mathrm{Gal}(K/\QQ)\) 的非平凡元交换 \(P_{+}\leftrightarrow P_{-}\) 从而诱导 \(D\mapsto -D\)，可知子群 \(G\) 在 \(\mathrm{Gal}(\overline{\QQ}/\QQ)\) 作用下稳定。
+因此存在定义于 \(\QQ\) 的度 \(3\) 同源
+\[
+\varphi:\ J(C)\longrightarrow J(C)/G,
+\]
+其核恰为 \(G\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+对任意域 \(F\) 上的阿贝尔簇 \(A/F\)，若有限子群方案 \(G\subset A\) 在 \(\mathrm{Gal}(\overline F/F)\) 作用下稳定，则商阿贝尔簇 \(A/G\) 与自然同源 \(A\to A/G\) 均可在 \(F\) 上下降。
+此处 \(F=\QQ\)、\(A=J(C)\)，而上式 \(G\) 的伽罗瓦稳定性由 \(D\mapsto -D\) 立即给出；由于 \(|G|=3\)，同源次数亦为 \(3\)。证毕。
+\end{proof}
+
+\begin{conclusion}[分裂型控制下的 \(3\)-扭专门化：良约化素数上的可见性二分律]\label{con:xi-terminal-zm-discriminant-ridge-3torsion-specialization}
+设 \(p\notin\{2,3,31,37\}\) 为素数，从而曲线 \(C\) 在 \(p\) 处良好约化（结论 \ref{con:xi-terminal-zm-leyang-discriminant-ridge-polydisc-badprimes}），并且 \(p\neq 3\)。
+令 \(D\in J(C)(\QQ(\sqrt{-3}))[3]\setminus\{0\}\) 为结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion} 的 \(3\)-扭结类。
+则：
+\begin{enumerate}
+  \item 若 \(p\equiv 1\pmod 3\)，则 \(\sqrt{-3}\in\FF_{p}\)，从而点 \(P_{\pm}\) 与 \(D\) 均在 \(\FF_{p}\) 上可专门化，并给出非零点
+  \[
+  D_{p}\in J(C)(\FF_{p})[3]\setminus\{0\}.
+  \]
+  \item 若 \(p\equiv 2\pmod 3\)，则 \(\sqrt{-3}\notin\FF_{p}\) 但 \(\sqrt{-3}\in\FF_{p^{2}}\)，因此 \(P_{\pm}\) 与 \(D\) 在 \(\FF_{p^{2}}\) 上专门化，并给出非零点
+  \[
+  D_{p^{2}}\in J(C)(\FF_{p^{2}})[3]\setminus\{0\}.
+  \]
+\end{enumerate}
+从而该 \(3\)-扭结构在有限域上的可见性由二次扩张 \(\QQ(\sqrt{-3})/\QQ\) 的分裂型（亦即 \(p\bmod 3\)）完全决定。
+\end{conclusion}
+\begin{proof}[证明要点]
+对良约化素数 \(p\neq 3\)，N\'eron 模型的基本性质保证专门化映射在素因子与 \(p\) 互素的挠子上为单射；因此 \(D\neq 0\) 的 \(3\)-挠性在约化后保持非平凡。
+当 \(p\equiv 1\pmod 3\) 时，\(-3\) 在 \(\FF_{p}\) 中为平方，故 \(\sqrt{-3}\) 与点 \(P_{\pm}\) 在 \(\FF_{p}\) 上可定义；
+当 \(p\equiv 2\pmod 3\) 时，\(-3\) 在 \(\FF_p\) 中为非平方而在 \(\FF_{p^2}\) 中必为平方，故所需定义域扩张恰为 \(\FF_{p^2}\)。证毕。
 \end{proof}
 
 \begin{conclusion}[判别式二次脊曲线的雅可比簇在 \texorpdfstring{$\QQ$}{Q} 上为简单阿贝尔曲面：不可约 Frobenius 多项式证书]\label{con:xi-terminal-zm-discriminant-ridge-jacobian-qsimple}

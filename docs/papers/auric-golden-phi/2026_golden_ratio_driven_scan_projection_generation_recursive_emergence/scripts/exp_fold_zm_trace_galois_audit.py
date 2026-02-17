@@ -23,6 +23,9 @@ We verify:
     and discriminant identities:
       Disc_z(R) = Disc_lam(Pi) = -y(y-1) P_LY(y).
   - At y=2, R(z,2) is irreducible over Q and Disc is not a square, supporting Gal(Pi/Q(y))=S4.
+  - Cardano/Kummer resolvent identity: a Groebner-reduction certificate that the
+    explicit radical expression z = t + 4A(y)^2/(9t) - A(y)/3 satisfies R(z,y)=0
+    under the relations v^2 = 3y(y-1)P_LY(y) and 54 t^3 = Q(y) + 3v.
 
 Outputs:
   - artifacts/export/fold_zm_trace_galois_audit.json
@@ -118,6 +121,7 @@ class Payload:
     resolvent_irreducible_at_y2: bool
     disc_y2: int
     disc_y2_is_square: bool
+    cardano_resolvent_identity_ok: bool
 
 
 def main() -> None:
@@ -189,6 +193,24 @@ def main() -> None:
     disc_y2 = int(sp.discriminant(R2.as_expr(), z))
     disc_y2_square = _is_square_int(abs(disc_y2))
 
+    # Cardano/Kummer explicit radical check:
+    # Let A(y)=1+2y, Q(y)=16+69y+219y^2+128y^3, and introduce v with
+    #   v^2 = 3y(y-1)P_LY(y)  (i.e. v = sqrt(-3)*w on the discriminant ridge curve).
+    # If t^3 = (Q+3v)/54 and z = t + 4A^2/(9t) - A/3, then R(z,y)=0.
+    v_sym, t_sym = sp.symbols("v t")
+    A = 1 + 2 * y
+    Q = 16 + 69 * y + 219 * y**2 + 128 * y**3
+    z_expr = t_sym + 4 * A**2 / (9 * t_sym) - A / 3
+    poly = sp.expand(sp.together(R.subs({z: z_expr}) * t_sym**3))
+    rel1 = v_sym**2 - 3 * y * (y - 1) * P_LY
+    rel2 = 54 * t_sym**3 - (Q + 3 * v_sym)
+    rel3 = Q**2 - 256 * A**6 - 9 * v_sym**2
+    G = sp.groebner([rel1, rel2, rel3], t_sym, v_sym, y, order="grevlex", domain=sp.QQ)
+    _, rem = G.reduce(poly)
+    cardano_ok = bool(sp.factor(rem) == 0)
+    if not cardano_ok:
+        raise RuntimeError(f"Cardano/Kummer resolvent identity failed, remainder={sp.sstr(rem)}")
+
     payload = Payload(
         u_coeffs={
             "a0": sp.sstr(a0_sol),
@@ -204,6 +226,7 @@ def main() -> None:
         resolvent_irreducible_at_y2=bool(irreducible_y2),
         disc_y2=int(disc_y2),
         disc_y2_is_square=bool(disc_y2_square),
+        cardano_resolvent_identity_ok=bool(cardano_ok),
     )
 
     out_json = export_dir() / "fold_zm_trace_galois_audit.json"
@@ -242,6 +265,7 @@ def main() -> None:
     print(
         "[fold-zm-trace-galois] checks:"
         f" u_match={match} trace_ok_upto={ok_upto} disc_ok={disc_ok} R2_irred={irreducible_y2} disc_y2_square={disc_y2_square}"
+        f" cardano_ok={cardano_ok}"
         f" seconds={dt:.3f}",
         flush=True,
     )
