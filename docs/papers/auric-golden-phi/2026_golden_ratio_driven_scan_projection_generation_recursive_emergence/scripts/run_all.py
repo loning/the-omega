@@ -2737,6 +2737,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_leyang_resy_spectral_decomposition_audit",
+            script="exp_fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_leyang_cover_geometry_audit",
             script="exp_fold_zm_elliptic_leyang_cover_geometry_audit.py",
             args=[],
