@@ -30,6 +30,8 @@ from fractions import Fraction
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+import mpmath as mp
+
 from common_paths import export_dir, generated_dir
 
 
@@ -426,6 +428,74 @@ def compute_weight_y_qexp(*, q_out: int, q_max: int, series_deg: int) -> Dict[st
     }
 
 
+def _sigma_k(n: int, k: int) -> int:
+    s = 0
+    d = 1
+    while d * d <= n:
+        if n % d == 0:
+            s += d**k
+            e = n // d
+            if e != d:
+                s += e**k
+        d += 1
+    return int(s)
+
+
+def _invert_j_on_imag_axis(*, j_target: mp.mpf, dps: int = 80, n_terms: int = 80) -> tuple[mp.mpf, mp.mpf]:
+    """Return (t,q) with tau=i*t in the SL2Z fundamental domain, such that j(i t)=j_target."""
+    if dps < 50:
+        raise ValueError("require dps >= 50 for stable inversion")
+    if n_terms < 20:
+        raise ValueError("require n_terms >= 20 for stable inversion")
+
+    mp.mp.dps = int(dps)
+    two_pi = mp.mpf(2) * mp.pi
+
+    # Precompute divisor sums for E4/E6 q-expansions.
+    sigma3 = [0] * (n_terms + 1)
+    sigma5 = [0] * (n_terms + 1)
+    for n in range(1, n_terms + 1):
+        sigma3[n] = _sigma_k(n, 3)
+        sigma5[n] = _sigma_k(n, 5)
+
+    def j_it(t: mp.mpf) -> mp.mpf:
+        q = mp.e ** (-two_pi * t)
+        E4 = mp.mpf(1)
+        E6 = mp.mpf(1)
+        qn = q
+        for n in range(1, n_terms + 1):
+            E4 += mp.mpf(240) * sigma3[n] * qn
+            E6 -= mp.mpf(504) * sigma5[n] * qn
+            qn *= q
+        E4_3 = E4**3
+        return mp.mpf(1728) * E4_3 / (E4_3 - E6**2)
+
+    # Fundamental-domain anchor: j(i)=1728. For real j_target>1728, the solution is unique on t>1.
+    t_lo = mp.mpf(1)
+    j_lo = j_it(t_lo)
+    if not (j_lo < j_target):
+        raise RuntimeError(f"expected j(i)=1728 < j_target, got j(i)={j_lo}")
+
+    t_hi = mp.mpf(2)
+    while j_it(t_hi) <= j_target:
+        t_hi *= 2
+        if t_hi > 64:
+            raise RuntimeError("failed to bracket the j-inversion root on the imaginary axis")
+
+    # Bisection (monotone on t>1).
+    iters = 3 * dps + 10
+    for _ in range(iters):
+        t_mid = (t_lo + t_hi) / 2
+        if j_it(t_mid) < j_target:
+            t_lo = t_mid
+        else:
+            t_hi = t_mid
+
+    t = (t_lo + t_hi) / 2
+    q = mp.e ** (-two_pi * t)
+    return t, q
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Audit modular q-expansion anchoring for y=eta+x^2 on 37a1 / X0^+(37).")
     parser.add_argument("--q-out", type=int, default=3, help="Max nonnegative q exponent to print for y(tau) (default: 3)")
@@ -436,6 +506,8 @@ def main() -> None:
         default=90,
         help="Internal formal-group series degree (default: 90)",
     )
+    parser.add_argument("--tau-dps", type=int, default=80, help="Decimal digits for j-inversion on the imaginary axis (default: 80)")
+    parser.add_argument("--j-terms", type=int, default=80, help="Number of q-terms for E4/E6 in j-inversion (default: 80)")
     parser.add_argument("--no-output", action="store_true", help="Skip writing outputs")
     args = parser.parse_args()
 
@@ -443,6 +515,18 @@ def main() -> None:
     print("[fold-zm-elliptic-modular-y-qexp] start", flush=True)
 
     payload = compute_weight_y_qexp(q_out=args.q_out, q_max=args.q_max, series_deg=args.series_deg)
+
+    # Invert j(E)=110592/37 in the SL2Z fundamental domain (tau is purely imaginary).
+    j_target = mp.mpf(110592) / mp.mpf(37)
+    t_im, q_at_tau = _invert_j_on_imag_axis(j_target=j_target, dps=int(args.tau_dps), n_terms=int(args.j_terms))
+    payload.update(
+        {
+            "j_target": mp.nstr(j_target, 30),
+            "tau_fundamental_domain": f"1j*{mp.nstr(t_im, 30)}",
+            "tau_imag": mp.nstr(t_im, 30),
+            "q_at_tau": mp.nstr(q_at_tau, 30),
+        }
+    )
 
     if not args.no_output:
         json_path = export_dir() / "fold_zm_elliptic_modular_y_qexp_audit.json"
