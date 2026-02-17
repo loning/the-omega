@@ -1,0 +1,87 @@
+% (User input window)
+% 时间（Asia/Singapore）：2026-02-17 13:13:46
+
+\begin{conclusion}[固定重量层系数的准多项式性：周期 \(2\)、次数量子化与首项系数闭式]\label{con:xi-terminal-zm-fixed-weight-quasipolynomial}
+沿用结论 \ref{con:xi-terminal-zm-order4-rational} 与结论 \ref{con:xi-terminal-zm-2d-recurrence-amk} 的记号，并记
+\[
+a_{m,k}:=[y^k]\,Z_m(y)\qquad(m\ge 0,\ k\ge 0).
+\]
+则对每个固定整数 \(k\ge 0\)，序列 \(m\mapsto a_{m,k}\) 为周期 \(2\) 的准多项式：存在整数 \(m_0=m_0(k)\) 与多项式 \(P_k,Q_k\in\QQ[m]\)，使对所有 \(m\ge m_0\) 成立
+\[
+\boxed{\;a_{m,k}=P_k(m)+(-1)^m Q_k(m)\;}
+\]
+并且次数满足
+\[
+\deg P_k=2k+1,\qquad \deg Q_k\le k.
+\]
+此外，\(P_k\) 的首项系数具有封闭形式
+\[
+P_k(m)=\frac{1}{2^{k+1}(2k+1)!}\,m^{2k+1}+O\!\left(m^{2k}\right)\qquad(m\to\infty).
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-order4-rational} 的有理生成函数
+\[
+F(t,y):=\sum_{m\ge 0}Z_m(y)t^m=\frac{1+yt-yt^2-y^2t^3}{1-t-(2y+1)t^2+t^3+y(y+1)t^4}
+\]
+与系数抽取恒等式 \(A_k(t):=\sum_{m\ge 0}a_{m,k}t^m=[y^k]F(t,y)\)，可将 \(A_k\) 视为关于 \(y\) 的形式幂级数系数。
+注意 \(y=0\) 时分母退化为
+\[
+D(t,0)=1-t-t^2+t^3=(1-t)^2(1+t),
+\]
+从而 \(t=1\) 为二重零点而 \(t=-1\) 为单零点。
+将 \(1/D(t,y)\) 在 \(y=0\) 处作幂级数展开可知：对固定 \(k\)，有
+\(
+A_k(t)\in\QQ(t)
+\)，并且其分母整除 \((1-t)^{2k+2}(1+t)^{k+1}\)；
+因此 \(A_k\) 仅在 \(t=\pm1\) 处出现极点，且 \(t=1\) 的极点阶恰为 \(2k+2\)、\(t=-1\) 的极点阶不超过 \(k+1\)。
+对 \(A_k\) 作部分分式并逐项取系数即可得到（在除去有限个初值项后）
+\(
+a_{m,k}=P_k(m)+(-1)^mQ_k(m)
+\)
+及次数界。
+\par
+首项系数由 \(t=1\) 处的最高阶极点给出：由于 \(D(t,0)\sim 2(1-t)^2\)（\(t\to 1\)），且 \(y\)-展开中产生的最高阶极点系数在 \(t=1\) 处不发生抵消，故
+\(
+A_k(t)\sim 2^{-(k+1)}(1-t)^{-(2k+2)}
+\)，从而
+\(
+[t^m]A_k(t)=2^{-(k+1)}\frac{m^{2k+1}}{(2k+1)!}+O(m^{2k})
+\)
+给出所示首项系数。
+上述分解与后续低阶闭式可由脚本 \texttt{scripts/exp\_fold\_zm\_low\_weight\_quasipolynomial\_audit.py} 复核。证毕。
+\end{proof}
+
+\begin{conclusion}[低重量层系数的全量闭式：\(k\le 3\) 时对所有 \(m\ge 0\) 逐点成立]\label{con:xi-terminal-zm-fixed-weight-kle3-closed}
+在结论 \ref{con:xi-terminal-zm-fixed-weight-quasipolynomial} 的记号下，令 \(n\ge 0\)。
+则 \(k=0,1,2,3\) 的两条奇偶子序列 \(\{a_{2n,k}\}_{n\ge 0}\)、\(\{a_{2n+1,k}\}_{n\ge 0}\) 具有如下逐点闭式：
+\[
+a_{2n,0}=n+1,\qquad a_{2n+1,0}=n+1.
+\]
+\[
+a_{2n,1}=\frac{1}{3}n^3+\frac{3}{2}n^2+\frac{1}{6}n,
+\qquad
+a_{2n+1,1}=\frac{1}{3}n^3+2n^2+\frac{5}{3}n+1.
+\]
+\[
+a_{2n,2}=\frac{1}{30}n^5+\frac{3}{8}n^4-\frac{1}{12}n^3-\frac{7}{8}n^2+\frac{11}{20}n,
+\]
+\[
+a_{2n+1,2}=\frac{1}{30}n^5+\frac{11}{24}n^4+\frac{3}{4}n^3-\frac{11}{24}n^2+\frac{13}{60}n.
+\]
+\[
+a_{2n,3}=\frac{1}{630}n^7+\frac{1}{30}n^6+\frac{7}{360}n^5-\frac{17}{24}n^4+\frac{523}{360}n^3-\frac{33}{40}n^2+\frac{11}{420}n,
+\]
+\[
+a_{2n+1,3}=\frac{1}{630}n^7+\frac{7}{180}n^6+\frac{23}{180}n^5-\frac{19}{36}n^4+\frac{29}{180}n^3+\frac{22}{45}n^2-\frac{61}{210}n.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+对 \(k\le 3\)，由 \(A_k(t)=[y^k]F(t,y)\in\QQ(t)\) 且其极点仅位于 \(t=\pm1\) 可知
+\(\{a_{2n,k}\}_{n\ge 0}\)、\(\{a_{2n+1,k}\}_{n\ge 0}\)
+均为关于 \(n\) 的多项式序列（次数至多 \(2k+1\)）。
+因此可用有限点值回收唯一多项式并与二维递推（结论 \ref{con:xi-terminal-zm-2d-recurrence-amk}）逐点核对；
+亦可直接对 \(A_k(t)\) 作部分分式并回收系数。
+上述闭式与其逐点一致性可由脚本 \texttt{scripts/exp\_fold\_zm\_low\_weight\_quasipolynomial\_audit.py} 复核。证毕。
+\end{proof}
+

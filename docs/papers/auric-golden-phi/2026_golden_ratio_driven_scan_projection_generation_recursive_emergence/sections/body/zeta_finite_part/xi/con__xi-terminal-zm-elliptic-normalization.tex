@@ -3,19 +3,30 @@
 % 日期与时间：2026-02-17 01:51:48（Asia/Singapore）
 % 2026-02-17 18:27:00（Asia/Singapore）
 % 日期与时间：2026-02-17 02:46:37（Asia/Singapore）
+% 时间（Asia/Singapore）：2026-02-17 13:13:46
 
 \begin{conclusion}[重量谱曲线的椭圆化：\texorpdfstring{$\Pi(\lambda,y)=0$}{Pi(lambda,y)=0} 的 Weierstrass 模型与判别式 \texorpdfstring{$37$}{37}]\label{con:xi-terminal-zm-elliptic-normalization}
 沿用结论 \ref{con:xi-terminal-zm-order4-rational} 的记号，并令
 \[
 \mathcal C:=\bigl\{(\lambda,y)\in\mathbb A^2:\ \Pi(\lambda,y)=0\bigr\}.
 \]
-定义新变量
+定义变量
 \[
-w:=2\lambda^{2}-1-2y.
+u:=y-\lambda^2,
+\qquad
+w:=-(2u+1)=2\lambda^{2}-1-2y.
 \]
-则存在定义于 \(\QQ\) 上的双有理同构
+则有仿射曲线之间的 \(\QQ\)-同构（而非仅双有理等价）：
 \[
-\mathcal C\ \dashrightarrow\ \mathcal E,\qquad
+\mathcal C\ \cong\ E_0,\qquad
+(\lambda,y)\longmapsto (x,u)=(\lambda,y-\lambda^2),
+\qquad
+E_0:\ u^2+u=x^3-x,
+\]
+其逆变换由 \(y=u+x^2\) 给出。
+进一步引入 \(w=-(2u+1)\) 后，得到同构
+\[
+\mathcal C\ \cong\ \mathcal E,\qquad
 (\lambda,y)\longmapsto(\lambda,w),
 \qquad
 \mathcal E:\ w^2=4\lambda^{3}-4\lambda+1,
@@ -70,11 +81,16 @@ y=\frac{2\lambda^{2}-1-w}{2}\ \in\ \QQ(E)\; } ,
 因此 \(y\) 在 \(y=0\) 与 \(y=1\) 处各出现一处二重纤维点（分别位于 \(\lambda=1\) 与 \(\lambda=-1\)），而其余分歧值由判别式分解（结论 \ref{con:xi-terminal-zm-discriminant-leyang} 或等价的结果式刻画，见结论 \ref{con:xi-terminal-zm-leyang-cubic-branch-image}）所完全决定；这给出一个纯代数几何的“除子—分歧”证书。
 \end{conclusion}
 \begin{proof}[证明要点]
-将 \(y=(2\lambda^2-1-w)/2\) 代入 \(\Pi(\lambda,y)\) 并化简可得恒等式
+令 \(u=y-\lambda^2\)，则直接展开可得
+\[
+\Pi(\lambda,y)=u^2+u-(\lambda^3-\lambda),
+\]
+从而 \(\Pi(\lambda,y)=0\) 等价于 \(E_0:u^2+u=\lambda^3-\lambda\)，并给出 \((\lambda,y)\leftrightarrow (x,u)\) 的仿射同构。
+再令 \(w=-(2u+1)=2\lambda^2-1-2y\)，则
 \[
 4\,\Pi(\lambda,y)=w^2-\bigl(4\lambda^3-4\lambda+1\bigr),
 \]
-从而得到所示双有理等价。
+从而得到 \((\lambda,y)\leftrightarrow(\lambda,w)\) 的仿射同构。
 Weierstrass 形式下取 \(a=-1,b=1/4\)，则
 \(
 \Delta=-16(4a^3+27b^2)=37
@@ -92,6 +108,15 @@ E_0:\quad \eta^2+\eta=x^3-x
 X=x,\ Y=\eta+\tfrac12
 \)
 给出。
+在最小模型 \(E_0\) 上，不变正则微分可取为
+\(
+\omega_0=\dd x/(2\eta+1)
+\)；
+通过上文同构 \((x,\eta)=(\lambda,y-\lambda^2)\) 得到谱坐标表达
+\[
+\boxed{\;\omega_0=\frac{\dd\lambda}{2y+1-2\lambda^2}\;}
+\]
+并与短 Weierstrass 模型的不变微分 \(\omega=\dd X/(2Y)\) 在同构下仅差一个符号常数（由 \(Y=\eta+\tfrac12\) 及 \(Y\mapsto -Y\) 的自同构给出）。
 本文统一采用 Weierstrass 不变量的标准约定
 \[
 c_4^3-c_6^2=1728\Delta,
@@ -160,7 +185,7 @@ a_p=p-\sum_{y\in\FF_p}N_p(y)\;}
 \]
 \end{conclusion}
 \begin{proof}[证明要点]
-当 \(p\notin\{2,37\}\) 时，结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的双有理变换
+当 \(p\notin\{2,37\}\) 时，结论 \ref{con:xi-terminal-zm-elliptic-normalization} 的仿射同构
 \[
 (\lambda,y)\longmapsto (\lambda,w),\qquad w:=2\lambda^{2}-1-2y
 \]
@@ -224,6 +249,28 @@ N_p(y)=\card{\{\lambda\in\FF_p:\ \Pi(\lambda,y)=0\}}
 \)
 除以 \(24\) 得到。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_s4\_chebotarev\_splitting\_distribution\_audit.py}。证毕。
+\end{proof}
+
+\begin{corollary}[二次特征和表示：Frobenius 迹的 Legendre 符号公式]\label{cor:xi-terminal-zm-hecke-legendre-sum}
+取素数 \(p\notin\{2,37\}\)，并令 \(\chi_p:\FF_p\to\{-1,0,1\}\) 为二次特征（约定 \(\chi_p(0)=0\)）。
+则对椭圆曲线 \(\mathcal E_p:w^2=4\lambda^3-4\lambda+1\) 有
+\[
+\boxed{\;
+a_p=-\sum_{\lambda\in\FF_p}\chi_p\!\bigl(4\lambda^3-4\lambda+1\bigr)\; }.
+\]
+\end{corollary}
+\begin{proof}
+对每个 \(\lambda\in\FF_p\)，方程 \(w^2=4\lambda^3-4\lambda+1\) 的解数为 \(1+\chi_p(4\lambda^3-4\lambda+1)\)。
+因此
+\[
+\card{E(\FF_p)}=1+\sum_{\lambda\in\FF_p}\bigl(1+\chi_p(4\lambda^3-4\lambda+1)\bigr)
+=p+1+\sum_{\lambda\in\FF_p}\chi_p(4\lambda^3-4\lambda+1),
+\]
+从而
+\(
+a_p=p+1-\card{E(\FF_p)}=-\sum_{\lambda\in\FF_p}\chi_p(4\lambda^3-4\lambda+1)
+\)。
+证毕。
 \end{proof}
 
 \begin{conclusion}[Lee--Yang 三次多项式的分歧像刻画：结果式给出的最小整系数证书]\label{con:xi-terminal-zm-leyang-cubic-branch-image}

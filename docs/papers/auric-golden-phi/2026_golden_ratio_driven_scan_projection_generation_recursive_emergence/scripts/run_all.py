@@ -2851,6 +2851,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_low_weight_quasipolynomial_audit",
+            script="exp_fold_zm_low_weight_quasipolynomial_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_low_weight_quasipolynomial_audit.json",
+                "sections/generated/eq_fold_zm_low_weight_quasipolynomial_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zq_weight_collision_partition_audit",
             script="exp_fold_zq_weight_collision_partition_audit.py",
             args=[],
