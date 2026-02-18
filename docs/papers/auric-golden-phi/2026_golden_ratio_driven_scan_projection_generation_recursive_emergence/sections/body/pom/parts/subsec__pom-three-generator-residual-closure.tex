@@ -1,233 +1,129 @@
-\subsection{三生成元的残差闭包：从交换证书到可计算异常签名}\label{subsec:pom-three-generator-residual-closure}
-
-本小节将三个生成元
-$$
+\subsection{Residual closure of three generators: from exchange certificates to computable exception signatures}\label{subsec:pom-three-generator-residual-closure}
+In this section, the three generators$$
 \mathrm{PROJ}_u,\qquad E_m,\qquad \mathrm{LIFT}_G
 $$
-收紧为一套“带参数的投影词语法 + 可核对残差指纹”的闭包口径。
-第 \ref{subsec:pom-derivable-calculus-closure} 小节已给出投影词 $2$-范畴 $\mathbf{PW}$ 的接口化定义（定义 \ref{def:pom-projword-2cat}）并展示了含 \(E_m,\mathrm{LIFT}_G,\mathrm{PROJ}_u\) 的可执行正规化示例（注 \ref{rem:pom-projword-lift-proj-normalizer-demo}）。
-这里的关键之处是：不把 “\(E_m\) 与 \(\mathrm{LIFT}_G\) 可交换” 当作一条无条件的语法断言，而是把其\emph{可交换性失败}压缩为一个可计算的“扭曲有限部异常签名”，从而把“算法等价”从叙事升级为可判定的自然性条件。
-
-\subsubsection{异常签名：用非平凡扭曲通道的有限部常数承载残差}\label{subsec:pom-anom-signature}
-
-\paragraph{动机}
-在核接口上，\(\mathrm{LIFT}_G\) 的语义由群扩张/角色分解给出：对有限阿贝尔标签群 \(G\)，其 \(\zeta\)（或行列式）可按角色族分解为一族扭曲通道（见第 \ref{sec:zeta-finite-part} 节，尤其是注 \ref{prop:arity-chebotarev-mertens-fourier} 的 DFT/反演口径）。
-另一方面，\(E_m\) 是折叠诱导的条件期望（定义 \ref{def:pom-proj-norm} 与命题 \ref{prop:fold-conditional-expectation}），它沿纤维平均并在分辨率塔上满足幂等/塔性质。
-两者在“纯产品纤维”情形下可以严格交换（Beck--Chevalley 型方块），但在一般的“标签与折叠纤维耦合”情形下，交换性破缺会把信息推入非平凡扭曲通道；而本文恰好已经具备一个可审计的常数级接口去承载这一破缺：Abel/Hadamard 有限部常数 \(\log\mathfrak{M}(\theta)\)（定义 \ref{def:abel-finite-part}）。
-
-\begin{definition}[扭曲有限部异常签名]\label{def:pom-anom-signature}
-取一个带势核 \(K\)（或等价的加权矩阵族 \(M_\theta\)），以及一个有限阿贝尔标签群 \(G\) 的 lift 语义。
-对每个角色 \(\chi\in\widehat G\)，记 \(\zeta_{\theta,\chi}\) 为 \(\chi\)-扭曲通道的 \(\zeta\) 接口（角色分解意义下的行列式因子），并按定义 \ref{def:abel-finite-part} 定义其 Abel/Hadamard 有限部常数 \(\log\mathfrak{M}_\chi(\theta)\)。
-定义 \textbf{异常签名}为非平凡角色的有限部常数族
-$$
+Tighten it into a set of closure caliber of "projection word grammar with parameters + checkable residual fingerprint".Section \ref{subsec:pom-derivable-calculus-closure} has given the interface definition of the projection word $2$-category $\mathbf{PW}$ (definition \ref{def:pom-projword-2cat}) and shown an executable normalization example containing \(E_m,\mathrm{LIFT}_G,\mathrm{PROJ}_u\) (note \ref{rem:pom-projword-lift-proj-normalizer-demo}).The key point here is: instead of treating “\(E_m\) and
+\subsubsection{Exception signature: carrying residuals with finite part constants of non-trivial twisted channels}\label{subsec:pom-anom-signature}
+\paragraph{motivation}On the core interface, the semantics of \(\mathrm{LIFT}_G\) are given by group expansion/role decomposition: for the finite Abelian label group \(G\), its \(\zeta\) (or determinant) can be decomposed by role family into a family of warped channels (see Section \ref{sec:zeta-finite-part}, especially the DFT/inversion caliber of note \ref{prop:arity-chebotarev-mertens-fourier}).\(E_m\), on the other hand, is a fold-induced conditional expectation (definitionThe two can be strictly exchanged in the case of "pure product fiber" (Beck--Chevalley type square), but in the general case of "label and folded fiber coupling", the commutative violation will push the information into a non-trivial distortion channel; and this article happens to have an auditable constant-level interface to carry this violation: Abel/Hadamard finite part constant \(\log\mathfrak{M}(\theta)\) (definition \ref{def:abel-finite-part}).
+\begin{definition}[Distorted Finite Part Anomaly Signature]\label{def:pom-anom-signature}Take a potential kernel \(K\) (or equivalently a family of weighted matrices \(M_\theta\)), and the lift semantics of a finite abelian label group \(G\).For each character \(\chi\in\widehat G\), denote \(\zeta_{\theta,\chi}\) as the \(\zeta\) interface of the \(\chi\)-distorted channel (the determinant factor in the sense of character decomposition), and define its Abel/Hadamard finite part constant \(\log\mathfrak{M}_\chi(\theta)\) according to the definition \ref{def:abel-finite-part}.Define \textbf{Exception Signature} as a finite family of constants for non-trivial characters$$
 \mathsf{Anom}_{G}(K;\theta)
 :=\Bigl(\log\mathfrak{M}_\chi(\theta)\Bigr)_{\chi\in\widehat G\setminus\{\chi_0\}},
 $$
-其中 \(\chi_0\) 为平凡角色。
-\end{definition}
+Among them, \(\chi_0\) is an ordinary character.\end{definition}
 
-\begin{remark}[为何选有限部而非仅选谱半径比]\label{rem:pom-anom-why-finite-part}
-谱半径比 \(\rho_\chi/\lambda\) 量化“慢模”的指数缺口，是扭曲破缺的主尺度证书；但它对不同扭曲通道在同一指数级下的差别不敏感。
-有限部常数 \(\log\mathfrak{M}_\chi(\theta)\) 捕获 prime-orbit Mertens 主项中的常数级漂移（命题 \ref{prop:abel-finite-part-mobius-zeta}），能稳定承载“交换失败”在常数级的残差输出；这正是把“不可交换性”从玄学变成可核对签名所需的最小补充。
-\end{remark}
+\begin{remark}[Why choose the finite part instead of just the spectral radius ratio]\label{rem:pom-anom-why-finite-part}The spectral radius ratio \(\rho_\chi/\lambda\) quantifies the exponential gap of the "slow mode" and is the main scale certificate of distortion breaking; but it is not sensitive to the differences between different distortion channels at the same exponential level.The finite part constant \(\log\mathfrak{M}_\chi(\theta)\) captures the constant-level drift in the prime-orbit Mertens principal term (Proposition \ref{prop:abel-finite-part-mobius-zeta}), and can stably carry the residual output of "exchange failure" at the constant level; this is the minimum complement needed to turn "non-commutatability" from metaphysics into a verifiable signature.\end{remark}
 
-\subsubsection{带残差的交换律：把重写证书升级为可核对的异常项}\label{subsec:pom-residual-swap}
-
-\begin{proposition}[带异常项的 \texorpdfstring{$E_m$}{Em}--\texorpdfstring{$\mathrm{LIFT}_G$}{LIFT} 交换证书（接口版）]\label{prop:pom-em-lift-residual-swap}
-在投影词 $2$-范畴 \(\mathbf{PW}\)（定义 \ref{def:pom-projword-2cat}）中，存在一类“交换证书”把复合
-\(
+\subsubsection{Commutative Law with Residuals: Upgrading Rewritten Certificates to Verifiable Exceptions}\label{subsec:pom-residual-swap}
+\begin{proposition}[\texorpdfstring{XPH0X}{Em}--\texorpdfstring{XPH1X}{LIFT} exchange certificate with exceptions (interface version)]\label{prop:pom-em-lift-residual-swap}In the projective word $2$-category \(\mathbf{PW}\) (definition\(
 E_m\circ \mathrm{LIFT}_G
 \)
-改写为
-\(
+rewritten as\(
 \mathrm{LIFT}_G\circ E_m
 \)
-并附带一个可核对的残差签名 \(\mathsf{Anom}_G(K;\theta)\)：
-对任意对象 \(\mathcal{I}(m;K;\kappa)\)，若 lift 标签与折叠纤维在机制上解耦（等价地，满足一个 Beck--Chevalley 型可拉回方块条件），则该交换证书的异常签名为零（所有非平凡扭曲通道的有限部常数与平凡通道一致到零漂移）；在一般情形下，交换失败的残差完全由非平凡扭曲通道的有限部常数族 \(\mathsf{Anom}_G(K;\theta)\) 承载。
-\end{proposition}
+And comes with a verifiable residual signature \(\mathsf{Anom}_G(K;\theta)\):For arbitrary object\end{proposition}
 
 \begin{proof}
-本命题是接口级封装：\(\mathrm{LIFT}_G\) 的角色分解把 lift 后的 \(\zeta\)/有限部输出拆成 \(\widehat G\) 上的扭曲因子族（注 \ref{prop:arity-chebotarev-mertens-fourier}），而 \(E_m\) 的语义是沿折叠纤维的条件期望（命题 \ref{prop:fold-conditional-expectation}）。
-当两者满足 Beck--Chevalley 型拉回条件时，条件期望与标签提升为直积结构，因而在每个扭曲通道上严格交换，异常签名为零。
-一般情形下，交换不再是严格等式；但由于本文所有可审计输出最终都通过同一个 \(\zeta_\theta=1/\det(I-zM_\theta)\) 与有限部接口抽取（定义 \ref{def:abel-finite-part}），交换破缺的\emph{可观测部分}必然落在“非平凡扭曲通道相对于平凡通道”的有限部差异上，即 \(\mathsf{Anom}_G(K;\theta)\)。
-\end{proof}
+This proposition is an interface-level encapsulation: the role decomposition of \(\mathrm{LIFT}_G\) splits the \(\zeta\)/finite output after lift into a family of twist factors on \(\widehat G\) (note \ref{prop:arity-chebotarev-mertens-fourier}), while the semantics of \(E_m\) is the conditional expectation along the folded fiber (proposition \ref{prop:fold-conditional-expectation}).When both satisfy the Beck--Chevalley-type pullback condition, the conditional expectation and label are promoted to a direct product structure, thus strictly commutating on each warp channel, and the anomaly signature is zero.Under normal circumstances, exchange is no longer a strict equation; but since all auditable outputs in this article are ultimately extracted through the same \(\zeta_\theta=1/\det(I-zM_\theta)\) and finite part interface (defined as \ref{def:abel-finite-part}), the \emph {observable part} of the exchange failure must fall on the finite part difference of "non-trivial twisted channels relative to trivial channels", that is, \(\mathsf{Anom}_G(K;\theta)\).\end{proof}
 
-\begin{corollary}[零异常 \texorpdfstring{$\Longleftrightarrow$}{<->} Beck--Chevalley 可拉回（闭环接口版）]\label{cor:pom-zero-anom-pullback-exactness}
-在命题 \ref{prop:pom-em-lift-residual-swap} 的设定下，把“严格交换”理解为：对每个扭曲角色通道 \(\chi\in\widehat G\)，在本文采用的闭环接口
-\[
-\text{有限核/矩阵族}\Rightarrow \zeta \Rightarrow \log\mathfrak{M}
-\]
-上，复合 \(E_m\circ \mathrm{LIFT}_G\) 与 \(\mathrm{LIFT}_G\circ E_m\) 给出相同的通道输出（等价地：该方块是离散 Beck--Chevalley 型的可拉回方块）。
-则有等价刻画：
-\[
+\begin{corollary}[Zero exception \texorpdfstring{XPH0X}{<->} Beck--Chevalley can be pulled back (closed-loop interface version)]\label{cor:pom-zero-anom-pullback-exactness}Under the setting of proposition \ref{prop:pom-em-lift-residual-swap}, "strict exchange" is understood as: for each twisted character channel \(\chi\in\widehat G\), the closed-loop interface used in this article\[
+\text{Finite core/matrix family}\Rightarrow \zeta \Rightarrow \logXPH0X\]
+above, the composite \(E_m\circ \mathrm{LIFT}_G\) gives the same channel output as \(\mathrm{LIFT}_G\circ E_m\) (equivalently: the block is a pullback block of the discrete Beck--Chevalley type).Then there is an equivalent description:\[
 \boxed{\;
 \mathsf{Anom}_G(K;\theta)=0
 \quad\Longleftrightarrow\quad
-E_m\ \text{与}\ \mathrm{LIFT}_G\ \text{在所有扭曲通道上严格交换（接口意义下）}.}
-\]
+E_m\\]
 \end{corollary}
 
 \begin{proof}
-命题 \ref{prop:pom-em-lift-residual-swap} 已把交换失败的全部可观测残差压缩为 \(\mathsf{Anom}_G(K;\theta)\)；
-因此“残差为零”与“闭环接口上严格交换”互为充要条件。
-\end{proof}
+Proposition \ref{prop:pom-em-lift-residual-swap} has compressed all observable residuals of exchange failure into \(\mathsf{Anom}_G(K;\theta)\);Therefore, "zero residual" and "strict exchange on the closed-loop interface" are necessary and sufficient conditions for each other.\end{proof}
 
-\subsubsection{普适可交换化群商：把残差从“数值签名”提升为“被折叠抹掉的群方向”}\label{subsec:pom-bc-quotient}
-命题 \ref{prop:pom-em-lift-residual-swap} 与推论 \ref{cor:pom-zero-anom-pullback-exactness} 把 \(E_m\) 与 \(\mathrm{LIFT}_G\) 的交换失败压缩为常数级异常签名 \(\mathsf{Anom}_G(K;\theta)\)。
-在“可推演的演算学”层面，仅有数值残差仍不足以构成可计算的结构对象：还需要把“交换失败来自哪一部分群信息”本体化为一个可构造对象。
-\par
-本段给出一个纯群论的 strictification：对固定分辨率 \(m\)，构造一个\textbf{普适群商} \(G\twoheadrightarrow G^{\mathrm{BC}}_m\)，使得在 \(G^{\mathrm{BC}}_m\) 上交换在接口意义下\emph{严格}成立；并且该群商是最大的（普适的），因此它刻画了“在 \(E_m\) 视角下仍可见的最大群寄存器”，而其核即为“被折叠抹掉的群方向”。
-
-\begin{definition}[纤维可见等价与 Beck--Chevalley 可交换化商]\label{def:pom-bc-quotient}
-固定对象 \(\mathcal{I}(m;K;\kappa)\) 与分辨率 \(m\)。
-设折叠为 \(\Fold_m:\Omega_m\to X_m\)，并以 \(E_m\) 表示其诱导的条件期望/纤维平均接口（命题 \ref{prop:fold-conditional-expectation}）。
-设 lift 语义由一个有限阿贝尔群 \(G\) 与一个（一步或长度 \(m\) 的）群标签函数
-\[
+\subsubsection{Universal exchangeable group quotient: Promote the residual from "numeric signature" to "group direction erased by folding"}\label{subsec:pom-bc-quotient}Proposition \ref{prop:pom-em-lift-residual-swap} and corollary \ref{cor:pom-zero-anom-pullback-exactness} compress the exchange failure of \(E_m\) and \(\mathrm{LIFT}_G\) into a constant-level exception signature \(\mathsf{Anom}_G(K;\theta)\).At the level of "deducible calculus", numerical residuals alone are still not enough to constitute a computable structural object: it is also necessary to ontology "which part of the group information the exchange failure comes from" into a constructible object.\par
+This paragraph gives a pure group theory strictification: for a fixed resolution \(m\), construct an \textbf {universal group quotient}
+\begin{definition}[fiber visible equivalent and Beck--Chevalley interchangeable supplier]\label{def:pom-bc-quotient}Fixed object \(\mathcal{I}(m;K;\kappa)\) and resolution \(m\).Let the fold be \(\Fold_m:\Omega_m\to X_m\), and let \(E_m\) denote its induced conditional expectation/fiber average interface (proposition \ref{prop:fold-conditional-expectation}).Let the lift semantics consist of a finite abelian group \(G\) and a group label function (of step or length \(m\))\[
 \ell:\Omega_m\to G
 \]
-给出（其来源可以是核边上的 cocycle 沿长度 \(m\) 路径的积累；在纤维内 Fourier 口径中同样写作 \(\ell\)，见定义 \ref{def:pom-fiber-fourier-coeff}）。
-\par
-定义“纤维不可分辨”关系为
-\[
+is given (its origin can be the accumulation of cocycles on the edge of the core along a path of length \(m\); also written\par
+Define the "fiber indistinguishable" relationship as\[
 a\sim_m b\quad\Longleftrightarrow\quad \Fold_m(a)=\Fold_m(b)\qquad(a,b\in\Omega_m),
 \]
-并定义\textbf{纤维不变子群}（被折叠抹掉的群方向）为
-\[
+And define \textbf{fiber invariant subgroup} (the group direction erased by folding) as\[
 N^{\mathrm{BC}}_m
 :=\left\langle\ \ell(a)\ell(b)^{-1}\ :\ a,b\in\Omega_m,\ a\sim_m b\ \right\rangle\ \le\ G.
 \]
-令 \(\pi_m:G\twoheadrightarrow G^{\mathrm{BC}}_m:=G/N^{\mathrm{BC}}_m\) 为商映射，并记 \(\bar\ell_m:=\pi_m\circ \ell:\Omega_m\to G^{\mathrm{BC}}_m\)。
-则 \(\bar\ell_m\) 在每条折叠纤维上常值，从而诱导一个良定义的\textbf{可见标签}
-\[
+Let \(\pi_m:G\twoheadrightarrow G^{\mathrm{BC}}_m:=G/N^{\mathrm{BC}}_m\) be the quotient mapping, and note \(\bar\ell_m:=\pi_m\circ \ell:\Omega_m\to G^{\mathrm{BC}}_m\).Then \(\bar\ell_m\) is constant on each folded fiber, thus inducing a well-defined \textbf{visible label}\[
 \ell^{\mathrm{vis}}_m:X_m\to G^{\mathrm{BC}}_m,
 \qquad
 \ell^{\mathrm{vis}}_m\bigl(\Fold_m(a)\bigr)=\bar\ell_m(a).
 \]
 \end{definition}
 
-\begin{proposition}[严格可交换化：在 \(G^{\mathrm{BC}}_m\) 上异常为零]\label{prop:pom-bc-quotient-strictify}
-沿用定义 \ref{def:pom-bc-quotient} 的记号。
-将 \(\mathrm{LIFT}_G\) 的群轴替换为 \(G^{\mathrm{BC}}_m\)（即以 \(\bar\ell_m\) 作为 lift 标签），则 \(E_m\) 与 \(\mathrm{LIFT}_{G^{\mathrm{BC}}_m}\) 在闭环接口意义下严格交换；等价地，
-\[
+\begin{proposition} [strict commutatability: zero exceptions on \(G^{\mathrm{BC}}_m\)] \label{prop:pom-bc-quotient-strictify}The notation used to define \ref{def:pom-bc-quotient} is used.Replace the group axis of \(\mathrm{LIFT}_G\) with \(G^{\mathrm{BC}}_m\) (that is, use \(\bar\ell_m\) as the lift label), then \(E_m\) and \(\mathrm{LIFT}_{G^{\mathrm{BC}}_m}\) are strictly exchanged in the sense of a closed-loop interface; equivalently,\[
 \mathsf{Anom}_{G^{\mathrm{BC}}_m}(K;\theta)=0
 \]
-（对所有被考虑的势参数 \(\theta\) 与所有非平凡扭曲通道）成立。
-\end{proposition}
+(holds for all considered potential parameters \(\theta\) and all non-trivial twist channels).\end{proposition}
 \begin{proof}
-由构造，\(\bar\ell_m\) 仅依赖于 \(\Fold_m(a)\)，即存在 \(\ell^{\mathrm{vis}}_m\) 使得 \(\bar\ell_m=\ell^{\mathrm{vis}}_m\circ \Fold_m\)。
-因此对任意角色 \(\overline\chi\in\widehat{G^{\mathrm{BC}}_m}\)，函数
-\(
+By construction, \(\bar\ell_m\) depends only on \(\Fold_m(a)\), i.e. the existence of \(\ell^{\mathrm{vis}}_m\) makes \(\bar\ell_m=\ell^{\mathrm{vis}}_m\circ \Fold_m\).Therefore for any character \(\overline\chi\in\widehat{G^{\mathrm{BC}}_m}\), the function\(
 f_{\overline\chi}:=\overline\chi\circ \bar\ell_m
 =
 \overline\chi\circ \ell^{\mathrm{vis}}_m\circ \Fold_m
 \)
-是 \(\sigma(\Fold_m)\)-可测，故满足 \(E_m f_{\overline\chi}=f_{\overline\chi}\)。
-这正是 Beck--Chevalley 型“标签与折叠纤维解耦”的严格版本：在每个可见扭曲通道上，条件期望不再引入通道间混合，因此 \(E_m\) 与 \(\mathrm{LIFT}_{G^{\mathrm{BC}}_m}\) 的交换方块在闭环接口上严格闭合。
-由推论 \ref{cor:pom-zero-anom-pullback-exactness} 得 \(\mathsf{Anom}_{G^{\mathrm{BC}}_m}(K;\theta)=0\)。证毕。
-\end{proof}
+It is \(\sigma(\Fold_m)\)-measurable, so it satisfies \(E_m f_{\overline\chi}=f_{\overline\chi}\).This is exactly the strict version of the Beck--Chevalley-type "label and folded fiber decoupling": on each visible twist channel, the conditional expectation no longer introduces inter-channel mixing, so the exchange block of \(E_m\) with \(\mathrm{LIFT}_{G^{\mathrm{BC}}_m}\) is strictly closed on the closed-loop interface.From \ref{cor:pom-zero-anom-pullback-exactness} we get \(\mathsf{Anom}_{G^{\mathrm{BC}}_m}(K;\theta)=0\). Certification completed.\end{proof}
 
-\begin{proposition}[普适性（最大性）：任何严格交换的群商必因子化]\label{prop:pom-bc-quotient-universal}
-沿用定义 \ref{def:pom-bc-quotient} 的设定。
-设 \(\phi:G\twoheadrightarrow H\) 为任意满同态。
-若 \(\phi\circ \ell\) 在折叠纤维上不变（等价地：存在 \(\ell_H^{\mathrm{vis}}:X_m\to H\) 使得 \(\phi\circ\ell=\ell_H^{\mathrm{vis}}\circ\Fold_m\)，亦等价于 \(E_m\) 与 \(\mathrm{LIFT}_H\) 在闭环接口意义下严格交换），则必有
-\[
+\begin{proposition}[Universality (maximum): Any strictly commutative group quotient must be factorized]\label{prop:pom-bc-quotient-universal}Inherit the settings defining \ref{def:pom-bc-quotient}.Let \(\phi:G\twoheadrightarrow H\) be any full homomorphism.If \(\phi\circ \ell\) is invariant on folded fibers (equivalently: there is \(\ell_H^{\mathrm{vis}}:X_m\to H\) such that \(\phi\circ\ell=\ell_H^{\mathrm{vis}}\circ\Fold_m\) is also equivalent to \(E_m\) and \(\mathrm{LIFT}_H\) being strictly exchanged in the sense of a closed-loop interface), then there must be\[
 N^{\mathrm{BC}}_m\ \le\ \ker(\phi),
 \]
-从而存在唯一满同态 \(\bar\phi:G^{\mathrm{BC}}_m\twoheadrightarrow H\) 使得 \(\phi=\bar\phi\circ \pi_m\)。
-\end{proposition}
+There is thus a unique full homomorphism \(\bar\phi:G^{\mathrm{BC}}_m\twoheadrightarrow H\) such that \(\phi=\bar\phi\circ \pi_m\).\end{proposition}
 \begin{proof}
-对任意 \(a\sim_m b\)，由假设 \(\phi\circ\ell\) 在纤维上不变得 \(\phi(\ell(a))=\phi(\ell(b))\)，即 \(\phi(\ell(a)\ell(b)^{-1})=1\)。
-因此 \(\ell(a)\ell(b)^{-1}\in\ker(\phi)\)。
-由 \(N^{\mathrm{BC}}_m\) 的生成定义，得 \(N^{\mathrm{BC}}_m\le \ker(\phi)\)。
-于是 \(\phi\) 在商群 \(G/N^{\mathrm{BC}}_m\) 上诱导出唯一的 \(\bar\phi\)，并满足 \(\phi=\bar\phi\circ\pi_m\)。证毕。
-\end{proof}
+For any \(a\sim_m b\), it is assumed that \(\phi\circ\ell\) does not become \(\phi(\ell(a))=\phi(\ell(b))\) on the fiber, that is, \(\phi(\ell(a)\ell(b)^{-1})=1\).Hence \(\ell(a)\ell(b)^{-1}\in\ker(\phi)\).From the generated definition of \(N^{\mathrm{BC}}_m\), we get \(N^{\mathrm{BC}}_m\le \ker(\phi)\).So \(\phi\) induces the only \(\bar\phi\) on the business group \(G/N^{\mathrm{BC}}_m\), and satisfies \(\phi=\bar\phi\circ\pi_m\). Certification completed.\end{proof}
 
-\begin{remark}[可计算性：从纤维枚举到商群的标准形]\label{rem:pom-bc-quotient-computable}
-定义 \ref{def:pom-bc-quotient} 的构造在有限分辨率上是直接可计算的：给定可计算的折叠 \(\Fold_m:\Omega_m\to X_m\) 与可计算的标签 \(\ell:\Omega_m\to G\)，枚举每条纤维 \(\Fold_m^{-1}(x)\) 并收集生成元
-\(
+\begin{remark}[Computability: from fiber enumeration to the standard form of quotient groups]\label{rem:pom-bc-quotient-computable}Define the construction of \ref{def:pom-bc-quotient} to be directly computable at finite resolution: given a computable fold \(\Fold_m:\Omega_m\to X_m\) and a computable label \(\ell:\Omega_m\to G\), enumerate each fiber\(
 \ell(a)\ell(b)^{-1}
 \)
-即可得到 \(N^{\mathrm{BC}}_m\) 的一个有限生成集合。
-当 \(G\) 为有限阿贝尔群时，可将 \(G\) 表示为有限个循环群的直积，并对生成元矩阵做 Smith 标准形，从而在多项式时间内得到商群 \(G^{\mathrm{BC}}_m=G/N^{\mathrm{BC}}_m\) 的不变量分解与角色域 \(\widehat{G^{\mathrm{BC}}_m}\)。
-因此“严格可交换化商”不仅存在，而且可作为审计流水线的一项离散输出直接核对。
-\end{remark}
+A limited generated set of \(N^{\mathrm{BC}}_m\) can be obtained.When \(G\) is a finite Abelian group, \(G\) can be expressed as the direct product of a finite number of cyclic groups, and the generator matrix can be made into Smith canonical form, thereby obtaining the invariant decomposition of the quotient group \(G^{\mathrm{BC}}_m=G/N^{\mathrm{BC}}_m\) and the role domain \(\widehat{G^{\mathrm{BC}}_m}\) in polynomial time.So the "strict commutability quotient" not only exists, but can be directly checked as a discrete output of the audit pipeline.\end{remark}
 
-\begin{corollary}[异常的支撑：仅来自 \texorpdfstring{$\widehat{N^{\mathrm{BC}}_m}$}{N^BC_m}-方向]\label{cor:pom-anom-supported-on-bc-kernel}
-沿用定义 \ref{def:pom-bc-quotient} 的设定。
-将 \(\widehat{G^{\mathrm{BC}}_m}\) 视为 \(\widehat G\) 的子群（即：\(\widehat{G^{\mathrm{BC}}_m}\cong\{\chi\in\widehat G:\chi|_{N^{\mathrm{BC}}_m}=1\}\)）。
-则对任意 \(\chi\in\widehat G\)，若 \(\chi|_{N^{\mathrm{BC}}_m}=1\)，则对应扭曲通道的交换残差为零：
-\[
+\begin{corollary}[Exceptional support: only from \texorpdfstring{XPH0X}{N^BC_m}-direction]\label{cor:pom-anom-supported-on-bc-kernel}Inherit the settings defining \ref{def:pom-bc-quotient}.Think of \(\widehat{G^{\mathrm{BC}}_m}\) as a subgroup of \(\widehat G\) (ie: \(\widehat{G^{\mathrm{BC}}_m}\cong\{\chi\in\widehat G:\chi|_{N^{\mathrm{BC}}_m}=1\}\)).Then for any \(\chi\in\widehat G\), if \(\chi|_{N^{\mathrm{BC}}_m}=1\), the exchange residual of the corresponding twisted channel is zero:\[
 \chi|_{N^{\mathrm{BC}}_m}=1
 \quad\Longrightarrow\quad
 \bigl(\mathsf{Anom}_G(K;\theta)\bigr)_{\chi}=0.
 \]
-因此任何非零异常坐标只能出现在 \(\widehat G\setminus \widehat{G^{\mathrm{BC}}_m}\)（即对 \(N^{\mathrm{BC}}_m\) 非平凡的角色）方向上。
-\end{corollary}
+Therefore any non-zero anomaly coordinates can only occur in the direction of \(\widehat G\setminus \widehat{G^{\mathrm{BC}}_m}\) (i.e. characters that are non-trivial to \(N^{\mathrm{BC}}_m\)).\end{corollary}
 \begin{proof}
-若 \(\chi|_{N^{\mathrm{BC}}_m}=1\)，则 \(\chi\) 因子化为某个 \(\overline\chi\in\widehat{G^{\mathrm{BC}}_m}\) 与商映射 \(\pi_m\) 的复合。
-因此 \(\chi\)-扭曲通道等价于在 \(G^{\mathrm{BC}}_m\) 上的可见扭曲通道。
-由命题 \ref{prop:pom-bc-quotient-strictify}，所有可见扭曲通道的异常为零，从而对应坐标 \(\bigl(\mathsf{Anom}_G(K;\theta)\bigr)_{\chi}=0\)。证毕。
-\end{proof}
+If \(\chi|_{N^{\mathrm{BC}}_m}=1\), then \(\chi\) factors into a composite of some \(\overline\chi\in\widehat{G^{\mathrm{BC}}_m}\) and the quotient map \(\pi_m\).Therefore the \(\chi\)-distortion channel is equivalent to the visible distortion channel on \(G^{\mathrm{BC}}_m\).By the proposition \ref{prop:pom-bc-quotient-strictify}, the anomaly of all visible distortion channels is zero, thus corresponding to the coordinate \(\bigl(\mathsf{Anom}_G(K;\theta)\bigr)_{\chi}=0\). Certification completed.\end{proof}
 
 \input{sections/body/pom/parts/cor__pom-bc-pontryagin-dual-classification}
 
-\begin{corollary}[分辨率塔上的可见寄存器逆系统]\label{cor:pom-bc-inverse-system}
-对任意 \(m_2\ge m_1\)，由于折叠条件期望满足塔性质 \(E_{m_1}\circ E_{m_2}=E_{m_1}\)（见 \S\ref{subsec:pom-conditional-expectation}），\(m_2\) 层的纤维不可分辨关系细化 \(m_1\) 层，因而
-\[
+\begin{corollary}[Visible register inverse system on resolution tower]\label{cor:pom-bc-inverse-system}For any \(m_2\ge m_1\), since the folding condition is expected to satisfy the tower property \(E_{m_1}\circ E_{m_2}=E_{m_1}\) (see \SXPH4X), the fiber indistinguishable relationship of the \(m_2\) layer refines the \(m_1\) layer, so\[
 N^{\mathrm{BC}}_{m_2}\ \le\ N^{\mathrm{BC}}_{m_1},
-\qquad\text{从而}\qquad
-G^{\mathrm{BC}}_{m_2}\twoheadrightarrow G^{\mathrm{BC}}_{m_1}.
+\qquad\text{thus}\qquadG^{\mathrm{BC}}_{m_2}\twoheadrightarrow G^{\mathrm{BC}}_{m_1}.
 \]
-因此 \(\{G^{\mathrm{BC}}_m\}_{m\ge 1}\) 构成一个逆系统，并可定义其逆极限
-\[
+Therefore \(\{G^{\mathrm{BC}}_m\}_{m\ge 1}\) constitutes an inverse system and its inverse limit can be defined\[
 G^{\mathrm{BC}}_\infty:=\varprojlim_m G^{\mathrm{BC}}_m.
 \]
-该极限对象可被解释为：在“无限分辨率读出”下仍与折叠严格相容的群寄存器可见骨架。
-\end{corollary}
+This limiting object can be interpreted as: a group register visible skeleton that is still strictly compatible with folding under "infinite resolution readout".\end{corollary}
 
-\subsubsection{异常签名的可组合律：作为 \texorpdfstring{$\mathbf{PW}$}{PW} 的 \texorpdfstring{$2$}{2}-上同调类}\label{subsec:pom-anom-cohomology}
-把命题 \ref{prop:pom-em-lift-residual-swap} 的“带标签交换证书”视为 \(\mathbf{PW}\) 的一个 \(2\)-态射生成元，其关键收益是：异常不再是事后补丁，而是一个可在重写层面组合、并在改变规约路径时只发生边界变换的残差类。
-
-\begin{definition}[异常累积与规范化异常]\label{def:pom-anom-accumulation}
-固定一个带参对象 \(\mathcal{I}(m;K;\kappa)\)、一个有限阿贝尔 lift 群 \(G\) 与势参数 \(\theta\)。
-在仅由 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 生成的子片段中，令
-\[
+\subsubsection{Combinable laws of anomaly signatures: \texorpdfstring{XPH1X}{2}-cohomology class}\label{subsec:pom-anom-cohomology} as \texorpdfstring{XPH0X}{PW}Thinking of the "labeled exchange certificate" of the proposition \ref{prop:pom-em-lift-residual-swap} as an \(2\)-morphism generator of \(\mathbf{PW}\), the key benefit is that the exception is no longer a post hoc patch, but a residual class that can be composed at the rewrite level and only undergoes boundary transformations when changing the specification path.
+\begin{definition}[Exception accumulation and normalized exception]\label{def:pom-anom-accumulation}Fix a parametric object \(\mathcal{I}(m;K;\kappa)\), a finite Abelian lift group \(G\) and the potential parameter \(\theta\).In the subfragment generated only by \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\), let\[
 \mathcal{A}_G:=\RR^{\widehat G\setminus\{\chi_0\}}
 \]
-并以分量加法为群运算。
-对任意重写证书（\(2\)-态射） \(\alpha:w\Rightarrow w'\)，定义其\textbf{异常累积}
-\(\mathrm{anom}(\alpha)\in\mathcal{A}_G\)
-为：把 \(\alpha\) 分解为一串局部重写步后，对每一步取其标签并求和，其中
-(i) 幂等/塔缩并/严格可交换步的标签取 \(0\)；
-(ii) 每一次 \(E_m\)--\(\mathrm{LIFT}_G\) 的带残差交换步的标签取 \(\mathsf{Anom}_G(K;\theta)\)（定义 \ref{def:pom-anom-signature}）。
-给定一个正规形选择算子 \(N\) 及其规范化证书族 \(\eta_w:w\Rightarrow N(w)\)，定义词的\textbf{规范化异常}为
-\[
+And use component addition as a group operation.For any rewritten certificate (\(2\)-morphism) \(\alpha:w\Rightarrow w'\), define its \textbf{exception accumulation}\(\mathrm{anom}(\alpha)\in\mathcal{A}_G\)
+is: after decomposing \(\alpha\) into a series of local rewriting steps, take the label of each step and sum it up, where(i) The labels of idempotent/pylon union/strictly commutative steps are \(0\);(ii) The label of each \(E_m\)--\(\mathrm{LIFT}_G\) with residual exchange step is \(\mathsf{Anom}_G(K;\theta)\) (define \ref{def:pom-anom-signature}).Given a normal form selection operator \(N\) and its family of normalized certificates \(\eta_w:w\Rightarrow N(w)\), the \textbf {normalized exception} of the definition word is\[
 \mathrm{Anom}(w):=\mathrm{anom}(\eta_w).
 \]
 \end{definition}
 
-\begin{proposition}[加法复合律与边界项]\label{prop:pom-anom-additive-up-to-boundary}
-在定义 \ref{def:pom-anom-accumulation} 的设定下，\(\mathrm{anom}\) 对 \(2\)-态射的纵向复合严格可加：若 \(\alpha:w\Rightarrow w'\) 与 \(\beta:w'\Rightarrow w''\) 可复合，则
-\[
+\begin{proposition}[Additive compound laws and boundary terms]\label{prop:pom-anom-additive-up-to-boundary}Under the setting of defining \ref{def:pom-anom-accumulation}, the longitudinal composition of \(2\)-morphisms by \(\mathrm{anom}\) is strictly additive: if \(\alpha:w\Rightarrow w'\) and\[
 \mathrm{anom}(\beta\circ\alpha)=\mathrm{anom}(\beta)+\mathrm{anom}(\alpha).
 \]
-进一步地，对任意可复合的 \(1\)-态射 \(w_1,w_2\)，存在一个仅依赖于正规形选择的 \(2\)-cochain \(B(w_2,w_1)\in\mathcal{A}_G\)，使得
-\[
+Furthermore, for any composable \(1\)-morphism \(w_1,w_2\), there exists an \(2\)-cochain \(B(w_2,w_1)\in\mathcal{A}_G\) that only depends on the selection of the normal form, such that\[
 \mathrm{Anom}(w_2\circ w_1)
 =
 \mathrm{Anom}(w_2)+\mathrm{Anom}(w_1)+\partial B(w_2,w_1),
 \]
-其中 \(\partial B\) 表示因“先各自规约再合并”与“直接规约”两条规范化路径的比较而产生的边界项（等价地：改变规范化证书族 \(\{\eta_w\}\) 时，\(\mathrm{Anom}\) 只改变一个 coboundary）。
-\end{proposition}
+Among them, \(\partial B\) represents the boundary term resulting from the comparison of the two normalization paths of "first specification and then merging" and "direct specification" (equivalently: when changing the normalized certificate family \(\{\eta_w\}\), \(\mathrm{Anom}\) only changes one coboundary).\end{proposition}
 
-\begin{corollary}[零异常是路径不变量]\label{cor:pom-anom-cohomology-class}
-“异常是否为零”与规约路径/规约基准无关：若在某一正规化选择下 \(\mathrm{Anom}(w)=0\)，则对任意其他正规化选择所得的 \(\mathrm{Anom}'(w)\) 亦为零。
-等价地，\(\mathrm{Anom}\) 定义了一个可计算的（\(2\)-）上同调类，其消失刻画了交换失败是否可被重写完全消去。
-\end{corollary}
+\begin{corollary}[Zero exceptions are path invariants]\label{cor:pom-anom-cohomology-class}"Whether the anomaly is zero" has nothing to do with the reduction path/reduction benchmark: if \(\mathrm{Anom}(w)=0\) under a certain normalization choice, the resulting \(\mathrm{Anom}'(w)\) for any other normalization choice is also zero.Equivalently, \(\mathrm{Anom}\) defines a computable (\(2\)-) cohomology class whose disappearance characterizes whether the exchange failure can be completely eliminated by rewriting.\end{corollary}
 
-\begin{corollary}[异常类的严格加法性（水平复合）]\label{cor:pom-anom-class-additive}
-在命题 \ref{prop:pom-anom-additive-up-to-boundary} 的记号下，对任意可复合的 \(1\)-态射 \(w_1,w_2\)，其异常上同调类满足严格加法律
-\[
+\begin{corollary}[Strict additivity of exception classes (horizontal composition)]\label{cor:pom-anom-class-additive}Under the notation of the proposition \ref{prop:pom-anom-additive-up-to-boundary}, for any composable \(1\)-morphism \(w_1,w_2\), its anomalous cohomology class satisfies the strict additive law\[
 \boxed{\;
 [\mathrm{Anom}(w_2\circ w_1)]
 =
@@ -235,241 +131,120 @@ G^{\mathrm{BC}}_\infty:=\varprojlim_m G^{\mathrm{BC}}_m.
 +
 [\mathrm{Anom}(w_1)]\;}
 \]
-（因为边界项 \(\partial B(w_2,w_1)\) 在取上同调类后消失）。
-\end{corollary}
+(Because the boundary term \(\partial B(w_2,w_1)\) disappears after taking the cohomology class).\end{corollary}
 
-\begin{remark}[带残差的 \(2\)-合流：把“不可交换”内化为中心标签]\label{rem:pom-residual-2confluence}
-在三生成元片段上，我们不要求 \(E_m\) 与 \(\mathrm{LIFT}_G\) \emph{严格}交换，而是要求其交换失败被一个可加的中心标签群 \(\mathcal{A}_G\) 完全承载（定义 \ref{def:pom-anom-accumulation}）。
-于是“合流”应被理解为一种带残差的 \(2\)-合流口径：在固定复杂度上界内，任意两条重写路径都可并到同一个接口正规形（命题 \ref{prop:pom-three-gen-interface-normal-form}），而其残差差异（若出现）必落在命题 \ref{prop:pom-anom-additive-up-to-boundary} 的边界项上；因此 \(\bigl(\mathrm{NF}(w),[\mathrm{Anom}(w)]\bigr)\)（正规形 + 异常上同调类）成为路径不变量。
-这正是推论 \ref{cor:pom-three-gen-normal-form-decidable} 的“正规形判等 + 有限签名核对”在演算学层面的封装：不可交换性不再破坏可推演性，而被提升为可组合、可审计的 \(2\)-态射数据。
-\end{remark}
+\begin{remark} [\(2\) with residuals-confluence: internalizing "non-commutative" as center label]\label{rem:pom-residual-2confluence}On three-generator fragments, we do not require \(E_m\) to be {strictly} exchanged with \(\mathrm{LIFT}_G\)Therefore, "confluence" should be understood as an \(2\)-confluence caliber with residuals: within a fixed complexity upper bound, any two rewritten paths can be merged into the same interface normal form (proposition \ref{prop:pom-three-gen-interface-normal-form}), and their residual differences (if they occur) must fall on the boundary terms of proposition \ref{prop:pom-anom-additive-up-to-boundary}; therefore \(\bigl(\mathrm{NF}(w),[\mathrm{Anom}(w)]\bigr)\) (normal form + anomalous cohomology class) becomes a path invariant.This is exactly the encapsulation of the "regular morphism + limited signature verification" of the inference \ref{cor:pom-three-gen-normal-form-decidable} at the calculus level: non-commutability no longer destroys deducibility, but is promoted to composable and auditable \(2\)-morphism data.\end{remark}
 
-\begin{remark}[离散联络观点：异常即曲率（闭层规范场强）]\label{rem:pom-anom-as-curvature}
-把对象 \(\mathcal{I}(m;K;\kappa)\) 的参数对 \((m,G)\) 视为一个离散“基底平面”的两条轴：
-分辨率/模数轴 \(m\)（由条件期望 \(E_m\) 给出 coarse-graining 的平行移动），以及内部标签轴 \(G\)（由 \(\mathrm{LIFT}_G\) 给出标签提升的平行移动）。
-则命题 \ref{prop:pom-em-lift-residual-swap} 所给的
-\[
+\begin{remark}[Discrete contact point of view: anomaly is curvature (closed layer standard field strength)]\label{rem:pom-anom-as-curvature}Consider the parameter pair \((m,G)\) of object \(\mathcal{I}(m;K;\kappa)\) as the two axes of a discrete "base plane":resolution/modulus axisThen the proposition \ref{prop:pom-em-lift-residual-swap} gives\[
 E_m\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ E_m
 \]
-正可被理解为该离散联络在一个基本方块上的\emph{曲率 \(2\)-胞腔}：
-当 lift 与折叠纤维解耦（Beck--Chevalley 型方块可拉回）时该曲率退化为恒等 \(2\)-态射；一般情形下的“方块不闭合”会把可观测残差推入非平凡扭曲通道，并被最小地压缩为有限部常数族 \(\mathsf{Anom}_G(K;\theta)\)（定义 \ref{def:pom-anom-signature}）。
-因此在本文的闭层 primitives 口径中，规范场无需先验连续纤维丛/李群即可被定义：它最小地由离散平行移动 \((E_m,\mathrm{LIFT}_G)\) 及其曲率证书 \(\mathsf{Anom}_G\) 给出。
-推论 \ref{cor:pom-anom-cohomology-class} 的上同调不变量性则对应于“改变规约基准（离散 gauge 选择）只改变一个 coboundary，而不改变曲率是否为零”的事实。
-\end{remark}
+It can be understood as the \emph {curvature \(2\)-cell} of the discrete connection on a basic block:This curvature degenerates into an identity \(2\)-morphism when lift is decoupled from the folded fibers (Beck--Chevalley-type blocks can be pulled back); the general case of "block unclosure" pushes the observable residuals into non-trivial twist channels and is minimally compressed into a finite family of constants \(\mathsf{Anom}_G(K;\theta)\) (defining \ref{def:pom-anom-signature}).Thus in the closed-layer primitives caliber of this paper, the gauge field can be defined without a priori a continuous fiber bundle/Lie group: it is minimally given by a discrete parallel shift \((E_m,\mathrm{LIFT}_G)\) and its curvature certificate \(\mathsf{Anom}_G\).Inference The cohomology invariance of \ref{cor:pom-anom-cohomology-class} corresponds to the fact that "changing the gauge datum (discrete gauge selection) only changes a coboundary, but does not change whether the curvature is zero."\end{remark}
 
-\begin{remark}[面向 completion：critical pairs 决定额外异常生成元]\label{rem:pom-anom-completion}
-推论 \ref{cor:pom-anom-cohomology-class} 的工程含义是：当把投影词片段扩展（例如加入 \(\mathrm{MOM}_q\) 或更一般的 lift/cocycle）时，只需枚举新旧生成元之间的临界对（critical pairs）并对重写系统做 completion，新出现的“不可严格交换”将自动表现为 \(\mathcal{A}\)-值标签；异常签名因此成为一个可组合的残差簇，而非逐条规则的临时补丁。
-例如在四生成元扩展中，\(\mathrm{MOM}_q\) 与 \(\mathrm{LIFT}_G\) 的新耦合由 \((\mathrm{RMOML})\)（命题 \ref{prop:pom-rmoml-sound}）统一归约，而其常数层可核对指纹由高阶异常签名塔 \(\mathsf{Anom}^{(q)}_G\)（定义 \ref{def:pom-anom-signature-tower}）组织。
-三生成元片段上的有界临界对枚举与 completion 审计见注 \ref{rem:pom-threegen-kb-completion-audit}。
-\end{remark}
+\begin{remark}[For completion: critical pairs determine additional exception generators]\label{rem:pom-anom-completion}The engineering implication of \ref{cor:pom-anom-cohomology-class} is that when extending the projection word fragment (for example, adding \(\mathrm{MOM}_q\) or the more general lift/cocycle), you only need to enumerate the critical pairs between the old and new generators and complete the rewriting system. The new "non-strict commutability" will automatically appear as an \(\mathcal{A}\)-value label; the exception signature therefore becomes a composable residual cluster, rather than a rule-by-rule temporary patch.For example, in the four-generator extension, the new coupling of \(\mathrm{MOM}_q\) toBounded critical pair enumeration and completion auditing on three generator fragments see note \ref{rem:pom-threegen-kb-completion-audit}.\end{remark}
 
-\begin{proposition}[Moment 的异常放大律（\texorpdfstring{$q$}{q} 倍 gap amplification）]\label{prop:pom-anom-moment-amplification}
-在四生成元扩展片段（定义 \ref{def:pom-four-gen-rewrite-rules}）中，取任意三生成元投影词 \(w\)。
-把定义 \ref{def:pom-anom-accumulation} 的“中心标签累积”口径按同一规约证书规范延拓到含 \(\mathrm{MOM}_q\) 的规约轨迹上（即仍只对每一次 \(E_m\)--\(\mathrm{LIFT}_G\) 的残差交换步累积 \(\mathsf{Anom}_G\) 标签，并按 coboundary 取商）。
-则对任意整数 \(q\ge 2\)，有异常上同调类的线性放大律：
-\[
+\begin{proposition}[Moment’s abnormal amplification law (\texorpdfstring{XPH0X}{q} times gap amplification)]\label{prop:pom-anom-moment-amplification}In the four-generator extended fragment (definition \ref{def:pom-four-gen-rewrite-rules}), take any three-generator projection word \(w\).Extend the "center label accumulation" caliber that defines \ref{def:pom-anom-accumulation} to the protocol track containing \(\mathrm{MOM}_q\) according to the same protocol certificate specification (that is, only accumulate \(\mathsf{Anom}_G\) labels for each residual exchange step of \(E_m\)--\(\mathrm{LIFT}_G\), and take the quotient according to the coboundary).Then for any integer \(q\ge 2\), there is a linear amplification law of the anomalous cohomology class:\[
 \boxed{\;
 [\mathrm{Anom}(\mathrm{MOM}_q\circ w)]
 =
 q\cdot [\mathrm{Anom}(w)].\;}
 \]
-因此，一旦两词的异常类差异在常数层过小而不易数值核验，可通过选择更高阶 moment 门将该差异按 \(q\) 线性放大，并仍停留在有限核可编译/可审计的语义域内。
-\end{proposition}
+Therefore, once the anomaly type difference between two words is too small at the constant level to be easily verified numerically, the difference can be linearly amplified by \(q\) by selecting a higher-order moment gate, and still stay within the compilable/auditable semantic domain of the limited kernel.\end{proposition}
 
-\begin{proof}[证明思路]
-按 \(\mathrm{MOM}_q\) 的 fiber-product 语义，它把底层轨道约束提升为 \(q\) 份并置的同步世界；因此任意一条针对 \(w\) 的规约证书轨迹，在 \(\mathrm{MOM}_q\circ w\) 上对应为“逐份提升”的 \(q\) 份平行证书轨迹。
-由于异常标签群 \(\mathcal{A}_G\) 在定义 \ref{def:pom-anom-accumulation} 中以分量加法为中心运算，且 \(\mathrm{anom}\) 对纵向复合严格可加（命题 \ref{prop:pom-anom-additive-up-to-boundary}），故累积标签随并置份数线性增长，得到所示 \(q\) 倍放大；取上同调类后边界项消失，结论不依赖规约路径选择。证毕。
-\end{proof}
+\begin{proof}[Proof Idea]According to the fiber-product semantics of \(\mathrm{MOM}_q\), it promotes the underlying track constraints to a synchronized world of \(q\) copies; therefore, any protocol certificate track for \(w\) corresponds to a "share-by-share promotion" \(q\) parallel certificate track on \(\mathrm{MOM}_q\circ w\).Since the anomaly label group \(\mathcal{A}_G\) takes component addition as the central operation in the definition of \ref{def:pom-anom-accumulation}, and \(\mathrm{anom}\) is strictly additive for longitudinal composition (Proposition Certification completed.\end{proof}
 
-\begin{remark}[可复现：holonomy/路径差异的自动核验]\label{rem:pom-holonomy-cocycle-audit}
-为把“异常作为 \(2\)-上同调类”的口径落到可执行证书，我们提供一个最小的 holonomy 核验脚本：
-\texttt{scripts/exp\_pom\_holonomy\_cocycle\_audit.py}。
-该脚本随机生成若干含 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 的投影词，并用两种不同的重写优先级分别规约到同一正规形候选；
-随后比较
-(i) 词法正规形是否一致，
-以及
-(ii) 在所选证书规范（gauge）下，交换证书（每次 \(E_m\)--\(\mathrm{LIFT}_G\) 的 swap）累积得到的 holonomy 计数是否一致。
-当检测到差异时，脚本会把反例词、两条规约轨迹及其 holonomy 统计写入
-\texttt{artifacts/export/pom\_holonomy\_cocycle\_audit.json}，
-用于定位 completion 所需的关键临界对/边界修正（命题 \ref{prop:pom-anom-additive-up-to-boundary}）。
-\end{remark}
+\begin{remark}[Reproducible: automatic verification of holonomy/path differences]\label{rem:pom-holonomy-cocycle-audit}In order to reduce the scope of "Exception as \(2\)-cohomology class" to the executable certificate, we provide a minimal holonomy verification script:\texttt{scripts/exp\_pom\_holonomy\_cocycle\_audit.py}。
+This script randomly generates several projection words containing \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\), and uses two different rewriting priorities to reduce them to the same regular form candidate;Then compare(i) Whether the lexical regular form is consistent,as well as(ii) Under the selected certificate specification (gauge), whether the holonomy count accumulated by exchanging certificates (each \(E_m\)--\(\mathrm{LIFT}_G\) swap) is consistent.When a discrepancy is detected, the script writes the counterexample, the two reduction trajectories, and their holonomy statistics\texttt{artifacts/export/pom\_holonomy\_cocycle\_audit.json}，
+Key critical pair/boundary correction required for locating completion (Proposition \ref{prop:pom-anom-additive-up-to-boundary}).\end{remark}
 
-\begin{remark}[可复现：三生成元片段的临界对枚举与 completion 审计]\label{rem:pom-threegen-kb-completion-audit}
-注 \ref{rem:pom-holonomy-cocycle-audit} 给出的是“随机词 + 两种规约优先级”的路径差异核验。
-为得到一个更接近 Knuth--Bendix completion 的\emph{穷举式}审计，我们提供脚本
-\texttt{scripts/exp\_pom\_projword\_three\_gen\_kb\_completion\_audit.py}：
-在固定复杂度上界（限制 \(m\)、限制 lift 的群列表、限制温度参数采样集合）下枚举所有长度 \(3\) 的 overlap 语境，
-并对每个临界对比较两条局部规约分支的接口正规形与残差计数。
-脚本输出 JSON 摘要与若干反例轨迹到
-\texttt{artifacts/export/pom\_projword\_three\_gen\_kb\_completion\_audit.json}，
-并生成表 \ref{tab:pom_projword_three_gen_kb_completion_audit} 作为可复现见证：
-\input{sections/generated/tab_pom_projword_three_gen_kb_completion_audit}
-\noindent 表中 \(\#\)NF mismatch 为零意味着该有界片段在词法层通过了局部合流审计；
-而 residual mismatch 的出现对应于命题 \ref{prop:pom-anom-additive-up-to-boundary} 中的边界项，
-脚本在 JSON 中给出按临界对类型聚类的 completion 候选修正。
-\end{remark}
+\begin{remark}[Reproducible: critical pair enumeration and completion auditing of three-generation fragments]\label{rem:pom-threegen-kb-completion-audit}Note: \ref{rem:pom-holonomy-cocycle-audit} gives the path difference verification of "random words + two protocol priorities".To get an \emph{exhaustive} audit closer to Knuth--Bendix completion, we provide a script\texttt{scripts/exp\_pom\_projword\_three\_gen\_kb\_completion\_audit.py}：
+Enumerate all overlap contexts of length \(3\) under a fixed complexity upper bound (limit \(m\), limit lift's group list, limit temperature parameter sampling set),And compare the interface normal form and residual count of the two local reduction branches for each critical pair.The script outputs a JSON summary and several counterexample traces to\texttt{artifacts/export/pom\_projword\_three\_gen\_kb\_completion\_audit.json}，
+And generate table \ref{tab:pom_projword_three_gen_kb_completion_audit} as a reproducible witness:\input{sections/generated/tab_pom_projword_three_gen_kb_completion_audit}
+A zero \(\#\)NF mismatch in the \noindent table means that the bounded fragment passed the local merge audit at the lexical level;The occurrence of residual mismatch corresponds to the boundary term in the proposition \ref{prop:pom-anom-additive-up-to-boundary},The script gives completion candidate fixes in JSON clustered by critical pair type.\end{remark}
 
-\begin{proposition}[合流不是绝对合流，而是合流模异常（有界审计版）]\label{prop:pom-confluence-mod-anom-audited}
-在与注 \ref{rem:pom-threegen-kb-completion-audit} 相同的复杂度上界内，三生成元片段 \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\) 满足：
-\begin{enumerate}
-  \item \textbf{（正规形唯一）} 对任意被审计的 overlap 临界对，两条局部规约分支都可并到同一个接口正规形，因此在该复杂度类上正规形是路径不变量（表 \ref{tab:pom_projword_three_gen_kb_completion_audit} 的 \(\#\mathrm{NF\ mismatch}=0\)）。
-  \item \textbf{（残差仅差边界）} 规约路径可能产生不同的残差标签（表 \ref{tab:pom_projword_three_gen_kb_completion_audit} 的 residual mismatch），但其差异必落在命题 \ref{prop:pom-anom-additive-up-to-boundary} 的边界项（coboundary）中；因此异常的上同调类 \([\mathrm{Anom}(w)]\) 与“异常是否为零”均为路径不变量（推论 \ref{cor:pom-anom-cohomology-class}）。
-\end{enumerate}
-因此，把投影词的判等关系取为“正规形一致 + 异常类一致”是自然的：改变规约优先级只改变一个 coboundary，而不改变异常类是否为零。
-\end{proposition}
+\begin{proposition}[The convergence is not an absolute convergence, but an abnormal convergence model (bounded audit version)]\label{prop:pom-confluence-mod-anom-audited}Within the same complexity upper bound as note \ref{rem:pom-threegen-kb-completion-audit}, the three-generator fragment \((\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)\) satisfies:\begin{enumerate}
+\item\item\end{enumerate}
+Therefore, it is natural to take the equivalence relationship of projection words as "regular form consistency + exception class consistency": changing the priority of the specification only changes one coboundary, but does not change whether the exception class is zero.\end{proposition}
 
-\begin{definition}[算法等价（正规形 + 异常类）]\label{def:pom-algorithmic-equivalence-nf-anom}
-在上述复杂度上界内，对任意两个投影词 \(w_1,w_2\)，定义
-\[
+\begin{definition}[Algorithmic Equivalence (Normal Form + Exception Class)]\label{def:pom-algorithmic-equivalence-nf-anom}Within the above complexity upper bound, for any two projection words \(w_1,w_2\), define\[
 w_1\sim w_2
 \iff
 \mathrm{NF}(w_1)=\mathrm{NF}(w_2)
-\ \text{且}\
-[\mathrm{Anom}(w_1)]=[\mathrm{Anom}(w_2)].
+\\text{and}\[\mathrm{Anom}(w_1)]=[\mathrm{Anom}(w_2)].
 \]
-其中 \(\mathrm{NF}\) 可取命题 \ref{prop:pom-three-gen-interface-normal-form} 的接口正规形代表，而 \([\mathrm{Anom}(w)]\) 为命题 \ref{prop:pom-anom-additive-up-to-boundary} 所确定的异常上同调类（在任一固定规约证书规范下计算的代表元，按 coboundary 取商）。
-在本文实现中我们固定一种正规化器与证书规范，因此该等价关系可由推论 \ref{cor:pom-three-gen-normal-form-decidable} 的“正规形参数 + 有限异常签名核对”直接判定。
-\end{definition}
+Among them, \(\mathrm{NF}\) can be the canonical representation of the interface of proposition \ref{prop:pom-three-gen-interface-normal-form}, and \([\mathrm{Anom}(w)]\) is the abnormal cohomology class determined by proposition \ref{prop:pom-anom-additive-up-to-boundary} (the representative element calculated under the specification of any fixed protocol certificate, quotient is taken according to the coboundary).In the implementation of this article, we fix a normalizer and certificate specification, so the equivalence relationship can be directly determined by the "normal formal parameters + limited exception signature verification" of the inference \ref{cor:pom-three-gen-normal-form-decidable}.\end{definition}
 
-\begin{corollary}[含 \texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)} 的正规形与有限签名判等]\label{cor:pom-three-gen-normal-form-decidable}
-固定词复杂度上界（例如限制 \(m\)、限制 lift 的群大小、限制温度参数采样集合）。
-则任何仅由 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\) 生成的投影词，都可归约到一类接口正规形（参见注 \ref{rem:pom-zeta-normal-form} 的编译顺序）并附带有限异常签名
-\(
+\begin{corollary}[Contains the normal form and finite signature evaluation of \texorpdfstring{XPH0X}{(PROJ,Em,LIFT)}]\label{cor:pom-three-gen-normal-form-decidable}Fixed word complexity upper bounds (e.g. limit \(m\), limit lift's group size, limit temperature parameter sampling set).Then any projection word generated only by\(
 \mathsf{Anom}_G(K;\theta)
 \)
-的有限采样集合。
-因此在该复杂度类上，“算法等价”（自然性意义下的可交换/可同构）可归结为：
-比较正规形参数 \((u,m,G)\) 以及比较有限个采样点上的异常签名是否一致。
-\end{corollary}
+a limited sampling set.So on this complexity class, "algorithmic equivalence" (commutative/isomorphic in the natural sense) boils down to:Compare the normal shape parameter \((u,m,G)\) and compare the anomaly signatures on a limited number of sampling points to see if they are consistent.\end{corollary}
 
-\begin{definition}[保守语义函子 \texorpdfstring{$\mathsf{Sem}$}{Sem}（有界复杂度切片）]\label{def:pom-conservative-sem-functor}
-令 \(\Theta\) 表示本文接口参数的一个\emph{有限审计切片}：例如固定分辨率上界 \(m\le m_{\max}\)、固定 lift 群列表 \(\mathcal{G}_{\max}\)（从而 \(|G|\le G_{\max}\)）、固定 moment 阶窗口 \(q\le q_{\max}\)，并对温度 \(u\in(0,1]\) 与势参数 \(\theta\) 取一组有限采样网格。
-把各生成元视为 \(\Theta\)-族后，得到参数化的投影词 \(2\)-范畴记作 \(\mathbf{PW}*\Theta\)。
-\par
-在该切片上，定义两个可计算的语义输出域：
-\begin{enumerate}
-  \item \textbf{签名域 \(\mathbf{Sig}*\Theta\)：}记录常数层与正规形层的可核对指纹。对词 \(w\) 取
-  \[
+\begin{definition}[Conservative semantic functor \texorpdfstring{XPH0X}{Sem} (bounded complexity slice)]\label{def:pom-conservative-sem-functor}LetAfter considering each generator as an \(\Theta\)-family, the parameterized projection word \(2\)-category is obtained, denoted as \(\mathbf{PW}*\Theta\).\par
+On this slice, define two computable semantic output domains:\begin{enumerate}
+\item \textbf{Signature field \(\mathbf{Sig}*\Theta\):} records the verifiable fingerprints of the constant layer and the regular shape layer. Get the word \(w\)  \[
   \mathsf{Sig}(w):=\Bigl(\mathrm{NF}(w),\ G^{\mathrm{BC}}_m(w),\ [\mathrm{Anom}(w)],\ \{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\Bigr),
   \]
-  其中 \(\mathrm{NF}(w)\) 为接口正规形代表（命题 \ref{prop:pom-three-gen-interface-normal-form}），
-  \(G^{\mathrm{BC}}_m(w)\) 为定义 \ref{def:pom-bc-quotient} 的普适可交换化商（记录“在 \(E_m\) 视角下仍可见的最大群寄存器”），
-  \([\mathrm{Anom}(w)]\) 为异常的 \(2\)-上同调类（命题 \ref{prop:pom-anom-additive-up-to-boundary}），
-  而 \(\{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\) 是有限采样签名族（定义 \ref{def:pom-anom-signature}）。
-  \item \textbf{谱域 \(\mathbf{Spec}*\Theta\)：}记录指数主尺度的谱资源读出。典型选择是：对每个通道参数 \((\chi,u)\) 与整数 \(q\) 输出加权碰撞 moment-kernel 的 Perron 根
-  \(r^{(w)}_{q,\chi}(u)\)，或等价的压力/预算曲线 \(\Sigma_{\mathrm{space}}(w)(q;\chi,u)\) 与其离散凸闭包类型正规形 \(\mathrm{Ty}_{\mathrm{space}}(w;\chi,u)\)（\S\ref{subsec:pom-spectral-resource-type}）。
-\end{enumerate}
-于是得到组合语义赋值（在切片上为可计算函子）
-\[
+Among them, \(\mathrm{NF}(w)\) is the formal representation of the interface (proposition \ref{prop:pom-three-gen-interface-normal-form}),\(G^{\mathrm{BC}}_m(w)\) is the universal exchangeable quotient that defines \ref{def:pom-bc-quotient} (recording "the largest group of registers still visible from the perspective of \(E_m\)"),\([\mathrm{Anom}(w)]\) is an abnormal \(2\)-cohomology class (proposition \ref{prop:pom-anom-additive-up-to-boundary}),And \(\{\mathsf{Anom}_{G}(K;\theta)\}_{\theta\in\Theta}\) is a family of limited sampling signatures (defining \ref{def:pom-anom-signature}).\item \textbf{spectral domain A typical choice is: per-channel parameter \((\chi,u)\) with integer \(q\) output weighted collision moment-kernel's Perron root\(r^{(w)}_{q,\chi}(u)\), or equivalently the pressure/budget curve \(\Sigma_{\mathrm{space}}(w)(q;\chi,u)\) and its discrete convex closure type normal form \(\mathrm{Ty}_{\mathrm{space}}(w;\chi,u)\) (\SXPH3X).\end{enumerate}
+So we get compositional semantic assignment (computable functor on the slice)\[
 \boxed{\;
 \mathsf{Sem}:\mathbf{PW}*\Theta\longrightarrow \mathbf{Sig}*\Theta\times \mathbf{Spec}*\Theta,\qquad
 \mathsf{Sem}(w):=(\mathsf{Sig}(w),\mathsf{Spec}(w)).\;}
 \]
 \end{definition}
 
-\begin{theorem}[有界切片上的语义保守性（自然同构的可判定核心）]\label{thm:pom-sem-conservative-on-slice}
-在与推论 \ref{cor:pom-three-gen-normal-form-decidable} 相同的复杂度上界内，\(\mathsf{Sem}\) 是保守的：若两词 \(w_1,w_2\) 满足
-\(
+\begin{theorem}[Semantic conservatism on bounded slices (decidable core of natural isomorphism)]\label{thm:pom-sem-conservative-on-slice}Within the same complexity upper bound as inference \ref{cor:pom-three-gen-normal-form-decidable}, \(\mathsf{Sem}\) is conservative: if the two words \(w_1,w_2\) satisfy\(
 \mathsf{Sem}(w_1)=\mathsf{Sem}(w_2)
 \)，
-则存在可逆 \(2\)-态射（自然同构）使 \(w_1\simeq w_2\)；等价地 \(w_1\sim w_2\)（定义 \ref{def:pom-algorithmic-equivalence-nf-anom}）。
-\end{theorem}
+Then there is a reversible \(2\)-morphism (natural isomorphism) such that \(w_1\simeq w_2\); equivalently \(w_1\sim w_2\) (defining \ref{def:pom-algorithmic-equivalence-nf-anom}).\end{theorem}
 
 \begin{proof}
-\(\mathsf{Sem}(w_1)=\mathsf{Sem}(w_2)\) 蕴含签名分量相等，特别是 \(\mathrm{NF}(w_1)=\mathrm{NF}(w_2)\) 且 \([\mathrm{Anom}(w_1)]=[\mathrm{Anom}(w_2)]\)。
-由定义 \ref{def:pom-algorithmic-equivalence-nf-anom} 得 \(w_1\sim w_2\)，并由推论 \ref{cor:pom-three-gen-normal-form-decidable} 的可判定性口径得到对应的可逆证书。
-谱分量在该结论中可视为冗余核验（但在后续的类型定向重写与多尺度预算比较中提供额外判别力）。证毕。
-\end{proof}
+\(\mathsf{Sem}(w_1)=\mathsf{Sem}(w_2)\) implies that the signature components are equal, specifically \(\mathrm{NF}(w_1)=\mathrm{NF}(w_2)\) and \([\mathrm{Anom}(w_1)]=[\mathrm{Anom}(w_2)]\).By defining \ref{def:pom-algorithmic-equivalence-nf-anom}, we get \(w_1\sim w_2\), and by inferring the decidability caliber of \ref{cor:pom-three-gen-normal-form-decidable}, we get the corresponding reversible certificate.The spectral component can be considered a redundant check in this conclusion (but provides additional discriminative power in subsequent type-directed rewriting and multi-scale budget comparisons). Certification completed.\end{proof}
 
-\begin{remark}[符号证书升级：用扭曲特征多项式替代有限采样]\label{rem:pom-anom-symbolic-certificate}
-推论 \ref{cor:pom-three-gen-normal-form-decidable} 的“有限采样签名”是工程友好的可审计口径；
-若希望把等价性进一步升级为\emph{完全形式化}的代数等式证书，可在固定复杂度上界下对扭曲通道做符号化：
-对每个非平凡角色 \(\chi\in\widehat G\setminus\{\chi_0\}\)，将投影词 \(w\)（含 \(\mathrm{PROJ}_u\) 的温度参数）编译为有限维扭曲矩阵 \(M_{\chi}^{(w)}(u)\)，并定义
-\[
+\begin{remark}[Symbol certificate upgrade: replacing finite sampling with twisted characteristic polynomials]\label{rem:pom-anom-symbolic-certificate}It is inferred that \ref{cor:pom-three-gen-normal-form-decidable}'s "limited sampling signature" is an engineering-friendly auditable caliber;If you wish to further upgrade the equivalence to a certificate of algebraic equality for \emph {completely formal}, you can symbolize the twist channel under a fixed complexity upper bound:For each non-trivial character \(\chi\in\widehat G\setminus\{\chi_0\}\), compile the projection word \(w\) (including the temperature parameter of \(\mathrm{PROJ}_u\)) into a finite-dimensional distortion matrix \(M_{\chi}^{(w)}(u)\), and define\[
 \Delta_\chi(w;z,u):=\det\bigl(I-z\,M_{\chi}^{(w)}(u)\bigr).
 \]
-在本文的接口设定中，矩阵条目由有限图核的边权生成（典型为 \(u\) 的幂或有限生成的解析函数），因此在给定复杂度类内 \(\Delta_\chi\) 是可计算的符号对象（关于 \(z\) 的多项式，系数在 \(u\) 的可计算代数域中）。
-一旦两实现对所有非平凡 \(\chi\) 的 \(\Delta_\chi\) 完全一致，则对应的扭曲 \(\zeta\) 与有限部常数一致，从而异常签名一致；此时“可审计”等价被提升为“可证明”等价。
-\end{remark}
+In the interface setting of this article, the matrix entries are generated by edge weights of finite graph kernels (typically powers of \(u\) or finitely generated analytic functions), so \(\Delta_\chi\) is a computable symbolic object within a given complexity class (polynomials with respect to \(z\), with coefficients in the computable algebraic domain of \(u\)).Once the two implementations are completely consistent for \(\Delta_\chi\) for all non-trivial \(\chi\), then the corresponding twisted \(\zeta\) is consistent with the finite part constant, so the exception signature is consistent; at this time, "auditable" equivalence is promoted to "provable" equivalence.\end{remark}
 
-\subsubsection{三生成元的可计算重写系统与接口正规形}\label{subsec:pom-three-gen-rewrite-normal}
-
-本段把“语义接口”落回到词法层：给出一套只依赖参数的重写规则，把任何由
-\(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\)
-生成的投影词归约到一个可执行的接口正规形，并把非交换残差显式收束为异常签名（定义 \ref{def:pom-anom-signature}）。
-
-\begin{definition}[三生成元片段上的重写规则族]\label{def:pom-three-gen-rewrite-rules}
-在 $\mathbf{PW}$ 中取仅由 \(\mathrm{PROJ}_u\)、\(\mathrm{LIFT}_G\)、\(E_m\) 生成的子片段。
-定义其上的重写规则族如下（均为 $2$-态射证书，省略单位与结合子的同构）：
-\begin{enumerate}
-  \item \textbf{温度门合并（幂半群）：}
-  $$
+\subsubsection{Computable rewriting system and interface canonical form of three generators}\label{subsec:pom-three-gen-rewrite-normal}
+This paragraph returns the "semantic interface" to the lexical level: a set of rewriting rules that only rely on parameters is given, and any\(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G\)
+The generated projection words reduce to an executable interface canonical form and explicitly wrap the non-commutative residuals into anomaly signatures (definition \ref{def:pom-anom-signature}).
+\begin{definition}[Rewrite rule family on three generator fragments]\label{def:pom-three-gen-rewrite-rules}Take in $\mathbf{PW}$ only the subfragments generated by \(\mathrm{PROJ}_u\), \(\mathrm{LIFT}_G\), \(E_m\).The rewriting rule family defined above is as follows (all are $2$-morphism certificates, isomorphisms of units and associators are omitted):\begin{enumerate}
+\item \textbf{Temperature gate merge (idempotent group):}  $$
   (\mathrm{RPROJ})\quad
   \mathrm{PROJ}_u\circ \mathrm{PROJ}_v\ \Rightarrow\ \mathrm{PROJ}_{uv}.
   $$
-  \item \textbf{lift 合并（直积提升）：}
-  $$
+\item \textbf{lift merge (direct product promotion):}  $$
   (\mathrm{RLIFT})\quad
   \mathrm{LIFT}_G\circ \mathrm{LIFT}_H\ \Rightarrow\ \mathrm{LIFT}_{G\times H}.
   $$
-  \item \textbf{条件期望塔缩并：}
-  $$
+\item \textbf{Conditional expectation tower shrinkage:}  $$
   (\mathrm{RE})\quad
   E_{m_1}\circ E_{m_2}\ \Rightarrow\ E_{\min(m_1,m_2)}.
   $$
-  \item \textbf{温度门与 lift 可交换（权重拉回）：}
-  $$
+\item \textbf{Temperature gate and lift are interchangeable (weight pull back):}  $$
   (\mathrm{RPL})\quad
   \mathrm{PROJ}_u\circ \mathrm{LIFT}_G\ \Rightarrow\ \mathrm{LIFT}_G\circ \mathrm{PROJ}_u.
   $$
-  \item \textbf{带残差的 \(E_m\)--lift 交换：}
-  以命题 \ref{prop:pom-em-lift-residual-swap} 为证书口径，把 \(E_m\circ\mathrm{LIFT}_G\) 归约为 \(\mathrm{LIFT}_G\circ E_m\) 并输出异常签名 \(\mathsf{Anom}_G(K;\theta)\) 作为可核对残差。
-\end{enumerate}
+\item \textbf{\(E_m\)--lift exchange with residual:}Taking proposition \ref{prop:pom-em-lift-residual-swap} as the certificate caliber, reduce \(E_m\circ\mathrm{LIFT}_G\) to \(\mathrm{LIFT}_G\circ E_m\) and output the abnormal signature \(\mathsf{Anom}_G(K;\theta)\) as the verifiable residual.\end{enumerate}
 \end{definition}
 
-\begin{proposition}[三生成元重写的终止性（逆序度量）]\label{prop:pom-three-gen-termination}
-取正规序
-\(
+\begin{proposition}[Terminability of three generator rewrites (reverse order metric)]\label{prop:pom-three-gen-termination}Take normal order\(
 \mathrm{LIFT}\prec \mathrm{PROJ}\prec E
 \)。
-对任意三生成元投影词 \(W\)，令 \(\ell(W)\) 为词长（生成元个数），并定义\textbf{逆序度量}
-\[
-\mu(W):=\#\{(i,j):i<j,\ \text{且第 }i\text{ 位与第 }j\text{ 位的生成元次序违反 }\prec\}.
-\]
-则在规则族 \ref{def:pom-three-gen-rewrite-rules} 下，每一次重写都会严格降低字典序量
-\(
+For any three-generator projection word \(W\), let \(\ell(W)\) be the word length (number of generators), and define \textbf {reverse order metric}\[
+\mu(W):=\#\{(i,j):i<j,\\]
+Then under the rule family \ref{def:pom-three-gen-rewrite-rules}, each rewrite will strictly reduce the lexicographic order\(
 (\ell(W),\mu(W))
 \)。
-因此该片段的重写必然终止；残差异常作为 \(2\)-态射标签记录，不影响 \(1\)-态射的下降度量。
-\end{proposition}
+Therefore the rewriting of this fragment must be terminated; the residual anomaly is recorded as an \(2\)-morphism label and does not affect the drop metric of the \(1\)-morphism.\end{proposition}
 \begin{proof}
-规则 \((\mathrm{RPROJ}),(\mathrm{RLIFT}),(\mathrm{RE})\) 把同类门复合缩并为一个门，故严格降低 \(\ell(W)\)。
-规则 \((\mathrm{RPL})\) 与带残差的 \(E_m\)--\(\mathrm{LIFT}_G\) 交换仅改变门的相对次序且不增词长；由于它们把“逆序对”交换成正序对，\(\mu(W)\) 严格下降。
-因此每一步都严格降低字典序量 \((\ell,\mu)\)，不存在无限重写链。证毕。
-\end{proof}
+Rule \((\mathrm{RPROJ}),(\mathrm{RLIFT}),(\mathrm{RE})\) condenses similar doors into one door, so \(\ell(W)\) is strictly reduced.Swapping rules \((\mathrm{RPL})\) with \(E_m\)--\(\mathrm{LIFT}_G\) with residuals only changes the relative order of the gates and does not increase the word length; since they swap "reverse-order pairs" for forward-order pairs, \(\mu(W)\) strictly decreases.Therefore, each step strictly reduces the lexicographic order \((\ell,\mu)\), and there is no infinite rewrite chain. Certification completed.\end{proof}
 
-\begin{remark}[可复现：三生成元正规化器与异常签名证书]\label{rem:pom-projword-threegen-anom-normalizer-demo}
-脚本 \texttt{scripts/exp\_pom\_projword\_three\_gen\_anom\_normalizer.py} 实现定义 \ref{def:pom-three-gen-rewrite-rules} 的最小三生成元重写片段：
-它把任意由 \texttt{E[m]}, \texttt{PROJ[u]}, \texttt{LIFT[G]} 生成的投影词规约到接口正规形
-\(\mathrm{LIFT}\circ\mathrm{PROJ}\circ E\)（命题 \ref{prop:pom-three-gen-interface-normal-form}），
-并在每一次 \(E_m\)--\(\mathrm{LIFT}_G\) 交换处输出一条带残差项的交换证书
-（接口为 \(\mathsf{Anom}_G(K;\theta)\)，定义 \ref{def:pom-anom-signature}）。
-该脚本写出正规形、重写轨迹与证书列表到
-\texttt{artifacts/export/pom\_projword\_three\_gen\_anom\_normalizer\_demo.json}，
-作为“异常签名进入规约轨迹”的可执行见证。
-\end{remark}
+\begin{remark}[Reproducible: Three-Generation Normalizer and Abnormal Signing Certificate]\label{rem:pom-projword-threegen-anom-normalizer-demo}The script \texttt{scripts/exp\_pom\_projword\_three\_gen\_anom\_normalizer.py} implementation defines a minimal three-generator rewrite fragment of \ref{def:pom-three-gen-rewrite-rules}:It reduces any projection words generated by \texttt{E[m]}, \texttt{PROJ[u]}, \texttt{LIFT[G]} to the interface canonical form.\(\mathrm{LIFT}\circ\mathrm{PROJ}\circ E\) (proposition \ref{prop:pom-three-gen-interface-normal-form}),And output an exchange certificate with residual items at each \(E_m\)--\(\mathrm{LIFT}_G\) exchange(Interface is \(\mathsf{Anom}_G(K;\theta)\), definition is \ref{def:pom-anom-signature}).This script writes the regular form, rewrite trajectory and certificate list to\texttt{artifacts/export/pom\_projword\_three\_gen\_anom\_normalizer\_demo.json}，
+As an executable witness of "exceptional signatures entering the protocol trace".\end{remark}
 
-\begin{remark}[关于 \texorpdfstring{$(\mathrm{RLIFT})$}{RLIFT} 的适用范围]\label{rem:pom-rlift-scope}
-规则 \((\mathrm{RLIFT})\) 反映“独立轴的并置提升”：把两次相互独立的有限标签提升合并为一次到直积群的提升。
-在更一般的群扩张（例如非平凡半直积或 cocycle 扭曲）中，对应的合并律应以扩张数据的纤维积/合成取代直积；本文在可审计实现中主要使用有限阿贝尔标签与其角色分解，因此以上写法足以覆盖本文的数值接口与重写示例。
-\end{remark}
+\begin{remark}[About the scope of application of \texorpdfstring{XPH0X}{RLIFT}]\label{rem:pom-rlift-scope}Rule \((\mathrm{RLIFT})\) reflects "collocated promotion of independent axes": combining two mutually independent finite label promotions into a single promotion to the direct product group.In more general group expansions (such as non-trivial semidirect products or cocycle twists), the corresponding coalescence law should replace the direct product with the fiber product/composition of the expanded data; this article mainly uses finite Abelian labels and its role decomposition in the auditable implementation, so the above writing method is enough to cover the numerical interface and rewriting examples of this article.\end{remark}
 
-\begin{remark}[交叉异常：\texorpdfstring{$(\mathrm{RLIFT})$}{RLIFT} 独立性的一条可计算审计条件]\label{rem:pom-rlift-cross-anom-test}
-设 \(G,H\) 为有限阿贝尔群，则 \(\widehat{G\times H}\cong\widehat G\times\widehat H\)。
-对任意 \((\chi,\psi)\in\widehat G\times\widehat H\)，记 \(\chi\otimes\psi\) 为 \(G\times H\) 上的乘积角色
-\((g,h)\mapsto \chi(g)\psi(h)\)，并记 \(\chi_0,\psi_0\) 为平凡角色。
-在异常签名口径（定义 \ref{def:pom-anom-signature}）下，定义\textbf{交叉异常}为
-\[
+\begin{remark}[Crossover anomaly: A computable audit condition for \texorpdfstring{XPH0X}{RLIFT} independence]\label{rem:pom-rlift-cross-anom-test}Suppose \(G,H\) is a finite Abelian group, then \(\widehat{G\times H}\cong\widehat G\times\widehat H\).For any \((\chi,\psi)\in\widehat G\times\widehat H\), denote \(\chi\otimes\psi\) as the product role on \(G\times H\)\((g,h)\mapsto \chi(g)\psi(h)\), and note \(\chi_0,\psi_0\) as an ordinary character.Under the exception signature caliber (define \ref{def:pom-anom-signature}), define \textbf{cross exception} as\[
 \Delta^{\mathrm{sep}}_{\chi,\psi}(\theta)
 :=
 \log\mathfrak{M}_{\chi\otimes\psi}(\theta)
@@ -478,136 +253,84 @@ w_1\sim w_2
 \qquad
 \chi\neq\chi_0,\ \psi\neq\psi_0.
 \]
-若两次 lift 的语义确为独立轴并置（对应 \((\mathrm{RLIFT})\) 的直积提升），则对每个取样参数 \(\theta\) 均应有
-\(\Delta^{\mathrm{sep}}_{\chi,\psi}(\theta)=0\)：其等价表述是在扭曲通道上存在可核对的分解
-\(\zeta_{\theta,\chi\otimes\psi}=\zeta_{\theta,\chi\otimes\psi_0}\cdot \zeta_{\theta,\chi_0\otimes\psi}\)，
-从而有限部常数层面严格可加。
-因此 \(\Delta^{\mathrm{sep}}\) 的非零给出一条可审计的“跨轴耦合指纹”，提示 lift 的合并不应被简化为直积，而需引入扩张数据（例如 cocycle/半直积）或把耦合显式留在残差项中。
-\end{remark}
+If the semantics of the two lifts are indeed independent axis juxtaposition (corresponding to the direct product lift of \((\mathrm{RLIFT})\)), then each sampling parameter \(\theta\) should have\(\Delta^{\mathrm{sep}}_{\chi,\psi}(\theta)=0\): The equivalent statement is that there is a verifiable decomposition on the twisted channel\(\zeta_{\theta,\chi\otimes\psi}=\zeta_{\theta,\chi\otimes\psi_0}\cdot \zeta_{\theta,\chi_0\otimes\psi}\)，
+Therefore, the level of finite part constants is strictly additive.Therefore, the non-zero value of\end{remark}
 
-\begin{proposition}[接口正规形：\texorpdfstring{$(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$}{(PROJ,Em,LIFT)} 的可归约顺序]\label{prop:pom-three-gen-interface-normal-form}
-在规则族 \ref{def:pom-three-gen-rewrite-rules} 下，任意三生成元投影词都可重写为如下“接口正规形”：
-$$
+\begin{proposition}[interface regular form: reducible order of \texorpdfstring{XPH0X}{(PROJ,Em,LIFT)}]\label{prop:pom-three-gen-interface-normal-form}Under the rule family \ref{def:pom-three-gen-rewrite-rules}, any three-generator projection word can be rewritten as the following "interface normal form":$$
 \boxed{\;
 \mathrm{LIFT}_G\ \circ\ \mathrm{PROJ}_u\ \circ\ E_m
 \;}
 $$
-并伴随一个异常签名输出 \(\mathsf{Anom}_G(K;\theta)\)（在存在非交换残差时非零）。
-进一步地，把该正规形接入注 \ref{rem:pom-zeta-normal-form} 的 \(\zeta\)/primitive/有限部编译约定，即得到一条从词法归一化到谱指纹核验的可执行判等流程。
-\end{proposition}
+and is accompanied by an exception signature output of \(\mathsf{Anom}_G(K;\theta)\) (non-zero in the presence of non-commutative residuals).Furthermore, by integrating this regular form into the \(\zeta\)/primitive/limited compilation convention of \ref{rem:pom-zeta-normal-form}, an executable judgment process from lexical normalization to spectral fingerprint verification is obtained.\end{proposition}
 
 \begin{proof}
-规则 \((\mathrm{RPROJ}),(\mathrm{RLIFT}),(\mathrm{RE})\) 消去同类门的冗余复合；规则 \((\mathrm{RPL})\) 把 \(\mathrm{PROJ}_u\) 交换到 lift 的右侧；而 \(E_m\) 与 lift 的交换由命题 \ref{prop:pom-em-lift-residual-swap} 给出（零异常时为严格交换，否则输出异常签名承载残差）。
-因此可把任意词排序为 \(\mathrm{LIFT}\to \mathrm{PROJ}\to E\) 的形式；再用合并律压缩多次出现的同类门，即得所示正规形与伴随异常签名。证毕。
-\end{proof}
+RulesTherefore, any words can be sorted into the form of Certification completed.\end{proof}
 
-\subsubsection{高阶交叉异常与轴可分解严格化：Möbius 完备分解}\label{subsec:pom-rlift-higher-cross-anom}
-
-注 \ref{rem:pom-rlift-cross-anom-test} 给出了两体交叉异常 \(\Delta^{\mathrm{sep}}\) 作为 \((\mathrm{RLIFT})\) 独立性的必要审计条件。
-当 lift 的并置轴数 \(k\ge 3\) 时，为得到\emph{充分且必要}的可计算判别，需要引入布尔子格上的全阶异常族 \(\{\Delta_S\}_{|S|\ge 2}\)，并将“Euler/直积可分解性”严格化为一条 Möbius 反演恒等式。
-
-\begin{definition}[高阶交叉异常族 \texorpdfstring{$\Delta_S$}{DeltaS}]\label{def:pom-higher-cross-anomaly}
-取 \(k\ge 2\)，令 \(G_1,\dots,G_k\) 为有限阿贝尔群，记
-\[
+\subsubsection{Higher-order crossing anomalies and axis-decomposable rigor: Möbius complete decomposition}\label{subsec:pom-rlift-higher-cross-anom}
+Note \ref{rem:pom-rlift-cross-anom-test} gives the two-body crossover anomaly \(\Delta^{\mathrm{sep}}\) as a necessary audit condition for the independence of \((\mathrm{RLIFT})\).When the number of collocated axes of lift is \(k\ge 3\), in order to obtain the {sufficient and necessary} computable discrimination of
+\begin{definition}[High-order crossover anomaly family \texorpdfstring{XPH0X}{DeltaS}]\label{def:pom-higher-cross-anomaly}Take \(k\ge 2\) and let \(G_1,\dots,G_k\) be the finite Abelian group, denoted\[
 G:=\prod_{i=1}^k G_i,
 \qquad
 \widehat G\cong \prod_{i=1}^k \widehat{G_i}.
 \]
-对每个取样参数 \(\theta\) 与每个 \(\chi\in\widehat G\)，设已给定 Abel/Hadamard 有限部常数 \(\log\mathfrak{M}_{\chi}(\theta)\in\RR\)，并约定归一化
-\[
+For each sampling parameter \(\theta\) and each \(\chi\in\widehat G\), it is assumed that the Abel/Hadamard finite part constant \(\log\mathfrak{M}_{\chi}(\theta)\in\RR\) is given, and the normalization is agreed\[
 \log\mathfrak{M}_{\chi^0}(\theta)=0,
 \qquad
 \chi^0:=(\chi_{1,0},\dots,\chi_{k,0})
 \]
-（各坐标的平凡角色）。
-令 \([k]:=\{1,\dots,k\}\)。
-对任意非空子集 \(S\subseteq[k]\) 与任意子元组 \(\chi_S=(\chi_i)_{i\in S}\in\prod_{i\in S}\widehat{G_i}\)，定义 \(S\)-阶交叉异常为
-\[
+(Ordinary role of each coordinate).Order \([k]:=\{1,\dots,k\}\).For any non-empty subset \(S\subseteq[k]\) and any sub-tuple \(\chi_S=(\chi_i)_{i\in S}\in\prod_{i\in S}\widehat{G_i}\), define the \(S\)-order crossover anomaly as\[
 \Delta_S(\chi_S;\theta)
 :=\sum_{T\subseteq S}(-1)^{|S|-|T|}\,\log\mathfrak{M}_{\chi^{(T)}}(\theta),
 \]
-其中 \(\chi^{(T)}\in\widehat G\) 表示：当 \(i\in T\) 时第 \(i\) 坐标取 \(\chi_i\)，当 \(i\notin T\) 时第 \(i\) 坐标取平凡角色 \(\chi_{i,0}\)。
-当 \(|S|=2\) 时，该定义与注 \ref{rem:pom-rlift-cross-anom-test} 的 \(\Delta^{\mathrm{sep}}\) 一致（在 \(\log\mathfrak{M}_{\chi^0}=0\) 的归一化下）。
-\end{definition}
+Among them, \(\chi^{(T)}\in\widehat G\) means: when \(i\in T\), the \(i\) coordinate takes \(\chi_i\), and when \(i\notin T\), the \(i\) coordinate takes the ordinary character \(\chi_{i,0}\).When \(|S|=2\), this definition is consistent with \(\Delta^{\mathrm{sep}}\) annotating \ref{rem:pom-rlift-cross-anom-test} (under normalization by \(\log\mathfrak{M}_{\chi^0}=0\)).\end{definition}
 
-\begin{theorem}[Möbius 完备分解]\label{thm:pom-mobius-complete-decomposition}
-在定义 \ref{def:pom-higher-cross-anomaly} 的设定下，对任意 \(\chi=(\chi_1,\dots,\chi_k)\in\widehat G\) 与任意 \(\theta\)，成立恒等式
-\[
+\begin{theorem}[Möbius complete decomposition]\label{thm:pom-mobius-complete-decomposition}Under the setting of defining \ref{def:pom-higher-cross-anomaly}, for any \(\chi=(\chi_1,\dots,\chi_k)\in\widehat G\) and any \(\theta\), the identity is established\[
 \boxed{\;
 \log\mathfrak{M}_\chi(\theta)
 =\sum_{\varnothing\neq S\subseteq[k]}\Delta_S(\chi_S;\theta)\; }.
 \]
 \end{theorem}
 \begin{proof}
-该恒等式等价于布尔格点上的 Möbius 反演。
-令 \(f(\chi):=\log\mathfrak{M}_\chi(\theta)\)（固定 \(\theta\)）。
-对每个坐标 \(i\in[k]\) 定义差分算子
-\[
+This identity is equivalent to the Möbius inversion at Boolean points.Let \(f(\chi):=\log\mathfrak{M}_\chi(\theta)\) (fix \(\theta\)).Define the difference operator for each coordinate \(i\in[k]\)\[
 (\delta_i f)(\chi):=f(\chi)-f(\chi^{(i\mapsto 0)}),
 \]
-并对任意非空 \(S\subseteq[k]\) 令 \(\delta_S:=\prod_{i\in S}\delta_i\)（算子可交换）。
-展开可得
-\(
+And let \(\delta_S:=\prod_{i\in S}\delta_i\) for any non-empty \(S\subseteq[k]\) (the operator is commutative).Expand available\(
 (\delta_S f)(\chi^{(S)})=\sum_{T\subseteq S}(-1)^{|S|-|T|}f(\chi^{(T)})
 \)，
-故 \(\Delta_S(\chi_S;\theta)=(\delta_S f)(\chi^{(S)})\)。
-另一方面，
-\[
+Therefore \(\Delta_S(\chi_S;\theta)=(\delta_S f)(\chi^{(S)})\).on the other hand,\[
 \mathrm{Id}=\prod_{i=1}^k\bigl((\mathrm{Id}-\delta_i)+\delta_i\bigr)
 =\sum_{S\subseteq[k]}\delta_S\prod_{i\notin S}(\mathrm{Id}-\delta_i).
 \]
-将其作用于 \(f\) 并在 \(\chi\) 处取值；利用 \(f(\chi^0)=0\) 及 \(\prod_{i\notin S}(\mathrm{Id}-\delta_i)\) 的逐坐标归零效应，得到
-\(
+Apply it to \(f\) and take the value at \(\chi\); using the coordinate-by-coordinate zeroing effect of \(f(\chi^0)=0\) and \(\prod_{i\notin S}(\mathrm{Id}-\delta_i)\), we get\(
 f(\chi)=\sum_{\varnothing\neq S\subseteq[k]}(\delta_S f)(\chi^{(S)})
 \)，
-即所示分解。证毕。
-\end{proof}
+That is the decomposition shown. Certification completed.\end{proof}
 
-\begin{theorem}[轴可分解严格化的充要条件]\label{thm:pom-axis-decomposability-iff}
-在上述设定下，以下两条件等价：
-\begin{enumerate}
-  \item \textbf{（轴可分解性）}存在函数族 \(L_i:\widehat{G_i}\to\RR\)（满足 \(L_i(\chi_{i,0})=0\)），使得对一切 \(\chi\in\widehat G\) 有
-  \[
+\begin{theorem}[Necessary and sufficient conditions for axis decomposability and strictness]\label{thm:pom-axis-decomposability-iff}Under the above settings, the following two conditions are equivalent:\begin{enumerate}
+\item  \[
   \log\mathfrak{M}_{\chi}(\theta)=\sum_{i=1}^k L_i(\chi_i).
   \]
-  \item \textbf{（高阶交叉异常全消失）}对一切 \(|S|\ge 2\) 与一切 \(\chi_S\)，有
-  \[
+\item  \[
   \Delta_S(\chi_S;\theta)=0.
   \]
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-\((1)\Rightarrow(2)\)：若 \(\log\mathfrak{M}_\chi(\theta)=\sum_i L_i(\chi_i)\)，则当 \(|S|\ge 2\) 时，
-\(\Delta_S\) 是对至少两个坐标的差分，必为零。
-\par
-\((2)\Rightarrow(1)\)：由定理 \ref{thm:pom-mobius-complete-decomposition}，
-\[
+\((1)\Rightarrow(2)\): If \(\log\mathfrak{M}_\chi(\theta)=\sum_i L_i(\chi_i)\), then when \(|S|\ge 2\),\(\Delta_S\) is the difference of at least two coordinates and must be zero.\par
+\((2)\Rightarrow(1)\): From theorem \ref{thm:pom-mobius-complete-decomposition},\[
 \log\mathfrak{M}_\chi(\theta)=\sum_{i=1}^k\Delta_{\{i\}}(\chi_i;\theta)+\sum_{|S|\ge 2}\Delta_S(\chi_S;\theta).
 \]
-在 (2) 下第二项消失，令 \(L_i(\chi_i):=\Delta_{\{i\}}(\chi_i;\theta)\) 即得 (1)。证毕。
-\end{proof}
+Under (2) the second term disappears, let \(L_i(\chi_i):=\Delta_{\{i\}}(\chi_i;\theta)\) we get (1). Certification completed.\end{proof}
 
-\begin{proposition}[两体核验不充分：存在纯三体耦合]\label{prop:pom-pairwise-cross-anom-insufficient}
-当 \(k\ge 3\) 时，仅检验所有两体交叉异常 \(\Delta_{\{i,j\}}\equiv 0\) 不能推出轴可分解性。
-\end{proposition}
+\begin{proposition}[Insufficient two-body verification: pure three-body coupling exists]\label{prop:pom-pairwise-cross-anom-insufficient}When \(k\ge 3\), only testing all two-body crossover anomalies \(\Delta_{\{i,j\}}\equiv 0\) cannot deduce axis decomposability.\end{proposition}
 \begin{proof}
-取每个 \(\widehat{G_i}\) 含有一个非平凡元素 \(a_i\)，并在固定 \(\theta\) 下定义函数
-\[
+Take each \(\widehat{G_i}\) containing a non-trivial element \(a_i\) and define a function under fixed \(\theta\)\[
 \log\mathfrak{M}_{\chi}(\theta):=
 \begin{cases}
 1, & \chi=(a_1,a_2,a_3,\chi_{4,0},\dots,\chi_{k,0}),\\
-0, & \text{其他情形}.
-\end{cases}
+0, & \text{other situations}.\end{cases}
 \]
-则任意两体截面（其余坐标取平凡）上函数恒为 \(0\)，从而 \(\Delta_{\{i,j\}}\equiv 0\)；
-但 \(\Delta_{\{1,2,3\}}(a_1,a_2,a_3;\theta)=1\neq 0\)，故由定理 \ref{thm:pom-axis-decomposability-iff} 不可分解。证毕。
-\end{proof}
+Then the function on any two-body cross-section (the rest of the coordinates are trivial) is always \(0\), so \(\Delta_{\{i,j\}}\equiv 0\);But \(\Delta_{\{1,2,3\}}(a_1,a_2,a_3;\theta)=1\neq 0\), therefore \ref{thm:pom-axis-decomposability-iff} cannot be decomposed by the theorem. Certification completed.\end{proof}
 
-\begin{remark}[与素数寄存器极限的对齐：Euler 可分解性的可审计判别]\label{rem:pom-higher-cross-anom-euler}
-在 prime-register 的极限口径 \(\widehat{\ZZ}\cong\prod_p\ZZ_p\)（定义 \ref{def:pom-profinite}）下，
-若把 \(\log\mathfrak{M}\) 视为多轴（多素数或多直积分量）并置 lift 的常数层载荷，
-则定理 \ref{thm:pom-axis-decomposability-iff} 给出的“全阶交叉异常全消失”
-正是将合并律严格化为直积（Euler 型限制积因子化）而\emph{不引入} cocycle/半直积等扩张数据的充要条件；
-命题 \ref{prop:pom-pairwise-cross-anom-insufficient} 则说明两体审计 \(\Delta^{\mathrm{sep}}\) 在多轴情形下仅为必要条件。
-\end{remark}
+\begin{remark} [Alignment with the Prime Register Limit: Auditable Judgments of Euler Decomposability] \label{rem:pom-higher-cross-anom-euler}At the prime-register's limit caliber \(\widehat{\ZZ}\cong\prod_p\ZZ_p\) (definition \ref{def:pom-profinite}),If \(\log\mathfrak{M}\) is regarded as a constant layer load with multiple axes (multiple primes or multiple direct integrals) and lift,Then the "all-order crossover anomalies disappear" given by theorem \ref{thm:pom-axis-decomposability-iff}It is the necessary and sufficient condition to strictly transform the coalescence law into a direct product (Euler type restricted product factorization) without \emph{not introducing} cocycle/semi-direct product and other expanded data;The proposition \ref{prop:pom-pairwise-cross-anom-insufficient} shows that the two-body audit \(\Delta^{\mathrm{sep}}\) is only a necessary condition in the multi-axis case.\end{remark}
 \input{parts/subsec__pom-mom-rewrite-normal}

@@ -1,634 +1,351 @@
-\subsection{模理论口径的视界零知识：Takesaki 判据、有限指数界与非交换行列式 \texorpdfstring{$\zeta$}{zeta}}\label{subsec:op-algebra-modular-zk-index-fkdet}
-本小节将正文“视界零知识（相对独立延拓）”的测度论定义（定义 \ref{def:xi-horizon-perfect-zero-knowledge} 与定理 \ref{thm:xi-horizon-perfect-zk-equivalences}）
-提升到 von Neumann 代数与 Tomita--Takesaki 模理论框架，并指出：
-视界零知识可被严格等价地刻画为一个\emph{态保持条件期望}的存在性；其存在性又等价于可见子代数对参考态模流的不变性（Takesaki 判据）。
-进一步地，在有限指数子因子包含下，Pimsner--Popa 不等式把“纤维内不可区分见证数”以 Jones 指数精确量化，从而给出零知识条件下健全性误差的不可改进下界。
-最后，引入 Fuglede--Kadison 行列式作为“视界 \(\zeta\) 函数”的非交换定义，并给出其与可见谱共振的零点对应。
-
-\paragraph{设置：体代数、可见子代数与转录信道}
-令 \(\mathcal{M}\) 为有限 von Neumann 代数，\(\varphi\) 为其上的忠实正规态；
-令 \(\mathcal{N}\subset \mathcal{M}\) 为“视界可见”子代数（可见因子）。
-令 \(\mathcal{T}\) 为转录代数（可取为任意 von Neumann 代数），并将一次协议转录抽象为正规完全正映射（normal u.c.p.\ channel）
-\[
+\subsection{Zero-knowledge horizon in modular theory caliber: Takesaki criterion, finite exponential bounds and non-commutative determinants \texorpdfstring{XPH0X}{zeta}}\label{subsec:op-algebra-modular-zk-index-fkdet}This section defines the measure theory of the main text "Horizon Zero Knowledge (Relatively Independent Extension)" (definition \ref{def:xi-horizon-perfect-zero-knowledge} and theorem \ref{thm:xi-horizon-perfect-zk-equivalences})Upgrade to the von Neumann algebra and Tomita--Takesaki module theory framework, and point out:The zero knowledge of the horizon can be strictly equivalently characterized as the existence of anFurthermore, under the inclusion of finite exponential sub-factors, the Pimsner-Popa inequality accurately quantifies the "number of indistinguishable witnesses within the fiber" with the Jones index, thereby giving an irreducible lower bound for the soundness error under zero-knowledge conditions.Finally, the Fuglede--Kadison determinant is introduced as the non-commutative definition of the "horizon \(\zeta\) function", and its zero-point correspondence with the visible spectrum resonance is given.
+\paragraph{Settings: Volume Algebra, Visible Sub-Algebra, and Transcription Channel}Let \(\mathcal{M}\) be a finite von Neumann algebra, and \(\varphi\) be its faithful normal state;Let \(\mathcal{N}\subset \mathcal{M}\) be the "horizon visible" subalgebra (visibility factor).Let\[
 \Phi:\mathcal{M}\to\mathcal{T}.
 \]
-在该口径下，“仅依赖可见因子”的模拟器应当是一个只读取 \(\mathcal{N}\) 的信道。
-
-\begin{definition}[算子代数口径的视界完美零知识]\label{def:op-algebra-horizon-perfect-zk}
-称转录信道 \(\Phi:\mathcal{M}\to\mathcal{T}\) 相对于可见子代数 \(\mathcal{N}\) \textbf{完美零知识}，
-若存在一个 \(\varphi\)-保持的条件期望 \(E:\mathcal{M}\to\mathcal{N}\) 与一个正规完全正映射 \(S:\mathcal{N}\to\mathcal{T}\)，使得
-\begin{equation}\label{eq:op-algebra-zk-factorization}
+At this caliber, an emulator that "relies only on visible factors" would be a channel that only reads \(\mathcal{N}\).
+\begin{definition}[Perfect zero-knowledge horizon of operator algebra]\label{def:op-algebra-horizon-perfect-zk}We call the transcription channel \(\Phi:\mathcal{M}\to\mathcal{T}\) relative to the number of visible subalgebras \(\mathcal{N}\) \textbf{perfect zero knowledge},If there exists an \(\varphi\)-preserving conditional expectation \(E:\mathcal{M}\to\mathcal{N}\) with a regular fully positive mapping \(S:\mathcal{N}\to\mathcal{T}\) such that\begin{equation}\label{eq:op-algebra-zk-factorization}
 \boxed{\;\Phi=S\circ E.\;}
 \end{equation}
-此时 \(E\) 可视为“视界粗粒化”，而 \(S\) 为“仅依赖可见因子”的模拟器。
-\end{definition}
+At this time, \(E\) can be regarded as a "horizon coarse-graining", while \(S\) is a simulator that "only relies on visible factors".\end{definition}
 
-\begin{remark}[与正文测度论定义的对应]\label{rem:op-algebra-zk-vs-measure}
-当 \(\mathcal{M}=L^\infty(\Omega,\mu)\)、\(\mathcal{N}=L^\infty(Y,\nu)\) 且 \(E\) 取为条件期望 \(\mathbb{E}[\cdot\mid Y]\) 时，
-\eqref{eq:op-algebra-zk-factorization} 退化为定义 \ref{def:xi-horizon-perfect-zero-knowledge} 的“转录核只依赖 \(y\)”；
-Takesaki 判据则给出：在非交换设定下，\(\varphi\)-保持条件期望存在性由模流不变性控制（定理 \ref{thm:op-algebra-takesaki-criterion}）。
-\end{remark}
+\begin{remark}[Correspondence to the definition of measure theory in the text]\label{rem:op-algebra-zk-vs-measure}When \(\mathcal{M}=L^\infty(\Omega,\mu)\), \(\mathcal{N}=L^\infty(Y,\nu)\) and \(E\) are taken as the conditional expectation \(\mathbb{E}[\cdot\mid Y]\),\eqref{eq:op-algebra-zk-factorization} degenerates into the “transcriptional core dependent only on \(y\)” that defines \ref{def:xi-horizon-perfect-zero-knowledge};Takesaki's criterion gives: In the non-commutative setting, the expected existence of the \(\varphi\)-holding condition is controlled by the mold flow invariance (Theorem \ref{thm:op-algebra-takesaki-criterion}).\end{remark}
 
-\paragraph{Takesaki 不变性与态保持条件期望存在}
-\begin{theorem}[Takesaki 判据：模群不变性 \texorpdfstring{$\Longleftrightarrow$}{<->} \(\varphi\)-保持条件期望]\label{thm:op-algebra-takesaki-criterion}
-令 \(\mathcal{M}\) 为 von Neumann 代数，\(\varphi\) 为其忠实正规态，\(\sigma_t^\varphi\) 为对应的模自同构群。
-对包含 \(\mathcal{N}\subset\mathcal{M}\)，下列命题等价：
-\begin{enumerate}
-  \item 存在 \(\varphi\)-保持的正规条件期望 \(E:\mathcal{M}\to\mathcal{N}\)，即 \(E\) 为 \(\mathcal{N}\)-双模（bimodular）且 \(\varphi\circ E=\varphi\)；
-  \item \(\mathcal{N}\) 在模流下不变：
-  \begin{equation}\label{eq:op-algebra-modular-invariance}
+\paragraph{Takesaki invariance and state-preserving conditions are expected to exist}\begin{theorem}[Takesaki criterion: module group invariance \texorpdfstring{XPH0X}{<->} \(\varphi\)-preserving conditional expectation]\label{thm:op-algebra-takesaki-criterion}Let \(\mathcal{M}\) be the von Neumann algebra, \(\varphi\) its faithful normal state, and \(\sigma_t^\varphi\) the corresponding modular automorphism group.For inclusion \(\mathcal{N}\subset\mathcal{M}\), the following propositions are equivalent:\begin{enumerate}
+\item exists \(\varphi\)-preserved normal condition expectation \(E:\mathcal{M}\to\mathcal{N}\), that is, \(E\) is \(\mathcal{N}\)-bimodular and \(\varphi\circ E=\varphi\);\item \(\mathcal{N}\) remains unchanged under mold flow:  \begin{equation}\label{eq:op-algebra-modular-invariance}
   \boxed{\;\sigma_t^\varphi(\mathcal{N})=\mathcal{N}\qquad(\forall t\in\RR).\;}
   \end{equation}
 \end{enumerate}
-并且在上述条件成立时，
-相对于 \(\mathcal{N}\) 的“完美零知识转录信道”恰为
-\[
-\bigl\{\,\Phi:\mathcal{M}\to\mathcal{T}\ \text{正规完全正}:\ \exists\,S:\mathcal{N}\to\mathcal{T}\ \text{s.t.}\ \Phi=S\circ E\,\bigr\}.
-\]
+And when the above conditions are met,Relative to \(\mathcal{N}\)’s “perfect zero-knowledge transcription channel”\[
+\bigl\{\,\Phi:\mathcal{M}\toXPH1X\\]
 \end{theorem}
 
 \begin{proof}
-\((1)\Leftrightarrow(2)\) 是 Takesaki 条件期望理论中的核心判据；
-在一般态的粗粒化（coarse-graining）框架下可参见 Accardi--Cecchini 的系统化表述 \cite{AccardiCecchini1982ConditionalExpectationsTakesaki}，
-亦可追溯至 Takesaki 的原始工作 \cite{Takesaki1972ConditionalExpectationsVNA}。
-最后一条刻画则由定义 \ref{def:op-algebra-horizon-perfect-zk} 的“因子闭包”语义直接给出：给定 \(E\)，任意 \(S\) 的后合成得到零知识信道；反向由 \(\Phi=S\circ E\) 即得。
-证毕。
-\end{proof}
+\((1)\Leftrightarrow(2)\) is the core criterion in Takesaki’s conditional expectation theory;In the framework of coarse-graining of general states, see Accardi--Cecchini's systematic expression \cite{AccardiCecchini1982ConditionalExpectationsTakesaki},Also harking back to Takesaki's original work \cite{Takesaki1972ConditionalExpectationsVNA}.The last characterization is directly given by the "factor closure" semantics that define \ref{def:op-algebra-horizon-perfect-zk}: given \(E\), the post-synthesis of any \(S\) results in a zero-knowledge channel; the reverse is obtained by \(\Phi=S\circ E\).Certification completed.\end{proof}
 
-\begin{remark}[零知识的算子代数等价表述]\label{rem:op-algebra-zk-as-fixed-subalgebra}
-定理 \ref{thm:op-algebra-takesaki-criterion} 表明：“视界零知识”可等价地看作
-\(\mathcal{N}\) 是 \((\mathcal{M},\varphi)\) 的模群不变子代数，从而存在态保持条件期望 \(E\)。
-因此，零知识并非附加的概率论假设，而是一个\emph{可见子代数的模理论不变量}；
-这为正文将“可见闭包”与“功能方程型对称”（例如 \eqref{eq:xi-hzom-detailed-balance}）并置的做法提供了非交换来源。
-\end{remark}
+\begin{remark}[Zero-knowledge operator algebraic equivalent expression]\label{rem:op-algebra-zk-as-fixed-subalgebra}Theorem \ref{thm:op-algebra-takesaki-criterion} shows that: "horizon zero knowledge" can be equivalently regarded as\(\mathcal{N}\) is the modular group invariant subalgebra of \((\mathcal{M},\varphi)\), so there is a state-preserving conditional expectation \(E\).Therefore, zero knowledge is not an additional probability theory assumption, but an \emph {modular theoretical invariant of visible subalgebra};This provides a non-commutative source for the text's juxtaposition of "visible closures" with "functional equation-type symmetries" such as \eqref{eq:xi-hzom-detailed-balance}.\end{remark}
 
-\paragraph{Pimsner--Popa 指数与不可区分见证数上界}
-下面在 \(\mathcal{M}\) 为 \(\mathrm{II}_1\) 因子且 \(\mathcal{N}\subset\mathcal{M}\) 为有限指数子因子时，
-用 Pimsner--Popa 不等式把“视界上不可区分的纤维大小”精确量化为 Jones 指数。
-
-\begin{theorem}[Pimsner--Popa 不等式与不可区分见证数界]\label{thm:op-algebra-pimsner-popa-witness-bound}
-设 \(\mathcal{M}\) 为 \(\mathrm{II}_1\) 因子，\(\mathcal{N}\subset\mathcal{M}\) 为子因子，且存在迹保持正规条件期望 \(E:\mathcal{M}\to\mathcal{N}\) 并具有有限 Jones 指数 \([\mathcal{M}:\mathcal{N}]<\infty\)。
-则存在最优常数
-\[
+\paragraph{Pimsner--Popa index and the upper bound of the number of indistinguishable witnesses}Below, when \(\mathcal{M}\) is the \(\mathrm{II}_1\) factor and \(\mathcal{N}\subset\mathcal{M}\) is the finite exponential subfactor,The "indistinguishable fiber size on the horizon" is accurately quantified as the Jones index using the Pimsner--Popa inequality.
+\begin{theorem}[Pimsner--Popa Inequalities and Indistinguishable Witness Number Boundaries]\label{thm:op-algebra-pimsner-popa-witness-bound}Let \(\mathcal{M}\) be the factor of \(\mathrm{II}_1\), \(\mathcal{N}\subset\mathcal{M}\) be the subfactor, and there exists a trace-preserving normal condition expectation \(E:\mathcal{M}\to\mathcal{N}\) with finite Jones exponent \([\mathcal{M}:\mathcal{N}]<\infty\).Then there is an optimal constant\[
 \lambda=[\mathcal{M}:\mathcal{N}]^{-1}
 \]
-使对所有正元 \(x\in\mathcal{M}_+\) 有
-\begin{equation}\label{eq:op-algebra-pimsner-popa}
+Make \(x\in\mathcal{M}_+\) have\begin{equation}\label{eq:op-algebra-pimsner-popa}
 \boxed{\;E(x)\ \ge\ \lambda\,x.\;}
 \end{equation}
-此外，若存在 \(k\) 个两两正交投影 \(\{p_i\}_{i=1}^k\subset\mathcal{M}\) 满足
-\begin{equation}\label{eq:op-algebra-indist-projections}
+In addition, if there are \(k\) pairwise orthogonal projections \(\{p_i\}_{i=1}^k\subset\mathcal{M}\) satisfying\begin{equation}\label{eq:op-algebra-indist-projections}
 \boxed{\;E(p_i)=k^{-1}1_{\mathcal{N}}\qquad(\forall i),\;}
 \end{equation}
-则必有
-\begin{equation}\label{eq:op-algebra-k-index-bound}
+then there must be\begin{equation}\label{eq:op-algebra-k-index-bound}
 \boxed{\;k\ \le\ [\mathcal{M}:\mathcal{N}].\;}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-\eqref{eq:op-algebra-pimsner-popa} 及 \(\lambda=[\mathcal{M}:\mathcal{N}]^{-1}\) 的刻画是 Pimsner--Popa 的基本结果，参见 \cite{PimsnerPopa1986EntropyIndexSubfactors}。
-对 \eqref{eq:op-algebra-k-index-bound}：
-由 \eqref{eq:op-algebra-pimsner-popa} 取 \(x=p_i\) 并结合 \eqref{eq:op-algebra-indist-projections} 得
-\(
+The characterizations of \eqref{eq:op-algebra-pimsner-popa} and \(\lambda=[\mathcal{M}:\mathcal{N}]^{-1}\) are basic results of Pimsner--Popa, see \cite{PimsnerPopa1986EntropyIndexSubfactors}.For \eqref{eq:op-algebra-k-index-bound}:Take \(x=p_i\) from \eqref{eq:op-algebra-pimsner-popa} and combine it with \eqref{eq:op-algebra-indist-projections} to get\(
 k^{-1}1_{\mathcal{N}}=E(p_i)\ge \lambda p_i
 \)，
-于是 \(k^{-1}\ge\lambda\)，即 \(k\le \lambda^{-1}=[\mathcal{M}:\mathcal{N}]\)。证毕。
-\end{proof}
+So \(k^{-1}\ge\lambda\) is \(k\le \lambda^{-1}=[\mathcal{M}:\mathcal{N}]\). Certification completed.\end{proof}
 
-\begin{corollary}[零知识健全性的指数下界（不可改进的尺度）]\label{cor:op-algebra-soundness-lower-bound-index}
-在定理 \ref{thm:op-algebra-pimsner-popa-witness-bound} 的设定下，
-若验证器的可见接口被限制在 \(\mathcal{N}\)（即其一切判定仅依赖 \(E(x)\in\mathcal{N}\)），
-则任何面对 \eqref{eq:op-algebra-indist-projections} 这类“纤维内不可区分”见证集合的策略都无法把最坏情形错误率压到
-\([\mathcal{M}:\mathcal{N}]^{-1}\) 之下。
-更精确地，若不可区分集合达到最大规模 \(k=[\mathcal{M}:\mathcal{N}]\)，则最坏情形不可区分率至少为 \(1/k\)，从而有尺度下界
-\[
+\begin{corollary}[Exponential lower bound for zero-knowledge soundness (an unimprovable scale)]\label{cor:op-algebra-soundness-lower-bound-index}Under the setting of theorem \ref{thm:op-algebra-pimsner-popa-witness-bound},If the validator's visible interface is restricted to \(\mathcal{N}\) (that is, all its decisions rely only on \(E(x)\in\mathcal{N}\)),Then any strategy facing "in-fiber indistinguishable" witness sets such as \eqref{eq:op-algebra-indist-projections} cannot reduce the worst-case error rate toUnder \([\mathcal{M}:\mathcal{N}]^{-1}\).More precisely, if the indistinguishable set reaches the maximum size \(k=[\mathcal{M}:\mathcal{N}]\), then the worst-case indistinguishability rate is at least \(1/k\), so there is a scale lower bound\[
 \boxed{\;\varepsilon_{\mathrm{sound}}\ \gtrsim\ [\mathcal{M}:\mathcal{N}]^{-1}.\;}
 \]
 \end{corollary}
 
-\begin{corollary}[近零知识—健全性—纤维规模的不可突破折衷]\label{cor:op-algebra-nearzk-soundness-fiber-tradeoff}
-在定理 \ref{thm:op-algebra-pimsner-popa-witness-bound} 的设定下，设存在 \(k\) 个两两正交投影 \(\{p_i\}_{i=1}^k\subset\mathcal{M}\) 满足
-\[
+\begin{corollary}[Near Zero Knowledge—Soundness—Unbreakable Tradeoffs at Fiber Scale]\label{cor:op-algebra-nearzk-soundness-fiber-tradeoff}Under the setting of theorem \ref{thm:op-algebra-pimsner-popa-witness-bound}, suppose there are \(k\) pairwise orthogonal projections \(\{p_i\}_{i=1}^k\subset\mathcal{M}\) that satisfy\[
 E(p_i)=k^{-1}1_{\mathcal{N}}\qquad(1\le i\le k),
 \]
-从而在视界因子 \(\mathcal{N}\) 上完全不可区分。
-考虑任意（交互或非交互）证明系统，其转录随机元记为 \(\tau\)。
-若系统满足：
-\begin{enumerate}
-  \item \(\varepsilon\)-健全性：最坏情形伪造成功率不超过 \(\varepsilon\)；
-  \item \(\delta\)-近零知识：存在仅依赖视界实例的模拟分布 \(S\)，使对每个 \(i\) 都有
-  \(d_{\mathrm{TV}}(\mathsf{Law}(\tau\mid p_i),S)\le \delta\)；
+Thus completely indistinguishable at the horizon factor \(\mathcal{N}\).Consider an arbitrary (interactive or non-interactive) proof system whose transcribed random element is denoted by \(\tau\).If the system satisfies:\begin{enumerate}
+\item \(\varepsilon\)-Soundness: The worst-case forgery success rate does not exceed \(\varepsilon\);\item \(\delta\) - Near-zero knowledge: There exists a simulation distribution  \(d_{\mathrm{TV}}(\mathsf{Law}(\tau\mid p_i),S)\le \delta\)；
 \end{enumerate}
-则必有硬约束
-\[
+then there must be hard constraints\[
 \boxed{\;\varepsilon\ \ge\ \frac{1-\delta}{k}.\;}
 \]
-等价地，若 \(\varepsilon<1/k\) 则必有 \(\delta\ge 1-k\varepsilon\)。
-\end{corollary}
-\begin{proof}[证明要点]
-由 \(\delta\)-近零知识，对任意验证谓词 \(\mathsf{Acc}=\mathsf{Acc}(\tau)\in[0,1]\) 有
-\(
+Equivalently, if \(\varepsilon<1/k\) then there must be \(\delta\ge 1-k\varepsilon\).\end{corollary}
+\begin{proof}[Points of Proof]By \(\delta\)-near zero knowledge, for any verification predicate \(\mathsf{Acc}=\mathsf{Acc}(\tau)\in[0,1]\) we have\(
 \bigl|\mathbb{E}[\mathsf{Acc}\mid p_i]-\mathbb{E}_S[\mathsf{Acc}]\bigr|\le \delta
 \)。
-因此，若存在某个 \(i\) 使 \(\mathbb{E}[\mathsf{Acc}\mid p_i]\) 接近 \(1\)，则无需访问不可见纤维的模拟器亦可把接受率推至 \(1-\delta\)，从而健全性误差不可能小于 \(1-\delta\)。
-另一方面，若验证器试图在视界不可区分的 \(k\) 条互斥纤维上同时压低接受率，则其最坏情形错误率至少为均匀先验下的平均错误率下界；结合不可区分纤维的规模约束 \(k\)（定理 \ref{thm:op-algebra-pimsner-popa-witness-bound}），得到 \(\varepsilon\ge(1-\delta)/k\)。
-严格推导可视为“多假设检验的 TV-稳定下界”在本节不可区分纤维口径下的直接应用。证毕。
-\end{proof}
+Therefore, if there is some \(i\) that makes \(\mathbb{E}[\mathsf{Acc}\mid p_i]\) close to \(1\), then a simulator without access to invisible fibers can push the acceptance rate to \(1-\delta\), so that the soundness error cannot be smaller than \(1-\delta\).On the other hand, if the verifier tries to simultaneously suppress the acceptance rate on \(k\) mutually exclusive fibers with indistinguishable horizons, its worst-case error rate is at least the lower bound of the average error rate under the uniform prior; combined with the scale constraint \(k\) of indistinguishable fibers (theorem \ref{thm:op-algebra-pimsner-popa-witness-bound}), we get \(\varepsilon\ge(1-\delta)/k\).The strict derivation can be regarded as the direct application of "TV-stable lower bound for multiple hypothesis testing" under the indistinguishable fiber diameter in this section. Certification completed.\end{proof}
 
-\begin{proposition}[交叉视界的指数次乘性：有限指数条件期望的普适不等式]\label{prop:op-algebra-index-submultiplicativity-commuting-square}
-设 \(\mathcal{A}\) 为有限 von Neumann 代数，\(\mathcal{B}_1,\mathcal{B}_2\subseteq\mathcal{A}\) 为子代数。
-设存在忠实正规条件期望
-\(
+\begin{proposition}[Exponential multiplicative properties of cross horizons: universal inequalities of finite exponential conditional expectations]\label{prop:op-algebra-index-submultiplicativity-commuting-square}Let \(\mathcal{A}\) be a finite von Neumann algebra and \(\mathcal{B}_1,\mathcal{B}_2\subseteq\mathcal{A}\) be a subalgebra.Suppose there is a formal condition of fidelity expected\(
 E_i:\mathcal{A}\to\mathcal{B}_i
 \)
-（\(i=1,2\)）与
-\(
+(\(i=1,2\)) vs.\(
 E_{12}:\mathcal{A}\to\mathcal{B}_1\cap\mathcal{B}_2
-\)，并假设三者均具有有限 Pimsner--Popa 指数。
-若进一步满足交换方阵（commuting square）条件
-\[
+\), and assume that all three have finite Pimsner--Popa exponents.If the condition of commuting square is further satisfied\[
 \boxed{\;E_1E_2=E_2E_1=E_{12},\;}
 \]
-则恒有指数次乘性不等式
-\[
+Then there is always an exponential multiplicative inequality\[
 \boxed{\;\mathrm{Ind}(E_{12})\ \le\ \mathrm{Ind}(E_1)\,\mathrm{Ind}(E_2).\;}
 \]
-并且在“交换方阵且极小”意义下（即上述不等式取等号），交叉接口的指数缺口被两接口指数乘积完全封口。
-\end{proposition}
+And in the sense of "swapped square matrix and minimal" (that is, the above inequality takes the equal sign), the exponential gap of the cross interface is completely closed by the product of the exponentials of the two interfaces.\end{proposition}
 \begin{proof}
-由 Pimsner--Popa 不等式，存在最优常数 \(\lambda_i=\mathrm{Ind}(E_i)^{-1}\) 使得对一切正元 \(x\in\mathcal{A}_+\) 有 \(E_i(x)\ge \lambda_i x\)。
-在交换方阵下 \(E_{12}=E_1E_2\)，于是对 \(x\ge 0\) 有
-\[
+According to the Pimsner--Popa inequality, there is an optimal constant \(\lambda_i=\mathrm{Ind}(E_i)^{-1}\) such that for all positive elements \(x\in\mathcal{A}_+\) there is \(E_i(x)\ge \lambda_i x\).Under the exchange square matrix \(E_{12}=E_1E_2\), then for \(x\ge 0\) we have\[
 E_{12}(x)=E_1(E_2(x))\ \ge\ \lambda_1E_2(x)\ \ge\ \lambda_1\lambda_2\,x.
 \]
-因此 \(\mathrm{Ind}(E_{12})^{-1}\ge \lambda_1\lambda_2=\mathrm{Ind}(E_1)^{-1}\mathrm{Ind}(E_2)^{-1}\)，即得所述不等式。证毕。
-\end{proof}
+Therefore \(\mathrm{Ind}(E_{12})^{-1}\ge \lambda_1\lambda_2=\mathrm{Ind}(E_1)^{-1}\mathrm{Ind}(E_2)^{-1}\), we get the inequality. Certification completed.\end{proof}
 
-\begin{corollary}[两源独立性的指数判别：条件互信息下界化为对数指数缺口]\label{cor:op-algebra-cmi-lower-bound-by-index-gap}
-在命题 \ref{prop:op-algebra-index-submultiplicativity-commuting-square} 的设定下，取一忠实正规状态 \(\varphi\) 使得 \(E_1,E_2,E_{12}\) 均为 \(\varphi\)-保持。
-记 \(\mathcal{B}_0:=\mathcal{B}_1\cap\mathcal{B}_2\)，并令
-\(
+\begin{corollary}[Exponential discrimination of independence of two sources: lower bound of conditional mutual information into logarithmic exponential gap]\label{cor:op-algebra-cmi-lower-bound-by-index-gap}Under the setting of proposition \ref{prop:op-algebra-index-submultiplicativity-commuting-square}, take a faithful regular state \(\varphi\) so that \(E_1,E_2,E_{12}\) are all \(\varphi\)-maintained.Remember \(\mathcal{B}_0:=\mathcal{B}_1\cap\mathcal{B}_2\) and order\(
 I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)
 \)
-为相对于 \(\varphi\) 的（非交换）条件互信息（在有限维情形退化为 Shannon 条件互信息；一般情形可用 Araki 相对熵作标准推广）。
-则有严格下界
-\[
+is the (non-commutative) conditional mutual information relative tothen there is a strict lower bound\[
 \boxed{\;
 I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)
 \ \ge\
 \log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}
 \ \ge\ 0.\;}
 \]
-并且当且仅当包含形成极小交换方阵（即 \(E_1E_2=E_2E_1=E_{12}\) 且指数次乘性取等号）时，指数缺口为零等价于条件互信息为零，从而给出“二源独立性”的纯指数可判定准则。
-\end{corollary}
-\begin{proof}[证明要点]
-由强次可加性得 \(I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)\ge 0\)。
-另一方面，在有限指数口径下，Pimsner--Popa 常数为“不可区分见证数”的最优指数证书；将其与交换方阵的组合 \(E_{12}=E_1E_2\) 并置，可把条件互信息的缺口下界化为指数缺口 \(\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}\)。
-当交换方阵极小时，该缺口消失当且仅当两源在 \(\varphi\) 下相对于交叉可见因子 \(\mathcal{B}_0\) 条件独立，从而 \(I_\varphi=0\)。证毕。
-\end{proof}
+And if and only if the inclusion forms a minimal commutative square matrix (i.e.,\end{corollary}
+\begin{proof}[Points of Proof]From strong subadditivity we get \(I_\varphi(\mathcal{B}_1:\mathcal{B}_2\mid\mathcal{B}_0)\ge 0\).On the other hand, under the limited exponential caliber, the Pimsner--Popa constant is the optimal exponential certificate of the "indistinguishable witness number"; juxtaposing it with the combination of the exchange square matrix \(E_{12}=E_1E_2\) can lower the gap of the conditional mutual information into the exponential gap \(\log\frac{\mathrm{Ind}(E_1)\mathrm{Ind}(E_2)}{\mathrm{Ind}(E_{12})}\).When the exchange square matrix is ​​extremely small, this gap disappears if and only if the two sources are conditionally independent at \(\varphi\) with respect to the cross-visibility factor \(\mathcal{B}_0\), and thus \(I_\varphi=0\). Certification completed.\end{proof}
 
-\begin{proposition}[指数极值的实现与极值态结构：最大信息损失由最大纤维实现]\label{prop:op-algebra-index-extremal-entropy-loss-maxfiber}
-在附录 \ref{app:op-algebra-fold-subalgebra} 的有限维交换口径中，取折叠诱导的条件期望 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)（命题 \ref{prop:fold-conditional-expectation}），并记最大纤维多重度 \(D_m:=\max_{x\in X_m}d_m(x)\)。
-则 Pimsner--Popa 指数满足
-\[
+\begin{proposition}[Realization of exponential extreme values ​​and extreme state structure: maximum information loss is achieved by maximum fiber]\label{prop:op-algebra-index-extremal-entropy-loss-maxfiber}In the finite-dimensional exchange caliber of appendix \ref{app:op-algebra-fold-subalgebra}, take the folding-induced conditional expectation \(E_m:\mathcal{A}_m\to\mathcal{B}_m\) (proposition \ref{prop:fold-conditional-expectation}), and record the maximum fiber multiplicity \(D_m:=\max_{x\in X_m}d_m(x)\).Then the Pimsner--Popa index satisfies\[
 \boxed{\ \mathrm{Ind}(E_m)=D_m\ }.
 \]
-令 \(\sigma_m\) 为 \(\Omega_m\) 上的均匀态（即概率向量 \(\sigma_m(a)=|\Omega_m|^{-1}\)），并对任意 \(a\in\Omega_m\) 令 \(\rho_{m,a}\) 为纯态 \(\delta_a\)。
-在将相对熵取为 KL 散度的识别下，有严格恒等式
-\[
+Let \(\sigma_m\) be the uniform state on \(\Omega_m\) (i.e., the probability vector \(\sigma_m(a)=|\Omega_m|^{-1}\)), and let \(\rho_{m,a}\) be the pure state \(\delta_a\) for anyUnder the identification of taking the relative entropy as the KL divergence, there is a strict identity\[
 \boxed{\;
 D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)\;-\;D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\ \|\ \sigma_m\circ E_m)
 =\log d_m(\Fold_m(a))\;}
 \]
-从而最大信息损失满足
-\[
+Thus the maximum information loss satisfies\[
 \boxed{\;
 \sup_{a\in\Omega_m}\Bigl(D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)-D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\|\sigma_m\circ E_m)\Bigr)
 =\log D_m=\log\mathrm{Ind}(E_m).\;}
 \]
-并且等号当且仅当 \(a\) 属于某条最大纤维；在此情形下 \(\rho_{m,a}\circ E_m\) 为该最大纤维上的均匀态（由 \(E_m\) 的纤维平均结构唯一确定，且在纤维置换群 \(\mathcal{G}_m\) 的作用下同轨，见定义 \ref{def:fold-gauge-group}）。
-\end{proposition}
+And the equal sign is if and only if \(a\) belongs to a certain largest fiber; in this case, \(\rho_{m,a}\circ E_m\) is a uniform state on the largest fiber (uniquely determined by the fiber average structure of \(E_m\), and is coorbital under the action of the fiber substitution group \(\mathcal{G}_m\), see the definition of \ref{def:fold-gauge-group}).\end{proposition}
 \begin{proof}
-由 Pimsner--Popa 指数的定义，\(\mathrm{Ind}(E_m)^{-1}\) 等于所有满足
-\(
+According to the definition of Pimsner--Popa index, \(\mathrm{Ind}(E_m)^{-1}\) is equal to all satisfying\(
 E_m(x)\ge \lambda x
-\)（对一切 \(x\in(\mathcal{A}_m)_+\)）的常数 \(\lambda>0\) 的上确界。
-对极小投影 \(P_a\)（其中 \(x=\Fold_m(a)\)）有
-\(
+\) The supremum of the constant \(\lambda>0\) (for all \(x\in(\mathcal{A}_m)_+\)).For the minimal projection \(P_a\) (of which \(x=\Fold_m(a)\)) we have\(
 E_m(P_a)=d_m(x)^{-1}\widetilde P_x
 \)
-（命题 \ref{prop:fold-conditional-expectation}），且 \(P_a\le \widetilde P_x\)。
-因此对任意 \(\lambda\le 1/D_m\) 都有
-\[
+(Proposition \ref{prop:fold-conditional-expectation}), and \(P_a\le \widetilde P_x\).Therefore for any \(\lambda\le 1/D_m\) we have\[
 E_m(P_a)=\frac{1}{d_m(x)}\widetilde P_x\ \ge\ \frac{1}{D_m}\widetilde P_x\ \ge\ \frac{1}{D_m}P_a.
 \]
-由线性性与正锥生成性（\(\mathcal{A}_m\cong \CC^{|\Omega_m|}\)）可推广到任意正元，从而 \(\mathrm{Ind}(E_m)\le D_m\)。
-另一方面，若取 \(a\) 属于最大纤维（\(d_m(\Fold_m(a))=D_m\)），则由
-\(
+From linearity and positive cone generation (\(\mathcal{A}_m\cong \CC^{|\Omega_m|}\)), it can be generalized to any positive element, thus \(\mathrm{Ind}(E_m)\le D_m\).On the other hand, if \(a\) belongs to the largest fiber (\(d_m(\Fold_m(a))=D_m\)), then\(
 E_m(P_a)=D_m^{-1}\widetilde P_x
 \)
-可知任意满足 \(E_m(P_a)\ge \lambda P_a\) 的 \(\lambda\) 必不超过 \(1/D_m\)，从而最优常数恰为 \(1/D_m\)，即 \(\mathrm{Ind}(E_m)=D_m\)。
-\par
-对相对熵恒等式：由 \(\rho_{m,a}=\delta_a\) 与 \(E_m(P_{a'})=d_m(\Fold_m(a'))^{-1}\widetilde P_{\Fold_m(a')}\) 得
-\[
+It can be seen that any \(\lambda\) that satisfies \(E_m(P_a)\ge \lambda P_a\) must not exceed \(1/D_m\), so the optimal constant is exactly \(1/D_m\), that is, \(\mathrm{Ind}(E_m)=D_m\).\par
+Relative entropy identity: from \(\rho_{m,a}=\delta_a\) and \(E_m(P_{a'})=d_m(\Fold_m(a'))^{-1}\widetilde P_{\Fold_m(a')}\)\[
 (\rho_{m,a}\circ E_m)(P_{a'})
 =\rho_{m,a}\!\left(E_m(P_{a'})\right)
 =\begin{cases}
 1/d_m(x),& \Fold_m(a')=x,\\
-0,& \text{否则},
-\end{cases}
+0,& \text{otherwise},\end{cases}
 \qquad x:=\Fold_m(a),
 \]
-即 \(\rho_{m,a}\circ E_m\) 是纤维 \( \Fold_m^{-1}(x)\) 上的均匀态。
-同理，
-\[
+That is, \(\rho_{m,a}\circ E_m\) is the uniform state on fiber \( \Fold_m^{-1}(x)\).In the same way,\[
 (\sigma_m\circ E_m)(P_{a'})
 =\sigma_m\!\left(E_m(P_{a'})\right)
 =\frac{1}{d_m(\Fold_m(a'))}\cdot \sigma_m\!\left(\widetilde P_{\Fold_m(a')}\right)
 =\frac{1}{d_m(\Fold_m(a'))}\cdot \frac{d_m(\Fold_m(a'))}{|\Omega_m|}
 =\frac{1}{|\Omega_m|},
 \]
-故 \(\sigma_m\circ E_m=\sigma_m\)。
-于是
-\[
+Therefore \(\sigma_m\circ E_m=\sigma_m\).then\[
 D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)=\log|\Omega_m|,
 \qquad
 D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\ \|\ \sigma_m)=\log\frac{|\Omega_m|}{d_m(x)},
 \]
-相减得
-\(
+Subtract\(
 D_{\mathrm{KL}}(\rho_{m,a}\|\sigma_m)-D_{\mathrm{KL}}(\rho_{m,a}\circ E_m\|\sigma_m\circ E_m)=\log d_m(x)
 \)。
-对 \(a\) 取上确界得到最大值 \(\log D_m=\log\mathrm{Ind}(E_m)\)，且等号当且仅当 \(a\) 属于最大纤维。证毕。
-\end{proof}
+Taking the supremum of \(a\) gives the maximum value \(\log D_m=\log\mathrm{Ind}(E_m)\), and the equal sign is if and only if \(a\) belongs to the largest fiber. Certification completed.\end{proof}
 
-\paragraph{最大相对熵版视界容量：\texorpdfstring{$\log\mathrm{Ind}(E)$}{log Ind(E)} 作为最坏零知识损失的精确封顶}
-命题 \ref{prop:op-algebra-index-extremal-entropy-loss-maxfiber} 给出了 KL（Shannon）相对熵口径下的“最大纤维 \(\Longleftrightarrow\) 最大损失”模板。
-下面将该接口提升到 max-相对熵与 Rényi 族：它们在制度意义下刻画“最坏情形”的可区分损失，并仍由同一指数常数完全封口。
-
-\begin{definition}[最大相对熵（max-relative entropy）]\label{def:op-algebra-max-relative-entropy}
-设 \(\mathcal{A}\) 为 von Neumann 代数，\(\rho,\sigma\) 为其上的正规态。
-定义最大相对熵
-\begin{equation}\label{eq:op-algebra-dmax-def}
+\paragraph{Maximum relative entropy version horizon capacity: \texorpdfstring{XPH0X}{log Ind(E)} as the exact cap of the worst zero-knowledge loss}Proposition \ref{prop:op-algebra-index-extremal-entropy-loss-maxfiber} gives the "maximum fiber \(\Longleftrightarrow\) maximum loss" template under the KL (Shannon) relative entropy caliber.In the following the interface is promoted to the max-relative entropy and Rényi families: they characterize the "worst case" distinguishable loss in an institutional sense and are still completely sealed by the same exponential constant.
+\begin{definition}[max-relative entropy]\label{def:op-algebra-max-relative-entropy}Let \(\mathcal{A}\) be the von Neumann algebra, and \(\rho,\sigma\) be the normal state above it.Define maximum relative entropy\begin{equation}\label{eq:op-algebra-dmax-def}
 \boxed{\;
 D_{\max}(\rho\|\sigma)
 :=\log\inf\{\lambda>0:\ \rho\le \lambda\,\sigma\}\;}
 \end{equation}
-其中序关系按正锥理解：\(\rho\le \lambda\sigma\) 指 \(\rho(x)\le \lambda\sigma(x)\) 对一切 \(x\in\mathcal{A}_+\) 成立。
-\end{definition}
+The order relationship is understood as a forward cone: \(\rho\le \lambda\sigma\) means \(\rho(x)\le \lambda\sigma(x)\) is true for all \(x\in\mathcal{A}_+\).\end{definition}
 
-\begin{proposition}[最大相对熵版视界容量：\texorpdfstring{$\log\mathrm{Ind}(E)$}{log Ind(E)} 等于最坏零知识损失]\label{prop:op-algebra-dmax-capacity-equals-log-index}
-设 \(\mathcal{B}\subseteq\mathcal{A}\) 为有限 von Neumann 代数包含，
-且 \(E:\mathcal{A}\to\mathcal{B}\) 为忠实正规条件期望并具有有限 Pimsner--Popa 指数 \(\mathrm{Ind}(E)\)。
-对任意正规态 \(\rho\) 定义 max-损失
-\[
+\begin{proposition}[Maximum relative entropy version horizon capacity: \texorpdfstring{XPH0X}{log Ind(E)} is equal to the worst zero-knowledge loss]\label{prop:op-algebra-dmax-capacity-equals-log-index}Let \(\mathcal{B}\subseteq\mathcal{A}\) be a finite von Neumann algebra containing,And \(E:\mathcal{A}\to\mathcal{B}\) is a faithful normal conditional expectation with finite Pimsner--Popa index \(\mathrm{Ind}(E)\).Define max-loss for any normal state \(\rho\)\[
 L_{\max}(\rho):=D_{\max}(\rho\|\rho\!\circ\!E).
 \]
-则恒有统一上界
-\begin{equation}\label{eq:op-algebra-dmax-bound-by-index}
+Then there is always a unified upper bound\begin{equation}\label{eq:op-algebra-dmax-bound-by-index}
 \boxed{\;
 L_{\max}(\rho)\le \log\mathrm{Ind}(E).\;}
 \end{equation}
-并且上确界满足精确极值公式
-\begin{equation}\label{eq:op-algebra-dmax-sup-equals-log-index}
+And the supremum satisfies the exact extreme value formula\begin{equation}\label{eq:op-algebra-dmax-sup-equals-log-index}
 \boxed{\;
 \sup_{\rho\in\mathcal{S}(\mathcal{A})}L_{\max}(\rho)=\log\mathrm{Ind}(E),\;}
 \end{equation}
-其中 \(\mathcal{S}(\mathcal{A})\) 表示 \(\mathcal{A}\) 上全体正规态。
-\end{proposition}
+Among them, \(\mathcal{S}(\mathcal{A})\) represents the overall normal state on \(\mathcal{A}\).\end{proposition}
 \begin{proof}
-由有限指数假设，Pimsner--Popa 不等式给出：对一切 \(x\in\mathcal{A}_+\) 有
-\(
+By the finite exponent assumption, the Pimsner--Popa inequality gives: for all \(x\in\mathcal{A}_+\)\(
 E(x)\ge \mathrm{Ind}(E)^{-1}x
 \)。
-对任意正规态 \(\rho\) 作用于该不等式得
-\[
+For any normal state \(\rho\) acting on this inequality we get\[
 (\rho\!\circ\!E)(x)=\rho(E(x))\ \ge\ \mathrm{Ind}(E)^{-1}\rho(x),
 \]
-即 \(\rho(x)\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)(x)\) 对所有 \(x\ge0\) 成立，
-故 \(\rho\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)\)。
-由定义 \eqref{eq:op-algebra-dmax-def} 得 \eqref{eq:op-algebra-dmax-bound-by-index}。
-\par
-为证 \eqref{eq:op-algebra-dmax-sup-equals-log-index}，取任意 \(c<\mathrm{Ind}(E)\)。
-若对所有正规态 \(\rho\) 都有 \(L_{\max}(\rho)\le \log c\)，则由 \eqref{eq:op-algebra-dmax-def} 得 \(\rho\le c(\rho\!\circ\!E)\) 对所有 \(\rho\) 成立，
-等价于 \(\rho(x)\le c\,\rho(E(x))\) 对一切 \(x\in\mathcal{A}_+\) 与一切正规态 \(\rho\) 成立。
-由正规正泛函分离序（\(x\le y\) 当且仅当 \(\rho(x)\le \rho(y)\) 对所有正规态 \(\rho\) 成立），推出 \(x\le cE(x)\) 对所有 \(x\ge0\) 成立，
-即 \(E(x)\ge c^{-1}x\)，从而 \(\mathrm{Ind}(E)\le c\)，矛盾。
-因此对每个 \(c<\mathrm{Ind}(E)\) 必存在某 \(\rho\) 使 \(L_{\max}(\rho)>\log c\)，故
-\(\sup_{\rho}L_{\max}(\rho)\ge \log\mathrm{Ind}(E)\)。
-结合 \eqref{eq:op-algebra-dmax-bound-by-index} 即得等号。证毕。
-\end{proof}
+That is, \(\rho(x)\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)(x)\) holds for all \(x\ge0\),Therefore \(\rho\le \mathrm{Ind}(E)\,(\rho\!\circ\!E)\).From defining \eqref{eq:op-algebra-dmax-def} we get \eqref{eq:op-algebra-dmax-bound-by-index}.\par
+To prove \eqref{eq:op-algebra-dmax-sup-equals-log-index}, take any \(c<\mathrm{Ind}(E)\).If there is \(L_{\max}(\rho)\le \log c\) for all normal states \(\rho\), then \(\rho\le c(\rho\!\circ\!E)\) from \eqref{eq:op-algebra-dmax-def} is true for all \(\rho\),Equivalent to \(\rho(x)\le c\,\rho(E(x))\), which holds for all \(x\in\mathcal{A}_+\) and all normal \(\rho\).From the normal positive functional separation order (\(x\le y\) if and only if \(\rho(x)\le \rho(y)\) holds for all normal states \(\rho\)), it follows that \(x\le cE(x)\) holds for all \(x\ge0\),That is, \(E(x)\ge c^{-1}x\), and thus \(\mathrm{Ind}(E)\le c\), a contradiction.Therefore, for each \(c<\mathrm{Ind}(E)\) there must be some \(\rho\) such that \(L_{\max}(\rho)>\log c\), so\(\sup_{\rho}L_{\max}(\rho)\ge \log\mathrm{Ind}(E)\)。
+Combined with \eqref{eq:op-algebra-dmax-bound-by-index} we get the equal sign. Certification completed.\end{proof}
 
-\begin{corollary}[Rényi 视界损失谱：从 Shannon 到 min-entropy 的单调插值并以指数封顶]\label{cor:op-algebra-renyi-loss-spectrum-capped-by-index}
-在命题 \ref{prop:op-algebra-dmax-capacity-equals-log-index} 的设定下，
-取 \(\alpha\in[1,\infty]\)，令 \(D_\alpha\) 为 sandwiched Rényi 相对熵（\(\alpha=1\) 取 Umegaki 相对熵，\(\alpha=\infty\) 取 \(D_{\max}\)），并定义视界损失谱
-\[
+\begin{corollary}[Rényi horizon loss spectrum: monotonic interpolation from Shannon to min-entropy and exponential capping]\label{cor:op-algebra-renyi-loss-spectrum-capped-by-index}Under the setting of proposition \ref{prop:op-algebra-dmax-capacity-equals-log-index},Take \(\alpha\in[1,\infty]\), let \(D_\alpha\) be the sandwiched Rényi relative entropy (\(\alpha=1\) takes Umegaki relative entropy, \(\alpha=\infty\) takes \(D_{\max}\)), and define the horizon loss spectrum\[
 L_\alpha(\rho):=D_\alpha(\rho\|\rho\!\circ\!E).
 \]
-则对每个固定 \(\rho\)，函数 \(\alpha\mapsto L_\alpha(\rho)\) 单调不减，且满足统一封顶
-\[
+Then for each fixed \(\rho\), the function \(\alpha\mapsto L_\alpha(\rho)\) is monotonic and does not decrease, and satisfies the unified cap\[
 \boxed{\;
 0\le L_\alpha(\rho)\le \log\mathrm{Ind}(E)\qquad(\forall \alpha\in[1,\infty]).\;}
 \]
-并且极限 \(\lim_{\alpha\to\infty}L_\alpha(\rho)=D_{\max}(\rho\|\rho\!\circ\!E)\) 存在。
-\end{corollary}
+And the limit \(\lim_{\alpha\to\infty}L_\alpha(\rho)=D_{\max}(\rho\|\rho\!\circ\!E)\) exists.\end{corollary}
 \begin{proof}
-sandwiched Rényi 相对熵对参数 \(\alpha\) 的单调性与极限 \(\alpha\to\infty\) 收敛到 \(D_{\max}\) 是其标准性质，因此
-\(
+The monotonicity and limit of sandwiched Rényi relative entropy for parameter \(\alpha\) is its standard property, so that \(\alpha\to\infty\) converges to \(D_{\max}\)\(
 L_\alpha(\rho)\le L_\infty(\rho)=D_{\max}(\rho\|\rho\!\circ\!E)
 \)。
-再与命题 \ref{prop:op-algebra-dmax-capacity-equals-log-index} 的上界 \eqref{eq:op-algebra-dmax-bound-by-index} 合并即得。证毕。
-\end{proof}
+Then combine it with the upper bound \eqref{eq:op-algebra-dmax-bound-by-index} of proposition \ref{prop:op-algebra-dmax-capacity-equals-log-index} to get it. Certification completed.\end{proof}
 
-\begin{corollary}[有限交换折叠的极值模板：最大损失由“最大纤维上的单点微态”实现]\label{cor:op-algebra-commutative-dmax-extremizers-maxfiber}
-在附录 \ref{app:op-algebra-fold-subalgebra} 的有限交换口径中，令 \(\mathcal{A}=\CC^{\Omega}\)、\(\mathcal{B}=\CC^{X}\)，并令 \(E:\mathcal{A}\to\mathcal{B}\) 为折叠 \(\Fold:\Omega\twoheadrightarrow X\) 的纤维均匀平均条件期望。
-记纤维多重度 \(d(x)=|\Fold^{-1}(x)|\) 与 \(D:=\max_{x\in X}d(x)=\mathrm{Ind}(E)\)。
-则对任意正规态 \(\rho\) 有
-\[
+\begin{corollary}[Extremal templates for finite exchange folding: maximum loss is achieved by "single-point microstates on the largest fiber"]\label{cor:op-algebra-commutative-dmax-extremizers-maxfiber}In the finite exchange aperture of appendix \ref{app:op-algebra-fold-subalgebra}, let \(\mathcal{A}=\CC^{\Omega}\), \(\mathcal{B}=\CC^{X}\), and letRecord fiber multiplicity \(d(x)=|\Fold^{-1}(x)|\) and \(D:=\max_{x\in X}d(x)=\mathrm{Ind}(E)\).Then for any normal state \(\rho\) we have\[
 D_{\max}(\rho\|\rho\!\circ\!E)\ \le\ \log D.
 \]
-并且 \(D_{\max}(\rho\|\rho\!\circ\!E)=\log D\) 当且仅当存在某个最大纤维点 \(x^\star\)（\(d(x^\star)=D\)）与某个 \(\omega^\star\in\Fold^{-1}(x^\star)\) 使得
-\[
+And \(D_{\max}(\rho\|\rho\!\circ\!E)=\log D\) if and only if there is a certain maximum fiber point \(x^\star\) (\(d(x^\star)=D\)) and a certain \(\omega^\star\in\Fold^{-1}(x^\star)\) such that\[
 \rho(\omega)=0\qquad\bigl(\forall \omega\in\Fold^{-1}(x^\star)\setminus\{\omega^\star\}\bigr).
 \]
-在此情形下，粗粒化态 \(\rho\!\circ\!E\) 在纤维 \(\Fold^{-1}(x^\star)\) 上必为均匀分布（质量为 \(\rho(\Fold^{-1}(x^\star))\) 的均匀分摊），从而“最大纤维 + 纤维均匀化（粗粒化后）”成为最大损失实现的结构模板。
-\end{corollary}
+In this case, the coarse-grained state \(\rho\!\circ\!E\) must be uniformly distributed on the fiber \(\Fold^{-1}(x^\star)\) (the mass is uniformly distributed as \(\rho(\Fold^{-1}(x^\star))\)), so "maximum fiber + fiber homogenization (after coarse-graining)" becomes the structural template for maximum loss realization.\end{corollary}
 \begin{proof}
-将 \(\rho\) 识别为 \(\Omega\) 上概率向量 \(p\)。
-对任意 \(\omega\in\Omega\) 令 \(x=\Fold(\omega)\)，并记纤维总质量 \(P_x:=\sum_{\omega'\in\Fold^{-1}(x)}p(\omega')\)。
-则 \((\rho\!\circ\!E)\) 对应的概率向量 \(q\) 在纤维上常值：
-\(
+Identify \(\rho\) as the probability vector \(p\) over \(\Omega\).For any \(\omega\in\Omega\) let \(x=\Fold(\omega)\), and record the total fiber mass \(P_x:=\sum_{\omega'\in\Fold^{-1}(x)}p(\omega')\).Then the probability vector \(q\) corresponding to \((\rho\!\circ\!E)\) is constant on the fiber:\(
 q(\omega)=P_x/d(x)
 \)。
-因此逐点比值满足
-\[
+Therefore the pointwise ratio satisfies\[
 \frac{p(\omega)}{q(\omega)}=\frac{d(x)\,p(\omega)}{P_x}\ \le\ d(x)\ \le\ D,
 \]
-其中不等式用到 \(p(\omega)\le P_x\)。
-从而 \(p\le Dq\) 点态成立，等价于 \(\rho\le D(\rho\!\circ\!E)\)，故
-\(
+The inequality uses \(p(\omega)\le P_x\).Therefore, the point state of \(p\le Dq\) is established, which is equivalent to \(\rho\le D(\rho\!\circ\!E)\), so\(
 D_{\max}(\rho\|\rho\!\circ\!E)\le \log D
 \)。
 \par
-并且 \(D_{\max}(\rho\|\rho\!\circ\!E)=\log D\) 等价于存在某点 \(\omega^\star\) 使得 \(\frac{p(\omega^\star)}{q(\omega^\star)}=D\)。
-由上式知这要求 \(d(\Fold(\omega^\star))=D\) 且 \(p(\omega^\star)=P_{x^\star}\)，即该最大纤维上的全部质量集中在单点 \(\omega^\star\)。
-最后，\(q\) 在该纤维上的均匀性由条件期望的纤维平均结构给出。证毕。
-\end{proof}
+And \(D_{\max}(\rho\|\rho\!\circ\!E)=\log D\) is equivalent to the existence of some point \(\omega^\star\) such that \(\frac{p(\omega^\star)}{q(\omega^\star)}=D\).From the above formula, we know that this requires \(d(\Fold(\omega^\star))=D\) and \(p(\omega^\star)=P_{x^\star}\), that is, all the mass on the largest fiber is concentrated at a single point \(\omega^\star\).Finally, the uniformity of XPHOX on that fiber is given by the average structure of the fiber expected by the conditions. Certification completed.\end{proof}
 
-\paragraph{Fuglede--Kadison 行列式与“视界 \texorpdfstring{$\zeta$}{zeta}”的非交换定义}
-下述行列式为正文以 Fredholm 行列式 \(\det(I-\mathcal{K}_s)\) 定义“协议 \(\zeta\)”的非交换推广。
-
-\begin{definition}[Fuglede--Kadison 行列式与非交换 \texorpdfstring{$\zeta$}{zeta}]\label{def:op-algebra-fk-determinant-zeta}
-令 \((\mathcal{A},\tau)\) 为带忠实正规迹的有限 von Neumann 代数。
-对任意元 \(X\in\mathcal{A}\) 定义 Fuglede--Kadison 行列式
-\begin{equation}\label{eq:op-algebra-fkdet}
+\paragraph{Fuglede--non-commutative definition of Kadison determinant and "horizon \texorpdfstring{XPH0X}{zeta}"}The following determinant is a non-commutative generalization of the Fredholm determinant \(\det(I-\mathcal{K}_s)\) defined in the text as "protocol \(\zeta\)".
+\begin{definition}[Fuglede--Kadison determinant and non-commutative \texorpdfstring{XPH0X}{zeta}]\label{def:op-algebra-fk-determinant-zeta}Let \((\mathcal{A},\tau)\) be a finite von Neumann algebra with a faithful normal trace.Define the Fuglede--Kadison determinant for any element \(X\in\mathcal{A}\)\begin{equation}\label{eq:op-algebra-fkdet}
 \boxed{\;\Delta_\tau(X):=\exp\bigl(\tau(\log|X|)\bigr)\ \in\ [0,\infty),\qquad |X|:=(X^\ast X)^{1/2}.\;}
 \end{equation}
-其中当 \(|X|\) 有非平凡核时，按标准约定理解 \(\tau(\log|X|)=-\infty\) 并取 \(\Delta_\tau(X)=0\)。
-给定一族解析依赖 \(s\) 的“视界转移元” \(K_s\in\mathcal{A}\)，定义非交换 \(\zeta\)-型对象
-\begin{equation}\label{eq:op-algebra-nc-zeta}
+Among them, when \(|X|\) has a non-trivial core, \(\tau(\log|X|)=-\infty\) is understood according to the standard convention and \(\Delta_\tau(X)=0\) is taken.Given a family of "horizon shift elements" \(K_s\in\mathcal{A}\) that are analytically dependent on \(s\), define a non-commutative \(\zeta\)-type object\begin{equation}\label{eq:op-algebra-nc-zeta}
 \boxed{\;
 Z_{\mathcal{A}}(s)\ :=\ \Delta_\tau(I-K_s)^{-1}.
 }
 \end{equation}
 \end{definition}
 
-\begin{proposition}[乘法性、矩阵退化与零点作为可见谱共振]\label{prop:op-algebra-fkdet-properties}
-在定义 \ref{def:op-algebra-fk-determinant-zeta} 的设定下：
-\begin{enumerate}
-  \item \(\Delta_\tau\) 具有严格乘法性：\(\Delta_\tau(XY)=\Delta_\tau(X)\Delta_\tau(Y)\)；
-  \item 当 \(\mathcal{A}=M_n(\CC)\) 且 \(\tau=\frac{1}{n}\Tr\) 时，有
-  \[
+\begin{proposition}[Multiplicative properties, matrix degeneracy and zeros as visible spectral resonances]\label{prop:op-algebra-fkdet-properties}Under the settings defining \ref{def:op-algebra-fk-determinant-zeta}:\begin{enumerate}
+\item \(\Delta_\tau\) is strictly multiplicative: \(\Delta_\tau(XY)=\Delta_\tau(X)\Delta_\tau(Y)\);\item When \(\mathcal{A}=M_n(\CC)\) and \(\tau=\frac{1}{n}\Tr\), there is  \[
   \Delta_\tau(X)=|\det(X)|^{1/n};
   \]
-  \item 若 \(\Delta_\tau(I-K_s)=0\)，则 \(I-K_s\) 非可逆，等价于
-  \begin{equation}\label{eq:op-algebra-resonance}
+\item If \(\Delta_\tau(I-K_s)=0\), then \(I-K_s\) is non-reversible and is equivalent to  \begin{equation}\label{eq:op-algebra-resonance}
   \boxed{\;1\in\mathrm{Spec}_{\mathcal{A}}(K_s),\;}
   \end{equation}
-  从而 \(Z_{\mathcal{A}}(s)\) 的“零点/极点异常”可被解释为可见谱的共振碰撞。
-\end{enumerate}
+The "zero/pole anomalies" of \(Z_{\mathcal{A}}(s)\) can thus be interpreted as resonance collisions in the visible spectrum.\end{enumerate}
 \end{proposition}
 
 \begin{proof}
-乘法性与矩阵退化性质源自 Fuglede--Kadison 行列式的基本理论，参见 \cite{FugledeKadison1951DeterminantsTraceFiniteFactors}。
-第 (3) 条中，\(\Delta_\tau(X)=0\) 当且仅当 \(X\) 不可逆（在有限情形等价于 \(0\in\mathrm{Spec}(X)\)）；
-取 \(X=I-K_s\) 即得 \eqref{eq:op-algebra-resonance}。证毕。
-\end{proof}
+Multiplicative and matrix degenerate properties originate from the basic theory of Fuglede-Kadison determinants, see \cite{FugledeKadison1951DeterminantsTraceFiniteFactors}.In clause (3), \(\Delta_\tau(X)=0\) iff \(X\) is irreversible (equivalent to \(0\in\mathrm{Spec}(X)\) in limited circumstances);Take \(X=I-K_s\) to get \eqref{eq:op-algebra-resonance}. Certification completed.\end{proof}
 
-\begin{remark}[非交换 \texorpdfstring{$\zeta$}{zeta} 的“可见重数”与主发散系数]\label{rem:op-algebra-nc-zeta-visible-multiplicity}
-在定义 \ref{def:op-algebra-fk-determinant-zeta} 下，令 \(s_0\) 满足 \(1\in\mathrm{Spec}_{\mathcal{A}}(K_{s_0})\)。
-若进一步假设 \(1\) 在 \(\mathrm{Spec}_{\mathcal{A}}(K_{s_0})\) 中为孤立谱点，则可由 holomorphic functional calculus 定义 Riesz 投影
-\[
+\begin{remark}["visible multiplicity" and principal divergence coefficient of non-commutative \texorpdfstring{XPH0X}{zeta}]\label{rem:op-algebra-nc-zeta-visible-multiplicity}Under the definition of \ref{def:op-algebra-fk-determinant-zeta}, let \(s_0\) satisfy \(1\in\mathrm{Spec}_{\mathcal{A}}(K_{s_0})\).If it is further assumed that \(1\) is an isolated spectral point in \(\mathrm{Spec}_{\mathcal{A}}(K_{s_0})\), the Riesz projection can be defined by the holomorphic functional calculus\[
 E_{s_0}:=E_{K_{s_0}}(\{1\})\ \in\ \mathcal{A},
 \]
-并称
-\(
+Together\(
 m_{\mathrm{vis}}(s_0):=\tau(E_{s_0})
 \)
-为谱点 \(1\) 的\emph{可见重数}。
-\begin{enumerate}
-  \item \textbf{（矩阵退化）}当 \(\mathcal{A}=M_n(\CC)\) 且 \(\tau=\frac{1}{n}\Tr\) 时，
-  \(Z_{\mathcal{A}}(s)=|\det(I-K_s)|^{-1/n}\)。
-  若 \(\det(I-K_s)\) 在 \(s_0\) 处具有零点阶 \(m_0\)，则
-  \[
+It is the \emph{visible multiplicity} of spectral point \(1\).\begin{enumerate}
+\item \textbf{(matrix degenerate)} when \(\mathcal{A}=M_n(\CC)\) and \(\tau=\frac{1}{n}\Tr\),  \(Z_{\mathcal{A}}(s)=|\det(I-K_s)|^{-1/n}\)。
+If \(\det(I-K_s)\) has zero point order \(m_0\) at \(s_0\), then  \[
   \log Z_{\mathcal{A}}(s)
   =\frac{m_0}{n}\log|s-s_0|^{-1}+O(1)
   =m_{\mathrm{vis}}(s_0)\log|s-s_0|^{-1}+O(1),
   \]
-  其中 \(m_{\mathrm{vis}}(s_0)=\tau(E_{s_0})=m_0/n\)。
-  \item \textbf{（一般有限因子）}在一般有限因子情形，\(\tau(E_{s_0})\) 给出谱点 \(1\) 在谱分布中的迹权重，
-  可视为“极点阶”的内禀替代：当 \(s\to s_0\) 触发 \(\Delta_\tau(I-K_s)\to 0\) 时，
-  \(\log Z_{\mathcal{A}}(s)=-\tau(\log|I-K_s|)\) 的对数型发散主项由该迹权重控制，
-  从而把“零点/极点异常”提升为可审计的谱投影迹不变量。
-\end{enumerate}
+Among them \(m_{\mathrm{vis}}(s_0)=\tau(E_{s_0})=m_0/n\).\item \textbf{(general finite factor)} In the case of general finite factors,It can be regarded as the intrinsic substitution of "pole order": when \(s\to s_0\) triggers \(\Delta_\tau(I-K_s)\to 0\),The logarithmic divergent principal term of \(\log Z_{\mathcal{A}}(s)=-\tau(\log|I-K_s|)\) is controlled by this trace weight,Thus, the "zero/pole anomaly" is promoted to an auditable spectral projection trace invariant.\end{enumerate}
 \end{remark}
 
-\paragraph{零知识模散射与功能方程的内禀来源}
-在模理论框架下，若存在两种互补视界粗粒化（入射/出射）且二者均为同一参考态的保持条件期望，
-则可将它们的相对模实现视为“散射”，并由对偶互反强制临界线纯相位性。
-
-\begin{proposition}[模散射行列式的反射对偶与临界线纯相位性]\label{prop:op-algebra-modular-scattering-phase}
-在定理 \ref{thm:op-algebra-takesaki-criterion} 的设定下，进一步假设存在两种 \(\varphi\)-保持条件期望
-\(
+\paragraph{Intrinsic source of zero-knowledge modular scattering and functional equations}Under the framework of modular theory, if there are two complementary horizon coarse-grainings (incoming/outgoing) and both are the same reference state,Their relative mode realizations can then be considered as "scattering", with the critical line pure phaseliness enforced by the dual reciprocity.
+\begin{proposition}[Reflection duality of mode scattering determinants and critical line pure phase properties]\label{prop:op-algebra-modular-scattering-phase}Under the setting of theorem \ref{thm:op-algebra-takesaki-criterion}, further assume that there are two \(\varphi\)-preserving conditional expectations\(
 E_{\mathrm{in}},E_{\mathrm{out}}:\mathcal{M}\to\mathcal{N}
 \)
-（对应入射/出射两种可见接口），并且可在某可迹化/正则化口径下定义由相对模互伴随诱导的可逆“散射算子族” \(S(s)\) 及其散射行列式 \(\varphi_{\mathrm{sc}}(s)\)。
-若该结构携带 \(s\leftrightarrow 1-s\) 的模对偶互反，则散射行列式满足功能方程
-\begin{equation}\label{eq:op-algebra-scattering-fe}
+(Corresponding to the two visible interfaces of incident/exit), and the reversible "scattering operator family" \(S(s)\) and its scattering determinant \(\varphi_{\mathrm{sc}}(s)\) induced by the relative mode mutual adjoint can be defined under a certain traceability/regularization caliber.If the structure carries the mode dual reciprocity of \(s\leftrightarrow 1-s\), then the scattering determinant satisfies the functional equation\begin{equation}\label{eq:op-algebra-scattering-fe}
 \boxed{\;\varphi_{\mathrm{sc}}(s)\,\varphi_{\mathrm{sc}}(1-s)=1,\;}
 \end{equation}
-从而在临界切片 \(s=\tfrac12+\mathrm{i}t\) 上必有
-\begin{equation}\label{eq:op-algebra-scattering-unit-modulus}
+Therefore, on the critical slice \(s=\tfrac12+\mathrm{i}t\) there must be\begin{equation}\label{eq:op-algebra-scattering-unit-modulus}
 \boxed{\;\bigl|\varphi_{\mathrm{sc}}(\tfrac12+\mathrm{i}t)\bigr|=1.\;}
 \end{equation}
 \end{proposition}
 
-\begin{remark}[与有限体积双曲曲面散射的同型性]\label{rem:op-algebra-scattering-selberg-analogy}
-在有限体积双曲曲面（含 cusp）的标准谱理论中，散射矩阵行列式满足与 \eqref{eq:op-algebra-scattering-fe} 同型的功能方程，
-并与 Selberg \(\zeta\) 的完成化表达相耦合；相关讨论与定量分布性质可参见 \cite{GarunkstisSimenas2017SelbergAValues}。
-本命题将其抽象为：\(\varphi\)-保持粗粒化的双通道结构 \(+\) 模对偶互反 \(\Rightarrow\) 临界线幺正（纯相位）切片。
-\end{remark}
+\begin{remark}[Isotype with finite volume hyperbolic scattering]\label{rem:op-algebra-scattering-selberg-analogy}In the standard spectral theory of finite volume hyperboloids (including cusp), the scattering matrix determinant satisfies the functional equation of the same type as \eqref{eq:op-algebra-scattering-fe},And coupled with the completion expression of Selberg \(\zeta\); related discussion and quantitative distribution properties can be found in \cite{GarunkstisSimenas2017SelbergAValues}.This proposition abstracts it as: \(\varphi\)-maintaining coarse-grained dual-channel structure\end{remark}
 
-\paragraph{Poisson 边界熵与零知识性的迭代判据}
-当辐射/蒸发过程被视为正规 Markov 作用的迭代时，Poisson 边界为“长期可见统计”的极限代数；
-边界熵为零恰对应于可见统计可被态保持条件期望完全拉回，从而存在全局模拟器。
-
-\begin{theorem}[Poisson 边界熵为零 \texorpdfstring{$\Longleftrightarrow$}{<->} 态保持条件期望存在]\label{thm:op-algebra-poisson-boundary-entropy}
-令 \(\mathcal{M}\) 为 \(\mathrm{II}_1\) 因子，\(\Phi\) 为其上的正规 Markov 作用（u.c.p.\ 并保持迹态），
-并令 \(\mathcal{A}\) 为与 \(\Phi\) 相关的 Poisson 边界代数（含包含 \(\mathcal{M}\subset\mathcal{A}\)）。
-对合适的边界态 \(\zeta\)，记边界熵为 \(h_\Phi(\mathcal{M}\subset\mathcal{A},\zeta)\)。
-则有严格等价
-\begin{equation}\label{eq:op-algebra-poisson-entropy-zero}
+\paragraph{Poisson boundary entropy and zero-knowledge iteration criterion}When the radiation/evaporation process is viewed as an iteration of a regular Markov action, the Poisson bound is the limiting algebra of "long-term visible statistics";A boundary entropy of zero corresponds exactly to the fact that the visible statistics can be completely pulled back by the state-preserving condition expectation, so that a global simulator exists.
+\begin{theorem}[Poisson boundary entropy is zero \texorpdfstring{XPH0X}{<->} state holding condition is expected to exist]\label{thm:op-algebra-poisson-boundary-entropy}Let \(\mathcal{M}\) be the \(\mathrm{II}_1\) factor, andAnd let \(\mathcal{A}\) be the Poisson boundary algebra related to \(\Phi\) (including \(\mathcal{M}\subset\mathcal{A}\)).For a suitable boundary state \(\zeta\), record the boundary entropy as \(h_\Phi(\mathcal{M}\subset\mathcal{A},\zeta)\).then there is strict equivalence\begin{equation}\label{eq:op-algebra-poisson-entropy-zero}
 \boxed{\;
 h_\Phi(\mathcal{M}\subset\mathcal{A},\zeta)=0
 \ \Longleftrightarrow\
-\exists\ \text{正规 }\zeta\text{-保持条件期望 }\mathcal{E}:\mathcal{A}\to\mathcal{M}.
-\;}
+\exists\\;}
 \end{equation}
-因此，当且仅当边界熵为零时，长期迭代产生的全部可见统计可被视为由 \(\mathcal{E}\) 拉回，
-并可由仅依赖 \(\mathcal{M}\) 的全局模拟器生成；若边界熵严格为正，则任何模拟器必在某些尺度上失效（出现可放大的区分器）。
-\end{theorem}
+Therefore, the entire visible statistics produced by long-term iterations can be considered to be pulled back by \(\mathcal{E}\) if and only if the boundary entropy is zero,and can be generated by a global simulator relying only on\end{theorem}
 
 \begin{proof}
-这是 Poisson 边界理论中“熵零 \(\Leftrightarrow\) 边界平凡/可期望回收”的标准型结论；
-在 \(\mathrm{II}_1\) 因子 Poisson 边界的系统构造与熵理论中可参见 \cite{DasPeterson2022PoissonBoundariesII1}。
-证毕。
-\end{proof}
+This is the standard conclusion of "entropy zero \(\Leftrightarrow\) boundary trivial/expected recovery" in Poisson's boundary theory;See \cite{DasPeterson2022PoissonBoundariesII1} in System construction and entropy theory on \(\mathrm{II}_1\) factor Poisson boundaries.Certification completed.\end{proof}
 
-\paragraph{贝叶斯逆 \texorpdfstring{$=$}{=} 模拟器}
-将“模拟器存在性”从概率论语言完全转译为“非交换贝叶斯反演是否可定义”，其存在性由模群判据控制。
-
-\begin{definition}[非交换贝叶斯逆（Bayesian inverse）]\label{def:op-algebra-bayesian-inverse}
-令 \(F:\mathcal{N}\hookrightarrow\mathcal{M}\) 为包含映射，\(\varphi\) 为 \(\mathcal{M}\) 上参考态并记 \(\xi:=\varphi\circ F\)。
-称 \(F\) 存在一个 \textbf{非交换贝叶斯逆} \(F^\sharp:\mathcal{M}\to\mathcal{N}\)，若 \(F^\sharp\) 为正规完全正映射，
-并在 \(\xi\)-意义下满足
-\begin{equation}\label{eq:op-algebra-bayes-inverse}
+\paragraph{Bayesian inverse \texorpdfstring{XPH0X}{=} simulator}The "existence of the simulator" is completely translated from the language of probability theory into "whether the non-commutative Bayesian inversion is definable", and its existence is controlled by the modular group criterion.
+\begin{definition}[Non-commutative Bayesian inverse]\label{def:op-algebra-bayesian-inverse}Let \(F:\mathcal{N}\hookrightarrow\mathcal{M}\) be the inclusion mapping, \(\varphi\) be the upper reference state of \(\mathcal{M}\) and denote it as \(\xi:=\varphi\circ F\).It is said that \(F\) has an \textbf {non-commutative Bayesian inverse} \(F^\sharp:\mathcal{M}\to\mathcal{N}\). If \(F^\sharp\) is a regular complete positive mapping,and satisfies in the sense of \(\xi\)\begin{equation}\label{eq:op-algebra-bayes-inverse}
 \boxed{\;F^\sharp\circ F=\mathrm{id}_{\mathcal{N}},\qquad \xi\circ F^\sharp=\varphi.\;}
 \end{equation}
 \end{definition}
 
-\begin{theorem}[贝叶斯逆存在性与模群判据；零知识分解的范畴闭包]\label{thm:op-algebra-bayes-inverse-zk}
-在定义 \ref{def:op-algebra-bayesian-inverse} 的设定下，
-贝叶斯逆 \(F^\sharp\) 的存在性由 Tomita--Takesaki 模群判据控制，并可视为 Takesaki 定理与 Accardi--Cecchini 粗粒化的统一推广。
-一旦 \(F^\sharp\) 存在，则对任意正规完全正转录信道 \(\Phi:\mathcal{M}\to\mathcal{T}\)，下列命题等价：
-\begin{enumerate}
-  \item 存在正规完全正映射 \(S:\mathcal{N}\to\mathcal{T}\) 使得
-  \begin{equation}\label{eq:op-algebra-zk-via-bayes-inverse}
+\begin{theorem}[Bayesian inverse existence and modular group criterion; category closure of zero-knowledge decomposition]\label{thm:op-algebra-bayes-inverse-zk}Under the settings that define \ref{def:op-algebra-bayesian-inverse},The existence of the Bayesian inverseOnce \(F^\sharp\) exists, then for any normal fully positive transcription channel \(\Phi:\mathcal{M}\to\mathcal{T}\), the following propositions are equivalent:\begin{enumerate}
+\item has a regular completely positive mapping \(S:\mathcal{N}\to\mathcal{T}\) such that  \begin{equation}\label{eq:op-algebra-zk-via-bayes-inverse}
   \boxed{\;\Phi = S\circ F^\sharp\;}
   \end{equation}
-  （即 \(\Phi\) 在范畴意义下因子化通过 \(F^\sharp\)，从而相对于 \(\mathcal{N}\) 完美零知识）；
-  \item \(\Phi\) 在“可见闭包”投影 \(F\circ F^\sharp:\mathcal{M}\to\mathcal{M}\) 下不变：
-  \begin{equation}\label{eq:op-algebra-zk-closure-fixed}
+(i.e. \(\Phi\) factors through \(F^\sharp\) in a categorical sense and is thus perfectly zero-knowledge relative to \(\mathcal{N}\));\item \(\Phi\) are unchanged under the "visible closure" projection \(F\circ F^\sharp:\mathcal{M}\to\mathcal{M}\):  \begin{equation}\label{eq:op-algebra-zk-closure-fixed}
   \boxed{\;\Phi=\Phi\circ F\circ F^\sharp.\;}
   \end{equation}
 \end{enumerate}
-在等价条件成立时，因子化 \(\Phi=S\circ F^\sharp\) 中的 \(S\) 唯一，并由
-\begin{equation}\label{eq:op-algebra-zk-simulator-unique}
+When the equivalence condition holds, \(S\) in the factorized \(\Phi=S\circ F^\sharp\) is unique and is given by\begin{equation}\label{eq:op-algebra-zk-simulator-unique}
 \boxed{\;S=\Phi|_{\mathcal{N}},\qquad S(y)=\Phi(F(y))\ (y\in\mathcal{N}).\;}
 \end{equation}
 \end{theorem}
 
 \begin{proof}
-贝叶斯逆与模群之间的对应关系、以及对 Takesaki/Accardi--Cecchini 结果的推广见 \cite{GiorgettiEtAl2023BayesianInversionModularGroup}。
-\par
-\((1)\Rightarrow(2)\)：若 \(\Phi=S\circ F^\sharp\)，则
-\(
+See \cite{GiorgettiEtAl2023BayesianInversionModularGroup} for the correspondence between Bayesian inverses and modular groups, and a generalization of the Takesaki/Accardi--Cecchini results.\par
+\((1)\Rightarrow(2)\): If \(\Phi=S\circ F^\sharp\), then\(
 \Phi\circ F\circ F^\sharp=S\circ (F^\sharp\circ F)\circ F^\sharp=S\circ F^\sharp=\Phi
-\)，得 \eqref{eq:op-algebra-zk-closure-fixed}。
-\par
-\((2)\Rightarrow(1)\)：若 \(\Phi=\Phi\circ F\circ F^\sharp\)，定义 \(S:\mathcal{N}\to\mathcal{T}\) 为 \(S:=\Phi\circ F\)。
-则
-\(
+\), get \eqref{eq:op-algebra-zk-closure-fixed}.\par
+\((2)\Rightarrow(1)\): If \(\Phi=\Phi\circ F\circ F^\sharp\), define \(S:\mathcal{N}\to\mathcal{T}\) as \(S:=\Phi\circ F\).but\(
 S\circ F^\sharp=\Phi\circ F\circ F^\sharp=\Phi
-\)，得 \eqref{eq:op-algebra-zk-via-bayes-inverse}。
-\par
-唯一性：若 \(\Phi=S\circ F^\sharp\)，则对任意 \(y\in\mathcal{N}\) 有 \(y=F^\sharp(F(y))\)，从而
-\(
+\), get \eqref{eq:op-algebra-zk-via-bayes-inverse}.\par
+Uniqueness: if \(\Phi=S\circ F^\sharp\), then for any \(y\in\mathcal{N}\) there is \(y=F^\sharp(F(y))\), so\(
 S(y)=S(F^\sharp(F(y)))=\Phi(F(y))
-\)，即 \(S=\Phi|_{\mathcal{N}}\)（式 \eqref{eq:op-algebra-zk-simulator-unique}）。
-证毕。
-\end{proof}
+\), that is, \(S=\Phi|_{\mathcal{N}}\) (formula \eqref{eq:op-algebra-zk-simulator-unique}).Certification completed.\end{proof}
 
-\begin{corollary}[贝叶斯逆诱导的零知识信道反射子与范畴同构]\label{cor:op-algebra-zk-reflector-bayes}
-在定理 \ref{thm:op-algebra-bayes-inverse-zk} 的设定下，令可见闭包幂等子
-\[
+\begin{corollary}[Bayesian inverse-induced zero-knowledge channel reflecton and category isomorphism]\label{cor:op-algebra-zk-reflector-bayes}Under the setting of theorem \ref{thm:op-algebra-bayes-inverse-zk}, let it be seen that the closure idempotent\[
 K:=F\circ F^\sharp:\mathcal{M}\to\mathcal{M}.
 \]
-对任意转录代数 \(\mathcal{T}\)，定义零知识类（作为同态集的子集）
-\[
+For any transcription algebra \(\mathcal{T}\), define a zero-knowledge class (as a subset of the homomorphic set)\[
 \mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})
-:=\left\{\Phi:\mathcal{M}\to\mathcal{T}\ \text{正规完全正}:\ \Phi=\Phi\circ K\right\}.
-\]
-则限制/后合成给出自然双射
-\[
+:=\left\{\Phi:\mathcal{M}\toXPH1X\\]
+Then restriction/post-synthesis gives natural bijection\[
 \mathrm{CP}(\mathcal{N},\mathcal{T})\ \xrightarrow{\ \cong\ }\ \mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T}),
 \qquad
 S\ \longmapsto\ S\circ F^\sharp,
 \]
-其逆映射为 \(\Phi\mapsto \Phi|_{\mathcal{N}}\)。
-等价地，预合成函子 \((-) \circ F^\sharp:\mathrm{CP}(\mathcal{N},\mathcal{T})\to \mathrm{CP}(\mathcal{M},\mathcal{T})\) 全忠实，且本质像恰为 \(\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\)；
-从而在（von Neumann 代数，正规完全正映射）范畴中，\(\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\) 给出 \(\mathrm{CP}(\mathcal{M},\mathcal{T})\) 的一个反射子子范畴（以同态集的固定点类表示）。
-\end{corollary}
+Its inverse mapping is \(\Phi\mapsto \Phi|_{\mathcal{N}}\).Equivalently, the presynthesized functor \((-) \circ F^\sharp:\mathrm{CP}(\mathcal{N},\mathcal{T})\to \mathrm{CP}(\mathcal{M},\mathcal{T})\) is fully faithful, and its essential image is exactly \(\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\);Thus in the category (von Neumann algebras, normal complete positive maps), \(\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\) gives a reflecton subcategory of \(\mathrm{CP}(\mathcal{M},\mathcal{T})\) (represented by the fixed-point class of homomorphism sets).\end{corollary}
 \begin{proof}
-由定理 \ref{thm:op-algebra-bayes-inverse-zk} 的等价性：\(\Phi=\Phi\circ K\) 当且仅当存在 \(S\) 使 \(\Phi=S\circ F^\sharp\)，
-并由 \eqref{eq:op-algebra-zk-simulator-unique} 得到 \(S=\Phi|_{\mathcal{N}}\) 的唯一性，
-从而得到所述互逆对应与全忠实性。证毕。
-\end{proof}
+According to the equivalence of theorem \ref{thm:op-algebra-bayes-inverse-zk}: \(\Phi=\Phi\circ K\) if and only if there exists \(S\) such that \(\Phi=S\circ F^\sharp\),And get the uniqueness of \(S=\Phi|_{\mathcal{N}}\) from \eqref{eq:op-algebra-zk-simulator-unique},Thus the reciprocal correspondence and full fidelity are obtained. Certification completed.\end{proof}
 
-\begin{corollary}[零知识类的后合成理想、凸闭包与张量闭包]\label{cor:op-algebra-zk-ideal-tensor-closure}
-在定理 \ref{thm:op-algebra-bayes-inverse-zk} 的设定下，对任意转录代数 \(\mathcal{T}\)：
-\begin{enumerate}
-  \item \textbf{（后合成封闭）}若 \(\Phi\in \mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\) 且 \(\Psi:\mathcal{T}\to\mathcal{T}'\) 为正规完全正，则 \(\Psi\circ\Phi\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T}')\)。
-  \item \textbf{（凸组合封闭）}若 \(\Phi_i\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\)、\(p_i\ge 0\)、\(\sum_i p_i=1\)，则 \(\sum_i p_i\Phi_i\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\)。
-\end{enumerate}
-此外，设 \(F':\mathcal{N}'\hookrightarrow\mathcal{M}'\) 亦具有贝叶斯逆 \((F')^\sharp\)，并令 \(K':=F'\circ (F')^\sharp\)。
-若 \(\Phi\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\)、\(\Phi'\in\mathrm{ZK}_{\mathcal{N}'}(\mathcal{M}',\mathcal{T}')\)，
-则其空间张量积满足
-\[
+\begin{corollary}[Zero-knowledge post-synthetic ideal, convex closure and tensor closure]\label{cor:op-algebra-zk-ideal-tensor-closure}Under the setting of theorem \ref{thm:op-algebra-bayes-inverse-zk}, for any transcription algebra \(\mathcal{T}\):\begin{enumerate}
+\item\item \textbf{(convex combined closure)} If \(\Phi_i\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\), \(p_i\ge 0\), \(\sum_i p_i=1\), then \(\sum_i p_i\Phi_i\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\).\end{enumerate}
+Furthermore, let \(F':\mathcal{N}'\hookrightarrow\mathcal{M}'\) also have the Bayesian inverse \((F')^\sharp\), and let \(K':=F'\circ (F')^\sharp\).If \(\Phi\in\mathrm{ZK}_{\mathcal{N}}(\mathcal{M},\mathcal{T})\), \(\Phi'\in\mathrm{ZK}_{\mathcal{N}'}(\mathcal{M}',\mathcal{T}')\),Then its space tensor product satisfies\[
 \Phi\bar\otimes \Phi'\in \mathrm{ZK}_{\mathcal{N}\bar\otimes \mathcal{N}'}(\mathcal{M}\bar\otimes \mathcal{M}',\mathcal{T}\bar\otimes \mathcal{T}').
 \]
-并且上述闭包性质均可等价重述为“因子化通过贝叶斯逆/可见闭包幂等子不变”（定理 \ref{thm:op-algebra-bayes-inverse-zk}）。
-\end{corollary}
+And the above closure properties can be equivalently restated as "factorization is invariant through Bayesian inverse/visible closure idempotence" (theorem \ref{thm:op-algebra-bayes-inverse-zk}).\end{corollary}
 \begin{proof}
-由 \(\Phi=\Phi\circ K\) 得
-\(
+Obtained from \(\Phi=\Phi\circ K\)\(
 \Psi\circ\Phi=\Psi\circ\Phi\circ K
-\)，故后合成封闭；凸组合封闭由线性性直接得到。
-张量闭包由
-\[
+\), so the post-synthetic closure is obtained; the convex combination closure is obtained directly from linearity.The tensor closure is given by\[
 (\Phi\bar\otimes\Phi')\circ (K\bar\otimes K')
 =(\Phi\circ K)\bar\otimes(\Phi'\circ K')
 =\Phi\bar\otimes\Phi'
 \]
-推出。
-等价表述由定理 \ref{thm:op-algebra-bayes-inverse-zk} 的 (1)$\Leftrightarrow$(2) 立即得到。证毕。
-\end{proof}
+roll out.The equivalent statement follows immediately from (1)$\Leftrightarrow$(2) of theorem \ref{thm:op-algebra-bayes-inverse-zk}. Certification completed.\end{proof}
 
-\paragraph{Selberg 行列式表达与算术散射中的 Riemann 共振}
-\begin{remark}[散射极点中的 \texorpdfstring{$\zeta$}{zeta}-比值结构与零知识失稳频率]\label{rem:op-algebra-selberg-zeros-as-resonances}
-在有限体积双曲曲面（含 cusp）的谱理论中，Selberg \(\zeta\) 可表达为 Laplacian 行列式与散射矩阵行列式的组合，
-并满足耦合的功能方程 \(Z(s)\varphi_{\mathrm{sc}}(s)=\eta(s)Z(1-s)\) 及 \(\varphi_{\mathrm{sc}}(s)\varphi_{\mathrm{sc}}(1-s)=1\)
-（见注 \ref{rem:op-algebra-scattering-selberg-analogy}）。
-在算术对称群相关的几何数据下，散射行列式中出现 \(\zeta(2s)\) 与 \(\zeta(2s-1)\) 的比值结构，
-从而 Riemann \(\zeta\) 的零点在散射对象中表现为极点/共振。
-因此，若以命题 \ref{prop:op-algebra-modular-scattering-phase} 的“临界线纯相位性”作为零知识稳定的幺正性要求，
-则一切共振只能以临界方式出现；任何假设性的非临界共振都会引入 \(|\varphi_{\mathrm{sc}}(\tfrac12+\mathrm{i}t)|\neq 1\) 的幅度异常，
-从而给出可放大的区分器（零知识失稳频率）。
-\end{remark}
+\paragraph{Selberg determinant expression and Riemann resonance in arithmetic scattering}\begin{remark}[\texorpdfstring{XPH0X}{zeta}-ratio structure and zero-knowledge instability frequency in scattering poles]\label{rem:op-algebra-selberg-zeros-as-resonances}In the spectral theory of finite volume hyperboloids (including cusp), Selberg \(\zeta\) can be expressed as a combination of the Laplacian determinant and the scattering matrix determinant,And satisfy the coupled functional equations \(Z(s)\varphi_{\mathrm{sc}}(s)=\eta(s)Z(1-s)\) and \(\varphi_{\mathrm{sc}}(s)\varphi_{\mathrm{sc}}(1-s)=1\)(See note \ref{rem:op-algebra-scattering-selberg-analogy}).Under the geometric data related to the arithmetic symmetry group, the ratio structure of \(\zeta(2s)\) and \(\zeta(2s-1)\) appears in the scattering determinant,The zeros of the Riemann \(\zeta\) thus appear as poles/resonances in the scattering object.Therefore, if the "critical line pure phase" of the proposition \ref{prop:op-algebra-modular-scattering-phase} is used as the unitarity requirement for zero-knowledge stability,Then all resonances can only appear in a critical manner; any hypothetical non-critical resonance will introduce an amplitude anomaly of \(|\varphi_{\mathrm{sc}}(\tfrac12+\mathrm{i}t)|\neq 1\),This gives a scalable differentiator (zero-knowledge instability frequency).\end{remark}
 
-\paragraph{指数--行列式--零点的统一控制律（模板）}
-\begin{proposition}[指数作为共同控制量：可模拟性、零自由带与伪造优势]\label{prop:op-algebra-index-determinant-zero-control}
-设 \(\mathcal{N}\subset\mathcal{M}\) 为有限指数子因子包含且存在迹保持条件期望 \(E\)，并设 \((\mathcal{A},\tau)\) 上给定非交换 \(\zeta\) 对象 \(Z_{\mathcal{A}}(s)\)（定义 \ref{def:op-algebra-fk-determinant-zeta}），
-且其“可见谱共振”通过 \(\Delta_\tau(I-K_s)\) 的退化被视界验证统计读出。
-则 Jones 指数 \([\mathcal{M}:\mathcal{N}]\) 同时作为以下三类约束的共同控制量：
-\begin{enumerate}
-  \item \textbf{（纤维容量/不可区分数）}不可区分投影集合的最大规模受限于 \([\mathcal{M}:\mathcal{N}]\)（定理 \ref{thm:op-algebra-pimsner-popa-witness-bound}），从而给出零知识条件下健全性误差的不可改进尺度（推论 \ref{cor:op-algebra-soundness-lower-bound-index}）；
-  \item \textbf{（非交换行列式稳定域）}若在某开域内可建立 \(K_s\) 的谱收缩/可逆性证书（例如 \(\|K_s\|\le 1-c([\mathcal{M}:\mathcal{N}])\)），则由命题 \ref{prop:op-algebra-fkdet-properties} 得到一个由指数控制的零自由带：在该带内不存在由“纤维共振”诱导的零点；
-  \item \textbf{（带外零点 \(\Rightarrow\) 指数级区分优势）}一旦出现带外零点/共振，则对应的谱投影无法被条件期望抹平，必诱导可放大的区分器；其指数级增长模式与 (1) 的“不可区分容量”约束形成闭环矛盾，从而把零点偏离转译为零知识失稳的可审计证据。
-\end{enumerate}
-因此，指数既可被解释为“视界熵容量”，亦可被视为“\(\zeta\)-谱稳定性”与“协议健全性极限”的共同控制量。
-\end{proposition}
+\paragraph{Exponent--Determinant--Unified control law of zero point (template)}\begin{proposition} [Indices as co-controlled quantities: simulatability, zero-free bands and forgery advantages] \label{prop:op-algebra-index-determinant-zero-control}Let \(\mathcal{N}\subset\mathcal{M}\) be the finite exponential subfactor containing and existing trace-preserving conditional expectationAnd its "visible spectrum resonance" is statistically read out by horizon verification through the degradation of \(\Delta_\tau(I-K_s)\).Then the Jones index \([\mathcal{M}:\mathcal{N}]\) serves as the common control variable for the following three types of constraints at the same time:\begin{enumerate}
+\item\item\item \textbf{(Out-of-band zero point\end{enumerate}
+Therefore, the index can be interpreted as the "horizon entropy capacity" or as the joint control quantity of "\(\zeta\)-spectral stability" and "protocol soundness limit".\end{proposition}
 
 \endinput
 
