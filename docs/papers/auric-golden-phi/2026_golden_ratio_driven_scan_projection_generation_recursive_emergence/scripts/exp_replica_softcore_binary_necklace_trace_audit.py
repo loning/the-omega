@@ -19,6 +19,7 @@ The audit uses only integer arithmetic by working with the scaled matrices:
 from __future__ import annotations
 
 import json
+from collections import Counter
 from math import comb
 from pathlib import Path
 from typing import Dict, Iterable, List, Sequence, Tuple
@@ -212,11 +213,97 @@ def precompute_necklace_data(m_values: Iterable[int]) -> Dict[int, List[Dict[str
     return data
 
 
+def word_tau_counts_excluding_all_zero(m: int) -> Dict[int, int]:
+    """Return {tau: count} over all m-bit words excluding the all-zero word."""
+    counts: Counter[int] = Counter()
+    for w in range(1 << m):
+        counts[tau_by_matrix(w, m)] += 1
+
+    lucas = tau_by_matrix(0, m)
+    counts[lucas] -= 1
+    if counts[lucas] == 0:
+        del counts[lucas]
+    if any(v < 0 for v in counts.values()):
+        raise RuntimeError("negative tau count encountered")
+    return dict(counts)
+
+
 def main() -> None:
     q_values = list(range(2, 7))
-    m_values = list(range(1, 8))
+    m_values = list(range(1, 9))
 
     necklace_data = precompute_necklace_data(m_values)
+
+    expected_coeffs: Dict[int, Dict[int, int]] = {
+        # 2^m S_m(q) = Omega_m(q) + sum_{t} coeff[t] * t^q
+        6: {
+            64: 1,
+            48: 6,
+            40: 6,
+            36: 9,
+            32: 6,
+            30: 12,
+            27: 2,
+            26: 6,
+            25: 3,
+            24: 6,
+            21: 6,
+        },
+        7: {
+            128: 1,
+            96: 7,
+            80: 7,
+            72: 14,
+            64: 7,
+            60: 21,
+            54: 7,
+            52: 7,
+            50: 7,
+            48: 14,
+            45: 7,
+            42: 7,
+            40: 7,
+            39: 7,
+            34: 7,
+        },
+        8: {
+            256: 1,
+            192: 8,
+            160: 8,
+            144: 20,
+            128: 8,
+            120: 32,
+            108: 16,
+            104: 8,
+            100: 12,
+            96: 24,
+            90: 24,
+            84: 8,
+            81: 2,
+            80: 16,
+            78: 16,
+            75: 8,
+            72: 8,
+            68: 8,
+            65: 8,
+            64: 4,
+            63: 8,
+            55: 8,
+        },
+    }
+
+    tau_value_counts: Dict[int, Dict[int, int]] = {}
+    for m, coeffs in expected_coeffs.items():
+        observed = word_tau_counts_excluding_all_zero(m)
+        if observed != coeffs:
+            raise RuntimeError(
+                f"Unexpected (tau -> count) distribution for m={m}. "
+                f"observed={sorted(observed.items(), reverse=True)} "
+                f"expected={sorted(coeffs.items(), reverse=True)}"
+            )
+        if sum(observed.values()) != (1 << m) - 1:
+            raise RuntimeError(f"Count sum mismatch for m={m}")
+        tau_value_counts[m] = dict(sorted(observed.items(), reverse=True))
 
     checks: List[Dict[str, int]] = []
     for q in q_values:
@@ -257,6 +344,13 @@ def main() -> None:
                     f"Exceptional sum mismatch at (q,m)=({q},{m}): lhs={lhs_exc} rhs={rhs_exc}"
                 )
 
+            if m in expected_coeffs:
+                rhs_exc_closed = omega + sum(c * pow(t, q) for t, c in expected_coeffs[m].items())
+                if lhs_exc != rhs_exc_closed:
+                    raise RuntimeError(
+                        f"Closed form mismatch at (q,m)=({q},{m}): lhs={lhs_exc} rhs={rhs_exc_closed}"
+                    )
+
             checks.append(
                 {
                     "q": q,
@@ -276,6 +370,7 @@ def main() -> None:
                 "q_values": q_values,
                 "m_values": m_values,
                 "checks": checks,
+                "tau_value_counts_excluding_all_zero": tau_value_counts,
                 "notes": {
                     "lhs_full": "Tr((2T^(q))^m) = 2^m Tr((T^(q))^m)",
                     "lhs_exc": "Tr((2A^(q))^m) = 2^m S_m(q)",
