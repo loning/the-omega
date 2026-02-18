@@ -20,6 +20,8 @@ We verify, by exact symbolic algebra in Q[...]:
     with resultant certificate.
   - The resolvent cubic R(z,y) discriminant identity:
       Disc_z(R) = Disc_lam(Pi) = -y(y-1) P_LY(y).
+  - An equivalent integral-scaled resolvent cubic R_std(z,y) has
+      Disc_z(R_std) = 2^24 * Disc_lam(Pi).
   - A field-trace representation of Z_m(y) over K=Q(y)(lam)/Q(y) with denominators
     supported only at y*P_LY(y)=0, plus the cleared-denominator polynomial identity.
   - The residue / partial-fraction construction of the trace weight u(lam) modulo Pi.
@@ -173,6 +175,10 @@ def main() -> None:
     R = z**3 + (1 + 2 * y) * z**2 - (1 + 4 * y + 4 * y**2) * z - (1 + 5 * y + 13 * y**2 + 8 * y**3)
     disc_R = sp.factor(sp.discriminant(R, z))
     disc_R_ok = sp.factor(disc_R - disc_Pi_expected) == 0
+
+    R_std = 64 * z**3 - (176 + 256 * y) * z**2 + (76 + 128 * y) * z - (64 * y**2 - 48 * y + 9)
+    disc_R_std = sp.factor(sp.discriminant(R_std, z))
+    disc_R_std_ok = sp.factor(disc_R_std - 2**24 * disc_Pi_expected) == 0
 
     # Specialization y=2: quick irreducibility witness for the resolvent cubic
     R_y2 = sp.Poly(sp.expand(R.subs({y: 2})), z, domain=sp.ZZ)
@@ -334,6 +340,7 @@ def main() -> None:
         "branch_factor_ok": bool(branch_factor_ok),
         "resultant_ok": bool(res_ok),
         "disc_R_ok": bool(disc_R_ok),
+        "disc_R_std_ok": bool(disc_R_std_ok),
         "R_y2_irreducible_ok": bool(R_y2_irreducible_ok),
         "disc_at_y2": int(disc_at_y2),
         "disc_at_y2_ok": bool(disc_at_y2_ok),
