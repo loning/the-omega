@@ -190,7 +190,13 @@ C:\ w^{2}=-y(y-1)P_{\mathrm{LY}}(y)
 \[
 A(y):=1+2y,\qquad Q(y):=16+69y+219y^{2}+128y^{3}.
 \]
-则在 \(\ZZ[y]\) 中有严格恒等式
+则在 \(\QQ[y]\)（事实上在 \(\ZZ[y]\)）中同时成立两条一次恒等式
+\[
+\boxed{\ Q(y)-16A(y)^3=27y(y-1)\ },\qquad
+\boxed{\ Q(y)+16A(y)^3=P_{\mathrm{LY}}(y)\ },
+\]
+其中 \(P_{\mathrm{LY}}(y)=256y^3+411y^2+165y+32\) 为结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的 Lee--Yang 三次因子。
+从而自动推出差平方分解
 \[
 \boxed{\ Q(y)^2-256A(y)^6=27y(y-1)P_{\mathrm{LY}}(y)\ }.
 \]
@@ -209,13 +215,73 @@ U:=\frac{Q(y)+3w\sqrt{-3}}{16A(y)^3}
 该范数--\(1\) 证书把判别式核 \(-y(y-1)P_{\mathrm{LY}}(y)\) 结构化为 \(\QQ(\sqrt{-3})\) 上的二次范数表达，从而为结论 \ref{con:xi-terminal-zm-s4-galois-closure-genus-tower-holomorphic-differentials} 的循环三次无分歧覆盖给出一条 Kummer 型描述的显式代数入口。
 \end{conclusion}
 \begin{proof}[证明要点]
-差平方恒等式由在 \(\ZZ[y]\) 中直接展开化简得到；将 \(w^2=-y(y-1)P_{\mathrm{LY}}(y)\) 代入即得范数形式。
+由
+\(
+16A(y)^3=16(1+2y)^3=16+96y+192y^2+128y^3
+\)
+与 \(Q(y)\) 逐项比较可得
+\(
+Q(y)-16A(y)^3=27y^2-27y=27y(y-1)
+\)
+与
+\(
+Q(y)+16A(y)^3=256y^3+411y^2+165y+32=P_{\mathrm{LY}}(y)
+\)。
+两式相乘即得差平方分解。
+再将曲线方程 \(w^2=-y(y-1)P_{\mathrm{LY}}(y)\) 代入即可得到范数形式。
 范数恒等式由
 \(
 \operatorname{N}(Q+3w\sqrt{-3})=Q^2+27w^2
 \)
 与分母 \((16A^3)^2\) 的显式平方性立即推出。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_leyang\_discriminant\_ridge\_difference\_square\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[Chebyshev 纤维积结构：二次脊曲线上的 \(S_3\) 六次闭包与循环三重 \'etale 覆叠]\label{con:xi-terminal-zm-discriminant-ridge-chebyshev-fiber-product}
+沿用结论 \ref{con:xi-terminal-zm-leyang-discriminant-ridge-diff-square-norm} 的记号，并定义有理函数
+\[
+a(y):=\frac{Q(y)}{8A(y)^3}\ \in\ \QQ(y).
+\]
+考虑 Chebyshev 型三次映射
+\[
+\psi:\ \PP^1_s\longrightarrow\PP^1_a,\qquad a=s^3-3s,
+\]
+其关于变量 \(s\) 的判别式满足
+\[
+\boxed{\ \mathrm{Disc}_{s}\bigl(s^3-3s-a\bigr)=-27\,(a^2-4)\ }.
+\]
+由结论 \ref{con:xi-terminal-zm-leyang-discriminant-ridge-diff-square-norm} 的两条一次恒等式立得
+\[
+a(y)-2=\frac{Q(y)-16A(y)^3}{8A(y)^3}=\frac{27y(y-1)}{8A(y)^3},
+\qquad
+a(y)+2=\frac{Q(y)+16A(y)^3}{8A(y)^3}=\frac{P_{\mathrm{LY}}(y)}{8A(y)^3}.
+\]
+从而 \(a(y)\) 在 \(y\)-线上把分歧集
+\(
+\{0,1,\infty\}\cup\{P_{\mathrm{LY}}(y)=0\}
+\)
+压缩为 \(\{2,-2,\infty\}\subset\PP^1_a\)：
+\(a^{-1}(2)=\{y=0,1,\infty\}\)，\(a^{-1}(-2)=\{P_{\mathrm{LY}}(y)=0\}\)，而 \(a^{-1}(\infty)=\{A(y)=0\}=\{y=-\tfrac12\}\)。
+\par
+令 \(C_6\) 为纤维积 \(C\times_{\PP^1_a}\PP^1_s\) 的正规化（其中 \(C\to\PP^1_a\) 由 \(C\to\PP^1_y\) 与 \(a(y)\) 复合得到）。
+则：
+\begin{enumerate}
+  \item 复合映射 \(C_6\to\PP^1_y\) 为次数 \(6\) 的 \(S_3\)-Galois 覆叠，其惰性群由换位（阶 \(2\) 元）生成；
+  \item 诱导的次数 \(3\) 覆叠 \(C_6\to C\) 为循环 Galois 覆叠，且处处无分歧（\'etale）；
+  \item 因而 \(g(C_6)=3(g(C)-1)+1=4\)。
+\end{enumerate}
+并且该 \(C_6\to C\) 与结论 \ref{con:xi-terminal-zm-discriminant-ridge-etale-c3-explicit-model} 中由三次分解式 \(\mathscr R(z,y)=0\) 所刻画的循环三次 \'etale 覆叠一致。
+\end{conclusion}
+\begin{proof}[证明要点]
+\(\psi\) 在 \(a=\pm 2\) 处具有指数 \(2\) 的驯分歧，在 \(a=\infty\) 处具有指数 \(3\) 的全分歧；
+另一方面，由上述分解可见：在 \(C\to\PP^1_y\) 的全部分歧点（\(y=0,1,\infty\) 与 \(P_{\mathrm{LY}}(y)=0\) 的三根）上，复合映射 \(C\to\PP^1_a\) 的分歧指数均为 \(2\)，而在 \(A(y)=0\) 的两点 \(P_\pm\) 上分歧指数为 \(3\)。
+因此在每个分歧点处，复合映射 \(C\to\PP^1_a\) 的分歧指数与 \(\psi\) 的分歧指数相同；由 Abhyankar 引理（驯分歧情形）知，拉回后的三次覆盖在 \(C\) 上无分歧，从而 \(C_6\to C\) 为 \'etale 循环三重覆盖。
+其与 \(S_3\)-闭包的对应由判别式恒等式
+\(
+\mathrm{Disc}_{s}(s^3-3s-a(y))\sim -y(y-1)P_{\mathrm{LY}}(y)
+\)
+给出（常数与 \(A(y)^6\) 仅贡献平方因子），遂得到 \(C_6\to\PP^1_y\) 的 \(S_3\)-Galois 性。
+最后由 Riemann--Hurwitz 公式得 \(g(C_6)=4\)。证毕。
 \end{proof}
 
 \begin{conclusion}[循环三次无分歧覆盖的 Kummer--Cardano 正规形与二面体提升：显式生成元与分解式同构]\label{con:xi-terminal-zm-discriminant-ridge-kummer-dihedral}
@@ -287,10 +353,12 @@ u\mapsto u^{-1}
 证毕。
 \end{proof}
 
-\begin{conclusion}[Kummer 生成元的除子完全局部化与显式 \(3\)-扭结类]\label{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion}
+\begin{conclusion}[Kummer 生成元的除子完全局部化与显式 \(3\)-挠点]\label{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion}
 在结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-dihedral} 的记号下，令
 \[
 P_{\pm}:=\left(y=-\frac12,\ w=\pm\frac{9}{4}\sqrt{-3}\right)\in C(K),
+\qquad
+u:=\frac{Q(y)+3w\sqrt{-3}}{16A(y)^3}\in K(C)^{\times},
 \qquad
 v:=\frac{Q(y)+3w\sqrt{-3}}{Q(y)-3w\sqrt{-3}}\in K(C)^{\times}.
 \]
@@ -303,10 +371,10 @@ v:=\frac{Q(y)+3w\sqrt{-3}}{Q(y)-3w\sqrt{-3}}\in K(C)^{\times}.
 从而 \(u\) 与 \(v\) 的零点与极点均仅支撑在 \(\{P_{+},P_{-}\}\) 上。
 因此
 \[
-D:=2(P_{+}-P_{-})\in \mathrm{Pic}^{0}(C_{K})\simeq J(C)(K)
+\tau:=[P_{+}-P_{-}]\in \mathrm{Pic}^{0}(C_{K})\simeq J(C)(K)
 \]
-为一个非平凡的 \(3\)-扭结类（即 \(3D=0\) 且 \(D\neq 0\)）。
-并且由于 \(\gcd(2,3)=1\)，Kummer 扩张 \(t^{3}=u\) 与 \(s^{3}=v\) 给出同一 \(\mu_{3}\)-扭子，因而与结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-dihedral} 的循环三次覆盖在函数域意义下相同。
+满足 \(3\tau=0\) 且 \(\tau\neq 0\)，从而 \(\mathrm{ord}(\tau)=3\)。
+并且由于 \(\gcd(2,3)=1\)，Kummer 扩张 \(t^{3}=u\) 与 \(s^{3}=v\) 给出同一 \(\mu_{3}\)-扭子。
 \end{conclusion}
 \begin{proof}[证明要点]
 由 \(P_{\mathrm{LY}}(-\tfrac12)=\tfrac{81}{4}\) 得
@@ -330,17 +398,18 @@ w^{2}\bigl\vert_{y=-1/2}=-(-\tfrac12)(-\tfrac32)\cdot\tfrac{81}{4}=-\tfrac{243}{
 \operatorname{div}(u)=3(P_{+}-P_{-})
 \)；
 由 \(v=(Q+3w\sqrt{-3})/(Q-3w\sqrt{-3})=u^{2}\) 得 \(\operatorname{div}(v)=6(P_{+}-P_{-})\)。
-于是 \(6(P_{+}-P_{-})\) 为主除子，故 \(3D=0\)。
-若 \(D=0\)，则 \(P_{+}-P_{-}\) 为 \(2\)-挠点；但 \(y=-\tfrac12\) 为非分歧纤维，\(P_{\pm}\) 非 Weierstrass 点，从而不可能落在 \(J(C)[2]\) 的分支点差结构中，故 \(D\neq 0\)。
-最后，因 \(v=u^{2}\) 且 \(\gcd(2,3)=1\)，Kummer 扩张由 \(t^{3}=u\) 与 \(s^{3}=v\) 生成同一次数 \(3\) 的循环子扩张。证毕。
+于是 \(3(P_{+}-P_{-})\) 为主除子，故 \(3\tau=0\)。
+若 \(\tau=0\)，则 \(P_{+}-P_{-}\) 为主除子，推出存在仅有一次极点的非常值函数 \(C\to\PP^1\)，从而 \(C\) 必为有理曲线；
+但结论 \ref{con:xi-terminal-zm-leyang-discriminant-ridge-polydisc-badprimes} 已给出 \(g(C)=2\)，矛盾，故 \(\tau\neq 0\)。
+最后，由 \(v=u^{2}\) 且 \(\gcd(2,3)=1\) 得由 \(t^{3}=u\) 与 \(s^{3}=v\) 所给出的 \(\mu_3\)-扭子相同。证毕。
 \end{proof}
 
 \begin{conclusion}[显式 \(3\)-循环子群的下降与 \texorpdfstring{$\QQ$}{Q}-定义 \(3\)-同源]\label{con:xi-terminal-zm-discriminant-ridge-3isogeny-descent}
-令 \(K=\QQ(\sqrt{-3})\)，并取结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion} 的 \(3\)-扭结类 \(D\in J(C)(K)[3]\) 与循环子群
+令 \(K=\QQ(\sqrt{-3})\)，并取结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion} 的 \(3\)-挠点 \(\tau\in J(C)(K)[3]\setminus\{0\}\) 与循环子群
 \[
-G:=\langle D\rangle=\{0,\pm D\}\subset J(C)[3].
+G:=\langle \tau\rangle=\{0,\pm \tau\}\subset J(C)[3].
 \]
-由于 \(\mathrm{Gal}(K/\QQ)\) 的非平凡元交换 \(P_{+}\leftrightarrow P_{-}\) 从而诱导 \(D\mapsto -D\)，可知子群 \(G\) 在 \(\mathrm{Gal}(\overline{\QQ}/\QQ)\) 作用下稳定。
+由于 \(\mathrm{Gal}(K/\QQ)\) 的非平凡元交换 \(P_{+}\leftrightarrow P_{-}\) 从而诱导 \(\tau\mapsto -\tau\)，可知子群 \(G\) 在 \(\mathrm{Gal}(\overline{\QQ}/\QQ)\) 作用下稳定。
 因此存在定义于 \(\QQ\) 的度 \(3\) 同源
 \[
 \varphi:\ J(C)\longrightarrow J(C)/G,
@@ -349,27 +418,27 @@ G:=\langle D\rangle=\{0,\pm D\}\subset J(C)[3].
 \end{conclusion}
 \begin{proof}[证明要点]
 对任意域 \(F\) 上的阿贝尔簇 \(A/F\)，若有限子群方案 \(G\subset A\) 在 \(\mathrm{Gal}(\overline F/F)\) 作用下稳定，则商阿贝尔簇 \(A/G\) 与自然同源 \(A\to A/G\) 均可在 \(F\) 上下降。
-此处 \(F=\QQ\)、\(A=J(C)\)，而上式 \(G\) 的伽罗瓦稳定性由 \(D\mapsto -D\) 立即给出；由于 \(|G|=3\)，同源次数亦为 \(3\)。证毕。
+此处 \(F=\QQ\)、\(A=J(C)\)，而上式 \(G\) 的伽罗瓦稳定性由 \(\tau\mapsto -\tau\) 立即给出；由于 \(|G|=3\)，同源次数亦为 \(3\)。证毕。
 \end{proof}
 
 \begin{conclusion}[分裂型控制下的 \(3\)-扭专门化：良约化素数上的可见性二分律]\label{con:xi-terminal-zm-discriminant-ridge-3torsion-specialization}
 设 \(p\notin\{2,3,31,37\}\) 为素数，从而曲线 \(C\) 在 \(p\) 处良好约化（结论 \ref{con:xi-terminal-zm-leyang-discriminant-ridge-polydisc-badprimes}），并且 \(p\neq 3\)。
-令 \(D\in J(C)(\QQ(\sqrt{-3}))[3]\setminus\{0\}\) 为结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion} 的 \(3\)-扭结类。
+令 \(\tau\in J(C)(\QQ(\sqrt{-3}))[3]\setminus\{0\}\) 为结论 \ref{con:xi-terminal-zm-discriminant-ridge-kummer-divisor-3torsion} 的 \(3\)-挠点。
 则：
 \begin{enumerate}
-  \item 若 \(p\equiv 1\pmod 3\)，则 \(\sqrt{-3}\in\FF_{p}\)，从而点 \(P_{\pm}\) 与 \(D\) 均在 \(\FF_{p}\) 上可专门化，并给出非零点
+  \item 若 \(p\equiv 1\pmod 3\)，则 \(\sqrt{-3}\in\FF_{p}\)，从而点 \(P_{\pm}\) 与 \(\tau\) 均在 \(\FF_{p}\) 上可专门化，并给出非零点
   \[
-  D_{p}\in J(C)(\FF_{p})[3]\setminus\{0\}.
+  \tau_{p}\in J(C)(\FF_{p})[3]\setminus\{0\}.
   \]
-  \item 若 \(p\equiv 2\pmod 3\)，则 \(\sqrt{-3}\notin\FF_{p}\) 但 \(\sqrt{-3}\in\FF_{p^{2}}\)，因此 \(P_{\pm}\) 与 \(D\) 在 \(\FF_{p^{2}}\) 上专门化，并给出非零点
+  \item 若 \(p\equiv 2\pmod 3\)，则 \(\sqrt{-3}\notin\FF_{p}\) 但 \(\sqrt{-3}\in\FF_{p^{2}}\)，因此 \(P_{\pm}\) 与 \(\tau\) 在 \(\FF_{p^{2}}\) 上专门化，并给出非零点
   \[
-  D_{p^{2}}\in J(C)(\FF_{p^{2}})[3]\setminus\{0\}.
+  \tau_{p^{2}}\in J(C)(\FF_{p^{2}})[3]\setminus\{0\}.
   \]
 \end{enumerate}
 从而该 \(3\)-扭结构在有限域上的可见性由二次扩张 \(\QQ(\sqrt{-3})/\QQ\) 的分裂型（亦即 \(p\bmod 3\)）完全决定。
 \end{conclusion}
 \begin{proof}[证明要点]
-对良约化素数 \(p\neq 3\)，N\'eron 模型的基本性质保证专门化映射在素因子与 \(p\) 互素的挠子上为单射；因此 \(D\neq 0\) 的 \(3\)-挠性在约化后保持非平凡。
+对良约化素数 \(p\neq 3\)，N\'eron 模型的基本性质保证专门化映射在素因子与 \(p\) 互素的挠子上为单射；因此 \(\tau\neq 0\) 的 \(3\)-挠性在约化后保持非平凡。
 当 \(p\equiv 1\pmod 3\) 时，\(-3\) 在 \(\FF_{p}\) 中为平方，故 \(\sqrt{-3}\) 与点 \(P_{\pm}\) 在 \(\FF_{p}\) 上可定义；
 当 \(p\equiv 2\pmod 3\) 时，\(-3\) 在 \(\FF_p\) 中为非平方而在 \(\FF_{p^2}\) 中必为平方，故所需定义域扩张恰为 \(\FF_{p^2}\)。证毕。
 \end{proof}

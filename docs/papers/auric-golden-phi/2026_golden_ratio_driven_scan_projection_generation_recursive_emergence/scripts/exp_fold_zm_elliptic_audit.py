@@ -65,6 +65,11 @@ def _factor_mod(p: sp.Expr, var: sp.Symbol, modulus: int) -> str:
     return str(sp.factor(P.as_expr(), modulus=modulus))
 
 
+def _groebner_is_unit(gb: sp.GroebnerBasis) -> bool:
+    # In SymPy, a Groebner basis contains 1 iff the ideal is the whole ring.
+    return any(p.as_expr() == 1 for p in gb.polys)
+
+
 def _count_points_short_weierstrass(p: int, a: int, b: int) -> int:
     """Count points on y^2 = x^3 + a x + b over F_p (including O)."""
     a %= p
@@ -257,8 +262,22 @@ def main() -> None:
             trace_id_ok = False
             break
 
+    # --- Spectral curve at (∞,∞) in P1_lambda x P1_y ---
+    mu, v = sp.symbols("mu v")
+    F_mu_v = (1 - mu - mu**2 + mu**3) * v**2 + mu**2 * (mu**2 - 2) * v + mu**4
+    disc_v = sp.factor(sp.discriminant(F_mu_v, v))
+    disc_v_expected = sp.factor(mu**5 * (mu**3 - 4 * mu**2 + 4))
+    disc_v_ok = sp.factor(disc_v - disc_v_expected) == 0
+
     # --- Discriminants/resultants and mod p factorizations (37 coupling) ---
     disc_P_LY = sp.factor(sp.discriminant(P_LY, y))
+    disc_P_LY_expected = sp.factor(-3**9 * 31**2 * 37)
+    disc_P_LY_ok = sp.factor(disc_P_LY - disc_P_LY_expected) == 0
+
+    B = sp.expand(y * (y - 1) * P_LY)
+    disc_B = sp.factor(sp.discriminant(B, y))
+    disc_B_expected = sp.factor(-2**20 * 3**15 * 31**2 * 37)
+    disc_B_ok = sp.factor(disc_B - disc_B_expected) == 0
     disc_g = sp.factor(sp.discriminant(g, lam))
     res_g_2div = sp.factor(sp.resultant(g, denom_2div, lam))
     # Mod p factorizations
@@ -269,6 +288,33 @@ def main() -> None:
     # Collision point at lam=5 mod 37 -> y via 4 lam y = 4 lam^3 -3 lam^2 -2 lam + 1
     y_at_5_mod37 = sp.mod_inverse(4 * 5, 37) * (4 * 5**3 - 3 * 5**2 - 2 * 5 + 1)
     y_at_5_mod37 %= 37
+
+    # --- Resolvent cubic: projective closure at infinity and smoothness ---
+    Zp, Yp, Wp = sp.symbols("Zp Yp Wp")
+    R_h = sp.expand(
+        Zp**3
+        + (Wp + 2 * Yp) * Zp**2
+        - (Wp**2 + 4 * Yp * Wp + 4 * Yp**2) * Zp
+        - (Wp**3 + 5 * Yp * Wp**2 + 13 * Yp**2 * Wp + 8 * Yp**3)
+    )
+    R_h_W0 = sp.factor(R_h.subs({Wp: 0}))
+    R_h_W0_expected = sp.factor((Zp - 2 * Yp) * (Zp + 2 * Yp) ** 2)
+    R_h_W0_ok = sp.factor(R_h_W0 - R_h_W0_expected) == 0
+
+    # Smoothness in affine chart W=1:
+    R_aff = sp.expand(R_h.subs({Wp: 1, Zp: z, Yp: y}))
+    dR_aff_dz = sp.diff(R_aff, z)
+    dR_aff_dy = sp.diff(R_aff, y)
+    gb_aff = sp.groebner([R_aff, dR_aff_dz, dR_aff_dy], z, y, order="lex", domain=sp.QQ)
+    resolvent_smooth_affine_ok = _groebner_is_unit(gb_aff)
+
+    # Smoothness at infinity: chart Y=1 (covers all points with W=0 since Y!=0 there)
+    Zc, Wc = sp.symbols("Zc Wc")
+    R_inf = sp.expand(R_h.subs({Yp: 1, Zp: Zc, Wp: Wc}))
+    dR_inf_dZ = sp.diff(R_inf, Zc)
+    dR_inf_dW = sp.diff(R_inf, Wc)
+    gb_inf = sp.groebner([R_inf, dR_inf_dZ, dR_inf_dW], Zc, Wc, order="lex", domain=sp.QQ)
+    resolvent_smooth_infty_ok = _groebner_is_unit(gb_inf)
 
     payload: Dict[str, object] = {
         "disc_E": int(disc_E),
@@ -298,10 +344,21 @@ def main() -> None:
         "disc_P_LY": str(disc_P_LY),
         "disc_g": str(disc_g),
         "res_g_2div": str(res_g_2div),
+        "spectral_infty_disc_v": str(disc_v),
+        "spectral_infty_disc_v_expected": str(disc_v_expected),
+        "spectral_infty_disc_v_ok": bool(disc_v_ok),
+        "disc_P_LY_ok": bool(disc_P_LY_ok),
+        "disc_B": str(disc_B),
+        "disc_B_expected": str(disc_B_expected),
+        "disc_B_ok": bool(disc_B_ok),
         "P_mod3": P_mod3,
         "P_mod31": P_mod31,
         "P_mod37": P_mod37,
         "y_at_lam5_mod37": int(y_at_5_mod37),
+        "resolvent_projective_W0_factor": str(R_h_W0),
+        "resolvent_projective_W0_ok": bool(R_h_W0_ok),
+        "resolvent_projective_smooth_affine_ok": bool(resolvent_smooth_affine_ok),
+        "resolvent_projective_smooth_infty_ok": bool(resolvent_smooth_infty_ok),
         "a_coeffs": [str(a0), str(a1), str(a2), str(a3)],
         "A_polys": [str(A0), str(A1), str(A2), str(A3)],
     }
@@ -331,6 +388,11 @@ def main() -> None:
         tex_lines.append("\\[")
         tex_lines.append(
             "\\mathrm{Disc}\\bigl(256y^{3}+411y^{2}+165y+32\\bigr)=%s." % sp.latex(disc_P_LY)
+        )
+        tex_lines.append("\\]")
+        tex_lines.append("\\[")
+        tex_lines.append(
+            "\\mathrm{Disc}\\bigl(y(y-1)(256y^{3}+411y^{2}+165y+32)\\bigr)=%s." % sp.latex(disc_B)
         )
         tex_lines.append("\\]")
         _write_text(generated_dir() / "eq_fold_zm_elliptic_audit.tex", "\n".join(tex_lines) + "\n")

@@ -26,8 +26,8 @@ We verify (exact, auditable):
     and log(v_n)/n^2 for n=8..12 (natural log).
   - Bad prime p=37 on minimal model:
       c6=-216,  (-c6 mod 37)=31,  (31/37)=-1 (nonsplit multiplicative),
-      v_37(den(x(nR))^(1/2)) is 1 iff 38|n (else 0) on n<=76,
-      v_37(den(x(nP))^(1/2)) is 1 iff 19|n (else 0) on n<=38.
+      v_37(den(x(nR))^(1/2)) is 0 if 38∤n, and v_37(n)+1 if 38|n (audited on n<=76),
+      v_37(den(x(nP))^(1/2)) is 0 if 19∤n, and v_37(n)+1 if 19|n (audited on n<=38).
 
 Outputs:
   - artifacts/export/fold_zm_elliptic_mw_height_denominator_growth_audit.json
@@ -314,10 +314,8 @@ def main() -> None:
     for n in range(1, 77):  # 2 * 38
         pt = _mul(n, R, a=a)
         e = v37_of_x_denom_sqrt(pt)
-        if e not in (0, 1):
-            v37_R_ok = False
-        cond = (n % 38 == 0)
-        if (e == 1) != cond:
+        expected = 0 if (n % 38 != 0) else (_v_p(n, 37) + 1)
+        if e != expected:
             v37_R_ok = False
         if e == 1:
             v37_R_hits.append(n)
@@ -327,10 +325,8 @@ def main() -> None:
     for n in range(1, 39):  # 2 * 19
         pt = _mul(n, P, a=a)
         e = v37_of_x_denom_sqrt(pt)
-        if e not in (0, 1):
-            v37_P_ok = False
-        cond = (n % 19 == 0)
-        if (e == 1) != cond:
+        expected = 0 if (n % 19 != 0) else (_v_p(n, 37) + 1)
+        if e != expected:
             v37_P_ok = False
         if e == 1:
             v37_P_hits.append(n)
