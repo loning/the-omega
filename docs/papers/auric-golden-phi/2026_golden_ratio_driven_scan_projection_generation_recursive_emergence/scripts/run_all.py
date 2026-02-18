@@ -2821,6 +2821,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_phase_resonance_resultant_chebyshev_audit",
+            script="exp_fold_zm_phase_resonance_resultant_chebyshev_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_phase_resonance_resultant_chebyshev_audit.json",
+                "sections/generated/eq_fold_zm_phase_resonance_resultant_chebyshev.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_fiber_root_counting_audit",
             script="exp_fold_zm_elliptic_fiber_root_counting_audit.py",
             args=[],
