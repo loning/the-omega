@@ -1,0 +1,60 @@
+﻿\begin{conclusion}[Real-axis bifurcation type of the spectral quartic: the number of real roots changes only at \texorpdfstring{$y_{\mathrm{LY}},0,1$}{yLY,0,1}]\label{con:xi-terminal-zm-pi-real-root-bifurcation}
+Let
+\[
+\Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1),
+\qquad
+P_{\mathrm{LY}}(y)=256y^3+411y^2+165y+32,
+\]
+and let \(y_{\mathrm{LY}}\in\RR\) be the unique real root of \(P_{\mathrm{LY}}(y)=0\) (Conclusion \ref{con:xi-terminal-zm-discriminant-leyang}).
+Then for any real parameter \(y\in\RR\), the number of real roots of \(\Pi(\lambda,y)=0\) has the following bifurcation pattern (all roots are simple on open intervals):
+\begin{enumerate}
+  \item if \(y<y_{\mathrm{LY}}\), then \(\Pi(\lambda,y)\) has no real roots;
+  \item if \(y_{\mathrm{LY}}<y<0\), then \(\Pi(\lambda,y)\) has exactly two real-root branches;
+  \item if \(0<y<1\), then \(\Pi(\lambda,y)\) has exactly four real-root branches;
+  \item if \(y>1\), then \(\Pi(\lambda,y)\) has exactly two real-root branches.
+\end{enumerate}
+Moreover, a double-root degeneration occurs at each of \(y=y_{\mathrm{LY}},0,1\) (matching the branch-value set in Conclusion \ref{con:xi-terminal-zm-discriminant-leyang}).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-terminal-zm-discriminant-leyang},
+\(
+\mathrm{Disc}_{\lambda}(\Pi)=-y(y-1)P_{\mathrm{LY}}(y)
+\),
+so when \(y\notin\{0,1\}\cup\{P_{\mathrm{LY}}(y)=0\}\), all four roots are simple, and the number of real roots is locally constant along the real axis as \(y\) varies.
+On the other hand, Theorem \ref{thm:xi-terminal-zm-leyang-elliptic-structure} gives \(\mathrm{Disc}(P_{\mathrm{LY}})<0\), hence \(P_{\mathrm{LY}}\) has exactly one real root \(y_{\mathrm{LY}}\);
+therefore the real-axis bifurcation points are exactly \(y\in\{y_{\mathrm{LY}},0,1\}\).
+Selecting one representative point in each interval \(( -\infty,y_{\mathrm{LY}} )\), \(( y_{\mathrm{LY}},0 )\), \((0,1)\), \((1,\infty)\), and applying Sturm counting determines the real-root count and yields the four-region bifurcation pattern; at each bifurcation point, discriminant vanishing gives double-root degeneration.
+Reproducible audit script: \texttt{scripts/exp\_fold\_zm\_pi\_real\_bifurcation\_asymptotics\_audit.py}. QED.
+\end{proof}
+
+\begin{conclusion}[Fractional-power asymptotics of positive real spectral branches at infinity: Puiseux jet for \texorpdfstring{$y\to+\infty$}{y->+infty}]\label{con:xi-terminal-zm-pi-positive-real-branch-puiseux-infty}
+Assume \(y>1\), and let \(\lambda_{\pm}(y)\) be the two real-root branches of \(\Pi(\lambda,y)=0\) on \(\RR\), ordered by
+\[
+0<\lambda_{-}(y)<\lambda_{+}(y).
+\]
+As \(y\to +\infty\) along the real axis, one has the fractional-power asymptotic expansion
+\[
+\boxed{\;
+\lambda_{\pm}(y)
+= y^{1/2}\ \pm\ \frac{1}{2}y^{1/4}\ +\ \frac{1}{4}\ \pm\ \frac{7}{64}y^{-1/4}\ +\ \frac{37}{128}y^{-1/2}\ \mp\ \frac{729}{4096}y^{-3/4}\ +\ O(y^{-1})\;}
+\]
+In particular,
+\[
+\lambda_{+}(y)=y^{1/2}+\frac12 y^{1/4}+\frac14+O(y^{-1/4}).
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch (Puiseux at infinity)]
+Let \(t=y^{-1/4}\) (so \(y=t^{-4}\)).
+Use the Puiseux-form ansatz for a root branch
+\[
+\lambda(t)=t^{-2}+c_{1}t^{-1}+c_{0}+c_{-1}t+c_{-2}t^{2}+c_{-3}t^{3}+O(t^{4}),
+\]
+substitute into \(\Pi(\lambda,y)=0\), multiply by \(t^{8}\) to remove negative powers, and compare coefficients order-by-order in \(t\) to obtain
+\[
+c_{1}=\pm\frac12,\qquad c_{0}=\frac14,\qquad c_{-1}=\pm\frac{7}{64},\qquad c_{-2}=\frac{37}{128},\qquad c_{-3}=\mp\frac{729}{4096},
+\]
+where equal signs (respectively opposite signs) correspond to the \(\lambda_{+}\) (respectively \(\lambda_{-}\)) branch choice.
+Substituting back \(t=y^{-1/4}\) gives the displayed expansion.
+Reproducible audit script: \texttt{scripts/exp\_fold\_zm\_pi\_real\_bifurcation\_asymptotics\_audit.py}. QED.
+\end{proof}
+
