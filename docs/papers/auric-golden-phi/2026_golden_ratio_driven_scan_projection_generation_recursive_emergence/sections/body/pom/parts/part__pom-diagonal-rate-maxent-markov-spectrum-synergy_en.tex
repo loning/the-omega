@@ -1,0 +1,587 @@
+% (User input window)
+
+\paragraph{Maximum entropy Markov chain, symmetrization spectrum and small distortion synergy}
+Follow the theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} and theorem \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} mark.
+This section combines the optimal coupling of diagonal mass constraints \(P^\star_\delta\) is equivalently rewritten as "a maximum entropy Markov chain given a stationary distribution and a global self-loop rate",
+And further gives the "diagonal" of its reversible symmetry spectrum \(+\) Tensor homomorphism law of "rank one" structure, secular equations and endpoint coordination.
+
+\begin{theorem}[Maximum entropy Markov chain: the only optimal kernel given stationary distribution and global self-loop rate]\label{thm:pom-maxent-markov-unique-optimal-kernel}
+make \(X\) is a finite set, take the fully supported distribution \(w\in\Delta(X)\)。
+For any Markov kernel \(K(\cdot\mid x)\)（\(x\in X\)) Consider constraints
+\[
+\sum_{x\in X}w(x)K(y\mid x)=w(y)\quad(\forall y\in X),
+\qquad
+\sum_{x\in X}w(x)K(x\mid x)\ge 1-\delta,\qquad \delta\in[0,1].
+\]
+Define entropy rate
+\[
+h(K):=\sum_{x\in X}w(x)\,H\!\bigl(K(\cdot\mid x)\bigr),
+\qquad
+H\!\bigl(K(\cdot\mid x)\bigr):=-\sum_{y\in X}K(y\mid x)\log K(y\mid x).
+\]
+Then on the above feasible set,\(h(K)\) There is a unique maximizing solution \(K^\star_\delta\)。
+Let coupling
+\[
+P^\star_\delta(x,y):=w(x)K^\star_\delta(y\mid x),
+\]
+but \(P^\star_\delta\) exactly
+\[
+R_w(\delta)=\inf\{I_P(X;Y):\ P_X=P_Y=w,\ \mathbb P_P(X=Y)\ge 1-\delta\}
+\]
+The only minimal coupling of and satisfies the identity
+\[
+\boxed{\;
+R_w(\delta)=H(w)-h\!\bigl(K^\star_\delta\bigr)\; }.
+\]
+\end{theorem}
+\begin{proof}
+Under the constraint of stability,\(P(x,y):=w(x)K(y\mid x)\) satisfy \(P_X=w\) and
+\(
+P_Y(y)=\sum_x w(x)K(y\mid x)=w(y)
+\), so \(P_X=P_Y=w\)。
+at the same time
+\(
+\mathbb P_P(X=Y)=\sum_x w(x)K(x\mid x)
+\)。
+and
+\(
+h(K)=H_P(Y\mid X)
+\)。
+Therefore maximize \(h(K)\) is equivalent to \(\{P_X=P_Y=w,\ \mathbb P(X=Y)\ge 1-\delta\}\) on \(H_P(Y\mid X)\)。
+And by the identity
+\(
+I_P(X;Y)=H(w)-H_P(Y\mid X)
+\), this maximization is equivalent to minimizing the mutual information \(I_P(X;Y)\), its optimal value is \(R_w(\delta)\)。
+because \(K\mapsto h(K)\) is strictly concave and constrained to be linear on each row vector, and the maximizer is unique;
+Equivalently,\(P\mapsto I_P(X;Y)\) is strictly convex on the feasible convex set and the minimizer is also unique.
+The two are the same object, so the conclusion can be drawn. Certification completed.
+\end{proof}
+
+\begin{theorem}[The "diagonal" of the symmetrization spectrum \(+\) "rank one" structure and secular equations]\label{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum}
+make \(P^\star_\delta\) and \(K^\star_\delta\) as theorem \ref{thm:pom-maxent-markov-unique-optimal-kernel}，
+and record \(D:=\mathrm{diag}(w)\)。
+then there is a unique parameter \(\kappa_\delta\ge 0\) and vector \(u_\delta\in\RR_{>0}^{X}\) (unique to the whole symbol, and desirable \(u_\delta\succ0\)）
+make
+\[
+\boxed{\;
+P^\star_\delta=u_\delta u_\delta^{\mathsf T}+\kappa_\delta\,\mathrm{diag}(u_\delta^2)\;}
+\]
+That is to say, right \(x\ne y\) have \(P^\star_\delta(x,y)=u_\delta(x)u_\delta(y)\),and
+\(
+P^\star_\delta(x,x)=(1+\kappa_\delta)u_\delta(x)^2
+\)。
+Define symmetrization operator
+\[
+S_\delta:=D^{-1/2}P^\star_\delta D^{-1/2},
+\qquad
+a_\delta:=D^{-1/2}u_\delta,
+\qquad
+d_x:=\kappa_\delta\,a_\delta(x)^2,
+\]
+then there is a strict decomposition
+\[
+\boxed{\;
+S_\delta=a_\delta a_\delta^{\mathsf T}+\kappa_\delta\,\mathrm{diag}(a_\delta^2)
+=a_\delta a_\delta^{\mathsf T}+\mathrm{diag}(d_x)\;}
+\]
+thereby \(S_\delta\succeq 0\) and all its eigenvalues ​​are non-negative real numbers.
+and \(S_\delta\) and \(K^\star_\delta\) exist \(\ell^2(w)\) are similar, so they have the same real spectrum;
+The largest eigenvalue is \(\lambda_1=1\)。
+\par
+set up \(\lambda\in\CC\). but \(S_\delta\) has a characteristic polynomial that satisfies the closed form
+\[
+\boxed{\;
+\det(S_\delta-\lambda I)
+=\Bigl(\prod_{x\in X}(d_x-\lambda)\Bigr)\Bigl(1+\sum_{x\in X}\frac{a_\delta(x)^2}{d_x-\lambda}\Bigr)\;}
+\]
+thus removing the diagonal poles \(d_x\), all eigenvalues ​​are represented by the one-dimensional secular equation
+\[
+\boxed{\;
+1+\sum_{x\in X}\frac{a_\delta(x)^2}{d_x-\lambda}=0\;}
+\]
+Characterizes and satisfies standard interlacing properties.
+\end{theorem}
+\begin{proof}
+By theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} The exponential family form of
+to a certain group \((\widehat u_\delta,\kappa_\delta,\widehat Z_\delta)\) have
+\(
+P^\star_\delta(x,y)=\widehat u_\delta(x)\widehat u_\delta(y)\bigl(1+\kappa_\delta\mathbf 1_{\{x=y\}}\bigr)/\widehat Z_\delta
+\)。
+Will \(\widehat Z_\delta^{-1/2}\) absorbed into \(\widehat u_\delta\) get \(u_\delta:=\widehat u_\delta/\sqrt{\widehat Z_\delta}\), which can be written as
+\(
+P^\star_\delta=u_\delta u_\delta^{\mathsf T}+\kappa_\delta\mathrm{diag}(u_\delta^2)
+\)；
+It can be known from the uniqueness of the optimal solution \(\kappa_\delta\) and \(u_\delta\)(Pick \(u_\delta\succ0\))only.
+The symmetry decomposition is by multiplying the left and right \(D^{-1/2}\) can be obtained directly; both terms are positive semidefinite, so \(S_\delta\succeq 0\)。
+\par
+because \(P^\star_\delta\mathbf 1=w\),have
+\[
+S_\delta\sqrt w
+=D^{-1/2}P^\star_\delta D^{-1/2}\sqrt w
+=D^{-1/2}P^\star_\delta\mathbf 1
+=D^{-1/2}w
+=\sqrt w,
+\]
+thereby \(\lambda_1=1\)。
+again \(P^\star_\delta=D K^\star_\delta\), so
+\(
+S_\delta=D^{1/2}K^\star_\delta D^{-1/2}
+\), gives similarity and spectral agreement.
+\par
+Finally, yes \(\mathrm{diag}(d_x)+a_\delta a_\delta^{\mathsf T}\) Apply the matrix determinant lemma
+\(
+\det(A+uv^{\mathsf T})=\det(A)\bigl(1+v^{\mathsf T}A^{-1}u\bigr)
+\)
+The characteristic polynomial closed form and secular equation can be obtained. Certification completed.
+\end{proof}
+
+\begin{corollary}[Binary latent variable representation of optimal coupling]\label{cor:pom-maxent-markov-optimal-coupling-latent-binary-mixture}
+Follow the theorem \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum} of \(u_\delta,\kappa_\delta\)。
+remember
+\[
+A_\delta:=\sum_{x\in X}u_\delta(x),
+\qquad
+\theta_\delta:=\kappa_\delta\sum_{x\in X}u_\delta(x)^2,
+\qquad
+\pi_\delta(x):=\frac{u_\delta(x)}{A_\delta},
+\qquad
+\rho_\delta(x):=\frac{u_\delta(x)^2}{\sum_{y\in X}u_\delta(y)^2}.
+\]
+Then the probability normalized identity \(\sum_{x,y}P^\star_\delta(x,y)=1\) roll out
+\[
+A_\delta^2+\theta_\delta=1.
+\]
+and optimal coupling \(P^\star_\delta\) can be written as a mixture of both ends:
+\[
+\boxed{\;
+P^\star_\delta
+=A_\delta^2\,(\pi_\delta\otimes\pi_\delta)
+\;+\;\theta_\delta\,\mathrm{Diag}(\rho_\delta)\;}
+\]
+in \(\mathrm{Diag}(\rho_\delta)\) means concentrated on the diagonal set \(\{(x,x)\}\) distribution.
+Equivalently, there is a binary latent variable \(J\in\{0,1\}\) so that in \(J=0\) hour \((X,Y)\sim\pi_\delta\otimes\pi_\delta\) independently and identically distributed, in \(J=1\) hour \(X=Y\) and \(X\sim\rho_\delta\),and
+\[
+\mathbb P(J=0)=A_\delta^2,\qquad \mathbb P(J=1)=\theta_\delta,
+\qquad
+{\rm Law}(X,Y)=P^\star_\delta.
+\]
+\end{corollary}
+\begin{proof}
+By theorem \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum} decomposition \(P^\star_\delta=u_\delta u_\delta^{\mathsf T}+\kappa_\delta\,\mathrm{diag}(u_\delta^2)\), sum the total mass to get
+\[
+1=\sum_{x,y}P^\star_\delta(x,y)=\Bigl(\sum_x u_\delta(x)\Bigr)^2+\kappa_\delta\sum_x u_\delta(x)^2=A_\delta^2+\theta_\delta.
+\]
+on the other hand,
+\(
+u_\delta u_\delta^{\mathsf T}=A_\delta^2(\pi_\delta\otimes\pi_\delta)
+\)
+and
+\(
+\kappa_\delta\,\mathrm{diag}(u_\delta^2)=\theta_\delta\,\mathrm{Diag}(\rho_\delta)
+\)，
+This results in a mixed representation.
+treat the two parts as pairs \(J\) conditional distribution and marginalize according to the weight to obtain the latent variable generation model. Certification completed.
+\end{proof}
+
+\paragraph{Laguerre--secular spectral compression and spectral side inversion}
+when \(\delta\in(0,\delta_0)\)（\(\delta_0:=1-\sum_{x\in X}w(x)^2\)), the optimal dual parameters satisfy \(\kappa_\delta>0\)。
+In the theorem \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum} under the specifications (i.e. \(P^\star_\delta=u_\delta u_\delta^{\mathsf T}+\kappa_\delta\mathrm{diag}(u_\delta^2)\) and \(\sum_{x,y}P^\star_\delta(x,y)=1\)），
+Self-consistent relationship by edge
+\(
+w(x)=u_\delta(x)\bigl(A_\delta+\kappa_\delta u_\delta(x)\bigr)
+\)
+(in \(A_\delta:=\sum_{y\in X}u_\delta(y)\)）
+An equivalent set of positive parameters can be introduced
+\[
+t_x:=\kappa_\delta+\frac{A_\delta}{u_\delta(x)}
+=\frac{A_\delta+\kappa_\delta u_\delta(x)}{u_\delta(x)}
+=\frac{w(x)}{u_\delta(x)^2}\qquad(x\in X),
+\]
+So that the secular equation can be further compressed into a single degree \(n:=|X|\) polynomial.
+
+\begin{theorem}[Laguerre--Secular Spectrum Theorem: The optimal nuclear spectrum is given by \(z\mathcal P_\delta'(z)+\kappa_\delta\mathcal P_\delta(z)\) real root characterization]\label{thm:pom-maxent-markov-laguerre-secular-spectrum}
+Take the full support distribution \(w\in\Delta(X)\)（\(n:=|X|\ge 2\)) and fixed \(\delta\in(0,\delta_0)\)。
+make \(P^\star_\delta,K^\star_\delta,u_\delta,\kappa_\delta,A_\delta\) and \(t_x\) as defined above, and note
+\[
+\mathcal P_\delta(z):=\prod_{x\in X}(t_x-z),\qquad
+\mathcal Q_\delta(z):=z\,\mathcal P_\delta'(z)+\kappa_\delta\,\mathcal P_\delta(z).
+\]
+Then it is established:
+\begin{enumerate}
+  \item for any \(\lambda\in\CC\setminus\{0\}\)，\(\lambda\) yes \(K^\star_\delta\) (equivalently \(S_\delta\)) has an eigenvalue if and only if
+  \(
+  z:=\kappa_\delta/\lambda
+  \)
+  yes \(\mathcal Q_\delta\); the corresponding relationship is \(\lambda=\kappa_\delta/z\)。
+  In particular, the trivial eigenvalues \(\lambda_1=1\) corresponds to zero point \(z=\kappa_\delta\), and satisfy the identity
+  \[
+  \mathcal P_\delta(\kappa_\delta)+\mathcal P_\delta'(\kappa_\delta)=0
+  \qquad\Longleftrightarrow\qquad
+  \sum_{x\in X}\frac{1}{t_x-\kappa_\delta}=1.
+  \]
+  \item if \(t_x\) are different in pairs and arranged in ascending order as \(t_{(1)}<\cdots<t_{(n)}\),but \(\mathcal Q_\delta\) are real numbers and strictly fall within \((0,\max_x t_x)\) within and with \(\{t_{(k)}\}_{k=1}^{n}\) strictly interleaved:\(\mathcal Q_\delta\) exist \((0,t_{(1)})\) with each \((t_{(k)},t_{(k+1)})\)（\(k=1,\dots,n-1\)) has exactly one zero point in each.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Depend on \(w(x)=t_xu_\delta(x)^2\) have to \(a_\delta(x)^2=u_\delta(x)^2/w(x)=1/t_x\),and
+\(
+d_x=\kappa_\delta a_\delta(x)^2=\kappa_\delta/t_x
+\)。
+Substitute it into the theorem \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum} secular equation of
+\(
+1+\sum_x a_\delta(x)^2/(d_x-\lambda)=0
+\)
+can be transformed into
+\[
+1+\sum_{x\in X}\frac{1}{\kappa_\delta-\lambda t_x}=0.
+\]
+make \(z:=\kappa_\delta/\lambda\)（\(\lambda\ne 0\)),but \(\kappa_\delta-\lambda t_x=\lambda(z-t_x)\), so the above equation is equivalent to
+\[
+\sum_{x\in X}\frac{1}{t_x-z}=\frac{\kappa_\delta}{z}.
+\]
+Notice \(\mathcal P_\delta'(z)/\mathcal P_\delta(z)=-\sum_x\frac{1}{t_x-z}\), then we get
+\(
+z\mathcal P_\delta'(z)+\kappa_\delta\mathcal P_\delta(z)=0
+\), that is, the spectrum-root correspondence.
+because \(K^\star_\delta\) is the Markov kernel,\(\lambda_1=1\) must be an eigenvalue; substitute \(z=\kappa_\delta\) to get \(\sum_x (t_x-\kappa_\delta)^{-1}=1\), and by \(t_x-\kappa_\delta=A_\delta/u_\delta(x)\) directly verify that the identity holds.
+\par
+In order to prove the real roots and intersectionality, let \(t_x\) are different in pairs and arranged in ascending order as \(t_{(1)}<\cdots<t_{(n)}\), consider the function \(F(z):=\sum_x (t_x-z)^{-1}\)。
+in each open interval \((0,t_{(1)})\) and \((t_{(k)},t_{(k+1)})\)（\(k=1,\dots,n-1\)) continuously and strictly increasing, and diverging at the endpoints;
+right-hand function \(G(z):=\kappa_\delta/z\) exist \((0,\infty)\) strictly decreases on.
+Therefore the equation \(F(z)=G(z)\) There is exactly one solution in each of the above intervals, and the solution cannot lie in \((-\infty,0]\) or \([\max t_x,\infty)\) (opposite sign).
+The total is \(n\) mutually different real roots, so \(\mathcal Q_\delta\) has all real and interval-by-interval unique zeros, and is the same as \(\{t_{(k)}\}\) are strictly staggered. Certification completed.
+\end{proof}
+
+\begin{corollary}[\(\zeta_\delta\) single polynomial scaling of determinant]\label{cor:pom-maxent-markov-zeta-determinant-single-polynomial}
+In the theorem \ref{thm:pom-maxent-markov-laguerre-secular-spectrum} Under the settings, define
+\[
+\zeta_\delta(z):=\det(I-zK^\star_\delta)^{-1}.
+\]
+Then for any \(z\in\CC\) establish a strict identity
+\[
+\det(I-zK^\star_\delta)=\frac{1}{\kappa_\delta\,\mathcal P_\delta(0)}\,\mathcal Q_\delta(\kappa_\delta z),
+\qquad
+\mathcal P_\delta(0)=\prod_{x\in X}t_x.
+\]
+therefore \(\zeta_\delta\) is a rational function, all its poles are real numbers and non-negative, and the zero point set is exactly \(\{\kappa_\delta^{-1}z_i\}\),in \(\{z_i\}\) for \(\mathcal Q_\delta\) zero point.
+\end{corollary}
+\begin{proof}
+By theorem \ref{thm:pom-maxent-markov-laguerre-secular-spectrum},set up \(\{z_i\}_{i=1}^n\) for \(\mathcal Q_\delta\) (including multiplicity), then \(K^\star_\delta\) has an eigenvalue of \(\lambda_i=\kappa_\delta/z_i\)。
+therefore
+\[
+\det(I-zK^\star_\delta)=\prod_{i=1}^n\Bigl(1-z\frac{\kappa_\delta}{z_i}\Bigr)=\frac{\prod_i(z_i-\kappa_\delta z)}{\prod_i z_i}.
+\]
+on the other hand,\(\mathcal Q_\delta\) The constant term is \(\mathcal Q_\delta(0)=\kappa_\delta\mathcal P_\delta(0)\),and \(\mathcal Q_\delta(0)=\mathrm{lc}(\mathcal Q_\delta)\prod_i(-z_i)\)；
+According to this, we get \(\prod_i z_i=\kappa_\delta\mathcal P_\delta(0)/(n+\kappa_\delta)\) and
+\(
+\mathcal Q_\delta(\kappa_\delta z)=(n+\kappa_\delta)\prod_i(z_i-\kappa_\delta z)
+\)。
+Get it by merging \(\det(I-zK^\star_\delta)=\mathcal Q_\delta(\kappa_\delta z)/(\kappa_\delta\mathcal P_\delta(0))\);exist \(z=0\) on both sides of \(1\), so the identity has no extra sign.
+Pole and zero statements are decomposed by finite-dimensional spectra \(\det(I-zK^\star_\delta)=\prod_i(1-z\lambda_i)\) is launched directly. Certification completed.
+\end{proof}
+
+\begin{theorem}[Inversion of a single spectral observation: by \((\kappa_\delta,\mathrm{Spec}(K^\star_\delta))\) Refactoring \(w\)]\label{thm:pom-maxent-markov-spectrum-single-shot-inversion}
+fixed \(\delta\in(0,\delta_0)\), assuming that it is known \(\delta\)'s dual parameter \(\kappa_\delta>0\) and the eigenvalue multiset of the optimal kernel
+\(
+\mathrm{Spec}(K^\star_\delta)=\{1=\lambda_1,\lambda_2,\dots,\lambda_n\}
+\)。
+make
+\[
+\mathcal Q(z):=(-1)^n(n+\kappa_\delta)\prod_{i=1}^{n}\Bigl(z-\frac{\kappa_\delta}{\lambda_i}\Bigr)
+=:\sum_{m=0}^{n}q_m z^m.
+\]
+Define times \(n\) polynomial
+\[
+\mathcal P(z):=\sum_{m=0}^{n}\frac{q_m}{m+\kappa_\delta}\,z^m,
+\]
+but \(\mathcal P\) uniquely satisfies the Euler--Cauchy equation
+\[
+z\mathcal P'(z)+\kappa_\delta \mathcal P(z)=\mathcal Q(z),
+\]
+and \(\mathcal P\) is exactly the theorem \ref{thm:pom-maxent-markov-laguerre-secular-spectrum} of \(\{t_x\}_{x\in X}\) (to rearrange).
+On this basis, the distribution \(w\) (to label permutation) is uniquely determined by a closed rational formula:
+\[
+w(x)=\frac{\dfrac{t_x}{(t_x-\kappa_\delta)^2}}{\sum_{y\in X}\dfrac{t_y}{(t_y-\kappa_\delta)^2}}.
+\]
+And if \(w(x)\ge w(y)\), then there must be \(t_x\le t_y\)。
+\end{theorem}
+\begin{proof}
+By theorem \ref{thm:pom-maxent-markov-laguerre-secular-spectrum}，\(\mathcal Q_\delta\) The zero point set of \(\{\kappa_\delta/\lambda_i\}\)。
+Therefore the polynomial constructed with this set of roots \(\prod_i(z-\kappa_\delta/\lambda_i)\) and \(\mathcal Q_\delta\) only differs by one leading coefficient;
+and \(\mathcal Q_\delta\) The leading coefficient is \((-1)^n(n+\kappa_\delta)\), so defined \(\mathcal Q\) and \(\mathcal Q_\delta\) consistent.
+\par
+For the Euler--Cauchy equation, if we write \(\mathcal P(z)=\sum_{m=0}^{n}p_m z^m\),but
+\(
+z\mathcal P'(z)+\kappa_\delta\mathcal P(z)=\sum_{m=0}^{n}(m+\kappa_\delta)p_m z^m
+\)。
+Therefore the coefficient-wise solution uniquely gives \(p_m=q_m/(m+\kappa_\delta)\), as shown \(\mathcal P\)；
+Know this from uniqueness \(\mathcal P\) must be equal to the theorem \ref{thm:pom-maxent-markov-laguerre-secular-spectrum} of \(\mathcal P_\delta\), so its root multiset is \(\{t_x\}\) (to rearrange).
+\par
+Finally, by \(t_x-\kappa_\delta=A_\delta/u_\delta(x)\) have to \(u_\delta(x)=A_\delta/(t_x-\kappa_\delta)\), and by the edge relationship
+\(
+w(x)=u_\delta(x)\bigl(A_\delta+\kappa_\delta u_\delta(x)\bigr)
+=t_xu_\delta(x)^2
+\)
+get
+\[
+w(x)=A_\delta^2\,\frac{t_x}{(t_x-\kappa_\delta)^2}.
+\]
+right \(x\) sum and use \(\sum_x w(x)=1\) have to \(A_\delta^2=\Bigl(\sum_y \frac{t_y}{(t_y-\kappa_\delta)^2}\Bigr)^{-1}\), substitute back to get the closed-form reconstruction formula.
+like \(w(x)\ge w(y)\), by the proposition \ref{prop:pom-diagonal-rate-scaling-keep-comonotone} It can be known \(u_\delta(x)\ge u_\delta(y)\),thereby \(t_x-\kappa_\delta=A_\delta/u_\delta(x)\le A_\delta/u_\delta(y)=t_y-\kappa_\delta\),Right now \(t_x\le t_y\). Certification completed.
+\end{proof}
+
+\begin{corollary}[Spectrum--Completeness of information invariants]\label{cor:pom-maxent-markov-spectrum-rate-complete-invariant}
+For any two-complete support distribution \(w,v\in\Delta(X)\), if there is a \(\delta\in(0,\min\{\delta_0(w),\delta_0(v)\})\) makes
+\[
+R_w'(\delta)=R_v'(\delta),
+\qquad
+\mathrm{Spec}\bigl(K_{\delta}^{\star,w}\bigr)=\mathrm{Spec}\bigl(K_{\delta}^{\star,v}\bigr)
+\]
+(The two spectra are the same as multisets), then \(w=v\) (to label replacement).
+On the contrary, if \(w=v\), then for any \(\delta\) The above two are always the same.
+\end{corollary}
+\begin{proof}
+By theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} The sensitivity formula of \(R_w'(\delta)=-\log(1+\kappa_\delta)\) can be \(R_w'(\delta)\) only recovery \(\kappa_\delta\)。
+Then the theorem \ref{thm:pom-maxent-markov-spectrum-single-shot-inversion}，\((\kappa_\delta,\mathrm{Spec}(K^\star_\delta))\) the only certainty \(w\) (to label replacement), thereby obtaining completeness.
+The reverse proposition is directly deduced from the definition and the uniqueness of the optimal solution. Certification completed.
+\end{proof}
+
+\begin{corollary}[No oscillation and spectrum collapse at both ends]\label{cor:pom-maxent-markov-no-oscillation-endpoints}
+make \(\delta_0:=1-p_2(w)=1-\sum_{x\in X}w(x)^2\)。
+Then for any \(\delta\in[0,\delta_0]\), optimal kernel \(K^\star_\delta\) exist \(\ell^2(w)\) on all eigenvalues ​​belong to the interval \([0,1]\)。
+In particular,\(K^\star_\delta\) There is no negative spectral mode, so it does not carry periodic oscillation components in the spectral sense.
+\par
+when \(\delta=\delta_0\), independent coupling \(P=w\otimes w\) is feasible and optimal, so
+\[
+\mathrm{Spec}(K^\star_{\delta_0})=\{1,0,\dots,0\}.
+\]
+when \(\delta=0\), diagonal coupling \(P=\mathrm{Diag}(w)\) is optimal, so
+\[
+\mathrm{Spec}(K^\star_0)=\{1,1,\dots,1\}.
+\]
+\end{corollary}
+\begin{proof}
+By theorem \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum}，\(S_\delta\succeq0\) and \(K^\star_\delta\) are similar, so \(\mathrm{Spec}(K^\star_\delta)\subseteq[0,\infty)\)。
+on the other hand,\(K^\star_\delta\) is the Markov kernel, and the operator norm satisfies \(\|K^\star_\delta\|_{\ell^2(w)\to \ell^2(w)}\le 1\),and \(\lambda_1=1\)；
+Therefore, all eigenvalues ​​belong to \([0,1]\)。
+\par
+Endpoint situation: when \(\delta=\delta_0\) when independent coupling satisfies \(\mathbb P(X=Y)=p_2(w)=1-\delta_0\) and the mutual information is zero, so the optimal and
+\(
+K(y\mid x)=w(y)
+\) is a rank-one projection, and the spectrum is \(\{1,0,\dots,0\}\)。
+when \(\delta=0\) when constraint enforcement \(\mathbb P(X=Y)=1\), the only feasible coupling is \(\mathrm{Diag}(w)\),corresponding \(K\) is the identity operator, and the spectrum is the complete \(1\)。
+Certification completed.
+\end{proof}
+
+\begin{theorem}[Monotonicity of spectral branches: non-trivial eigenvalues ​​strictly decrease with distortion]\label{thm:pom-maxent-markov-spectrum-monotone-in-delta}
+Take the full support distribution \(w\in\Delta(X)\), and note \(\delta_0:=1-\sum_{x\in X}w(x)^2\)。
+right \(\delta\in(0,\delta_0)\) make \(K^\star_\delta\) is the theorem \ref{thm:pom-maxent-markov-unique-optimal-kernel} The only optimal kernel of
+And order
+\[
+1=\lambda_1(\delta)\ \ge\ \lambda_2(\delta)\ \ge\ \cdots\ \ge\ \lambda_n(\delta)\ \ge\ 0
+\]
+for it to be in \(\ell^2(w)\) on eigenvalues ​​(including multiplicity).
+then for each \(i\ge 2\),function \(\delta\mapsto \lambda_i(\delta)\) exist \((0,\delta_0)\) is strictly decreasing and continuous;
+and there exists a set of real analytical branches \(\{\widetilde\lambda_i(\delta)\}_{i=1}^n\) (after rearrangement and \(\{\lambda_i(\delta)\}\) consistent point by point) covering the entire genealogical family.
+Endpoint behavior satisfies
+\[
+\lambda_i(\delta)\xrightarrow[\delta\downarrow 0]{}1,
+\qquad
+\lambda_i(\delta)\xrightarrow[\delta\uparrow \delta_0]{}0
+\qquad(i\ge 2).
+\]
+\end{theorem}
+\begin{proof}[Points of proof]
+by proposition \ref{prop:pom-diagonal-rate-analytic-strict-convexity-curvature} and theorem \ref{thm:pom-maxent-markov-diagonal-plus-rankone-spectrum}，
+There are dual parameters \(\kappa_\delta>0\) and scaling vector \(u_\delta\succ0\) follow \(\delta\in(0,\delta_0)\) real analytical changes,
+Thus the symmetrization operator
+\(
+S_\delta:=D^{1/2}K^\star_\delta D^{-1/2}
+\)
+It constitutes a family of real analytic symmetry matrices; according to Kato analytic perturbation theory, real analytic spectral branches can be selected to cover this family of spectra.
+\par
+For strict monotonicity:\(\delta\) is equivalent to the constraint \(\sum_x w(x)K(x\mid x)\ge 1-\delta\) of relaxation,
+Its dual multiplier \(\log(1+\kappa_\delta)\) strictly decreasing.
+Under this dual parameter, the optimal kernel corresponds to an exponential family scaling of the diagonal reward (theorem \ref{thm:pom-diagonal-rate-scaling-duality} homogeneous structure),
+And induce the reversible nuclear family to follow on the Peskun/Dirichlet preorder \(\delta\) strictly enhanced mixing;
+Translate it to the symmetrization operator \(S_\delta\) of the Rayleigh quotient monotonicity, and then use Courant-Fischer variational characterization to derive all non-trivial eigenvalue random \(\delta\) strictly decreasing.
+\par
+Endpoints are inferred from \ref{cor:pom-maxent-markov-no-oscillation-endpoints} given (\(\delta=0\) is the identity kernel,\(\delta=\delta_0\) is the rank-one projection kernel), thus obtaining the limit behavior shown. Certification completed.
+\end{proof}
+
+\begin{corollary}[Small distortion spectrum threshold: first-order coefficient of the second eigenvalue]\label{thm:pom-maxent-markov-small-distortion-lambda2-slope}
+Take the full support distribution \(w\in\Delta(X)\) and \(|X|=n\ge 2\)。
+make \(K^\star_\delta\) is the theorem \ref{thm:pom-maxent-markov-unique-optimal-kernel} The only optimal kernel of , and let
+\(
+0=\mu_1<\mu_2\le\cdots\le\mu_n
+\)
+as theorem \ref{thm:pom-diagonal-rate-critical-line-laplacian-first-order} The critical line Laplace defined \(L_w\) eigenvalues.
+then when \(\delta\downarrow 0\) sometimes
+\[
+\boxed{\;
+1-\lambda_2(K^\star_\delta)=\mu_2\,\delta+o(\delta)\; }.
+\]
+and \(\mu_2\) by the theorem \ref{thm:pom-diagonal-rate-critical-spectrum-secular-interlacing} The secular equation is uniquely determined with staggered positioning.
+\end{corollary}
+\begin{proof}
+By theorem \ref{thm:pom-diagonal-rate-critical-line-laplacian-first-order} Obtain the first-order expansion of the full spectrum
+\(
+\lambda_i(K^\star_\delta)=1-\delta\mu_i+o(\delta)
+\)
+(in \(\lambda_1\equiv 1\)),Pick \(i=2\) is obtained.
+Secular equations and positioning as theorem \ref{thm:pom-diagonal-rate-critical-spectrum-secular-interlacing} direct inference. Certification completed.
+\end{proof}
+
+\begin{corollary}[Endpoint coupling: the spectral gap is of the same order as the information slope index]\label{cor:pom-maxent-markov-gap-vs-rate-slope-coupling}
+Corollary \ref{thm:pom-maxent-markov-small-distortion-lambda2-slope} mark, and order
+\(
+C_{1/2}(w):=A_{1/2}(w)^2-1
+\)。
+then when \(\delta\downarrow 0\) is established when
+\[
+\lim_{\delta\downarrow 0}\ \frac{1-\lambda_2(K^\star_\delta)}{\exp\bigl(-R_w'(\delta)\bigr)}
+=\mu_2\,C_{1/2}(w).
+\]
+Equivalently,
+\[
+1-\lambda_2(K^\star_\delta)=\mu_2\,\delta\,(1+o(1)),
+\qquad
+\exp\bigl(-R_w'(\delta)\bigr)=\frac{\delta}{C_{1/2}(w)}\,(1+o(1)).
+\]
+\end{corollary}
+\begin{proof}
+By theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} have to
+\(
+\exp(-R_w'(\delta))=(1+\kappa_\delta)^{-1}
+\)；
+And by theorem \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} have \(\kappa_\delta\sim C_{1/2}(w)/\delta\)，
+thereby \(\exp(-R_w'(\delta))=\delta/C_{1/2}(w)\cdot(1+o(1))\)。
+On the other hand, inference \ref{thm:pom-maxent-markov-small-distortion-lambda2-slope} given
+\(
+1-\lambda_2(K^\star_\delta)=\mu_2\delta+o(\delta)
+\)。
+Divide the two equations to get the limit. Certification completed.
+\end{proof}
+
+\begin{theorem}[Small distortion synergy: The optimal rate under the multiplicative distribution is strictly better than any coordinate separation strategy]\label{thm:pom-diagonal-rate-small-distortion-synergy-product}
+Take two finite sets \(X_1,X_2\),distributed \(w\in\Delta(X_1)\)、\(v\in\Delta(X_2)\), and let the product distribution \(\omega:=w\otimes v\in\Delta(X_1\times X_2)\)。
+remember
+\[
+C_{1/2}(w):=A_{1/2}(w)^2-1,\qquad C_{1/2}(v):=A_{1/2}(v)^2-1,\qquad
+C_{1/2}(\omega):=A_{1/2}(\omega)^2-1.
+\]
+then when \(\delta\downarrow 0\) sometimes expands with small distortion
+\[
+R_{\omega}(\delta)=H(w)+H(v)-\delta\log\frac{C_{1/2}(\omega)}{\delta}+O(\delta).
+\]
+\par
+It is called the "coordinate separation strategy" to take two couplings \(P_1,P_2\) respectively act on \(X_1,X_2\), coupled with product coupling \(P=P_1\otimes P_2\) generate \(X_1\times X_2\) coupling.
+like
+\(
+\mathbb P(X_1=Y_1)\ge 1-\delta_1
+\)、
+\(
+\mathbb P(X_2=Y_2)\ge 1-\delta_2
+\)，
+but
+\(
+\mathbb P(Z=Z')\ge (1-\delta_1)(1-\delta_2)=1-(\delta_1\oplus\delta_2)
+\),in \(\delta_1\oplus\delta_2:=\delta_1+\delta_2-\delta_1\delta_2\)。
+Achieve diagonal mass in this class of strategies \(1-\delta\) satisfies the optimal mutual information of
+\[
+\inf_{\delta_1\oplus\delta_2=\delta}\bigl(R_w(\delta_1)+R_v(\delta_2)\bigr)
+=H(w)+H(v)-\delta\log\frac{C_{1/2}(w)+C_{1/2}(v)}{\delta}+O(\delta).
+\]
+And there is a strictly synergistic gain: as long as \(C_{1/2}(w),C_{1/2}(v)>0\) (equivalent to the fact that neither distribution is a single point), we have
+\[
+\inf_{\delta_1\oplus\delta_2=\delta}\bigl(R_w(\delta_1)+R_v(\delta_2)\bigr)-R_{w\otimes v}(\delta)
+=\delta\log\Bigl(1+\frac{C_{1/2}(w)C_{1/2}(v)}{C_{1/2}(w)+C_{1/2}(v)}\Bigr)+o(\delta)\;>\;0.
+\]
+\end{theorem}
+\begin{proof}
+By theorem \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint}，
+\(
+R_w(\delta)=H(w)-\delta\log\frac{C_{1/2}(w)}{\delta}+O(\delta)
+\), the same applies to \(v\) and \(\omega\) is established.
+again \(H(\omega)=H(w)+H(v)\) and
+\(
+A_{1/2}(\omega)=A_{1/2}(w)A_{1/2}(v)
+\), so
+\[
+C_{1/2}(\omega)
+=A_{1/2}(\omega)^2-1
+=(1+C_{1/2}(w))(1+C_{1/2}(v))-1
+=C_{1/2}(w)+C_{1/2}(v)+C_{1/2}(w)C_{1/2}(v).
+\]
+The first formula is obtained immediately.
+\par
+For separate classes, constraints \(\delta_1\oplus\delta_2=\delta\) is equivalent to \(\delta_1+\delta_2=\delta+O(\delta^2)\)，
+So there \(\delta\downarrow 0\) can be replaced by \(\delta_1+\delta_2=\delta\)。
+Substituting the endpoint expansion and maximizing it with Lagrange multipliers
+\(
+\delta_1\log(C_{1/2}(w)/\delta_1)+\delta_2\log(C_{1/2}(v)/\delta_2)
+\)
+Get the optimal ratio \(\delta_1:\delta_2=C_{1/2}(w):C_{1/2}(v)\) and coefficients \(C_{1/2}(w)+C_{1/2}(v)\), thus giving the separation optimal expansion.
+Finally will \(C_{1/2}(\omega)=C_{1/2}(w)+C_{1/2}(v)+C_{1/2}(w)C_{1/2}(v)\) is compared with the above coefficients to obtain the strict gap formula. Certification completed.
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$k$}{k} Heavy collaborative amplification: the first-order coefficient of the small distortion endpoint grows multiplicatively]\label{thm:pom-diagonal-rate-small-distortion-synergy-k}
+Pick \(k\ge 2\) fully supported distributions \(w^{(1)},\dots,w^{(k)}\), and order \(\omega=\bigotimes_{i=1}^k w^{(i)}\)。
+remember \(C_i:=C_{1/2}(w^{(i)})\) as well as
+\[
+C_{\mathrm{joint}}:=C_{1/2}(\omega)=\prod_{i=1}^k(1+C_i)-1,\qquad
+C_{\mathrm{sep}}:=\sum_{i=1}^k C_i.
+\]
+then when \(\delta\downarrow 0\) is established when
+\[
+R_{\omega}(\delta)=\sum_{i=1}^k H\!\bigl(w^{(i)}\bigr)-\delta\log\frac{C_{\mathrm{joint}}}{\delta}+O(\delta),
+\]
+The optimal first-order coefficient of any coordinate separation strategy is at most \(C_{\mathrm{sep}}\),Right now
+\[
+\inf_{\delta_1\oplus\cdots\oplus\delta_k=\delta}\ \sum_{i=1}^k R_{w^{(i)}}(\delta_i)
+=\sum_{i=1}^k H\!\bigl(w^{(i)}\bigr)-\delta\log\frac{C_{\mathrm{sep}}}{\delta}+O(\delta).
+\]
+Therefore, the first-order synergy gain is
+\[
+\delta\log\frac{C_{\mathrm{joint}}}{C_{\mathrm{sep}}}+o(\delta),
+\]
+Its in \(C_i\) is a constant order with \(k\) can grow exponentially.
+\end{theorem}
+\begin{proof}
+Depend on \(A_{1/2}(\omega)=\prod_i A_{1/2}(w^{(i)})\) have to
+\(
+1+C_{1/2}(\omega)=\prod_i (1+C_{1/2}(w^{(i)}))
+\)，
+thereby \(C_{\mathrm{joint}}=\prod_i(1+C_i)-1\)。
+The rest and theorem \ref{thm:pom-diagonal-rate-small-distortion-synergy-product} Same: use endpoint expansion for each factor and use multivariate Lagrange multipliers to obtain the separated optimal ratio \(\delta_i\propto C_i\), so the first-order coefficient is \(C_{\mathrm{sep}}\)。
+Compare \(C_{\mathrm{joint}}\) and \(C_{\mathrm{sep}}\) is the gain. Certification completed.
+\end{proof}
+
+\begin{corollary}[Tensor homomorphism of endpoint co-generators]\label{cor:pom-diagonal-rate-small-distortion-synergy-generator-homomorphism}
+For any fully supported distribution \(w\) definition
+\[
+\mathcal J(w):=\log\bigl(1+C_{1/2}(w)\bigr)=2\log A_{1/2}(w).
+\]
+Then for any two distributions \(w,v\) establishes a strict equation
+\[
+\boxed{\;
+\mathcal J(w\otimes v)=\mathcal J(w)+\mathcal J(v)\;}
+\]
+Equivalently,
+\(
+1+C_{1/2}(w\otimes v)=(1+C_{1/2}(w))(1+C_{1/2}(v))
+\)。
+And at the small distortion limit \(\delta\downarrow 0\) Down,
+\[
+H(w)-R_w(\delta)=\delta\log\frac{e^{\mathcal J(w)}-1}{\delta}+O(\delta),
+\]
+therefore \(\mathcal J\) gives the additive generator of the endpoint synergy coefficient.
+\end{corollary}
+\begin{proof}
+Depend on \(A_{1/2}(w\otimes v)=A_{1/2}(w)A_{1/2}(v)\) have to
+\(
+\mathcal J(w\otimes v)=2\log A_{1/2}(w\otimes v)=2\log A_{1/2}(w)+2\log A_{1/2}(v)
+\)。
+The last formula is given by theorem \ref{thm:pom-diagonal-rate-small-distortion-hellinger-endpoint} The endpoint expansion is rewritten. Certification completed.
+\end{proof}
+

@@ -1,0 +1,97 @@
+﻿% (User input window)
+
+\begin{conclusion}[A multiplication ``modular equation'' in weighted coordinates: strict quartic minimal polynomial of \(y({[2]}P)\) over \texorpdfstring{$\QQ(y)$}{Q(y)}]\label{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}
+On the elliptic curve
+\[
+E:\ Y^{2}=X^{3}-X+\frac14,
+\qquad
+y:=X^{2}+Y-\frac12
+\]
+define \(y_{2}:=y([2]P)\).
+Then \(y_{2}\) satisfies an irreducible quartic algebraic equation over \(\QQ(y)\):
+\[
+H(y_{2},y)=0,
+\qquad
+H(T,y)\in\ZZ[y][T],
+\]
+and \(H(T,y)\) can be chosen as the planar modular-curve certificate \(\mathcal H(y,T)\) obtained by elimination in \((X,Y)\):
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_H}
+Moreover, its leading coefficient satisfies the strict identity
+\[
+A_{4}(y)=S(y)^{4},
+\qquad
+S(y):=16y^{3}-8y^{2}-4y+1
+\]
+where \(S\) gives the \(y\)-image of \(E[2]\setminus\{O\}\); see Conclusion \ref{con:xi-terminal-zm-2division-norm-square}.
+\par
+Furthermore, this quartic equation comes from purely algebraic elimination in \(X\): writing \(y([2]P)\) as a rational function of \(X,Y\) via the duplication formula and eliminating \(X\) yields the strict resultant factorization
+\[
+\mathrm{Res}_{X}\bigl(\Pi(X,y),\,T-y([2]P)\bigr)
+=-16\cdot S(y)^{3}\cdot H(T,y),
+\]
+where \(\Pi(X,y)=X^{4}-X^{3}-(2y+1)X^{2}+X+y(y+1)\) is the spectral quartic plane-curve equation.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Use duplication formulas to write \([2](X,Y)=(X_{2},Y_{2})\) in closed rational form, then express \(y_{2}=X_{2}^{2}+Y_{2}-\tfrac12\) as a \(\QQ(X)\)-linear function on \(\{1,y\}\).
+Reducing under the quartic certificate \(\Pi(X,y)=0\) and eliminating \(X\) yields the displayed quartic equation and resultant factorization.
+Irreducibility and coefficient checks are reproducible via \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}. QED.
+\end{proof}
+
+\begin{conclusion}[Square class of the discriminant of the duplication modular equation agrees exactly with the Lee--Yang ramification kernel]\label{con:xi-terminal-zm-elliptic-weight-doubling-disc-squareclass}
+Viewing \(H(T,y)\) from Conclusion \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation} as a quartic in \(T\), its discriminant square class in \(\QQ(y)^{\times}/(\QQ(y)^{\times})^{2}\) satisfies
+\[
+\mathrm{Disc}_{T}\bigl(H(\cdot,y)\bigr)\equiv -y(y-1)P_{\mathrm{LY}}(y)\pmod{(\QQ(y)^{\times})^{2}},
+\]
+where \(P_{\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32\) is the Lee--Yang cubic factor (Conclusion \ref{con:xi-terminal-zm-leyang-ramification-critical-values}).
+More strongly, there exist \(Q_{12}(y),Q_{26}(y)\in\ZZ[y]\) (\(\deg Q_{12}=12,\deg Q_{26}=26\)) such that the strict identity holds:
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant}
+Therefore the unique quadratic resolvent subfield of the weighted quartic modular equation induced by duplication is locked by
+\[
+\QQ(y)\Bigl(\sqrt{-y(y-1)P_{\mathrm{LY}}(y)}\Bigr)
+\]
+and the Lee--Yang cubic factor remains rigidly invariant for duplication dynamics at the level of square classes.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Compute \(\mathrm{Disc}_{T}(H)\) by definition and factor in \(\ZZ[y]\) to obtain the displayed identity; the square-class statement follows immediately.
+Reproducible audit script: \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}. QED.
+\end{proof}
+
+\begin{conclusion}[The generic Galois group of the duplication modular equation is \texorpdfstring{$S_{4}$}{S4}]\label{con:xi-terminal-zm-elliptic-weight-doubling-galois-s4}
+Let \(K:=\QQ(y)\), and let \(L\) be the splitting field over \(K\) of the quartic polynomial \(H(T,y)\) from Conclusion \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}.
+Then, in the generic case,
+\[
+\mathrm{Gal}(L/K)\cong S_{4}.
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}, \(H(T,y)\) is irreducible over \(K\).
+Conclusion \ref{con:xi-terminal-zm-elliptic-weight-doubling-disc-squareclass} gives the discriminant square class \(-y(y-1)P_{\mathrm{LY}}(y)\), which is nonsquare in \(K\), excluding \(\mathrm{Gal}\subset A_{4}\).
+Specializing at \(y=2\) gives
+\[
+H(T,2)=62742241T^{4}-225603363T^{3}+534557358T^{2}-28061748T+235224\in\QQ[T],
+\]
+whose specialized Galois group is auditable as \(S_{4}\).
+By Hilbert irreducibility, the generic Galois group is also \(S_{4}\).
+Reproducible audit script: \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}. QED.
+\end{proof}
+
+\begin{conclusion}[Function-field reconstruction via \texorpdfstring{$(y,y\circ[2])$}{(y,y∘[2])}: normalization of the duplication modular curve is birational to \(E\)]\label{con:xi-terminal-zm-elliptic-weight-doubling-function-field-reconstruction}
+Let \(C_{2}\subset\mathbb P^{1}_{y}\times\mathbb P^{1}_{y_{2}}\) be the plane algebraic curve defined by \(H(y_{2},y)=0\).
+Then:
+\begin{enumerate}
+  \item \(\QQ(E)=\QQ(y,y_{2})\), i.e., \(y\) and \(y_{2}=y\circ[2]\) jointly generate the function field of \(E\);
+  \item the normalization of \(C_{2}\) is birationally isomorphic to \(E\); equivalently, the map
+  \[
+  E\longrightarrow \mathbb P^{1}_{y}\times\mathbb P^{1}_{y_{2}},\qquad
+  P\longmapsto\bigl(y(P),y([2]P)\bigr)
+  \]
+  is one-to-one at the geometric generic point.
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By Conclusion \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}, \(y([2]P)\) satisfies a quartic minimal polynomial over \(\QQ(y)\),
+so \([\QQ(y,y_{2}):\QQ(y)]=4=[\QQ(E):\QQ(y)]\), hence \(\QQ(E)=\QQ(y,y_{2})\).
+The birational isomorphism follows from an explicit inverse-map certificate (reconstruction of \(X,Y\)); see output of \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}. QED.
+\end{proof}
+
+

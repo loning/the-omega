@@ -1,0 +1,273 @@
+% (User input window)
+
+\begin{theorem}[Single scalar collapse: optimal coupling fully parameterized by "overlap magnitude"]\label{thm:pom-diagonal-rate-scalar-collapse}
+Let \(X\) be a finite set, take the fully supported distribution \(w\in\Delta(X)\), and note
+\[
+p_2(w):=\sum_{x\in X}w(x)^2,
+\qquad
+\delta_0:=1-p_2(w).
+\]
+There is \(R_w(\delta)=0\) when \(\delta\ge \delta_0\) (Proposition \ref{prop:pom-diagonal-rate-zero-threshold-collision}).
+Let \(\delta\in(0,\delta_0)\), and follow the optimal coupling exponential family representation of the theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}.
+\par
+For any \(\kappa>0\) and any \(A>0\), define
+\[
+u_{\kappa,A}(x):=\frac{\sqrt{A^2+4\kappa\,w(x)}-A}{2\kappa}\qquad(x\in X),
+\qquad
+\Phi_\kappa(A):=\sum_{x\in X}u_{\kappa,A}(x).
+\]
+Then it is established:
+\begin{enumerate}
+\item \textbf{(Unique fixed point and normalized scaling)}
+For every \(\kappa>0\), the equation \(A=\Phi_\kappa(A)\) has a unique solution on \(A>0\), denoted as \(A(\kappa)\in(0,1)\).
+Let \(u_\kappa(x):=u_{\kappa,A(\kappa)}(x)\), and define coupling
+  \[
+  P_\kappa(x,y):=
+  \begin{cases}
+  (1+\kappa)\,u_\kappa(x)^2, & x=y,\\
+  u_\kappa(x)u_\kappa(y), & x\ne y.
+  \end{cases}
+  \]
+Then \(P_\kappa\) is a probability distribution and satisfies the double-margin constraint \((P_\kappa)_X=(P_\kappa)_Y=w\).
+
+\item \textbf{（\(\kappa\)-distorted bijection)}
+make
+  \[
+  \delta(\kappa):=1-\sum_{x\in X}P_\kappa(x,x)\in(0,\delta_0).
+  \]
+Then the map \(\kappa\mapsto \delta(\kappa)\) is continuous and strictly decreasing on \((0,\infty)\), and bijects \((0,\infty)\) to \((0,\delta_0)\);
+Its endpoint limit is
+  \[
+  \kappa\downarrow 0\ \Longrightarrow\ \delta(\kappa)\uparrow\delta_0,
+  \qquad
+  \kappa\uparrow\infty\ \Longrightarrow\ \delta(\kappa)\downarrow 0.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}[Proof sketch]
+For fixed \(\kappa>0\), the function \(A\mapsto u_{\kappa,A}(x)\) is continuous and strictly decreasing, so \(\Phi_\kappa\) is continuous and strictly decreasing.
+At the same time, \(A\mapsto A-\Phi_\kappa(A)\) continuously increases strictly and satisfies:
+When \(A\downarrow 0\) \(\Phi_\kappa(A)\to \kappa^{-1/2}\sum_x\sqrt{w(x)}>0\) thus \(A-\Phi_\kappa(A)<0\);
+When \(A\uparrow\infty\) \(u_{\kappa,A}(x)=w(x)/A+O(A^{-3})\) thus \(\Phi_\kappa(A)=A^{-1}+o(A^{-1})\) and \(A-\Phi_\kappa(A)>0\).
+Therefore, there is a unique fixed point \(A(\kappa)\).
+\par
+From the positive root formula of the quadratic equation \(\kappa u^2+Au-w=0\) we can get
+\(
+w(x)=A(\kappa)\,u_\kappa(x)+\kappa u_\kappa(x)^2
+\), and from the fixed point condition \(\sum_x u_\kappa(x)=A(\kappa)\) we get
+\[
+\sum_{y\in X}P_\kappa(x,y)=u_\kappa(x)\bigl(A(\kappa)+\kappa u_\kappa(x)\bigr)=w(x),
+\]
+Thus the double edge is \(w\).
+Then derived from \(\sum_x w(x)=1\)
+\(
+1=A(\kappa)^2+\kappa\sum_x u_\kappa(x)^2
+=\sum_{x,y}P_\kappa(x,y)
+\), so \(P_\kappa\) is a probability distribution.
+\par
+\(\delta(\kappa)=1-(1+\kappa)\sum_x u_\kappa(x)^2\)。
+When \(\kappa\downarrow 0\) the above scaling degenerates to independent coupling and gives \(\delta\uparrow \delta_0\);
+When \(\kappa\uparrow\infty\) the diagonal enhancement tends to the same coupling and gives \(\delta\downarrow 0\).
+Strict monotonicity can be derived from strict convexity and dual slope representation: from the proposition \ref{prop:pom-diagonal-rate-analytic-strict-convexity-curvature},
+\(\delta\mapsto\kappa(\delta)\) is strictly decreasing on \((0,\delta_0)\), so its inverse mapping \(\kappa\mapsto\delta(\kappa)\) is strictly decreasing. Certification completed.
+\end{proof}
+
+\begin{corollary}[One-dimensional closed-form rate and algebraic recycling:\texorpdfstring{$\kappa=\frac{1-A^2}{A^2-\delta}$}{kappa=(1-A^2)/(A^2-delta)}]\label{cor:pom-diagonal-rate-scalar-collapse-rate}
+Let \(\delta\in(0,\delta_0)\), and let \(\kappa(\delta)\) be the bijective inverse function of theorem \ref{thm:pom-diagonal-rate-scalar-collapse} (satisfying \(\delta(\kappa(\delta))=\delta\)).
+Remember \(A:=A(\kappa(\delta))\) and \(u:=u_{\kappa(\delta)}\).
+Then the unique minimal coupling of \(R_w(\delta)\) is \(P_{\kappa(\delta)}\), and the rate has an explicit one-dimensional representation
+\[
+\boxed{\;
+R_w(\delta)=2\sum_{x\in X}w(x)\log\frac{u(x)}{w(x)}+(1-\delta)\log\bigl(1+\kappa(\delta)\bigr)\; }.
+\]
+Furthermore \(A\in(\sqrt\delta,1)\), and satisfies the explicit algebraic relation
+\[
+\boxed{\;
+\kappa(\delta)=\frac{1-A^2}{A^2-\delta}\; } .
+\]
+\end{corollary}
+\begin{proof}[Proof sketch]
+According to the theorem \ref{thm:pom-diagonal-rate-scalar-collapse}, for a given \(\delta\in(0,\delta_0)\), there is a unique \(\kappa(\delta)\) such that \(P_{\kappa(\delta)}\) is feasible and satisfies \(\mathbb P(X=Y)=1-\delta\);
+It is known from strict convexity (theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}) that it is the only optimal coupling.
+\par
+From \(\sum_{x,y}P_{\kappa}(x,y)=1\) (obtained in the proof), we can get the normalization constant \(Z\equiv 1\),
+So the closed form of the theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}
+\(
+R_w(\delta)=2\sum_x w(x)\log\frac{u_x}{w(x)}-\log Z+(1-\delta)\log(1+\kappa)
+\)
+into the one-dimensional representation shown.
+\par
+Finally, by the identity
+\[
+1-\delta=\sum_x P_\kappa(x,x)=(1+\kappa)\sum_x u_\kappa(x)^2,
+\qquad
+1=\sum_x w(x)=A^2+\kappa\sum_x u_\kappa(x)^2,
+\]
+Eliminate \(\sum_x u_\kappa(x)^2\) to get
+\(
+\delta=A^2-\frac{1-A^2}{\kappa}
+\), that is, \(\kappa=(1-A^2)/(A^2-\delta)\); and \(\kappa>0\) forces \(A^2>\delta\), and from \(1=A^2+\kappa\sum u^2\), we get \(A<1\). Certification completed.
+\end{proof}
+
+\begin{theorem}[Matrix scaling duality: single-parameter maximal and optimal coupling recovery of \texorpdfstring{$R_w(\delta)$}{R}]\label{thm:pom-diagonal-rate-scaling-duality}
+Let \(X\) be a finite set, and take the fully supported distribution \(w\in\Delta(X)\).
+Define the diagonal enhancement kernel for \(\kappa\ge 0\)
+\[
+K_\kappa(x,y):=1+\kappa\,\mathbf 1_{\{x=y\}},
+\]
+And define \(u\in\RR_{>0}^{X}\)
+\[
+Z_\kappa(u):=\sum_{x,y\in X}u(x)K_\kappa(x,y)u(y)
+=(\sum_x u(x))^2+\kappa\sum_x u(x)^2.
+\]
+Define a scaled energy functional
+\[
+\mathcal G_\kappa(w):=\inf_{u\succ 0}\Bigl(\log Z_\kappa(u)-2\sum_{x\in X}w(x)\log u(x)\Bigr),
+\]
+Its minimum point is unique under the overall expansion and contraction (\(u\mapsto cu\)).
+Then there is a dual maximum representation for any \(\delta\in[0,1]\)
+\[
+\boxed{\;
+R_w(\delta)=\sup_{\kappa\ge 0}\Bigl(2H(w)-\mathcal G_\kappa(w)+(1-\delta)\log(1+\kappa)\Bigr)\;},
+\qquad
+H(w):=-\sum_x w(x)\log w(x).
+\]
+And when \(\delta\in(0,\delta_0)\)(\(\delta_0:=1-p_2(w)\)), the supremum is reached by the unique \(\kappa^\star(\delta)>0\);
+If \(u^\star\) is one of the minimum points that realizes \(\mathcal G_{\kappa^\star}(w)\), then
+\[
+\boxed{\;
+P^\star_\delta(x,y):=\frac{u^\star(x)K_{\kappa^\star}(x,y)u^\star(y)}{Z_{\kappa^\star}(u^\star)}\;}
+\]
+That is the only minimal coupling of \(R_w(\delta)\).
+\end{theorem}
+\begin{proof}[Proof sketch]
+For fixed \(\kappa\ge 0\), the function
+\(
+u\mapsto \log Z_\kappa(u)-2\langle w,\log u\rangle
+\)
+It is convex on the variable \(\log u\) and strictly convex in the direction of the modular constant, so that the minimum point is unique under the overall expansion.
+Its first-order condition is equivalent to the existence of a constant \(Z>0\) such that
+\[
+w(x)=\frac{u(x)\bigl(A+\kappa u(x)\bigr)}{Z},
+\qquad A:=\sum_y u(y),
+\]
+and thus induces a coupling satisfying the double edge \(w\)
+\(
+P(x,y)\propto u(x)K_\kappa(x,y)u(y)
+\)；
+This structure is of the same type as the exponential family of theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative}.
+\par
+Expand the relative entropy of this coupling \(P\) and use
+\(
+\mathcal G_\kappa(w)=\log Z_\kappa(u)-2\sum_x w(x)\log u(x)
+\)
+Eliminate \(\log Z_\kappa\) and \(\sum w\log u\) to get
+\[
+D(P\|w\otimes w)=2H(w)-\mathcal G_\kappa(w)+\mathbb P_P(X=Y)\log(1+\kappa).
+\]
+Extract the constraint \(\mathbb P_P(X=Y)\ge 1-\delta\) with the multiplier \(\log(1+\kappa)\) and take the supremum, which is the dual form shown; strong duality, uniqueness and \(\kappa^\star>0\) are given by the strict convexity of the original problem and the Slater condition.
+The unique optimal coupling can be recovered by back-substituting \(\kappa^\star\) with any corresponding minimum point \(u^\star\). Certification completed.
+\end{proof}
+
+\paragraph{Fingerprinting and distribution identifiability of rate curves}
+Theorem \ref{thm:pom-diagonal-rate-scalar-collapse} and theorem \ref{thm:pom-diagonal-rate-scaling-duality} show that on \(\delta\in(0,\delta_0)\), the optimal coupling is completely characterized by a single dual scalar \(\kappa(\delta)\) and its normalized scaling vector \(u_\delta\).
+A stronger conclusion is given below: if \(\delta\mapsto R_w(\delta)\) is regarded as a function-level observation, then it itself constitutes a complete fingerprint of \(w\) (removing the invariance of label substitution).
+
+\begin{theorem}[Single-curve identifiability: \texorpdfstring{$\delta\mapsto R_w(\delta)$}{R(delta)} unique decision \texorpdfstring{$w$}{w} (to permutation)]\label{thm:pom-diagonal-rate-rate-curve-identifiability}
+Let \(X\) be a finite set, \(|X|=n\ge 2\), and take the fully supported distribution \(w\in\Delta(X)\).
+Remember \(\delta_0(w):=1-\sum_{x\in X}w(x)^2\).
+If another fully supported distribution \(v\in\Delta(X)\) satisfies: there exists \((0,\delta_1)\subset\bigl(0,\min\{\delta_0(w),\delta_0(v)\}\bigr)\) such that
+\[
+R_w(\delta)=R_v(\delta)\qquad(\forall \delta\in(0,\delta_1)),
+\]
+Then the weight multisets of the two distributions are consistent:
+\[
+\{w(x):x\in X\}=\{v(x):x\in X\},
+\]
+Thus \(w=v\) (to label substitution).
+\end{theorem}
+\begin{proof}[Proof sketch]
+From the proposition \ref{prop:pom-diagonal-rate-analytic-strict-convexity-curvature}, \(\delta\mapsto R_w(\delta)\) and \(\delta\mapsto R_v(\delta)\) are real analytic on their respective \((0,\delta_0)\).
+Therefore, the identity on the interval containing convergence points \((0,\delta_1)\) forces the two to be equal everywhere in the common domain.
+\par
+By the dual sensitivity of the theorem \ref{thm:pom-diagonal-rate-explicit-param-and-derivative},
+\[
+R_w'(\delta)=-\log\bigl(1+\kappa_w(\delta)\bigr),
+\qquad
+R_v'(\delta)=-\log\bigl(1+\kappa_v(\delta)\bigr),
+\]
+Thus from \(R_w\equiv R_v\) we get \(\kappa_w(\delta)\equiv \kappa_v(\delta)\).
+Then according to the theorem \ref{thm:pom-diagonal-rate-scalar-collapse}, the map \(\kappa\mapsto\delta(\kappa)\) strictly decreases and becomes a bijection between \((0,\infty)\) and \((0,\delta_0)\),
+Therefore, its inverse function \(\delta\mapsto \kappa(\delta)\) is unique; so the \(\delta(\kappa)\) induced by the two is consistent on \(\kappa>0\).
+\par
+Let \(A(\kappa)\) be the unique fixed point solution of the theorem \ref{thm:pom-diagonal-rate-scalar-collapse}, and take the normalized scaling \(Z\equiv 1\) (same as the theorem).
+From the algebraic relationship of \ref{cor:pom-diagonal-rate-scalar-collapse-rate} we can get
+\[
+A(\kappa)^2=\frac{1+\kappa\,\delta(\kappa)}{1+\kappa}\qquad(\kappa>0),
+\]
+Thus the function \(\kappa\mapsto A(\kappa)\) is uniquely determined by the known \(\delta(\kappa)\).
+\par
+When \(\kappa\downarrow 0\) there is \(A(\kappa)\uparrow 1\) and \(A\) can be analytically extended to the neighborhood of \(\kappa=0\).
+The fixed point equation of the theorem \ref{thm:pom-diagonal-rate-scalar-collapse}
+\(
+A=\Phi_\kappa(A)=\sum_x u_{\kappa,A}(x)
+\)
+Consider as an analytic identity with respect to \(\kappa\), and for
+\(
+u_{\kappa,A}(x)=(\sqrt{A^2+4\kappa w(x)}-A)/(2\kappa)
+\)
+Perform Taylor expansion at \(\kappa=0\) to get
+\[
+\Phi_\kappa(A)=\frac{1}{A}-\kappa\,\frac{p_2(w)}{A^3}+O(\kappa^2),
+\qquad p_2(w):=\sum_x w(x)^2,
+\]
+Thus \(p_2(w)=-2A'(0)\) is given by coefficient comparison.
+More generally, the \(\kappa^{q-1}\) coefficients of \(\Phi_\kappa(A)\) linearly contain the power sum \(p_q(w)=\sum_x w(x)^q\) and depend only on the low-order derivatives of \(A\) with \(\{p_j(w)\}_{2\le j\le q-1}\);
+Therefore \(\{p_q(w)\}_{q=2}^{n}\) can be recovered step by step from the Taylor jet of \(\kappa\mapsto A(\kappa)\) at \(\kappa=0\) by induction.
+\par
+Finally, from Newton's identity, the known power sum \(\{p_q(w)\}_{q=1}^{n}\) (where \(p_1\equiv 1\)) is equivalent to the known basic symmetric polynomial \(\{e_k(w)\}_{k=1}^{n}\), thereby determining the unary polynomial
+\(
+t^n-e_1 t^{n-1}+\cdots+(-1)^n e_n
+\)
+all roots of ; the multiset of roots is exactly \(\{w(x):x\in X\}\).
+Therefore \(R_w\) uniquely determines the weighted multiset (to permutation) of \(w\). Certification completed.
+\end{proof}
+
+\begin{corollary}[Two-scalar certificate completeness: \texorpdfstring{$R_w(\delta)$}{R(delta)} and \texorpdfstring{$\lambda_2(K^\star_\delta)$}{lambda2}]\label{cor:pom-diagonal-rate-two-curve-identifiability}
+Let \(X\) be a finite set, \(w\in\Delta(X)\) is fully supported.
+For \(\delta\in(0,\delta_0(w))\), let \(K^\star_\delta\) be the unique optimal kernel of theorem \ref{thm:pom-maxent-markov-unique-optimal-kernel}, and let \(\lambda_2(K^\star_\delta)\) be its second eigenvalue (according to \(\lambda_1=1\ge \lambda_2\ge\cdots\ge \lambda_n\) sort).
+If two curves are known
+\(
+\delta\mapsto R_w(\delta)
+\)
+and
+\(
+\delta\mapsto \lambda_2(K^\star_\delta)
+\)
+All values ​​on a certain interval containing convergence points can uniquely determine \(\{w(x)\}\) (to permutation).
+\end{corollary}
+\begin{proof}
+According to the theorem \ref{thm:pom-diagonal-rate-rate-curve-identifiability}, \(\delta\mapsto R_w(\delta)\) is enough to uniquely determine \(\{w(x)\}\);
+Therefore, giving \(\lambda_2(K^\star_\delta)\) on this basis will not introduce additional ambiguity. Certification completed.
+\end{proof}
+
+\begin{proposition}[Recovering weight multisets from rate curve: power sum--Newton reconstruction]\label{prop:pom-diagonal-rate-reconstruct-w-from-rate-curve}
+Under the setting of the theorem \ref{thm:pom-diagonal-rate-rate-curve-identifiability}, given all the values ​​of \(n=|X|\) and function \(\delta\mapsto R_w(\delta)\) on any interval containing convergence points, the weight multiset \(\{w(x)\}\) can be recovered as follows:
+\begin{enumerate}
+\item extends \(R_w\) to the universe of \((0,\delta_0)\) by real analyticity and is calculated by dual sensitivity
+  \[
+  \kappa(\delta):=\exp\bigl(-R_w'(\delta)\bigr)-1.
+  \]
+\item Inversely solve \(\delta\mapsto\kappa(\delta)\) to get \(\delta(\kappa)\) (\(\kappa\downarrow 0\) corresponds to \(\delta\uparrow\delta_0\)), and define
+  \[
+  A(\kappa):=\sqrt{\frac{1+\kappa\,\delta(\kappa)}{1+\kappa}}.
+  \]
+\item Recover the power sum \(\{p_q(w)\}_{q=2}^{n}\) step by step from the Taylor expansion of the fixed point equation \(A(\kappa)=\Phi_\kappa(A(\kappa))\) at \(\kappa=0\) (e.g. \(p_2(w)=-2A'(0)\)).
+\item Calculate the basic symmetric polynomial \(\{e_k(w)\}_{k=1}^{n}\) from \(\{p_q(w)\}_{q=1}^{n}\) by Newton's identity, and use
+  \[
+  t^n-e_1 t^{n-1}+\cdots+(-1)^n e_n
+  \]
+The root multiset of is the output of \(\{w(x)\}\).
+\end{enumerate}
+This procedure relies only on \(\delta\mapsto R_w(\delta)\) as function input, and theoretically achieves sorted spectrum recycling of \(w\).
+\end{proposition}

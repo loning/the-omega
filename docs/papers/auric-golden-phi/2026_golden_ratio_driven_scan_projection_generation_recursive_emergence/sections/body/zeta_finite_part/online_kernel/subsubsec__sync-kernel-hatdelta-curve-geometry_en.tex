@@ -1,0 +1,185 @@
+\subsubsection{Geometric quotient and covering structure of completed determinant curve}\label{subsubsec:sync-kernel-hatdelta-curve-geometry}
+This section is compiled from the internal derivation document on 2026-02-17. Except for the completion determinant defined by \ref{rem:sync-hatdelta-explicit}
+\(\widehat{\Delta}(w,s)\in\ZZ[s][w]\) and its symmetry
+\(\widehat\Delta(w,-s)=\widehat\Delta(-w,s)\), and adopt the variable relationship given in the same place
+\(
+u=r^2,\ s=r+r^{-1},\ w=zr
+\)
+In addition, no additional input is introduced.
+\par
+Consider \(\widehat\Delta(w,s)=0\) as a plane algebraic curve on \(\mathbb{A}^2_{w,s}\), and note that the normalization of its projective closure on \(\mathbb{P}^2\) is \(\mathcal{X}\).
+Depend on
+\(
+\widehat\Delta(-w,-s)=\widehat\Delta(w,s)
+\)
+Known involution
+\[
+\iota:\mathcal{X}\longrightarrow\mathcal{X},\qquad (w,s)\longmapsto(-w,-s)
+\]
+It is a well-defined algebraic automorphism.
+
+\begin{proposition}[Symmetry-induced geometric quotient: explicit planar quartic model and genus three]\label{prop:sync-hatdelta-curve-quotient-plane-quartic-genus3}
+Let \(\mathcal{C}\subset\mathbb{A}^2_{x,y}\) be an affine plane curve, and its equation is
+\[
+F(x,y)=1-y-5x+3xy+5x^2-xy^2+xy^3-6x^2y+x^2y^2-x^3=0.
+\]
+Then at the function domain level, \(\mathcal{X}/\langle\iota\rangle\) is represented by \(\iota\)-invariant
+\[
+x:=w^2,\qquad y:=sw
+\]
+is generated and birational isomorphism with \(\mathcal{C}\).
+Its projective closure \(\overline{\mathcal{C}}\subset\mathbb{P}^2_{X:Y:Z}\) is given by the homogeneous quartic equation
+\[
+\begin{aligned}
+0={}&Z^4-YZ^3-5XZ^3+3XYZ^2+5X^2Z^2-XY^2Z+XY^3\\
+&\quad +X^2Y^2-6X^2YZ-X^3Z
+\end{aligned}
+\]
+Characterized by, and smooth on algebraic closure.
+Therefore \(\overline{\mathcal{C}}\) is a non-hyperelliptic cubic curve (equivalently: a smooth planar quartic curve), so
+\[
+g(\overline{\mathcal{C}})=3.
+\]
+\end{proposition}
+\begin{proof}[Proof sketch]
+From \(\widehat\Delta(w,-s)=\widehat\Delta(-w,s)\), we get \(\widehat\Delta(-w,-s)=\widehat\Delta(w,s)\), so \(\iota\) maintains the curve.
+And \(x=w^2\), \(y=sw\) are unchanged under the action of \(\iota\).
+By substituting \(s=y/w\) and \(w^2=x\) on the open set of \(w\neq 0\), \(\widehat\Delta(w,s)=0\) can be equivalently rewritten as \(F(x,y)=0\), thus obtaining the explicit affine model and birational isomorphism of the quotient curve.
+\par
+Smoothness can be directly verified on the affine graph and the infinite point by point-wise gradient discrimination; therefore \(\overline{\mathcal{C}}\) is a smooth plane quartic curve.
+The generic formula for the fourth degree of the plane gives \(g(\overline{\mathcal{C}})=(4-1)(4-2)/2=3\).
+Reproducible verification script: \texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}. Certification completed.
+\end{proof}
+
+\begin{proposition}[Second expansion and divergence: only two divergences and \texorpdfstring{$g(\mathcal{X})=6$}{g(X)=6}]\label{prop:sync-hatdelta-curve-double-cover-branch-genus6}
+There is a second expansion in the sense of function domain
+\[
+\QQ(\mathcal{X})=\QQ(\overline{\mathcal{C}})\bigl(\sqrt{x}\bigr),
+\]
+and thus obtain standardized secondary coverage
+\[
+\pi:\mathcal{X}\longrightarrow\overline{\mathcal{C}},
+\]
+Its deck transformation is \(\iota\).
+The divergence of this coverage is completely determined by the odd-order zeros and odd-order poles of \(x\) on \(\overline{\mathcal{C}}\);
+For this curve, the odd-order zeros/poles are exactly two points:
+\[
+P_0=(x,y)=(0,1)\in \overline{\mathcal{C}}(\QQ),\qquad
+P_\infty=[1:-1:0]\in \overline{\mathcal{C}}(\QQ),
+\]
+Among them, \(x\) is a first-order zero at \(P_0\) and a first-order pole at \(P_\infty\).
+In addition, \(x\) at \([0:1:0]\) has a second-order zero point, and \(x\) at \([1:0:0]\) has a second-order pole, so there is no disagreement.
+Therefore \(\pi\) diverges exactly at \(\{P_0,P_\infty\}\), \'{e}tale everywhere else, and \(\mathcal{X}^{\iota}\) consists of two points.
+Obtained from Hurwitz formula
+\[
+g(\mathcal{X})
+=2g(\overline{\mathcal{C}})-1+\frac{\#\mathrm{Branch}(\pi)}{2}
+=2\cdot 3-1+\frac{2}{2}
+=6.
+\]
+\end{proposition}
+\begin{proof}[Proof sketch]
+From \(\QQ(\mathcal{X})=\QQ(w,s)\) and the invariant relations \(x=w^2\), \(y=sw\), we get \(\QQ(\overline{\mathcal{C}})=\QQ(x,y)\), and \(\QQ(\mathcal{X})=\QQ(\overline{\mathcal{C}})(w)=\QQ(\overline{\mathcal{C}})(\sqrt{x})\).
+The divergence point is characterized by odd-order zeros/poles of \(x\).
+\par
+At the affine point \(P_0=(0,1)\), \(F_y(0,1)=-1\neq 0\), so \(x\) is a local parameter and gives a zero point.
+For the infinite point \(P_\infty=[1:-1:0]\), take the graph \(X=1\) and let \((y,z)=(Y/X,Z/X)\), then \(x=X/Z=1/z\);
+The partial derivative of the curve equation in this figure with respect to \(y\) is non-zero at \((y,z)=(-1,0)\), so \(z\) is a local parameter and \(x\) gives a first-order pole.
+For \([1:0:0]\) and \([0:1:0]\), in the same way, the lowest-order expansion in the corresponding affine graph can obtain the second-order behavior of \(z\sim y^2\) and \(x\sim z^2\). Therefore, it is not inconsistent that the zero/pole order is an even number.
+Hurwitz's formula yields a numerical conclusion. Certification completed.
+\end{proof}
+
+\begin{proposition}[Triple Cover of Quotient Curves: Triple Expansion, Discriminant and \texorpdfstring{$S_3$}{S3} Closure]\label{prop:sync-hatdelta-quotient-triple-cover-s3-discriminant}
+The rational function \(x\) on \(\overline{\mathcal{C}}\) defines a triple cover
+\[
+\varphi:\overline{\mathcal{C}}\longrightarrow\mathbb{P}^1_x.
+\]
+Its function domain expansion \(\QQ(x)\subset\QQ(\overline{\mathcal{C}})\) can be explicitly described by the cubic equation about \(y\):
+\[
+x\,y^3+(x^2-x)\,y^2+(3x-6x^2-1)\,y+(1-5x+5x^2-x^3)=0.
+\]
+The discriminant of this cubic equation with respect to \(y\) satisfies the strict identity
+\[
+\mathrm{Disc}_y=x\cdot P_8(x),
+\qquad
+P_8(x)=4x^8+85x^7+416x^6-818x^5+1196x^4-871x^3+284x^2-44x+4.
+\]
+Therefore, the finite divergence point of \(\varphi\) is given by \(x=0\) and \(P_8(x)=0\); another divergence occurs at infinity to satisfy the Riemann--Hurwitz constraint of \(g(\overline{\mathcal{C}})=3\).
+And since \(\mathrm{Disc}_y\) is non-square in \(\QQ(x)\), the geometric/arithmetical Galois closure group of this cubic expansion is \(S_3\).
+The second intermediate expansion corresponding to the square root of the discriminant determines a natural hyperelliptic curve
+\[
+H:\quad v^2=x\,P_8(x),
+\]
+Its right end is a ninth degree polynomial, so \(H\) is a four-dimensional hyperelliptic curve; it characterizes the only quadratic subfield in \(S_3\)-closure.
+\end{proposition}
+\begin{proof}[Proof sketch]
+The affine model of \(\overline{\mathcal{C}}\) is \(F(x,y)=0\), which can be regarded as a cubic polynomial of \(y\) to obtain the cubic equation and triple coverage shown.
+Taking \(\mathrm{Disc}_y\) for this polynomial and factoring it gives \(\mathrm{Disc}_y=xP_8(x)\).
+The Galois group of cubic irreducible extensions is \(A_3\) if and only if the discriminant is square; here it is not square, so the closure group is \(S_3\).
+The quadratic subdomain is generated by \(\sqrt{\mathrm{Disc}_y}\), thus obtaining the hyperelliptic model \(v^2=xP_8(x)\), whose genus is determined by \(\deg(xP_8)=9\).
+Reproducible verification script: \texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}. Certification completed.
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\widehat\Delta(w,s)$}{hatDelta(w,s)}'s general Galois group and complete simple group property]\label{prop:sync-hatdelta-galois-s6-generic}
+Consider \(\widehat\Delta(w,s)\) as a sixth degree polynomial on \(\QQ(s)\) with respect to \(w\), then its Galois group on \(\QQ(s)\) is a fully symmetric group:
+\[
+\mathrm{Gal}\bigl(\widehat\Delta(w,s)\ /\ \QQ(s)\bigr)\cong S_6.
+\]
+And the general monodromy of the natural projection \(\mathcal{X}\to\mathbb{P}^1_s\) is \(S_6\), so the six-leaf cover is geometrically fully symmetric.
+\end{proposition}
+\begin{proof}[Proof sketch]
+When specializing \(s=3\) we get an irreducible sixth degree polynomial
+\[
+\widehat\Delta(w,3)=8w^6+9w^5-4w^4+9w^3-5w^2-3w+1\in\QQ[w],
+\]
+Its Galois group on \(\QQ\) is \(S_6\).
+The Galois group in the general case is a transitive subgroup of \(S_6\), and the specialization does not increase the Galois group: for specializations except for a limited number of degenerate parameters, the specialized Galois group can be regarded as a subgroup of the general Galois group; therefore once there is a specialization that results in \(S_6\), the general Galois group can only be \(S_6\).
+The simple group property is obtained by "the Galois group of the functional field is consistent with the general simple group" (for geometric fibers outside the divergence point).
+Reproducible verification script: \texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}. Certification completed.
+\end{proof}
+
+\begin{remark}[\texorpdfstring{$s=\infty$}{s=infty} Puiseux branch classification and explicit expansion]\label{rem:sync-hatdelta-puiseux-at-infty}
+Let \(t:=1/s\), and take \(u:=t^{1/2}\).
+Then on the normalization of \(\mathcal{X}\), six analytical branches \(w=w(s)\) appear in the neighborhood of \(s=\infty\):
+Two are of integer Laurent type (no divergence), and four are of half-integer Puiseux type (corresponding to two divergence points with index \(2\), each contributing two local branches).
+The following standardized expansion is available (only the first few items are displayed):
+\begin{enumerate}
+\item Pole type branch (\(w\sim -s\)):
+  \[
+  w_{\mathrm{pole}}(s)= -s+\frac{4}{s}+\frac{2}{s^3}-\frac{24}{s^5}-\frac{189}{s^7}+O(s^{-9}).
+  \]
+\item Small branch (\(w\sim s^{-1}\)):
+  \[
+  w_{\mathrm{small}}(s)= \frac{1}{s}-\frac{2}{s^3}+\frac{39}{s^7}-\frac{120}{s^9}-\frac{1240}{s^{11}}+O(s^{-13}).
+  \]
+\item Real square root branch (two local branches merge at the same branch point):
+  \[
+  w_{\pm}(s)=\pm s^{-1/2}\ \mp\ \frac{3}{4}s^{-3/2}\ +\ \frac{1}{4}s^{-2}\ \pm\ \frac{65}{32}s^{-5/2}\ +\ \frac{5}{4}s^{-3}\ +\ O(s^{-7/2}).
+  \]
+\item Pure imaginary square root branch (another divergence point):
+  \[
+  w_{\pm i}(s)=\pm i\,s^{-1/2}\ \pm\ \frac{3i}{4}s^{-3/2}\ -\ \frac{1}{4}s^{-2}\ \pm\ \frac{65i}{32}s^{-5/2}\ +\ \frac{5}{4}s^{-3}\ +\ O(s^{-7/2}).
+  \]
+\end{enumerate}
+And the effect of the involution \(\iota:(w,s)\mapsto(-w,-s)\) at this point is satisfied: the two points corresponding to the first two integer-type branches are the fixed points of \(\iota\), and the four branches of the square root type are locally exchanged in pairs (reflecting the non-trivial local effect of \(\iota\) at infinity).
+\end{remark}
+
+\begin{corollary}[Jacobian's Prym decomposition: three-dimensional \texorpdfstring{$(1,1,2)$}{(1,1,2)}-polarization factor]\label{cor:sync-hatdelta-prym-decomposition}
+Covering \(\pi:\mathcal{X}\to\overline{\mathcal{C}}\) by the quadratic divergence of the proposition \ref{prop:sync-hatdelta-curve-double-cover-branch-genus6} (the number of divergence points is \(2\)), there is a Prym algebra variety with dimension \(3\)
+\(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\subset J(\mathcal{X})\), and homologous decomposition on \(\QQ\)
+\[
+J(\mathcal{X})\ \sim\ J(\overline{\mathcal{C}})\times \mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}}).
+\]
+Since the number of divergence points is \(2\), the polarization type inherited by \(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\) is \((1,1,2)\).
+\end{corollary}
+\begin{proof}[Proof sketch]
+Prym's theory for bifurcated quadratic coverage gives
+\(\dim\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})=g(\mathcal{X})-g(\overline{\mathcal{C}})=6-3=3\)，
+And the Jacobian homology decomposition holds.
+When the number of divergence points is \(2\), the induced polarization type is \((1,1,2)\), which is the standard conclusion.
+Certification completed.
+\end{proof}
+
+\par
+Based on the above explicit model, the decomposition form of \(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\) can be further characterized in a testable manner, as well as the homology relationship between the decomposition type, the end automorphic algebra and the Jacobian belonging to the four-discriminant double cover \(H\) in the proposition \ref{prop:sync-hatdelta-quotient-triple-cover-s3-discriminant};
+A natural path is to combine finite domain point counting with Frobenius/Hecke characteristic polynomial tests to improve homology decomposition and modular parameter identification into reproducible audit outputs.
