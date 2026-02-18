@@ -2754,6 +2754,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_weight_tripling_audit",
+            script="exp_fold_zm_elliptic_weight_tripling_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_weight_tripling_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_weight_tripling_M3.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_tripling_discriminant.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_weight_doubling_2torsion_translation_collision_audit",
             script="exp_fold_zm_elliptic_weight_doubling_2torsion_translation_collision_audit.py",
             args=[],
