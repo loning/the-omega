@@ -36,6 +36,9 @@ We verify:
     and we reproduce the first six terms.
   - Bad prime 37 stable reduction degree-drop of Phi:
       mod 37, numerator and denominator share (X-5)^2 and the reduced map has degree 2.
+  - Bad prime 37 Chebyshev conjugacy and cycle spectrum on P^1(F_37):
+      M o overline{Phi} o M^{-1} = (X^2 - 2) and the full cycle decomposition
+      consists of one 9-cycle, one 3-cycle, and three fixed points {5,22,∞}.
 
 Outputs:
   - artifacts/export/fold_zm_elliptic_lattes_rational_points_audit.json
@@ -200,6 +203,9 @@ class Payload:
     mw_anchor_points: Dict[str, str]
     mw_anchor_relations_ok: bool
     table_first6: List[TableRow]
+    phi_mod37_chebyshev_conjugacy_ok: bool
+    phi_mod37_cycle_spectrum_ok: bool
+    phi_mod37_cycles_p1: List[List[int]]
 
 
 def main() -> None:
@@ -243,6 +249,101 @@ def main() -> None:
     phi_mod37_degree_drop_ok = bool(num_mod_ok and den_mod_ok and num_red == num_red_expected and den_red == den_red_expected)
     phi_mod37_gcd = gcd_mod.as_expr()
     phi_mod37_reduced_map = sp.together(num_red.as_expr() / den_red.as_expr())
+
+    # --- Bad prime 37: Chebyshev conjugacy and cycle spectrum on P^1(F_37) ---
+    def _inv_mod(a: int, p: int) -> int:
+        a %= p
+        if a == 0:
+            raise ZeroDivisionError("inverse of 0")
+        return pow(a, p - 2, p)
+
+    def _overphi_p1(x: int | None, p: int) -> int | None:
+        # overline{Phi}(x) = (x^2+10x+3)/(4x+3), with infinity represented by None
+        if x is None:
+            return None
+        num = (x * x + 10 * x + 3) % p
+        den = (4 * x + 3) % p
+        if den == 0:
+            return None
+        return (num * _inv_mod(den, p)) % p
+
+    def _mobius_M(x: int | None, p: int) -> int | None:
+        # M(x) = (2x+13)/(x-5)
+        if x is None:
+            return 2 % p
+        den = (x - 5) % p
+        if den == 0:
+            return None
+        num = (2 * x + 13) % p
+        return (num * _inv_mod(den, p)) % p
+
+    def _mobius_Minv(x: int | None, p: int) -> int | None:
+        # M^{-1}(x) = (5x+13)/(x-2)
+        if x is None:
+            return 5 % p
+        den = (x - 2) % p
+        if den == 0:
+            return None
+        num = (5 * x + 13) % p
+        return (num * _inv_mod(den, p)) % p
+
+    def _T2(x: int | None, p: int) -> int | None:
+        if x is None:
+            return None
+        return (x * x - 2) % p
+
+    pts_p1 = [None] + list(range(p_bad))
+    phi_mod37_chebyshev_conjugacy_ok = True
+    for x in pts_p1:
+        lhs = _mobius_M(_overphi_p1(_mobius_Minv(x, p_bad), p_bad), p_bad)
+        rhs = _T2(x, p_bad)
+        if lhs != rhs:
+            phi_mod37_chebyshev_conjugacy_ok = False
+            break
+
+    # Cycle decomposition (record each cycle once; ignore preperiodic tails).
+    seen: set[int | None] = set()
+    cycles: List[List[int | None]] = []
+    for x in pts_p1:
+        if x in seen:
+            continue
+        seq: List[int | None] = []
+        cur = x
+        while cur not in seen and cur not in seq:
+            seq.append(cur)
+            cur = _overphi_p1(cur, p_bad)
+        if cur in seen:
+            for u in seq:
+                seen.add(u)
+            continue
+        # New cycle: cur repeats inside seq.
+        i0 = seq.index(cur)
+        cycles.append(seq[i0:])
+        for u in seq:
+            seen.add(u)
+
+    # Normalize cycles for stable JSON comparisons: rotate to the minimal element (∞ last), sort by length.
+    def _key(u: int | None) -> Tuple[int, int]:
+        return (1, 0) if u is None else (0, int(u))
+
+    def _rot_min(cyc: List[int | None]) -> List[int | None]:
+        ks = [_key(u) for u in cyc]
+        j = min(range(len(cyc)), key=lambda i: ks[i])
+        return cyc[j:] + cyc[:j]
+
+    cycles_norm = [_rot_min(c) for c in cycles]
+    cycles_norm.sort(key=lambda c: (len(c), [_key(u) for u in c]))
+    cycles_json: List[List[int]] = [[-1 if u is None else int(u) for u in c] for c in cycles_norm]
+    phi_mod37_cycle_spectrum_ok = bool(
+        cycles_json
+        == [
+            [5],
+            [22],
+            [-1],
+            [3, 25, 29],
+            [1, 2, 26, 15, 6, 16, 30, 17, 31],
+        ]
+    )
 
     # --- Bad prime 37: cubic g(X)=16X^3-9X^2+1 double-root collapse ---
     g_cubic = 16 * X**3 - 9 * X**2 + 1
@@ -483,6 +584,9 @@ def main() -> None:
         },
         mw_anchor_relations_ok=bool(mw_ok),
         table_first6=rows,
+        phi_mod37_chebyshev_conjugacy_ok=bool(phi_mod37_chebyshev_conjugacy_ok),
+        phi_mod37_cycle_spectrum_ok=bool(phi_mod37_cycle_spectrum_ok),
+        phi_mod37_cycles_p1=cycles_json,
     )
 
     out_json = export_dir() / "fold_zm_elliptic_lattes_rational_points_audit.json"

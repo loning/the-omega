@@ -23,16 +23,23 @@ Z_K(u,t):=\prod_{p}\bigl(1-u^{\kappa(p)}t^{\ell(p)}\bigr)^{-1},
 \qquad
 Z_K(u,t;\beta):=\prod_{p}\bigl(1-\chi_\beta(p)\,u^{\kappa(p)}t^{\ell(p)}\bigr)^{-1}.
 \]
-若零能量骨架不发生 sheet-交换（即对所有 \(p\) 有 \(\kappa(p)=0\Rightarrow \chi_\beta(p)=+1\)），则存在严格整数不变量
+若零能量骨架不发生 sheet-交换（即对所有 \(p\) 有 \(\kappa(p)=0\Rightarrow \chi_\beta(p)=+1\)），则可定义扩展取值的不变量
 \[
 A_{\mathrm{flip}}
-:=\min\{\kappa(p):\ p\ \text{为 Ihara prime 环且}\ \chi_\beta(p)=-1\}\in\ZZ_{>0},
+:=\min\{\kappa(p):\ p\ \text{为 Ihara prime 环且}\ \chi_\beta(p)=-1\}\in\ZZ_{>0}\cup\{+\infty\},
 \]
-并且比值的 \(u\)-首阶指数严格等于 \(A_{\mathrm{flip}}\)：
+其中约定 \(\min\varnothing:=+\infty\)。
+当 \(A_{\mathrm{flip}}=+\infty\) 时，所有 prime 环均满足 \(\chi_\beta(p)=+1\)，从而
+\[
+Z_K(u,t;\beta)\equiv Z_K(u,t),
+\qquad
+\frac{Z_K(u,t;\beta)}{Z_K(u,t)}\equiv 1.
+\]
+一般地，比值的 \(u\)-首阶指数由 \(A_{\mathrm{flip}}\) 给出：
 \[
 [u^k]\left(\frac{Z_K(u,t;\beta)}{Z_K(u,t)}-1\right)=0\quad(0\le k<A_{\mathrm{flip}}),
 \]
-且其首项系数具有闭式
+且当 \(A_{\mathrm{flip}}<+\infty\) 时，其首项系数具有闭式
 \[
 \frac{Z_K(u,t;\beta)}{Z_K(u,t)}
 =1-2\Bigl(\sum_{\substack{p\ \mathrm{Ihara\ prime}\\ \kappa(p)=A_{\mathrm{flip}},\ \chi_\beta(p)=-1}} t^{\ell(p)}\Bigr)u^{A_{\mathrm{flip}}}
@@ -45,6 +52,8 @@ A_{\mathrm{flip}}
 \[
 \frac{Z_K(u,t;\beta)}{Z_K(u,t)}=\prod_{p}\frac{1-x_p}{1-\chi_\beta(p)x_p}.
 \]
+若对所有 prime 环均有 \(\chi_\beta(p)=+1\)，则乘积中每一因子恒为 \(1\)，从而比值恒为 \(1\)，并按约定 \(A_{\mathrm{flip}}=\min\varnothing=+\infty\)。
+下设存在某条 prime 环满足 \(\chi_\beta(p)=-1\)。
 当 \(\chi_\beta(p)=+1\) 时该因子恒为 \(1\)；当 \(\chi_\beta(p)=-1\) 时
 \(
 \frac{1-x_p}{1+x_p}=1-2x_p+O(x_p^2)
@@ -140,12 +149,13 @@ I-(A\pm B)=\bigl(I-A\bigr)\bigl(I\mp (I-A)^{-1}B\bigr)
 \(
 \langle[\beta],c\rangle:=\sum_{e\in c}\beta(e)\in\ZZ_2
 \)。
-则
+则在约定 \(\min\varnothing:=+\infty\) 下有
 \[
 A_{\mathrm{flip}}
 =
-\min\bigl\{\kappa(c):\ c\ \text{为}\ \ZZ_2\text{-}1\text{-循环且}\ \langle[\beta],c\rangle=1\bigr\}.
+\min\bigl\{\kappa(c):\ c\ \text{为}\ \ZZ_2\text{-}1\text{-循环且}\ \langle[\beta],c\rangle=1\bigr\}\in\ZZ_{>0}\cup\{+\infty\}.
 \]
+特别地，\(A_{\mathrm{flip}}=+\infty\) 当且仅当 \([\beta]=0\in H^{1}(\Gamma;\ZZ_2)\)，亦即 \(\beta\) 为余边界并对每条闭链满足 \(\langle[\beta],c\rangle=0\)。
 特别地，\(A_{\mathrm{flip}}\) 仅依赖同调类 \([\beta]\in H^1(\Gamma;\ZZ_2)\) 与权重 \(\kappa\) 的 \(\ZZ_2\)-循环极小化问题，而与“primitive/无回溯”的语法选择无关；primitive 条件只决定实现该极小值的代表是否需要进一步去除幂重复。
 \end{conclusion}
 \begin{proof}[证明要点]
@@ -167,7 +177,7 @@ A_{\mathrm{flip}}
 =
 \min_{v\in V(\Gamma)}\ \operatorname{dist}_{\Gamma_\beta}\bigl((v,0),(v,1)\bigr),
 \]
-其中右端为带权最短路距离（允许重复点与边）。
+其中右端为带权最短路距离（允许重复点与边；若两点不连通则约定该距离为 \(+\infty\)）。
 因此 \(A_{\mathrm{flip}}\) 的数值可由一次标准最短路算法给出，并且最短路本身即为跨支隧穿作用量的可审计见证。
 \end{conclusion}
 \begin{proof}[证明要点]
@@ -325,7 +335,7 @@ W(\rho;y_0):=\bigl\{\theta\in[-\pi,\pi]:\ B^{-1}(\rho e^{\mathrm{i}\theta})\ge y
 \par
 \((2)\Rightarrow(1)\)：由 \(p=e\gamma\) 为 Ihara prime 环且 \(\kappa(e)=1\)、\(\kappa(\gamma)=0\)，得 \(\kappa(p)=1\)；
 又由 \(\beta(e)=1\) 且 \(\beta(\gamma)=0\) 得 \(\chi_\beta(p)=-1\)，从而 \(A_{\mathrm{flip}}\le 1\)。
-结合 \(A_{\mathrm{flip}}\in\ZZ_{>0}\) 得 \(A_{\mathrm{flip}}=1\)。
+结合 \(A_{\mathrm{flip}}\in\ZZ_{>0}\cup\{+\infty\}\) 且 \(A_{\mathrm{flip}}\le 1\) 得 \(A_{\mathrm{flip}}=1\)。
 \end{proof}
 
 \begin{conclusion}[有限观测反演：由有限阶迹数据抽取 \texorpdfstring{$A_{\mathrm{flip}}$}{A_flip} 与裂分系数]\label{con:xi-split-tunneling-finite-trace-inversion}

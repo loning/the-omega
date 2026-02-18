@@ -1,4 +1,4 @@
-\begin{conclusion}[坏素数 \(37\) 处的 Latt\`es 稳定约化：公共平方因子导致的次数下降]\label{con:xi-terminal-zm-elliptic-lattes-badprime-37-degree-drop}
+\begin{conclusion}[坏素数 \(37\) 处的 Latt\`es 稳定约化：公共平方因子、Chebyshev 共轭与结点退化的同步]\label{con:xi-terminal-zm-elliptic-lattes-badprime-37-degree-drop}
 沿用结论 \ref{con:xi-terminal-zm-elliptic-lattes-doubling} 的倍点 Latt\`es 自映射
 \[
 \Phi(X)=\frac{X^4+2X^2-2X+1}{4X^3-4X+1}\in\QQ(X).
@@ -16,6 +16,19 @@ X^4+2X^2-2X+1\equiv (X-5)^2\,(X^2+10X+3)\pmod{37},
 \overline{\Phi}(X)=\frac{X^2+10X+3}{4X+3}\in\FF_{37}(X),\qquad \deg\overline{\Phi}=2<\deg\Phi=4\; } .
 \]
 \par
+并且在 \(\PP^{1}/\FF_{37}\) 上存在显式 Möbius 变换
+\[
+M(X)=\frac{2X+13}{X-5}\in \mathrm{PGL}_{2}(\FF_{37})
+\]
+使得
+\[
+\boxed{\;
+M\circ \overline{\Phi}\circ M^{-1}(X)=X^{2}-2\; } .
+\]
+因而 \(\overline{\Phi}\) 在 \(\FF_{37}\) 上与归一化 Chebyshev 多项式 \(T_{2}(X)=X^{2}-2\) 共轭。
+在该约化动力系统中，\(X=5\) 满足 \(\overline{\Phi}(5)=5\) 且 \(\overline{\Phi}'(5)=0\)，从而为唯一的临界不动点；
+同时 \(M\) 在 \(X=5\) 处具有极点并将其送至 \(\infty\)，从而把 \(\overline{\Phi}\) 刚性化为多项式正规形。
+\par
 另一方面，Lee--Yang 分歧点的三次控制多项式（结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values}）
 \[
 g(X):=16X^3-9X^2+1
@@ -28,11 +41,40 @@ g(X)\equiv 16\,(X-16)(X-5)^2\pmod{37}.
 \[
 P_{\mathrm{LY}}(y)\equiv -3\,(y-14)(y-6)^2\pmod{37}.
 \]
-因此素数 \(37\) 的特殊性可在内禀层面刻画为：同一坏素数处同时发生重量覆盖的非平凡分歧像碰撞与倍点 Latt\`es 自映射的稳定约化降阶；
-该同步退化给出该椭圆化体系在唯一坏素数处的算术奇异源。
+\par
+因此判别式二次脊曲线
+\[
+C:\quad W^{2}=-y(y-1)P_{\mathrm{LY}}(y)
+\]
+在 \(p=37\) 处出现由二重根 \(y\equiv 6\) 所触发的半稳定退化：
+其特殊纤维满足
+\[
+C_{\FF_{37}}:\quad W^{2}=3\,y(y-1)(y-14)(y-6)^{2},
+\]
+为不可约结点曲线。
+令 \(Z=W/(y-6)\)，则归一化为椭圆曲线
+\[
+E_{14}:\quad Z^{2}=3\,y(y-1)(y-14)
+\]
+并且该结点为非分裂结点（两支仅在 \(\FF_{37^{2}}\) 上分离）。
+从而对任意 \(n\ge 1\) 有点数恒等式
+\[
+\card{C(\FF_{37^{n}})}=\card{E_{14}(\FF_{37^{n}})}+(-1)^{n+1},
+\]
+并得到局部 \(\zeta\)-函数的显式分解
+\[
+Z_{C,37}(T)=(1+T)\,Z_{E_{14},37}(T),\qquad
+Z_{E_{14},37}(T)=\frac{1-2T+37T^{2}}{(1-T)(1-37T)}.
+\]
+\par
+综上，素数 \(37\) 同时承载：倍点 Latt\`es 自映射的稳定约化降阶与 Chebyshev 共轭、Lee--Yang 三次分歧的重根碰撞、以及判别式二次脊曲线的非分裂结点退化；
+这些同步现象共同刻画了该椭圆化机制在唯一坏素处的算术奇异性。
 \end{conclusion}
 \begin{proof}[证明要点]
-模 \(37\) 的因式分解与约去为有限整系数计算；
+模 \(37\) 的因式分解与约去为有限整系数计算。
+Möbius 共轭可在 \(\FF_{37}(X)\) 中直接代入化简核验。
+结点曲线的归一化由代换 \(Z=W/(y-6)\) 给出，而非分裂性等价于归一化纤维在 \(y=6\) 处的两点仅在二次扩张上可见，从而点数差异呈 \((-1)^{n+1}\) 交替并推出所示 \(\zeta\)-因子。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_lattes\_rational\_points\_audit.py}（\(\overline{\Phi}\) 的约化、Chebyshev 共轭与周期枚举），\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}（\(E_{14}\) 点数与 \((-1)^{n+1}\) 修正）。
 最后一条重根分解由结论 \ref{con:xi-terminal-zm-leyang-badprime-37-common-double-root} 给出。证毕。
 \end{proof}
 

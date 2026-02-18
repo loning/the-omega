@@ -36,6 +36,12 @@ We verify (symbolically, with SymPy):
 
 Outputs:
   - artifacts/export/fold_zm_elliptic_leyang_cover_geometry_audit.json
+
+We also audit the bad prime p=37 semistable degeneration of the discriminant ridge
+hyperelliptic curve C_LY: W^2 = -y(y-1)P_LY(y):
+  - The special fiber has a nonsplit node at y=6.
+  - The normalization is the elliptic curve E_14: Z^2 = 3 y(y-1)(y-14).
+  - Point counts satisfy #C(F_{37^n}) = #E_14(F_{37^n}) + (-1)^{n+1} for n=1,2.
 """
 
 from __future__ import annotations
@@ -116,6 +122,14 @@ class Payload:
     genus_s4_splitting: int
     genus_sign_quadratic: int
     genus_v4_quotient: int
+    badprime_37_C_Fp: int
+    badprime_37_E14_Fp: int
+    badprime_37_C_minus_E14_Fp: int
+    badprime_37_C_Fp2: int
+    badprime_37_E14_Fp2: int
+    badprime_37_C_minus_E14_Fp2: int
+    badprime_37_E14_trace_a: int
+    badprime_37_nonsplit_node_ok: bool
 
 
 def main() -> None:
@@ -307,6 +321,122 @@ def main() -> None:
     ram6 = sum(n6 * (1 - sp.Rational(1, e)) for e in e_list6)
     genus6 = int(((-2) * n6 + ram6 + 2) / 2)
 
+    # --- Bad prime 37: discriminant ridge degeneration point counts ---
+    p_bad = 37
+
+    def _legendre(a: int, p0: int) -> int:
+        a %= p0
+        if a == 0:
+            return 0
+        return 1 if pow(a, (p0 - 1) // 2, p0) == 1 else -1
+
+    def _count_hyperelliptic_fp(rhs_fn, deg: int, p0: int) -> int:
+        cnt = 1  # point at infinity (deg odd)
+        for yy in range(p0):
+            rhs = int(rhs_fn(yy)) % p0
+            if rhs == 0:
+                cnt += 1
+            else:
+                if _legendre(rhs, p0) == 1:
+                    cnt += 2
+        if deg % 2 != 1:
+            raise RuntimeError("Expected odd degree for a single point at infinity.")
+        return int(cnt)
+
+    def _rhs_C37(yy: int) -> int:
+        yy %= p_bad
+        return (3 * yy * (yy - 1) * (yy - 14) * (yy - 6) * (yy - 6)) % p_bad
+
+    def _rhs_E14(yy: int) -> int:
+        yy %= p_bad
+        return (3 * yy * (yy - 1) * (yy - 14)) % p_bad
+
+    C_Fp = _count_hyperelliptic_fp(_rhs_C37, 5, p_bad)
+    E14_Fp = _count_hyperelliptic_fp(_rhs_E14, 3, p_bad)
+
+    # Count over F_{p^2} using the quadratic character in F_{p^2}=F_p[alpha]/(alpha^2-d).
+    def _find_nonsquare(p0: int) -> int:
+        for d0 in range(2, p0):
+            if pow(d0, (p0 - 1) // 2, p0) == p0 - 1:
+                return int(d0)
+        raise RuntimeError("No nonsquare found (unexpected).")
+
+    d_ns = _find_nonsquare(p_bad)
+    q_bad = p_bad * p_bad
+    Fp2 = Tuple[int, int]  # a + b*alpha
+
+    def _fp2_add(u: Fp2, v: Fp2) -> Fp2:
+        return ((u[0] + v[0]) % p_bad, (u[1] + v[1]) % p_bad)
+
+    def _fp2_sub(u: Fp2, v: Fp2) -> Fp2:
+        return ((u[0] - v[0]) % p_bad, (u[1] - v[1]) % p_bad)
+
+    def _fp2_mul(u: Fp2, v: Fp2) -> Fp2:
+        a0, b0 = u
+        c0, e0 = v
+        return ((a0 * c0 + b0 * e0 * d_ns) % p_bad, (a0 * e0 + b0 * c0) % p_bad)
+
+    def _fp2_sqr(u: Fp2) -> Fp2:
+        return _fp2_mul(u, u)
+
+    def _fp2_pow(u: Fp2, n: int) -> Fp2:
+        r: Fp2 = (1, 0)
+        a0 = u
+        k = int(n)
+        while k > 0:
+            if k & 1:
+                r = _fp2_mul(r, a0)
+            a0 = _fp2_mul(a0, a0)
+            k >>= 1
+        return r
+
+    def _fp2_is_zero(u: Fp2) -> bool:
+        return (u[0] % p_bad == 0) and (u[1] % p_bad == 0)
+
+    def _quad_char_fp2(u: Fp2) -> int:
+        if _fp2_is_zero(u):
+            return 0
+        t = _fp2_pow(u, (q_bad - 1) // 2)
+        if t == (1, 0):
+            return 1
+        if t == (p_bad - 1, 0):
+            return -1
+        raise RuntimeError(f"Unexpected quadratic character in F_{p_bad**2}: {t}")
+
+    def _rhs_C37_fp2(yy: Fp2) -> Fp2:
+        y0 = yy
+        term = _fp2_mul(y0, _fp2_sub(y0, (1, 0)))
+        term = _fp2_mul(term, _fp2_sub(y0, (14, 0)))
+        t = _fp2_sub(y0, (6, 0))
+        term = _fp2_mul(term, _fp2_sqr(t))
+        return _fp2_mul((3, 0), term)
+
+    def _rhs_E14_fp2(yy: Fp2) -> Fp2:
+        y0 = yy
+        term = _fp2_mul(y0, _fp2_sub(y0, (1, 0)))
+        term = _fp2_mul(term, _fp2_sub(y0, (14, 0)))
+        return _fp2_mul((3, 0), term)
+
+    def _count_hyperelliptic_fp2(rhs_fn, deg: int) -> int:
+        cnt = 1  # point at infinity
+        for a0 in range(p_bad):
+            for b0 in range(p_bad):
+                yy = (a0, b0)
+                rhs = rhs_fn(yy)
+                if _fp2_is_zero(rhs):
+                    cnt += 1
+                else:
+                    if _quad_char_fp2(rhs) == 1:
+                        cnt += 2
+        if deg % 2 != 1:
+            raise RuntimeError("Expected odd degree for a single point at infinity.")
+        return int(cnt)
+
+    C_Fp2 = _count_hyperelliptic_fp2(_rhs_C37_fp2, 5)
+    E14_Fp2 = _count_hyperelliptic_fp2(_rhs_E14_fp2, 3)
+    a_E14 = int(p_bad + 1 - E14_Fp)
+    nonsplit_ok = bool((C_Fp - E14_Fp == 1) and (C_Fp2 - E14_Fp2 == -1) and (a_E14 == 2))
+
     payload = Payload(
         dy_identity_ok=dy_identity_ok,
         abel_jacobi_ode_ok=abel_jacobi_ode_ok,
@@ -341,6 +471,14 @@ def main() -> None:
         genus_s4_splitting=genus_s4,
         genus_sign_quadratic=genus2,
         genus_v4_quotient=genus6,
+        badprime_37_C_Fp=int(C_Fp),
+        badprime_37_E14_Fp=int(E14_Fp),
+        badprime_37_C_minus_E14_Fp=int(C_Fp - E14_Fp),
+        badprime_37_C_Fp2=int(C_Fp2),
+        badprime_37_E14_Fp2=int(E14_Fp2),
+        badprime_37_C_minus_E14_Fp2=int(C_Fp2 - E14_Fp2),
+        badprime_37_E14_trace_a=int(a_E14),
+        badprime_37_nonsplit_node_ok=bool(nonsplit_ok),
     )
 
     if not args.no_output:

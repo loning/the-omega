@@ -24,6 +24,9 @@ We verify (by exact symbolic algebra in Q[...], plus small finite-field audits):
   - Disc(g_R) has squarefree part -111, hence the quadratic resolvent field is Q(sqrt(-111)).
   - Torsion-triviality certificate for E_R(Q) via coprime reductions at good primes.
   - Split/non-split multiplicative reduction at p=31,37 via Legendre symbols of -c6.
+  - At the bad prime p=37, the reduced plane cubic has a unique singular point
+    (z,y)=(29,6) in F_37^2, and its tangent cone has nonsquare discriminant,
+    hence the singularity is a non-split node.
 
 Outputs:
   - artifacts/export/fold_zm_resolvent_cubic_weierstrass_audit.json
@@ -141,6 +144,11 @@ class Payload:
     torsion_certificate_gcd: int
     legendre_minus_c6_31: int
     legendre_minus_c6_37: int
+    plane_cubic_mod37_unique_singularity_ok: bool
+    plane_cubic_mod37_singular_point: List[int]
+    plane_cubic_mod37_tangent_cone_quadratic: str
+    plane_cubic_mod37_tangent_cone_discriminant: int
+    plane_cubic_mod37_tangent_cone_disc_legendre: int
 
 
 def main() -> None:
@@ -294,6 +302,114 @@ def main() -> None:
     ls31 = _legendre_symbol(-c6, 31)
     ls37 = _legendre_symbol(-c6, 37)
 
+    # --- Bad prime p=37: singularity of the reduced plane cubic model ---
+    p_bad = 37
+    # Affine singular points satisfy R=∂_z R=∂_y R=0 in F_p.
+    def _R_mod(zv: int, yv: int) -> int:
+        zv %= p_bad
+        yv %= p_bad
+        return (
+            zv**3
+            + (1 + 2 * yv) * zv**2
+            - (1 + 4 * yv + 4 * yv * yv) * zv
+            - (1 + 5 * yv + 13 * yv * yv + 8 * yv**3)
+        ) % p_bad
+
+    def _dR_dz_mod(zv: int, yv: int) -> int:
+        zv %= p_bad
+        yv %= p_bad
+        return (3 * zv * zv + 2 * (1 + 2 * yv) * zv - (1 + 4 * yv + 4 * yv * yv)) % p_bad
+
+    def _dR_dy_mod(zv: int, yv: int) -> int:
+        zv %= p_bad
+        yv %= p_bad
+        return (2 * zv * zv - (4 + 8 * yv) * zv - (5 + 26 * yv + 24 * yv * yv)) % p_bad
+
+    singular_aff: List[Tuple[int, int]] = []
+    for yv in range(p_bad):
+        for zv in range(p_bad):
+            if _R_mod(zv, yv) == 0 and _dR_dz_mod(zv, yv) == 0 and _dR_dy_mod(zv, yv) == 0:
+                singular_aff.append((int(zv), int(yv)))
+
+    # Projective check on the homogenized plane cubic: no singularities at infinity.
+    def _Rh_mod(Zv: int, Yv: int, Wv: int) -> int:
+        Zv %= p_bad
+        Yv %= p_bad
+        Wv %= p_bad
+        return (
+            Zv**3
+            + (Wv + 2 * Yv) * Zv**2
+            - (Wv * Wv + 4 * Yv * Wv + 4 * Yv * Yv) * Zv
+            - (Wv**3 + 5 * Yv * Wv * Wv + 13 * Yv * Yv * Wv + 8 * Yv**3)
+        ) % p_bad
+
+    def _dRh_dZ_mod(Zv: int, Yv: int, Wv: int) -> int:
+        Zv %= p_bad
+        Yv %= p_bad
+        Wv %= p_bad
+        return (3 * Zv * Zv + 2 * (Wv + 2 * Yv) * Zv - (Wv * Wv + 4 * Yv * Wv + 4 * Yv * Yv)) % p_bad
+
+    def _dRh_dY_mod(Zv: int, Yv: int, Wv: int) -> int:
+        Zv %= p_bad
+        Yv %= p_bad
+        Wv %= p_bad
+        return (2 * Zv * Zv - (4 * Wv + 8 * Yv) * Zv - (5 * Wv * Wv + 26 * Yv * Wv + 24 * Yv * Yv)) % p_bad
+
+    def _dRh_dW_mod(Zv: int, Yv: int, Wv: int) -> int:
+        Zv %= p_bad
+        Yv %= p_bad
+        Wv %= p_bad
+        return (Zv * Zv - (2 * Wv + 4 * Yv) * Zv - (3 * Wv * Wv + 10 * Yv * Wv + 13 * Yv * Yv)) % p_bad
+
+    psing: set[Tuple[int, int, int]] = set()
+    for Yv in range(p_bad):
+        for Zv in range(p_bad):
+            for Wv in range(p_bad):
+                if Yv == 0 and Zv == 0 and Wv == 0:
+                    continue
+                if _Rh_mod(Zv, Yv, Wv) != 0:
+                    continue
+                if _dRh_dZ_mod(Zv, Yv, Wv) != 0:
+                    continue
+                if _dRh_dY_mod(Zv, Yv, Wv) != 0:
+                    continue
+                if _dRh_dW_mod(Zv, Yv, Wv) != 0:
+                    continue
+                # Canonical representative (scale by the first nonzero among W,Y,Z).
+                if Wv != 0:
+                    s = pow(Wv, p_bad - 2, p_bad)
+                    rep = (int(Zv * s % p_bad), int(Yv * s % p_bad), 1)
+                elif Yv != 0:
+                    s = pow(Yv, p_bad - 2, p_bad)
+                    rep = (int(Zv * s % p_bad), 1, 0)
+                else:
+                    rep = (1, 0, 0)
+                psing.add(rep)
+
+    # Tangent cone (quadratic form) at the singular point via a mod-p Taylor shift.
+    z0, y0 = (29, 6)
+    u, v = sp.symbols("u v")
+    R_shift = sp.expand(R.subs({z: u + z0, y: v + y0}))
+    R_shift_poly = sp.Poly(R_shift, u, v, modulus=p_bad)
+    min_deg = min(du + dv for (du, dv), _c in R_shift_poly.terms())
+    quad = 0
+    for (du, dv), c in R_shift_poly.terms():
+        if du + dv == min_deg:
+            quad += int(c) * (u**du) * (v**dv)
+    quad_poly = sp.Poly(quad, u, v, modulus=p_bad)
+    A = int(quad_poly.coeff_monomial(u**2)) % p_bad
+    B = int(quad_poly.coeff_monomial(u * v)) % p_bad
+    C = int(quad_poly.coeff_monomial(v**2)) % p_bad
+    disc_tc = int((B * B - 4 * A * C) % p_bad)
+    disc_tc_ls = _legendre_symbol(disc_tc, p_bad) if disc_tc != 0 else 0
+    plane37_ok = bool(
+        singular_aff == [(z0, y0)]
+        and psing == {(z0, y0, 1)}
+        and min_deg == 2
+        and disc_tc != 0
+        and disc_tc_ls == -1
+    )
+
     payload = Payload(
         birational_R_identity_ok=bir_R_ok,
         birational_inverse_X_ok=bir_X_ok,
@@ -319,6 +435,11 @@ def main() -> None:
         torsion_certificate_gcd=int(tors_gcd),
         legendre_minus_c6_31=int(ls31),
         legendre_minus_c6_37=int(ls37),
+        plane_cubic_mod37_unique_singularity_ok=plane37_ok,
+        plane_cubic_mod37_singular_point=[int(z0), int(y0)],
+        plane_cubic_mod37_tangent_cone_quadratic=str(quad_poly.as_expr()),
+        plane_cubic_mod37_tangent_cone_discriminant=int(disc_tc),
+        plane_cubic_mod37_tangent_cone_disc_legendre=int(disc_tc_ls),
     )
 
     if not args.no_output:
@@ -350,6 +471,9 @@ def main() -> None:
             r"\]",
             r"\[",
             rf"\#E_{{\mathscr R}}(\mathbb F_{{{p1}}})={n1},\qquad \#E_{{\mathscr R}}(\mathbb F_{{{p2}}})={n2},\qquad \gcd={tors_gcd}.",
+            r"\]",
+            r"\[",
+            r"\overline{\mathcal R}_{37}\ \text{has a unique singular point}\ (z,y)\equiv(29,6)\pmod{37},\ \text{and its tangent-cone discriminant is }2\ \text{(nonsquare)}.",
             r"\]",
         ]
         _write_text(generated_dir() / "eq_fold_zm_resolvent_cubic_weierstrass_audit.tex", "\n".join(tex) + "\n")
