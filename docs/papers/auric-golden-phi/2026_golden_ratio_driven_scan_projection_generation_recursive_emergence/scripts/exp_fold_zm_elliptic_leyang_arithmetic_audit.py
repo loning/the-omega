@@ -21,6 +21,9 @@ We verify symbolically and numerically:
   - Arithmetic of the Lee–Yang cubic g(y)=256y^3+411y^2+165y+32:
       Disc(g) = -3^9 * 31^2 * 37, squarefree part = -111,
       hence the unique quadratic subfield is Q(sqrt(-111)), with class number h(-111)=8.
+  - Field arithmetic of the Lee–Yang cubic field K (maximal order):
+      Disc(K) = -999 = -3^3 * 37, so only {3,37} ramify;
+      3 is totally ramified, and 37 has factorization type (1)(2) (i.e., P * Q^2).
   - Discriminant of P2(lambda)=lambda^3-2lambda^2-2lambda+2 equals 148=4*37.
 
 Outputs:
@@ -39,6 +42,8 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 
 import sympy as sp
+from sympy.polys.numberfields import prime_decomp
+from sympy.polys.numberfields.basis import round_two
 
 from common_paths import export_dir, generated_dir
 
@@ -104,6 +109,26 @@ def _reduced_primitive_forms_negative_discriminant(D: int) -> List[Tuple[int, in
     return forms
 
 
+def _alpha_vec_to_poly_expr(alpha: List[int], x: sp.Symbol) -> sp.Expr:
+    """
+    Convert a PrimeIdeal.alpha vector (power-basis coordinates) to a polynomial in x.
+    """
+    expr = sp.Integer(0)
+    for i, a in enumerate(alpha):
+        ai = int(a)
+        if ai == 0:
+            continue
+        expr += sp.Integer(ai) * (x**i)
+    return sp.expand(expr)
+
+
+@dataclass(frozen=True)
+class PrimeIdealData:
+    gen: str
+    e: int
+    f: int
+
+
 @dataclass(frozen=True)
 class Payload:
     # core identities
@@ -125,6 +150,15 @@ class Payload:
     quadratic_field_discriminant: int
     class_number: int
     reduced_forms: List[Tuple[int, int, int]]
+    # cubic field K = Q(beta) (maximal order)
+    disc_field_K: int
+    disc_field_K_factorization: Dict[str, int]
+    disc_field_K_squarefree_part: int
+    signature_r1: int
+    signature_r2: int
+    ramified_primes_K: List[int]
+    prime_decomposition_3: List[PrimeIdealData]
+    prime_decomposition_37: List[PrimeIdealData]
     # P2
     disc_P2: int
 
@@ -208,6 +242,53 @@ def main() -> None:
     forms = _reduced_primitive_forms_negative_discriminant(D)
     h = len(forms)
 
+    # --- Field discriminant + prime decompositions for the Lee–Yang cubic field ---
+    # Work with an integral generator theta := 256*beta, where beta is a root of g(y)=0.
+    # Then theta is a root of a monic integer cubic, generating the same cubic field.
+    th = sp.Symbol("th")
+    poly_theta = sp.Poly(th**3 + 411 * th**2 + 42240 * th + 2097152, th, domain=sp.ZZ)
+    ZK, disc_field_K = round_two(poly_theta)
+    disc_field_K = int(disc_field_K)
+    disc_field_fac_abs = sp.factorint(abs(disc_field_K))
+    disc_field_sqfree = _squarefree_part_from_factorint(disc_field_fac_abs)
+    if disc_field_K < 0:
+        disc_field_sqfree = -int(disc_field_sqfree)
+
+    # For a cubic field, Disc(K)<0 iff signature is (1,1).
+    r1 = 1 if disc_field_K < 0 else 3
+    r2 = (3 - r1) // 2
+
+    # Ramified primes are exactly those dividing the field discriminant.
+    ramified_primes_K = sorted(int(p) for p in disc_field_fac_abs.keys())
+
+    # Prime ideal decompositions above the ramified primes (local structure).
+    def _prime_decomp_data(p: int) -> List[PrimeIdealData]:
+        ideals = prime_decomp(int(p), T=poly_theta, ZK=ZK, dK=disc_field_K)
+        items: List[PrimeIdealData] = []
+        for P in ideals:
+            gen_expr = _alpha_vec_to_poly_expr(P.alpha.coeffs, th)
+            items.append(PrimeIdealData(gen=sp.sstr(gen_expr), e=int(P.e), f=int(P.f)))
+        items.sort(key=lambda it: (-it.e, -it.f, it.gen))
+        return items
+
+    decomp_3 = _prime_decomp_data(3)
+    decomp_37 = _prime_decomp_data(37)
+
+    # Sanity checks against the expected tame/wild ramification portrait.
+    if disc_field_K != -999:
+        raise RuntimeError(f"Unexpected field discriminant: got {disc_field_K}, expected -999.")
+    if disc_field_sqfree != -111:
+        raise RuntimeError(f"Unexpected field discriminant squarefree part: got {disc_field_sqfree}, expected -111.")
+    if ramified_primes_K != [3, 37]:
+        raise RuntimeError(f"Unexpected ramified primes: got {ramified_primes_K}, expected [3, 37].")
+    if not (len(decomp_3) == 1 and decomp_3[0].e == 3 and decomp_3[0].f == 1):
+        raise RuntimeError(f"Unexpected decomposition at p=3: got {decomp_3}.")
+    if not (
+        len(decomp_37) == 2
+        and sorted([(it.e, it.f) for it in decomp_37]) == [(1, 1), (2, 1)]
+    ):
+        raise RuntimeError(f"Unexpected decomposition at p=37: got {decomp_37}.")
+
     # --- Discriminant of P2(lambda) ---
     lam2 = sp.Symbol("lam2")
     P2 = lam2**3 - 2 * lam2**2 - 2 * lam2 + 2
@@ -230,6 +311,14 @@ def main() -> None:
         quadratic_field_discriminant=int(D),
         class_number=int(h),
         reduced_forms=forms,
+        disc_field_K=int(disc_field_K),
+        disc_field_K_factorization={str(int(p)): int(e) for p, e in sp.factorint(abs(disc_field_K)).items()},
+        disc_field_K_squarefree_part=int(disc_field_sqfree),
+        signature_r1=int(r1),
+        signature_r2=int(r2),
+        ramified_primes_K=[int(p) for p in ramified_primes_K],
+        prime_decomposition_3=decomp_3,
+        prime_decomposition_37=decomp_37,
         disc_P2=int(disc_P2),
     )
 
@@ -261,6 +350,9 @@ def main() -> None:
                 "\\mathrm{Disc}(256y^{3}+411y^{2}+165y+32)=-3^{9}\\cdot 31^{2}\\cdot 37,\\quad \\text{sqfree part }=-111,\\quad h(-111)=8.",
                 "\\]",
                 "\\[",
+                "\\mathrm{Disc}(K)=-999=-3^{3}\\cdot 37,\\qquad 3\\mathcal O_K=\\mathfrak p_3^{3},\\qquad 37\\mathcal O_K=\\mathfrak p_{37}^{2}\\mathfrak q_{37}.",
+                "\\]",
+                "\\[",
                 "\\mathrm{Disc}(\\lambda^{3}-2\\lambda^{2}-2\\lambda+2)=148=4\\cdot 37.",
                 "\\]",
                 "",
@@ -275,7 +367,8 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-leyang-arith] checks:"
-        f" bir={birational_ok} inv={invariants_ok} res={resultant_ok} elim={elimination_ok} y_match={y_match} disc_P2={disc_P2} h(-111)={h} seconds={dt:.3f}",
+        f" bir={birational_ok} inv={invariants_ok} res={resultant_ok} elim={elimination_ok}"
+        f" y_match={y_match} disc_field_K={disc_field_K} disc_P2={disc_P2} h(-111)={h} seconds={dt:.3f}",
         flush=True,
     )
     print("[fold-zm-elliptic-leyang-arith] done", flush=True)
