@@ -1,0 +1,58 @@
+\begin{conclusion}[谱四次在实轴上的分岔型：实根数目仅在 \texorpdfstring{$y_{\mathrm{LY}},0,1$}{yLY,0,1} 处变化]\label{con:xi-terminal-zm-pi-real-root-bifurcation}
+令
+\[
+\Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1),
+\qquad
+P_{\mathrm{LY}}(y)=256y^3+411y^2+165y+32,
+\]
+并令 \(y_{\mathrm{LY}}\in\RR\) 为 \(P_{\mathrm{LY}}(y)=0\) 的唯一实根（结论 \ref{con:xi-terminal-zm-discriminant-leyang}）。
+则对任意实参数 \(y\in\RR\)，四次方程 \(\Pi(\lambda,y)=0\) 的实根数目满足如下分岔型（在开区间内根均互异）：
+\begin{enumerate}
+  \item 若 \(y<y_{\mathrm{LY}}\)，则 \(\Pi(\lambda,y)\) 在 \(\RR\) 上无实根；
+  \item 若 \(y_{\mathrm{LY}}<y<0\)，则 \(\Pi(\lambda,y)\) 在 \(\RR\) 上恰有两条实根分支；
+  \item 若 \(0<y<1\)，则 \(\Pi(\lambda,y)\) 在 \(\RR\) 上恰有四条实根分支；
+  \item 若 \(y>1\)，则 \(\Pi(\lambda,y)\) 在 \(\RR\) 上恰有两条实根分支。
+\end{enumerate}
+并且在 \(y=y_{\mathrm{LY}},0,1\) 处分别出现一次二重根退化（对应结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的分歧值集合）。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-discriminant-leyang}，
+\(\mathrm{Disc}_{\lambda}(\Pi)=-y(y-1)P_{\mathrm{LY}}(y)\)，
+故当 \(y\notin\{0,1\}\cup\{P_{\mathrm{LY}}(y)=0\}\) 时，四根皆为单根，实根数目在实轴上随 \(y\) 作局部常数变化。
+另一方面，定理 \ref{thm:xi-terminal-zm-leyang-elliptic-structure} 给出 \(\mathrm{Disc}(P_{\mathrm{LY}})<0\)，从而 \(P_{\mathrm{LY}}\) 仅有一个实根 \(y_{\mathrm{LY}}\)；
+故实轴上的分岔点严格为 \(y\in\{y_{\mathrm{LY}},0,1\}\)。
+对每个开区间 \((-\infty,y_{\mathrm{LY}})\)、\((y_{\mathrm{LY}},0)\)、\((0,1)\)、\((1,\infty)\) 取代表点并用 Sturm 计数确定实根数目，即得到所示四段分岔型；在分岔点处由判别式为零得到二重根退化。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_pi\_real\_bifurcation\_asymptotics\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[无穷远处的正实谱支分数幂渐近：\texorpdfstring{$y\to+\infty$}{y->+infty} 的 Puiseux jet]\label{con:xi-terminal-zm-pi-positive-real-branch-puiseux-infty}
+设 \(y>1\)，并令 \(\lambda_{\pm}(y)\) 为 \(\Pi(\lambda,y)=0\) 在 \(\RR\) 上的两条实根分支，按大小约定
+\[
+0<\lambda_{-}(y)<\lambda_{+}(y).
+\]
+则当 \(y\to +\infty\) 沿实轴趋于无穷时，存在分数幂渐近展开
+\[
+\boxed{\;
+\lambda_{\pm}(y)
+= y^{1/2}\ \pm\ \frac{1}{2}y^{1/4}\ +\ \frac{1}{4}\ \pm\ \frac{7}{64}y^{-1/4}\ +\ \frac{37}{128}y^{-1/2}\ \mp\ \frac{729}{4096}y^{-3/4}\ +\ O(y^{-1})\;}
+\]
+特别地，
+\[
+\lambda_{+}(y)=y^{1/2}+\frac12 y^{1/4}+\frac14+O(y^{-1/4}).
+\]
+\end{conclusion}
+\begin{proof}[证明要点（Puiseux 于无穷远）]
+令 \(t=y^{-1/4}\)（故 \(y=t^{-4}\)）。
+对根分支作 Puiseux 型设定
+\[
+\lambda(t)=t^{-2}+c_{1}t^{-1}+c_{0}+c_{-1}t+c_{-2}t^{2}+c_{-3}t^{3}+O(t^{4}),
+\]
+代入方程 \(\Pi(\lambda,y)=0\)，并乘以 \(t^{8}\) 以消去负幂，逐阶比较 \(t\)-系数得
+\[
+c_{1}=\pm\frac12,\qquad c_{0}=\frac14,\qquad c_{-1}=\pm\frac{7}{64},\qquad c_{-2}=\frac{37}{128},\qquad c_{-3}=\mp\frac{729}{4096},
+\]
+其中同号（分别异号）对应于 \(\lambda_{+}\)（分别 \(\lambda_{-}\)）的两支选择。
+把 \(t=y^{-1/4}\) 回代即得所示展开。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_pi\_real\_bifurcation\_asymptotics\_audit.py}。证毕。
+\end{proof}
+

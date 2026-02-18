@@ -2805,6 +2805,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_pi_real_bifurcation_asymptotics_audit",
+            script="exp_fold_zm_pi_real_bifurcation_asymptotics_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_pi_real_bifurcation_asymptotics_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_pi_specialization_discriminant_ab_audit",
             script="exp_fold_zm_pi_specialization_discriminant_ab_audit.py",
             args=[],
