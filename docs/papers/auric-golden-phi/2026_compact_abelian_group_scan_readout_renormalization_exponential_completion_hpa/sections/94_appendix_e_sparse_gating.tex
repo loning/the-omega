@@ -1,57 +1,56 @@
-\section{附录 E：独立门控稀疏化保持等分布的证明（定理 \ref{thm:sparse-gating}）}
+﻿\section{Appendix E: Proof that Independent Gated Sparsification Preserves Equidistribution (Theorem \ref{thm:sparse-gating})}
 \label{app:sparse-gating}
 
-\subsection{E.1 计数分解}
+\subsection{E.1 Counting Decomposition}
 
-固定区间 $J=[0,u)$。令
+Fix an interval $J=[0,u)$. Let
 \[
 A_N=\sum_{n=0}^{N-1}S_n\,\ind_J(x_n),\qquad M_N=\sum_{n=0}^{N-1}S_n.
 \]
-目标为证明 $A_N/M_N\to u$ 几乎必然。将
+The goal is to prove $A_N/M_N\to u$ almost surely. Write
 \[
 A_N-p\sum_{n=0}^{N-1}\ind_J(x_n)=\sum_{n=0}^{N-1}(S_n-p)\ind_J(x_n)
 \]
-视为独立中心化随机变量之和。
+as a sum of independent centered random variables.
 
-\subsection{E.2 原序列等分布项}
+\subsection{E.2 Equidistribution Term of the Original Sequence}
 
-由 $(x_n)$ 等分布，有
+Since $(x_n)$ is equidistributed,
 \[
 \frac{1}{N}\sum_{n=0}^{N-1}\ind_J(x_n)\to u.
 \]
-从而
+Hence
 \[
 \frac{p}{N}\sum_{n=0}^{N-1}\ind_J(x_n)\to pu.
 \]
 
-\subsection{E.3 门控涨落项}
+\subsection{E.3 Gating-Fluctuation Term}
 
-由于 $(S_n)$ 独立同分布且与 $(x_n)$ 独立，给定 $(x_n)$ 后，$(S_n-p)\ind_J(x_n)$ 仍为独立、均值零且有界的随机变量。由 Kolmogorov 强大数定律（或 Hoeffding 不等式 + Borel--Cantelli）得
+Because $(S_n)$ is i.i.d. and independent of $(x_n)$, conditioning on $(x_n)$ shows that $(S_n-p)\ind_J(x_n)$ remains independent, mean-zero, and bounded. By Kolmogorov's strong law (or Hoeffding + Borel--Cantelli),
 \[
-\frac{1}{N}\sum_{n=0}^{N-1}(S_n-p)\ind_J(x_n)\to 0\quad\text{几乎必然}.
+\frac{1}{N}\sum_{n=0}^{N-1}(S_n-p)\ind_J(x_n)\to 0\quad\text{almost surely}.
 \]
-因此
+Therefore,
 \[
 \frac{A_N}{N}=\frac{p}{N}\sum_{n=0}^{N-1}\ind_J(x_n)+o(1)\to pu.
 \]
-同理，强大数定律给出 $M_N/N\to p$ 几乎必然。于是
+Similarly, the strong law gives $M_N/N\to p$ almost surely. Consequently,
 \[
-\frac{A_N}{M_N}=\frac{A_N/N}{M_N/N}\to \frac{pu}{p}=u\quad\text{几乎必然}.
+\frac{A_N}{M_N}=\frac{A_N/N}{M_N/N}\to \frac{pu}{p}=u\quad\text{almost surely}.
 \]
 
-\subsection{E.4 从半开区间到一般区间}
+\subsection{E.4 From Half-Open Intervals to General Intervals}
 
-对有理端点区间构成可数稠密族，用并集事件保持概率 $1$。由单调类逼近与边界测度为零的连续性，推广到所有区间与一般 Riemann 可积函数。证毕。
+Take a countable dense family of rational-endpoint intervals and preserve probability-one events under countable union. Then extend to all intervals and general Riemann-integrable functions by monotone-class approximation and boundary-zero continuity. The proof is complete.
 
-\subsection{E.5 有限样本误差界分解（检验用）}
+\subsection{E.5 Finite-Sample Error Decomposition (for Testing)}
 
-对固定 $J$，可写
+For fixed $J$, one has
 \[
 \left|\frac{A_N}{M_N}-u\right|
 \le
-\underbrace{\left|\frac{A_N}{M_N}-\frac{p}{M_N}\sum_{n=0}^{N-1}\ind_J(x_n)\right|}_{\text{门控涨落}}
+\underbrace{\left|\frac{A_N}{M_N}-\frac{p}{M_N}\sum_{n=0}^{N-1}\ind_J(x_n)\right|}_{\text{gating fluctuation}}
 \;+\;
-\underbrace{\left|\frac{p}{M_N}\sum_{n=0}^{N-1}\ind_J(x_n)-u\right|}_{\text{原序列偏差 + 密度偏差}}.
+\underbrace{\left|\frac{p}{M_N}\sum_{n=0}^{N-1}\ind_J(x_n)-u\right|}_{\text{original-sequence deviation + density deviation}}.
 \]
-第一项可用 Hoeffding 给出指数尾界；第二项可用原序列差异度 $D_N^*$ 与 $\abs{M_N-pN}$ 的浓缩界控制。该分解为门控概率取 $\varphi^{-1}$ 时的可反驳数值检验提供直接误差预算接口。
-
+The first term admits exponential tails via Hoeffding bounds; the second is controlled by the original discrepancy $D_N^*$ together with concentration bounds on $\abs{M_N-pN}$. This decomposition provides a direct error-budget interface for falsifiable numerical tests when the gating probability is chosen as $\varphi^{-1}$.
