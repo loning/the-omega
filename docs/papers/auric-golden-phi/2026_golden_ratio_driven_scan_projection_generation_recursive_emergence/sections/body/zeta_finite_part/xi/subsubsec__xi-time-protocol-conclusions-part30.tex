@@ -1,0 +1,291 @@
+% (User input window)
+%
+% (Source tag) /killo-golden
+% Timestamp: 2026-02-18 14:57:09 (Asia/Singapore)
+% Source: main.pdf (accessed on 2026-02-18)
+%
+% 内容以本文既有记号与可审计接口重写，不引入手工编号。
+
+\paragraph{负谱体积势、伸缩平移与两态退化：Pick--Poisson 不变量、Hankel 同源病态与可复算 DP 核}
+本段把 Pick--Poisson 负谱体积势的完备不变量、统一伸缩下的 \(\log m\) 平移化、Hankel/Toeplitz 两类反演的同源病态，以及 window-\(6\)/bin-fold 侧的离散选择与两态闭式化，组织为一组可直接引用的条目；其证明入口均可由本文既有定理/命题精确定位。
+
+\begin{conclusion}[负谱行列式的完备不变量：Poisson 权重与伪双曲 Vandermonde 的乘积极限]\label{con:xi-terminal-negative-spectrum-det-invariant}
+设点状缺陷由有限 Blaschke 零点多重集 \(\{a_j\}_{j=1}^{\kappa}\subset\mathbb{D}\) 给出，并令 \(\mathsf P\) 为相应 Pick--Poisson Gram 矩阵 \eqref{eq:xi-pick-poisson-gram}。
+令伪双曲距离
+\[
+\rho(a,b):=\left|\frac{a-b}{1-\overline b\,a}\right|\qquad(a,b\in\mathbb{D}).
+\]
+则行列式具有闭式分解
+\[
+\boxed{\;
+\det\mathsf P
+=
+\Bigl(\prod_{j=1}^{\kappa}P_{a_j}(-1)\Bigr)
+\Bigl(\prod_{1\le j<k\le\kappa}\rho(a_j,a_k)^2\Bigr)\; }.
+\]
+并且当 Toeplitz 主子矩阵 \(\mathbf{T}_N\) 进入稳定显影区间、其负特征值（按重数）为 \(\{\lambda_j^{-}(\mathbf{T}_N)\}_{j=1}^{\kappa}\) 时，有严格乘积极限
+\[
+\boxed{\;
+\lim_{N\to\infty}\ \prod_{j=1}^{\kappa}\bigl(-\lambda_j^{-}(\mathbf{T}_N)\bigr)=\det\mathsf P\; }.
+\]
+该不变量对贴边（\(P_{a_j}(-1)\downarrow 0\)）与碰撞（\(\rho(a_j,a_k)\downarrow 0\)）均发生严格退化，从而在半经典极限意义下完整编码点状缺陷几何。
+\end{conclusion}
+\begin{proof}[证明要点]
+见命题 \ref{prop:xi-pick-poisson-det-factorization}。
+\end{proof}
+
+\begin{conclusion}[统一伸缩的协变律：显影复杂度发生 \texorpdfstring{$\log m$}{log m} 平移]\label{con:xi-terminal-visibility-complexity-logm-translation}
+沿用上一条结论的有限缺陷设定，并令 \(\phi_m(w):=\mathcal{C}(m\,\mathcal{C}^{-1}(w))\)（\(m>0\)，固定端点 \(-1\)）为统一伸缩。
+令 \(a_j(m):=\phi_m(a_j)\)，并令 \(\mathsf P(m)\) 为由 \(\{a_j(m)\}\) 通过 \eqref{eq:xi-pick-poisson-gram} 生成的 Pick--Poisson Gram 矩阵。
+定义边界熵势、边界体积势与显影复杂度
+\[
+S_{\partial}:=-\log\det\mathsf P,
+\qquad
+V_{\partial}:=\log\mathrm{tr}(\mathsf P),
+\qquad
+\mathscr{C}_{\partial}:=S_{\partial}+(\kappa-1)V_{\partial},
+\]
+并以同式定义 \(S_{\partial}(m),V_{\partial}(m),\mathscr{C}_{\partial}(m)\)。
+则对一切 \(m>0\) 成立严格协变律
+\[
+\boxed{\;
+\mathscr{C}_{\partial}(m)=\mathscr{C}_{\partial}(1)+\log m\; }.
+\]
+因此尺度参数在 \(\mathscr{C}_{\partial}\) 上被线性化为加法坐标；该平移化与 Witt 伸缩在 Koenigs 深度坐标 \(y\) 上的平移恒等式 \(y(ms)=y(s)+\log m\)（定理 \ref{thm:koenigs-linearization-witt-dilation}）在机制上对齐。
+\end{conclusion}
+\begin{proof}[证明要点]
+由命题 \ref{prop:xi-pick-poisson-det-scaling-law}，\(\rho\) 在 \(\phi_m\) 下不变且 \(P_{\phi_m(a)}(-1)=m^{-1}P_a(-1)\)，从而 \(\det\mathsf P(m)=m^{-\kappa}\det\mathsf P\) 且 \(\mathrm{tr}(\mathsf P(m))=m^{-1}\mathrm{tr}(\mathsf P)\)。
+代入 \(\mathscr{C}_{\partial}=S_{\partial}+(\kappa-1)V_{\partial}\) 即得结论；详见推论 \ref{cor:xi-toeplitz-visibility-complexity-anomaly}。
+\end{proof}
+
+\begin{conclusion}[负谱体积势的静电学刻画：\texorpdfstring{$-\log\det\mathsf P$}{-log det P} 等价于上半平面 Dirichlet Green 镜像能量]\label{con:xi-terminal-pick-poisson-green-mirror-energy}
+在上半平面坐标 \(z_j=\mathcal{C}^{-1}(a_j)\in\mathbb{H}\) 下，令
+\(
+t_j:=-1/z_j\in\mathbb{H}
+\)。
+则端点 Poisson 权重与伪双曲距离满足
+\[
+P_{a_j}(-1)=\Im(t_j),
+\qquad
+\rho(a_j,a_k)=\left|\frac{t_j-t_k}{t_j-\overline t_k}\right|.
+\]
+定义上半平面 Dirichlet Green 函数
+\[
+G_{\mathbb{H}}(t,s):=\log\left|\frac{t-\overline s}{t-s}\right|.
+\]
+则广义缺陷熵（负谱体积势）
+\(
+S_{\mathrm{gen}}:=-\log\det\mathsf P
+\)
+具有严格等价式
+\[
+\boxed{\;
+S_{\mathrm{gen}}
+=\sum_{j=1}^{\kappa}\bigl(-\log\Im(t_j)\bigr)
++2\sum_{1\le j<k\le\kappa}G_{\mathbb{H}}(t_j,t_k)\; }.
+\]
+并且若缺陷多重集分解为不交并 \(A\sqcup B\)，则交叉能满足恒等式
+\[
+\boxed{\;
+-\log\det\mathsf P(A\cup B)
+=-\log\det\mathsf P(A)-\log\det\mathsf P(B)
++2\sum_{a\in A}\sum_{b\in B}\bigl(-\log\rho(a,b)\bigr)\; }.
+\]
+从而推出次乘法律 \(\det\mathsf P(A\cup B)\le \det\mathsf P(A)\det\mathsf P(B)\)，且交叉项完全由伪双曲分离度控制。
+\end{conclusion}
+\begin{proof}[证明要点]
+像荷镜像能量表示见命题 \ref{prop:xi-pick-poisson-image-charge-green-energy}；
+并集交叉互能恒等式与次乘性见命题 \ref{prop:xi-pick-poisson-union-submultiplicativity-cross-energy}。
+\end{proof}
+
+\begin{conclusion}[Schur 补链式外部化记账：逐点加入的新增能量等于条件通量损失]\label{con:xi-terminal-pick-poisson-schur-ledger}
+对固定点序 \(1,\dots,\kappa\)，记 \(\mathsf P^{(m)}\) 为前 \(m\) 个点诱导的主子矩阵，并定义 Schur 补（条件通量）
+\[
+\pi_m
+:=\mathsf P_{mm}-\mathsf P_{m,1:m-1}\,(\mathsf P^{(m-1)})^{-1}\,\mathsf P_{1:m-1,m},
+\qquad
+m=1,\dots,\kappa.
+\]
+则有严格分解
+\[
+\boxed{\;
+\det\mathsf P=\prod_{m=1}^{\kappa}\pi_m,
+\qquad
+S_{\mathrm{gen}}=-\sum_{m=1}^{\kappa}\log\pi_m\; }.
+\]
+并且每一 \(\pi_m\) 满足 \(0<\pi_m\le \mathsf P_{mm}=P_{a_m}(-1)\)。
+因此负谱体积势具有逐步记账结构：第 \(m\) 个缺陷的新增代价精确等于其在既有缺陷张成空间上的条件通量损失，并被端点自能显式上界控制。
+\end{conclusion}
+\begin{proof}[证明要点]
+见命题 \ref{prop:xi-pick-poisson-schur-flux-ledger}。
+\end{proof}
+
+\begin{conclusion}[谱裕度与病态封口：\texorpdfstring{$\lambda_{\min}(\mathsf P)$}{lambda_min(P)} 与条件数在贴边/碰撞极限下同步塌缩]\label{con:xi-terminal-pick-poisson-conditioning-collapse}
+对扫描谱点集诱导的 Pick--Poisson 矩阵 \(\mathsf P(t)\)（命题 \ref{prop:xi-scan-toeplitz-conditioning-by-separation}），记端点权重 \(p_j(t):=P_{a_j(t)}(-1)\) 与伪双曲距离 \(\rho_{jk}(t):=\rho(a_j(t),a_k(t))\)。
+则其最小特征值满足显式夹逼：一方面
+\[
+\boxed{\;
+\lambda_{\min}(\mathsf P(t))
+\ \ge\
+\frac{\Bigl(\prod_{j=1}^{\kappa}p_j(t)\Bigr)\Bigl(\prod_{1\le j<k\le\kappa}\rho_{jk}(t)^2\Bigr)}
+{\Bigl(\sum_{j=1}^{\kappa}p_j(t)\Bigr)^{\kappa-1}}\; } ;
+\]
+另一方面令 \(p_{\max}(t):=\max_j p_j(t)\)、\(\rho_{\min}(t):=\min_{j<k}\rho_{jk}(t)\)，则有二次上界
+\[
+\boxed{\;
+\lambda_{\min}(\mathsf P(t))\ \le\ p_{\max}(t)\,\rho_{\min}(t)^2\; }.
+\]
+再由 \(\lambda_{\max}(\mathsf P)\le \mathrm{tr}(\mathsf P)\) 与推论 \ref{cor:xi-pick-poisson-gap-lower-bound} 的下界，可得条件数封口
+\[
+\boxed{\;
+\kappa(\mathsf P)
+:=\frac{\lambda_{\max}(\mathsf P)}{\lambda_{\min}(\mathsf P)}
+\ \le\
+\frac{\bigl(\mathrm{tr}\,\mathsf P\bigr)^{\kappa}}
+\Bigl(\prod_{j}P_{a_j}(-1)\Bigr)\Bigl(\prod_{j<k}\rho(a_j,a_k)^2\Bigr)\; }.
+\]
+因此当 \(\rho_{\min}(t)\downarrow 0\)（碰撞）或 \(p_j(t)\downarrow 0\)（贴边）时，Pick/Toeplitz 侧的谱裕度必按至少二次速率塌缩，形成可审计的病态证书。
+\end{conclusion}
+\begin{proof}[证明要点]
+上下界见命题 \ref{prop:xi-scan-toeplitz-conditioning-by-separation}；
+条件数分式封口见推论 \ref{cor:xi-pick-poisson-condition-number-certificate}（并用 \(\det\mathsf P\) 的闭式分解）。
+\end{proof}
+
+\begin{conclusion}[Hankel--Toeplitz 病态同源：两类反演的最小稳定性常数共享 Vandermonde 平方律]\label{con:xi-terminal-hankel-toeplitz-common-illconditioning}
+在有限原子矩口径 \(\mu=\sum_{j=1}^{\kappa}w_j\delta_{a_j}\) 下，记 \(b_j:=a_j^{-1}\in(0,1)\)、\(\widetilde w_j:=w_j b_j\)，并令 Hankel 主块 \(\mathsf H_{\kappa-1}:=(\mu_{p+q})_{0\le p,q\le \kappa-1}\)。
+则有行列式闭式
+\[
+\boxed{\;
+\det \mathsf H_{\kappa-1}
+=\left(\prod_{j=1}^{\kappa}\widetilde w_j\right)
+\left(\prod_{1\le j<k\le \kappa}(b_k-b_j)^2\right)\; }.
+\]
+因此任意基于 Hankel 反演（Prony/Pad\'e/Hankel 核空间法）的误差放大因子不可能在 \(b\)-碰撞极限保持一致有界，至少按 \(\prod_{j<k}|b_k-b_j|^{-2}\) 发散。
+该 Vandermonde 平方律与
+\(
+\det\mathsf P=(\prod_j P_{a_j}(-1))(\prod_{j<k}\rho(a_j,a_k)^2)
+\)
+在退化机制上同型，表明“矩证书通道（Toeplitz/Pick）”与“层析反演通道（Hankel/Vandermonde）”在碰撞参数上发生同源病态，并可由行列式闭式给出统一的下界型稳定性护栏。
+\end{conclusion}
+\begin{proof}[证明要点]
+Hankel 行列式的 Vandermonde 分解与病态发散见命题 \ref{prop:xi-depth-hankel-determinant-vandermonde-square}；
+Pick--Poisson 的同型乘积律见命题 \ref{prop:xi-pick-poisson-det-factorization}。
+\end{proof}
+
+\begin{conclusion}[Toeplitz--PSD 证书的最小失败定位：等价于 CMV 反射谱前缀越界]\label{con:xi-terminal-toeplitz-psd-failure-cmv-prefix}
+令 \(\mathbf{T}_m\) 为由视界 Carath\'eodory 矩 \((c_n)\) 生成的 Toeplitz 主子矩阵，并令 \((\alpha_n)_{n\ge 0}\) 为相应 Schur 算法给出的反射系数（Verblunsky 参数）。
+则 Toeplitz--PSD 层级的失效可由最小越界反射系数精确定位：存在最小 \(m^\ast\ge 1\) 使
+\[
+\boxed{\ |\alpha_{m^\ast-1}|\ge 1\ },
+\]
+且该 \(m^\ast\) 等价刻画“最小 PSD 失败阶”（在更低阶 \(m<m^\ast\) 时仍保持 \(\mathbf{T}_m\succeq 0\)）。
+因此否证器出现的位置被压缩为可审计的最小前缀指标，而不依赖全局数值谱排序。
+\end{conclusion}
+\begin{proof}[证明要点]
+见定理 \ref{thm:xi-toeplitz-det-verblunsky}（Toeplitz 行列式反射乘积分解与最小失败索引）及其后随的讨论。
+\end{proof}
+
+\begin{conclusion}[Chebyshev--Frobenius 的整系数 \texorpdfstring{$\delta_p$}{delta_p}-结构：Adams 倍角成为 Frobenius-lift]\label{con:xi-terminal-chebyshev-frobenius-pderivation}
+在边界坐标 \(S=2\cos(\theta/2)\) 下，幂映射 \(w\mapsto w^{m}\) 等价于 \(S\mapsto C_m(S)\)（Chebyshev--Adams 多项式）。
+对素数 \(p\) 定义差额多项式
+\[
+\Delta_p(S):=\frac{C_p(S)-S^p}{p}\in\ZZ[S],
+\]
+并对任意 \(f\in\ZZ[S]\) 定义
+\[
+\delta_p(f):=\frac{f(C_p(S))-\bigl(f(S)\bigr)^p}{p}.
+\]
+则有整系数闭包与 Frobenius-lift 恒等式
+\[
+\boxed{\ \delta_p(f)\in\ZZ[S],\qquad f(C_p(S))=\bigl(f(S)\bigr)^p+p\,\delta_p(f)\ },
+\]
+并且模 \(p\) 层面严格退化为 \(f(C_p(S))\equiv f(S)^p\pmod p\)。
+因此倍角/幂半群的完成化作用可被提升为 \(p\)-进同余护栏的代数源头。
+\end{conclusion}
+\begin{proof}[证明要点]
+见定义 \ref{def:chebyshev-frobenius-pderivation} 与命题 \ref{prop:chebyshev-frobenius-pderivation-integrality}。
+\end{proof}
+
+\begin{conclusion}[Witt 伸缩的 Koenigs 线性化：\texorpdfstring{$s\mapsto ms$}{s->ms} 在深度线 \texorpdfstring{$y$}{y} 上严格平移]\label{con:xi-terminal-witt-koenigs-logm-translation}
+在 Dirichlet--Abel 接口 \(z=\lambda^{-s}\) 下，Witt 伸缩 \(s\mapsto ms\) 与幂替换 \(z\mapsto z^m\) 严格等价。
+定义无参深度坐标
+\[
+y(s):=\log\!\bigl(s\log\lambda\bigr)=\log\!\bigl(-\log(\lambda^{-s})\bigr),
+\]
+则对任意整数 \(m\ge 1\) 有严格恒等式
+\[
+\boxed{\ y(ms)=y(s)+\log m\ }.
+\]
+因此 Witt 伸缩在 \(y\)-坐标中被完全对角化为平移半群；相应 Witt 算子在深度线 \(y\) 上成为由离散测度 \(\nu=\sum_{m\ge 1}\frac{1}{m}\delta_{\log m}\) 生成的平移叠加算子。
+\end{conclusion}
+\begin{proof}[证明要点]
+见定理 \ref{thm:koenigs-linearization-witt-dilation} 与推论 \ref{cor:witt-depth-line-convolution}。
+\end{proof}
+
+\begin{conclusion}[window-\texorpdfstring{$6$}{6} 的局域 uplift 选择律：\texorpdfstring{$SO(10)$}{SO(10)} 分支为唯一保局域的顶层候选]\label{con:xi-terminal-window6-local-uplift-so10-unique}
+在保持稳定类型标签 \(F_6\) 不变且由 \(\mathrm{Aut}(Q_6)\) 实现的强局域 uplift 口径下，除平凡位移外仅允许 \(\delta=\pm 34\)（推论 \ref{cor:terminal-window6-local-uplift-admissibility}）。
+另一方面，window-\(6\) uplift 的尾部三分支集合为 \(\{21,34,55\}=\{F_8,F_9,F_{10}\}\)，并与 \((SU(5),SO(10),E_6)\) 的顶层 Zeckendorf 项分别对齐为 \((F_8,F_9,F_{10})\)（定理 \ref{thm:terminal-window6-tail-three-branch}）。
+因此在附加施加“uplift 必须局域可实现且标签不变”的协议约束时，\(\delta=34\) 分支（\(F_9\)）是唯一与局域性相容的顶层补全；其余两支的顶层对齐只能通过非局域机制外置实现。
+\end{conclusion}
+\begin{proof}[证明要点]
+局域可实现性与 \(\delta=\pm 34\) 的唯一性见推论 \ref{cor:terminal-window6-local-uplift-admissibility}；
+三分支与 Zeckendorf--GUT 顶层项对齐见定理 \ref{thm:terminal-window6-tail-three-branch}（并与家族数锁定律 \ref{thm:terminal-family-uplift-lock} 的 \(F_9\) 选中一致）。
+\end{proof}
+
+\begin{conclusion}[bin-fold 推前分布的末位充分化：全变差塌缩与单参数指数倾斜]\label{con:xi-terminal-foldbin-lastbit-sufficient-statistic}
+令 \(\mu_m(w):=d_m^{\mathrm{bin}}(w)/2^m\) 为 bin-fold 在 \(X_m\) 上的推前分布，并令末位指示 \(\ell(w):=w_m\in\{0,1\}\)。
+将 \(X_m\) 按末位分块并令 \(\overline\mu_m\) 为块内均匀化近似，则存在绝对常数 \(C>0\) 使
+\[
+\boxed{\ D_{\mathrm{TV}}(\mu_m,\overline\mu_m)\ \le\ C\left(\frac{\varphi}{2}\right)^{m}\ }.
+\]
+并且存在 \(\beta_m\in\RR\) 使 \(\overline\mu_m\) 可写成稳定层均匀分布 \(u_m\) 的指数倾斜
+\[
+\overline\mu_m(w)=Z_m^{-1}u_m(w)e^{-\beta_m\ell(w)},
+\qquad
+\beta_m\to\log\varphi.
+\]
+因此末位 \(\ell(w)\) 在指数精度上成为充分统计量，bin-fold 输出分布在信息几何意义下被压缩为单参数指数族。
+\end{conclusion}
+\begin{proof}[证明要点]
+见命题 \ref{prop:fold-bin-lastbit-sufficient-tv}。
+\end{proof}
+
+\begin{conclusion}[escort 温度族与散度谱的二态闭式化：温度间 KL 的 Bernoulli 退化与 Rényi 熵率塌缩]\label{con:xi-terminal-foldbin-escort-divergence-two-state-closure}
+对 \(q\ge 0\) 定义 escort 分布 \(\pi_{m,q}(w)\propto (d_m^{\mathrm{bin}}(w))^{q}\)，并令
+\(
+\theta(q):=\lim_{m\to\infty}\mathbb{P}_{\pi_{m,q}}(w_m=1)
+=\frac{1}{1+\varphi^{q+1}}
+\)。
+则对任意 \(p,q\ge 0\)，温度间 KL 极限存在且严格退化为一维 Bernoulli KL：
+\[
+\boxed{\;
+\lim_{m\to\infty}D_{\mathrm{KL}}(\pi_{m,q}\Vert\pi_{m,p})
+=\theta(q)\log\!\frac{\theta(q)}{\theta(p)}+(1-\theta(q))\log\!\frac{1-\theta(q)}{1-\theta(p)}\; }.
+\]
+同时，bin-fold 推前分布 \(\mu_m\) 相对稳定层均匀基线的 Rényi 散度极限对每个 \(\alpha>0\) 存在且给出闭式表达，并具有 \(O((\varphi/2)^m)\) 的指数收敛（定理 \ref{thm:fold-bin-renyi-divergence-limit}）。
+并且 Rényi 熵密度满足统一塌缩：对一切 \(q>0\) 有
+\[
+\boxed{\ \lim_{m\to\infty}\frac{1}{m}H_q(\mu_m)=\log\varphi\ },
+\]
+从而“多温度/多散度/多分形”结构在极限中被制度性压缩为末位 Bernoulli 参数 \(\theta(q)\) 的一维谱。
+\end{conclusion}
+\begin{proof}[证明要点]
+Bernoulli KL 退化见命题 \ref{prop:fold-bin-escort-escort-kl}；
+Rényi 散度极限见定理 \ref{thm:fold-bin-renyi-divergence-limit}；
+Rényi 熵率塌缩见定理 \ref{thm:fold-bin-renyi-rate-collapse}。
+\end{proof}
+
+\begin{conclusion}[bin-fold 纤维多重度的线性时间可计算性：Fibonacci-digit DP 给出可复算审计核]\label{con:xi-terminal-foldbin-digit-dp-linear-time}
+给定 \(m\ge 1\) 与 \(w\in X_m\)，令 \(K=K(m)\)、\(V=V_m(w)\)、\(\mathrm{slack}:=2^m-1-V\)，并将 \(\mathrm{slack}\) 写为合法 Zeckendorf 位串 \(Z(\mathrm{slack})=(b_1,\dots,b_K)\)。
+则 \(d_m^{\mathrm{bin}}(w)\) 可由状态
+\(
+\mathrm{DP}(k,\mathrm{prev},\mathrm{tight})
+\)
+的 digit DP 在 \(O(K-m)=O(m)\) 时间内精确计算；转移中仅需施加有限冲突约束（无相邻 \(11\)）、紧性约束与末位约束 \(w_m=1\Rightarrow c_{m+1}=0\)。
+因此 bin-fold 的纤维多重度不仅具有可审计的渐近律，同时具备线性复杂度的精确计算内核，为大窗口的完全确定性复算提供算法闭合。
+\end{conclusion}
+\begin{proof}[证明要点]
+见命题 \ref{prop:fold-bin-digit-dp}。
+\end{proof}
+
+\endinput
