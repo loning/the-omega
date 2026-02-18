@@ -1,655 +1,654 @@
-\subsection{本体态空间与局部演化}\label{subsec:pom-state-evolution}
-\begin{definition}[分辨率态空间]\label{def:pom-state-space}
-对分辨率 $m$，定义本体态空间
+﻿\subsection{Ontological state space and local evolution}\label{subsec:pom-state-evolution}
+\begin{definition}[Resolution State Space]\label{def:pom-state-space}
+For resolution $m$, define the ontology space
 \[
 \mathcal{H}_m:=\mathcal{X}_m\times \mathcal{M}_m,
 \]
-其中 $\mathcal{X}_m$ 为外表坐标（如 $X_m$ 或 $X_\infty$ 的截断），$\mathcal{M}_m$ 为隐纤维（可包含 $\mathcal{S}_\varphi,\mathcal{T},\mathcal{P}$ 的局部激活块、同步核状态与余量等）。
+Among them, $\mathcal{X}_m$ â€‹â€‹is the appearance coordinate (such as the truncation of $X_m$ or $X_\infty$), and $\mathcal{M}_m$ is the hidden fiber (which can include the local activation block, synchronized core state and margin of $\mathcal{S}_\varphi,\mathcal{T},\mathcal{P}$, etc.).
 \end{definition}
 
-\begin{definition}[局部性与有限传播]\label{def:pom-locality}
-给定本体一步演化算子
+\begin{definition}[Locality and Limited Propagation]\label{def:pom-locality}
+Given one-step evolution operator of ontology
 \[
 U:\mathcal{H}_m\to\mathcal{H}_m
 \]
-并称 \(U\) 满足\textbf{局部性与有限传播}，若每一步仅依赖有限窗口并只更新有限半径的局部块。该定义与第 \ref{sec:A-kernel-compare-main} 节的局部核/在线归一化口径一致。
+It is also said that \(U\) â€‹â€‹satisfies \textbf{locality and limited propagation}, if each step only relies on a limited window and only updates local blocks of limited radius. This definition is consistent with the local kernel/online normalization scope of Section \ref{sec:A-kernel-compare-main}.
 \end{definition}
 
-\subsection{三类投影：规范投影、原子投影与序投影}\label{subsec:pom-projections}
-\begin{definition}[规范投影 $P_Z$]\label{def:pom-proj-norm}
-在窗口层，$P_Z$ 定义为 $\Fold_m:\Omega_m\to X_m$ 的规范化投影（定义 \ref{def:fold-word}），其实现为值保持的局部重写系统并满足终止与合流（定理 \ref{thm:fold-suite}）。在算子代数层，$P_Z$ 由折叠诱导的条件期望
+\subsection{Three types of projections: canonical projection, atomic projection and order projection}\label{subsec:pom-projections}
+\\begin{definition}[Canonical projection $P_Z$]\\label{def:pom-proj-norm}`r`nAt the window level, $P_Z$ is defined as the normalized projection $\\Fold_m:\\Omega_m\\to X_m$ (Definition \\ref{def:fold-word}), implemented as a value-preserving local rewriting system that is terminating and confluent (Theorem \\ref{thm:fold-suite}). At the level of operator algebra, $P_Z$ conditional expectations induced by folding
 \[
 E_m:\mathcal{A}_m\to\mathcal{B}_m
 \]
-实现（命题 \ref{prop:fold-conditional-expectation}），因此 $P_Z$ 为幂等投影并与归约顺序无关。
+Realizes (proposition \ref{prop:fold-conditional-expectation}), so $P_Z$ â€‹â€‹is an idempotent projection and is independent of the reduction order.
 \end{definition}
 
-\begin{definition}[原子投影 $P_{\mathrm{prim}}$]\label{def:pom-proj-prim}
-给定核/演化算子 $T$，令时间迹序列 $a_n:=\Tr(T^n)$。定义 primitive 轨道谱
+\begin{definition}[Atomic projection $P_{\mathrm{prim}}$]\label{def:pom-proj-prim}
+Given the kernel/evolution operator $T$, let the time trace sequence $a_n:=\Tr(T^n)$. Define primitive orbit spectrum
 \[
 p_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d}.
 \]
-记 $P_{\mathrm{prim}}(a):=(p_n)_{n\ge 1}$，则由 Euler 乘积与 Möbius/Witt 反演，有
+Note $P_{\mathrm{prim}}(a):=(p_n)_{n\ge 1}$, then invert by Euler product and MÃ¶bius/Witt, we have
 \[
 Z=E\circ P_{\mathrm{prim}}\circ T,
 \qquad
 Z=E\circ M\circ T.
 \]
-因此 $P_{\mathrm{prim}}$ 是把“时间迹”投影为 prime-like 原子层的规范读出门。
+Therefore $P_{\mathrm{prim}}$ â€‹â€‹is a canonical readout gate that projects a "time trace" into a prime-like atomic layer.
 \end{definition}
 
-\begin{definition}[序投影 $P_{\le}$]\label{def:pom-proj-order}
-序投影 $P_{\le}$ 指把本体态映射到有序约束的读出证书（如符号、比较判定或区间约束），其目标在于把“$0\le r<b$”一类的全局序关系编码为可观测输出。与 $P_Z$ 不同，$P_{\le}$ 不一定是环同态，也不保证局部可并行化；其读出往往需要跨窗口聚合，因此是不可并行增长的主要来源。
+\begin{definition}[Sequence projection $P_{\le}$]\label{def:pom-proj-order}
+Order projection $P_{\le}$ â€‹â€‹refers to the readout certificate that maps ontological states to ordered constraints (such as symbols, comparison decisions, or interval constraints). Its goal is to encode global order relationships such as "$0\le r<b$" into observable outputs. Unlike $P_Z$, $P_{\le}$ is not necessarily ring homomorphic, nor is it guaranteed to be locally parallelizable; its readout often requires cross-window aggregation and is therefore a major source of non-parallelizable growth.
 \end{definition}
 
-\begin{definition}[温度化序投影 $\mathrm{PROJ}_u$（软序门）]\label{def:pom-proj-temp}
-令 $\Gamma$ 为某个用于序/约束读出的有限图核（例如比较、区间约束或 residue 分层核），并设每条边 $e$ 具有一个非负可加代价势
+\begin{definition}[Temperature sequence projection $\mathrm{PROJ}_u$ â€‹â€‹(soft sequence gate)]\label{def:pom-proj-temp}
+Let $\Gamma$ â€‹â€‹be some finite graph kernel for order/constraint readout (such as comparison, interval constraint, or residue hierarchical kernel), and let each edge $e$ have a nonnegative additive cost potential
 \[
 E(e)\in\ZZ_{\ge 0},
 \qquad
 E(\gamma)=\sum_{e\in\gamma}E(e).
 \]
-对 $u\in(0,1]$，定义带权邻接矩阵
+For $u\in(0,1]$, define a weighted adjacency matrix
 \[
 M_E(u)_{ij}:=\sum_{e:i\to j}u^{E(e)}.
 \]
-令 $\mu_u$ 为该带权 SFT 的平衡态/Parry 测度（等价地由 $M_E(u)$ 的 Perron--Frobenius 特征向量给出的一步马尔可夫测度）。对任一证书读出函数 $R$（例如比较符号、商余区间标签、或同余类标签），定义\textbf{温度化序投影}为其在 $\mu_u$ 下的推前分布：
+Let $\mu_u$ â€‹â€‹be the equilibrium/Parry measure of this weighted SFT (equivalently the one-step Markov measure given by the Perron--Frobenius eigenvectors of $M_E(u)$). For any certificate readout function $R$ (such as comparison symbols, quotient interval labels, or congruence class labels), define \textbf{temperature-ordered projection} as its push-forward distribution under $\mu_u$:
 \[
 \mathrm{PROJ}_u(R):=R_\ast\mu_u.
 \]
-当 $u$ 接近 $1$ 时，$\mathrm{PROJ}_u$ 体现“软约束/平均读出”；当 $u$ 减小（$\beta=-\log u$ 增大）时，读出逐步向低代价（更满足约束/更接近最优）的路径集合集中。
+When $u$ â€‹â€‹is close to $1$, $\mathrm{PROJ}_u$ embodies "soft constraints/average readout"; when $u$ decreases ($\beta=-\log u$ increases), the readout gradually concentrates on the path set with lower cost (more satisfying constraints/closer to the optimal).
 \end{definition}
 
-\begin{remark}[序投影作为零温极限]\label{rem:pom-order-as-zero-temp}
-在局部常势（边势）设定下，零温极限 $u\to 0$（等价 $\beta\to+\infty$）把平衡态 $\mu_u$ 推向\emph{基态集合}：支持在使平均代价 $\bar E=\lim_{n\to\infty}E(\gamma_n)/|\gamma_n|$ 最小的周期/子移位分量上（参见 \cite{ChazottesGambaudoUgalde2011ZeroTempLocConst} 的一般结论）。因此在机制层面，序投影 $P_{\le}$ 可被理解为“软序门 $\mathrm{PROJ}_u$ 在零温下的硬化极限”：从加权平均转为选择/可行性筛选（典型为 $\arg\min$ 结构），这也是 $P_{\le}$ 不可约地引入不可并行读出深度的根源。
+\begin{remark}[Sequence projection as zero temperature limit]\label{rem:pom-order-as-zero-temp}
+Under the local constant potential (side potential) setting, the zero-temperature limit $u\to 0$ â€‹â€‹(equivalent to $\beta\to+\infty$) pushes the equilibrium state $\mu_u$ to \emph{the set of ground states}: favoring the period/sub-shift component that minimizes the average cost $\bar E=\lim_{n\to\infty}E(\gamma_n)/|\gamma_n|$ (see the general conclusion of \cite{ChazottesGambaudoUgalde2011ZeroTempLocConst}). Therefore, at the mechanism level, sequence projection $P_{\le}$ can be understood as "the hardening limit of soft sequence gate $\mathrm{PROJ}_u$ at zero temperature": switching from weighted averaging to selection/feasibility screening (typically $\arg\min$ structure), which is also the source of $P_{\le}$'s irreducible introduction of non-parallel readout depth.
 
-在有限图上，零温基态可由最小平均回路权精确表征：令 $\phi_\theta=\langle\theta,\Phi\rangle$ 或一般取 $\phi=E$，则最小平均代价等于图上的 min-mean-cycle 值，并可用 Karp 算法多项式时间求出（\cite{Karp1978MinCycleMean}）。这把序投影的关键制约因素转化为一个可审计的组合证书接口。
+On a finite graph, the zero-temperature ground state can be accurately characterized by the minimum mean cycle weight: let $\phi_\theta=\langle\theta,\Phi\rangle$ â€‹â€‹or generally $\phi=E$, then the minimum average cost is equal to the min-mean-cycle value on the graph, and can be found in polynomial time using the Karp algorithm (\cite{Karp1978MinCycleMean}). This translates the key constraints of ordinal projection into an auditable composite certificate interface.
 \end{remark}
 
-\subsubsection{由势诱导的凸几何：可达均值凸体与对偶压力}\label{subsec:pom-potential-convex-geometry}
-\paragraph{势向量作为内禀坐标}
-对有限图核（SFT）\(\Gamma\)，给每条边赋一个多维可加观测量（势向量）
+\subsubsection{Convex geometry induced by potential: reachable mean convex body and dual pressure}\label{subsec:pom-potential-convex-geometry}
+\paragraph{Potential vector as intrinsic coordinate}
+For finite graph kernel (SFT) \(\Gamma\), assign a multi-dimensional additive observation quantity (potential vector) to each edge
 $$
 \varphi:E(\Gamma)\to \ZZ^d.
 $$
-对任一 \(\sigma\)-不变测度 \(\mu\)，其平均观测向量定义为
+For any \(\sigma\)-invariant measure \(\mu\), its average observation vector is defined as
 $$
 m(\mu):=\int \varphi\,d\mu\ \in\ \RR^d.
 $$
-定义\textbf{可达均值集合}（rotation/mean set）
+Definition \textbf{reachable mean set} (rotation/mean set)
 $$
-\mathcal{R}_\varphi:=\{m(\mu):\ \mu\ \text{为}\ \Gamma\ \text{上的}\ \sigma\text{-不变测度}\}\subset\RR^d.
+\mathcal{R}_\varphi:=\{m(\mu):\ \mu\ \text{is}@@TK15@ @\Gamma\ \text{on}\ \sigma\text{-invariant measure}\}\subset\RR^d.
 $$
-由于不变测度集合在弱-\(\ast\) 拓扑下紧且凸、而 \(\mu\mapsto m(\mu)\) 为连续线性映射，故 \(\mathcal{R}_\varphi\) 也是紧凸集。
+Since the invariant measure set is compact and convex under the weak-\(\ast\) â€‹â€‹topology, and \(\mu\mapsto m(\mu)\) is a continuous linear mapping, \(\mathcal{R}_\varphi\) is also a compact convex set.
 
-\paragraph{压力面与率函数：凸对偶把“几何”读出来}
-对参数 \(\theta\in\RR^d\)，令边权取为 \(\exp\langle\theta,\varphi(e)\rangle\)，得到加权矩阵族 \(M_\theta\) 与压力
+\paragraph{Pressure surface and rate function: convex duality reads out "geometry"}
+For parameter \(\theta\in\RR^d\), let the edge weight be \(\exp\langle\theta,\varphi(e)\rangle\), and get the weighted matrix family \(M_\theta\) and pressure
 $$
 P(\theta):=\log\rho(M_\theta).
 $$
-在原始情形，\(\nabla P(\theta)\) 给出平衡态下的典型均值密度，而 Hessian \(\nabla^2P(\theta)\) 给出协方差密度（正文 \ref{subsec:logM-analyticity} 已将这种“可微分指纹”作为实现接口固定）。
-更重要的是：对固定基准 \(\theta_0\)，经验均值的 LDP 率函数可写为
+In the original case, \(\nabla P(\theta)\) â€‹â€‹gives the typical mean density at equilibrium, while the Hessian \(\nabla^2P(\theta)\) gives the covariance density (the text \ref{subsec:logM-analyticity} has fixed this "differentiable fingerprint" as an implementation interface).
+More importantly: for a fixed benchmark \(\theta_0\), the LDP rate function of the empirical mean can be written as
 $$
 I_{\theta_0}(x)=\sup_{t\in\RR^d}\Bigl(\langle t,x\rangle-\bigl(P(\theta_0+t)-P(\theta_0)\bigr)\Bigr),
 $$
-其有效域恰落在 \(\mathcal{R}_\varphi\) 上（域外取 \(+\infty\)）。
-因此，“几何”无需先验嵌入欧氏空间：它由势向量的并置与核约束内生生成，并通过 \((P\leftrightarrow I)\) 的 Legendre--Fenchel 对偶被量化读出。
+Its effective domain falls exactly on \(\mathcal{R}_\varphi\) â€‹â€‹(outside the domain, take \(+\infty\)).
+Therefore, "geometry" need not be embedded a priori in Euclidean space: it is generated endogenously by the juxtaposition of potential vectors with kernel constraints, and is read out quantitatively by the Legendre--Fenchel duality of \((P\leftrightarrow I)\).
 
-\paragraph{6D 超立方体与 3D 切面（最小形式）}
-若选取 \(6\) 个二元通道（每步取值 \(0/1\)）作为势分量 \(\varphi=(\varphi_1,\dots,\varphi_6)\)，则任一长度 \(n\) 的轨道给出计数向量
+\paragraph{6D hypercube and 3D slices (minimum form)}
+If \(6\) â€‹â€‹binary channels (value \(0/1\) at each step) are selected as potential components \(\varphi=(\varphi_1,\dots,\varphi_6)\), then any orbit of length \(n\) gives a counting vector
 $$
 N_n:=\sum_{t=0}^{n-1}\varphi(e_t)\in\{0,1,\dots,n\}^6,
 $$
-归一化后落在 \([0,1]^6\)。真实可达集合是其中由核允许路径裁剪出的凸子体（即 \(\mathcal{R}_\varphi\) 在该选择下的具体化）。
-所谓“6D 立方体的 3D 切面”，就是固定其中 \(3\) 个坐标（或固定 \(3\) 个线性组合，例如 \(\chi=\varphi_e-\varphi_2\) 这类）所得到的截面；而在 \(\theta\) 空间中对该切片做梯度/Hessian 读出，即对应对该凸体在该切片上的一阶与二阶局部测量。
+After normalization it falls on \([0,1]^6\). A truly reachable set is one of the convex subvolumes clipped by the allowed paths of the kernel (i.e., the instantiation of \(\mathcal{R}_\varphi\) under this choice).
+The so-called "3D section of a 6D cube" is the section obtained by fixing \(3\) â€‹â€‹coordinates (or fixing \(3\) linear combinations, such as \(\chi=\varphi_e-\varphi_2\)); and performing gradient/Hessian reading on the slice in \(\theta\) space corresponds to the first-order and second-order local measurements of the convex body on the slice.
 
-\begin{remark}[范畴边界与不可并行增长]\label{rem:pom-factor-boundary}
-任意滑动块因子码均具有常数在线延迟，因此所有随规模增长的读出深度必然来自非因子码投影（典型即 $P_{\le}$）或把混合留在演化深度 $D_U$ 中。这一“范畴边界”把增长项从算法技巧提升为结构性约束。
+\begin{remark}[Category boundaries and non-parallel growth]\label{rem:pom-factor-boundary}
+Any sliding block factor code has a constant online delay, so all readout depths that grow with scale must come from non-factor code projections (typically $P_{\le}$) or leave the mix in the evolving depth $D_U$. This â€œcategory boundaryâ€ elevates the growth term from an algorithmic trick to a structural constraint.
 \end{remark}
 
-\begin{definition}[角色/同余投影 $P_\chi$]\label{def:pom-proj-chi}
-角色投影 $P_\chi$ 指把 primitive 轨道按可加观测量（如 $\chi(\gamma),N_-(\gamma),N_e(\gamma)$）做同余/角色分层，并读出 residue 类标签。其可由扭曲矩阵族 $M(q)$ 与 Dirichlet--Mertens 常数张量实现（见 \ref{subsec:arity-dirichlet-mertens-tensor}），因此是 $P_{\le}$ 在“序/同余/角色读出”方向上的具体化门，亦可视为对 $P_{\mathrm{prim}}$ 的角色化增强。
+\begin{definition}[Character/Congruent Projection $P_\chi$]\label{def:pom-proj-chi}
+Role projection $P_\chi$ â€‹â€‹refers to making congruence/role layering of primitive orbits according to additive observable quantities (such as $\chi(\gamma),N_-(\gamma),N_e(\gamma)$), and reading out the residue class label. It can be realized by the twisted matrix family $M(q)$ and the Dirichlet--Mertens constant tensor (see \ref{subsec:arity-dirichlet-mertens-tensor}), so it is a concretization gate of $P_{\le}$ in the "order/congruence/role readout" direction, and can also be regarded as a role-based enhancement of $P_{\mathrm{prim}}$.
 \end{definition}
 
-\begin{remark}[序约束的主导轴：碰撞轴]\label{rem:pom-collision-axis}
-在真实输入 40 状态核中，\(((3,3,5))\) 的最坏扭曲谱半径由纯碰撞 cocycle 达到（注记 \ref{prop:arity-335-collision-dominant}），说明序投影的主导限制因素并非“值轴”而是碰撞/相消轴。因而若以空间换时间，优先引入可分离的碰撞轴束比单纯扩展值通道更有效。
+\begin{remark}[Dominant axis of sequence constraint: collision axis]\label{rem:pom-collision-axis}
+In the real input 40-state kernel, the worst-case distortion spectrum radius of \(((3,3,5))\) â€‹â€‹is reached by a pure collision cocycle (note \ref{prop:arity-335-collision-dominant}), indicating that the dominant limiting factor of order projection is not the "value axis" but the collision/destruction axis. Therefore, if space is exchanged for time, it is more effective to introduce separable collision axis beams first than to simply expand the value channel.
 \end{remark}
 
-\begin{remark}[“加轴不一定加速”：更细分的同余读出可能更慢]\label{rem:pom-more-axis-slower}
-在三维同余分层中，已给出两组可审计的最坏扭曲比值：
+\begin{remark}["Adding axes does not necessarily speed up": more subdivided congruent readout may be slower]\label{rem:pom-more-axis-slower}
+In three-dimensional congruential stratification, two sets of auditable worst-case distortion ratios have been given:
 \[
 \rho_{3,3,3}/\lambda\approx 0.9366863402,
 \qquad
 \rho_{5,5,5}/\lambda\approx 0.9628140340
 \]
-（附录 \ref{app:real-input-40-arity-3d} 的数值输出；见脚本 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}）。
-注意到 \(\rho_{5,5,5}/\lambda\) 更接近 \(1\)，因此其扭曲谱隙 \(-\log(\rho/\lambda)\) 更小、对应的混合尺度更大。
+(Appendix for numerical output of \ref{app:real-input-40-arity-3d}; see scripts \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_arity\_3d.py}).
+Note that \(\rho_{5,5,5}/\lambda\) â€‹â€‹is closer to \(1\), so its distortion spectral gap \(-\log(\rho/\lambda)\) is smaller and the corresponding mixing scale is larger.
 
-这给出一个结构性结果：当最坏扭曲由\emph{纯碰撞 cocycle} 主导时，增加同余轴的模数（更细的 residue/角色读出）会引入更多非平凡角色，但\textbf{最慢模并不会因此被“值轴细分”所消除}；相反，它可能进一步逼近共振从而使混合变慢。
-因此“空间换时间”在该相区的有效手段不是单纯增加角色维数，而是改变核几何以解耦/削弱碰撞轴（例如引入可分离的碰撞轴束或改变投影门编排）。
+This gives a structural consequence: when the worst distortion is dominated by \emph{pure collisional cocycle}, increasing the mode of the congruence axis (finer residue/role readout) introduces more non-trivial characters, but \textbf{the slowest mode is not therefore eliminated by "value axis subdivision"}; instead, it may approach the resonance further and thus slow down the mixing.
+Therefore, the effective way to "exchange space for time" in this phase area is not to simply increase the character dimension, but to change the core geometry to decouple/weaken the collision axis (such as introducing a detachable collision axis bundle or changing the projection gate arrangement).
 \end{remark}
 
-\subsection{投影词语法与成本模型}\label{subsec:pom-words}
-\begin{definition}[投影词与半群]\label{def:pom-projection-word}
-令投影字母表 $\{Z,\le\}$ 分别代表一次 $P_Z$ 与一次 $P_{\le}$ 读出。对任意指令/微码 $I$，定义投影词
+\subsection{Projection word syntax and cost model}\label{subsec:pom-words}
+\begin{definition}[Projective words and semigroups]\label{def:pom-projection-word}
+Let the projected alphabet $\{Z,\le\}$ â€‹â€‹represent one reading of $P_Z$ and one reading of $P_{\le}$ respectively. For any instruction/microcode $I$, define the projection word
 \[
 W(I)=(k_Z(I),k_{\le}(I)),
 \]
-其中 $k_Z,k_{\le}$ 为规范/序投影的调用次数。令
+Where $k_Z,k_{\le}$ â€‹â€‹is the number of calls to canonical/order projection. make
 \[
 \mathcal{W}=\langle Z,\le\rangle^*/\sim,\qquad Z^2\sim Z
 \]
-为投影词半群（幂等律来自 $P_Z\circ P_Z=P_Z$）；其他等价关系可按具体实现的因果锥/局部可交换性附加。
+is a projective word semigroup (the idempotence law comes from $P_Z\circ P_Z=P_Z$); other equivalence relations can be attached according to the causal cone/local commutativity of the specific implementation.
 \end{definition}
 
-\begin{remark}[原子投影的扩展投影词]\label{rem:pom-word-prim}
-若把原子投影纳入读出，则可扩展字母表为 $\{Z,\mathrm{prim},\le\}$，并记
+\begin{remark}[Extended projection word of atomic projection]\label{rem:pom-word-prim}
+If the atomic projection is included in the readout, the alphabet can be extended to $\{Z,\mathrm{prim},\le\}$, and noted
 \[
 W^{\mathrm{full}}(I)=(k_Z(I),k_{\mathrm{prim}}(I),k_{\le}(I)).
 \]
-对算术指令默认 $k_{\mathrm{prim}}=0$，原子投影主要服务于 prime-like 谱的读出与机制审计。
+The default for arithmetic instructions is $k_{\mathrm{prim}}=0$, and atomic projection mainly serves the readout and mechanism audit of prime-like spectra.
 \end{remark}
 
-\begin{remark}[角色投影的投影词记号]\label{rem:pom-word-chi}
-当序读出由 $P_\chi$ 实现时，可改记投影字母表为 $\{Z,\chi\}$，并写
+\begin{remark}[Projection word token for character projection]\label{rem:pom-word-chi}
+When sequential reading is implemented by $P_\chi$, the projected alphabet can be rewritten as $\{Z,\chi\}$ and written
 \(
 W_\chi(I)=(k_Z(I),k_\chi(I))
-\)。
-此时 $k_\chi$ 仅统计角色/同余投影的调用次数，作为 $k_{\le}$ 的具体化版本。
+\)ã€‚
+At this time $k_\chi$ â€‹â€‹only counts the number of calls of role/congruential projection, as a concrete version of $k_{\le}$.
 \end{remark}
 
-\begin{definition}[跨分辨率降阶计数]\label{def:pom-rescale-count}
-除投影词中的读出门 $P_Z,P_{\le}$ 外，若指令/微码 $I$ 显式调用分辨率降阶投影门
+\begin{definition}[cross-resolution reduced count]\label{def:pom-rescale-count}
+In addition to the readout gate $P_Z,P_{\le}$ â€‹â€‹in the projection word, if the instruction/microcode $I$ explicitly calls the resolution reduction projection gate
 \(
 \mathrm{RESCALE}\downarrow:\Omega_{m+1}\to X_m
 \)
-（见注 \ref{rem:pom-rescale-gauge-anomaly}），则记其调用次数为 $k_{\downarrow}(I)$；若不涉及跨分辨率读出，则取 $k_{\downarrow}(I)=0$。
+(See note \ref{rem:pom-rescale-gauge-anomaly}), then the number of calls is recorded as $k_{\downarrow}(I)$; if cross-resolution readout is not involved, it is taken as $k_{\downarrow}(I)=0$.
 \end{definition}
 
-\begin{definition}[纤维选择与核选择]\label{def:pom-fiber-kernel-choice}
-对任意指令/微码 $I$，记其在实现过程中被激活的先验纤维族为
+\begin{definition}[Fiber selection and core selection]\label{def:pom-fiber-kernel-choice}
+For any instruction/microcode $I$, record the prior fiber family activated during its implementation as
 $$
 \mathcal{F}(I)\subseteq \{\mathcal{S}_\varphi,\mathcal{T},\mathcal{P},\widehat{\ZZ}\},
 $$
-分别对应尺度纤维、相位纤维、素数寄存器纤维与 profinite 同余轴（定义 \ref{def:pom-scale-fiber}、\ref{def:pom-phase-fiber}、\ref{def:pom-prime-fiber}、\ref{def:pom-profinite}）。
-并且记其规范读出所采用的归一化核为 $K_Z(I)$（即实现 $P_Z$ 的具体核），序/角色读出所采用的核为 $K_{\le}(I)$ 或 $K_{\chi}(I)$（实现 $P_{\le}$ 或 $P_\chi$ 的具体核）。
+Corresponding to the scale fiber, phase fiber, prime register fiber and profinite congruence axis respectively (definition \ref{def:pom-scale-fiber}, \ref{def:pom-phase-fiber}, \ref{def:pom-prime-fiber}, \ref{def:pom-profinite}).
+And remember that the normalization core used for standard readout is $K_Z(I)$ â€‹â€‹(that is, the specific core that implements $P_Z$), and the core used for sequence/role readout is $K_{\le}(I)$ or $K_{\chi}(I)$ (the specific core that implements $P_{\le}$ or $P_\chi$).
 \end{definition}
 
-\begin{remark}[相位纤维与寄存器轴的紧群封装：通用 solenoid 扩张]\label{rem:pom-solenoid-extension}
-定义 \ref{def:pom-fiber-kernel-choice} 把相位纤维 \(\mathcal{T}\) 与同余轴 \(\widehat{\ZZ}\) 并列为可被 \(\mathrm{LIFT}\) 激活的先验纤维族。
-在紧致交换群层面，这两条轴可被一个规范的紧阿贝尔群扩张统一封装：定义一维通用 solenoid
+\begin{remark}[Tight group packaging of phase fiber and register axis: general solenoid expansion]\label{rem:pom-solenoid-extension}
+Definition \ref{def:pom-fiber-kernel-choice} juxtaposes the phase fiber \(\mathcal{T}\) â€‹â€‹and the congruence axis \(\widehat{\ZZ}\) as a priori fiber family that can be activated by \(\mathrm{LIFT}\).
+At the level of compact commutative groups, these two axes can be uniformly encapsulated by a canonical compact abelian group expansion: defining a one-dimensional universal solenoid
 \begin{equation}\label{eq:pom-universal-solenoid-quotient}
 \boxed{\;
 \Sol\ :=\ (\RR\times \widehat{\ZZ})/\ZZ,\qquad
 n\cdot(t,a):=(t+n,\ a-n)\; }.
 \end{equation}
-则存在自然短正合列
+Then there exists a natural short exact sequence
 \begin{equation}\label{eq:pom-universal-solenoid-ses}
 \boxed{\;
 0\ \longrightarrow\ \widehat{\ZZ}\ \xrightarrow{\ \iota_{\widehat{\ZZ}}\ }\ \Sol\ \xrightarrow{\ \pi_{\TT}\ }\ \TT\ \longrightarrow\ 0\;}
 \end{equation}
-其中
+in
 \(
 \iota_{\widehat{\ZZ}}(a)=[(0,a)]
 \)
-为嵌入，而
+for embedding, while
 \(
 \pi_{\TT}([(t,a)])=e^{2\pi \mathrm{i}t}
 \)
-为满射（其核同构于 \(\widehat{\ZZ}\)）。
+is a surjection (its core is isomorphic to \(\widehat{\ZZ}\)).
 \par
-该扩张的结构含义是：相位圆 \(\TT\) 可作为 \(\Sol\) 的商群读出（对应相位纤维 \(\mathcal{T}\) 的投影像），而同余轴 \(\widehat{\ZZ}\) 作为核被“内置”为不可见自由度；因此任何在相位投影下出现的遗忘/不可逆性，都可以在 \(\Sol\) 层被严格提升为一个可逆的群动作，并将差异外置为核方向的残差坐标。
-这把“信息外置守恒/可逆性”的叙事约束提升为一个可审计的群扩张结构接口。
+The structural meaning of this expansion is that the phase circle \(\TT\) can be read out as the quotient group of \(\Sol\) (corresponding to the projected image of the phase fiber \(\mathcal{T}\)), and the congruence axis \(\widehat{\ZZ}\) as the kernel is "built in" as an invisible degree of freedom; therefore any forgetting/irreversibility that occurs under phase projection can be seen in \(\Sol\) The layer is strictly promoted to a reversible group action and the difference is externalized as the residual coordinate in the kernel direction.
+This elevates the narrative constraint of â€œinformation external conservation/reversibilityâ€ into an auditable group expansion structure interface.
 \end{remark}
 
-\begin{definition}[指令签名：投影词 $\times$ 核指纹 $\times$ 纤维选择]\label{def:pom-instruction-signature}
-令 $\mathfrak{F}(K)$ 为核的谱指纹（定义 \ref{def:kernel-spectral-fingerprint}）。对任意指令/微码 $I$，定义其（审计）指令签名为
+\begin{definition}[Command signature: Projection word $\times$ â€‹â€‹Nuclear fingerprint $\times$ Fiber selection]\label{def:pom-instruction-signature}
+Let $\mathfrak{F}(K)$ â€‹â€‹be the spectral fingerprint of the nucleus (defining \ref{def:kernel-spectral-fingerprint}). For any instruction/microcode $I$, define its (audit) instruction signature as
 $$
 \Sigma(I):=\Bigl(W(I),\ k_{\downarrow}(I),\ \mathfrak{F}\bigl(K_Z(I)\bigr),\ \mathfrak{F}\bigl(K_{\le}(I)\bigr),\ \mathcal{F}(I)\Bigr),
 $$
-其中 $W(I)$ 为投影词（定义 \ref{def:pom-projection-word}），$k_{\downarrow}(I)$ 为跨分辨率降阶调用次数（定义 \ref{def:pom-rescale-count}），$\mathcal{F}(I)$ 为纤维选择（定义 \ref{def:pom-fiber-kernel-choice}）。当序读出由 $P_\chi$ 实现时，可将 $\mathfrak{F}(K_{\le}(I))$ 替换为 $\mathfrak{F}(K_{\chi}(I))$。
+Among them, $W(I)$ â€‹â€‹is the projection word (defined as \ref{def:pom-projection-word}), $k_{\downarrow}(I)$ is the number of cross-resolution reduction calls (defined as \ref{def:pom-rescale-count}), and $\mathcal{F}(I)$ is the fiber selection (defined as \ref{def:pom-fiber-kernel-choice}). When sequential readout is implemented by $P_\chi$, $\mathfrak{F}(K_{\le}(I))$ can be replaced by $\mathfrak{F}(K_{\chi}(I))$.
 \end{definition}
 
-\begin{remark}[为什么 $W$ 不够：核几何进入指纹]\label{rem:pom-signature-why}
-投影词 $W(I)$ 只记录“调用了几次投影门”，并不记录“投影门的几何是什么”。而核指纹 $\mathfrak{F}(K)$（例如 $\zeta_K$、primitive 分层谱 $\{B_{K,n}(u)\}$、有限部常数与扭曲谱隙）决定了同一投影门在机制层的差异（附录 \ref{app:sync-kernel-A-compare}）。因此更强的统一分类对象应为 $\Sigma(I)$ 而非仅为 $W(I)$。
+\begin{remark}[Why $W$ â€‹â€‹is not enough: nuclear geometry enters the fingerprint]\label{rem:pom-signature-why}
+The projection word $W(I)$ â€‹â€‹only records "how many times the projection gate is called" and does not record "what is the geometry of the projection gate". The nuclear fingerprint $\mathfrak{F}(K)$ (such as $\zeta_K$, primitive hierarchical spectrum $\{B_{K,n}(u)\}$, finite part constant and twisted spectral gap) determines the difference in the mechanism layer of the same projection gate (Appendix \ref{app:sync-kernel-A-compare}). So a stronger unified classification object would be $\Sigma(I)$ instead of just $W(I)$.
 \end{remark}
 
-\begin{proposition}[签名一致 $\Rightarrow$ 指纹一致与成本模型同型]\label{prop:pom-signature-audit}
-设两条指令/微码 $I,J$ 满足 $\Sigma(I)=\Sigma(J)$。则：
+\begin{proposition}[The signature is the same $\Rightarrow$ â€‹â€‹The fingerprint is the same as the cost model]\label{prop:pom-signature-audit}
+Suppose two instructions/microcode $I,J$ â€‹â€‹satisfy $\Sigma(I)=\Sigma(J)$. but:
 \begin{enumerate}
-  \item \textbf{投影审计不变量一致：}两者在同一核指纹口径下给出相同的 $\zeta$、primitive 原子谱（含其加权分层）、压力曲线端点与扭曲谱隙等可审计指纹（由 $\mathfrak{F}(K_Z),\mathfrak{F}(K_{\le})$ 完全决定）。
-  \item \textbf{成本模型同型：}在定义 \ref{def:pom-cost} 的口径下，两者具有相同的投影词系数 $(k_Z,k_{\le})$ 以及相同的跨分辨率降阶次数 $k_{\downarrow}$，并且其常数项（如 $\delta_Z$）与混合尺度（如 $\tau_{\mathrm{mix}}$）由核指纹相同而一致，因此成本模型的结构分解一致：
+  \item \textbf{The projection audit invariants are consistent:} The two give the same auditable fingerprints such as $\zeta$, primitive atomic spectrum (including its weighted layering), pressure curve endpoints and distortion spectral gaps under the same nuclear fingerprint scope (completely determined by $\mathfrak{F}(K_Z),\mathfrak{F}(K_{\le})$).
+  \item \textbf{Cost model is of the same type:} Under the scope of defining \ref{def:pom-cost}, the two have the same projection word coefficient $(k_Z,k_{\le})$ â€‹â€‹and the same number of cross-resolution order reductions $k_{\downarrow}$, and their constant terms (such as $\delta_Z$) and the mixed scale (such as $\tau_{\mathrm{mix}}$) are consistent by the same kernel fingerprint, so the structural decomposition of the cost model is consistent:
   $$
   \begin{aligned}
   T_I(n;m)&=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+k_{\downarrow}\,T_{\downarrow}(m)+D_U(n),\\
   T_J(n;m)&=k_Z\,\delta_Z+k_{\le}\,T_{\le}(n)+k_{\downarrow}\,T_{\downarrow}(m)+D_U'(n),
   \end{aligned}
   $$
-  其中差异仅可能出现在“线性化深度/演化深度”项 $D_U$ 上，而该项正由纤维选择 $\mathcal{F}$ 与具体演化编排决定（定义 \ref{def:pom-space-time}）。
+  The difference may only appear in the "linearization depth/evolution depth" item $D_U$, which is determined by the fiber selection $\mathcal{F}$ and the specific evolution arrangement (definition \ref{def:pom-space-time}).
 \end{enumerate}
 \end{proposition}
 
-\begin{definition}[成本模型]\label{def:pom-cost}
-令 $\delta_Z$ 为一次规范投影的基准读出深度（例如在线归一化的固定延迟，见定理 \ref{thm:online-delay-fold}），令 $T_{\le}(n)$ 为一次序投影的聚合深度，令 $T_{\downarrow}(m)$ 为一次跨分辨率降阶门 $\mathrm{RESCALE}\downarrow$ 的典型写回支持规模（注 \ref{rem:pom-rescale-gauge-anomaly}），令 $D_U(n)$ 为在本体演化中完成线性化所需的深度。则定义
+\begin{definition}[Cost Model]\label{def:pom-cost}
+Let $\delta_Z$ be the baseline readout depth of a canonical projection (e.g. fixed delay of online normalization, see theorem \ref{thm:online-delay-fold}), let $T_{\le}(n)$ be the aggregation depth of a sequential projection, let $T_{\downarrow}(m)$ be the typical writeback support scale of a cross-resolution reduction gate $\mathrm{RESCALE}\downarrow$ (note \ref{rem:pom-rescale-gauge-anomaly}), let $D_U(n)$ is the depth required to complete linearization in ontology evolution. Then the definition
 \[
 T_I(n;m)=k_Z(I)\,\delta_Z+k_{\le}(I)\,T_{\le}(n)+k_{\downarrow}(I)\,T_{\downarrow}(m)+D_U(n).
 \]
-该模型把投影读出与演化深度分离，用于比较不同实现把“混合”置于时间还是空间的策略差异。
+This model separates projection readout from evolution depth and is used to compare the differences in strategies of different implementations in placing "mixing" in time or space.
 \end{definition}
 
-\begin{remark}[分辨率降阶不是“扔尾巴”：\texorpdfstring{$\mathrm{RESCALE}\downarrow$}{RESCALE down} 与规范差下界]\label{rem:pom-rescale-gauge-anomaly}
-除投影词中的 \(P_Z,P_{\le}\) 外，分辨率变换本身也可视为一个不可省略的投影门：在微态空间 \(\Omega_{m+1}\) 上，朴素截断
+\begin{remark}[Resolution downgrading is not "throwing the tail": \texorpdfstring{$\mathrm{RESCALE}\downarrow$}{RESCALE down} is lower than the specification limit]\label{rem:pom-rescale-gauge-anomaly}
+In addition to \(P_Z,P_{\le}\) â€‹â€‹in the projection word, the resolution transformation itself can also be regarded as a projection gate that cannot be omitted: on the microstate space \(\Omega_{m+1}\), naive truncation
 \(
 r_{m+1\to m}:\Omega_{m+1}\to\Omega_m
 \)
-一般不与折叠相容，而折叠感知 restriction
+Generally not compatible with folding, while folding is aware of restriction
 \(
 \widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\in X_m
 \)
-才是跨尺度一致的降分辨率读出（小节 \ref{subsec:fold-omega-restriction}）。
-因此在 ISA/微码抽象中，可把
+is the reduced-resolution readout that is consistent across scales (section \ref{subsec:fold-omega-restriction}).
+So in the ISA/microcode abstraction, we can put
 $$
 \mathrm{RESCALE}\downarrow:\ \Omega_{m+1}\to X_m,\qquad \omega\mapsto \widetilde r_{m+1\to m}(\omega)
 $$
-当作一个原语投影门来计入成本。
+Treated as a primitive projection gate to account for costs.
 \par
-更关键的是：该门的\emph{空间}投影支持规模在最坏情形下是线性的。定义规范差 \(G_m(\omega)\) 为
+More importantly: the gate's \emph{space} projection support scale is linear in the worst case. Define the specification difference \(G_m(\omega)\) â€‹â€‹as
 \(
 |r_{m+1\to m}(\omega)\oplus \widetilde r_{m+1\to m}(\omega)|_0
 \)
-（定义 \ref{def:fold-gauge-anomaly}），则定理 \ref{thm:fold-gauge-anomaly-max} 给出最坏下界 \(G_m^{\max}=m\)。
-并且在均匀微态基线下，其\emph{典型}支持规模同样为线性且具有闭式常数密度：
+(definition \ref{def:fold-gauge-anomaly}), then the theorem \ref{thm:fold-gauge-anomaly-max} gives the worst lower bound \(G_m^{\max}=m\).
+And under the uniform microstate baseline, its \emph{typical} support scale is also linear and has a closed-form constant density:
 \(
 \lim_{m\to\infty}\bar G_m/m=4/9
 \)
-（定理 \ref{thm:fold-gauge-anomaly-density}），因此平均需要触及约 \((4/9)m\) 个外表位。
-若把这一"支持重写量"作为独立的非并行开销项记为 \(T_{\downarrow}(m)\)，则典型情形下
+(Theorem \ref{thm:fold-gauge-anomaly-density}), so on average about \((4/9)m\) â€‹â€‹outer bits need to be touched.
+If this "supported rewrite amount" is recorded as \(T_{\downarrow}(m)\) â€‹â€‹as an independent non-parallel overhead item, then under typical circumstances
 \[
 T_{\downarrow}(m)\ \asymp\ \frac{4}{9}m.
 \]
-这说明"在线延迟为常数"（因果锥长度）并不排除"降一阶分辨率需要触及整条外表寄存器"的最坏情形：两者刻画的是正交的复杂度分量（延迟 vs.\ 总体支持规模）。
+This shows that "online latency is constant" (causal cone length) does not rule out the worst case scenario of "reducing one-order resolution requires touching the entire surface register": the two describe orthogonal complexity components (latency vs. \  â€‹â€‹overall support scale).
 \end{remark}
 
-\begin{remark}[原子投影读出成本]\label{rem:pom-cost-prim}
-若需要读取 primitive 原子层谱，可在成本模型中添加
+\begin{remark}[Atomic projection readout cost]\label{rem:pom-cost-prim}
+If you need to read the primitive atomic layer spectrum, you can add it to the cost model
 \[
 k_{\mathrm{prim}}(I)\,T_{\mathrm{prim}}(n),
 \]
-其中 $T_{\mathrm{prim}}(n)$ 表示轨道层谱的读出或 Möbius 反演深度；对算术指令取 $k_{\mathrm{prim}}=0$。
+Where $T_{\mathrm{prim}}(n)$ â€‹â€‹represents the readout of the orbital layer spectrum or the MÃ¶bius inversion depth; for arithmetic instructions, take $k_{\mathrm{prim}}=0$.
 \end{remark}
 
-\begin{remark}[角色投影门下的时间上界]\label{rem:pom-cost-chi}
-当序读出由 $P_\chi$ 实现时，可用 $\tau_{\mathrm{mix}}$ 作为 $T_{\le}$ 的有效尺度（见注 \ref{rem:pom-chi-mixing}），从而得到
+\begin{remark}[The upper bound of time under the character projection door]\label{rem:pom-cost-chi}
+When the sequence readout is implemented by $P_\chi$, $\tau_{\mathrm{mix}}$ can be used as the effective scale of $T_{\le}$ (see note \ref{rem:pom-chi-mixing}), thus obtaining
 \[
 T_I(n;m)\ \approx\ k_Z(I)\,\delta_Z\ +\ k_\chi(I)\,\tau_{\mathrm{mix}}\ +\ k_{\downarrow}(I)\,T_{\downarrow}(m)\ +\ D_U(n).
 \]
-这给出“投影词 $\Rightarrow$ 非并行开销”的直接量化接口。
+This gives a direct quantified interface to the "projection word $\Rightarrow$ â€‹â€‹non-parallel overhead".
 \end{remark}
 
-\begin{remark}[不可并行开销的三正交指纹（延迟/支持/混合）]\label{rem:pom-nonparallel-three-meters}
-定义 \ref{def:pom-cost} 给出总成本。
-若采取“先验纤维内线性化（尺度/相位/素数寄存器等）为本体结构、可并行展开”的口径，则 $D_U(n)$ 可视为可并行项而不计入\emph{不可并行}开销。
-于是与规模相关且不可通过并行化消去的部分可由下述三项互不替代的指纹刻画：
+\begin{remark}[Tri-orthogonal fingerprint of non-parallel overhead (delayed/supported/hybrid)]\label{rem:pom-nonparallel-three-meters}
+Definition \ref{def:pom-cost} â€‹â€‹gives the total cost.
+If the scope of "a priori intra-fiber linearization (scale/phase/prime registers, etc.) is an ontology structure and can be expanded in parallel", then $D_U(n)$ â€‹â€‹can be regarded as a parallel item and does not include the \emph{non-parallelizable} overhead.
+Therefore, the part that is relevant to scale and cannot be eliminated through parallelization can be characterized by the following three mutually exclusive fingerprints:
 \begin{itemize}
-  \item \textbf{延迟指纹 \(\delta\)：}规范投影门 \(P_Z\) 的最小在线延迟（因果锥长度）。对 Zeckendorf 归一化有
-  \(\delta_{\min}(\Fold_\infty)=3\)（命题 \ref{prop:pom-delay-min}），且增大空间不能将其压到 \(2\)（注 \ref{rem:pom-space-time-orth}）。
-  \item \textbf{支持指纹 \(G_m\)：}跨分辨率降阶/写回纠偏所需触及的外表位数。其最坏情形 \(G_m^{\max}=m\)（定理 \ref{thm:fold-gauge-anomaly-max}），均匀基线下的典型密度极限为
-  \(\lim_{m\to\infty}\bar G_m/m=4/9\)（定理 \ref{thm:fold-gauge-anomaly-density}），从而 \(T_{\downarrow}(m)\asymp (4/9)m\)（注 \ref{rem:pom-rescale-gauge-anomaly}）。
-  \item \textbf{混合指纹 \(\tau_{\mathrm{mix}}\)：}序/同余/角色读出门（\(P_{\le}\) 或其角色化版本 \(P_\chi\)）的收敛尺度。达到误差阈值 \(\varepsilon\) 的必要深度满足
+  \item \textbf{Delay fingerprint \(\delta\):}Specifies the minimum online delay (causal cone length) of projection gate \(P_Z\). For Zeckendorf normalization we have
+  \(\delta_{\min}(\Fold_\infty)=3\) â€‹â€‹(proposition \ref{prop:pom-delay-min}), and increasing the space cannot push it to \(2\) (note \ref{rem:pom-space-time-orth}).
+  \item \textbf{Support fingerprint \(G_m\):} The number of surface digits involved in cross-resolution reduction/writeback correction. Its worst case \(G_m^{\max}=m\) (theorem \ref{thm:fold-gauge-anomaly-max}), the typical density limit under a uniform baseline is
+  \(\lim_{m\to\infty}\bar G_m/m=4/9\) â€‹â€‹(Theorem \ref{thm:fold-gauge-anomaly-density}), thus \(T_{\downarrow}(m)\asymp (4/9)m\) (note \ref{rem:pom-rescale-gauge-anomaly}).
+  \item \textbf{Hybrid Fingerprint \(\tau_{\mathrm{mix}}\):} The convergence scale of the ordinal/congruential/character readout gate (\(P_{\le}\) or its characterized version \(P_\chi\)). The necessary depth to reach the error threshold \(\varepsilon\) is satisfied
   \[
   n\ \gtrsim\ \tau_{\mathrm{mix}}(u)\,\log(1/\varepsilon),
   \qquad
   \tau_{\mathrm{mix}}(u)=\frac{1}{\log(\lambda_1(u)/\Lambda(u))}
   \]
-  （推论 \ref{cor:pom-order-mixing}；注 \ref{rem:pom-order-mixing-scale} 与注 \ref{rem:pom-chi-mixing}）。
+  (Corollary \ref{cor:pom-order-mixing}; note \ref{rem:pom-order-mixing-scale} and note \ref{rem:pom-chi-mixing}).
 \end{itemize}
-在该口径下，“四则与商余”的不可并行差异只表现为投影词中的序门是否出现：若 \(k_{\le}=0\)，则不可并行延迟主项仅为常数 \(\delta_Z\)；
-若语义包含规范解选择（符号、最小非负余数、商余约束 \(0\le r<b\) 等），则必有 \(k_{\le}\ge 1\) 并引入由 \(\tau_{\mathrm{mix}}\) 刻度的增长项。
-若指令显式调用 \(\mathrm{RESCALE}\downarrow\)，则支持指纹 \(G_m\) 给出独立且线性尺度的写回预算。
+Under this scope, the non-parallel difference of "Four Rules and Shang Yu" is only reflected in whether the sequence gate appears in the projection word: if \(k_{\le}=0\), the non-parallel delayed main term is only a constant \(\delta_Z\);
+If the semantics include canonical solution selection (sign, minimum nonnegative remainder, quotient remainder constraints \(0\le r<b\), etc.), then \(k_{\le}\ge 1\) is required and a growing term scaled by \(\tau_{\mathrm{mix}}\) is introduced.
+If the instruction explicitly calls \(\mathrm{RESCALE}\downarrow\), the fingerprint \(G_m\) is supported to give an independent and linearly scaled writeback budget.
 \par
-此外，规范投影门 \(P_Z\) 的\emph{空间}非单射性仍可由碰撞 moment-kernel 的 Perron 根 \(\{r_q\}_{q\ge 2}\)（或压力曲线）作谱级量化（定理 \ref{thm:pom-collision-kernel-ak}）：该谱指纹决定尾部分位与 prime-register 预算证书，但它刻画的是“同像碰撞强度”，不应与上述三类不可并行读出指纹混同。
-一个直接的、可复算的例子是：把输入合法性约束提升为 40 状态真实输入核后，“加法作为一次投影”的空间侧碰撞常数发生显著变化（附录 \S\ref{app:add-collision-spectrum}）。
+In addition, the \emph{space} non-injectivity of the canonical projection gate \(P_Z\) can still be spectrally quantified by the Perron root \(\{r_q\}_{q\ge 2}\) (or the pressure curve) of the collision moment-kernel (theorem \ref{thm:pom-collision-kernel-ak}): This spectral fingerprint determines the tail position and the prime-register Budget certificate, but it describes the "same image collision intensity" and should not be confused with the above three types of fingerprints that cannot be read in parallel.
+A direct and recomputable example is: after raising the input legality constraint to a 40-state real input kernel, the space side collision constant of "addition as a projection" changes significantly (Appendix \S\ref{app:add-collision-spectrum}).
 \end{remark}
 
-\subsection{带参数的投影词 \texorpdfstring{$2$}{2}-范畴与可审计重写}\label{subsec:pom-2cat-rewrite}
-\paragraph{目标}
-投影词半群 $\mathcal W$（定义 \ref{def:pom-projection-word}）提供了“词法计数”，指令签名 $\Sigma$（定义 \ref{def:pom-instruction-signature}）提供了“可审计不变量”。
-要得到可推演的演算学，还需把“可重写、可判等、可估价”收束为一个统一系统：重写在词法/编译层闭合，判等与估价在谱指纹层完成。
+\subsection{Projected words with parameters \texorpdfstring{$2$}{2}-Category and auditable rewriting}\label{subsec:pom-2cat-rewrite}
+\paragraph{target}
+The projected word semigroup $\mathcal W$ â€‹â€‹(definition \ref{def:pom-projection-word}) provides the "lexical counting", and the instruction signature $\Sigma$ (definition \ref{def:pom-instruction-signature}) provides the "auditable invariant".
+To obtain a calculus that can be deduced, it is necessary to consolidate "rewriteable, judgeable, and evaluable" into a unified system: rewriting is closed at the lexical/compilation level, and judgment and evaluation are completed at the spectral fingerprint level.
 
-\begin{definition}[带参数的投影词 \texorpdfstring{$2$}{2}-范畴]\label{def:pom-projword-2cat}
-定义一个（弱）$2$-范畴 $\mathbf{PW}$（projection-word）如下：
+\begin{definition}[Projected word with parameters \texorpdfstring{$2$}{2}-category]\label{def:pom-projword-2cat}
+Define a (weak) $2$-category $\mathbf{PW}$ (projection-word) as follows:
 \begin{itemize}
-  \item \textbf{对象（带类型的接口）：}一个对象可取为三元接口
+  \item â€‹â€‹\textbf{Object (typed interface):} An object can be a ternary interface
   \[
   \mathcal{I}(m;K;\kappa),
   \]
-  其中 $m$ 为分辨率（窗口长度/截断尺度），$K$ 为机制核（同步核、真实输入核、碰撞核等），$\kappa$ 为边势/可观测（事件势、角色势、同余标签或 cocycle）。该对象等价于“读出层与纤维配置”的带参化版本：它把“在哪个尺度上、用哪个核、读哪个可观测”固定为类型，从而把后续投影词的复合约束为可检查的类型匹配。
-  \item \textbf{$1$-态射：}由生成元与其参数标注组成的投影词（允许有限复合）：
+  Among them, $m$ â€‹â€‹is the resolution (window length/truncation scale), $K$ is the mechanism kernel (synchronization kernel, real input kernel, collision kernel, etc.), $\kappa$ is the edge potential/observable (event potential, actor potential, congruence label or cocycle). This object is equivalent to a parameterized version of "readout layer and fiber configuration": it fixes "at which scale, which kernel to use, which observable to read" as a type, thus constraining the composition of subsequent projection words into a checkable type match.
+  \item \textbf{$1$-morphism:}A projection word consisting of generators and their parameter annotations (limited composition allowed):
   \[
   \{\ P_Z,\ P_{\le},\ P_\chi,\ P_{\mathrm{prim}},\ E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{MOM}_q,\ \mathrm{TWIST}(\chi),\ U\ \}
   \]
-  其中 $E_m$ 为条件期望接口（定义 \ref{def:pom-proj-norm}），$\mathrm{PROJ}_u$ 为软序门（定义 \ref{def:pom-proj-temp}），$\mathrm{LIFT}_G$ 为群扩张/标记提升门（见第 \ref{sec:zeta-finite-part} 节的群扩张接口），$\mathrm{MOM}_q$（$q\ge2$）为 $q$-重碰撞/矩提升门：把一个折叠/读出核编译为其 $q$-重 fiber-product moment-kernel，从而读出高阶碰撞矩 \(S_q(m)=\sum_x d_m(x)^q\) 的线性递推与 Perron 主尺度（见定理 \ref{thm:pom-collision-kernel-ak}）。与 \(\mathrm{TWIST}(\chi)\) 一起，\(\mathrm{MOM}_q\) 构成将“词法重写”提升为“可计算谱指纹/资源预算”的最小谱门接口。其余为本文的投影门族（定义 \ref{def:pom-proj-norm}--\ref{def:pom-proj-chi}）。
-  \item \textbf{$2$-态射：}由“可审计结构事实”给出的重写证书（等式/同构），包括但不限于：
+  Among them, $E_m$ is the conditional expectation interface (definition \ref{def:pom-proj-norm}), $\mathrm{PROJ}_u$ is the soft sequence gate (definition \ref{def:pom-proj-temp}), $\mathrm{LIFT}_G$ is the group expansion/marking lift gate (see \ref{sec:zeta-finite-part} section's group expansion interface), $\mathrm{MOM}_q$ ($q\ge2$) is a $q$-heavy collision/moment lifting gate: compiles a folding/readout kernel into its $q$-heavy fiber-product moment-kernel, thereby reading out the linear recurrence of higher-order collision moments \(S_q(m)=\sum_x d_m(x)^q\) with the Perron principal scale (see theorem \ref{thm:pom-collision-kernel-ak}). Together with \(\mathrm{TWIST}(\chi)\), \(\mathrm{MOM}_q\) constitutes the minimal spectrum gate interface that promotes "lexical rewriting" to "computable spectrum fingerprint/resource budget". The rest are the projection gate families of this paper (definition \ref{def:pom-proj-norm}--\ref{def:pom-proj-chi}).
+  \item \textbf{$2$-morphism:} Rewriting certificates (equalities/isomorphisms) given by â€œauditable structural factsâ€, including but not limited to:
   \begin{enumerate}
-    \item 幂等与塔式关系：$P_Z\circ P_Z=P_Z$，以及 $E_{m_1}\circ E_{m_2}=E_{m_1}$（条件期望塔性质）；
-    \item 时间—空间交换图：$Z=E\circ M\circ T$（命题 \ref{prop:time-space-commuting-diagram}），把 $\det(I-zT)^{-1}$ 与 primitive/Euler 乘积的两条实现路径严格对齐；
-    \item 群扩张分解：对 abelian 标记扩张，$\mathrm{LIFT}_G$ 的行列式/谱对象可在角色上分解并由 $\mathrm{TWIST}(\chi)$ 的族读出（第 \ref{sec:zeta-finite-part} 节的 DFT/扭曲接口）；
-    \item 高阶矩核编译：对任意 \(q\ge2\)，$\mathrm{MOM}_q$ 产生的 moment-kernel 在有限状态上闭合，从而 \(S_q(m)\) 可写为有限矩阵幂的读出并满足有限阶整系数递推；其主指数由 Perron 根 \(r_q\) 给出（定理 \ref{thm:pom-collision-kernel-ak}）。
-    \item 硬序门作为零温极限：$P_{\le}$ 可视为 $\mathrm{PROJ}_u$ 在 $u\to 0$ 的硬化极限（注 \ref{rem:pom-order-as-zero-temp}），其“极限退化”提供一类可检验的渐近重写规则。
+    \item Idempotent and tower relationship: $P_Z\circ P_Z=P_Z$, and $E_{m_1}\circ E_{m_2}=E_{m_1}$ (conditional expectation tower property);
+    \item Time-space exchange diagram: $Z=E\circ M\circ T$ â€‹â€‹(proposition \ref{prop:time-space-commuting-diagram}), strictly align the two implementation paths of $\det(I-zT)^{-1}$ and primitive/Euler product;
+    \item Group expansion decomposition: For abelian label expansion, the determinant/spectrum object of $\mathrm{LIFT}_G$ â€‹â€‹can be decomposed on the character and read out by the family of $\mathrm{TWIST}(\chi)$ (DFT/Twisted Interface in Section \ref{sec:zeta-finite-part});
+    \item High-order moment kernel compilation: For any \(q\ge2\), the moment-kernel generated by $\mathrm{MOM}_q$ â€‹â€‹is closed in a finite state, so that \(S_q(m)\) can be written as a readout of a finite matrix power and satisfies finite-order integer coefficient recursion; its principal exponent is given by the Perron root \(r_q\) (theorem \ref{thm:pom-collision-kernel-ak}).
+    \item Hard sequence gate as zero-temperature limit: $P_{\le}$ â€‹â€‹can be regarded as the hardened limit of $\mathrm{PROJ}_u$ at $u\to 0$ (note \ref{rem:pom-order-as-zero-temp}), and its "limit degradation" provides a class of testable asymptotic rewriting rules.
   \end{enumerate}
 \end{itemize}
-将这些 $2$-态射视为“可证明等价/可交换的编译变换”，即可在 $\mathbf{PW}$ 中进行带证书的重写。
+Think of these $2$-morphisms as "provably equivalent/commutative compilation transformations" that can be rewritten with certificates in $\mathbf{PW}$.
 \end{definition}
 
-\begin{remark}[三门 + 两谱门：最小可推演片段]\label{rem:pom-pw-star-fragment}
-在本文后续的“正规形—异常—空间谱—零温证书”闭环中，反复出现的最小生成片段可记为
+\begin{remark}[Three gates + two spectrum gates: the smallest deducible fragment]\label{rem:pom-pw-star-fragment}
+In the subsequent closed loop of "normal shape - anomaly - space spectrum - zero temperature certificate" In this paper, the recurring minimum generated fragment can be recorded as
 \[
 \mathbf{PW}^{\ast}:=\langle E_m,\ \mathrm{PROJ}_u,\ \mathrm{LIFT}_G,\ \mathrm{TWIST}(\chi),\ \mathrm{MOM}_q\rangle\subseteq \mathbf{PW}.
 \]
-其中 \(E_m,\mathrm{PROJ}_u,\mathrm{LIFT}_G\) 给出分辨率读出、温度化序门与群扩张三条接口轴；
-而 \(\mathrm{TWIST}(\chi)\) 与 \(\mathrm{MOM}_q\) 则把交换失败/尾部放大等“残差”对象化为可计算谱指纹（\(\log\mathfrak{M}_\chi\)、\(\rho_\chi/\lambda\)、\(r_q(u)\)、\(P(q,u)\)）。
-因此在 \(\mathbf{PW}^{\ast}\) 上，一个“算法等价”既可在词法层以正规形与 \(2\)-态射证书呈现，也可在谱层以异常签名与资源曲线交叉核验（见 \S\ref{subsec:pom-three-generator-residual-closure}、\S\ref{subsec:pom-spectral-resource-type}、\S\ref{subsec:pom-proj-tropicalization}）。
+Among them, \(E_m,\mathrm{PROJ}_u,\mathrm{LIFT}_G\) â€‹â€‹provides three interface axes: resolution readout, temperature sequence gate and group expansion;
+\(\mathrm{TWIST}(\chi)\) â€‹â€‹and \(\mathrm{MOM}_q\) objectify "residual errors" such as exchange failure/tail amplification into computable spectral fingerprints (\(\log\mathfrak{M}_\chi\), \(\rho_\chi/\lambda\), \(r_q(u)\), \(P(q,u)\)).
+Therefore, on \(\mathbf{PW}^{\ast}\), an "algorithmic equivalence" can be presented in normal form with \(2\)-morphism certificates at the lexical level, or cross-checked with anomaly signatures and resource curves at the spectral level (see \S\ref{subsec:pom-three-generator-residual-closure}, \S\ref{subsec:pom-spectral-resource-type}, \S\ref{subsec:pom-proj-tropicalization}).
 \end{remark}
 
-\begin{definition}[\texorpdfstring{$\varepsilon$}{eps}-sound 的近似重写证书（误差预算）]\label{def:pom-eps-sound-rewrite}
-固定对象 \(\mathcal{I}(m;K;\kappa)\)，并约定其携带一份参考抽样分布 \(\mathbb{P}_{\mathcal I}\)
-（典型例子：折叠输出基线 \(X\sim\pi_m\)；温度门口径下由 Gibbs/Parry 平衡态诱导的推前分布）。
-对任意同型的投影词 \(w,w'\)（同源同靶），把它们在该接口与抽样分布下诱导的可见读出记为随机变量
+\begin{definition}[\texorpdfstring{$\varepsilon$}{eps}-soundâ€™s approximate rewrite certificate (error budget)]\label{def:pom-eps-sound-rewrite}
+Fixed object \(\mathcal{I}(m;K;\kappa)\) â€‹â€‹and agreed that it carries a reference sampling distribution \(\mathbb{P}_{\mathcal I}\)
+(Typical example: folded output baseline \(X\sim\pi_m\); push-forward distribution induced by Gibbs/Parry equilibrium state under temperature gate diameter).
+For any projection words of the same type \(w,w'\) â€‹â€‹(homogeneous and same target), record the visible reads induced by them under the interface and sampling distribution as random variables
 \(
 Y_w,Y_{w'}.
 \)
-若存在坏事件 \(E\) 满足 \(\mathbb{P}_{\mathcal I}[E]\le \varepsilon\)，并且在 \(E^c\) 上有 \(Y_w=Y_{w'}\) 几乎处处成立，
-则称存在一个 \textbf{\(\varepsilon\)-sound} 的近似重写证书，记为
+If there is a bad event \(E\) â€‹â€‹that satisfies \(\mathbb{P}_{\mathcal I}[E]\le \varepsilon\), and \(Y_w=Y_{w'}\) is true almost everywhere on \(E^c\),
+Then it is said that there is an approximate rewrite certificate of \textbf{\(\varepsilon\)-sound}, denoted as
 $$
 w\ \Longrightarrow_{\varepsilon}\ w'.
 $$
-当 \(\varepsilon=0\) 时，该定义退化为 exact 重写证书。
+When \(\varepsilon=0\) â€‹â€‹this definition degenerates into an exact rewrite certificate.
 \end{definition}
 
-\begin{proposition}[误差预算的可加复合律]\label{prop:pom-eps-sound-compose}
-若 \(w\Longrightarrow_{\varepsilon}w'\) 且 \(w'\Longrightarrow_{\delta}w''\)，则 \(w\Longrightarrow_{\varepsilon+\delta}w''\)。
-因此沿任意有限重写轨迹 \(w=w_0\Rightarrow w_1\Rightarrow\cdots\Rightarrow w_r=w'\)，若第 \(i\) 步的预算为 \(\varepsilon_i\)，则整体失败概率满足
+\begin{proposition}[Additive composite law of error budget]\label{prop:pom-eps-sound-compose}
+If \(w\Longrightarrow_{\varepsilon}w'\) â€‹â€‹and \(w'\Longrightarrow_{\delta}w''\), then \(w\Longrightarrow_{\varepsilon+\delta}w''\).
+Therefore, along any finite rewriting trajectory \(w=w_0\Rightarrow w_1\Rightarrow\cdots\Rightarrow w_r=w'\), if the budget of step \(i\) is \(\varepsilon_i\), the overall failure probability satisfies
 \[
 \varepsilon_{\mathrm{tot}}\ \le\ \sum_{i=1}^{r}\varepsilon_i.
 \]
 \end{proposition}
 \begin{proof}
-取对应坏事件 \(E_1,E_2\)。
-在 \(E_1^c\cap E_2^c\) 上有 \(Y_w=Y_{w'}=Y_{w''}\)，故坏事件可取 \(E_1\cup E_2\)，其概率不超过 \(\varepsilon+\delta\)。证毕。
+Get the corresponding bad event \(E_1,E_2\).
+There is \(Y_w=Y_{w'}=Y_{w''}\) on \(E_1^c\cap E_2^c\), so the bad event is \(E_1\cup E_2\), and its probability does not exceed \(\varepsilon+\delta\). Certification completed.
 \end{proof}
 
-\begin{definition}[最小预算距离（Lawvere 距离）]\label{def:pom-eps-distance}
-固定对象 \(\mathcal{I}(m;K;\kappa)\) 与其参考抽样分布 \(\mathbb{P}_{\mathcal I}\)（定义 \ref{def:pom-eps-sound-rewrite}）。
-对任意同型的投影词 \(w_1,w_2\)（同源同靶），定义其\textbf{最小预算距离}为
+\begin{definition}[Minimum budget distance (Lawvere distance)]\label{def:pom-eps-distance}
+Fixed object \(\mathcal{I}(m;K;\kappa)\) â€‹â€‹with its reference sampling distribution \(\mathbb{P}_{\mathcal I}\) (defining \ref{def:pom-eps-sound-rewrite}).
+For any projection word \(w_1,w_2\) â€‹â€‹of the same type (same origin and same target), define its \textbf{minimum budget distance} as
 \[
 \boxed{\;
 d_{\mathcal I}(w_1,w_2)
 :=
 \inf\{\varepsilon\ge 0:\ w_1\Longrightarrow_{\varepsilon} w_2\}\;}
 \]
-并约定当集合为空时 \(d_{\mathcal I}(w_1,w_2)=+\infty\)。
+And it is agreed that when the collection is empty \(d_{\mathcal I}(w_1,w_2)=+\infty\).
 \end{definition}
 
-\begin{proposition}[预算范畴化：最小预算给出内禀距离]\label{prop:pom-eps-distance-lawvere}
-在定义 \ref{def:pom-eps-distance} 的记号下，对任意同源同靶的投影词 \(w_1,w_2,w_3\) 有
+\begin{proposition}[Budget categorization: the minimum budget gives the intrinsic distance]\label{prop:pom-eps-distance-lawvere}
+Under the notation defining \ref{def:pom-eps-distance}, for any projection word \(w_1,w_2,w_3\) â€‹â€‹with the same origin and same target, we have
 \[
 \boxed{\;
 d_{\mathcal I}(w,w)=0,\qquad
 d_{\mathcal I}(w_1,w_3)\ \le\ d_{\mathcal I}(w_1,w_2)+d_{\mathcal I}(w_2,w_3)\; }.
 \]
-因此每个同态类 \(\mathbf{PW}(A,B)\) 在 \(d_{\mathcal I}\) 下带有一个（一般非对称的）Lawvere 距离结构：预算的可加复合律被内化为距离的三角不等式。
+Thus every homomorphic class \(\mathbf{PW}(A,B)\) â€‹â€‹has a (generally asymmetric) Lawvere distance structure under \(d_{\mathcal I}\): the additive composite law of budget is internalized into the triangle inequality of distance.
 \end{proposition}
 \begin{proof}
-取 \(E=\varnothing\) 得 \(w\Longrightarrow_0 w\)，故 \(d_{\mathcal I}(w,w)=0\)。
+Taking \(E=\varnothing\) â€‹â€‹we get \(w\Longrightarrow_0 w\), so \(d_{\mathcal I}(w,w)=0\).
 \par
-对三角不等式，任取 \(\eta_1>d_{\mathcal I}(w_1,w_2)\)、\(\eta_2>d_{\mathcal I}(w_2,w_3)\)。
-按下确界的定义，存在证书 \(w_1\Longrightarrow_{\eta_1} w_2\) 与 \(w_2\Longrightarrow_{\eta_2} w_3\)；
-由命题 \ref{prop:pom-eps-sound-compose} 得 \(w_1\Longrightarrow_{\eta_1+\eta_2} w_3\)，从而
+For triangle inequalities, take any \(\eta_1>d_{\mathcal I}(w_1,w_2)\), \(\eta_2>d_{\mathcal I}(w_2,w_3)\).
+According to the definition of the boundary, there are certificates \(w_1\Longrightarrow_{\eta_1} w_2\) â€‹â€‹and \(w_2\Longrightarrow_{\eta_2} w_3\);
+From the proposition \ref{prop:pom-eps-sound-compose} we get \(w_1\Longrightarrow_{\eta_1+\eta_2} w_3\), so
 \(
 d_{\mathcal I}(w_1,w_3)\le \eta_1+\eta_2
-\)。
-令 \(\eta_1,\eta_2\downarrow\) 即得结论。证毕。
+\)ã€‚
+Let \(\eta_1,\eta_2\downarrow\) â€‹â€‹get the conclusion. Certification completed.
 \end{proof}
 
-\begin{remark}[Lawvere 富化口径：\texorpdfstring{$\mathbf{PW}_\varepsilon$}{PW\_eps}]\label{rem:pom-pw-eps-lawvere}
-将 \(\varepsilon\)-sound 证书 \(w\Longrightarrow_\varepsilon w'\) 视为带预算的 \(2\)-态射，并以最小预算距离 \(d_{\mathcal I}\)（定义 \ref{def:pom-eps-distance}）作为同态类上的内禀结构，则对固定接口 \(\mathcal I\)：
+\begin{remark}[Lawvere enriched scope: \texorpdfstring{$\mathbf{PW}_\varepsilon$}{PW\_eps}]\label{rem:pom-pw-eps-lawvere}
+Treating the \(\varepsilon\)-sound certificate \(w\Longrightarrow_\varepsilon w'\) as a \(2\)-morphism with budget, and taking the minimum budget distance \(d_{\mathcal I}\) (defining \ref{def:pom-eps-distance}) as the intrinsic structure on the homomorphic class, then for the fixed interface \(\mathcal I\):
 \begin{itemize}
-  \item \textbf{预算合成律}（命题 \ref{prop:pom-eps-sound-compose}）等价于 \(d_{\mathcal I}\) 的三角不等式（命题 \ref{prop:pom-eps-distance-lawvere}）；
-  \item \textbf{非对称性}允许把“可实现的近似编译”组织为有向距离（Lawvere 距离），无需强加对称性假设。
+  \item \textbf{Budget synthesis law} (Proposition \ref{prop:pom-eps-sound-compose}) is equivalent to the triangle inequality of \(d_{\mathcal I}\) â€‹â€‹(Proposition \ref{prop:pom-eps-distance-lawvere});
+  \item â€‹â€‹\textbf{Asymmetry} allows "realizable approximate compilation" to be organized as directed distances (Lawvere distances) without imposing symmetry assumptions.
 \end{itemize}
-在该意义下，投影词演算可被视为一个以 \((\overline{\RR}_{\ge 0},\ge,+,0)\) 为基底的 Lawvere 富化 \(2\)-范畴（记作 \(\mathbf{PW}_\varepsilon\)）：证书与预算不再作为外部叙述附加于输出，而被内化为范畴结构数据。
+In this sense, the projected word calculus can be regarded as a Lawvere enriched \(2\)-category (denoted as \(\mathbf{PW}_\varepsilon\)) based on \((\overline{\RR}_{\ge 0},\ge,+,0)\): certificates and budgets are no longer attached to the output as external narratives, but are internalized as category structure data.
 \end{remark}
 
-\begin{remark}[编译输出作为 \texorpdfstring{$(w',\varepsilon)$}{(w',eps)}]\label{rem:pom-compile-output-word-eps}
-在工程口径下，一个“带证书”的编译过程往往输出一条正规化后的词 \(w'\) 以及其相对于原词 \(w\) 的总误差预算 \(\varepsilon\)：
-这正对应于在 \(\mathbf{PW}\) 中构造一条 \(2\)-态射证书 \(w\Longrightarrow_{\varepsilon} w'\)。
-本文后续的分位预算与 prime-register 设计正是为“从 side condition 生成 \(\varepsilon\)-sound 证书”服务（见 \S\ref{subsec:pom-quantile-budget-law}）。
+\begin{remark}[Compile output as \texorpdfstring{$(w',\varepsilon)$}{(w',eps)}]\label{rem:pom-compile-output-word-eps}
+Under engineering standards, a "certified" compilation process often outputs a normalized word \(w'\) â€‹â€‹and its total error budget \(\varepsilon\) relative to the original word \(w\):
+This corresponds to constructing an \(2\)-morphism certificate \(w\Longrightarrow_{\varepsilon} w'\) in \(\mathbf{PW}\).
+The quantile budget and prime-register design that follows this paper serve exactly to "generate \(\varepsilon\)-sound certificate from side condition" (see \S\ref{subsec:pom-quantile-budget-law}).
 \end{remark}
 
-\paragraph{局部可终止/可合流的重写片段（读出冗余的正规形）}
-\begin{definition}[读出塔重写系统]\label{def:pom-rewrite-E-tower}
-在 $\mathbf{PW}$ 的生成元中，取仅由条件期望门与规范投影门生成的局部子片段
+\paragraph{Partially terminable/confluent rewrite fragment (read redundant normal form)}
+\begin{definition}[Read Tower Rewriting System]\label{def:pom-rewrite-E-tower}
+In the generator of $\mathbf{PW}$, take the local subfragments generated only by the conditional expectation gate and the canonical projection gate
 \[
 \mathbf{PW}_{Z,E}:=\langle P_Z,\ \{E_m\}_{m\ge 1}\rangle.
 \]
-定义其上的重写规则族为：
+Define the above rewrite rule family as:
 \begin{enumerate}
-  \item \textbf{(R$_Z$) 幂等缩并：} $P_Z\circ P_Z\Rightarrow P_Z$；
-  \item \textbf{(R$_E$) 条件期望塔缩并：} 若 $m_2\ge m_1$，则 $E_{m_1}\circ E_{m_2}\Rightarrow E_{m_1}$。
+  \item \textbf{(R$_Z$) Idempotent reduction:} $P_Z\circ P_Z\Rightarrow P_Z$;
+  \item \textbf{(R$_E$) Conditional expectation tower contraction:} If $m_2\ge m_1$, then $E_{m_1}\circ E_{m_2}\Rightarrow E_{m_1}$.
 \end{enumerate}
 \end{definition}
 
-\begin{theorem}[读出塔重写的终止性与合流性（局部正规形）]\label{thm:pom-rewrite-termination-confluence}
-在重写系统 \ref{def:pom-rewrite-E-tower} 下，任意 $\mathbf{PW}_{Z,E}$-投影词都：
+\begin{theorem}[Read the termination and confluence of tower rewriting (local normal form)]\label{thm:pom-rewrite-termination-confluence}
+Under the rewrite system \ref{def:pom-rewrite-E-tower}, any $\mathbf{PW}_{Z,E}$-projected word is:
 \begin{enumerate}
-  \item \textbf{终止：}不存在无限重写链；
-  \item \textbf{（局部）合流：}任意两条重写序列最终可汇合到同一不可约词；
-  \item \textbf{正规形唯一：}对任意仅含 $\{E_m\}$ 的复合词，其正规形唯一且等于单个 $E_{m_\star}$，其中 $m_\star$ 为该词中出现的最小分辨率指标；对含 $P_Z$ 的词，其正规形至多含一个 $P_Z$ 因子。
+  \item â€‹â€‹\textbf{Termination:} There is no infinite rewrite chain;
+  \item â€‹â€‹\textbf{(Partial) Confluence:} Any two rewriting sequences can eventually converge to the same irreducible word;
+  \item \textbf{Unique in normal form:} For any compound word containing only $\{E_m\}$, its normal form is unique and equal to a single $E_{m_\star}$, where $m_\star$ is the minimum resolution index appearing in the word; for words containing $P_Z$, its normal form contains at most one $P_Z$ factor.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-\textbf{终止性：}对任意词，定义度量
+\textbf{Termination:}For any word, define the metric
 \[
-\mu(W):=\bigl(\#P_Z(W)+\#E(W),\ \min\{m:\ E_m\ \text{出现在}\ W\}\bigr)\in\NN\times(\NN\cup\{+\infty\})
+\mu(W):=\bigl(\#P_Z(W)+\#E(W),\ \min\{m:\ E_m\ @@T K3@@{Appears in}\ W\}\bigr)\in\NN\times(\NN\cup\{+\infty\})
 \]
-并按字典序比较。规则 (R$_Z$) 与 (R$_E$) 都严格减少 $\#P_Z+\#E$，因此不存在无限重写链。
+And compare lexicographically. Rules (R$_Z$) and (R$_E$) both strictly reduce $\#P_Z+\#E$, so there is no infinite rewrite chain.
 
-\textbf{合流性与正规形：}在 $\{E_m\}$ 片段中，任意二元相邻子词都可由 (R$_E$) 缩并为较小指标的 $E$；因此任意重写都只可能把词逐步缩并到“仅剩一个最小指标”的形式。由于塔性质本身给出等式 $E_{m_1}\circ E_{m_2}=E_{m_1}$（条件期望塔性质），不同缩并顺序对应同一复合算子，故不可约正规形唯一。含 $P_Z$ 的情形同理：幂等缩并把多余的 $P_Z$ 归并为一个。证毕。
+\textbf{Convergence and regular form:} In the $\{E_m\}$ â€‹â€‹fragment, any binary adjacent subword can be condensed by (R$_E$) into $E$ with a smaller index; therefore, any rewriting can only gradually condense the word to the form of "only one minimal index remains". Since the tower property itself gives the equation $E_{m_1}\circ E_{m_2}=E_{m_1}$ (conditional expectation tower property), different contraction orders correspond to the same composite operator, so the irreducible regular form is unique. The same goes for the case containing $P_Z$: idempotent reduction and merging the redundant $P_Z$ into one. Certification completed.
 \end{proof}
 
-\begin{proposition}[半环闭包内的判等性：正规形 \texorpdfstring{$\Rightarrow$}{=>} 可判定词问题]\label{prop:pom-projword-decidable}
-在片段 $\mathbf{PW}_{Z,E}$ 上，$1$-态射（投影词）的等价关系（由 $2$-态射给出的可重写等式闭包）是可判定的：给定任意两词 $W_1,W_2\in\mathbf{PW}_{Z,E}$，计算其在重写系统 \ref{def:pom-rewrite-E-tower} 下的不可约正规形 $N(W_1),N(W_2)$，则
+\begin{proposition}[Identity in semi-ring closure: regular form \texorpdfstring{$\Rightarrow$}{=>} decidable word problem]\label{prop:pom-projword-decidable}
+On the fragment $\mathbf{PW}_{Z,E}$, the equivalence relation (rewriteable equality closure given by the $2$-morphism) of $1$-morphisms (projected words) is decidable: given any two words $W_1,W_2\in\mathbf{PW}_{Z,E}$, calculate their irreducible regular form $N(W_1),N(W_2)$ under the rewriting system \ref{def:pom-rewrite-E-tower}, then
 \[
 W_1\ \simeq\ W_2\quad\Longleftrightarrow\quad N(W_1)=N(W_2),
 \]
-从而词问题可在多项式时间内解决（正规化仅需逐步缩并相邻子词）。
+The word problem can thus be solved in polynomial time (regularization requires only progressive contraction of adjacent subwords).
 \end{proposition}
 \begin{proof}
-由定理 \ref{thm:pom-rewrite-termination-confluence}，重写系统终止且（局部）合流，因此每个词存在且仅存在一个不可约正规形；并且两词等价当且仅当它们可重写到同一正规形。证毕。
+According to the theorem \ref{thm:pom-rewrite-termination-confluence}, the rewriting system terminates and merges (locally), so each word exists and only has one irreducible normal form; and two words are equivalent if and only if they can be rewritten to the same normal form. Certification completed.
 \end{proof}
 
-\begin{remark}[可计算实现：读出塔正规化器]\label{rem:pom-projword-normalizer-script}
-脚本 \texttt{scripts/exp\_pom\_projword\_ze\_normalizer.py} 给出 $\mathbf{PW}_{Z,E}$ 片段的一个最小可复现正规化器：输入一个由符号 \texttt{PZ} 与 \texttt{E[m]} 组成的复合词（按从左到右的复合顺序），输出按 (R$_Z$),(R$_E$) 缩并后的正规形。
-这提供“算法等价 \(\Rightarrow\) 投影词等价”的最小可执行原型：在该片段中，等价性完全由正规形决定。
+\begin{remark}[Computable implementation: readout tower normalizer]\label{rem:pom-projword-normalizer-script}
+Script \texttt{scripts/exp\_pom\_projword\_ze\_normalizer.py} gives a minimally reproducible normalizer for the $\mathbf{PW}_{Z,E}$ fragment: input a vector consisting of the symbols \texttt{PZ} and \texttt{E[m]} Compound words composed of (in compound order from left to right), output the regular form after contraction according to (R$_Z$), (R$_E$).
+This provides a minimal executable prototype of "algorithmic equivalence \(\Rightarrow\) â€‹â€‹projected word equivalence": in this fragment, equivalence is determined entirely by the canonical form.
 \end{remark}
 
-\begin{remark}[split-epi 扩展片段的可计算正规化器：\texorpdfstring{$\mathbf{PW}_{Z,E,P,Q}$}{PW_{Z,E,P,Q}}]\label{rem:pom-projword-zepq-normalizer-script}
-在分辨率 \(m\) 上，折叠推前 \(P_m:=(\Fold_m)_*\) 与纤维均匀提升 \(Q_m\) 满足 split-epi 恒等式
+\begin{remark}[split-epi Computable regularizer for extended fragments: \texorpdfstring{$\mathbf{PW}_{Z,E,P,Q}$}{PW_{Z,E,P,Q}}]\label{rem:pom-projword-zepq-normalizer-script}
+At the resolution \(m\), folding forward \(P_m:=(\Fold_m)_*\) and fibers uniformly promoted \(Q_m\) satisfy the split-epi identity
 \(
 P_m\circ Q_m=\mathrm{id}
 \)
-（见 \S\ref{subsec:pom-information-ledger} 及定理 \ref{thm:pom-fiber-reflector}）。
-令 \(K_m:=Q_m\circ P_m\) 为纤维反射子，则 \(K_m^2=K_m\)，并且 \(P_m\circ K_m=P_m\)、\(K_m\circ Q_m=Q_m\)。
+(See \S\ref{subsec:pom-information-ledger} â€‹â€‹and theorem \ref{thm:pom-fiber-reflector}).
+Let \(K_m:=Q_m\circ P_m\) â€‹â€‹be the fiber reflecton, then \(K_m^2=K_m\), and \(P_m\circ K_m=P_m\), \(K_m\circ Q_m=Q_m\).
 \par
-脚本 \texttt{scripts/exp\_pom\_projword\_zepq\_normalizer.py} 给出包含这些局部规则的一个可执行正规化器：输入由 \texttt{PZ}, \texttt{E[m]}, \texttt{P[m]}, \texttt{Q[m]}, \texttt{K[m]} 组成的复合词，按局部重写规则将其缩并到不可约正规形。
-该实现提供一个更贴近投影词范畴的形式结构的可复现原型：在读出塔规则之外，把 split-epi（推前/提升对偶）也纳入可推迟执行与冗余消除的可计算重写框架。
+The script \texttt{scripts/exp\_pom\_projword\_zepq\_normalizer.py} gives an executable normalizer containing these local rules: input is \texttt@{PZ}, \texttt{E[m]}, \texttt{P[m]}, Compound words composed of \texttt{Q[m]}, \texttt{K[m]} are condensed into irreducible regular forms according to local rewriting rules.
+This implementation provides a reproducible prototype of a formal structure closer to the projected word category: in addition to the reading tower rules, split-epi (push ahead/boost duality) is also incorporated into a computable rewriting framework that can defer execution and eliminate redundancy.
 \end{remark}
 
-\begin{remark}[边界：序投影 \texorpdfstring{$P_{\le}$}{P<=} 不属于局部可消去片段]\label{rem:pom-rewrite-boundary-order}
-定理 \ref{thm:pom-rewrite-termination-confluence} 只处理“局部 coarse-graining 冗余”的可终止片段。
-一旦投影词中出现 $P_{\le}$（或其实现 $\mathrm{PROJ}_u$ 的零温硬化极限），其读出往往依赖跨窗口聚合（定义 \ref{def:pom-proj-order}），不再具有由分辨率指标单调下降所控制的缩并度量；因此 $P_{\le}$ 是投影词演算学中的结构性边界：它标记了不可并行增长项的进入点，而非可被局部重写消去的冗余。
+\begin{remark}[Boundary: sequential projection \texorpdfstring{$P_{\le}$}{P<=} is not a locally deletable segment]\label{rem:pom-rewrite-boundary-order}
+Theorem \ref{thm:pom-rewrite-termination-confluence} â€‹â€‹only deals with terminable fragments of "local coarse-graining redundancy".
+Once $P_{\le}$ â€‹â€‹(or the zero-temperature hardening limit of its implementation $\mathrm{PROJ}_u$) appears in a projection word, its readout often relies on cross-window aggregation (defining \ref{def:pom-proj-order}) and no longer has a shrinkage metric controlled by a monotonic decrease in the resolution index; therefore $P_{\le}$ is a structural boundary in the projection word calculus: it marks the entry point of non-parallelizable growth terms, rather than redundancy that can be eliminated by local rewriting.
 \end{remark}
 
-\begin{definition}[签名函子与投影门估价]\label{def:pom-sigma-functor}
-把指令签名 $\Sigma$（定义 \ref{def:pom-instruction-signature}）从“指令集合”提升为 $\mathbf{PW}$ 上的一个（弱）$2$-函子
+\begin{definition}[Signature Functor and Projection Gate Valuation]\label{def:pom-sigma-functor}
+Promote the instruction signature $\Sigma$ â€‹â€‹(defining \ref{def:pom-instruction-signature}) from a "set of instructions" to a (weak) $2$-functor on $\mathbf{PW}$
 \[
 \Sigma:\mathbf{PW}\to \mathbf{Inv},
 \]
-其在 $1$-态射上取值为
+Its value on $1$-morphism is
 \(
 \Sigma(I)=(W(I),\mathfrak F(K_Z(I)),\mathfrak F(K_{\le}(I)),\mathcal F(I))
 \)
-（或以 $K_\chi$ 取代 $K_{\le}$），并把 $2$-态射（重写证书）送到恒等同构（即“重写不改变签名”）。
+(Or replace $K_{\le}$ with $K_\chi$), and send the $2$-morphism (rewriting certificate) to the identity isoform (i.e. "rewriting does not change the signature").
 \end{definition}
 
-\begin{proposition}[重写不变性与可估价闭环]\label{prop:pom-rewrite-audit-loop}
-若在 $\mathbf{PW}$ 中存在带证书的重写 $I\Rightarrow J$（即存在 $2$-态射），则：
+\begin{proposition}[Rewriting immutability and estimable closed loop]\label{prop:pom-rewrite-audit-loop}
+If there is a certificated rewrite $I\Rightarrow J$ in $\mathbf{PW}$ â€‹â€‹(that is, there is a $2$-morphism), then:
 \begin{enumerate}
-  \item \textbf{签名不变：}$\Sigma(I)=\Sigma(J)$。
-  \item \textbf{投影门成本可由指纹估价：}对角色/同余门，令
+  \item \textbf{Signature unchanged:}$\Sigma(I)=\Sigma(J)$.
+  \item â€‹â€‹\textbf{The cost of the projection door can be estimated by fingerprints:} For role/congruent doors, let
   \[
   g(u):=\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr),
   \qquad
   \tau_{\mathrm{mix}}(u):=\frac{1}{g(u)},
   \]
-  其中 $\lambda_1(u)$ 为主谱半径、$\Lambda(u)$ 为最坏非平凡扭曲谱半径（推论 \ref{cor:pom-order-mixing}）。
-  则达到相对误差 $\varepsilon$ 的读出深度满足
+  Among them, $\lambda_1(u)$ â€‹â€‹is the main spectrum radius, and $\Lambda(u)$ is the worst non-trivial distortion spectrum radius (Corollary \ref{cor:pom-order-mixing}).
+  Then the reading depth of the relative error $\varepsilon$ â€‹â€‹is satisfied
   \[
   n\ \gtrsim\ \frac{\log(1/\varepsilon)}{g(u)}=\tau_{\mathrm{mix}}(u)\,\log(1/\varepsilon),
   \]
-  且该尺度由核指纹中的扭曲谱隙完全决定（见注 \ref{rem:pom-chi-mixing}）。
+  And this scale is completely determined by the twisted spectral gap in the nuclear fingerprint (see note \ref{rem:pom-chi-mixing}).
 \end{enumerate}
 \end{proposition}
 
-\begin{corollary}[GRH-型平方根界 \texorpdfstring{$\Rightarrow$}{=>} 混合尺度的通用上界]\label{cor:pom-grh-mix-upper}
-若在某一角色/扭曲族上满足核版 RH/GRH 的平方根界（定义 \ref{def:kernel-rh} 的同型条件），即
+\begin{corollary}[GRH-type square root bound \texorpdfstring{$\Rightarrow$}{=>} Universal upper bound for mixed scales]\label{cor:pom-grh-mix-upper}
+If the square root bound of the nuclear version of RH/GRH (the isotype condition defining \ref{def:kernel-rh}) is satisfied on a certain character/twist family, that is
 \(
 \Lambda(u)\le \lambda_1(u)^{1/2}
-\)，
-则
+\)ï¼Œ
+but
 \[
 g(u)=\log\!\bigl(\lambda_1(u)/\Lambda(u)\bigr)\ \ge\ \tfrac12\log\lambda_1(u),
 \qquad
 \tau_{\mathrm{mix}}(u)\ \le\ \frac{2}{\log\lambda_1(u)}.
 \]
-因此在平方根界成立时，序/角色读出的本体时间尺度被主尺度 $\lambda_1(u)$ 的对数统一控制。
+Therefore, when the square root bound holds, the ontological time scale of sequence/role readout is uniformly controlled by the logarithm of the principal scale $\lambda_1(u)$.
 \end{corollary}
 
-\subsection{高阶碰撞核与空间损失谱}\label{subsec:pom-higher-collision-spectrum}
-本小节把规范投影 $P_Z$ 在有限分辨率下的“纤维残差”从一个平均压缩率提升为一族可审计的谱指纹。记折叠纤维多重度
+\subsection{High-order collision kernel and spatial loss spectrum}\label{subsec:pom-higher-collision-spectrum}
+This section improves the "fiber residual" of the canonical projection $P_Z$ â€‹â€‹at limited resolution from an average compression rate to a family of auditable spectral fingerprints. Record the multiplicity of folded fibers
 $$
 d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|,\qquad x\in X_m,
 $$
-并定义 $k$ 阶碰撞矩（$k$-tuple 同像计数）
+And define $k$ â€‹â€‹order collision moment ($k$-tuple identical image count)
 $$
 S_k(m):=\sum_{x\in X_m} d_m(x)^k
 =\Bigl|\{(\omega^{(1)},\dots,\omega^{(k)})\in\Omega_m^k:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(k)})\}\Bigr|.
 $$
-当 $k=2$ 时，$S_2(m)$ 即二体碰撞计数，控制了 Fold 输出分布的 Rényi-2 指纹；更一般的 $k$ 给出一整条矩谱。
+When $k=2$, $S_2(m)$ is the two-body collision count, which controls the RÃ©nyi-2 fingerprint of the Fold output distribution; the more general $k$ gives a whole moment spectrum.
 
-\subsubsection{一般 \texorpdfstring{$k$}{k} 的 moment-kernel \texorpdfstring{$A_k$}{Ak}：存在性与 PF 主谱}\label{subsec:pom-ak-existence}
-\begin{theorem}[一般 $k$ 的碰撞核与 Perron 主谱]\label{thm:pom-collision-kernel-ak}
-对每个固定整数 $k\ge 2$，存在一个有限状态的非负整数矩阵 $A_k$（可视为某个 SFT 的邻接矩阵）以及非负整数向量 $u_k,v_k$，使得对所有充分大的 $m$ 有
+\subsubsection{General \texorpdfstring{$k$}{k}â€™s moment-kernel \texorpdfstring{$A_k$}{Ak}: Existence and PF main score}\label{subsec:pom-ak-existence}
+\begin{theorem}[Generally $k$â€™s collision core and Perron master score]\label{thm:pom-collision-kernel-ak}
+For every fixed integer $k\ge 2$, there is a finite-state non-negative integer matrix $A_k$ (which can be regarded as the adjacency matrix of some SFT) and a non-negative integer vector $u_k,v_k$, such that for all sufficiently large $m$
 \[
 S_k(m)=u_k^{\mathsf T}\,A_k^{\,m}\,v_k.
 \]
-从而极限
+thus the limit
 \[
 \lim_{m\to\infty}\frac{1}{m}\log S_k(m)=\log r_k
 \]
-存在，其中 $r_k:=\rho(A_k)>0$ 为 Perron--Frobenius 主特征值（谱半径）。
+exists, where $r_k:=\rho(A_k)>0$ â€‹â€‹is the Perron--Frobenius main eigenvalue (spectral radius).
 \end{theorem}
-\begin{proof}[证明思路（可构造，审计链闭合）]
-关键输入事实是：$\Fold_\infty$ 可由固定延迟的确定性有限状态在线转导器实现（定理 \ref{thm:online-delay-fold}），因此有限分辨率的 $\Fold_m$ 亦可视为“有限状态同步图 + 末端函数”的组合读出。
+\begin{proof}[Proof idea (constructible, audit chain closed)]
+The key input fact is: $\Fold_\infty$ â€‹â€‹can be realized by a fixed-delay deterministic finite state online transducer (theorem \ref{thm:online-delay-fold}), so the finite resolution $\Fold_m$ can also be regarded as the combined readout of "finite state synchronization graph + terminal function".
 
-令该转导器的状态集为 $Q$，一步转移由“读入一位 $\Rightarrow$ 输出一位 + 状态更新”的确定性规则给出。构造其 $k$ 重同步积自动机：状态为 $Q^k$，一步同时读入 $(d^{(1)},\dots,d^{(k)})\in\{0,1\}^k$，并得到 $k$ 个输出位 $(e^{(1)},\dots,e^{(k)})\in\{0,1\}^k$ 及下一状态。再施加\textbf{相等约束} $e^{(1)}=\cdots=e^{(k)}$（并把末端函数的有限输出也一并纳入该相等约束：可通过把“末端窗口”并入状态来实现）。这样得到一个有限有向图，其边的重数等于满足相等约束的输入 $k$-tuple 数。
+Let the state set of the transducer be $Q$, and the one-step transfer is given by the deterministic rule of "read one bit $\Rightarrow$ and output one bit + state update". Construct its $k$ resynchronization product automaton: the state is $Q^k$, read in $(d^{(1)},\dots,d^{(k)})\in\{0,1\}^k$ at the same time in one step, and get $k$ output bits $(e^{(1)},\dots,e^{(k)})\in\{0,1\}^k$ and the next state. Then impose \textbf{equality constraint} $e^{(1)}=\cdots=e^{(k)}$ (and include the finite output of the terminal function into the equality constraint: this can be achieved by incorporating the "terminal window" into the state). This results in a finite directed graph whose multiplicity of edges is equal to the number of input $k$-tuples that satisfy the equality constraint.
 
-于是长度为 $m$ 的可接受路径条数正是“$k$ 个输入词被转导到同一个输出词”的计数，也即 $S_k(m)$。取该图的邻接矩阵为 $A_k$，并用起止向量编码初态集合与末端函数的有限修正，即得到 $S_k(m)=u_k^{\mathsf T}A_k^{m}v_k$（对小 $m$ 的边界项可吸收进“充分大”的阈值）。
+Therefore, the number of acceptable paths with length $m$ â€‹â€‹is exactly the count of "$k$ input words are transduced to the same output word", that is, $S_k(m)$. Taking the adjacency matrix of the graph as $A_k$, and using the start and end vectors to encode the initial state set and the limited modification of the terminal function, we get $S_k(m)=u_k^{\mathsf T}A_k^{m}v_k$ (the boundary terms of small $m$ can be absorbed into the "sufficiently large" threshold).
 
-最后，对 $A_k$ 的本质强连通分量应用 Perron--Frobenius 定理：主谱半径 $r_k$ 控制路径数的指数增长率，从而得到所述极限。
+Finally, the limit is obtained by applying the Perron--Frobenius theorem to the intrinsically strongly connected components of $A_k$: the dominant spectral radius $r_k$ controls the exponential growth rate of the number of paths.
 \end{proof}
 
-\begin{remark}[推广到一般投影词的 moment 编译器]\label{rem:pom-moment-compiler-general-word}
-上面的构造只用到了“可由有限状态转导器实现”的事实，因此可直接推广：只要某个投影词 \(W\) 的语义能被编译为有限状态同步图（或等价的加权自动机/有限歧义转导器），对任意 \(k\ge 2\) 都能构造一个依赖于 \(W\) 的 moment-kernel
+\begin{remark}[moment compiler generalized to general projected words]\label{rem:pom-moment-compiler-general-word}
+The above construction only uses the fact that it can be implemented by a finite state transducer, so it can be directly generalized: as long as the semantics of a certain projection word \(W\) â€‹â€‹can be compiled into a finite state synchronization graph (or an equivalent weighted automaton/finite ambiguity transducer), a moment-kernel that depends on \(W\) can be constructed for any \(k\ge 2\)
 \(
 A_k^{(W)}
 \)
-与读出向量，使得
+and the readout vector, such that
 \(
 S_k^{(W)}(m)=u_k^{(W)\mathsf T}(A_k^{(W)})^{m}v_k^{(W)}
 \)
-并定义主谱 \(r_k^{(W)}=\rho(A_k^{(W)})\)。
-具体做法是：取 \(k\) 重同步积并对输出施加“相等约束”，再按对称化/直方图压缩（若约束与权重对坐标置换不变）即可得到多项式规模的对称商核；这给出“任意投影词 \(\Rightarrow\) moment 谱”的统一可计算编译口径。
+And define the main score \(r_k^{(W)}=\rho(A_k^{(W)})\).
+The specific method is: take the \(k\) â€‹â€‹resynchronization product and impose "equality constraints" on the output, and then press symmetry/histogram compression (if the constraints and weights are invariant to coordinate permutation) to obtain a polynomial-scale symmetry quotient core; this gives a unified computable compilation scope of "arbitrary projection word \(\Rightarrow\) moment spectrum".
 \end{remark}
 
-\begin{remark}[与 $k=2,3,4$ 的一致性检查（已生成指纹）]\label{rem:pom-ak-consistency}
-当 $k=2,3,4$ 时，本文已有最小有限状态“碰撞核”实现（分别记为 $A_2,A_3,A_4$），从而 $r_k$ 可由有限矩阵的谱半径精确给出，并已汇总为 Rényi 指纹表
+\begin{remark}[Consistency check with $k=2,3,4$ â€‹â€‹(fingerprint generated)]\label{rem:pom-ak-consistency}
+When $k=2,3,4$, this paper has implemented the minimum finite state "collision kernel" (respectively marked as $A_2,A_3,A_4$), so $r_k$ can be accurately given by the spectral radius of the finite matrix, and has been summarized as the RÃ©nyi fingerprint table
 \[
 \texttt{sections/generated/tab\_fold\_collision\_renyi\_spectrum.tex}.
 \]
-此外，$k=4,\dots,8$ 的 $S_k(m)$ 已给出经枚举核验的整系数递推（可审计证据表
+Additionally, $S_k(m)$ of $k=4,\dots,8$ â€‹â€‹has given an enumeration-verified integer coefficient recursion (auditable evidence table
 \(
 \texttt{sections/generated/tab\_fold\_collision\_moment\_recursions.tex}
 \)
-；入口脚本见 \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}）。
+;For the entry script, see \texttt{scripts/exp\_fold\_collision\_moment\_recursions.py}).
 \end{remark}
 
-\begin{proposition}[对称化编译：\texorpdfstring{$A_k$}{Ak} 的多项式规模上界（可计算）]\label{prop:pom-ak-symmetric-compression}
-令 $\Fold_\infty$ 的固定延迟在线实现的同步状态集为 $Q$（本论文的 delay-$3$ 同步核取 $|Q|=10$），并按定理 \ref{thm:pom-collision-kernel-ak} 的 fiber-product 构造得到 $k$ 重 moment-kernel \(A_k\)。
-则存在一个由对称化（商去 $S_k$ 作用）得到的非负整数核 \(\widetilde A_k\) 及相应读出向量 \(\widetilde u_k,\widetilde v_k\)，使得对充分大的 $m$ 有
+\begin{proposition}[Symmetization compilation: polynomial scale upper bound (computable) for \texorpdfstring{$A_k$}{Ak}]\label{prop:pom-ak-symmetric-compression}
+Let the synchronization state set of $\Fold_\infty$â€™s fixed delay online implementation be $Q$ (the delay-$3$ synchronization check of this paper is $|Q|=10$), and according to the theorem \ref{thm:pom-collision-kernel-ak}â€™s fiber-product construction is obtained $k$ heavy moment-kernel \(A_k\).
+Then there exists a non-negative integer kernel \(\widetilde A_k\) obtained by symmetrization (quotient to remove $S_k$) and the corresponding readout vector \(\widetilde u_k,\widetilde v_k\), so that for sufficiently large $m$
 \[
 S_k(m)=\widetilde u_k^{\mathsf T}\,\widetilde A_k^{\,m}\,\widetilde v_k,
 \qquad
 \rho(\widetilde A_k)=\rho(A_k)=r_k.
 \]
-并且其状态数满足显式上界
+And its number of states satisfies an explicit upper bound
 \[
 \dim(\widetilde A_k)\ \le\ \binom{k+|Q|-1}{|Q|-1}.
 \]
-特别地，对本文的 10 状态同步核（$|Q|=10$）有
+In particular, for the 10-state synchronization core ($|Q|=10$) In this paper,
 \[
 \boxed{\ \dim(\widetilde A_k)\le \binom{k+9}{9}=O(k^9)\ }.
 \]
 \end{proposition}
-\begin{proof}[证明思路]
-在 $Q^k$ 上对称群 $S_k$ 作用为置换坐标。fiber-product 的“逐位输出一致”约束与每步计数权重仅依赖于各坐标所处的同步状态与可用边集合，因此对坐标置换不变。故可将 $Q^k$ 的状态按 $S_k$-轨道分组，等价地用“直方图/多重集合”状态
+\begin{proof}[Proof idea]
+On $Q^k$ â€‹â€‹the symmetry group $S_k$ acts as a displacement coordinate. The "bit-by-bit output consistency" constraint and each step count weight of fiber-product only depend on the synchronization state of each coordinate and the set of available edges, so the coordinate substitution is unchanged. Therefore, the states of $Q^k$ can be grouped by $S_k$-tracks, equivalently using the "histogram/multiset" state
 \[
 \nu\in\NN^{Q},\qquad \sum_{q\in Q}\nu(q)=k
 \]
-代表：$\nu(q)$ 记录 $k$ 份拷贝中处于状态 $q$ 的个数。此类 $\nu$ 的总数即为“把 $k$ 分到 $|Q|$ 个盒子”的组合数 \(\binom{k+|Q|-1}{|Q|-1}\)。
+Representative: $\nu(q)$ â€‹â€‹records the number of copies in the state $q$ among the $k$ copies. The total number of such $\nu$ is the number of combinations \(\binom{k+|Q|-1}{|Q|-1}\) that divide $k$ into $|Q|$ boxes.
 
-对任意两类直方图状态 $\nu,\nu'$，定义 \(\widetilde A_k(\nu,\nu')\) 为所有满足“输出一致”约束、并使得从任一代表元（具有直方图 $\nu$）出发一步更新后直方图变为 $\nu'$ 的输入 $k$-tuple 的总数；该数由于置换不变性与计数可加性而良定义，并给出一个非负整数邻接矩阵 \(\widetilde A_k\)。起止向量的对称化同理得到 \(\widetilde u_k,\widetilde v_k\)。这样得到的路径计数与原 $A_k$ 在轨道计数意义下相同，从而给出同一序列 $S_k(m)$ 的线性表示。
+For any two types of histogram states $\nu,\nu'$, define \(\widetilde A_k(\nu,\nu')\) as the total number of input $k$-tuples that satisfy the "output consistency" constraint and make the histogram become $\nu'$ after one step update starting from any representative element (with histogram $\nu$); this number is well defined due to permutation invariance and counting additivity, and gives a non-negative integer adjacency matrix \(\widetilde A_k\). The symmetrization of the start and end vectors yields \(\widetilde u_k,\widetilde v_k\) in the same way. The resulting path count is the same as the original $A_k$ in the orbital count sense, thus giving a linear representation of the same sequence $S_k(m)$.
 
-最后，$A_k$ 与 $\widetilde A_k$ 的关系可视为把表示空间按 $S_k$-不变子空间投影（或把加权自动机做确定性最小化之前的对称化预压缩），其 Perron 主尺度由本质强连通分量上的增长率决定；对称化不会改变“可接受路径条数”的指数增长率，因此谱半径保持为同一 \(r_k\)。证毕。
+Finally, the relationship between $A_k$ â€‹â€‹and $\widetilde A_k$ can be regarded as the projection of the representation space according to the $S_k$-invariant subspace (or symmetry pre-compression before deterministic minimization of the weighted automaton). Its Perron main scale is determined by the growth rate of the intrinsically strongly connected component; symmetry will not change the exponential growth rate of the "number of acceptable paths", so the spectral radius remains the same \(r_k\). Certification completed.
 \end{proof}
 
-\begin{proposition}[对称商 moment-kernel 的转移权重：多项式时间可计算]\label{prop:pom-ak-symmetric-transition-poly}
-沿定理 \ref{thm:pom-collision-kernel-ak} 的构造，设在线同步核为确定性转导器：状态集 $Q$，输入字母表 $\{0,1\}$，并存在确定性函数
+\begin{proposition}[Transfer weights of symmetry quotient moment-kernel: computable in polynomial time]\label{prop:pom-ak-symmetric-transition-poly}
+Following the structure of theorem \ref{thm:pom-collision-kernel-ak}, assume that the online synchronization core is a deterministic transducer: state set $Q$, input alphabet $\{0,1\}$, and there is a deterministic function
 $$
 \delta:Q\times\{0,1\}\to Q,\qquad \varepsilon:Q\times\{0,1\}\to\{0,1\},
 $$
-其中 $\delta(q,d)$ 为下一状态、$\varepsilon(q,d)$ 为输出位。令 $k\ge 2$，并用直方图状态
+Among them, $\delta(q,d)$ â€‹â€‹is the next state and $\varepsilon(q,d)$ is the output bit. Let $k\ge 2$, and use the histogram state
 $$
 \nu\in\NN^{Q},\qquad \sum_{q\in Q}\nu(q)=k
 $$
-表示 $k$ 份拷贝在各同步状态上的出现次数。
+Indicates the number of occurrences of $k$ â€‹â€‹copies in each synchronization state.
 
-则对任意输出位 $e\in\{0,1\}$ 与任意两直方图 $\nu,\nu'$，从 $\nu$ 以“逐位输出一致且等于 $e$”约束一步转移到 $\nu'$ 的权重可写为
+Then for any output bit $e\in\{0,1\}$ â€‹â€‹and any two histograms $\nu,\nu'$, the weight transferred from $\nu$ to $\nu'$ in one step with the constraint of â€œbit-by-bit output is consistent and equal to $e$â€ can be written as
 $$
 w_e(\nu,\nu')
 =
 \sum_{\{a_q\}}
 \ \prod_{q\in Q}\binom{\nu(q)}{a_q},
 $$
-其中求和对所有整数族 $\{a_q\}_{q\in Q}$ 进行，满足：
+where the summation is performed over all integer families $\{a_q\}_{q\in Q}$, satisfying:
 \begin{itemize}
-  \item \textbf{(输出一致约束)} 对每个 $q\in Q$，必须有
+  \item \textbf{(Output Consistency Constraint)} For each $q\in Q$, there must be
   $$
   \varepsilon(q,0)\neq e\ \Rightarrow\ a_q=0,\qquad
   \varepsilon(q,1)\neq e\ \Rightarrow\ a_q=\nu(q),
   $$
-  即 $a_q$ 仅在允许的输入位上取值（$a_q$ 解释为“处于状态 $q$ 的轨道中，选择输入 $0$ 的条数”）；
-  \item \textbf{(下一直方图约束)} $\nu'$ 由 $\{a_q\}$ 唯一确定，且要求满足
+  That is, $a_q$ â€‹â€‹only takes the value on the allowed input bits ($a_q$ is interpreted as "in the track of state $q$, select the number of input $0$");
+  \item \textbf{(Next histogram constraint)} $\nu'$ â€‹â€‹is uniquely determined by $\{a_q\}$ and the requirements are met
   $$
   \nu'(q')
   =
@@ -659,48 +658,49 @@ $$
   \qquad \forall q'\in Q.
   $$
 \end{itemize}
-因此对称商核的一步邻接权重为
+Therefore, the one-step adjacency weight of the symmetric quotient kernel is
 $$
 \widetilde A_k(\nu,\nu')=w_0(\nu,\nu')+w_1(\nu,\nu').
 $$
-并且当 $|Q|$ 固定（本文为 $|Q|=10$）时，给定任意 $\nu$，全体 $w_e(\nu,\nu')$（对所有 $\nu'$）可通过对 $q\in Q$ 逐状态做一次多项式卷积/动态规划在 $\mathrm{poly}(k)$ 时间内计算，从而 \(\widetilde A_k\) 的构造为可执行的多项式级过程。
+And when $|Q|$ â€‹â€‹is fixed (@TK1@@ In this paper), given any $\nu$, all $w_e(\nu,\nu')$ (for all $\nu'$) can be calculated in $\mathrm{poly}(k)$ time by doing a state-by-state polynomial convolution/dynamic programming on $q\in Q$, so that the construction of \(\widetilde A_k\) is an executable polynomial-level process.
 \end{proposition}
-\begin{proof}[证明要点（计数=二项式系数卷积）]
-固定 $\nu$ 与输出位 $e$。对每个同步状态 $q$，处于 $q$ 的 $\nu(q)$ 条轨道在满足 $\varepsilon(q,d)=e$ 的输入位 $d\in\{0,1\}$ 中作选择；当两种输入均允许时，选择 $a_q$ 条取 $0$、其余取 $1$ 的方式数为 $\binom{\nu(q)}{a_q}$；当仅一种输入允许时，$a_q$ 被强制为 $0$ 或 $\nu(q)$。
+\begin{proof}[Point of proof (count = convolution with binomial coefficients)]
+Fixed $\nu$ â€‹â€‹and output bit $e$. For each synchronization state $q$, the $\nu(q)$ tracks in $q$ are selected from the input bits $d\in\{0,1\}$ that satisfy $\varepsilon(q,d)=e$; when both inputs are allowed, the number of ways to select $a_q$ is to take $0$ and the rest to be $1$. $\binom{\nu(q)}{a_q}$;$a_q$ is forced to $0$ or $\nu(q)$ when only one input is allowed.
 
-在给定所有 $\{a_q\}$ 后，每条轨道的下一状态由 $\delta(q,0)$ 或 $\delta(q,1)$ 确定，从而得到唯一的下一直方图 $\nu'$，其坐标满足题中线性约束式。对所有可行 $\{a_q\}$ 求和即得到 $w_e(\nu,\nu')$。
+After all $\{a_q\}$ â€‹â€‹are given, the next state of each track is determined by $\delta(q,0)$ or $\delta(q,1)$, thus obtaining the unique next histogram $\nu'$, whose coordinates satisfy the linear constraints in the question. Summing over all feasible $\{a_q\}$ gives $w_e(\nu,\nu')$.
 
-算法层面，这就是一组“按状态独立选择 $\Rightarrow$ 按目标状态聚合”的计数卷积：把每个 $q$ 的选择视为在变量族 $\{z_{q'}\}_{q'\in Q}$ 上的多项式
+At the algorithm level, this is a set of counting convolutions that "select $\Rightarrow$ â€‹â€‹independently by state and aggregate by target state": treat the selection of each $q$ as a polynomial on the variable family $\{z_{q'}\}_{q'\in Q}$
 $$
 P_{q,e}(z):=\mathbf{1}_{\varepsilon(q,0)=e}\,z_{\delta(q,0)}+\mathbf{1}_{\varepsilon(q,1)=e}\,z_{\delta(q,1)},
 $$
-则对固定 $\nu$ 有生成函数
+Then there is a generating function for fixed $\nu$
 $$
 \prod_{q\in Q} P_{q,e}(z)^{\nu(q)}
 =\sum_{\nu'} w_e(\nu,\nu')\,z^{\nu'},
 $$
-其中 $z^{\nu'}:=\prod_{q'\in Q} z_{q'}^{\nu'(q')}$。在 $|Q|$ 固定时，系数抽取可用逐状态卷积 DP 实现，复杂度为 $k$ 的某个固定次数多项式。证毕。
+Among them $z^{\nu'}:=\prod_{q'\in Q} z_{q'}^{\nu'(q')}$. When $|Q|$ is fixed, coefficient extraction can be implemented by state-by-state convolution DP, with a certain fixed degree polynomial of complexity $k$. Certification completed.
 \end{proof}
 
-\begin{corollary}[系数抽取形式：转移多项式生成函数]\label{cor:pom-ak-coefficient-extraction}
-沿用命题 \ref{prop:pom-ak-symmetric-transition-poly} 的记号。
-对每个同步状态 \(q\in Q\) 与输出位 \(e\in\{0,1\}\)，定义转移多项式
+\begin{corollary}[Coefficient extraction form: transfer polynomial generating function]\label{cor:pom-ak-coefficient-extraction}
+Follow the notation of the proposition \ref{prop:pom-ak-symmetric-transition-poly}.
+For each synchronization state \(q\in Q\) â€‹â€‹and output bit \(e\in\{0,1\}\), define the transition polynomial
 \[
 P_{q,e}(z):=\sum_{d\in\{0,1\}:\ \varepsilon(q,d)=e} z_{\delta(q,d)}.
 \]
-对直方图态 \(\nu\in\NN^Q\)（\(\sum_q\nu(q)=k\)），定义
+For the histogram state \(\nu\in\NN^Q\) â€‹â€‹(\(\sum_q\nu(q)=k\)), define
 \[
 F_{\nu,e}(z):=\prod_{q\in Q}P_{q,e}(z)^{\nu(q)}.
 \]
-则有严格系数抽取恒等式
+Then there is a strict coefficient extraction identity
 \[
 F_{\nu,e}(z)=\sum_{\nu'} w_e(\nu,\nu')\,z^{\nu'},
 \qquad
 w_e(\nu,\nu')=[z^{\nu'}]\,F_{\nu,e}(z),
 \]
-其中 \([z^{\nu'}]\) 表示取单项式 \(z^{\nu'}=\prod_{q'\in Q} z_{q'}^{\nu'(q')}\) 的系数。
-因此对称商 moment-kernel 的一步权重满足
+Where \([z^{\nu'}]\) â€‹â€‹represents the coefficient of the monomial \(z^{\nu'}=\prod_{q'\in Q} z_{q'}^{\nu'(q')}\).
+Therefore, the one-step weight of the symmetry quotient moment-kernel satisfies
 \[
 \widetilde A_k(\nu,\nu')=\sum_{e\in\{0,1\}}[z^{\nu'}]\,F_{\nu,e}(z).
 \]
 \end{corollary}
+
