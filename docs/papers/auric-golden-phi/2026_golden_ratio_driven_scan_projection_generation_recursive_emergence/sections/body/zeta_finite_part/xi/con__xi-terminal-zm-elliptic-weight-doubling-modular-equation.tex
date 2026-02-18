@@ -1,49 +1,64 @@
-% (User input window)
-
-\begin{conclusion}[重量坐标下的倍乘“模方程”：\(y({[2]}P)\) 在 \texorpdfstring{$\QQ(y)$}{Q(y)} 上的严格四次最小多项式]\label{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}
-在椭圆曲线
+\begin{conclusion}[倍点算子在重量坐标下的代数对应：四值闭包的双次数证书]\label{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}
+设
 \[
-E:\ Y^{2}=X^{3}-X+\frac14,
-\qquad
-y:=X^{2}+Y-\frac12
+E_0:\ \eta^{2}+\eta=x^{3}-x
 \]
-上令 \(y_{2}:=y([2]P)\)。
-则 \(y_{2}\) 在 \(\QQ(y)\) 上满足不可约四次代数方程
+并定义其函数域中的次数 \(4\) 有理函数
+\(
+y:=x^{2}-\eta-1\in\QQ(E_0)
+\)。
+在同构
+\(
+X=x,\ Y=-\eta-\tfrac12
+\)
+下，\(E_0\) 等价配方为短 Weierstrass 模型
+\(
+E:\ Y^{2}=X^{3}-X+\tfrac14
+\)，并且该重量函数等价写为 \(y=X^{2}+Y-\tfrac12\)。
+记 \([2]:E_0\to E_0\) 为倍点算子，令 \(y_{2}:=y([2]P)\)。
+考虑在 \(\PP^{1}_{y}\times \PP^{1}_{y_{2}}\) 中的 Zariski 闭包
 \[
-H(y_{2},y)=0,
-\qquad
-H(T,y)\in\ZZ[y][T],
+C_{2}:=\overline{\{(y(P),y([2]P)):\ P\in E_0(\overline{\QQ})\}}\subset \PP^{1}_{y}\times \PP^{1}_{y_{2}}.
 \]
-并且 \(H(T,y)\) 可取为对 \((X,Y)\) 作消元得到的平面模曲线证书 \(\mathcal H(y,T)\)：
+则 \(C_{2}\) 为一条双次数 \((16,4)\) 的不可约曲线，并存在唯一（除整体非零常数因子）整系数多项式
+\[
+\Phi_{2}(y,y_{2})=A_{4}(y)y_{2}^{4}+A_{3}(y)y_{2}^{3}+A_{2}(y)y_{2}^{2}+A_{1}(y)y_{2}+A_{0}(y)\in\ZZ[y,y_{2}]
+\]
+使 \(C_{2}=\{\Phi_{2}=0\}\)。
+其中 \(\Phi_{2}\) 的显式系数证书可由对模型 \(E\) 与重量函数 \(y\) 作消元得到。
+具体地，可取 \(\Phi_{2}=\mathcal H\)，其闭式展开为
 \input{sections/generated/eq_fold_zm_elliptic_weight_doubling_H}
-此外，其首项系数满足严格恒等式
+并且其首项系数为完全四次幂
 \[
-A_{4}(y)=S(y)^{4},
-\qquad
-S(y):=16y^{3}-8y^{2}-4y+1
+A_{4}(y)=\bigl(16y^{3}-8y^{2}-4y+1\bigr)^{4},
 \]
-（其中 \(S\) 给出 \(E[2]\setminus\{O\}\) 的 \(y\)-像，见结论 \ref{con:xi-terminal-zm-2division-norm-square}）。
+其中三次因子刻画 \(E[2]\setminus\{O\}\) 在 \(y\)-坐标下的像（见结论 \ref{con:xi-terminal-zm-2division-norm-square}）。
 \par
-并且该四次方程来自对 \(X\) 的纯代数消元：把 \(y([2]P)\) 以倍点公式写成 \(X,Y\) 的有理函数并消去 \(X\)，可得到结果式的严格分解
+因此对任意 \(P\in E_0(\overline{\QQ})\) 均有 \(\Phi_{2}(y(P),y([2]P))=0\)，且对一般 \(y_{0}\in\overline{\QQ}\)，方程 \(\Phi_{2}(y_{0},y_{2})=0\) 在 \(y_{2}\) 中恰为四次，从而给出倍点对应在重量坐标下的四值性。
+\par
+进一步，若以谱四次平面曲线
+\[
+\Pi(X,y):=X^{4}-X^{3}-(2y+1)X^{2}+X+y(y+1)
+\]
+表征 \(\QQ(E_0)/\QQ(y)\)（结论 \ref{con:xi-terminal-zm-elliptic-normalization}），则 \(\Phi_{2}\) 可由对 \(X\) 的纯代数消元得到，并满足结果式分解恒等式
 \[
 \mathrm{Res}_{X}\bigl(\Pi(X,y),\,T-y([2]P)\bigr)
-=-16\cdot S(y)^{3}\cdot H(T,y),
+=-16\cdot\bigl(16y^{3}-8y^{2}-4y+1\bigr)^{3}\cdot \Phi_{2}(y,T).
 \]
-其中 \(\Pi(X,y)=X^{4}-X^{3}-(2y+1)X^{2}+X+y(y+1)\) 为谱四次平面曲线方程。
 \end{conclusion}
 \begin{proof}[证明要点]
-由倍点公式将 \([2](X,Y)=(X_{2},Y_{2})\) 写成闭式有理表达，进而把 \(y_{2}=X_{2}^{2}+Y_{2}-\tfrac12\) 表为 \(\QQ(X)\)-线性函数于 \(\{1,y\}\)；
-再在四次证书 \(\Pi(X,y)=0\) 下化简并对 \(X\) 作消元即可得到所示四次方程与结果式分解。
-不可约性与系数核验可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 复核。证毕。
+在模型 \(E:\ Y^{2}=X^{3}-X+\tfrac14\) 与重量函数 \(y=X^{2}+Y-\tfrac12\) 下，由倍点公式把 \([2](X,Y)=(X_{2},Y_{2})\) 写成 \(X,Y\) 的有理函数；
+进而把 \(y_{2}=X_{2}^{2}+Y_{2}-\tfrac12\) 写成 \(\QQ(X)\)-线性函数于 \(\{1,y\}\)。
+在 \(\Pi(X,y)=0\) 下化简并对 \(X\) 作消元，即得平面消元方程与结果式分解；不可约性与系数核验可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 复核。证毕。
 \end{proof}
 
 \begin{conclusion}[倍乘模方程的判别式平方类与 Lee--Yang 分歧核完全一致]\label{con:xi-terminal-zm-elliptic-weight-doubling-disc-squareclass}
-把结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation} 的 \(H(T,y)\) 视为关于 \(T\) 的四次多项式，则其判别式在 \(\QQ(y)^{\times}/(\QQ(y)^{\times})^{2}\) 中的平方类满足
+把结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation} 的 \(\Phi_{2}(y,T)\) 视为关于 \(T\) 的四次多项式，则其判别式在 \(\QQ(y)^{\times}/(\QQ(y)^{\times})^{2}\) 中的平方类满足
 \[
-\mathrm{Disc}_{T}\bigl(H(\cdot,y)\bigr)\equiv -y(y-1)P_{\mathrm{LY}}(y)\pmod{(\QQ(y)^{\times})^{2}},
+\mathrm{Disc}_{T}\bigl(\Phi_{2}(y,\cdot)\bigr)\equiv -y(y-1)P_{\mathrm{LY}}(y)\pmod{(\QQ(y)^{\times})^{2}},
 \]
 其中 \(P_{\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32\) 为 Lee--Yang 三次因子（结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values}）。
-更强地，存在 \(Q_{12}(y),Q_{26}(y)\in\ZZ[y]\)（\(\deg Q_{12}=12,\deg Q_{26}=26\)）使得严格恒等式成立：
+更强地，存在 \(A(y)\in\ZZ[y]\)（\(\deg A=12\)）与 \(B_{\pm}(y)\in\ZZ[y]\)（\(\deg B_{\pm}=26\)）使得判别式在 \(\ZZ[y]\) 中严格分解为：
 \input{sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant}
 因此倍乘诱导的重量四次模方程之唯一二次分辨率子域由
 \[
@@ -52,23 +67,46 @@ S(y):=16y^{3}-8y^{2}-4y+1
 锁定；Lee--Yang 三次因子在平方类意义下对倍乘动力学保持刚性不变。
 \end{conclusion}
 \begin{proof}[证明要点]
-按定义计算 \(\mathrm{Disc}_{T}(H)\) 并在 \(\ZZ[y]\) 中因式分解即可得到所示恒等式；平方类结论随即推出。
+按定义计算 \(\mathrm{Disc}_{T}(\Phi_2)\) 并在 \(\ZZ[y]\) 中因式分解即可得到所示恒等式；平方类结论随即推出。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}。证毕。
 \end{proof}
 
+\begin{conclusion}[\texorpdfstring{$2$}{2}-扭平移不变纤维的参数约束：平方型碰撞因子与判别式平方因子对齐]\label{con:xi-terminal-zm-elliptic-weight-doubling-2torsion-translation-collision-parameters}
+令 \(E[2]\subset E(\overline{\QQ})\) 为二阶扭点子群，并定义参数集合
+\[
+\Lambda_{2}:=\Bigl\{\,y_{0}\in\overline{\QQ}:\ \exists\,P\in E(\overline{\QQ}),\ \exists\,T\in E[2]\setminus\{O\}\ \text{s.t.}\ y(P)=y(P+T)=y_{0}\,\Bigr\}.
+\]
+记
+\[
+Q(y):=16y^{3}-8y^{2}-4y+1,
+\]
+并令 \(A(y)\in\ZZ[y]\) 为结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-disc-squareclass} 的判别式分解中出现的次数 \(12\) 因子（\(\mathrm{Disc}_{T}(\Phi_{2})\) 的平方因子之一）。
+则 \(\Lambda_{2}\) 的 Zariski 闭包满足
+\[
+\Lambda_{2}\subseteq \{\,y\in\overline{\QQ}:\ Q(y)\,A(y)=0\,\}.
+\]
+其中 \(Q(y)=0\) 的零点集合恰为 \(y\bigl(E[2]\setminus\{O\}\bigr)\)，而其余的平移碰撞参数被 \(A(y)=0\) 约束；
+并且 \(A(y)\) 在 \(\mathrm{Disc}_{T}(\Phi_{2})\) 中以平方方式出现，与平移碰撞仅贡献偶分歧的机制一致。
+\end{conclusion}
+\begin{proof}[证明要点]
+取短 Weierstrass 形式下的非平凡二扭点 \(T=(a,0)\)，满足 \(4a^{3}-4a+1=0\)；
+将加法公式写出 \(P+T\) 并把条件 \(y(P)=y(P+T)\) 视为关于 \((X,a,y)\) 的代数系统，随后对 \(X\) 与 \(a\) 作消元即可得到 \(y\) 的必要约束多项式。
+该消元多项式的平方自由部分严格等于 \(Q(y)A(y)\)，从而得到所示包含关系；可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_2torsion\_translation\_collision\_audit.py}。证毕。
+\end{proof}
+
 \begin{conclusion}[倍乘模方程的泛型伽罗瓦群为 \texorpdfstring{$S_{4}$}{S4}]\label{con:xi-terminal-zm-elliptic-weight-doubling-galois-s4}
-设 \(K:=\QQ(y)\)，令 \(L\) 为结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation} 的四次多项式 \(H(T,y)\) 在 \(K\) 上的分裂域。
+设 \(K:=\QQ(y)\)，令 \(L\) 为结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation} 的四次多项式 \(\Phi_{2}(y,T)\) 在 \(K\) 上的分裂域。
 则泛型情形下
 \[
 \mathrm{Gal}(L/K)\cong S_{4}.
 \]
 \end{conclusion}
 \begin{proof}[证明要点]
-由结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}，\(H(T,y)\) 在 \(K\) 上不可约；
-而结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-disc-squareclass} 给出 \(\mathrm{Disc}_{T}(H)\) 的平方类为 \(-y(y-1)P_{\mathrm{LY}}(y)\)，因而在 \(K\) 中非平方，排除 \(\mathrm{Gal}\subset A_{4}\)。
+由结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}，\(\Phi_{2}(y,\cdot)\) 在 \(K\) 上不可约；
+而结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-disc-squareclass} 给出 \(\mathrm{Disc}_{T}(\Phi_{2})\) 的平方类为 \(-y(y-1)P_{\mathrm{LY}}(y)\)，因而在 \(K\) 中非平方，排除 \(\mathrm{Gal}\subset A_{4}\)。
 再对 \(y=2\) 作一次专门化，得到
 \[
-H(T,2)=62742241T^{4}-225603363T^{3}+534557358T^{2}-28061748T+235224\in\QQ[T],
+\Phi_{2}(2,T)=62742241T^{4}-225603363T^{3}+534557358T^{2}-28061748T+235224\in\QQ[T],
 \]
 其专门化伽罗瓦群可由可审计算法判定为 \(S_{4}\)；
 由 Hilbert 不可约性定理，泛型伽罗瓦群亦为 \(S_{4}\)。
@@ -76,7 +114,7 @@ H(T,2)=62742241T^{4}-225603363T^{3}+534557358T^{2}-28061748T+235224\in\QQ[T],
 \end{proof}
 
 \begin{conclusion}[用 \texorpdfstring{$(y,y\circ[2])$}{(y,y∘[2])} 重构函数域：倍乘模曲线的归一化双有理同构于 \(E\)]\label{con:xi-terminal-zm-elliptic-weight-doubling-function-field-reconstruction}
-设 \(C_{2}\subset\mathbb P^{1}_{y}\times\mathbb P^{1}_{y_{2}}\) 为由方程 \(H(y_{2},y)=0\) 定义的平面代数曲线。
+设 \(C_{2}\subset\mathbb P^{1}_{y}\times\mathbb P^{1}_{y_{2}}\) 为由方程 \(\Phi_{2}(y,y_{2})=0\) 定义的平面代数曲线。
 则：
 \begin{enumerate}
   \item \(\QQ(E)=\QQ(y,y_{2})\)，即 \(y\) 与 \(y_{2}=y\circ[2]\) 共同生成 \(E\) 的函数域；
@@ -89,7 +127,7 @@ H(T,2)=62742241T^{4}-225603363T^{3}+534557358T^{2}-28061748T+235224\in\QQ[T],
 \end{enumerate}
 \end{conclusion}
 \begin{proof}[证明要点]
-由结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}，\(y([2]P)\) 在 \(\QQ(y)\) 上满足四次最小多项式，
+由结论 \ref{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}，\(y([2]P)\) 在 \(\QQ(y)\) 上满足次数为 \(4\) 的代数关系 \(\Phi_{2}(y,y_{2})=0\)，
 故 \([\QQ(y,y_{2}):\QQ(y)]=4=[\QQ(E):\QQ(y)]\)，从而 \(\QQ(E)=\QQ(y,y_{2})\)。
 双有理同构可由显式逆映射证书（重构 \(X,Y\)）给出，见脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py} 的输出。证毕。
 \end{proof}

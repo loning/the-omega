@@ -914,18 +914,18 @@ def main() -> None:
         tex_D.append("P_{\\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32.")
         tex_D.append("\\]")
         tex_D.append("\\[")
-        tex_D.append(f"S(y)={sp.latex(sp.Poly(Q12.subs({y0: y}), y, domain=sp.ZZ).as_expr())}.")
+        tex_D.append(f"A(y)={sp.latex(sp.Poly(Q12.subs({y0: y}), y, domain=sp.ZZ).as_expr())}.")
         tex_D.append("\\]")
         tex_D.append("\\[")
-        tex_D.append(f"T_{{+}}(y)={sp.latex(sp.Poly(Q26.subs({y0: y}), y, domain=sp.ZZ).as_expr())}.")
+        tex_D.append(f"B_{{+}}(y)={sp.latex(sp.Poly(Q26.subs({y0: y}), y, domain=sp.ZZ).as_expr())}.")
         tex_D.append("\\]")
         tex_D.append("\\[")
-        tex_D.append(f"T_{{-}}(y)={sp.latex(sp.Poly(Q26m.subs({y0: y}), y, domain=sp.ZZ).as_expr())}.")
+        tex_D.append(f"B_{{-}}(y)={sp.latex(sp.Poly(Q26m.subs({y0: y}), y, domain=sp.ZZ).as_expr())}.")
         tex_D.append("\\]")
         tex_D.append("\\[")
         tex_D.append(
             "\\mathrm{Disc}_{v}\\bigl(R_{\\pm}(y,v)\\bigr)"
-            "=-y(y-1)P_{\\mathrm{LY}}(y)\\,S(y)^{2}T_{\\pm}(y)^{2}."
+            "=-y(y-1)P_{\\mathrm{LY}}(y)\\,A(y)^{2}B_{\\pm}(y)^{2}."
         )
         tex_D.append("\\]")
         _write_text(
