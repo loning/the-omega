@@ -3,19 +3,19 @@
 """Strip auto-inserted timestamp comments from paper sources.
 
 This repository occasionally accumulates comment lines that only record "added/modified"
-timestamps (e.g. "日期与时间：2026-02-17 14:25:12" or "Time (Asia/Singapore): ...").
+timestamps (e.g. "Date and Time: 2026-02-17 14:25:12" or "Time (Asia/Singapore): ...").
 These lines are metadata and should not appear in the manuscript sources.
 
 Policy implemented here:
   - Only remove full-line comments (LaTeX: '% ...', Python: '# ...').
   - Remove a line if (and only if) it looks like a timestamp record:
-      * contains "日期与时间" or "当前时间", OR
+      * contains recognized CN timestamp labels (via `_CN_TIME_LABEL_RE`), OR
       * contains an ISO date pattern (YYYY-MM-DD), with or without a time-of-day.
   - Do not touch non-comment content.
   - Additionally, for LaTeX sources, remove editorial timestamp notes inside
     `\\footnote{...}` when they are clearly provenance metadata, e.g.:
-      * contains "版本记录"  -> drop the whole footnote
-      * contains "归档时间戳" -> drop the timestamp clause (or the whole footnote if empty)
+      * contains a version-record marker -> drop the whole footnote
+      * contains an archive-timestamp marker -> drop the timestamp clause (or the whole footnote if empty)
 
 The script edits files in place and writes a small JSON report under:
   artifacts/export/strip_comment_timestamps_report.json
@@ -39,7 +39,7 @@ class Change:
 
 
 _ISO_DATE_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
-_CN_TIME_LABEL_RE = re.compile(r"(日期与时间|当前时间)")
+_CN_TIME_LABEL_RE = re.compile(r"(\u65e5\u671f\u4e0e\u65f6\u95f4|\u5f53\u524d\u65f6\u95f4)")
 
 
 def _iter_files(root: Path, include_dirs: Sequence[str], exts: Sequence[str]) -> Iterable[Path]:
@@ -108,17 +108,17 @@ def _strip_latex_editorial_timestamp_footnotes(text: str) -> Tuple[str, int]:
 
     def strip_one(content: str) -> str | None:
         frag = content.strip()
-        if frag in {"本段条目链的", "本段条目链的。", "本段条目链的．", "本段条目链的."}:
+        if frag in {"\u672c\u6bb5\u6761\u76ee\u94fe\u7684", "\u672c\u6bb5\u6761\u76ee\u94fe\u7684\u3002", "\u672c\u6bb5\u6761\u76ee\u94fe\u7684\uff0e", "\u672c\u6bb5\u6761\u76ee\u94fe\u7684."}:
             return None
-        if "版本记录" in content:
+        if "\u7248\u672c\u8bb0\u5f55" in content:
             return None
-        if "归档时间戳" in content:
-            before = content.split("归档时间戳", 1)[0].rstrip()
+        if "\u5f52\u6863\u65f6\u95f4\u6233" in content:
+            before = content.split("\u5f52\u6863\u65f6\u95f4\u6233", 1)[0].rstrip()
             before_clean = before.strip()
-            if before_clean in {"本段条目链的", "本段条目链"}:
+            if before_clean in {"\u672c\u6bb5\u6761\u76ee\u94fe\u7684", "\u672c\u6bb5\u6761\u76ee\u94fe"}:
                 return None
-            # Heuristic: if we would leave a dangling possessive like "...的", drop the note.
-            if before_clean.endswith("的") and len(before_clean) <= 12:
+            # Heuristic: if we would leave a dangling possessive marker, drop the note.
+            if before_clean.endswith("\u7684") and len(before_clean) <= 12:
                 return None
             if before == "":
                 return None

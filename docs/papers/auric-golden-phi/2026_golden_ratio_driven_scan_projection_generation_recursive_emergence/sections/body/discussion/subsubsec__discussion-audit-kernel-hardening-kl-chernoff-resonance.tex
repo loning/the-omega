@@ -1,80 +1,80 @@
-% Auto-split to keep each TeX source < 600 lines.
+﻿% Auto-split to keep each TeX source < 600 lines.
 
-\subsubsection{审计核硬化：KL 正交分解、Chernoff 断点相图与共振谱本体}\label{subsubsec:discussion-audit-kernel-hardening-kl-chernoff-resonance}
-在 \S\ref{subsubsec:discussion-audit-kernel-closed-loop} 的闭合链之外，文稿中还存在三条更偏“硬约束”的结构线：
-它们分别把“正交记录轴/信息不泄漏”的直觉对象化为严格恒等式，把“预算设计”固化为离散曲率驱动的断点相图，并把共振窗的本体钉死在谱根几何而非额外 Hankel 原始约束上。
-下述陈述均直接引用正文/附录中的已编号结论与生成表，不引入新的证明前提。
+\subsubsection{Audit-kernel hardening: KL orthogonal decomposition, Chernoff breakpoint phase diagrams, and resonance-spectrum ontology}\label{subsubsec:discussion-audit-kernel-hardening-kl-chernoff-resonance}
+Beyond the closed chain in \S\ref{subsubsec:discussion-audit-kernel-closed-loop}, the manuscript contains three additional, more hard-constrained structural lines:
+they objectify the intuition of an ``orthogonal recording axis/information non-leakage'' as strict identities, crystallize ``budget design'' into a discrete-curvature-driven breakpoint phase diagram, and pin the ontology of the resonance window to spectral-root geometry rather than extra primitive Hankel constraints.
+All statements below directly cite numbered conclusions and generated tables already present in the main text/appendix, without introducing new proof assumptions.
 
-\paragraph{KL 勾股分解：把微观残差严格外置为可核验字段}
-在固定分辨率 \(m\) 下，读出算子 \(P_m\) 与纤维均匀提升 \(Q_m\) 构成一个可审计的“宏观—微观”接口（\S\ref{subsec:pom-information-ledger}）。
-以 \(\Omega_m\) 的均匀分布 \(u_{\Omega_m}\) 为微态基线，其稳定推前为
+\paragraph{KL Pythagorean decomposition: strict externalization of microscopic residuals as auditable fields}
+At fixed resolution \(m\), the readout operator \(P_m\) and the fiber-uniform lift \(Q_m\) form an auditable ``macroscopic--microscopic'' interface (\S\ref{subsec:pom-information-ledger}).
+Taking the uniform distribution \(u_{\Omega_m}\) on \(\Omega_m\) as the microstate baseline, its stable pushforward is
 \(
 w_m:=P_m u_{\Omega_m}
 \)
-且 \(w_m(x)=d_m(x)/2^m\)（定理 \ref{thm:pom-kl-pythagoras-uniform}）。
-对任意微观分布 \(\mu\in\Delta(\Omega_m)\)，令其宏观直方图为 \(\pi:=P_m\mu\)，并令 \(\mu^e:=Q_m\pi\) 为同一宏观约束下的纤维条件均匀提升，则到均匀基线的 KL 散度满足精确三项恒等式
+with \(w_m(x)=d_m(x)/2^m\) (Theorem \ref{thm:pom-kl-pythagoras-uniform}).
+For any microscopic distribution \(\mu\in\Delta(\Omega_m)\), let its macroscopic histogram be \(\pi:=P_m\mu\), and let \(\mu^e:=Q_m\pi\) be the fiberwise conditionally uniform lift under the same macroscopic constraint. Then KL divergence to the uniform baseline satisfies the exact identity
 \[
 \boxed{\;
 D_{\mathrm{KL}}(\mu\|u_{\Omega_m})
 =D_{\mathrm{KL}}(\pi\|w_m)\;+\;D_{\mathrm{KL}}(\mu\|\mu^e)\;}
 \]
-（定理 \ref{thm:pom-kl-pythagoras-uniform}）。
-这把“偏离均匀微态”的代价严格分裂为：
+(Theorem \ref{thm:pom-kl-pythagoras-uniform}).
+This strictly splits the cost of ``deviation from uniform microstates'' into:
 \begin{itemize}
-  \item \textbf{宏观代价} \(D_{\mathrm{KL}}(\pi\|w_m)\)：只依赖稳定层分布 \(\pi\) 相对均匀微态推前 \(w_m\) 的偏离；
-  \item \textbf{微观残差} \(D_{\mathrm{KL}}(\mu\|\mu^e)\)：在固定 \(\pi\) 的约束类内，\(\mu\) 相对其纤维均匀化版本的偏离（纤维内非均匀的平均；引理 \ref{lem:pom-fiberwise-kl}）。
+  \item \textbf{Macroscopic cost} \(D_{\mathrm{KL}}(\pi\|w_m)\): depends only on the deviation of \(\pi\) from \(w_m\), the pushforward of uniform microstates;
+  \item \textbf{Microscopic residual} \(D_{\mathrm{KL}}(\mu\|\mu^e)\): the deviation of \(\mu\) from its fiber-uniformized version inside the constraint class with fixed \(\pi\) (fiberwise average nonuniformity; Lemma \ref{lem:pom-fiberwise-kl}).
 \end{itemize}
-并且 \(\mu^e\) 同时具有最大熵与 I-投影的严格刻画：
-它是约束集 \(\mathcal{C}_\pi=\{\nu:P_m\nu=\pi\}\) 中唯一的最大熵元，也等价于到 \(u_{\Omega_m}\) 的 KL 最近点（推论 \ref{cor:pom-Iproj-maxent}）。
-因此 KL 勾股分解可作为“正交记录轴”的最小可核验定义：正交轴并非额外叙事坐标，而是投影 \(\mu\mapsto\mu^e\) 之下的残差项 \(D_{\mathrm{KL}}(\mu\|\mu^e)\)，其差额刻画亦是精确的
+Moreover, \(\mu^e\) admits strict characterizations as both maximum-entropy and I-projection:
+it is the unique maximum-entropy element in the constraint set \(\mathcal{C}_\pi=\{\nu:P_m\nu=\pi\}\), and equivalently the KL-nearest point to \(u_{\Omega_m}\) (Corollary \ref{cor:pom-Iproj-maxent}).
+Hence the KL Pythagorean decomposition serves as a minimal auditable definition of the ``orthogonal recording axis'': the axis is not an additional narrative coordinate but the residual term \(D_{\mathrm{KL}}(\mu\|\mu^e)\) under projection \(\mu\mapsto\mu^e\), with exact gap characterization
 \[
 D_{\mathrm{KL}}(\mu\|u_{\Omega_m})-D_{\mathrm{KL}}(\mu^e\|u_{\Omega_m})
 =D_{\mathrm{KL}}(\mu\|\mu^e)
 \]
-（推论 \ref{cor:pom-Iproj-gap-exact}）。
+(Corollary \ref{cor:pom-Iproj-gap-exact}).
 
-\paragraph{Chernoff 分位证书：由离散曲率 \texorpdfstring{$A_q$}{Aq} 驱动的断点相图}
-把尾部失败率 \(\varepsilon\)、分辨率 \(m\) 与矩阶 \(q\) 的最优设计写成可审计证书，下包络结构会强制出现断点。
-具体地，对已审计的 \(r_q\) 定义割线斜率 \(\beta_q=(\log r_q-\log2)/(q-1)\) 与证书族
+\paragraph{Chernoff quantile certificates: breakpoint phase diagrams driven by discrete curvature \texorpdfstring{$A_q$}{Aq}}
+When the optimal design over tail failure rate \(\varepsilon\), resolution \(m\), and moment order \(q\) is written as an auditable certificate, the lower-envelope structure necessarily exhibits breakpoints.
+Specifically, for audited \(r_q\), define secant slopes \(\beta_q=(\log r_q-\log2)/(q-1)\) and certificate family
 \(
 \gamma_m^{(q)}(\varepsilon)=\beta_q+\frac{1}{m(q-1)}\log\frac{1}{\varepsilon}
-\)，
-其下包络
+\),
+whose lower envelope
 \(
 \gamma_m^{\mathrm{cert}}(\varepsilon)=\inf_{q\ge 2}\gamma_m^{(q)}(\varepsilon)
 \)
-是 \(1/m\) 型双曲线族的分段下包络（注 \ref{rem:pom-qstar-phase-diagram-breakpoints}）。
-命题 \ref{prop:pom-breakpoint-curvature-law-Aq} 表明：最优矩阶的跳变完全由一个离散曲率增量标量 \(A_q\) 控制，
-其断点闭式为
+is the piecewise lower envelope of a \(1/m\)-hyperbola family (Remark \ref{rem:pom-qstar-phase-diagram-breakpoints}).
+Proposition \ref{prop:pom-breakpoint-curvature-law-Aq} shows that jumps of the optimal moment order are fully controlled by a discrete-curvature increment scalar \(A_q\), with closed-form breakpoints
 \[
 m_{q\to q+1}(\varepsilon)=\frac{\log(1/\varepsilon)}{A_q},
 \qquad
 A_q=(q-1)(\log r_{q+1}-\log2)-q(\log r_q-\log2),
 \]
-从而 \(q^\star(m,\varepsilon)\) 随 \(m\) 增大按单位步长单调下降，并在断点处出现两点并列最优（注 \ref{rem:pom-qstar-phase-diagram-breakpoints}）。
-在 \(\varepsilon=10^{-6}\) 且 DP 扩展审计 \(q\le 20\) 的范围内，所有断点可由 \(\{r_q\}\) 唯一计算并汇总为表 \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}；
-例如 \(m\in[513.01,643.28)\) 时 \(q^\star=7\)，而 \(m\ge 5344.31\) 时 \(q^\star=2\)（同一注与该表）。
-在压力几何的连续插值制度下，\(A_q\) 亦可被解释为解析凸压力面的离散曲率采样（注 \ref{rem:pom-breakpoint-curvature-thermo-realization}），从而把“预算设计相图”的折点机制固定为曲率的几何后果。
+so \(q^\star(m,\varepsilon)\) decreases monotonically in unit steps as \(m\) increases, with two-way ties exactly at breakpoints (Remark \ref{rem:pom-qstar-phase-diagram-breakpoints}).
+For \(\varepsilon=10^{-6}\) and DP-extended audits up to \(q\le 20\), all breakpoints are uniquely computable from \(\{r_q\}\) and summarized in Table \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20};
+for example, \(q^\star=7\) for \(m\in[513.01,643.28)\), while \(q^\star=2\) for \(m\ge 5344.31\) (same remark and table).
+Under continuous interpolation in pressure geometry, \(A_q\) can also be interpreted as discrete-curvature sampling of an analytic convex pressure surface (Remark \ref{rem:pom-breakpoint-curvature-thermo-realization}), fixing the kink mechanism of the ``budget-design phase diagram'' as a geometric consequence of curvature.
 
-\paragraph{共振窗的本体：谱近退化而非 Hankel 原始退化}
-在共振窗口 \(q=9,\dots,17\) 的已审计设定下，Hankel-null 证书虽非空（表 \ref{tab:fold_collision_resonance_nullmodes_q9_17}），
-但其“原始商空间维数”恒为零：
+\paragraph{Ontology of the resonance window: near-spectral degeneracy, not primitive Hankel degeneracy}
+In the audited resonance window \(q=9,\dots,17\), Hankel-null certificates are nonempty (Table \ref{tab:fold_collision_resonance_nullmodes_q9_17}),
+but their ``primitive quotient-space dimension'' is identically zero:
 \[
 \Delta_{\mathrm{prim}}(q)=0
 \]
-（推论 \ref{cor:pom-hankel-null-no-primitive-residual}；并见注 \ref{rem:pom-nullmodes-recurrence-plus-signature} 与表 \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17} 的显式倍乘分解）。
-等价地，任意 NullMode 所诱导的湮灭多项式均可写成 \(A^{(j)}(\lambda)=Q^{(j)}(\lambda)P_q(\lambda)\)（余式为零），不存在任何不由最小递推特征多项式 \(P_q\) 所解释的“原始”零模态。
-因此在该窗口内，共振不应被理解为“额外 Hankel 约束方向”的出现，而应回到谱根几何的近退化机制：
-影子谱包给出 \(|\mu_q|/r_{q-2}\uparrow 1\) 与窄角窗相位漂移（注 \ref{rem:pom-shadow-spectral-packet-q9-17}、注 \ref{rem:pom-resonance-trimodal-phase-lock}），并由代数相位锁定残差 \((\delta\theta_q,\rho_q)\) 形成可复算的一维强度坐标（表 \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}；并见线性化常数与二次误差界：命题 \ref{prop:pom-phase-residual-linearization-sqrt15}）。
-这一路径在概念上与注 \ref{rem:pom-resonance-spectral-not-hankel-degeneracy} 的总结一致：强共振可以在谱侧显影为贴边慢模态与锁定相位，但在当前窗口内并不产生新的 Hankel 原始约束；
-因此若希望“消解共振”，只能通过改变生成核从而改变 \(P_q\)，或显式外置新通道，而不能依赖在同一 \(P_q\) 下挖掘额外的 Hankel 退化。
+(Corollary \ref{cor:pom-hankel-null-no-primitive-residual}; see also Remark \ref{rem:pom-nullmodes-recurrence-plus-signature} and the explicit multiplicative decomposition in Table \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}).
+Equivalently, every annihilating polynomial induced by a NullMode can be written as \(A^{(j)}(\lambda)=Q^{(j)}(\lambda)P_q(\lambda)\) (zero remainder), so there is no ``primitive'' null mode unexplained by the minimal recurrence characteristic polynomial \(P_q\).
+Hence, in this window, resonance should not be interpreted as the appearance of ``additional Hankel constraint directions,'' but rather as near-degeneracy in spectral-root geometry:
+the shadow spectral packet gives \(|\mu_q|/r_{q-2}\uparrow 1\) and narrow-angle-window phase drift (Remarks \ref{rem:pom-shadow-spectral-packet-q9-17}, \ref{rem:pom-resonance-trimodal-phase-lock}), and the algebraic phase-lock residual \((\delta\theta_q,\rho_q)\) yields a reproducible one-dimensional intensity coordinate (Table \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}; see also linearization constants and quadratic error bounds in Proposition \ref{prop:pom-phase-residual-linearization-sqrt15}).
+Conceptually, this is consistent with Remark \ref{rem:pom-resonance-spectral-not-hankel-degeneracy}: strong resonance can appear spectrally as near-edge slow modes and phase locking, but in the current window it does not generate new primitive Hankel constraints.
+Therefore, if one seeks to ``dissolve resonance,'' one must change the generating kernel (thus changing \(P_q\)) or explicitly externalize new channels, rather than mining extra Hankel degeneracies under the same \(P_q\).
 
-\paragraph{审计核的最小字段化输出（硬接口）}
-上述三条线与 \S\ref{subsubsec:discussion-audit-kernel-closed-loop} 的曲率误差条、Hankel 正规形与算术刚性字段可并列组织为一个更硬的审计核输出：
+\paragraph{Minimal fieldwise output of the audit kernel (hard interface)}
+Together with the curvature error bars, Hankel normal forms, and arithmetic-rigidity fields in \S\ref{subsubsec:discussion-audit-kernel-closed-loop}, the three lines above can be organized into a harder audit-kernel output:
 \begin{itemize}
-  \item \textbf{信息正交分解字段：}输出 \(\bigl(D_{\mathrm{KL}}(\mu\|u_{\Omega_m}),D_{\mathrm{KL}}(\pi\|w_m),D_{\mathrm{KL}}(\mu\|\mu^e)\bigr)\) 并强制满足勾股恒等式（定理 \ref{thm:pom-kl-pythagoras-uniform}），同时输出 I-投影/最大熵判据（推论 \ref{cor:pom-Iproj-maxent}）。
-  \item \textbf{矩阶设计字段：}以已审计 \(\{r_q\}\) 为输入，输出离散曲率 \(A_q\)、断点 \(m_{q\to q+1}(\varepsilon)\) 与相图 \(q^\star(m,\varepsilon)\)（命题 \ref{prop:pom-breakpoint-curvature-law-Aq}；注 \ref{rem:pom-qstar-phase-diagram-breakpoints}；表 \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}）。
-  \item \textbf{共振谱字段与原始性字段：}输出 \(\Delta_{\mathrm{prim}}(q)\) 与倍乘分解核验（推论 \ref{cor:pom-hankel-null-no-primitive-residual}；表 \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}），并并列输出谱包几何与相位残差证书（注 \ref{rem:pom-shadow-spectral-packet-q9-17}；表 \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}）。
+  \item \textbf{Information-orthogonal decomposition field:}output \(\bigl(D_{\mathrm{KL}}(\mu\|u_{\Omega_m}),D_{\mathrm{KL}}(\pi\|w_m),D_{\mathrm{KL}}(\mu\|\mu^e)\bigr)\) with enforced Pythagorean identity (Theorem \ref{thm:pom-kl-pythagoras-uniform}), together with I-projection/maximum-entropy criteria (Corollary \ref{cor:pom-Iproj-maxent}).
+  \item \textbf{Moment-order design field:}using audited \(\{r_q\}\) as input, output discrete curvature \(A_q\), breakpoints \(m_{q\to q+1}(\varepsilon)\), and phase diagram \(q^\star(m,\varepsilon)\) (Proposition \ref{prop:pom-breakpoint-curvature-law-Aq}; Remark \ref{rem:pom-qstar-phase-diagram-breakpoints}; Table \ref{tab:fold_collision_qstar_breakpoints_eps1e6_q2_20}).
+  \item \textbf{Resonance-spectrum and primitivity fields:}output \(\Delta_{\mathrm{prim}}(q)\) and multiplicative-decomposition verification (Corollary \ref{cor:pom-hankel-null-no-primitive-residual}; Table \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}), alongside spectral-packet geometry and phase-residual certificates (Remark \ref{rem:pom-shadow-spectral-packet-q9-17}; Table \ref{tab:fold_collision_shadow_spectral_packet_algebraic_phase_residual_q9_17}).
 \end{itemize}
-任一字段稳定失配都给出实现中立的否证接口，从而把“外置/不泄漏/预算设计/共振来源”的叙事性表述转写为可复核的证书一致性判据。
+Any stable mismatch in any field provides an implementation-neutral falsification interface, recasting narrative statements about ``externalization/non-leakage/budget design/resonance origin'' into reproducible certificate-consistency criteria.
+
 

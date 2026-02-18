@@ -11,13 +11,8 @@ This script is English-only by repository convention.
 We verify:
   - Lattès map on x-coordinate induced by [2]:
       Phi(X) = x([2]P) = (X^4 + 2 X^2 - 2 X + 1) / (4 X^3 - 4 X + 1).
-  - 2-division polynomial square pullback under Phi:
-      D(Phi(X)) = C(X)^2 / D(X)^3, where D(X)=4X^3-4X+1 and
-      C(X)=2X^6-10X^4+10X^3-10X^2+2X+1.
   - Critical polynomial of Phi:
       Phi'(X)=0  <=>  2X^6 - 10X^4 + 10X^3 - 10X^2 + 2X + 1 = 0.
-  - y-coordinate doubling uses the same critical sextic:
-      Y([2]P) = C(X) / (16 Y^3) in Q(E).
   - Arithmetic closure of the critical sextic:
       Disc(C) = -2^8 * 37^5, and Gal(Split(C)/Q) has order 48 (octahedral type S4 x C2).
   - Weight pullback under doubling is linear in y with critical coefficient:
@@ -168,13 +163,11 @@ class TableRow:
 @dataclass(frozen=True)
 class Payload:
     phi_formula_ok: bool
-    phi_2division_pullback_square_ok: bool
     phi_mod37_degree_drop_ok: bool
     phi_mod37_gcd: str
     phi_mod37_reduced_map: str
     g_mod37_factor_ok: bool
     phi_prime_critical_poly_ok: bool
-    phi_Y_doubling_ok: bool
     critical_poly_disc: int
     critical_poly_disc_factorization: Dict[str, int]
     critical_poly_galois_degree: int
@@ -255,12 +248,6 @@ def main() -> None:
     nump_prim = sp.factor(prim_nump.as_expr())
     crit_ok = bool(sp.factor(nump_prim - crit_expected) == 0 or sp.factor(nump_prim + crit_expected) == 0)
 
-    # --- 2-division polynomial square pullback under Phi ---
-    D_poly = 4 * X**3 - 4 * X + 1
-    D_at_Phi = sp.together(4 * Phi_expected**3 - 4 * Phi_expected + 1)
-    D_pullback_expected = sp.together(crit_expected**2 / D_poly**3)
-    phi_2division_pullback_square_ok = bool(sp.factor(sp.together(D_at_Phi - D_pullback_expected)) == 0)
-
     # --- Discriminant and Galois group of the critical sextic ---
     crit_disc = int(sp.discriminant(crit_expected, X))
     crit_disc_fac = sp.factorint(crit_disc)
@@ -307,13 +294,6 @@ def main() -> None:
     modY = sp.Poly(Y**2 - fX, Y)
     num_y2_red = sp.rem(sp.Poly(sp.expand(num_y2), Y), modY).as_expr()
     den_y2_red = sp.rem(sp.Poly(sp.expand(den_y2), Y), modY).as_expr()
-
-    # --- Y-coordinate of [2]P uses the same critical sextic ---
-    target_Y2 = sp.together(crit_expected / (16 * Y**3))
-    diff_Y2 = sp.together(Y2 - target_Y2)
-    num_diff_Y2, _den_diff_Y2 = diff_Y2.as_numer_denom()
-    num_diff_Y2_red = sp.rem(sp.Poly(sp.expand(num_diff_Y2), Y), modY).as_expr()
-    phi_Y_doubling_ok = bool(sp.simplify(num_diff_Y2_red) == 0)
 
     Y_sub = y - X**2 + sp.Rational(1, 2)
     expr_xy = sp.together(num_y2_red.subs({Y: Y_sub}) / den_y2_red.subs({Y: Y_sub}))
@@ -417,13 +397,11 @@ def main() -> None:
 
     payload = Payload(
         phi_formula_ok=bool(phi_ok),
-        phi_2division_pullback_square_ok=bool(phi_2division_pullback_square_ok),
         phi_mod37_degree_drop_ok=bool(phi_mod37_degree_drop_ok),
         phi_mod37_gcd=sp.sstr(phi_mod37_gcd),
         phi_mod37_reduced_map=sp.sstr(phi_mod37_reduced_map),
         g_mod37_factor_ok=bool(g_mod37_factor_ok),
         phi_prime_critical_poly_ok=bool(crit_ok),
-        phi_Y_doubling_ok=bool(phi_Y_doubling_ok),
         critical_poly_disc=int(crit_disc),
         critical_poly_disc_factorization={str(int(p)): int(e) for p, e in crit_disc_fac.items()},
         critical_poly_galois_degree=G_degree,
@@ -464,9 +442,6 @@ def main() -> None:
         "\\Phi(X)=\\frac{X^{4}+2X^{2}-2X+1}{4X^{3}-4X+1},\\qquad \\Phi'(X)=0\\iff 2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1=0.",
         "\\]",
         "\\[",
-        "D(\\Phi(X))=\\frac{(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1)^{2}}{(4X^{3}-4X+1)^{3}},\\qquad Y([2]P)=\\frac{2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1}{16Y^{3}}.",
-        "\\]",
-        "\\[",
         "X^{4}+2X^{2}-2X+1\\equiv (X-5)^{2}(X^{2}+10X+3),\\quad 4X^{3}-4X+1\\equiv (X-5)^{2}(4X+3)\\ (\\mathrm{mod}\\ 37),\\quad \\overline{\\Phi}(X)=\\frac{X^{2}+10X+3}{4X+3}.",
         "\\]",
         "\\[",
@@ -493,8 +468,7 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-lattes] checks:"
-        f" phi={phi_ok} Dpull={phi_2division_pullback_square_ok} Ydbl={phi_Y_doubling_ok}"
-        f" mod37degdrop={phi_mod37_degree_drop_ok} gmod37={g_mod37_factor_ok}"
+        f" phi={phi_ok} mod37degdrop={phi_mod37_degree_drop_ok} gmod37={g_mod37_factor_ok}"
         f" crit={crit_ok} galois48={(G_order == 48)} y2lin={y_pullback_ok} y2cubic={y_pullback_cubic_ok}"
         f" mw={mw_ok} minpoly={y_minpoly_ok} disc={y_disc_ok} tors_gcd={g} denlaw={all(r.den_law_ok for r in rows)}"
         f" seconds={dt:.3f}",

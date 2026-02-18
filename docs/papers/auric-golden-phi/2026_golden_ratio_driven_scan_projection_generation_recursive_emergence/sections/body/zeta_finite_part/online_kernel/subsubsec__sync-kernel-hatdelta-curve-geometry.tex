@@ -1,76 +1,76 @@
-\subsubsection{完成化行列式曲线的几何商与覆盖结构}\label{subsubsec:sync-kernel-hatdelta-curve-geometry}
-本小节整理自 2026-02-17 的内部推导文档。除注 \ref{rem:sync-hatdelta-explicit} 所定义之完成化行列式
-\(\widehat{\Delta}(w,s)\in\ZZ[s][w]\) 及其对称性
-\(\widehat\Delta(w,-s)=\widehat\Delta(-w,s)\)，并采用同处给定之变量关系
+\subsubsection{Geometric quotient and covering structure of completed determinant curve}\label{subsubsec:sync-kernel-hatdelta-curve-geometry}
+This section is compiled from the internal derivation document on 2026-02-17. Except for the completion determinant defined by \ref{rem:sync-hatdelta-explicit}
+\(\widehat{\Delta}(w,s)\in\ZZ[s][w]\) and its symmetry
+\(\widehat\Delta(w,-s)=\widehat\Delta(-w,s)\), and adopt the variable relationship given in the same place
 \(
 u=r^2,\ s=r+r^{-1},\ w=zr
 \)
-外，不再引入额外输入。
+In addition, no additional input is introduced.
 \par
-把 \(\widehat\Delta(w,s)=0\) 视为 \(\mathbb{A}^2_{w,s}\) 上的平面代数曲线，并记其射影闭包在 \(\mathbb{P}^2\) 上的规范化为 \(\mathcal{X}\)。
-由
+Consider \(\widehat\Delta(w,s)=0\) as a plane algebraic curve on \(\mathbb{A}^2_{w,s}\), and note that the normalization of its projective closure on \(\mathbb{P}^2\) is \(\mathcal{X}\).
+Depend on
 \(
 \widehat\Delta(-w,-s)=\widehat\Delta(w,s)
 \)
-可知对合
+Known involution
 \[
 \iota:\mathcal{X}\longrightarrow\mathcal{X},\qquad (w,s)\longmapsto(-w,-s)
 \]
-为良定的代数自同构。
+It is a well-defined algebraic automorphism.
 
-\begin{proposition}[对称性诱导的几何商：显式平面四次模型与属三]\label{prop:sync-hatdelta-curve-quotient-plane-quartic-genus3}
-令 \(\mathcal{C}\subset\mathbb{A}^2_{x,y}\) 为仿射平面曲线，其方程为
+\begin{proposition}[Symmetry-induced geometric quotient: explicit planar quartic model and genus three]\label{prop:sync-hatdelta-curve-quotient-plane-quartic-genus3}
+Let \(\mathcal{C}\subset\mathbb{A}^2_{x,y}\) be an affine plane curve, and its equation is
 \[
 F(x,y)=1-y-5x+3xy+5x^2-xy^2+xy^3-6x^2y+x^2y^2-x^3=0.
 \]
-则在函数域层面，\(\mathcal{X}/\langle\iota\rangle\) 由 \(\iota\)-不变量
+Then at the function domain level, \(\mathcal{X}/\langle\iota\rangle\) is represented by \(\iota\)-invariant
 \[
 x:=w^2,\qquad y:=sw
 \]
-生成，并与 \(\mathcal{C}\) 双有理同构。
-其射影闭包 \(\overline{\mathcal{C}}\subset\mathbb{P}^2_{X:Y:Z}\) 由齐次四次方程
+is generated and birational isomorphism with \(\mathcal{C}\).
+Its projective closure \(\overline{\mathcal{C}}\subset\mathbb{P}^2_{X:Y:Z}\) is given by the homogeneous quartic equation
 \[
 \begin{aligned}
 0={}&Z^4-YZ^3-5XZ^3+3XYZ^2+5X^2Z^2-XY^2Z+XY^3\\
 &\quad +X^2Y^2-6X^2YZ-X^3Z
 \end{aligned}
 \]
-刻画，且在代数闭包上光滑。
-因此 \(\overline{\mathcal{C}}\) 为非超椭圆属三曲线（等价地：光滑平面四次曲线），从而
+Characterized by, and smooth on algebraic closure.
+Therefore \(\overline{\mathcal{C}}\) is a non-hyperelliptic cubic curve (equivalently: a smooth planar quartic curve), so
 \[
 g(\overline{\mathcal{C}})=3.
 \]
 \end{proposition}
-\begin{proof}[证明要点]
-由 \(\widehat\Delta(w,-s)=\widehat\Delta(-w,s)\) 得 \(\widehat\Delta(-w,-s)=\widehat\Delta(w,s)\)，故 \(\iota\) 保持曲线。
-并且 \(x=w^2\)、\(y=sw\) 在 \(\iota\) 作用下不变。
-在 \(w\neq 0\) 的开集上代入 \(s=y/w\)、\(w^2=x\)，可将 \(\widehat\Delta(w,s)=0\) 等价改写为 \(F(x,y)=0\)，从而得到商曲线的显式仿射模型与双有理同构。
+\begin{proof}[Proof sketch]
+From \(\widehat\Delta(w,-s)=\widehat\Delta(-w,s)\), we get \(\widehat\Delta(-w,-s)=\widehat\Delta(w,s)\), so \(\iota\) maintains the curve.
+And \(x=w^2\), \(y=sw\) are unchanged under the action of \(\iota\).
+By substituting \(s=y/w\) and \(w^2=x\) on the open set of \(w\neq 0\), \(\widehat\Delta(w,s)=0\) can be equivalently rewritten as \(F(x,y)=0\), thus obtaining the explicit affine model and birational isomorphism of the quotient curve.
 \par
-光滑性可由逐点梯度判别在仿射图与无穷远点上直接核验；因而 \(\overline{\mathcal{C}}\) 为光滑平面四次曲线。
-平面四次的属公式给出 \(g(\overline{\mathcal{C}})=(4-1)(4-2)/2=3\)。
-可复现核验脚本：\texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}。证毕。
+Smoothness can be directly verified on the affine graph and the infinite point by point-wise gradient discrimination; therefore \(\overline{\mathcal{C}}\) is a smooth plane quartic curve.
+The generic formula for the fourth degree of the plane gives \(g(\overline{\mathcal{C}})=(4-1)(4-2)/2=3\).
+Reproducible verification script: \texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}. Certification completed.
 \end{proof}
 
-\begin{proposition}[二次扩张与分歧：仅两处分歧且 \texorpdfstring{$g(\mathcal{X})=6$}{g(X)=6}]\label{prop:sync-hatdelta-curve-double-cover-branch-genus6}
-在函数域意义下有二次扩张
+\begin{proposition}[Second expansion and divergence: only two divergences and \texorpdfstring{$g(\mathcal{X})=6$}{g(X)=6}]\label{prop:sync-hatdelta-curve-double-cover-branch-genus6}
+There is a second expansion in the sense of function domain
 \[
 \QQ(\mathcal{X})=\QQ(\overline{\mathcal{C}})\bigl(\sqrt{x}\bigr),
 \]
-并由此得到规范化二次覆盖
+and thus obtain standardized secondary coverage
 \[
 \pi:\mathcal{X}\longrightarrow\overline{\mathcal{C}},
 \]
-其甲板变换即为 \(\iota\)。
-该覆盖的分歧由 \(x\) 在 \(\overline{\mathcal{C}}\) 上的奇阶零点与奇阶极点完全决定；
-就本曲线而言，奇阶零/极点恰为两点：
+Its deck transformation is \(\iota\).
+The divergence of this coverage is completely determined by the odd-order zeros and odd-order poles of \(x\) on \(\overline{\mathcal{C}}\);
+For this curve, the odd-order zeros/poles are exactly two points:
 \[
 P_0=(x,y)=(0,1)\in \overline{\mathcal{C}}(\QQ),\qquad
 P_\infty=[1:-1:0]\in \overline{\mathcal{C}}(\QQ),
 \]
-其中 \(x\) 在 \(P_0\) 为一次零点、在 \(P_\infty\) 为一次极点。
-此外，\([0:1:0]\) 处 \(x\) 具有二阶零点，\([1:0:0]\) 处 \(x\) 具有二阶极点，故均不致分歧。
-因此 \(\pi\) 恰在 \(\{P_0,P_\infty\}\) 处分歧、其余处皆为 \'{e}tale，且 \(\mathcal{X}^{\iota}\) 由两点组成。
-由 Hurwitz 公式得
+Among them, \(x\) is a first-order zero at \(P_0\) and a first-order pole at \(P_\infty\).
+In addition, \(x\) at \([0:1:0]\) has a second-order zero point, and \(x\) at \([1:0:0]\) has a second-order pole, so there is no disagreement.
+Therefore \(\pi\) diverges exactly at \(\{P_0,P_\infty\}\), \'{e}tale everywhere else, and \(\mathcal{X}^{\iota}\) consists of two points.
+Obtained from Hurwitz formula
 \[
 g(\mathcal{X})
 =2g(\overline{\mathcal{C}})-1+\frac{\#\mathrm{Branch}(\pi)}{2}
@@ -78,108 +78,108 @@ g(\mathcal{X})
 =6.
 \]
 \end{proposition}
-\begin{proof}[证明要点]
-由 \(\QQ(\mathcal{X})=\QQ(w,s)\) 与不变量关系 \(x=w^2\)、\(y=sw\) 得 \(\QQ(\overline{\mathcal{C}})=\QQ(x,y)\)，并且 \(\QQ(\mathcal{X})=\QQ(\overline{\mathcal{C}})(w)=\QQ(\overline{\mathcal{C}})(\sqrt{x})\)。
-分歧点由 \(x\) 的奇阶零/极点刻画。
+\begin{proof}[Proof sketch]
+From \(\QQ(\mathcal{X})=\QQ(w,s)\) and the invariant relations \(x=w^2\), \(y=sw\), we get \(\QQ(\overline{\mathcal{C}})=\QQ(x,y)\), and \(\QQ(\mathcal{X})=\QQ(\overline{\mathcal{C}})(w)=\QQ(\overline{\mathcal{C}})(\sqrt{x})\).
+The divergence point is characterized by odd-order zeros/poles of \(x\).
 \par
-在仿射点 \(P_0=(0,1)\) 处，\(F_y(0,1)=-1\neq 0\)，故 \(x\) 为局部参数并给出一次零点。
-对无穷远点 \(P_\infty=[1:-1:0]\)，取图 \(X=1\) 并令 \((y,z)=(Y/X,Z/X)\)，则 \(x=X/Z=1/z\)；
-曲线方程在该图中对 \(y\) 的偏导在 \((y,z)=(-1,0)\) 处非零，从而 \(z\) 为局部参数，\(x\) 给出一次极点。
-对 \([1:0:0]\) 与 \([0:1:0]\)，同理在相应仿射图中作最低阶展开可得 \(z\sim y^2\) 与 \(x\sim z^2\) 的二阶行为，因此零/极点阶为偶数并不分歧。
-Hurwitz 公式即得属数结论。证毕。
+At the affine point \(P_0=(0,1)\), \(F_y(0,1)=-1\neq 0\), so \(x\) is a local parameter and gives a zero point.
+For the infinite point \(P_\infty=[1:-1:0]\), take the graph \(X=1\) and let \((y,z)=(Y/X,Z/X)\), then \(x=X/Z=1/z\);
+The partial derivative of the curve equation in this figure with respect to \(y\) is non-zero at \((y,z)=(-1,0)\), so \(z\) is a local parameter and \(x\) gives a first-order pole.
+For \([1:0:0]\) and \([0:1:0]\), in the same way, the lowest-order expansion in the corresponding affine graph can obtain the second-order behavior of \(z\sim y^2\) and \(x\sim z^2\). Therefore, it is not inconsistent that the zero/pole order is an even number.
+Hurwitz's formula yields a numerical conclusion. Certification completed.
 \end{proof}
 
-\begin{proposition}[商曲线的三重覆盖：三次扩张、判别式与 \texorpdfstring{$S_3$}{S3} 闭包]\label{prop:sync-hatdelta-quotient-triple-cover-s3-discriminant}
-\(\overline{\mathcal{C}}\) 上的有理函数 \(x\) 定义一个三重覆盖
+\begin{proposition}[Triple Cover of Quotient Curves: Triple Expansion, Discriminant and \texorpdfstring{$S_3$}{S3} Closure]\label{prop:sync-hatdelta-quotient-triple-cover-s3-discriminant}
+The rational function \(x\) on \(\overline{\mathcal{C}}\) defines a triple cover
 \[
 \varphi:\overline{\mathcal{C}}\longrightarrow\mathbb{P}^1_x.
 \]
-其函数域扩张 \(\QQ(x)\subset\QQ(\overline{\mathcal{C}})\) 可由关于 \(y\) 的三次方程显式刻画：
+Its function domain expansion \(\QQ(x)\subset\QQ(\overline{\mathcal{C}})\) can be explicitly described by the cubic equation about \(y\):
 \[
 x\,y^3+(x^2-x)\,y^2+(3x-6x^2-1)\,y+(1-5x+5x^2-x^3)=0.
 \]
-该三次方程关于 \(y\) 的判别式满足严格恒等式
+The discriminant of this cubic equation with respect to \(y\) satisfies the strict identity
 \[
 \mathrm{Disc}_y=x\cdot P_8(x),
 \qquad
 P_8(x)=4x^8+85x^7+416x^6-818x^5+1196x^4-871x^3+284x^2-44x+4.
 \]
-因此 \(\varphi\) 的有限分歧点由 \(x=0\) 与 \(P_8(x)=0\) 给出；无穷远处另出现一次分歧以满足 \(g(\overline{\mathcal{C}})=3\) 的 Riemann--Hurwitz 约束。
-并且由于 \(\mathrm{Disc}_y\) 在 \(\QQ(x)\) 中非平方，该三次扩张的几何/算术 Galois 闭包群为 \(S_3\)。
-判别式平方根所对应之二次中间扩张确定一条自然的超椭圆曲线
+Therefore, the finite divergence point of \(\varphi\) is given by \(x=0\) and \(P_8(x)=0\); another divergence occurs at infinity to satisfy the Riemann--Hurwitz constraint of \(g(\overline{\mathcal{C}})=3\).
+And since \(\mathrm{Disc}_y\) is non-square in \(\QQ(x)\), the geometric/arithmetical Galois closure group of this cubic expansion is \(S_3\).
+The second intermediate expansion corresponding to the square root of the discriminant determines a natural hyperelliptic curve
 \[
 H:\quad v^2=x\,P_8(x),
 \]
-其右端为九次多项式，故 \(H\) 为属四超椭圆曲线；它刻画了 \(S_3\)-闭包中的唯一二次子域。
+Its right end is a ninth degree polynomial, so \(H\) is a four-dimensional hyperelliptic curve; it characterizes the only quadratic subfield in \(S_3\)-closure.
 \end{proposition}
-\begin{proof}[证明要点]
-\(\overline{\mathcal{C}}\) 的仿射模型即为 \(F(x,y)=0\)，视为 \(y\) 的三次多项式即可得到所示三次方程与三重覆盖。
-对该多项式取 \(\mathrm{Disc}_y\) 并因式分解可得 \(\mathrm{Disc}_y=xP_8(x)\)。
-三次不可约扩张的 Galois 群为 \(A_3\) 当且仅当判别式为平方；此处非平方，故闭包群为 \(S_3\)。
-二次子域由 \(\sqrt{\mathrm{Disc}_y}\) 生成，从而得到超椭圆模型 \(v^2=xP_8(x)\)，其属数由 \(\deg(xP_8)=9\) 立得。
-可复现核验脚本：\texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}。证毕。
+\begin{proof}[Proof sketch]
+The affine model of \(\overline{\mathcal{C}}\) is \(F(x,y)=0\), which can be regarded as a cubic polynomial of \(y\) to obtain the cubic equation and triple coverage shown.
+Taking \(\mathrm{Disc}_y\) for this polynomial and factoring it gives \(\mathrm{Disc}_y=xP_8(x)\).
+The Galois group of cubic irreducible extensions is \(A_3\) if and only if the discriminant is square; here it is not square, so the closure group is \(S_3\).
+The quadratic subdomain is generated by \(\sqrt{\mathrm{Disc}_y}\), thus obtaining the hyperelliptic model \(v^2=xP_8(x)\), whose genus is determined by \(\deg(xP_8)=9\).
+Reproducible verification script: \texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}. Certification completed.
 \end{proof}
 
-\begin{proposition}[\texorpdfstring{$\widehat\Delta(w,s)$}{hatDelta(w,s)} 的通用伽罗瓦群与满单群性]\label{prop:sync-hatdelta-galois-s6-generic}
-将 \(\widehat\Delta(w,s)\) 视为 \(\QQ(s)\) 上关于 \(w\) 的六次多项式，则其在 \(\QQ(s)\) 上的伽罗瓦群为全对称群：
+\begin{proposition}[\texorpdfstring{$\widehat\Delta(w,s)$}{hatDelta(w,s)}'s general Galois group and complete simple group property]\label{prop:sync-hatdelta-galois-s6-generic}
+Consider \(\widehat\Delta(w,s)\) as a sixth degree polynomial on \(\QQ(s)\) with respect to \(w\), then its Galois group on \(\QQ(s)\) is a fully symmetric group:
 \[
 \mathrm{Gal}\bigl(\widehat\Delta(w,s)\ /\ \QQ(s)\bigr)\cong S_6.
 \]
-并且自然投影 \(\mathcal{X}\to\mathbb{P}^1_s\) 的一般单群（monodromy）为 \(S_6\)，从而该六叶覆盖在几何上为满对称型。
+And the general monodromy of the natural projection \(\mathcal{X}\to\mathbb{P}^1_s\) is \(S_6\), so the six-leaf cover is geometrically fully symmetric.
 \end{proposition}
-\begin{proof}[证明要点]
-在特化 \(s=3\) 时得到不可约六次多项式
+\begin{proof}[Proof sketch]
+When specializing \(s=3\) we get an irreducible sixth degree polynomial
 \[
 \widehat\Delta(w,3)=8w^6+9w^5-4w^4+9w^3-5w^2-3w+1\in\QQ[w],
 \]
-其在 \(\QQ\) 上的伽罗瓦群为 \(S_6\)。
-一般情形的伽罗瓦群是 \(S_6\) 的一个传递子群，并且特化不会增大伽罗瓦群：对除有限多个退化参数外的特化，特化伽罗瓦群可视为一般伽罗瓦群的一个子群；因此一旦存在某个特化得到 \(S_6\)，一般伽罗瓦群只能为 \(S_6\)。
-单群性由“函数域伽罗瓦群与一般单群一致”（对分歧点之外的几何纤维）得到。
-可复现核验脚本：\texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}。证毕。
+Its Galois group on \(\QQ\) is \(S_6\).
+The Galois group in the general case is a transitive subgroup of \(S_6\), and the specialization does not increase the Galois group: for specializations except for a limited number of degenerate parameters, the specialized Galois group can be regarded as a subgroup of the general Galois group; therefore once there is a specialization that results in \(S_6\), the general Galois group can only be \(S_6\).
+The simple group property is obtained by "the Galois group of the functional field is consistent with the general simple group" (for geometric fibers outside the divergence point).
+Reproducible verification script: \texttt{scripts/exp\_sync\_kernel\_hatdelta\_discriminant.py}. Certification completed.
 \end{proof}
 
-\begin{remark}[\texorpdfstring{$s=\infty$}{s=infty} 处的 Puiseux 分支分类与显式展开]\label{rem:sync-hatdelta-puiseux-at-infty}
-令 \(t:=1/s\)，并取 \(u:=t^{1/2}\)。
-则在 \(\mathcal{X}\) 的规范化上，\(s=\infty\) 的邻域出现六条解析分支 \(w=w(s)\)：
-两条为整数 Laurent 型（不分歧），四条为半整数 Puiseux 型（对应两处指数 \(2\) 的分歧点，每处贡献两张局部分支）。
-可取如下规范化展开（仅陈列首若干项）：
+\begin{remark}[\texorpdfstring{$s=\infty$}{s=infty} Puiseux branch classification and explicit expansion]\label{rem:sync-hatdelta-puiseux-at-infty}
+Let \(t:=1/s\), and take \(u:=t^{1/2}\).
+Then on the normalization of \(\mathcal{X}\), six analytical branches \(w=w(s)\) appear in the neighborhood of \(s=\infty\):
+Two are of integer Laurent type (no divergence), and four are of half-integer Puiseux type (corresponding to two divergence points with index \(2\), each contributing two local branches).
+The following standardized expansion is available (only the first few items are displayed):
 \begin{enumerate}
-  \item 极点型分支（\(w\sim -s\)）：
+\item Pole type branch (\(w\sim -s\)):
   \[
   w_{\mathrm{pole}}(s)= -s+\frac{4}{s}+\frac{2}{s^3}-\frac{24}{s^5}-\frac{189}{s^7}+O(s^{-9}).
   \]
-  \item 小量型分支（\(w\sim s^{-1}\)）：
+\item Small branch (\(w\sim s^{-1}\)):
   \[
   w_{\mathrm{small}}(s)= \frac{1}{s}-\frac{2}{s^3}+\frac{39}{s^7}-\frac{120}{s^9}-\frac{1240}{s^{11}}+O(s^{-13}).
   \]
-  \item 实平方根型分支（两张局部分支在同一分歧点处汇合）：
+\item Real square root branch (two local branches merge at the same branch point):
   \[
   w_{\pm}(s)=\pm s^{-1/2}\ \mp\ \frac{3}{4}s^{-3/2}\ +\ \frac{1}{4}s^{-2}\ \pm\ \frac{65}{32}s^{-5/2}\ +\ \frac{5}{4}s^{-3}\ +\ O(s^{-7/2}).
   \]
-  \item 纯虚平方根型分支（另一处分歧点）：
+\item Pure imaginary square root branch (another divergence point):
   \[
   w_{\pm i}(s)=\pm i\,s^{-1/2}\ \pm\ \frac{3i}{4}s^{-3/2}\ -\ \frac{1}{4}s^{-2}\ \pm\ \frac{65i}{32}s^{-5/2}\ +\ \frac{5}{4}s^{-3}\ +\ O(s^{-7/2}).
   \]
 \end{enumerate}
-并且对合 \(\iota:(w,s)\mapsto(-w,-s)\) 在该点的作用满足：前两条整数型分支对应的两点为 \(\iota\) 的不动点，而平方根型四分支在局部被成对互换（体现了 \(\iota\) 在无穷远处的非平凡局部作用）。
+And the effect of the involution \(\iota:(w,s)\mapsto(-w,-s)\) at this point is satisfied: the two points corresponding to the first two integer-type branches are the fixed points of \(\iota\), and the four branches of the square root type are locally exchanged in pairs (reflecting the non-trivial local effect of \(\iota\) at infinity).
 \end{remark}
 
-\begin{corollary}[Jacobian 的 Prym 分解：维数三的 \texorpdfstring{$(1,1,2)$}{(1,1,2)}-极化因子]\label{cor:sync-hatdelta-prym-decomposition}
-由命题 \ref{prop:sync-hatdelta-curve-double-cover-branch-genus6} 的二次分歧覆盖 \(\pi:\mathcal{X}\to\overline{\mathcal{C}}\)（分歧点数为 \(2\)），存在维数为 \(3\) 的 Prym 代数簇
-\(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\subset J(\mathcal{X})\)，并且在 \(\QQ\) 上同源分解
+\begin{corollary}[Jacobian's Prym decomposition: three-dimensional \texorpdfstring{$(1,1,2)$}{(1,1,2)}-polarization factor]\label{cor:sync-hatdelta-prym-decomposition}
+Covering \(\pi:\mathcal{X}\to\overline{\mathcal{C}}\) by the quadratic divergence of the proposition \ref{prop:sync-hatdelta-curve-double-cover-branch-genus6} (the number of divergence points is \(2\)), there is a Prym algebra variety with dimension \(3\)
+\(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\subset J(\mathcal{X})\), and homologous decomposition on \(\QQ\)
 \[
 J(\mathcal{X})\ \sim\ J(\overline{\mathcal{C}})\times \mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}}).
 \]
-由于分歧点数为 \(2\)，\(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\) 所继承的极化类型为 \((1,1,2)\)。
+Since the number of divergence points is \(2\), the polarization type inherited by \(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\) is \((1,1,2)\).
 \end{corollary}
-\begin{proof}[证明要点]
-对分歧二次覆盖的 Prym 理论给出
+\begin{proof}[Proof sketch]
+Prym's theory for bifurcated quadratic coverage gives
 \(\dim\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})=g(\mathcal{X})-g(\overline{\mathcal{C}})=6-3=3\)，
-并且 Jacobian 的同源分解成立。
-分歧点数为 \(2\) 时，诱导极化类型为 \((1,1,2)\) 为标准结论。
-证毕。
+And the Jacobian homology decomposition holds.
+When the number of divergence points is \(2\), the induced polarization type is \((1,1,2)\), which is the standard conclusion.
+Certification completed.
 \end{proof}
 
 \par
-在上述显式模型基础上，可进一步对 \(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\) 的分解型态、端自同态代数以及与命题 \ref{prop:sync-hatdelta-quotient-triple-cover-s3-discriminant} 中属四判别双覆 \(H\) 的 Jacobian 之间的同源关系进行可检验刻画；
-一条自然路径是结合有限域点计数与 Frobenius/Hecke 特征多项式检验，把同源分解与模参数识别提升为可复现的审计输出。
+Based on the above explicit model, the decomposition form of \(\mathrm{Prym}(\mathcal{X}/\overline{\mathcal{C}})\) can be further characterized in a testable manner, as well as the homology relationship between the decomposition type, the end automorphic algebra and the Jacobian belonging to the four-discriminant double cover \(H\) in the proposition \ref{prop:sync-hatdelta-quotient-triple-cover-s3-discriminant};
+A natural path is to combine finite domain point counting with Frobenius/Hecke characteristic polynomial tests to improve homology decomposition and modular parameter identification into reproducible audit outputs.
