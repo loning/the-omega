@@ -366,7 +366,7 @@ def main() -> None:
         r"最近复分支点 \(\theta_\ast=\log u_\ast\) 的选择与 \(R_\theta\) 的最优性由该分类立得。"
         r"平方根型 Puiseux 系数与 \(D_\ast\) 由隐函数局部展开与 \(u=e^\theta\) 的复对数提升得到。"
         r"上述计算与数值常量可由脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_branch\_points.py} 一键复算；"
-        r"其与日期为 \(2026\text{-}02\text{-}17\)（Asia/Singapore）的内部审计记录 \cite{Internal2026FoldGaugeAnomalyBranchPointsAudit} 对齐。"
+        r"其与内部审计记录 \cite{Internal2026FoldGaugeAnomalyBranchPointsAudit} 对齐。"
     )
     tex.append(r"\end{proof}")
     tex.append("")
