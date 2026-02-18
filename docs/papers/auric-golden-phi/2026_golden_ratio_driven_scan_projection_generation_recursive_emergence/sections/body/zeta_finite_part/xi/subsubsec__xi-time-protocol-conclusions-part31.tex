@@ -1,83 +1,194 @@
 % (User input window)
 %
 % (Source tag) /killo-golden
-% Timestamp: 2026-02-18 15:49:11 (Asia/Singapore)
-% Source: internal notes; cross-check against main.pdf dated 2026-02-16
 %
 % 内容以本文既有记号与可审计接口重写，不引入手工编号。
 
-\paragraph{Lee--Yang 判别式核的几何化闭环：范数—分歧—倍点对应—模性锚点的同一链条}
-本段将用户手工编号的“结论 171--177”与外部文档（2026-02-16）中的“结论 1--6”对齐到本文既有的椭圆统一化、分歧覆盖与倍点审计链条中。
-核心信息是：同一条固定椭圆曲线（判别式 \(37\)）同时支撑
-（i）谱四次覆盖的 Lee--Yang 判别式核，
-（ii）重量覆叠 \(y:E\to\mathbb P^1\) 的 Hurwitz 护照与 \(S_4\) 单值化，
-（iii）倍点 Latt\`es 自映射的 PCF 肖像与 \(2\)-division 平方拉回，
-（iv）重量倍乘对应的判别式平方类稳定性，
-并由此把“Lee--Yang 三次因子”从经验判别式提升为覆盖分歧与不同理想的范数证书（结论 \ref{con:xi-terminal-zm-leyang-discriminant-norm-identity}）。
+\paragraph{例外谱幂和与低阶迹矩的指数分解：Lucas--Pell 纠正项、符号型递推与有限枚举核验}
+令 \(q\ge 2\)，并取 \(U_q=\{0,1\}^q\)；将 \(U_q\) 与 \(\mathcal P([q])\) 通过指示向量识别，并以 \(u\wedge v\) 表示逐坐标与。
+定义对称矩阵 \(T^{(q)}\in\RR^{U_q\times U_q}\) 为
+\[
+T^{(q)}_{u,v}=
+\begin{cases}
+1,&u\wedge v=0,\\[2pt]
+\frac12,&u\wedge v\neq 0,
+\end{cases}
+\qquad (u,v\in U_q).
+\]
+由命题 \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction}，\(T^{(q)}\) 在 \(S_q\)-对称子空间上的谱由显式 \((q+1)\times(q+1)\) 矩阵 \(A^{(q)}\) 给出；记该 \((q+1)\) 个单根特征值（例外谱）为 \(\{\lambda_i^{(q)}\}_{i=0}^{q}\)，并对整数 \(m\ge 1\) 定义幂和
+\[
+S_m(q):=\sum_{i=0}^{q}\big(\lambda_i^{(q)}\big)^m.
+\]
 
-\begin{conclusion}[记号对齐：椭圆模型与三次控制多项式的命名约定]\label{con:xi-timeprotocol-leyang-notation-alignment}
-沿用本文的谱四次
+\begin{conclusion}[例外谱一次幂和的整系数塌缩：\texorpdfstring{$S_1(q)=2^{q-1}+\frac12F_{q+1}$}{S1(q)=2^{q-1}+1/2 F_{q+1}}]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-m1-integer-collapse}
+令 Fibonacci 数列满足 \(F_0=0\)、\(F_1=1\)。
+则对一切 \(q\ge 2\) 成立严格闭式
+\[
+\boxed{\;
+S_1(q)=2^{q-1}+\frac12\,F_{q+1}\; }.
+\]
+因此例外谱总和在 \(\QQ(\sqrt5)\) 中出现的 \(\varphi\)-表示可完全消去，并在 \(\QQ\) 中塌缩为半整数序列。
+\end{conclusion}
+\begin{proof}
+由于 \(S_1(q)=\Tr(A^{(q)})\)，由 \eqref{eq:pom-multiplicity-composition-Aq-def} 直接计算
+\[
+\Tr(A^{(q)})
+=\frac12\sum_{k=0}^{q}\binom{q}{k}+\frac12\sum_{k=0}^{q}\binom{q-k}{k}
+=2^{q-1}+\frac12\sum_{k\ge 0}\binom{q-k}{k}.
+\]
+再用经典恒等式 \(\sum_{k\ge 0}\binom{q-k}{k}=F_{q+1}\) 即得结论（亦与定理 \ref{thm:pom-replica-softcore-exceptional-spectrum-trace} 等价）。证毕。
+\end{proof}
+
+\begin{conclusion}[Lucas--Pell 纠正项的统一生成与符号型递推律]\label{con:xi-terminal-replica-softcore-lucas-pell-omega-unified}
+令 Lucas 数列满足 \(L_0=2\)、\(L_1=1\)，并令 \(\varphi=\frac{1+\sqrt5}{2}\)。
+对任意整数 \(m\ge 1\) 定义
+\[
+\Omega_m(q):=
+\begin{cases}
+\dfrac{\varphi^{m(q+2)}+(-1)^q\varphi^{-mq}}{\varphi^{2m}+1},& m\ \text{为奇数},\\[10pt]
+\dfrac{\varphi^{m(q+2)}-\varphi^{-mq}}{\varphi^{2m}-1},& m\ \text{为偶数}.
+\end{cases}
+\]
+则对每个 \(m\ge 1\) 与 \(q\ge 0\)，有 \(\Omega_m(q)\in\ZZ\)，并满足统一的二阶线性递推
+\[
+\boxed{\;
+\Omega_m(q)=L_m\,\Omega_m(q-1)-(-1)^m\,\Omega_m(q-2),\qquad
+\Omega_m(0)=1,\ \Omega_m(1)=L_m\; }.
+\]
+尤其地，\(\Omega_1(q)=F_{q+1}\)、\(\Omega_2(q)=F_{2q+2}\) 为该机制的低阶退化。
+\end{conclusion}
+\begin{proof}
+记 \(\widehat\varphi:=-\varphi^{-1}\) 为 \(\QQ(\sqrt5)\) 的共轭根，则
 \(
-\Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1)
+L_m=\varphi^m+\widehat\varphi^{\,m}=\varphi^m+(-1)^m\varphi^{-m}
+\)
+且
+\(
+\varphi^m\widehat\varphi^{\,m}=(-1)^m
 \)。
-则（结论 \ref{con:xi-terminal-zm-elliptic-normalization}）存在完全显式的椭圆统一化链条
-\[
-u:=y-\lambda^2,\qquad
-u^2+u=\lambda^3-\lambda,
-\qquad
-w:=2u+1=2y+1-2\lambda^2,
-\qquad
-w^2=4\lambda^3-4\lambda+1,
-\]
-并在短 Weierstrass 口径下取
-\[
-X:=\lambda,\qquad Y:=\frac{w}{2},
-\qquad
-E:\ Y^2=X^3-X+\frac14,
-\qquad
-y=X^2+Y-\frac12.
-\]
-进一步作整变换
-\[
-x':=4X,\qquad y':=8Y,
-\qquad
-E':\ {y'}^{2}={x'}^{3}-16x'+16,
-\]
-则重量函数亦等价写为
-\[
-y=\frac{x'^2+2y'-8}{16}.
-\]
-\par
-关于三次控制多项式，本文固定采用以下命名以避免混淆：
-\[
-P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32
-\]
-为 Lee--Yang 分歧三次因子（来自 \(\Disc_{\lambda}\Pi=-y(y-1)P_{\mathrm{LY}}(y)\)），而
-\[
-Q_{2}(y):=16y^{3}-8y^{2}-4y+1
-\]
-为二分点像控制三次（亦即结论 \ref{con:xi-terminal-zm-2division-norm-square} 中的 \(S(y)\)）。
-外部文档中若把 \(P_{\mathrm{LY}}\) 记作 \(Q\)，则应在并入本文时将其统一改写为 \(P_{\mathrm{LY}}\)，并保留 \(Q_2\)（或 \(S\)）给二分点像三次，以避免与倍乘对应首项因子 \(Q_2(y)^4\) 的记号冲突（结论 \ref{con:xi-terminal-zm-weight-doubling-quartic-closure}）。
-\end{conclusion}
+因此数列 \(q\mapsto \varphi^{mq}\) 与 \(q\mapsto \widehat\varphi^{\,mq}\) 均满足线性递推
+\(
+x_q=L_m x_{q-1}-(-1)^m x_{q-2}
+\)；
+由定义可将 \(\Omega_m(q)\) 写成二者的 \(\QQ\)-线性组合，从而递推式成立。
+初值由 \(q=0,1\) 的直接代入得到。
+递推系数与初值均为整数，故 \(\Omega_m(q)\in\ZZ\) 由归纳法给出。
+最后，\(m=1,2\) 的退化式可由相同递推与初值对齐（或由 \(\Omega_1\)、\(\Omega_2\) 的闭式与 Binet 公式直接化简）得到。证毕。
+\end{proof}
 
-\begin{conclusion}[对照索引：手工编号条目在本文中的可定位入口]\label{con:xi-timeprotocol-leyang-crosswalk-index}
-用户手工编号条目可在本文中按如下标签定位其“可审计接口”：
-\begin{itemize}
-  \item Lee--Yang 判别式核的范数实现（手工 171）：
-  结论 \ref{con:xi-terminal-zm-leyang-discriminant-norm-identity}（并与 \(\dd y=(4XY+3X^2-1)\omega\) 的分歧刻画结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values} 对齐）。
-  \item 重量覆盖的分歧点/分歧值/Hurwitz 护照与 \(S_4\) 单值化（手工 172）：
-  结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values} 与结论 \ref{con:xi-terminal-zm-elliptic-y-hurwitz-passport}。
-  \item Latt\`es 的 \(2\)-division 平方拉回、有限临界值与后临界集合（手工 173）：
-  结论 \ref{con:xi-terminal-zm-elliptic-lattes-doubling} 与结论 \ref{con:xi-terminal-zm-elliptic-lattes-pcf-portrait}。
-  \item 二分点在重量坐标下的三次极小多项式与判别式（手工 174）：
-  结论 \ref{con:xi-terminal-zm-2division-norm-square}（及其在倍乘对应首项中出现的解释见结论 \ref{con:xi-terminal-zm-weight-doubling-quartic-closure}）。
-  \item 重量倍乘对应 \((16,4)\) 与判别式平方类由 \(-y(y-1)P_{\mathrm{LY}}(y)\) 锁定（手工 175）：
-  结论 \ref{con:xi-terminal-zm-weight-doubling-quartic-closure} 与结论 \ref{con:xi-terminal-zm-weight-doubling-disc-squareclass}。
-  \item 坏素集与素数 \(37\) 的平方自由共现（手工 176）：
-  结论 \ref{con:xi-terminal-37-squarefree-coupling} 与结论 \ref{con:xi-terminal-zm-leyang-badprime-37-common-double-root}。
-  \item 五个有限分歧点的群和为零（手工 177）：
-  结论 \ref{con:xi-terminal-zm-leyang-ramification-divisor-principalization-trace}（并给出更强的有理迹点闭式）。
-\end{itemize}
-外部文档（2026-02-16）“结论 1--6”的椭圆化、模性锚点、\(S_4\) 单值化与 Puiseux 奇性在本文中统一收束于定理 \ref{thm:xi-terminal-zm-leyang-elliptic-structure} 与注记 \ref{rem:xi-terminal-elliptic-37a1-modular-anchor}。
+\begin{conclusion}[低阶迹矩的完全指数分解：\texorpdfstring{$\Tr((T^{(q)})^m)$}{Tr((T^(q))^m)} 的闭式]\label{con:xi-terminal-replica-softcore-low-moment-trace-exponential-decomposition}
+对任意 \(q\ge 2\)，\(T^{(q)}\) 的低阶迹矩满足严格闭式
+\[
+\boxed{\;
+\Tr\!\bigl((T^{(q)})^3\bigr)=\frac18\Big(8^{q}+3\cdot 6^{q}+3\cdot 5^{q}+4^{q}\Big)\; } ,
+\]
+\[
+\boxed{\;
+\Tr\!\bigl((T^{(q)})^4\bigr)=\frac1{16}\Big(16^{q}+4\cdot 12^{q}+4\cdot 10^{q}+2\cdot 9^{q}+4\cdot 8^{q}+7^{q}\Big)\; } ,
+\]
+\[
+\boxed{\;
+\Tr\!\bigl((T^{(q)})^5\bigr)=\frac1{32}\Big(32^{q}+5\cdot 24^{q}+5\cdot 20^{q}+5\cdot 18^{q}+5\cdot 16^{q}+5\cdot 15^{q}+5\cdot 13^{q}+11^{q}\Big)\; } .
+\]
 \end{conclusion}
+\begin{proof}[证明要点]
+由 \(T^{(q)}_{u,v}=\frac12\bigl(1+\mathbf{1}_{\{u\wedge v=0\}}\bigr)\) 展开
+\(
+\Tr((T^{(q)})^m)=\sum_{u_1,\dots,u_m}\prod_{k=1}^{m}T^{(q)}_{u_k,u_{k+1}}
+\)
+（其中 \(u_{m+1}=u_1\)），得到
+\[
+\Tr\!\bigl((T^{(q)})^m\bigr)
+=2^{-m}\sum_{E'\subseteq E(C_m)}\ \sum_{u_1,\dots,u_m\in U_q}\ \prod_{(k,k+1)\in E'}\mathbf{1}_{\{u_k\wedge u_{k+1}=0\}}.
+\]
+对固定 \(E'\)，指示乘积在各坐标上分解，故内层求和按坐标完全因子化为 \(a(E')^q\)，其中 \(a(E')\) 为单坐标二元 \(m\)-环上满足相应“禁相邻 \(11\)”约束的可行赋值数。
+当 \(m=3,4,5\) 时，\(E'\subseteq E(C_m)\) 的同构类型有限，可逐型枚举得到对应的 \(a(E')\) 分别为
+\[
+8,6,5,4;\qquad
+16,12,10,9,8,7;\qquad
+32,24,20,18,16,15,13,11,
+\]
+且其出现次数分别为
+\[
+1,3,3,1;\qquad
+1,4,4,2,4,1;\qquad
+1,5,5,5,5,5,5,1.
+\]
+代回并收集同底数项即得三条闭式。证毕。
+\end{proof}
 
+\begin{conclusion}[例外谱三次幂和的全闭式：\texorpdfstring{$\{8,6,5\}$}{\{8,6,5\}} 指数族与 Lucas--Pell 纠正项]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-m3}
+定义整数序列
+\[
+\Omega_3(q):=\frac{\varphi^{3q+6}+(-1)^q\varphi^{-3q}}{\varphi^{6}+1}\in\ZZ.
+\]
+则对一切 \(q\ge 2\) 有严格恒等式
+\[
+\boxed{\;
+S_3(q)=\frac18\Big(8^{q}+3\cdot 6^{q}+3\cdot 5^{q}+\Omega_3(q)\Big)\; }.
+\]
+并且 \(\Omega_3\) 满足二阶线性递推
+\[
+\Omega_3(q)=4\,\Omega_3(q-1)+\Omega_3(q-2),\qquad \Omega_3(0)=1,\ \Omega_3(1)=4.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由定理 \ref{thm:pom-replica-softcore-characteristic-factorization}，\(T^{(q)}\) 的全谱由例外谱与固定谱簇并置给出。
+因此
+\(
+\Tr((T^{(q)})^3)=S_3(q)+\sum_{j=0}^{q}(\binom{q}{j}-1)\bigl(\frac{(-1)^j\varphi^{q-2j}}{2}\bigr)^3
+\)。
+对固定谱簇幂和作二项式求和与几何级数求和可得
+\[
+\sum_{j=0}^{q}\Bigl(\binom{q}{j}-1\Bigr)\Bigl(\frac{(-1)^j\varphi^{q-2j}}{2}\Bigr)^3
+=\frac18\bigl(4^q-\Omega_3(q)\bigr),
+\]
+其中 \(\varphi^3-\varphi^{-3}=4\) 被识别为 Lucas 数 \(L_3\)。
+再与结论 \ref{con:xi-terminal-replica-softcore-low-moment-trace-exponential-decomposition} 的 \(\Tr((T^{(q)})^3)\) 闭式合并即得所示。
+\(\Omega_3\) 的递推为结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified} 在 \(m=3\) 的特例。证毕。
+\end{proof}
+
+\begin{conclusion}[例外谱四次幂和的全闭式：\texorpdfstring{$\{16,12,10,9,8\}$}{\{16,12,10,9,8\}} 指数族与 Lucas--Pell 纠正项]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-m4}
+定义整数序列
+\[
+\Omega_4(q):=\frac{\varphi^{4q+8}-\varphi^{-4q}}{\varphi^{8}-1}\in\ZZ.
+\]
+则对一切 \(q\ge 2\) 有严格恒等式
+\[
+\boxed{\;
+S_4(q)=\frac1{16}\Big(16^{q}+4\cdot 12^{q}+4\cdot 10^{q}+2\cdot 9^{q}+4\cdot 8^{q}+\Omega_4(q)\Big)\; }.
+\]
+并且 \(\Omega_4\) 满足二阶线性递推
+\[
+\Omega_4(q)=7\,\Omega_4(q-1)-\Omega_4(q-2),\qquad \Omega_4(0)=1,\ \Omega_4(1)=7.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+同上，\(
+\Tr((T^{(q)})^4)=S_4(q)+\sum_{j}(\binom{q}{j}-1)\bigl(\frac{(-1)^j\varphi^{q-2j}}{2}\bigr)^4
+\)。
+固定谱簇幂和化简为 \(\frac1{16}(7^q-\Omega_4(q))\)（其中 \(\varphi^4+\varphi^{-4}=7=L_4\)），再与结论 \ref{con:xi-terminal-replica-softcore-low-moment-trace-exponential-decomposition} 的 \(\Tr((T^{(q)})^4)\) 闭式合并即得所示。
+递推为结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified} 在 \(m=4\) 的特例。证毕。
+\end{proof}
+
+\begin{conclusion}[例外谱五次幂和的全闭式：\texorpdfstring{$\{32,24,20,18,16,15,13\}$}{\{32,24,20,18,16,15,13\}} 指数族与 Lucas--Pell 纠正项]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-m5}
+定义整数序列
+\[
+\Omega_5(q):=\frac{\varphi^{5q+10}+(-1)^q\varphi^{-5q}}{\varphi^{10}+1}\in\ZZ.
+\]
+则对一切 \(q\ge 2\) 有严格恒等式
+\[
+\boxed{\;
+S_5(q)=\frac1{32}\Big(32^{q}+5\cdot 24^{q}+5\cdot 20^{q}+5\cdot 18^{q}+5\cdot 16^{q}+5\cdot 15^{q}+5\cdot 13^{q}+\Omega_5(q)\Big)\; }.
+\]
+并且 \(\Omega_5\) 满足二阶线性递推
+\[
+\Omega_5(q)=11\,\Omega_5(q-1)+\Omega_5(q-2),\qquad \Omega_5(0)=1,\ \Omega_5(1)=11.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+同理，固定谱簇五次幂和化简为 \(\frac1{32}(11^q-\Omega_5(q))\)（其中 \(\varphi^5-\varphi^{-5}=11=L_5\)），再与结论 \ref{con:xi-terminal-replica-softcore-low-moment-trace-exponential-decomposition} 的 \(\Tr((T^{(q)})^5)\) 闭式合并即可得到所示表达。
+递推为结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified} 在 \(m=5\) 的特例。证毕。
+\end{proof}
+
+\endinput

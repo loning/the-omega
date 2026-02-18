@@ -286,4 +286,217 @@ Rényi 熵率塌缩见定理 \ref{thm:fold-bin-renyi-rate-collapse}。
 见命题 \ref{prop:fold-bin-digit-dp}。
 \end{proof}
 
+\paragraph{\texorpdfstring{$q$}{q}-复制软核传递矩阵的整系数结构：多尺度转级数、补集自对偶反演与 Smith 形刚性}
+沿用命题 \ref{prop:pom-multiplicity-composition-replica-softcore-transfer} 的状态空间 \(U_q=\{0,1\}^q\) 与软核传递矩阵 \(T^{(q)}\)（\(T^{(q)}_{u,v}=2^{-\mathbf{1}_{\{u\wedge v\neq 0\}}}\)），并记增长常数
+\(
+\lambda_q:=2\,\rho(T^{(q)})
+\)。
+将 \(U_q\) 与子集幂集 \(\mathcal P([q])\) 通过指示向量识别，并令 \(|u|\) 表示 Hamming 权。
+再令 \(D^{(q)}:=K^{\otimes q}\)（定理 \ref{thm:pom-replica-softcore-tensor-eigenbasis}），则
+\(
+T^{(q)}=\frac12(\mathbf{1}\mathbf{1}^{\mathsf T}+D^{(q)})
+\)，从而
+\[
+B^{(q)}:=2T^{(q)}=\mathbf{1}\mathbf{1}^{\mathsf T}+D^{(q)}\in \mathrm{M}_{2^q}(\ZZ).
+\]
+
+\begin{conclusion}[\texorpdfstring{$\lambda_q$}{lambda_q} 的多尺度转级数：整数系数与 Fibonacci 比率半群]\label{con:xi-terminal-replica-softcore-lambdaq-multiscale-transseries}
+令 Fibonacci 数列满足 \(F_{n+2}=F_{n+1}+F_n\) 且 \(F_1=F_2=1\)，并对 \(k\ge 2\) 定义
+\[
+r_k:=\frac{F_{k+2}}{2^{k}}\in(0,1).
+\]
+则当 \(q\to\infty\) 时，\(\lambda_q\) 存在一个由乘法半群 \(\langle r_2,r_3,r_4,\dots\rangle\) 支撑的多尺度渐近展开；其前若干主导项可取为
+\[
+\begin{aligned}
+\lambda_q
+&=2^{q}
++\Big(\frac{3}{2}\Big)^{q}
++\Big(\frac{5}{4}\Big)^{q}
+-\Big(\frac{9}{8}\Big)^{q}
++1
+-3\Big(\frac{15}{16}\Big)^{q}
++2\Big(\frac{27}{32}\Big)^{q}
++\Big(\frac{13}{16}\Big)^{q}\\
+&\quad
+-2\Big(\frac{25}{32}\Big)^{q}
+-4\Big(\frac{3}{4}\Big)^{q}
++10\Big(\frac{45}{64}\Big)^{q}
++O\!\Big(\Big(\frac{21}{32}\Big)^{q}\Big).
+\end{aligned}
+\]
+其中各底数均可写为 \(2\cdot \prod_{i=1}^m r_{k_i}\) 的形式，且对应系数为整数（由固定点方程 \(A_q(\rho(q))=1\) 的 Lagrange 反演所诱导的组合计数给出）。
+\end{conclusion}
+\begin{proof}[证明要点]
+由定义 \ref{def:pom-multiplicity-real-q-pressure} 的方程 \(A_q(\rho)=\sum_{k\ge 1}F_{k+2}^q\rho^k=1\)。
+作换元 \(\rho=2^{-q}y\) 得
+\(
+1=y+\sum_{k\ge 2}r_k^q\,y^k
+\)
+且 \(y\to 1\)。
+对该隐式方程应用 Lagrange 反演并在 \(\lambda_q=\rho^{-1}=2^q/y\) 上作展开即可得到所示多尺度项；
+系数的整性由反演公式中的树形组合系数保证。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$B^{(q)}$}{B^(q)} 的补集自对偶反演：与 \texorpdfstring{$D^{(q)}$}{D^(q)} 的共轭逆仅差一秩修正]\label{con:xi-terminal-disjointness-bq-complement-selfdual-inverse-rankone}
+令 \(C\) 为补集置换矩阵（\((Ce_u)=e_{[q]\setminus u}\)），令 \(S=\mathrm{diag}(({-1})^{|u|})\)，并记 \(E_{\varnothing,\varnothing}\) 为在 \((\varnothing,\varnothing)\) 处为 \(1\)、其余为 \(0\) 的矩阵。
+则对一切 \(q\ge 2\) 成立严格恒等式
+\[
+\boxed{\;
+\bigl(B^{(q)}\bigr)^{-1}
+=(-1)^{q}\,C^{\mathsf T}S\,D^{(q)}\,S C\;-\;\frac12\,E_{\varnothing,\varnothing}\; }.
+\]
+从而
+\(
+\bigl(B^{(q)}\bigr)^{-1}+\frac12E_{\varnothing,\varnothing}\in \mathrm{M}_{2^q}(\ZZ)
+\)，且该整矩阵与 \((-1)^qD^{(q)}\) 共轭等谱；
+而 \(\bigl(B^{(q)}\bigr)^{-1}\) 本身则为该共轭像的单秩负扰动。
+\end{conclusion}
+\begin{proof}
+将 \(U_q\) 与 \(\mathcal P([q])\) 识别，并记 \(D^{(q)}_{u,v}=\mathbf{1}_{\{u\wedge v=0\}}\)。
+直接计算可得对一切 \(u,v\subseteq[q]\) 有
+\[
+\bigl(D^{(q)}\bigr)^{-1}_{u,v}
+=(-1)^{|u\cap v|}\,\mathbf{1}_{\{u\cup v=[q]\}}.
+\]
+事实上，
+\[
+\sum_{w\subseteq[q]}D^{(q)}_{u,w}\,(-1)^{|w\cap v|}\mathbf{1}_{\{w\cup v=[q]\}}
+=\sum_{t\subseteq v\setminus u}(-1)^{|t|}
+=(1-1)^{|v\setminus u|}
+=\mathbf{1}_{\{u=v\}},
+\]
+从而 \(D^{(q)}\bigl(D^{(q)}\bigr)^{-1}=I\)。
+另一方面，若 \(u\cup v=[q]\)，则 \(|u|+|v|=q+|u\cap v|\)，故
+\[
+\bigl(C^{\mathsf T}S\,D^{(q)}\,S C\bigr)_{u,v}
+=(-1)^{|u|+|v|}\,D^{(q)}_{[q]\setminus u,[q]\setminus v}
+=(-1)^{q+|u\cap v|}\mathbf{1}_{\{u\cup v=[q]\}},
+\]
+从而 \(((-1)^q C^{\mathsf T}S D^{(q)} S C)=\bigl(D^{(q)}\bigr)^{-1}\)。
+最后对 \(B^{(q)}=D^{(q)}+\mathbf{1}\mathbf{1}^{\mathsf T}\) 应用 Sherman--Morrison 公式并用
+\(
+\bigl(D^{(q)}\bigr)^{-1}\mathbf{1}=e_{\varnothing}
+\)
+与
+\(
+\mathbf{1}^{\mathsf T}\bigl(D^{(q)}\bigr)^{-1}\mathbf{1}=1
+\)
+即得
+\(
+\bigl(B^{(q)}\bigr)^{-1}
+=\bigl(D^{(q)}\bigr)^{-1}-\frac12E_{\varnothing,\varnothing}
+\)，从而结论成立。
+\end{proof}
+
+\begin{conclusion}[Smith 标准形的刚性：余核恒为 \texorpdfstring{$\mathbb Z/2\mathbb Z$}{Z/2Z}，且唯一可解障碍为 \texorpdfstring{$b_{\varnothing}$}{b_empty} 的奇偶性]\label{con:xi-terminal-disjointness-bq-smith-snf-coker-parity}
+对任意 \(q\ge 2\)，整数矩阵 \(B^{(q)}\) 的 Smith 标准形为
+\[
+\mathrm{SNF}(B^{(q)})=\mathrm{diag}(1,\dots,1,2),
+\]
+从而 \(\det B^{(q)}=2\) 且
+\(
+\mathrm{coker}(B^{(q)}:\ZZ^{2^q}\to\ZZ^{2^q})\cong \ZZ/2\ZZ
+\)。
+等价地，对任意 \(b\in\ZZ^{2^q}\)，丢番图方程
+\[
+B^{(q)}x=b,\qquad x\in\ZZ^{2^q},
+\]
+有解当且仅当 \(b_{\varnothing}\) 为偶数；且在此条件下解空间为一个满秩格的陪集。
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-terminal-disjointness-bq-complement-selfdual-inverse-rankone}，
+\(
+\bigl(B^{(q)}\bigr)^{-1}=\mathsf M-\frac12E_{\varnothing,\varnothing}
+\)
+其中 \(\mathsf M\in \mathrm{M}_{2^q}(\ZZ)\)。
+因此若 \(x=\bigl(B^{(q)}\bigr)^{-1}b\)，则除 \(\varnothing\)-坐标外各分量自动为整数，而
+\(
+x_{\varnothing}=\mathsf M_{\varnothing,\bullet}b-\frac12 b_{\varnothing}
+\)
+为整数当且仅当 \(b_{\varnothing}\) 为偶数；这给出丢番图可解性的充要条件，并推出余核为 \(\ZZ/2\ZZ\)。
+另一方面，\(\det\!\bigl(D^{(q)}\bigr)=1\)（\(q\ge 2\)）且
+\(
+\det(B^{(q)})=\det(D^{(q)})\bigl(1+\mathbf{1}^{\mathsf T}(D^{(q)})^{-1}\mathbf{1}\bigr)=2
+\)
+（由 Sherman--Morrison 行列式公式）。
+结合 \(\gcd\) 的 \(1\times 1\) 余子式为 \(1\) 且 \(|\det(B^{(q)})|=2\)，得到 \(\mathrm{SNF}(B^{(q)})=\mathrm{diag}(1,\dots,1,2)\)。
+\end{proof}
+
+\begin{conclusion}[伴随矩阵的稀疏闭式：所有余子式仅取 \texorpdfstring{$\{0,\pm 2\}$}{\{0,±2\}} 与唯一的 \texorpdfstring{$-1$}{-1}]\label{con:xi-terminal-disjointness-bq-adjugate-sparse-minors}
+记 \(\mathrm{adj}(B^{(q)})\) 为伴随矩阵。
+则对 \(q\ge 2\)，其条目满足完全稀疏闭式：
+\[
+\mathrm{adj}(B^{(q)})_{\varnothing,\varnothing}=-1,
+\qquad
+\mathrm{adj}(B^{(q)})_{u,v}=
+\begin{cases}
+2(-1)^{|u\cap v|},&u\cup v=[q],\\
+0,&\text{其余情形}.
+\end{cases}
+\]
+因此，所有 \((2^q-1)\times(2^q-1)\) 余子式除上述覆盖情形外全部消失，且非零者在绝对值意义下至多为 \(2\)。
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-terminal-disjointness-bq-smith-snf-coker-parity} 有 \(\det(B^{(q)})=2\)。
+再由结论 \ref{con:xi-terminal-disjointness-bq-complement-selfdual-inverse-rankone} 得到
+\[
+\bigl(B^{(q)}\bigr)^{-1}_{\varnothing,\varnothing}=-\frac12,
+\qquad
+\bigl(B^{(q)}\bigr)^{-1}_{u,v}=(-1)^{|u\cap v|}\mathbf{1}_{\{u\cup v=[q]\}}\quad((u,v)\neq(\varnothing,\varnothing)).
+\]
+于是 \(\mathrm{adj}(B^{(q)})=\det(B^{(q)})\bigl(B^{(q)}\bigr)^{-1}=2\bigl(B^{(q)}\bigr)^{-1}\)，逐项即得所示闭式。
+\end{proof}
+
+\begin{conclusion}[例外谱平方和的纯整闭式：\texorpdfstring{$4^{q-1}+\frac12 3^q+\frac14F_{2q+2}$}{4^(q-1)+1/2 3^q+1/4 F_{2q+2}}]\label{con:xi-terminal-replica-softcore-exceptional-spectrum-square-sum}
+令 \(\{\lambda_i^{(q)}\}_{i=0}^{q}\) 表示 \(T^{(q)}\) 的 \(q+1\) 个例外本征值（亦即 \(S_q\)-对称降维矩阵 \(A^{(q)}\) 的谱，命题 \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction}）。
+则对一切 \(q\ge 2\)，成立严格恒等式
+\[
+\boxed{\;
+\sum_{i=0}^{q}\big(\lambda_i^{(q)}\big)^2
+=4^{q-1}
+\;+\;\frac12\,3^{q}
+\;+\;\frac14\,F_{2q+2}\; }.
+\]
+该恒等式给出一个谱--组合桥：例外谱的二阶幂和在代数上塌缩为仅含 \(4^q\)、\(3^q\) 与 Fibonacci 指标 \(2q+2\) 的整系数表达。
+\end{conclusion}
+\begin{proof}
+由于 \(T^{(q)}\) 对称，
+\(
+\Tr\!\bigl((T^{(q)})^2\bigr)=\sum_{u,v\in U_q}(T^{(q)}_{u,v})^2
+\)。
+其中 \(T^{(q)}_{u,v}=1\) 当且仅当 \(u\wedge v=0\)；逐坐标计数得该类对数为 \(3^q\)，其余为 \(4^q-3^q\)。
+因此
+\[
+\Tr\!\bigl((T^{(q)})^2\bigr)
+=3^q+\frac14(4^q-3^q)
+=4^{q-1}+\frac34\,3^q.
+\]
+另一方面，由定理 \ref{thm:pom-replica-softcore-characteristic-factorization}，固定谱簇
+\(
+\{\frac{(-1)^j\varphi^{q-2j}}{2}\}_{j=0}^{q}
+\)
+在 \(T^{(q)}\) 中的重数为 \(\binom{q}{j}-1\)。
+故其平方和贡献为
+\[
+\frac14\sum_{j=0}^{q}\bigl(\binom{q}{j}-1\bigr)\varphi^{2(q-2j)}
+=\frac14\Bigl(\sum_{j=0}^{q}\binom{q}{j}\varphi^{2(q-2j)}-\sum_{j=0}^{q}\varphi^{2(q-2j)}\Bigr).
+\]
+利用恒等式 \(\varphi^2+\varphi^{-2}=3\) 得
+\(
+\sum_{j=0}^{q}\binom{q}{j}\varphi^{2(q-2j)}=(\varphi^2+\varphi^{-2})^q=3^q
+\)；
+又由等比求和与 \(\varphi^4-1=\sqrt5\,\varphi^2\) 得
+\(
+\sum_{j=0}^{q}\varphi^{2(q-2j)}=F_{2q+2}
+\)。
+因此固定谱簇的平方和为 \(\frac14(3^q-F_{2q+2})\)。
+从 \(\Tr((T^{(q)})^2)=\sum_i(\lambda_i^{(q)})^2+\)（固定谱簇平方和）得出
+\[
+\sum_{i=0}^{q}\big(\lambda_i^{(q)}\big)^2
+=\Bigl(4^{q-1}+\frac34\,3^q\Bigr)-\frac14(3^q-F_{2q+2})
+=4^{q-1}+\frac12\,3^q+\frac14\,F_{2q+2},
+\]
+证毕。
+\end{proof}
+
 \endinput
