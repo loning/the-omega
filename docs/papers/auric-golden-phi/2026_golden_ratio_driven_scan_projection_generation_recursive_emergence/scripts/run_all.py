@@ -82,6 +82,14 @@ def _outputs_ok(step: Step) -> Tuple[bool, List[str]]:
 def build_steps() -> List[Step]:
     return [
         Step(
+            name="replica_softcore_binary_necklace_trace_audit",
+            script="exp_replica_softcore_binary_necklace_trace_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/replica_softcore_binary_necklace_trace_audit.json",
+            ],
+        ),
+        Step(
             name="rotation_microstate_kl_certificate",
             script="exp_rotation_microstate_kl_certificate.py",
             args=[],

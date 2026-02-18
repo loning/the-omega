@@ -298,6 +298,62 @@ a_n(u)=\Tr(B(u)^n)=\Tr\!\bigl((uB(1/u))^n\bigr)=u^n\Tr(B(1/u)^n)=u^n a_n(1/u),
 比较系数即得结论。证毕。
 \end{proof}
 
+\begin{conclusion}[Teichm\"uller 切片上的驻波分解：回文谱只含余弦模态]\label{con:sync-kernel-weighted-teichmueller-standing-wave}
+沿用命题 \ref{prop:trace-palindrome} 的记号，并取单位圆扭曲 \(u=e^{\mathrm{i}\theta}\)。
+定义归一化离散傅里叶振幅
+\[
+A_n(\theta):=e^{-\mathrm{i}n\theta/2}\,a_n(e^{\mathrm{i}\theta})
+=\sum_{k=0}^{n}a_{n,k}\,e^{\mathrm{i}(k-n/2)\theta}.
+\]
+则 \(A_n(\theta)\in\RR\) 且 \(A_n(\theta)=A_n(-\theta)\)。
+更精确地，\(A_n\) 具有纯余弦展开
+\[
+\boxed{\ 
+A_n(\theta)=
+\begin{cases}
+a_{n,n/2}+2\sum_{k=0}^{n/2-1} a_{n,k}\cos\!\bigl((k-n/2)\theta\bigr), & 2\mid n,\\[4pt]
+2\sum_{k=0}^{(n-1)/2} a_{n,k}\cos\!\bigl((k-n/2)\theta\bigr), & 2\nmid n.
+\end{cases}
+\ }
+\]
+因此 \(a_n(e^{\mathrm{i}\theta})=e^{\mathrm{i}n\theta/2}A_n(\theta)\) 为“行波相位”乘以实偶振幅，离散谱在严格意义上呈驻波型而无正弦分量。
+\end{conclusion}
+\begin{proof}[证明要点]
+由 \(a_{n,k}=a_{n,n-k}\)，把和式按 \(k\leftrightarrow n-k\) 配对：
+\[
+a_{n,k}e^{\mathrm{i}(k-n/2)\theta}+a_{n,n-k}e^{-\mathrm{i}(k-n/2)\theta}
+=2a_{n,k}\cos\!\bigl((k-n/2)\theta\bigr).
+\]
+若 \(n\) 为偶数，尚有中心项 \(k=n/2\) 给出常数项 \(a_{n,n/2}\)。
+由此得到所示余弦展开与实偶性。
+\end{proof}
+
+\begin{conclusion}[Archimedean--Teichm\"uller 二面体约束：完成化落在 \texorpdfstring{$\mathbb{Z}[s]$}{Z[s]} 并满足奇偶表示]\label{con:sync-kernel-weighted-archimedean-teichmueller-dihedral}
+仍沿用命题 \ref{prop:trace-palindrome} 的记号，令 \(u=r^2\)，并记
+\[
+s:=r+r^{-1},\qquad \widehat a_n(s):=r^{-n}a_n(r^2)\in\mathbb{Z}[r,r^{-1}].
+\]
+则 \(\widehat a_n(s)\) 实际属于不变量子环 \(\mathbb{Z}[s]\)，并满足二面体奇偶律
+\[
+\boxed{\ \widehat a_n(-s)=(-1)^n\,\widehat a_n(s)\ }.
+\]
+在 Archimedean 单位圆切片 \(r=e^{\mathrm{i}\theta/2}\) 上，\(s=2\cos(\theta/2)\in[-2,2]\) 使得
+\[
+a_n(e^{\mathrm{i}\theta})=e^{\mathrm{i}n\theta/2}\,\widehat a_n(2\cos(\theta/2)),
+\]
+从而驻波振幅严格由实变量 \(s\) 控制。
+该 “\(r\mapsto r^{-1}\)” 反射与 “\(r\mapsto -r\)” 半转共同生成的二面体约束，与正文的自对偶函数方程（命题 \ref{prop:kernel-self-dual-character} 与注 \ref{rem:kernel-self-dual-character-dihedral}）在结构上同源。
+\end{conclusion}
+\begin{proof}[证明要点]
+由命题 \ref{prop:trace-palindrome}，\(a_n(r^2)=r^{2n}a_n(r^{-2})\)，故
+\(
+r^{-n}a_n(r^2)=r^{n}a_n(r^{-2})
+\)，
+等价于 \(r^{-n}a_n(r^2)\) 在 \(r\mapsto r^{-1}\) 下不变。
+由不变量子环恒等式 \(\mathbb{Z}[r,r^{-1}]^{\,r\mapsto r^{-1}}=\mathbb{Z}[r+r^{-1}]=\mathbb{Z}[s]\) 得 \(\widehat a_n(s)\in\mathbb{Z}[s]\)。
+又因 \(\widehat a_n(-r)=(-r)^{-n}a_n((-r)^2)=(-1)^n\widehat a_n(r)\)，而 \(-r+(-r)^{-1}=-s\)，故得到 \(\widehat a_n(-s)=(-1)^n\widehat a_n(s)\)。
+\end{proof}
+
 \begin{corollary}[奇阶消失律]\label{cor:trace-odd-vanish}
 若 $n$ 为奇数，则
 \[

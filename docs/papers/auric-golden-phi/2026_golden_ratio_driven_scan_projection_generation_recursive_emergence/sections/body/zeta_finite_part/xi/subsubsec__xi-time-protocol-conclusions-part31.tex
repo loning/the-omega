@@ -1,9 +1,3 @@
-% (User input window)
-%
-% (Source tag) /killo-golden
-%
-% 内容以本文既有记号与可审计接口重写，不引入手工编号。
-
 \paragraph{例外谱幂和与低阶迹矩的指数分解：Lucas--Pell 纠正项、符号型递推与有限枚举核验}
 令 \(q\ge 2\)，并取 \(U_q=\{0,1\}^q\)；将 \(U_q\) 与 \(\mathcal P([q])\) 通过指示向量识别，并以 \(u\wedge v\) 表示逐坐标与。
 定义对称矩阵 \(T^{(q)}\in\RR^{U_q\times U_q}\) 为
@@ -189,6 +183,227 @@ S_5(q)=\frac1{32}\Big(32^{q}+5\cdot 24^{q}+5\cdot 20^{q}+5\cdot 18^{q}+5\cdot 16
 \begin{proof}[证明要点]
 同理，固定谱簇五次幂和化简为 \(\frac1{32}(11^q-\Omega_5(q))\)（其中 \(\varphi^5-\varphi^{-5}=11=L_5\)），再与结论 \ref{con:xi-terminal-replica-softcore-low-moment-trace-exponential-decomposition} 的 \(\Tr((T^{(q)})^5)\) 闭式合并即可得到所示表达。
 递推为结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified} 在 \(m=5\) 的特例。证毕。
+\end{proof}
+
+\paragraph{二元 word/necklace 核：迹矩与例外幂和的全阶离散指数展开}
+前述低阶闭式可由一个统一的二元 word/necklace 展开推出；下述条目给出该机制在任意阶 \(m\) 上的完全形式，并把 \(\Omega_m\) 与 Fibonacci 乘法权重精确对齐。
+
+\begin{conclusion}[二元 necklace 张量迹公式：\texorpdfstring{$\Tr((T^{(q)})^{m})$}{Tr((T^(q))^m)} 的完全离散指数展开]\label{con:xi-terminal-replica-softcore-binary-necklace-trace-formula}
+令
+\[
+J:=\begin{pmatrix}1&1\\[2pt]1&1\end{pmatrix},
+\qquad
+K:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix}.
+\]
+则在 \(U_q=\{0,1\}^q\) 的自然张量基下有严格分解
+\[
+T^{(q)}=\frac12\bigl(J^{\otimes q}+K^{\otimes q}\bigr).
+\]
+对任意整数 \(m\ge 1\) 与二元词 \(\omega=\omega_1\cdots\omega_m\in\{0,1\}^m\)，定义
+\[
+A_{\omega_t}:=\begin{cases}K,&\omega_t=0,\\ J,&\omega_t=1,\end{cases}
+\qquad
+\tau(\omega):=\Tr\!\bigl(A_{\omega_1}A_{\omega_2}\cdots A_{\omega_m}\bigr)\in\ZZ_{\ge 0}.
+\]
+则对一切 \(q\ge 1\) 成立精确恒等式
+\[
+\boxed{\;
+\Tr\!\bigl((T^{(q)})^{m}\bigr)=2^{-m}\sum_{\omega\in\{0,1\}^m}\tau(\omega)^{q}\; }.
+\]
+进一步，由迹的循环不变性 \(\tau(\omega)\) 在循环移位下不变。
+令 \(\mathrm{Neck}_m^{(2)}:=\{0,1\}^m/\!\sim\) 为长度 \(m\) 的二元 necklace 集（模循环移位等价），
+对 \(\eta\in \mathrm{Neck}_m^{(2)}\) 记 \(\#\mathrm{orb}(\eta)\) 为其旋转轨道大小，则
+\[
+\boxed{\;
+\Tr\!\bigl((T^{(q)})^{m}\bigr)=2^{-m}\sum_{\eta\in \mathrm{Neck}_m^{(2)}}\#\mathrm{orb}(\eta)\,\tau(\eta)^{q}\; } ,
+\]
+其中 \(\tau(\eta)\) 由任意代表元定义且良定。
+并且 \(\tau(\eta)\) 具有完全的 Fibonacci--Lucas 乘法形：
+\begin{enumerate}
+  \item 若 \(\eta=0^m\)，则 \(\tau(\eta)=L_m\)；
+  \item 若 \(\eta\) 含至少一个 \(1\)，将 \(\eta\) 以循环方式写成
+  \[
+  \eta\sim 1\,0^{r_1}\,1\,0^{r_2}\cdots 1\,0^{r_s},
+  \qquad
+  s\ge 1,\ r_i\ge 0,\ \sum_{i=1}^s r_i=m-s,
+  \]
+  则
+  \[
+  \tau(\eta)=\prod_{i=1}^{s}F_{r_i+3}.
+  \]
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+由命题 \ref{prop:pom-multiplicity-composition-replica-explicit-eigs}，
+\(
+T^{(q)}=\frac12(\mathbf{1}\mathbf{1}^{\mathsf T}+K^{\otimes q})
+\)；
+注意 \(\mathbf{1}\mathbf{1}^{\mathsf T}=J^{\otimes q}\)，得到所示张量分解。
+对 \(\Tr((T^{(q)})^m)\) 展开并用 \((A^{\otimes q})(B^{\otimes q})=(AB)^{\otimes q}\) 与 \(\Tr(M^{\otimes q})=(\Tr M)^q\) 得到 word 求和式。
+循环移位不变性由 \(\Tr(X_1\cdots X_m)=\Tr(X_mX_1\cdots X_{m-1})\) 给出。
+\par
+若 \(\eta=0^m\)，则 \(\tau(0^m)=\Tr(K^m)=L_m\)（由 Fibonacci 矩阵恒等式 \(K^m=\bigl(\begin{smallmatrix}F_{m+1}&F_m\\ F_m&F_{m-1}\end{smallmatrix}\bigr)\) 得 \(\Tr(K^m)=F_{m+1}+F_{m-1}=L_m\)）。
+若 \(\eta\) 含至少一个 \(1\)，令 \(u=(1,1)^{\top}\) 则 \(J=uu^{\top}\)，并有
+\(
+J K^{r} J=(u^{\top}K^{r}u)\,J
+\)
+与
+\(
+\Tr(JK^{r})=u^{\top}K^{r}u
+\)。
+再由 \(u^{\top}K^{r}u=F_{r+3}\) 得到 \(\tau(\eta)=\prod_i F_{r_i+3}\)。
+\end{proof}
+
+\begin{conclusion}[二元 necklace 剥离律：例外幂和 \texorpdfstring{$S_m(q)$}{S_m(q)} 的全阶闭式]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling}
+对任意整数 \(m\ge 1\) 与 \(q\ge 2\)，沿用 \(\Omega_m(q)\)（结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified}）与
+\(\mathrm{Neck}_m^{(2)}\)、\(\tau(\eta)\)（结论 \ref{con:xi-terminal-replica-softcore-binary-necklace-trace-formula}）的记号。
+则存在严格恒等式
+\[
+\boxed{\;
+S_m(q)
+=2^{-m}\left(
+\Omega_m(q)
+\;+\!\!\!\sum_{\eta\in \mathrm{Neck}_m^{(2)}\setminus\{0^m\}}\#\mathrm{orb}(\eta)\,\tau(\eta)^{q}
+\right)\; } .
+\]
+并且 \(\Omega_m(q)\) 可等价写为
+\[
+\Omega_m(q)=\Tr(B_q^{\,m}),
+\qquad
+B_q(i,j)=\binom{q-j}{i}\qquad(0\le i,j\le q),
+\]
+其中 \(B_q\) 为不交算子在 \(S_q\)-对称子空间上的压缩矩阵（结论 \ref{con:xi-terminal-disjointness-bq-sympower-unimodular-inverse}）。
+该分解表明：例外幂和的全部“非 Lucas--Pell 部分”由含 \(1\) 的二元 necklace 族贡献，其权重完全由零段长度的 Fibonacci 乘法形 \(\tau(\eta)=\prod_i F_{r_i+3}\) 控制；而 \(\Omega_m\) 精确承担全零 necklace 通道的谱替换。
+\end{conclusion}
+\begin{proof}[证明要点]
+由定理 \ref{thm:pom-replica-softcore-characteristic-factorization}，
+\(
+\Tr((T^{(q)})^m)=S_m(q)+\sum_{j=0}^{q}(\binom{q}{j}-1)\bigl(\frac{(-1)^j\varphi^{q-2j}}{2}\bigr)^m
+\)。
+对固定谱簇幂和作二项式求和与等比求和可得
+\(
+\sum_{j}(\binom{q}{j}-1)\bigl(\frac{(-1)^j\varphi^{q-2j}}{2}\bigr)^m
+=2^{-m}\bigl(L_m^{q}-\Omega_m(q)\bigr)
+\)
+（其中 \(L_m=\varphi^m+(-1)^m\varphi^{-m}\)）。
+将其代回并与结论 \ref{con:xi-terminal-replica-softcore-binary-necklace-trace-formula} 的
+\(
+2^{m}\Tr((T^{(q)})^m)=\sum_{\eta}\#\mathrm{orb}(\eta)\tau(\eta)^q
+\)
+合并，恰好消去全零 necklace 项 \(2^{-m}L_m^q\)，得到所示剥离律。
+最后，\(\Omega_m(q)=\Tr(B_q^{\,m})\) 由 \(B_q=\mathrm{Sym}^q(K)\)（结论 \ref{con:xi-terminal-disjointness-bq-sympower-unimodular-inverse}）与 \(\mathrm{Sym}^q\) 的函子性给出：\(B_q^{\,m}=\mathrm{Sym}^q(K^m)\)，取迹即与结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified} 的闭式一致。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$q$}{q}-方向谱递推的显式特征多项式上界]\label{con:xi-terminal-replica-softcore-q-recurrence-characteristic-upper-bound}
+固定 \(m\ge 1\)，令
+\[
+\mathcal W_m:=\{\tau(\eta):\ \eta\in \mathrm{Neck}_m^{(2)}\setminus\{0^m\}\}\subset\ZZ_{\ge 2}.
+\]
+将数列 \(a_q:=2^m S_m(q)\) 按结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling} 的右端闭式扩展至 \(q\ge 0\)。
+则 \(a_q\) 满足某条整系数齐次线性递推，其特征多项式可取为
+\[
+P_m(x):=\bigl(x^2-L_m x+(-1)^m\bigr)\prod_{w\in\mathcal W_m}(x-w)\in\ZZ[x].
+\]
+同理，\(b_q:=2^m\Tr((T^{(q)})^m)\) 满足整系数递推，其特征多项式可取为
+\[
+\prod_{\eta\in \mathrm{Neck}_m^{(2)}}(x-\tau(\eta)).
+\]
+因此对每个固定 \(m\)，例外矩列在 \(q\)-方向上为有限多个底数指数项 \(w^q\) 与二阶 Lucas--Pell 因子共同生成的有限谱可解系统。
+\end{conclusion}
+
+\begin{conclusion}[\texorpdfstring{$q$}{q}-方向普通生成函数的全分式表示]\label{con:xi-terminal-replica-softcore-q-ordinary-genfunc-partial-fractions}
+固定 \(m\ge 1\)，将 \(S_m(q)\) 按结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling} 的右端闭式扩展至 \(q\ge 0\)。
+则其普通生成函数具有显式有理分式表示
+\[
+\boxed{\;
+\sum_{q\ge 0}2^m S_m(q)\,z^{q}
+=\frac{1}{1-L_m z+(-1)^m z^2}
+\;+\!\!\!\sum_{\eta\in \mathrm{Neck}_m^{(2)}\setminus\{0^m\}}\frac{\#\mathrm{orb}(\eta)}{1-\tau(\eta)\,z}\; } .
+\]
+特别地，右端每一极点均位于 \(z=\tau(\eta)^{-1}\)（\(\eta\ne 0^m\)）以及二次方程 \(1-L_m z+(-1)^m z^2=0\) 的根。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling}，
+\(
+2^mS_m(q)=\Omega_m(q)+\sum_{\eta\ne 0^m}\#\mathrm{orb}(\eta)\tau(\eta)^q
+\)。
+对 \(\Omega_m\) 用结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified} 的二阶递推与初值得到
+\(
+\sum_{q\ge 0}\Omega_m(q)z^q=(1-L_m z+(-1)^m z^2)^{-1}
+\)；
+对其余有限项逐一求和得 \(\sum_{q\ge 0}\tau(\eta)^q z^q=(1-\tau(\eta)z)^{-1}\)，叠加即得所示全分式形式。
+\end{proof}
+
+\begin{conclusion}[例外矩的指数层级与可计算的首两级渐近]\label{con:xi-terminal-replica-softcore-exceptional-moments-exponential-hierarchy}
+固定整数 \(m\ge 2\)，令
+\[
+\alpha_0:=2^m,
+\qquad
+\alpha_1:=3\cdot 2^{m-2},
+\qquad
+\delta_m:=\max\left\{\frac{5}{8},\left(\frac{\varphi}{2}\right)^m\right\}\in(0,1).
+\]
+则当 \(q\to\infty\) 时，例外幂和满足严格的指数分层渐近
+\[
+\boxed{\;
+S_m(q)=2^{-m}\alpha_0^{q}+2^{-m}m\,\alpha_1^{q}
+ + O\!\Bigl(2^{-m}\bigl(\alpha_0\delta_m\bigr)^{q}\Bigr)\; } ,
+\]
+等价地
+\[
+\boxed{\;
+S_m(q)=2^{m(q-1)}\left(1+m\left(\frac34\right)^q+O(\delta_m^q)\right)\; } .
+\]
+该层级中主项由 necklace \(1^m\) 唯一贡献，次主项由恰含一个 \(0\) 的原始 necklace 轨道贡献 \(m\) 倍叠加；其余项被统一的指数比率 \(\delta_m^q\) 压制。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling}，
+\(
+2^mS_m(q)=\Omega_m(q)+\sum_{\eta\ne 0^m}\#\mathrm{orb}(\eta)\tau(\eta)^q
+\)。
+其中 \(1^m\) 给出 \(\tau(1^m)=2^m=\alpha_0\) 且 \(\#\mathrm{orb}(1^m)=1\)；
+恰含一个 \(0\) 的 necklace 的零段分解为 \((r_1,\dots,r_{m-1})\) 中一项为 \(1\)、其余为 \(0\)，故 \(\tau=3\cdot 2^{m-2}=\alpha_1\)，并且其轨道大小为 \(m\)。
+其余含 \(1\) 的 necklace 至少含两个 \(0\)，由 \(\tau(\eta)=\prod_i F_{r_i+3}\) 立即得
+\(
+\tau(\eta)\le 5\cdot 2^{m-3}=(5/8)\alpha_0
+\)。
+另一方面，\(\Omega_m(q)=\Tr(B_q^{\,m})\) 的主导指数底数为 \(\varphi^m=\alpha_0(\varphi/2)^m\)。
+取 \(\delta_m=\max\{5/8,(\varphi/2)^m\}\) 统一控制剩余所有指数底数与 \(\Omega_m\) 的增长率，即得所示余项界。
+\end{proof}
+
+\begin{conclusion}[例外谱 \texorpdfstring{$\zeta$}{zeta}-函数的 Euler 乘积：原始二元 necklace 分解]\label{con:xi-terminal-replica-softcore-exceptional-spectrum-zeta-euler-product}
+定义例外谱 \(\zeta\)-函数（形式幂级数意义）
+\[
+\mathcal Z_{\mathrm{exc}}^{(q)}(z)
+:=\exp\!\left(\sum_{m\ge 1}\frac{S_m(q)}{m}z^m\right)
+=\prod_{i=0}^{q}\frac{1}{1-\lambda_i^{(q)}z}
+=\det\!\bigl(I_{q+1}-zA^{(q)}\bigr)^{-1}.
+\]
+令 \(\mathcal P^{(2)}\) 为所有含至少一个 \(1\) 的原始二元 necklace 之集合；
+对 \(p\in\mathcal P^{(2)}\) 记其长度为 \(|p|\)，并以结论 \ref{con:xi-terminal-replica-softcore-binary-necklace-trace-formula} 定义 \(\tau(p)\)。
+则存在严格的 Euler 乘积分解（形式恒等式）
+\[
+\boxed{\;
+\mathcal Z_{\mathrm{exc}}^{(q)}(z)
+=\det\!\Bigl(I_{q+1}-\frac z2\,B_q\Bigr)^{-1}
+\prod_{p\in\mathcal P^{(2)}}\left(1-\tau(p)^q\left(\frac z2\right)^{|p|}\right)^{-1}\; } .
+\]
+该分解把例外谱的闭路矩信息拆解为两条互不混淆的通道：有限维二项式动力学通道 \(\det(I-\tfrac z2 B_q)^{-1}\)，以及由原始二元 necklace 索引的无限 Euler 乘积通道，其局部因子以 Fibonacci 乘法权重 \(\tau(p)^q\) 精确编码闭路增益。
+\end{conclusion}
+\begin{proof}[证明要点]
+由 \(\log\det(I-zM)=-\sum_{m\ge 1}\Tr(M^m)z^m/m\) 得
+\(
+\det(I-\tfrac z2B_q)^{-1}=\exp(\sum_{m\ge 1}\Omega_m(q)(z/2)^m/m)
+\)。
+另一方面，结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling} 把
+\(
+\sum_{m\ge 1}S_m(q)z^m/m
+\)
+分解为上述 \(\Omega_m\) 通道与一项
+\(
+\sum_{m\ge 1}\frac{1}{m}\sum_{\eta\ne 0^m}\#\mathrm{orb}(\eta)\bigl(\tau(\eta)^q(z/2)^m\bigr)
+\)。
+对后一项应用经典的 necklace--primitive 分解恒等式（Witt Euler 乘积；将所有 necklace 按其本原周期分解），即得 \(\prod_{p\in\mathcal P^{(2)}}(1-\tau(p)^q(z/2)^{|p|})^{-1}\)。
 \end{proof}
 
 \endinput
