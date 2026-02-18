@@ -24,6 +24,9 @@ We verify (exact, auditable):
       Pi(lambda,21) = (lambda-6)(lambda^3 + 5 lambda^2 - 13 lambda - 77).
   - Denominator sequence v_n for x(nP)=u_n/v_n^2 (P=(2,-5/2)) for n=1..12,
     and log(v_n)/n^2 for n=8..12 (natural log).
+  - Ward-type bilinear recurrence for the positive denominator normalization (v_0=0):
+      v_{n+2} v_{n-2} = 29 v_n^2 + (-1)^{floor(n/2)} 25 v_{n+1} v_{n-1}  (n>=2),
+    where 25=v_2^2 and 29=v_3 for this orbit.
   - Bad prime p=37 on minimal model:
       c6=-216,  (-c6 mod 37)=31,  (31/37)=-1 (nonsplit multiplicative),
       v_37(den(x(nR))^(1/2)) is 0 if 38∤n, and v_37(n)+1 if 38|n (audited on n<=76),
@@ -143,6 +146,8 @@ class Payload:
     p_ly_specializations: Dict[str, str]
     pi_fiber_factorizations: Dict[str, str]
     v_first12: List[int]
+    vn_ward_bilinear_ok: bool
+    vn_ward_bilinear_first_failure_n: Optional[int]
     log_v_over_n2_8_12: List[float]
     hhat_P: float
     c6_min_model: int
@@ -271,6 +276,22 @@ def main() -> None:
     if v_first12 != expected_v:
         low_ok = False
 
+    # --- Ward bilinear recurrence for the denominator EDS (specialized at m=2)
+    # Convention: v_0=0, v_1=1.
+    vn = [0] + [int(x) for x in v_first12]
+    vn_bilin_ok = True
+    vn_bilin_first_fail: Optional[int] = None
+    for n in range(2, len(vn) - 2):
+        sgn = -1 if ((n // 2) % 2 == 1) else 1  # (-1)^{floor(n/2)}
+        lhs = vn[n + 2] * vn[n - 2]
+        rhs = 29 * vn[n] * vn[n] + sgn * 25 * vn[n + 1] * vn[n - 1]
+        if lhs != rhs:
+            vn_bilin_ok = False
+            vn_bilin_first_fail = int(n)
+            break
+    if not vn_bilin_ok:
+        low_ok = False
+
     # log(v_n)/n^2 for n=8..12
     logs_8_12: List[float] = []
     for n in range(8, 13):
@@ -345,6 +366,8 @@ def main() -> None:
         p_ly_specializations=p_ly_spec,
         pi_fiber_factorizations=pi_facts,
         v_first12=[int(x) for x in v_first12],
+        vn_ward_bilinear_ok=bool(vn_bilin_ok),
+        vn_ward_bilinear_first_failure_n=vn_bilin_first_fail,
         log_v_over_n2_8_12=[float(x) for x in logs_8_12],
         hhat_P=float(hhat_P),
         c6_min_model=int(c6),
@@ -375,7 +398,7 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-mw-height-den] checks:"
-        f" low_ok={low_ok} v37R={v37_R_ok} v37P={v37_P_ok}"
+        f" low_ok={low_ok} vnBilin={vn_bilin_ok} v37R={v37_R_ok} v37P={v37_P_ok}"
         f" seconds={dt:.3f}",
         flush=True,
     )

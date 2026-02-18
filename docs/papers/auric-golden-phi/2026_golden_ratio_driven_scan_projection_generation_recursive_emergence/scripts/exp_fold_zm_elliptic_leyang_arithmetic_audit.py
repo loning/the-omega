@@ -18,6 +18,9 @@ We verify symbolically and numerically:
       (lambda-1)(lambda+1)(16 lambda^3 - 9 lambda^2 + 1)=0,
     hence the nontrivial ramification lambda_LY is the unique real root of the cubic factor.
   - Closed-form back-substitution recovers y_LY from (lambda_LY, w_LY).
+  - Puiseux amplitude at the Lee--Yang branch point:
+      a_LY^2 = -2 * (∂_y Pi)/(∂_{λλ} Pi) evaluated at (lambda_LY, y_LY),
+    and derived scaling constant pi^2 * lambda_LY^2 / a_LY^2.
   - Arithmetic of the Lee–Yang cubic g(y)=256y^3+411y^2+165y+32:
       Disc(g) = -3^9 * 31^2 * 37, squarefree part = -111,
       hence the unique quadratic subfield is Q(sqrt(-111)), with class number h(-111)=8.
@@ -142,6 +145,10 @@ class Payload:
     w_LY_positive: str
     y_LY_backsub: str
     y_LY_backsub_matches: bool
+    # Puiseux amplitude at y_LY
+    a_LY_sq: str
+    lambda_LY_sq_over_a_LY_sq: str
+    pi2_lambda_LY_sq_over_a_LY_sq: str
     # arithmetic
     disc_g: int
     disc_g_factorization: Dict[str, int]
@@ -230,6 +237,16 @@ def main() -> None:
     y_backsub = sp.N((2 * lam_LY**2 - 1 - w_LY) / 2, dps)
     y_match = bool(abs(y_backsub - y_LY) < sp.Float(10) ** (-(dps // 2 - 5)))
 
+    # --- Puiseux amplitude at (lambda_LY, y_LY) ---
+    dPi_dy = sp.diff(Pi, y)
+    d2Pi_dlam2 = sp.diff(Pi, lam, 2)
+    a_LY_sq = sp.N(
+        -2 * dPi_dy.subs({lam: lam_LY, y: y_backsub}) / d2Pi_dlam2.subs({lam: lam_LY, y: y_backsub}),
+        dps,
+    )
+    lam_sq_over_a_sq = sp.N((lam_LY**2) / a_LY_sq, dps)
+    pi2_lam_sq_over_a_sq = sp.N((sp.pi**2) * lam_sq_over_a_sq, dps)
+
     # --- Arithmetic of the Lee–Yang cubic ---
     disc_g = int(sp.discriminant(cubic_y, y))
     fac = sp.factorint(disc_g)
@@ -304,6 +321,9 @@ def main() -> None:
         w_LY_positive=sp.sstr(sp.N(w_LY, dps)),
         y_LY_backsub=sp.sstr(y_backsub),
         y_LY_backsub_matches=y_match,
+        a_LY_sq=sp.sstr(a_LY_sq),
+        lambda_LY_sq_over_a_LY_sq=sp.sstr(lam_sq_over_a_sq),
+        pi2_lambda_LY_sq_over_a_LY_sq=sp.sstr(pi2_lam_sq_over_a_sq),
         disc_g=int(disc_g),
         disc_g_factorization={str(int(p)): int(e) for p, e in fac.items()},
         disc_g_squarefree_part=int(sqfree),
@@ -345,6 +365,16 @@ def main() -> None:
                 "\\[",
                 "y_{\\mathrm{LY}}=\\frac{2\\lambda_{\\mathrm{LY}}^{2}-1-\\sqrt{4\\lambda_{\\mathrm{LY}}^{3}-4\\lambda_{\\mathrm{LY}}+1}}{2}\\ \\approx\\ "
                 + f"{float(y_LY):.16f}",
+                "\\]",
+                "\\[",
+                "a_{\\mathrm{LY}}^{2}=-\\,\\frac{2\\,\\partial_{y}\\Pi(\\lambda_{\\mathrm{LY}},y_{\\mathrm{LY}})}{\\partial_{\\lambda\\lambda}\\Pi(\\lambda_{\\mathrm{LY}},y_{\\mathrm{LY}})}\\ \\approx\\ "
+                + f"{float(a_LY_sq):.16f}",
+                "\\]",
+                "\\[",
+                "\\frac{\\lambda_{\\mathrm{LY}}^{2}}{a_{\\mathrm{LY}}^{2}}\\ \\approx\\ " + f"{float(lam_sq_over_a_sq):.16f}",
+                "\\qquad",
+                "\\pi^{2}\\frac{\\lambda_{\\mathrm{LY}}^{2}}{a_{\\mathrm{LY}}^{2}}\\ \\approx\\ "
+                + f"{float(pi2_lam_sq_over_a_sq):.16f}",
                 "\\]",
                 "\\[",
                 "\\mathrm{Disc}(256y^{3}+411y^{2}+165y+32)=-3^{9}\\cdot 31^{2}\\cdot 37,\\quad \\text{sqfree part }=-111,\\quad h(-111)=8.",

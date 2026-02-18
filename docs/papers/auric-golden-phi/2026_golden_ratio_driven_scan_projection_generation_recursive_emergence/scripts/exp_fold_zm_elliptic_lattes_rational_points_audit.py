@@ -174,6 +174,11 @@ class Payload:
     phi_mod37_reduced_map: str
     g_mod37_factor_ok: bool
     phi_prime_critical_poly_ok: bool
+    phi_critval_resultant_ok: bool
+    phi_fiber_square_splitting_ok: bool
+    critical_sextic_quadratic_factor_ok: bool
+    norm_3a2_minus1_ok: bool
+    norm_3a2_minus1: str
     phi_Y_doubling_ok: bool
     critical_poly_disc: int
     critical_poly_disc_factorization: Dict[str, int]
@@ -254,6 +259,27 @@ def main() -> None:
     _, prim_nump = poly_nump.primitive()
     nump_prim = sp.factor(prim_nump.as_expr())
     crit_ok = bool(sp.factor(nump_prim - crit_expected) == 0 or sp.factor(nump_prim + crit_expected) == 0)
+
+    # --- Critical value elimination via resultant (PCF portrait certificate) ---
+    T = sp.Symbol("T")
+    res_critval = sp.factor(sp.resultant(crit_expected, N - T * D, X))
+    res_critval_expected = (37**3) * (4 * T**3 - 4 * T + 1) ** 2
+    phi_critval_resultant_ok = bool(sp.factor(res_critval - res_critval_expected) == 0)
+
+    # --- Fiber square splitting over the 2-division cubic ---
+    A = sp.Symbol("A")
+    qA = X**2 - 2 * A * X - 2 * A**2 + 1
+    fiber_diff = sp.expand((X**4 + 2 * X**2 - 2 * X + 1) - A * (4 * X**3 - 4 * X + 1) - qA**2)
+    D_A = 4 * A**3 - 4 * A + 1
+    # Equivalent form: fiber_diff = -(A+2X) * D_A, hence vanishes on D_A=0.
+    phi_fiber_square_splitting_ok = bool(sp.factor(fiber_diff + (A + 2 * X) * D_A) == 0)
+
+    # --- Critical sextic quadratic factorization and a norm identity in Q(A) ---
+    fA = A**3 - A + sp.Rational(1, 4)
+    res_quad = sp.factor(sp.resultant(fA, qA, A))
+    critical_sextic_quadratic_factor_ok = bool(sp.factor(2 * res_quad - crit_expected) == 0)
+    norm_3a2_minus1 = sp.resultant(fA, 3 * A**2 - 1, A)
+    norm_3a2_minus1_ok = bool(sp.factor(norm_3a2_minus1 + sp.Rational(37, 16)) == 0)
 
     # --- 2-division polynomial square pullback under Phi ---
     D_poly = 4 * X**3 - 4 * X + 1
@@ -423,6 +449,11 @@ def main() -> None:
         phi_mod37_reduced_map=sp.sstr(phi_mod37_reduced_map),
         g_mod37_factor_ok=bool(g_mod37_factor_ok),
         phi_prime_critical_poly_ok=bool(crit_ok),
+        phi_critval_resultant_ok=bool(phi_critval_resultant_ok),
+        phi_fiber_square_splitting_ok=bool(phi_fiber_square_splitting_ok),
+        critical_sextic_quadratic_factor_ok=bool(critical_sextic_quadratic_factor_ok),
+        norm_3a2_minus1_ok=bool(norm_3a2_minus1_ok),
+        norm_3a2_minus1=sp.sstr(norm_3a2_minus1),
         phi_Y_doubling_ok=bool(phi_Y_doubling_ok),
         critical_poly_disc=int(crit_disc),
         critical_poly_disc_factorization={str(int(p)): int(e) for p, e in crit_disc_fac.items()},
@@ -467,6 +498,12 @@ def main() -> None:
         "D(\\Phi(X))=\\frac{(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1)^{2}}{(4X^{3}-4X+1)^{3}},\\qquad Y([2]P)=\\frac{2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1}{16Y^{3}}.",
         "\\]",
         "\\[",
+        "\\mathrm{Res}_{X}\\bigl(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1,\\ (X^{4}+2X^{2}-2X+1)-T(4X^{3}-4X+1)\\bigr)=37^{3}(4T^{3}-4T+1)^{2}.",
+        "\\]",
+        "\\[",
+        "\\operatorname{N}_{\\mathbb{Q}(\\alpha)/\\mathbb{Q}}(3\\alpha^{2}-1)=-\\frac{37}{16}\\ \\text{for }4\\alpha^{3}-4\\alpha+1=0.",
+        "\\]",
+        "\\[",
         "X^{4}+2X^{2}-2X+1\\equiv (X-5)^{2}(X^{2}+10X+3),\\quad 4X^{3}-4X+1\\equiv (X-5)^{2}(4X+3)\\ (\\mathrm{mod}\\ 37),\\quad \\overline{\\Phi}(X)=\\frac{X^{2}+10X+3}{4X+3}.",
         "\\]",
         "\\[",
@@ -495,7 +532,9 @@ def main() -> None:
         "[fold-zm-elliptic-lattes] checks:"
         f" phi={phi_ok} Dpull={phi_2division_pullback_square_ok} Ydbl={phi_Y_doubling_ok}"
         f" mod37degdrop={phi_mod37_degree_drop_ok} gmod37={g_mod37_factor_ok}"
-        f" crit={crit_ok} galois48={(G_order == 48)} y2lin={y_pullback_ok} y2cubic={y_pullback_cubic_ok}"
+        f" crit={crit_ok} res={phi_critval_resultant_ok} fibsq={phi_fiber_square_splitting_ok}"
+        f" quadfac={critical_sextic_quadratic_factor_ok} norm={norm_3a2_minus1_ok}"
+        f" galois48={(G_order == 48)} y2lin={y_pullback_ok} y2cubic={y_pullback_cubic_ok}"
         f" mw={mw_ok} minpoly={y_minpoly_ok} disc={y_disc_ok} tors_gcd={g} denlaw={all(r.den_law_ok for r in rows)}"
         f" seconds={dt:.3f}",
         flush=True,
