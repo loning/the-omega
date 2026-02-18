@@ -83,6 +83,36 @@ c_n=\int_{\TT}\xi^{-n}\,d\mu(\xi)
 另一方面，Fourier 矩 \(c_n=\int_{\TT}\xi^{-n}\,d\mu(\xi)\) 对测度 \(\mu\) 线性；若 \(\mu\) 由有限模态权重线性生成，则每个 \(c_n\) 以及由其构成的 Toeplitz 矩阵 \(\mathbf{T}_N\) 对这些权重均为仿射函数。故 \(\mathbf{T}_N\succeq 0\) 为关于参数的 LMI，从而对应一个标准 SDP 可行性约束。证毕。
 \end{proof}
 
+% (Source tag) /killo-golden
+% Timestamp: 2026-02-18 19:11:53 (Asia/Singapore)
+
+\begin{corollary}[Weyl-压缩的 Toeplitz 可行域为低维谱体，并存在三原子极小实现]\label{cor:xi-weyl-toeplitz-spectrahedron-rank3-atomic}
+在命题 \ref{prop:xi-horizon-21mode-weyl-compression} 的 Weyl-压缩线性参数化下，固定任意 \(N\ge 0\)，记参数维数 \(d\le 6\)，并将第 \(N\) 级 Toeplitz 主子矩阵写作 \(\mathbf{T}_N(\mathbf{a})\)（\(\mathbf{a}\in\RR^d\)）。
+令
+\[
+\mathcal{F}_N:=\{\mathbf{a}\in\RR^{d}:\ \mathbf{T}_N(\mathbf{a})\succeq 0\}
+\]
+为该级别的可行域，则 \(\mathcal{F}_N\) 是 \(\RR^{d}\) 中的谱体（spectrahedron）。
+若 \(\mathcal{F}_N\) 非空且在额外的线性归一化（例如固定总质量 \(c_0\)）下为紧，则存在极端可行点 \(\mathbf{a}_\star\) 使得 Toeplitz 矩阵满足一般 SDP 秩界（Barvinok--Pataki 型）
+\[
+\mathrm{rank}\,\mathbf{T}_N(\mathbf{a}_\star)\le r,
+\qquad
+\frac{r(r+1)}{2}\le d,
+\]
+从而在 \(d\le 6\) 时可取 \(r\le 3\)。
+结合 Toeplitz--Carath\'eodory 结构（有限秩 Toeplitz--PSD \(\Longleftrightarrow\) 有限原子测度表示），该结论把“任一级可行性”压缩为“存在至多三原子支撑的极小可行视界毛发测度”。
+\end{corollary}
+
+\begin{corollary}[有限深度终止准则：平坦延拓一旦出现即强制全链可行]\label{cor:xi-toeplitz-flat-extension-finite-termination}
+沿用推论 \ref{cor:xi-weyl-toeplitz-spectrahedron-rank3-atomic} 的记号。
+若存在某个 \(N_0\ge 1\) 与参数 \(\mathbf{a}\in\RR^d\) 使得 \(\mathbf{T}_{N_0}(\mathbf{a})\succeq 0\) 且满足平坦延拓条件
+\[
+\mathrm{rank}\,\mathbf{T}_{N_0}(\mathbf{a})=\mathrm{rank}\,\mathbf{T}_{N_0-1}(\mathbf{a}),
+\]
+则该截断矩数据在 Toeplitz 矩问题意义下被锁定为有限原子测度：存在有限正原子测度 \(\mu\) 使得 \(c_n=\int_{\TT}\xi^{-n}\,d\mu(\xi)\) 延拓给出全体矩序列，并且对所有 \(N\ge N_0\) 有 \(\mathbf{T}_N(\mathbf{a})\succeq 0\)。
+因此，“全链 Toeplitz--PSD”可被归约为有限阶半正定性与有限条秩平坦等式的联立判定；在 Weyl-压缩 \(d\le 6\) 的口径下，可进一步在原子数不超过 \(3\) 的闭包中完成该终止判据的可审计实现。
+\end{corollary}
+
 在解释性类比中，单位圆边界可被理解为“黑洞视界”式的边界切片：端点层的二次径向压缩把高高度偏移压入极薄边界层，而由此诱导的宏态规模二次标度（定理 \ref{thm:xi-bulk-horizon-phi-area-law}）对应一种严格的“面积型”代价律。
 本文仅使用该压缩的解析闭式与证书成本推论，不以类比作为任何证明前提。
 下述三项主要结果将这一解释性图景压缩为可直接引用的定量命题；其证明仅依赖本文已给出的编号结论。

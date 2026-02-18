@@ -21,6 +21,7 @@ Outputs (default):
 from __future__ import annotations
 
 import argparse
+import cmath
 import json
 import math
 import time
@@ -180,25 +181,50 @@ def main() -> None:
     var_ok = sp.simplify(var - sp.Rational(67, 972)) == 0
 
     # --- Higher cumulant rates via local series at y=1 ---
+    ORDER = 9  # compute up to s^8 (kappa_8)
     u = sp.Symbol("u")
-    c1, c2, c3, c4 = sp.symbols("c1 c2 c3 c4")
+    c = sp.symbols("c1:9")  # c1,...,c8
     y_ser = y0 + u
-    lam_ser = lam0 + c1 * u + c2 * u**2 + c3 * u**3 + c4 * u**4
-    Pi_u = sp.expand(Pi.subs({lam: lam_ser, y: y_ser}).series(u, 0, 5).removeO())
-    eqs = [sp.Eq(sp.expand(Pi_u).coeff(u, k), 0) for k in range(1, 5)]
-    sol = sp.solve(eqs, [c1, c2, c3, c4], dict=True)[0]
+    lam_ser = lam0 + sp.Add(*[c[j - 1] * u**j for j in range(1, 9)])
+    Pi_u = sp.expand(Pi.subs({lam: lam_ser, y: y_ser}).series(u, 0, ORDER).removeO())
+    eqs = [sp.Eq(Pi_u.coeff(u, k), 0) for k in range(1, 9)]
+    sol = sp.solve(eqs, list(c), dict=True)[0]
     lam_ser_u = sp.expand(lam_ser.subs(sol))
 
     s = sp.Symbol("s")
-    lam_ser_s = sp.expand(lam_ser_u.subs({u: sp.exp(s) - 1}).series(s, 0, 5).removeO())
-    psi_ser = sp.expand((sp.log(lam_ser_s) - sp.log(2)).series(s, 0, 5).removeO())
-    kappa1 = sp.simplify(sp.diff(psi_ser, s, 1).subs({s: 0}))
-    kappa2 = sp.simplify(sp.diff(psi_ser, s, 2).subs({s: 0}))
-    kappa3 = sp.simplify(sp.diff(psi_ser, s, 3).subs({s: 0}))
-    kappa4 = sp.simplify(sp.diff(psi_ser, s, 4).subs({s: 0}))
+    lam_ser_s = sp.expand(lam_ser_u.subs({u: sp.exp(s) - 1}).series(s, 0, ORDER).removeO())
+    psi_ser = sp.expand((sp.log(lam_ser_s) - sp.log(2)).series(s, 0, ORDER).removeO())
+    kappa = [sp.simplify(sp.diff(psi_ser, s, n).subs({s: 0})) for n in range(1, 9)]
+    kappa1, kappa2, kappa3, kappa4, kappa5, kappa6, kappa7, kappa8 = kappa
 
     kappa3_ok = sp.simplify(kappa3 + sp.Rational(22, 2187)) == 0
     kappa4_ok = sp.simplify(kappa4 + sp.Rational(1763, 157464)) == 0
+
+    # --- Nearest complex Lee--Yang branch pair in s=log y (principal branch) ---
+    y_complex = [r for r in roots if abs(r.imag) >= 1e-10]
+    y_c_plus = max(y_complex, key=lambda z: z.imag) if y_complex else None
+    y_c_minus = y_c_plus.conjugate() if y_c_plus is not None else None
+    s_c_plus = cmath.log(y_c_plus) if y_c_plus is not None else None
+    rho_s = abs(s_c_plus) if s_c_plus is not None else None
+    theta_s = math.atan2(s_c_plus.imag, s_c_plus.real) if s_c_plus is not None else None
+
+    # Critical (lambda_c,y_c) and the square-root amplitude constant for psi(s)
+    lam_c = None
+    B_abs = None
+    if y_c_plus is not None:
+        lam_cubic = 16 * lam**3 - 9 * lam**2 + 1
+        lam_crit_roots = [complex(r) for r in sp.nroots(lam_cubic)]
+
+        def _y_of_lam(z: complex) -> complex:
+            return (4 * z**3 - 3 * z**2 - 2 * z + 1) / (4 * z)
+
+        lam_c, _ = min(((z, _y_of_lam(z)) for z in lam_crit_roots), key=lambda p: abs(p[1] - y_c_plus))
+        dy_val = complex(sp.N(Pi_y.subs({lam: lam_c, y: y_c_plus}), 50))
+        dll_val = complex(sp.N(Pi_ll.subs({lam: lam_c, y: y_c_plus}), 50))
+        c_sq = -2.0 * dy_val / dll_val
+        c_val = cmath.sqrt(c_sq)
+        B_val = c_val * cmath.sqrt(y_c_plus) / lam_c
+        B_abs = abs(B_val)
 
     # Self-inversive spot check at primitive cube root y = exp(2pi i/3)
     omega = complex(-0.5, math.sqrt(3) / 2.0)
@@ -482,6 +508,16 @@ def main() -> None:
             "var": {"exact": str(var), "float": float(sp.N(var))},
             "kappa3_rate": {"exact": str(kappa3), "float": float(sp.N(kappa3))},
             "kappa4_rate": {"exact": str(kappa4), "float": float(sp.N(kappa4))},
+            "kappa5_rate": {"exact": str(kappa5), "float": float(sp.N(kappa5))},
+            "kappa6_rate": {"exact": str(kappa6), "float": float(sp.N(kappa6))},
+            "kappa7_rate": {"exact": str(kappa7), "float": float(sp.N(kappa7))},
+            "kappa8_rate": {"exact": str(kappa8), "float": float(sp.N(kappa8))},
+            "y_c_plus": None if y_c_plus is None else {"re": float(y_c_plus.real), "im": float(y_c_plus.imag)},
+            "s_c_plus": None
+            if s_c_plus is None
+            else {"re": float(s_c_plus.real), "im": float(s_c_plus.imag), "abs": float(rho_s), "arg": float(theta_s)},
+            "lambda_c": None if lam_c is None else {"re": float(lam_c.real), "im": float(lam_c.imag)},
+            "B_abs": None if B_abs is None else float(B_abs),
         },
         "Z_m_coeffs_a_mk_head": [
             {"m": m, "a_mk": a_mk[m][: (m + 1)]} for m in range(min(args.m_max, 8) + 1)
@@ -491,6 +527,9 @@ def main() -> None:
     if not args.no_output:
         out_json = export_dir() / "fold_zm_bivariate_partition_audit.json"
         _write_json(out_json, payload)
+
+        def _latex_q(expr: sp.Expr) -> str:
+            return sp.latex(sp.simplify(expr))
 
         # Minimal TeX snippet (optional in the paper).
         tex = "\n".join(
@@ -507,7 +546,16 @@ def main() -> None:
                 "\\psi'(0)=\\frac{5}{18},\\qquad \\psi''(0)=\\frac{67}{972}.",
                 "\\]",
                 "\\[",
-                "\\psi^{(3)}(0)=-\\frac{22}{2187},\\qquad \\psi^{(4)}(0)=-\\frac{1763}{157464}.",
+                f"\\psi^{{(3)}}(0)={_latex_q(kappa3)},\\qquad \\psi^{{(4)}}(0)={_latex_q(kappa4)}.",
+                "\\]",
+                "\\[",
+                f"\\psi^{{(5)}}(0)={_latex_q(kappa5)},\\qquad \\psi^{{(6)}}(0)={_latex_q(kappa6)}.",
+                "\\]",
+                "\\[",
+                f"\\psi^{{(7)}}(0)={_latex_q(kappa7)},\\qquad \\psi^{{(8)}}(0)={_latex_q(kappa8)}.",
+                "\\]",
+                "\\[",
+                "16e^{4\\psi(s)}-8e^{3\\psi(s)}-4(2e^{s}+1)e^{2\\psi(s)}+2e^{\\psi(s)}+e^{2s}+e^{s}=0.",
                 "\\]",
                 "",
             ]
