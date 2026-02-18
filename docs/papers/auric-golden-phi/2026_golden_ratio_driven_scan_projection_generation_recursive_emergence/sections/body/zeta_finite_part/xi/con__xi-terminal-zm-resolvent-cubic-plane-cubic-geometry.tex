@@ -58,3 +58,174 @@
 证毕。
 \end{proof}
 
+\begin{conclusion}[三次预解式曲线的 Weierstrass 化与显式双有理同一]\label{con:xi-terminal-zm-resolvent-cubic-weierstrass-birational}
+沿用结论 \ref{con:xi-terminal-zm-resolvent-cubic-plane-cubic-geometry} 的记号。
+则平面三次曲线 \(\overline{\mathcal R}/\QQ\) 与下述椭圆曲线 \(E_{\mathscr R}/\QQ\) 双有理同构：
+\[
+E_{\mathscr R}:\quad Y^2=X^3-37X^2+307X+361.
+\]
+并且可取一组完全显式的双有理互逆变换：在 \(E_{\mathscr R}\) 上令
+\[
+y=-\frac{8X}{Y+19+14X-X^2},
+\qquad
+z=1-\frac{2X(7-X)}{Y+19+14X-X^2},
+\]
+则 \((y,z)\) 满足 \(\mathscr R(z,y)=0\)，从而给出 \(E_{\mathscr R}\dashrightarrow \overline{\mathcal R}\)；
+反之，在开子集 \(y\neq 0\) 上，取
+\[
+X=\frac{7y+4-4z}{y},
+\qquad
+Y=X^2-14X-19-\frac{8X}{y},
+\]
+则 \((X,Y)\) 满足 \(E_{\mathscr R}\) 的 Weierstrass 方程，从而给出 \(\overline{\mathcal R}\dashrightarrow E_{\mathscr R}\)。
+\par
+此外，\(E_{\mathscr R}\) 的基本不变量可显式写为
+\[
+c_4=7168,\quad c_6=-341504,\quad \Delta=2^{12}\cdot 31^{2}\cdot 37,\quad
+j(E_{\mathscr R})=\frac{2^{18}\cdot 7^{3}}{31^{2}\cdot 37}.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由所给双有理变换将 \((X,Y)\) 代入 \((y,z)\) 并清分母，可验证 \(\mathscr R(z,y)=0\) 在理想 \((Y^2-(X^3-37X^2+307X+361))\) 中为零；
+反向同理由直接代入并清分母得到。
+判别式、\(c_4,c_6\) 与 \(j\) 的显式表达来自对该 Weierstrass 模型套用标准不变量公式。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$\pi^{(3)}_y$}{pi\_y(3)} 的零极点分解与三条有理纤维的分歧剖面]\label{con:xi-terminal-zm-resolvent-cubic-y-divisor-rational-fibers}
+通过结论 \ref{con:xi-terminal-zm-resolvent-cubic-weierstrass-birational} 的同构，把投影
+\(
+\pi^{(3)}_y:\overline{\mathcal R}\to\mathbb P^1_y
+\)
+识别为 \(E_{\mathscr R}\) 上的有理函数
+\[
+y=-\frac{8X}{Y+19+14X-X^2}\in\QQ(E_{\mathscr R}).
+\]
+则其极点、零点除子在 \(E_{\mathscr R}(\overline{\QQ})\) 上满足精确分解
+\[
+(y)_\infty=2(15,-4)+(-1,-4),
+\qquad
+(y)_0=2O+(0,19),
+\]
+其中 \(O\) 为 \(E_{\mathscr R}\) 的无穷远点。
+因此，\(\pi^{(3)}_y\) 的三条有理分歧纤维在 \(E_{\mathscr R}\) 上可具体写为
+\[
+(\pi^{(3)}_y)^{-1}(0)=2O+(0,19),
+\qquad
+(\pi^{(3)}_y)^{-1}(1)=2(23,4)+(-1,4),
+\qquad
+(\pi^{(3)}_y)^{-1}(\infty)=2(15,-4)+(-1,-4),
+\]
+从而在 \(y=0,1,\infty\) 三处均呈现“一点二次分歧、其余不分歧”的纤维型。
+\end{conclusion}
+\begin{proof}[证明要点]
+由
+\(
+y=-8X/(Y+19+14X-X^2)
+\)
+可知零点来自 \(X=0\) 与无穷远点处的阶数比较，而极点来自分母与曲线的交点及其重数；
+将 \(Y=X^2-14X-19\) 代入 \(E_{\mathscr R}\) 的方程并因式分解可得分母零点的 \(X\)-坐标分解，从而读出 \((y)_\infty\)。
+对 \(y-1\) 同理得到 \(y=1\) 纤维的重数分解。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[非有理分歧值的 \texorpdfstring{$X$}{X}-坐标消元证书与 \texorpdfstring{$P_{\mathrm{LY}}$}{P\_LY} 的再出现]\label{con:xi-terminal-zm-resolvent-cubic-nonrational-branch-elimination}
+考虑 \(\pi^{(3)}_y\) 的非有理分歧点（即不在 \(y=0,1,\infty\) 之上者）。
+则其在 \(E_{\mathscr R}\) 上的 \(X\)-坐标必满足不可约三次方程
+\[
+g_{\mathscr R}(X):=4X^3+3X^2+114X-269=0,
+\]
+且相应分歧值 \(y\) 可纯以 \(X\) 表示为
+\[
+y=\frac{16(X^2+19)}{(X-15)(2X^2+X+15)}.
+\]
+对 \(X\) 作结式消元可得显式证书
+\[
+\boxed{\;
+\mathrm{Res}_X\!\Bigl(g_{\mathscr R}(X),\ (X-15)(2X^2+X+15)y-16(X^2+19)\Bigr)
+=-68460544\,P_{\mathrm{LY}}(y)\; }.
+\]
+从而上述三条非有理二次分歧值的极小多项式恰为
+\[
+P_{\mathrm{LY}}(y)=256y^3+411y^2+165y+32.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+对 \(y\) 的显式表达式计算 \(\dd y\) 并在 \(E_{\mathscr R}\) 上消去 \(Y\) 得到分歧点的 \(X\)-坐标多项式；
+对 \(X\) 作结式消元即可回收 \(P_{\mathrm{LY}}(y)\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$\QQ(\sqrt{-111})$}{Q(sqrt(-111))} 的几何实现：由 \texorpdfstring{$\mathrm{Disc}(g_{\mathscr R})$}{Disc(g\_R)} 直接读出]\label{con:xi-terminal-zm-resolvent-cubic-sqrt-111-geometric}
+结论 \ref{con:xi-terminal-zm-resolvent-cubic-nonrational-branch-elimination} 的分歧控制多项式 \(g_{\mathscr R}(X)\) 的判别式满足
+\[
+\mathrm{Disc}(g_{\mathscr R})=-(2^3\cdot 3\cdot 31)^2\cdot 111,
+\]
+故其分裂域的二次分辨子域必为
+\[
+\QQ\!\left(\sqrt{\mathrm{Disc}(g_{\mathscr R})}\right)=\QQ(\sqrt{-111}).
+\]
+因此，二次域 \(\QQ(\sqrt{-111})\) 在此获得一条完全显式的几何实现：它即为 \(\pi^{(3)}_y\) 于 \(y\neq 0,1,\infty\) 的三条二次分歧值之定义域的公共二次分辨域（由 \(g_{\mathscr R}\) 的判别式直接给出），并与 \(P_{\mathrm{LY}}\) 的判别式平方自由部分精确一致。
+\end{conclusion}
+\begin{proof}[证明要点]
+判别式分解可由对三次多项式的标准判别式公式计算并在 \(\ZZ\) 中分解得到。
+由不可约三次分裂域的标准结构，二次分辨子域由 \(\sqrt{\mathrm{Disc}}\) 给出。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$E_{\mathscr R}(\QQ)$}{E\_R(Q)} 的扭点平凡性与可计算的无穷阶点]\label{con:xi-terminal-zm-resolvent-cubic-mw-point}
+\(E_{\mathscr R}(\QQ)\) 的扭点子群为平凡群
+\[
+E_{\mathscr R}(\QQ)_{\mathrm{tors}}=\{O\}.
+\]
+特别地，任一 \(\QQ\)-有理点只要不同于 \(O\) 即为无穷阶点；例如
+\[
+P:=(23,4)\in E_{\mathscr R}(\QQ)
+\]
+为无穷阶点。
+在结论 \ref{con:xi-terminal-zm-resolvent-cubic-weierstrass-birational} 的平面模型坐标下，
+\[
+\bigl(y(P),z(P)\bigr)=(1,-3),
+\]
+从而沿 \((nP)\)（\(n\ge 1\)）取值可产生无穷多个有理参数
+\[
+y_n:=y(nP)\in\QQ,
+\]
+使得三次预解式 \(\mathscr R(z,y_n)=0\) 在 \(\QQ\) 上具有有理根 \(z_n:=z(nP)\in\QQ\)，并因此在每个 \(y_n\) 处发生线性因子化。
+\end{conclusion}
+\begin{proof}[证明要点]
+扭点注入良约化的有限域点群，故扭点阶整除任意良约化素数 \(p\nmid \Delta\) 处的 \(\#E_{\mathscr R}(\FF_p)\)；
+例如在 \(p=3,5\) 处良约化且 \(\#E_{\mathscr R}(\FF_3)=5\)、\(\#E_{\mathscr R}(\FF_5)=8\)，其最大公因子为 \(1\) 即推出扭点平凡性。
+\((y(P),z(P))\) 的取值由结论 \ref{con:xi-terminal-zm-resolvent-cubic-weierstrass-birational} 的显式公式直接代入得到。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$31$}{31} 与 \texorpdfstring{$37$}{37} 处的约化型与分裂性判据]\label{con:xi-terminal-zm-resolvent-cubic-reduction-31-37}
+对结论 \ref{con:xi-terminal-zm-resolvent-cubic-weierstrass-birational} 的 \(E_{\mathscr R}\)，由
+\(
+v_{31}(c_4)=v_{37}(c_4)=0
+\)
+且
+\[
+v_{31}(\Delta)=2,\qquad v_{37}(\Delta)=1,
+\]
+可知其在 \(p=31,37\) 处均为乘性约化。
+进一步由 \(-c_6\) 的二次特征判定分裂性：
+\[
+\left(\frac{-c_6}{31}\right)=+1
+\quad\Longrightarrow\quad
+\text{\(31\) 处分裂乘性约化（Kodaira 型 \(I_2\)）},
+\]
+\[
+\left(\frac{-c_6}{37}\right)=-1
+\quad\Longrightarrow\quad
+\text{\(37\) 处非分裂乘性约化（Kodaira 型 \(I_1\)）}.
+\]
+因此，素数 \(31\) 与 \(37\) 的局部约化行为在 \(E_{\mathscr R}\) 的 Weierstrass 模型上被完全显式地控制，并与三次预解式所诱导的分歧结构在判别式层面严格对齐。
+\end{conclusion}
+\begin{proof}[证明要点]
+由 \(v_p(c_4)=0\) 且 \(v_p(\Delta)>0\) 的 Tate 判据知为乘性约化；
+Kodaira 型由 \(v_p(\Delta)\) 决定，而分裂性由 \(\left(\frac{-c_6}{p}\right)\) 判别。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
+\end{proof}
+

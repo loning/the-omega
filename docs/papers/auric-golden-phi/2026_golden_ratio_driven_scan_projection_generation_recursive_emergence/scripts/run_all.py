@@ -2936,6 +2936,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_resolvent_cubic_weierstrass_audit",
+            script="exp_fold_zm_resolvent_cubic_weierstrass_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_resolvent_cubic_weierstrass_audit.json",
+                "sections/generated/eq_fold_zm_resolvent_cubic_weierstrass_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_hard_boundary_coeffs_audit",
             script="exp_fold_zm_hard_boundary_coeffs_audit.py",
             args=[],
