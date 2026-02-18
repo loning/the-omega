@@ -2900,6 +2900,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_discriminant_ridge_3torsion_frobenius_mod3_audit",
+            script="exp_fold_zm_discriminant_ridge_3torsion_frobenius_mod3_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_3torsion_frobenius_mod3_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_3torsion_frobenius_mod3_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit",
             script="exp_fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit.py",
             args=[],
