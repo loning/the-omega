@@ -1,0 +1,245 @@
+\paragraph{跨支隧穿作用量与分裂纤维的首项可见性：\texorpdfstring{$\ZZ_2$}{Z/2} 扭曲 Ihara-\texorpdfstring{$\zeta$}{zeta}、谱双重态裂分与端点角窗}
+沿用定义 \ref{def:ihara-tunneling-action} 对隧穿作用量 \(A_K\) 的约定（无回溯 Ihara prime 环的最小正能量），并沿用引理 \ref{lem:pom-one-bit} 的隐藏位二支分解
+\(
+d_m(x)=d_{m,0}(x)+d_{m,1}(x)
+\)；
+同时沿用结论 \ref{con:xi-timefiber-poisson-busemann-identity} 的端点 \(-1\) Poisson--Busemann 时间纤维坐标
+\(
+\mathcal{B}_{-1}(w)=\frac{1-|w|^2}{|1+w|^2}
+\)。
+在该固定口径下，隐藏位二支分裂在协议图/无回溯 prime 侧诱导一个 \(\ZZ_2\) 扭曲通道；
+其首个可见阶数由一纯整数不变量 \(A_{\mathrm{flip}}\) 完全刻画，并可在 Euler 乘积比值、Perron 双重态裂分与端点读出分辨率三条接口上同时读出。
+
+\begin{conclusion}[分裂隧穿作用量的 \texorpdfstring{$\zeta$}{zeta}-检测：扭曲/未扭曲比值的 \texorpdfstring{$u$}{u}-首阶指数]\label{con:xi-split-tunneling-zeta-detect-aflip}
+设 \(\Gamma\) 为有限有向图，并在其 Hashimoto 无回溯边空间上取 Ihara prime 环（tailless、primitive、non-backtracking 闭环）为 \(p\)。
+令 \(\kappa:E(\Gamma)\to\ZZ_{\ge 0}\) 为能量权重，\(\ell:E(\Gamma)\to\ZZ_{>0}\) 为时间权重，并对闭环取总权重 \(\kappa(p),\ell(p)\)。
+设 \(\beta:E(\Gamma)\to\ZZ_2\) 为由隐藏位二支分裂诱导的 \(\ZZ_2\)-余圈，并记
+\[
+\chi_\beta(p):=(-1)^{\sum_{e\in p}\beta(e)}\in\{\pm 1\}.
+\]
+定义二变量带权 Ihara \(\zeta\) 与其 \(\ZZ_2\)-扭曲通道（形式幂级数意义）
+\[
+Z_K(u,t):=\prod_{p}\bigl(1-u^{\kappa(p)}t^{\ell(p)}\bigr)^{-1},
+\qquad
+Z_K(u,t;\beta):=\prod_{p}\bigl(1-\chi_\beta(p)\,u^{\kappa(p)}t^{\ell(p)}\bigr)^{-1}.
+\]
+若零能量骨架不发生 sheet-交换（即对所有 \(p\) 有 \(\kappa(p)=0\Rightarrow \chi_\beta(p)=+1\)），则存在严格整数不变量
+\[
+A_{\mathrm{flip}}
+:=\min\{\kappa(p):\ p\ \text{为 Ihara prime 环且}\ \chi_\beta(p)=-1\}\in\ZZ_{>0},
+\]
+并且比值的 \(u\)-首阶指数严格等于 \(A_{\mathrm{flip}}\)：
+\[
+[u^k]\left(\frac{Z_K(u,t;\beta)}{Z_K(u,t)}-1\right)=0\quad(0\le k<A_{\mathrm{flip}}),
+\]
+且其首项系数具有闭式
+\[
+\frac{Z_K(u,t;\beta)}{Z_K(u,t)}
+=1-2\Bigl(\sum_{\substack{p\ \mathrm{Ihara\ prime}\\ \kappa(p)=A_{\mathrm{flip}},\ \chi_\beta(p)=-1}} t^{\ell(p)}\Bigr)u^{A_{\mathrm{flip}}}
++O\!\left(u^{A_{\mathrm{flip}}+1}\right).
+\]
+因此，隐藏位二支分裂对“零温隧穿”的首个可见阶数并不由 \(A_K\) 决定，而由跨支隧穿作用量 \(A_{\mathrm{flip}}\) 完全刻画。
+\end{conclusion}
+\begin{proof}[证明要点]
+把 \(x_p:=u^{\kappa(p)}t^{\ell(p)}\) 代入，则逐 prime 环有严格因子化
+\[
+\frac{Z_K(u,t;\beta)}{Z_K(u,t)}=\prod_{p}\frac{1-x_p}{1-\chi_\beta(p)x_p}.
+\]
+当 \(\chi_\beta(p)=+1\) 时该因子恒为 \(1\)；当 \(\chi_\beta(p)=-1\) 时
+\(
+\frac{1-x_p}{1+x_p}=1-2x_p+O(x_p^2)
+\)。
+零能量假设排除了 \(\kappa(p)=0\) 且 \(\chi_\beta(p)=-1\) 的情形，从而最小能量阶由
+\(
+\min\{\kappa(p):\chi_\beta(p)=-1\}=A_{\mathrm{flip}}
+\)
+给出，首项系数由所有满足 \(\kappa(p)=A_{\mathrm{flip}}\) 的 prime 环线性叠加得到。
+\end{proof}
+
+\begin{conclusion}[零温谱双重态的裂分律：两层提升 Perron 根的离散瞬子系数]\label{con:xi-split-tunneling-perron-doublet-splitting-law}
+在结论 \ref{con:xi-split-tunneling-zeta-detect-aflip} 的设定下，令 \(\widetilde B(u,t)\) 为由 \(\beta\) 定义之两层覆盖上的加权无回溯转移算子（Hashimoto 边空间上的提升算子），并按 sheet 分解为 \(2\times2\) 块矩阵
+\[
+\widetilde B(u,t)=
+\begin{pmatrix}
+B_{00}(u,t) & B_{01}(u,t)\\
+B_{10}(u,t) & B_{11}(u,t)
+\end{pmatrix}.
+\]
+假设零能量骨架不发生 sheet-交换，从而 \(B_{01}(0,t)=B_{10}(0,t)=0\)；
+并假设共同对角块
+\(
+B_{00}(0,t)=B_{11}(0,t)=:B_{0}(t)
+\)
+为 primitive，且其 Perron--Frobenius 特征值 \(\lambda_{0}(t)\) 单。
+取左右 Perron 向量 \(\mathbf r(t),\mathbf l(t)\) 归一化为 \(\mathbf l(t)^{\top}\mathbf r(t)=1\)。
+令
+\[
+C(t):=[u^{A_{\mathrm{flip}}}]\,B_{01}(u,t),
+\qquad
+D(t):=[u^{A_{\mathrm{flip}}}]\,B_{10}(u,t)
+\]
+为跨支耦合的首个非零系数块（方括号表示取 \(u^{A_{\mathrm{flip}}}\) 系数）。
+则 \(\widetilde B(u,t)\) 的两条顶端特征值 \(\lambda_{\pm}(u,t)\) 满足严格裂分渐近式
+\[
+\lambda_{+}(u,t)-\lambda_{-}(u,t)
+=2\,u^{A_{\mathrm{flip}}}\,
+\sqrt{\bigl(\mathbf l^{\top} C\,\mathbf r\bigr)\bigl(\mathbf l^{\top} D\,\mathbf r\bigr)}
+\;+\;O\!\left(u^{A_{\mathrm{flip}}+1}\right),
+\qquad (u\downarrow 0),
+\]
+其中 \(\mathbf r=\mathbf r(t)\)、\(\mathbf l=\mathbf l(t)\)。
+该裂分律给出一条离散“瞬子公式”：跨支 prime 环的最小能量 \(A_{\mathrm{flip}}\) 决定谱双重态的首个可见裂分阶数，而首项系数由首阶跨支耦合的 Perron 投影给出。
+\end{conclusion}
+\begin{proof}[证明要点]
+由假设，\(\widetilde B(0,t)=\mathrm{diag}(B_0(t),B_0(t))\) 在 \(\lambda_0(t)\) 处为二重简并。
+把 \(\widetilde B(u,t)\) 在 \(u=0\) 处作幂级数展开，\(\beta\)-扭曲首次引入跨支耦合即出现在 \(u^{A_{\mathrm{flip}}}\) 阶，
+从而在简并子空间 \(\Span\{(\mathbf r,0),(0,\mathbf r)\}\) 上得到有效 \(2\times2\) 微扰矩阵
+\(
+\bigl(\begin{smallmatrix} a & \mathbf l^{\top}C\mathbf r\\ \mathbf l^{\top}D\mathbf r & a\end{smallmatrix}\bigr)
+\)
+（对角修正 \(a\) 仅平移两条特征值的平均值）。
+对该矩阵取特征值即得两根之差的首项系数为
+\(
+2\sqrt{(\mathbf l^{\top}C\mathbf r)(\mathbf l^{\top}D\mathbf r)}
+\)，
+其余项吸收至 \(O(u^{A_{\mathrm{flip}}+1})\)。
+\end{proof}
+
+\begin{conclusion}[余圈同调与滑动块共轭下的分裂隧穿指纹不变性]\label{con:xi-split-tunneling-cohomology-conjugacy-invariance}
+设两套有限状态实现 \((\Gamma,\ell)\)、\((\Gamma',\ell')\) 表示同一协议，并存在滑动块共轭 \(\Phi\) 使时间余圈同调等价（\(\ell'\circ\Phi=\ell+\partial b\)）。
+若进一步假设能量余圈与分裂余圈在该共轭下亦仅差余边界（即 \(\kappa'\circ\Phi=\kappa+\partial\varphi\)、\(\beta'\circ\Phi=\beta+\partial\psi\)），则对任一闭环 \(p\) 有
+\[
+\kappa'\!\bigl(\Phi(p)\bigr)=\kappa(p),
+\qquad
+\chi_{\beta'}\!\bigl(\Phi(p)\bigr)=\chi_{\beta}(p).
+\]
+从而：
+\begin{enumerate}
+  \item 隧穿作用量 \(A_K\)（定义 \ref{def:ihara-tunneling-action}）与跨支隧穿作用量 \(A_{\mathrm{flip}}\) 均为协议语义不变量；
+  \item 结论 \ref{con:xi-split-tunneling-zeta-detect-aflip} 的 \(u\)-首阶指数与首项系数，以及结论 \ref{con:xi-split-tunneling-perron-doublet-splitting-law} 的谱裂分首项系数，均仅依赖于同调类 \([\kappa]\in H^{1}(\Gamma;\ZZ)\)、\([\beta]\in H^{1}(\Gamma;\ZZ_2)\) 的协议级像，而不依赖于具体编码/recoding。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+对闭环 \(p\) 而言，余边界项在闭合求和中消失：\(\sum_{e\in p}\partial f(e)=0\)。
+因此闭环的能量和与 \(\ZZ_2\) holonomy 在共轭下保持不变，随之 \(A_K\)、\(A_{\mathrm{flip}}\) 及其由 prime 环枚举/谱投影构造出的首项系数均保持不变。
+\end{proof}
+
+\begin{conclusion}[超选结构与两尺度弛豫：\texorpdfstring{$A_{\mathrm{flip}}$}{A_flip} 给出跨支混合的 Arrhenius 指数]\label{con:xi-split-tunneling-superselection-arrhenius-exponent}
+令 \(\widetilde P(u)\) 为由 \(\widetilde B(u,1)\) 逐行归一化得到的随机转移算子，并假设在 \(u=0\) 时两张 sheet 各自不可约且非周期。
+则在 \(u\downarrow 0\) 的低温极限中：
+\begin{enumerate}
+  \item 跨 sheet 的最慢弛豫时间尺度满足
+  \[
+  \tau_{\mathrm{mix}}(u)=\Theta\!\bigl(u^{-A_{\mathrm{flip}}}\bigr),
+  \]
+  且第二特征值具有一阶缺口
+  \[
+  \lambda_2(u)=1-c\,u^{A_{\mathrm{flip}}}+o\!\left(u^{A_{\mathrm{flip}}}\right),
+  \qquad c>0,
+  \]
+  其中常数 \(c\) 可由结论 \ref{con:xi-split-tunneling-perron-doublet-splitting-law} 的裂分系数经标准随机化归一化显式给出。
+  \item 若 \(A_{\mathrm{flip}}>A_K\)，则所有能量阶 \(<A_{\mathrm{flip}}\) 的贡献均在每张 sheet 内闭合；
+  因此在低温展开的 \(u^{A_K},u^{A_K+1},\dots,u^{A_{\mathrm{flip}}-1}\) 各阶上形成严格“超选结构”：跨支耦合在 \(\Theta(u^{A_{\mathrm{flip}}})\) 之前不可见。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+在 \(u=0\) 时 \(\widetilde P(0)\) 为两块互不连通的不可约链，因而存在一条简并特征值 \(1\) 的双重态。
+跨支跃迁的最小能量阶为 \(A_{\mathrm{flip}}\) 意味着跨块耦合概率规模为 \(\Theta(u^{A_{\mathrm{flip}}})\)，标准两团块微扰给出谱隙与混合时间的指数尺度分别为 \(\Theta(u^{A_{\mathrm{flip}}})\) 与 \(\Theta(u^{-A_{\mathrm{flip}}})\)。
+若 \(A_{\mathrm{flip}}>A_K\)，则在 \(u^{A_{\mathrm{flip}}}\) 阶之前跨块项严格为零，得到逐阶超选结构。
+\end{proof}
+
+\begin{conclusion}[端点压缩的平方根分辨率律：动作指数 \texorpdfstring{$\Rightarrow$}{=>} 端点角窗尺度]\label{con:xi-split-tunneling-endpoint-window-sqrt-law}
+在圆盘模型中取端点 \(-1\) 的 Poisson--Busemann 权重
+\(
+\mathcal{B}_{-1}(w)=\frac{1-|w|^2}{|1+w|^2}
+\)
+（结论 \ref{con:xi-timefiber-poisson-busemann-identity}）。
+固定 \(A\in\ZZ_{>0}\)，令
+\[
+\varrho(u):=\sqrt{1-u^{A}},
+\qquad
+w=\varrho(u)e^{\mathrm{i}\theta}.
+\]
+则对任意固定阈值 \(y_0>0\)，存在常数 \(K_1(y_0),K_2(y_0)>0\) 使当 \(u\downarrow 0\) 时端点角窗满足双侧夹逼
+\[
+\{\theta:\ \mathcal{B}_{-1}(\varrho(u)e^{\mathrm{i}\theta})\ge y_0\}
+\subseteq
+\{\theta:\ |\theta-\pi|\le K_1(y_0)\,u^{A/2}\},
+\]
+\[
+\{\theta:\ |\theta-\pi|\le K_2(y_0)\,u^{A/2}\}
+\subseteq
+\{\theta:\ \mathcal{B}_{-1}(\varrho(u)e^{\mathrm{i}\theta})\ge y_0\}.
+\]
+从而端点窗口宽度为 \(\Theta(u^{A/2})\)。
+结合“等半径纤维双端触及并把高高度贡献压缩到端点邻域”的端点压缩机制（定理 \ref{thm:dephys-timefiber-two-ended}），得到可操作的分辨率律：
+若某类效应的低温阶数为 \(u^{A}\)，则其在端点压缩读出中必局域于角宽 \(\Theta(u^{A/2})\) 的端点窗；
+取 \(A=A_{\mathrm{flip}}\) 即得跨支隧穿首项的端点读出分辨率下界。
+\end{conclusion}
+\begin{proof}[证明要点]
+由恒等式
+\(
+|1+\varrho e^{\mathrm{i}\theta}|^{2}=(1-\varrho)^{2}+4\varrho\sin^{2}\bigl((\theta-\pi)/2\bigr)
+\)
+得
+\[
+\mathcal{B}_{-1}(\varrho e^{\mathrm{i}\theta})
+:=\frac{1-\varrho^{2}}{(1-\varrho)^{2}+4\varrho\sin^{2}\bigl((\theta-\pi)/2\bigr)}.
+\]
+代入 \(1-\varrho^{2}=u^{A}\) 与 \(1-\varrho=u^{A}/(1+\varrho)\asymp u^{A}\)，并用 \(\sin x\asymp x\)（\(x\to 0\)）得到
+\(
+\mathcal{B}_{-1}(\varrho e^{\mathrm{i}\theta})\ge y_0
+\iff
+|\theta-\pi|=O(u^{A/2})
+\)；
+常数可取为仅依赖 \(y_0\) 的显式上、下界。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$A_{\mathrm{flip}}=1$}{A_flip=1} 的可审计充要证书：一条见证边与零能量闭合]\label{con:xi-split-tunneling-aflip1-auditable-certificate}
+沿用结论 \ref{con:xi-split-tunneling-zeta-detect-aflip}，并进一步假设零能量骨架在两张 sheet 上各自闭合（等价地：\(\kappa(e)=0\Rightarrow \beta(e)=0\)）。
+则以下两条件等价：
+\begin{enumerate}
+  \item \(A_{\mathrm{flip}}=1\)；
+  \item 存在一条无回溯边 \(e\) 满足 \(\kappa(e)=1\) 且 \(\beta(e)=1\)，并且存在一条仅由零能量边组成的无回溯路径 \(\gamma\) 使 \(p:=e\gamma\) 构成 tailless 的 Ihara prime 环。
+\end{enumerate}
+该证书在“见证边 \(+\) 零能量无回溯闭合”的意义上是严格有限可核验的，从而把跨支隧穿首激发态的存在性判别归约为一次有限状态搜索。
+\end{conclusion}
+\begin{proof}[证明要点]
+\((1)\Rightarrow(2)\)：由 \(A_{\mathrm{flip}}=1\) 存在 Ihara prime 环 \(p\) 满足 \(\kappa(p)=1\) 且 \(\chi_\beta(p)=-1\)。
+由于 \(\kappa\ge 0\) 且取值为整数，必存在且仅存在一条边 \(e\in p\) 满足 \(\kappa(e)=1\)，其余边能量为零。
+零能量闭合假设给出这些边皆满足 \(\beta=0\)，故 \(\chi_\beta(p)=-1\) 强制 \(\beta(e)=1\)。
+取 \(\gamma\) 为 \(p\) 中删去该边后的剩余路径即可。
+\par
+\((2)\Rightarrow(1)\)：由 \(p=e\gamma\) 为 Ihara prime 环且 \(\kappa(e)=1\)、\(\kappa(\gamma)=0\)，得 \(\kappa(p)=1\)；
+又由 \(\beta(e)=1\) 且 \(\beta(\gamma)=0\) 得 \(\chi_\beta(p)=-1\)，从而 \(A_{\mathrm{flip}}\le 1\)。
+结合 \(A_{\mathrm{flip}}\in\ZZ_{>0}\) 得 \(A_{\mathrm{flip}}=1\)。
+\end{proof}
+
+\begin{conclusion}[有限观测反演：由有限阶迹数据抽取 \texorpdfstring{$A_{\mathrm{flip}}$}{A_flip} 与裂分系数]\label{con:xi-split-tunneling-finite-trace-inversion}
+令 \(d:=\dim(\widetilde B(u,t))\) 为两层提升后的 Hashimoto 边空间维数，并假设 \(\widetilde B(u,t)\) 的条目在 \(u\) 上为多项式（能量权重有限）。
+则：
+\begin{enumerate}
+  \item \(\det(I-\widetilde B(u,t))\) 的系数在 \(u\) 上为多项式，次数存在上界 \(O(d)\)；
+  因此 \(Z_K(u,t;\beta)/Z_K(u,t)\) 作为 \(u\)-形式幂级数的首阶指数 \(A_{\mathrm{flip}}\) 与首项系数由有限多个 \(u\)-系数决定。
+  \item 通过恒等式
+  \[
+  \log\det(I-\widetilde B)
+  =-\sum_{n\ge 1}\frac{1}{n}\Tr(\widetilde B^{\,n}),
+  \]
+  结合 Newton 恒等式，可由有限族迹数据 \(\{\Tr(\widetilde B(u,t)^n)\}_{1\le n\le d}\) 的 \(u\)-展开系数有限地重建 \(\det(I-\widetilde B(u,t))\) 的 \(u\)-首项结构，进而抽取：
+  \[
+  A_{\mathrm{flip}},\qquad
+  \sum_{\kappa(p)=A_{\mathrm{flip}},\ \chi_\beta(p)=-1}t^{\ell(p)},
+  \qquad
+  \sqrt{(\mathbf l^{\top} C\mathbf r)(\mathbf l^{\top} D\mathbf r)}.
+  \]
+\end{enumerate}
+从而“时间纤维分裂 \(\times\) 隧穿”的首个可见效应可被封闭为一套有限阶矩/迹的可审计证书体系，而不依赖极限论证或不可控拟合。
+\end{conclusion}
+\begin{proof}[证明要点]
+第一条由行列式展开与条目次数上界直接给出。
+第二条由 \(\log\det\) 的迹级数恒等式给出 ghost（迹）坐标，并由 Newton 恒等式把有限个迹幂和反演为特征多项式系数；对这些系数再作 \(u\)-展开即可定位首个非零阶与其系数。
+\end{proof}
+
+\endinput
+
