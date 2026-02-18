@@ -144,7 +144,7 @@ class Payload:
     pi_fiber_factorizations: Dict[str, str]
     v_first12: List[int]
     log_v_over_n2_8_12: List[float]
-    hhat_P_over_2: float
+    hhat_P: float
     c6_min_model: int
     minus_c6_mod_37: int
     legendre_31_over_37: int
@@ -277,8 +277,9 @@ def main() -> None:
         vn = v_first12[n - 1]
         logs_8_12.append(float(math.log(vn) / (n * n)))
 
-    # hhat(P)/2 (LMFDB value): 0.8177825304658876... / 2
-    hhat_P_over_2 = float(0.8177825304658876 / 2.0)
+    # Canonical Néron–Tate height (natural log normalization) for P=[4]R on 37a1.
+    # Note: LMFDB often reports the height pairing <P,P>=2*hhat(P), hence the factor 1/2.
+    hhat_P = float(0.40889126523294376)
 
     # --- Bad prime 37 invariants on minimal model E0: y0^2 + y0 = x^3 - x
     # Weierstrass coefficients: a1=0,a2=0,a3=1,a4=-1,a6=0
@@ -349,7 +350,7 @@ def main() -> None:
         pi_fiber_factorizations=pi_facts,
         v_first12=[int(x) for x in v_first12],
         log_v_over_n2_8_12=[float(x) for x in logs_8_12],
-        hhat_P_over_2=float(hhat_P_over_2),
+        hhat_P=float(hhat_P),
         c6_min_model=int(c6),
         minus_c6_mod_37=int(minus_c6_mod_37),
         legendre_31_over_37=int(leg_31_37),

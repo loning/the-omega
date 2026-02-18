@@ -29,6 +29,8 @@ We verify:
       if x(nP) = u_n / v_n^2 in lowest terms with v_n>0, then
       den(y(nP)) = v_n^4,
     and we reproduce the first six terms.
+  - Bad prime 37 stable reduction degree-drop of Phi:
+      mod 37, numerator and denominator share (X-5)^2 and the reduced map has degree 2.
 
 Outputs:
   - artifacts/export/fold_zm_elliptic_lattes_rational_points_audit.json
@@ -161,6 +163,10 @@ class TableRow:
 @dataclass(frozen=True)
 class Payload:
     phi_formula_ok: bool
+    phi_mod37_degree_drop_ok: bool
+    phi_mod37_gcd: str
+    phi_mod37_reduced_map: str
+    g_mod37_factor_ok: bool
     phi_prime_critical_poly_ok: bool
     critical_poly_disc: int
     critical_poly_disc_factorization: Dict[str, int]
@@ -205,6 +211,31 @@ def main() -> None:
 
     Phi_expected = sp.together((X**4 + 2 * X**2 - 2 * X + 1) / (4 * X**3 - 4 * X + 1))
     phi_ok = bool(sp.factor(Phi - Phi_expected) == 0)
+
+    # --- Bad prime 37: stable reduction degree-drop of Phi ---
+    p_bad = 37
+    num_phi = X**4 + 2 * X**2 - 2 * X + 1
+    den_phi = 4 * X**3 - 4 * X + 1
+    num_phi_mod_expected = (X - 5) ** 2 * (X**2 + 10 * X + 3)
+    den_phi_mod_expected = (X - 5) ** 2 * (4 * X + 3)
+    num_mod_ok = bool(sp.Poly(num_phi - num_phi_mod_expected, X, modulus=p_bad).is_zero)
+    den_mod_ok = bool(sp.Poly(den_phi - den_phi_mod_expected, X, modulus=p_bad).is_zero)
+    num_poly_mod = sp.Poly(num_phi, X, modulus=p_bad)
+    den_poly_mod = sp.Poly(den_phi, X, modulus=p_bad)
+    gcd_mod = sp.gcd(num_poly_mod, den_poly_mod)
+    gcd_mod = sp.Poly(gcd_mod, X, modulus=p_bad).monic()
+    num_red = num_poly_mod.quo(gcd_mod)
+    den_red = den_poly_mod.quo(gcd_mod)
+    num_red_expected = sp.Poly(X**2 + 10 * X + 3, X, modulus=p_bad)
+    den_red_expected = sp.Poly(4 * X + 3, X, modulus=p_bad)
+    phi_mod37_degree_drop_ok = bool(num_mod_ok and den_mod_ok and num_red == num_red_expected and den_red == den_red_expected)
+    phi_mod37_gcd = gcd_mod.as_expr()
+    phi_mod37_reduced_map = sp.together(num_red.as_expr() / den_red.as_expr())
+
+    # --- Bad prime 37: cubic g(X)=16X^3-9X^2+1 double-root collapse ---
+    g_cubic = 16 * X**3 - 9 * X**2 + 1
+    g_cubic_mod_expected = 16 * (X - 16) * (X - 5) ** 2
+    g_mod37_factor_ok = bool(sp.Poly(g_cubic - g_cubic_mod_expected, X, modulus=p_bad).is_zero)
 
     # --- Critical polynomial for Phi'(X)=0 (affine chart) ---
     Phi_prime = sp.diff(Phi_expected, X)
@@ -366,6 +397,10 @@ def main() -> None:
 
     payload = Payload(
         phi_formula_ok=bool(phi_ok),
+        phi_mod37_degree_drop_ok=bool(phi_mod37_degree_drop_ok),
+        phi_mod37_gcd=sp.sstr(phi_mod37_gcd),
+        phi_mod37_reduced_map=sp.sstr(phi_mod37_reduced_map),
+        g_mod37_factor_ok=bool(g_mod37_factor_ok),
         phi_prime_critical_poly_ok=bool(crit_ok),
         critical_poly_disc=int(crit_disc),
         critical_poly_disc_factorization={str(int(p)): int(e) for p, e in crit_disc_fac.items()},
@@ -407,6 +442,9 @@ def main() -> None:
         "\\Phi(X)=\\frac{X^{4}+2X^{2}-2X+1}{4X^{3}-4X+1},\\qquad \\Phi'(X)=0\\iff 2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1=0.",
         "\\]",
         "\\[",
+        "X^{4}+2X^{2}-2X+1\\equiv (X-5)^{2}(X^{2}+10X+3),\\quad 4X^{3}-4X+1\\equiv (X-5)^{2}(4X+3)\\ (\\mathrm{mod}\\ 37),\\quad \\overline{\\Phi}(X)=\\frac{X^{2}+10X+3}{4X+3}.",
+        "\\]",
+        "\\[",
         "[2]^*(y)=\\frac{(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1)\\,y+(-X^{8}+7X^{6}-14X^{5}+27X^{4}-9X^{3}-6X^{2}+X+1)}{(4X^{3}-4X+1)^{2}}.",
         "\\]",
         "\\[",
@@ -430,7 +468,8 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-lattes] checks:"
-        f" phi={phi_ok} crit={crit_ok} galois48={(G_order == 48)} y2lin={y_pullback_ok} y2cubic={y_pullback_cubic_ok}"
+        f" phi={phi_ok} mod37degdrop={phi_mod37_degree_drop_ok} gmod37={g_mod37_factor_ok}"
+        f" crit={crit_ok} galois48={(G_order == 48)} y2lin={y_pullback_ok} y2cubic={y_pullback_cubic_ok}"
         f" mw={mw_ok} minpoly={y_minpoly_ok} disc={y_disc_ok} tors_gcd={g} denlaw={all(r.den_law_ok for r in rows)}"
         f" seconds={dt:.3f}",
         flush=True,
