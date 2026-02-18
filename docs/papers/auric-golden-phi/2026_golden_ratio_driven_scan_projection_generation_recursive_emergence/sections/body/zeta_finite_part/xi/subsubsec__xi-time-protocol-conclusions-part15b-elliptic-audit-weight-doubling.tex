@@ -1,0 +1,224 @@
+% (User input window)
+
+\paragraph{Multiplicative correspondence in weight coordinates: four-valued dynamic closure and level preservation of Lee--Yang discriminant kernel}
+Following the notation of conclusion \ref{con:xi-terminal-zm-lattes-4division-certificate} and conclusion \ref{con:xi-terminal-zm-elliptic-quadratic-discriminant},
+Get the weight function on the elliptic curve \(\mathcal{E}:Y^{2}=\lambda^{3}-\lambda+\tfrac14\)
+\(
+y:=\lambda^{2}+Y-\tfrac12
+\)。
+Since \(y:\mathcal{E}\to\mathbb{P}^{1}\) is a cover of degree \(4\),
+The multiple point mapping \([2]\) does not induce single-valued rational self-mapping on \(y\)-coordinates,
+Instead, a four-valued correspondence is given that is encoded by an explicit elimination equation.
+Furthermore, if the weight conjugate pair \(\{y([2]P),y^{\iota}([2]P)\}\) of the double point image is included together, then the four-valued closure will naturally split into two irreducible fourth branches.
+All its divergences are strictly locked by the same Lee--Yang discriminant kernel in the square-free sense and can be aligned with the tangent locking function via norm/knot identities.
+
+\begin{conclusion}[Quarteric correspondence of two branches multiplied on weight coordinates: irreducible closure of conjugate weight pairs]\label{con:xi-terminal-zm-weight-doubling-quartic-closure}
+Let \(\iota:\mathcal{E}\to\mathcal{E}\) be the elliptical inversion \((\lambda,Y)\mapsto(\lambda,-Y)\), and note the conjugate weight function
+\[
+y^{\iota}:=\lambda^{2}-Y-\tfrac12.
+\]
+For any point \(P\in\mathcal{E}(\overline{\QQ})\) note
+\[
+y_0:=y(P),\qquad y_1:=y([2]P),\qquad y_1^{\iota}:=y^{\iota}([2]P).
+\]
+Then there are two irreducible polynomial corresponding expressions
+\[
+R_{+}(y_0,y_1)=0,\qquad R_{-}(y_0,y_1^{\iota})=0,
+\qquad R_{\pm}\in\ZZ[y_0,y_1],
+\]
+Its dual degree is \((16,4)\), and it is strictly true for all \(P\).
+More precisely, both share the same leading factor
+\[
+Q(y_0)^{4},
+\qquad
+Q(y):=16y^{3}-8y^{2}-4y+1,
+\]
+and can be written as
+\[
+R_{\pm}(y_0,v)=Q(y_0)^{4}v^{4}+A_{\pm}(y_0)v^{3}+B_{\pm}(y_0)v^{2}+C_{\pm}(y_0)v+D_{\pm}(y_0).
+\]
+where \(R_{+}\) can be taken as \(\mathcal H\), and the expansion of its coefficient polynomial \(A_{+},B_{+},C_{+},D_{+}\) is given by the following closed-form certificate:
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_H}
+And its constant term satisfies further factorization
+\[
+\boxed{\;
+D_{+}(y_0)
+=(y_0+1)^{2}(y_0^{3}-7y_0^{2}+13y_0-5)^{2}(y_0^{4}-6y_0^{3}+66y_0^{2}+28y_0+9)(y_0^{4}+2y_0^{3}+8y_0^{2}+8y_0+8)\; }.
+\]
+And the coefficient polynomial \(A_{-},B_{-},C_{-},D_{-}\) of \(R_{-}\) is given by the following closed-form certificate:
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_Rminus}
+\par
+Therefore, the push of multiplication \([2]\) on the weight coordinate is not a single-valued rational function, but is decomposed into two irreducible fourth branches,
+The conjugate weight pair \(\{y([2]P),y^{\iota}([2]P)\}\) corresponding to the doubled point image.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By definition \(y=\lambda^{2}+Y-\tfrac12\), and by the double point formula
+\(
+\lambda([2]P)=\Phi(\lambda)
+\) (Conclusion \ref{con:xi-terminal-zm-lattes-4division-certificate}) and
+\(
+Y([2]P)=m\,(\lambda-\Phi(\lambda))-Y
+\), where the tangent slope \(m=(3\lambda^{2}-1)/(2Y)\).
+Therefore \(y_0,y_1,y_1^{\iota}\) can all be written as explicit rational functions in \(\QQ(\lambda,Y)\).
+Three relationships are combined in \(\ZZ[\lambda,Y,y_0,y_1]\)
+\[
+Y^{2}-\bigl(\lambda^{3}-\lambda+\tfrac14\bigr)=0,\qquad
+y_0-\bigl(\lambda^{2}+Y-\tfrac12\bigr)=0,\qquad
+y_1-\bigl(\Phi(\lambda)^{2}+Y([2]P)-\tfrac12\bigr)=0,
+\]
+And by eliminating the elements of \(\lambda,Y\) (for example, using the sequential solution of \(Y\) and \(\lambda\)), the plane elimination relationship of \((y_0,y_1)\) can be obtained;
+Taking its reduced primitive part in \(\ZZ[y_0,y_1]\) is \(\mathcal H\).
+For \(y_1^{\iota}=y^{\iota}([2]P)=\Phi(\lambda)^{2}-Y([2]P)-\tfrac12\), elimination is done in the same way,
+The second irreducible correspondence \(R_{-}(y_0,y_1^{\iota})=0\) is obtained.
+The item-by-item verification of the above equation can be completed by the script \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}. Certification completed.
+\end{proof}
+
+\begin{conclusion}[The discriminant square free part rigidity corresponding to the renormalization: Lee--Yang stability and generics \texorpdfstring{$S_{4}$}{S4} symmetry]\label{con:xi-terminal-zm-weight-doubling-disc-squareclass}
+Note the Lee--Yang cubic factor
+\(
+P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32
+\)。
+Treat the \(R_{\pm}\) of the conclusion \ref{con:xi-terminal-zm-weight-doubling-quartic-closure} as a fourth-order polynomial with respect to the second variable, then its discriminant satisfies the strict decomposition identity
+\[
+\boxed{\;
+\mathrm{Disc}_{v}\bigl(R_{\pm}(y,v)\bigr)
+=-\,y(y-1)P_{\mathrm{LY}}(y)\,S(y)^{2}\,T_{\pm}(y)^{2}\;}
+\]
+Where the common factor \(S\in\ZZ[y]\) can be taken as a polynomial of degree \(12\), and \(T_{\pm}\in\ZZ[y]\) is a branch-dependent factor of degree \(26\) (see equation below).
+In particular,
+\(
+\mathrm{Disc}_{v}(R_{\pm})
+\)
+The square classes in \(\QQ(y)^{\times}/(\QQ(y)^{\times})^{2}\) are strictly equal to \(-y(y-1)P_{\mathrm{LY}}(y)\).
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant}
+\par
+Furthermore, as a quartic polynomial on \(\QQ(y)\), the general Galois groups of \(R_{+}(y,\cdot)\) and \(R_{-}(y,\cdot)\) are both isomorphic to \(S_{4}\),
+And the only quadratic resolution subdomain of its split domain is given by the same discriminant kernel:
+\[
+\QQ(y)\Bigl(\sqrt{-y(y-1)P_{\mathrm{LY}}(y)}\Bigr).
+\]
+\end{conclusion}
+\begin{proof}[Proof sketch]
+Treating \(R_{\pm}\) as a fourth degree polynomial in the second variable, computing the discriminant as defined and factoring in \(\ZZ[y]\) gives the identity shown;
+Since \(S(y)^{2}T_{\pm}(y)^{2}\) is a perfect square, square statements immediately hold.
+\par
+For the generic Galois group, note that the discriminant is non-square in \(\QQ(y)\), thus ruling out \(A_{4}\).
+Then specialize \(y=2\) and verify that the corresponding resolvent cubic is irreducible on \(\QQ\), that is, the specialized Galois group is \(S_{4}\), so the generic is also \(S_{4}\);
+The only quadratic resolution subdomain is given by \(\sqrt{\mathrm{Disc}}\).
+The above verification can be reviewed by the script \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}. Certification completed.
+\end{proof}
+
+\begin{conclusion}[Geometric characterization of the weight bisection cubic polynomial: \texorpdfstring{$Q(y)=0$}{Q(y)=0} gives the pole set isomorphic to the bisection domain]\label{con:xi-terminal-zm-weight-doubling-2torsion-q-cubic}
+make
+\[
+Q(y):=16y^{3}-8y^{2}-4y+1.
+\]
+Then the zero point set of \(Q(y)=0\) is exactly the image of the weight map \(y:\mathcal{E}\to\mathbb{P}^{1}\) at the bisection point:
+\[
+y\bigl(\mathcal{E}[2]\setminus\{O\}\bigr)=\{\,u\in\overline{\QQ}:\ Q(u)=0\,\}.
+\]
+More precisely, if \(\alpha\) satisfies \(D(\alpha)=4\alpha^{3}-4\alpha+1=0\) and corresponds to the bisection point \((\alpha,0)\), then its weight value
+\(
+u=\alpha^{2}-\tfrac12
+\)
+Satisfy \(Q(u)=0\);
+On the contrary, for any \(u\) satisfying \(Q(u)=0\), it is defined
+\[
+\alpha:=-\frac{1}{4(u-\tfrac12)},
+\]
+Then \(D(\alpha)=0\) and \(u=\alpha^{2}-\tfrac12\).
+The bisection point field is therefore exactly identified by the same Möbius transformation between the \(x\)-coordinate and the weight coordinate, and satisfies \(\QQ(\alpha)=\QQ(u)\).
+\par
+At the same time, the first terms of the two quartic correspondences of the conclusion \ref{con:xi-terminal-zm-weight-doubling-quartic-closure} are both \(Q(y_0)^{4}v^{4}\),
+Thus \(Q(y_0)=0\) accurately depicts the pole support corresponding to the weight multiplication in the base direction, and is embedded in the coefficient system in a fourth power manner.
+\end{conclusion}
+\begin{proof}[Proof sketch]
+From \(y(\alpha,0)=\alpha^{2}-\tfrac12\) we directly get \(u=\alpha^{2}-\tfrac12\).
+Write \(D(\alpha)=0\) as \(4\alpha(\alpha^{2}-1)=-1\), and pay attention to \(u-\tfrac12=\alpha^{2}-1\), you can recover \(\alpha=-1/(4(u-\tfrac12))\);
+The same goes for reverse substitution.
+The first statement comes from the \(v^{4}\) coefficient of \(R_{\pm}\) in the conclusion \ref{con:xi-terminal-zm-weight-doubling-quartic-closure}. Certification completed.
+\end{proof}
+
+\begin{conclusion}[Ellipticization of the doubling corresponding graph curve: \texorpdfstring{$\mathcal H(y_0,y_1)=0$}{H=0}'s normalization isomorphic to \texorpdfstring{$\mathcal{E}$}{E}]\label{con:xi-terminal-zm-weight-doubling-elliptic-normalization}
+Let \(\Gamma\subset\mathbb{A}^{2}_{(y_0,y_1)}\) be the plane algebraic curve \(\mathcal H(y_0,y_1)=0\).
+then rational mapping
+\[
+\mathcal{E}\dashrightarrow\Gamma,\qquad
+P\longmapsto \bigl(y(P),\,y([2]P)\bigr)
+\]
+Birational isomorphism on generics.
+Its inverse mapping can be given by an explicit rational expression on the Zariski open set \(\{\alpha(y_0,y_1)\neq 0\}\) of \(\Gamma\):
+\[
+\lambda=\frac{\beta(y_0,y_1)}{\alpha(y_0,y_1)},\qquad
+Y=y_0-\lambda^{2}+\tfrac12,
+\]
+Where \(\alpha,\beta\in\ZZ[y_0,y_1]\) is as follows (closed certificate):
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_inverse}
+Thus \((\lambda,Y)\) satisfies \(Y^{2}=\lambda^{3}-\lambda+\tfrac14\), and \(y_0=\lambda^{2}+Y-\tfrac12\).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By the conclusion \ref{con:xi-terminal-zm-weight-doubling-quartic-closure}, the image of the map \(P\mapsto(y(P),y([2]P))\) falls on \(\Gamma\).
+On the other hand, consider \(\alpha,\beta\) as a function on \(\Gamma\) and take \(\lambda=\beta/\alpha\),
+Just verify on the generic point of \(\mathcal{E}\)
+\(
+\beta\bigl(y(P),y([2]P)\bigr)=\lambda(P)\,\alpha\bigl(y(P),y([2]P)\bigr)
+\)，
+You can get the reconstruction of \(\lambda\);
+Then \(Y=y_0-\lambda^{2}+\tfrac12\) is directly derived from the definition of \(y_0\) and reconstructs the original \(Y\).
+This check is a finite algebraic identity test, which can be reviewed item by item by the script \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}. Certification completed.
+\end{proof}
+
+\begin{conclusion}[Quadratic spine preservation of the doubling weight tower: the unique square obstacle for any one-step expansion is always equal to \texorpdfstring{$-y(y-1)P_{\mathrm{LY}}(y)$}{-y(y-1)P}]\label{con:xi-terminal-zm-weight-doubling-spine-invariance}
+For any \(P\in\mathcal{E}(\overline{\QQ})\) definition
+\(
+y_n:=y([2^{n}]P)
+\)。
+Then there is a recursion constraint for every \(n\ge 0\)
+\[
+\mathcal H(y_n,y_{n+1})=0.
+\]
+And in a generic sense, the only quadratic resolution subdomain of the split domain of domain expansion \(\QQ(y_n,y_{n+1})/\QQ(y_n)\) is always equal to
+\[
+\QQ(y_n)\Bigl(\sqrt{-y_n(y_n-1)P_{\mathrm{LY}}(y_n)}\Bigr),
+\]
+That is to say, the Lee--Yang discriminant kernel is maintained layer by layer on the multiplicative weight tower and does not drift with \(n\).
+\end{conclusion}
+\begin{proof}[Proof sketch]
+By the conclusion \ref{con:xi-terminal-zm-weight-doubling-disc-squareclass}, the discriminant of the fourth degree polynomial \(\mathcal H(y,y_1)\) in \(\QQ(y)\) is exactly \(-y(y-1)P_{\mathrm{LY}}(y)\).
+For a fixed \(n\), let \(y=y_n\) and consider \(\mathcal H(y_n,\cdot)\) as a fourth-order polynomial on \(\QQ(y_n)\). The invariance of the square class of the discriminant gives the only quadratic resolution subdomain of the one-step expansion split domain.
+Repeat the application for each layer to reach the conclusion. Certification completed.
+\end{proof}
+
+\begin{conclusion}[Norm certificate of the Lee--Yang set:\texorpdfstring{$-y(y-1)P_{\mathrm{LY}}(y)$}{-y(y-1)P} is the function domain norm of the tangent locking function]\label{con:xi-terminal-zm-leyang-norm-certificate}
+remember
+\[
+\Pi(\lambda,y):=\lambda^{4}-\lambda^{3}-(2y+1)\lambda^{2}+\lambda+y(y+1)\in\ZZ[\lambda,y],
+\]
+and define the tangent locking function on \(\mathcal{E}\)
+\[
+h:=4\lambda Y+3\lambda^{2}-1\in\QQ(\mathcal{E}).
+\]
+Then the strict norm identity is satisfied in the function domain expansion \(\QQ(\mathcal{E})/\QQ(y)\) of degree \(4\)
+\[
+\boxed{\;
+\mathrm{N}_{\QQ(\mathcal{E})/\QQ(y)}(h)=-\,y(y-1)P_{\mathrm{LY}}(y)\;}
+\]
+And equivalently there exists a completely explicit elimination certificate
+\[
+\boxed{\;
+\mathrm{Res}_{\lambda}\!\Bigl(\Pi(\lambda,y),\ 4\lambda\bigl(y-\lambda^{2}+\tfrac12\bigr)+3\lambda^{2}-1\Bigr)=-\,y(y-1)P_{\mathrm{LY}}(y)\;}
+\]
+(Use \(Y=y-\lambda^{2}+\tfrac12\) to eliminate \(Y\)).
+\input{sections/generated/eq_fold_zm_elliptic_weight_doubling_norm}
+\end{conclusion}
+\begin{proof}[Proof sketch]
+From the conclusion \ref{con:xi-terminal-zm-elliptic-quadratic-discriminant}, in \(\QQ(\mathcal{E})\) we have
+\(
+Y=y-\lambda^{2}+\tfrac12
+\), and \(\lambda\) satisfies the quartic equation \(\Pi(\lambda,y)=0\) on \(\QQ(y)\), so \(\QQ(\mathcal{E})=\QQ(y)(\lambda,Y)\) is an expansion of degree \(4\).
+For any \(g(\lambda)\in\QQ(y)[\lambda]\), its norm in this expansion is equal to \(\mathrm{Res}_{\lambda}(\Pi(\lambda,y),g(\lambda))\) (the norm describing the result is the standard conclusion).
+Taking \(g(\lambda)=4\lambda(y-\lambda^{2}+\tfrac12)+3\lambda^{2}-1\) is the expression of \(h\) after eliminating \(Y\),
+The norm identity is thus equivalent to the resultant identity shown; the right-hand side \(-y(y-1)P_{\mathrm{LY}}(y)\) is aligned with the discriminant kernel of the conclusion \ref{con:xi-terminal-zm-discriminant-leyang}.
+This knot identity can be checked by the script \texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}. Certification completed.
+\end{proof}
+

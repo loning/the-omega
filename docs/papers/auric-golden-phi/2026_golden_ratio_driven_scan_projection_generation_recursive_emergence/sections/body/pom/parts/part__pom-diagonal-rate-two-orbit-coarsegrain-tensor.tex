@@ -1,0 +1,150 @@
+% (User input window)
+
+\begin{theorem}[Two-orbit closed station: cubic certificate under one-heavy-multi-light distribution]\label{thm:pom-diagonal-rate-two-orbit-heavy-light-cubic}
+Let \(n\ge 3\), and take
+\[
+X=\{0,1,\dots,n-1\},\qquad
+w=(p,q,\dots,q),\qquad
+q:=\frac{1-p}{n-1},\qquad p\in(0,1).
+\]
+remember
+\(
+\delta_0:=1-\sum_{x\in X}w(x)^2=1-p^2-(n-1)q^2
+\), and take \(\delta\in(0,\delta_0)\).
+Then the only optimal coupling that realizes \(R_w(\delta)\) must have a four-orbital structure under the "light sign permutation + transposition" symmetry:
+There exists \(a,b,c,d\ge 0\) such that
+\[
+P^\star_\delta(0,0)=a,\quad
+P^\star_\delta(i,i)=b\ (i\ge 1),\quad
+P^\star_\delta(0,i)=P^\star_\delta(i,0)=c,\quad
+P^\star_\delta(i,j)=d\ (i\ne j,\ i,j\ge 1).
+\]
+Uniquely solved by edge and diagonal constraints
+\[
+c=\frac{p-a}{n-1},\qquad
+b=\frac{1-\delta-a}{n-1},\qquad
+d=\frac{\delta+2a-2p}{(n-1)(n-2)}.
+\]
+And there is a unique \(a^\star\) that falls in the feasible interior point interval (making \(b^\star,c^\star,d^\star>0\)) that satisfies the stationary point equation
+\[
+\boxed{\;
+a^\star(d^\star)^2=b^\star(c^\star)^2\;}
+\]
+Among them \(b^\star,c^\star,d^\star\) is obtained by substituting \(a=a^\star\) into the above formula.
+Equivalently, \(a^\star\) is the only root of the following cubic equation in the feasible interval:
+\[
+\boxed{\;
+a(n-1)\,(\delta+2a-2p)^2=(n-2)^2(1-\delta-a)(p-a)^2\; }.
+\]
+The closed form of the optimal value is
+\[
+\boxed{\;
+\begin{aligned}
+R_w(\delta)=&
+\ a^\star\log\frac{a^\star}{p^2}
+(n-1)b^\star\log\frac{b^\star}{q^2}
+2(n-1)c^\star\log\frac{c^\star}{pq}\\
+&\ +\ (n-1)(n-2)d^\star\log\frac{d^\star}{q^2}.
+\end{aligned}}
+\]
+\end{theorem}
+\begin{proof}[Proof sketch]
+The feasible set is invariant under light sign permutation and transposition, and \(P\mapsto D(P\|w\otimes w)=I_P(X;Y)\) is strictly convex on this convex set;
+Therefore, the only minimum point must be the symmetric orbital average, which can be written in the form of four orbits and uniquely determined by constraints that \((b,c,d)\) is a linear function of \(a\).
+\par
+Write the objective as a one-dimensional function \(D(a)\) and take the derivative at interior points:
+Since \(b,c,d\) is linear with respect to \(a\) and \(\sum P\equiv 1\), the constant terms completely cancel, giving
+\[
+\frac{\mathrm d}{\mathrm d a}D(a)=\log\frac{a d(a)^2}{b(a)c(a)^2}.
+\]
+The derivative \(\to-\infty\) when \(d\downarrow 0\), and the derivative \(\to+\infty\) when \(c\downarrow 0\) or \(b\downarrow 0\),
+Therefore, there is a unique interior point root \(a^\star\), and the stationary point equation \(ad^2=bc^2\) is given;
+Substituting the explicit linear expression for \(b,c,d\) gives the cubic equation.
+The closed form value is obtained by directly substituting the four orbitals \(D(P^\star\|w\otimes w)\). Certification completed.
+\end{proof}
+
+\begin{theorem}[Coarsegraining: block layer lower bound and block diagonal upper bound]\label{thm:pom-diagonal-rate-coarsegraining-bounds}
+Let \(X\) be finite and \(w\in\Delta(X)\) be fully supported.
+Take a partition \(\pi=\{B_1,\dots,B_M\}\) (the blocks are disjoint and the union is \(X\)), and induce the block distribution \(W\in\Delta(\pi)\):
+\[
+W(B):=\sum_{x\in B}w(x).
+\]
+For each block \(B\in\pi\), record the conditional distribution \(w_B(x):=w(x)/W(B)\) (\(x\in B\)), and define the second-order collision lower bound within the block
+\[
+c_\pi:=\min_{B\in\pi}\ \sum_{x\in B} w_B(x)^2\in(0,1].
+\]
+Then it holds for any \(\delta\in[0,1]\):
+\begin{enumerate}
+\item \textbf{(Information lower bound: coarse-graining cannot reduce difficulty)}
+  \[
+  \boxed{\;R_w(\delta)\ \ge\ R_W(\delta)\;}
+  \]
+where \(R_W\) is the diagonally constrained rate function identically defined on the block alphabet \(\pi\).
+
+\item \textbf{(Information upper bound: a feasible construction mediated by the block diagonal)}
+make
+  \[
+  \delta':=1-\frac{1-\delta}{c_\pi},
+  \]
+If \(\delta'\in[0,1]\) (equivalent to \(1-\delta\le c_\pi\)), then we have
+  \[
+  \boxed{\;R_w(\delta)\ \le\ R_W(\delta')\;}
+  \]
+Thus \(R_w\) is clamped by block-layer problems with explicitly computable quantities on both sides.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(Lower bound) Define block variables \(B(X)\) for any feasible coupling \(P\).
+Processing inequalities \(I(X;Y)\ge I(B(X);B(Y))\) by data.
+And because of the event \(\{X=Y\}\subseteq\{B(X)=B(Y)\}\), the block coupling satisfies the same \(\delta\) constraint;
+Taking off the exact bound, we get \(R_w(\delta)\ge R_W(\delta)\).
+\par
+(Upper bound) Take the optimal coupling \(\bar P\) of the block layer such that \(\mathbb P(B(X)=B(Y))\ge 1-\delta'\).
+When the condition is \(B(X)=B(Y)=B\), let \(X,Y\) conditions be independent in the block and the edge is \(w_B\), then
+\[
+\mathbb P(X=Y\mid B(X)=B(Y)=B)=\sum_{x\in B}w_B(x)^2\ge c_\pi.
+\]
+therefore
+\[
+\mathbb P(X=Y)\ge \mathbb P(B(X)=B(Y))\cdot c_\pi\ge (1-\delta')c_\pi=1-\delta,
+\]
+This results in a feasible coupling for the pair \(w\); and since the block pair is conditionally independent given the pair, \(I(X;Y)=I(B(X);B(Y))\).
+Taking the optimal coupling of the block layer is \(R_w(\delta)\le R_W(\delta')\). Certification completed.
+\end{proof}
+
+\begin{theorem}[Tensor upper bound of product alphabet: \(\delta\)-convolutional subadditivity]\label{thm:pom-diagonal-rate-tensor-upper-bound}
+Let \(X=X_1\times X_2\), and take the multiplicative distribution \(w=w^{(1)}\otimes w^{(2)}\).
+For any \(\delta\in[0,1]\) define \(R_w(\delta)\) as before, and record the operation
+\[
+\delta_1\oplus\delta_2:=1-(1-\delta_1)(1-\delta_2)=\delta_1+\delta_2-\delta_1\delta_2.
+\]
+Then there is a tensor upper bound for any \(\delta\in[0,1]\)
+\[
+\boxed{\;
+R_{w^{(1)}\otimes w^{(2)}}(\delta)\ \le\
+\inf\Bigl\{R_{w^{(1)}}(\delta_1)+R_{w^{(2)}}(\delta_2):\ \delta_1\oplus\delta_2\le \delta\Bigr\}\; }.
+\]
+And there is also a data processing lower bound for any \(\delta\in[0,1]\)
+\[
+\boxed{\;
+R_{w^{(1)}\otimes w^{(2)}}(\delta)\ \ge\ \max\bigl\{R_{w^{(1)}}(\delta),\ R_{w^{(2)}}(\delta)\bigr\}\; }.
+\]
+\end{theorem}
+\begin{proof}
+Let \(P_1,P_2\) be the optimal coupling of \((w^{(1)},w^{(2)})\) respectively under distortion \((\delta_1,\delta_2)\), and let \(P:=P_1\otimes P_2\).
+Then the edge of \(P\) is \(w^{(1)}\otimes w^{(2)}\), and
+\[
+\mathbb P_P(X=Y)=\mathbb P(X_1=Y_1)\mathbb P(X_2=Y_2)\ge (1-\delta_1)(1-\delta_2)=1-(\delta_1\oplus\delta_2).
+\]
+And mutual information can be added:
+\(
+I_P((X_1,X_2);(Y_1,Y_2))=I_{P_1}(X_1;Y_1)+I_{P_2}(X_2;Y_2)
+\)。
+Taking off the exact bound, we get the upper bound of the tensor.
+\par
+The lower bound is given by the data processing inequality for the projection map \((X_1,X_2)\mapsto X_i\): any feasible coupling still satisfies on the coordinates
+\(
+\mathbb P(X_i=Y_i)\ge \mathbb P(X=Y)\ge 1-\delta
+\), so its mutual information is at least the minimum value of the coordinate problem, and the maximum value is taken to get the conclusion. Certification completed.
+\end{proof}
+
