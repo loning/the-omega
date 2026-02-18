@@ -26,8 +26,8 @@ We verify (exact, auditable):
     and log(v_n)/n^2 for n=8..12 (natural log).
   - Bad prime p=37 on minimal model:
       c6=-216,  (-c6 mod 37)=31,  (31/37)=-1 (nonsplit multiplicative),
-      v_37(den(x(nR))^(1/2)) is 1 iff 38|n (else 0) on n<=76,
-      v_37(den(x(nP))^(1/2)) is 1 iff 19|n (else 0) on n<=38.
+      v_37(den(x(nR))^(1/2)) is 0 if 38∤n, and v_37(n)+1 if 38|n (audited on n<=76),
+      v_37(den(x(nP))^(1/2)) is 0 if 19∤n, and v_37(n)+1 if 19|n (audited on n<=38).
 
 Outputs:
   - artifacts/export/fold_zm_elliptic_mw_height_denominator_growth_audit.json
@@ -144,7 +144,7 @@ class Payload:
     pi_fiber_factorizations: Dict[str, str]
     v_first12: List[int]
     log_v_over_n2_8_12: List[float]
-    hhat_P_over_2: float
+    hhat_P: float
     c6_min_model: int
     minus_c6_mod_37: int
     legendre_31_over_37: int
@@ -277,8 +277,9 @@ def main() -> None:
         vn = v_first12[n - 1]
         logs_8_12.append(float(math.log(vn) / (n * n)))
 
-    # hhat(P)/2 (LMFDB value): 0.8177825304658876... / 2
-    hhat_P_over_2 = float(0.8177825304658876 / 2.0)
+    # Canonical Néron–Tate height (natural log normalization) for P=[4]R on 37a1.
+    # Note: LMFDB often reports the height pairing <P,P>=2*hhat(P), hence the factor 1/2.
+    hhat_P = float(0.40889126523294376)
 
     # --- Bad prime 37 invariants on minimal model E0: y0^2 + y0 = x^3 - x
     # Weierstrass coefficients: a1=0,a2=0,a3=1,a4=-1,a6=0
@@ -313,10 +314,8 @@ def main() -> None:
     for n in range(1, 77):  # 2 * 38
         pt = _mul(n, R, a=a)
         e = v37_of_x_denom_sqrt(pt)
-        if e not in (0, 1):
-            v37_R_ok = False
-        cond = (n % 38 == 0)
-        if (e == 1) != cond:
+        expected = 0 if (n % 38 != 0) else (_v_p(n, 37) + 1)
+        if e != expected:
             v37_R_ok = False
         if e == 1:
             v37_R_hits.append(n)
@@ -326,10 +325,8 @@ def main() -> None:
     for n in range(1, 39):  # 2 * 19
         pt = _mul(n, P, a=a)
         e = v37_of_x_denom_sqrt(pt)
-        if e not in (0, 1):
-            v37_P_ok = False
-        cond = (n % 19 == 0)
-        if (e == 1) != cond:
+        expected = 0 if (n % 19 != 0) else (_v_p(n, 37) + 1)
+        if e != expected:
             v37_P_ok = False
         if e == 1:
             v37_P_hits.append(n)
@@ -349,7 +346,7 @@ def main() -> None:
         pi_fiber_factorizations=pi_facts,
         v_first12=[int(x) for x in v_first12],
         log_v_over_n2_8_12=[float(x) for x in logs_8_12],
-        hhat_P_over_2=float(hhat_P_over_2),
+        hhat_P=float(hhat_P),
         c6_min_model=int(c6),
         minus_c6_mod_37=int(minus_c6_mod_37),
         legendre_31_over_37=int(leg_31_37),

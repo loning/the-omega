@@ -172,6 +172,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_branch_points",
+            script="exp_fold_gauge_anomaly_branch_points.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_branch_points.json",
+                "sections/generated/eq_fold_gauge_anomaly_branch_points.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_jordan_correlations",
             script="exp_fold_gauge_anomaly_jordan_correlations.py",
             args=[],
@@ -2796,6 +2805,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_pi_real_bifurcation_asymptotics_audit",
+            script="exp_fold_zm_pi_real_bifurcation_asymptotics_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_pi_real_bifurcation_asymptotics_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_pi_specialization_discriminant_ab_audit",
             script="exp_fold_zm_pi_specialization_discriminant_ab_audit.py",
             args=[],
@@ -2871,6 +2888,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_discriminant_ridge_jacobian_frobenius_audit.json",
                 "sections/generated/eq_fold_zm_discriminant_ridge_jacobian_frobenius_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit",
+            script="exp_fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit.tex",
             ],
         ),
         Step(
