@@ -3,7 +3,7 @@
 """Strip auto-inserted timestamp comments from paper sources.
 
 This repository occasionally accumulates comment lines that only record "added/modified"
-timestamps (e.g. "日期与时间：2026-02-17 14:25:12" or "Time (Asia/Singapore): ...").
+timestamps (e.g. "日期与时间：YYYY-MM-DD HH:MM:SS" or "Time (local timezone): ...").
 These lines are metadata and should not appear in the manuscript sources.
 
 Policy implemented here:
