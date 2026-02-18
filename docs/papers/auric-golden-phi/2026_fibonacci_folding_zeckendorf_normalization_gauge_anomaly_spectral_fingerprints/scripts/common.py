@@ -7,7 +7,7 @@ try:
     import sympy as sp
 except ImportError as e:  # pragma: no cover
     raise SystemExit(
-        "缺少依赖 sympy。请先安装：\n"
+        "Missing dependency: sympy. Please install it first:\n"
         "  python3 -m pip install sympy\n"
     ) from e
 
@@ -66,7 +66,7 @@ def compute_parry_measure(A: sp.Matrix) -> ParryMeasure:
     r_ns = (A - lam * sp.eye(A.rows)).nullspace()
     l_ns = (A.T - lam * sp.eye(A.rows)).nullspace()
     if not r_ns or not l_ns:  # pragma: no cover
-        raise RuntimeError("未能找到 Perron 特征向量（nullspace 为空）。")
+        raise RuntimeError("Failed to find Perron eigenvectors (nullspace is empty).")
     r = r_ns[0]
     l = l_ns[0]
 

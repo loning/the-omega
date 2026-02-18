@@ -13,7 +13,7 @@ def run() -> str:
     pm = compute_parry_measure(A)
 
     # Basic spectral facts
-    assert_equal(pm.lam, 2, "Perron 根应为 2。")
+    assert_equal(pm.lam, 2, "Perron root should be 2.")
 
     # Labeled edges (with multiplicities embedded in A):
     # state 0: 0->0 label 00; 0->1 label 01; 0->3 label 11
@@ -46,13 +46,13 @@ def run() -> str:
         (1, 1): R(1, 6),
     }
     for k, v in expected.items():
-        assert_equal(prob[k], v, f"符号概率 P(X,Y) 不匹配：{k}")
+        assert_equal(prob[k], v, f"Symbol probability P(X,Y) mismatch: {k}")
 
     # Derived marginals
     p_mismatch = prob[(0, 1)] + prob[(1, 0)]
     p_y1 = prob[(0, 1)] + prob[(1, 1)]
-    assert_equal(p_mismatch, R(4, 9), "P(X!=Y) 应为 4/9。")
-    assert_equal(p_y1, R(5, 18), "P(Y=1) 应为 5/18。")
+    assert_equal(p_mismatch, R(4, 9), "P(X!=Y) should be 4/9.")
+    assert_equal(p_y1, R(5, 18), "P(Y=1) should be 5/18.")
 
     return "Sofic joint law OK (7/18, 1/9, 1/3, 1/6; mismatch 4/9; P(Y=1)=5/18)"
 

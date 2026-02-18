@@ -26,14 +26,14 @@ def _run_check(chk: Check) -> str:
     mod = importlib.import_module(chk.module)
     fn = getattr(mod, chk.func, None)
     if fn is None or not callable(fn):
-        raise RuntimeError(f"模块 {chk.module} 缺少可调用函数 {chk.func}()")
+        raise RuntimeError(f"Module {chk.module} is missing callable function {chk.func}()")
     return str(fn())
 
 
 def main(argv: Optional[list[str]] = None) -> int:
     _ = argv or sys.argv[1:]
 
-    print("== 论文验证脚本：run_all ==")
+    print("== Paper verification script: run_all ==")
     print(f"Python: {sys.version.split()[0]}")
     print()
 
@@ -53,9 +53,9 @@ def main(argv: Optional[list[str]] = None) -> int:
         print(f"[OK] {msg}")
         print()
 
-    print("== 汇总 ==")
-    print(f"通过: {ok}")
-    print(f"失败: {failed}")
+    print("== Summary ==")
+    print(f"Passed: {ok}")
+    print(f"Failed: {failed}")
     return 0 if failed == 0 else 1
 
 
