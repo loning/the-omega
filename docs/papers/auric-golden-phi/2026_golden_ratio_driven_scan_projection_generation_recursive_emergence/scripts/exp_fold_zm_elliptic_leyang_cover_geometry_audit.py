@@ -9,6 +9,8 @@ This script is English-only by repository convention.
 We verify (symbolically, with SymPy):
   - On E: Y^2 = X^3 - X + 1/4, for y = X^2 + Y - 1/2 and omega = dX/(2Y),
       dy = (4 X Y + 3 X^2 - 1) * omega.
+  - Abel–Jacobi algebraic ODE: with du=omega and p=dy/du, eliminating X yields
+      p^4 + (8y-3)p^3 + (2y^2-34y-4)p^2 - y(y-1)P_LY(y) = 0.
   - Finite ramification points satisfy 4XY + 3X^2 - 1 = 0; eliminating Y yields
       (X-1)(X+1)(16X^3 - 9X^2 + 1) = 0.
   - The nontrivial ramification images satisfy the Lee–Yang cubic
@@ -79,6 +81,9 @@ def _reduce_mod(poly_expr: sp.Expr, var: sp.Symbol, modulus: sp.Expr) -> sp.Expr
 @dataclass(frozen=True)
 class Payload:
     dy_identity_ok: bool
+    abel_jacobi_ode_ok: bool
+    abel_jacobi_ode_constant: str
+    abel_jacobi_ode_exact_ok: bool
     critical_x_factor_ok: bool
     resy_F_Fx_factor_ok: bool
     resy_F_Fx_constant: str
@@ -117,7 +122,7 @@ def main() -> None:
     t0 = time.time()
     print("[fold-zm-elliptic-leyang-cover-geom] start", flush=True)
 
-    X, Y, y, t = sp.symbols("X Y y t")
+    X, Y, y, p, t = sp.symbols("X Y y p t")
 
     # Elliptic curve E and weight function y(X,Y)
     E = Y**2 - (X**3 - X + sp.Rational(1, 4))
@@ -162,6 +167,25 @@ def main() -> None:
     twoY = 2 * y - 2 * X**2 + 1  # since Y = y - X^2 + 1/2
     Res_twoY = sp.factor(sp.resultant(F, twoY, X))
     norm_2Y_ok = bool(sp.factor(Res_twoY + ctrl) == 0)
+
+    # Abel–Jacobi ODE closure in (y,p): with du = dX/(2Y) and p = dy/du.
+    # Since dy = (4XY+3X^2-1) * (dX/(2Y)), we have p = 4XY + 3X^2 - 1.
+    # Eliminating Y via Y = y - X^2 + 1/2 yields a cubic constraint in X:
+    #   4X^3 - 3X^2 - (4y+2)X + (1+p) = 0.
+    cubic_p = 4 * X**3 - 3 * X**2 - (4 * y + 2) * X + (1 + p)
+    Res_ode = sp.factor(sp.resultant(F, cubic_p, X))
+    ode_expected = (
+        p**4
+        + (8 * y - 3) * p**3
+        + (2 * y**2 - 34 * y - 4) * p**2
+        - y * (y - 1) * P_LY
+    )
+    q_ode = sp.together(Res_ode / ode_expected)
+    abel_jacobi_ode_ok = _is_constant_in(q_ode, y) and _is_constant_in(q_ode, p)
+    abel_jacobi_ode_constant = str(sp.factor(q_ode)) if abel_jacobi_ode_ok else "nan"
+    abel_jacobi_ode_exact_ok = (
+        bool(sp.factor(Res_ode - sp.factor(q_ode) * ode_expected) == 0) if abel_jacobi_ode_ok else False
+    )
 
     # Discriminants
     disc_cubic_x = int(sp.discriminant(cubicX, X))
@@ -271,6 +295,9 @@ def main() -> None:
 
     payload = Payload(
         dy_identity_ok=dy_identity_ok,
+        abel_jacobi_ode_ok=abel_jacobi_ode_ok,
+        abel_jacobi_ode_constant=abel_jacobi_ode_constant,
+        abel_jacobi_ode_exact_ok=abel_jacobi_ode_exact_ok,
         critical_x_factor_ok=critical_x_factor_ok,
         resy_F_Fx_factor_ok=resy_F_Fx_factor_ok,
         resy_F_Fx_constant=resy_F_Fx_constant,
@@ -309,7 +336,8 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-leyang-cover-geom] checks:"
-        f" dy={dy_identity_ok} critX={critical_x_factor_ok} leyang_res={leyang_resultant_ok}"
+        f" dy={dy_identity_ok} ajode={abel_jacobi_ode_ok} ajode_c={abel_jacobi_ode_constant}"
+        f" ajode_exact={abel_jacobi_ode_exact_ok} critX={critical_x_factor_ok} leyang_res={leyang_resultant_ok}"
         f" leyang_c={leyang_resultant_constant} leyang_exact={leyang_resultant_exact_ok}"
         f" norm={norm_identity_ok} norm2div={norm_2division_ok} norm2Y={norm_2Y_ok}"
         f" resy={resy_F_Fx_factor_ok} resFg={res_F_cubicx_factor_ok} y(-P)={y_of_minus_P}"
