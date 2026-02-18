@@ -217,6 +217,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_s4_hurwitz_tower_audit",
+            script="exp_fold_gauge_anomaly_s4_hurwitz_tower_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_s4_hurwitz_tower_audit.json",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_ldp_rate",
             script="exp_fold_gauge_anomaly_ldp_rate.py",
             args=[],
