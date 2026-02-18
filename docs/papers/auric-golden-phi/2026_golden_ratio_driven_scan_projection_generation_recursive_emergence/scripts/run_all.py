@@ -172,6 +172,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_branch_points",
+            script="exp_fold_gauge_anomaly_branch_points.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_branch_points.json",
+                "sections/generated/eq_fold_gauge_anomaly_branch_points.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_jordan_correlations",
             script="exp_fold_gauge_anomaly_jordan_correlations.py",
             args=[],
