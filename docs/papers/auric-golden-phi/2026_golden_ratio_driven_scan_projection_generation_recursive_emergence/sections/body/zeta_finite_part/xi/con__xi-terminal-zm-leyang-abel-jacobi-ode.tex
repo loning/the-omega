@@ -9,19 +9,26 @@ y:=X^2+Y-\frac12\in\QQ(E),
 \]
 取 Abel--Jacobi 坐标 \(u\) 使 \(\dd u=\omega\)，并令
 \[
-p(u):=\frac{\dd y}{\dd u}.
+\delta(u):=\frac{\dd y}{\dd u}\ \in\ \QQ(E).
 \]
-则在去分歧区域内，\((y(u),p(u))\) 满足完全显式的一阶代数微分闭式
+则在去分歧区域内，\((y(u),\delta(u))\) 满足完全显式的一阶代数微分闭式
 \[
 \boxed{\;
-p^{4}+(8y-3)p^{3}+(2y^{2}-34y-4)p^{2}
+\delta^{4}+(8y-3)\delta^{3}+(2y^{2}-34y-4)\delta^{2}
 -y(y-1)\,P_{\mathrm{LY}}(y)=0\;},
 \qquad
 P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32.
 \]
-因此常数项（即 \(p=0\) 的驻值谱）严格给出
+该四次关系在 \(\QQ(y)[T]\) 中不可约，从而给出函数域扩张的首一四次本原表示
 \[
-p(u)=0\quad\Longleftrightarrow\quad
+\QQ(E)=\QQ(y,\delta),
+\qquad
+[\QQ(E):\QQ(y)]=4,
+\]
+并且常数项精确等于 Lee--Yang 判别核（带符号）\(-y(y-1)P_{\mathrm{LY}}(y)\)。
+因此常数项（即 \(\delta=0\) 的驻值谱）严格给出
+\[
+\delta(u)=0\quad\Longleftrightarrow\quad
 y(u)\in \{0,1\}\ \cup\ \{P_{\mathrm{LY}}(y)=0\},
 \]
 从而 Lee--Yang 分歧像在 Abel--Jacobi 时间下作为驻值集合内禀出现，并与结论 \ref{con:xi-terminal-zm-discriminant-leyang} 的分歧判别核一致。
@@ -33,19 +40,84 @@ y(u)\in \{0,1\}\ \cup\ \{P_{\mathrm{LY}}(y)=0\},
 \)
 得
 \[
-p=4XY+3X^2-1.
+\delta=4XY+3X^2-1.
 \]
 又由 \(y=X^2+Y-\tfrac12\) 得 \(Y=y-X^2+\tfrac12\)，代入上式得到关于 \(X\) 的三次约束
 \[
-4X^{3}-3X^{2}-(4y+2)X+(1+p)=0.
+4X^{3}-3X^{2}-(4y+2)X+(1+\delta)=0.
 \]
 另一方面，消去 \(Y\) 的平面四次模型由
 \[
 F(X,y):=X^{4}-X^{3}-(2y+1)X^{2}+X+y(y+1)=0
 \]
 给出（结论 \ref{con:xi-terminal-zm-leyang-discriminant-norm-identity}）。
-对变量 \(X\) 作结果式消元 \(\mathrm{Res}_{X}(F,\ 4X^{3}-3X^{2}-(4y+2)X+(1+p))\)，并在 \(\ZZ[y,p]\) 中因式整理，即得到所示四次方程；
+对变量 \(X\) 作结果式消元 \(\mathrm{Res}_{X}(F,\ 4X^{3}-3X^{2}-(4y+2)X+(1+\delta))\)，并在 \(\ZZ[y,\delta]\) 中因式整理，即得到所示四次方程；
 其常数项分解为 \(-y(y-1)P_{\mathrm{LY}}(y)\) 与分歧像刻画（结论 \ref{con:xi-terminal-zm-discriminant-leyang}）一致。
+不可约性可由一次良性专化读出：例如取 \(y=2\)，所得四次多项式在 \(\QQ[T]\) 上不可约，从而原四次在 \(\QQ(y)[T]\) 中不可约。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[判别式自反与二级退化五次：\texorpdfstring{$\mathrm{Disc}_T(F_\delta)$}{Disc\_T(F\_delta)} 的平方自由部仍为 Lee--Yang 核]\label{con:xi-terminal-zm-leyang-delta-quartic-discriminant-reflexive}
+令
+\[
+F_\delta(T;y):=T^{4}+(8y-3)T^{3}+(2y^{2}-34y-4)T^{2}-y(y-1)\,P_{\mathrm{LY}}(y)\in\ZZ[y][T],
+\qquad
+P_{\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32.
+\]
+则其关于 \(T\) 的判别式满足严格因式分解
+\[
+\boxed{\;
+\mathrm{Disc}_{T}\bigl(F_\delta(T;y)\bigr)
+=-y(y-1)\,P_{\mathrm{LY}}(y)\cdot Q_{5}(y)^{2}\;},
+\]
+其中
+\[
+Q_{5}(y)=4096y^{5}+5376y^{4}-464y^{3}-2749y^{2}-723y+80\in\ZZ[y].
+\]
+因此 \(\delta\)-生成表示的全部不可约平方自由障碍仍由同一 Lee--Yang 判别核 \(-y(y-1)P_{\mathrm{LY}}(y)\) 控制；
+而 \(Q_{5}(y)=0\) 给出一组与 \(y(y-1)P_{\mathrm{LY}}(y)=0\) 不同的二级退化参数集合，其上四叶结构发生额外并合。
+\end{conclusion}
+\begin{proof}[证明要点]
+直接计算 \(\mathrm{Disc}_{T}(F_\delta)\) 并在 \(\ZZ[y]\) 中因式分解得到所示恒等式。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[二级退化五次的全局算术指纹：新的平方自由敏感素数 \texorpdfstring{$727$}{727}]\label{con:xi-terminal-zm-leyang-q5-discriminant-727}
+令 \(Q_5(y)\) 如结论 \ref{con:xi-terminal-zm-leyang-delta-quartic-discriminant-reflexive}。
+则其判别式满足严格素因子分解
+\[
+\boxed{\;
+\mathrm{Disc}\bigl(Q_5\bigr)=-2^{28}\cdot 3^{9}\cdot 11^{2}\cdot 31^{3}\cdot 727\; }.
+\]
+因此除去结论 \ref{con:xi-terminal-zm-leyang-branchpolynomial-discriminant-modp-collisions} 所限定的一级分歧素集 \(\{2,3,31,37\}\) 之外，
+二级退化集合还引入新的平方自由敏感素数 \(727\)（并且 \(11\) 仅以平方因子出现）；
+在该素数特征下，\(Q_5(y)=0\) 的约化不可避免地产生额外的并合/不可分现象，从而提供一条与 Lee--Yang 一级核正交的更深层算术奇异源。
+\end{conclusion}
+\begin{proof}[证明要点]
+对 \(Q_5\) 作判别式计算并在 \(\ZZ\) 中分解即可。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[模性--微分闭合：\texorpdfstring{$D(\tau)=\frac{q\,\partial_q y(\tau)}{f(q)}$}{D(tau)=q y'/f} 满足同一四次方程]\label{con:xi-terminal-zm-leyang-modular-differential-closure}
+沿用注记 \ref{rem:xi-terminal-elliptic-37a1-modular-anchor} 的模参数化：取 \(q=e^{2\pi i\tau}\)，
+并令 \(f(\tau)=\sum_{n\ge 1}a_n q^n\) 为 level \(37\) 的规范化新形式，使得 \(f(q)\,\dd q/q\) 等于椭圆曲线 \(E\) 的 N\'eron 微分 \(\omega=\dd X/(2Y)\) 在同一参数化下的拉回；
+令 \(y(\tau)\) 为该参数化下的重量函数。
+定义
+\[
+D(\tau):=\frac{q\,\frac{\dd}{\dd q}y(\tau)}{f(q)}\in \CC((q)).
+\]
+则 \((y(\tau),D(\tau))\) 满足完全闭合的一阶代数微分方程
+\[
+\boxed{\;
+D^{4}+(8y-3)D^{3}+(2y^{2}-34y-4)D^{2}
+-y(y-1)\,P_{\mathrm{LY}}(y)=0\;},
+\qquad
+P_{\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32,
+\]
+其中 \(y=y(\tau)\)、\(D=D(\tau)\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+由定义 \(D(\tau)=\frac{q\,(\dd/\dd q)y(\tau)}{f(q)}\) 与 \(\dd u=\omega=f(q)\,\dd q/q\) 得 \(D=\dd y/\dd u=\delta\)。
+代入结论 \ref{con:xi-terminal-zm-leyang-abel-jacobi-ode} 的四次闭式即得。证毕。
 \end{proof}
 

@@ -4,6 +4,8 @@
 命题 \ref{prop:fold-gauge-anomaly-discriminant-factorization} 给出谱四次 \(F(\mu,u)\) 的判别式分解与分支集合，
 命题 \ref{prop:fold-gauge-anomaly-rate-curve-param} 给出速率曲线的消元模型 \(R(\alpha,u)=0\) 及其可行分支选择。
 基于同一组代数对象，可以进一步抽取出谱曲线、分歧多项式与速率曲线之间的几何与算术对齐关系。
+以下条目主要围绕特征多项式 \(F(\mu,u)\) 与分歧十次 \(P_{10}(u)\) 的算术几何展开；
+其中涉及的若干群论与密度型推论可视为标准框架下的直接推演，而外部文献的先后性仍需作系统核验。
 
 \begin{proposition}[谱四次曲线的平面模型、亏格与简单分歧]\label{prop:fold-gauge-anomaly-spectral-quartic-geometry}
 沿用命题 \ref{prop:fold-gauge-anomaly-discriminant-factorization} 的记号。
@@ -26,7 +28,7 @@ F^{\mathrm{hom}}(\mu,u,w)
 u(u-1)P_{10}(u)=0
 \)
 支撑。
-并且在全部分支点处均为单分歧（分歧指数为 \(2\)）。
+并且在全部有限分支点处均为单分歧（分歧指数为 \(2\)），而在 \(u=\infty\) 处不分歧。
 \end{proposition}
 
 \begin{proposition}[分歧多项式 \texorpdfstring{$P_{10}$}{P10} 的满对称伽罗瓦群与判别式]\label{prop:fold-gauge-anomaly-P10-galois-discriminant}
@@ -39,8 +41,33 @@ u(u-1)P_{10}(u)=0
 \[
 \boxed{\ \mathrm{Disc}\bigl(P_{10}\bigr)=2^{38}3^{24}5^{2}\cdot 1931\cdot 9013^{2}\cdot 34319^{3}\ }.
 \]
+其平方自由部分为 \(1931\cdot 34319=66269989\)，从而 \(P_{10}\) 的分裂域 \(L/\QQ\) 具有唯一的非平凡正规子域
+\[
+L^{A_{10}}=\QQ\!\left(\sqrt{66269989}\right)
+=\QQ\!\left(\sqrt{\mathrm{Disc}(P_{10})}\right).
+\]
+并且 \(L\) 的最大阿贝尔子扩张恰为上述二次子域（亦即任意阿贝尔正规子扩张均包含于其中）。
 因此，除去平凡分支 \(u\in\{0,1\}\) 后，谱四次曲线的非平凡分歧位置在 \(\QQ\) 上达到满对称的算术一般性。
 \end{proposition}
+
+\begin{corollary}[Chebotarev 等分布：模素分解型的显式密度]\label{cor:fold-gauge-anomaly-P10-modp-splitting-densities}
+设 \(p\nmid \mathrm{Disc}(P_{10})\) 为素数。
+则 \(P_{10}\) 在 \(\mathbb F_p[u]\) 中的不可约分解型按 \(S_{10}\) 的循环型共轭类等分布：
+对任意 \(10\) 的分拆 \(\lambda\)，满足“模 \(p\) 分解型为 \(\lambda\)”的素数集合存在自然密度，且该密度等于
+\[
+\frac{|C_{\lambda}|}{10!},
+\]
+其中 \(C_{\lambda}\subset S_{10}\) 为循环型为 \(\lambda\) 的共轭类。
+特别地，
+\[
+(10):\ \frac1{10},\qquad (9,1):\ \frac1{9},\qquad (7,3):\ \frac1{21}.
+\]
+\end{corollary}
+\begin{proof}[证明要点]
+由命题 \ref{prop:fold-gauge-anomaly-P10-galois-discriminant}，\(P_{10}\) 的分裂域在 \(\QQ\) 上的伽罗瓦群为 \(S_{10}\)。
+对 \(p\nmid \mathrm{Disc}(P_{10})\) 的非分歧素数，Frobenius 元在 \(S_{10}\) 的共轭类按 Chebotarev 密度定理等分布；
+而其循环型与 \(P_{10}\) 在 \(\mathbb F_p[u]\) 的分解型一致，故得结论。证毕。
+\end{proof}
 
 \begin{proposition}[重根谱值多项式与 \texorpdfstring{$P_{10}$}{P10} 的 Tschirnhaus 同域同构]\label{prop:fold-gauge-anomaly-Q10-tschirnhaus}
 考虑系统
@@ -193,6 +220,11 @@ g(\mathcal C_F)=3.
 \mathrm{Gal}\bigl(F(\mu,u)/\QQ(u)\bigr)\cong S_4.
 \]
 等价地，覆叠 \(\pi:\mathcal C_F\to\PP^1_u\) 的几何单值群为满对称群 \(S_4\)。
+更进一步，设 \(L\) 为 \(F(\mu,u)\) 在 \(\QQ(u)\) 上的分裂域，则该扩张为正则：
+\[
+L\cap \overline{\QQ}=\QQ,
+\]
+亦即其常数域等于 \(\QQ\)。
 \end{conclusion}
 \begin{proof}[证明要点（可核验特化证书）]
 由命题 \ref{prop:fold-gauge-anomaly-cubic-resolvent-discriminant}，谱四次的三次预解式 \(\mathcal R(y,u)\) 满足
@@ -201,6 +233,63 @@ g(\mathcal C_F)=3.
 \)，其在 \(\QQ(u)\) 中非平方，故伽罗瓦群不包含于 \(A_4\)。
 取 \(u=2\) 的特化，四次多项式 \(F(\mu,2)\in\ZZ[\mu]\) 在模 \(3\) 下不可约，而在模 \(11\) 下分解型为 \((3,1)\)，从而特化伽罗瓦群含有 \(3\)-循环并因此包含 \(A_4\)。
 合并得特化伽罗瓦群为 \(S_4\)，从而泛型伽罗瓦群亦为 \(S_4\)。
+此外，由 \(\mathrm{Disc}_{\mu}(F)=-u(u-1)D_{10}(u)\) 在分支集合 \(B=\{0,1\}\cup\{D_{10}=0\}\) 的每一点均具有奇阶零点可知，
+\(\mathrm{Disc}_{\mu}(F)\) 在 \(\overline{\QQ}(u)\) 中亦非平方；
+因此几何伽罗瓦群不包含于 \(A_4\)，从而与算术伽罗瓦群同为 \(S_4\)，并推出常数域为 \(\QQ\)。
+\end{proof}
+
+\begin{conclusion}[十次分歧根域的签名与不可根式性]\label{con:fold-gauge-anomaly-P10-rootfield-signature-nonradical}
+令 \(u_0\) 为 \(D_{10}(u)=P_{10}(u)\) 的任一根，并记 \(K:=\QQ(u_0)\)。
+则 \([K:\QQ]=10\)，且其正规闭包的伽罗瓦群同构于 \(S_{10}\)。
+因此 \(u_0\) 不可由根式表示。
+此外，由 \(D_{10}\) 的实根计数（命题 \ref{prop:fold-gauge-anomaly-branch-point-classification} 或结论 \ref{con:fold-gauge-anomaly-real-complex-phase}），\(K\) 的签名为
+\[
+(r_1,r_2)=(2,4).
+\]
+特别地，对命题 \ref{prop:fold-gauge-anomaly-branch-point-classification} 所选主导共轭分支点 \(u_\ast\) 的根域 \(\QQ(u_\ast)\)，上述结论成立。
+\end{conclusion}
+\begin{proof}[证明要点]
+\([K:\QQ]=10\) 由命题 \ref{prop:fold-gauge-anomaly-discriminant-factorization} 中 \(P_{10}\) 的不可约性给出；
+正规闭包的伽罗瓦群为 \(S_{10}\) 由命题 \ref{prop:fold-gauge-anomaly-P10-galois-discriminant}。
+由于 \(S_{10}\) 不可解，故根不可由根式表示。
+签名由 \(D_{10}\) 的两条实根与四对共轭复根直接推出。证毕。
+\end{proof}
+
+\begin{conclusion}[对数奇点的超越性]\label{con:fold-gauge-anomaly-log-transcendence}
+令 \(u_\ast\) 为命题 \ref{prop:fold-gauge-anomaly-branch-point-classification} 所选主导共轭分支点，并取任意复对数 \(\theta_\ast\) 满足 \(e^{\theta_\ast}=u_\ast\)。
+则 \(\theta_\ast\) 为超越数。
+进一步，若 \(|u_\ast|\neq 1\)（例如在定理 \ref{thm:fold-gauge-anomaly-branch-radius-cumulant-growth} 的主值对数选择下 \(\Re(\theta_\ast)\neq 0\)），则
+\[
+\Re(\theta_\ast)=\log|u_\ast|
+\]
+亦为超越数。
+\end{conclusion}
+\begin{proof}
+由于 \(u_\ast\neq 1\)，故任何满足 \(e^{\theta_\ast}=u_\ast\) 的复对数 \(\theta_\ast\) 均非零。
+若 \(\theta_\ast\) 为非零代数数，则由 Lindemann--Weierstrass 定理知 \(e^{\theta_\ast}\) 为超越数，与 \(e^{\theta_\ast}=u_\ast\)（代数数）矛盾；
+故 \(\theta_\ast\) 必为超越数。
+同理，若 \(\log|u_\ast|\) 为非零代数数，则 \(e^{\log|u_\ast|}=|u_\ast|\) 为超越数，与 \(|u_\ast|\) 的代数性矛盾；
+故在 \(|u_\ast|\neq 1\) 下 \(\log|u_\ast|\) 为超越数。证毕。
+\end{proof}
+
+\begin{conclusion}[由谱四次专化生成无穷多 \texorpdfstring{$S_4$}{S4} 数域]\label{con:fold-gauge-anomaly-s4-number-fields-specialization}
+令 \(B:=\{0,1\}\cup\{u:\ D_{10}(u)=0\}\) 为结论 \ref{con:fold-gauge-anomaly-disc-factorization-simple-branch} 的分支集合。
+则存在无穷多 \(u_0\in\QQ\setminus B\)，使得专化四次多项式
+\[
+F(\mu,u_0)\in\QQ[\mu]
+\]
+在 \(\QQ\) 上的伽罗瓦群同构于 \(S_4\)。
+对任意此类 \(u_0\)，其判别式满足
+\[
+\mathrm{Disc}_{\mu}\bigl(F(\mu,u_0)\bigr)=-u_0(u_0-1)D_{10}(u_0),
+\]
+并且其 \(V_4\)-不变子域可由三次预解式 \(\mathcal R(y,u)\)（命题 \ref{prop:fold-gauge-anomaly-cubic-resolvent-discriminant}）在 \(u=u_0\) 处的根域显式给出。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:fold-gauge-anomaly-generic-galois-s4} 与 Hilbert 不可约性定理，存在无穷多 \(u_0\in\QQ\) 使得特化伽罗瓦群保持为 \(S_4\)；
+再要求 \(u_0\notin B\) 以避免判别式为零即可。
+判别式恒等式由结论 \ref{con:fold-gauge-anomaly-disc-factorization-simple-branch} 逐点专化得到；
+\(V_4\)-不变子域由命题 \ref{prop:fold-gauge-anomaly-cubic-resolvent-discriminant} 的三次预解式给出。证毕。
 \end{proof}
 
 \begin{conclusion}[符号二次子覆盖：判别式双覆盖的亏格]\label{con:fold-gauge-anomaly-sign-quadratic-cover}
@@ -209,6 +298,7 @@ g(\mathcal C_F)=3.
 \mathcal H:\quad w^2=-u(u-1)D_{10}(u).
 \]
 由于右端次数为 \(12\)，故 \(g(\mathcal H)=5\)，并且 \(\mathcal H\to\PP^1_u\) 的分支集合与结论 \ref{con:fold-gauge-anomaly-disc-factorization-simple-branch} 完全一致。
+此外，由右端首项系数为 \(-27\) 可知：\(\mathcal H\) 在无穷远处的两点之最小分裂域为 \(\QQ(\sqrt{-3})\)。
 \end{conclusion}
 
 \begin{conclusion}[显式三次分辨：同一判别式核]\label{con:fold-gauge-anomaly-cubic-resolvent}
