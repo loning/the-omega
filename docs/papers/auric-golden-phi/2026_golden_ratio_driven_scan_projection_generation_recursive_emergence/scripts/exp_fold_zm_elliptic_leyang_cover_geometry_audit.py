@@ -11,6 +11,9 @@ We verify (symbolically, with SymPy):
       dy = (4 X Y + 3 X^2 - 1) * omega.
   - Abel–Jacobi algebraic ODE: with du=omega and p=dy/du, eliminating X yields
       p^4 + (8y-3)p^3 + (2y^2-34y-4)p^2 - y(y-1)P_LY(y) = 0.
+  - Self-reflexive discriminant factorization of the above quartic:
+      Disc_p(F(p;y)) = -y(y-1)P_LY(y) * Q5(y)^2,
+    and Disc(Q5) = -2^28*3^9*11^2*31^3*727.
   - Finite ramification points satisfy 4XY + 3X^2 - 1 = 0; eliminating Y yields
       (X-1)(X+1)(16X^3 - 9X^2 + 1) = 0.
   - The nontrivial ramification images satisfy the Lee–Yang cubic
@@ -93,6 +96,10 @@ class Payload:
     abel_jacobi_ode_ok: bool
     abel_jacobi_ode_constant: str
     abel_jacobi_ode_exact_ok: bool
+    delta_quartic_y2_irreducible_ok: bool
+    delta_quartic_disc_factor_ok: bool
+    disc_q5: int
+    disc_q5_factorization: Dict[str, int]
     critical_x_factor_ok: bool
     resy_F_Fx_factor_ok: bool
     resy_F_Fx_constant: str
@@ -204,6 +211,20 @@ def main() -> None:
     abel_jacobi_ode_exact_ok = (
         bool(sp.factor(Res_ode - sp.factor(q_ode) * ode_expected) == 0) if abel_jacobi_ode_ok else False
     )
+
+    # Irreducibility certificate (specialization): y=2 gives a quartic irreducible over QQ.
+    ode_y2 = sp.Poly(ode_expected.subs(y, sp.Integer(2)), p, domain=sp.QQ).as_expr()
+    _, ode_y2_factors = sp.factor_list(ode_y2, p)
+    delta_quartic_y2_irreducible_ok = bool(len(ode_y2_factors) == 1 and ode_y2_factors[0][1] == 1)
+
+    # Discriminant factorization of the (y,p)-quartic.
+    Q5 = 4096 * y**5 + 5376 * y**4 - 464 * y**3 - 2749 * y**2 - 723 * y + 80
+    disc_p = sp.factor(sp.discriminant(ode_expected, p))
+    disc_expected = -y * (y - 1) * P_LY * Q5**2
+    delta_quartic_disc_factor_ok = bool(sp.factor(disc_p - disc_expected) == 0)
+
+    disc_q5 = int(sp.discriminant(Q5, y))
+    disc_q5_fac = sp.factorint(disc_q5)
 
     # Discriminants
     disc_cubic_x = int(sp.discriminant(cubicX, X))
@@ -442,6 +463,10 @@ def main() -> None:
         abel_jacobi_ode_ok=abel_jacobi_ode_ok,
         abel_jacobi_ode_constant=abel_jacobi_ode_constant,
         abel_jacobi_ode_exact_ok=abel_jacobi_ode_exact_ok,
+        delta_quartic_y2_irreducible_ok=delta_quartic_y2_irreducible_ok,
+        delta_quartic_disc_factor_ok=delta_quartic_disc_factor_ok,
+        disc_q5=disc_q5,
+        disc_q5_factorization={str(int(p)): int(e) for p, e in disc_q5_fac.items()},
         critical_x_factor_ok=critical_x_factor_ok,
         resy_F_Fx_factor_ok=resy_F_Fx_factor_ok,
         resy_F_Fx_constant=resy_F_Fx_constant,
@@ -492,6 +517,7 @@ def main() -> None:
         f" dy={dy_identity_ok} ajode={abel_jacobi_ode_ok} ajode_c={abel_jacobi_ode_constant}"
         f" ajode_exact={abel_jacobi_ode_exact_ok} critX={critical_x_factor_ok} leyang_res={leyang_resultant_ok}"
         f" leyang_c={leyang_resultant_constant} leyang_exact={leyang_resultant_exact_ok}"
+        f" y2_irr={delta_quartic_y2_irreducible_ok} disc={delta_quartic_disc_factor_ok} discQ5={disc_q5}"
         f" norm={norm_identity_ok} norm2div={norm_2division_ok} norm2Y={norm_2Y_ok}"
         f" resy={resy_F_Fx_factor_ok} resFg={res_F_cubicx_factor_ok} y(-P)={y_of_minus_P}"
         f" puiseux0={puiseux_y0_0_ok} puiseux1={puiseux_y0_1_ok}"
