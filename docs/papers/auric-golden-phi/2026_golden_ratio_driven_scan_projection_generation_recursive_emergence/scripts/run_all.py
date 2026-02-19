@@ -2839,6 +2839,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_translation_q_biquartic_audit",
+            script="exp_fold_zm_elliptic_translation_q_biquartic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_translation_q_biquartic_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_trace_dual_delta_audit",
             script="exp_fold_zm_elliptic_trace_dual_delta_audit.py",
             args=[],
