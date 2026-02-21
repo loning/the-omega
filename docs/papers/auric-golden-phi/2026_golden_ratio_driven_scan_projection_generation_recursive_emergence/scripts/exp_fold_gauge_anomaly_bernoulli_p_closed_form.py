@@ -123,8 +123,9 @@ def main() -> None:
     g_star = sp.simplify(p**2 * (3 - 2 * p) / (1 + p**3))
     sigma_star = sp.simplify(
         p**2
-        * (9 - 2 * p - 43 * p**2 + 50 * p**3 - 20 * p**4 + 27 * p**5 - 21 * p**6)
-        / (1 + p**3) ** 3
+        * (1 - p)
+        * (21 * p**5 - 6 * p**4 + 14 * p**3 - 36 * p**2 + 7 * p + 9)
+        / ((p + 1) ** 3 * (p**2 - p + 1) ** 3)
     )
 
     # Characteristic polynomial factorization (symbolic).
@@ -187,6 +188,66 @@ def main() -> None:
     # 1) char poly factorization (symbolic exact).
     results.append(CheckResult(name="char_poly_factorization", max_abs_err=float(char_poly != char_expected)))
     results.append(CheckResult(name="pressure_quartic", max_abs_err=float(sp.simplify(pressure_poly - pressure_expected) != 0)))
+
+    # 1b) Perron interface: A_{theta,p} eigenvectors and Parry normalization (symbolic exact).
+    q = 1 - p
+    A0_sym = sp.Matrix(
+        [
+            [q, q, 0, p],
+            [0, 0, p, 0],
+            [p, 1, 0, 0],
+            [q, 0, 0, 0],
+        ]
+    )
+    r_sym = sp.Matrix([q, p**2, p, q**2])
+    ell_sym = sp.Matrix([1, 1, p, p])  # left Perron eigenvector (as a column)
+    A0_r_resid = sp.simplify(A0_sym * r_sym - r_sym)
+    ell_A0_resid = sp.simplify((ell_sym.T * A0_sym - ell_sym.T))
+    results.append(
+        CheckResult(
+            name="A0_right_eigenvector",
+            max_abs_err=float(any(sp.simplify(x) != 0 for x in list(A0_r_resid))),
+        )
+    )
+    results.append(
+        CheckResult(
+            name="A0_left_eigenvector",
+            max_abs_err=float(any(sp.simplify(x) != 0 for x in list(ell_A0_resid))),
+        )
+    )
+    P_from_A0 = sp.Matrix([[sp.simplify(A0_sym[i, j] * r_sym[j] / r_sym[i]) for j in range(4)] for i in range(4)])
+    P_from_A0_resid = sp.simplify(P_from_A0 - P_sym)
+    results.append(
+        CheckResult(
+            name="parry_normalization_P",
+            max_abs_err=float(any(sp.simplify(x) != 0 for x in list(P_from_A0_resid))),
+        )
+    )
+    # Diagonal similarity for the u-tilt: Q = D^{-1} A_u D.
+    A_u_sym = sp.Matrix(
+        [
+            [q, q * u, 0, p],
+            [0, 0, p * u, 0],
+            [p * u, 1, 0, 0],
+            [q, 0, 0, 0],
+        ]
+    )
+    D = sp.diag(*list(r_sym))
+    sim_resid = sp.simplify(A_u_sym * D - D * Q_sym)
+    results.append(
+        CheckResult(
+            name="tilt_similarity_Au_vs_Q",
+            max_abs_err=float(any(sp.simplify(x) != 0 for x in list(sim_resid))),
+        )
+    )
+
+    # 1c) Unimodality and 1/2-threshold (symbolic exact).
+    g_prime = sp.factor(sp.diff(g_star, p))
+    g_prime_expected = sp.factor(-3 * p * (p**3 + 2 * p - 2) / ((p + 1) ** 2 * (p**2 - p + 1) ** 2))
+    results.append(CheckResult(name="density_derivative_closed_form", max_abs_err=float(sp.simplify(g_prime - g_prime_expected) != 0)))
+    half_diff = sp.factor(sp.simplify(g_star - sp.Rational(1, 2)))
+    half_expected = sp.factor(-(p - 1) * (5 * p**2 - p - 1) / (2 * (1 + p**3)))
+    results.append(CheckResult(name="density_half_threshold_factorization", max_abs_err=float(sp.simplify(half_diff - half_expected) != 0)))
 
     # 2) numeric checks across p-grid
     errs_density: List[float] = []

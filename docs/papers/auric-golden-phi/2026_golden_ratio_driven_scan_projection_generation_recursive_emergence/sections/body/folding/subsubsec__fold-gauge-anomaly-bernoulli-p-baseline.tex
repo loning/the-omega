@@ -3,13 +3,14 @@
 下面给出一般 IID Bernoulli\((p)\)（\(p\in(0,1)\)）基线下的完全显式推广：失配密度、方差率、压力函数与端点指数均可写为有理/代数闭式；并且转移谱在 \(p=\tfrac12\) 处出现唯一 Jordan 共振，解释了均匀基线相关衰减中的 \(k2^{-k}\) 修正项（定理 \ref{thm:fold-gauge-anomaly-jordan-fingerprint} 的一般化）。
 
 \begin{theorem}[Berstel--Zeckendorf 失配加性泛函：密度、中心极限定理与代数压力函数]\label{thm:fold-gauge-anomaly-bernoulli-p-laws}
-取 \(p\in(0,1)\)，并在状态空间 \(V=\{a,b,c,d\}\) 上考虑平稳马尔可夫链 \((S_n)_{n\ge 0}\)，其转移矩阵为
+取 \(p\in(0,1)\) 并记 \(q:=1-p\)。
+在状态空间 \(V=\{a,b,c,d\}\) 上考虑平稳马尔可夫链 \((S_n)_{n\ge 0}\)，其转移矩阵为
 \begin{equation}\label{eq:fold-gauge-anomaly-bernoulli-p-transition}
 P(p)=
 \begin{pmatrix}
-1-p & p^2 & 0 & p(1-p)\\
+q & p^2 & 0 & pq\\
 0 & 0 & 1 & 0\\
-1-p & p & 0 & 0\\
+q & p & 0 & 0\\
 1 & 0 & 0 & 0
 \end{pmatrix}.
 \end{equation}
@@ -41,10 +42,31 @@ G_m:=\sum_{n=0}^{m-1} g(S_n,S_{n+1}).
   \[
   \boxed{\;
   \sigma_G^2(p)=
-  \frac{p^2\bigl(9-2p-43p^2+50p^3-20p^4+27p^5-21p^6\bigr)}{(1+p^3)^3}. \;}
+  \frac{p^2(1-p)\bigl(21 p^5 - 6 p^4 + 14 p^3 - 36 p^2 + 7 p + 9\bigr)}
+  {(p+1)^3(p^2-p+1)^3}. \;}
   \]
 
-  \item \textbf{代数压力函数：}对任意 \(u>0\) 定义倾斜矩阵
+  \item \textbf{代数压力函数与 Perron 矩阵接口：}对任意 \(\theta\in\RR\) 令 \(u=e^{\theta}>0\)，并定义加权邻接矩阵
+  \[
+  A_{\theta,p}:=
+  \begin{pmatrix}
+  q & qu & 0 & p\\
+  0 & 0 & pu & 0\\
+  pu & 1 & 0 & 0\\
+  q & 0 & 0 & 0
+  \end{pmatrix}.
+  \]
+  定义极限压力（对数矩母函数的单位长度极限）
+  \[
+  P_{G,p}(\theta):=\lim_{m\to\infty}\frac{1}{m}\log\EE\!\left[e^{\theta G_m}\right]
+  =\lim_{m\to\infty}\frac{1}{m}\log\EE\!\left[u^{G_m}\right].
+  \]
+  则该极限存在，并满足
+  \[
+  \boxed{\;P_{G,p}(\theta)=\log\rho(A_{\theta,p})\;}
+  \]
+  其中 \(\rho(\cdot)\) 为谱半径。
+  等价地，对任意 \(u>0\) 定义倾斜矩阵
   \[
   Q_p(u)_{ij}:=P(p)_{ij}\,u^{g(i,j)}.
   \]
@@ -57,6 +79,10 @@ G_m:=\sum_{n=0}^{m-1} g(S_n,S_{n+1}).
   \boxed{\;\Lambda_p(u)=\log\rho\!\bigl(Q_p(u)\bigr)\;}
   \]
   其中 \(\rho(\cdot)\) 为谱半径。
+  并且在 \(u=e^\theta\) 下有
+  \(
+  P_{G,p}(\theta)=\Lambda_p(e^\theta)=\log\rho(A_{\theta,p})=\log\rho\!\bigl(Q_p(e^\theta)\bigr)
+  \)。
   进一步，\(\lambda=\rho(Q_p(u))\) 为下述四次方程在 \((0,\infty)\) 上的唯一最大实根：
   \begin{equation}\label{eq:fold-gauge-anomaly-bernoulli-p-pressure-quartic}
   \boxed{\;
@@ -94,8 +120,31 @@ f(i):=\EE[g(S_0,S_1)\mid S_0=i]=\sum_jP_{ij}g(i,j)
 并解 \((I-P(p))h=f-g_\ast(p)\mathbf 1\)（配以规范 \(\pi^\top h=0\) 以唯一化）。
 将 \(h\) 代入边势型方差公式即可化简得到所示 \(\sigma_G^2(p)\)。
 \par
-第 (3) 条由 Perron--Frobenius 理论与有界边势的热力学形式主义：对任意 \(u>0\)，矩阵 \(Q_p(u)\) 非负且原始，从而 \(\rho(Q_p(u))\) 为单纯主特征值，且
-\(\EE[u^{G_m}]\) 的指数增长率为 \(\rho(Q_p(u))^m\)，故 \(\Lambda_p(u)=\log\rho(Q_p(u))\)。
+第 (3) 条给出两种等价的矩阵接口。
+其一为加权邻接矩阵 \(A_{\theta,p}\)：在 Berstel 的四状态不歧义换能器上，把边标记 \((X,Y)\in\{0,1\}^2\) 的 Bernoulli\((p)\) 输入权重与逐位失配势 \(e^{\theta\mathbf 1\{X\neq Y\}}\) 相乘，并对同起讫点的平行边求和，即得到上述 \(A_{\theta,p}\)；
+由不歧义性，\(\EE[e^{\theta G_m}]\) 可写为某个初末向量夹持下的 \(A_{\theta,p}^{\,m}\) 的线性型，从而其指数增长率由 \(\rho(A_{\theta,p})\) 给出。
+其二为 Parry 归一化后的倾斜核 \(Q_p(u)\)：在 \(\theta=0\) 时，矩阵
+\(
+A_{0,p}=
+\begin{psmallmatrix}
+q & q & 0 & p\\
+0 & 0 & p & 0\\
+p & 1 & 0 & 0\\
+q & 0 & 0 & 0
+\end{psmallmatrix}
+\)
+的 Perron 本征值为 \(1\)，右本征向量可取
+\(
+r=(q,\ p^2,\ p,\ q^2)^{\mathsf T}
+\)，并满足 \(P(p)_{ij}=A_{0,p}(i,j)\,r_j/r_i\)。
+因此对任意 \(\theta\in\RR\)（记 \(u=e^\theta\)），有对角相似关系
+\(
+Q_p(e^\theta)=D_r^{-1}A_{\theta,p}D_r
+\)
+（\(D_r:=\mathrm{diag}(r)\)），从而 \(\rho(Q_p(e^\theta))=\rho(A_{\theta,p})\) 并得到
+\(
+P_{G,p}(\theta)=\log\rho(A_{\theta,p})=\Lambda_p(e^\theta)
+\)。
 四次方程 \eqref{eq:fold-gauge-anomaly-bernoulli-p-pressure-quartic} 为特征方程 \(\det(\lambda I-Q_p(u))=0\) 的显式展开。证毕。
 \end{proof}
 \begin{remark}[换能器加权邻接矩阵口径与 Parry 归一化]\label{rem:fold-gauge-anomaly-bernoulli-p-adjacency-parry}
@@ -149,6 +198,58 @@ p_\star\approx 0.770917,\qquad g_\ast(p_\star)\approx 0.594299.
 数值近似由求根计算给出。证毕。
 \end{proof}
 
+\begin{proposition}[全参数大偏差原理：压力的 Legendre--Fenchel 对偶与端点常数]\label{prop:fold-gauge-anomaly-bernoulli-p-ldp}
+在定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws} 的平稳设定下，函数 \(\theta\mapsto P_{G,p}(\theta)=\log\rho(A_{\theta,p})\) 在 \(\RR\) 上实解析且严格凸。
+并且比例序列 \((G_m/m)_{m\ge 1}\) 在区间 \([0,1]\) 上满足大偏差原理：存在良率函数 \(I_p:[0,1]\to[0,\infty]\) 使得对任意 Borel 集 \(B\subset\RR\)，
+\[
+-\inf_{x\in B^\circ}I_p(x)\ \le\
+\liminf_{m\to\infty}\frac1m\log\PP\!\left(\frac{G_m}{m}\in B\right)
+\le
+\limsup_{m\to\infty}\frac1m\log\PP\!\left(\frac{G_m}{m}\in B\right)
+\le\
+-\inf_{x\in \overline B}I_p(x),
+\]
+且 \(I_p\) 由 Legendre--Fenchel 变换给出：
+\[
+\boxed{\;
+I_p(x)=\sup_{\theta\in\RR}\bigl(\theta x-P_{G,p}(\theta)\bigr). \;}
+\]
+端点零失配指数满足
+\[
+\boxed{\;
+I_p(0)=-\lim_{\theta\to-\infty}P_{G,p}(\theta)
+=-\log\!\Bigl(\frac{q+\sqrt{q^{2}+4pq}}{2}\Bigr). \;}
+\]
+\end{proposition}
+\begin{proof}[证明要点]
+由于 \(A_{\theta,p}\) 在 \(\theta\in\RR\) 上解析且对每个 \(\theta\) 为原始非负矩阵，Perron 根 \(\rho(A_{\theta,p})\) 随 \(\theta\) 实解析；
+非平凡边势保证 \(P_{G,p}\) 严格凸。
+G\"artner--Ellis 定理适用，从而得到大偏差原理与 Legendre--Fenchel 表达。
+端点 \(I_p(0)\) 由 \(u=e^\theta\to 0^+\) 的退化给出：此时仅保留匹配子图，Perron 根满足二次方程 \(\lambda^2-q\lambda-pq=0\)，取正根即得到所示闭式。证毕。
+\end{proof}
+
+\begin{proposition}[失配密度的全局单峰性与过半阈值]\label{prop:fold-gauge-anomaly-bernoulli-p-density-unimodal-threshold}
+令 \(g_\ast(p)=\frac{p^2(3-2p)}{1+p^3}\) 为定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws} 的失配密度。
+则 \(g_\ast\) 在 \((0,1)\) 上严格单峰：存在唯一 \(p_\star\in(0,1)\) 使 \(g_\ast\) 在 \((0,p_\star)\) 严格递增、在 \((p_\star,1)\) 严格递减；
+并且 \(p_\star\) 由不可约三次方程
+\[
+\boxed{\;p_\star^3+2p_\star-2=0\;}
+\]
+唯一确定。
+此外存在精确阈值
+\[
+\boxed{\;g_\ast(p)>\frac12\ \Longleftrightarrow\ p\in\Bigl(\frac{1+\sqrt{21}}{10},\,1\Bigr).\;}
+\]
+\end{proposition}
+\begin{proof}
+直接求导得
+\[
+g_\ast'(p)=-\frac{3p\,(p^3+2p-2)}{(p+1)^2(p^2-p+1)^2}.
+\]
+分母在 \((0,1)\) 恒正，故单调性由 \(p^3+2p-2\) 的符号唯一决定；该三次在 \((0,1)\) 上严格递增且跨越零点，故存在唯一根 \(p_\star\) 并得到单峰性。
+解方程 \(g_\ast(p)=\tfrac12\) 等价于 \(5p^3-6p^2+1=0=(p-1)(5p^2-p-1)\)，从而在 \((0,1)\) 上仅余根 \(p=(1+\sqrt{21})/10\)，据此得到阈值刻画。证毕。
+\end{proof}
+
 \begin{proposition}[转移谱的完全分解与 \texorpdfstring{$p=\tfrac12$}{p=1/2} 的唯一 Jordan 共振]\label{prop:fold-gauge-anomaly-bernoulli-p-spectrum}
 对任意 \(p\in(0,1)\)，矩阵 \(P(p)\) 的特征多项式完全分解为
 \[
@@ -158,10 +259,13 @@ p_\star\approx 0.770917,\qquad g_\ast(p_\star)\approx 0.594299.
 \[
 \mathrm{Spec}(P(p))=\Bigl\{1,\ -p,\ \sqrt{p(1-p)},\ -\sqrt{p(1-p)}\Bigr\}.
 \]
+令 \(\rho_{\mathrm{mix}}(p):=\max\{p,\sqrt{p(1-p)}\}\in(0,1)\)，则 \(P(p)\) 的谱隙为 \(1-\rho_{\mathrm{mix}}(p)\)。
 并且：
 \begin{enumerate}
   \item 若 \(p\neq\tfrac12\)，则四个特征值两两不同，\(P(p)\) 在 \(\RR\) 上可对角化；
+  因而对任意平方可积零均值可观测量，其相关与混合的指数尺度由 \(\rho_{\mathrm{mix}}(p)^n\) 控制。
   \item 若 \(p=\tfrac12\)，则 \(-p=-\sqrt{p(1-p)}=-\tfrac12\) 的代数重数为 \(2\)，而其特征子空间维数为 \(1\)，从而 \(P(\tfrac12)\) 存在唯一非平凡 Jordan 块（大小 \(2\)）。
+  相应地，除指数因子 \(2^{-n}\) 外出现线性 \(n\) 修正，与均匀基线下的 Jordan 指纹一致。
 \end{enumerate}
 \end{proposition}
 \begin{proof}
@@ -308,6 +412,11 @@ I_p(0)=\log\!\Bigl(\frac{2}{\varphi}\Bigr),\qquad I_p(1)=\log 2,
 
 \begin{remark}[审计脚本]\label{rem:fold-gauge-anomaly-bernoulli-p-audit-script}
 定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws}--推论 \ref{cor:fold-gauge-anomaly-bernoulli-p-specialize-half} 中出现的闭式表达式（包括协方差生成函数与压力四次方程）可由脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_bernoulli\_p\_closed\_form.py} 进行一致性核验。
+\end{remark}
+
+\begin{remark}[公开检索核验口径]\label{rem:fold-gauge-anomaly-bernoulli-p-public-search-note}
+以 \(g_\ast(p)\)、\(\sigma_G^2(p)\) 的闭式表达、\(\chi_{P(p)}(\lambda)\) 的完全分解以及压力四次方程 \eqref{eq:fold-gauge-anomaly-bernoulli-p-pressure-quartic} 的系数结构为检索词，对公开资料作关键词与精确字符串检索，未见与本节同型的直接表述。
+由于公开文献体量巨大且检索覆盖有限，该类核验不构成穷尽性断言，亦不应被视为“唯一性”证明。
 \end{remark}
 
 \endinput
