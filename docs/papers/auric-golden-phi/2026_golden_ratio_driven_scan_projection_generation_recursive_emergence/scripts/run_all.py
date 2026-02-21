@@ -1321,6 +1321,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_diagonal_rate_diagonal_observation_audit",
+            script="exp_pom_diagonal_rate_diagonal_observation_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_diagonal_observation_audit.json",
+                "sections/generated/eq_pom_diagonal_rate_diagonal_observation_audit.tex",
+            ],
+        ),
+        Step(
             name="pom_diagonal_rate_two_orbit_cubic_audit",
             script="exp_pom_diagonal_rate_two_orbit_cubic_audit.py",
             args=[],
