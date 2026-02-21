@@ -3088,6 +3088,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_discriminant_ridge_rational_points_height200_audit",
+            script="exp_fold_zm_discriminant_ridge_rational_points_height200_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_rational_points_height200_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_rational_points_height200_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_s4_galois_closure_representation_audit",
             script="exp_fold_zm_s4_galois_closure_representation_audit.py",
             args=[],

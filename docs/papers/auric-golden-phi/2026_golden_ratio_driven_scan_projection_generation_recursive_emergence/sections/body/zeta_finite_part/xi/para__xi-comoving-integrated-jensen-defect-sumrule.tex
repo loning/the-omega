@@ -319,6 +319,64 @@ U_a(u,t):=\log\bigl(u^2+(t+a)^2\bigr)
 最后对 \eqref{eq:xi-log-defect-poisson-convolution} 关于 \(t\) 求导并整理为 Poisson 核形式即得 \eqref{eq:xi-log-defect-poisson-scale-derivative}。证毕。
 \end{proof}
 
+\begin{theorem}[单零 co-moving Jensen 权的基点积分守恒律]\label{thm:xi-comoving-jensen-weight-integral-conservation}
+在命题 \ref{prop:xi-log-defect-potential-poisson-primitive} 的设定下，取任意 \((\gamma,\delta)\in\RR\times(0,1)\)，并令
+\[
+w_{x_0}:=\mathcal{C}\bigl((\gamma-x_0)+\mathrm{i}\delta\bigr)\in\mathbb{D},
+\qquad
+J_{\gamma,\delta}(x_0):=\log\frac{1}{|w_{x_0}|}=\mathcal{K}_{\gamma,\delta}(x_0).
+\]
+则有严格恒等式
+\[
+\int_{\RR}J_{\gamma,\delta}(x_0)\,\dd x_0=2\pi\delta.
+\]
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:xi-log-defect-poisson-primitive}，
+\[
+\mathcal{K}_{\gamma,\delta}(x)=\pi\int_{1-\delta}^{1+\delta}P_s(x-\gamma)\,\dd s.
+\]
+两端对 \(x\in\RR\) 积分并交换积分次序，利用 \(\int_{\RR}P_s(x-\gamma)\,\dd x=1\) 得
+\[
+\int_{\RR}\mathcal{K}_{\gamma,\delta}(x)\,\dd x
+=\pi\int_{1-\delta}^{1+\delta}\left(\int_{\RR}P_s(x-\gamma)\,\dd x\right)\dd s
+=\pi\int_{1-\delta}^{1+\delta}1\,\dd s
+=2\pi\delta.
+\]
+证毕。
+\end{proof}
+
+\begin{proposition}[Dirichlet--to--Neumann 算子作用于 Jensen 核：闭式表达与 Poisson 互易]\label{prop:xi-dtn-acts-on-jensen-kernel}
+令 \(|D|\) 为 \(\RR\) 上 Dirichlet--to--Neumann 算子（Fourier 乘子 \(|\xi|\)），并令 \(P_t*f=\exp(-t|D|)f\) 表示 Poisson 半群（\(t>0\)）。
+在命题 \ref{prop:xi-log-defect-potential-poisson-primitive} 的设定下，对任意 \((\gamma,\delta)\in\RR\times(0,1)\) 有分布恒等式
+\[
+\boxed{\;
+|D|\,\mathcal{K}_{\gamma,\delta}
+=\pi\Bigl(P_{1-\delta}(\cdot-\gamma)-P_{1+\delta}(\cdot-\gamma)\Bigr)\; }.
+\]
+特别地，取 \(j_\delta(x):=\mathcal{K}_{0,\delta}(x)\) 得
+\[
+\boxed{\;
+|D|\,j_\delta
+=\pi\bigl(P_{1-\delta}-P_{1+\delta}\bigr)\; }.
+\]
+并且 Poisson 平滑满足显式参数平移公式 \eqref{eq:xi-log-defect-poisson-convolution}。
+\end{proposition}
+\begin{proof}
+由 Dirichlet--to--Neumann 恒等式，\(P_t*f=e^{-t|D|}f\) 且在分布意义下
+\[
+\partial_t(P_t*f)=-P_t*(|D|f)\qquad(t>0).
+\]
+将 \(f=\mathcal{K}_{\gamma,\delta}\) 代入，并用 \eqref{eq:xi-log-defect-poisson-scale-derivative} 得
+\[
+P_t*(|D|\mathcal{K}_{\gamma,\delta})(x)
+=-\partial_t(P_t*\mathcal{K}_{\gamma,\delta})(x)
+=\pi\Bigl(P_{t+1-\delta}(x-\gamma)-P_{t+1+\delta}(x-\gamma)\Bigr).
+\]
+令 \(t\downarrow 0\)，由 \(P_t*\) 对 \(\mathcal{S}'(\RR)\) 的强连续性得到所述恒等式。
+平移 \(\gamma=0\) 的特例即为 \(j_\delta\) 的公式。证毕。
+\end{proof}
+
 \begin{theorem}[极限缺陷势的频域谱分解与可辨识性（有限缺陷口径）]\label{thm:xi-limit-defect-potential-fourier-injective}
 设离临界线零点多重集为有限族 \(\{\rho_j\}_{j=1}^{M}\)（按重数计），其中
 \(

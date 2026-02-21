@@ -391,5 +391,81 @@ h_t(\bar\gamma+ty)-g_t(\bar\gamma+ty)=g_t(\bar\gamma+ty)\left(\frac{h_t}{g_t}(\b
 由于余项被 \(Ct^{-1}(1+y^2)^{-1}\) 控制，且 \((1+y^2)^{-1}\in L^p(\RR)\)（\(1\le p\le\infty\)），故 \(L^p\) 收敛同阶成立。证毕。
 \end{proof}
 
+\begin{theorem}[Poisson--Cauchy 粗粒化下 Kolmogorov 距离的普适极限]\label{thm:cdim-poisson-kolmogorov-universal-limit}
+在本段的单参 Poisson--Cauchy 粗粒化设定下，令
+\[
+F_t(x):=\int_{-\infty}^{x}h_t(u)\,\dd u,
+\qquad
+G_t(x):=\int_{-\infty}^{x}g_t(u)\,\dd u,
+\qquad
+d_K(t):=\sup_{x\in\RR}\abs{F_t(x)-G_t(x)}.
+\]
+若 \(\EE[|\Delta|^{3}]<\infty\)，则当 \(t\to\infty\) 有极限
+\[
+\lim_{t\to\infty}\frac{t^2}{\sigma^2}\,d_K(t)=\frac{9}{16\pi\sqrt3}.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:cdim-poisson-l1-second-order-constant} 的三阶展开与余项控制，可写
+\[
+h_t(x)-g_t(x)=\frac{\sigma^2}{2}P_t''(x-\bar\gamma)+\mathcal R_t(x),
+\qquad
+\|\mathcal R_t\|_{L^1(\RR)}=O(t^{-3}).
+\]
+对 \(x\) 积分得到
+\[
+F_t(x)-G_t(x)=\frac{\sigma^2}{2}P_t'(x-\bar\gamma)+\int_{-\infty}^{x}\mathcal R_t(u)\,\dd u,
+\]
+从而
+\(
+\sup_x\left|\int_{-\infty}^{x}\mathcal R_t(u)\,\dd u\right|\le \|\mathcal R_t\|_{1}=O(t^{-3})
+\)。
+因此
+\[
+d_K(t)=\frac{\sigma^2}{2}\,\|P_t'\|_{L^\infty(\RR)}+O(t^{-3}).
+\]
+直接计算
+\[
+P_t'(x)=-\frac{2}{\pi}\frac{t\,x}{(x^2+t^2)^2}.
+\]
+令 \(x=ty\) 得
+\(
+\abs{P_t'(ty)}=\frac{2}{\pi t^2}\frac{\abs{y}}{(1+y^2)^2}
+\)，其最大值在 \(y=1/\sqrt3\) 处取到，并且
+\[
+\sup_{y\in\RR}\frac{\abs{y}}{(1+y^2)^2}=\frac{9}{16\sqrt3}.
+\]
+故 \(\|P_t'\|_{\infty}=\frac{9}{8\pi\sqrt3}t^{-2}\)，代回得到
+\[
+d_K(t)=\frac{9}{16\pi\sqrt3}\frac{\sigma^2}{t^2}+o(t^{-2}),
+\]
+即所述极限。证毕。
+\end{proof}
+
+\begin{proposition}[Poisson--Cauchy 粗粒化下密度差的 \texorpdfstring{$L^\infty$}{L∞} 普适常数]\label{prop:cdim-poisson-density-linfty-universal-constant}
+在本段设定下，若 \(\EE[|\Delta|^{3}]<\infty\)，则当 \(t\to\infty\) 有极限
+\[
+\lim_{t\to\infty}\frac{t^3}{\sigma^2}\,\|h_t-g_t\|_{L^\infty(\RR)}=\frac{1}{\pi}.
+\]
+\end{proposition}
+\begin{proof}
+仍由三阶 Taylor 展开（证明见命题 \ref{prop:cdim-poisson-l1-second-order-constant}）可得一致分解
+\[
+h_t(x)-g_t(x)=\frac{\sigma^2}{2}P_t''(x-\bar\gamma)+O(t^{-4})
+\qquad\text{于 }L^\infty(\RR),
+\]
+其中余项由 \(\EE|\Delta|^3<\infty\) 与 \(\|P_t'''\|_{\infty}\asymp t^{-4}\) 控制。
+对 \(P_t''\) 的闭式
+\[
+P_t''(x)=\frac{2}{\pi}\frac{t(3x^2-t^2)}{(x^2+t^2)^3}
+\]
+作缩放 \(x=\bar\gamma+ty\)，得到
+\[
+\frac{t^3}{2}P_t''(\bar\gamma+ty-\bar\gamma)=\frac{1}{\pi}\frac{3y^2-1}{(1+y^2)^3}=R(y),
+\]
+其中 \(R\) 为命题 \ref{prop:cdim-poisson-second-order-profile-convergence} 的密度差剖面函数。
+由于 \(\sup_{y\in\RR}\abs{R(y)}=\abs{R(0)}=1/\pi\)，并且余项在 \(\|\cdot\|_\infty\) 下为 \(o(1)\)，即得所述极限。证毕。
+\end{proof}
+
 \endinput
 

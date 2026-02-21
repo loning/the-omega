@@ -138,5 +138,203 @@ b_p=\frac{p(s)-p(-s)}{2s}.
 将 \(p\) 在 \(\{\pm s\}\) 上作偶/奇分解并代回 \(C_q\) 即得所示表达与唯一性。证毕。
 \end{proof}
 
+\paragraph{整数环上的阶梯 Smith 结构：\texorpdfstring{$\ZZ[\varphi]$}{Z[phi]} 与 \texorpdfstring{$(\varphi+2)$}{phi+2}-进骨架}
+在二次数域的整数环 \(\mathcal O:=\ZZ[\varphi]\) 中，元素
+\[
+\pi_\varphi:=\varphi+2
+\]
+满足 \(\mathrm N_{\QQ(\sqrt5)/\QQ}(\pi_\varphi)=5\)（见结论 \ref{con:xi-symq-golden-trace-det-norm}），因此 \((\pi_\varphi)\) 给出 \(5\) 上方的唯一素理想。
+下述结论表明：\(C_q\) 在 \(\mathcal O\) 上不仅满足缩放对合 \(C_q^2=\pi_\varphi^q I\)，其整格层面还具有严格的阶梯 Smith 结构。
+
+\begin{conclusion}[幺模阶梯分解与 Smith 正规形]\label{con:xi-symq-golden-cq-smith-staircase}
+令
+\[
+\ell:=\varphi x+y,\qquad m:=(\varphi-1)x+y,
+\qquad
+x-\varphi y=2\ell-\pi_\varphi m.
+\]
+对 \(0\le r\le q\) 定义
+\[
+Q_r(x,y):=\ell^{\,q-r}m^{\,r},
+\qquad
+P_j(x,y):=\ell^{\,q-j}(x-\varphi y)^{j}\qquad(0\le j\le q),
+\]
+并令 \(Q_q\in\Mat_{q+1}(\mathcal O)\) 为列向量 \((Q_0,\dots,Q_q)\) 相对于基 \(\{x^{q-k}y^k\}_{k=0}^{q}\) 的系数矩阵。
+再令上三角矩阵 \(U_q=(u_{rj})_{0\le r,j\le q}\in\Mat_{q+1}(\mathcal O)\) 由
+\[
+u_{rj}:=
+\begin{cases}
+(-1)^r\,2^{\,j-r}\binom{j}{r},& r\le j,\\
+0,& r>j.
+\end{cases}
+\]
+则在 \(\mathcal O\) 上成立完全恒等式
+\[
+\boxed{\;
+C_q
+=
+Q_q\cdot \mathrm{diag}(1,\pi_\varphi,\pi_\varphi^2,\dots,\pi_\varphi^{q})\cdot U_q\; }.
+\]
+并且 \(Q_q,U_q\in \mathrm{GL}_{q+1}(\mathcal O)\) 为幺模矩阵。
+因此 \(C_q\) 的 Smith 正规形（按整除链排列）为
+\[
+\boxed{\;
+\mathrm{SNF}_{\mathcal O}(C_q)=\mathrm{diag}(1,\pi_\varphi,\pi_\varphi^2,\dots,\pi_\varphi^{q})\; }.
+\]
+\end{conclusion}
+\begin{proof}
+由
+\(
+x-\varphi y=2\ell-\pi_\varphi m
+\)
+对每个 \(j\) 作二项式展开并合并 \(\ell^{q-j}\) 得
+\[
+P_j=\sum_{r=0}^{j}(-1)^r\,2^{\,j-r}\binom{j}{r}\,\pi_\varphi^{\,r}\,Q_r,
+\]
+从而以“系数列向量逐列相等”的意义得到矩阵恒等式
+\(
+C_q=Q_qD_qU_q
+\)，其中 \(D_q=\mathrm{diag}(\pi_\varphi^{\,r})_{r=0}^{q}\)。
+\par
+对幺模性：线性型 \((\ell,m)\) 的系数列向量分别为 \((\varphi,1)^{\top}\) 与 \((\varphi-1,1)^{\top}\)，故其变换矩阵
+\[
+H:=
+\begin{pmatrix}\varphi&\varphi-1\\[2pt]1&1\end{pmatrix}\in\mathrm{SL}_2(\mathcal O)
+\]
+满足 \((\ell,m)=(x,y)H\) 且 \(\det H=1\)。
+因此 \(Q_q=\mathrm{Sym}^q(H)\) 且
+\(
+\det(Q_q)=\det(H)^{q(q+1)/2}=1
+\)，从而 \(Q_q\) 幺模。
+另一方面，\(U_q\) 为上三角矩阵且对角元为 \(u_{jj}=(-1)^j\in\mathcal O^{\times}\)，故 \(U_q\) 幺模。
+最后，Smith 正规形由幺模等价唯一性与对角阶梯指数 \(0,1,\dots,q\) 立得。证毕。
+\end{proof}
+
+\begin{corollary}[子式理想的 \texorpdfstring{$\pi_\varphi$}{pi}-阶]\label{cor:xi-symq-golden-cq-determinantal-divisors}
+令 \(d_k(C_q)\subset\mathcal O\) 表示由 \(C_q\) 的全部 \(k\times k\) 子式生成的理想（\(1\le k\le q+1\)）。
+则在单位元意义下有
+\[
+\boxed{\;
+d_k(C_q)\ \sim\ \pi_\varphi^{\,\frac{k(k-1)}{2}}\; }.
+\]
+\end{corollary}
+\begin{proof}
+由结论 \ref{con:xi-symq-golden-cq-smith-staircase} 的 Smith 正规形，
+\(d_k(C_q)\) 等于前 \(k\) 个不变因子的乘积所生成的理想，即
+\(
+\prod_{r=0}^{k-1}\pi_\varphi^{\,r}=\pi_\varphi^{k(k-1)/2}
+\)（确定到单位元）。证毕。
+\end{proof}
+
+\begin{corollary}[模 \texorpdfstring{$\pi_\varphi^t$}{pi^t} 的阶梯约化与生成秩]\label{cor:xi-symq-golden-cq-mod-pi-power-staircase}
+对整数 \(t\) 满足 \(1\le t\le q+1\)，在商环 \(\mathcal O/(\pi_\varphi^t)\) 上有等价变换
+\[
+\boxed{\;
+C_q\bmod \pi_\varphi^t
+\ \sim\
+\mathrm{diag}(1,\pi_\varphi,\dots,\pi_\varphi^{t-1},0,\dots,0)\;}
+\]
+其中 “\(\sim\)” 表示左右乘以 \(\mathrm{GL}_{q+1}(\mathcal O/(\pi_\varphi^t))\) 的可逆矩阵。
+因此像模 \(\mathrm{Im}(C_q\bmod \pi_\varphi^t)\) 的最小生成元数为 \(t\)；
+等价地，
+\[
+\dim_{\mathcal O/(\pi_\varphi)}\Bigl(\mathrm{Im}(C_q\bmod \pi_\varphi^t)\big/\pi_\varphi\,\mathrm{Im}(C_q\bmod \pi_\varphi^t)\Bigr)=t.
+\]
+\end{corollary}
+\begin{proof}
+将结论 \ref{con:xi-symq-golden-cq-smith-staircase} 的幺模分解在 \(\mathcal O/(\pi_\varphi^t)\) 下约化即可；此时 \(\pi_\varphi^{r}\equiv 0\) 当且仅当 \(r\ge t\)，从而得到对角形态。
+最小生成元数等于上述商空间的维数，为 Artin 局部环上的标准等价刻画。证毕。
+\end{proof}
+
+\begin{corollary}[余核的完全分解与 \texorpdfstring{$5$}{5}-规模]\label{cor:xi-symq-golden-cq-cokernel-structure}
+有 \(\mathcal O\)-模同构
+\[
+\boxed{\;
+\mathrm{coker}_{\mathcal O}(C_q)\ \cong\ \bigoplus_{r=1}^{q}\mathcal O/(\pi_\varphi^{r})\;}
+\]
+从而其 Jordan--H\"older 长度为 \(\sum_{r=1}^{q}r=\frac{q(q+1)}{2}\)，并且其有限基数为
+\[
+\boxed{\;
+\#\,\mathrm{coker}_{\mathcal O}(C_q)=\prod_{r=1}^{q}\mathrm N(\pi_\varphi^{r})=5^{\frac{q(q+1)}{2}}.\;}
+\]
+\end{corollary}
+\begin{proof}
+由 Smith 正规形 \(\mathrm{diag}(1,\pi_\varphi,\dots,\pi_\varphi^{q})\)，余核同构为除去单位元因子后的直和 \(\bigoplus_{r=1}^q\mathcal O/(\pi_\varphi^r)\)。
+长度与基数由加性/乘法性以及 \(\mathrm N(\pi_\varphi)=5\) 得到。证毕。
+\end{proof}
+
+\begin{corollary}[模 \texorpdfstring{$\pi_\varphi$}{pi} 的秩一外积与列比律]\label{cor:xi-symq-golden-cq-mod-pi-rankone-outer}
+在剩余域 \(\mathcal O/(\pi_\varphi)\cong\FF_5\) 中有同余
+\[
+x-\varphi y\equiv 2(\varphi x+y)\pmod{\pi_\varphi},
+\]
+从而对每个 \(0\le j\le q\) 有
+\[
+(\varphi x+y)^{q-j}(x-\varphi y)^j\equiv 2^{j}(\varphi x+y)^q\pmod{\pi_\varphi}.
+\]
+令 \(u\in(\mathcal O/\pi_\varphi)^{q+1}\) 为 \((\varphi x+y)^q\) 在基 \(\{x^{q-k}y^k\}\) 下的系数列向量，令
+\(
+v:=(2^{0},2^{1},\dots,2^{q})^{\top}\in(\mathcal O/\pi_\varphi)^{q+1}
+\)。
+则
+\[
+\boxed{\;
+C_q\bmod \pi_\varphi\;=\;u\,v^{\mathsf T}\;}
+\]
+因而 \(\mathrm{rank}_{\FF_5}(C_q\bmod \pi_\varphi)=1\) 且每一列满足严格列比
+\[
+\boxed{\;
+(C_q\bmod \pi_\varphi)_{\bullet,j}=2^{j}(C_q\bmod \pi_\varphi)_{\bullet,0}\; }.
+\]
+并且由结论 \ref{con:xi-symq-golden-involution-reciprocity} 的 \(C_q^2=\pi_\varphi^q I_{q+1}\) 得
+\[
+\boxed{\;(C_q\bmod \pi_\varphi)^2=0\;},
+\]
+故 \(\mathrm{Im}(C_q\bmod \pi_\varphi)\subseteq \ker(C_q\bmod \pi_\varphi)\)。
+\end{corollary}
+\begin{proof}
+由结论 \ref{con:xi-symq-golden-cq-smith-staircase} 的恒等式 \(x-\varphi y=2\ell-\pi_\varphi m\) 取模 \(\pi_\varphi\) 即得所示线性型同余；其余为逐列系数同余转译。证毕。
+\end{proof}
+
+\begin{proposition}[阶梯 Smith 模板：对称幂与线性型同余导出的幺模分解]\label{prop:xi-smith-staircase-template-symq}
+设 \(R\) 为交换整环，\(\pi\in R\) 为非零非单位元。
+取
+\(
+H=\begin{pmatrix}a&b\\ c&d\end{pmatrix}\in\mathrm{SL}_2(R)
+\)
+并令 \(\ell=ax+cy\)、\(m=bx+dy\)。
+若存在单位元 \(u\in R^\times\) 与另一线性型 \(\ell_2\) 满足
+\(
+\ell_2=u\,\ell-\pi\,m
+\)，
+则对任意 \(q\ge 1\)，由
+\(
+P_j:=\ell^{\,q-j}\ell_2^{\,j}
+\)
+生成的系数矩阵 \(C_q(R)\) 具有双侧幺模分解
+\[
+\boxed{\;
+C_q(R)=\mathrm{Sym}^q(H)\cdot \mathrm{diag}(1,\pi,\pi^2,\dots,\pi^q)\cdot U_q(R)\;}
+\]
+其中 \(U_q(R)\) 为上三角矩阵并满足
+\[
+U_q(R)_{rj}=
+\begin{cases}
+(-1)^r\,u^{\,j-r}\binom{j}{r},& r\le j,\\
+0,& r>j.
+\end{cases}
+\]
+若进一步 \(R\) 为 PID，则 \(C_q(R)\) 的 Smith 正规形为 \(\mathrm{diag}(1,\pi,\dots,\pi^q)\)。
+\end{proposition}
+\begin{proof}
+由二项式展开
+\(
+\ell_2^{j}=(u\ell-\pi m)^{j}
+\)
+得到 \(P_j=\sum_{r\le j}(-1)^r u^{j-r}\binom{j}{r}\pi^r\,Q_r\)（其中 \(Q_r=\ell^{q-r}m^r\)），从而给出所示矩阵分解。
+由于 \(\mathrm{Sym}^q(H)\in\mathrm{GL}_{q+1}(R)\) 且 \(U_q(R)\) 对角元为 \(((-1)^j)_{0\le j\le q}\subset R^\times\)，二者均幺模。
+PID 情形下 Smith 形由幺模等价唯一性推出。证毕。
+\end{proof}
+
 \endinput
 
