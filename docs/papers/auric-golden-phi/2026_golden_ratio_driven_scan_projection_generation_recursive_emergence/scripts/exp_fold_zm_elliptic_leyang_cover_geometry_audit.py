@@ -35,6 +35,8 @@ We verify (symbolically, with SymPy):
   - The next Puiseux jet coefficient on the Lee–Yang branch points:
       beta = -F_xy/F_xx + (F_xxx*F_y)/(3 F_xx^2),
     reduced to a closed rational function of the critical eigenvalue.
+  - The next (t^3) Puiseux jet coefficient on the Lee–Yang branch points:
+      gamma = G(alpha) / c0, i.e. gamma * c0 is a closed rational function of alpha.
   - Riemann–Hurwitz genus numbers for the S4 splitting cover and its A4/V4 quotients.
 
 Outputs:
@@ -126,6 +128,7 @@ class Payload:
     puiseux_y0_1_ok: bool
     c0_sq_formula_ok: bool
     beta_formula_ok: bool
+    gamma_formula_ok: bool
     genus_s4_splitting: int
     genus_sign_quadratic: int
     genus_v4_quotient: int
@@ -317,11 +320,40 @@ def main() -> None:
     Fxy = sp.diff(F, X, y).subs({X: a, y: ycrit_a})
     Fxxx = sp.diff(F, X, 3).subs({X: a, y: ycrit_a})
     beta_coeff = sp.simplify(-Fxy / Fxx + sp.Rational(1, 3) * (Fxxx * Fy) / (Fxx**2))
-    expected_beta = 8 * (283 * a**2 + 80 * a - 3) / (3879 * a**2 + 144 * a - 2223)
+    expected_beta = -a * (3 * a**2 + 16 * a + 5) / (18 * (a**2 - 1) ** 2)
     diff_b = sp.together(beta_coeff - expected_beta)
     num_b, den_b = diff_b.as_numer_denom()
     num_b_red = _reduce_mod(num_b, a, 16 * a**3 - 9 * a**2 + 1)
     beta_formula_ok = bool(sp.simplify(num_b_red) == 0)
+
+    # Next Puiseux jet coefficient (t^3 term): gamma = G(a)/c0 so that gamma*c0 is rational in a.
+    k2 = c0_sq
+    Fyy = sp.diff(F, y, 2).subs({X: a, y: ycrit_a})
+    Fxxy = sp.diff(F, X, 2, y).subs({X: a, y: ycrit_a})
+    Fxxxx = sp.diff(F, X, 4).subs({X: a, y: ycrit_a})
+    bracket = sp.simplify(
+        sp.Rational(1, 2) * Fxx * beta_coeff**2
+        + Fxy * beta_coeff
+        + sp.Rational(1, 2) * Fxxx * k2 * beta_coeff
+        + sp.Rational(1, 2) * Fyy
+        + sp.Rational(1, 2) * Fxxy * k2
+        + sp.Rational(1, 24) * Fxxxx * (k2**2)
+    )
+    gamma_times_c0 = sp.simplify(-bracket / Fxx)
+    expected_gamma_times_c0 = -a**2 * (
+        1152 * a**7
+        - 1152 * a**6
+        - 280 * a**5
+        + 723 * a**4
+        - 312 * a**3
+        + 30 * a**2
+        + 16 * a
+        - 5
+    ) / (2 * (8 * a**3 - 3 * a**2 - 1) ** 4)
+    diff_g = sp.together(gamma_times_c0 - expected_gamma_times_c0)
+    num_g, den_g = diff_g.as_numer_denom()
+    num_g_red = _reduce_mod(num_g, a, 16 * a**3 - 9 * a**2 + 1)
+    gamma_formula_ok = bool(sp.simplify(num_g_red) == 0)
 
     # Genus computations by Riemann–Hurwitz (pure integers).
     # S4-splitting cover: degree 24, branch e = [4,2,2,2,2,2].
@@ -493,6 +525,7 @@ def main() -> None:
         puiseux_y0_1_ok=puiseux_y0_1_ok,
         c0_sq_formula_ok=c0_sq_formula_ok,
         beta_formula_ok=beta_formula_ok,
+        gamma_formula_ok=gamma_formula_ok,
         genus_s4_splitting=genus_s4,
         genus_sign_quadratic=genus2,
         genus_v4_quotient=genus6,
@@ -521,7 +554,8 @@ def main() -> None:
         f" norm={norm_identity_ok} norm2div={norm_2division_ok} norm2Y={norm_2Y_ok}"
         f" resy={resy_F_Fx_factor_ok} resFg={res_F_cubicx_factor_ok} y(-P)={y_of_minus_P}"
         f" puiseux0={puiseux_y0_0_ok} puiseux1={puiseux_y0_1_ok}"
-        f" c0sq={c0_sq_formula_ok} beta={beta_formula_ok} genusS4={genus_s4} genus2={genus2} genus6={genus6} seconds={dt:.3f}",
+        f" c0sq={c0_sq_formula_ok} beta={beta_formula_ok} gamma={gamma_formula_ok}"
+        f" genusS4={genus_s4} genus2={genus2} genus6={genus6} seconds={dt:.3f}",
         flush=True,
     )
     print("[fold-zm-elliptic-leyang-cover-geom] done", flush=True)
