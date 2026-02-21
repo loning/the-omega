@@ -1,0 +1,30 @@
+\begin{proposition}[谱四次曲线 Jacobian 的几何单纯性：不可约 Frobenius 多项式证书]\label{prop:fold-gauge-anomaly-spectral-quartic-jacobian-simple}
+沿用命题 \ref{prop:fold-gauge-anomaly-spectral-quartic-geometry} 的光滑平面四次曲线 \(C/\QQ\)，并令 \(J:=\operatorname{Jac}(C)\)。
+则 \(J\) 在 \(\overline{\QQ}\) 上单纯。
+更具体地，在素数 \(p=7\) 处 \(C\) 具有良好约化，且其约化曲线 \(C/\FF_{7}\) 的局部 \(L\)-多项式满足
+\[
+\boxed{\ L_{7}(T)=1+4T+9T^{2}+9T^{3}+63T^{4}+196T^{5}+343T^{6}\ }
+\]
+并在 \(\QQ[T]\) 中不可约。
+\end{proposition}
+\begin{proof}[证明要点]
+脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_spectral\_quartic\_jacobian\_L7\_audit.py} 以有限域穷举实现如下核验：
+\begin{enumerate}
+  \item 在 \(p=7\) 上对齐次模型 \(F^{\mathrm{hom}}(\mu,u,w)=0\) 检验无奇点，从而 \(C\) 在 \(p=7\) 处良好约化。
+  \item 记 \(N_n:=\#C(\FF_{7^{n}})\ (n=1,2,3)\)，并由点数恒等式
+  \(
+  N_n=7^n+1-\sum_{i=1}^{6}\alpha_i^{n}
+  \)
+  回收幂和 \(S_n:=\sum_{i=1}^{6}\alpha_i^{n}\)；
+  再由 Newton 恒等式确定 \(L_7(T)=\prod_{i=1}^{6}(1-\alpha_iT)\) 的系数，并得到上述闭式。
+  \item 将 \(L_7(T)\) 模 \(13\) 化后在 \(\FF_{13}[T]\) 中保持不可约，从而 \(L_7(T)\) 在 \(\QQ[T]\) 中不可约。
+\end{enumerate}
+相应的可引用 TeX 证书片段为：
+\input{sections/generated/eq_fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit}
+\par
+由 Honda--Tate 理论，\(L_7(T)\) 的不可约性蕴含约化雅可比簇 \(J_{\FF_7}\) 在 \(\overline{\FF}_7\) 上为简单阿贝尔三维簇，故其端同态代数无非平凡幂等元。
+另一方面，若 \(J_{\overline{\QQ}}\) 可分，则 \(\mathrm{End}^0_{\overline{\QQ}}(J)\) 含非平凡幂等元；由良好约化处端同态专门化映射的单射性（Tate--Faltings 型结果），该幂等元将注入到 \(\mathrm{End}^0_{\overline{\FF}_{7}}(J_{\FF_7})\)，矛盾。
+故 \(J\) 在 \(\overline{\QQ}\) 上单纯。证毕。
+\end{proof}
+
+\endinput

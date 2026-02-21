@@ -225,6 +225,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit",
+            script="exp_fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit.json",
+                "sections/generated/eq_fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_ldp_rate",
             script="exp_fold_gauge_anomaly_ldp_rate.py",
             args=[],
