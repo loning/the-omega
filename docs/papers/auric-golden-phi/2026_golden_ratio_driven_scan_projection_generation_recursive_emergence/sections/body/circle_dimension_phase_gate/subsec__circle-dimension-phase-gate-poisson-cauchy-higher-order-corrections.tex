@@ -72,6 +72,14 @@ D_{\mathrm{KL}}(h_t\mid g_t)
 \frac{\sigma^6+6\mu_3^2-8\sigma^2\mu_4}{64}\cdot\frac{1}{t^6}
 \;+\;o(t^{-6})\; }.
 \end{equation}
+记六次校正系数
+\[
+C_6(\nu):=\frac{\sigma^6+6\mu_3^2-8\sigma^2\mu_4}{64},
+\]
+则 \eqref{eq:cdim-poisson-kl-sixth-order-correction} 等价于极限
+\[
+\lim_{t\to\infty}t^{6}\left(D_{\mathrm{KL}}(h_t\mid g_t)-\frac{\sigma^4}{8t^4}\right)=C_6(\nu).
+\]
 特别地，上式为偶阶展开：不存在 \(t^{-5}\) 级项，亦即
 \[
 \lim_{t\to\infty}t^{5}\left(D_{\mathrm{KL}}(h_t\mid g_t)-\frac{\sigma^4}{8t^4}\right)=0.
@@ -128,6 +136,7 @@ f''(1)\Bigl(\frac{3\mu_3^2}{32}-\frac{\sigma^2\mu_4}{8}\Bigr)
 \Bigr]\frac{1}{t^6}
 \;+\;o(t^{-6})\; }.
 \end{equation}
+其中 \(\int_{\RR}g_t\bigl(\frac{h_t}{g_t}-1\bigr)=0\) 使得 \(f'(1)\) 的仿射正规化项在散度中严格消失，故六次次主项仅依赖 \(f''(1)\) 与 \(f'''(1)\)。
 \end{proposition}
 \begin{proof}[证明要点]
 仍记 \(r_t=1+\delta_t\) 并沿用命题 \ref{prop:cdim-poisson-kl-sixth-order-correction} 中的 \(\delta_t\) 展开。
@@ -156,9 +165,31 @@ D_f(h_t\mid g_t)
 \frac{3(\sigma^6+6\mu_3^2-8\sigma^2\mu_4)}{32}\cdot\frac{1}{t^7}
 \;+\;o(t^{-7})\; }.
 \end{equation}
+等价地，若记 \(C_6(\nu)\) 如命题 \ref{prop:cdim-poisson-kl-sixth-order-correction} 所定义，则
+\[
+\lim_{t\to\infty}t^{7}\left(\mathcal I_1(h_t\mid g_t)-\frac{\sigma^4}{2t^5}\right)=6C_6(\nu).
+\]
+并且由命题 \ref{prop:cdim-poisson-kl-sixth-order-coefficient-negative} 得到普适上界
+\[
+\limsup_{t\to\infty}t^{7}\left(\mathcal I_1(h_t\mid g_t)-\frac{\sigma^4}{2t^5}\right)\le -\frac{21}{32}\sigma^6.
+\]
+上述不等式取等当且仅当 \(\mu_3=0\) 且 \(\nu\) 为关于均值 \(\bar\gamma\) 的对称二点分布，即
+\[
+\nu=\tfrac12\delta_{\bar\gamma+\sigma}+\tfrac12\delta_{\bar\gamma-\sigma}.
+\]
 \end{corollary}
 \begin{proof}
-由 \eqref{eq:cdim-poisson-kl-sixth-order-correction} 对 \(t\) 求导并与耗散恒等式对照即可。
+由耗散恒等式
+\(
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid g_t)=-\mathcal I_1(h_t\mid g_t)
+\)
+与 \eqref{eq:cdim-poisson-kl-sixth-order-correction} 逐项求导，得到 \eqref{eq:cdim-poisson-dissipation-seventh-order-correction}，并因此
+\(
+t^{7}\bigl(\mathcal I_1(h_t\mid g_t)-\frac{\sigma^4}{2t^5}\bigr)\to 6C_6(\nu)
+\)。
+由命题 \ref{prop:cdim-poisson-kl-sixth-order-coefficient-negative} 得 \(C_6(\nu)\le -7\sigma^6/64\)，从而给出 \(\limsup\) 上界。
+若取等，则必须 \(\mu_3=0\) 且命题 \ref{prop:cdim-poisson-kl-sixth-order-coefficient-negative} 的 Cauchy--Schwarz 取等；
+因此 \((\Delta/\sigma)^2=1\) 几乎处处成立，并由 \(\EE[\Delta]=0\) 推得权重相等，从而得到所述对称二点分布。证毕。
 \end{proof}
 
 \begin{proposition}[六次系数的严格负性：非退化混合的熵损失必低于主项]\label{prop:cdim-poisson-kl-sixth-order-coefficient-negative}
@@ -171,6 +202,7 @@ D_f(h_t\mid g_t)
 \sigma^6+6\mu_3^2-8\sigma^2\mu_4\le -7\sigma^6-2\mu_3^2<0.
 \end{equation}
 上述上界取等当且仅当 \(\nu\) 的支撑至多两点（等价地：随机变量 \(X:=\Delta\) 满足 \(X^2-\sigma^2\) 与 \(X\) 线性相关）。
+从而在固定 \((\bar\gamma,\sigma^2)\) 的类中，命题 \ref{prop:cdim-poisson-kl-sixth-order-correction} 的六次系数 \(C_6(\nu)\) 的上确界为 \(-7\sigma^6/64\)，且仅当 \(\nu=\tfrac12\delta_{\bar\gamma+\sigma}+\tfrac12\delta_{\bar\gamma-\sigma}\) 时达到。
 \end{proposition}
 \begin{proof}
 由 Cauchy--Schwarz，不等式
@@ -189,6 +221,11 @@ D_f(h_t\mid g_t)
 \]
 从而得到 \eqref{eq:cdim-poisson-kl-sixth-order-coefficient-negative}--\eqref{eq:cdim-poisson-kl-sixth-order-coefficient-upperbound}。
 Cauchy--Schwarz 取等当且仅当 \(X(X^2-\sigma^2)\) 与 \(X\) 线性相关，即存在常数 \(c\) 使 \(X^2-\sigma^2=cX\) 几乎处处成立；故 \(X\) 只能取该二次方程的至多两根，等价于 \(\nu\) 支撑至多两点。
+特别地，由 \eqref{eq:cdim-poisson-kl-sixth-order-coefficient-upperbound} 可得
+\(
+C_6(\nu)\le -7\sigma^6/64-\mu_3^2/32\le -7\sigma^6/64
+\)。
+若在固定 \((\bar\gamma,\sigma^2)\) 的类中取等，则需 \(\mu_3=0\) 且 Cauchy--Schwarz 取等，从而 \(\Delta^2=\sigma^2\) 几乎处处成立并强制两点权重相等，故 \(\nu=\tfrac12\delta_{\bar\gamma+\sigma}+\tfrac12\delta_{\bar\gamma-\sigma}\)。证毕。
 \end{proof}
 
 \begin{proposition}[二散度矩层析：由全变差与相对熵的大尺度系数反演 \texorpdfstring{$(\sigma^2,\mu_3^2,\mu_4)$}{(sigma^2,mu3^2,mu4)}]\label{prop:cdim-poisson-two-divergence-moment-tomography}
