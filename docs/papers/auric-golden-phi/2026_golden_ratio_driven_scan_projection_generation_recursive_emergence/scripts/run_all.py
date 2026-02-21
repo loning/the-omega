@@ -90,6 +90,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_exceptional_integer_model_Mq_audit",
+            script="exp_xi_exceptional_integer_model_Mq_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_exceptional_integer_model_Mq_audit.json",
+            ],
+        ),
+        Step(
             name="rotation_microstate_kl_certificate",
             script="exp_rotation_microstate_kl_certificate.py",
             args=[],
@@ -239,6 +247,14 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "sections/generated/eq_fold_gauge_anomaly_ldp_rate.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_bernoulli_p_closed_form",
+            script="exp_fold_gauge_anomaly_bernoulli_p_closed_form.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_bernoulli_p_closed_form.json",
             ],
         ),
         Step(
