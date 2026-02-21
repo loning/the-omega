@@ -98,6 +98,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="symq_golden_involution_matrix_audit",
+            script="exp_symq_golden_involution_matrix_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/symq_golden_involution_matrix_audit.json",
+            ],
+        ),
+        Step(
             name="replica_softcore_exceptional_charpoly_galois_audit",
             script="exp_replica_softcore_exceptional_charpoly_galois_audit.py",
             args=[],
