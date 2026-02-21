@@ -85,6 +85,70 @@ inner 假设把每个 \(F_\varrho\)（除去单位模常数后）识别为有限
 由定义 \(\Phi_{-1}=\sum_k P_{a_k}(-1)\) 对乘积严格可加，立即得到所示恒等式；\(\Phi_{-1}(R_{\det})\) 为两通道通量之差。证毕。
 \end{proof}
 
+\begin{conclusion}[端点 Poisson 通量的可审计迹公式：\texorpdfstring{$t=-1$}{t=-1} 处 resolvent 的通道差]\label{con:xi-endpoint-flux-resolvent-trace-channel-difference}
+令 \(u\mapsto M^{\pm}(u)\) 为某个复邻域内解析的有限维算子族，并假设 \(I+M^{\pm}(u)\) 可逆。
+定义行列式比值
+\[
+R(u,t):=\frac{\det(I-tM^{+}(u))}{\det(I-tM^{-}(u))}.
+\]
+若进一步 \(R(u,\cdot)\) 在 \(t=-1\) 处解析且 \(R(u,-1)\neq 0\)，则可定义端点通量
+\[
+\Phi_{-1}(R(u,\cdot))
+:=
+-\Re\left(\frac{\dd}{\dd t}\log R(u,t)\Big|_{t=-1}\right).
+\]
+此时成立严格迹恒等式
+\[
+\boxed{\;
+\Phi_{-1}(R(u,\cdot))
+=
+\Re\,\mathrm{tr}\!\Bigl((I+M^{+}(u))^{-1}M^{+}(u)-(I+M^{-}(u))^{-1}M^{-}(u)\Bigr)\; }.
+\]
+进一步，若存在整数 \(A_{\mathrm{flip}}\ge 1\) 以及算子 \(M_0,B\) 使得在 \(u\downarrow 0\) 下有
+\[
+M^{\pm}(u)=M_0\pm u^{A_{\mathrm{flip}}}B+O\bigl(u^{A_{\mathrm{flip}}+1}\bigr),
+\qquad
+\det(I+M_0)\neq 0,
+\]
+则端点通量差具有首项展开
+\[
+\boxed{\;
+\Phi_{-1}(R(u,\cdot))
+=
+2u^{A_{\mathrm{flip}}}\Re\,\mathrm{tr}\!\Bigl((I+M_0)^{-1}B(I+M_0)^{-1}\Bigr)
++O\bigl(u^{A_{\mathrm{flip}}+1}\bigr)\; }.
+\]
+特别地，若 \(\Re\,\mathrm{tr}\!\bigl((I+M_0)^{-1}B(I+M_0)^{-1}\bigr)\neq 0\)，则 \(\operatorname{ord}_u \Phi_{-1}(R(u,\cdot))=A_{\mathrm{flip}}\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+由恒等式
+\(
+\frac{\dd}{\dd t}\log\det(I-tM)=-\mathrm{tr}\!\bigl((I-tM)^{-1}M\bigr)
+\)
+得
+\[
+\frac{\dd}{\dd t}\log R(u,t)
+=
+-\mathrm{tr}\!\bigl((I-tM^{+}(u))^{-1}M^{+}(u)\bigr)
++\mathrm{tr}\!\bigl((I-tM^{-}(u))^{-1}M^{-}(u)\bigr),
+\]
+代入 \(t=-1\) 并取实部即得第一式。
+\par
+对首项展开，令 \(K:=(I+M_0)^{-1}\)。
+由 Fr\'echet 展开
+\(
+(I+M_0\pm u^{A_{\mathrm{flip}}}B)^{-1}=K\mp u^{A_{\mathrm{flip}}}KBK+O(u^{A_{\mathrm{flip}}+1})
+\)，
+并用恒等式 \((I+M)^{-1}M=I-(I+M)^{-1}\)，
+得到
+\[
+(I+M^{+}(u))^{-1}M^{+}(u)-(I+M^{-}(u))^{-1}M^{-}(u)
+=(I+M^{-}(u))^{-1}-(I+M^{+}(u))^{-1}
+=2u^{A_{\mathrm{flip}}}KBK+O(u^{A_{\mathrm{flip}}+1}),
+\]
+取迹并取实部即得所示首项系数。
+\end{proof}
+
 \begin{conclusion}[端点通量的两条稀疏证书：深度计数上界与端点读出能量预算]\label{con:xi-endpoint-flux-sparsity-and-readout-budget}
 沿用结论 \ref{con:xi-endpoint-flux-operator-trace-identity} 的有限 Blaschke 设定。
 对任意阈值 \(\delta>0\) 定义端点深度计数

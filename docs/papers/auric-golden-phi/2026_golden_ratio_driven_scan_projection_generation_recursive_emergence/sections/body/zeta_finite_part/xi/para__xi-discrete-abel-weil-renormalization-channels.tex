@@ -1,0 +1,220 @@
+\paragraph{抽取算子与 residue-class 通道：Hardy 能量的正交分解与确定性降噪接口}
+底数递归 \(b\mapsto b^k\) 的核心作用是对系数序列作稀疏抽取（命题 \ref{prop:abel-base-recursion-pole-conjugacy}）。
+该抽取不仅在极点位置上实现幂次共轭，同时在 Hardy--Hilbert 能量口径下诱导严格的能量单调性与模 \(k\) 通道分解；后者把“对数尺度残差类”制度化为一组互不混淆的可核验通道，并提供一个完全确定性的能量最小化选择原则。
+
+\begin{definition}[系数抽取算子与 residue-class 通道]\label{def:abel-decimation-operators}
+令 \(f(r)=\sum_{n\ge 0}a_n r^n\) 为形式幂级数，取整数 \(k\ge 1\)。
+定义\textbf{抽取算子}
+\[
+(\mathsf D_k f)(r):=\sum_{n\ge 0}a_{kn}\,r^n,
+\]
+以及对每个 residue 类 \(j\in\{0,1,\dots,k-1\}\) 的\textbf{通道抽取算子}
+\[
+(\mathsf D_{k,j} f)(r):=\sum_{n\ge 0}a_{kn+j}\,r^n.
+\]
+\end{definition}
+
+\begin{proposition}[Hardy 能量的抽取单调性与 residue-class 正交分解]\label{prop:abel-hardy-energy-decimation-orthogonal}
+若 \(f(r)=\sum_{n\ge 0}a_nr^n\in H^2(\mathbb D)\)，则对任意 \(k\ge 1\) 与 \(0\le j\le k-1\) 有 \(\mathsf D_{k,j}f\in H^2(\mathbb D)\) 且满足严格分解
+\begin{equation}\label{eq:abel-hardy-energy-residue-decomposition}
+\boxed{\;
+\|f\|_{H^2(\mathbb D)}^2=\sum_{j=0}^{k-1}\|\mathsf D_{k,j}f\|_{H^2(\mathbb D)}^2\;}
+\end{equation}
+并因此成立单调性
+\[
+\boxed{\;\|\mathsf D_k f\|_{H^2(\mathbb D)}\le \|f\|_{H^2(\mathbb D)}\;}
+\]
+以及平均通道界：存在某个 \(j_\star\in\{0,\dots,k-1\}\) 使
+\[
+\boxed{\;\|\mathsf D_{k,j_\star}f\|_{H^2(\mathbb D)}\le \frac{1}{\sqrt{k}}\,\|f\|_{H^2(\mathbb D)}\; }.
+\]
+\end{proposition}
+\begin{proof}
+由 \(H^2(\mathbb D)\) 的系数刻画，
+\(
+\|f\|_{H^2}^2=\sum_{n\ge 0}|a_n|^2
+\)。
+而 \(\|\mathsf D_{k,j}f\|_{H^2}^2=\sum_{n\ge 0}|a_{kn+j}|^2\)，于是
+\[
+\sum_{j=0}^{k-1}\|\mathsf D_{k,j}f\|_{H^2}^2
+=\sum_{j=0}^{k-1}\sum_{n\ge 0}|a_{kn+j}|^2
+=\sum_{m\ge 0}|a_m|^2
+=\|f\|_{H^2}^2,
+\]
+得到 \eqref{eq:abel-hardy-energy-residue-decomposition}。
+单调性由 \(\|\mathsf D_k f\|_{H^2}^2\le \sum_{j}\|\mathsf D_{k,j}f\|_{H^2}^2\) 立得；平均通道界由最小值不等式
+\(
+\min_j \|\mathsf D_{k,j}f\|_{H^2}^2\le k^{-1}\sum_j\|\mathsf D_{k,j}f\|_{H^2}^2
+\)
+给出。证毕。
+\end{proof}
+
+\begin{remark}[对 \texorpdfstring{$\mathcal A_{b,\delta}$}{A\_{b,δ}} 的通道化]\label{rem:abel-hardy-energy-decimation-applied}
+对 \(k\ge 1\) 与 \(0\le j\le k-1\) 定义
+\[
+\mathcal A_{b,\delta}^{(k,j)}(r):=(\mathsf D_{k,j}\mathcal A_{b,\delta})(r)
+=\sum_{n\ge 0}E_b(kn+j)\,b^{-\delta(kn+j)}\,r^n.
+\]
+则命题 \ref{prop:abel-base-recursion-pole-conjugacy} 可重述为
+\(
+\mathcal A_{b^k,\delta}=\mathsf D_k\mathcal A_{b,\delta}=\mathcal A_{b,\delta}^{(k,0)}
+\)。
+并且在 \(\mathcal A_{b,\delta}\in H^2(\mathbb D)\) 时，命题 \ref{prop:abel-hardy-energy-decimation-orthogonal} 给出能量分解
+\[
+\|\mathcal A_{b,\delta}\|_{H^2}^2=\sum_{j=0}^{k-1}\|\mathcal A_{b,\delta}^{(k,j)}\|_{H^2}^2,
+\qquad
+\|\mathcal A_{b^k,\delta}\|_{H^2}\le \|\mathcal A_{b,\delta}\|_{H^2},
+\]
+并存在 \(j_\star\) 使 \(\|\mathcal A_{b,\delta}^{(k,j_\star)}\|_{H^2}\le k^{-1/2}\|\mathcal A_{b,\delta}\|_{H^2}\)。
+该选择原则不依赖于任何随机性或数值假设，仅由 \(H^2\) 的 Hilbert 结构与 residue 类分拆强制。
+\end{remark}
+
+\paragraph{超临界阻尼下的强吸引子：递归粗化把系统压缩到常数固定点}
+抽取算子 \(\mathsf D_k\) 的另一条结构后果，是当阻尼超过临界阈值 \(\sigma_*-\tfrac12\) 时，底数递归 \(b\mapsto b^k\) 在闭单位圆盘上一致把生成函数收缩到常数项。
+该结论把“误差控制”转写为一个严格的控制论式收缩：在超临界阻尼下，递归粗化必然指数级消隐全部非零频率成分。
+
+\begin{proposition}[超临界阻尼下的强吸引子：底数递归的常数极限]\label{prop:abel-supercritical-damping-constant-attractor}
+令 \(\sigma_*\) 为定理 \ref{thm:radius-captures-sigma-star} 中的最右零点实部上确界。
+若 \(\delta>\sigma_*-\tfrac12\)，则对任意 \(b>1\) 有
+\[
+\mathcal A_{b^k,\delta}(r)\xrightarrow[k\to\infty]{}E_b(0)
+\qquad\text{一致于}\quad |r|\le 1.
+\]
+更具体地，对任意
+\(
+\varepsilon\in\bigl(0,\ \delta-(\sigma_*-\tfrac12)\bigr)
+\)
+存在常数 \(C_{b,\varepsilon}>0\) 使对所有 \(k\ge 1\) 成立显式界
+\begin{equation}\label{eq:abel-supercritical-damping-uniform-rate}
+\boxed{\;
+\sup_{|r|\le 1}\bigl|\mathcal A_{b^k,\delta}(r)-E_b(0)\bigr|
+\le
+\frac{C_{b,\varepsilon}\,b^{-k(\delta-(\sigma_*-\frac12+\varepsilon))}}{1-b^{-k(\delta-(\sigma_*-\frac12+\varepsilon))}}\; }.
+\end{equation}
+特别地，在 RH 下 \(\sigma_*=\tfrac12\)，任意 \(\delta>0\) 皆满足上述强吸引性。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:radius-captures-sigma-star}，\(\mathcal A_b\) 的收敛半径为 \(R_b=b^{-(\sigma_*-\frac12)}\)，因此
+\(
+\limsup_{n\to\infty}|E_b(n)|^{1/n}\le b^{\sigma_*-\frac12}
+\)。
+取任意 \(\varepsilon>0\)，可取常数 \(C_{b,\varepsilon}\) 使得对所有 \(n\ge 0\) 有
+\[
+|E_b(n)|\le C_{b,\varepsilon}\,b^{(\sigma_*-\frac12+\varepsilon)n}.
+\]
+由命题 \ref{prop:abel-base-recursion-pole-conjugacy}，\(\mathcal A_{b^k,\delta}(r)=\sum_{n\ge 0}E_b(kn)b^{-\delta kn}r^n\)，因此
+\[
+\sup_{|r|\le 1}\bigl|\mathcal A_{b^k,\delta}(r)-E_b(0)\bigr|
+\le \sum_{n\ge 1}|E_b(kn)|\,b^{-\delta kn}
+\le C_{b,\varepsilon}\sum_{n\ge 1}b^{-k(\delta-(\sigma_*-\frac12+\varepsilon))n},
+\]
+后者为几何级数并等于 \eqref{eq:abel-supercritical-damping-uniform-rate} 右端。证毕。
+\end{proof}
+
+\paragraph{解析余项的指数塌缩：非谱信息在递归粗化下消隐}
+离散 Abel--Weil 分解中余项 \(H_{b,\delta}\) 在大圆盘内解析（定理 \ref{thm:discrete-abel-weil-expansion} 与命题 \ref{prop:damped-poles}）。
+对解析函数作系数抽取会把其收敛半径幂次放大，从而在闭单位圆盘上一致塌缩到常数项；这给出一个严格的“非谱信息消隐”机制。
+
+\begin{proposition}[解析余项在抽取下的指数塌缩]\label{prop:abel-analytic-remainder-decimation-collapse}
+令 \(H_{b,\delta}(r)=\sum_{n\ge 0}h_n r^n\)，并假设 \(H_{b,\delta}\) 在 \(|r|<b^{1/2+\delta}\) 内解析（命题 \ref{prop:damped-poles}）。
+取任意 \(R\) 满足 \(1<R<b^{1/2+\delta}\)，并令
+\(
+M_R:=\sup_{|z|=R}|H_{b,\delta}(z)|
+\)。
+则对任意 \(k\ge 1\) 与 \(|r|\le 1\) 有
+\begin{equation}\label{eq:abel-remainder-decimation-collapse}
+\boxed{\;
+\bigl|(\mathsf D_k H_{b,\delta})(r)-h_0\bigr|
+\le
+\frac{M_R\,R^{-k}}{1-R^{-k}}\; }.
+\end{equation}
+从而 \(\mathsf D_k H_{b,\delta}\to h_0\) 在闭单位圆盘上一致收敛，且收敛速率至少为 \(R^{-k}\)（可取 \(R\uparrow b^{1/2+\delta}\) 以得到接近 \(b^{-k(1/2+\delta)}\) 的指数率）。
+\end{proposition}
+\begin{proof}
+由 Cauchy 估计，对所有 \(m\ge 0\) 有 \(|h_m|\le M_R R^{-m}\)。
+于是
+\[
+\bigl|(\mathsf D_k H_{b,\delta})(r)-h_0\bigr|
+=\left|\sum_{n\ge 1}h_{kn}\,r^n\right|
+\le \sum_{n\ge 1}|h_{kn}|
+\le \sum_{n\ge 1}M_R R^{-kn}
+=\frac{M_R R^{-k}}{1-R^{-k}},
+\]
+即得 \eqref{eq:abel-remainder-decimation-collapse}。证毕。
+\end{proof}
+
+\paragraph{多底数断别：由不共度对数步长消除相位碰撞}
+在 RH 下，零点虚部 \(\gamma\) 在单位圆边界上以角频率
+\(
+\theta\equiv -\gamma\log b\pmod{2\pi}
+\)
+编码。
+单一底数的相位读出不可避免地存在周期别名；两底数若对数步长不共度，则该别名严格消失，形成可核验的断别接口。
+
+\begin{proposition}[双底去别名：角频率对的单射性]\label{prop:abel-two-base-dealiasing-injectivity}
+假设 RH 成立，并取 \(b_1,b_2>1\) 满足 \(\log b_1/\log b_2\notin\QQ\)。
+对任意固定 \(\delta\ge 0\)，令 \(\rho=\tfrac12+\mathrm{i}\gamma\) 并记其阻尼极点的辐角
+\[
+\arg r_{\rho,\delta}(b)\equiv -\gamma\log b\pmod{2\pi}.
+\]
+则映射
+\[
+\gamma\longmapsto \bigl(\arg r_{\rho,\delta}(b_1),\ \arg r_{\rho,\delta}(b_2)\bigr)\in(\RR/2\pi\ZZ)^2
+\]
+在 \(\RR\) 上为单射。
+\end{proposition}
+\begin{proof}
+若 \(\gamma,\gamma'\) 具有相同像，则
+\[
+(\gamma-\gamma')\log b_1\in 2\pi\ZZ,
+\qquad
+(\gamma-\gamma')\log b_2\in 2\pi\ZZ,
+\]
+从而存在整数 \(m,n\) 使 \((\gamma-\gamma')=\frac{2\pi m}{\log b_1}=\frac{2\pi n}{\log b_2}\)，即
+\(
+\frac{\log b_1}{\log b_2}=\frac{m}{n}\in\QQ
+\)。
+由不共度假设推出只能 \(m=n=0\)，故 \(\gamma=\gamma'\)。证毕。
+\end{proof}
+
+\paragraph{通道的极点展开与相位扭转：同一极点位置上的可控权重喷射}
+residue-class 通道不仅在 \(H^2\) 能量层面正交分解系数，而且在 Abel--Weil 极点展开层面表现为对每个零点模态施加一个确定性的相位扭转因子。
+该结构解释了“通道选择”如何在不改变极点位置的前提下重写模态权重，从而提供与 \S\ref{subsec:cdim-minimal-record-axis} 的“正交外置”语义兼容的确定性调制接口。
+
+\begin{proposition}[residue-class 通道的 Abel--Weil 极点展开：幂次极点与相位扭转]\label{prop:abel-residue-class-channel-pole-expansion}
+沿用命题 \ref{prop:damped-poles} 的记号，并令
+\[
+c_\rho:=b^{\rho-(\frac12+\delta)}.
+\]
+对任意 \(k\ge 1\) 与 \(0\le j\le k-1\)，令 \(\mathcal A_{b,\delta}^{(k,j)}:=\mathsf D_{k,j}\mathcal A_{b,\delta}\) 如注 \ref{rem:abel-hardy-energy-decimation-applied}。
+则在 \(|r|\) 足够小从而交换求和合法时有极点展开
+\begin{equation}\label{eq:abel-channel-pole-expansion}
+\boxed{\;
+\mathcal A_{b,\delta}^{(k,j)}(r)
+=-\sum_{\rho}\frac{c_\rho^{\,j}}{\rho}\cdot\frac{1}{1-c_\rho^{\,k}r}
+\;+\;H_{b,\delta}^{(k,j)}(r)\;}
+\end{equation}
+其中余项 \(H_{b,\delta}^{(k,j)}:=\mathsf D_{k,j}H_{b,\delta}\) 至少在 \(|r|<b^{k(1/2+\delta)}\) 内解析。
+\par
+若进一步假设 RH 成立，\(\rho=\tfrac12+\mathrm{i}\gamma\)，则
+\[
+c_\rho=b^{-\delta}e^{\mathrm{i}\gamma\log b},
+\qquad
+c_\rho^{\,j}=b^{-\delta j}e^{\mathrm{i}j\gamma\log b},
+\]
+即在同一组极点位置 \(r=c_\rho^{-k}\) 之上，通道指数 \(j\) 仅以确定性的相位因子 \(e^{\mathrm{i}j\gamma\log b}\) 与幅度因子 \(b^{-\delta j}\) 扭转每个零点模态权重。
+\end{proposition}
+\begin{proof}
+对几何核 \(K_\rho(r):=(1-c_\rho r)^{-1}=\sum_{m\ge 0}c_\rho^{\,m}r^m\)，直接计算 residue-class 抽取得
+\[
+(\mathsf D_{k,j}K_\rho)(r)=\sum_{n\ge 0}c_\rho^{\,kn+j}r^n
+=c_\rho^{\,j}\sum_{n\ge 0}(c_\rho^{\,k}r)^n
+=\frac{c_\rho^{\,j}}{1-c_\rho^{\,k}r}.
+\]
+将此应用于命题 \ref{prop:damped-poles} 的 Abel--Weil 展开并交换抽取算子与逐项求和，得到 \eqref{eq:abel-channel-pole-expansion}。
+余项的解析半径由 \(\mathsf D_{k,j}\) 对解析函数的系数估计给出：若 \(H_{b,\delta}\) 在 \(|r|<b^{1/2+\delta}\) 内解析，则其系数满足 \(|h_m|\ll b^{-(1/2+\delta)m}\)，从而抽取后满足 \(|h_{kn+j}|\ll b^{-k(1/2+\delta)n}\)，故 \(H_{b,\delta}^{(k,j)}\) 至少在 \(|r|<b^{k(1/2+\delta)}\) 内解析。
+RH 下的相位扭转由 \(c_\rho=b^{\rho-(1/2+\delta)}\) 直接代入得到。证毕。
+\end{proof}
+
+\endinput
+
