@@ -12,6 +12,10 @@ We verify (with SymPy):
   - Hence the number of real roots of Pi(lambda,y)=0 is constant on the four
     real intervals (-inf,y_LY), (y_LY,0), (0,1), (1,inf). We fix the count by a
     Sturm count at one rational sample point in each interval.
+  - The unique real root lambda_LY of the associated cubic
+      g(lambda)=16 lambda^3 - 9 lambda^2 + 1
+    admits a Cardano radical expression with the exact depressed-cubic
+    discriminant Delta = 37 / 2^16, forcing sqrt(37) to appear.
   - The two positive real branches for y>1 admit a Puiseux jet at infinity with
     fractional powers y^{±1/4}; we derive the coefficients by solving the
     coefficient-matching system in the t=y^{-1/4} chart and numerically check.
@@ -55,6 +59,32 @@ def _leyang_real_root(dps: int = 80) -> sp.Float:
     if len(realish) != 1:
         raise RuntimeError(f"Expected exactly one real root of P_LY, got {len(realish)}.")
     return sp.N(realish[0], dps)
+
+
+def _lambda_leyang_real_root(dps: int = 80) -> sp.Float:
+    lam = sp.Symbol("lam")
+    g = 16 * lam**3 - 9 * lam**2 + 1
+    roots = sp.Poly(g, lam).nroots(n=dps)
+    realish: List[sp.Float] = []
+    for r in roots:
+        if abs(sp.im(r)) < sp.Float(10) ** (-(dps // 2)):
+            realish.append(sp.re(r))
+    if len(realish) != 1:
+        raise RuntimeError(f"Expected exactly one real root of g, got {len(realish)}.")
+    return sp.N(realish[0], dps)
+
+
+def _lambda_leyang_cardano(dps: int = 80) -> Tuple[sp.Float, sp.Expr, sp.Expr]:
+    """
+    Return (lambda_LY_numeric, A, B) where
+      lambda_LY = (3 + A + B) / 16,
+      A = real_cuberoot(-101 + 16*sqrt(37)),
+      B = real_cuberoot(-101 - 16*sqrt(37)).
+    """
+    A = sp.real_root(-101 + 16 * sp.sqrt(37), 3)
+    B = sp.real_root(-101 - 16 * sp.sqrt(37), 3)
+    lam_expr = (sp.Integer(3) + A + B) / sp.Integer(16)
+    return sp.N(lam_expr, dps), A, B
 
 
 def _factor_mod(expr: sp.Expr, var: sp.Symbol, p: int) -> str:
@@ -158,6 +188,13 @@ def _positive_real_roots_numeric(y0: sp.Rational, dps: int = 80) -> Tuple[float,
 @dataclass(frozen=True)
 class Payload:
     y_LY: str
+    lambda_LY: str
+    lambda_LY_cardano: str
+    lambda_LY_cardano_abs_err: str
+    y_LY_from_lambda_cardano: str
+    y_LY_from_lambda_cardano_abs_err: str
+    depressed_cubic_discriminant: str
+    depressed_cubic_discriminant_is_37_over_2_16: bool
     P_LY_mod_3: str
     P_LY_mod_31: str
     P_LY_mod_37: str
@@ -187,6 +224,19 @@ def main() -> None:
     P_LY = 256 * y**3 + 411 * y**2 + 165 * y + 32
 
     y_LY = _leyang_real_root(dps=100)
+    lam_LY = _lambda_leyang_real_root(dps=120)
+
+    lam_cardano_num, A_expr, B_expr = _lambda_leyang_cardano(dps=120)
+    lam_cardano_err = sp.N(abs(lam_cardano_num - lam_LY), 60)
+
+    y_from_lam = (4 * lam**3 - 3 * lam**2 - 2 * lam + 1) / (4 * lam)
+    y_cardano = sp.N(y_from_lam.subs(lam, lam_cardano_num), 120)
+    y_cardano_err = sp.N(abs(y_cardano - y_LY), 60)
+
+    # Exact Cardano discriminant for the depressed cubic obtained by lambda=t+3/16.
+    Delta = sp.Rational(101, 4096) ** 2 + sp.Rational(-9, 256) ** 3
+    Delta_simpl = sp.simplify(Delta)
+    Delta_target = sp.Rational(37, 2**16)
 
     # Sample points in the four real intervals.
     samples = {
@@ -212,6 +262,13 @@ def main() -> None:
 
     payload = Payload(
         y_LY=str(y_LY),
+        lambda_LY=str(sp.N(lam_LY, 80)),
+        lambda_LY_cardano=str(sp.N(lam_cardano_num, 80)),
+        lambda_LY_cardano_abs_err=str(lam_cardano_err),
+        y_LY_from_lambda_cardano=str(sp.N(y_cardano, 80)),
+        y_LY_from_lambda_cardano_abs_err=str(y_cardano_err),
+        depressed_cubic_discriminant=str(Delta_simpl),
+        depressed_cubic_discriminant_is_37_over_2_16=bool(Delta_simpl == Delta_target),
         P_LY_mod_3=_factor_mod(P_LY, y, 3),
         P_LY_mod_31=_factor_mod(P_LY, y, 31),
         P_LY_mod_37=_factor_mod(P_LY, y, 37),

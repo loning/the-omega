@@ -107,17 +107,33 @@ g_t(x):=\frac{1}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2}
 \(
 \int_{\RR}|\gamma-\bar\gamma|^3\,\dd\tilde\nu(\gamma)<\infty
 \)。
-则当 \(t\to\infty\) 时成立二阶尺度律：
+则当 \(t\to\infty\) 时成立二阶尺度与常数律：
 \[
 \|h_t-g_t\|_{L^1(\RR)}\ \asymp\ t^{-2}\cdot \mathrm{Var},
 \qquad
-D_{\mathrm{KL}}(h_t\mid g_t)\ \asymp\ t^{-4}\cdot \mathrm{Var}^2,
+\chi^2(h_t\mid g_t)=\frac{\mathrm{Var}^2}{4t^4}+o(t^{-4}),
+\qquad
+D_{\mathrm{KL}}(h_t\mid g_t)=\frac{\mathrm{Var}^2}{8t^4}+o(t^{-4}),
 \]
-其中相对熵取经典形式
+其中
+\[
+D_{\mathrm{KL}}(h\mid g):=\int_{\RR} h(x)\log\!\frac{h(x)}{g(x)}\,\dd x,
+\qquad
+\chi^2(h\mid g):=\int_{\RR}\frac{(h(x)-g(x))^2}{g(x)}\,\dd x.
+\]
+并且二者在二次项上满足等价关系
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)=\frac12\,\chi^2(h_t\mid g_t)+o(t^{-4}).
+\]
+从而
 \(
-D_{\mathrm{KL}}(h\mid g):=\int_{\RR} h(x)\log\!\frac{h(x)}{g(x)}\,\dd x
+\lim_{t\to\infty} t^4D_{\mathrm{KL}}(h_t\mid g_t)=\mathrm{Var}^2/8
+\)
+且
+\(
+\lim_{t\to\infty} t^4\chi^2(h_t\mid g_t)=\mathrm{Var}^2/4
 \)。
-特别地，当 \(\mathrm{Var}=0\) 时 \(h_t\equiv g_t\) 从而两者恒为 \(0\)；当 \(\mathrm{Var}>0\) 时，上式的隐含常数可取为与 \(\tilde\nu\) 无关的绝对常数。
+特别地，当 \(\mathrm{Var}=0\) 时 \(h_t\equiv g_t\) 从而上述距离与散度恒为 \(0\)；当 \(\mathrm{Var}>0\) 时，\(\|h_t-g_t\|_{L^1}\asymp t^{-2}\mathrm{Var}\) 中的隐含常数可取为与 \(\tilde\nu\) 无关的绝对常数。
 \end{proposition}
 \begin{proof}[证明要点]
 由命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form}，写作
@@ -139,20 +155,45 @@ r_t(x):=\frac{1}{\pi}\,
 \]
 从而得到 \(\|h_t-g_t\|_{L^1}\asymp \mathrm{Var}\,t^{-2}\)。
 \par
-对相对熵，注意 \(h_t/g_t=1+O(\mathrm{Var}\,t^{-2})\) 在 \(t\) 充分大时一致有界；
-对 \(\log(1+u)\) 作二阶展开并利用 \(\int(h_t-g_t)=0\) 消去线性项，可得
+由定义
+\(
+\chi^2(h_t\mid g_t)=\int_{\RR}\frac{(h_t-g_t)^2}{g_t}\,\dd x
+\)。
+将 \(h_t-g_t=\mathrm{Var}\,r_t+\varepsilon_t\) 代入并展开平方，
+利用 \(\sup_x|\varepsilon_t(x)|=O(t^{-4})\) 与 \(\|\varepsilon_t\|_{L^1}=O(t^{-3})\)，得到
+\[
+\chi^2(h_t\mid g_t)
+=\mathrm{Var}^2\int_{\RR}\frac{r_t(x)^2}{g_t(x)}\,\dd x+o(t^{-4}).
+\]
+对主项作代换 \(x=\bar\gamma+ty\)，并用恒等式
+\[
+\frac{r_t(\bar\gamma+ty)^2}{g_t(\bar\gamma+ty)}=\frac{1}{\pi t^5}\,\frac{(3y^2-1)^2}{(1+y^2)^5},
+\]
+得到
+\[
+\int_{\RR}\frac{r_t(x)^2}{g_t(x)}\,\dd x
+=\frac{1}{t^4}\int_{\RR}\frac{(3y^2-1)^2}{\pi(1+y^2)^5}\,\dd y
+=\frac{1}{4t^4},
+\]
+其中最后一步可由标准积分
+\(
+\int_{\RR}(1+y^2)^{-n}\dd y=\pi\frac{(2n-3)!!}{(2n-2)!!}
+\)
+化简得到。
+从而 \(\chi^2(h_t\mid g_t)=\mathrm{Var}^2/(4t^4)+o(t^{-4})\)。
+\par
+对相对熵，令 \(u_t:=h_t/g_t-1\)。由 \(u_t=O(t^{-2})\) 与 \(\int g_tu_t=\int(h_t-g_t)=0\)，
+对 \((1+u)\log(1+u)\) 作二阶展开得到
 \[
 D_{\mathrm{KL}}(h_t\mid g_t)
-=\frac12\int_{\RR}\frac{(h_t-g_t)^2}{g_t}\,\dd x\ +\ o(t^{-4})
-\asymp \mathrm{Var}^2\,t^{-4},
+=\frac12\int_{\RR} g_t\,u_t^2\,\dd x+O\!\left(\int_{\RR} g_t|u_t|^3\,\dd x\right)
+=\frac12\,\chi^2(h_t\mid g_t)+o(t^{-4}),
 \]
-其中主项常数由
-\(
-\int_{\RR}\frac{(3y^2-1)^2}{\pi(1+y^2)^5}\,\dd y
-\)
-给出并严格正。证毕。
+其中 \(o(t^{-4})\) 由 \(\|u_t\|_\infty=O(t^{-2})\) 与 \(\int g_tu_t^2=\chi^2(h_t\mid g_t)=O(t^{-4})\) 保证。
+证毕。
 \end{proof}
-
+\input{con__xi-poisson-distinguishability-trinity}
+\input{cor__xi-poisson-density-ratio-second-order-profile}
 \begin{theorem}[Cauchy--Poisson 粗粒化下 \texorpdfstring{$L^1$}{L1} 距离的锐渐近常数]\label{thm:xi-cauchy-poisson-tv-sharp-constant}
 沿用命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form} 的设定，并记
 \[
@@ -412,20 +453,20 @@ D_f(h_t\mid g_t)
 \end{proof}
 
 \begin{corollary}[\texorpdfstring{$t^{-4}$}{t^{-4}} 速率的刚性]\label{cor:xi-cauchy-poisson-kl-rigidity}
-在定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的条件下，若
+在命题 \ref{prop:xi-poisson-tv-kl-second-order} 的矩条件下，
 \[
 D_{\mathrm{KL}}(h_t\mid g_t)=o(t^{-4})\qquad(t\to\infty),
 \]
-则 \(\sigma^2=0\)，从而 \(\tilde\nu=\delta_{\bar\gamma}\) 且对一切 \(t>0\) 有 \(h_t\equiv g_t\)。
+当且仅当 \(\sigma^2=0\)。此时 \(\tilde\nu=\delta_{\bar\gamma}\)，并且对一切 \(t>0\) 有 \(h_t\equiv g_t\)。
 \end{corollary}
 
 \begin{proof}
-由 \eqref{eq:xi-cauchy-poisson-kl-sharp-asymptotics} 的首项
+由命题 \ref{prop:xi-poisson-tv-kl-second-order}，
 \(
-D_{\mathrm{KL}}(h_t\mid g_t)=\sigma^4/(8t^4)+O(t^{-6})
-\)
-可知 \(o(t^{-4})\) 强制 \(\sigma^4=0\)，即 \(\sigma^2=0\)。
-零方差迫使 \(\tilde\nu\) 为点质量 \(\delta_{\bar\gamma}\)，从而 \(h_t=P_t*\tilde\nu=g_t\)。证毕。
+t^4D_{\mathrm{KL}}(h_t\mid g_t)\to \sigma^4/8
+\)。
+因此 \(D_{\mathrm{KL}}(h_t\mid g_t)=o(t^{-4})\) 等价于 \(\sigma^4=0\)，等价于 \(\sigma^2=0\)。
+当 \(\sigma^2=0\) 时 \(\tilde\nu=\delta_{\bar\gamma}\)，从而 \(h_t=P_t*\tilde\nu=g_t\) 并推出反向蕴含。证毕。
 \end{proof}
 
 \begin{corollary}[族内二阶 Pinsker 比值常数]\label{cor:xi-cauchy-poisson-pinsker-sharp-ratio}

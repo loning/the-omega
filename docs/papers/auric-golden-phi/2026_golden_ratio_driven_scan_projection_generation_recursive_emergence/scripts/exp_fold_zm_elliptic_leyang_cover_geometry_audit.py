@@ -32,6 +32,8 @@ We verify (symbolically, with SymPy):
   - Puiseux expansions at y=0,1 (checked to O(t^4)), and the general formula
       c0^2 = -2 F_y / F_xx = (2/3)*(3alpha^2-1)/(alpha^2-1)
     at the Lee–Yang branch points.
+  - Puiseux expansion at y=infty in the t-uniformizer with y=t^(-4), matching the
+    manuscript coefficients up to O(t^4).
   - The next Puiseux jet coefficient on the Lee–Yang branch points:
       beta = -F_xy/F_xx + (F_xxx*F_y)/(3 F_xx^2),
     reduced to a closed rational function of the critical eigenvalue.
@@ -126,6 +128,8 @@ class Payload:
     disc_leyang: int
     puiseux_y0_0_ok: bool
     puiseux_y0_1_ok: bool
+    puiseux_infty_ok: bool
+    puiseux_infty_branches_ok: bool
     c0_sq_formula_ok: bool
     beta_formula_ok: bool
     gamma_formula_ok: bool
@@ -302,6 +306,24 @@ def main() -> None:
     expr1p = sp.expand(F.subs({X: X_series_1_plus, y: 1 - t**2}))
     expr1m = sp.expand(F.subs({X: X_series_1_minus, y: 1 - t**2}))
     puiseux_y0_1_ok = _series_order_at_least(expr1p, t, 4) and _series_order_at_least(expr1m, t, 4)
+
+    # Puiseux check near y=infty: set y=t^(-4) and solve for the x-branch lambda(t).
+    # We validate the manuscript jet by checking F(lambda(t), t^(-4)) * t^8 = O(t^8).
+    lam_infty = (
+        t ** (-2)
+        + sp.Rational(1, 2) * t ** (-1)
+        + sp.Rational(1, 4)
+        + sp.Rational(7, 64) * t
+        + sp.Rational(37, 128) * t**2
+        - sp.Rational(729, 4096) * t**3
+    )
+    expr_inf = sp.expand(F.subs({X: lam_infty, y: t ** (-4)}) * t**8)
+    puiseux_infty_ok = _series_order_at_least(expr_inf, t, 8)
+    puiseux_infty_branches_ok = True
+    for k in range(4):
+        lam_k = sp.expand(lam_infty.subs(t, (sp.I**k) * t))
+        expr_k = sp.expand(F.subs({X: lam_k, y: t ** (-4)}) * t**8)
+        puiseux_infty_branches_ok = puiseux_infty_branches_ok and _series_order_at_least(expr_k, t, 8)
 
     # General coefficient formula at Lee–Yang branch points.
     a = sp.Symbol("a")
@@ -523,6 +545,8 @@ def main() -> None:
         disc_leyang=int(disc_leyang),
         puiseux_y0_0_ok=puiseux_y0_0_ok,
         puiseux_y0_1_ok=puiseux_y0_1_ok,
+        puiseux_infty_ok=puiseux_infty_ok,
+        puiseux_infty_branches_ok=puiseux_infty_branches_ok,
         c0_sq_formula_ok=c0_sq_formula_ok,
         beta_formula_ok=beta_formula_ok,
         gamma_formula_ok=gamma_formula_ok,
@@ -554,6 +578,7 @@ def main() -> None:
         f" norm={norm_identity_ok} norm2div={norm_2division_ok} norm2Y={norm_2Y_ok}"
         f" resy={resy_F_Fx_factor_ok} resFg={res_F_cubicx_factor_ok} y(-P)={y_of_minus_P}"
         f" puiseux0={puiseux_y0_0_ok} puiseux1={puiseux_y0_1_ok}"
+        f" puiseuxInf={puiseux_infty_ok} puiseuxInf4={puiseux_infty_branches_ok}"
         f" c0sq={c0_sq_formula_ok} beta={beta_formula_ok} gamma={gamma_formula_ok}"
         f" genusS4={genus_s4} genus2={genus2} genus6={genus6} seconds={dt:.3f}",
         flush=True,

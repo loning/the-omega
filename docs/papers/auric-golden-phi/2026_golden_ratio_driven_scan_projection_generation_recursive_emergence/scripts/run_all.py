@@ -2932,6 +2932,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_branch_puiseux_coeff_cubic_audit",
+            script="exp_fold_zm_branch_puiseux_coeff_cubic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_branch_puiseux_coeff_cubic_audit.json",
+                "sections/generated/eq_fold_zm_branch_puiseux_coeff_cubic_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_pi_specialization_discriminant_ab_audit",
             script="exp_fold_zm_pi_specialization_discriminant_ab_audit.py",
             args=[],
