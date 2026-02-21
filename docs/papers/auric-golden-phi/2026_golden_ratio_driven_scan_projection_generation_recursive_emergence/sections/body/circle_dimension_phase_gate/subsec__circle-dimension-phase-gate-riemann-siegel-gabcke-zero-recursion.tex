@@ -1,0 +1,231 @@
+\subsection{Riemann--Siegel--Gabcke 层级的零点区间证书：零点轨迹与递归误差控制}\label{subsec:cdim-rs-gabcke-zero-recursion}
+在 unitary slice 的离线核验语义中，零点不是地址对象：其指称必须由共终端细化链在逆极限意义下实现（命题 \ref{prop:cdim-certificate-inverse-limit-addressing}，注 \ref{rem:cdim-zero-not-address}）。
+因此，“核验零点”应被表述为一类可编译的证书对象：给出随精度索引递增而嵌套收缩的根区间族，并提供确定性规则将该证书链与真实零点对齐。
+\par
+经典 Riemann--Siegel 公式及 Gabcke 的高阶余项展开为 Hardy 实值化函数
+\begin{equation}\label{eq:cdim-hardyzeta-def}
+Z_{\zeta}(t):=e^{\mathrm{i}\theta_{\mathrm{RS}}(t)}\zeta\!\left(\tfrac12+\mathrm{i}t\right)\in\RR,\qquad t\in\RR,
+\end{equation}
+提供一族以截断阶 \(K\in\NN\cup\{0\}\) 参数化的显式近似 \(Z_{\zeta,K}\)（其主体为有限和并带有 \(t^{-1/4}\) 型的渐近余项；见 \cite{Titchmarsh1986RiemannZeta,Gabcke1979RiemannSiegelRemainder}，以及快速求值背景 \cite{Hiary2011FastZeta}）。
+为把该层级直接接入本章的“有限数据证书 + 确定性离线验证器”口径，下述结果仅假设存在可计算的误差上界与一阶导数误差上界。
+\par
+对每个 \(K\ge 0\)，假设存在常数 \(A_K,B_K>0\) 与阈值 \(T_0(K)>0\)，使得对所有 \(t\ge T_0(K)\) 成立
+\begin{align}
+\abs{Z_{\zeta}(t)-Z_{\zeta,K}(t)}
+&\le A_K\,t^{-1/4-(K+1)/2},\label{eq:cdim-rs-gabcke-error0}\\
+\abs{Z_{\zeta}'(t)-Z_{\zeta,K}'(t)}
+&\le B_K\,t^{-3/4-(K+1)/2}.\label{eq:cdim-rs-gabcke-error1}
+\end{align}
+在 Riemann--Siegel--Gabcke 层级中，上述界可由余项展开的显式控制给出，并具有“主阶 \(t^{-1/4}\) 且每增加一项提升 \(t^{-1/2}\) 阶”的结构。
+\par
+为便于后续把层级差分 \(\Delta_{K+1}:=Z_{\zeta,K+1}-Z_{\zeta,K}\) 显式化，记一类标准形
+\begin{equation}\label{eq:cdim-rs-gabcke-delta}
+\Delta_{K+1}(t)=t^{-1/4}\frac{C_{K+1}\!\bigl(z_{\mathrm{RS}}(t)\bigr)}{t^{(K+1)/2}},
+\end{equation}
+其中 \(z_{\mathrm{RS}}(t)\in[0,1]\) 为由 \(\sqrt{t/(2\pi)}\) 的小数部分构造的相位参数，而 \(C_{K+1}\) 为显式系数函数（其具体封装方式依实现而定；本节仅使用其有界性输入）。
+
+\begin{theorem}[层级截断诱导的单零点稳定性与递归步长界]\label{thm:cdim-rs-gabcke-local-zero-stability}
+设 \(\gamma>0\) 满足 \(Z_{\zeta}(\gamma)=0\) 且 \(Z_{\zeta}'(\gamma)\neq 0\)。
+取 \(\rho>0\)，令 \(I:=[\gamma-\rho,\gamma+\rho]\)，并假设
+\begin{equation}\label{eq:cdim-rs-gabcke-local-slope}
+\inf_{t\in I}\abs{Z_{\zeta}'(t)}\ge m>0.
+\end{equation}
+固定 \(K\ge 0\)，并假设 \(I\subseteq[T_0(K+1),\infty)\) 且
+\begin{equation}\label{eq:cdim-rs-gabcke-local-smallness}
+A_K(\gamma-\rho)^{-1/4-(K+1)/2}\le \frac{m\rho}{4},
+\qquad
+B_K(\gamma-\rho)^{-3/4-(K+1)/2}\le \frac{m}{4}.
+\end{equation}
+则成立：
+\begin{enumerate}
+  \item \(Z_{\zeta,K}\) 在 \(I\) 内存在唯一零点 \(\gamma^{(K)}\)，且该零点为单零点。
+  \item \(\gamma^{(K)}\) 对真零点 \(\gamma\) 具有显式误差界
+  \begin{equation}\label{eq:cdim-rs-gabcke-zero-location-bound}
+  \abs{\gamma^{(K)}-\gamma}\le \frac{A_K}{m}\,(\gamma-\rho)^{-1/4-(K+1)/2}.
+  \end{equation}
+  \item 令 \(\gamma^{(K+1)}\) 为 \(Z_{\zeta,K+1}\) 在 \(I\) 内的唯一零点，并记 \(\Delta_{K+1}=Z_{\zeta,K+1}-Z_{\zeta,K}\)。
+  则存在 \(\xi_K\) 介于 \(\gamma^{(K)}\) 与 \(\gamma^{(K+1)}\) 之间，使得递归恒等式
+  \begin{equation}\label{eq:cdim-rs-gabcke-zero-recursion-identity}
+  \gamma^{(K+1)}-\gamma^{(K)}=-\frac{\Delta_{K+1}\!\bigl(\gamma^{(K)}\bigr)}{Z_{\zeta,K+1}'(\xi_K)}
+  \end{equation}
+  成立。
+  若进一步对 \(K{+}1\) 亦有
+  \begin{equation}\label{eq:cdim-rs-gabcke-local-smallness-kp1}
+  B_{K+1}(\gamma-\rho)^{-3/4-(K+2)/2}\le \frac{m}{4},
+  \end{equation}
+  则得到显式步长界
+  \begin{equation}\label{eq:cdim-rs-gabcke-zero-step-bound}
+  \abs{\gamma^{(K+1)}-\gamma^{(K)}}\le \frac{2}{m}\,\sup_{t\in I}\abs{\Delta_{K+1}(t)}.
+  \end{equation}
+  在标准形 \eqref{eq:cdim-rs-gabcke-delta} 下，进一步有
+  \begin{equation}\label{eq:cdim-rs-gabcke-zero-step-bound-Ck}
+  \sup_{t\in I}\abs{\Delta_{K+1}(t)}
+  \le \Bigl(\sup_{z\in[0,1]}\abs{C_{K+1}(z)}\Bigr)\,(\gamma-\rho)^{-1/4-(K+1)/2}.
+  \end{equation}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:cdim-rs-gabcke-local-slope} 知 \(Z_{\zeta}'\) 在 \(I\) 上处处非零且连续，故其符号在 \(I\) 上恒定，从而 \(Z_{\zeta}\) 在 \(I\) 上严格单调。
+取端点 \(a=\gamma-\rho\)、\(b=\gamma+\rho\)，由中值定理，
+\[
+\abs{Z_{\zeta}(a)}=\abs{Z_{\zeta}(a)-Z_{\zeta}(\gamma)}\ge m\rho,
+\qquad
+\abs{Z_{\zeta}(b)}\ge m\rho,
+\]
+且由于严格单调并穿越 \(0\)，\(Z_{\zeta}(a)\) 与 \(Z_{\zeta}(b)\) 异号。
+\par
+由 \eqref{eq:cdim-rs-gabcke-error0} 与 \(a,b\ge \gamma-\rho\) 得
+\[
+\abs{Z_{\zeta,K}(a)-Z_{\zeta}(a)}
+\le A_K(\gamma-\rho)^{-1/4-(K+1)/2}\le \frac{m\rho}{4},
+\]
+故 \(Z_{\zeta,K}(a)\) 与 \(Z_{\zeta}(a)\) 同号；同理 \(Z_{\zeta,K}(b)\) 与 \(Z_{\zeta}(b)\) 同号，从而 \(Z_{\zeta,K}(a)\) 与 \(Z_{\zeta,K}(b)\) 异号。
+因此 \(Z_{\zeta,K}\) 在 \(I\) 内至少存在一零点。
+\par
+再由 \eqref{eq:cdim-rs-gabcke-error1} 及 \eqref{eq:cdim-rs-gabcke-local-smallness}，对任意 \(t\in I\) 有
+\[
+\abs{Z_{\zeta,K}'(t)}
+\ge \abs{Z_{\zeta}'(t)}-\abs{Z_{\zeta}'(t)-Z_{\zeta,K}'(t)}
+\ge m-\frac{m}{4}=\frac{3m}{4}>0.
+\]
+故 \(Z_{\zeta,K}\) 在 \(I\) 上严格单调，其零点唯一，且为单零点。
+\par
+令该唯一零点为 \(\gamma^{(K)}\)。
+由 \(Z_{\zeta,K}(\gamma^{(K)})=0\) 与 \eqref{eq:cdim-rs-gabcke-error0} 得
+\[
+\abs{Z_{\zeta}(\gamma^{(K)})}
+=\abs{Z_{\zeta}(\gamma^{(K)})-Z_{\zeta,K}(\gamma^{(K)})}
+\le A_K(\gamma-\rho)^{-1/4-(K+1)/2}.
+\]
+再对 \(Z_{\zeta}\) 在 \(\gamma\) 与 \(\gamma^{(K)}\) 之间应用中值定理：
+存在 \(\eta\) 介于二者之间使 \(Z_{\zeta}(\gamma^{(K)})-Z_{\zeta}(\gamma)=Z_{\zeta}'(\eta)(\gamma^{(K)}-\gamma)\)。
+由 \(\abs{Z_{\zeta}'(\eta)}\ge m\) 得到 \eqref{eq:cdim-rs-gabcke-zero-location-bound}。
+\par
+最后，注意到 \(\Delta_{K+1}=Z_{\zeta,K+1}-Z_{\zeta,K}\) 且 \(Z_{\zeta,K}(\gamma^{(K)})=0\)，故
+\(
+Z_{\zeta,K+1}(\gamma^{(K)})=\Delta_{K+1}(\gamma^{(K)})
+\)。
+令 \(\gamma^{(K+1)}\) 为 \(Z_{\zeta,K+1}\) 在 \(I\) 内唯一零点，则对 \(Z_{\zeta,K+1}\) 在区间 \([\gamma^{(K)},\gamma^{(K+1)}]\) 应用中值定理，存在 \(\xi_K\) 介于二者之间，使
+\[
+0-Z_{\zeta,K+1}(\gamma^{(K)})
+=Z_{\zeta,K+1}'(\xi_K)\bigl(\gamma^{(K+1)}-\gamma^{(K)}\bigr),
+\]
+即得 \eqref{eq:cdim-rs-gabcke-zero-recursion-identity}。
+若 \eqref{eq:cdim-rs-gabcke-local-smallness-kp1} 成立，则同上可得 \(\abs{Z_{\zeta,K+1}'(\xi_K)}\ge 3m/4\ge m/2\)，遂推出 \eqref{eq:cdim-rs-gabcke-zero-step-bound}。
+\eqref{eq:cdim-rs-gabcke-zero-step-bound-Ck} 由 \eqref{eq:cdim-rs-gabcke-delta} 与 \(t\ge \gamma-\rho\) 直接得出。证毕。
+\end{proof}
+
+\begin{corollary}[紧化相位坐标中的二次增益：零点区间的额外压缩]\label{cor:cdim-rs-gabcke-compactified-quadratic-gain}
+在定理 \ref{thm:cdim-rs-gabcke-local-zero-stability} 的假设下，令紧化相位坐标
+\[
+u(t):=\upsilon(t)=\frac{1}{\pi}\arctan t\in\Bigl(-\frac12,\frac12\Bigr),
+\qquad
+u'(t)=\frac{1}{\pi(1+t^2)}.
+\]
+则
+\begin{equation}\label{eq:cdim-rs-gabcke-compactified-zero-bound}
+\abs{u(\gamma^{(K)})-u(\gamma)}
+\le \frac{1}{\pi\bigl(1+(\gamma-\rho)^2\bigr)}\,\abs{\gamma^{(K)}-\gamma}
+\le \frac{A_K}{m\pi\bigl(1+(\gamma-\rho)^2\bigr)}\,(\gamma-\rho)^{-1/4-(K+1)/2}.
+\end{equation}
+特别地，当 \(\gamma\to\infty\) 且 \(\rho=o(\gamma)\) 时，
+\begin{equation}\label{eq:cdim-rs-gabcke-compactified-asymptotic}
+\abs{u(\gamma^{(K)})-u(\gamma)}
+\ll \frac{A_K}{m\pi}\,\gamma^{-9/4-(K+1)/2}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+由均值定理，存在 \(\xi\) 介于 \(\gamma\) 与 \(\gamma^{(K)}\) 之间，使
+\(
+\abs{u(\gamma^{(K)})-u(\gamma)}=\abs{u'(\xi)}\,\abs{\gamma^{(K)}-\gamma}
+\)。
+由于 \(\xi\in I\)，故 \(\abs{u'(\xi)}\le 1/(\pi(1+(\gamma-\rho)^2))\)，代入 \eqref{eq:cdim-rs-gabcke-zero-location-bound} 即得 \eqref{eq:cdim-rs-gabcke-compactified-zero-bound}。
+而当 \(\gamma\to\infty\) 且 \(\rho=o(\gamma)\) 时，\((1+(\gamma-\rho)^2)^{-1}\asymp \gamma^{-2}\)，遂得 \eqref{eq:cdim-rs-gabcke-compactified-asymptotic}。证毕。
+\end{proof}
+
+\begin{proposition}[序号推进与精度推进的近似可交换性]\label{prop:cdim-rs-gabcke-recursions-almost-commute}
+设 \(\{\gamma_n\}_{n\ge 1}\) 为 \(Z_{\zeta}\) 的正单零点序列，且对每个 \(n\) 与固定阶 \(K\) 存在区间 \(I_n\) 满足定理 \ref{thm:cdim-rs-gabcke-local-zero-stability} 的局部非退化条件，使得 \(Z_{\zeta,K}\) 在 \(I_n\) 内存在唯一零点，记为 \(\gamma_n^{(K)}\)。
+\par
+定义两类递归算子：
+\begin{enumerate}
+  \item 序号推进：\(\mathcal A_K:\gamma_n^{(K)}\mapsto \gamma_{n+1}^{(K)}\)；
+  \item 精度推进：\(\mathcal R_n:\gamma_n^{(K)}\mapsto \gamma_n^{(K+1)}\)。
+\end{enumerate}
+则交换子满足
+\begin{equation}\label{eq:cdim-rs-gabcke-commutator-bound}
+\Bigl|
+\bigl(\mathcal A_{K+1}\circ\mathcal R_n\bigr)(\gamma_n^{(K)})
+-\bigl(\mathcal R_{n+1}\circ\mathcal A_K\bigr)(\gamma_n^{(K)})
+\Bigr|
+\le
+\abs{\gamma_{n+1}^{(K+1)}-\gamma_{n+1}^{(K)}}
+\;+\;
+\abs{\gamma_{n}^{(K+1)}-\gamma_{n}^{(K)}}.
+\end{equation}
+若对 \(I_n\) 与 \(I_{n+1}\) 的导数下界分别为 \(m_n,m_{n+1}\)，并且层级差分 \(\Delta_{K+1}\) 在相应区间上满足定理 \ref{thm:cdim-rs-gabcke-local-zero-stability} 的步长界条件，则进一步有
+\begin{equation}\label{eq:cdim-rs-gabcke-commutator-stepbound}
+\Bigl|
+\bigl(\mathcal A_{K+1}\circ\mathcal R_n\bigr)(\gamma_n^{(K)})
+-\bigl(\mathcal R_{n+1}\circ\mathcal A_K\bigr)(\gamma_n^{(K)})
+\Bigr|
+\le
+\frac{2}{m_{n+1}}\sup_{t\in I_{n+1}}\abs{\Delta_{K+1}(t)}
+\;+\;
+\frac{2}{m_{n}}\sup_{t\in I_{n}}\abs{\Delta_{K+1}(t)}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+由定义，
+\[
+\bigl(\mathcal A_{K+1}\circ\mathcal R_n\bigr)(\gamma_n^{(K)})=\gamma_{n+1}^{(K+1)},
+\qquad
+\bigl(\mathcal R_{n+1}\circ\mathcal A_K\bigr)(\gamma_n^{(K)})=\gamma_{n+1}^{(K)},
+\]
+且 \(\mathcal R_n(\gamma_n^{(K)})=\gamma_n^{(K+1)}\)。
+于是左侧即为
+\(
+\abs{\gamma_{n+1}^{(K+1)}-\gamma_{n+1}^{(K)}-(\gamma_n^{(K+1)}-\gamma_n^{(K)})}
+\)，
+由三角不等式得到 \eqref{eq:cdim-rs-gabcke-commutator-bound}。
+\eqref{eq:cdim-rs-gabcke-commutator-stepbound} 由定理 \ref{thm:cdim-rs-gabcke-local-zero-stability} 的步长界 \eqref{eq:cdim-rs-gabcke-zero-step-bound} 分别应用于 \(I_n\) 与 \(I_{n+1}\) 得出。证毕。
+\end{proof}
+
+\begin{theorem}[层级余项阶与二进制认证精度的增益律]\label{thm:cdim-rs-gabcke-bit-gain}
+保持定理 \ref{thm:cdim-rs-gabcke-local-zero-stability} 的设定，并设 \(\gamma\asymp T\to\infty\)。
+对目标误差 \(\varepsilon\in(0,\rho)\)，若满足
+\begin{equation}\label{eq:cdim-rs-gabcke-target-eps}
+\frac{A_K}{m}\,T^{-1/4-(K+1)/2}\le \varepsilon,
+\end{equation}
+则 \(\abs{\gamma^{(K)}-\gamma}\le \varepsilon\)。
+取 \(\varepsilon=2^{-J}\)（以 \(J\) 个二进制位计量零点位置的认证精度），则 \eqref{eq:cdim-rs-gabcke-target-eps} 等价于
+\begin{equation}\label{eq:cdim-rs-gabcke-bit-bound}
+J\ \le\ \Bigl(\frac14+\frac{K+1}{2}\Bigr)\log_2 T\ -\ \log_2\!\Bigl(\frac{A_K}{m}\Bigr).
+\end{equation}
+因此在 \(A_K\) 的增长受控（例如 \(K\) 固定或温和增长）时，\(K\mapsto K+1\) 的主项增益为
+\[
+J(T,K+1)-J(T,K)=\frac12\log_2 T+O(1),
+\]
+即每增加一阶余项可在高度 \(T\) 处带来约 \((\tfrac12\log_2 T)\) 位的认证精度提升。
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:cdim-rs-gabcke-zero-location-bound}（取 \(\rho=o(T)\) 并吸收入常数）得
+\(
+\abs{\gamma^{(K)}-\gamma}\le (A_K/m)\,T^{-1/4-(K+1)/2}
+\)。
+若右侧不超过 \(\varepsilon\) 则结论成立，从而得到 \eqref{eq:cdim-rs-gabcke-target-eps}。
+取 \(\varepsilon=2^{-J}\) 并取二进制对数即得 \eqref{eq:cdim-rs-gabcke-bit-bound}；对 \(K\) 作差分得到主项增益。证毕。
+\end{proof}
+
+\begin{conjecture}[高位零点的单侧层级收敛]\label{conj:cdim-rs-gabcke-one-sided-convergence}
+固定零点序号 \(n\) 并令 \(\gamma_n\to\infty\)。
+设 \(\gamma_n^{(K)}\) 为 \(Z_{\zeta,K}\) 在 \(\gamma_n\) 邻域内的唯一零点（当层级近似在该高度区间内有效时）。
+则存在随高度增长的可用层级范围 \(0\le K\le K_\star(\gamma_n)\)，使得对充分大的 \(\gamma_n\)，序列 \(K\mapsto \gamma_n^{(K)}\) 在 \(0\le K\le K_\star(\gamma_n)\) 上呈单调，且从同一侧逼近 \(\gamma_n\)：
+\[
+\exists\,\sigma_n\in\{+1,-1\},\ \forall\,0\le K<K_\star(\gamma_n),\qquad
+\sigma_n\bigl(\gamma_n^{(K+1)}-\gamma_n^{(K)}\bigr)>0,
+\quad
+\gamma_n^{(K)}\to\gamma_n.
+\]
+\end{conjecture}
+
+\endinput

@@ -2822,6 +2822,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_leyang_lattes_joint_splitting_density_audit",
+            script="exp_fold_zm_leyang_lattes_joint_splitting_density_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_lattes_joint_splitting_density_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_leyang_resy_spectral_decomposition_audit",
             script="exp_fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.py",
             args=[],
@@ -2929,6 +2937,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_leyang_discriminant_ridge_difference_square_audit.json",
                 "sections/generated/eq_fold_zm_leyang_discriminant_ridge_difference_square_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_discriminant_ridge_bad_reduction_31_37_audit",
+            script="exp_fold_zm_discriminant_ridge_bad_reduction_31_37_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_bad_reduction_31_37_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_bad_reduction_31_37_audit.tex",
             ],
         ),
         Step(

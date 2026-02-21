@@ -1,0 +1,261 @@
+\paragraph{高阶校正项与结构刚性：全变差、相对熵与耗散的次主常数}
+沿用命题 \ref{prop:cdim-poisson-l1-second-order-constant} 与命题 \ref{prop:cdim-poisson-kl-constant-one-eighth} 的单参设定：
+令 \(\nu\) 为 \(\RR\) 上概率测度，\(\bar\gamma:=\int \gamma\,\dd\nu(\gamma)\)，\(\Delta:=\gamma-\bar\gamma\)，并记中心矩
+\[
+\mu_k:=\EE[\Delta^k]\qquad(k\ge 2),
+\qquad
+\sigma^2:=\mu_2>0.
+\]
+对 \(t>0\) 令 \(P_t(x)=\frac{1}{\pi}\frac{t}{x^2+t^2}\)，并定义粗粒化
+\[
+h_t(x):=\int_{\RR}P_t(x-\gamma)\,\dd\nu(\gamma),
+\qquad
+g_t(x):=P_t(x-\bar\gamma).
+\]
+
+\begin{proposition}[全变差的四次锐渐近：三阶中心矩线性项严格消隐]\label{prop:cdim-poisson-tv-fourth-order-correction}
+在上述设定下，若进一步满足 \(\EE|\Delta|^5<\infty\)，则当 \(t\to\infty\) 有二项锐渐近
+\begin{equation}\label{eq:cdim-poisson-tv-fourth-order-correction}
+\boxed{\;
+\|h_t-g_t\|_{L^{1}(\RR)}
+=\frac{3\sqrt3}{4\pi}\frac{\sigma^2}{t^2}
+\;+\;
+\frac{3\sqrt3}{32\pi}\Bigl(\frac{2\mu_3^2}{\sigma^2}-3\mu_4\Bigr)\frac{1}{t^4}
+\;+\;o(t^{-4})\; }.
+\end{equation}
+特别地，\(\|h_t-g_t\|_{L^{1}(\RR)}\) 的 \(t^{-3}\) 级系数恒为 \(0\)：三阶中心矩 \(\mu_3\) 不以线性项进入全变差渐近，首次形状校正出现在 \(t^{-4}\) 层并以 \(\mu_3^2\) 与 \(\mu_4\) 的组合出现。
+\end{proposition}
+\begin{proof}[证明要点]
+对任意固定 \(x\) 以 \(\Delta\) 为变量在 \(\Delta=0\) 处作四阶 Taylor 展开并取期望，得到
+\[
+h_t(x)-g_t(x)
+=\frac{\mu_2}{2}\partial_x^2 g_t(x)-\frac{\mu_3}{6}\partial_x^3 g_t(x)+\frac{\mu_4}{24}\partial_x^4 g_t(x)+R_t(x),
+\qquad
+\|R_t\|_{L^1(\RR)}=O(t^{-5}),
+\]
+其中余项由 \(\EE|\Delta|^5\) 与 \(\|\partial_x^5P_t\|_{L^1}\asymp t^{-5}\) 控制。
+令 \(y=(x-\bar\gamma)/t\)，并把 \(\partial_x^k g_t\) 写成齐次形式，可将主项归结为
+\[
+\|h_t-g_t\|_{1}
+=\frac{\sigma^2}{\pi}\frac{1}{t^2}\int_{\RR}\left|A(y)+\frac{\alpha}{t}B(y)+\frac{\beta}{t^2}C(y)\right|\dd y+O(t^{-5}),
+\]
+其中 \(\alpha:=4\mu_3/\sigma^2\)、\(\beta:=\mu_4/\sigma^2\)，并且
+\[
+A(y)=\frac{3y^2-1}{(1+y^2)^3}\ (\text{偶}),
+\qquad
+B(y)=\frac{y(y^2-1)}{(1+y^2)^4}\ (\text{奇}),
+\qquad
+C(y)=\frac{5y^4-10y^2+1}{(1+y^2)^5}\ (\text{偶}).
+\]
+由于 \(\mathrm{sign}(A)\) 为偶函数而 \(B\) 为奇函数，线性校正项满足
+\(
+\int_{\RR}B(y)\,\mathrm{sign}(A(y))\dd y=0
+\)，故 \(t^{-3}\) 级贡献严格消失。
+进一步利用 \(A\) 在 \(\pm 1/\sqrt3\) 处为简单零点，对零点随 \(t^{-1}\) 的位移作隐函数展开，可得
+\[
+\int_{\RR}\left|A+\frac{\alpha}{t}B+\frac{\beta}{t^2}C\right|
+=\int_{\RR}|A|
+\;+\;\frac{3\sqrt3}{256}\bigl(\alpha^2-24\beta\bigr)\frac{1}{t^2}
+\;+\;o(t^{-2}),
+\]
+且 \(\int_{\RR}|A(y)|\dd y=\frac{3\sqrt3}{4}\)（命题 \ref{prop:cdim-poisson-kernel-derivative-l1-energy} 中 \eqref{eq:cdim-poisson-pt-second-l1} 的等价表述）。
+代回并化简得到 \eqref{eq:cdim-poisson-tv-fourth-order-correction}。
+\end{proof}
+
+\begin{proposition}[相对熵的六次校正项：六阶矩组合的完全显式常数]\label{prop:cdim-poisson-kl-sixth-order-correction}
+在上述设定下，若进一步满足 \(\EE|\Delta|^6<\infty\)，则当 \(t\to\infty\) 有二项锐渐近
+\begin{equation}\label{eq:cdim-poisson-kl-sixth-order-correction}
+\boxed{\;
+D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac{\sigma^4}{8t^4}
+\;+\;
+\frac{\sigma^6+6\mu_3^2-8\sigma^2\mu_4}{64}\cdot\frac{1}{t^6}
+\;+\;o(t^{-6})\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}[证明要点]
+记 \(r_t:=h_t/g_t=1+\delta_t\)。由四阶展开并除以 \(g_t\) 的齐次形式可得（于 \(g_t\dd x\) 的积分意义下）
+\[
+\delta_t(x)
+=\frac{\sigma^2}{t^2}u_2\!\left(\frac{x-\bar\gamma}{t}\right)
+\;+\;\frac{\mu_3}{t^3}u_3\!\left(\frac{x-\bar\gamma}{t}\right)
+\;+\;\frac{\mu_4}{t^4}u_4\!\left(\frac{x-\bar\gamma}{t}\right)
+\;+\;O(t^{-5}),
+\]
+其中
+\[
+u_2(y)=\frac{3y^2-1}{(1+y^2)^2},\qquad
+u_3(y)=\frac{4y(y^2-1)}{(1+y^2)^3},\qquad
+u_4(y)=\frac{5y^4-10y^2+1}{(1+y^2)^4}.
+\]
+利用展开
+\(
+(1+\delta)\log(1+\delta)=\delta+\frac12\delta^2-\frac16\delta^3+O(\delta^4)
+\)
+以及 \(\int g_t\delta_t=\int(h_t-g_t)=0\)，得到
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac12\int_{\RR} g_t\,\delta_t^2\,\dd x-\frac16\int_{\RR} g_t\,\delta_t^3\,\dd x+O(t^{-8}).
+\]
+令 \(y=(x-\bar\gamma)/t\)，则 \(g_t(x)\dd x=\frac{1}{\pi(1+y^2)}\dd y\)。
+直接计算四个有理积分（均可由 \(y=\tan\theta\) 化为初等积分）：
+\[
+\int_{\RR}\frac{u_2(y)^2}{\pi(1+y^2)}\dd y=\frac14,\qquad
+\int_{\RR}\frac{u_3(y)^2}{\pi(1+y^2)}\dd y=\frac{3}{16},
+\]
+\[
+\int_{\RR}\frac{u_2(y)u_4(y)}{\pi(1+y^2)}\dd y=-\frac18,\qquad
+\int_{\RR}\frac{u_2(y)^3}{\pi(1+y^2)}\dd y=-\frac{3}{32}.
+\]
+代入并收集 \(t^{-4}\)、\(t^{-6}\) 的贡献，得到 \eqref{eq:cdim-poisson-kl-sixth-order-correction}。
+\end{proof}
+
+\begin{proposition}[三阶可微 \texorpdfstring{$f$}{f}-散度的六次次主项：由 \texorpdfstring{$f'''(1)$}{f'''} 控制的结构常数]\label{prop:cdim-poisson-fdiv-sixth-order-correction}
+令 \(f\) 在 \(1\) 的邻域 \(C^3\)，满足 \(f(1)=0\) 且 \(f''(1)>0\)。
+在命题 \ref{prop:cdim-poisson-kl-sixth-order-correction} 的矩条件下，当 \(t\to\infty\) 有
+\begin{equation}\label{eq:cdim-poisson-fdiv-sixth-order-correction}
+\boxed{\;
+D_f(h_t\mid g_t)
+=\frac{f''(1)\sigma^4}{8t^4}
+\;+\;
+\Bigl[
+f''(1)\Bigl(\frac{3\mu_3^2}{32}-\frac{\sigma^2\mu_4}{8}\Bigr)
+-\frac{f'''(1)\sigma^6}{64}
+\Bigr]\frac{1}{t^6}
+\;+\;o(t^{-6})\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}[证明要点]
+仍记 \(r_t=1+\delta_t\) 并沿用命题 \ref{prop:cdim-poisson-kl-sixth-order-correction} 中的 \(\delta_t\) 展开。
+对 \(f(1+\delta)\) 在 \(\delta=0\) 处作三阶 Taylor 展开并积分，利用 \(\int g_t\delta_t=0\) 消去一次项，得到
+\[
+D_f(h_t\mid g_t)
+=\frac{f''(1)}{2}\int_{\RR} g_t\,\delta_t^2\,\dd x
+\;+\;\frac{f'''(1)}{6}\int_{\RR} g_t\,\delta_t^3\,\dd x
+\;+\;O(t^{-8}).
+\]
+将 \(\delta_t\) 的展开代入并使用上一个命题证明中的四个有理积分值，即得 \eqref{eq:cdim-poisson-fdiv-sixth-order-correction}。
+\end{proof}
+
+\begin{corollary}[熵耗散率的七次校正项]\label{cor:cdim-poisson-kl-dissipation-seventh-order-correction}
+在命题 \ref{prop:cdim-poisson-kl-sixth-order-correction} 的假设下，令分数 Fisher--Krein 耗散率由
+\[
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid g_t)=-\mathcal I_1(h_t\mid g_t)
+\]
+定义（命题 \ref{prop:xi-poisson-kl-dissipation-fractional-fisher}）。
+则当 \(t\to\infty\) 有
+\begin{equation}\label{eq:cdim-poisson-dissipation-seventh-order-correction}
+\boxed{\;
+\mathcal I_1(h_t\mid g_t)
+=\frac{\sigma^4}{2t^5}
+\;+\;
+\frac{3(\sigma^6+6\mu_3^2-8\sigma^2\mu_4)}{32}\cdot\frac{1}{t^7}
+\;+\;o(t^{-7})\; }.
+\end{equation}
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:cdim-poisson-kl-sixth-order-correction} 对 \(t\) 求导并与耗散恒等式对照即可。
+\end{proof}
+
+\begin{proposition}[六次系数的严格负性：非退化混合的熵损失必低于主项]\label{prop:cdim-poisson-kl-sixth-order-coefficient-negative}
+设 \(\sigma^2=\mu_2>0\) 且 \(\mu_4<\infty\)。则恒有严格不等式
+\begin{equation}\label{eq:cdim-poisson-kl-sixth-order-coefficient-negative}
+\sigma^6+6\mu_3^2-8\sigma^2\mu_4<0,
+\end{equation}
+并且更强地
+\begin{equation}\label{eq:cdim-poisson-kl-sixth-order-coefficient-upperbound}
+\sigma^6+6\mu_3^2-8\sigma^2\mu_4\le -7\sigma^6-2\mu_3^2<0.
+\end{equation}
+上述上界取等当且仅当 \(\nu\) 的支撑至多两点（等价地：随机变量 \(X:=\Delta\) 满足 \(X^2-\sigma^2\) 与 \(X\) 线性相关）。
+\end{proposition}
+\begin{proof}
+由 Cauchy--Schwarz，不等式
+\[
+\mu_3^2=\bigl(\EE[X(X^2-\sigma^2)]\bigr)^2
+\le \EE[X^2]\cdot \EE[(X^2-\sigma^2)^2]
+=\sigma^2(\mu_4-\sigma^4)
+\]
+成立，从而 \(\mu_4\ge \sigma^4+\mu_3^2/\sigma^2\)。
+代入得
+\[
+\sigma^6+6\mu_3^2-8\sigma^2\mu_4
+\le
+\sigma^6+6\mu_3^2-8\sigma^2\left(\sigma^4+\frac{\mu_3^2}{\sigma^2}\right)
+=-7\sigma^6-2\mu_3^2<0,
+\]
+从而得到 \eqref{eq:cdim-poisson-kl-sixth-order-coefficient-negative}--\eqref{eq:cdim-poisson-kl-sixth-order-coefficient-upperbound}。
+Cauchy--Schwarz 取等当且仅当 \(X(X^2-\sigma^2)\) 与 \(X\) 线性相关，即存在常数 \(c\) 使 \(X^2-\sigma^2=cX\) 几乎处处成立；故 \(X\) 只能取该二次方程的至多两根，等价于 \(\nu\) 支撑至多两点。
+\end{proof}
+
+\begin{proposition}[二散度矩层析：由全变差与相对熵的大尺度系数反演 \texorpdfstring{$(\sigma^2,\mu_3^2,\mu_4)$}{(sigma^2,mu3^2,mu4)}]\label{prop:cdim-poisson-two-divergence-moment-tomography}
+在命题 \ref{prop:cdim-poisson-tv-fourth-order-correction} 与命题 \ref{prop:cdim-poisson-kl-sixth-order-correction} 的条件下，定义尺度归一化观测量
+\[
+\mathcal B(t):=t^2\|h_t-g_t\|_{L^1(\RR)},
+\qquad
+\mathcal A(t):=t^4D_{\mathrm{KL}}(h_t\mid g_t).
+\]
+则存在系数 \(b_2,a_2\) 使得
+\[
+\mathcal B(t)=\frac{3\sqrt3}{4\pi}\sigma^2+\frac{b_2}{t^2}+o(t^{-2}),
+\qquad
+\mathcal A(t)=\frac{\sigma^4}{8}+\frac{a_2}{t^2}+o(t^{-2}),
+\]
+其中
+\[
+b_2=\frac{3\sqrt3}{32\pi}\Bigl(\frac{2\mu_3^2}{\sigma^2}-3\mu_4\Bigr),
+\qquad
+a_2=\frac{\sigma^6+6\mu_3^2-8\sigma^2\mu_4}{64}.
+\]
+因此一旦从曲线 \(\mathcal A,\mathcal B\) 的大尺度二阶系数读出 \((\sigma^2,a_2,b_2)\)，则 \((\mu_3^2,\mu_4)\) 被唯一确定，且具有闭式反演：
+令
+\[
+K:=\frac{32\pi}{3\sqrt3}\,b_2\ (=\,\frac{2\mu_3^2}{\sigma^2}-3\mu_4),
+\qquad
+L:=64a_2\ (=\,\sigma^6+6\mu_3^2-8\sigma^2\mu_4),
+\]
+则
+\begin{equation}\label{eq:cdim-poisson-two-divergence-moment-tomography-inversion}
+\boxed{\;
+\mu_4=\frac{L}{\sigma^2}-\sigma^4-3K,
+\qquad
+\mu_3^2=\frac{\sigma^2}{2}(3\mu_4+K)\; }.
+\end{equation}
+该“二散度矩层析”仅依赖大尺度二阶系数即可抽取 \((\mu_3^2,\mu_4)\) 的闭式反演；其与命题 \ref{prop:cdim-poisson-central-slice-stieltjes-identifiability} 的中心剖面 Stieltjes 反演互补：后者在全尺度上恢复中心对称化，而此处给出低阶矩组合的快速读出接口。
+\end{proposition}
+\begin{proof}
+前两式分别由 \eqref{eq:cdim-poisson-tv-fourth-order-correction} 与 \eqref{eq:cdim-poisson-kl-sixth-order-correction} 直接读出；反演为代数消元。
+\end{proof}
+
+\begin{corollary}[归一化相对熵的最终单调性：\texorpdfstring{$t^4D_{\mathrm{KL}}$}{t^4 D_KL} 从下方逼近极限]\label{cor:cdim-poisson-normalized-kl-eventual-monotone}
+在命题 \ref{prop:cdim-poisson-kl-sixth-order-correction} 条件且 \(\sigma^2>0\) 下，令
+\(
+\mathcal A(t):=t^4D_{\mathrm{KL}}(h_t\mid g_t)
+\)。
+则存在 \(t_0\) 使对所有 \(t\ge t_0\) 有
+\[
+\mathcal A(t)<\frac{\sigma^4}{8},
+\qquad
+\mathcal A'(t)>0,
+\]
+并且
+\[
+\lim_{t\to\infty}\mathcal A(t)=\frac{\sigma^4}{8},
+\qquad
+\lim_{t\to\infty}t^2\left(\mathcal A(t)-\frac{\sigma^4}{8}\right)
+=\frac{\sigma^6+6\mu_3^2-8\sigma^2\mu_4}{64}<0.
+\]
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:cdim-poisson-kl-sixth-order-correction} 得
+\(
+\mathcal A(t)=\sigma^4/8+c/t^2+o(t^{-2})
+\)，其中 \(c=(\sigma^6+6\mu_3^2-8\sigma^2\mu_4)/64\)。
+由命题 \ref{prop:cdim-poisson-kl-sixth-order-coefficient-negative} 知 \(c<0\)，故 \(\mathcal A(t)<\sigma^4/8\) 对充分大 \(t\) 成立，且
+\(
+\mathcal A'(t)=-2c\,t^{-3}+o(t^{-3})>0
+\)
+亦对充分大 \(t\) 成立。
+\end{proof}
+
+\endinput
+

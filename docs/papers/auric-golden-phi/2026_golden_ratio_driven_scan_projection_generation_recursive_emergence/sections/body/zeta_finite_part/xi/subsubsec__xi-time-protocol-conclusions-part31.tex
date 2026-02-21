@@ -446,7 +446,7 @@ B_q(i,j)=\binom{q-j}{i}\qquad(0\le i,j\le q),
 并由上一个证明中的二项式与等比求和化简得到固定谱簇幂和为 \(2^{-m}(L_m^q-\Omega_m(q))\)，代回即得结论。证毕。
 \end{proof}
 
-\begin{conclusion}[例外幂和的分拆闭式：\texorpdfstring{$S_m(q)$}{S_m(q)} 的全阶可计算分解]\label{con:xi-terminal-replica-softcore-partition-exceptional-closed-form}
+\begin{conclusion}[例外幂和的分拆闭式：Fibonacci--partition 的全指数分解]\label{con:xi-terminal-replica-softcore-partition-exceptional-closed-form}
 固定整数 \(m\ge 1\) 与 \(q\ge 2\)。
 沿用结论 \ref{con:xi-terminal-replica-softcore-partition-trace-closed-form} 的 \(B_\lambda\) 与 \(c_{m,\lambda}\)。
 则成立严格闭式
@@ -492,33 +492,35 @@ q\longmapsto 2^m S_m(q)
 换言之，\(\Tr((T^{(q)})^m)\) 与 \(S_m(q)\) 在 \(q\)-方向上的全部指数率分别由 \(\mathcal B_m\cup\{L_m\}\) 与 \(\mathcal B_m\)（并加上二次 Lucas--Pell 因子）完全控制。
 \end{conclusion}
 
-\begin{conclusion}[\texorpdfstring{$q$}{q}-方向普通生成函数的全分式表示]\label{con:xi-terminal-replica-softcore-q-ordinary-genfunc-partial-fractions}
-固定 \(m\ge 1\)，将 \(S_m(q)\) 按结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling} 的右端闭式扩展至 \(q\ge 0\)。
-则其普通生成函数具有显式有理分式表示
+\begin{conclusion}[\texorpdfstring{$q$}{q}-方向有理型生成函数：例外幂和的 C-finite 刚性]\label{con:xi-terminal-replica-softcore-q-ordinary-genfunc-partial-fractions}
+固定 \(m\ge 1\)，将 \(S_m(q)\) 按结论 \ref{con:xi-terminal-replica-softcore-partition-exceptional-closed-form} 的右端闭式延拓至 \(q\ge 0\)。
+并定义普通生成函数 \(\mathcal G_m(z):=\sum_{q\ge 0}S_m(q)\,z^q\)。
 \[
 \boxed{\;
-\sum_{q\ge 0}2^m S_m(q)\,z^{q}
-=\frac{1}{1-L_m z+(-1)^m z^2}
-\;+\!\!\!\sum_{\eta\in \mathrm{Neck}_m^{(2)}\setminus\{0^m\}}\frac{\#\mathrm{orb}(\eta)}{1-\tau(\eta)\,z}\; } .
+\mathcal G_m(z)
+=\frac1{2^m}\left(\frac{1}{1-L_m z+(-1)^m z^2}
+\;+\;\sum_{\lambda\vdash m}\frac{c_{m,\lambda}}{1-B_\lambda z}\right)\; } .
 \]
-特别地，右端每一极点均位于 \(z=\tau(\eta)^{-1}\)（\(\eta\ne 0^m\)）以及二次方程 \(1-L_m z+(-1)^m z^2=0\) 的根。
+因此，对固定 \(m\)，序列 \(q\mapsto S_m(q)\) 必为常系数线性递推序列；其极点集合由 \(\{B_\lambda^{-1}:\lambda\vdash m\}\) 与二次因子 \(1-L_m z+(-1)^m z^2\) 的根完全决定。
 \end{conclusion}
 \begin{proof}[证明要点]
-由结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling}，
+由结论 \ref{con:xi-terminal-replica-softcore-partition-exceptional-closed-form} 的右端闭式（视作对 \(q\ge 0\) 的定义延拓），有
 \(
-2^mS_m(q)=\Omega_m(q)+\sum_{\eta\ne 0^m}\#\mathrm{orb}(\eta)\tau(\eta)^q
+2^mS_m(q)=\Omega_m(q)+\sum_{\lambda\vdash m}c_{m,\lambda}B_\lambda^{q}
 \)。
 对 \(\Omega_m\) 用结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified} 的二阶递推与初值得到
 \(
 \sum_{q\ge 0}\Omega_m(q)z^q=(1-L_m z+(-1)^m z^2)^{-1}
 \)；
-对其余有限项逐一求和得 \(\sum_{q\ge 0}\tau(\eta)^q z^q=(1-\tau(\eta)z)^{-1}\)，叠加即得所示全分式形式。
+并对每个 \(\lambda\) 逐项求和得 \(\sum_{q\ge 0}B_\lambda^{q}z^q=(1-B_\lambda z)^{-1}\)，代回并除以 \(2^m\) 即得所示有理分式表达。证毕。
 \end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part31d}
 
 \input{subsubsec__xi-time-protocol-conclusions-part31c}
 
-\begin{conclusion}[例外矩的指数层级与可计算的首两级渐近]\label{con:xi-terminal-replica-softcore-exceptional-moments-exponential-hierarchy}
-固定整数 \(m\ge 2\)，令
+\begin{conclusion}[主导谱与严格间隙：\texorpdfstring{$q\to\infty$}{q->infty} 的指数级集中]\label{con:xi-terminal-replica-softcore-exceptional-moments-exponential-hierarchy}
+固定整数 \(m\ge 3\)，令
 \[
 \alpha_0:=2^m,
 \qquad
@@ -537,8 +539,8 @@ S_m(q)=2^{-m}\alpha_0^{q}+2^{-m}m\,\alpha_1^{q}
 \boxed{\;
 S_m(q)=2^{m(q-1)}\left(1+m\left(\frac34\right)^q+O(\delta_m^q)\right)\; } .
 \]
-特别地，当 \(m\ge 3\) 时有 \((\varphi/2)^m\le 5/8\)，故 \(\delta_m=5/8\)，从而余项可写为 \(O((5/8)^q)\)。
-该层级中主项由 necklace \(1^m\) 唯一贡献，次主项由恰含一个 \(0\) 的原始 necklace 轨道贡献 \(m\) 倍叠加；其余项被统一的指数比率 \(\delta_m^q\) 压制。
+并且分拆指数底数的前三大值严格满足 \(B_{1^m}=2^m>B_{(2,1^{m-2})}=3\cdot 2^{m-2}>B_{(3,1^{m-3})}=5\cdot 2^{m-3}\)，且对其余 \(\lambda\notin\{1^m,(2,1^{m-2}),(3,1^{m-3})\}\) 有 \(B_\lambda\le 9\cdot 2^{m-4}<5\cdot 2^{m-3}\)。
+因此 \((\varphi/2)^m\le 5/8\) 且 \(\delta_m=5/8\)，从而余项可写为 \(O((5/8)^q)\)，并且 \(\Omega_m(q)\) 在该尺度下严格次指数主导。
 \end{conclusion}
 \begin{proof}[证明要点]
 由结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-necklace-peeling}，
@@ -547,10 +549,9 @@ S_m(q)=2^{m(q-1)}\left(1+m\left(\frac34\right)^q+O(\delta_m^q)\right)\; } .
 \)。
 其中 \(1^m\) 给出 \(\tau(1^m)=2^m=\alpha_0\) 且 \(\#\mathrm{orb}(1^m)=1\)；
 恰含一个 \(0\) 的 necklace 的零段分解为 \((r_1,\dots,r_{m-1})\) 中一项为 \(1\)、其余为 \(0\)，故 \(\tau=3\cdot 2^{m-2}=\alpha_1\)，并且其轨道大小为 \(m\)。
-其余含 \(1\) 的 necklace 至少含两个 \(0\)；若其零计数为 \(r\ge 2\)，由结论 \ref{con:xi-terminal-replica-softcore-fixed-zero-count-trace-extremal} 得
-\(
-\tau(\eta)\le F_{r+3}2^{m-r-1}\le 5\cdot 2^{m-3}=(5/8)\alpha_0
-\)。
+其余含 \(1\) 的 necklace 至少含两个 \(0\)。
+若零计数为 \(r=2\)，则单簇型给出 \(\tau=F_{5}2^{m-3}=5\cdot 2^{m-3}\)，而非单簇型唯一对应于分拆 \((2,2,1^{m-4})\) 并满足 \(\tau=F_{4}^2\,2^{m-4}=9\cdot 2^{m-4}\)。
+若 \(r\ge 3\)，由结论 \ref{con:xi-terminal-replica-softcore-fixed-zero-count-trace-extremal} 得 \(\tau(\eta)\le F_{r+3}2^{m-r-1}\le F_{6}2^{m-4}=8\cdot 2^{m-4}\le 9\cdot 2^{m-4}\)。
 另一方面，\(\Omega_m(q)=\Tr(B_q^{\,m})\) 的主导指数底数为 \(\varphi^m=\alpha_0(\varphi/2)^m\)。
 取 \(\delta_m=\max\{5/8,(\varphi/2)^m\}\) 统一控制剩余所有指数底数与 \(\Omega_m\) 的增长率，即得所示余项界。
 \end{proof}
