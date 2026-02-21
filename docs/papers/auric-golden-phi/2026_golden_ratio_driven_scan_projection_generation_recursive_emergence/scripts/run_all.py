@@ -98,6 +98,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="replica_softcore_exceptional_charpoly_galois_audit",
+            script="exp_replica_softcore_exceptional_charpoly_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/replica_softcore_exceptional_charpoly_galois_audit.json",
+                "sections/generated/tab_replica_softcore_exceptional_charpoly_galois_audit.tex",
+            ],
+        ),
+        Step(
             name="rotation_microstate_kl_certificate",
             script="exp_rotation_microstate_kl_certificate.py",
             args=[],
