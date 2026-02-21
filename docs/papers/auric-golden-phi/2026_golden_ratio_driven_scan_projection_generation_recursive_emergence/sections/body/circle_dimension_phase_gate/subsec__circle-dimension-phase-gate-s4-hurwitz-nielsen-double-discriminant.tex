@@ -1,0 +1,146 @@
+\subsection{\texorpdfstring{$S_4$}{S4} 护照 \texorpdfstring{$(4)(2)^5$}{(4)(2)^5} 的 Nielsen 单轨道性与双判别同步：离散外置证书链}\label{subsec:cdim-s4-hurwitz-nielsen-double-discriminant}
+本小节记录一类可被完全离线复核的离散外置证书：以分歧循环型（Hurwitz 护照）固定局部单值数据，并在 Nielsen 类意义下把覆盖的同伦类型压缩为有限轨道；同时给出一个与该护照相匹配的双判别同步四次族，使分歧像集合与其整性平移闭包在代数层面被刚性锁定。
+上述两条链路合并后，形成一条从\emph{判别式恒等式}到\emph{Nielsen 离散不变量}的闭合审计接口：前者将连续参数空间压缩为有限分歧像集合，后者将局部循环型压缩为有限轨道与覆盖度。
+
+\paragraph{Hurwitz 变换与同时共轭}
+令 \(G\) 为有限群，取 \(r\ge 2\)。
+对 \(r\)-元组 \((g_1,\dots,g_r)\in G^r\)，辫群 \(B_r\) 的标准 Hurwitz 生成元 \(\sigma_i\)（\(1\le i\le r-1\)）按右作用定义为
+\[
+\sigma_i:\ (g_1,\dots,g_i,g_{i+1},\dots,g_r)\longmapsto
+(g_1,\dots,g_{i+1},g_{i+1}^{-1}g_i g_{i+1},\dots,g_r).
+\]
+该作用保持乘积 \(g_1\cdots g_r\) 不变，并保持由 \(\{g_1,\dots,g_r\}\) 所生成的子群不变。
+另一方面，\(G\) 可对 \((g_1,\dots,g_r)\) 作同时共轭：
+\(
+h\cdot(g_1,\dots,g_r):=(hg_1h^{-1},\dots,hg_rh^{-1})
+\)。
+二者可交换组合为 \(B_r\times G\) 的作用。
+
+\paragraph{护照 \texorpdfstring{$(4)(2)^5$}{(4)(2)^5} 的 Nielsen 数据}
+在 \(G=S_4\) 中，考虑满足一条 \(4\)-循环与五条换位之乘积约束的 Nielsen 数据。设
+\[
+\mathcal{F}
+:=\Bigl\{\,
+\mathbf{g}=(g_\infty,g_1,g_2,g_3,g_4,g_5)\in S_4^6\ \Bigm|\ 
+\begin{array}{l}
+g_\infty\ \text{为 \(4\)-循环},\\
+g_1,\dots,g_5\ \text{均为换位},\\
+g_1g_2g_3g_4g_5=g_\infty,\\
+\langle g_\infty,g_1,\dots,g_5\rangle=S_4
+\end{array}
+\,\Bigr\}.
+\]
+辫群 \(B_5\) 作用于 \((g_1,\dots,g_5)\)，并令 \(S_4\) 按同时共轭作用于 \(\mathbf g\)。
+
+\begin{theorem}[护照 \texorpdfstring{$(4)(2)^5$}{(4)(2)^5} 的 Hurwitz--共轭单轨道性]\label{thm:cdim-s4-hurwitz-conjugacy-single-orbit}
+在 \(B_5\times S_4\) 的自然作用下，集合 \(\mathcal{F}\) 为单一轨道。
+并且存在代表元满足
+\[
+g_\infty=(1,2,3,4),\qquad
+(g_1,g_2,g_3,g_4,g_5)=\bigl((3,4),(2,3),(2,4),(1,4),(1,3)\bigr),
+\]
+其满足 \(g_1g_2g_3g_4g_5=g_\infty\) 且生成 \(S_4\)。
+\end{theorem}
+\begin{proof}
+Hurwitz 变换保持乘积不变并在生成子群意义下闭合，因此保守 \(\mathcal{F}\) 的三条结构约束（循环型、乘积约束与生成性）。
+在 \(S_4\) 的具体情形下，满足给定循环型的数据集合为有限集。
+以同时共轭将 \(g_\infty\) 规约到固定 \(4\)-循环，再对满足乘积约束且生成 \(S_4\) 的五换位分解作枚举，并在 Hurwitz 生成元闭包下计算轨道分解，可得仅出现一条轨道，从而任意 \(\mathbf g\in\mathcal{F}\) 与所示代表元 Hurwitz--共轭等价。
+上述枚举与轨道分解可由纯有限群运算完全复算；对应的可重复审计输出由脚本 \texttt{scripts/exp\_fold\_zm\_trace\_galois\_audit.py} 生成并写入 \texttt{artifacts/export/fold\_zm\_trace\_galois\_audit.json}。
+\end{proof}
+
+\begin{corollary}[绝对 Nielsen 类的基数与覆盖度]\label{cor:cdim-s4-abs-nielsen-cardinality-degree}
+令 \(\mathrm{Ni}^{\mathrm{abs}}:=\mathcal{F}/S_4\) 为按同时共轭取商得到的绝对 Nielsen 类集合，则有
+\[
+\card{\mathcal{F}}=3840,
+\qquad
+\card{\mathrm{Ni}^{\mathrm{abs}}}=\frac{\card{\mathcal{F}}}{\card{S_4}}=160.
+\]
+并且 \(B_5\) 在 \(\mathrm{Ni}^{\mathrm{abs}}\) 上作用传递；因此与该护照相应的（带序分歧点的）Hurwitz 空间为连通覆盖，其覆盖度为 \(160\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:cdim-s4-hurwitz-conjugacy-single-orbit} 的单轨道性，\(B_5\) 在 \(\mathcal{F}/S_4\) 上作用传递。
+另一方面，由 \(\langle g_\infty,g_1,\dots,g_5\rangle=S_4\) 可知同时共轭的稳定子为 \(S_4\) 的中心，因而为平凡群；故每个共轭轨道大小为 \(\card{S_4}=24\)，从而 \(\card{\mathrm{Ni}^{\mathrm{abs}}}=\card{\mathcal{F}}/24\)。
+数值 \(\card{\mathcal{F}}=3840\) 由同一有限枚举直接得到，并已在上述审计脚本输出中给出。证毕。
+\end{proof}
+
+\paragraph{双判别同步约束：\texorpdfstring{$(y)$}{y}-判别式锁定 \texorpdfstring{$(\lambda,y)$}{(lambda,y)} 体系的代数骨架}
+考虑二元整式
+\[
+\Pi(\lambda,y)=y^{2}+p(\lambda)\,y+q(\lambda)\in\ZZ[\lambda,y],
+\]
+并要求 \(\Pi\) 关于 \(y\) 为首一二次、关于 \(\lambda\) 为首一四次。
+若其 \(y\)-判别式满足
+\begin{equation}\label{eq:cdim-double-discriminant-Disc-y}
+\mathrm{Disc}_{y}\bigl(\Pi(\lambda,\cdot)\bigr)
+=p(\lambda)^{2}-4q(\lambda)
+=4\lambda^{3}-4\lambda+1,
+\end{equation}
+则 \eqref{eq:cdim-double-discriminant-Disc-y} 将 \(\Pi\) 的自由度压缩为同余受限的二参数族。
+
+\begin{proposition}[双判别同步族的二参数压缩]\label{prop:cdim-double-discriminant-two-parameter-family}
+在 \eqref{eq:cdim-double-discriminant-Disc-y} 的设定下，必有
+\[
+p(\lambda)=\pm 2\lambda^{2}+a\lambda+b,
+\qquad
+a\equiv 0\pmod{2},\quad b\equiv 1\pmod{2},
+\]
+且
+\[
+q(\lambda)=\frac{p(\lambda)^{2}-(4\lambda^{3}-4\lambda+1)}{4}\in\ZZ[\lambda]
+\]
+由 \(p(\lambda)\) 唯一决定。
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:cdim-double-discriminant-Disc-y} 右端为三次多项式知 \(p(\lambda)^{2}\) 的四次首项必须与 \(4q(\lambda)\) 的四次首项完全抵消，故 \(\deg p=2\) 且其二次首系数为 \(\pm 2\)。
+写 \(p(\lambda)=\pm 2\lambda^{2}+a\lambda+b\) 并代入 \eqref{eq:cdim-double-discriminant-Disc-y}，得到
+\[
+q(\lambda)=\frac{p(\lambda)^{2}-(4\lambda^{3}-4\lambda+1)}{4}.
+\]
+比较系数可见 \(q\in\ZZ[\lambda]\) 当且仅当 \(a\) 为偶数且 \(b\) 为奇数（由 \(\lambda^{2}\) 与常数项的四分之一整性强制）。
+唯一性由上式直接给出。证毕。
+\end{proof}
+
+\paragraph{整数平移刚性：相邻整点的有理分歧与 Lee--Yang 三次核}
+在命题 \ref{prop:cdim-double-discriminant-two-parameter-family} 的族中，取
+\[
+p(\lambda)=1-2\lambda^{2}
+\qquad(\text{对应取负号分支且 }a=0,\ b=1),
+\]
+则 \(q(\lambda)=\lambda^{4}-\lambda^{3}-\lambda^{2}+\lambda\)，从而得到显式四次
+\begin{equation}\label{eq:cdim-double-discriminant-Pi-special}
+\Pi(\lambda,y)=\lambda^{4}-\lambda^{3}-(2y+1)\lambda^{2}+\lambda+y(y+1)
+=y^{2}+(1-2\lambda^{2})y+\bigl(\lambda^{4}-\lambda^{3}-\lambda^{2}+\lambda\bigr).
+\end{equation}
+定义 Lee--Yang 三次核
+\[
+P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32\in\ZZ[y].
+\]
+
+\begin{proposition}[判别式核的因式分解与整数平移闭包]\label{prop:cdim-double-discriminant-integer-translate-rigidity}
+令 \(\Pi\) 如 \eqref{eq:cdim-double-discriminant-Pi-special}，并记
+\(
+\Delta(y):=\mathrm{Disc}_{\lambda}\bigl(\Pi(\cdot,y)\bigr)\in\ZZ[y]
+\)。
+则有严格恒等式
+\[
+\Delta(y)=-y(y-1)P_{\mathrm{LY}}(y).
+\]
+并且对任意整数 \(k\in\ZZ\)，令 \(\Pi_k(\lambda,y):=\Pi(\lambda,y-k)\)，则
+\[
+\mathrm{Disc}_{\lambda}\bigl(\Pi_k(\cdot,y)\bigr)
+=-(y-k)(y-k-1)\,P_{\mathrm{LY}}(y-k).
+\]
+因此在该双判别同步特例中，两条有理分歧值只能以相邻整点 \((k,k+1)\) 的形态出现；其余三条有限分歧值由 \(P_{\mathrm{LY}}\) 的三根在平移 \(y\mapsto y+k\) 下整体搬运得到。
+\end{proposition}
+\begin{proof}
+对 \eqref{eq:cdim-double-discriminant-Pi-special} 直接计算 \(\lambda\)-判别式并因式分解可得 \(\Delta(y)=-y(y-1)P_{\mathrm{LY}}(y)\)。
+在平移重参数化 \(y\mapsto y-k\) 下，判别式作为消元多项式的构造保持其代数形式，仅对参数作同一平移，故
+\(
+\mathrm{Disc}_{\lambda}(\Pi(\cdot,y-k))=\Delta(y-k)
+\)，代入上式即得结论。证毕。
+\end{proof}
+
+\begin{conjecture}[双判别同步族的有理分歧极小性]\label{conj:cdim-double-discriminant-rational-branch-minimality}
+在命题 \ref{prop:cdim-double-discriminant-two-parameter-family} 的全二参数族中，若 \(\mathrm{Disc}_{\lambda}(\Pi(\cdot,y))\in\QQ[y]\) 具有两个互异有理根，则在仿射变换 \(y\mapsto y+c\) 与对合 \(y\mapsto-1-y\) 的等价下，\(\Pi\) 等价于 \eqref{eq:cdim-double-discriminant-Pi-special} 所给的特例。
+\end{conjecture}
+
