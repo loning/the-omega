@@ -91,6 +91,61 @@ r_i\ge 0,\ \ \sum_{i=1}^{k}r_i=m-k.
 \par
 分拆参数化与计数结论由 \(\Tr M(w)\) 的分拆像刻画（结论 \ref{con:xi-terminal-replica-softcore-trace-partition-image}）与分拆系数展开（结论 \ref{con:xi-terminal-replica-softcore-partition-trace-closed-form}）给出。
 \end{proof}
+\begin{conclusion}[\texorpdfstring{$\{J,K\}$}{\{J,K\}}-字词迹的块化 Fibonacci 因子分解]\label{con:xi-terminal-replica-softcore-jk-word-trace-fib-block-factorization}
+固定整数 \(m\ge 1\)。
+取任意字词 \(w\in\{J,K\}^m\) 且含至少一个 \(J\)，并记 \(M(w)\) 如结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-word-trace-sympower}。
+则 \(\det M(w)=0\)，且 \(M(w)\) 为秩 \(1\) 矩阵。
+\par
+更精确地，将相邻同字母合并后，\(w\) 具有唯一分块表示
+\[
+w=K^{a_0}J^{b_1}K^{a_1}J^{b_2}\cdots J^{b_r}K^{a_r},
+\qquad
+r\ge 1,\ a_0,\dots,a_r\in\ZZ_{\ge 0},\ b_1,\dots,b_r\in\ZZ_{\ge 1}.
+\]
+令 Fibonacci 数列满足 \(F_0=0,F_1=1\) 与递推 \(F_{n+2}=F_{n+1}+F_n\)。
+则迹满足严格因子分解
+\[
+\boxed{\;
+\Tr M(w)
+=2^{(b_1+\cdots+b_r)-r}\,F_{a_0+a_r+3}\prod_{i=1}^{r-1}F_{a_i+3}\;} ,
+\]
+从而 \(M(w)\) 的特征值集合为 \(\mathrm{Spec}(M(w))=\{\Tr M(w),0\}\)。
+\end{conclusion}
+\begin{proof}
+设 \(u=(1,1)^{\top}\)，则 \(J=uu^{\top}\)，从而 \(J^2=2J\) 并归纳得
+\(
+J^{b}=2^{b-1}J
+\)（\(b\ge 1\)）。
+因此
+\[
+M(w)=2^{(b_1+\cdots+b_r)-r}\cdot K^{a_0}J K^{a_1}J\cdots J K^{a_r}.
+\]
+由 \(K\) 的 Fibonacci 矩阵恒等式
+\[
+K^n=
+\begin{pmatrix}
+F_{n+1}&F_n\\[2pt]
+F_n&F_{n-1}
+\end{pmatrix}\quad(n\ge 1),
+\qquad
+K^0=I,
+\]
+可得 \(u^{\top}K^n u=F_{n+3}\)（\(n\ge 0\)）。
+注意到 \(K^{a}J=(K^{a}u)u^{\top}\) 与 \(JK^{a}=u(u^{\top}K^{a})\) 皆为秩 \(1\) 矩阵，
+从而
+\[
+K^{a_0}J K^{a_1}J\cdots J K^{a_r}
+=(K^{a_0}u)\Bigl(\prod_{i=1}^{r-1}u^{\top}K^{a_i}u\Bigr)(u^{\top}K^{a_r}),
+\]
+其迹为
+\[
+\Tr\!\bigl(K^{a_0}J K^{a_1}J\cdots J K^{a_r}\bigr)
+=(u^{\top}K^{a_r}K^{a_0}u)\prod_{i=1}^{r-1}(u^{\top}K^{a_i}u)
+=F_{a_0+a_r+3}\prod_{i=1}^{r-1}F_{a_i+3}.
+\]
+乘回标量因子即得所示因子分解。
+由于 \(\det J=0\)，且 \(w\) 含 \(J\)，故 \(\det M(w)=0\)；同时上式将 \(M(w)\) 表为一对列/行向量的外积，故 \(\mathrm{rank}(M(w))=1\)。证毕。
+\end{proof}
 \begin{conclusion}[例外幂和的线性字词全闭式：Fibonacci 乘法核与 dyadic 整性]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-linear-word-closed-form}
 对任意整数 \(m\ge 1\) 与 \(q\ge 2\)，沿用 \(\Omega_m(q)\)（结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified}）。
 则
@@ -114,6 +169,10 @@ w=K^{a_0}JK^{a_1}J\cdots JK^{a_k},
 \end{conclusion}
 \begin{proof}[证明要点]
 对 \(w\neq K^m\)，按首个 \(J\) 的位置唯一写成所示线性分解。
+该情形可视为结论 \ref{con:xi-terminal-replica-softcore-jk-word-trace-fib-block-factorization} 在 \(b_1=\cdots=b_k=1\) 的特例；从而亦可直接读出
+\[
+\Tr M(w)=F_{a_0+a_k+3}\prod_{i=1}^{k-1}F_{a_i+3}.
+\]
 设 \(u=(1,1)^{\top}\)，则 \(J=uu^{\top}\)，并由结论 \ref{con:xi-terminal-replica-softcore-binary-necklace-trace-formula} 的计算有
 \(u^{\top}K^{r}u=F_{r+3}\)。
 因此
@@ -183,6 +242,11 @@ z\mathscr B_q(z)\sum_{k\ge 1}(z\mathscr A_q(z))^{k-1}=\frac{z\mathscr B_q(z)}{1-
 最后，\(\Omega_m(q)=\Tr(\mathrm{Sym}^q(K^m))\)，而 \(\mathrm{Sym}^q(K)\) 的谱为
 \(\{(-1)^j\varphi^{q-2j}\}_{j=0}^{q}\)，故按几何级数求和得到部分分式表示。证毕。
 \end{proof}
+\begin{remark}[文献对照]\label{rem:xi-terminal-replica-softcore-word-trace-literature-contrast}
+关于 Fibonacci/Lucas 矩阵恒等式与秩一因子分解 \(J=uu^{\top}\) 的标准推导，可参见 \cite{FQFibonacciLucasChap11Matrices,MSEFibonacciMatrices784710} 等资料。
+本段把这些支点组织为一条可离线核验的指数展开链：由 \(\{J,K\}^m\) 的字词迹因子分解把 \(2^mS_m(q)\) 与 \(\Tr((T^{(q)})^m)\) 在 \(q\)-方向压缩为有限多底数指数族，并进一步给出素数长度处的循环轨道整除刚性与低阶 \(m\) 的显式聚类闭式。
+就公开资料可检索范围而言，尚未发现与该组合陈述在相同记号与等价口径下直接同式的来源。
+\end{remark}
 上述线性字词口径与 \(m\)-方向生成函数可视为对结论 \ref{con:xi-terminal-replica-softcore-binary-necklace-trace-formula} 的非循环展开；
 进一步将字词按循环移位归并，可得到以下 necklace 剥离律。
 \endinput

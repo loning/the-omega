@@ -60,8 +60,8 @@ G_m:=\sum_{n=0}^{m-1} g(S_n,S_{n+1}).
   进一步，\(\lambda=\rho(Q_p(u))\) 为下述四次方程在 \((0,\infty)\) 上的唯一最大实根：
   \begin{equation}\label{eq:fold-gauge-anomaly-bernoulli-p-pressure-quartic}
   \boxed{\;
-  \lambda^4+(p-1)\lambda^3+(p^2-pu-p)\lambda^2
-  +(p^3u^3-p^2u^3-p^2u+pu)\lambda+p^2u(1-p)=0.\;}
+  \lambda^4-(1-p)\lambda^3+p(p-u-1)\lambda^2
+  +p(1-p)u(1-pu^2)\lambda+p^2(1-p)u=0.\;}
   \end{equation}
 \end{enumerate}
 \end{theorem}
@@ -97,6 +97,56 @@ f(i):=\EE[g(S_0,S_1)\mid S_0=i]=\sum_jP_{ij}g(i,j)
 第 (3) 条由 Perron--Frobenius 理论与有界边势的热力学形式主义：对任意 \(u>0\)，矩阵 \(Q_p(u)\) 非负且原始，从而 \(\rho(Q_p(u))\) 为单纯主特征值，且
 \(\EE[u^{G_m}]\) 的指数增长率为 \(\rho(Q_p(u))^m\)，故 \(\Lambda_p(u)=\log\rho(Q_p(u))\)。
 四次方程 \eqref{eq:fold-gauge-anomaly-bernoulli-p-pressure-quartic} 为特征方程 \(\det(\lambda I-Q_p(u))=0\) 的显式展开。证毕。
+\end{proof}
+\begin{remark}[换能器加权邻接矩阵口径与 Parry 归一化]\label{rem:fold-gauge-anomaly-bernoulli-p-adjacency-parry}
+令 \(q:=1-p\) 且 \(u=e^\theta>0\)。
+在 Berstel 的四状态不歧义 Zeckendorf 归一化换能器上，对每条边 \(e\) 赋权
+\(
+w_\theta(e):=u^{\mathbf 1_{\{X(e)\neq Y(e)\}}}\,\PP(X(e))
+\)
+（\(\PP(X=1)=p\)、\(\PP(X=0)=q\)），得到加权邻接矩阵（状态序 \(a,b,c,d\)）
+\[
+A_\theta(p)=
+\begin{pmatrix}
+q & q u & 0 & p\\
+0 & 0 & p u & 0\\
+p u & 1 & 0 & 0\\
+q & 0 & 0 & 0
+\end{pmatrix}.
+\]
+由有限状态边移位的 Perron--Frobenius 理论可得
+\(
+\lim_{m\to\infty}m^{-1}\log \EE[\exp(\theta G_m)]=\log\rho(A_\theta(p))
+\)。
+并且取 \(r=(q,p^2,p,q^2)^{\top}\) 有对角相似关系
+\[
+\mathrm{diag}(r)^{-1}A_\theta(p)\,\mathrm{diag}(r)=Q_p(u),
+\]
+从而 \(\rho(A_\theta(p))=\rho(Q_p(u))\)，并与 \eqref{eq:fold-gauge-anomaly-bernoulli-p-pressure-quartic} 的四次代数封闭一致。
+\end{remark}
+\begin{corollary}[失配密度的单峰性与唯一极大点]\label{cor:fold-gauge-anomaly-bernoulli-p-density-unimodal}
+令 \(g_\ast(p)=\frac{p^2(3-2p)}{1+p^3}\)。
+则
+\begin{equation}\label{eq:fold-gauge-anomaly-bernoulli-p-density-derivative}
+\boxed{\;
+g_\ast'(p)=
+-\frac{3p\,(p^3+2p-2)}{(p+1)^2(p^2-p+1)^2}\; }.
+\end{equation}
+因此在区间 \(p\in(0,1)\) 上存在唯一 \(p_\star\) 满足
+\begin{equation}\label{eq:fold-gauge-anomaly-bernoulli-p-density-maximizer}
+p_\star^3+2p_\star-2=0,
+\end{equation}
+并且 \(g_\ast\) 在 \((0,p_\star)\) 上严格递增、在 \((p_\star,1)\) 上严格递减，从而 \(p_\star\) 为 \(g_\ast\) 的全局唯一极大点。
+数值上
+\[
+p_\star\approx 0.770917,\qquad g_\ast(p_\star)\approx 0.594299.
+\]
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:fold-gauge-anomaly-bernoulli-p-density-derivative} 得
+\(\mathrm{sgn}\,g_\ast'(p)=-\mathrm{sgn}(p^3+2p-2)\)。
+多项式 \(p^3+2p-2\) 在 \((0,1)\) 上严格递增且在端点处取值异号，故其在 \((0,1)\) 内存在且仅存在一根 \(p_\star\)，并据此得到单峰性与唯一极大性。
+数值近似由求根计算给出。证毕。
 \end{proof}
 
 \begin{proposition}[转移谱的完全分解与 \texorpdfstring{$p=\tfrac12$}{p=1/2} 的唯一 Jordan 共振]\label{prop:fold-gauge-anomaly-bernoulli-p-spectrum}
@@ -166,6 +216,36 @@ c_k(p)=\pi^\top H\,P(p)^{k-1}H\,\mathbf 1-g_\ast(p)^2
 =z\,\pi^\top H(I-zP(p))^{-1}H\mathbf 1
 \]
 与 \(\sum_{k\ge 1}g_\ast(p)^2z^k=g_\ast(p)^2\frac{z}{1-z}\) 合并，并对分母作代数化简得到 \eqref{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf}。证毕。
+\end{proof}
+\begin{corollary}[协方差生成函数的部分分式分解与指数衰减率]\label{cor:fold-gauge-anomaly-bernoulli-p-covariance-partial-fractions}
+在命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-covariance-recurrence} 的记号下，取 \(p\neq\tfrac12\)，并定义移位生成函数
+\[
+\widetilde C_p(z):=\sum_{n\ge 0}c_{n+1}(p)\,z^n=\frac{C_p(z)}{z}.
+\]
+则存在严格的部分分式分解
+\begin{equation}\label{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-partial-fractions}
+\boxed{\;
+\widetilde C_p(z)
+=\frac{B(p)}{1+p z}
+\;+\;
+\frac{E(p)+F(p)z}{1-p(1-p)z^2}\;},
+\end{equation}
+其中
+\begin{align}
+B(p)&=
+-\frac{p^3(p^2-3p+1)^2}{(2p-1)(p+1)(1+p^3)},\label{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-B}\\
+E(p)&=
+\frac{p^2(1-p)\bigl(p^5+4p^4-4p^3-5p^2+7p-2\bigr)}{(2p-1)(1+p^3)(p^2-p+1)},\label{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-E}\\
+F(p)&=
+\frac{p^2(1-p)^2\bigl(p^5-p^4-6p^3+3p^2+2p-1\bigr)}{(2p-1)(1+p^3)(p^2-p+1)}.\label{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-F}
+\end{align}
+因此对每个 \(k\ge 1\)，\(c_k(p)\) 为 \(({-p})^{k-1}\) 与 \((\pm\sqrt{p(1-p)})^{k-1}\) 的显式线性组合。
+并且当 \(p\neq\tfrac12\) 时协方差呈纯指数衰减，其衰减率由 \(\max\{p,\sqrt{p(1-p)}\}\) 控制。
+点 \(p=\tfrac12\) 为唯一的极点合并位置，对应到命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-spectrum} 的非半单退化；在该点自协方差出现线性多项式修正因子。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-covariance-recurrence} 的闭式 \eqref{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf}，对 \(p\neq\tfrac12\) 作部分分式分解即可得到 \eqref{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-partial-fractions} 与 \eqref{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-B}--\eqref{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-F}。
+指数衰减率与 \(p=\tfrac12\) 的极点合并由命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-spectrum} 的谱分解及标准有理型生成函数系数抽取给出。证毕。
 \end{proof}
 
 \begin{proposition}[端点大偏差指数：零失配与满失配的精确指数]\label{prop:fold-gauge-anomaly-bernoulli-p-endpoint-ldp}
