@@ -206,5 +206,278 @@ Jensen 缺陷链与 Toeplitz--PSD 层级在逻辑强度上均与 RH 等价（定
 并且在大尺度极限中，可见贡献在二阶之前塌缩为有限矩不变量并满足一致二阶展开（命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form}），从而全变差与相对熵分别具有 \(t^{-2}\) 与 \(t^{-4}\) 的可审计尺度律（命题 \ref{prop:xi-poisson-tv-kl-second-order}；并见 \S\ref{subsec:cdim-poisson-second-order-certificate}）。
 因此，将有限模态投影/有理核证书置于粗粒化半群的尺度推进下，可得到一条统一的误差预算口径：信息量在尺度推进下自然收缩，使区间上界更易闭合，而二阶尺度律提供与证书深度/分辨率门槛可并置的量纲基准。
 
+\subsection{确定性离线验证器：证书对象、细化关系与可核验等价}\label{subsec:cdim-deterministic-offline-verifier-certificates}
+\subsubsection{可审计语义的形式化约束}
+在 unitary slice 的可见域约束下（定理 \ref{thm:mellin-unitary-slice-unique}），本章采用的“可审计”含义为：任何断言必须由有限数据证书见证，并能被确定性离线规则复核（定义 \ref{def:cdim-finite-data-certificate-offline-verifier}）。
+验证器仅接收由有限整数/有理数据编码的输入对象，输出为二值判定 \(\mathsf{pass}/\mathsf{fail}\)，从而在语义层排除生成过程中的浮点轨迹、采样路径等侧信息通道对结论的影响。
+
+\subsubsection{证书对象族 \texorpdfstring{$\mathrm{Cert}_b(\mathcal F)$}{Certb(F)} 与 dyadic 深度类型}
+固定一个 unitary slice 上的可核验实值函数 \(\mathcal F:\RR\to\RR\) 以及一个确定性离线验证器 \(\mathrm{Ver}\)。
+对每个 dyadic 深度 \(b\in\NN\)，定义证书对象族 \(\mathrm{Cert}_b(\mathcal F)\) 为由有限对象 \(C=(I,\sigma)\) 组成的集合，其中
+\begin{enumerate}
+  \item 区间括号 \(I=I(C)=[\theta_-,\theta_+]\subset\RR\) 的端点满足 \(\theta_\pm\in 2^{-b}\ZZ\)；
+  \item \(\sigma=\sigma(C)\) 为与协议一致的辅助数据（例如非零证书、根区间证书、单根性/收缩证书、以及与寄存器规格表相容的外置分量；表 \ref{tab:cdim-certificate-register-spec}）。
+\end{enumerate}
+有效性由离线核验条件
+\[
+\mathrm{Ver}(\mathcal F;C)=\mathsf{pass}
+\]
+定义。该定义与“地址先于取值”的制度兼容：深度 \(b\) 的证书对象为柱事件/区间盒的有限编码，而非点对象的指针（\S\ref{subsec:cdim-phase-prefix-quadratic-barrier}，\S\ref{subsec:cdim-three-axis-address}）。
+
+\subsubsection{细化关系与可核验等价：证书的逆系统结构}
+对证书对象 \(C\in\mathrm{Cert}_b(\mathcal F)\) 与 \(C'\in\mathrm{Cert}_{b'}(\mathcal F)\)（允许 \(b'\ge b\)），定义细化关系 \(C'\preceq C\) 当且仅当
+\begin{enumerate}
+  \item \(I(C')\subseteq I(C)\)；
+  \item \(\mathrm{Ver}(\mathcal F;C')=\mathsf{pass}\)。
+\end{enumerate}
+据此，定义可核验等价 \(C\sim C'\) 当且仅当存在共同细化 \(D\) 使 \(D\preceq C\) 且 \(D\preceq C'\)（共同细化口径与定义 \ref{def:xi-cert-refinement-equivalence} 一致）。
+该结构把“证书一致性”压缩为可判定的共同细化关系，并使证书对象族随深度形成逆系统：深度上升对应地址细化，证书后端的可核验等价由共同细化唯一决定。
+
+\subsubsection{逆极限归并与实现中立性：证书同一性的唯一化}
+\begin{proposition}[嵌套证书链的逆极限寻址与等价类归并]\label{prop:cdim-certificate-inverse-limit-addressing}
+设存在嵌套证书链 \((C_b)_{b\ge b_0}\) 满足 \(C_b\in\mathrm{Cert}_b(\mathcal F)\)、\(C_{b+1}\preceq C_b\) 且 \(|I(C_b)|\to 0\)。
+若每一级 \(\sigma(C_b)\) 在其区间 \(I(C_b)\) 上以“至多一根/同一对象”的语义隔离同一候选点对象，则
+\[
+\bigcap_{b\ge b_0} I(C_b)=\{\theta^\ast\}
+\]
+为单点集合，并且任何指称该点对象的有效证书在 \(\sim\) 下归并为同一等价类；该等价类由该嵌套链在逆系统 \((\mathrm{Cert}_b(\mathcal F),\preceq)\) 中的逆极限唯一确定。
+\end{proposition}
+\begin{proof}
+由嵌套闭区间定理，\(\bigcap_{b\ge b_0} I(C_b)\neq\varnothing\)；再由 \(|I(C_b)|\to 0\) 得交集为单点 \(\{\theta^\ast\}\)。
+对任意两份指称同一点对象的有效证书 \(C,C'\)，取足够大的深度使二者区间均包含在某个 \(I(C_b)\) 内，并将其后端数据统一提升到共同深度（按协议只允许有限编码的确定性细化），即可构造共同细化 \(D\)，从而 \(C\sim C'\)。
+唯一性由共同细化等价的定义给出。证毕。
+\end{proof}
+
+\begin{remark}[实现中立性与无侧信息通道]\label{rem:cdim-implementation-neutrality-offline}
+若验证器 \(\mathrm{Ver}\) 仅依赖证书对象的有限编码并按固定规则在整数/有理运算与区间算术层运行，则同一证书对象在不同实现环境中给出完全一致的 \(\mathsf{pass}/\mathsf{fail}\) 输出。
+因此点对象的寻址仅依赖其 \(\sim\)-等价类，而与生成过程可能携带的非证书数据无关；在语义层表现为“无侧信息通道”的制度化封口。
+\end{remark}
+
+\subsubsection{类型纪律：点对象不是地址}
+\begin{remark}[类型否定：零点不是地址]\label{rem:cdim-zero-not-address}
+在上述逆系统语义中，“地址对象”是有限证书对象 \(C\in\mathrm{Cert}_b(\mathcal F)\) 或其 \(\sim\)-等价类，用于以有限编码指定可离线复核的断言；
+而点对象（例如零点）属于逆极限意义下的极限对象，其指称需要一条无限细化链的区间交来实现（命题 \ref{prop:cdim-certificate-inverse-limit-addressing}）。
+因此“零点作为地址”的表述在类型层不成立：地址是柱事件/证书对象，点对象不是点对点指针；拒绝该区分会在有限深度下触发不可分离聚类并在协议内表现为 \(\mathsf{NULL}\)（表 \ref{tab:cdim-certificate-register-spec}，\S\ref{subsec:cdim-address-ultrametric-budget-irreplaceable}）。
+\end{remark}
+
+\subsection{稀疏化核验原理：共终端子序列与量词消去}\label{subsec:cdim-sparsification-oracle-collapse}
+\subsubsection{Toeplitz--PSD 层级的共终端稀疏化}
+Toeplitz--PSD 视界接口允许实现无关的稀疏化：对 Carath\'eodory 候选函数 \(C(w)=c_0+2\sum_{n\ge 1}c_n w^n\) 及其 Toeplitz 主子矩阵 \(T_N=(c_{j-k})_{0\le j,k\le N}\)，定理 \ref{thm:xi-toeplitz-psd-cofinal-sparsification} 表明
+\[
+\forall N\ge 0,\;T_N\succeq 0
+\quad\Longleftrightarrow\quad
+\exists\,N_1<N_2<\cdots\to\infty,\ \forall k,\;T_{N_k}\succeq 0.
+\]
+因此，在 Toeplitz--PSD 表述 RH 的框架中，核验一条共终端子序列（例如 \(N_k=2^k\)）在逻辑强度上不损失信息。
+
+\subsubsection{dyadic 证书链的共终端稀疏化：逆极限点对象的稳定寻址}
+\begin{proposition}[共终端深度子链的逆极限不变性]\label{prop:cdim-dyadic-cofinal-sparsification}
+设 \(b_1<b_2<\cdots\to\infty\) 为任意共终端深度子序列。
+若存在嵌套链 \(C_{b_k}\in\mathrm{Cert}_{b_k}(\mathcal F)\) 满足 \(C_{b_{k+1}}\preceq C_{b_k}\) 且 \(|I(C_{b_k})|\to 0\)，并在每一级保持“至多一根/同一对象”的隔离语义，则其区间交为单点 \(\{\theta^\ast\}\)，并在 \(\sim\) 下归并为唯一等价类；该等价类与取全体深度的任一细化链所确定的点对象一致。
+\end{proposition}
+\begin{proof}
+由 \(|I(C_{b_k})|\to 0\) 的嵌套区间交性质得 \(\bigcap_k I(C_{b_k})=\{\theta^\ast\}\)。
+对任一更细深度 \(b\ge b_1\)，可取 \(k\) 使 \(b\le b_k\)，并将 \(b\)-深度证书对象确定性提升到深度 \(b_k\) 以获得共同细化，从而点对象的 \(\sim\)-等价类不依赖是否遍历全部深度。证毕。
+\end{proof}
+
+\subsubsection{预言机坍缩：一致有界最小实现维数下的有限截断化}
+在 Toeplitz--PSD 接口中，若最小 realization 维数/可见自由度在所考虑的族上保持一致有界，则“对所有截断阶 \(N\)”的无穷约束可被消去为有限证书；该逻辑分岔由定理 \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation} 制度化。
+其陈述给出一个统一阈值 \(N_0\le 2D\)，使得全层级 PSD 与有限截断 \(N\le N_0\) 的联合核验严格等价，并且每一阶截断满足合同压缩表示 \(T_N=W_N^\ast T_{N_0}W_N\)。
+因此在一致维数上界制度下，谱侧与矩侧的量词可被统一消去为有限阶离线核验；反之，若不存在一致维数上界，则会出现与有限数据完全一致而全局真值相反的谱替身（定理 \ref{thm:xi-spectral-surrogate-finite-audit-undecidable}）。
+
+\subsection{地址化读出与二次分辨率门槛：将 dyadic 超度量并入寄存器规格}\label{subsec:cdim-addressed-readout-quadratic-barrier}
+\subsubsection{dyadic 超度量与共享前缀的语义}
+dyadic 盒 \(J_b(\theta)\) 与地址超度量 \(d_{\mathrm{addr}}(\theta,\theta')=2^{-m(\theta,\theta')}\) 的定义见 \S\ref{subsec:cdim-phase-prefix-quadratic-barrier}。
+其语义是：共享 \(b\) 位前缀等价于在深度 \(b\) 的证书层级上不可分离，而非点对点寻址；点对象的指称只能由共终端细化链在逆极限意义下实现（备注 \ref{rem:cdim-zero-not-address}）。
+
+\subsubsection{端点压缩下的地址碰撞强制律与多轴预算}
+端点紧化诱导二次分辨率屏障：命题 \ref{prop:cdim-phase-prefix-occupancy-barrier} 给出，在高度带 \((T,2T]\) 上若要求相位地址映射在深度 \(b\) 下单射，则必须 \(b\ge 2\log_2T+\log_2\log T-O(1)\)。
+因此，有限深度地址在高高度区间结构性地产生高重数等价类；若拒绝外置 residue/逆极限轴、绕数轴或端点深度账本等正交记录分量（表 \ref{tab:cdim-certificate-register-spec}），则扩展保存失败必在类型层表现为碰撞型 \(\mathsf{NULL}\)（定理 \ref{thm:cdim-budget-failure-separation}）。
+以上讨论仅依赖 dyadic 超度量与二次分辨率门槛所强制的“不可分离性”与“多轴预算”。
+可见域约束下的偏读出、\(\mathsf{NULL}\) 的完备三分解、以及 unitary slice 的 \(\mathrm{Read}_{US}\) 偏函数接口将在后续小节中作为对象层事件加以制度化（\S\ref{subsec:cdim-visible-null-trichotomy}--\S\ref{subsec:cdim-quantifier-elimination-spectral-surrogate}）。
+
+\subsection{小结：证书深度、稀疏化与最小闭包的统一}\label{subsec:cdim-offline-verifier-summary}
+综合本章的闭环定理（定理 \ref{thm:cdim-closed-loop-unitary-horizon-repulsion-toeplitz}）与离线验证器语义，可将可核验体系的闭合提炼为三点：
+\begin{enumerate}
+  \item \textbf{对象层：}证书对象以 dyadic 深度类型化并在共同细化等价下形成逆系统；点对象由逆极限实现，地址与点对象在类型层严格区分（命题 \ref{prop:cdim-certificate-inverse-limit-addressing}，备注 \ref{rem:cdim-zero-not-address}）。
+  \item \textbf{层级层：}Toeplitz--PSD 层级与 dyadic 证书链均允许共终端稀疏化；在一致有界最小实现维数制度下进一步发生量词消去，无穷层级约束可被统一压缩为有限截断核验（定理 \ref{thm:xi-toeplitz-psd-cofinal-sparsification}，定理 \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation}）。
+  \item \textbf{资源层：}端点压缩诱导的二次分辨率门槛把证书深度提升为不可替代的硬资源；若仅沿可见相位轴提升深度而拒绝外置正交记录轴，则扩展保存失败在协议内必以结构性 \(\mathsf{NULL}\) 表达（命题 \ref{prop:cdim-phase-prefix-occupancy-barrier}，定理 \ref{thm:cdim-budget-failure-separation}，表 \ref{tab:cdim-certificate-register-spec}）。
+\end{enumerate}
+由此，“有限数据证书 + 确定性离线验证器”不再是实现偏好，而是由切片唯一性、端点压缩与正交阈值分解共同强制的制度性闭包。
+
+\subsection{可见域约束与 \texorpdfstring{$\mathsf{NULL}$}{NULL} 的三分解：把不可读出提升为对象层事件}\label{subsec:cdim-visible-null-trichotomy}
+在 unitary slice 审计口径下，可核验读出的制度化由“可见域约束 + 确定性离线验证器 + 类型化精度索引”三者的合取给出；
+其中任何超出可见域或未能给出有限证书对象的断言在类型层读出为 \(\mathsf{NULL}\)，而非数值不稳定（\S\ref{subsec:cdim-three-axis-address}，\S\ref{subsec:cdim-null-three-way}）。
+
+\subsubsection{可见域约束下的偏读出}
+\begin{definition}[可见域约束下的偏读出]\label{def:cdim-visible-domain-read}
+设状态空间 \(\Omega\)、观测映射 \(\mathrm{obs}:\Omega\rightharpoonup X\)（允许为部分映射）、可见域 \(X_{\mathrm{vis}}\subseteq X\)，并固定确定性检查器 \(\mathrm{Chk}\)。
+定义带可见域约束的可见读出 \(\mathrm{read}:\Omega\to X\cup\{\mathsf{NULL}\}\) 为
+\[
+\mathrm{read}(\omega)=
+\begin{cases}
+\mathrm{obs}(\omega), & \omega\in\mathrm{Dom}(\mathrm{obs}),\ \mathrm{obs}(\omega)\in X_{\mathrm{vis}},\ \mathrm{Chk}(\omega)=\mathsf{pass},\\
+\mathsf{NULL}, & \text{否则}.
+\end{cases}
+\]
+\end{definition}
+在 unitary slice 语境中，取
+\(
+X_{\mathrm{vis}}=\mathrm{Phase}:=\{u\in\CC:|u|=1\}=\{e^{\mathrm{i}\theta}:\theta\in\RR\}
+\)，
+并以尺度映射 \(u_L(s)=L^{2s-1}\) 将 \(\Re(s)=\tfrac12\) 等价转写为 \(u_L(s)\in\mathrm{Phase}\)。
+因此任何需要 \(|u|\neq 1\) 的径向自由度读出，在未外置模式轴的协议内都必须在对象层退化为 \(\mathsf{NULL}\)（定理 \ref{thm:mellin-unitary-slice-unique} 与定理 \ref{thm:xi-pw-no-continuous-hair}）。
+
+\subsubsection{\texorpdfstring{$\mathsf{NULL}$}{NULL} 的三分解：语义空值、协议空值与碰撞空值}
+在可见域读出语义中，失败不是数值层噪声，而是证书对象在该地址处的结构性缺失；
+其来源可完备三分解为语义空值、协议空值与碰撞空值（\S\ref{subsec:cdim-null-three-way}，定理 \ref{thm:xi-null-complete-trichotomy-offline}）。
+该三分解与预算—失败类型分离严格对齐：不同失败类型由不同正交阈值/不变量证书支撑，预算提升不能跨轴抵偿（定理 \ref{thm:cdim-budget-failure-separation}）。
+
+\subsection{\texorpdfstring{$\mathrm{Read}_{US}$}{Read\_US} 偏函数：类型化地址的确定性读出与跨实现可复现性}\label{subsec:cdim-read-us-interface}
+\subsubsection{读出协议的三要素}
+在 unitary slice 审计口径下，固定以下三要素：
+\begin{enumerate}
+  \item \textbf{可见域约束与检查器：}取 \(X_{\mathrm{vis}}=\mathrm{Phase}\) 并规定确定性检查器 \(\mathrm{Chk}\)（定义 \ref{def:cdim-visible-domain-read}）。
+  \item \textbf{确定性验证器与证书后端：}固定离线验证器 \(\mathrm{Ver}\) 与证书对象族 \(\mathrm{Cert}_b(\mathcal F)\)，并将精度索引类型化为 dyadic 深度 \(b\in\NN\)（\S\ref{subsec:cdim-deterministic-offline-verifier-certificates}）。
+  \item \textbf{实现约定：}固定算法标识、外向舍入与输入规范化约定，使任意候选证书对象可被第三方离线确定性复核其 \(\mathsf{pass}/\mathsf{fail}\) 输出（定义 \ref{def:cdim-finite-data-certificate-offline-verifier}，备注 \ref{rem:cdim-implementation-neutrality-offline}）。
+\end{enumerate}
+
+\subsubsection{三值偏函数 \texorpdfstring{$\mathrm{Read}_{US}$}{Read\_US} 与 \texorpdfstring{$\mathsf{NULL}$}{NULL} 的对象语义}
+在上述固定下，可将可见域读出写成一个确定性的三值偏函数：输入为可见地址与深度类型，输出为可离线核验的有限证书对象或 \(\mathsf{NULL}\) 失败见证。
+\begin{definition}[unitary slice 可见域读出偏函数]\label{def:cdim-read-us-partial}
+固定可核验函数 \(\mathcal F:\RR\to\RR\) 与确定性验证器 \(\mathrm{Ver}\)。
+在单参相位读出模型中，令
+\[
+\mathrm{Addr}_{US}:=\{(L,\theta,b):\ L>1,\ \theta\in\RR,\ b\in\NN\},
+\]
+并将其与多轴前缀地址口径互译（\S\ref{subsec:cdim-three-axis-address}）。
+定义三值偏函数
+\[
+\mathrm{Read}_{US}:\mathrm{Addr}_{US}\rightharpoonup \{\mathsf{NonZero},\mathsf{RootInterval},\mathsf{NULL}\}
+\]
+如下：对输入地址 \((L,\theta,b)\)，若存在通过核验的证书对象 \(C=(I,\sigma)\in\mathrm{Cert}_b(\mathcal F)\) 且 \(\sigma\) 断言在 \(I\) 上无零点，则输出 \(\mathsf{NonZero}\)；
+若存在通过核验的证书对象且 \(\sigma\) 断言 \(I\) 为根区间并满足单根性/收缩语义，则输出 \(\mathsf{RootInterval}\)；
+否则输出 \(\mathsf{NULL}\) 并附带可离线复核的失败见证。
+\end{definition}
+该结构在三轴地址口径下由算法 \ref{alg:cdim-three-axis-address-compile} 与站点判据 \(F(a)\neq\varnothing\)（命题 \ref{prop:cdim-nonnull-section-criterion}）给出：读出为非 \(\mathsf{NULL}\) 当且仅当相应地址处存在可接受的局部截面/证书纤维，并且所有正交阈值均被跨越；否则输出可复核的否证见证。
+因此，\(\mathsf{NULL}\) 的语义不是数值不稳定，而是证书对象的结构性缺失：在有限证书制度下，拒绝外置与拒绝细化会被类型系统转写为读出不定义。
+
+\subsection{精度索引的类型化与信息不泄漏：禁止隐式混合精度的侧信息通道}\label{subsec:cdim-typed-precision-no-leak}
+\subsubsection{证书对象、细化与可核验等价}
+在确定性离线验证器语义下，证书对象族 \(\mathrm{Cert}_b(\mathcal F)\)、细化关系 \(\preceq\) 与可核验等价 \(\sim\) 的定义见 \S\ref{subsec:cdim-deterministic-offline-verifier-certificates}。
+其中关键点在于：证书一致性由“存在共同细化”这一可判定关系表达；嵌套证书链在逆系统中给出点对象的逆极限寻址；并且实现中立性排除生成轨迹的侧信息通道（命题 \ref{prop:cdim-certificate-inverse-limit-addressing}，备注 \ref{rem:cdim-implementation-neutrality-offline}）。
+
+\subsubsection{显式提升原则：混合精度的操作在类型层不定义}
+\begin{remark}[显式提升原则与混合精度的类型否定]\label{rem:cdim-explicit-lifting-no-mixed-precision}
+由于验证器 \(\mathrm{Ver}\) 对有限编码对象的运行是确定性的，任何“读出为非 \(\mathsf{NULL}\)”的断言必须由某个有限证书对象 \(C\in\mathrm{Cert}_b(\mathcal F)\) 见证；
+因此 dyadic 深度 \(b\) 被提升为证书对象的类型索引。
+任何试图在未显式提升到共同深度的情况下混合精度地组合/比较证书对象的操作在类型语义中均不被定义，并按协议等价退化为 \(\mathsf{NULL}\)；
+该规则排除了通过隐式混合精度偷渡侧信息进入证书的通道（备注 \ref{rem:cdim-implementation-neutrality-offline}）。
+\end{remark}
+
+\subsection{局部截面存在性与粘接唯一性：把 \texorpdfstring{$\mathsf{NULL}$}{NULL} 内禀化为证书纤维的空性}\label{subsec:cdim-local-section-gluing-null}
+在“地址先于取值”的站点语义下，对每个可核对地址 \(a\)（柱事件前缀）定义证书纤维
+\[
+F(a):=\{\text{在柱事件 }C_a\text{ 上协议允许、且在类型意义下为单值可核验的读出/证书对象}\}.
+\]
+则读出的对象论判据与粘接唯一性由命题 \ref{prop:cdim-nonnull-section-criterion} 给出：在类型意义下
+\[
+\mathrm{read}(a)\neq \mathsf{NULL}\quad\Longleftrightarrow\quad F(a)\neq\varnothing,
+\]
+并且对任意有限柱覆盖 \(\{b_i\preceq a\}\)，若局部对象在交叠上相容，则存在唯一 \(s\in F(a)\) 实现粘接。
+因此 \(\mathsf{NULL}\) 可被严格归因于证书纤维的空性，而非数值层噪声。
+
+\subsection{离线零点断言的唯一可证伪接口：模式轴外延或失败见证}\label{subsec:cdim-offline-zero-claim-interface}
+在 unitary slice 可见域约束与 \(\mathbf{PW}\) 类型闭包下，“构造一个不在 \(\Re(s)=\tfrac12\) 上的零点”不等价于给出一个数值点，而等价于给出一个能通过闭包检查器的可核验地址对象与有限证书对象，或给出其在协议内不可类型化的失败见证。
+更具体地，任何声称“离切片零点存在”的断言在体系内只能呈现为两类输出之一：
+\begin{enumerate}
+  \item \textbf{模式轴外延：}显式外置径向记录（等价于唯一横截寄存器 \(\varrho=\log|u|\) 的模式轴输入），使读出协议脱离纯相位可见域并支付端点深度/容量的制度成本（推论 \ref{cor:xi-unique-continuous-transverse-register}，定理 \ref{thm:cdim-minimal-record-axis}）。
+  \item \textbf{失败见证：}输出一份离线可核验的 \(\mathsf{NULL}\) 见证，证明该断言在既定可见域/闭包协议下不可能被类型化，从而读出必退化为 \(\mathsf{NULL}\)（\S\ref{subsec:cdim-null-three-way}，算法 \ref{alg:cdim-three-axis-address-compile}）。
+\end{enumerate}
+并且若以减少 \(\mathsf{NULL}\) 为目标而允许外置侧信息以实现单射化，则该外置轴在结构上必须因子化到 residue/逆极限轴（prime-register）与其规范初对象分解中，而非引入与相位解耦的额外连续坐标寄存器（定理 \ref{thm:xi-pw-no-continuous-hair}，定理 \ref{thm:cdim-budget-failure-separation}，表 \ref{tab:cdim-certificate-register-spec}）。
+
+\subsection{端点热核探针：从有限 Toeplitz 数据单调抽取端点原子质量}\label{subsec:cdim-endpoint-heat-kernel-probe}
+\subsubsection{二项式向量与端点热核量}
+在视界 Carath\'eodory 表示下（附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz}），对 Toeplitz 主子矩阵 \(\mathbf{T}_N=(c_{j-k})_{0\le j,k\le N}\) 定义二项式向量
+\(
+b^{(N)}_k:=(-1)^k\binom{N}{k}
+\)
+并置端点热核量
+\[
+\boxed{\;
+a_N:=\frac{(b^{(N)})^{\mathsf T}\mathbf{T}_N\,b^{(N)}}{4^N}\;}
+\]
+（见定义 \ref{def:xi-endpoint-binomial-probe} 的完整设定）。
+
+\subsubsection{端点热核恒等式与单调极限}
+定理 \ref{thm:xi-endpoint-heat-kernel-probe} 给出严格恒等式
+\[
+a_N=\int_{\TT}\left|\frac{1-\xi}{2}\right|^{2N}\,\dd\mu(\xi)\ge 0,
+\]
+并且 \(\{a_N\}\) 单调下降且满足
+\[
+a_N\downarrow \mu(\{-1\})\qquad(N\to\infty).
+\]
+因此端点原子质量可由有限 Toeplitz 数据单调抽取；在端点邻域之外存在谱隙（或支撑受控）时，误差还满足指数型界（推论 \ref{cor:xi-endpoint-heat-kernel-exp-error}），而 \(N\) 在端点提取意义下可视为一类分辨率深度（备注 \ref{rem:xi-endpoint-probe-resolution-depth}）。
+
+\subsection{有限寄存器的支撑护栏与逐级谱定位：Gershgorin、Sturm 交错与 Stieltjes 残差}\label{subsec:cdim-jacobi-certificate-guards}
+\subsubsection{Jacobi 证书的 Gershgorin 支撑界}
+令 \(J\in\RR^{\kappa\times\kappa}\) 为对称三对角 Jacobi 寄存器并记
+\(
+\beta_i:=J_{ii}
+\),
+\(
+\alpha_i:=J_{i,i+1}>0
+\)
+且约定 \(\alpha_0=\alpha_\kappa:=0\)。
+则命题 \ref{prop:xi-jacobi-gershgorin-support-guardrail} 给出仅依赖有限寄存器系数的显式支撑护栏：
+\[
+\min_{1\le i\le \kappa}\bigl(\beta_i-\alpha_{i-1}-\alpha_i\bigr)
+\ \le\ a_{\min}\ \le\ a_{\max}\ \le\
+\max_{1\le i\le \kappa}\bigl(\beta_i+\alpha_{i-1}+\alpha_i\bigr),
+\]
+从而 \((\delta_{\min},\delta_{\max})=(a_{\min}-1,a_{\max}-1)\) 的可核验区间完全由局部系数给出。
+
+\subsubsection{Sturm 交错与逐级区间夹逼}
+对 \(1\le N\le\kappa\) 令 \(J_N\) 为首主子矩阵并记其升序谱为
+\(
+\lambda^{(N)}_1<\cdots<\lambda^{(N)}_N
+\)。
+则命题 \ref{prop:xi-jacobi-sturm-nested-localization} 给出严格 Sturm 交错
+\[
+\lambda^{(N+1)}_1<\lambda^{(N)}_1<\lambda^{(N+1)}_2<\cdots<
+\lambda^{(N)}_N<\lambda^{(N+1)}_{N+1},
+\]
+并推出对每个全谱原子 \(a_j\in\mathrm{Spec}(J)\) 存在嵌套夹逼区间
+\[
+\lambda^{(N)}_{i_N(j)}\ \le\ a_j\ \le\ \lambda^{(N)}_{i_N(j)+1},
+\]
+其随 \(N\uparrow\kappa\) 单调收缩并在 \(N=\kappa\) 时闭合为点区间 \([a_j,a_j]\)。
+
+\subsubsection{Schur 残差的 Stieltjes 证书化}
+记
+\[
+S(t):=\Phi\,\langle e_1,(tI+J)^{-1}e_1\rangle,
+\qquad
+S_N(t):=\Phi\,\langle e_1,(tI+J_N)^{-1}e_1\rangle
+\qquad(t>0),
+\]
+则命题 \ref{prop:xi-jacobi-truncation-remainder-stieltjes} 给出 Schur 补余量的 Stieltjes 证书化：存在支撑于 \([a_{\min},a_{\max}]\) 的有限正测度 \(\nu_N\ge 0\) 使
+\[
+(-1)^{N-1}\bigl(S(t)-S_N(t)\bigr)
+\ =\ \int_{[a_{\min},a_{\max}]}\frac{1}{t+a}\,\dd\nu_N(a).
+\]
+因此截断误差在全尺度上为 Stieltjes 型并完全单调，其符号由 \(N\) 的奇偶性强制；并且该残差的总质量由 \(t\to\infty\) 渐近以确定性方式读出（同命题 \ref{prop:xi-jacobi-truncation-remainder-stieltjes}）。
+
+\subsection{量词消去与谱替身：一致维数上界作为有限审计可判定性的必要前提}\label{subsec:cdim-quantifier-elimination-spectral-surrogate}
+在 Toeplitz/Hankel 族证书中，若对所考虑的参数族存在一致上界 \(D\) 使最小 realization 维数（等价 Hankel 秩）满足 \(d_{\min}\le D\)，则全层级约束可被统一压缩为有限截断核验：定理 \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation} 给出 \(N_0\le 2D\) 使
+\[
+\forall N\ge 0,\ T_N\succeq 0
+\quad\Longleftrightarrow\quad
+\forall N\in\{0,1,\dots,N_0\},\ T_N\succeq 0,
+\]
+并且对每个 \(N\) 存在压缩矩阵 \(W_N\) 使 \(T_N=W_N^\ast T_{N_0}W_N\)。
+反之，若不存在一致维数上界，则任何仅访问有限个截断/采样点的有限审计规则都不可避免地遭遇谱替身：存在两组候选在全部有限可见数据上完全一致而全局真值相反，从而在“不知道一致维数上界”的语义下全局命题对有限审计不可判定，除非外置额外模式轴或引入无限族检查（定理 \ref{thm:xi-spectral-surrogate-finite-audit-undecidable}）。
+
 \endinput
 
