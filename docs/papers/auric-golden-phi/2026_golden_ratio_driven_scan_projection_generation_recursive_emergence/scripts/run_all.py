@@ -3044,6 +3044,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_rational_fiber_cubic_factor_audit",
+            script="exp_fold_zm_elliptic_rational_fiber_cubic_factor_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_rational_fiber_cubic_factor_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_discriminant_ridge_jacobian_frobenius_audit",
             script="exp_fold_zm_discriminant_ridge_jacobian_frobenius_audit.py",
             args=[],
