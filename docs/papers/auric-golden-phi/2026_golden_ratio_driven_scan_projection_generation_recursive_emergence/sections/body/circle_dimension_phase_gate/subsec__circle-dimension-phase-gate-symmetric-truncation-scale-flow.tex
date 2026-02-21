@@ -2,6 +2,11 @@
 Riemann--Siegel--Gabcke 层级以截断阶 \(K\) 在高度变量 \(t\) 上给出可核验的余项界与零点区间递归（\S\ref{subsec:cdim-rs-gabcke-zero-recursion}）。
 本小节给出一条互补的“尺度轴”：利用 Jacobi \(\Theta\) 核的模变换把完成化对象的函数方程编译为一族\emph{对称截断} \(\Xi_{\zeta,\lambda}\)；其误差项为显式尾积分，且尺度参数 \(\lambda\) 满足严格的乘法递归与生成方程，从而可将“分辨率”制度化为可计算的重整化流。
 
+\begin{remark}[可检索范围内的独立性说明]\label{rem:cdim-symmetric-truncation-search-independence}
+就下述若干核心关键词（例如 \emph{truncated theta integral xi function zeros}，\emph{zero flow xi function differential equation}，\emph{dyadic shell truncation Xi function interlacing}）进行公开检索，未见与本小节中的命题链同构且同表述强度的既有定理/命题文本。
+该核验仅提供“可检索范围内未见同构”的否证接口，并不构成对未收录文献的穷尽性排除。
+\end{remark}
+
 \paragraph{Jacobi 核、完成化与对称截断}
 令 Jacobi \(\Theta\) 核与完成化 \(\Xi_\zeta\) 分别为
 \begin{equation}\label{eq:cdim-jacobi-theta-and-xi}
@@ -54,7 +59,7 @@ Riemann--Siegel--Gabcke 层级以截断阶 \(K\) 在高度变量 \(t\) 上给出
 \end{equation}
 \end{theorem}
 \begin{proof}[证明要点]
-当 \(\Re(s)>1\) 时有经典积分表示
+当 \(\Re(s)>1\) 时有经典积分表示（参见 \cite{PerezMarco2018NotesRH}）
 \[
 \Lambda_\zeta(s)=\frac12\int_0^\infty\bigl(\Theta(x)-1\bigr)x^{\frac{s}{2}-1}\,\dd x,
 \]
@@ -106,6 +111,55 @@ Riemann--Siegel--Gabcke 层级以截断阶 \(K\) 在高度变量 \(t\) 上给出
 即得 \eqref{eq:cdim-symmetric-truncation-multiplicative-recursion}；同乘 \(\tfrac12 s(s-1)\) 得 \eqref{eq:cdim-symmetric-truncation-multiplicative-recursion-xi}。
 令 \(q=e^h\) 并令 \(h\to 0\)，由微积分基本定理得到 \eqref{eq:cdim-symmetric-truncation-generator}；
 \eqref{eq:cdim-symmetric-truncation-generator-xi} 由定义 \eqref{eq:cdim-symmetric-truncation-Xi} 立即推出。证毕。
+\end{proof}
+
+\paragraph{临界线截面与余弦驱动项}
+为在纯相位（unitary slice）口径下显式分离尺度参数，定义临界线截面
+\[
+E_{\zeta,\lambda}(t):=\Xi_{\zeta,\lambda}\!\left(\tfrac12+\mathrm{i}t\right)\in\RR,
+\qquad t\in\RR,\ \lambda\ge 1,
+\]
+并引入正尾核
+\[
+\psi(x):=\sum_{n\ge 1}e^{-\pi n^2 x}=\frac12\bigl(\Theta(x)-1\bigr)\qquad(x\ge 1).
+\]
+
+\begin{proposition}[临界线截断的对数尺度流与余弦驱动项]\label{prop:cdim-symmetric-truncation-critical-line-flow}
+对任意 \(r\ge 0\) 与 \(t\in\RR\) 有
+\begin{equation}\label{eq:cdim-symmetric-truncation-critical-line-flow}
+\boxed{\;
+\frac{\partial}{\partial r}E_{\zeta,e^r}(t)
+=-(\tfrac14+t^2)\,\psi(e^r)\,e^{r/4}\cos\!\Bigl(\tfrac{tr}{2}\Bigr)\;}
+\end{equation}
+并且 \(E_{\zeta,1}(t)\equiv \tfrac12\)，且满足严格积分表示
+\begin{equation}\label{eq:cdim-symmetric-truncation-critical-line-integral}
+\boxed{\;
+E_\zeta(t):=\Xi_\zeta\!\left(\tfrac12+\mathrm{i}t\right)
+=\frac12-\int_0^\infty (\tfrac14+t^2)\,\psi(e^r)\,e^{r/4}\cos\!\Bigl(\tfrac{tr}{2}\Bigr)\,\dd r\;}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+由生成公式 \eqref{eq:cdim-symmetric-truncation-generator-xi}，对 \(s=\tfrac12+\mathrm{i}t\) 有
+\[
+\frac{\partial}{\partial r}\Xi_{\zeta,e^r}(s)
+=\frac14 s(s-1)\bigl(\Theta(e^r)-1\bigr)\Bigl(e^{\frac{rs}{2}}+e^{\frac{r(1-s)}{2}}\Bigr).
+\]
+注意 \(s(s-1)=-(\tfrac14+t^2)\)，且
+\(
+e^{\frac{rs}{2}}+e^{\frac{r(1-s)}{2}}
+=2e^{r/4}\cos(tr/2)
+\)。
+代回并用 \(\Theta-1=2\psi\) 即得 \eqref{eq:cdim-symmetric-truncation-critical-line-flow}。
+\par
+当 \(\lambda=1\) 时，由 \eqref{eq:cdim-symmetric-truncation-Lambda} 可直接化简得
+\(\Lambda_{\zeta,1}(s)=\frac{1}{s-1}-\frac{1}{s}\)，从而 \(\Xi_{\zeta,1}(s)\equiv \tfrac12\) 并给出 \(E_{\zeta,1}(t)\equiv\tfrac12\)。
+\par
+对任意 \(R>0\)，微积分基本定理给出
+\(
+E_{\zeta,e^R}(t)=\tfrac12+\int_0^R \partial_r E_{\zeta,e^r}(t)\,\dd r
+\)。
+由定理 \ref{thm:cdim-symmetric-truncation-explicit-error}，当 \(R\to\infty\) 时 \(E_{\zeta,e^R}(t)\to E_\zeta(t)\)，并且积分项绝对可积，故取极限得到 \eqref{eq:cdim-symmetric-truncation-critical-line-integral}。证毕。
 \end{proof}
 
 \begin{theorem}[临界带内的显式误差界与尺度深度的指数收敛]\label{thm:cdim-symmetric-truncation-explicit-error}
@@ -162,6 +216,38 @@ Riemann--Siegel--Gabcke 层级以截断阶 \(K\) 在高度变量 \(t\) 上给出
 \)。
 分别取 \(\alpha=\sigma/2\) 与 \(\alpha=(1-\sigma)/2\) 即得 \eqref{eq:cdim-symmetric-truncation-explicit-error-Lambda}；
 再同乘 \(\tfrac12\abs{s(s-1)}\) 得 \eqref{eq:cdim-symmetric-truncation-explicit-error-Xi}。证毕。
+\end{proof}
+
+\begin{corollary}[有限高度的多项式精度与对数—对数尺度深度]\label{cor:cdim-symmetric-truncation-loglog-depth}
+给定 \(A>0\) 与 \(T\ge 3\)。若 \(\lambda\ge 1\) 满足
+\[
+\pi\lambda\ \ge\ (A+3)\log T,
+\]
+则对所有 \(s=\sigma+\mathrm{i}t\) 且 \(0\le\sigma\le 1,\ |t|\le T\) 有一致估计
+\[
+\abs{\Xi_\zeta(s)-\Xi_{\zeta,\lambda}(s)}\ \ll_A\ T^{-A}.
+\]
+因此达到任意多项式阶精度只需 \(\lambda=O_A(\log T)\)，等价地，对数尺度深度 \(r=\log\lambda\) 仅为 \(O_A(\log\log T)\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:cdim-symmetric-truncation-explicit-error} 的 \eqref{eq:cdim-symmetric-truncation-explicit-error-Xi}，
+对 \(0\le\sigma\le 1\) 有
+\(
+\lambda^{\sigma/2-1}+\lambda^{-(\sigma+1)/2}\le 2\lambda^{-1/2}\le 2
+\)；
+并且当 \(|t|\le T\) 时，
+\(
+\abs{s(s-1)}\le (1+t^2)\le 1+T^2
+\)。
+于是对 \(T\ge 3\) 得到
+\[
+\sup_{\substack{|t|\le T\\ 0\le\sigma\le 1}}
+\abs{\Xi_\zeta(s)-\Xi_{\zeta,\lambda}(s)}
+\ \le\ C\,(1+T^2)\,e^{-\pi\lambda}
+\ \le\ 2C\,T^2\,e^{-\pi\lambda},
+\]
+其中 \(C\) 只依赖于 \(1/(1-e^{-3\pi\lambda})\le 1/(1-e^{-3\pi})\) 的上界常数。
+若 \(\pi\lambda\ge (A+3)\log T\)，则 \(e^{-\pi\lambda}\le T^{-(A+3)}\)，从而右端 \(\ll_A T^{-A}\)。证毕。
 \end{proof}
 
 \begin{theorem}[基于 \texorpdfstring{$\Xi_{\zeta,\lambda}$}{Xi(zeta,lambda)} 的零点计数保持与唯一性认证]\label{thm:cdim-symmetric-truncation-rouche-zero-count}
@@ -258,6 +344,91 @@ Riemann--Siegel--Gabcke 层级以截断阶 \(K\) 在高度变量 \(t\) 上给出
 当 \(\Xi_\zeta'(\rho_\infty)\neq 0\) 时，\(\Xi_\zeta\) 在 \(\rho_\infty\) 的邻域为双射到其像，故 \(\abs{\rho(\lambda)-\rho_\infty}\asymp \abs{\Xi_\zeta(\rho(\lambda))}\)。证毕。
 \end{proof}
 
+\begin{theorem}[临界线零点分支的超指数漂移界]\label{thm:cdim-symmetric-truncation-critical-line-zero-drift}
+取 \(T>0\) 与 \(r_0\ge 0\)。
+假设存在连续函数 \(\gamma:[r_0,\infty)\to[-T,T]\) 使得对所有 \(r\ge r_0\),
+\[
+E_{\zeta,e^r}(\gamma(r))=0,
+\qquad
+\partial_t E_{\zeta,e^r}(\gamma(r))\neq 0,
+\qquad
+\inf_{r\ge r_0}\bigl|\partial_t E_{\zeta,e^r}(\gamma(r))\bigr|\ge m>0.
+\]
+则极限 \(\gamma(\infty):=\lim_{r\to\infty}\gamma(r)\) 存在，且满足显式位移界
+\begin{equation}\label{eq:cdim-symmetric-truncation-critical-line-zero-drift}
+\boxed{\;
+|\gamma(\infty)-\gamma(r_0)|
+\le
+\frac{\tfrac14+T^2}{\pi\,m\,(1-e^{-\pi})}\;
+e^{-3r_0/4}\;
+e^{-\pi e^{r_0}}\;}
+\end{equation}
+\end{theorem}
+\begin{proof}
+由隐函数定理，\(\gamma\) 在每个满足 \(\partial_t E_{\zeta,e^r}(\gamma(r))\neq 0\) 的点可微，且
+\[
+\gamma'(r)=-\frac{\partial_r E_{\zeta,e^r}(\gamma(r))}{\partial_t E_{\zeta,e^r}(\gamma(r))}.
+\]
+由 \eqref{eq:cdim-symmetric-truncation-critical-line-flow} 与 \(|\cos|\le 1\) 得
+\[
+\bigl|\partial_r E_{\zeta,e^r}(t)\bigr|
+\le (\tfrac14+t^2)\,\psi(e^r)\,e^{r/4}
+\le (\tfrac14+T^2)\,\psi(e^r)\,e^{r/4}
+\qquad(|t|\le T).
+\]
+对 \(x\ge 1\)，由 \(\psi(x)=\sum_{n\ge 1}e^{-\pi n^2 x}\le \sum_{n\ge 1}e^{-\pi n x}=\frac{e^{-\pi x}}{1-e^{-\pi x}}\le \frac{e^{-\pi x}}{1-e^{-\pi}}\) 得
+\(
+\psi(e^r)\le \frac{e^{-\pi e^r}}{1-e^{-\pi}}
+\)。
+结合 \(|\partial_t E_{\zeta,e^r}(\gamma(r))|\ge m\) 得
+\[
+|\gamma'(r)|
+\le
+\frac{\tfrac14+T^2}{m(1-e^{-\pi})}\,e^{r/4}e^{-\pi e^r}.
+\]
+右端在 \([r_0,\infty)\) 可积，故 \(\gamma\) 为 Cauchy，从而极限 \(\gamma(\infty)\) 存在且
+\[
+|\gamma(\infty)-\gamma(r_0)|
+\le \int_{r_0}^{\infty}|\gamma'(r)|\,\dd r
+\le
+\frac{\tfrac14+T^2}{m(1-e^{-\pi})}\int_{r_0}^{\infty}e^{r/4}e^{-\pi e^r}\,\dd r.
+\]
+对尾积分作代换 \(v=\pi e^r\)（于是 \(\dd r=\dd v/v\)）得
+\[
+\int_{r_0}^{\infty}e^{r/4}e^{-\pi e^r}\,\dd r
+=\pi^{-1/4}\int_{\pi e^{r_0}}^{\infty} v^{-3/4}e^{-v}\,\dd v
+=\pi^{-1/4}\Gamma\!\left(\tfrac14,\pi e^{r_0}\right).
+\]
+由 \(0<\tfrac14\le 1\) 时不完全伽马函数的基本界
+\(
+\Gamma(\alpha,z)\le z^{\alpha-1}e^{-z}
+\)
+得
+\[
+\Gamma\!\left(\tfrac14,\pi e^{r_0}\right)\le (\pi e^{r_0})^{-3/4}e^{-\pi e^{r_0}},
+\]
+代回即得 \eqref{eq:cdim-symmetric-truncation-critical-line-zero-drift}。证毕。
+\end{proof}
+
+\begin{proposition}[对称解析形变中的临界线多重零点屏障]\label{prop:cdim-symmetric-truncation-multiple-zero-barrier}
+设 \(\{f_\lambda\}_{\lambda\in I}\) 为参数区间 \(I\subset\RR\) 上的整函数族，且 \((\lambda,s)\mapsto f_\lambda(s)\) 联合解析，并满足对称性
+\[
+f_\lambda(s)=f_\lambda(1-s)\qquad(\lambda\in I,\ s\in\CC).
+\]
+若存在连续零点轨道 \(\lambda\mapsto \rho(\lambda)\) 使得对某 \(\lambda_*\in I\) 有 \(\Re\rho(\lambda_*)\neq\tfrac12\)，而对另一个 \(\lambda^*\in I\) 有 \(\Re\rho(\lambda^*)=\tfrac12\)，则存在 \(\lambda^\dagger\in I\) 与 \(t^\dagger\in\RR\) 使
+\[
+f_{\lambda^\dagger}\!\left(\tfrac12+\mathrm{i}t^\dagger\right)=0,
+\qquad
+\partial_s f_{\lambda^\dagger}\!\left(\tfrac12+\mathrm{i}t^\dagger\right)=0.
+\]
+换言之，离轴零点分支若在对称形变中穿越临界线，则必经临界线上的多重零点事件。
+\end{proposition}
+\begin{proof}
+当 \(\Re\rho(\lambda)\neq\tfrac12\) 时，由对称性 \(f_\lambda(s)=f_\lambda(1-s)\) 可知 \(\rho(\lambda)\) 与其镜像 \(1-\rho(\lambda)\) 为不同点且同为零点。
+若存在参数使 \(\rho(\lambda)\to \tfrac12+\mathrm{i}t^\dagger\)，则同时 \(1-\rho(\lambda)\to \tfrac12+\mathrm{i}t^\dagger\)，即两条不同零点分支在临界线上汇合。
+解析函数零点分支的汇合必对应多重零点（否则由隐函数定理零点分支在该点局部唯一而不能合并），从而得到所述 \(\partial_s f_{\lambda^\dagger}(\tfrac12+\mathrm{i}t^\dagger)=0\)。证毕。
+\end{proof}
+
 \begin{conjecture}[尺度流的临界线不变性与吸引性]\label{conj:cdim-symmetric-truncation-critical-line}
 设 \(\rho_\lambda\) 为 \(\Xi_{\zeta,\lambda}\) 的非平凡零点。
 以下两种陈述任一成立都将推出 RH：
@@ -271,7 +442,34 @@ Riemann--Siegel--Gabcke 层级以截断阶 \(K\) 在高度变量 \(t\) 上给出
 由定理 \ref{thm:cdim-symmetric-truncation-explicit-error}，\(\Xi_{\zeta,\lambda}\to \Xi_\zeta\) 在任意紧集上一致收敛。
 在该一致收敛与零点不在边界的条件下，Hurwitz 定理将“零点落在临界线”的性质从 \(\Xi_{\zeta,\lambda}\) 传递到极限函数 \(\Xi_\zeta\)。
 因此，猜想 \ref{conj:cdim-symmetric-truncation-critical-line} 的任一形式均可视作 RH 的一种动力学表述：临界线成为尺度流下的全局不变集或最终吸引集。
+离散 dyadic 壳层版本的交错稳定性猜想（猜想 \ref{conj:cdim-symmetric-truncation-dyadic-lp-interlacing}）提供另一条可核验入口：若足够深度的 dyadic 截断已落入 Laguerre--P\'olya 类并呈现严格交错，则相同的 Hurwitz 机制可把“实零点性/临界线性”传递到极限函数 \(E_\zeta(t)=\Xi_\zeta(\tfrac12+\mathrm{i}t)\)。
 \end{remark}
+
+\begin{conjecture}[dyadic 壳层截断的 Laguerre--P\'olya 稳定与零点交错]\label{conj:cdim-symmetric-truncation-dyadic-lp-interlacing}
+令 \(\lambda_k=2^k\) 并记
+\[
+E_k(t):=E_{\zeta,\lambda_k}(t)=\Xi_{\zeta,\lambda_k}\!\left(\tfrac12+\mathrm{i}t\right)
+\qquad(k\in\NN,\ t\in\RR).
+\]
+猜想存在 \(k_0\ge 1\) 使得对所有 \(k\ge k_0\) 成立：
+\begin{enumerate}
+  \item \(E_k\) 属于 Laguerre--P\'olya 类，因而其全部零点为实且互异；
+  \item \(E_{k+1}\) 的零点与 \(E_k\) 的零点严格交错；
+  \item 若 \(\gamma_{k,j}\) 为 \(E_k\) 的第 \(j\) 个正零点，则 \(\gamma_{k,j}\to\gamma_j\)（\(k\to\infty\)）且 \(\{\pm\gamma_j\}\) 给出 \(E_\zeta\) 的对应零点；并且存在常数 \(C_j\)（允许多项式增长）使
+  \[
+  |\gamma_j-\gamma_{k,j}|\ \le\ C_j\,e^{-\pi 2^k}\qquad(k\to\infty).
+  \]
+\end{enumerate}
+\end{conjecture}
+
+\begin{remark}[交错猜想的可核验性]\label{rem:cdim-symmetric-truncation-dyadic-lp-auditability}
+定理 \ref{thm:cdim-symmetric-truncation-explicit-error} 已给出 dyadic 深度 \(\lambda_k=2^k\) 下的显式尾项界 \(\abs{E_\zeta(t)-E_k(t)}\ll_{t}e^{-\pi 2^k}\)。
+因此，若能在某个 \(k_0\) 之后建立（或数值核验并进一步寻求证明）Laguerre--P\'olya 性与交错性，则由 Hurwitz 稳定性可把实零点性从 \(\{E_k\}\) 传递到 \(E_\zeta\)，从而得到 RH。
+\end{remark}
+
+上述对称截断框架把“尺度递归—尾积分误差—零点尺度流”组织为一条可审计链：尺度参数 \(\lambda\) 在乘法递归下累积 \(\Theta\) 核信息，而尾积分在 \(e^{-\pi\lambda}\) 级显式衰减并给出可计算误差证书（定理 \ref{thm:cdim-symmetric-truncation-explicit-error}）。
+Rouch\'e 条件提供有限域内零点计数/唯一性认证（定理 \ref{thm:cdim-symmetric-truncation-rouche-zero-count}），生成算子诱导的流方程把零点的尺度演化写成确定性递归（定理 \ref{thm:cdim-symmetric-truncation-zero-flow}），并在临界线分支非退化时给出超指数漂移压制（定理 \ref{thm:cdim-symmetric-truncation-critical-line-zero-drift}）。
+对称解析形变下离轴分支若穿越临界线则必经多重零点事件（命题 \ref{prop:cdim-symmetric-truncation-multiple-zero-barrier}），从而把“离轴生成/消失”转写为可定位的退化见证并与审计口径对齐。
 
 \endinput
 

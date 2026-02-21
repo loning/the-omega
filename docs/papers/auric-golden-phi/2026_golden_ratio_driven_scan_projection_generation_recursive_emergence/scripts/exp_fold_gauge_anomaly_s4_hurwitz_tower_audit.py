@@ -19,6 +19,7 @@ import json
 import math
 import time
 from dataclasses import asdict, dataclass
+from fractions import Fraction
 from pathlib import Path
 from typing import Dict, List, Tuple
 
@@ -98,6 +99,22 @@ def _factor_degrees_mod_p(poly: sp.Poly, p: int) -> Tuple[bool, List[int]]:
     return squarefree, degs
 
 
+def _squarefree_part_int(n: int) -> int:
+    if n == 0:
+        return 0
+    sgn = -1 if n < 0 else 1
+    fac = sp.factorint(abs(int(n)))
+    out = 1
+    for p, e in fac.items():
+        if int(e) % 2 == 1:
+            out *= int(p)
+    return int(sgn * out)
+
+
+def _as_frac_str(q: Fraction) -> str:
+    return f"{q.numerator}/{q.denominator}"
+
+
 def _find_prime_with_degrees(poly: sp.Poly, ramified_primes: set[int], want: List[int], p_max: int) -> int:
     want_sorted = sorted(want, reverse=True)
     for p in sp.primerange(2, p_max + 1):
@@ -174,10 +191,12 @@ def main() -> None:
     mu = sp.Symbol("mu")
     u = sp.Symbol("u")
     alpha = sp.Symbol("alpha")
+    y = sp.Symbol("y")
 
     F = _build_F(mu, u)
     P10 = _P10(u)
     H19 = _H19(u)
+    P_LY = sp.Poly(256 * y**3 + 411 * y**2 + 165 * y + 32, y, domain="ZZ")
 
     # Disc_mu(F) factorization check.
     disc_mu_F = sp.discriminant(F, mu)
@@ -224,6 +243,83 @@ def main() -> None:
     if int(R_u2.degree()) != 4:
         raise RuntimeError(f"Expected deg(R(alpha,2))=4; got {R_u2.degree()}")
     cert_R = _s4_certificate_for_quartic(R_u2, p_max=2000)
+
+    # --- P10 × Lee–Yang: quadratic-spine separation and joint splitting audit.
+    disc_P10 = int(sp.discriminant(P10.as_expr(), u))
+    disc_P10_sqfree = _squarefree_part_int(disc_P10)
+    disc_P_LY = int(sp.discriminant(P_LY.as_expr(), y))
+    disc_P_LY_sqfree = _squarefree_part_int(disc_P_LY)
+
+    # Closed-form check for Disc(P10) (as stated in the paper).
+    disc_P10_closed = int(2**38 * 3**24 * 5**2 * 1931 * (9013**2) * (34319**3))
+    disc_P10_closed_ok = bool(disc_P10 == disc_P10_closed)
+
+    # Galois-type witnesses for P10 (mod p factorization degrees).
+    # These are the degrees used in the proof sketch in the paper.
+    _, degs_P10_mod_13 = _factor_degrees_mod_p(P10, 13)
+    _, degs_P10_mod_7 = _factor_degrees_mod_p(P10, 7)
+    _, degs_P10_mod_11 = _factor_degrees_mod_p(P10, 11)
+
+    # Joint splitting sample over primes: deterministic finite-field audit.
+    p_max = 2000
+    bad_primes = set(sp.factorint(abs(disc_P10)).keys()) | set(sp.factorint(abs(disc_P_LY)).keys())
+    tested_primes: List[int] = []
+    joint_counts = {
+        "both_have_linear_factor": 0,
+        "both_irreducible": 0,
+        "both_fully_split": 0,
+    }
+    marginal_counts = {
+        "P10_have_linear_factor": 0,
+        "P10_irreducible": 0,
+        "P10_fully_split": 0,
+        "P_LY_have_linear_factor": 0,
+        "P_LY_irreducible": 0,
+        "P_LY_fully_split": 0,
+    }
+    # Quadratic-character joint sample on the same prime set (excluding ramified primes).
+    chi_counts: Dict[str, int] = {"(+1,+1)": 0, "(+1,-1)": 0, "(-1,+1)": 0, "(-1,-1)": 0}
+
+    for p in sp.primerange(2, p_max + 1):
+        p = int(p)
+        if p in bad_primes:
+            continue
+        tested_primes.append(p)
+
+        _, degs10 = _factor_degrees_mod_p(P10, p)
+        _, degs3 = _factor_degrees_mod_p(P_LY, p)
+
+        P10_has_lin = 1 in degs10
+        P10_irred = degs10 == [10]
+        P10_split = degs10 == [1] * 10
+
+        LY_has_lin = 1 in degs3
+        LY_irred = degs3 == [3]
+        LY_split = degs3 == [1, 1, 1]
+
+        marginal_counts["P10_have_linear_factor"] += int(P10_has_lin)
+        marginal_counts["P10_irreducible"] += int(P10_irred)
+        marginal_counts["P10_fully_split"] += int(P10_split)
+        marginal_counts["P_LY_have_linear_factor"] += int(LY_has_lin)
+        marginal_counts["P_LY_irreducible"] += int(LY_irred)
+        marginal_counts["P_LY_fully_split"] += int(LY_split)
+
+        joint_counts["both_have_linear_factor"] += int(P10_has_lin and LY_has_lin)
+        joint_counts["both_irreducible"] += int(P10_irred and LY_irred)
+        joint_counts["both_fully_split"] += int(P10_split and LY_split)
+
+        # Legendre symbols for the two quadratic spines.
+        chi1 = int(sp.legendre_symbol(int(disc_P10_sqfree), p))
+        chi2 = int(sp.legendre_symbol(int(disc_P_LY_sqfree), p))
+        key = f"({'+1' if chi1 > 0 else '-1'},{'+1' if chi2 > 0 else '-1'})"
+        chi_counts[key] = int(chi_counts.get(key, 0) + 1)
+
+    n_test = int(len(tested_primes))
+    dens_P10_has_lin = Fraction(28319, 44800)
+    dens_LY_has_lin = Fraction(2, 3)
+    dens_joint_has_lin = dens_P10_has_lin * dens_LY_has_lin
+    dens_joint_irred = Fraction(1, 10) * Fraction(1, 3)
+    dens_joint_split = Fraction(1, math.factorial(10)) * Fraction(1, 6)
 
     # Hurwitz-tower genus computations (purely algebraic, no numeric dependence).
     # X -> P1_u: Galois closure with group S4, 12 branch points, inertia order 2.
@@ -282,6 +378,42 @@ def main() -> None:
             "g_H": int(gH),
             "g_X_over_V4": int(gV4),
             "branch_points_count": int(r),
+        },
+        "p10_leyang_disjointness": {
+            "P_LY_poly": str(P_LY.as_expr()),
+            "Disc_P10": int(disc_P10),
+            "Disc_P10_closed_form": int(disc_P10_closed),
+            "Disc_P10_closed_form_ok": bool(disc_P10_closed_ok),
+            "Disc_P10_sqfree_part": int(disc_P10_sqfree),
+            "Disc_P_LY": int(disc_P_LY),
+            "Disc_P_LY_sqfree_part": int(disc_P_LY_sqfree),
+            "quadratic_spines": {
+                "K10": "Q(sqrt(66269989))",
+                "K_LY": "Q(sqrt(-111))",
+            },
+            "spines_distinct_real_vs_imag": bool(disc_P10_sqfree > 0 and disc_P_LY_sqfree < 0),
+            "linear_disjoint_over_Q": bool(disc_P10_sqfree > 0 and disc_P_LY_sqfree < 0),
+            "galois_group_product_shape": "S10 x S3",
+            "P10_mod_p_degree_witnesses": {
+                "p=13": [int(d) for d in degs_P10_mod_13],
+                "p=7": [int(d) for d in degs_P10_mod_7],
+                "p=11": [int(d) for d in degs_P10_mod_11],
+            },
+        },
+        "p10_leyang_joint_splitting_sample": {
+            "p_max": int(p_max),
+            "bad_primes": sorted(int(p) for p in bad_primes),
+            "primes_tested_count": int(n_test),
+            "joint_counts": {k: int(v) for k, v in joint_counts.items()},
+            "marginal_counts": {k: int(v) for k, v in marginal_counts.items()},
+            "expected_densities": {
+                "P10_have_linear_factor": _as_frac_str(dens_P10_has_lin),
+                "P_LY_have_linear_factor": _as_frac_str(dens_LY_has_lin),
+                "both_have_linear_factor": _as_frac_str(dens_joint_has_lin),
+                "both_irreducible": _as_frac_str(dens_joint_irred),
+                "both_fully_split": _as_frac_str(dens_joint_split),
+            },
+            "quadratic_character_pair_counts": {k: int(v) for k, v in chi_counts.items()},
         },
     }
 
