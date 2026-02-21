@@ -1,0 +1,210 @@
+\subsection{闭环定理：幺正切片—视界缺陷—排斥半径—Toeplitz 正性层级}\label{subsec:cdim-closed-loop-theorem}
+本章的协议语义以“有限数据证书 + 确定性离线验证器”为核心：一方面，等距读出若拒绝外置权重扭曲轴，则切片位置被结构性钉死；另一方面，盘内零点事件既可由 Jensen 缺陷的半径族压缩为单参标量，也可由 Carath\'eodory--Toeplitz 的 PSD 层级表达为可逐级核验的半正定可行性问题。
+下述闭环定理把这些接口组织为一条实现无关的等价证书链，并将“解析缺陷证书”与“矩/正性证书”严格对齐。
+
+\begin{theorem}[闭环定理：等距切片、缺陷链与正性层级的完全等价]\label{thm:cdim-closed-loop-unitary-horizon-repulsion-toeplitz}
+在乘法 Haar 测度下的 Hilbert 空间 \(L^2_{\times}\) 上，若协议要求读出在 \(L^{2}\) 意义下等距且拒绝外置权重扭曲，则：
+\begin{enumerate}
+  \item 幺正切片 \(\Re(s)=\tfrac12\) 为唯一等距 Mellin 读出位置（定理 \ref{thm:mellin-unitary-slice-unique}，式 \eqref{eq:mellin-sigma-weight-twist}）；并且反演对偶算子 \(J\) 在谱侧满足共轭退化（命题 \ref{prop:cdim-mellin-inversion-duality}）。
+  \item 记圆盘完成化 \(F_{\zeta}\) 与 Jensen 缺陷 \(D_{\zeta}(\varrho)\) 如附录 \ref{subsec:unit-disk-jensen-defect}，并定义排斥半径
+  \[
+  r_{\ast}(\varrho):=\varrho\,e^{-D_{\zeta}(\varrho)}\qquad(0<\varrho<1).
+  \]
+  则下列命题等价：
+  \begin{enumerate}
+    \item RH 成立；
+    \item \(\displaystyle \lim_{\varrho\uparrow 1}D_{\zeta}(\varrho)=0\)（等价地 \(\displaystyle \limsup_{\varrho\uparrow 1}D_{\zeta}(\varrho)=0\)）；
+    \item 存在 \(\varrho_n\uparrow 1\) 使 \(D_{\zeta}(\varrho_n)\to 0\)；
+    \item 存在 \(\varrho_n\uparrow 1\) 使 \(r_{\ast}(\varrho_n)\uparrow 1\)；
+    \item 令 \(\mathscr{C}_{\zeta}(w)=c_0+2\sum_{n\ge 1}c_n w^n\) 为附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz} 的视界 Carath\'eodory 函数，并置 Toeplitz 主子矩阵 \(\mathbf{T}_N:=(c_{j-k})_{0\le j,k\le N}\)，则对所有 \(N\ge 0\) 有 \(\mathbf{T}_N\succeq 0\)；
+    \item 存在任意一条共终端严格递增子序列 \(N_1<N_2<\cdots\to\infty\) 使对所有 \(k\) 有 \(\mathbf{T}_{N_k}\succeq 0\)。
+  \end{enumerate}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+第一部分即定理 \ref{thm:mellin-unitary-slice-unique} 与命题 \ref{prop:cdim-mellin-inversion-duality} 的直接汇总。
+\par
+第二部分中，(a)\(\Leftrightarrow\)(b) 由定理 \ref{thm:cdim-horizon-purity-criterion} 给出；(b)\(\Leftrightarrow\)(c) 由附录定理 \ref{thm:app-rh-iff-jensen-defect-vanishing-sequence} 给出。
+由 \(r_{\ast}(\varrho)=\varrho e^{-D_{\zeta}(\varrho)}\) 得
+\(
+D_{\zeta}(\varrho)=\log(\varrho/r_{\ast}(\varrho))
+\)，
+因此在 \(\varrho_n\uparrow 1\) 下，\(D_{\zeta}(\varrho_n)\to 0\) 当且仅当 \(r_{\ast}(\varrho_n)\uparrow 1\)，故 (c)\(\Leftrightarrow\)(d)。
+而 (d)\(\Rightarrow\)(a) 由定理 \ref{thm:cdim-defect-repulsion-radius} 的“趋一证书 \(\Rightarrow\) 零点禁入 \(\Rightarrow\) RH”推出；反向 RH \(\Rightarrow\) \(D_{\zeta}\equiv 0\)（推论 \ref{cor:app-rh-iff-jensen-defect-zero}）从而可取任意 \(\varrho_n\uparrow 1\) 得 (d)。
+\par
+最后，(a)\(\Leftrightarrow\)(e) 为附录定理 \ref{thm:app-horizon-toeplitz-lmi}；(e)\(\Leftrightarrow\)(f) 为定理 \ref{thm:xi-toeplitz-psd-cofinal-sparsification}。证毕。
+\end{proof}
+
+\subsection{时间纤维表示与端点压缩：高高度信息的边界层迁移}\label{subsec:cdim-timefiber-endpoint-compression}
+Jensen 缺陷具有上半平面圆平均表示：对 \(0<\varrho<1\)，命题 \ref{prop:app-jensen-defect-upperhalf-circle-average} 给出
+\[
+D_{\zeta}(\varrho)
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log\Bigl|\Xi_{\zeta}\!\Bigl(\tfrac12+\mathrm{i}\,t(\varrho,\theta)\Bigr)\Bigr|\,\dd\theta
+-\log\bigl|\Xi_{\zeta}(-\tfrac12)\bigr|,
+\qquad
+t(\varrho,\theta)=\mathcal{C}^{-1}(\varrho e^{\mathrm{i}\theta})\in\mathbb{H},
+\]
+并给出 \(t(\varrho,\theta)\) 的显式分解 \eqref{eq:app-t-rho-theta-explicit}。
+\par
+另一方面，命题 \ref{prop:app-cayley-preimage-modulus-circle} 表明等半径层 \(|w|=\varrho\) 的 Cayley 逆像为上半平面中的一条显式圆，并与虚轴交于两点
+\[
+y_{\pm}(\varrho)=\frac{1\pm\varrho}{1\mp\varrho},
+\qquad
+\varrho\uparrow 1\ \Longrightarrow\ y_{-}(\varrho)\downarrow 0,\ \ y_{+}(\varrho)\uparrow \infty.
+\]
+因此，当 \(\varrho\uparrow 1\) 时，同一条“等半径观测纤维”在上半平面中必然同时触及近边界层与高高度层；该双端触及机制在去物理化口径下被制度化为时间纤维的端点压缩定理（定理 \ref{thm:dephys-timefiber-two-ended}）。
+\par
+由 \eqref{eq:app-t-rho-theta-explicit} 还可见圆平均的高虚部贡献被强制集中于端点角窗 \(\theta\approx \pi\)（推论 \ref{cor:app-jensen-endpoint-localization}）。
+因此，对缺陷圆平均/排斥半径上界链而言，高高度信息的有效输入通道在结构上被压缩到端点邻域 \(w\approx-1\) 的边界层贡献中，并与本章关于有限采样盲区与端点二次压缩的讨论一致（\S\ref{subsec:cdim-finite-sampling-blindspot-endpoint-compression-deblind}）。
+
+\subsection{有限模态压缩与离线核验：Hardy 投影与谱裕度接口}\label{subsec:cdim-hardy-toeplitz-offline-verifier}
+在 Toeplitz--PSD 视界证书中，输入数据为有限阶矩系数 \(\{c_n\}_{0\le n\le N}\)（附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz}），核验任务为 \(\mathbf{T}_N\succeq 0\) 的半正定性检查。
+本章 \S\ref{subsec:cdim-hardy-finite-mode-projection} 给出“相位 Fourier \(\to\) Hardy 截断”的显式有理核，从而为连续对象提供一个可编译为有限维数据的投影接口；并且在误差可审计条件下，谱裕度判据允许将“近似 Toeplitz 数据”提升为严格 PSD 证书（定理 \ref{thm:xi-spectral-margin-finite-psd-certificate}；并见 \S\ref{subsec:cdim-hardy-finite-mode-projection} 后的谱裕度语法输入）。
+因此，“有限模态核—误差界—谱裕度”可作为与缺陷链并行的离线验证器接口：其输出为有限阶 PSD 或相应否证见证，且与闭环定理的正性层级表述一致（定理 \ref{thm:cdim-closed-loop-unitary-horizon-repulsion-toeplitz}）。
+
+\subsection{地址超度量与二次分辨率门槛：证书深度作为不可替代资源}\label{subsec:cdim-address-ultrametric-budget-irreplaceable}
+dyadic 前缀过滤把“共享前缀深度”制度化为超度量 \(d_{\mathrm{addr}}\) 的闭球结构（\S\ref{subsec:cdim-phase-prefix-quadratic-barrier}），从而使证书深度成为可核验的离散资源。
+在端点二次压缩下，命题 \ref{prop:cdim-phase-prefix-occupancy-barrier} 给出不可绕过的位预算门槛：若要求高度带 \((T,2T]\) 上的相位地址映射在 \(b\) 位精度下可达单射，则必须
+\[
+b\ \ge\ 2\log_2 T+\log_2\log T-O(1).
+\]
+该门槛与“预算—失败类型分离”的正交不可替代性一致（定理 \ref{thm:cdim-budget-failure-separation}）：前缀深度不足所导致的碰撞型不可寻址性不能被其它正交轴预算抵偿，而必须以可寻址前缀或可逆层析的方式外置修复（\S\ref{subsec:cdim-finite-sampling-blindspot-endpoint-compression-deblind}）。
+
+\subsection{证书语义与离线验证器约定：固定网格、区间算术与跨平台可重复性}\label{subsec:cdim-certificate-semantics-offline-verifier-conventions}
+本章后续各类视界证书均采用统一语义核心：\emph{有限数据证书 + 确定性离线验证器}。
+其中“有限数据”指由有限个有理/ dyadic 网格点、有限个显式有理核、有限阶矩（或有限阶 Toeplitz 主子矩阵）以及伴随的误差上界（以区间算术格式给出）所组成；“离线验证器”指仅依赖上述有限输入并能确定性复核结论的检查器，旨在保证跨平台可重复性与可审计性。
+
+\begin{definition}[有限数据证书与确定性离线验证器]\label{def:cdim-finite-data-certificate-offline-verifier}
+一份\textbf{有限数据证书}由以下要素构成：
+\begin{enumerate}
+  \item \textbf{固定网格/地址：}一组有限地址（dyadic 或有理）及其精度深度，用以规范采样点与可见域（\S\ref{subsec:cdim-three-axis-address}、\S\ref{subsec:cdim-phase-prefix-quadratic-barrier}）。
+  \item \textbf{区间化输入：}对每个需要的函数值/矩系数给出包含真值的区间包络，并给出由实现策略导出的余项/截断误差上界，使所有后续推导仅依赖区间算术闭包而不依赖平台浮点细节。
+  \item \textbf{可核验输出断言：}以有限个不等式或半正定约束表达的结论（例如 \(D_{\zeta}(\varrho)\le\varepsilon\)、\(\mathbf{T}_N\succeq 0\)、或某类 \(\mathsf{NULL}\) 失败见证），并附带可复核的误差预算与裕度参数。
+\end{enumerate}
+\textbf{确定性离线验证器}是一个仅以（i）固定网格/地址、（ii）区间化输入、（iii）输出断言为输入的检查流程；其全部判断步骤可被精确算术与区间算术复算，从而在实现无关意义下给出可审计的“通过/失败”结论。
+\end{definition}
+
+\paragraph{三类接口的统一视角}
+本章主要接口可归约为三类互补通道：
+\begin{enumerate}
+  \item \textbf{缺陷链通道：}圆盘完成化 \(F_{\zeta}\) 与 Jensen 缺陷 \(D_{\zeta}(\varrho)\) 的半径族证书，及其排斥半径禁入律与对数半径导数律（\S\ref{subsec:cdim-spectral-conjugation-horizon-defect-repulsion-chain}、\S\ref{subsec:cdim-defect-zero-count-differential-equivalence}）。
+  \item \textbf{正性层级通道：}视界 Carath\'eodory 函数 \(\mathscr{C}_{\zeta}\) 的正实部性与 Toeplitz--PSD 层级（附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz}，定理 \ref{thm:app-horizon-toeplitz-lmi}），以及谱裕度/误差界驱动的有限阶 PSD 证书（定理 \ref{thm:xi-spectral-margin-finite-psd-certificate}）。
+  \item \textbf{纯相位可见域与地址化：}在 unitary slice 约束与 \(\mathbf{PW}\) 无连续毛发纪律下，径向自由度被拒绝并被迫以离散前缀/残差轴外置（定理 \ref{thm:xi-pw-no-continuous-hair}、\S\ref{subsec:cdim-three-axis-address}），其位预算由二次分辨率屏障强制（命题 \ref{prop:cdim-phase-prefix-occupancy-barrier}）。
+\end{enumerate}
+三类通道共享同一“证书对象—离线核验器”语法：输入均为有限维、区间化的数据；输出均为可复核的不等式/半正定性/禁入断言。
+
+\subsection{Jensen 缺陷证书的编译：从圆周平均到禁入律与趋一序列}\label{subsec:cdim-jensen-defect-certificate-compilation}
+Jensen 缺陷通道将“盘内零点禁入”压缩为单参标量函数 \(D_{\zeta}(\varrho)\) 的半径族约束（\S\ref{subsec:cdim-jensen-defect-finiteization}）。
+在离线证书语义下，其关键在于把圆周平均的连续对象编译为固定网格上的有限数据，并在区间算术下给出可核验的上界与推论。
+
+\subsubsection{缺陷定义与非负性：盘内零点计数的完全有限化}
+Jensen 缺陷由定义 \ref{def:app-jensen-defect} 给出，并由 Jensen--Blaschke 求和式（命题 \ref{prop:app-jensen-formula-defect}）满足
+\[
+D_{\zeta}(\varrho)=\sum_{|a_k|<\varrho}\log\!\left(\frac{\varrho}{|a_k|}\right)\ge 0,
+\qquad
+D_{\zeta}(\varrho)=0\ \Longleftrightarrow\ F_{\zeta}\ \text{在 }|w|<\varrho\text{ 内无零点}.
+\]
+因此盘内零点事件被完全有限化为半径参数上的圆周平均缺陷族，而不再以不可见的全局解析性出现（\S\ref{subsec:cdim-jensen-defect-finiteization}）。
+
+\subsubsection{视界纯度判据：RH 的单标量边界极限等价}
+视界纯度定理 \ref{thm:cdim-horizon-purity-criterion} 给出
+\[
+\mathrm{RH}\ \Longleftrightarrow\ \lim_{\varrho\uparrow 1}D_{\zeta}(\varrho)=0,
+\]
+并与附录定理 \ref{thm:app-rh-iff-jensen-defect-vanishing-sequence} 的序列化表述相容：只需构造 \(\varrho_n\uparrow 1\) 使 \(D_{\zeta}(\varrho_n)\to 0\) 即可推出 RH。
+因此，证书任务可组织为一族“固定半径上界”与其趋零机制的组合（定理 \ref{thm:cdim-closed-loop-unitary-horizon-repulsion-toeplitz}）。
+
+\subsubsection{排斥半径与禁入律：缺陷上界的几何化翻译}
+对任意 \(0<\varrho<1\) 定义排斥半径
+\[
+r_{\ast}(\varrho):=\varrho\,e^{-D_{\zeta}(\varrho)}.
+\]
+定理 \ref{thm:cdim-defect-repulsion-radius} 表明有限数据对 \((\varrho,D_{\zeta}(\varrho))\) 即可导出一个显式禁入子盘 \(|w|<r_{\ast}(\varrho)\)，其中零点事件被完全排除；并且当 \(D_{\zeta}(\varrho)\le\varepsilon\) 时有定量下界 \(r_{\ast}(\varrho)\ge \varrho e^{-\varepsilon}\)。
+从而缺陷标量上界可被制度性编译为“禁入律”证书链，并以趋一序列 \(r_{\ast}(\varrho_n)\uparrow 1\) 给出 RH 的充分证书（同定理 \ref{thm:cdim-closed-loop-unitary-horizon-repulsion-toeplitz}）。
+
+\subsubsection{导数即计数：缺陷曲线的离线可核验结构}
+命题 \ref{prop:cdim-jensen-defect-log-derivative} 给出对数半径导数律：对几乎处处的 \(\varrho\in(0,1)\)，
+\[
+\frac{\dd}{\dd(\log\varrho)}D_{\zeta}(\varrho)=N_{F_{\zeta}}(\varrho)\in\ZZ_{\ge 0},
+\]
+并且零点进入半径层时对应于折角/斜率跳变（推论 \ref{cor:app-jensen-defect-kink-structure}）。
+因此，缺陷曲线携带一组可否证的结构约束（单调性、几乎处处整数斜率、折角阈值），可作为离线验证器的附加一致性检查口径：任何声称的区间上界族若与这些约束不相容，则可在有限采样与区间算术下构造确定性否证见证。
+
+\begin{algorithm}[Jensen 缺陷证书的编译—核验流程（固定网格与区间算术）]\label{alg:cdim-jensen-defect-certificate-compiler}
+对给定半径 \(0<\varrho<1\)，定义如下离线流程：
+\begin{enumerate}
+  \item \textbf{固定网格：}选取 dyadic 角网格 \(\theta_j:=2\pi j/2^b\)（\(0\le j<2^b\)）并记录深度 \(b\)。
+  \item \textbf{区间化求值：}对每个 \(j\) 计算区间包络
+  \(
+  \log|F_{\zeta}(\varrho e^{\mathrm{i}\theta_j})|\in[\underline L_j,\overline L_j]
+  \)，并给出由求值策略导出的余项/截断误差上界。
+  \item \textbf{圆平均上界：}以确定性求积与区间余项界得到 \(D_{\zeta}(\varrho)\) 的区间包络 \([\underline D(\varrho),\overline D(\varrho)]\)。
+  \item \textbf{禁入子盘输出：}输出
+  \(
+  r_{\mathrm{cert}}(\varrho):=\varrho e^{-\overline D(\varrho)}
+  \)
+  并由定理 \ref{thm:cdim-defect-repulsion-radius} 得到零点禁入断言 \(|w|<r_{\mathrm{cert}}(\varrho)\)。
+  \item \textbf{序列证书接口：}若给出一列 \(\varrho_n\uparrow 1\) 及对应的区间上界 \(\overline D(\varrho_n)\to 0\)（或 \(r_{\mathrm{cert}}(\varrho_n)\uparrow 1\)），则由定理 \ref{thm:cdim-closed-loop-unitary-horizon-repulsion-toeplitz} 得到 RH。
+\end{enumerate}
+\end{algorithm}
+
+\subsection{Toeplitz--PSD 证书的编译：Carath\'eodory 正性与层级可行性}\label{subsec:cdim-toeplitz-psd-certificate-compilation}
+Toeplitz--PSD 通道把同一“盘内零点禁入”改写为视界 Carath\'eodory 正性的可核验层级约束（附录 \ref{subsubsec:app-horizon-weyl-carath-toeplitz}）。
+其优势在于：每一级证书输入为有限维矩系数与半正定约束，从而可直接落入确定性线性代数核验器。
+
+\subsubsection{视界正性判别：与 RH 的等价闭合}
+推论 \ref{cor:app-horizon-carath-rh} 给出 RH 的圆盘正性形式：RH 成立当且仅当 \(\mathscr{C}_{\zeta}\) 在 \(\mathbb{D}\) 上解析且满足 \(\Re \mathscr{C}_{\zeta}(w)\ge 0\)。
+该正性语言与缺陷链在逻辑上等价（定理 \ref{thm:cdim-closed-loop-unitary-horizon-repulsion-toeplitz}），但其可核验输入为矩序列而非圆周平均。
+
+\subsubsection{Toeplitz--PSD 层级与共终端稀疏化}
+定理 \ref{thm:app-horizon-toeplitz-lmi} 表明：令
+\(
+\mathscr{C}_{\zeta}(w)=c_0+2\sum_{n\ge 1}c_n w^n
+\)
+并置 Toeplitz 主子矩阵 \(\mathbf{T}_N=(c_{j-k})_{0\le j,k\le N}\)，则 RH 等价于对所有 \(N\ge 0\) 有 \(\mathbf{T}_N\succeq 0\)。
+进一步地，定理 \ref{thm:xi-toeplitz-psd-cofinal-sparsification} 给出共终端稀疏化：全层级 PSD 与在任一共终端子序列 \(\{N_k\}\) 上核验 PSD 严格等价，从而允许把无限层级约束压缩为可生成的稀疏核验任务族。
+
+\subsubsection{谱裕度与误差界：从近似矩到严格 PSD 的离线封口}
+在有限证书语义中，Toeplitz 输入通常来自绝对收敛补丁或数值/符号混合求值，从而必须同时给出误差界。
+定理 \ref{thm:xi-spectral-margin-finite-psd-certificate} 给出一条实现无关的封口规则：若存在近似 Toeplitz 矩阵 \(\widehat{\mathbf{T}}_N\) 的谱裕度 \(\lambda_{\min}(\widehat{\mathbf{T}}_N)\ge \eta>0\)，并且算子误差满足
+\[
+\bigl\|\widehat{\mathbf{T}}_N-\mathbf{T}_N\bigr\|_{\mathrm{op}}\le \eta/2,
+\]
+则必有 \(\mathbf{T}_N\succeq 0\)。
+因此，“谱裕度—误差界”可作为 Toeplitz--PSD 的离线验证器输入格式，并与 Hardy 有理核通道的区间化误差预算兼容（\S\ref{subsec:cdim-hardy-toeplitz-offline-verifier}，以及 \S\ref{subsec:cdim-hardy-finite-mode-projection} 后的谱裕度语法）。
+
+\subsubsection{负平方指数与偏离量：有限否证器与缺陷维数}
+若允许进入广义 Schur/Carath\'eodory 类，则盘内极点总重数与负平方指数严格等价（定义 \ref{def:xi-generalized-schur-negative-squares}，定理 \ref{thm:xi-poles-negative-squares-equivalence}）。
+在“有限型”口径（盘内极点有限且边界无极点）下，Toeplitz 截断的负惯性在足够高阶上稳定并等于该指数（定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}）。
+因此 Toeplitz--PSD 证书不仅提供逐级可核验的充分条件，也提供确定性的有限否证见证：任一有限阶截断一旦出现负特征值，即给出可复算的失败见证；其稳定极限刻画缺陷维数并在 RH 下退化为零。
+
+\subsection{两条证书链的互译与融合：缺陷标量化与 PSD 层级的共同核}\label{subsec:cdim-defect-toeplitz-translation-fusion}
+Jensen 缺陷链与 Toeplitz--PSD 层级在逻辑强度上均与 RH 等价（定理 \ref{thm:cdim-closed-loop-unitary-horizon-repulsion-toeplitz}），但对应不同的审计接口：
+\begin{itemize}
+  \item 缺陷链以 \(D_{\zeta}(\varrho)\) 的边界趋零为核心，把盘内零点禁入压缩为单参标量的趋一；并通过排斥半径 \(r_{\ast}(\varrho)=\varrho e^{-D_{\zeta}(\varrho)}\) 将上界翻译为几何禁入子盘（定理 \ref{thm:cdim-defect-repulsion-radius}）。
+  \item PSD 层级以 \(\Re\mathscr{C}_{\zeta}\ge 0\) 为核心，把同一命题压缩为 Toeplitz 主子矩阵的逐级半正定可行性；并以负惯性/负平方指数在有限型口径下稳定读出点状缺陷维数（定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}）。
+\end{itemize}
+两者的结构性桥接在于：盘内点状缺陷一方面在 Jensen 求和式中生成正缺陷项，另一方面在广义 Carath\'eodory 口径下生成负平方并在 Toeplitz 惯性中稳定显影；从而“缺陷标量”与“负平方指数/负惯性指标”在有限点状缺陷设定下测量同一缺陷规模，只是分别落在凸分析与线性代数两种证书语法上。
+
+\subsection{可计算证书的统一编译：Hardy 有限模态投影与有理核的离线可核验性}\label{subsec:cdim-computable-certificate-unified-compilation}
+有限模态 Hardy 投影与显式有理核为“连续视界数据 \(\to\) 有限维证书对象”提供一条统一的可执行编译路线（\S\ref{subsec:cdim-hardy-finite-mode-projection}；命题 \ref{prop:unit-circle-phase-hardy-kernel-rational}）。
+该路线与 Toeplitz--PSD 的谱裕度封口、以及 Poisson 粗粒化的单调性/量纲律自然兼容，从而形成可审计的离线验证器范式。
+
+\subsubsection{相位 Fourier 模板：有理基函数作为可操作证书基底}
+相位 Fourier 系数由式 \eqref{eq:unit-circle-phase-fourier-coeff} 定义，并在 \(L^2\) 意义下给出圆级数重构 \eqref{eq:unit-circle-phase-fourier-reconstruct}。
+由于基函数 \(w(x)^k=\bigl(\frac{1+\mathrm{i}x}{1-\mathrm{i}x}\bigr)^k\) 为显式有理函数族（附录 \ref{subsec:unit-circle-phase-fourier}），故“模态截断 \(\Rightarrow\) 有理核积分”的变换可被直接编译为纯代数可操作的证书输入。
+
+\subsubsection{有限模态 Hardy 投影核：显式有理核与积分算子表示}
+命题 \ref{prop:unit-circle-phase-hardy-kernel-rational} 给出有限模态 Hardy 投影的显式有理核 \(K_N(x,y)\)（式 \eqref{eq:unit-circle-phase-hardy-kernel}）及其分母闭式化简 \eqref{eq:unit-circle-phase-hardy-kernel-denominator}，从而投影算子满足
+\[
+(\Pi_N f)(x)=\int_{\RR} K_N(x,y)\,f(y)\,\dd\mu(y).
+\]
+因此，任何需要在相位边界上评估的连续对象（例如圆周平均中的被积项）均可先截断到有限模态子空间，再转写为实轴上的显式有理核积分；随后以区间算术对积分误差与截断余项给出上界，从而生成可核验的有限数据证书（并与谱裕度输入格式对齐，见定理 \ref{thm:xi-spectral-margin-finite-psd-certificate}）。
+
+\subsubsection{与粗粒化单调性的兼容：尺度推进下的误差预算}
+在 Poisson 粗粒化口径下，卷积算子为 Markov 核诱导的随机映射，相对熵沿尺度严格收缩（命题 \ref{prop:xi-poisson-relative-entropy-contraction}）。
+并且在大尺度极限中，可见贡献在二阶之前塌缩为有限矩不变量并满足一致二阶展开（命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form}），从而全变差与相对熵分别具有 \(t^{-2}\) 与 \(t^{-4}\) 的可审计尺度律（命题 \ref{prop:xi-poisson-tv-kl-second-order}；并见 \S\ref{subsec:cdim-poisson-second-order-certificate}）。
+因此，将有限模态投影/有理核证书置于粗粒化半群的尺度推进下，可得到一条统一的误差预算口径：信息量在尺度推进下自然收缩，使区间上界更易闭合，而二阶尺度律提供与证书深度/分辨率门槛可并置的量纲基准。
+
+\endinput
+
