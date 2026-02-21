@@ -63,7 +63,7 @@ C(y)=\frac{5y^4-10y^2+1}{(1+y^2)^5}\ (\text{偶}).
 \end{proof}
 
 \begin{proposition}[相对熵的六次校正项：六阶矩组合的完全显式常数]\label{prop:cdim-poisson-kl-sixth-order-correction}
-在上述设定下，若进一步满足 \(\EE|\Delta|^6<\infty\)，则当 \(t\to\infty\) 有二项锐渐近
+在上述设定下，若进一步满足 \(\EE|\Delta|^5<\infty\)，则当 \(t\to\infty\) 有二项锐渐近
 \begin{equation}\label{eq:cdim-poisson-kl-sixth-order-correction}
 \boxed{\;
 D_{\mathrm{KL}}(h_t\mid g_t)
@@ -72,6 +72,10 @@ D_{\mathrm{KL}}(h_t\mid g_t)
 \frac{\sigma^6+6\mu_3^2-8\sigma^2\mu_4}{64}\cdot\frac{1}{t^6}
 \;+\;o(t^{-6})\; }.
 \end{equation}
+特别地，上式为偶阶展开：不存在 \(t^{-5}\) 级项，亦即
+\[
+\lim_{t\to\infty}t^{5}\left(D_{\mathrm{KL}}(h_t\mid g_t)-\frac{\sigma^4}{8t^4}\right)=0.
+\]
 \end{proposition}
 \begin{proof}[证明要点]
 记 \(r_t:=h_t/g_t=1+\delta_t\)。由四阶展开并除以 \(g_t\) 的齐次形式可得（于 \(g_t\dd x\) 的积分意义下）
@@ -255,6 +259,99 @@ L:=64a_2\ (=\,\sigma^6+6\mu_3^2-8\sigma^2\mu_4),
 \mathcal A'(t)=-2c\,t^{-3}+o(t^{-3})>0
 \)
 亦对充分大 \(t\) 成立。
+\end{proof}
+
+\begin{proposition}[二阶正规形的全局剖面收敛：密度差与比值偏移的统一极限]\label{prop:cdim-poisson-second-order-profile-convergence}
+在本段的单参 Poisson--Cauchy 粗粒化设定下，设 \(\sigma^2=\mu_2>0\) 且 \(\EE[|\Delta|^4]<\infty\)。
+定义两条剖面函数
+\[
+R(y):=\frac{1}{\pi}\frac{3y^2-1}{(1+y^2)^3},
+\qquad
+U(y):=\frac{3y^2-1}{(1+y^2)^2}.
+\]
+则当 \(t\to\infty\) 时成立两类全局一致收敛：
+\begin{enumerate}
+  \item \textbf{密度差剖面：}
+  \[
+  \sup_{y\in\RR}\left|
+  \frac{t^3}{\sigma^2}\Bigl(h_t(\bar\gamma+ty)-g_t(\bar\gamma+ty)\Bigr)-R(y)
+  \right|=O(t^{-1}),
+  \]
+  并且对任意 \(1\le p\le\infty\) 有
+  \[
+  \left\|
+  \frac{t^3}{\sigma^2}\Bigl(h_t(\bar\gamma+t\cdot)-g_t(\bar\gamma+t\cdot)\Bigr)-R
+  \right\|_{L^p(\RR)}=O(t^{-1}).
+  \]
+  \item \textbf{比值偏移剖面：}由于 \(g_t>0\) 且 \(h_t>0\)，密度比在全空间上良定，并且
+  \[
+  \sup_{y\in\RR}\left|
+  \frac{t^2}{\sigma^2}\left(\frac{h_t}{g_t}(\bar\gamma+ty)-1\right)-U(y)
+  \right|=O(t^{-1}).
+  \]
+  若进一步记 \(G(y):=\frac{1}{\pi(1+y^2)}\)（标准 Cauchy 密度），则对任意 \(1\le p\le\infty\) 亦有加权收敛
+  \[
+  \left\|
+  \frac{t^2}{\sigma^2}\left(\frac{h_t}{g_t}(\bar\gamma+t\cdot)-1\right)-U
+  \right\|_{L^p(\RR,G(y)\dd y)}=O(t^{-1}).
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由定义 \(g_t(x)=P_t(x-\bar\gamma)\) 与 \(h_t(x)=\EE[P_t(x-\bar\gamma-\Delta)]\)。
+令 \(y=(x-\bar\gamma)/t\)，则
+\[
+g_t(\bar\gamma+ty)=\frac{1}{\pi t}\frac{1}{1+y^2}.
+\]
+对任意 \(y\in\RR\) 与 \(\varepsilon\in\RR\) 记
+\[
+F(y,\varepsilon):=\frac{P_t(t(y-\varepsilon))}{P_t(ty)}=\frac{1+y^2}{1+(y-\varepsilon)^2}.
+\]
+则 \(\frac{h_t}{g_t}(\bar\gamma+ty)=\EE[F(y,\Delta/t)]\)。
+注意下述有理恒等式与其统一余项界。
+由直接代数化简得到
+\[
+F(y,\varepsilon)
+=\frac{1+y^2}{1+(y-\varepsilon)^2}
+=1+\frac{2y}{1+y^2}\varepsilon+U(y)\varepsilon^2
+-\frac{4y(1-y^2)}{(1+y^2)^2\bigl(1+(y-\varepsilon)^2\bigr)}\,\varepsilon^3
+-\frac{3y^2-1}{(1+y^2)^2\bigl(1+(y-\varepsilon)^2\bigr)}\,\varepsilon^4.
+\]
+由于 \(\bigl(1+(y-\varepsilon)^2\bigr)^{-1}\le 1\) 且
+\(
+\frac{|y||1-y^2|}{(1+y^2)^2},\frac{|3y^2-1|}{(1+y^2)^2}
+\)
+在 \(y\in\RR\) 上一致有界，故存在绝对常数 \(C>0\) 使对一切 \(y,\varepsilon\in\RR\) 有
+\[
+\left|F(y,\varepsilon)-1-\frac{2y}{1+y^2}\varepsilon-U(y)\varepsilon^2\right|
+\le C\bigl(|\varepsilon|^3+|\varepsilon|^4\bigr).
+\]
+代入 \(\varepsilon=\Delta/t\) 并取期望，利用 \(\EE[\Delta]=0\) 得到一致展开
+\[
+\frac{h_t}{g_t}(\bar\gamma+ty)-1
+=\frac{\sigma^2}{t^2}U(y)+O\!\left(\frac{\EE[|\Delta|^3]}{t^3}+\frac{\EE[|\Delta|^4]}{t^4}\right),
+\]
+其中常数仅依赖于上述 \(C\)。
+亦可等价地写为
+\[
+\frac{h_t}{g_t}(\bar\gamma+ty)-1
+=\frac{\EE[\Delta^2]}{2t^2}\,\partial_\varepsilon^2F(y,0)+O(t^{-3})
+=\frac{\sigma^2}{t^2}U(y)+O(t^{-3}),
+\]
+从而第二条的 \(L^\infty\) 收敛成立；加权 \(L^p(\RR,G\dd y)\) 收敛由 \(G\dd y\) 为有限测度与一致界直接推出。
+\par
+第一条由恒等式
+\[
+h_t(\bar\gamma+ty)-g_t(\bar\gamma+ty)=g_t(\bar\gamma+ty)\left(\frac{h_t}{g_t}(\bar\gamma+ty)-1\right)
+\]
+与上式展开给出：
+\[
+\frac{t^3}{\sigma^2}\bigl(h_t(\bar\gamma+ty)-g_t(\bar\gamma+ty)\bigr)
+=\frac{t^2}{\pi\sigma^2}\frac{1}{1+y^2}\left(\frac{h_t}{g_t}(\bar\gamma+ty)-1\right)
+=\frac{1}{\pi}\frac{U(y)}{1+y^2}+O\!\left(\frac{1}{t(1+y^2)}\right),
+\]
+即 \(R(y)\) 的一致逼近。
+由于余项被 \(Ct^{-1}(1+y^2)^{-1}\) 控制，且 \((1+y^2)^{-1}\in L^p(\RR)\)（\(1\le p\le\infty\)），故 \(L^p\) 收敛同阶成立。证毕。
 \end{proof}
 
 \endinput
