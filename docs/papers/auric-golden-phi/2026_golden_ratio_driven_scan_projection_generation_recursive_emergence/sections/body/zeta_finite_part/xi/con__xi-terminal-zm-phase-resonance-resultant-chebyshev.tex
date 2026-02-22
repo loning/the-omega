@@ -28,3 +28,169 @@ F(u,y)=u^6G(s,y).
 上述恒等式与系数可由脚本 \texttt{scripts/exp\_fold\_zm\_phase\_resonance\_resultant\_chebyshev\_audit.py} 复核。证毕。
 \end{proof}
 
+\begin{conclusion}[相位压缩消元多项式的端点退化与判别式全平方分解]\label{con:xi-terminal-zm-phase-compression-disc-square}
+沿用结论 \ref{con:xi-terminal-zm-phase-resonance-resultant-chebyshev} 的相位压缩多项式 \(G(s,y)\in\ZZ[s,y]\)，并记
+\[
+P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32
+\]
+为 Lee--Yang 三次因子（结论 \ref{con:xi-terminal-zm-discriminant-leyang}）。
+则除去 \(s=2\) 的 Lee--Yang 退化 \(G(2,y)=-y(y-1)P_{\mathrm{LY}}(y)\) 之外，还成立端点恒等式与判别式结构：
+\input{sections/generated/eq_fold_zm_phase_compression_discriminant_square}
+其中因子 \(y^{2}+y-1\) 在 \(\Delta_G(y)\) 中以平方幂出现；为便于引用，将判别式除子中由 \(y^{2}+y-1=0\) 切出的偶重分量称为\emph{黄金屏障除子}。
+\end{conclusion}
+\begin{proof}[证明要点]
+将 \(G(s,y)\) 视为关于 \(s\) 的 \(6\) 次多项式。
+端点恒等式 \(G(-2,y)=y^{2}(y-1)^{2}\) 由显式系数直接代入并在 \(\ZZ[y]\) 中化简得到。
+判别式恒等式
+\(
+\mathrm{Disc}_{s}(G)=(-1)^{15}a_6(y)^{-1}\operatorname{Res}_{s}(G,\partial_sG)
+\)
+（其中 \(a_6(y)=[s^6]G(s,y)\)）
+同样可由结果式消元并在 \(\ZZ[y]\) 中因式分解得到所示全平方分解。
+上述恒等式可由脚本 \texttt{scripts/exp\_fold\_zm\_phase\_compression\_discriminant\_square\_audit.py} 复核。证毕。
+\end{proof}
+
+\begin{conclusion}[二子集表示的 \texorpdfstring{$S_4$}{S4} 伽罗瓦像与 \texorpdfstring{$A_6$}{A6} 约束]\label{con:xi-terminal-zm-phase-compression-galois-a6}
+设 \(K\) 为谱四次 \(\Pi(\lambda,y)\) 在 \(\QQ(y)\) 上的分裂域，并已知 \(\mathrm{Gal}(K/\QQ(y))\cong S_4\)（结论 \ref{con:xi-terminal-zm-galois-s4-from-ramification}）。
+令 \(\lambda_1,\dots,\lambda_4\) 为 \(\Pi(\lambda,y)=0\) 的根，并对 \(1\le i<j\le 4\) 定义
+\[
+s_{ij}:=\frac{\lambda_i}{\lambda_j}+\frac{\lambda_j}{\lambda_i}\in K.
+\]
+则结论 \ref{con:xi-terminal-zm-phase-resonance-resultant-chebyshev} 的 \(G(s,y)\) 在 \(\QQ(y)[s]\) 上不可约，且其根集恰为 \(\{s_{ij}\}_{1\le i<j\le 4}\)。
+从而
+\[
+\mathrm{Gal}\bigl(G/\QQ(y)\bigr)\cong \mathrm{im}\!\left(S_4\hookrightarrow S_6\right),
+\]
+其中嵌入由 \(S_4\) 对 \(2\)-子集集合 \(\binom{\{1,2,3,4\}}{2}\) 的自然作用给出，并且该像包含于 \(A_6\)。
+因此 \(\mathrm{Disc}_{s}(G)\) 在 \(\QQ(y)^{\times}/\QQ(y)^{\times 2}\) 中的平方类为平凡元，从而结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 的“判别式全平方”现象具有群论必然性。
+\end{conclusion}
+\begin{proof}[证明要点]
+对固定无序对 \(\{1,2\}\) 而言，换位 \((12)\) 保持 \(s_{12}\) 不变，且 \((34)\) 亦保持 \(s_{12}\) 不变，故
+\(
+H:=\langle(12),(34)\rangle
+\)
+固定 \(s_{12}\)。
+一般参数点 \(y\) 处六个值 \(\{s_{ij}\}\) 两两互异，故 \(s_{12}\) 的稳定子恰为 \(H\)，从而其共轭轨道大小为 \(|S_4|/|H|=6\)；
+又 \(G\) 在 \(s\) 上次数为 \(6\) 且由消元构造满足 \(G(s_{12},y)=0\)，故 \(G\) 必为 \(s_{12}\) 的最小多项式，从而在 \(\QQ(y)[s]\) 上不可约且根集为全部 \(s_{ij}\)。
+\par
+\(S_4\) 在 \(2\)-子集上的作用给出忠实嵌入 \(S_4\hookrightarrow S_6\)，并与上述共轭轨道同一。
+检查生成元：\((12)\) 在 \(2\)-子集上诱导置换型为 \((1^2\,2^2)\)，为偶置换；而 \((1234)\) 诱导为 \((4\cdot 2)\)，亦为偶置换，故像包含于 \(A_6\)。
+最后，对特征 \(\neq 2\) 的可分多项式 \(f\)（次数 \(n\)），其判别式在基域中为平方当且仅当 \(\mathrm{Gal}(f)\subseteq A_n\)；应用于 \(n=6\) 即得。证毕。
+\end{proof}
+
+\begin{conclusion}[相位压缩曲线的正规化：属 \(2\) 与分歧签名由二子集表示完全决定]\label{con:xi-terminal-zm-phase-compression-curve-genus2}
+令 \(X_{\mathrm{ph}}\) 为平面曲线 \(G(s,y)=0\) 的射影闭包之正规化，并令
+\[
+\pi:X_{\mathrm{ph}}\longrightarrow \PP^1_y
+\]
+为由 \(y\) 坐标诱导的有限态射。
+则 \(\deg(\pi)=6\)，且 \(\pi\) 的分歧仅可能发生在
+\(
+y\in\{0,1,P_{\mathrm{LY}}(y)=0,\infty\}
+\)
+之上；其局部分歧型为：在每个有限分歧点上惯性置换在六张面上的循环型为 \((1^2\,2^2)\)，而在 \(y=\infty\) 上循环型为 \((4\cdot 2)\)。
+此外，结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 的判别式分解在 \(y=-1\)、\(y^{2}+y-1=0\) 与 \(P_9(y)=0\) 处出现额外退化因子；这些对应于仿射平面模型的奇异纤维（结论 \ref{con:xi-terminal-zm-phase-compression-affine-singular-fibers}），而不产生新的域分歧点。
+因此
+\[
+g(X_{\mathrm{ph}})=2.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-phase-compression-galois-a6}，\(\QQ(X_{\mathrm{ph}})=\QQ(y,s_{12})\) 为 \(\Pi(\lambda,y)\) 的分裂域 \(K/\QQ(y)\) 的中间子扩张；
+因此 \(X_{\mathrm{ph}}\to\PP^1_y\) 不可能在 \(K/\QQ(y)\) 的分歧集合之外引入新的域分歧。
+又谱四次覆盖的 Hurwitz 分歧签名为 \((2,2,2,2,2,4)\)（结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values}），
+将其中换位与四循环通过“对 \(2\)-子集的作用”诱导到次数 \(6\) 的表示，得到所述循环型 \((1^2\,2^2)\) 与 \((4\cdot 2)\)。
+\par
+对 \(\pi\) 应用 Riemann--Hurwitz 公式：
+五个有限分歧点各贡献 \((2-1)+(2-1)=2\)，总计 \(10\)；
+\(\infty\) 处贡献 \((4-1)+(2-1)=4\)，总分歧贡献 \(14\)。
+于是
+\(
+2g(X_{\mathrm{ph}})-2=6(-2)+14
+\),
+从而 \(g(X_{\mathrm{ph}})=2\)。证毕。
+\end{proof}
+
+\begin{conclusion}[到 \texorpdfstring{$D_4$}{D4}--resolvent 椭圆曲线的分歧二重覆盖与 Jacobian 椭圆分解]\label{con:xi-terminal-zm-phase-compression-jacobian-splitting}
+令 \(H:=\langle(12),(34)\rangle\le S_4\)，并令 \(D_4:=N_{S_4}(H)\) 为其正规化子（阶 \(8\) 的二面体 Sylow \(2\)-子群）。
+取谱四次覆盖的 \(S_4\) 伽罗瓦闭包曲线 \(X_e\to\PP^1_y\)（结论 \ref{con:xi-terminal-zm-s4-d4fixedfield-resolvent-elliptic}），并记
+\[
+X_{\mathrm{ph}}:=X_e/H,\qquad R:=X_e/D_4.
+\]
+则存在自然次数 \(2\) 的态射
+\[
+\varphi:X_{\mathrm{ph}}\longrightarrow R
+\]
+使得 \(\pi\) 分解为 \(X_{\mathrm{ph}}\xrightarrow{\varphi}R\to\PP^1_y\)。
+并且 \(\varphi\) 的分歧除子次数恰为 \(2\)，从而在 \(\QQ\) 上成立同源分解
+\[
+J(X_{\mathrm{ph}})\ \sim_{\QQ}\ R\times \operatorname{Prym}(\varphi),
+\]
+其中 \(\operatorname{Prym}(\varphi)\) 为一条定义于 \(\QQ\) 的椭圆曲线。
+\end{conclusion}
+\begin{proof}[证明要点]
+由于 \(H\triangleleft D_4\) 且 \([D_4:H]=2\)，商映射 \(X_e/H\to X_e/D_4\) 给出 \(\varphi\)，其次数为 \(2\)。
+由结论 \ref{con:xi-terminal-zm-phase-compression-curve-genus2} 得 \(g(X_{\mathrm{ph}})=2\)，而 \(R\) 为椭圆曲线（结论 \ref{con:xi-terminal-zm-s4-d4fixedfield-resolvent-elliptic}），故 \(g(R)=1\)。
+Riemann--Hurwitz 对二重覆盖给出
+\(
+2g(X_{\mathrm{ph}})-2=2(2g(R)-2)+\deg\mathrm{Ram}(\varphi)
+\),
+从而 \(\deg\mathrm{Ram}(\varphi)=2\)。
+最后，对任意二重覆盖 \(\varphi:C\to E\)（\(E\) 椭圆曲线），Prym 分解给出 \(J(C)\sim E\times \operatorname{Prym}(\varphi)\)，且 \(\dim\operatorname{Prym}=g(C)-g(E)=1\)，故 Prym 为椭圆曲线。证毕。
+\end{proof}
+
+\begin{conclusion}[平面相位压缩模型的奇异纤维投影：由 \texorpdfstring{$y=-1$}{y=-1}、黄金共轭与 \texorpdfstring{$P_9$}{P9} 控制]\label{con:xi-terminal-zm-phase-compression-affine-singular-fibers}
+令 \(C_{\mathrm{aff}}\subset\mathbb A^2_{s,y}\) 为仿射曲线 \(G(s,y)=0\)。
+则其奇异点 \((s_0,y_0)\) 必满足
+\[
+y_0(y_0-1)(y_0+1)(y_0^{2}+y_0-1)P_{9}(y_0)=0,
+\]
+其中 \(P_9\) 由结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 给出。
+更精确地：
+\begin{itemize}
+  \item 在 \(y=0\) 与 \(y=1\) 上，唯一有限奇异点分别为 \((s,y)=(-2,0)\) 与 \((s,y)=(-2,1)\)。
+  \item 在 \(y^{2}+y-1=0\) 的每个根上，存在恰好两个有限奇异点；其 \(s\)-坐标在 \(\QQ(\sqrt5)\) 中可取为
+  \[
+  s=\frac{\sqrt5-2}{2}\ \pm\ \frac12\sqrt{13+4\sqrt5},
+  \]
+  另一根对应其 \(\sqrt5\)-共轭。
+  \item 在 \(P_9(y)=0\) 的每个根上，\(C_{\mathrm{aff}}\) 存在有限奇异点；其发生机制为在该参数处 \(G(\cdot,y)\) 出现二重 \(s\)-根。
+\end{itemize}
+\end{conclusion}
+\begin{proof}[证明要点]
+仿射奇异点当且仅当 \(G=\partial_sG=\partial_yG=0\)。
+消去 \(s\) 并记
+\[
+D_1(y):=\operatorname{Res}_{s}\bigl(G,\partial_sG\bigr),\qquad
+D_2(y):=\operatorname{Res}_{s}\bigl(G,\partial_yG\bigr).
+\]
+若存在奇异点，则必有 \(D_1(y)=D_2(y)=0\)。
+由结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 中给出的
+\(
+\gcd(D_1,D_2)=y^{10}(y-1)^3(y+1)^6(y^2+y-1)^4P_9(y)^2
+\)
+可得 \(y_0\) 的必要条件即为所述零点集合。
+\par
+对 \(y=0,1\) 的断言由结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 中的分解
+\(
+G(s,0)=-(s-2)(s+2)^2
+\)、\(
+G(s,1)=(s-2)(s+2)^2(2s+5)^2(2s-5)
+\)
+直接检验三方程同解点得到。
+对 \(y^{2}+y-1=0\) 的情形，在系数域 \(\QQ(\sqrt5)\) 上将 \(y\) 特化到任一根 \(y_0\) 后，
+可计算得到
+\(
+\gcd_{\,\QQ(\sqrt5)[s]}\bigl(G(\cdot,y_0),\partial_sG(\cdot,y_0)\bigr)
+\)
+为一条可分二次多项式；例如当 \(y_0=\frac{-1+\sqrt5}{2}\) 时该因子可取为
+\(
+s^{2}-(\sqrt5-2)s-(1+2\sqrt5)
+\)，另一根对应其 \(\sqrt5\)-共轭。
+并且该二次因子整除 \(\partial_yG(\cdot,y_0)\)；
+从而在该 \(y_0\) 上恰存在两条有限奇异分支，给出“恰好两个”有限奇异点。
+所示 \(s\)-坐标即该二次多项式的求根公式展开。
+对 \(P_9(y)=0\) 的情形，由 \(\gcd(D_1,D_2)\) 含因子 \(P_9(y)^2\) 可知每个 \(P_9\) 的根 \(y_0\) 处必存在 \(s_0\) 使 \(G=\partial_sG=\partial_yG=0\)，从而出现有限奇异点。
+上述恒等式与投影必要条件可由脚本 \texttt{scripts/exp\_fold\_zm\_phase\_compression\_discriminant\_square\_audit.py} 复核。证毕。
+\end{proof}
+

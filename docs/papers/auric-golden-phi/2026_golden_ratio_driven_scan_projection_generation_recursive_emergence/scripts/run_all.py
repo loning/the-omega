@@ -98,6 +98,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_hankel_rigidity_dp_audit",
+            script="exp_xi_hankel_rigidity_dp_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_hankel_rigidity_dp_audit.json",
+            ],
+        ),
+        Step(
+            name="pom_fractran_primecore_finite_partial_functions_audit",
+            script="exp_pom_fractran_primecore_finite_partial_functions_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_fractran_primecore_finite_partial_functions_audit.json",
+            ],
+        ),
+        Step(
             name="symq_golden_involution_matrix_audit",
             script="exp_symq_golden_involution_matrix_audit.py",
             args=[],
@@ -2979,6 +2995,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_phase_resonance_resultant_chebyshev_audit.json",
                 "sections/generated/eq_fold_zm_phase_resonance_resultant_chebyshev.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_phase_compression_discriminant_square_audit",
+            script="exp_fold_zm_phase_compression_discriminant_square_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_phase_compression_discriminant_square_audit.json",
+                "sections/generated/eq_fold_zm_phase_compression_discriminant_square.tex",
             ],
         ),
         Step(
