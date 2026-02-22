@@ -1,8 +1,10 @@
 \paragraph{prime-register 外置的结构刚性：自由交换轴、规范化森林与痕迹—索引对偶}\label{para:pom-fold-prime-register-rigidity-forest-trace-index}
-本段在定义 \ref{def:pom-fold-prime-lift} 的“逐步事件写回”制度之上，提炼三条可复用的结构断言。
+本段在定义 \ref{def:pom-fold-prime-lift} 的“逐步事件写回”制度之上，提炼若干条可复用的结构断言。
 第一条刻画外置的代数刚性：若逐步写回在交换可消去口径下要保持单射，则外置轴在本质上必须是自由交换幺半群，从而与 prime-register 的标准模型同构。
 第二条刻画策略语义：确定性正规化策略等价于把重写图分解为一族以正规形为根的规范化森林，prime-register 残差即该森林路径的可回放标签。
 第三条刻画信息极小化：在固定稳定类型的纤维上，prime-register 痕迹与“纤维索引”严格等价，但二者分别保留可回放轨迹与最小充分信息。
+第四条刻画轨迹连接的代数化：事件序列的连接在 \(\mathcal P\) 上被编译为“坐标移位 + 坐标加法”，从而与自由单子严格同构。
+第五条刻画策略变换：更换确定性策略在无损提升像上诱导保持稳定坐标的群胚同构，并在每条纤维上实现 residual 集合的置换。
 
 \begin{theorem}[事件逐步外置的素数刚性：单射 \texorpdfstring{$\Longleftrightarrow$}{<->} 自由交换轴]\label{thm:pom-stepwise-externalization-free-commutative-rigidity}
 设 \((M,\cdot,1)\) 为交换且可消去的幺半群，取一列元素 \((g_t)_{t\ge 1}\subset M\)。
@@ -52,6 +54,59 @@
 最后一条由定义 \ref{def:pom-fold-prime-lift} 对事件序列 \(e_t(\omega)\) 与残差坐标写回规则的逐步对应直接推出。证毕。
 \end{proof}
 
+\begin{theorem}[轨迹连接的 prime-register 编译：移位加法与自由单子]\label{thm:pom-prime-trace-shift-free-monoid}
+令 \(\mathcal E\) 为定义 \ref{def:pom-fold-prime-lift} 中出现的原子事件集合，并记其注入编码为 \(\mathrm{code}:\mathcal E\hookrightarrow\NN_{\ge 1}\)。
+固定素数序列 \(p_1<p_2<\cdots\)。
+对任意有限事件序列 \(\mathbf e=(e_1,\dots,e_T)\in\mathcal E^*\) 定义其 prime-register 轨迹像 \(\mathsf{tr}(\mathbf e)\in\mathcal P\) 为
+\[
+\mathsf{tr}(\mathbf e)(p_t):=\mathrm{code}(e_t)\quad(1\le t\le T),
+\qquad
+\mathsf{tr}(\mathbf e)(p)=0\ \text{对其余 }p.
+\]
+对 \(k\ge 0\) 定义坐标移位算子 \(\sigma^k:\mathcal P\to\mathcal P\)：
+\[
+(\sigma^k r)(p_t):=
+\begin{cases}
+0,&1\le t\le k,\\
+r(p_{t-k}),&t>k.
+\end{cases}
+\]
+并在 \(\mathsf{tr}(\mathcal E^*)\) 上定义长度 \(T(r)\) 为满足 \(r(p_t)=0\ (t>T(r))\) 的最小整数（约定 \(T(0)=0\)），以及二元运算
+\[
+r\odot s:=r+\sigma^{T(r)}s.
+\]
+则 \(\bigl(\mathsf{tr}(\mathcal E^*),\odot,0\bigr)\) 为自由单子，其生成元为 \(\mathsf{tr}(\mathcal E)\)，且
+\[
+\mathsf{tr}:\ (\mathcal E^*,\text{连接})\ \xrightarrow{\ \sim\ }\ \bigl(\mathsf{tr}(\mathcal E^*),\odot\bigr)
+\]
+为单子同构。
+特别地，对任意确定性策略 \(\mathsf S\) 与任意 \(\omega\)，若 \((e_t(\omega))_{t=1}^{T}\) 为定理 \ref{thm:pom-deterministic-normalization-forest} 所述轨迹标签序列，则 \(r_{\mathsf S}(\omega)=\mathsf{tr}(e_1(\omega),\dots,e_T(\omega))\)，从而轨迹连接在 prime-register 上严格实现为 \(\odot\)。
+\end{theorem}
+\begin{proof}
+先由定义得 \(\sigma^a\sigma^b=\sigma^{a+b}\)。
+若 \(r,s\in\mathsf{tr}(\mathcal E^*)\)，则 \(\sigma^{T(r)}s\) 的支撑落在 \(\{p_{T(r)+1},p_{T(r)+2},\dots\}\)，从而与 \(r\) 的支撑不相交，故
+\(
+T(r\odot s)=T(r)+T(s)
+\)。
+因此对任意 \(r,s,t\) 有
+\[
+(r\odot s)\odot t
+=\bigl(r+\sigma^{T(r)}s\bigr)+\sigma^{T(r)+T(s)}t
+=r+\sigma^{T(r)}\bigl(s+\sigma^{T(s)}t\bigr)
+=r\odot(s\odot t),
+\]
+从而 \(\odot\) 结合且 \(0\) 为幺元。
+\par
+对 \(\mathbf e\in\mathcal E^*\)（长 \(T\)）与 \(\mathbf f\in\mathcal E^*\)（长 \(U\)），由逐坐标定义可得
+\(
+\mathsf{tr}(\mathbf e\mathbf f)=\mathsf{tr}(\mathbf e)+\sigma^{T}\mathsf{tr}(\mathbf f)
+=\mathsf{tr}(\mathbf e)\odot \mathsf{tr}(\mathbf f)
+\)，
+故 \(\mathsf{tr}\) 为单子同态。
+若两事件序列在首个位置 \(t\) 处不同，则由 \(\mathrm{code}\) 的单射性知 \(\mathsf{tr}\) 在坐标 \(p_t\) 处取值不同，从而 \(\mathsf{tr}\) 单射；满射性由 \(\mathsf{tr}(\mathcal E^*)\) 的定义成立，故为同构。
+自由性即由 \(\mathcal E^*\) 为以 \(\mathcal E\) 为生成元的自由单子与同构传递得到。证毕。
+\end{proof}
+
 \begin{proposition}[痕迹—索引对偶：prime-register 可回放痕迹与纤维索引的严格等价]\label{prop:pom-prime-trace-index-duality}
 固定分辨率 \(m\) 与确定性策略 \(\mathsf S\)，并沿用定义 \ref{def:pom-fold-prime-lift} 的无损提升
 \(
@@ -90,6 +145,49 @@ R_x:=\{r_{\mathsf S}(\omega):\ \omega\in\Omega_x\}\subset \mathcal{P}.
 \par
 第二条中，\(N\) 为双射且 \(R_x\) 有限，故全序与秩函数良定义。
 给定 \((x,\mathrm{idx})\) 先由秩逆映射恢复唯一 \(r\in R_x\)，再由 \(\mathrm{UNLIFT}^{\mathsf S}_m(x,r)\)（命题 \ref{prop:pom-fold-prime-lift-injective}）唯一恢复 \(\omega\)。证毕。
+\end{proof}
+
+\begin{proposition}[策略变换的群胚律：保持稳定坐标的 residual 置换]\label{prop:pom-prime-register-strategy-gauge-groupoid}
+固定分辨率 \(m\) 并取两种确定性策略 \(\mathsf S,\mathsf S'\)。
+在无损提升像上定义变换
+\[
+\Xi_{m}^{\mathsf S\to\mathsf S'}
+:=\widetilde{\Fold}^{\mathsf S'}_m\circ \mathrm{UNLIFT}^{\mathsf S}_m:
+\ \widetilde{\Fold}^{\mathsf S}_m(\Omega_m)\ \longrightarrow\ \widetilde{\Fold}^{\mathsf S'}_m(\Omega_m).
+\]
+则：
+\begin{enumerate}
+  \item \(\Xi_{m}^{\mathsf S\to\mathsf S'}\) 为双射；
+  \item \(\Xi_{m}^{\mathsf S\to\mathsf S'}\) 保持稳定坐标：对任意 \((x,r)\in \widetilde{\Fold}^{\mathsf S}_m(\Omega_m)\) 有
+  \[
+  \Xi_{m}^{\mathsf S\to\mathsf S'}(x,r)=(x,\rho_x^{\mathsf S\to\mathsf S'}(r)),
+  \]
+  其中对每个 \(x\in X_m\)，\(\rho_x^{\mathsf S\to\mathsf S'}:R_x^{\mathsf S}\to R_x^{\mathsf S'}\) 为有限集置换，定义为
+  \[
+  \rho_x^{\mathsf S\to\mathsf S'}\bigl(r_{\mathsf S}(\omega)\bigr):=r_{\mathsf S'}(\omega),
+  \qquad \omega\in\Omega_x,
+  \]
+  且 \(R_x^{\mathsf S}:=\{r_{\mathsf S}(\omega):\omega\in\Omega_x\}\)；
+  \item 这些变换满足群胚律：
+  \[
+  \Xi_{m}^{\mathsf S\to\mathsf S}=\mathrm{id},\qquad
+  \Xi_{m}^{\mathsf S\to\mathsf S''}=\Xi_{m}^{\mathsf S'\to\mathsf S''}\circ \Xi_{m}^{\mathsf S\to\mathsf S'}.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:pom-fold-prime-lift-injective}，\(\mathrm{UNLIFT}^{\mathsf S}_m\) 为 \(\widetilde{\Fold}^{\mathsf S}_m\) 在其像上的逆；同理 \(\widetilde{\Fold}^{\mathsf S'}_m\) 单射，故复合 \(\Xi_{m}^{\mathsf S\to\mathsf S'}\) 为双射。
+\par
+对任意 \((x,r)=\widetilde{\Fold}^{\mathsf S}_m(\omega)\)，有 \(\mathrm{UNLIFT}^{\mathsf S}_m(x,r)=\omega\)，从而
+\[
+\Xi_{m}^{\mathsf S\to\mathsf S'}(x,r)
+=\widetilde{\Fold}^{\mathsf S'}_m(\omega)
+=\bigl(\Fold_m(\omega),r_{\mathsf S'}(\omega)\bigr)
+=(x,r_{\mathsf S'}(\omega)),
+\]
+稳定坐标保持。
+另一方面，由命题 \ref{prop:pom-prime-trace-index-duality}(1) 可知在每条纤维 \(\Omega_x\) 上，\(r_{\mathsf S}\) 与 \(r_{\mathsf S'}\) 分别为到 \(R_x^{\mathsf S}\)、\(R_x^{\mathsf S'}\) 的双射，从而 \(\rho_x^{\mathsf S\to\mathsf S'}\) 良定义且为置换，并给出所示分解形式。
+群胚律由定义的复合与逆性直接推出。证毕。
 \end{proof}
 
 \begin{definition}[Steinitz 完成的素数寄存器（超自然扩张）]\label{def:pom-steinitz-prime-register}

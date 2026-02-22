@@ -83,6 +83,58 @@ S_m(q)=2^{-m}\Biggl(\sum_{\substack{S\subseteq E(C_m)\\ S\neq E(C_m)}} I\!\bigl(
 最后一条差分式由结论 \ref{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets} 与上式相减立得，并用 \(I(C_m)=L_m\) 记号统一写出。证毕。
 \end{proof}
 
+\begin{conclusion}[时间纤维分裂的系数定律：Fibonacci 乘积基底与圆周重复指数]\label{con:xi-terminal-replica-softcore-cycle-subgraph-cyclic-composition-coeff-law}
+固定整数 \(m\ge 1\)。
+对任意真子图 \(C_m[S]\)（即 \(S\subsetneq E(C_m)\)），图 \(C_m[S]\) 必为若干条路径的离散并。
+记其路径分量的顶点数依圆周顺序给出圆周分拆（cyclic composition）
+\[
+\boldsymbol n=(n_1,\dots,n_r),\qquad n_i\in\ZZ_{\ge 1},\ \sum_{i=1}^{r}n_i=m,
+\]
+并按圆周旋转等价。
+令 Fibonacci 数列满足 \(F_0=0,F_1=1\) 与递推 \(F_{n+2}=F_{n+1}+F_n\)，并定义
+\[
+B(\boldsymbol n):=\prod_{i=1}^{r}F_{n_i+2}\in\ZZ_{>0}.
+\]
+再令 \(\mathrm{rep}(\boldsymbol n)\) 表示 \(\boldsymbol n\) 作为圆周序列的最大重复次数：存在且仅存在最小块 \(\boldsymbol n_0\) 使得（按圆周意义）
+\(
+\boldsymbol n=\boldsymbol n_0^{\ \mathrm{rep}(\boldsymbol n)}
+\)。
+则：
+\begin{enumerate}
+  \item \textbf{（指数基底）}若 \(S\subsetneq E(C_m)\) 的分量圆周分拆为 \(\boldsymbol n\)，则
+  \[
+  \boxed{\ I\!\bigl(C_m[S]\bigr)=B(\boldsymbol n)\ }.
+  \]
+  \item \textbf{（多重性）}对应于同一圆周分拆类 \(\boldsymbol n\) 的边子集个数严格等于
+  \[
+  \boxed{\ \kappa(\boldsymbol n)=\frac{m}{\mathrm{rep}(\boldsymbol n)}\ } .
+  \]
+  \item \textbf{（分组重写）}因此结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-cycle-sector-replacement} 的循环扇区替换可按圆周分拆分组为
+  \[
+  \boxed{\;
+  2^m S_m(q)=\Omega_m(q)+\sum_{\boldsymbol n\in\mathrm{CycComp}(m)}\kappa(\boldsymbol n)\,B(\boldsymbol n)^{q}\; },
+  \qquad q\ge 2,
+  \]
+  其中 \(\mathrm{CycComp}(m)\) 表示全部圆周分拆类（按圆周旋转取商）。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+由于 \(S\subsetneq E(C_m)\)，图 \(C_m[S]\) 无环且每个顶点度数不超过 \(2\)，故其连通分量必为路径。
+设某一分量为顶点数 \(n\) 的路径 \(P_n\)，记 \(a_n:=I(P_n)\)。
+按是否选取端点拆分可得递推 \(a_n=a_{n-1}+a_{n-2}\)（\(n\ge 2\)），且 \(a_0=1,a_1=2\)，故 \(a_n=F_{n+2}\)。
+从而 \(I(C_m[S])\) 由分量相乘得到 \(B(\boldsymbol n)\)。
+\par
+对多重性，令 \(Z:=E(C_m)\setminus S\neq\varnothing\) 为缺边集合，并按圆周顺序列出其元素。
+相邻缺边之间的圆周距离（以顶点数计）给出 \(\boldsymbol n\)。
+循环平移群 \(\ZZ/m\ZZ\) 作用于边子集并保持 \(\boldsymbol n\) 的圆周分拆类；
+其稳定子由把缺边集合整体平移不变的旋转组成，而稳定子阶恰等于重复次数 \(\mathrm{rep}(\boldsymbol n)\)。
+由轨道—稳定子定理得到轨道大小 \(m/\mathrm{rep}(\boldsymbol n)\)，即为出现次数 \(\kappa(\boldsymbol n)\)。
+最后，将结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-cycle-sector-replacement} 中
+\(\sum_{S\subsetneq E(C_m)}I(C_m[S])^{q}\)
+按圆周分拆类分组并代入前两条即得重写式。
+可复现核验脚本：\texttt{scripts/exp\_replica\_softcore\_cycle\_subgraph\_cyccomp\_audit.py}。证毕。
+\end{proof}
+
 \begin{conclusion}[谱泄漏局部化：非对称子空间的迹仅由全循环扇区贡献]\label{con:xi-terminal-replica-softcore-spectral-leakage-localization-full-cycle-sector}
 令 \(\mathcal H_q:=(\CC^2)^{\otimes q}\)，并记 \(S_q\)-不变子空间 \(\mathcal H_q^{S_q}\cong\mathrm{Sym}^q(\CC^2)\)（结论 \ref{con:xi-terminal-replica-softcore-exceptional-spectrum-sympower-model}）。
 则对任意整数 \(m\ge 1\) 与 \(q\ge 2\)，有
