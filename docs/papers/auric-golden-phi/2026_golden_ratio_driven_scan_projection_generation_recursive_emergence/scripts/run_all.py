@@ -2193,6 +2193,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_poisson_defect_measure_complex_multipole_kl_audit",
+            script="exp_xi_poisson_defect_measure_complex_multipole_kl_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_defect_measure_complex_multipole_kl_audit.json",
+                "sections/generated/eq_xi_poisson_defect_measure_complex_multipole_kl_audit.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_logM_theta",
             script="exp_sync_kernel_real_input_40_logM_theta.py",
             args=[
@@ -2977,6 +2986,15 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_zm_elliptic_leyang_cover_geometry_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_perron_fuchs_operator_audit",
+            script="exp_fold_zm_leyang_perron_fuchs_operator_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_perron_fuchs_operator_audit.json",
+                "sections/generated/eq_fold_zm_leyang_perron_fuchs_operator.tex",
             ],
         ),
         Step(

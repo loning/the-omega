@@ -121,3 +121,241 @@ P_{\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32,
 代入结论 \ref{con:xi-terminal-zm-leyang-abel-jacobi-ode} 的四次闭式即得。证毕。
 \end{proof}
 
+\begin{conclusion}[Lee--Yang Perron 分支的中心化三阶 Fuchs 线性算子]\label{con:xi-terminal-zm-leyang-perron-centered-fuchs-operator}
+令
+\[
+\Pi(\lambda,y):=\lambda^{4}-\lambda^{3}-(2y+1)\lambda^{2}+\lambda+y(y+1),\qquad
+P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32,
+\]
+并记 \(\lambda_{+}(y)\) 为 \(y=1\) 邻域内满足 \(\lambda_{+}(1)=2\) 的解析分支（结论 \ref{con:xi-terminal-zm-lln-clt}）。
+定义中心化分支
+\[
+f(y):=\lambda_{+}(y)-\frac14.
+\]
+则 \(f\) 满足三阶线性微分方程
+\[
+A_{3}(y)f^{(3)}+A_{2}(y)f^{(2)}+A_{1}(y)f'+A_{0}(y)f=0,
+\]
+其中 \(A_{j}(y)\in\ZZ[y]\) 显式如下：
+\input{sections/generated/eq_fold_zm_leyang_perron_fuchs_operator}
+\end{conclusion}
+\begin{proof}[证明要点]
+设
+\(
+K:=\QQ(y)[\lambda]/(\Pi(\lambda,y))
+\)。
+由 Vieta 关系 \(\sum_{i=1}^{4}\lambda_i=1\) 得
+\(
+\mathrm{Tr}_{K/\QQ(y)}(\lambda-\tfrac14)=0
+\)，故
+\(
+g:=\lambda-\tfrac14\in K_0:=\ker\mathrm{Tr}
+\)。
+又 \(\dim_{\QQ(y)}K_0=3\)。
+令 \(\partial:=\frac{d}{dy}\)；
+可分扩张下迹与导数可交换，
+\(
+\mathrm{Tr}(\partial u)=\partial\mathrm{Tr}(u)
+\)，故 \(\partial(K_0)\subseteq K_0\)。
+因此 \(g,\partial g,\partial^2 g,\partial^3 g\) 在 \(K_0\) 中线性相关，存在 \(a_j(y)\in\QQ(y)\) 使
+\[
+\partial^3 g+a_2(y)\partial^2 g+a_1(y)\partial g+a_0(y)g=0.
+\]
+将该恒等式在 \(K\) 中按基 \(\{1,\lambda,\lambda^2,\lambda^3\}\) 消元并清分母，得到整系数多项式 \(A_3,A_2,A_1,A_0\)。
+脚本 \texttt{scripts/exp\_fold\_zm\_leyang\_perron\_fuchs\_operator\_audit.py} 对上述恒等式给出代数核验。证毕。
+\end{proof}
+
+\begin{conclusion}[Riemann 方案中的真奇点与表观奇点分离]\label{con:xi-terminal-zm-leyang-perron-fuchs-riemann-apparent-split}
+设 \(L_3\) 为结论 \ref{con:xi-terminal-zm-leyang-perron-centered-fuchs-operator} 的三阶算子。
+其有限奇点恰为 \(A_3(y)=0\)：
+\[
+\{0,1\}\cup\{P_{\mathrm{LY}}(y)=0\}\cup\{Q(y)=0\}.
+\]
+其中 \(\{0,1\}\cup\{P_{\mathrm{LY}}=0\}\) 为 \(\Pi\) 的分歧点集；\(\{Q=0\}\) 为五个有限表观奇点。
+若 \(y_0\) 为 \(A_3\) 的简单零点，则局部指标为
+\[
+\operatorname{Exp}_{y_0}(L_3)=\left\{0,1,2-\frac{A_2(y_0)}{A_3'(y_0)}\right\}.
+\]
+并且
+\[
+\operatorname{Exp}_{y_0}(L_3)=\left\{0,\frac12,1\right\}
+\quad\bigl(y_0\in\{0,1,P_{\mathrm{LY}}=0\}\bigr),
+\]
+\[
+\operatorname{Exp}_{y_0}(L_3)=\{0,1,3\}
+\quad\bigl(y_0\in\{Q=0\}\bigr).
+\]
+在 \(y=\infty\) 处，指标集合为
+\[
+\left\{-\frac14,\frac14,\frac12\right\},
+\]
+其指标多项式为
+\[
+32\sigma^{3}-16\sigma^{2}-2\sigma+1=(2\sigma-1)(4\sigma-1)(4\sigma+1).
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+将方程写成首一形式 \(f^{(3)}+p_2f^{(2)}+p_1f'+p_0f=0\)。
+在 \(A_3\) 的简单零点处 \(p_2\) 仅有一阶极点、\(p_1,p_0\) 不产生更高阶极部，故为正则奇点，
+并得到指标公式
+\(
+r(r-1)\bigl(r-2+p_{2,-1}\bigr)=0
+\)；
+即
+\(
+\{0,1,2-A_2(y_0)/A_3'(y_0)\}
+\)。
+由恒等式
+\[
+2A_2-3A_3'\equiv 0\pmod{y(y-1)P_{\mathrm{LY}}},\qquad
+A_2+A_3'\equiv 0\pmod{Q}
+\]
+分别得到上述两组局部指数。
+又 \(\gcd\!\bigl(Q,\ y(y-1)P_{\mathrm{LY}}\bigr)=1\)，故 \(Q\) 的零点不在 \(\Pi\) 的分歧集上；
+四个代数分支在这些点局部单值解析，故该五点为表观奇点。
+无穷远指标由主平衡项直接给出。证毕。
+\end{proof}
+
+\begin{conclusion}[Wronskian 的平方闭式与表观奇点结构方程]\label{con:xi-terminal-zm-leyang-perron-fuchs-wronskian-square}
+设 \(V\) 为算子 \(L_3\) 的解空间，\(\dim V=3\)。
+取任意基 \((u_1,u_2,u_3)\)，Wronskian 记为
+\[
+W(y):=\det\bigl(u_i^{(j-1)}(y)\bigr)_{1\le i,j\le 3}.
+\]
+则存在常数 \(C\neq 0\) 使
+\[
+W(y)^2
+=
+C\cdot\frac{Q(y)^2}{y^3(y-1)^3P_{\mathrm{LY}}(y)^3}.
+\]
+因此 \(Q(y)=0\) 给出 \(W\) 的有限零点，而 \(P_{\mathrm{LY}}(y)=0\) 与 \(y=0,1\) 给出 \(W\) 的有限极点。
+\end{conclusion}
+\begin{proof}[证明要点]
+对首一三阶方程有经典恒等式
+\(
+\frac{W'}{W}=-p_2
+\)。
+从而
+\(
+\frac{(W^2)'}{W^2}=-2p_2=-2A_2/A_3
+\)。
+对
+\(
+R(y):=\frac{Q(y)^2}{y^3(y-1)^3P_{\mathrm{LY}}(y)^3}
+\)
+直接计算得
+\(
+\frac{R'}{R}=-2A_2/A_3
+\)。
+故 \(W^2=CR\)。
+脚本 \texttt{scripts/exp\_fold\_zm\_leyang\_perron\_fuchs\_operator\_audit.py} 已给出符号核验。证毕。
+\end{proof}
+
+\begin{conclusion}[Perron 分支 \texorpdfstring{$\Lambda(t)$}{Lambda(t)} 的全局 \(p\)-整性与仅 \(3\)-进分母]\label{con:xi-terminal-zm-leyang-perron-global-pintegrality}
+令 \(t:=y-1\)，并令 \(\Lambda(t)\in\QQ[[t]]\) 满足
+\[
+\Pi(\Lambda(t),1+t)=0,\qquad \Lambda(0)=2.
+\]
+则对任意素数 \(p\neq 3\)，有
+\[
+\Lambda(t)\in\ZZ_p[[t]].
+\]
+因此 \(\Lambda(t)=2+\sum_{n\ge 1}a_n t^n\) 的每个系数满足 \(a_n\in\ZZ[1/3]\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+设 \(F(\lambda,t):=\Pi(\lambda,1+t)\in\ZZ[\lambda,t]\)。
+有 \(F(2,0)=0\) 且
+\(
+F_{\lambda}(2,0)=\partial_{\lambda}\Pi(2,1)=9
+\)。
+当 \(p\neq 3\) 时 \(9\in\ZZ_p^\times\)，由 \(p\)-进隐函数定理得到唯一
+\(
+\Lambda_p(t)\in\ZZ_p[[t]]
+\)
+满足 \(F(\Lambda_p(t),t)=0\)、\(\Lambda_p(0)=2\)。
+而该初值下 \(\QQ[[t]]\) 形式解唯一，故 \(\Lambda=\Lambda_p\) 视为 \(\QQ_p[[t]]\) 元成立。
+于是对所有 \(p\neq 3\) 的 \(p\)-整性同时成立，分母仅可能含素因子 \(3\)。证毕。
+\end{proof}
+
+\begin{conclusion}[累积量密度序列的分母支撑仅含 \texorpdfstring{$\{2,3\}$}{\{2,3\}}]\label{con:xi-terminal-zm-leyang-perron-cumulant-denominator-2-3}
+定义
+\[
+\psi(s):=\log\frac{\Lambda(e^s-1)}{2},\qquad
+\kappa_n^\infty:=\psi^{(n)}(0)\quad(n\ge 1).
+\]
+则
+\[
+\kappa_n^\infty\in\ZZ\!\left[\frac16\right]\qquad(n\ge 1).
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-leyang-perron-global-pintegrality}，\(\Lambda(t)\) 系数属于 \(\ZZ[1/3]\)。
+又
+\[
+(e^s-1)^k
+=
+k!\sum_{n\ge k}S(n,k)\frac{s^n}{n!},
+\]
+其中 \(S(n,k)\in\ZZ\)，故 \(\Lambda(e^s-1)\) 的各阶导数在 \(s=0\) 落在 \(\ZZ[1/3]\)。
+再由 \(\psi(s)=\log(\Lambda(e^s-1))-\log 2\)，对数微分仅额外引入 \(\Lambda(0)=2\) 的分母因子，
+因此最多新增素因子 \(2\)。
+故 \(\kappa_n^\infty\in\ZZ[1/6]\)。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$p\neq 3$}{p!=3} 下的模 \(p\) 自动性与有限 \(p\)-核]\label{con:xi-terminal-zm-leyang-perron-modp-automaticity}
+对任意素数 \(p\neq 3\)，记
+\[
+\overline{\Lambda}_p(t):=\sum_{n\ge 0}\overline{a}_n t^n\in\FF_p[[t]]
+\]
+为 \(\Lambda(t)\) 的逐项模 \(p\) 约化。
+则 \(\overline{\Lambda}_p(t)\) 在 \(\FF_p(t)\) 上代数，且系数序列 \((\overline{a}_n)_{n\ge 0}\) 为 \(p\)-自动序列（等价地，其 \(p\)-核有限）。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-leyang-perron-global-pintegrality}，\(\Lambda(t)\in\ZZ_p[[t]]\)（\(p\neq 3\)），故可逐项约化得到 \(\overline{\Lambda}_p\)。
+约化后仍满足
+\(
+\Pi(\overline{\Lambda}_p(t),1+t)=0
+\)
+的模 \(p\) 方程，故 \(\overline{\Lambda}_p\) 为 \(\FF_p(t)\)-代数幂级数。
+由 Christol 定理，代数性当且仅当系数序列 \(p\)-自动，结论即得。证毕。
+\end{proof}
+
+\begin{conclusion}[三阶算子的单值群与 \texorpdfstring{$S_4$}{S4} 标准三维表示]\label{con:xi-terminal-zm-leyang-perron-fuchs-monodromy-s4}
+设 \(\lambda_1,\dots,\lambda_4\) 为 \(\Pi(\lambda,y)=0\) 的四个解析分支，并定义
+\[
+f_i(y):=\lambda_i(y)-\frac14\qquad(1\le i\le 4).
+\]
+则
+\[
+V=\mathrm{span}_{\CC}\{f_1,f_2,f_3,f_4\}
+=
+\left\{\sum_{i=1}^4 c_i f_i:\ \sum_{i=1}^4 c_i=0\right\},
+\qquad \dim_{\CC}V=3,
+\]
+且 \(V\) 恰为结论 \ref{con:xi-terminal-zm-leyang-perron-centered-fuchs-operator} 中 \(L_3\) 的解空间。
+解析延拓在 \(V\) 上诱导的表示同构于 \(S_4\) 在
+\(
+\{(x_1,x_2,x_3,x_4)\in\CC^4:\sum x_i=0\}
+\)
+上的标准三维表示，故单值群同构于 \(S_4\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+由 Vieta 关系 \(\sum_i\lambda_i=1\) 得 \(\sum_i f_i=0\)，因此四分支张成空间至多三维。
+另一方面，\(L_3\) 为三阶算子且各 \(f_i\) 均被其湮灭，故解空间维数恰为 \(3\)，于是两者一致。
+由定理 \ref{thm:xi-terminal-zm-leyang-monodromy-s4}，\(\Pi\) 的四叶覆盖单值群为 \(S_4\)；
+其在 \((f_1,\dots,f_4)\) 上为指标置换作用，并保持和为零超平面，得到标准三维表示。
+该表示忠实，故诱导单值群同构于 \(S_4\)。证毕。
+\end{proof}
+
+\begin{remark}[公开索引同形检索说明]\label{rem:xi-terminal-zm-leyang-perron-fuchs-public-index-check}
+对五次多项式
+\(
+Q(y)=168y^5+1260y^4-422y^3-183y^2-639y-76
+\)
+及
+\(
+W(y)^2\propto Q(y)^2/\bigl(y^3(y-1)^3P_{\mathrm{LY}}(y)^3\bigr)
+\)
+的组合结构进行公开索引关键词检索，未见与本算子同形的可检索条目。
+\end{remark}
+
