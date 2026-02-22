@@ -214,6 +214,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_trigonal_mu_audit",
+            script="exp_fold_gauge_anomaly_trigonal_mu_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_trigonal_mu_audit.json",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_jordan_correlations",
             script="exp_fold_gauge_anomaly_jordan_correlations.py",
             args=[],
