@@ -207,5 +207,210 @@ m_k=\frac{r^k}{N}\sum_{j=0}^{N-1}\omega_j^k=0
 于是 \(k_0=N\)，代入定理 \ref{thm:xi-poisson-cauchy-harmonic-moment-multipole-kl} 即得结论。证毕。
 \end{proof}
 
+\begin{theorem}[缺陷测度归一化框架下的复多极主导律]\label{thm:xi-poisson-defect-measure-complex-multipole-kl}
+沿用
+\eqref{eq:xi-offcritical-defect-measure-nu}--\eqref{eq:xi-offcritical-comoving-poisson-field}
+的缺陷测度与共动 Poisson 场记号，并记总质量
+\[
+M_0:=\nu\!\left(\RR\times(0,\infty)\right),\qquad
+h_t(x):=\frac{1}{M_0}G_t(x).
+\]
+定义
+\[
+\bar\gamma:=\int \gamma\,\dd\!\left(\frac{\nu}{M_0}\right),\qquad
+\bar\delta:=\int \delta\,\dd\!\left(\frac{\nu}{M_0}\right),\qquad
+T:=t+\bar\delta,\qquad
+g_t(x):=\mathsf P_T(x-\bar\gamma),
+\]
+其中
+\(
+\mathsf P_t(x):=\frac{1}{\pi}\frac{t}{x^2+t^2}
+\)
+为 Cauchy（Poisson）核。
+以及复中心变量
+\[
+W:=(\gamma-\bar\gamma)-\mathrm{i}(\delta-\bar\delta),\qquad
+m_k:=\mathbb E[W^k]\ \ (\mathbb E\text{ 相对于 }\nu/M_0).
+\]
+设整数 \(k\ge 2\)，且满足
+\[
+\mathbb E|W|^{k+1}<\infty,\qquad
+m_1=\cdots=m_{k-1}=0,\qquad
+m_k\neq 0.
+\]
+则
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)\sim c_k\,\frac{|m_k|^2}{T^{2k}}
+\qquad(t\to\infty),
+\qquad
+c_k=\frac{1}{2^{2k}}\binom{2k-2}{k-1}.
+\]
+\end{theorem}
+\begin{proof}
+令随机向量
+\(
+(\Gamma,\Delta)\sim \nu/M_0
+\)，并记
+\(
+Z:=(\Gamma-\bar\gamma)+\mathrm{i}(\Delta-\bar\delta)
+\)。
+则 \(W=\overline Z\)，故对任意 \(k\) 有
+\(
+|m_k|=|\mathbb E[W^k]|=|\mathbb E[Z^k]|
+\)。
+在该识别下，\((h_t,g_t)\) 与定理
+\ref{thm:xi-poisson-cauchy-harmonic-moment-multipole-kl}
+中的对象完全同构，故直接得到
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)
+=c_k\frac{|m_k|^2}{T^{2k}}+o(T^{-2k}).
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[二阶主项的协方差二次型表达]\label{cor:xi-poisson-defect-measure-complex-m2-quadratic}
+在定理 \ref{thm:xi-poisson-defect-measure-complex-multipole-kl} 下，若
+\(
+\mathbb E|W|^3<\infty
+\)
+且 \(m_2\neq 0\)，则
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)\sim \frac{1}{8}\frac{|m_2|^2}{T^4}.
+\]
+并且
+\[
+m_2=\mathbb E\!\big[(\gamma-\bar\gamma)^2-(\delta-\bar\delta)^2\big]
+-2\mathrm{i}\,\mathbb E\!\big[(\gamma-\bar\gamma)(\delta-\bar\delta)\big],
+\]
+\[
+|m_2|^2=
+\bigl(\Var(\gamma)-\Var(\delta)\bigr)^2+4\,\Cov(\gamma,\delta)^2.
+\]
+\end{corollary}
+\begin{proof}
+取定理 \ref{thm:xi-poisson-defect-measure-complex-multipole-kl} 中 \(k=2\) 即得首式。
+其余由 \(W^2\) 的直接展开得到。证毕。
+\end{proof}
+
+\begin{corollary}[超四次衰减与二阶各向同性消失的等价性]\label{cor:xi-poisson-defect-measure-superquartic-iff-m2zero}
+在推论 \ref{cor:xi-poisson-defect-measure-complex-m2-quadratic} 的条件下，
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)=o(T^{-4})
+\quad\Longleftrightarrow\quad
+m_2=0
+\]
+成立；等价地，
+\[
+\Var(\gamma)=\Var(\delta),\qquad \Cov(\gamma,\delta)=0.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:xi-poisson-defect-measure-complex-m2-quadratic}，
+\(
+T^4D_{\mathrm{KL}}(h_t\mid g_t)\to |m_2|^2/8
+\)。
+故 \(o(T^{-4})\) 与 \(m_2=0\) 等价。
+再分离 \(m_2\) 的实部与虚部即得矩条件。证毕。
+\end{proof}
+
+\begin{corollary}[二阶隐身后的首个可见项]\label{cor:xi-poisson-defect-measure-m2zero-m3-leading}
+在定理 \ref{thm:xi-poisson-defect-measure-complex-multipole-kl} 下，若
+\[
+\mathbb E|W|^4<\infty,\qquad
+m_2=0,\qquad
+m_3\neq 0,
+\]
+则
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)\sim \frac{3}{32}\frac{|m_3|^2}{T^6}.
+\]
+并且令
+\(
+\Gamma:=\gamma-\bar\gamma,\ \Delta:=\delta-\bar\delta
+\)，有
+\[
+m_3=\mathbb E[W^3]
+=\mathbb E\!\left[\Gamma^3-3\Gamma\Delta^2\right]
+-\mathrm{i}\,\mathbb E\!\left[3\Gamma^2\Delta-\Delta^3\right].
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-poisson-defect-measure-complex-multipole-kl} 取 \(k=3\) 得
+\(
+c_3=\binom{4}{2}/2^6=3/32
+\)。
+\(m_3\) 公式由 \((\Gamma-\mathrm{i}\Delta)^3\) 展开得到。证毕。
+\end{proof}
+
+\begin{proposition}[任意光滑 \texorpdfstring{$f$}{f}-散度的同型主导常数]\label{prop:xi-poisson-defect-measure-fdiv-multipole}
+在定理 \ref{thm:xi-poisson-defect-measure-complex-multipole-kl} 的假设下，令 \(f\) 为凸函数，满足 \(f(1)=0\)，且在 \(1\) 邻域二阶可微并有有限 \(f''(1)\)。定义
+\[
+D_f(h_t\mid g_t):=\int_{\RR}g_t(x)\,
+f\!\left(\frac{h_t(x)}{g_t(x)}\right)\,\dd x.
+\]
+则
+\[
+D_f(h_t\mid g_t)\sim f''(1)\,c_k\,\frac{|m_k|^2}{T^{2k}}
+\qquad(t\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+置 \(\delta_t:=h_t/g_t-1\)。
+由定理 \ref{thm:xi-poisson-defect-measure-complex-multipole-kl} 的同一展开结构，
+\(
+\delta_t=O(T^{-k})
+\)
+且
+\(
+\int g_t\delta_t=0
+\)。
+对 \(f(1+\delta)\) 作二阶 Taylor 展开并积分，线性项消失，得到
+\[
+D_f(h_t\mid g_t)=\frac{f''(1)}{2}\int g_t\delta_t^2\,\dd x+o(T^{-2k}).
+\]
+再由
+\(
+\int g_t\delta_t^2\sim 2c_k|m_k|^2T^{-2k}
+\)
+即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[信息耗散量的全阶主常数]\label{cor:xi-poisson-defect-measure-i1-multipole}
+在定理 \ref{thm:xi-poisson-defect-measure-complex-multipole-kl} 的设定下，若沿 Poisson 半群演化满足
+\(
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid g_t)=-I_1(h_t\mid g_t)
+\)，
+则
+\[
+I_1(h_t\mid g_t)\sim (2k)c_k\,\frac{|m_k|^2}{T^{2k+1}}
+\qquad(t\to\infty).
+\]
+\end{corollary}
+\begin{proof}
+对
+\(
+D_{\mathrm{KL}}(h_t\mid g_t)\sim c_k|m_k|^2T^{-2k}
+\)
+关于 \(t\) 求导，注意 \(T=t+\bar\delta\)，得
+\(
+\frac{\dd}{\dd t}D_{\mathrm{KL}}\sim -2kc_k|m_k|^2T^{-(2k+1)}
+\)。
+再代入耗散恒等式即得。证毕。
+\end{proof}
+
+\begin{remark}[复多极常数链与核验片段]\label{rem:xi-poisson-defect-measure-complex-multipole-audit-snippet}
+上述常数链与 \(W^2,W^3\) 展开可由
+\texttt{scripts/exp\_xi\_poisson\_defect\_measure\_complex\_multipole\_kl\_audit.py}
+复核；对应公式片段如下：
+\input{sections/generated/eq_xi_poisson_defect_measure_complex_multipole_kl_audit}
+\end{remark}
+
+\begin{remark}[公开索引同形性检索说明]\label{rem:xi-poisson-defect-measure-complex-multipole-public-index-check}
+围绕“Poisson/Cauchy 混合相对熵高阶主项”“复中心矩主导”“
+\(\binom{2k-2}{k-1}/2^{2k}\) 常数链”等关键词进行公开索引检索，
+未见与本节结论同形的现成命题条目。
+该检索结论仅构成可检索范围内的同形性排查，不替代严格的新颖性证明。
+\end{remark}
+
 \endinput
 

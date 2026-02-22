@@ -28,54 +28,172 @@ F(u,y)=u^6G(s,y).
 上述恒等式与系数可由脚本 \texttt{scripts/exp\_fold\_zm\_phase\_resonance\_resultant\_chebyshev\_audit.py} 复核。证毕。
 \end{proof}
 
-\begin{conclusion}[相位压缩消元多项式的端点退化与判别式全平方分解]\label{con:xi-terminal-zm-phase-compression-disc-square}
-沿用结论 \ref{con:xi-terminal-zm-phase-resonance-resultant-chebyshev} 的相位压缩多项式 \(G(s,y)\in\ZZ[s,y]\)，并记
+\begin{conclusion}[相位共振判别式的闭式分解与平方结构]\label{con:xi-terminal-zm-phase-compression-disc-square}
+沿用结论 \ref{con:xi-terminal-zm-phase-resonance-resultant-chebyshev} 的记号：
 \[
-P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32
+F(u,y)=u^{6}G(u+u^{-1},y),\qquad s=u+u^{-1},
 \]
-为 Lee--Yang 三次因子（结论 \ref{con:xi-terminal-zm-discriminant-leyang}）。
-则除去 \(s=2\) 的 Lee--Yang 退化 \(G(2,y)=-y(y-1)P_{\mathrm{LY}}(y)\) 之外，还成立端点恒等式与判别式结构：
+并记
+\[
+P_{\mathrm{LY}}(y):=256y^{3}+411y^{2}+165y+32.
+\]
+则关于 \(G\) 与 \(F\) 的端点值、判别式闭式分解与平方结构由下式统一给出：
 \input{sections/generated/eq_fold_zm_phase_compression_discriminant_square}
-其中因子 \(y^{2}+y-1\) 在 \(\Delta_G(y)\) 中以平方幂出现；为便于引用，将判别式除子中由 \(y^{2}+y-1=0\) 切出的偶重分量称为\emph{黄金屏障除子}。
+特别地，\(\mathrm{Disc}_{s}(G)\) 在 \(\ZZ[y]\) 中为完全平方，且满足桥接恒等式
+\[
+\mathrm{Disc}_{u}\bigl(F(u,y)\bigr)=\mathrm{Disc}_{s}\bigl(G(s,y)\bigr)^2\,G(2,y)\,G(-2,y).
+\]
 \end{conclusion}
 \begin{proof}[证明要点]
-将 \(G(s,y)\) 视为关于 \(s\) 的 \(6\) 次多项式。
-端点恒等式 \(G(-2,y)=y^{2}(y-1)^{2}\) 由显式系数直接代入并在 \(\ZZ[y]\) 中化简得到。
-判别式恒等式
+记 \(d:=\deg_s G=6\)，并在代数闭包上写
+\[
+G(s,y)=a(y)\prod_{i=1}^{d}(s-s_i),\qquad a(y)=y^{3}(y+1)^{3}.
+\]
+由 \(s=u+u^{-1}\) 得
+\[
+F(u,y)=u^{d}G(u+u^{-1},y)=a(y)\prod_{i=1}^{d}\bigl(u^{2}-s_i u+1\bigr).
+\]
+对二次因子 \(f_i(u):=u^2-s_i u+1\) 使用判别式与结式乘法恒等式
+\[
+\mathrm{Disc}\!\Bigl(\prod_i f_i\Bigr)=\prod_i \mathrm{Disc}(f_i)\cdot \prod_{i<j}\mathrm{Res}(f_i,f_j)^2
+\]
+并代入
 \(
-\mathrm{Disc}_{s}(G)=(-1)^{15}a_6(y)^{-1}\operatorname{Res}_{s}(G,\partial_sG)
-\)
-（其中 \(a_6(y)=[s^6]G(s,y)\)）
-同样可由结果式消元并在 \(\ZZ[y]\) 中因式分解得到所示全平方分解。
+\mathrm{Disc}_u(f_i)=s_i^2-4,\ 
+\mathrm{Res}_u(f_i,f_j)=(s_i-s_j)^2
+\)，
+再结合
+\[
+\prod_i(s_i^2-4)=\frac{G(2,y)G(-2,y)}{a(y)^2},\qquad
+\prod_{i<j}(s_i-s_j)^4=\frac{\mathrm{Disc}_s(G)^2}{a(y)^{4d-4}},
+\]
+即可得到
+\(
+\mathrm{Disc}_u(F)=\mathrm{Disc}_s(G)^2\,G(2,y)\,G(-2,y)
+\)，其中首项因子 \(a(y)\) 完全消去。
+将显式 \(G(s,y)\) 代入并在 \(\ZZ[y]\) 中因式分解，得到所列闭式。
 上述恒等式可由脚本 \texttt{scripts/exp\_fold\_zm\_phase\_compression\_discriminant\_square\_audit.py} 复核。证毕。
 \end{proof}
 
-\begin{conclusion}[二子集表示的 \texorpdfstring{$S_4$}{S4} 伽罗瓦像与 \texorpdfstring{$A_6$}{A6} 约束]\label{con:xi-terminal-zm-phase-compression-galois-a6}
-设 \(K\) 为谱四次 \(\Pi(\lambda,y)\) 在 \(\QQ(y)\) 上的分裂域，并已知 \(\mathrm{Gal}(K/\QQ(y))\cong S_4\)（结论 \ref{con:xi-terminal-zm-galois-s4-from-ramification}）。
-令 \(\lambda_1,\dots,\lambda_4\) 为 \(\Pi(\lambda,y)=0\) 的根，并对 \(1\le i<j\le 4\) 定义
+\begin{conclusion}[Chebyshev 压缩下的二次判别式类严格不变性]\label{con:xi-terminal-zm-phase-compression-disc-squareclass-invariance}
+在函数域平方类群 \(\QQ(y)^{\times}/(\QQ(y)^{\times})^{2}\) 中成立
 \[
-s_{ij}:=\frac{\lambda_i}{\lambda_j}+\frac{\lambda_j}{\lambda_i}\in K.
+\bigl[\mathrm{Disc}_{u}\bigl(F(u,y)\bigr)\bigr]
+=\bigl[-y(y-1)P_{\mathrm{LY}}(y)\bigr]
+=\bigl[\mathrm{Disc}_{\lambda}\bigl(\Pi(\lambda,y)\bigr)\bigr].
 \]
-则结论 \ref{con:xi-terminal-zm-phase-resonance-resultant-chebyshev} 的 \(G(s,y)\) 在 \(\QQ(y)[s]\) 上不可约，且其根集恰为 \(\{s_{ij}\}_{1\le i<j\le 4}\)。
-从而
-\[
-\mathrm{Gal}\bigl(G/\QQ(y)\bigr)\cong \mathrm{im}\!\left(S_4\hookrightarrow S_6\right),
-\]
-其中嵌入由 \(S_4\) 对 \(2\)-子集集合 \(\binom{\{1,2,3,4\}}{2}\) 的自然作用给出，并且该像包含于 \(A_6\)。
-因此 \(\mathrm{Disc}_{s}(G)\) 在 \(\QQ(y)^{\times}/\QQ(y)^{\times 2}\) 中的平方类为平凡元，从而结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 的“判别式全平方”现象具有群论必然性。
+等价地，\(\mathrm{Disc}_{u}(F)\) 的平方自由核恰为 \(-y(y-1)P_{\mathrm{LY}}(y)\)。
 \end{conclusion}
 \begin{proof}[证明要点]
-对固定无序对 \(\{1,2\}\) 而言，换位 \((12)\) 保持 \(s_{12}\) 不变，且 \((34)\) 亦保持 \(s_{12}\) 不变，故
+由结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 的显式分解，
+\[
+\mathrm{Disc}_{u}(F)
+=-y(y-1)P_{\mathrm{LY}}(y)\,\Omega(y)^2
+\]
+其中 \(\Omega(y)\in\QQ(y)\)。
+因此其平方类仅由 \(-y(y-1)P_{\mathrm{LY}}(y)\) 决定。
+再由结论 \ref{con:xi-terminal-zm-discriminant-leyang}
 \(
-H:=\langle(12),(34)\rangle
+\mathrm{Disc}_{\lambda}(\Pi)=-y(y-1)P_{\mathrm{LY}}(y)
 \)
-固定 \(s_{12}\)。
-一般参数点 \(y\) 处六个值 \(\{s_{ij}\}\) 两两互异，故 \(s_{12}\) 的稳定子恰为 \(H\)，从而其共轭轨道大小为 \(|S_4|/|H|=6\)；
-又 \(G\) 在 \(s\) 上次数为 \(6\) 且由消元构造满足 \(G(s_{12},y)=0\)，故 \(G\) 必为 \(s_{12}\) 的最小多项式，从而在 \(\QQ(y)[s]\) 上不可约且根集为全部 \(s_{ij}\)。
-\par
-\(S_4\) 在 \(2\)-子集上的作用给出忠实嵌入 \(S_4\hookrightarrow S_6\)，并与上述共轭轨道同一。
-检查生成元：\((12)\) 在 \(2\)-子集上诱导置换型为 \((1^2\,2^2)\)，为偶置换；而 \((1234)\) 诱导为 \((4\cdot 2)\)，亦为偶置换，故像包含于 \(A_6\)。
-最后，对特征 \(\neq 2\) 的可分多项式 \(f\)（次数 \(n\)），其判别式在基域中为平方当且仅当 \(\mathrm{Gal}(f)\subseteq A_n\)；应用于 \(n=6\) 即得。证毕。
+立即得到两者平方类相等。证毕。
+\end{proof}
+
+\begin{conclusion}[压缩六次多项式的二子集表示伽罗瓦像]\label{con:xi-terminal-zm-phase-compression-galois-a6}
+设 \(k:=\QQ(y)\)，\(\Pi(\lambda,y)\in k[\lambda]\) 为谱四次多项式，且 \(\mathrm{Gal}(\Pi/k)\cong S_4\)；
+记其分裂域为 \(L/k\)，根为 \(\lambda_1,\dots,\lambda_4\)。
+定义
+\[
+s_{ij}:=\frac{\lambda_i}{\lambda_j}+\frac{\lambda_j}{\lambda_i}\in L\qquad (1\le i<j\le4).
+\]
+则 \(G(s,y)\) 的六个根恰为 \(\{s_{ij}\}_{i<j}\)，并且 \(G\) 在 \(k[s]\) 上不可约、\([k(s_{12}):k]=6\)。
+此外，\(G\) 的分裂域等于 \(L\)，且
+\[
+\mathrm{Gal}\bigl(G/k\bigr)\cong S_4
+\]
+其在六个根上的作用同构于 \(S_4\) 在 \(\binom{\{1,2,3,4\}}{2}\) 上的自然作用。
+该像包含于 \(A_6\)，故 \(\mathrm{Disc}_s(G)\) 为平方，与结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 一致。
+\end{conclusion}
+\begin{proof}[证明要点]
+令 \(u_{ij}:=\lambda_i/\lambda_j\)。
+由结果式构造
+\(
+F(u,y)=\operatorname{Res}_{\lambda}(\Pi(\lambda,y),\Pi(u\lambda,y))/\bigl(y(y+1)(u-1)^4\bigr)
+\)
+可知 \(F(u_{ij},y)=0\)，于是
+\[
+0=F(u_{ij},y)=u_{ij}^{6}G(u_{ij}+u_{ij}^{-1},y)=u_{ij}^{6}G(s_{ij},y),
+\]
+故每个 \(s_{ij}\) 为 \(G\) 的根。
+由于 \(\deg_s G=6\) 且 \(\{s_{ij}\}_{i<j}\) 恰有 \(6\) 个，根集即为全部 \(s_{ij}\)。
+对 \(s_{12}\) 而言，其在 \(S_4\) 下稳定子为集合稳定子 \(\mathrm{Stab}(\{1,2\})\)，阶为 \(4\)，故轨道大小为 \(24/4=6\)；
+因而 \(s_{12}\) 在 \(k\) 上的最小多项式次数为 \(6\)，即 \(G\) 不可约且 \([k(s_{12}):k]=6\)。
+再者，所有根 \(s_{ij}\in L\)，故 \(G\) 的分裂域 \(M\subseteq L\)。
+而 \(S_4\) 在二子集上的作用是忠实作用，给出阶 \(24\) 的像；由 \(M\subseteq L\) 及 \([L:k]=24\) 得 \(M=L\)。
+最后，\(S_4\) 的换位在二子集上的诱导置换是两个互换之积，为偶置换，故像落在 \(A_6\)。证毕。
+\end{proof}
+
+\begin{conclusion}[反相位点 \texorpdfstring{$u=-1$}{u=-1} 的刚性]\label{con:xi-terminal-zm-phase-compression-antiphase-rigidity}
+对任意参数 \(y\) 有
+\[
+G(-2,y)=y^2(y-1)^2.
+\]
+因此 \(u=-1\)（即 \(s=-2\)）是方程 \(F(u,y)=0\) 的根当且仅当 \(y\in\{0,1\}\)。
+特别地，Lee--Yang 条件 \(P_{\mathrm{LY}}(y)=0\) 不产生 \(u=-1\) 的相位共振根。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-phase-compression-disc-square}，\(G(-2,y)=y^2(y-1)^2\)。
+又 \(F(-1,y)=(-1)^6G(-2,y)=G(-2,y)\)，故 \(F(-1,y)=0\iff y\in\{0,1\}\)。
+当 \(P_{\mathrm{LY}}(y)=0\) 时 \(y\neq 0,1\)，从而不能触发 \(u=-1\) 根。证毕。
+\end{proof}
+
+\begin{conclusion}[黄金比例判别式分量的显式平方塌缩]\label{con:xi-terminal-zm-phase-compression-golden-square-collapse}
+令
+\[
+\alpha:=\frac{-1-\sqrt5}{2},\qquad
+\beta:=\frac{-1+\sqrt5}{2},
+\]
+则在 \(\QQ(\sqrt5)\) 上有精确因式分解
+\[
+G(s,\alpha)=\bigl(s^2+(1-2\sqrt5)s+7\bigr)\bigl(s^2+(2+\sqrt5)s-1+2\sqrt5\bigr)^2,
+\]
+\[
+G(s,\beta)=\bigl(s^2+(1+2\sqrt5)s+7\bigr)\bigl(s^2+(2-\sqrt5)s-1-2\sqrt5\bigr)^2.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+将 \(y=\alpha,\beta\) 代入显式 \(G(s,y)\)，并在 \(\QQ(\sqrt5)[s]\) 中进行代数因式分解即可得到两式。
+该分解由脚本 \texttt{scripts/exp\_fold\_zm\_phase\_compression\_discriminant\_square\_audit.py} 直接核验。证毕。
+\end{proof}
+
+\begin{conclusion}[Lee--Yang 边界处的二重共振对机制]\label{con:xi-terminal-zm-phase-compression-leyang-double-resonance-pairs}
+设 \(y_0\) 满足 \(P_{\mathrm{LY}}(y_0)=0\)，并记 \(k_0:=\QQ(y_0)\)。
+则在 \(k_0[s]\) 中有
+\[
+G(s,y_0)=y_0^3(y_0+1)^3\,(s-2)\,L(s)\,Q(s)^2,
+\]
+其中
+\[
+L(s)=s+\frac{-1280y_0^2+2041y_0+6583}{3168},
+\]
+\[
+Q(s)=s^2+\frac{6400y_0^2-10205y_0-1235}{3168}\,s+\frac{16640y_0^2-26533y_0-9547}{1584}.
+\]
+等价地，对首项归一化多项式 \(\widetilde G(s,y):=G(s,y)/(y^3(y+1)^3)\) 有
+\[
+\widetilde G(s,y_0)=(s-2)L(s)Q(s)^2.
+\]
+因此在 Lee--Yang 边界上，压缩六次多项式呈现 \((1,1,2,2)\) 根型。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-phase-compression-disc-square} 的端点恒等式，
+\(
+G(2,y)=-y(y-1)P_{\mathrm{LY}}(y)
+\)，故 \(P_{\mathrm{LY}}(y_0)=0\Rightarrow s=2\) 为根。
+将 \(y\) 约化到商域 \(\QQ[y]/(P_{\mathrm{LY}}(y))\) 后对 \(G\) 进行精确因式分解，可得所示
+\((s-2)LQ^2\) 结构（对 \(G\) 本身仅差首项系数 \(y_0^3(y_0+1)^3\)）。
+于是重根结构为一个二次因子的平方与两个一次因子，根型即 \((1,1,2,2)\)。
+上述等式由脚本 \texttt{scripts/exp\_fold\_zm\_phase\_compression\_discriminant\_square\_audit.py} 核验。证毕。
 \end{proof}
 
 \begin{conclusion}[相位压缩曲线的正规化：属 \(2\) 与分歧签名由二子集表示完全决定]\label{con:xi-terminal-zm-phase-compression-curve-genus2}
@@ -96,8 +214,8 @@ g(X_{\mathrm{ph}})=2.
 \]
 \end{conclusion}
 \begin{proof}[证明要点]
-由结论 \ref{con:xi-terminal-zm-phase-compression-galois-a6}，\(\QQ(X_{\mathrm{ph}})=\QQ(y,s_{12})\) 为 \(\Pi(\lambda,y)\) 的分裂域 \(K/\QQ(y)\) 的中间子扩张；
-因此 \(X_{\mathrm{ph}}\to\PP^1_y\) 不可能在 \(K/\QQ(y)\) 的分歧集合之外引入新的域分歧。
+由结论 \ref{con:xi-terminal-zm-phase-compression-galois-a6}，\(\QQ(X_{\mathrm{ph}})=\QQ(y,s_{12})\) 为 \(\Pi(\lambda,y)\) 的分裂域 \(L/\QQ(y)\) 的中间子扩张；
+因此 \(X_{\mathrm{ph}}\to\PP^1_y\) 不可能在 \(L/\QQ(y)\) 的分歧集合之外引入新的域分歧。
 又谱四次覆盖的 Hurwitz 分歧签名为 \((2,2,2,2,2,4)\)（结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values}），
 将其中换位与四循环通过“对 \(2\)-子集的作用”诱导到次数 \(6\) 的表示，得到所述循环型 \((1^2\,2^2)\) 与 \((4\cdot 2)\)。
 \par
