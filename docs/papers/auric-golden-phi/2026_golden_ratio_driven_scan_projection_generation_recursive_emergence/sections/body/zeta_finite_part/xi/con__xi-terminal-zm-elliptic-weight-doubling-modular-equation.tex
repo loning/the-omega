@@ -1,4 +1,4 @@
-\begin{conclusion}[倍点算子在重量坐标下的代数对应：四值闭包的双次数证书]\label{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}
+\begin{conclusion}[重量二倍对应的四次模方程：双次数曲线与最小多项式证书]\label{con:xi-terminal-zm-elliptic-weight-doubling-modular-equation}
 设
 \[
 E_0:\ \eta^{2}+\eta=x^{3}-x
@@ -112,7 +112,20 @@ A_{4}(y)=Q(y)^{4}.
 \mathrm{Disc}_{T}\bigl(\Phi_{2}(y,\cdot)\bigr)\equiv -y(y-1)P_{\mathrm{LY}}(y)\pmod{(\QQ(y)^{\times})^{2}},
 \]
 其中 \(P_{\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32\) 为 Lee--Yang 三次因子（结论 \ref{con:xi-terminal-zm-leyang-ramification-critical-values}）。
-更强地，存在 \(A(y)\in\ZZ[y]\)（\(\deg A=12\)）与 \(B_{\pm}(y)\in\ZZ[y]\)（\(\deg B_{\pm}=26\)）使得判别式在 \(\ZZ[y]\) 中严格分解为：
+更强地，存在 \(A(y)\in\ZZ[y]\)（\(\deg A=12\)）与 \(B_{+}(y),B_{-}(y)\in\ZZ[y]\)（\(\deg B_{\pm}=26\)），并记
+\[
+Q_{12}(y):=A(y),
+\qquad
+Q_{26}(y):=B_{+}(y),
+\qquad
+\widetilde Q_{26}(y):=B_{-}(y).
+\]
+则在 \(\ZZ[y]\) 中严格成立判别式分解
+\[
+\boxed{\;
+\mathrm{Disc}_{T}\bigl(\Phi_{2}(y,\cdot)\bigr)=-y(y-1)P_{\mathrm{LY}}(y)\cdot Q_{12}(y)^{2}\cdot Q_{26}(y)^{2}\; }.
+\]
+其中 \(A,B_{+},B_{-}\) 的显式展开见下列闭式证书；同一证书亦表明共轭重量支下的四次对应在判别式层面共享相同的平方自由核：
 \input{sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant}
 因此倍乘诱导的重量四次模方程之唯一二次分辨率子域由
 \[
@@ -123,6 +136,33 @@ A_{4}(y)=Q(y)^{4}.
 \begin{proof}[证明要点]
 按定义计算 \(\mathrm{Disc}_{T}(\Phi_2)\) 并在 \(\ZZ[y]\) 中因式分解即可得到所示恒等式；平方类结论随即推出。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_weight\_doubling\_audit.py}。证毕。
+\end{proof}
+
+\begin{conclusion}[原始元的判别式平方自由类不变性：二次分辨率在二倍重整化塔中恒定]\label{con:xi-terminal-zm-discriminant-squarefree-class-primitive-element}
+令 \(k:=\QQ(y)\) 且 \(K:=\QQ(E)\)。
+则对任意满足 \([k(\alpha):k]=4\) 的原始元 \(\alpha\in K\)，其首一最小多项式 \(m_{\alpha}(T)\in k[T]\) 的判别式在平方类意义下满足
+\[
+\boxed{\;
+\mathrm{Disc}_{T}\bigl(m_{\alpha}(T)\bigr)\equiv -y(y-1)P_{\mathrm{LY}}(y)\pmod{(k^{\times})^{2}}\; }.
+\]
+特别地，对每个整数 \(n\ge 1\)，令 \(y_{n}:=y\circ[2^{n}]\in K\)；
+若 \([k(y_{n}):k]=4\)，则其最小多项式判别式同样满足
+\[
+\mathrm{Disc}_{T}\bigl(m_{y_{n}}(T)\bigr)\equiv -y(y-1)P_{\mathrm{LY}}(y)\pmod{(k^{\times})^{2}}.
+\]
+从而 Lee--Yang 判别式核 \(-y(y-1)P_{\mathrm{LY}}(y)\) 在任意二倍迭代层级上均不给出新的二次判别式数据。
+\end{conclusion}
+\begin{proof}[证明要点]
+由于 \(K/k\) 的伽罗瓦闭包之唯一二次分辨率子域由 \(\sqrt{\mathrm{Disc}_{\lambda}(\Pi)}\) 生成（结论 \ref{con:xi-terminal-zm-generic-galois-s4} 与结论 \ref{con:xi-terminal-zm-discriminant-dual-role}），并且
+\(
+\mathrm{Disc}_{\lambda}(\Pi)=-y(y-1)P_{\mathrm{LY}}(y)
+\)
+（结论 \ref{con:xi-terminal-zm-discriminant-leyang}），故该二次子域恒为
+\(
+k\bigl(\sqrt{-y(y-1)P_{\mathrm{LY}}(y)}\bigr)
+\)。
+另一方面，对任意原始元 \(\alpha\)，\(\sqrt{\mathrm{Disc}_{T}(m_{\alpha})}\) 在分裂域上实现同一符号表示的生成元，因而生成相同的二次分辨率子域；于是 \(\mathrm{Disc}_{T}(m_{\alpha})\) 与 \(-y(y-1)P_{\mathrm{LY}}(y)\) 在 \(k^{\times}/(k^{\times})^{2}\) 中同类。
+对 \(\alpha=y_{n}\) 的情形仅需附加假设 \([k(y_{n}):k]=4\)（即 \(y_{n}\) 为原始元），结论随即得到。证毕。
 \end{proof}
 
 \begin{conclusion}[\texorpdfstring{$2$}{2}-扭平移不变纤维的参数约束：平方型碰撞因子与判别式平方因子对齐]\label{con:xi-terminal-zm-elliptic-weight-doubling-2torsion-translation-collision-parameters}
