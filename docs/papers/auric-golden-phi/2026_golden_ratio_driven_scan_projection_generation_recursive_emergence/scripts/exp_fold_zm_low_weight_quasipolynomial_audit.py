@@ -13,10 +13,15 @@ Checks performed:
   - For each fixed k<=k_max, fit polynomials P_k(m) and Q_k(m) such that
         a_{m,k} = P_k(m) + (-1)^m Q_k(m)
     holds on a stable range m >= m0(k) (we use m0(k)=3k+3).
-  - Verify deg(P_k)=2k+1, deg(Q_k)<=k, and the leading coefficient of P_k is
-    1/(2^{k+1}(2k+1)!).
+  - Verify deg(P_k)=2k+1, deg(Q_k)=k, and the leading coefficients satisfy
+        [m^{2k+1}] P_k(m) = 1/(2^{k+1}(2k+1)!)
+        [m^{k}]   Q_k(m) = 1/(2^{2k+2}k!).
   - Verify the paper's closed forms for k<=3 (in parity-polynomial form) agree
     with the table values on a wide test window.
+  - Verify the numerator-polynomial golden factor pattern:
+        Phi_gold(t) := t^2 - t - 1 divides P_{5n+4}(t),
+    via reduction in Z[t]/(Phi_gold) and the 5-step scaling identity
+        M^5 = -(55 t + 34) I_2.
 
 Outputs (default):
   - artifacts/export/fold_zm_low_weight_quasipolynomial_audit.json
@@ -36,6 +41,124 @@ import sympy as sp
 
 from common_paths import export_dir, generated_dir
 from common_phi_fold import fold_m
+
+
+class _PhiGold:
+    """Ring element in Z[t]/(t^2 - t - 1), represented as a + b t."""
+
+    __slots__ = ("a", "b")
+
+    def __init__(self, a: int, b: int) -> None:
+        self.a = int(a)
+        self.b = int(b)
+
+    def __add__(self, other: "_PhiGold") -> "_PhiGold":
+        return _PhiGold(self.a + other.a, self.b + other.b)
+
+    def __neg__(self) -> "_PhiGold":
+        return _PhiGold(-self.a, -self.b)
+
+    def __sub__(self, other: "_PhiGold") -> "_PhiGold":
+        return _PhiGold(self.a - other.a, self.b - other.b)
+
+    def __mul__(self, other: "_PhiGold") -> "_PhiGold":
+        # (a + b t)(c + d t) with t^2 = t + 1.
+        a, b = self.a, self.b
+        c, d = other.a, other.b
+        return _PhiGold(a * c + b * d, a * d + b * c + b * d)
+
+    def __rmul__(self, n: int) -> "_PhiGold":
+        return _PhiGold(n * self.a, n * self.b)
+
+    def is_zero(self) -> bool:
+        return self.a == 0 and self.b == 0
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, _PhiGold):
+            return False
+        return self.a == other.a and self.b == other.b
+
+    def to_json(self) -> Dict[str, int]:
+        return {"a": int(self.a), "b": int(self.b)}
+
+    def __repr__(self) -> str:
+        return f"({self.a}+{self.b}t)"
+
+
+_PHI_ONE = _PhiGold(1, 0)
+_PHI_ZERO = _PhiGold(0, 0)
+_PHI_T = _PhiGold(0, 1)
+
+
+def _phi_pow(x: _PhiGold, n: int) -> _PhiGold:
+    r = _PHI_ONE
+    b = x
+    e = int(n)
+    while e:
+        if e & 1:
+            r = r * b
+        b = b * b
+        e >>= 1
+    return r
+
+
+def _mat2_mul(A: List[List[_PhiGold]], B: List[List[_PhiGold]]) -> List[List[_PhiGold]]:
+    return [
+        [A[0][0] * B[0][0] + A[0][1] * B[1][0], A[0][0] * B[0][1] + A[0][1] * B[1][1]],
+        [A[1][0] * B[0][0] + A[1][1] * B[1][0], A[1][0] * B[0][1] + A[1][1] * B[1][1]],
+    ]
+
+
+def _mat2_pow(M: List[List[_PhiGold]], n: int) -> List[List[_PhiGold]]:
+    I = [[_PHI_ONE, _PHI_ZERO], [_PHI_ZERO, _PHI_ONE]]
+    r = I
+    b = M
+    e = int(n)
+    while e:
+        if e & 1:
+            r = _mat2_mul(r, b)
+        b = _mat2_mul(b, b)
+        e >>= 1
+    return r
+
+
+def _pk_mod_phi_gold(k_max: int) -> List[_PhiGold]:
+    """Compute numerator polynomials P_k(t) reduced mod (t^2 - t - 1), for 0<=k<=k_max."""
+    if k_max < 0:
+        raise ValueError("k_max must be non-negative")
+
+    # P_0(t)=1.
+    P0 = _PHI_ONE
+
+    # P_1(t) = -t (t^4 - t^3 - 1).
+    t = _PHI_T
+    P1 = -t * (_phi_pow(t, 4) - _phi_pow(t, 3) - _PHI_ONE)
+
+    # P_2(t) = t^3 (t^5 - 2 t^4 - t^3 + t^2 + t + 1).
+    P2 = _phi_pow(t, 3) * (
+        _phi_pow(t, 5)
+        - 2 * _phi_pow(t, 4)
+        - _phi_pow(t, 3)
+        + _phi_pow(t, 2)
+        + t
+        + _PHI_ONE
+    )
+
+    P: List[_PhiGold] = [_PHI_ZERO] * (k_max + 1)
+    P[0] = P0
+    if k_max >= 1:
+        P[1] = P1
+    if k_max >= 2:
+        P[2] = P2
+
+    # Reduced recurrence in Z[t]/(t^2 - t - 1):
+    #   P_k = -t P_{k-1} - (3 t + 2) P_{k-2},  for k>=3.
+    coef1 = -t
+    coef2 = -_PhiGold(2, 3)  # -(2 + 3 t)
+    for k in range(3, k_max + 1):
+        P[k] = coef1 * P[k - 1] + coef2 * P[k - 2]
+
+    return P
 
 
 def _write_text(path: Path, content: str) -> None:
@@ -260,8 +383,12 @@ def main() -> None:
         # Degree + leading coefficient of P.
         expected_lc_p = sp.Rational(1, 2 ** (k + 1) * sp.factorial(2 * k + 1))
         deg_p_ok = int(P.degree(m_sym)) == int(deg_p)
-        deg_q_ok = int(Q.degree(m_sym)) <= int(deg_q)
+        deg_q_ok = int(Q.degree(m_sym)) == int(deg_q)
         lc_p_ok = deg_p_ok and (sp.simplify(P.LC() - expected_lc_p) == 0)
+
+        # Leading coefficient of Q.
+        expected_lc_q = sp.Rational(1, 2 ** (2 * k + 2) * sp.factorial(k))
+        lc_q_ok = deg_q_ok and (sp.simplify(Q.LC() - expected_lc_q) == 0)
 
         # Closed forms for k<=3 (parity-polynomial forms in n).
         closed_ok = None
@@ -282,7 +409,7 @@ def main() -> None:
                     closed_ok = False
                     break
 
-        ok_k = stable_ok and deg_p_ok and deg_q_ok and lc_p_ok and (True if closed_ok is None else bool(closed_ok))
+        ok_k = stable_ok and deg_p_ok and deg_q_ok and lc_p_ok and lc_q_ok and (True if closed_ok is None else bool(closed_ok))
         all_ok = all_ok and ok_k
 
         per_k[str(k)] = {
@@ -296,12 +423,53 @@ def main() -> None:
             "leading_coeff_p_expected": str(expected_lc_p),
             "leading_coeff_p": str(P.LC()),
             "leading_coeff_p_ok": bool(lc_p_ok),
+            "leading_coeff_q_expected": str(expected_lc_q),
+            "leading_coeff_q": str(Q.LC()),
+            "leading_coeff_q_ok": bool(lc_q_ok),
             "P": _poly_to_json(P),
             "Q": _poly_to_json(Q),
             "closed_form_k_le_3_ok": (None if closed_ok is None else bool(closed_ok)),
             "closed_form_checked_up_to_n": closed_checked_up_to_n,
             "ok": bool(ok_k),
         }
+
+    # Golden-factor check for the numerator polynomials P_k(t) modulo t^2 - t - 1.
+    k_phi_max = max(34, 5 * args.k_max + 4)
+    pk_mod = _pk_mod_phi_gold(k_phi_max)
+
+    # Check M^5 = -(55 t + 34) I_2 in Mat_2(Z[t]/(t^2 - t - 1)).
+    t_el = _PHI_T
+    M = [[-t_el, -_PhiGold(2, 3)], [_PHI_ONE, _PHI_ZERO]]
+    M5 = _mat2_pow(M, 5)
+    scale = -_PhiGold(34, 55)  # -(34 + 55 t)
+    M5_expected = [[scale, _PHI_ZERO], [_PHI_ZERO, scale]]
+    m5_ok = (M5 == M5_expected)
+
+    idxs: List[int] = []
+    rems: Dict[str, object] = {}
+    phi_ok = True
+    n = 0
+    while True:
+        k_idx = 5 * n + 4
+        if k_idx > k_phi_max:
+            break
+        idxs.append(k_idx)
+        r = pk_mod[k_idx]
+        rems[str(k_idx)] = r.to_json()
+        phi_ok = phi_ok and r.is_zero()
+        n += 1
+
+    checks["numerator_phi_gold"] = {
+        "phi_poly": "t^2 - t - 1",
+        "k_max_checked": int(k_phi_max),
+        "indices_5n_plus_4_checked": idxs,
+        "remainders_mod_phi": rems,
+        "all_remainders_zero": bool(phi_ok),
+        "matrix_M5_ok": bool(m5_ok),
+        "matrix_M5_scale": scale.to_json(),
+    }
+
+    all_ok = all_ok and bool(phi_ok) and bool(m5_ok)
 
     checks["per_k"] = per_k
     checks["all_ok"] = bool(all_ok)

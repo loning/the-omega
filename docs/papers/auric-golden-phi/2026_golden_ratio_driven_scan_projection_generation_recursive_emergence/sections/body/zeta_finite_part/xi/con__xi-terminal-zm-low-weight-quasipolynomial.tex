@@ -27,6 +27,10 @@ A_k(t)=\frac{\mathcal{P}_k(t)}{(1-t)^{2k+2}(1+t)^{k+1}}\;}
 \boxed{\;
 \mathcal{P}_k(t)=(2t^2-t^4)\mathcal{P}_{k-1}(t)-t^4(1-t)^2(1+t)\mathcal{P}_{k-2}(t)\; }.
 \]
+并且当 \(k\ge 1\) 时成立整除性
+\[
+\boxed{\; t^{2k-1}\mid \mathcal{P}_k(t)\;}
+\]
 \end{conclusion}
 \begin{proof}[证明要点]
 将分母记为
@@ -53,7 +57,58 @@ D_0(t)A_k(t)+D_1(t)A_{k-1}(t)+D_2(t)A_{k-2}(t)=N_k(t),
 对 \(k\ge 3\) 时 \(N_k\equiv 0\)，得到所示齐次二阶递推；
 \(k=0,1,2\) 的显式初值由上式直接化简得到。
 由于 \(D_0,D_1,D_2,N_k\in\ZZ[t]\) 且初值整系数，递推给出 \(\mathcal{P}_k\in\ZZ[t]\)。
+\par
+另一方面，\(\mathcal{P}_1(t)\) 含因子 \(t\)、\(\mathcal{P}_2(t)\) 含因子 \(t^3\)，且对 \(k\ge 3\) 的递推右端两项分别额外带因子 \(t^2\) 与 \(t^4\)，
+故可归纳得到 \(t^{2k-1}\mid \mathcal{P}_k(t)\)（\(k\ge 1\)）。
 最后由 \(D_0(t)^{k+1}=(1-t)^{2k+2}(1+t)^{k+1}\) 得到分母结构。证毕。
+\end{proof}
+
+\begin{conclusion}[分子多项式的黄金因子：模 \texorpdfstring{$t^2-t-1$}{t^2-t-1} 的五步标度闭合]\label{con:xi-terminal-zm-fixed-weight-numerator-golden-factor}
+在结论 \ref{con:xi-terminal-zm-fixed-weight-generating-function-rigidity} 的记号下，令
+\[
+\Phi_{\mathrm{gold}}(t):=t^2-t-1\in\ZZ[t].
+\]
+则对一切整数 \(n\ge 0\)，成立严格整除性
+\[
+\boxed{\;\Phi_{\mathrm{gold}}(t)\mid \mathcal{P}_{5n+4}(t)\; }.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+在商环 \(R:=\ZZ[t]/(\Phi_{\mathrm{gold}})\) 中有关系 \(t^2=t+1\)，从而
+\[
+(1-t)^2(1+t)=1-t-t^2+t^3\equiv 1,\qquad
+2t^2-t^4\equiv -t,\qquad
+t^4\equiv 3t+2
+\pmod{\Phi_{\mathrm{gold}}}.
+\]
+将结论 \ref{con:xi-terminal-zm-fixed-weight-generating-function-rigidity} 的齐次递推在 \(R\) 中约化，得到对 \(k\ge 3\)
+\[
+\mathcal{P}_k\equiv -t\,\mathcal{P}_{k-1}-(3t+2)\mathcal{P}_{k-2}.
+\]
+令向量 \(v_k:=(\mathcal{P}_k,\mathcal{P}_{k-1})^{\mathsf T}\)，则对 \(k\ge 3\) 有
+\[
+v_k\equiv M v_{k-1},\qquad
+M:=\begin{pmatrix}-t&-(3t+2)\\[2pt]1&0\end{pmatrix}\in \Mat_{2}(R).
+\]
+在 \(R\) 中对 \(M\) 作直接幂计算并约化可得
+\[
+M^5\equiv -(55t+34)\,I_2.
+\]
+因此对一切 \(k\ge 2\) 有五步标度关系
+\[
+v_{k+5}\equiv M^5 v_k\equiv -(55t+34)\,v_k,
+\qquad\text{特别地}\quad
+\mathcal{P}_{k+5}\equiv -(55t+34)\,\mathcal{P}_k.
+\]
+由初值在 \(R\) 中的约化计算
+\(
+\mathcal{P}_1\equiv -(1+t)
+\)、\(
+\mathcal{P}_2\equiv -(2+3t)
+\)，进而由递推得到 \(\mathcal{P}_4\equiv 0\)。
+于是对任意 \(n\ge 0\)，反复应用五步标度推出 \(\mathcal{P}_{5n+4}\equiv 0\)，
+等价于 \(\Phi_{\mathrm{gold}}(t)\mid \mathcal{P}_{5n+4}(t)\)。
+可复核脚本：\texttt{scripts/exp\_fold\_zm\_low\_weight\_quasipolynomial\_audit.py}。证毕。
 \end{proof}
 
 \begin{conclusion}[固定重量层系数的准多项式性：周期 \(2\)、次数量子化与首项系数闭式]\label{con:xi-terminal-zm-fixed-weight-quasipolynomial}
@@ -151,16 +206,23 @@ A_k(t)=\frac{1}{4^{k+1}}(1+t)^{-(k+1)}+O\!\bigl((1+t)^{-k}\bigr)\qquad(t\to-1),
 \boxed{\;
 \mathcal{P}_k''(1)=4-12k,\qquad \mathcal{P}_k^{(3)}(1)=42-78k\; }.
 \]
-因此，对每个固定 \(k\)（令 \(m\to\infty\)）有两项显式主部展开
+因此，对每个固定 \(k\)（令 \(m\to\infty\)）有两极点主部叠加的显式展开
 \[
 \boxed{\;
 a_{m,k}
 =\frac{1}{2^{k+1}}\binom{m+2k+1}{2k+1}
-\frac{k+1}{2^{k+2}}\binom{m+2k}{2k}
-O_k(m^{2k-1})
-(-1)^m O_k(m^{k})\; }.
++\frac{k+1}{2^{k+2}}\binom{m+2k}{2k}
++O_k(m^{2k-1})
++(-1)^m\left(\frac{1}{2^{2k+2}}\binom{m+k}{k}+O_k(m^{k-1})\right)\; }.
 \]
-其中 \(O_k(m^{2k-1})\) 来自 \(t=1\) 的次高阶极点，而交替项 \((-1)^mO_k(m^k)\) 来自 \(t=-1\) 的极点。
+其中 \(O_k(m^{2k-1})\) 来自 \(t=1\) 的次高阶极点，而交替项来自 \(t=-1\) 的极点。
+特别地，
+\[
+a_{m,k}
+=\frac{m^{2k+1}}{2^{k+1}(2k+1)!}
++(-1)^m\frac{m^k}{2^{2k+2}k!}
++O_k(m^{2k}).
+\]
 \end{conclusion}
 \begin{proof}[证明要点]
 由结论 \ref{con:xi-terminal-zm-fixed-weight-generating-function-rigidity} 的递推
@@ -181,8 +243,50 @@ A_k(t)=\frac{\mathcal{P}_k(t)}{(1-t)^{2k+2}(1+t)^{k+1}}
 (1+t)^{-(k+1)}=2^{-(k+1)}\bigl(1+\frac{k+1}{2}(1-t)+O((1-t)^2)\bigr)
 \)
 并结合 \(\mathcal{P}_k(1)=1\)、\(\mathcal{P}_k'(1)=0\) 得到所示两项主部；
-而在 \(t=-1\) 处由极点阶 \(k+1\) 得到交替项的阶为 \(O_k(m^k)\)。
+在 \(t=-1\) 处，由 \(\mathcal{P}_k(-1)=1\) 得
+\[
+A_k(t)=\frac{1}{2^{2k+2}}(1+t)^{-(k+1)}+O\!\bigl((1+t)^{-k}\bigr)\qquad(t\to-1),
+\]
+从而
+\(
+[t^m]A_k(t)=(-1)^m\frac{1}{2^{2k+2}}\binom{m+k}{k}+(-1)^mO_k(m^{k-1})
+\)。
 证毕。
+\end{proof}
+
+\begin{conclusion}[固定重量层系数的最小常系数递推：阶 \texorpdfstring{$3k+3$}{3k+3} 与 \texorpdfstring{$\pm 1$}{±1} 极点分解]\label{con:xi-terminal-zm-fixed-weight-minimal-cc-recurrence-order}
+固定 \(k\ge 0\)。
+则序列 \(\{a_{m,k}\}_{m\ge 0}\) 在常系数递推意义下为 \(C\)-finite：
+存在一个阶数为 \(3k+3\) 的齐次常系数线性递推，使得对所有充分大 \(m\) 成立；其特征多项式（以移位算子 \(E:a_m\mapsto a_{m+1}\) 记）为
+\[
+\boxed{\;(E-1)^{2k+2}(E+1)^{k+1}\;}
+\]
+并且在“充分大 \(m\)”意义下该阶数为最小：不存在阶数 \(<3k+3\) 的非平凡常系数递推能在全部充分大 \(m\) 上湮灭 \(\{a_{m,k}\}\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-fixed-weight-generating-function-rigidity}，
+\(
+A_k(t)=\sum_{m\ge 0}a_{m,k}t^m
+\)
+为有理函数，且其分母为
+\(
+Q_k(t)=(1-t)^{2k+2}(1+t)^{k+1}
+\)
+并满足 \(Q_k(0)=1\)。
+由恒等式 \(Q_k(t)A_k(t)=\mathcal{P}_k(t)\) 逐项比较系数，得到由 \(Q_k\) 的系数给出的常系数线性递推；
+当 \(m\) 足够大时右端系数归零，于是递推齐次化。
+将 \(Q_k(t)\) 写成
+\(
+Q_k(t)=\sum_{j=0}^{3k+3}q_j t^j
+\)
+即可得到对应阶数为 \(3k+3\) 的递推；其特征多项式等价于
+\(
+E^{3k+3}Q_k(1/E)=(E-1)^{2k+2}(E+1)^{k+1}
+\)。
+\par
+最小性归结为 \(\gcd(\mathcal{P}_k,Q_k)=1\)。
+由于 \(Q_k\) 的全部不可约因子仅为 \((1-t)\) 与 \((1+t)\)，而结论 \ref{con:xi-terminal-zm-fixed-weight-two-term-asymptotic} 给出 \(\mathcal{P}_k(\pm1)=1\)，
+故 \(\mathcal{P}_k\) 不被 \((1-t)\) 或 \((1+t)\) 整除，从而 \(Q_k\) 在既约意义下为最小湮灭分母（只差非零常数因子），递推阶数不可再降。证毕。
 \end{proof}
 
 \begin{conclusion}[低重量层系数的全量闭式：\(k\le 3\) 时对所有 \(m\ge 0\) 逐点成立]\label{con:xi-terminal-zm-fixed-weight-kle3-closed}
