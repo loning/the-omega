@@ -218,6 +218,82 @@ L_{a,b}=\binom{q-a}{b}
 将 \(U_q\cong\mathcal P([q])\) 复原为按位 \(\wedge,\vee\) 记号并用 \(T^{(q)}=\frac12B^{(q)}\) 即得所示整数核。证毕。
 \end{proof}
 
+\begin{corollary}[两层核的行列式闭式：仅由 \texorpdfstring{$(a,b,N)$}{(a,b,N)} 决定]\label{cor:xi-terminal-replica-softcore-twolevel-kernel-det}
+设 \(q\ge 2\) 并记 \(N:=2^q\)。
+对任意标量 \(a,b\in\CC\)，定义两层核矩阵 \(T^{(q)}(a,b)\in\CC^{U_q\times U_q}\) 为
+\[
+T^{(q)}(a,b)_{u,v}:=
+\begin{cases}
+a,&u\wedge v=\mathbf{0},\\[2pt]
+b,&u\wedge v\neq \mathbf{0}.
+\end{cases}
+\]
+则成立严格闭式
+\[
+\boxed{\ \det\bigl(T^{(q)}(a,b)\bigr)=a\,(a-b)^{N-1}\ }.
+\]
+\end{corollary}
+\begin{proof}
+当 \(a=b\) 时，\(T^{(q)}(a,a)=a\,\mathbf{1}\mathbf{1}^{\mathsf T}\) 为秩一矩阵且 \(N\ge 4\)，故行列式为 \(0\)，与右端一致。
+以下设 \(a\neq b\)。
+\par
+由定义
+\(
+T^{(q)}(a,b)=b\,\mathbf{1}\mathbf{1}^{\mathsf T}+(a-b)D^{(q)}
+\)。
+由于 \(D^{(q)}=K^{\otimes q}\) 且 \(q\ge 2\)，有 \(\det(D^{(q)})=1\)（见结论 \ref{con:xi-terminal-disjointness-bq-smith-snf-coker-parity} 的证明）。
+并且由 \(\bigl(D^{(q)}\bigr)^{-1}\mathbf{1}=e_{\varnothing}\) 得
+\(\mathbf{1}^{\mathsf T}\bigl(D^{(q)}\bigr)^{-1}\mathbf{1}=1\)。
+对矩阵行列式引理应用于
+\(
+A:=(a-b)D^{(q)}
+\)
+与秩一更新 \(b\,\mathbf{1}\mathbf{1}^{\mathsf T}\)，得到
+\[
+\det\bigl(T^{(q)}(a,b)\bigr)
+=\det(A)\Bigl(1+b\,\mathbf{1}^{\mathsf T}A^{-1}\mathbf{1}\Bigr)
+=(a-b)^{N}\det(D^{(q)})\Bigl(1+\frac{b}{a-b}\Bigr)
+=a\,(a-b)^{N-1}.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[逆核支撑的精确计数：\texorpdfstring{$3^q+1$}{3^q+1} 稀疏度与逐行分布]\label{cor:xi-terminal-replica-softcore-inverse-support-count}
+沿用推论 \ref{cor:xi-terminal-replica-softcore-Tq-det-and-integer-inverse-kernel} 的显式逆核。
+则 \(\bigl(T^{(q)}\bigr)^{-1}\) 的非零元总数满足
+\[
+\#\Bigl\{(u,v)\in U_q^2:\ \bigl(T^{(q)}\bigr)^{-1}_{u,v}\neq 0\Bigr\}=3^q+1.
+\]
+更精确地，若 \(u\neq \mathbf{0}\)，则第 \(u\) 行恰有 \(2^{|u|}\) 个非零元，且其取值集合包含于 \(\{\pm 2\}\)；
+而第 \(\mathbf{0}\) 行恰有两个非零元：
+\[
+\bigl(T^{(q)}\bigr)^{-1}_{\mathbf{0},\mathbf{0}}=-1,
+\qquad
+\bigl(T^{(q)}\bigr)^{-1}_{\mathbf{0},\mathbf{1}}=2.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:xi-terminal-replica-softcore-Tq-det-and-integer-inverse-kernel}，
+当 \((u,v)\neq(\mathbf{0},\mathbf{0})\) 时有
+\(
+\bigl(T^{(q)}\bigr)^{-1}_{u,v}\neq 0
+\iff
+u\vee v=\mathbf{1}
+\)，且此时取值必为 \(\pm 2\)。
+因此对固定 \(u\neq \mathbf{0}\)，条件 \(u\vee v=\mathbf{1}\) 要求 \(v\) 在 \(\{j:\ u_j=0\}\) 上强制取 \(1\)，并在 \(\{j:\ u_j=1\}\) 上自由取 \(0/1\)，从而解的个数为 \(2^{|u|}\)。
+对 \(u=\mathbf{0}\) 时仅有 \(v=\mathbf{1}\) 满足 \(u\vee v=\mathbf{1}\)，且 \((\mathbf{0},\mathbf{0})\) 处另有修正项 \(-1\)，得到所示两处非零值。
+\par
+将 \(2^{|u|}\) 对所有 \(u\in U_q\) 求和得
+\[
+\sum_{u\in U_q}2^{|u|}
+=\sum_{k=0}^{q}\binom{q}{k}2^{k}
+=(1+2)^q
+=3^q,
+\]
+对应于 \(u\vee v=\mathbf{1}\) 产生的全部非零元；再加上额外的 \((\mathbf{0},\mathbf{0})\) 条目即得总数 \(3^q+1\)。
+证毕。
+\end{proof}
+
 \begin{conclusion}[Fibonacci 幂矩恒等式与 Perron 根的收敛级数方程]\label{con:xi-terminal-replica-softcore-fib-moment-and-perron-series}
 沿用结论 \ref{con:xi-terminal-replica-softcore-fiber-splitting-full-spectrum} 的记号。
 对任意整数 \(m\ge 0\)，成立严格幂矩恒等式

@@ -110,6 +110,110 @@ m\ \ge\ 2\log_2T+\log_2\log T-O(1).
 若地址映射单射，则 \eqref{eq:cdim-phase-prefix-occupancy-barrier} 的左侧 \(\le 1\)，从而得到所示门槛。证毕。
 \end{proof}
 
+\paragraph{外置残差轴：从占用下界到 prime-register 配额}
+命题 \ref{prop:cdim-phase-prefix-occupancy-barrier} 刻画了“仅凭相位前缀地址”在高高度端点压缩下的结构性碰撞不可避免性。
+在扩展保存口径中，唯一可行的修复是把碰撞完全移入外置残差寄存器（prime-register 及其有限截断即为规范实现之一）。
+下述推论把 \eqref{eq:cdim-phase-prefix-occupancy-barrier} 直接翻译为残差寄存器的最小容量，并与 Quantile-CRT 的模积门槛合并为同一联合下界。
+
+\begin{corollary}[前缀地址单射化所需残差寄存器容量]\label{cor:cdim-prefix-residual-register-capacity}
+取 \(T\ge T_0\)（其中 \(T_0\) 为命题 \ref{prop:cdim-phase-prefix-occupancy-barrier} 中常数）并令
+\[
+\Gamma(T):=\{\gamma\in(T,2T]:\ \exists\,\rho=\beta+\mathrm{i}\gamma\ \text{为非平凡零点}\}.
+\]
+令 \(m\ge 1\)。
+若存在有限集合 \(R_m\) 与映射 \(r_m:\Gamma(T)\to R_m\) 使得扩展地址
+\[
+\gamma\longmapsto \bigl(A_m(\gamma),\,r_m(\gamma)\bigr)\in\{0,\dots,2^m-1\}\times R_m
+\]
+在 \(\Gamma(T)\) 上为单射，则
+\[
+\card{R_m}\ \ge\ c\,\frac{T^2\log T}{2^m},
+\]
+其中常数 \(c>0\) 与命题 \ref{prop:cdim-phase-prefix-occupancy-barrier} 相同。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:cdim-phase-prefix-occupancy-barrier}，存在 \(a\in\{0,\dots,2^m-1\}\) 使桶
+\(
+S_a:=\{\gamma\in\Gamma(T):\ A_m(\gamma)=a\}
+\)
+满足 \(\card{S_a}\ge c\,T^2\log T/2^m\)。
+若 \(\gamma\mapsto(A_m(\gamma),r_m(\gamma))\) 单射，则 \(r_m\) 在 \(S_a\) 上必为单射，故
+\(
+\card{R_m}\ge \card{r_m(S_a)}=\card{S_a}
+\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[地址碰撞与 Quantile-CRT 的模积联合下界]\label{cor:cdim-prefix-quantile-crt-joint-modulus}
+在推论 \ref{cor:cdim-prefix-residual-register-capacity} 的设定下，进一步假设残差寄存器由两两互素模数组实现，
+使得 \(R_m\cong \ZZ/P_m\ZZ\) 且 \(P_m=\card{R_m}\)。
+若还要求该寄存器在失败概率 \(\le \varepsilon\) 的意义下实现 \((\mathrm{RCRT}_\varepsilon)\) 型可逆化读出（命题 \ref{prop:pom-rcrt-epsilon}），
+则对命题 \ref{prop:pom-rcrt-epsilon} 中任意可行尾部阈值 \(B_m(\varepsilon)\) 必有
+\[
+P_m\ \ge\ \max\!\left\{\, c\,\frac{T^2\log T}{2^m},\ 2B_m(\varepsilon)\,\right\}.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:cdim-prefix-residual-register-capacity} 得 \(P_m=\card{R_m}\ge c\,T^2\log T/2^m\)。
+另一方面，为在好事件上由 residue 唯一恢复区间 \([-B_m(\varepsilon),B_m(\varepsilon)]\) 内的整数标签，
+必须有 \(P_m>2B_m(\varepsilon)\)（这是 CRT 在该区间上单射的算术必要条件，亦即命题 \ref{prop:pom-rcrt-epsilon} 的 CRT 侧条件）。
+合并两条必要条件并取最大值即得。证毕。
+\end{proof}
+
+\begin{remark}[模积的深度归一化密度]\label{rem:cdim-prime-register-density}
+定义 prime-register 的深度归一化容量
+\[
+\delta_m:=\frac{1}{m}\log_2 P_m.
+\]
+若把尾部阈值写为 \(B_m(\varepsilon)=\exp\!\bigl(m\,\gamma_m(\varepsilon)\bigr)\)（即 \(\gamma_m(\varepsilon):=\frac{1}{m}\log B_m(\varepsilon)\)），
+则条件 \(P_m>2B_m(\varepsilon)\) 给出换算下界
+\[
+\delta_m\ \ge\ \frac{\gamma_m(\varepsilon)}{\log 2}+\frac{1}{m}.
+\]
+该密度与残差圆维 \(\overline{\cdim}_{\mathrm{res}}\) 同量纲：二者均以“每层深度的对数容量”度量外置离散轴预算。
+\end{remark}
+
+\begin{corollary}[最小化模积阈值时的平衡深度尺度]\label{cor:cdim-optimal-depth-scale-modulus}
+在推论 \ref{cor:cdim-prefix-quantile-crt-joint-modulus} 的联合下界中，若存在常数 \(\underline\gamma(\varepsilon)>0\) 使得在所考虑深度范围内
+\[
+B_m(\varepsilon)\ \ge\ \exp\!\bigl(m\,\underline\gamma(\varepsilon)\bigr),
+\]
+则存在常数 \(C(\varepsilon)>0\) 使对所有足够大 \(T\) 有
+\[
+\inf_{m\ge 1}\ \max\!\left\{\, c\,\frac{T^2\log T}{2^m},\ 2B_m(\varepsilon)\,\right\}
+\ \ge\
+C(\varepsilon)\,
+T^{\frac{2\underline\gamma(\varepsilon)}{\underline\gamma(\varepsilon)+\log 2}}\,
+(\log T)^{\frac{\underline\gamma(\varepsilon)}{\underline\gamma(\varepsilon)+\log 2}}.
+\]
+\end{corollary}
+\begin{proof}
+在连续 \(m>0\) 上令
+\[
+f(m):=cT^2\log T\cdot 2^{-m}=cT^2\log T\cdot e^{-m\log 2},
+\qquad
+g(m):=2e^{m\underline\gamma(\varepsilon)}.
+\]
+则由假设 \(2B_m(\varepsilon)\ge g(m)\) 得
+\(
+\max\{cT^2\log T/2^m,\ 2B_m(\varepsilon)\}\ge \max\{f(m),g(m)\}
+\)。
+而 \(\max\{f(m),g(m)\}\) 的最小值（在连续 \(m\) 上）发生在交点 \(f(m)=g(m)\)，即
+\[
+m^\ast=\frac{\log(cT^2\log T)-\log 2}{\underline\gamma(\varepsilon)+\log 2}.
+\]
+将 \(m^\ast\) 代回得
+\[
+\inf_{m>0}\max\{f(m),g(m)\}
+=f(m^\ast)=g(m^\ast)
+=C(\varepsilon)\,
+T^{\frac{2\underline\gamma(\varepsilon)}{\underline\gamma(\varepsilon)+\log 2}}\,
+(\log T)^{\frac{\underline\gamma(\varepsilon)}{\underline\gamma(\varepsilon)+\log 2}},
+\]
+其中 \(C(\varepsilon)>0\) 仅依赖于 \(c\) 与 \(\underline\gamma(\varepsilon)\)。
+将连续下确界限制到整数 \(m\ge 1\) 仅改变一个与 \(T\) 无关的常数因子，吸收入 \(C(\varepsilon)\) 即得。证毕。
+\end{proof}
+
 \paragraph{dyadic 前缀的超度量结构}
 为把“共享前缀深度”制度化为可核验对象，对任意 \(\theta\in(0,1)\) 与 \(b\in\NN\) 定义 dyadic 盒
 \[

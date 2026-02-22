@@ -358,6 +358,182 @@ C_q\bmod \pi_\varphi\;=\;u\,v^{\mathsf T}\;}
 由结论 \ref{con:xi-symq-golden-cq-smith-staircase} 的恒等式 \(x-\varphi y=2\ell-\pi_\varphi m\) 取模 \(\pi_\varphi\) 即得所示线性型同余；其余为逐列系数同余转译。证毕。
 \end{proof}
 
+\paragraph{预像塔、模幂截断与限制标量：阶梯 Smith 结构的伴随分解}
+固定整数 \(q\ge 2\)，并沿用上文关于 \(\mathcal O=\ZZ[\varphi]\)、\(\pi_\varphi=\varphi+2\) 与 \(C_q\) 的记号。
+
+\begin{conclusion}[预像子晶格塔的指数闭式与 \texorpdfstring{$\FF_5$}{F5}-分级维数]\label{con:xi-symq-golden-cq-preimage-tower-index}
+令 \(L:=\mathcal O^{q+1}\)，并把 \(C_q\) 视为 \(L\to L\) 的 \(\mathcal O\)-线性同态。
+对每个整数 \(s\ge 0\) 定义预像子晶格
+\[
+L(s):=\{x\in L:\ C_qx\in \pi_\varphi^{\,s}L\}.
+\]
+则其指数满足闭式
+\[
+\boxed{\;
+[L:L(s)]
+=5^{\sum_{r=0}^{q}\max\{0,s-r\}}
+=
+\begin{cases}
+5^{\frac{s(s+1)}{2}},& 0\le s\le q,\\[4pt]
+5^{(q+1)s-\frac{q(q+1)}{2}},& s\ge q.
+\end{cases}\;}
+\]
+并且每一层商 \(L(s)/L(s+1)\) 都是 \(\mathcal O/(\pi_\varphi)\cong\FF_5\) 上的向量空间，且维数满足
+\[
+\boxed{\;
+\dim_{\FF_5}\bigl(L(s)/L(s+1)\bigr)=\min\{s+1,q+1\}\; } .
+\]
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-symq-golden-cq-smith-staircase} 的 Smith 正规形，存在幺模矩阵 \(P,Q\in\mathrm{GL}_{q+1}(\mathcal O)\) 使
+\(
+PC_qQ=\mathrm{diag}(1,\pi_\varphi,\dots,\pi_\varphi^q)
+ \)。
+令 \(y:=Q^{-1}x\)，则 \(x\in L(s)\) 等价于 \(\mathrm{diag}(\pi_\varphi^r)_{r=0}^q\,y\in \pi_\varphi^{\,s}L\)，亦即对每个 \(0\le r\le q\) 有
+\(
+y_r\in \pi_\varphi^{\max\{0,s-r\}}\mathcal O
+\)。
+因此
+\[
+[L:L(s)]
+=\prod_{r=0}^{q}\bigl[\mathcal O:\pi_\varphi^{\max\{0,s-r\}}\mathcal O\bigr]
+=\prod_{r=0}^{q}5^{\max\{0,s-r\}}
+=5^{\sum_{r=0}^q\max\{0,s-r\}},
+\]
+其中使用 \(\#(\mathcal O/(\pi_\varphi^k))=\mathrm N(\pi_\varphi^k)=5^k\)。
+对和式作分段求和得到所示闭式。
+同理，
+\(
+L(s)/L(s+1)\cong\bigoplus_{r=0}^{q}\pi_\varphi^{\max\{0,s-r\}}\mathcal O\big/\pi_\varphi^{\max\{0,s+1-r\}}\mathcal O
+\)，
+每个直和分量要么为 \(0\)，要么同构于 \(\mathcal O/(\pi_\varphi)\cong\FF_5\)；
+非零分量恰对应于 \(r\le s\)，其个数为 \(\min\{s+1,q+1\}\)。
+证毕。
+\end{proof}
+
+\begin{conclusion}[模 \texorpdfstring{$\pi_\varphi^t$}{pi^t} 的外积截断：显式秩一算子和与生成系]\label{con:xi-symq-golden-cq-mod-pi-power-outer-truncation}
+取整数 \(t\) 满足 \(1\le t\le q+1\)，并令 \(R_t:=\mathcal O/(\pi_\varphi^t)\)。
+沿用结论 \ref{con:xi-symq-golden-cq-smith-staircase} 的幺模分解
+\[
+C_q=Q_q\cdot \mathrm{diag}(1,\pi_\varphi,\dots,\pi_\varphi^q)\cdot U_q.
+\]
+记 \(q_r\in\mathcal O^{q+1}\) 为 \(Q_q\) 的第 \(r\) 列向量、记 \(u_r^{\mathsf T}\in\mathcal O^{1\times(q+1)}\) 为 \(U_q\) 的第 \(r\) 行向量（\(0\le r\le q\)）。
+并以 \(\overline q_r\) 表示 \(q_r\) 在 \(R_t^{q+1}\) 中的像。
+则成立精确外积展开
+\[
+\boxed{\;
+C_q=\sum_{r=0}^{q}\pi_\varphi^{\,r}\,q_r\,u_r^{\mathsf T}\;}
+\]
+并在 \(R_t\) 上满足截断同余
+\[
+\boxed{\;
+C_q\equiv \sum_{r=0}^{t-1}\pi_\varphi^{\,r}\,q_r\,u_r^{\mathsf T}\pmod{\pi_\varphi^{t}}\;}
+\]
+从而 \(\mathrm{Im}(C_q\bmod \pi_\varphi^t)\) 可由 \(\{\,\pi_\varphi^{\,r}\,\overline q_r\,\}_{r=0}^{t-1}\) 生成，并且其最小生成元数为 \(t\)（见推论 \ref{cor:xi-symq-golden-cq-mod-pi-power-staircase}）。
+\end{conclusion}
+\begin{proof}
+将 \(Q_q\mathrm{diag}(\pi_\varphi^r)U_q\) 按对角分量展开得到
+\(
+C_q=\sum_{r=0}^{q}\pi_\varphi^r(Q_qE_{rr}U_q)
+\)，
+其中 \(E_{rr}\) 为第 \((r,r)\) 处为 \(1\) 的标准矩阵单位。
+而 \(Q_qE_{rr}\) 仅保留第 \(r\) 列、\(E_{rr}U_q\) 仅保留第 \(r\) 行，故 \(Q_qE_{rr}U_q=q_ru_r^{\mathsf T}\)，得到外积展开。
+将等式在 \(R_t\) 下约化并注意 \(\pi_\varphi^r\equiv 0\pmod{\pi_\varphi^t}\) 当且仅当 \(r\ge t\)，即得截断同余。
+由外积形态，右端每一项的像均包含于 \(R_t\cdot(\pi_\varphi^{\,r}\overline q_r)\)，故像模由所列向量生成；
+最小性由推论 \ref{cor:xi-symq-golden-cq-mod-pi-power-staircase} 给出。证毕。
+\end{proof}
+
+\begin{conclusion}[模 \texorpdfstring{$\pi_\varphi^t$}{pi^t} 下核、像、余核的完全同构型；\texorpdfstring{$\ker\cong\mathrm{coker}$}{ker≅coker} 为严格结构恒等]\label{con:xi-symq-golden-cq-mod-pi-power-kernel-image-cokernel}
+令 \(R_t:=\mathcal O/(\pi_\varphi^t)\)，并记 \(C_{q,t}:R_t^{q+1}\to R_t^{q+1}\) 为由 \(C_q\) 诱导的 \(R_t\)-线性同态。
+则存在 \(R_t\)-模同构
+\[
+\boxed{\;
+\mathrm{Im}(C_{q,t})\ \cong\ \bigoplus_{s=1}^{t}\mathcal O/(\pi_\varphi^{s})\;}
+\]
+\[
+\boxed{\;
+\ker(C_{q,t})\ \cong\ \Bigl(\bigoplus_{s=1}^{t-1}\mathcal O/(\pi_\varphi^{s})\Bigr)\ \oplus\ \bigl(\mathcal O/(\pi_\varphi^{t})\bigr)^{q+1-t}\;}
+\]
+\[
+\boxed{\;
+\mathrm{coker}(C_{q,t})\ \cong\ \Bigl(\bigoplus_{s=1}^{t-1}\mathcal O/(\pi_\varphi^{s})\Bigr)\ \oplus\ \bigl(\mathcal O/(\pi_\varphi^{t})\bigr)^{q+1-t}\;}
+\]
+从而对每个 \(t\) 都有严格同构 \(\ker(C_{q,t})\cong \mathrm{coker}(C_{q,t})\)。
+\end{conclusion}
+\begin{proof}
+由 Smith 正规形，\(C_{q,t}\) 在 \(R_t\) 上与对角算子
+\(
+(x_r)_{r=0}^{q}\mapsto (\pi_\varphi^{\,r}x_r)_{r=0}^{q}
+\)
+幺模等价。
+因此像在第 \(r\) 分量为 \(\pi_\varphi^{\,r}R_t\)；当 \(r<t\) 时乘法 \(R_t\to\pi_\varphi^{\,r}R_t\) 的核为 \(\pi_\varphi^{t-r}R_t\)，故 \(\pi_\varphi^{\,r}R_t\cong R_t/(\pi_\varphi^{t-r})\cong \mathcal O/(\pi_\varphi^{t-r})\)，而当 \(r\ge t\) 时像分量为 \(0\)。
+将 \(r=0,\dots,t-1\) 重标为 \(s=t-r\) 得到像的直和分解。
+\par
+核在第 \(r\) 分量为 \(\{x\in R_t:\ \pi_\varphi^{\,r}x=0\}\)。
+当 \(r<t\) 时该集合为 \(\pi_\varphi^{t-r}R_t\cong R_t/(\pi_\varphi^{r})\cong \mathcal O/(\pi_\varphi^{r})\)；
+当 \(r\ge t\) 时 \(\pi_\varphi^{\,r}=0\) 于 \(R_t\)，故核分量为 \(R_t\cong \mathcal O/(\pi_\varphi^{t})\)。
+汇总得到核的分解。
+\par
+余核在第 \(r\) 分量为 \(R_t/\pi_\varphi^{\,r}R_t\)。
+当 \(r<t\) 时同构于 \(\mathcal O/(\pi_\varphi^{r})\)，而当 \(r\ge t\) 时同构于 \(R_t\cong \mathcal O/(\pi_\varphi^{t})\)，故余核与核同构。证毕。
+\end{proof}
+
+\begin{conclusion}[限制标量后的逐级块化分解：\texorpdfstring{$\widetilde C_q$}{Ctilde} 的整数幺模对角骨架可显式写出]\label{con:xi-symq-golden-cq-restriction-of-scalars-block-diagonal}
+定义乘法表示 \(\iota:\mathcal O\to\Mat_2(\ZZ)\) 为：对 \(a+b\varphi\in\mathcal O\),
+\[
+\iota(a+b\varphi):=
+\begin{pmatrix}a&b\\[2pt]b&a+b\end{pmatrix}.
+\]
+令 \(A:=\iota(\pi_\varphi)=\bigl(\begin{smallmatrix}2&1\\[2pt]1&3\end{smallmatrix}\bigr)\)，则 \(\iota(\pi_\varphi^{\,r})=A^{r}\)。
+对任意 \(\mathcal O\)-矩阵 \(M=[m_{ij}]\)，定义其限制标量矩阵 \(\widetilde M\in\Mat_{2n}(\ZZ)\) 为以 \(2\times 2\) 块 \(\iota(m_{ij})\) 组成的整数矩阵（其中 \(M\in\Mat_n(\mathcal O)\)）。
+\par
+则沿结论 \ref{con:xi-symq-golden-cq-smith-staircase} 的幺模分解，有严格恒等式
+\[
+\boxed{\;
+\widetilde C_q
+=\widetilde Q_q\cdot \mathrm{diag}(A^{0},A^{1},\dots,A^{q})\cdot \widetilde U_q\;}
+\]
+其中 \(\widetilde Q_q,\widetilde U_q\in\mathrm{GL}_{2(q+1)}(\ZZ)\) 为整数幺模矩阵。
+\end{conclusion}
+\begin{proof}
+\(\iota\) 为环同态，故对块化构造满足 \(\widetilde{MN}=\widetilde M\,\widetilde N\)。
+对角阶梯阵的块化为
+\[
+\widetilde{\mathrm{diag}(1,\pi_\varphi,\dots,\pi_\varphi^q)}
+=\mathrm{diag}\bigl(\iota(1),\iota(\pi_\varphi),\dots,\iota(\pi_\varphi^q)\bigr)
+=\mathrm{diag}(A^0,A^1,\dots,A^q),
+\]
+从而由结论 \ref{con:xi-symq-golden-cq-smith-staircase} 得到所示分解。
+又由于 \(Q_q,U_q\in\mathrm{GL}_{q+1}(\mathcal O)\) 作为 \(\mathcal O\)-线性自同构在限制标量后仍为 \(\ZZ\)-线性自同构，故 \(\widetilde Q_q,\widetilde U_q\) 为整数幺模矩阵。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$\varpi^m$}{pi^m}-自逆矩阵的 Smith 对称律：离散赋值环上的互补指数约束]\label{con:xi-dvr-selfinverse-smith-symmetry}
+令 \(R\) 为离散赋值环，\(\varpi\) 为其均匀元，\(K\) 为分式域。
+设 \(M\in\Mat_n(R)\cap\mathrm{GL}_n(K)\) 满足
+\[
+M^2=\varpi^{m}I_n
+\qquad(\text{等价地 }M^{-1}=\varpi^{-m}M).
+\]
+设 \(M\) 的 Smith 正规形不变指数为 \(0\le s_1\le\cdots\le s_n\)，即 \(M\) 在 \(R\) 上幺模等价于
+\(\mathrm{diag}(\varpi^{s_1},\dots,\varpi^{s_n})\)。
+则必有对称律
+\[
+\boxed{\;
+s_i+s_{n+1-i}=m,\qquad 1\le i\le n.\;}
+\]
+\end{conclusion}
+\begin{proof}
+取 Smith 分解 \(M=U\,\mathrm{diag}(\varpi^{s_1},\dots,\varpi^{s_n})\,V\)（\(U,V\in\mathrm{GL}_n(R)\)）。
+则
+\[
+\varpi^{m}M^{-1}
+=\varpi^{m}V^{-1}\,\mathrm{diag}(\varpi^{-s_1},\dots,\varpi^{-s_n})\,U^{-1}
+=V^{-1}\,\mathrm{diag}(\varpi^{m-s_1},\dots,\varpi^{m-s_n})\,U^{-1}.
+\]
+由假设 \(\varpi^{m}M^{-1}=M\) 且 Smith 指数在 \(R\) 上除重排外唯一，指数多重集 \(\{s_1,\dots,s_n\}\) 与 \(\{m-s_1,\dots,m-s_n\}\) 相同。
+将二者按升序排列即得 \(s_i=m-s_{n+1-i}\)。证毕。
+\end{proof}
+
 \begin{proposition}[阶梯 Smith 模板：对称幂与线性型同余导出的幺模分解]\label{prop:xi-smith-staircase-template-symq}
 设 \(R\) 为交换整环，\(\pi\in R\) 为非零非单位元。
 取
@@ -397,6 +573,8 @@ U_q(R)_{rj}=
 由于 \(\mathrm{Sym}^q(H)\in\mathrm{GL}_{q+1}(R)\) 且 \(U_q(R)\) 对角元为 \(((-1)^j)_{0\le j\le q}\subset R^\times\)，二者均幺模。
 PID 情形下 Smith 形由幺模等价唯一性推出。证毕。
 \end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part31i-exterior-power-smith-schubert}
 
 \input{subsubsec__xi-time-protocol-conclusions-part31i-integer-blockization}
 
