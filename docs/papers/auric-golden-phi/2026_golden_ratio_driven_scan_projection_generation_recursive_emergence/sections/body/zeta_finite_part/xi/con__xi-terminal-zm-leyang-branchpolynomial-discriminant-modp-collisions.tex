@@ -9,10 +9,12 @@ B(y):=y(y-1)P_{\mathrm{LY}}(y)\in\ZZ[y]
 \)。
 则：
 \begin{enumerate}
+  \item \(P_{\mathrm{LY}}\) 在 \(\QQ\) 上不可约。
   \item \(P_{\mathrm{LY}}\) 的判别式为
   \[
   \boxed{\ \mathrm{Disc}(P_{\mathrm{LY}})=-3^9\cdot 31^2\cdot 37\ }.
   \]
+  \item 因而 \(P_{\mathrm{LY}}\) 的分裂域仅可能在素数 \(\{3,31,37\}\) 处分歧，并且 \(37\) 必分歧。
   \item \(B(y)\) 的判别式为
   \[
   \boxed{\ \mathrm{Disc}(B)=-2^{20}\cdot 3^{15}\cdot 31^2\cdot 37\ }.
@@ -32,6 +34,20 @@ B(y):=y(y-1)P_{\mathrm{LY}}(y)\in\ZZ[y]
 \end{enumerate}
 \end{conclusion}
 \begin{proof}[证明要点]
+不可约性可由模 \(5\) 的化简给出：在 \(\FF_5[y]\) 中有
+\[
+P_{\mathrm{LY}}(y)\equiv y^{3}+y^{2}+2\pmod 5,
+\]
+而对 \(y\in\FF_5\) 逐点代入可知其无根；由于三次多项式在域上可约当且仅当有一次因子，故 \(P_{\mathrm{LY}}\) 在 \(\FF_5\) 上不可约，从而在 \(\QQ\) 上不可约。
+\par
+对分歧素数集合，令 \(\beta\) 为 \(P_{\mathrm{LY}}\) 的任一根并记 \(L:=\QQ(\beta)\)，再记 \(K\) 为 \(P_{\mathrm{LY}}\) 的分裂域。
+由判别式与整指数的标准关系
+\[
+\mathrm{Disc}(P_{\mathrm{LY}})=\mathrm{Disc}(L)\cdot[\mathcal O_L:\ZZ[\beta]]^{2}
+\]
+可知：\(\mathrm{Disc}(P_{\mathrm{LY}})\) 的素因子给出 \(L/\QQ\) 的分歧素数上界，因而分裂域 \(K\) 的分歧素数也只能来自 \(\{3,31,37\}\)。
+并且由于指数项为平方，\(37\) 在 \(\mathrm{Disc}(P_{\mathrm{LY}})\) 中以奇数次幂出现不能被吸收，故 \(37\mid \mathrm{Disc}(L)\)，从而 \(37\) 在 \(L\) 中分歧；因此在包含 \(L\) 的分裂域 \(K\) 中亦必分歧。
+\par
 判别式分解与模 \(p\) 因式分解均为 \(\ZZ[y]\) 与 \((\ZZ/p\ZZ)[y]\) 内的有限代数计算；
 \(\mathrm{Disc}(B)\) 亦可由 \(\mathrm{Disc}(P_{\mathrm{LY}})\) 与结果式 \(\mathrm{Res}(P_{\mathrm{LY}},y(y-1))\) 的乘法公式回收。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_audit.py}。证毕。
