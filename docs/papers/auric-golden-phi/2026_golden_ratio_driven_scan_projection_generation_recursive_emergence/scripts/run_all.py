@@ -90,6 +90,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="replica_softcore_cycle_subgraph_cyccomp_audit",
+            script="exp_replica_softcore_cycle_subgraph_cyccomp_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/replica_softcore_cycle_subgraph_cyccomp_audit.json",
+            ],
+        ),
+        Step(
             name="xi_exceptional_integer_model_Mq_audit",
             script="exp_xi_exceptional_integer_model_Mq_audit.py",
             args=[],
@@ -2177,6 +2185,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_poisson_cauchy_harmonic_multipole_kl_audit",
+            script="exp_xi_poisson_cauchy_harmonic_multipole_kl_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_cauchy_harmonic_multipole_kl_audit.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_logM_theta",
             script="exp_sync_kernel_real_input_40_logM_theta.py",
             args=[
@@ -2840,6 +2856,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_leyang_exponential_time_differential_closure_audit",
+            script="exp_fold_zm_leyang_exponential_time_differential_closure_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_exponential_time_differential_closure_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_weight_doubling_audit",
             script="exp_fold_zm_elliptic_weight_doubling_audit.py",
             args=[],
@@ -3056,6 +3080,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_leyang_discriminant_ridge_difference_square_audit.json",
                 "sections/generated/eq_fold_zm_leyang_discriminant_ridge_difference_square_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_compression_chebyshev_conjugacy_audit",
+            script="exp_fold_zm_leyang_compression_chebyshev_conjugacy_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_compression_chebyshev_conjugacy_audit.json",
             ],
         ),
         Step(

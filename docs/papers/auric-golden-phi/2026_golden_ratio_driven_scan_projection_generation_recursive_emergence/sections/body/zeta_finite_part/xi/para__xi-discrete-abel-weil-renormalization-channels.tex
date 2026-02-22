@@ -319,5 +319,165 @@ m,&j=j_0,\\
 直接验证。证毕。
 \end{proof}
 
+\paragraph{对角重整化与留数不变量：从极点代数到整重数证书}
+
+\begin{proposition}[抽取重整化算子的半群恒等式]\label{prop:abel-decimation-semigroup-identity}
+在定义 \ref{def:abel-decimation-operators} 的记号下，对任意整数 \(k,\ell\ge 1\) 与形式幂级数 \(f(r)=\sum_{n\ge 0}a_n r^n\)，有
+\[
+\mathsf D_k\!\bigl(\mathsf D_\ell f\bigr)=\mathsf D_{k\ell}f.
+\]
+并且对任意 \(b>1,\delta\ge 0\)，
+\[
+\mathcal A_{b^k,\delta}=\mathsf D_k\mathcal A_{b,\delta}.
+\]
+此外，在 \(|r|<1\) 内成立根单位平均表示
+\[
+\mathsf D_k f(r)=\frac1k\sum_{j=0}^{k-1}f\!\bigl(\omega_k^j r^{1/k}\bigr),
+\qquad
+\omega_k=e^{2\pi i/k},
+\]
+其中右端作为幂级数恒等与分支选择无关。
+\end{proposition}
+\begin{proof}
+第一式由系数抽取直接计算：
+\(
+\mathsf D_k(\mathsf D_\ell f)=\sum_{n\ge 0}a_{k\ell n}r^n=\mathsf D_{k\ell}f
+\)。
+第二式见命题 \ref{prop:abel-base-recursion-pole-conjugacy} 与注 \ref{rem:abel-hardy-energy-decimation-applied}。
+根单位平均式是标准滤波恒等式：
+\[
+\frac1k\sum_{j=0}^{k-1}\sum_{n\ge 0}a_n\omega_k^{jn}r^{n/k}
+=\sum_{m\ge 0}a_{km}r^m.
+\]
+证毕。
+\end{proof}
+
+\begin{proposition}[归一化留数不变量与整重数一致性证书]\label{prop:abel-normalized-residue-invariant-integrality}
+定义
+\[
+\mathcal B_{b,\delta}(r):=\frac{\mathcal A_{b,\delta}(r)}{r}.
+\]
+设 \(\rho\) 为 \(\zeta\) 的非平凡零点，重数为 \(m(\rho)\ge 1\)，并记
+\[
+r_{\rho,\delta}(b):=b^{-(\rho-(\frac12+\delta))}.
+\]
+则 \(\mathcal A_{b,\delta}\) 在 \(r=r_{\rho,\delta}(b)\) 处的留数为
+\[
+\operatorname{Res}_{r=r_{\rho,\delta}(b)}\mathcal A_{b,\delta}(r)
+=\frac{m(\rho)\,r_{\rho,\delta}(b)}{\rho},
+\]
+并且归一化后满足
+\[
+\boxed{\;
+\operatorname{Res}_{r=r_{\rho,\delta}(b)}\mathcal B_{b,\delta}(r)=\frac{m(\rho)}{\rho},
+\;}
+\]
+从而该留数与 \((b,\delta)\) 无关。
+\par
+反之，若某点 \(r_0\neq 0\) 是 \(\mathcal A_{b,\delta}\) 的单极点，且
+\(
+c=\operatorname{Res}_{r=r_0}\mathcal A_{b,\delta}(r)
+\)，
+并存在 \(\rho\) 使 \(r_0=b^{-(\rho-(\frac12+\delta))}\)，则对应重数由
+\[
+m=\frac{\rho\,c}{r_0}
+\]
+给出，且必须满足 \(m\in\ZZ_{>0}\)。
+因此 \(\rho c/r_0\in\ZZ_{>0}\) 构成极点--留数对的严格整性一致性约束。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:damped-poles} 的极点展开，
+\[
+\mathcal A_{b,\delta}(r)
+=-\sum_\rho \frac{m(\rho)}{\rho}\frac1{1-r\,b^{\rho-(\frac12+\delta)}}+H_{b,\delta}(r).
+\]
+令 \(\alpha_\rho=b^{\rho-(\frac12+\delta)}\)、\(r_0=\alpha_\rho^{-1}\)，则
+\[
+\frac1{1-\alpha_\rho r}=-\frac1{\alpha_\rho}\frac1{r-r_0},
+\]
+故对应留数为
+\[
+\operatorname{Res}_{r=r_0}\mathcal A_{b,\delta}
+=\frac{m(\rho)}{\rho\alpha_\rho}
+=\frac{m(\rho)\,r_0}{\rho}.
+\]
+再由
+\(
+\operatorname{Res}_{r=r_0}(F/r)=\operatorname{Res}_{r=r_0}F\,/\,r_0
+\)
+得归一化不变量。反向整性判据由同式直接反解得到。证毕。
+\end{proof}
+
+\begin{theorem}[对角重整化判别与 RH 的等价刻画]\label{thm:abel-diagonal-renormalization-rh-criterion}
+固定 \(b>1\)，定义对角序列
+\[
+F_k(r):=\mathcal A_{b^k,1/k}(r),\qquad k\ge 1.
+\]
+则以下三条等价：
+\begin{enumerate}
+  \item RH 成立；
+  \item 对所有充分大的 \(k\)，\(F_k\) 在 \(|r|<1\) 内全纯（等价地，对任意无界子序列 \(k\to\infty\) 均成立）；
+  \item 对所有充分大的 \(k\)，有 \(F_k\in H^2(\mathbb D)\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:damped-poles}，\(\mathcal A_{b,\delta}\) 在 \(|r|<1\) 全纯当且仅当
+\(
+\sigma_*\le \frac12+\delta
+\)
+（\(\sigma_*:=\sup_\rho\Re\rho\)）。
+取 \(\delta=1/k\) 即得
+\[
+F_k\ \text{全纯}\quad\Longleftrightarrow\quad \sigma_*\le \frac12+\frac1k.
+\]
+若对无界 \(k\) 成立，则令 \(k\to\infty\) 得 \(\sigma_*\le\frac12\)。
+结合函数方程的对称性 \(\rho\mapsto 1-\rho\)，推出全部非平凡零点实部等于 \(\frac12\)，即 RH。
+反向显然：RH \(\Rightarrow \sigma_*=\frac12\Rightarrow \sigma_*\le \frac12+\frac1k\) 对所有 \(k\) 成立。
+由定理 \ref{thm:hardy-criterion-delta}，在固定 \(\delta>0\) 时“全纯于单位圆盘”与 \(H^2\) 判据等价，故第 (2)(3) 等价。证毕。
+\end{proof}
+
+\begin{theorem}[幂底数递归下的谱隙放大与误差指数分离]\label{thm:abel-power-base-gap-amplification}
+设存在 \(\sigma_*>\sigma_2\) 与有限零点族 \(\{\rho_1,\dots,\rho_M\}\) 使
+\[
+\Re(\rho_j)=\sigma_*\quad(1\le j\le M),\qquad
+\Re(\rho)\le \sigma_2\ \ \text{对其余零点 }\rho.
+\]
+取任意 \(\delta\) 满足
+\(
+\sigma_2<\frac12+\delta<\sigma_*
+\)。
+则对任意 \(b>1\)、\(k\ge 1\) 与 \(n\to\infty\)，有
+\[
+[r^n]\mathcal A_{b^k,\delta}(r)
+=-\sum_{j=1}^M\frac{m(\rho_j)}{\rho_j}\,b^{k(\rho_j-(\frac12+\delta))n}
++O\!\left(b^{k(\sigma_2-(\frac12+\delta))n}\right).
+\]
+从而主项与误差项的相对规模满足
+\[
+\frac{\text{误差规模}}{\text{主项规模}}
+=O\!\left(b^{-k(\sigma_*-\sigma_2)n}\right).
+\]
+即底数幂次递归把指数分离率按因子 \(k\) 放大。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:damped-poles}，
+\[
+\mathcal A_{b^k,\delta}(r)
+=-\sum_\rho\frac{m(\rho)}{\rho}\frac1{1-r\,b^{k(\rho-(\frac12+\delta))}}
++H_{b^k,\delta}(r),
+\]
+且 \(H_{b^k,\delta}\) 在某个 \(>1\) 半径圆盘内解析，故其系数指数衰减可并入余项。
+将零点按实部分层：\(\Re=\sigma_*\) 的有限族给主项，其余 \(\Re\le \sigma_2\) 给误差上界
+\(
+O(b^{k(\sigma_2-(\frac12+\delta))n})
+\)。
+两指数差即
+\(
+k(\sigma_*-\sigma_2)n
+\)，得相对误差律。证毕。
+\end{proof}
+
+\input{para__xi-discrete-abel-weil-renormalization-channels-part2}
+
 \endinput
 
