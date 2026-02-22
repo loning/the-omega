@@ -1,0 +1,213 @@
+\subsection{prime-register 外置的半直积结构与几何复杂度闭包}\label{subsec:conclusion-prime-register-semidirect-godel-geometry}
+为把前文分散出现的 prime-register 外置机制压缩为统一的代数--几何接口，本小节给出一组可直接复用的编号结论。
+其输入层仅依赖定义 \ref{def:pom-prime-fiber}、定义 \ref{def:pom-fold-prime-lift} 与既有的规范差统计定理链（定理 \ref{thm:fold-gauge-anomaly-density}、\ref{thm:fold-gauge-anomaly-clt}）。
+
+\begin{theorem}[Gödel 轨迹连接的半直积律]\label{thm:conclusion-godel-semidirect-law}
+设 \(\mathcal E\) 为原子事件集合，\(\mathrm{code}:\mathcal E\hookrightarrow \NN_{\ge 1}\) 为单射编码。
+令 \(p_1<p_2<\cdots\) 为素数序列，\(\mathcal P:=\NN^{(\mathbb P)}\)。
+对 \(r\in\mathcal P\) 定义
+\[
+N(r):=\prod_{p\in\mathbb P}p^{r(p)}\in\NN_{\ge 1}.
+\]
+对 \(k\in\NN\) 定义移位端同态 \(\Sigma^k:\mathcal P\to\mathcal P\)：
+\[
+(\Sigma^k r)(p_t):=
+\begin{cases}
+0,&t\le k,\\
+r(p_{t-k}),&t>k.
+\end{cases}
+\]
+再定义半直积幺半群
+\[
+\mathcal H:=\mathcal P\rtimes_{\Sigma}\NN,\qquad
+(r,k)\cdot(s,\ell):=\bigl(r+\Sigma^k s,\ k+\ell\bigr).
+\]
+对任意事件词 \(w=e_1\cdots e_T\in\mathcal E^\ast\)，令
+\[
+r_w(p_t):=
+\begin{cases}
+\mathrm{code}(e_t),&1\le t\le T,\\
+0,&t>T,
+\end{cases}
+\qquad
+h(w):=(r_w,T)\in\mathcal H.
+\]
+则 \(h:\mathcal E^\ast\to\mathcal H\) 为幺半群嵌入，且对任意 \(u,v\in\mathcal E^\ast\) 有
+\[
+h(uv)=h(u)\cdot h(v).
+\]
+等价地，记 \(G(w):=N(r_w)\)，则存在由 \(p_t\mapsto p_{t+k}\) 诱导的整数端同态 \(\mathrm{Sh}_k\) 使
+\[
+G(uv)=G(u)\cdot \mathrm{Sh}_{|u|}(G(v)).
+\]
+\end{theorem}
+\begin{proof}
+由 \(\Sigma^k(r+s)=\Sigma^k r+\Sigma^k s\) 与 \(\Sigma^{k+\ell}=\Sigma^k\circ\Sigma^\ell\)，\(\mathcal H\) 的乘法满足结合律并以 \((0,0)\) 为幺元。
+若 \(u=e_1\cdots e_T,\ v=f_1\cdots f_U\)，则按定义
+\[
+r_{uv}=r_u+\Sigma^T r_v,\qquad |uv|=T+U,
+\]
+故 \(h(uv)=h(u)\cdot h(v)\)。
+若 \(h(w)=h(w')\)，则长度相同且各坐标 \(r_w(p_t)=r_{w'}(p_t)\) 相同；由 \(\mathrm{code}\) 单射得 \(w=w'\)，故 \(h\) 为嵌入。
+最后由 \(N(r+s)=N(r)N(s)\) 与 \(\mathrm{Sh}_k(N(r)):=N(\Sigma^k r)\) 即得整数形式。
+这与定理 \ref{thm:pom-prime-trace-shift-free-monoid} 的轨迹连接同构一致。证毕。
+\end{proof}
+
+\begin{proposition}[prime-register 到椭圆轴比的对角表示]\label{prop:conclusion-prime-register-elliptic-representation}
+定义
+\[
+\Phi:\mathcal P\to \mathrm{SL}_2(\RR),\qquad
+\Phi(r):=
+\begin{pmatrix}
+\sqrt{N(r)}&0\\
+0&N(r)^{-1/2}
+\end{pmatrix}.
+\]
+则：
+\begin{enumerate}
+  \item \(\Phi\) 为幺半群同态（\(\mathcal P\) 取加法，矩阵取乘法）；
+  \item \(\Phi(r)\) 将单位圆 \(x^2+y^2=1\) 送到椭圆
+  \[
+  E_r:\ \frac{X^2}{N(r)}+N(r)Y^2=1;
+  \]
+  其长短半轴分别为 \(\sqrt{N(r)}\) 与 \(1/\sqrt{N(r)}\)，故轴比等于 \(N(r)\)；
+  \item 在 \(\mathrm{PSL}_2(\RR)\) 的双曲长度口径下，
+  \[
+  \ell(\Phi(r))=\bigl|\log N(r)\bigr|.
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由 \(N(r+s)=N(r)N(s)\) 得
+\[
+\Phi(r+s)=\Phi(r)\Phi(s).
+\]
+设 \((X,Y)=\Phi(r)(x,y)\)，即 \(X=\sqrt{N(r)}\,x,\ Y=y/\sqrt{N(r)}\)；代入 \(x^2+y^2=1\) 即得椭圆方程。
+\(\Phi(r)\) 的特征值为 \(\lambda=\sqrt{N(r)}\) 与 \(\lambda^{-1}\)，故双曲平移长度为 \(2|\log\lambda|=|\log N(r)|\)。证毕。
+\end{proof}
+
+\begin{theorem}[历史 Gödel 值的高概率超线性位长]\label{thm:conclusion-godel-history-superlinear-highprob}
+固定确定性策略 \(\mathsf S\)，并沿用定义 \ref{def:pom-fold-prime-lift} 的记号。
+记
+\[
+G_{\mathsf S}^{\mathrm{hist}}(\omega):=N\!\bigl(r_{\mathsf S}(\omega)\bigr),\qquad
+T_{m+1}^{\mathsf S}(\omega):=\#\mathrm{supp}\bigl(r_{\mathsf S}(\omega)\bigr).
+\]
+在均匀基线 \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) 下，对任意 \(\delta\in(0,4/27)\)，存在常数 \(C_\delta>0\) 使
+\[
+\PP\!\left(
+\log_2 G_{\mathsf S}^{\mathrm{hist}}(\omega)\ge
+\Bigl(\frac{4}{27}-\delta\Bigr)m\log_2 m-C_\delta m
+\right)\longrightarrow 1\qquad(m\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:pom-prime-residual-linear-lb} 的点态不等式，
+\[
+T_{m+1}^{\mathsf S}(\omega)\ge \frac{1}{3}G_m(\omega),
+\]
+其中 \(G_m(\omega)\) 为规范差（定义 \ref{def:fold-gauge-anomaly}）。
+由定理 \ref{thm:fold-gauge-anomaly-clt}，对任意 \(\varepsilon>0\) 有
+\[
+\PP\!\left(G_m(\omega)\ge \Bigl(\frac{4}{9}-\varepsilon\Bigr)m\right)\to 1.
+\]
+取 \(\varepsilon=3\delta\)，得到
+\[
+\PP\!\left(T_{m+1}^{\mathsf S}(\omega)\ge \Bigl(\frac{4}{27}-\delta\Bigr)m\right)\to 1.
+\]
+另一方面，由推论 \ref{cor:pom-prime-register-godel-factorial-pointwise},
+\[
+G_{\mathsf S}^{\mathrm{hist}}(\omega)\ge \bigl(T_{m+1}^{\mathsf S}(\omega)+1\bigr)!.
+\]
+再用 Stirling 下界 \(\log((n+1)!)\ge n\log n-n\)（\(n\ge 1\)），并在上式高概率事件上代入 \(n=T_{m+1}^{\mathsf S}\)，得
+\[
+\log G_{\mathsf S}^{\mathrm{hist}}(\omega)
+\ge \Bigl(\frac{4}{27}-\delta\Bigr)m\log m-C_\delta' m.
+\]
+两边除以 \(\log 2\) 即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[纤维标签与算法历史的量纲分离]\label{prop:conclusion-fiber-label-vs-history-separation}
+令 \(d_m(x):=\#\Fold_m^{-1}(x)\)、\(D_m:=\max_x d_m(x)\)。
+任取一组纤维内可逆标签 \(L_m(\omega)\in\{1,\dots,d_m(\Fold_m(\omega))\}\)，其最坏位数至多为
+\[
+\log_2 D_m.
+\]
+并且由定理 \ref{thm:pom-max-fiber}，
+\[
+\log_2 D_m=\frac12(\log_2\varphi)\,m+O(1).
+\]
+与定理 \ref{thm:conclusion-godel-history-superlinear-highprob} 合并可得：对任意 \(\delta\in(0,4/27)\)，存在常数 \(c_\delta>0\) 使
+\[
+\PP\!\left(
+\frac{\log_2 G_{\mathsf S}^{\mathrm{hist}}(\omega)}{\log_2 D_m}
+\ge c_\delta\log_2 m
+\right)\longrightarrow 1.
+\]
+因此，纤维识别标签（线性位长）与算法历史外置（超线性位长）之间存在 \(\Theta(\log m)\) 级分离。
+\end{proposition}
+\begin{proof}
+标签位数上界由计数不等式 \(d_m(x)\le D_m\) 立即得到；\(\log_2 D_m\) 的线性尺度来自定理 \ref{thm:pom-max-fiber}。
+再将定理 \ref{thm:conclusion-godel-history-superlinear-highprob} 的下界除以 \(\log_2 D_m=\Theta(m)\) 即得所述结论。证毕。
+\end{proof}
+
+\begin{theorem}[CRT 线性预算无法承载历史 Gödel 外置]\label{thm:conclusion-crt-linear-budget-impossibility}
+设 \((P_m)_{m\ge 1}\) 为任意预算序列，且 \(\log P_m=O(m)\)。
+若采用定义 \ref{def:pom-order-elimination-rewrite} 的区间读出口径对同一整数做唯一重建，则必要条件是
+\[
+\bigl|G_{\mathsf S}^{\mathrm{hist}}(\omega)\bigr|\le \frac{P_m}{2}.
+\]
+在均匀基线下有
+\[
+\PP\!\left(\bigl|G_{\mathsf S}^{\mathrm{hist}}(\omega)\bigr|\le \frac{P_m}{2}\right)\longrightarrow 0.
+\]
+因而若希望该成功概率不退化到 \(0\)，必须满足
+\[
+\log P_m=\Omega(m\log m).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-godel-history-superlinear-highprob}，对任意小 \(\delta>0\)，\(\log G_{\mathsf S}^{\mathrm{hist}}(\omega)\) 以高概率至少为
+\[
+\Bigl(\frac{4}{27}-\delta\Bigr)m\log m-O(m).
+\]
+而 \(\log(P_m/2)=O(m)\) 与 \(m\log m\) 相比为严格低阶。
+故事件 \(\{|G_{\mathsf S}^{\mathrm{hist}}(\omega)|\le P_m/2\}\) 的概率趋于 \(0\)。
+必要条件 \(\log P_m=\Omega(m\log m)\) 由反证法立即得到。证毕。
+\end{proof}
+
+\begin{theorem}[prime-register 诱导的椭圆几何复杂度定标]\label{thm:conclusion-elliptic-geometric-complexity}
+对 \(\omega\in\Omega_{m+1}\)，定义
+\[
+E_{\mathsf S}(\omega):=\Phi\!\bigl(r_{\mathsf S}(\omega)\bigr)(S^1),
+\]
+其中 \(\Phi\) 见命题 \ref{prop:conclusion-prime-register-elliptic-representation}。
+记 \(\mathrm{AxisRatio}(E_{\mathsf S}(\omega))\) 为该椭圆轴比。
+则对任意 \(\delta\in(0,4/27)\) 有
+\[
+\PP\!\left(
+\frac{\log \mathrm{AxisRatio}(E_{\mathsf S}(\omega))}{m\log m}
+\ge \frac{4}{27}-\delta
+\right)\longrightarrow 1,
+\]
+并且
+\[
+\PP\!\left(
+\frac{\ell\!\left(\Phi(r_{\mathsf S}(\omega))\right)}{m\log m}
+\ge \frac{4}{27}-\delta
+\right)\longrightarrow 1.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:conclusion-prime-register-elliptic-representation}，
+\[
+\mathrm{AxisRatio}(E_{\mathsf S}(\omega))
+=N\!\bigl(r_{\mathsf S}(\omega)\bigr)
+=G_{\mathsf S}^{\mathrm{hist}}(\omega),
+\]
+且
+\(
+\ell(\Phi(r_{\mathsf S}(\omega)))=|\log G_{\mathsf S}^{\mathrm{hist}}(\omega)|.
+\)
+再把定理 \ref{thm:conclusion-godel-history-superlinear-highprob} 直接代入上述两式即可。证毕。
+\end{proof}
