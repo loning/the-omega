@@ -321,3 +321,159 @@ f_8(t)=3t^3+14t^2+93t+37
 \end{remark}
 
 \input{sections/generated/tab_sync_kernel_weighted_primitive_completed_discriminant_fingerprint}
+
+\subsubsection{Dirichlet 完成化截面的单例外对与 Salem 多项式}\label{app:sync-kernel-weighted-dirichlet-xi-single-exception}
+沿用式 \eqref{eq:sync-kernel-weighted-delta-explicit} 的 \(\Delta(z,u)=\det(I-zB(u))\) 以及命题 \ref{prop:kernel-xi-functional-equation} 的完成化截面
+\[
+\Xi(s):=\Delta(3^{-s},3^{2s-1}),
+\qquad
+\Xi(s)=\Xi(1-s).
+\]
+记
+\[
+r:=3^{\,s-\frac12}\qquad(\text{故 }u=3^{2s-1}=r^2,\ z=3^{-s}=3^{-1/2}r^{-1}).
+\]
+
+\begin{theorem}[完成化零点的单例外对结构]\label{thm:sync-kernel-weighted-xi-single-exception-pair}
+在上述记号下，存在多项式 \(N(r)\in\ZZ[\sqrt3][r]\) 使得
+\begin{equation}\label{eq:sync-kernel-weighted-xi-Nr-quotient}
+\boxed{\;
+\Xi(s)=\frac{N(r)}{27r^3},
+\qquad
+N(r)=\sqrt3\,r^6-2r^5-3\sqrt3\,r^4-8r^3-3\sqrt3\,r^2-2r+\sqrt3\; }.
+\end{equation}
+并且 \(N\) 为互逆多项式：\(r^6N(1/r)=N(r)\)。
+设 \(\sigma:\sqrt3\mapsto-\sqrt3\) 为 \(\QQ(\sqrt3)\) 的非平凡自同构，则 \(N\) 的零点满足如下分层：
+\begin{enumerate}
+  \item 存在唯一实数 \(\alpha>1\) 使得 \(\{\alpha,\alpha^{-1}\}\) 为 \(N\) 的全部非幺模实零点；
+  \item 除 \(\alpha,\alpha^{-1}\) 外，\(N\) 的其余四个零点皆满足 \(|r|=1\)，并成两对共轭。
+\end{enumerate}
+等价地，\(\Xi(s)=0\) 在临界线 \(\Re(s)=\tfrac12\) 之外仅出现一对例外零点（互为 \(s\mapsto 1-s\) 的对称像）。
+\end{theorem}
+
+\begin{proof}
+将 \(u=r^2,\ z=3^{-1/2}r^{-1}\) 代入 \(\Delta(z,u)\) 的显式表达式 \eqref{eq:sync-kernel-weighted-delta-explicit} 并清分母，即得 \eqref{eq:sync-kernel-weighted-xi-Nr-quotient}；互逆性由直接代数化简验证。
+\par
+为刻画零点模长结构，令 \(t:=r+r^{-1}\)。
+由互逆性可将 \(N\) 写成
+\begin{equation}\label{eq:sync-kernel-weighted-Nr-pt}
+\boxed{\;
+N(r)=r^3P(t),
+\qquad
+P(t)=\sqrt3\,t^3-2t^2-6\sqrt3\,t-4\in\RR[t]\; }.
+\end{equation}
+计算得
+\[
+P(-2)=4\sqrt3-12<0,\qquad
+P(-1)=5\sqrt3-6>0,\qquad
+P(0)=-4<0,
+\]
+\[
+P(3)=9\sqrt3-22<0,\qquad
+P(4)=40\sqrt3-36>0,
+\]
+从而 \(P\) 存在三实根 \(t_1<t_2<t_3\) 且满足
+\[
+t_1\in(-2,-1),\qquad t_2\in(-1,0),\qquad t_3\in(3,4)\subset(2,\infty).
+\]
+对任一根 \(t=t_j\)，方程 \(t=r+r^{-1}\) 等价于二次方程 \(r^2-tr+1=0\)。
+当 \(|t|<2\) 时判别式 \(t^2-4<0\)，两根为共轭且满足 \(|r|=1\)；
+当 \(t>2\) 时判别式 \(t^2-4>0\)，两根为互逆正实根 \(\alpha,\alpha^{-1}\)（其中 \(\alpha=\frac{t+\sqrt{t^2-4}}{2}>1\)）。
+由 \(t_1,t_2\in(-2,2)\) 与 \(t_3>2\) 即得所述分层。证毕。
+\end{proof}
+
+\begin{corollary}[三二次分解与临界/例外分层]\label{cor:sync-kernel-weighted-xi-three-quadratics}
+设 \(t_1<t_2<t_3\) 为 \(P(t)=0\) 的三实根，则在 \(\RR[r]\) 上成立分解
+\[
+N(r)=\sqrt3\prod_{j=1}^{3}\bigl(r^2-t_jr+1\bigr).
+\]
+其中 \(r^2-t_3r+1\) 的两根为 \(\alpha,\alpha^{-1}\)（\(\alpha>1\)），而 \(r^2-t_1r+1\) 与 \(r^2-t_2r+1\) 的根皆在单位圆上。
+\end{corollary}
+
+\begin{proof}
+由 \eqref{eq:sync-kernel-weighted-Nr-pt} 有 \(N(r)=r^3P(r+r^{-1})\)。
+将 \(P\) 分解为 \(\sqrt3\prod_{j=1}^{3}(t-t_j)\) 并使用恒等式
+\(
+r+r^{-1}-t_j=(r^2-t_jr+1)/r
+\)
+即可得到所示分解；根的模长归类继承自定理 \ref{thm:sync-kernel-weighted-xi-single-exception-pair} 的证明。证毕。
+\end{proof}
+
+\begin{theorem}[例外零点的显式坐标与偏离指数]\label{thm:sync-kernel-weighted-xi-exception-coordinate}
+沿用推论 \ref{cor:sync-kernel-weighted-xi-three-quadratics} 的记号，令
+\[
+\alpha=\frac{t_3+\sqrt{t_3^2-4}}{2}>1,
+\qquad
+\beta:=\frac{\log\alpha}{\log 3}.
+\]
+则 \(\Xi(s)=0\) 的全部零点分为两类：
+\begin{enumerate}
+  \item 例外实零点恰为 \(s_\pm=\frac12\pm\beta\)；
+  \item 其余四个零点全落在临界线 \(\Re(s)=\tfrac12\)，并可写为
+  \[
+  s=\frac12\pm i\frac{\theta_1}{\log 3},
+  \qquad
+  s=\frac12\pm i\frac{\theta_2}{\log 3},
+  \qquad
+  \theta_j:=\arccos(t_j/2)\in(0,\pi)\ (j=1,2).
+  \]
+\end{enumerate}
+数值上，
+\[
+t_1\approx-1.6423800228,\quad t_2\approx-0.4350479177,\quad t_3\approx3.2321284788,
+\]
+\[
+\alpha\approx 2.8855773846,\qquad \beta\approx 0.9646032765.
+\]
+\end{theorem}
+
+\begin{proof}
+由定义 \(r=3^{s-1/2}\) 与 \eqref{eq:sync-kernel-weighted-xi-Nr-quotient}，\(\Xi(s)=0\iff N(r)=0\)。
+当 \(r=\alpha,\alpha^{-1}\) 时 \(\log r\in\RR\)，故 \(s=\frac12+\log r/\log 3\) 为实数并给出 \(s_\pm\)。
+当 \(|r|=1\) 时写 \(r=e^{i\theta}\)，则 \(s=\frac12+i\theta/\log 3\) 落在临界线；
+由 \(r+r^{-1}=2\cos\theta=t_j\) 得 \(\theta_j=\arccos(t_j/2)\)。
+数值近似由三次方程 \(P(t)=0\) 的实根及二次方程 \(r^2-t_3r+1=0\) 的解析表达式给出。证毕。
+\end{proof}
+
+\begin{proposition}[范数降阶与整系数 Salem 型六次]\label{prop:sync-kernel-weighted-xi-norm-salem}
+设 \(\sigma:\sqrt3\mapsto-\sqrt3\) 为 \(\QQ(\sqrt3)\) 的非平凡自同构，并令
+\[
+F(r):=-\,\mathrm{Nm}_{\QQ(\sqrt3)/\QQ}\!\bigl(N\bigr)(r):=-\,N(r)\,\sigma(N)(r)\in\ZZ[r].
+\]
+则有显式恒等式
+\[
+F(r)=3r^{12}-22r^{10}-23r^{8}-12r^{6}-23r^{4}-22r^{2}+3.
+\]
+置 \(y=r^2\)，得到整系数六次多项式
+\[
+f(y):=3y^{6}-22y^{5}-23y^{4}-12y^{3}-23y^{2}-22y+3\in\ZZ[y].
+\]
+则 \(y_0:=\alpha^2\) 为 \(f\) 的唯一实根（\(>1\)），并且 \(f\) 另有唯一实根 \(y_0^{-1}\in(0,1)\)，其余四根均满足 \(|y|=1\)。
+并且 \(f\) 在 \(\QQ\) 上不可约（例如其模 \(7\) 约化不可约）。
+\end{proposition}
+
+\begin{proof}
+范数闭式由直接展开 \(N(r)\sigma(N)(r)\) 并取负号得到；得到 \(f(y)\) 仅使用代换 \(y=r^2\)。
+由定理 \ref{thm:sync-kernel-weighted-xi-single-exception-pair}，\(N(r)\) 的零点模长结构为 \(\{\alpha,\alpha^{-1}\}\cup\{|r|=1\text{ 的四点}\}\)；
+共轭嵌入 \(\sigma\) 不改变 \(|r|\)，故 \(F(r)\) 的零点集合为两者并集，从而仍仅含一对正实互逆根 \(\alpha,\alpha^{-1}\) 而其余均在单位圆上。
+代换 \(y=r^2\) 得到 \(f\) 的根模长结构为 \(\{\alpha^2,\alpha^{-2}\}\cup\{|y|=1\text{ 的四点}\}\)，从而实根性陈述成立。
+不可约性可由有限域不可约性判别：将 \(f\) 模 \(7\) 约化得到 \(\FF_7[y]\) 上不可约六次多项式，故 \(f\) 在 \(\QQ[y]\) 上不可约（Gauss 引理）。证毕。
+\end{proof}
+
+\begin{theorem}[例外偏离指数的 Mahler 测度表述]\label{thm:sync-kernel-weighted-xi-beta-mahler}
+令 \(\tilde f(y):=f(y)/3\) 为首一化多项式（从而 \(\tilde f\) 的首项与常数项皆为 \(1\)），并令 \(M(\tilde f)\) 为 Mahler 测度。
+则
+\[
+M(\tilde f)=\alpha^2,
+\qquad
+\log M(\tilde f)=2\log\alpha=2\beta\log 3,
+\qquad
+\beta=\frac{1}{2\log 3}\,\log M(\tilde f).
+\]
+\end{theorem}
+
+\begin{proof}
+按定义 \(M(\tilde f)=\prod_i\max\{1,|y_i|\}\)，其中 \(\{y_i\}\) 为 \(\tilde f\) 的根（按重数计）。
+由命题 \ref{prop:sync-kernel-weighted-xi-norm-salem}，除 \(y_0=\alpha^2>1\) 外其余根均满足 \(|y_i|\le 1\)；并且仅有一根为 \(y_0^{-1}<1\) 而其余四根在单位圆上。
+因此 \(M(\tilde f)=\alpha^2\)，取对数并用 \(\beta=\log\alpha/\log 3\) 即得。证毕。
+\end{proof}

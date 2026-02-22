@@ -1,4 +1,4 @@
-\begin{proposition}[Cauchy--Poisson 核位置导数的精确能量闭式]\label{prop:xi-cauchy-poisson-derivative-energy-closed-form}
+\begin{proposition}[Poisson（Cauchy）核高阶导数的 Fisher--binomial 恒等式]\label{prop:xi-cauchy-poisson-derivative-energy-closed-form}
 设
 \[
 g_t(x):=\frac{1}{\pi}\frac{t}{x^2+t^2}\qquad(t>0),
@@ -10,7 +10,8 @@ g_t(x):=\frac{1}{\pi}\frac{t}{x^2+t^2}\qquad(t>0),
 则有显式闭式
 \begin{equation}\label{eq:xi-cauchy-poisson-derivative-energy-closed-form}
 \boxed{\;
-\mathcal{E}_k(t)=\frac{k^2(2k-2)!}{2^{2k-1}}\,t^{-2k}\;}
+\mathcal{E}_k(t)=\frac{(k!)^2}{2^{2k-1}}\binom{2k-2}{k-1}\,t^{-2k}
+=\frac{k^2(2k-2)!}{2^{2k-1}}\,t^{-2k}\;}
 \end{equation}
 特别地 \(\mathcal{E}_1(t)=\tfrac12 t^{-2}\)、\(\mathcal{E}_2(t)=t^{-4}\)。
 \end{proposition}
@@ -62,6 +63,61 @@ g_1^{(k)}(x)=\frac{1}{\pi}f^{(k)}(x).
 \mathcal{E}_k(1)=\frac{k^2(2k-2)!}{2^{2k-1}}
 \)。
 结合缩放关系即得 \eqref{eq:xi-cauchy-poisson-derivative-energy-closed-form}。证毕。
+\end{proof}
+
+\begin{theorem}[Poisson 粗粒化下 KL 的首个不匹配中心矩律与显式系数]\label{thm:xi-poisson-coarsegraining-first-mismatch-kl}
+令 \(\mu,\nu\) 为 \(\RR\) 上概率测度，并定义 Poisson（Cauchy）粗粒化密度
+\[
+p_t:=g_t*\mu,\qquad q_t:=g_t*\nu\qquad(t>0).
+\]
+设存在 \(m\in\RR\) 与整数 \(n\ge 1\) 使得中心矩在阶 \(1,\dots,n-1\) 上匹配：
+\[
+\int_{\RR}(y-m)^k\,\mu(\dd y)=\int_{\RR}(y-m)^k\,\nu(\dd y)\qquad(k=1,\dots,n-1),
+\]
+且第 \(n\) 阶中心矩差
+\[
+\Delta_n:=\int_{\RR}(y-m)^n\,\mu(\dd y)-\int_{\RR}(y-m)^n\,\nu(\dd y)\neq 0.
+\]
+若 \(\mu,\nu\) 具有有限的 \((n+1)\) 阶绝对中心矩，则当 \(t\to\infty\) 时成立锐渐近
+\begin{equation}\label{eq:xi-poisson-first-mismatch-kl-leading}
+\boxed{\;
+D_{\mathrm{KL}}(p_t\mid q_t)
+=\frac{1}{2^{2n}}\binom{2n-2}{n-1}\,\frac{\Delta_n^2}{t^{2n}}+o(t^{-2n}).\;}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[证明要点]
+对两测度同时作平移 \(y\mapsto y-m\) 不改变相对熵与矩匹配条件，故可取 \(m=0\)。
+对核函数作 Taylor 展开
+\[
+g_t(x-y)=\sum_{k=0}^{n}\frac{(-y)^k}{k!}\,\partial_x^k g_t(x)+R_{n+1}(x,y;t),
+\qquad
+R_{n+1}(x,y;t)=O\!\left(|y|^{n+1}\sup_{u\in\RR}|\partial_x^{n+1}g_t(u)|\right).
+\]
+由缩放 \(g_t(x)=t^{-1}g_1(x/t)\) 得 \(\sup|\partial_x^{n+1}g_t|=O(t^{-(n+2)})\)，结合 \((n+1)\) 阶绝对矩有界可把余项积分后写作
+\[
+p_t(x)-q_t(x)=\frac{(-1)^n\Delta_n}{n!}\,\partial_x^n g_t(x)+\varepsilon_t(x),
+\qquad \|\varepsilon_t\|_{L^\infty(\RR)}=O(t^{-(n+2)}).
+\]
+同一展开亦给出 \(q_t(x)=g_t(x)+O(t^{-2})\)（一致于 \(x\)），从而 \(q_t(x)\asymp g_t(x)\) 且
+\(
+u_t:=(p_t-q_t)/q_t=O(t^{-n})
+\)
+在 \(\RR\) 上一致趋于 \(0\)。
+于是
+\[
+D_{\mathrm{KL}}(p_t\mid q_t)
+=\int_{\RR} q_t(1+u_t)\log(1+u_t)\,\dd x
+=\frac12\int_{\RR}\frac{(p_t-q_t)^2}{q_t}\,\dd x+o(t^{-2n}),
+\]
+并可将分母 \(q_t\) 以 \(g_t\) 替换且误差为 \(o(t^{-2n})\)。
+代入主项并用命题 \ref{prop:xi-cauchy-poisson-derivative-energy-closed-form} 得
+\[
+D_{\mathrm{KL}}(p_t\mid q_t)
+=\frac12\cdot\frac{\Delta_n^2}{(n!)^2}\int_{\RR}\frac{(\partial_x^n g_t)^2}{g_t}\,\dd x+o(t^{-2n})
+=\frac12\cdot\frac{\Delta_n^2}{(n!)^2}\,\mathcal E_n(t)+o(t^{-2n}),
+\]
+从而由 \eqref{eq:xi-cauchy-poisson-derivative-energy-closed-form} 化简得到 \eqref{eq:xi-poisson-first-mismatch-kl-leading}。证毕。
 \end{proof}
 
 \begin{theorem}[Poisson 粗粒化下 KL 尾部的中心矩缺口律]\label{thm:xi-cauchy-poisson-moment-gap-kl-leading}
@@ -134,6 +190,75 @@ D_{\mathrm{KL}}(h_t\mid g_{t,m})
 \)
 化简得到 \eqref{eq:xi-cauchy-poisson-moment-gap-kl-leading}。证毕。
 \end{proof}
+
+\begin{corollary}[Poisson 相对熵耗散的首项常数]\label{cor:xi-poisson-first-mismatch-dissipation-leading}
+在定理 \ref{thm:xi-poisson-coarsegraining-first-mismatch-kl} 的设定下，若可交换微分与积分并定义耗散率（分数 Fisher 信息）
+\[
+\mathcal I_1(p_t\mid q_t):=-\frac{\dd}{\dd t}D_{\mathrm{KL}}(p_t\mid q_t),
+\]
+则当 \(t\to\infty\) 有
+\[
+\mathcal I_1(p_t\mid q_t)
+=2n\cdot\frac{1}{2^{2n}}\binom{2n-2}{n-1}\,\frac{\Delta_n^2}{t^{2n+1}}+o(t^{-(2n+1)}).
+\]
+特别地在方差不匹配情形 \(n=2\) 下，
+\(
+\mathcal I_1(p_t\mid q_t)=\frac12\,\Delta_2^2\,t^{-5}+o(t^{-5})
+\)。
+\end{corollary}
+
+\begin{proof}
+对 \eqref{eq:xi-poisson-first-mismatch-kl-leading} 逐项求导并取负号即得。证毕。
+\end{proof}
+
+\begin{proposition}[方差不匹配时 Poisson 粗粒化的全变差主项与闭式常数]\label{prop:xi-poisson-variance-mismatch-tv-leading}
+在定理 \ref{thm:xi-poisson-coarsegraining-first-mismatch-kl} 的设定下取 \(n=2\)，并假设 \(\mu,\nu\) 具有共同均值 \(m\) 且有限三阶绝对中心矩。
+记方差差 \(\Delta\sigma^2:=\Var(\mu)-\Var(\nu)\)。
+则当 \(t\to\infty\) 时成立
+\[
+\|p_t-q_t\|_{L^1(\RR)}
+=\frac{3\sqrt3}{4\pi}\,\frac{|\Delta\sigma^2|}{t^2}+o(t^{-2}).
+\]
+\end{proposition}
+
+\begin{proof}[证明要点]
+由共同平移不变性可取 \(m=0\)。
+对 \(g_t(x-y)\) 作二阶 Taylor 展开并用一阶矩匹配消去一次项，得到
+\[
+p_t(x)-q_t(x)=\frac{\Delta\sigma^2}{2}\,g_t''(x)+\varepsilon_t(x),
+\qquad \|\varepsilon_t\|_{L^1(\RR)}=o(t^{-2}).
+\]
+于是
+\(
+\|p_t-q_t\|_{1}=\frac{|\Delta\sigma^2|}{2}\,\|g_t''\|_{1}+o(t^{-2})
+\)。
+由缩放 \(g_t''(x)=t^{-3}g_1''(x/t)\) 得 \(\|g_t''\|_1=t^{-2}\|g_1''\|_1\)，且 \(\|g_1''\|_1=\frac{3\sqrt3}{2\pi}\)（见定理 \ref{thm:xi-cauchy-poisson-tv-sharp-constant} 的积分计算），代回即得结论。证毕。
+\end{proof}
+
+\begin{remark}[常数的最优性与构造性例子]\label{rem:xi-poisson-first-mismatch-optimality}
+对任意 \(n\ge 1\)，存在紧支撑概率测度对 \((\mu,\nu)\) 使得其中心矩在阶 \(1,\dots,n-1\) 上匹配而 \(\Delta_n\neq 0\)。
+因此由定理 \ref{thm:xi-poisson-coarsegraining-first-mismatch-kl}，
+\[
+\lim_{t\to\infty}t^{2n}\frac{D_{\mathrm{KL}}(p_t\mid q_t)}{\Delta_n^2}
+=\frac{1}{2^{2n}}\binom{2n-2}{n-1}.
+\]
+从而若试图给出对所有此类 \((\mu,\nu)\) 成立的上界
+\(
+D_{\mathrm{KL}}(p_t\mid q_t)\le C\,\Delta_n^2 t^{-2n}
+\)
+（充分大 \(t\)），则必有
+\(
+C\ge \frac{1}{2^{2n}}\binom{2n-2}{n-1}
+\)。
+\par
+上述存在性可由有限原子测度的矩约束线性方程组直接构造：取足够多原子点（例如 \(n+1\) 个）即可解出两组权重使低阶矩一致而第 \(n\) 阶矩分离。
+\end{remark}
+
+\begin{remark}[文献对照]\label{rem:xi-poisson-first-mismatch-literature-contrast}
+就公开网络资源的非穷尽关键词检索范围而言，尚未发现与
+\eqref{eq:xi-cauchy-poisson-derivative-energy-closed-form}--\eqref{eq:xi-poisson-first-mismatch-kl-leading}
+在同一记号与等价口径下直接同式的来源；绝对新颖性的最终判定仍依赖系统性文献检索与同行评审。
+\end{remark}
 
 \begin{corollary}[缺口阶的耗散尾部常数]\label{cor:xi-cauchy-poisson-moment-gap-dissipation}
 在定理 \ref{thm:xi-cauchy-poisson-moment-gap-kl-leading} 的设定下，令
