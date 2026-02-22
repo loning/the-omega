@@ -216,5 +216,108 @@ c_\rho^{\,j}=b^{-\delta j}e^{\mathrm{i}j\gamma\log b},
 RH 下的相位扭转由 \(c_\rho=b^{\rho-(1/2+\delta)}\) 直接代入得到。证毕。
 \end{proof}
 
+\paragraph{余类通道的收敛半径与循环角色投影}
+residue-class 通道 \(\mathcal A_b^{(k,j)}=\mathsf D_{k,j}\mathcal A_b\) 的极点位置不依赖 \(j\)，从而任取一个余类即可读取最右零点实部的幂放大版本；并且对通道施加离散 Fourier 变换可把“相位扭转”提升为一条可计算的选择律。
+
+\begin{corollary}[余类通道的收敛半径与最右零点实部的幂放大读出]\label{cor:abel-residue-class-channel-radius-sigma-star}
+固定 \(b>1\)，并令 \(\sigma_*\) 与 \(R_b\) 分别如定理 \ref{thm:radius-captures-sigma-star} 所定义。
+对整数 \(k\ge 1\) 与 \(0\le j\le k-1\)，令 \(\mathcal A_b^{(k,j)}:=\mathsf D_{k,j}\mathcal A_b=\sum_{n\ge 0}E_b(kn+j)\,r^n\)，并令 \(R_b^{(k,j)}\) 为其在 \(r=0\) 的幂级数所对应的最大无极点圆盘半径。
+则 \(R_b^{(k,j)}\) 与 \(j\) 无关，且满足
+\begin{equation}\label{eq:abel-residue-class-radius-power}
+\boxed{\;
+R_b^{(k,j)}=R_b^{\,k}=b^{-k(\sigma_*-\frac12)}\; }.
+\end{equation}
+等价地，对任意固定的余类 \(j\) 有
+\begin{equation}\label{eq:abel-sigma-star-from-residue-class}
+\boxed{\;
+\sigma_*=\frac12-\frac{1}{k}\frac{\log R_b^{(k,j)}}{\log b}
+=\frac12+\frac{1}{k}\limsup_{n\to\infty}\frac{1}{n}\frac{\log\bigl|E_b(kn+j)\bigr|}{\log b}\;}
+\end{equation}
+并且右端的 \(\limsup\) 不依赖于 \(j\)。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:abel-residue-class-channel-pole-expansion} 取 \(\delta=0\) 可得
+\[
+\mathcal A_b^{(k,j)}(r)
+=-\sum_{\rho}\frac{b^{(\rho-\frac12)j}}{\rho}\cdot\frac{1}{1-b^{k(\rho-\frac12)}r}+H_b^{(k,j)}(r),
+\]
+其中 \(H_b^{(k,j)}\) 在某个含原点的圆盘内解析。
+因此极点集合为
+\(
+r=b^{-k(\rho-\frac12)}
+\)，与 \(j\) 无关；其模长为 \(|r|=b^{-k(\Re\rho-\frac12)}\)。
+故最大无极点圆盘半径为
+\[
+R_b^{(k,j)}=\inf_{\rho}b^{-k(\Re\rho-\frac12)}
+=b^{-k(\sup_{\rho}\Re\rho-\frac12)}
+=b^{-k(\sigma_*-\frac12)}
+=R_b^{\,k},
+\]
+得到 \eqref{eq:abel-residue-class-radius-power}。
+最后由 Cauchy--Hadamard 定理，
+\(
+1/R_b^{(k,j)}=\limsup_{n\to\infty}|E_b(kn+j)|^{1/n}
+\)，取对数并除以 \(\log b\) 整理即得 \eqref{eq:abel-sigma-star-from-residue-class}。证毕。
+\end{proof}
+
+\begin{proposition}[循环角色投影的 Abel--Weil 展开：模态选择律与可控湮没因子]\label{prop:abel-cyclic-character-projection}
+固定整数 \(m\ge 2\)，令 \(\omega:=e^{2\pi \mathrm{i}/m}\)。
+沿用命题 \ref{prop:abel-residue-class-channel-pole-expansion} 的记号，并取 \(k=m\)。
+对每个 \(0\le j\le m-1\) 定义循环角色投影（离散 Fourier 分量）
+\begin{equation}\label{eq:abel-cyclic-projection-def}
+\boxed{\;
+\mathcal A_{b,\delta}^{[m,j]}(r):=\sum_{a=0}^{m-1}\omega^{-aj}\,\mathcal A_{b,\delta}^{(m,a)}(r)
+=\sum_{n\ge 0}\left(\sum_{a=0}^{m-1}\omega^{-aj}E_b(mn+a)\,b^{-\delta(mn+a)}\right)r^n\; }.
+\end{equation}
+则在 \(|r|\) 足够小从而交换求和合法时，有极点展开
+\begin{equation}\label{eq:abel-cyclic-projection-pole-expansion}
+\boxed{\;
+\mathcal A_{b,\delta}^{[m,j]}(r)
+=-\sum_{\rho}\frac{S_m(\omega^{-j}c_\rho)}{\rho}\cdot\frac{1}{1-c_\rho^{\,m}r}
+\;+\;H_{b,\delta}^{[m,j]}(r)\;}
+\end{equation}
+其中 \(c_\rho=b^{\rho-(\frac12+\delta)}\)，
+\[
+S_m(q):=\sum_{a=0}^{m-1}q^a
+=\begin{cases}
+\frac{1-q^m}{1-q},&q\neq 1,\\
+m,&q=1,
+\end{cases}
+\]
+且余项 \(H_{b,\delta}^{[m,j]}:=\sum_{a=0}^{m-1}\omega^{-aj}H_{b,\delta}^{(m,a)}\) 至少在 \(|r|<b^{m(1/2+\delta)}\) 内解析。
+\par
+并且在任意满足 \(c_\rho^m=1\) 的零点上（等价于 \(b^{m(\rho-(\frac12+\delta))}=1\)），几何模态满足严格选择律：存在唯一 \(j_0\in\{0,\dots,m-1\}\) 使 \(c_\rho=\omega^{j_0}\)，并且
+\[
+S_m(\omega^{-j}c_\rho)=
+\begin{cases}
+m,&j=j_0,\\
+0,&j\neq j_0,
+\end{cases}
+\]
+从而该模态在所有非共振分量 \(\mathcal A_{b,\delta}^{[m,j]}\) 中被完全湮没。
+\par
+最后，循环角色投影与余类通道之间存在精确反演：对所有 \(0\le a\le m-1\) 有
+\begin{equation}\label{eq:abel-cyclic-projection-inversion}
+\boxed{\;
+\mathcal A_{b,\delta}^{(m,a)}(r)=\frac{1}{m}\sum_{j=0}^{m-1}\omega^{aj}\,\mathcal A_{b,\delta}^{[m,j]}(r)\; }.
+\end{equation}
+\end{proposition}
+\begin{proof}
+由定义 \eqref{eq:abel-cyclic-projection-def} 与命题 \ref{prop:abel-residue-class-channel-pole-expansion}（取 \(k=m\)）得
+\[
+\mathcal A_{b,\delta}^{[m,j]}(r)
+=-\sum_{\rho}\frac{1}{\rho}\cdot\frac{1}{1-c_\rho^{\,m}r}\sum_{a=0}^{m-1}(\omega^{-j}c_\rho)^a
+\;+\;\sum_{a=0}^{m-1}\omega^{-aj}H_{b,\delta}^{(m,a)}(r).
+\]
+第一项给出 \eqref{eq:abel-cyclic-projection-pole-expansion}，其中权重即为 \(S_m(\omega^{-j}c_\rho)\)；余项解析性由有限线性组合继承。
+若 \(c_\rho^m=1\)，则 \(c_\rho\in\mu_m=\{\omega^j\}\) 且存在唯一 \(j_0\) 使 \(c_\rho=\omega^{j_0}\)；
+此时 \(S_m(\omega^{-j}c_\rho)=\sum_{a=0}^{m-1}\omega^{(j_0-j)a}\) 的取值由根单位正交性立即推出。
+反演公式 \eqref{eq:abel-cyclic-projection-inversion} 为离散 Fourier 反演恒等式：由
+\(
+\frac{1}{m}\sum_{j=0}^{m-1}\omega^{j(a-a')}=\mathbf 1_{\{a=a'\}}
+\)
+直接验证。证毕。
+\end{proof}
+
 \endinput
 

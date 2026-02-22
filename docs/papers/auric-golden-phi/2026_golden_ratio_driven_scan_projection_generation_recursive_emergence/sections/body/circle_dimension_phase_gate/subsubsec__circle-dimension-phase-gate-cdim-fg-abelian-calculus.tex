@@ -1,0 +1,81 @@
+\subsubsection{有限生成离散交换群的圆维代数：公理刚性、短正合加法与函子算律}\label{subsubsec:cdim-fg-abelian-calculus}
+圆维定义为对偶紧群连通分量的环面维数（定义 \ref{def:circle-dimension}），因而在有限生成交换群上只读出自由秩而忽略 torsion（例 \ref{ex:circle-dimension-examples}）。
+本小节记录若干可在后续章节直接调用的封闭算律：圆维的公理刻画、短正合列加法，以及与 \(\otimes\)、\(\operatorname{Hom}\)、\(\operatorname{Ext}^1\) 的相容性。
+
+\begin{theorem}[圆维的公理刚性与不可替代性]\label{thm:cdim-axiomatic-rigidity}
+设 \(f\) 为从有限生成离散交换群到 \(\NN\cup\{0\}\) 的函数，满足：
+\begin{enumerate}
+  \item \textbf{同构不变：}若 \(G\simeq H\)，则 \(f(G)=f(H)\)；
+  \item \textbf{直和可加：}\(f(G\oplus H)=f(G)+f(H)\)；
+  \item \textbf{有限扩张不变：}若 \(0\to F\to G\to H\to 0\) 正合且 \(F\) 有限，则 \(f(G)=f(H)\)；
+  \item \textbf{归一化：}\(f(\ZZ)=1\)；
+  \item \textbf{有限群归零：}若 \(F\) 有限，则 \(f(F)=0\)。
+\end{enumerate}
+则对一切有限生成离散交换群 \(G\) 有 \(f(G)=\cdim(G)\)；因此上述公理唯一刻画圆维。
+\end{theorem}
+\begin{proof}
+由有限生成交换群结构定理，存在分解 \(G\simeq \ZZ^{r}\oplus T\)，其中 \(T\) 有限。
+由 (3)(5) 得 \(f(G)=f(\ZZ^{r})\)，再由 (2)(4) 得 \(f(\ZZ^{r})=r\)，故 \(f(G)=r\)。
+\par
+另一方面，Pontryagin 对偶给出 \(\widehat{\ZZ^{r}\oplus T}\cong \TT^{r}\times \widehat T\)；
+其中 \(\widehat T\) 为有限紧群从而全不连通，故 \((\widehat G)^0\cong \TT^{r}\)。
+由定义 \ref{def:circle-dimension} 得 \(\cdim(G)=r\)，从而 \(f(G)=\cdim(G)\)。证毕。
+\end{proof}
+
+\begin{theorem}[短正合列的圆维加法]\label{thm:cdim-short-exact-additivity}
+对任意短正合列
+\[
+0\longrightarrow A\longrightarrow B\longrightarrow C\longrightarrow 0
+\]
+（其中 \(A,B,C\) 为有限生成离散交换群），成立精确加法律
+\[
+\cdim(B)=\cdim(A)+\cdim(C).
+\]
+因此对任意同态 \(\varphi:B\to D\) 有
+\[
+\cdim(B)=\cdim(\ker\varphi)+\cdim(\operatorname{im}\varphi).
+\]
+\end{theorem}
+\begin{proof}
+对有限生成交换群 \(G\)，由结构定理与例 \ref{ex:circle-dimension-examples} 可知
+\[
+\cdim(G)=\dim_{\QQ}(G\otimes_{\ZZ}\QQ).
+\]
+将短正合列张量 \(\QQ\)（\(\QQ\) 作为 \(\ZZ\)-模平坦），得到
+\[
+0\to A\otimes\QQ\to B\otimes\QQ\to C\otimes\QQ\to 0
+\]
+仍正合。
+对有限维 \(\QQ\)-向量空间取维数得
+\(\dim(B\otimes\QQ)=\dim(A\otimes\QQ)+\dim(C\otimes\QQ)\)，即所示加法律。
+第二式取 \(A=\ker\varphi\)、\(C=\operatorname{im}\varphi\) 即得。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\otimes$}{tensor}、\texorpdfstring{$\operatorname{Hom}$}{Hom} 与 \texorpdfstring{$\operatorname{Ext}^1$}{Ext1} 的圆维算律]\label{prop:cdim-tensor-hom-ext-laws}
+对任意有限生成离散交换群 \(G,H\)，有：
+\begin{enumerate}
+  \item \textbf{张量乘法：}\(\cdim(G\otimes_{\ZZ} H)=\cdim(G)\cdim(H)\)；
+  \item \textbf{同态乘法：}\(\cdim(\operatorname{Hom}(G,H))=\cdim(G)\cdim(H)\)；
+  \item \textbf{一阶扩张归零：}\(\cdim(\operatorname{Ext}^1(G,H))=0\)。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+写 \(G\simeq \ZZ^{r}\oplus T\)、\(H\simeq \ZZ^{s}\oplus E\)，其中 \(T,E\) 有限，且 \(r=\cdim(G)\)、\(s=\cdim(H)\)（例 \ref{ex:circle-dimension-examples}）。
+\par
+\textbf{(1)} 有同构
+\(
+G\otimes H\simeq (\ZZ^{r}\otimes\ZZ^{s})\oplus(\text{torsion})\simeq \ZZ^{rs}\oplus(\text{torsion})
+\)，
+故 \(\cdim(G\otimes H)=rs\)。
+\par
+\textbf{(2)} 分解
+\(
+\operatorname{Hom}(G,H)\simeq \operatorname{Hom}(\ZZ^{r},H)\oplus \operatorname{Hom}(T,H)
+\)。
+其中 \(\operatorname{Hom}(\ZZ^{r},H)\simeq H^{r}\simeq \ZZ^{rs}\oplus(\text{torsion})\)，而 \(\operatorname{Hom}(T,H)\) 为有限群，故 \(\cdim(\operatorname{Hom}(G,H))=rs\)。
+\par
+\textbf{(3)} 由 \(\operatorname{Ext}^1(\ZZ^{r},H)=0\) 且 \(\operatorname{Ext}^1(T,H)\) 为有限群，可得 \(\operatorname{Ext}^1(G,H)\) 为有限群，从而圆维为 \(0\)。证毕。
+\end{proof}
+
+\endinput
+

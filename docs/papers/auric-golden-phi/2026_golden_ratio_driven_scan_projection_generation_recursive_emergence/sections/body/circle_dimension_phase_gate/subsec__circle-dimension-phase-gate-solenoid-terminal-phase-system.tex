@@ -88,5 +88,123 @@ f:\Sigma\longrightarrow \Sigma_S
 对偶与短正合列由对 \(\ZZ\hookrightarrow\QQ\) 的对偶化与 \Sol 的定义给出。证毕。
 \end{proof}
 
+\subsubsection{prime-register 轴的 pro-圆维：终对象性、CRT 复用与有限纤维的外置下界}\label{subsubsec:cdim-prime-register-pro-cdim}
+短正合列 \(0\to \widehat{\ZZ}\to\Sol\to\TT\to 0\) 将 prime-register 的核心对象 \(\widehat{\ZZ}\) 作为一个完全不连通紧因子显式化：它不改变结构圆维（定义 \ref{def:circle-dimension}），但承载了全部同余/逆极限读出所需的可核验 residue 信息。
+为将“需要多少条 residue/逆极限轴”这一实现约束提升为结构化预算，本小节引入 pro-圆维并给出其 CRT 复用律与有限纤维的结构性外置下界。
+
+\begin{theorem}[residue/逆极限轴的终对象性]\label{thm:cdim-zhatZ-terminal-residue-axis}
+记
+\[
+\widehat{\ZZ}:=\varprojlim_{n\ge 1}\ZZ/n\ZZ,
+\]
+并令 \(\pi_n:\widehat{\ZZ}\twoheadrightarrow \ZZ/n\ZZ\) 为典范投影。
+设 \(P\) 为紧阿贝尔群，且给定一族连续满射 \((\psi_n:P\twoheadrightarrow \ZZ/n\ZZ)_{n\ge 1}\) 满足兼容性
+\[
+\psi_m=\rho_{m,n}\circ \psi_n\qquad(m\mid n),
+\]
+其中 \(\rho_{m,n}:\ZZ/n\ZZ\twoheadrightarrow \ZZ/m\ZZ\) 为自然约化。
+则存在唯一连续群同态
+\[
+f:P\longrightarrow \widehat{\ZZ}
+\]
+使得对一切 \(n\ge 1\) 有 \(\pi_n\circ f=\psi_n\)。
+等价地：在以此类 \((P,(\psi_n))\) 为对象、以保持全部 \(\psi_n\) 的连续同态为态射的范畴中，\((\widehat{\ZZ},(\pi_n))\) 为终对象。
+\end{theorem}
+\begin{proof}
+由逆极限的泛性质，兼容锥 \((\psi_n)_n\) 唯一诱导连续同态 \(f:P\to\varprojlim_n \ZZ/n\ZZ=\widehat{\ZZ}\)，并满足 \(\pi_n\circ f=\psi_n\)。
+唯一性同理由泛性质给出。证毕。
+\end{proof}
+
+\begin{definition}[pro-圆维]\label{def:cdim-pro-circle-dimension}
+令 \(P\) 为拓扑有限生成的 profinite 交换群（等价地：紧、全不连通、交换群且存在有限拓扑生成集）。
+定义其\textbf{pro-圆维}为
+\[
+\boxed{\;
+\pcdim(P):=\min\Bigl\{|S|:\ S\subseteq P,\ \overline{\langle S\rangle}=P\Bigr\}\ \in\ \NN\cup\{0\}\; }.
+\]
+\end{definition}
+
+\begin{remark}[生成元与 \texorpdfstring{$\widehat{\ZZ}^k$}{Zhat^k} 的满射口径]\label{rem:cdim-pro-cdim-zhat-surjection}
+若 \(P\) 为 profinite 交换群，则 \(\pcdim(P)\) 等于使得存在连续满射 \(\widehat{\ZZ}^{k}\twoheadrightarrow P\) 的最小 \(k\)：
+由 \(k\) 个拓扑生成元可定义 \(\widehat{\ZZ}^{k}\) 上的连续同态，其像的闭包恰为所生成闭包；反之，满射的坐标像给出生成集。
+\end{remark}
+
+\begin{proposition}[Sylow 分解与 CRT 复用律]\label{prop:cdim-pro-cdim-crt-reuse}
+令 \(P\) 为拓扑有限生成的 profinite 交换群。则：
+\begin{enumerate}
+  \item 存在唯一分解 \(P\simeq \prod_{p}P_p\)，其中 \(P_p\) 为 \(P\) 的 Sylow pro-\(p\) 分量；
+  \item \(\displaystyle \pcdim(P)=\max_{p}\pcdim(P_p)\)；
+  \item 对任意同类 \(P,Q\)，有
+  \[
+  \pcdim(P\times Q)=\max_{p}\bigl(\pcdim(P_p)+\pcdim(Q_p)\bigr).
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+\textbf{(1)} 对 profinite 交换群，Sylow pro-\(p\) 子群唯一且随 \(p\) 变化两两直积，从而得到分解 \(P\simeq\prod_p P_p\)。
+\par
+\textbf{(2)} 设 \(d:=\max_p\pcdim(P_p)\)。
+对每个 \(p\) 取 \(P_p\) 的 \(d\) 元拓扑生成集并在不足处用单位元补齐，得到 \(d\) 个元素 \((g_{i,p})_{p}\in\prod_p P_p\)（\(1\le i\le d\)）。
+其在每个分量 \(P_p\) 上的投影闭包为全体 \(P_p\)，故在乘积 \(P\) 上的生成闭包为全体 \(P\)，从而 \(\pcdim(P)\le d\)。
+反向不等式由投影保持生成闭包给出：任一生成集投影到每个 \(P_p\) 仍生成 \(P_p\)，故 \(\pcdim(P)\ge \pcdim(P_p)\) 对所有 \(p\) 成立，取最大值得到 \(\pcdim(P)\ge d\)。
+\par
+\textbf{(3)} 由 \((P\times Q)_p\simeq P_p\times Q_p\)。
+对 abelian pro-\(p\) 群 \(R\)，其最小拓扑生成元数等于
+\(\dim_{\FF_p}(R/pR)\)；特别地对直积满足可加性
+\(
+\pcdim(P_p\times Q_p)=\pcdim(P_p)+\pcdim(Q_p)
+\)。
+将该等式与 (2) 的 \(\max_p\) 公式合并即得所示结论。证毕。
+\end{proof}
+
+\begin{proposition}[有限纤维的最小 residue 轴数]\label{prop:cdim-finite-fiber-min-prime-register-axes}
+设 \(F\) 为有限交换群。定义其最小生成元数
+\[
+d(F):=\min\bigl\{k:\exists\ \text{满射}\ \ZZ^{k}\twoheadrightarrow F\bigr\}.
+\]
+则 \(d(F)=\max_{p}\dim_{\FF_p}(F/pF)\)，并且
+\[
+d(F)=\min\bigl\{k:\exists\ \text{连续满射}\ \widehat{\ZZ}^{k}\twoheadrightarrow F\bigr\}
+=\pcdim(F).
+\]
+\end{proposition}
+\begin{proof}
+等式 \(d(F)=\max_{p}\dim_{\FF_p}(F/pF)\) 为有限交换群的标准生成元刻画。
+\par
+若存在连续满射 \(\widehat{\ZZ}^{k}\twoheadrightarrow F\)，则其像包含稠密子群 \(\ZZ^{k}\subset\widehat{\ZZ}^{k}\) 的像；由于 \(F\) 有限离散，稠密像必为全体，故诱导满射 \(\ZZ^{k}\twoheadrightarrow F\)，从而 \(d(F)\le k\)。
+反之，若 \(\ZZ^{d(F)}\twoheadrightarrow F\)，则对其作 profinite 完备化并利用 \(F\) 的 profinite 性，可唯一延拓为连续满射 \(\widehat{\ZZ}^{d(F)}\twoheadrightarrow F\)。
+因此上述最小 \(k\) 等于 \(d(F)\)，再由备注 \ref{rem:cdim-pro-cdim-zhat-surjection} 得其亦等于 \(\pcdim(F)\)。证毕。
+\end{proof}
+
+\begin{corollary}[有限扩张的圆维不变与结构性外置下界]\label{cor:cdim-finite-extension-pro-cdim-lower-bound}
+设 \(0\to F\to E\to G\to 0\) 为有限生成离散交换群的短正合列且 \(F\) 有限，则 \(\cdim(E)=\cdim(G)\)（命题 \ref{prop:circle-dimension-laws}）。
+若进一步要求将纤维 \(F\) 以交换群结构外置到 prime-register 上，即存在连续满射 \(\widehat{\ZZ}^{k}\twoheadrightarrow F\)，则必有
+\[
+k\ge d(F)=\pcdim(F).
+\]
+\end{corollary}
+\begin{proof}
+圆维不变性由命题 \ref{prop:circle-dimension-laws}(3) 给出；外置下界由命题 \ref{prop:cdim-finite-fiber-min-prime-register-axes} 立即推出。证毕。
+\end{proof}
+
+\begin{remark}[连续圆维--pro圆维二元签名]\label{rem:cdim-cont-pro-signature}
+圆维 \((\cdim,\cdim_+)\) 计数可见连续相位圆因子，而 pro-圆维 \(\pcdim\) 计数 residue/逆极限轴的最小数目。
+在寄存器语义下可将二者合并为二元签名
+\[
+\Sigma_{\circ,\mathrm{pro}}(\cdot):=\bigl(\cdim_{\mathrm{cont}}(\cdot),\ \pcdim(\cdot)\bigr),
+\]
+其中约定：对有限生成可消去交换幺半群 \(M\) 取 \(\cdim_{\mathrm{cont}}(M)=\cdim_+(M)\)（定义 \ref{def:half-circle-dimension}）且 \(\pcdim(M)=0\)；
+对有限生成离散交换群取 \(\cdim_{\mathrm{cont}}=\cdim\) 且 \(\pcdim=0\)；
+对 profinite 交换群取 \(\cdim_{\mathrm{cont}}=0\)。
+于是基本轴对象满足
+\[
+\Sigma_{\circ,\mathrm{pro}}(\NN)=\bigl(\tfrac12,0\bigr),\qquad
+\Sigma_{\circ,\mathrm{pro}}(\ZZ)=(1,0),\qquad
+\Sigma_{\circ,\mathrm{pro}}(\widehat{\ZZ})=(0,1),
+\qquad
+\Sigma_{\circ,\mathrm{pro}}(F)=\bigl(0,d(F)\bigr).
+\]
+\end{remark}
+
 \endinput
 
