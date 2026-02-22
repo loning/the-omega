@@ -56,6 +56,16 @@ A:=\sum_{j=1}^n u_j,
 由上一步严格单调性该判别式成立，从而 \(w\mapsto R_w(\delta)\) 为 Schur--凹。证毕。
 \end{proof}
 
+\begin{remark}[猜想 8.1006 的肯定化]\label{rem:pom-diagonal-rate-schur-concavity-conjecture-81006}
+定理 \ref{thm:pom-diagonal-rate-schur-concavity} 与定理 \ref{thm:pom-diagonal-rate-strict-schur-concavity}
+共同给出如下结论：在固定 \(\delta\) 下，自耦合对角约束速率函数
+\[
+w\mapsto R_w(\delta)
+\]
+在主序意义上单调下降，且在活跃区间内具有严格版本。
+因此文内所述 Schur--凹性猜想（猜想 8.1006）得到严格证明。
+\end{remark}
+
 \begin{corollary}[均匀分布给出全局上界]\label{cor:pom-diagonal-rate-uniform-global-upper}
 令 \(|X|=n\ge 2\)，并记均匀分布 \(U_n\)。
 则对任意全支撑分布 \(w\in\Delta(X)\) 与任意 \(\delta\in[0,1]\) 成立
@@ -72,6 +82,48 @@ R_w(\delta)\ \le\ R_{U_n}(\delta).
 R_{U_n}(\delta)\ge R_w(\delta)
 \)。
 当 \(0\le\delta<1-\tfrac1n\) 时，\(R_{U_n}(\delta)>0\) 且严格性与等号情形由定理 \ref{thm:pom-diagonal-rate-strict-schur-concavity} 给出。证毕。
+\end{proof}
+
+\begin{theorem}[固定最大原子质量下的极值分布]\label{thm:pom-diagonal-rate-max-atom-extremizer}
+固定 \(n\ge 2\)、\(\delta\in[0,1)\) 与 \(m\in[1/n,1)\)。
+定义约束族
+\[
+\mathcal W_n(m):=\Bigl\{w\in\Delta_n:\ \|w\|_\infty=m\Bigr\},
+\]
+并记
+\[
+w^{(m)}:=\left(m,\frac{1-m}{n-1},\dots,\frac{1-m}{n-1}\right).
+\]
+则对任意 \(w\in\mathcal W_n(m)\) 成立
+\[
+w^{(m)}\prec w.
+\]
+从而
+\[
+\sup_{w\in\mathcal W_n(m)}R_w(\delta)=R_{w^{(m)}}(\delta).
+\]
+若 \(\delta\) 处于活跃区间且 \(w\) 不与 \(w^{(m)}\) 排列等价，则上述不等式严格。
+\end{theorem}
+\begin{proof}
+不妨令 \(w\) 按非增序排列，故 \(w_1=m\)。
+对任意 \(k\in\{2,\dots,n\}\)，\((w_2,\dots,w_n)\) 的平均值为 \((1-m)/(n-1)\)，
+故其前 \(k-1\) 个最大分量之和满足
+\[
+\sum_{i=2}^{k}w_i\ge (k-1)\frac{1-m}{n-1}.
+\]
+于是
+\[
+\sum_{i=1}^{k}w_i
+=m+\sum_{i=2}^{k}w_i
+\ge m+(k-1)\frac{1-m}{n-1}
+=\sum_{i=1}^{k}w_i^{(m)}.
+\]
+再结合两者总和同为 \(1\)，得到 \(w^{(m)}\prec w\)。
+由定理 \ref{thm:pom-diagonal-rate-schur-concavity} 即得
+\(
+R_{w^{(m)}}(\delta)\ge R_w(\delta)
+\)；
+严格性由定理 \ref{thm:pom-diagonal-rate-strict-schur-concavity} 给出。
 \end{proof}
 
 \begin{theorem}[严格 Schur--凹性与等号情形]\label{thm:pom-diagonal-rate-strict-schur-concavity}
@@ -113,6 +165,40 @@ R_v(\delta)\ >\ R_w(\delta).
 于是若 \(v\prec w\) 且非置换，则严格不等式 \(R_v(\delta)>R_w(\delta)\) 成立。证毕。
 \end{proof}
 
+\begin{proposition}[最优对偶势的反序比较律]\label{prop:pom-diagonal-rate-dual-potential-reverse-order}
+在定理 \ref{thm:pom-diagonal-rate-strict-schur-concavity} 的活跃区间假设下，记
+\[
+\psi_\delta(i):=\log\frac{u_i}{w_i},
+\]
+其中 \(u\) 来自最优缩放表示
+\(
+w_i=u_i(A+\kappa u_i)/Z
+\)。
+则成立：
+\begin{enumerate}
+\item \(w_i>w_j\iff u_i>u_j\)；
+\item \(w_i>w_j\iff \psi_\delta(i)<\psi_\delta(j)\)；
+\item 若 \(w_i\ne w_j\)，则
+\[
+(w_i-w_j)\bigl(\psi_\delta(i)-\psi_\delta(j)\bigr)<0.
+\]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由
+\(
+w_i=u_i(A+\kappa u_i)/Z
+\)
+且 \(t\mapsto t(A+\kappa t)\) 在 \(t>0\) 上严格递增，得 \(w_i>w_j\iff u_i>u_j\)。
+再由
+\[
+\frac{u_i}{w_i}=\frac{2Z}{A+\sqrt{A^2+4\kappa Zw_i}},
+\]
+右端关于 \(w_i\) 严格递减，故 \(w_i>w_j\Rightarrow u_i/w_i<u_j/w_j\)，等价于
+\(\psi_\delta(i)<\psi_\delta(j)\)；
+从而第三条随之成立。证毕。
+\end{proof}
+
 \begin{proposition}[最优耦合的二阶子式符号刚性]\label{prop:pom-diagonal-rate-optimal-coupling-minor-sign-rigidity}
 设 \(\delta<1-p_2(w)\) 且 \(w\in\Delta(X)\) 全支撑，令 \(P^\star_\delta\) 为实现 \(R_w(\delta)\) 的唯一最优耦合，并写成
 \[
@@ -138,4 +224,15 @@ b_{ab}:=1+\kappa\,\mathbf 1_{\{a=b\}}.
 将 \(P^\star_\delta(i,j)=\frac{u_i u_j}{Z}b_{ij}\) 代入并将 \(u_i,u_j,u_k,u_\ell\) 提出到行列式外即得显式分解。
 由于 \(b_{ab}\in\{1,1+\kappa\}\) 仅依赖于指标相等关系，后三条结论为有限情形的直接枚举。证毕。
 \end{proof}
+
+\begin{remark}[文献边界说明]\label{rem:pom-diagonal-rate-literature-boundary-note}
+无输出边缘约束的经典率失真问题中，主序结构与极值现象已有早期研究；
+输出分布受限（或分布保持）率失真模型亦有系统化发展。
+本节处理的对象为
+\[
+P_X=P_Y=w,\qquad \PP(X=Y)\ge 1-\delta
+\]
+的自耦合约束单字母问题；
+上述定理链给出了该框架下的 Schur--凹性与严格性、均匀上包络以及固定 \(\|w\|_\infty\) 约束下的显式极值分布，形成可直接审计的封闭推导。
+\end{remark}
 

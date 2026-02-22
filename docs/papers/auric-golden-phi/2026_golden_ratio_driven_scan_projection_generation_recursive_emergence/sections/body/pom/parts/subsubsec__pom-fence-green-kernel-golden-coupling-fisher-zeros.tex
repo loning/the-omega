@@ -356,3 +356,181 @@ q_k-q_{k+1}
 \input{sections/generated/tab_fence_green_kernel_golden_coupling_audit}
 \end{remark}
 
+\paragraph{\texorpdfstring{$k$}{k}-重谱碰撞的根单位过滤核：递推、临界缩放与零点指纹}
+为刻画高重并根临界点附近的统一核结构，固定整数 \(k\ge 2\)，定义
+\[
+Z_n^{(k)}(t):=\sum_{r\ge 0}\binom{n+k-1}{k-1+kr}\,t^r,\qquad n\in\ZZ_{\ge 0}.
+\]
+其中求和在 \(k-1+kr\le n+k-1\) 时终止。
+
+\begin{theorem}[根单位过滤配分函数的代数结构]\label{thm:pom-kcollision-root-filter-recurrence}
+对上述 \(Z_n^{(k)}(t)\) 有：
+\begin{enumerate}
+\item 系数均为非负整数，且 \(\deg_t Z_n^{(k)}=\lfloor n/k\rfloor\)；
+\item 序列 \((Z_n^{(k)}(t))_{n\ge 0}\) 满足阶 \(k\) 常系数递推
+\[
+Z_{n+k}^{(k)}
+=\binom{k}{1}Z_{n+k-1}^{(k)}-\binom{k}{2}Z_{n+k-2}^{(k)}+\cdots+(-1)^{k-1}\binom{k}{k-1}Z_{n+1}^{(k)}
++\bigl(t-(-1)^k\bigr)Z_n^{(k)},
+\]
+且在 \(0\le n\le k-1\) 时
+\(
+Z_n^{(k)}(t)=\binom{n+k-1}{k-1}
+\)；
+\item 对应特征多项式为
+\[
+\chi_k(\lambda;t)=(\lambda-1)^k-t.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+第一点由定义直接成立。
+将 \((\lambda-1)^k-t\) 展开为
+\[
+\lambda^k-\binom{k}{1}\lambda^{k-1}+\binom{k}{2}\lambda^{k-2}-\cdots+(-1)^k-t
+\]
+并代入常系数递推与特征多项式的对应关系，得到第二、三点。
+初值由 \(\lfloor n/k\rfloor=0\) 时仅 \(r=0\) 项贡献给出。证毕。
+\end{proof}
+
+\begin{theorem}[重碰撞临界窗口的 Mittag--Leffler 极限]\label{thm:pom-kcollision-mittag-leffler-scaling}
+令
+\[
+E_{\alpha,\beta}(z):=\sum_{m=0}^{\infty}\frac{z^m}{\Gamma(\alpha m+\beta)},\qquad \alpha>0.
+\]
+固定 \(k\ge 2\)。当 \(n\to\infty\) 时，在任意紧集 \(K\subset\CC\) 上一致有
+\[
+n^{-(k-1)}Z_n^{(k)}\!\left(-\frac{u}{n^k}\right)\longrightarrow E_{k,k}(-u),\qquad u\in K.
+\]
+\end{theorem}
+\begin{proof}
+写作
+\[
+Z_n^{(k)}\!\left(-\frac{u}{n^k}\right)
+=\sum_{r\ge 0}\binom{n+k-1}{k-1+kr}\left(-\frac{u}{n^k}\right)^r.
+\]
+固定 \(r\) 时，
+\[
+\binom{n+k-1}{k-1+kr}
+=\frac{n^{k-1+kr}}{(k-1+kr)!}\bigl(1+o(1)\bigr),
+\]
+故
+\[
+n^{-(k-1)}\binom{n+k-1}{k-1+kr}\left(-\frac{u}{n^k}\right)^r
+\to \frac{(-u)^r}{\Gamma(kr+k)}.
+\]
+再由
+\[
+\left|n^{-(k-1)}\binom{n+k-1}{k-1+kr}\left(\frac{u}{n^k}\right)^r\right|
+\le \frac{C_K^r\,e^{kr}}{(k-1+kr)!},\qquad u\in K,
+\]
+及右端可求和，应用 Weierstrass \(M\)-判别法可交换极限与求和，得结论。证毕。
+\end{proof}
+
+\begin{corollary}[Lee--Yang 零点的临界缩放极限]\label{cor:pom-kcollision-lee-yang-scaling}
+记 \(E_{k,k}(-u)\) 的零点（按重数）为 \(\{\xi_{k,j}\}_{j\ge 1}\subset\CC\setminus\{0\}\)。
+对任意固定 \(J\in\NN\)，当 \(n\) 充分大时，\(Z_n^{(k)}(t)\) 在窗口 \(|t|=O(n^{-k})\) 内对应的前 \(J\) 个零点满足
+\[
+t_{n,j}\sim -\frac{\xi_{k,j}}{n^k},\qquad 1\le j\le J.
+\]
+并且
+\[
+\{-n^k t:\ Z_n^{(k)}(t)=0\}\xrightarrow[n\to\infty]{\mathrm{loc.\ Hausdorff}}\{\xi_{k,j}\}_{j\ge 1}.
+\]
+\end{corollary}
+\begin{proof}
+令
+\[
+F_n(u):=n^{-(k-1)}Z_n^{(k)}\!\left(-\frac{u}{n^k}\right),\qquad F(u):=E_{k,k}(-u).
+\]
+由定理 \ref{thm:pom-kcollision-mittag-leffler-scaling}，\(F_n\to F\) 在紧集上一致，且均全纯。
+由 Hurwitz 定理，紧域内零点（计重数）收敛到 \(F\) 的零点。
+变量替换 \(t=-u/n^k\) 即得。证毕。
+\end{proof}
+
+\begin{proposition}[Hankel 行列式的秩截断与主指纹]\label{prop:pom-kcollision-hankel-fingerprint}
+定义
+\[
+H_m^{(k)}(t):=\det\bigl[Z_{i+j}^{(k)}(t)\bigr]_{0\le i,j\le m-1}.
+\]
+则
+\begin{enumerate}
+\item 若 \(m>k\)，则 \(H_m^{(k)}(t)\equiv 0\)；
+\item 主 Hankel 行列式满足
+\[
+H_k^{(k)}(t)=(-1)^{\frac{(k-1)(3k-4)}{2}}\bigl(1-(-1)^k t\bigr)^{k-1}.
+\]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+取 \(\tau^k=t\)、\(\omega_j=e^{2\pi i j/k}\)。
+由根单位过滤恒等式，
+\[
+Z_n^{(k)}(t)=\sum_{j=0}^{k-1}w_j(t)\lambda_j(t)^n,\qquad
+\lambda_j(t):=1+\omega_j\tau,\quad
+w_j(t):=\frac{1}{k}\frac{\lambda_j(t)^{k-1}}{\omega_j^{k-1}\tau^{k-1}}.
+\]
+故 Hankel 矩阵分解为 \(V_m^\top W V_m\)，其中
+\[
+(V_m)_{j,i}=\lambda_j(t)^i,\qquad
+W=\mathrm{diag}(w_0,\dots,w_{k-1}).
+\]
+从而 \(\mathrm{rank}\le k\)，得 \(m>k\) 时行列式为零。
+当 \(m=k\) 时，
+\[
+H_k^{(k)}=(\det V_k)^2\prod_{j=0}^{k-1}w_j.
+\]
+再用 Vandermonde 公式、\(x^k-1\) 判别式
+\[
+\prod_{0\le i<j\le k-1}(\omega_j-\omega_i)^2
+=(-1)^{\frac{(k-1)(k-2)}{2}}k^k,
+\]
+以及
+\[
+\prod_{j=0}^{k-1}(1+\omega_j\tau)=1-(-1)^k t,\qquad
+\prod_{j=0}^{k-1}\omega_j=(-1)^{k-1},
+\]
+整理即得所示闭式。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$E_{k,k}$}{Ekk} 的根单位指数分解与实轴零点量子化]\label{thm:pom-kcollision-ekk-root-phase-quantization}
+对任意分支 \(z^{1/k}\) 有恒等式
+\[
+E_{k,k}(z)=\frac1k\,z^{\frac{1-k}{k}}\sum_{j=0}^{k-1}\omega_j^{1-k}\exp\!\bigl(\omega_j z^{1/k}\bigr),\qquad
+\omega_j=e^{2\pi i j/k}.
+\]
+令 \(u>0\)，取主值分支 \((-u)^{1/k}=u^{1/k}e^{i\pi/k}\)。
+当 \(u\to+\infty\) 时，
+\[
+E_{k,k}(-u)
+=-\frac{2}{k}u^{\frac{1-k}{k}}
+\exp\!\Bigl(u^{1/k}\cos\frac{\pi}{k}\Bigr)
+\cos\!\Bigl(u^{1/k}\sin\frac{\pi}{k}+\frac{\pi}{k}\Bigr)
++O\!\left(u^{\frac{1-k}{k}}\exp\!\Bigl(u^{1/k}\cos\frac{3\pi}{k}\Bigr)\right),
+\]
+其中 \(k=2\) 时误差项消失。
+进一步，记 \(E_{k,k}(-u)\) 的正实大零点为 \(\xi_{k,n}\)（按递增计），则
+\[
+\xi_{k,n}
+=\left(\frac{\bigl(n+\frac12-\frac1k\bigr)\pi}{\sin(\pi/k)}\right)^{k}\bigl(1+o(1)\bigr),\qquad n\to\infty.
+\]
+\end{theorem}
+\begin{proof}
+第一式由
+\(
+e^{\omega_j z^{1/k}}=\sum_{m\ge 0}\omega_j^m z^{m/k}/m!
+\)
+与根单位正交关系筛选 \(m\equiv k-1\pmod k\) 得到。
+第二式中，代入 \(z=-u\) 后，\(j=0\) 与 \(j=k-1\) 两项给出最大实部并构成共轭主导对，其余项实部不超过 \(\cos(3\pi/k)\) 对应指数级次，故得主项加误差。
+令主项余弦相位等于 \((n+\frac12)\pi\) 即得零点量子化近似；指数分离保证相对误差为 \(o(1)\)。证毕。
+\end{proof}
+
+\begin{conjecture}[有限维转移模型中的重碰撞临界核普适性]\label{conj:pom-kcollision-universality-ekk}
+设 \((Z_n(t))\) 来自有限维转移矩阵（等价常系数递推）并在 \(t=t_\ast\) 发生原始 \(k\)-重主导谱碰撞：主导特征值代数重数为 \(k\)，其余谱与主导谱存在正模长间隙，且无额外对称性引起进一步约化。
+则存在常数 \(C,c\ne 0\) 使在临界窗口 \(t=t_\ast-u/n^k\) 下
+\[
+n^{-(k-1)}Z_n\!\left(t_\ast-\frac{u}{n^k}\right)\Longrightarrow C\,E_{k,k}(-c\,u),
+\]
+并且 Lee--Yang 零点在该窗口内按推论 \ref{cor:pom-kcollision-lee-yang-scaling} 收敛到相应 \(E_{k,k}\) 零点集。
+\end{conjecture}
+

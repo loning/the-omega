@@ -1,152 +1,232 @@
-\begin{conclusion}[可见容量曲线的“双折点刚性”]\label{con:fold-bin-visible-capacity-double-kink}
-设 \(d_m^{\mathrm{bin}}(w)\) 为 bin-fold 的纤维多重度，并定义尾谱计数函数
+\begin{theorem}[分层素数片上的有限深度投影可逆化外置]\label{thm:killo-layered-prime-slices-finite-depth}
+设 \((X_j)_{j=0}^{k}\) 为可数集合列，且对每个 \(j=0,\dots,k-1\) 给定有限纤维满射
 \[
-N^{\mathrm{bin}}_m(t):=\bigl|\{w\in X_m:\ d^{\mathrm{bin}}_m(w)\ge t\}\bigr|,
-\qquad t\ge 0,
-\]
-以及连续容量曲线
-\[
-\mathcal{C}^{\mathrm{bin,cont}}_m(T):=\sum_{w\in X_m}\min\bigl(d^{\mathrm{bin}}_m(w),T\bigr),
-\qquad T\ge 0.
-\]
-则对一切 \(T\ge 0\) 有恒等式
-\[
-\mathcal{C}^{\mathrm{bin,cont}}_m(T)=\int_{0}^{T}N^{\mathrm{bin}}_m(t)\,\dd t.
-\]
-在尺度 \(t=s(2/\varphi)^m\) 下，令
-\[
-\widehat N^{\mathrm{bin}}_m(s):=\frac{1}{|X_m|}\,N^{\mathrm{bin}}_m\!\Bigl(s\Bigl(\frac{2}{\varphi}\Bigr)^m\Bigr),
+\pi_j:X_j\twoheadrightarrow X_{j+1},
 \qquad
-\widehat C^{\mathrm{bin}}_m(s):=2^{-m}\,\mathcal{C}^{\mathrm{bin,cont}}_m\!\Bigl(s\Bigl(\frac{2}{\varphi}\Bigr)^m\Bigr).
+\forall y\in X_{j+1},\ \#\pi_j^{-1}(y)<\infty.
 \]
-则对每个 \(s\notin\{\varphi^{-1},1\}\) 有点态极限
+固定素数枚举 \((p_n)_{n\ge 1}\)。定义分层素数片
 \[
-\widehat N^{\mathrm{bin}}_m(s)\longrightarrow
-\begin{cases}
-1, & 0<s<\varphi^{-1},\\[2pt]
-\varphi^{-1}, & \varphi^{-1}<s<1,\\[2pt]
-0, & s>1,
-\end{cases}
+\mathcal P_j:=\{p_{2^j(2n-1)}:n\ge 1\},\qquad j\ge 0.
 \]
-并且 \(\widehat C^{\mathrm{bin}}_m\) 在紧集上一致收敛到分段线性极限
+则 \(\mathcal P=\bigsqcup_{j\ge 0}\mathcal P_j\) 为素数集合的不交分解。并且存在映射
 \[
-\widehat C^{\mathrm{bin}}_\infty(s)
-=\frac{\varphi}{\sqrt5}\min\{1,s\}+\frac{1}{\sqrt5}\min\{\varphi^{-1},s\}.
+\Phi:X_0\longrightarrow X_k\times \ZZ_{>0},\qquad
+\Phi(x_0)=(x_k,G(x_0)),
 \]
-因此在 \(s=\varphi^{-1}\) 与 \(s=1\) 处出现两处不可消除的折点（kink）。
-\end{conclusion}
-\begin{proof}[证明要点]
-命题 \ref{prop:fold-bin-degeneracy-tail-capacity-kinks}。证毕。
+满足：
+\begin{enumerate}
+\item \(\Phi\) 为单射；
+\item \(G(x_0)\) 在唯一分解下具有严格分层分离
+\[
+G(x_0)=\prod_{j=0}^{k-1}q_j(x_0),\qquad q_j(x_0)\in \mathcal P_j,
+\]
+且由 \((x_k,G(x_0))\) 可逐层确定性重构唯一 \(x_0\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+任意整数 \(m\ge 1\) 唯一表示为 \(m=2^j(2n-1)\)，故指标层由 \(v_2(m)=j\) 给出不交覆盖；经枚举 \(m\mapsto p_m\) 即得 \(\mathcal P=\bigsqcup_{j\ge 0}\mathcal P_j\)。
+
+固定 \(j\in\{0,\dots,k-1\}\)。因 \(X_{j+1}\times\NN\) 与 \(\mathcal P_j\) 均可数，取单射
+\[
+\alpha_j:X_{j+1}\times\NN\hookrightarrow \mathcal P_j.
+\]
+对每个 \(y\in X_{j+1}\)，取纤维枚举单射
+\[
+\iota_{j,y}:\pi_j^{-1}(y)\hookrightarrow\NN.
+\]
+对 \(x_j\in X_j\) 记 \(y_{j+1}:=\pi_j(x_j)\)，并定义
+\[
+q_j(x_j):=\alpha_j\!\bigl(y_{j+1},\iota_{j,y_{j+1}}(x_j)\bigr)\in\mathcal P_j.
+\]
+对 \(x_0\in X_0\) 递推 \(x_{j+1}:=\pi_j(x_j)\)，设
+\[
+G(x_0):=\prod_{j=0}^{k-1}q_j(x_j),\qquad
+\Phi(x_0):=(x_k,G(x_0)).
+\]
+
+给定 \((x_k,N)\) 属于 \(\Phi\) 的像。由唯一分解，按分层片提取
+\[
+N=\prod_{j\ge 0}N_j,\qquad
+N_j:=\prod_{p\in\mathcal P_j}p^{v_p(N)}.
+\]
+在像内有 \(N_j=1\)（\(j\ge k\)），且 \(N_j=q_j\in\mathcal P_j\)（\(0\le j\le k-1\)）。于是可逆向递推：已知 \(x_{j+1}\) 与 \(q_j\)，由 \(\alpha_j\) 的像上反演得到唯一索引，再由 \(\iota_{j,x_{j+1}}\) 的像上反演得到唯一 \(x_j\in\pi_j^{-1}(x_{j+1})\)。逐层下推得到唯一 \(x_0\)。故 \(\Phi\) 为单射，且像上逆映射显式可构造。
 \end{proof}
 
-\begin{conclusion}[\texorpdfstring{\(2\pi\)}{2pi} 的“可审计重构”：仅由 \texorpdfstring{\(\{C_m\}\)}{Cm} 决定]\label{con:fold-bin-recover-2pi-auditable}
-沿用推论 \ref{cor:fold-bin-recover-2pi} 中由 fold-gauge 密度 \(g_m,\kappa_m\) 与稳定层对数纤维项内生定义的常数序列 \(C_m\)。
-则极限存在且
+\begin{corollary}[分层外置的最坏情形必要性与最小实现]\label{cor:killo-layered-necessity-minimality}
+沿用定理 \ref{thm:killo-layered-prime-slices-finite-depth}，并假设对每层 \(j=0,\dots,k-1\)，存在 \(y_j\in X_{j+1}\) 使 \(\#\pi_j^{-1}(y_j)\ge 2\)。设
 \[
-\lim_{m\to\infty}C_m=2\pi,
-\qquad
-\bigl|\log C_m-\log(2\pi)\bigr|
-=O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right).
+\Psi(x_0)=(x_k,H(x_0)),\qquad
+H(x_0)=\prod_{j=0}^{k-1}h_j(x_0),
 \]
-特别地，三角 Ces\`aro 平均满足
-\[
-\frac{2}{m(m+1)}\sum_{k=1}^{m}(m-k+1)\log C_k\ \longrightarrow\ \log(2\pi),
-\]
-从而 \(\log(2\pi)\) 可由 \(\{\log C_m\}_{m\ge 1}\) 在无外部解析输入的前提下重构。
-\end{conclusion}
-\begin{proof}[证明要点]
-第一式为推论 \ref{cor:fold-bin-recover-2pi}。
-第二式由 \(\log C_m\to\log(2\pi)\) 与三角平均的正规化（Toeplitz 型引理）得到。证毕。
+其中每个 \(h_j(x_0)\) 的全部素因子均落在预先固定片 \(\mathcal P_j\)。若 \(\Psi\) 为单射，则对每一层 \(j\) 至少存在一个微态 \(x_0^{(j)}\)（可取在同一宏态纤维内）使 \(h_j(x_0^{(j)})\neq 1\)。因此在最坏情形分析中，系统必须为全部 \(k\) 个分层素数片预留有效通道。
+
+定理 \ref{thm:killo-layered-prime-slices-finite-depth} 的构造在最坏情形下每层恰使用一个素数因子，达到该必要下界。
+\end{corollary}
+\begin{proof}
+固定一层 \(j\)。由 \(\#\pi_j^{-1}(y_j)\ge 2\)，取不同点 \(u_j\neq v_j\in\pi_j^{-1}(y_j)\)。固定其余层的选择并沿后续映射延拓到同一宏态，可构造两个微态 \(x_0',x_0''\) 使它们仅在第 \(j\) 层分支选择不同而宏态相同。若对所有此类微态有 \(h_j\equiv 1\)，则分层分离导致 \(\Psi(x_0')=\Psi(x_0'')\)，与单射性矛盾。故存在 \(x_0^{(j)}\) 使 \(h_j(x_0^{(j)})\neq 1\)。
+
+对每个 \(j\) 重复即得结论。定理 \ref{thm:killo-layered-prime-slices-finite-depth} 中每层直接写入一枚 \(q_j\in\mathcal P_j\)，故在最坏情形下达到每层一枚的最小实现。
 \end{proof}
 
-\begin{conclusion}[Bernoulli 数列的“由折叠生成”：\texorpdfstring{\(\{\log C_m\}\)}{logCm} 决定全部偶 Bernoulli 数]\label{con:fold-bin-bernoulli-generated-by-gauge-constants}
-沿用定理 \ref{thm:fold-bin-gauge-constant-stirling-bernoulli-hierarchy} 的 \(C_m\)。
-则序列 \(\{\log C_m\}_{m\ge 1}\) 在可算法化意义下确定全部偶 Bernoulli 数 \(B_{2r}\ (r\ge 1)\)；
-并由 Euler--Bernoulli 恒等式
+\begin{theorem}[有限纤维自映射的自然扩张与分支指标寄存器实现]\label{thm:killo-natural-extension-branch-register}
+设 \(X\) 为可数集合，\(T:X\twoheadrightarrow X\) 为有限纤维满射。对每个 \(y\in X\) 固定单射
 \[
-B_{2r}=(-1)^{r-1}\frac{2(2r)!}{(2\pi)^{2r}}\zeta(2r)
+\iota_y:T^{-1}(y)\hookrightarrow\NN,\qquad
+\beta(x):=\iota_{T(x)}(x).
 \]
-进一步确定全部偶点值 \(\zeta(2r)\)。
-\end{conclusion}
-\begin{proof}[证明要点]
-由定理 \ref{thm:fold-bin-gauge-constant-stirling-bernoulli-hierarchy} 与命题 \ref{prop:fold-bin-gauge-bernoulli-extraction-operator} 的逐阶抽取算子。证毕。
+定义自然扩张
+\[
+X^{\leftarrow}:=\{(x_0,x_{-1},x_{-2},\dots):T(x_{-n})=x_{-n+1}\},
+\]
+及其左移同构 \(\sigma\)。令编码映射
+\[
+\mathcal C:X^{\leftarrow}\to X\times\NN^\NN,\qquad
+\mathcal C((x_0,x_{-1},x_{-2},\dots))=(x_0,(\beta(x_{-1}),\beta(x_{-2}),\dots)).
+\]
+记 \(\widehat X:=\mathcal C(X^{\leftarrow})\subseteq X\times\NN^\NN\)，并定义
+\[
+\widehat T:=\mathcal C\circ \sigma\circ \mathcal C^{-1}:\widehat X\to\widehat X.
+\]
+则 \(\widehat T\) 为双射；在 \(\widehat X\) 上其作用可写成“右移插入”
+\[
+\widehat T(x,(a_1,a_2,\dots))=(T(x),(\beta(x),a_1,a_2,\dots)).
+\]
+故 \((\widehat X,\widehat T)\) 与 \((X^{\leftarrow},\sigma)\) 共轭。
+\end{theorem}
+\begin{proof}
+\(\mathcal C\) 的单射性来自递推反演：给定 \((x_0,(a_1,a_2,\dots))\in\widehat X\)，由其属于像空间可知存在且唯一前史满足
+\[
+x_{-1}=\iota_{x_0}^{-1}(a_1),\quad
+x_{-2}=\iota_{x_{-1}}^{-1}(a_2),\ \dots
+\]
+从而可重构唯一元素于 \(X^{\leftarrow}\)。满射性对 \(\widehat X\) 为定义所致。
+
+对任意 \(\mathbf x=(x_0,x_{-1},\dots)\in X^{\leftarrow}\)，
+\[
+(\mathcal C\circ \sigma)(\mathbf x)
+=(T(x_0),(\beta(x_0),\beta(x_{-1}),\beta(x_{-2}),\dots)),
+\]
+而这正对应右移插入形式。故 \(\widehat T=\mathcal C\circ\sigma\circ\mathcal C^{-1}\) 为双射并与自然扩张共轭。
 \end{proof}
 
-\begin{conclusion}[规范体积密度的严格二阶展开：首个非平凡校正项与可控余项]\label{con:fold-bin-gauge-volume-stirling-second-order}
-在
-\(
-|\mathcal{G}^{\mathrm{bin}}_m|=\prod_{w\in X_m} d^{\mathrm{bin}}_m(w)!
-\)
-与
-\(
-g_m:=2^{-m}\log|\mathcal{G}^{\mathrm{bin}}_m|
-\)
-的 fold-gauge 定义下，存在严格二阶 Stirling 展开
+\begin{theorem}[整数线性投影的信息亏损谱与 Smith 不变量可逆读出]\label{thm:killo-smith-loss-spectrum}
+设 \(A\in M_{m\times n}(\ZZ)\) 且 \(\operatorname{rank}_{\QQ}(A)=m\)。其 Smith 不变量记为
 \[
-g_m
-=\kappa_m-1+\frac{1}{2^{m+1}}\Bigl(|X_m|\log(2\pi)+\sum_{w\in X_m}\log d^{\mathrm{bin}}_m(w)\Bigr)+R_m,
-\qquad
-0\le R_m\le \frac{|X_m|}{12\cdot 2^m}.
+d_1\mid d_2\mid\cdots\mid d_m.
 \]
-该式将 \(g_m-\kappa_m+1\) 的首个非平凡偏离完全归结为稳定层“对数纤维体积”总和，并给出指数级可审计余项界。
-\end{conclusion}
-\begin{proof}[证明要点]
-定理 \ref{thm:fold-bin-gauge-volume-stirling-second-order}。证毕。
+对素数 \(p\) 与 \(k\ge 1\)，定义
+\[
+K_p(k):=\#\ker(A\bmod p^k),\qquad
+f_p(k):=\log_p K_p(k)-k(n-m).
+\]
+若记 \(e_i(p):=v_p(d_i)\)，则：
+\begin{enumerate}
+\item
+\[
+f_p(k)=\sum_{i=1}^m\min(k,e_i(p));
+\]
+\item 由 \(f_p\) 可逆恢复多重集 \(\{e_i(p)\}_{i=1}^m\)，且
+\[
+\Delta_p(k):=f_p(k)-f_p(k-1)=\#\{i:e_i(p)\ge k\},\qquad k\ge 1.
+\]
+\end{enumerate}
+因此 \(\{K_p(k)\}_{p,k}\)（等价地 \(\{f_p(k)\}_{p,k}\)）可逆确定全部 Smith 不变量。
+\end{theorem}
+\begin{proof}
+由 Smith 形式，存在 \(U\in GL_m(\ZZ),V\in GL_n(\ZZ)\) 使
+\[
+UAV=\operatorname{diag}(d_1,\dots,d_m,0,\dots,0).
+\]
+模 \(p^k\) 后 \(U,V\) 仍可逆，故核大小不变。对 \(i\le m\)，同余
+\[
+d_i y_i\equiv 0\pmod{p^k}
+\]
+的解数为 \(p^{\min(k,e_i(p))}\)；其余 \(n-m\) 个变量自由，各有 \(p^k\) 种。故
+\[
+K_p(k)=p^{k(n-m)+\sum_{i=1}^m\min(k,e_i(p))},
+\]
+即得第一式。
+
+再用恒等式
+\[
+\min(k,e)-\min(k-1,e)=\mathbf 1_{\{e\ge k\}},
+\]
+得到
+\[
+\Delta_p(k)=\sum_{i=1}^m\mathbf 1_{\{e_i(p)\ge k\}}=\#\{i:e_i(p)\ge k\}.
+\]
+这正是分拆与共轭分拆的标准反演，故 \(\{e_i(p)\}\) 可逆恢复。
 \end{proof}
 
-\begin{conclusion}[\texorpdfstring{\(g_m\)}{gm} 的双尺度渐近：主项含 \texorpdfstring{\(\log(2\pi)\)}{log2pi} 与 \texorpdfstring{\(\log\varphi\)}{logphi} 的显式耦合]\label{con:fold-bin-gauge-density-two-scale-log2pi-logphi}
-在 bin-fold 情形下，规范体积密度 \(g_m\) 相对纤维信息项 \(\kappa_m\) 具有二尺度展开
+\begin{corollary}[任意模数下的信息亏损闭式与素数可加分解]\label{cor:killo-kernel-size-general-modulus}
+在定理 \ref{thm:killo-smith-loss-spectrum} 的设定下，对任意 \(b\ge 1\)，诱导映射
 \[
-g_m
-=\kappa_m-1+\frac{(\varphi/2)^m}{2\sqrt5}\Bigl(\varphi^2 m\log\!\Bigl(\frac{2}{\varphi}\Bigr)+\varphi^2\log(2\pi)-\log\varphi\Bigr)
-+O\bigl((\varphi/2)^m\bigr),
-\qquad m\to\infty.
+A_b:(\ZZ/b\ZZ)^n\to(\ZZ/b\ZZ)^m
 \]
-因此首个可见校正项在指数主尺度 \((\varphi/2)^m\) 上同时携带线性因子 \(m\log(2/\varphi)\) 与常数项 \(\log(2\pi),\log\varphi\) 的耦合信息，并以显式指数速率收敛。
-\end{conclusion}
-\begin{proof}[证明要点]
-命题 \ref{prop:fold-bin-gauge-density-two-scale}。证毕。
+满足
+\[
+\#\ker(A_b)=b^{\,n-m}\prod_{i=1}^m\gcd(d_i,b).
+\]
+若 \(b=\prod_p p^{k_p}\)，则
+\[
+\log \#\ker(A_b)
+=\sum_{p}\Bigl(k_p(n-m)+\sum_{i=1}^m\min(k_p,e_i(p))\Bigr)\log p.
+\]
+因此信息亏损的对数量在素数方向严格可加分解。
+\end{corollary}
+\begin{proof}
+Smith 形下核方程分解为 \(d_i y_i\equiv 0\pmod b\) 与自由变量部分。映射 \(y\mapsto d_i y\) 在 \(\ZZ/b\ZZ\) 上的核大小为 \(\gcd(d_i,b)\)，自由变量贡献 \(b^{n-m}\)，得第一式。
+
+再由
+\[
+\gcd(d_i,b)=\prod_p p^{\min(v_p(d_i),k_p)}
+=\prod_p p^{\min(e_i(p),k_p)},
+\]
+取对数并交换求和即得第二式。
 \end{proof}
 
-\begin{conclusion}[约数触发的“三重削减界”：零点余类并导致的碰撞/KL/峰值下压]\label{con:fold-zero-divisor-triple-reduction}
-令 \(M:=F_{m+2}\) 且假设 \(M\) 为偶数。
-若存在真约数 \(d\mid(m+2)\) 使 \(F_d\mid (M/2)\)，则成立确定性改进界
+\begin{theorem}[整数轴对齐椭圆与对角算法的素数寄存器等价]\label{thm:killo-ellipse-diagonal-prime-register-equivalence}
+令
 \[
-\mathsf{Col}_m\ \le\ 1-\frac{F_d}{M},\qquad
-D_{\mathrm{KL}}(p_m\|u)\ \le\ \log(M-F_d),\qquad
-S_m\ \le\ 2^m\sqrt{M-1-F_d},
+\mathsf E_{\NN}:=\left\{
+E_{a,b}: \frac{x^2}{a^2}+\frac{y^2}{b^2}=1,\ a,b\in\NN_{>0}
+\right\},
 \]
-并且最大纤维超额满足
+并定义运算
 \[
-M_m-\overline d_m\ \le\ 2^m\sqrt{\frac{M-1-F_d}{M}}.
+E_{a,b}\odot E_{c,d}:=E_{ac,bd}.
 \]
-从而一旦出现 Fibonacci 约数整除触发，碰撞缺口、相对熵缺口与峰值/最大纤维超额的上界可被同一算术增量 \(F_d\) 同步下压。
-\end{conclusion}
-\begin{proof}[证明要点]
-推论 \ref{cor:fold-zero-divisor-triple-reduction}。证毕。
+则 \((\mathsf E_{\NN},\odot)\) 为交换幺半群，且存在幺半群同构
+\[
+(\NN^{(\mathcal P)}\times \NN^{(\mathcal P)},+)
+\cong
+(\mathsf E_{\NN},\odot),\qquad
+(r_1,r_2)\mapsto E_{N(r_1),N(r_2)},
+\]
+其中
+\[
+N(r):=\prod_{p\in\mathcal P}p^{r(p)},\qquad
+\NN^{(\mathcal P)}:=\{r:\mathcal P\to\NN\text{ 有限支撑}\}.
+\]
+因此在该可计算子类中，椭圆参数与对角算法 \(\operatorname{diag}(a,b)\) 的素数指数寄存器完全等价，且算法复合对应 \(\odot\)。
+\end{theorem}
+\begin{proof}
+由 \(\operatorname{diag}(a,b)(S^1)=E_{a,b}\) 与
+\[
+\operatorname{diag}(a,b)\circ\operatorname{diag}(c,d)=\operatorname{diag}(ac,bd),
+\]
+可得
+\[
+(\mathsf E_{\NN},\odot)\cong(\NN_{>0}\times\NN_{>0},\times).
+\]
+唯一分解给出
+\[
+(\NN_{>0},\times)\cong(\NN^{(\mathcal P)},+),\qquad r\mapsto N(r).
+\]
+取直积即得所述同构。
 \end{proof}
 
-\begin{conclusion}[bin-fold 推前下纤维规模的两点极限律：尺度化后退化为 \texorpdfstring{\(\{1,\varphi^{-1}\}\)}{1,phi^-1}]\label{con:fold-bin-two-point-limit-law-scaled-fiber-size}
-令 \(U_m\sim\mathrm{Unif}\{0,\dots,2^m-1\}\)，并令 \(W_m:=\mathrm{Fold}^{\mathrm{bin}}_m(U_m)\in X_m\)。
-定义推前分布
-\[
-\mu_m(w):=\mathbb{P}(W_m=w)=\frac{d^{\mathrm{bin}}_m(w)}{2^m},
-\qquad w\in X_m,
-\]
-以及尺度化随机变量
-\[
-Z_m:=\Bigl(\frac{\varphi}{2}\Bigr)^m d^{\mathrm{bin}}_m(W_m).
-\]
-则 \(Z_m\) 在分布上收敛到两点分布 \(Z\)：
-\[
-Z=
-\begin{cases}
-1,& \text{以概率 }\displaystyle \frac{\varphi}{\sqrt5},\\[6pt]
-\varphi^{-1},& \text{以概率 }\displaystyle \frac{1}{\varphi\sqrt5}.
-\end{cases}
-\]
-\end{conclusion}
-\begin{proof}[证明要点]
-推论 \ref{cor:fold-bin-two-point-limit-law}。证毕。
-\end{proof}
-
+\begin{remark}[文献定位说明]\label{rem:killo-literature-scope-note}
+上述体系中，定理 \ref{thm:killo-layered-prime-slices-finite-depth}--\ref{thm:killo-natural-extension-branch-register} 的核心是将预先固定的 \(2\)-进分层素数片、链式有限纤维投影与显式逐层反演放入同一可构造框架。定理 \ref{thm:killo-smith-loss-spectrum} 与推论 \ref{cor:killo-kernel-size-general-modulus} 使用 Smith 正规形与唯一分解的经典工具，但将其组织为“信息亏损谱可逆读出”与“素数寄存器可加守恒”的统一表述。定理 \ref{thm:killo-ellipse-diagonal-prime-register-equivalence} 则给出椭圆参数化与对角算法在素数寄存器语义下的结构等价。
+\end{remark}
