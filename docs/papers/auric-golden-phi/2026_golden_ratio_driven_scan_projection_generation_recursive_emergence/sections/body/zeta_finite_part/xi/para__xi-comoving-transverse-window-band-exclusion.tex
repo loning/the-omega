@@ -252,6 +252,65 @@ t^4D_{\mathrm{KL}}(h_t\mid g_t)\to \Delta_2^2/8
 若左端趋于 \(0\)，则 \(\Delta_2=0\)。证毕。
 \end{proof}
 
+\begin{corollary}[Cauchy 混合与同重心单核：全变差、相对熵与耗散的首项常数]\label{cor:xi-poisson-cauchy-mixture-point-leading-constants}
+令 \(\tilde\nu\) 为 \(\RR\) 上概率测度，记其重心与方差为
+\[
+\bar\gamma:=\int_{\RR}\gamma\,\dd\tilde\nu(\gamma),
+\qquad
+\mathrm{Var}(\tilde\nu):=\int_{\RR}(\gamma-\bar\gamma)^2\,\dd\tilde\nu(\gamma).
+\]
+假设三阶中心绝对矩有限 \(\int_{\RR}|\gamma-\bar\gamma|^3\,\dd\tilde\nu(\gamma)<\infty\)，并定义
+\[
+h_t(x):=\int_{\RR}P_t(x-\gamma)\,\dd\tilde\nu(\gamma),
+\qquad
+g_t(x):=P_t(x-\bar\gamma).
+\]
+则当 \(t\to\infty\) 时成立锐主项
+\begin{align}
+\|h_t-g_t\|_{L^1(\RR)}&=\frac{3\sqrt3}{4\pi}\,\frac{\mathrm{Var}(\tilde\nu)}{t^2}+O(t^{-3}),\label{eq:xi-poisson-cauchy-mixture-tv-leading}\\
+D_{\mathrm{KL}}(h_t\mid g_t)&=\frac{\mathrm{Var}(\tilde\nu)^2}{8t^4}+O(t^{-5}).\label{eq:xi-poisson-cauchy-mixture-kl-leading}
+\end{align}
+此外，令 \(\mathcal I_1\) 为 Poisson 流上的熵耗散率（命题 \ref{prop:xi-poisson-kl-dissipation-fractional-fisher}），则
+\begin{equation}\label{eq:xi-poisson-cauchy-mixture-fisher-leading}
+\mathcal I_1(h_t\mid g_t)=\frac{\mathrm{Var}(\tilde\nu)^2}{2t^5}+O(t^{-7}).
+\end{equation}
+从而得到单尺度反演公式
+\begin{equation}\label{eq:xi-poisson-cauchy-mixture-variance-inversion}
+\boxed{\;
+\mathrm{Var}(\tilde\nu)
+=\lim_{t\to\infty}\frac{4\pi}{3\sqrt3}\,t^2\|h_t-g_t\|_{L^1(\RR)}
+=\lim_{t\to\infty}\sqrt{8}\,t^2\sqrt{D_{\mathrm{KL}}(h_t\mid g_t)}\; }.
+\end{equation}
+并且若存在 \(t_n\to\infty\) 使 \(t_n^4D_{\mathrm{KL}}(h_{t_n}\mid g_{t_n})\to 0\)，则 \(\mathrm{Var}(\tilde\nu)=0\)，从而 \(\tilde\nu=\delta_{\bar\gamma}\) 且 \(h_t\equiv g_t\)（\(\forall t>0\)）。
+\end{corollary}
+
+\begin{proof}
+\eqref{eq:xi-poisson-cauchy-mixture-tv-leading} 由定理 \ref{thm:xi-cauchy-poisson-tv-sharp-constant} 给出；
+\eqref{eq:xi-poisson-cauchy-mixture-kl-leading} 由定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics}（取其首项）给出；
+\par
+其中常数 \(3\sqrt3/(4\pi)\) 与 \(1/8\) 的闭式评估可归结为一元积分
+\[
+\int_{\RR}\frac{|3y^2-1|}{(1+y^2)^3}\,\dd y=\frac{3\sqrt3}{4},
+\qquad
+\int_{\RR}\frac{(3y^2-1)^2}{(1+y^2)^5}\,\dd y=\frac{\pi}{4},
+\]
+参见命题 \ref{prop:cdim-poisson-kernel-derivative-l1-energy}（或等价地：定理 \ref{thm:xi-cauchy-poisson-tv-sharp-constant} 与定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的证明中的常数计算）。
+\eqref{eq:xi-poisson-cauchy-mixture-fisher-leading} 由命题 \ref{prop:xi-poisson-kl-dissipation-fractional-fisher} 的耗散恒等式
+\(
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid g_t)=-\mathcal I_1(h_t\mid g_t)
+\)
+与推论 \ref{cor:xi-cauchy-poisson-fisher-sharp-asymptotics} 的锐渐近给出。
+两条反演公式由 \eqref{eq:xi-poisson-cauchy-mixture-tv-leading}--\eqref{eq:xi-poisson-cauchy-mixture-kl-leading} 直接同乘 \(t^2\) 或 \(t^4\) 并取极限得到。
+最后一条刚性由 \eqref{eq:xi-poisson-cauchy-mixture-kl-leading} 或推论 \ref{cor:xi-cauchy-poisson-kl-rigidity} 立得：若 \(t_n^4D_{\mathrm{KL}}(h_{t_n}\mid g_{t_n})\to 0\)，则 \(\mathrm{Var}(\tilde\nu)^2/8=0\)。
+而概率测度方差为零当且仅当其为 Dirac 测度，故 \(\tilde\nu=\delta_{\bar\gamma}\)，从而 \(h_t=P_t*\tilde\nu=g_t\)。证毕。
+\end{proof}
+
+\begin{remark}[可检索范围内的定位说明]\label{rem:xi-poisson-cauchy-mixture-search-note}
+两条单一 Cauchy 分布之间的 \(D_{\mathrm{KL}}\) 闭式在公开资料中可检索；本段涉及的是 “Cauchy 混合 \(P_t*\tilde\nu\)” 与同重心单核 \(P_t(\cdot-\bar\gamma)\) 之间的信息损失首项常数与由此诱导的反演刚性。
+以 “Poisson 卷积/粗粒化 + 相对熵 \(t^{-4}\) 主项常数” 等关键词组合在公开索引范围内作定位检索，未见与 \eqref{eq:xi-poisson-cauchy-mixture-kl-leading}--\eqref{eq:xi-poisson-cauchy-mixture-variance-inversion} 同型的直接陈述；
+该类核验仅提供“可检索范围内未见同构”的接口，并不构成对未收录文献的穷尽性排除。
+\end{remark}
+
 \begin{conjecture}[端点化缺陷的二阶矩主导律：将一致趋零证书压缩为二阶矩一致匹配]\label{conj:xi-comoving-defect-second-moment-dominance}
 设端点观测密度族 \(\{h^{(x_0)}\}_{x_0\in\RR}\) 及其粗粒化 \(h_t^{(x_0)}:=P_t*h^{(x_0)}\) 已按共动参数构造，并满足同均值规范化 \(\int x\,h^{(x_0)}(x)\dd x=0\)。
 猜想存在一条参考密度 \(g\)（同均值且满足定理 \ref{thm:xi-poisson-cauchy-kl-fourth-order-universality} 的矩条件）与尺度对应 \(t=t(\varrho)\to\infty\)（当 \(\varrho\uparrow 1\)），使得在黄金分辨率链 \(\varrho=\varrho_m\) 上有

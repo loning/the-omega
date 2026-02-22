@@ -15,8 +15,11 @@ Model:
 Checks:
 - stationary distribution and mismatch density g_*(p)
 - asymptotic variance rate sigma_G^2(p) via Poisson equation (edge-reward martingale)
+- third cumulant density P_{G,p}^{(3)}(0) via implicit differentiation
 - characteristic polynomial factorization of P(p)
 - endpoint LDP rate I_p(0) via rho(Q_p(0))
+- GC far-field defect constant and the golden critical bias p=phi/2 (numeric)
+- square-collapse factorization at the unique maximizer p_* (symbolic identity)
 - covariance recurrence and generating function (spot checks)
 - bit-pair law sums to 1 and matches p=1/2 table
 
@@ -127,6 +130,21 @@ def main() -> None:
         * (21 * p**5 - 6 * p**4 + 14 * p**3 - 36 * p**2 + 7 * p + 9)
         / ((p + 1) ** 3 * (p**2 - p + 1) ** 3)
     )
+    Pi11 = (
+        117 * p**11
+        - 450 * p**10
+        + 242 * p**9
+        - 1360 * p**8
+        + 2537 * p**7
+        - 833 * p**6
+        + 301 * p**5
+        - 1076 * p**4
+        + 188 * p**3
+        + 344 * p**2
+        - 37 * p
+        - 27
+    )
+    kappa3_star = sp.simplify(p**2 * (p - 1) * Pi11 / ((p + 1) ** 5 * (p**2 - p + 1) ** 5))
 
     # Characteristic polynomial factorization (symbolic).
     P_sym = sp.Matrix(
@@ -154,10 +172,39 @@ def main() -> None:
         + p**2 * u * (1 - p)
     )
 
+    # Cumulants via implicit differentiation at (lam,u)=(1,1).
+    F = sp.expand(pressure_expected)
+    subs_11 = {lam: 1, u: 1}
+    Fl = sp.simplify(sp.diff(F, lam).subs(subs_11))
+    Fu = sp.simplify(sp.diff(F, u).subs(subs_11))
+    Fll = sp.simplify(sp.diff(F, lam, 2).subs(subs_11))
+    Flu = sp.simplify(sp.diff(F, lam, 1, u, 1).subs(subs_11))
+    Fuu = sp.simplify(sp.diff(F, u, 2).subs(subs_11))
+    Flll = sp.simplify(sp.diff(F, lam, 3).subs(subs_11))
+    Fllu = sp.simplify(sp.diff(F, lam, 2, u, 1).subs(subs_11))
+    Fluu = sp.simplify(sp.diff(F, lam, 1, u, 2).subs(subs_11))
+    Fuuu = sp.simplify(sp.diff(F, u, 3).subs(subs_11))
+
+    lam1 = sp.simplify(-Fu / Fl)  # d/du lambda(u,p) at u=1
+    lam2 = sp.simplify(-(Fll * lam1**2 + 2 * Flu * lam1 + Fuu) / Fl)
+    lam3 = sp.simplify(
+        -(
+            3 * (Fll * lam1 + Flu) * lam2
+            + Flll * lam1**3
+            + 3 * Fllu * lam1**2
+            + 3 * Fluu * lam1
+            + Fuuu
+        )
+        / Fl
+    )
+    kappa2_from_lam = sp.simplify(lam2 + lam1 - lam1**2)
+    kappa3_from_lam = sp.simplify(lam3 + 3 * lam2 + lam1 - 3 * lam1 * lam2 - 3 * lam1**2 + 2 * lam1**3)
+
     # Endpoint I_p(0): rho(Q_p(0)) closed form.
     rho_q0 = sp.simplify(((1 - p) + sp.sqrt((1 - p) * (1 + 3 * p))) / 2)
     I0 = sp.simplify(-sp.log(rho_q0))
     I1 = sp.simplify(-sp.Rational(1, 3) * sp.log(p**2 * (1 - p)))
+    delta_inf = sp.simplify(sp.Rational(1, 3) * sp.log(p**2 * (1 - p)) - sp.log(rho_q0))
 
     # Covariance GF closed form (as in the paper).
     z = sp.Symbol("z")
@@ -188,6 +235,8 @@ def main() -> None:
     # 1) char poly factorization (symbolic exact).
     results.append(CheckResult(name="char_poly_factorization", max_abs_err=float(char_poly != char_expected)))
     results.append(CheckResult(name="pressure_quartic", max_abs_err=float(sp.simplify(pressure_poly - pressure_expected) != 0)))
+    results.append(CheckResult(name="kappa2_from_implicit_matches_sigma2", max_abs_err=float(sp.simplify(kappa2_from_lam - sigma_star) != 0)))
+    results.append(CheckResult(name="kappa3_closed_form", max_abs_err=float(sp.simplify(kappa3_from_lam - kappa3_star) != 0)))
 
     # 1b) Perron interface: A_{theta,p} eigenvectors and Parry normalization (symbolic exact).
     q = 1 - p
@@ -248,10 +297,27 @@ def main() -> None:
     half_diff = sp.factor(sp.simplify(g_star - sp.Rational(1, 2)))
     half_expected = sp.factor(-(p - 1) * (5 * p**2 - p - 1) / (2 * (1 + p**3)))
     results.append(CheckResult(name="density_half_threshold_factorization", max_abs_err=float(sp.simplify(half_diff - half_expected) != 0)))
+    collapse = sp.factor(sp.simplify(g_star - p**2))
+    collapse_expected = sp.factor(-(p**2) * (p**3 + 2 * p - 2) / (1 + p**3))
+    results.append(CheckResult(name="density_square_collapse_factorization", max_abs_err=float(sp.simplify(collapse - collapse_expected) != 0)))
+
+    # 1d) GC far-field defect constant: delta_inf(pcrit)=0 and sign matches 4p^2-2p-1.
+    pcrit = sp.simplify((1 + sp.sqrt(5)) / 4)
+    delta_pcrit = float(sp.N(delta_inf.subs({p: pcrit}), 80))
+    results.append(CheckResult(name="gc_farfield_pcrit_zero", max_abs_err=abs(delta_pcrit)))
+    sign_samples = [0.11, 0.27, 0.73, 0.91]
+    sign_ok = True
+    for pv in sign_samples:
+        dv = float(sp.N(delta_inf.subs({p: pv}), 80))
+        poly = 4 * pv * pv - 2 * pv - 1
+        # allow equality only at the unique critical point (not in our sample set)
+        sign_ok = sign_ok and ((dv > 0) == (poly > 0))
+    results.append(CheckResult(name="gc_farfield_sign_samples", max_abs_err=float(not sign_ok)))
 
     # 2) numeric checks across p-grid
     errs_density: List[float] = []
     errs_sigma: List[float] = []
+    errs_kappa3: List[float] = []
     errs_I0: List[float] = []
     errs_prob_sum: List[float] = []
     errs_Cp: List[float] = []
@@ -279,6 +345,11 @@ def main() -> None:
         sig_num = _variance_rate_edge_reward(P_num, pi_num)
         sig_cf = float(sp.N(sigma_star.subs({p: pv}), 50))
         errs_sigma.append(sig_num - sig_cf)
+
+        # third cumulant density (pressure third derivative at 0)
+        k3_cf = float(sp.N(kappa3_star.subs({p: pv}), 50))
+        k3_imp = float(sp.N(kappa3_from_lam.subs({p: pv}), 50))
+        errs_kappa3.append(k3_imp - k3_cf)
 
         # endpoint I0
         I0_cf = float(sp.N(I0.subs({p: pv}), 50))
@@ -335,6 +406,8 @@ def main() -> None:
             "g_star_closed": mu_cf,
             "sigma2_numeric": sig_num,
             "sigma2_closed": sig_cf,
+            "kappa3_closed": k3_cf,
+            "kappa3_implicit": k3_imp,
             "I0_closed": I0_cf,
             "prob_sum": sum(probs),
             "Cp_diff": float(sp.N(Cm_mat - Cm_closed, 30)),
@@ -344,6 +417,7 @@ def main() -> None:
         [
             CheckResult(name="density_g_star", max_abs_err=_max_abs(errs_density)),
             CheckResult(name="variance_sigma2", max_abs_err=_max_abs(errs_sigma)),
+            CheckResult(name="kappa3_density", max_abs_err=_max_abs(errs_kappa3)),
             CheckResult(name="endpoint_I0", max_abs_err=_max_abs(errs_I0)),
             CheckResult(name="bitpair_prob_sum", max_abs_err=_max_abs(errs_prob_sum)),
             CheckResult(name="covariance_gf_match", max_abs_err=_max_abs(errs_Cp)),
@@ -364,6 +438,7 @@ def main() -> None:
             "char_expected": str(char_expected),
             "g_star": str(g_star),
             "sigma2": str(sigma_star),
+            "kappa3": str(kappa3_star),
             "I0": str(I0),
             "I1": str(I1),
         },
