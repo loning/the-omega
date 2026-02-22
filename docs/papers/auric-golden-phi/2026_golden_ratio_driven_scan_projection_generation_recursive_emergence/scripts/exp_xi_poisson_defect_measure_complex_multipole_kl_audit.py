@@ -270,14 +270,14 @@ def main() -> None:
                          r"(c_2,c_3,c_4,c_5)=\left(\frac18,\frac{3}{32},\frac{5}{64},\frac{35}{512}\right).")
         tex_lines.append(r"\]")
         tex_lines.append(r"\[")
-        tex_lines.append(r"W=\Gamma-\mathrm{i}\Delta,\quad"
-                         r"W^2=(\Gamma^2-\Delta^2)-2\mathrm{i}\Gamma\Delta,\quad"
+        tex_lines.append(r"W=\Gamma-\mathrm{i}\Delta,\quad "
+                         r"W^2=(\Gamma^2-\Delta^2)-2\mathrm{i}\Gamma\Delta,\quad "
                          r"W^3=(\Gamma^3-3\Gamma\Delta^2)-\mathrm{i}(3\Gamma^2\Delta-\Delta^3).")
         tex_lines.append(r"\]")
         tex_lines.append(r"\[")
         tex_lines.append(
-            r"D_{\mathrm{KL}}(h_t\mid g_t)\sim c_k\,\frac{|m_k|^2}{T^{2k}},\qquad"
-            r"D_f(h_t\mid g_t)\sim f''(1)c_k\,\frac{|m_k|^2}{T^{2k}},\qquad"
+            r"D_{\mathrm{KL}}(h_t\mid g_t)\sim c_k\,\frac{|m_k|^2}{T^{2k}},\qquad "
+            r"D_f(h_t\mid g_t)\sim f''(1)c_k\,\frac{|m_k|^2}{T^{2k}},\qquad "
             r"I_1(h_t\mid g_t)\sim (2k)c_k\,\frac{|m_k|^2}{T^{2k+1}}."
         )
         tex_lines.append(r"\]")

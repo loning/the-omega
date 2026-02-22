@@ -273,7 +273,7 @@ def main() -> None:
         )
         tex.append(r"\]")
         tex.append(r"\[")
-        tex.append(r"\mathrm{Disc}_{s}\bigl(G(s,y)\bigr)=\Delta_{G}(y)^{2},\qquad"
+        tex.append(r"\mathrm{Disc}_{s}\bigl(G(s,y)\bigr)=\Delta_{G}(y)^{2},\qquad "
                    r"\Delta_{G}(y)=y^{5}(y-1)^{2}(y+1)^{3}(y^{2}+y-1)^{2}P_{\mathrm{LY}}(y)P_{9}(y).")
         tex.append(r"\]")
         tex.append(r"\[")
@@ -294,7 +294,7 @@ def main() -> None:
         tex.append(r"\[")
         tex.append(
             r"\mathrm{Disc}_{u}\bigl(F(u,y)\bigr)"
-            r"=-y(y-1)P_{\mathrm{LY}}(y)\,\Omega(y)^{2},\quad"
+            r"=-y(y-1)P_{\mathrm{LY}}(y)\,\Omega(y)^{2},\quad "
             r"\Omega(y)=y^{11}(y-1)^{5}(y+1)^{6}(y^{2}+y-1)^{4}P_{\mathrm{LY}}(y)^{2}P_{9}(y)^{2}."
         )
         tex.append(r"\]")
@@ -330,7 +330,7 @@ def main() -> None:
         tex.append(r"\]")
         tex.append(r"\[")
         tex.append(
-            r"L(s)=s+\frac{-1280y_{0}^{2}+2041y_{0}+6583}{3168},\quad"
+            r"L(s)=s+\frac{-1280y_{0}^{2}+2041y_{0}+6583}{3168},\quad "
             r"Q(s)=s^{2}+\frac{6400y_{0}^{2}-10205y_{0}-1235}{3168}\,s"
             r"+\frac{16640y_{0}^{2}-26533y_{0}-9547}{1584}."
         )
