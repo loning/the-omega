@@ -1,0 +1,92 @@
+\subsection{素数可逆性与 solenoid 终对象：把实现层因子化到最小完备相位系统}\label{subsec:cdim-solenoid-terminal-phase-system}
+上一小节以 dyadic 前缀读出给出半圆维的操作型缩放律。
+在更抽象的协议层面，“可逆素集合”提供另一条与实现无关的最小性机制：当某些素数被声明为可逆门（允许无损除法/提升），则所有实现必须因子化到同一紧阿贝尔终对象，从而把“可编码性”与“结构圆维”严格分离。
+
+\paragraph{离散侧：局部化的初对象}
+固定一个素数集合 \(S\)。
+记
+\[
+\ZZ[S^{-1}]
+:=\left\{\frac{a}{b}\in\QQ:\ a\in\ZZ,\ b\in\NN,\ \text{\(b\) 的素因子全在 \(S\)}\right\},
+\]
+并令 \(\iota:\ZZ\hookrightarrow \ZZ[S^{-1}]\) 为自然嵌入。
+该群满足：对每个 \(p\in S\)，乘 \(p\) 映射 \([p]_{\ZZ[S^{-1}]}:\ZZ[S^{-1}]\to\ZZ[S^{-1}]\) 为双射。
+
+\begin{proposition}[局部化的泛性质]\label{prop:cdim-localization-universal-property}
+设 \(A\) 为离散交换群，且给定嵌入 \(j:\ZZ\hookrightarrow A\)。
+若对每个 \(p\in S\)，乘 \(p\) 映射 \([p]_A\) 为双射，则存在唯一群同态
+\[
+\phi:\ZZ[S^{-1}]\longrightarrow A
+\]
+使 \(\phi\circ\iota=j\)。
+\end{proposition}
+\begin{proof}
+对任意 \(a/b\in\ZZ[S^{-1}]\)，由假设 \(b=\prod_{p\in S}p^{\alpha_p}\) 在 \(A\) 上可逆，故可定义
+\(
+\phi(a/b):=a\cdot [b]_A^{-1}(j(1))
+\)；
+该定义与表示无关并给出同态。
+唯一性由 \(\ZZ[S^{-1}]\) 由 \(\iota(\ZZ)\) 与对 \(p\in S\) 的除法闭包生成立得。证毕。
+\end{proof}
+
+\paragraph{紧侧：\texorpdfstring{$S$}{S}-solenoid 与终对象}
+令 \(\Sigma_S:=\widehat{\ZZ[S^{-1}]}\) 为其 Pontryagin 对偶紧群。
+由嵌入 \(\iota:\ZZ\hookrightarrow \ZZ[S^{-1}]\) 的对偶得到满射
+\[
+\pi_S:\Sigma_S\twoheadrightarrow \TT.
+\]
+
+\begin{theorem}[\texorpdfstring{$S$}{S}-solenoid 的终对象性质]\label{thm:cdim-s-solenoid-terminal-object}
+设 \(\Sigma\) 为紧阿贝尔群并给定满射 \(\pi:\Sigma\twoheadrightarrow \TT\)。
+记其对偶离散群为 \(A:=\widehat{\Sigma}\)，并令 \(j:\ZZ\hookrightarrow A\) 为 \(\pi\) 的对偶嵌入。
+若对每个 \(p\in S\)，\([p]_A\) 为双射，则存在唯一连续群同态
+\[
+f:\Sigma\longrightarrow \Sigma_S
+\]
+使得
+\[
+\pi_S\circ f=\pi.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:cdim-localization-universal-property}，存在唯一 \(\phi:\ZZ[S^{-1}]\to A\) 使 \(\phi\circ\iota=j\)。
+取 Pontryagin 对偶得到唯一同态 \(f:=\widehat{\phi}:\Sigma\to\Sigma_S\)。
+对偶化保持交换图表，故 \(f\) 与 \(\pi,\pi_S\) 满足 \(\pi_S\circ f=\pi\)。
+唯一性同理由对偶化的反变等价给出。证毕。
+\end{proof}
+
+\begin{remark}[实现层编码与结构圆维的严格分离]\label{rem:cdim-solenoid-terminal-separation}
+定理 \ref{thm:cdim-s-solenoid-terminal-object} 将“可逆素集合 \(S\)”提升为一个实现无关的最小性断言：
+在固定 \(S\) 的约束下，任何满足该可逆性纪律的实现都只能通过唯一因子化映射落入同一个 \(\Sigma_S\)，从而“最小完备相位系统”在范畴意义下由终对象唯一确定。
+因此，实现层的可编码性（例如把有限描述序列化为自然数）不携带可用于改变结构圆维的自由度；
+结构层的不变量仍由对偶连通部分/秩所控制（定义 \ref{def:circle-dimension} 与命题 \ref{prop:circle-dimension-laws}），而实现差异只能以残差寄存器与证书轴的外置形式进入账本（\S\ref{subsec:cdim-residual-circle-dimension}）。
+\end{remark}
+
+\paragraph{全素可逆性的极端：通用 solenoid}
+当 \(S\) 取所有素数时，\(\ZZ[S^{-1}]=\QQ\)，从而 \(\Sigma_S=\widehat{\QQ}\) 为一维通用 solenoid。
+这与 \eqref{eq:pom-universal-solenoid-quotient}--\eqref{eq:pom-universal-solenoid-ses} 的定义一致，记为 \(\Sol\)。
+
+\begin{theorem}[圆维为 \(1\) 且全素可逆的离散群必为 \texorpdfstring{$\QQ$}{Q}]\label{thm:cdim-cdim1-divisible-implies-Q}
+设 \(A\) 为离散交换群并满足：
+\begin{enumerate}
+  \item \textbf{无挠：}\(A\) torsion-free；
+  \item \textbf{全素可逆：}对每个素数 \(p\)，乘 \(p\) 映射 \([p]_A\) 为双射；
+  \item \textbf{秩为 \(1\)：}\(\dim_{\QQ}(A\otimes_{\ZZ}\QQ)=1\)；
+  \item \textbf{含整数：}存在嵌入 \(\ZZ\hookrightarrow A\)。
+\end{enumerate}
+则 \(A\cong\QQ\)。
+因此其对偶紧群同构于 \(\widehat{\QQ}\cong\Sol\)，并且存在短正合列
+\[
+0\to \widehat{\ZZ}\to \Sol\to \TT\to 0,
+\]
+与备注 \ref{rem:pom-solenoid-extension} 的接口一致。
+\end{theorem}
+\begin{proof}
+由 (2) 得 \(A\) 为可除群；与 (1) 合并得 \(A\) 为 \(\QQ\)-向量空间。
+由 (3) 得其 \(\QQ\)-维数为 \(1\)，故 \(A\cong\QQ\) 作为 \(\QQ\)-向量空间，从而作为交换群同构于 \(\QQ\)。
+(4) 排除平凡零群并固定嵌入类型。
+对偶与短正合列由对 \(\ZZ\hookrightarrow\QQ\) 的对偶化与 \Sol 的定义给出。证毕。
+\end{proof}
+
+\endinput
+
