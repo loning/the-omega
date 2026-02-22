@@ -1,0 +1,112 @@
+\paragraph{循环子图与独立集解释：迹矩的图计数展开}
+固定整数 \(m\ge 1\)。
+记 \(C_m\) 为顶点集 \(\ZZ/m\ZZ\) 上的循环图（当 \(m=1\) 允许自环、当 \(m=2\) 允许重边），边集
+\[
+E(C_m):=\{(t,t+1):t\in\ZZ/m\ZZ\}.
+\]
+对任意 \(S\subseteq E(C_m)\)，记 \(C_m[S]\) 为同顶点集的生成子图。
+令 \(\Ind(G)\) 表示图 \(G\) 的独立集全体（含空集），并记
+\[
+I(G):=|\Ind(G)|.
+\]
+
+\begin{conclusion}[全阶迹矩的“循环子图—独立集”展开]\label{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets}
+对任意 \(q\ge 1\) 与整数 \(m\ge 1\)，成立恒等式
+\[
+\boxed{\;
+\Tr\!\bigl((T^{(q)})^m\bigr)=2^{-m}\sum_{S\subseteq E(C_m)} I\!\bigl(C_m[S]\bigr)^{\,q}\;}
+\]
+其中 \(T^{(q)}\) 沿用本段开头对 \(U_q\) 上软核 \(T^{(q)}_{u,v}\) 的定义。
+\end{conclusion}
+\begin{proof}
+按迹的路径展开，
+\[
+\Tr\!\bigl((T^{(q)})^m\bigr)
+=\sum_{u_1,\dots,u_m\in U_q}\ \prod_{t\in\ZZ/m\ZZ}T^{(q)}_{u_t,u_{t+1}},
+\qquad (u_{m+1}:=u_1),
+\]
+而 \(T^{(q)}_{u,v}=\frac12\bigl(1+\mathbf{1}_{\{u\wedge v=0\}}\bigr)\)（由定义）给出
+\[
+\Tr\!\bigl((T^{(q)})^m\bigr)
+=2^{-m}\sum_{S\subseteq E(C_m)}\ \sum_{u_1,\dots,u_m\in U_q}\ \prod_{(t,t+1)\in S}\mathbf{1}_{\{u_t\wedge u_{t+1}=0\}}.
+\]
+对固定 \(S\)，将 \(u_t=(u_t^{(1)},\dots,u_t^{(q)})\) 按坐标分解。
+由于
+\[
+\mathbf{1}_{\{u_t\wedge u_{t+1}=0\}}=\prod_{j=1}^{q}\mathbf{1}_{\{u_t^{(j)}u_{t+1}^{(j)}=0\}},
+\]
+内层求和按坐标完全因子化为
+\[
+\sum_{u_1,\dots,u_m\in U_q}\ \prod_{(t,t+1)\in S}\mathbf{1}_{\{u_t\wedge u_{t+1}=0\}}
+=\left(\sum_{x\in\{0,1\}^{\ZZ/m\ZZ}}\ \prod_{(t,t+1)\in S}\mathbf{1}_{\{x_t x_{t+1}=0\}}\right)^{q}.
+\]
+而对二元赋值 \(x\)，令 \(A(x):=\{t\in\ZZ/m\ZZ:\ x_t=1\}\)。
+乘积约束 \(\mathbf{1}_{\{x_t x_{t+1}=0\}}\)（对每条 \((t,t+1)\in S\)）等价于 \(A(x)\) 不含任何 \(C_m[S]\) 的边，
+即 \(A(x)\in\Ind(C_m[S])\)。
+因此括号内的计数恰为 \(I(C_m[S])\)，从而内层求和为 \(I(C_m[S])^{q}\)。
+代回即得所示恒等式。证毕。
+\end{proof}
+
+\begin{remark}[与二元 word/necklace 展开的同一性]\label{rem:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-word-identification}
+将边子集 \(S\subseteq E(C_m)\) 编码为二元词 \(\omega=\omega_1\cdots\omega_m\in\{0,1\}^m\)：
+\[
+\omega_t:=\mathbf{1}_{\{(t,t+1)\notin S\}}\quad(t\in\ZZ/m\ZZ).
+\]
+则结论 \ref{con:xi-terminal-replica-softcore-binary-necklace-trace-formula} 的词迹值 \(\tau(\omega)\) 满足
+\(\tau(\omega)=I(C_m[S])\)，
+从而结论 \ref{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets} 与其 word 求和式严格一致。
+\end{remark}
+
+\begin{conclusion}[例外幂和的全循环扇区替换：独立集通道与对称幂通道]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-cycle-sector-replacement}
+对任意 \(q\ge 2\) 与整数 \(m\ge 1\)，有严格恒等式
+\[
+\boxed{\;
+S_m(q)=2^{-m}\Biggl(\sum_{\substack{S\subseteq E(C_m)\\ S\neq E(C_m)}} I\!\bigl(C_m[S]\bigr)^{\,q}\;+\;\Omega_m(q)\Biggr)\;}
+\]
+其中 \(S_m(q)=\sum_{i=0}^{q}(\lambda_i^{(q)})^m\) 为例外幂和（本段开头定义），并且
+\(\Omega_m(q)=\Tr(\mathrm{Sym}^q(K^m))\) 沿用结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified} 的记号。
+等价地，
+\[
+\Tr\!\bigl((T^{(q)})^m\bigr)-S_m(q)=2^{-m}\Bigl(I(C_m)^{q}-\Omega_m(q)\Bigr)
+=2^{-m}\Bigl(L_m^{q}-\Omega_m(q)\Bigr).
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-word-trace-sympower}，
+\(
+2^m S_m(q)=\sum_{w\in\{J,K\}^m}\Tr(\mathrm{Sym}^q(M(w)))
+\)
+并满足行列式二分：除 \(w=K^m\) 外的全部字词 \(w\) 均有
+\(\Tr(\mathrm{Sym}^q(M(w)))=(\Tr M(w))^q\)，而 \(w=K^m\) 的贡献恰为 \(\Omega_m(q)\)。
+将 \(w\) 通过 \(K\leftrightarrow (t,t+1)\in S\)、\(J\leftrightarrow (t,t+1)\notin S\) 与边子集 \(S\subseteq E(C_m)\) 识别，
+并用注 \ref{rem:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-word-identification} 的 \(\Tr M(w)=I(C_m[S])\)，即可得到所示替换恒等式。
+最后一条差分式由结论 \ref{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets} 与上式相减立得，并用 \(I(C_m)=L_m\) 记号统一写出。证毕。
+\end{proof}
+
+\begin{conclusion}[谱泄漏局部化：非对称子空间的迹仅由全循环扇区贡献]\label{con:xi-terminal-replica-softcore-spectral-leakage-localization-full-cycle-sector}
+令 \(\mathcal H_q:=(\CC^2)^{\otimes q}\)，并记 \(S_q\)-不变子空间 \(\mathcal H_q^{S_q}\cong\mathrm{Sym}^q(\CC^2)\)（结论 \ref{con:xi-terminal-replica-softcore-exceptional-spectrum-sympower-model}）。
+则对任意整数 \(m\ge 1\) 与 \(q\ge 2\)，有
+\[
+\boxed{\;
+\Tr\!\left(\left.(T^{(q)})^m\right|_{(\mathcal H_q^{S_q})^{\perp}}\right)
+=2^{-m}\Bigl(I(C_m)^{q}-\Omega_m(q)\Bigr)\;}
+\]
+其中正交补取于 \(\mathcal H_q\) 的自然内积。
+从而非对称方向的全部迹贡献被严格局部化到全循环扇区 \(S=E(C_m)\)（亦即字词 \(K^m\)）所触发的替换差项上。
+\end{conclusion}
+\begin{proof}[证明要点]
+由 \(J=uu^{\top}\)（\(u=(1,1)^{\top}\)），任一含 \(J\) 的字词乘积 \(M(w)\) 皆为秩 \(1\) 矩阵；
+因此 \(M(w)^{\otimes q}\) 的像空间包含于 \(\mathrm{span}\{a(w)^{\otimes q}\}\subset \mathcal H_q^{S_q}\)。
+换言之，除 \(w=K^m\) 外的全部扇区项在 \((\mathcal H_q^{S_q})^{\perp}\) 上限制为零算子。
+因此
+\[
+\Tr\!\left(\left.(T^{(q)})^m\right|_{(\mathcal H_q^{S_q})^{\perp}}\right)
+=2^{-m}\left(\Tr\!\bigl((K^{\otimes q})^m\bigr)-\Tr\!\bigl(\mathrm{Sym}^q(K^m)\bigr)\right)
+=2^{-m}\bigl(L_m^{q}-\Omega_m(q)\bigr),
+\]
+其中 \(\Tr((K^{\otimes q})^m)=\Tr((K^m)^{\otimes q})=(\Tr K^m)^q=L_m^q\)。
+最后用 \(I(C_m)=L_m\) 得到所示形式。证毕。
+\end{proof}
+
+\endinput
+
