@@ -1,0 +1,146 @@
+% (User input window)
+
+\begin{theorem}[对角约束最小互信息泛函的 Schur--凹性]\label{thm:pom-diagonal-rate-schur-concavity}
+固定有限字母表 \(X=\{1,\dots,n\}\)（\(n\ge 2\)）与 \(\delta\in[0,1]\)。
+对任意全支撑分布 \(w\in\Delta(X)\) 定义
+\[
+R_w(\delta):=\inf\Bigl\{I_P(X;Y):\ P_X=P_Y=w,\ \mathbb P_P(X=Y)\ge 1-\delta\Bigr\}.
+\]
+则映射 \(w\mapsto R_w(\delta)\) 在 \(\Delta(X)\) 的内点上为 Schur--凹：
+对任意 \(v,w\in\Delta(X)\)，若 \(v\prec w\)（Hardy--Littlewood--P\'olya 主序），则
+\[
+R_v(\delta)\ \ge\ R_w(\delta).
+\]
+\end{theorem}
+\begin{proof}
+记 \(p_2(w):=\sum_{i=1}^n w_i^2\)。
+若 \(\delta\ge 1-p_2(w)\)，则独立耦合 \(P=w\otimes w\) 满足
+\(
+\mathbb P(X=Y)=p_2(w)\ge 1-\delta
+\)
+且 \(I(X;Y)=0\)，从而 \(R_w(\delta)=0\)（命题 \ref{prop:pom-diagonal-rate-zero-threshold-collision}）。
+由于 \(t\mapsto t^2\) 凸，\(p_2\) 为 Schur--凸；因此 \(v\prec w\Rightarrow p_2(v)\le p_2(w)\Rightarrow \delta\ge 1-p_2(v)\)，并得到 \(R_v(\delta)=0\)。
+故以下仅需讨论 \(\delta<1-p_2(w)\) 的情形。
+\par
+当 \(\delta<1-p_2(w)\) 时，定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 给出唯一最优耦合
+\[
+P^\star_\delta(i,j)=\frac{u_i u_j\bigl(1+\kappa\,\mathbf 1_{\{i=j\}}\bigr)}{Z},
+\qquad
+w_i=\sum_j P^\star_\delta(i,j)=\frac{u_i(A+\kappa u_i)}{Z},
+\qquad
+A:=\sum_{j=1}^n u_j,
+\]
+其中 \(\kappa>0\)、\(u\in(0,\infty)^n\)、\(Z>0\)，且对角质量约束饱和。
+由定理 \ref{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}，函数 \(w\mapsto R_w(\delta)\) 在内点处 Fr\'echet 可微；
+其切空间梯度可取
+\[
+\nabla R_w(\delta)\equiv 2\psi_\delta \pmod{\RR\mathbf 1},
+\qquad
+\psi_\delta(i):=\log\frac{u_i}{w_i}.
+\]
+\par
+由边缘自洽关系 \(\kappa u_i^2+A u_i=Zw_i\) 的正根表示，
+\[
+\frac{u_i}{w_i}
+=\frac{2Z}{A+\sqrt{A^2+4\kappa Zw_i}},
+\]
+右端随 \(w_i\) 严格递减，因而 \(w_i>w_j\Rightarrow \psi_\delta(i)<\psi_\delta(j)\)。
+\par
+最后应用 Hardy--Littlewood--P\'olya 的梯度判别准则：对置换不变的可微函数 \(F\)，
+\(
+F
+\)
+为 Schur--凹当且仅当对任意 \(i,j\) 有
+\[
+(w_i-w_j)\Bigl(\frac{\partial F}{\partial w_i}-\frac{\partial F}{\partial w_j}\Bigr)\le 0.
+\]
+将 \(F(w)=R_w(\delta)\) 代入并用 \(\nabla R_w(\delta)\equiv 2\psi_\delta\pmod{\RR\mathbf 1}\) 消去常数项，即得
+\(
+(w_i-w_j)(\psi_\delta(i)-\psi_\delta(j))\le 0
+\)；
+由上一步严格单调性该判别式成立，从而 \(w\mapsto R_w(\delta)\) 为 Schur--凹。证毕。
+\end{proof}
+
+\begin{corollary}[均匀分布给出全局上界]\label{cor:pom-diagonal-rate-uniform-global-upper}
+令 \(|X|=n\ge 2\)，并记均匀分布 \(U_n\)。
+则对任意全支撑分布 \(w\in\Delta(X)\) 与任意 \(\delta\in[0,1]\) 成立
+\[
+R_w(\delta)\ \le\ R_{U_n}(\delta).
+\]
+并且当 \(0\le \delta<1-\tfrac1n\) 时，等号当且仅当 \(w\) 为 \(U_n\) 的置换。
+此外，\(R_{U_n}(\delta)\) 由定理 \ref{thm:pom-diagonal-rate-uniform-closed-form} 给出显式闭式，等价熵型重写见推论 \ref{cor:pom-diagonal-rate-uniform-entropy-rewrite}。
+\end{corollary}
+\begin{proof}
+均匀分布被任何 \(w\in\Delta(X)\) 主序化，即 \(U_n\prec w\)。
+由定理 \ref{thm:pom-diagonal-rate-schur-concavity} 的 Schur--凹性得
+\(
+R_{U_n}(\delta)\ge R_w(\delta)
+\)。
+当 \(0\le\delta<1-\tfrac1n\) 时，\(R_{U_n}(\delta)>0\) 且严格性与等号情形由定理 \ref{thm:pom-diagonal-rate-strict-schur-concavity} 给出。证毕。
+\end{proof}
+
+\begin{theorem}[严格 Schur--凹性与等号情形]\label{thm:pom-diagonal-rate-strict-schur-concavity}
+固定 \(n\ge 2\) 与 \(\delta\in(0,1)\)，并令 \(X=\{1,\dots,n\}\)。
+取 \(v,w\in\Delta(X)\) 全支撑且满足
+\[
+\delta<1-p_2(v),
+\qquad
+\delta<1-p_2(w),
+\]
+从而 \(R_v(\delta)>0\)、\(R_w(\delta)>0\)。
+若 \(v\prec w\) 且 \(v\) 不是 \(w\) 的置换，则必有严格不等式
+\[
+R_v(\delta)\ >\ R_w(\delta).
+\]
+另一方面，若 \(\delta\ge 1-p_2(w)\)，则 \(R_w(\delta)=0\)，并且对任何 \(v\prec w\) 亦有 \(R_v(\delta)=0\)。
+\end{theorem}
+\begin{proof}
+当 \(\delta\ge 1-p_2(w)\) 时，由定理 \ref{thm:pom-diagonal-rate-schur-concavity} 的证明已知 \(R_w(\delta)=0\) 且 \(v\prec w\Rightarrow R_v(\delta)=0\)。
+\par
+以下设 \(\delta<1-p_2(w)\) 且 \(w\) 全支撑。
+由定理 \ref{thm:pom-diagonal-rate-explicit-param-and-derivative} 与定理 \ref{thm:pom-diagonal-rate-frechet-derivative-scaling-potential}，
+在内点处
+\(
+\nabla R_w(\delta)\equiv 2\psi_\delta\pmod{\RR\mathbf 1}
+\)
+且 \(\psi_\delta(i)=\log(u_i/w_i)\)。
+由
+\[
+\frac{u_i}{w_i}=\frac{2Z}{A+\sqrt{A^2+4\kappa Zw_i}}
+\]
+可知当 \(w_i\ne w_j\) 时有严格不等式 \(\psi_\delta(i)\ne \psi_\delta(j)\)，并满足同序反向性 \(w_i>w_j\Rightarrow \psi_\delta(i)<\psi_\delta(j)\)。
+因此对任意 \(i\ne j\) 且 \(w_i\ne w_j\)，Hardy--Littlewood--P\'olya 的梯度判别式严格成立：
+\[
+(w_i-w_j)\Bigl(\frac{\partial R_w(\delta)}{\partial w_i}-\frac{\partial R_w(\delta)}{\partial w_j}\Bigr)
+\equiv 2(w_i-w_j)\bigl(\psi_\delta(i)-\psi_\delta(j)\bigr)\ <\ 0.
+\]
+由严格梯度判别准则，\(w\mapsto R_w(\delta)\) 在该区间上为严格 Schur--凹；
+于是若 \(v\prec w\) 且非置换，则严格不等式 \(R_v(\delta)>R_w(\delta)\) 成立。证毕。
+\end{proof}
+
+\begin{proposition}[最优耦合的二阶子式符号刚性]\label{prop:pom-diagonal-rate-optimal-coupling-minor-sign-rigidity}
+设 \(\delta<1-p_2(w)\) 且 \(w\in\Delta(X)\) 全支撑，令 \(P^\star_\delta\) 为实现 \(R_w(\delta)\) 的唯一最优耦合，并写成
+\[
+P^\star_\delta(i,j)=\frac{u_i u_j\bigl(1+\kappa\,\mathbf 1_{\{i=j\}}\bigr)}{Z},
+\qquad
+\kappa>0,\ u\in(0,\infty)^n.
+\]
+则对任意两行指标 \(i\ne j\) 与两列指标 \(k\ne \ell\)，有
+\[
+\det\!\begin{pmatrix}
+P^\star_\delta(i,k) & P^\star_\delta(i,\ell)\\
+P^\star_\delta(j,k) & P^\star_\delta(j,\ell)
+\end{pmatrix}
+=\frac{u_i u_j u_k u_\ell}{Z^2}\Bigl(b_{ik}b_{j\ell}-b_{i\ell}b_{jk}\Bigr),
+\qquad
+b_{ab}:=1+\kappa\,\mathbf 1_{\{a=b\}}.
+\]
+特别地，若 \(\{i,j\}\cap\{k,\ell\}=\varnothing\) 则该子式为零；
+若交集为单点，则子式的绝对值恒为 \(\kappa\,u_i u_j u_k u_\ell/Z^2\)，其符号由该单一对角元位于主对角角点（\(i=k\) 或 \(j=\ell\)）或反对角角点（\(i=\ell\) 或 \(j=k\)）唯一决定；
+若 \(i=k\) 且 \(j=\ell\)，则子式为正且绝对值为 \(\kappa(\kappa+2)\,u_i u_j u_k u_\ell/Z^2\)。
+\end{proposition}
+\begin{proof}
+将 \(P^\star_\delta(i,j)=\frac{u_i u_j}{Z}b_{ij}\) 代入并将 \(u_i,u_j,u_k,u_\ell\) 提出到行列式外即得显式分解。
+由于 \(b_{ab}\in\{1,1+\kappa\}\) 仅依赖于指标相等关系，后三条结论为有限情形的直接枚举。证毕。
+\end{proof}
+

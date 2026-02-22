@@ -1,0 +1,265 @@
+% (User input window)
+
+\paragraph{均匀基线下失配指示过程的同步收缩与无限记忆}\label{par:fold-gauge-anomaly-sofic-memory}
+在定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws} 的 Markov 表示下取 \(p=\tfrac12\)。
+沿用边势 \(g\)（式 \eqref{eq:fold-gauge-anomaly-bernoulli-p-edge-potential}），并把它视作二元观测过程
+\[
+g_t:=g(S_{t-1},S_t)\in\{0,1\},\qquad t\in\ZZ,
+\]
+其中 \((S_t)_{t\in\ZZ}\) 为该平稳链。
+记 \(0^n,1^n\) 为长度 \(n\) 的常字串，并沿用 \S\ref{subsec:folding-fibonacci-stable-syntax} 的 Fibonacci 数列 \((F_k)\) 与黄金比例 \(\varphi\)。
+
+\begin{theorem}[零段条件律的 Fibonacci 闭式与同步收缩]\label{thm:fold-gauge-anomaly-zero-run-fibonacci}
+在上述均匀基线下，对任意整数 \(n\ge 2\) 成立
+\[
+\PP\!\bigl(g_{t+1}=1\mid g_{t-n+1}\cdots g_t=0^n\bigr)
+=\frac{F_{n+3}}{2F_{n+5}}.
+\]
+并且该条件概率收敛到极限
+\[
+\lim_{n\to\infty}\PP(g_{t+1}=1\mid 0^n)=\frac{1}{2\varphi^2}=\frac{3-\sqrt5}{4},
+\]
+且振荡误差满足上界
+\[
+\Bigl|\PP(g_{t+1}=1\mid 0^n)-\frac{3-\sqrt5}{4}\Bigr|
+<\frac{1}{2F_{n+5}F_{n+6}}
+\qquad(n\ge 2).
+\]
+\end{theorem}
+\begin{proof}
+在 \(p=\tfrac12\) 时，由 \eqref{eq:fold-gauge-anomaly-bernoulli-p-transition} 得到四态链的转移矩阵
+\[
+P=
+\begin{pmatrix}
+\frac12&\frac14&0&\frac14\\
+0&0&1&0\\
+\frac12&\frac12&0&0\\
+1&0&0&0
+\end{pmatrix},
+\qquad
+\pi=\Bigl(\frac49,\frac29,\frac29,\frac19\Bigr),
+\]
+其中 \(\pi\) 为平稳分布（定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws} 的闭式在 \(p=\tfrac12\) 的特化）。
+\par
+由 \eqref{eq:fold-gauge-anomaly-bernoulli-p-edge-potential}，事件 \(g_t=0\) 等价于一步转移不在三条失配边
+\(
+a\to b,\ b\to c,\ c\to a
+\)
+之中；因此在该链上 \(g=0\) 的允许边恰为
+\[
+a\to a,\ a\to d,\ c\to b,\ d\to a.
+\]
+由此可见：若 \(g_{t-1}g_t=00\)，则第二步必须从 \(S_{t-1}\) 走一条 \(0\)-边，而状态 \(b\) 无 \(0\)-出边，故 \(S_{t-1}\neq b\)；
+又因 \(c\) 无 \(0\)-入边（即上式无任何 \(0\)-边以 \(c\) 为终点），结合 \(g_t=0\) 可得
+\[
+\PP(S_t\in\{a,d\}\mid g_{t-1}g_t=00)=1.
+\]
+从而对一切 \(n\ge 2\)，在条件 \(g_{t-n+1}\cdots g_t=0^n\) 下亦有 \(\PP(S_t\in\{a,d\}\mid 0^n)=1\)。
+\par
+记
+\[
+p_n:=\PP(S_t=a\mid g_{t-n+1}\cdots g_t=0^n)\qquad(n\ge 2).
+\]
+由于在集合 \(\{a,d\}\) 上仅 \(a\) 能以概率 \(P_{ab}=\tfrac14\) 产生下一位 \(g_{t+1}=1\)，从而
+\[
+\PP(g_{t+1}=1\mid 0^n)=\frac{p_n}{4}.
+\]
+另一方面，在后验分布 \((p,1-p)\)（对应 \(\{a,d\}\)）下观测到下一位为 \(0\) 的 Bayes 更新为
+\[
+p\longmapsto f(p)
+:=\frac{p\cdot P(a\to a)+(1-p)\cdot P(d\to a)}{p\cdot \PP(g_{t+1}=0\mid S_t=a)+(1-p)\cdot \PP(g_{t+1}=0\mid S_t=d)}
+=\frac{p\cdot\frac12+(1-p)\cdot 1}{p\cdot\frac34+(1-p)\cdot 1}
+=\frac{4-2p}{4-p},
+\]
+从而 \(p_{n+1}=f(p_n)\)（\(n\ge 2\)）。
+由平稳分布与两步滤波直接计算得到初值 \(p_2=\frac{10}{13}\)。
+\par
+断言
+\[
+p_n=\frac{2F_{n+3}}{F_{n+5}}\qquad(n\ge 2)
+\]
+可由归纳法验证：基例 \(n=2\) 成立；
+若对某个 \(n\ge 2\) 成立，则
+\[
+p_{n+1}=f(p_n)=\frac{4-2p_n}{4-p_n}
+=\frac{4-\frac{4F_{n+3}}{F_{n+5}}}{4-\frac{2F_{n+3}}{F_{n+5}}}
+=\frac{2F_{n+4}}{F_{n+6}}
+\]
+（其中用到 \(F_{n+5}-F_{n+3}=F_{n+4}\)、\(2F_{n+4}+F_{n+3}=F_{n+6}\)），得到归纳步。
+于是
+\[
+\PP(g_{t+1}=1\mid 0^n)=\frac{p_n}{4}=\frac{F_{n+3}}{2F_{n+5}}.
+\]
+极限由 \(F_{n+3}/F_{n+5}\to\varphi^{-2}\) 给出。
+误差界来自 Fibonacci 连分数收敛子的标准估计：\(\frac{F_{n+3}}{F_{n+5}}\) 为 \(\varphi^{-2}\) 的交错有界逼近且满足
+\(
+\bigl|\frac{F_{n+3}}{F_{n+5}}-\varphi^{-2}\bigr|<\frac{1}{F_{n+5}F_{n+6}}
+\)；
+两边乘以 \(\tfrac12\) 即得所示上界。证毕。
+\end{proof}
+
+\begin{theorem}[严格 sofic 与无限 Markov 阶：可计算的不可截断记忆]\label{thm:fold-gauge-anomaly-strictly-sofic-infinite-memory}
+在定理 \ref{thm:fold-gauge-anomaly-zero-run-fibonacci} 的设定下，对任意整数 \(n\ge 2\) 成立
+\[
+\PP\!\bigl(g_{t+1}=1\mid g_{t-n}\cdots g_t=10^n\bigr)=\frac{F_{n+1}}{2F_{n+3}}.
+\]
+并且对任意 \(k\ge 1\)，过程 \((g_t)_{t\in\ZZ}\) 不可能是 \(k\) 阶 Markov 链。
+更强地，对任意 \(n\ge \max\{2,k\}\)，两段共享同一长度 \(k\) 后缀的历史 \(0^n\) 与 \(10^n\) 给出严格不同的下一位条件律，且差值具有闭式：
+\[
+\PP(g_{t+1}=1\mid 10^n)-\PP(g_{t+1}=1\mid 0^n)
+=\frac{(-1)^n}{2F_{n+3}F_{n+5}}\neq 0.
+\]
+\end{theorem}
+\begin{proof}
+对 \(n\ge 2\)，历史 \(10^n\) 仍以 \(00\) 结尾，因而同样将 \(S_t\) 同步到 \(\{a,d\}\)，并在零段内部满足同一 Möbius 更新 \(p\mapsto f(p)=\frac{4-2p}{4-p}\)。
+令
+\[
+p^{(1)}_n:=\PP(S_t=a\mid g_{t-n}\cdots g_t=10^n)\qquad(n\ge 2),
+\]
+则对 \(n\ge 2\) 有 \(\PP(g_{t+1}=1\mid 10^n)=p^{(1)}_n/4\) 且 \(p^{(1)}_{n+1}=f(p^{(1)}_n)\)。
+只需确定初值：当 \(n=2\) 时 \(10^n=100\)，直接由平稳链计算得 \(\PP(g_{t+1}=1\mid 100)=\frac15\)，从而 \(p^{(1)}_2=\frac45\)。
+\par
+由归纳法可得
+\[
+p^{(1)}_n=\frac{2F_{n+1}}{F_{n+3}}\qquad(n\ge 2),
+\]
+因而
+\(
+\PP(g_{t+1}=1\mid 10^n)=\frac{F_{n+1}}{2F_{n+3}}
+\)。
+\par
+其次，Fibonacci 的广义 Cassini 恒等式给出
+\[
+F_{n+1}F_{n+5}-F_{n+3}^2 = (-1)^n,
+\]
+从而差值闭式成立：
+\[
+\frac{F_{n+1}}{2F_{n+3}}-\frac{F_{n+3}}{2F_{n+5}}
+=\frac{F_{n+1}F_{n+5}-F_{n+3}^2}{2F_{n+3}F_{n+5}}
+=\frac{(-1)^n}{2F_{n+3}F_{n+5}}.
+\]
+最后，若 \((g_t)\) 为某个有限阶 \(k\) 的 Markov 链，则任意两段历史只要共享长度 \(k\) 的末尾块，其下一位条件分布必相同。
+取任意 \(n\ge k\)，则 \(0^n\) 与 \(10^n\) 共享后缀 \(0^k\)，但其下一位取值 \(1\) 的条件概率差值严格非零，矛盾。
+因此不存在有限 \(k\) 使 \((g_t)\) 成为 \(k\) 阶 Markov。
+由于 \((g_t)\) 为有限状态链在边标号下的输出过程，其支撑为 sofic shift（见定理 \ref{thm:fold-gauge-anomaly-g-support-sofic}），上述结论可视为“严格 sofic”测度口径下的无限记忆深度证书。证毕。
+\end{proof}
+
+\begin{theorem}[失配指示过程的支撑语法：sofic 分解与双谱熵常数]\label{thm:fold-gauge-anomaly-g-support-sofic}
+令 \(\Sigma_g\subset\{0,1\}^{\ZZ}\) 为所有可由隐藏态图 \(V=\{a,b,c,d\}\) 的双边路径读取的标号序列集合：对每条允许边 \((i\to j)\) 赋标号 \(g(i,j)\in\{0,1\}\)（式 \eqref{eq:fold-gauge-anomaly-bernoulli-p-edge-potential}），并取其全体双边标号路径的像。
+则：
+\begin{enumerate}
+  \item \(\Sigma_g\) 为 sofic shift。
+  \item 其 follower-set（子集构造）右可解呈现恰有 \(10\) 个可达状态（可达的非空子集）：
+  \[
+  \{a,b,c,d\},\ \{a,b,c\},\ \{a,b,d\},\ \{a,b\},\ \{a,c\},\ \{a,d\},\ \{b,c\},\ \{a\},\ \{b\},\ \{c\}.
+  \]
+  \item 该右可解呈现的邻接矩阵 \(\mathbf A\) 的特征多项式因式分解为
+  \[
+  \chi_{\mathbf A}(\lambda)=\lambda^4(\lambda-1)(\lambda^2-\lambda-1)(\lambda^3-2),
+  \]
+  从而
+  \[
+  h_{\mathrm{top}}(\Sigma_g)=\log\varphi.
+  \]
+  \item \(\Sigma_g\) 含有两个非共轭的本质不可约成分：一不可约成分的 Perron 根为 \(\varphi\)，另一不可约成分的 Perron 根为 \(2^{1/3}\)；并且存在一个周期成分对应特征值 \(1\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+第 (1) 条为标准事实：任一有限标号有向图的双边标号路径集合为 sofic shift（参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}）。
+\par
+对第 (2) 条，对该四顶点标号图做子集构造：以“给定过去标号后当前可能顶点集”为状态，并对符号 \(x\in\{0,1\}\) 定义确定化转移
+\[
+\delta(Q,x)=\bigcup_{v\in Q}\mathrm{Out}_x(v),
+\]
+其中 \(\mathrm{Out}_x(v)\) 为从 \(v\) 出发、标号为 \(x\) 的边的终点集合。
+从初态 \(Q_0=\{a,b,c,d\}\) 出发直接枚举可达的非空子集，即得到所列 \(10\) 个状态；并且该确定化自动机对每个状态与每个符号至多一条出边，故为右可解呈现。
+\par
+对第 (3) 与第 (4) 条，把上述 \(10\) 状态自动机按强连通分量分块：可验证存在两个 \(4\) 状态强连通块，其邻接矩阵分别为
+\[
+B_1=
+\begin{pmatrix}
+0&1&0&1\\
+0&0&1&0\\
+1&1&0&0\\
+0&1&0&1
+\end{pmatrix},
+\qquad
+\chi_{B_1}(\lambda)=\lambda^2(\lambda^2-\lambda-1),
+\]
+\[
+B_2=
+\begin{pmatrix}
+0&1&0&0\\
+0&0&1&0\\
+1&0&0&1\\
+0&1&0&0
+\end{pmatrix},
+\qquad
+\chi_{B_2}(\lambda)=\lambda(\lambda^3-2),
+\]
+从而两者的 Perron 根分别为 \(\varphi\) 与 \(2^{1/3}\)。
+其余强连通块要么为瞬态（仅贡献零特征值），要么为单点周期块（贡献特征值 \(1\)），因此整体邻接矩阵 \(\mathbf A\) 的特征多项式为上述因子的乘积，即
+\(
+\chi_{\mathbf A}(\lambda)=\lambda^4(\lambda-1)(\lambda^2-\lambda-1)(\lambda^3-2)
+\)。
+sofic shift 的拓扑熵等于任一右可解呈现邻接矩阵的 Perron 根对数，故
+\(
+h_{\mathrm{top}}(\Sigma_g)=\log\varphi
+\)。
+两条本质不可约成分与周期成分亦由强连通分量分解直接读出。证毕。
+\end{proof}
+
+\begin{proposition}[柱事件 \(1^n\) 的三周期精确律]\label{prop:fold-gauge-anomaly-one-block-three-period-law}
+在同一设定下，记柱事件概率
+\[
+p_n:=\PP(g_{t+1}\cdots g_{t+n}=1^n)\qquad(n\ge 1).
+\]
+则对任意整数 \(m\ge 0\) 成立
+\[
+p_{3m+1}=\frac{4}{9\cdot 8^{m}},\qquad
+p_{3m+2}=\frac{1}{4\cdot 8^{m}},\qquad
+p_{3m}=\frac{1}{9\cdot 8^{m-1}}\ (m\ge 1).
+\]
+因此下一位条件概率呈严格三周期：
+\[
+\PP(g_{t+1}=1\mid 1^{3m})=\frac12,\quad
+\PP(g_{t+1}=1\mid 1^{3m+1})=\frac{9}{16},\quad
+\PP(g_{t+1}=1\mid 1^{3m+2})=\frac{4}{9}.
+\]
+\end{proposition}
+\begin{proof}
+在 \eqref{eq:fold-gauge-anomaly-bernoulli-p-edge-potential} 的标号下，标号为 \(1\) 的边强迫隐藏态沿三环
+\(
+a\to b\to c\to a
+\)
+运动；并且对应转移概率分别为 \(\frac14,1,\frac12\)，三步一圈的乘积为 \(\frac18\)。
+因此对任意 \(m\ge 0\)，在事件 \(1^{3m}\) 下隐藏态回到同一顶点并额外带来权重因子 \(8^{-m}\)。
+再由平稳分布 \(\pi_a+\pi_b+\pi_c=\frac89\) 与
+\(
+p_1=\PP(g_{t+1}=1)=g_\ast=\frac49
+\)
+及
+\(
+p_2=\PP(g_{t+1}g_{t+2}=11)=\frac14
+\)
+（直接由 \(\pi\) 与 \(P\) 计算），即可得到三条闭式；条件概率由比值 \(p_{n+1}/p_n\) 立得。证毕。
+\end{proof}
+
+\begin{conjecture}[金属平均 Ostrowski 家族中的 continuant 支配律]\label{conj:fold-gauge-anomaly-metallic-continuant-law}
+设 \(\alpha_A=[0;A,A,A,\dots]\) 为常数型连分数（\(A\in\NN_{\ge 1}\)），并假设相应的“取规范形”过程可由某个同步、确定性的有限状态转导器实现（Fibonacci 情形可参见 \cite{ITA_2001__35_6_491_0,LabbeLepsova2023FibonacciTwosComplement} 的 Berstel 加法器与不歧义换能器接口）。
+令 \((g^{(A)}_t)_{t\in\ZZ}\) 为相应的规范差异（mismatch）指示过程。
+\par
+记 continuant（广义 Fibonacci）序列 \((K^{(A)}_n)_{n\ge 0}\) 由
+\[
+K^{(A)}_0=0,\quad K^{(A)}_1=1,\quad K^{(A)}_{n+2}=A K^{(A)}_{n+1}+K^{(A)}_{n}
+\]
+定义。
+则存在有限阈值 \(n_0(A)\) 使得对一切 \(n\ge n_0(A)\) 成立闭式条件律
+\[
+\PP\!\bigl(g^{(A)}_{t+1}=1\mid 0^n\bigr)=\frac{K^{(A)}_{n+3}}{2K^{(A)}_{n+5}}.
+\]
+并且对任意 \(k\ge 1\)，过程 \((g^{(A)}_t)\) 不可能是 \(k\) 阶 Markov；其不可截断记忆差值应由 \(K^{(A)}\) 的广义 Cassini 型行列式恒等式给出显式闭式（在 \(A=1\) 时退化为定理 \ref{thm:fold-gauge-anomaly-strictly-sofic-infinite-memory} 的 Fibonacci 公式）。
+\end{conjecture}
+
+\endinput
+
