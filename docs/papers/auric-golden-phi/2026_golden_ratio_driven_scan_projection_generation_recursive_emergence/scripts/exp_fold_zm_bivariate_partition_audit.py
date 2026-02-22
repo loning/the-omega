@@ -149,6 +149,16 @@ def main() -> None:
 
     # Lee–Yang real root
     cubic = 256 * y**3 + 411 * y**2 + 165 * y + 32
+
+    # --- Exterior-square sextic chi^(2)(mu;y) (wedge^2 companion) ---
+    mu = sp.Symbol("mu")
+    C = sp.Matrix([[0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1], [-y * (y + 1), -1, 2 * y + 1, 1]])
+    pairs = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3), (2, 3)]
+    W2 = sp.Matrix(6, 6, lambda r, c: C[pairs[r][0], pairs[c][0]] * C[pairs[r][1], pairs[c][1]] - C[pairs[r][0], pairs[c][1]] * C[pairs[r][1], pairs[c][0]])
+    chi2_expected = mu**6 + (2 * y + 1) * mu**5 - (y**2 + y + 1) * mu**4 - (4 * y**3 + 7 * y**2 + 3 * y + 1) * mu**3 - (y**4 + 2 * y**3 + 2 * y**2 + y) * mu**2 + (2 * y**5 + 5 * y**4 + 4 * y**3 + y**2) * mu + y**3 * (y + 1) ** 3
+    chi2_ok = sp.factor(sp.expand(W2.charpoly(mu).as_expr()) - chi2_expected) == 0
+    disc2_ok = sp.factor(sp.factor(sp.discriminant(chi2_expected, mu)) - (y**4 * (y - 1) * (y + 1) ** 3 * (y**2 + y - 1) * cubic) ** 2) == 0
+    chi2_minus1_ok = sp.factor(chi2_expected.subs({mu: -1}) - y * (y - 1) * (y**2 + y - 1) ** 2) == 0
     roots = [complex(r) for r in sp.nroots(cubic)]
     y_ly = None
     for r in roots:
@@ -485,6 +495,9 @@ def main() -> None:
             "recurrence_2d_amk_ok": rec2_ok,
             "recurrence_2d_fail_head": rec2_fail[:5],
             "discriminant_factorization_ok": bool(disc_ok),
+            "exterior_square_charpoly_ok": bool(chi2_ok),
+            "exterior_square_discriminant_square_ok": bool(disc2_ok),
+            "exterior_square_mu_minus1_ok": bool(chi2_minus1_ok),
             "mean_ok_5_over_18": bool(mean_ok),
             "var_ok_67_over_972": bool(var_ok),
             "kappa3_rate_ok_neg_22_over_2187": bool(kappa3_ok),

@@ -1,6 +1,6 @@
 \paragraph{全局积分缺陷与端点通量：闭式核、总和律与黄金尺度渐近}\label{par:xi-comoving-integrated-jensen-defect-sumrule}
-在共动平移族 \(x_0\mapsto F_{\zeta,x_0}\) 的圆盘化完成化口径下，Jensen 缺陷 \(D_{\zeta,x_0}(\varrho)\)（\eqref{eq:xi-comoving-shifted-jensen-defect}）对零点是可加的，从而其在 \(x_0\) 上的积分给出一个只依赖离线偏移 \(\delta\) 的标量不变量。
-该不变量与端点吸收系数 \(\Phi_{-1}(B)\)（端点通量）形成严格的同构关系（参见 \eqref{eq:xi-endpoint-absorption-kernel-limit} 的 \(\Phi_{-1}(B)=\sum_k\delta_k\)），并在黄金分辨率链上具有可显式审计的速率常数。
+在共动平移族 \(x_0\mapsto F_{\zeta,x_0}\) 的圆盘化完成化口径下，Jensen 缺陷 \(D_{\zeta,x_0}(\varrho)\)（\eqref{eq:xi-comoving-shifted-jensen-defect}）对零点逐项可加；其在 \(x_0\) 上的全局积分因此分解为一组仅依赖离线偏移 \(\delta\) 的闭式核的总和。
+该分解完全消去高度变量 \(\gamma\)，并导出 \(L^1\)-型端点判据、可见阈值处的非整数幂尖点律，以及黄金分辨率链上的显式端点饱和渐近。
 
 \paragraph{单零点截断缺陷核的 \texorpdfstring{$L^1$}{L1} 闭式}
 固定 \(0<\delta<1\)，定义 Cayley 像
@@ -132,6 +132,8 @@ J_{\varrho}(\delta)\to \pi(1+\delta)-\pi(1-\delta)=2\pi\delta
 \)，得到 \eqref{eq:xi-single-defect-saturation}。证毕。
 \end{proof}
 
+\input{prop__xi-single-defect-threshold-phase-transition}
+
 \begin{proposition}[可见区长度与对数半径导数]\label{prop:xi-single-defect-mass-log-derivative}
 固定 \(0<\delta<1\)。
 则映射 \(\varrho\mapsto J_{\varrho}(\delta)\) 在 \((0,1)\) 上局部绝对连续，并且对几乎处处 \(0<\varrho<1\) 有
@@ -177,7 +179,7 @@ f_x(\varrho)=\log(\varrho/|\mathcal{C}(x+\mathrm{i}\delta)|)
 \mathcal{I}_D(\varrho):=\int_{\RR}D_{\zeta,x_0}(\varrho)\,\dd x_0\qquad(0<\varrho<1).\;}
 \end{equation}
 
-\begin{theorem}[协变 Jensen 缺陷的 \(x_0\)-迹公式与端点吸收系数]\label{thm:xi-integrated-defect-sumrule-endpoint-flux}
+\begin{theorem}[平移 coarea 恒等式：全局积分缺陷的高度消去分解与端点饱和]\label{thm:xi-integrated-defect-sumrule-endpoint-flux}
  令 \(\mathcal{Z}^-\) 与 \(\delta(\rho)\) 如定理 \ref{thm:xi-comoving-jensen-defect-kernel-decomposition} 所定义（按重数计）。
  则对任意 \(0<\varrho<1\)，总平均缺陷 \(\mathcal{I}_D(\varrho)\) 满足精确恒等式（允许取扩展实数 \(+\infty\)）
 \begin{equation}\label{eq:xi-integrated-defect-sumrule}
@@ -228,7 +230,7 @@ f_x(\varrho)=\log(\varrho/|\mathcal{C}(x+\mathrm{i}\delta)|)
  最后由端点通量的加性表示 \(\Phi_{-1}(B)=\sum_{\rho\in\mathcal{Z}^-}\delta(\rho)\)（见 \eqref{eq:xi-endpoint-absorption-kernel-limit}）得到 \eqref{eq:xi-integrated-defect-limit-endpoint-flux}。证毕。
 \end{proof}
 
-\begin{corollary}[总平均缺陷的端点等价判据]\label{cor:xi-scalar-certificate-integrated-defect}
+\begin{corollary}[总平均缺陷的端点等价判据（不取上确界）]\label{cor:xi-scalar-certificate-integrated-defect}
 RH 成立当且仅当
 \begin{equation}\label{eq:xi-rh-iff-integrated-defect-vanishes}
 \boxed{\;\lim_{\varrho\uparrow 1}\mathcal{I}_D(\varrho)=0.\;}
@@ -242,6 +244,8 @@ RH 成立当且仅当
 \lim_{\varrho\uparrow 1}\mathcal{I}_D(\varrho)\ge 2\pi\delta(\rho)>0
 \)，与 \eqref{eq:xi-rh-iff-integrated-defect-vanishes} 矛盾。证毕。
 \end{proof}
+
+\input{thm__xi-integrated-defect-cusp-reconstruction}
 
 \begin{corollary}[离临界线偏移的计数上界]\label{cor:xi-offcritical-count-bound-by-integrated-defect}
 取任意 \(\delta_0\in(0,1)\) 与任意半径 \(\varrho\in(0,1)\) 满足 \(\varrho>\frac{1-\delta_0}{1+\delta_0}\)（从而 \(J_{\varrho}(\delta_0)>0\)）。
@@ -566,6 +570,8 @@ X(\varrho_m,\delta)^2=\delta(\varphi^m+\varphi^{-m})-(1+\delta^2)=\delta\,\varph
 用 \(\arctan u\le u\)（\(u\ge 0\)）估计即得 \eqref{eq:xi-saturation-upperbound-by-window}。
 最后对黄金链，\eqref{eq:xi-golden-resolution-chain-rho-closed} 给出 \(q(\varrho_m)=\varphi^{-m}\)，代回 \eqref{eq:xi-visible-window-q-identity} 得所述 \(X(\varrho_m,\delta)\) 的闭式与增长率，从而得到结论。证毕。
 \end{proof}
+
+\input{conj__xi-integrated-defect-golden-exponential-decay}
 
 \begin{conjecture}[Poisson 粗粒化下 Jensen 缺陷的逆向相对熵表征]\label{conj:xi-jensen-defect-reverse-kl-bridge}
 存在由 \(F_{\zeta,x_0}\) 的边界值可构造的概率密度族 \(\{h^{(x_0)}\}_{x_0\in\RR}\)，以及与 \(\varrho\uparrow 1\) 单调对应的尺度参数 \(t=t(\varrho)\to\infty\)，使得对所有 \(x_0\) 有

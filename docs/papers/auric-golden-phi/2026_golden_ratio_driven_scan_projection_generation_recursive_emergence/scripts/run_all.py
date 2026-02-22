@@ -2864,6 +2864,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_y_doubling_mobius_cocycle_audit",
+            script="exp_fold_zm_elliptic_y_doubling_mobius_cocycle_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_y_doubling_mobius_cocycle_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_weight_doubling_audit",
             script="exp_fold_zm_elliptic_weight_doubling_audit.py",
             args=[],
