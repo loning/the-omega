@@ -190,4 +190,118 @@ c_{n+2N}=\sum_{j=0}^{2N-1}\alpha_j\,c_{n+j}\qquad(\alpha_j\in\QQ).
 因此，在外因子 \(O\) 的径向对数导数可被可审计地控制/剥离的条件下，\(\mathcal{A}_B\) 的非零性给出离线零点存在性的端点证书；并且在有限缺陷近似（有限 Blaschke）下，\(\mathcal{A}_B\) 甚至可反演出全部 \((\gamma_k,\delta_k)\)，从而把“离线零点”从二维隐数据转写为单变量剖面函数的可审计谱指纹（定理 \ref{thm:xi-endpoint-absorption-inversion-uniqueness}）。
 \end{corollary}
 
+\begin{theorem}[无穷 Blaschke 漂移剖面的亚纯结构、可识别性与局部稳定]\label{thm:xi-endpoint-infinite-blaschke-drift-identifiability-stability}
+令 \(B\) 为（可能无穷）Blaschke 乘积，并记 Cayley 参数
+\(
+t_k=\gamma_k+\mathrm{i}\delta_k\in\mathbb H
+\)（\(\delta_k>0\)）。
+假设可和条件
+\[
+\sum_k\frac{\delta_k}{\gamma_k^2+\delta_k^2}<\infty.
+\]
+定义漂移剖面
+\[
+\mathcal A_B(r):=-\frac{\dd}{\dd r}\log|B(-r)|,\qquad r\in(0,1),
+\]
+并令
+\[
+F_B(q):=\mathcal A_B\!\left(\frac{1-q}{1+q}\right).
+\]
+则成立：
+\begin{enumerate}
+  \item \(F_B\) 在 \(\Re q>0\) 解析，并可唯一亚纯延拓到
+  \(
+  \CC\setminus\{q_{k,\pm}\}
+  \)，其中
+  \[
+  q_{k,\pm}=\frac{-\delta_k\pm \mathrm{i}\gamma_k}{\delta_k^2+\gamma_k^2}.
+  \]
+  \item 若 \(B_1,B_2\) 满足同样可和条件，且在任一具有聚点的集合
+  \(I\subset(0,1)\) 上有
+  \(
+  \mathcal A_{B_1}(r)=\mathcal A_{B_2}(r)
+  \)，
+  则二者极点多重集一致，等价于
+  \(
+  \{(\gamma_k,\delta_k)\}
+  \)
+  一致（仅差排列与共轭配对）。
+  \item 设 \(F_B\) 在闭圆盘 \(\overline{D(q_0,\eta)}\) 内仅有一个简单极点 \(q_0\)，留数 \(\alpha\neq 0\)；
+  设 \(\widetilde F\) 在该盘内亦仅有一个简单极点 \(\widetilde q_0\)，并满足
+  \[
+  \sup_{|q-q_0|=\eta}|F_B(q)-\widetilde F(q)|\le \varepsilon
+  \quad\text{且}\quad
+  \varepsilon<\frac{|\alpha|}{2\eta}.
+  \]
+  则有显式稳定界
+  \[
+  |\widetilde q_0-q_0|
+  \le
+  \frac{2\eta^2}{|\alpha|}\,\varepsilon.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:xi-endpoint-absorption-kernel-representation} 的单因子公式，
+\[
+F_B(q)=\sum_k \frac{\delta_k(1+q)^2}{q^2\gamma_k^2+(1+q\delta_k)^2}.
+\]
+对任意紧集 \(K\Subset\{q:\Re q>0\}\)，每项可由常数 \(C_K\) 估计为
+\[
+\left|\frac{\delta_k(1+q)^2}{q^2\gamma_k^2+(1+q\delta_k)^2}\right|
+\le
+C_K\frac{\delta_k}{\gamma_k^2+\delta_k^2},
+\]
+而右端可和，故由 Weierstrass 判别法得在 \(\Re q>0\) 上局部一致收敛并解析。
+同理在任意避开 \(\{q_{k,\pm}\}\) 的紧集上局部一致收敛，得到唯一亚纯延拓。
+
+若 \(B_1,B_2\) 在 \(I\subset(0,1)\) 上剖面相等，则对应 \(F_{B_1},F_{B_2}\) 在 \(\Re q>0\) 的带聚点集合上相等，由恒等定理得该半平面内恒等；再由亚纯延拓唯一性，极点多重集一致。
+由
+\[
+q_{k,+}=\frac{-\delta_k+\mathrm{i}\gamma_k}{\delta_k^2+\gamma_k^2}
+\quad\Longrightarrow\quad
+\delta_k=\frac{-\Re q_{k,+}}{|q_{k,+}|^2},\ 
+\gamma_k=\frac{\Im q_{k,+}}{|q_{k,+}|^2},
+\]
+可恢复参数多重集（到排列/共轭配对）。
+
+最后证明局部稳定界。记
+\[
+\alpha=\frac{1}{2\pi i}\oint_{|q-q_0|=\eta}F_B(q)\,\dd q,\qquad
+\widetilde\alpha=\frac{1}{2\pi i}\oint_{|q-q_0|=\eta}\widetilde F(q)\,\dd q .
+\]
+由边界误差界，
+\[
+|\widetilde\alpha-\alpha|
+\le
+\frac{1}{2\pi}\cdot(2\pi\eta)\varepsilon
+=\eta\varepsilon
+<\frac{|\alpha|}{2},
+\]
+从而 \(|\widetilde\alpha|\ge |\alpha|/2\)。
+又由于 \((q-q_0)F_B\) 在盘内全纯（唯一极点已消去），有
+\[
+\frac{1}{2\pi i}\oint_{|q-q_0|=\eta}(q-q_0)\widetilde F(q)\,\dd q
+=
+\widetilde\alpha(\widetilde q_0-q_0)
+=
+\frac{1}{2\pi i}\oint_{|q-q_0|=\eta}(q-q_0)\bigl(\widetilde F-F_B\bigr)\,\dd q.
+\]
+故
+\[
+|\widetilde\alpha|\,|\widetilde q_0-q_0|
+\le
+\frac{1}{2\pi}\cdot(2\pi\eta)\cdot\eta\varepsilon
+=\eta^2\varepsilon.
+\]
+代入 \(|\widetilde\alpha|\ge |\alpha|/2\) 即得
+\[
+|\widetilde q_0-q_0|
+\le
+\frac{2\eta^2}{|\alpha|}\,\varepsilon.
+\]
+证毕。
+\end{proof}
+
 \endinput

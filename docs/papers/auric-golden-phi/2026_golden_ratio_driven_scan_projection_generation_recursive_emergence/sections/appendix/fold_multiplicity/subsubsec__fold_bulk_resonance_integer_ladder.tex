@@ -11,13 +11,195 @@
 \mathsf{Col}_m=\frac{1}{F_{m+2}}\sum_{k}a_m(k)^2
 \)。
 
-\begin{definition}[整数共振梯常数]\label{def:fold-critical-resonance-ladder}
+\begin{definition}[共振梯常数]\label{def:fold-critical-resonance-ladder}
 令 \(\varphi=(1+\sqrt 5)/2\)。
-对每个整数 \(u\in\ZZ\)，定义无穷乘积
+对每个实数 \(u\in\RR\)，定义无穷乘积
 \[
 C_\varphi(u):=\prod_{n=2}^{\infty}\bigl|\cos(\pi u\,\varphi^{-n})\bigr|.
 \]
 \end{definition}
+
+\paragraph{解析闭包与实零结构}
+\begin{theorem}[共振梯的整函数闭包、函数方程与实零点结构]\label{thm:fold-resonance-entire-lp}
+定义整函数候选
+\[
+\mathcal{F}_\varphi(z):=\prod_{n=2}^{\infty}\cos(\pi z\,\varphi^{-n}),\qquad z\in\CC.
+\]
+则成立：
+\begin{enumerate}
+  \item \(\mathcal{F}_\varphi\) 为整函数，且为指数型（阶为 \(1\)），并满足
+  \[
+  |\mathcal{F}_\varphi(z)|\le \exp\!\bigl(\pi|\Im z|\bigr)\qquad(\forall z\in\CC).
+  \]
+  \item \(\mathcal{F}_\varphi\) 满足严格自相似函数方程
+  \[
+  \mathcal{F}_\varphi(z)=\cos\!\Bigl(\frac{\pi z}{\varphi^2}\Bigr)\,\mathcal{F}_\varphi\!\Bigl(\frac{z}{\varphi}\Bigr).
+  \]
+  \item \(\mathcal{F}_\varphi\) 的零点全部为实且均为单零，零点集为
+  \[
+  \mathcal{Z}(\mathcal{F}_\varphi)=\Bigl\{(k+\tfrac12)\varphi^n:\ k\in\ZZ,\ n\ge 2\Bigr\}.
+  \]
+  \item \(\mathcal{F}_\varphi\) 属于 Laguerre--P\'olya 类。
+\end{enumerate}
+并且对任意 \(u\in\RR\)，有
+\[
+C_\varphi(u)=|\mathcal{F}_\varphi(u)|.
+\]
+\end{theorem}
+
+\begin{proof}
+记 \(w_n(z):=\pi z\varphi^{-n}\)（\(n\ge 2\)）。对任意紧集 \(K_R:=\{z:|z|\le R\}\)，有
+\(
+|w_n(z)|\le \pi R\varphi^{-n}
+\)。
+利用估计
+\[
+|\cos w-1|\le \frac{|w|^2}{2}e^{|\Im w|}\qquad(\forall w\in\CC),
+\]
+可得
+\[
+\sum_{n\ge 2}\sup_{z\in K_R}|\cos w_n(z)-1|
+\le
+\frac{\pi^2R^2}{2}e^{\pi R}\sum_{n\ge 2}\varphi^{-2n}<\infty.
+\]
+故无穷乘积在紧集上一致收敛并定义整函数。
+
+再由 \(|\cos(x+iy)|\le e^{|y|}\) 得
+\[
+|\mathcal{F}_\varphi(z)|
+\le
+\prod_{n\ge 2}\exp\!\bigl(\pi|\Im z|\,\varphi^{-n}\bigr)
+=
+\exp\!\Bigl(\pi|\Im z|\sum_{n\ge 2}\varphi^{-n}\Bigr)
+=\exp\!\bigl(\pi|\Im z|\bigr),
+\]
+其中使用 \(\sum_{n\ge 2}\varphi^{-n}=1\)。从而得到指数型上界。
+
+函数方程由首因子分离得到：
+\[
+\mathcal{F}_\varphi(z)
+=
+\cos\!\Bigl(\frac{\pi z}{\varphi^2}\Bigr)\prod_{n\ge 3}\cos(\pi z\varphi^{-n})
+=
+\cos\!\Bigl(\frac{\pi z}{\varphi^2}\Bigr)\,\mathcal{F}_\varphi\!\Bigl(\frac{z}{\varphi}\Bigr).
+\]
+
+每个因子 \(\cos(\pi z\varphi^{-n})\) 的零点为 \(\{(k+\tfrac12)\varphi^n:k\in\ZZ\}\)。
+若 \(n\neq m\) 时两层零点重合，则有
+\[
+\varphi^{n-m}=\frac{\ell+\tfrac12}{k+\tfrac12}\in\QQ,
+\]
+与 \(\varphi\) 的无理性矛盾，故不同层零点不相交；在任一零点处仅一因子消失，故皆为单零。
+
+令有限部分积
+\[
+\mathcal{F}_{\varphi,N}(z):=\prod_{n=2}^{N}\cos(\pi z\varphi^{-n}).
+\]
+每个 \(\mathcal{F}_{\varphi,N}\) 为仅有实零点的实整函数，故属于 Laguerre--P\'olya 类。由前述紧集一致收敛，
+\(\mathcal{F}_{\varphi,N}\to\mathcal{F}_\varphi\)；
+Laguerre--P\'olya 类对局部一致极限封闭，故 \(\mathcal{F}_\varphi\in\mathrm{LP}\)。
+
+最后，对 \(u\in\RR\) 取绝对值即得
+\[
+|\mathcal{F}_\varphi(u)|
+=
+\prod_{n=2}^{\infty}|\cos(\pi u\varphi^{-n})|
+=
+C_\varphi(u).
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[Jensen 多项式的全实根性]\label{cor:fold-resonance-jensen-hyperbolicity}
+设
+\[
+\mathcal{F}_\varphi(z)=\sum_{n\ge 0}a_n z^n.
+\]
+对任意整数 \(d\ge 0\) 与 \(N\ge 1\)，定义 Jensen 多项式
+\[
+J_N^{(d)}(x):=\sum_{k=0}^{N}\binom{N}{k}a_{k+d}x^k.
+\]
+则 \(J_N^{(d)}\) 均为全实根多项式。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:fold-resonance-entire-lp}，\(\mathcal{F}_\varphi\in\mathrm{LP}\)。
+据 P\'olya--Jensen 判别，实整函数属于 Laguerre--P\'olya 类当且仅当其全部 Jensen 多项式全实根。应用该判别即得结论。证毕。
+\end{proof}
+
+\begin{remark}[从数值极值到可判别结构的桥接]\label{rem:fold-jensen-bridge-fibonacci-extrema}
+在本文的 Fibonacci 模态极值分析中，
+\(\{J_N^{(d)}\}_{N,d}\) 的全实根性提供了一类与离散频率审计兼容的解析判别对象。
+这使得“极值是否由稳定实零结构驱动”可以在 Jensen 链上被逐级检验，
+从而补充纯数值扫描并形成可复核的结构性证据。
+\end{remark}
+
+\begin{proposition}[共振梯常数的截断误差上界]\label{prop:fold-resonance-truncation-error}
+对 \(u\in\RR\) 与 \(N\ge 2\)，记
+\[
+C_{\varphi,N}(u):=\prod_{n=2}^{N}\Bigl|\cos\bigl(\pi u\varphi^{-n}\bigr)\Bigr|.
+\]
+若满足
+\[
+\pi|u|\varphi^{-(N+1)}\le \frac12,
+\]
+则有显式双边界
+\[
+C_{\varphi,N}(u)\,
+\exp\!\Bigl(
+-\frac{\pi^2u^2\,\varphi^{-2(N+1)}}{1-\varphi^{-2}}
+\Bigr)
+\le
+C_\varphi(u)
+\le
+C_{\varphi,N}(u).
+\]
+其中右侧不等式对所有 \(N\ge 2\) 恒成立。
+\end{proposition}
+
+\begin{proof}
+由 \(|\cos x|\le 1\)（\(x\in\RR\)）直接得到上界
+\(
+C_\varphi(u)\le C_{\varphi,N}(u)
+\)。
+
+下界方面，令 \(x_n:=\pi|u|\varphi^{-n}\)。
+当 \(n\ge N+1\) 时有 \(x_n\le 1/2\)。
+在区间 \([0,1/2]\) 上记
+\[
+h(x):=x^2+\log(\cos x),
+\]
+则 \(h(0)=0\) 且
+\[
+h'(x)=2x-\tan x.
+\]
+又 \(g(x):=2x-\tan x\) 满足 \(g(0)=0\)、\(g'(x)=2-\sec^2x>0\)（\(0\le x\le 1/2<\pi/4\)），故 \(h'(x)\ge 0\)。
+于是 \(h(x)\ge 0\)，等价于
+\[
+-\log(\cos x)\le x^2\qquad(0\le x\le 1/2).
+\]
+因此
+\[
+-\sum_{n>N}\log\Bigl|\cos\bigl(\pi u\varphi^{-n}\bigr)\Bigr|
+\le
+\sum_{n>N}x_n^2
+=
+\pi^2u^2\sum_{n>N}\varphi^{-2n}
+=
+\frac{\pi^2u^2\,\varphi^{-2(N+1)}}{1-\varphi^{-2}}.
+\]
+指数化并与前 \(N\) 项分离即得
+\[
+C_\varphi(u)
+=
+C_{\varphi,N}(u)\prod_{n>N}\Bigl|\cos\bigl(\pi u\varphi^{-n}\bigr)\Bigr|
+\ge
+C_{\varphi,N}(u)\exp\!\Bigl(
+-\frac{\pi^2u^2\,\varphi^{-2(N+1)}}{1-\varphi^{-2}}
+\Bigr).
+\]
+证毕。
+\end{proof}
 
 \begin{theorem}[bulk 共振梯的全整数推广]\label{thm:fold-critical-resonance-constant-integer-ladder}
 对每个固定整数 \(u\in\ZZ\)，乘积 \(C_\varphi(u)\) 收敛且严格为正。

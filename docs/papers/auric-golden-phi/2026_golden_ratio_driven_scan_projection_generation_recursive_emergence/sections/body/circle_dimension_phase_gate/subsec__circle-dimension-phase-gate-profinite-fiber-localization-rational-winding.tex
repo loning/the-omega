@@ -1,0 +1,281 @@
+\subsection{profinite 纤维扩张、局部化与缠绕度有理化}\label{subsec:cdim-profinite-fiber-localization-rational-winding}
+本小节在定义 \ref{def:circle-dimension} 与定义 \ref{def:half-circle-dimension} 的基础上，将圆维口径从有限生成离散交换群扩展到一般离散交换群，并把 prime-register 的 profinite 纤维结构与 solenoid 自同态的度值域统一为同一条可审计链。
+核心目标是分离两类信息：连续相位圆因子的维数（主分量）与素数纤维坐标（签名分量）。
+
+\begin{definition}[扩展圆维]\label{def:cdim-star}
+设 \(A\) 为离散交换群，\(\widehat A:=\operatorname{Hom}(A,\TT)\) 为其 Pontryagin 对偶紧交换群，\((\widehat A)^0\) 为单位元连通分量。
+定义
+\[
+\cdim^\ast(A):=\dim_{\mathrm{top}}\!\bigl((\widehat A)^0\bigr),
+\]
+其中 \(\dim_{\mathrm{top}}\) 为紧 Hausdorff 空间的覆盖维数。
+\end{definition}
+
+\begin{proposition}[与有限生成口径的一致性]\label{prop:cdim-star-compatible-fg}
+若 \(A\) 为有限生成离散交换群，则
+\[
+\cdim^\ast(A)=\cdim(A).
+\]
+\end{proposition}
+\begin{proof}
+由有限生成交换群结构定理，\((\widehat A)^0\) 为有限维环面，覆盖维数与其 Lie 维数一致。
+故定义 \ref{def:cdim-star} 退化为定义 \ref{def:circle-dimension}。证毕。
+\end{proof}
+
+\begin{theorem}[torsion/profinite 纤维扩张不增扩展圆维]\label{thm:cdim-star-torsion-fiber-invariance}
+设
+\[
+0\longrightarrow F\longrightarrow G\longrightarrow H\longrightarrow 0
+\]
+为离散交换群短正合列，且 \(F\) 为 torsion 群。
+则
+\[
+(\widehat G)^0\cong (\widehat H)^0,
+\qquad
+\cdim^\ast(G)=\cdim^\ast(H).
+\]
+\end{theorem}
+\begin{proof}
+对偶化得短正合列
+\[
+0\longrightarrow \widehat H\longrightarrow \widehat G\longrightarrow \widehat F\longrightarrow 0.
+\]
+由于 \(F\) 为 torsion，\(\widehat F\) 为紧且全不连通群。
+于是 \((\widehat G)^0\) 在商群 \(\widehat G/\widehat H\cong \widehat F\) 中的像是连通子群，只能是单位元，故
+\[
+(\widehat G)^0\subseteq \widehat H.
+\]
+左侧为连通子群，故必包含于 \((\widehat H)^0\)，即 \((\widehat G)^0\subseteq (\widehat H)^0\)。
+反向包含由 \(\widehat H\subseteq \widehat G\) 立即得到：\((\widehat H)^0\subseteq (\widehat G)^0\)。
+两者相等，维数相等。证毕。
+\end{proof}
+
+\begin{theorem}[局部化群 \texorpdfstring{$\ZZ[1/S]$}{Z[1/S]} 的对偶扩张与一维性]\label{thm:cdim-star-z1s-dual-extension}
+设 \(S\) 为有限素数集，记
+\[
+A_S:=\ZZ[1/S].
+\]
+则存在紧交换群短正合列
+\[
+0\longrightarrow \prod_{p\in S}\ZZ_p
+\longrightarrow \widehat{A_S}
+\longrightarrow \TT
+\longrightarrow 0,
+\]
+并且
+\[
+\cdim^\ast(A_S)=1.
+\]
+\end{theorem}
+\begin{proof}
+由短正合列
+\[
+0\to \ZZ\to A_S\to A_S/\ZZ\to 0
+\]
+及 \(p\)-primary 分解，有
+\[
+A_S/\ZZ\cong \bigoplus_{p\in S}\ZZ(p^\infty),
+\]
+其中 \(\ZZ(p^\infty)\) 为 Prüfer \(p\)-群。
+对偶化并使用
+\(
+\widehat{\ZZ(p^\infty)}\cong \ZZ_p
+\)
+与 \(\widehat{\ZZ}\cong\TT\)，得所示短正合列。
+
+另一方面，\(A_S\) 为 rank-\(1\) torsion-free 群，可写成 \(\ZZ\xrightarrow{\times n_1}\ZZ\xrightarrow{\times n_2}\cdots\) 的直极限（其中每个 \(n_j\) 的素因子属于 \(S\)），故
+\[
+\widehat{A_S}\cong \varprojlim\!\bigl(\TT\xleftarrow{z\mapsto z^{n_1}}\TT\xleftarrow{z\mapsto z^{n_2}}\cdots\bigr).
+\]
+该逆极限由一维紧空间构成，故覆盖维数不超过 \(1\)；同时其到任一阶段圆周的投影为满射，故维数至少 \(1\)。
+因此 \(\dim_{\mathrm{top}}(\widehat{A_S})=1\)，即 \(\cdim^\ast(A_S)=1\)。证毕。
+\end{proof}
+
+\begin{corollary}[有理群的相位圆与全素数纤维分解]\label{cor:cdim-star-q-dual-extension}
+对离散群 \((\QQ,+)\)，有短正合列
+\[
+0\longrightarrow \widehat{\ZZ}\cong\prod_{p}\ZZ_p
+\longrightarrow \widehat{\QQ}
+\longrightarrow \TT
+\longrightarrow 0,
+\]
+并且
+\[
+\cdim^\ast(\QQ)=1.
+\]
+\end{corollary}
+\begin{proof}
+由
+\(
+\QQ/\ZZ\cong\bigoplus_p \ZZ(p^\infty)
+\)
+对偶化即得核 \(\prod_p\ZZ_p\) 与商 \(\TT\) 的短正合列。
+同理于定理 \ref{thm:cdim-star-z1s-dual-extension} 的逆极限口径，\(\widehat\QQ\) 为一维通用 solenoid，故 \(\cdim^\ast(\QQ)=1\)。证毕。
+\end{proof}
+
+\begin{proposition}[有限素数截断映射的核]\label{prop:cdim-star-finite-prime-truncation-kernels}
+若 \(S\subseteq S'\) 为有限素数集，则包含 \(A_S\hookrightarrow A_{S'}\) 诱导自然满同态
+\[
+\pi_{S',S}:\widehat{A_{S'}}\twoheadrightarrow \widehat{A_S},
+\qquad
+\ker(\pi_{S',S})\cong \prod_{p\in S'\setminus S}\ZZ_p.
+\]
+并且对任意有限 \(S\) 有自然满同态
+\[
+\pi_S:\widehat{\QQ}\twoheadrightarrow \widehat{A_S},
+\qquad
+\ker(\pi_S)\cong \prod_{p\notin S}\ZZ_p.
+\]
+\end{proposition}
+\begin{proof}
+对偶化等价于计算离散侧商群：
+\[
+A_{S'}/A_S\cong \bigoplus_{p\in S'\setminus S}\ZZ(p^\infty),\qquad
+\QQ/A_S\cong \bigoplus_{p\notin S}\ZZ(p^\infty).
+\]
+再对偶化并用
+\(
+\widehat{\bigoplus_i B_i}\cong \prod_i \widehat{B_i}
+\)
+即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[素数坐标的连续正交性]\label{thm:cdim-star-prime-coordinate-orthogonality}
+对任意互异素数 \(p\neq q\)，有
+\[
+\operatorname{Hom}_{\mathrm{cont}}(\ZZ_p,\ZZ_q)=0.
+\]
+因此，对任意有限集 \(S,T\)，每个连续同态
+\[
+f:\prod_{p\in S}\ZZ_p\longrightarrow \prod_{q\in T}\ZZ_q
+\]
+都按坐标分解，且仅在相同素数坐标上可能非零。
+\end{theorem}
+\begin{proof}
+\(\ZZ_p\) 为 pro-\(p\) 群，其连续像仍为 pro-\(p\) 群；
+\(\ZZ_q\) 的任意有限连续商群阶为 \(q^n\)，故不含非平凡 pro-\(p\) 闭子群（\(p\neq q\)）。
+于是任意连续同态 \(\ZZ_p\to\ZZ_q\) 只能为零映射。
+
+对乘积同态 \(f\)，令
+\[
+f_{q,p}:=\operatorname{pr}_q\circ f\circ \operatorname{in}_p:\ZZ_p\to\ZZ_q.
+\]
+若 \(p\neq q\)，则 \(f_{q,p}=0\)。
+因此 \(f\) 由对角块 \(f_{p,p}\) 唯一决定。证毕。
+\end{proof}
+
+\begin{proposition}[通用 solenoid 的相位--素数纤维模型]\label{prop:cdim-star-universal-solenoid-fiber-model}
+在 \(\widehat{\ZZ}\times \RR\) 上定义 \(\ZZ\)-对角作用
+\[
+n\cdot(x,t)=(x+n,t-n),\qquad n\in\ZZ.
+\]
+则有同构
+\[
+\widehat{\QQ}\cong (\widehat{\ZZ}\times \RR)/\ZZ
+\cong \widehat{\ZZ}\times_{\ZZ}\RR,
+\]
+并与 \eqref{eq:pom-universal-solenoid-quotient}--\eqref{eq:pom-universal-solenoid-ses} 的模型一致。
+\end{proposition}
+\begin{proof}
+由备注 \ref{rem:pom-solenoid-extension} 的定义，\(\Sol=(\RR\times\widehat{\ZZ})/\ZZ\) 且 \(\Sol\cong\widehat{\QQ}\)。
+交换因子顺序即得上述表示。证毕。
+\end{proof}
+
+\begin{theorem}[局部化与有理化的自同态度值域]\label{thm:cdim-star-endomorphism-localized-degree}
+记
+\[
+K_S:=\widehat{\ZZ[1/S]},\qquad K:=\widehat{\QQ}.
+\]
+则存在自然反同构
+\[
+\operatorname{End}_{\mathrm{cont}}(K_S)\cong \operatorname{End}(\ZZ[1/S])\cong \ZZ[1/S],
+\]
+\[
+\operatorname{End}_{\mathrm{cont}}(K)\cong \operatorname{End}(\QQ)\cong \QQ.
+\]
+由于 \(\ZZ[1/S]\) 与 \(\QQ\) 交换，上述反同构可直接视作环同构。
+\end{theorem}
+\begin{proof}
+Pontryagin 对偶给出
+\(
+\operatorname{Hom}_{\mathrm{cont}}(\widehat B,\widehat A)\cong \operatorname{Hom}(A,B)
+\)
+的反变等价。
+因此
+\[
+\operatorname{End}_{\mathrm{cont}}(K_S)\cong \operatorname{End}(\ZZ[1/S]),\qquad
+\operatorname{End}_{\mathrm{cont}}(K)\cong \operatorname{End}(\QQ).
+\]
+对 \(A_S=\ZZ[1/S]\)，端同态 \(f\) 由 \(f(1)\) 唯一决定，且
+\(
+f(1/p^n)=f(1)/p^n
+\)
+迫使 \(f\) 为“乘以某个 \(a\in \ZZ[1/S]\)”；
+故 \(\operatorname{End}(\ZZ[1/S])\cong \ZZ[1/S]\)。
+\(\QQ\) 情形同理，因其是一维 \(\QQ\)-向量空间，端同态即“乘以 \(q\in\QQ\)”。
+证毕。
+\end{proof}
+
+\begin{remark}[winding-register 的局部化/有理化]\label{rem:cdim-star-winding-localization}
+在 \(\TT\) 上，自同态的度取值于 \(\ZZ\)。
+定理 \ref{thm:cdim-star-endomorphism-localized-degree} 表明：当系统提升到 \(K_S\) 或 \(K\)（即进入 prime-register 的 solenoid 几何）后，自同态由对偶侧标量唯一参数化，其值域分别提升为 \(\ZZ[1/S]\) 与 \(\QQ\)。
+在本文寄存器语义下，这一标量可作为缠绕度/覆盖度的代数读出。
+\end{remark}
+
+\begin{definition}[扩展半圆维]\label{def:cdim-plus-star}
+设 \(M\) 为可消交换幺半群，\(G(M)\) 为其 Grothendieck 群完成。
+定义
+\[
+\cdim_+^\ast(M):=\frac12\,\cdim^\ast\!\bigl(G(M)\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[局部化正锥的半圆维与素数签名]\label{prop:cdim-plus-star-localized-cone}
+设
+\[
+M_S:=\ZZ[1/S]_{\ge 0}.
+\]
+则
+\[
+G(M_S)\cong \ZZ[1/S],\qquad
+\cdim_+^\ast(M_S)=\frac12.
+\]
+同时，\(S\) 的差异不体现在数值 \(\cdim_+^\ast\) 上，而体现在纤维签名
+\[
+\prod_{p\in S}\ZZ_p
+\]
+上。
+\end{proposition}
+\begin{proof}
+任意 \(x\in \ZZ[1/S]\) 可写成 \(x=x_+-x_-\) 且 \(x_\pm\in M_S\)，故 \(G(M_S)\cong \ZZ[1/S]\)。
+由定理 \ref{thm:cdim-star-z1s-dual-extension} 得 \(\cdim^\ast(\ZZ[1/S])=1\)，代入定义 \ref{def:cdim-plus-star} 即得 \(\cdim_+^\ast(M_S)=1/2\)。
+纤维签名由同一定理中的短正合列核给出。证毕。
+\end{proof}
+
+\begin{corollary}[有限 prime-register 的精确覆盖边界]\label{cor:cdim-star-finite-prime-register-limit}
+设 \(A\subseteq \QQ\) 为离散子群。
+若存在有限素数集 \(S\) 使 \(A\) 中每个元素分母的素因子都属于 \(S\)，则
+\[
+A\subseteq \ZZ[1/S].
+\]
+反之，若 \(A\) 的分母素因子支持为无限集，则不存在有限 \(S\) 使 \(A\subseteq \ZZ[1/S]\)。
+因此，任何仅依赖有限 prime-register 纤维
+\(
+\prod_{p\in S}\ZZ_p
+\)
+的精确表征，最多覆盖 \(\ZZ[1/S]\) 型对象，不能精确覆盖全体 \(\QQ\)。
+\end{corollary}
+\begin{proof}
+前一断言由 \(\ZZ[1/S]\) 的定义直接得到；
+后一断言由反证法：若 \(A\subseteq \ZZ[1/S]\) 且 \(S\) 有限，则 \(A\) 的分母素支持必有限，与假设矛盾。
+最后结论由命题 \ref{prop:cdim-star-finite-prime-truncation-kernels} 的核结构与上述包含判据合并得到。证毕。
+\end{proof}
+
+\begin{remark}[主分量与签名分量的分离]\label{rem:cdim-star-main-vs-signature}
+对任意有限 \(S\)，\(\cdim^\ast(\ZZ[1/S])=1\) 保持不变；
+但纤维 \(\prod_{p\in S}\ZZ_p\) 随 \(S\) 改变。
+因此“圆维主分量”与“prime-register 签名分量”构成互补不变量：前者刻画连续相位通道数，后者刻画素数纤维结构。
+\end{remark}
+
+\endinput
+
