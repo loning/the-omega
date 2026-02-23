@@ -230,3 +230,265 @@ N(r):=\prod_{p\in\mathcal P}p^{r(p)},\qquad
 \begin{remark}[文献定位说明]\label{rem:killo-literature-scope-note}
 上述体系中，定理 \ref{thm:killo-layered-prime-slices-finite-depth}--\ref{thm:killo-natural-extension-branch-register} 的核心是将预先固定的 \(2\)-进分层素数片、链式有限纤维投影与显式逐层反演放入同一可构造框架。定理 \ref{thm:killo-smith-loss-spectrum} 与推论 \ref{cor:killo-kernel-size-general-modulus} 使用 Smith 正规形与唯一分解的经典工具，但将其组织为“信息亏损谱可逆读出”与“素数寄存器可加守恒”的统一表述。定理 \ref{thm:killo-ellipse-diagonal-prime-register-equivalence} 则给出椭圆参数化与对角算法在素数寄存器语义下的结构等价。
 \end{remark}
+
+\paragraph{Lee--Yang 扭点地址化与 Gödel--Zeckendorf 外置链条}
+在上述分层寄存器与椭圆化框架基础上，可进一步得到 \(2\)-进扭点地址化、半直积仿射表示与 Zeckendorf 像集解析之间的一致闭环。
+
+\begin{theorem}[Lee--Yang 椭圆曲线的 \(2^n\)-扭点超立方体 Cayley 实现]\label{thm:killo-leyang-2power-torsion-cayley-hypercube}
+设 Lee--Yang 频谱曲线的极小 Weierstrass 模型为
+\[
+E_{\min}:\quad u^2+u=x^3-x,
+\]
+其同构类对应 Cremona 记号 \(37a1\)。对任意 \(n\ge 1\)，记 \(E_{\min}[2^n]\) 为 \(2^n\)-扭点群，\(\Omega_{2n}:=\{0,1\}^{2n}\)，并记 \(Q_{2n}\) 为 \(\Omega_{2n}\) 上的 Hamming 立方图（相邻当且仅当 Hamming 距离为 \(1\)）。任选同构
+\[
+E_{\min}[2^n]\cong(\ZZ/2^n\ZZ)^2
+\]
+的一组 \(\ZZ/2^n\ZZ\)-基 \((P_n,Q_n)\)，定义
+\[
+\iota_n(\mathbf b,\mathbf c)
+:=\Bigl(\sum_{j=1}^{n} b_j2^{j-1}\Bigr)P_n
+ +\Bigl(\sum_{j=1}^{n} c_j2^{j-1}\Bigr)Q_n,
+\]
+其中 \(\mathbf b=(b_1,\dots,b_n),\ \mathbf c=(c_1,\dots,c_n)\in\{0,1\}^n\)。则 \(\iota_n:\Omega_{2n}\to E_{\min}[2^n]\) 为双射。并且若定义对称生成集
+\[
+S_n:=\{\pm 2^{j-1}P_n,\ \pm 2^{j-1}Q_n:\ 1\le j\le n\}\subset E_{\min}[2^n],
+\]
+则有图同构
+\[
+Q_{2n}\cong \mathrm{Cay}(E_{\min}[2^n],S_n).
+\]
+\end{theorem}
+\begin{proof}
+由 \(E_{\min}[2^n]\cong(\ZZ/2^n\ZZ)^2\)，在固定基 \((P_n,Q_n)\) 后，每个扭点唯一表示为 \(aP_n+bQ_n\)（\(a,b\in\{0,\dots,2^n-1\}\)）。映射 \(\iota_n\) 正是将 \(\Omega_{2n}\) 的两段长度 \(n\) 的二进制向量分别解释为 \(a,b\) 的二进展开，故为双射。
+
+若 \(\omega,\omega'\in\Omega_{2n}\) 仅在一位翻转，则对应的 \((a,b)\) 仅在某一坐标改变 \(\pm 2^{j-1}\)，故
+\[
+\iota_n(\omega')-\iota_n(\omega)\in S_n.
+\]
+反之，若两点差在 \(S_n\) 内，则仅有一位二进制位发生翻转，对应 \(Q_{2n}\) 的一条边。故邻接关系一一对应，图同构成立。
+\end{proof}
+
+\begin{corollary}[分辨率塔与 \(2\)-进 Tate 模块的超立方体逆极限同构]\label{cor:killo-2adic-tate-hypercube-limit}
+在定理 \ref{thm:killo-leyang-2power-torsion-cayley-hypercube} 的设定下，取相容基 \((P_n,Q_n)_{n\ge 1}\) 使得
+\[
+P_n=2P_{n+1},\qquad Q_n=2Q_{n+1}.
+\]
+则乘二映射
+\[
+[2]:E_{\min}[2^{n+1}]\longrightarrow E_{\min}[2^n]
+\]
+在坐标表示下等同于
+\[
+(a\bmod 2^{n+1},\,b\bmod 2^{n+1})\longmapsto (a\bmod 2^n,\,b\bmod 2^n),
+\]
+而在 \(\Omega_{2(n+1)}\to\Omega_{2n}\) 上对应于丢弃两段二进制展开最高位的截断算子。因而
+\[
+\varprojlim_n E_{\min}[2^n]\cong T_2(E_{\min})\cong\ZZ_2^2,
+\]
+且在上述截断兼容下，图塔 \((Q_{2n})_{n\ge 1}\) 的逆极限同构于 \(T_2(E_{\min})\) 的 \(2\)-进地址空间。
+\end{corollary}
+\begin{proof}
+相容基给出
+\[
+E_{\min}[2^{n+1}]\cong(\ZZ/2^{n+1}\ZZ)^2,\qquad
+E_{\min}[2^n]\cong(\ZZ/2^n\ZZ)^2
+\]
+的兼容识别，并使 \([2]\) 将 \(aP_{n+1}+bQ_{n+1}\) 送至 \(aP_n+bQ_n\)。由于 \(P_n,Q_n\) 的阶为 \(2^n\)，系数自然按 \(\bmod 2^n\) 约化。二进截断与该约化一致，故逆极限即 \(\ZZ_2^2\)，并与 Tate 模块定义一致。
+\end{proof}
+
+\begin{theorem}[Gödel 半直积在 \(T_2(E_{\min})\) 上的 \(2^L\)-进仿射表示]\label{thm:killo-godel-semidir-affine-2adic}
+设 \(\mathcal E\) 为有限原子事件集，并固定注入编码
+\[
+\mathrm{code}:\mathcal E\hookrightarrow\NN,\qquad
+M:=\max_{e\in\mathcal E}\mathrm{code}(e),\qquad B:=2^L>M.
+\]
+记 \((p_t)_{t\ge 1}\) 为素数序列，\(\mathcal R:=\NN^{(\mathbb P)}\) 为素数指标上的有限支撑向量空间，\(\Sigma\) 为素数坐标移位算子，\(H:=\mathcal R\rtimes_{\Sigma}\NN\) 为对应半直积。令
+\[
+T:=T_2(E_{\min})\cong\ZZ_2^2,
+\]
+并任选非零向量 \(v\in T\)。定义
+\[
+\mathrm{ev}_B:\mathcal R\to T,\qquad
+\mathrm{ev}_B(r):=\sum_{t\ge 1} r(p_t)\,B^{t-1}v,
+\]
+（因 \(r\) 有限支撑，该和有限），以及
+\[
+\Psi:H\to\mathrm{Aff}(T),\qquad
+\Psi(r,k)(x):=B^k x+\mathrm{ev}_B(r).
+\]
+则 \(\Psi\) 为单子同态。进一步，若取规范编码子集
+\[
+H_{\mathrm{can}}
+:=\{(r,k)\in H:\ \mathrm{supp}(r)\subseteq\{p_1,\dots,p_k\},\ 0\le r(p_t)\le M\},
+\]
+则 \(\Psi|_{H_{\mathrm{can}}}\) 为忠实表示。
+\end{theorem}
+\begin{proof}
+由移位定义可得
+\[
+\mathrm{ev}_B(\Sigma^k s)
+=\sum_{t\ge 1}(\Sigma^k s)(p_t)\,B^{t-1}v
+=\sum_{u\ge 1}s(p_u)\,B^{u+k-1}v
+=B^k\mathrm{ev}_B(s).
+\]
+故对任意 \((r,k),(s,\ell)\in H\),
+\[
+\Psi(r,k)\!\circ\!\Psi(s,\ell)(x)
+=B^{k+\ell}x+B^k\mathrm{ev}_B(s)+\mathrm{ev}_B(r)
+=B^{k+\ell}x+\mathrm{ev}_B(r+\Sigma^k s),
+\]
+与半直积乘法
+\[
+(r,k)\cdot(s,\ell)=(r+\Sigma^k s,k+\ell)
+\]
+一致，故 \(\Psi\) 为同态。
+
+再证忠实性。若 \((r,k),(s,\ell)\in H_{\mathrm{can}}\) 且 \(\Psi(r,k)=\Psi(s,\ell)\)，比较线性部分得 \(B^k=B^\ell\)，故 \(k=\ell\)。再比较平移部分得 \(\mathrm{ev}_B(r)=\mathrm{ev}_B(s)\)。由 \(H_{\mathrm{can}}\) 的支撑约束，二者仅涉及 \(p_1,\dots,p_k\) 的系数；由 \(0\le r(p_t),s(p_t)\le M<B\) 以及 \(B\)-进展开唯一性，得到 \(r(p_t)=s(p_t)\)（\(1\le t\le k\)），故 \(r=s\)。因此 \(\Psi|_{H_{\mathrm{can}}}\) 忠实。
+\end{proof}
+
+\begin{corollary}[无限事件流的 \(2^L\)-进全息点与地址读取解释]\label{cor:killo-infinite-stream-2adic-holographic-point}
+沿用定理 \ref{thm:killo-godel-semidir-affine-2adic} 的设定。对任意无限事件流 \(\mathbf e=(e_1,e_2,\dots)\in\mathcal E^{\NN}\)，定义
+\[
+X(\mathbf e):=\sum_{t\ge 1}\mathrm{code}(e_t)\,B^{t-1}v\in T.
+\]
+则该级数在 \(2\)-进拓扑下收敛；其前缀和
+\[
+X_n(\mathbf e):=\sum_{t=1}^{n}\mathrm{code}(e_t)\,B^{t-1}v
+\]
+满足
+\[
+X_n(\mathbf e)\equiv X(\mathbf e)\pmod{B^nT}.
+\]
+此外，当 \(B>M\) 时，映射 \(\mathbf e\mapsto X(\mathbf e)\) 为单射。因而在该模型中，时间推进可解释为同一 \(2^L\)-进地址点的分辨率提升过程。
+\end{corollary}
+\begin{proof}
+因 \(B=2^L\) 满足 \(|B|_2<1\)，且 \(\mathrm{code}(e_t)\) 有界，故 \(B^{t-1}v\to 0\) 且级数按 \(2\)-进范数绝对收敛。尾和
+\[
+\sum_{t>n}\mathrm{code}(e_t)\,B^{t-1}v\in B^nT
+\]
+立即给出同余关系。若 \(X(\mathbf e)=X(\mathbf e')\)，则
+\[
+\sum_{t\ge 1}\bigl(\mathrm{code}(e_t)-\mathrm{code}(e_t')\bigr)B^{t-1}v=0.
+\]
+由各位系数落在 \([-(B-1),B-1]\) 且 \(B\)-进展开唯一，得
+\(\mathrm{code}(e_t)=\mathrm{code}(e_t')\) 对一切 \(t\) 成立。编码注入性推出 \(\mathbf e=\mathbf e'\)。
+\end{proof}
+
+\begin{theorem}[Zeckendorf--Gödel 像集 \(ZG\) 的自然密度与素数转移矩阵闭式]\label{thm:killo-zg-natural-density-transfer-matrix}
+定义
+\[
+ZG:=\left\{
+\prod_{k\ge 1}p_k^{z_k}\;:\;
+z_k\in\{0,1\},\ z_kz_{k+1}=0,\ z_k=0\text{ 对充分大 }k
+\right\},
+\]
+即平方自由且不含相邻素因子的整数集。则其自然密度
+\[
+\delta(ZG):=\lim_{N\to\infty}\frac{1}{N}\#\{n\le N:\ n\in ZG\}
+\]
+存在，并满足
+\[
+\delta(ZG)
+=\frac{1}{\zeta(2)}
+\cdot
+\lim_{n\to\infty}
+\mathbf 1^\top
+\Bigl(\prod_{i=1}^{n}
+\begin{pmatrix}
+\dfrac{p_i}{p_i+1} & \dfrac{p_i}{p_i+1}\\[4pt]
+\dfrac{1}{p_i+1} & 0
+\end{pmatrix}
+\Bigr)
+\begin{pmatrix}1\\0\end{pmatrix},
+\qquad
+\mathbf 1=\begin{pmatrix}1\\1\end{pmatrix}.
+\]
+且该极限严格为正，因此 \(\delta(ZG)\in(0,1)\)。
+\end{theorem}
+\begin{proof}
+对每个素数 \(p\)，事件 \(p^2\nmid n\) 的密度为 \(1-1/p^2\)，并在不同素数间可乘。条件化于平方自由后，
+\[
+\PP(p\mid n\mid p^2\nmid n)
+=\frac{(1/p-1/p^2)}{1-1/p^2}
+=\frac{1}{p+1}.
+\]
+故在平方自由模型下，指标变量 \(\mathbf 1_{\{p_i\mid n\}}\) 独立，参数为 \(1/(p_i+1)\)。而 \(ZG\) 的约束即链上禁相邻 \(1\)。
+
+对前缀 \(\{p_1,\dots,p_n\}\)，令 \(a_i\) 为第 \(i\) 位取 \(0\) 的合法概率，\(b_i\) 为第 \(i\) 位取 \(1\) 的合法概率，则
+\[
+a_i=(a_{i-1}+b_{i-1})\frac{p_i}{p_i+1},\qquad
+b_i=a_{i-1}\frac{1}{p_i+1},\qquad
+(a_0,b_0)=(1,0),
+\]
+即所示矩阵递推。再乘回平方自由因子 \(\prod_i(1-1/p_i^2)=1/\zeta(2)\) 即得截断密度表达。由 \(\sum_i p_i^{-2}<\infty\) 与上述递推的 Cauchy 收敛性，极限存在。每一阶段概率均正且尾部校正因子正，故极限严格正。
+\end{proof}
+
+\begin{theorem}[\(ZG\) 的 Dirichlet 生成函数矩阵 Euler 积表达]\label{thm:killo-zg-dirichlet-matrix-euler}
+对 \(\Re(s)>1\)，定义
+\[
+D_{ZG}(s):=\sum_{n\in ZG}\frac{1}{n^s}.
+\]
+则 \(D_{ZG}(s)\) 绝对收敛，并可表示为
+\[
+D_{ZG}(s)
+=\lim_{n\to\infty}
+\mathbf 1^\top
+\Bigl(\prod_{i=1}^{n}
+\begin{pmatrix}
+1 & 1\\[2pt]
+p_i^{-s} & 0
+\end{pmatrix}
+\Bigr)
+\begin{pmatrix}1\\0\end{pmatrix}.
+\]
+上式即 \(ZG\) 的矩阵 Euler 积表示。
+\end{theorem}
+\begin{proof}
+\(ZG\) 的元素与素数指标链上的独立集 \(S\subset\NN\)（禁止相邻）对应，权重为 \(\prod_{i\in S}p_i^{-s}\)，故
+\[
+D_{ZG}(s)
+=\sum_{\substack{S\subset\NN\\S\ \text{无相邻}}}\ \prod_{i\in S}p_i^{-s}.
+\]
+对前 \(n\) 个素数，设 \(A_n\) 为合法加权和，\(B_n\) 为“且选取第 \(n\) 位”的合法加权和，则
+\[
+A_n=A_{n-1}+B_{n-1},\qquad
+B_n=p_n^{-s}A_{n-1},\qquad
+(A_0,B_0)=(1,0).
+\]
+故 \((A_n,B_n)^\top\) 由所示矩阵迭代给出，且
+\[
+A_n+B_n
+=\mathbf 1^\top
+\Bigl(\prod_{i=1}^{n}
+\begin{pmatrix}
+1 & 1\\
+p_i^{-s} & 0
+\end{pmatrix}
+\Bigr)
+\begin{pmatrix}1\\0\end{pmatrix}.
+\]
+当 \(\sigma:=\Re(s)>1\) 时，\(\sum_i p_i^{-\sigma}<\infty\)，故独立集权重和绝对收敛，\(\lim_{n\to\infty}(A_n+B_n)\) 存在并等于 \(D_{ZG}(s)\)。
+\end{proof}
+
+\begin{proposition}[Lee--Yang 分支集的超立方体平行族分解与二进地址几何]\label{prop:killo-leyang-branchset-hypercube-families}
+设 \(y_n\) 为 Lee--Yang 塔的第 \(n\) 层对象。其分支集满足
+\[
+R(y_n)=\bigcup_{i=1}^{5}\bigl(P_i+E_{\min}[2^n]\bigr),
+\]
+并且
+\[
+\deg R(y_n)=5\cdot 4^n.
+\]
+结合定理 \ref{thm:killo-leyang-2power-torsion-cayley-hypercube}，每个 \(P_i+E_{\min}[2^n]\) 都可识别为一个 \(2n\)-超立方体顶点集的平移像；从而 \(R(y_n)\) 在 \(E_{\min}\) 内分解为五个互不相交的超立方体平行族。再由推论 \ref{cor:killo-2adic-tate-hypercube-limit}，乘二映射 \([2]\) 将第 \(n+1\) 层平行族按去最高位截断投影到第 \(n\) 层。
+\end{proposition}
+\begin{proof}
+分支集余类分解及次数公式由 Lee--Yang 塔的既有分歧计算给出。对每个 \(i\)，平移 \(x\mapsto x+P_i\) 将 \(E_{\min}[2^n]\) 双射到 \(P_i+E_{\min}[2^n]\)，故各余类与 \(E_{\min}[2^n]\) 作为图同构。定理 \ref{thm:killo-leyang-2power-torsion-cayley-hypercube} 赋予后者 \(Q_{2n}\) 结构，于是得到五个平移超立方体。推论 \ref{cor:killo-2adic-tate-hypercube-limit} 已说明 \([2]\) 在扭点坐标上等同模约化，即二进最高位截断；对平移余类作用同理成立。
+\end{proof}
+
+\begin{conjecture}[Gödel--Lee--Yang 统一实现]\label{conj:killo-godel-leyang-unified-realization}
+存在整数 \(L\ge 1\) 与有限数字扭点集 \(D\subset E_{\min}[2^L]\)，使文中扫描--投影生成器 \(\mathrm{SPG}=P\circ S\) 在适当可测共轭下，可实现为 \(T_2(E_{\min})\) 上的 \(2^L\)-进仿射迭代函数系
+\[
+x\longmapsto 2^Lx+d,\qquad d\in D.
+\]
+在该共轭下，prime-register 半直积结构对应于 \(T_2(E_{\min})\) 的“尺度（乘 \(2^L\)）+平移（加 \(d\)）”分离；时间推进对应地址精度提升；相干判据对应于 \(2\)-进超度量下进入同一 \(2^n\)-球（等价于同一 \(E_{\min}[2^n]\) 余类）所需的最小分辨率。
+\end{conjecture}
