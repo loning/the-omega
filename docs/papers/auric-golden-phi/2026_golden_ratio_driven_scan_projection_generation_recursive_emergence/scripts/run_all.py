@@ -2244,6 +2244,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_poisson_cauchy_complex_stieltjes_rigidity_audit",
+            script="exp_xi_poisson_cauchy_complex_stieltjes_rigidity_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_cauchy_complex_stieltjes_rigidity_audit.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_logM_theta",
             script="exp_sync_kernel_real_input_40_logM_theta.py",
             args=[
@@ -3054,6 +3062,14 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_zm_elliptic_translation_q_biquartic_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_translation_t_discriminant_c3_audit",
+            script="exp_fold_zm_elliptic_translation_t_discriminant_c3_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_translation_t_discriminant_c3_audit.json",
             ],
         ),
         Step(

@@ -320,5 +320,239 @@ G(M)\cong \ZZ^r\oplus F,\qquad r=\operatorname{rank}G(M).
 故 \(\delta(M)=r/2=\cdim_{+}(M)\)。证毕。
 \end{proof}
 
+\subsubsection{圆维守恒与前缀--素数账本律}\label{subsubsec:cdim-prefix-prime-ledger-laws}
+在定义 \ref{def:circle-dimension} 与定义 \ref{def:half-circle-dimension} 的口径下，下面给出一组可直接用于“可见相位轴--外置账本轴”分解的结构结论。
+
+\begin{proposition}[圆维在 \texorpdfstring{$\otimes$}{tensor} 与 \texorpdfstring{$\operatorname{Hom}$}{Hom} 下的乘法律]\label{prop:cdim-tensor-hom-product-law-restated}
+设 \(G,H\) 为有限生成离散交换群，则
+\[
+\cdim(G\otimes_{\ZZ}H)=\cdim(G)\cdim(H),\qquad
+\cdim\!\bigl(\operatorname{Hom}_{\ZZ}(G,H)\bigr)=\cdim(G)\cdim(H).
+\]
+\end{proposition}
+\begin{proof}
+命题 \ref{prop:cdim-tensor-hom-ext-laws} 的第 (1)、(2) 条即给出所述等式。证毕。
+\end{proof}
+
+\begin{theorem}[前缀熵表征与维--深守恒律]\label{thm:cdim-prefix-entropy-depth-conservation}
+设 \(U:=(-\tfrac12,\tfrac12)\)，\(d\ge 1\)，\(b\in\NN\)，并定义
+\[
+A_b^{(d)}:U^d\to\{0,1,\dots,2^b-1\}^d,\qquad
+A_b^{(d)}(u_1,\dots,u_d)
+:=\bigl(\lfloor 2^b(u_1+\tfrac12)\rfloor,\dots,\lfloor 2^b(u_d+\tfrac12)\rfloor\bigr).
+\]
+设 \(G\) 为有限生成离散交换群，\(S\) 为一组有限生成元，\(|\cdot|_S\) 为相应词长，
+\[
+B_N:=\{g\in G:\ |g|_S\le N\}.
+\]
+对任意单射 \(\Phi:B_N\hookrightarrow U^d\)，定义
+\[
+b_d(N;\Phi)
+:=\min\{b\in\NN:\ A_b^{(d)}\circ\Phi\ \text{在 }B_N\text{ 上单射}\},
+\]
+并令
+\[
+b_d^\star(N):=\inf_{\Phi} b_d(N;\Phi).
+\]
+记 \(r:=\cdim(G)\)。则存在常数 \(C_1,C_2\) 使得对所有充分大的 \(N\)，
+\[
+\frac{r}{d}\log_2 N-C_1\ \le\ b_d^\star(N)\ \le\ \frac{r}{d}\log_2 N+C_2.
+\]
+因此
+\[
+\lim_{N\to\infty}\frac{d\,b_d^\star(N)}{\log_2 N}=r=\cdim(G).
+\]
+特别地，当 \(d=1\) 时，
+\[
+b_1^\star(N)=r\log_2 N+O(1).
+\]
+\end{theorem}
+\begin{proof}
+固定 \(N\)。若 \(A_b^{(d)}\circ\Phi\) 在 \(B_N\) 上单射，则其像至多有 \(2^{bd}\) 个地址，故
+\[
+|B_N|\le 2^{bd},
+\qquad\Longrightarrow\qquad
+b_d(N;\Phi)\ge \frac{\log_2|B_N|}{d}.
+\]
+对 \(\Phi\) 取下确界得
+\[
+b_d^\star(N)\ge \frac{\log_2|B_N|}{d}.
+\]
+
+反向地，取
+\[
+b_N:=\left\lceil\frac{\log_2|B_N|}{d}\right\rceil.
+\]
+则 \(2^{b_N d}\ge |B_N|\)。由有限集合计数可取单射
+\[
+e_N:B_N\hookrightarrow\{0,1,\dots,2^{b_N}-1\}^d.
+\]
+写 \(e_N(g)=(e_{N,1}(g),\dots,e_{N,d}(g))\)，定义
+\[
+\Phi_N(g):=\left(\frac{e_{N,1}(g)+1/2}{2^{b_N}}-\frac12,\dots,
+\frac{e_{N,d}(g)+1/2}{2^{b_N}}-\frac12\right)\in U^d.
+\]
+则 \(A_{b_N}^{(d)}\circ\Phi_N=e_N\) 在 \(B_N\) 上单射，故
+\[
+b_d^\star(N)\le b_N\le \frac{\log_2|B_N|}{d}+1.
+\]
+于是
+\[
+\left|\,b_d^\star(N)-\frac{\log_2|B_N|}{d}\right|\le 1.
+\]
+
+另一方面，有限生成交换群可写为 \(G\cong\ZZ^r\oplus F\)（\(F\) 有限），故任意词长球满足
+\[
+|B_N|=\Theta(N^r),
+\]
+等价于
+\[
+\log_2|B_N|=r\log_2 N+O(1).
+\]
+代入即得所述双边界与极限公式。\(d=1\) 为其直接特例。证毕。
+\end{proof}
+
+\begin{proposition}[可测同态下圆维不可坍缩]\label{prop:cdim-borel-homomorphism-noncollapse}
+设 \(r>d\ge 1\)。则不存在 Borel 可测群同态单射
+\[
+f:\TT^r\to\TT^d.
+\]
+\end{proposition}
+\begin{proof}
+\(\TT^r,\TT^d\) 都是 Polish 群。Borel 可测同态在 Polish 群之间自动连续，故 \(f\) 连续。
+连续群同态 \(f:\TT^r\to\TT^d\) 必由某个整数矩阵 \(A\in M_{d\times r}(\ZZ)\) 给出：
+\[
+f(x)=Ax\pmod{\ZZ^d}.
+\]
+由于 \(r>d\)，有 \(\operatorname{rank}(A)\le d<r\)，故线性映射 \(A:\RR^r\to\RR^d\) 的核维数至少 \(r-d>0\)。
+于是 \(\ker f\) 含非平凡子环面，\(f\) 不可能单射，矛盾。证毕。
+\end{proof}
+
+\begin{theorem}[前缀--素数账本守恒不等式]\label{thm:cdim-prefix-prime-ledger-conservation}
+设 \(S\) 为有限集合。若编码
+\[
+c:S\to\{0,\dots,2^b-1\}\times(\ZZ/P\ZZ)
+\]
+为单射，则必有
+\[
+2^bP\ge |S|.
+\]
+进一步，设 \(G\) 为有限生成离散交换群，\(r=\cdim(G)\)，并取词长球 \(B_N\)。
+若存在对 \(B_N\) 的单射编码
+\[
+c_N:B_N\to\{0,\dots,2^b-1\}\times(\ZZ/P\ZZ),
+\]
+则存在常数 \(C\)（与 \(N\) 无关）使得对充分大 \(N\),
+\[
+b+\log_2 P\ge r\log_2 N-C.
+\]
+\end{theorem}
+\begin{proof}
+第一式是基数必要条件：单射满足
+\[
+|S|=|c(S)|\le 2^bP.
+\]
+
+对第二式，取 \(S=B_N\) 得
+\[
+b+\log_2 P\ge \log_2|B_N|.
+\]
+由 \(G\cong\ZZ^r\oplus F\) 的球增长律，\(\log_2|B_N|=r\log_2N+O(1)\)，
+故存在常数 \(C\) 使
+\[
+b+\log_2 P\ge r\log_2N-C
+\]
+对充分大 \(N\) 成立。证毕。
+\end{proof}
+
+\begin{corollary}[平方自由素数账本下的支撑规模下界]\label{cor:cdim-squarefree-prime-support-growth}
+在定理 \ref{thm:cdim-prefix-prime-ledger-conservation} 的设定下，附加约束
+\[
+P=\prod_{j=1}^{k}p_j,\qquad p_i\neq p_j.
+\]
+并采用按支撑数 \(k\) 的规范最小模数
+\[
+P_k^\#:=\prod_{j\le k}p_j
+\]
+（即前 \(k\) 个素数的乘积）。
+若该选择满足
+\[
+\log P_k^\#\ge r\log N-O(1),
+\]
+则当 \(N\to\infty\) 时
+\[
+k\ \ge\ (1-o(1))\,\frac{r\log N}{\log\log N}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:cdim-prefix-prime-ledger-conservation} 得 \(\log P\ge r\log N-O(1)\)。
+在上述规范选择下 \(P=P_k^\#\)，故
+\[
+\log P_k^\#\ge r\log N-O(1).
+\]
+又由素数定理的等价形式，
+\[
+\log P_k^\#=\vartheta(p_k)=(1+o(1))\,k\log k.
+\]
+于是
+\[
+k\log k\ge (1-o(1))\,r\log N.
+\]
+反解得到
+\[
+k\ge (1-o(1))\,\frac{r\log N}{\log\log N}.
+\]
+证毕。
+\end{proof}
+
+\begin{proposition}[有限扩张不计费语义下的圆维唯一性]\label{prop:cdim-finite-extension-axiomatic-uniqueness}
+设 \(\mathcal A\) 为有限生成离散交换群同构类。若函数
+\[
+F:\mathcal A\to\RR_{\ge 0}
+\]
+满足：
+\begin{enumerate}
+  \item \(F(G\oplus H)=F(G)+F(H)\)；
+  \item 若 \(G\) 有限，则 \(F(G)=0\)；
+  \item 若 \(0\to K\to G\to H\to 0\) 正合且 \(K\) 有限，则 \(F(G)=F(H)\)。
+\end{enumerate}
+则存在常数 \(c:=F(\ZZ)\ge 0\) 使得对任意 \(G\in\mathcal A\),
+\[
+F(G)=c\,\cdim(G).
+\]
+特别地，当 \(F(\ZZ)=1\) 时，\(F\equiv \cdim\)。
+\end{proposition}
+\begin{proof}
+写 \(G\cong\ZZ^r\oplus T\)（\(T\) 有限）。
+由正合列
+\[
+0\to T\to G\to \ZZ^r\to 0
+\]
+与条件 (3) 得
+\[
+F(G)=F(\ZZ^r).
+\]
+再由条件 (1) 得
+\[
+F(\ZZ^r)=rF(\ZZ)=cr.
+\]
+另一方面，\(\cdim(G)=r\)。
+故 \(F(G)=c\,\cdim(G)\)。当 \(c=1\) 时即得 \(F=\cdim\)。证毕。
+\end{proof}
+
+\begin{conjecture}[圆维--账本守恒的可测最优性]\label{conj:cdim-measurable-prefix-ledger-optimality}
+在扩展保存范畴 \(\mathrm{Ext}(\pi)\) 下，设某类信息对象的可见相位秩为 \(r=\cdim\)。
+对尺度 \(N\) 的有限截断系统，令实现输出由两部分组成：前缀深度 \(b_N\) 与有限可审计账本 \(R_N\)。
+定义总复杂度
+\[
+\mathfrak C(N):=b_N+\log_2|R_N|.
+\]
+猜想存在普适下界
+\[
+\mathfrak C(N)\ge r\log_2 N-O(1),
+\]
+且该下界可渐近达到，当且仅当实现在 Borel 同构意义下等价于“\(r\) 个相位坐标直积 + CRT 素数账本”的标准形。
+\end{conjecture}
+
 \endinput
 

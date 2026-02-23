@@ -285,6 +285,131 @@ M_q=2I_{q+1}-\mathbf 1e_q^{\mathsf T}.
 代回即得结论。证毕。
 \end{proof}
 
+\begin{theorem}[例外谱块的二项核逆矩阵闭式]\label{thm:xi-exceptional-binomial-kernel-inverse}
+固定 \(q\ge 2\)。定义
+\[
+A^{(q)}_{k,\ell}:=\frac12\!\left(\binom{q}{\ell}+\binom{q-k}{\ell}\right),\qquad
+C^{(q)}_{k,\ell}:=\binom{q-k}{\ell},
+\qquad 0\le k,\ell\le q,
+\]
+并记
+\[
+b:=\bigl(\binom{q}{0},\binom{q}{1},\dots,\binom{q}{q}\bigr)^{\mathsf T},\qquad
+\mathbf 1:=(1,\dots,1)^{\mathsf T},\qquad
+E_{00}:=e_0e_0^{\mathsf T}.
+\]
+则
+\[
+A^{(q)}=\frac12\bigl(\mathbf 1\,b^{\mathsf T}+C^{(q)}\bigr),
+\]
+且 \(A^{(q)}\) 可逆并满足
+\[
+\boxed{\ \bigl(A^{(q)}\bigr)^{-1}=2\bigl(C^{(q)}\bigr)^{-1}-E_{00}\ }\in M_{q+1}(\ZZ).
+\]
+逐元公式可写为
+\[
+\bigl(A^{(q)}\bigr)^{-1}_{k,\ell}=
+\begin{cases}
+-1,&(k,\ell)=(0,0),\\[2mm]
+2(-1)^{k+\ell-q}\binom{k}{q-\ell},&k+\ell\ge q,\ (k,\ell)\neq(0,0),\\[2mm]
+0,&k+\ell<q.
+\end{cases}
+\]
+\end{theorem}
+\begin{proof}
+由定义有 \(A^{(q)}=\frac12(C^{(q)}+\mathbf 1\,b^{\mathsf T})\)。
+又 \(C^{(q)}e_0=\mathbf 1\)，故 \((C^{(q)})^{-1}\mathbf 1=e_0\)。
+并且 \(C^{(q)}\) 的第 \(0\) 行正是 \(b^{\mathsf T}\)，即 \(b^{\mathsf T}=e_0^{\mathsf T}C^{(q)}\)，从而
+\[
+b^{\mathsf T}(C^{(q)})^{-1}=e_0^{\mathsf T},
+\qquad
+b^{\mathsf T}(C^{(q)})^{-1}\mathbf 1=e_0^{\mathsf T}e_0=1.
+\]
+对秩一扰动应用 Sherman--Morrison 公式：
+\[
+\bigl(C^{(q)}+\mathbf 1\,b^{\mathsf T}\bigr)^{-1}
+=(C^{(q)})^{-1}
+-\frac{(C^{(q)})^{-1}\mathbf 1\ b^{\mathsf T}(C^{(q)})^{-1}}
+{1+b^{\mathsf T}(C^{(q)})^{-1}\mathbf 1}
+=(C^{(q)})^{-1}-\frac12E_{00}.
+\]
+两侧乘以 \(2\) 即得
+\(
+(A^{(q)})^{-1}=2(C^{(q)})^{-1}-E_{00}
+\)。
+再由结论 \ref{con:xi-terminal-disjointness-bq-sympower-unimodular-inverse} 的逆矩阵闭式与 \(C^{(q)}=B_q^{\mathsf T}\) 得
+\[
+\bigl(C^{(q)}\bigr)^{-1}_{k,\ell}
+=(-1)^{k+\ell-q}\binom{k}{q-\ell}\mathbf 1_{\{k+\ell\ge q\}},
+\]
+代回即得逐元表达。证毕。
+\end{proof}
+
+\begin{proposition}[整格像的首坐标二元判别与余核刚性]\label{prop:xi-exceptional-binomial-kernel-image-cokernel}
+在定理 \ref{thm:xi-exceptional-binomial-kernel-inverse} 记号下，令
+\[
+M^{(q)}:=2A^{(q)}=C^{(q)}+\mathbf 1\,b^{\mathsf T}\in M_{q+1}(\ZZ).
+\]
+则对任意 \(y\in\ZZ^{q+1}\)，方程 \(M^{(q)}x=y\) 存在整数解 \(x\in\ZZ^{q+1}\) 当且仅当 \(y_0\) 为偶数。等价地，
+\[
+M^{(q)}(\ZZ^{q+1})
+=\{y\in\ZZ^{q+1}:y_0\equiv 0\pmod 2\},
+\qquad
+\mathrm{coker}_{\ZZ}(M^{(q)})\cong \ZZ/2\ZZ.
+\]
+并且在 \(\FF_2\) 上
+\[
+\ker\!\bigl(M^{(q)}\bmod 2\bigr)=\langle e_0\rangle.
+\]
+\end{proposition}
+\begin{proof}
+由上一定理，
+\[
+\bigl(M^{(q)}\bigr)^{-1}
+=\bigl(C^{(q)}\bigr)^{-1}-\frac12E_{00}.
+\]
+故对 \(y\in\ZZ^{q+1}\) 有
+\[
+x=\bigl(M^{(q)}\bigr)^{-1}y
+=\bigl(C^{(q)}\bigr)^{-1}y-\frac{y_0}{2}e_0.
+\]
+因 \((C^{(q)})^{-1}\in M_{q+1}(\ZZ)\)，第一项始终为整数向量，因此
+\(
+x\in\ZZ^{q+1}\iff y_0/2\in\ZZ
+\)，即 \(y_0\) 为偶数。
+这给出整像的精确描述，并立得余核为 \(\ZZ/2\ZZ\)。
+
+对模 \(2\) 像空间，以上整像描述表明其恰为 \(\{z\in\FF_2^{q+1}:z_0=0\}\)，故秩为 \(q\)、核维数为 \(1\)。
+又 \(M^{(q)}\) 的第 \(0\) 列全为 \(2\)，故 \(e_0\in\ker(M^{(q)}\bmod 2)\)；
+由一维性可知核即 \(\langle e_0\rangle\)。证毕。
+\end{proof}
+
+\begin{theorem}[例外谱倒数幂和的 Fibonacci 闭式]\label{thm:xi-exceptional-reciprocal-moment-fibonacci-unified}
+设 \(\{\lambda_i^{(q)}\}_{i=0}^{q}=\mathrm{spec}(A^{(q)})\)。
+则对任意 \(q\ge 1\) 有
+\[
+\sum_{i=0}^{q}\frac{1}{\lambda_i^{(q)}}
+=-1+2(-1)^qF_{q+1},
+\]
+\[
+\sum_{i=0}^{q}\frac{1}{\bigl(\lambda_i^{(q)}\bigr)^2}
+=4F_{2q+2}+1.
+\]
+\end{theorem}
+\begin{proof}
+第一式即推论 \ref{cor:xi-terminal-replica-softcore-exceptional-reciprocal-sum-fibonacci}，
+第二式即推论 \ref{cor:xi-terminal-replica-softcore-exceptional-reciprocal-square-sum-fibonacci}。
+两式可分别写为
+\(
+\operatorname{tr}((A^{(q)})^{-1})
+\)
+与
+\(
+\operatorname{tr}((A^{(q)})^{-2})
+\)
+的闭式。证毕。
+\end{proof}
+
 \begin{corollary}[全矩阵行列式的塌缩与整数逆核]\label{cor:xi-terminal-replica-softcore-Tq-det-and-integer-inverse-kernel}
 设 \(q\ge 2\) 并记 \(N:=2^q\)。
 则

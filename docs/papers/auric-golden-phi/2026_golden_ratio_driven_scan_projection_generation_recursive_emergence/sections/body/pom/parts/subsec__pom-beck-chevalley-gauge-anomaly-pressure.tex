@@ -1,0 +1,301 @@
+\subsection{规范差压力谱的复合外置结构：Beck--Chevalley 缺陷与树形分解}\label{subsec:pom-bc-gauge-anomaly-pressure}
+在定理 \ref{thm:pom-kl-ledger} 给出的单投影账本恒等式中，纤维均匀提升 \(Q_m\) 将“不可见信息”精确编码为 KL 缺陷项。本小节进一步刻画复合外置（两层与多层）下的非函子性结构，并给出其与 AM--GM 缺陷、Gibbs 变分、树形分解以及椭圆偏心率之间的严格同构关系。
+
+\begin{theorem}[均匀提升的 Beck--Chevalley AM--GM 缺陷恒等式]\label{thm:pom-bc-amgm-defect-identity}
+设 \(f:X\twoheadrightarrow Y\)、\(g:Y\twoheadrightarrow Z\) 为有限集上的满射。记纤维基数
+\[
+d_f(y):=\lvert f^{-1}(y)\rvert,\qquad
+d_g(z):=\lvert g^{-1}(z)\rvert,\qquad
+d_{g\circ f}(z):=\lvert(g\circ f)^{-1}(z)\rvert=\sum_{y\in g^{-1}(z)}d_f(y).
+\]
+对任意概率分布 \(\nu\in\Delta(Z)\)，定义纤维均匀提升核
+\[
+(L_h\pi)(u):=\frac{\pi(h(u))}{d_h(h(u))},
+\]
+其中 \(h:U\twoheadrightarrow V\) 为满射且 \(\pi\in\Delta(V)\)。令
+\[
+P:=L_fL_g\nu\in\Delta(X),\qquad
+Q:=L_{g\circ f}\nu\in\Delta(X).
+\]
+定义
+\[
+\mathrm{AM}_z:=\frac{1}{d_g(z)}\sum_{y\in g^{-1}(z)}d_f(y),\qquad
+\mathrm{GM}_z:=\exp\!\left(\frac{1}{d_g(z)}\sum_{y\in g^{-1}(z)}\log d_f(y)\right).
+\]
+则有恒等式
+\[
+\boxed{\;
+H(Q)-H(P)=D_{\mathrm{KL}}(P\|Q)
+=\mathbb E_{Z\sim\nu}\!\left[\log\frac{\mathrm{AM}_Z}{\mathrm{GM}_Z}\right].
+\;}
+\]
+特别地，右端非负，且为零当且仅当对每个 \(z\in Z\)，函数 \(d_f(\cdot)\) 在 \(g^{-1}(z)\) 上常值。
+\end{theorem}
+\begin{proof}
+取任意 \(x\in X\)，记 \(y=f(x)\)、\(z=g(y)\)。则
+\[
+P(x)=\frac{\nu(z)}{d_g(z)\,d_f(y)},\qquad
+Q(x)=\frac{\nu(z)}{d_{g\circ f}(z)}.
+\]
+故
+\[
+\log\frac{P(x)}{Q(x)}
+=\log d_{g\circ f}(z)-\log d_g(z)-\log d_f(y).
+\]
+在 \(P\) 下，给定 \(Z=z\) 时，\(Y\) 在 \(g^{-1}(z)\) 上均匀。于是
+\[
+\begin{aligned}
+D_{\mathrm{KL}}(P\|Q)
+&=\mathbb E_{P}\!\left[\log\frac{P}{Q}\right]\\
+&=\mathbb E_{Z\sim\nu}\!\left[
+\log d_{g\circ f}(Z)-\log d_g(Z)
+-\frac1{d_g(Z)}\sum_{y\in g^{-1}(Z)}\log d_f(y)
+\right]\\
+&=\mathbb E_{Z\sim\nu}\!\left[\log\frac{\mathrm{AM}_Z}{\mathrm{GM}_Z}\right].
+\end{aligned}
+\]
+另一方面，
+\[
+H(Q)=H(\nu)+\mathbb E_{Z\sim\nu}\!\big[\log d_{g\circ f}(Z)\big],
+\]
+且
+\[
+H(P)=H(\nu)+\mathbb E_{Z\sim\nu}\!\left[
+\log d_g(Z)+\frac1{d_g(Z)}\sum_{y\in g^{-1}(Z)}\log d_f(y)\right].
+\]
+二式相减即得 \(H(Q)-H(P)=D_{\mathrm{KL}}(P\|Q)\)。
+最后，\(\mathrm{AM}_z=\mathrm{GM}_z\) 当且仅当 \(\{d_f(y):y\in g^{-1}(z)\}\) 全部相等，由 AM--GM 取等条件即得。
+\end{proof}
+
+\begin{corollary}[均匀提升函子性的充要判据]\label{cor:pom-bc-functoriality-criterion}
+沿用定理 \ref{thm:pom-bc-amgm-defect-identity} 的记号。下列三条等价：
+\begin{enumerate}
+  \item 作为算子 \(\Delta(Z)\to\Delta(X)\)，有 \(L_fL_g=L_{g\circ f}\)；
+  \item 对每个 \(z\in Z\)，\(d_f(\cdot)\) 在 \(g^{-1}(z)\) 上常值；
+  \item 对每个 \(\nu\in\Delta(Z)\)，
+  \(D_{\mathrm{KL}}(L_fL_g\nu\|L_{g\circ f}\nu)=0\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\((1)\Rightarrow(3)\) 显然。
+\((3)\Rightarrow(2)\) 由定理 \ref{thm:pom-bc-amgm-defect-identity} 的零缺陷判据直接得到。
+\((2)\Rightarrow(1)\)：取任意 \(x\in X\)，记 \(y=f(x),z=g(y)\)。若 \(d_f\) 在 \(g^{-1}(z)\) 上常值为 \(c(z)\)，则
+\[
+(L_fL_g\nu)(x)=\frac{\nu(z)}{d_g(z)c(z)}
+=\frac{\nu(z)}{\sum_{y'\in g^{-1}(z)}c(z)}
+=(L_{g\circ f}\nu)(x).
+\]
+故两算子相等。
+\end{proof}
+
+\begin{theorem}[层级外置的树形 KL 分解]\label{thm:pom-tree-kl-amgm-decomposition}
+设 \(T\) 为有限有根树，根为 \(r\)，叶集为 \(\mathcal L\)，内部结点集为 \(\mathcal I\)。对每个 \(v\in\mathcal I\)，记子结点集 \(\mathrm{Ch}(v)\)，度数 \(k(v):=\lvert\mathrm{Ch}(v)\rvert\ge 2\)，并记叶规模
+\[
+s(u):=\left|\{\ell\in\mathcal L:\ \ell\ \text{位于}\ u\ \text{的子树中}\}\right|.
+\]
+定义叶上的两种分布：
+\begin{itemize}
+  \item \(P\)：从根出发，在每个内部结点 \(v\) 上均匀选取下一子结点；
+  \item \(Q\)：在叶集 \(\mathcal L\) 上均匀分布。
+\end{itemize}
+对每个内部结点定义局部缺陷
+\[
+\alpha(v):=\log\frac{\mathrm{AM}_v}{\mathrm{GM}_v},
+\qquad
+\mathrm{AM}_v:=\frac1{k(v)}\sum_{u\in\mathrm{Ch}(v)}s(u),
+\qquad
+\mathrm{GM}_v:=\exp\!\left(\frac1{k(v)}\sum_{u\in\mathrm{Ch}(v)}\log s(u)\right).
+\]
+则
+\[
+\boxed{\;
+D_{\mathrm{KL}}(P\|Q)
+=\mathbb E_{\ell\sim P}\!\left[
+\sum_{v\in \mathrm{Path}(r,\ell)\cap\mathcal I}\alpha(v)\right].
+\;}
+\]
+因此 \(D_{\mathrm{KL}}(P\|Q)\ge 0\)，且当且仅当每个内部结点的子树叶规模在其子结点上常值。
+\end{theorem}
+\begin{proof}
+将 \(Q\) 写为同树上的 Markov 过程：在结点 \(v\) 处选子结点 \(u\in\mathrm{Ch}(v)\) 的条件概率定义为
+\[
+q_v(u):=\frac{s(u)}{s(v)}.
+\]
+则对任意叶 \(\ell\)，沿路径连乘得到
+\[
+Q(\ell)=\prod_{v\in\mathrm{Path}(r,\ell)\cap\mathcal I}\frac{s(\mathrm{next}_v(\ell))}{s(v)}
+=\frac{s(\ell)}{s(r)}=\frac1{|\mathcal L|},
+\]
+与均匀分布一致。
+另一方面，\(P\) 的局部转移为 \(p_v(u)=1/k(v)\)。
+
+于是
+\[
+\log\frac{P(\ell)}{Q(\ell)}
+=\sum_{v\in\mathrm{Path}(r,\ell)\cap\mathcal I}
+\log\frac{p_v(\mathrm{next}_v(\ell))}{q_v(\mathrm{next}_v(\ell))}.
+\]
+对 \(\ell\sim P\) 取期望并按结点分组，得到
+\[
+D_{\mathrm{KL}}(P\|Q)
+=\sum_{v\in\mathcal I}\mathbb P_P(v\ \text{被经过})\,
+\frac1{k(v)}\sum_{u\in\mathrm{Ch}(v)}
+\log\frac{1/k(v)}{s(u)/s(v)}.
+\]
+括号内化简为
+\[
+\log s(v)-\log k(v)-\frac1{k(v)}\sum_{u\in\mathrm{Ch}(v)}\log s(u)
+=\log\frac{\mathrm{AM}_v}{\mathrm{GM}_v}
+=\alpha(v),
+\]
+即得所述分解。零缺陷判据由每个 \(\alpha(v)=0\) 与 AM--GM 取等条件等价得到。
+\end{proof}
+
+\begin{proposition}[算法椭圆化：缺陷即偏心能量]\label{prop:pom-defect-eccentricity-energy}
+沿用定理 \ref{thm:pom-bc-amgm-defect-identity} 记号。对每个 \(z\in Z\) 定义椭圆
+\[
+E_z:\quad \frac{x^2}{a_z^2}+\frac{y^2}{b_z^2}=1,
+\qquad
+a_z:=\mathrm{AM}_z,\quad b_z:=\mathrm{GM}_z,
+\]
+偏心率
+\[
+e_z:=\sqrt{1-\left(\frac{b_z}{a_z}\right)^2}\in[0,1).
+\]
+则局部缺陷满足
+\[
+\log\frac{\mathrm{AM}_z}{\mathrm{GM}_z}
+=-\frac12\log(1-e_z^2),
+\]
+从而全局缺陷可写为
+\[
+\boxed{\;
+D_{\mathrm{KL}}(L_fL_g\nu\|L_{g\circ f}\nu)
+=\mathbb E_{Z\sim\nu}\!\left[-\frac12\log(1-e_Z^2)\right].
+\;}
+\]
+\end{proposition}
+\begin{proof}
+由偏心率定义得
+\(
+1-e_z^2=(b_z/a_z)^2
+\)。
+因此
+\[
+-\frac12\log(1-e_z^2)
+=-\frac12\log\!\left(\frac{b_z^2}{a_z^2}\right)
+=\log\frac{a_z}{b_z}
+=\log\frac{\mathrm{AM}_z}{\mathrm{GM}_z}.
+\]
+再对 \(Z\sim\nu\) 取期望并调用定理 \ref{thm:pom-bc-amgm-defect-identity} 即得。
+\end{proof}
+
+\begin{theorem}[局部缺陷的 Gibbs 变分原理与唯一极值]\label{thm:pom-local-defect-gibbs-variational}
+固定定理 \ref{thm:pom-bc-amgm-defect-identity} 中任意 \(z\in Z\)。记
+\[
+k:=d_g(z),\qquad g^{-1}(z)=\{y_1,\dots,y_k\},\qquad
+n_i:=d_f(y_i)\in\mathbb N_{>0}.
+\]
+定义均匀分布 \(u_i:=1/k\) 与尺寸偏置分布
+\[
+q_i:=\frac{n_i}{\sum_{j=1}^{k}n_j}.
+\]
+再记 \(\Delta_k:=\{\pi\in\RR_{\ge0}^{k}:\sum_i\pi_i=1\}\)。
+则局部缺陷
+\[
+\alpha(z):=\log\frac{\mathrm{AM}_z}{\mathrm{GM}_z}
+\]
+具有以下等价表述：
+\begin{enumerate}
+  \item Jensen--AM/GM 形式
+  \[
+  \alpha(z)
+  =\log\!\left(\frac1k\sum_{i=1}^{k}n_i\right)-\frac1k\sum_{i=1}^{k}\log n_i;
+  \]
+  \item 相对熵形式
+  \[
+  \alpha(z)=D_{\mathrm{KL}}(u\|q);
+  \]
+  \item Gibbs 变分形式
+  \[
+  \alpha(z)
+  =\sup_{\pi\in\Delta_k}\left\{
+  H(\pi)-\log k+\sum_{i=1}^{k}\pi_i\log n_i-\frac1k\sum_{i=1}^{k}\log n_i
+  \right\},
+  \]
+  且上确界唯一在 \(\pi=q\) 处取得。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\((1)\) 是定义展开。
+对 \((2)\)，直接计算
+\[
+\begin{aligned}
+D_{\mathrm{KL}}(u\|q)
+&=\sum_{i=1}^{k}\frac1k\log\frac{1/k}{n_i/\sum_j n_j}\\
+&=\log\!\left(\frac{\sum_j n_j}{k}\right)-\frac1k\sum_i\log n_i
+=\alpha(z).
+\end{aligned}
+\]
+对 \((3)\)，定义
+\[
+F(\pi):=H(\pi)+\sum_{i=1}^{k}\pi_i\log n_i.
+\]
+由
+\[
+F(\pi)=\log\!\left(\sum_{j=1}^{k}n_j\right)-D_{\mathrm{KL}}(\pi\|q),
+\]
+得 \(\sup_{\pi\in\Delta_k}F(\pi)=\log\sum_j n_j\)，且唯一极值点为 \(\pi=q\)。
+故
+\[
+\sup_{\pi\in\Delta_k}\left\{H(\pi)-\log k+\sum_i\pi_i\log n_i\right\}
+=\log\!\left(\frac1k\sum_i n_i\right),
+\]
+再减去常数 \(\frac1k\sum_i\log n_i\) 即得所述变分公式与唯一性。
+\end{proof}
+
+\begin{corollary}[小缺陷刚性：纤维近均匀的定量界]\label{cor:pom-small-defect-fiber-rigidity}
+沿用定理 \ref{thm:pom-local-defect-gibbs-variational} 记号。令
+\[
+\alpha(z)=\log\frac{\mathrm{AM}_z}{\mathrm{GM}_z}.
+\]
+则
+\[
+\boxed{\;
+\max_{1\le i\le k}\left|\frac{n_i}{\mathrm{AM}_z}-1\right|
+\le k\sqrt{2\alpha(z)}.
+\;}
+\]
+特别地，若 \(\alpha(z)\to 0\)，则 \(n_i/\mathrm{AM}_z\to 1\) 在 \(i=1,\dots,k\) 上一致成立。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-local-defect-gibbs-variational}(2) 有 \(\alpha(z)=D_{\mathrm{KL}}(u\|q)\)。
+由 Pinsker 不等式
+\[
+\|u-q\|_1^2\le 2D_{\mathrm{KL}}(u\|q)=2\alpha(z),
+\]
+故 \(\|u-q\|_1\le \sqrt{2\alpha(z)}\)。
+又
+\[
+\frac{n_i}{\mathrm{AM}_z}
+=\frac{n_i}{(\sum_j n_j)/k}
+=kq_i,
+\]
+从而
+\[
+\max_i\left|\frac{n_i}{\mathrm{AM}_z}-1\right|
+=k\max_i|q_i-u_i|
+\le k\|q-u\|_1
+\le k\sqrt{2\alpha(z)}.
+\]
+证毕。
+\end{proof}
+
+\begin{remark}[与规范差压力谱接口的对应关系]\label{rem:pom-bc-gauge-pressure-interface}
+定理 \ref{thm:pom-bc-amgm-defect-identity}--推论 \ref{cor:pom-small-defect-fiber-rigidity} 将“复合均匀提升的非函子性”精确化为一组可审计标量：
+\[
+\mathcal A_{\nu}(f,g):=D_{\mathrm{KL}}(L_fL_g\nu\|L_{g\circ f}\nu)
+=\mathbb E_{Z\sim\nu}\!\left[\log\frac{\mathrm{AM}_Z}{\mathrm{GM}_Z}\right].
+\]
+该量与定理 \ref{thm:pom-kl-ledger} 的单层缺陷属于同一账本类型，但在两层/树形外置下给出新的结构性超额项。由定理 \ref{thm:pom-tree-kl-amgm-decomposition} 的局部加和形式可见，这一超额可在层级图上分解为局部压力缺陷之和，从而与本节及第 \ref{sec:folding} 节中的规范差压力谱对象形成一致的多尺度审计接口。
+\end{remark}

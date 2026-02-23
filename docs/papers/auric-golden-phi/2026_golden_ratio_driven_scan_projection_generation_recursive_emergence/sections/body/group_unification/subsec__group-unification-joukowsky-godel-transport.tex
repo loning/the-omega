@@ -1,0 +1,310 @@
+\subsection{Joukowsky--Gödel 输运的结式分解与双尺度可逆结构}\label{subsec:group-unification-joukowsky-godel}
+
+为将“扫描--投影--重建”链条压缩为可直接调用的代数证书，本小节给出一组围绕结式、判别式与双尺度反演的严格恒等式。其作用是把单尺度 Joukowsky 读出、双尺度几何闭包与碰撞谱半径统一到同一消元框架中，并与本节既有的谱隙/边界审计接口形成互补。
+
+\begin{theorem}[Joukowsky--Gödel 输运的回拉分解恒等式]\label{thm:group-jg-pullback-factorization}
+设 \(K\) 为特征 \(0\) 的域，\(P(z)\in K[z]\) 为次数 \(n\ge 1\) 的多项式，
+\[
+P(z)=a_n\prod_{j=1}^{n}(z-z_j),\qquad a_n\neq 0,\quad z_j\neq 0.
+\]
+对任意 \(r\in K^\times\)，定义二次核
+\[
+R_{r,w}(z):=r z^2-w z+r^{-1},
+\]
+并定义 Joukowsky--Gödel 输运多项式
+\[
+Q_r(w):=\operatorname{Res}_{z}\!\bigl(P(z),R_{r,w}(z)\bigr)\in K[r,r^{-1}][w].
+\]
+再定义倒易多项式
+\[
+P^{\vee}(u):=u^n P(1/u)\in K[u].
+\]
+则在 \(K[r,r^{-1}][z,z^{-1}]\) 中成立恒等式
+\[
+\boxed{\;
+r^n z^n\,Q_r\!\left(r z+r^{-1}z^{-1}\right)=P(z)\,P^{\vee}(r^2 z).
+\;}
+\]
+\end{theorem}
+\begin{proof}
+由结式乘积公式（在代数闭包中计算）可得
+\[
+Q_r(w)=a_n^2\prod_{j=1}^{n}\bigl(r z_j^2-w z_j+r^{-1}\bigr).
+\]
+代入 \(w=r z+r^{-1}z^{-1}\) 并逐项乘以 \(z\)，有
+\[
+\begin{aligned}
+z\bigl(r z_j^2-(r z+r^{-1}z^{-1})z_j+r^{-1}\bigr)
+&=r z z_j(z_j-z)+r^{-1}(z-z_j)\\
+&=(z-z_j)\bigl(r^{-1}-r z z_j\bigr)\\
+&=r^{-1}(z-z_j)(1-r^2 z z_j).
+\end{aligned}
+\]
+故
+\[
+\begin{aligned}
+z^n Q_r\!\left(r z+r^{-1}z^{-1}\right)
+&=a_n^2\prod_{j=1}^{n}\Bigl[r^{-1}(z-z_j)(1-r^2 z z_j)\Bigr]\\
+&=a_n^2 r^{-n}\Bigl(\prod_{j=1}^{n}(z-z_j)\Bigr)\Bigl(\prod_{j=1}^{n}(1-r^2 z z_j)\Bigr).
+\end{aligned}
+\]
+另一方面
+\[
+\prod_{j=1}^{n}(z-z_j)=\frac{P(z)}{a_n},\qquad
+\prod_{j=1}^{n}(1-r^2 z z_j)=\frac{P^{\vee}(r^2 z)}{a_n}.
+\]
+代回即得
+\[
+z^n Q_r\!\left(r z+r^{-1}z^{-1}\right)=r^{-n}P(z)\,P^{\vee}(r^2 z),
+\]
+两边同乘 \(r^n\) 即证。
+\end{proof}
+
+\begin{theorem}[两尺度全息可逆性：由两条椭圆边界唯一重建]\label{thm:group-two-scale-holographic-recovery}
+在定理 \ref{thm:group-jg-pullback-factorization} 的设定下，令 \(K=\CC\)，并进一步假设
+\[
+|z_j|=1,\qquad 1\le j\le n.
+\]
+取两个不同尺度 \(r_1,r_2\in\RR\) 满足 \(r_1>1,\ r_2>1,\ r_1\neq r_2\)，定义回拉多项式
+\[
+F_r(z):=r^n z^n Q_r\!\left(r z+r^{-1}z^{-1}\right)\in \CC[z].
+\]
+则
+\[
+\boxed{\;
+\gcd_{\CC[z]}\bigl(F_{r_1},F_{r_2}\bigr)=P(z)
+\;}
+\]
+在取首一规范后给出唯一重建。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:group-jg-pullback-factorization} 直接得到
+\[
+F_r(z)=P(z)\,P^{\vee}(r^2 z).
+\]
+其中 \(P^{\vee}(r^2 z)\) 的零点为
+\[
+\{\,r^{-2} z_j^{-1}:1\le j\le n\,\}.
+\]
+由 \(|z_j|=1\) 知上述零点全部落在圆 \(|z|=r^{-2}<1\) 上。因 \(r_1\neq r_2\) 且 \(r_1,r_2>1\)，两圆
+\[
+|z|=r_1^{-2},\qquad |z|=r_2^{-2}
+\]
+不相交，故 \(P^{\vee}(r_1^2 z)\) 与 \(P^{\vee}(r_2^2 z)\) 在 \(\CC[z]\) 中互素。于是
+\[
+\gcd(F_{r_1},F_{r_2})
+=P\cdot \gcd\!\bigl(P^{\vee}(r_1^2 z),P^{\vee}(r_2^2 z)\bigr)
+=P.
+\]
+将 \(P\) 取首一代表即得唯一性。
+\end{proof}
+
+\begin{theorem}[输运结式判别式的完全分解与碰撞谱]\label{thm:group-jg-discriminant-factorization}
+沿用定理 \ref{thm:group-jg-pullback-factorization} 记号，并假设 \(P\) 无重根，即 \(\operatorname{Disc}_{z}(P)\neq 0\)。
+则 \(Q_r(w)\) 作为 \(w\) 的次数 \(n\) 多项式满足
+\[
+\boxed{\;
+\operatorname{Disc}_{w}(Q_r)
+=a_n^{2n-2}\operatorname{Disc}_{z}(P)\,
+r^{-n(n-1)}
+\prod_{1\le i<j\le n}(r^2 z_i z_j-1)^2.
+\;}
+\]
+特别地，当 \(r\neq 0\) 时，\(Q_r\) 在 \(w\)-轴上出现重根当且仅当存在 \(i<j\) 使
+\[
+r^2 z_i z_j=1.
+\]
+\end{theorem}
+\begin{proof}
+由
+\[
+Q_r(w)=a_n^2\prod_{j=1}^{n}(r z_j^2-w z_j+r^{-1})
+\]
+可知其根为
+\[
+w_j=r z_j+r^{-1}z_j^{-1},\qquad 1\le j\le n,
+\]
+首项系数为
+\[
+L=(-1)^n a_n^2\prod_{j=1}^{n} z_j.
+\]
+判别式公式给出
+\[
+\operatorname{Disc}_{w}(Q_r)=L^{2n-2}\prod_{1\le i<j\le n}(w_i-w_j)^2.
+\]
+而
+\[
+\begin{aligned}
+w_i-w_j
+&=r(z_i-z_j)+r^{-1}(z_i^{-1}-z_j^{-1})\\
+&=(z_i-z_j)\Bigl(r-r^{-1}(z_i z_j)^{-1}\Bigr)\\
+&=(z_i-z_j)\frac{r^2 z_i z_j-1}{r z_i z_j}.
+\end{aligned}
+\]
+故
+\[
+\prod_{i<j}(w_i-w_j)^2
+=\Bigl(\prod_{i<j}(z_i-z_j)^2\Bigr)\,
+r^{-n(n-1)}
+\Bigl(\prod_{i<j}(r^2 z_i z_j-1)^2\Bigr)\,
+\Bigl(\prod_{i<j}(z_i z_j)^{-2}\Bigr),
+\]
+且
+\[
+\prod_{i<j}(z_i z_j)^{-2}
+=\prod_{k=1}^{n} z_k^{-2(n-1)}
+=\Bigl(\prod_{k=1}^{n} z_k\Bigr)^{-2(n-1)}.
+\]
+与
+\[
+L^{2n-2}=a_n^{4n-4}\Bigl(\prod_{k=1}^{n} z_k\Bigr)^{2n-2}
+\]
+相乘后，\(\prod z_k\) 指数抵消，得到
+\[
+\operatorname{Disc}_{w}(Q_r)
+=a_n^{4n-4}\Bigl(\prod_{i<j}(z_i-z_j)^2\Bigr)\,
+r^{-n(n-1)}
+\prod_{i<j}(r^2 z_i z_j-1)^2.
+\]
+再用
+\[
+\operatorname{Disc}_{z}(P)=a_n^{2n-2}\prod_{i<j}(z_i-z_j)^2
+\]
+代换即证。重根判据由判别式零点条件直接推出。
+\end{proof}
+
+\begin{theorem}[复时间相干半径的显式公式]\label{thm:group-complex-time-coherence-radius}
+在定理 \ref{thm:group-jg-discriminant-factorization} 的条件下，令
+\[
+Q_t(w):=Q_{e^t}(w),\qquad t\in\CC,
+\]
+并定义碰撞谱
+\[
+\Sigma(P):=\{\,t\in\CC:\ e^{2t}z_i z_j=1\ \text{对某些}\ i<j\,\}.
+\]
+则对任意 \(t_0\notin\Sigma(P)\)，存在 \(\varepsilon>0\) 及根标号
+\((w_1(t),\dots,w_n(t))\)，使得在 \(|t-t_0|<\varepsilon\) 内：
+\begin{enumerate}
+  \item \(Q_t(w)=0\) 的全部根均为单根；
+  \item 每个 \(w_j(t)\) 都是 \(t\) 的全纯函数；
+  \item 任一由 \(\{w_j(t)\}\) 构成的对称全纯函数在该圆盘内全纯。
+\end{enumerate}
+进一步地，若
+\[
+\rho(t_0):=\operatorname{dist}\bigl(t_0,\Sigma(P)\bigr),
+\]
+则上述解析延拓的最大半径恰为 \(\rho(t_0)\)。
+
+在特例 \(|z_j|=1\) 下，写 \(z_j=e^{i\theta_j}\)（\(\theta_j\in\RR/2\pi\ZZ\)），则
+\[
+\boxed{\;
+\rho(0)=\frac12\min_{i<j}\operatorname{dist}_{2\pi\ZZ}(\theta_i+\theta_j,0).
+\;}
+\]
+若 \(\{z_j\}\) 为 \(m\) 次单位根的一个满轨道（即 \(\theta_j=2\pi j/m\) 的平移），则
+\[
+\boxed{\;\rho(0)=\frac{\pi}{m}.\;}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:group-jg-discriminant-factorization}，
+\[
+\operatorname{Disc}_{w}(Q_t)
+=C_P\,e^{-n(n-1)t}\prod_{i<j}(e^{2t}z_i z_j-1)^2,
+\qquad
+C_P:=a_n^{2n-2}\operatorname{Disc}_{z}(P)\neq 0.
+\]
+故 \(\operatorname{Disc}_{w}(Q_t)=0\) 当且仅当 \(t\in\Sigma(P)\)。对 \(t_0\notin\Sigma(P)\)，
+\(Q_t(w)\) 的系数关于 \(t\) 全纯且在 \(t_0\) 处无重根，由全纯隐函数定理可在邻域内选取全纯根分支 \(w_j(t)\)。对称全纯函数作为这些分支的对称组合仍全纯。
+
+最大半径由最近判别式零点决定：当半径超过 \(\operatorname{dist}(t_0,\Sigma(P))\) 时必触及碰撞点，无法继续保持单根标号；而在该距离以内判别式保持非零，标号可持续延拓，故最大半径即 \(\rho(t_0)\)。
+
+若 \(|z_j|=1\)，则 \(z_i z_j=e^{i(\theta_i+\theta_j)}\)，碰撞方程
+\(
+e^{2t}z_i z_j=1
+\)
+等价于
+\[
+2t+i(\theta_i+\theta_j)\in 2\pi i\ZZ
+\quad\Longleftrightarrow\quad
+t\in i\Bigl(\pi\ZZ-\frac{\theta_i+\theta_j}{2}\Bigr).
+\]
+故 \(t_0=0\) 到碰撞谱的最小距离为
+\(
+\frac12\min_{i<j}\operatorname{dist}_{2\pi\ZZ}(\theta_i+\theta_j,0)
+\)。
+当 \(\{z_j\}\) 为等间距 \(m\)-轨道时，\(\theta_i+\theta_j\) 的最小非零模 \(2\pi\) 距离为 \(2\pi/m\)，于是 \(\rho(0)=\pi/m\)。
+\end{proof}
+
+\begin{theorem}[两尺度椭圆投影的代数闭包与显式反演]\label{thm:group-two-scale-conic-embedding}
+取 \(r_1,r_2\in K^\times\) 且 \(r_1^2\neq r_2^2\)。定义两尺度 Joukowsky 映射
+\[
+J_r(z)=r z+r^{-1}z^{-1},
+\]
+以及
+\[
+f_{r_1,r_2}:\mathbb{G}_m\to\mathbb{A}^2,\qquad
+f_{r_1,r_2}(z)=(w_1,w_2):=\bigl(J_{r_1}(z),J_{r_2}(z)\bigr).
+\]
+则：
+\begin{enumerate}
+  \item \(f_{r_1,r_2}\) 为代数嵌入（在代数闭包上单射，且给出双有理参数化）；
+  \item 其像为光滑仿射锥曲线 \(C_{r_1,r_2}\subset\mathbb{A}^2\)，由单个二次方程刻画
+  \[
+  \boxed{\;
+  r_1 r_2\,(r_1 w_1-r_2 w_2)(r_1 w_2-r_2 w_1)=(r_1^2-r_2^2)^2;
+  \;}
+  \]
+  \item 对任意满足该方程的点 \((w_1,w_2)\)，其原像由显式有理式给出
+  \[
+  \boxed{\;
+  z=\frac{r_1 w_1-r_2 w_2}{r_1^2-r_2^2},
+  \qquad
+  z^{-1}=\frac{r_1 r_2\,(r_1 w_2-r_2 w_1)}{r_1^2-r_2^2}.
+  \;}
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定义
+\[
+w_1=r_1 z+r_1^{-1}z^{-1},\qquad
+w_2=r_2 z+r_2^{-1}z^{-1}.
+\]
+把 \((z,z^{-1})\) 视为未知量，则系数矩阵为
+\[
+\begin{pmatrix}
+r_1 & r_1^{-1}\\
+r_2 & r_2^{-1}
+\end{pmatrix},
+\]
+其行列式
+\(
+\frac{r_1^2-r_2^2}{r_1 r_2}\neq 0
+\)。
+故可唯一解得
+\[
+z=\frac{r_1 w_1-r_2 w_2}{r_1^2-r_2^2},\qquad
+z^{-1}=\frac{r_1 r_2\,(r_1 w_2-r_2 w_1)}{r_1^2-r_2^2}.
+\]
+代入约束 \(z\cdot z^{-1}=1\) 即得二次方程
+\[
+r_1 r_2\,(r_1 w_1-r_2 w_2)(r_1 w_2-r_2 w_1)=(r_1^2-r_2^2)^2.
+\]
+反之，任意满足该方程的 \((w_1,w_2)\) 代入上式都给出唯一 \(z\in\mathbb{G}_m\)，故 \(f_{r_1,r_2}\) 单射且双有理可逆，其像即该仿射锥曲线。
+
+最后验证光滑性。设
+\[
+F(w_1,w_2):=r_1 r_2\,(r_1 w_1-r_2 w_2)(r_1 w_2-r_2 w_1)-(r_1^2-r_2^2)^2.
+\]
+记 \(A=r_1 w_1-r_2 w_2,\ B=r_1 w_2-r_2 w_1\)，则
+\[
+\partial_{w_1}F=r_1 r_2(r_1 B-r_2 A),\qquad
+\partial_{w_2}F=r_1 r_2(r_1 A-r_2 B).
+\]
+若两偏导同零，则线性方程组推出 \(A=B=0\)（因 \(r_1^2\neq r_2^2\)），与曲线上恒有
+\(
+AB=(r_1^2-r_2^2)^2/(r_1 r_2)\neq 0
+\)
+矛盾。故曲线无奇点，即为光滑锥曲线。
+\end{proof}

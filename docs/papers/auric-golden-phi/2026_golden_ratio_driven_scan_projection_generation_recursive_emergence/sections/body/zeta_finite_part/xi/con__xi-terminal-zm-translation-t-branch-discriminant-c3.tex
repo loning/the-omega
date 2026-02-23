@@ -1,0 +1,269 @@
+\begin{theorem}[双参数四次模型的分歧判别式闭式与 \texorpdfstring{$C_{3}$}{C3} 协变律]\label{thm:xi-terminal-zm-translation-t-branch-discriminant-c3-closed}
+定义
+\[
+F_t(\mu,u):=\mu^4-\mu^3-(tu+1)\mu^2+\mu(tu-u^3)+tu.
+\]
+令
+\[
+\operatorname{Disc}_{\mu}\!\bigl(F_t(\mu,u)\bigr)=u\,D_t(u),
+\qquad D_t(u)\in\ZZ[t,u].
+\]
+则 \(\deg_u D_t=11\)，并且
+\[
+\boxed{
+\begin{aligned}
+D_t(u)=\;&-27u^{11}+90t\,u^9+(4t^3-22)u^8-239t^2u^7-(8t^4+70t)u^6\\
+&+(236t^3+5)u^5+(20t^5-164t^2)u^4-(120t^4+108t)u^3\\
+&+220t^3u^2-120t^2u+20t.
+\end{aligned}}
+\]
+此外，对任意满足 \(\zeta^3=1\) 的三次单位根 \(\zeta\)，有严格协变关系
+\[
+\boxed{\,D_{\zeta t}(u)=\zeta\,D_t(\zeta u)\, }.
+\]
+\end{theorem}
+\begin{proof}
+由判别式定义
+\[
+\operatorname{Disc}_{\mu}(F)=(-1)^{n(n-1)/2}\operatorname{Res}_{\mu}(F,\partial_{\mu}F),\qquad n=4,
+\]
+对 \(F_t\) 直接消元可得
+\[
+\operatorname{Disc}_{\mu}(F_t)=u\,D_t(u),
+\]
+并得到上述闭式系数。
+\par
+对协变性，先验证恒等式
+\[
+F_{\zeta t}(\mu,\zeta^{-1}u)=F_t(\mu,u),
+\]
+因为 \(u^3\) 在 \(u\mapsto \zeta^{-1}u\) 下不变，且 \(tu\) 在 \((t,u)\mapsto(\zeta t,\zeta^{-1}u)\) 下不变。
+对两边取 \(\mu\)-判别式：
+\[
+u\,D_t(u)=\zeta^{-1}u\,D_{\zeta t}(\zeta^{-1}u).
+\]
+将 \(u\) 替换为 \(\zeta u\) 即得
+\[
+D_{\zeta t}(u)=\zeta D_t(\zeta u).
+\]
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_translation\_t\_discriminant\_c3\_audit.py}。证毕。
+\end{proof}
+
+\begin{theorem}[二次判别式 \texorpdfstring{$\Delta(t)=\operatorname{Disc}_u(D_t)$}{Delta(t)=Disc_u(Dt)} 的完全分解]\label{thm:xi-terminal-zm-translation-t-branch-discriminant-c3-delta-factor}
+令
+\[
+\Delta(t):=\operatorname{Disc}_u\!\bigl(D_t(u)\bigr)\in\ZZ[t].
+\]
+则有完全分解
+\[
+\boxed{
+\begin{aligned}
+\Delta(t)=\;&515978035200\;t^4\,(80t^6+16424t^3-84375)\,(256t^6-1312t^3+3125)^2\\
+&\times(8000t^{12}+429800t^9+96378087t^6-2034256t^3-64)^3.
+\end{aligned}}
+\]
+等价地，记 \(s=t^3\)，则
+\[
+\Delta(t)=515978035200\;t^4\,\Phi_1(s)\,\Phi_2(s)^2\,\Phi_3(s)^3,
+\]
+其中
+\[
+\Phi_1(s)=80s^2+16424s-84375,\qquad
+\Phi_2(s)=256s^2-1312s+3125,
+\]
+\[
+\Phi_3(s)=8000s^4+429800s^3+96378087s^2-2034256s-64.
+\]
+\end{theorem}
+\begin{proof}
+由 \(\deg_u D_t=11\) 与判别式定义
+\[
+\operatorname{Disc}_u(D_t)=(-1)^{m(m-1)/2}\operatorname{Res}_u(D_t,\partial_u D_t),\qquad m=11,
+\]
+直接消元并因式分解得所示公式。
+\par
+由定理 \ref{thm:xi-terminal-zm-translation-t-branch-discriminant-c3-closed} 的协变律
+\[
+D_{\zeta t}(u)=\zeta D_t(\zeta u),
+\]
+并使用判别式缩放公式
+\[
+\operatorname{Disc}_u\!\bigl(c\,P(au)\bigr)=c^{2m-2}a^{m(m-1)}\operatorname{Disc}_u(P),\qquad m=11,
+\]
+得
+\[
+\Delta(\zeta t)=\zeta^{20}\zeta^{110}\Delta(t)=\zeta\,\Delta(t).
+\]
+因此 \(\Delta\) 的幂次仅落在 \(1\pmod 3\) 的同余类上，等价写为 \(t^4\) 乘 \(t^3\)-多项式；上式给出了该结构的精确因子。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\RR$}{R}-参数下分歧碰撞点的精确刻画]\label{cor:xi-terminal-zm-translation-t-branch-discriminant-c3-real-collision}
+对 \(t\in\RR\)，多项式 \(D_t(u)\) 在 \(\CC\) 上出现重根当且仅当
+\[
+t=0,\quad\text{或}\quad 80t^6+16424t^3-84375=0,\quad\text{或}\quad
+8000t^{12}+429800t^9+96378087t^6-2034256t^3-64=0.
+\]
+其中：
+\begin{enumerate}
+  \item \(80t^6+16424t^3-84375=0\) 的两实解为
+  \[
+  t^3=-\frac{2053}{20}\pm\frac{247}{10}\sqrt{19},
+  \qquad
+  t=\sqrt[3]{-\frac{2053}{20}\pm\frac{247}{10}\sqrt{19}},
+  \]
+  数值为
+  \[
+  t\approx 1.7116619053346387,\qquad t\approx -5.946890580731152;
+  \]
+  \item \(8000t^{12}+429800t^9+96378087t^6-2034256t^3-64=0\) 恰有两实根，数值为
+  \[
+  t\approx 0.2764887319883657,\qquad t\approx -0.0315531574228415;
+  \]
+  \item \(256t^6-1312t^3+3125=0\) 在 \(\RR\) 上无解。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-terminal-zm-translation-t-branch-discriminant-c3-delta-factor}，
+\(\Delta(t)=0\) 当且仅当其因子之一为零。
+对 \(\Phi_2(s)=256s^2-1312s+3125\)，判别式为
+\[
+(-1312)^2-4\cdot 256\cdot 3125=-1478656<0,
+\]
+故无实根。
+\par
+\(\Phi_1\) 为二次式，直接求根得到闭式表达。
+\(\Phi_3\) 为四次式，且其导数三次式判别式为
+\[
+\operatorname{Disc}\!\bigl(\Phi_3'(s)\bigr)=-855217962210024019631145312000<0,
+\]
+故 \(\Phi_3'\) 仅有一个实根，从而 \(\Phi_3\) 仅有一个实极值点，实根数至多为 \(2\)。
+又 \(\Phi_3(0)=-64<0\)，且 \(\Phi_3(s)\to +\infty\)（\(s\to\pm\infty\)），故恰有一正一负两个实根。
+映射 \(t\mapsto t^3\) 在 \(\RR\) 上双射，因此对应地恰有两实 \(t\)-根。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$u=1$}{u=1} 进入分歧值的完整代数条件]\label{prop:xi-terminal-zm-translation-t-branch-discriminant-c3-u1}
+对 \(u=1\)，有
+\[
+\boxed{
+D_t(1)=0\iff (t-2)\bigl(20t^4-88t^3+284t^2+45t+22\bigr)=0.}
+\]
+因此在 \(\overline{\QQ}\) 上恰有 \(5\) 个参数使 \(u=1\) 为分歧值：一实根 \(t=2\) 与该四次多项式的四个根。
+\end{proposition}
+\begin{proof}
+将 \(u=1\) 代入定理 \ref{thm:xi-terminal-zm-translation-t-branch-discriminant-c3-closed} 的闭式表达并因式分解，立即得到结论。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_translation\_t\_discriminant\_c3\_audit.py}。证毕。
+\end{proof}
+
+\begin{theorem}[四次因子的严格正性与唯一实 \texorpdfstring{$u=1$}{u=1} 共振]\label{thm:xi-terminal-zm-translation-t-branch-discriminant-c3-u1-positivity}
+定义
+\[
+q(t):=20t^4-88t^3+284t^2+45t+22.
+\]
+则有严格平方和分解
+\[
+\boxed{
+q(t)=20\Bigl(t^2-\frac{11}{5}t\Bigr)^2+\frac{936}{5}\Bigl(t+\frac{25}{208}\Bigr)^2+\frac{8027}{416}.}
+\]
+从而 \(q(t)>0\) 对一切 \(t\in\RR\) 成立。
+因此
+\[
+t\in\RR,\ D_t(1)=0\ \Longrightarrow\ t=2.
+\]
+\end{theorem}
+\begin{proof}
+上式直接展开可核验。右端三项均非负且常数项严格为正，故 \(q(t)\) 在 \(\RR\) 上严格正。
+结合命题 \ref{prop:xi-terminal-zm-translation-t-branch-discriminant-c3-u1} 即得唯一实解 \(t=2\)。证毕。
+\end{proof}
+
+\begin{proposition}[判别曲线奇点的消元刻画与唯一性]\label{prop:xi-terminal-zm-translation-t-branch-discriminant-c3-singular-elimination}
+设
+\[
+\Gamma\subset\AA^2_{t,u},\qquad \Gamma:\ D_t(u)=0.
+\]
+则 \(\Gamma\) 的奇点参数满足：
+\begin{enumerate}
+  \item \(\Gamma\) 存在奇点当且仅当
+  \[
+  \boxed{
+  \bigl(256t^6-1312t^3+3125\bigr)\,
+  \bigl(8000t^{12}+429800t^9+96378087t^6-2034256t^3-64\bigr)=0.}
+  \]
+  \item 等价地，在 \(t\)-线上由消元多项式
+  \[
+  \boxed{
+  \bigl(256t^6-1312t^3+3125\bigr)\,
+  \bigl(8000t^{12}+429800t^9+96378087t^6-2034256t^3-64\bigr)^2=0
+  }
+  \]
+  刻画；其中平方指数给出消元重数。
+  \item 对每个满足上述条件的 \(t\)，奇点的 \(u\)-坐标唯一，且由
+  \[
+  \boxed{
+  u=\frac{t^2\,P_9(t^3)}{C}}
+  \]
+  给出，其中
+  \[
+  C=
+  1146919918223400883707609447433426476251203385787440489213053015719484911581940154368000,
+  \]
+  且
+  \[
+  \boxed{
+  \begin{aligned}
+  P_9(s)=\;&
+  17864502295709707825431356157528873283413020214750253582630010725020746370305048576000000\,s^9\\
+  &+1827985552391858929673625577699869358461325615692919356153396939222537398020953119539200000\,s^8\\
+  &+472380765502860761689023714837178856458962674487907763054197839296312918358467091455103488000\,s^7\\
+  &+20669312921272651046479667688582870966622217807989339629125906175063486375887028759114636876800\,s^6\\
+  &+2479717207964943525348394675715513569066639511983825407996293452948613349769192552883221946978496\,s^5\\
+  &-13112777363415463937040364405348120900527714677007038191152130648141031999868546590632040898213488\,s^4\\
+  &+32206159583214755787286512483786868328764234040970721269159053665093307376534469693668131746127017\,s^3\\
+  &-1341350108695509062380855870071374542799221268567807990255827240403545308460434755576190878625288\,s^2\\
+  &+14031773541681724880812976025532230691811442528685420734972982181307286334826738788279124405440\,s\\
+  &+1142522353125628145251947755351541775770680303528808392151252348593203216967111461525699072.
+  \end{aligned}}
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+对理想
+\[
+I:=\langle D_t(u),\partial_u D_t(u),\partial_t D_t(u)\rangle\subset\QQ[u,t]
+\]
+取字典序 \(u\succ t\) 的 Gröbner 基。
+其 \(t\)-消元子恰为
+\[
+\bigl(256t^6-1312t^3+3125\bigr)\bigl(8000t^{12}+429800t^9+96378087t^6-2034256t^3-64\bigr)^2.
+\]
+故奇点参数集合由其平方自由部分给出，即第 1 条。
+\par
+同一 Gröbner 基含一条关于 \(u\) 的一次关系
+\[
+Cu-t^2P_9(t^3)=0,
+\]
+其中 \(C\neq 0\) 且 \(P_9\) 如上，故每个可行 \(t\) 对应唯一 \(u\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_translation\_t\_discriminant\_c3\_audit.py}。证毕。
+\end{proof}
+
+\begin{conjecture}[泛型 \texorpdfstring{$S_{11}$}{S11} 稳定性]\label{conj:xi-terminal-zm-translation-t-branch-discriminant-c3-galois-s11}
+设 \(t\in\QQ\setminus\{0,2\}\)，并满足 \(\Delta(t)\neq 0\)（即 \(D_t(u)\) 无重根）。
+猜想：
+\[
+\boxed{
+D_t(u)\ \text{在}\ \QQ[u]\ \text{上不可约，且}\ \operatorname{Gal}\bigl(D_t/\QQ\bigr)\cong S_{11}.}
+\]
+若该猜想成立，则除显式可描述的异常参数族外，\(D_t(u)\) 在 \(\QQ\)-参数线上保持满对称群复杂度。
+\end{conjecture}
+
+\begin{remark}[可检索系数指纹与复核通道]\label{rem:xi-terminal-zm-translation-t-branch-discriminant-c3-fingerprint}
+因子 \(\Phi_3(s)=8000s^4+429800s^3+96378087s^2-2034256s-64\) 及奇点消元一次关系中的常数
+\[
+C=
+1146919918223400883707609447433426476251203385787440489213053015719484911581940154368000
+\]
+可作为该分歧族的检索指纹。
+相关恒等式均可由脚本
+\texttt{scripts/exp\_fold\_zm\_elliptic\_translation\_t\_discriminant\_c3\_audit.py}
+独立复核。
+\end{remark}
+
