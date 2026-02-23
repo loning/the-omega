@@ -91,68 +91,154 @@ T^{(q)}\big|_{\mathrm{sym}}
 至于有理/整性：例外谱亦等于 \(A^{(q)}\) 的谱（命题 \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction}），而 \(A^{(q)}\) 在基 \(\{e_b\}_{b=0}^{q}\) 下为半整数矩阵（\eqref{eq:pom-multiplicity-composition-Aq-def}），故其特征多项式属于 \(\QQ[\lambda]\)，并且乘以 \(2^{q+1}\) 后系数皆为整数。证毕。
 \end{proof}
 
-\begin{conclusion}[对称降维算子的显式逆核与整性]\label{con:xi-terminal-replica-softcore-Aq-explicit-inverse-integrality}
-固定整数 \(q\ge 2\)，并沿用 \(S_q\)-对称降维矩阵 \(A^{(q)}\) 的定义 \eqref{eq:pom-multiplicity-composition-Aq-def}。
-则 \(A^{(q)}\) 可逆，且其逆矩阵具有闭式核：对任意 \(0\le a,b\le q\)，有
+\begin{conclusion}[例外块逆矩阵的 Pascal--反转分解与整数核闭式]\label{con:xi-terminal-replica-softcore-Aq-explicit-inverse-integrality}
+固定整数 \(q\ge 1\)，并沿用 \(S_q\)-对称降维矩阵 \(A^{(q)}\) 的定义 \eqref{eq:pom-multiplicity-composition-Aq-def}。
+记 Pascal 矩阵 \(P_q\in M_{q+1}(\ZZ)\) 与反转置换矩阵 \(R_q\in M_{q+1}(\ZZ)\) 为
 \[
-\boxed{\ (A^{(q)})^{-1}_{a,b}
-=2(-1)^{a+b-q}\binom{a}{q-b}-\delta_{a,0}\delta_{b,0}\ } ,
+(P_q)_{i,j}:=\binom{i}{j}\mathbf 1_{\{i\ge j\}},
+\qquad
+(R_q)_{i,j}:=\mathbf 1_{\{i+j=q\}},
 \]
-其中约定当 \(q-b>a\) 时 \(\binom{a}{q-b}=0\)。
-特别地，\(A^{(q)}\) 的逆矩阵逐项为整数。
+并令 \(E_{00}:=e_0e_0^{\mathsf T}\)。
+则
+\[
+\boxed{\;
+(A^{(q)})^{-1}=2P_q^{-1}R_q-E_{00}\in M_{q+1}(\ZZ)\; }.
+\]
+等价地，对任意 \(0\le k,\ell\le q\)，有
+\[
+\boxed{\;
+(A^{(q)})^{-1}_{k,\ell}
+=2(-1)^{k+\ell-q}\binom{k}{q-\ell}\mathbf 1_{\{k+\ell\ge q\}}
+-\delta_{k,0}\delta_{\ell,0}\; } .
+\]
 \end{conclusion}
 \begin{proof}
-令
+令 \(b_\ell:=\binom{q}{\ell}\)（\(0\le \ell\le q\)）与 \(\mathbf 1:=(1,\dots,1)^{\mathsf T}\)。
+并定义
 \[
-L_{a,b}:=\binom{q-a}{b},\qquad
-R_{a,b}:=\binom{q}{b},
+C^{(q)}_{k,\ell}:=\binom{q-k}{\ell},
 \qquad
-\Rightarrow\quad
-A^{(q)}=\frac12(L+R).
+0\le k,\ell\le q.
 \]
-注意 \(R=uv^{\mathsf T}\) 为秩一矩阵，其中 \(u\) 为全 \(1\) 列向量、\(v_b=\binom{q}{b}\)。
-对 \(L+uv^{\mathsf T}\) 应用 Sherman--Morrison 公式并用 \(v^{\mathsf T}L^{-1}u=1\)（二项反演的等价表述），得到
+由 \(R_q\) 的反转作用直接得到 \(C^{(q)}=R_qP_q\)，从而
 \[
-(L+uv^{\mathsf T})^{-1}=L^{-1}-\frac12\,L^{-1}uv^{\mathsf T}L^{-1}.
+A^{(q)}=\frac12\bigl(C^{(q)}+\mathbf 1\,b^{\mathsf T}\bigr)
+=\frac12\bigl(R_qP_q+\mathbf 1\,b^{\mathsf T}\bigr).
 \]
-而 \(L^{-1}u=e_0\) 且 \(v^{\mathsf T}L^{-1}=e_0^{\mathsf T}\)，故
+因为 \(R_q\) 为置换矩阵且 \(P_q\) 为单位下三角矩阵，故
 \[
-(L+uv^{\mathsf T})^{-1}=L^{-1}-\frac12\,e_0e_0^{\mathsf T},
-\qquad
-(A^{(q)})^{-1}=2(L+uv^{\mathsf T})^{-1}=2L^{-1}-e_0e_0^{\mathsf T}.
+(R_qP_q)^{-1}=P_q^{-1}R_q.
 \]
-最后，\(L\) 经行反转与 Pascal 下三角矩阵同型，其逆核为经典反二项变换：
+对秩一扰动应用 Sherman--Morrison 公式：
 \[
-(L^{-1})_{a,b}=(-1)^{a+b-q}\binom{a}{q-b},
+\bigl(R_qP_q+\mathbf 1b^{\mathsf T}\bigr)^{-1}
+=(R_qP_q)^{-1}
+-\frac{(R_qP_q)^{-1}\mathbf 1\,b^{\mathsf T}(R_qP_q)^{-1}}
+{1+b^{\mathsf T}(R_qP_q)^{-1}\mathbf 1}.
 \]
-代回即得所示闭式与整性。证毕。
+由反二项恒等式 \(P_q^{-1}\mathbf 1=e_0\) 可得
+\[
+(R_qP_q)^{-1}\mathbf 1=P_q^{-1}R_q\mathbf 1=e_0.
+\]
+又 \(b^{\mathsf T}\) 是 \(P_q\) 的第 \(q\) 行，故
+\[
+b^{\mathsf T}(R_qP_q)^{-1}
+=b^{\mathsf T}P_q^{-1}R_q
+=e_q^{\mathsf T}R_q
+=e_0^{\mathsf T}.
+\]
+于是分母为 \(1+e_0^{\mathsf T}e_0=2\)，并且
+\[
+\bigl(R_qP_q+\mathbf 1b^{\mathsf T}\bigr)^{-1}
+=P_q^{-1}R_q-\frac12E_{00}.
+\]
+再由 \(A^{(q)}=\frac12(R_qP_q+\mathbf 1b^{\mathsf T})\) 得
+\[
+(A^{(q)})^{-1}=2P_q^{-1}R_q-E_{00}.
+\]
+最后用
+\[
+(P_q^{-1})_{i,j}=(-1)^{i-j}\binom{i}{j}\mathbf 1_{\{i\ge j\}}
+\]
+与 \(R_q\) 的定义即可得到逐元闭式。证毕。
+\end{proof}
+
+\begin{conclusion}[例外块逆矩阵的 Smith 正规形与模二秩塌缩]\label{con:xi-terminal-replica-softcore-Aq-inverse-smith-mod2-collapse}
+对任意整数 \(q\ge 1\)，整数矩阵 \((A^{(q)})^{-1}\in M_{q+1}(\ZZ)\) 的 Smith 正规形满足
+\[
+\boxed{\;
+\mathrm{SNF}\bigl((A^{(q)})^{-1}\bigr)
+=\mathrm{diag}\bigl(1,\underbrace{2,\dots,2}_{q\text{ 次}}\bigr)\; }.
+\]
+因而
+\[
+\mathrm{coker}\!\bigl((A^{(q)})^{-1}:\ZZ^{q+1}\to\ZZ^{q+1}\bigr)
+\cong (\ZZ/2\ZZ)^q.
+\]
+并且
+\[
+\boxed{\;
+(A^{(q)})^{-1}\equiv E_{00}\pmod 2,\qquad
+\mathrm{rank}_{\FF_2}\!\bigl((A^{(q)})^{-1}\bmod 2\bigr)=1\; }.
+\]
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-terminal-replica-softcore-Aq-explicit-inverse-integrality}，
+\[
+P_q(A^{(q)})^{-1}R_q
+=P_q\bigl(2P_q^{-1}R_q-E_{00}\bigr)R_q
+=2I_{q+1}-P_qE_{00}R_q
+=:M_q.
+\]
+注意 \(P_qE_{00}=(P_qe_0)e_0^{\mathsf T}=\mathbf 1e_0^{\mathsf T}\)，且 \(e_0^{\mathsf T}R_q=e_q^{\mathsf T}\)，故
+\[
+M_q=2I_{q+1}-\mathbf 1e_q^{\mathsf T}.
+\]
+由于 \(P_q,R_q\in\mathrm{GL}_{q+1}(\ZZ)\)，\(M_q\) 与 \((A^{(q)})^{-1}\) 在 \(\ZZ\) 上酉模等价，因而 Smith 正规形相同。
+对 \(M_q\) 做如下初等变换：
+\begin{enumerate}
+  \item 列变换 \(C_q\leftarrow C_q+\sum_{j=0}^{q-1}C_j\)，将最后一列化为全 \(1\) 列；
+  \item 对 \(0\le i\le q-1\)，行变换 \(R_i\leftarrow R_i-R_q\)，消去前 \(q\) 行最后一列。
+\end{enumerate}
+得到对角矩阵 \(\mathrm{diag}(2,\dots,2,1)\)，交换对角元顺序即得
+\(\mathrm{diag}(1,2,\dots,2)\)。
+于是余核同构与模二秩结论同时成立。证毕。
 \end{proof}
 
 \begin{corollary}[例外谱倒数一次幂和的 Fibonacci 闭式]\label{cor:xi-terminal-replica-softcore-exceptional-reciprocal-sum-fibonacci}
-对一切整数 \(q\ge 2\)，令 \(\{\lambda_i^{(q)}\}_{i=0}^{q}=\mathrm{spec}(A^{(q)})\)。
+对一切整数 \(q\ge 1\)，令 \(\{\lambda_i^{(q)}\}_{i=0}^{q}=\mathrm{spec}(A^{(q)})\)。
 则成立严格恒等式
 \[
 \boxed{\ \sum_{i=0}^{q}\frac{1}{\lambda_i^{(q)}}
-=\operatorname{tr}\bigl((A^{(q)})^{-1}\bigr)
+:=\operatorname{tr}\bigl((A^{(q)})^{-1}\bigr)
 =-1+2(-1)^qF_{q+1}\ } .
 \]
 \end{corollary}
 \begin{proof}
-由结论 \ref{con:xi-terminal-replica-softcore-Aq-explicit-inverse-integrality}，
+记 \(U_q:=P_q^{-1}R_q\)。由结论 \ref{con:xi-terminal-replica-softcore-Aq-explicit-inverse-integrality}，
 \[
-\operatorname{tr}\bigl((A^{(q)})^{-1}\bigr)
-=\sum_{a=0}^{q}\bigl(2(-1)^q\binom{a}{q-a}-\delta_{a,0}\bigr)
-=-1+2(-1)^q\sum_{a=0}^{q}\binom{a}{q-a}.
+\operatorname{tr}\bigl((A^{(q)})^{-1}\bigr)=2\operatorname{tr}(U_q)-1.
 \]
-令 \(k=q-a\) 并用 Fibonacci 的经典二项表示
-\(
-\sum_{k=0}^{\lfloor q/2\rfloor}\binom{q-k}{k}=F_{q+1}
-\)
-即得结论。证毕。
+并且
+\[
+(U_q)_{k,k}
+=(P_q^{-1})_{k,q-k}
+=(-1)^{k-(q-k)}\binom{k}{q-k}\mathbf 1_{\{k\ge q-k\}}
+=(-1)^q\binom{k}{q-k}\mathbf 1_{\{k\ge \lceil q/2\rceil\}}.
+\]
+故
+\[
+\operatorname{tr}(U_q)
+=(-1)^q\sum_{k=\lceil q/2\rceil}^{q}\binom{k}{q-k}
+=(-1)^q\sum_{r=0}^{\lfloor q/2\rfloor}\binom{q-r}{r}
+=(-1)^qF_{q+1}.
+\]
+代回即得结论。证毕。
 \end{proof}
 
 \begin{corollary}[例外谱倒数二次幂和的 Fibonacci 闭式]\label{cor:xi-terminal-replica-softcore-exceptional-reciprocal-square-sum-fibonacci}
-对一切整数 \(q\ge 2\)，令 \(\{\lambda_i^{(q)}\}_{i=0}^{q}=\mathrm{spec}(A^{(q)})\)。
+对一切整数 \(q\ge 1\)，令 \(\{\lambda_i^{(q)}\}_{i=0}^{q}=\mathrm{spec}(A^{(q)})\)。
 则成立严格恒等式
 \[
 \boxed{\ \sum_{i=0}^{q}\frac{1}{\bigl(\lambda_i^{(q)}\bigr)^2}
@@ -161,35 +247,42 @@ A^{(q)}=\frac12(L+R).
 \]
 \end{corollary}
 \begin{proof}
-由结论 \ref{con:xi-terminal-replica-softcore-Aq-explicit-inverse-integrality} 的证明，存在
-\(
-L_{a,b}=\binom{q-a}{b}
-\)
-与 \(e_0=(1,0,\dots,0)^{\mathsf T}\) 使
+仍记 \(U_q:=P_q^{-1}R_q\)。由结论 \ref{con:xi-terminal-replica-softcore-Aq-explicit-inverse-integrality}，
 \[
-(A^{(q)})^{-1}=2L^{-1}-e_0e_0^{\mathsf T}.
+(A^{(q)})^{-1}=2U_q-E_{00},
 \]
-因此
+故
 \[
 \operatorname{tr}\bigl((A^{(q)})^{-2}\bigr)
-=\operatorname{tr}\bigl((2L^{-1}-e_0e_0^{\mathsf T})^2\bigr)
-=4\,\operatorname{tr}(L^{-2})-4\,e_0^{\mathsf T}L^{-1}e_0+\operatorname{tr}(e_0e_0^{\mathsf T}).
+=4\operatorname{tr}(U_q^2)-2\operatorname{tr}(U_qE_{00})-2\operatorname{tr}(E_{00}U_q)+1.
 \]
-由 \((L^{-1})_{0,0}=(-1)^{q}\binom{0}{q}=0\) 得 \(e_0^{\mathsf T}L^{-1}e_0=0\)，且 \(\operatorname{tr}(e_0e_0^{\mathsf T})=1\)，故
+当 \(q\ge1\) 时 \((U_q)_{0,0}=(P_q^{-1})_{0,q}=0\)，因此
 \[
-\operatorname{tr}\bigl((A^{(q)})^{-2}\bigr)=4\,\operatorname{tr}(L^{-2})+1.
+\operatorname{tr}\bigl((A^{(q)})^{-2}\bigr)=4\operatorname{tr}(U_q^2)+1.
 \]
-另一方面，\(L=C^{(q)}\) 与 \(B_q^{\mathsf T}\) 相同（定理 \ref{thm:xi-replica-softcore-exceptional-interlacing} 的记号），而 \(B_q\) 的谱为
-\(\{(-1)^k\varphi^{q-2k}\}_{k=0}^{q}\)（命题 \ref{prop:pom-bq-is-symq-and-spectrum}）。
-故 \(L^{-2}\) 的谱为 \(\{\varphi^{-2(q-2k)}\}_{k=0}^{q}\)，从而
+由上一结论中的逐元公式，
 \[
-\operatorname{tr}(L^{-2})
-=\sum_{k=0}^{q}\varphi^{-2(q-2k)}
-=\sum_{k=0}^{q}\varphi^{2(q-2k)}
-=F_{2q+2},
+(U_q)_{k,\ell}=(-1)^{k+\ell-q}\binom{k}{q-\ell}\mathbf 1_{\{k+\ell\ge q\}},
 \]
-其中最后一步使用结论 \ref{con:xi-terminal-replica-softcore-exceptional-spectrum-square-sum} 证明中的等比求和恒等式。
-代回即得所示闭式。证毕。
+从而
+\[
+\operatorname{tr}(U_q^2)
+=\sum_{k,\ell=0}^{q}(U_q)_{k,\ell}(U_q)_{\ell,k}
+=\sum_{\substack{k,\ell\ge0\\k+\ell\ge q}}
+\binom{k}{q-\ell}\binom{\ell}{q-k}.
+\]
+令 \(k'=q-k,\ \ell'=q-\ell\)，得到
+\[
+\operatorname{tr}(U_q^2)
+=\sum_{\substack{k',\ell'\ge0\\k'+\ell'\le q}}
+\binom{q-k'}{\ell'}\binom{q-\ell'}{k'}.
+\]
+该双和与推论 \ref{cor:xi-terminal-replica-softcore-exceptional-power-sum-m2-closed-form}
+证明中的组合项 \(T_4(q)\) 完全一致，因此
+\(
+\operatorname{tr}(U_q^2)=F_{2q+2}
+\)。
+代回即得结论。证毕。
 \end{proof}
 
 \begin{corollary}[全矩阵行列式的塌缩与整数逆核]\label{cor:xi-terminal-replica-softcore-Tq-det-and-integer-inverse-kernel}

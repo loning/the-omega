@@ -448,6 +448,48 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window_pushforward_markov_full_symmetric_galois_audit",
+            script="exp_window_pushforward_markov_full_symmetric_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window_pushforward_markov_full_symmetric_galois_audit_m5_m9.json",
+                "sections/generated/eq_window6_pushforward_markov_charpoly_q6.tex",
+                "sections/generated/tab_window_pushforward_markov_full_symmetric_galois_audit_m5_m9.tex",
+            ],
+        ),
+        Step(
+            name="xi_prime_register_semidirect_two_shadow_audit",
+            script="exp_xi_prime_register_semidirect_two_shadow_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_semidirect_two_shadow_audit.json",
+                "sections/generated/eq_xi_prime_register_semidirect_two_shadow_audit.tex",
+                "sections/generated/tab_xi_elliptic_two_shadow_invariants_audit.tex",
+            ],
+        ),
+        Step(
+            name="xi_belyi_full_symmetric_puiseux_audit",
+            script="exp_xi_belyi_full_symmetric_puiseux_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_belyi_full_symmetric_puiseux_audit.json",
+                "sections/generated/eq_xi_belyi_family_discriminant_recurrence_r3.tex",
+                "sections/generated/tab_xi_belyi_branch_discriminant_group_audit_r2_r9.tex",
+                "sections/generated/tab_xi_belyi_scaling_limit_audit.tex",
+            ],
+        ),
+        Step(
+            name="cdim_hom_completion_anomaly_audit",
+            script="exp_cdim_hom_completion_anomaly_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/cdim_hom_completion_anomaly_audit.json",
+                "sections/generated/eq_cdim_hom_completion_anomaly_audit.tex",
+                "sections/generated/tab_cdim_hom_completion_examples.tex",
+                "sections/generated/tab_cdim_discrete_anomaly_primary_examples.tex",
+            ],
+        ),
+        Step(
             name="foldbin6_geo_stabilizer",
             script="exp_foldbin6_geo_stabilizer.py",
             args=[],

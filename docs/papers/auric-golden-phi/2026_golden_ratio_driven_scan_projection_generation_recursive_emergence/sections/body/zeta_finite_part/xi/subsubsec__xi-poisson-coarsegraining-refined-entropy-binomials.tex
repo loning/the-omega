@@ -300,6 +300,134 @@ C:=\frac{\sigma^6}{64}+\frac{3m_3^2}{32}-\frac{\sigma^2m_4}{8}.
 代入 \(6C\) 并整理即得 \eqref{eq:xi-poisson-i1-seventh-order-refined}。
 \end{proof}
 
+\begin{theorem}[Poisson--Cauchy 差分剖面的全形态 \texorpdfstring{$L^1$}{L1} 极限]\label{thm:xi-poisson-cauchy-fullshape-l1-limit}
+沿用命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form} 的设定，
+记
+\[
+\sigma^2:=\int_{\RR}(\gamma-\bar\gamma)^2\,\dd\tilde\nu(\gamma)\in(0,\infty),\qquad
+\tilde h_t:=P_t*\tilde\nu,\qquad
+\tilde g_t(x):=P_t(x-\bar\gamma),
+\]
+并定义重标定差分剖面
+\[
+\Delta_t(y):=\frac{t^3}{\sigma^2}\Bigl(\tilde h_t(\bar\gamma+ty)-\tilde g_t(\bar\gamma+ty)\Bigr),
+\qquad y\in\RR.
+\]
+则当 \(t\to\infty\) 时，
+\begin{equation}\label{eq:xi-poisson-cauchy-fullshape-l1-limit}
+\Delta_t\longrightarrow R
+\quad\text{于 }L^1(\RR,\dd y),
+\qquad
+R(y):=\frac{1}{\pi}\frac{3y^2-1}{(1+y^2)^3}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form}，
+存在余项 \(\varepsilon_t\) 使
+\[
+\tilde h_t=\tilde g_t+\sigma^2\tilde r_t+\varepsilon_t,\qquad
+\tilde r_t(\bar\gamma+ty)=t^{-3}R(y),\qquad
+\|\varepsilon_t\|_{L^1(\RR,\dd x)}=O(t^{-3}).
+\]
+因此
+\[
+\Delta_t(y)=R(y)+\frac{t^3}{\sigma^2}\,\varepsilon_t(\bar\gamma+ty).
+\]
+对误差项作变量代换 \(x=\bar\gamma+ty\)，得到
+\[
+\|\Delta_t-R\|_{L^1(\RR,\dd y)}
+\le
+\left\|\frac{t^3}{\sigma^2}\varepsilon_t(\bar\gamma+t\cdot)\right\|_{L^1(\RR,\dd y)}
+=\frac{t^2}{\sigma^2}\|\varepsilon_t\|_{L^1(\RR,\dd x)}
+=O(t^{-1})\xrightarrow[t\to\infty]{}0.
+\]
+故 \eqref{eq:xi-poisson-cauchy-fullshape-l1-limit} 成立。证毕。
+\end{proof}
+
+\begin{theorem}[Rényi 散度主导系数的普适常数律]\label{thm:xi-poisson-cauchy-renyi-alpha-over-8}
+在定理 \ref{thm:xi-poisson-kl-sixth-order-refined-binomials} 的条件下，
+对任意固定 \(\alpha\in(0,\infty)\setminus\{1\}\) 定义
+\[
+D_\alpha(\tilde h_t\mid \tilde g_t)
+:=\frac{1}{\alpha-1}\log\!\int_{\RR}\tilde h_t(x)^\alpha\tilde g_t(x)^{1-\alpha}\,\dd x.
+\]
+则有
+\begin{equation}\label{eq:xi-poisson-cauchy-renyi-alpha-over-8}
+\lim_{t\to\infty}\frac{t^4}{\sigma^4}\,D_\alpha(\tilde h_t\mid \tilde g_t)=\frac{\alpha}{8}.
+\end{equation}
+等价地，
+\[
+D_\alpha(\tilde h_t\mid \tilde g_t)=\frac{\alpha\sigma^4}{8t^4}+o(t^{-4}).
+\]
+特别地，\(\alpha\downarrow1\) 回收 KL 主导常数 \(\sigma^4/8\)；而 \(\alpha=\tfrac12\) 时，
+\[
+-\log\!\int_{\RR}\sqrt{\tilde h_t\tilde g_t}\,\dd x
+=\frac{1}{2}D_{1/2}(\tilde h_t\mid \tilde g_t)
+=\frac{\sigma^4}{32t^4}+o(t^{-4}).
+\]
+\end{theorem}
+
+\begin{proof}
+记
+\[
+M_\alpha(t):=\int_{\RR}\tilde h_t^\alpha\tilde g_t^{1-\alpha}\,\dd x.
+\]
+考虑 \(f_\alpha(u):=\frac{u^\alpha-1}{\alpha-1}\)。
+则 \(f_\alpha(1)=0\)、\(f_\alpha''(1)=\alpha\)，并且
+\[
+D_{f_\alpha}(\tilde h_t\mid \tilde g_t)
+=\int_{\RR}\tilde g_t(x)\,f_\alpha\!\left(\frac{\tilde h_t(x)}{\tilde g_t(x)}\right)\dd x
+=\frac{M_\alpha(t)-1}{\alpha-1}.
+\]
+由命题 \ref{prop:xi-cauchy-poisson-fdiv-universal-constant} 得
+\[
+\frac{M_\alpha(t)-1}{\alpha-1}
+=\frac{\alpha\sigma^4}{8t^4}+o(t^{-4}),
+\]
+即
+\[
+M_\alpha(t)=1+\frac{\alpha(\alpha-1)\sigma^4}{8t^4}+o(t^{-4}).
+\]
+由于 \(\log(1+u)=u+O(u^2)\) 且 \(u=O(t^{-4})\)，可得
+\[
+\log M_\alpha(t)
+=\frac{\alpha(\alpha-1)\sigma^4}{8t^4}+o(t^{-4}).
+\]
+两边除以 \(\alpha-1\) 即得 \eqref{eq:xi-poisson-cauchy-renyi-alpha-over-8}。证毕。
+\end{proof}
+
+\begin{corollary}[KL 六阶精化的中心矩记号重写]\label{cor:xi-poisson-cauchy-kl-tminus6-mu34-form}
+在定理 \ref{thm:xi-poisson-kl-sixth-order-refined-binomials} 的条件下，若进一步满足
+\[
+\int_{\RR}\abs{\gamma-\bar\gamma}^6\,\dd\tilde\nu(\gamma)<\infty,
+\]
+并记
+\[
+\mu_3:=\int_{\RR}(\gamma-\bar\gamma)^3\,\dd\tilde\nu(\gamma),\qquad
+\mu_4:=\int_{\RR}(\gamma-\bar\gamma)^4\,\dd\tilde\nu(\gamma),
+\]
+则
+\begin{equation}\label{eq:xi-poisson-cauchy-kl-tminus6-mu34-form}
+D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t)
+=\frac{\sigma^4}{8t^4}
++\frac{1}{t^6}\left(
+\frac{\sigma^6}{64}
+-\frac{\sigma^2\mu_4}{8}
++\frac{3\mu_3^2}{32}
+\right)
++o(t^{-6}).
+\end{equation}
+\end{corollary}
+
+\begin{proof}
+该式即 \eqref{eq:xi-poisson-kl-sixth-order-refined-binomials} 在记号
+\(
+\mu_3=m_3,\ \mu_4=m_4
+\)
+下的直接改写；六阶矩条件蕴含原定理所需矩条件。证毕。
+\end{proof}
+
 \begin{conjecture}[Jensen 缺陷与 Poisson 熵证书的重参数化对齐]\label{conj:xi-jensen-poisson-defect-alignment-refined}
 存在仅依赖文内既定坐标门（Cayley/相位门）与缺陷测度构造的显式重参数化
 \(

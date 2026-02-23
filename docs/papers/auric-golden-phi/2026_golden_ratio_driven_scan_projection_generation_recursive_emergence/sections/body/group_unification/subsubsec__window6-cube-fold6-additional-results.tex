@@ -178,6 +178,152 @@ X_t:=F_6(W_t)\in X_6
 因此 \(P_6\) 的谱数据（包括 \(\lambda_2\) 与 \(\lambda_\star\)）可被视为 window-\(6\) 的协议不变动力学指纹：任何声称与该推送口径同构的替代实现，若其诱导核在谱层面不一致，则必无法通过 \(\Gamma_6\) 的函子性/刚性检验。
 \end{remark}
 
+\paragraph{window-\texorpdfstring{$m$}{m} 推送谱对象}
+以下结果固定以二进制区间折叠
+\(
+\mathrm{Fold}^{\mathrm{bin}}_m:\{0,\dots,2^m-1\}\to X_m
+\)
+（经 Zeckendorf 投影定义）及其在 \(Q_m\) 上诱导的 pushforward 核
+\[
+P_m(w,w'):=\frac{A_m(w,w')}{m\,d^{\mathrm{bin}}_m(w)},
+\qquad
+d^{\mathrm{bin}}_m(w):=\#\bigl(\mathrm{Fold}^{\mathrm{bin}}_m{}^{-1}(w)\bigr)
+\]
+作为环境对象。
+
+\begin{theorem}[window-\(6\) 推送核的非平凡谱多项式与满对称 Galois 证书]\label{thm:terminal-window6-pushforward-charpoly-galois}
+在定理 \ref{thm:terminal-foldbin6-pushforward-markov} 的记号下，
+\(\chi_{P_6}(\lambda)\) 可分解为
+\[
+\chi_{P_6}(\lambda)=(\lambda-1)q_6(\lambda),
+\]
+其中 \(q_6\in\QQ[\lambda]\) 为次数 \(20\) 的首一多项式。
+并且 \(q_6\) 在 \(\QQ[\lambda]\) 上不可约、无重根，且其分裂域的 Galois 群满足
+\[
+\mathrm{Gal}(q_6/\QQ)\cong S_{20}.
+\]
+\end{theorem}
+\input{sections/generated/eq_window6_pushforward_markov_charpoly_q6}
+\begin{proof}
+由
+\(
+P_6=\frac{1}{6}D_6^{-1}A_6
+\)
+（\(D_6=\mathrm{diag}(d^{\mathrm{bin}}_6(w))\)）可知，
+\(\chi_{P_6}\) 等价于广义特征方程
+\(
+\det(6\lambda D_6-A_6)=0
+\)
+的首一化形式；
+式 \eqref{eq:window6_pushforward_markov_charpoly_q6} 给出了对应的显式 \(q_6\) 与清分母常数 \(L_6\)。
+
+由表 \ref{tab:window_pushforward_markov_full_symmetric_galois_audit_m5_m9} 在 \(m=6\) 行的证书，
+可取不整除 \(L_6\) 的素数 \(41,137\)，使得
+\[
+f_6:=L_6q_6
+\quad\text{在}\quad
+\FF_{41}[\lambda]\ \text{中分解次数型为 }(20),
+\quad
+\FF_{137}[\lambda]\ \text{中分解次数型为 }(19,1).
+\]
+前者给出不可约性（由 Gauss 引理推出 \(q_6\) 在 \(\QQ\) 上不可约），后者给出“固定一点的 \(19\)-cycle”型 Frobenius 元。
+因此 \(\mathrm{Gal}(q_6/\QQ)\le S_{20}\) 为传递子群，且同时含有一个 \(20\)-cycle 与一个固定一点的 \(19\)-cycle。
+
+对任意 \(n\ge 2\)，若传递子群 \(G\le S_n\) 同时含有一个 \(n\)-cycle 与一个固定一点的 \((n-1)\)-cycle，则 \(G=S_n\)：
+重标号后可设
+\(
+a=(1,2,\dots,n)\in G
+\)
+与
+\(
+b=(1,2,\dots,n-1)\in G
+\)，
+于是
+\(
+a^{-1}b=(n-1\;\;n)\in G
+\)
+为换位，而 \(n\)-cycle 与任一换位生成 \(S_n\)。
+应用于 \(n=20\) 即得 \(\mathrm{Gal}(q_6/\QQ)\cong S_{20}\)。
+此外，表 \ref{tab:window_pushforward_markov_full_symmetric_galois_audit_m5_m9} 亦给出 \(q_6\) 的平方自由性（等价于 \(\gcd(q_6,q_6')=1\)），故其无重根。证毕。
+\end{proof}
+
+\input{sections/generated/tab_window_pushforward_markov_full_symmetric_galois_audit_m5_m9}
+
+\begin{corollary}[window-\(6\) 的非平凡特征值属于单一代数共轭轨道]\label{cor:terminal-window6-pushforward-single-galois-orbit}
+在定理 \ref{thm:terminal-window6-pushforward-charpoly-galois} 的设定下，
+\(P_6\) 的全部非平凡特征值（即除去 \(1\) 之外的 \(20\) 个特征值）构成一个单一 Galois 轨道。
+等价地，任取非平凡特征值 \(\lambda\)，其极小多项式均为 \(q_6\)（次数 \(20\)）。
+特别地，式 \eqref{eq:window6_pushforward_markov_charpoly_q6} 中的
+\(\lambda_2(P_6)\) 与 \(\lambda_{\min}(P_6)\) 互为代数共轭。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:terminal-window6-pushforward-charpoly-galois}，
+\(\mathrm{Gal}(q_6/\QQ)\cong S_{20}\) 在根集上传递，故根集仅有一个轨道。
+因此任一根的极小多项式都等于 \(q_6\)，并且任意两根互为代数共轭。证毕。
+\end{proof}
+
+\begin{corollary}[根域的原始性与不可根式求解]\label{cor:terminal-window6-q6-root-field-primitive-nonsolvable}
+设 \(\alpha\) 为 \(q_6\) 的任一根，并令 \(K_6:=\QQ(\alpha)\)。
+则 \([K_6:\QQ]=20\)，且不存在严格中间域
+\(
+\QQ\subsetneq E\subsetneq K_6
+\)；
+此外，\(q_6\) 不可由根式求解。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:terminal-window6-pushforward-charpoly-galois}，
+\(q_6\) 在 \(\QQ\) 上不可约且分裂域 Galois 群为 \(S_{20}\)。
+故 \([K_6:\QQ]=\deg q_6=20\)。
+在分裂域 \(L_6\) 的 Galois 对应下，\(K_6\) 对应于点稳定子 \(S_{19}\le S_{20}\)；
+而点稳定子在 \(S_{20}\) 中为极大子群，因而不存在严格夹在 \(S_{19}\) 与 \(S_{20}\) 之间的子群，对应地不存在严格中间域。
+
+若 \(q_6\) 可由根式求解，则其分裂域 Galois 群必须为可解群。
+但 \(S_{20}\) 非可解（含非阿贝尔单群 \(A_{20}\)），矛盾。证毕。
+\end{proof}
+
+\begin{theorem}[窗口 \(m=5\) 与 \(m=7\) 的同类满对称谱现象]\label{thm:terminal-window5-window7-full-symmetric-spectrum}
+对一般 \(m\)，定义
+\(
+P_m(w,w')=\frac{A_m(w,w')}{m\,d^{\mathrm{bin}}_m(w)}
+\)。
+则在 \(m=5\) 与 \(m=7\) 两个窗口上，非平凡谱多项式分别满足：
+\[
+\chi_{P_5}(\lambda)=(\lambda-1)q_5(\lambda),\quad \deg q_5=12,\quad \mathrm{Gal}(q_5/\QQ)\cong S_{12},
+\]
+\[
+\chi_{P_7}(\lambda)=(\lambda-1)q_7(\lambda),\quad \deg q_7=33,\quad \mathrm{Gal}(q_7/\QQ)\cong S_{33}.
+\]
+\end{theorem}
+\begin{proof}
+表 \ref{tab:window_pushforward_markov_full_symmetric_galois_audit_m5_m9} 给出：
+\[
+m=5:\ \text{次数型 }(12)\text{ at }p=101,\ \ (11,1)\text{ at }p=53;
+\]
+\[
+m=7:\ \text{次数型 }(33)\text{ at }p=37,\ \ (32,1)\text{ at }p=83.
+\]
+对应论证与定理 \ref{thm:terminal-window6-pushforward-charpoly-galois} 完全平行：
+由 \((n)\) 型得到不可约与传递性，由 \((n-1,1)\) 型得到固定一点的 \((n-1)\)-cycle，
+再用同一群论事实推出满对称群。证毕。
+\end{proof}
+
+\begin{conjecture}[一般窗口 \texorpdfstring{$m\ge 5$}{m>=5} 的谱满对称性]\label{conj:terminal-window-pushforward-full-symmetric-spectrum}
+对所有 \(m\ge 5\)，设
+\(
+\chi_{P_m}(\lambda)=(\lambda-1)q_m(\lambda)
+\)
+且
+\(
+\deg q_m=F_{m+2}-1
+\)。
+猜想：
+\[
+q_m\ \text{在}\ \QQ[\lambda]\ \text{上不可约},\qquad
+\mathrm{Gal}(q_m/\QQ)\cong S_{F_{m+2}-1}.
+\]
+表 \ref{tab:window_pushforward_markov_full_symmetric_galois_audit_m5_m9} 在 \(m=5,6,7,8,9\) 上给出一致证据：每个 \(q_m\) 都出现 \([F_{m+2}-1]\) 与 \([F_{m+2}-2,1]\) 的模素数次数型证书。
+\end{conjecture}
+
 \begin{corollary}[纤维码距谱的计数直方图（window-\(6\)）]\label{cor:terminal-foldbin6-fiber-hamming-min-distance-histogram}
 在定理 \ref{thm:terminal-foldbin6-fiber-hamming-three-valued} 的记号下，window-\(6\) 的纤维最小汉明距离三值谱
 \(\delta_{\min}(w)\in\{2,3,5\}\) 的出现次数为固定常数，并由生成片段 \eqref{eq:foldbin6_fiber_hamming_min_distance_value_counts} 给出。
