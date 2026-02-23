@@ -207,3 +207,194 @@ D_{\mathrm{KL}}(w_m\mid u_m)=m\bigl(\gamma_m^{\mathrm{Sh}}-\gamma_m^{\mathrm{ari
 因此在该纤维账本框架内，“熵”并非附加量，而是对数体积的等价坐标系；边界厚度与端点可见平均的全部一阶信息可在该坐标变换下等价转写。
 \end{conclusion}
 
+\paragraph{纤维账本的算法信息转写：可计算提升、统计谱转移与整数化几何畸变}
+沿用本段记号。固定分辨率 \(m\)，记
+\[
+d_m(x):=\card{\Fold_m^{-1}(x)},
+\qquad
+\pi_m(x):=\frac{d_m(x)}{2^m},
+\qquad
+\kappa_m(\pi_m):=\EE_{\pi_m}\!\left[\log d_m(X)\right],
+\qquad
+\gamma_m(X):=\frac{1}{m}\log d_m(X).
+\]
+设 \(S\) 为确定性折叠策略，\(r_{m,S}:\Omega_m\to\mathcal P\) 为其 prime-register 残差映射（\(\mathcal P\) 为有限支撑素数幂坐标寄存器），并定义提升映射
+\[
+\widetilde F_{m,S}(\omega):=\bigl(\Fold_m(\omega),r_{m,S}(\omega)\bigr).
+\]
+
+\begin{theorem}[Gödel 外置下的算法信息守恒]\label{thm:xi-godel-externalized-algorithmic-information-conservation}
+设 \(\widetilde F_{m,S}\) 可计算，且存在可计算恢复算子 \(R_{m,S}\) 使
+\[
+R_{m,S}\circ \widetilde F_{m,S}=\mathrm{id}_{\Omega_m}.
+\]
+令 \(K(\cdot)\) 为相对于固定通用前缀机的前缀 Kolmogorov 复杂度。则存在仅依赖于 \(S\) 的常数 \(c_S\)，使对所有 \(\omega\in\Omega_m\) 成立
+\[
+\left|K(\omega)-K\!\bigl(\Fold_m(\omega),r_{m,S}(\omega)\bigr)\right|\le c_S,
+\]
+且
+\[
+\left|K\!\bigl(\omega\mid \Fold_m(\omega)\bigr)-K\!\bigl(r_{m,S}(\omega)\mid \Fold_m(\omega)\bigr)\right|\le c_S.
+\]
+\end{theorem}
+\begin{proof}
+由假设，\(\omega\mapsto (\Fold_m(\omega),r_{m,S}(\omega))\) 与其逆向恢复均为可计算变换。
+前缀复杂度在可计算双向可逆编码下保持 \(O(1)\) 不变，故第一式成立。
+把 \(\Fold_m(\omega)\) 作为条件后，同一不变性对条件复杂度同样成立，得第二式。证毕。
+\end{proof}
+
+\begin{theorem}[条件复杂度与纤维对数体积的双侧夹逼及指数尾界]\label{thm:xi-register-conditional-complexity-vs-fiber-volume}
+在定理 \ref{thm:xi-godel-externalized-algorithmic-information-conservation} 的设定下，记 \(X:=\Fold_m(\omega)\)。存在常数 \(c\) 使
+\[
+K\!\bigl(r_{m,S}(\omega)\mid X\bigr)\le \left\lceil\log_2 d_m(X)\right\rceil+c
+\]
+对所有 \(\omega\in\Omega_m\) 成立。
+并且对任意 \(t\ge 0\)，在 \(\omega\sim\mathrm{Unif}(\Omega_m)\) 下有
+\[
+\PP\!\left[
+K\!\bigl(r_{m,S}(\omega)\mid X\bigr)\le \log_2 d_m(X)-t
+\right]\le 2^{-t+c}.
+\]
+若定义
+\[
+\Delta_m(\omega):=K\!\bigl(r_{m,S}(\omega)\mid X\bigr)-\log_2 d_m(X),
+\]
+则
+\[
+\Delta_m(\omega)\le c+1\quad(\forall \omega),
+\qquad
+\PP\!\left[\Delta_m(\omega)\le -t\right]\le 2^{-t+c}\quad(t\ge0).
+\]
+\end{theorem}
+\begin{proof}
+固定 \(x\in X_m\)。由可计算恢复可知 \(\widetilde F_{m,S}\) 在纤维 \(\Fold_m^{-1}(x)\) 上诱导到残差像集合
+\[
+R_x:=\{r_{m,S}(\omega):\Fold_m(\omega)=x\}
+\]
+的双射，故 \(\card{R_x}=d_m(x)\)。
+给定 \(x\) 时，可计算枚举 \(\Fold_m^{-1}(x)\) 并输出对应残差；任意 \(r\in R_x\) 可由其枚举序号编码，长度不超过 \(\lceil\log_2 d_m(x)\rceil\) 加常数开销，得上界。
+
+对下界尾概率，利用前缀复杂度计数界：在固定条件 \(x\) 下，满足 \(K(u\mid x)\le k\) 的串最多 \(2^{k+O(1)}\) 个。
+取 \(k=\lfloor \log_2 d_m(x)-t\rfloor\)，则
+\[
+\frac{\card{\{r\in R_x:K(r\mid x)\le \log_2 d_m(x)-t\}}}{\card{R_x}}
+\le 2^{-t+O(1)}.
+\]
+又因 \(\omega\) 在 \(\Omega_m\) 上均匀，条件于 \(X=x\) 时在纤维上亦均匀，故上式即为条件坏事件概率上界。再对 \(x\) 取全概率求和即得无条件指数尾界。证毕。
+\end{proof}
+
+\begin{theorem}[多重分形谱向算法复杂度谱的指数等价转移]\label{thm:xi-multifractal-to-algorithmic-spectrum-transfer}
+在定理 \ref{thm:xi-register-conditional-complexity-vs-fiber-volume} 的设定下，定义
+\[
+\eta_m(\omega):=\frac1m K\!\bigl(r_{m,S}(\omega)\mid X\bigr)\quad(\text{bit/步}).
+\]
+则对任意 \(\varepsilon>0\)，存在 \(c_\varepsilon>0\) 使
+\[
+\PP\!\left[\left|\eta_m-\frac{\gamma_m(X)}{\log 2}\right|>\varepsilon\right]
+\le 2^{-c_\varepsilon m}.
+\]
+因此：
+\begin{enumerate}
+  \item 若 \(\gamma_m(X)\) 在 \(\pi_m\) 下满足中心极限定理，则 \(\eta_m\) 满足同一极限定理（仅有 \(\log 2\) 的单位换算），方差按 \((\log2)^{-2}\) 缩放；
+  \item 若 \(\gamma_m(X)\) 以速率 \(m\) 满足良速率函数 \(I\) 的大偏差原理，则 \(\eta_m\) 亦以速率 \(m\) 满足大偏差原理，其速率函数
+  \[
+  J(u)=I(u\log2).
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-register-conditional-complexity-vs-fiber-volume}，对 \(t=\varepsilon m\) 有
+\[
+\PP\!\left[K(r_{m,S}(\omega)\mid X)\le \log_2 d_m(X)-\varepsilon m\right]
+\le 2^{-\varepsilon m+O(1)}.
+\]
+同时点态上界给出
+\[
+K(r_{m,S}(\omega)\mid X)\le \log_2 d_m(X)+O(1),
+\]
+故当 \(m\) 充分大时
+\[
+\PP\!\left[K(r_{m,S}(\omega)\mid X)\ge \log_2 d_m(X)+\varepsilon m\right]=0.
+\]
+两式合并得到指数等价。指数等价序列共享大偏差原理；并且两者差异为 \(o_{\PP}(m^{1/2})\) 时，中心极限定理保持不变，遂得两条转移结论。证毕。
+\end{proof}
+
+\begin{theorem}[纤维熵势与期望条件复杂度的 \(O(1)\) 同一性]\label{thm:xi-fiber-entropy-potential-expected-conditional-complexity}
+在 \(\omega\sim\mathrm{Unif}(\Omega_m)\) 下，存在与 \(m\) 无关常数 \(C\) 使
+\[
+\left|
+\EE_{\omega}\!\left[K\!\bigl(r_{m,S}(\omega)\mid X\bigr)\right]
+-\frac{\kappa_m(\pi_m)}{\log2}
+\right|
+\le C.
+\]
+\end{theorem}
+\begin{proof}
+定义
+\[
+\Delta(\omega):=\log_2 d_m(X)-K\!\bigl(r_{m,S}(\omega)\mid X\bigr).
+\]
+由定理 \ref{thm:xi-register-conditional-complexity-vs-fiber-volume}，\(\Delta(\omega)\ge -O(1)\) 且
+\(\PP[\Delta(\omega)\ge t]\le 2^{-t+O(1)}\)。
+因此
+\[
+\EE[\Delta]\le \sum_{t\ge0}\PP[\Delta\ge t]\le \sum_{t\ge0}2^{-t+O(1)}=O(1),
+\]
+从而
+\[
+\EE\!\left[K(r_{m,S}(\omega)\mid X)\right]
+=\EE[\log_2 d_m(X)]+O(1)
+=\frac{\kappa_m(\pi_m)}{\log2}+O(1).
+\]
+吸收常数即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[prime-register 向量的 Gödel 整数化具有不可避免的对数开销]\label{thm:xi-godel-integerization-log-overhead}
+设 \(\tau=(a_1,\dots,a_T)\) 为长度 \(T\) 的事件码序列，且 \(a_t\in\NN_{\ge1}\)。
+定义 Gödel 整数
+\[
+G(\tau):=\prod_{t=1}^{T}p_t^{a_t},
+\]
+其中 \(p_t\) 为第 \(t\) 个素数。则存在绝对常数 \(c_0>0\) 与 \(T_0\)，使对 \(T\ge T_0\) 有
+\[
+\log_2 G(\tau)\ge c_0\,T\log_2 T.
+\]
+因而，把长度 \(T\) 的寄存器向量压成单整数的位长下界为 \(\Omega(T\log T)\)。
+\end{theorem}
+\begin{proof}
+由 \(a_t\ge 1\) 得
+\[
+\log G(\tau)\ge \sum_{t=1}^{T}\log p_t=\vartheta(p_T),
+\]
+其中 \(\vartheta(x)=\sum_{p\le x}\log p\) 为 Chebyshev 函数。
+由素数定理的等价形式 \(\vartheta(x)\sim x\) 与 \(p_T\sim T\log T\)，可得
+\[
+\sum_{t=1}^{T}\log p_t\sim T\log T.
+\]
+换底到 \(\log_2\) 即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[单位圆到椭圆的 Gödel 畸变律：条件数的超线性增长]\label{thm:xi-godel-ellipse-condition-number-distortion}
+沿用定理 \ref{thm:xi-godel-integerization-log-overhead} 的记号，定义面积保持线性算子
+\[
+A_\tau:=\mathrm{diag}\!\left(G(\tau)^{1/2},\,G(\tau)^{-1/2}\right)\in SL(2,\RR),
+\qquad
+E_\tau:=A_\tau(S^1).
+\]
+则 \(E_\tau\) 的轴比（等于 \(A_\tau\) 的谱条件数）满足
+\[
+\kappa(A_\tau)=G(\tau).
+\]
+于是存在 \(c_1>0\) 与 \(T_0\)，使对 \(T\ge T_0\) 有
+\[
+\log \kappa(A_\tau)\ge c_1\,T\log T.
+\]
+\end{theorem}
+\begin{proof}
+对角算子 \(A_\tau\) 的奇异值为 \(G(\tau)^{1/2}\) 与 \(G(\tau)^{-1/2}\)，故
+\[
+\kappa(A_\tau)=\frac{G(\tau)^{1/2}}{G(\tau)^{-1/2}}=G(\tau).
+\]
+再代入定理 \ref{thm:xi-godel-integerization-log-overhead} 的增长下界即得。证毕。
+\end{proof}
+

@@ -72,6 +72,250 @@ F(\mu,u)=\det(\mu I-B_u)
 将 \(F(B_u,u)=0\) 左右乘以相应向量并取该线性泛函，得到 \eqref{eq:fold-gauge-anomaly-Mm-order4}。证毕。
 \end{proof}
 
+\begin{theorem}[单位圆扭结的 Perron--Frobenius 刚性与严格谱隙]\label{thm:fold-gauge-anomaly-unit-circle-rigidity}
+令
+\[
+B(u):=2A_{\log u}=
+\begin{pmatrix}
+1&u&0&1\\
+0&0&u&0\\
+u&2&0&0\\
+1&0&0&0
+\end{pmatrix},
+\]
+其中 \(A_\theta\) 由命题 \ref{prop:fold-gauge-anomaly-pressure} 给出，\(\log u\) 取任意分支使 \(e^{\log u}=u\)。
+则对任意 \(|u|=1\) 有
+\[
+\rho(B(u))\le \rho(B(1))=2,
+\]
+且当 \(u\neq 1\) 时严格成立 \(\rho(B(u))<2\)。
+等价地，对任意 \(t\in\RR\setminus 2\pi\ZZ\)，有
+\[
+\rho(A_{it})<1.
+\]
+\end{theorem}
+
+\begin{proof}
+当 \(|u|=1\) 时逐项取绝对值得 \(|B(u)|=B(1)\)（按元素绝对值）。
+矩阵 \(B(1)\) 非负且原始：其存在自环 \(1\to 1\)，并且从任一状态都可达状态 \(1\) 且可由状态 \(1\) 到达，故强连通且非周期。
+由 Frobenius--Wielandt 比较定理，
+\[
+\rho(B(u))\le \rho(B(1))=2.
+\]
+若等号成立，则存在 \(\varphi\in\RR\) 与对角酉矩阵 \(D=\mathrm{diag}(d_1,d_2,d_3,d_4)\) 使
+\[
+B(u)=e^{i\varphi}D\,B(1)\,D^{-1}.
+\]
+比较 \((1,1)\) 元得 \(e^{i\varphi}=1\)，从而 \(B(u)=D B(1)D^{-1}\)。
+对每个 \(B(1)_{ij}\neq 0\) 有
+\[
+\frac{d_j}{d_i}=\frac{B(u)_{ij}}{B(1)_{ij}}.
+\]
+由 \((1,2)\)、\((2,3)\)、\((3,1)\) 元分别得
+\[
+\frac{d_2}{d_1}=u,\qquad \frac{d_3}{d_2}=u,\qquad \frac{d_1}{d_3}=u,
+\]
+相乘得到 \(u^3=1\)。
+另一方面，\((3,2)\) 元给出 \(d_2/d_3=1\)，与 \(d_3/d_2=u\) 合并即 \(u=1\)。
+故 \(u\neq 1\) 时不可能取等，必有 \(\rho(B(u))<2\)。
+最后令 \(u=e^{it}\)，则 \(B(u)=2A_{it}\)，于是
+\[
+\rho(A_{it})=\frac{\rho(B(e^{it}))}{2}<1\qquad (t\notin 2\pi\ZZ).
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[规范差同余分布的指数均匀化]\label{cor:fold-gauge-anomaly-congruence-mixing}
+记
+\[
+M_m(u):=\mathbb E\!\left[u^{G_m}\right],\qquad \widetilde M_m(u):=2^m M_m(u).
+\]
+则 \(\widetilde M_m\) 满足四阶递推
+\[
+\widetilde M_{m+4}
+=\widetilde M_{m+3}
++(2u+1)\widetilde M_{m+2}
++(u^3-2u)\widetilde M_{m+1}
+-2u\,\widetilde M_m,
+\]
+其特征多项式即
+\[
+F(\mu,u)=\mu^4-\mu^3-\mu^2(2u+1)+\mu(-u^3+2u)+2u.
+\]
+固定整数 \(q\ge 2\)，令 \(\omega_q=e^{2\pi i/q}\)，并记
+\[
+R_{m,q}:=G_m\bmod q\in \ZZ/q\ZZ.
+\]
+定义
+\[
+\delta_q:=\max_{1\le j\le q-1}\frac{\rho(B(\omega_q^{\,j}))}{2}\in(0,1).
+\]
+则存在常数 \(C_q>0\)，使对任意 \(m\ge 1\) 与 \(r\in\ZZ/q\ZZ\) 都有
+\[
+\left|\mathbb P(R_{m,q}=r)-\frac1q\right|
+\le C_q\,m^3\,\delta_q^{\,m}.
+\]
+特别地，\(R_{m,q}\) 以指数速度趋于 \(\ZZ/q\ZZ\) 上的均匀分布。
+当 \(q=2\) 时，
+\[
+\delta_2=\frac{\rho(B(-1))}{2},
+\]
+其中 \(\rho(B(-1))\) 为多项式
+\[
+\mu^4-\mu^3+\mu^2-\mu-2
+\]
+的最大实根。
+\end{corollary}
+
+\begin{proof}
+离散 Fourier 反演给出
+\[
+\mathbb P(R_{m,q}=r)
+=\frac1q\sum_{j=0}^{q-1}\omega_q^{-jr}\,\mathbb E\!\left[(\omega_q^{\,j})^{G_m}\right]
+=\frac1q+\frac1q\sum_{j=1}^{q-1}\omega_q^{-jr}M_m(\omega_q^{\,j}),
+\]
+从而
+\[
+\left|\mathbb P(R_{m,q}=r)-\frac1q\right|
+\le \frac1q\sum_{j=1}^{q-1}\left|M_m(\omega_q^{\,j})\right|.
+\]
+对固定 \(u\in\CC\)，由命题 \ref{prop:fold-gauge-anomaly-mgf-order4-recurrence} 的四阶递推与 Jordan 分解，
+\[
+\widetilde M_m(u)=\sum_{\ell} p_\ell(m)\lambda_\ell(u)^m,
+\]
+其中 \(\lambda_\ell(u)\) 是 \(B(u)\) 的特征值，且 \(\deg p_\ell\le 3\)。
+故存在 \(C(u)>0\) 使
+\[
+|\widetilde M_m(u)|\le C(u)\,m^3\,\rho(B(u))^m,
+\qquad
+|M_m(u)|\le C(u)\,m^3\!\left(\frac{\rho(B(u))}{2}\right)^m.
+\]
+当 \(u=\omega_q^{\,j}\) 且 \(1\le j\le q-1\) 时，\(u\neq 1\) 且 \(|u|=1\)，由定理 \ref{thm:fold-gauge-anomaly-unit-circle-rigidity} 得 \(\rho(B(u))<2\)。
+取
+\[
+\delta_q=\max_{1\le j\le q-1}\frac{\rho(B(\omega_q^{\,j}))}{2}<1
+\]
+并吸收有限个 \(j\) 的常数，即得所述不等式。
+\(q=2\) 情形由 \(u=-1\) 代入 \(F(\mu,u)\) 直接得到。
+证毕。
+\end{proof}
+
+\begin{theorem}[大模数同余谱隙的扩散标度]\label{thm:fold-gauge-anomaly-large-q-delta}
+设 \(g_\ast=\frac49\)、\(\sigma_G^2=\frac{118}{243}\)（定理 \ref{thm:fold-gauge-anomaly-clt}）。
+则存在 \(q_0\ge 2\)，使对所有 \(q\ge q_0\) 有
+\[
+\delta_q
+=\exp\!\left(-\frac{2\pi^2\sigma_G^2}{q^2}+O(q^{-4})\right)
+=\exp\!\left(-\frac{236\pi^2}{243\,q^2}+O(q^{-4})\right),
+\]
+等价地，
+\[
+\delta_q
+=1-\frac{2\pi^2\sigma_G^2}{q^2}+O(q^{-4}).
+\]
+\end{theorem}
+
+\begin{proof}
+写
+\[
+F(\mu,u)=\mu^4-\mu^3-\mu^2(2u+1)+\mu(-u^3+2u)+2u.
+\]
+由命题 \ref{prop:fold-gauge-anomaly-pressure}，\(F(2,1)=0\) 且
+\[
+\partial_\mu F(2,1)=9\neq 0.
+\]
+由隐函数定理，存在 \(u=1\) 邻域上的解析主导根分支 \(\mu(u)\)（\(\mu(1)=2\)）。
+令
+\[
+\Lambda(\theta):=\frac{\mu(e^\theta)}{2}.
+\]
+在 \(\theta=0\) 邻域内，\(\log \Lambda(\theta)=P_G(\theta)\)（实轴上一致），故
+\[
+P_G(it)=ig_\ast t-\frac{\sigma_G^2}{2}t^2+O(t^3),
+\qquad
+\Re P_G(it)=-\frac{\sigma_G^2}{2}t^2+O(t^4),
+\]
+其中第二式用到实系数解析函数在虚轴上的偶性。
+因此当 \(|t|\) 足够小时，
+\[
+\rho(A_{it})
+=\exp\!\bigl(\Re P_G(it)\bigr)
+=\exp\!\left(-\frac{\sigma_G^2}{2}t^2+O(t^4)\right).
+\]
+取 \(t=2\pi/q\) 得
+\[
+\rho\!\left(A_{2\pi i/q}\right)
+=\exp\!\left(-\frac{2\pi^2\sigma_G^2}{q^2}+O(q^{-4})\right).
+\]
+又由定理 \ref{thm:fold-gauge-anomaly-unit-circle-rigidity}，所有非零频率均严格小于 \(1\)；
+当 \(q\) 足够大时，\(\delta_q=\max_{1\le j\le q-1}\rho(A_{2\pi i j/q})\) 的最大项由最小非零频率 \(j=1\)（等价地 \(j=q-1\)）取得，从而得到所述展开。
+证毕。
+\end{proof}
+
+\begin{theorem}[随窗口增长的同余阈值相变]\label{thm:fold-gauge-anomaly-congruence-phase-transition}
+令 \(q=q(m)\ge 2\) 随 \(m\to\infty\) 变化，并记
+\[
+R_{m,q(m)}:=G_m\bmod q(m).
+\]
+则有：
+\begin{enumerate}
+  \item 若 \(\frac{m}{q(m)^2}\to\infty\)，则
+  \[
+  \sup_{r\in\ZZ/q(m)\ZZ}
+  \left|\mathbb P(R_{m,q(m)}=r)-\frac{1}{q(m)}\right|
+  \longrightarrow 0,
+  \]
+  且该差异可压到 \(\exp(-c\,m/q(m)^2)\) 量级（某个 \(c>0\)）。
+  \item 若 \(\frac{q(m)}{\sqrt m}\to\infty\)，则
+  \[
+  \left\|\mathcal L(R_{m,q(m)})-\mathrm{Unif}(\ZZ/q(m)\ZZ)\right\|_{\mathrm{TV}}
+  \longrightarrow 1.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+对任意 \(q\ge 2\)，Fourier 反演给出
+\[
+\sup_r\left|\mathbb P(R_{m,q}=r)-\frac1q\right|
+\le \frac1q\sum_{j=1}^{q-1}\left|\mathbb E\!\left[e^{2\pi i j G_m/q}\right]\right|.
+\]
+由推论 \ref{cor:fold-gauge-anomaly-congruence-mixing} 的 Jordan 上界与定理 \ref{thm:fold-gauge-anomaly-large-q-delta} 的小频率展开，可得
+\[
+\left|\mathbb E\!\left[e^{2\pi i j G_m/q}\right]\right|
+\le C\,m^3\exp\!\left(-c_0\,\frac{j^2m}{q^2}\right)
+\]
+（常数与 \(q\) 足够大时的局部频率区间统一可取；高频段由定理 \ref{thm:fold-gauge-anomaly-unit-circle-rigidity} 的严格谱隙给出更强指数衰减）。
+故
+\[
+\sup_r\left|\mathbb P(R_{m,q}=r)-\frac1q\right|
+\le C' q\,m^3\,\exp\!\left(-c_0\frac{m}{q^2}\right).
+\]
+当 \(m/q(m)^2\to\infty\) 时，前因子 \(q\,m^3\) 可被指数项吸收，得到 (1)。
+
+对 (2)，由定理 \ref{thm:fold-gauge-anomaly-clt} 的方差线性增长，
+对任意 \(C>0\) 存在 \(m_0(C)\) 使 \(m\ge m_0(C)\) 时
+\[
+\mathbb P\!\left(|G_m-g_\ast m|\le C\sqrt m\right)\ge 1-\varepsilon_C,
+\qquad
+\varepsilon_C:=\frac{2\sigma_G^2}{C^2}.
+\]
+记
+\[
+S_m:=\left\{r\in\ZZ/q\ZZ:\exists n\in\ZZ,\ |n-g_\ast m|\le C\sqrt m,\ n\equiv r\!\!\!\pmod q\right\},
+\]
+则 \(|S_m|\le 2C\sqrt m+1\)，且 \(\mathbb P(R_{m,q}\in S_m)\ge 1-\varepsilon_C\)。
+于是
+\[
+\left\|\mathcal L(R_{m,q})-\mathrm{Unif}(\ZZ/q\ZZ)\right\|_{\mathrm{TV}}
+\ge \mathbb P(R_{m,q}\in S_m)-\frac{|S_m|}{q}
+\ge (1-\varepsilon_C)-\frac{2C\sqrt m+1}{q}.
+\]
+若 \(q/\sqrt m\to\infty\)，则对任意固定 \(C\)，上式下极限不小于 \(1-\varepsilon_C\)；
+再令 \(C\to\infty\)（故 \(\varepsilon_C\to 0\)）得到总变差极限为 \(1\)。
+证毕。
+\end{proof}
+
 \begin{proposition}[非渐近 Chernoff 轮廓：尾概率指数由代数压力函数唯一决定]\label{prop:fold-gauge-anomaly-chernoff-nonasymptotic}
 令压力函数 \(P_G(\theta)=\log\rho(A_\theta)\) 如命题 \ref{prop:fold-gauge-anomaly-pressure}，并令
 \[

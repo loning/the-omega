@@ -282,5 +282,277 @@ Z_F(z)=n^{m}\frac{(z/n)^{m+1}-1}{z/n-1}
 \end{enumerate}
 \end{example}
 
+\paragraph{圆维的可观测重构：素数局部账本、解析极点与相位精度指数}
+以下结果把结构层圆维 \(\cdim\) 与实现层“有限分辨率可逆性”联结到同一组可计算对象上：
+一方面，\(|G/nG|\) 形成 Dirichlet 解析账本并将 \(\cdim\) 编码为收敛临界指数；
+另一方面，\(\ZZ^r\to\TT^d\) 的相位压缩必然产生 \(B^{-r/d}\) 量级的最小分离衰减，从而给出不可规避的精度守恒律。
+
+\begin{theorem}[圆维 \texorpdfstring{$\zeta$}{zeta} 函数的欧拉分解与收敛界]\label{thm:xi-cdim-zeta-euler-abscissa-locality}
+设 \(G\) 为有限生成离散交换群，并记
+\[
+r:=\cdim(G)\in\NN.
+\]
+对每个 \(n\ge 1\) 定义
+\[
+a_G(n):=\card{G/nG},
+\qquad
+\zeta_{\circ}(G;s):=\sum_{n\ge 1}a_G(n)\,n^{-s}.
+\]
+则成立：
+\begin{enumerate}
+  \item \(a_G\) 为乘法函数，故在收敛半平面内
+  \[
+  \zeta_{\circ}(G;s)=\prod_{p}\left(\sum_{k\ge 0}a_G(p^k)\,p^{-ks}\right).
+  \]
+  \item \(\zeta_{\circ}(G;\cdot)\) 的收敛 abscissa 为
+  \[
+  \sigma_c\!\bigl(\zeta_{\circ}(G;\cdot)\bigr)=r+1.
+  \]
+  \item 若 \(G\cong \ZZ^r\oplus F\)（\(F\) 有限），则存在仅依赖于有限坏素数集
+  \[
+  S(G):=\{p:\ p\mid |F|\}
+  \]
+  的欧拉修正因子 \(E_G(s)\)，使
+  \[
+  \zeta_{\circ}(G;s)=\zeta(s-r)\,E_G(s),
+  \]
+  其中 \(E_G(s)\) 为 \(S(G)\) 上有理局部因子的有限乘积。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+先证乘法性。取 \(\gcd(m,n)=1\)，考虑
+\[
+\phi:G\to G/mG\times G/nG,\qquad g\mapsto (g\bmod mG,\ g\bmod nG).
+\]
+有 \(\ker\phi=mG\cap nG\)。由 Bezout 等式取 \(u,v\in\ZZ\) 使 \(um+vn=1\)。
+若 \(g\in mG\cap nG\)，写 \(g=ma=nb\)，则
+\[
+g=(um+vn)g=um(nb)+vn(ma)=mn(ub+va)\in mnG,
+\]
+故 \(mG\cap nG=mnG\)。
+另一方面，任取 \((x\bmod mG,\ y\bmod nG)\)，令 \(g:=vnx+umy\)，则
+\[
+g-x=um(y-x)\in mG,\qquad g-y=vn(x-y)\in nG,
+\]
+故 \(\phi\) 满射。
+于是 \(G/mnG\cong G/mG\times G/nG\)，即
+\[
+a_G(mn)=a_G(m)a_G(n),
+\]
+故 \(a_G\) 为乘法函数，欧拉积成立。
+
+再证收敛界。写 \(G\cong \ZZ^r\oplus F\)（\(F\) 有限），则
+\[
+G/nG\cong (\ZZ/n\ZZ)^r\oplus (F/nF),
+\qquad
+a_G(n)=n^r\,|F/nF|.
+\]
+由 \(1\le |F/nF|\le |F|\)，得
+\[
+\sum_{n\ge 1}n^{r-s}
+\le
+\zeta_{\circ}(G;s)
+\le
+|F|\sum_{n\ge 1}n^{r-s}.
+\]
+故其收敛当且仅当 \(\Re(s)>r+1\)，从而 \(\sigma_c=r+1\)。
+
+最后证局部性。对 \(p\nmid |F|\)，乘以 \(p^k\) 在 \(F\) 上为自同构，故 \(F/p^kF\) 平凡，因而
+\[
+\sum_{k\ge 0}a_G(p^k)p^{-ks}
+=
+\sum_{k\ge 0}p^{k(r-s)}
+=
+\frac{1}{1-p^{r-s}}.
+\]
+把这些好素数局部因子相乘得到 \(\zeta(s-r)\)；坏素数仅在 \(S(G)\) 中有限多个，其局部比值合并为有限欧拉修正 \(E_G(s)\)。证毕。
+\end{proof}
+
+\begin{theorem}[由素数账本 \texorpdfstring{$|G/p^kG|$}{|G/p^kG|} 完整重构有限生成交换群]\label{thm:xi-cdim-prime-ledger-complete-reconstruction}
+设 \(G,H\) 为有限生成离散交换群。若对所有素数 \(p\) 与所有 \(k\ge 1\) 都有
+\[
+|G/p^kG|=|H/p^kH|,
+\]
+则 \(G\cong H\)。
+特别地，若对所有 \(n\ge 1\) 有 \(|G/nG|=|H/nH|\)，亦推出 \(G\cong H\)。
+\end{theorem}
+\begin{proof}
+写
+\[
+G\cong \ZZ^{r_G}\oplus F,\qquad H\cong \ZZ^{r_H}\oplus F',
+\]
+其中 \(F,F'\) 有限。
+定义
+\[
+e_G(p):=\log_p|G/pG|,\qquad e_H(p):=\log_p|H/pH|.
+\]
+由
+\[
+|G/pG|=p^{r_G}|F/pF|,\qquad |H/pH|=p^{r_H}|F'/pF'|
+\]
+知 \(e_G(p)\ge r_G\)、\(e_H(p)\ge r_H\)，且当 \(p\nmid |F|\)（分别 \(p\nmid |F'|\)）时取等。
+故
+\[
+r_G=\min_p e_G(p),\qquad r_H=\min_p e_H(p).
+\]
+由假设 \(e_G(p)=e_H(p)\) 对所有 \(p\) 成立，得 \(r_G=r_H=:r\)。
+
+固定素数 \(p\)，定义
+\[
+b_{G,p}(k):=v_p(|G/p^kG|)-kr,\qquad
+b_{H,p}(k):=v_p(|H/p^kH|)-kr.
+\]
+把 \(F\) 的 \(p\)-primary 分量写为
+\[
+F_p\cong \bigoplus_{i=1}^{t_p}\ZZ/p^{\alpha_i}\ZZ,\qquad
+\alpha_1\ge\cdots\ge\alpha_{t_p}\ge 1.
+\]
+则
+\[
+b_{G,p}(k)=v_p(|F_p/p^kF_p|)=\sum_{i=1}^{t_p}\min(\alpha_i,k).
+\]
+令
+\[
+m_{G,p}(k):=b_{G,p}(k)-b_{G,p}(k-1)=\#\{i:\alpha_i\ge k\},
+\]
+则
+\[
+\#\{i:\alpha_i=k\}=m_{G,p}(k)-m_{G,p}(k+1).
+\]
+因此序列 \(\{b_{G,p}(k)\}_{k\ge 1}\) 唯一决定 \(F_p\) 的不变量因子；同理对 \(H\) 成立。
+由假设 \(b_{G,p}(k)=b_{H,p}(k)\)，得所有 \(p\)-primary 分量一致，故 \(F\cong F'\)。
+再结合 \(r_G=r_H\)，即得 \(G\cong H\)。
+
+若 \(|G/nG|=|H/nH|\) 对所有 \(n\) 成立，则取 \(n=p^k\) 即回到上式条件。证毕。
+\end{proof}
+
+\begin{proposition}[好素数一次观测给出圆维，坏素数支撑给出有限账本]\label{prop:xi-cdim-good-prime-readout-and-bad-support}
+设 \(G\cong \ZZ^r\oplus F\)（\(r=\cdim(G)\)），并记
+\[
+S(G):=\{p:\ p\mid |F|\}.
+\]
+则：
+\begin{enumerate}
+  \item 对任意 \(p\notin S(G)\) 与任意 \(k\ge 1\)，
+  \[
+  |G/p^kG|=p^{kr}.
+  \]
+  \item 若某素数 \(p\) 满足 \(|G/pG|>p^r\)，则 \(p\in S(G)\)。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+若 \(p\nmid |F|\)，则乘以 \(p^k\) 在 \(F\) 上可逆，故 \(F/p^kF\) 平凡，于是
+\[
+|G/p^kG|=|(\ZZ/p^k\ZZ)^r|\,|F/p^kF|=p^{kr}.
+\]
+反过来，若 \(p\mid |F|\)，则 \(F/pF\) 非平凡，故
+\[
+|G/pG|=p^r|F/pF|>p^r.
+\]
+命题两条即得。证毕。
+\end{proof}
+
+\begin{theorem}[单位圆相位压缩的混叠指数等于 \texorpdfstring{$r/d$}{r/d}]\label{thm:xi-cdim-phase-compression-aliasing-exponent}
+取 \(\TT:=\RR/\ZZ\cong S^1\)，并令
+\[
+\mathrm{dist}_{\TT^d}(x,y):=\min_{m\in\ZZ^d}|x-y-m|_{\infty}.
+\]
+对群同态 \(\phi:\ZZ^r\to\TT^d\)，定义
+\[
+Q_B:=\{u\in\ZZ^r:\ |u|_{\infty}\le B\},
+\]
+\[
+\Delta_B(\phi):=
+\min\Bigl\{\mathrm{dist}_{\TT^d}\!\bigl(\phi(u),\phi(v)\bigr):
+u\neq v,\ u,v\in Q_B\Bigr\}.
+\]
+再定义
+\[
+\alpha_d:=
+\inf_{\substack{\phi\in\mathrm{Hom}(\ZZ^r,\TT^d)\\ \phi\ \text{单射}}}
+\ \limsup_{B\to\infty}\frac{\log(1/\Delta_B(\phi))}{\log B}.
+\]
+则
+\[
+\alpha_d=\frac{r}{d}.
+\]
+\end{theorem}
+\begin{proof}
+先证下界。对任意单射 \(\phi\)，\(\phi(Q_B)\) 有 \((2B+1)^r\) 个不同点。
+若 \(\Delta_B(\phi)\ge \varepsilon\)，则这些点两两 \(\varepsilon\)-分离。
+而 \(\TT^d\) 中任意 \(\varepsilon\)-分离集的基数至多 \(C_d\varepsilon^{-d}\)（由 \(\ell^\infty\)-球装填/网格覆盖）。
+故
+\[
+(2B+1)^r\le C_d\,\Delta_B(\phi)^{-d},
+\qquad
+\Delta_B(\phi)\le C'_d\,B^{-r/d}.
+\]
+于是
+\[
+\limsup_{B\to\infty}\frac{\log(1/\Delta_B(\phi))}{\log B}\ge \frac{r}{d}.
+\]
+对所有单射 \(\phi\) 取下确界得 \(\alpha_d\ge r/d\)。
+
+再证上界。由经典 Schmidt 型坏可逼近系统存在定理（见 \cite{Schmidt1969BadlyApproximableSystems}），存在矩阵
+\[
+A\in M_{d\times r}(\RR),\quad c>0,
+\]
+使得对所有 \(m\in\ZZ^r\setminus\{0\}\) 有
+\[
+\mathrm{dist}_{\TT^d}(Am,0)\ge c\,|m|_{\infty}^{-r/d}.
+\]
+定义 \(\phi_A(u):=Au\bmod\ZZ^d\)。上式立即推出 \(\phi_A\) 单射。
+对任意不同 \(u,v\in Q_B\)，令 \(m=u-v\neq 0\)，则 \(|m|_{\infty}\le 2B\)，故
+\[
+\mathrm{dist}_{\TT^d}(\phi_A(u),\phi_A(v))
+=
+\mathrm{dist}_{\TT^d}(Am,0)
+\ge c(2B)^{-r/d}.
+\]
+即
+\[
+\Delta_B(\phi_A)\ge c'B^{-r/d}.
+\]
+于是
+\[
+\limsup_{B\to\infty}\frac{\log(1/\Delta_B(\phi_A))}{\log B}\le \frac{r}{d},
+\]
+从而 \(\alpha_d\le r/d\)。
+结合上下界得 \(\alpha_d=r/d\)。证毕。
+\end{proof}
+
+\begin{corollary}[圆维—精度守恒律：相位压缩的可逆实现下界]\label{cor:xi-cdim-precision-conservation-law}
+在定理 \ref{thm:xi-cdim-phase-compression-aliasing-exponent} 的设定下，设实现层相位分辨率为 \(\varepsilon>0\)：当两点距离 \(<\varepsilon\) 时不可区分。
+若要求在 \(Q_B\) 上实现 \(\varepsilon\)-意义下可逆解码，则必须满足
+\[
+\varepsilon\ \lesssim\ B^{-r/d},
+\]
+等价地，
+\[
+d\log\frac1\varepsilon\ \gtrsim\ r\log B.
+\]
+\end{corollary}
+\begin{proof}
+对任意单射 \(\phi\)，由定理 \ref{thm:xi-cdim-phase-compression-aliasing-exponent} 证明中的装填估计，有
+\[
+\Delta_B(\phi)\le C_d' B^{-r/d}.
+\]
+若要在分辨率 \(\varepsilon\) 下可逆区分 \(Q_B\) 中所有点，必要条件是 \(\varepsilon<\Delta_B(\phi)\)。
+故必有 \(\varepsilon\le C_d'B^{-r/d}\)，即第一式。
+两侧取对数并吸收常数得第二式。证毕。
+\end{proof}
+
+\begin{remark}[半圆维口径下的同一指数]\label{rem:xi-cdim-plus-phase-precision-index}
+若 \(M\) 为有限生成可消去交换幺半群，且其 Grothendieck 群完成 \(G(M)\) 的自由秩为 \(r_M\)，则
+\[
+\cdim_{+}(M)=\frac{r_M}{2}.
+\]
+把上述定理应用到 \(G(M)\) 可得对应实现指数
+\[
+\frac{r_M}{d}=\frac{2\cdim_{+}(M)}{d}.
+\]
+因此半圆维同样给出可检验的精度收缩率，只是以 \(2\cdim_{+}\) 进入幂指数。
+\end{remark}
+
 \endinput
 
