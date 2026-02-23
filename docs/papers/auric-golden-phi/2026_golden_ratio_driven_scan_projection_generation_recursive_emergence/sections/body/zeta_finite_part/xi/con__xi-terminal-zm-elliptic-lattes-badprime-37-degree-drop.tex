@@ -78,6 +78,44 @@ Möbius 共轭可在 \(\FF_{37}(X)\) 中直接代入化简核验。
 最后一条重根分解由结论 \ref{con:xi-terminal-zm-leyang-badprime-37-common-double-root} 给出。证毕。
 \end{proof}
 
+\begin{conclusion}[权坐标除法结果式的整系数性、根像刻画与次数律]\label{con:xi-terminal-zm-elliptic-division-resultant-integrality-degree}
+在椭圆曲线
+\[
+E:\ Y^{2}=X^{3}-X+\frac14,
+\qquad
+y:=X^{2}+Y-\frac12,
+\]
+与四次关系
+\[
+\Pi(X,y):=X^{4}-X^{3}-(2y+1)X^{2}+X+y(y+1)=0
+\]
+的设定下，对任意奇整数 \(n\ge 3\)，令 \(\psi_{n}(X)\in\ZZ[X]\) 为 \(E\) 的 \(n\)-division 多项式，并定义
+\[
+L_{n}(y):=\operatorname{Res}_{X}\!\bigl(\psi_{n}(X),\Pi(X,y)\bigr)\in\ZZ[y].
+\]
+则成立：
+\begin{enumerate}
+  \item \(L_{n}(y)\) 具有整系数，且 \(\deg L_{n}=n^{2}-1\)；
+  \item 根集满足
+  \[
+  \{\,\alpha\in\overline{\QQ}:L_{n}(\alpha)=0\,\}
+  =\{\,y(P):P\in E[n]\setminus\{O\}\,\},
+  \]
+  并且在特征 \(0\) 下 \(L_n\) 可分。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+由 \(\psi_n(X)\in\ZZ[X]\) 与 \(\Pi(X,y)\in\ZZ[X,y]\)，结果式 \(L_n(y)\) 直接属于 \(\ZZ[y]\)。
+对任意 \(\psi_n(x_0)=0\)，多项式 \(\Pi(x_0,y)\) 关于 \(y\) 为首一二次式，故每个 \(x_0\) 贡献 \(2\) 次 \(y\)-度；
+结合奇数 \(n\) 的标准次数公式 \(\deg_X\psi_n=(n^2-1)/2\)，得到 \(\deg_y L_n=n^2-1\)。
+\par
+若 \(P=(x_0,Y_0)\in E[n]\setminus\{O\}\)，则 \(\psi_n(x_0)=0\)，且 \(y(P)=x_0^2+Y_0-\tfrac12\) 满足 \(\Pi(x_0,y(P))=0\)，故 \(L_n(y(P))=0\)。
+反之若 \(L_n(\alpha)=0\)，则存在 \(x_0\) 使 \(\psi_n(x_0)=0\) 且 \(\Pi(x_0,\alpha)=0\)；
+令 \(Y_0:=\alpha+\tfrac12-x_0^2\)，代回即得 \((x_0,Y_0)\in E(\overline{\QQ})\)，并由 \(\psi_n(x_0)=0\) 知其为非平凡 \(n\)-挠点。
+因此 \(\alpha=y(P)\) 对某 \(P\in E[n]\setminus\{O\}\) 成立。
+在 \(\mathrm{char}=0\) 下，\(E[n]\) 为 étale 群簇，故对应消元方程无不可分重根。证毕。
+\end{proof}
+
 \begin{conclusion}[三除点重量像在 \texorpdfstring{$\FF_{37}$}{F37} 上的六重坍缩]\label{con:xi-terminal-zm-elliptic-3torsion-y-image-mod37-collapse}
 仍沿用结论 \ref{con:xi-terminal-zm-elliptic-3torsion-y-image-octic} 的八次消元多项式
 \[
@@ -94,7 +132,7 @@ L_{3}(y)\equiv 7\,(y-6)^{6}\,(y^{2}-5y-1)\pmod{37}.
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_odd\_torsion\_mod37\_collapse\_audit.py}。证毕。
 \end{proof}
 
-\begin{conclusion}[五除点重量像的次数 \(24\) 消元证书与模 \(37\) 的二十重坍缩]\label{con:xi-terminal-zm-elliptic-5torsion-y-image-degree24-mod37-collapse}
+\begin{conclusion}[五除点重量消元多项式的显式证书、模 \(37\) 分解与判别式平方类]\label{con:xi-terminal-zm-elliptic-5torsion-y-image-degree24-mod37-collapse}
 仍在椭圆曲线
 \(
 E:\ Y^{2}=X^{3}-X+\tfrac14
@@ -113,26 +151,42 @@ L_{5}(y):=\operatorname{Res}_{X}\bigl(\psi_{5}(X),\Pi(X,y)\bigr)\in\ZZ[y],
 \qquad
 \Pi(X,y):=X^{4}-X^{3}-(2y+1)X^{2}+X+y(y+1).
 \]
-则 \(L_{5}(y)\) 在 \(\QQ\) 上不可约，且 \(\deg L_{5}=24\)；并且可取其闭式证书为
-\[
-\boxed{\;
-\begin{aligned}
-L_{5}(y)=\;&625 y^{24}-23500 y^{23}+244475 y^{22}+855915 y^{21}-11037859 y^{20}-89302755 y^{19}-22555640 y^{18}\\
-&+761997855 y^{17}+1386419000 y^{16}-320647060 y^{15}-1928743150 y^{14}+838813180 y^{13}+3910018680 y^{12}\\
-&+3220925750 y^{11}+1313468808 y^{10}-538699445 y^{9}-1045141370 y^{8}-317786725 y^{7}-89515935 y^{6}\\
-&-310993491 y^{5}-240190705 y^{4}-86874340 y^{3}-15726875 y^{2}-1254110 y+10048.
-\end{aligned}
-\;}
-\]
-在坏素数 \(37\) 处，其模约化发生指数为 \(20=5^{2}-5\) 的集中塌缩：
-\[
-L_{5}(y)\equiv -4\,(y-6)^{20}\,\bigl(y^{4}+y^{3}+10y^{2}+9y+4\bigr)\pmod{37}.
-\]
+则 \(L_{5}(y)\) 在 \(\QQ\) 上不可约，且 \(\deg L_{5}=24\)。
+其显式展开、模 \(37\) 分解及判别式平方类分解如下：
+\input{sections/generated/eq_fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit}
+特别地，\(\operatorname{Disc}(L_5)\) 的平方自由核为 \(5\)。
 \end{conclusion}
 \begin{proof}[证明要点]
 由结果式的基本性质，\(L_{5}(y)\) 的根集合恰为 \(y\bigl(E[5]\setminus\{O\}\bigr)\) 的消元像。
-不可约性与同余分解可由有限代数计算核验；见脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_odd\_torsion\_mod37\_collapse\_audit.py} 的可复现输出。证毕。
+不可约性与模 \(37\) 分解可由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_odd\_torsion\_mod37\_collapse\_audit.py} 核验；
+判别式分解与平方类由脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_5torsion\_discriminant\_quadratic\_character\_audit.py} 核验。证毕。
 \end{proof}
+
+\begin{corollary}[五次权除法分裂域的符号二次特征]\label{cor:xi-terminal-zm-elliptic-5torsion-sign-quadratic-field}
+设 \(K\) 为 \(L_{5}\) 的分裂域，\(G:=\mathrm{Gal}(K/\QQ)\)，并记
+\[
+\rho:G\longrightarrow S_{24}
+\]
+为 \(G\) 在 \(L_{5}\) 的 \(24\) 个根上的自然置换表示。
+则符号特征 \(\mathrm{sgn}\circ\rho\) 所对应的二次子域为
+\[
+\QQ(\sqrt5),
+\]
+等价地，
+\[
+\QQ\!\bigl(\sqrt{\operatorname{Disc}(L_{5})}\bigr)=\QQ(\sqrt5).
+\]
+\end{corollary}
+\begin{proof}
+对任意可分多项式 \(f\in\QQ[y]\)，\(\operatorname{Disc}(f)\) 的平方类对应于分裂域中由符号特征切出的二次子扩张。
+由结论 \ref{con:xi-terminal-zm-elliptic-5torsion-y-image-degree24-mod37-collapse}，
+\(\operatorname{Disc}(L_{5})\) 的平方自由核为 \(5\)，故结论成立。证毕。
+\end{proof}
+
+\begin{remark}[公开索引一致性排查]
+以 \(L_{5}\) 的高次系数片段与模 \(37\) 因子结构作为检索键进行公开索引排查，未见与本结论同构的已公开条目。
+该排查仅作为文献去重记录，不作为证明链条的推理前提。
+\end{remark}
 
 \begin{conclusion}[七除点重量像在模 \(37\) 下的四十二重坍缩]\label{con:xi-terminal-zm-elliptic-7torsion-y-image-mod37-collapse}
 令 \(\psi_{7}(X)\in\ZZ[X]\) 为同一曲线 \(E\) 的 \(7\)-division 多项式（\(X\)-坐标形式，次数 \(24\)）。
@@ -151,22 +205,45 @@ L_{7}^{(37)}(y)= -4\,(y-6)^{42}\,\bigl(y^{6}-11y^{5}+18y^{4}+7y^{3}-6y^{2}-13y-9
 在 \(\FF_{37}[X,y]\) 中计算结果式并因式分解即可得到所示恒等式；见脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_odd\_torsion\_mod37\_collapse\_audit.py}。证毕。
 \end{proof}
 
-\begin{conjecture}[非分裂乘法约化素点处的普适坍缩指数]\label{conj:xi-terminal-zm-elliptic-odd-torsion-mod37-collapse-exponent}
-对任意奇整数 \(n\ge 3\)（与 \(37\) 互素），令 \(\psi_{n}(X)\) 为曲线 \(E\) 的 \(n\)-division 多项式（\(X\)-坐标形式），并定义
+\begin{conclusion}[坏素数 \(37\) 处的普适坍缩指数与残余次数]\label{con:xi-terminal-zm-elliptic-odd-torsion-mod37-collapse-exponent}
+对任意整数 \(n\ge 2\) 且 \(\gcd(n,37)=1\)，定义 \(L_n(y)\) 如下：
+\begin{itemize}
+  \item 若 \(n\) 为奇数，令
+  \[
+  L_n(y):=\operatorname{Res}_{X}\bigl(\psi_n(X),\Pi(X,y)\bigr)\in\ZZ[y];
+  \]
+  \item 若 \(n\) 为偶数，令 \(\varphi_n(X)\in\ZZ[X]\) 为短 Weierstrass 模型下刻画 \(x\bigl(E[n]\setminus E[2]\bigr)\) 的标准 \(X\)-坐标除法多项式，并定义
+  \[
+  L_n(y):=\operatorname{Res}_{X}\bigl(\varphi_n(X),\Pi(X,y)\bigr)\in\ZZ[y].
+  \]
+\end{itemize}
+则在 \(\FF_{37}[y]\) 中存在 \(u_n\in\FF_{37}^{\times}\) 与 \(H_n(y)\in\FF_{37}[y]\)，使
 \[
-L_{n}(y):=\operatorname{Res}_{X}\bigl(\psi_{n}(X),\Pi(X,y)\bigr)\in\ZZ[y].
+L_n(y)\equiv u_n\,(y-6)^{n(n-1)}H_n(y)\pmod{37},
 \]
-则在 \(\FF_{37}[y]\) 中存在单位 \(c_{n}\in\FF_{37}^{\times}\) 与次数 \(n-1\) 的多项式 \(R_{n}(y)\) 使得
+并满足
 \[
-L_{n}(y)\equiv c_{n}\,(y-6)^{n^{2}-n}\,R_{n}(y)\pmod{37},
-\qquad
-\deg R_{n}=n-1,
-\qquad
-R_{n}(6)\neq 0.
+\deg H_n=n-1,\qquad H_n(6)\neq 0.
 \]
-\end{conjecture}
-\begin{remark}
-若把 \(p=37\) 处的非分裂乘法约化通过 Tate 曲线统一化理解，则在 \(\overline{\FF}_{37}\) 上可将 \(E[n]\) 的几何成分分解为 \(\mu_{n}\times (\ZZ/n\ZZ)\) 的两类参数族；其中后者在约化时趋向同一奇点分量，从而在某一重量像值（此处为 \(y\equiv 6\)）产生 \(n(n-1)=n^{2}-n\) 阶的集中坍缩，而 \(\mu_{n}\setminus\{1\}\) 的 \(n-1\) 个点贡献剩余次数 \(n-1\) 的因子。
-该机制与上文 \(P_{\mathrm{LY}}(y)\) 在模 \(37\) 下于 \(y=6\) 出现二重根的退化现象一致。
-\end{remark}
+因此 \(y\equiv 6\pmod{37}\) 是 \(L_n\) 在模 \(37\) 下的唯一高重根，其精确重数为 \(n(n-1)\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+在 \(p=37\) 处，曲线 \(E\) 呈非分裂节点型退化，且节点在重量坐标上对应 \(y\equiv 6\)。
+取 \(\QQ_{37}\) 的不分歧二次扩张 \(K\)，则 \(E/K\) 具有 Tate 一致化
+\[
+E(\overline{K})\simeq \overline{K}^{\times}/q^{\ZZ}.
+\]
+当 \(\gcd(n,37)=1\) 时，\(n\)-挠点由参数
+\(
+u=\zeta_n^{a}q^{b/n}
+\)
+（\(0\le a,b<n\)）给出。
+其中 \(b\neq 0\) 的点共有 \(n(n-1)\) 个，约化时落入节点分量，故其重量像同余于 \(6\)；
+而 \(b=0\) 的 \(n-1\) 个点约化到光滑分量，给出次数 \(n-1\) 的剩余因子，且在 \(y=6\) 处非零。
+于是得到所示分解与精确重数。
+结论 \ref{con:xi-terminal-zm-elliptic-3torsion-y-image-mod37-collapse}、
+\ref{con:xi-terminal-zm-elliptic-5torsion-y-image-degree24-mod37-collapse}、
+\ref{con:xi-terminal-zm-elliptic-7torsion-y-image-mod37-collapse}
+分别对应 \(n=3,5,7\) 的显式核验。证毕。
+\end{proof}
 

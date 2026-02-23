@@ -2939,6 +2939,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit",
+            script="exp_fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_leyang_arithmetic_audit",
             script="exp_fold_zm_elliptic_leyang_arithmetic_audit.py",
             args=[],

@@ -4,6 +4,24 @@
 定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 已将 Cauchy--Poisson 粗粒化下的相对熵尾部推进到 \(t^{-6}\) 并给出显式系数组合。
 下述结果把该六阶系数的符号与取等情形完全刻画为中心矩的代数约束，并给出两测度比较时的主导信息源层级，从而形成可离线核验的普适判别式。
 
+\begin{corollary}[相对熵二项锐渐近的极限等价式]\label{cor:xi-cauchy-poisson-kl-two-term-limit}
+在定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的条件下，记
+\[
+C_6:=\frac{3\mu_3^2}{32}-\frac{\sigma^2\mu_4}{8}+\frac{\sigma^6}{64}.
+\]
+则当 \(t\to\infty\) 时
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)=\frac{\sigma^4}{8t^4}+\frac{C_6}{t^6}+O(t^{-8}),
+\]
+并且
+\[
+\lim_{t\to\infty}t^6\!\left(D_{\mathrm{KL}}(h_t\mid g_t)-\frac{\sigma^4}{8t^4}\right)=C_6.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的展开式直接得到。
+\end{proof}
+
 \begin{proposition}[六阶信息签名的普适负号与二点刚性]\label{prop:xi-cauchy-poisson-sixth-signature-negativity-rigidity}
 沿用定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的设定，并记标准化偏度与峰度
 \[
@@ -29,9 +47,10 @@ C_6
 严格为负并满足
 \begin{equation}\label{eq:xi-cauchy-poisson-sixth-coefficient-negative}
 \boxed{\;
-C_6\le -\frac{7\sigma^6}{64}<0.\;}
+C_6\le -\frac{\mu_3^2}{32}-\frac{7\sigma^6}{64}<0.\;}
 \end{equation}
-并且若 \(\mathcal J=-7\)（达到上界），则必有 \(\gamma_1=0\)、\(\beta_2=1\)，并且在平移回均值 \(\bar\gamma\) 后
+特别地，\(C_6\le -\frac{7\sigma^6}{64}\)。
+并且该后者上界取等当且仅当 \(\tilde\nu\) 为方差固定类中的对称二点分布，即在平移回均值 \(\bar\gamma\) 后
 \begin{equation}\label{eq:xi-cauchy-poisson-sixth-rigidity-two-point}
 \boxed{\;
 \tilde\nu=\frac12\delta_{\bar\gamma-a}+\frac12\delta_{\bar\gamma+a}
@@ -67,12 +86,48 @@ M:=\mathbb E
 \[
 \mathcal J\le 1-8(\gamma_1^2+1)+6\gamma_1^2=-7-2\gamma_1^2,
 \]
+两边乘以 \(\sigma^6/64\) 并代入 \(\gamma_1=\mu_3/\sigma^3\)，即
+\[
+C_6\le -\frac{\mu_3^2}{32}-\frac{7\sigma^6}{64},
+\]
 从而得到 \eqref{eq:xi-cauchy-poisson-sixth-signature-upper-bound} 与 \eqref{eq:xi-cauchy-poisson-sixth-coefficient-negative}。
 \par
-若 \(\mathcal J=-7\)，则上式链中必须处处取等，故 \(\gamma_1=0\) 且 \(\beta_2=\gamma_1^2+1=1\)。
+若 \(C_6=-\frac{7\sigma^6}{64}\)，则由 \(\mathcal J=-7\) 可知上式链中必须处处取等，故 \(\gamma_1=0\) 且 \(\beta_2=\gamma_1^2+1=1\)。
 由 \(\beta_2=1\) 得 \(\mu_4=\sigma^4\)，于是 \(\mathbb E[(X^2-\sigma^2)^2]=\mu_4-\sigma^4=0\)，从而 \(X^2=\sigma^2\) a.s.，即 \(X\in\{\pm\sigma\}\) a.s.。
 再由 \(\mathbb E[X]=0\) 得两点权重相等，故 \(X=\pm\sigma\) 等概率。
 平移回 \(\bar\gamma\) 并记 \(a:=\sigma>0\)，得到 \eqref{eq:xi-cauchy-poisson-sixth-rigidity-two-point}。证毕。
+\end{proof}
+
+\begin{corollary}[四次重整化相对熵的最终单调趋近]\label{cor:xi-cauchy-poisson-kl-renormalized-monotone-approach}
+在定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的条件下，若 \(\sigma^2>0\)，则
+\[
+t^4D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac{\sigma^4}{8}+\frac{C_6}{t^2}+O(t^{-4}),
+\qquad
+C_6<0.
+\]
+其中 \(C_6\) 如命题 \ref{prop:xi-cauchy-poisson-sixth-signature-negativity-rigidity} 所定义。
+从而存在 \(t_0>0\)，使得对一切 \(t\ge t_0\) 成立
+\[
+\frac{\dd}{\dd t}\!\Bigl(t^4D_{\mathrm{KL}}(h_t\mid g_t)\Bigr)>0,
+\qquad
+t^4D_{\mathrm{KL}}(h_t\mid g_t)<\frac{\sigma^4}{8}.
+\]
+即四次重整化相对熵从下方趋近其极限值 \(\sigma^4/8\)，并在充分大尺度上严格单调递增。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 与命题 \ref{prop:xi-cauchy-poisson-sixth-signature-negativity-rigidity} 可得
+\(
+t^4D_{\mathrm{KL}}=\sigma^4/8+C_6t^{-2}+O(t^{-4})
+\)
+且 \(C_6<0\)。
+于是
+\[
+\frac{\dd}{\dd t}\!\Bigl(t^4D_{\mathrm{KL}}\Bigr)
+=-2C_6t^{-3}+O(t^{-5}),
+\]
+右端在 \(t\) 充分大时严格为正，得到最终单调性。
+同理由 \(C_6t^{-2}+O(t^{-4})<0\) 得到从下趋近结论。证毕。
 \end{proof}
 
 \begin{proposition}[三阶光滑 \texorpdfstring{$f$}{f}-散度的六阶普适展开]\label{prop:xi-cauchy-poisson-fdiv-sixth-order-expansion}
@@ -145,6 +200,45 @@ t^6\bigl(\frac{\sigma^4}{8t^4}-D_{\mathrm{KL}}(h_t\mid g_t)\bigr)=-C_6+O(t^{-2})
 \frac{C_6}{t^6}+O(t^{-8})<0
 \)，
 代回即得 \(D_{\mathrm{KL}}(h_t\mid g_t)<\sigma^4/(8t^4)\)。证毕。
+\end{proof}
+
+\begin{corollary}[耗散--熵比值的自相似极限与二阶缺陷]\label{cor:xi-cauchy-poisson-fisher-kl-selfsimilar-defect}
+在定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的条件下，若 \(\sigma^2>0\)，则
+\[
+\mathcal I_1(h_t\mid g_t)
+=\frac{\sigma^4}{2t^5}+\frac{6C_6}{t^7}+O(t^{-9}),
+\]
+并且成立极限律
+\[
+\lim_{t\to\infty}\frac{t\,\mathcal I_1(h_t\mid g_t)}{D_{\mathrm{KL}}(h_t\mid g_t)}=4,
+\]
+\[
+\lim_{t\to\infty}t^7\!\left(
+\mathcal I_1(h_t\mid g_t)-\frac{4}{t}D_{\mathrm{KL}}(h_t\mid g_t)
+\right)=2C_6.
+\]
+\end{corollary}
+\begin{proof}
+第一式由推论 \ref{cor:xi-cauchy-poisson-fisher-sharp-asymptotics} 与
+\(
+C_6=\frac{1}{64}(\sigma^6-8\sigma^2\mu_4+6\mu_3^2)
+\)
+同一化得到。
+再与
+\(
+D_{\mathrm{KL}}=\frac{\sigma^4}{8t^4}+\frac{C_6}{t^6}+O(t^{-8})
+\)
+联立，直接计算
+\[
+\frac{t\,\mathcal I_1}{D_{\mathrm{KL}}}
+=\frac{\sigma^4/2+6C_6t^{-2}+O(t^{-4})}{\sigma^4/8+C_6t^{-2}+O(t^{-4})}\to 4,
+\]
+以及
+\[
+\mathcal I_1-\frac{4}{t}D_{\mathrm{KL}}
+=\frac{2C_6}{t^7}+O(t^{-9}),
+\]
+即得两条极限式。证毕。
 \end{proof}
 
 \begin{theorem}[两测度比较的方差差主导律：\texorpdfstring{$t^{-4}$}{t^-4} 的唯一信息源]\label{thm:xi-poisson-two-measure-variance-gap}
@@ -275,6 +369,73 @@ D_f(\tilde h_t\mid \hat h_t)
 \;+\;o(t^{-6}).
 \]
 由定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的常数计算 \(\frac{1}{\pi}\int gB^2=\frac{3}{16}\)，代回即得 \eqref{eq:xi-poisson-two-measure-third-moment-gap}。证毕。
+\end{proof}
+
+\begin{theorem}[Poisson--Cauchy 粗粒化的 \texorpdfstring{$L^2$}{L2} 锐渐近常数与 KL 标度等价]\label{thm:xi-cauchy-poisson-l2-sharp-kl-scaling}
+沿用命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form} 的设定，记
+\[
+\sigma^2:=\int_{\RR}(\gamma-\bar\gamma)^2\,\dd\tilde\nu(\gamma)\in(0,\infty).
+\]
+若三阶中心绝对矩有限，则
+\[
+\lim_{t\to\infty}\frac{t^{5/2}}{\sigma^2}\,\|h_t-g_t\|_{L^2(\RR)}
+=\sqrt{\frac{3}{16\pi}}.
+\]
+若进一步满足五阶中心绝对矩有限（即定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics} 的条件），则
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)\sim \frac{2\pi}{3}\,t\,\|h_t-g_t\|_{L^2(\RR)}^2
+\qquad(t\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form}，
+\[
+h_t-g_t=\sigma^2 r_t+\varepsilon_t,
+\qquad
+r_t(x)=\frac{1}{\pi}\frac{t\bigl(3(x-\bar\gamma)^2-t^2\bigr)}{\bigl((x-\bar\gamma)^2+t^2\bigr)^3},
+\]
+并且 \(\|\varepsilon_t\|_{L^\infty}=O(t^{-4})\)、\(\|\varepsilon_t\|_{L^1}=O(t^{-3})\)。
+由插值不等式
+\[
+\|\varepsilon_t\|_{L^2}^2\le \|\varepsilon_t\|_{L^\infty}\|\varepsilon_t\|_{L^1}=O(t^{-7})=o(t^{-5}),
+\]
+故 \(\|\varepsilon_t\|_{L^2}=o(t^{-5/2})\)。
+于是
+\[
+\|h_t-g_t\|_{L^2}
+=\sigma^2\|r_t\|_{L^2}+o(t^{-5/2}).
+\]
+对 \(\|r_t\|_{L^2}\) 作代换 \(y=(x-\bar\gamma)/t\) 得
+\[
+\|r_t\|_{L^2}^2
+=\frac{1}{\pi^2 t^5}
+\int_{\RR}\frac{(3y^2-1)^2}{(1+y^2)^6}\,\dd y
+=\frac{3}{16\pi}\,t^{-5},
+\]
+其中最后一步由 \(y=\tan\theta\) 与 Beta 积分恒等式给出。
+故
+\[
+\|r_t\|_{L^2}=\sqrt{\frac{3}{16\pi}}\,t^{-5/2},
+\]
+从而第一式成立。
+\par
+再由定理 \ref{thm:xi-cauchy-poisson-kl-sharp-asymptotics}，
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)=\frac{\sigma^4}{8t^4}+O(t^{-6}),
+\]
+而第一部分给出
+\[
+\|h_t-g_t\|_{L^2}^2
+=\sigma^4\frac{3}{16\pi}\,t^{-5}+o(t^{-5}).
+\]
+因此
+\[
+\frac{D_{\mathrm{KL}}(h_t\mid g_t)}{t\,\|h_t-g_t\|_{L^2}^2}
+\to
+\frac{1/8}{3/(16\pi)}
+=\frac{2\pi}{3},
+\]
+即得所述标度等价。证毕。
 \end{proof}
 
 \endinput

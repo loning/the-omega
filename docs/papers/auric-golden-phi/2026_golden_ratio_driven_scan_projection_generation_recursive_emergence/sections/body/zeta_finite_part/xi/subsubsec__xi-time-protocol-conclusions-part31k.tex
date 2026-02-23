@@ -10,13 +10,13 @@ E(C_m):=\{(t,t+1):t\in\ZZ/m\ZZ\}.
 I(G):=|\Ind(G)|.
 \]
 
-\begin{conclusion}[全阶迹矩的“循环子图—独立集”展开]\label{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets}
-对任意 \(q\ge 1\) 与整数 \(m\ge 1\)，成立恒等式
+\begin{conclusion}[全阶迹矩的循环子图独立集展开]\label{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets}
+对任意整数 \(q\ge 2\) 与 \(m\ge 1\)，成立
 \[
 \boxed{\;
-\Tr\!\bigl((T^{(q)})^m\bigr)=2^{-m}\sum_{S\subseteq E(C_m)} I\!\bigl(C_m[S]\bigr)^{\,q}\;}
+\Tr\!\bigl((T^{(q)})^m\bigr)
+=\frac1{2^m}\sum_{S\subseteq E(C_m)} I\!\bigl(C_m[S]\bigr)^{\,q}\; } .
 \]
-其中 \(T^{(q)}\) 沿用本段开头对 \(U_q\) 上软核 \(T^{(q)}_{u,v}\) 的定义。
 \end{conclusion}
 \begin{proof}
 按迹的路径展开，
@@ -96,45 +96,54 @@ a_n=a_{n-1}+a_{n-2}
 从而结论 \ref{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets} 与其 word 求和式严格一致。
 \end{remark}
 
-\begin{conclusion}[例外幂和的全阶组合分解：循环子图独立集矩与 \texorpdfstring{$\Omega_m$}{Omega\_m} 修正]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-cycle-sector-replacement}
-固定 \(q\ge2\)。记
+\begin{conclusion}[例外幂和的循环子图展开与对称化替换项]\label{con:xi-terminal-replica-softcore-exceptional-power-sum-cycle-sector-replacement}
+固定 \(q\ge 2\)。记
 \[
-S_m(q):=\sum_{i=0}^{q}\bigl(\lambda_i^{(q)}\bigr)^m=\Tr\!\bigl((A^{(q)})^m\bigr),\qquad m\ge1.
+S_m(q):=\sum_{i=0}^{q}\bigl(\lambda_i^{(q)}\bigr)^m,\qquad m\ge1.
 \]
-对任意 \(S\subseteq E(C_m)\)，定义
+令
 \[
-I(S):=\#\Ind\!\bigl(C_m[S]\bigr)=I\!\bigl(C_m[S]\bigr).
+M:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},\qquad
+\Omega_m(q):=\Tr\!\bigl(\mathrm{Sym}^q(M^m)\bigr).
 \]
-则对一切 \(m\ge1\) 有严格恒等式
+则对一切 \(m\ge 1\) 有
 \[
 \boxed{\;
-2^mS_m(q)=\Omega_m(q)+\sum_{\substack{S\subseteq E(C_m)\\ S\neq E(C_m)}} I(S)^{\,q}\; } ,
+2^mS_m(q)=\Omega_m(q)+\sum_{S\subsetneq E(C_m)} I\!\bigl(C_m[S]\bigr)^{\,q}\; } ,
 \]
-亦即
+等价地，
 \[
 \boxed{\;
-S_m(q)=2^{-m}\!\left(\Omega_m(q)+\sum_{S\subsetneq E(C_m)} I(S)^{\,q}\right)\; }.
+S_m(q)=\frac1{2^m}\left(\sum_{S\subsetneq E(C_m)} I\!\bigl(C_m[S]\bigr)^{\,q}+\Omega_m(q)\right)\; }.
 \]
 \end{conclusion}
 \begin{proof}
-由结论 \ref{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets}，
+设 \(\mathrm{Inv}\subset\RR^{U_q}\) 为 \(S_q\)-不变子空间，\(P\) 为到 \(\mathrm{Inv}\) 的正交投影。由于 \(T^{(q)}\) 与坐标置换作用可交换，
 \[
-2^m\Tr\!\bigl((T^{(q)})^m\bigr)=\sum_{S\subseteq E(C_m)}I(S)^q.
+S_m(q)=\Tr\!\Bigl(\bigl(T^{(q)}|_{\mathrm{Inv}}\bigr)^m\Bigr)=\Tr\!\bigl(P(T^{(q)})^m\bigr).
 \]
-另一方面，结论 \ref{con:xi-terminal-replica-softcore-trace-exceptional-difference} 给出
+把 \((T^{(q)})^m\) 按 \(T^{(q)}=\frac12(J+D^{(q)})\) 展开为 \(\varepsilon\in\{0,1\}^m\) 的和。
+若 \(\varepsilon\neq(1,\dots,1)\)，对应字词 \(W_\varepsilon\) 至少含一个 \(J\)。
+由 \(J=\mathbf 1\mathbf 1^{\mathsf T}\) 及 \(J,D^{(q)}\) 与置换作用可交换，任意含 \(J\) 的字词像空间包含于 \(\mathrm{Inv}\)，故
 \[
-\Tr\!\bigl((T^{(q)})^m\bigr)-S_m(q)=2^{-m}\bigl(I(C_m)^q-\Omega_m(q)\bigr).
+\Tr(PW_\varepsilon)=\Tr(W_\varepsilon).
 \]
-将第一式代入并移项，可得
+这些项与全迹一致，按结论
+\ref{con:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-independent-sets}
+给出
 \[
-2^mS_m(q)=\Omega_m(q)+\sum_{S\subseteq E(C_m)}I(S)^q-I(C_m)^q.
+\sum_{S\subsetneq E(C_m)}I\!\bigl(C_m[S]\bigr)^q.
 \]
-注意 \(I(C_m)=I(E(C_m))\)，即全边子图 \(S=E(C_m)\) 对应的唯一扇区，
-故上式正是
+唯一剩余项为 \(\varepsilon=(1,\dots,1)\)，即 \((D^{(q)})^m\)。
+在按位张量识别 \(\RR^{U_q}\cong(\RR^2)^{\otimes q}\) 下，
 \[
-2^mS_m(q)=\Omega_m(q)+\sum_{S\subsetneq E(C_m)}I(S)^q.
+D^{(q)}=M^{\otimes q},\qquad (D^{(q)})^m=(M^m)^{\otimes q}.
 \]
-两边同除 \(2^m\) 即得第二式。证毕。
+投影 \(P\) 即对称化算子，其像同构于 \(\mathrm{Sym}^q(\RR^2)\)，从而
+\[
+\Tr\!\bigl(P(D^{(q)})^m\bigr)=\Tr\!\bigl(\mathrm{Sym}^q(M^m)\bigr)=\Omega_m(q).
+\]
+合并全部项即得结论。
 \end{proof}
 
 \begin{conclusion}[边伯努利形变下的随机环图独立集矩表示]\label{con:xi-terminal-replica-softcore-trace-moment-bernoulli-deformation-random-cycle}

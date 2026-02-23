@@ -1,117 +1,103 @@
-\begin{conclusion}[例外幂和的三项主导展开与显式余项界]\label{con:xi-terminal-replica-softcore-exceptional-moments-exponential-hierarchy}
-取整数 \(m\ge 3\)，并定义
-\[
-A_{m,0}:=2^{m},\qquad
-A_{m,1}:=3\cdot 2^{m-2},\qquad
-A_{m,2}:=5\cdot 2^{m-3}.
-\]
-则对一切 \(q\ge 2\) 存在严格分解
+\begin{conclusion}[定边数约束下循环子图独立集极值与例外幂和主导渐近]\label{con:xi-terminal-replica-softcore-exceptional-moments-exponential-hierarchy}
+令 \(m\ge3\)。对每个 \(0\le k\le m\)，有
 \[
 \boxed{\;
-S_m(q)=2^{-m}\Big(A_{m,0}^{q}+mA_{m,1}^{q}+mA_{m,2}^{q}+\Omega_m(q)+R_m(q)\Big)\;}
+\max_{\substack{S\subseteq E(C_m)\\ |S|=k}} I\!\bigl(C_m[S]\bigr)=
+\begin{cases}
+2^m, & k=0,\\[3pt]
+F_{k+3}\,2^{m-k-1}, & 1\le k\le m-1,\\[3pt]
+L_m, & k=m.
+\end{cases}
+\;}
 \]
-其中余项 \(R_m(q)\) 满足显式界
+当 \(1\le k\le m-1\) 时，取到最大值当且仅当 \(S\) 的 \(k\) 条边在 \(C_m\) 上构成单一连续路径（其余 \(m-k-1\) 个顶点孤立）。
+
+并且，当 \(q\to\infty\) 时，
 \[
-0\le R_m(q)\le (2^{m}-2m-2)\,\bigl(9\cdot 2^{m-4}\bigr)^{q}.
+\boxed{\;
+S_m(q)=2^{m(q-1)}\left(1+m\left(\frac34\right)^q+O_m\!\left(\left(\frac58\right)^q\right)\right)\; } .
 \]
-从而得到相对误差展开
-\[
-\frac{S_m(q)}{2^{m(q-1)}}=
-1+m\left(\frac34\right)^{q}
-+m\left(\frac58\right)^{q}
-+O_m\!\left(\left(\frac{9}{16}\right)^{q}\right),
-\qquad (q\to\infty),
-\]
-其中 \(O_m\) 的隐常数仅依赖于 \(m\)。
 \end{conclusion}
 \begin{proof}
-由结论 \ref{con:xi-terminal-replica-softcore-exceptional-power-sum-word-trace-sympower}，
-\[
-2^mS_m(q)=\Omega_m(q)+\sum_{\substack{w\in\{J,K\}^m\\ w\neq K^m}}\bigl(\Tr M(w)\bigr)^q,
-\qquad M(w)=A_1\cdots A_m.
-\]
-将求和按字母 \(K\) 的出现次数 \(r=\#\{t:A_t=K\}\) 分层。
-\par
-\textbf{(i) \(r=0\).}
-仅有字词 \(w=J^m\)，且 \(\Tr(J^m)=2^m=A_{m,0}\)。
-\par
-\textbf{(ii) \(r=1\).}
-恰有 \(m\) 个字词，为 \(KJ^{m-1}\) 的循环移位；由结论 \ref{con:xi-terminal-replica-softcore-fixed-zero-count-trace-extremal}（取 \(r=1\)）知该层词迹恒为
-\(\Tr M(w)=3\cdot 2^{m-2}=A_{m,1}\)。
-\par
-\textbf{(iii) \(r=2\).}
-由注 \ref{rem:xi-terminal-replica-softcore-trace-moment-cycle-subgraph-word-identification}，
-\(\Tr M(w)\) 等于相应循环子图 \(C_m[S]\) 的独立集计数 \(I(C_m[S])\)。
-当 \(S\) 为两条相邻边时 \(I(C_m[S])=5\cdot 2^{m-3}=A_{m,2}\)，且这类 \(S\) 恰有 \(m\) 个；
-因此相邻型字词总贡献为 \(mA_{m,2}^{q}\)。
-\par
-\textbf{(iv) 余项界。}
-对其余全部字词（仍满足 \(w\neq K^m\) 且不属于 (i)--(iii)），若 \(r\ge 3\)，由
+当 \(k=0\) 时 \(S=\varnothing\)，显然 \(I(C_m[S])=2^m\)。
+当 \(k=m\) 时 \(S=E(C_m)\) 唯一，故 \(I(C_m[S])=I(C_m)=L_m\)。
+
+下设 \(1\le k\le m-1\)。
+此时 \(C_m[S]\) 无环，且每个连通分量为路径或孤立点。
+设路径分量条数为 \(r\ge1\)，其边数为 \(\ell_1,\dots,\ell_r\ge1\)，满足
 \(
-\Tr M(w)\le F_{r+3}\,2^{m-r-1}\le 2^{r}\,2^{m-r-1}=2^{m-1}<9\cdot 2^{m-4}
-\)
-得 \(\Tr M(w)<9\cdot 2^{m-4}\)；
-而 \(r=2\) 的非相邻型给出 \(I(C_m[S])=9\cdot 2^{m-4}\)，故亦有 \(\Tr M(w)\le 9\cdot 2^{m-4}\)。
-令 \(R_m(q)\) 为上述其余字词之 \((\Tr M(w))^q\) 的总和。
-该类字词个数为 \((2^m-1)-(1+m+m)=2^m-2m-2\)，因此
+\sum_{i=1}^{r}\ell_i=k
+\)；
+孤立点数为 \(m-(k+r)\)。
+由路径独立集计数 \(I(P_{\ell+1})=F_{\ell+3}\) 得
 \[
-0\le R_m(q)\le (2^{m}-2m-2)\,\bigl(9\cdot 2^{m-4}\bigr)^{q}.
+I\!\bigl(C_m[S]\bigr)=2^{m-(k+r)}\prod_{i=1}^{r}F_{\ell_i+3}.
 \]
-\par
-合并各层贡献并除以 \(2^m\) 即得严格分解。
-最后，将分解式两侧除以 \(2^{m(q-1)}=2^{-m}A_{m,0}^q\) 得
+对 \(a,b\ge1\)，定义
 \[
-\frac{S_m(q)}{2^{m(q-1)}}=
-1+m\left(\frac{A_{m,1}}{A_{m,0}}\right)^q
-+m\left(\frac{A_{m,2}}{A_{m,0}}\right)^q
-+\frac{\Omega_m(q)}{2^{mq}}
-+\frac{R_m(q)}{2^{mq}}.
+g_b:=2F_{a+b+3}-F_{a+3}F_{b+3}.
 \]
-其中 \(\frac{A_{m,1}}{A_{m,0}}=\frac34\) 且 \(\frac{A_{m,2}}{A_{m,0}}=\frac58\)。
-另一方面，\(\Omega_m(q)\) 的闭式（结论 \ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified}）给出
-\(|\Omega_m(q)|\le C_m\,\varphi^{mq}\)（常数 \(C_m>0\) 仅依赖于 \(m\)），从而
+由 Fibonacci 递推可得 \(g_{b+1}=g_b+g_{b-1}\)，且
+\(
+g_1=F_a\ge0,\ g_2=F_{a+1}\ge0
+\)，故 \(g_b\ge0\)，即
 \[
-\frac{|\Omega_m(q)|}{2^{mq}}\le C_m\left(\frac{\varphi}{2}\right)^{mq}
-\le C_m\left(\frac{9}{16}\right)^q
-\qquad(m\ge 3).
+F_{a+3}F_{b+3}\le 2F_{a+b+3}.
 \]
-结合 \(\frac{R_m(q)}{2^{mq}}\le (2^m-2m-2)\left(\frac{9}{16}\right)^q\)，即得所示相对误差展开。证毕。
+迭代合并 \(\ell_1,\dots,\ell_r\) 得
+\[
+\prod_{i=1}^{r}F_{\ell_i+3}\le 2^{r-1}F_{k+3}.
+\]
+代回即
+\[
+I\!\bigl(C_m[S]\bigr)\le 2^{m-(k+r)}\cdot 2^{r-1}F_{k+3}
+=F_{k+3}\,2^{m-k-1}.
+\]
+当且仅当 \(r=1\) 且 \(\ell_1=k\) 取等，即 \(S\) 为连续 \(k\) 边路径。
+
+再证渐近式。由结论
+\ref{con:xi-terminal-replica-softcore-exceptional-power-sum-cycle-sector-replacement}，
+\[
+2^mS_m(q)=\Omega_m(q)+\sum_{S\subsetneq E(C_m)}I\!\bigl(C_m[S]\bigr)^q.
+\]
+其中 \(S=\varnothing\) 给出主项 \((2^m)^q\)；
+\(|S|=1\) 给出次主项 \(m(3\cdot 2^{m-2})^q\)。
+当 \(|S|=k\ge2\) 时，上述极值公式给出
+\[
+I\!\bigl(C_m[S]\bigr)\le F_{k+3}\,2^{m-k-1}\le 5\cdot 2^{m-3},
+\]
+其中第二个不等式由 \(F_{k+3}\le 5\cdot 2^{k-2}\)（\(k\ge2\)，可由 \(F_{n+1}\le2F_n\) 归纳）得到。
+故所有 \(k\ge2\) 的贡献统一为 \(O_m((5\cdot 2^{m-3})^q)\)。
+同时 \(|\Omega_m(q)|\ll_m \varphi^{mq}\)，且 \(m\ge3\) 时
+\(
+(\varphi/2)^m<(5/8)
+\)，故 \(\Omega_m(q)\) 亦可并入同一余项尺度。
+两边同除 \(2^m\) 即得
+\[
+S_m(q)=2^{m(q-1)}\left(1+m\left(\frac34\right)^q+O_m\!\left(\left(\frac58\right)^q\right)\right).
+\]
 \end{proof}
 
-\begin{conclusion}[全迹矩的三项主导展开与显式余项界]\label{con:xi-terminal-replica-softcore-trace-moments-exponential-hierarchy}
-保持结论 \ref{con:xi-terminal-replica-softcore-exceptional-moments-exponential-hierarchy} 的记号（取 \(m\ge 3\) 并沿用 \(A_{m,0},A_{m,1},A_{m,2}\) 与余项 \(R_m(q)\)）。
-则对一切 \(q\ge 2\) 成立严格分解
+\begin{conclusion}[全迹矩的同阶主导渐近]\label{con:xi-terminal-replica-softcore-trace-moments-exponential-hierarchy}
+固定 \(m\ge3\)。当 \(q\to\infty\) 时，
 \[
-\boxed{\;
 \Tr\!\bigl((T^{(q)})^m\bigr)
-=2^{-m}\Big(A_{m,0}^{q}+mA_{m,1}^{q}+mA_{m,2}^{q}+L_m^{q}+R_m(q)\Big)\;}
+=2^{m(q-1)}\left(1+m\left(\frac34\right)^q+O_m\!\left(\left(\frac58\right)^q\right)\right).
 \]
-并且余项界
-\[
-0\le R_m(q)\le (2^{m}-2m-2)\,\bigl(9\cdot 2^{m-4}\bigr)^{q}
-\]
-仍然成立。
-因此
-\[
-\frac{\Tr((T^{(q)})^m)}{2^{m(q-1)}}
-=1+m\left(\frac34\right)^{q}
-+m\left(\frac58\right)^{q}
-+O_m\!\left(\left(\frac{9}{16}\right)^{q}\right),
-\qquad (q\to\infty),
-\]
-其中 \(O_m\) 的隐常数仅依赖于 \(m\)。
 \end{conclusion}
 \begin{proof}[证明要点]
 由结论 \ref{con:xi-terminal-replica-softcore-trace-exceptional-difference}，
-\(
-\Tr((T^{(q)})^m)=S_m(q)+2^{-m}(L_m^q-\Omega_m(q))
-\)；
-将结论 \ref{con:xi-terminal-replica-softcore-exceptional-moments-exponential-hierarchy} 的
-\(
-S_m(q)=2^{-m}\bigl(A_{m,0}^{q}+mA_{m,1}^{q}+mA_{m,2}^{q}+\Omega_m(q)+R_m(q)\bigr)
-\)
-代入即可抵消 \(\Omega_m(q)\)，得到所示分解与同一余项界。相对误差展开由两侧同除以 \(2^{m(q-1)}\)，再用 \(A_{m,1}/A_{m,0}=3/4\)、\(A_{m,2}/A_{m,0}=5/8\) 以及 \((L_m/2^m)^q\le (\varphi/2)^{mq}\le (9/16)^q\)（\(m\ge 3\)）并结合 \(R_m(q)\) 的界给出。证毕。
+\[
+\Tr\!\bigl((T^{(q)})^m\bigr)
+=S_m(q)+2^{-m}\bigl(L_m^q-\Omega_m(q)\bigr).
+\]
+又 \(L_m\ll \varphi^m\)、\(|\Omega_m(q)|\ll_m\varphi^{mq}\)，故差项满足
+\[
+2^{-m}\bigl|L_m^q-\Omega_m(q)\bigr|
+=2^{m(q-1)}O_m\!\left(\left(\frac{\varphi}{2}\right)^{mq}\right)
+=2^{m(q-1)}O_m\!\left(\left(\frac58\right)^q\right),
+\]
+并入上一结论的余项即可。
 \end{proof}
 
 \endinput
-

@@ -98,7 +98,7 @@ p_{n+1}=f(p_n)=\frac{4-2p_n}{4-p_n}
 两边乘以 \(\tfrac12\) 即得所示上界。证毕。
 \end{proof}
 
-\begin{theorem}[严格 sofic 与无限 Markov 阶：可计算的不可截断记忆]\label{thm:fold-gauge-anomaly-strictly-sofic-infinite-memory}
+\begin{theorem}[有限型支撑下的无限 Markov 阶：可计算的不可截断记忆]\label{thm:fold-gauge-anomaly-strictly-sofic-infinite-memory}
 在定理 \ref{thm:fold-gauge-anomaly-zero-run-fibonacci} 的设定下，对任意整数 \(n\ge 2\) 成立
 \[
 \PP\!\bigl(g_{t+1}=1\mid g_{t-n}\cdots g_t=10^n\bigr)=\frac{F_{n+1}}{2F_{n+3}}.
@@ -141,72 +141,157 @@ F_{n+1}F_{n+5}-F_{n+3}^2 = (-1)^n,
 最后，若 \((g_t)\) 为某个有限阶 \(k\) 的 Markov 链，则任意两段历史只要共享长度 \(k\) 的末尾块，其下一位条件分布必相同。
 取任意 \(n\ge k\)，则 \(0^n\) 与 \(10^n\) 共享后缀 \(0^k\)，但其下一位取值 \(1\) 的条件概率差值严格非零，矛盾。
 因此不存在有限 \(k\) 使 \((g_t)\) 成为 \(k\) 阶 Markov。
-由于 \((g_t)\) 为有限状态链在边标号下的输出过程，其支撑为 sofic shift（见定理 \ref{thm:fold-gauge-anomaly-g-support-sofic}），上述结论可视为“严格 sofic”测度口径下的无限记忆深度证书。证毕。
+由于 \((g_t)\) 为有限状态链在边标号下的输出过程，其支撑由定理 \ref{thm:fold-gauge-anomaly-g-support-sofic} 给出为有限型子移位，上述结论可视为“有限型支撑 + 无限记忆核”的可计算证书。证毕。
 \end{proof}
 
-\begin{theorem}[失配指示过程的支撑语法：sofic 分解与双谱熵常数]\label{thm:fold-gauge-anomaly-g-support-sofic}
-令 \(\Sigma_g\subset\{0,1\}^{\ZZ}\) 为所有可由隐藏态图 \(V=\{a,b,c,d\}\) 的双边路径读取的标号序列集合：对每条允许边 \((i\to j)\) 赋标号 \(g(i,j)\in\{0,1\}\)（式 \eqref{eq:fold-gauge-anomaly-bernoulli-p-edge-potential}），并取其全体双边标号路径的像。
-则：
-\begin{enumerate}
-  \item \(\Sigma_g\) 为 sofic shift。
-  \item 其 follower-set（子集构造）右可解呈现恰有 \(10\) 个可达状态（可达的非空子集）：
-  \[
-  \{a,b,c,d\},\ \{a,b,c\},\ \{a,b,d\},\ \{a,b\},\ \{a,c\},\ \{a,d\},\ \{b,c\},\ \{a\},\ \{b\},\ \{c\}.
-  \]
-  \item 该右可解呈现的邻接矩阵 \(\mathbf A\) 的特征多项式因式分解为
-  \[
-  \chi_{\mathbf A}(\lambda)=\lambda^4(\lambda-1)(\lambda^2-\lambda-1)(\lambda^3-2),
-  \]
-  从而
-  \[
-  h_{\mathrm{top}}(\Sigma_g)=\log\varphi.
-  \]
-  \item \(\Sigma_g\) 含有两个非共轭的本质不可约成分：一不可约成分的 Perron 根为 \(\varphi\)，另一不可约成分的 Perron 根为 \(2^{1/3}\)；并且存在一个周期成分对应特征值 \(1\)。
-\end{enumerate}
+\begin{theorem}[规范异常场支撑的有限型刻画与拓扑不变量]\label{thm:fold-gauge-anomaly-g-support-sofic}
+设 \((X_t,Y_t)_{t\in\ZZ}\) 为定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws} 在 \(p=\tfrac12\) 下的四状态联合过程，并记
+\[
+g_t:=\mathbf 1_{\{X_t\neq Y_t\}}\in\{0,1\}.
+\]
+在边势定义 \eqref{eq:fold-gauge-anomaly-bernoulli-p-edge-potential} 的标记图口径下，\(g_t=1\) 恰对应三条边
+\(
+a\to b,\ b\to c,\ c\to a
+\)，其余可达边均标记为 \(0\)。
+
+定义
+\[
+\Sigma_g:=\Bigl\{\mathbf g\in\{0,1\}^{\ZZ}:\ 
+\text{任意长度 \(4\) 子块均不等于 }0010\text{ 或 }0100\Bigr\}.
+\]
+则 \(g\) 的拓扑支撑满足
+\[
+\operatorname{supp}(g)=\Sigma_g.
+\]
+并且
+\[
+h_{\mathrm{top}}(\Sigma_g)=\log\lambda,
+\quad
+\lambda>1\ \text{为}\ x^5-x^4-x^3-x-1=0\ \text{的 Perron 实根},
+\]
+其 Artin--Mazur \(\zeta\) 函数为
+\[
+\zeta_{\Sigma_g}(z)=\frac{1}{\det(I-zA)}
+=\frac{1}{(1-z)(1-z-z^2-z^4-z^5)},
+\]
+其中 \(A\) 为以 \(\{0,1\}^3\) 为顶点、由允许长度 \(4\) 块诱导的三步 de Bruijn 呈示邻接矩阵。
 \end{theorem}
 \begin{proof}
-第 (1) 条为标准事实：任一有限标号有向图的双边标号路径集合为 sofic shift（参见 \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}）。
-\par
-对第 (2) 条，对该四顶点标号图做子集构造：以“给定过去标号后当前可能顶点集”为状态，并对符号 \(x\in\{0,1\}\) 定义确定化转移
+\textbf{必要性。}
+由边标记结构，\(1\) 仅可出现在三条三环边上；
+并且从 \(b\) 的唯一出边为 \(b\to c\)（标记 \(1\)），从 \(d\) 的唯一出边为 \(d\to a\)（标记 \(0\)）。
+对长度 \(4\) 局部块做穷尽可达性分析可得：模式 \(0010\) 与 \(0100\) 均与上述局部转移约束矛盾，故不可实现。
+于是 \(\operatorname{supp}(g)\subseteq\Sigma_g\)。
+
+\textbf{充分性。}
+对四状态标记图施行标准确定化（子集构造）并去除瞬态状态，得到一个 \(8\) 状态再返呈示；
+该呈示与长度 \(3\) 二元块集合 \(\{0,1\}^3\) 一一对应，且允许长度 \(4\) 块恰为
 \[
-\delta(Q,x)=\bigcup_{v\in Q}\mathrm{Out}_x(v),
+\{0,1\}^4\setminus\{0010,0100\}.
 \]
-其中 \(\mathrm{Out}_x(v)\) 为从 \(v\) 出发、标号为 \(x\) 的边的终点集合。
-从初态 \(Q_0=\{a,b,c,d\}\) 出发直接枚举可达的非空子集，即得到所列 \(10\) 个状态；并且该确定化自动机对每个状态与每个符号至多一条出边，故为右可解呈现。
-\par
-对第 (3) 与第 (4) 条，把上述 \(10\) 状态自动机按强连通分量分块：可验证存在两个 \(4\) 状态强连通块，其邻接矩阵分别为
+因此任意不含禁块 \(0010,0100\) 的双边序列都可在该确定型呈示上实现。
+由确定化前后语言等价性，原四状态标记图亦可实现该序列，故
+\(\Sigma_g\subseteq\operatorname{supp}(g)\)。
+综上 \(\operatorname{supp}(g)=\Sigma_g\)。
+
+\textbf{熵与 \(\zeta\) 函数。}
+由三步 de Bruijn 呈示邻接矩阵 \(A\) 的特征多项式分解
 \[
-B_1=
-\begin{pmatrix}
-0&1&0&1\\
-0&0&1&0\\
-1&1&0&0\\
-0&1&0&1
-\end{pmatrix},
-\qquad
-\chi_{B_1}(\lambda)=\lambda^2(\lambda^2-\lambda-1),
+\chi_A(x)=x^2(x-1)\bigl(x^5-x^4-x^3-x-1\bigr),
 \]
-\[
-B_2=
-\begin{pmatrix}
-0&1&0&0\\
-0&0&1&0\\
-1&0&0&1\\
-0&1&0&0
-\end{pmatrix},
-\qquad
-\chi_{B_2}(\lambda)=\lambda(\lambda^3-2),
-\]
-从而两者的 Perron 根分别为 \(\varphi\) 与 \(2^{1/3}\)。
-其余强连通块要么为瞬态（仅贡献零特征值），要么为单点周期块（贡献特征值 \(1\)），因此整体邻接矩阵 \(\mathbf A\) 的特征多项式为上述因子的乘积，即
+其 Perron 根即上述 \(\lambda\)，故
 \(
-\chi_{\mathbf A}(\lambda)=\lambda^4(\lambda-1)(\lambda^2-\lambda-1)(\lambda^3-2)
+h_{\mathrm{top}}(\Sigma_g)=\log\lambda
 \)。
-sofic shift 的拓扑熵等于任一右可解呈现邻接矩阵的 Perron 根对数，故
+对 SFT 有标准公式
 \(
-h_{\mathrm{top}}(\Sigma_g)=\log\varphi
+\zeta_{\Sigma_g}(z)=1/\det(I-zA)
+\)，直接计算得
+\[
+\det(I-zA)=(1-z)(1-z-z^2-z^4-z^5).
+\]
+命题成立。
+\end{proof}
+
+\begin{theorem}[再生分解与周期内异常数的显式母函数]\label{thm:fold-gauge-anomaly-regeneration-pgf}
+在同一四状态链中，状态 \(d\) 满足 \(d\to a\) 为确定转移，且进入 \(d\) 的唯一方式为 \(a\to d\)（该边标记 \(0\)）。
+令 \((\tau_k)_{k\ge0}\) 为 \(d\) 的相继到达时刻，并定义块
+\[
+B_k:=(g_{\tau_k},g_{\tau_k+1},\dots,g_{\tau_{k+1}-1}).
+\]
+则 \((B_k)_{k\ge0}\) 构成独立同分布再生块。
+记
+\[
+L:=\tau_{k+1}-\tau_k,\qquad
+S:=\sum_{t=\tau_k}^{\tau_{k+1}-1}g_t.
+\]
+则二元概率母函数为
+\[
+\EE[u^S z^L]
+=\frac{u z^{4}-2 z^{2}}{u^{3}z^{3}-2u z^{3}+4u z^{2}+4z-8},
+\qquad (|z|\ \text{充分小}).
+\]
+特别地，
+\[
+\EE[u^S]=\frac{u-2}{u^3+2u-4},
+\]
+并且
+\[
+\PP(S=1)=\PP(S=2)=0,
+\]
+且对 \(k\ge3\) 存在整数序列 \((a_k)\) 使
+\[
+\PP(S=k)=\frac{a_k}{2^k},\qquad
+a_3=a_4=a_5=1,\quad
+a_k=a_{k-1}+2a_{k-3}\ (k\ge6).
+\]
+\end{theorem}
+\begin{proof}
+\textbf{再生性。}
+由 \(d\to a\) 的确定性与 \(a\to d\) 的唯一入射结构，\(d\) 为再生状态；
+Markov 性立即给出 \((B_k)\) 独立同分布。
+
+\textbf{母函数。}
+从 \(d\) 出发第一步必为 \(d\to a\)，贡献一因子 \(z\)（长度加 \(1\)，异常计数加 \(0\)）。
+令 \(F_s(u,z)\) 表示从 \(s\in\{a,b,c\}\) 出发直到首次到达 \(d\)（含吸收步）的 \(\EE[u^S z^L]\)。
+由边标记与转移概率，得到线性系统
+\[
+\begin{aligned}
+F_a&=\tfrac14 z+\tfrac12 z F_a+\tfrac14 z\,u\,F_b,\\
+F_b&=z\,u\,F_c,\\
+F_c&=\tfrac12 z\,u\,F_a+\tfrac12 z\,F_b.
+\end{aligned}
+\]
+解得
+\[
+F_a(u,z)=\frac{u z^3-2z}{u^3 z^3-2u z^3+4u z^2+4z-8}.
+\]
+故
+\[
+\EE[u^S z^L]=zF_a(u,z)
+=\frac{u z^{4}-2 z^{2}}{u^{3}z^{3}-2u z^{3}+4u z^{2}+4z-8}.
+\]
+取 \(z=1\) 得 \(\EE[u^S]=(u-2)/(u^3+2u-4)\)。
+
+\textbf{系数递推。}
+写
+\(
+\EE[u^S]=\sum_{k\ge0}p_k u^k
 \)。
-两条本质不可约成分与周期成分亦由强连通分量分解直接读出。证毕。
+由
+\[
+(u^3+2u-4)\sum_{k\ge0}p_k u^k=u-2
+\]
+比较系数可得
+\[
+p_0=\tfrac12,\qquad p_1=p_2=0,\qquad
+p_k=\tfrac12 p_{k-1}+\tfrac14 p_{k-3}\ (k\ge3).
+\]
+令 \(p_k=a_k/2^k\)（\(k\ge3\)），即得
+\[
+a_3=a_4=a_5=1,\qquad a_k=a_{k-1}+2a_{k-3}\ (k\ge6).
+\]
+命题成立。
 \end{proof}
 
 \begin{proposition}[柱事件 \(1^n\) 的三周期精确律]\label{prop:fold-gauge-anomaly-one-block-three-period-law}
