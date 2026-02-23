@@ -2,7 +2,7 @@
 本节此前的“均匀基线”对应 IID Bernoulli\((1/2)\) 输入，其逐位失配指示可由 Berstel 的 \(4\) 状态不歧义 Zeckendorf 归一化换能器实现，并据此得到密度、CLT、压力函数与端点大偏差指数（定理 \ref{thm:fold-gauge-anomaly-density}--命题 \ref{prop:fold-gauge-anomaly-ldp}）。
 下面给出一般 IID Bernoulli\((p)\)（\(p\in(0,1)\)）基线下的完全显式推广：失配密度、方差率、压力函数与端点指数均可写为有理/代数闭式；并且转移谱在 \(p=\tfrac12\) 处出现唯一 Jordan 共振，解释了均匀基线相关衰减中的 \(k2^{-k}\) 修正项（定理 \ref{thm:fold-gauge-anomaly-jordan-fingerprint} 的一般化）。
 
-\begin{theorem}[Berstel--Zeckendorf 失配加性泛函：密度、中心极限定理与代数压力函数]\label{thm:fold-gauge-anomaly-bernoulli-p-laws}
+\begin{theorem}[Berstel--Zeckendorf 失配加性泛函：\(p\)-变形压力与一、二阶极限矩闭式]\label{thm:fold-gauge-anomaly-bernoulli-p-laws}
 取 \(p\in(0,1)\) 并记 \(q:=1-p\)。
 在状态空间 \(V=\{a,b,c,d\}\) 上考虑平稳马尔可夫链 \((S_n)_{n\ge 0}\)，其转移矩阵为
 \begin{equation}\label{eq:fold-gauge-anomaly-bernoulli-p-transition}
@@ -283,26 +283,46 @@ G\"artner--Ellis 定理适用，从而得到大偏差原理与 Legendre--Fenchel
 端点 \(I_p(0)\) 由 \(u=e^\theta\to 0^+\) 的退化给出：此时仅保留匹配子图，Perron 根满足二次方程 \(\lambda^2-q\lambda-pq=0\)，取正根即得到所示闭式。证毕。
 \end{proof}
 
-\begin{proposition}[失配密度的全局单峰性与过半阈值]\label{prop:fold-gauge-anomaly-bernoulli-p-density-unimodal-threshold}
-令 \(g_\ast(p)=\frac{p^2(3-2p)}{1+p^3}\) 为定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws} 的失配密度。
-则 \(g_\ast\) 在 \((0,1)\) 上严格单峰：存在唯一 \(p_\star\in(0,1)\) 使 \(g_\ast\) 在 \((0,p_\star)\) 严格递增、在 \((p_\star,1)\) 严格递减；
-并且 \(p_\star\) 由不可约三次方程
+\begin{proposition}[仅基于折叠读出位的 Bayes 推断相变与代数阈值]\label{prop:fold-gauge-anomaly-bernoulli-p-bayes-phase-transition}
+在命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-bitpair-law} 的单点联合律下，仅观测 \(Y_0\) 来估计 \(X_0\)。
+设 \(p_{\mathrm c}\in(0,1)\) 为四次方程
 \[
-\boxed{\;p_\star^3+2p_\star-2=0\;}
+p^4-3p^3+3p^2+p-1=0
 \]
-唯一确定。
-此外存在精确阈值
+在 \((0,1)\) 内的唯一实根。则 Bayes 最优判决满足
 \[
-\boxed{\;g_\ast(p)>\frac12\ \Longleftrightarrow\ p\in\Bigl(\frac{1+\sqrt{21}}{10},\,1\Bigr).\;}
+\widehat X^\star(y)
+=\arg\max_{x\in\{0,1\}}\PP(X_0=x\mid Y_0=y)
+=
+\begin{cases}
+y,& 0<p\le p_{\mathrm c},\\
+1,& p_{\mathrm c}\le p<1.
+\end{cases}
 \]
+其最小错误率 \(R(p):=\PP(\widehat X^\star(Y_0)\neq X_0)\) 具有分段闭式
+\[
+R(p)=
+\begin{cases}
+g_\ast(p)=\dfrac{p^2(3-2p)}{1+p^3},& 0<p\le p_{\mathrm c},\\[4pt]
+1-p,& p_{\mathrm c}\le p<1,
+\end{cases}
+\]
+并在临界点满足精确匹配 \(g_\ast(p_{\mathrm c})=1-p_{\mathrm c}\)。
 \end{proposition}
 \begin{proof}
-直接求导得
+由命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-bitpair-law}，
 \[
-g_\ast'(p)=-\frac{3p\,(p^3+2p-2)}{(p+1)^2(p^2-p+1)^2}.
+\PP(X_0=1,Y_0=1)-\PP(X_0=0,Y_0=1)
+=\frac{p\,(p^3+2p^2-3p+1)}{1+p^3}>0,
 \]
-分母在 \((0,1)\) 恒正，故单调性由 \(p^3+2p-2\) 的符号唯一决定；该三次在 \((0,1)\) 上严格递增且跨越零点，故存在唯一根 \(p_\star\) 并得到单峰性。
-解方程 \(g_\ast(p)=\tfrac12\) 等价于 \(5p^3-6p^2+1=0=(p-1)(5p^2-p-1)\)，从而在 \((0,1)\) 上仅余根 \(p=(1+\sqrt{21})/10\)，据此得到阈值刻画。证毕。
+故在分支 \(Y_0=1\) 上最优判决恒为 \(\widehat X^\star=1\)。
+在分支 \(Y_0=0\) 上，比较
+\[
+\PP(X_0=1,Y_0=0)-\PP(X_0=0,Y_0=0)
+=\frac{p^4-3p^3+3p^2+p-1}{1+p^3},
+\]
+从而阈值由上述四次式决定。该四次式在 \((0,1)\) 仅有一根（例如由 Sturm 序列可直接计数），故 \(p_{\mathrm c}\) 唯一。低偏置相对应判决 \(\widehat X^\star(Y_0)=Y_0\)，高偏置相对应常值判决 \(\widehat X^\star\equiv1\)。分别代入即可得到
+\(R(p)=\PP(X_0\neq Y_0)=g_\ast(p)\) 与 \(R(p)=\PP(X_0=0)=1-p\)；二式相等即给出匹配关系。证毕。
 \end{proof}
 
 \begin{proposition}[转移谱的完全分解与 \texorpdfstring{$p=\tfrac12$}{p=1/2} 的唯一 Jordan 共振]\label{prop:fold-gauge-anomaly-bernoulli-p-spectrum}
@@ -407,29 +427,29 @@ F(p)&=
 指数衰减率与 \(p=\tfrac12\) 的极点合并由命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-spectrum} 的谱分解及标准有理型生成函数系数抽取给出。证毕。
 \end{proof}
 
-\begin{corollary}[失配自协方差的显式奇偶分解]\label{cor:fold-gauge-anomaly-bernoulli-p-covariance-explicit-even-odd}
+\begin{corollary}[失配自协方差的显式奇偶闭式与 Jordan 退化阈值]\label{cor:fold-gauge-anomaly-bernoulli-p-covariance-explicit-even-odd}
 保持命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-covariance-recurrence} 的记号，并假设 \(p\neq\tfrac12\)。
 定义
 \[
-A(p):=\frac{p^2(p^2-3p+1)^2}{(p+1)^2(2p-1)(p^2-p+1)},
+A(p):=-\frac{p^3(p^2-3p+1)^2}{(p+1)^2(2p-1)(p^2-p+1)},
 \]
 \[
-R_{\mathrm{even}}(p):=\frac{p(1-p)\bigl(p^5-p^4-6p^3+3p^2+2p-1\bigr)}{(p+1)(2p-1)(p^2-p+1)^2},
+C_1(p):=-\frac{p(p-1)\bigl(p^5-p^4-6p^3+3p^2+2p-1\bigr)}{(p+1)(2p-1)(p^2-p+1)^2},
 \]
 \[
-R_{\mathrm{odd}}(p):=\frac{p^2(1-p)\bigl(p^5+4p^4-4p^3-5p^2+7p-2\bigr)}{(p+1)(2p-1)(p^2-p+1)^2}.
+C_0(p):=-\frac{p^2(p-1)\bigl(p^5+4p^4-4p^3-5p^2+7p-2\bigr)}{(p+1)(2p-1)(p^2-p+1)^2}.
 \]
 则对任意整数 \(m\ge 0\) 有
 \[
 \boxed{\;
-c_{2m+1}(p)
-=A(p)(-p)^{2m+1}+\bigl(p(1-p)\bigr)^m R_{\mathrm{odd}}(p)\;},
+c_{2m+1}(p)\;:=\;A(p)(-p)^{2m}+\bigl(p(1-p)\bigr)^m C_0(p),
+\;},
 \]
 并且对任意整数 \(m\ge 1\) 有
 \[
 \boxed{\;
-c_{2m}(p)
-=A(p)(-p)^{2m}+\bigl(p(1-p)\bigr)^m R_{\mathrm{even}}(p)\;}.
+c_{2m}(p)\;:=\;A(p)(-p)^{2m-1}+\bigl(p(1-p)\bigr)^m C_1(p)
+\;}.
 \]
 因此当 \(p\neq\tfrac12\) 时，失配自协方差序列为两种指数模态之线性组合：一支由 \((-p)^k\) 给出，另一支由 \(\bigl(\pm\sqrt{p(1-p)}\bigr)^k\) 的奇偶分裂给出。
 \end{corollary}
@@ -438,11 +458,11 @@ c_{2m}(p)
 对 \(\widetilde C_p(z)=\sum_{n\ge 0}c_{n+1}(p)\,z^n\) 作幂级数展开并按奇偶系数抽取即可得到所示形式。
 系数的显式闭式由 \eqref{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-B}--\eqref{eq:fold-gauge-anomaly-bernoulli-p-covariance-gf-F} 直接化简得到，其中
 \(
-A(p)=-B(p)/p
+A(p)=-p\,B(p)
 \)、\(
-R_{\mathrm{odd}}(p)=E(p)
+C_0(p)=E(p)
 \)、\(
-R_{\mathrm{even}}(p)=F(p)/(p(1-p))
+C_1(p)=F(p)/(p(1-p))
 \)。
 证毕。
 \end{proof}
@@ -519,6 +539,8 @@ I_p(1)=-\frac13\log\bigl(p^2(1-p)\bigr).\;}
 并且远场极限在 \(p\downarrow 0\) 时趋于 \(-\infty\)、在 \(p\uparrow 1\) 时趋于 \(+\infty\)，于是得到所示符号律。证毕。
 \end{proof}
 
+\input{subsubsec__fold-gauge-anomaly-bernoulli-p-leyang-branch}
+
 \begin{proposition}[输入--输出位对的平稳单点联合律（闭式表达）]\label{prop:fold-gauge-anomaly-bernoulli-p-bitpair-law}
 在 Berstel--Zeckendorf 四状态图的边标记 \((X,Y)\in\{0,1\}^2\) 解释下，
 令 \((X_0,Y_0)\) 表示平稳情形下某一典型位置的输入--输出比特对（输入为 Bernoulli\((p)\) 基线）。
@@ -531,13 +553,31 @@ I_p(1)=-\frac13\log\bigl(p^2(1-p)\bigr).\;}
 \end{align*}
 特别地，输出比特密度为
 \[
-\PP(Y_0=1)=\frac{p(p^3-p+1)}{1+p^3}.
+\PP(Y_0=1)=\frac{p(p^3-p+1)}{1+p^3},
+\qquad
+p-\PP(Y_0=1)=\frac{p^2}{1+p^3}>0.
 \]
-并且失配密度满足 \(\PP(X_0\neq Y_0)=g_\ast(p)\)。
+并且协方差闭式为
+\[
+\Cov(X_0,Y_0)
+=-\frac{p(1-p)^2(p^2+p-1)}{1+p^3}.
+\]
+记 \(p_\phi:=\frac{\sqrt5-1}{2}\)，则
+\[
+\Cov(X_0,Y_0)
+\begin{cases}
+>0,& 0<p<p_\phi,\\
+=0,& p=p_\phi,\\
+<0,& p_\phi<p<1.
+\end{cases}
+\]
+此外，失配密度满足 \(\PP(X_0\neq Y_0)=g_\ast(p)\)。
 \end{proposition}
 \begin{proof}[证明要点]
 平稳一阶边分布由 \(\pi(p)\) 与转移概率给出；除状态 \(c\to b\) 上存在两条不同标记的平行边（分别对应 \((0,0)\) 与 \((1,1)\)）外，其余允许边的标记唯一。
-对平行边按 Bernoulli\((p)\) 权重分解并逐边求和，即得所示四项闭式；对 \(Y_0=1\) 汇总得到边缘密度；再将 \((0,1)\) 与 \((1,0)\) 两项相加即得 \(\PP(X_0\neq Y_0)=g_\ast(p)\)。证毕。
+对平行边按 Bernoulli\((p)\) 权重分解并逐边求和，即得所示四项闭式；对 \(Y_0=1\) 汇总并化简得到严格收缩恒等式
+\(p-\PP(Y_0=1)=\frac{p^2}{1+p^3}\)；
+再由 \(\Cov(X_0,Y_0)=\EE[X_0Y_0]-\EE[X_0]\EE[Y_0]\) 直接化简得到协方差闭式与符号阈值；最后将 \((0,1)\) 与 \((1,0)\) 两项相加即得 \(\PP(X_0\neq Y_0)=g_\ast(p)\)。证毕。
 \end{proof}
 
 \begin{corollary}[均匀基线作为特例：\texorpdfstring{$p=\tfrac12$}{p=1/2}]\label{cor:fold-gauge-anomaly-bernoulli-p-specialize-half}
@@ -549,14 +589,9 @@ I_p(0)=\log\!\Bigl(\frac{2}{\varphi}\Bigr),\qquad I_p(1)=\log 2,
 \]
 并且命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-bitpair-law} 的联合律退化为定理 \ref{thm:fold-gauge-anomaly-density} 所列的有理表。
 \end{corollary}
-
 \input{subsubsec__fold-gauge-anomaly-bernoulli-p-primorial-godel-register}
-
 \input{subsubsec__fold-gauge-anomaly-sofic-memory}
-
 \begin{remark}[审计脚本]\label{rem:fold-gauge-anomaly-bernoulli-p-audit-script}
-定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws}--推论 \ref{cor:fold-gauge-anomaly-bernoulli-p-specialize-half} 中出现的闭式表达式（包括三阶密度累积量、协方差生成函数、压力四次方程以及 GC 远场常数的临界点核验）可由脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_bernoulli\_p\_closed\_form.py} 进行一致性核验。
+定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws}--推论 \ref{cor:fold-gauge-anomaly-bernoulli-p-specialize-half} 中出现的闭式表达式（包括三阶密度累积量、协方差生成函数、压力四次方程以及 Lee--Yang 判别式阈值核验）可由脚本 \texttt{scripts/exp\_fold\_gauge\_anomaly\_bernoulli\_p\_closed\_form.py} 进行一致性核验。
 \end{remark}
-
 \endinput
-
