@@ -266,8 +266,9 @@ def _write_table_tex(rows: Sequence[MatrixAuditRow], out_path: Path) -> None:
     lines.append("id & $\\det A$ & $\\Delta_1(A)$ & $\\Delta_2(A)$ & $\\sigma_1$ (num.) & $\\sigma_2$ (num.)\\\\")
     lines.append("\\midrule")
     for r in rows:
+        name_tex = f"${r.name}$"
         lines.append(
-            f"{r.name} & ${r.det}$ & ${r.delta1}$ & ${r.delta2}$ & "
+            f"{name_tex} & ${r.det}$ & ${r.delta1}$ & ${r.delta2}$ & "
             f"{r.sigma1_numeric:.9f} & {r.sigma2_numeric:.9f}\\\\"
         )
     lines.append("\\bottomrule")

@@ -273,6 +273,13 @@ def _set_to_tex(s: Set[int]) -> str:
     return r"\{" + ",".join(str(v) for v in sorted(s)) + r"\}"
 
 
+def _symbol_to_tex(symbol: object) -> str:
+    s = str(symbol)
+    if "_" in s:
+        return f"${s}$"
+    return s
+
+
 def _write_eq_tex(
     *,
     L_f1: int,
@@ -325,8 +332,9 @@ def _write_table_hom_completion(rows: Sequence[Dict[str, object]], out_path: Pat
     )
     lines.append(r"\midrule")
     for row in rows:
+        name_tex = _symbol_to_tex(row["name"])
         lines.append(
-            f"{row['name']} & {row['cdim_G']} & {row['cdim_im']} & {row['loss']} & {row['min_cost']} & "
+            f"{name_tex} & {row['cdim_G']} & {row['cdim_im']} & {row['loss']} & {row['min_cost']} & "
             f"${row['supp_K_tor_tex']}$ & ${row['supp_R_tor_tex']}$ & {row['injective_sample']}\\\\"
         )
     lines.append(r"\bottomrule")
@@ -353,8 +361,9 @@ def _write_table_discrete(rows: Sequence[Dict[str, object]], out_path: Path) -> 
     lines.append(r"group & $r$ & torsion part & $p$ & criterion RHS & computed $\mathcal D(G)_{(p)}\neq 0$\\")
     lines.append(r"\midrule")
     for row in rows:
+        group_tex = _symbol_to_tex(row["group"])
         lines.append(
-            f"{row['group']} & {row['rank']} & ${row['torsion_tex']}$ & {row['p']} & {int(row['criterion_rhs'])} & {int(row['computed_nontrivial'])}\\\\"
+            f"{group_tex} & {row['rank']} & ${row['torsion_tex']}$ & {row['p']} & {int(row['criterion_rhs'])} & {int(row['computed_nontrivial'])}\\\\"
         )
     lines.append(r"\bottomrule")
     lines.append(r"\end{tabular}")
@@ -505,7 +514,7 @@ def main() -> None:
             if rhs != computed:
                 raise RuntimeError(f"Discrete anomaly criterion mismatch for {G.name}, p={p}.")
             torsion_tex = (
-                r"\oplus".join([f"C_{{{n}}}" for n in G.torsion_moduli])
+                r"\oplus ".join([f"C_{{{n}}}" for n in G.torsion_moduli])
                 if G.torsion_moduli
                 else "0"
             )
