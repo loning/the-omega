@@ -1,0 +1,429 @@
+\subsection{Poisson--Cauchy 粗粒化的高阶信息渐近与时间纤维端点几何}\label{subsec:conclusion-poisson-cauchy-high-order-entropy-fiber-rigidity}
+本小节在 \S\ref{subsec:conclusion-poisson-cauchy-bivariate-information-fingerprint} 的二阶框架上，
+对一维位置混合模型给出三阶总变差常数、KL/R\'enyi 六阶系数、耗散七阶系数以及时间纤维的 Cauchy 化与端点爆破极限。
+
+\paragraph{基础设定}
+设 \(\tilde\nu\) 为 \(\RR\) 上概率测度，定义
+\[
+\mathsf P_t(x):=\frac1\pi\frac{t}{x^2+t^2},
+\]
+\[
+\tilde h_t(x):=\int_{\RR}\mathsf P_t(x-\gamma)\,\dd\tilde\nu(\gamma),\qquad
+\tilde g_t(x):=\mathsf P_t(x-\bar\gamma),\qquad
+\bar\gamma:=\int_{\RR}\gamma\,\dd\tilde\nu(\gamma).
+\]
+记中心矩
+\[
+\mu_k:=\int_{\RR}(\gamma-\bar\gamma)^k\,\dd\tilde\nu(\gamma)\qquad(k\ge 2),
+\]
+并定义
+\[
+\tilde r_t(x):=\frac12\,\partial_x^2\tilde g_t(x).
+\]
+
+\begin{theorem}[三阶去方差总变差常数]\label{thm:conclusion-poisson-cauchy-third-order-tv-constant}
+若 \(\mu_4<\infty\)，定义二阶剥离余项
+\[
+\Delta_t(x):=\tilde h_t(x)-\tilde g_t(x)-\mu_2\tilde r_t(x),
+\]
+及三阶轮廓核
+\[
+\tilde s_t(x):=-\frac16\,\partial_x^3\tilde g_t(x).
+\]
+则
+\[
+t^3\|\Delta_t-\mu_3\tilde s_t\|_{L^1(\RR)}\longrightarrow 0,
+\]
+并且
+\[
+\lim_{t\to\infty}\frac{t^3}{|\mu_3|}\,\|\Delta_t\|_{L^1(\RR)}=\frac1\pi.
+\]
+\end{theorem}
+\begin{proof}
+令 \(u:=x-\bar\gamma\)，并以随机变量 \(Z:=\gamma-\bar\gamma\)（\(\EE Z=0\)）表示混合：
+\[
+\tilde h_t(x)=\EE\bigl[\mathsf P_t(u-Z)\bigr].
+\]
+对 \(z\mapsto \mathsf P_t(u-z)\) 在 \(z=0\) 作三阶 Taylor 展开并取期望：
+\[
+\tilde h_t(u)
+=
+\mathsf P_t(u)
+\frac{\mu_2}{2}\mathsf P_t''(u)
+-\frac{\mu_3}{6}\mathsf P_t^{(3)}(u)
++R_t(u),
+\]
+其中 \(\|R_t\|_\infty=O(t^{-5})\)（由 \(\mu_4<\infty\) 与 \(\sup_u|\mathsf P_t^{(4)}(u)|=O(t^{-5})\)）。
+由 \(\tilde g_t(u)=\mathsf P_t(u)\)、\(\tilde r_t=\frac12\mathsf P_t''\)，得
+\[
+\Delta_t(u)= -\frac{\mu_3}{6}\mathsf P_t^{(3)}(u)+R_t(u)=\mu_3\tilde s_t(u)+R_t(u).
+\]
+故
+\[
+t^3\|\Delta_t-\mu_3\tilde s_t\|_{L^1}\le t^3\|R_t\|_{L^1}=o(1).
+\]
+
+再用尺度律
+\[
+\mathsf P_t(x)=t^{-1}\mathsf P_1(x/t)
+\]
+可得
+\[
+\|\mathsf P_t^{(3)}\|_{L^1}=t^{-3}\|\mathsf P_1^{(3)}\|_{L^1},
+\qquad
+\|\tilde s_t\|_{L^1}=\frac16\|\mathsf P_t^{(3)}\|_{L^1}.
+\]
+直接积分得到
+\[
+\|\mathsf P_1^{(3)}\|_{L^1}=\frac6\pi,
+\]
+故
+\[
+t^3\|\tilde s_t\|_{L^1}=\frac1\pi.
+\]
+于是
+\[
+\frac{t^3}{|\mu_3|}\|\Delta_t\|_{L^1}
+=
+\frac{t^3}{|\mu_3|}\|\mu_3\tilde s_t+o(t^{-3})\|_{L^1}
+\longrightarrow
+\frac1\pi.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[KL 相对熵的六阶精细渐近]\label{thm:conclusion-poisson-cauchy-kl-sixth-order-expansion}
+若 \(\mu_5^\ast:=\int_{\RR}|\gamma-\bar\gamma|^5\,\dd\tilde\nu(\gamma)<\infty\)，则
+\[
+D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t)
+:=
+\int_{\RR}\tilde h_t\log\!\frac{\tilde h_t}{\tilde g_t}\,\dd x
+\]
+满足
+\[
+D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t)
+=
+\frac{\mu_2^2}{8\,t^4}
++
+\frac1{t^6}\left(
+\frac{\mu_2^3}{64}
+-\frac{\mu_2\mu_4}{8}
++\frac{3\mu_3^2}{32}
+\right)
++o(t^{-6}).
+\]
+\end{theorem}
+\begin{proof}
+令
+\[
+\delta_t(x):=\frac{\tilde h_t(x)}{\tilde g_t(x)}-1.
+\]
+由四阶展开与尺度变换，存在有界轮廓函数
+\[
+U_2(y)=\frac{3y^2-1}{(1+y^2)^2},\quad
+U_3(y)=\frac{4y(y^2-1)}{(1+y^2)^3},\quad
+U_4(y)=\frac{5y^4-10y^2+1}{(1+y^2)^4},
+\]
+使得（\(y=(x-\bar\gamma)/t\)）
+\[
+\delta_t(x)=\frac{\mu_2}{t^2}U_2(y)+\frac{\mu_3}{t^3}U_3(y)+\frac{\mu_4}{t^4}U_4(y)+O(t^{-5})
+\]
+一致成立。
+又
+\[
+\int_{\RR}\tilde g_t\,\delta_t\,\dd x=0.
+\]
+因此
+\[
+D_{\mathrm{KL}}
+=
+\int \tilde g_t\,(1+\delta_t)\log(1+\delta_t)\,\dd x
+=
+\frac12\int\tilde g_t\delta_t^2\,\dd x
+-\frac16\int\tilde g_t\delta_t^3\,\dd x
++O(\|\delta_t\|_\infty^4),
+\]
+而 \(\|\delta_t\|_\infty=O(t^{-2})\)，余项为 \(O(t^{-8})\)。
+
+换元 \(x=\bar\gamma+ty\) 后
+\[
+\tilde g_t(x)\,\dd x=\frac1\pi\frac{\dd y}{1+y^2}.
+\]
+利用奇偶性 \(U_2\) 偶、\(U_3\) 奇，\(t^{-5}\) 项消失。
+所需积分为
+\[
+\int_{\RR}\frac{U_2^2}{\pi(1+y^2)}\,\dd y=\frac14,\quad
+\int_{\RR}\frac{U_3^2}{\pi(1+y^2)}\,\dd y=\frac{3}{16},
+\]
+\[
+\int_{\RR}\frac{U_2U_4}{\pi(1+y^2)}\,\dd y=-\frac18,\quad
+\int_{\RR}\frac{U_2^3}{\pi(1+y^2)}\,\dd y=-\frac{3}{32}.
+\]
+代回并整理即得公式。证毕。
+\end{proof}
+
+\begin{theorem}[R\'enyi 散度的六阶一参数闭式]\label{thm:conclusion-poisson-cauchy-renyi-sixth-order-expansion}
+在定理 \ref{thm:conclusion-poisson-cauchy-kl-sixth-order-expansion} 的假设下，取 \(\alpha>0,\ \alpha\neq 1\)，定义
+\[
+D_\alpha(\tilde h_t\mid \tilde g_t)
+:=
+\frac{1}{\alpha-1}\log\!\int_{\RR}\tilde h_t^\alpha \tilde g_t^{1-\alpha}\,\dd x
+=
+\frac{1}{\alpha-1}\log\!\int_{\RR}\tilde g_t(1+\delta_t)^\alpha\,\dd x.
+\]
+则
+\[
+D_\alpha(\tilde h_t\mid \tilde g_t)
+=
+\frac{\alpha\mu_2^2}{8\,t^4}
++
+\frac1{t^6}\left[
+\alpha\left(\frac{3\mu_3^2}{32}-\frac{\mu_2\mu_4}{8}\right)
+-\frac{\alpha(\alpha-2)\mu_2^3}{64}
+\right]
++o(t^{-6}).
+\]
+且当 \(\alpha\to 1\) 时该展开连续退化为
+定理 \ref{thm:conclusion-poisson-cauchy-kl-sixth-order-expansion}。
+\end{theorem}
+\begin{proof}
+由二项式展开
+\[
+(1+\delta_t)^\alpha
+=
+1+\alpha\delta_t+\frac{\alpha(\alpha-1)}{2}\delta_t^2+\frac{\alpha(\alpha-1)(\alpha-2)}{6}\delta_t^3+O(\delta_t^4),
+\]
+积分后用 \(\int \tilde g_t\delta_t=0\) 得
+\[
+\int \tilde g_t(1+\delta_t)^\alpha
+=
+1+\frac{\alpha(\alpha-1)}{2}\int\tilde g_t\delta_t^2
++
+\frac{\alpha(\alpha-1)(\alpha-2)}{6}\int\tilde g_t\delta_t^3
++O(t^{-8}).
+\]
+再用 \(\log(1+u)=u+O(u^2)\)（此处 \(u=O(t^{-4})\)）及前一条证明中的同一积分常数，即得所示系数。
+\(\alpha\to1\) 极限由系数显式连续性直接给出。证毕。
+\end{proof}
+
+\begin{corollary}[信息耗散泛函的七阶精细渐近]\label{cor:conclusion-poisson-cauchy-i1-seventh-order-expansion}
+沿用定理 \ref{thm:conclusion-poisson-cauchy-kl-sixth-order-expansion} 的假设。
+若 \(I_1\) 满足耗散恒等式
+\[
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t)=-I_1(\tilde h_t\mid \tilde g_t),
+\]
+则
+\[
+I_1(\tilde h_t\mid \tilde g_t)
+=
+\frac{\mu_2^2}{2\,t^5}
++
+\frac1{t^7}
+\left(
+\frac{3\mu_2^3}{32}
+-\frac{3\mu_2\mu_4}{4}
++\frac{9\mu_3^2}{16}
+\right)
++o(t^{-7}).
+\]
+\end{corollary}
+\begin{proof}
+将定理 \ref{thm:conclusion-poisson-cauchy-kl-sixth-order-expansion} 的展开逐项求导并取负号：
+\[
+I_1=-\frac{\dd}{\dd t}D_{\mathrm{KL}}
+=4\cdot\frac{\mu_2^2}{8}t^{-5}
++6\left(
+\frac{\mu_2^3}{64}
+-\frac{\mu_2\mu_4}{8}
++\frac{3\mu_3^2}{32}
+\right)t^{-7}
++o(t^{-7}),
+\]
+化简即得。证毕。
+\end{proof}
+
+\begin{theorem}[时间纤维的 Cauchy 化与 Jensen 缺陷期望表示]\label{thm:conclusion-time-fiber-cauchy-jensen-representation}
+定义时间纤维
+\[
+t(\varrho,\theta)
+=
+\mathsf C^{-1}(\varrho e^{i\theta})
+=
+\frac{2\varrho\sin\theta}{1+\varrho^2+2\varrho\cos\theta}
++
+i\,\frac{1-\varrho^2}{1+\varrho^2+2\varrho\cos\theta},
+\]
+并令
+\[
+D_\zeta(\varrho)
+=
+\frac1{2\pi}\int_0^{2\pi}
+\log\Bigl|\Xi\!\bigl(\tfrac12+i\,t(\varrho,\theta)\bigr)\Bigr|\,\dd\theta
+-\log|\Xi(-\tfrac12)|.
+\]
+取半角变量 \(u=\tan(\theta/2)\)，则
+\[
+\frac{\dd\theta}{2\pi}=\frac{\dd u}{\pi(1+u^2)}.
+\]
+再令
+\[
+\lambda:=\frac{1-\varrho}{1+\varrho}\in(0,1),
+\]
+则
+\[
+t(\varrho,\theta(u))=x_\lambda(u)+i\,y_\lambda(u),
+\]
+其中
+\[
+x_\lambda(u)=\frac{(1-\lambda^2)u}{1+\lambda^2u^2},\qquad
+y_\lambda(u)=\frac{\lambda(1+u^2)}{1+\lambda^2u^2}.
+\]
+故
+\[
+D_\zeta(\varrho)
+=
+\int_{\RR}
+\log\Bigl|\Xi\!\bigl(\tfrac12+i(x_\lambda(u)+iy_\lambda(u))\bigr)\Bigr|
+\frac{\dd u}{\pi(1+u^2)}
+-\log|\Xi(-\tfrac12)|.
+\]
+\end{theorem}
+\begin{proof}
+由恒等式
+\[
+\sin\theta=\frac{2u}{1+u^2},\qquad
+\cos\theta=\frac{1-u^2}{1+u^2},\qquad
+\dd\theta=\frac{2\,\dd u}{1+u^2},
+\]
+可得测度变换式。
+代入 \(t(\varrho,\theta)\) 的分子分母并统一化简：
+\[
+1+\varrho^2+2\varrho\cos\theta
+=
+\frac{(1+\varrho)^2+(1-\varrho)^2u^2}{1+u^2}.
+\]
+于是
+\[
+\Re t(\varrho,\theta(u))
+=
+\frac{4\varrho u}{(1+\varrho)^2+(1-\varrho)^2u^2},
+\]
+\[
+\Im t(\varrho,\theta(u))
+=
+\frac{(1-\varrho^2)(1+u^2)}{(1+\varrho)^2+(1-\varrho)^2u^2}.
+\]
+再用
+\[
+\lambda=\frac{1-\varrho}{1+\varrho},\quad
+\frac{4\varrho}{(1+\varrho)^2}=1-\lambda^2,\quad
+\frac{1-\varrho^2}{(1+\varrho)^2}=\lambda
+\]
+得到 \(x_\lambda,y_\lambda\) 的显式式子。
+将其与 Cauchy 权重变换代回 \(D_\zeta(\varrho)\) 即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[端点爆破的普适半圆极限]\label{thm:conclusion-time-fiber-endpoint-universal-semicircle}
+沿用定理 \ref{thm:conclusion-time-fiber-cauchy-jensen-representation} 记号，令
+\[
+\lambda=\frac{1-\varrho}{1+\varrho}\to 0^+,\qquad
+u=\frac{v}{\lambda},
+\]
+并定义端点爆破缩放
+\[
+T_\lambda(v):=\lambda\,t\!\left(\varrho,\theta\!\left(\frac{v}{\lambda}\right)\right).
+\]
+则对任意 \(M>0\)，在 \([-M,M]\) 上一致收敛
+\[
+T_\lambda(v)\longrightarrow T_\ast(v):=\frac{v+i\,v^2}{1+v^2}.
+\]
+且其像满足
+\[
+\bigl(\Re T_\ast(v)\bigr)^2+\left(\Im T_\ast(v)-\frac12\right)^2=\frac14.
+\]
+故极限轨道为圆心 \(i/2\)、半径 \(1/2\) 的半圆。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-time-fiber-cauchy-jensen-representation}，
+\[
+x_\lambda\!\left(\frac{v}{\lambda}\right)
+=
+\frac{(1-\lambda^2)(v/\lambda)}{1+v^2}
+=
+\frac{v}{\lambda(1+v^2)}+O(\lambda),
+\]
+\[
+y_\lambda\!\left(\frac{v}{\lambda}\right)
+=
+\frac{\lambda(1+v^2/\lambda^2)}{1+v^2}
+=
+\frac{v^2}{\lambda(1+v^2)}+O(\lambda),
+\]
+故
+\[
+T_\lambda(v)
+=
+\lambda\bigl(x_\lambda(v/\lambda)+i\,y_\lambda(v/\lambda)\bigr)
+=
+\frac{v+i\,v^2}{1+v^2}+O(\lambda^2),
+\]
+并在任意紧集上一致成立。
+圆方程由代数恒等式
+\[
+\left(\frac{v}{1+v^2}\right)^2
++
+\left(\frac{v^2}{1+v^2}-\frac12\right)^2
+=\frac14
+\]
+直接得到。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$L^2$}{L2} 与 \texorpdfstring{$L^\infty$}{Linf} 的二阶锐衰减常数]\label{thm:conclusion-poisson-cauchy-l2-linf-sharp}
+在定理 \ref{thm:conclusion-poisson-cauchy-third-order-tv-constant} 假设下（\(\mu_4<\infty\)），有
+\[
+\|\tilde h_t-\tilde g_t\|_{L^2(\RR)}
+=
+\frac{\sqrt3}{4\sqrt\pi}\frac{\mu_2}{t^{5/2}}+o(t^{-5/2}),
+\]
+\[
+\|\tilde h_t-\tilde g_t\|_{L^\infty(\RR)}
+=
+\frac{1}{\pi}\frac{\mu_2}{t^{3}}+o(t^{-3}).
+\]
+\end{theorem}
+\begin{proof}
+由二阶正规形
+\[
+\tilde h_t-\tilde g_t=\mu_2\tilde r_t+o(t^{-3})
+\]
+（由 \(\mu_4<\infty\) 的 Taylor 余项控制）可知只需计算 \(\tilde r_t\) 的常数。
+写 \(y=(x-\bar\gamma)/t\)，则
+\[
+\tilde r_t(x)=\frac1\pi\,t^{-3}\frac{3y^2-1}{(1+y^2)^3}.
+\]
+于是
+\[
+\|\tilde r_t\|_{L^2}^2
+=
+\frac{t^{-5}}{\pi^2}\int_{\RR}\frac{(3y^2-1)^2}{(1+y^2)^6}\,\dd y.
+\]
+直接积分得
+\[
+\int_{\RR}\frac{(3y^2-1)^2}{(1+y^2)^6}\,\dd y=\frac{3\pi}{16},
+\]
+故
+\[
+\|\tilde r_t\|_{L^2}
+=
+\frac{\sqrt3}{4\sqrt\pi}\,t^{-5/2}.
+\]
+再看 \(L^\infty\)：
+\[
+\left|\frac{3y^2-1}{(1+y^2)^3}\right|
+\]
+在 \(y=0\) 处取最大值 \(1\)，故
+\[
+\|\tilde r_t\|_{L^\infty}=\frac1\pi t^{-3}.
+\]
+与主项分解合并即得结论。证毕。
+\end{proof}
