@@ -101,6 +101,21 @@ E_{00}:=\begin{pmatrix}1&0\\[2pt]0&0\end{pmatrix}.
 \qquad
 \#\{(u,v):\ (T^{(q)})^{-1}_{u,v}=-2\}=\frac{3^q-1}{2}.
 \]
+并且对任意 \(u\in U_q\)，若记 \(|u|=r\)，则第 \(u\)-行（等价地第 \(u\)-列）的非零元个数满足
+\[
+\#\{v\in U_q:\ (T^{(q)})^{-1}_{u,v}\neq 0\}
+=
+\begin{cases}
+2,&u=\mathbf 0,\\[2pt]
+2^r,&u\neq \mathbf 0.
+\end{cases}
+\]
+此外，
+\[
+\sum_{u,v\in U_q}\bigl|(T^{(q)})^{-1}_{u,v}\bigr|=2\cdot 3^q+1,
+\qquad
+\bigl\|(T^{(q)})^{-1}\bigr\|_F^2=4\cdot 3^q+1.
+\]
 此外，
 \[
 \operatorname{adj}\!\bigl(2T^{(q)}\bigr)=\bigl(T^{(q)}\bigr)^{-1}\in\Mat_{2^q}(\ZZ).
@@ -141,34 +156,112 @@ D_q^{-1}\mathbf 1
 \frac{(2+1)^q-(2-1)^q}{2}=\frac{3^q-1}{2},
 \]
 分别对应 \(2\) 与 \(-2\)。
+固定 \(u\in U_q\)，记 \(|u|=r\)。
+当 \(u\neq \mathbf 0\) 时，条件 \(u\vee v=\mathbf 1\) 等价于：在 \(u_i=0\) 的坐标上 \(v_i=1\) 必取，在 \(u_i=1\) 的坐标上 \(v_i\in\{0,1\}\) 自由，故对应 \(v\) 的个数为 \(2^r\)。
+当 \(u=\mathbf 0\) 时，满足 \(u\vee v=\mathbf 1\) 的 \(v\) 唯一为 \(\mathbf 1\)，并叠加 \((\mathbf 0,\mathbf 0)\) 项，故该行恰有 \(2\) 个非零元；由对称性列计数相同。
+\par
+绝对值和与 Frobenius 范数平方由同一支撑计数直接得到：除 \((\mathbf 0,\mathbf 0)\) 外共有 \(3^q\) 个非零项且绝对值皆为 \(2\)，从而
+\[
+\sum_{u,v}\bigl|(T^{(q)})^{-1}_{u,v}\bigr|=1+2\cdot 3^q,
+\qquad
+\sum_{u,v}\bigl((T^{(q)})^{-1}_{u,v}\bigr)^2=1+4\cdot 3^q.
+\]
 最后由上一结论 \(\det(2T^{(q)})=2\) 得
 \(
 \operatorname{adj}(2T^{(q)})=2(2T^{(q)})^{-1}=(T^{(q)})^{-1}
 \)，整性随即成立。证毕。
 \end{proof}
 
-\begin{conclusion}[整数结构极限：Smith 形与 \texorpdfstring{$\FF_2$}{F2} 退化秩]\label{con:xi-terminal-disjointness-boolean-smith-mod2-rank-kernel}
-令 \(M^{(q)}:=2T^{(q)}\in\Mat_{2^q}(\ZZ)\)。
+\begin{conclusion}[Smith 形、余核与整可解性判别]\label{con:xi-terminal-disjointness-boolean-smith-mod2-rank-kernel}
+令
+\[
+A_q:=2T^{(q)}\in\Mat_{2^q}(\ZZ).
+\]
 则
 \[
-\mathrm{SNF}\!\bigl(M^{(q)}\bigr)=\operatorname{diag}(\underbrace{1,\dots,1}_{2^q-1\text{ 次}},2).
+\mathrm{SNF}\!\bigl(A_q\bigr)=\operatorname{diag}(\underbrace{1,\dots,1}_{2^q-1\text{ 次}},2),
 \]
 从而
 \[
-\operatorname{rank}_{\FF_2}\!\bigl(M^{(q)}\bmod 2\bigr)=2^q-1,
+\operatorname{coker}(A_q)\cong \ZZ/2\ZZ.
+\]
+进一步，对任意 \(b\in\ZZ^{U_q}\)，方程
+\[
+A_qx=b
+\]
+在 \(\ZZ^{U_q}\) 中可解当且仅当
+\[
+b_{\mathbf 0}\equiv 0\pmod 2,
+\]
+其中 \(b_{\mathbf 0}\) 表示 \(\mathbf 0\in U_q\) 对应坐标。
+并且在 \(\FF_2\) 上有
+\[
+\operatorname{rank}_{\FF_2}\!\bigl(A_q\bmod 2\bigr)=2^q-1,
 \qquad
-\ker_{\FF_2}\!\bigl(M^{(q)}\bmod 2\bigr)=\langle \delta_{\mathbf 0}\rangle.
+\ker_{\FF_2}\!\bigl(A_q\bmod 2\bigr)=\langle \delta_{\mathbf 0}\rangle.
 \]
 \end{conclusion}
 \begin{proof}
-由结论 \ref{con:xi-terminal-disjointness-boolean-det-rigidity}，\(\det(M^{(q)})=2\)。
+由结论 \ref{con:xi-terminal-disjointness-boolean-det-rigidity}，\(\det(A_q)=2\)。
 设 Smith 不变量为 \(d_1\mid\cdots\mid d_N\)（\(N=2^q\)），则 \(\prod_i d_i=2\)，故每个 \(d_i\in\{1,2\}\) 且恰有一个 \(2\)。
-另一方面，\(M^{(q)}\) 含奇数条目（例如任意 \(u\neq \mathbf 0\) 有 \(M^{(q)}_{u,u}=1\)），故全部条目最大公因子为 \(1\)，从而 \(d_1=1\)。
-于是 Smith 形唯一可能即上式。
+另一方面，\(A_q\) 含奇数条目（例如任意 \(u\neq \mathbf 0\) 有 \(A_{q,u,u}=1\)），故全部条目最大公因子为 \(1\)，从而 \(d_1=1\)。
+于是 Smith 形唯一可能即上式，并由结构定理得到 \(\operatorname{coker}(A_q)\cong\ZZ/2\ZZ\)。
+\par
+再由前述 Sherman--Morrison 分解，
+\[
+A_q^{-1}
+=(D_q+J_q)^{-1}
+=D_q^{-1}-\frac12\,e_{\mathbf 0}e_{\mathbf 0}^{\mathsf T},
+\]
+其中 \(e_{\mathbf 0}\) 为 \(\mathbf 0\)-坐标标准基向量，且 \(D_q^{-1}\in\Mat_{2^q}(\ZZ)\)。
+对任意 \(b\in\ZZ^{U_q}\)，其有理解为
+\[
+x=A_q^{-1}b=D_q^{-1}b-\frac{b_{\mathbf 0}}{2}\,e_{\mathbf 0}.
+\]
+故 \(x\in\ZZ^{U_q}\iff b_{\mathbf 0}\) 为偶数。
 \par
 在 \(\FF_2\) 上，秩与核维数由 Smith 形立即给出：秩为 \(N-1\)、核一维。
-又 \(M^{(q)}\) 的 \(\mathbf 0\)-列全为 \(2\)，模 \(2\) 后成为零列，故 \(\delta_{\mathbf 0}\in\ker\)；
+又 \(A_q\) 的 \(\mathbf 0\)-列全为 \(2\)，模 \(2\) 后成为零列，故 \(\delta_{\mathbf 0}\in\ker\)；
 结合核一维，得到 \(\ker=\langle\delta_{\mathbf 0}\rangle\)。证毕。
+\end{proof}
+
+\begin{conclusion}[全谱倒一阶与倒二阶矩闭式]\label{con:xi-terminal-disjointness-boolean-inverse-spectral-moments}
+记 \(T^{(q)}\) 的全体特征值（按代数重数）为
+\[
+\{\theta_{\alpha}^{(q)}\}_{\alpha=1}^{2^q}.
+\]
+则对任意 \(q\ge 1\) 有
+\[
+\sum_{\alpha=1}^{2^q}\frac{1}{\theta_{\alpha}^{(q)}}
+=\operatorname{tr}\!\bigl((T^{(q)})^{-1}\bigr)
+=2(-1)^q-1,
+\]
+\[
+\sum_{\alpha=1}^{2^q}\frac{1}{(\theta_{\alpha}^{(q)})^{2}}
+=\operatorname{tr}\!\bigl((T^{(q)})^{-2}\bigr)
+=4\cdot 3^q+1.
+\]
+\end{conclusion}
+\begin{proof}
+由谱映射与迹恒等式，
+\[
+\sum_{\alpha}\theta_{\alpha}^{-1}=\operatorname{tr}(T^{-1}),
+\qquad
+\sum_{\alpha}\theta_{\alpha}^{-2}=\operatorname{tr}(T^{-2}).
+\]
+第一式由结论 \ref{con:xi-terminal-disjointness-boolean-inverse-closed-form} 的逐项逆核直接得到：\((T^{(q)})^{-1}_{\mathbf 0,\mathbf 0}=-1\)、\((T^{(q)})^{-1}_{\mathbf 1,\mathbf 1}=2(-1)^q\)，其余对角元皆为 \(0\)，故
+\[
+\operatorname{tr}\!\bigl((T^{(q)})^{-1}\bigr)=2(-1)^q-1.
+\]
+第二式由同一结论中的范数闭式
+\[
+\bigl\|(T^{(q)})^{-1}\bigr\|_F^2=4\cdot 3^q+1
+\]
+及 \(T^{(q)}\) 对称性给出的
+\[
+\operatorname{tr}\!\bigl((T^{(q)})^{-2}\bigr)=\bigl\|(T^{(q)})^{-1}\bigr\|_F^2
+\]
+立即推出。证毕。
 \end{proof}
 
 \begin{conclusion}[例外谱负一次幂和的显式闭式与递推]\label{con:xi-terminal-replica-softcore-exceptional-neg1-closed-recurrence}
