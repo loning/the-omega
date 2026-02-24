@@ -282,6 +282,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_s4_v4_fixedfield_s3_chain_audit",
+            script="exp_fold_zm_s4_v4_fixedfield_s3_chain_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_s4_v4_fixedfield_s3_chain_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_s4_a4_v4_etale_prym_split_audit",
+            script="exp_fold_zm_s4_a4_v4_etale_prym_split_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_s4_a4_v4_etale_prym_split_audit.json",
+            ],
+        ),
+        Step(
+            name="fibonacci_poisson_kl_rh_discretization_audit",
+            script="exp_fibonacci_poisson_kl_rh_discretization_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fibonacci_poisson_kl_rh_discretization_audit.json",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit",
             script="exp_fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit.py",
             args=[],
