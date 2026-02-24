@@ -1,0 +1,219 @@
+\paragraph{轨道矩阵、二字母词迹与倒数谱矩的统一强化}
+沿用本节记号。
+对每个 \(q\ge 2\)，令 \(T^{(q)}\) 为定义在 \(U_q=\{0,1\}^q\) 上的对称矩阵，
+其 \(S_q\)-对称子空间（例外块）谱记为
+\(\{\lambda_i^{(q)}\}_{i=0}^{q}\)，并定义
+\[
+S_m(q):=\sum_{i=0}^{q}\bigl(\lambda_i^{(q)}\bigr)^m\qquad(m\ge 1).
+\]
+
+\begin{theorem}[例外谱轨道矩阵的行列式闭式与整逆性]\label{thm:xi-replica-softcore-orbit-matrix-determinant-integral-inverse}
+定义轨道矩阵 \(M^{(q)}\in\QQ^{(q+1)\times(q+1)}\) 为
+\[
+M^{(q)}_{a,b}:=\frac12\!\left(\binom{q}{b}+\binom{q-a}{b}\right),
+\qquad 0\le a,b\le q.
+\]
+则有：
+\begin{enumerate}
+  \item \[
+  \det M^{(q)}=\frac{(-1)^{\frac{q(q+1)}2}}{2^q}.
+  \]
+  \item \(M^{(q)}\) 可逆且 \((M^{(q)})^{-1}\in\ZZ^{(q+1)\times(q+1)}\)，并满足
+  \[
+  \bigl(M^{(q)}\bigr)^{-1}_{a,b}
+  =2(-1)^{a+q-b}\binom{a}{q-b}-\mathbf{1}_{\{a=0\}}\mathbf{1}_{\{b=0\}}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+令 Pascal 矩阵 \(P\) 与反序置换矩阵 \(R\) 为
+\[
+P_{i,j}:=\binom{i}{j}\mathbf{1}_{\{i\ge j\}},
+\qquad
+R_{i,j}:=\mathbf{1}_{\{i+j=q\}}.
+\]
+记 \(c^\top\) 为 \(P\) 的第 \(q\) 行（\(c_b=\binom qb\)），\(\mathbf1\) 为全 \(1\) 列向量。
+由定义
+\[
+2M^{(q)}=\mathbf1 c^\top+RP.
+\]
+右乘 \(P^{-1}\) 得
+\[
+2M^{(q)}P^{-1}
+=\mathbf1(c^\top P^{-1})+R
+=\mathbf1 e_q^\top+R,
+\]
+故
+\[
+2M^{(q)}=(R+\mathbf1 e_q^\top)P.
+\]
+由 \(\det P=1\) 与矩阵行列式引理，
+\[
+\det(R+\mathbf1 e_q^\top)
+=\det(R)\bigl(1+e_q^\top R^{-1}\mathbf1\bigr)
+=2\det(R).
+\]
+而 \(\det(R)=(-1)^{\frac{q(q+1)}2}\)，故
+\[
+\det(2M^{(q)})=2(-1)^{\frac{q(q+1)}2},
+\qquad
+\det(M^{(q)})=\frac{(-1)^{\frac{q(q+1)}2}}{2^q}.
+\]
+
+再记 \(A:=R+\mathbf1 e_q^\top\)。
+Sherman--Morrison 公式给出
+\[
+A^{-1}
+=R-\frac{R\mathbf1 e_q^\top R}{1+e_q^\top R\mathbf1}
+=R-\frac{\mathbf1 e_0^\top}{2}.
+\]
+于是
+\[
+(2M^{(q)})^{-1}=P^{-1}A^{-1}
+=P^{-1}R-\frac12(P^{-1}\mathbf1)e_0^\top.
+\]
+由 \(Pe_0=\mathbf1\) 得 \(P^{-1}\mathbf1=e_0\)，故
+\[
+(M^{(q)})^{-1}=2P^{-1}R-e_0e_0^\top.
+\]
+再用
+\(
+(P^{-1})_{i,j}=(-1)^{i-j}\binom{i}{j}\mathbf1_{\{i\ge j\}}
+\)
+即可得到分量公式。证毕。
+\end{proof}
+
+\begin{theorem}[任意阶例外幂和的单词--迹普适分解]\label{thm:xi-replica-softcore-exceptional-word-trace-master}
+令
+\[
+J=\begin{pmatrix}1&1\\1&1\end{pmatrix},\qquad
+D=\begin{pmatrix}1&1\\1&0\end{pmatrix}.
+\]
+对 \(m\ge 1\) 与词 \(w=(w_1,\dots,w_m)\in\{J,D\}^m\)，定义
+\[
+B_w:=w_1\cdots w_m,\qquad \tau(w):=\Tr(B_w).
+\]
+并记 \(L_m:=\Tr(D^m)\)（Lucas 数），\(\Omega_m(q)\) 沿用结论
+\ref{con:xi-terminal-replica-softcore-lucas-pell-omega-unified}。
+则对一切 \(q\ge 2\)、\(m\ge 1\) 有
+\[
+\boxed{\;
+S_m(q)
+=\frac1{2^m}\left(\sum_{w\in\{J,D\}^m}\tau(w)^q-L_m^q+\Omega_m(q)\right).}
+\]
+等价地，
+\[
+\Tr\!\bigl((T^{(q)})^m\bigr)-S_m(q)
+=\frac1{2^m}\bigl(L_m^q-\Omega_m(q)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+由
+\(
+T^{(q)}=\frac12(J^{\otimes q}+D^{\otimes q})
+\)
+（命题 \ref{prop:pom-multiplicity-composition-replica-explicit-eigs} 与定理
+\ref{thm:pom-replica-softcore-word-trace-power-sums}）可得
+\[
+(T^{(q)})^m
+=\frac1{2^m}\sum_{w\in\{J,D\}^m}(B_w)^{\otimes q}.
+\]
+在 \(\mathrm{Sym}^q(\CC^2)\) 上取迹即
+\[
+S_m(q)=\frac1{2^m}\sum_{w}\Tr\!\bigl(\mathrm{Sym}^q(B_w)\bigr).
+\]
+若 \(w\) 含至少一个 \(J\)，则 \(\rank(B_w)\le 1\)，其特征值为 \(\{\tau(w),0\}\)，故
+\(
+\Tr(\mathrm{Sym}^q(B_w))=\tau(w)^q
+\)。
+唯一例外词为 \(w=D^m\)，其贡献分别为
+\(
+\tau(D^m)^q=L_m^q
+\)
+与
+\(
+\Tr(\mathrm{Sym}^q(D^m))=\Omega_m(q)
+\)。
+分离该项即得所示恒等式。证毕。
+\end{proof}
+
+\begin{corollary}[二次幂和的闭式补全]\label{cor:xi-replica-softcore-exceptional-power-sum-m2-completion}
+对一切 \(q\ge 2\)，成立
+\[
+S_2(q)=\frac14\Bigl(4^q+2\cdot 3^q+F_{2q+2}\Bigr).
+\]
+\end{corollary}
+\begin{proof}
+在定理 \ref{thm:xi-replica-softcore-exceptional-word-trace-master} 取 \(m=2\)。
+四个词 \(JJ,JD,DJ,DD\) 的迹分别为 \(4,3,3,3\)；
+并有 \(L_2=\Tr(D^2)=3\)、\(\Omega_2(q)=F_{2q+2}\)。
+代入即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\tau(w)$}{tau(w)} 的独立集解释与 Fibonacci--Lucas 因子分解]\label{thm:xi-replica-softcore-wordtrace-independent-set-factorization}
+对任意 \(m\ge 1\) 与词 \(w\in\{J,D\}^m\)，在顶点集 \(\ZZ/m\ZZ\) 上定义图 \(G(w)\)：
+当且仅当 \(w_t=D\) 时加入边 \(\{t,t+1\}\)（下标模 \(m\)）。
+则：
+\begin{enumerate}
+  \item \[
+  \tau(w)=\mathsf I(G(w)),
+  \]
+  其中 \(\mathsf I(G)\) 表示图 \(G\) 的独立集总数。
+  \item 若 \(G(w)\) 的连通分量分解为若干环 \(C_{c_i}\) 与若干路径 \(P_{r_j}\)（\(r_j\) 为边数），则
+  \[
+  \tau(w)=\prod_i L_{c_i}\cdot\prod_j F_{r_j+3}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由迹展开
+\[
+\tau(w)=\sum_{x_1,\dots,x_m\in\{0,1\}}
+\prod_{t=1}^{m}(w_t)_{x_t,x_{t+1}},
+\qquad x_{m+1}:=x_1.
+\]
+当 \(w_t=J\) 时该因子恒为 \(1\)；当 \(w_t=D\) 时仅在 \((x_t,x_{t+1})=(1,1)\) 取 \(0\)。
+故可行赋值恰满足：每条 \(D\)-边两端不能同时为 \(1\)，即
+\(\{t:\ x_t=1\}\) 正好是 \(G(w)\) 的独立集。
+于是 \(\tau(w)=\mathsf I(G(w))\)。
+
+独立集计数在连通分量下乘法分解。
+对 \(c\)-环有 \(\mathsf I(C_c)=L_c\)，对含 \(r\) 条边的路径有
+\(\mathsf I(P_r)=F_{r+3}\)，乘积即得结论。
+\end{proof}
+
+\begin{corollary}[倒数谱矩的 Fibonacci 闭式]\label{cor:xi-replica-softcore-exceptional-reciprocal-moments-fibonacci-unified}
+令 \(M^{(q)}\) 如定理
+\ref{thm:xi-replica-softcore-orbit-matrix-determinant-integral-inverse}，
+其谱为 \(\{\lambda_i^{(q)}\}_{i=0}^{q}\)。
+则：
+\[
+\sum_{i=0}^{q}\frac1{\lambda_i^{(q)}}
+=\Tr\!\bigl((M^{(q)})^{-1}\bigr)
+=-1+2(-1)^qF_{q+1},
+\]
+\[
+\sum_{i=0}^{q}\frac1{(\lambda_i^{(q)})^2}
+=\Tr\!\bigl((M^{(q)})^{-2}\bigr)
+=4F_{2q+2}+1.
+\]
+\end{corollary}
+\begin{proof}
+第一式直接由定理
+\ref{thm:xi-replica-softcore-orbit-matrix-determinant-integral-inverse}
+的对角元求和得到：
+\[
+\Tr(M^{-1})
+=-1+2(-1)^q\sum_{a=0}^{q}\binom{a}{q-a}
+=-1+2(-1)^qF_{q+1}.
+\]
+第二式由同一节已证命题
+\ref{prop:xi-replica-softcore-exceptional-reciprocal-second-power-fibonacci}
+（且 \(M^{(q)}=A^{(q)}\)）即得
+\(
+\Tr((M^{(q)})^{-2})=1+4F_{2q+2}
+\)。
+证毕。
+\end{proof}
+
+\endinput
