@@ -1,0 +1,228 @@
+\begin{theorem}[Poisson--Cauchy 混合的 KL 四阶主项：三阶矩口径下的精确常数]\label{thm:xi-poisson-cauchy-mixture-kl-t4-minimal-third}
+设 \(\nu\in\mathcal P(\RR)\) 满足
+\[
+M_3:=\int_{\RR}|\gamma-\mu|^3\,\dd\nu(\gamma)<\infty,\qquad
+\mu:=\int_{\RR}\gamma\,\dd\nu(\gamma),\qquad
+\sigma^2:=\int_{\RR}(\gamma-\mu)^2\,\dd\nu(\gamma).
+\]
+令
+\[
+P_t(x):=\frac{1}{\pi}\frac{t}{x^2+t^2},\qquad
+h_t(x):=\int_{\RR}P_t(x-\gamma)\,\dd\nu(\gamma),\qquad
+g_t(x):=P_t(x-\mu).
+\]
+则有
+\begin{equation}\label{eq:xi-poisson-cauchy-mixture-kl-t4-minimal-third}
+\boxed{\;
+\lim_{t\to\infty}t^4D_{\mathrm{KL}}(h_t\mid g_t)=\frac{\sigma^4}{8}\; }.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[证明要点]
+由共同平移不变性可令 \(\mu=0\)，此时 \(g_t=P_t\)。
+对固定 \(x\)，在 \(\gamma=0\) 处对 \(\gamma\mapsto g_t(x-\gamma)\) 作二阶 Taylor 展开并对 \(\nu\) 积分，得
+\[
+h_t(x)=g_t(x)+\frac{\sigma^2}{2}\,g_t''(x)+R_t(x),
+\]
+其中余项满足
+\[
+\|R_t\|_{L^1(\RR)}=o(t^{-3}),\qquad
+\left\|\frac{R_t}{g_t}\right\|_{L^2(g_t\dd x)}=o(t^{-2}).
+\]
+显式计算
+\[
+g_t(x)=\frac{1}{\pi}\frac{t}{x^2+t^2},\qquad
+g_t''(x)=\frac{2}{\pi}\,t\,\frac{3x^2-t^2}{(x^2+t^2)^3},
+\]
+故
+\[
+\frac{g_t''(x)}{g_t(x)}=2\frac{3x^2-t^2}{(x^2+t^2)^2}.
+\]
+定义
+\[
+\Delta_t(x):=\frac{h_t(x)-g_t(x)}{g_t(x)},
+\]
+则
+\[
+\Delta_t(x)=\sigma^2\frac{3x^2-t^2}{(x^2+t^2)^2}+o_{L^2(g_t\dd x)}(t^{-2}),
+\qquad
+\|\Delta_t\|_{L^\infty}=O(t^{-2}),
+\]
+且 \(\int_{\RR}g_t\Delta_t\,\dd x=0\)。
+由
+\(
+(1+u)\log(1+u)=u+\frac12u^2+O(u^3)
+\)
+得到
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac12\int_{\RR}g_t(x)\Delta_t(x)^2\,\dd x+o(t^{-4}).
+\]
+作尺度变换 \(x=tu\)。记 \(g_1(u):=\pi^{-1}(1+u^2)^{-1}\)，则
+\[
+g_t(tu)\,t\,\dd u=g_1(u)\,\dd u,\qquad
+\Delta_t(tu)=\frac{\sigma^2}{t^2}\frac{3u^2-1}{(1+u^2)^2}+o_{L^2(g_1\dd u)}(t^{-2}),
+\]
+从而
+\[
+\int_{\RR}g_t\Delta_t^2\,\dd x
+=\frac{\sigma^4}{t^4}
+\int_{\RR}\frac{1}{\pi}\frac{(3u^2-1)^2}{(1+u^2)^5}\,\dd u
++o(t^{-4}).
+\]
+利用
+\[
+I_k:=\int_{\RR}\frac{u^{2k}}{(1+u^2)^5}\,\dd u,\qquad
+I_0=\frac{35\pi}{128},\quad I_1=\frac{5\pi}{128},\quad I_2=\frac{3\pi}{128},
+\]
+可得
+\[
+\int_{\RR}\frac{1}{\pi}\frac{(3u^2-1)^2}{(1+u^2)^5}\,\dd u
+=\frac{1}{\pi}(9I_2-6I_1+I_0)=\frac14.
+\]
+故
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)=\frac12\cdot\frac{\sigma^4}{t^4}\cdot\frac14+o(t^{-4})
+=\frac{\sigma^4}{8t^4}+o(t^{-4}),
+\]
+即得 \eqref{eq:xi-poisson-cauchy-mixture-kl-t4-minimal-third}。证毕。
+\end{proof}
+
+\begin{corollary}[Poisson--KL 耗散的五次主项]\label{cor:xi-poisson-cauchy-mixture-i1-t5-minimal-third}
+在定理 \ref{thm:xi-poisson-cauchy-mixture-kl-t4-minimal-third} 的设定下，沿用耗散恒等式
+\[
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid g_t)=-\mathcal I_1(h_t\mid g_t),
+\]
+则有
+\[
+\lim_{t\to\infty}t^5\mathcal I_1(h_t\mid g_t)=\frac{\sigma^4}{2}.
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-poisson-cauchy-mixture-kl-t4-minimal-third}，
+\(
+D_{\mathrm{KL}}(h_t\mid g_t)=\frac{\sigma^4}{8t^4}+o(t^{-4})
+\)。
+对 \(t\) 求导并代入耗散恒等式即得
+\(
+\mathcal I_1(h_t\mid g_t)=\frac{\sigma^4}{2t^5}+o(t^{-5})
+\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[四次衰减阶的最优性与方差刚性]\label{thm:xi-poisson-cauchy-mixture-t4-optimality-rigidity}
+在定理 \ref{thm:xi-poisson-cauchy-mixture-kl-t4-minimal-third} 的条件下，下列命题等价：
+\begin{enumerate}
+  \item \(D_{\mathrm{KL}}(h_t\mid g_t)=o(t^{-4})\)（\(t\to\infty\)）；
+  \item \(\sigma^2=0\)；
+  \item \(\nu=\delta_\mu\)。
+\end{enumerate}
+此外，若 \(\sigma^2>0\)，则
+\[
+\liminf_{t\to\infty}t^4D_{\mathrm{KL}}(h_t\mid g_t)\ge\frac{\sigma^4}{8}>0.
+\]
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:xi-poisson-cauchy-mixture-kl-t4-minimal-third} 的极限常数，(1)\(\Rightarrow\)(2) 立即成立；
+而 \(\sigma^2=0\) 当且仅当 \(\nu\) 为 Dirac 测度，故 (2)\(\Leftrightarrow\)(3)。
+若 (3) 成立，则 \(h_t\equiv g_t\)，从而 (1) 成立。
+最后一式同样由极限公式直接得到。证毕。
+\end{proof}
+
+\begin{corollary}[黄金尺度上的指数 \(4\) 屏障]\label{cor:xi-poisson-cauchy-mixture-golden-exponent4-barrier}
+设 \(t_m:=\varphi^m\)（或更一般 \(t_m\asymp \varphi^m\)）。
+在定理 \ref{thm:xi-poisson-cauchy-mixture-kl-t4-minimal-third} 条件下，
+\[
+D_{\mathrm{KL}}(h_{t_m}\mid g_{t_m})
+=\frac{\sigma^4}{8}\,\varphi^{-4m}+o(\varphi^{-4m}).
+\]
+若 \(\sigma^2>0\)，则 \(D_{\mathrm{KL}}(h_{t_m}\mid g_{t_m})\) 不可能快于 \(\varphi^{-4m}\) 阶衰减。
+\end{corollary}
+
+\begin{proof}
+将 \(t=t_m\) 代入定理 \ref{thm:xi-poisson-cauchy-mixture-kl-t4-minimal-third} 即得首式；
+由定理 \ref{thm:xi-poisson-cauchy-mixture-t4-optimality-rigidity} 的刚性判别得到指数屏障。证毕。
+\end{proof}
+
+\begin{theorem}[桥接接口中的方差必要条件]\label{thm:xi-poisson-kl-bridge-variance-necessary-condition}
+令 \(\varrho_m\uparrow 1\)，并取尺度 \(t_m:=t(\varrho_m)\asymp\varphi^m\to\infty\)。
+对每个 \(x_0\in\RR\) 给定概率测度 \(\nu^{(x_0)}\in\mathcal P(\RR)\)，记
+\[
+m(x_0):=\int_{\RR}\gamma\,\dd\nu^{(x_0)}(\gamma),\qquad
+h_t^{(x_0)}:=P_t*\nu^{(x_0)},\qquad
+g_t^{(x_0)}(x):=P_t\bigl(x-m(x_0)\bigr).
+\]
+假设：
+\begin{enumerate}
+  \item \(\sup_{x_0}\int_{\RR}|\gamma-m(x_0)|^3\,\dd\nu^{(x_0)}(\gamma)<\infty\)；
+  \item 存在常数 \(A>0\) 与误差列 \(\mathrm{Err}_m\) 满足
+  \[
+  D_{\zeta,x_0}(\varrho_m)\ge
+  A\,D_{\mathrm{KL}}\!\bigl(h_{t_m}^{(x_0)}\mid g_{t_m}^{(x_0)}\bigr)-\mathrm{Err}_m
+  \qquad(\forall x_0,m),
+  \]
+  且 \(\sup_m t_m^4|\mathrm{Err}_m|<\infty\)、\(\mathrm{Err}_m=o(t_m^{-4})\)；
+  \item 存在 \(v_0>0\) 使
+  \[
+  \inf_{x_0\in\RR}\mathrm{Var}\!\bigl(\nu^{(x_0)}\bigr)\ge v_0.
+  \]
+\end{enumerate}
+则有
+\[
+\liminf_{m\to\infty}t_m^4\sup_{x_0\in\RR}D_{\zeta,x_0}(\varrho_m)\ge A\,\frac{v_0^2}{8}.
+\]
+因此，任何试图在该桥接口下实现
+\(
+t_m^4\sup_{x_0}D_{\zeta,x_0}(\varrho_m)\to 0
+\)
+的证书链，都必须满足
+\(
+\inf_{x_0}\mathrm{Var}(\nu^{(x_0)})=0
+\)。
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:xi-poisson-cauchy-mixture-kl-t4-minimal-third} 对每个 \(x_0\) 的逐纤维应用，
+\[
+D_{\mathrm{KL}}\!\bigl(h_{t_m}^{(x_0)}\mid g_{t_m}^{(x_0)}\bigr)
+=\frac{\mathrm{Var}(\nu^{(x_0)})^2}{8t_m^4}+o(t_m^{-4}),
+\]
+且由一致三阶矩控制，该 \(o(t_m^{-4})\) 可在 \(x_0\) 上一致选取。
+由桥接下界得
+\[
+\sup_{x_0}D_{\zeta,x_0}(\varrho_m)
+\ge
+A\sup_{x_0}D_{\mathrm{KL}}\!\bigl(h_{t_m}^{(x_0)}\mid g_{t_m}^{(x_0)}\bigr)-\mathrm{Err}_m
+\ge
+A\frac{v_0^2}{8t_m^4}+o(t_m^{-4})-\mathrm{Err}_m.
+\]
+同乘 \(t_m^4\) 并取下极限即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[Poisson--KL 路径的主通道二分]\label{cor:xi-poisson-kl-bridge-main-channel-dichotomy}
+在定理 \ref{thm:xi-poisson-kl-bridge-variance-necessary-condition} 的设定下，若目标是实现
+\(
+t_m^4\sup_{x_0}D_{\zeta,x_0}(\varrho_m)\to 0
+\)，则必须出现以下二者之一：
+\begin{enumerate}
+  \item \textbf{方差塌缩通道：}存在 \(x_0=x_0(m)\) 使 \(\mathrm{Var}(\nu^{(x_0(m))})\to 0\)；
+  \item \textbf{误差抵消通道：}桥接误差在 \(t_m^{-4}\) 主阶提供统一负补偿，以抵消 \(\mathrm{Var}(\nu^{(x_0)})^2/(8t_m^4)\) 的刚性项。
+\end{enumerate}
+特别地，若误差项可独立证明为非负且 \(o(t_m^{-4})\)，则第二通道被排除；此时上述目标等价于第一通道。
+\end{corollary}
+
+\begin{proof}
+定理 \ref{thm:xi-poisson-kl-bridge-variance-necessary-condition} 给出主阶下界。
+若不存在方差塌缩，则该下界保持正值，故只能由同阶负误差抵消；反之若误差非负且更高阶，则无法抵消，因而必须发生方差塌缩。证毕。
+\end{proof}
+
+\begin{remark}[公开检索范围说明]\label{rem:xi-poisson-cauchy-kl-one-eighth-public-index-note}
+针对 ``Cauchy mixture KL asymptotic \(t^{-4}\) variance'' 与 ``Poisson kernel convolution relative entropy asymptotic'' 的同型关键词组合所作公开索引检索，未定位到直接给出
+\eqref{eq:xi-poisson-cauchy-mixture-kl-t4-minimal-third}
+中精确常数 \(1/8\) 的同参写法。
+该结论仅构成检索语料范围内的事实陈述，不构成形式意义上的排他性证明；其文献新颖性仍以系统综述与审稿结论为准。
+\end{remark}
+
+\endinput
