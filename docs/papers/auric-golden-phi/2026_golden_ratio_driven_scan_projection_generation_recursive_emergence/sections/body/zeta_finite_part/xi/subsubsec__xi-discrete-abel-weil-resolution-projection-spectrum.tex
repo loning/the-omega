@@ -1,135 +1,143 @@
-\paragraph{分辨率幂提升、Hardy 投影塔与极点谱推前兼容}\label{par:xi-discrete-abel-weil-resolution-projection-spectrum}
-在定理 \ref{thm:discrete-abel-weil-expansion} 与命题
-\ref{prop:abel-base-recursion-pole-conjugacy} 的基础上，
-本段把底数幂提升 \(b\mapsto b^m\) 的代数恒等式、边界投影结构与极点谱测度推前统一为同一条可核验链，并据此提出模同余能量均分的二阶统计猜想。
+\paragraph{分辨率幂提升、\(k\)-进投影塔与双底数反混叠的统一链条}\label{par:xi-discrete-abel-weil-resolution-projection-spectrum}
+在定理 \ref{thm:discrete-abel-weil-expansion}、命题 \ref{prop:abel-base-recursion-pole-conjugacy}
+与段落 \ref{def:abel-decimation-operators} 的记号下，
+本段把“底数幂重整化 \(\Rightarrow\) 条件期望投影 \(\Rightarrow\) 多分辨率能量记账 \(\Rightarrow\) 双底数反混叠”
+组织为同一条可审计闭环，并给出尺度差分概率极限定律的猜想接口。
 
-\begin{theorem}[分辨率幂提升下的精确重整化恒等式]\label{thm:abel-resolution-power-renormalization-identity}
-设 \(b>1\)，并沿用
+\begin{theorem}[\texorpdfstring{$k$}{k}-进底数幂重整化的根单位平均恒等式]\label{thm:abel-resolution-power-renormalization-identity}
+设 \(b>1\)、\(k\ge 2\) 为整数，并沿用
 \[
-E_b(n):=b^{-n/2}\psi_0(b^n)-b^n,\qquad
-\mathcal A_b(r):=\sum_{n\ge 0}E_b(n)r^n,\qquad
-\mathcal A_{b,\delta}(r):=\sum_{n\ge 0}E_b(n)b^{-\delta n}r^n
+E_b(n):=b^{-n/2}\bigl(\psi_0(b^n)-b^n\bigr),\qquad
+\mathcal A_{b,\delta}(r):=\sum_{n\ge 0}E_b(n)b^{-\delta n}r^n\qquad(\delta\ge 0).
 \]
-（\(\delta\ge 0\)）。
-对任意整数 \(m\ge 2\)，记 \(\omega:=e^{2\pi i/m}\)。
-则在共同收敛域内有严格恒等式
+则作为形式幂级数有
+\[
+\mathcal A_{b^k,\delta}(r)=\sum_{n\ge 0}E_{b^k}(n)(b^k)^{-\delta n}r^n
+=\sum_{n\ge 0}E_b(kn)b^{-\delta kn}r^n.
+\]
+并且在共同收敛域内有解析恒等式
 \begin{equation}\label{eq:abel-resolution-power-renormalization-identity}
-\boxed{
-\mathcal A_{b^m}(r^m)=\frac1m\sum_{j=0}^{m-1}\mathcal A_b(\omega^j r),\qquad
-\mathcal A_{b^m,\delta}(r^m)=\frac1m\sum_{j=0}^{m-1}\mathcal A_{b,\delta}(\omega^j r).
-}
+\boxed{\;
+\mathcal A_{b^k,\delta}(t^k)=\frac1k\sum_{j=0}^{k-1}\mathcal A_{b,\delta}(\zeta_k^j t),\qquad
+\zeta_k:=e^{2\pi i/k}.\;}
 \end{equation}
-并且该恒等式与 Abel--Weil 极点展开交换：若
-\[
-\mathcal A_b(r)= -\sum_{\rho}\frac1{\rho}\cdot\frac1{1-r\,b^{\rho-\frac12}} +H_b(r),
-\]
-其中 \(H_b\) 在 \(|r|<b^{1/2}\) 内解析，则
-\[
-\mathcal A_{b^m}(r)= -\sum_{\rho}\frac1{\rho}\cdot\frac1{1-r\,(b^m)^{\rho-\frac12}} +H_{b^m}(r),
-\]
-且极点满足幂一致性
-\[
-r_\rho(b^m)=r_\rho(b)^m,\qquad r_\rho(b):=b^{-(\rho-\frac12)}.
-\]
-同理，对阻尼极点
-\(
-r_{\rho,\delta}(b)=b^\delta r_\rho(b)
-\)
-也有
-\(
-r_{\rho,\delta}(b^m)=r_{\rho,\delta}(b)^m
-\)。
+因此，\(b\mapsto b^k\) 在 \(\mathcal A_{b,\delta}\) 上正对应于“抽取每 \(k\) 项系数”的 \(k\)-进下采样算子。
 \end{theorem}
 
 \begin{proof}
-由命题 \ref{prop:abel-base-recursion-pole-conjugacy}，
-\(
-E_{b^m}(n)=E_b(mn)
-\)。
-故
+由定义直接计算
 \[
-\mathcal A_{b^m}(r^m)=\sum_{n\ge 0}E_b(mn)r^{mn}.
+E_{b^k}(n)
+=(b^k)^{-n/2}\bigl(\psi_0((b^k)^n)-(b^k)^n\bigr)
+=b^{-kn/2}\bigl(\psi_0(b^{kn})-b^{kn}\bigr)
+=E_b(kn),
 \]
-另一方面，
-\[
-\frac1m\sum_{j=0}^{m-1}\mathcal A_b(\omega^jr)
-=\sum_{n\ge 0}E_b(n)r^n\Bigl(\frac1m\sum_{j=0}^{m-1}\omega^{jn}\Bigr),
-\]
-括号内为根单位筛选子，仅在 \(m\mid n\) 时取 \(1\)，否则为 \(0\)，故右端化为
-\(\sum_{n\ge 0}E_b(mn)r^{mn}\)。
-阻尼版仅把 \(E_b(n)\) 替换为 \(E_b(n)b^{-\delta n}\) 即得。
+且 \((b^k)^{-\delta n}=b^{-k\delta n}\)，故系数恒等式成立。
 
-极点交换性由定理 \ref{thm:discrete-abel-weil-expansion} 对底数 \(b^m\) 的同型展开以及
+记 \(a_m:=E_b(m)b^{-\delta m}\)，则
+\[
+\frac1k\sum_{j=0}^{k-1}\mathcal A_{b,\delta}(\zeta_k^j t)
+=\sum_{m\ge 0}a_m t^m\Bigl(\frac1k\sum_{j=0}^{k-1}\zeta_k^{jm}\Bigr)
+=\sum_{n\ge 0}a_{kn}t^{kn}
+=\mathcal A_{b^k,\delta}(t^k),
+\]
+其中使用根单位筛选恒等式
 \(
-(b^m)^{\rho-\frac12}=(b^{\rho-\frac12})^m
-\)
-直接得到。证毕。
+\frac1k\sum_{j=0}^{k-1}\zeta_k^{jm}=\mathbf 1_{k\mid m}
+\)。
+证毕。
 \end{proof}
 
-\begin{theorem}[多分辨率 Hardy 投影塔与反向鞅误差控制]\label{thm:abel-hardy-projection-tower-reverse-martingale}
-固定 \(\delta\ge 0\)，并假设 \(\mathcal A_{b,\delta}\in H^2(\mathbb D)\)。
-记边界值
+\begin{theorem}[\texorpdfstring{$H^2$}{H2} 条件期望实现与反向鞅递归]\label{thm:abel-hardy-projection-tower-reverse-martingale}
+设 \(\delta>0\) 且 \(\mathcal A_{b,\delta}\in H^2(\mathbb D)\)。
+记径向边界值
 \[
 f_\delta(e^{i\theta}):=\lim_{r\uparrow 1}\mathcal A_{b,\delta}(re^{i\theta})\in L^2(\mathbb S^1).
 \]
-对 \(m\ge 2\) 定义旋转平均算子
+对整数 \(k\ge 2\) 定义
 \[
-(\mathsf P_m f)(e^{i\theta})
-:=\frac1m\sum_{j=0}^{m-1}f\!\left(e^{i(\theta+2\pi j/m)}\right).
+(\mathbb E_k f)(e^{i\theta})
+:=\frac1k\sum_{j=0}^{k-1}f\!\left(e^{i(\theta+2\pi j)/k}\right),\qquad f\in L^2(\mathbb S^1).
 \]
-则：
-\begin{enumerate}
-  \item \(\mathsf P_m\) 是 \(L^2(\mathbb S^1)\) 上到“频率为 \(m\) 倍数”闭子空间的正交投影，并满足
-  \[
-  \mathsf P_m f_\delta(e^{i\theta})=\mathcal A_{b^m,\delta}(e^{im\theta})
-  \quad\text{a.e. on }\mathbb S^1.
-  \]
-  \item 对二进制塔 \(m=2^k\)（\(k\ge 0\)），\(\{\mathsf P_{2^k}f_\delta\}\) 构成反向鞅，并且
-  \[
-  \mathsf P_{2^k}f_\delta \xrightarrow[k\to\infty]{L^2\ \&\ a.e.} E_b(0).
-  \]
-  \item 存在绝对常数 \(C_2\)（可取 \(C_2=2\)）使
-  \[
-  \left\|\sup_{k\ge 0}\left|\mathsf P_{2^k}f_\delta-E_b(0)\right|\right\|_{L^2(\mathbb S^1)}
-  \le
-  C_2\|f_\delta-E_b(0)\|_{L^2(\mathbb S^1)}.
-  \]
-\end{enumerate}
+则对几乎处处 \(\theta\) 有
+\[
+\mathcal A_{b^k,\delta}(e^{i\theta})=(\mathbb E_k f_\delta)(e^{i\theta}).
+\]
+进一步令
+\[
+F_m:=\mathcal A_{b^{k^m},\delta}\quad(m\ge 0),\qquad
+\mathcal F_m:=\sigma\!\left(e^{ik^m\theta}\right),
+\]
+则 \((F_m,\mathcal F_m)_{m\ge 0}\) 在 \(L^2(\mathbb S^1)\) 中构成反向鞅，且
+\[
+F_{m+1}=\mathbb E(F_m\mid\mathcal F_{m+1})
+\quad\text{于 }L^2(\mathbb S^1).
+\]
 \end{theorem}
 
 \begin{proof}
-设
-\(
-f(e^{i\theta})=\sum_{n\in\mathbb Z}\hat f(n)e^{in\theta}
-\)。
-直接计算
+由 \eqref{eq:abel-resolution-power-renormalization-identity}，取 \(t=re^{i\theta/k}\) 得
 \[
-\mathsf P_m f(e^{i\theta})
-=\sum_{n\in\mathbb Z}\hat f(n)e^{in\theta}
-\Bigl(\frac1m\sum_{j=0}^{m-1}e^{2\pi ijn/m}\Bigr)
-=\sum_{k\in\mathbb Z}\hat f(mk)e^{imk\theta},
+\mathcal A_{b^k,\delta}(r^k e^{i\theta})
+=\frac1k\sum_{j=0}^{k-1}
+\mathcal A_{b,\delta}\!\left(r\,e^{i(\theta+2\pi j)/k}\right).
 \]
-故 \(\mathsf P_m\) 为所述正交投影。
+令 \(r\uparrow 1\)，由 \(H^2\) 径向边界值存在性即得边界恒等式。
 
-对解析边界值 \(f_\delta\)（仅含非负频率），结合
-\eqref{eq:abel-resolution-power-renormalization-identity}
-并取径向边界极限，得到
+另一方面，若 \(f(e^{i\theta})=\sum_{n\in\mathbb Z}\widehat f(n)e^{in\theta}\)，则
+\[
+\mathbb E_k f(e^{i\theta})
+=\sum_{n\in\mathbb Z}\widehat f(n)e^{in\theta}
+\Bigl(\frac1k\sum_{j=0}^{k-1}e^{2\pi ijn/k}\Bigr)
+=\sum_{\ell\in\mathbb Z}\widehat f(k\ell)e^{ik\ell\theta},
+\]
+故 \(\mathbb E_k\) 是投影到“频率为 \(k\) 倍数”闭子空间的正交投影，即
 \(
-\mathsf P_m f_\delta(e^{i\theta})=\mathcal A_{b^m,\delta}(e^{im\theta})
+\mathbb E_k f=\mathbb E(f\mid \sigma(e^{ik\theta}))
 \)。
-
-当 \(m=2^k\) 时，投影子空间递减，且
+应用于 \(F_m\) 并迭代即可得到
 \(
-\mathsf P_{2^{k+1}}\mathsf P_{2^k}=\mathsf P_{2^{k+1}}
+F_{m+1}=\mathbb E(F_m\mid\mathcal F_{m+1})
 \)；
-故是反向鞅。
-极限空间为常数函数子空间，因此极限为 \(\hat f_\delta(0)=E_b(0)\)。
+由于 \(\mathcal F_{m+1}\subset\mathcal F_m\)，故是反向鞅。证毕。
+\end{proof}
 
-最大函数估计由 \(L^2\) 反向鞅 Doob 不等式给出：
+\begin{corollary}[严格的 \texorpdfstring{$k$}{k}-进多分辨率能量分解]\label{cor:abel-kadic-multiresolution-energy-ledger}
+在定理 \ref{thm:abel-hardy-projection-tower-reverse-martingale} 的条件下，对任意 \(M\ge 1\) 有正交恒等式
 \[
-\Bigl\|\sup_{k\ge 0}|X_k-X_\infty|\Bigr\|_2\le 2\|X_0-X_\infty\|_2,
+\|F_0\|_{H^2(\mathbb D)}^2
+=\|F_M\|_{H^2(\mathbb D)}^2+\sum_{m=0}^{M-1}\|F_m-F_{m+1}\|_{H^2(\mathbb D)}^2.
 \]
-取 \(X_k=\mathsf P_{2^k}f_\delta\) 即得。证毕。
+等价地，在系数层面有精确拆分
+\[
+\sum_{n\ge 0}|E_b(n)|^2b^{-2\delta n}
+=\sum_{n\ge 0}|E_b(k^Mn)|^2b^{-2\delta k^Mn}
++\sum_{m=0}^{M-1}\ \sum_{\substack{n\ge 1\\ v_k(n)=m}}
+|E_b(n)|^2b^{-2\delta n},
+\]
+其中 \(v_k(n)\) 为 \(k\)-进赋值。
+因此 \(M\mapsto\|F_M\|_{H^2(\mathbb D)}\) 单调不增，且差分层 \(\{F_m-F_{m+1}\}_{m\ge 0}\) 两两正交。
+\end{corollary}
+
+\begin{proof}
+由反向鞅恒等式
+\(
+F_{m+1}=\mathbb E(F_m\mid\mathcal F_{m+1})
+\)
+可知 \(F_m-F_{m+1}\) 与 \(\mathcal F_{m+1}\)-可测子空间正交。
+对 \(m=0,\dots,M-1\) 迭代 Pythagoras 恒等式即得第一式。
+
+设 \(a_n:=E_b(n)b^{-\delta n}\)。
+则 \(F_M\) 的系数恰为 \(\{a_{k^Mn}\}_{n\ge 0}\)，而 \(F_m-F_{m+1}\) 恰选取
+\(
+k^m\mid n,\ k^{m+1}\nmid n
+\)
+对应的系数，即 \(v_k(n)=m\) 的指数层。
+由 \(H^2\) 系数等距同构
+\(
+\| \sum_{n\ge 0}c_n r^n\|_{H^2}^2=\sum_{n\ge 0}|c_n|^2
+\)
+即得第二式。证毕。
 \end{proof}
 
 \begin{proposition}[极点谱测度在幂映射下的推前兼容]\label{prop:abel-weil-polar-measure-power-pushforward}
@@ -139,37 +147,130 @@ f(e^{i\theta})=\sum_{n\in\mathbb Z}\hat f(n)e^{in\theta}
 \qquad
 \lambda_\rho(b):=b^{\rho-\frac12},
 \]
-并定义离散复谱测度
+及离散复谱测度
 \[
 \nu_b:=\sum_{\rho}\Bigl(-\frac1{\rho}\Bigr)\delta_{\lambda_\rho(b)}.
 \]
 则
 \[
-\mathcal P_b(r)=\int_{\CC^\times}\frac1{1-r\lambda}\,\dd\nu_b(\lambda).
+\mathcal P_b(r)=\int_{\CC^\times}\frac{1}{1-r\lambda}\,\dd\nu_b(\lambda).
 \]
-对任意 \(m\ge 2\)，令 \(\pi_m(\lambda)=\lambda^m\)，则
+对任意 \(m\ge 2\)，令 \(\pi_m(\lambda)=\lambda^m\)，则有
 \[
 \nu_{b^m}=(\pi_m)_\#\nu_b.
 \]
-在 RH 情形 \(\rho=\frac12+i\gamma\) 下，边界角
-\(
-\theta_\rho(b):=\arg\lambda_\rho(b)=\gamma\log b\ (\mathrm{mod}\ 2\pi)
-\)
-满足同余递归
+在 RH 情形 \(\rho=\frac12+i\gamma\) 下，相位编码
+\[
+\theta_\rho(b):=\arg\lambda_\rho(b)\equiv\gamma\log b\pmod{2\pi}
+\]
+满足
 \[
 \theta_\rho(b^m)\equiv m\,\theta_\rho(b)\pmod{2\pi}.
 \]
 \end{proposition}
 
 \begin{proof}
-积分表示由离散测度定义逐项展开即得。
+积分表示由离散测度逐项展开即得。
 又
 \[
 \lambda_\rho(b^m)=(b^m)^{\rho-\frac12}
-=(b^{\rho-\frac12})^m=\pi_m(\lambda_\rho(b)),
+=(b^{\rho-\frac12})^m
+=\pi_m(\lambda_\rho(b)),
 \]
-故推前恒等式成立。相位同余为该幂映射在单位圆上的直接表达。证毕。
+故推前恒等式成立；相位递推是其在单位圆上的直接表达。证毕。
 \end{proof}
+
+\begin{theorem}[双底数反混叠与 Baker 型有效分离]\label{thm:abel-dual-base-dealiasing-baker-effective-separation}
+设 \(b_1,b_2>1\)，定义
+\[
+\Phi:\gamma\longmapsto\bigl(e^{-i\gamma\log b_1},e^{-i\gamma\log b_2}\bigr)\in(\mathbb S^1)^2.
+\]
+并记
+\[
+\|x\|_{2\pi}:=\inf_{q\in\mathbb Z}|x-2\pi q|.
+\]
+则有：
+\begin{enumerate}
+  \item 若 \(\log b_1/\log b_2\notin\mathbb Q\)，则 \(\Phi\) 在 \(\mathbb R\) 上单射。
+  \item 若进一步 \(b_1,b_2\in\mathbb Z_{>1}\) 乘法独立，则存在常数 \(c_0,c,C>0\)（仅依赖于 \(b_1,b_2\)），使得对任意 \(T\ge 2\) 与 \(\Delta\in[-2T,2T]\setminus\{0\}\)：
+  \[
+  \max\!\bigl(\|\Delta\log b_1\|_{2\pi},\|\Delta\log b_2\|_{2\pi}\bigr)
+  \ge
+  \min\!\bigl(c_0|\Delta|,\ cT^{-C}\bigr).
+  \]
+  特别地，在非平凡同余支（即至少一侧最近整数非零）上有有效分离界
+  \[
+  \max\!\bigl(\|\Delta\log b_1\|_{2\pi},\|\Delta\log b_2\|_{2\pi}\bigr)\ge cT^{-C}.
+  \]
+\end{enumerate}
+因此，双底数联合相位把全局混叠压缩为局部线性分辨问题；当观测误差小于 \(\tfrac12 cT^{-C}\) 时，非平凡同余碰撞在高度窗 \(|\gamma|\le T\) 内被排除。
+\end{theorem}
+
+\begin{proof}
+\textbf{(1)} 若 \(\Phi(\gamma)=\Phi(\gamma')\)，令 \(\Delta:=\gamma-\gamma'\)，则存在 \(m,n\in\mathbb Z\) 使
+\[
+\Delta\log b_1=2\pi m,\qquad \Delta\log b_2=2\pi n.
+\]
+若 \(\Delta\neq 0\)，则 \(\log b_1/\log b_2=m/n\in\mathbb Q\)，与假设矛盾。故 \(\Delta=0\)，即 \(\gamma=\gamma'\)。
+
+\textbf{(2)} 固定 \(\Delta\neq 0\)，记
+\[
+\eta:=\max\!\bigl(\|\Delta\log b_1\|_{2\pi},\|\Delta\log b_2\|_{2\pi}\bigr).
+\]
+取整数 \(m,n\) 使
+\(
+|\Delta\log b_1-2\pi m|\le\eta
+\),
+\(
+|\Delta\log b_2-2\pi n|\le\eta
+\)。
+若 \(m=n=0\)，则
+\[
+\eta=\max\!\bigl(|\Delta|\log b_1,|\Delta|\log b_2\bigr)\ge \min(\log b_1,\log b_2)\,|\Delta|,
+\]
+可取 \(c_0:=\min(\log b_1,\log b_2)\)。
+
+若 \((m,n)\neq(0,0)\)，则
+\[
+\bigl|m\log b_2-n\log b_1\bigr|
+\le \frac{\log b_1+\log b_2}{2\pi}\,\eta.
+\]
+另一方面，乘法独立保证
+\(
+m\log b_2-n\log b_1\neq 0
+\)，
+由 Baker--W\"ustholz/Matveev 型线性对数下界
+\cite{BakerWustholz2007LogarithmicForms,Matveev2000LinearFormsLogs}
+可得常数 \(C_1,C_2>0\) 使
+\[
+\bigl|m\log b_2-n\log b_1\bigr|
+\ge C_1\,H^{-C_2},\qquad H:=\max\{|m|,|n|\}.
+\]
+又由 \(|\Delta|\le 2T\) 得
+\[
+H\le \frac{T}{\pi}\max(\log b_1,\log b_2)+1\le C_3T.
+\]
+故
+\[
+\eta\ge C_4H^{-C_2}\ge C_5T^{-C_2}.
+\]
+取 \(c:=C_5,\ C:=C_2\) 即得结论。证毕。
+\end{proof}
+
+\begin{conjecture}[尺度差分的渐近独立高斯性]\label{conj:abel-scale-difference-asymptotic-gaussianity}
+固定 \(b>1\)、\(k\ge 2\)、\(\delta>0\)，并取 \(\Theta\sim\mathrm{Unif}[0,2\pi)\)。
+令
+\[
+F_m:=\mathcal A_{b^{k^m},\delta},\qquad
+D_m(\Theta):=F_m(e^{i\Theta})-F_{m+1}(e^{i\Theta})\quad(m\ge 0).
+\]
+在 RH 与零点 GUE 型局部统计假设下，存在 \(\sigma^2=\sigma^2(b,k,\delta)>0\) 使
+\[
+k^{m/2}D_m(\Theta)\xrightarrow[m\to\infty]{\mathrm{law}}\mathcal N_{\mathbb C}(0,\sigma^2),
+\]
+且有限维分布意义下，\(\{k^{m/2}D_m(\Theta)\}_{m\ge m_0}\) 渐近独立。
+该猜想把推论 \ref{cor:abel-kadic-multiresolution-energy-ledger} 的 \(L^2\)-正交分层提升为分布层的噪声极限律。
+\end{conjecture}
 
 \begin{conjecture}[模同余能量均分律]\label{conj:abel-congruence-energy-equipartition}
 固定 \(b>1\)，令 \(E_b(n)\) 如上。
@@ -188,7 +289,6 @@ f(e^{i\theta})=\sum_{n\in\mathbb Z}\hat f(n)e^{in\theta}
 =O_m(N^{1-\eta})
 \]
 （某个 \(\eta>0\)）。
-\par
 该猜想是猜想 \ref{conj:abel-channel-energy-equipartition} 在非阻尼二阶统计层面的自然强化，并与命题 \ref{prop:abel-cyclic-character-projection} 的循环角色分解共同给出可检验的多尺度噪声均衡断言。
 \end{conjecture}
 

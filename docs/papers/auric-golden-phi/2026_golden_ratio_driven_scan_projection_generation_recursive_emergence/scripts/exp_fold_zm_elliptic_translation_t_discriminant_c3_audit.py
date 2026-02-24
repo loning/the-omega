@@ -17,6 +17,10 @@ The script certifies:
   5) u=1 factorization and strict SOS positivity of the quartic factor.
   6) Singular-locus elimination via Groebner basis:
        <D_t, d_u D_t, d_t D_t> with lex order u > t.
+  7) t=1 specialization certificate toward Gal(D_1/Q)=S11:
+       - irreducible mod 19 (degree 11),
+       - mod-11 split type (3,8),
+       - discriminant is a nonsquare integer.
 
 Outputs:
   - artifacts/export/fold_zm_elliptic_translation_t_discriminant_c3_audit.json
@@ -104,6 +108,12 @@ class Payload:
     singular_t_squarefree_ok: bool
     singular_linear_u_relation_ok: bool
     singular_u_formula: str
+    t1_poly_matches: bool
+    t1_mod19_irreducible: bool
+    t1_mod11_split_degrees: List[int]
+    t1_disc_value: int
+    t1_disc_is_square: bool
+    t1_s11_frobenius_certificate: bool
     elapsed_s: float
 
 
@@ -199,6 +209,35 @@ def main() -> None:
     else:
         u_formula = "unmatched"
 
+    # 7) t=1 specialization: S11 certificate ingredients.
+    P_t1 = sp.expand(D_t.subs(t, 1))
+    P_t1_expected = sp.expand(
+        -27 * u**11
+        + 90 * u**9
+        - 18 * u**8
+        - 239 * u**7
+        - 78 * u**6
+        + 241 * u**5
+        - 144 * u**4
+        - 228 * u**3
+        + 220 * u**2
+        - 120 * u
+        + 20
+    )
+    t1_poly_matches = sp.expand(P_t1 - P_t1_expected) == 0
+
+    fac19 = sp.factor_list(sp.Poly(P_t1, u, modulus=19))[1]
+    t1_mod19_irred = bool(len(fac19) == 1 and int(fac19[0][0].degree()) == 11 and int(fac19[0][1]) == 1)
+
+    fac11 = sp.factor_list(sp.Poly(P_t1, u, modulus=11))[1]
+    t1_mod11_degrees = sorted(int(f.degree()) for f, _ in fac11)
+    t1_mod11_split = bool(t1_mod11_degrees == [3, 8])
+
+    t1_disc = int(sp.expand(sp.discriminant(P_t1, u)))
+    _, t1_disc_is_square_exact = sp.integer_nthroot(abs(t1_disc), 2)
+    t1_disc_is_square = bool(t1_disc_is_square_exact)
+    t1_s11_frobenius_certificate = bool(t1_mod11_split and (t1_disc % 11 != 0) and (t1_disc % 19 != 0))
+
     payload = Payload(
         deg_u_D_t=deg_u,
         disc_mu_equals_u_D_t=bool(disc_mu_ok),
@@ -213,6 +252,12 @@ def main() -> None:
         singular_t_squarefree_ok=bool(t_sqf_ok),
         singular_linear_u_relation_ok=bool(linear_u_ok),
         singular_u_formula=u_formula,
+        t1_poly_matches=bool(t1_poly_matches),
+        t1_mod19_irreducible=bool(t1_mod19_irred),
+        t1_mod11_split_degrees=t1_mod11_degrees,
+        t1_disc_value=int(t1_disc),
+        t1_disc_is_square=bool(t1_disc_is_square),
+        t1_s11_frobenius_certificate=bool(t1_s11_frobenius_certificate),
         elapsed_s=float(time.time() - t0),
     )
 
@@ -236,6 +281,16 @@ def main() -> None:
         raise AssertionError("Groebner squarefree t-elimination check failed")
     if not payload.singular_linear_u_relation_ok:
         raise AssertionError("Groebner linear u-relation check failed")
+    if not payload.t1_poly_matches:
+        raise AssertionError("t=1 specialization polynomial mismatch")
+    if not payload.t1_mod19_irreducible:
+        raise AssertionError("t=1 polynomial is not irreducible mod 19")
+    if payload.t1_mod11_split_degrees != [3, 8]:
+        raise AssertionError(f"unexpected mod-11 split degrees: {payload.t1_mod11_split_degrees}")
+    if payload.t1_disc_is_square:
+        raise AssertionError("t=1 discriminant unexpectedly square")
+    if not payload.t1_s11_frobenius_certificate:
+        raise AssertionError("t=1 Frobenius-cycle certificate failed")
 
     if not args.no_output:
         out = export_dir() / "fold_zm_elliptic_translation_t_discriminant_c3_audit.json"
@@ -247,6 +302,9 @@ def main() -> None:
         f"disc_mu_ok={payload.disc_mu_equals_u_D_t} "
         f"disc_u_ok={payload.disc_u_factorization_ok} "
         f"singular_elim_ok={payload.singular_t_elimination_ok} "
+        f"t1_mod19_irred={payload.t1_mod19_irreducible} "
+        f"t1_mod11_degrees={payload.t1_mod11_split_degrees} "
+        f"t1_disc_square={payload.t1_disc_is_square} "
         f"u_formula='{payload.singular_u_formula}' "
         f"elapsed_s={payload.elapsed_s:.3f}",
         flush=True,
