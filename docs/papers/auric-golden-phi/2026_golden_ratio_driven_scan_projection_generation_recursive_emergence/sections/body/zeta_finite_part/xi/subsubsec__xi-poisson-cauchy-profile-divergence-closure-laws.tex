@@ -340,11 +340,260 @@ s_t=t+\sigma^2/(2t)+o(t^{-1})
 证毕。
 \end{proof}
 
-\begin{remark}[同形公开索引排查的范围说明]\label{rem:xi-poisson-profile-divergence-public-index-note}
-关于六阶系数组合、最优尺度修正与相关常数的同形公开索引排查，可与注
-\ref{rem:xi-poisson-refined-sixth-order-public-index-check}
-联读。该类检索结论仅在既定检索语料与参数化口径内成立，不构成形式意义上的排他性证明。
-\end{remark}
+\begin{conclusion}[Poisson--Cauchy 位置混合的二阶常数律与显式余项]\label{con:xi-poisson-cauchy-second-order-constants-with-mu3-remainder}
+在命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form} 的单通道记号下，记 \(\Var:=\int_{\RR}(\gamma-\bar\gamma)^2\,\dd\tilde\nu(\gamma)\)、\(\mu_3:=\int_{\RR}|\gamma-\bar\gamma|^3\,\dd\tilde\nu(\gamma)<\infty\)。
+\[
+\|h_t-g_t\|_{L^1(\RR)}
+=\frac{3\sqrt3}{4\pi}\frac{\Var}{t^2}
++O\!\left(\frac{\mu_3}{t^3}\right),
+\]
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac{1}{8}\frac{\Var^2}{t^4}
++O\!\left(\frac{\mu_3\Var}{t^5}+\frac{\mu_3^2}{t^6}\right).
+\]
+\end{conclusion}
+\begin{proof}[证明]
+由命题 \ref{con:xi-poisson-coarsegraining-second-order-normal-form}，
+\[
+h_t-g_t=\Var\,r_t+\varepsilon_t,\qquad
+\|\varepsilon_t\|_{L^1}=O(\mu_3 t^{-3}),\qquad
+\left\|\frac{\varepsilon_t}{g_t}\right\|_{L^\infty}=O(\mu_3 t^{-3}),
+\]
+其中
+\(
+r_t(x)=\frac{1}{\pi}\frac{t(3(x-\bar\gamma)^2-t^2)}{((x-\bar\gamma)^2+t^2)^3}
+\)。
+第一式由定理 \ref{thm:xi-cauchy-poisson-tv-sharp-constant} 与上述余项界直接得到。
 
+对第二式，令 \(u_t:=(h_t-g_t)/g_t\)。由 \(\int g_tu_t\,\dd x=0\) 与
+\(
+(1+u)\log(1+u)=u+\frac12u^2+O(|u|^3)
+\)，有
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac12\int_{\RR}g_tu_t^2\,\dd x
++O\!\left(\|u_t\|_{L^\infty}\int_{\RR}g_tu_t^2\,\dd x\right).
+\]
+主项分解为
+\[
+\frac12\Var^2\int_{\RR}\frac{r_t^2}{g_t}\,\dd x
++\Var\,O\!\left(\left\|\frac{r_t}{g_t}\right\|_{L^\infty}\|\varepsilon_t\|_{L^1}\right)
++O\!\left(\left\|\frac{\varepsilon_t}{g_t}\right\|_{L^\infty}\|\varepsilon_t\|_{L^1}\right).
+\]
+其中 \(\int r_t^2/g_t=\frac{1}{4t^4}\)（见定理 \ref{thm:xi-cauchy-poisson-tv-sharp-constant} 及相关常数计算），
+故主导项为 \(\frac18\Var^2t^{-4}\)，其余项阶即为所述。证毕。
+\end{proof}
+
+\begin{theorem}[Poisson--Cauchy 位置混合的全阶正规形与统一余项界]\label{thm:xi-poisson-cauchy-all-order-normal-form-uniform-remainder}
+在结论 \ref{con:xi-poisson-cauchy-second-order-constants-with-mu3-remainder} 的记号下，设 \(N\ge2\) 且
+\[
+\mu_{N+1}:=\int_{\RR}|\gamma-\bar\gamma|^{N+1}\,\dd\tilde\nu(\gamma)<\infty.
+\]
+令
+\[
+f(y):=\frac{1}{1+y^2},\qquad y:=\frac{x-\bar\gamma}{t},\qquad
+m_k:=\int_{\RR}(\gamma-\bar\gamma)^k\,\dd\tilde\nu(\gamma).
+\]
+则存在只依赖于 \(N\) 的常数 \(C_N>0\)，使得
+\[
+h_t(x)
+=\frac{1}{\pi t}\sum_{k=0}^{N}\frac{(-1)^k m_k}{k!\,t^k}\,
+f^{(k)}\!\left(\frac{x-\bar\gamma}{t}\right)
++R_{N+1}(t;x),
+\]
+且对全体 \(x\in\RR\) 有一致估计
+\[
+|R_{N+1}(t;x)|
+\le \frac{C_N}{\pi}\,
+\frac{\mu_{N+1}}{t^{N+2}}\,
+\frac{1}{1+\bigl(\frac{x-\bar\gamma}{t}\bigr)^2}.
+\]
+\end{theorem}
+\begin{proof}
+写成缩放形式
+\[
+\frac{1}{\pi}\frac{t}{(x-\gamma)^2+t^2}
+=\frac{1}{\pi t}\,
+f\!\left(y-\frac{\gamma-\bar\gamma}{t}\right),\qquad
+y:=\frac{x-\bar\gamma}{t}.
+\]
+对 \(u=(\gamma-\bar\gamma)/t\) 在 \(u=0\) 做 \(N\) 阶 Taylor 展开，
+\[
+f(y-u)=\sum_{k=0}^{N}\frac{(-u)^k}{k!}f^{(k)}(y)
++\frac{(-u)^{N+1}}{N!}\int_0^1(1-s)^N f^{(N+1)}(y-su)\,\dd s.
+\]
+对 \(\tilde\nu\) 积分即得主和式，其中系数恰为中心矩 \(m_k\)。
+余项由上式最后一项给出。由于
+\(
+f^{(N+1)}(z)=P_{N+1}(z)/(1+z^2)^{N+2}
+\)
+（\(P_{N+1}\) 为多项式），存在 \(C_N\) 使
+\(
+|f^{(N+1)}(z)|\le C_N(1+z^2)^{-1}
+\)。
+再结合 \(\mu_{N+1}<\infty\) 与缩放因子 \(t^{-(N+2)}\) 即得结论。证毕。
+\end{proof}
+\begin{corollary}[Fisher--Krein 耗散尾常数的显式封口]\label{cor:xi-poisson-cauchy-fisher-krein-tail-half-var2}
+在结论 \ref{con:xi-poisson-cauchy-second-order-constants-with-mu3-remainder} 的设定下，令
+\[
+I(t):=-\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid g_t).
+\]
+若 \(t\mapsto D_{\mathrm{KL}}(h_t\mid g_t)\) 可微并满足命题
+\ref{prop:xi-poisson-kl-dissipation-fractional-fisher} 的耗散恒等式，则
+\[
+I(t)=\frac12\,\frac{\Var^2}{t^5}
++O\!\left(\frac{\mu_3\Var}{t^6}+\frac{\mu_3^2}{t^7}\right),
+\]
+从而
+\[
+\lim_{t\to\infty}t^5 I(t)=\frac12\,\Var^2.
+\]
+\end{corollary}
+\begin{proof}
+由结论 \ref{con:xi-poisson-cauchy-second-order-constants-with-mu3-remainder}
+中 \(D_{\mathrm{KL}}\) 的展开逐项求导即得。证毕。
+\end{proof}
+\begin{theorem}[双参数 Poisson--Cauchy 正规形的无迹协方差结构]\label{thm:xi-poisson-cauchy-two-parameter-tracefree-covariance-structure}
+令 \(\mu\in\mathcal P(\RR\times(0,\infty))\)，\((\Gamma,\Delta)\sim\mu\)，并记
+\[
+\bar\gamma:=\mathbb E[\Gamma],\qquad
+\bar\delta:=\mathbb E[\Delta],\qquad
+\Sigma:=
+\begin{pmatrix}
+\Var(\Gamma) & \Cov(\Gamma,\Delta)\\
+\Cov(\Gamma,\Delta) & \Var(\Delta)
+\end{pmatrix}.
+\]
+若
+\(
+\mathbb E\!\bigl[(|\Gamma-\bar\gamma|+|\Delta-\bar\delta|)^3\bigr]<\infty
+\)，定义
+\[
+H_t(x):=\mathbb E\!\left[\frac{1}{\pi}\frac{t+\Delta}{(x-\Gamma)^2+(t+\Delta)^2}\right],\qquad
+G_t(x):=\frac{1}{\pi}\frac{t+\bar\delta}{(x-\bar\gamma)^2+(t+\bar\delta)^2}.
+\]
+则当 \(t\to\infty\) 时，在 \(x\in\RR\) 上一致成立
+\[
+H_t(x)=G_t(x)
++\frac12\bigl(\Var(\Gamma)-\Var(\Delta)\bigr)\,\partial_x^2 G_t(x)
+-\Cov(\Gamma,\Delta)\,\partial_x\partial_t G_t(x)
++O(t^{-4}),
+\]
+其中余项由三阶绝对中心矩控制。
+\end{theorem}
+\begin{proof}
+对
+\(
+F(x,t;\gamma,\delta):=\frac{1}{\pi}\frac{t+\delta}{(x-\gamma)^2+(t+\delta)^2}
+\)
+在 \((\bar\gamma,\bar\delta)\) 处做二变量 Taylor 展开并取期望。
+一次项因中心化消失。二次项收缩为
+\[
+\frac12\Var(\Gamma)\,\partial_\gamma^2F
++\Cov(\Gamma,\Delta)\,\partial_\gamma\partial_\delta F
++\frac12\Var(\Delta)\,\partial_\delta^2F.
+\]
+用 \(\partial_\gamma=-\partial_x\)、\(\partial_\delta=\partial_t\) 改写，再利用 Poisson 核调和恒等式
+\(
+\partial_t^2G_t+\partial_x^2G_t=0
+\)
+消去迹项，即得到仅含无迹组合的二阶主项。三阶余项由三阶矩与核导数尺度估计给出 \(O(t^{-4})\) 一致界。证毕。
+\end{proof}
+\begin{corollary}[协方差平衡触发的超二阶信息塌缩]\label{cor:xi-poisson-cauchy-covariance-balance-supersecond-collapse}
+在定理 \ref{thm:xi-poisson-cauchy-two-parameter-tracefree-covariance-structure} 的条件下，若
+\[
+\Var(\Gamma)=\Var(\Delta),\qquad
+\Cov(\Gamma,\Delta)=0,
+\]
+则
+\[
+\|H_t-G_t\|_{L^1(\RR)}=O(t^{-3}),\qquad
+D_{\mathrm{KL}}(H_t\mid G_t)=O(t^{-6}).
+\]
+隐含常数由三阶绝对中心矩控制。
+\end{corollary}
+\begin{proof}
+在协方差平衡条件下，定理
+\ref{thm:xi-poisson-cauchy-two-parameter-tracefree-covariance-structure}
+的二阶主项完全抵消，故 \(H_t-G_t=O(t^{-4})\) 一致于 \(x\)，并给出 \(L^1\) 量级 \(O(t^{-3})\)。
+再令 \(u_t:=(H_t-G_t)/G_t\)，则 \(\|u_t\|_{L^\infty}=O(t^{-3})\)。
+由
+\(
+(1+u)\log(1+u)=u+\frac12u^2+O(|u|^3)
+\)
+在 \(G_t\)-加权积分下展开，得到
+\(
+D_{\mathrm{KL}}(H_t\mid G_t)=O(\int G_tu_t^2)=O(t^{-6})
+\)。
+证毕。
+\end{proof}
+\begin{conclusion}[黄金分辨率证书链的可计算加速：无迹协方差是唯一二阶障碍]\label{con:xi-golden-resolution-certificate-tracefree-covariance-bottleneck}
+设缺陷测度取有限原子口径
+\[
+\nu=\sum_j m_j\delta_j\,\delta_{(\gamma_j,\delta_j)},
+\]
+并令共动 Poisson 场 \(G_t\) 如
+\eqref{eq:xi-offcritical-defect-measure-nu}--\eqref{eq:xi-offcritical-comoving-poisson-field}
+定义。记
+\[
+H_t(x):=\frac{G_t(x)}{\int_{\RR}G_t},\qquad
+M_0:=\sum_j m_j\delta_j,\qquad
+\mathbb P\!\left[(\Gamma,\Delta)=(\gamma_j,\delta_j)\right]=\frac{m_j\delta_j}{M_0}.
+\]
+则在 \(t\to\infty\) 的证书构造中，二阶可区分度主项（例如 \(L^1\) 与 \(D_{\mathrm{KL}}\)）
+仅由
+\[
+\Var(\Gamma)-\Var(\Delta),\qquad
+\Cov(\Gamma,\Delta)
+\]
+决定。因而任何“粗粒化可分辨度 \(\to0\)”的链式证书，其二阶瓶颈等价于同时压制上述两项。
+若进一步实现
+\[
+\Var(\Gamma)=\Var(\Delta),\qquad \Cov(\Gamma,\Delta)=0,
+\]
+则自动触发推论
+\ref{cor:xi-poisson-cauchy-covariance-balance-supersecond-collapse}
+的超二阶塌缩，把相对熵衰减从 \(t^{-4}\) 制度性提升到 \(t^{-6}\)。
+\end{conclusion}
+\begin{proof}
+把有限原子权重归一化后，\((\Gamma,\Delta)\) 的二阶统计量即由 \(\nu\) 显式给出。
+将定理
+\ref{thm:xi-poisson-cauchy-two-parameter-tracefree-covariance-structure}
+与推论
+\ref{cor:xi-poisson-cauchy-covariance-balance-supersecond-collapse}
+应用于该随机向量，即得证书链的二阶瓶颈与加速结论。证毕。
+\end{proof}
+\begin{conjecture}[\texorpdfstring{\(\zeta\)}{zeta} 共动缺陷测度的协方差平衡机制]\label{conj:xi-zeta-comoving-defect-measure-covariance-balance}
+在文内 \(\zeta\)-动力学框架中，缺陷测度
+\(
+\nu\subset\RR\times(0,\infty)
+\)
+同时编码高度 \(\gamma\) 与离线深度 \(\delta\)，并经共动 Poisson 场在尺度 \(t\) 上读出。
+猜想存在自然规一化，使得在粗粒化极限（至少在有限缺陷分块口径下逐块）成立
+\[
+\Var(\Gamma)=\Var(\Delta),\qquad
+\Cov(\Gamma,\Delta)=0.
+\]
+若该条件成立，则由结论
+\ref{con:xi-golden-resolution-certificate-tracefree-covariance-bottleneck}
+可把粗粒化信息塌缩从二阶提升到三阶，并在 Jensen 缺陷与相对熵可对齐的桥接框架中系统性加速黄金分辨率证书链。
+\end{conjecture}
+\begin{remark}[同形公开索引排查的范围说明]\label{rem:xi-poisson-profile-divergence-public-index-note}
+关于常数
+\(
+\frac{3\sqrt3}{4\pi}
+\)、\(
+\frac18
+\)
+及“无迹协方差主导二阶塌缩”结构（结论
+\ref{con:xi-poisson-cauchy-second-order-constants-with-mu3-remainder}、
+\ref{cor:xi-poisson-cauchy-fisher-krein-tail-half-var2}、
+\ref{thm:xi-poisson-cauchy-two-parameter-tracefree-covariance-structure}、
+\ref{cor:xi-poisson-cauchy-covariance-balance-supersecond-collapse}、
+\ref{con:xi-golden-resolution-certificate-tracefree-covariance-bottleneck}），
+可与注 \ref{rem:xi-poisson-refined-sixth-order-public-index-check} 联读。
+在既定中英文关键词与参数化口径下，公开索引未发现同形直接对应条目；但该检索不构成形式意义上的文献完备性证明。
+\end{remark}
 \endinput
 
