@@ -1,0 +1,283 @@
+\paragraph{Gödel 纤维索引的模均匀化、profinite 极限与 Koenigs--Joukowsky 参数化}
+在满射折叠与外置寄存器语义下，纤维内的均匀索引可在有限模层面给出统一的均匀化与去耦误差界；该误差在 \(\Fold_m\) 的 Fibonacci 规模律下呈指数衰减，并提升为 \(\widehat{\mathbb Z}\) 上的 Haar 极限。与此同时，Witt 伸缩在 Koenigs 坐标中的平移化与素数寄存器分解共同给出一条从“算术生成元”到“Joukowsky 椭圆族”的可审计同构通道。
+
+\begin{theorem}[Gödel 纤维索引的模均匀性与输出独立性定量界]\label{thm:xi-godel-fiber-index-mod-uniformity-independence}
+设 \(\Omega,X\) 为有限集合，\(f:\Omega\twoheadrightarrow X\) 为满射。
+记
+\[
+d(x):=\bigl|f^{-1}(x)\bigr|,\qquad x\in X.
+\]
+对每个 \(x\in X\) 固定一个双射
+\[
+\iota_x:f^{-1}(x)\stackrel{\sim}{\longrightarrow}\{0,1,\dots,d(x)-1\}.
+\]
+令 \(\omega\sim\mathrm{Unif}(\Omega)\)，设 \(X_\ast:=f(\omega)\)，并定义
+\[
+I:=\iota_{X_\ast}(\omega),\qquad
+R_q:=I\bmod q\in\mathbb Z/q\mathbb Z
+\]
+（\(q\ge 2\)）。
+记 \(U_q:=\mathrm{Unif}(\mathbb Z/q\mathbb Z)\)。
+则总变差距离满足
+\begin{equation}\label{eq:xi-godel-mod-uniform-tv-bound}
+\bigl\|\mathcal L(R_q)-U_q\bigr\|_{\mathrm{TV}}
+\le
+\min\!\left\{1,\frac{q\,|X|}{4\,|\Omega|}\right\},
+\end{equation}
+以及
+\begin{equation}\label{eq:xi-godel-joint-independence-tv-bound}
+\bigl\|\mathcal L(X_\ast,R_q)-\mathcal L(X_\ast)\otimes U_q\bigr\|_{\mathrm{TV}}
+\le
+\min\!\left\{1,\frac{q\,|X|}{4\,|\Omega|}\right\}.
+\end{equation}
+特别地，误差仅由规模比 \(|X|/|\Omega|\) 控制，与纤维形状 \(\{d(x)\}_{x\in X}\) 的细节无关。
+\end{theorem}
+\begin{proof}
+固定 \(x\in X\)，写 \(d(x)=a_xq+b_x\)（\(0\le b_x<q\)）。
+在条件 \(X_\ast=x\) 下，\(I\) 在 \(\{0,\dots,d(x)-1\}\) 上均匀，故
+\(
+R_q
+\)
+在 \(b_x\) 个剩余类上概率为 \((a_x+1)/d(x)\)，在其余 \(q-b_x\) 个类上概率为 \(a_x/d(x)\)。
+于是
+\[
+\left\|\mathcal L(R_q\mid X_\ast=x)-U_q\right\|_{\mathrm{TV}}
+=\frac{b_x(q-b_x)}{q\,d(x)}
+\le \frac{q}{4\,d(x)}.
+\]
+又 \(\mathbb P(X_\ast=x)=d(x)/|\Omega|\)。
+利用总变差对混合的凸性可得
+\[
+\|\mathcal L(R_q)-U_q\|_{\mathrm{TV}}
+\le
+\sum_{x\in X}\frac{d(x)}{|\Omega|}\cdot\frac{q}{4d(x)}
+=\frac{q|X|}{4|\Omega|},
+\]
+并与平凡上界 \(1\) 取最小得到
+\eqref{eq:xi-godel-mod-uniform-tv-bound}。
+
+对联合分布，按 \(X_\ast\) 分层有精确分解
+\[
+\left\|\mathcal L(X_\ast,R_q)-\mathcal L(X_\ast)\otimes U_q\right\|_{\mathrm{TV}}
+=
+\sum_{x\in X}\mathbb P(X_\ast=x)
+\left\|\mathcal L(R_q\mid X_\ast=x)-U_q\right\|_{\mathrm{TV}},
+\]
+代入同一单纤维界即得
+\eqref{eq:xi-godel-joint-independence-tv-bound}。证毕。
+\end{proof}
+
+\begin{corollary}[\(\Fold_m\) 的 profinite Haar 极限与指数收敛率]\label{cor:xi-fold-profinite-haar-exponential-rate}
+令 \(\Fold_m:\Omega_m\twoheadrightarrow X_m\) 为折叠算子，\(\Omega_m=\{0,1\}^m\)，并令 \(\omega\sim\mathrm{Unif}(\Omega_m)\)。
+在每条纤维上任选双射索引，定义 \(I_m\) 与 \(R_{m,q}:=I_m\bmod q\)（\(q\ge 2\)）。
+则
+\begin{equation}\label{eq:xi-fold-mod-tv-rate-general}
+\bigl\|\mathcal L(R_{m,q})-U_q\bigr\|_{\mathrm{TV}}
+\le
+\min\!\left\{1,\frac{q\,|X_m|}{4\cdot 2^m}\right\},
+\end{equation}
+且
+\begin{equation}\label{eq:xi-fold-joint-mod-tv-rate-general}
+\bigl\|\mathcal L(\Fold_m(\omega),R_{m,q})-\mathcal L(\Fold_m(\omega))\otimes U_q\bigr\|_{\mathrm{TV}}
+\le
+\min\!\left\{1,\frac{q\,|X_m|}{4\cdot 2^m}\right\}.
+\end{equation}
+若 \(|X_m|=F_{m+2}\)（无相邻 \(1\) 的二进制词计数），则
+\begin{equation}\label{eq:xi-fold-mod-tv-rate-fibonacci}
+\bigl\|\mathcal L(R_{m,q})-U_q\bigr\|_{\mathrm{TV}}
+=
+O\!\left(q\left(\frac{\varphi}{2}\right)^m\right),
+\qquad
+\varphi=\frac{1+\sqrt5}{2}.
+\end{equation}
+并且把 \(I_m\) 经自然嵌入 \(\mathbb Z\hookrightarrow\widehat{\mathbb Z}\) 记为 \(\widehat I_m\)，则
+\begin{equation}\label{eq:xi-fold-profinite-haar-limit}
+\widehat I_m \Longrightarrow \mathrm{Haar}_{\widehat{\mathbb Z}},
+\qquad m\to\infty.
+\end{equation}
+\end{corollary}
+\begin{proof}
+\eqref{eq:xi-fold-mod-tv-rate-general} 与
+\eqref{eq:xi-fold-joint-mod-tv-rate-general}
+由定理 \ref{thm:xi-godel-fiber-index-mod-uniformity-independence}
+直接代入 \(|\Omega_m|=2^m\) 得到。
+\eqref{eq:xi-fold-mod-tv-rate-fibonacci}
+由 \(|X_m|=F_{m+2}\sim \varphi^{m+2}/\sqrt5\) 立得。
+
+对
+\eqref{eq:xi-fold-profinite-haar-limit}，
+只需检验每个有限商 \(\pi_q:\widehat{\mathbb Z}\to\mathbb Z/q\mathbb Z\) 的推前分布收敛到 \(U_q\)。
+而 \(\pi_q(\widehat I_m)=R_{m,q}\)，其收敛已由
+\eqref{eq:xi-fold-mod-tv-rate-general} 给出。
+由于 \(\widehat{\mathbb Z}\) 的柱集合由有限模投影生成，故得到弱收敛到 Haar 测度。证毕。
+\end{proof}
+
+\begin{theorem}[外置寄存器的信息屏蔽上界]\label{thm:xi-godel-register-mutual-information-bound}
+在定理 \ref{thm:xi-godel-fiber-index-mod-uniformity-independence} 的设定下，令
+\[
+P_x:=\mathcal L(R_q\mid X_\ast=x),\qquad
+\eta_x:=\|P_x-U_q\|_{\mathrm{TV}},
+\qquad
+h(t):=-t\log t-(1-t)\log(1-t).
+\]
+则
+\begin{equation}\label{eq:xi-godel-mutual-information-bound-general}
+\mathbf I(X_\ast;R_q)
+\le
+\varepsilon_q\log(q-1)+h(\varepsilon_q),
+\qquad
+\varepsilon_q:=\min\!\left\{1-\frac1q,\frac{q|X|}{4|\Omega|}\right\}.
+\end{equation}
+尤其在
+\(
+\frac{q|X|}{4|\Omega|}\le \frac12
+\)
+的制度下，
+\[
+\mathbf I(X_\ast;R_q)
+\le
+\frac{q|X|}{4|\Omega|}\log(q-1)
++h\!\left(\frac{q|X|}{4|\Omega|}\right).
+\]
+对 \(\Fold_m\) 且 \(|X_m|=F_{m+2}\) 的情形，任意固定 \(q\) 有
+\begin{equation}\label{eq:xi-fold-register-mutual-information-rate}
+\mathbf I\!\bigl(\Fold_m(\omega);\,I_m\bmod q\bigr)
+=
+O\!\left(q\left(\frac{\varphi}{2}\right)^m\log q\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+由 \(H(R_q)\le\log q\) 得
+\[
+\mathbf I(X_\ast;R_q)
+=H(R_q)-H(R_q\mid X_\ast)
+\le \log q-\sum_{x}\mathbb P(X_\ast=x)H(P_x).
+\]
+对每个 \(x\)，Fannes--Audenaert 不等式给出
+\[
+\log q-H(P_x)\le \eta_x\log(q-1)+h(\eta_x),
+\qquad
+\eta_x\in\left[0,1-\frac1q\right].
+\]
+故
+\[
+\mathbf I(X_\ast;R_q)
+\le
+\sum_x\mathbb P(X_\ast=x)\bigl[\eta_x\log(q-1)+h(\eta_x)\bigr].
+\]
+利用 \(h\) 的凹性与 Jensen，不等式右侧至多为
+\[
+\bar\eta\,\log(q-1)+h(\bar\eta),
+\qquad
+\bar\eta:=\sum_x\mathbb P(X_\ast=x)\eta_x.
+\]
+由定理 \ref{thm:xi-godel-fiber-index-mod-uniformity-independence} 的单纤维界，
+\(
+\bar\eta\le q|X|/(4|\Omega|)
+\)，并且 \(\bar\eta\le 1-1/q\) 总成立。
+函数 \(t\mapsto t\log(q-1)+h(t)\) 在 \([0,1-1/q]\) 单调递增，故可把 \(\bar\eta\) 以 \(\varepsilon_q\) 替换，得到
+\eqref{eq:xi-godel-mutual-information-bound-general}。
+\eqref{eq:xi-fold-register-mutual-information-rate}
+由 \(|\Omega_m|=2^m\)、\(|X_m|=F_{m+2}\) 与
+\eqref{eq:xi-godel-mutual-information-bound-general}
+直接推出。证毕。
+\end{proof}
+
+\begin{proposition}[Koenigs 平移化与素数生成元的谱分解]\label{prop:xi-koenigs-prime-generator-spectral-factorization}
+设 Koenigs 深度坐标满足 Witt 伸缩平移律
+\begin{equation}\label{eq:xi-koenigs-witt-translation-law}
+y(ms)=y(s)+\log m,\qquad m\ge 1.
+\end{equation}
+设素数寄存器半群为
+\[
+\mathsf P:=\bigoplus_{p\ \mathrm{prime}}\mathbb Z_{\ge 0},
+\]
+并定义值映射
+\begin{equation}\label{eq:xi-prime-register-value-map}
+N:\mathsf P\to\mathbb N_{\ge 1},
+\qquad
+N(r):=\prod_{p}p^{r(p)}.
+\end{equation}
+则对任意 \(r\in\mathsf P\) 有
+\begin{equation}\label{eq:xi-koenigs-prime-register-translation}
+y\!\bigl(N(r)s\bigr)
+=
+y(s)+\sum_{p}r(p)\log p.
+\end{equation}
+进一步，在 \(L^2(\mathbb R,dy)\) 上定义 Koopman 表示
+\[
+(T_m f)(y):=f(y+\log m).
+\]
+其傅里叶像满足
+\begin{equation}\label{eq:xi-koopman-fourier-diagonalization}
+\widehat{T_m f}(t)=e^{it\log m}\,\widehat f(t)
+=m^{it}\widehat f(t)
+=\left(\prod_{p}p^{it\,r_m(p)}\right)\widehat f(t),
+\end{equation}
+其中 \(m=\prod_p p^{r_m(p)}\)。
+故伸缩半群在频域上完全对角化，且相位谱值位于单位圆 \(\mathbb S^1\) 并按素数生成元乘法分离。
+\end{proposition}
+\begin{proof}
+\eqref{eq:xi-koenigs-prime-register-translation}
+由
+\eqref{eq:xi-koenigs-witt-translation-law}
+与
+\eqref{eq:xi-prime-register-value-map}
+及
+\(
+\log N(r)=\sum_p r(p)\log p
+\)
+直接得到。
+对 \(T_m\) 取傅里叶变换即得
+\eqref{eq:xi-koopman-fourier-diagonalization}，
+最后代入 \(m\) 的素因子分解完成证明。证毕。
+\end{proof}
+
+\begin{corollary}[Joukowsky 椭圆族的素数寄存器参数化]\label{cor:xi-joukowsky-prime-register-ellipse-parameterization}
+令
+\[
+S=y+y^{-1},\qquad
+|y|=\sqrt L,\quad L>0.
+\]
+写 \(y=\sqrt L\,e^{i\theta}\)（\(\theta\in[0,2\pi)\)），则
+\begin{equation}\label{eq:xi-joukowsky-ellipse-param}
+S(\theta)
+=
+\left(\sqrt L+\frac{1}{\sqrt L}\right)\cos\theta
++i\left(\sqrt L-\frac{1}{\sqrt L}\right)\sin\theta,
+\end{equation}
+对应椭圆半轴
+\[
+a(L)=\sqrt L+\frac{1}{\sqrt L},
+\qquad
+b(L)=\sqrt L-\frac{1}{\sqrt L}.
+\]
+若 \(L=N(r)\)（\(r\in\mathsf P\)），则
+\begin{equation}\label{eq:xi-joukowsky-prime-register-semiaxes}
+a(r)=\sqrt{N(r)}+\frac{1}{\sqrt{N(r)}},
+\qquad
+b(r)=\sqrt{N(r)}-\frac{1}{\sqrt{N(r)}}.
+\end{equation}
+并且对应 Koenigs 平移长度为
+\begin{equation}\label{eq:xi-joukowsky-koenigs-prime-shift}
+\Delta y(r)=\log\sqrt{N(r)}
+=\frac12\sum_{p}r(p)\log p.
+\end{equation}
+因此，选择寄存器状态 \(r\) 与选择椭圆尺度参数 \(L\)（等价地 \(\Delta y\)）一一对应；椭圆族由素数生成元坐标唯一标定。
+\end{corollary}
+\begin{proof}
+\eqref{eq:xi-joukowsky-ellipse-param}
+由 \(y=\sqrt L\,e^{i\theta}\) 直接代入 \(S=y+y^{-1}\) 得到。
+再以 \(L=N(r)\) 代入即得
+\eqref{eq:xi-joukowsky-prime-register-semiaxes}。
+式
+\eqref{eq:xi-joukowsky-koenigs-prime-shift}
+由
+\(
+\log\sqrt{N(r)}=\frac12\log N(r)=\frac12\sum_p r(p)\log p
+\)
+与命题 \ref{prop:xi-koenigs-prime-generator-spectral-factorization}
+一致。证毕。
+\end{proof}
+
+\endinput

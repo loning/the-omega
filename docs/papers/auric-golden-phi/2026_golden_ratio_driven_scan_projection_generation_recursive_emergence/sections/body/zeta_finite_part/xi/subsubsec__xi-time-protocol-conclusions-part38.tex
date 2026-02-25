@@ -1,0 +1,303 @@
+\paragraph{总圆维预算、素数秩障碍与无穷对象的圆维剖面}
+本段在定义 \ref{def:circle-dimension}--\ref{def:half-circle-dimension} 与命题 \ref{prop:circle-dimension-laws} 的口径下，将实现层的相位--账本编码预算与结构层的秩障碍统一为可审计下界。有限纤维标签只进入残差寄存器，不计入结构圆维增量；对应的最小化问题由规模指数、核秩与共终剖面共同控制。
+
+\begin{theorem}[总圆维预算下界与相位--账本守恒律]\label{thm:xi-total-cdim-budget-phase-ledger-conservation}
+令 \(k\in\mathbb N\) 且
+\[
+B_N:=\{-N,\dots,N\}^k\subset\mathbb Z^k,\qquad |B_N|=(2N+1)^k.
+\]
+设存在常数 \(C_{\mathcal L}>0\) 及编码族
+\[
+\mathrm{Enc}_N:B_N\hookrightarrow \mathcal A_N\times \mathcal L_N
+\]
+满足：
+\begin{enumerate}
+  \item \(\mathcal A_N\) 由 \(p\) 个相位通道组成，且每通道使用至多 \(b(N)\) 比特，从而
+  \[
+  |\mathcal A_N|\le 2^{p\,b(N)};
+  \]
+  \item \(\mathcal L_N\) 为 \(m\) 个计数型账本寄存器的截断状态集合，且
+  \[
+  |\mathcal L_N|\le C_{\mathcal L}(N+1)^m;
+  \]
+  \item
+  \(
+  b(N)=\alpha\log_2N+o(\log N)
+  \)
+  （\(N\to\infty\)）对某个 \(\alpha\ge 0\) 成立。
+\end{enumerate}
+则必有
+\begin{equation}\label{eq:xi-total-cdim-budget-general}
+p\alpha+m\ge k.
+\end{equation}
+特别地，当 \(\alpha=1\) 时，
+\begin{equation}\label{eq:xi-total-cdim-budget-alpha-one}
+p+m\ge k.
+\end{equation}
+定义总圆维预算
+\[
+\mathsf B(p,m):=\cdim(\mathbb Z^p)+2\cdim^+(\mathbb N^m)=p+m,
+\]
+则在 \(\alpha=1\) 的审计制度下有
+\[
+\mathsf B(p,m)\ge k.
+\]
+并且对任意分解 \(k=p+m\) 该下界可达到。
+\end{theorem}
+\begin{proof}
+由单射性，
+\[
+(2N+1)^k\le |\mathcal A_N|\,|\mathcal L_N|
+\le 2^{p\,b(N)}\,C_{\mathcal L}(N+1)^m.
+\]
+取 \(\log_2\)：
+\[
+k\log_2(2N+1)
+\le p\,b(N)+m\log_2(N+1)+\log_2C_{\mathcal L}.
+\]
+除以 \(\log_2N\) 并令 \(N\to\infty\)，使用
+\[
+\frac{\log_2(2N+1)}{\log_2N}\to 1,\qquad
+\frac{\log_2(N+1)}{\log_2N}\to 1,\qquad
+\frac{\log_2C_{\mathcal L}}{\log_2N}\to 0,
+\]
+以及 \(b(N)=\alpha\log_2N+o(\log N)\)，得到
+\eqref{eq:xi-total-cdim-budget-general}。
+\eqref{eq:xi-total-cdim-budget-alpha-one}
+为 \(\alpha=1\) 的直接特例。
+
+对可达性，给定任意 \(k=p+m\)，定义
+\[
+\mathrm{Enc}_N(x_1,\dots,x_k)
+=\Big((x_1,\dots,x_p),\,(x_{p+1}+N,\dots,x_k+N)\Big).
+\]
+相位部分可用每坐标 \(b(N)=\lceil\log_2(2N+1)\rceil\) 比特编码；账本部分落在 \(\{0,\dots,2N\}^m\)，因此
+\[
+|\mathcal L_N|=(2N+1)^m\le 2^m(N+1)^m
+\]
+（取 \(C_{\mathcal L}=2^m\)）。
+此时 \(b(N)=\log_2N+O(1)\)，故 \(\alpha=1\)，且 \(p+m=k\) 取等号。证毕。
+\end{proof}
+
+\begin{corollary}[基本数系的实现层圆维签名极小化]\label{cor:xi-basic-number-systems-cdim-signature-minimization}
+在定理 \ref{thm:xi-total-cdim-budget-phase-ledger-conservation} 的 \(\alpha=1\) 口径下，
+对具有有限近似族 \(S_N\) 的对象 \(S\)，定义实现层签名集合
+\[
+\Sigma(S):=
+\left\{
+\left(p,\frac m2\right):
+\exists\,\mathrm{Enc}_N:S_N\hookrightarrow \mathcal A_N\times \mathcal L_N
+\ \text{满足定理条件并对充分大 }N\text{ 成立}
+\right\}.
+\]
+则有以下极小预算：
+\begin{enumerate}
+  \item \(S=\mathbb N\)（\(S_N=\{0,\dots,N\}\)）：
+  \[
+  \min\left\{p+2\ell:\ (p,\ell)\in\Sigma(\mathbb N)\right\}=1,
+  \]
+  且可取 \((p,\ell)=(0,\tfrac12)\)；
+  \item \(S=\mathbb Z\)（\(S_N=\{-N,\dots,N\}\)）：
+  \[
+  \min\left\{p+2\ell:\ (p,\ell)\in\Sigma(\mathbb Z)\right\}=1,
+  \]
+  且可取 \((p,\ell)=(1,0)\)；
+  \item \(S=\mathbb Q\)，取
+  \[
+  S_N:=\left\{\frac ab:\ |a|\le N,\ 1\le b\le N,\ \gcd(a,b)=1\right\},
+  \]
+  则 \(|S_N|\asymp N^2\)，并有
+  \[
+  \min\left\{p+2\ell:\ (p,\ell)\in\Sigma(\mathbb Q)\right\}=2,
+  \]
+  且可取 \((p,\ell)=(1,\tfrac12)\)；
+  \item \(S=\mathbb Z^k\)（\(S_N=B_N\)）：
+  \[
+  \left(p,\frac{k-p}{2}\right)\in\Sigma(\mathbb Z^k),\qquad p=0,1,\dots,k,
+  \]
+  且全部满足 \(p+2\cdot\frac{k-p}{2}=k\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+先给统一下界：在 \(\alpha=1\) 下，
+\[
+|\mathcal A_N|\,|\mathcal L_N|
+\le
+2^{p(\log_2N+o(\log N))}\,C_{\mathcal L}(N+1)^m
+=N^{p+m+o(1)}.
+\]
+因此凡满足 \(|S_N|\ge cN^{d}\)（某 \(c>0\)）的对象，都必须有 \(p+m\ge d\)。
+对 \(\mathbb N,\mathbb Z,\mathbb Q,\mathbb Z^k\) 分别取 \(d=1,1,2,k\) 即得下界。
+
+对 \(\mathbb Q\) 的下界，由 \(|S_N|\asymp N^2\) 与
+\[
+|S_N|\le |\mathcal A_N|\,|\mathcal L_N|
+\le 2^{p\,b(N)}C_{\mathcal L}(N+1)^m
+=N^{p+m+o(1)}
+\]
+得 \(p+m\ge 2\)。
+对可达性，取既约表示 \(\frac ab\)（\(b>0\)）的唯一参数对 \((a,b)\)，令相位通道编码 \(a\in[-N,N]\)，账本通道编码 \(b\in[1,N]\)，得 \((p,m)=(1,1)\)，即 \((p,\ell)=(1,\tfrac12)\)。
+\(\mathbb N,\mathbb Z,\mathbb Z^k\) 的可达性分别由自然编码、整数单通道编码与定理 \ref{thm:xi-total-cdim-budget-phase-ledger-conservation} 的等号构造给出。
+于是最小总预算如述。证毕。
+\end{proof}
+
+\begin{theorem}[有界秩但非有限生成对象的半圆维深度轴下界]\label{thm:xi-nonfinitely-generated-bounded-rank-halfaxis}
+设 \(G\) 为可数无挠交换群，且
+\[
+\operatorname{rank}_{\mathbb Q}(G):=
+\dim_{\mathbb Q}(G\otimes_{\mathbb Z}\mathbb Q)=k<\infty.
+\]
+若 \(G\) 非有限生成，则任何满足下述扩展保存分解的数据
+\[
+\Phi:P\times M\to G
+\]
+都强迫
+\[
+\cdim^+(M)\ge \frac12.
+\]
+其中：
+\begin{enumerate}
+  \item \(P\) 为有限生成交换群，\(\cdim(P)=k\)；
+  \item \(M\) 为有限生成可消去交换幺半群；
+  \item 对每个 \(m\in M\)，切片 \(\Phi(\cdot,m):P\to G\) 为群同态；
+  \item \(\Phi\) 满射，且每个纤维 \(\Phi^{-1}(g)\) 有限。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+先证 \(M\) 必无限。
+反设 \(M\) 有限，记 \(M=\{m_1,\dots,m_r\}\)。
+则
+\[
+G=\Phi(P\times M)=\bigcup_{i=1}^{r}\Phi(P,m_i).
+\]
+每个 \(\Phi(P,m_i)\) 是 \(G\) 的有限生成子群（\(P\) 有限生成且切片为同态像）。
+取各子群有限生成集并并，得到 \(G\) 的有限生成集，故 \(G\) 有限生成，矛盾。
+因此 \(M\) 无限。
+
+又 \(M\) 为有限生成可消去交换幺半群，故其群完成 \(G(M)\) 为有限生成交换群。
+若 \(\cdim(G(M))=0\)，则 \(G(M)\) 有限。
+由于 \(M\subseteq G(M)\)，遂 \(M\) 也有限，与上步矛盾。
+故 \(\cdim(G(M))\ge 1\)。
+按定义 \(\cdim^+(M)=\frac12\cdim(G(M))\)，结论成立。证毕。
+\end{proof}
+
+\begin{corollary}[对 \texorpdfstring{$(\mathbb Q,+)$}{(Q,+)} 的直接约束]\label{cor:xi-additive-q-halfaxis-lower-bound}
+设 \(G=(\mathbb Q,+)\)。
+在定理 \ref{thm:xi-nonfinitely-generated-bounded-rank-halfaxis} 的扩展保存框架下，任意可审计分解都满足
+\[
+\cdim^+(M)\ge \frac12.
+\]
+因此实现层至少需要一条半圆维深度轴。
+\end{corollary}
+\begin{proof}
+\((\mathbb Q,+)\) 为可数无挠交换群，\(\operatorname{rank}_{\mathbb Q}(\mathbb Q)=1\)，且非有限生成。直接套用定理
+\ref{thm:xi-nonfinitely-generated-bounded-rank-halfaxis}
+即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[素数寄存器的不可替换性与半圆维下界]\label{thm:xi-prime-register-irreplaceability-halfcdim-lower-bound}
+令 \(S\) 为有限素数集，\(|S|=n\)，并记
+\[
+\mathbb Q_S^{\times}:=
+\left\{\prod_{p\in S}p^{e_p}:e_p\in\mathbb Z\right\}
+\cong \mathbb Z^n.
+\]
+设 \(P\) 为有限生成交换群且 \(\cdim(P)=d\)。
+则：
+\begin{enumerate}
+  \item 对任意群同态 \(\varphi:\mathbb Q_S^{\times}\to P\)，有
+  \[
+  \cdim(\ker\varphi)\ge n-d.
+  \]
+  \item 若存在有限生成可消去交换幺半群 \(M\) 及群同态
+  \[
+  \psi:\mathbb Q_S^{\times}\to G(M)
+  \]
+  使得 \((\varphi,\psi):\mathbb Q_S^{\times}\to P\times G(M)\) 为单射，则
+  \[
+  \cdim^+(M)\ge \frac{n-d}{2}.
+  \]
+\end{enumerate}
+特别地，若 \(S=\{p\le B\}\)（\(n=\pi(B)\)），则任意固定 \(d\) 的可见相位系统都满足
+\[
+\cdim^+(M)\ge \frac{\pi(B)-d}{2}.
+\]
+\end{theorem}
+\begin{proof}
+由 \(\mathbb Q_S^{\times}\cong\mathbb Z^n\)，其自由秩为 \(n\)。
+同态 \(\varphi\) 的像自由秩至多 \(d\)，故
+\[
+\operatorname{rank}(\ker\varphi)
+=n-\operatorname{rank}(\operatorname{im}\varphi)\ge n-d.
+\]
+对有限生成交换群，\(\cdim\) 等于自由秩，得第 (1) 条。
+
+对第 (2) 条，\((\varphi,\psi)\) 单射意味着
+\[
+n
+=\operatorname{rank}\bigl(\mathbb Q_S^\times\bigr)
+=\operatorname{rank}\bigl(\operatorname{im}(\varphi,\psi)\bigr)
+\le \operatorname{rank}(P)+\operatorname{rank}(G(M))
+=d+\cdim(G(M)).
+\]
+因此 \(\cdim(G(M))\ge n-d\)，即
+\[
+\cdim^+(M)=\frac12\cdim(G(M))\ge \frac{n-d}{2}.
+\]
+最后把 \(n\) 替换为 \(\pi(B)\) 即得截断素数预算式。证毕。
+\end{proof}
+
+\begin{theorem}[无穷对象的圆维剖面与共终不变性]\label{thm:xi-circle-dimension-profile-cofinal}
+设 \(G\) 为可数交换群。
+定义其圆维剖面为
+\[
+\mathcal P(G):=\bigl(\mathcal F(G),\le,\cdim\bigr),
+\]
+其中 \(\mathcal F(G)\) 为所有有限生成子群构成的偏序集（按包含关系）。
+则：
+\begin{enumerate}
+  \item \(\mathcal F(G)\) 是有向集：任意 \(H_1,H_2\in\mathcal F(G)\)，存在 \(H_3\in\mathcal F(G)\) 使 \(H_1,H_2\le H_3\)；
+  \item 若 \((H_i)_{i\in I}\)、\((K_j)_{j\in J}\) 为两条穷尽链（\(\bigcup_iH_i=G=\bigcup_jK_j\)），则
+  \[
+  L_{(i,j)}:=H_i+K_j
+  \]
+  给出同时共终于两者的共同细化链；因此“圆维随深度增长的剖面”在共终意义下良定义；
+  \item 例：
+  \begin{enumerate}
+    \item 对 \((\mathbb Q,+)\)，任意非平凡有限生成子群 \(H\) 皆同构于 \(\mathbb Z\)，故 \(\cdim(H)=1\)；
+    \item 对 \(\mathbb Q_{>0}^{\times}\)，剖面无界：可取
+    \(
+    H_n:=\langle 2,3,\dots,p_n\rangle\cong\mathbb Z^n
+    \)
+    使 \(\cdim(H_n)=n\to\infty\)。
+  \end{enumerate}
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对 (1)，取 \(H_3:=H_1+H_2\)。
+有限生成子群之和仍有限生成，且显然包含 \(H_1,H_2\)。
+
+对 (2)，定义 \(L_{(i,j)}:=H_i+K_j\)。
+每个 \(L_{(i,j)}\) 有限生成，且
+\[
+H_i\le L_{(i,j)},\qquad K_j\le L_{(i,j)}.
+\]
+又
+\[
+\bigcup_{i,j}L_{(i,j)}
+=\left(\bigcup_iH_i\right)+\left(\bigcup_jK_j\right)=G.
+\]
+故 \((L_{(i,j)})\) 同时共终于两条链，得到共终不变性。
+
+对 (3a)，设 \(H=\langle q_1,\dots,q_r\rangle\le (\mathbb Q,+)\)。
+令 \(D\) 为所有 \(q_\ell\) 的公分母，则 \(H\subseteq \frac1D\mathbb Z\cong\mathbb Z\)，从而 \(H\) 循环，非平凡时 \(\cdim(H)=1\)。
+
+对 (3b)，\(\mathbb Q_{>0}^{\times}\) 的有限生成子群由有限素数支撑决定，且同构于有限秩自由阿贝尔群。
+取前 \(n\) 个素数生成子群即得 \(\mathbb Z^n\) 子群，故剖面无界。证毕。
+\end{proof}
+
+\paragraph{与深度/素数接口的兼容性}
+定理 \ref{thm:xi-total-cdim-budget-phase-ledger-conservation}--\ref{thm:xi-circle-dimension-profile-cofinal}
+给出的预算与剖面下界，与命题 \ref{prop:xi-koenigs-prime-generator-spectral-factorization} 及推论 \ref{cor:xi-joukowsky-prime-register-ellipse-parameterization} 相容：相位圆因子、素数寄存器与 Koenigs 深度轴在结构层分别对应自由秩、外置账本秩与平移尺度，不发生维度重复计费。
+
+\endinput
