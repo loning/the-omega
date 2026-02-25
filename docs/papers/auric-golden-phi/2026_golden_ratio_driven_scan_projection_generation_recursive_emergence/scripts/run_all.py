@@ -298,6 +298,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_s4_s3_nielsen_monodromy_audit",
+            script="exp_fold_zm_s4_s3_nielsen_monodromy_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_s4_s3_nielsen_monodromy_audit.json",
+            ],
+        ),
+        Step(
             name="fibonacci_poisson_kl_rh_discretization_audit",
             script="exp_fibonacci_poisson_kl_rh_discretization_audit.py",
             args=[],
