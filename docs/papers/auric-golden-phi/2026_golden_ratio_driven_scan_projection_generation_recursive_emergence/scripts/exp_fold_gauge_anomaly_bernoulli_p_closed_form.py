@@ -22,6 +22,9 @@ Checks:
 - square-collapse factorization at the unique maximizer p_* (symbolic identity)
 - covariance recurrence and generating function (spot checks)
 - bit-pair law sums to 1 and matches p=1/2 table
+- output-density / mismatch-density elimination curve
+- strict third-order Markov kernel of the mismatch indicator process
+- quartic pressure discriminant factorization and u=1 resonance criterion
 
 Outputs:
 - artifacts/export/fold_gauge_anomaly_bernoulli_p_closed_form.json
@@ -225,6 +228,66 @@ def main() -> None:
     P10 = (p**2 * (2 - p)) / (1 + p**3)
     P11 = (p * (p**3 + (1 - p) ** 2)) / (1 + p**3)
 
+    # Reparameterized covariance coefficients (odd/even closed forms).
+    r_cov = sp.simplify(p * (1 - p))
+    alpha_cov = sp.simplify(-p**3 * (p**2 - 3 * p + 1) ** 2 / ((p + 1) ** 2 * (2 * p - 1) * (p**2 - p + 1)))
+    beta_cov = sp.simplify(
+        p**2 * (1 - p) * (p**5 + 4 * p**4 - 4 * p**3 - 5 * p**2 + 7 * p - 2) / ((p + 1) * (2 * p - 1) * (p**2 - p + 1) ** 2)
+    )
+    delta_cov = sp.simplify(
+        p**2 * (1 - p) ** 2 * (p**5 - p**4 - 6 * p**3 + 3 * p**2 + 2 * p - 1) / ((p + 1) * (2 * p - 1) * (p**2 - p + 1) ** 2)
+    )
+    critical_cov = lambda k: sp.simplify(
+        sp.Rational(1, 2) ** (k - 1)
+        * (sp.Rational(1, 16) + (-1) ** (k - 1) * (-sp.Rational(13, 1296) - sp.Rational(k - 1, 216)))
+    )
+
+    # Output-density / mismatch-density elimination polynomial.
+    q_out = sp.simplify(P01 + P11)
+    gamma_out = sp.simplify(g_star)
+    q_sym, gamma_sym = sp.symbols("q_out gamma_out", real=True)
+    state_curve_poly = (
+        gamma_sym**4
+        + 9 * gamma_sym**3 * q_sym
+        + 4 * gamma_sym**3
+        + 27 * gamma_sym**2 * q_sym**2
+        + 18 * gamma_sym**2 * q_sym
+        - 23 * gamma_sym**2
+        + 35 * gamma_sym * q_sym**3
+        + 72 * gamma_sym * q_sym**2
+        - 54 * gamma_sym * q_sym
+        + 23 * gamma_sym
+        + 70 * q_sym**3
+        - 69 * q_sym**2
+    )
+
+    # Word-probability algebra for the mismatch indicator process.
+    B1_sym = P_sym.multiply_elementwise(g_sym)
+    B0_sym = sp.simplify(P_sym - B1_sym)
+    pi_row_sym = sp.Matrix([[1 - p, p**2, p**2, p * (1 - p) ** 2]]) / (1 + p**3)
+    ones_sym = sp.Matrix([1, 1, 1, 1])
+
+    def _word_prob(word: str) -> sp.Expr:
+        acc = pi_row_sym
+        for bit in word:
+            acc = acc * (B1_sym if bit == "1" else B0_sym)
+        return sp.simplify((acc * ones_sym)[0])
+
+    kernel_formulas: Dict[str, sp.Expr] = {
+        "000": p**2 * (2 * p + 1) / ((1 + p) * (1 + 2 * p - p**2)),
+        "001": sp.Integer(1),
+        "010": sp.Integer(1),
+        "011": (2 * p**3 - p**2 - p + 1) / (1 + p - p**2),
+        "100": p**2 / (1 + p - p**2),
+        "101": (1 - p) * (1 + p - p**2) / (1 + p - 2 * p**2 + p**3),
+        "110": p,
+        "111": p**2 * (3 - 2 * p) / (1 - p + 2 * p**2),
+    }
+
+    # Pressure discriminant polynomial in (u,p).
+    pressure_discriminant = sp.expand(sp.discriminant(pressure_expected, lam))
+    D_up = sp.expand(sp.simplify(pressure_discriminant / (p**3 * u * (1 - p))))
+
     # Numeric audit points.
     ps: List[float] = [0.11, 0.27, 0.5, 0.73, 0.91]
     z0 = 0.17
@@ -314,6 +377,38 @@ def main() -> None:
         sign_ok = sign_ok and ((dv > 0) == (poly > 0))
     results.append(CheckResult(name="gc_farfield_sign_samples", max_abs_err=float(not sign_ok)))
 
+    # 1e) state equation and elimination curve in (q_out, gamma_out).
+    state_eq_resid = sp.simplify(gamma_out - (3 - 2 * p) * (p - q_out))
+    results.append(CheckResult(name="state_equation_gamma_q", max_abs_err=float(state_eq_resid != 0)))
+    curve_resid = sp.simplify(state_curve_poly.subs({q_sym: q_out, gamma_sym: gamma_out}))
+    results.append(CheckResult(name="state_curve_elimination", max_abs_err=float(curve_resid != 0)))
+
+    # 1f) strict third-order kernel of (G_t).
+    kernel_ok = True
+    for ctx, expr in kernel_formulas.items():
+        den = _word_prob(ctx)
+        num = _word_prob(ctx + "1")
+        cond = sp.simplify(num / den)
+        if sp.simplify(cond - expr) != 0:
+            kernel_ok = False
+            break
+    results.append(CheckResult(name="mismatch_third_order_kernel", max_abs_err=float(not kernel_ok)))
+    kernel_gap = sp.simplify(kernel_formulas["000"] - kernel_formulas["100"])
+    kernel_gap_expected = sp.simplify(-p**5 / ((1 + p) * (1 + 2 * p - p**2) * (1 + p - p**2)))
+    results.append(CheckResult(name="mismatch_not_second_order_gap", max_abs_err=float(sp.simplify(kernel_gap - kernel_gap_expected) != 0)))
+
+    # 1g) pressure discriminant factorization and u=1 resonance criterion.
+    results.append(
+        CheckResult(
+            name="pressure_discriminant_factorization",
+            max_abs_err=float(sp.simplify(pressure_discriminant - p**3 * u * (1 - p) * D_up) != 0),
+        )
+    )
+    D_u_degree = int(sp.Poly(D_up, u).degree())
+    results.append(CheckResult(name="pressure_discriminant_degree_u", max_abs_err=float(D_u_degree != 11)))
+    D_u1_expected = sp.simplify(4 * (1 + p) ** 2 * (2 * p - 1) ** 2 * (p**2 - p + 1) ** 2)
+    results.append(CheckResult(name="pressure_discriminant_u1", max_abs_err=float(sp.simplify(D_up.subs({u: 1}) - D_u1_expected) != 0)))
+
     # 2) numeric checks across p-grid
     errs_density: List[float] = []
     errs_sigma: List[float] = []
@@ -322,6 +417,9 @@ def main() -> None:
     errs_prob_sum: List[float] = []
     errs_Cp: List[float] = []
     errs_cov_recur: List[float] = []
+    errs_cov_shifted_gf: List[float] = []
+    errs_cov_even_odd: List[float] = []
+    errs_cov_half_jordan: List[float] = []
 
     for pv in ps:
         P_num = _P(pv)
@@ -401,6 +499,36 @@ def main() -> None:
             rhs = sp.simplify(-pvv * cs[k + 1] + pvv * (1 - pvv) * cs[k] + pvv**2 * (1 - pvv) * cs[k - 1])
             errs_cov_recur.append(float(sp.N(lhs - rhs, 50)))
 
+        # Shifted covariance GF:
+        # S_p(z)=sum_{n>=0} s_n z^n with s_n=c_{n+1}, and C_p(z)=z S_p(z).
+        s0, s1, s2 = cs[0], cs[1], cs[2]
+        S_formula = sp.simplify(
+            (s0 + (s1 + pvv * s0) * zsym + (s2 + pvv * s1 - pvv * (1 - pvv) * s0) * zsym**2)
+            / ((1 + pvv * zsym) * (1 - pvv * (1 - pvv) * zsym**2))
+        )
+        errs_cov_shifted_gf.append(float(sp.N(S_formula - (Cm_mat / zsym), 50)))
+
+        # Explicit odd/even covariance closed forms away from p=1/2.
+        if abs(pv - 0.5) > 1e-12:
+            alpha_num = float(sp.N(alpha_cov.subs({p: pvv}), 60))
+            beta_num = float(sp.N(beta_cov.subs({p: pvv}), 60))
+            delta_num = float(sp.N(delta_cov.subs({p: pvv}), 60))
+            r_num = float(sp.N(r_cov.subs({p: pvv}), 60))
+            for k in range(1, 9):
+                c_num = float(sp.N(cs[k - 1], 60))
+                if k % 2 == 1:
+                    m = (k - 1) // 2
+                    c_closed = alpha_num * (pv ** (2 * m)) + beta_num * (r_num**m)
+                else:
+                    m = k // 2
+                    c_closed = -alpha_num * (pv ** (2 * m - 1)) + delta_num * (r_num ** (m - 1))
+                errs_cov_even_odd.append(c_num - c_closed)
+        else:
+            for k in range(1, 9):
+                c_num = float(sp.N(cs[k - 1], 60))
+                c_closed = float(sp.N(critical_cov(k), 60))
+                errs_cov_half_jordan.append(c_num - c_closed)
+
         details[str(pv)] = {
             "g_star_numeric": mu_num,
             "g_star_closed": mu_cf,
@@ -422,6 +550,9 @@ def main() -> None:
             CheckResult(name="bitpair_prob_sum", max_abs_err=_max_abs(errs_prob_sum)),
             CheckResult(name="covariance_gf_match", max_abs_err=_max_abs(errs_Cp)),
             CheckResult(name="covariance_recurrence", max_abs_err=_max_abs(errs_cov_recur)),
+            CheckResult(name="covariance_shifted_gf_formula", max_abs_err=_max_abs(errs_cov_shifted_gf)),
+            CheckResult(name="covariance_even_odd_closed_form", max_abs_err=_max_abs(errs_cov_even_odd)),
+            CheckResult(name="covariance_half_jordan_closed_form", max_abs_err=_max_abs(errs_cov_half_jordan)),
         ]
     )
 
@@ -441,6 +572,10 @@ def main() -> None:
             "kappa3": str(kappa3_star),
             "I0": str(I0),
             "I1": str(I1),
+            "q_out": str(q_out),
+            "gamma_out": str(gamma_out),
+            "state_curve_poly": str(state_curve_poly),
+            "pressure_discriminant_over_p3u1mp": str(D_up),
         },
         "elapsed_s": time.time() - t0,
     }

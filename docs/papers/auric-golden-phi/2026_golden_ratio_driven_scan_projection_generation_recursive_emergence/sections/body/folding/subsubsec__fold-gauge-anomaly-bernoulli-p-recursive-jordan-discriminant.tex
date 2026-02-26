@@ -1,0 +1,267 @@
+\paragraph{偏置族中的递归相关证书、状态消元曲线与分歧判别式}
+以下结论在 Bernoulli\((p)\) 基线（\(p\in(0,1)\)）下，沿用
+定理 \ref{thm:fold-bernoulli-p-parry-pressure-chain} 与
+定理 \ref{thm:fold-bernoulli-p-bitpair-gamma-q-closed}
+的记号：平稳四状态链 \((S_t)\)、转移核 \(P(p)\)、平稳分布 \(\pi(p)\)，以及边可观测量
+\[
+g_t:=\mathbf 1_{\{(S_t,S_{t+1})\in\{(a,b),(b,c),(c,a)\}\}}.
+\]
+
+\begin{theorem}[失配指示过程的全自协方差闭式与临界 Jordan 修正]\label{thm:fold-bernoulli-p-full-autocovariance-jordan}
+设
+\[
+r(p):=p(1-p),
+\]
+并定义
+\[
+\alpha(p):=
+-\frac{p^{3}(p^{2}-3p+1)^{2}}{(p+1)^{2}(2p-1)(p^{2}-p+1)},
+\]
+\[
+\beta(p):=
+\frac{p^{2}(1-p)\bigl(p^{5}+4p^{4}-4p^{3}-5p^{2}+7p-2\bigr)}
+{(p+1)(2p-1)(p^{2}-p+1)^{2}},
+\]
+\[
+\delta(p):=
+\frac{p^{2}(1-p)^{2}\bigl(p^{5}-p^{4}-6p^{3}+3p^{2}+2p-1\bigr)}
+{(p+1)(2p-1)(p^{2}-p+1)^{2}}.
+\]
+当 \(p\neq \tfrac12\) 时，对任意整数 \(m\ge 0\) 与 \(m\ge 1\) 分别有
+\[
+\operatorname{Cov}(g_0,g_{2m+1})
+=\alpha(p)\,p^{2m}+\beta(p)\,r(p)^m,
+\]
+\[
+\operatorname{Cov}(g_0,g_{2m})
+=-\alpha(p)\,p^{2m-1}+\delta(p)\,r(p)^{m-1}.
+\]
+在临界点 \(p=\tfrac12\) 处，对任意 \(k\ge 1\) 成立
+\[
+\operatorname{Cov}(g_0,g_k)
+=2^{-(k-1)}
+\left[
+\frac1{16}
++(-1)^{k-1}\!\left(-\frac{13}{1296}-\frac{k-1}{216}\right)
+\right],
+\]
+其中 \((k-1)2^{-k}\) 项对应 \(-\tfrac12\) 处的 Jordan 退化贡献。
+\end{theorem}
+\begin{proof}
+第一部分由推论
+\ref{cor:fold-gauge-anomaly-bernoulli-p-covariance-explicit-even-odd}
+重参数化得到：其偶、奇协方差闭式与上式等价。
+第二部分即定理 \ref{thm:fold-gauge-anomaly-cov-closed} 的协方差闭式重写。
+两式在 \(p\to\tfrac12\) 极限下由特征值并合
+\(
+-p\to-\sqrt{p(1-p)}
+\)
+产生线性多项式修正。证毕。
+\end{proof}
+
+\begin{theorem}[自协方差生成函数的完全有理性与临界二重极点]\label{thm:fold-bernoulli-p-autocovariance-generating-rational}
+令
+\[
+s_n:=\operatorname{Cov}(g_0,g_{n+1}),\qquad n\ge 0,
+\]
+并定义生成函数
+\[
+\mathcal S_p(z):=\sum_{n\ge 0}s_n z^n.
+\]
+则
+\[
+\mathcal S_p(z)=
+\frac{s_0+(s_1+p s_0)z+\bigl(s_2+p s_1-p(1-p)s_0\bigr)z^2}
+{(1+p z)\bigl(1-p(1-p)z^2\bigr)}.
+\]
+其中分母在 \(p\neq\tfrac12\) 时分解为一线性因子与一二次因子；在 \(p=\tfrac12\) 时发生并合
+\[
+(1+p z)\bigl(1-p(1-p)z^2\bigr)\Big|_{p=1/2}
+=(1+z/2)^2(1-z/2),
+\]
+故 \(\mathcal S_{1/2}(z)\) 在 \(z=-2\) 处出现二重极点。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-covariance-recurrence}，
+\[
+s_{n+3}
+=-p\,s_{n+2}+p(1-p)\,s_{n+1}+p^2(1-p)\,s_n\qquad(n\ge 0).
+\]
+对上式乘以 \(z^n\) 并求和，整理初值项即得所示有理表达。
+当 \(p=\tfrac12\) 时分母因子在 \(-2\) 合并为二重因子，因此出现二重极点。证毕。
+\end{proof}
+
+\begin{theorem}[输出密度--失配密度状态方程与消元曲线]\label{thm:fold-bernoulli-p-output-mismatch-elimination-curve}
+记
+\[
+\mathsf q(p):=\PP(Y_t=1),\qquad
+\gamma(p):=\PP(X_t\neq Y_t).
+\]
+则有状态方程
+\[
+\gamma(p)=(3-2p)\,\bigl(p-\mathsf q(p)\bigr).
+\]
+此外，点 \((\mathsf q(p),\gamma(p))\) 落在平面四次代数曲线
+\[
+\begin{aligned}
+0={}&\gamma^{4}+9\gamma^{3}\mathsf q+4\gamma^{3}
++27\gamma^{2}\mathsf q^{2}+18\gamma^{2}\mathsf q-23\gamma^{2}\\
+&\quad+35\gamma\,\mathsf q^{3}+72\gamma\,\mathsf q^{2}-54\gamma\,\mathsf q+23\gamma
++70\mathsf q^{3}-69\mathsf q^{2}.
+\end{aligned}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:fold-bernoulli-p-bitpair-gamma-q-closed}，
+\[
+\mathsf q(p)=\frac{p(p^3-p+1)}{1+p^3},\qquad
+\gamma(p)=\frac{p^2(3-2p)}{1+p^3},
+\]
+并且
+\[
+p-\mathsf q(p)=\frac{p^2}{1+p^3},
+\]
+故状态方程立即成立。
+对 \((\mathsf q,\gamma)\) 的多项式关系，取
+\[
+\mathsf q(1+p^3)-p(p^3-p+1)=0,\qquad
+\gamma(1+p^3)-p^2(3-2p)=0
+\]
+对参数 \(p\) 进行 Sylvester 结式消元，得到所示四次曲线。
+把 \((\mathsf q,\gamma)=(\mathsf q(p),\gamma(p))\) 代回可得恒等为零。证毕。
+\end{proof}
+
+\begin{theorem}[失配指示过程的严格三阶 Markov 性与完整转移核]\label{thm:fold-bernoulli-p-mismatch-strict-third-order-markov}
+记 \(G_t:=g_t\in\{0,1\}\)。
+则在平稳分布下，\((G_t)\) 为三阶 Markov 过程：转移核
+\[
+\PP(G_{t+3}=1\mid G_t,G_{t+1},G_{t+2})
+\]
+仅依赖三位历史，且对允许的三比特上下文有闭式
+\[
+\PP(1\mid 001)=1,\qquad \PP(1\mid 010)=1,
+\]
+\[
+\PP(1\mid 000)=\frac{p^{2}(2p+1)}{(1+p)(1+2p-p^{2})},
+\]
+\[
+\PP(1\mid 011)=\frac{2p^{3}-p^{2}-p+1}{1+p-p^{2}},
+\qquad
+\PP(1\mid 100)=\frac{p^{2}}{1+p-p^{2}},
+\]
+\[
+\PP(1\mid 101)=\frac{(1-p)(1+p-p^{2})}{1+p-2p^{2}+p^{3}},
+\qquad
+\PP(1\mid 110)=p,
+\]
+\[
+\PP(1\mid 111)=\frac{p^{2}(3-2p)}{1-p+2p^{2}}.
+\]
+并且该过程不是二阶 Markov：对 \(p\in(0,1)\) 有
+\[
+\PP(1\mid 000)-\PP(1\mid 100)
+=-\frac{p^5}{(1+p)(1+2p-p^2)(1+p-p^2)}\neq 0.
+\]
+\end{theorem}
+\begin{proof}
+令
+\[
+(B_1)_{ij}:=P_{ij}\,\mathbf 1_{\{g(i,j)=1\}},\qquad B_0:=P-B_1.
+\]
+对任意字 \(w=w_1\cdots w_n\in\{0,1\}^n\)，有标准矩阵表示
+\[
+\PP(G_0\cdots G_{n-1}=w)
+=\pi^\top B_{w_1}\cdots B_{w_n}\mathbf 1.
+\]
+故
+\[
+\PP(G_3=d\mid G_0G_1G_2=abc)
+=\frac{\PP(abcd)}{\PP(abc)}
+\]
+可由有限次有理运算显式计算，得到上述八个上下文公式。
+其中 \((001)\) 与 \((010)\) 的后继为确定性，是由不可实现四字模式的分子为零导致。
+最后由
+\(
+\PP(1\mid 000)\neq \PP(1\mid 100)
+\)
+可知同后缀 \((00)\) 不能决定下一位，故二阶 Markov 性不成立。证毕。
+\end{proof}
+
+\begin{theorem}[压力分歧判别式的全分解与 \(u=1\) 临界并合条件]\label{thm:fold-bernoulli-p-pressure-discriminant-degree11}
+令 \(u=e^\theta\)，并记 \(\lambda\) 为特征值变量。
+把特征方程写成四次多项式
+\[
+\begin{aligned}
+F(\lambda;u,p):={}&\lambda^{4}+(p-1)\lambda^{3}
++\bigl(p^{2}-p(u+1)\bigr)\lambda^{2}\\
+&\quad+\bigl(p^{3}u^{3}-p^{2}u^{3}-p^{2}u+pu\bigr)\lambda
++p^{2}u(1-p).
+\end{aligned}
+\]
+则其 \(\lambda\)-判别式满足
+\[
+\Disc_{\lambda}F(\lambda;u,p)=p^{3}u(1-p)\,D(u,p),
+\]
+其中 \(D(u,p)\in\ZZ[p,u]\) 为关于 \(u\) 的 \(11\) 次多项式：
+\[
+\begin{aligned}
+D(u,p)={}&27p^{8}u^{11}-14p^{8}u^{8}+3p^{8}u^{5}-81p^{7}u^{11}-90p^{7}u^{9}+52p^{7}u^{8}
++170p^{7}u^{6}-11p^{7}u^{5}-68p^{7}u^{3}+12p^{7}\\
+&+81p^{6}u^{11}+270p^{6}u^{9}-68p^{6}u^{8}-25p^{6}u^{7}-536p^{6}u^{6}
++14p^{6}u^{5}+36p^{6}u^{4}+252p^{6}u^{3}+24p^{6}u-44p^{6}\\
+&-27p^{5}u^{11}-270p^{5}u^{9}+28p^{5}u^{8}-57p^{5}u^{7}+576p^{5}u^{6}
++126p^{5}u^{5}-68p^{5}u^{4}-328p^{5}u^{3}+36p^{5}u^{2}-40p^{5}u+56p^{5}\\
+&+90p^{4}u^{9}+6p^{4}u^{8}+189p^{4}u^{7}-204p^{4}u^{6}-213p^{4}u^{5}
++176p^{4}u^{3}-36p^{4}u^{2}-16p^{4}u-24p^{4}\\
+&-4p^{3}u^{8}-107p^{3}u^{7}-18p^{3}u^{6}+29p^{3}u^{5}+60p^{3}u^{4}
++20p^{3}u^{3}-16p^{3}u^{2}+48p^{3}u-4p^{3}\\
+&+12p^{2}u^{6}+52p^{2}u^{5}-44p^{2}u^{3}-8p^{2}u+4p^{2}
+-12pu^{4}-8pu^{3}+12pu^{2}-8pu+4u^{2}.
+\end{aligned}
+\]
+并且
+\[
+D(1,p)=4(1+p)^2(2p-1)^2(p^2-p+1)^2.
+\]
+因此在 \(p\in(0,1)\) 内，
+\[
+u=1\ \text{为分歧点}
+\quad\Longleftrightarrow\quad
+p=\frac12.
+\]
+\end{theorem}
+\begin{proof}
+命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-leyang-branch-u1}
+已给出判别式分解结构与 \(u=1\) 判据。
+将四次多项式 \(F\) 代入四次判别式闭式并在 \(\ZZ[p,u]\) 中化简，即得上式中 \(D(u,p)\) 的显式系数。
+代入 \(u=1\) 并因式分解，得到
+\(
+D(1,p)=4(1+p)^2(2p-1)^2(p^2-p+1)^2
+\)。
+由于 \(1+p>0\) 且 \(p^2-p+1>0\) 在 \((0,1)\) 恒正，结论等价于 \(2p-1=0\)。证毕。
+\end{proof}
+
+\begin{conjecture}[主导分歧根唯一性与高阶累积量振荡律的参数族延拓]\label{conj:fold-bernoulli-p-dominant-branch-cumulant-oscillation}
+对每个 \(p\in(0,1)\setminus\{\tfrac12\}\)，记
+\[
+\mathcal B(p):=\{u\in\mathbb C: D(u,p)=0\},
+\]
+其中 \(D(u,p)\) 由定理 \ref{thm:fold-bernoulli-p-pressure-discriminant-degree11} 给出。
+猜想：
+\begin{enumerate}
+  \item \(\mathcal B(p)\) 存在唯一一对共轭根 \(u_\ast(p),\overline{u_\ast(p)}\)，满足
+  \[
+  |u_\ast(p)|=\min\{|u|:u\in\mathcal B(p)\},\qquad \Im u_\ast(p)\neq 0,
+  \]
+  且该根为单根；
+  \item 取分支 \(\theta_\ast(p)=\log u_\ast(p)\)（\(\Re\theta_\ast(p)<0\)），则失配计数每步归一化累积量 \(\kappa_n(p)\) 在 \(n\to\infty\) 时满足
+  \[
+  \kappa_n(p)\sim
+  C(p)\,n!\,|\theta_\ast(p)|^{-n}
+  \cos\!\bigl(n\arg\theta_\ast(p)+\phi(p)\bigr),
+  \]
+  其中 \(C(p)\neq 0\)、\(\phi(p)\in\mathbb R\) 随 \(p\) 实解析变化。
+\end{enumerate}
+\end{conjecture}
+
+\endinput
