@@ -1,0 +1,220 @@
+\paragraph{圆维预算下的迪奥凡廷压缩律与素数账本指数}
+沿用定义 \ref{def:circle-dimension} 与例 \ref{ex:cdim-signature} 的结构圆维口径。
+本段把定理 \ref{thm:xi-cdim-phase-compression-aliasing-exponent} 的相位压缩结论改写为“最优精度指数”形式，并给出与有限素数账本轴的直接对应。
+
+\begin{theorem}[有限相位预算下的迪奥凡廷最优压缩律]\label{thm:xi-cdim-diophantine-optimal-compression-law}
+设 \(d,k\in\NN\)，\(\TT^k:=(\RR/\ZZ)^k\)。
+对任意矩阵 \(A\in M_{k\times d}(\RR)\)，定义群同态
+\[
+\phi_A:\ZZ^d\to\TT^k,\qquad n\mapsto An\!\!\pmod{\ZZ^k},
+\]
+并记
+\[
+\|x\|_{\TT^k,\infty}:=\min_{m\in\ZZ^k}|x-m|_\infty.
+\]
+定义半径 \(R\) 的最小相位间距
+\[
+\delta_A(R):=\min\Bigl\{\|An\|_{\TT^k,\infty}:\
+n\in\ZZ^d\setminus\{0\},\ |n|_\infty\le R\Bigr\},
+\]
+及精度指数
+\[
+\mu(A):=\limsup_{R\to\infty}\frac{\log\!\bigl(1/\delta_A(R)\bigr)}{\log R}.
+\]
+则：
+\begin{enumerate}
+  \item 对任意 \(A\)，有 \(\mu(A)\ge d/k\)；
+  \item 存在满足 \(\phi_A\) 单射的矩阵 \(A\)，使 \(\mu(A)=d/k\)。
+\end{enumerate}
+从而
+\[
+\mu_k^{\mathrm{hom}}(\ZZ^d)
+:=
+\inf_{\substack{A\in M_{k\times d}(\RR)\\ \phi_A\ \mathrm{单射}}}\mu(A)
+=\frac{d}{k}.
+\]
+\end{theorem}
+\begin{proof}
+先证下界。对整数 \(Q\ge1\)，取
+\[
+\mathcal B_Q:=\{0,1,\dots,Q\}^d,\qquad N:=|\mathcal B_Q|=(Q+1)^d.
+\]
+考虑点集 \(\phi_A(\mathcal B_Q)\subset\TT^k\)。
+若其最小两点距离记为 \(\eta_Q\)，则 \(\phi_A(\mathcal B_Q)\) 是 \(\eta_Q\)-分离集。
+对 \(\TT^k\) 的 \(\ell_\infty\)-度量，\(\eta\)-分离点数至多 \(C_k\eta^{-k}\)（体积装填估计），故
+\[
+N\le C_k\,\eta_Q^{-k},
+\qquad
+\eta_Q\le C_k'Q^{-d/k}.
+\]
+故存在 \(n\neq n'\in\mathcal B_Q\) 使
+\[
+\|A(n-n')\|_{\TT^k,\infty}\le C_k'Q^{-d/k}.
+\]
+令 \(m=n-n'\neq 0\)，则 \(|m|_\infty\le Q\)，从而
+\[
+\delta_A(Q)\le C_k'Q^{-d/k}.
+\]
+取 \(\limsup\) 得 \(\mu(A)\ge d/k\)。
+
+再证可达性。对 \(\phi_A\) 定义定理 \ref{thm:xi-cdim-phase-compression-aliasing-exponent} 中的
+\[
+\Delta_B(\phi_A)
+:=
+\min_{\substack{u\neq v\\ |u|_\infty,|v|_\infty\le B}}
+\|A(u-v)\|_{\TT^k,\infty}.
+\]
+由差集包含关系
+\[
+\{m:\ 0\neq |m|_\infty\le B\}
+\subseteq
+\{u-v:\ |u|_\infty,|v|_\infty\le B\}
+\subseteq
+\{m:\ 0\neq |m|_\infty\le 2B\}
+\]
+可得
+\[
+\delta_A(2B)\le \Delta_B(\phi_A)\le \delta_A(B).
+\]
+因此
+\[
+\limsup_{B\to\infty}\frac{\log(1/\Delta_B(\phi_A))}{\log B}
+=
+\mu(A).
+\]
+把定理 \ref{thm:xi-cdim-phase-compression-aliasing-exponent} 的参数 \((r,d)\) 取为 \((d,k)\)，可取单射 \(\phi_A\) 使上式等于 \(d/k\)，即 \(\mu(A)=d/k\)。
+结合下界即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[圆维的相位—精度乘积守恒]\label{cor:xi-cdim-phase-precision-product-law}
+设 \(G\cong \ZZ^d\oplus F\)（\(F\) 有限），并记 \(\cdim(G)=d\)（命题 \ref{prop:xi-cdim-circle-ledger-signature}）。
+定义
+\[
+\mu_k(G):=\mu_k^{\mathrm{hom}}(\ZZ^d).
+\]
+则
+\[
+\mu_k(G)=\frac{d}{k},
+\qquad
+\cdim(G)=k\,\mu_k(G)\quad(\forall\,k\in\NN).
+\]
+\end{corollary}
+\begin{proof}
+第一式由定理 \ref{thm:xi-cdim-diophantine-optimal-compression-law} 直接给出。
+第二式代入 \(d=\cdim(G)\) 即得。
+有限扭结部分 \(F\) 只贡献有界离散相位标签，不改变 \(R\to\infty\) 的幂指数。证毕。
+\end{proof}
+
+\begin{theorem}[保持群结构与仅保持可分辨性的最优指数一致]\label{thm:xi-cdim-hom-vs-injective-same-exponent}
+令
+\[
+\mathcal E_k(\ZZ^d):=\{f:\ZZ^d\to\TT^k\mid f\ \mathrm{单射}\}.
+\]
+对 \(f\in\mathcal E_k(\ZZ^d)\)，定义
+\[
+\delta_f(R):=
+\min\Bigl\{
+\|f(n)-f(n')\|_{\TT^k,\infty}:\ n\neq n',\ |n|_\infty,|n'|_\infty\le R
+\Bigr\},
+\]
+\[
+\mu(f):=\limsup_{R\to\infty}\frac{\log\!\bigl(1/\delta_f(R)\bigr)}{\log R},
+\qquad
+\mu_k^{\mathrm{inj}}(\ZZ^d):=
+\inf_{f\in\mathcal E_k(\ZZ^d)}\mu(f).
+\]
+则
+\[
+\mu_k^{\mathrm{inj}}(\ZZ^d)
+=
+\mu_k^{\mathrm{hom}}(\ZZ^d)
+=
+\frac{d}{k}.
+\]
+\end{theorem}
+\begin{proof}
+下界：固定 \(f\in\mathcal E_k(\ZZ^d)\)，令
+\[
+Q_R:=\{-R,\dots,R\}^d,\qquad N_R:=|Q_R|=(2R+1)^d.
+\]
+点集 \(f(Q_R)\subset\TT^k\) 的最小两点距离为 \(\delta_f(R)\)，故是 \(\delta_f(R)\)-分离集。
+同样由装填估计
+\[
+N_R\le C_k\,\delta_f(R)^{-k},
+\]
+即
+\[
+\delta_f(R)\le C_k'R^{-d/k},
+\]
+从而 \(\mu(f)\ge d/k\)。
+对 \(f\) 取下确界得
+\[
+\mu_k^{\mathrm{inj}}(\ZZ^d)\ge d/k.
+\]
+
+上界：定理 \ref{thm:xi-cdim-diophantine-optimal-compression-law} 给出单射同态 \(\phi_A\) 使 \(\mu(A)=d/k\)。
+把 \(\phi_A\) 视为 \(\mathcal E_k(\ZZ^d)\) 中元素即得
+\[
+\mu_k^{\mathrm{inj}}(\ZZ^d)\le d/k.
+\]
+故 \(\mu_k^{\mathrm{inj}}(\ZZ^d)=d/k\)。
+又 \(\mu_k^{\mathrm{hom}}(\ZZ^d)=d/k\) 已由定理 \ref{thm:xi-cdim-diophantine-optimal-compression-law} 给出，结论成立。证毕。
+\end{proof}
+
+\begin{corollary}[圆维预算的相位资源不等式]\label{cor:xi-cdim-phase-budget-resource-inequality}
+设对象的结构圆维为 \(d\)，并以 \(k\) 个相位通道进行单射编码。
+记半径 \(R\) 内最小可分辨相位间距为 \(\delta(R)\)。
+则存在仅依赖于 \(d,k\) 的常数 \(C,C_0>0\) 使
+\[
+\delta(R)\le C\,R^{-d/k}\qquad(R\ge1),
+\]
+等价地
+\[
+\log\frac1{\delta(R)}\ge \frac{d}{k}\log R-C_0.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-cdim-hom-vs-injective-same-exponent} 的下界证明，任意单射编码在 \(Q_R\) 上都满足装填上界
+\(
+\delta(R)\le C\,R^{-d/k}
+\)。
+对数变形即得第二式。证毕。
+\end{proof}
+
+\begin{proposition}[有限素数账本的最优精度指数由支撑基数决定]\label{prop:xi-prime-ledger-support-cardinality-exponent}
+设 \(S\subset\mathbb P\) 为有限素数集，\(|S|=s\)。
+定义其指数群
+\[
+\Gamma_S:=\left\{\prod_{p\in S}p^{e_p}:\ e_p\in\ZZ\right\}\cong\ZZ^s.
+\]
+对任意 \(k\in\NN\)，令
+\[
+\mu_{k,S}^{\mathrm{inj}}
+:=
+\inf_{f:\ZZ^s\hookrightarrow\TT^k}\mu(f),
+\qquad
+\mu_{k,S}^{\mathrm{hom}}
+:=
+\inf_{\substack{A\in M_{k\times s}(\RR)\\ \phi_A\ \mathrm{单射}}}\mu(A).
+\]
+则
+\[
+\mu_{k,S}^{\mathrm{inj}}
+=
+\mu_{k,S}^{\mathrm{hom}}
+=
+\frac{s}{k}.
+\]
+并且可取单射同态编码使
+\[
+c\,R^{-s/k}\le \delta(R)\le C\,R^{-s/k}\qquad(R\ge1)
+\]
+对某些常数 \(c,C>0\) 成立。
+\end{proposition}
+\begin{proof}
+把定理 \ref{thm:xi-cdim-hom-vs-injective-same-exponent} 中 \(d\) 替换为 \(s=|S|\) 即得首式。
+普适上界 \(\delta(R)\le C R^{-s/k}\) 来自装填估计；
+可达下界（即存在编码满足 \(\delta(R)\ge cR^{-s/k}\)）由定理 \ref{thm:xi-cdim-diophantine-optimal-compression-law} 的可达性给出。证毕。
+\end{proof}
+
+\endinput

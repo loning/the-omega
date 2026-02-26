@@ -1,0 +1,287 @@
+\paragraph{有序遗失信息的半直积编码、可回放函子化与椭圆输运分解}
+为与定理 \ref{thm:xi-replay-godel-prime-terminality}、命题 \ref{prop:pom-fold-prime-lift-injective} 与推论 \ref{cor:xi-joukowsky-prime-register-ellipse-parameterization} 的接口保持一致，本段把“轨迹顺序信息的外置化”写成同一条可逆代数链：自由单子编码、可回放提升、椭圆译码与 Chebyshev 动力学分解。
+
+\begin{theorem}[有序遗失信息的 Gödel--半直积表征]\label{thm:xi-godel-semidir-ordered-loss}
+设 \(A\) 为有限字母表，\(g:A\hookrightarrow\NN_{>0}\) 为单射。
+令
+\[
+\mathsf P:=\NN^{(\mathbb P)}
+\]
+为有限支撑素数指数向量幺半群，\((p_t)_{t\ge1}\) 为递增素数序列。
+定义移位幺半群同态
+\[
+(\sigma r)(p_1):=0,\qquad
+(\sigma r)(p_{t+1}):=r(p_t)\quad(t\ge1).
+\]
+令
+\[
+\mathsf M:=(\NN,+)\ltimes_{\sigma}(\mathsf P,+),
+\qquad
+(m,r)\star(n,s):=(m+n,\ r+\sigma^m(s)).
+\]
+对任意词 \(w=a_1\cdots a_T\in A^\ast\) 定义
+\[
+\Gamma(w):=(T,r_w),
+\]
+\[
+r_w(p_t):=
+\begin{cases}
+g(a_t),&1\le t\le T,\\
+0,&t>T.
+\end{cases}
+\]
+则成立：
+\begin{enumerate}
+  \item \(\Gamma\) 是幺半群同态：
+  \[
+  \Gamma(uv)=\Gamma(u)\star\Gamma(v),\qquad \Gamma(\varepsilon)=(0,0);
+  \]
+  \item \(\Gamma\) 为单射；
+  \item 因而 \(A^\ast\) 忠实嵌入到“长度轴 \(\ltimes\) 素数寄存器”的半直积结构 \(\mathsf M\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+设 \(u=a_1\cdots a_m\)、\(v=b_1\cdots b_n\)。
+由定义，
+\[
+r_{uv}(p_t)=g(a_t)\ (1\le t\le m),\qquad
+r_{uv}(p_{m+j})=g(b_j)\ (1\le j\le n).
+\]
+另一方面，
+\[
+\Gamma(u)\star\Gamma(v)
+=(m,r_u)\star(n,r_v)
+=(m+n,\ r_u+\sigma^m(r_v)).
+\]
+对 \(1\le j\le n\),
+\[
+\sigma^m(r_v)(p_{m+j})=r_v(p_j)=g(b_j),
+\]
+且 \(\sigma^m(r_v)\) 在 \(p_1,\dots,p_m\) 上为 \(0\)，故
+\[
+r_u+\sigma^m(r_v)=r_{uv}.
+\]
+同态性成立。
+
+再证单射。若 \(\Gamma(w)=\Gamma(w')\)，则长度分量相等，记共同长度为 \(T\)；
+且 \(r_w=r_{w'}\)。
+于是对每个 \(1\le t\le T\),
+\[
+g(a_t)=r_w(p_t)=r_{w'}(p_t)=g(a_t').
+\]
+由 \(g\) 单射得 \(a_t=a_t'\)，故 \(w=w'\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[可回放投影的 Gödel 提升与证书余圈律]\label{thm:xi-replay-projection-godel-lift-cocycle}
+设 \(\pi:\Omega\to X\) 为可回放投影：存在轨迹映射 \(\tau:\Omega\to A^\ast\) 与确定性回放算子
+\[
+\mathcal R:X\times A^\ast\to\Omega
+\]
+满足
+\[
+\mathcal R(\pi(\omega),\tau(\omega))=\omega,\qquad \forall\,\omega\in\Omega.
+\]
+沿用定理 \ref{thm:xi-godel-semidir-ordered-loss} 的 \(\Gamma\)，定义提升
+\[
+\widetilde\pi:\Omega\to X\times\mathsf M,
+\qquad
+\widetilde\pi(\omega):=\bigl(\pi(\omega),\Gamma(\tau(\omega))\bigr).
+\]
+则：
+\begin{enumerate}
+  \item \(\widetilde\pi\) 为单射；
+  \item 在 \(\operatorname{Im}(\widetilde\pi)\) 上有显式逆
+  \[
+  \widetilde\pi^{-1}(x,\mu)=\mathcal R\bigl(x,\Gamma^{-1}(\mu)\bigr),
+  \qquad
+  (x,\mu)\in\operatorname{Im}(\widetilde\pi).
+  \]
+\end{enumerate}
+
+进一步，设
+\[
+(\pi_1,\tau_1,\mathcal R_1):\Omega\to X,\qquad
+(\pi_2,\tau_2,\mathcal R_2):X\to Y
+\]
+均为可回放投影（在统一字母表编码下）。
+定义合成轨迹
+\[
+\tau_{21}(\omega):=\tau_1(\omega)\cdot\tau_2(\pi_1(\omega)).
+\]
+则其证书满足半直积余圈律
+\[
+\Gamma(\tau_{21}(\omega))
+=
+\Gamma(\tau_1(\omega))\star\Gamma(\tau_2(\pi_1(\omega))).
+\]
+\end{theorem}
+\begin{proof}
+若 \(\widetilde\pi(\omega)=\widetilde\pi(\omega')\)，则
+\[
+\pi(\omega)=\pi(\omega'),\qquad
+\Gamma(\tau(\omega))=\Gamma(\tau(\omega')).
+\]
+由定理 \ref{thm:xi-godel-semidir-ordered-loss} 的单射性，\(\tau(\omega)=\tau(\omega')\)。
+故
+\[
+\omega
+=\mathcal R(\pi(\omega),\tau(\omega))
+=\mathcal R(\pi(\omega'),\tau(\omega'))
+=\omega',
+\]
+得单射。
+逆映射公式由同一等式直接给出。
+
+对合成轨迹，\(\tau_{21}\) 为串接，故由定理 \ref{thm:xi-godel-semidir-ordered-loss} 的同态性
+\[
+\Gamma(\tau_{21})
+=\Gamma(\tau_1\cdot(\tau_2\circ\pi_1))
+=\Gamma(\tau_1)\star\Gamma(\tau_2\circ\pi_1),
+\]
+即所述余圈律。证毕。
+\end{proof}
+
+\begin{theorem}[Joukowsky--Gödel 椭圆门的可逆译码]\label{thm:xi-joukowsky-godel-ellipse-reversible-decoding}
+定义
+\[
+J(z):=\frac12\left(z+\frac1z\right),\qquad z\in\CC^\times.
+\]
+对 \(\rho>1\) 置
+\[
+E_\rho:=\{J(\rho e^{i\theta}):\theta\in[0,2\pi)\}.
+\]
+则 \(E_\rho\) 为焦点在 \(\pm1\) 的椭圆，其半轴为
+\[
+a(\rho)=\frac{\rho+\rho^{-1}}2,\qquad
+b(\rho)=\frac{\rho-\rho^{-1}}2,
+\qquad
+a(\rho)^2-b(\rho)^2=1.
+\]
+令
+\[
+\mathsf P_{>1}:=\{r\in\mathsf P:\ N(r)>1\},
+\qquad
+N(r):=\prod_{p}p^{r(p)}.
+\]
+定义算法椭圆映射
+\[
+\mathcal E:\mathsf P_{>1}\to\{E_\rho:\rho>1\},
+\qquad
+\mathcal E(r):=E_{N(r)}.
+\]
+则：
+\begin{enumerate}
+  \item \(\mathcal E\) 单射；
+  \item 给定椭圆半轴 \((a,b)\) 可显式恢复
+  \[
+  \rho=a+b,\qquad \rho^{-1}=a-b;
+  \]
+  \item 若 \(\rho\in\NN_{>1}\)，则 \(r\) 由 \(\rho\) 的唯一素因子分解唯一确定。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由半轴公式直接计算
+\[
+a(\rho)+b(\rho)=\rho,\qquad
+a(\rho)-b(\rho)=\rho^{-1}.
+\]
+故椭圆几何数据 \((a,b)\) 唯一确定 \(\rho\)。
+若 \(\mathcal E(r)=\mathcal E(r')\)，则 \(N(r)=N(r')\)，由算术基本定理得 \(r=r'\)。
+当 \(\rho\in\NN_{>1}\) 时，同理由唯一分解恢复 \(r\)。证毕。
+\end{proof}
+
+\begin{proposition}[素数椭圆在椭圆相似模空间中的稠密性]\label{prop:xi-prime-ellipse-density-in-moduli}
+令 \(\mathsf P^{\mathrm{gp}}:=\ZZ^{(\mathbb P)}\) 为 \(\mathsf P\) 的 Grothendieck 群完成，并记
+\[
+N:\mathsf P^{\mathrm{gp}}\xrightarrow{\sim}\QQ_{>0},
+\qquad
+N(s)=\prod_{p}p^{s(p)}.
+\]
+对 \(\rho>1\) 定义轴比
+\[
+\kappa(\rho):=\frac{b(\rho)}{a(\rho)}
+=\frac{\rho-\rho^{-1}}{\rho+\rho^{-1}}
+=\frac{\rho^2-1}{\rho^2+1}\in(0,1).
+\]
+则 \(\kappa\) 在 \((1,\infty)\) 上严格递增且连续，并且
+\[
+\kappa(\QQ_{>1})
+\]
+在 \((0,1)\) 中稠密。
+等价地：对任意 \(\kappa_0\in(0,1)\) 与 \(\varepsilon>0\)，存在 \(s\in\mathsf P^{\mathrm{gp}}\) 使
+\[
+\bigl|\kappa(N(s))-\kappa_0\bigr|<\varepsilon.
+\]
+\end{proposition}
+\begin{proof}
+\(\QQ_{>1}\) 在 \((1,\infty)\) 稠密，而 \(\kappa\) 连续严格单调，故其像 \(\kappa(\QQ_{>1})\) 在
+\[
+\kappa((1,\infty))=(0,1)
+\]
+中稠密。再由 \(N:\mathsf P^{\mathrm{gp}}\xrightarrow{\sim}\QQ_{>0}\) 即得等价表述。证毕。
+\end{proof}
+
+\begin{theorem}[Chebyshev--Gödel 椭圆输运的素数原子分解]\label{thm:xi-chebyshev-godel-ellipse-prime-atomic-decomposition}
+设 \(T_n\) 为第一类 Chebyshev 多项式。
+对任意 \(z\in\CC^\times\) 有恒等式
+\[
+T_n\!\left(\frac{z+z^{-1}}2\right)=\frac{z^n+z^{-n}}2,
+\]
+故
+\[
+J(z^n)=T_n(J(z)).
+\]
+于是对任意 \(\rho>1\)：
+\[
+T_n(E_\rho)=E_{\rho^n}.
+\]
+
+进一步，对任意 \(r\in\mathsf P_{>1}\)，记
+\[
+n:=N(r)=\prod_{p}p^{r(p)}.
+\]
+则在由 \(\{T_p\}_{p\ \mathrm{prime}}\) 生成的交换复合半群中有分解
+\[
+T_n
+=
+\bigcirc_{p\in\operatorname{supp}(r)} T_p^{\circ r(p)},
+\]
+且该分解唯一（至多差交换次序）。
+\end{theorem}
+\begin{proof}
+前两式由 Chebyshev 基本恒等式直接得到。
+令 \(z=\rho e^{i\theta}\)，则
+\[
+T_n(J(\rho e^{i\theta}))=J(\rho^n e^{in\theta}).
+\]
+随 \(\theta\) 取遍 \([0,2\pi)\)，右侧恰扫过 \(E_{\rho^n}\)，故 \(T_n(E_\rho)=E_{\rho^n}\)。
+
+对分解式，利用复合律
+\[
+T_{mn}=T_m\circ T_n=T_n\circ T_m
+\]
+并代入 \(n=\prod_p p^{r(p)}\) 得存在性。
+若存在另一分解对应整数 \(n'\)，则两侧作为多项式相等，比较次数
+\(
+\deg T_n=n
+\)
+得 \(n=n'\)；
+再由算术基本定理得到指数向量唯一，故原子分解唯一。证毕。
+\end{proof}
+
+\begin{conjecture}[Lee--Yang 坏素数与证书支撑的同构控制]\label{conj:xi-leyang-badprime-support-register-correspondence}
+沿用猜想 \ref{conj:xi-terminal-zm-spectral-compatible-externalization-badprime-minimal} 与猜想 \ref{conj:xi-leyang-badprime37-algorithmic-threshold} 的语义框架。
+设 \(r\) 为可回放投影的 Gödel 证书，\(n=N(r)\)，并令 \(C_r\) 为由相应消元机制生成的谱曲线最小模型，记其坏约化素数集为 \(\mathcal B(C_r)\)。
+则存在与具体策略无关的有限背景集 \(\mathcal B_0\) 使
+\[
+\mathcal B(C_r)\subseteq \operatorname{supp}(r)\cup\mathcal B_0.
+\]
+并且在参数的 Zariski 稠密开集中满足反向包含
+\[
+\operatorname{supp}(r)\setminus\mathcal B_0\subseteq \mathcal B(C_r).
+\]
+换言之，除有限背景素数外，坏素数支撑由证书支撑在算术上刚性决定。
+\end{conjecture}
+
+\endinput

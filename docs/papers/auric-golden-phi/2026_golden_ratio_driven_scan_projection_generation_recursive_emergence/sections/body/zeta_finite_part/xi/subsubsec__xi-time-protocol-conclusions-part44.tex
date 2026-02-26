@@ -1,0 +1,196 @@
+\paragraph{二级退化五次的最大对称性、子结式闭式与特征坍缩门槛}
+沿用结论 \ref{con:xi-terminal-zm-leyang-delta-quartic-discriminant-reflexive} 的四次 \(\delta\)-生成多项式
+\[
+F_\delta(T;y):=T^{4}+(8y-3)T^{3}+(2y^{2}-34y-4)T^{2}-y(y-1)\,P_{\mathrm{LY}}(y)\in\ZZ[y][T],
+\qquad
+P_{\mathrm{LY}}(y)=256y^{3}+411y^{2}+165y+32,
+\]
+及其判别式分解
+\[
+\mathrm{Disc}_{T}\bigl(F_\delta(T;y)\bigr)=-y(y-1)\,P_{\mathrm{LY}}(y)\cdot Q_{5}(y)^{2},
+\]
+其中
+\[
+Q_{5}(y)=4096y^{5}+5376y^{4}-464y^{3}-2749y^{2}-723y+80\in\ZZ[y].
+\]
+
+\begin{theorem}[二级退化五次的全对称伽罗瓦群]\label{thm:xi-q5-galois-s5}
+多项式 \(Q_5(y)\) 在 \(\QQ\) 上不可约，且其分裂域 \(L_5/\QQ\) 的伽罗瓦群满足
+\[
+\operatorname{Gal}(L_5/\QQ)\cong S_5.
+\]
+\end{theorem}
+\begin{proof}
+不可约性可由一次良性模素约化读出：在 \(\FF_7[y]\) 上，\(Q_5\bmod 7\) 仍为次数 \(5\) 的不可约多项式，
+故 \(Q_5\) 在 \(\QQ[y]\) 不可约。
+
+由结论 \ref{con:xi-terminal-zm-leyang-q5-discriminant-727}，
+\[
+\mathrm{Disc}(Q_5)=-2^{28}\cdot 3^{9}\cdot 11^{2}\cdot 31^{3}\cdot 727,
+\]
+从而 \(7\nmid \mathrm{Disc}(Q_5)\)，素数 \(7\) 在分裂域中不分歧。
+由于 \(Q_5\bmod 7\) 为不可约 \(5\) 次因子，Dedekind 分解型与 Frobenius 循环型对应给出
+\(\operatorname{Gal}(L_5/\QQ)\) 含一个 \(5\)-循环。
+
+另一方面，\(\nu_{727}(\mathrm{Disc}(Q_5))=1\)。
+并且在 \(\FF_{727}[y]\) 上出现唯一二重根型分解：
+存在 \(a\neq b\in\FF_{727}\) 与不可约二次因子 \(h_2\in\FF_{727}[y]\) 使
+\[
+Q_5(y)\equiv (y-a)^2(y-b)\,h_2(y)\quad(\bmod 727).
+\]
+因此 \(727\) 处的惯性群包含一个换位。
+在 \(S_5\) 中，一个 \(5\)-循环与一个换位生成 \(S_5\)，故伽罗瓦群为 \(S_5\)。
+可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_q5\_a7\_subresultant\_galois\_audit.py}。证毕。
+\end{proof}
+
+\begin{corollary}[二级退化参数的不可根式性]\label{cor:xi-q5-unsolvable-by-radicals}
+若 \(\alpha\) 为 \(Q_5\) 的任一根，则 \(\QQ(\alpha)/\QQ\) 不为可解扩张，因而 \(\alpha\) 不可由有理数经有限次四则运算与开方表示。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-q5-galois-s5}，分裂域伽罗瓦群为不可解群 \(S_5\)，与根式可解性判别矛盾。证毕。
+\end{proof}
+
+\begin{theorem}[一阶子结式闭式与唯一二重根刚性]\label{thm:xi-fdelta-subresultant-unique-double-root}
+令 \(f(T):=F_\delta(T;y)\)、\(g(T):=\partial_TF_\delta(T;y)\)。
+则二者关于 \(T\) 的第一子结式满足严格闭式
+\[
+\mathrm{SRes}_1(f,g)(T)
+=
+-4A_7(y)\,T
+-y(y-1)(8y-3)(16y+11)(32y+19)\,P_{\mathrm{LY}}(y),
+\]
+其中
+\[
+A_7(y):=45056 y^7 + 60160 y^6 - 11984 y^5 - 19765 y^4 + 18906 y^3 + 14723 y^2 + 2216 y + 200.
+\]
+并且在特征 \(0\) 上成立：
+\begin{enumerate}
+  \item 若 \(y_0\in\overline{\QQ}\) 使 \(\mathrm{Disc}_T(F_\delta(\cdot;y_0))=0\)，则 \(F_\delta(T;y_0)\) 恰有且仅有一个二重根，其余两根为单根；
+  \item 该唯一二重根 \(\delta_\ast(y_0)\) 满足（当 \(A_7(y_0)\neq 0\) 时）
+  \[
+  \delta_\ast(y)
+  =
+  -\frac{y(y-1)(8y-3)(16y+11)(32y+19)\,P_{\mathrm{LY}}(y)}{4A_7(y)},
+  \]
+  且当 \(y\in\{0,1\}\cup\{P_{\mathrm{LY}}(y)=0\}\) 时 \(\delta_\ast(y)=0\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+子结式理论给出：当 \(\gcd(f,g)\) 在 \(\overline{\QQ}(y)[T]\) 中次数为 \(1\) 时，
+\(\mathrm{SRes}_1(f,g)\) 与该一次 \(\gcd\) 在 \(\overline{\QQ}(y)^\times\) 意义下成比例；
+因此其唯一零点即为二重根。
+所示闭式为直接子结式计算的恒等式。
+
+若存在 \(y_0\) 使 \(F_\delta(\cdot;y_0)\) 发生更高碰撞（出现三重根或两处不同二重根），则 \(\gcd(f,g)\) 的次数至少为 \(2\)，
+从而 \(\mathrm{SRes}_1(f,g)\) 作为 \(T\)-一次多项式必须恒等为零，等价于
+\[
+A_7(y_0)=0,
+\qquad
+y_0(y_0-1)(8y_0-3)(16y_0+11)(32y_0+19)P_{\mathrm{LY}}(y_0)=0.
+\]
+但在 \(\ZZ[y]\) 中有
+\[
+\gcd\!\bigl(A_7,\ y(y-1)P_{\mathrm{LY}}\bigr)=1,
+\qquad
+\gcd(A_7,Q_5)=1,
+\]
+故上述同时为零不可能发生。
+于是在判别式为零处 \(\gcd(f,g)\) 只能为一次，得到“唯一二重根”结论。
+解一次方程给出 \(\delta_\ast\) 的闭式；当 \(y\in\{0,1\}\cup\{P_{\mathrm{LY}}=0\}\) 时分子为零，故 \(\delta_\ast=0\)。
+可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_q5\_a7\_subresultant\_galois\_audit.py}。证毕。
+\end{proof}
+
+\begin{theorem}[特征 \texorpdfstring{$31$}{31} 的唯一总坍缩纤维]\label{thm:xi-fdelta-char31-total-collapse}
+对奇素数 \(p\neq 2\)，考虑 \(F_\delta(T;y)\) 在 \(\FF_p\) 上的约化。
+存在 \(y_0\in\FF_p\) 使
+\[
+F_\delta(T;y_0)\equiv T^4\quad\text{于}\ \FF_p[T]
+\]
+当且仅当 \(p=31\)；此时唯一解为 \(y_0\equiv 12\pmod{31}\)。
+\end{theorem}
+\begin{proof}
+等式 \(F_\delta(T;y_0)\equiv T^4\) 等价于三条系数同时为零：
+\[
+8y_0-3\equiv 0,\qquad
+2y_0^2-34y_0-4\equiv 0,\qquad
+y_0(y_0-1)P_{\mathrm{LY}}(y_0)\equiv 0
+\quad(\bmod p).
+\]
+第一式给出 \(y_0\equiv 3/8\)。
+代入第二式得到 \(-527/32\)，故必须 \(p\mid 527\)，即 \(p\in\{17,31\}\)。
+第三式在 \(y_0\not\equiv 0,1\) 时等价于 \(P_{\mathrm{LY}}(3/8)\equiv 0\pmod p\)。
+直接计算
+\[
+P_{\mathrm{LY}}\!\left(\frac38\right)=\frac{10571}{64}=\frac{11\cdot 31^2}{2^6},
+\]
+故仅在 \(p=31\) 时成立。
+再由 \(8^{-1}\equiv 4\pmod{31}\) 得 \(y_0\equiv 3\cdot 4\equiv 12\pmod{31}\)。
+可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_q5\_a7\_subresultant\_galois\_audit.py}。证毕。
+\end{proof}
+
+\begin{theorem}[主分歧三次与二级退化五次的线性互不相交与联合密度]\label{thm:xi-leyang-ply-q5-linearly-disjoint-chebotarev}
+令 \(L_3\) 为 \(P_{\mathrm{LY}}(y)\) 的分裂域，\(L_5\) 为 \(Q_5(y)\) 的分裂域。
+则：
+\begin{enumerate}
+  \item \(L_3\cap L_5=\QQ\)，从而 \(\operatorname{Gal}(L_3L_5/\QQ)\cong S_3\times S_5\)；
+  \item 对一切不分歧素数 \(p\nmid \mathrm{Disc}(P_{\mathrm{LY}})\mathrm{Disc}(Q_5)\)，两者模 \(p\) 的分解型联合分布为直积分布；
+  \item 特别地，
+  \[
+  \delta\bigl(P_{\mathrm{LY}}\ \text{全分裂且}\ Q_5\ \text{全分裂}\bigr)=\frac{1}{6}\cdot\frac{1}{120}=\frac{1}{720},
+  \]
+  \[
+  \delta\bigl(P_{\mathrm{LY}}\ \text{在}\ \FF_p\ \text{上有根且}\ Q_5\ \text{在}\ \FF_p\ \text{上有根}\bigr)
+  =\frac{2}{3}\cdot\frac{19}{30}=\frac{19}{45}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由结论 \ref{con:xi-terminal-37-squarefree-coupling}，
+\[
+\mathrm{Disc}(P_{\mathrm{LY}})=-3^9\cdot 31^2\cdot 37,
+\]
+故 \(L_3\) 的唯一二次子域为 \(\QQ(\sqrt{-111})\)。
+由结论 \ref{con:xi-terminal-zm-leyang-q5-discriminant-727}，
+\[
+\mathrm{Disc}(Q_5)=-2^{28}\cdot 3^{9}\cdot 11^{2}\cdot 31^{3}\cdot 727,
+\]
+故 \(L_5\) 的唯一二次子域为 \(\QQ(\sqrt{-67611})\)。
+两二次子域分歧素集不同，因而不相等；而 \(L_3/\QQ\) 的真非平凡子域仅有该二次子域，故 \(L_3\cap L_5=\QQ\)。
+直积伽罗瓦群同构随之得到。
+
+联合分布与密度由 Chebotarev 定理在直积群上的等分布给出。
+其中 \(P_{\mathrm{LY}}\) 的三类分解型密度由结论 \ref{con:xi-terminal-zm-elliptic-normalization} 给出为
+\((1)(1)(1)\) 密度 \(1/6\)、\((1)(2)\) 密度 \(1/2\)、\((3)\) 密度 \(1/3\)，故“有根”密度为 \(2/3\)。
+对 \(S_5\) 的共轭类计数给出 \(Q_5\) 的分解型密度：全分裂对应恒等类密度 \(1/120\)；
+“无一次因子”等价于无不动点，仅可能为 \(5\)-循环（密度 \(1/5\)）或 \((3)(2)\)（密度 \(1/6\)），故“有一次因子”密度为 \(1-(1/5+1/6)=19/30\)。
+乘积即得所示密度。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$A_7$}{A7} 的满对称伽罗瓦群与极点不可根式性]\label{thm:xi-a7-galois-s7}
+令 \(A_7(y)\) 如定理 \ref{thm:xi-fdelta-subresultant-unique-double-root}。
+则 \(A_7\) 在 \(\QQ\) 上不可约，且其分裂域 \(L_7/\QQ\) 满足
+\[
+\operatorname{Gal}(L_7/\QQ)\cong S_7.
+\]
+因此由 \(\delta_\ast\) 的分母诱导的极点参数集合在算术上达到最大对称性破缺，并不可由根式表示。
+\end{theorem}
+\begin{proof}
+首先，\(A_7\bmod 23\) 在 \(\FF_{23}[y]\) 上不可约（分解型为 \([7]\)），且 \(23\nmid \mathrm{Disc}(A_7)\)，
+故 Frobenius 元给出一个 \(7\)-循环。
+
+其次，判别式素因子分解为
+\[
+\mathrm{Disc}(A_7)=2^{38}\cdot 3^{19}\cdot 31^{7}\cdot 5651\cdot 12045409\cdot 258006961,
+\]
+从而 \(\nu_{5651}(\mathrm{Disc}(A_7))=1\)。
+并且 \(A_7\bmod 5651\) 亦出现唯一二重根型分解：
+存在 \(a\neq b\in\FF_{5651}\) 与不可约三次因子 \(h_3\in\FF_{5651}[y]\) 使
+\[
+A_7(y)\equiv (y-a)^2(y-b)\,h_3(y)\quad(\bmod 5651).
+\]
+故 \(5651\) 处的惯性群包含换位。
+在 \(S_7\) 中，一个 \(7\)-循环与一个换位生成 \(S_7\)，故伽罗瓦群为 \(S_7\)。
+可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_q5\_a7\_subresultant\_galois\_audit.py}。证毕。
+\end{proof}
+
+\endinput
