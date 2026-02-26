@@ -165,6 +165,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_leyang_q5_a7_subresultant_galois_audit",
+            script="exp_xi_leyang_q5_a7_subresultant_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_q5_a7_subresultant_galois_audit.json",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly",
             script="exp_fold_gauge_anomaly.py",
             args=[],
