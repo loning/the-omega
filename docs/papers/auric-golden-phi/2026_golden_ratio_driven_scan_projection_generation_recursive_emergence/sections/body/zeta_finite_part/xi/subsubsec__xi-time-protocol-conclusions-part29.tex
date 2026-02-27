@@ -290,6 +290,228 @@ Witt 侧的“迹 \(\to\) primitive \(\to\) Euler”桥包与 Fourier 侧的 Par
 见注 \ref{rem:fw-bridge}（并由定理 \ref{thm:fold-collision-spectrum} 的 Parseval 恒等式给出该标尺的严格推导；其与 Rényi-2/均匀性缺口的等价关系见推论 \ref{cor:pom-renyi2-near-uniform}）。
 \end{proof}
 
+\begin{conclusion}[碰撞概率的谱迹公式与 Riesz--Parseval 恒等式]\label{con:xi-fold-collision-spectral-trace-parseval}
+令 \(M:=F_{m+2}\)，并把折叠多重度剖面视为模环上的函数
+\(
+d_m:\ZZ/(M\ZZ)\to\NN
+\)。
+定义归一化分布
+\[
+\mu_m(r):=\frac{d_m(r)}{2^m},
+\qquad
+u(r):=\frac{1}{M}\qquad\bigl(r\in\ZZ/(M\ZZ)\bigr),
+\]
+以及碰撞概率
+\[
+\mathsf{Col}_m:=\sum_{r\in\ZZ/(M\ZZ)}\mu_m(r)^2.
+\]
+则有严格谱迹恒等式
+\[
+\boxed{\;
+\mathsf{Col}_m
+=\frac{1}{M}\sum_{k\in\ZZ/(M\ZZ)}
+\prod_{j=1}^{m}\cos^2\!\Bigl(\pi k\,\frac{F_{j+1}}{M}\Bigr)\; }.
+\]
+因此
+\[
+\mathsf{Col}_m-\frac1M
+=\frac{1}{M}\sum_{k\ne 0}
+\prod_{j=1}^{m}\cos^2\!\Bigl(\pi k\,\frac{F_{j+1}}{M}\Bigr).
+\]
+并且 \(\chi^2\)-散度与碰撞缺口满足精确等价
+\[
+\boxed{\;
+\chi^2(\mu_m\mid u)
+:=\sum_{r}\frac{\bigl(\mu_m(r)-u(r)\bigr)^2}{u(r)}
+=M\sum_{r}\Bigl(\mu_m(r)-\frac1M\Bigr)^2
+=M\mathsf{Col}_m-1
+=M\Bigl(\mathsf{Col}_m-\frac1M\Bigr).\;}
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由定理 \ref{thm:fold-collision-spectrum} 的 Parseval 恒等式，
+\(
+\mathsf{Col}_m=\frac{1}{M}\sum_k|\widehat\mu_m(k)|^2
+\)。
+再由定理 \ref{thm:fold-spectrum-factorization} 的乘积分解得到
+\(
+|\widehat\mu_m(k)|^2=\prod_{j=1}^m\cos^2(\pi kF_{j+1}/M)
+\)，代回即得谱迹公式。
+\(\chi^2\) 恒等式则由
+\(
+M\sum_r(\mu_m(r)-1/M)^2=M\sum_r\mu_m(r)^2-1
+\)
+直接化简得到。证毕。
+\end{proof}
+
+\begin{conclusion}[群环卷积算子的零点--核维数等价]\label{con:xi-fold-group-ring-convolution-kernel-dimension}
+在群环
+\[
+\CC[\ZZ/(M\ZZ)]\cong\CC[x]/(x^M-1)
+\]
+中令生成函数
+\[
+D_m(x):=\sum_{r=0}^{M-1}d_m(r)x^r,
+\]
+并定义卷积/乘法算子
+\[
+T_m:\CC[x]/(x^M-1)\to\CC[x]/(x^M-1),\qquad f\longmapsto D_m\cdot f\ \ (\mathrm{mod}\ x^M-1).
+\]
+记谱零点集合
+\[
+\mathcal Z_m:=\{k\in\ZZ/(M\ZZ):\ \widehat d_m(k)=0\}.
+\]
+则核维数与零点数严格一致：
+\[
+\boxed{\;
+\dim_\CC\ker(T_m)=|\mathcal Z_m|,
+\qquad
+\mathrm{rank}(T_m)=M-|\mathcal Z_m|.\;}
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+取标准 Fourier 基（或等价地：把 \(\CC[x]/(x^M-1)\) 以 \(x\mapsto e^{-2\pi i k/M}\) 的特征分解对角化）。
+在该基下，乘法算子 \(T_m\) 对角化，其特征值为
+\(
+D_m(e^{-2\pi i k/M})=\widehat d_m(k)
+\)（见命题 \ref{prop:fold-multiplicity-group-algebra} 与定理 \ref{thm:fold-spectrum-factorization}）。
+故核由所有 \(\widehat d_m(k)=0\) 的特征方向张成，维数等于零点数目。证毕。
+\end{proof}
+
+\begin{conclusion}[谱零点的同余方程刻画与余类分层]\label{con:xi-fold-spectrum-zero-congruence-coset-stratification}
+令 \(M:=F_{m+2}\) 且 \(k\in\ZZ/(M\ZZ)\)。
+则
+\[
+k\in\mathcal Z_m
+\quad\Longleftrightarrow\quad
+\exists j\in\{1,\dots,m\}\ \text{s.t.}\ e^{-2\pi i kF_{j+1}/M}=-1.
+\]
+等价地（因此必有 \(M\) 偶）：
+\[
+k\in\mathcal Z_m
+\quad\Longleftrightarrow\quad
+\bigl(M\ \text{为偶数}\bigr)\ \wedge\
+\exists j\in\{1,\dots,m\}\ \text{s.t.}\ kF_{j+1}\equiv \frac{M}{2}\pmod M.
+\]
+并且对固定的 \(j\)，令 \(g_j:=\gcd(F_{j+1},M)\)。
+则同余
+\(
+kF_{j+1}\equiv M/2\ (\mathrm{mod}\ M)
+\)
+可解当且仅当 \(g_j\mid M/2\)；
+在可解时解集为 \(\ZZ/(M\ZZ)\) 的一个仿射陪集，且其元素个数恰为 \(g_j\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+第一段由定理 \ref{thm:fold-spectrum-factorization}：\(\widehat d_m(k)=\prod_{j=1}^m(1+e^{-2\pi i kF_{j+1}/M})\)，故为零当且仅当某因子为零。
+第二段与第三段是线性同余方程的标准判别，并在本文记号下由定理 \ref{thm:fold-zero-coset-rigidity} 给出显式陪集与其大小。证毕。
+\end{proof}
+
+\begin{conclusion}[六倍窗的核维数下界与线性不可逆的半阶崩塌]\label{con:xi-fold-window6-kernel-half-index-lower-bound}
+若 \(m+2\equiv 0\pmod 6\)，则存在一个半阶余类块满足
+\[
+|\mathcal Z_m|\ \ge\ F_{(m+2)/2}.
+\]
+因此由结论 \ref{con:xi-fold-group-ring-convolution-kernel-dimension} 立刻推出
+\[
+\dim_\CC\ker(T_m)\ge F_{(m+2)/2},
+\qquad
+\mathrm{rank}(T_m)\le M-F_{(m+2)/2}.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+谱零点下界为推论 \ref{cor:fold-zero-half-index-multiple6}；
+核维数等价由结论 \ref{con:xi-fold-group-ring-convolution-kernel-dimension} 得到。证毕。
+\end{proof}
+
+\begin{conclusion}[\texorpdfstring{$\chi^2$}{chi^2} 距离的常数级刚性下界]\label{con:xi-fold-chi2-constant-residual-energy}
+令 \(M:=F_{m+2}\)，并沿用结论 \ref{con:xi-fold-collision-spectral-trace-parseval} 的 \(\mu_m,u\)。
+设临界共振常数 \(C_\varphi>0\) 如定理 \ref{thm:fold-critical-resonance-constant}。
+则有常数级下界
+\[
+\boxed{\;
+\liminf_{m\to\infty}\chi^2(\mu_m\mid u)\ \ge\ 2C_\varphi^2\;}
+\]
+等价地，
+\[
+\mathsf{Col}_m-\frac1M\ \ge\ \frac{2C_\varphi^2+o(1)}{M}.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-fold-collision-spectral-trace-parseval}，
+\(
+\chi^2(\mu_m\mid u)=M(\mathsf{Col}_m-1/M)
+\)。
+而推论 \ref{cor:fold-critical-resonance-gap} 给出
+\(
+\liminf_{m\to\infty}M(\mathsf{Col}_m-1/M)\ge 2C_\varphi^2
+\)。
+合并即得。证毕。
+\end{proof}
+
+\begin{conclusion}[高阶碰撞核 Perron 根的端点斜率由最大纤维指数锁定]\label{con:xi-fold-high-q-perron-endpoint-slope-maxfiber}
+记最大纤维 \(M_m:=\max_{x\in X_m}d_m(x)\)，并令 \(\alpha_m:=\frac1m\log M_m\)。
+若极限 \(\alpha_\ast:=\lim_{m\to\infty}\alpha_m\) 存在且有限，则对每个固定整数 \(q\ge 1\)，令
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q,
+\qquad
+\log r_q:=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)
+\quad(\text{若极限存在}),
+\]
+则恒有双边夹逼
+\[
+q\alpha_\ast\ \le\ \log r_q\ \le\ q\alpha_\ast+\log\varphi,
+\]
+并且端点斜率满足
+\[
+\lim_{q\to\infty}\frac{1}{q}\log r_q=\alpha_\ast.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由平凡夹逼 \(M_m^q\le S_q(m)\le |X_m|\,M_m^q\) 得
+\[
+q\alpha_m\ \le\ \frac{1}{m}\log S_q(m)\ \le\ q\alpha_m+\frac{1}{m}\log|X_m|.
+\]
+利用 \(|X_m|=F_{m+2}=\Theta(\varphi^m)\) 与 \(\alpha_m\to\alpha_\ast\) 取极限得到 \(\log r_q\) 的夹逼；
+再令 \(q\to\infty\) 得端点斜率。证毕。
+\end{proof}
+
+\begin{conclusion}[Rényi 指纹率的零温极限]\label{con:xi-fold-renyi-fingerprint-rate-zero-temp}
+沿用结论 \ref{con:xi-fold-high-q-perron-endpoint-slope-maxfiber} 的 \(r_q\) 与 \(\alpha_\ast\)。
+定义每阶 \(q\) 的指纹率
+\[
+h_R(q):=\frac{q\log 2-\log r_q}{q-1}.
+\]
+则存在零温极限
+\[
+\boxed{\;\lim_{q\to\infty}h_R(q)=\log 2-\alpha_\ast.\;}
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-fold-high-q-perron-endpoint-slope-maxfiber}，有 \(\log r_q=q\alpha_\ast+O(1)\)，代入定义并令 \(q\to\infty\) 得结论。证毕。
+\end{proof}
+
+\begin{conclusion}[规范体积密度的余维一常数：离散体积与折叠缺陷熵的稳定平移]\label{con:xi-fold-gauge-volume-codim1-constant}
+对任意折叠系统，令 \(d_m(w)\) 为纤维大小函数并定义规范群体积
+\[
+|G_m|:=\prod_{w\in X_m} d_m(w)!,
+\qquad
+g_m:=\frac{1}{2^m}\log|G_m|,
+\qquad
+\kappa_m:=\frac{1}{2^m}\sum_{w\in X_m} d_m(w)\log d_m(w).
+\]
+在计数守恒 \(\sum_w d_m(w)=2^m\) 下，Stirling 展开给出普适差常数：存在与 \(m\) 无关的绝对常数使
+\[
+g_m=\kappa_m-1+O\!\Bigl(\frac{|X_m|\,m}{2^m}\Bigr).
+\]
+在本文给定的 Fibonacci 稳定类型尺度 \(|X_m|=F_{m+2}=\Theta(\varphi^m)\) 下，误差为指数级小量，从而
+\[
+\kappa_m-g_m=1+O\!\bigl(m(\varphi/2)^m\bigr)=1+o(1).
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+见定理 \ref{thm:fold-bin-gauge-volume-stirling-second-order}（并结合命题 \ref{prop:fold-bin-gauge-volume} 的记号设定与余项界）。证毕。
+\end{proof}
+
 \begin{conclusion}[Big-Witt 运算的算子编译：原子 Euler 数据的半环可同态嵌入迹类算子组合]\label{con:xi-atomic-witt-operator-compilation}
 令 \(\mathcal{W}_{\mathrm{atom}}\) 为由原子数据 \((\beta,n,m)\) 生成的 Big-Witt 型半环，令 \(\mathrm{TC}_1\) 为迹类算子在酉等价类下的交换半环（加法为直和、乘法为张量积）。
 则映射
