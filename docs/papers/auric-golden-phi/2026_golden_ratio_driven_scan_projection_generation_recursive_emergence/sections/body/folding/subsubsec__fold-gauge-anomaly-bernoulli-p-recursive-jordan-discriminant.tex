@@ -400,6 +400,54 @@ M_m(u)=e_d^{\mathsf T}Q_p(u)^{m}\mathbf 1,
 将 \eqref{eq:fold-bernoulli-p-finite-time-mgf-gf} 在 \(z=0\) 处展开至三阶即可得到初值 \eqref{eq:fold-bernoulli-p-finite-time-mgf-initial}。证毕。
 \end{proof}
 
+\begin{theorem}[二维常系数递推闭合：\texorpdfstring{$G_m$}{Gm} 的全概率质量函数可由有限步精确生成]\label{thm:fold-bernoulli-p-finite-time-pmf-2d-recurrence}
+从再生态 \(d\) 出发，令
+\[
+a_{m,k}:=\PP(G_m=k\mid S_0=d)\qquad(m\ge 0,\ k\ge 0),
+\]
+并约定当 \(m<0\) 或 \(k<0\) 时取 \(a_{m,k}=0\)。
+则对任意 \(m\ge 4\)、\(k\ge 0\) 成立二维齐次递推
+\begin{equation}\label{eq:fold-bernoulli-p-finite-time-pmf-2d-recurrence}
+\begin{aligned}
+a_{m,k}={}&(1-p)\,a_{m-1,k}
++p(1-p)\,a_{m-2,k}
++p\,a_{m-2,k-1}
+-p(1-p)\,a_{m-3,k-1}\\
+&\quad
++p^{2}(1-p)\,a_{m-3,k-3}
+-p^{2}(1-p)\,a_{m-4,k-1}.
+\end{aligned}
+\end{equation}
+其初值由 \eqref{eq:fold-bernoulli-p-finite-time-mgf-initial} 唯一确定，具体为
+\[
+a_{0,0}=1,\quad a_{1,0}=1,
+\]
+\[
+a_{2,0}=1-p^{2},\quad a_{2,1}=p^{2},
+\]
+\[
+a_{3,0}=1-2p^{2}+p^{3},\quad a_{3,1}=p^{2}-p^{3},\quad a_{3,2}=p^{2}.
+\]
+因此格点族 \(\{a_{m,k}\}_{m,k}\) 在上述递推与边界条件下被完全刻画，从而 \(G_m\) 的全概率质量函数可由有限步计算精确生成，而无需矩阵幂或谱分解。
+\end{theorem}
+\begin{proof}
+令
+\(
+M_m(u)=\sum_{k\ge 0}a_{m,k}u^{k}
+\)，并定义二元生成函数
+\[
+F(u,z):=\sum_{m\ge 0}M_m(u)\,z^{m}
+=\sum_{m,k\ge 0}a_{m,k}u^{k}z^{m}.
+\]
+由定理 \ref{thm:fold-bernoulli-p-finite-time-mismatch-rational-recurrence}，
+\(
+F(u,z)=N_p(u,z)/D_p(u,z)
+\)，其中 \(D_p(u,z)\) 由 \eqref{eq:fold-bernoulli-p-finite-time-mgf-den} 给出。
+将恒等式 \(D_p(u,z)F(u,z)=N_p(u,z)\) 的两端按 \(z^{m}u^{k}\) 比较系数：
+由于 \(\deg_z N_p\le 3\)，当 \(m\ge 4\) 时右端系数恒为零，从而得到二维齐次递推 \eqref{eq:fold-bernoulli-p-finite-time-pmf-2d-recurrence}。
+初值由 \(M_0,M_1,M_2,M_3\) 的显式表达展开为 \(u\)-系数即可读出。证毕。
+\end{proof}
+
 \input{subsubsec__fold-gauge-anomaly-bernoulli-p-renewal-determinant-pressure-doob-tilt}
 
 \begin{remark}[公开索引同形排查说明]\label{rem:fold-bernoulli-p-regeneration-closed-form-public-index-note}
