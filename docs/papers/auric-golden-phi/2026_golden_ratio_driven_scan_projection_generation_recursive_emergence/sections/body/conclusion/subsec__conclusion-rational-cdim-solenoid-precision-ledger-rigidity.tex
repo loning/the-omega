@@ -164,7 +164,7 @@ B:=\sum_{i=1}^r \ZZ a_i\cong \ZZ^r.
 \)。
 在该归一化下，对每个素数 \(p\) 定义其\textbf{高度}
 \[
-h_p(A):=\sup\{k\in\NN:\ p^{-k}\in A\}\in\NN\cup\{\infty\},
+h_p(A):=\sup\bigl(\{k\in\NN:\ p^{-k}\in A\}\cup\{0\}\bigr)\in(\NN\cup\{0\})\cup\{\infty\},
 \]
 并称 \(\Sigma(A):=(h_p(A))_{p}\) 为 \(A\) 的高度签名。
 \end{definition}
@@ -216,6 +216,79 @@ A=\bigcup_j d_j^{-1}\ZZ
 \]
 即便高度签名 \(\Sigma(A)\) 在素数方向携带无限信息，其结构圆维仍保持为一维；无限性被严格容纳在逆极限纤维的 profinite/solenoidal 结构中，而非表现为无穷多个相位圆因子。
 \end{remark}
+\paragraph{高度序列与归一化周期模}\label{para:conclusion-solenoid-height-normalized-period-module}
+定理 \ref{thm:conclusion-rank1-height-solenoid-dual} 表明，一维 solenoid 的离散侧分类信息可编码为高度序列 \(\Sigma(A)\)。
+在有限覆盖逆塔的层无关积分口径（定理 \ref{thm:app-normalized-stokes-finite-cover-inverse-tower}）下，该分类参数亦可由单一“归一化斯托克斯周期模”完全恢复。
+
+\begin{theorem}[归一化斯托克斯周期模恢复高度签名]\label{thm:conclusion-rank1-solenoid-normalized-stokes-period-module-recovers-height}
+令 \(A\) 为秩一无挠可数阿贝尔群，并取定理 \ref{thm:conclusion-rank1-height-solenoid-dual} 的整数链 \(d_1\mid d_2\mid\cdots\) 与表示
+\[
+\widehat{A}\ \cong\ \varprojlim_j\Bigl(\TT \xleftarrow{\,z\mapsto z^{d_{j+1}/d_j}\,}\TT\Bigr).
+\]
+在 \(\TT\simeq\RR/\ZZ\) 上取标准平移不变闭 \(1\)-形式 \(\mathrm d\theta\)（其周期群为 \(\ZZ\)）。
+定义 \(\widehat{A}\) 的\emph{归一化斯托克斯周期模}
+\[
+\Pi_{\mathrm{St}}(\widehat{A})
+:=
+\bigcup_{j\ge 1}\left\{\frac1{d_j}\int_{\gamma}\mathrm d\theta:\ \gamma\ \text{为 }\TT\text{ 上的分段光滑闭曲线}\right\}
+\subseteq \QQ\subseteq\RR.
+\]
+则 \(\Pi_{\mathrm{St}}(\widehat{A})=A\)（在归一化 \(\ZZ\subseteq A\subseteq\QQ\) 下）。
+并且对每个素数 \(p\)，高度由周期模完全恢复：
+\[
+h_p(A)=\sup\left(\{k\in\NN:\ p^{-k}\in \Pi_{\mathrm{St}}(\widehat{A})\}\cup\{0\}\right)\quad(\text{允许 }=\infty).
+\]
+\end{theorem}
+
+\begin{proof}
+任意闭曲线 \(\gamma\) 在 \(\TT\) 上的绕数 \(\deg(\gamma)\in\ZZ\) 满足
+\(
+\int_\gamma \mathrm d\theta=\deg(\gamma)
+\)。
+故对每个 \(j\)，集合
+\(
+\left\{\frac1{d_j}\int_\gamma \mathrm d\theta\right\}
+=d_j^{-1}\ZZ
+\)。
+取并得
+\[
+\Pi_{\mathrm{St}}(\widehat{A})=\bigcup_{j\ge 1}d_j^{-1}\ZZ=A,
+\]
+其中最后一步使用定理 \ref{thm:conclusion-rank1-height-solenoid-dual} 的离散侧刻画。
+最后，\(p^{-k}\in A\) 当且仅当 \(k\le h_p(A)\)，由此即得恢复式。证毕。
+\end{proof}
+
+\begin{theorem}[profinite 纤维的斯托克斯不可见性]\label{thm:conclusion-profinite-fiber-stokes-invisibility}
+设有紧交换群短正合列
+\[
+0\longrightarrow P\longrightarrow E\stackrel{\pi}{\longrightarrow}\TT^r\longrightarrow 0,
+\]
+其中 \(P\) 为 profinite（紧、全不连通）交换群。
+定义 \(E\) 上的斯托克斯可见形式子空间
+\[
+\Omega^k_{\mathrm{St}}(E):=\pi^\ast\Omega^k(\TT^r).
+\]
+若 \(\alpha\in\Omega^{r-1}_{\mathrm{St}}(E)\)，且 \(C\) 为 \(E\) 中一条 \(r\)-维分段光滑奇异链，满足 \(C\) 在 \(P\) 方向局部常值（从而 \(\partial C\) 亦局部常值），则成立
+\[
+\int_C d\alpha=\int_{\partial C}\alpha.
+\]
+并且该等式仅由 \(\pi(C)\subseteq\TT^r\) 与 \(\pi^\ast\) 的函子性决定，与 \(P\) 的内部结构无关。
+\end{theorem}
+
+\begin{proof}
+由定义 \(\alpha=\pi^\ast\beta\)（某 \(\beta\in\Omega^{r-1}(\TT^r)\)），且 \(d\alpha=\pi^\ast(d\beta)\)。
+当 \(C\) 在 \(P\) 方向局部常值时，\(\pi\) 在链意义下给出 \(\pi_\# C\)，并满足 \(\pi_\#(\partial C)=\partial(\pi_\# C)\)。
+于是
+\[
+\int_C d\alpha
+=\int_C \pi^\ast(d\beta)
+=\int_{\pi_\# C} d\beta
+=\int_{\partial(\pi_\# C)}\beta
+=\int_{\partial C}\pi^\ast\beta
+=\int_{\partial C}\alpha,
+\]
+其中第三个等号为 \(\TT^r\) 上经典广义斯托克斯定理。证毕。
+\end{proof}
 
 \begin{theorem}[有限精度势约束下的圆维单调性]\label{thm:conclusion-jacobian-potential-dimension-monotonicity}
 令 \(U:=(-\tfrac12,\tfrac12)\)。
@@ -343,6 +416,22 @@ K_A\hookrightarrow L.
 \mathcal P_{\min}(K)=\{p:\ p\mid \Delta_K\}.
 \]
 等价地，所有不可消去的进位/分歧/纤维缺陷均由 ramified primes 强制，而在 \(\mathcal O_K[\Delta_K^{-1}]\) 上不需引入新素账本轴。
+\end{conjecture}
+
+\begin{conjecture}[Hecke--Stokes 互易接口：solenoid 周期模的本征谱恢复]\label{conj:conclusion-hecke-stokes-reciprocity-solenoid-period-spectrum}
+设 \((X_n,\pi_n)_{n\ge 0}\) 为模曲线的有限覆盖塔（例如 \(X_0(Np^n)\)），并令
+\(
+\mathcal S:=\varprojlim (X_n,\pi_n)
+\)
+为其逆极限 solenoid 型紧空间。
+设 \(f\) 为权 \(2\) 的 Hecke 本征新形式，\(\omega_f\) 为对应的全纯微分。
+考虑由层间拉回并按覆盖次数作归一化所诱导的闭 \(1\)-形式系统，并以此定义 \(\mathcal S\) 上的归一化周期模 \(\Pi_{\mathrm{St}}(\mathcal S,\omega_f)\)（与定理 \ref{thm:app-normalized-stokes-finite-cover-inverse-tower} 同型的层无关积分口径）。
+则猜想：
+\begin{enumerate}
+  \item \(\Pi_{\mathrm{St}}(\mathcal S,\omega_f)\) 在 Hecke 代数作用下稳定；
+  \item Hecke 本征值 \(\{a_\ell(f)\}\) 可由层间转移算子在 \(\Pi_{\mathrm{St}}(\mathcal S,\omega_f)\) 上的特征谱唯一确定；
+  \item 在适当完备化后，\(\Pi_{\mathrm{St}}(\mathcal S,\omega_f)\) 的“周期--转移”结构与 \(H^1\) 的 \(p\)-进实现之局部滤过数据相容，从而把局部因子以可审计的边界周期数据编码。
+\end{enumerate}
 \end{conjecture}
 
 \begin{remark}[与本质素数谱口径的对接]\label{rem:conclusion-discriminant-ledger-interface}

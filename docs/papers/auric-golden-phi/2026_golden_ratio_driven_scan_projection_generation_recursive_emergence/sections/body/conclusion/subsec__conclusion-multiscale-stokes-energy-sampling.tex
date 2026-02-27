@@ -1,0 +1,118 @@
+\subsection{超立方体上的多尺度斯托克斯能量与边界采样证书}\label{subsec:conclusion-multiscale-stokes-energy-sampling}
+本小节在欧氏胞腔复形上将广义斯托克斯公式提升为一条多尺度能量恒等式：仅由边界积分构成的量在尺度极限中严格重建 \(\|d\alpha\|_{L^2}\)。
+进一步地，在每个胞腔边界上作独立随机采样，可得到带统一置信界与样本复杂度的可审计证书。
+
+\begin{theorem}[多尺度斯托克斯能量的 \(L^2\) 重建]\label{thm:conclusion-multiscale-stokes-energy-l2-reconstruction}
+令 \(Q=[0,1]^d\)（\(d\ge 2\)），取 \(\alpha\in C^{1}(Q;\Lambda^{k})\)（\(0\le k\le d-1\)）。
+对 dyadic 级别 \(m\in\NN\)，记网格步长 \(h:=2^{-m}\)，并令 \(\mathcal C_m^{k+1}\) 为由该网格诱导的全体定向 \((k+1)\)-维小立方体胞腔集合。
+对 \(C\in\mathcal C_m^{k+1}\)，定义尺度 \(m\) 的斯托克斯差分
+\[
+\mathbf S_m\alpha(C)
+:=\frac{1}{h^{k+1}}\int_{\partial C}\alpha
+=\frac{1}{h^{k+1}}\int_C d\alpha,
+\]
+其中第二个等号为胞腔上的广义斯托克斯定理。
+并定义多尺度斯托克斯能量
+\[
+\mathcal E_m(\alpha):=h^d\sum_{C\in\mathcal C_m^{k+1}}\bigl|\mathbf S_m\alpha(C)\bigr|^2.
+\]
+则：
+\begin{enumerate}
+  \item 若 \(d\alpha\) 连续，则
+  \[
+  \lim_{m\to\infty}\mathcal E_m(\alpha)=\int_Q |d\alpha(x)|^2\,\mathrm dx.
+  \]
+  \item 若 \(d\alpha\) 为 Lipschitz，设 \(L:=\mathrm{Lip}(d\alpha)\)，则存在仅依赖 \((d,k)\) 的常数 \(C_{d,k}<\infty\) 使
+  \[
+  \biggl|\mathcal E_m(\alpha)-\int_Q |d\alpha(x)|^2\,\mathrm dx\biggr|
+  \le C_{d,k}\,L\,h.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+对每个胞腔 \(C\in\mathcal C_m^{k+1}\) 令其 \((k{+}1)\)-体积为 \(|C|=h^{k+1}\)，并记
+\[
+\overline{d\alpha}_C:=\frac1{|C|}\int_C d\alpha.
+\]
+由定义与斯托克斯公式有 \(\mathbf S_m\alpha(C)=\overline{d\alpha}_C\)，故
+\[
+\mathcal E_m(\alpha)
+=h^d\sum_{C\in\mathcal C_m^{k+1}}\bigl|\overline{d\alpha}_C\bigr|^2.
+\]
+将 \(d\alpha\) 在每个 \(C\) 上用其平均 \(\overline{d\alpha}_C\) 近似，可将右端视为对函数 \(|d\alpha|^2\) 的 Riemann 型求和。
+当 \(d\alpha\) 连续时，胞腔平均在 \(h\to 0\) 时对几乎处处点一致逼近 \(d\alpha\)；
+结合一致连续性与主导收敛，即得 (1)。
+
+若 \(d\alpha\) 为 Lipschitz，则对任意 \(x\in C\) 有
+\(
+|d\alpha(x)-\overline{d\alpha}_C|\le L\,\mathrm{diam}(C)\le L\sqrt d\,h
+\)。
+用恒等式
+\(
+\bigl||u|^2-|v|^2\bigr|\le (|u|+|v|)\,|u-v|
+\)
+并在 \(C\) 上积分、再对所有 \(C\) 求和，可得整体误差被 \(O(Lh)\) 控制；
+把维数与组合常数吸收到 \(C_{d,k}\) 中即得 (2)。证毕。
+\end{proof}
+
+\begin{proposition}[随机边界采样的斯托克斯证书]\label{prop:conclusion-stokes-random-sampling-certificate}
+在定理 \ref{thm:conclusion-multiscale-stokes-energy-l2-reconstruction} 的设定下固定尺度 \(m\)，并设 \(\alpha\) 有界：\(\|\alpha\|_{\infty}\le B\)。
+对每个 \(C\in\mathcal C_m^{k+1}\)，在 \(\partial C\) 的 \(k\)-维测度归一化概率上独立采样 \(N\) 个点 \(X_{C,1},\dots,X_{C,N}\)。
+记 \(\tau_C\) 为 \(\partial C\) 上的单位定向 \(k\)-向量场，并定义 Monte Carlo 估计量
+\[
+\widehat{\mathbf S}_m\alpha(C)
+:=\frac{|\partial C|}{h^{k+1}}\cdot \frac1N\sum_{j=1}^N \langle \alpha(X_{C,j}),\tau_C(X_{C,j})\rangle.
+\]
+令胞腔数 \(M_m:=|\mathcal C_m^{k+1}|\asymp h^{-d}\)。
+则对任意 \(\varepsilon>0\)，有一致偏差界
+\[
+\PP\!\left(
+\max_{C\in\mathcal C_m^{k+1}}
+\bigl|\widehat{\mathbf S}_m\alpha(C)-\mathbf S_m\alpha(C)\bigr|
+\ge \varepsilon
+\right)
+\le
+2M_m\exp\!\left(
+-\frac{2N\varepsilon^2}{\left(\frac{|\partial C|}{h^{k+1}}B\right)^2}
+\right).
+\]
+特别地，若取
+\[
+N\ \ge\
+\frac12\left(\frac{|\partial C|}{h^{k+1}}B\right)^2\cdot
+\frac{\log(2M_m/\delta)}{\varepsilon^2},
+\]
+则以概率至少 \(1-\delta\) 同时对所有胞腔成立
+\(
+\bigl|\widehat{\mathbf S}_m\alpha(C)-\mathbf S_m\alpha(C)\bigr|\le \varepsilon
+\)，从而由边界采样得到对 \(\mathcal E_m(\alpha)\) 的可审计统计证书，并可与定理 \ref{thm:conclusion-multiscale-stokes-energy-l2-reconstruction} 的尺度极限合并得到 \(\|d\alpha\|_{L^2}\) 的外推控制。
+\end{proposition}
+
+\begin{proof}
+对固定胞腔 \(C\)，令随机变量
+\[
+Y_{C,j}:=\frac{|\partial C|}{h^{k+1}}\langle \alpha(X_{C,j}),\tau_C(X_{C,j})\rangle.
+\]
+则 \(\{Y_{C,j}\}_{j=1}^N\) 独立同分布，且由 \(\|\alpha\|_\infty\le B\)、\(\|\tau_C\|=1\) 得
+\(
+|Y_{C,j}|\le \frac{|\partial C|}{h^{k+1}}B
+\)。
+并且由采样分布的定义
+\[
+\EE[Y_{C,j}]
+=\frac{|\partial C|}{h^{k+1}}\cdot \frac1{|\partial C|}\int_{\partial C}\alpha
+=\frac1{h^{k+1}}\int_{\partial C}\alpha
+=\mathbf S_m\alpha(C).
+\]
+由 Hoeffding 不等式得
+\[
+\PP\bigl(|\widehat{\mathbf S}_m\alpha(C)-\mathbf S_m\alpha(C)|\ge\varepsilon\bigr)
+\le
+2\exp\!\left(
+-\frac{2N\varepsilon^2}{\left(\frac{|\partial C|}{h^{k+1}}B\right)^2}
+\right).
+\]
+对全部 \(M_m\) 个胞腔作并合界即得第一式；再解出 \(N\) 得充分条件。证毕。
+\end{proof}
+
