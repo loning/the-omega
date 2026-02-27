@@ -225,7 +225,7 @@ $$
 \text{有限核/矩阵族}\ \Longrightarrow\ \zeta(z)=\det(I-zM)^{-1}\ \Longrightarrow\ (\text{twist})\ \Longrightarrow\ \log\mathfrak{M}\ \Longrightarrow\ \text{签名}.
 $$
 
-\paragraph{接口 A：\texorpdfstring{$\mathsf{Anom}_G$}{Anom}（扭曲有限部异常签名）}
+\paragraph{异常签名接口：\texorpdfstring{$\mathsf{Anom}_G$}{Anom}（扭曲有限部异常签名）}
 对定义 \ref{def:pom-anom-signature}，工程上只需两步：枚举非平凡角色并计算对应的 \(\log\mathfrak{M}_\chi(\theta)\)。
 本文已有脚本在 \(\chi\)-切片上实现了 \(\theta=(t,0,-t)\) 的一维族（即把 arity-charge 作为势注入）并输出 \((P_\chi(t),\log\mathfrak{M}_\chi(t))\)：
 \texttt{scripts/exp\_sync\_kernel\_real\_input\_40\_logM\_chi.py}。
@@ -250,7 +250,7 @@ return Anom
 若需要仅做“判等/判零”，可在少量采样点 \(\theta\in\Theta_{\mathrm{grid}}\) 上比较 \(\log\mathfrak{M}_\chi(\theta)\) 向量（推论 \ref{cor:pom-three-gen-normal-form-decidable}）。
 \end{remark}
 
-\paragraph{接口 B：扭曲谱半径比与最坏角色（慢模证书）}
+\paragraph{慢模证书接口：扭曲谱半径比与最坏角色（慢模证书）}
 异常签名是常数级残差；指数级慢模证书可由 \(\rho_\chi/\lambda\) 给出。
 本文对真实输入 40 状态核的某些势（例如 output potential）已经提供“单位根扭曲”的全表与最坏角色输出：
 \texttt{scripts/exp\_real\_input\_40\_output\_potential\_dirichlet\_twists.py}，
@@ -258,7 +258,7 @@ return Anom
 报告了每个模数 \(m\) 的最坏 \(j\) 与 \(\rho_m/\lambda\)。
 该接口与 \(\mathsf{Anom}\) 可并列使用：前者给指数缺口，后者给常数漂移。
 
-\paragraph{接口 C：moment 递推证书（\texorpdfstring{$r_q$}{rq} 与尾部预算）}
+\paragraph{尾部预算接口：moment 递推证书（\texorpdfstring{$r_q$}{rq} 与尾部预算）}
 对碰撞矩 \(S_q(m)\) 的“可审计证书”本文采用两种等价口径：
 \begin{itemize}
   \item \textbf{递推证书：}用整数递推系数核验 \(S_q\)（表 \ref{tab:fold_collision_moment_recursions}）。
@@ -274,9 +274,9 @@ return Anom
 
 以上三类脚本输出共同构成“\(r_q\) 可计算 \(\Rightarrow\) 尾部分位预算可计算”的闭环：将 \(r_q\) 代入注 \ref{rem:pom-quantile-budget-computable} 的显式不等式即可得到 prime-register 的可审计配额上界（推论 \ref{cor:pom-prime-register-quantile-budget}）。
 
-\paragraph{接口 D：Bridge-Kit（严格化交换图的二级回归测试包）}
-前述接口 A/B/C 分别给出：常数级残差（异常签名）、指数级慢模证书（最坏扭曲谱半径比）、以及 tail/prime-register 预算证书（由 \(r_q\) 控制）。
-但在工程实践中，真正需要的是一个“\emph{可作为验收标准的一键桥包}”：任何对核实现、截断策略、角色分解或数值线性代数优化的改动，都必须保持一组低维可审计输出不漂移。
+\paragraph{Bridge-Kit 接口：严格化交换图的二级回归测试包}
+前述三类接口分别给出：常数级残差（异常签名）、指数级慢模证书（最坏扭曲谱半径比）、以及 tail/prime-register 预算证书（由 \(r_q\) 控制）。
+但在工程实践中，真正需要的是一个“\emph{可作为验收准则的一键桥包}”：任何对核实现、截断策略、角色分解或数值线性代数优化的改动，都必须保持一组低维可审计输出不漂移。
 \par
 为此我们把
 \[

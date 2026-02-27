@@ -1,0 +1,74 @@
+\section{Introduction}\label{sec:introduction}
+
+This paper isolates a single normalizing map---\emph{resolution folding} $\Fold_m$---as the minimal interface that turns finite-resolution window readouts into canonical symbolic objects with computable invariants and auditable certificates.
+The central loop is
+\[
+\Omega_m\ \xrightarrow{\ \Fold_m\ }\ X_m\ \xrightarrow{\ \Phi_m\ }\ Y_m
+\quad\Longrightarrow\quad
+\text{computable covers, fiber statistics, and an entropy ledger}.
+\]
+
+\paragraph{Finite-window readout and the audit objective.}
+Given a binary time series, the length-$m$ window state space is $\Omega_m=\{0,1\}^m$.
+Our aim is to replace raw windows by stable \emph{types} that admit:
+(i) a unique canonical representative (normal form);
+(ii) multiscale compatibility across $m$;
+(iii) a symbolic-dynamics factor $Y_m$ with a computable Markov cover;
+(iv) a quantitative interface to fiber statistics;
+(v) an information-theoretic decomposition that separates visible from residual microstructure.
+
+\paragraph{Design space and the golden endpoint.}
+The Zeckendorf/golden-mean fold is the simplest member of a broader family based on Ostrowski numeration for irrational rotations \cite{Ostrowski1922,Berthe2001Ostrowski,HieronymiTerry2018OstrowskiAddition}.
+In that design space, folding is naturally defined by a normalization-then-truncation principle (value $\to$ canonical digit expansion $\to$ truncate), which is functorial across resolutions.
+Imposing a \emph{binary} alphabet constraint at all resolutions forces the golden endpoint $\alpha=\varphi^{-1}$ and hence the golden-mean syntax as the minimal binary stable language.
+This clarifies that the model is not an arbitrary choice among rewriting rules, but a rigid specialization selected by an auditable interface requirement.
+
+\paragraph{Why a fold-aware multiscale interface is necessary.}
+While prefix restriction $\pi_{m+1\to m}$ is functorial on the stable language $X_m$, naive truncation $r_{m+1\to m}$ on microstates does not commute with folding (Remark~\ref{rem:noncommute-truncation}).
+We therefore introduce the fold-aware restriction $\widetilde r_{m+1\to m}$ and quantify the resulting obstruction by the \emph{gauge anomaly} $G_m$ (Definition~\ref{def:gauge-anomaly}).
+This obstruction is genuinely nonlocal: it can be full length in the worst case (Proposition~\ref{prop:gauge-anomaly-max}), and under the uniform baseline it has a positive constant density $g_\ast=4/9$ with an explicit finite-state certificate (Proposition~\ref{prop:gauge-anomaly-density-49} and Appendix~\ref{app:gauge-anomaly-transducer}).
+
+\paragraph{Beyond cover-level invariants: fiber spectra and online normalization.}
+Cover theory yields computable invariants from a finite adjacency matrix, but it does not by itself resolve the internal degrees of freedom inside fold fibers.
+To make fiber structure auditable, we introduce a spectrum of collision moments
+\(
+S_k(m)=\sum_{x\in X_m} d_m(x)^k
+\)
+and show they admit finite-state (matrix) representations whose Perron roots control exponential rates.
+Separately, we show that folding admits an explicit \emph{online} realization with a provably minimal delay \cite{Frougny1999OnlineAddition}; this isolates an intrinsic time defect of Zeckendorf normalization that is independent of cover presentations.
+
+\paragraph{Main results (theorem groups).}
+The main statements are organized into the following theorem groups:
+\begin{itemize}
+  \item Section~\ref{sec:extensions} (Section~\ref{subsec:extensions-ostrowski}): the Ostrowski design space and the golden endpoint rigidity under a binary alphabet constraint.
+  \item Section~\ref{sec:certificates} (Theorems~\ref{thm:tv-certificate-hist} and \ref{thm:markov-tv-envelope}): finite-sample total-variation certificates for folded histograms, both deterministic (discrepancy-based) and probabilistic (Markov concentration).
+  \item Section~\ref{sec:folding} (Theorem~\ref{thm:fold-normal-form-multiscale}): $\Fold_m$ as a confluent local rewriting normalizer, with idempotence and multiscale compatibility via a fold-aware restriction; the gauge anomaly then quantifies the non-commutativity of naive truncation.
+  \item Appendix~\ref{app:online-normalization}: a deterministic finite-state online normalizer for $\Fold_\infty$ with delay $3$ and a proof of the optimality of this delay.
+  \item Section~\ref{sec:sofic-cover} (Theorem~\ref{thm:phi-sofic-fischer}): the induced sliding block factor $\Phi_m$ admits an explicit suffix-state presentation that is \emph{bi-resolving} by one-step distinguishability; consequently $h_{\mathrm{top}}(Y_m)=\log 2$ and the factor has a finite-defect register (an injective lift $\Psi_m$ with fiber bound $\le 2^{m-1}$), while Fischer-cover theory provides a computable interface to Parry/PF and cover zeta determinants.
+  \item Section~\ref{sec:collision-spectra}: collision moments and moment kernels, providing a computable fiber spectrum whose Perron roots control exponential rates and admit polynomial-size symmetry quotients.
+  \item Section~\ref{sec:ledger} (Theorem~\ref{thm:information-ledger}): the entropy ledger identity
+  \[
+  H(\mu)=H(P_m\mu)+\mathbb{E}[\log d_m]-D_{\mathrm{KL}}(\mu\|Q_mP_m\mu),
+  \]
+  which makes the KL term the unique residual carrier beyond folded types and fiber volumes.
+\end{itemize}
+In addition, Appendix~\ref{app:fiber-multiplicity} proves an exact independent-set factorization of fold fibers, yielding a closed product formula for $d_m(x)$ and a baseline composition partition function with free-energy constant $\log\!\bigl((3+\sqrt{17})/2\bigr)$.
+
+\paragraph{Relation to prior work.}
+On the symbolic-dynamics side we use standard notions of sliding block codes, sofic shifts, and canonical right-resolving/Fischer-cover presentations \cite{LindMarcus1995,Kitchens1998SymbolicDynamics,Weiss1973SFTandSofic,CovenPaul1975SoficSystems}.
+On the arithmetic/normal-form side, folding is anchored in Zeckendorf representations \cite{Zeckendorf1972} and in finite-state normalization mechanisms (unambiguous transducers) for Fibonacci numeration systems \cite{ITA_2001__35_6_491_0}.
+Our point of departure is to treat $\Fold_m$ as the \emph{single organizing interface} that closes the loop from finite windows to computable cover invariants and an auditable entropy ledger, while explicitly quantifying the multiscale obstruction through $G_m$ and its finite-state certificates (Appendix~\ref{app:gauge-anomaly-transducer}).
+At the level of fibers, we show that the residual degrees of freedom of $\Fold_m^{-1}(x)$ reduce to non-overlapping inverse normal-form triggers, yielding an induced-path independent-set model and an exact multiplicative factorization of $d_m(x)$ (Appendix~\ref{app:fiber-multiplicity}).
+The certification layer relies on discrepancy bounds \cite{KuipersNiederreiter1974} and Markov concentration \cite{Paulin2015MarkovConcentration}, and the information ledger is a conditional-entropy/KL decomposition specialized to fold fibers \cite{CoverThomas2006,SasonVerdu2016fDivergence}.
+
+\paragraph{Paper structure.}
+Section~\ref{sec:preliminaries} fixes notation and minimal prerequisites.
+Section~\ref{sec:generator} introduces the finite-window readout setting.
+Section~\ref{sec:certificates} gives finite-sample certificates.
+Section~\ref{sec:folding} constructs $\Fold_m$ and its multiscale interface.
+Section~\ref{sec:sofic-cover} builds the sofic factor $Y_m$ and its Markov cover interface.
+Section~\ref{sec:ledger} proves the information ledger identity.
+Section~\ref{sec:collision-spectra} develops collision spectra and finite-state moment-kernel interfaces for fiber statistics.
+Section~\ref{sec:algorithms} summarizes algorithms, complexity, and an auditable protocol.
+Section~\ref{sec:extensions} discusses minimal extensions and falsifiable limitations.
+

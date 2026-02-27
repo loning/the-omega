@@ -1,0 +1,319 @@
+\subsection{Lucas 幂 Hankel 主子式的判别式分解与刚性谱律}\label{subsec:conclusion-lucas-hankel-discriminant-rigidity}
+本小节给出一组闭式可核验结论：Lucas 幂序列的 Hankel 主子式可写成二项系数、判别式与 Fibonacci 因子的完全乘积；对应对称幂特征多项式判别式与 Hankel 行列式之间存在无剩余恒等式；并在移位、特征 \(p\) 与黄金比例特例下给出刚性分类与 \(5\)-进显式公式。
+
+\begin{definition}[Lucas/Fibonacci 型输入]\label{def:conclusion-lucas-fib-input}
+设 \(S,P\in\ZZ\) 且 \(\Delta:=S^2-4P\neq 0\)，并假设 \(P=\pm 1\)。
+令 \(\alpha,\beta\) 为
+\[
+x^2-Sx+P=0
+\]
+的两根。定义
+\[
+L_n:=\alpha^n+\beta^n,\qquad
+F_n:=\frac{\alpha^n-\beta^n}{\alpha-\beta}\qquad (n\ge 0).
+\]
+固定 \(q\ge 1\)，置
+\[
+a_n:=L_n^q,\qquad
+H_q:=(a_{i+j})_{0\le i,j\le q}.
+\]
+\end{definition}
+
+\begin{theorem}[Lucas 幂 Hankel 主子式闭式]\label{thm:conclusion-lucas-power-hankel-closed-form}
+在定义 \ref{def:conclusion-lucas-fib-input} 的设定下，有
+\[
+\det(H_q)
+=
+\left(\prod_{k=0}^{q}\binom{q}{k}\right)
+\Delta^{\frac{q(q+1)}{2}}
+\prod_{d=1}^{q}F_d^{\,2(q+1-d)}.
+\]
+特别地，在黄金比例特例 \((S,P)=(1,-1)\)（\(\Delta=5\)）中，
+\[
+\det(H_q)
+=
+\left(\prod_{k=0}^{q}\binom{q}{k}\right)
+5^{\frac{q(q+1)}{2}}
+\prod_{d=1}^{q}F_d^{\,2(q+1-d)}.
+\]
+\end{theorem}
+\begin{proof}
+由二项式展开
+\[
+a_n=(\alpha^n+\beta^n)^q
+=\sum_{k=0}^{q}\binom{q}{k}r_k^n,\qquad
+r_k:=\alpha^{q-k}\beta^k.
+\]
+令 \(c_k:=\binom{q}{k}\)，并定义 Vandermonde 矩阵
+\[
+V:=(r_k^i)_{0\le i,k\le q}.
+\]
+则
+\[
+H_q=V\,\mathrm{diag}(c_0,\dots,c_q)\,V^{\mathsf T},
+\]
+故
+\[
+\det(H_q)=\det(V)^2\prod_{k=0}^{q}c_k.
+\]
+
+记 \(s:=\beta/\alpha\)，则 \(r_k=\alpha^q s^k\)。从而
+\[
+\det(V)=\prod_{0\le i<j\le q}(r_j-r_i)
+=\alpha^{q\binom{q+1}{2}}
+\prod_{0\le i<j\le q}(s^j-s^i).
+\]
+几何节点的 Vandermonde 乘积恒等式给出
+\[
+\prod_{0\le i<j\le q}(s^j-s^i)
+=
+s^{\frac{q(q+1)(q-1)}{6}}
+\prod_{d=1}^{q}(s^d-1)^{q+1-d}.
+\]
+因此
+\[
+\det(V)^2
+=
+\alpha^{q^2(q+1)}
+s^{\frac{q(q+1)(q-1)}{3}}
+\prod_{d=1}^{q}(s^d-1)^{2(q+1-d)}.
+\]
+
+又
+\[
+s^d-1
+=\frac{\beta^d-\alpha^d}{\alpha^d}
+=-\frac{(\alpha-\beta)F_d}{\alpha^d}.
+\]
+代入并整理得
+\[
+\det(V)^2
+=
+(\alpha\beta)^{\frac{q(q+1)(q-1)}{3}}
+(\alpha-\beta)^{q(q+1)}
+\prod_{d=1}^{q}F_d^{2(q+1-d)}.
+\]
+由于 \(P=\alpha\beta=\pm1\)，且
+\[
+\frac{q(q+1)(q-1)}{3}
+\]
+恒为偶数，故
+\(
+(\alpha\beta)^{q(q+1)(q-1)/3}=1
+\)。
+再用 \((\alpha-\beta)^2=\Delta\)，得
+\[
+\det(V)^2
+=
+\Delta^{\frac{q(q+1)}{2}}
+\prod_{d=1}^{q}F_d^{2(q+1-d)}.
+\]
+与 \(\det(H_q)=\det(V)^2\prod_{k=0}^{q}c_k\) 合并即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[对称幂特征多项式判别式分解]\label{thm:conclusion-sympower-discriminant-factorization}
+在定义 \ref{def:conclusion-lucas-fib-input} 下，定义首一多项式
+\[
+\Pi_q(t):=\prod_{k=0}^{q}(t-r_k),
+\qquad r_k=\alpha^{q-k}\beta^k.
+\]
+则
+\[
+\mathrm{Disc}(\Pi_q)
+=
+\Delta^{\frac{q(q+1)}{2}}
+\prod_{d=1}^{q}F_d^{\,2(q+1-d)},
+\]
+并且
+\[
+\det(H_q)
+=
+\left(\prod_{k=0}^{q}\binom{q}{k}\right)\mathrm{Disc}(\Pi_q).
+\]
+\end{theorem}
+\begin{proof}
+由判别式定义
+\[
+\mathrm{Disc}(\Pi_q)
+=\prod_{0\le i<j\le q}(r_i-r_j)^2
+=\det(V)^2.
+\]
+再用定理 \ref{thm:conclusion-lucas-power-hankel-closed-form} 中已得的 \(\det(V)^2\) 闭式与
+\[
+\det(H_q)=\det(V)^2\prod_{k=0}^{q}\binom{q}{k}
+\]
+即得。证毕。
+\end{proof}
+
+\begin{proposition}[移位 Hankel 行列式刚性]\label{prop:conclusion-shifted-hankel-rigidity}
+对任意 \(r\ge 0\)，定义移位 Hankel 矩阵
+\[
+H_q^{(r)}:=(a_{i+j+r})_{0\le i,j\le q}.
+\]
+则
+\[
+\det(H_q^{(r)})
+=
+P^{\,r\cdot \frac{q(q+1)}{2}}
+\det(H_q).
+\]
+因此：当 \(P=1\) 时 \(\det(H_q^{(r)})\) 与 \(r\) 无关；当 \(P=-1\) 时绝对值不变，仅符号按
+\(
+r\cdot q(q+1)/2
+\)
+的奇偶切换。
+\end{proposition}
+\begin{proof}
+由
+\[
+a_{n+r}=\sum_{k=0}^{q} c_k r_k^{n+r}
+=\sum_{k=0}^{q}(c_kr_k^r)r_k^n,
+\]
+得
+\[
+H_q^{(r)}=V\,\mathrm{diag}(c_0r_0^r,\dots,c_qr_q^r)\,V^{\mathsf T},
+\]
+故
+\[
+\det(H_q^{(r)})
+=\det(V)^2\prod_{k=0}^{q}(c_kr_k^r)
+=\det(H_q)\left(\prod_{k=0}^{q}r_k\right)^r.
+\]
+而
+\[
+\prod_{k=0}^{q}r_k
+=\prod_{k=0}^{q}\alpha^{q-k}\beta^k
+=(\alpha\beta)^{\frac{q(q+1)}{2}}
+=P^{\frac{q(q+1)}{2}},
+\]
+代回即得。证毕。
+\end{proof}
+
+\begin{theorem}[特征 \texorpdfstring{$p$}{p} 下 Hankel 秩塌缩分类]\label{thm:conclusion-charp-hankel-rank-classification}
+设 \(K\) 为域，\(\operatorname{char}(K)=0\) 或 \(\operatorname{char}(K)=p>q\)。
+在定义 \ref{def:conclusion-lucas-fib-input} 中记
+\[
+s:=\beta/\alpha,\qquad m:=\operatorname{ord}(s)\in\NN\cup\{\infty\}.
+\]
+若 \(m<\infty\)，定义
+\[
+C_a:=\sum_{\substack{0\le k\le q\\ k\equiv a\ (\mathrm{mod}\ m)}}\binom{q}{k},
+\qquad
+a=0,\dots,m-1,
+\]
+并令
+\[
+M:=\#\{a\in\{0,\dots,m-1\}:C_a\neq 0\}.
+\]
+则序列 \(a_n=L_n^q\) 的 Hankel 秩满足
+\[
+\operatorname{rank}_H(a)=
+\begin{cases}
+q+1,& m=\infty,\\
+q+1,& m>q,\\
+M,& m\le q.
+\end{cases}
+\]
+且在 \(m\le q\) 情形有合并表示
+\[
+a_n=\sum_{a=0}^{m-1}C_a(\alpha^q s^a)^n,
+\]
+其非零项数恰为 \(M\)；因此存在非零 \(M\times M\) Hankel 主子式，而任意 \((M+1)\times(M+1)\) Hankel 主子式恒为零。
+\end{theorem}
+\begin{proof}
+基础表示
+\[
+a_n=\sum_{k=0}^{q}\binom{q}{k}(\alpha^q s^k)^n
+\]
+已给出。
+当 \(m=\infty\) 或 \(m>q\) 时，\(\{s^k\}_{k=0}^{q}\) 两两不同，且 \(\operatorname{char}(K)=0\) 或 \(p>q\) 保证 \(\binom{q}{k}\neq 0\)。
+因此有 \(q+1\) 个不同节点、非零权重的指数和表示，Hankel 秩为 \(q+1\)。
+
+当 \(m\le q\) 时，\(s^{k+m}=s^k\)，按同余类合并得
+\[
+a_n=\sum_{a=0}^{m-1}C_a(\alpha^q s^a)^n.
+\]
+删去 \(C_a=0\) 项后得到 \(M\) 个互异节点的指数和表示，故 Hankel 秩为 \(M\)。
+同理，\(M\) 阶主块可写为 \(V_M\mathrm{diag}(C_{a_1},\dots,C_{a_M})V_M^{\mathsf T}\)（其中 \(a_j\) 枚举非零类），行列式非零；而高一阶主子式因递推阶不超过 \(M\) 必为零。证毕。
+\end{proof}
+
+\begin{proposition}[最小递推与倒易对称]\label{prop:conclusion-lucas-power-minpoly-reciprocity}
+在定义 \ref{def:conclusion-lucas-fib-input} 下：
+\begin{enumerate}
+  \item 序列 \(a_n=L_n^q\) 满足以 \(\Pi_q\) 为湮灭多项式的线性递推
+  \[
+  a_{n+q+1}
+  -e_1 a_{n+q}
+  +e_2 a_{n+q-1}
+  -\cdots
+  +(-1)^{q+1}e_{q+1}a_n=0,
+  \]
+  其中 \(e_j=e_j(r_0,\dots,r_q)\) 为基本对称多项式。
+  若 \(\prod_{d=1}^{q}F_d\neq 0\)（等价于 \(r_0,\dots,r_q\) 两两不同），则该阶数 \(q+1\) 最小。
+  \item \(\Pi_q\) 满足严格倒易对称
+  \[
+  t^{q+1}\Pi_q(P^q/t)
+  =
+  (-1)^{q+1}P^{\frac{q(q+1)}{2}}\Pi_q(t).
+  \]
+  等价地，若 \(\rho\) 为 \(\Pi_q\) 的根，则 \(P^q/\rho\) 亦为其根（同重数）。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一条由指数和表示直接得到：每个 \(r_k^n\) 被 \(\Pi_q(\mathsf S)\) 湮灭，线性组合同理。
+当节点互异时，Hankel 秩为 \(q+1\)，故最小阶即 \(q+1\)。
+
+第二条由
+\[
+r_k r_{q-k}=P^q
+\]
+与根集封闭性给出。直接计算
+\[
+t^{q+1}\Pi_q(P^q/t)
+=\prod_{k=0}^{q}(P^q-r_kt)
+=(-1)^{q+1}\left(\prod_{k=0}^{q}r_k\right)\Pi_q(t),
+\]
+再用
+\(
+\prod_{k=0}^{q}r_k=P^{q(q+1)/2}
+\)
+即得。证毕。
+\end{proof}
+
+\begin{theorem}[黄金比例特例的 \texorpdfstring{$5$}{5}-进赋值闭式]\label{thm:conclusion-golden-lucas-hankel-v5-rigidity}
+在黄金比例特例 \((S,P)=(1,-1)\) 下，记
+\[
+D_q:=\det\!\big(L_{i+j}^{\,q}\big)_{0\le i,j\le q}.
+\]
+则
+\[
+v_5(D_q)
+=
+v_5\!\left(\prod_{k=0}^{q}\binom{q}{k}\right)
++\frac{q(q+1)}{2}
++2\sum_{d=1}^{q}(q+1-d)\,v_5(F_d).
+\]
+若进一步使用经典恒等式
+\[
+v_5(F_d)=
+\begin{cases}
+v_5(d),&5\mid d,\\
+0,&5\nmid d,
+\end{cases}
+\]
+则可化为
+\[
+v_5(D_q)
+=
+v_5\!\left(\prod_{k=0}^{q}\binom{q}{k}\right)
++\frac{q(q+1)}{2}
++2\sum_{m=1}^{\lfloor q/5\rfloor}(q+1-5m)\,v_5(5m).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-lucas-power-hankel-closed-form} 在 \(\Delta=5\) 下取 \(v_5\) 即得第一式。
+第二式仅将加权和按 \(d=5m\) 与 \(5\nmid d\) 分组改写。证毕。
+\end{proof}
+
+\endinput
+

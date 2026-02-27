@@ -1,0 +1,220 @@
+\paragraph{二项--几何谱测度的 Fibonacci 塌缩：幂矩、Perron 固定点方程与 Hankel 乘积证书}\label{par:pom-replica-softcore-fibonacci-moment-collapse}
+沿用 \( \varphi=\frac{1+\sqrt5}{2} \)、\(\psi=\frac{1-\sqrt5}{2}=-\varphi^{-1}\)。
+在命题 \ref{prop:pom-multiplicity-composition-replica-explicit-eigs} 的固定谱簇上，对每个整数 \(q\ge 1\) 引入节点
+\begin{equation}\label{eq:pom-replica-softcore-di-nodes}
+\boxed{\;
+d_i:=\frac12\,\varphi^{q-i}\psi^i=\frac12(-1)^i\varphi^{q-2i}\qquad(0\le i\le q).}
+\end{equation}
+并定义参数
+\begin{equation}\label{eq:pom-replica-softcore-alpha-beta}
+\boxed{\;
+\alpha:=1+\frac{2}{\sqrt5}=\frac{\varphi^3}{\sqrt5},\qquad
+\beta:=1-\frac{2}{\sqrt5}=-\frac{\psi^3}{\sqrt5},\qquad
+w_i:=\binom{q}{i}\alpha^{q-i}\beta^i.}
+\end{equation}
+
+\begin{proposition}[秩一扰动的割线方程接口（例外谱的一维刻画）]\label{prop:pom-replica-softcore-exceptional-secant-equation}
+取整数 \(q\ge 2\)，并令 \(\rho_q=\rho(A^{(q)})\) 为例外块的 Perron 根（见定理 \ref{thm:pom-replica-softcore-exceptional-spectrum-trace} 的记号）。
+则 \(\rho_q\) 满足严格割线方程
+\begin{equation}\label{eq:pom-replica-softcore-secant-equation}
+\boxed{\;
+\sum_{i=0}^{q}\frac{w_i}{\rho_q-d_i}=2.}
+\end{equation}
+\end{proposition}
+\begin{proof}[证明要点]
+由命题 \ref{prop:pom-multiplicity-composition-replica-explicit-eigs}，固定谱簇在 \((S_q)\)-对称子空间上以 \(\{d_i\}_{i=0}^{q}\) 为节点呈对角化；
+而 \(T^{(q)}=\frac12(\mathbf{1}\mathbf{1}^{\mathsf T}+D^{(q)})\) 的 \(\mathbf{1}\mathbf{1}^{\mathsf T}\) 项在该子空间上给出秩一耦合。
+在该谱基下应用秩一行列式引理（等价于 rank-one resolvent 恒等式），得到例外特征值 \(\lambda\) 满足
+\(
+1-\frac12\sum_i \frac{w_i}{\lambda-d_i}=0
+\)，即 \eqref{eq:pom-replica-softcore-secant-equation}。
+权重 \(w_i\) 的闭式由对称张量本征基与 \(\mathbf{1}\) 的投影系数显式计算得到，见 \eqref{eq:pom-replica-softcore-alpha-beta}。证毕。
+\end{proof}
+
+\begin{theorem}[二项--几何谱测度的 Fibonacci 幂矩塌缩]\label{thm:pom-replica-softcore-fibonacci-power-moment-collapse}
+在 \eqref{eq:pom-replica-softcore-di-nodes}--\eqref{eq:pom-replica-softcore-alpha-beta} 的记号下，对任意整数 \(m\ge 0\) 成立严格恒等式
+\begin{equation}\label{eq:pom-replica-softcore-moment-collapse}
+\boxed{\;
+\sum_{i=0}^{q} w_i\,d_i^{\,m}
+\,=\,2^{-m}\,F_{m+3}^{\,q}.}
+\end{equation}
+因此该谱测度的全部幂矩都落在 \(\QQ\) 中，右端不含 \(\sqrt5\) 的代数延拓项。
+\end{theorem}
+\begin{proof}
+由 \(\psi=-\varphi^{-1}\) 得 \(d_i^{\,m}=2^{-m}\varphi^{m(q-i)}\psi^{mi}\)。
+于是
+\[
+\sum_{i=0}^{q} w_i\,d_i^{\,m}
+=2^{-m}\sum_{i=0}^{q}\binom{q}{i}(\alpha\varphi^m)^{q-i}(\beta\psi^m)^i
+=2^{-m}(\alpha\varphi^m+\beta\psi^m)^{q}.
+\]
+由 \eqref{eq:pom-replica-softcore-alpha-beta} 的 \(\alpha=\varphi^3/\sqrt5\)、\(\beta=-\psi^3/\sqrt5\)，有
+\[
+\alpha\varphi^m+\beta\psi^m=\frac{\varphi^{m+3}-\psi^{m+3}}{\sqrt5}=F_{m+3},
+\]
+代回即得 \eqref{eq:pom-replica-softcore-moment-collapse}。证毕。
+\end{proof}
+
+\begin{theorem}[Perron 特征值的纯 Fibonacci 固定点方程]\label{thm:pom-replica-softcore-perron-fibonacci-fixed-point}
+取整数 \(q\ge 2\)，令 \(\rho_q=\rho(A^{(q)})\) 为例外块 Perron 根。
+则存在唯一 \(x_q>1\) 使得
+\begin{equation}\label{eq:pom-replica-softcore-rho-xq}
+\boxed{\;\rho_q=2^{q-1}x_q\;}
+\end{equation}
+并且 \(x_q\) 满足严格收敛的固定点方程
+\begin{equation}\label{eq:pom-replica-softcore-xq-fixed-point}
+\boxed{\;
+x_q
+=1+\sum_{m=1}^{\infty}\left(\frac{F_{m+3}}{2^{m+1}}\right)^{q}x_q^{-m}.}
+\end{equation}
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-multiplicity-composition-sq-symmetry-reduction}，有 \(\rho_q=\rho(T^{(q)})\)。
+取 \(\mathbf{1}\in\RR^{U_q}\) 为全 \(1\) 向量作 Rayleigh 商，得
+\[
+\rho_q
+\ge \frac{\mathbf 1^{\mathsf T}T^{(q)}\mathbf 1}{\mathbf 1^{\mathsf T}\mathbf 1}
+=\frac{4^q+3^q}{2^{q+1}}
+=2^{q-1}+\frac{3^q}{2^{q+1}}
+>\frac{\varphi^q}{2}
+=\max_{0\le i\le q} d_i.
+\]
+因此对每个 \(i\) 可作几何级数展开
+\[
+\frac{1}{\rho_q-d_i}=\frac{1}{\rho_q}\sum_{m=0}^{\infty}\left(\frac{d_i}{\rho_q}\right)^{m},
+\qquad \text{且一致绝对收敛。}
+\]
+将之代入 \eqref{eq:pom-replica-softcore-secant-equation} 并交换求和次序得
+\[
+2=\frac{1}{\rho_q}\sum_{m=0}^{\infty}\rho_q^{-m}\sum_{i=0}^{q}w_i d_i^{\,m}.
+\]
+由定理 \ref{thm:pom-replica-softcore-fibonacci-power-moment-collapse}，
+\(
+\sum_i w_i d_i^{\,m}=2^{-m}F_{m+3}^q
+\)，
+从而
+\[
+2=\frac{1}{\rho_q}\sum_{m=0}^{\infty}\left(\frac{F_{m+3}}{2}\right)^{q}\left(\frac{1}{2\rho_q}\right)^m.
+\]
+记 \(\rho_q=2^{q-1}x_q\)，整理并移去 \(m=0\) 项（注意 \(F_3=2\)）即得 \eqref{eq:pom-replica-softcore-xq-fixed-point}。
+右端关于 \(x\in(1,\infty)\) 严格递减而左端为严格递增函数 \(x\mapsto x\)，故正解唯一。证毕。
+\end{proof}
+
+\begin{corollary}[Perron 根的两项主导展开与显式余项界]\label{cor:pom-replica-softcore-rho-two-term-remainder}
+定义
+\[
+b_m:=\frac{F_{m+3}}{2^{m+1}}\quad(m\ge 1),
+\qquad
+\varepsilon_q:=\sum_{m=1}^{\infty}b_m^{\,q}.
+\]
+则 \(x_q\in(1,1+\varepsilon_q)\)，并且存在余项 \(R_q\) 使
+\begin{equation}\label{eq:pom-replica-softcore-rho-two-term}
+\rho_q
+=2^{q-1}+\frac{3^q}{2^{q+1}}+R_q,
+\end{equation}
+其中余项满足显式上界
+\begin{equation}\label{eq:pom-replica-softcore-rho-remainder-bound}
+\boxed{\;
+0<R_q
+<2^{q-1}\sum_{m=2}^{\infty}b_m^{\,q}
+\le \frac{5^q}{2^{2q+1}}\cdot\frac{1}{1-(\varphi/2)^q}.}
+\end{equation}
+因此当 \(q\to\infty\) 时有严格渐近
+\[
+\rho_q
+=2^{q-1}+\frac{3^q}{2^{q+1}}+O\!\left(\frac{5^q}{2^{2q}}\right).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-replica-softcore-perron-fibonacci-fixed-point} 的固定点方程，
+\(
+x_q-1=\sum_{m\ge 1}b_m^{\,q}x_q^{-m}
+\)。
+因 \(x_q>1\)，得 \(0<x_q-1<\sum_{m\ge 1}b_m^{\,q}=\varepsilon_q\)，从而 \(x_q\in(1,1+\varepsilon_q)\)。
+再将首项 \(m=1\) 分离并乘以 \(2^{q-1}\)，用 \(b_1=F_4/2^2=3/4\) 得到 \eqref{eq:pom-replica-softcore-rho-two-term}，并且 \(R_q>0\)。
+对余项上界，用 \(x_q^{-m}\le 1\) 得
+\(
+R_q<2^{q-1}\sum_{m\ge 2}b_m^{\,q}
+\)。
+又由 Fibonacci 比值单调性 \(F_{n+1}/F_n<\varphi\)（\(n\ge 1\)）推出
+\(
+b_{m+1}/b_m<\varphi/2
+\)，
+故 \(\sum_{m\ge 2}b_m^{\,q}\) 被等比级数控制并得到 \eqref{eq:pom-replica-softcore-rho-remainder-bound}。证毕。
+\end{proof}
+
+\begin{theorem}[Fibonacci 幂 Hankel 行列式的完全乘积公式]\label{thm:pom-replica-softcore-fibonacci-power-hankel-determinant}
+对任意整数 \(q\ge 1\)，定义 \((q+1)\times(q+1)\) Hankel 矩阵
+\[
+H_q:=\bigl(F_{i+j+3}^{\,q}\bigr)_{0\le i,j\le q}.
+\]
+则成立精确闭式
+\begin{equation}\label{eq:pom-replica-softcore-fibpower-hankel-det}
+\boxed{\;
+\det(H_q)
+=\left(\prod_{i=0}^{q}\binom{q}{i}\right)
+\left(\prod_{k=1}^{q}F_k^{\,2(q+1-k)}\right).}
+\end{equation}
+右端为整数的纯乘积表达，不含任何代数数域延拓。
+\end{theorem}
+\begin{proof}
+由 Binet 公式与 \eqref{eq:pom-replica-softcore-alpha-beta} 的 \(\alpha,\beta\) 可写
+\(
+F_{n+3}=\alpha\varphi^n+\beta\psi^n
+\)。
+从而对每个整数 \(n\ge 0\) 有指数和表示
+\[
+F_{n+3}^{\,q}
+=\sum_{i=0}^{q}\binom{q}{i}\alpha^{q-i}\beta^i(\varphi^{q-i}\psi^i)^{n}
+=\sum_{i=0}^{q}c_i r_i^{\,n},
+\]
+其中 \(r_i:=\varphi^{q-i}\psi^i\)、\(c_i:=\binom{q}{i}\alpha^{q-i}\beta^i\)。
+令 \(V=(r_i^{\,j})_{0\le i,j\le q}\) 且 \(C=\mathrm{diag}(c_0,\dots,c_q)\)，则 \(H_q=V^{\mathsf T}CV\)，因而
+\[
+\det(H_q)=(\det V)^2\prod_{i=0}^{q}c_i
+=\left(\prod_{0\le i<j\le q}(r_j-r_i)^2\right)\left(\prod_{i=0}^{q}c_i\right).
+\]
+计算 \(\prod_i c_i=(\prod_i\binom{q}{i})(\alpha\beta)^{q(q+1)/2}\) 且 \(\alpha\beta=1/5\)，得
+\(
+\prod_i c_i=(\prod_i\binom{q}{i})\,5^{-q(q+1)/2}
+\)。
+另一方面，把 \(r_i=\varphi^q(\psi/\varphi)^i\) 写为几何节点并用 Vandermonde 分解，
+再用恒等式 \(1-(-\varphi^{-2})^k=\sqrt5\,F_k/\varphi^{k}\) 整理，可得
+\(
+\prod_{i<j}(r_j-r_i)^2
+=5^{q(q+1)/2}\prod_{k=1}^{q}F_k^{2(q+1-k)}
+\)；
+两者的 \(5\)-因子精确抵消，得到 \eqref{eq:pom-replica-softcore-fibpower-hankel-det}。证毕。
+\end{proof}
+
+\begin{corollary}[交错几何点的 Vandermonde 平方塌缩为纯 Fibonacci 乘积]\label{cor:pom-replica-softcore-alternating-vandermonde-fibonacci-product}
+令
+\(
+\xi_i:=(-1)^i\varphi^{q-2i}\ (0\le i\le q)
+\)。
+则成立严格恒等式
+\begin{equation}\label{eq:pom-replica-softcore-alternating-vandermonde}
+\boxed{\;
+\prod_{0\le i<j\le q}(\xi_j-\xi_i)^2
+=5^{q(q+1)/2}\prod_{k=1}^{q}F_k^{2(q+1-k)}\in\ZZ.}
+\end{equation}
+\end{corollary}
+\begin{proof}
+注意 \(r_i=\varphi^{q-i}\psi^i=\xi_i\)（由 \(\psi^i=(-1)^i\varphi^{-i}\)），
+故定理 \ref{thm:pom-replica-softcore-fibonacci-power-hankel-determinant} 证明中的 Vandermonde 平方闭式直接给出 \eqref{eq:pom-replica-softcore-alternating-vandermonde}。证毕。
+\end{proof}
+
+\begin{remark}[审计脚本]\label{rem:pom-replica-softcore-fibonacci-moment-collapse-audit-script}
+式 \eqref{eq:pom-replica-softcore-moment-collapse}、\eqref{eq:pom-replica-softcore-xq-fixed-point}、\eqref{eq:pom-replica-softcore-fibpower-hankel-det} 与 \eqref{eq:pom-replica-softcore-alternating-vandermonde} 的一致性可由脚本
+\texttt{scripts/exp\_pom\_replica\_softcore\_fibonacci\_moment\_collapse\_audit.py}
+在小 \(q\) 上进行严格核验。
+\end{remark}
+
+\begin{remark}[公开索引的最低限度核验说明]\label{rem:pom-replica-softcore-fibonacci-moment-collapse-public-index-note}
+围绕 \eqref{eq:pom-replica-softcore-fibpower-hankel-det} 与 \eqref{eq:pom-replica-softcore-alternating-vandermonde} 所呈现的“幂 Hankel 行列式完全乘积公式 / 交错几何点 Vandermonde--Fibonacci 塌缩”结构，
+以其长系数串与索引形态为关键词对公开资源作检索与交叉比对，未发现可直接同型匹配的先行记录。
+检索所得相近材料主要落在一般 Hankel 行列式与正交多项式框架、以及若干 Fibonacci 相关矩阵族（例如 Filbert 型对象）之上，但其对象与本处 \( (F_{i+j+3}^{\,q}) \) 的幂 Hankel 结构并不一致。
+\end{remark}
+
+\endinput
+

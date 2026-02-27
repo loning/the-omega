@@ -1,0 +1,115 @@
+\section{Scan depth, clarity, and finite-sample certificates}\label{sec:certificates}
+
+This section isolates the auditable outputs that quantify finite-resolution readout quality.
+We present two complementary certification regimes:
+\begin{itemize}
+  \item a deterministic certificate for rotation-generated data based on star discrepancy;
+  \item a probabilistic confidence envelope for Markov models based on a pseudo spectral gap.
+\end{itemize}
+Both are stated in total variation, because it is directly auditable from histograms and admits clean pushforward monotonicity under folding.
+
+\subsection{Folded histograms and the TV metric}\label{subsec:cert-tv-setup}
+Fix $m\ge 1$.
+Let $\hat{\mu}_{m,N}\in\Delta(\Omega_m)$ be an empirical microstate distribution and $\mu_m\in\Delta(\Omega_m)$ a reference distribution.
+Define the folded (type) distributions by pushforward:
+\[
+\hat{\pi}_{m,N}:=(\Fold_m)_*\hat{\mu}_{m,N}\in\Delta(X_m),
+\qquad
+\pi_m^{\mathrm{fold}}:=(\Fold_m)_*\mu_m\in\Delta(X_m).
+\]
+Total variation on a finite set $S$ is
+\[
+\TV(p,q):=\frac12\sum_{s\in S}\abs{p(s)-q(s)}.
+\]
+
+\begin{lemma}[TV monotonicity under pushforward]\label{lem:tv-pushforward}
+Let $S,T$ be finite sets, $F:S\to T$ a map, and $p,q\in\Delta(S)$.
+Then
+\[
+\TV(F_*p,F_*q)\le \TV(p,q).
+\]
+\end{lemma}
+
+\begin{proof}
+For any $A\subseteq T$, one has $F_*p(A)=p(F^{-1}(A))$ and $F_*q(A)=q(F^{-1}(A))$, hence
+\[
+\abs{F_*p(A)-F_*q(A)}=\abs{p(F^{-1}(A))-q(F^{-1}(A))}\le \sup_{B\subseteq S}\abs{p(B)-q(B)}.
+\]
+Taking the supremum over $A\subseteq T$ yields the claim.
+\end{proof}
+
+\subsection{Deterministic certificate via discrepancy (rotation scan)}\label{subsec:cert-discrepancy}
+We record a standard deterministic bridge from star discrepancy to total variation, specialized to finite-window microstates and their folded types.
+The statement is written in a model-agnostic form and becomes explicit once an upper bound on $D_N^*(\alpha;x_0)$ is available \cite{KuipersNiederreiter1974}.
+
+\begin{theorem}[Discrepancy $\Rightarrow$ histogram TV certificate]\label{thm:tv-certificate-hist}
+Consider the circle rotation $T(x)=x+\alpha\ (\mathrm{mod}\ 1)$ on $\TT^1$ with an interval window $W=[0,\beta)$, and the induced binary readout $s_t(x)=\ind_W(T^t x)$.
+Let $\hat{\mu}_{m,N}$ be the empirical distribution of length-$m$ windows $\omega_m(s(\cdot);t)$ for $t=0,\dots,N-1$, and let $\mu_m$ be the limiting window distribution induced by Lebesgue measure.
+Then for all $N\ge 1$,
+\[
+\TV(\hat{\mu}_{m,N},\mu_m)\le (m+1)\,D_N^*(\alpha;x_0),
+\]
+and the same bound holds after folding:
+\[
+\TV(\hat{\pi}_{m,N},\pi_m^{\mathrm{fold}})\le (m+1)\,D_N^*(\alpha;x_0).
+\]
+\end{theorem}
+
+\begin{remark}[Explicit rates for badly approximable $\alpha$]\label{rem:cert-discrepancy-rate}
+If $\alpha$ has bounded continued-fraction coefficients (equivalently, $\alpha$ is badly approximable), then
+$
+D_N^*(\alpha;x_0)=O((\log N)/N)
+$
+uniformly in $x_0$ \cite{KuipersNiederreiter1974}.
+For the golden rotation $\alpha=\varphi^{-1}$, the continued fraction is $[0;1,1,1,\dots]$, and the implied constants are explicit.
+Theorem~\ref{thm:tv-certificate-hist} therefore provides an auditable decay law in $N$ at each fixed resolution $m$.
+\end{remark}
+
+\begin{corollary}[Certificate decomposition to a chosen baseline]\label{cor:tv-decomposition-baseline}
+In the setting of Theorem~\ref{thm:tv-certificate-hist}, let $\pi_m^{0}\in\Delta(X_m)$ be any chosen baseline distribution on types (e.g.\ a Parry/PF cylinder baseline).
+Then
+\[
+\TV(\hat{\pi}_{m,N},\pi_m^{0})\ \le\ (m+1)\,D_N^*(\alpha;x_0)\ +\ \TV(\pi_m^{\mathrm{fold}},\pi_m^{0}).
+\]
+The first term is a certificate controlled by discrepancy; the second term is a structural model-mismatch term that is independent of $N$.
+\end{corollary}
+
+\subsection{Probabilistic envelope for Markov sources}\label{subsec:cert-markov}
+When the folded output is modeled as a finite-state ergodic Markov chain, one can certify the histogram deviation with high probability via a pseudo spectral gap \cite{Paulin2015MarkovConcentration}.
+
+\begin{definition}[Empirical histogram and pseudo spectral gap]\label{def:pseudo-gap-hist}
+Let $(Z_t)_{t\ge 0}$ be an irreducible ergodic Markov chain on a finite state space $S$ with transition kernel $P$ and stationary distribution $\pi$.
+The empirical histogram is
+\[
+\hat{\pi}_N(s):=\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{\{Z_t=s\}},\qquad s\in S.
+\]
+We write $\gamma_{\mathrm{ps}}\in(0,1]$ for its pseudo spectral gap (see \cite{Paulin2015MarkovConcentration}).
+\end{definition}
+
+\begin{theorem}[Markov TV confidence envelope]\label{thm:markov-tv-envelope}
+In the setting of Definition~\ref{def:pseudo-gap-hist}, assume the chain starts at stationarity ($Z_0\sim\pi$).
+Then for any $\delta\in(0,1)$, with probability at least $1-\delta$,
+\[
+\TV(\hat{\pi}_N,\pi)\le \frac12\,|S|\,\eta(N,|S|,\delta),
+\qquad
+\eta(N,|S|,\delta):=\sqrt{\frac{2}{\gamma_{\mathrm{ps}}\,N}\log\frac{2|S|}{\delta}}.
+\]
+\end{theorem}
+
+\begin{corollary}[Sample complexity (audit budget)]\label{cor:markov-tv-sample-complexity}
+Under the conditions of Theorem~\ref{thm:markov-tv-envelope}, a sufficient condition for
+$
+\TV(\hat{\pi}_N,\pi)\le \tau
+$
+with confidence $1-\delta$ is
+\[
+N\ \ge\ \frac{|S|^{2}}{2\,\gamma_{\mathrm{ps}}\,\tau^{2}}\log\frac{2|S|}{\delta}.
+\]
+\end{corollary}
+
+\begin{remark}[Why this belongs to the folding main line]\label{rem:cert-why-folding}
+Theorem~\ref{thm:tv-certificate-hist} provides a deterministic certificate for a concrete scan model.
+Theorem~\ref{thm:markov-tv-envelope} provides a protocol-level certificate that is agnostic to the generator and depends only on a measurable mixing parameter.
+Both bounds remain meaningful after folding because pushforward does not increase total variation.
+\end{remark}
+

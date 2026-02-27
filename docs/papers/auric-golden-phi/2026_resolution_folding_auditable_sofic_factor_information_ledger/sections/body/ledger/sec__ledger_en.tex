@@ -1,0 +1,191 @@
+\section{Information ledger: visible entropy, fiber volume, and residual KL}\label{sec:ledger}
+
+This section proves the information ledger identity that makes the auditing loop logically closed.
+At a fixed resolution $m$, folding induces a projection from microstates to stable types; the ledger decomposes microstate entropy into a visible term, a fiber-volume term, and a unique residual term measured by KL divergence.
+
+\subsection{Pushforward, fiber multiplicity, and max-entropy lift}\label{subsec:ledger-setup}
+Fix $m\ge 1$.
+Recall $\Omega_m=\{0,1\}^m$ and $X_m\subset\Omega_m$.
+For each $x\in X_m$, define the fiber multiplicity
+\[
+d_m(x):=\card{\Fold_m^{-1}(x)}.
+\]
+
+\begin{proposition}[A crude but explicit fiber multiplicity bound]\label{prop:fiber-multiplicity-bound}
+For every $m\ge 1$ and every $x\in X_m$,
+\[
+d_m(x)\le F_{\lceil m/2\rceil+2}.
+\]
+Consequently,
+\[
+\|\log d_m\|_{\infty}:=\max_{x\in X_m}\log d_m(x)\ \le\ \log\!\bigl(F_{\lceil m/2\rceil+2}\bigr).
+\]
+\end{proposition}
+\begin{proof}
+By Theorem~\ref{thm:fiber-indset-factorization}, there exists an induced path subgraph
+\(
+\Gamma_x\subseteq P_{k_+}
+\)
+with $k_+=\lceil m/2\rceil$ such that $d_m(x)=\card{\mathsf{Ind}(\Gamma_x)}$.
+Since $\Gamma_x$ is an induced subgraph of the path $P_{k_+}$, every independent set of $\Gamma_x$ is in particular an independent set of $P_{k_+}$, so
+\[
+d_m(x)=\card{\mathsf{Ind}(\Gamma_x)}\le \card{\mathsf{Ind}(P_{k_+})}=I_{k_+}(1).
+\]
+By Lemma~\ref{lem:path-indset-rec}, $I_{k_+}(1)=F_{k_+ +2}=F_{\lceil m/2\rceil+2}$, proving the stated bound.
+Taking logarithms gives the $\|\log d_m\|_\infty$ estimate.
+\end{proof}
+
+\begin{definition}[Type pushforward and fiber-uniform lift]\label{def:pushforward-lift}
+Let $\Delta(\Omega_m)$ and $\Delta(X_m)$ be probability simplices.
+Define the pushforward (readout) operator
+\[
+P_m:=(\Fold_m)_*:\Delta(\Omega_m)\to\Delta(X_m),
+\qquad
+(P_m\mu)(x)=\sum_{\Fold_m(a)=x}\mu(a),
+\]
+and define the fiber-uniform lift kernel
+\[
+Q_m:\Delta(X_m)\to\Delta(\Omega_m),
+\qquad
+(Q_m\pi)(a)=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))}.
+\]
+\end{definition}
+
+\begin{proposition}[Section property]\label{prop:PmQm-id}
+For all $\pi\in\Delta(X_m)$, one has
+\[
+P_m(Q_m\pi)=\pi.
+\]
+\end{proposition}
+
+\begin{proof}
+For each $x\in X_m$,
+\[
+(P_mQ_m\pi)(x)=\sum_{\Fold_m(a)=x}\frac{\pi(x)}{d_m(x)}=\pi(x).
+\]
+\end{proof}
+
+\begin{definition}[Fiber reflector]\label{def:fiber-reflector}
+Define the Markov operator
+\[
+K_m:=Q_m\circ P_m:\Delta(\Omega_m)\to\Delta(\Omega_m).
+\]
+For $\mu\in\Delta(\Omega_m)$, the distribution $K_m\mu$ is the fiber-uniform lift of its folded type $\nu=P_m\mu$.
+\end{definition}
+
+\begin{proposition}[Idempotent Markov projection and fixed points]\label{prop:Km-idempotent}
+The operator $K_m$ is idempotent: $K_m^2=K_m$.
+Moreover, $K_m\mu=\mu$ holds if and only if $\mu$ is conditionally uniform on every fiber $\Fold_m^{-1}(x)$ with positive mass.
+\end{proposition}
+
+\begin{proof}
+Using Proposition~\ref{prop:PmQm-id} gives
+\(
+K_m^2=Q_mP_mQ_mP_m=Q_m(P_mQ_m)P_m=Q_mP_m=K_m.
+\)
+If $K_m\mu=\mu$, then $\mu$ is a fiber-uniform lift of its own pushforward and is therefore conditionally uniform on each fiber.
+Conversely, a fiberwise conditionally uniform $\mu$ equals $Q_m(P_m\mu)=K_m\mu$.
+\end{proof}
+
+\subsection{The ledger identity}\label{subsec:ledger-identity}
+
+\begin{theorem}[Information ledger identity]\label{thm:information-ledger}
+Let $\mu\in\Delta(\Omega_m)$ and write its folded type distribution as $\nu:=P_m\mu\in\Delta(X_m)$.
+Let the fiber-uniform lift of $\nu$ be $\mu^{e}:=Q_m\nu\in\Delta(\Omega_m)$.
+Then the following identity holds:
+\[
+\boxed{\;
+H(\mu)=H(\nu)+\mathbb{E}_{X\sim\nu}\!\bigl[\log d_m(X)\bigr]\;-\;D_{\mathrm{KL}}(\mu\|\mu^{e}).
+\;}
+\]
+\end{theorem}
+
+\begin{proof}
+Expand the KL term:
+\[
+D_{\mathrm{KL}}(\mu\|\mu^e)=\sum_{a\in\Omega_m}\mu(a)\log\frac{\mu(a)}{\mu^e(a)}
+=-H(\mu)-\sum_{a\in\Omega_m}\mu(a)\log\mu^e(a).
+\]
+By definition, $\mu^e(a)=\nu(x)/d_m(x)$ where $x=\Fold_m(a)$, hence
+\[
+\log\mu^e(a)=\log\nu(\Fold_m(a))-\log d_m(\Fold_m(a)).
+\]
+Grouping terms by fibers yields
+\[
+\sum_a \mu(a)\log\nu(\Fold_m(a))=\sum_{x\in X_m}\nu(x)\log\nu(x)=-H(\nu),
+\]
+and
+\[
+\sum_a \mu(a)\log d_m(\Fold_m(a))=\sum_{x\in X_m}\nu(x)\log d_m(x)=\mathbb{E}_\nu[\log d_m(X)].
+\]
+Substituting completes the proof.
+\end{proof}
+
+\begin{corollary}[Max-entropy lift and the meaning of zero residual]\label{cor:maxent-lift}
+For fixed $\nu\in\Delta(X_m)$, among all $\mu\in\Delta(\Omega_m)$ such that $P_m\mu=\nu$, the entropy $H(\mu)$ is uniquely maximized at $\mu=\mu^e:=Q_m\nu$.
+Equivalently, $D_{\mathrm{KL}}(\mu\|\mu^e)=0$ if and only if $\mu$ is conditionally uniform on each fiber.
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:information-ledger} gives
+\(
+H(\mu)=H(\nu)+\mathbb{E}_\nu[\log d_m]-D_{\mathrm{KL}}(\mu\|\mu^e)
+\),
+and $D_{\mathrm{KL}}\ge 0$ with equality iff $\mu=\mu^e$.
+\end{proof}
+
+\begin{corollary}[Entropy increase equals the KL residual]\label{cor:entropy-increase-equals-kl}
+For any $\mu\in\Delta(\Omega_m)$,
+\[
+\boxed{\;
+H(K_m\mu)-H(\mu)=D_{\mathrm{KL}}(\mu\|K_m\mu)\ \ge\ 0.
+\;}
+\]
+Equality holds if and only if $K_m\mu=\mu$.
+\end{corollary}
+
+\begin{proof}
+In Theorem~\ref{thm:information-ledger}, set $\nu=P_m\mu$ and $\mu^e=Q_m\nu=K_m\mu$.
+Applying the same identity to $\mu^e$ yields
+\(
+H(\mu^e)=H(\nu)+\mathbb{E}_{\nu}[\log d_m].
+\)
+Subtracting the ledger identity for $\mu$ gives $H(\mu^e)-H(\mu)=D_{\mathrm{KL}}(\mu\|\mu^e)$.
+The fixed-point characterization is Proposition~\ref{prop:Km-idempotent}.
+\end{proof}
+
+\subsection{How to read the ledger as an audit object}\label{subsec:ledger-audit}
+The ledger terms have distinct operational meanings:
+\begin{itemize}
+  \item $H(\nu)$ is the \emph{visible} entropy of folded types (fully observable from type histograms).
+  \item $\mathbb{E}_\nu[\log d_m(X)]$ is the \emph{hidden fiber volume}, computable from fiber counts or from a cover-based counting interface.
+  \item $D_{\mathrm{KL}}(\mu\|\mu^e)$ is the unique residual term capturing microstructure not explained by folded types plus fiber volume; it is therefore a falsifiable carrier of non-baseline structure.
+\end{itemize}
+
+\begin{remark}[Certificate outputs]\label{rem:ledger-certificates}
+An auditable certificate package at resolution $m$ consists of:
+(i) the visible histogram $\hat{\nu}$ and its confidence bounds (Section~\ref{sec:certificates});
+(ii) computable cover-level invariants $\rho(A_m)$, Parry PF data, and zeta determinants (Section~\ref{sec:sofic-cover});
+(iii) fiber statistics $d_m(x)$ and derived bounds such as $\|\log d_m\|_\infty$;
+(iv) a residual KL estimate or an upper bound derived from TV/KL inequalities \cite{SasonVerdu2016fDivergence}.
+\end{remark}
+
+\subsection{Uniform baseline and collision moments}\label{subsec:ledger-collision}
+The uniform microstate baseline provides a canonical reference point in which the ledger residual vanishes and fiber statistics become directly observable through folded type frequencies.
+Let $\mu=\mathrm{Unif}(\Omega_m)$ and $\nu=P_m\mu$.
+Then $\mu$ is conditionally uniform on each fiber, hence $\mu=\mu^e$ and $D_{\mathrm{KL}}(\mu\|\mu^e)=0$.
+Moreover,
+\[
+\nu(x)=\frac{d_m(x)}{2^m},
+\qquad x\in X_m.
+\]
+In particular, the family of collision moments
+\(
+S_k(m)=\sum_x d_m(x)^k
+\)
+encodes the full sequence of R\'enyi fingerprints of $\nu$:
+\[
+\sum_{x\in X_m}\nu(x)^k=\frac{S_k(m)}{2^{km}}.
+\]
+Section~\ref{sec:collision-spectra} develops a finite-state moment-kernel interface for $(S_k(m))_{m\ge 1}$, extending the single-fiber quantity $\mathbb{E}_\nu[\log d_m]$ in the ledger into an auditable spectrum.
+

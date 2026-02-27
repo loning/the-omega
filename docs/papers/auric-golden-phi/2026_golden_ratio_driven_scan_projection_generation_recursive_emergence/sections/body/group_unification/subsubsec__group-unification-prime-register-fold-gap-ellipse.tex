@@ -1,0 +1,321 @@
+\subsubsection{Gödel 素数寄存器的初对象结构与 Fold 纤维的几何外置}\label{subsubsec:group-jg-prime-register-fold-gap-ellipse}
+
+本段把时间移位编码、Fold 纤维自由度与面积守恒椭圆读出统一到同一代数链条。所有“丢失信息”均在可审计意义下外置为可组合对象，并与前文 Joukowsky--Gödel 输运证书保持接口一致。
+
+\begin{definition}[Gödel--移位可加编码器]\label{def:group-jg-godel-shift-additive-encoder}
+记 \(\mathsf{Seq}(\mathbb{N}_{\ge 1})\) 为正整数有限序列集合。称五元组
+\[
+(M,+,0;\sigma,u)
+\]
+为 Gödel--移位可加编码器，若满足：
+\begin{enumerate}
+  \item \((M,+,0)\) 为交换幺半群；
+  \item \(\sigma:M\to M\) 为单射幺半群自同态；
+  \item 由
+  \[
+  G_M(k_1,\dots,k_T):=\sum_{t=1}^{T} k_t\,\sigma^{t-1}(u)
+  \]
+  定义的映射
+  \(
+  G_M:\mathsf{Seq}(\mathbb{N}_{\ge 1})\to M
+  \)
+  为单射。
+\end{enumerate}
+定义范畴 \(\mathbf{GShiftEnc}\)：对象为上述编码器；态射为保持 \(+\)、\(0\)、\(u\) 与 \(\sigma\) 的幺半群同态。
+\end{definition}
+
+\begin{theorem}[Gödel--素数寄存器的时间移位初对象原理]\label{thm:group-jg-prime-register-initial-object}
+设
+\[
+\mathsf{P}:=\mathbb{N}^{(\mathbb{P})},
+\]
+其中 \(\mathbb{P}=\{p_1,p_2,\dots\}\) 为素数序列，\(\delta_{p_t}\) 为第 \(t\) 个素数坐标的标准基元。定义
+\[
+\sigma_{\mathsf P}(\delta_{p_t})=\delta_{p_{t+1}},
+\qquad
+u_{\mathsf P}:=\delta_{p_1}.
+\]
+则：
+\begin{enumerate}
+  \item \((\mathsf{P},+,0;\sigma_{\mathsf P},u_{\mathsf P})\) 是 Gödel--移位可加编码器；
+  \item 在 \(\mathbf{GShiftEnc}\) 中，\((\mathsf{P},\sigma_{\mathsf P},u_{\mathsf P})\) 为初对象：对任意编码器 \((M,\sigma,u)\)，存在唯一幺半群同态
+  \[
+  \Phi:\mathsf{P}\to M
+  \]
+  使得
+  \[
+  \Phi(u_{\mathsf P})=u,\qquad
+  \Phi\circ\sigma_{\mathsf P}=\sigma\circ\Phi.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对第 \(t\) 个基元有 \(\delta_{p_t}=\sigma_{\mathsf P}^{t-1}(u_{\mathsf P})\)，故
+\[
+G_{\mathsf P}(k_1,\dots,k_T)=\sum_{t=1}^{T}k_t\,\delta_{p_t}.
+\]
+若两序列在 \(\mathsf{P}\) 中编码相等，则各素数坐标系数逐点相等，从而原序列逐项相等，故 \(G_{\mathsf P}\) 单射。
+
+另一方面，\(\mathsf{P}\) 是由 \(\{\delta_{p_t}\}_{t\ge 1}\) 自由生成的交换幺半群。对任意 \((M,\sigma,u)\)，先定义
+\[
+\Phi(\delta_{p_t}):=\sigma^{t-1}(u),
+\]
+再按自由性唯一延拓为幺半群同态。该定义立即给出
+\(
+\Phi(u_{\mathsf P})=u
+\)
+与
+\(
+\Phi\circ\sigma_{\mathsf P}=\sigma\circ\Phi
+\)。
+唯一性同样由生成元上的唯一取值推出，故该对象为初对象。
+\end{proof}
+
+\begin{remark}[与本文残差寄存器接口的同一性]\label{rem:group-jg-prime-register-initial-object-interface}
+本文残差记录
+\[
+r_S(\omega)=\sum_{t=1}^{T_S(\omega)}\mathrm{code}(e_t(\omega))\,\delta_{p_t}
+\]
+正是定理 \ref{thm:group-jg-prime-register-initial-object} 中 \(G_{\mathsf P}\) 的实例。故“时间移位相容”的 Gödel 外置并非可替换修辞，而由初对象性质唯一固定到素数寄存器通道。
+\end{remark}
+
+\begin{theorem}[Fold 纤维的平方自由素数外置与最小自由度刻画]\label{thm:group-jg-fold-squarefree-externalization}
+固定 \(m\)，令 \(\mathrm{Fold}_m:\Omega_m\to X_m\)。在定理 8.129 的记号下，对每个 \(x\in X_m\)，纤维由规范同构
+\[
+\mathrm{Fold}_m^{-1}(x)\cong \mathrm{Ind}(\Gamma_x)
+\]
+给出；当 \(m\) 为奇数时另有隐藏位 \(b(\omega)\in\{0,1\}\)。
+
+取互异素数族 \(\{q_v:v\in\mathrm{Adm}(x)\}\)，定义平方自由编码
+\[
+\mathcal G_x(S):=\prod_{v\in S} q_v,\qquad
+S\in \mathrm{Ind}(\Gamma_x),
+\]
+并定义
+\[
+\Psi_m:\Omega_m\longrightarrow
+\bigsqcup_{x\in X_m}\bigl(\{x\}\times\{0,1\}\times\mathbb{N}_{\mathrm{sf}}\bigr),
+\]
+\[
+\Psi_m(\omega):=
+\Bigl(\mathrm{Fold}_m(\omega),\,b(\omega),\,\mathcal G_{\mathrm{Fold}_m(\omega)}(S(\omega))\Bigr).
+\]
+则 \(\Psi_m\) 为单射；其像
+\(
+\mathcal R_m:=\Psi_m(\Omega_m)
+\)
+上，\(\Psi_m:\Omega_m\to\mathcal R_m\) 为显式双射。
+\end{theorem}
+\begin{proof}
+设 \(\Psi_m(\omega)=\Psi_m(\omega')\)。则
+\[
+\mathrm{Fold}_m(\omega)=\mathrm{Fold}_m(\omega')=:x,\qquad
+b(\omega)=b(\omega').
+\]
+且
+\[
+\mathcal G_x(S(\omega))=\mathcal G_x(S(\omega')).
+\]
+由素数唯一分解定理与 \(\{q_v\}\) 互异性可得
+\(
+S(\omega)=S(\omega')
+\)。
+再由定理 8.129 给出的纤维参数化唯一性，得到 \(\omega=\omega'\)。故 \(\Psi_m\) 单射。对像集 \(\mathcal R_m\) 的双射性由定义直接成立。
+\end{proof}
+
+\begin{theorem}[非相邻素数平方自由 Dirichlet 级数与素数递归连分式]\label{thm:group-jg-gap-dirichlet-continued-fraction}
+令 \(p_n\) 为第 \(n\) 个素数，定义
+\[
+\mathcal I:=\{S\subset\mathbb N:\ S\ \text{有限且}\ i\in S\Rightarrow i+1\notin S\},
+\]
+\[
+Z_{\mathrm{gap}}(s):=\sum_{S\in\mathcal I}\ \prod_{i\in S} p_i^{-s},
+\qquad \Re(s)>1.
+\]
+则：
+\begin{enumerate}
+  \item 在半平面 \(\Re(s)>1\) 上，\(Z_{\mathrm{gap}}(s)\) 绝对收敛并定义全纯函数；
+  \item 对任意实数 \(\sigma>1\)，定义
+  \[
+  Z_0(\sigma)=1,\quad
+  Z_1(\sigma)=1+p_1^{-\sigma},\quad
+  Z_n(\sigma)=Z_{n-1}(\sigma)+p_n^{-\sigma}Z_{n-2}(\sigma)\ (n\ge 2),
+  \]
+  则 \(\{Z_n(\sigma)\}\) 单调递增且有界，且
+  \[
+  Z_{\mathrm{gap}}(\sigma)=\lim_{n\to\infty}Z_n(\sigma);
+  \]
+  \item 对任意实数 \(\sigma>1\)，令
+  \(
+  R_n(\sigma):=Z_n(\sigma)/Z_{n-1}(\sigma)
+  \)，则
+  \[
+  R_1(\sigma)=1+p_1^{-\sigma},\qquad
+  R_n(\sigma)=1+\frac{p_n^{-\sigma}}{R_{n-1}(\sigma)}\ (n\ge 2);
+  \]
+  \item 对任意实数 \(\sigma>1\)，有显式夹逼
+  \[
+  1+\sum_{p}p^{-\sigma}
+  \le
+  Z_{\mathrm{gap}}(\sigma)
+  \le
+  \prod_{p}(1+p^{-\sigma})
+  =
+  \frac{\zeta(\sigma)}{\zeta(2\sigma)}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对任意 \(\Re(s)>1\)，有
+\[
+\sum_{S\in\mathcal I}\left|\prod_{i\in S}p_i^{-s}\right|
+\le
+\sum_{\substack{S\subset\mathbb N\\ S\ \mathrm{finite}}}\prod_{i\in S}p_i^{-\Re(s)}
+=
+\prod_{i\ge 1}(1+p_i^{-\Re(s)})<\infty,
+\]
+故绝对收敛。对任意紧集 \(K\subset\{\,\Re(s)>1\,\}\)，取 \(\varepsilon>0\) 使 \(\Re(s)\ge 1+\varepsilon\)（\(s\in K\)），由同一估计得一致收敛，从而 \(Z_{\mathrm{gap}}\) 全纯。
+
+记
+\(
+\mathcal I_n:=\{S\in\mathcal I:S\subseteq\{1,\dots,n\}\}
+\)，则
+\[
+Z_n(\sigma):=\sum_{S\in\mathcal I_n}\prod_{i\in S}p_i^{-\sigma}
+\]
+满足递推
+\(
+Z_n=Z_{n-1}+p_n^{-\sigma}Z_{n-2}
+\)：
+按是否包含 \(n\) 分拆集合即可。因 \(p_n^{-\sigma}>0\)，\(\{Z_n(\sigma)\}\) 单调递增；又
+\[
+Z_n(\sigma)\le \prod_{i=1}^{n}(1+p_i^{-\sigma})\le \prod_{i\ge1}(1+p_i^{-\sigma})<\infty,
+\]
+故有界并收敛。极限与 \(Z_{\mathrm{gap}}(\sigma)\) 一致由 \(\mathcal I_n\uparrow\mathcal I\) 与单调收敛给出。
+
+比值递推由代数恒等式
+\[
+\frac{Z_n}{Z_{n-1}}
+=1+p_n^{-\sigma}\frac{Z_{n-2}}{Z_{n-1}}
+=1+\frac{p_n^{-\sigma}}{Z_{n-1}/Z_{n-2}}
+\]
+直接得到。夹逼不等式中，下界取空集和单元素集贡献；上界去除“非相邻”约束并展开全体平方自由素数子集，得到 Euler 型积表示。
+\end{proof}
+
+\begin{theorem}[单位圆信息的面积守恒投影族与素数同态实现]\label{thm:group-jg-ellipse-prime-homomorphism}
+记
+\[
+\mathcal E:=\{E(a):a>0,\ E(a)=\{(x,y):x^2/a^2+y^2a^2=1\}\},
+\]
+并定义
+\[
+E(a)\odot E(b):=E(ab).
+\]
+对素数寄存器 \(\mathsf{P}=\mathbb N^{(\mathbb P)}\)，定义
+\[
+N:\mathsf P\to\mathbb N_{>0},
+\qquad
+N(r)=\prod_{p}p^{r(p)},
+\]
+\[
+\Xi:\mathsf P\to\mathcal E,\qquad
+\Xi(r):=E\bigl(N(r)\bigr).
+\]
+则：
+\begin{enumerate}
+  \item \(\Xi\) 为单射幺半群同态；
+  \item 若赋予 \(\mathcal E\) 距离
+  \[
+  d_{\mathcal E}\!\bigl(E(a),E(b)\bigr):=2|\log(a/b)|,
+  \]
+  则
+  \[
+  d_{\mathcal E}\!\bigl(\Xi(r),\Xi(r')\bigr)
+  =2\left|\sum_{p}(r(p)-r'(p))\log p\right|,
+  \]
+  从而素数寄存器的可加更新在 \(\mathcal E\) 上对应对数坐标中的测地平移；特别地，生成元 \(\delta_p\) 对应长度 \(2\log p\) 的基本位移。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+素数唯一分解保证 \(N\) 为单射幺半群同态，且由定义
+\[
+\Xi(r+r')=E\!\bigl(N(r+r')\bigr)=E\!\bigl(N(r)N(r')\bigr)=\Xi(r)\odot\Xi(r').
+\]
+故 \(\Xi\) 为单射同态。距离公式由 \(a=N(r)\)、\(b=N(r')\) 代入定义即得：
+\[
+\log\!\frac{N(r)}{N(r')}
+=\sum_p (r(p)-r'(p))\log p.
+\]
+在 \(\log a\) 坐标中该度量为欧氏距离常数倍，因此轨道为测地线。
+\end{proof}
+
+\begin{proposition}[信息守恒素数外置与 \(\mathbb Q\) 的范数一赋值一致性]\label{prop:group-jg-norm-one-idele-coherence}
+对任意 \(r\in\mathsf P\)，定义
+\[
+a_\infty:=N(r),\qquad a_p:=p^{r(p)}\quad (p\ \text{为素数}).
+\]
+在归一化绝对值 \(|p|_p=p^{-1}\) 下有
+\[
+|a_\infty|_\infty\cdot\prod_{p}|a_p|_p=1.
+\]
+反过来，若一组数据满足：
+\begin{enumerate}
+  \item 仅有限个 \(p\) 上 \(a_p\neq 1\)；
+  \item 对每个 \(p\)，\(a_p=p^{n_p}\) 且 \(n_p\in\mathbb N\)；
+  \item \(|a_\infty|_\infty\prod_p|a_p|_p=1\)；
+\end{enumerate}
+则存在唯一 \(r\in\mathsf P\) 使 \(r(p)=n_p\) 且 \(a_\infty=N(r)\)。
+\end{proposition}
+\begin{proof}
+由定义
+\[
+|a_\infty|_\infty\cdot\prod_p|a_p|_p
+=N(r)\cdot\prod_p p^{-r(p)}
+=1.
+\]
+反向方向取 \(r(p):=n_p\) 即得有限支撑向量，且
+\[
+|a_\infty|_\infty
+=\prod_p p^{n_p}
+=N(r)
+\]
+由范数一条件唯一确定，故结论成立。
+\end{proof}
+
+\begin{corollary}[Fold 丢失信息的素数--椭圆三重同构]\label{cor:group-jg-fold-prime-ellipse-triple}
+在定理 \ref{thm:group-jg-fold-squarefree-externalization} 的设定下，定义平方自由整数到素数寄存器的嵌入
+\[
+\iota_{\mathrm{sf}}:\mathbb N_{\mathrm{sf}}\hookrightarrow \mathsf P,
+\]
+其在素数分解 \(n=\prod_q q^{\varepsilon_q}\)（\(\varepsilon_q\in\{0,1\}\)）下给出 \( \iota_{\mathrm{sf}}(n)(q)=\varepsilon_q\)。
+则存在链式单射
+\[
+\Omega_m
+\xhookrightarrow{\ \Psi_m\ }
+\bigsqcup_{x\in X_m}\bigl(\{x\}\times\{0,1\}\times \mathbb N_{\mathrm{sf}}\bigr)
+\xhookrightarrow{\ \mathrm{id}\times\mathrm{id}\times (\Xi\circ\iota_{\mathrm{sf}})\ }
+\bigsqcup_{x\in X_m}\bigl(\{x\}\times\{0,1\}\times \mathcal E\bigr).
+\]
+因此，任意微态 \(\omega\) 的投影丢失信息可等价表示为：
+\begin{enumerate}
+  \item 纤维独立集 \(S(\omega)\)（分支选择自由度）；
+  \item 平方自由外置整数 \(\mathcal G(S(\omega))\)；
+  \item 面积守恒椭圆 \(\Xi(\iota_{\mathrm{sf}}(\mathcal G(S(\omega))))\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+第一步单射由定理 \ref{thm:group-jg-fold-squarefree-externalization} 给出。第二步中，\(\iota_{\mathrm{sf}}\) 由平方自由唯一分解单射，\(\Xi\) 由定理 \ref{thm:group-jg-ellipse-prime-homomorphism}(i) 单射，故复合仍为单射。于是得到链式单射与三重等价描述。
+\end{proof}
+
+\begin{conjecture}[\(Z_{\mathrm{gap}}\) 的自然边界由序位相邻约束诱导]\label{conj:group-jg-gap-zeta-natural-boundary}
+对定理 \ref{thm:group-jg-gap-dirichlet-continued-fraction} 的函数 \(Z_{\mathrm{gap}}(s)\)，预期：
+\begin{enumerate}
+  \item \(Z_{\mathrm{gap}}(s)\) 可延拓为 \(\Re(s)>0\) 上的亚纯函数；
+  \item 直线 \(\Re(s)=0\) 构成其自然边界，无法在单值亚纯意义下跨越延拓。
+\end{enumerate}
+其机制可表述为：递归
+\[
+R_n(\sigma)=1+\frac{p_n^{-\sigma}}{R_{n-1}(\sigma)}
+\]
+由素数序位上的局部相邻排斥驱动，在 \(\Re(s)\downarrow 0\) 时产生多尺度相位不稳定，从而与经典 Euler 乘积主导的乘法独立解析结构形成分离。
+\end{conjecture}

@@ -113,6 +113,43 @@ m_\ell:=\#\{\,i:\ \ell_i=\ell\,\}
 证毕。
 \end{proof}
 
+\begin{corollary}[坐标边缘概率的 Fibonacci 比值闭式与边界层指数衰减]\label{cor:pom-fibcube-marginal-boundary-layer}
+令 \(\varphi=\frac{1+\sqrt5}{2}\)。
+在 \(\Gamma_n\) 的均匀计数测度下，对任意 \(1\le i\le n\) 有严格闭式
+\[
+\mathbb P(v_i=1)=\frac{|\Theta_i|}{|V(\Gamma_n)|}
+=\frac{F_iF_{n-i+1}}{F_{n+2}}.
+\]
+并且当 \(n\to\infty\) 且 \(i\to\infty\)、\(n-i\to\infty\) 时，边缘概率收敛到 Parry 体相常数
+\[
+\mathbb P(v_i=1)\ \longrightarrow\ \pi(1)=\frac{1}{\varphi^2+1}=\frac{1}{\varphi\sqrt5}
+\qquad\text{（见定理 \ref{thm:pom-parry-limit-chain-explicit}）},
+\]
+且偏离满足指数衰减
+\[
+\mathbb P(v_i=1)-\frac{1}{\varphi^2+1}
+=O\!\left(\varphi^{-2i}+\varphi^{-2(n-i+1)}\right)
+\qquad(n\to\infty).
+\]
+更一般地，若 \(\mathcal F_x\cong\prod_{j=1}^r\Gamma_{\ell_j}\)，则对任意坐标 \((j,a)\) 有
+\[
+\mathbb P(v_{j,a}=1)=\frac{F_aF_{\ell_j-a+1}}{F_{\ell_j+2}},
+\]
+并在体相窗口 \(a\to\infty\)、\(\ell_j-a\to\infty\) 内具有同型的指数边界层衰减
+\(
+O(\varphi^{-2a}+\varphi^{-2(\ell_j-a+1)})
+\)。
+\end{corollary}
+\begin{proof}
+第一式由定理 \ref{thm:pom-fibcube-theta-class-size} 与 \(|V(\Gamma_n)|=F_{n+2}\) 立即得到。
+极限与误差由 Binet 展开
+\(
+F_k=\frac{\varphi^k}{\sqrt5}\bigl(1+O(\varphi^{-2k})\bigr)
+\)
+代入闭式并化简推出。
+乘积纤维情形由命题 \ref{prop:pom-fiber-hyperplane-tensorization} 的张量化直接归约到单因子估计。证毕。
+\end{proof}
+
 \begin{theorem}[坐标为 \(1\) 的精确计数与一般 \(k\)-点函数]\label{thm:pom-fibcube-kpoint-count}
 记 \(V(\Gamma_n)=X_n\) 为长度 \(n\) 的合法词集合，并在其上取均匀计数。
 对任意指标集 \(S=\{i_1<\cdots<i_k\}\subseteq\{1,\dots,n\}\)，若存在 \(j\) 使 \(i_{j+1}-i_j=1\)，则
@@ -277,6 +314,55 @@ S_n(f):=\sum_{t=1}^{n}f(\sigma^t x)
 再对因子应用定理 \ref{thm:pom-fibcube-theta-class-size} 即得。
 第 (2) 点由顶点集合的笛卡尔乘积与均匀测度的乘积结构直接推出；体相极限由定理 \ref{thm:pom-parry-limit-chain-explicit} 与局部窗口收敛给出。
 第 (3) 点由独立张量积下的中心极限定理与定理 \ref{thm:pom-parry-ones-clt} 的分量常数给出。证毕。
+\end{proof}
+
+\begin{corollary}[超平面计数的可逆性：由 \texorpdfstring{$|V|$}{|V|} 与 \texorpdfstring{$\{|\Theta|\}$}{|Theta|} 重建分量长度谱]\label{cor:pom-fiber-hyperplane-spectrum-invertibility}
+设 \(\mathcal F_x\cong\prod_{i=1}^r\Gamma_{\ell_i}\)，并记顶点数 \(V_x:=|V(\mathcal F_x)|\)，以及 \(\mathcal M_x:=\{|\Theta|\}\) 为 \(\mathcal F_x\) 全部 \(\Theta\)-类边数的多重集。
+则 \((V_x,\mathcal M_x)\) 唯一确定长度谱多重集
+\(
+\mathsf{Spec}_{\square}(x)=\{\ell_1,\dots,\ell_r\}
+\)；
+从而在该纤维类上，超平面统计 \(\mathcal M_x\)（配合基数 \(V_x\)）在不依赖实现细节的意义下确定 \(\mathcal F_x\) 的 Cartesian 素因子分解与图同构类（推论 \ref{cor:pom-fiber-reconstruction-spectrum-complete}）。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-fiber-hyperplane-tensorization}，对任意因子 \(j\) 与坐标 \(a\in\{1,\dots,\ell_j\}\) 有
+\[
+\frac{|\Theta_{j,a}|}{V_x}=\frac{F_aF_{\ell_j-a+1}}{F_{\ell_j+2}}.
+\]
+因此归一化多重集
+\(
+\mathcal P_x:=\{|\Theta|/V_x:\ |\Theta|\in\mathcal M_x\}
+\)
+分解为各因子剖面的多重并：
+\[
+\mathcal P_x=\bigsqcup_{j=1}^r \left\{\frac{F_aF_{\ell_j-a+1}}{F_{\ell_j+2}}:\ 1\le a\le \ell_j\right\}.
+\]
+对固定长度 \(\ell\)，端点值
+\(
+p^{\mathrm{end}}(\ell):=F_{\ell}/F_{\ell+2}
+\)
+由定理 \ref{thm:pom-fibcube-theta-class-size} 为该剖面的唯一最大元且出现两次（对应 \(a=1,\ell\)）。
+令 \(p_{\max}:=\max\mathcal P_x\)，则 \(p_{\max}=p^{\mathrm{end}}(\ell)\) 对某个 \(\ell\) 成立，并且其重数必为 \(2m_\ell\)，其中 \(m_\ell:=\#\{j:\ell_j=\ell\}\)。
+\par
+为由 \(p_{\max}\) 反推出 \(\ell\)，记 \(u_n:=F_{n+2}/F_n\)（\(n\ge 1\)）。
+由恒等式
+\(
+F_{n+3}F_n-F_{n+2}F_{n+1}=(-1)^{n+1}
+\)
+得
+\[
+u_{n+2}-u_n=\frac{(-1)^{n+1}}{F_{n+2}F_n},
+\]
+从而 \(u_{2k}\) 严格递减而 \(u_{2k+1}\) 严格递增，并分别从上、下收敛到 \(\varphi^2\)。
+因此端点比值 \(p^{\mathrm{end}}(n)=1/u_n\) 在 \(n\) 上严格可识别（其奇偶性亦由与 \(\varphi^{-2}\) 的大小关系判定）。
+故 \(\ell\) 与 \(m_\ell\) 由 \(p_{\max}\) 及其重数唯一确定。
+\par
+从 \(\mathcal P_x\) 中删去 \(m_\ell\) 份长度 \(\ell\) 的完整剖面
+\(
+\{F_aF_{\ell-a+1}/F_{\ell+2}\}_{a=1}^{\ell}
+\)
+后，得到的剩余多重集仍为剩余因子的归一化剖面并可递归处理；递归终止时得到全部长度多重集 \(\{\ell_i\}\)。
+最后由推论 \ref{cor:pom-fiber-reconstruction-spectrum-complete} 得到图同构类的确定性。证毕。
 \end{proof}
 
 \begin{remark}[最小窗 \(m=6\) 的实例化]\label{rem:pom-fiber-hyperplane-m6}

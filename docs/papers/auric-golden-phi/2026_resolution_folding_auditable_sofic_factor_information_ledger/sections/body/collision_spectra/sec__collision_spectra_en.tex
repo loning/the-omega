@@ -1,0 +1,126 @@
+\section{Collision spectra and moment-kernel interfaces}\label{sec:collision-spectra}
+
+This section upgrades the fiber multiplicity profile $\{d_m(x)\}_{x\in X_m}$ to a spectrum of computable invariants.
+The guiding input is that Zeckendorf normalization admits a deterministic finite-state implementation with fixed delay (Appendix~\ref{app:online-normalization}); therefore, \emph{fiber-collision statistics} admit finite-state counting interfaces.
+
+\subsection{Collision moments and their meaning}\label{subsec:collision-defs}
+Fix $m\ge 1$.
+Recall the fiber multiplicity
+\[
+d_m(x):=\card{\Fold_m^{-1}(x)},\qquad x\in X_m.
+\]
+
+\begin{definition}[Collision moments]\label{def:collision-moments}
+For each integer $k\ge 2$, define the $k$-th collision moment at resolution $m$ by
+\[
+S_k(m):=\sum_{x\in X_m} d_m(x)^k
+=\card{\Bigl\{(\omega^{(1)},\dots,\omega^{(k)})\in\Omega_m^k:\ \Fold_m(\omega^{(1)})=\cdots=\Fold_m(\omega^{(k)})\Bigr\}}.
+\]
+\end{definition}
+
+\begin{remark}[Uniform baseline and R\'enyi fingerprints]\label{rem:collision-renyi}
+Under the uniform baseline $\mu=\mathrm{Unif}(\Omega_m)$, the folded type distribution is
+\(
+w_m(x)=d_m(x)/2^m
+\).
+Hence
+\[
+\sum_{x\in X_m} w_m(x)^k=\frac{S_k(m)}{2^{km}},
+\]
+so exponential rates of $(S_k(m))_{m\ge 1}$ encode a family of R\'enyi-type fingerprints of the fold fiber spectrum.
+\end{remark}
+
+\subsection{Moment kernels: finite-state counting of collisions}\label{subsec:moment-kernel}
+The next theorem provides a finite-state interface for all collision moments.
+
+\begin{theorem}[Moment-kernel representation of collision moments]\label{thm:moment-kernel-collisions}
+Fix an integer $k\ge 2$.
+There exist a finite nonnegative integer matrix $A_k$ and nonnegative integer vectors $u_k,v_k$ such that
+\begin{equation}\label{eq:Sk-matrix-coefficient}
+S_k(m)=u_k^{\mathsf T}A_k^{\,m}v_k
+\end{equation}
+for all sufficiently large $m$.
+In particular, the limit
+\[
+\lim_{m\to\infty}\frac{1}{m}\log S_k(m)=\log r_k
+\]
+exists, where $r_k:=\rho(A_k)$ is the Perron--Frobenius spectral radius of $A_k$.
+\end{theorem}
+
+\begin{proof}
+Let $\mathcal{T}$ be a deterministic finite-state subsequential transducer implementing $\Fold_\infty$ with fixed delay $\delta=3$ (Appendix~\ref{app:online-normalization}).
+Write its (finite) internal state set as $Q$, its one-step update/output as deterministic maps
+\[
+\delta:Q\times\{0,1\}\to Q,\qquad \varepsilon:Q\times\{0,1\}\to\{0,1\},
+\]
+and its terminal output function as a bounded-length map $\omega:Q\to\{0,1\}^{\delta}$ that flushes the delay window.
+For each $m$, applying $\mathcal{T}$ to an input word $\omega\in\Omega_m=\{0,1\}^m$ produces a stable output word of length $m$ (obtained from the emitted stream together with the terminal output), which coincides with $\Fold_m(\omega)$ by uniqueness of the Zeckendorf normal form (Theorem~\ref{thm:rewrite-unique-normal-form}).
+\par
+Fix $k\ge 2$ and form the $k$-fold synchronous product transducer $\mathcal{T}^{\times k}$: its state space is $Q^k$, it reads an input $k$-tuple
+\(
+(d^{(1)},\dots,d^{(k)})\in\{0,1\}^k
+\),
+updates each coordinate state by $\delta$, and emits the $k$-tuple of output bits
+\(
+(\varepsilon(q^{(1)},d^{(1)}),\dots,\varepsilon(q^{(k)},d^{(k)})).
+\)
+Impose the \emph{collision constraint} that the $k$ outputs agree at each step (and incorporate the finite terminal flush by enlarging the state by a constant-size buffer).
+This yields a finite directed graph whose vertices are the admissible augmented states and whose directed edges correspond to those input $k$-tuples that satisfy the output-equality constraint; the edge multiplicity equals the number of admissible input $k$-tuples producing that transition.
+\par
+Let $A_k$ be the adjacency matrix of this finite multigraph.
+Choose $u_k$ to encode the unique initial augmented state (all $k$ copies at the start state and empty buffer), and choose $v_k$ to encode the terminal acceptance weights (absorbing the finite flush constraint).
+Then the number of length-$m$ admissible paths equals the number of $k$-tuples of microstates in $\Omega_m^k$ whose folded outputs agree, i.e.\ $S_k(m)$, up to a boundary correction that depends only on the fixed delay/buffer size.
+Absorbing this constant boundary into the choice of augmentation and the threshold yields \eqref{eq:Sk-matrix-coefficient} for all sufficiently large $m$.
+\par
+Finally, Perron--Frobenius theory applied to the maximal-growth irreducible component of $A_k$ implies the existence of the exponential growth rate and identifies it with $\log\rho(A_k)$.
+\end{proof}
+
+\subsection{Symmetry quotient: polynomial-size compressed kernels}\label{subsec:symmetric-quotient}
+The fiber-collision constraint is invariant under permutation of the $k$ inputs.
+This yields a canonical symmetry quotient that reduces the kernel size from exponential in $k$ to polynomial in $k$ (for fixed base transducer).
+Appendix~\ref{app:moment-kernel} records an explicit coefficient-extraction formula for the quotient transition weights.
+
+\begin{proposition}[Symmetric compression]\label{prop:moment-kernel-symmetric-compression}
+Let $Q$ be the finite state set of the delay-$3$ online transducer from Appendix~\ref{app:online-normalization}, and let $|Q|<\infty$.
+For each $k\ge 2$, there exists a quotient moment kernel $\widetilde A_k$ and vectors $\widetilde u_k,\widetilde v_k$ such that
+\[
+S_k(m)=\widetilde u_k^{\mathsf T}\widetilde A_k^{\,m}\widetilde v_k
+\quad\text{for all sufficiently large $m$},
+\qquad
+\rho(\widetilde A_k)=\rho(A_k).
+\]
+Moreover, the dimension satisfies the explicit bound
+\[
+\dim(\widetilde A_k)\ \le\ \binom{k+|Q|-1}{|Q|-1}=O(k^{|Q|-1}).
+\]
+\end{proposition}
+
+\begin{proof}
+The $k$-fold collision construction above acts on $Q^k$ (up to a constant-size augmentation for the terminal flush).
+The output-equality constraint is invariant under permuting the $k$ coordinates, and the transition multiplicities depend only on the multiset of coordinate states.
+Hence the adjacency operator commutes with the natural $S_k$-action on $Q^k$ by permuting coordinates.
+\par
+Quotient by this action.
+An orbit is uniquely represented by its \emph{occupancy vector} (histogram)
+\(
+\nu\in\NN^{Q}
+\)
+with $\sum_{q\in Q}\nu(q)=k$, where $\nu(q)$ records how many coordinates are in state $q$.
+The number of such histograms is $\binom{k+|Q|-1}{|Q|-1}$, giving the stated dimension bound.
+Define $\widetilde A_k(\nu,\nu')$ as the total number of admissible input $k$-tuples that, from any representative with histogram $\nu$, produce the next histogram $\nu'$ while satisfying the output-equality constraint.
+This is well-defined by permutation invariance and yields a nonnegative integer matrix $\widetilde A_k$.
+The corresponding quotient initial/terminal vectors $\widetilde u_k,\widetilde v_k$ are defined similarly.
+By construction, path counts are preserved, hence $S_k(m)$ admits the same matrix-coefficient form on the quotient, and the Perron root is unchanged on the maximal-growth component.
+\end{proof}
+
+\subsection{Zeta/primitive interface (standard tool)}\label{subsec:moment-zeta-interface}
+Once a moment kernel is fixed, standard SFT technology applies to it as a \emph{counting interface}.
+In particular, the Artin--Mazur zeta function of the kernel SFT satisfies
+\[
+\zeta_{A_k}(z)=\frac{1}{\det(I-zA_k)},
+\qquad
+\#\mathrm{Fix}(\sigma^n)=\mathrm{Tr}(A_k^n),
+\]
+and primitive-orbit counts are extracted by M\"obius/Witt inversion (cf.\ Section~\ref{subsec:prelim-zeta}).
+We emphasize that this interface is used as a reproducible packaging of collision statistics, rather than as a new invariant of the sofic factor $Y_m$ itself.
+

@@ -1,0 +1,60 @@
+\begin{abstract}
+We study a finite-window normalization map induced by Fibonacci (Zeckendorf) numeration and use it as a single organizing interface that closes an auditable loop:
+\[
+\Omega_m \xrightarrow{\ \Fold_m\ } X_m \xrightarrow{\ \Phi_m\ } Y_m
+\quad\Longrightarrow\quad
+\text{computable covers, fiber statistics, and an entropy ledger}.
+\]
+At resolution $m$, microstates are $\Omega_m=\{0,1\}^m$ and stable types are the golden-mean language $X_m$ (no adjacent $11$).
+The \emph{resolution folding} $\Fold_m:\Omega_m\to X_m$ is defined as ``value $\to$ Zeckendorf normal form $\to$ truncate'' and admits an order-independent local rewriting implementation; hence it produces a unique canonical type and is compatible with a fold-aware restriction across resolutions.
+\par
+We place the construction in the broader \emph{Ostrowski design space}: for any irrational $\alpha$, the corresponding normalization-then-truncation fold $\Fold_m^{(\alpha)}$ is functorial across $m$, and the \emph{binary} alphabet constraint forces the golden endpoint $\alpha=\varphi^{-1}$.
+In the binary case, naive truncation does not commute with folding; we quantify the mismatch by a \emph{gauge anomaly} functional $G_m$, show it can be full length in the worst case, and compute its uniform-baseline density $g_\ast=4/9$ with a finite-state (synchronizing-kernel) certificate.
+\par
+At the sequence level, the induced sliding block code $\Phi_m$ yields a sofic shift $Y_m$ with an explicit bi-resolving presentation and a computable Fischer-cover interface.
+Beyond cover-level invariants, we introduce a \emph{fiber spectrum} through collision moments
+\(
+S_k(m):=\sum_{x\in X_m} d_m(x)^k
+\)
+of the fiber multiplicity $d_m(x)=|\Fold_m^{-1}(x)|$.
+For each fixed $k\ge 2$ we construct a finite nonnegative integer \emph{moment kernel} $A_k$ such that $S_k(m)$ is a matrix coefficient of $A_k^m$ for all sufficiently large $m$; hence $\lim_{m\to\infty}\frac{1}{m}\log S_k(m)=\log\rho(A_k)$, and a symmetry quotient yields polynomial-size compressed kernels.
+We also give an explicit \emph{online} normalizer: $\Fold_\infty$ is computed by a deterministic finite-state transducer with delay $3$, and this delay is provably minimal.
+\par
+Finally, we record an \emph{entropy ledger identity} for arbitrary $\mu\in\Delta(\Omega_m)$:
+\[
+H(\mu)=H(P_m\mu)+\mathbb{E}[\log d_m]-D_{\mathrm{KL}}(\mu\|Q_mP_m\mu),
+\]
+decomposing microstate entropy into visible type entropy, fiber volume, and a residual KL term. Combined with exact independent-set factorization of fibers, this yields auditable certificates (constants, spectral radii, tail bounds) and a finite-sample verification protocol.
+\end{abstract}
+
+\noindent\textbf{Keywords.}
+Ostrowski numeration; golden mean shift; Zeckendorf normal form; online normalization; local rewriting system; sliding block code; sofic shift; Fischer cover; Perron--Frobenius measure; collision moments; entropy ledger; auditable certificate.
+
+\bigskip
+\noindent\textbf{Main contributions.}
+\begin{itemize}
+  \item \textbf{Design-space rigidity (Ostrowski families and the golden endpoint).} We formalize a general normalization-then-truncation fold $\Fold_m^{(\alpha)}$ for Ostrowski numeration systems and prove functorial multiscale compatibility. Requiring a binary alphabet at all resolutions forces $\alpha=\varphi^{-1}$, hence the golden-mean syntax as the minimal binary member of the design space.
+  \item \textbf{Canonical folding and quantified multiscale obstruction.} In the golden-mean case we realize $\Fold_m$ as a confluent local rewriting normalizer producing a unique canonical form in $X_m$, and we prove idempotence and fold-aware multiscale compatibility (Theorem~\ref{thm:fold-normal-form-multiscale}). We quantify the non-commutativity of naive truncation by the gauge anomaly $G_m$, prove a worst-case full-length obstruction, and compute its uniform-baseline density $g_\ast=4/9$ with a finite-state certificate (Propositions~\ref{prop:gauge-anomaly-max} and \ref{prop:gauge-anomaly-density-49}, Appendix~\ref{app:gauge-anomaly-transducer}).
+  \item \textbf{Online normalization with optimal delay.} We construct an explicit deterministic finite-state transducer computing $\Fold_\infty$ with delay $3$ and prove that no delay-$2$ online normalizer exists; this isolates an intrinsic \emph{time defect} of Zeckendorf normalization.
+  \item \textbf{Sofic factor and computable cover interface.} We construct $Y_m=\Phi_m(\{0,1\}^{\ZZ})$ via an explicit suffix-state labeled graph and prove one-step distinguishability (right- and left-resolving). This yields an auditable Fischer-cover interface for entropy/PF/Parry data and cover-level zeta determinants (Theorem~\ref{thm:phi-sofic-fischer} and Appendix~\ref{app:pf-parry-zeta}).
+  \item \textbf{Fiber spectra via collision moments.} We elevate the fiber multiplicity profile to a spectrum of collision moments $S_k(m)=\sum_x d_m(x)^k$ and construct, for each fixed $k\ge 2$, a finite nonnegative integer moment kernel $A_k$ whose Perron root controls the exponential growth rate of $S_k(m)$. A symmetry quotient yields polynomial-size compressed kernels, providing a computable interface to a family of auditable invariants beyond cover-level PF data.
+  \item \textbf{Ledger identity and auditable certificates.} We record an entropy ledger identity that isolates the residual KL term beyond folded types and fiber volume (Theorem~\ref{thm:information-ledger}). We also give an exact fiber factorization into path independent sets, yielding a closed product formula $d_m(x)=\prod_i F_{\ell_i+2}$ and explicit universal bounds (Appendix~\ref{app:fiber-multiplicity} and Proposition~\ref{prop:fiber-multiplicity-bound}), together with finite-sample total-variation certificates (Theorems~\ref{thm:tv-certificate-hist} and \ref{thm:markov-tv-envelope}).
+\end{itemize}
+
+\bigskip
+\noindent\textbf{Reproducibility.}
+All tables, figures, and exported numerical artifacts are generated by scripts under \path{scripts/} and written to \path{sections/generated/} and \path{artifacts/export/}. Generated \LaTeX\ fragments are treated as write-only outputs. The pipeline entry is \path{python3 scripts/run_all.py}.
+
+\bigskip
+\noindent\textbf{Organization.}
+Section~\ref{sec:introduction} states the goal and the main theorem groups.
+Section~\ref{sec:preliminaries} fixes notation.
+Section~\ref{sec:generator} defines the finite-window microstate setting.
+Section~\ref{sec:certificates} gives finite-sample certificates.
+Section~\ref{sec:folding} constructs $\Fold_m$ and its multiscale interface.
+Section~\ref{sec:sofic-cover} derives the sofic factor $Y_m$ and the Markov cover interface.
+Section~\ref{sec:ledger} proves the information ledger identity.
+Section~\ref{sec:collision-spectra} develops collision spectra and moment-kernel interfaces for fiber statistics.
+Section~\ref{sec:algorithms} summarizes algorithms and an auditable protocol, including online normalization.
+Section~\ref{sec:extensions} records minimal extensions and falsifiable limits, including the Ostrowski design space.
+

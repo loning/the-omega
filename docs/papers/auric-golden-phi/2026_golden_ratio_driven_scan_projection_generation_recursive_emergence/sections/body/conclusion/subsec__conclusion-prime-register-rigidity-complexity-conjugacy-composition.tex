@@ -1,0 +1,257 @@
+\subsection{prime-register 可逆化机制的刚性、位复杂度与合成闭包}\label{subsec:conclusion-prime-register-rigidity-complexity-conjugacy-composition}
+沿用定义 \ref{def:pom-prime-fiber} 与定义 \ref{def:pom-fold-prime-lift} 的记号，记
+\[
+\mathcal P=\NN^{(\mathbb P)},\qquad
+N(r)=\prod_{p\in\mathbb P}p^{r(p)},
+\]
+并以命题 \ref{prop:pom-fold-prime-lift-injective} 作为可逆化基底。
+下述命题组把时间寻址、整数化代价、策略变化与投影合成统一写成同一条可审计代数链。
+
+\begin{theorem}[时间寻址 Gödel 证书的刚性与唯一性]\label{thm:conclusion-prime-time-addressed-godel-rigidity}
+令
+\[
+\mathcal A:=\NN^{(\NN)}=\left\{a=(a_t)_{t\ge 1}\mid a_t=0\ \text{仅除有限多个 }t\right\},
+\]
+并定义移位算子 \(\mathrm{sh}:\mathcal A\to\mathcal A\) 为
+\[
+(\mathrm{sh}(a))_1=0,\qquad (\mathrm{sh}(a))_{t+1}=a_t.
+\]
+设 \(\Gamma:\mathcal A\to\NN_{\ge 1}\) 满足存在两两不同素数列 \((q_t)_{t\ge 1}\) 使
+\[
+\Gamma(a)=\prod_{t\ge 1}q_t^{a_t}\qquad(a\in\mathcal A),
+\]
+并且存在乘法幺半群自同态 \(\Sigma:\NN_{\ge 1}\to\NN_{\ge 1}\) 使
+\[
+\Gamma(\mathrm{sh}(a))=\Sigma(\Gamma(a)),\qquad \forall a\in\mathcal A.
+\]
+则成立：
+\begin{enumerate}
+  \item 在由 \(\{q_t\}_{t\ge 1}\) 生成的子幺半群上，\(\Sigma\) 必满足
+  \[
+  \Sigma(q_t)=q_{t+1},\qquad
+  \Sigma\!\left(\prod_{t\ge 1}q_t^{\alpha_t}\right)=\prod_{t\ge 1}q_{t+1}^{\alpha_t}.
+  \]
+  \item 若进一步假设 \(\Sigma\) 是 \(\NN_{\ge 1}\) 的自同构，则存在唯一素数置换
+  \(\pi:\mathbb P\to\mathbb P\) 使
+  \[
+  \Sigma\!\left(\prod_{p\in\mathbb P}p^{\alpha(p)}\right)
+  =
+  \prod_{p\in\mathbb P}\pi(p)^{\alpha(p)},
+  \]
+  且在时间寻址轴上 \(\pi(q_t)=q_{t+1}\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+取 \(e_t\in\mathcal A\) 为第 \(t\) 位为 \(1\) 其余为 \(0\) 的序列。
+由移位相容性
+\[
+\Sigma(q_t)
+=\Sigma(\Gamma(e_t))
+=\Gamma(\mathrm{sh}(e_t))
+=\Gamma(e_{t+1})
+=q_{t+1},
+\]
+故第一式成立。
+对任意有限支撑指数列 \((\alpha_t)\)，由 \(\Sigma\) 乘法同态性质得
+\[
+\Sigma\!\left(\prod_{t\ge 1}q_t^{\alpha_t}\right)
+=\prod_{t\ge 1}\Sigma(q_t)^{\alpha_t}
+=\prod_{t\ge 1}q_{t+1}^{\alpha_t},
+\]
+即得第 (1) 条。
+
+若 \(\Sigma\) 为自同构，则由算术基本定理，\(\Sigma\) 在素数上的取值必须构成素数集的置换 \(\pi\)，并唯一决定 \(\Sigma\) 在整个 \(\NN_{\ge 1}\) 上的作用：
+\[
+\Sigma\!\left(\prod_{p}p^{\alpha(p)}\right)=\prod_p\pi(p)^{\alpha(p)}.
+\]
+结合上式 \(\Sigma(q_t)=q_{t+1}\) 即得 \(\pi(q_t)=q_{t+1}\)。
+唯一性由唯一分解直接推出。证毕。
+\end{proof}
+
+\begin{theorem}[prime-register 整数化的超线性位复杂度下界]\label{thm:conclusion-prime-integerization-superlinear-bitlength}
+固定确定性策略 \(\mathsf S\)，并沿用定义 \ref{def:pom-fold-prime-lift} 中的事件序列
+\((e_t(\omega))_{t=1}^{T_{m+1}^{\mathsf S}(\omega)}\) 与编码 \(\mathrm{code}(e_t)\in\NN_{\ge 1}\)。
+定义 Gödel 整数
+\[
+G_{\mathsf S}(\omega):=N\!\bigl(r_{\mathsf S}(\omega)\bigr)
+=\prod_{t=1}^{T_{m+1}^{\mathsf S}(\omega)}p_t^{\,\mathrm{code}(e_t(\omega))}.
+\]
+则对任意 \(\omega\) 有
+\[
+\log_2 G_{\mathsf S}(\omega)
+\ge
+\log_2\!\bigl((T_{m+1}^{\mathsf S}(\omega)+1)!\bigr)
+\ge
+\frac{(T_{m+1}^{\mathsf S}(\omega)+1)\log(T_{m+1}^{\mathsf S}(\omega)+1)-(T_{m+1}^{\mathsf S}(\omega)+1)+1}{\ln 2}.
+\]
+特别地，
+\[
+\log_2 G_{\mathsf S}(\omega)=\Omega\!\bigl(T_{m+1}^{\mathsf S}(\omega)\log T_{m+1}^{\mathsf S}(\omega)\bigr).
+\]
+在均匀基线 \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) 下，存在常数 \(C>0\) 使
+\[
+\EE[\log_2 G_{\mathsf S}(\omega)]
+\ge
+\frac{4}{27\ln 2}\,m\log m-Cm.
+\]
+\end{theorem}
+\begin{proof}
+由定义 \ref{def:pom-fold-prime-lift}，\(\mathrm{code}(e_t)\ge 1\)，故
+\[
+G_{\mathsf S}(\omega)\ge \prod_{t=1}^{T}p_t,\qquad T:=T_{m+1}^{\mathsf S}(\omega).
+\]
+又 \(p_t\ge t+1\)，于是
+\[
+G_{\mathsf S}(\omega)\ge \prod_{t=1}^{T}(t+1)=(T+1)!.
+\]
+取对数得第一不等式。
+再由
+\[
+\log (T+1)!
+=\sum_{k=1}^{T+1}\log k
+\ge
+\int_1^{T+1}\log x\,\mathrm dx
+=(T+1)\log(T+1)-(T+1)+1
+\]
+得到第二不等式，从而点态 \(\Omega(T\log T)\) 成立。
+
+令
+\[
+h(t):=(t+1)\log(t+1)-(t+1),\qquad t\ge 0.
+\]
+有 \(h''(t)=1/(t+1)>0\)，故 \(h\) 凸。
+由上界链与 Jensen 不等式，
+\[
+\EE[\log_2 G_{\mathsf S}]
+\ge
+\frac{1}{\ln 2}\,\EE[h(T)]
+\ge
+\frac{1}{\ln 2}\,h(\EE[T]).
+\]
+再由推论 \ref{cor:pom-prime-residual-linear-lb}，
+\[
+\liminf_{m\to\infty}\frac{\EE[T]}{m}\ge \frac{4}{27},
+\]
+代回即得
+\[
+\EE[\log_2 G_{\mathsf S}]
+\ge
+\frac{4}{27\ln 2}\,m\log m-Cm
+\]
+（某常数 \(C>0\)）。证毕。
+\end{proof}
+
+\begin{theorem}[策略变化下 prime-register 证书系统的可计算共轭]\label{thm:conclusion-prime-strategy-computable-conjugacy}
+设 \(\mathsf S,\mathsf S'\) 为两种确定性策略，并定义
+\[
+\widetilde{\Fold}_m^{\mathsf S},\ \widetilde{\Fold}_m^{\mathsf S'}:\Omega_m\to X_m\times\mathcal P
+\]
+如定义 \ref{def:pom-fold-prime-lift}。
+令
+\[
+\mathcal I_m^{\mathsf S}:=\widetilde{\Fold}_m^{\mathsf S}(\Omega_m),\qquad
+\mathcal I_m^{\mathsf S'}:=\widetilde{\Fold}_m^{\mathsf S'}(\Omega_m),
+\]
+并以命题 \ref{prop:pom-fold-prime-lift-injective} 的逆过程记号定义
+\[
+\Psi_{\mathsf S\to\mathsf S'}
+:=
+\widetilde{\Fold}_m^{\mathsf S'}\circ
+\mathrm{UNLIFT}_m^{\mathsf S}
+:\mathcal I_m^{\mathsf S}\to\mathcal I_m^{\mathsf S'}.
+\]
+则：
+\begin{enumerate}
+  \item \(\Psi_{\mathsf S\to\mathsf S'}\) 为双射，且逆为 \(\Psi_{\mathsf S'\to\mathsf S}\)；
+  \item 若 \(\Psi_{\mathsf S\to\mathsf S'}(x,r)=(x',r')\)，则 \(x'=x\)；
+  \item 在 \(\Omega_m\) 上成立共轭关系
+  \[
+  \widetilde{\Fold}_m^{\mathsf S'}
+  =
+  \Psi_{\mathsf S\to\mathsf S'}\circ \widetilde{\Fold}_m^{\mathsf S}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+任取 \((x,r)\in \mathcal I_m^{\mathsf S}\)，令
+\[
+\omega:=\mathrm{UNLIFT}_m^{\mathsf S}(x,r).
+\]
+则
+\[
+\Psi_{\mathsf S\to\mathsf S'}(x,r)=\widetilde{\Fold}_m^{\mathsf S'}(\omega)\in \mathcal I_m^{\mathsf S'},
+\]
+故映射良定义。
+同理
+\[
+\Psi_{\mathsf S'\to\mathsf S}\circ\Psi_{\mathsf S\to\mathsf S'}(x,r)
+=
+\widetilde{\Fold}_m^{\mathsf S}\!\left(
+\mathrm{UNLIFT}_m^{\mathsf S'}\!\left(\widetilde{\Fold}_m^{\mathsf S'}(\omega)\right)
+\right)
+=
+\widetilde{\Fold}_m^{\mathsf S}(\omega)
+=(x,r),
+\]
+另一方向同理，故互逆，得第 (1) 条。
+
+由定义
+\[
+\widetilde{\Fold}_m^{\mathsf S'}(\omega)=\bigl(\Fold_m(\omega),\,r_{\mathsf S'}(\omega)\bigr),
+\]
+而 \((x,r)\in\mathcal I_m^{\mathsf S}\) 意味着 \(x=\Fold_m(\omega)\)，故 \(x'=x\)，得第 (2) 条。
+
+对任意 \(\omega\in\Omega_m\)，
+\[
+\Psi_{\mathsf S\to\mathsf S'}\!\bigl(\widetilde{\Fold}_m^{\mathsf S}(\omega)\bigr)
+=
+\widetilde{\Fold}_m^{\mathsf S'}\!\left(
+\mathrm{UNLIFT}_m^{\mathsf S}\!\left(\widetilde{\Fold}_m^{\mathsf S}(\omega)\right)
+\right)
+=
+\widetilde{\Fold}_m^{\mathsf S'}(\omega),
+\]
+即得第 (3) 条。证毕。
+\end{proof}
+
+\begin{theorem}[投影合成下的素数交错分配律]\label{thm:conclusion-prime-interleaving-composition-law}
+设 \(f:\Omega\to X\)、\(g:X\to Y\) 为两级投影。
+假设存在确定性策略 \(\mathsf S_f,\mathsf S_g\) 及寄存器读出
+\[
+\widetilde f^{\mathsf S_f}(\omega):=\bigl(f(\omega),r_f(\omega)\bigr)\in X\times\mathcal P,\qquad
+\widetilde g^{\mathsf S_g}(x):=\bigl(g(x),r_g(x)\bigr)\in Y\times\mathcal P,
+\]
+并且二者均在对象层单射且可由寄存器回放逆过程重建。
+定义交错嵌入 \(I_{\mathrm{odd}},I_{\mathrm{even}}:\mathcal P\to\mathcal P\)：
+\[
+I_{\mathrm{odd}}(r)(p_{2t-1})=r(p_t),\quad I_{\mathrm{odd}}(r)(p_{2t})=0,
+\]
+\[
+I_{\mathrm{even}}(r)(p_{2t})=r(p_t),\quad I_{\mathrm{even}}(r)(p_{2t-1})=0.
+\]
+令合成寄存器
+\[
+r_{g\circ f}(\omega)
+:=
+I_{\mathrm{even}}(r_f(\omega))
++
+I_{\mathrm{odd}}(r_g(f(\omega))),
+\]
+并定义
+\[
+\widetilde{(g\circ f)}^{\mathrm{mix}}(\omega)
+:=
+\bigl(g(f(\omega)),\,r_{g\circ f}(\omega)\bigr).
+\]
+则 \(\widetilde{(g\circ f)}^{\mathrm{mix}}\) 为单射，且可由 \((y,r_{g\circ f})\) 确定性重建 \(\omega\)。
+\end{theorem}
+\begin{proof}
+由定义，\(I_{\mathrm{odd}}(\mathcal P)\) 与 \(I_{\mathrm{even}}(\mathcal P)\) 支撑不交，故可从 \(r_{g\circ f}\) 唯一分离
+\[
+r_f^\sharp(p_t):=r_{g\circ f}(p_{2t}),\qquad
+r_g^\sharp(p_t):=r_{g\circ f}(p_{2t-1})\qquad (t\ge 1).
+\]
+先用 \((y,r_g^\sharp)\) 经 \(\widetilde g^{\mathsf S_g}\) 的逆过程恢复唯一 \(x\in X\)；
+再用 \((x,r_f^\sharp)\) 经 \(\widetilde f^{\mathsf S_f}\) 的逆过程恢复唯一 \(\omega\in\Omega\)。
+故 \((y,r_{g\circ f})\) 唯一决定 \(\omega\)，即 \(\widetilde{(g\circ f)}^{\mathrm{mix}}\) 单射且可回放。证毕。
+\end{proof}

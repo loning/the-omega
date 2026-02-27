@@ -1,0 +1,259 @@
+\subsubsection{偏置 Bernoulli 源下的纤维硬核后验：推前闭式、KL 分解与浓缩律}\label{subsubsec:pom-fiber-biased-bernoulli-hardcore}
+在定义 \ref{def:pom-fiber-adm-path} 与定理 \ref{thm:pom-fiber-indset-factorization} 的“纤维--候选位点--独立集”框架中，
+纤维生成函数
+\(
+Z_x(t)=\sum_{\omega\in\Fold_m^{-1}(x)}t^{r(\omega)}
+\)
+已给出统一计数接口。
+本节固定偏置 Bernoulli 输入，给出推前分布、条件后验、Poisson--binomial 谱分解、统计推断结构以及相对熵链式分解的闭式表达。
+
+\begin{theorem}[偏置 Bernoulli 推前闭式与纤维后验硬核化]\label{thm:pom-fiber-biased-bernoulli-pushforward-hardcore}
+设 \(\Omega_m=\{0,1\}^m\)，并取
+\(
+\mu_{m,p}:=\mathrm{Bernoulli}(p)^{\otimes m}
+\)
+（\(p\in(0,1)\)）。
+令
+\[
+\nu_{m,p}:=(\Fold_m)_{\#}\mu_{m,p}.
+\]
+记
+\(
+t:=\frac{p}{1-p}
+\)。
+则对任意 \(x\in X_m\) 有
+\begin{equation}\label{eq:pom-fiber-biased-pushforward-closed}
+\nu_{m,p}(x)
+=
+p^{|x|_1}(1-p)^{m-|x|_1}\,Z_x(t).
+\end{equation}
+并且对任意 \(\omega\in\Fold_m^{-1}(x)\)，条件后验满足
+\begin{equation}\label{eq:pom-fiber-biased-posterior-hardcore}
+\mu_{m,p}(\omega\mid x)
+=
+\frac{t^{r(\omega)}}{Z_x(t)}.
+\end{equation}
+因此在规范同构
+\(
+\Fold_m^{-1}(x)\cong \mathsf{Ind}(\Gamma_x)
+\)
+下，后验正是活动度 \(t\) 的 hard-core 模型：
+\[
+\mathbb P_{x,p}(S)=\frac{t^{|S|}}{\sum_{T\in\mathsf{Ind}(\Gamma_x)}t^{|T|}}
+\qquad
+\bigl(S\in\mathsf{Ind}(\Gamma_x)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+由逆代换 \(100\mapsto 011\) 的局部变化，每次触发使 \(|\cdot|_1\) 增加 \(1\)。
+故对任意 \(\omega\in\Fold_m^{-1}(x)\) 有
+\[
+|\omega|_1=|x|_1+r(\omega).
+\]
+于是
+\[
+\mu_{m,p}(\omega)
+=p^{|\omega|_1}(1-p)^{m-|\omega|_1}
+=p^{|x|_1}(1-p)^{m-|x|_1}\left(\frac{p}{1-p}\right)^{r(\omega)}.
+\]
+在纤维上求和即得
+\eqref{eq:pom-fiber-biased-pushforward-closed}；
+再除以该和即得
+\eqref{eq:pom-fiber-biased-posterior-hardcore}。
+最后由定理 \ref{thm:pom-fiber-indset-factorization} 的规范同构把 \(r(\omega)\) 识别为 \(|S|\)，得到 hard-core 形式。证毕。
+\end{proof}
+
+\begin{theorem}[权重--纤维生成函数的二项式守恒律]\label{thm:pom-fiber-biased-weighted-partition-identity}
+对任意 \(m\ge 1\) 与任意 \(t>0\)，成立
+\begin{equation}\label{eq:pom-fiber-biased-binomial-conservation}
+\sum_{x\in X_m} t^{|x|_1}Z_x(t)=(1+t)^m.
+\end{equation}
+\end{theorem}
+\begin{proof}
+由 \(\Omega_m=\bigsqcup_{x\in X_m}\Fold_m^{-1}(x)\) 与
+\(
+|\omega|_1=|x|_1+r(\omega)
+\)，有
+\[
+\sum_{x\in X_m} t^{|x|_1}Z_x(t)
+=\sum_{x\in X_m}\sum_{\omega\in\Fold_m^{-1}(x)}t^{|x|_1+r(\omega)}
+=\sum_{\omega\in\Omega_m}t^{|\omega|_1}.
+\]
+右端按 Hamming 权重分层即为 \((1+t)^m\)。证毕。
+\end{proof}
+
+\begin{theorem}[偏置后验下逆代换次数的 Poisson--binomial 谱分解]\label{thm:pom-fiber-biased-posterior-poisson-binomial}
+固定 \(x\in X_m\) 与 \(p\in(0,1)\)，令
+\[
+R_{x,p}:=r(\omega),\qquad \omega\sim \mu_{m,p}(\cdot\mid x),
+\qquad
+t=\frac{p}{1-p}.
+\]
+则其概率母函数为
+\begin{equation}\label{eq:pom-fiber-biased-pgf-ratio}
+\mathbb E\!\left[s^{R_{x,p}}\mid x\right]
+=\frac{Z_x(ts)}{Z_x(t)},\qquad s\ge 0.
+\end{equation}
+又由定理 \ref{thm:pom-fiber-rewrite-realroot-ulc}，\(Z_x\) 的根全在负实轴上。
+设
+\[
+Z_x(z)=C_x\prod_{j=1}^{d_x}\left(1+\frac{z}{\alpha_{x,j}}\right),
+\qquad
+\alpha_{x,j}>0,\ \ d_x=\deg Z_x,
+\]
+并定义
+\[
+q_{x,j}(t):=\frac{t}{t+\alpha_{x,j}}\in(0,1).
+\]
+则
+\begin{equation}\label{eq:pom-fiber-biased-poisson-binomial-factor}
+\frac{Z_x(ts)}{Z_x(t)}
+=\prod_{j=1}^{d_x}\bigl(1-q_{x,j}(t)+q_{x,j}(t)s\bigr),
+\end{equation}
+从而
+\[
+R_{x,p}\overset{d}{=}\sum_{j=1}^{d_x}\mathrm{Bernoulli}\bigl(q_{x,j}(t)\bigr).
+\]
+特别地，
+\[
+\mathbb E[R_{x,p}\mid x]=\sum_{j=1}^{d_x}q_{x,j}(t),\qquad
+\mathrm{Var}(R_{x,p}\mid x)=\sum_{j=1}^{d_x}q_{x,j}(t)\bigl(1-q_{x,j}(t)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+式 \eqref{eq:pom-fiber-biased-pgf-ratio} 由
+\eqref{eq:pom-fiber-biased-posterior-hardcore} 直接计算：
+\[
+\mathbb E\!\left[s^{R_{x,p}}\mid x\right]
+=\sum_{\omega\in\Fold_m^{-1}(x)}s^{r(\omega)}\frac{t^{r(\omega)}}{Z_x(t)}
+=\frac{Z_x(ts)}{Z_x(t)}.
+\]
+将根分解代入并逐因子化简：
+\[
+\frac{1+ts/\alpha}{1+t/\alpha}
+=1-\frac{t}{t+\alpha}+\frac{t}{t+\alpha}s,
+\]
+得到 \eqref{eq:pom-fiber-biased-poisson-binomial-factor}。
+由概率母函数唯一性可得 Poisson--binomial 表示；均值方差由独立 Bernoulli 和的可加性给出。证毕。
+\end{proof}
+
+\begin{proposition}[纤维后验族的一参数指数结构与 MLR]\label{prop:pom-fiber-biased-posterior-mlr}
+固定 \(x\in X_m\)。
+模型族
+\[
+\left\{\mu_{m,p}(\cdot\mid x):\ p\in(0,1)\right\}
+\]
+在有限样本空间 \(\Fold_m^{-1}(x)\) 上构成一参数指数族，自然参数
+\[
+\eta=\log\frac{p}{1-p},
+\]
+规范充分统计量为 \(r(\omega)\)。
+对任意 \(p,q\in(0,1)\)，似然比满足
+\begin{equation}\label{eq:pom-fiber-biased-lr-formula}
+\frac{\mu_{m,p}(\omega\mid x)}{\mu_{m,q}(\omega\mid x)}
+=
+\left(\frac{t_p}{t_q}\right)^{r(\omega)}
+\frac{Z_x(t_q)}{Z_x(t_p)},
+\qquad
+t_\bullet:=\frac{\bullet}{1-\bullet}.
+\end{equation}
+因此当 \(p>q\) 时，似然比关于 \(r(\omega)\) 严格递增，模型族对 \(r\) 具有单调似然比（MLR）性质。
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:pom-fiber-biased-posterior-hardcore}，
+\[
+\mu_{m,p}(\omega\mid x)
+=\exp\!\left(\eta\,r(\omega)-\log Z_x(e^\eta)\right),
+\]
+即指数族形式，且 \(r\) 为规范充分统计量。
+\eqref{eq:pom-fiber-biased-lr-formula} 由两参数后验比值直接相除得到。
+若 \(p>q\)，则 \(t_p/t_q>1\)，故似然比随 \(r(\omega)\) 严格递增，MLR 成立。证毕。
+\end{proof}
+
+\begin{theorem}[纤维条件 KL 闭式与全局信息链式分解]\label{thm:pom-fiber-biased-conditional-kl-chain}
+取 \(p,q\in(0,1)\)，并固定 \(x\in X_m\)。
+记 \(t_p=p/(1-p)\)、\(t_q=q/(1-q)\)。
+则
+\begin{equation}\label{eq:pom-fiber-biased-conditional-kl-closed}
+D_{\mathrm{KL}}\!\left(\mu_{m,p}(\cdot\mid x)\,\middle\|\,\mu_{m,q}(\cdot\mid x)\right)
+=
+\mathbb E_{\mu_{m,p}(\cdot\mid x)}[R_{x,p}]\,\log\frac{t_p}{t_q}
+-\log\frac{Z_x(t_p)}{Z_x(t_q)}.
+\end{equation}
+并且全局相对熵满足
+\begin{equation}\label{eq:pom-fiber-biased-global-kl-chain}
+D_{\mathrm{KL}}(\mu_{m,p}\,\|\,\mu_{m,q})
+=
+D_{\mathrm{KL}}(\nu_{m,p}\,\|\,\nu_{m,q})
++
+\mathbb E_{x\sim \nu_{m,p}}
+\!\left[
+D_{\mathrm{KL}}\!\left(\mu_{m,p}(\cdot\mid x)\,\middle\|\,\mu_{m,q}(\cdot\mid x)\right)
+\right].
+\end{equation}
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:pom-fiber-biased-lr-formula}，
+\[
+\log\frac{\mu_{m,p}(\omega\mid x)}{\mu_{m,q}(\omega\mid x)}
+=
+r(\omega)\log\frac{t_p}{t_q}
+-\log\frac{Z_x(t_p)}{Z_x(t_q)}.
+\]
+对 \(\omega\sim\mu_{m,p}(\cdot\mid x)\) 取期望，得
+\eqref{eq:pom-fiber-biased-conditional-kl-closed}。
+
+再对联合变量 \((\omega,\Fold_m(\omega))\) 应用相对熵链式法则：
+\[
+D_{\mathrm{KL}}\!\left(P_{\omega,X}^{(p)}\middle\|P_{\omega,X}^{(q)}\right)
+=
+D_{\mathrm{KL}}\!\left(P_X^{(p)}\middle\|P_X^{(q)}\right)
++
+\mathbb E_{X\sim P_X^{(p)}}
+\left[D_{\mathrm{KL}}\!\left(P_{\omega\mid X}^{(p)}\middle\|P_{\omega\mid X}^{(q)}\right)\right].
+\]
+由于 \(X=\Fold_m(\omega)\) 为确定函数，左端即
+\(
+D_{\mathrm{KL}}(\mu_{m,p}\,\|\,\mu_{m,q})
+\)，
+而 \(P_X^{(\cdot)}=\nu_{m,\cdot}\)，故得
+\eqref{eq:pom-fiber-biased-global-kl-chain}。证毕。
+\end{proof}
+
+\begin{corollary}[偏置后验下逆代换次数的统一浓缩界]\label{cor:pom-fiber-biased-posterior-bernstein}
+在定理 \ref{thm:pom-fiber-biased-posterior-poisson-binomial} 的设定下，
+对任意 \(a>0\) 有
+\[
+\mathbb P\!\left(R_{x,p}-\mathbb E[R_{x,p}\mid x]\ge a\ \middle|\ x\right)
+\le
+\exp\!\left(
+-\frac{a^2}{2\,\mathrm{Var}(R_{x,p}\mid x)+\frac{2}{3}a}
+\right),
+\]
+以及对称下尾界。故
+\[
+\mathbb P\!\left(\left|R_{x,p}-\mathbb E[R_{x,p}\mid x]\right|\ge a\ \middle|\ x\right)
+\le
+2\exp\!\left(
+-\frac{a^2}{2\,\mathrm{Var}(R_{x,p}\mid x)+\frac{2}{3}a}
+\right).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-biased-posterior-poisson-binomial}，
+\(
+R_{x,p}
+\)
+为独立 Bernoulli 和。
+对其中心化和应用 Bernstein 不等式（每项振幅 \(\le 1\)）即得所示尾界。证毕。
+\end{proof}
+
+\begin{remark}[与均匀纤维模型的一致性]\label{rem:pom-fiber-biased-specializes-uniform}
+当 \(p=\frac12\) 时 \(t=1\)，本节结果退化为
+\(
+\mu_{m,1/2}(\cdot\mid x)
+\)
+下的均匀纤维模型；
+特别地，定理 \ref{thm:pom-fiber-biased-posterior-poisson-binomial} 在 \(t=1\) 的特例与推论 \ref{cor:pom-fiber-rewrite-poisson-binomial} 一致。
+\end{remark}
+

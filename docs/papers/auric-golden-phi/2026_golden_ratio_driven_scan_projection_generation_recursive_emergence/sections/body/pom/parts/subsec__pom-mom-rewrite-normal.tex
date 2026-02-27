@@ -151,6 +151,8 @@ G\wr S_q\ :=\ G^{\times q}\rtimes S_q,
 在本文实现中，异常作为中心标签进入重写轨迹（注 \ref{rem:pom-projword-threegen-anom-normalizer-demo}、注 \ref{rem:pom-projword-mom-twist-normalizer-demo}），并可与 holonomy/cocycle 审计脚本联用（注 \ref{rem:pom-holonomy-cocycle-audit}）。
 \end{remark}
 
+\input{sections/body/pom/parts/cor__pom-anom-gap-amplification-completeness}
+
 \begin{proposition}[Moment--Lift 的 Fourier 分配律证书（\texorpdfstring{$\mathrm{RMOML}$}{RMOML}）]\label{prop:pom-rmoml-sound}
 对任意有限阿贝尔群 \(G\) 与整数 \(q\ge 2\)，复合 \(\mathrm{MOM}_q\circ \mathrm{LIFT}_G\) 的有限尺度 \(q\)-moment 读出满足命题 \ref{prop:pom-mom-lift-fourier-distribution} 的严格恒等式。
 因此 \((\mathrm{RMOML})\)（定义 \ref{def:pom-four-gen-rewrite-rules}）可被视为 \(\mathbf{PW}\) 的一条可组合 \(2\)-态射证书：它把“lift 后再做碰撞”归约为“角色域上的 \(q\)-线性卷积”，并为后续 completion 提供一个有限维、可审计的扭曲通道展开。
@@ -657,7 +659,7 @@ moment-kernel 的一步转移计数只依赖于：每个轨道当前所处的内
 \end{proof}
 
 \begin{remark}[可执行接口：分割细化与 histogram-DP]\label{rem:pom-moment-col-lumping-impl}
-定义 \ref{def:pom-collision-count-bisim} 的 \(\sim_{\mathrm{col}}\) 可用标准的分割细化（partition refinement）在多项式时间内求得；
+定义 \ref{def:pom-collision-count-bisim} 的 \(\sim_{\mathrm{col}}\) 可用分割细化（partition refinement）在多项式时间内求得；
 脚本模块 \texttt{scripts/common\_moment\_kernel\_hist.py} 实现了该分割求解器（函数 \texttt{collision\_count\_lumping\_partition}），并允许在构造 histogram moment-kernel 时先做一次 \(\sim_{\mathrm{col}}\) 预压缩（参数 \texttt{lump\_by\_collision\_counts}，以及 demo \texttt{scripts/exp\_moment\_kernel\_histogram\_dp\_demo.py --lump-col}）。
 该预压缩与命题 \ref{prop:pom-moment-symmetric-power} 的对称幂商压缩可叠加：先用 \(|Q/{\sim_{\mathrm{col}}}|\) 降维，再用直方图/轨道表示把指数态 \(Q^q\) 压到多项式态。
 \end{remark}

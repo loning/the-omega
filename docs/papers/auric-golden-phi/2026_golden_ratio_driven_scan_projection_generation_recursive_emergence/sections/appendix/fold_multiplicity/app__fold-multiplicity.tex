@@ -22,25 +22,25 @@ d_m\sim C\left(\frac{2}{\varphi}\right)^m,\quad C=\frac{\sqrt5}{\varphi^2}.
 \[
 N(\omega):=\sum_{k=1}^m \omega_k F_{k+1},
 \qquad
-\pi_m(\omega):=N(\omega)\bmod F_{m+2}.
+r(\omega):=N(\omega)\bmod F_{m+2}.
 \]
 并记 $w(r):=\pi_m(Z(r))\in X_m\subset\Omega_m$（$0\le r\le F_{m+2}-1$）。
 \end{definition}
 
 \begin{theorem}[折叠同余的模半环表示]
 \label{thm:fold-congruence-mod-semirings}
-映射 $\pi_m$ 在 $\equiv_m$ 上良定义并诱导双射
+映射 $r$ 在 $\equiv_m$ 上良定义并诱导双射
 \[
-\overline\pi_m:\Omega_m/\!\equiv_m\;\longrightarrow\;\ZZ/(F_{m+2}\ZZ).
+\overline r_m:\Omega_m/\!\equiv_m\;\longrightarrow\;\ZZ/(F_{m+2}\ZZ).
 \]
 进一步，若在 $\Omega_m/\!\equiv_m$ 上定义
 \[
-[\omega]\,\boxplus_m\,[\eta]:=[w(\overline\pi_m([\omega])\!+\!\overline\pi_m([\eta])\bmod F_{m+2})],
+[\omega]\,\boxplus_m\,[\eta]:=[w(\overline r_m([\omega])\!+\!\overline r_m([\eta])\bmod F_{m+2})],
 \]
 \[
-[\omega]\,\boxtimes_m\,[\eta]:=[w(\overline\pi_m([\omega])\,\overline\pi_m([\eta])\bmod F_{m+2})],
+[\omega]\,\boxtimes_m\,[\eta]:=[w(\overline r_m([\omega])\,\overline r_m([\eta])\bmod F_{m+2})],
 \]
-则 $\overline\pi_m$ 给出半环同构
+则 $\overline r_m$ 给出半环同构
 \[
 (\Omega_m/\!\equiv_m,\boxplus_m,\boxtimes_m)\cong\bigl(\ZZ/(F_{m+2}\ZZ),+,\times\bigr).
 \]
@@ -50,8 +50,8 @@ N(\omega):=\sum_{k=1}^m \omega_k F_{k+1},
 若 $\omega\equiv_m\omega'$，则 $\Fold_m(\omega)=\Fold_m(\omega')=:x\in X_m$。
 由引理 \ref{lem:zeckendorf-range-bijection}，$V_m(x)$ 唯一确定模 $F_{m+2}$ 的剩余类，且
 \(V_m(x)\equiv N(\omega)\equiv N(\omega')\pmod{F_{m+2}}\)。
-故 $\pi_m$ 在 $\equiv_m$ 上良定义并诱导 $\overline\pi_m$。又对任意 $r$，取 $w(r)\in X_m\subset\Omega_m$，有
-\(\overline\pi_m([w(r)])=r\)，故 $\overline\pi_m$ 为双射。由定义可见 $\overline\pi_m$ 保持加法与乘法，故为半环同构。证毕。
+故 $r$ 在 $\equiv_m$ 上良定义并诱导 $\overline r_m$。又对任意 $r$，取 $w(r)\in X_m\subset\Omega_m$，有
+\(\overline r_m([w(r)])=r\)，故 $\overline r_m$ 为双射。由定义可见 $\overline r_m$ 保持加法与乘法，故为半环同构。证毕。
 
 \subsection{多重度谱与方差能量恒等式}
 将折叠多重度视为模环上的类函数，并给出其 $\ell^2$ 能量与频谱的精确对应。
@@ -59,7 +59,7 @@ N(\omega):=\sum_{k=1}^m \omega_k F_{k+1},
 \begin{definition}[多重度谱]
 对 $r\in\ZZ/(F_{m+2}\ZZ)$ 定义多重度剖面
 \[
-d_m(r):=\bigl|\{\omega\in\Omega_m:\pi_m(\omega)=r\}\bigr|.
+d_m(r):=\bigl|\{\omega\in\Omega_m:r(\omega)=r\}\bigr|.
 \]
 记其离散 Fourier 变换为
 \[
@@ -100,7 +100,7 @@ d_m(r):=\bigl|\{\omega\in\Omega_m:\pi_m(\omega)=r\}\bigr|.
 \begin{definition}[折叠碰撞概率]
 对独立均匀的 $\omega,\eta\in\Omega_m$，定义
 \[
-\mathsf{Col}_m:=\mathbb{P}\bigl(\pi_m(\omega)=\pi_m(\eta)\bigr)
+\mathsf{Col}_m:=\mathbb{P}\bigl(r(\omega)=r(\eta)\bigr)
 =\frac{1}{2^{2m}}\sum_r d_m(r)^2.
 \]
 称 $\mathsf{Col}_m-1/F_{m+2}$ 为折叠的均匀性缺口，并记作
@@ -127,11 +127,19 @@ g_{\mathrm{col}}^2(m):=\mathsf{Col}_m-\frac{1}{F_{m+2}}.
 \)，
 再代入 $\overline d_m=2^m/F_{m+2}$ 即得结论。
 
-\begin{theorem}[多重度谱的乘法分解]
+\begin{theorem}[多重度谱的乘积分解：离散 Riesz 乘积结构]
 \label{thm:fold-spectrum-factorization}
 对任意 $k\in\ZZ/(F_{m+2}\ZZ)$，有
 \[
 \widehat d_m(k)=\prod_{j=1}^m\Bigl(1+e^{-2\pi i k F_{j+1}/F_{m+2}}\Bigr).
+\]
+等价地，令归一化测度 \(\mu_m(r):=d_m(r)/2^m\)，并定义其特征函数（离散 Fourier 变换）
+\[
+\widehat\mu_m(k):=\sum_{r\in\ZZ/(F_{m+2}\ZZ)}\mu_m(r)\,e^{-2\pi i kr/F_{m+2}},
+\]
+则
+\[
+\widehat\mu_m(k)=\prod_{j=1}^m\frac{1+e^{-2\pi i k F_{j+1}/F_{m+2}}}{2}.
 \]
 从而
 \[
@@ -142,9 +150,9 @@ g_{\mathrm{col}}^2(m):=\mathsf{Col}_m-\frac{1}{F_{m+2}}.
 \textbf{证明：}
 按定义
 \(
-\widehat d_m(k)=\sum_{\omega\in\Omega_m}e^{-2\pi i k\pi_m(\omega)/F_{m+2}}
+\widehat d_m(k)=\sum_{\omega\in\Omega_m}e^{-2\pi i k r(\omega)/F_{m+2}}
 \)。
-又 $\pi_m(\omega)\equiv \sum_{j=1}^m \omega_j F_{j+1}\pmod{F_{m+2}}$，故
+又 \(r(\omega)\equiv \sum_{j=1}^m \omega_j F_{j+1}\pmod{F_{m+2}}\)，故
 \[
 \widehat d_m(k)=\sum_{\omega\in\Omega_m}\prod_{j=1}^m e^{-2\pi i k\omega_j F_{j+1}/F_{m+2}}
 =\prod_{j=1}^m\bigl(1+e^{-2\pi i k F_{j+1}/F_{m+2}}\bigr).
@@ -371,9 +379,9 @@ a_m(k)=\prod_{j=1}^m|\cos(\pi kF_{j+1}/F_{m+2})|
 \begin{corollary}[严格奇偶平衡律]\label{cor:fold-even-odd-balance}
 当 $m+2\equiv 0\pmod 3$ 时，
 \[
-\#\{\omega\in\Omega_m:\ \pi_m(\omega)\equiv 0\ (\mathrm{mod}\ 2)\}
+\#\{\omega\in\Omega_m:\ r(\omega)\equiv 0\ (\mathrm{mod}\ 2)\}
 =
-\#\{\omega\in\Omega_m:\ \pi_m(\omega)\equiv 1\ (\mathrm{mod}\ 2)\}
+\#\{\omega\in\Omega_m:\ r(\omega)\equiv 1\ (\mathrm{mod}\ 2)\}
 =2^{m-1}.
 \]
 \end{corollary}

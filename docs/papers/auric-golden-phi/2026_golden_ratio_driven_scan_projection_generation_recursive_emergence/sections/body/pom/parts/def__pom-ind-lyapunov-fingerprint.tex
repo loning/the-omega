@@ -119,6 +119,14 @@ F_{\ell+\ell'+3}-F_{\ell+2}F_{\ell'+2}=F_{\ell+1}F_{\ell'+1}\ge F_{\min\{\ell,\e
 在定理 \ref{thm:pom-fiber-indset-factorization} 的分量乘法分解口径下，上述不等式可被解读为：若两条路径分量 \(P_{\ell}\)、\(P_{\ell'}\) 之间可通过补齐一个桥接位点并接为一条更长路径，则对应的纤维基数在该局部并接操作下严格增大，且增益至少由较短分量的 Fibonacci 尾项控制。
 \end{corollary}
 
+\input{parts/lem__pom-shifted-fib-fusion-defect-positive}
+
+\input{parts/subsubsec__pom-multiplicity-composition-partition-sqrt17}
+
+\input{parts/subsubsec__pom-multiplicity-composition-exact-update-softcore}
+
+\input{parts/subsubsec__pom-multiplicity-composition-sharp-asymptotics-renewal}
+
 \subsubsection{纤维的带符号指数与 \texorpdfstring{$\bmod 3$}{mod 3} 阻碍}\label{subsec:pom-fiber-signed-index}
 在定理 \ref{thm:pom-fiber-indset-factorization} 的独立集模型下，纤维内部的“逆代换次数谱”不仅可计数，还自然诱导一个取值极刚性的带符号指数（独立集多项式在 \(t=-1\) 处的取值）。
 
@@ -207,6 +215,8 @@ F_{\ell_i+2}\equiv 0\pmod 2\iff \ell_i+2\equiv 0\pmod 3\iff \ell_i\equiv 1\pmod 
 \)。
 由乘积表达式 \(d_m(x)=\prod_i F_{\ell_i+2}\)，可知 \(d_m(x)\) 为奇数当且仅当所有因子均为奇数，即对一切 \(i\) 有 \(\ell_i\not\equiv 1\pmod 3\)。证毕。
 \end{proof}
+
+\input{parts/cor__pom-fiber-modq-pisano-invariant}
 
 \subsubsection{最大纤维闭式与顶端谱缺口}\label{subsec:pom-top-fiber}
 \begin{theorem}[最大纤维闭式]\label{thm:pom-max-fiber}
@@ -301,7 +311,7 @@ D_m=D_{m-2}+D_{m-4}\qquad(m\ge 6),
 \]
 并具有基值
 \[
-D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
+D_1=1,\quad D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
 \]
 \end{corollary}
 \begin{proof}
@@ -309,14 +319,10 @@ D_2=2,\quad D_3=2,\quad D_4=3,\quad D_5=4.
 \end{proof}
 
 \begin{remark}[最大纤维序列的生成函数与四周期次主振荡]\label{rem:pom-D-generating-function}
-为把二步递推写成统一线性递推，取约定 \(D_0:=1,D_1:=2\)（从而 \((D_2,D_3,D_4,D_5)=(2,2,3,4)\) 与推论 \ref{cor:pom-D-rec} 相容），则
-\[
-D_m=D_{m-2}+D_{m-4}\qquad(m\ge 4).
-\]
-其特征多项式为 \(r^{4}-r^{2}-1\)，四个特征根为 \(\pm\sqrt{\varphi}\) 与 \(\pm i/\sqrt{\varphi}\)。
+取约定 \(D_0:=1\) 且 \(D_1:=1\)。由推论 \ref{cor:pom-D-rec}，\(D_m\) 满足二步递推 \(D_m=D_{m-2}+D_{m-4}\)（\(m\ge 6\)），其特征多项式为 \(r^{4}-r^{2}-1\)，四个特征根为 \(\pm\sqrt{\varphi}\) 与 \(\pm i/\sqrt{\varphi}\)。
 相应生成函数为严格有理式
 \[
-\sum_{m\ge 0} D_m\,z^m=\frac{1+2z+z^{2}}{1-z^{2}-z^{4}}.
+\sum_{m\ge 0} D_m\,z^m=\frac{1+z+z^{2}+z^{3}+z^{5}}{1-z^{2}-z^{4}}.
 \]
 因此收敛半径为 \(1/\sqrt{\varphi}\)，主导增长率为 \(\sqrt{\varphi}\)；并且由次主特征根 \(\pm i/\sqrt{\varphi}\) 产生 \(4\) 周期相位（由 \(i^m\) 控制）的次主校正项，其幅度为 \(O(\varphi^{-m/2})\)。
 等价地，存在常数 \(A_\pm\) 使得
@@ -381,7 +387,7 @@ c_m(r)=\#\{\omega\in\Omega_m:\ N(\omega)\equiv r\ (\mathrm{mod}\ F_{m+2})\}
 \kappa_m^{\mathrm{max}}:=\#\{r\in\ZZ/F_{m+2}\ZZ:\ c_m(r)=D_m\}
 =\#\{x\in X_m:\ d_m(x)=D_m\}.
 \]
-在可审计窗口 \(m\le 32\) 内，\(\kappa_m^{\mathrm{max}}\) 呈现出稳定的“有限相位”行为（见表 \ref{tab:fold_max_fiber_achievers_phase}）：偶数 \(m\) 两相位达到、奇数 \(m\) 四相位达到；代表稳定词表现出近周期核 \(\texttt{0001}\) 的相位截断。
+在可审计窗口 \(m\le 32\) 内，\(\kappa_m^{\mathrm{max}}\) 呈现出稳定的“有限相位”行为（见表 \ref{tab:fold_max_fiber_achievers_phase}）：偶数 \(m\) 两相位达到、奇数 \(m\) 四相位达到；代表达到者在体相上呈现严格的 \(4\) 周期晶格相（对应近周期核 \(\texttt{0001}\) 的相位截断；除两端有限位修正外，其 \(1\)-支撑落在同一同余类 \(i\equiv 1\pmod 4\) 或 \(i\equiv 3\pmod 4\)）。
 由定理 \ref{thm:pom-max-achievers-phase-stabilization}，该有限相位行为在阈值之后被解析地封口（\(\kappa_{2k}^{\mathrm{max}}=2,\ \kappa_{2k+1}^{\mathrm{max}}=4\)）。
 因此达到者族的规模不发生指数增长：
 \[

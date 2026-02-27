@@ -1,5 +1,5 @@
 \subsubsection{二次特征铅笔化与“轴外泄漏谱”：视界圆互反对称与模态分类}\label{subsubsec:xi-quadratic-pencil-leakage-spectrum}
-本段把 \(\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})\) 的零点问题转写为一个二次特征铅笔（quadratic eigenvalue pencil）问题，并由此给出一个可独立陈述的结构结论：临界线 \(\Re(s)=\tfrac12\) 与 \(z\)-平面中的视界圆 \(|z|=L^{-1/2}\) 严格同构；所谓“轴外零点”严格对应于二次特征值落在视界圆的内外侧；若进一步满足视界圆互反对称，则零点关于 \(s\mapsto 1-\overline{s}\) 成对出现。
+本段把 \(\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})\) 的零点问题转写为一个二次特征铅笔（quadratic eigenvalue pencil）问题，并由此给出一个可独立陈述的结构命题：临界线 \(\Re(s)=\tfrac12\) 与 \(z\)-平面中的视界圆 \(|z|=L^{-1/2}\) 严格同构；所谓“轴外零点”严格对应于二次特征值落在视界圆的内外侧；若进一步满足视界圆互反对称，则零点关于 \(s\mapsto 1-\overline{s}\) 成对出现。
 在可交换（可同时酉对角化）桥核情形下，二次特征铅笔分解为标量二次模态，从而把轴外泄漏压缩为一族离散不变量（泄漏指数/泄漏谱），并给出零点塔的完全分类。
 
 \paragraph{完成化桥核的二次特征铅笔化}
@@ -60,6 +60,27 @@ s=-\frac{\log z}{\log L}+\frac{2\pi i}{\log L}k
 故 \(\Re(s)=\tfrac12\iff |z|=L^{-1/2}\)。证毕。
 \end{proof}
 
+\begin{corollary}[泄漏谱的可加性与通道叠加：桥核直和即零点塔的可分并]\label{cor:xi-leakage-additivity-directsum}
+若桥核在同一参数化下可分解为块直和
+\[
+B(u)=B^{(1)}(u)\oplus B^{(2)}(u),
+\]
+则行列式桥核因子分解：
+\[
+\Delta(z,u)=\det(I-zB(u))=\det(I-zB^{(1)}(u))\cdot \det(I-zB^{(2)}(u)).
+\]
+从而对任意 \(L>1\) 有
+\[
+\Xi_{\Delta,L}(s)=\Xi_{\Delta^{(1)},L}(s)\cdot \Xi_{\Delta^{(2)},L}(s),
+\qquad
+\Delta^{(i)}(z,u):=\det(I-zB^{(i)}(u)).
+\]
+因此 \(\Xi_{\Delta,L}\) 的零点集合（按代数重数计）是两子系统零点塔的可分并；特别地，任意用零点塔所定义的“轴外泄漏指数/泄漏谱”（例如由 \(|z|=L^{-\Re(s)}\) 或 \(\Re(s)-\tfrac12\) 的偏移多重集刻画）在该直和装配下按多重集并和叠加。
+\end{corollary}
+\begin{proof}
+块对角矩阵的行列式等于各块行列式之积，代入 \(\Delta\) 与 \(\Xi_{\Delta,L}\) 的定义即得因子分解；零点集合的（按重数）可分并是解析函数乘积的直接推论。证毕。
+\end{proof}
+
 \paragraph{\texorpdfstring{$L$}{L}-互反对称与临界线配对}
 将视界圆 \(|z|=L^{-1/2}\) 的圆反演与共轭合并，定义互反变换
 \begin{equation}\label{eq:xi-z-sharp}
@@ -92,6 +113,28 @@ q_L(z)=c\,z^{2n}\,\overline{q_L(z^\sharp)}.
 \)，从而 \(q_L(z_0^\sharp)=0\)。
 由 \eqref{eq:xi-z-sharp-s-map} 知 \(z_0^\sharp=L^{-(1-\overline{s_0})}\)，再用定理 \ref{thm:xi-qep-zero-equivalence} 得 \(\Xi_{\Delta,L}(1-\overline{s_0})=0\)。
 最后，由 \(\Re(1-\overline{s_0})=1-\Re(s_0)\) 可知其关于 \(\Re(s)=\tfrac12\) 的对称性。证毕。
+\end{proof}
+
+\begin{corollary}[负平方指数的“离视界泄漏对”上界：有限 Toeplitz 指数强制有限配对]\label{cor:xi-horizon-offcircle-pair-bound-by-kappa}
+在本文的有限缺陷口径下，设圆盘完成化数据的 Blaschke 缺陷维数为
+\(
+\kappa:=\deg(B_{F_{\zeta}})=\dim K_{B_{F_{\zeta}}}<\infty
+\)；
+并假设 Toeplitz 层级的负惯性在充分高阶截断上稳定为 \(\kappa\)（定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}）。
+则对任意满足 \(L\)-自反性的视界圆互反对象 \(q_L(z)=\det\mathcal P_L(z)\)（定义 \ref{def:xi-L-self-reciprocal}），其离视界零点必成互反配对 \((z,z^\sharp)\)（定理 \ref{thm:xi-L-reciprocal-implies-critical-pairing}），且配对数按代数重数计至多为 \(\kappa\)：
+\[
+\#\{z:\ q_L(z)=0,\ |z|<L^{-1/2}\}\ \le\ \kappa,
+\qquad
+\#\{z:\ q_L(z)=0,\ |z|>L^{-1/2}\}\ \le\ \kappa.
+\]
+等价地，在 \(s\)-坐标下，\(\Xi_{\Delta,L}\) 的临界线外零点至多出现 \(\kappa\) 个反射配对 \(\{s,1-\overline s\}\)。
+因此，“偏离 \(\Re(s)=\tfrac12\) 的可见自由度”在制度意义上被压缩为可审计的有限指数 \(\kappa\)；
+任何试图引入无限族稳定泄漏模态的方案，都将迫使 Toeplitz 负惯性指标无界，从而与有限缺陷/惯性稳定口径不相容。
+\end{corollary}
+\begin{proof}[证明要点]
+由定理 \ref{thm:xi-L-reciprocal-implies-critical-pairing} 得离视界零点必按 \(z\mapsto z^\sharp\) 成对出现，且 \(|z|<L^{-1/2}\) 与 \(|z^\sharp|>L^{-1/2}\) 对应同一配对。
+另一方面，在圆盘完成化视界接口中，盘内缺陷点的总重数等于负平方指数 \(\kappa\)，并可由高阶 Toeplitz 截断负惯性的稳定值读出（定理 \ref{thm:xi-poles-negative-squares-equivalence} 与定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}；亦见推论 \ref{cor:xi-inertia-stable-counts-disk-zeros}）。
+将“离视界 \(\Longleftrightarrow\) 离临界线”（推论 \ref{cor:xi-critical-line-horizon-circle}）与上述计数对齐，即得配对数上界。
 \end{proof}
 
 \paragraph{可交换桥核的模态分解：零点塔的谱分解与泄漏指数}
@@ -391,7 +434,7 @@ L(v^\ast v)^2-4\lambda_{\min}(B_1)\lambda_{\min}(B_0)(v^\ast v)^2<0,
 其余结论由推论 \ref{cor:xi-qep-leakage-spectrum-commuting}（分别应用于 \(\Delta<0\) 与 \(\Delta>0\) 情形）立得；\(\lambda\sim b/a\) 则由 \(\operatorname{artanh}(x)=x+O(x^3)\) 给出。证毕。
 \end{proof}
 
-\begin{remark}[概念性结论：单切片协议下的“泄漏谱”外显与类型回收]\label{rem:xi-qep-leakage-conceptual}
+\begin{remark}[概念性归约：单切片协议下的“泄漏谱”外显与类型回收]\label{rem:xi-qep-leakage-conceptual}
 由定理 \ref{thm:xi-qep-zero-equivalence} 与推论 \ref{cor:xi-critical-line-horizon-circle}，在完成化协议固定为单一视界切片（\(|z|=L^{-1/2}\) 或等价的 \(\Re(s)=\tfrac12\)）时，任何可检验的“偏离”都可等价表述为二次特征铅笔 \(\mathcal{P}_L(z)\) 的谱在视界圆内外的径向偏离。
 当满足视界圆互反对称（定理 \ref{thm:xi-L-reciprocal-implies-critical-pairing}）时，这种偏离被强制成对出现并关于临界线对称。
 在有限维可交换桥核中，偏离进一步被压缩为离散泄漏指数/泄漏谱（定义 \ref{def:xi-modal-leakage-index}；推论 \ref{cor:xi-qep-leakage-spectrum-commuting}）。

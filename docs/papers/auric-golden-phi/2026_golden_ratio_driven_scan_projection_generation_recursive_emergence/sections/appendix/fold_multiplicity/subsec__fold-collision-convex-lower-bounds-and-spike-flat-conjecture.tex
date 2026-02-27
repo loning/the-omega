@@ -1,0 +1,66 @@
+\subsection{仅由总和与最大值控制的碰撞下界与频谱能量下界}\label{subsec:fold-collision-convex-lower-bounds}
+本小节抽取两类与具体折叠实现无关的普适不等式：在仅固定总质量与最大纤维的约束下，碰撞概率与非平凡频谱能量都存在最强凸性下界；其极值结构由“单尖峰--平背景”的二次型极小化给出。
+
+\begin{theorem}[给定最大纤维下的最强凸性下界]\label{thm:fold-collision-convex-lower-bounds}
+固定分辨率 \(m\)。令 \(n:=|X_m|=F_{m+2}\)，并将折叠多重度视为模环剖面 \(d_m(r)\)（\(r\in\ZZ/(n\ZZ)\)），满足
+\[
+\sum_{r} d_m(r)=2^m,\qquad
+\overline d_m:=\frac{1}{n}\sum_r d_m(r)=\frac{2^m}{n}.
+\]
+记最大纤维
+\(
+D_m:=\max_r d_m(r)
+\)，并定义折叠碰撞概率（见附录 \ref{app:fold-multiplicity}）
+\[
+\mathsf{Col}_m:=\frac{1}{2^{2m}}\sum_r d_m(r)^2.
+\]
+则在仅使用“总和固定 + 最大值固定”的约束下，成立以下两条下界：
+\begin{enumerate}
+\item 碰撞概率满足
+\begin{equation}\label{eq:fold-col-convex-lb}
+\boxed{\;
+\mathsf{Col}_m\ \ge\ \frac{1}{2^{2m}}\left(D_m^2+\frac{(2^m-D_m)^2}{n-1}\right).\;}
+\end{equation}
+\item 若 \(\widehat d_m(k)\) 为离散 Fourier 变换（见附录 \ref{app:fold-multiplicity}），则非平凡频谱能量满足
+\begin{equation}\label{eq:fold-nontrivial-spectrum-energy-convex-lb}
+\boxed{\;
+\sum_{k\ne 0}\bigl|\widehat d_m(k)\bigr|^2\ \ge\ \frac{n^2}{n-1}\,(D_m-\overline d_m)^2.\;}
+\end{equation}
+\end{enumerate}
+并且上述两条下界在实数松弛下均由同一极值结构达到：存在且仅需一个坐标取 \(D_m\)，其余 \(n-1\) 个坐标相等。
+\end{theorem}
+\begin{proof}
+取 \(r_\star\) 使 \(d_m(r_\star)=D_m\)，并令 \(R:=2^m-D_m=\sum_{r\ne r_\star}d_m(r)\)。
+由 Cauchy--Schwarz 不等式，
+\[
+\sum_{r\ne r_\star} d_m(r)^2\ \ge\ \frac{\left(\sum_{r\ne r_\star}d_m(r)\right)^2}{n-1}
+=\frac{R^2}{n-1}.
+\]
+加上 \(D_m^2\) 并乘以 \(2^{-2m}\) 即得 \eqref{eq:fold-col-convex-lb}。
+
+对第二条，令 \(\mu=\overline d_m\)。在固定 \(\sum_r d_m(r)=2^m\) 且某一坐标取 \(D_m\) 的约束下，二次型
+\(
+\sum_r(d_m(r)-\mu)^2
+\)
+在其余 \(n-1\) 个坐标相等时取最小值；直接计算得到
+\[
+\sum_r(d_m(r)-\mu)^2\ \ge\ \frac{n}{n-1}(D_m-\mu)^2.
+\]
+另一方面，由方差的谱表示（定理 \ref{thm:fold-multiplicity-energy}）
+\[
+\frac{1}{n}\sum_r(d_m(r)-\mu)^2=\frac{1}{n^2}\sum_{k\ne 0}|\widehat d_m(k)|^2,
+\]
+合并即得 \eqref{eq:fold-nontrivial-spectrum-energy-convex-lb}。证毕。
+\end{proof}
+
+\begin{conjecture}[单尖峰--平背景的二阶统计饱和机制]\label{conj:fold-col-spike-flat-saturation}
+令 \(n=F_{m+2}\)，并以 \(p_m(r):=d_m(r)/2^m\) 表示推前分布剖面。
+猜想当 \(m\to\infty\) 时，碰撞概率在指数尺度上渐近饱和定理 \ref{thm:fold-collision-convex-lower-bounds} 的下界：存在 \(o(1)\) 使
+\[
+\mathsf{Col}_m
+=\frac{1}{2^{2m}}\left(D_m^2+\frac{(2^m-D_m)^2}{n-1}\right)\cdot(1+o(1)).
+\]
+等价地，二阶偏离由一个最大纤维尖峰主导，而其余剖面在二阶意义下趋于平坦。
+\end{conjecture}
+
+\endinput

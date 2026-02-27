@@ -1,0 +1,368 @@
+\subsubsection{Boolean 互斥核的行列式刚性、逆核闭式与整数结构}
+固定整数 \(q\ge 2\)，记
+\[
+U_q:=\{0,1\}^q,\qquad N:=2^q.
+\]
+定义对称核矩阵 \(T^{(q)}\in\RR^{U_q\times U_q}\)：
+\[
+T^{(q)}_{u,v}=
+\begin{cases}
+1,&u\wedge v=\mathbf 0,\\[2pt]
+\frac12,&u\wedge v\neq \mathbf 0,
+\end{cases}
+\qquad (u,v\in U_q),
+\]
+其中 \(\wedge\) 与 \(\vee\) 分别表示逐位与、逐位或，\(\mathbf 0,\mathbf 1\) 分别为全零与全一向量。
+
+\begin{conclusion}[行列式刚性：\texorpdfstring{$\det(2T^{(q)})=2$}{det(2T)=2}]\label{con:xi-terminal-disjointness-boolean-det-rigidity}
+设
+\[
+K:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},
+\qquad
+C:=\begin{pmatrix}1&1\\[2pt]1&1\end{pmatrix},
+\qquad
+D_q:=K^{\otimes q},
+\qquad
+J_q:=C^{\otimes q}=\mathbf 1\mathbf 1^{\mathsf T}.
+\]
+则有
+\[
+2T^{(q)}=D_q+J_q,
+\]
+并且
+\[
+\boxed{\;\det\!\bigl(2T^{(q)}\bigr)=2,\qquad
+\det\!\bigl(T^{(q)}\bigr)=2^{-(2^q-1)}\; }.
+\]
+\end{conclusion}
+\begin{proof}
+由张量积逐坐标分解，
+\(
+(D_q)_{u,v}=\mathbf 1_{\{u\wedge v=\mathbf 0\}}
+\)，故 \(2T^{(q)}=D_q+J_q\)。
+又 \(\det(K)=-1\)，由 Kronecker 行列式公式
+\[
+\det(D_q)=\det(K)^{q2^{q-1}}=(-1)^{q2^{q-1}}=1
+\qquad(q\ge 2).
+\]
+记
+\[
+K^{-1}=\begin{pmatrix}0&1\\[2pt]1&-1\end{pmatrix},
+\qquad
+D_q^{-1}=(K^{-1})^{\otimes q}.
+\]
+并有
+\[
+\mathbf 1^{\mathsf T}D_q^{-1}\mathbf 1
+=\bigl(\mathbf 1_2^{\mathsf T}K^{-1}\mathbf 1_2\bigr)^q
+=1^q=1.
+\]
+由矩阵行列式引理
+\[
+\det(D_q+\mathbf 1\mathbf 1^{\mathsf T})
+=\det(D_q)\Bigl(1+\mathbf 1^{\mathsf T}D_q^{-1}\mathbf 1\Bigr)
+=2.
+\]
+即 \(\det(2T^{(q)})=2\)。
+再由 \(\det(2T^{(q)})=2^{N}\det(T^{(q)})\) 得
+\(
+\det(T^{(q)})=2^{-(N-1)}
+\)。证毕。
+\end{proof}
+
+\begin{conclusion}[逆核的矩阵级闭式与支撑稀疏结构]\label{con:xi-terminal-disjointness-boolean-inverse-closed-form}
+记
+\[
+E_{00}:=\begin{pmatrix}1&0\\[2pt]0&0\end{pmatrix}.
+\]
+则有矩阵级恒等式
+\[
+\boxed{\;
+\bigl(T^{(q)}\bigr)^{-1}
+=2\,(K^{-1})^{\otimes q}-E_{00}^{\otimes q}\; }.
+\]
+等价地，对任意 \(u,v\in U_q\)：
+\[
+\boxed{\;
+\bigl(T^{(q)}\bigr)^{-1}_{u,v}
+=
+\begin{cases}
+-1,&(u,v)=(\mathbf 0,\mathbf 0),\\[2pt]
+2(-1)^{|u\wedge v|},&u\vee v=\mathbf 1,\ (u,v)\neq(\mathbf 0,\mathbf 0),\\[2pt]
+0,&\text{其余情形},
+\end{cases}\;}
+\]
+并且
+\[
+\#\{(u,v):\ (T^{(q)})^{-1}_{u,v}\neq 0\}=3^q+1,
+\]
+\[
+\#\{(u,v):\ (T^{(q)})^{-1}_{u,v}=2\}=\frac{3^q+1}{2},
+\qquad
+\#\{(u,v):\ (T^{(q)})^{-1}_{u,v}=-2\}=\frac{3^q-1}{2}.
+\]
+并且对任意 \(u\in U_q\)，若记 \(|u|=r\)，则第 \(u\)-行（等价地第 \(u\)-列）的非零元个数满足
+\[
+\#\{v\in U_q:\ (T^{(q)})^{-1}_{u,v}\neq 0\}
+=
+\begin{cases}
+2,&u=\mathbf 0,\\[2pt]
+2^r,&u\neq \mathbf 0.
+\end{cases}
+\]
+此外，
+\[
+\sum_{u,v\in U_q}\bigl|(T^{(q)})^{-1}_{u,v}\bigr|=2\cdot 3^q+1,
+\qquad
+\bigl\|(T^{(q)})^{-1}\bigr\|_F^2=4\cdot 3^q+1.
+\]
+此外，
+\[
+\operatorname{adj}\!\bigl(2T^{(q)}\bigr)=\bigl(T^{(q)}\bigr)^{-1}\in\Mat_{2^q}(\ZZ).
+\]
+\end{conclusion}
+\begin{proof}
+由 Sherman--Morrison 公式与上一结论中的
+\(
+\mathbf 1^{\mathsf T}D_q^{-1}\mathbf 1=1
+\)，
+\[
+(D_q+\mathbf 1\mathbf 1^{\mathsf T})^{-1}
+=D_q^{-1}-\frac12D_q^{-1}\mathbf 1\mathbf 1^{\mathsf T}D_q^{-1}.
+\]
+又
+\[
+D_q^{-1}\mathbf 1
+=(K^{-1}\mathbf 1_2)^{\otimes q}
+=e_0^{\otimes q},
+\]
+故
+\[
+\bigl(T^{(q)}\bigr)^{-1}
+=2(D_q+\mathbf 1\mathbf 1^{\mathsf T})^{-1}
+=2D_q^{-1}-e_0^{\otimes q}(e_0^{\otimes q})^{\mathsf T}
+=2(K^{-1})^{\otimes q}-E_{00}^{\otimes q}.
+\]
+其中 \((K^{-1})_{00}=0\)、\((K^{-1})_{01}=(K^{-1})_{10}=1\)、\((K^{-1})_{11}=-1\)，
+故 \((K^{-1})^{\otimes q}_{u,v}\neq 0\iff u\vee v=\mathbf 1\)，且符号为 \((-1)^{|u\wedge v|}\)；
+再扣除 \(E_{00}^{\otimes q}\) 即得逐项分段式。
+\par
+计数方面，约束 \(u\vee v=\mathbf 1\) 每坐标有三种局部型 \((0,1),(1,0),(1,1)\)，故总数为 \(3^q\)；再加上 \((\mathbf 0,\mathbf 0)\) 给出 \(3^q+1\) 个非零项。
+若 \(k\) 为 \((1,1)\) 坐标数，则对应有序对数为 \(\binom{q}{k}2^{q-k}\)；
+偶 \(k\) 与奇 \(k\) 求和分别为
+\[
+\frac{(2+1)^q+(2-1)^q}{2}=\frac{3^q+1}{2},
+\qquad
+\frac{(2+1)^q-(2-1)^q}{2}=\frac{3^q-1}{2},
+\]
+分别对应 \(2\) 与 \(-2\)。
+固定 \(u\in U_q\)，记 \(|u|=r\)。
+当 \(u\neq \mathbf 0\) 时，条件 \(u\vee v=\mathbf 1\) 等价于：在 \(u_i=0\) 的坐标上 \(v_i=1\) 必取，在 \(u_i=1\) 的坐标上 \(v_i\in\{0,1\}\) 自由，故对应 \(v\) 的个数为 \(2^r\)。
+当 \(u=\mathbf 0\) 时，满足 \(u\vee v=\mathbf 1\) 的 \(v\) 唯一为 \(\mathbf 1\)，并叠加 \((\mathbf 0,\mathbf 0)\) 项，故该行恰有 \(2\) 个非零元；由对称性列计数相同。
+\par
+绝对值和与 Frobenius 范数平方由同一支撑计数直接得到：除 \((\mathbf 0,\mathbf 0)\) 外共有 \(3^q\) 个非零项且绝对值皆为 \(2\)，从而
+\[
+\sum_{u,v}\bigl|(T^{(q)})^{-1}_{u,v}\bigr|=1+2\cdot 3^q,
+\qquad
+\sum_{u,v}\bigl((T^{(q)})^{-1}_{u,v}\bigr)^2=1+4\cdot 3^q.
+\]
+最后由上一结论 \(\det(2T^{(q)})=2\) 得
+\(
+\operatorname{adj}(2T^{(q)})=2(2T^{(q)})^{-1}=(T^{(q)})^{-1}
+\)，整性随即成立。证毕。
+\end{proof}
+
+\begin{conclusion}[Smith 形、余核与整可解性判别]\label{con:xi-terminal-disjointness-boolean-smith-mod2-rank-kernel}
+令
+\[
+A_q:=2T^{(q)}\in\Mat_{2^q}(\ZZ).
+\]
+则
+\[
+\mathrm{SNF}\!\bigl(A_q\bigr)=\operatorname{diag}(\underbrace{1,\dots,1}_{2^q-1\text{ 次}},2),
+\]
+从而
+\[
+\operatorname{coker}(A_q)\cong \ZZ/2\ZZ.
+\]
+进一步，对任意 \(b\in\ZZ^{U_q}\)，方程
+\[
+A_qx=b
+\]
+在 \(\ZZ^{U_q}\) 中可解当且仅当
+\[
+b_{\mathbf 0}\equiv 0\pmod 2,
+\]
+其中 \(b_{\mathbf 0}\) 表示 \(\mathbf 0\in U_q\) 对应坐标。
+并且在 \(\FF_2\) 上有
+\[
+\operatorname{rank}_{\FF_2}\!\bigl(A_q\bmod 2\bigr)=2^q-1,
+\qquad
+\ker_{\FF_2}\!\bigl(A_q\bmod 2\bigr)=\langle \delta_{\mathbf 0}\rangle.
+\]
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-terminal-disjointness-boolean-det-rigidity}，\(\det(A_q)=2\)。
+设 Smith 不变量为 \(d_1\mid\cdots\mid d_N\)（\(N=2^q\)），则 \(\prod_i d_i=2\)，故每个 \(d_i\in\{1,2\}\) 且恰有一个 \(2\)。
+另一方面，\(A_q\) 含奇数条目（例如任意 \(u\neq \mathbf 0\) 有 \(A_{q,u,u}=1\)），故全部条目最大公因子为 \(1\)，从而 \(d_1=1\)。
+于是 Smith 形唯一可能即上式，并由结构定理得到 \(\operatorname{coker}(A_q)\cong\ZZ/2\ZZ\)。
+\par
+再由前述 Sherman--Morrison 分解，
+\[
+A_q^{-1}
+=(D_q+J_q)^{-1}
+=D_q^{-1}-\frac12\,e_{\mathbf 0}e_{\mathbf 0}^{\mathsf T},
+\]
+其中 \(e_{\mathbf 0}\) 为 \(\mathbf 0\)-坐标标准基向量，且 \(D_q^{-1}\in\Mat_{2^q}(\ZZ)\)。
+对任意 \(b\in\ZZ^{U_q}\)，其有理解为
+\[
+x=A_q^{-1}b=D_q^{-1}b-\frac{b_{\mathbf 0}}{2}\,e_{\mathbf 0}.
+\]
+故 \(x\in\ZZ^{U_q}\iff b_{\mathbf 0}\) 为偶数。
+\par
+在 \(\FF_2\) 上，秩与核维数由 Smith 形立即给出：秩为 \(N-1\)、核一维。
+又 \(A_q\) 的 \(\mathbf 0\)-列全为 \(2\)，模 \(2\) 后成为零列，故 \(\delta_{\mathbf 0}\in\ker\)；
+结合核一维，得到 \(\ker=\langle\delta_{\mathbf 0}\rangle\)。证毕。
+\end{proof}
+
+\begin{conclusion}[全谱倒一阶与倒二阶矩闭式]\label{con:xi-terminal-disjointness-boolean-inverse-spectral-moments}
+记 \(T^{(q)}\) 的全体特征值（按代数重数）为
+\[
+\{\theta_{\alpha}^{(q)}\}_{\alpha=1}^{2^q}.
+\]
+则对任意 \(q\ge 1\) 有
+\[
+\sum_{\alpha=1}^{2^q}\frac{1}{\theta_{\alpha}^{(q)}}
+=\operatorname{tr}\!\bigl((T^{(q)})^{-1}\bigr)
+=2(-1)^q-1,
+\]
+\[
+\sum_{\alpha=1}^{2^q}\frac{1}{(\theta_{\alpha}^{(q)})^{2}}
+=\operatorname{tr}\!\bigl((T^{(q)})^{-2}\bigr)
+=4\cdot 3^q+1.
+\]
+\end{conclusion}
+\begin{proof}
+由谱映射与迹恒等式，
+\[
+\sum_{\alpha}\theta_{\alpha}^{-1}=\operatorname{tr}(T^{-1}),
+\qquad
+\sum_{\alpha}\theta_{\alpha}^{-2}=\operatorname{tr}(T^{-2}).
+\]
+第一式由结论 \ref{con:xi-terminal-disjointness-boolean-inverse-closed-form} 的逐项逆核直接得到：\((T^{(q)})^{-1}_{\mathbf 0,\mathbf 0}=-1\)、\((T^{(q)})^{-1}_{\mathbf 1,\mathbf 1}=2(-1)^q\)，其余对角元皆为 \(0\)，故
+\[
+\operatorname{tr}\!\bigl((T^{(q)})^{-1}\bigr)=2(-1)^q-1.
+\]
+第二式由同一结论中的范数闭式
+\[
+\bigl\|(T^{(q)})^{-1}\bigr\|_F^2=4\cdot 3^q+1
+\]
+及 \(T^{(q)}\) 对称性给出的
+\[
+\operatorname{tr}\!\bigl((T^{(q)})^{-2}\bigr)=\bigl\|(T^{(q)})^{-1}\bigr\|_F^2
+\]
+立即推出。证毕。
+\end{proof}
+
+\begin{conclusion}[例外谱负一次幂和的显式闭式与递推]\label{con:xi-terminal-replica-softcore-exceptional-neg1-closed-recurrence}
+令 \(\{\lambda_i^{(q)}\}_{i=0}^{q}\) 为例外谱（即 \(\mathrm{spec}(A^{(q)})\)），并定义
+\[
+S_{-1}(q):=\sum_{i=0}^{q}\bigl(\lambda_i^{(q)}\bigr)^{-1}.
+\]
+则
+\[
+S_{-1}(q)=\frac{2\bigl((-1)^q\varphi^{q+2}+\varphi^{-q}\bigr)}{\varphi^2+1}-1\in\ZZ,
+\]
+并满足
+\[
+S_{-1}(q)=-S_{-1}(q-1)+S_{-1}(q-2)-1\qquad(q\ge 4),
+\]
+且
+\[
+S_{-1}(2)=3,\qquad S_{-1}(3)=-7.
+\]
+\end{conclusion}
+\begin{proof}
+由推论 \ref{cor:xi-terminal-replica-softcore-exceptional-reciprocal-sum-fibonacci}，
+\(
+S_{-1}(q)=-1+2(-1)^qF_{q+1}
+\)。
+将 Binet 公式与 \(\varphi^2+1=\sqrt5\,\varphi\) 代入即得所示闭式。
+设 \(U_q:=S_{-1}(q)+1\)，则 \(U_q\) 为 \((-\varphi)^q,\varphi^{-q}\) 的线性组合，
+两者同满足 \(x^2+x-1=0\) 的递推核，故
+\(
+U_q=-U_{q-1}+U_{q-2}
+\)，即
+\(
+S_{-1}(q)=-S_{-1}(q-1)+S_{-1}(q-2)-1
+\)。
+初值由 \(q=2,3\) 直接代入。证毕。
+\end{proof}
+
+\begin{conclusion}[全逆平方迹与例外谱负二次幂和]\label{con:xi-terminal-replica-softcore-exceptional-neg2-trace-closed-recurrence}
+定义
+\[
+S_{-2}(q):=\sum_{i=0}^{q}\bigl(\lambda_i^{(q)}\bigr)^{-2}.
+\]
+则有
+\[
+\operatorname{tr}\bigl((T^{(q)})^{-2}\bigr)=4\cdot 3^q+1,
+\]
+并且
+\[
+S_{-2}(q)=\frac{4\bigl(\varphi^{2q+4}-\varphi^{-2q}\bigr)}{\varphi^4-1}+1\in\ZZ,
+\]
+\[
+S_{-2}(q)=3S_{-2}(q-1)-S_{-2}(q-2)-1\qquad(q\ge 4),
+\]
+\[
+S_{-2}(2)=33,\qquad S_{-2}(3)=85.
+\]
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-terminal-disjointness-boolean-inverse-closed-form}，
+\((T^{(q)})^{-1}\) 仅在 \((\mathbf 0,\mathbf 0)\) 处取 \(-1\)，其余 \(u\vee v=\mathbf 1\) 的 \(3^q\) 个位置取 \(\pm2\)。
+故
+\[
+\operatorname{tr}\bigl((T^{(q)})^{-2}\bigr)
+=\sum_{u,v}\bigl((T^{(q)})^{-1}_{u,v}\bigr)^2
+=1+3^q\cdot 4
+=4\cdot 3^q+1.
+\]
+\par
+再由推论 \ref{cor:xi-terminal-replica-softcore-exceptional-reciprocal-square-sum-fibonacci}，
+\(
+S_{-2}(q)=4F_{2q+2}+1
+\)。
+结合 Binet 公式与 \(\varphi^4-1=\sqrt5\,\varphi^2\) 可化为所示 \(\varphi\)-闭式。
+设 \(V_q:=S_{-2}(q)-1=4F_{2q+2}\)，由 \(F_{2q+2}=3F_{2q}-F_{2q-2}\) 得
+\(
+V_q=3V_{q-1}-V_{q-2}
+\)，
+即所示非齐次递推。
+初值由 \(q=2,3\) 代入即得。证毕。
+\end{proof}
+
+\begin{conclusion}[互补 Möbius 反演：线性方程 \texorpdfstring{$T^{(q)}f=g$}{Tq f=g} 的显式求解]\label{con:xi-terminal-disjointness-complementary-mobius-inversion-linear-solve}
+把 \(T^{(q)}\) 视作 \(U_q\) 上函数空间的算子
+\[
+(T^{(q)}f)(u):=\sum_{v\in U_q}T^{(q)}_{u,v}f(v).
+\]
+则对任意 \(g:U_q\to\RR\)，方程 \(T^{(q)}f=g\) 存在唯一解，且
+\[
+f(\mathbf 0)=-g(\mathbf 0)+2g(\mathbf 1),
+\]
+\[
+f(u)=2\sum_{\substack{v\in U_q\\ u\vee v=\mathbf 1}}(-1)^{|u\wedge v|}g(v),
+\qquad u\neq \mathbf 0.
+\]
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-terminal-disjointness-boolean-inverse-closed-form}，\(T^{(q)}\) 可逆且
+\(
+f=(T^{(q)})^{-1}g
+\)。
+将其逐项展开即得。证毕。
+\end{proof}
+
+\endinput

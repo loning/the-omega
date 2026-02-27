@@ -1,0 +1,208 @@
+\section{Fiber multiplicity via independent-set factorization}\label{app:fiber-multiplicity}
+
+This appendix records a structural description of fibers of the window folding map $\Fold_m:\Omega_m\to X_m$.
+The main output is an \emph{exact} factorization of the fiber generating function into path independence polynomials; in particular, the fiber multiplicity $d_m(x)$ becomes an explicit product of Fibonacci numbers.
+This turns the fiber-volume term in the ledger into an auditable combinatorial object.
+
+\subsection{Independent sets and path polynomials}\label{app:fiber-indset-prelim}
+Let $G=(V,E)$ be a finite simple graph.
+An \emph{independent set} is a subset $S\subseteq V$ with no edge inside $S$; the family is denoted $\mathsf{Ind}(G)$.
+For $\ell\ge 0$, let $P_\ell$ be the path graph on vertices $\{1,\dots,\ell\}$ (with $P_0$ the empty graph).
+Define its independence polynomial
+\begin{equation}\label{eq:path-indset-poly}
+I_\ell(t):=\sum_{S\in \mathsf{Ind}(P_\ell)} t^{|S|}.
+\end{equation}
+
+\begin{lemma}[Path independence recurrence]\label{lem:path-indset-rec}
+For $\ell\ge 2$,
+\[
+I_\ell(t)=I_{\ell-1}(t)+t\,I_{\ell-2}(t),
+\qquad
+I_0(t)=1,\ \ I_1(t)=1+t.
+\]
+In particular, $I_\ell(1)=F_{\ell+2}$.
+\end{lemma}
+\begin{proof}
+Partition independent sets of $P_\ell$ according to whether they contain the last vertex $\ell$.
+If $\ell\notin S$, then $S$ is an independent set of $P_{\ell-1}$.
+If $\ell\in S$, then $\ell-1\notin S$ and $S\setminus\{\ell\}$ is an independent set of $P_{\ell-2}$, contributing a factor $t$.
+This gives the recurrence.
+At $t=1$ it becomes $I_\ell(1)=I_{\ell-1}(1)+I_{\ell-2}(1)$ with initial values $I_0(1)=1$, $I_1(1)=2$, hence $I_\ell(1)=F_{\ell+2}$.
+\end{proof}
+
+\subsection{Candidate sites, induced paths, and fiber generating functions}\label{app:fiber-adm}
+Fix a resolution $m\ge 2$.
+Set
+\[
+k:=\lfloor m/2\rfloor,\qquad
+k_{+}:=\lceil m/2\rceil.
+\]
+When $m$ is odd, the one-hidden-bit split (Lemma~\ref{lem:one-hidden-bit}) introduces an additional endpoint freedom in the inverse-rewrite chain; the index range $\{1,\dots,k_+\}$ is a convenient normalization that uniformly accommodates this endpoint.
+
+\begin{definition}[Candidate sites and induced path graph]\label{def:fiber-adm-path}
+Fix $x\in X_m$.
+Consider the inverse of the local merge rule (the inverse of Rule~\eqref{rule:adj-merge}), written in binary as the length-$3$ replacement
+\[
+100\ \mapsto\ 011
+\qquad
+(\text{equivalently, the forward normalization uses }011\mapsto 100).
+\]
+In a fixed deterministic reverse-replay convention (scan from high weight to low weight), let $\mathsf{Adm}(x)\subseteq\{1,\dots,k_+\}$ denote the set of \emph{candidate sites} at which this inverse replacement can be applied while maintaining a binary word throughout the replay.
+Overlaps of length-$3$ replacements are forbidden (they would create a digit $2$ in an intermediate configuration), hence feasible choices of sites must be non-adjacent.
+
+Let $P_{k_+}$ be the path graph on $\{1,\dots,k_+\}$ and define the induced subgraph
+\[
+\Gamma_x:=P_{k_+}[\mathsf{Adm}(x)].
+\]
+For $\omega\in\Fold_m^{-1}(x)$, let $r(\omega)\in\NN$ be the number of inverse replacements used in the reverse replay from $x$ to $\omega$.
+Define the fiber generating function
+\[
+Z_x(t):=\sum_{\omega\in\Fold_m^{-1}(x)} t^{r(\omega)}.
+\]
+\end{definition}
+
+\begin{theorem}[Fiber factorization into path independence polynomials]\label{thm:fiber-indset-factorization}
+For every $x\in X_m$, the candidate-site set $\mathsf{Adm}(x)$ in Definition~\ref{def:fiber-adm-path} is uniquely determined by $x$ (under the fixed replay convention), and there is a canonical bijection
+\[
+\Fold_m^{-1}(x)\ \cong\ \mathsf{Ind}(\Gamma_x).
+\]
+Under this bijection, the inverse-rewrite count equals the independent-set size, so
+\[
+Z_x(t)=\sum_{S\in \mathsf{Ind}(\Gamma_x)} t^{|S|}.
+\]
+Moreover, if the connected components of $\Gamma_x$ are paths $P_{\ell_1},\dots,P_{\ell_r}$, then
+\[
+Z_x(t)=\prod_{i=1}^r I_{\ell_i}(t),
+\qquad
+d_m(x)=|\Fold_m^{-1}(x)|=Z_x(1)=\prod_{i=1}^r F_{\ell_i+2}.
+\]
+\end{theorem}
+\begin{proof}
+Fix the deterministic reverse-replay convention from Definition~\ref{def:fiber-adm-path}.
+Because the forward rewrite system is terminating and confluent (Proposition~\ref{prop:fold-termination-confluence} and Appendix~\ref{app:rewrite-system}), every $\omega\in\Omega_m$ admits a unique normal form and hence a unique folded type $x=\Fold_m(\omega)$.
+Replaying the normalization backwards provides a deterministic generation procedure from $x$ to $\omega$, except for the choice of when to trigger the inverse length-$3$ replacement $100\mapsto 011$.
+\par
+\textbf{(1) Independent-set constraint.}
+Two inverse replacements that overlap in their length-$3$ support would create an intermediate digit $2$ and therefore leave the binary state space $\{0,1\}^m$.
+Hence legal triggers must be non-overlapping; in the one-dimensional scan order this reduces to a non-adjacency constraint on the candidate-site indices, i.e.\ the choice set is an independent set of the induced path graph $\Gamma_x$.
+\par
+\textbf{(2) Bijection and generating function.}
+By construction of $\mathsf{Adm}(x)$, every independent set $S\in\mathsf{Ind}(\Gamma_x)$ yields a well-defined binary word obtained by triggering inverse replacements at the sites in $S$ (in the fixed scan order).
+Forward normalization takes this word back to $x$, hence the map $\mathsf{Ind}(\Gamma_x)\to \Fold_m^{-1}(x)$ is well-defined.
+Conversely, any $\omega\in\Fold_m^{-1}(x)$ induces a unique trigger set $S(\omega)\subseteq \mathsf{Adm}(x)$ encountered along the deterministic replay; the non-overlap constraint forces $S(\omega)\in\mathsf{Ind}(\Gamma_x)$.
+These two maps are inverse to each other, giving the bijection.
+Moreover, the replay uses exactly $|S|$ inverse replacements on the branch indexed by $S$, so $r(\omega)=|S|$ and $Z_x(t)=\sum_{S\in\mathsf{Ind}(\Gamma_x)}t^{|S|}$.
+\par
+\textbf{(3) Component factorization.}
+If $\Gamma_x$ is a disjoint union of path components $P_{\ell_1}\sqcup\cdots\sqcup P_{\ell_r}$, then independent sets factor as a Cartesian product across components, hence the generating function factors:
+\(
+Z_x(t)=\prod_i I_{\ell_i}(t)
+\)
+with $I_\ell$ as in \eqref{eq:path-indset-poly}.
+Setting $t=1$ and applying Lemma~\ref{lem:path-indset-rec} gives $d_m(x)=\prod_i I_{\ell_i}(1)=\prod_i F_{\ell_i+2}$.
+\end{proof}
+
+\begin{theorem}[Closed-form coefficients for $I_\ell(t)$]\label{thm:path-indset-poly-closed}
+For every $\ell\ge 0$,
+\[
+I_\ell(t)=\sum_{j=0}^{\lceil \ell/2\rceil}\binom{\ell+1-j}{j}\,t^j.
+\]
+Equivalently, the number of independent sets of size $j$ in $P_\ell$ equals $\binom{\ell+1-j}{j}$.
+\end{theorem}
+\begin{proof}
+An independent set of size $j$ in $P_\ell$ is the same as a choice of indices
+\(
+1\le s_1<\cdots<s_j\le \ell
+\)
+with gaps $s_{a+1}-s_a\ge 2$.
+Define $u_a:=s_a-(a-1)$.
+Then $1\le u_1<\cdots<u_j\le \ell+1-j$, and the map $(s_a)\mapsto (u_a)$ is bijective.
+Hence the number of such choices is $\binom{\ell+1-j}{j}$.
+Summing over $j$ yields the polynomial formula.
+\end{proof}
+
+\subsection{Relation to classical Fibonacci representation counts}\label{app:fiber-related-work}
+The inverse-replay viewpoint in Definition~\ref{def:fiber-adm-path} is closely related to a classical theme in Fibonacci numeration:
+an integer typically admits many binary Fibonacci representations, and the Zeckendorf representation is obtained by iterating the normalization rewrite $011\mapsto 100$.
+Counting the number of equivalent representations (or, more generally, counting representation sets recognized by transducers/automata) has a long history; see, e.g., Carlitz and subsequent refinements, and Berstel's transducer/automaton formulation \cite{Carlitz1968FibonacciRepresentations,ITA_2001__35_6_491_0}.
+
+Our fiber multiplicity $d_m(x)=|\Fold_m^{-1}(x)|$ can be interpreted in this language as a \emph{resolution-conditioned} representation count.
+Indeed, for $\omega\in\Omega_m$ the fold $\Fold_m(\omega)$ is obtained by (i) evaluating the Fibonacci-weighted value $N(\omega)$ and (ii) truncating the Zeckendorf digit sequence $Z(N(\omega))$ to its first $m$ digits.
+Thus, fixing $x\in X_m$ and counting $\omega$ with $\Fold_m(\omega)=x$ amounts to counting those binary representations whose Zeckendorf normal form begins with the prefix $x$.
+Lemma~\ref{lem:one-hidden-bit} shows that at fixed resolution the underlying values split into at most two congruence classes:
+every $\omega\in\Fold_m^{-1}(x)$ satisfies
+\[
+N(\omega)=\mathrm{Val}_m(x)+b(\omega)F_{m+2},\qquad b(\omega)\in\{0,1\}.
+\]
+
+Theorem~\ref{thm:fiber-indset-factorization} provides a structural refinement of these classical counts:
+instead of a global matrix-product interface for the number of representations of a given integer, it decomposes the fiber into \emph{independent inverse triggers} supported on an induced path graph $\Gamma_x$ determined by the canonical prefix $x$.
+This yields an exact factorization of the fiber generating function into path independence polynomials, and in particular the closed product formula
+\(
+d_m(x)=\prod_i F_{\ell_i+2}
+\)
+in terms of the connected path components of $\Gamma_x$.
+From the point of view of the entropy ledger, this fiberwise factorization is the crucial feature: it turns the hidden fiber-volume term $\mathbb{E}_\nu[\log d_m]$ into an auditable combinatorial object.
+
+\subsection{A composition partition function and a \texorpdfstring{$\sqrt{17}$}{sqrt(17)} entropy rate}\label{app:fiber-sqrt17-partition}
+The product formula $d_m(x)=\prod_i F_{\ell_i+2}$ in Theorem~\ref{thm:fiber-indset-factorization} suggests studying a baseline statistical-mechanics object obtained by summing such multiplicative weights over all ordered decompositions of a fixed total length.
+We record a closed-form computation; the resulting free-energy constant lives in $\QQ(\sqrt{17})$.
+
+\begin{definition}[Partition function over ordered compositions]\label{def:composition-partition}
+For $L\ge 0$, let $\mathcal{C}_L$ be the set of ordered compositions $\boldsymbol{\ell}=(\ell_1,\dots,\ell_r)$ with $\ell_i\in\NN_{\ge 1}$ and $\sum_{i=1}^r \ell_i=L$, and set $\mathcal{C}_0:=\{()\}$.
+Define the multiplicative weight and partition function by
+\[
+w(\boldsymbol{\ell}):=\prod_{i=1}^r F_{\ell_i+2},
+\qquad
+Z_L:=\sum_{\boldsymbol{\ell}\in\mathcal{C}_L} w(\boldsymbol{\ell}),
+\]
+with the convention $w(())=1$ so that $Z_0=1$.
+\end{definition}
+
+\begin{proposition}[Rational generating function and \texorpdfstring{$\sqrt{17}$}{sqrt(17)} free energy]\label{prop:composition-partition-sqrt17}
+Let $Z_L$ be as in Definition~\ref{def:composition-partition}.
+Then the ordinary generating function is rational:
+\begin{equation}\label{eq:composition-partition-gf}
+\boxed{\;
+\sum_{L\ge 0} Z_L\,t^L=\frac{1-t-t^2}{1-3t-2t^2}.\;}
+\end{equation}
+Equivalently, $(Z_L)$ satisfies the linear recurrence
+\[
+\boxed{\;
+Z_L=3Z_{L-1}+2Z_{L-2}\qquad(L\ge 3),\;}
+\]
+with initial values $Z_0=1$, $Z_1=2$, $Z_2=7$.
+Moreover,
+\[
+Z_L=\frac{17+\sqrt{17}}{34}\,\lambda_+^{L}
+\;+\;
+\frac{17-\sqrt{17}}{34}\,\lambda_-^{L},
+\qquad
+\lambda_\pm=\frac{3\pm\sqrt{17}}{2},
+\]
+and hence the free-energy density exists and equals
+\[
+\boxed{\;
+\lim_{L\to\infty}\frac{1}{L}\log Z_L=\log \lambda_+.\;}
+\]
+\end{proposition}
+\begin{proof}
+Let
+\[
+W(t):=\sum_{k\ge 1}F_{k+2}t^k.
+\]
+Because ordered compositions are concatenations of parts and the weight is multiplicative under concatenation, one has the formal identity
+\[
+\sum_{L\ge 0}Z_L t^L=\sum_{r\ge 0} W(t)^r=\frac{1}{1-W(t)}.
+\]
+Using the Fibonacci generating function $\sum_{n\ge 0}F_n t^n=\frac{t}{1-t-t^2}$, we obtain
+\[
+\sum_{k\ge 0}F_{k+2}t^k=\frac{1+t}{1-t-t^2}
+\quad\Longrightarrow\quad
+W(t)=\sum_{k\ge 1}F_{k+2}t^k=\frac{2t+t^2}{1-t-t^2}.
+\]
+Substituting into $1/(1-W(t))$ and simplifying gives \eqref{eq:composition-partition-gf}.
+The recurrence follows by coefficient comparison from the denominator $1-3t-2t^2$ (valid for $L\ge 3$), and the closed form follows from the characteristic equation $\lambda^2-3\lambda-2=0$ with roots $\lambda_\pm$ and the initial values.
+Finally, $\lambda_+>|\lambda_-|$ implies $\frac{1}{L}\log Z_L\to \log\lambda_+$.
+\end{proof}
+

@@ -1,0 +1,157 @@
+\begin{theorem}[纤维规范群体积的复合链式分解]\label{thm:fiber-gauge-volume-chain-factorization}
+设 \(\Omega,X,Y\) 为有限集合，且 \(f:\Omega\twoheadrightarrow X\)、\(g:X\twoheadrightarrow Y\) 为满射，并记 \(h:=g\circ f\)。
+对任意满射 \(u:A\twoheadrightarrow B\) 定义纤维计数
+\[
+d_u(b):=\card{u^{-1}(b)},\qquad b\in B,
+\]
+以及纤维规范群
+\[
+\mathcal{G}(u):=\prod_{b\in B}\mathrm{Sym}\bigl(u^{-1}(b)\bigr),
+\qquad
+\card{\mathcal{G}(u)}=\prod_{b\in B} d_u(b)!.
+\]
+则成立精确恒等式
+\[
+\boxed{\;
+\card{\mathcal{G}(h)}
+=
+\card{\mathcal{G}(f)}
+\cdot
+\prod_{y\in Y}
+\binom{d_h(y)}{\bigl(d_f(x)\bigr)_{x\in g^{-1}(y)}}
+\;}
+\]
+其中多项式系数为多项式系数（多项式系数/多项式系数）定义
+\[
+\binom{n}{n_1,\dots,n_r}:=\frac{n!}{n_1!\cdots n_r!}\in\NN,
+\qquad
+\sum_{i=1}^{r}n_i=n.
+\]
+\end{theorem}
+
+\begin{proof}
+对每个 \(y\in Y\) 有不交并分解
+\[
+h^{-1}(y)=\bigsqcup_{x\in g^{-1}(y)} f^{-1}(x),
+\]
+因此
+\(
+d_h(y)=\sum_{x\in g^{-1}(y)} d_f(x)
+\)，并且
+\[
+d_h(y)!
+=
+\binom{d_h(y)}{\bigl(d_f(x)\bigr)_{x\in g^{-1}(y)}}
+\cdot
+\prod_{x\in g^{-1}(y)} d_f(x)!.
+\]
+对所有 \(y\in Y\) 取乘积即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[\(p\)-进赋值与进位签名：多项式系数的 Kummer--Legendre 恒等式]\label{thm:multinomial-vp-carry-signature}
+取素数 \(p\)，记 \(v_p(\cdot)\) 为 \(p\)-进赋值，记 \(s_p(n)\) 为 \(n\) 的 \(p\)-进制数字和。
+则对任意分拆 \(n=\sum_{i=1}^{r}n_i\)（\(n_i\in\NN\)）有
+\[
+\boxed{\;
+v_p\!\left(\binom{n}{n_1,\dots,n_r}\right)
+=
+\frac{\sum_{i=1}^{r}s_p(n_i)-s_p(n)}{p-1}.
+\;}
+\]
+并且右端等于在 \(p\)-进制逐位加法中把 \((n_1,\dots,n_r)\) 相加得到 \(n\) 时产生的总进位次数（该总数与加法次序无关）。
+\end{theorem}
+
+\begin{proof}
+由 Legendre 公式
+\[
+v_p(n!)=\sum_{k\ge 1}\left\lfloor\frac{n}{p^k}\right\rfloor=\frac{n-s_p(n)}{p-1}
+\]
+得
+\[
+\begin{aligned}
+v_p\!\left(\binom{n}{n_1,\dots,n_r}\right)
+&=v_p(n!)-\sum_{i=1}^{r}v_p(n_i!)\\
+&=\frac{n-s_p(n)}{p-1}-\sum_{i=1}^{r}\frac{n_i-s_p(n_i)}{p-1}\\
+&=\frac{\sum_{i=1}^{r}s_p(n_i)-s_p(n)}{p-1}.
+\end{aligned}
+\]
+为给出进位解释，将每个 \(n_i\) 写作 \(p\)-进展开 \(n_i=\sum_{k\ge 0}a_{i,k}p^k\)（\(0\le a_{i,k}<p\)）。
+令逐位相加时第 \(k\) 位的进位为 \(c_k\)（约定 \(c_0=0\)），则存在唯一 \(b_k\in\{0,\dots,p-1\}\) 使
+\[
+\sum_{i=1}^{r}a_{i,k}+c_k=b_k+p\,c_{k+1}.
+\]
+对 \(k\) 求和并用 \(s_p(n_i)=\sum_k a_{i,k}\)、\(s_p(n)=\sum_k b_k\) 得
+\[
+\sum_{i=1}^{r}s_p(n_i)-s_p(n)=(p-1)\sum_{k\ge 1}c_k.
+\]
+右端即总进位次数（各位进位之和），且该数由对称表达式 \(\sum_i s_p(n_i)-s_p(n)\) 唯一确定，因而与加法次序无关。证毕。
+\end{proof}
+
+\begin{theorem}[多尺度相容诱导的 \(p\)-进进位缺陷]\label{thm:fold-multiscale-carry-defect}
+取二元折叠 \(\Fold_m:\Omega_m\twoheadrightarrow X_m\)（定义 \ref{def:fold-word}），并令截断
+\[
+\pi:\Omega_{m+1}\twoheadrightarrow\Omega_m,\qquad
+(\omega_1\cdots \omega_{m+1})\mapsto(\omega_1\cdots\omega_m),
+\]
+以及稳定语法的前缀投影
+\[
+\rho:X_{m+1}\twoheadrightarrow X_m,\qquad
+(x_1\cdots x_{m+1})\mapsto(x_1\cdots x_m).
+\]
+则相容关系
+\[
+\rho\circ\Fold_{m+1}=\Fold_m\circ\pi
+\]
+成立。
+记纤维多重度
+\[
+d_m(w):=\card{\Fold_m^{-1}(w)},\qquad w\in X_m,
+\]
+并定义折叠诱导的纤维规范体积
+\[
+\card{\mathcal{G}_m}:=\card{\mathcal{G}(\Fold_m)}=\prod_{w\in X_m} d_m(w)!,
+\qquad
+\card{\mathcal{G}_m^{(2)}}:=\prod_{w\in X_m}(2d_m(w))!.
+\]
+则成立整数恒等式
+\[
+\boxed{\;
+\frac{\card{\mathcal{G}_m^{(2)}}}{\card{\mathcal{G}_{m+1}}}
+=
+\prod_{w\in X_m}
+\binom{2d_m(w)}{\bigl(d_{m+1}(u)\bigr)_{u\in\rho^{-1}(w)}}
+\in\NN.
+\;}
+\]
+并且对任意素数 \(p\)，定义尺度耦合的 \(p\)-进缺陷
+\[
+\Delta_p(m):=v_p\!\bigl(\card{\mathcal{G}_m^{(2)}}\bigr)-v_p\!\bigl(\card{\mathcal{G}_{m+1}}\bigr),
+\]
+则有精确进位表述
+\[
+\boxed{\;
+\Delta_p(m)
+=
+\sum_{w\in X_m}
+\mathrm{Carr}_p\!\Bigl(\bigl(d_{m+1}(u)\bigr)_{u\in\rho^{-1}(w)}\Bigr),
+\;}
+\]
+其中 \(\mathrm{Carr}_p(n_1,\dots,n_r)\) 表示把 \((n_1,\dots,n_r)\) 在 \(p\)-进制逐位相加得到 \(\sum_i n_i\) 时产生的总进位次数。
+\end{theorem}
+
+\begin{proof}
+令 \(h:=\rho\circ\Fold_{m+1}=\Fold_m\circ\pi:\Omega_{m+1}\twoheadrightarrow X_m\)。
+由于 \(\pi^{-1}(\omega)\) 对每个 \(\omega\in\Omega_m\) 恰含两点，且 \(h\) 仅依赖于前缀 \(\pi(\cdot)\)，故对任意 \(w\in X_m\) 有
+\[
+\card{h^{-1}(w)}=2\,\card{\Fold_m^{-1}(w)}=2d_m(w).
+\]
+对满射 \(\Fold_{m+1}:\Omega_{m+1}\twoheadrightarrow X_{m+1}\) 与 \(\rho:X_{m+1}\twoheadrightarrow X_m\) 应用定理 \ref{thm:fiber-gauge-volume-chain-factorization}，
+并代入 \(\card{h^{-1}(w)}=2d_m(w)\) 与
+\(
+\card{\mathcal{G}(h)}=\prod_{w\in X_m}\card{h^{-1}(w)}!=\card{\mathcal{G}_m^{(2)}}
+\)，得到乘积恒等式。
+
+再对素数 \(p\) 取 \(v_p\)，并对每个 \(w\) 应用定理 \ref{thm:multinomial-vp-carry-signature}，
+即可将每一项多项式系数的 \(p\)-进赋值识别为相应纤维簇内计数之和的总进位次数，从而得到 \(\Delta_p(m)\) 的进位表述。证毕。
+\end{proof}
+

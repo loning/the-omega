@@ -1,0 +1,278 @@
+\subparagraph{primorial 归一化下的 Gödel 外置素数寄存器：自平均、偏差与复杂度胀量}
+在定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws} 的平稳 Bernoulli\((p)\) 设定下，定义逐位失配指示
+\[
+M_k:=g(S_{k-1},S_k)\in\{0,1\},\qquad
+G_m=\sum_{k=1}^{m}M_k.
+\]
+再令 \(\mathfrak p_k\) 为第 \(k\) 个素数，并记
+\[
+\mathfrak P_m:=\prod_{k=1}^{m}\mathfrak p_k,\qquad
+A_m:=\log \mathfrak P_m=\sum_{k=1}^{m}\log \mathfrak p_k,
+\]
+\[
+R_m:=\prod_{k=1}^{m}\mathfrak p_k^{M_k},\qquad
+H_m:=\log R_m=\sum_{k=1}^{m}M_k\log \mathfrak p_k.
+\]
+下述结果把“投影失配外置到素数寄存器”的统计极限与复杂度代价转写为可检验闭式。
+
+\begin{theorem}[primorial 归一化下的外置寄存器极限定律]\label{thm:fold-gauge-anomaly-bernoulli-p-primorial-godel-laws}
+在上述设定下，令
+\[
+g_\ast(p)=\frac{p^2(3-2p)}{1+p^3},
+\]
+并令 \(\sigma_G^2(p)\) 为定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws} 中的方差率闭式。
+则有：
+\begin{enumerate}
+  \item \textbf{强自平均：}
+  \[
+  \frac{H_m}{A_m}\xrightarrow[m\to\infty]{a.s.}g_\ast(p).
+  \]
+  \item \textbf{中心极限定理（同方差率）：}
+  \[
+  \frac{H_m-g_\ast(p)A_m}{\sqrt m\,\log m}
+  \ \Rightarrow\
+  \mathcal N\!\bigl(0,\sigma_G^2(p)\bigr).
+  \]
+  \item \textbf{大偏差同率函数：}
+  序列 \(\bigl(H_m/A_m\bigr)_{m\ge1}\) 在速度 \(m\) 下满足大偏差原理，其良率函数与
+  \(\bigl(G_m/m\bigr)_{m\ge1}\) 相同，即命题
+  \ref{prop:fold-gauge-anomaly-bernoulli-p-ldp} 的 \(I_p\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(1) 强自平均.}
+记
+\(
+S_m:=\sum_{k=1}^{m}(M_k-g_\ast(p))
+\)。
+由定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws}(1)，有 \(S_m=o(m)\) 几乎处处。
+由 Abel 变换，
+\[
+H_m-g_\ast(p)A_m
+=
+S_m\log\mathfrak p_m
+-\sum_{k=1}^{m-1}S_k\bigl(\log\mathfrak p_{k+1}-\log\mathfrak p_k\bigr).
+\]
+利用经典素数渐近 \(\log\mathfrak p_k=\log k+O(\log\log k)\)，得
+\(
+\log\mathfrak p_{k+1}-\log\mathfrak p_k=O(k^{-1})
+\)、
+\(
+A_m\sim m\log m
+\)。
+于是第一项满足
+\[
+\frac{|S_m|\log\mathfrak p_m}{A_m}\to 0.
+\]
+第二项中，对任意 \(\varepsilon>0\)，取 \(K\) 使 \(|S_k|\le \varepsilon k\)（\(k\ge K\)）：
+\[
+\sum_{k=K}^{m-1}|S_k|\bigl|\log\mathfrak p_{k+1}-\log\mathfrak p_k\bigr|
+\le
+C\varepsilon\sum_{k=K}^{m-1}1
+=
+O(\varepsilon m),
+\]
+再除以 \(A_m\sim m\log m\) 得 \(O(\varepsilon/\log m)\to0\)；
+有限前缀 \(k<K\) 贡献为 \(O(1/A_m)\to0\)。
+故
+\[
+\frac{H_m-g_\ast(p)A_m}{A_m}\to0,
+\]
+即 \(H_m/A_m\to g_\ast(p)\) 几乎处处。
+\par
+\textbf{(2) 中心极限定理.}
+分解
+\[
+H_m-g_\ast(p)A_m
+=
+(\log m)\bigl(G_m-mg_\ast(p)\bigr)
++\sum_{k=1}^{m}\bigl(M_k-g_\ast(p)\bigr)b_{m,k},
+\]
+其中
+\(
+b_{m,k}:=\log\mathfrak p_k-\log m
+\)。
+第一项由定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws}(2) 直接给出
+\[
+\frac{(\log m)\bigl(G_m-mg_\ast(p)\bigr)}{\sqrt m\,\log m}
+\Rightarrow
+\mathcal N\!\bigl(0,\sigma_G^2(p)\bigr).
+\]
+对余项，令 \(\xi_k:=M_k-g_\ast(p)\)。
+有限状态不可约非周期马尔可夫链上的有界可加观测给出协方差绝对可和，
+故存在常数 \(C_0\) 使
+\[
+\operatorname{Var}\!\left(\sum_{k=1}^{m}\xi_k b_{m,k}\right)
+\le
+C_0\sum_{k=1}^{m}b_{m,k}^2.
+\]
+又由 \(\log\mathfrak p_k=\log k+O(\log\log k)\) 得
+\[
+b_{m,k}=\log(k/m)+O(\log\log m),
+\]
+从而
+\[
+\sum_{k=1}^{m}b_{m,k}^2=O\!\bigl(m(\log\log m)^2\bigr).
+\]
+于是
+\[
+\operatorname{Var}\!\left(
+\frac{1}{\sqrt m\,\log m}\sum_{k=1}^{m}\xi_k b_{m,k}
+\right)
+=
+O\!\left(\frac{(\log\log m)^2}{\log^2 m}\right)\to0,
+\]
+即该余项在 \(L^2\) 中收敛到 \(0\)。
+由 Slutsky 定理得到所述极限正态律。
+\par
+\textbf{(3) 大偏差同率函数.}
+有确定性估计
+\[
+\left|\frac{H_m}{A_m}-\frac{G_m}{m}\right|
+\le
+\frac{1}{A_m}\sum_{k=1}^{m}\left|\log\mathfrak p_k-\frac{A_m}{m}\right|.
+\]
+同样用 \(\log\mathfrak p_k=\log k+O(\log\log k)\) 与 \(A_m\sim m\log m\)，可得右端为
+\(
+O(1/\log m)\to0
+\)。
+因而对任意 \(\delta>0\)，充分大 \(m\) 时
+\[
+\PP\!\left(\left|\frac{H_m}{A_m}-\frac{G_m}{m}\right|>\delta\right)=0,
+\]
+即两序列在速度 \(m\) 下指数等价。
+命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-ldp} 已给出 \(G_m/m\) 的 LDP 与率函数 \(I_p\)；
+指数等价保持率函数，故 \(H_m/A_m\) 共享同一 \(I_p\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[坐标可分 Gödel 整数化的不可压缩胀量]\label{thm:fold-gauge-anomaly-godel-coprime-inflation}
+令 \((q_k)_{k\ge1}\subset\NN_{\ge2}\) 两两互素。
+对任意二进模式 \(b=(b_k)_{k\ge1}\in\{0,1\}^{\NN}\)，定义前缀 Gödel 整数
+\[
+N_m(b):=\prod_{k=1}^{m}q_k^{b_k},
+\qquad
+s_m:=\sum_{k=1}^{m}b_k.
+\]
+若 \(b\) 的 \(1\)-密度存在且为 \(\alpha\in(0,1)\)，即 \(s_m/m\to\alpha\)，则有
+\[
+\liminf_{m\to\infty}\frac{\log N_m(b)}{m\log m}\ge \alpha.
+\]
+此外，当 \(q_k=\mathfrak p_k\)（前缀素数寄存器）时，极限存在且
+\[
+\lim_{m\to\infty}\frac{\log N_m(b)}{m\log m}=\alpha.
+\]
+\end{theorem}
+\begin{proof}
+设
+\(
+I_m:=\{1\le k\le m:\ b_k=1\}
+\)，则 \(|I_m|=s_m\)。
+集合 \(\{q_k:\ k\in I_m\}\) 由 \(s_m\) 个两两互素整数构成，故其乘积不小于前 \(s_m\) 个素数的乘积：
+\[
+N_m(b)=\prod_{k\in I_m}q_k\ge \prod_{j=1}^{s_m}\mathfrak p_j=: \mathfrak P_{s_m}.
+\]
+于是
+\[
+\frac{\log N_m(b)}{m\log m}
+\ge
+\frac{\log \mathfrak P_{s_m}}{m\log m}.
+\]
+由 primorial 渐近 \(\log\mathfrak P_n\sim n\log n\)，再结合 \(s_m/m\to\alpha\)，得
+\[
+\liminf_{m\to\infty}\frac{\log N_m(b)}{m\log m}\ge \alpha.
+\]
+\par
+若 \(q_k=\mathfrak p_k\)，则
+\[
+\log N_m(b)=\sum_{k=1}^{m}b_k\log\mathfrak p_k.
+\]
+记 \(B(x):=\sum_{k\le x}b_k=\alpha x+o(x)\)。
+由部分求和与 \(\log\mathfrak p_k=\log k+O(\log\log k)\)：
+\[
+\sum_{k=1}^{m}b_k\log\mathfrak p_k
+=
+\sum_{k=1}^{m}b_k\log k
++O\!\left(\sum_{k=1}^{m}b_k\log\log k\right)
+=
+\alpha m\log m+o(m\log m).
+\]
+两边同除 \(m\log m\) 得极限为 \(\alpha\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[失配模式的 primorial 外置胀量]\label{cor:fold-gauge-anomaly-mismatch-primorial-growth}
+取 \(b_k=M_k\)。
+则在定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-primorial-godel-laws} 的平稳设定下，几乎处处有
+\[
+\lim_{m\to\infty}\frac{\log R_m}{m\log m}=g_\ast(p).
+\]
+更一般地，任意坐标可分、两两互素的 Gödel 外置机制对同一失配模式都满足
+\[
+\liminf_{m\to\infty}\frac{\log N_m}{m\log m}\ge g_\ast(p)\qquad a.s.
+\]
+因此把长度 \(m\) 的失配模式外置为单整数时，位长主阶不可避免地带有 \(\log m\) 膨胀因子。
+\end{corollary}
+\begin{proof}
+第一式由定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-primorial-godel-laws}(1) 与
+\(
+A_m\sim m\log m
+\) 直接推出。
+第二式由定理 \ref{thm:fold-gauge-anomaly-godel-coprime-inflation} 代入
+\(
+\alpha=g_\ast(p)
+\) 得到。证毕。
+\end{proof}
+
+\begin{proposition}[素数寄存器诱导的随机椭球体积律]\label{prop:fold-gauge-anomaly-godel-ellipsoid-volume}
+对每个 \(m\)，定义线性算子
+\[
+D_m:=\mathrm{diag}\!\left(\mathfrak p_1^{M_1/2},\dots,\mathfrak p_m^{M_m/2}\right),
+\]
+并令
+\[
+B_m:=\{x\in\RR^m:\ |x|_2\le1\},\qquad E_m:=D_m(B_m).
+\]
+则体积比恒等式成立：
+\[
+\frac{\operatorname{Vol}(E_m)}{\operatorname{Vol}(B_m)}
+=\det(D_m)
+=\prod_{k=1}^{m}\mathfrak p_k^{M_k/2}
+=R_m^{1/2}.
+\]
+因此在平稳 Bernoulli\((p)\) 设定下：
+\begin{enumerate}
+  \item \[
+  \frac{\log\operatorname{Vol}(E_m)-\log\operatorname{Vol}(B_m)}{A_m}
+  \xrightarrow[m\to\infty]{a.s.}
+  \frac12 g_\ast(p).
+  \]
+  \item \[
+  \frac{\log\operatorname{Vol}(E_m)-\log\operatorname{Vol}(B_m)-\frac12 g_\ast(p)A_m}
+  {\sqrt m\,\log m}
+  \Rightarrow
+  \mathcal N\!\left(0,\frac14\sigma_G^2(p)\right).
+  \]
+  \item 变量
+  \(
+  \bigl(\log\operatorname{Vol}(E_m)-\log\operatorname{Vol}(B_m)\bigr)/A_m
+  \)
+  在速度 \(m\) 下满足 LDP，率函数为
+  \[
+  J_p(x)=I_p(2x),\qquad x\in[0,1/2].
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+体积恒等式由线性代数公式
+\(
+\operatorname{Vol}(D(B_m))=\det(D)\operatorname{Vol}(B_m)
+\)
+直接给出。
+其余三条分别由定理
+\ref{thm:fold-gauge-anomaly-bernoulli-p-primorial-godel-laws}
+在变换 \(x\mapsto x/2\) 下立即推出。证毕。
+\end{proof}
+
+\endinput
+

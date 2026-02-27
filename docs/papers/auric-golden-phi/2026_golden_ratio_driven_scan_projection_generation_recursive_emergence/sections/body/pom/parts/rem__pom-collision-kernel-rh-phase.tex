@@ -5,7 +5,7 @@
 \qquad
 R_q:=\frac{\Lambda_q}{\sqrt{r_q}},
 \qquad
-\beta_q:=\frac{\log \Lambda_q}{\log r_q},
+\beta^{\mathrm{RH}}_q:=\frac{\log \Lambda_q}{\log r_q},
 \qquad
 \delta_q:=\log\!\left(\frac{\Lambda_q^2}{r_q}\right)=2\log R_q.
 \]
@@ -16,9 +16,26 @@ R_q:=\frac{\Lambda_q}{\sqrt{r_q}},
 
 \begin{remark}[从 \texorpdfstring{$q=4$}{q=4} 起的系统性越线与快速劣化]\label{rem:pom-collision-kernel-rh-phase}
 由表 \ref{tab:fold_collision_kernel_rh_scan_q2_17} 与表 \ref{tab:fold_collision_kernel_rh_scan_q18_23} 可见：在已核验范围内，\(\delta_q<0\) 仅发生在 \(q=2,3\)，而从 \(q=4\) 起即出现严格越线 \(\delta_q>0\)（其中 \(q=4\) 为贴线量级）。
-并且 \(\beta_q\) 与 \(\delta_q\) 在 \(q\le 23\) 的已核验范围内随 \(q\) 单调上升，表现为“误差指数”从平方根相（\(\beta\le\frac12\)）向主项同阶（\(\beta\to 1\)）快速劣化的谱相变。
+并且 \(\beta^{\mathrm{RH}}_q\) 与 \(\delta_q\) 在 \(q\le 23\) 的已核验范围内随 \(q\) 单调上升，表现为“误差指数”从平方根相（\(\beta^{\mathrm{RH}}_q\le\frac12\)）向主项同阶（\(\beta^{\mathrm{RH}}_q\to 1\)）快速劣化的谱相变。
+在同一符号口径下，记 \(F_q:=\log r_q\)、\(G_q:=\log\Lambda_q\)，则
+\(\delta_q=2G_q-F_q=\log(\Lambda_q^2/r_q)\) 可被视为一类“二鞍差”标量不变量：若按 Perron--Frobenius 分解写
+\(
+A_q^m=r_q^{\,m}\Pi_q+O(\Lambda_q^{\,m})
+\)
+（\(\Pi_q\) 为 Perron 投影），则任意由 \(A_q^m\) 生成的线性观测量 \(L(A_q^m)\) 满足
+\(
+L(A_q^m)=c\,r_q^{\,m}+O(\Lambda_q^{\,m})
+\)；
+相应地，任何由该类线性观测派生的二次型观测（例如中心化后平方涨落、或连通二点项）在非主通道上的指数尺度至多为 \(\Lambda_q^{2m}\)，从而其相对主尺度 \(r_q^{\,m}\) 的强度由
+\[
+\left(\frac{\Lambda_q^2}{r_q}\right)^{m}=\exp(m\delta_q)
+\]
+统一控制。于是 \(\delta_q<0\) 对应二次通道被指数压制（平方根稳定相），而 \(\delta_q>0\) 则意味着存在谱通道使二次涨落在指数尺度上与主项竞争。
+又由于 \(\Lambda_q=r_q^{\beta^{\mathrm{RH}}_q}\) 且 \(\delta_q=(2\beta^{\mathrm{RH}}_q-1)\log r_q\)，\(\beta^{\mathrm{RH}}_q=\tfrac12\) 给出“平方根压制”的不可约分界；表中 \(q=4\) 首次出现 \(\beta^{\mathrm{RH}}_q>\tfrac12\) 的贴线穿越。
 此外，在 \(q\le 17\) 的范围内达到 \(\Lambda_q\) 的主导非 Perron 根恒为负实根，从而存在稳定的反相慢模态主导越线。
 \end{remark}
+
+\input{sections/body/pom/parts/part__pom-deltaq-geometry-quadratic-channel-sample-threshold}
 
 \begin{remark}[高阶 \texorpdfstring{$\delta_q$}{deltaq} 的近线性律（\(q=18,\dots,23\)）]\label{rem:pom-collision-kernel-rh-linear}
 由表 \ref{tab:fold_collision_kernel_rh_scan_q18_23} 的 \(\delta_q\) 可见，在 \(q=18,\dots,23\) 上增量
@@ -103,7 +120,57 @@ $$
 最后一段直接由表中的递推系数写出特征多项式并比较阶数即可。证毕。
 \end{proof}
 
+% (User input window)
+
+\begin{remark}[高阶复杂度的延迟显影：\texorpdfstring{$q=12,14,16$}{q=12,14,16} 的阶数下界可由 \texorpdfstring{$m=25$}{m=25} 的首破缺审计锁定]\label{rem:pom-moment-order-lb-q12-14-16-m25}
+在强制要求“递推自 \(m=1\) 起对所有项成立”的齐次整系数递推范畴内，
+对 \(q\in\{12,14,16\}\) 逐阶枚举所有 \(d\le 12\) 的候选递推并以 \(m\le 24\) 的精确枚举值作一致性筛选，可审计地得到：任何在 \(m\le 24\) 上不破缺的候选递推都必在 \(m=25\) 处发生严格失配。
+因此在上述范畴中这三个 \(q\) 的最小递推阶数满足
+\(
+\deg P_q\ge 13
+\)。
+可复现脚本：\texttt{scripts/exp\_fold\_collision\_moment\_order\_lower\_bound\_q12\_14\_16.py}。该下界与定理 \ref{thm:pom-moment-resonance} 中的 \(\deg P_{12}=\deg P_{14}=13\) 及表 \ref{tab:fold_collision_moment_recursions_9_17} 的 \(d_{16}=13\) 相互吻合。
+\end{remark}
+
 \input{parts/resonance/prop__pom-resonance-two-cycle-ratio}
+
+\begin{remark}[递推特征式的模 \texorpdfstring{$2$}{2} 台阶律：\texorpdfstring{$(\lambda+1)$}{(lambda+1)}-重数的离散相（\(q\le 10\)）]\label{rem:pom-charpoly-mod2-staircase-q2-10}
+对已核验的最小整系数递推特征多项式 \(P_q(\lambda)\)（表 \ref{tab:fold_collision_moment_recursions} 与定理 \ref{thm:pom-moment-resonance}），在模 \(2\) 约化下出现一个稳定的坍缩型结构：
+\[
+P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\pmod 2,
+\qquad a_q+b_q=d_q.
+\]
+其低阶具体输出见表 \ref{tab:fold_collision_charpoly_mod2_shadow_q2_10}（脚本 \texttt{scripts/exp\_fold\_collision\_charpoly\_mod2\_shadow\_q2\_10.py} 一键生成）。
+在 \(q\le 10\) 的已核验范围内，\((\lambda+1)\) 因子重数 \(b_q\) 随 \(q\) 呈现台阶跃迁：\(b_q=2\) 在 \(q=4,5,6\) 处达到最大幂，而从 \(q=7\) 起跃迁为 \(b_q=4\)（并在 \(q=7,8,9,10\) 上稳定保持）。
+因此从阈值 \(q=7\) 起，所有碰撞矩序列在 \(\FF_2\) 上都被强制包含更高阶的“交替差分”分量，并由此在 \(2\)-进意义上诱导更深的最终多项式退化层。
+该台阶律提供一类与实谱正交的“模素数棱镜”诊断：并非所有 Rényi 阶都会引入新的局部复杂性；相反，存在离散阈值触发局部退化相。
+\end{remark}
+
+\input{sections/generated/tab_fold_collision_charpoly_mod2_shadow_q2_10}
+
+\begin{proposition}[2-进塌缩的封闭指数律：最小递推在 \texorpdfstring{$\FF_2$}{F2} 上仅剩 \texorpdfstring{$\{0,1\}$}{\{0,1\}} 两谱点（\(4\le q\le 11\)，已核验）]\label{prop:pom-charpoly-mod2-closed-exponent-law-q4-11}
+对每个整数 \(q\ge 2\)，令 \(P_q(\lambda)\in\ZZ[\lambda]\) 表示序列 \(m\mapsto S_q(m)\) 的最小整系数递推特征多项式（等价于最小湮灭多项式）。
+则在已核验范围 \(4\le q\le 11\) 内，存在模 \(2\) 的严格同余分解
+\[
+P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\pmod 2,
+\]
+其中指数满足闭式
+\[
+b_q=2\Bigl\lfloor\frac{q+1}{4}\Bigr\rfloor,\qquad
+a_q=3+2\,\ind\{q\ \mathrm{even},\ q\ge 6\}.
+\]
+因此在 \(\FF_2\) 上，\(P_q\) 的全部根只能取 \(0\) 与 \(1\)。
+等价地，若以前移算子 \(E\) 作用于序列 \(S\) 为 \((ES)(m):=S(m+1)\)，则在模 \(2\) 约化下满足湮灭律
+\[
+E^{a_q}(E+1)^{b_q}S_q(\cdot)\equiv 0\pmod 2.
+\]
+此外，闭式 \(b_q\) 在该窗口内凝结出一个不可见的 \(q\mapsto q+4\) 台阶相：\(b_{q+4}=b_q+2\)，从而差分阶以步长 \(2\) 随 \(q\) 每 \(4\) 阶跃迁一次。
+\end{proposition}
+\begin{proof}
+对 \(q=4,\dots,10\)，指数对 \((a_q,b_q)\) 可由表 \ref{tab:fold_collision_charpoly_mod2_shadow_q2_10} 的模 \(2\) 影子分解直接读出；对 \(q=9,10,11\)，同样可由表 \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17} 读出。
+逐一对照得到所示闭式并核验同余分解成立。
+湮灭律只是把同余 \(P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\ (\mathrm{mod}\ 2)\) 以 \(\lambda\mapsto E\) 代入，并作用于 \(S_q\) 的递推关系所得。证毕。
+\end{proof}
 
 \begin{remark}[2-进影子律：\texorpdfstring{$P_q(\lambda)$}{Pq} 在模 \texorpdfstring{$2$}{2} 下坍缩为 \texorpdfstring{$\lambda^a(\lambda+1)^b$}{lambda^a(lambda+1)^b}（可审计）]\label{rem:pom-charpoly-mod2-shadow}
 对共振窗口 \(q=9,\dots,17\) 的已核验最小递推（表 \ref{tab:fold_collision_moment_recursions_9_17}；定理 \ref{thm:pom-moment-resonance}），把特征多项式 \(P_q(\lambda)\) 的系数按奇偶性约化到 \(\mathbb{F}_2\) 上，会出现一个完全内部的“2-进影子坍缩”：
@@ -149,6 +216,7 @@ T_q\mid 16\ (q=17).
 
 \input{parts/resonance/rem__pom-charpoly-mod3-selection}
 \input{parts/resonance/prop__pom-charpoly-modp-a2-embedding}
+\input{parts/resonance/prop__pom-observable-minpoly-galois-chebotarev}
 
 \begin{remark}[最小递推的端点刚性：首系数 \(2\) 与偶阶的 \texorpdfstring{$\pm 8$}{±8} 尾差分块]\label{rem:pom-recurrence-endpoint-rigidity}
 在已核验的最小整系数递推中（表 \ref{tab:fold_collision_moment_recursions}、\ref{tab:fold_collision_moment_recursions_9_17}、\ref{tab:fold_collision_moment_recursions_18_23}），始终有
@@ -447,6 +515,28 @@ A^{(j)}(\lambda)=Q^{(j)}(\lambda)P_q(\lambda)
 \)；
 其乘子 \(Q^{(j)}\) 的系数向量列于表 \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}。
 因此在该窗口内，Hankel-null 的多条“额外向量”应理解为同一最小递推在固定长度下的倍乘展开证书，而非额外独立约束。
+\end{remark}
+
+\begin{corollary}[Hankel-null 的“无原始剩余”刚性：共振窗不存在隐藏的额外零模态]\label{cor:pom-hankel-null-no-primitive-residual}
+在共振窗 \(q=9,\dots,17\) 的已审计设定下，原始商空间维数恒为零：
+\[
+\Delta_{\mathrm{prim}}(q)=0.
+\]
+等价地，\(\ker(H^{\mathsf T})\) 中任意 NullMode 向量 \(\alpha^{(j)}\) 所诱导的湮灭多项式 \(A^{(j)}(\lambda)\) 都可写为
+\(
+A^{(j)}(\lambda)=Q^{(j)}(\lambda)P_q(\lambda)
+\)
+的倍乘形式（余式为零），不存在任何不由最小递推特征多项式 \(P_q\) 所解释的“原始”零模态。
+\end{corollary}
+\begin{proof}
+这是注 \ref{rem:pom-nullmodes-recurrence-plus-signature} 的直接抽取；具体的 \(Q^{(j)}\) 系数见表 \ref{tab:fold_collision_resonance_nullmodes_primitive_quotient_q9_17}。证毕。
+\end{proof}
+
+\begin{remark}[“谱近退化而非 Hankel 退化”的共振定性：强共振不产生新的 Hankel 约束]\label{rem:pom-resonance-spectral-not-hankel-degeneracy}
+在同一共振窗内，影子谱包显示 \(|\mu_q|/r_{q-2}\uparrow 1\) 且 \(\arg(\mu_q)\) 在极窄角窗内漂移（注 \ref{rem:pom-shadow-spectral-packet-q9-17}、注 \ref{rem:pom-resonance-trimodal-phase-lock}），从而存在可观测的慢衰减三模态包与相位锁定残差证书。
+另一方面，推论 \ref{cor:pom-hankel-null-no-primitive-residual} 给出 \(\Delta_{\mathrm{prim}}(q)\equiv 0\)，说明 Hankel-null 证书在该窗口内不携带任何“超出 \(P_q\) 的倍乘模块”的新约束方向：其额外向量完全可由固定长度下的倍乘冗余解释。
+因此在该窗口内，共振的定性来源应理解为\emph{谱根几何的近退化}（贴边慢模态与锁定相位），而非 Hankel 证书层面出现额外的原始秩退化。
+任何试图通过挖掘“隐藏 Hankel 退化/额外 moment 约束”来消解共振的方案在代数上缺乏支撑；消解只能通过改变生成核（从而改变 \(P_q\)）或显式外置新通道来实现。
 \end{remark}
 
 \begin{remark}[Hankel-null 与特征多项式的对齐：以 \texorpdfstring{$q=14$}{q=14} 为例]\label{rem:pom-nullmodes-q14-poly-alignment}

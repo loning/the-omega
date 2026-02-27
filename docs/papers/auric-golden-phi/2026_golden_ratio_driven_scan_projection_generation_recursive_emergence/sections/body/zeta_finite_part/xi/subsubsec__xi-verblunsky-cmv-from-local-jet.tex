@@ -1,6 +1,6 @@
 \subsubsection{\texorpdfstring{$\Xi_\zeta$}{Xi\_zeta} 的单点喷射到 Verblunsky--CMV 反射谱：Toeplitz 证书的标量化与 LMI 提升}\label{subsubsec:xi-verblunsky-cmv-from-local-jet}
 本段把“视界对数导数的正性 \(\Leftrightarrow\) Toeplitz--PSD 层级”（附录定理 \ref{thm:app-horizon-toeplitz-lmi}）进一步标量化为一列反射系数（Verblunsky/Schur 参数），并强调其\textbf{单点局部闭包}：在每一有限级别上，反射系数与相应 CMV（五对角）对象都可由 \(\Xi_\zeta\) 在 \(s=-\tfrac12\) 的有限阶对数导数数据 \(\{\ell_k\}\) 显式生成（命题 \ref{prop:app-horizon-coeff-local}）。
-由此得到一个可发表的“逆谱接口”：
+由此得到一个可审计的“逆谱接口”：
 \[
 \boxed{\;
 (\ell_k)_{k\ge 1}\ \Longrightarrow\ (c_n)_{n\ge 0}\ \Longrightarrow\ (\alpha_n)_{n\ge 0}
@@ -79,6 +79,23 @@ S_1(w)=\frac{1}{w}\frac{S(w)-\alpha_0}{1-\overline{\alpha_0}\,S(w)}
 最后由命题 \ref{prop:app-horizon-coeff-local}，每个 \(c_k\) 由有限个 \(\ell\)-喷射数据有理生成，从而 \(\alpha_n\) 亦然。证毕。
 \end{proof}
 
+\begin{corollary}[Toeplitz--PSD 的喷射标量化：失败可消元为有限个显式代数不等式]\label{cor:xi-toeplitz-psd-jet-semialgebraic}
+沿用定理 \ref{thm:xi-verblunsky-from-local-jet} 的记号，固定 \(N\ge 1\)，并在非退化口径下假设
+\(\det\mathbf{T}_m>0\) 对所有 \(0\le m\le N\) 成立。
+则 \(\mathbf{T}_N\succeq 0\) 等价于 Verblunsky 前缀满足
+\[
+|\alpha_k|\le 1\qquad(0\le k\le N-1).
+\]
+并且每个 \(\alpha_k\) 都是有限喷射 \((\ell_1,\dots,\ell_{k+2})\) 的有理函数。
+因此，上述不等式组在逐项写成 \(|\alpha_k|^2\le 1\) 并清分母后，等价于关于有限喷射 \((\ell_1,\dots,\ell_{N+2})\) 的有限个显式多项式不等式系统。
+从而“某一级 Toeplitz--PSD 失败”可被转写为一个有限维半代数可行性问题，否证器搜索的计算对象可由大矩阵谱问题压缩为低维标量不等式系统。
+\end{corollary}
+\begin{proof}
+Schur 算法的有限步可行性判据给出：在 \(\det\mathbf{T}_m>0\) 的非退化口径下，\(\mathbf{T}_N\succeq 0\) 当且仅当全部前缀反射系数满足 \(|\alpha_k|\le 1\)（\(k<N\)）。
+而 \(\alpha_k\) 对喷射 \((\ell_1,\dots,\ell_{k+2})\) 的有理依赖由定理 \ref{thm:xi-verblunsky-from-local-jet} 给出。
+将每个约束写为 \(|\alpha_k|^2\le 1\) 并清分母，即得到关于 \((\ell_1,\dots,\ell_{N+2})\) 的有限个多项式不等式。证毕。
+\end{proof}
+
 \paragraph{Toeplitz--PSD 层级的反射乘积分解与最小失败步定位}
 反射系数不仅给出“正性”的标量化参数，而且给出 Toeplitz 行列式的乘积分解，从而把有限维否证器定位到最小越界步。
 
@@ -104,6 +121,35 @@ S_1(w)=\frac{1}{w}\frac{S(w)-\alpha_0}{1-\overline{\alpha_0}\,S(w)}
 由此得到 \(\det \mathbf{T}_m>0 \Longleftrightarrow |\alpha_k|<1\)（\(k<m\)）。
 反向定位：若 \(\mathbf{T}_{m_\star}\not\succeq 0\) 且 \(m_\star\) 最小，则对所有 \(m<m_\star\) 有 \(\mathbf{T}_m\succeq 0\) 且（在 \(c_0>0\) 下）\(\mathbf{T}_m\succ 0\)，从而 Schur 递归在前 \(m_\star-1\) 步可行并产生 \(\alpha_0,\dots,\alpha_{m_\star-2}\in\mathbb{D}\)。
 若仍有 \(|\alpha_{m_\star-1}|<1\)，则由 \eqref{eq:xi-toeplitz-det-product} 得 \(\det\mathbf{T}_{m_\star}>0\)，与 \(\mathbf{T}_{m_\star}\not\succeq 0\) 矛盾；故必须 \(|\alpha_{m_\star-1}|\ge 1\)，并使 \(\det\mathbf{T}_{m_\star}\le 0\)。证毕。
+\end{proof}
+
+\begin{corollary}[“视界主子式”一致性：Toeplitz 行列式序列的对数凹性与反射参数界]\label{cor:xi-toeplitz-principal-minor-logconcavity}
+沿用定理 \ref{thm:xi-toeplitz-det-verblunsky} 的记号，令 \(\Delta_N:=\det\mathbf{T}_N\)（\(N\ge 0\)）。
+当 \(\mathbf{T}_N\succ 0\) 对所有 \(N\) 成立时，行列式序列 \((\Delta_N)_{N\ge 0}\) 满足显式比值恒等式
+\[
+\boxed{\;
+\frac{\Delta_{N+1}\Delta_{N-1}}{\Delta_N^{2}}=1-|\alpha_N|^2\qquad(N\ge 1),\;}
+\]
+从而 \((\Delta_N)\) 为对数凹序列：
+\[
+\boxed{\;
+\Delta_N^2\ \ge\ \Delta_{N-1}\Delta_{N+1}\qquad(N\ge 1).\;}
+\]
+特别地，\(\Delta_{N+1}\Delta_{N-1}/\Delta_N^2\in(0,1]\) 等价于 \(|\alpha_N|\le 1\)；
+因此在非退化情形（\(\Delta_N>0\)）下，\(|\alpha_N|\le 1\)（所有 \(N\)）可被视为 Toeplitz--PSD 层级的一组纯标量一致性检查：
+它把“全级正性”压缩为“主子式的对数凹性（跨级一致性）+ 行列式正性（级内可行性）”两类单调约束。
+\end{corollary}
+\begin{proof}[证明要点]
+由 \eqref{eq:xi-toeplitz-det-product} 直接计算
+\[
+\frac{\Delta_{N+1}}{\Delta_N}
+=c_0\prod_{k=0}^{N}\bigl(1-|\alpha_k|^2\bigr),
+\qquad
+\frac{\Delta_{N}}{\Delta_{N-1}}
+=c_0\prod_{k=0}^{N-1}\bigl(1-|\alpha_k|^2\bigr),
+\]
+两式相除即得 \(\Delta_{N+1}\Delta_{N-1}/\Delta_N^2=1-|\alpha_N|^2\)。
+对数凹性由 \(1-|\alpha_N|^2\le 1\) 立得。证毕。
 \end{proof}
 
 \begin{remark}[与 \texorpdfstring{$\ZZ/2$}{Z/2} 扇区失败定位的相容性]\label{rem:xi-verblunsky-z2-compatible}

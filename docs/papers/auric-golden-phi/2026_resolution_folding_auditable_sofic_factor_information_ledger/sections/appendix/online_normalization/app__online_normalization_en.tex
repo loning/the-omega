@@ -1,0 +1,151 @@
+\section{Online normalization and minimal delay}\label{app:online-normalization}
+
+This appendix records an explicit \emph{online} realization of Zeckendorf normalization and proves that a delay of $3$ is intrinsic.
+The material is included as an auditable interface: it provides a constant-memory streaming implementation of the normal form that is compatible with the value-preserving rewrite system (Appendix~\ref{app:rewrite-system}).
+
+\subsection{Extended normalization on digit streams}\label{app:online-norm-setup}
+Recall the Fibonacci weights $(F_k)_{k\ge 1}$ with $F_1=F_2=1$.
+For a finite-support digit configuration $a=(a_1,a_2,\dots)\in\mathcal{D}$ (Section~\ref{subsec:fold-rewrite}) define
+\[
+\mathrm{Val}(a):=\sum_{k\ge 1} a_k F_{k+1}.
+\]
+The rewrite system from Definition~\ref{def:fold-rewrite-rules} is strongly terminating and confluent on $\mathcal{D}$, hence every $a\in\mathcal{D}$ has a unique normal form $\mathrm{NF}(a)\in X_\infty$ with the same value (Theorem~\ref{thm:rewrite-unique-normal-form}).
+
+\begin{definition}[One-sided normalization map]\label{def:fold-infty}
+Define the one-sided normalization
+\[
+\Fold_\infty:\mathcal{D}\to X_\infty,\qquad \Fold_\infty(a):=\mathrm{NF}(a).
+\]
+For a finite word $s=s_1\cdots s_m\in\{0,1,2\}^m$, write $\iota_m(s)=(s_1,\dots,s_m,0,0,\dots)\in\mathcal{D}$ and set $\Fold_\infty(s):=\Fold_\infty(\iota_m(s))$.
+\end{definition}
+
+\subsection{A deterministic delay-$3$ online transducer}\label{app:online-delay-3-transducer}
+Online normalization in Fibonacci numeration is classical in automata/numeration theory; see, e.g., \cite{Frougny1992NumbersAutomata,Frougny1999OnlineAddition}.
+We record an explicit deterministic \emph{subsequential} transducer that realizes $\Fold_\infty$ on digit streams with delay $3$.
+
+\paragraph{Residual conservation (delay-$3$ mechanism).}
+Let $\varphi=(1+\sqrt5)/2$.
+For a signed triple $s=s_1s_2s_3$ (with $\overline{1}:=-1$), define the residual
+\[
+R(s):=s_1\varphi^{-1}+s_2\varphi^{-2}+s_3\varphi^{-3}.
+\]
+For an input digit $d\in\{0,1,2\}$ and an output digit $e\in\{0,1\}$, the delay-$3$ normalization kernel is governed by the conservation law
+\begin{equation}\label{eq:online-delay3-conservation}
+R(s)+d\varphi^{-4}=e\varphi^{-1}+t_1\varphi^{-2}+t_2\varphi^{-3}+t_3\varphi^{-4},
+\end{equation}
+equivalently
+\begin{equation}\label{eq:online-delay3-update}
+R(t)=\varphi R(s)+d\varphi^{-3}-e,
+\qquad R(t)\in[0,1),
+\end{equation}
+where $t=t_1t_2t_3$ is the next state.
+Thus
+\begin{equation}\label{eq:online-delay3-floor}
+e=\Bigl\lfloor \varphi R(s)+d\varphi^{-3}\Bigr\rfloor,\qquad
+R(t)=\Bigl\{\varphi R(s)+d\varphi^{-3}\Bigr\},
+\end{equation}
+where $\{\cdot\}$ denotes fractional part.
+The transducer below is a finite Markov partition of this update rule \cite{Frougny1999OnlineAddition}.
+
+\begin{definition}[A $10$-state subsequential transducer]\label{def:delay3-transducer}
+Let $\overline{1}:=-1$.
+Consider the finite state set
+\[
+Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\overline{1}\},
+\]
+with initial state $000$.
+For each state $q\in Q$ and input digit $d\in\{0,1,2\}$, define a transition $q\xrightarrow{d/e}q'$ with output $e\in\{0,1\}$ as follows:
+\[
+\begin{aligned}
+000&\xrightarrow{d/0}00d,\qquad 100\xrightarrow{d/1}00d\quad(d=0,1,2),\\
+001&\xrightarrow{0/0}010,\ \xrightarrow{1/0}100,\ \xrightarrow{2/0}101,\\
+002&\xrightarrow{0/0}11\overline{1},\ \xrightarrow{1/1}000,\ \xrightarrow{2/1}001,\\
+010&\xrightarrow{0/0}100,\ \xrightarrow{1/0}101,\ \xrightarrow{2/1}0\overline{1}2,\\
+101&\xrightarrow{0/1}010,\ \xrightarrow{1/1}100,\ \xrightarrow{2/1}101,\\
+0\overline{1}2&\xrightarrow{0/0}01\overline{1},\ \xrightarrow{1/0}010,\ \xrightarrow{2/0}100,\\
+1\overline{1}2&\xrightarrow{0/1}01\overline{1},\ \xrightarrow{1/1}010,\ \xrightarrow{2/1}100,\\
+01\overline{1}&\xrightarrow{0/0}001,\ \xrightarrow{1/0}002,\ \xrightarrow{2/0}1\overline{1}2,\\
+11\overline{1}&\xrightarrow{0/1}001,\ \xrightarrow{1/1}002,\ \xrightarrow{2/1}1\overline{1}2.
+\end{aligned}
+\]
+Define the terminal output function $\omega:Q\to\{0,1\}^3$ as the unique Zeckendorf-admissible
+triple $\omega(s_1s_2s_3)=c_1c_2c_3$ (no adjacent $11$) satisfying the three-weight value constraint
+\begin{equation}\label{eq:online-terminal-omega}
+c_1F_4+c_2F_3+c_3F_2=s_1F_4+s_2F_3+s_3F_2.
+\end{equation}
+For an input word $s\in\{0,1,2\}^m$, the transducer produces edge outputs $e_1\cdots e_m$ and a final state $q_m$.
+Its total output is the length-$(m+3)$ word
+\(
+e_1\cdots e_m\,\omega(q_m).
+\)
+\par
+Equivalently, for a one-sided input stream $d=(d_t)_{t\ge 1}\in\{0,1,2\}^{\NN}$, let $(e_t)_{t\ge 1}$ be the emitted edge outputs along the run.
+The \emph{stable} normalized digits $(c_t)_{t\ge 1}$ are recovered by the delay-$3$ relation
+\[
+e_t=c_{t-3}\quad(t\ge 1),
+\qquad\text{with the convention }c_t=0\ (t\le 0).
+\]
+Thus the first three emitted bits are padding, and $c_1$ is emitted when reading the fourth input digit.
+\end{definition}
+
+\begin{theorem}[Existence of an online normalizer with delay $3$]\label{thm:online-delay-3}
+The subsequential transducer of Definition~\ref{def:delay3-transducer} computes the normal form $\Fold_\infty$ on finite-support inputs over $\{0,1,2\}$.
+Equivalently, there exists a deterministic finite-state online normalizer for Zeckendorf admissibility with delay $3$.
+\end{theorem}
+\begin{proof}
+The update law \eqref{eq:online-delay3-conservation} implies that the (scaled) value carried by the state plus the incoming digit is conserved when passing to the emitted digit and the next state.
+Equivalently, \eqref{eq:online-delay3-update}--\eqref{eq:online-delay3-floor} show that the emitted digit $e$ and the next residual $R(t)$ are deterministic functions of the current residual $R(s)$ and the current input digit $d$, with $R(t)\in[0,1)$.
+The $10$ states in $Q$ form a Markov partition of this dynamics, and the edge table lists exactly the admissible transitions \cite{Frougny1999OnlineAddition}.
+\par
+Iterating the conservation law along a finite input word $s\in\{0,1,2\}^m$ shows that the produced output word $e_1\cdots e_m\omega(q_m)$ is Zeckendorf-admissible (no adjacent $11$) and has the same Fibonacci value as the input configuration $\iota_m(s)$.
+By uniqueness of the Zeckendorf normal form (Theorem~\ref{thm:rewrite-unique-normal-form}), the output must coincide with the corresponding prefix of $\Fold_\infty(\iota_m(s))$.
+\end{proof}
+
+\subsection{Optimality: delay-$2$ is impossible}\label{app:online-delay-optimality}
+
+\begin{definition}[One-pass online delay]\label{def:online-delay}
+Let $\mathcal{A}_{\mathrm{in}}$ and $\mathcal{A}_{\mathrm{out}}$ be finite alphabets.
+A deterministic one-pass online transducer with delay $\delta\in\NN$ is a map
+\(
+T:\mathcal{A}_{\mathrm{in}}^{\NN}\to\mathcal{A}_{\mathrm{out}}^{\NN}
+\)
+such that, for every $t\ge 1$, the output symbol $(T(d))_t$ depends only on the input prefix
+\(
+d_1\cdots d_{t+\delta}.
+\)
+We write $\delta_{\min}(T)$ for the minimal $\delta$ for which such an implementation exists.
+\end{definition}
+
+\begin{proposition}[Minimal delay is at least $3$]\label{prop:online-delay-min-3}
+Any deterministic online transducer computing $\Fold_\infty$ on $\{0,1,2\}^\NN$ must have delay at least $3$.
+\end{proposition}
+\begin{proof}
+In the delay-$3$ kernel, the emitted digit at each step is given by the floor rule \eqref{eq:online-delay3-floor}:
+\[
+e=\Bigl\lfloor \varphi R(s)+d\varphi^{-3}\Bigr\rfloor,
+\]
+where $s$ is the current (length-$3$) state and $d\in\{0,1,2\}$ is the current input digit.
+Take the specific state $s=002\in Q$.
+Then $R(s)=2\varphi^{-3}$ and therefore
+\[
+e=\left\lfloor 2\varphi^{-2}+d\varphi^{-3}\right\rfloor.
+\]
+For $d=0$ one has $e=0$, while for $d=1$ one has $e=1$.
+Thus the emitted output bit depends on the value of the current input digit $d$.
+\par
+Now consider the two one-sided inputs
+\[
+d:=0020\,0\,0\,0\cdots,\qquad d':=0021\,0\,0\,0\cdots,
+\]
+which coincide on the first three digits.
+Running the kernel from the initial state $000$ on the common prefix $002$ places it in state $s=002$ just before reading the fourth digit.
+At the next step, the emitted bit equals $0$ for $d$ and equals $1$ for $d'$ by the computation above.
+This emitted bit is the \emph{first} stable output digit (the preceding three emitted bits are the fixed padding caused by the delay-$3$ window).
+Therefore
+\[
+\bigl(\Fold_\infty(d)\bigr)_1\neq \bigl(\Fold_\infty(d')\bigr)_1
+\]
+even though $d$ and $d'$ agree on the input prefix of length $3$.
+By Definition~\ref{def:online-delay}, no deterministic delay-$2$ online implementation can produce the first output symbol from only the first $1+2=3$ input symbols, so $\delta_{\min}(\Fold_\infty)\ge 3$.
+\end{proof}
+

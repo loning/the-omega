@@ -1,0 +1,316 @@
+\section{Sofic factor induced by folding and computable Markov covers}\label{sec:sofic-cover}
+
+This section lifts the window-level normalizer $\Fold_m$ to a sequence-level factor and derives a computable sofic presentation.
+We then extract a right-resolving / Fischer-cover interface that enables linear-algebraic computation of invariants (entropy, Parry data, cover zeta determinants).
+
+\subsection{Sliding block code induced by $\Fold_m$}\label{subsec:phi-def}
+Let $\sigma$ be the left shift on $\{0,1\}^{\ZZ}$ and on $X_m^{\ZZ}$.
+
+\begin{definition}[Sequence-level folding (sliding block code)]\label{def:Phi_m}
+For $m\ge 1$, define
+\[
+\Phi_m:\{0,1\}^{\ZZ}\to X_m^{\ZZ},\qquad (\Phi_m(s))_t:=\Fold_m(s_t s_{t+1}\cdots s_{t+m-1}).
+\]
+Let the image shift be
+\[
+Y_m:=\Phi_m(\{0,1\}^{\ZZ})\subset X_m^{\ZZ}.
+\]
+\end{definition}
+
+\begin{proposition}[Radius and shift equivariance]\label{prop:phi-radius-equiv}
+The map $\Phi_m$ is a sliding block code with memory $0$ and anticipation $m-1$, and it commutes with the shift:
+\[
+\Phi_m\circ\sigma=\sigma\circ\Phi_m.
+\]
+\end{proposition}
+
+\subsection{Explicit labeled graph for $Y_m$}\label{subsec:Gm}
+We now present $Y_m$ as the labeled image of an explicit finite graph.
+
+\begin{definition}[Suffix-state labeled graph]\label{def:G_m}
+Let the vertex set be $V_m:=\{0,1\}^{m-1}$.
+For each $v=v_1\cdots v_{m-1}\in V_m$ and $b\in\{0,1\}$, define an edge
+\[
+e=(v,b): v\to v':=v_2\cdots v_{m-1}b,
+\]
+labeled by
+\[
+\ell_m(e):=\Fold_m(v_1\cdots v_{m-1}b)\in X_m.
+\]
+This yields a finite labeled graph $G_m=(V_m,E_m,\ell_m)$ with $\card{V_m}=2^{m-1}$ and $\card{E_m}=2^m$.
+\end{definition}
+
+\begin{theorem}[Sofic factor, one-step distinguishability, and auditable cover interface]\label{thm:phi-sofic-fischer}
+Fix $m\ge 1$ and define $\Phi_m$ and $Y_m$ as in Definition~\ref{def:Phi_m}.
+Then:
+\begin{enumerate}
+  \item \textbf{(Explicit sofic presentation)} With the labeled graph $G_m$ from Definition~\ref{def:G_m}, let $Z_m\subset E_m^{\ZZ}$ be its bi-infinite edge shift and let $\mathcal{L}_m:Z_m\to X_m^{\ZZ}$ be coordinatewise labeling. Then
+  \[
+  Y_m=\mathcal{L}_m(Z_m),
+  \]
+  hence $Y_m$ is sofic. The state $V_m=\{0,1\}^{m-1}$ is the length-$(m-1)$ input suffix, and each transition appends one input bit and outputs the folded type of the current window.
+  \item \textbf{(One-step distinguishability; bi-resolving presentation)} For every $v\in\{0,1\}^{m-1}$,
+  \[
+  \Fold_m(v0)\neq \Fold_m(v1),
+  \qquad
+  \Fold_m(0v)\neq \Fold_m(1v).
+  \]
+  In particular, the labeled graph $G_m$ is right-resolving and left-resolving: outgoing (resp.\ incoming) edges at any vertex carry distinct labels.
+  \item \textbf{(Entropy saturation and finite defect register)} The sofic factor saturates the source entropy:
+  \[
+  h_{\mathrm{top}}(Y_m)=\log 2.
+  \]
+  Moreover, for $m\ge 2$, the map
+  \[
+  \Psi_m:\{0,1\}^{\ZZ}\to Y_m\times \{0,1\}^{m-1},
+  \qquad
+  \Psi_m(s):=\bigl(\Phi_m(s),\,s_0s_1\cdots s_{m-2}\bigr),
+  \]
+  is injective. Consequently, for every $y\in Y_m$,
+  \[
+  \card{\Phi_m^{-1}(y)}\le 2^{m-1}.
+  \]
+  \item \textbf{(Right Fischer cover interface and computable invariants)} Determinization yields a right-resolving presentation $H_m^{\mathrm{det}}$ of $Y_m$; minimizing by follower sets yields the right Fischer cover \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+  For any follower-separated right-resolving cover $H_m$ of $Y_m$, let $A_m$ be its edge adjacency matrix (Definition~\ref{def:adjacency}). Then
+  \[
+  h_{\mathrm{top}}(Y_m)=\log\rho(A_m),
+  \]
+  the Parry measure on the cover is given explicitly by PF eigenvectors, and the cover zeta function satisfies
+  \(
+  \zeta_{X_{A_m}}(z)=1/\det(I-zA_m).
+  \)
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Item (1) is proved by mapping input sequences to suffix-state paths in $G_m$ and conversely reconstructing a compatible binary sequence from any bi-infinite path; the labeling identity follows from the definition of $\ell_m$.
+\par
+\textbf{Item (2).}
+Fix $v\in\{0,1\}^{m-1}$ and write $\omega_0:=v0$, $\omega_1:=v1\in\Omega_m$.
+Then $N(\omega_1)-N(\omega_0)=F_{m+1}$.
+If $\Fold_m(\omega_0)=\Fold_m(\omega_1)$, Lemma~\ref{lem:one-hidden-bit} gives
+\[
+N(\omega_1)-N(\omega_0)=\bigl(b(\omega_1)-b(\omega_0)\bigr)\,F_{m+2}\in\{0,\pm F_{m+2}\},
+\]
+contradicting $F_{m+1}\notin\{0,F_{m+2}\}$. Hence $\Fold_m(v0)\neq\Fold_m(v1)$.
+Similarly, let $\omega_0:=0v$ and $\omega_1:=1v$.
+Then $N(\omega_1)-N(\omega_0)=F_2=1$, while Lemma~\ref{lem:one-hidden-bit} would force the difference to lie in $\{0,\pm F_{m+2}\}$ if $\Fold_m(0v)=\Fold_m(1v)$, which is impossible since $F_{m+2}\ge 2$.
+Thus $\Fold_m(0v)\neq\Fold_m(1v)$. The right-/left-resolving interpretation follows from Definition~\ref{def:G_m}.
+\par
+\textbf{Item (3): entropy.}
+Since $\Phi_m$ is a factor of the full two-shift, $h_{\mathrm{top}}(Y_m)\le \log 2$.
+For the reverse inequality, fix any vertex $v\in V_m$.
+From $v$ there are exactly $2^n$ length-$n$ edge paths in $G_m$ (each step appends one bit).
+Because $G_m$ is right-resolving by Item~(2), the label map is injective on paths with a fixed start vertex, hence $Y_m$ has at least $2^n$ admissible length-$n$ blocks.
+Therefore $h_{\mathrm{top}}(Y_m)\ge \log 2$, proving $h_{\mathrm{top}}(Y_m)=\log 2$.
+\par
+\textbf{Item (3): finite defect register.}
+Assume $m\ge 2$ and suppose $\Psi_m(s)=\Psi_m(s')=(y,\delta)$.
+We show $s=s'$.
+For $t\in\ZZ$, write
+\[
+v_t:=s_t s_{t+1}\cdots s_{t+m-2}\in\{0,1\}^{m-1},\qquad
+v'_t:=s'_t s'_{t+1}\cdots s'_{t+m-2}\in\{0,1\}^{m-1}.
+\]
+Then $v_0=v'_0=\delta$.
+\par
+\emph{Forward direction.}
+Assume $v_t=v'_t$ for some $t\ge 0$.
+Then
+\[
+y_t=\Fold_m(v_t s_{t+m-1})=\Fold_m(v'_t s'_{t+m-1}),
+\]
+and Item~(2) implies $\Fold_m(v_t0)\neq\Fold_m(v_t1)$, hence $s_{t+m-1}=s'_{t+m-1}$.
+Therefore $v_{t+1}=v'_{t+1}$.
+By induction, $s_k=s'_k$ for all $k\ge 0$.
+\par
+\emph{Backward direction.}
+Assume $v_t=v'_t$ for some $t\le 0$.
+Then
+\[
+y_{t-1}=\Fold_m(s_{t-1}v_t)=\Fold_m(s'_{t-1}v'_t),
+\]
+and Item~(2) implies $\Fold_m(0v_t)\neq\Fold_m(1v_t)$, hence $s_{t-1}=s'_{t-1}$.
+Therefore $v_{t-1}=v'_{t-1}$.
+Iterating for $t=0,-1,-2,\dots$ yields $s_k=s'_k$ for all $k<0$.
+\par
+Thus $s=s'$, proving that $\Psi_m$ is injective.
+The fiber bound follows since the register $\delta$ has $2^{m-1}$ possibilities.
+\par
+\textbf{Item (4).}
+This is standard determinization/Fischer-cover theory for sofic shifts \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}, together with the SFT cover interface for entropy/PF/Parry/zeta (Appendix~\ref{app:pf-parry-zeta}).
+\end{proof}
+
+\subsection{Right-resolving presentation and Fischer cover interface}\label{subsec:right-resolving}
+For auditing, we require an explicit pathwise interface that turns sofic structure into computable linear-algebraic invariants.
+For general sofic shifts, this is achieved by passing to a right-resolving presentation via determinization.
+In the present Zeckendorf folding model, the explicit graph $G_m$ is already right-resolving (and even left-resolving) by Theorem~\ref{thm:phi-sofic-fischer}(2); we nevertheless record the standard determinization pipeline to expose a canonical Fischer-cover interface.
+
+\begin{definition}[Determinization (subset construction)]\label{def:determinization}
+Let $G_m=(V_m,E_m,\ell_m)$.
+For a subset state $S\subseteq V_m$ and a label $a\in X_m$, define
+\[
+\delta_m(S,a):=\{v'\in V_m:\exists e:v\to v'\ \text{with}\ v\in S,\ \ell_m(e)=a\}.
+\]
+Starting from $S_0:=V_m$, take all reachable subsets as states and add transitions
+$S\xrightarrow{a}\delta_m(S,a)$.
+The resulting labeled graph is denoted $H_m^{\mathrm{det}}$.
+\end{definition}
+
+\begin{proposition}[Right-resolving presentation]\label{prop:right-resolving}
+The determinized presentation $H_m^{\mathrm{det}}$ is right-resolving and recognizes the same labeled language as $G_m$; hence its labeled shift is $Y_m$.
+\end{proposition}
+
+\begin{proof}
+By construction, for each state $S$ and label $a$ the successor is unique, so the presentation is right-resolving.
+Language equivalence is standard for automaton determinization \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+\end{proof}
+
+\subsection{Output-driven filtering and synchronization time}\label{subsec:sofic-sync}
+The determinized automaton $H_m^{\mathrm{det}}$ can be interpreted as an \emph{output-driven filter}:
+it tracks, for a given observed output prefix, the set of internal suffix states that remain consistent with that prefix.
+This yields a canonical notion of synchronization time and an auditable tail bound in terms of a finite-state entropy gap.
+
+\begin{definition}[Candidate-set filter and synchronization time]\label{def:sync-time}
+Fix $m\ge 1$ and let $\delta_m$ be as in Definition~\ref{def:determinization}.
+For $y\in Y_m$, define the candidate-set recursion
+\[
+S_0(y):=V_m,\qquad S_{t+1}(y):=\delta_m(S_t(y),y_t)\quad(t\ge 0).
+\]
+Define the \emph{synchronization time}
+\[
+T_m(y):=\inf\{\,t\ge 0:\ |S_t(y)|=1\,\}\in\NN\cup\{\infty\}.
+\]
+\end{definition}
+
+\begin{definition}[Ambiguity shell]\label{def:ambiguity-shell}
+Define the \emph{ambiguity shell} as the set of outputs that never synchronize:
+\[
+Y_m^{\mathrm{amb}}:=\{y\in Y_m:\ T_m(y)=\infty\}.
+\]
+Equivalently, $Y_m^{\mathrm{amb}}$ consists of those $y$ for which the filter state $S_t(y)$ stays non-singleton for all $t$.
+\end{definition}
+
+\begin{remark}[Finite-state realization of the ambiguity shell]\label{rem:amb-shell-sofic}
+Let $H_m^{\mathrm{det}}$ be the determinized right-resolving presentation from Definition~\ref{def:determinization}.
+Restrict $H_m^{\mathrm{det}}$ to the (reachable) subset states $S$ with $|S|>1$ and keep only transitions between such states.
+The labeled shift recognized by this restricted automaton is precisely the ambiguity shell $Y_m^{\mathrm{amb}}$; in particular, $Y_m^{\mathrm{amb}}$ is sofic.
+\end{remark}
+
+\begin{proposition}[Candidate-set monotonicity and singleton closure]\label{prop:candidate-set-monotone}
+Let $H_m^{\mathrm{det}}$ be right-resolving.
+Then for every subset state $S\subseteq V_m$ and every label $a\in X_m$,
+\[
+|\delta_m(S,a)|\le |S|.
+\]
+Moreover, singleton states are forward closed: if $S=\{v\}$ then $\delta_m(S,a)$ is either empty or a singleton for every $a$.
+Consequently, once the filter trajectory $(S_t(y))_{t\ge 0}$ enters a singleton state, it can never return to a non-singleton state.
+\end{proposition}
+\begin{proof}
+Right-resolving means that, for each $v\in V_m$ and label $a\in X_m$, there is \emph{at most one} outgoing edge from $v$ labeled by $a$.
+Hence for each $a$ we obtain a partial function $f_a:V_m\rightharpoonup V_m$ sending $v$ to the unique successor (if it exists) along an $a$-labeled edge.
+By Definition~\ref{def:determinization}, $\delta_m(S,a)$ is the image of $S$ under $f_a$, so its cardinality is at most $|S|$.
+If $S$ is a singleton, its image is either empty or a singleton, proving closure.
+\end{proof}
+
+\begin{theorem}[Synchronization tail bound from an entropy gap]\label{thm:sync-tail-entropy-gap}
+Let $\nu_m$ be the pushforward to $Y_m$ of the Parry (maximal-entropy) measure on a mixing follower-separated right-resolving SFT cover of $Y_m$ (e.g.\ the right Fischer cover).
+Let $\varepsilon_m:=h_{\mathrm{top}}(Y_m)-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\ge 0$.
+Assume $\varepsilon_m>0$.
+Then there exists a constant $C_m>0$ such that for all sufficiently large $n$,
+\[
+\nu_m(T_m>n)\le C_m e^{-\varepsilon_m n}.
+\]
+\end{theorem}
+\begin{proof}
+Write $\mathcal{W}_m^{\mathrm{unsync}}(n)\subset X_m^n$ for the set of length-$n$ blocks $w=w_0\cdots w_{n-1}$ such that, starting from $S_0=V_m$ and iterating $S_{t+1}=\delta_m(S_t,w_t)$, one has $|S_n|>1$.
+Then
+\[
+\{T_m>n\}=\bigcup_{w\in\mathcal{W}_m^{\mathrm{unsync}}(n)} [w],
+\]
+where $[w]$ is the length-$n$ cylinder in $Y_m$.
+\par
+By definition of topological entropy, there exists $C_m^{\mathrm{lang}}>0$ such that
+\[
+|\mathcal{W}_m^{\mathrm{unsync}}(n)|
+\le
+C_m^{\mathrm{lang}}\exp\!\bigl(h_{\mathrm{top}}(Y_m^{\mathrm{amb}})\,n\bigr)
+\]
+for all sufficiently large $n$.
+On the other hand, Parry measure on a mixing SFT cover satisfies a Gibbs-type cylinder bound, and since the cover is right-resolving the pushforward to label cylinders inherits a uniform upper bound: there exist $C_m^{\mathrm{cyl}}>0$ and $n_1\in\NN$ such that for every admissible length-$n$ output cylinder $[w]\subset Y_m$ with $n\ge n_1$,
+\[
+\nu_m([w])\le C_m^{\mathrm{cyl}}e^{-h_{\mathrm{top}}(Y_m)n}=C_m^{\mathrm{cyl}}2^{-n};
+\]
+see \cite[Chapter~4]{LindMarcus1995}.
+Therefore, for large $n$,
+\[
+\nu_m(T_m>n)
+\le
+\sum_{w\in\mathcal{W}_m^{\mathrm{unsync}}(n)}\nu_m([w])
+\le
+|\mathcal{W}_m^{\mathrm{unsync}}(n)|\cdot C_m^{\mathrm{cyl}}2^{-n}
+\le
+(C_m^{\mathrm{cyl}}C_m^{\mathrm{lang}})\exp\!\bigl(-(\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}}))n\bigr),
+\]
+which is the claimed bound with $\varepsilon_m=\log 2-h_{\mathrm{top}}(Y_m^{\mathrm{amb}})$.
+\end{proof}
+
+\begin{remark}[When the ambiguity shell is empty]\label{rem:amb-shell-empty}
+If $Y_m^{\mathrm{amb}}=\varnothing$, then $T_m(y)\le L_m<\infty$ for all $y\in Y_m$ and some finite $L_m$, i.e.\ synchronization occurs after a uniformly bounded time.
+In this case the output determines the internal suffix state after finitely many steps and yields an explicit inverse sliding-block reconstruction.
+\end{remark}
+
+\begin{remark}[Certificate in the Zeckendorf folding model]\label{rem:amb-shell-certificate}
+In the present Zeckendorf folding model, the determinized ambiguity subgraph $H_m^{\mathrm{amb}}$ can be audited directly by the subset construction (Definitions~\ref{def:determinization}--\ref{def:ambiguity-shell}).
+Table~\ref{tab:sync-theory} records a reproducible certificate (generated by \texttt{scripts/gen\_sync\_theory.py}) showing that, for $3\le m\le 10$, the non-singleton subgraph is acyclic and the worst-case synchronization delay equals $D_{\mathrm{sync}}(m)=m-1$.
+\end{remark}
+
+\subsection{Adjacency matrices, entropy, Parry data, and cover zeta}\label{subsec:cover-invariants}
+Fix a follower-separated right-resolving cover of $Y_m$ (e.g. the right Fischer cover obtained by minimizing $H_m^{\mathrm{det}}$ by follower sets).
+Let the cover graph be $H_m=(\mathcal{S}_m,\mathcal{E}_m,\lambda_m)$, where edges are labeled by $\lambda_m:\mathcal{E}_m\to X_m$.
+
+\begin{definition}[Edge adjacency matrix]\label{def:adjacency}
+Let $X_{A_m}$ be the edge shift of $H_m$ (treat edges as symbols).
+Its adjacency matrix $A_m$ is the $0$--$1$ matrix indexed by $\mathcal{E}_m$ with
+\[
+(A_m)_{e,e'}:=\ind\{t(e)=s(e')\}.
+\]
+\end{definition}
+
+\begin{proposition}[Computable entropy via PF radius]\label{prop:entropy-logrho}
+If $H_m$ is irreducible (or after restricting to the maximal-entropy irreducible component), then
+\[
+h_{\mathrm{top}}(Y_m)=h_{\mathrm{top}}(X_{A_m})=\log\rho(A_m).
+\]
+\end{proposition}
+
+\begin{proof}
+The edge shift $X_{A_m}$ factors onto $Y_m$ by edge-labeling.
+On the Fischer cover this factor is finite-to-one on the maximal-entropy component, hence entropy is preserved.
+For SFTs, entropy equals $\log\rho(A_m)$ \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+\end{proof}
+
+\begin{proposition}[Parry measure on the cover]\label{prop:parry}
+Let $\lambda=\rho(A_m)$ and let $l,r>0$ be PF left/right eigenvectors normalized by $l^{\mathsf T}r=1$.
+Define $\pi(e)=l_e r_e$ and transition probabilities
+\[
+P_{e\to e'}:=\frac{(A_m)_{e,e'}\,r_{e'}}{\lambda\,r_e}.
+\]
+Then $(\pi,P)$ defines the Parry (maximal-entropy) Markov measure on $X_{A_m}$.
+\end{proposition}
+
+\begin{proposition}[Cover zeta determinant]\label{prop:cover-zeta}
+The Artin--Mazur zeta function of the cover SFT $X_{A_m}$ satisfies
+\[
+\zeta_{X_{A_m}}(z)=\frac{1}{\det(I-zA_m)},
+\qquad
+\#\mathrm{Fix}(\sigma^n|_{X_{A_m}})=\mathrm{Tr}(A_m^n).
+\]
+\end{proposition}
+
+\begin{remark}[Intrinsic sofic zeta vs cover determinant]\label{rem:intrinsic-vs-cover}
+The intrinsic zeta function $\zeta_{Y_m}$ counts periodic \emph{label} sequences and is rational for sofic shifts \cite{Manning1971RationalZeta,Weiss1973SFTandSofic}.
+However, it is not invariant under finite-to-one factors and generally differs from $1/\det(I-zA_m)$.
+We treat $1/\det(I-zA_m)$ as an auditable \emph{cover-level} interface: it is entirely determined by a finite matrix and is therefore reproducible by linear algebra.
+\end{remark}
+

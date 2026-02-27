@@ -274,7 +274,7 @@ B^{(0)} & 0   & 0   & 0
 基图顶点为记忆态 \(V_{\mathrm{base}}=\{00,01,10,11\}\)，其邻接由记忆骨架矩阵 \(A\) 给出（命题 \ref{prop:real-input-40-skeleton-factor}）；纤维为同步核内部状态集 \(Q\)（\(|Q|=10\)）。
 对每条允许的基边 \(i\to j\)，由输入和位确定一个字母 \(d=d(i\to j)\in\{0,1,2\}\)，并以确定性映射 \(f_d\)（矩阵 \(B^{(d)}\)）作为纤维上的 cocycle：
 提升边 \((i,s)\to(j,t)\) 存在当且仅当 \(\delta(s,d)=t\)。
-这给出一个标准的有限状态 skew-product 扩张。
+这给出一个有限状态 skew-product 扩张。
 \par
 需要强调的是：一般而言 \(f_d\) 并非双射（例如在 $d=0$ 时有 \(\delta(000,0)=\delta(100,0)=000\)），故此处\emph{不是}置换覆盖（permutation lift），也不存在由置换群表示推出的 Artin 型通道分解。
 我们在本文中只使用由“每行恰有一个 $1$”推出的 \(B^{(d)}\mathbf{1}=\mathbf{1}\)，从而常纤维子空间
@@ -353,7 +353,10 @@ K_1(\mathcal O_A)\cong \ZZ^2.
 由于 Bowen--Franks 群是 flow equivalence 的基本不变量（对 SFT 的稳定同构分类高度敏感），该扭结因子在“换 presentation / 去瞬态扩张 / 取 essential 核”等操作下保持不变（见表 \ref{tab:real_input_40_bf_ktheory}）。
 \par
 在本文的统一叙事中，这提供了一个完全由离散核强制出的选择原则：若某个连续统一候选被视为该离散动力系统的“连续完成”，则其破缺后必须能自然地产生一个 \(\ZZ_2\) 型的离散残余（宇称/物质宇称式的最小模板），以解释该 $2$-扭结的拓扑来源。
-我们强调：这里的 \(\ZZ_2\) 不是手工外加的对称假设，而是由核的 $K$-理论扭结直接给出的\emph{约束}。
+\par
+另一方面，在纤维立方几何层面亦存在一个实现无关的 \(\ZZ_2\) 分级：推论 \ref{cor:pom-fiber-reconstruction-median-partialcube-cat0} 表明纤维重构图的二分分解由逆代换次数（等价于独立集大小）的奇偶性规范给出。
+因此在同时要求“纤维几何语义”与“BF/\(K\)-理论扭结不变量”两条接口保持的口径下，\(\ZZ_2\) 残余并非可选装饰，而是被两端结构同时强制的共同约束。
+我们强调：这里的 \(\ZZ_2\) 不是手工外加的对称假设，而是由核的 $K$-理论扭结与纤维 CAT(0) 立方几何共同给出的\emph{约束}。
 \end{remark}
 
 \begin{remark}[可复现输出：Smith normal form 与 \texorpdfstring{$\mathrm{BF}/K$}{BF/K}-群]\label{rem:real-input-40-bf-ktheory-repro}
@@ -536,6 +539,30 @@ I(S;C)\approx 0.282063\ \text{bits}.
 并从 $k=5$ 起稳定，故 $0$ 处最大 Jordan 块大小为 $5$。
 这与同步核的在线延迟 $3$（本质核）与同步复位词长度 $5$（命题 \ref{prop:real-input-40-reset-word}）相呼应。
 \end{proposition}
+
+\begin{corollary}[幂零指数的可观测后果：瞬态记忆深度的严格上界]\label{cor:real-input-40-nilpotent-memory-depth}
+令 \(V_0(M)\) 为全矩阵 \(M\) 在特征值 \(0\) 处的广义特征子空间（即 \(0\)-谱的瞬态子空间），并记其幂零指数为
+\(
+r_{\mathrm{full}}:=\max\{\text{$0$ 处 Jordan 块大小}\}
+\)
+（命题 \ref{prop:real-input-40-nilpotent-index} 给出 \(r_{\mathrm{full}}=5\)）。
+则对任意固定向量 \(v,w\)，计数序列
+\[
+f_m:=v^\ast M^m w
+\]
+满足：当 \(m\ge r_{\mathrm{full}}\) 时，\(f_m\) 与 \(w\) 在 \(V_0(M)\) 上的分量无关（等价地：所有来自 \(0\)-谱的瞬态贡献在 \(m\ge r_{\mathrm{full}}\) 后被幂零部分彻底湮灭）。
+同理，对 essential 核 \(A=M_{\mathrm{ess}}\) 的对应结论以 \(r_{\mathrm{ess}}=3\) 成立。
+\end{corollary}
+
+\begin{proof}
+在广义特征分解下，限制到 \(V_0(M)\) 上的算子 \(M|_{V_0(M)}\) 幂零，且幂零指数即为 \(r_{\mathrm{full}}\)；
+因此 \((M|_{V_0(M)})^{r_{\mathrm{full}}}=0\)。
+把 \(w=w_0+w_\perp\) 分解为 \(w_0\in V_0(M)\) 与 \(w_\perp\perp V_0(M)\)（取任意补空间即可），则当 \(m\ge r_{\mathrm{full}}\) 时有 \(M^m w_0=0\)，从而
+\(
+f_m=v^\ast M^m w=v^\ast M^m w_\perp
+\)
+与 \(w_0\) 无关。essential 情形同理。证毕。
+\end{proof}
 
 \begin{remark}[可复现输出：核维数链与 Jordan 块计数]\label{rem:real-input-40-nilpotent-index-repro}
 表 \ref{tab:real_input_40_nilpotent_jordan} 汇总了 $(\dim\ker A^k)$ 链，并据此给出 $0$ 处 Jordan 块大小的计数摘要。

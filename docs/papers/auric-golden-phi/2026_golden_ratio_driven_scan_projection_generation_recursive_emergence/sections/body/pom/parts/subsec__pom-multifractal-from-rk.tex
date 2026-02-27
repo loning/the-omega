@@ -124,6 +124,74 @@ S_q(m)\le \kappa_m^{\mathrm{max}}D_m^q+|X_m|\,(D_m^{(2)})^q
 的指数率，并检验其在 $\theta$ 接近 $1$ 的区间是否稳定为 $0$；若是，则双极限尺度下不存在非平凡的 \(\alpha_\ast>0\) 相变点（“冻结”在任何正斜率上立刻发生）。
 \end{remark}
 
+\begin{theorem}[对角矩的 \(m^2\) 退化自由能：\texorpdfstring{$S_{\lfloor\tau m\rfloor}$}{S_{floor(tau m)}} 仅决定顶端指数]\label{thm:pom-diagonal-moment-free-energy-degeneracy}
+设 \(|X_m|=\exp(O(m))\)，并令
+\(
+D_m:=\max_{x\in X_m} d_m(x)
+\)
+与
+\(
+S_q(m)=\sum_{x\in X_m} d_m(x)^q
+\)
+如上。
+假设极限
+\[
+\alpha_*:=\lim_{m\to\infty}\frac{1}{m}\log D_m
+\]
+存在。
+对任意 \(\tau>0\) 令 \(q_m(\tau):=\lfloor\tau m\rfloor\)，则极限
+\[
+F(\tau):=\lim_{m\to\infty}\frac{1}{m^2}\log S_{q_m(\tau)}(m)
+\]
+存在且满足
+\[
+\boxed{\;F(\tau)=\tau\,\alpha_*.\;}
+\]
+因此对角尺度族 \(\{F(\tau):\tau>0\}\) 与单个常数 \(\alpha_*\) 等价，并在 \(m^2\) 指数尺度上对中层谱信息完全失明。
+\end{theorem}
+\begin{proof}
+由 \(D_m^{q}\le S_q(m)\le |X_m|D_m^q\) 得
+\[
+\frac{q_m(\tau)}{m^2}\log D_m
+\ \le\
+\frac{1}{m^2}\log S_{q_m(\tau)}(m)
+\ \le\
+\frac{\log|X_m|}{m^2}+\frac{q_m(\tau)}{m^2}\log D_m.
+\]
+由 \(\log|X_m|=O(m)\) 知 \(\log|X_m|/m^2\to 0\)，又 \(q_m(\tau)/m\to\tau\) 且 \(\frac{1}{m}\log D_m\to\alpha_*\)，夹逼即得。证毕。
+\end{proof}
+
+\begin{corollary}[对角观测的强不可识别性：固定顶端而中层压力仍可变]\label{cor:pom-diagonal-observation-strong-unidentifiability}
+在定理 \ref{thm:pom-diagonal-moment-free-energy-degeneracy} 的设定下，若另一族纤维谱 \(\tilde d_m\) 满足
+\(
+\lim_{m\to\infty}\frac{1}{m}\log \tilde D_m=\alpha_*
+\)
+且 \(|\tilde X_m|=\exp(O(m))\)，则对每个 \(\tau>0\) 有
+\[
+\frac{1}{m^2}\log \tilde S_{q_m(\tau)}(m)-\frac{1}{m^2}\log S_{q_m(\tau)}(m)\to 0,
+\]
+其中 \(\tilde D_m:=\max_x \tilde d_m(x)\)、\(\tilde S_q(m):=\sum_x \tilde d_m(x)^q\)。
+然而即使在保持 \(D_m\)（乃至 \(\kappa_m^{\mathrm{max}}\)）不变的前提下，固定阶碰撞矩（例如 \(S_2(m)\)）仍可通过重新分配非最大层质量在指数尺度上发生可观改变，从而对角矩并不能决定任何固定阶压力谱。
+\end{corollary}
+\begin{proof}
+第一式由定理 \ref{thm:pom-diagonal-moment-free-energy-degeneracy} 分别作用于两族谱立得。
+\par
+对第二句，固定 \(m\) 并记 \(N=2^m\)、\(n=|X_m|\)、\(D=D_m\)。
+取某个 \(x_\star\) 使 \(d_m(x_\star)=D\)，并令剩余质量 \(R:=N-D\)。
+在保持最大值仍为 \(D\) 的约束下，可构造两种分配：
+\begin{enumerate}
+  \item \emph{扩散型}：将 \(R\) 尽量均匀分配到 \(n-1\) 个非最大类型上（再作整数修正），则
+  \(
+  S_2(m)=D^2+\Theta\!\bigl(R^2/(n-1)\bigr)
+  \)；
+  \item \emph{集中型}：将 \(R\) 尽量集中在尽可能少的类型上并保持每项 \(<D\)（例如用若干个 \(D-1\) 填充并以余量收尾），则
+  \(
+  S_2(m)=D^2+\Theta(RD)
+  \)。
+\end{enumerate}
+当 \(n=\exp(\Theta(m))\) 且 \(D=\exp(\Theta(m))\) 时，上述两式在 \(\frac1m\log S_2(m)\) 的极限上给出不同常数；从而在保持顶端 \(D_m\) 不变的前提下，固定阶压力谱仍可发生正幅度改变。证毕。
+\end{proof}
+
 \begin{proposition}[矩谱给出的多重分形上包络（Legendre--Fenchel 口径）]\label{prop:pom-fold-multifractal-envelope}
 设 $P$ 仅在整数 $q\ge 2$ 上给定。令 $\widetilde P:\RR_{\ge 2}\to\RR\cup\{+\infty\}$ 为集合点 $\{(q,P(q)):\ q\in\ZZ_{\ge 2}\}$ 的\emph{下闭包凸延拓}（即最小的下半连续凸函数，使得 $\widetilde P(q)\le P(q)$ 对所有整数 $q\ge2$ 成立）。
 定义

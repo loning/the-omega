@@ -82,7 +82,7 @@ P(z):=\sum_{n\ge 1}p_n z^n,
 :=\log C+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_M(\lambda^{-m}).
 \]
 
-\begin{proposition}[带证书的截断误差界：Möbius--Abel 尾项的显式上界]\label{prop:real-input-40-logM-trunc-bound}
+\begin{proposition}[Möbius--Abel 快速公式的显式尾项证书：有限部常数可指数精度截断]\label{prop:real-input-40-logM-trunc-bound}
 设 $\zeta_M(z)=1/\det(I-zM)$ 在圆盘 $|z|\le z_\star^{\,2}=\lambda^{-2}$ 内解析且 $\zeta_M(0)=1$。定义常数
 \[
 A:=\sup_{0<|z|\le \lambda^{-2}}\ \frac{|\log\zeta_M(z)|}{|z|}\ <\ \infty.
@@ -120,6 +120,50 @@ A\sum_{m>K}\frac{\lambda^{-m}}{m}
 \frac{1}{K+1}\sum_{m>K}\lambda^{-m}
 :=\frac{1}{K+1}\cdot\frac{\lambda^{-(K+1)}}{1-\lambda^{-1}}
 :=\frac{1}{(K+1)(\lambda-1)}\,\lambda^{-K}.
+\]
+证毕。
+\end{proof}
+
+\begin{remark}[对数精度截断深度：常数层可在 \texorpdfstring{$O(\log(1/\varepsilon))$}{O(log(1/eps))} 次采样内证书化]\label{rem:real-input-40-logM-logeps-truncation}
+由命题 \ref{prop:real-input-40-logM-trunc-bound} 的尾项界，给定 \(\varepsilon\in(0,1)\)，取 \(K\ge 2\) 使得
+\[
+\frac{A}{(K+1)(\lambda-1)}\,\lambda^{-K}\le \varepsilon
+\]
+即可保证 \(|\log\mathfrak{M}-\log\mathfrak{M}^{(K)}|\le \varepsilon\)。
+因此在固定 \(\lambda>1\) 的设定下，达到对数精度 \(\varepsilon\) 所需的采样次数满足 \(K\asymp \log(1/\varepsilon)\)，并且每一项仅涉及收敛圆盘内部点 \(\lambda^{-m}\) 上的 \(\log\zeta_M\) 采样。
+\end{remark}
+
+\begin{proposition}[有限部常数的稳定性泛函：采样误差仅以 Möbius 权线性聚合]\label{prop:real-input-40-logM-stability-functional}
+沿用命题 \ref{prop:real-input-40-logM-trunc-bound} 的设定。若对每个 \(m\ge 2\) 的采样存在加性误差 \(\epsilon_m\)，使
+\[
+\log\zeta_M(\lambda^{-m})\ \longmapsto\ \log\zeta_M(\lambda^{-m})+\epsilon_m,
+\]
+则有限部常数的漂移满足严格上界
+\[
+\boxed{\;
+|\Delta\log\mathfrak{M}|\le \sum_{m\ge 2}\frac{|\epsilon_m|}{m}\; }.
+\]
+特别地，若存在 \(\varepsilon>0\) 使对一切 \(m\ge 2\) 有 \(|\epsilon_m|\le \varepsilon\,\lambda^{-m}\)，则
+\[
+|\Delta\log\mathfrak{M}|
+\le
+\varepsilon\sum_{m\ge 2}\frac{\lambda^{-m}}{m}
+\le
+\frac{\varepsilon\,\lambda^{-2}}{2(1-\lambda^{-1})}.
+\]
+\end{proposition}
+\begin{proof}
+由 Möbius--Abel 表示 \(\log\mathfrak{M}=\log C+\sum_{m\ge 2}\frac{\mu(m)}{m}\log\zeta_M(\lambda^{-m})\) 得
+\(
+\Delta\log\mathfrak{M}=\sum_{m\ge 2}\frac{\mu(m)}{m}\epsilon_m
+\)；
+结合 \(|\mu(m)|\le 1\) 取绝对值即得第一式。
+若 \(|\epsilon_m|\le \varepsilon\lambda^{-m}\)，则
+\[
+|\Delta\log\mathfrak{M}|
+\le \varepsilon\sum_{m\ge 2}\frac{\lambda^{-m}}{m}
+\le \frac{\varepsilon}{2}\sum_{m\ge 2}\lambda^{-m}
+=\frac{\varepsilon\,\lambda^{-2}}{2(1-\lambda^{-1})}.
 \]
 证毕。
 \end{proof}

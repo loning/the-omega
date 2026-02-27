@@ -82,6 +82,39 @@ C(m)\equiv \sum_{j=0}^4 b_j\binom{m}{j}
 合并即得结论。证毕。
 \end{proof}
 
+\begin{corollary}[模 \texorpdfstring{$6$}{6} 的极短周期压缩：\texorpdfstring{$q\in\{13,15\}$}{q in {13,15}} 的最终周期整除 \texorpdfstring{$72$}{72}]\label{cor:pom-mod6-period-collapse-72-q13-15}
+在定理 \ref{thm:pom-moment-resonance} 的递推生效区间内，对 \(q\in\{13,15\}\) 考察序列 \(S_q(m)\) 在模 \(6\) 下的像。
+则在对齐有限瞬态后，\(S_q(m)\ (\mathrm{mod}\ 6)\) 落入长度至多 \(72\) 的纯周期类；更具体地，
+\[
+\mathrm{Per}_2(S_q)\mid 8,\qquad \mathrm{Per}_3(S_q)\mid 18,\qquad \mathrm{Per}_6(S_q)\mid \mathrm{lcm}(8,18)=72.
+\]
+\end{corollary}
+\begin{proof}
+\textbf{模 \(2\)。}由注 \ref{rem:pom-charpoly-mod2-shadow}（并见表 \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17}），对 \(q\in\{13,15\}\) 有
+\(
+P_q(\lambda)\equiv \lambda^3(\lambda+1)^8\ (\mathrm{mod}\ 2)
+\)。
+故对 \(\widehat S_q:=E^3S_q\) 有 \((E+1)^8\widehat S_q\equiv 0\ (\mathrm{mod}\ 2)\)。
+在 \(\mathbb{F}_2\) 中 \((E+1)^8=E^8+1\)，从而 \(\widehat S_q(m+8)=\widehat S_q(m)\)，得到最终周期整除 \(8\)。
+\par
+\textbf{模 \(3\)。}由命题 \ref{prop:pom-moment-mod3-two-phase}，对 \(\widetilde S_q:=E^2S_q\) 有
+\(
+(E-1)^4(E+1)^5\widetilde S_q\equiv 0\ (\mathrm{mod}\ 3)
+\)，并在其证明中构造了分解 \(\widetilde S_q=A+B\)，满足
+\(
+(E-1)^4A\equiv 0
+\)
+与
+\(
+(E+1)^5B\equiv 0
+\)。
+将第一式右乘 \((E-1)^5\) 得 \((E-1)^9A\equiv 0\)；而在 \(\mathbb{F}_3\) 中 \((E-1)^9=E^9-1\)，故 \(A\) 的最终周期整除 \(9\)。
+同理将第二式右乘 \((E+1)^4\) 得 \((E+1)^9B\equiv 0\)，且 \((E+1)^9=E^9+1\)，从而 \(B(m+9)\equiv -B(m)\)，故 \(B\) 的最终周期整除 \(18\)。
+于是 \(\widetilde S_q=A+B\)（从而 \(S_q\)）的最终周期整除 \(18\)。
+\par
+最后由中国剩余分解 \(\ZZ/6\ZZ\cong \ZZ/2\ZZ\times \ZZ/3\ZZ\)，对齐共同瞬态后模 \(6\) 的最终周期整除 \(\mathrm{lcm}(8,18)=72\)。证毕。
+\end{proof}
+
 \begin{conjecture}[模 \texorpdfstring{$3$}{3} 的奇偶分界选择律（可证伪）]\label{conj:pom-charpoly-mod3-odd-even}
 在定理 \ref{thm:pom-moment-resonance} 的共振窗内，奇阶 \(q\) 的 \(P_q(\lambda)\) 在 \(\mathbb{F}_3[\lambda]\) 上应倾向于只支持线性谱 \(\{0,\pm 1\}\)（不含非平凡不可约因子），而偶阶 \(q\) 则倾向于包含非平凡不可约因子并引入扩域模态。
 该选择律在 \(q=13,14,15\) 的已核验切片上成立（表 \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}），其可证伪方式是继续对更大窗口的已核验递推计算模 \(3\) 分解并检验是否出现反例。
@@ -91,6 +124,27 @@ C(m)\equiv \sum_{j=0}^4 b_j\binom{m}{j}
 在模 \(5\) 上，即便固定在奇阶类内，特征多项式也会发生可审计的结构分岔。
 对 \(q=13,15\)，表 \ref{tab:fold_collision_charpoly_mod5_branch_q13_15} 给出 \(\mathbb{F}_5[\lambda]\) 分解并显式读出零本征值的重数 \(a_0\)：\(q=13\) 含 \(\lambda^2\) 因子而 \(q=15\) 不含。
 因此模 \(5\) 提供一个计算代价较低的“瞬态 vs 本征”诊断接口：检查 \(P_q(0)\equiv 0\ (\mathrm{mod}\ 5)\)（等价于常数项的 \(5\)-整除性）即可判定零模态是否存在。
+\end{remark}
+
+\begin{proposition}[判别式 \texorpdfstring{$-15$}{-15} 的有限域分裂选择律：相位锁定二次式 \texorpdfstring{$2z^2+z+2$}{2z^2+z+2} 的模 \texorpdfstring{$p$}{p} 指纹]\label{prop:pom-phase-lock-discriminant-minus15-splitting}
+二次式 \(2z^2+z+2\) 的判别式为 \(\Delta=1-16=-15\)。
+对任意奇素数 \(p\nmid 30\)，该多项式在 \(\mathbb{F}_p\) 上分裂当且仅当 Kronecker（Legendre）符号 \(\bigl(\frac{-15}{p}\bigr)=1\)；
+若 \(\bigl(\frac{-15}{p}\bigr)=-1\)，则其在 \(\mathbb{F}_p\) 上不可约并在 \(\mathbb{F}_{p^{2}}\) 上分裂。
+在分歧素数 \(p\in\{3,5\}\) 处有 \(\Delta\equiv 0\pmod p\)，从而在 \(\mathbb{F}_p\) 上出现重根退化。
+\end{proposition}
+\begin{proof}
+当 \(p\ne 2\) 时，二次式 \(az^2+bz+c\) 在 \(\mathbb{F}_p\) 上有根当且仅当判别式 \(b^2-4ac\) 为二次剩余。
+对 \(2z^2+z+2\) 有 \(\Delta=-15\)，且 \(p\nmid 2\) 时 \(2\) 可逆，故分裂性等价于 \(\Delta\) 在 \(\mathbb{F}_p\) 中为平方，
+亦即 \(\bigl(\frac{\Delta}{p}\bigr)=\bigl(\frac{-15}{p}\bigr)=1\)。
+当 \(\bigl(\frac{-15}{p}\bigr)=-1\) 时，多项式无根因而不可约，但其根在二次扩域中必存在，故在 \(\mathbb{F}_{p^2}\) 上分裂。
+若 \(p\mid 15\)，则 \(\Delta\equiv 0\pmod p\)，对应重根退化。证毕。
+\end{proof}
+
+\begin{remark}[条件性可证伪预测：分裂/惰化二分应在跨素数模 \texorpdfstring{$p$}{p} 指纹中显影]\label{rem:pom-phase-lock-discriminant-minus15-prediction}
+若在两步重标度口径下稳定出现的复相位锁定二维不变块确由 \(2z^2+z+2\) 控制，
+则在跨素数的模 \(p\) 分解指纹中，是否出现必需的二次扩域模态应随 \(\bigl(\frac{-15}{p}\bigr)\) 呈系统性分裂/惰化二分：
+当 \(\bigl(\frac{-15}{p}\bigr)=1\) 时该块应可在 \(\mathbb{F}_p\) 上实现，而当 \(\bigl(\frac{-15}{p}\bigr)=-1\) 时其实现需进入 \(\mathbb{F}_{p^2}\)。
+分歧素数 \(p\in\{3,5\}\) 处的退化与本节的模 \(3\) 分界、模 \(5\) 分岔在结构上同属“判别式整除处的优先敏感性”。
 \end{remark}
 
 \input{sections/generated/tab_fold_collision_charpoly_mod5_branch_q13_15}

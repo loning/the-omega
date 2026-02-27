@@ -1,0 +1,62 @@
+\section{Algorithms, complexity, and an auditable protocol}\label{sec:algorithms}
+
+This section summarizes executable interfaces suggested by the theory.
+The goal is not to optimize constants, but to expose a minimal pipeline that is reproducible and auditable.
+
+\subsection{Computing $\Fold_m$}\label{subsec:algo-fold}
+Two equivalent implementations are available:
+\begin{itemize}
+  \item \textbf{Value $\to$ Zeckendorf $\to$ truncate:} compute $N(\omega)=\sum_{k=1}^m \omega_k F_{k+1}$, compute the Zeckendorf digits $Z(N)$, and output $\pi_m(Z(N))$.
+  \item \textbf{Local rewriting:} embed $\omega$ into $\mathcal{D}$ and repeatedly apply the local rules in Definition~\ref{def:fold-rewrite-rules} until irreducible; then truncate.
+\end{itemize}
+The rewriting implementation is directly auditable (every rewrite preserves value) and is robust under streaming settings.
+
+\begin{proposition}[Per-window complexity]\label{prop:fold-complexity}
+For fixed $m$, computing $\Fold_m(\omega)$ from $\omega\in\Omega_m$ can be performed in time $O(m)$ and space $O(m)$.
+\end{proposition}
+
+\begin{proof}
+The value computation is $O(m)$.
+For the rewriting implementation, each rewrite strictly decreases a lexicographic measure (as in Proposition~\ref{prop:fold-termination-confluence}); the number of rewrites is $O(m)$ for fixed-length inputs, and each rewrite updates $O(1)$ digits.
+\end{proof}
+
+\subsection{Online normalization and minimal delay}\label{subsec:algo-online}
+While the rewriting normalizer is auditable, it is also intrinsically \emph{streamable} at constant memory.
+Appendix~\ref{app:online-normalization} records an explicit deterministic finite-state subsequential transducer computing the one-sided normalization $\Fold_\infty$ on digit streams over $\{0,1,2\}$ with delay $3$ (Theorem~\ref{thm:online-delay-3}).
+Moreover, delay $3$ is optimal: no deterministic delay-$2$ online transducer can compute $\Fold_\infty$ (Proposition~\ref{prop:online-delay-min-3}).
+This isolates an intrinsic time defect of Zeckendorf normalization that is independent of cover presentations.
+
+\subsection{Building the sofic presentation and covers}\label{subsec:algo-graph}
+The labeled graph $G_m$ in Definition~\ref{def:G_m} is explicit:
+\[
+\card{V_m}=2^{m-1},\qquad \card{E_m}=2^m,
+\]
+and each edge label requires one evaluation of $\Fold_m$.
+The determinized right-resolving presentation $H_m^{\mathrm{det}}$ is obtained by subset construction (Definition~\ref{def:determinization}).
+The right Fischer cover can then be computed by minimizing follower sets \cite{LindMarcus1995,Kitchens1998SymbolicDynamics}.
+
+\subsection{Computing invariants}\label{subsec:algo-invariants}
+Once a follower-separated right-resolving cover is fixed, the audit-relevant invariants follow from linear algebra on the edge adjacency matrix $A_m$:
+\begin{itemize}
+  \item \textbf{Entropy:} $h_{\mathrm{top}}(Y_m)=\log\rho(A_m)$ (Proposition~\ref{prop:entropy-logrho}).
+  \item \textbf{Parry data:} stationary weights and transition probabilities from PF eigenvectors (Proposition~\ref{prop:parry}).
+  \item \textbf{Cover zeta determinant:} $\zeta_{X_{A_m}}(z)=1/\det(I-zA_m)$ (Proposition~\ref{prop:cover-zeta}).
+\end{itemize}
+These are auditable because they can be recomputed from the explicit finite matrix $A_m$.
+
+\subsection{Finite-sample audit protocol template}\label{subsec:algo-protocol}
+Given an input time series $s_0,\dots,s_{N+m-1}$:
+\begin{enumerate}
+  \item \textbf{Fold:} compute $w_t=\Fold_m(s_t\cdots s_{t+m-1})\in X_m$ for $t=0,\dots,N-1$.
+  \item \textbf{Visible term:} form the empirical type histogram $\hat{\nu}\in\Delta(X_m)$ and estimate $H(\hat{\nu})$.
+  \item \textbf{Certificate:} obtain a TV confidence radius (Section~\ref{sec:certificates}).
+  \item \textbf{Fiber volume:} compute/estimate $\mathbb{E}_{\hat{\nu}}[\log d_m(X)]$.
+  \item \textbf{Residual test:} report a residual KL upper bound using TV/KL inequalities \cite{SasonVerdu2016fDivergence} and interpret deviations as falsifiable non-baseline structure.
+\end{enumerate}
+The ledger identity (Theorem~\ref{thm:information-ledger}) specifies exactly which term must carry any remaining discrepancy.
+
+\subsection{Reproducibility entry points}\label{subsec:algo-repro}
+Scripts live under \path{scripts/} and write outputs to:
+\path{sections/generated/} (LaTeX fragments) and \path{artifacts/export/} (CSV/JSON/PNG).
+The pipeline entry is \path{python3 scripts/run_all.py}.
+

@@ -1,5 +1,5 @@
 \subsubsection{单切片协议下的“读出反射子”与判定完备性}\label{subsubsec:xi-read-reflector-completeness}
-沿用定义 \ref{def:xi-visible-read-null} 的协议设定：读出 \(\mathrm{read}:\Omega\to X_{\mathrm{vis}}\cup\{\mathsf{NULL}\}\) 由“部分观测 \(\operatorname{obs}\) + 可见域过滤 \(X_{\mathrm{vis}}\) + 检查器 \(\mathrm{Chk}\)”固定确定，并在本章的 unitary-slice 口径下取 \(X_{\mathrm{vis}}=\mathsf{Phase}\)（见 \S\ref{subsec:xi-pw-type-safety-null}）。
+沿用定义 \ref{def:xi-visible-read-null} 的协议设定，其中读出 \(\mathrm{read}:\Omega\to X_{\mathrm{vis}}\cup\{\mathsf{NULL}\}\) 由“部分观测 \(\operatorname{obs}\) + 可见域过滤 \(X_{\mathrm{vis}}\) + 检查器 \(\mathrm{Chk}\)”固定确定，并在本章的 unitary-slice 口径下取 \(X_{\mathrm{vis}}=\mathsf{Phase}\)（见 \S\ref{subsec:xi-pw-type-safety-null}）。
 该协议的关键并不在于把对象强行判等，而在于把\emph{可审计判定}限制为对读出纤维不敏感的类型化操作：一切额外自由度若未被显式外置为正交记录轴，便只能在类型层塌缩为 \(\mathsf{NULL}\)（参见命题 \ref{prop:xi-null-three-way} 与定义 \ref{def:multi_axis_address}）。
 \par
 下述因子分解律把这一“闭包式同型化”表述为一个严格的反射/商空间性质。
@@ -135,6 +135,22 @@ e^{-(1+\delta_j)|\xi|}\,e^{-\mathrm{i}\gamma_j\xi}.
 并且 \(\mathcal{F}_N\) 仅依赖有限证书参数 \((\alpha_0,\dots,\alpha_{N-1})\) 且可在纯乘加有理运算内实现。
 因此端点通量不仅是存在性不变量，而且具有可有效逼近的有限证书表达：缺陷若存在，则其端点强度可由有限 CMV 证书以指数精度恢复。
 \end{proposition}
+
+\begin{corollary}[端点缺陷证书复杂度律：\texorpdfstring{$\Phi_{-1}$}{Phi-(-1)} 的对数级样本复杂度]\label{cor:xi-endpoint-flux-log-sample-complexity}
+沿用命题 \ref{con:xi-endpoint-flux-computable-by-finite-cmv} 的记号。
+对任意误差容忍 \(\varepsilon>0\)，若取
+\[
+N\ \ge\ \frac{\log(C/\varepsilon)}{\log(1/q)},
+\]
+则有限 CMV/Verblunsky 证书给出的近似满足
+\[
+\bigl|\Phi_{-1}(B)-\mathcal{F}_N(\alpha_0,\dots,\alpha_{N-1})\bigr|\ \le\ \varepsilon.
+\]
+因此端点通量的数值审计在该口径下具有对数级样本复杂度 \(N=O(\log \varepsilon^{-1})\)。
+\end{corollary}
+\begin{proof}
+由命题 \ref{con:xi-endpoint-flux-computable-by-finite-cmv} 的指数误差界 \( |\Phi_{-1}(B)-\mathcal{F}_N|\le Cq^N \)，令 \(Cq^N\le\varepsilon\) 并解出 \(N\) 即得结论。证毕。
+\end{proof}
 
 \begin{proposition}[两类证书的统一下界：Toeplitz 阶数与扫描覆盖数的不可避免增长]\label{con:xi-toeplitz-vs-scan-complexity-lower-bounds}
 固定偏移下界 \(\delta\ge\delta_0>0\) 与高度窗 \(|\gamma|\le T\)。
@@ -333,6 +349,30 @@ e^{-\mathrm{i}\gamma_j n\Delta}
 该阈值给出地址分辨率的制度化下界：当地址被离散化为固定步长格点时，高度信息自动折叠为模 \(2\pi/\Delta\) 的同余类；要避免该回收效应，步长必须随目标高度窗线性收缩（与 \S\ref{subsec:discrete-abel-weil-polar-rigidity} 的 Nyquist 采样尺度相容）。
 \end{proposition}
 
+\begin{proposition}[双步长去混叠定理：两套地址网格的相位载体将高度同余类压缩到最小交]\label{con:xi-grid-scan-two-step-dealiasing}
+设高度相位仅能通过格点扫描步长 \(\Delta>0\) 的字符 \(e^{-\mathrm{i}\gamma n\Delta}\)（\(n\in\ZZ\)）进入可见谱指纹，则单一 \(\Delta\) 下高度仅能确定至同余群
+\[
+\Gamma_{\Delta}:=\frac{2\pi}{\Delta}\ZZ.
+\]
+若额外引入第二步长 \(\Delta'>0\)，则可见不变性群收缩为交
+\[
+\Gamma_{\Delta}\cap \Gamma_{\Delta'}.
+\]
+并且：
+\begin{enumerate}
+  \item 若 \(\Delta/\Delta'\notin\QQ\)，则 \(\Gamma_{\Delta}\cap \Gamma_{\Delta'}=\{0\}\)，从而高度参数在理论上无全局同余混叠；
+  \item 若 \(\Delta/\Delta'=p/q\in\QQ\)（既约），则存在唯一 \(d>0\) 使 \(\Delta=pd,\ \Delta'=qd\)，并且
+  \[
+  \Gamma_{\Delta}\cap \Gamma_{\Delta'}=\frac{2\pi}{d}\ZZ,
+  \]
+  即双网格把混叠周期收缩到最小公同余周期 \(2\pi/d\)。
+\end{enumerate}
+\end{proposition}
+
+\input{subsubsec__xi-grid-scan-two-step-dealiasing-diophantine-stability}
+
+\input{subsubsec__xi-depth-height-two-level-extremal-decomposition}
+
 \input{subsubsec__xi-cayley-normalization-factor4}
 
 \paragraph{局部峰刚性、相位谱移位与有限样本病态}
@@ -438,6 +478,10 @@ u_{-n}=\overline{u_n}.
 该“\(2\kappa\) 点锁定”与 Hankel 秩的最小 realization 刻画（定理 \ref{thm:hankel-rank-minimal}）及 \(2d\) 点有限判等原理（定理 \ref{thm:dephys-hankel-finite-audit}）一致。
 \end{proposition}
 
+\input{subsubsec__xi-scan-fingerprint-caratheodory-schur-realization}
+
+\input{subsubsec__xi-scan-tail-ratio-peeling}
+
 \begin{proposition}[碰撞不适定性：缺陷合并导致反演条件数的必然爆炸]\label{con:xi-collision-illposedness-sep-blowup}
 沿用结论 \ref{con:xi-2kappa-minimal-complete-samples} 的参数化，令谱点间距
 \[
@@ -506,5 +550,42 @@ G_t(x)
 其中余项在 \(x\in\RR\) 上一致，且可由缺陷的二阶中心矩控制。
 因此当观测尺度 \(t\) 足够大时，全部点状缺陷在制度可见域内不可避免地退化为单个“有效 Lorentzian”：可区分参数仅为总质量 \(M_0\) 与重心 \(\bar\gamma\)；更高阶几何信息以 \(t^{-2}\) 级别被严格压制并在粗粒化流下衰落（与能量耗散公式 \eqref{eq:xi-offcritical-poisson-energy-dissipation} 一致）。
 \end{proposition}
+
+\begin{proposition}[Poisson 粗粒化的二阶正规形：仅由二阶中心矩控制的普适校正项]\label{con:xi-poisson-coarsegraining-second-order-normal-form}
+在命题 \ref{con:xi-poisson-coarsegraining-nohair} 的记号下，令归一化权重测度为
+\[
+\tilde\nu:=\frac{1}{M_0}\sum_{j}m_j\delta_j\,\delta_{\gamma_j},
+\qquad
+\bar\gamma:=\int_{\RR}\gamma\,\dd\tilde\nu(\gamma),
+\qquad
+\mathrm{Var}:=\int_{\RR}(\gamma-\bar\gamma)^2\,\dd\tilde\nu(\gamma),
+\]
+并定义大尺度 Poisson 粗粒化密度
+\[
+h_t(x):=\int_{\RR}\frac{1}{\pi}\frac{t}{(x-\gamma)^2+t^2}\,\dd\tilde\nu(\gamma)
+\qquad (t>0).
+\]
+则当 \(t\to\infty\) 时存在二阶一致渐近展开（在 \(x\in\RR\) 上一致成立）
+\[
+\boxed{\;
+h_t(x)
+=
+\frac{1}{\pi}\frac{t}{(x-\bar\gamma)^2+t^2}
+\;+\;
+\frac{\mathrm{Var}}{\pi}\,
+\frac{t\bigl(3(x-\bar\gamma)^2-t^2\bigr)}{\bigl((x-\bar\gamma)^2+t^2\bigr)^3}
+\;+\;O(t^{-4})\; }.
+\]
+其中余项 \(O(t^{-4})\) 可由三阶中心矩 \(\int|\gamma-\bar\gamma|^3\,\dd\tilde\nu(\gamma)\) 控制。
+因此在大尺度视界观测下，全部几何自由度的可见贡献在二阶之前严格塌缩为两参数族 \((\bar\gamma,\mathrm{Var})\)：更高阶形状信息以更高次幂被制度性压制并进入不可恢复区。
+\end{proposition}
+
+\input{subsubsec__xi-poisson-coarsegraining-tv-kl-asymptotics}
+
+\input{subsubsec__xi-poisson-coarsegraining-sixth-order-audit}
+
+\input{subsubsec__xi-poisson-coarsegraining-harmonic-moment-multipole-kl}
+
+\input{subsubsec__xi-poisson-cauchy-location-scale-entropy-rigidity-busemann}
 
 \endinput

@@ -15,6 +15,45 @@ w^m=e^{\mathrm{i}m\theta},\qquad
 其中 \(C_m\in\ZZ[S]\) 为 Chebyshev--Adams 多项式表示（参见 \cite{MasonHandscomb2003Chebyshev}）。
 因此幂半群 \(w\mapsto w^m\) 在 \(S\)-坐标中恰对应 \(S\mapsto C_m(S)\) 的代数化倍角运算。
 
+\paragraph{Chebyshev--Frobenius 差额与 \texorpdfstring{$p$}{p}-导数}
+令 \(p\) 为素数。由 \(C_p(S)=\mathfrak{r}^p+\mathfrak{r}^{-p}\) 与二项式系数的 \(p\)-整除性，在 \(\ZZ[S]\) 中可定义差额多项式
+\begin{equation}\label{eq:chebyshev-frobenius-delta-poly}
+\boxed{\;\Delta_p(S):=\frac{C_p(S)-S^p}{p}\in\ZZ[S]\;}
+\end{equation}
+并据此把代入算子 \(f(S)\mapsto f(C_p(S))\) 解释为一条 Frobenius 提升。
+
+\begin{definition}[\texorpdfstring{$\delta_p$}{delta_p}-结构：Chebyshev 作为 Frobenius-lift]\label{def:chebyshev-frobenius-pderivation}
+对任意 \(f\in\ZZ[S]\)，定义
+\begin{equation}\label{eq:chebyshev-frobenius-pderivation}
+\boxed{\;
+\delta_p(f):=\frac{f(C_p(S))-\bigl(f(S)\bigr)^p}{p}\in\QQ[S]\; }.
+\end{equation}
+\end{definition}
+
+\begin{proposition}[\texorpdfstring{$\delta_p$}{delta_p}-导数的整系数闭包：\texorpdfstring{$\ZZ[S]$}{Z[S]} 上的可审计 Frobenius-lift]\label{prop:chebyshev-frobenius-pderivation-integrality}
+在定义 \ref{def:chebyshev-frobenius-pderivation} 的设定下，有：
+\begin{enumerate}
+  \item \(\Delta_p(S)\in\ZZ[S]\)（等价于 \(\delta_p(S)=\Delta_p(S)\)）；
+  \item 对任意 \(f\in\ZZ[S]\)，有 \(\delta_p(f)\in\ZZ[S]\)，并且满足 Frobenius-lift 恒等式
+  \[
+  \boxed{\ f(C_p(S))=\bigl(f(S)\bigr)^p+p\,\delta_p(f)\ }.
+  \]
+\end{enumerate}
+特别地，\(\bmod p\) 层面 \(f(C_p(S))\equiv f(S)^p\) 把完成化 Adams 作用与纯 Frobenius 严格对齐（并与推论 \ref{cor:completed-dwork-frobenius-tower} 的 \(\widehat a_{p^k}\) 塌缩链相容）。
+\end{proposition}
+\begin{proof}
+由 \((\mathfrak{r}+\mathfrak{r}^{-1})^p\equiv \mathfrak{r}^p+\mathfrak{r}^{-p}\ (\mathrm{mod}\ p)\)（因 \(\binom{p}{k}\equiv 0\ (\mathrm{mod}\ p)\) 对 \(1\le k\le p-1\) 成立），得
+\(
+C_p(S)\equiv S^p\ (\mathrm{mod}\ p)
+\) 于 \(\ZZ[S]\)，故 \(\Delta_p(S)\in\ZZ[S]\)。
+对一般 \(f\in\ZZ[S]\)，由同余的代入不变性得
+\(
+f(C_p(S))\equiv f(S^p)\ (\mathrm{mod}\ p)
+\)；
+另一方面在 \(\ZZ/p\ZZ\) 上 Frobenius 满足 \(f(S)^p\equiv f(S^p)\ (\mathrm{mod}\ p)\)。
+两式合并即得 \(f(C_p(S))-\bigl(f(S)\bigr)^p\in p\,\ZZ[S]\)，从而 \(\delta_p(f)\in\ZZ[S]\) 且 Frobenius-lift 恒等式成立。证毕。
+\end{proof}
+
 \subsubsection{相位坐标与完成化迹坐标的全有理交换图}\label{subsubsec:phase-completion-rational-exchange}
 本段给出一个对 unitary-slice 接口尤为关键的“全有理”事实：若以 Cayley 紧化坐标 \(x\in\overline{\RR}\) 参数化半角变量 \(\mathfrak{r}\)，则完成化迹坐标 \(S=\mathfrak{r}+\mathfrak{r}^{-1}\) 与 Chebyshev--Adams 动力学 \(S\mapsto C_d(S)\) 都可被实现为纯有理/整系数运算。
 
@@ -89,6 +128,27 @@ B_{d+1}=B_d+xA_d.
 (1+\mathrm{i}x)^{d+1}=(1+\mathrm{i}x)(A_d+\mathrm{i}B_d)
 \)
 展开并对实/虚部分别比较得到。证毕。
+\end{proof}
+
+\begin{corollary}[Chebyshev--Adams 的有理半群表示：\texorpdfstring{$\tau_{mn}=\tau_m\circ\tau_n$}{tau_mn=tau_m∘tau_n}]\label{cor:chebyshev-adams-rational-semigroup}
+对任意整数 \(m,n\ge 1\)，有作为有理函数的恒等式
+\[
+\tau_{mn}=\tau_m\circ\tau_n,
+\qquad
+\tau_1=\mathrm{id}.
+\]
+因此 \(d\mapsto\tau_d\) 给出从乘法半群 \((\NN_{\ge 1},\cdot)\) 到有理自映射半群 \((\QQ(x),\circ)\) 的同态。
+特别地，一切依赖 \(\mathfrak r\mapsto \mathfrak r^d\) 或 \(S\mapsto C_d(S)\) 的 unitary-slice 审计与证书构造，均可被编译为 \(\tau_d\) 的复合与整系数递推运算，从而在实现层彻底剥离三角函数与代数根式。
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:adams-cayley-lift}，
+\[
+\iota\!\bigl(\tau_m(\tau_n(x))\bigr)
+=\bigl(\iota(\tau_n(x))\bigr)^m
+=\iota(x)^{mn}.
+\]
+另一方面仍由 \eqref{eq:adams-cayley-lift}，\(\iota(\tau_{mn}(x))=\iota(x)^{mn}\)。
+由于 \(\iota\) 在 \(\overline{\RR}\) 上为单射（M\"obius 同胚），故得到 \(\tau_{mn}(x)=\tau_m(\tau_n(x))\) 作为 \(\QQ(x)\) 中的恒等式。证毕。
 \end{proof}
 
 \paragraph{半角提升作为最小不可见纤维：从 \(w\) 到 \(\mathfrak{r}\) 的分支信息}

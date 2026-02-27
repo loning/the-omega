@@ -234,8 +234,8 @@ a w^2-4w+4=0
 \)，解之即得所示反演两分支；分支选择由先验口径（例如 \(\delta\le 1\)）固定。证毕。
 \end{proof}
 
-\begin{proposition}[扫描密度的谱移位表达：加权内函数相位导数的绝对连续化]\label{prop:xi-scan-density-spectral-shift-phase-derivative}
-在有限点状缺陷口径下，定义上半平面内函数
+\begin{proposition}[基点扫描剖面的总质量恒等式：轴外偏离的全局可积不变量（48）]\label{prop:xi-scan-density-spectral-shift-phase-derivative}
+在有限点状缺陷口径下，定义上半平面内函数\footnote{据内部文稿 \cite{Internal2025ResolutionFoldingPhiPi}（2025）在“相位坐标门—有限窗审计—orbit--Levi 刚性”并置且不增设额外公理的口径下，该全质量恒等式与其 Fourier--Laplace 指纹、无穷远矩链一起构成可独立复核的扫描层析不变量链。}
 \[
 S_{\mathrm{HP}}(z)
 :=\prod_{j=1}^{\kappa}\left(\frac{z-\gamma_j-\mathrm{i}(1+\delta_j)}{z-\gamma_j+\mathrm{i}(1+\delta_j)}\right)^{m_j},
@@ -306,7 +306,7 @@ S_{\mathrm{def}}
 \)
 立得 \eqref{eq:xi-defect-entropy-closed-form}。
 其中每一项满足 \(0<\frac{\delta_j}{1+\delta_j}<1\)，故 \(0<S_{\mathrm{def}}<\sum_j m_j=\kappa_{\mathrm{ind}}\)。
-坐标不变性来自于：\(S_{\mathrm{def}}\) 由闭式表达 \(\sum_j m_j\frac{\delta_j}{1+\delta_j}\) 给出，而该比值正是端点 Poisson/Busemann 权重在规一化标尺下的无量纲组合；任何保持端点基准的共形重标定只会一致改变“单位选择”（对应 \(b_{-1}=\log\mathcal{B}_{-1}\) 的加性零点），不会改变上述无量纲和。证毕。
+坐标不变性来自于：\(S_{\mathrm{def}}\) 由闭式表达 \(\sum_j m_j\frac{\delta_j}{1+\delta_j}\) 给出，而该比值正是端点 Poisson/Busemann 权重在规一化标尺下的无量纲组合；任何保持端点基准的共形重标定只会一致改变“单位选择”（对应 \(b_{-1}=\log B^{-1}\) 的加性零点），不会改变上述无量纲和。证毕。
 \end{proof}
 
 \begin{proposition}[指数--熵分解：整数缺陷指数与连续缺陷熵的严格分离]\label{prop:xi-index-entropy-decomposition}
@@ -370,6 +370,8 @@ S_{\mathrm{def}}
 \]
 \end{corollary}
 
+\input{subsubsec__xi-horizon-spectral-measure-tomography__defect-entropy-hyperbolic-laws}
+
 \begin{theorem}[双 Herglotz 残数比定律：无需分离假设的 \texorpdfstring{$\delta$}{delta} 识别机制]\label{thm:xi-double-herglotz-residue-ratio}
 在上述设定下，定义
 \[
@@ -420,17 +422,66 @@ H_{(\gamma,\delta,m)}(x)=m\,\frac{4\delta}{(x-\gamma)^2+w^2}
 代入即得残数比识别律。证毕。
 \end{proof}
 
-\begin{proposition}[远场矩展开：扫描剖面尾部系数给出 \texorpdfstring{$(\gamma,\delta)$}{(gamma,delta)} 的全部代数矩]\label{prop:xi-scan-far-field-moment-expansion}
+\begin{corollary}[单剖面全重建：共动密度 \(H\) 唯一决定点状缺陷多重集及其内函数编码]\label{cor:xi-comoving-profile-complete-reconstruction}
+在有限点状缺陷口径下，给定共动扫描剖面 \(H\)（\eqref{eq:xi-comoving-scan-profile-H}），其 Cauchy 变换
+\(
+M_H(z)=\int_{\RR}\frac{H(x)}{x-z}\dd x
+\)
+在 \(\CC\setminus\RR\) 上作有理延拓，并在下半平面具有极点集合
+\(
+z_j^-=\gamma_j-\mathrm{i}(1+\delta_j)
+\)
+及残数闭式（定理 \ref{thm:xi-double-herglotz-residue-ratio}）：
+\[
+\operatorname*{Res}_{z=z_j^-} M_H(z)= -4\pi\,m_j\,\frac{\delta_j}{1+\delta_j}.
+\]
+因此 \(H\) 在解析意义下唯一确定多重集 \(\{(\gamma_j,\delta_j,m_j)\}_{j=1}^{\kappa}\)：
+\(\gamma_j=\Re z_j^-\)、\(\delta_j=-\Im z_j^- -1\) 由极点位置给出，而
+\begin{equation}\label{eq:xi-comoving-profile-recover-multiplicity-by-residue}
+\boxed{\;
+m_j
+=
+-\frac{1+\delta_j}{4\pi\,\delta_j}\operatorname*{Res}_{z=z_j^-} M_H(z)\ \in\ (0,\infty)\;}
+\end{equation}
+由残数与 \(\delta_j\) 唯一恢复。
+从而上半平面内函数编码
+\[
+S_{\mathrm{HP}}(z)=\prod_{j=1}^{\kappa}\left(\frac{z-\gamma_j-\mathrm{i}(1+\delta_j)}{z-\gamma_j+\mathrm{i}(1+\delta_j)}\right)^{m_j}
+\]
+亦由 \(H\) 唯一确定（以归一化 \(S_{\mathrm{HP}}(\infty)=1\) 固定单位模常数）。
+在 Cayley 逆像下，盘内点
+\(
+a_j=\mathcal{C}(\gamma_j+\mathrm{i}\delta_j)\in\mathbb{D}
+\)
+由 \((\gamma_j,\delta_j)\) 唯一确定；故 \(H\) 是“点状缺陷”意义下的完整边界不变量。
+\end{corollary}
+
+\begin{corollary}[边界重建的整数化判别：由残数整除性锁定重数]\label{cor:xi-comoving-profile-integrality-test}
+在推论 \ref{cor:xi-comoving-profile-complete-reconstruction} 的设定下，若仅给定 \(H\) 并要求其来自某个\emph{整数重数}点状缺陷机制（即 \(m_j\in\NN\)），
+则必要且充分条件为：\(M_H\) 的极点集合满足 \(\delta_j=-\Im z_j^- -1>0\)，并且对每个极点 \(z_j^-\) 都有
+\[
+\boxed{\;
+-\frac{1+\delta_j}{4\pi\,\delta_j}\operatorname*{Res}_{z=z_j^-} M_H(z)\ \in\ \NN.\;}
+\]
+该条件为“边界数据是否可由合法点状缺陷产生”的纯解析可判定准则：极点位置给出连续深度，而残数的整除性给出离散重数。
+\end{corollary}
+
+\begin{proof}
+由 \eqref{eq:xi-comoving-profile-recover-multiplicity-by-residue}，\(m_j\) 的闭式恢复是必要的；其取值于 \(\NN\) 亦显然充分。证毕。
+\end{proof}
+
+\begin{proposition}[无穷远剖面矩展开：扫描尾部系数给出轴外参数的可审计矩（50）]\label{prop:xi-scan-far-field-moment-expansion}
 当 \(|x|\to\infty\) 时，共动扫描剖面 \(H(x)\) 具有渐近展开
 \[
 H(x)\sim \sum_{n\ge 0}\frac{M_n}{x^{n+2}},
 \]
 其中系数 \(M_n\) 为缺陷参数的显式代数矩。
-前两项为
+前三项为
 \[
 \boxed{\;
 M_0=4\sum_{j=1}^{\kappa}m_j\delta_j,\qquad
-M_1=8\sum_{j=1}^{\kappa}m_j\delta_j\,\gamma_j\;}
+M_1=8\sum_{j=1}^{\kappa}m_j\delta_j\,\gamma_j,\qquad
+M_2=4\sum_{j=1}^{\kappa}m_j\delta_j\bigl(3\gamma_j^2-(1+\delta_j)^2\bigr)\;}
 \]
 并且一般地 \(M_n\) 可写为 \(\sum_j m_j\delta_j\) 与 \(\sum_j m_j\delta_j\,\gamma_j^k(1+\delta_j)^\ell\)（\(k+\ell\le n\)）的线性组合。
 因此若能在远场区间上以足够精度估计 \(M_0,M_1,\dots,M_{N}\)，即可得到一列可审计的“矩链证书”，把二维离线参数转写为标量代数不变量。
@@ -443,7 +494,40 @@ M_1=8\sum_{j=1}^{\kappa}m_j\delta_j\,\gamma_j\;}
 :=\frac{4\delta}{x^2}\cdot\frac{1}{1-\frac{2\gamma}{x}+\frac{\gamma^2+(1+\delta)^2}{x^2}},
 \]
 再对括号内作幂级数展开并逐项求和即可得到 \(x^{-(n+2)}\) 系数为关于 \(\gamma\) 与 \(1+\delta\) 的多项式。
-汇总各峰并按重数加权即得结论；\(M_0,M_1\) 由首两项直接读出。证毕。
+汇总各峰并按重数加权即得结论；\(M_0,M_1,M_2\) 由前三项直接读出。证毕。
+\end{proof}
+
+\begin{proposition}[远场矩—极点连锁：尾系数满足最小阶 \(2\kappa\) 线性递推]\label{prop:xi-far-field-moment-recursion-order-2kappa}
+在有限点状缺陷口径下，\(H\) 为实有理函数且可写为 \(H(x)=P(x)/Q(x)\)，其中
+\[
+Q(x)=\prod_{j=1}^{\kappa}\bigl((x-\gamma_j)^2+(1+\delta_j)^2\bigr),
+\qquad \deg Q=2\kappa,\ \deg P\le 2\kappa-2.
+\]
+令远场展开 \(H(x)\sim\sum_{n\ge 0}\frac{M_n}{x^{n+2}}\)（命题 \ref{prop:xi-scan-far-field-moment-expansion}），并定义反转多项式
+\begin{equation}\label{eq:xi-Qsharp-from-Q}
+\boxed{\;
+Q^\sharp(y):=y^{2\kappa}Q(1/y)=\sum_{r=0}^{2\kappa}q_r\,y^{r}\qquad(q_0=1).\;}
+\end{equation}
+则尾系数满足严格递推
+\begin{equation}\label{eq:xi-far-field-moment-recursion}
+\boxed{\;
+\sum_{r=0}^{2\kappa} q_r\,M_{n+r}=0\qquad(\forall n\ge 0).\;}
+\end{equation}
+并且当 \(P,Q\) 既约（等价于 \(H\) 的极点无消去）时，\eqref{eq:xi-far-field-moment-recursion} 的最小递推阶数恰为 \(2\kappa\)；
+因此 \(\kappa\) 等于尾矩序列的最小递推阶数的一半，而 \(Q\)（从而全部 \((\gamma_j,\delta_j)\)）可由有限段 \(\{M_n\}\) 通过 Pad\'e/消元（或等价的线性代数）完全恢复。
+\end{proposition}
+
+\begin{proof}
+令 \(y=1/x\)，并设
+\(
+F(y):=y^{-2}H(1/y)=\sum_{n\ge 0}M_ny^n
+\)。
+由 \(H=P/Q\) 得
+\(
+y^{2\kappa-2}P(1/y)=Q^\sharp(y)\,F(y)
+\)，其中左端为次数不超过 \(2\kappa-2\) 的多项式。
+故 \(Q^\sharp(y)F(y)\) 的幂级数在 \(y^{2\kappa-1}\) 及以上系数全为零，即得 \eqref{eq:xi-far-field-moment-recursion}。
+若 \(H\) 的最小分母次数为 \(2\kappa\)，则 \(Q^\sharp\) 亦为最小；从而递推阶数不可再降。证毕。
 \end{proof}
 
 \begin{proposition}[Poisson 粗粒化的无毛发极限：大尺度 \texorpdfstring{$t$}{t} 下仅剩有限矩不变量]\label{prop:xi-poisson-coarsegraining-nohair}
