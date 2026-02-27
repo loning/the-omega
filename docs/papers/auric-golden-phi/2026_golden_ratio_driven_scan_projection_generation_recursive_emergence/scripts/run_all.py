@@ -355,6 +355,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_replica_softcore_fibonacci_moment_collapse_audit",
+            script="exp_pom_replica_softcore_fibonacci_moment_collapse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_replica_softcore_fibonacci_moment_collapse_audit.json",
+            ],
+        ),
+        Step(
             name="iid_sources_fold_vs_parry",
             script="exp_iid_sources_fold_vs_parry.py",
             args=[],
