@@ -174,6 +174,128 @@ B:=\frac{c\sqrt{y_{\mathrm c}}}{\lambda_{\mathrm c}},
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_bivariate\_partition\_audit.py}。
 \end{conclusion}
 
+\begin{theorem}[Lee--Yang 主振荡角的 Gelfond--Schneider 超越性]\label{thm:xi-terminal-zm-leyang-oscillation-angle-transcendence}
+沿用结论 \ref{con:xi-terminal-zm-psi-analytic-radius-cumulant-oscillation} 的记号，令
+\(
+s_{\mathrm c}:=s_{\mathrm c}^{+}=\log y_{\mathrm c}^{+}
+\)
+为主值对数，并写 \(\rho:=|s_{\mathrm c}|\)、\(\theta:=\arg(s_{\mathrm c})\in(0,\pi)\)。
+则：
+\begin{enumerate}
+  \item \(\tan\theta\) 为超越数；
+  \item 特别地，\(\theta/\pi\notin\QQ\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+设
+\[
+N:=y_{\mathrm c}^{+}\overline{y_{\mathrm c}^{+}}=|y_{\mathrm c}^{+}|^{2}\in\overline{\QQ}\cap\RR_{>0},
+\qquad
+r:=\frac{y_{\mathrm c}^{+}}{\overline{y_{\mathrm c}^{+}}}\in\overline{\QQ},
+\qquad |r|=1.
+\]
+由于 \(y_{\mathrm c}^{+}\notin\RR_{\le 0}\)，主值对数与共轭相容，故
+\[
+\log N=s_{\mathrm c}+\overline{s_{\mathrm c}}=2\Re(s_{\mathrm c})\neq 0,
+\qquad
+s_{\mathrm c}-\overline{s_{\mathrm c}}=2i\,\Im(s_{\mathrm c})
+\]
+并且 \(\exp(s_{\mathrm c}-\overline{s_{\mathrm c}})=r\neq 1\)。
+令
+\[
+\beta:=\frac{s_{\mathrm c}-\overline{s_{\mathrm c}}}{s_{\mathrm c}+\overline{s_{\mathrm c}}}
+=i\,\frac{\Im(s_{\mathrm c})}{\Re(s_{\mathrm c})}=i\tan\theta.
+\]
+若 \(\tan\theta\) 为代数数，则 \(\beta\in\overline{\QQ}\setminus\QQ\)（因为 \(\beta\notin\RR\)）。
+取 \(\alpha:=N\in\overline{\QQ}\setminus\{0,1\}\)，由 Gelfond--Schneider 定理可知任一值 \(\alpha^{\beta}\) 皆为超越数。\cite{Baker1975TranscendentalNumberTheory}
+另一方面，由 \(\beta\log N=s_{\mathrm c}-\overline{s_{\mathrm c}}\) 得
+\[
+N^{\beta}=\exp(\beta\log N)=\exp(s_{\mathrm c}-\overline{s_{\mathrm c}})=r\in\overline{\QQ},
+\]
+矛盾。
+故 \(\tan\theta\) 不可能为代数数，即 \(\tan\theta\) 为超越数。
+\par
+若 \(\theta/\pi\in\QQ\)，则 \(\zeta:=e^{2i\theta}\) 为单位根，从而
+\(
+\tan\theta=\frac{\zeta-1}{i(\zeta+1)}
+\in\overline{\QQ}
+\)，
+与已证超越性矛盾。
+故 \(\theta/\pi\notin\QQ\)。证毕。
+\end{proof}
+
+\begin{theorem}[归一化高阶累积量密度的反正弦极限律]\label{thm:xi-terminal-zm-cumulant-arcsine-limit-law}
+沿用结论 \ref{con:xi-terminal-zm-psi-analytic-radius-cumulant-oscillation} 的振荡渐近：
+存在 \(B\neq 0\)、\(\varphi\in\RR\) 使
+\[
+\kappa_n^\infty
+=\frac{n!}{\sqrt\pi}\,|B|\,\rho^{-n+\frac12}\,n^{-\frac32}
+\cos\!\Bigl((n-\tfrac12)\theta+\varphi\Bigr)
++o\!\bigl(n!\rho^{-n}n^{-\frac32}\bigr).
+\]
+定义归一化序列
+\[
+A_n:=\frac{\sqrt\pi}{|B|}\,\rho^{\,n-\frac12}\,n^{\frac32}\,\frac{\kappa_n^\infty}{n!}.
+\]
+则 \(A_n=\cos\!\bigl((n-\tfrac12)\theta+\varphi\bigr)+o(1)\)，并且由定理 \ref{thm:xi-terminal-zm-leyang-oscillation-angle-transcendence} 的 \(\theta/\pi\notin\QQ\) 得：\(A_n\) 的经验分布弱收敛到 \([-1,1]\) 上的反正弦分布。
+具体地，对任意连续函数 \(f\in C([-1,1])\)，有
+\[
+\lim_{N\to\infty}\frac1N\sum_{n=1}^{N} f(A_n)
+=\frac{1}{\pi}\int_{-1}^{1}\frac{f(x)}{\sqrt{1-x^2}}\,\dd x.
+\]
+\end{theorem}
+\begin{proof}
+由渐近式直接得到 \(A_n-\cos(t_n)\to 0\)，其中 \(t_n:=(n-\tfrac12)\theta+\varphi\)。
+由 \(\theta/\pi\notin\QQ\) 可知旋转序列 \(t_n\ (\mathrm{mod}\ 2\pi)\) 在 \(\RR/2\pi\ZZ\) 上等分布（Kronecker--Weyl），故对任意连续 \(g\in C(\RR/2\pi\ZZ)\) 有
+\[
+\frac1N\sum_{n=1}^{N} g(t_n)\to \frac{1}{2\pi}\int_{0}^{2\pi} g(t)\,\dd t.
+\]
+取 \(g(t)=f(\cos t)\) 即得 \(\cos(t_n)\) 的经验分布为反正弦律的推前测度。\cite{KuipersNiederreiter1974}
+再由 \(f\) 的一致连续性与 \(A_n-\cos(t_n)\to 0\) 控制 Ces\`aro 平均差，得到所述极限式。证毕。
+\end{proof}
+
+\begin{corollary}[符号密度、极值充满与无限次符号翻转]\label{cor:xi-terminal-zm-cumulant-sign-density-extremes}
+沿用定理 \ref{thm:xi-terminal-zm-cumulant-arcsine-limit-law} 的记号。
+则集合 \(\{n:\kappa_n^\infty>0\}\) 与 \(\{n:\kappa_n^\infty<0\}\) 的自然密度均为 \(1/2\)，并且
+\[
+\limsup_{n\to\infty}A_n=1,\qquad \liminf_{n\to\infty}A_n=-1.
+\]
+从而序列 \((\kappa_n^\infty)\) 发生无限次符号翻转，且不可能最终周期。
+\end{corollary}
+\begin{proof}
+由反正弦分布关于 \(0\) 对称且 \(\cos t\) 在一半圆周取正、一半取负，
+结合 \(A_n-\cos(t_n)\to 0\) 得符号密度结论。
+反正弦分布的支撑为 \([-1,1]\) 且任意开邻域均有正测度，故 \(\cos(t_n)\) 在 \([-1,1]\) 稠密；
+再由 \(A_n-\cos(t_n)\to 0\) 得 \(\limsup A_n=1\)、\(\liminf A_n=-1\)。
+最后，无限次正负出现推出无限次符号翻转；若 \((\kappa_n^\infty)\) 最终周期，则其主振荡相位 \((n-\tfrac12)\theta+\varphi\) 只能对应有理旋转，从而 \(\theta/\pi\in\QQ\)，与定理 \ref{thm:xi-terminal-zm-leyang-oscillation-angle-transcendence} 矛盾。证毕。
+\end{proof}
+
+\begin{proposition}[相邻阶局部增长率在扩展实轴上的稠密聚点]\label{prop:xi-terminal-zm-cumulant-local-growth-dense}
+沿用结论 \ref{con:xi-terminal-zm-psi-analytic-radius-cumulant-oscillation} 的振荡渐近，并在 \(\kappa_n^\infty\neq 0\) 时定义
+\[
+R_n:=\rho\left(\frac{n}{n+1}\right)^{\frac32}\cdot\frac{\kappa_{n+1}^\infty}{(n+1)\kappa_n^\infty}.
+\]
+则 \(R_n\) 在扩展实轴 \(\widehat{\RR}:=\RR\cup\{\infty\}\) 上具有稠密的聚点集合：对任意 \(L\in\RR\)，存在无穷子列 \(n_k\to\infty\) 使 \(R_{n_k}\to L\)，并且亦存在无穷子列使 \(|R_{n_k}|\to\infty\)。
+\end{proposition}
+\begin{proof}
+由结论 \ref{con:xi-terminal-zm-psi-analytic-radius-cumulant-oscillation}，
+\[
+\frac{\kappa_{n+1}^\infty}{(n+1)\kappa_n^\infty}
+=\frac{1}{\rho}\left(\frac{n}{n+1}\right)^{\frac32}
+\frac{\cos(t_n+\theta)}{\cos(t_n)}+o(1),
+\qquad
+t_n:=(n-\tfrac12)\theta+\varphi.
+\]
+故
+\[
+R_n=\frac{\cos(t_n+\theta)}{\cos(t_n)}+o(1)
+=\cos\theta-\sin\theta\,\tan(t_n)+o(1),
+\]
+其中 \(\sin\theta\neq 0\)（因 \(\theta\in(0,\pi)\)）。
+由 \(\theta/\pi\notin\QQ\) 得 \(t_n\ (\mathrm{mod}\ \pi)\) 等分布，从而 \(\tan(t_n)\) 在 \(\widehat{\RR}\) 上稠密；
+再由仿射同胚 \(x\mapsto \cos\theta-\sin\theta\,x\) 与 \(o(1)\) 微扰的稳定性得到 \(R_n\) 的聚点稠密性，并可取 \(|\tan(t_n)|\to\infty\) 的子列推出 \(|R_n|\to\infty\)。证毕。
+\end{proof}
+
 \begin{theorem}[Stokes 幅值平方 \texorpdfstring{$B^2$}{B^2} 的三次最小多项式、判别式与 \texorpdfstring{$S_3$}{S3} 刚性]\label{thm:xi-terminal-zm-stokes-amplitude-square-cubic-rigidity}
 沿用结论 \ref{con:xi-terminal-zm-psi-analytic-radius-cumulant-oscillation} 的临界对 \((\lambda_{\mathrm c},y_{\mathrm c})\) 与幅值常数 \(B\)，并令
 \[

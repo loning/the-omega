@@ -253,5 +253,248 @@ Z_n(y)=\sum_j c_j(y)\lambda_j(y)^n,
 若该猜想成立，则临界定位与指数读取可统一归约为 \(\Pi\) 的判别式/子结式链的符号判别与主导重根阶的抽取。
 \end{conjecture}
 
+\paragraph{有限阶累积量的代数零点反演：Hankel 铅笔、收敛阶与稳定性}
+本段把 Lee--Yang 零点的反演组织为一个纯代数问题：给定 \(\log Z\) 在原点的有限阶导数（等价的累积量/对数导数泰勒系数），以 Hankel 铅笔的谱读出最近零点族，并给出可证的指数收敛、锐性与扰动稳定性判据（参见 \cite{LeeYang1952LatticeGasIsing,FlindtGarrahan2013Trajectory} 的背景脉络）。
+
+\begin{definition}[对数累积量与规范化幂和]\label{def:xi-leyang-cumulant-power-sums}
+设 \(Z(z)\in\RR[z]\) 为多项式且 \(Z(0)\neq 0\)。记其非零零点（按重数计）为 \(\{\zeta_j\}_{j=1}^N\subset\CC\setminus\{0\}\)，并定义对数累积量
+\[
+\kappa_n:=\left.\frac{\dd^n}{\dd z^n}\log Z(z)\right|_{z=0}\qquad(n\ge 1).
+\]
+定义规范化幂和
+\begin{equation}\label{eq:xi-leyang-power-sum-sn}
+s_n:=-\frac{\kappa_n}{(n-1)!}=\sum_{j=1}^N \zeta_j^{-n}\qquad(n\ge 1),
+\end{equation}
+并记 \(\xi_j:=\zeta_j^{-1}\)。
+\end{definition}
+
+\begin{remark}[零点--累积量幂和恒等式]\label{rem:xi-leyang-zero-cumulant-identity}
+在上述设定下有因子分解
+\[
+Z(z)=Z(0)\prod_{j=1}^N\left(1-\frac{z}{\zeta_j}\right),
+\]
+从而在 \(z=0\) 的邻域
+\[
+\log Z(z)=\log Z(0)-\sum_{n\ge 1}\frac{z^n}{n}\sum_{j=1}^N\zeta_j^{-n}.
+\]
+逐项求导并在 \(z=0\) 取值给出
+\(
+\kappa_n=-(n-1)!\sum_j\zeta_j^{-n}
+\)，即 \eqref{eq:xi-leyang-power-sum-sn}。
+\end{remark}
+
+\begin{theorem}[支配零点的 Hankel 铅笔谱逼近与指数收敛]\label{thm:xi-leyang-hankel-pencil-dominant-zeros}
+在定义 \ref{def:xi-leyang-cumulant-power-sums} 的设定下，将零点按模长排序 \(|\zeta_1|\le\cdots\le|\zeta_N|\)，并取整数 \(r\ge 1\) 使
+\[
+|\zeta_r|<|\zeta_{r+1}|\qquad (|\zeta_{N+1}|:=+\infty).
+\]
+令 \(\xi_j=\zeta_j^{-1}\)，则
+\(
+|\xi_1|\ge\cdots\ge|\xi_r|>|\xi_{r+1}|
+\)。
+对任意 \(n\ge 1\) 与固定 \(r\) 定义 \(r\times r\) Hankel 矩阵
+\[
+H_0^{(r)}(n):=\bigl[s_{n+i+j}\bigr]_{i,j=0}^{r-1},
+\qquad
+H_1^{(r)}(n):=\bigl[s_{n+i+j+1}\bigr]_{i,j=0}^{r-1},
+\]
+并在 \(H_0^{(r)}(n)\) 可逆时定义 Hankel 铅笔
+\[
+\mathcal{S}_r(n):=\bigl(H_0^{(r)}(n)\bigr)^{-1}H_1^{(r)}(n).
+\]
+记间隙比
+\(
+q:=|\xi_{r+1}|/|\xi_r|\in(0,1)
+\)。
+则存在常数 \(C>0\) 与 \(n_0\in\NN\)（仅依赖于 \(\{\xi_j\}_{j=1}^{r+1}\)）使得对所有 \(n\ge n_0\)：
+\begin{enumerate}
+  \item \(H_0^{(r)}(n)\) 可逆；
+  \item 若以 \(\{\widehat\xi_j^{(r)}(n)\}_{j=1}^r\) 表示 \(\mathcal{S}_r(n)\) 的特征值（计代数重数），则可重排使
+  \begin{equation}\label{eq:xi-leyang-hankel-pencil-eig-error}
+  \max_{1\le j\le r}\abs{\widehat\xi_j^{(r)}(n)-\xi_j}\ \le\ C\,|\xi_1|\,q^{\,n}.
+  \end{equation}
+\end{enumerate}
+因此 \(\widehat\zeta_j^{(r)}(n):=1/\widehat\xi_j^{(r)}(n)\) 给出最近 \(r\) 个零点的指数级逼近，其收敛率由模长间隙 \(q\) 精确控制。
+\end{theorem}
+\begin{proof}
+令 Vandermonde 型矩阵 \(V_r\in\CC^{r\times r}\) 与对角矩阵 \(D_n,\Lambda\) 为
+\[
+(V_r)_{i,j}:=\xi_j^{\,i}\quad(0\le i\le r-1,\,1\le j\le r),\qquad
+D_n:=\mathrm{diag}(\xi_1^n,\dots,\xi_r^n),\qquad
+\Lambda:=\mathrm{diag}(\xi_1,\dots,\xi_r).
+\]
+按定义 \(s_m=\sum_{j=1}^N\xi_j^m\)，可分解为
+\[
+H_0^{(r)}(n)=V_rD_nV_r^{\mathsf T}+E_0(n),\qquad
+H_1^{(r)}(n)=V_rD_n\Lambda V_r^{\mathsf T}+E_1(n),
+\]
+其中误差矩阵 \(E_0(n),E_1(n)\) 仅由 \(j\ge r+1\) 的项贡献。由 \(|\xi_j|^{n+i+j}\le |\xi_{r+1}|^{n}|\xi_{r+1}|^{i+j}\) 得
+\[
+\norm{E_\ell(n)}\le C_\ell |\xi_{r+1}|^{\,n}\qquad(\ell=0,1),
+\]
+其中 \(C_\ell\) 与 \(n\) 无关。
+另一方面，\(V_r\) 可逆且 \(D_n\) 可逆，故 \(V_rD_nV_r^{\mathsf T}\) 可逆，且存在常数 \(C'>0\) 使
+\[
+\norm{(V_rD_nV_r^{\mathsf T})^{-1}}\le C'|\xi_r|^{-n}.
+\]
+因此
+\[
+\norm{(V_rD_nV_r^{\mathsf T})^{-1}E_0(n)}\le C''\left(\frac{|\xi_{r+1}|}{|\xi_r|}\right)^{n}=C''q^{\,n}.
+\]
+取 \(n_0\) 充分大使上式 \(\le \tfrac12\)，则 \(H_0^{(r)}(n)\) 可逆且
+\(
+\norm{(H_0^{(r)}(n))^{-1}}\le 2\norm{(V_rD_nV_r^{\mathsf T})^{-1}}
+\)。
+进一步，
+\[
+\mathcal{S}_r(n)
+=(V_rD_nV_r^{\mathsf T})^{-1}(V_rD_n\Lambda V_r^{\mathsf T})
+O(q^{\,n})
+=V_r^{-{\mathsf T}}\Lambda V_r^{\mathsf T}+O(q^{\,n}).
+\]
+其中 \(V_r^{-{\mathsf T}}\Lambda V_r^{\mathsf T}\) 与 \(\Lambda\) 相似，特征值恰为 \(\{\xi_1,\dots,\xi_r\}\)。
+对矩阵扰动应用 Bauer--Fike 型特征值扰动界即可得到 \eqref{eq:xi-leyang-hankel-pencil-eig-error}。证毕。
+\end{proof}
+
+\begin{corollary}[最近共轭对的二阶 Hankel 判别式估计器]\label{cor:xi-leyang-nearest-conjugate-pair-discriminant-estimator}
+在定理 \ref{thm:xi-leyang-hankel-pencil-dominant-zeros} 的设定下取 \(r=2\)，并进一步假设最近两零点构成非实共轭对
+\[
+|\zeta_1|=|\zeta_2|=:R_1<R_2:=\min_{j\ge 3}|\zeta_j|,\qquad \zeta_2=\overline{\zeta_1},\qquad \zeta_1\notin\RR.
+\]
+对 \(n\ge 1\) 定义二阶 Hankel 判别式
+\[
+\Delta_n:=\det\begin{pmatrix}
+s_n & s_{n+1}\\
+s_{n+1} & s_{n+2}
+\end{pmatrix}
+=s_ns_{n+2}-s_{n+1}^2,
+\]
+并在 \(\Delta_n\neq 0\) 时定义
+\[
+A_n:=\frac{s_{n+3}s_n-s_{n+2}s_{n+1}}{\Delta_n},\qquad
+B_n:=\frac{s_{n+3}s_{n+1}-s_{n+2}^2}{\Delta_n}.
+\]
+令 \(\widehat\xi_\pm^{(n)}\) 为二次多项式 \(q_n(\lambda)=\lambda^2-A_n\lambda+B_n\) 的两根，并令 \(\widehat\zeta_\pm^{(n)}:=1/\widehat\xi_\pm^{(n)}\)。
+则存在常数 \(C>0\) 与 \(n_0\)（仅依赖于 \(\{\zeta_j\}\)）使对所有 \(n\ge n_0\) 成立：在适当重排下
+\[
+\max_{\sigma\in\{+,-\}}\abs{\widehat\zeta_\sigma^{(n)}-\zeta_\sigma}
+\ \le\ C\,R_1\left(\frac{R_1}{R_2}\right)^{n}.
+\]
+\end{corollary}
+\begin{proof}
+当 \(r=2\) 时，\(\mathcal{S}_2(n)=(H_0^{(2)}(n))^{-1}H_1^{(2)}(n)\) 的特征多项式恰为
+\(
+\lambda^2-A_n\lambda+B_n
+\)，其根为 \(\widehat\xi_\pm^{(n)}\)。
+由定理 \ref{thm:xi-leyang-hankel-pencil-dominant-zeros} 的特征值收敛界（此时 \(q=R_1/R_2\)）得到
+\(\widehat\xi_\pm^{(n)}\to \xi_{1,2}\) 且误差为 \(O(q^n)\)。
+再由映射 \(\xi\mapsto 1/\xi\) 在 \(|\xi|=R_1^{-1}\) 的邻域上 Lipschitz（常数 \(\asymp R_1^2\)）得到对应的 \(\zeta\)-平面误差界。证毕。
+\end{proof}
+
+\begin{proposition}[指数收敛率的一般锐性]\label{prop:xi-leyang-exponential-rate-sharpness}
+在推论 \ref{cor:xi-leyang-nearest-conjugate-pair-discriminant-estimator} 的设定下，进一步假设存在第二个最近共轭对
+\[
+|\zeta_3|=|\zeta_4|=R_2,\qquad \zeta_4=\overline{\zeta_3},
+\]
+且其余零点模长严格大于 \(R_2\)。
+则存在常数 \(c\neq 0\) 与 \(n_1\in\NN\) 使对所有 \(n\ge n_1\) 有
+\[
+\max_{\sigma\in\{+,-\}}\abs{\widehat\zeta_\sigma^{(n)}-\zeta_\sigma}
+\ \ge\ |c|\,R_1\left(\frac{R_1}{R_2}\right)^{n}.
+\]
+因此在仅由模长间隙 \(R_1<R_2\) 所刻画的类上，收敛率 \((R_1/R_2)^n\) 不能被统一改进。
+\end{proposition}
+\begin{proof}[证明要点]
+将幂和分解为两对共轭主项与更远余项：
+\(
+s_n=(\xi_1^n+\overline{\xi_1}^n)+(\xi_3^n+\overline{\xi_3}^n)+\widetilde R_n
+\)，其中 \(|\widetilde R_n|=o(|\xi_3|^n)\)。
+把 \(A_n,B_n\) 视为 \((s_n,s_{n+1},s_{n+2},s_{n+3})\) 的有理函数，并按小参数
+\(
+\varepsilon_n:=(|\xi_3|/|\xi_1|)^n=(R_1/R_2)^n
+\)
+作一阶展开，可得在一般位置（相位非共振的开稠密条件）下
+\[
+A_n=(\xi_1+\overline{\xi_1})+\alpha\,\varepsilon_n+o(\varepsilon_n),\qquad
+B_n=\xi_1\overline{\xi_1}+\beta\,\varepsilon_n+o(\varepsilon_n),
+\]
+其中 \((\alpha,\beta)\neq (0,0)\)。
+二次多项式根对系数的一阶扰动给出根位移 \(\asymp \varepsilon_n\)，从而经 \(\xi\mapsto 1/\xi\) 得到 \(\zeta\)-平面误差下界 \(\asymp R_1\varepsilon_n\)。证毕。
+\end{proof}
+
+\begin{theorem}[Hankel 奇异值的对数斜率识别支配模长]\label{thm:xi-leyang-hankel-singular-slope-detects-moduli}
+在定理 \ref{thm:xi-leyang-hankel-pencil-dominant-zeros} 的设定下，固定任意 \(k\ge r\)，并令
+\[
+H_0^{(k)}(n):=\bigl[s_{n+i+j}\bigr]_{i,j=0}^{k-1}.
+\]
+记其奇异值按降序为 \(\sigma_1(n)\ge\cdots\ge\sigma_k(n)\ge 0\)。
+则对每个 \(1\le j\le r\) 存在常数 \(c_j,C_j>0\) 与 \(n_j\) 使对所有 \(n\ge n_j\) 有
+\[
+c_j\,|\xi_j|^{\,n}\ \le\ \sigma_j(n)\ \le\ C_j\,|\xi_j|^{\,n}.
+\]
+因此
+\[
+\lim_{n\to\infty}\frac{1}{n}\log\sigma_j(n)=\log|\xi_j|=-\log|\zeta_j|\qquad(1\le j\le r).
+\]
+\end{theorem}
+\begin{proof}[证明要点]
+将 \(H_0^{(k)}(n)\) 分解为秩 \(r\) 的主项与余项：
+\(
+H_0^{(k)}(n)=V_k D_n^{(r)} V_k^{\mathsf T}+\widetilde E(n)
+\)，其中 \((V_k)_{i,j}=\xi_j^i\)（\(0\le i\le k-1,\,1\le j\le r\)），\(D_n^{(r)}=\mathrm{diag}(\xi_1^n,\dots,\xi_r^n)\)，且 \(\norm{\widetilde E(n)}\le C|\xi_{r+1}|^{\,n}\)。
+对主项应用奇异值的 min--max 表达与 \(V_k\) 的左右有界性得到 \(\sigma_j(V_k D_n^{(r)} V_k^{\mathsf T})\asymp |\xi_j|^n\)；
+再用 Weyl 型奇异值扰动不等式吸收余项，即得双边界与极限。证毕。
+\end{proof}
+
+\begin{theorem}[累积量噪声扰动下的零点重构稳定性]\label{thm:xi-leyang-reconstruction-stability-under-noise}
+在定理 \ref{thm:xi-leyang-hankel-pencil-dominant-zeros} 的设定下，设观测到的幂和为 \(\widetilde s_n=s_n+\delta_n\)，并由此构造 \(\widetilde H_0^{(r)}(n),\widetilde H_1^{(r)}(n)\) 与
+\(
+\widetilde{\mathcal S}_r(n):=(\widetilde H_0^{(r)}(n))^{-1}\widetilde H_1^{(r)}(n)
+\)。
+若对某个 \(n\ge n_0\) 有
+\begin{equation}\label{eq:xi-leyang-stability-invertibility-condition}
+\norm{(H_0^{(r)}(n))^{-1}}\cdot \norm{\widetilde H_0^{(r)}(n)-H_0^{(r)}(n)}\le \frac12,
+\end{equation}
+则：
+\begin{enumerate}
+\item \(\widetilde H_0^{(r)}(n)\) 可逆，且
+\begin{align}\label{eq:xi-leyang-stability-pencil-bound}
+\norm{\widetilde{\mathcal S}_r(n)-\mathcal S_r(n)}
+&\le
+4\norm{(H_0^{(r)}(n))^{-1}}
+\Bigl(\norm{\widetilde H_1^{(r)}(n)-H_1^{(r)}(n)}
+\nonumber\\
+&\hspace{3.7em}
++\norm{\mathcal S_r(n)}\cdot\norm{\widetilde H_0^{(r)}(n)-H_0^{(r)}(n)}\Bigr).
+\end{align}
+\item 若 \(\mathcal S_r(n)\) 可对角化，\(\mathcal S_r(n)=PDP^{-1}\)，则任意 \(\widetilde{\mathcal S}_r(n)\) 的特征值 \(\widetilde\xi\) 满足
+\[
+\mathrm{dist}\!\bigl(\widetilde\xi,\sigma(\mathcal S_r(n))\bigr)\ \le\ \kappa(P)\,\norm{\widetilde{\mathcal S}_r(n)-\mathcal S_r(n)},
+\qquad
+\kappa(P):=\norm{P}\,\norm{P^{-1}}.
+\]
+从而在 \(|\xi_j|\) 有下界的区域内，零点估计 \(\widetilde\zeta=1/\widetilde\xi\) 的误差亦可由同一右端给出显式控制。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+条件 \eqref{eq:xi-leyang-stability-invertibility-condition} 蕴含
+\(
+\widetilde H_0^{(r)}(n)=H_0^{(r)}(n)\bigl(I+(H_0^{(r)}(n))^{-1}(\widetilde H_0^{(r)}(n)-H_0^{(r)}(n))\bigr)
+\)
+中括号可逆，且
+\(
+\norm{(\widetilde H_0^{(r)}(n))^{-1}}\le 2\norm{(H_0^{(r)}(n))^{-1}}
+\)。
+再由恒等式
+\[
+\widetilde{\mathcal S}-\mathcal S
+=(\widetilde H_0^{-1}-H_0^{-1})H_1+\widetilde H_0^{-1}(\widetilde H_1-H_1),
+\qquad
+\widetilde H_0^{-1}-H_0^{-1}=\widetilde H_0^{-1}(H_0-\widetilde H_0)H_0^{-1},
+\]
+直接得到 \eqref{eq:xi-leyang-stability-pencil-bound}。
+第二条为 Bauer--Fike 定理的直接推论。证毕。
+\end{proof}
+
 \endinput
 

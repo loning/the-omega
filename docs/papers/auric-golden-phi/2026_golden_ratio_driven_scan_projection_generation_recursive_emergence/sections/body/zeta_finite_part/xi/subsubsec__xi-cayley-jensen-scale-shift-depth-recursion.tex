@@ -127,6 +127,105 @@ t^2+(\delta-a)^2\ge r^2\bigl(t^2+(\delta+a)^2\bigr),
 \eqref{eq:xi-scaled-shifted-delta-bound-comoving}。证毕。
 \end{proof}
 
+\begin{theorem}[给定偏移阈值下的高度覆盖窗与尺度最优选择]\label{thm:xi-jensen-window-optimal-scale}
+在定理 \ref{thm:xi-scaled-shifted-jensen-implies-delta-bound} 的设定下，固定 \(0<r<1\) 与偏移阈值 \(\delta_0>0\)，并记
+\[
+A(r):=\frac{1+r^2}{1-r^2}.
+\]
+对任意 \(a>0\) 定义高度覆盖半宽 \(U(a)\ge 0\) 为
+\begin{equation}\label{eq:xi-jensen-window-Ua}
+U(a)^2:=\max\bigl\{0,\ 2aA(r)\delta_0-a^2-\delta_0^2\bigr\}.
+\end{equation}
+则在证书条件 \(|w_{\rho,a,x_0}|\ge r\) 下，对任意离线零点 \(\rho=\beta+\mathrm{i}\gamma\)（\(\delta=\tfrac12-\beta>0\)）均有蕴含
+\begin{equation}\label{eq:xi-jensen-window-implication}
+|\gamma-x_0|\le U(a)\quad\Longrightarrow\quad \delta\le \delta_0.
+\end{equation}
+并且当右端为正时，\(U(a)\) 关于尺度参数 \(a\) 的最大化具有解析解
+\begin{equation}\label{eq:xi-jensen-window-optimal-scale}
+a_{\mathrm{opt}}=\delta_0A(r),
+\qquad
+U_{\max}:=\max_{a>0}U(a)=\delta_0\sqrt{A(r)^2-1}
+=\delta_0\frac{2r}{1-r^2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+令 \(t:=|\gamma-x_0|\)。由定理 \ref{thm:xi-scaled-shifted-jensen-implies-delta-bound} 的推导可知
+\(|w_{\rho,a,x_0}|\ge r\) 等价地推出二次不等式
+\[
+\delta^2-2aA(r)\delta+(t^2+a^2)\ge 0,
+\]
+并在 \(\delta>0\)、\(\beta\in(0,\tfrac12)\) 的有效分支上强制
+\begin{equation}\label{eq:xi-jensen-window-delta-upper-branch}
+\delta\le aA(r)-\sqrt{a^2\bigl(A(r)^2-1\bigr)-t^2}.
+\end{equation}
+若 \(t^2\le 2aA(r)\delta_0-a^2-\delta_0^2\)，则
+\[
+a^2\bigl(A(r)^2-1\bigr)-t^2\ge (aA(r)-\delta_0)^2,
+\]
+从而由 \eqref{eq:xi-jensen-window-delta-upper-branch} 得 \(\delta\le \delta_0\)，即
+\eqref{eq:xi-jensen-window-implication}。
+
+将 \eqref{eq:xi-jensen-window-Ua} 的非零分支视作关于 \(a\) 的凹二次式，
+\[
+U(a)^2=-(a-\delta_0A(r))^2+\delta_0^2\bigl(A(r)^2-1\bigr),
+\]
+故极大点为 \(a_{\mathrm{opt}}=\delta_0A(r)\)，最大值给出 \eqref{eq:xi-jensen-window-optimal-scale}。证毕。
+\end{proof}
+
+\begin{corollary}[有限高度区间的最小采样复杂度与等距网格]\label{cor:xi-height-interval-minimal-sampling}
+在定理 \ref{thm:xi-jensen-window-optimal-scale} 的设定下，固定偏移阈值 \(\delta_0>0\) 与高度截断 \(T>0\)，并取 \(\varrho\in(0,1)\)、\(\varepsilon\ge 0\) 及 \(r=\varrho e^{-\varepsilon}\)，在每个中心 \(x_0\) 处使用最优尺度 \(a_{\mathrm{opt}}=\delta_0A(r)\)。
+若存在中心集 \(\{x_k\}_{k=1}^N\subset[-T,T]\)，使对每个 \(k\) 均有 Jensen 证书
+\[
+D_{\zeta,a_{\mathrm{opt}},x_k}(\varrho)\le \varepsilon,
+\]
+且覆盖条件
+\[
+[-T,T]\subset \bigcup_{k=1}^N [x_k-U_{\max},\,x_k+U_{\max}],
+\]
+则在 \([-T,T]\) 内不存在满足 \(\delta>\delta_0\) 的离线零点。
+
+此外，覆盖数的最小可能值满足
+\begin{equation}\label{eq:xi-height-interval-Nmin}
+N_{\min}=\Bigl\lceil \frac{T}{U_{\max}}\Bigr\rceil
+=\Bigl\lceil \frac{T(1-r^2)}{2\delta_0 r}\Bigr\rceil,
+\end{equation}
+并可由等距网格 \(x_k=-T+U_{\max}+2(k-1)U_{\max}\) 达到。
+\end{corollary}
+\begin{proof}
+对任意 \(\gamma\in[-T,T]\)，覆盖条件保证存在 \(k\) 使 \(|\gamma-x_k|\le U_{\max}\)。
+在中心 \(x_k\) 的证书条件下，定理 \ref{thm:xi-jensen-window-optimal-scale} 给出
+\(\delta\le \delta_0\)。
+因此 \([-T,T]\) 内无 \(\delta>\delta_0\) 的离线零点。
+
+反之，每个中心最多覆盖长度 \(2U_{\max}\) 的区间，故任何覆盖 \([-T,T]\) 的方案必满足
+\(N\cdot 2U_{\max}\ge 2T\)，即 \(N\ge \lceil T/U_{\max}\rceil\)，从而得到
+\eqref{eq:xi-height-interval-Nmin}。等距构造达到该下界。证毕。
+\end{proof}
+
+\begin{corollary}[固定缺陷预算下的极限半径与复杂度闭式]\label{cor:xi-eps-fixed-radius-limit}
+在定理 \ref{thm:xi-scaled-shifted-jensen-implies-delta-bound} 的证书形式
+\(
+D_{\zeta,a,x_0}(\varrho)\le \varepsilon
+\)
+下，排斥半径为 \(r=\varrho e^{-\varepsilon}\)。
+若在固定 \(\varepsilon>0\) 下令 \(\varrho\uparrow 1\)，则 \(r\uparrow e^{-\varepsilon}\)，并且
+\begin{equation}\label{eq:xi-eps-fixed-Umax-limit}
+U_{\max}\uparrow
+\delta_0\frac{2e^{-\varepsilon}}{1-e^{-2\varepsilon}}
+=\delta_0\frac{1}{\sinh\varepsilon}.
+\end{equation}
+相应地，\eqref{eq:xi-height-interval-Nmin} 给出的全局覆盖下界满足渐近
+\begin{equation}\label{eq:xi-eps-fixed-Nmin-asymptotic}
+N_{\min}\sim \frac{T\sinh\varepsilon}{\delta_0}\qquad (\varrho\uparrow 1).
+\end{equation}
+\end{corollary}
+\begin{proof}
+函数 \(r\mapsto \frac{2r}{1-r^2}\) 在 \((0,1)\) 上严格递增，故在固定 \(\varepsilon\) 下
+\(\varrho\uparrow 1\) 给出 \(r=\varrho e^{-\varepsilon}\uparrow e^{-\varepsilon}\)，代入
+\eqref{eq:xi-jensen-window-optimal-scale} 即得 \eqref{eq:xi-eps-fixed-Umax-limit}。
+再代入 \eqref{eq:xi-height-interval-Nmin} 即得 \eqref{eq:xi-eps-fixed-Nmin-asymptotic}。证毕。
+\end{proof}
+
 \begin{proposition}[Jensen 缺陷在对数半径变量上的凸性与多半径融合]\label{prop:xi-jensen-logradius-convex-fusion}
 设 \(F\) 在 \(\mathbb D\) 内解析且 \(F(0)\neq 0\)。定义
 \[
@@ -179,6 +278,74 @@ Jensen 求和式逐项求导可得
 r_F^\ast(\varrho)=\varrho e^{-D_F(\varrho)}
 \)
 直接得到 \eqref{eq:xi-jensen-logradius-fusion-repulsion}。证毕。
+\end{proof}
+
+\begin{theorem}[单零点缺陷贡献的中心平移平均闭式与极限律]\label{thm:xi-singlezero-defect-translation-average}
+固定 \(a>0\) 与 \(0<r<1\)。对单个离线零点参数 \((\gamma,\delta)\)（\(\delta>0\)）定义其在中心 \(x_0\) 处的单零点缺陷贡献
+\begin{equation}\label{eq:xi-singlezero-defect-pointwise}
+\mathfrak d_{r,a}(x_0;\gamma,\delta)
+:=\log_+\frac{r}{|w_{\rho,a,x_0}|},
+\qquad
+\log_+(u):=\max\{\log u,0\}.
+\end{equation}
+记
+\begin{equation}\label{eq:xi-singlezero-defect-B}
+B:=r^2(\delta+a)^2-(\delta-a)^2.
+\end{equation}
+若 \(B\le 0\)，则 \(\mathfrak d_{r,a}(\cdot;\gamma,\delta)\equiv 0\)。若 \(B>0\)，定义
+\begin{equation}\label{eq:xi-singlezero-defect-L}
+L:=\sqrt{\frac{B}{1-r^2}}>0,
+\end{equation}
+则中心平移平均具有闭式表达
+\begin{equation}\label{eq:xi-singlezero-defect-translation-average}
+\int_{-\infty}^{\infty}\mathfrak d_{r,a}(x_0;\gamma,\delta)\,\dd x_0
+=
+2(\delta+a)\arctan\!\frac{L}{\delta+a}
+-2(\delta-a)\arctan\!\frac{L}{\delta-a}.
+\end{equation}
+并约定当 \(\delta=a\) 时，上式第二项取其连续延拓值 \(0\)。
+并且当 \(r\uparrow 1\) 时有极限律
+\begin{equation}\label{eq:xi-singlezero-defect-translation-average-limit}
+\lim_{r\uparrow 1}\int_{-\infty}^{\infty}\mathfrak d_{r,a}(x_0;\gamma,\delta)\,\dd x_0
+=2\pi\,\min\{\delta,a\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+由平移不变性令 \(t:=\gamma-x_0\)，则 \(\dd x_0=-\dd t\)，且
+\[
+|w_{\rho,a,x_0}|^2
+=\frac{t^2+(\delta-a)^2}{t^2+(\delta+a)^2}.
+\]
+当且仅当 \(|w_{\rho,a,x_0}|<r\) 时有 \(\mathfrak d_{r,a}(x_0;\gamma,\delta)>0\)，即
+\[
+\frac{t^2+(\delta-a)^2}{t^2+(\delta+a)^2}<r^2
+\quad\Longleftrightarrow\quad
+(1-r^2)t^2<r^2(\delta+a)^2-(\delta-a)^2.
+\]
+因此当 \(B\le 0\) 时无解，\(\mathfrak d_{r,a}\equiv 0\)；当 \(B>0\) 时等价于 \(|t|<L\)，其中 \(L\) 由
+\eqref{eq:xi-singlezero-defect-L} 给出。于是
+\begin{align*}
+\int_{-\infty}^{\infty}\mathfrak d_{r,a}(x_0;\gamma,\delta)\,\dd x_0
+&=\int_{-L}^{L}\left(\log r-\frac12\log\bigl(t^2+(\delta-a)^2\bigr)+\frac12\log\bigl(t^2+(\delta+a)^2\bigr)\right)\dd t.
+\end{align*}
+利用初等积分恒等式（\(c\neq 0\)）
+\[
+\int_0^L\log(t^2+c^2)\,\dd t
+=L\log(L^2+c^2)-2L+2c\arctan(L/c),
+\]
+并注意到端点条件 \(|w_{\rho,a,x_0}|=r\) 在 \(|t|=L\) 处等价于
+\[
+r^2=\frac{L^2+(\delta-a)^2}{L^2+(\delta+a)^2}
+\quad\Longrightarrow\quad
+\log(L^2+(\delta+a)^2)-\log(L^2+(\delta-a)^2)=-2\log r,
+\]
+从而上述积分中所有线性 \(\log r\) 项完全抵消，仅余反正切项，化简得到
+\eqref{eq:xi-singlezero-defect-translation-average}。
+
+当 \(r\uparrow 1\) 且 \(B>0\) 时，由 \eqref{eq:xi-singlezero-defect-L} 得 \(L\to+\infty\)。
+若 \(\delta<a\)，则 \(\arctan(L/(\delta+a))\to\pi/2\) 且 \(\arctan(L/(\delta-a))\to-\pi/2\)，极限为 \(2\pi\delta\)；
+若 \(\delta>a\)，则两反正切同趋 \(\pi/2\)，极限为 \(2\pi a\)。
+两者统一为 \eqref{eq:xi-singlezero-defect-translation-average-limit}。证毕。
 \end{proof}
 
 \begin{theorem}[单零点缺陷模型下的对数网格极值最优性]\label{thm:xi-singlezero-jensen-loggrid-minimax}

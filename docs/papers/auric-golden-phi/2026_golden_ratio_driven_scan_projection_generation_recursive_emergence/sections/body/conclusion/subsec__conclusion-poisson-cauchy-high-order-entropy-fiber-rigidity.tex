@@ -162,6 +162,86 @@ D_{\mathrm{KL}}
 代回并整理即得公式。证毕。
 \end{proof}
 
+\begin{theorem}[KL 相对熵的八阶喷流与奇次项消隐]\label{thm:conclusion-poisson-cauchy-kl-eighth-order-jet}
+若中心化绝对八阶矩有限
+\[
+\mu_8^\ast:=\int_{\RR}|\gamma-\bar\gamma|^8\,\dd\tilde\nu(\gamma)<\infty,
+\]
+并且高阶 Taylor 余项可交换到积分号内，则当 \(t\to\infty\) 有八阶喷流展开
+\[
+D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t)
+=\frac{\mu_2^2}{8\,t^4}+\frac{B_6}{t^6}+\frac{B_8}{t^8}+o(t^{-8}),
+\]
+其中
+\[
+B_6=\frac{\mu_2^3}{64}-\frac{\mu_2\mu_4}{8}+\frac{3\mu_3^2}{32},
+\]
+\[
+B_8=\frac1{256}\Bigl(3\mu_2^4-12\mu_2^2\mu_4+9\mu_2\mu_3^2+12\mu_2\mu_6+20\mu_4^2-30\mu_3\mu_5\Bigr).
+\]
+并且该展开仅含偶次幂：\(t^{-5}\) 与 \(t^{-7}\) 项的系数恒等为零。
+\end{theorem}
+\begin{proof}[证明要点]
+令 \(\delta_t(x)=\tilde h_t(x)/\tilde g_t(x)-1\) 并作尺度置换 \(y=(x-\bar\gamma)/t\)，则
+\[
+\tilde g_t(x)\,\dd x=\frac{1}{\pi}\frac{\dd y}{1+y^2}.
+\]
+对 \(z\mapsto (1+(y-z)^2)^{-1}\) 在 \(z=0\) 作六阶 Taylor 展开并取期望，得到
+\[
+\delta_t(x)=\sum_{k=2}^{6}\frac{\mu_k}{t^k}U_k(y)+O(t^{-7})
+\]
+（于 \(\tilde g_t\dd x\) 的加权 \(L^p\) 意义下），其中
+\[
+U_2(y)=\frac{3y^2-1}{(1+y^2)^2},\quad
+U_3(y)=\frac{4y(y^2-1)}{(1+y^2)^3},\quad
+U_4(y)=\frac{5y^4-10y^2+1}{(1+y^2)^4},
+\]
+\[
+U_5(y)=\frac{2y(y^2-3)(3y^2-1)}{(1+y^2)^5},\quad
+U_6(y)=\frac{7y^6-35y^4+21y^2-1}{(1+y^2)^6}.
+\]
+将
+\(
+(1+\delta)\log(1+\delta)=\sum_{n\ge 2}\frac{(-1)^n}{n(n-1)}\delta^n
+\)
+代入
+\(
+D_{\mathrm{KL}}=\int \tilde g_t(1+\delta_t)\log(1+\delta_t)
+\)
+并按 \(t^{-k}\) 收集项。
+由于基准密度为偶函数、\(U_{2\ell}\) 为偶函数而 \(U_{2\ell+1}\) 为奇函数，所有导致 \(t^{-5}\)、\(t^{-7}\) 的积分项均为整体奇函数的期望，故严格为零。
+其余系数可归结为有限个有理积分常数；将这些常数代回即可得到 \(B_6,B_8\) 的闭式表达。证毕。
+\end{proof}
+
+\begin{theorem}[四阶可微 \texorpdfstring{$f$}{f}-散度的八阶喷流]\label{thm:conclusion-poisson-cauchy-fdiv-eighth-order-jet}
+令 \(f:(0,\infty)\to\RR\) 为凸函数，满足 \(f(1)=0\)，并在 \(1\) 的邻域 \(C^4\) 且 \(f^{(j)}(1)\)（\(j=2,3,4\)）有限。
+定义 Csisz\'ar \texorpdfstring{$f$}{f}-散度
+\[
+D_f(\tilde h_t\mid\tilde g_t):=\int_{\RR}\tilde g_t(x)\,f\!\left(\frac{\tilde h_t(x)}{\tilde g_t(x)}\right)\dd x.
+\]
+在定理 \ref{thm:conclusion-poisson-cauchy-kl-eighth-order-jet} 的矩条件下，当 \(t\to\infty\) 有
+\[
+D_f(\tilde h_t\mid\tilde g_t)
+=\frac{f''(1)\mu_2^2}{8t^4}+\frac{C_6(f)}{t^6}+\frac{C_8(f)}{t^8}+o(t^{-8}),
+\]
+其中
+\[
+C_6(f)=-\frac{f^{(3)}(1)\mu_2^3}{64}-\frac{f''(1)\mu_2 \mu_4}{8}+\frac{3f''(1)\mu_3^2}{32},
+\]
+\[
+C_8(f)=\frac1{512}\Bigl(
+f''(1)\bigl(24\mu_2 \mu_6-60\mu_3\mu_5+40\mu_4^2\bigr)
++f^{(3)}(1)\bigl(24\mu_2^2\mu_4-18\mu_2\mu_3^2\bigr)
++f^{(4)}(1)\cdot 3\mu_2^4
+\Bigr).
+\]
+\end{theorem}
+\begin{proof}[证明要点]
+令 \(\delta_t=\tilde h_t/\tilde g_t-1\) 并对 \(f(1+\delta)\) 在 \(\delta=0\) 处作四阶 Taylor 展开。
+由于质量守恒 \(\int \tilde g_t\delta_t=0\)，一次项在积分中消失。
+再把 \(\delta_t\) 的六阶喷流代入并按 \(t^{-k}\) 收集至 \(k=8\)，即可把系数归结为同一组有理积分常数；将常数代回得到所示闭式。证毕。
+\end{proof}
+
 \begin{theorem}[R\'enyi 散度的六阶一参数闭式]\label{thm:conclusion-poisson-cauchy-renyi-sixth-order-expansion}
 在定理 \ref{thm:conclusion-poisson-cauchy-kl-sixth-order-expansion} 的假设下，取 \(\alpha>0,\ \alpha\neq 1\)，定义
 \[
@@ -240,6 +320,59 @@ I_1=-\frac{\dd}{\dd t}D_{\mathrm{KL}}
 +o(t^{-7}),
 \]
 化简即得。证毕。
+\end{proof}
+
+\begin{corollary}[信息耗散泛函的九阶喷流]\label{cor:conclusion-poisson-cauchy-i1-ninth-order-jet}
+在定理 \ref{thm:conclusion-poisson-cauchy-kl-eighth-order-jet} 的假设下，若 \(I_1\) 满足耗散恒等式
+\[
+\frac{\dd}{\dd t}D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t)=-I_1(\tilde h_t\mid \tilde g_t),
+\]
+则当 \(t\to\infty\) 有
+\[
+I_1(\tilde h_t\mid \tilde g_t)
+=\frac{\mu_2^2}{2t^5}+\frac{6B_6}{t^7}+\frac{8B_8}{t^9}+o(t^{-9}),
+\]
+其中 \(B_6,B_8\) 与定理 \ref{thm:conclusion-poisson-cauchy-kl-eighth-order-jet} 相同。
+\end{corollary}
+\begin{proof}
+对定理 \ref{thm:conclusion-poisson-cauchy-kl-eighth-order-jet} 的展开逐项求导并取负号即可；余项 \(o(t^{-8})\) 的导数为 \(o(t^{-9})\) 由支配收敛与差分形式的耗散律正则化给出。证毕。
+\end{proof}
+
+\begin{proposition}[四阶中心矩的显式解码：由 \texorpdfstring{$L^1$}{L1} 三阶喷流与 KL 六阶喷流确定]\label{prop:conclusion-poisson-cauchy-m4-decode}
+设 \(\mu_2>0\)、\(\mu_5^\ast<\infty\) 且 \(\mu_4<\infty\)。
+令
+\[
+\Delta_t(x):=\tilde h_t(x)-\tilde g_t(x)-\mu_2\tilde r_t(x)
+\]
+如定理 \ref{thm:conclusion-poisson-cauchy-third-order-tv-constant} 所定义，并令
+\[
+A_3:=\lim_{t\to\infty} t^3\|\Delta_t\|_{L^1(\RR)}
+\qquad(\text{从而 }A_3=\frac{|\mu_3|}{\pi}).
+\]
+若再令
+\[
+B_6:=\lim_{t\to\infty}t^6\!\left(D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t)-\frac{\mu_2^2}{8t^4}\right)
+\qquad(\text{从而 }B_6=\frac{\mu_2^3}{64}-\frac{\mu_2\mu_4}{8}+\frac{3\mu_3^2}{32}),
+\]
+则第四中心矩 \(\mu_4\) 可由 \((\mu_2,A_3,B_6)\) 显式重构：
+\[
+\mu_4
+=\frac{\mu_2^2}{8}+\frac{3\mu_3^2}{4\mu_2}-\frac{8B_6}{\mu_2}
+=\frac{\mu_2^2}{8}+\frac{3\pi^2A_3^2}{4\mu_2}-\frac{8B_6}{\mu_2}.
+\]
+特别地，若 \(\tilde\nu\) 关于 \(\bar\gamma\) 对称（等价于 \(\mu_3=0\)），则无需三阶 \(\,L^1\) 喷流即可由 KL 六阶喷流反演
+\[
+\mu_4=\frac{\mu_2^2}{8}-\frac{8B_6}{\mu_2}.
+\]
+若进一步满足 \(\mu_5=0\) 且定理 \ref{thm:conclusion-poisson-cauchy-kl-eighth-order-jet} 的八阶喷流成立，则由 \(B_8\) 还可显式解码第六中心矩：
+\[
+\mu_6=\frac{256B_8-3\mu_2^4+12\mu_2^2\mu_4-20\mu_4^2}{12\mu_2}.
+\]
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:conclusion-poisson-cauchy-third-order-tv-constant} 得 \(A_3=|\mu_3|/\pi\)，从而 \(\mu_3^2=\pi^2A_3^2\)。
+另一方面，由定理 \ref{thm:conclusion-poisson-cauchy-kl-sixth-order-expansion} 可得 \(B_6\) 的中心矩表达式。
+对该代数恒等式解出 \(\mu_4\) 即得结论。证毕。
 \end{proof}
 
 \begin{theorem}[时间纤维的 Cauchy 化与 Jensen 缺陷期望表示]\label{thm:conclusion-time-fiber-cauchy-jensen-representation}

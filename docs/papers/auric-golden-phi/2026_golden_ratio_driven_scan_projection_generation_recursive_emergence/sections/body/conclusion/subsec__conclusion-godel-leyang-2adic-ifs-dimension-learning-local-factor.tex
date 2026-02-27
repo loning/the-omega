@@ -5,6 +5,7 @@
 E_{\min}:\ u^2+u=x^3-x,
 \]
 并以 \(T_2(E_{\min})\cong\ZZ_2^2\) 作为分辨率地址空间，给出强分离数字系统的超度量分形结论、有限样本可识别性以及 \(2\)-处局部因子的谱接口猜想。
+与该地址化方案相兼容的 Lee--Yang 分支结构与椭圆归一化证书，可参见内部审计记录 \cite{Internal2026TerminalZmLeeYangEllipticS4Audit} 所给出的分解与一致性核验口径。
 
 \begin{theorem}[强分离 Gödel--Lee--Yang 仿射 IFS 的同胚编码与精确维数]\label{thm:conclusion-godel-leyang-2adic-ifs-exact-dimension}
 设
@@ -84,6 +85,37 @@ N(2^{-nL};K_D)=|D|^n.
 \mu_D(B(x,2^{-nL}))=|D|^{-n}.
 \]
 再用 \eqref{eq:conclusion-godel-leyang-dimh-exact} 即得 \eqref{eq:conclusion-godel-leyang-ball-mass-exact}。证毕。
+\end{proof}
+
+\begin{proposition}[前缀一致与 \(B^n\)-同余的等价刻画]\label{prop:conclusion-godel-leyang-prefix-congruence-equivalence}
+在定理 \ref{thm:conclusion-godel-leyang-2adic-ifs-exact-dimension} 的设定下，令
+\[
+x=\sum_{j\ge 0}B^j d_j,\qquad
+y=\sum_{j\ge 0}B^j e_j
+\qquad (d_j,e_j\in D)
+\]
+为 \(K_D\) 中两点的唯一地址展开。
+则对任意 \(n\ge 1\)，下列两项等价：
+\[
+d_0=e_0,\ \dots,\ d_{n-1}=e_{n-1}
+\quad\Longleftrightarrow\quad
+x\equiv y\pmod{B^nT}.
+\]
+\end{proposition}
+\begin{proof}
+若前 \(n\) 位一致，则
+\[
+x-y=\sum_{j\ge n}B^j(d_j-e_j)\in B^nT,
+\]
+故 \(x\equiv y\pmod{B^nT}\)。
+
+反之，若 \(x\equiv y\pmod{B^nT}\)，则模 \(BT\) 约化得 \(d_0\equiv e_0\pmod{BT}\)。
+由强分离条件 \eqref{eq:conclusion-godel-leyang-ssc-modBT}，必有 \(d_0=e_0\)。
+两边同减 \(d_0\) 并除以 \(B\)（在 \(T\) 上单射）得到
+\(
+\sum_{j\ge 0}B^j d_{j+1}\equiv \sum_{j\ge 0}B^j e_{j+1}\pmod{B^{n-1}T}
+\)，
+归纳即得前 \(n\) 位一致。证毕。
 \end{proof}
 
 \begin{proposition}[截断误差最优界与分辨率纤维几何]\label{prop:conclusion-godel-leyang-truncation-fiber}
@@ -197,6 +229,65 @@ f(g)=\frac1{|G|}\sum_{\chi\in\widehat G}\widehat f(\chi)\chi(g)
 \]
 证毕。
 \end{proof}
+
+\begin{proposition}[数字不足强制 Haar-零测]\label{prop:conclusion-godel-leyang-haar-null-small-digit}
+在定理 \ref{thm:conclusion-godel-leyang-2adic-ifs-exact-dimension} 的设定下，令 \(m_T\) 为紧群 \(T\) 的归一化 Haar 概率测度。
+若 \(|D|<B^2\)，则
+\[
+m_T(K_D)=0.
+\]
+\end{proposition}
+\begin{proof}
+由 Hutchinson 方程 \eqref{eq:conclusion-godel-leyang-hutchinson}、Haar 测度的平移不变性与缩放性 \(m_T(BE)=B^{-2}m_T(E)\)，有
+\[
+m_T(K_D)
+=m_T\!\left(\bigcup_{d\in D}(d+BK_D)\right)
+\le \sum_{d\in D}m_T(d+BK_D)
+=|D|\,B^{-2}m_T(K_D).
+\]
+当 \(|D|<B^2\) 时，系数 \(|D|B^{-2}<1\)，从而 \(m_T(K_D)=0\)。证毕。
+\end{proof}
+
+\begin{proposition}[Haar 随机分辨率相干深度的指数尾律]\label{prop:conclusion-godel-leyang-haar-coherence-depth}
+令 \(X,Y\) 为 \(T\) 上独立的 Haar 随机变量。
+定义分辨率相干深度
+\[
+\mathrm{coh}_B(X,Y):=\sup\{n\in\NN:\ X\equiv Y\pmod{B^nT}\}\in\NN\cup\{\infty\}.
+\]
+则对任意 \(n\ge 0\)，有
+\[
+\PP\!\bigl(\mathrm{coh}_B(X,Y)\ge n\bigr)=B^{-2n},
+\qquad
+\PP\!\bigl(\mathrm{coh}_B(X,Y)=n\bigr)=(1-B^{-2})B^{-2n}.
+\]
+\end{proposition}
+\begin{proof}
+差值 \(Z:=X-Y\) 仍为 Haar 分布，且事件 \(\mathrm{coh}_B(X,Y)\ge n\) 等价于 \(Z\in B^nT\)。
+又 \(T/B^nT\) 的基数为 \(B^{2n}\)，故 \(m_T(B^nT)=B^{-2n}\)，从而
+\[
+\PP(\mathrm{coh}_B(X,Y)\ge n)=m_T(B^nT)=B^{-2n}.
+\]
+精确分布由尾概率差分得到。证毕。
+\end{proof}
+
+\begin{corollary}[五余类强分离的分辨率下界与 Haar-零测]\label{cor:conclusion-godel-leyang-five-digit-rigidity}
+在定理 \ref{thm:conclusion-godel-leyang-2adic-ifs-exact-dimension} 的设定下，若 \(|D|=5\) 且满足强分离条件 \eqref{eq:conclusion-godel-leyang-ssc-modBT}，则必有 \(L\ge 2\)，并且
+\[
+m_T(K_D)=0,
+\qquad
+\dim_H(K_D)=\frac{\log_2 5}{L}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-godel-leyang-2adic-ifs-exact-dimension}\eqref{eq:conclusion-godel-leyang-dimh-exact} 得 \(\dim_H(K_D)=\log_2 5/L\)。
+又 \(K_D\subset T\cong \ZZ_2^2\) 的 Hausdorff 维数不超过 \(2\)，故 \(\log_2 5/L\le 2\)，从而 \(L\ge 2\)。
+Haar-零测由命题 \ref{prop:conclusion-godel-leyang-haar-null-small-digit} 直接推出（此时 \(5<B^2=4^L\)）。证毕。
+\end{proof}
+
+\begin{remark}[强分离资源的离散门槛]\label{rem:conclusion-godel-leyang-five-digit-quantization}
+若将地址空间推广为 \(M=\ZZ_2^k\)，并在其上考虑同类强分离的 \(2^L\)-进仿射 IFS，则模 \(2^L\) 的互异性强制 \(|D|\le 2^{kL}\)，因而 \(kL\ge \lceil \log_2|D|\rceil\)。
+当 \(|D|=5\) 时，最小整数解仅为 \((k,L)=(1,3)\) 或 \((k,L)=(2,2)\)；在本文的 \(T_2(E_{\min})\cong\ZZ_2^2\) 模型中对应于 \(L=2\) 的最小可行分辨率步长。
+\end{remark}
 
 \begin{theorem}[Lee--Yang 分辨率塔多项式的单位圆零点与等分布极限]\label{thm:conclusion-godel-leyang-resolution-tower-circle-law}
 设 \(B=2^L\ge 2\)，并取整数 \(M\) 满足 \(1\le M<B\)。

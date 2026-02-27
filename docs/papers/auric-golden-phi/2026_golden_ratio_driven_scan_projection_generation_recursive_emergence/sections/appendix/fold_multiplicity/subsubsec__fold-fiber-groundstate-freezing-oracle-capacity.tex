@@ -189,6 +189,37 @@ h_\infty(a)=g_*.
 反向构造可逐纤维实现该上界：对每个 \(x\) 任取 \(\min(d_m(x),2^B)\) 个纤维内微态并赋予互异码字，由此定义 \({\rm enc}\) 与 \({\rm dec}\) 即达等号。证毕。
 \end{proof}
 
+\begin{corollary}[全态可逆的比特阈值与渐近速率]\label{cor:fold-oracle-full-invertibility-threshold}
+令
+\(
+M_m:=\max_{x\in X_m} d_m(x)
+\)
+为分辨率 \(m\) 的最大纤维。
+则存在对所有微态皆可逆的 \(B\)-比特预言机反演机制（即 \({\rm Succ}_m(B)=1\)）当且仅当
+\begin{equation}\label{eq:fold-oracle-full-invertibility-threshold}
+B\ \ge\ \left\lceil \log_2 M_m\right\rceil.
+\end{equation}
+进一步，若极限 \(\alpha_*=\lim_{m\to\infty}\frac{1}{m}\log M_m\) 存在，则
+\[
+\lim_{m\to\infty}\frac{1}{m}\left\lceil \log_2 M_m\right\rceil=\frac{\alpha_*}{\log 2}.
+\]
+在本文的 Fibonacci 折叠口径下，由最大纤维闭式 \(M_m=D_m\)（定理 \ref{thm:pom-max-fiber}）立得
+\[
+\lim_{m\to\infty}\frac{1}{m}\left\lceil \log_2 M_m\right\rceil=\frac12\log_2\varphi.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-oracle-capacity-closed-form}，
+\({\rm Succ}_m(B)=1\) 等价于 \(\mathcal{C}_m(B)=2^m\)，亦等价于对每个 \(x\in X_m\) 都有 \(\min(d_m(x),2^B)=d_m(x)\)，即 \(2^B\ge M_m\)。
+取二进制对数并取整得到 \eqref{eq:fold-oracle-full-invertibility-threshold}。
+对极限速率，注意
+\(
+0\le \lceil \log_2 M_m\rceil-\log_2 M_m<1
+\)，两端除以 \(m\) 并令 \(m\to\infty\) 即得
+\(\lim \frac{1}{m}\lceil \log_2 M_m\rceil=\lim \frac{1}{m}\log_2 M_m=\alpha_*/\log 2\)。
+最后一式由 \(M_m=D_m\) 的闭式增长率 \(\frac{1}{m}\log D_m\to \frac12\log\varphi\) 得到。证毕。
+\end{proof}
+
 \begin{corollary}[纯鸽巢下界：无结构条件下的必要比特率]\label{cor:fold-oracle-pigeonhole-bound}
 若要求 \({\rm Succ}_m(B)\ge 1-\varepsilon\)，则必有
 \[
