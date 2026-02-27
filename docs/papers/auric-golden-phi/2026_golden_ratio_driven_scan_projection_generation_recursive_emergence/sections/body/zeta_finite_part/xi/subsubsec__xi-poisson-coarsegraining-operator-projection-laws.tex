@@ -272,6 +272,98 @@ D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_{t+\Delta})
 且最优尺度对应 \(s_t=t+\sigma^2/(2t)\)。证毕。
 \end{proof}
 
+\begin{theorem}[等尺度 Poisson--Cauchy 粗粒化的六阶最优尺度与最小相对熵展开]\label{thm:xi-poisson-optimal-cauchy-rescaling-sixth-order}
+沿用定理 \ref{thm:xi-poisson-kl-sixth-order-refined-binomials} 的单通道记号。
+设 \(\tilde\nu\) 满足六阶矩条件
+\(
+\int_{\RR}\abs{\gamma-\bar\gamma}^{6}\,\dd\tilde\nu(\gamma)<\infty
+\)，并记中心矩
+\[
+m_k:=\int_{\RR}(\gamma-\bar\gamma)^k\,\dd\tilde\nu(\gamma)\quad(k\ge 2),
+\qquad
+\sigma^2:=m_2>0.
+\]
+定义
+\[
+\tilde h_t:=\mathsf P_t*\tilde\nu,\qquad
+\tilde g_s(x):=\mathsf P_s(x-\bar\gamma)\qquad(t>0,\ s>0).
+\]
+令 \(s^\star(t)\) 为函数 \(s\mapsto D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_s)\) 的极小点。
+则当 \(t\to\infty\) 时，有渐近展开
+\begin{equation}\label{eq:xi-poisson-optimal-scale-expansion-sixth}
+s^\star(t)=t+\frac{\sigma^2}{2t}-\frac{m_4}{8t^3}+o(t^{-3}),
+\end{equation}
+并且最小相对熵具有六阶展开
+\begin{equation}\label{eq:xi-poisson-optimal-scale-min-kl-sixth}
+D_{\mathrm{KL}}\bigl(\tilde h_t\mid \tilde g_{s^\star(t)}\bigr)
+=\frac{\sigma^4}{16t^4}
+\;+\;\frac{\sigma^6-3\sigma^2m_4+3m_3^2}{32t^6}
+\;+\;o(t^{-6}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+平移后不妨设 \(\bar\gamma=0\)，并记 \(\Gamma\sim\tilde\nu\)。
+令 \(F_t(s):=D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_s)\)。
+由参数微分公式，
+\[
+F_t'(s)=-\int_{\RR}\tilde h_t(x)\,\partial_s\log \tilde g_s(x)\,\dd x.
+\]
+而
+\[
+\partial_s\log \tilde g_s(x)=\frac1s-\frac{2s}{x^2+s^2}.
+\]
+因此极值点 \(s=s^\star(t)\) 满足
+\begin{equation}\label{eq:xi-poisson-optimal-scale-euler}
+1=2s^2\int_{\RR}\frac{\tilde h_t(x)}{x^2+s^2}\,\dd x.
+\end{equation}
+利用 \(x\mapsto (x^2+s^2)^{-1}=(\pi/s)\mathsf P_s(x)\) 与 Poisson--Cauchy 半群卷积
+\(\mathsf P_t*\mathsf P_s=\mathsf P_{t+s}\)，对任意 \(\gamma\in\RR\) 有
+\[
+\int_{\RR}\frac{\mathsf P_t(x-\gamma)}{x^2+s^2}\,\dd x
+=\frac{t+s}{s}\cdot\frac{1}{\gamma^2+(t+s)^2}.
+\]
+对 \(\gamma\) 按 \(\tilde\nu\) 积分并代入 \eqref{eq:xi-poisson-optimal-scale-euler}，得到
+\begin{equation}\label{eq:xi-poisson-optimal-scale-u-eq}
+1=2s(t+s)\,\EE\!\left[\frac{1}{\Gamma^2+(t+s)^2}\right].
+\end{equation}
+令 \(u:=t+s\)。
+由六阶矩条件可对 \(u\to\infty\) 作展开：
+\[
+\EE\!\left[\frac{1}{\Gamma^2+u^2}\right]
+=u^{-2}-\sigma^2u^{-4}+m_4u^{-6}+O(u^{-8}).
+\]
+注意 \(s^\star(t)\sim t\)，故 \(u\sim 2t\)。
+将 \(s=t+\alpha t^{-1}+\beta t^{-3}+o(t^{-3})\) 代入 \eqref{eq:xi-poisson-optimal-scale-u-eq} 并按 \(t^{-2}\)、\(t^{-4}\) 配平，得到唯一解
+\[
+\alpha=\frac{\sigma^2}{2},\qquad \beta=-\frac{m_4}{8},
+\]
+即 \eqref{eq:xi-poisson-optimal-scale-expansion-sixth}。
+\par
+为展开最小相对熵，令 \(y=x/t\) 并记
+\[
+H_t(y):=t\,\tilde h_t(ty),\qquad
+G_\varepsilon(y):=t\,\tilde g_{t(1+\varepsilon)}(ty)=\frac{1}{\pi}\frac{1+\varepsilon}{y^2+(1+\varepsilon)^2}.
+\]
+则
+\[
+D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_{t(1+\varepsilon)})
+=\int_{\RR}H_t(y)\log\frac{H_t(y)}{G_\varepsilon(y)}\,\dd y.
+\]
+由对 \(\mathsf P_t(ty-\Gamma)\) 的 Taylor 展开（同定理 \ref{thm:xi-poisson-kl-sixth-order-refined-binomials} 的推导）可得
+\[
+H_t(y)=G_0(y)+\frac{\sigma^2}{2t^2}G_0''(y)-\frac{m_3}{6t^3}G_0^{(3)}(y)+\frac{m_4}{24t^4}G_0^{(4)}(y)+O(t^{-5}),
+\]
+并且
+\(
+\varepsilon(t):=s^\star(t)/t-1=\frac{\sigma^2}{2t^2}-\frac{m_4}{8t^4}+o(t^{-4})
+\)
+由 \eqref{eq:xi-poisson-optimal-scale-expansion-sixth} 给出。
+将 \(H_t\) 与 \(G_{\varepsilon(t)}\) 代入，并对 \(\log\) 作二阶/三阶展开，逐项积分（皆化归为
+\(\int_{\RR}\frac{y^{2k}}{(1+y^2)^n}\dd y\) 的 Beta 闭式），得到
+\eqref{eq:xi-poisson-optimal-scale-min-kl-sixth}。
+证毕。
+\end{proof}
+
 \begin{theorem}[二阶 Petz 判别与交换平方的勾股恒等式]\label{thm:xi-poisson-second-order-petz-commuting-square}
 令 \(Y\sim G\)，并对任意子 \(\sigma\)-代数 \(\mathcal G\subset \sigma(Y)\) 定义
 \[
