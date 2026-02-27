@@ -190,6 +190,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_fibonacci_low_defect_endpoints_audit",
+            script="exp_fold_gauge_anomaly_fibonacci_low_defect_endpoints_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_fibonacci_low_defect_endpoints_audit.json",
+            ],
+        ),
+        Step(
             name="fold_truncation_curvature",
             script="exp_fold_truncation_curvature.py",
             args=[],
