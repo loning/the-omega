@@ -381,6 +381,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_bernoulli_p_pressure_curve_local_ldp_audit",
+            script="exp_fold_bernoulli_p_pressure_curve_local_ldp_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bernoulli_p_pressure_curve_local_ldp_audit.json",
+            ],
+        ),
+        Step(
             name="pom_replica_softcore_fibonacci_moment_collapse_audit",
             script="exp_pom_replica_softcore_fibonacci_moment_collapse_audit.py",
             args=[],
@@ -509,6 +517,15 @@ def build_steps() -> List[Step]:
                 "sections/generated/eq_window6_green_kernel_audit_prime_571.tex",
                 "sections/generated/tab_window6_green_kernel_Z.tex",
                 "sections/generated/tab_window6_mean_first_passage_times.tex",
+            ],
+        ),
+        Step(
+            name="window6_mod571_spectral_collision_audit",
+            script="exp_window6_mod571_spectral_collision_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_mod571_spectral_collision_audit.json",
+                "sections/generated/eq_window6_mod571_spectral_collision_audit.tex",
             ],
         ),
         Step(
@@ -2334,6 +2351,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_poisson_cauchy_sharp_constants_audit",
+            script="exp_xi_poisson_cauchy_sharp_constants_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_cauchy_sharp_constants_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_offline_neumann_trace_cauchy_semigroup_audit",
+            script="exp_xi_offline_neumann_trace_cauchy_semigroup_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_offline_neumann_trace_cauchy_semigroup_audit.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_logM_theta",
             script="exp_sync_kernel_real_input_40_logM_theta.py",
             args=[
@@ -3145,6 +3178,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_leyang_perron_fuchs_operator_audit.json",
                 "sections/generated/eq_fold_zm_leyang_perron_fuchs_operator.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_perron_p3_renormalization_audit",
+            script="exp_fold_zm_leyang_perron_p3_renormalization_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_perron_p3_renormalization_audit.json",
             ],
         ),
         Step(

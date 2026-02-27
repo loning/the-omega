@@ -104,6 +104,74 @@ K(\mathcal{G}_E)\cong \ZZ/123336\ZZ,
 因此 \(571\) 可被视为一种纯 Kirchhoff 型算术证据：它在局部骨架的 Smith 判别与三次谱域的分歧支撑中均不可见，却在全局生成树复杂度（等价于临界群）中被强制生成，体现出从局部骨架到全局图复形的层级分离。
 \end{remark}
 
+\begin{corollary}[模 \texorpdfstring{$p_\star$}{p*} 的谱碰撞与 Green 核的 \texorpdfstring{$p_\star$}{p*}-分母强迫]\label{cor:window6-modpstar-spectral-collision}
+在定理 \ref{thm:terminal-window6-edge-flux-skeleton} 的设定下，令 \(T\) 为四状态粗粒化核，并令
+\(
+f(t)=48114t^3+7263t^2-506t-55
+\)
+如推论 \ref{cor:window6-edge-flux-coarse-markov-galois}。
+取 \(p_\star=571\)（定义见 \eqref{eq:window6_green_kernel_audit_prime_571}），则在有限域 \(\FF_{p_\star}\) 上成立分解证书
+\[
+f(t)\equiv 150(t-1)\bigl(t^2+38t-209\bigr)\pmod{p_\star},
+\]
+从而 \(\chi_T(t)\) 在模 \(p_\star\) 意义下满足
+\[
+\chi_T(t)\equiv (t-1)^2\bigl(t^2+38t-209\bigr)\pmod{p_\star},
+\]
+即 \(t=1\) 在 \(\FF_{p_\star}\) 上成为重根，出现模谱碰撞（证书见 \eqref{eq:window6_mod571_spectral_collision_audit}，并可追溯至 \cite{Internal2026Window6Mod571SpectralCollisionAudit20260227}）。
+\par
+因此矩阵 \(I-T+\mathbf 1\pi^\top\) 的行列式在分母清除后必被 \(p_\star\) 整除；等价地，该矩阵在 \(\FF_{p_\star}\) 上奇异，从而其有理逆（基本矩阵/平均首达时闭式）在不可约分意义下必引入 \(p_\star\) 作为分母素因子。
+\end{corollary}
+\begin{proof}
+分解证书 \eqref{eq:window6_mod571_spectral_collision_audit} 直接给出 \(t=1\) 同时为 \(f\) 与 \(\chi_T\) 的模 \(p_\star\) 根，且与本征因子 \((t-1)\) 叠加得到 \((t-1)^2\)。
+另一方面，由基本矩阵定义 \(Z=(I-T+\mathbf 1\pi^\top)^{-1}\)（脚本见 \texttt{scripts/exp\_window6\_green\_kernel\_audit\_prime\_571.py}），其存在性要求 \(\det(I-T+\mathbf 1\pi^\top)\neq 0\) 于 \(\QQ\) 成立，而模 \(p_\star\) 的重根现象强制该行列式在清分母后为零，从而 \(Z\) 的分母结构不可避免地含 \(p_\star\)。
+证毕。
+\end{proof}
+\input{sections/generated/eq_window6_mod571_spectral_collision_audit}
+
+\begin{proposition}[\texorpdfstring{$\delta=34$}{δ=34} 在 \texorpdfstring{$\FF_{p_\star}^\times$}{F*^×} 中生成平方子群]\label{prop:window6-delta34-generates-squares}
+令 \(p_\star=571\) 并视 \(\FF_{p_\star}^\times\) 为阶 \(p_\star-1=570\) 的循环群。
+则 window-\(6\) 的 boundary uplift 主位移 \(\delta=34\)（表 \ref{tab:foldbin_boundary_lift_m6_m8}）满足
+\[
+\ord_{p_\star}(34)=\frac{p_\star-1}{2}=285,
+\]
+从而 \(34\) 生成二次剩余子群 \((\FF_{p_\star}^\times)^2\)。
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:window6_mod571_spectral_collision_audit}，存在平方根证据 \(264^2\equiv 34\pmod{p_\star}\)，故 \(34\in(\FF_{p_\star}^\times)^2\)。
+同一证书给出 \(\ord_{p_\star}(34)=285\)，从而 \(34\) 必生成阶为 \(285\) 的平方子群。证毕。
+\end{proof}
+
+\begin{proposition}[跨分辨率的 boundary uplift 在 \texorpdfstring{$\FF_{p_\star}^\times$}{F*^×} 中诱导剩余分层]\label{prop:window6-bdry-uplift-residue-stratification}
+沿用 \(p_\star=571\)。
+对 \(m\in\{6,7,8\}\)，令 \(\Delta_m^{\mathrm{bdry}}\) 为 boundary 扇区在 dyadic uplift 下的位移集合（表 \ref{tab:foldbin_boundary_lift_m6_m8}）。
+则在 \(\FF_{p_\star}^\times\) 上成立如下阶证书（见 \eqref{eq:window6_mod571_spectral_collision_audit}）：
+\[
+\ord_{p_\star}(34)=285,\quad
+\ord_{p_\star}(144)=285,\quad
+\ord_{p_\star}(55)=19,\quad
+\ord_{p_\star}(89)=570.
+\]
+因此 \(\Delta_6^{\mathrm{bdry}}\setminus\{0\}\subset(\FF_{p_\star}^\times)^2\)，而 \(\Delta_7^{\mathrm{bdry}}\) 与 \(\Delta_8^{\mathrm{bdry}}\) 通过引入本原元 \(89\) 生成整个乘法群 \(\FF_{p_\star}^\times\)。
+\end{proposition}
+\begin{proof}
+表 \ref{tab:foldbin_boundary_lift_m6_m8} 给出 \(\Delta^{\mathrm{bdry}}_6=\{0,34\}\)、\(\Delta^{\mathrm{bdry}}_7=\{0,55,89\}\)、\(\Delta^{\mathrm{bdry}}_8=\{0,89,144\}\)。
+阶断言由 \eqref{eq:window6_mod571_spectral_collision_audit} 的显式模幂审计与乘法阶定义直接推出；
+并且 \(\ord_{p_\star}(89)=p_\star-1\) 等价于 \(89\) 为本原元，从而与任意非平凡平方子群生成元并置即可生成全体 \(\FF_{p_\star}^\times\)。
+证毕。
+\end{proof}
+
+\begin{conjecture}[素数—边界—谱的三联锁定原则]\label{conj:window-prime-bdry-spectrum-triple-lock}
+对一般分辨率 \(m\)，若在该窗口的粗粒化图/核审计中出现新的 Kirchhoff 素数 \(p_m\)（即生成树复杂度或等价的临界群阶含有此前不可见的素因子），
+则预期以下性质以同一 \(p_m\) 为锁定参数同步出现：
+\begin{enumerate}
+  \item 对应的粗粒化核的非平凡谱因子在模 \(p_m\) 上含额外的 \((t-1)\) 因子，从而在 \(\FF_{p_m}\) 上发生 \(t=1\) 的模谱碰撞；
+  \item boundary uplift 的主位移 \(\delta_m\) 在 \(\FF_{p_m}^\times\) 中生成平方子群 \((\FF_{p_m}^\times)^2\)；
+  \item boundary 的 sheet parity 分级与 \(\FF_{p_m}\) 上的二次特征在可观测层面兼容，从而把几何 \(\ZZ_2\) 提升为同一素点上的算术特征。
+\end{enumerate}
+在 \(m=6\) 时，上述三条分别由推论 \ref{cor:window6-modpstar-spectral-collision}、命题 \ref{prop:window6-delta34-generates-squares} 与推论 \ref{cor:terminal-delta-parity-rule} 的联合证书实现。
+\end{conjecture}
+
 \begin{corollary}[四状态粗粒化核的代数数论指纹：\texorpdfstring{$\mathrm{Gal}\cong S_3$}{Gal=S3} 与判别式含 \texorpdfstring{$23$}{23}]\label{cor:window6-edge-flux-coarse-markov-galois}
 在定理 \ref{thm:terminal-window6-edge-flux-skeleton} 的记号下，
 \(\chi_T(t)\) 的三次因子可写为
@@ -192,6 +260,15 @@ f(t):=48114t^3+7263t^2-506t-55.
 \mathrm{Gal}(\widehat K/\QQ)\cong \mathrm{Gal}(L/\QQ)\times \mathrm{Gal}(K_\varphi/\QQ)\cong S_3\times C_2.
 \]
 证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$S_3\times C_2$}{S3xC2} 内生的阶 \texorpdfstring{$6$}{6} 循环子群]\label{cor:window6-golden-s3c2-c6-phase-source}
+在推论 \ref{cor:window6-golden-s3c2-audit-cover-degree12} 的设定下，
+\(\mathrm{Gal}(\widehat K/\QQ)\cong S_3\times C_2\) 含有一个阶为 \(6\) 的循环子群。
+\end{corollary}
+\begin{proof}
+取 \(S_3\) 中任一 \(3\)-循环 \(\sigma\) 与 \(C_2\) 的非平凡元 \(\varepsilon\)，则 \((\sigma,\varepsilon)\in S_3\times C_2\) 的阶为 \(\mathrm{lcm}(3,2)=6\)。
+故其生成的子群同构于 \(\ZZ_6\)。证毕。
 \end{proof}
 
 \begin{corollary}[谱—响应双重素因子：\texorpdfstring{$23$}{23} 的分歧/挠性并存]\label{cor:window6-prime23-spectral-response}
