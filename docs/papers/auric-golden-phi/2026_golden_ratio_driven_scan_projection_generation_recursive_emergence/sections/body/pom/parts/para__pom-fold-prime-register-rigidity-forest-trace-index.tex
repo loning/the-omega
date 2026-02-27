@@ -238,6 +238,81 @@ g_m=v_{q_m}(G(\omega))
 全体前缀 \((\omega|_m)_{m\ge 1}\) 兼容并唯一确定 \(\omega\)，从而 \(\Psi\) 单射。证毕。
 \end{proof}
 
+\begin{definition}[Gödel 塔像上的分辨率一致性超度量]\label{def:pom-godel-tower-resolution-ultrametric}
+沿用定理 \ref{thm:pom-multiresolution-godel-tower-injection} 的记号。
+对 \(\omega,\eta\in\Omega_\infty\) 定义共同前缀深度
+\[
+\ell(\omega,\eta):=\sup\{m\in\NN:\ \omega|_m=\eta|_m\}\in\NN\cup\{\infty\},
+\qquad \sup\varnothing:=0,
+\qquad 2^{-\infty}:=0,
+\]
+并定义前缀超度量
+\[
+d_{\mathrm{pre}}(\omega,\eta):=2^{-\ell(\omega,\eta)}.
+\]
+\par
+对 \((x,G),(x',G')\in X_\infty\times \mathcal P^{\mathrm{St}}\) 定义分辨率一致性深度
+\[
+\ell_\Psi\bigl((x,G),(x',G')\bigr)
+:=\sup\Bigl\{m\in\NN:\ x_m=x'_m\ \text{且}\ v_{q_m}(G)=v_{q_m}(G')\Bigr\}\in\NN\cup\{\infty\},
+\qquad \sup\varnothing:=0,
+\]
+并定义超度量
+\[
+d_\Psi\bigl((x,G),(x',G')\bigr):=2^{-\ell_\Psi((x,G),(x',G'))}.
+\]
+\end{definition}
+
+\begin{theorem}[Gödel--Steinitz 全息嵌入的等距刚性与柱球对应]\label{thm:pom-godel-steinitz-isometric-rigidity}
+沿用定义 \ref{def:pom-godel-tower-resolution-ultrametric}。
+则 \(\Psi:(\Omega_\infty,d_{\mathrm{pre}})\to (X_\infty\times \mathcal P^{\mathrm{St}},d_\Psi)\) 为等距嵌入。
+并且对任意 \(m\ge 1\) 与任意前缀 \(\sigma\in\Omega_m\)，柱集
+\(
+[\sigma]:=\{\omega\in\Omega_\infty:\ \omega|_m=\sigma\}
+\)
+在 \(\Psi\) 下恰对应于一闭球：对任意 \(\omega\in[\sigma]\)，
+\[
+\Psi([\sigma])=\overline{B}_{d_\Psi}\bigl(\Psi(\omega),2^{-m}\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+取 \(\omega,\eta\in\Omega_\infty\) 并记 \(\ell=\ell(\omega,\eta)\)。
+若 \(j\le \ell\)，则 \(\omega|_j=\eta|_j\)。
+由定理 \ref{thm:pom-multiresolution-godel-tower-injection} 的构造，\((x_j(\cdot),r_j(\cdot))\) 仅依赖长度 \(j\) 的前缀，故
+\[
+x_j(\omega)=x_j(\eta),\qquad r_j(\omega)=r_j(\eta),
+\qquad g_j(\omega)=g_j(\eta),
+\]
+从而
+\(
+v_{q_j}(G(\omega))=g_j(\omega)=g_j(\eta)=v_{q_j}(G(\eta))
+\)。
+因此 \(\ell_\Psi(\Psi(\omega),\Psi(\eta))\ge \ell\)，即
+\[
+d_\Psi(\Psi(\omega),\Psi(\eta))\le 2^{-\ell}=d_{\mathrm{pre}}(\omega,\eta).
+\]
+\par
+反之，若 \(\ell_\Psi(\Psi(\omega),\Psi(\eta))\ge \ell+1\)，则 \(x_{\ell+1}(\omega)=x_{\ell+1}(\eta)\) 且
+\(
+v_{q_{\ell+1}}(G(\omega))=v_{q_{\ell+1}}(G(\eta))
+\)，即 \(g_{\ell+1}(\omega)=g_{\ell+1}(\eta)\)。
+由 \(N:\mathcal P\to\NN_{\ge 1}\) 的双射性得 \(r_{\ell+1}(\omega)=r_{\ell+1}(\eta)\)。
+于是 \((x_{\ell+1},r_{\ell+1})\) 相同，借助 \(\mathrm{UNLIFT}^{\mathsf S}_{\ell+1}\) 的唯一反演性得到
+\(
+\omega|_{\ell+1}=\eta|_{\ell+1}
+\)，矛盾于 \(\ell\) 的极大性。
+故 \(\ell_\Psi(\Psi(\omega),\Psi(\eta))=\ell\)，从而
+\[
+d_\Psi(\Psi(\omega),\Psi(\eta))=2^{-\ell}=d_{\mathrm{pre}}(\omega,\eta),
+\]
+等距性成立。
+\par
+最后，对柱集对应：\(\eta\in[\sigma]\) 当且仅当 \(d_{\mathrm{pre}}(\omega,\eta)\le 2^{-m}\)（\(\omega\in[\sigma]\) 任取），
+由等距性这等价于 \(d_\Psi(\Psi(\omega),\Psi(\eta))\le 2^{-m}\)，即 \(\Psi(\eta)\in \overline{B}_{d_\Psi}(\Psi(\omega),2^{-m})\)。
+因此 \(\Psi([\sigma])\) 恰为该闭球。
+\end{proof}
+
 \begin{proposition}[Steinitz 完成的终端外置坐标：支撑约束下的唯一嵌入]\label{prop:pom-steinitz-terminal-external-coordinates}
 固定一列互异素数 \((q_m)_{m\ge 1}\)。
 设 \(Q\) 为交换幺半群，并给定一族幺半群同态 \(v_m:Q\to\NN\)（\(m\ge 1\)），满足分离性：映射

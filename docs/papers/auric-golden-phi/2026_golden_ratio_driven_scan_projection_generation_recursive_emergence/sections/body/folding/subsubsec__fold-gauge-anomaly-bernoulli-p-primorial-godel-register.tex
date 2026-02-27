@@ -146,6 +146,52 @@ O(1/\log m)\to0
 证毕。
 \end{proof}
 
+\begin{proposition}[逐层赋值可审计强制互异素因子与 primorial 下界]\label{prop:fold-layerwise-auditable-primorial-necessity}
+令 \(\Sigma\) 为有限字母表，\(T\ge 1\)。
+设存在乘法外置编码
+\[
+\mathcal N(a_1\cdots a_T)=\prod_{t=1}^{T} q_t^{\,c_t(a_t)},
+\qquad q_t\in\NN_{\ge 2},
+\qquad c_t:\Sigma\hookrightarrow\{1,\dots,M\}\ \text{单射}.
+\]
+称其为\emph{逐层赋值可审计}，若对每个位置 \(t\) 存在素数 \(p_t\) 使对所有串 \(w=a_1\cdots a_T\) 都有
+\[
+v_{p_t}(\mathcal N(w))=c_t(a_t).
+\]
+则存在两两互异素数 \(p_1,\dots,p_T\) 满足：
+\begin{enumerate}
+  \item \(p_t\mid q_t\) 且 \(v_{p_t}(q_t)=1\)；
+  \item 对 \(s\neq t\)，有 \(p_t\nmid q_s\)；
+  \item 因而对所有 \(w\)，有 \(\mathcal N(w)\ge \prod_{t=1}^{T}p_t\)。
+\end{enumerate}
+特别地，在最小化最坏情形比特长度的意义下，最优选择为 \(q_t=p_t\) 且取前 \(T\) 个素数，从而强制出现 primorial 型增长。
+\end{proposition}
+
+\begin{proof}
+固定 \(t\)。
+由赋值加法性与编码的乘法形式，对任意 \(w=a_1\cdots a_T\) 有
+\[
+v_{p_t}(\mathcal N(w))=\sum_{s=1}^{T} c_s(a_s)\,v_{p_t}(q_s).
+\]
+该值对所有 \(w\) 仅依赖 \(a_t\)，故若存在 \(s\neq t\) 使 \(v_{p_t}(q_s)>0\)，则改变 \(a_s\) 会改变右端，矛盾。
+因此对 \(s\neq t\)，必有 \(v_{p_t}(q_s)=0\)，即 \(p_t\nmid q_s\)。
+另一方面，若 \(v_{p_t}(q_t)=0\)，则上式右端与 \(a_t\) 无关，与可审计性矛盾；
+故 \(v_{p_t}(q_t)\ge 1\)，即 \(p_t\mid q_t\)。
+将 \(s\neq t\) 项已知为 \(0\) 代回上式可得
+\(
+v_{p_t}(\mathcal N(w))=c_t(a_t)\,v_{p_t}(q_t)
+\)；
+而该值对所有 \(a_t\) 恒等于 \(c_t(a_t)\)，故必有 \(v_{p_t}(q_t)=1\)。
+由 (2) 立即推出 \(p_t\) 两两互异。
+\par
+最后，由 \(c_t(a_t)\ge 1\) 与 \(v_{p_t}(q_t)=1\) 得对所有 \(w\)，
+\(
+v_{p_t}(\mathcal N(w))\ge 1
+\)，从而 \(p_t\mid \mathcal N(w)\)。
+因此 \(\mathcal N(w)\ge \prod_{t=1}^{T}p_t\)。
+在互异素数集合中，\(\prod_{t=1}^{T}p_t\) 的最小值由取前 \(T\) 个素数实现；同时 \(q_t\) 含额外素因子或更高幂只会增大最坏情形规模，故最优为 \(q_t=p_t\)。
+\end{proof}
+
 \begin{theorem}[坐标可分 Gödel 整数化的不可压缩胀量]\label{thm:fold-gauge-anomaly-godel-coprime-inflation}
 令 \((q_k)_{k\ge1}\subset\NN_{\ge2}\) 两两互素。
 对任意二进模式 \(b=(b_k)_{k\ge1}\in\{0,1\}^{\NN}\)，定义前缀 Gödel 整数
