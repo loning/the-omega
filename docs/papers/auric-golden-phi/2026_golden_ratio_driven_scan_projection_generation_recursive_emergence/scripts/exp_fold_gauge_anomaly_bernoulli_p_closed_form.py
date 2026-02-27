@@ -149,6 +149,28 @@ def main() -> None:
     )
     kappa3_star = sp.simplify(p**2 * (p - 1) * Pi11 / ((p + 1) ** 5 * (p**2 - p + 1) ** 5))
 
+    Pi17 = (
+        609 * p**17
+        - 7572 * p**16
+        + 16148 * p**15
+        - 30024 * p**14
+        + 126169 * p**13
+        - 182509 * p**12
+        + 114342 * p**11
+        - 197084 * p**10
+        + 260364 * p**9
+        - 65334 * p**8
+        - 20148 * p**7
+        - 40612 * p**6
+        + 12405 * p**5
+        + 19432 * p**4
+        - 3652 * p**3
+        - 2466 * p**2
+        + 175 * p
+        + 81
+    )
+    kappa4_star = sp.simplify(p**2 * (1 - p) * Pi17 / ((p + 1) ** 7 * (p**2 - p + 1) ** 7))
+
     # Characteristic polynomial factorization (symbolic).
     P_sym = sp.Matrix(
         [
@@ -202,6 +224,24 @@ def main() -> None:
     )
     kappa2_from_lam = sp.simplify(lam2 + lam1 - lam1**2)
     kappa3_from_lam = sp.simplify(lam3 + 3 * lam2 + lam1 - 3 * lam1 * lam2 - 3 * lam1**2 + 2 * lam1**3)
+
+    # kappa4 via series expansion in theta using the implicit u-series at u=1.
+    t = sp.Symbol("t", real=True)
+    a1, a2, a3, a4 = sp.symbols("a1 a2 a3 a4")
+    lam_series = 1 + a1 * t + a2 * t**2 + a3 * t**3 + a4 * t**4
+    F_t = sp.expand(F.subs({u: 1 + t, lam: lam_series}))
+    coeffs = [sp.expand(sp.series(F_t, t, 0, 5).removeO().coeff(t, k)) for k in range(1, 5)]
+    # Solve sequentially to keep expressions tractable.
+    sol_a1 = sp.simplify(sp.solve(sp.Eq(coeffs[0], 0), a1)[0])
+    sol_a2 = sp.simplify(sp.solve(sp.Eq(coeffs[1].subs({a1: sol_a1}), 0), a2)[0])
+    sol_a3 = sp.simplify(sp.solve(sp.Eq(coeffs[2].subs({a1: sol_a1, a2: sol_a2}), 0), a3)[0])
+    sol_a4 = sp.simplify(sp.solve(sp.Eq(coeffs[3].subs({a1: sol_a1, a2: sol_a2, a3: sol_a3}), 0), a4)[0])
+    # theta-series: u=e^theta => t=u-1.
+    th = sp.Symbol("th", real=True)
+    t_th = sp.expand(sp.series(sp.exp(th) - 1, th, 0, 5).removeO())
+    lam_th = sp.expand((1 + sol_a1 * t_th + sol_a2 * t_th**2 + sol_a3 * t_th**3 + sol_a4 * t_th**4))
+    P_th = sp.expand(sp.series(sp.log(lam_th), th, 0, 5).removeO())
+    kappa4_from_series = sp.simplify(sp.factorial(4) * sp.expand(P_th).coeff(th, 4))
 
     # Endpoint I_p(0): rho(Q_p(0)) closed form.
     rho_q0 = sp.simplify(((1 - p) + sp.sqrt((1 - p) * (1 + 3 * p))) / 2)
@@ -300,6 +340,7 @@ def main() -> None:
     results.append(CheckResult(name="pressure_quartic", max_abs_err=float(sp.simplify(pressure_poly - pressure_expected) != 0)))
     results.append(CheckResult(name="kappa2_from_implicit_matches_sigma2", max_abs_err=float(sp.simplify(kappa2_from_lam - sigma_star) != 0)))
     results.append(CheckResult(name="kappa3_closed_form", max_abs_err=float(sp.simplify(kappa3_from_lam - kappa3_star) != 0)))
+    results.append(CheckResult(name="kappa4_closed_form", max_abs_err=float(sp.simplify(kappa4_from_series - kappa4_star) != 0)))
 
     # 1b) Perron interface: A_{theta,p} eigenvectors and Parry normalization (symbolic exact).
     q = 1 - p
@@ -413,6 +454,7 @@ def main() -> None:
     errs_density: List[float] = []
     errs_sigma: List[float] = []
     errs_kappa3: List[float] = []
+    errs_kappa4: List[float] = []
     errs_I0: List[float] = []
     errs_prob_sum: List[float] = []
     errs_Cp: List[float] = []
@@ -448,6 +490,11 @@ def main() -> None:
         k3_cf = float(sp.N(kappa3_star.subs({p: pv}), 50))
         k3_imp = float(sp.N(kappa3_from_lam.subs({p: pv}), 50))
         errs_kappa3.append(k3_imp - k3_cf)
+
+        # fourth cumulant density (series-based vs closed form)
+        k4_cf = float(sp.N(kappa4_star.subs({p: pv}), 50))
+        k4_ser = float(sp.N(kappa4_from_series.subs({p: pv}), 50))
+        errs_kappa4.append(k4_ser - k4_cf)
 
         # endpoint I0
         I0_cf = float(sp.N(I0.subs({p: pv}), 50))
@@ -536,6 +583,8 @@ def main() -> None:
             "sigma2_closed": sig_cf,
             "kappa3_closed": k3_cf,
             "kappa3_implicit": k3_imp,
+            "kappa4_closed": k4_cf,
+            "kappa4_series": k4_ser,
             "I0_closed": I0_cf,
             "prob_sum": sum(probs),
             "Cp_diff": float(sp.N(Cm_mat - Cm_closed, 30)),
@@ -546,6 +595,7 @@ def main() -> None:
             CheckResult(name="density_g_star", max_abs_err=_max_abs(errs_density)),
             CheckResult(name="variance_sigma2", max_abs_err=_max_abs(errs_sigma)),
             CheckResult(name="kappa3_density", max_abs_err=_max_abs(errs_kappa3)),
+            CheckResult(name="kappa4_density", max_abs_err=_max_abs(errs_kappa4)),
             CheckResult(name="endpoint_I0", max_abs_err=_max_abs(errs_I0)),
             CheckResult(name="bitpair_prob_sum", max_abs_err=_max_abs(errs_prob_sum)),
             CheckResult(name="covariance_gf_match", max_abs_err=_max_abs(errs_Cp)),
@@ -555,6 +605,18 @@ def main() -> None:
             CheckResult(name="covariance_half_jordan_closed_form", max_abs_err=_max_abs(errs_cov_half_jordan)),
         ]
     )
+
+    # 3) Sturm root count for Pi11 on (0,1) and numeric roots.
+    Pi11_poly = sp.Poly(Pi11, p)
+    n_roots_01 = int(sp.count_roots(Pi11_poly, 0, 1))
+    results.append(CheckResult(name="Pi11_root_count_(0,1)", max_abs_err=float(n_roots_01 != 2)))
+    Pi11_roots = []
+    for rr in sp.nroots(Pi11_poly.as_expr(), n=80):
+        if abs(sp.im(rr)) < sp.Float("1e-40"):
+            rv = float(sp.re(rr))
+            if 0.0 < rv < 1.0:
+                Pi11_roots.append(rv)
+    Pi11_roots = sorted(Pi11_roots)
 
     # p=1/2 table check (exact fractions)
     half = sp.Rational(1, 2)
@@ -570,12 +632,15 @@ def main() -> None:
             "g_star": str(g_star),
             "sigma2": str(sigma_star),
             "kappa3": str(kappa3_star),
+            "kappa4": str(kappa4_star),
             "I0": str(I0),
             "I1": str(I1),
             "q_out": str(q_out),
             "gamma_out": str(gamma_out),
             "state_curve_poly": str(state_curve_poly),
             "pressure_discriminant_over_p3u1mp": str(D_up),
+            "Pi11_root_count_(0,1)": n_roots_01,
+            "Pi11_roots_(0,1)": Pi11_roots,
         },
         "elapsed_s": time.time() - t0,
     }
