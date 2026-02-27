@@ -1,0 +1,226 @@
+\subsection{超立方体粗粒化的规范体积与边界切割：体--界字典的离散等周接口}\label{subsec:fold-hypercube-bulk-boundary-gauge-volume}
+本小节在与定理 \ref{thm:fiber-gauge-volume-chain-factorization} 一致的纤维规范群口径下，讨论超立方体微态空间 \(\Omega_n=\{0,1\}^n\) 上的任意满射粗粒化 \(f:\Omega_n\twoheadrightarrow X\)。
+核心目标是将纤维规范体积密度与界面切割面积联系起来，并以边界邻接多图的回路圆维（自由秩）给出等价表述。
+
+\begin{definition}[超立方体粗粒化的界面面积与规范体积密度]\label{def:hypercube-coarsegraining-area-gauge-volume}
+记 \(Q_n=(\Omega_n,E_n)\) 为 \(n\)-维超立方体图（相邻当且仅当 Hamming 距离为 \(1\)），并取满射 \(f:\Omega_n\twoheadrightarrow X\)。
+对 \(x\in X\) 记纤维 \(S_x:=f^{-1}(x)\) 与纤维大小 \(d_x:=\card{S_x}\)。
+定义纤维规范群
+\[
+\mathcal G(f):=\mathcal G(f:\Omega_n\twoheadrightarrow X)
+=\prod_{x\in X}\mathrm{Sym}(S_x),
+\qquad
+\card{\mathcal G(f)}=\prod_{x\in X} d_x!,
+\]
+以及规范体积密度
+\[
+g(f):=2^{-n}\log\card{\mathcal G(f)}=2^{-n}\sum_{x\in X}\log(d_x!).
+\]
+再定义界面面积（切割边数）
+\[
+A(f):=\card{\{\{u,v\}\in E_n:\ f(u)\neq f(v)\}}.
+\]
+\end{definition}
+
+\begin{proposition}[离散全息斯托克不等式：规范体积密度的切割下界]\label{prop:hypercube-discrete-holographic-stokes-gauge-area}
+在定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的设定下，恒有
+\[
+\boxed{\;
+g(f)\ \ge\ (n\log 2-1)\ -\ 2\log 2\cdot\frac{A(f)}{2^n}\ +\ \frac{\card{X}}{2^n}.
+\;}
+\]
+\end{proposition}
+
+\begin{proof}
+\textbf{（阶乘下界）}
+对整数 \(m\ge 1\) 有
+\[
+\log(m!)=\sum_{k=1}^{m}\log k\ \ge\ \int_{1}^{m}\log t\,\dd t\ =\ m\log m-m+1.
+\]
+故
+\[
+\sum_{x\in X}\log(d_x!)
+\ge
+\sum_{x\in X}(d_x\log d_x-d_x+1)
+=
+\sum_{x\in X}d_x\log d_x-2^n+\card{X}.
+\]
+
+\textbf{（超立方体边缘等周不等式）}
+对任意 \(S\subseteq \Omega_n\)，记其边界边集
+\(
+\partial S:=\{\{u,v\}\in E_n:\ u\in S,\ v\notin S\}
+\)。
+超立方体的标准边缘等周不等式给出
+\[
+\card{\partial S}
+\ge
+\card{S}\log_2\!\Bigl(\frac{2^n}{\card{S}}\Bigr)
+=
+\card{S}\bigl(n-\log_2\card{S}\bigr).
+\]
+应用于每个纤维 \(S_x\) 得
+\[
+\card{\partial S_x}\ge d_x\bigl(n-\log_2 d_x\bigr)
+\quad\Longrightarrow\quad
+d_x\log_2 d_x\ \ge\ nd_x-\card{\partial S_x}.
+\]
+对 \(x\in X\) 求和并用 \(\sum_x d_x=2^n\)，得
+\[
+\sum_{x\in X}d_x\log_2 d_x
+\ge
+n2^n-\sum_{x\in X}\card{\partial S_x}.
+\]
+注意每条切割边 \(\{u,v\}\)（满足 \(f(u)\neq f(v)\)）恰被计入 \(\sum_x\card{\partial S_x}\) 两次，故 \(\sum_x\card{\partial S_x}=2A(f)\)。
+于是
+\[
+\sum_{x\in X}d_x\log d_x
+
+=
+\log 2\cdot \sum_{x\in X}d_x\log_2 d_x
+\ge
+\log 2\cdot (n2^n-2A(f)).
+\]
+
+\textbf{（合并）}
+代回阶乘下界并除以 \(2^n\) 得
+\[
+g(f)
+\ge
+2^{-n}\Bigl(\log 2\cdot (n2^n-2A(f))-2^n+\card{X}\Bigr),
+\]
+即所示不等式。证毕。
+\end{proof}
+
+\begin{proposition}[面积律的熵上界与二相刚性]\label{prop:hypercube-entropy-area-rigidity}
+在定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的设定下，令 \(p_x:=d_x/2^n\) 为纤维分布，并记 Shannon 熵
+\[
+H(p):=-\sum_{x\in X}p_x\log p_x.
+\]
+则有：
+\begin{enumerate}
+  \item \label{it:hypercube-entropy-area} 熵--面积上界
+  \[
+  \boxed{\;
+  H(p)\ \le\ 2\log 2\cdot \frac{A(f)}{2^n}.
+  \;}
+  \]
+  \item \label{it:hypercube-area-collapse} 若 \(A(f)=o(2^n)\)（当 \(n\to\infty\)），则 \(\max_x p_x\to 1\)。
+  \item \label{it:hypercube-area-saturation} 记 \(\card{E_n}=n2^{n-1}\)。若 \(A(f)=\card{E_n}-o(2^n)\)，则对均匀随机边 \(\{U,V\}\in E_n\) 有 \(\PP(f(U)=f(V))\to 0\)。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{（\ref{it:hypercube-entropy-area}）}
+由边缘等周不等式，\(\card{\partial S_x}\ge d_x\log_2(2^n/d_x)=d_x\log_2(1/p_x)\)。
+求和得
+\[
+\sum_{x\in X}\card{\partial S_x}
+\ge
+2^n\sum_{x\in X}p_x\log_2(1/p_x)
+=
+2^n H_2(p),
+\]
+其中 \(H_2(p):=-\sum_x p_x\log_2 p_x\) 为以 \(2\) 为底的熵。
+又 \(\sum_x\card{\partial S_x}=2A(f)\)，故 \(H(p)=\log 2\cdot H_2(p)\le 2\log 2\cdot A(f)/2^n\)。
+
+\textbf{（\ref{it:hypercube-area-collapse}）}
+设 \(p_{\max}=1-\delta\)。则对任意分布有下界 \(H(p)\ge h(\delta)\)，其中
+\(
+h(\delta):=-\delta\log\delta-(1-\delta)\log(1-\delta)
+\)。
+由 \ref{it:hypercube-entropy-area} 若 \(A(f)=o(2^n)\) 则 \(H(p)\to 0\)，从而 \(\delta\to 0\)，即 \(p_{\max}\to 1\)。
+
+\textbf{（\ref{it:hypercube-area-saturation}）}
+记内部边数
+\[
+I(f):=\card{\{\{u,v\}\in E_n:\ f(u)=f(v)\}},
+\]
+则 \(A(f)=\card{E_n}-I(f)\)。
+若 \(A(f)=\card{E_n}-o(2^n)\)，则 \(I(f)=o(2^n)\)。
+对均匀随机边 \(\{U,V\}\) 有
+\[
+\PP(f(U)=f(V))=\frac{I(f)}{\card{E_n}}=\frac{o(2^n)}{n2^{n-1}}\to 0.
+\]
+证毕。
+\end{proof}
+
+\begin{definition}[边界邻接多图]\label{def:hypercube-boundary-multigraph}
+在定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的设定下，定义边界邻接多图 \(\mathsf B_f\) 为：其顶点集为 \(X\)，并对每条切割边 \(\{u,v\}\in E_n\)（满足 \(f(u)\neq f(v)\)）添加一条连接 \(f(u)\) 与 \(f(v)\) 的无向边（允许重边与自环；本构造中自环不出现）。
+于是 \(\card{E(\mathsf B_f)}=A(f)\)。
+\end{definition}
+
+\begin{proposition}[回路圆维的欧拉恒等式]\label{prop:hypercube-boundary-multigraph-h1-cdim}
+在定义 \ref{def:hypercube-boundary-multigraph} 的设定下，记 \(\mathsf B_f\) 的连通分量数为 \(c(\mathsf B_f)\)。
+则其一维同调为自由阿贝尔群，且
+\[
+H_1(\mathsf B_f;\ZZ)\ \cong\ \ZZ^{\,A(f)-\card{X}+c(\mathsf B_f)}.
+\]
+因此（按圆维在有限生成交换群上的自由秩口径）
+\[
+\boxed{\;
+\cdim\bigl(H_1(\mathsf B_f;\ZZ)\bigr)=A(f)-\card{X}+c(\mathsf B_f).
+\;}
+\]
+\end{proposition}
+
+\begin{proof}
+将 \(\mathsf B_f\) 视作一维 CW 复形。其链复形满足 \(C_1\cong \ZZ^{\card{E}}\)、\(C_0\cong \ZZ^{\card{V}}\)，且
+\(
+\operatorname{rank}H_1=\card{E}-\card{V}+c
+\)。
+代入 \(\card{E}=A(f)\)、\(\card{V}=\card{X}\) 即得秩公式，并得同构 \(H_1(\mathsf B_f;\ZZ)\cong \ZZ^{\operatorname{rank}H_1}\)。
+最后由 \(\cdim(\ZZ^r)=r\) 得圆维等式。证毕。
+\end{proof}
+
+\begin{corollary}[回路圆维与规范体积的互补下界]\label{cor:hypercube-loop-cdim-gauge-volume-complement}
+在命题 \ref{prop:hypercube-discrete-holographic-stokes-gauge-area} 与命题 \ref{prop:hypercube-boundary-multigraph-h1-cdim} 的设定下，有
+\[
+\boxed{\;
+g(f)\ \ge\ (n\log 2-1)\ -\ 2\log 2\cdot\frac{\cdim(H_1(\mathsf B_f;\ZZ))+\card{X}-c(\mathsf B_f)}{2^n}\ +\ \frac{\card{X}}{2^n}.
+\;}
+\]
+\end{corollary}
+
+\begin{proof}
+由命题 \ref{prop:hypercube-boundary-multigraph-h1-cdim} 得
+\(
+A(f)=\cdim(H_1(\mathsf B_f;\ZZ))+\card{X}-c(\mathsf B_f)
+\)。
+代入命题 \ref{prop:hypercube-discrete-holographic-stokes-gauge-area} 即得。证毕。
+\end{proof}
+
+\begin{corollary}[面积密度极限下的线性面积律]\label{cor:hypercube-linear-area-law-density}
+取一列满射粗粒化 \(f_n:\Omega_n\twoheadrightarrow X_n\)。
+记面积密度
+\[
+a_n:=\frac{A(f_n)}{n2^{n-1}}\in[0,1],
+\]
+以及每比特规范体积密度
+\[
+\bar g_n:=\frac{g(f_n)}{n}.
+\]
+若 \(\card{X_n}/2^n\to 0\)，则
+\[
+\boxed{\;
+\liminf_{n\to\infty}\bar g_n\ \ge\ (1-\limsup_{n\to\infty}a_n)\log 2.
+\;}
+\]
+特别地，若 \(a_n\to a\in[0,1]\)，则 \(\liminf_{n\to\infty}\bar g_n\ge (1-a)\log 2\)。
+\end{corollary}
+
+\begin{proof}
+由命题 \ref{prop:hypercube-discrete-holographic-stokes-gauge-area}，
+\[
+\bar g_n
+\ge
+\log 2-\frac{1}{n}-2\log 2\cdot\frac{A(f_n)}{n2^n}+\frac{\card{X_n}}{n2^n}.
+\]
+注意 \(\frac{A(f_n)}{2^n}=\frac{n}{2}a_n\)，故
+\[
+\bar g_n\ge (1-a_n)\log 2-\frac{1}{n}+\frac{\card{X_n}}{n2^n}.
+\]
+取 \(\liminf\) 并用 \(\card{X_n}/2^n\to 0\) 即得结论。证毕。
+\end{proof}
+
+\endinput
