@@ -122,6 +122,146 @@ A^2\!\int_{\RR}Gu^2\,\dd y+B^2\!\int_{\RR}Gv^2\,\dd y\right)+o(s^{-4}).
 得复矩形式。证毕。
 \end{proof}
 
+\begin{theorem}[Cauchy 位置--尺度族的信息投影与二分常数律]\label{thm:xi-poisson-cauchy-location-scale-information-projection}
+沿用命题 \ref{prop:xi-poisson-cauchy-location-scale-second-normal-form} 的记号。
+对任意 \((\alpha,\beta)\in\RR^2\)，定义一族位置--尺度可调参考密度
+\begin{equation}\label{eq:xi-poisson-cauchy-location-scale-gab}
+\tilde g_t^{(\alpha,\beta)}(x)
+:=\mathsf P_{\,t+\bar\delta+\alpha/(t+\bar\delta)}\!\left(x-\bar\gamma-\beta/(t+\bar\delta)\right).
+\end{equation}
+则存在唯一一对 \((\alpha^\star,\beta^\star)\) 使得
+\begin{equation}\label{eq:xi-poisson-cauchy-location-scale-information-projection-optimal}
+\lim_{t\to\infty}(t+\bar\delta)^4\,D_{\mathrm{KL}}\!\left(\tilde h_t\mid \tilde g_t^{(\alpha^\star,\beta^\star)}\right)
+=\inf_{\alpha,\beta}\ \limsup_{t\to\infty}(t+\bar\delta)^4\,D_{\mathrm{KL}}\!\left(\tilde h_t\mid \tilde g_t^{(\alpha,\beta)}\right),
+\end{equation}
+并且最优参数与最小极限值满足闭式
+\[
+\alpha^\star=\frac{A}{2},\qquad
+\beta^\star=-B,
+\]
+\[
+\lim_{t\to\infty}(t+\bar\delta)^4\,D_{\mathrm{KL}}\!\left(\tilde h_t\mid \tilde g_t^{(\alpha^\star,\beta^\star)}\right)
+=\frac{1}{16}\Bigl(A^2+4B^2\Bigr)
+=\frac{A^2}{16}+\frac{B^2}{4}.
+\]
+\end{theorem}
+\begin{proof}
+记 \(s:=t+\bar\delta\)、\(y:=(x-\bar\gamma)/s\)、\(G(y):=\pi^{-1}(1+y^2)^{-1}\)。
+由定理 \ref{thm:xi-poisson-cauchy-location-scale-kl-sharp-m2} 证明中的展开，有
+\[
+\frac{\tilde h_t}{\tilde g_t}=1+\frac{1}{s^2}\bigl(Au(y)-Bv(y)\bigr)+o_{L^2(\tilde g_t\dd x)}(s^{-2}),
+\]
+其中
+\[
+u(y)=\frac{3y^2-1}{(1+y^2)^2}\ \text{(偶)},\qquad
+v(y)=\frac{2y(3-y^2)}{(1+y^2)^2}\ \text{(奇)}.
+\]
+\par
+另一方面，对 \eqref{eq:xi-poisson-cauchy-location-scale-gab} 作二阶尺度的相对扰动展开。
+记
+\[
+\phi(y):=\frac{y^2-1}{1+y^2}\ \text{(偶)},\qquad
+\psi(y):=\frac{2y}{1+y^2}\ \text{(奇)}.
+\]
+则直接由位置与尺度方向的得分函数得到
+\[
+\frac{\tilde g_t^{(\alpha,\beta)}}{\tilde g_t}
+=1+\frac{1}{s^2}\bigl(\alpha\,\phi(y)+\beta\,\psi(y)\bigr)+o_{L^2(\tilde g_t\dd x)}(s^{-2}),
+\]
+从而
+\[
+\frac{\tilde h_t}{\tilde g_t^{(\alpha,\beta)}}-1
+=\frac{1}{s^2}\Bigl(Au-\alpha\phi-Bv-\beta\psi\Bigr)+o_{L^2(\tilde g_t\dd x)}(s^{-2}).
+\]
+由 \(\int \tilde g_t\left(\frac{\tilde h_t}{\tilde g_t^{(\alpha,\beta)}}-1\right)\dd x=0\) 与 \((1+z)\log(1+z)=z+\frac12z^2+O(z^3)\)，得
+\[
+D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t^{(\alpha,\beta)})
+=\frac{1}{2s^4}\int_{\RR}G(y)\Bigl(Au-\alpha\phi-Bv-\beta\psi\Bigr)^2\dd y+o(s^{-4}).
+\]
+利用偶奇正交性 \(\int Gu\psi=\int Gv\phi=0\)，该二次型分裂为
+\[
+\int G(Au-\alpha\phi-Bv-\beta\psi)^2
+=\int G(Au-\alpha\phi)^2+\int G(Bv+\beta\psi)^2.
+\]
+令内积 \(\langle f,g\rangle:=\int_{\RR}Gfg\)。
+直接计算得
+\[
+\langle u,u\rangle=\frac14,\qquad
+\langle v,v\rangle=1,\qquad
+\langle u,\phi\rangle=\frac14,\qquad
+\langle \phi,\phi\rangle=\frac12,\qquad
+\langle v,\psi\rangle=\frac12,\qquad
+\langle \psi,\psi\rangle=\frac12.
+\]
+于是两块分别在
+\[
+\alpha^\star=A\frac{\langle u,\phi\rangle}{\langle \phi,\phi\rangle}=\frac{A}{2},
+\qquad
+\beta^\star=-B\frac{\langle v,\psi\rangle}{\langle \psi,\psi\rangle}=-B
+\]
+处唯一取极小；对应的最小值为
+\[
+\inf_\alpha \int G(Au-\alpha\phi)^2
+=A^2\left(\langle u,u\rangle-\frac{\langle u,\phi\rangle^2}{\langle \phi,\phi\rangle}\right)
+=\frac{A^2}{8},
+\]
+\[
+\inf_\beta \int G(Bv+\beta\psi)^2
+=B^2\left(\langle v,v\rangle-\frac{\langle v,\psi\rangle^2}{\langle \psi,\psi\rangle}\right)
+=\frac{B^2}{2}.
+\]
+代回得到
+\[
+D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t^{(\alpha^\star,\beta^\star)})
+=\frac{1}{2s^4}\left(\frac{A^2}{8}+\frac{B^2}{2}\right)+o(s^{-4})
+=\frac{A^2+4B^2}{16s^4}+o(s^{-4}),
+\]
+从而结论成立。唯一性由二次型严格凸性给出。证毕。
+\end{proof}
+
+\begin{corollary}[一般光滑 \texorpdfstring{$f$}{f}-散度的同伦二次型与投影常数]\label{cor:xi-poisson-cauchy-location-scale-fdiv-projection-constants}
+在命题 \ref{prop:xi-poisson-cauchy-location-scale-second-normal-form} 的设定下，设 \(f:(0,\infty)\to\RR\) 在 \(1\) 的邻域 \(C^2\)，满足
+\[
+f(1)=f'(1)=0,\qquad f''(1)>0,
+\]
+并定义 \(f\)-散度
+\[
+D_f(h\mid g):=\int_{\RR} g(x)\,f\!\left(\frac{h(x)}{g(x)}\right)\dd x.
+\]
+则：
+\begin{enumerate}
+  \item 若取固定一阶匹配基线 \(g=\tilde g_t\)，则
+  \[
+  \lim_{t\to\infty}(t+\bar\delta)^4\,D_f(\tilde h_t\mid \tilde g_t)
+  =\frac{f''(1)}{8}\Bigl(A^2+4B^2\Bigr).
+  \]
+  \item 若取位置--尺度投影基线 \(g=\tilde g_t^{(\alpha^\star,\beta^\star)}\)（定理 \ref{thm:xi-poisson-cauchy-location-scale-information-projection}），则
+  \[
+  \lim_{t\to\infty}(t+\bar\delta)^4\,D_f\!\left(\tilde h_t\mid \tilde g_t^{(\alpha^\star,\beta^\star)}\right)
+  =\frac{f''(1)}{16}\Bigl(A^2+4B^2\Bigr).
+  \]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由 \(f\) 在 \(1\) 处的二阶展开
+\(
+f(1+z)=\frac{f''(1)}{2}z^2+o(z^2)
+\)（\(z\to 0\)），并用
+\(
+\delta_t:=\tilde h_t/\tilde g_t-1=O_{L^2(\tilde g_t\dd x)}((t+\bar\delta)^{-2})
+\)
+以及 \(\int \tilde g_t\delta_t\,\dd x=0\)，可得
+\[
+D_f(\tilde h_t\mid \tilde g_t)=\frac{f''(1)}{2}\int \tilde g_t\,\delta_t^2\,\dd x+o((t+\bar\delta)^{-4}).
+\]
+再由定理 \ref{thm:xi-poisson-cauchy-location-scale-kl-sharp-m2} 的主项常数
+\(
+\lim (t+\bar\delta)^4D_{\mathrm{KL}}(\tilde h_t\mid \tilde g_t)=\frac18(A^2+4B^2)
+\)
+与 \(D_{\mathrm{KL}}=\frac12\int \tilde g_t\delta_t^2+o((t+\bar\delta)^{-4})\)，得到第一条。
+第二条同理由定理 \ref{thm:xi-poisson-cauchy-location-scale-information-projection} 的最小主项常数给出。证毕。
+\end{proof}
+
 \begin{corollary}[二阶盲点后的六次衰减常数]\label{cor:xi-poisson-cauchy-location-scale-m2-blind-m3-kl}
 在定理 \ref{thm:xi-poisson-cauchy-location-scale-kl-sharp-m2} 设定下，进一步假设六阶中心矩有限。
 若 \(\mathbb E_{\tilde\nu}[Z^2]=0\)，则
