@@ -14,6 +14,93 @@ T^{(q)}_{u,v}=
 \]
 其中 \(\wedge\) 与 \(\vee\) 分别表示逐位与、逐位或，\(\mathbf 0,\mathbf 1\) 分别为全零与全一向量。
 
+为避免记号歧义，可通过支撑同构将 \(U_q\) 与幂集 \(V_q:=2^{[q]}\) 识别：对 \(u\in U_q\) 令
+\(
+\mathrm{supp}(u):=\{i\in[q]:u_i=1\}=:U
+\)。
+则 \(u\wedge v=\mathbf 0\) 等价于 \(U\cap V=\varnothing\)。
+在该识别下，记
+\[
+A_q:=2T^{(q)}\in\Mat_{2^q}(\ZZ),
+\qquad
+(A_q)_{U,V}=
+\begin{cases}
+2,&U\cap V=\varnothing,\\
+1,&U\cap V\neq \varnothing,
+\end{cases}
+\qquad (U,V\subseteq[q]).
+\]
+
+\begin{proposition}\label{prop:xi-disjointness-boolean-zeta-ldlt}
+取任意与包含关系相容的线性扩张对 \(V_q=2^{[q]}\) 排序。
+令 \(Z_q\) 为 Boolean 格 \((V_q,\subseteq)\) 的 \(\zeta\)-矩阵：
+\[
+(Z_q)_{A,B}:=\ind_{\{A\subseteq B\}}\qquad (A,B\subseteq[q]),
+\]
+并令对角矩阵 \(\Delta_q\) 由
+\[
+(\Delta_q)_{\varnothing,\varnothing}:=2,
+\qquad
+(\Delta_q)_{S,S}:=(-1)^{\card{S}}\quad(S\neq\varnothing)
+\]
+给定。
+则成立严格因子分解
+\[
+A_q=Z_q^{\mathsf T}\Delta_q Z_q.
+\]
+等价地，令 \(\mu_q:=Z_q^{-1}\) 为 Möbius 矩阵（即
+\(
+(\mu_q)_{A,B}=(-1)^{\card{B\setminus A}}\ind_{\{A\subseteq B\}}
+\)），则有整同余对角化
+\[
+\mu_q^{\mathsf T}A_q\mu_q=\Delta_q.
+\]
+\end{proposition}
+\begin{proof}
+由定义，
+\[
+\bigl(Z_q^{\mathsf T}\Delta_q Z_q\bigr)_{U,V}
+=\sum_{S\subseteq[q]}(Z_q)_{S,U}(\Delta_q)_{S,S}(Z_q)_{S,V}
+=\sum_{S\subseteq U\cap V}(\Delta_q)_{S,S}.
+\]
+若 \(U\cap V=\varnothing\)，则仅 \(S=\varnothing\) 贡献，取值 \(2\)。
+若 \(U\cap V\neq\varnothing\)，则
+\[
+\sum_{S\subseteq U\cap V}(\Delta_q)_{S,S}
+=2+\sum_{\varnothing\neq S\subseteq U\cap V}(-1)^{\card{S}}
+=2+\bigl((1-1)^{\card{U\cap V}}-1\bigr)=1.
+\]
+故逐项有 \(\bigl(Z_q^{\mathsf T}\Delta_q Z_q\bigr)_{U,V}=(A_q)_{U,V}\)，从而分解成立。
+\end{proof}
+
+\begin{corollary}\label{cor:xi-disjointness-boolean-order-ideal-principal-minors}
+设 \(\mathcal I\subseteq V_q\) 为任意下闭集（order ideal），即 \(S\in\mathcal I\) 且 \(R\subseteq S\Rightarrow R\in\mathcal I\)。
+记 \(A_q[\mathcal I]\) 为按 \(\mathcal I\) 取行列得到的主子矩阵。
+则
+\[
+\det A_q[\mathcal I]
+=\prod_{S\in\mathcal I}(\Delta_q)_{S,S}
+=2^{\ind_{\{\varnothing\in\mathcal I\}}}\cdot (-1)^{\#\{S\in\mathcal I\setminus\{\varnothing\}:\ \card{S}\ \mathrm{odd}\}}.
+\]
+从而对任意下闭集 \(\mathcal I\)，主子矩阵 \(A_q[\mathcal I]\) 必为可逆整矩阵，且 \(\abs{\det A_q[\mathcal I]}\in\{1,2\}\)。
+\end{corollary}
+\begin{proof}
+在与包含关系相容的排序下，\(Z_q\) 为单位上三角整矩阵，故 \(\det(Z_q)=1\)。
+对下闭集 \(\mathcal I\)，若 \(B\in\mathcal I\) 则任意 \(A\subseteq B\) 亦在 \(\mathcal I\)，因此 \(Z_q\) 的 \(\mathcal I\)-列在 \(\mathcal I\) 之外无非零项，遂
+\[
+A_q[\mathcal I]=Z_{\mathcal I}^{\mathsf T}\Delta_{\mathcal I}Z_{\mathcal I},
+\qquad
+Z_{\mathcal I}:=Z_q[\mathcal I].
+\]
+其中 \(Z_{\mathcal I}\) 仍为单位三角整矩阵，\(\det(Z_{\mathcal I})=1\)，故
+\(\det(A_q[\mathcal I])=\det(\Delta_{\mathcal I})\)
+即为所示乘积公式。
+\end{proof}
+
+\begin{remark}\label{rem:xi-disjointness-kneser-sierpinski}
+不交指示矩阵 \(\bigl(\ind_{\{U\cap V=\varnothing\}}\bigr)_{U,V\subseteq[q]}\) 及其块递推常作为 Kneser--Sierpiński 矩阵出现；相关背景与递推表述可参见 Jukna 的专著笔记（例如对不交矩阵与 Möbius 反演结构的讨论）\cite{Jukna2011ExtremalCombinatorics}。
+\end{remark}
+
 \begin{conclusion}[行列式刚性：\texorpdfstring{$\det(2T^{(q)})=2$}{det(2T)=2}]\label{con:xi-terminal-disjointness-boolean-det-rigidity}
 设
 \[
@@ -173,10 +260,7 @@ D_q^{-1}\mathbf 1
 \end{proof}
 
 \begin{conclusion}[Smith 形、余核与整可解性判别]\label{con:xi-terminal-disjointness-boolean-smith-mod2-rank-kernel}
-令
-\[
-A_q:=2T^{(q)}\in\Mat_{2^q}(\ZZ).
-\]
+沿用 \(A_q:=2T^{(q)}\in\Mat_{2^q}(\ZZ)\) 的记号。
 则
 \[
 \mathrm{SNF}\!\bigl(A_q\bigr)=\operatorname{diag}(\underbrace{1,\dots,1}_{2^q-1\text{ 次}},2),
@@ -202,27 +286,39 @@ b_{\mathbf 0}\equiv 0\pmod 2,
 \]
 \end{conclusion}
 \begin{proof}
-由结论 \ref{con:xi-terminal-disjointness-boolean-det-rigidity}，\(\det(A_q)=2\)。
-设 Smith 不变量为 \(d_1\mid\cdots\mid d_N\)（\(N=2^q\)），则 \(\prod_i d_i=2\)，故每个 \(d_i\in\{1,2\}\) 且恰有一个 \(2\)。
-另一方面，\(A_q\) 含奇数条目（例如任意 \(u\neq \mathbf 0\) 有 \(A_{q,u,u}=1\)），故全部条目最大公因子为 \(1\)，从而 \(d_1=1\)。
-于是 Smith 形唯一可能即上式，并由结构定理得到 \(\operatorname{coker}(A_q)\cong\ZZ/2\ZZ\)。
-\par
-再由前述 Sherman--Morrison 分解，
+令 \(V_q=2^{[q]}\) 并按包含关系相容的线性扩张对 \(V_q\) 排序。
+由命题 \ref{prop:xi-disjointness-boolean-zeta-ldlt}，记 \(\mu_q:=Z_q^{-1}\)，则
 \[
-A_q^{-1}
-=(D_q+J_q)^{-1}
-=D_q^{-1}-\frac12\,e_{\mathbf 0}e_{\mathbf 0}^{\mathsf T},
+\mu_q^{\mathsf T}A_q\mu_q=\Delta_q.
 \]
-其中 \(e_{\mathbf 0}\) 为 \(\mathbf 0\)-坐标标准基向量，且 \(D_q^{-1}\in\Mat_{2^q}(\ZZ)\)。
-对任意 \(b\in\ZZ^{U_q}\)，其有理解为
+由于 \(\mu_q^{\mathsf T},\mu_q\in\mathrm{GL}_{2^q}(\ZZ)\)，Smith 正规形在左右乘幺模矩阵下不变，故
+\(
+\mathrm{SNF}(A_q)=\mathrm{SNF}(\Delta_q)
+\)。
+而 \(\Delta_q\) 为对角矩阵，其对角元为 \(2\) 及若干 \(\pm1\)；对角上的 \(-1\) 可由行/列乘以 \(-1\) 消去，得到与 \(\mathrm{diag}(2,1,\dots,1)\) 等价之对角形，
+从而
 \[
-x=A_q^{-1}b=D_q^{-1}b-\frac{b_{\mathbf 0}}{2}\,e_{\mathbf 0}.
+\mathrm{SNF}\!\bigl(A_q\bigr)=\operatorname{diag}(\underbrace{1,\dots,1}_{2^q-1\text{ 次}},2),
+\qquad
+\operatorname{coker}(A_q)\cong\ZZ/2\ZZ.
 \]
-故 \(x\in\ZZ^{U_q}\iff b_{\mathbf 0}\) 为偶数。
 \par
-在 \(\FF_2\) 上，秩与核维数由 Smith 形立即给出：秩为 \(N-1\)、核一维。
+对整数可解性，写 \(A_q=Z_q^{\mathsf T}\Delta_q Z_q\) 并令 \(y:=Z_qx\in\ZZ^{V_q}\)。
+左乘 \((Z_q^{\mathsf T})^{-1}=\mu_q^{\mathsf T}\) 得同解等价变形
+\[
+\Delta_q\,y=\mu_q^{\mathsf T}b.
+\]
+由于 \(\Delta_q\) 仅在 \(\varnothing\) 分量的对角元为 \(2\)，其余对角元均为 \(\pm1\)，该方程存在整数解 \(y\) 当且仅当 \((\mu_q^{\mathsf T}b)_{\varnothing}\) 为偶数。
+又 Möbius 矩阵满足 \((\mu_q)_{A,\varnothing}=\ind_{\{A=\varnothing\}}\)，从而
+\(
+(\mu_q^{\mathsf T}b)_{\varnothing}=b_{\varnothing}=b_{\mathbf 0}
+\)，
+因此 \(A_qx=b\) 在 \(\ZZ^{U_q}\) 中可解当且仅当 \(b_{\mathbf 0}\equiv 0\pmod 2\)。
+\par
+在 \(\FF_2\) 上，Smith 形给出 \(\operatorname{rank}_{\FF_2}(A_q\bmod 2)=2^q-1\) 且核为一维。
 又 \(A_q\) 的 \(\mathbf 0\)-列全为 \(2\)，模 \(2\) 后成为零列，故 \(\delta_{\mathbf 0}\in\ker\)；
-结合核一维，得到 \(\ker=\langle\delta_{\mathbf 0}\rangle\)。证毕。
+由一维性得 \(\ker=\langle \delta_{\mathbf 0}\rangle\)。
+证毕。
 \end{proof}
 
 \begin{conclusion}[全谱倒一阶与倒二阶矩闭式]\label{con:xi-terminal-disjointness-boolean-inverse-spectral-moments}
