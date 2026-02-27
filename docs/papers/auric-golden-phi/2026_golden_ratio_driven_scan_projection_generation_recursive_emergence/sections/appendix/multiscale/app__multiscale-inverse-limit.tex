@@ -18,3 +18,63 @@
 
 最后验证互逆：对 $c\in X_\infty$，由定义可得反向构造返回 $c$；对一致族 $(x^{(m)})$，其反向构造的 $c$ 满足 $\pi_m(c)=x^{(m)}$，故返回原一致族。因而 $\Phi$ 为双射，且构造为自然同构。证毕。
 \end{proof}
+
+\subsection{归一化逆塔积分与广义斯托克斯一致性}\label{app:multiscale-normalized-stokes-inverse-tower}
+本附录前半部分讨论 restriction 逆系统与逆极限的\emph{一致性}。
+在若干几何接口（例如有限覆盖塔、solenoid 型逆极限与多尺度胞腔分解）中，还需要一个与逆塔相容的\emph{归一化积分口径}：
+它把“层间覆盖次数的膨胀”吸收到同一个可审计的标度中，使得积分型不变量在逆系统中保持层无关性。
+
+\begin{theorem}[有限覆盖逆塔的归一化广义斯托克斯公式]\label{thm:app-normalized-stokes-finite-cover-inverse-tower}
+令 \(\bigl((M_n,\pi_n)\bigr)_{n\ge 0}\) 为一列定向紧致光滑 \(m\)-维带角流形（允许边界与角），其中
+\[
+\pi_n:M_{n+1}\to M_n
+\]
+为定向保持的有限覆盖映射，覆盖次数记为 \(d_n\ge 2\)，并满足 \(\pi_n^{-1}(\partial M_n)=\partial M_{n+1}\)。
+记累积覆盖次数
+\[
+D_n:=\prod_{j=0}^{n-1}d_j,\qquad D_0:=1.
+\]
+称一族 \((m-1)\)-形式 \(\alpha=(\alpha_n)_{n\ge 0}\) \emph{逆塔相容}，若 \(\alpha_{n+1}=\pi_n^\ast\alpha_n\)；同理 \(m\)-形式族 \(\beta=(\beta_n)_{n\ge 0}\) 相容若 \(\beta_{n+1}=\pi_n^\ast\beta_n\)。
+
+对相容的 \(m\)-形式族 \(\beta\) 与 \((m-1)\)-形式族 \(\alpha\)，定义归一化积分泛函
+\[
+\mathcal I_M(\beta):=\frac1{D_n}\int_{M_n}\beta_n,\qquad
+\mathcal I_{\partial M}(\alpha):=\frac1{D_n}\int_{\partial M_n}\alpha_n.
+\]
+则：
+\begin{enumerate}
+  \item \(\mathcal I_M(\beta)\) 与 \(\mathcal I_{\partial M}(\alpha)\) 与所选层 \(n\) 无关，因而良定义；
+  \item 对任意逆塔相容的 \((m-1)\)-形式族 \(\alpha\)，成立归一化广义斯托克斯公式
+  \[
+  \mathcal I_M(d\alpha)=\mathcal I_{\partial M}(\alpha).
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+对任意 \(m\)-形式 \(\omega\) 与 \((m-1)\)-形式 \(\eta\)，覆盖次数公式给出
+\[
+\int_{M_{n+1}}\pi_n^\ast\omega=d_n\int_{M_n}\omega,
+\qquad
+\int_{\partial M_{n+1}}\pi_n^\ast\eta=d_n\int_{\partial M_n}\eta.
+\]
+取 \(\omega=\beta_n\)、\(\eta=\alpha_n\) 并用相容性 \(\beta_{n+1}=\pi_n^\ast\beta_n\)、\(\alpha_{n+1}=\pi_n^\ast\alpha_n\)，得到
+\[
+\frac1{D_{n+1}}\int_{M_{n+1}}\beta_{n+1}
+=\frac1{D_{n+1}}\int_{M_{n+1}}\pi_n^\ast\beta_n
+=\frac{d_n}{D_{n+1}}\int_{M_n}\beta_n
+=\frac1{D_n}\int_{M_n}\beta_n,
+\]
+以及同样的
+\(
+\frac1{D_{n+1}}\int_{\partial M_{n+1}}\alpha_{n+1}
+=\frac1{D_n}\int_{\partial M_n}\alpha_n
+\)。
+从而两归一化积分与 \(n\) 无关，得第 (1) 条。
+
+对第 (2) 条，对每个 \(n\) 的带角流形 \(M_n\) 适用经典广义斯托克斯定理
+\(
+\int_{M_n}d\alpha_n=\int_{\partial M_n}\alpha_n
+\)，
+两边同除以 \(D_n\) 并用第 (1) 条给出的层无关性，即得所示归一化公式。证毕。
+\end{proof}
