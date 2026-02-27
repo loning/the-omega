@@ -125,6 +125,57 @@ a_{k+1}\equiv a_k\ (\mathrm{mod}\ N^k)
 合并得等号。证毕。
 \end{proof}
 
+\begin{theorem}[相位编码的 Diophantine 分辨下界与外置寄存器阈值]\label{thm:cdim-phase-diophantine-resolution-lower-bound}
+取 \(\alpha\in\RR\setminus\QQ\)，定义相位编码
+\[
+\pi_\alpha:\ZZ\to \TT,\qquad \pi_\alpha(n):=e^{2\pi i\alpha n}.
+\]
+记到最近整数距离
+\[
+\|x\|_{\RR/\ZZ}:=\min_{k\in\ZZ}|x-k|,
+\qquad
+\delta_N(\alpha):=\min_{1\le |k|\le N}\|k\alpha\|_{\RR/\ZZ}.
+\]
+设 \((p_j/q_j)_{j\ge 0}\) 为 \(\alpha\) 的连分数收敛分数（\(q_j\) 为收敛分母）。
+若 \(q_j\le N<q_{j+1}\)，则有夹逼（参见 \cite{Cassels1957}）
+\[
+\frac{1}{q_{j+1}+q_j}\ <\ \delta_N(\alpha)\ \le\ \frac{1}{q_{j+1}}.
+\]
+从而对任意误差容忍 \(\varepsilon>0\)，若要求存在仅依赖观测相位 \(\pi_\alpha(n)\) 的解码器在所有 \(|n|\le N\) 上唯一恢复 \(n\)，则必须满足
+\[
+\varepsilon\ <\ \frac12\,\delta_{2N}(\alpha)
+\ \le\ \frac{1}{2q_{j+1}}
+\ \le\ \frac{1}{2N}.
+\]
+反之，当 \(N\) 超过 \(1/\varepsilon\) 的尺度时，必存在不同的 \(|n|,|m|\le N\) 使得 \(\pi_\alpha(n)\) 与 \(\pi_\alpha(m)\) 在 \(\varepsilon\) 误差内不可消歧。
+在保持审计可逆性的实现层口径下，任何此类碰撞都必须由外置寄存器区分，而其最紧致的尺度可取为模 \(q_{j+1}\) 的离散标签。
+\end{theorem}
+\begin{proof}
+对 \(n\neq m\)，有
+\[
+|\pi_\alpha(n)-\pi_\alpha(m)|
+=\left|e^{2\pi i\alpha n}-e^{2\pi i\alpha m}\right|
+=2\left|\sin\!\bigl(\pi\alpha(n-m)\bigr)\right|
+=2\left|\sin\!\bigl(\pi\| (n-m)\alpha\|_{\RR/\ZZ}\bigr)\right|.
+\]
+令 \(k=n-m\)，则 \(|k|\le 2N\)。
+若存在 \(|k|\le 2N\) 使 \(\|(k\alpha)\|_{\RR/\ZZ}\le 2\varepsilon\)，则上式给出两点相位在 \(O(\varepsilon)\) 量级内不可消歧；
+因此“对所有 \(|n|\le N\) 唯一恢复”强制
+\(
+2\varepsilon<\delta_{2N}(\alpha)
+\)。
+这给出所述必要条件。
+\par
+连分数理论给出：当 \(q_j\le N<q_{j+1}\) 时，\(\|q_j\alpha\|_{\RR/\ZZ}\) 实现了 \(\delta_N(\alpha)\)，并且满足
+\[
+\frac{1}{q_{j+1}+q_j}<\|q_j\alpha\|_{\RR/\ZZ}\le \frac{1}{q_{j+1}}.
+\]
+代入即得夹逼与由此推出的 \(\varepsilon\) 下界链。
+\par
+当 \(N\gg 1/\varepsilon\) 时，上述必要条件失败，故存在碰撞对。
+为保持可逆性，必须引入外置离散标签把碰撞类分开；而收敛分母 \(q_{j+1}\) 给出区分这些近邻的自然标度（其在 \(\ZZ\) 上诱导模 \(q_{j+1}\) 的粗粒化坐标），从而得到所述寄存器阈值表述。证毕。
+\end{proof}
+
 \begin{theorem}[精度势的编码极小性：相位前缀重建的 \(\delta\)-一致码长下界]\label{thm:cdim-precision-potential-delta-coding-optimality}
 令
 \[

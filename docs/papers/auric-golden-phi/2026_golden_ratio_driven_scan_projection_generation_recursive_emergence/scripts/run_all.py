@@ -520,6 +520,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_mod571_spectral_collision_audit",
+            script="exp_window6_mod571_spectral_collision_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_mod571_spectral_collision_audit.json",
+                "sections/generated/eq_window6_mod571_spectral_collision_audit.tex",
+            ],
+        ),
+        Step(
             name="window6_ur_first_return_time",
             script="exp_window6_ur_first_return_time.py",
             args=[],
