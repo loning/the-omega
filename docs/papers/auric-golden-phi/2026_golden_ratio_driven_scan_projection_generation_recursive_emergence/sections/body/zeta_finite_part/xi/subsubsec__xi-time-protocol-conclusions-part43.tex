@@ -175,6 +175,253 @@ g_i^2=\binom{q}{i}c_+^{2(q-i)}c_-^{2i}=w_i^{(q)}.
 推出。证毕。
 \end{proof}
 
+\begin{theorem}[二项--几何谱测度的 Fibonacci 幂矩塌缩]\label{thm:xi-replica-softcore-fibonacci-moment-collapse}
+沿用定理 \ref{thm:xi-replica-softcore-exceptional-weighted-secular} 的权重 \(w_i^{(q)}\) 与节点
+\(
+d_i:=\mu_i^{(q)}/2=\frac12\varphi^{\,q-i}\psi^{\,i}=\frac12(-1)^i\varphi^{\,q-2i}
+\)（\(0\le i\le q\)）。
+则对任意整数 \(m\ge 0\)，成立严格恒等式
+\begin{equation}\label{eq:xi-replica-softcore-fibonacci-moment-collapse}
+\sum_{i=0}^{q} w_i^{(q)}\,d_i^{\,m}
+=2^{-m}\,F_{m+3}^{\,q}.
+\end{equation}
+因此所有幂矩均在 \(\QQ\) 内闭合；右端不含任何 \(\sqrt5\) 的显式项。
+\end{theorem}
+\begin{proof}
+由 \(\psi=-\varphi^{-1}\)，有
+\(
+d_i^{\,m}=2^{-m}\varphi^{m(q-i)}\psi^{mi}
+\)。
+因此
+\[
+\sum_{i=0}^{q} w_i^{(q)}\,d_i^{\,m}
+=2^{-m}\sum_{i=0}^{q}\binom{q}{i}\alpha^{q-i}\beta^{i}\varphi^{m(q-i)}\psi^{mi}
+=2^{-m}\sum_{i=0}^{q}\binom{q}{i}(\alpha\varphi^m)^{q-i}(\beta\psi^m)^{i}.
+\]
+二项式定理给出
+\[
+\sum_{i=0}^{q} w_i^{(q)}\,d_i^{\,m}
+=2^{-m}\bigl(\alpha\varphi^m+\beta\psi^m\bigr)^{q}.
+\]
+再由
+\(
+\alpha=\varphi^3/\sqrt5
+\)、\(
+\beta=-\psi^3/\sqrt5
+\)，得到
+\[
+\alpha\varphi^m+\beta\psi^m=\frac{\varphi^{m+3}-\psi^{m+3}}{\sqrt5}=F_{m+3},
+\]
+代回即得 \eqref{eq:xi-replica-softcore-fibonacci-moment-collapse}。证毕。
+\end{proof}
+
+\begin{theorem}[Perron 根的纯 Fibonacci 固定点方程]\label{thm:xi-replica-softcore-perron-fibonacci-fixed-point}
+记 \(\rho_q:=\rho(A^{(q)})\) 为 \(\left.T^{(q)}\right|_{\mathcal H_q}\) 的 Perron 特征值。
+则存在唯一实数 \(x_q>1\) 使
+\[
+\rho_q=2^{q-1}x_q,
+\]
+并且 \(x_q\) 满足严格收敛的固定点方程
+\begin{equation}\label{eq:xi-replica-softcore-perron-fixed-point}
+x_q
+=1+\sum_{m=1}^{\infty}\left(\frac{F_{m+3}}{2^{m+1}}\right)^{q}\,x_q^{-m}.
+\end{equation}
+该刻画在每个 \(q\ge 2\) 下给出唯一正根。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-replica-softcore-exceptional-weighted-secular}，Perron 根 \(\rho_q\) 为割线方程
+\begin{equation}\label{eq:xi-replica-softcore-perron-secular}
+\sum_{i=0}^{q}\frac{w_i^{(q)}}{\rho_q-d_i}=2
+\end{equation}
+在顶端区间的唯一解，其中 \(d_i=\mu_i^{(q)}/2\)。
+并且由 Rayleigh 商下界（取向量 \(u=D\mathbf 1\) 于相似对称表示 \(\widetilde A^{(q)}\) 上计算）可得
+\(
+\rho_q\ge (4^q+3^q)/2^{q+1}
+=2^{q-1}+3^q/2^{q+1}
+\)；
+从而 \(\rho_q>\max_{0\le i\le q}d_i=\varphi^q/2\)，并对每个 \(i\) 有绝对收敛展开
+\[
+\frac{1}{\rho_q-d_i}
+=\frac{1}{\rho_q}\sum_{m=0}^{\infty}\left(\frac{d_i}{\rho_q}\right)^{m}.
+\]
+将其代入 \eqref{eq:xi-replica-softcore-perron-secular} 并由一致收敛交换求和次序，得到
+\[
+2
+=\frac{1}{\rho_q}\sum_{m=0}^{\infty}\rho_q^{-m}\sum_{i=0}^{q} w_i^{(q)}\,d_i^{\,m}.
+\]
+由定理 \ref{thm:xi-replica-softcore-fibonacci-moment-collapse}，
+\(
+\sum_i w_i^{(q)}d_i^{\,m}=2^{-m}F_{m+3}^q
+\)，故
+\[
+2
+=\frac{1}{\rho_q}\sum_{m=0}^{\infty}\rho_q^{-m}\,2^{-m}F_{m+3}^{\,q}.
+\]
+令 \(\rho_q=2^{q-1}x_q\)，并将 \(m=0\) 项（\(F_3=2\)）分离，即得
+\[
+2
+=\frac{2}{x_q}+ \frac{2}{x_q}\sum_{m=1}^{\infty}\left(\frac{F_{m+3}}{2^{m+1}}\right)^{q}x_q^{-m}.
+\]
+两边同乘 \(x_q/2\) 得到固定点方程 \eqref{eq:xi-replica-softcore-perron-fixed-point}。
+
+右端作为 \(x\) 的函数在 \((1,\infty)\) 上严格递减，而左端 \(x\mapsto x\) 严格递增，故解唯一。证毕。
+\end{proof}
+
+\begin{corollary}[Perron 根的两项主导展开与可控余项]\label{cor:xi-replica-softcore-perron-two-term-expansion}
+令
+\[
+b_m:=\frac{F_{m+3}}{2^{m+1}}\qquad(m\ge 1),
+\qquad
+\varepsilon_q:=\sum_{m=1}^{\infty}b_m^{\,q}.
+\]
+则 \(x_q\in(1,1+\varepsilon_q)\)，并且
+\begin{equation}\label{eq:xi-replica-softcore-perron-two-term-expansion}
+\rho_q
+=2^{q-1}+\frac{3^q}{2^{q+1}}+R_q,
+\end{equation}
+其中余项满足显式上界
+\begin{equation}\label{eq:xi-replica-softcore-perron-remainder-bound}
+0<R_q
+<2^{q-1}\sum_{m=2}^{\infty}b_m^{\,q}
+\le 2^{q-1}\cdot \frac{b_2^{\,q}}{1-(\varphi/2)^q}
+=\frac{5^q}{2^{2q+1}}\cdot\frac{1}{1-(\varphi/2)^q}.
+\end{equation}
+因此
+\(
+\rho_q
+=2^{q-1}+\frac{3^q}{2^{q+1}}+O\!\bigl(5^q/2^{2q}\bigr)
+\)
+当 \(q\to\infty\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-replica-softcore-perron-fibonacci-fixed-point}，
+\[
+x_q-1=\sum_{m=1}^{\infty} b_m^{\,q}x_q^{-m}.
+\]
+因 \(x_q>1\)，即得 \(0<x_q-1<\sum_{m\ge 1}b_m^q=\varepsilon_q\)，从而 \(x_q\in(1,1+\varepsilon_q)\)。
+将首项 \(m=1\) 分离并乘以 \(2^{q-1}\) 得
+\[
+\rho_q
+=2^{q-1}+2^{q-1}\frac{b_1^{\,q}}{x_q}
+2^{q-1}\sum_{m=2}^{\infty}b_m^{\,q}x_q^{-m}.
+\]
+由于 \(b_1=F_4/2^2=3/4\) 且 \(x_q>1\)，有
+\(
+2^{q-1}b_1^q/x_q<2^{q-1}b_1^q=3^q/2^{q+1}
+\)。
+将差额并入余项并注意最后一项为正，得到展开式 \eqref{eq:xi-replica-softcore-perron-two-term-expansion}，且
+\[
+0<R_q<2^{q-1}\sum_{m=2}^{\infty}b_m^{\,q}x_q^{-m}\le 2^{q-1}\sum_{m=2}^{\infty}b_m^{\,q}.
+\]
+再由 Fibonacci 比值单调性 \(F_{n+1}/F_n<\varphi\)（\(n\ge 1\)）推出
+\[
+\frac{b_{m+1}}{b_m}=\frac{F_{m+4}}{2F_{m+3}}<\frac{\varphi}{2},
+\]
+故 \(\sum_{m\ge 2}b_m^q\) 由等比级数控制，得到 \eqref{eq:xi-replica-softcore-perron-remainder-bound}。证毕。
+\end{proof}
+
+\begin{theorem}[Fibonacci 幂 Hankel 行列式的完全乘积公式]\label{thm:xi-replica-softcore-fibonacci-power-hankel-determinant}
+定义 \((q+1)\times(q+1)\) Hankel 矩阵
+\[
+H_q:=\bigl(F_{i+j+3}^{\,q}\bigr)_{0\le i,j\le q}.
+\]
+则对一切 \(q\ge 1\) 成立精确闭式
+\begin{equation}\label{eq:xi-replica-softcore-fibonacci-power-hankel-determinant}
+\det(H_q)
+=\left(\prod_{i=0}^{q}\binom{q}{i}\right)
+\left(\prod_{k=1}^{q}F_k^{\,2(q+1-k)}\right).
+\end{equation}
+右端为整数的纯乘积表达，且不含任何代数数域延拓。
+\end{theorem}
+\begin{proof}
+由 Binet 形式与 \(\alpha=\varphi^3/\sqrt5\)、\(\beta=-\psi^3/\sqrt5\)，有
+\(
+F_{n+3}=\alpha\varphi^n+\beta\psi^n
+\)；
+从而对任意 \(n\ge 0\),
+\[
+F_{n+3}^{\,q}
+=\sum_{i=0}^{q}\binom{q}{i}\alpha^{q-i}\beta^{i}(\varphi^{q-i}\psi^{i})^{n}
+=\sum_{i=0}^{q}c_i r_i^{\,n},
+\]
+其中 \(r_i:=\varphi^{q-i}\psi^{i}\) 且 \(c_i:=\binom{q}{i}\alpha^{q-i}\beta^{i}\)。
+令 \(V:=(r_i^{\,j})_{0\le i,j\le q}\) 为 Vandermonde 型矩阵，并令 \(C:=\mathrm{diag}(c_0,\dots,c_q)\)。
+则 \(H_q=V^{\mathsf T}CV\)，从而
+\begin{equation}\label{eq:xi-replica-softcore-hankel-det-vandermonde-step}
+\det(H_q)=(\det V)^2\prod_{i=0}^{q}c_i
+=\left(\prod_{0\le i<j\le q}(r_j-r_i)^2\right)\left(\prod_{i=0}^{q}c_i\right).
+\end{equation}
+
+先算系数乘积。
+由 \(\sum_{i=0}^{q} i=\sum_{i=0}^{q}(q-i)=q(q+1)/2\) 与
+\(
+\alpha\beta=(\varphi^3/\sqrt5)(-\psi^3/\sqrt5)=-(\varphi\psi)^3/5=1/5
+\),
+得到
+\[
+\prod_{i=0}^{q}c_i
+=\left(\prod_{i=0}^{q}\binom{q}{i}\right)(\alpha\beta)^{q(q+1)/2}
+=\left(\prod_{i=0}^{q}\binom{q}{i}\right)5^{-q(q+1)/2}.
+\]
+
+再算 Vandermonde 因子。
+注意 \(r_i=\varphi^q(\psi/\varphi)^i=\varphi^q r^i\)，其中 \(r:=\psi/\varphi=-\varphi^{-2}\)。
+于是
+\[
+\prod_{0\le i<j\le q}(r_j-r_i)^2
+=(\varphi^q)^{q(q+1)}\prod_{0\le i<j\le q}(r^j-r^i)^2.
+\]
+而几何节点的 Vandermonde 恒等式给出
+\[
+\prod_{0\le i<j\le q}(r^j-r^i)^2
+=\prod_{k=1}^{q}(r^k-1)^{2(q+1-k)}\cdot r^{\,2\sum_{0\le i<j\le q}i}.
+\]
+对每个 \(k\ge 1\)，有
+\[
+1-r^k
+=1-(-\varphi^{-2})^k
+=\frac{\varphi^{2k}-(-1)^k}{\varphi^{2k}}
+=\frac{\varphi^k(\varphi^k-\psi^k)}{\varphi^{2k}}
+=\frac{\sqrt5\,F_k}{\varphi^k},
+\]
+故
+\(
+(r^k-1)^2=(1-r^k)^2=5F_k^2/\varphi^{2k}
+\)。
+将其代回并整理 \(\varphi\) 的幂次，可验证所有 \(\varphi\) 因子完全相消，从而得到
+\[
+\prod_{0\le i<j\le q}(r_j-r_i)^2
+=5^{q(q+1)/2}\prod_{k=1}^{q}F_k^{\,2(q+1-k)}.
+\]
+与 \eqref{eq:xi-replica-softcore-hankel-det-vandermonde-step} 中的 \(5^{-q(q+1)/2}\) 系数因子精确抵消，得到 \eqref{eq:xi-replica-softcore-fibonacci-power-hankel-determinant}。证毕。
+\end{proof}
+
+\begin{corollary}[交错几何点的 Vandermonde 平方塌缩为 Fibonacci 乘积]\label{cor:xi-replica-softcore-alternating-geom-vandermonde}
+令
+\[
+\xi_i:=(-1)^i\varphi^{\,q-2i}\qquad(0\le i\le q).
+\]
+则成立严格恒等式
+\begin{equation}\label{eq:xi-replica-softcore-alternating-geom-vandermonde}
+\prod_{0\le i<j\le q}(\xi_j-\xi_i)^2
+=5^{q(q+1)/2}\prod_{k=1}^{q}F_k^{\,2(q+1-k)}\in\ZZ.
+\end{equation}
+因此左端虽表面上属于 \(\QQ(\sqrt5)\) 的代数整数乘积，其平方判别式却在 \(\ZZ\) 中塌缩为完全显式的 Fibonacci 乘积。
+\end{corollary}
+\begin{proof}
+在定理 \ref{thm:xi-replica-softcore-fibonacci-power-hankel-determinant} 的证明中，节点 \(r_i=\varphi^{q-i}\psi^i\) 满足
+\(
+r_i=(-1)^i\varphi^{q-2i}=\xi_i
+\)。
+因此其中已得的 Vandermonde 平方闭式即为 \eqref{eq:xi-replica-softcore-alternating-geom-vandermonde}。证毕。
+\end{proof}
+
+\begin{remark}[公开索引同形排查说明]\label{rem:xi-replica-softcore-hankel-vandermonde-public-index-note}
+围绕 \eqref{eq:xi-replica-softcore-fibonacci-power-hankel-determinant} 与 \eqref{eq:xi-replica-softcore-alternating-geom-vandermonde} 的同型显式乘积结构进行公开关键词检索时，检索结果通常回落到一般 Hankel 行列式、正交多项式与若干 Fibonacci 相关矩阵条目之综述讨论，未见以同一索引结构 \((F_{i+j+3}^{\,q})_{0\le i,j\le q}\) 给出等价乘积公式的可核对来源。
+可对照的代表性入口包括 MathOverflow 的相关汇总条目 \url{https://mathoverflow.net/questions/249838/some-hankel-determinants}；
+该说明仅是公开索引层面的同形排查，不替代完备文献证明。
+\end{remark}
+
 \begin{theorem}[严格交错与全矩阵惯性平衡]\label{thm:xi-replica-softcore-full-inertia-balance}
 设
 \[
