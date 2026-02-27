@@ -3330,6 +3330,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="m2_level3_boundary_transvection_counts",
+            script="exp_m2_level3_boundary_transvection_counts.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m2_level3_boundary_transvection_counts.json",
+                "sections/generated/eq_m2_level3_boundary_transvection_counts.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_hard_boundary_coeffs_audit",
             script="exp_fold_zm_hard_boundary_coeffs_audit.py",
             args=[],

@@ -93,6 +93,60 @@ j(E_{\mathscr R})=\frac{2^{18}\cdot 7^{3}}{31^{2}\cdot 37}.
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
 \end{proof}
 
+\begin{conclusion}[分解式椭圆因子的双二次模型与短 Weierstrass 正规形]\label{con:xi-terminal-zm-resolvent-cubic-biquadratic-invariants-short-weierstrass}
+沿用结论 \ref{con:xi-terminal-zm-resolvent-cubic-plane-cubic-geometry} 的 \((y,z)\) 坐标，并在开子集 \(z\neq 1\) 上置
+\[
+x:=\frac{y}{z-1}.
+\]
+则对过基点 \((y,z)=(0,1)\) 的直线族 \(z=1+\frac{y}{x}\) 代入 \(\mathscr R(z,y)=0\) 并约去因子 \(y\)，可得关于 \(y\) 的二次方程
+\[
+(1+2x-4x^2-8x^3)y^2+(4x-17x^3)y+(4x^2-7x^3)=0.
+\]
+令
+\[
+u:=\frac{2(1+2x-4x^2-8x^3)y+(4x-17x^3)}{x},
+\]
+则 \((x,u)\) 满足双二次模型
+\[
+\mathcal Q:\quad
+u^2=x\bigl(65x^3+16x^2-16x-4\bigr)
+=65x^4+16x^3-16x^2-4x,
+\]
+并与平面三次 \(\overline{\mathcal R}\) 在 \(\QQ\) 上双有理等价。
+对二元四次 \(65x^4+16x^3-16x^2-4x\) 的经典不变量，有
+\[
+I=448,\qquad J=-10672,\qquad 4I^3-J^2=2^8\cdot 3^3\cdot 31^2\cdot 37,
+\]
+从而其 Jacobian 与 \(E_{\mathscr R}\) 在 \(\QQ\) 上同构，并同具
+\[
+j=\frac{2^{18}\cdot 7^3}{31^2\cdot 37}.
+\]
+此外，定义短 Weierstrass 曲线
+\[
+E_{\mathrm{res}}:\quad Y^2=X^3-12096X+288144,
+\]
+则 \(E_{\mathrm{res}}\cong_{\QQ}E_{\mathscr R}\)；例如由变换
+\[
+X_{\mathrm{res}}=9X-111,\qquad Y_{\mathrm{res}}=27Y
+\]
+可将 \(E_{\mathscr R}:\ Y^2=X^3-37X^2+307X+361\) 送至短模型 \(E_{\mathrm{res}}:\ Y_{\mathrm{res}}^2=X_{\mathrm{res}}^3-12096X_{\mathrm{res}}+288144\)。
+\end{conclusion}
+\begin{proof}[证明要点]
+将 \(z=1+\frac{y}{x}\) 代入 \(\mathscr R(z,y)=0\) 并清分母，出现因子 \(y\) 对应基点 \((0,1)\)；其余二次因子即给出所示关于 \(y\) 的二次方程。
+令该二次方程的系数为 \(Ay^2+By+C=0\)，则恒等式 \((2Ay+B)^2=B^2-4AC\) 导出
+\[
+u^2=\frac{B^2-4AC}{x^2}=x\bigl(65x^3+16x^2-16x-4\bigr),
+\]
+从而得到 \(\mathcal Q\)。
+二元四次不变量 \(I,J\) 的计算为经典公式的直接代入；由
+\(
+c_4=2^4I,\ c_6=2^5J
+\)
+可回收 \(j=c_4^3/\Delta\) 的闭式。
+最后，将 \(X=\frac{X_{\mathrm{res}}+111}{9}\)、\(Y=\frac{Y_{\mathrm{res}}}{27}\) 代回 \(E_{\mathscr R}\) 即得短 Weierstrass 方程，并给出 \(E_{\mathrm{res}}\cong_{\QQ}E_{\mathscr R}\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
+\end{proof}
+
 \begin{proposition}[无复乘与几何端同态代数的极大性]\label{prop:xi-terminal-zm-resolvent-cubic-no-cm-max-end}
 令 \(E_{\mathscr R}\) 为结论 \ref{con:xi-terminal-zm-resolvent-cubic-weierstrass-birational} 的 Weierstrass 模型。
 则 \(E_{\mathscr R}\) 不具有复乘；因此
@@ -215,6 +269,15 @@ E_{\mathscr R}(\QQ)_{\mathrm{tors}}=\{O\}.
 P:=(23,4)\in E_{\mathscr R}(\QQ)
 \]
 为无穷阶点。
+并且在结论 \ref{con:xi-terminal-zm-resolvent-cubic-biquadratic-invariants-short-weierstrass} 的短 Weierstrass 模型
+\[
+E_{\mathrm{res}}:\quad Y^2=X^3-12096X+288144
+\]
+上，点
+\[
+P_{\mathrm{res}}:=(25,37)\in E_{\mathrm{res}}(\QQ)
+\]
+亦为无穷阶点，从而 \(\operatorname{rank}E_{\mathrm{res}}(\QQ)\ge 1\)（等价于 \(\operatorname{rank}E_{\mathscr R}(\QQ)\ge 1\)）。
 在结论 \ref{con:xi-terminal-zm-resolvent-cubic-weierstrass-birational} 的平面模型坐标下，
 \[
 \bigl(y(P),z(P)\bigr)=(1,-3),
@@ -228,6 +291,7 @@ y_n:=y(nP)\in\QQ,
 \begin{proof}[证明要点]
 扭点注入良约化的有限域点群，故扭点阶整除任意良约化素数 \(p\nmid \Delta\) 处的 \(\#E_{\mathscr R}(\FF_p)\)；
 例如在 \(p=3,5\) 处良约化且 \(\#E_{\mathscr R}(\FF_3)=5\)、\(\#E_{\mathscr R}(\FF_5)=8\)，其最大公因子为 \(1\) 即推出扭点平凡性。
+点 \(P_{\mathrm{res}}=(25,37)\in E_{\mathrm{res}}(\QQ)\) 的代入验证为直接计算；又由 \(E_{\mathrm{res}}\cong_{\QQ}E_{\mathscr R}\) 知其对应点在 \(E_{\mathscr R}(\QQ)\) 中非零，因扭点平凡而必为无穷阶点。
 \((y(P),z(P))\) 的取值由结论 \ref{con:xi-terminal-zm-resolvent-cubic-weierstrass-birational} 的显式公式直接代入得到。
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_resolvent\_cubic\_weierstrass\_audit.py}。证毕。
 \end{proof}

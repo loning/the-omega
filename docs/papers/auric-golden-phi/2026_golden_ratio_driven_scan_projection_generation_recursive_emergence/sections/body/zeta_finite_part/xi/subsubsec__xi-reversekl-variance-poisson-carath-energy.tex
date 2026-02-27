@@ -117,6 +117,236 @@ P_r(\theta)=\frac{1-r^2}{1-2r\cos\theta+r^2}
 再将定理 \ref{thm:xi-reversekl-chi2-optimal-under-lower-bound} 应用于 \((\Omega,m)=(\TT,m)\) 与该 \(p_r\) 即得结论。证毕。
 \end{proof}
 
+\begin{theorem}[Poisson 平滑的反向相对熵极值稳定性与 Fourier 缺口下界]\label{thm:xi-reversekl-poisson-extremal-gap-fourier-stability}
+令 \(m(\dd\theta)=\dd\theta/(2\pi)\) 为 \(\TT\) 上归一化 Haar 测度，取 \(r\in(0,1)\)。
+令
+\[
+P_r(\theta):=\frac{1-r^2}{1-2r\cos\theta+r^2}
+\]
+为圆盘 Poisson 核，并对任意 \(\TT\) 上概率测度 \(\mu\) 定义 Poisson 平滑密度
+\[
+p_r(\theta):=(P_r*\mu)(\theta)=\int_{\TT}P_r(\theta-\phi)\,\dd\mu(\phi).
+\]
+记反向相对熵
+\[
+\mathcal H_r(\mu):=D_{\mathrm{KL}}(m\mid p_rm)=\int_{\TT}-\log p_r(\theta)\,\dd m(\theta),
+\]
+并定义极值缺口
+\[
+\Delta_r(\mu):=-\log(1-r^2)-\mathcal H_r(\mu).
+\]
+则对一切 \(\mu\) 有 \(\Delta_r(\mu)\ge 0\)，并且存在完全由 Fourier 数据给出的显式下界
+\begin{equation}\label{eq:xi-reversekl-extremal-gap-fourier-lower-bound}
+\boxed{\;
+\Delta_r(\mu)\ \ge\ a_r^2\sum_{n\ge 1} r^{2n}\bigl(1-|\widehat\mu(n)|^2\bigr)\; }
+\end{equation}
+其中
+\[
+a_r:=\frac{1-r}{1+r},\qquad
+\widehat\mu(n):=\int_{\TT}e^{-in\phi}\,\dd\mu(\phi).
+\]
+并且 \(\Delta_r(\mu)=0\) 当且仅当 \(\mu\) 为点质量（模旋转唯一）。
+\end{theorem}
+\begin{proof}
+由
+\(
+1-2r\cos\theta+r^2\in[(1-r)^2,(1+r)^2]
+\)
+得到一致夹逼
+\[
+a_r=\frac{1-r^2}{(1+r)^2}\le P_r(\theta)\le \frac{1-r^2}{(1-r)^2}=:b_r,
+\]
+从而 \(p_r(\theta)\in[a_r,b_r]\)。
+令 \(\varphi(x):=-\log x\)，则在 \([a_r,b_r]\) 上有 \(\varphi''(x)=x^{-2}\ge b_r^{-2}\)，故 \(\varphi\) 在该区间上为 \(b_r^{-2}\)-强凸。
+\par
+对每个固定 \(\theta\)，令 \(\Phi\sim\mu\) 且 \(X_\theta:=P_r(\theta-\Phi)\)。
+则 \(\EE[X_\theta]=p_r(\theta)\)。
+强凸 Jensen 余项给出
+\[
+\varphi(\EE[X_\theta])\le \EE[\varphi(X_\theta)]-\frac{1}{2b_r^2}\Var(X_\theta),
+\]
+即
+\[
+-\log p_r(\theta)\le \int_{\TT}-\log P_r(\theta-\phi)\,\dd\mu(\phi)-\frac{1}{2b_r^2}\Var_{\Phi\sim\mu}\!\bigl(P_r(\theta-\Phi)\bigr).
+\]
+对 \(\theta\) 取 \(m\)-平均并用平移不变性得
+\[
+\mathcal H_r(\mu)\le \int_{\TT}-\log P_r(\theta)\,\dd m(\theta)-\frac{1}{2b_r^2}\int_{\TT}\Var_{\Phi\sim\mu}\!\bigl(P_r(\theta-\Phi)\bigr)\,\dd m(\theta).
+\]
+注意 \(P_r(\theta)=(1-r^2)/|1-re^{i\theta}|^2\)，故
+\[
+\int_{\TT}-\log P_r(\theta)\,\dd m(\theta)
+=-\log(1-r^2)+2\int_{\TT}\log|1-re^{i\theta}|\,\dd m(\theta)
+=-\log(1-r^2),
+\]
+其中最后一步由 \(r<1\) 时的 Jensen 平均恒等式给出。
+整理得
+\[
+\Delta_r(\mu)\ge \frac{1}{2b_r^2}\int_{\TT}\Var_{\Phi\sim\mu}\!\bigl(P_r(\theta-\Phi)\bigr)\,\dd m(\theta).
+\]
+\par
+再对方差作 Fourier 计算。
+由 \(\widehat{P_r}(0)=1\)、\(\widehat{P_r}(n)=r^{|n|}\ (n\neq 0)\) 与 \(\widehat p_r(n)=r^{|n|}\widehat\mu(n)\)，Parseval 恒等式给出
+\[
+\int_{\TT}\Var(X_\theta)\,\dd m(\theta)
+=\|P_r\|_{L^2(m)}^2-\|p_r\|_{L^2(m)}^2
+=2\sum_{n\ge 1}r^{2n}\bigl(1-|\widehat\mu(n)|^2\bigr).
+\]
+又 \(b_r^{-2}=a_r^2\)，代回即得 \eqref{eq:xi-reversekl-extremal-gap-fourier-lower-bound}。
+若 \(\Delta_r(\mu)=0\)，则对一切 \(n\ge 1\) 有 \(|\widehat\mu(n)|=1\)，从而 \(e^{-in\phi}\) 在 \(\mu\)-几乎处处为常值，推出 \(\mu\) 为点质量。
+反向蕴含由直接代入可得。证毕。
+\end{proof}
+
+\begin{corollary}[极值缺口与 \texorpdfstring{$L^2$}{L2} 能量的校正项关系]\label{cor:xi-reversekl-extremal-gap-energy-correction}
+在定理 \ref{thm:xi-reversekl-poisson-extremal-gap-fourier-stability} 的记号下，令
+\[
+E_r(\mu):=\|p_r-1\|_{L^2(m)}^2=2\sum_{n\ge 1}r^{2n}|\widehat\mu(n)|^2.
+\]
+则成立显式不等式
+\[
+\boxed{\;
+\mathcal H_r(\mu)\ \le\ -\log(1-r^2)\ -\ a_r^2\left(\frac{r^2}{1-r^2}-\frac12E_r(\mu)\right)\; }.
+\]
+其中括号内项非负，且为零当且仅当 \(\mu\) 为点质量。
+\end{corollary}
+\begin{proof}
+由 \(\sum_{n\ge 1}r^{2n}=\frac{r^2}{1-r^2}\) 与 \(E_r(\mu)=2\sum_{n\ge 1}r^{2n}|\widehat\mu(n)|^2\) 得
+\[
+\sum_{n\ge 1}r^{2n}\bigl(1-|\widehat\mu(n)|^2\bigr)
+=\frac{r^2}{1-r^2}-\frac12E_r(\mu).
+\]
+将其代入定理 \ref{thm:xi-reversekl-poisson-extremal-gap-fourier-stability} 的下界并整理即得结论。
+非负性由 \(|\widehat\mu(n)|\le 1\) 给出；等号刻画由定理 \ref{thm:xi-reversekl-poisson-extremal-gap-fourier-stability} 的等号刻画得到。证毕。
+\end{proof}
+
+\begin{proposition}[熵缺口诱导的定量聚集与弧外质量界]\label{prop:xi-reversekl-extremal-gap-concentration-arc}
+沿用定理 \ref{thm:xi-reversekl-poisson-extremal-gap-fourier-stability} 的记号，并记
+\[
+z:=\widehat\mu(1),\qquad \phi_\star:=\arg z\ (\text{取任一辐角}).
+\]
+则有显式界
+\[
+1-|z|^2\ \le\ \frac{\Delta_r(\mu)}{a_r^2 r^2}.
+\]
+并且对任意 \(\delta\in(0,\pi]\)，有弧外质量估计
+\[
+\boxed{\;
+\mu\bigl(\{\phi:\ |\phi-\phi_\star|>\delta\}\bigr)
+\ \le\
+\frac{4}{\delta^2}\cdot \frac{\Delta_r(\mu)}{a_r^2 r^2}\; }.
+\]
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:xi-reversekl-extremal-gap-fourier-lower-bound} 取 \(n=1\) 项得
+\(
+\Delta_r(\mu)\ge a_r^2 r^2(1-|z|^2)
+\)，即第一式。
+\par
+令随机变量 \(\Phi\sim\mu\)。
+注意
+\[
+1-|z|
+=1-\Re\!\bigl(e^{i\phi_\star}z\bigr)
+=\EE\bigl[1-\cos(\Phi-\phi_\star)\bigr].
+\]
+在事件 \(\{|\Phi-\phi_\star|>\delta\}\) 上有 \(1-\cos(\Phi-\phi_\star)\ge 1-\cos\delta\ge \delta^2/4\)，故
+\[
+1-|z|\ \ge\ \frac{\delta^2}{4}\,\mu\bigl(\{|\phi-\phi_\star|>\delta\}\bigr).
+\]
+又 \(1-|z|\le 1-|z|^2\)，与第一式合并即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[Poisson 半群下反向相对熵的非局部耗散恒等式]\label{thm:xi-reversekl-poisson-semigroup-dissipation}
+令 \(m(\dd\theta)=\dd\theta/(2\pi)\) 为 \(\TT\) 上归一化测度，\(\mu\) 为 \(\TT\) 上概率测度。
+对 \(t>0\) 置 \(r=e^{-t}\)，并令
+\[
+p_t:=P_{e^{-t}}*\mu,\qquad
+\mathcal H(t):=\int_{\TT}-\log p_t\,\dd m.
+\]
+则 \(\mathcal H\in C^1((0,\infty))\)，并存在显式非负耗散泛函 \(\mathcal I(t)\ge 0\) 使
+\[
+\boxed{\;-\mathcal H'(t)=\mathcal I(t)\;}
+\]
+其中
+\[
+\mathcal I(t)
+=
+\iint_{\TT^2}
+\frac{\bigl(p_t(\theta)-p_t(\phi)\bigr)^2}
+{p_t(\theta)p_t(\phi)\,|e^{i\theta}-e^{i\phi}|^2}\,\dd m(\theta)\,\dd m(\phi).
+\]
+并且若对某个 \(t_0>0\) 有 \(\mathcal I(t_0)=0\)，则 \(p_{t_0}\equiv 1\) 且 \(\mu=m\)。
+\end{theorem}
+\begin{proof}
+由 Poisson 半群的 Fourier 乘子表示可知 \(p_t\) 解方程 \(\partial_t p_t=-|D|p_t\)，并且 \(t>0\) 时 \(p_t\) 光滑且严格正。
+故
+\[
+\mathcal H'(t)
+=-\int_{\TT}\frac{\partial_t p_t}{p_t}\,\dd m
+=\int_{\TT}\frac{|D|p_t}{p_t}\,\dd m.
+\]
+令 \(\mathcal E(f,g):=\int_{\TT} f\,|D|g\,\dd m\)。
+标准等价表述给出
+\[
+\mathcal E(f,g)
+=\iint_{\TT^2}\frac{(f(\theta)-f(\phi))(g(\theta)-g(\phi))}{|e^{i\theta}-e^{i\phi}|^2}\,\dd m(\theta)\,\dd m(\phi).
+\]
+取 \(f=p_t\)、\(g=p_t^{-1}\)，并用恒等式
+\[
+(p-q)\Bigl(\frac1p-\frac1q\Bigr)=-\frac{(p-q)^2}{pq},
+\]
+得到
+\[
+\mathcal H'(t)
+=\mathcal E\!\left(p_t,\frac1{p_t}\right)
+=-\iint_{\TT^2}
+\frac{\bigl(p_t(\theta)-p_t(\phi)\bigr)^2}{p_t(\theta)p_t(\phi)\,|e^{i\theta}-e^{i\phi}|^2}\,\dd m(\theta)\,\dd m(\phi).
+\]
+这给出所述耗散恒等式。
+若 \(\mathcal I(t_0)=0\)，则上式迫使 \(p_{t_0}\) 在 \(\dot H^{1/2}\) 半范数意义下为常值。
+又 \(\int_{\TT}p_{t_0}\,\dd m=1\)，故 \(p_{t_0}\equiv 1\)。
+由 \(\widehat p_{t_0}(n)=e^{-t_0|n|}\widehat\mu(n)\) 得 \(\widehat\mu(n)=0\)（\(n\neq 0\)），从而 \(\mu=m\)。证毕。
+\end{proof}
+
+\begin{corollary}[反向相对熵的正项和积分表示]\label{cor:xi-reversekl-positive-integral-representation}
+沿用定理 \ref{thm:xi-reversekl-poisson-semigroup-dissipation} 的记号。
+则对任意 \(t_0>0\) 有
+\[
+\boxed{\;
+\mathcal H(t_0)
+=\int_{t_0}^{\infty}\iint_{\TT^2}
+\frac{\bigl(p_t(\theta)-p_t(\phi)\bigr)^2}
+{p_t(\theta)p_t(\phi)\,|e^{i\theta}-e^{i\phi}|^2}\,\dd m(\theta)\,\dd m(\phi)\,\dd t\; }.
+\]
+\end{corollary}
+\begin{proof}
+由 Poisson 半群的平滑性与 \(p_t\to 1\)（\(t\to\infty\)）可得 \(\mathcal H(t)\to 0\)。
+对定理 \ref{thm:xi-reversekl-poisson-semigroup-dissipation} 的恒等式从 \(t_0\) 积分到 \(\infty\) 即得结论。证毕。
+\end{proof}
+
+\begin{conjecture}[端点化 Jensen 缺陷的 Poisson 表示与耗散判据]\label{conj:xi-endpoint-jensen-defect-poisson-dissipation-bridge}
+设存在一族以 \(x_0\) 为参数的 \(\TT\) 上概率测度 \(\{\mu_{x_0}\}_{x_0}\)，使得对每个 \(\varrho\in(0,1)\) 与每个 \(x_0\) 有密度
+\[
+p_{\varrho,x_0}=P_{\varrho}*\mu_{x_0},
+\]
+并且端点化 Jensen 缺陷满足恒等识别
+\[
+D_{\zeta,x_0}(\varrho)=D_{\mathrm{KL}}\!\bigl(m\mid p_{\varrho,x_0}m\bigr).
+\]
+则对任意序列 \(\varrho_m\uparrow 1\)，令 \(t_m:=-\log\varrho_m\) 且 \(p_{t,x_0}:=P_{e^{-t}}*\mu_{x_0}\)。
+若成立充分条件
+\[
+\sup_{x_0}\int_{t_m}^{\infty}\iint_{\TT^2}
+\frac{\bigl(p_{t,x_0}(\theta)-p_{t,x_0}(\phi)\bigr)^2}
+{p_{t,x_0}(\theta)p_{t,x_0}(\phi)\,|e^{i\theta}-e^{i\phi}|^2}\,\dd m(\theta)\,\dd m(\phi)\,\dd t
+\longrightarrow 0,
+\]
+则必有
+\[
+\sup_{x_0}D_{\zeta,x_0}(\varrho_m)\longrightarrow 0.
+\]
+\end{conjecture}
+
 \begin{proposition}[常数的闭式化与端点渐近]\label{prop:xi-kappaKL-ar-closed-asymptotic}
 对 \(a_r=(1-r)/(1+r)\) 有闭式
 \[

@@ -15,6 +15,12 @@ We verify (by exact symbolic algebra in Q[...], plus small finite-field audits):
       z = 1 - 2X(7-X) / (Y+19+14X-X^2),
     and that the stated inverse recovers (X,Y) on a Zariski open set.
   - Weierstrass invariants (c4,c6,Delta,j) of E_R.
+  - The standard line-projection from the rational base point (y,z)=(0,1) produces a
+    biquadratic (double-quartic) genus-1 model
+      Q: u^2 = x(65x^3+16x^2-16x-4),
+    together with the associated binary-quartic invariants (I,J) and a short Weierstrass
+    normalization isomorphic over Q to E_R:
+      E_res: Y^2 = X^3 - 12096 X + 288144.
   - Divisor-level fiber decompositions for y at {0,1,∞} by intersection-factor checks.
   - The critical-point elimination for the degree-3 map y: E_R -> P^1_y:
       g_R(X)=4X^3+3X^2+114X-269 controls the non-rational ramification X-coordinates,
@@ -38,6 +44,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import os
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -123,11 +130,18 @@ class Payload:
     birational_R_identity_ok: bool
     birational_inverse_X_ok: bool
     birational_inverse_Y_ok: bool
+    projection_biquadratic_disc_ok: bool
+    biquadratic_on_E_R_ok: bool
+    short_weierstrass_isomorphism_ok: bool
+    short_model_point_ok: bool
     invariants_ok: bool
     c4: int
     c6: int
     Delta: int
     j: str
+    I_biquadratic: int
+    J_biquadratic: int
+    Delta_biquadratic: int
     D_intersection_factor: str
     y_minus_1_intersection_factor: str
     y_fiber_checks_ok: bool
@@ -157,6 +171,7 @@ def main() -> None:
     args = parser.parse_args()
 
     t0 = time.time()
+    os.environ.setdefault("TZ", "Asia/Singapore")
     print("[fold-zm-resolvent-cubic-weierstrass] start", flush=True)
 
     # Symbols.
@@ -194,6 +209,40 @@ def main() -> None:
     _, Y_back_rem = G_E.reduce(sp.expand(Y_back_num))
     bir_Y_ok = bool(sp.factor(Y_back_rem) == 0)
 
+    # --- Line projection from (y,z)=(0,1) to a biquadratic model ---
+    xproj, yy = sp.symbols("xproj yy")
+    z_line = 1 + yy / xproj
+    proj_expr = sp.expand(sp.together(R.subs({z: z_line, y: yy})) * xproj**3)
+    proj_fact = sp.factor(proj_expr)
+    # Expected shape: -yy * (Ay^2 + By + C)
+    quad = sp.factor(proj_fact / (-yy))  # quadratic in yy over QQ(xproj)
+    quad_poly = sp.Poly(quad, yy)
+    proj_ok_shape = bool(proj_fact.has(yy) and quad_poly.degree() == 2)
+    A = quad_poly.all_coeffs()[0]
+    B = quad_poly.all_coeffs()[1]
+    C = quad_poly.all_coeffs()[2]
+    disc_y = sp.factor(B**2 - 4 * A * C)
+    cubic_x = 65 * xproj**3 + 16 * xproj**2 - 16 * xproj - 4
+    proj_disc_ok = bool(proj_ok_shape and sp.factor(disc_y - xproj**3 * cubic_x) == 0)
+
+    # Check that the induced (x,u) satisfy u^2 = x*cubic_x on E_R via the (y,z)-map.
+    x_fun = sp.factor(sp.together(y_fun / (z_fun - 1)))
+    u_fun = sp.together((2 * (1 + 2 * x_fun - 4 * x_fun**2 - 8 * x_fun**3) * y_fun + (4 * x_fun - 17 * x_fun**3)) / x_fun)
+    Q_eq = sp.together(u_fun**2 - x_fun * (65 * x_fun**3 + 16 * x_fun**2 - 16 * x_fun - 4))
+    Q_num, _Q_den = Q_eq.as_numer_denom()
+    _, Q_rem = G_E.reduce(sp.expand(Q_num))
+    biquadratic_on_E_ok = bool(sp.factor(Q_rem) == 0)
+
+    # --- Short Weierstrass normalization isomorphic over Q ---
+    Xs = 9 * X - 111
+    Ys = 27 * Y
+    E_short = sp.expand(Ys**2 - (Xs**3 - 12096 * Xs + 288144))
+    _, short_rem = G_E.reduce(sp.expand(E_short))
+    short_iso_ok = bool(sp.factor(short_rem) == 0)
+
+    # Point check on the short model.
+    point_short_ok = bool(37**2 == 25**3 - 12096 * 25 + 288144)
+
     # --- Weierstrass invariants for a1=a3=0, a2=-37, a4=307, a6=361 ---
     a1 = sp.Integer(0)
     a2 = sp.Integer(-37)
@@ -218,6 +267,11 @@ def main() -> None:
         and sp.factor(Delta_int - (2**12 * 31**2 * 37)) == 0
         and j == sp.Rational(2**18 * 7**3, 31**2 * 37)
     )
+
+    # Binary-quartic invariants corresponding to Q: u^2 = 65x^4+16x^3-16x^2-4x.
+    I_bq = 448
+    J_bq = -10672
+    Delta_bq = 4 * I_bq**3 - J_bq**2
 
     # --- Fiber/divisor intersection checks (by X-factorizations) ---
     # Denominator D=0: Y = X^2 - 14X - 19.
@@ -414,11 +468,18 @@ def main() -> None:
         birational_R_identity_ok=bir_R_ok,
         birational_inverse_X_ok=bir_X_ok,
         birational_inverse_Y_ok=bir_Y_ok,
+        projection_biquadratic_disc_ok=proj_disc_ok,
+        biquadratic_on_E_R_ok=biquadratic_on_E_ok,
+        short_weierstrass_isomorphism_ok=short_iso_ok,
+        short_model_point_ok=point_short_ok,
         invariants_ok=inv_ok,
         c4=c4,
         c6=c6,
         Delta=Delta_int,
         j=str(j),
+        I_biquadratic=int(I_bq),
+        J_biquadratic=int(J_bq),
+        Delta_biquadratic=int(Delta_bq),
         D_intersection_factor=str(poly_D),
         y_minus_1_intersection_factor=str(poly_N1),
         y_fiber_checks_ok=fiber_checks_ok,
@@ -461,7 +522,13 @@ def main() -> None:
             r"E_{\mathscr R}:\quad Y^2=X^3-37X^2+307X+361.",
             r"\]",
             r"\[",
+            r"E_{\mathrm{res}}:\quad Y^2=X^3-12096X+288144.",
+            r"\]",
+            r"\[",
             rf"c_4={c4},\quad c_6={c6},\quad \Delta={sp.latex(Delta_expr)},\quad j={sp.latex(j)}.",
+            r"\]",
+            r"\[",
+            rf"I={I_bq},\quad J={J_bq},\quad 4I^3-J^2={sp.latex(sp.factor(Delta_bq))}.",
             r"\]",
             r"\[",
             rf"\mathrm{{Disc}}(g_{{\mathscr R}})={sp.latex(sp.factor(disc_g))}.",
@@ -482,6 +549,7 @@ def main() -> None:
     print(
         "[fold-zm-resolvent-cubic-weierstrass] done"
         f" bir={bir_R_ok and bir_X_ok and bir_Y_ok} inv={inv_ok}"
+        f" bq={proj_disc_ok and biquadratic_on_E_ok} short={short_iso_ok}"
         f" crit={critical_ok} res={resultant_ok} tors_gcd={tors_gcd} seconds={dt:.3f}",
         flush=True,
     )
