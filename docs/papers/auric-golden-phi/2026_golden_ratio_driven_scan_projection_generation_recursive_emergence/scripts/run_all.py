@@ -106,6 +106,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_exceptional_integer_model_Mq_galois_audit",
+            script="exp_xi_exceptional_integer_model_Mq_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_exceptional_integer_model_Mq_galois_audit.json",
+            ],
+        ),
+        Step(
             name="xi_exceptional_reciprocal_fibonacci_partition_audit",
             script="exp_xi_exceptional_reciprocal_fibonacci_partition_audit.py",
             args=[],
