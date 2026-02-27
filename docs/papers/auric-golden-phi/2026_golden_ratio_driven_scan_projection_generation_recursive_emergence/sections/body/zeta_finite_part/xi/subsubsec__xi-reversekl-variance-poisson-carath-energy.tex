@@ -197,6 +197,102 @@ a_r=\frac{1-r^2}{(1+r)^2}\le P_r(\theta)\le \frac{1-r^2}{(1-r)^2}=:b_r,
 反向蕴含由直接代入可得。证毕。
 \end{proof}
 
+\begin{theorem}[反向相对熵的有限 Fourier 证书与统一截断尾界]\label{thm:xi-reversekl-finite-fourier-certificate}
+在定理 \ref{thm:xi-reversekl-poisson-extremal-gap-fourier-stability} 的记号下，
+对任意 \(\mu\in\mathrm{Prob}(\TT)\)、任意 \(0<r<1\)、任意整数 \(N\ge 1\)，成立
+\begin{equation}\label{eq:xi-reversekl-finite-fourier-certificate}
+\boxed{\;
+a_r^{2}\sum_{n=1}^{N} r^{2n}|\widehat\mu(n)|^2
+\ \le\
+\mathcal H_r(\mu)
+\ \le\
+b_r^{2}\left(\sum_{n=1}^{N} r^{2n}|\widehat\mu(n)|^2+\frac{r^{2(N+1)}}{1-r^2}\right).\;}
+\end{equation}
+其中尾项 \(\frac{r^{2(N+1)}}{1-r^2}\) 仅依赖 \((r,N)\)，并对所有 \(\mu\) 同时成立。
+\end{theorem}
+\begin{proof}
+由 \(P_r(\theta)\in[a_r,b_r]\) 与卷积平均性可知 \(p_r(\theta)\in[a_r,b_r]\)（\(\forall\theta\)）。
+令 \(\Theta\sim m\) 并置 \(X:=p_r(\Theta)\)，则 \(X\in[a_r,b_r]\) 且 \(\EE[X]=\int_{\TT}p_r\,\dd m=1\)，并且
+\(\mathcal H_r(\mu)=\EE[-\log X]\)。
+令 \(\varphi(x):=-\log x\)，则 \(\varphi''(x)=x^{-2}\)，从而在 \([a_r,b_r]\) 上有
+\[
+\frac{1}{b_r^2}\le \varphi''(x)\le \frac{1}{a_r^2}.
+\]
+对随机变量 \(X\) 以二阶 Taylor 余项（等价地强凸/强光滑 Jensen 余项）得到
+\[
+\frac{1}{2b_r^{2}}\EE[(X-1)^2]\ \le\ \EE[\varphi(X)]-\varphi(\EE[X])\ \le\ \frac{1}{2a_r^{2}}\EE[(X-1)^2].
+\]
+由于 \(\EE[X]=1\) 且 \(\varphi(1)=0\)，上式化为
+\[
+\frac{1}{2b_r^{2}}\EE[(X-1)^2]\ \le\ \mathcal H_r(\mu)\ \le\ \frac{1}{2a_r^{2}}\EE[(X-1)^2].
+\]
+又 \(\EE[(X-1)^2]=\|p_r-1\|_{L^2(m)}^2\)。
+由 \(\widehat p_r(n)=r^{|n|}\widehat\mu(n)\) 与 Parseval 恒等式，
+\[
+\|p_r-1\|_{L^2(m)}^2=\sum_{n\neq 0}|\widehat p_r(n)|^2
+=2\sum_{n\ge 1}r^{2n}|\widehat\mu(n)|^2.
+\]
+代回并用 \(b_r^{-2}=a_r^2\)、\(a_r^{-2}=b_r^2\)，得到
+\[
+a_r^2\sum_{n\ge 1}r^{2n}|\widehat\mu(n)|^2\ \le\ \mathcal H_r(\mu)\ \le\ b_r^2\sum_{n\ge 1}r^{2n}|\widehat\mu(n)|^2.
+\]
+左端丢弃 \(n>N\) 的非负项即得 \eqref{eq:xi-reversekl-finite-fourier-certificate} 的下界。
+右端对尾和用 \(|\widehat\mu(n)|\le 1\) 得
+\[
+\sum_{n>N}r^{2n}|\widehat\mu(n)|^2\le \sum_{n>N}r^{2n}=\frac{r^{2(N+1)}}{1-r^2},
+\]
+从而得到 \eqref{eq:xi-reversekl-finite-fourier-certificate} 的上界。证毕。
+\end{proof}
+
+\begin{corollary}[端点尺度的刚性：反向相对熵的临界量级蕴含 Haar]\label{cor:xi-reversekl-critical-rigidity-haar}
+设 \(r_k\uparrow 1\)。
+若对某个 \(\mu\in\mathrm{Prob}(\TT)\) 有
+\[
+\mathcal H_{r_k}(\mu)=o\!\left(a_{r_k}^2\right)\qquad(k\to\infty),
+\]
+则 \(\mu=m\)（等价地 \(\widehat\mu(n)=0\) 对所有 \(n\ge 1\) 成立）。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-reversekl-finite-fourier-certificate} 的下界，对任意固定 \(n\ge 1\) 有
+\[
+\mathcal H_{r_k}(\mu)\ \ge\ a_{r_k}^2\,r_k^{2n}|\widehat\mu(n)|^2.
+\]
+故
+\(
+|\widehat\mu(n)|^2\le \mathcal H_{r_k}(\mu)/(a_{r_k}^2 r_k^{2n})\to 0
+\)，从而 \(\widehat\mu(n)=0\)。
+由于 \(n\) 任意，得 \(\mu=m\)。证毕。
+\end{proof}
+
+\begin{corollary}[黄金分辨率链上的临界尺度]\label{cor:xi-golden-chain-reversekl-critical}
+令 \(\varphi=\frac{1+\sqrt5}{2}\)，并取黄金分辨率链 \(\varrho_m\) 如 \eqref{eq:xi-golden-resolution-chain-rho}。
+则 \(a_{\varrho_m}=\varphi^{-m}\)，从而若
+\[
+\mathcal H_{\varrho_m}(\mu)=o(\varphi^{-2m})\qquad(m\to\infty),
+\]
+则 \(\mu=m\)。
+\end{corollary}
+\begin{proof}
+由 \(a_{\varrho_m}=\varphi^{-m}\) 与推论 \ref{cor:xi-reversekl-critical-rigidity-haar} 直接得到。证毕。
+\end{proof}
+
+\begin{proposition}[统一尾项预算的截断阶下界]\label{prop:xi-reversekl-truncation-depth-lower-bound}
+固定 \(0<r<1\) 与 \(\varepsilon>0\)。
+若希望定理 \ref{thm:xi-reversekl-finite-fourier-certificate} 中的统一尾项满足
+\[
+b_r^2\cdot \frac{r^{2(N+1)}}{1-r^2}\ \le\ \varepsilon,
+\]
+则整数 \(N\) 必满足
+\begin{equation}\label{eq:xi-reversekl-truncation-depth-lower-bound}
+\boxed{\;
+N\ \ge\ \frac{1}{2|\log r|}\log\!\Bigl(\frac{b_r^2}{\varepsilon(1-r^2)}\Bigr)\ -\ 1.\;}
+\end{equation}
+\end{proposition}
+\begin{proof}
+不等式等价于 \(r^{2(N+1)}\le \varepsilon(1-r^2)/b_r^2\)。
+两边取对数并用 \(\log r<0\) 整理即得 \eqref{eq:xi-reversekl-truncation-depth-lower-bound}。证毕。
+\end{proof}
+
 \input{thm__xi-reversekl-poisson-gap-fourier-bilateral-kernel-bayes}
 
 \begin{corollary}[极值缺口与 \texorpdfstring{$L^2$}{L2} 能量的校正项关系]\label{cor:xi-reversekl-extremal-gap-energy-correction}

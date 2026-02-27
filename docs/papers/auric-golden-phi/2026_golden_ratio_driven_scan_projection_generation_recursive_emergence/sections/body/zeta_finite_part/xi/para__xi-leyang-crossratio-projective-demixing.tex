@@ -3,6 +3,79 @@
 另一类来自解析背景与变量混合：允许的复仿射重参数化 \(z\mapsto az+b(\tau)\) 会引入共同平移与整体缩放，使得直接以零点坐标作比值或作体积交叉的定位量对混合参数敏感。
 以下首先记录可直接用于“判别式分解 \(\Rightarrow\) 零点标度反演”的谱侧定量律，随后给出射影化的消混合接口。
 
+\begin{theorem}[两相并存临界窗的尺度极限与零点凝聚]\label{thm:xi-godel-leyang-two-phase-coexistence-window}
+设 \(\mathcal C\) 为可数概念类，并给定前缀自由码长 \(\ell:\mathcal C\to\NN\)，权重 \(w(C):=2^{-\ell(C)}\)。
+对观测前缀长度 \(n\) 与参数 \(\beta\in\CC\)，定义有限体积配分函数
+\[
+Z_n(\beta):=\sum_{C\in\mathcal C}w(C)\exp\!\bigl(-\beta E_C(n)\bigr),
+\]
+其中 \(E_C(n)\in\RR\) 为可加失配能量。
+假设存在两概念 \(C_\pm\in\mathcal C\) 与常数 \(e_\pm,\lambda_\pm\in\RR\) 使
+\[
+\frac{E_{C_\pm}(n)}{n}\to e_\pm,\qquad \frac{\ell(C_\pm)}{n}\to \lambda_\pm,
+\qquad
+\Delta e:=e_+-e_-\neq 0,
+\]
+并且存在实数 \(\beta^\star\) 使两相自由能并存且严格主导：对任意其余概念 \(C\notin\{C_+,C_-\}\)，若极限
+\(
+e(C):=\lim_{n\to\infty}E_C(n)/n
+\) 与
+\(
+\lambda(C):=\lim_{n\to\infty}\ell(C)/n
+\)
+存在，则成立严格不等式
+\[
+(\ln 2)\lambda_+ + \beta^\star e_+
+=
+(\ln 2)\lambda_- + \beta^\star e_-
+\ <\ (\ln 2)\lambda(C)+\beta^\star e(C).
+\]
+对 \(z\in\CC^\times\)，定义临界窗重标度
+\[
+\beta_{n}(z):=\beta^\star-\frac{1}{n\Delta e}\log z,
+\]
+并定义归一化局部配分函数
+\[
+\mathcal Z_n(z):=
+\frac{Z_n\!\bigl(\beta_n(z)\bigr)}
+w(C_-)\exp\!\bigl(-\beta_n(z)E_{C_-}(n)\bigr)}.
+\]
+则对任意紧集 \(K\Subset\CC\setminus\{0\}\)，有一致收敛
+\[
+\mathcal Z_n(z)\ \longrightarrow\ 1+z
+\qquad(n\to\infty,\ z\in K).
+\]
+因此在该尺度下，\(\mathcal Z_n\) 的零点在 \(K\) 上趋于 \(\{-1\}\)；并且最靠近 \(\beta^\star\) 的 Lee--Yang 零点满足
+\[
+\beta_{n,k}
+\;=\;
+\beta^\star-\frac{(2k+1)\pi i}{n\Delta e}+o(n^{-1}),
+\qquad k\in\ZZ.
+\]
+\end{theorem}
+\begin{proof}
+将 \(Z_n\) 分解为两主导项与余项：
+\[
+Z_n(\beta)=w(C_-)\,e^{-\beta E_{C_-}(n)}+w(C_+)\,e^{-\beta E_{C_+}(n)}+R_n(\beta).
+\]
+把 \(\beta=\beta_n(z)\) 代入并按 \(w(C_-)\,e^{-\beta E_{C_-}(n)}\) 归一化，得到
+\[
+\mathcal Z_n(z)=1+\frac{w(C_+)}{w(C_-)}\exp\!\bigl(-\beta_n(z)\,(E_{C_+}(n)-E_{C_-}(n))\bigr)
+\;+\;\frac{R_n(\beta_n(z))}{w(C_-)\,e^{-\beta_n(z)E_{C_-}(n)}}.
+\]
+由 \(w(C_\pm)=2^{-\ell(C_\pm)}\) 与假设给出的并存等式，可得
+\[
+\frac{w(C_+)}{w(C_-)}\exp\!\bigl(-\beta^\star(E_{C_+}(n)-E_{C_-}(n))\bigr)=1+o(1).
+\]
+并且由 \(\beta_n(z)=\beta^\star-\frac{1}{n\Delta e}\log z\) 与 \((E_{C_+}(n)-E_{C_-}(n))/n\to \Delta e\)，有
+\[
+\exp\!\left(+\frac{\log z}{n\Delta e}\,(E_{C_+}(n)-E_{C_-}(n))\right)=z^{1+o(1)}.
+\]
+合并得到第二项趋于 \(z\)，从而给出 \(1+z\) 的主极限。
+余项 \(\frac{R_n(\beta_n(z))}{w(C_-)\,e^{-\beta_n(z)E_{C_-}(n)}}\) 由严格主导条件在 \(K\) 上以指数速率趋于 \(0\)，从而得到一致收敛。
+零点渐近式由 \(1+z=0\) 与 \(z=\exp(-n\Delta e(\beta-\beta^\star))\) 反解，并把误差吸收进 \(o(n^{-1})\) 得到。证毕。
+\end{proof}
+
 \begin{theorem}[两谱竞争下零点的对数位移定量律]\label{thm:xi-leyang-logshift-two-spectrum}
 设 \(U\subset\CC\) 为开集，\(\lambda_1,\dots,\lambda_s:U\to\CC\setminus\{0\}\) 为解析函数。
 对 \(n\in\NN\) 定义

@@ -91,6 +91,36 @@ p=\phi*\nu.
 这是经典 turnpike/Golomb ruler 反演问题的标准刚性结论：最大差分给出两端点间距，递归地从差分多重集中剥离与端点兼容的差分，并在一般位置假设下消除分支，从而得到唯一解；平移与反射为唯一残余对称。证毕。
 \end{proof}
 
+\begin{theorem}[Hankel--Prony 学习的零点谱稳定性与可递归误差证书]\label{thm:xi-hankel-prony-root-stability-recursive-certificate}
+设 \(\zeta_1,\dots,\zeta_r\in\CC^\times\) 两两不同，\(c_1,\dots,c_r\in\CC\setminus\{0\}\)，并定义矩序列
+\[
+m_k:=\sum_{j=1}^{r}c_j\zeta_j^k,\qquad k=0,1,\dots,2r-1.
+\]
+令 Hankel 矩阵
+\[
+H:=(m_{i+j})_{0\le i,j\le r-1}\in\Mat_r(\CC),
+\]
+并假设 \(H\) 可逆，记 \(\sigma_{\min}:=\sigma_{\min}(H)>0\)。
+给定噪声观测 \(\tilde m_k=m_k+\varepsilon_k\) 且 \(|\varepsilon_k|\le \epsilon\)，构造 \(\tilde H=(\tilde m_{i+j})_{0\le i,j\le r-1}\)。
+则存在常数
+\[
+C=C\!\left(r,\ \max_j|c_j|,\ \max_j|\zeta_j|\right)>0
+\]
+使得当 \(\epsilon\le \sigma_{\min}/(2C)\) 时，由 Prony--Hankel 过程从 \(\{\tilde m_k\}_{k=0}^{2r-1}\) 所恢复的估计根 \(\tilde\zeta_1,\dots,\tilde\zeta_r\) 可重标记满足
+\[
+\max_{1\le j\le r}|\tilde\zeta_j-\zeta_j|\ \le\ \frac{C}{\sigma_{\min}}\,\epsilon.
+\]
+并且当追加矩观测 \(\tilde m_{2r},\tilde m_{2r+1},\dots\) 以形成更高阶 Hankel 扩维矩阵时，\(\sigma_{\min}\) 的下界与上述上界可由 Schur 补与最小奇异值扰动估计逐步更新，从而在每一阶生成后验可核验的稳定性证书。
+\end{theorem}
+\begin{proof}[证明要点]
+矩分解可写为 \(H=VCV^{\mathsf T}\)，其中 \(V=(\zeta_j^i)_{0\le i\le r-1,\,1\le j\le r}\) 为 Vandermonde 矩阵且 \(C=\mathrm{diag}(c_1,\dots,c_r)\)。
+由 \(|\varepsilon_k|\le\epsilon\) 得 \(\|\tilde H-H\|_{\mathrm{op}}\le C_0(r)\epsilon\)。
+当 \(\epsilon\le \sigma_{\min}/(2C)\) 时，可保证 \(\tilde H\) 可逆且 \(\|\tilde H^{-1}\|_{\mathrm{op}}\le 2/\sigma_{\min}\)。
+Prony 重构可表述为从 \(\tilde H\) 解出线性递推（或等价 companion 矩阵）并取其特征根；该映射在根互异域内对数据是局部 Lipschitz。
+将线性系统的条件数界（由 \(\sigma_{\min}^{-1}\) 控制）与多项式根对系数的稳定性界（例如由 companion 矩阵的 Bauer--Fike 型估计）合并，即得所示 \(\frac{C}{\sigma_{\min}}\epsilon\) 上界；常数 \(C\) 仅依赖于 \(r\) 与 \(\max_j|c_j|\)、\(\max_j|\zeta_j|\) 的上界。
+递归更新部分由 Hankel 扩维的块矩阵 Schur 补公式与 Weyl 型奇异值扰动界给出。证毕。
+\end{proof}
+
 \begin{corollary}[超分辨率屏障常数 \texorpdfstring{$\pi$}{pi}：深度分离的稳定阈值为 \texorpdfstring{$\exp(-\pi/\Delta)$}{exp(-pi/Delta)}]\label{cor:xi-bulk-curvature-superresolution-pi-barrier}
 设观测到的曲率概率密度为 \(\widetilde p=p+\eta\)，并假定 Fourier 噪声在带宽 \(|\xi|\le\Omega\) 内满足
 \[
