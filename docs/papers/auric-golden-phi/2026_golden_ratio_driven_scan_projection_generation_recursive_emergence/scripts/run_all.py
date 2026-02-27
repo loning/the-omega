@@ -306,6 +306,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_ed_discriminant_pullback_factorization_audit",
+            script="exp_xi_ed_discriminant_pullback_factorization_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_ed_discriminant_pullback_factorization_audit.json",
+                "sections/generated/eq_xi_ed_discriminant_pullback_factorization.tex",
+            ],
+        ),
+        Step(
+            name="xi_ed_h_to_htilde_varphi_audit",
+            script="exp_xi_ed_h_to_htilde_varphi_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_ed_h_to_htilde_varphi_audit.json",
+                "sections/generated/eq_xi_ed_h_to_htilde_varphi.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_s4_a4_v4_etale_prym_split_audit",
             script="exp_fold_zm_s4_a4_v4_etale_prym_split_audit.py",
             args=[],
@@ -3000,6 +3018,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_zm_elliptic_weight_doubling_rational_lift_psi_audit",
+            script="exp_fold_zm_elliptic_weight_doubling_rational_lift_psi_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_weight_doubling_rational_lift_psi_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_psi.tex",
+            ],
+        ),
+        Step(
             name="fold_zm_elliptic_weight_tripling_audit",
             script="exp_fold_zm_elliptic_weight_tripling_audit.py",
             args=[],
@@ -3344,6 +3371,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/m2_level3_boundary_transvection_counts.json",
                 "sections/generated/eq_m2_level3_boundary_transvection_counts.tex",
+            ],
+        ),
+        Step(
+            name="m2_level3_bielliptic_involution_counts",
+            script="exp_m2_level3_bielliptic_involution_counts.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m2_level3_bielliptic_involution_counts.json",
+                "sections/generated/eq_m2_level3_bielliptic_involution_counts.tex",
             ],
         ),
         Step(
