@@ -295,6 +295,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_endpoint_gf_closedform_audit",
+            script="exp_fold_gauge_anomaly_endpoint_gf_closedform_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_endpoint_gf_closedform_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zeckendorf_mod_topbits_audit",
             script="exp_fold_zeckendorf_mod_topbits_audit.py",
             args=[],
@@ -535,6 +543,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_spectral_quartic_jacobian_L13_audit",
+            script="exp_fold_gauge_anomaly_spectral_quartic_jacobian_L13_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_spectral_quartic_jacobian_L13_audit.json",
+                "sections/generated/eq_fold_gauge_anomaly_spectral_quartic_jacobian_L13_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_ldp_rate",
             script="exp_fold_gauge_anomaly_ldp_rate.py",
             args=[],
@@ -742,6 +759,30 @@ def build_steps() -> List[Step]:
                 "artifacts/export/xi_prime_register_semidirect_two_shadow_audit.json",
                 "sections/generated/eq_xi_prime_register_semidirect_two_shadow_audit.tex",
                 "sections/generated/tab_xi_elliptic_two_shadow_invariants_audit.tex",
+            ],
+        ),
+        Step(
+            name="xi_prime_register_zg_density_leyang_spectrum_audit",
+            script="exp_xi_prime_register_zg_density_leyang_spectrum_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_zg_density_leyang_spectrum_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_prime_register_zg_dirichlet_log_renormalization_audit",
+            script="exp_xi_prime_register_zg_dirichlet_log_renormalization_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_zg_dirichlet_log_renormalization_audit.json",
+            ],
+        ),
+        Step(
+            name="group_jg_radial_quadratic_identifiability_audit",
+            script="exp_group_jg_radial_quadratic_identifiability_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/group_jg_radial_quadratic_identifiability_audit.json",
             ],
         ),
         Step(
