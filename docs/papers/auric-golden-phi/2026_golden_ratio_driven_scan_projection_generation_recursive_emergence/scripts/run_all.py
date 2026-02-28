@@ -246,6 +246,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_p7_three_s3_disjointness_chebotarev_certificate",
+            script="exp_xi_p7_three_s3_disjointness_chebotarev_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_p7_three_s3_disjointness_chebotarev_certificate.json",
+            ],
+        ),
+        Step(
+            name="xi_pick_poisson_phi_m_homothetic_spectrum_ledger_audit",
+            script="exp_xi_pick_poisson_phi_m_homothetic_spectrum_ledger_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_pick_poisson_phi_m_homothetic_spectrum_ledger_audit.json",
+            ],
+        ),
+        Step(
             name="xi_leyang_node_preimage_r10_wreath_audit",
             script="exp_xi_leyang_node_preimage_r10_wreath_audit.py",
             args=[],
@@ -3221,6 +3237,29 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/collision_kernel_A4_newman_u4_certificate.json",
                 "sections/generated/eq_collision_kernel_A4_newman_u4_minpoly.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_u4_discriminant_certificate",
+            script="exp_collision_kernel_A4_newman_u4_discriminant_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_u4_discriminant_certificate.json",
+                "sections/generated/eq_collision_kernel_A4_newman_u4_discriminant_factorization.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_root_ratio_r20_r10_certificate",
+            script="exp_collision_kernel_A4_root_ratio_r20_r10_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_root_ratio_r20_r10_certificate.json",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_r20_minpoly.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_r10_minpoly.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_resultant_square_identity.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_r20_discriminant_factorization.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_r10_discriminant_factorization.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_norm_s2_minus_4.tex",
             ],
         ),
         Step(

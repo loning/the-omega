@@ -134,5 +134,262 @@ H_m(U):=\prod_{\vec f} q_{\vec f}^{\,\varepsilon_{\vec f}}\in\NN.
 将边界链再算术化为一个整数的素因子分解，得到一个在严格意义下可逆的“边界 \(\leftrightarrow\) bulk”字典。
 \end{remark}
 
+\paragraph{连续边界通量的形参重构与 Gödel 轴译码}
+离散 dyadic 链层的“边界单射”依赖于顶维同调的消失。
+在连续几何模型中，对严格凸域的边界通量同样存在可逆译码机制：在若干可计算的形参族上，有限阶边界多项式通量即为形参的完备不变量。
+下述结果把“Stokes 探针的体积读出”提升为“二阶通量的形状矩阵读出”，并给出对角 Gödel 轴编码的显式可逆译码与噪声阈值。
+
+\begin{theorem}[椭球形状矩阵的边界通量重构]\label{thm:spg-ellipsoid-boundary-flux-reconstruction}
+令 \(d\ge 2\)，并令 \(Q\in\mathrm{Sym}_d^{+}\) 为实对称正定矩阵。
+定义椭球及其边界
+\[
+E_Q:=\{x\in\RR^d:\ x^{\mathsf T}Q^{-1}x\le 1\},
+\qquad
+S_Q:=\partial E_Q.
+\]
+记 \(n(x)\) 为 \(S_Q\) 上外法单位法向，\(dS\) 为 \((d-1)\)-维面积测度，并定义边界标量与边界二阶通量矩阵
+\[
+B_0:=\int_{S_Q}\langle x,n(x)\rangle\,dS,
+\qquad
+B:=(B_{ij})_{1\le i,j\le d},\qquad
+B_{ij}:=\int_{S_Q}x_ix_j\langle x,n(x)\rangle\,dS.
+\]
+则成立完全重构关系
+\[
+\operatorname{Vol}(E_Q)=\frac{1}{d}B_0,
+\qquad
+B=\operatorname{Vol}(E_Q)\,Q,
+\qquad
+Q=\frac{d}{B_0}\,B.
+\]
+因此 \(Q\) 的谱决定椭球在正交基下的半轴长度平方。
+\end{theorem}
+\begin{proof}
+取向量场 \(X(x):=x\)，则 \(\mathrm{div}\,X=d\)，由散度定理得
+\[
+B_0=\int_{S_Q}\langle x,n\rangle\,dS=\int_{E_Q}\mathrm{div}\,X\,dx=d\,\operatorname{Vol}(E_Q),
+\]
+从而 \(\operatorname{Vol}(E_Q)=B_0/d\)。
+\par
+固定 \(i,j\)，取向量场 \(X^{ij}(x):=x_ix_j\,x\)。
+逐分量计算得 \(\mathrm{div}\,X^{ij}=(d+2)x_ix_j\)，故
+\[
+B_{ij}=\int_{S_Q}\langle X^{ij},n\rangle\,dS=\int_{E_Q}\mathrm{div}\,X^{ij}\,dx
+=(d+2)\int_{E_Q}x_ix_j\,dx.
+\]
+取 \(A\in\mathrm{GL}_d(\RR)\) 使 \(Q=AA^{\mathsf T}\)，则 \(E_Q=A(B_d)\)，其中 \(B_d:=\{y\in\RR^d:\ |y|_2\le 1\}\)。
+令 \(x=Ay\)，得
+\[
+\int_{E_Q}xx^{\mathsf T}\,dx
+=\det(A)\,A\Bigl(\int_{B_d}yy^{\mathsf T}\,dy\Bigr)A^{\mathsf T}.
+\]
+由旋转对称性，\(\int_{B_d}yy^{\mathsf T}\,dy=c\,I_d\)，并由取迹得到
+\(
+c\,d=\int_{B_d}|y|_2^2\,dy=\frac{d}{d+2}\operatorname{Vol}(B_d)
+\)，故 \(c=\operatorname{Vol}(B_d)/(d+2)\)。
+因此
+\[
+\int_{E_Q}xx^{\mathsf T}\,dx
+=\frac{\det(A)\operatorname{Vol}(B_d)}{d+2}\,AA^{\mathsf T}
+=\frac{\operatorname{Vol}(E_Q)}{d+2}\,Q.
+\]
+代回 \(B_{ij}=(d+2)\int_{E_Q}x_ix_j\,dx\) 得 \(B=\operatorname{Vol}(E_Q)\,Q\)，从而 \(Q=(d/B_0)B\)。证毕。
+\end{proof}
+
+\begin{corollary}[对角 Gödel 轴编码的边界可逆译码]\label{cor:spg-godel-axis-boundary-invertibility}
+取互异素数 \(p_1,\dots,p_d\) 与指数 \(b_1,\dots,b_d\in\ZZ_{\ge 0}\)，并令
+\[
+Q=\mathrm{diag}\bigl(p_1^{2b_1},\dots,p_d^{2b_d}\bigr),
+\qquad
+E:=E_Q.
+\]
+则仅由边界通量数据 \(\bigl(B_0,B_{11},\dots,B_{dd}\bigr)\) 可恢复
+\[
+N:=\prod_{i=1}^d p_i^{b_i}=\frac{B_0}{d\,\operatorname{Vol}(B_d)},
+\qquad
+b_i=\frac{1}{2\log p_i}\log\!\left(\frac{d\,B_{ii}}{B_0}\right)\qquad(1\le i\le d).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:spg-ellipsoid-boundary-flux-reconstruction}，有 \(\operatorname{Vol}(E)=B_0/d\) 且 \(Q=(d/B_0)B\)，故
+\[
+\frac{d\,B_{ii}}{B_0}=Q_{ii}=p_i^{2b_i},
+\]
+取对数即得 \(b_i\)。
+又由 \(E=A(B_d)\) 且 \(\det(A)=\prod_i p_i^{b_i}\)，有
+\(
+\operatorname{Vol}(E)=\operatorname{Vol}(B_d)\prod_i p_i^{b_i}
+\)，
+从而
+\(
+N=\operatorname{Vol}(E)/\operatorname{Vol}(B_d)=B_0/(d\,\operatorname{Vol}(B_d))
+\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\ell_p$}{lp}-超椭球族的边界--体积译码恒等式]\label{thm:spg-lp-superellipsoid-boundary-volume-decoding}
+令 \(d\ge 2\)，\(p>1\)，并取 \(a=(a_1,\dots,a_d)\in(0,\infty)^d\)。
+定义 \(\ell_p\)-超椭球与其边界
+\[
+\Omega_p(a):=\Bigl\{x\in\RR^d:\ \sum_{i=1}^d\Bigl|\frac{x_i}{a_i}\Bigr|^p\le 1\Bigr\},
+\qquad
+S_p(a):=\partial\Omega_p(a).
+\]
+记 \(n\) 为外法单位法向，并定义边界通量矩
+\[
+B_0(p):=\int_{S_p(a)}\langle x,n\rangle\,dS,
+\qquad
+B_i(p):=\int_{S_p(a)}|x_i|^p\langle x,n\rangle\,dS\qquad(1\le i\le d).
+\]
+则对每个 \(i\) 有
+\[
+\operatorname{Vol}(\Omega_p(a))=\frac{1}{d}B_0(p),
+\qquad
+B_i(p)=a_i^p\,\operatorname{Vol}(\Omega_p(a)),
+\qquad
+a_i^p=\frac{d\,B_i(p)}{B_0(p)}.
+\]
+\end{theorem}
+\begin{proof}
+第一式同定理 \ref{thm:spg-ellipsoid-boundary-flux-reconstruction} 的体积恒等式：对 \(X(x)=x\) 用散度定理即得。
+\par
+对第二式，取向量场 \(X_i(x):=|x_i|^p x\)。
+由于 \(p>1\)，函数 \(t\mapsto |t|^p\) 为 \(C^1\)，从而 \(X_i\) 足够正则。
+逐分量计算得 \(\mathrm{div}\,X_i=(d+p)|x_i|^p\)，故
+\[
+B_i(p)=\int_{S_p(a)}\langle X_i,n\rangle\,dS
+=\int_{\Omega_p(a)}\mathrm{div}\,X_i\,dx
+=(d+p)\int_{\Omega_p(a)}|x_i|^p\,dx.
+\]
+令 \(U_p:=\Omega_p(1,\dots,1)\)，并作缩放 \(x=\mathrm{diag}(a_1,\dots,a_d)y\)，得
+\[
+\int_{\Omega_p(a)}|x_i|^p\,dx
+=\Bigl(\prod_{k=1}^d a_k\Bigr)a_i^p\int_{U_p}|y_i|^p\,dy,
+\qquad
+\operatorname{Vol}(\Omega_p(a))
+=\Bigl(\prod_{k=1}^d a_k\Bigr)\operatorname{Vol}(U_p).
+\]
+令 \(f(y)=\sum_{k=1}^d|y_k|^p\)，则 \(U_p=\{f\le 1\}\)。
+由层析积分公式 \(\int_{U_p} f\,dy=\int_0^1 \operatorname{Vol}(\{y\in U_p:\ f(y)>t\})\,dt\)。
+注意 \(\{f\le t\}=t^{1/p}U_p\)（\(t\in[0,1]\)）且体积按 \(t^{d/p}\) 缩放，
+故 \(\operatorname{Vol}(\{f>t\})=\operatorname{Vol}(U_p)(1-t^{d/p})\)，从而
+\[
+\int_{U_p} f\,dy
+=\operatorname{Vol}(U_p)\int_0^1(1-t^{d/p})\,dt
+=\operatorname{Vol}(U_p)\frac{d}{d+p}.
+\]
+由对称性 \(\int_{U_p}|y_1|^p=\cdots=\int_{U_p}|y_d|^p\)，且 \(\int f\,dy=\sum_{i=1}^d\int|y_i|^p\,dy\)，得
+\(
+\int_{U_p}|y_i|^p\,dy=\operatorname{Vol}(U_p)/(d+p)
+\)。
+代回即得
+\(
+\int_{\Omega_p(a)}|x_i|^p\,dx=\frac{a_i^p}{d+p}\operatorname{Vol}(\Omega_p(a))
+\)，
+再代回 \(B_i(p)=(d+p)\int |x_i|^p\) 得 \(B_i(p)=a_i^p\operatorname{Vol}(\Omega_p(a))\)。证毕。
+\end{proof}
+
+\begin{proposition}[加权 \texorpdfstring{$\ell_1$}{l1} 环面上的稳定长度与 Gödel 对数]\label{prop:spg-weighted-l1-torus-stable-length-godel}
+令 \(w_i=\log p_i>0\)，并在环面 \(T^d=\RR^d/\ZZ^d\) 上考虑平移不变的 Finsler 结构
+\[
+|v|_w:=\sum_{i=1}^d w_i|v_i|,
+\qquad v\in T_xT^d\simeq\RR^d.
+\]
+对 \(m\in H_1(T^d;\ZZ)\simeq\ZZ^d\)，定义稳定长度
+\[
+L_w(m):=\inf\Bigl\{\int_0^1|\gamma'(t)|_w\,dt:\ \gamma\ \text{为代表 }m\text{ 的闭 Lipschitz 曲线}\Bigr\}.
+\]
+则
+\[
+L_w(m)=\sum_{i=1}^d w_i|m_i|.
+\]
+特别地，对任意 \(b\in\{0,1\}^d\)，有
+\[
+L_w(b)=\sum_{i:b_i=1}\log p_i
+=\log\Bigl(\prod_{i=1}^d p_i^{b_i}\Bigr).
+\]
+\end{proposition}
+\begin{proof}
+取常系数闭 \(1\)-形式
+\[
+\alpha:=\sum_{i=1}^d \mathrm{sgn}(m_i)\,w_i\,d\theta_i,
+\]
+其中 \(\theta_i\) 为标准环面坐标。
+对任意切向量 \(v\) 有
+\[
+\alpha(v)=\sum_i \mathrm{sgn}(m_i)w_iv_i\le \sum_i w_i|v_i|=|v|_w,
+\]
+故对任意代表 \(m\) 的 \(\gamma\) 有
+\[
+\int_0^1|\gamma'(t)|_w\,dt\ge \int_\gamma \alpha=\sum_i \mathrm{sgn}(m_i)w_im_i=\sum_i w_i|m_i|.
+\]
+另一方面，取分段沿坐标方向的闭路，分别绕第 \(i\) 个圆周 \(|m_i|\) 次，即取到等号，从而得到 \(L_w(m)=\sum_i w_i|m_i|\)。证毕。
+\end{proof}
+
+\begin{theorem}[紧边界连续加性译码的平凡性]\label{thm:spg-compact-boundary-continuous-decoder-trivial}
+设 \(G\) 为紧拓扑群，\(\psi:G\to(\RR,+)\) 为连续群同态，则 \(\psi\equiv 0\)。
+因此，若要求“边界 \(\to\) Gödel 寄存器”的译码器是紧边界对称群上的连续加性可观测量，则该译码必为平凡；
+要实现对无界 Gödel 数据的精确抽取，必然迫使译码在边界上失去连续性，或经由非紧覆盖引入可承载非平凡 \(\RR\)-角色的圈因子结构（从而在圆维语义下出现正的可见通道）。
+\end{theorem}
+\begin{proof}
+\(\psi(G)\subset\RR\) 为紧子群，而 \((\RR,+)\) 的紧子群仅为 \(\{0\}\)，故 \(\psi(G)=\{0\}\) 并得 \(\psi\equiv 0\)。
+其余断言为直接推论。证毕。
+\end{proof}
+
+\begin{theorem}[Gödel 边界译码的相对误差阈值]\label{thm:spg-godel-boundary-decoding-relative-error-threshold}
+在推论 \ref{cor:spg-godel-axis-boundary-invertibility} 的设定下，设可观测边界通量满足相对误差界 \(\varepsilon\in(0,1)\)：
+\[
+\widetilde B_0=B_0(1+\delta_0),
+\qquad
+\widetilde B_{ii}=B_{ii}(1+\delta_i),
+\qquad
+|\delta_0|,|\delta_i|\le \varepsilon.
+\]
+令 \(\lfloor \cdot\rceil\) 表示最近整数。
+定义译码
+\[
+\widetilde b_i:=\left\lfloor \frac{1}{2\log p_i}\log\!\left(\frac{d\,\widetilde B_{ii}}{\widetilde B_0}\right)\right\rceil.
+\]
+若
+\[
+\varepsilon<\frac{p_{\min}-1}{p_{\min}+1},
+\qquad
+p_{\min}:=\min_{1\le i\le d}p_i,
+\]
+则必有 \(\widetilde b_i=b_i\) 对所有 \(i\) 成立。
+\end{theorem}
+\begin{proof}
+记真实比值 \(r_i:=dB_{ii}/B_0=p_i^{2b_i}\) 与观测比值 \(\widetilde r_i:=d\widetilde B_{ii}/\widetilde B_0\)。
+由误差界得
+\[
+\frac{1-\varepsilon}{1+\varepsilon}\,r_i
+\le
+\widetilde r_i
+\le
+\frac{1+\varepsilon}{1-\varepsilon}\,r_i.
+\]
+最近整数译码的充分条件为 \(\widetilde r_i\in(r_i/p_i,\ r_ip_i)\)，等价于
+\(
+\frac{1+\varepsilon}{1-\varepsilon}<p_i
+\)。
+因此只需 \(\frac{1+\varepsilon}{1-\varepsilon}<p_{\min}\)，即 \(\varepsilon<\frac{p_{\min}-1}{p_{\min}+1}\)，便得 \(\widetilde b_i=b_i\)。
+证毕。
+\end{proof}
+
+\begin{conjecture}[边界多项式通量的有限阶全息完备性]\label{conj:spg-boundary-polynomial-flux-finite-order-completeness}
+固定 \(d\ge 2\)。
+对包含原点的实解析严格凸域 \(\Omega\subset\RR^d\)，定义边界多项式通量矩
+\[
+M_\alpha(\Omega):=\int_{\partial\Omega} x^\alpha\,\langle x,n(x)\rangle\,dS,
+\qquad \alpha\in\NN^d.
+\]
+猜想存在仅依赖于 \(d\) 的整数 \(N(d)\)，使得若两域 \(\Omega,\Omega'\) 满足上述正则性并且
+\[
+M_\alpha(\Omega)=M_\alpha(\Omega')\qquad\text{对所有}\ |\alpha|\le N(d)
+\]
+成立，则 \(\Omega\) 与 \(\Omega'\) 在线性等距变换下同构。
+作为可检验证据，定理 \ref{thm:spg-lp-superellipsoid-boundary-volume-decoding} 表明：在对角 \(\ell_p\)-超椭球族 \(\Omega_p(a)\) 上，仅用阶 \(0\) 与阶 \(p\) 的坐标通量矩即可完全恢复全部形参 \(a\)。
+\end{conjecture}
+
 \endinput
 

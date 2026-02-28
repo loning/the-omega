@@ -6,6 +6,7 @@ Audit node-preimage elimination (R10) and wreath certificates.
 This script checks explicit algebraic fingerprints used in the xi Lee--Yang
 delta-closure node-preimage layer:
   - resultant_y(Q5(y), Q2(X,y)) equals primitive part of R10(X),
+  - an alternative quadratic G_node(X;y) and its discriminant D8(y),
   - mod-p factor patterns for irreducibility (p=17) and Frobenius cycle type
     evidence (p=101 gives degrees 1,1,8),
   - discriminant factorization of R10 and its squarefree kernel,
@@ -98,7 +99,38 @@ def main() -> None:
 
     # Mod-p factor patterns for certificates
     mod_R10_17 = _factor_degrees_mod(sp.Poly(R10, X), 17)
+    mod_R10_5 = _factor_degrees_mod(sp.Poly(R10, X), 5)
     mod_R10_101 = _factor_degrees_mod(sp.Poly(R10, X), 101)
+
+    # Alternative quadratic G_node(X;y) and its discriminant certificate
+    a_node = 1488 * y + 1023
+    b_node = 32768 * y**4 + 23552 * y**3 - 14720 * y**2 - 11020 * y - 322
+    c_node = -(8192 * y**4 + 5888 * y**3 - 2192 * y**2 - 1360 * y + 245)
+    G_node = sp.expand(a_node * X**2 + b_node * X + c_node)
+
+    D8 = sp.expand(
+        67108864 * y**8
+        + 96468992 * y**7
+        - 25624576 * y**6
+        - 85426176 * y**5
+        - 15933952 * y**4
+        + 20019264 * y**3
+        + 7115981 * y**2
+        + 186875 * y
+        + 69139
+    )
+    disc_G_node = sp.discriminant(sp.Poly(G_node, X), X)
+    disc_matches = sp.expand(disc_G_node - 16 * D8) == 0
+    gcd_D8_Q5 = sp.Poly(D8, y).gcd(sp.Poly(Q5, y)).as_expr()
+
+    # Elimination check via alternative quadratic (should also yield R10)
+    res_y_gnode = sp.resultant(sp.Poly(Q5, y), sp.Poly(G_node, y), y)
+    res_gnode_poly = sp.Poly(res_y_gnode, X)
+    res_gnode_content, res_gnode_prim = res_gnode_poly.primitive()
+    res_gnode_prim = sp.Poly(res_gnode_prim, X)
+    if int(res_gnode_prim.LC()) < 0:
+        res_gnode_prim = -res_gnode_prim
+    res_gnode_matches_R10 = sp.expand(res_gnode_prim.as_expr() - R10_prim.as_expr()) == 0
 
     # Discriminant of R10
     disc_R10 = int(sp.discriminant(sp.Poly(R10, X), X))
@@ -127,11 +159,22 @@ def main() -> None:
             "resultant_y_Q5_Q2_content": int(res_content),
             "resultant_y_Q5_Q2_degree": int(res_prim.degree()),
             "resultant_y_Q5_Q2_matches_R10": bool(res_matches_R10),
+            "mod5": asdict(mod_R10_5),
             "mod17": asdict(mod_R10_17),
             "mod101": asdict(mod_R10_101),
             "disc": int(disc_R10),
             "disc_factorint_abs": {int(k): int(v) for k, v in disc_R10_factors.items()},
             "disc_squarefree_kernel_signed": int(sf_kernel_signed),
+        },
+        "G_node_D8": {
+            "G_node_X_y": str(G_node),
+            "disc_G_node": str(sp.expand(disc_G_node)),
+            "D8_y": str(D8),
+            "disc_matches_16D8": bool(disc_matches),
+            "gcd_D8_Q5": str(gcd_D8_Q5),
+            "resultant_y_Q5_G_node_content": int(res_gnode_content),
+            "resultant_y_Q5_G_node_degree": int(res_gnode_prim.degree()),
+            "resultant_y_Q5_G_node_matches_R10": bool(res_gnode_matches_R10),
         },
         "norm_identity": {
             "resultant_y_Q5_DeltaX": int(res_Delta),
@@ -149,6 +192,10 @@ def main() -> None:
 
     # Hard assertions for pipeline gating
     assert res_matches_R10, "Res_y(Q5, Q2) primitive part does not match R10"
+    assert disc_matches, "Disc_X(G_node) != 16*D8"
+    assert str(gcd_D8_Q5) == "1", "gcd(D8,Q5) is not 1"
+    assert res_gnode_matches_R10, "Res_y(Q5, G_node) primitive part does not match R10"
+    assert sorted(mod_R10_5.degrees) == [1, 1, 2, 2, 4], "R10 mod 5 factor degrees not [1,1,2,2,4]"
     assert mod_R10_17.degrees == [10] and mod_R10_17.exponents == [1], "R10 mod 17 not irreducible degree 10"
     assert sorted(mod_R10_101.degrees) == [1, 1, 8], "R10 mod 101 factor degrees not [1,1,8]"
     expected_disc_factors = {
