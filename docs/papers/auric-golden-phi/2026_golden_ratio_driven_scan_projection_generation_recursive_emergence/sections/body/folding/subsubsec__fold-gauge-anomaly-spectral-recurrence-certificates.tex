@@ -118,6 +118,101 @@ F(\mu,u)=\det(\mu I-B_u)
 将 \(F(B_u,u)=0\) 左右乘以相应向量并取该线性泛函，得到 \eqref{eq:fold-gauge-anomaly-Mm-order4}。证毕。
 \end{proof}
 
+\begin{theorem}[生成函数的显式有理性与整系数递推]\label{thm:fold-gauge-anomaly-gf-rational-integral-recurrence}
+在命题 \ref{prop:fold-gauge-anomaly-parry-kernel-mismatch-label} 的 Parry 转移核 \(P\) 与边标记 \(g\) 下，
+令
+\[
+D_m(u):=\EE\!\left[u^{G_m}\right]=\sum_{k=0}^{m}p_{m,k}u^k,\qquad
+p_{m,k}:=\PP(G_m=k),
+\]
+并定义步长母函数
+\[
+\mathcal F(z,u):=\sum_{m\ge 0} D_m(u)\,z^m.
+\]
+则 \(\mathcal F\) 为显式有理函数，且满足
+\[
+\mathcal F(z,u)=\frac{N(z,u)}{9\,\Delta(z,u)},
+\]
+其中
+\[
+\Delta(z,u)=8-4z-(4u+2)z^2+(2u-u^3)z^3+u z^4,
+\]
+\[
+\begin{aligned}
+N(z,u)=\;&72+4z-12z^2-2z^3+32u z-24u z^2-10u z^3\\
+&\quad+18u^2 z^2+4u^2 z^3-u^3 z^3.
+\end{aligned}
+\]
+等价地，对一切 \(m\ge 4\) 有四阶递推
+\[
+8D_m(u)=4D_{m-1}(u)+(4u+2)D_{m-2}(u)+(u^3-2u)D_{m-3}(u)-uD_{m-4}(u).
+\]
+更强地，令
+\[
+H_m(u):=9\cdot 2^m D_m(u)=9\,\widetilde M_m(u),
+\]
+则对所有 \(m\ge 0\) 有 \(H_m(u)\in\ZZ[u]\)，并且对一切 \(m\ge 4\) 有整系数递推
+\[
+H_m(u)=H_{m-1}(u)+(2u+1)H_{m-2}(u)+(u^3-2u)H_{m-3}(u)-2u\,H_{m-4}(u).
+\]
+因此对每个 \(m,k\) 皆有 \(9\cdot 2^m\,p_{m,k}\in\ZZ\)。
+\end{theorem}
+
+\begin{proof}
+由 Markov 结构与倾斜核 \(Q(u)_{ij}:=P_{ij}u^{g(i,j)}\)，有
+\(
+D_m(u)=\pi^\top Q(u)^m\mathbf 1
+\)，其中 \(\pi\) 为 \(P\) 的平稳分布。
+因此
+\(
+\mathcal F(z,u)=\pi^\top (I-zQ(u))^{-1}\mathbf 1
+\)
+为有理函数。
+对本 \(4\) 态模型直接展开 \(\det(I-zQ(u))\) 得到 \(\Delta(z,u)\)，并由伴随矩阵条目计算得到 \(N(z,u)\)。
+将恒等式 \(9\Delta(z,u)\mathcal F(z,u)=N(z,u)\) 逐项比较 \(z^m\) 系数得到 \(D_m\) 的四阶递推；该递推与命题 \ref{prop:fold-gauge-anomaly-mgf-order4-recurrence} 对 \(\widetilde M_m\) 的递推在缩放下等价。
+将递推乘以 \(9\cdot 2^m\) 并整理得到 \(H_m\) 的整系数递推。
+由 \(H_0,\dots,H_3\) 的有限枚举可知其属于 \(\ZZ[u]\)，递推闭合推出 \(H_m\in\ZZ[u]\) 对所有 \(m\) 成立，从而 \(9\cdot 2^m p_{m,k}\in\ZZ\)。证毕。
+\end{proof}
+
+\begin{theorem}[端点事件的精确闭式：Fibonacci 端点与 \texorpdfstring{$\bmod 3$}{mod 3} 律]\label{thm:fold-gauge-anomaly-endpoint-fibonacci-mod3}
+沿用定理 \ref{thm:fold-gauge-anomaly-gf-rational-integral-recurrence} 的记号。
+令 Fibonacci 数列满足 \(F_0=0,F_1=1,F_{n+2}=F_{n+1}+F_n\)。
+则端点事件概率满足
+\[
+\PP(G_m=0)=
+\begin{cases}
+1,& m=0,\\[2pt]
+\frac59,& m=1,\\[6pt]
+\displaystyle \frac{F_{m+5}}{9\cdot 2^m},& m\ge 2,
+\end{cases}
+\]
+并且对任意 \(m\ge 1\)，满长端点满足
+\[
+\PP(G_m=m)=
+\begin{cases}
+2^{-m},& m\equiv 2\pmod 3,\\[4pt]
+\frac89\,2^{-m},& m\equiv 0,1\pmod 3.
+\end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+由定义 \(\PP(G_m=0)=D_m(0)\)。
+将定理 \ref{thm:fold-gauge-anomaly-gf-rational-integral-recurrence} 的四阶递推代入 \(u=0\) 并化简可得：对 \(m\ge 4\)，序列
+\(
+U_m:=9\cdot 2^m D_m(0)
+\)
+满足二阶递推 \(U_m=U_{m-1}+U_{m-2}\)。
+直接计算 \(U_2=13\)、\(U_3=21\) 得 \(U_m=F_{m+5}\)（\(m\ge 2\)），从而得到 \(\PP(G_m=0)=F_{m+5}/(9\cdot 2^m)\)。
+\(m=0\) 时 \(G_0=0\) 给出 \(\PP(G_0=0)=1\)；\(m=1\) 时由 \(\EE[g_t]=4/9\) 得 \(\PP(G_1=0)=1-\EE[g_1]=5/9\)。
+\par
+对 \(\PP(G_m=m)\)，由命题 \ref{prop:fold-gauge-anomaly-parry-kernel-mismatch-label} 知 \(g=1\) 的允许边仅为
+\((a,b)\)、\((b,c)\)、\((c,a)\)，故事件 \(\{G_m=m\}\) 强制隐藏链沿 \(a\to b\to c\to a\) 的 \(3\)-循环确定性行走。
+该循环上一步概率依次为 \(P_{ab}=\frac14\)、\(P_{bc}=1\)、\(P_{ca}=\frac12\)，每三步乘积为 \(2^{-3}\)。
+按起点 \(S_0\in\{a,b,c\}\) 与余数 \(m\bmod 3\) 分情形计算满循环乘积，并以平稳分布
+\(\pi=(\pi_a,\pi_b,\pi_c,\pi_d)=(\frac49,\frac29,\frac29,\frac19)\) 加权求和，即得所示 \(\bmod 3\) 分段公式。证毕。
+\end{proof}
+
 \begin{theorem}[单位圆扭结的 Perron--Frobenius 刚性与严格谱隙]\label{thm:fold-gauge-anomaly-unit-circle-rigidity}
 令
 \[

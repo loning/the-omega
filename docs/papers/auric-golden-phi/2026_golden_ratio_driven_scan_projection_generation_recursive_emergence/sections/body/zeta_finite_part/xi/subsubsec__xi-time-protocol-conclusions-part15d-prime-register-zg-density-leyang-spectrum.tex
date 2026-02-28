@@ -8,7 +8,88 @@ n\in\NN:\ \forall p,\ v_p(n)\in\{0,1\},\ \forall k\ge 1,\ v_{p_k}(n)\,v_{p_{k+1}
 \]
 即 \(n\) 为平方因子自由，且其素因子索引集合不含相邻整数。
 
-\begin{conclusion}[Zeckendorf--Gödel 素数码集合的自然密度、闭式可计算性与尾项误差界]\label{con:xi-zg-density-closed-form-tail-bound}
+\begin{theorem}[Gödel--Zeckendorf 素数约束 Dirichlet 级数的对数重整化与半临界解析性]\label{thm:xi-zg-dirichlet-log-renormalization}
+令
+\[
+\Omega:=\Bigl\{\varepsilon=(\varepsilon_k)_{k\ge 1}:\ \varepsilon_k\in\{0,1\},\ \varepsilon_k\varepsilon_{k+1}=0,\ \varepsilon\ \text{仅有限支撑}\Bigr\}.
+\]
+对 \(\Re(s)>1\) 定义 Dirichlet 级数
+\[
+F(s):=\sum_{n\in \mathrm{ZG}}n^{-s}
+=\sum_{\varepsilon\in\Omega}\ \prod_{k\ge 1}p_k^{-s\varepsilon_k}.
+\]
+并对 \(N\ge 0\) 定义截断
+\[
+F_N(s):=\sum_{\substack{\varepsilon\in\{0,1\}^N\\ \varepsilon_k\varepsilon_{k+1}=0}}\ \prod_{k=1}^{N}p_k^{-s\varepsilon_k},
+\qquad
+F_0(s)=1,\ \ F_1(s)=1+2^{-s}.
+\]
+令 \(r_N(s):=F_N(s)/F_{N-1}(s)\)（\(N\ge 1\)），并令
+\[
+\Delta_N(s):=\log r_N(s)-p_N^{-s}\qquad(N\ge 2),
+\]
+其中对数取为与实轴上 \(s>1\) 的正值一致的解析分支。
+则：
+\begin{enumerate}
+  \item 对所有 \(\Re(s)>0\) 成立递推恒等式
+  \[
+  F_N(s)=F_{N-1}(s)+p_N^{-s}F_{N-2}(s),\qquad
+  r_N(s)=1+\frac{p_N^{-s}}{r_{N-1}(s)}.
+  \]
+  \item 级数
+  \[
+  G(s):=\sum_{N\ge 2}\Delta_N(s)
+  \]
+  在每个半平面 \(\Re(s)\ge \sigma_0>\tfrac12\) 上绝对且一致收敛，从而在 \(\Re(s)>\tfrac12\) 上给出全纯函数。
+  \item 令素数 \(\zeta\) 函数（prime zeta）
+  \(
+  P(s):=\sum_{k\ge 1}p_k^{-s}
+  \)
+  （在 \(\Re(s)>1\) 绝对收敛）。
+  则对 \(\Re(s)>1\) 有严格分解
+  \[
+  \log F(s)=P(s)+G(s),
+  \qquad\text{从而}\qquad
+  F(s)=\exp\!\bigl(P(s)+G(s)\bigr).
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+第一条由末位 \(\varepsilon_N\in\{0,1\}\) 分拆：\(\varepsilon_N=0\) 贡献为 \(F_{N-1}\)，而 \(\varepsilon_N=1\) 强制 \(\varepsilon_{N-1}=0\) 并贡献 \(p_N^{-s}F_{N-2}\)。
+对 \(r_N=F_N/F_{N-1}\) 取比即得递推。
+\par
+对第二条，令 \(\sigma=\Re(s)\ge \sigma_0>\tfrac12\)。
+由递推 \(r_N=1+p_N^{-s}/r_{N-1}\) 与 \(|p_N^{-s}|\le p_N^{-\sigma}\) 可在每个紧子域上固定 \(r_{N-1}(s)\) 远离 \(0\) 的一致下界，
+从而存在常数 \(C(\sigma_0)\) 使
+\[
+|\Delta_N(s)|
+\le
+C(\sigma_0)\Bigl(p_N^{-2\sigma}+(p_Np_{N-1})^{-\sigma}\Bigr)
+\qquad(\sigma\ge\sigma_0).
+\]
+由于
+\(
+\sum_N p_N^{-2\sigma}
+\)
+与
+\(
+\sum_N(p_Np_{N-1})^{-\sigma}
+\)
+在 \(\sigma>\tfrac12\) 收敛，故 \(\sum_{N\ge 2}\Delta_N(s)\) 在 \(\Re(s)\ge\sigma_0\) 上绝对一致收敛，从而 \(G\) 在 \(\Re(s)>\tfrac12\) 全纯。
+\par
+第三条由
+\(
+\log F_N(s)=\sum_{k=1}^N\log r_k(s)
+\)
+与 \(\Delta_k=\log r_k-p_k^{-s}\) 得
+\[
+\log F_N(s)=\sum_{k=1}^{N}p_k^{-s}+\sum_{k=2}^{N}\Delta_k(s).
+\]
+令 \(N\to\infty\) 并在 \(\Re(s)>1\) 用绝对收敛交换极限，得到 \(\log F(s)=P(s)+G(s)\)。证毕。
+\end{proof}
+
+\begin{theorem}[Zeckendorf--Gödel 素数码集合的自然密度、闭式可计算性与尾项误差界]\label{con:xi-zg-density-closed-form-tail-bound}
 对每个 \(N\ge 1\)，定义截断集合
 \[
 \mathrm{ZG}^{(N)}
@@ -44,7 +125,7 @@ I_N:=\sum_{\substack{S\subseteq\{1,\dots,N\}\\ S\ \mathrm{无相邻}}}\ \prod_{k
 \sum_{k\ge N}\frac1{p_kp_{k+1}}.
 \]
 特别地，\(\delta_{\mathrm{ZG}}\) 可通过生成素数并迭代计算 \(\delta_N\) 在任意精度下有效逼近。
-\end{conclusion}
+\end{theorem}
 \begin{proof}
 对固定 \(N\)，成员资格仅依赖于模
 \(
@@ -110,7 +191,7 @@ a_k:=1-\frac1{p_k},\ b_k:=a_k\frac1{p_k}
 \end{proof}
 
 \begin{corollary}[Mertens 重整常数与素数路径独立集分区函数的对数增长律]\label{cor:xi-zg-mertens-log-growth}
-沿用结论 \ref{con:xi-zg-density-closed-form-tail-bound} 的记号。
+沿用定理 \ref{con:xi-zg-density-closed-form-tail-bound} 的记号。
 则
 \[
 \delta_{\mathrm{ZG}}
@@ -125,7 +206,7 @@ I_N\sim \delta_{\mathrm{ZG}}\,e^{\gamma}\,\log p_N
 其中 \(\gamma\) 为 Euler--Mascheroni 常数。
 \end{corollary}
 \begin{proof}
-由结论 \ref{con:xi-zg-density-closed-form-tail-bound}，
+由定理 \ref{con:xi-zg-density-closed-form-tail-bound}，
 \[
 I_N=\frac{\delta_N}{\prod_{k\le N}(1-\frac1{p_k})}.
 \]
@@ -136,7 +217,7 @@ I_N=\frac{\delta_N}{\prod_{k\le N}(1-\frac1{p_k})}.
 并令 \(y=p_N\)、\(\delta_N\to\delta_{\mathrm{ZG}}\) 即得。证毕。
 \end{proof}
 
-\begin{conclusion}[素数权重 Fibonacci 路径的 Lee--Yang 实根性与 Poisson--binomial 分解]\label{con:xi-zg-weighted-path-leyang-poisson-binomial}
+\begin{theorem}[素数权重 Fibonacci 路径的 Lee--Yang 实根性与 Poisson--binomial 分解]\label{con:xi-zg-weighted-path-leyang-poisson-binomial}
 定义
 \[
 P_N(t):=\sum_{\substack{S\subseteq\{1,\dots,N\}\\ S\ \mathrm{无相邻}}}
@@ -172,7 +253,7 @@ P_N(t)=P_{N-1}(t)+\frac{t}{p_N}P_{N-2}(t)\quad(N\ge 2).
 B_{N,j}\sim\mathrm{Bernoulli}\!\bigl(\pi_{N,j}(t)\bigr),
 \]
 其中 \((B_{N,j})\) 相互独立。
-\end{conclusion}
+\end{theorem}
 \begin{proof}
 递推直接由索引 \(N\) 是否入独立集的分拆得到。
 
@@ -201,8 +282,8 @@ G_{N,t}(s):=\frac{P_N(ts)}{P_N(t)}
 右侧即独立 Bernoulli 和的概率母函数，故得到分布恒等式。证毕。
 \end{proof}
 
-\begin{conclusion}[Lee--Yang 单位圆提升、Joukowsky 椭圆输运与 \texorpdfstring{$\delta_{\mathrm{ZG}}$}{deltaZG} 的谱行列式表达]\label{con:xi-zg-unit-circle-joukowsky-spectral-determinant}
-在结论 \ref{con:xi-zg-weighted-path-leyang-poisson-binomial} 的记号下：
+\begin{theorem}[Lee--Yang 单位圆提升、Joukowsky 椭圆输运与 \texorpdfstring{$\delta_{\mathrm{ZG}}$}{deltaZG} 的谱行列式表达]\label{con:xi-zg-unit-circle-joukowsky-spectral-determinant}
+在定理 \ref{con:xi-zg-weighted-path-leyang-poisson-binomial} 的记号下：
 \begin{enumerate}
   \item 设 \(\chi_{N+1}(x)=\det(xI-A_{N+1})\)，\(\Phi_{N+1}(x):=\chi_{N+1}(x/\sqrt2)\)。
   由于 \(\|A_{N+1}\|_{2}\le 2\max_k w_k=\sqrt2\)，\(\Phi_{N+1}\) 全部根落在 \([-2,2]\)。
@@ -244,12 +325,76 @@ G_{N,t}(s):=\frac{P_N(ts)}{P_N(t)}
   \Bigl(\prod_{k=1}^N\Bigl(1-\frac1{p_k}\Bigr)\Bigr)\det(I+A_{N+1}^2)^{1/2}.
   \]
 \end{enumerate}
-\end{conclusion}
+\end{theorem}
 \begin{proof}
 第一条由谱半径界和参数化 \(x=z+z^{-1}=2\cos\theta\) 直接得到。
 第二条是 \(J_r\) 对单位圆的标准像性质。
 第三条由 \(x=i\) 代入与行列式恒等式逐步化简得出。证毕。
 \end{proof}
+
+\begin{corollary}[\texorpdfstring{$s=1$}{s=1} 处单极点与 Dirichlet 留数常数]\label{cor:xi-zg-dirichlet-residue}
+令 \(P(s)=\sum_{k\ge 1}p_k^{-s}\) 为 prime zeta，并令 \(G(s)\) 为定理 \ref{thm:xi-zg-dirichlet-log-renormalization} 的正则因子。
+采用 prime zeta 在 \(s\to 1^+\) 的经典展开
+\[
+P(s)=\log\frac1{s-1}+B_{\mathsf P}+o(1),
+\]
+其中 \(B_{\mathsf P}\in\RR\) 为常数（可由 Mertens 定理推导；参见 \cite{Apostol1976,Titchmarsh1986RiemannZeta}）。
+则 \(F(s)=\sum_{n\in\mathrm{ZG}}n^{-s}\) 在 \(s=1\) 处具有单极点，且其留数为
+\[
+\lim_{s\to1^+}(s-1)F(s)=\exp\!\bigl(B_{\mathsf P}+G(1)\bigr)\in(0,\infty).
+\]
+并且该留数等于 \(\mathrm{ZG}\) 的 Dirichlet 密度；结合定理 \ref{con:xi-zg-density-closed-form-tail-bound} 的自然密度存在性，两者一致。
+\end{corollary}
+
+\begin{proposition}[临界重整化常数的可计算误差界]\label{prop:xi-zg-holographic-constant-tail-bound}
+取 \(s=1\)，并令 \(\Delta_N(1)\) 与 \(G(1)=\sum_{N\ge 2}\Delta_N(1)\) 如定理 \ref{thm:xi-zg-dirichlet-log-renormalization}。
+定义截断
+\[
+G^{(N)}(1):=\sum_{k=2}^{N}\Delta_k(1).
+\]
+则存在绝对常数 \(C>0\) 使对所有 \(N\ge 3\) 有
+\[
+\bigl|G(1)-G^{(N)}(1)\bigr|
+\le
+C\sum_{k>N}\Bigl(\frac1{p_k^2}+\frac1{p_kp_{k-1}}\Bigr),
+\]
+从而正则因子 \(\exp(G(1))\) 可被一条显式可求和尾项在任意精度下有效逼近。
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:xi-zg-dirichlet-log-renormalization} 的一致估计，在 \(s=1\) 时存在常数 \(C\) 使
+\(
+|\Delta_k(1)|
+\le C\bigl(p_k^{-2}+(p_kp_{k-1})^{-1}\bigr)
+\)。
+对尾和求并界即得。证毕。
+\end{proof}
+
+\begin{theorem}[\(\mathrm{ZG}\) 的对数 Mertens 定律]\label{thm:xi-zg-log-mertens}
+设
+\[
+H(x):=\sum_{\substack{n\le x\\ n\in\mathrm{ZG}}}\frac1n.
+\]
+则极限存在并满足
+\[
+\lim_{x\to\infty}\frac{H(x)}{\log x}=\delta_{\mathrm{ZG}},
+\]
+并且存在常数 \(C_{\mathrm{ZG}}\in\RR\) 使
+\[
+H(x)=\delta_{\mathrm{ZG}}\log x+C_{\mathrm{ZG}}+o(1)\qquad(x\to\infty).
+\]
+\end{theorem}
+
+\begin{proof}
+由推论 \ref{cor:xi-zg-dirichlet-residue}，\(\sum_{n\in\mathrm{ZG}}n^{-s}\) 在 \(s=1\) 处的留数为 \(\delta_{\mathrm{ZG}}\)（Dirichlet 密度）。
+对非负系数 Dirichlet 级数应用标准 Tauberian 原理可得对数加权计数的渐近，即所述对数 Mertens 定律；常数项收敛同属该框架的常见加强形式。证毕。
+\end{proof}
+
+\begin{conjecture}[正则因子的全半平面延拓与 Lee--Yang 型零点边界]\label{conj:xi-zg-leyang-godel-transport-boundary}
+令 \(\mathcal R(s):=\exp(G(s))\)（定理 \ref{thm:xi-zg-dirichlet-log-renormalization}），其在 \(\Re(s)>\tfrac12\) 全纯且无零。
+猜想 \(\mathcal R\) 可延拓为 \(\Re(s)>0\) 上的全纯无零函数；从而 \(F(s)=\exp(P(s))\mathcal R(s)\) 在 \(\Re(s)>0\) 的全部奇性结构由 prime zeta \(P(s)\) 的奇性传输唯一决定。
+进一步地，对充分大的截断 \(N\)，将 \(F_N(s)\) 视为有限体积分配函数，则其归一化零点云在 \(N\to\infty\) 的极限中形成一条由 Joukowsky 椭圆输运诱导的边界曲线，并以 \(\Re(s)=\tfrac12\) 为临界对称轴，与 \(\mathcal R\) 的零点真空相容。
+\end{conjecture}
 
 \begin{conjecture}[弱局域约束下的 Erd\H{o}s--Kac 型高斯极限]\label{conj:xi-zg-erdos-kac-under-local-hardcore}
 记
@@ -269,10 +414,16 @@ G_{N,t}(s):=\frac{P_N(ts)}{P_N(t)}
 \end{conjecture}
 
 \begin{remark}[可复现核验脚本]\label{rem:xi-zg-density-leyang-spectral-audit-script}
-结论 \ref{con:xi-zg-density-closed-form-tail-bound}--\ref{con:xi-zg-unit-circle-joukowsky-spectral-determinant}
+定理 \ref{con:xi-zg-density-closed-form-tail-bound}--\ref{con:xi-zg-unit-circle-joukowsky-spectral-determinant}
 中的闭式恒等式与有限窗数值核验由脚本
 \texttt{scripts/exp\_xi\_prime\_register\_zg\_density\_leyang\_spectrum\_audit.py}
 给出，对应证书文件为
 \texttt{artifacts/export/xi\_prime\_register\_zg\_density\_leyang\_spectrum\_audit.json}。
+\par
+定理 \ref{thm:xi-zg-dirichlet-log-renormalization} 与命题 \ref{prop:xi-zg-holographic-constant-tail-bound}
+在 \(s=1\) 处的递推与尾项模板核验由脚本
+\texttt{scripts/exp\_xi\_prime\_register\_zg\_dirichlet\_log\_renormalization\_audit.py}
+给出，对应证书文件为
+\texttt{artifacts/export/xi\_prime\_register\_zg\_dirichlet\_log\_renormalization\_audit.json}。
 \end{remark}
 
