@@ -57,45 +57,109 @@ Z(\mathcal G)[2]:=\{z\in Z(\mathcal G):z^2=e\}.
 三条刻画分别由所引定理/推论直接给出；将其并置即可。证毕。
 \end{proof}
 
-\begin{corollary}[几何稳定子诱导的 sheet parity 对角化]\label{cor:bdry-sheet-parity-diagonal}
+\begin{corollary}[几何稳定子在 boundary 中心上的单轴投影]\label{cor:bdry-sheet-parity-diagonal}
 在推论 \ref{cor:fold-bin-boundary-center-z2} 的 \((\ZZ_2)^3\hookrightarrow Z(\mathcal{G}^{\mathrm{bin}}_6)\) 识别下，
 定理 \ref{thm:foldbin6-geo-stabilizer-z2} 给出的唯一非平凡几何稳定子元 \(\sigma_{\mathrm{geo}}\)
-在 boundary 三条纤维上的作用等同于三份 sheet-flip 的同步翻转，
-从而给出一个规范的对角嵌入
-\[
-\ZZ_2^{\mathrm{diag}}=\langle(1,1,1)\rangle\ \hookrightarrow\ (\ZZ_2)^3.
-\]
-因此，在同时施加“dyadic 纤维内翻转”与“几何可实现”两种约束时（命题 \ref{prop:bdry-sheet-parity-discrete-breaking}），
-允许的非平凡分支被压缩为该对角 \(\ZZ_2\) 所生成的唯一翻转。
-等价地，可用分支数从 \(2^3\) 压缩到 \(2\)，从而在均匀先验口径下对应 \(\log_2 4=2\) bits 的严格熵亏损（亦即乘性体积因子 \(4\) 的不可逆剥离）。
+在 boundary 三条二点纤维上的限制并非同步翻转：它仅在 \(w=\texttt{101001}\) 的纤维上诱导非平凡换位，而在其余两条 boundary 纤维上逐点固定。
+等价地，在以三条 boundary 纤维换位 \(\tau_w\)（\(w\in X_6^{\mathrm{bdry}}\)）作为坐标的中心子格 \((\ZZ_2)^3\) 中，
+\(\sigma_{\mathrm{geo}}\) 的像为单一坐标生成元 \(\tau_{\texttt{101001}}\)。
+因此在同时施加“dyadic 纤维内翻转”与“几何可实现”两种约束时（命题 \ref{prop:bdry-sheet-parity-discrete-breaking}），
+允许的非平凡分支被压缩为一个 \(\ZZ_2\) 单轴选择律，而非三轴的独立激活。
 \end{corollary}
 \begin{proof}
-由推论 \ref{cor:terminal-delta-parity-rule}，对每个 \(w\in X_6^{\mathrm{bdry}}\) 其 dyadic 预像对为 \(\{V_6(w),V_6(w)+34\}\)。
-而定理 \ref{thm:foldbin6-geo-stabilizer-z2} 与推论 \ref{cor:foldbin6-geo-mask-34} 表明：
-除平凡元外，保持 window-\(6\) 稳定类型且可由立方体几何实现的唯一非平凡自同构在二进制编号上实现 \(\pm 34\) 的掩码位移。
-该位移在每条 boundary 纤维上均交换上述二点对，故其在中心坐标 \((\ZZ_2)^3\) 中对应同步翻转 \((1,1,1)\)。
+表 \ref{tab:fold6_boundary_sheet_pairs} 给出三条 boundary 词与其 dyadic 预像对：
+\[
+(\mathrm{Fold}^{\mathrm{bin}}_6)^{-1}(\texttt{100001})=\{14,48\},\quad
+(\mathrm{Fold}^{\mathrm{bin}}_6)^{-1}(\texttt{100101})=\{19,53\},\quad
+(\mathrm{Fold}^{\mathrm{bin}}_6)^{-1}(\texttt{101001})=\{17,51\}.
+\]
+将 \(n\in\{0,\dots,63\}\) 写成其 \(6\) 位二进制向量 \(\omega\in\Omega_6\)，并用
+\(\sigma_{\mathrm{geo}}(\omega_1,\dots,\omega_6)=(1-\omega_5,\omega_2,\omega_3,\omega_4,1-\omega_1,\omega_6)\)
+（定理 \ref{thm:foldbin6-geo-stabilizer-z2}）逐点代入即可核验：
+\(\sigma_{\mathrm{geo}}\) 固定 \(14,48\) 与 \(19,53\)，并交换 \(17\) 与 \(51\)。
+故其在 boundary 三条二点纤维上的作用仅在 \(\texttt{101001}\) 处为非平凡换位。
+在推论 \ref{cor:fold-bin-boundary-center-z2} 的坐标识别下，这正对应于中心子格 \((\ZZ_2)^3\) 中的单轴生成元 \(\tau_{\texttt{101001}}\)。证毕。
 \end{proof}
 
-\begin{remark}[两条不可几何实现的剩余中心电荷]\label{rem:bdry-nongeometric-two-charges}
-推论 \ref{cor:bdry-sheet-parity-diagonal} 表明：在几何可实现性约束下，可观测的非平凡 sheet-flip 被压缩为对角子群 \(\ZZ_2^{\mathrm{diag}}\subset(\ZZ_2)^3\)。
-因此其余两条独立方向由商群
+\begin{proposition}[几何稳定子在 parity-charge 格上的像：精确支持集与边界投影]\label{prop:window6-geo-parity-charge-support-bdry}
+将 \(\sigma_{\mathrm{geo}}\) 视为稳定子元，其对每条纤维 \(F_6^{-1}(w)\) 诱导置换 \(\pi_w\)，并以符号映射
+\(
+\mathrm{sgn}_6:G^{\mathrm{bin}}_6\to (\ZZ_2)^{X_6}
+\)
+记录其 Abel 化电荷坐标（\S\ref{subsubsec:window6-discrete-results}）。
+则 \(\mathrm{sgn}_6(\sigma_{\mathrm{geo}})\) 的支持集（取值为 \(1\) 的坐标）恰为十个稳定类型词
 \[
-(\ZZ_2)^3/\ZZ_2^{\mathrm{diag}}\ \cong\ (\ZZ_2)^2
+\{\texttt{000001},\ \texttt{000100},\ \texttt{001000},\ \texttt{001001},\ \texttt{010100},\ \texttt{010101},\ \texttt{100000},\ \texttt{100010},\ \texttt{101001},\ \texttt{101010}\}.
 \]
-刻画，并给出两条与几何稳定子口径不相容的中心电荷；它们可被视为几何可实现性的二元阻碍证书：任何要求独立激活该商群方向的候选耦合/包络机制，都必然破坏 window-\(6\) 的几何稳定子或 boundary 的 dyadic 覆叠结构。
+并且在 boundary 三维坐标子空间（仅保留 \(X_6^{\mathrm{bdry}}\) 三个坐标）上的投影满足
+\[
+\pi_{\mathrm{bdry}}\bigl(\mathrm{sgn}_6(\sigma_{\mathrm{geo}})\bigr)=\mathbf 1_{\texttt{101001}}.
+\]
+\end{proposition}
+\begin{proof}
+由 \(\sigma_{\mathrm{geo}}^2=\mathrm{id}\)，其在每条纤维上分解为若干个二循环与不动点；
+而 \(\mathrm{sgn}(\pi_w)\in\ZZ_2\) 仅由二循环个数的奇偶决定。
+表 \ref{tab:foldbin6_geo_orbit_charge} 给出各 \(w\) 的轨道电荷 \(q(w)=(f_w,p_w)\)，其中 \(p_w\) 为二循环个数；
+因此 \(\mathrm{sgn}_6(\sigma_{\mathrm{geo}})_w\equiv p_w\pmod 2\)。
+将 \(p_w\) 为奇数者收集即可得到所列支持集。
+boundary 投影由推论 \ref{cor:bdry-sheet-parity-diagonal} 立刻推出。
+可复核核验脚本：\texttt{\detokenize{scripts/exp_foldbin6_two_point_fiber_direction_spectrum.py}}。证毕。
+\end{proof}
+
+\begin{theorem}[三层 boundary uplift 的二阶差分残余与跨分辨率 \texorpdfstring{$\ZZ_2$}{Z2} 选择律]\label{thm:bdry-uplift-second-difference-residual-law}
+对 \(m\in\{7,8\}\) 的 boundary 扇区，表 \ref{tab:foldbin_boundary_lift_m6_m8} 给出其 uplift-delta 模式为三值集合 \(\{0,a_m,b_m\}\)（\(0<a_m<b_m\)）。
+定义二阶差分残余
+\[
+\Delta_m^{(2)}:=b_m-a_m.
+\]
+则有确定恒等式
+\[
+\Delta_{7}^{(2)}=89-55=34,
+\qquad
+\Delta_{8}^{(2)}=144-89=55.
+\]
+因此尽管在 \(m=7,8\) 上 boundary uplift 不再是二层覆盖，三层数据仍内生诱导出一条二层残余差分通道；
+并且在 \(m=7\) 处该残余差分精确复现 window-\(6\) 的 uplift 差值 \(34\)。
+\end{theorem}
+\begin{proof}
+由表 \ref{tab:foldbin_boundary_lift_m6_m8} 直接代入计算即可。证毕。
+\end{proof}
+
+\begin{conjecture}[boundary uplift 的 Fibonacci 三值律与残余差分塔的普适性]\label{conj:bdry-uplift-fibonacci-three-value-law}
+对所有 \(m\ge 7\) 与任意 boundary 词 \(w\in X_m^{\mathrm{bdry}}\)，其 dyadic uplift-delta 多重集满足
+\[
+\{\,n-V_m(w):\ n\in(\mathrm{Fold}^{\mathrm{bin}}_m)^{-1}(w)\,\}=\{0,\ F_{m+3},\ F_{m+4}\}.
+\]
+从而二阶差分残余恒为
+\[
+F_{m+4}-F_{m+3}=F_{m+2},
+\]
+并在 \(m\to m+1\) 的推进中形成一条严格的残余差分塔。
+\end{conjecture}
+
+\begin{remark}[两条不可几何实现的剩余中心电荷]\label{rem:bdry-nongeometric-two-charges}
+推论 \ref{cor:bdry-sheet-parity-diagonal} 表明：在几何可实现性约束下，boundary 三轴的独立 sheet-flip 中仅有一轴（\(\texttt{101001}\)）可由几何稳定子实现。
+因此其余两条独立方向可由商群
+\[
+(\ZZ_2)^3/\langle\tau_{\texttt{101001}}\rangle\ \cong\ (\ZZ_2)^2
+\]
+刻画，并给出两条与几何稳定子口径不相容的中心电荷；
+它们可被视为几何可实现性的二元阻碍证书：任何要求独立激活该两轴方向的候选耦合/包络机制，都必然破坏 window-\(6\) 的几何稳定子或 boundary 的 dyadic 覆叠结构。
 \end{remark}
 
 \begin{remark}[从组合奇偶到判别式奇偶的单比特压缩]\label{rem:bdry-parity-compression-to-discriminant-spine}
-在 window-\(6\) 上，fold-gauge 的 Abel 化电荷格为 \((\ZZ_2)^{21}\)（\S\ref{subsubsec:window6-discrete-results}），其中 boundary 三轴在 \(\mathrm{sgn}_6\) 口径下给出一个规范的 \((\ZZ_2)^3\) 坐标子格（推论 \ref{cor:fold-bin-boundary-center-z2}）；几何可实现性进一步将可观测分支压缩为对角 \(\ZZ_2^{\mathrm{diag}}\)（推论 \ref{cor:bdry-sheet-parity-diagonal}）。
+在 window-\(6\) 上，fold-gauge 的 Abel 化电荷格为 \((\ZZ_2)^{21}\)（\S\ref{subsubsec:window6-discrete-results}），其中 boundary 三轴在 \(\mathrm{sgn}_6\) 口径下给出一个规范的 \((\ZZ_2)^3\) 坐标子格（推论 \ref{cor:fold-bin-boundary-center-z2}）；几何可实现性进一步将可观测分支压缩为一条单轴 \(\ZZ_2\)（推论 \ref{cor:bdry-sheet-parity-diagonal}）。
 与之平行，在 Newman 临界八次分裂域的满对称情形下，符号表示把局部 Frobenius 奇偶压缩为判别式二次子域的唯一二元寄存器（结论 \ref{con:pom-a4-newman-common-quadratic-spine}）。
-因此，当“可实现/可观测”约束被施加时，多比特奇偶层向单比特奇偶层的坍缩可视为一条共同结构原则；在该意义下，对角 \(\ZZ_2^{\mathrm{diag}}\) 提供一个组合层面的判别式二次脊柱原型。
+因此，当“可实现/可观测”约束被施加时，多比特奇偶层向单比特奇偶层的坍缩可视为一条共同结构原则；在该意义下，几何选轴的 \(\ZZ_2\) 提供一个组合层面的判别式二次脊柱原型。
 \end{remark}
 
-\begin{remark}[对角 \texorpdfstring{$\ZZ_2$}{Z2} 与自旋覆盖语义]\label{rem:bdry-diagonal-z2-spin-cover}
-推论 \ref{cor:bdry-sheet-parity-diagonal} 给出的对角 \(\ZZ_2^{\mathrm{diag}}\) 把 boundary 三条纤维的独立 sheet-flip 压缩为一个可由几何稳定子实现的全局翻转分支。
-在将 window-\(6\) 的 \(16\) 点纤维解释为 \(SO(10)\) 型手征自旋表示维数的语义中（\(\dim=16=15\oplus 1\) 的对齐见注 \ref{rem:window6-15plus1-dim-alignment}），
-该对角 \(\ZZ_2\) 可被理解为“正交群 vs.\ 自旋双覆盖”的最小离散开关：它把覆盖选择从外部偏好转写为一个可审计的中心元选择问题。
-本文在此仅记录该结构性含义，并不将其作为任何计数结论的证明前提。
+\begin{remark}[自旋覆盖语义下的阶 \texorpdfstring{$2$}{2} 中心元：对角核与几何选轴]\label{rem:bdry-diagonal-z2-spin-cover}
+在正交分解 \(\RR^{10}=\RR^6\oplus\RR^4\) 的自旋提升中，自然出现一个对角核
+\(\ZZ_2^{\mathrm{diag}}\subset \mathrm{Spin}(6)\times \mathrm{Spin}(4)\)
+（推论 \ref{cor:bdry-patisalam-spin10-kernel}）。
+另一方面，在 window-\(6\) 的有限分辨率读出层面，几何稳定子 \(\sigma_{\mathrm{geo}}\) 在 boundary 中心子格 \((\ZZ_2)^3\) 上选出一条可实现轴（推论 \ref{cor:bdry-sheet-parity-diagonal}）。
+因此“覆盖选择”在本文口径下可被转写为：在可审计中心电荷格中选择一个阶 \(2\) 方向，并区分其是否可由几何稳定子实现；
+该过程并不要求该方向与自旋提升中的对角核同一，而可作为一个独立的可检验兼容性条件。
 \end{remark}
 
 \begin{corollary}[Pati--Salam 骨架的中心商与 \texorpdfstring{$\mathrm{Spin}(10)$}{Spin(10)} 的标准嵌入核]\label{cor:bdry-patisalam-spin10-kernel}
@@ -131,7 +195,6 @@ G_{\mathrm{PS}}/\langle z_{\mathrm{diag}}\rangle
 \ \hookrightarrow\
 \mathrm{Spin}(10).
 \]
-进一步地，在推论 \ref{cor:bdry-sheet-parity-diagonal} 的识别下，boundary 的对角 sheet parity \(\ZZ_2^{\mathrm{diag}}\) 与该自旋嵌入的核一致。
 \end{corollary}
 \begin{proof}
 同构 \(\mathrm{Spin}(6)\simeq SU(4)\) 与 \(\mathrm{Spin}(4)\simeq SU(2)_L\times SU(2)_R\) 为经典事实。
@@ -140,7 +203,7 @@ G_{\mathrm{PS}}/\langle z_{\mathrm{diag}}\rangle
 其核由两因子中心元同步取 \((-1)\) 给出，故为 \(\{(1,1),(-1,-1)\}\cong\ZZ_2\)。
 在同构到 \(SU(4)\times SU(2)_L\times SU(2)_R\) 后，\((-1)\) 分别对应 \(-I_4\) 与 \((-I_2,-I_2)\)，即 \(z_{\mathrm{diag}}\)；
 因而商群同构与嵌入结论成立。
-最后一断言由推论 \ref{cor:bdry-sheet-parity-diagonal} 中“同步翻转”的对角识别直接给出。证毕。
+证毕。
 \end{proof}
 
 \begin{remark}[\texorpdfstring{$\delta=34$}{δ=34} 的 phason \texorpdfstring{$2$}{2}-torsion 解释（作为几何语义）]\label{rem:bdry-delta34-phason-2torsion}
@@ -194,15 +257,15 @@ G_{\mathrm{SM}}^{\mathrm{glob}}
 可在本文的审计口径中被解释为：由有限窗口上同时可核验的 \(\ZZ_3\)-轨道源与 \(\ZZ_2\)-sheet 源的共存条件所强制的中心商结构，而非先验输入的外加选择。
 \end{corollary}
 
-\begin{remark}[内生 \texorpdfstring{$\ZZ_6$}{Z6} 的显式构造：对角 sheet-flip \(\times\) 三轴 \(3\)-循环]\label{rem:bdry-intrinsic-z6-diagz2-c3}
-推论 \ref{cor:bdry-sheet-parity-diagonal} 给出 boundary 三轴 sheet-flip 的对角子群
+\begin{remark}[内生 \texorpdfstring{$\ZZ_6$}{Z6} 的显式构造：几何选轴 \texorpdfstring{$\ZZ_2$}{Z2} \(\times\) 三轴 \(3\)-循环]\label{rem:bdry-intrinsic-z6-diagz2-c3}
+推论 \ref{cor:bdry-sheet-parity-diagonal} 给出 boundary 三轴 sheet-flip 中由几何稳定子可实现的单轴子群
 \(
-\ZZ_2^{\mathrm{diag}}=\langle(1,1,1)\rangle\hookrightarrow (\ZZ_2)^3
+\langle\tau_{\texttt{101001}}\rangle\cong\ZZ_2\hookrightarrow (\ZZ_2)^3
 \)；
 另一方面，在 Weyl 核 \(W(B_3)\cong (\ZZ_2)^3\rtimes S_3\) 中，\(S_3\) 含唯一正规 \(3\)-循环子群 \(C_3\)。
 将二者并置即可得到一个内生子群
 \[
-\ZZ_2^{\mathrm{diag}}\times C_3\ \cong\ \ZZ_2\times\ZZ_3\ \cong\ \ZZ_6,
+\langle\tau_{\texttt{101001}}\rangle\times C_3\ \cong\ \ZZ_2\times\ZZ_3\ \cong\ \ZZ_6,
 \]
 其定义仅依赖于 “sheet parity（\(\ZZ_2\)）” 与 “三轴置换（\(\ZZ_3\)）” 两条离散刚性接口，因而为全局中心识别提供一条非循环来源。
 \end{remark}
