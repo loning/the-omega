@@ -146,6 +146,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_symq_fibonacci_binomial_power_audit",
+            script="exp_xi_symq_fibonacci_binomial_power_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_symq_fibonacci_binomial_power_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_cayley_joukowsky_hecke_dirichlet_audit",
+            script="exp_xi_cayley_joukowsky_hecke_dirichlet_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_cayley_joukowsky_hecke_dirichlet_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_fib_congruence_diffusion_inverse_audit",
+            script="exp_xi_fib_congruence_diffusion_inverse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_fib_congruence_diffusion_inverse_audit.json",
+            ],
+        ),
+        Step(
             name="replica_softcore_exceptional_charpoly_galois_audit",
             script="exp_replica_softcore_exceptional_charpoly_galois_audit.py",
             args=[],
@@ -189,6 +213,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_leyang_delta_node_tangent_wreath_audit",
+            script="exp_xi_leyang_delta_node_tangent_wreath_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_delta_node_tangent_wreath_audit.json",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly",
             script="exp_fold_gauge_anomaly.py",
             args=[],
@@ -203,6 +235,22 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_gauge_anomaly_fibonacci_low_defect_endpoints_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zeckendorf_mod_topbits_audit",
+            script="exp_fold_zeckendorf_mod_topbits_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zeckendorf_mod_topbits_audit.json",
+            ],
+        ),
+        Step(
+            name="conclusion_zeckendorf_15_16_family_lock_audit",
+            script="exp_conclusion_zeckendorf_15_16_family_lock_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/conclusion_zeckendorf_15_16_family_lock_audit.json",
             ],
         ),
         Step(

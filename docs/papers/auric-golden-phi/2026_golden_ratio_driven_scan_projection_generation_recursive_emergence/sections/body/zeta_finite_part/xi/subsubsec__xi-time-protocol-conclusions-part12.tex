@@ -167,6 +167,105 @@ F_x(u)=\prod_i C_{\ell_i}(u),
 纤维 \(f\)-多项式因子化见推论 \ref{cor:pom-fiber-fpoly-factorization}。证毕。
 \end{proof}
 
+\begin{conclusion}[Fibonacci cube 的 \(f\)-多项式：全实负根、统一下界与三角参数化]\label{con:xi-terminal-fibcube-fpoly-real-negative-roots-param}
+沿用定义 \ref{def:pom-fibcube-fvector} 的 \(f\)-多项式 \(C_n(u)=\sum_{k\ge 0}C(n,k)u^k\)。
+则对一切 \(n\ge 0\)：
+\begin{enumerate}
+  \item \(\deg C_n=\left\lfloor\frac{n+1}{2}\right\rfloor\)；
+  \item \(C_n\) 的全部零点均为互异的严格负实数，并满足统一下界 \(u<-\frac54\)；
+  \item 全体零点可显式枚举为
+  \[
+  u_{n,k}=-\frac{5+\tan^2\!\left(\frac{k\pi}{n+2}\right)}{4},
+  \qquad
+  k=1,2,\dots,\left\lfloor\frac{n+1}{2}\right\rfloor.
+  \]
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明要点]
+由生成函数恒等式
+\(
+\sum_{n\ge 0}C_n(u)z^n=\frac{1+z(1+u)}{1-z-(1+u)z^2}
+\)
+可读出一元递推
+\[
+C_n(u)=C_{n-1}(u)+(1+u)C_{n-2}(u)\quad(n\ge 2),
+\qquad
+C_0(u)=1,\ \ C_1(u)=2+u.
+\]
+令 \(s:=\sqrt{5+4u}\) 并置
+\(
+r_\pm:=\frac{1\pm s}{2}
+\)；
+则 \(r_\pm\) 为特征方程 \(r^2=r+(1+u)\) 的两根，因而二阶递推的一般解为
+\[
+C_n(u)=\frac{r_+^{\,n+2}-r_-^{\,n+2}}{r_+-r_-}
+  =\frac{r_+^{\,n+2}-r_-^{\,n+2}}{s}.
+\]
+于是 \(C_n(u)=0\) 等价于 \(r_+^{\,n+2}=r_-^{\,n+2}\)，亦即
+\[
+\left(\frac{r_+}{r_-}\right)^{n+2}=1,\qquad \frac{r_+}{r_-}\neq 1.
+\]
+记
+\[
+z(u):=\frac{r_+}{r_-}=\frac{1+s}{1-s},
+\]
+则零点条件为 \(z(u)^{n+2}=1\) 且 \(z(u)\neq 1\)。
+若 \(u\in\RR\) 为零点，则 \(|z(u)|=1\) 迫使 \(s\) 纯虚；写作 \(s=i\tan\theta\)（\(\theta\in(0,\pi)\)）即得
+\[
+u=-\frac{5+\tan^2\theta}{4}<-\frac54.
+\]
+另一方面 \(z(u)=e^{2i\theta}\)，条件 \(z(u)^{n+2}=1\) 等价于 \(\theta=\frac{k\pi}{n+2}\)；
+利用 \(\tan^2(\theta)=\tan^2(\pi-\theta)\) 去重，即得所示列表。
+零点个数等于 \(\deg C_n\)（由递推的次数增长与初值直接归纳），从而已穷尽全部零点。
+最后，\(\theta\mapsto -\frac{5+\tan^2\theta}{4}\) 在 \((0,\pi/2)\) 上严格单调，且 \(\theta=\frac{k\pi}{n+2}\) 为互异点，故根皆为单根。证毕。
+\end{proof}
+
+\begin{conclusion}[\(f\)-向量的严格对数凹与唯一峰值]\label{con:xi-terminal-fibcube-fvector-strict-logconcave-unimodal}
+对固定 \(n\)，系数列 \(\bigl(C(n,k)\bigr)_{k=0}^{\lfloor (n+1)/2\rfloor}\) 严格对数凹：
+\[
+C(n,k)^2> C(n,k-1)\,C(n,k+1)
+\qquad\left(1\le k\le \deg C_n-1\right),
+\]
+从而 \(f\)-向量严格单峰且峰值指标唯一。
+\end{conclusion}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-fibcube-fpoly-real-negative-roots-param}，\(C_n\) 为全实根多项式且全部根为负实数，且系数非负。
+Newton 不等式给出系数列严格对数凹，进而推出严格单峰与唯一峰值。证毕。
+\end{proof}
+
+\begin{conclusion}[单位圆提升与 Joukowsky--Godel 椭圆输运：根集的显式推前]\label{con:xi-terminal-fibcube-fpoly-circle-lift-jg-transport}
+定义代数变换
+\[
+s(u):=\sqrt{5+4u},\qquad
+z(u):=\frac{1+s(u)}{1-s(u)}.
+\]
+则对每个 \(n\ge 0\)，有等价刻画
+\[
+C_n(u)=0
+\quad\Longleftrightarrow\quad
+z(u)^{n+2}=1\ \text{且}\ z(u)\neq 1.
+\]
+特别地，对实零点 \(u\) 恒有 \(|z(u)|=1\)，并且 \(z(u)\) 为某个非平凡 \((n+2)\)-次单位根。
+\par
+进一步，取任意 \(r>0\) 并定义 Joukowsky--Godel 投影与椭圆
+\[
+J_r(z):=rz+r^{-1}z^{-1},\qquad E_r:=J_r(\TT).
+\]
+令
+\[
+Q_{n,r}(w):=\operatorname{Res}_z\!\bigl(z^{n+2}-1,\ r z^2-wz+r^{-1}\bigr)\in\QQ(r)[w].
+\]
+则 \(Q_{n,r}\) 的全部零点均落在椭圆 \(E_r\) 上，且零点多重集恰为
+\[
+\left\{\,J_r(\zeta):\ \zeta^{n+2}=1\,\right\}\subset E_r.
+\]
+\end{conclusion}
+\begin{proof}[证明要点]
+第一部分为结论 \ref{con:xi-terminal-fibcube-fpoly-real-negative-roots-param} 中的闭式推导直接等价改写。
+第二部分：对任意 \(\zeta^{n+2}=1\)，二次式 \(r z^2-wz+r^{-1}=0\) 在 \(z=\zeta\) 处有解当且仅当 \(w=J_r(\zeta)\)，因而由结果式的消元刻画，\(Q_{n,r}(w)=0\) 当且仅当存在 \(\zeta^{n+2}=1\) 使 \(w=J_r(\zeta)\)。
+又因 \(|\zeta|=1\) 时 \(J_r(\zeta)\in E_r\)，故零点落在 \(E_r\) 上且集合如所示。证毕。
+\end{proof}
+
 \begin{conclusion}[共振区的 Aitken 证书：\texorpdfstring{$(\sigma_{\mathrm{osc}},\delta_{\mathrm{ait}})$}{(sigma_osc,delta_ait)} 给出窗口长度的确定性选择律]\label{con:xi-terminal-resonance-aitken-certificate-window-law}
 对共振区特征多项式 \(P_q(\lambda)\) 的根按模排序 \( |\lambda_{1,q}|>|\lambda_{2,q}|\ge|\lambda_{3,q}|\ge\cdots \)（其中 \(\lambda_{1,q}=r_q\)），定义
 \[

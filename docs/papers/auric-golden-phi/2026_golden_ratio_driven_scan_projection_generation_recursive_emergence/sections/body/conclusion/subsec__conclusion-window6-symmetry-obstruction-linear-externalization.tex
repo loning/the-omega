@@ -184,6 +184,8 @@ L(\omega)=L(\omega')
 故因子化不存在，结论成立。证毕。
 \end{proof}
 
+\input{subsubsec__conclusion-zeckendorf-15-16-family-lock}
+
 \begin{theorem}[window-\(6\) 的三重一致性锁定]\label{thm:conclusion-window6-sm-locking-triple-consistency}
 设以下离散约束同时成立：
 \begin{enumerate}
@@ -263,6 +265,101 @@ D=1+3+8=12.
 可检验版本应以有限证书形式给出：输入 \(m=10\) 的退化谱扇区数据与相互作用矩阵/推送核，输出对应包络的 Killing 形式秩与根型证书。
 \end{conjecture}
 
+\paragraph{纤维平均与非可逆对称接口}
+附录 \ref{app:op-algebra-fold-subalgebra} 将分辨率折叠的粗粒化实现为交换代数包含 \(\mathcal{B}_m\subset \mathcal{A}_m\) 与纤维平均条件期望 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)。
+以下结果把该接口与量子操作、缺陷融合及 SymTFT 的标准结构对齐。
+
+\begin{theorem}\label{thm:conclusion-fold-condexp-quantum-operation-noninvertible}
+沿用命题 \ref{prop:fold-conditional-expectation} 的记号，并取计数迹 \(\tau_m\) 使得 \(\tau_m(P_a)=1\)（或等价的微观均匀迹 \(2^{-m}\tau_m\)）。
+则 \(E_m\) 为保持单位元的完全正映射且满足 \(\tau_m\circ E_m=\tau_m\)，从而在 Heisenberg 图像下定义一量子信道。
+此外，若存在 \(x\in X_m\) 使 \(d_m(x)>1\)，则 \(E_m\) 非单射，因而不可能为 \(\ast\)-自同构；该不可逆性由纤维凝聚所强制，并与非可逆对称以量子操作局域作用于可观测量的范式相容 \cite{OkadaTachikawa2024NonInvertibleQuantumOperations,SchaferNameki2023ICTPLecturesNonInvertibleGeneralizedSymmetries}。
+\end{theorem}
+\begin{proof}
+命题 \ref{prop:fold-conditional-expectation} 已给出 \(E_m\) 的正性与保持单位元；在有限维交换 \(C^\ast\)-代数中，正性蕴含完全正。
+对迹保持性，只需在基 \(\{P_a\}_{a\in\Omega_m}\) 上验证：若 \(x=\Fold_m(a)\)，则
+\[
+\tau_m(E_m(P_a))=\tau_m\!\left(\frac{1}{d_m(x)}\widetilde P_x\right)
+=\frac{1}{d_m(x)}\sum_{\Fold_m(b)=x}\tau_m(P_b)=1=\tau_m(P_a),
+\]
+线性延拓得到 \(\tau_m\circ E_m=\tau_m\)。
+若某纤维满足 \(d_m(x)>1\)，取不同 \(a\neq b\) 使 \(\Fold_m(a)=\Fold_m(b)=x\)，则
+\(
+E_m(P_a-P_b)=0
+\)
+而 \(P_a-P_b\neq 0\)，故 \(E_m\) 非单射，从而不可逆。证毕。
+\end{proof}
+
+\begin{proposition}\label{prop:conclusion-collision-moment-morita-defect-fusion}
+令 \(B:=\mathcal{B}_m\) 并把 \(\mathcal{A}_m\) 视为 \(B\text{-}B\) 双模（左右作用由 \(B\subset\mathcal{A}_m\) 的乘法给出）。
+则对任意整数 \(q\ge 1\)，有自然同构
+\[
+\mathcal{A}_m^{\otimes_{B} q}\ \cong\ \bigoplus_{x\in X_m}\CC^{\,d_m(x)^q}\otimes \mathbf{1}_x,
+\]
+其中 \(\mathbf{1}_x\) 为由极小幂等元 \(\widetilde P_x\) 所对应的简单 \(B\text{-}B\) 双模。
+因此
+\[
+\dim_\CC \Hom_{B\text{-}B}\!\bigl(B,\mathcal{A}_m^{\otimes_B q}\bigr)
+=\sum_{x\in X_m}d_m(x)^q
+=S_q(m),
+\]
+与正文碰撞矩的定义一致。
+\end{proposition}
+\begin{proof}
+由于 \(B\cong\bigoplus_{x\in X_m}\CC\,\widetilde P_x\) 为交换半单代数，\(B\text{-}B\) 双模等价于 \((X_m\times X_m)\)-分级向量空间。
+对 \(a\in\Omega_m\)，其左右 \(B\)-作用仅由 \(x=\Fold_m(a)\) 的对角幂等元 \(\widetilde P_x\) 决定，故 \(\mathcal{A}_m\) 仅在对角分量 \((x,x)\) 上非零，且该分量维数为 \(d_m(x)\)。
+在 \(\otimes_B\) 下对角分量逐点张量，得 \((x,x)\) 分量维数为 \(d_m(x)^q\)，从而得到直和分解。
+再由 \(B\cong\bigoplus_x \mathbf{1}_x\) 与 \(\Hom_{B\text{-}B}(\mathbf{1}_x,\CC^{d_m(x)^q}\otimes \mathbf{1}_x)\cong \CC^{d_m(x)^q}\)，取维数即得结论。证毕。
+\end{proof}
+
+\begin{proposition}\label{prop:conclusion-morita-2trace-determinant-zeta}
+令 \(X\) 为有限集合且 \(B:=\CC^X\)。
+给定一族 \(u\)-分级 \(B\text{-}B\) 双模 \(\mathsf{M}(u)\)，其 \((x,y)\) 分量的分级维数记为
+\(\mathrm{grdim}_u(\mathsf{M}_{x,y})=:M_{x,y}(u)\)，从而得到一个多项式矩阵 \(M(u)\)。
+定义 Morita \(2\)-迹（Hochschild \(0\)-同调）为
+\(
+\Tr_2(\mathsf{N}):=\bigoplus_{x\in X}\mathsf{N}_{x,x}.
+\)
+则对一切 \(n\ge 1\) 有
+\[
+\mathrm{grdim}_u\!\bigl(\Tr_2(\mathsf{M}(u)^{\otimes_B n})\bigr)=\Tr(M(u)^n),
+\]
+并且
+\[
+\exp\!\left(\sum_{n\ge 1}\frac{z^n}{n}\,
+\mathrm{grdim}_u\!\bigl(\Tr_2(\mathsf{M}(u)^{\otimes_B n})\bigr)\right)
+=\det(I-zM(u))^{-1}.
+\]
+\end{proposition}
+\begin{proof}
+在 \(B=\CC^X\) 的双模模型中，\(\otimes_B\) 的 \((x,y)\) 分量按中间指标求和，与矩阵乘法一致。
+取对角并对 \(x\) 求和得到 \(\Tr_2(\mathsf{M}(u)^{\otimes_B n})\) 的分级维数为 \(\Tr(M(u)^n)\)。
+指数生成式恒等式 \(-\log\det(I-zM)=\sum_{n\ge 1}\Tr(M^n)z^n/n\) 给出第二式。证毕。
+\end{proof}
+
+\begin{theorem}\label{thm:conclusion-fold-symtft-partition-function-collision-moments}
+在 \(B_m=\bigoplus_{x\in X_m}\CC\,\widetilde P_x\) 上定义线性泛函
+\[
+\varepsilon_m(\widetilde P_x):=\frac{1}{d_m(x)}.
+\]
+则 \((B_m,\mu,\eta,\varepsilon_m)\) 诱导一个交换半单 Frobenius 代数结构，从而给出二维定向 TQFT（亦可视为 SymTFT 的一个可计算模型 \cite{Bottini2025CategoricalSymmetriesQFT}）。
+其在闭连通 genus-\(g\) 曲面 \(\Sigma_g\) 上的分区函数满足
+\[
+Z_m(\Sigma_g)=\sum_{x\in X_m} d_m(x)^{g-2}\qquad(g\ge 0),
+\]
+并且对任意整数 \(q\ge 0\) 有 \(Z_m(\Sigma_{q+2})=S_q(m)\)。
+\end{theorem}
+\begin{proof}
+由于 \(\varepsilon_m(\widetilde P_x)\neq 0\)，双线性型 \(\langle a,b\rangle:=\varepsilon_m(ab)\) 在基 \(\{\widetilde P_x\}\) 下为非退化对角型，从而给出 Frobenius 结构。
+半单交换情形下把手元为 \(h=\mu\circ\Delta(1)=\sum_x d_m(x)\widetilde P_x\)，标准二维 TQFT 公式给出
+\(
+Z_m(\Sigma_g)=\varepsilon_m(h^{g-1})
+=\sum_x \varepsilon_m(\widetilde P_x)\,d_m(x)^{g-1}
+=\sum_x d_m(x)^{g-2}.
+\)
+取 \(g=q+2\) 得 \(Z_m(\Sigma_{q+2})=\sum_x d_m(x)^q=S_q(m)\)。证毕。
+\end{proof}
+
 \begin{remark}[分辨率尺度下的统一读法]\label{rem:conclusion-resolution-scale-unified-reading}
 上述命题簇给出一条一致的分辨率解释链：大尺度 \(m\) 固定规范差密度 \(4/9\) 所诱导的线性外置成本；\(m=6\) 同时锁定家族数、规范代数与玻色子计数，并在连通对称口径排除 \(SU(5)\) 直因子来源；\(U(1)\) 由相对同调对偶门而非连通自同构群直因子给出；中间尺度 \(m=10\) 则提供例外型核结构的可审计候选入口。
+在算子接口层面，折叠粗粒化由纤维平均条件期望 \(E_m\) 具体实现为幂等量子操作，并且一旦存在非平凡纤维多重度便强制不可逆性；同一多重度谱同时以缺陷融合的单位出现次数与二维 Frobenius/SymTFT 闭曲面振幅的形式外显为碰撞矩谱 \(S_q(m)\)。
 \end{remark}

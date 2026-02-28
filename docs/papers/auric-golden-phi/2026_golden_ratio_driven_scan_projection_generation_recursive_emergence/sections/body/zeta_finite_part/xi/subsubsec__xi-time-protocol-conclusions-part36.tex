@@ -208,6 +208,8 @@ rz^2-wz+r^{-1}=0
 再由定理 \ref{thm:xi-fibonacci-leyang-haar-equidistribution} 与连续映射定理即得弱收敛。证毕。
 \end{proof}
 
+\input{subsubsec__xi-fold-congruence-diffusion-hankel-attention}
+
 \begin{theorem}[投影词相干模数与有限可证性]\label{thm:xi-coherence-modulus-finite-decidability}
 设 \(w\) 为有限投影词，\(\mathrm{Mod}(w)\) 为其调用的模集合，且
 \[
@@ -380,6 +382,177 @@ P(z+z^{-1})=0
 再由结式定义，单位圆零点经 \(w=J_r(z)\) 推前后即得椭圆零点闭包。证毕。
 \end{proof}
 
+\begin{theorem}[Lee--Yang--Fold 特征和的 Pisano 周期分解与衰减指数闭式]\label{thm:xi-leyang-fold-pisano-factorization-decay}
+令 Fibonacci 数列满足 \(F_1=F_2=1\) 与递推 \(F_{n+2}=F_{n+1}+F_n\)。
+取奇素数 \(p\)，并记 \(\zeta_p:=\exp(2\pi i/p)\)。
+对 \(m\ge 1\) 定义特征和
+\begin{equation}\label{eq:xi-leyang-fold-Sm-def}
+S_m(p):=
+2^{-m}\sum_{\omega\in\{0,1\}^m}\zeta_p^{\sum_{j=1}^{m}\omega_jF_{j+1}}
+=
+\prod_{j=1}^{m}\frac{1+\zeta_p^{F_{j+1}}}{2}.
+\end{equation}
+令 \(T:=\pi(p)\) 为 Fibonacci 数列在模 \(p\) 下的 Pisano 周期（见 \eqref{eq:xi-leyang-fold-Sm-def} 的指数序列），则对任意分解 \(m=qT+r\)（\(q\in\NN\)，\(0\le r<T\)）有严格因子化
+\begin{equation}\label{eq:xi-leyang-fold-pisano-block-factorization}
+S_m(p)=\bigl(S_T(p)\bigr)^q\,S_r(p).
+\end{equation}
+并且极限
+\begin{equation}\label{eq:xi-leyang-fold-gamma-def}
+\gamma(p):=-\lim_{m\to\infty}\frac{1}{m}\log|S_m(p)|
+\end{equation}
+存在，且满足闭式
+\begin{equation}\label{eq:xi-leyang-fold-gamma-closed}
+\gamma(p)= -\frac{1}{T}\log\abs{S_T(p)}
+ = -\frac{1}{T}\sum_{j=1}^{T}\log\abs{\cos\!\Bigl(\frac{\pi F_{j+1}}{p}\Bigr)} \;>\;0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+对 \eqref{eq:xi-leyang-fold-Sm-def} 的和式逐坐标分离得
+\[
+S_m(p)=2^{-m}\prod_{j=1}^{m}\Bigl(\sum_{\omega_j\in\{0,1\}}\zeta_p^{\omega_jF_{j+1}}\Bigr)
+=\prod_{j=1}^{m}\frac{1+\zeta_p^{F_{j+1}}}{2}.
+\]
+由于 \(F_{n+T}\equiv F_n\ (\bmod\ p)\)（\(T=\pi(p)\)），因子 \(\frac{1+\zeta_p^{F_{j+1}}}{2}\) 在 \(j\) 上以周期 \(T\) 重复，从而得到分解 \eqref{eq:xi-leyang-fold-pisano-block-factorization}。
+对 \eqref{eq:xi-leyang-fold-pisano-block-factorization} 取绝对值对数并除以 \(m=qT+r\)，注意到 \(r\) 有界而 \(q/m\to 1/T\)，得到极限 \eqref{eq:xi-leyang-fold-gamma-def} 存在且等于 \(-\frac1T\log|S_T(p)|\)。
+\par
+最后，对任意整数 \(k\) 有恒等式
+\[
+\left|\frac{1+\zeta_p^{k}}{2}\right|
+=\left|\cos\!\Bigl(\frac{\pi k}{p}\Bigr)\right|,
+\]
+代入 \(k=F_{j+1}\) 即得 \eqref{eq:xi-leyang-fold-gamma-closed} 的第二个表达式。
+当 \(p\) 为奇素数时，\(\cos(\pi k/p)\neq 0\) 对一切 \(k\in\ZZ\) 成立；并且在积 \(\prod_{j=1}^{T}\frac{1+\zeta_p^{F_{j+1}}}{2}\) 中 \(j=1\) 给出因子 \(\abs{\cos(\pi/p)}<1\)，从而 \(|S_T(p)|\in(0,1)\) 且 \(\gamma(p)>0\)。
+\end{proof}
+
+\begin{proposition}[Pisano 块的 cyclotomic 范数恒等式与共轭平均衰减指数]\label{prop:xi-leyang-fold-cyclotomic-norm-conjugate-mean}
+在定理 \ref{thm:xi-leyang-fold-pisano-factorization-decay} 的设定下，取 \(g\in(\ZZ/p\ZZ)^\times\)，并定义扭曲特征和
+\begin{equation}\label{eq:xi-leyang-fold-Sm-twist}
+S_m(p;g):=
+2^{-m}\sum_{\omega\in\{0,1\}^m}\zeta_p^{g\sum_{j=1}^{m}\omega_jF_{j+1}}
+=\prod_{j=1}^{m}\frac{1+\zeta_p^{gF_{j+1}}}{2}.
+\end{equation}
+令 \(T:=\pi(p)\)，并定义 Pisano 块
+\[
+A_{p,g}:=S_T(p;g)\in \QQ(\zeta_p).
+\]
+设
+\[
+\rho(p):=\min\{n\ge 1:\ p\mid F_n\}
+\]
+为 Fibonacci 数列的出现阶，则 \(\rho(p)\mid T\) 且 \(p\mid F_n\iff \rho(p)\mid n\)（例如见 \cite{Wall1960FibonacciModm}）。
+在此记号下，\(A_{p,1}\) 的范数满足闭式
+\begin{equation}\label{eq:xi-leyang-fold-norm-Ap1}
+\mathrm N_{\QQ(\zeta_p)/\QQ}\!\bigl(A_{p,1}\bigr)
+=\prod_{g=1}^{p-1}A_{p,g}
+=2^{-(p-1)\left(T-\frac{T}{\rho(p)}\right)}\in\QQ_{>0},
+\end{equation}
+从而
+\begin{equation}\label{eq:xi-leyang-fold-absprod-Apg}
+\prod_{g=1}^{p-1}\abs{A_{p,g}}
+=2^{-(p-1)\left(T-\frac{T}{\rho(p)}\right)}.
+\end{equation}
+定义共轭衰减指数
+\[
+\gamma_g(p):=-\frac{1}{T}\log\abs{A_{p,g}},
+\]
+则其共轭平均值满足
+\begin{equation}\label{eq:xi-leyang-fold-mean-gamma}
+\frac{1}{p-1}\sum_{g=1}^{p-1}\gamma_g(p)=\left(1-\frac{1}{\rho(p)}\right)\log 2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+\(\Gal(\QQ(\zeta_p)/\QQ)\cong(\ZZ/p\ZZ)^\times\) 由 \(\sigma_g(\zeta_p)=\zeta_p^g\) 给出；由 \eqref{eq:xi-leyang-fold-Sm-twist} 得 \(\sigma_g(A_{p,1})=A_{p,g}\)，因此
+\[
+\mathrm N(A_{p,1})
+=\prod_{g=1}^{p-1}A_{p,g}
+=\prod_{g=1}^{p-1}\prod_{j=1}^{T}\frac{1+\zeta_p^{gF_{j+1}}}{2}
+=\prod_{j=1}^{T}\prod_{g=1}^{p-1}\frac{1+\zeta_p^{gF_{j+1}}}{2}.
+\]
+对固定 \(j\) 分两类：
+若 \(p\mid F_{j+1}\)，则 \(\zeta_p^{gF_{j+1}}=1\) 且内积等于 \(1\)。
+若 \(p\nmid F_{j+1}\)，则映射 \(g\mapsto gF_{j+1}\) 在 \((\ZZ/p\ZZ)^\times\) 上为置换，从而
+\[
+\prod_{g=1}^{p-1}(1+\zeta_p^{gF_{j+1}})=\prod_{k=1}^{p-1}(1+\zeta_p^k).
+\]
+由 \(\prod_{k=1}^{p-1}(x-\zeta_p^k)=\frac{x^p-1}{x-1}\) 取 \(x=-1\)（\(p\) 奇使 \(p-1\) 为偶）得
+\(\prod_{k=1}^{p-1}(1+\zeta_p^k)=1\)，因此该类 \(j\) 的内积为 \(2^{-(p-1)}\)。
+\par
+由出现阶性质 \(p\mid F_n\iff \rho(p)\mid n\) 且 \(\rho(p)\mid T\) 可知，在 \(j\in\{1,\dots,T\}\) 中满足 \(p\mid F_{j+1}\) 的指标恰有 \(T/\rho(p)\) 个。
+故满足 \(p\nmid F_{j+1}\) 的指标数为 \(T-T/\rho(p)\)，从而得到 \eqref{eq:xi-leyang-fold-norm-Ap1}。
+对绝对值并利用范数与共轭乘积一致性得到 \eqref{eq:xi-leyang-fold-absprod-Apg}，再取对数即得 \eqref{eq:xi-leyang-fold-mean-gamma}。
+\end{proof}
+
+\begin{corollary}[Fibonacci--cyclotomic \(2\)-单位性：Pisano 块乘积仅在 \((2)\) 处有算术支撑]\label{cor:xi-leyang-fold-pisano-block-2unit}
+取奇素数 \(p\)，令 \(T=\pi(p)\) 并以 \(\rho(p)\) 表示出现阶。
+在 \(\ZZ[\zeta_p]\) 中定义
+\[
+U_p:=\prod_{j=1}^{T}\bigl(1+\zeta_p^{F_{j+1}}\bigr)\in\ZZ[\zeta_p].
+\]
+则其绝对范数满足闭式
+\begin{equation}\label{eq:xi-leyang-fold-norm-Up}
+\mathrm N_{\QQ(\zeta_p)/\QQ}(U_p)=2^{(p-1)\,T/\rho(p)}.
+\end{equation}
+特别地，主理想 \((U_p)\subset\ZZ[\zeta_p]\) 的素理想分解中不出现任何位于奇素数 \(\ell\neq 2\) 之上的素理想；
+换言之，\(U_p\) 是一个 \(2\)-单位（其理想支撑仅位于 \((2)\) 上）。
+\end{corollary}
+\begin{proof}
+由定义 \(U_p=2^T A_{p,1}\) 且 \(\mathrm N(2^T)=2^{T(p-1)}\)，再结合命题 \ref{prop:xi-leyang-fold-cyclotomic-norm-conjugate-mean} 的 \eqref{eq:xi-leyang-fold-norm-Ap1} 得到
+\[
+\mathrm N(U_p)=2^{T(p-1)}\cdot 2^{-(p-1)\left(T-\frac{T}{\rho(p)}\right)}
+=2^{(p-1)\,T/\rho(p)}.
+\]
+若某素理想 \(\mathfrak p\subset\ZZ[\zeta_p]\) 位于奇素数 \(\ell\neq 2\) 之上且 \(\mathfrak p\mid (U_p)\)，则理想范数 \(\mathrm N(\mathfrak p)=\ell^f\) 为奇数，从而 \(\ell\mid \mathrm N(U_p)\)，与 \eqref{eq:xi-leyang-fold-norm-Up} 右端为纯 \(2\) 次幂矛盾。
+故 \((U_p)\) 的支撑仅能位于 \((2)\) 上。
+\end{proof}
+
+\begin{corollary}[由原始素因子定理导出的无穷共轭平均衰减平台]\label{cor:xi-leyang-fold-infinite-mean-gamma-platform}
+对每个整数 \(n>12\)，存在素数 \(p\) 使 \(\rho(p)=n\)（例如由 Lucas 序列的原始素因子定理推出，见 \cite{BiluHanrotVoutier2001PrimitiveDivisorsLucas}）。
+从而对每个 \(n>12\) 都存在素数 \(p\) 满足
+\[
+\frac{1}{p-1}\sum_{g=1}^{p-1}\gamma_g(p)=\left(1-\frac{1}{n}\right)\log 2,
+\]
+并且这些值随 \(n\to\infty\) 单调趋于 \(\log 2\)。
+\end{corollary}
+\begin{proof}
+取 \(n>12\)。原始素因子定理给出：\(F_n\) 存在一个原始素因子 \(p\)，即 \(p\mid F_n\) 且对一切 \(1\le k<n\) 有 \(p\nmid F_k\)。
+由出现阶定义即得 \(\rho(p)=n\)。
+代入命题 \ref{prop:xi-leyang-fold-cyclotomic-norm-conjugate-mean} 的平均公式 \eqref{eq:xi-leyang-fold-mean-gamma} 得到所示恒等式；并且右端随 \(n\) 增大严格递增且以 \(\log 2\) 为极限。
+\end{proof}
+
+\begin{proposition}[Pisano 块的实值性与相位锁定：整周期上无净相位]\label{prop:xi-leyang-fold-pisano-block-real}
+取奇素数 \(p\)，令 \(T=\pi(p)\) 且 \(g\in(\ZZ/p\ZZ)^\times\)。
+则 Pisano 块 \(A_{p,g}=S_T(p;g)\) 为实数。
+更强地，令
+\[
+W_T:=\sum_{j=1}^{T}F_{j+1},
+\]
+则 \(W_T\equiv 0\ (\bmod\ p)\)，并且对补映射 \(\omega\mapsto \omega^c\)（\(\omega_j^c:=1-\omega_j\)）有严格共轭配对，从而 \(A_{p,g}\in\RR\)。
+\end{proposition}
+\begin{proof}
+由恒等式 \(\sum_{k=0}^{n}F_k=F_{n+2}-1\) 得
+\(
+W_T=\sum_{k=2}^{T+1}F_k=F_{T+3}-2
+\)。
+由 Pisano 周期定义 \((F_T,F_{T+1})\equiv(0,1)\ (\bmod\ p)\)，从而 \(F_{T+2}\equiv 1\) 且 \(F_{T+3}\equiv 2\)，于是 \(W_T\equiv 0\ (\bmod\ p)\)。
+\par
+将 \eqref{eq:xi-leyang-fold-Sm-twist} 在 \(m=T\) 写为
+\[
+A_{p,g}
+=2^{-T}\sum_{\omega\in\{0,1\}^T}\zeta_p^{g\sum_{j=1}^{T}\omega_jF_{j+1}}.
+\]
+对任意 \(\omega\)，记 \(\omega^c\) 为补，则
+\[
+\sum_{j=1}^{T}\omega^c_jF_{j+1}=W_T-\sum_{j=1}^{T}\omega_jF_{j+1}\equiv -\sum_{j=1}^{T}\omega_jF_{j+1}\pmod p,
+\]
+从而
+\[
+\zeta_p^{g\sum \omega^c_jF_{j+1}}
+=\zeta_p^{-g\sum \omega_jF_{j+1}}
+=\overline{\zeta_p^{g\sum \omega_jF_{j+1}}}.
+\]
+故和式在复共轭下不变，得到 \(A_{p,g}\in\RR\)。
+\end{proof}
+
 \begin{conjecture}[6D--Lee--Yang--Fold 的 Chebotarev 共振律]\label{conj:xi-6d-leyang-fold-chebotarev-resonance}
 沿用文内记号：令 \(L_2\) 为 6D 超立方体相关多项式 \(P_2\) 的分裂域，\(L_{\mathrm{LY}}\) 为 Lee--Yang 三次多项式的分裂域，记复合域
 \[
@@ -404,7 +577,7 @@ S_m(p):=
 \gamma(p):=
 -\lim_{m\to\infty}\frac{1}{m}\log|S_m(p)|
 \]
-（若极限存在）。
+（当 \(p\) 为奇素数时极限由定理 \ref{thm:xi-leyang-fold-pisano-factorization-decay} 保证存在并具有闭式）。
 
 猜想：\(\gamma(p)\) 对每个不分歧 \(p\) 存在，且仅依赖于 \(\operatorname{Frob}_p\) 的共轭类。
 此外，\(\operatorname{Frob}_p\) 为恒等类（即 \(p\) 在 \(K\) 中完全分裂）时，\(\gamma(p)\) 严格低于 Chebotarev 意义下的典型值，从而在模 \(p\) 的 Fold 纤维多重度 Fourier 指纹中产生可检测的算术偏振窗口。

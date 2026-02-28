@@ -176,6 +176,61 @@ S_q(m)= (u^{\mathrm{eq}}_q)^{\mathsf T}\,(A^{\mathrm{eq}}_q)^{\,m-m_0}\,v^{\math
 碰撞计数预压缩见命题 \ref{prop:pom-moment-col-lumping}；星形耦合的 \(\binom{q+1}{2}\) 轨道表示见注 \ref{rem:pom-star-sympress}。证毕。
 \end{proof}
 
+\begin{theorem}[Hankel 秩刻画最小线性实现维数，且可由两块相邻 Hankel 主块显式构造]\label{thm:xi-hankel-rank-minimal-linear-realization}
+设序列 \((a_m)_{m\ge 0}\subset\RR\) 的无穷 Hankel 矩阵为
+\[
+\mathrm{Hankel}(a):=\bigl(a_{i+j}\bigr)_{i,j\ge 0}.
+\]
+若其秩为有限整数 \(d:=\mathrm{rank}\,\mathrm{Hankel}(a)<\infty\)，并且主块
+\[
+H_0:=\bigl(a_{i+j}\bigr)_{0\le i,j\le d-1}
+\]
+可逆，则存在 \(A\in\RR^{d\times d}\) 与向量 \(\alpha,\beta\in\RR^{d}\) 使对所有 \(m\ge 0\) 成立
+\[
+a_m=\beta^{\mathsf T}A^{m}\alpha,
+\]
+并且可取显式构造
+\[
+H_1:=\bigl(a_{i+j+1}\bigr)_{0\le i,j\le d-1},
+\qquad
+A:=H_0^{-1}H_1,\qquad
+\alpha:=e_0,\qquad
+\beta:=(a_0,a_1,\dots,a_{d-1})^{\mathsf T}.
+\]
+反之，若存在表示 \(a_m=\tilde\beta^{\mathsf T}\tilde A^{m}\tilde\alpha\)（\(\tilde A\in\RR^{r\times r}\)），则
+\[
+\mathrm{rank}\,\mathrm{Hankel}(a)\le r.
+\]
+因此任意精确生成该序列的有限维线性状态空间实现的状态维数下界恰为 Hankel 秩 \(d\)。
+\end{theorem}
+\begin{proof}
+若 \(a_m=\tilde\beta^{\mathsf T}\tilde A^{m}\tilde\alpha\)，则
+\(
+a_{i+j}=(\tilde\beta^{\mathsf T}\tilde A^{i})(\tilde A^{j}\tilde\alpha)
+\)
+给出 Hankel 矩阵为秩至多 \(r\) 的分解，故 \(\mathrm{rank}\,\mathrm{Hankel}(a)\le r\)。
+\par
+若 \(\mathrm{rank}\,\mathrm{Hankel}(a)=d\) 且 \(H_0\) 可逆，则 Hankel 列空间由前 \(d\) 列生成且其在前 \(d\) 个坐标上的截断给出一组基；令 \(c_j:=(a_{i+j})_{0\le i\le d-1}\in\RR^{d}\)，并定义线性算子 \(A\) 使 \(Ac_j=c_{j+1}\)（\(0\le j\le d-2\)）。
+矩阵恒等式 \(AH_0=H_1\) 给出 \(A=H_0^{-1}H_1\)。
+取 \(\alpha=e_0=c_0\) 与 \(\beta\) 为前 \(d\) 项向量即可得到 \(a_m=\beta^{\mathsf T}A^{m}\alpha\)。
+\end{proof}
+
+\begin{proposition}[有限 Hankel 证书原则：全域一致性可由有限前缀与移位约束封口]\label{prop:xi-hankel-finite-certificate-principle}
+在定理 \ref{thm:xi-hankel-rank-minimal-linear-realization} 的设定下，
+设候选三元组 \((\alpha,A,\beta)\)（\(A\in\RR^{d\times d}\)）诱导候选序列 \(b_m:=\beta^{\mathsf T}A^{m}\alpha\)。
+则以下两者等价：
+\begin{enumerate}
+  \item 对所有 \(m\ge 0\)，有 \(b_m=a_m\)；
+  \item 同时满足：\(\,b_m=a_m\) 对所有 \(0\le m\le 2d-1\) 成立，且 \(AH_0=H_1\)（等价 \(A=H_0^{-1}H_1\)）。
+\end{enumerate}
+因此当 \(\mathrm{rank}\,\mathrm{Hankel}(a)=d\) 且 \(H_0\) 可逆时，任意声称的 \(d\)-维线性实现都可由长度 \(2d\) 的前缀数据与一次矩阵等式构成可核验的有限证书。
+\end{proposition}
+\begin{proof}
+\((1)\Rightarrow(2)\) 为直接代入：由 \(b_m=a_m\) 得 \(H_0(b)=H_0(a)\)、\(H_1(b)=H_1(a)\)，且 \(AH_0(b)=H_1(b)\) 必成立，故 \(AH_0=H_1\)。
+\par
+\((2)\Rightarrow(1)\) 由移位算子刻画给出：条件 \(AH_0=H_1\) 表明 \(A\) 在 Hankel 列空间上实现“前缀到后继”的一致移位；因此 \((b_m)\) 与 \((a_m)\) 满足同一最小线性递推并在前 \(2d\) 项一致，归纳得全体项一致。
+\end{proof}
+
 \begin{conclusion}[含 \texorpdfstring{$\mathrm{MOM}[q]$}{MOM[q]} 与 \texorpdfstring{$\mathrm{TWIST}[\chi]$}{TWIST[chi]} 的投影词演算形成规范接口正规形；异常被压缩为最小标量并具同调不变性]\label{con:xi-terminal-projword-normal-form-mom-twist-anom}
 在规则族 \ref{def:pom-four-gen-rewrite-rules} 与三生成元规则族 \ref{def:pom-three-gen-rewrite-rules} 的联合闭包下，任意仅由
 \(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G,\mathrm{MOM}_q\)
