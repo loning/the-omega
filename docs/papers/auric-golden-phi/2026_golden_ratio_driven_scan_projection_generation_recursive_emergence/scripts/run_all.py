@@ -650,6 +650,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="foldbin6_two_point_fiber_direction_spectrum",
+            script="exp_foldbin6_two_point_fiber_direction_spectrum.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_two_point_fiber_direction_spectrum.json",
+            ],
+        ),
+        Step(
             name="foldbin6_bitflip_stability_polynomial",
             script="exp_foldbin6_bitflip_stability_polynomial.py",
             args=[],
