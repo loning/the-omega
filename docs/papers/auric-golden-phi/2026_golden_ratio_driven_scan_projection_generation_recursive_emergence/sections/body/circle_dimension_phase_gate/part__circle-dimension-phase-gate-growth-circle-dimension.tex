@@ -140,6 +140,73 @@ A_{\le N}:=B_{\le N}a_1+\cdots+B_{\le N}a_r.
 最后，由 \(A\) 对 \(B\) 整且有限模，Krull 维数满足 \(\dim(A)=\dim(B)\)，而 \(\dim(\ZZ[t_1,\dots,t_n])=n+1\)，故 \(\dim(A)=n+1\) 并得 \(\operatorname{gcdim}(A)=\dim(A)-1\)。证毕。
 \end{proof}
 
+\begin{definition}[素点 Dirichlet 级数与算术圆维]\label{def:acdim-prime-point-dirichlet}
+设 \(R\) 为有限生成交换含幺 \(\ZZ\)-代数。
+定义其\textbf{素点 Dirichlet 级数}为
+\[
+\mathcal Z_R(s):=\sum_{p\ \mathrm{prime}}\ \#\operatorname{Hom}_{\mathrm{ring}}(R,\mathbb F_p)\,p^{-s},
+\]
+并定义其\textbf{算术圆维}为
+\[
+\operatorname{acdim}(R):=\sigma_c(\mathcal Z_R)-1,
+\]
+其中 \(\sigma_c(\cdot)\) 表示收敛临界指数（abscissa of convergence）。
+\end{definition}
+
+\begin{proposition}[多项式环的算术圆维]\label{prop:acdim-polynomial-ring}
+对任意整数 \(d\ge 0\)，令 \(R=\ZZ[x_1,\dots,x_d]\)。
+则对任意素数 \(p\) 有
+\[
+\#\operatorname{Hom}_{\mathrm{ring}}(R,\mathbb F_p)=p^{d},
+\qquad
+\mathcal Z_R(s)=\sum_{p}p^{d-s},
+\qquad
+\operatorname{acdim}(R)=d.
+\]
+\end{proposition}
+\begin{proof}
+环同态 \(\varphi:\ZZ[x_1,\dots,x_d]\to\mathbb F_p\) 必限制为 \(\ZZ\to\mathbb F_p\) 的自然映射，
+且由 \((\varphi(x_1),\dots,\varphi(x_d))\in(\mathbb F_p)^d\) 唯一决定；反之任意赋值给出同态，故同态数为 \(p^d\)。
+对收敛性：若 \(\Re(s)>d+1\)，则 \(\sum_p p^{d-\Re(s)}\le \sum_{n\ge 2} n^{-(\Re(s)-d)}<\infty\)；
+而当 \(\Re(s)=d+1\) 时 \(\sum_p p^{-1}=\infty\)，故 \(\sigma_c=d+1\) 且 \(\operatorname{acdim}(R)=d\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[代数整数与超越元的算术圆维分离]\label{cor:acdim-algebraic-vs-transcend}
+取 \(\alpha\in\CC\)。
+\begin{enumerate}
+  \item 若 \(\alpha\) 超越，则 \(\ZZ[\alpha]\cong\ZZ[x]\)，从而 \(\operatorname{acdim}(\ZZ[\alpha])=1\)。
+  \item 若 \(\alpha\) 为代数整数，则 \(\operatorname{acdim}(\ZZ[\alpha])=0\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+\textbf{(1)} 由命题 \ref{prop:acdim-polynomial-ring} 取 \(d=1\) 即得。
+\par
+\textbf{(2)} 设 \(\alpha\) 的首一最小多项式为 \(f\in\ZZ[x]\)，则 \(\ZZ[\alpha]\cong\ZZ[x]/(f)\)。
+对任意素数 \(p\)，环同态 \(\ZZ[x]/(f)\to\mathbb F_p\) 等价于选取 \(a\in\mathbb F_p\) 使 \(f(a)\equiv 0\pmod p\)，故
+\[
+\#\operatorname{Hom}_{\mathrm{ring}}(\ZZ[\alpha],\mathbb F_p)\le \deg f=:m.
+\]
+于是对任意 \(\Re(s)>1\) 有
+\(
+\mathcal Z_{\ZZ[\alpha]}(s)\le m\sum_p p^{-\Re(s)}<\infty
+\)；
+而在 \(\Re(s)=1\) 处由 \(\sum_p 1/p=\infty\) 得发散，从而 \(\sigma_c(\mathcal Z_{\ZZ[\alpha]})=1\)，即 \(\operatorname{acdim}(\ZZ[\alpha])=0\)。
+证毕。
+\end{proof}
+
+\begin{conjecture}[算术圆维与相对 Krull 维度一致]\label{conj:acdim-krull-dimension}
+设 \(R\) 为有限生成、既约的交换含幺 \(\ZZ\)-代数，令
+\(
+d:=\dim(\Spec R)-1
+\)
+为其相对维度。
+则预期
+\[
+\operatorname{acdim}(R)=d.
+\]
+\end{conjecture}
+
 \begin{theorem}[单元素生成子环的代数/超越二分：增长圆维的有限化分岔]\label{thm:gcdim-zalpha-dichotomy}
 取 \(\alpha\in\CC\)，令 \(A:=\ZZ[\alpha]\subset\CC\)，并给定滤过
 \[

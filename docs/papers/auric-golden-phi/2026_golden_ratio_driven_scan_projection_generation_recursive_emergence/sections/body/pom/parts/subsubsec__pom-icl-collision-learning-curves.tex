@@ -1,0 +1,241 @@
+% ICL-style learning curves from collision moments and fiber LDP.
+
+\subsubsection{碰撞矩的学习曲线接口：占用泛函展开、随机纤维任务的 Bayes 误差与提示长度相变}\label{subsubsec:pom-icl-collision-learning-curves}
+本段把“表示瓶颈诱导的不可分辨等价类”压缩为折叠纤维谱的可核验统计量，并给出一组与实现细节无关的闭式学习曲线：其输入仅为输出分布 \(w_m\) 与碰撞矩序列 \(\{S_q(m)\}_{q\ge 1}\)，并在指数提示长度尺度上由纤维对数多重度的大偏差率函数封口。
+
+\paragraph{记号}
+固定分辨率 \(m\ge 1\)，令 \(\Omega_m=\{0,1\}^m\)，并令 \(\Fold_m:\Omega_m\twoheadrightarrow X_m\) 为折叠映射。
+纤维多重度 \(d_m(x)=|\Fold_m^{-1}(x)|\) 与输出分布
+\[
+w_m(x):=\frac{d_m(x)}{2^m}\qquad(x\in X_m)
+\]
+见定义 \ref{def:pom-ind-lyapunov-fingerprint}。
+对 \(q\ge 1\) 定义标准碰撞矩
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q,
+\]
+及其归一化幂矩（Rényi/碰撞幂和）
+\[
+M_q(m):=\sum_{x\in X_m}w_m(x)^q=\frac{S_q(m)}{2^{qm}}.
+\]
+
+\begin{theorem}[解析占用泛函的碰撞矩展开律]\label{thm:pom-occupancy-functional-collision-expansion}
+令 \(\psi:\CC\to\CC\) 为整函数，并取任意整数 \(n\ge 0\)。
+则成立严格恒等式
+\[
+\sum_{x\in X_m} w_m(x)\,\psi\!\bigl(n w_m(x)\bigr)
+=\sum_{q=0}^{\infty}\frac{\psi^{(q)}(0)}{q!}\,n^q\,M_{q+1}(m)
+=\sum_{q=0}^{\infty}\frac{\psi^{(q)}(0)}{q!}\,n^q\,\frac{S_{q+1}(m)}{2^{(q+1)m}}.
+\]
+\end{theorem}
+
+\begin{proof}
+由 Taylor 展开 \(\psi(t)=\sum_{q\ge 0}\psi^{(q)}(0)t^q/q!\)，对每个 \(x\) 代入 \(t=nw_m(x)\) 得
+\[
+w_m(x)\psi(nw_m(x))=\sum_{q\ge 0}\frac{\psi^{(q)}(0)}{q!}\,n^q\,w_m(x)^{q+1}.
+\]
+因 \(\sum_x w_m(x)^{q+1}\le \sum_x w_m(x)=1\)，且 \(\psi\) 为整函数从而 \(\sum_q|\psi^{(q)}(0)|n^q/q!<\infty\)，故可交换求和次序并得结论。
+证毕。
+\end{proof}
+
+\begin{theorem}[随机纤维任务的提示学习：Bayes 误差由有限阶碰撞矩决定]\label{thm:pom-random-fiber-task-bayes-error}
+令任务标签为随机函数 \(\tau:X_m\to\{\pm1\}\)，在 \(\{\pm1\}^{X_m}\) 上均匀取值。
+给定提示长度 \(k\in\NN\)，观测 \(k\) 个 i.i.d.\ 样本
+\[
+(X_1,Y_1),\dots,(X_k,Y_k),
+\qquad
+X_i\sim w_m,\quad Y_i=\tau(X_i),
+\]
+并对独立测试点 \(X_{k+1}\sim w_m\) 预测 \(Y_{k+1}=\tau(X_{k+1})\)。
+则在所有可测预测器中，Bayes 最小分类误差满足严格闭式
+\[
+\mathrm{Err}_m(k)
+=\frac12\sum_{x\in X_m}w_m(x)\bigl(1-w_m(x)\bigr)^k
+=\frac12\sum_{j=0}^{k}(-1)^j\binom{k}{j}\,M_{j+1}(m)
+=\frac12\sum_{j=0}^{k}(-1)^j\binom{k}{j}\,\frac{S_{j+1}(m)}{2^{(j+1)m}}.
+\]
+\end{theorem}
+
+\begin{proof}
+条件于提示样本 \(X_1,\dots,X_k\) 与查询 \(X_{k+1}=x\)：
+若 \(x\in\{X_1,\dots,X_k\}\)，则 \(\tau(x)\) 已被提示揭示，Bayes 误差为 \(0\)；
+若 \(x\notin\{X_1,\dots,X_k\}\)，则在提示条件下 \(\tau(x)\) 仍为独立均匀的 \(\pm1\)，故 Bayes 误差为 \(1/2\)。
+因此
+\[
+\mathrm{Err}_m(k)=\frac12\,\PP\bigl(X_{k+1}\notin\{X_1,\dots,X_k\}\bigr)
+=\frac12\sum_x w_m(x)\,\PP(\forall i\le k,\ X_i\neq x)
+=\frac12\sum_x w_m(x)\bigl(1-w_m(x)\bigr)^k.
+\]
+最后对 \((1-w)^k=\sum_{j=0}^k(-1)^j\binom{k}{j}w^j\) 作二项式展开并求和即得。
+证毕。
+\end{proof}
+
+\begin{corollary}[固定提示长度下的有理生成函数与常系数递推]\label{cor:pom-icl-error-rational-recursion}
+固定 \(k\in\NN\)。
+若对每个 \(q\in\{1,\dots,k+1\}\)，序列 \(m\mapsto S_q(m)\) 自某个 \(m_0\) 起满足常系数线性递推（等价于有限 Hankel 秩），则误差序列 \(m\mapsto \mathrm{Err}_m(k)\) 亦自某个阈值起满足常系数线性递推；其普通生成函数
+\[
+\mathcal E_k(z):=\sum_{m\ge 0}\mathrm{Err}_m(k)\,z^m
+\]
+为有理函数，并可写为
+\[
+\mathcal E_k(z)=\frac12\sum_{j=0}^{k}(-1)^j\binom{k}{j}\,\mathcal M_{j+1}(z),
+\qquad
+\mathcal M_q(z):=\sum_{m\ge 0}M_q(m)\,z^m=\sum_{m\ge 0}\frac{S_q(m)}{2^{qm}}\,z^m.
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:pom-random-fiber-task-bayes-error}，
+\(
+\mathrm{Err}_m(k)=\frac12\sum_{j=0}^k(-1)^j\binom{k}{j}M_{j+1}(m)
+\)。
+若 \(S_q(m)\) 满足递推，则 \(M_q(m)=2^{-qm}S_q(m)\) 仍满足常系数递推（系数按 \(2^{-q\ell}\) 缩放）；有限个递推序列的线性组合仍满足某个常系数递推，生成函数因此为有理函数。
+证毕。
+\end{proof}
+
+\begin{proposition}[插值噪声方差的 Poisson--\texorpdfstring{$\mathrm{Ei}$}{Ei}--碰撞矩闭式]\label{prop:pom-interpolation-variance-poisson-ei-collision}
+取如下最小插值模型：
+\begin{itemize}
+  \item 训练样本数 \(N\sim\mathrm{Pois}(n)\)；
+  \item 条件于 \(N\)，样本 \(\omega_i\) i.i.d.\ 均匀于 \(\Omega_m\)，并置 \(X_i=\Fold_m(\omega_i)\in X_m\)；
+  \item 标签为纯噪声 \(Y_i=\varepsilon_i\)，其中 \(\EE[\varepsilon_i]=0\)、\(\EE[\varepsilon_i^2]=\sigma^2\)；
+  \item 学习器输出纤维常数预测：对每个 \(x\in X_m\) 令 \(N_x:=\#\{i\le N:X_i=x\}\)，并置
+  \[
+  \widehat f(x):=\mathbf 1_{\{N_x>0\}}\cdot\frac{1}{N_x}\sum_{i:X_i=x}\varepsilon_i.
+  \]
+\end{itemize}
+则对测试点 \(X\sim w_m\) 的期望平方误差满足严格恒等式
+\[
+\mathcal V_m(n):=\EE[\widehat f(X)^2]
+=\sigma^2\sum_{x\in X_m}w_m(x)\,g\!\bigl(nw_m(x)\bigr),
+\]
+其中函数 \(g\) 具有等价闭式：
+\[
+g(\lambda)=\sum_{r=1}^{\infty}\frac{1}{r}\,e^{-\lambda}\frac{\lambda^r}{r!},
+\qquad
+g(\lambda)=e^{-\lambda}\bigl(\mathrm{Ei}(\lambda)-\gamma-\log\lambda\bigr)\quad(\lambda>0),
+\]
+并且 \(g\) 在 \(0\) 点解析，幂级数为
+\[
+g(\lambda)=\sum_{q=1}^{\infty}b_q\lambda^q,
+\qquad
+b_q=\sum_{r=1}^{q}\frac{(-1)^{q-r}}{r\cdot r!\cdot (q-r)!}.
+\]
+从而有碰撞矩展开
+\[
+\mathcal V_m(n)=\sigma^2\sum_{q=1}^{\infty}b_q\,n^q\,M_{q+1}(m)
+=\sigma^2\sum_{q=1}^{\infty}b_q\,n^q\,\frac{S_{q+1}(m)}{2^{(q+1)m}}.
+\]
+其中前几项为 \(b_1=1\)、\(b_2=-\tfrac34\)、\(b_3=\tfrac{11}{36}\)、\(b_4=-\tfrac{25}{288}\)。
+\end{proposition}
+
+\begin{proof}
+在 Poisson 化抽样下，计数向量 \((N_x)_{x\in X_m}\) 独立且 \(N_x\sim\mathrm{Pois}(nw_m(x))\)。
+条件于 \(N_x\)，有
+\[
+\EE[\widehat f(x)^2\mid N_x]
+=\mathbf 1_{\{N_x>0\}}\cdot \EE\!\left[\left(\frac{1}{N_x}\sum_{i=1}^{N_x}\varepsilon_i\right)^2\Bigm|N_x\right]
+=\mathbf 1_{\{N_x>0\}}\cdot \frac{\sigma^2}{N_x}.
+\]
+故
+\[
+\mathcal V_m(n)=\sum_x w_m(x)\,\EE\!\left[\frac{\sigma^2}{N_x}\mathbf 1_{\{N_x>0\}}\right]
+=\sigma^2\sum_x w_m(x)\,g(nw_m(x)),
+\]
+其中 \(g(\lambda)=\EE[\,N^{-1}\mathbf 1_{\{N>0\}}\,]\) 且 \(N\sim\mathrm{Pois}(\lambda)\)。
+代入 Poisson 质量函数得级数形式。
+又由
+\(
+\mathrm{Ei}(\lambda)=\gamma+\log\lambda+\sum_{r\ge 1}\lambda^r/(r\cdot r!)
+\)
+（\(\lambda>0\)）可得指数积分闭式。
+将 \(e^{-\lambda}=\sum_{j\ge 0}(-1)^j\lambda^j/j!\) 与 \(\sum_{r\ge 1}\lambda^r/(r\cdot r!)\) 相乘并收集 \(\lambda^q\) 系数即得 \(b_q\)。
+最后由 \(\sum_x w_m(x)\,(nw_m(x))^q=n^qM_{q+1}(m)\) 得展开式。
+证毕。
+\end{proof}
+
+\begin{corollary}[亚临界占用下的二阶闭式：方差由二重碰撞主导]\label{cor:pom-subcritical-occupancy-variance-second-order}
+在命题 \ref{prop:pom-interpolation-variance-poisson-ei-collision} 的设定下，若存在一列 \(n_m\) 满足
+\[
+\max_{x\in X_m} n_m\,w_m(x)\xrightarrow[m\to\infty]{}0,
+\]
+则
+\[
+\mathcal V_m(n_m)
+=\sigma^2\,n_m\,M_2(m)+O\!\left(\sigma^2\,n_m^2\,M_3(m)\right)
+=\sigma^2\,n_m\,\frac{S_2(m)}{4^m}+O\!\left(\sigma^2\,n_m^2\,\frac{S_3(m)}{8^m}\right).
+\]
+若进一步存在指数闭式 \(S_q(m)=\Theta(r_q^m)\)（例如由碰撞核 realization 给出），则
+\[
+\lim_{m\to\infty}\frac1m\log \mathcal V_m(n_m)
+=\lim_{m\to\infty}\frac1m\log n_m+\log r_2-2\log 2.
+\]
+\end{corollary}
+
+\begin{proof}
+由 \(g(\lambda)=\lambda+O(\lambda^2)\)（\(\lambda\to0\)）与一致性条件 \(\sup_x(n_m w_m(x))\to0\)，
+\[
+\mathcal V_m(n_m)=\sigma^2\sum_x w_m(x)\Bigl(n_mw_m(x)+O\bigl((n_mw_m(x))^2\bigr)\Bigr)
+=\sigma^2n_mM_2(m)+O(\sigma^2n_m^2M_3(m)).
+\]
+指数率结论由 \(M_2(m)=S_2(m)/4^m=\Theta((r_2/4)^m)\) 得到。
+证毕。
+\end{proof}
+
+\begin{theorem}[指数提示长度下的提示相变：误差指数由 \texorpdfstring{$I_w$}{Iw} 给出]\label{thm:pom-icl-exponential-prompt-phase-transition}
+令随机变量
+\[
+E_m:=\frac1m\log d_m(X),\qquad X\sim w_m.
+\]
+假设 \(E_m\) 在速度 \(m\) 下满足完全大偏差原理，率函数为良函数 \(I_w\)（记号与存在性条件见定理 \ref{thm:pom-ldp-uniform-and-wm-exact-spectrum}）。
+对 \(\kappa\ge 0\) 令提示长度 \(k_m:=\lceil e^{\kappa m}\rceil\)，并记
+\[
+U_m(\kappa):=2\,\mathrm{Err}_m(k_m)=\sum_{x\in X_m}w_m(x)\bigl(1-w_m(x)\bigr)^{k_m}.
+\]
+设 \(I_w\) 在有效域内部严格凸且其零点唯一，记该零点为 \(\alpha_\star\)（即 \(I_w(\alpha_\star)=0\)）。
+则有指数律
+\[
+\lim_{m\to\infty}-\frac1m\log U_m(\kappa)
+=
+\begin{cases}
+0, & \kappa\le \log 2-\alpha_\star,\\[4pt]
+\displaystyle \inf_{\alpha\le \log 2-\kappa} I_w(\alpha), & \kappa>\log 2-\alpha_\star.
+\end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+写 \(w_m(x)=\exp(m(E_m-\log2))\)。
+对任意 \(\varepsilon>0\) 定义事件
+\[
+A_m^-(\varepsilon):=\{E_m\le \log2-\kappa-\varepsilon\},\qquad
+A_m^+(\varepsilon):=\{E_m\ge \log2-\kappa+\varepsilon\}.
+\]
+在 \(A_m^-(\varepsilon)\) 上有 \(k_mw_m(X)\le e^{-\varepsilon m+o(m)}\to0\)，故
+\(
+(1-w_m(X))^{k_m}=1+o(1)
+\)
+且 \(o(1)\) 可一致控制。
+在 \(A_m^+(\varepsilon)\) 上有 \(k_mw_m(X)\ge e^{\varepsilon m+o(m)}\to\infty\)，并由 \((1-u)^k\le e^{-ku}\) 得该部分贡献超指数衰减。
+因此 \(U_m(\kappa)\) 的指数率与 \(\PP(A_m^-(\varepsilon))\) 一致；令 \(\varepsilon\downarrow0\) 并应用 \(E_m\) 的大偏差原理得到
+\[
+\lim_{m\to\infty}-\frac1m\log U_m(\kappa)=\inf_{\alpha\le \log2-\kappa}I_w(\alpha),
+\]
+并注意当阈值 \(\log2-\kappa\) 覆盖零点 \(\alpha_\star\) 时右端为 \(0\)，得分段形式。
+证毕。
+\end{proof}
+
+\begin{conjecture}[Fibonacci 码率约束下的提示效率极值性]\label{conj:pom-icl-efficiency-extremal-under-fibonacci-rate}
+设 \(\mathcal F\) 为所有满足 \(|\Omega_m|=2^m\)、\(|X_m|=F_{m+2}\) 且 \(f_m:\Omega_m\twoheadrightarrow X_m\) 为满射的映射族。
+对 \(f\in\mathcal F\) 记其诱导分布 \(w_m^{(f)}(x):=|f_m^{-1}(x)|/2^m\)，并在指数提示长度 \(k_m=\lceil e^{\kappa m}\rceil\)（\(\kappa>\log\varphi\)）下定义未见概率指数率
+\[
+\mathcal E_f(\kappa):=\liminf_{m\to\infty}-\frac1m\log\Bigl(\sum_{x}w_m^{(f)}(x)\bigl(1-w_m^{(f)}(x)\bigr)^{k_m}\Bigr).
+\]
+猜想对所有 \(\kappa>\log\varphi\) 有
+\[
+\mathcal E_{\mathrm{Fold}}(\kappa)=\sup_{f\in\mathcal F}\mathcal E_f(\kappa),
+\]
+并且在指数尺度上极值唯一（仅差 \(o(m)\) 级量化扰动）。
+\end{conjecture}
+
+\endinput

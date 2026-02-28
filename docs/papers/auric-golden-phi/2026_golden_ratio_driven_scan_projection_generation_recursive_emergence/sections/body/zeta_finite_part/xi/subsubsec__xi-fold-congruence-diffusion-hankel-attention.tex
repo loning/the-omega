@@ -114,5 +114,57 @@ f(r)=\frac1M\sum_{\chi\in S}c_\chi\overline{\chi(r)}
 这些结构与近期对线性注意力、掩码扩散与可验证机制证书的解析研究在形式上同型，可作为本文同余口径的一个可比参照系。\cite{LeeSohnLee2026LinearAttentionICLNoForgetting,LiangTanShroffLiang2026MaskedDiffusionSharpTV,HadadKatzBassan2026AutomatedCircuitDiscoveryProvable}
 \end{remark}
 
+\begin{theorem}[黄金均值稳定类型上的掩码后验计数与转移矩阵闭式]\label{thm:xi-masked-posterior-golden-mean-transfer-matrix}
+令 \(m\ge 1\)，并令
+\(
+X_m\subset\{0,1\}^m
+\)
+为黄金均值稳定类型集合（禁止相邻子词 \(11\)，从而 \(|X_m|=F_{m+2}\)，见附录 \ref{subsec:sync-kernel-counting}）。
+取 \(U_m\) 为 \(X_m\) 上的均匀分布。
+对任意掩码观测 \(y\in\{0,1,\bot\}^m\)（\(\bot\) 表示未知位），定义一致集合
+\[
+X_m(y):=\{x\in X_m:\ \forall i,\ y_i\in\{0,1\}\Rightarrow x_i=y_i\},
+\]
+则后验 \(U_m(\cdot\mid y)\) 为 \(X_m(y)\) 上的均匀分布。
+令黄金均值约束的转移矩阵为
+\[
+A:=
+\begin{pmatrix}
+1&1\\
+1&0
+\end{pmatrix},
+\]
+其行/列分别以状态 \(0,1\) 编号（允许转移 \(0\to 0,1\) 与 \(1\to 0\)）。
+设 \(I\subseteq\{1,\dots,m\}\) 为一段极大掩码块（连续 \(\bot\)）的指标区间，长度为 \(L:=|I|\)；
+令该块左右相邻的已知边界位为 \(a,b\in\{0,1\}\)（若块触及端点，则约定端点之外的边界位为 \(0\)）。
+则：
+\begin{enumerate}
+  \item 该掩码块的可补全数为
+  \[
+  \#\{\text{补全}\}=(A^{L+1})_{a,b}.
+  \]
+  \item 对块内第 \(j\) 个位置（\(1\le j\le L\)），其后验边缘概率满足
+  \[
+  \boxed{\;
+  \PP(x_{I_0+j-1}=1\mid y)=
+  \frac{(A^{j})_{a,1}\,(A^{L+1-j})_{1,b}}{(A^{L+1})_{a,b}}\;},
+  \]
+  其中 \(I_0\) 为该块的起始指标（即 \(I=\{I_0,\dots,I_0+L-1\}\)）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+黄金均值约束等价于在二状态有向图 \(0\rightleftarrows 1\)（删除 \(1\to 1\)）上的路径约束。
+因此长度为 \(L\) 的补全过程 \((z_1,\dots,z_L)\) 连同边界 \(z_0=a,z_{L+1}=b\) 与约束 \(z_i z_{i+1}=0\) 等价于从顶点 \(a\) 到 \(b\) 的长度 \(L+1\) 路径计数，给出 (1)。
+若进一步固定块内第 \(j\) 位为 \(1\)，则路径必须在第 \(j\) 步到达顶点 \(1\)，其计数由路径拼接分解为 \((A^{j})_{a,1}(A^{L+1-j})_{1,b}\)。
+在均匀后验下，边缘概率即为“固定为 \(1\) 的计数 / 总计数”，得到 (2)。证毕。
+\end{proof}
+
+\begin{remark}[与逆扩散 logistic 比值的一致形式]\label{rem:xi-masked-posterior-logistic-parallel}
+定理 \ref{thm:xi-masked-posterior-golden-mean-transfer-matrix} 的边缘闭式可视为“按端点条件计数的局部桥分解”，其分子/分母均为有限步转移计数。
+与定理 \ref{thm:xi-fib-congruence-diffusion-inverse-closed} 的逆扩散后验
+\(\PP(B_t=1\mid R_t=r)=\sigma(\log p_{t-1}(r-F_{t+1})-\log p_{t-1}(r))\)
+同型：两者均把 Bayes 去噪器压缩为对数计数差（或对数密度差）的 logistic 形式，只是一个发生在稳定语法 \(X_m\) 的局部桥约束上，另一个发生在同余群 \(G_m\) 的加性扩散上。
+\end{remark}
+
 \endinput
 

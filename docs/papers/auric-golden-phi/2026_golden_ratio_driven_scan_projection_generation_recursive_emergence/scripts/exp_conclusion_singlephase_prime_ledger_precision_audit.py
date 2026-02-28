@@ -237,7 +237,7 @@ def _tex_table(cases: List[PrecisionCase], density_rows: List[Dict[str, object]]
         lines.append(
             f"\\multicolumn{{2}}{{c}}{{L={d['L']}}} & "
             f"\\multicolumn{{2}}{{c}}{{N={d['count']}}} & "
-            f"\\multicolumn{{4}}{{c}}{{\\max\\,\\text{{gap}}={d['max_gap']:.3e}}}\\\\"
+            f"\\multicolumn{{4}}{{c}}{{$\\max\\,\\mathrm{{gap}}={d['max_gap']:.3e}$}}\\\\"
         )
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")

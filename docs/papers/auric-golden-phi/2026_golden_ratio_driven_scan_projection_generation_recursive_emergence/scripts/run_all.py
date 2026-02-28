@@ -359,6 +359,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="conclusion_singlephase_prime_ledger_precision_audit",
+            script="exp_conclusion_singlephase_prime_ledger_precision_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/conclusion_singlephase_prime_ledger_precision_audit.json",
+                "sections/generated/tab_conclusion_singlephase_prime_ledger_precision_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_truncation_curvature",
             script="exp_fold_truncation_curvature.py",
             args=[],
@@ -489,6 +498,15 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_gauge_anomaly_rate_curve_discriminant_q19_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_rate_curve_singularity_audit",
+            script="exp_fold_gauge_anomaly_rate_curve_singularity_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_rate_curve_singularity_audit.json",
+                "sections/generated/eq_fold_gauge_anomaly_rate_curve_singularity_audit.tex",
             ],
         ),
         Step(
@@ -815,6 +833,22 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/xi_prime_register_zg_dirichlet_log_renormalization_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_prime_register_zg_hardcore_zeta_factorization_constant_audit",
+            script="exp_xi_prime_register_zg_hardcore_zeta_factorization_constant_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_zg_hardcore_zeta_factorization_constant_audit.json",
+            ],
+        ),
+        Step(
+            name="conclusion_endpoint_horizon_arcsine_kl_audit",
+            script="exp_conclusion_endpoint_horizon_arcsine_kl_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/conclusion_endpoint_horizon_arcsine_kl_audit.json",
             ],
         ),
         Step(
@@ -2093,6 +2127,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_10_state_mealy_minimality",
+            script="exp_sync_kernel_10_state_mealy_minimality.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_10_state_mealy_minimality.json",
+                "sections/generated/eq_sync_kernel_10_state_mealy_minimality.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_cyclotomic_elimination",
             script="exp_sync_kernel_cyclotomic_elimination.py",
             args=[],
@@ -3104,6 +3147,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_critical_resonance_constant.json",
                 "sections/generated/eq_fold_critical_resonance_constant_numeric.tex",
+            ],
+        ),
+        Step(
+            name="fold_residual_gap_constants_phi",
+            script="exp_fold_residual_gap_constants_phi.py",
+            args=["--c-n-max", "200", "--d-n-max", "600"],
+            expected_outputs=[
+                "artifacts/export/fold_residual_gap_constants_phi.json",
+                "sections/generated/eq_fold_residual_gap_constants_phi.tex",
             ],
         ),
         Step(
