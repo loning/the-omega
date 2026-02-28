@@ -218,6 +218,38 @@ U(p)\ \text{在}\ \le g(m)\ \text{步内输出}\ X\upharpoonright N_m.
 对充分大的 \(m\) 成立。证毕。
 \end{proof}
 
+\begin{corollary}[读取时间可独立于信息量设定：常数描述长度下的任意慢化]\label{cor:conclusion-holography-arbitrarily-slow-readout}
+固定同一通用机 \(U\) 及其时间计数 \(\mathrm{time}_U(p,n)\)。
+令 \(g:\NN\to\NN\) 为任意全可计算、单调不减函数。
+则存在一个可计算二元序列 \(X\in\{0,1\}^{\NN}\) 与常数 \(L<\infty\)，并存在无穷多的前缀长度 \(n\)，使得：
+\begin{enumerate}
+  \item 存在长度不超过 \(L\) 的程序 \(p_X\) 使 \(\forall n,\ U(p_X,n)=X\upharpoonright n\)；
+  \item 对上述无穷多个 \(n\)，任意满足 \(|p|\le L\) 且 \(U(p,n)=X\upharpoonright n\) 的程序都满足
+        \[
+        \mathrm{time}_U(p,n)\ >\ g(n).
+        \]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-holography-logical-depth-separation} 的构造，给定任意全可计算单调不减无界函数 \(\widetilde g\)，都可得到可计算序列 \(X\) 与 \(N_m\) 使得
+\[
+K(X\upharpoonright N_m)=O(\log m),
+\qquad
+\mathrm{depth}_{O(\log m)}(X\upharpoonright N_m)>\widetilde g(m)
+\]
+对充分大的 \(m\) 成立。
+令 \(\widetilde g(m):=g(N_m)\)，则 \(\widetilde g\) 仍为全可计算、单调不减且无界函数。
+对相应构造的 \(X\)，取 \(p_X\) 为生成 \(X\) 的常数长度程序，并取 \(L\ge |p_X|\)。
+\par
+由 \(\mathrm{depth}_{s}(X\upharpoonright N_m)>\widetilde g(m)\) 的定义可知：对充分大的 \(m\)，任意在时间 \(\le g(N_m)\) 内输出 \(X\upharpoonright N_m\) 的程序 \(p\) 都必须满足
+\[
+|p|>K(X\upharpoonright N_m)+s.
+\]
+而 \(K(X\upharpoonright N_m)+s=O(\log m)\)，故可取 \(m\) 充分大使得右端严格大于 \(L\)。
+于是对这些 \(m\)，任何长度 \(\le L\) 的程序若输出 \(X\upharpoonright N_m\)，其运行时间必大于 \(g(N_m)\)。
+取无穷子列 \(n=N_m\) 即得所述结论。证毕。
+\end{proof}
+
 \begin{corollary}[信息饱和而时间可任意爆炸：以 \(N_m\) 为尺度的表述]\label{cor:conclusion-holography-logical-depth-separation-Nm}
 存在可计算序列 \(X\) 与无穷前缀长度列 \((N_m)\) 使
 \[

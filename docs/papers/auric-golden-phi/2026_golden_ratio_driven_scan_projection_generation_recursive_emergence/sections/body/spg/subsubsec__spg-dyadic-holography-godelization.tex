@@ -106,6 +106,92 @@ n+\limsup_{m\to\infty}\frac{\log\operatorname{Vol}(U_m(A))}{m\log 2}
 再由 \eqref{eq:spg-probe-volume-identity} 得 \(\operatorname{Vol}(U_m(A))=\int_{\partial U_m(A)}\omega_0\)，代入即得。证毕。
 \end{proof}
 
+\begin{theorem}[Gödel--素数编码的密度全息与中心极限定理]\label{thm:spg-godel-prime-density-holography-clt}
+令 \((p_n)_{n\ge 1}\) 为素数序列。
+对二元序列 \(x=(x_n)_{n\ge 1}\in\{0,1\}^{\NN}\)，定义其长度 \(n\) 的 Gödel--素数编码与权重和
+\[
+G_n(x):=\prod_{j=1}^{n}p_j^{\,x_j},
+\qquad
+\Theta_n:=\sum_{j=1}^{n}\log p_j.
+\]
+\begin{enumerate}
+  \item \textbf{密度全息（加权极限等于通常密度）.}
+        若通常密度极限 \(d(x):=\lim_{n\to\infty}\frac1n\sum_{j=1}^n x_j\) 存在，则
+        \[
+        \lim_{n\to\infty}\frac{\log G_n(x)}{\Theta_n}=d(x).
+        \]
+  \item \textbf{i.i.d. 情形的高斯涨落（对数编码的 CLT）.}
+        若 \(X_1,X_2,\dots\) 独立同分布且 \(X_j\sim \mathrm{Bernoulli}(p)\)（\(0<p<1\)），令
+        \[
+        S_n:=\log G_n(X)=\sum_{j=1}^n X_j\log p_j,
+        \qquad
+        \sigma_n^2:=\Var(S_n)=p(1-p)\sum_{j=1}^n (\log p_j)^2,
+        \]
+        则
+        \[
+        \frac{S_n-p\Theta_n}{\sigma_n}\ \Longrightarrow\ \mathcal N(0,1).
+        \]
+        并且 \(\sigma_n\asymp \sqrt n\,\log n\)，故涨落规模为 \(\sqrt n\log n\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{（1）}写
+\[
+\log G_n(x)-d(x)\Theta_n=\sum_{j=1}^n (x_j-d(x))\log p_j.
+\]
+记 \(A_m:=\sum_{j=1}^m (x_j-d(x))\)，则由密度极限存在性得 \(A_m=o(m)\)。
+令 \(b_j:=\log p_j\)（单调递增），对 \(\sum_{j=1}^n (x_j-d)b_j\) 作 Abel 变换得
+\[
+\sum_{j=1}^n (x_j-d)b_j=A_n b_n-\sum_{j=1}^{n-1}A_j(b_{j+1}-b_j).
+\]
+由素数定理 \(p_n\sim n\log n\) 推出 \(b_n=\log n+\log\log n+o(1)\)，并且 \(b_{j+1}-b_j=O(1/j)\)。
+于是 \(A_n b_n=o(n)\cdot O(\log n)=o(n\log n)\)，且
+\[
+\sum_{j=1}^{n-1}A_j(b_{j+1}-b_j)
+\;=\;
+\sum_{j=1}^{n-1}o(j)\cdot O(1/j)
+\;=\;
+o(n).
+\]
+另一方面 \(\Theta_n\sim n\log n\)，故
+\(
+\bigl(\log G_n(x)-d(x)\Theta_n\bigr)/\Theta_n\to 0
+\)，即所示极限成立。
+\par
+\textbf{（2）}令 \(Y_j:=(X_j-p)\log p_j\)，则 \(\EE[Y_j]=0\)，且 \(\sum_{j\le n}\Var(Y_j)=\sigma_n^2\)。
+又 \(\max_{j\le n}|Y_j|\le \max_{j\le n}\log p_j\sim \log n\)。
+并且
+\[
+\sigma_n^2=p(1-p)\sum_{j=1}^n(\log p_j)^2\asymp \sum_{j=1}^n(\log j)^2\asymp n(\log n)^2,
+\]
+从而 \(\max_{j\le n}|Y_j|/\sigma_n\to 0\)，Lindeberg 条件成立，故
+\(
+\sum_{j\le n}Y_j/\sigma_n\Rightarrow \mathcal N(0,1)
+\)。
+注意 \(\sum_{j\le n}Y_j=S_n-p\Theta_n\)，即得中心极限定理。证毕。
+\end{proof}
+
+\begin{corollary}[Gödel 比值的指数相干判别：密度差导出 \texorpdfstring{$n\log n$}{n log n} 级证书]\label{cor:spg-godel-prime-ratio-density}
+设 \(x,y\in\{0,1\}^{\NN}\) 的通常密度 \(d(x),d(y)\) 均存在且 \(d(x)\neq d(y)\)。
+则
+\[
+\log\frac{G_n(x)}{G_n(y)}
+=
+\bigl(d(x)-d(y)\bigr)\Theta_n+o(\Theta_n),
+\]
+从而
+\[
+\left|\frac{G_n(x)}{G_n(y)}\right|
+=
+\exp\Bigl(\bigl(d(x)-d(y)\bigr)\Theta_n+o(\Theta_n)\Bigr),
+\qquad
+\Theta_n\sim n\log n.
+\]
+\end{corollary}
+\begin{proof}
+对 \(x,y\) 分别应用定理 \ref{thm:spg-godel-prime-density-holography-clt}(1) 并相减即可。证毕。
+\end{proof}
+
 \begin{theorem}[边界 Gödelization 的可逆全息字典：由边界素因子分解重构 dyadic polycube]\label{thm:spg-boundary-godelization-holographic-dictionary}
 固定 \(m,n\) 并令 \(\mathcal F_{m}^{n-1}\) 为 \(\mathcal Q_m\) 的全部 \((n-1)\)-胞腔（面）。
 对每一条有向 \((n-1)\)-面 \(\vec f\) 赋予互异素数 \(q_{\vec f}\)。
@@ -324,6 +410,40 @@ L_w(b)=\sum_{i:b_i=1}\log p_i
 \int_0^1|\gamma'(t)|_w\,dt\ge \int_\gamma \alpha=\sum_i \mathrm{sgn}(m_i)w_im_i=\sum_i w_i|m_i|.
 \]
 另一方面，取分段沿坐标方向的闭路，分别绕第 \(i\) 个圆周 \(|m_i|\) 次，即取到等号，从而得到 \(L_w(m)=\sum_i w_i|m_i|\)。证毕。
+\end{proof}
+
+\begin{proposition}[6D 超立方体的 Gödel 平方类模型：算术化与度量保持]\label{prop:spg-hypercube6-godel-squareclass}
+令 \(d=6\)，并以按位加法赋予 \(\{0,1\}^{6}\cong(\ZZ/2\ZZ)^{6}\) 群结构。
+取前 \(6\) 个素数 \(p_1,\dots,p_6\)，并定义映射
+\[
+\Phi:\{0,1\}^6\longrightarrow \QQ^\times/(\QQ^\times)^2,
+\qquad
+\Phi(v):=\left[\prod_{j=1}^{6}p_j^{\,v_j}\right],
+\]
+其中 \([\cdot]\) 表示平方类。
+则：
+\begin{enumerate}
+  \item \(\Phi\) 为群同构：\(\{0,1\}^6\) 同构到由 \([p_1],\dots,[p_6]\) 生成的平方类子群；
+  \item 若在平方类上定义素支撑距离
+        \[
+        d_{\square}(a,b):=\card\left\{p\in\{p_1,\dots,p_6\}:\ p\ \text{在 }ab^{-1}\text{ 的平方自由代表中出现}\right\},
+        \]
+        则对任意 \(u,v\in\{0,1\}^6\) 有
+        \[
+        d_{\square}\bigl(\Phi(u),\Phi(v)\bigr)=d_H(u,v),
+        \]
+        其中 \(d_H\) 为 Hamming 距离。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+在平方类群中指数按模 \(2\) 约化，故
+\[
+\Phi(u)\Phi(v)=\left[\prod_{j}p_j^{u_j+v_j}\right]
+=\left[\prod_{j}p_j^{u_j\oplus v_j}\right]
+=\Phi(u\oplus v),
+\]
+从而 \(\Phi\) 为群同态；其核仅含零向量，故为单射，有限群单射即为同构，得第 (1) 条。
+对第 (2) 条，\(ab^{-1}\) 的平方自由代表中出现 \(p_j\) 当且仅当 \(u_j\neq v_j\)，其计数即为 Hamming 距离。证毕。
 \end{proof}
 
 \begin{theorem}[紧边界连续加性译码的平凡性]\label{thm:spg-compact-boundary-continuous-decoder-trivial}
