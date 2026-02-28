@@ -89,6 +89,135 @@ C(\sigma_0)\Bigl(p_N^{-2\sigma}+(p_Np_{N-1})^{-\sigma}\Bigr)
 令 \(N\to\infty\) 并在 \(\Re(s)>1\) 用绝对收敛交换极限，得到 \(\log F(s)=P(s)+G(s)\)。证毕。
 \end{proof}
 
+\begin{theorem}[平方自由 Euler 因子分离与 \texorpdfstring{$\zeta$}{zeta}-因子化]\label{thm:xi-zg-zeta-factorization}
+沿用定理 \ref{thm:xi-zg-dirichlet-log-renormalization} 的记号，并令
+\[
+B_N(s):=\prod_{k=1}^{N}\bigl(1+p_k^{-s}\bigr),\qquad
+H_N(s):=\frac{F_N(s)}{B_N(s)}.
+\]
+则存在唯一函数 \(H\) 满足：
+\begin{enumerate}
+  \item \(H_N(s)\to H(s)\) 在每个紧集 \(K\subset\{s:\Re(s)>\tfrac12\}\) 上一致收敛；
+  \item \(H(s)\) 在半平面 \(\Re(s)>\tfrac12\) 上全纯且处处非零；
+  \item 在 \(\Re(s)>1\) 上成立严格因子化
+  \[
+  F(s)=H(s)\frac{\zeta(s)}{\zeta(2s)}.
+  \]
+\end{enumerate}
+从而 \(F\) 在 \(\Re(s)>\tfrac12\) 上亚纯，且在该半平面内唯一可能的极点位于 \(s=1\)，并且为一阶极点。
+\end{theorem}
+
+\begin{proof}
+由递推可写 \(F_N(s)=\prod_{k=1}^{N}r_k(s)\)，从而
+\[
+\log H_N(s)
+=\sum_{k=1}^{N}\Bigl(\log r_k(s)-\log\bigl(1+p_k^{-s}\bigr)\Bigr).
+\]
+对 \(k\ge 2\) 使用 \(\Delta_k(s)=\log r_k(s)-p_k^{-s}\)，并将上式改写为
+\[
+\log H_N(s)
+=\Bigl(\log r_1(s)-\log(1+p_1^{-s})\Bigr)
+\sum_{k=2}^{N}\Delta_k(s)
+\sum_{k=2}^{N}\Bigl(p_k^{-s}-\log(1+p_k^{-s})\Bigr).
+\]
+第一项恒为 \(0\)。
+由定理 \ref{thm:xi-zg-dirichlet-log-renormalization}，\(\sum_{k\ge 2}\Delta_k(s)\) 在 \(\Re(s)>\tfrac12\) 的每个紧集上一致收敛。
+另一方面，当 \(\Re(s)\ge \sigma_0>\tfrac12\) 时有
+\(
+\bigl|p_k^{-s}-\log(1+p_k^{-s})\bigr|
+\ll p_k^{-2\sigma_0}
+\),
+从而 \(\sum_{k\ge 2}\bigl(p_k^{-s}-\log(1+p_k^{-s})\bigr)\) 在同一紧集上一致绝对收敛。
+故 \(\log H_N\) 在 \(\Re(s)>\tfrac12\) 的紧集上一致收敛到某个全纯函数 \(\log H\)，并且 \(H=\exp(\log H)\) 全纯且不取零值。
+
+对 \(\Re(s)>1\)，由平方自由 Dirichlet 级数的标准恒等式
+\[
+\prod_{p}\bigl(1+p^{-s}\bigr)
+=\sum_{\substack{m\ge 1\\ m\ \text{平方因子自由}}}\frac1{m^s}
+=\frac{\zeta(s)}{\zeta(2s)}
+\]
+（参见 \cite{Apostol1976,Titchmarsh1986RiemannZeta}），得 \(B_N(s)\to \zeta(s)/\zeta(2s)\)。
+再由 \(F_N(s)=H_N(s)B_N(s)\) 并令 \(N\to\infty\)（在 \(\Re(s)>1\) 可由绝对收敛交换极限），得到 \(F(s)=H(s)\zeta(s)/\zeta(2s)\)。
+最后，\(\zeta(2s)\) 在 \(\Re(s)>\tfrac12\) 上解析且无零点，而 \(\zeta(s)\) 在该半平面内唯一奇性为 \(s=1\) 的一阶极点，因而 \(F\) 在 \(\Re(s)>\tfrac12\) 上仅可能在 \(s=1\) 处有一阶极点。证毕。
+\end{proof}
+
+\begin{corollary}[素数路径硬核常数与 \texorpdfstring{$s=1$}{s=1} 留数]\label{cor:xi-zg-hardcore-constant-residue}
+在定理 \ref{thm:xi-zg-zeta-factorization} 的记号下，记
+\[
+\mathfrak C_{\mathrm{HC}}:=H(1)=\lim_{N\to\infty}\frac{F_N(1)}{\prod_{k=1}^{N}\bigl(1+\frac1{p_k}\bigr)}\in(0,1).
+\]
+则 \(F(s)\) 在 \(s=1\) 的留数满足
+\[
+\operatorname*{Res}_{s=1}F(s)=\frac{\mathfrak C_{\mathrm{HC}}}{\zeta(2)}=\frac{6}{\pi^2}\,\mathfrak C_{\mathrm{HC}}.
+\]
+并且该留数与 \(\mathrm{ZG}\) 的 Dirichlet 密度一致；结合定理 \ref{con:xi-zg-density-closed-form-tail-bound} 的自然密度存在性，得到
+\[
+\delta_{\mathrm{ZG}}=\frac{\mathfrak C_{\mathrm{HC}}}{\zeta(2)}.
+\]
+数值核验可得到
+\[
+\mathfrak C_{\mathrm{HC}}=0.8461958103\ldots,
+\qquad
+\delta_{\mathrm{ZG}}=0.5144253666\ldots
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-zg-zeta-factorization}，在 \(s=1\) 的邻域内
+\(
+F(s)=H(s)\zeta(s)/\zeta(2s)
+\)
+且 \(H\) 在 \(s=1\) 解析。
+因此
+\[
+\operatorname*{Res}_{s=1}F(s)
+=H(1)\operatorname*{Res}_{s=1}\frac{\zeta(s)}{\zeta(2s)}
+=\frac{H(1)}{\zeta(2)}.
+\]
+留数等于 \(\mathrm{ZG}\) 的 Dirichlet 密度是推论 \ref{cor:xi-zg-dirichlet-residue} 的内容，而该推论亦指出留数与自然密度一致，从而得 \(\delta_{\mathrm{ZG}}=\mathfrak C_{\mathrm{HC}}/\zeta(2)\)。
+最后，由于对实数 \(s>1\) 有 \(F_N(s)\le B_N(s)\) 且约束非平凡，故 \(0<H(s)<1\) 并推出 \(\mathfrak C_{\mathrm{HC}}\in(0,1)\)。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$s=1$}{s=1} 的 Laurent 展开与 Euler--Kronecker 型常数]\label{prop:xi-zg-hardcore-laurent}
+记
+\[
+\kappa_{\mathrm{HC}}:=\left.\frac{d}{ds}\log H(s)\right|_{s=1}.
+\]
+则 \(\kappa_{\mathrm{HC}}\) 存在，并且 \(F\) 在 \(s=1\) 的 Laurent 展开为
+\[
+F(s)=\frac{\mathfrak C_{\mathrm{HC}}}{\zeta(2)}\cdot\frac{1}{s-1}
+\;+\;
+\frac{\mathfrak C_{\mathrm{HC}}}{\zeta(2)}
+\left(\gamma-\frac{2\zeta'(2)}{\zeta(2)}+\kappa_{\mathrm{HC}}\right)
+ + O(s-1),
+\qquad s\to 1,
+\]
+其中 \(\gamma\) 为 Euler--Mascheroni 常数。
+数值核验表明 \(\kappa_{\mathrm{HC}}=0.40404\ldots\)。
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:xi-zg-zeta-factorization} 的构造，\(\log H_N(s)\) 在 \(\Re(s)>\tfrac12\) 的紧集上一致收敛为 \(\log H(s)\)，并且其尾项由 \(\sum_{k\ge 2}\Delta_k(s)\) 与 \(\sum_{k\ge 2}(p_k^{-s}-\log(1+p_k^{-s}))\) 的一致收敛控制。
+同样地，对 \(s\) 位于 \(s=1\) 的小邻域且满足 \(\Re(s)>\tfrac12\)，上述两级数可逐项求导，从而 \(\kappa_{\mathrm{HC}}\) 存在。
+
+另一方面，
+\(
+\zeta(s)=\frac1{s-1}+\gamma+O(s-1)
+\)
+且
+\[
+\frac{1}{\zeta(2s)}
+\;=\;
+\frac{1}{\zeta(2)}
+\left(1-\frac{2\zeta'(2)}{\zeta(2)}(s-1)+O((s-1)^2)\right).
+\]
+再由
+\(
+H(s)=H(1)\bigl(1+\kappa_{\mathrm{HC}}(s-1)+O((s-1)^2)\bigr)
+\)
+三者相乘即得所述展开式。证毕。
+\end{proof}
+
 \begin{theorem}[Zeckendorf--Gödel 素数码集合的自然密度、闭式可计算性与尾项误差界]\label{con:xi-zg-density-closed-form-tail-bound}
 对每个 \(N\ge 1\)，定义截断集合
 \[
@@ -425,5 +554,11 @@ H(x)=\delta_{\mathrm{ZG}}\log x+C_{\mathrm{ZG}}+o(1)\qquad(x\to\infty).
 \texttt{scripts/exp\_xi\_prime\_register\_zg\_dirichlet\_log\_renormalization\_audit.py}
 给出，对应证书文件为
 \texttt{artifacts/export/xi\_prime\_register\_zg\_dirichlet\_log\_renormalization\_audit.json}。
+\par
+定理 \ref{thm:xi-zg-zeta-factorization}--命题 \ref{prop:xi-zg-hardcore-laurent}
+中 \(\mathfrak C_{\mathrm{HC}}\) 与 \(\kappa_{\mathrm{HC}}\) 的数值核验由脚本
+\texttt{scripts/exp\_xi\_prime\_register\_zg\_hardcore\_zeta\_factorization\_constant\_audit.py}
+给出，对应证书文件为
+\texttt{artifacts/export/xi\_prime\_register\_zg\_hardcore\_zeta\_factorization\_constant\_audit.json}。
 \end{remark}
 

@@ -147,5 +147,71 @@ G^{-1}A_H^je_0=A_H^jG^{-1}e_0=A_H^je_0
 而在允许可控误差的情形，定理 \ref{thm:xi-hankel-single-point-random-audit} 进一步把该窗口压缩为一次生成函数取值比较。
 \end{remark}
 
+\begin{proposition}[素数幂模下的线性同余可解性：Smith 正规形判别与解数]\label{prop:xi-smith-pk-congruence-solvability-count}
+令 \(n,d\ge 1\)，并取整数矩阵 \(M_0\in M_n(\ZZ)\)、\(M_1\in M_{n\times d}(\ZZ)\)。
+固定素数 \(p\) 与整数 \(k\ge 1\)。
+设 \(M_0\) 的 Smith 标准形为
+\[
+M_0=UDV,\qquad U,V\in \GL_n(\ZZ),\qquad
+D=\mathrm{diag}(s_1,\dots,s_n),\ \ s_i\mid s_{i+1}.
+\]
+令 \(C:=U^{-1}M_1\in M_{n\times d}(\ZZ)\)。
+则同余线性系统
+\[
+M_0X\equiv M_1\pmod{p^k},\qquad X\in M_{n\times d}(\ZZ/p^k\ZZ),
+\]
+可解当且仅当对所有 \(1\le i\le n\)、\(1\le j\le d\) 有
+\[
+v_p(C_{ij})\ \ge\ \min\{v_p(s_i),\,k\},
+\]
+并且在可解时，解的总数满足精确计数
+\[
+\#\bigl\{X\in M_{n\times d}(\ZZ/p^k\ZZ):\ M_0X\equiv M_1\bigr\}
+=\prod_{i=1}^{n}\bigl(\gcd(s_i,p^k)\bigr)^{d}.
+\]
+\end{proposition}
+\begin{proof}
+将同余两边左乘 \(U^{-1}\)、右乘 \(V^{-1}\)，得到与原系统等价的
+\[
+DY\equiv C\pmod{p^k},\qquad Y:=VX.
+\]
+由于 \(D\) 为对角矩阵，该系统按行分离：对每个固定 \(i\) 与每个列指标 \(j\) 需要解一元同余
+\[
+s_i\,Y_{ij}\equiv C_{ij}\pmod{p^k}.
+\]
+该同余可解当且仅当 \(\gcd(s_i,p^k)\mid C_{ij}\)，等价地 \(v_p(C_{ij})\ge \min\{v_p(s_i),k\}\)，从而得到可解条件。
+在可解时，对固定 \(i,j\) 的解数恰为 \(\gcd(s_i,p^k)\)；并且不同 \(j\) 的选择相互独立，故第 \(i\) 行贡献 \((\gcd(s_i,p^k))^d\) 个解。
+对 \(i=1,\dots,n\) 相乘即得总解数公式。证毕。
+\end{proof}
+
+\begin{proposition}[有限素数证伪的审计原则：有理候选在有限模一致性下的唯一性]\label{prop:xi-finite-prime-refutation-audit}
+令 \(n,d\ge 1\)，并取整数矩阵 \(M_0\in M_n(\ZZ)\)、\(M_1\in M_{n\times d}(\ZZ)\)，并在 \(\QQ\) 上令
+\(
+A:=M_0^{-1}M_1\in M_{n\times d}(\QQ)
+\)。
+给定有理候选矩阵 \(\widehat A\in M_{n\times d}(\QQ)\) 与公共分母上界 \(N^\ast\in\ZZ_{\ge 1}\)（使 \(N^\ast\widehat A\in M_{n\times d}(\ZZ)\)），定义整数残差
+\[
+F:=N^\ast\,(M_0\widehat A-M_1)\in M_{n\times d}(\ZZ).
+\]
+取有限素数集 \(\mathcal P\) 满足 \(\gcd(N^\ast,p)=1\)（\(\forall p\in\mathcal P\)）且
+\[
+\prod_{p\in\mathcal P}p\ >\ 2\,\|F\|_\infty,
+\]
+其中 \(\|F\|_\infty:=\max_{i,j}|F_{ij}|\)。
+若对所有 \(p\in\mathcal P\) 成立
+\(
+F\equiv 0\pmod p
+\)，
+则必有 \(\widehat A=A\)。
+\end{proposition}
+\begin{proof}
+设 \(P:=\prod_{p\in\mathcal P}p\)。
+若 \(\widehat A\neq A\)，则 \(F\neq 0\)，从而存在某个矩阵元 \(f\) 满足 \(0<|f|\le \|F\|_\infty\)。
+由假设 \(F\equiv 0\pmod p\)（\(\forall p\in\mathcal P\)）得 \(p\mid f\) 对所有 \(p\in\mathcal P\) 成立，因此 \(P\mid f\)。
+但又有 \(0<|f|<P/2\)，与 \(P\mid f\) 矛盾。
+故 \(F=0\)，即 \(M_0\widehat A=M_1\)。
+在 \(\QQ\) 上左乘 \(M_0^{-1}\) 得 \(\widehat A=A\)。证毕。
+\end{proof}
+
 \endinput
 

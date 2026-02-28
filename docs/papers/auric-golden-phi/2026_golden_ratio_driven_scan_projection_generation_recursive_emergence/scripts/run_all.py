@@ -812,6 +812,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_prime_register_zg_hardcore_zeta_factorization_constant_audit",
+            script="exp_xi_prime_register_zg_hardcore_zeta_factorization_constant_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_zg_hardcore_zeta_factorization_constant_audit.json",
+            ],
+        ),
+        Step(
+            name="conclusion_endpoint_horizon_arcsine_kl_audit",
+            script="exp_conclusion_endpoint_horizon_arcsine_kl_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/conclusion_endpoint_horizon_arcsine_kl_audit.json",
+            ],
+        ),
+        Step(
             name="group_jg_radial_quadratic_identifiability_audit",
             script="exp_group_jg_radial_quadratic_identifiability_audit.py",
             args=[],
@@ -2084,6 +2100,15 @@ def build_steps() -> List[Step]:
                 "artifacts/export/sync_kernel_10_state_automaton_invariants.json",
                 "sections/generated/tab_sync_kernel_reset_targets.tex",
                 "sections/generated/tab_sync_kernel_transition_semigroup_invariants.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_10_state_mealy_minimality",
+            script="exp_sync_kernel_10_state_mealy_minimality.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_10_state_mealy_minimality.json",
+                "sections/generated/eq_sync_kernel_10_state_mealy_minimality.tex",
             ],
         ),
         Step(
