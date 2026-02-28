@@ -141,6 +141,104 @@ h(t):=(t+1)\log(t+1)-(t+1),\qquad t\ge 0.
 （某常数 \(C>0\)）。证毕。
 \end{proof}
 
+\begin{theorem}[全息—深度分离原理：低前缀信息与任意可计算时间深度可共存]\label{thm:conclusion-holography-logical-depth-separation}
+固定一台前缀自由通用机 \(U\)，并以 \(K(\cdot)\) 表示前缀 Kolmogorov 复杂度。
+令 \(g:\NN\to\NN\) 为任意全可计算、单调不减且无界的函数。
+则存在一个可计算无穷二进制序列 \(X\in\{0,1\}^{\NN}\)，以及一列前缀长度
+\[
+N_m:=\frac{m(m+1)}{2}\qquad(m\ge 1),
+\]
+使得对所有充分大的 \(m\) 同时成立：
+\begin{enumerate}
+  \item 存在常数 \(C_1>0\) 使
+  \[
+  K\!\bigl(X\upharpoonright N_m\bigr)\ \le\ C_1\log m;
+  \]
+  \item 令 \(K^t(\sigma)\) 为时间界 \(t\) 下的时间有界前缀复杂度，并定义 Bennett 型逻辑深度
+  \[
+  \mathrm{depth}_s(\sigma):=\min\{t:\ K^t(\sigma)\le K(\sigma)+s\}.
+  \]
+  则存在常数 \(C_2>0\) 使
+  \[
+  \mathrm{depth}_{C_2\log m}\!\bigl(X\upharpoonright N_m\bigr)\ >\ g(m).
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+取常数 \(c\) 并令
+\[
+L(m):=\bigl\lceil 2\log_2 m\bigr\rceil+c.
+\]
+对每个 \(m\) 定义集合
+\[
+\mathcal S_m:=
+\Bigl\{
+\tau\in\{0,1\}^m:\ \exists\,p,\ |p|\le L(m)\ \text{且}\ U(p)\ \text{在}\ \le g(m)\ \text{步内输出}\ \tau
+\Bigr\}.
+\]
+由于 \(U\) 前缀自由，长度 \(\le L(m)\) 的程序数至多为 \(2^{L(m)}\)，故
+\(
+|\mathcal S_m|\le 2^{L(m)}\ll m^2
+\)。
+当 \(m\) 充分大时有 \(|\mathcal S_m|<2^m\)，从而 \(\{0,1\}^m\setminus \mathcal S_m\neq\varnothing\)。
+令
+\[
+B_m:=\min\nolimits_{\mathrm{lex}}\bigl(\{0,1\}^m\setminus \mathcal S_m\bigr)
+\]
+为字典序最小的缺失块。
+由于 \(g(m)\) 为可计算且时间界有限，可通过有限枚举全部 \(|p|\le L(m)\) 的程序并在步数 \(\le g(m)\) 内模拟判定 \(U(p)\) 的输出，从而 \(\mathcal S_m\) 与 \(B_m\) 均可计算。
+
+定义
+\[
+X:=B_1B_2B_3\cdots .
+\]
+于是 \(X\) 可计算。
+并且由给定 \(m\) 可逐块计算 \(B_1,\dots,B_m\) 并输出其拼接 \(X\upharpoonright N_m\)，故存在常数 \(C_1\) 使
+\(
+K(X\upharpoonright N_m)\le C_1\log m
+\)。
+
+设反之存在程序 \(p\) 满足
+\[
+|p|\le K(X\upharpoonright N_m)+C_2\log m,
+\qquad
+U(p)\ \text{在}\ \le g(m)\ \text{步内输出}\ X\upharpoonright N_m.
+\]
+构造程序 \(q\)：将 \(m\) 与 \(p\) 作为内嵌常量，模拟 \(U(p)\) 的输出并丢弃前 \(N_{m-1}\) 位，仅输出接下来的 \(m\) 位后停机。
+则 \(U(q)\) 在 \(\le g(m)\) 步内输出 \(B_m\)。
+并且 \(|q|\le |p|+O(\log m)\)。
+取 \(C_2\) 足够大，使得对充分大的 \(m\) 有 \(|q|\le L(m)\)，则 \(B_m\in\mathcal S_m\)，与 \(B_m\notin\mathcal S_m\) 矛盾。
+故上述 \(p\) 不存在，从而
+\(
+\mathrm{depth}_{C_2\log m}(X\upharpoonright N_m)>g(m)
+\)
+对充分大的 \(m\) 成立。证毕。
+\end{proof}
+
+\begin{corollary}[信息饱和而时间可任意爆炸：以 \(N_m\) 为尺度的表述]\label{cor:conclusion-holography-logical-depth-separation-Nm}
+存在可计算序列 \(X\) 与无穷前缀长度列 \((N_m)\) 使
+\[
+K\!\bigl(X\upharpoonright N_m\bigr)=O(\log N_m),
+\]
+但对任意给定可计算无界单调函数 \(g\)，仍可使
+\[
+\mathrm{depth}_{O(\log N_m)}\!\bigl(X\upharpoonright N_m\bigr)\ \ge\ g(\sqrt{N_m})
+\]
+最终成立。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-holography-logical-depth-separation} 取 \(N_m=\frac{m(m+1)}2\asymp m^2\)，并以 \(\log m\asymp \log N_m\) 代入即可。证毕。
+\end{proof}
+
+\begin{remark}[低信息并不蕴含可快速识别]\label{rem:conclusion-low-information-not-fast-recognition}
+对定理 \ref{thm:conclusion-holography-logical-depth-separation} 的 \(X\) 与充分大的 \(m\)，不等式
+\(
+\mathrm{depth}_{C_2\log m}(X\upharpoonright N_m)>g(m)
+\)
+等价于断言：任意长度不超过 \(K(X\upharpoonright N_m)+C_2\log m\) 的程序若输出 \(X\upharpoonright N_m\)，其运行时间必超过 \(g(m)\)。
+因此，概念描述的对数级短性与相干输出的不可规避计算成本可在同一可计算对象中严格共存。
+\end{remark}
+
 \begin{theorem}[策略变化下 prime-register 证书系统的可计算共轭]\label{thm:conclusion-prime-strategy-computable-conjugacy}
 设 \(\mathsf S,\mathsf S'\) 为两种确定性策略，并定义
 \[

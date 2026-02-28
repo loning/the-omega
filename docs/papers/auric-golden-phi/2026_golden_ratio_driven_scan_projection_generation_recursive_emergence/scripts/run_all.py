@@ -529,6 +529,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_fractran_fold_compiler_audit",
+            script="exp_fold_fractran_fold_compiler_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_fractran_fold_compiler_audit.json",
+            ],
+        ),
+        Step(
             name="boundary_uplift_m10_b3c3_dictionary",
             script="exp_boundary_uplift_m10_b3c3_dictionary.py",
             args=[],
@@ -3319,6 +3327,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_branch_puiseux_coeff_cubic_audit.json",
                 "sections/generated/eq_fold_zm_branch_puiseux_coeff_cubic_audit.tex",
+            ],
+        ),
+        Step(
+            name="xi_leyang_kappa_square_quadratic_reconstruction_audit",
+            script="exp_xi_leyang_kappa_square_quadratic_reconstruction_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_kappa_square_quadratic_reconstruction_audit.json",
             ],
         ),
         Step(

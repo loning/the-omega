@@ -166,6 +166,9 @@ def _write_eq_tex(tex_out: Path, payload: Dict[str, object]) -> None:
         "\\ord_{p_\\star}(34)="
         + str(orders["34"])
         + ",\\quad "
+        + "\\ord_{p_\\star}(21)="
+        + str(orders["21"])
+        + ",\\quad "
         + "\\ord_{p_\\star}(55)="
         + str(orders["55"])
         + ",\\quad "
@@ -175,6 +178,16 @@ def _write_eq_tex(tex_out: Path, payload: Dict[str, object]) -> None:
         + "\\ord_{p_\\star}(144)="
         + str(orders["144"])
         + ",\\\\"
+    )
+    rel = payload["relations_mod_p_star"]  # type: ignore[assignment]
+    lines.append(
+        "55\\equiv 34^{"
+        + str(rel["exp_34_to_55"])
+        + "}\\equiv 21^{"
+        + str(rel["exp_21_to_55"])
+        + "}\\pmod{p_\\star},\\qquad [\\langle 34\\rangle:\\langle 55\\rangle]="
+        + str(rel["index_square_subgroup_to_order19"])
+        + ".\\\\"
     )
     lines.append(
         "264^2\\equiv 34\\pmod{p_\\star},\\qquad 24^2\\equiv 5\\pmod{p_\\star},\\qquad "
@@ -231,9 +244,9 @@ def main() -> None:
         raise AssertionError(f"Unexpected monic quadratic: {q_monic_low}")
 
     # Orders in F_p^× for boundary uplift deltas.
-    orders = {str(a): _multiplicative_order(a, p=p) for a in (34, 55, 89, 144, 274, 298)}
+    orders = {str(a): _multiplicative_order(a, p=p) for a in (21, 34, 55, 89, 144, 274, 298)}
     # Required exact values.
-    expected = {"34": 285, "55": 19, "89": 570, "144": 285, "274": 285, "298": 570}
+    expected = {"21": 285, "34": 285, "55": 19, "89": 570, "144": 285, "274": 285, "298": 570}
     if any(orders[k] != v for k, v in expected.items()):
         raise AssertionError(f"Unexpected orders: {orders}, expected subset {expected}")
 
@@ -253,6 +266,10 @@ def main() -> None:
         raise AssertionError("Expected 274^13 == 34 mod p")
     if pow(89, (p - 1) // 2, p) != p - 1:
         raise AssertionError("Expected 89^285 == -1 mod p")
+    if pow(34, 15, p) != 55 % p:
+        raise AssertionError("Expected 34^15 == 55 mod p")
+    if pow(21, 30, p) != 55 % p:
+        raise AssertionError("Expected 21^30 == 55 mod p")
 
     payload: Dict[str, object] = {
         "p_star": p,
@@ -268,6 +285,11 @@ def main() -> None:
             "monic_quadratic_factor": [int(c) for c in q_monic_low],
         },
         "orders_mod_p_star": {k: int(v) for k, v in orders.items()},
+        "relations_mod_p_star": {
+            "exp_34_to_55": 15,
+            "exp_21_to_55": 30,
+            "index_square_subgroup_to_order19": 285 // 19,
+        },
         "auxiliary_checks_mod_p_star": {
             "sqrt34_witness": 264,
             "sqrt5_witness": 24,

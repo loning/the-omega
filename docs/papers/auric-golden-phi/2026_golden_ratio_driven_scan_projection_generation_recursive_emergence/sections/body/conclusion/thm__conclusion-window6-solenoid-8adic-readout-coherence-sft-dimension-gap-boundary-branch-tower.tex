@@ -116,6 +116,67 @@ X\equiv Y\pmod{8^k\ZZ_2^2}\ \Longleftrightarrow\ \kappa(\omega,\omega')\ge k.
 取最大 \(k\) 即得结论。证毕。
 \end{proof}
 
+\begin{proposition}[二进制 Gödel 倍点提升与逐位可逆读出]\label{prop:conclusion-binary-godel-elliptic-lift-reversible-readout}
+令 \(K\) 为特征不等于 \(2\) 的域，\(E/K\) 为椭圆曲线（群 law 以加法记），\(O\in E(K)\) 为单位元。
+取点 \(P\in E(K)\) 且 \(P\neq O\)。
+对任意二进制字 \(w=b_0b_1\cdots b_{n-1}\in\{0,1\}^n\)，定义二进制 Gödel 整数
+\[
+I(w):=\sum_{j=0}^{n-1}b_j\,2^{n-1-j},
+\]
+并定义倍点提升
+\[
+\Phi_n(w):=[I(w)]P\in E(K).
+\]
+则：
+\begin{enumerate}
+  \item 对任意 \(w\in\{0,1\}^n\) 与位 \(b\in\{0,1\}\)，满足递推
+  \[
+  \Phi_{n+1}(wb)=[2]\Phi_n(w)+[b]P.
+  \]
+  \item 若点列 \((Q_n)_{n\ge 0}\subset E(K)\) 满足
+  \[
+  Q_{n+1}=[2]Q_n+[b_n]P,\qquad b_n\in\{0,1\},
+  \]
+  则每个 \(b_n\) 由差分唯一恢复：
+  \[
+  b_n=
+  \begin{cases}
+  0,& Q_{n+1}-[2]Q_n=O,\\
+  1,& Q_{n+1}-[2]Q_n=P.
+  \end{cases}
+  \]
+  \item 若 \(P\) 的阶为 \(N\) 且 \(N\ge 2^n\)，则 \(\Phi_n:\{0,1\}^n\to\langle P\rangle\) 为单射，从而 \(\Phi_n(w)\) 无歧义确定 \(w\)。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一条由恒等式 \(I(wb)=2I(w)+b\) 立即推出。
+第二条将递推改写为 \(Q_{n+1}-[2]Q_n=[b_n]P\)；由于 \(b_n\in\{0,1\}\) 且 \(P\neq O\)，右端仅可能为 \(O\) 或 \(P\)，故恢复唯一。
+第三条中，若 \(\Phi_n(w)=\Phi_n(w')\)，则 \([I(w)-I(w')]P=O\)，即 \(N\mid(I(w)-I(w'))\)。
+而 \(|I(w)-I(w')|<2^n\le N\)，故差为 \(0\)，从而 \(w=w'\)。证毕。
+\end{proof}
+
+\begin{proposition}[三重积的二挠残差与 \(6\) 维超立方体分歧]\label{prop:conclusion-elliptic-e3-2torsion-q6-branching}
+设 \(K\) 代数闭且 \(\mathrm{char}(K)\neq 2\)，令 \(E/K\) 为椭圆曲线并假设二挠完全分裂 \(E[2]\cong(\ZZ/2\ZZ)^2\)。
+则
+\[
+E^3[2]\ \cong\ (E[2])^3\ \cong\ (\ZZ/2\ZZ)^6,
+\]
+从而 \(E^3[2]\) 的 Cayley 图（取任一 \(\FF_2\)-基为生成元）同构于 \(6\) 维超立方体 \(Q_6\) 的 \(1\)-骨架。
+进一步地，对任意驱动序列 \((R_n)_{n\ge 0}\subset E^3(K)\) 考虑递推
+\[
+Q_{n+1}=[2]Q_n+R_n.
+\]
+给定末端点 \(Q_{n+1}\) 与驱动项 \(R_n\) 后，满足该递推的 \(Q_n\) 解集为一个 \(E^3[2]\) 的陪集，因而在每一步向后求逆时存在恰 \(2^6\) 个二挠分支，可由 \(Q_6\) 的顶点标记。
+\end{proposition}
+\begin{proof}
+\([2]:E\to E\) 的核为 \(E[2]\) 且 \(|E[2]|=4\)，故对三重积有 \(\ker([2]:E^3\to E^3)=E^3[2]\) 且 \(|E^3[2]|=4^3=64=2^6\)，并与 \((\ZZ/2\ZZ)^6\) 同构。
+其 Cayley 图为 \(6\) 维超立方体为标准事实。
+对递推方程，固定 \(Q_{n+1}\) 与 \(R_n\) 后需解 \([2]Q_n=Q_{n+1}-R_n\)；若 \(Q_n^{(0)}\) 为任一解，则全部解为
+\(
+Q_n^{(0)}+E^3[2]
+\)，从而分歧自由度由 \(E^3[2]\) 给出。证毕。
+\end{proof}
+
 \begin{theorem}[受限 window-\(6\) 语法的谱维数公式：\texorpdfstring{$\rho(A)$}{rho(A)} 决定 Hausdorff 维数]\label{thm:conclusion-window6-sft-2adic-dimension-spectral-radius}
 令 \(\Gamma\) 为以 \(\Omega_6\) 为顶点集的有限有向图，邻接矩阵为 \(A\in\mathrm{Mat}_{64}(\{0,1\})\)。
 令 \(X_\Gamma\subseteq\Omega_6^{\NN}\) 为所有允许路径（一步转移受 \(\Gamma\) 约束）构成的一侧移位系统，并令

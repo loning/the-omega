@@ -110,6 +110,25 @@ I_1(h_t\mid g_t)
 即所求极限。证毕。
 \end{proof}
 
+\begin{corollary}[四阶标度消失的充要条件]\label{cor:conclusion-poisson-bivariate-fourth-order-vanishing}
+沿用定理 \ref{thm:conclusion-poisson-bivariate-kl-sharp} 的设定。
+则
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)=o\bigl((t+\bar\Delta)^{-4}\bigr)\quad(t\to\infty)
+\quad\Longleftrightarrow\quad
+A=0\ \text{且}\ B=0.
+\]
+特别地，若 \(\Delta\) 几乎处处为常数（\(\mathrm{Var}(\Delta)=0\)），则该条件退化为 \(\mathrm{Var}(\Gamma)=0\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-poisson-bivariate-kl-sharp}，
+\[
+\lim_{t\to\infty}(t+\bar\Delta)^4\,D_{\mathrm{KL}}(h_t\mid g_t)=\frac{A^2}{8}+\frac{B^2}{2}\ge 0.
+\]
+故 \(D_{\mathrm{KL}}(h_t\mid g_t)=o((t+\bar\Delta)^{-4})\) 当且仅当右端极限为零，即当且仅当 \(A=B=0\)。
+当 \(\mathrm{Var}(\Delta)=0\) 时 \(B=\mathrm{Cov}(\Gamma,\Delta)=0\) 且 \(A=\mathrm{Var}(\Gamma)\)，从而条件等价于 \(\mathrm{Var}(\Gamma)=0\)。证毕。
+\end{proof}
+
 \begin{theorem}[二参数全变差极限的显式积分律]\label{thm:conclusion-poisson-bivariate-tv-sharp}
 沿用定理 \ref{thm:conclusion-poisson-bivariate-kl-sharp} 设定。
 则
@@ -351,6 +370,41 @@ A'=A,\qquad B'=B,
 \]
 代入假设即得 \(A'=A,\ B'=B\)。
 再由定理 \ref{thm:conclusion-poisson-bivariate-kl-sharp} 对 \((\Gamma',\Delta')\) 与 \((\Gamma,\Delta)\) 分别应用即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[二阶信息指纹的完备性：同 \((A,B)\) 的长时 KL 不可区分]\label{prop:conclusion-poisson-bivariate-nohair}
+设 \(\mu_1,\mu_2\) 为 \(\RR\times(0,\infty)\) 上概率测度，并令 \((\Gamma_i,\Delta_i)\sim\mu_i\)（\(i=1,2\)）。
+假设两者具有相同的一阶矩
+\[
+\EE\Gamma_1=\EE\Gamma_2=:\bar\Gamma,\qquad
+\EE\Delta_1=\EE\Delta_2=:\bar\Delta,
+\]
+并分别构造
+\[
+h_t^{(i)}(x):=\EE\!\left[P_{t+\Delta_i}(x-\Gamma_i)\right],
+\qquad
+g_t(x):=P_{t+\bar\Delta}(x-\bar\Gamma).
+\]
+若两者对应的二阶不变量满足
+\[
+A_i=\mathrm{Var}(\Gamma_i)-\mathrm{Var}(\Delta_i),\qquad
+B_i=\mathrm{Cov}(\Gamma_i,\Delta_i),
+\qquad
+(A_1,B_1)=(A_2,B_2),
+\]
+则
+\[
+D_{\mathrm{KL}}\!\bigl(h_t^{(1)}\mid g_t\bigr)-D_{\mathrm{KL}}\!\bigl(h_t^{(2)}\mid g_t\bigr)
+=o\bigl((t+\bar\Delta)^{-4}\bigr)\quad(t\to\infty).
+\]
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:conclusion-poisson-bivariate-kl-sharp} 分别作用于 \(\mu_1,\mu_2\) 得
+\[
+D_{\mathrm{KL}}\!\bigl(h_t^{(i)}\mid g_t\bigr)
+=\left(\frac{A_i^2}{8}+\frac{B_i^2}{2}\right)(t+\bar\Delta)^{-4}+o\bigl((t+\bar\Delta)^{-4}\bigr).
+\]
+当 \((A_1,B_1)=(A_2,B_2)\) 时四阶主项相消，差即为 \(o((t+\bar\Delta)^{-4})\)。证毕。
 \end{proof}
 
 \begin{remark}[文献定位与本节接口范围]\label{rem:conclusion-poisson-bivariate-novelty-scope}

@@ -196,19 +196,159 @@ x_0=(M_q^{-1})_{00}b_0+(M_q^{-1})_{0q}b_q=-\frac12 b_0+b_q,
 第 (2) 条由定理 \ref{thm:xi-exceptional-integer-model-Mq-inverse-closed-form} 的条目式直接读出：除 \((0,0)\) 外皆为整数，而 \((0,0)=-\tfrac12\)。证毕。
 \end{proof}
 
-\begin{conjecture}[高阶加权互补核的单点分母现象普适]\label{conj:xi-exceptional-integer-model-weighted-snf-single-defect}
-设 \(s\in\NN_{\ge 2}\)，并对 \(q\ge 2\) 定义矩阵 \(M_q^{(s)}\in\ZZ^{(q+1)\times(q+1)}\)：
+\begin{conclusion}[加权互补核的闭式逆与分母支撑]\label{con:xi-exceptional-integer-model-weighted-complementary-kernel-inverse-denominator-support}
+取整数 \(q\ge 2\) 与 \(s\in\NN_{\ge 1}\)，并定义整数矩阵 \(M_q^{(s)}\in\ZZ^{(q+1)\times(q+1)}\) 为
 \[
+\boxed{\;
 \bigl(M_q^{(s)}\bigr)_{k\ell}:=\binom{q}{\ell}+s\,\binom{q-k}{\ell},
-\qquad 0\le k,\ell\le q.
+\qquad 0\le k,\ell\le q.\;}
 \]
-猜想：对每个固定 \(s\)，存在唯一整数 \(d(s)\ge 1\) 使得对一切 \(q\ge 2\) 有
+则 \(M_q^{(s)}\) 在 \(\QQ\) 上可逆，并满足闭式分解
 \[
-\mathrm{SNF}\bigl(M_q^{(s)}\bigr)=\mathrm{diag}(1,\dots,1,d(s)),
+\boxed{\;
+\bigl(M_q^{(s)}\bigr)^{-1}
+\;=\;\frac1s\,P_q^{-1}R_q\;-\;\frac{1}{s(s+1)}\,E_{00}\; }.
 \]
-且 \(d(s)\) 的素因子集合与 \(q\) 无关。
-并且 \(d(1)=2\) 回收定理 \ref{thm:xi-exceptional-integer-model-Mq-det-snf}。
-\end{conjecture}
+特别地，\(s\bigl(M_q^{(s)}\bigr)^{-1}\) 的全部条目均为整数，唯一可能引入额外分母的条目为 \((0,0)\) 元，并且该额外分母仅来自因子 \((s+1)\)。
+\end{conclusion}
+\begin{proof}
+令 \(b_q:=(\binom{q}{0},\binom{q}{1},\dots,\binom{q}{q})^{\top}\) 与 \(\mathbf 1:=(1,\dots,1)^{\top}\in\ZZ^{q+1}\)。
+由 \((R_qP_q)_{k\ell}=\binom{q-k}{\ell}\) 可写
+\[
+M_q^{(s)}=\mathbf 1\,b_q^{\top}+s\,R_qP_q.
+\]
+记 \(N_q:=R_qP_q\)，则 \(N_q\) 幺模且 \(N_q^{-1}=P_q^{-1}R_q\)。
+左乘 \(N_q^{-1}\) 得到秩一扰动的标准形
+\[
+N_q^{-1}M_q^{(s)}=sI_{q+1}+u\,v^{\top},
+\qquad
+u:=N_q^{-1}\mathbf 1,\quad v:=b_q.
+\]
+注意到 \(e_q^{\top}P_q=b_q^{\top}\) 与 \(e_q^{\top}R_q=e_0^{\top}\)，故
+\(
+v^{\top}N_q^{-1}=b_q^{\top}P_q^{-1}R_q=e_0^{\top}
+\)。
+另一方面，\(N_qe_0=\mathbf 1\) 蕴含 \(u=N_q^{-1}\mathbf 1=e_0\)。
+因此 \(v^{\top}u=e_0^{\top}e_0=1\)，由 Sherman--Morrison 公式得到
+\[
+\bigl(sI_{q+1}+uv^{\top}\bigr)^{-1}
+\;=\;\frac1s I_{q+1}-\frac{1}{s(s+1)}\,u v^{\top}.
+\]
+两侧右乘 \(N_q^{-1}\) 并代入 \(u=e_0\) 与 \(v^{\top}N_q^{-1}=e_0^{\top}\) 即得
+\[
+\bigl(M_q^{(s)}\bigr)^{-1}
+\;=\;\bigl(sI_{q+1}+uv^{\top}\bigr)^{-1}N_q^{-1}
+\;=\;\frac1s\,P_q^{-1}R_q-\frac{1}{s(s+1)}\,E_{00}.
+\]
+最后的整性断言由 \(P_q^{-1}R_q\in\Mat_{q+1}(\ZZ)\) 与 \(E_{00}\) 的支撑性质直接推出。证毕。
+\end{proof}
+
+\begin{conclusion}[Smith 标准形与余核的完全分解]\label{con:xi-exceptional-integer-model-weighted-complementary-kernel-snf-cokernel}
+在结论 \ref{con:xi-exceptional-integer-model-weighted-complementary-kernel-inverse-denominator-support} 的设定下，对任意 \(q\ge 2\)、\(s\ge 1\) 有
+\[
+\boxed{\;
+\mathrm{SNF}\bigl(M_q^{(s)}\bigr)
+\;=\;
+\mathrm{diag}\Bigl(1,\underbrace{s,\dots,s}_{q-1\ \mathrm{times}},\,s(s+1)\Bigr).\;}
+\]
+等价地，
+\[
+\boxed{\;
+\mathrm{coker}\!\bigl(M_q^{(s)}:\ZZ^{q+1}\to\ZZ^{q+1}\bigr)
+\ \cong\ (\ZZ/s\ZZ)^{\oplus(q-1)}\ \oplus\ \ZZ/(s(s+1))\ZZ.\;}
+\]
+\end{conclusion}
+\begin{proof}
+由上一个证明中的幺模矩阵 \(N_q=R_qP_q\) 有
+\[
+N_q^{-1}M_q^{(s)}=sI_{q+1}+e_0\,b_q^{\top}.
+\]
+右乘幺模矩阵不改变余核同构型，故
+\(
+\mathrm{coker}(M_q^{(s)})\cong \mathrm{coker}(sI_{q+1}+e_0b_q^{\top})
+\)。
+进一步注意到 \(b_q^{\top}N_q^{-1}=e_0^{\top}\)，从而
+\[
+\bigl(sI_{q+1}+e_0b_q^{\top}\bigr)N_q^{-1}=sN_q^{-1}+e_0e_0^{\top}.
+\]
+因此 \(\mathrm{coker}(M_q^{(s)})\cong \mathrm{coker}(A)\)，其中
+\[
+A:=sI_{q+1}+\mathbf 1\,e_0^{\top}.
+\]
+设 \(\{e_i\}_{0\le i\le q}\) 为 \(\ZZ^{q+1}\) 的标准基并记 \(G:=\ZZ^{q+1}/A\ZZ^{q+1}\)。
+由
+\[
+Ae_0=(s+1)e_0+\sum_{i=1}^{q}e_i,\qquad
+Ae_i=s e_i\ (1\le i\le q),
+\]
+在 \(G\) 中得到关系
+\[
+s\,\bar e_i=0\ (1\le i\le q),\qquad (s+1)\bar e_0+\sum_{i=1}^{q}\bar e_i=0,
+\]
+其中 \(\bar e_i\) 表示 \(e_i\) 在 \(G\) 中的像。
+令 \(H:=\langle \bar e_1,\dots,\bar e_q\rangle\)，则 \(H\cong(\ZZ/s\ZZ)^{\oplus q}\)。
+记 \(t:=\sum_{i=1}^{q}\bar e_i\in H\)，则 \(t=-(s+1)\bar e_0\)，从而
+\(
+s(s+1)\bar e_0=-s t=0
+\)，故 \(\langle \bar e_0\rangle\cong \ZZ/(s(s+1))\ZZ\)。
+另一方面，\(H/\langle t\rangle\cong(\ZZ/s\ZZ)^{\oplus(q-1)}\)，并且 \(t\) 已由 \(\bar e_0\) 的倍数控制，从而
+\[
+G\cong \bigl(H/\langle t\rangle\bigr)\oplus \langle \bar e_0\rangle
+\cong(\ZZ/s\ZZ)^{\oplus(q-1)}\oplus \ZZ/(s(s+1))\ZZ.
+\]
+由有限生成交换群结构定理读出 Smith 对角不变因子即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[整数可解性的显式同余判据]\label{cor:xi-exceptional-integer-model-weighted-complementary-kernel-diophantine-congruence}
+令 \(q\ge 2\)、\(s\ge 1\)，并取 \(b=(b_0,\dots,b_q)^{\top}\in\ZZ^{q+1}\)。
+线性丢番图方程
+\[
+M_q^{(s)}x=b,\qquad x\in\ZZ^{q+1},
+\]
+存在整数解当且仅当同余条件
+\[
+\boxed{\;
+b_0\equiv 0\pmod{s+1}
+\quad\text{且}\quad
+b_i\equiv \frac{b_0}{s+1}\pmod{s}\ \ (1\le i\le q)\;}
+\]
+同时成立。
+\end{corollary}
+\begin{proof}
+由 \(M_q^{(s)}=A\,R_qP_q\)（其中 \(A=sI_{q+1}+\mathbf 1 e_0^{\top}\)）可知
+\(
+M_q^{(s)}x=b
+\)
+与
+\(
+Ay=b
+\)
+等价，其中 \(y:=R_qP_qx\in\ZZ^{q+1}\)（因为 \(R_qP_q\) 幺模）。
+令 \(y=(y_0,\dots,y_q)^{\top}\)，则 \(Ay=b\) 逐坐标为
+\[
+(s+1)y_0=b_0,\qquad sy_i+y_0=b_i\ (1\le i\le q).
+\]
+因此可解当且仅当 \(b_0\equiv 0\pmod{s+1}\) 使 \(y_0=b_0/(s+1)\in\ZZ\)，并且对每个 \(i\ge 1\) 有
+\(
+b_i-y_0\equiv 0\pmod{s}
+\)，即 \(b_i\equiv b_0/(s+1)\pmod{s}\)。
+充分性由上述等式直接构造 \(y\) 得到。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$p$}{p}-局部可逆性与坏素支撑]\label{cor:xi-exceptional-integer-model-weighted-complementary-kernel-localization-bad-primes}
+令 \(p\) 为素数并取 \(q\ge 2\)、\(s\ge 1\)。
+若 \(p\nmid s(s+1)\)，则 \(M_q^{(s)}\) 在 \(\ZZ_p\) 上可逆。
+若 \(p\mid s\)，则 \(\mathrm{coker}(M_q^{(s)})\) 的 \(p\)-初等分量至少含有秩 \(q-1\) 的 \((\ZZ/p^{v_p(s)}\ZZ)\)-挠直和因子；
+若 \(p\mid(s+1)\)，则除来自 \(s\) 的挠分量外，额外出现一个循环 \(p\)-挠因子，其阶为 \(p^{v_p(s+1)}\)（嵌入于 \(\ZZ/(s(s+1))\ZZ\) 的 \(p\)-分量）。
+\end{corollary}
+\begin{proof}
+由结论 \ref{con:xi-exceptional-integer-model-weighted-complementary-kernel-snf-cokernel} 的余核分解，
+\(
+\mathrm{coker}(M_q^{(s)})\cong(\ZZ/s\ZZ)^{\oplus(q-1)}\oplus \ZZ/(s(s+1))\ZZ
+\)，其挠素因子集合恰为 \(\pi(s(s+1))\)。
+若 \(p\nmid s(s+1)\)，则在 \(\ZZ_p\) 上余核消失，从而矩阵可逆。
+其余断言由直和分解与 \(p\)-初等分量的标准分解直接读出。证毕。
+\end{proof}
 
 \begin{remark}[审计脚本]\label{rem:xi-exceptional-integer-model-Mq-audit-script}
 定理 \ref{thm:xi-exceptional-integer-model-Mq-inverse-closed-form}--推论 \ref{cor:xi-exceptional-integer-model-Mq-single-denominator-defect} 的矩阵恒等式与 Smith 标准形可由脚本 \texttt{scripts/exp\_xi\_exceptional\_integer\_model\_Mq\_audit.py} 在有限 \(q\) 范围内进行一致性核验。
