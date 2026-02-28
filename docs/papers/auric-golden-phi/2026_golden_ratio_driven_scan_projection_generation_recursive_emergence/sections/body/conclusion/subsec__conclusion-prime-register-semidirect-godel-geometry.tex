@@ -54,6 +54,34 @@ r_{uv}=r_u+\Sigma^T r_v,\qquad |uv|=T+U,
 \end{proof}
 
 \input{para__conclusion-prime-shift-phase-visible-collapse}
+\begin{theorem}[前缀关系的纯算术判据]\label{thm:conclusion-godel-prefix-arithmetic-criterion}
+沿用定理 \ref{thm:conclusion-godel-semidirect-law} 的 \(G(\cdot)\) 与素数序列 \((p_t)\)。
+对 \(k\in\NN\) 定义首段截断算子
+\[
+\tau_k(n):=\prod_{t=1}^{k} p_t^{\,v_{p_t}(n)}\qquad(n\in\NN_{\ge 1}).
+\]
+则对任意 \(u,v\in\mathcal E^\ast\)，令 \(k:=|u|\)。有等价
+\[
+u\ \text{是}\ v\ \text{的前缀}
+\quad\Longleftrightarrow\quad
+\tau_k\!\bigl(G(v)\bigr)=G(u).
+\]
+\end{theorem}
+\begin{proof}
+若 \(v=uw\)，由定理 \ref{thm:conclusion-godel-semidirect-law} 的半直积分解
+\(
+G(v)=G(u)\cdot \mathrm{Sh}_{k}(G(w))
+\)，且 \(\mathrm{Sh}_{k}(G(w))\) 仅含素因子 \(p_{k+1},p_{k+2},\dots\)，故对 \(t\le k\) 有
+\(
+v_{p_t}(G(v))=v_{p_t}(G(u))
+\)，从而 \(\tau_k(G(v))=G(u)\)。
+\par
+反向，若 \(\tau_k(G(v))=G(u)\)，则对每个 \(1\le t\le k\) 有
+\(
+v_{p_t}(G(v))=v_{p_t}(G(u))
+\)。
+由 \(G(\cdot)\) 的定义，\(v_{p_t}(G(v))=\mathrm{code}(v_t)\)、\(v_{p_t}(G(u))=\mathrm{code}(u_t)\)，再由 \(\mathrm{code}\) 单射得 \(v_t=u_t\)（\(1\le t\le k\)），即 \(u\) 为 \(v\) 的前缀。证毕。
+\end{proof}
 
 \begin{proposition}[Gödel 整数上的首段素数支撑幺半群]\label{prop:conclusion-godel-prefix-prime-monoid}
 令 \(p_1<p_2<\cdots\) 为素数序列。
@@ -164,6 +192,40 @@ r_{\mathsf S}(\omega)
 \(
 (\Fold_m(\omega),r_{\mathsf S}(\omega))
 \)，再由命题 \ref{prop:pom-fold-prime-lift-injective} 即得 \(\omega\) 的唯一恢复。证毕。
+\end{proof}
+
+\begin{theorem}[prime-register 的超度量完备化与形式 Gödel 数]\label{thm:conclusion-prime-register-ultrametric-completion}
+按素数序列 \(p_1<p_2<\cdots\) 视 \(\mathcal P=\NN^{(\mathbb P)}\) 为坐标空间。
+定义距离
+\[
+d(r,s):=
+\begin{cases}
+0,& r=s,\\[1mm]
+p_k^{-1},& k=\min\{t\ge 1:\ r(p_t)\ne s(p_t)\},
+\end{cases}
+\qquad r,s\in\mathcal P.
+\]
+则 \(d\) 为非阿基米德超度量。
+并且 \((\mathcal P,d)\) 的完备化可同构识别为全乘积空间 \(\NN^{\mathbb P}\)（允许无限支撑的指数配置）；
+值映射 \(N:\mathcal P\to\NN_{\ge 1}\) 具有唯一连续延拓
+\[
+\widehat N:\NN^{\mathbb P}\longrightarrow \prod_{p\in\mathbb P}p^{\NN},\qquad
+\widehat N\bigl((n_p)_p\bigr):=\prod_{p\in\mathbb P}p^{n_p},
+\]
+其中右端视为形式素因子分解幺半群（逐点加法对应形式乘法）。
+\end{theorem}
+\begin{proof}
+设 \(k(r,s)\) 为首个不同坐标索引，则对任意 \(r,s,t\) 有
+\(
+k(r,t)\ge \min\{k(r,s),k(s,t)\}
+\)，等价于
+\(
+d(r,t)\le \max\{d(r,s),d(s,t)\}
+\)，故 \(d\) 为超度量。
+\par
+若 \((r_n)\) 为 \(d\)-Cauchy，则对任意固定 \(K\) 存在 \(N\) 使 \(n,m\ge N\Rightarrow r_n(p_t)=r_m(p_t)\) 对 \(t\le K\) 成立，
+从而每个坐标 \(r_n(p)\) 最终稳定并定义极限 \(r_\infty\in\NN^{\mathbb P}\)；反之由有限截断逼近得 \(\mathcal P\) 在 \(\NN^{\mathbb P}\) 中稠密并给出完备化识别。
+延拓 \(\widehat N\) 逐坐标定义且与截断兼容，故在稠密子集 \(\mathcal P\) 上与 \(N\) 一致并由一致连续性给出唯一性。证毕。
 \end{proof}
 
 \begin{proposition}[prime-register 到椭圆轴比的对角表示]\label{prop:conclusion-prime-register-elliptic-representation}
@@ -389,6 +451,8 @@ L_{\mathsf S}(\omega)\ge \log_2\!\bigl((T+1)!\bigr).
 再将定理 \ref{thm:conclusion-godel-history-superlinear-highprob} 的下界除以 \(\log_2 D_m=\Theta(m)\) 即得所述结论。证毕。
 \end{proof}
 
+\input{para__conclusion-godel-minimal-externalization-gap}
+
 \begin{theorem}[多项式模数上界下的素数轴数定标律]\label{thm:conclusion-prime-axis-count-scaling}
 沿用定义 \ref{def:pom-gamma-quantile} 与推论 \ref{cor:pom-prime-register-quantile-budget} 的记号，设
 \[
@@ -523,3 +587,14 @@ E_{\mathsf S}(\omega):=\Phi\!\bigl(r_{\mathsf S}(\omega)\bigr)(S^1),
 \)
 再把定理 \ref{thm:conclusion-godel-history-superlinear-highprob} 直接代入上述两式即可。证毕。
 \end{proof}
+
+\begin{conjecture}[策略无关的轨迹长度与 Gödel 位长定律]\label{conj:conclusion-strategy-invariant-godel-law}
+令 \(\mathsf S\) 遍历所有满足定义 \ref{def:pom-order-elimination-rewrite} 的确定性归一化策略。
+在均匀基线 \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) 下，猜想存在常数 \(c_\ast>0\) 使当 \(m\to\infty\) 时同时成立
+\[
+\frac{T_{m+1}^{\mathsf S}(\omega)}{m}\xrightarrow{\ \PP\ }c_\ast,
+\qquad
+\frac{\log N\!\bigl(r_{\mathsf S}(\omega)\bigr)}{m\log m}\xrightarrow{\ \PP\ }c_\ast,
+\]
+并且极限常数 \(c_\ast\) 与策略 \(\mathsf S\) 无关。
+\end{conjecture}

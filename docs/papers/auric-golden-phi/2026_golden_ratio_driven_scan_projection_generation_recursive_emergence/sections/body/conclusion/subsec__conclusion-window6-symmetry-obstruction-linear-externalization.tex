@@ -99,6 +99,147 @@ d_6^{\mathrm{bin}}(w):=
 若存在 \(U(1)\) 连通直因子，则其 Lie 代数 \(\RR\) 将嵌入为非零阿贝尔理想，矛盾。证毕。
 \end{proof}
 
+\begin{corollary}[二次碰撞矩与连通规范群的维数/秩闭式]\label{cor:conclusion-collision2-lie-dim-rank}
+对固定分辨率 \(m\ge 1\)，定义二次碰撞矩
+\[
+S_2^{\mathrm{bin}}(m):=\sum_{w\in X_m}\bigl(d_m^{\mathrm{bin}}(w)\bigr)^2.
+\]
+则有严格恒等式
+\[
+\dim_{\RR}\Aut(\CC[R_m^{\mathrm{bin}}])_0
+=S_2^{\mathrm{bin}}(m)-|X_m|,
+\qquad
+\mathrm{rank}\,\Aut(\CC[R_m^{\mathrm{bin}}])_0
+=2^m-|X_m|
+=2^m-F_{m+2}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-no-connected-u1-direct-factor} 的连通分解
+\(
+\Aut(\CC[R_m^{\mathrm{bin}}])_0\cong\prod_{w\in X_m}PU(d_m^{\mathrm{bin}}(w))
+\)。
+再用 \(\dim_{\RR}PU(d)=d^2-1\)、\(\mathrm{rank}\,PU(d)=d-1\) 以及计数恒等式
+\(
+\sum_{w\in X_m}d_m^{\mathrm{bin}}(w)=2^m
+\)
+即可。证毕。
+\end{proof}
+
+\begin{corollary}[连续规范对称维度的黄金夹逼与指数窗]\label{cor:conclusion-golden-squeeze-dim-aut}
+记 \(D_m^{\mathrm{bin}}:=\max_{w\in X_m}d_m^{\mathrm{bin}}(w)\)。则对一切 \(m\ge 1\) 有双边界
+\[
+\frac{4^m}{|X_m|}-|X_m|
+\ \le\
+\dim_{\RR}\Aut(\CC[R_m^{\mathrm{bin}}])_0
+\ \le\
+2^mD_m^{\mathrm{bin}}-|X_m|.
+\]
+从而
+\[
+\log\!\Bigl(\frac4\varphi\Bigr)
+\ \le\
+\liminf_{m\to\infty}\frac1m\log \dim_{\RR}\Aut(\CC[R_m^{\mathrm{bin}}])_0
+\ \le\
+\limsup_{m\to\infty}\frac1m\log \dim_{\RR}\Aut(\CC[R_m^{\mathrm{bin}}])_0
+\ \le\
+\log\!\bigl(2\sqrt\varphi\bigr),
+\]
+其中使用 \(|X_m|=F_{m+2}=\Theta(\varphi^m)\) 与 \(D_m^{\mathrm{bin}}=\Theta(\varphi^{m/2})\)（参见 \S\ref{subsec:pom-max-fiber} 及其二进制对应口径）。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:conclusion-collision2-lie-dim-rank}，
+\(
+\dim_{\RR}\Aut(\CC[R_m^{\mathrm{bin}}])_0=S_2^{\mathrm{bin}}(m)-|X_m|
+\)。
+下界由 Cauchy--Schwarz：
+\(
+S_2^{\mathrm{bin}}(m)\ge (\sum_w d_m^{\mathrm{bin}}(w))^2/|X_m|=4^m/|X_m|
+\)。
+上界用 \((d_m^{\mathrm{bin}}(w))^2\le D_m^{\mathrm{bin}}\,d_m^{\mathrm{bin}}(w)\) 求和得
+\(
+S_2^{\mathrm{bin}}(m)\le 2^mD_m^{\mathrm{bin}}
+\)。
+指数窗由渐近代入并取 \(\liminf/\limsup\) 得到。证毕。
+\end{proof}
+
+\begin{proposition}[全体 \(\ast\)-自同构群的分量结构]\label{prop:conclusion-aut-components}
+对 \(d\ge 1\) 令
+\(
+N_{m,d}^{\mathrm{bin}}:=\#\{w\in X_m:\ d_m^{\mathrm{bin}}(w)=d\}
+\)。
+则存在自然同构
+\[
+\Aut(\CC[R_m^{\mathrm{bin}}])
+\ \cong\
+\Bigl(\prod_{w\in X_m}PU(d_m^{\mathrm{bin}}(w))\Bigr)\rtimes
+\Bigl(\prod_{d\ge 1}\mathfrak{S}_{N_{m,d}^{\mathrm{bin}}}\Bigr),
+\]
+并且
+\[
+\pi_0\,\Aut(\CC[R_m^{\mathrm{bin}}])
+\ \cong\ \prod_{d\ge 1}\mathfrak{S}_{N_{m,d}^{\mathrm{bin}}},
+\qquad
+\bigl|\pi_0\,\Aut(\CC[R_m^{\mathrm{bin}}])\bigr|
+=\prod_{d\ge 1} \bigl(N_{m,d}^{\mathrm{bin}}!\bigr).
+\]
+\end{proposition}
+\begin{proof}
+Wedderburn 分解把 \(\CC[R_m^{\mathrm{bin}}]\) 表示为按 \(w\in X_m\) 索引的矩阵块直和。任意 \(\ast\)-自同构必须置换最小中心幂等元，因此诱导对简单块的置换；不同维数的矩阵块不 \(\ast\)-同构，故置换仅在同维数族内发生，得到到 \(\prod_d\mathfrak S_{N_{m,d}^{\mathrm{bin}}}\) 的满同态。其核由逐块内自同构组成，等于 \(\prod_w PU(d_m^{\mathrm{bin}}(w))\)，并由置换作用给出半直积。证毕。
+\end{proof}
+
+\begin{proposition}[\(\pi_1\) 的循环分解与素数挠谱的遍在性]\label{prop:conclusion-pi1-all-primes}
+有自然同构
+\[
+\pi_1\Aut(\CC[R_m^{\mathrm{bin}}])_0\ \cong\ \prod_{w\in X_m}\ZZ/d_m^{\mathrm{bin}}(w)\ZZ.
+\]
+特别地，对任意素数 \(p\)，存在偶数 \(m\) 使得 \(\pi_1\Aut(\CC[R_m^{\mathrm{bin}}])_0\) 含有阶为 \(p\) 的元素。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:conclusion-no-connected-u1-direct-factor} 的连通分解与 \(\pi_1(PU(d))\cong\ZZ/d\ZZ\)，以及 \(\pi_1\) 对有限直积的乘法性得第一式。
+对给定 \(p\)，Fibonacci 模 \(p\) 的周期性保证存在 \(T\) 使 \(p\mid F_T\)。取偶数 \(m\) 使 \(D_m^{\mathrm{bin}}\) 达到该 Fibonacci 值（由最大纤维闭式给出无穷多实现点），则存在 \(w\) 使 \(p\mid d_m^{\mathrm{bin}}(w)\)，从而基本群含阶 \(p\) 元素。证毕。
+\end{proof}
+
+\begin{proposition}[纤维内置换的离散规范群与双指数阶]\label{prop:conclusion-discrete-gauge-double-exp}
+定义离散规范群
+\[
+G_m^{\mathrm{bin}}:=\prod_{w\in X_m}\mathfrak S_{d_m^{\mathrm{bin}}(w)}.
+\]
+则对一切 \(m\ge 1\) 有严格双边界
+\[
+2^m\log\!\Bigl(\frac{2^m}{|X_m|}\Bigr)-2^m
+\ \le\
+\log|G_m^{\mathrm{bin}}|
+\ \le\
+2^m\log D_m^{\mathrm{bin}},
+\]
+并且 \(|G_m^{\mathrm{bin}}|=\exp(\Theta(m2^m))\)。
+\end{proposition}
+\begin{proof}
+由 \(\log|G_m^{\mathrm{bin}}|=\sum_{w}\log(d_m^{\mathrm{bin}}(w)!)\)。
+下界用 \(\log(n!)\ge n\log n-n\) 与 Jensen（\(t\mapsto t\log t\) 凸）；
+上界用 \(\log(n!)\le n\log n\) 与 \(d_m^{\mathrm{bin}}(w)\le D_m^{\mathrm{bin}}\)。
+再代入 \(|X_m|=\Theta(\varphi^m)\)、\(D_m^{\mathrm{bin}}=\Theta(\varphi^{m/2})\) 得 \(\Theta(m2^m)\) 级别。证毕。
+\end{proof}
+
+\begin{proposition}[离散到连续的自然嵌入]\label{prop:conclusion-discrete-into-connected}
+存在自然单射群同态
+\[
+\iota_m:\ G_m^{\mathrm{bin}}\hookrightarrow \Aut(\CC[R_m^{\mathrm{bin}}])_0,
+\]
+其在每个矩阵块上由置换矩阵诱导的内自同构给出。
+\end{proposition}
+\begin{proof}
+对每个 \(w\)，将 \(\mathfrak S_{d_m^{\mathrm{bin}}(w)}\) 视为 \(U(d_m^{\mathrm{bin}}(w))\) 中的置换矩阵子群并令其共轭作用于对应矩阵块。模去中心后得到 \(PU(d_m^{\mathrm{bin}}(w))\) 中元素；对全部 \(w\) 取直积即得同态。逐块置换表示忠实，故整体为单射。证毕。
+\end{proof}
+
+\begin{conjecture}[典型纤维多重度的素数整除]\label{conj:conclusion-typical-fiber-prime-divisibility}
+对任意固定素数 \(p\)，猜想
+\[
+\lim_{m\to\infty}\frac1{|X_m|}\#\{w\in X_m:\ p\mid d_m^{\mathrm{bin}}(w)\}=1.
+\]
+\end{conjecture}
+
 \begin{theorem}[\(U(1)\) 的同调来源：径向塌缩纤维化的 Pontryagin 对偶门]\label{thm:conclusion-u1-from-relative-homology-dual}
 在径向映射
 \[

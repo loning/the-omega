@@ -104,5 +104,203 @@ C(a)=a_2,
 折叠 $\Fold_\infty$ 是值纤维到横截面的投影；因此“残差”可视为从 $a$ 到 $\Fold_\infty(a)$ 的群胚态射（重写路径/轨道坐标）。在有限分辨率 $m$ 下，则对应附录 D 中的折叠多重度 $d_m$：大量微态压缩到同一稳定类型，丢失的信息即是这些预像的区分标签。
 \end{remark}
 
+\subsubsection{折叠等价关系群胚与碰撞矩的规范对称}\label{subsubsec:groupoid-fold-collision-gauge}
+上一节将 Zeckendorf 规范形解释为“值保持群胚的轨道横截面”。在固定分辨率 \(m\) 下，折叠投影
+\(\Fold_m:\Omega_m=\{0,1\}^m\twoheadrightarrow X_m\)
+（定义 \ref{def:fold-word}）
+还诱导一个更直接的等价关系群胚：两微态等价当且仅当它们在稳定类型层不可区分。该群胚的有限维 \(\ast\)-代数实现把碰撞矩 \(S_q(m)=\sum_x d_m(x)^q\) 与“离散/连续规范对称”的维数与挠性严格对齐。
+
+\begin{definition}[折叠等价关系群胚与群胚代数]\label{def:fold-equivalence-groupoid-algebra}
+固定分辨率 \(m\ge 1\)。定义等价关系群胚
+\[
+\mathcal{R}_m:=\Omega_m\times_{X_m}\Omega_m
+:=\{(\omega,\omega')\in\Omega_m\times\Omega_m:\ \Fold_m(\omega)=\Fold_m(\omega')\}.
+\]
+其复群胚代数 \(\CC[\mathcal{R}_m]\) 取为由 \(\mathcal{R}_m\) 的箭头生成的有限维 \(\ast\)-代数（卷积乘法与反向取逆为 \(\ast\)）。
+\end{definition}
+
+\begin{proposition}[Wedderburn 分解与纤维多重度直方图]\label{prop:fold-groupoid-wedderburn}
+沿定义 \ref{def:fold-equivalence-groupoid-algebra}，有自然的 \(\ast\)-同构
+\[
+\boxed{\;
+\CC[\mathcal{R}_m]\ \cong\ \bigoplus_{x\in X_m} M_{d_m(x)}(\CC)\; }.
+\]
+因此 \(\CC[\mathcal{R}_m]\) 的分解型完全由纤维多重度函数 \(d_m(\cdot)\) 决定。
+\end{proposition}
+\begin{proof}
+\(\mathcal{R}_m\) 是由 \(X_m\) 参数化的等价关系群胚：每个 \(x\in X_m\) 的连通分量即为全关系 \(\Fold_m^{-1}(x)\times\Fold_m^{-1}(x)\)。
+而全关系群胚的复代数与矩阵代数 \(M_{d_m(x)}(\CC)\) 同构（由标准基的矩阵单位与卷积对应）。
+对各分量取直和得到所示分解。证毕。
+\end{proof}
+
+\begin{theorem}[二次碰撞矩的 Lie--规范等式：维数与秩的闭式]\label{thm:fold-collision2-aut-lie-dimension-rank}
+固定 \(m\ge 1\)。记二次碰撞矩
+\[
+S_2(m):=\sum_{x\in X_m} d_m(x)^2,
+\qquad
+|\Omega_m|=2^m,
+\qquad
+|X_m|=F_{m+2}.
+\]
+则 \(\ast\)-自同构群的连通分量满足同构
+\[
+\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0\ \cong\ \prod_{x\in X_m}\mathrm{PU}\bigl(d_m(x)\bigr),
+\]
+并且其实 Lie 维数与秩满足严格恒等式
+\[
+\boxed{\;
+\dim_{\RR}\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0
+=S_2(m)-|X_m|\;},
+\qquad
+\boxed{\;
+\mathrm{rank}\,\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0
+=|\Omega_m|-|X_m|
+=2^m-F_{m+2}\; }.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:fold-groupoid-wedderburn}，\(\CC[\mathcal{R}_m]\cong\bigoplus_{x}M_{d_m(x)}(\CC)\)。
+有限维 \(C^\ast\)-代数的 \(\ast\)-自同构在每个简单块上由酉共轭给出，并且同构于 \(\mathrm{PU}(d)\)；直和给出直积结构。
+再用 \(\dim_{\RR}\mathrm{PU}(d)=d^2-1\) 与 \(\mathrm{rank}\,\mathrm{PU}(d)=d-1\)，并注意 \(\sum_x d_m(x)=|\Omega_m|\)，得到两条闭式。证毕。
+\end{proof}
+
+\begin{theorem}[连续规范对称维度的黄金夹逼]\label{thm:fold-aut-dimension-golden-squeeze}
+沿定理 \ref{thm:fold-collision2-aut-lie-dimension-rank} 记 \(D_m:=\max_{x\in X_m}d_m(x)\)（\S\ref{subsec:pom-max-fiber}）。
+则对一切 \(m\ge 1\) 有双边界
+\[
+\frac{4^m}{|X_m|}-|X_m|
+\ \le\
+\dim_{\RR}\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0
+\ \le\
+2^mD_m-|X_m|.
+\]
+从而得到指数增长率的纯组合夹逼
+\[
+\log\!\Bigl(\frac4\varphi\Bigr)
+\ \le\
+\liminf_{m\to\infty}\frac1m\log \dim_{\RR}\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0
+\ \le\
+\limsup_{m\to\infty}\frac1m\log \dim_{\RR}\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0
+\ \le\
+\log\!\bigl(2\sqrt\varphi\bigr).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:fold-collision2-aut-lie-dimension-rank}，\(\dim_{\RR}\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0=S_2(m)-|X_m|\)。
+下界由 Cauchy--Schwarz：
+\(
+S_2(m)\ge (\sum_x d_m(x))^2/|X_m|=4^m/|X_m|
+\)。
+上界用 \(d_m(x)^2\le D_m d_m(x)\) 求和得 \(S_2(m)\le 2^mD_m\)。
+再代入 \(|X_m|=F_{m+2}=\Theta(\varphi^m)\) 与 \(D_m=\Theta(\varphi^{m/2})\)（定理 \ref{thm:pom-max-fiber}）并取 \(\liminf/\limsup\) 得指数夹逼。证毕。
+\end{proof}
+
+\begin{theorem}[全体 \(\ast\)-自同构群的半直积分解与分量群]\label{thm:fold-groupoid-aut-semidirect-pi0}
+对每个 \(d\ge 1\) 令
+\[
+N_{m,d}:=\#\{x\in X_m:\ d_m(x)=d\}
+\]
+为纤维直方图计数。则存在自然同构
+\[
+\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])
+\ \cong\
+\Bigl(\prod_{x\in X_m}\mathrm{PU}(d_m(x))\Bigr)\rtimes
+\Bigl(\prod_{d\ge 1}\mathfrak{S}_{N_{m,d}}\Bigr),
+\]
+并且分量群满足
+\[
+\pi_0\,\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])
+\ \cong\ \prod_{d\ge 1}\mathfrak{S}_{N_{m,d}},
+\qquad
+\bigl|\pi_0\,\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])\bigr|
+=\prod_{d\ge 1} N_{m,d}!.
+\]
+\end{theorem}
+\begin{proof}
+任意 \(\ast\)-自同构必须置换最小中心幂等元，从而置换 Wedderburn 分解的简单块指标；而不同维数的矩阵块不可能彼此 \(\ast\)-同构，因此置换仅发生在同一维数族内，得到满同态到 \(\prod_d\mathfrak{S}_{N_{m,d}}\)。
+其核由逐块内自同构组成，即 \(\prod_x\mathrm{PU}(d_m(x))\)。
+由置换作用得到半直积结构；分量群与阶公式由直积给出。证毕。
+\end{proof}
+
+\begin{proposition}[\(\pi_1\) 的纤维化循环分解与全素数挠性]\label{prop:fold-groupoid-aut-pi1-all-primes}
+有自然同构
+\[
+\pi_1\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0\ \cong\ \prod_{x\in X_m}\ZZ/d_m(x)\ZZ.
+\]
+特别地，对任意素数 \(p\)，存在偶数 \(m\) 使 \(\pi_1\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0\) 含有阶为 \(p\) 的元素。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:fold-collision2-aut-lie-dimension-rank} 的连通分解与 \(\pi_1(\mathrm{PU}(d))\cong\ZZ/d\ZZ\)（因 \(\mathrm{PU}(d)=\mathrm{SU}(d)/\mu_d\) 且 \(\mathrm{SU}(d)\) 单连通）以及 \(\pi_1\) 对有限直积的乘法性得第一式。
+\par
+对给定素数 \(p\)，Pisano 周期性保证存在 \(T\ge 1\) 使 \(p\mid F_T\)。
+取偶数 \(m\) 使 \(D_m\) 等于某个 Fibonacci 数 \(F_T\)（定理 \ref{thm:pom-max-fiber} 的显式闭式给出无穷多此类 \(m\)），则存在 \(x\) 使 \(d_m(x)=D_m\) 且 \(p\mid d_m(x)\)。
+于是 \(\ZZ/d_m(x)\ZZ\) 含阶 \(p\) 元素，从而整体基本群含阶 \(p\) 元素。证毕。
+\end{proof}
+
+\begin{theorem}[离散规范群的双指数律]\label{thm:fold-discrete-gauge-group-double-exponential}
+定义折叠的离散规范群（纤维内置换群）
+\[
+G_m:=\prod_{x\in X_m}\mathfrak S_{d_m(x)}.
+\]
+则有严格双边界
+\[
+2^m\log\!\Bigl(\frac{2^m}{|X_m|}\Bigr)-2^m
+\ \le\
+\log|G_m|
+\ \le\
+2^m\log D_m,
+\]
+并且当 \(m\to\infty\) 时满足
+\[
+\bigl(\log(2/\varphi)+o(1)\bigr)\,m2^m
+\ \le\
+\log|G_m|
+\ \le\
+\bigl(\tfrac12\log\varphi+o(1)\bigr)\,m2^m.
+\]
+因此
+\(
+|G_m|=\exp(\Theta(m2^m))
+\)
+呈双指数增长（以 \(m\) 为尺度）。
+\end{theorem}
+\begin{proof}
+由定义 \(\log|G_m|=\sum_x \log(d_m(x)!)\)。
+下界用 \(\log(n!)\ge n\log n-n\) 与 Jensen（\(t\mapsto t\log t\) 凸）：
+\[
+\sum_x d_m(x)\log d_m(x)
+\ge
+\Bigl(\sum_x d_m(x)\Bigr)\log\!\Bigl(\frac{\sum_x d_m(x)}{|X_m|}\Bigr)
+=2^m\log\!\Bigl(\frac{2^m}{|X_m|}\Bigr).
+\]
+上界用 \(\log(n!)\le n\log n\) 与 \(d_m(x)\le D_m\) 得 \(\sum_x \log(d_m(x)!)\le 2^m\log D_m\)。
+最后代入 \(|X_m|=F_{m+2}=\Theta(\varphi^m)\) 与 \(D_m=\Theta(\varphi^{m/2})\) 得常数窗与双指数结论。证毕。
+\end{proof}
+
+\begin{proposition}[离散规范群到连续规范群的自然嵌入]\label{prop:fold-discrete-to-continuous-gauge-embedding}
+存在自然单射群同态
+\[
+\iota_m:\ G_m\hookrightarrow \mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0,
+\]
+其在每个 \(M_{d_m(x)}(\CC)\) 块上由置换矩阵诱导的内自同构给出。
+\end{proposition}
+\begin{proof}
+对每个 \(x\)，将 \(\mathfrak S_{d_m(x)}\) 视为 \(U(d_m(x))\) 中的置换矩阵子群，并令其作用于 \(M_{d_m(x)}(\CC)\)：
+\(
+A\mapsto PAP^{-1}
+\)。
+模去中心标量后得到 \(\mathrm{PU}(d_m(x))\) 中元素。
+对全部 \(x\) 取直积得到 \(\iota_m:G_m\to \prod_x\mathrm{PU}(d_m(x))\cong \mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0\)。
+置换表示逐块忠实，故整体为单射。证毕。
+\end{proof}
+
+\begin{conjecture}[素数整除在典型纤维中的几乎必然性]\label{conj:fold-typical-fiber-divisible-by-p}
+对任意固定素数 \(p\)，猜想
+\[
+\lim_{m\to\infty}\frac1{|X_m|}\#\{x\in X_m:\ p\mid d_m(x)\}=1.
+\]
+等价地，对任意 \(p\)，当 \(m\) 增大时“典型”稳定类型的纤维多重度几乎必被 \(p\) 整除。
+\end{conjecture}
+
 数值验证与统计复现见脚本 \texttt{scripts/exp\_fold\_infty\_rewrite.py}，其输出为
 \texttt{artifacts/export/fold\_infty\_rewrite\_stats.json}。
