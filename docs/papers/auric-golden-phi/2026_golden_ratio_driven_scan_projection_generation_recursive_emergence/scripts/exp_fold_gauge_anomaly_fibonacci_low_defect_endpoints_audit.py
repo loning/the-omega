@@ -107,6 +107,53 @@ def _check_degree_and_leading_period3(Mf: List[sp.Poly]) -> List[Check]:
     ]
 
 
+def _check_explicit_closed_forms_k3_to_k6(Mf: List[sp.Poly]) -> List[Check]:
+    u = sp.Symbol("u")
+    nmax = len(Mf) - 1
+
+    mismatches: List[Dict[str, int]] = []
+    for m in range(0, nmax + 1):
+        Fm = _fib(m)
+        Fm1 = _fib(m - 1)
+
+        a3 = int(Mf[m].coeff_monomial(u**3))
+        a4 = int(Mf[m].coeff_monomial(u**4))
+        a5 = int(Mf[m].coeff_monomial(u**5))
+        a6 = int(Mf[m].coeff_monomial(u**6))
+
+        if m >= 5:
+            num = (m - 26) * Fm + 2 * (m + 20) * Fm1
+            if num % 5 != 0 or a3 != num // 5:
+                mismatches.append({"m": m, "k": 3, "got": a3, "exp": num // 5})
+
+        if m >= 7:
+            num = (m - 136) * Fm + 2 * (m + 105) * Fm1
+            if num % 5 != 0 or a4 != num // 5:
+                mismatches.append({"m": m, "k": 4, "got": a4, "exp": num // 5})
+
+        if m >= 9:
+            num = 4 * (m - 181) * Fm + (1150 - 2 * m) * Fm1
+            if num % 5 != 0 or a5 != num // 5:
+                mismatches.append({"m": m, "k": 5, "got": a5, "exp": num // 5})
+
+        if m >= 11:
+            num = (5 * m * m + 393 * m - 40048) * Fm + (-5 * m * m - 619 * m + 64550) * Fm1
+            if num % 50 != 0 or a6 != num // 50:
+                mismatches.append({"m": m, "k": 6, "got": a6, "exp": num // 50})
+
+    return [
+        Check(
+            name="explicit_closed_forms_k3_to_k6",
+            ok=len(mismatches) == 0,
+            details={
+                "nmax": nmax,
+                "num_mismatches": len(mismatches),
+                "mismatch_samples": mismatches[:10],
+            },
+        )
+    ]
+
+
 def _solve_low_temp_mu_series() -> Check:
     u = sp.Symbol("u")
     sqrt5 = sp.sqrt(5)
@@ -207,6 +254,7 @@ def main() -> None:
     Mf = _compute_Mf_polys(nmax=30)
     checks.extend(_check_fibonacci_low_defect(Mf))
     checks.extend(_check_degree_and_leading_period3(Mf))
+    checks.extend(_check_explicit_closed_forms_k3_to_k6(Mf))
     checks.append(_solve_low_temp_mu_series())
     checks.extend(_solve_high_temp_mu_asymptotic())
 

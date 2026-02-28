@@ -13,6 +13,8 @@ G_m:=\Aut(\Fold_m):=\{\sigma\in\mathrm{Sym}(\Omega_m):\ \Fold_m\circ\sigma=\Fold
 G_m\ \cong\ \prod_{x\in X_m}\mathfrak{S}_{d_m(x)}.
 \]
 
+\input{parts/thm__op-algebra-fold-gauge-orbit-classification-qtuple}
+
 \begin{proposition}[纤维退化谱决定的群论骨架：导群、中心、Abel 化与合成因子]\label{prop:op-algebra-fold-gauge-group-structure}
 沿上段设置，记纤维退化度直方图
 \[
@@ -99,6 +101,8 @@ E(\sigma\cdot f)=E(f)\ (\sigma\in G_m)
 又对任意 \(x\) 有 \(\sum_{\omega\in\Fold_m^{-1}(x)}\delta_\omega\) 在纤维上恒等为 \(1\)，由 \(E\) 的保单位性与 \(E|_{\mathcal B_m}=\mathrm{id}\) 得该常值必为 \(1/d_m(x)\)。
 于是 \(E\) 与 \(E_m\) 在基上相同，从而 \(E=E_m\)。证毕。
 \end{proof}
+
+\input{parts/prop__op-algebra-fold-reynolds-risk-convex}
 
 \begin{theorem}[交换子代数的显式闭式：逐纤维的 \texorpdfstring{$\mathrm{span}\{I,J\}$}{span{I,J}}]\label{thm:op-algebra-fold-gauge-commutant-explicit}
 沿上段设置，存在自然同构
@@ -208,6 +212,36 @@ w_m(x)P(x,y)
 \)。
 对 \(\mu\) 取期望后，第一项成为 \(\EE_{\pi}[-\log q(X)]=H(\pi)+D_{\mathrm{KL}}(\pi\|q)\)，第二项成为 \(\EE_{\pi}[\log d_m(X)]\)。
 极小性与唯一性由 \(D_{\mathrm{KL}}\ge 0\) 及等号条件给出。证毕。
+\end{proof}
+
+\begin{theorem}[纤维均匀模型的似然分解与贝叶斯后验塌缩]\label{thm:op-algebra-fold-bayes-posterior-collapse}
+令 \(\mathcal P_m:\Delta(\Omega_m)\to\Delta(X_m)\) 为折叠推前 \((\Fold_m)_\#\)，并令 \(\mathcal Q_m:\Delta(X_m)\to\Delta(\Omega_m)\) 为纤维条件均匀提升：
+\[
+(\mathcal Q_m\pi)(a)=\frac{\pi(\Fold_m(a))}{d_m(\Fold_m(a))},
+\qquad
+\mathcal P_m\circ \mathcal Q_m=\mathrm{id}.
+\]
+设统计模型族 \(\{\mu_\theta\}_{\theta\in\Theta}\subset\Delta(\Omega_m)\) 满足存在 \(\pi_\theta\in\Delta(X_m)\) 使
+\(
+\mu_\theta=\mathcal Q_m\pi_\theta
+\)。
+令 \(A_1,\dots,A_n\stackrel{\mathrm{i.i.d.}}{\sim}\mu_\theta\)，并记 \(X_i=\Fold_m(A_i)\)。
+则对任意样本 \(a_{1:n}\in\Omega_m^n\) 有精确似然分解
+\[
+\mu_\theta(a_{1:n})
+=\prod_{i=1}^n \frac{\pi_\theta(x_i)}{d_m(x_i)}
+=\Bigl(\prod_{i=1}^n d_m(x_i)^{-1}\Bigr)\cdot \pi_\theta(x_{1:n}).
+\]
+从而对任意先验 \(\Pi\) 于 \(\Theta\)，贝叶斯后验满足
+\[
+\Pi(\,\cdot\,\mid A_{1:n}=a_{1:n})=\Pi(\,\cdot\,\mid X_{1:n}=x_{1:n}),
+\]
+即 \(\sigma(X_{1:n})\) 为该模型族的贝叶斯充分统计量；任意贝叶斯最优决策（对任意损失函数）均仅依赖于 \(x_{1:n}\)。
+\end{theorem}
+
+\begin{proof}
+由 \(\mu_\theta=\mathcal Q_m\pi_\theta\) 的定义，\(\mu_\theta(a_i)=\pi_\theta(x_i)/d_m(x_i)\)，相乘得到似然分解。
+在贝叶斯公式中，\(\prod_i d_m(x_i)^{-1}\) 与 \(\theta\) 无关，归一化时消去，故后验仅依赖于 \(\pi_\theta(x_{1:n})\)，亦即仅依赖于 \(x_{1:n}\)。证毕。
 \end{proof}
 
 \paragraph{规范增强下的信息复杂度上界}
@@ -390,6 +424,38 @@ c_2(m)=\sum_{x\in X_m}w_m(x)^2=\frac{S_2(m)}{4^m}.
 \sum_x w_m(x)(1-w_m(x))^n\ge \sum_x w_m(x)(1-nw_m(x))=1-n\sum_x w_m(x)^2,
 \]
 从而得到 \eqref{eq:op-algebra-fold-supervised-minimax-c2-lb}。证毕。
+\end{proof}
+
+\begin{proposition}[随机标注器的一步泛化上界：指数级上下文需求]\label{prop:op-algebra-random-labeler-one-shot-generalization}
+固定分辨率 \(m\)，令 \(d_m:X_m\to\mathbb Z_{\ge 1}\) 为一组纤维规模，并记
+\(
+D_m:=\max_{x\in X_m} d_m(x)
+\)。
+考虑如下随机标注任务：从集合
+\[
+\mathcal F(d_m):=\Bigl\{F:\Omega_m\to X_m:\ \#F^{-1}(x)=d_m(x)\ (\forall x\in X_m)\Bigr\}
+\]
+中等概率抽取未知标注器 \(F\)；随后无放回抽取 \(p\) 个互异点 \(a_1,\dots,a_p\in\Omega_m\) 并揭示其标签 \(F(a_i)\)；再独立均匀抽取查询点 \(A\sim\mathrm{Unif}(\Omega_m)\)。
+则对任意（可随机的）学习器 \(\mathcal A\)，其平均成功率满足上界
+\[
+\mathbb P\bigl(\mathcal A(\{(a_i,F(a_i))\}_{i=1}^p,A)=F(A)\bigr)
+\le
+\frac{p+D_m}{|\Omega_m|}
+=\frac{p+D_m}{2^m}.
+\]
+因此当 \(p=\mathrm{poly}(m)\) 且 \(D_m=\Theta(\varphi^{m/2})\)（定理 \ref{thm:pom-max-fiber}）时，成功率以指数速率衰减，其端点指数与 \(h_\infty=\log(2/\sqrt\varphi)\)（推论 \ref{cor:pom-max-fiber-rate-endpoint}）对齐。
+\end{proposition}
+
+\begin{proof}
+令事件 \(E:=\{A\in\{a_1,\dots,a_p\}\}\)，则 \(\mathbb P(E)=p/|\Omega_m|\)，且在 \(E\) 上成功率至多为 \(1\)。
+在 \(E^c\) 上，查询点为未出现点。给定上下文后，对任意 \(x\in X_m\)，未出现点中标签为 \(x\) 的剩余数量至多为 \(d_m(x)\le D_m\)，从而（即便采用最优 MAP）条件成功率至多为 \(D_m/(|\Omega_m|-p)\)。
+于是总成功率
+\[
+\le \mathbb P(E)\cdot 1+\mathbb P(E^c)\cdot \frac{D_m}{|\Omega_m|-p}
+=\frac{p}{|\Omega_m|}+\frac{|\Omega_m|-p}{|\Omega_m|}\cdot\frac{D_m}{|\Omega_m|-p}
+=\frac{p+D_m}{|\Omega_m|}.
+\]
+证毕。
 \end{proof}
 
 \paragraph{抽象的一步马尔可夫逼近：最优核与条件互信息}\label{par:op-algebra-fold-markov-closure-cmi}

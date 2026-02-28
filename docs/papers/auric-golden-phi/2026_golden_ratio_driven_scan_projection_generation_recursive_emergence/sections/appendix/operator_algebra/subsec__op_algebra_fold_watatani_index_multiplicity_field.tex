@@ -73,4 +73,118 @@ u_aE_m(u_aP_b)
 即 \eqref{eq:op-algebra-fold-watatani-index-closed}。证毕。
 \end{proof}
 
+\paragraph{基本构造与纤维等价关系群胚代数}
+保持上述有限维交换包含 \(\mathcal B_m\subset \mathcal A_m\)。
+令 \(\tau_m\) 为 \(\mathcal A_m\) 的标准迹
+\[
+\tau_m(A):=2^{-m}\sum_{a\in\Omega_m}A(a)\qquad(A\in\mathcal A_m\cong \CC^{\Omega_m}),
+\]
+并以 \(L^2(\mathcal A_m,\tau_m)\) 表示 GNS 空间。
+令 \(e_m:L^2(\mathcal A_m,\tau_m)\to L^2(\mathcal B_m,\tau_m)\) 为由 \(E_m\) 实现的 Jones 投影（即 \(e_m(\xi)=E_m(\xi)\)），并记基本构造代数
+\[
+\mathcal A_{m,1}:=\langle \mathcal A_m,e_m\rangle.
+\]
+
+\begin{theorem}[折叠条件期望的 Jones 基本构造与纤维群胚矩阵直和]\label{thm:op-algebra-fold-basic-construction-pair-groupoid}
+对每个 \(m\ge 1\)，存在规范 \(\ast\)-同构
+\[
+\boxed{\;\mathcal A_{m,1}\ \cong\ \bigoplus_{x\in X_m} M_{d_m(x)}(\CC).\;}
+\]
+更精确地：对任意 \(x\in X_m\) 与同一纤维 \(F_x:=\Fold_m^{-1}(x)\) 上的 \(a,b\in F_x\)，令
+\[
+E^{(x)}_{a,b}:=d_m(x)\,P_a e_m P_b\ \in\ \mathcal A_{m,1}.
+\]
+则 \(\{E^{(x)}_{a,b}\}_{a,b\in F_x}\) 为对应直和分量的一组矩阵单位，满足
+\[
+\bigl(E^{(x)}_{a,b}\bigr)^\ast=E^{(x)}_{b,a},
+\qquad
+E^{(x)}_{a,b}\,E^{(x)}_{c,d}=\delta_{b,c}\,E^{(x)}_{a,d}.
+\]
+并且不同 \(x\neq y\) 的分量相乘为零。
+该分解与正文定义 \ref{def:fold-equivalence-groupoid-algebra} 的等价关系群胚 \(\mathcal R_m=\Omega_m\times_{X_m}\Omega_m\) 的卷积代数实现一致：每个块可视为“成对群胚” \(F_x\times F_x\) 的复代数。
+\end{theorem}
+
+\begin{proof}
+由于 \(\mathcal B_m\cong \CC^{X_m}\) 在 \(\Omega_m\) 上按纤维分块常值，GNS 空间有正交直和分解
+\(
+L^2(\mathcal A_m,\tau_m)\cong \bigoplus_{x\in X_m}\ell^2(F_x)
+\)，且 \(e_m\) 在每个 \(\ell^2(F_x)\) 上为投影到常值向量所张成的一维子空间。
+在基本构造中对一切 \(A\in\mathcal A_m\) 有标准恒等式 \(e_mAe_m=E_m(A)e_m\)。
+取 \(x\in X_m\) 与 \(b\in F_x\)，由命题 \ref{prop:fold-conditional-expectation} 的基元公式，
+\[
+P_b e_m P_b
+=E_m(P_b)e_m
+=\frac{1}{d_m(x)}\,\widetilde P_x\,e_m.
+\]
+于是当 \(a,b,c,d\in F_x\) 时，
+\[
+(P_a e_m P_b)(P_c e_m P_d)
+=\delta_{b,c}\,P_a e_m P_b e_m P_d
+=\delta_{b,c}\,\frac{1}{d_m(x)}\,P_a e_m P_d.
+\]
+因此 \(E^{(x)}_{a,b}:=d_m(x)P_a e_m P_b\) 满足矩阵单位关系并生成一个与 \(M_{d_m(x)}(\CC)\) 同构的简单块。
+若 \(a\in F_x\) 而 \(c\in F_y\) 且 \(x\neq y\)，则 \(P_bP_c=0\) 使得相应乘积为零，从而得到直和分解与所述同构。
+最后，将矩阵单位与箭头 \((a,b)\in F_x\times F_x\) 对应即可与群胚卷积代数的标准基一致。证毕。
+\end{proof}
+
+\begin{corollary}[Watatani 指标元的谱矩与碰撞矩一致]\label{cor:op-algebra-fold-watatani-index-moments}
+沿用定理 \ref{thm:op-algebra-fold-watatani-index-equals-multiplicity-field} 的记号。
+对任意整数 \(q\ge 1\) 有
+\[
+\tau_m\!\bigl(\mathrm{Ind}_{\mathrm{W}}(E_m)^q\bigr)
+=\frac{1}{2^m}\sum_{x\in X_m} d_m(x)^{q+1}
+=\frac{S_{q+1}(m)}{2^m},
+\]
+其中 \(S_{q+1}(m)=\sum_{x\in X_m}d_m(x)^{q+1}\) 为正文使用的碰撞矩记号。
+\end{corollary}
+
+\begin{proof}
+由 \eqref{eq:op-algebra-fold-watatani-index-closed} 与幂等关系 \(\widetilde P_x\widetilde P_y=\delta_{xy}\widetilde P_x\)，有
+\(
+\mathrm{Ind}_{\mathrm{W}}(E_m)^q=\sum_x d_m(x)^q\,\widetilde P_x
+\)。
+而 \(\tau_m(\widetilde P_x)=2^{-m}\sum_{a\in F_x}1=d_m(x)/2^m\)。
+代入即得。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$q$}{q}-重折叠碰撞空间与相对张量幂的规范基]\label{prop:op-algebra-fold-relative-tensor-power-fiber-product}
+对整数 \(q\ge 1\)，定义 \(q\)-重折叠纤维积
+\[
+\mathcal R_m^{(q)}
+:=\underbrace{\Omega_m\times_{X_m}\cdots\times_{X_m}\Omega_m}_{q\ \text{次}}
+=\left\{(\omega_1,\dots,\omega_q)\in\Omega_m^q:\ \Fold_m(\omega_1)=\cdots=\Fold_m(\omega_q)\right\}.
+\]
+把 \(\mathcal A_m\) 视为 \(\mathcal B_m\)-双模（由包含 \(\mathcal B_m\subset\mathcal A_m\) 的左右乘给出）。
+则存在规范的 \(\mathcal B_m\)-双模同构
+\[
+\mathcal A_m\otimes_{\mathcal B_m}\cdots\otimes_{\mathcal B_m}\mathcal A_m
+\ \cong\
+\CC[\mathcal R_m^{(q)}],
+\]
+其在点投影基上由
+\[
+P_{\omega_1}\otimes\cdots\otimes P_{\omega_q}\ \longmapsto\ \mathbf 1_{(\omega_1,\dots,\omega_q)}
+\]
+给出，并约定若 \((\omega_1,\dots,\omega_q)\notin \mathcal R_m^{(q)}\) 则该相对张量元为零。
+因此维数满足
+\[
+\dim\bigl(\mathcal A_m\otimes_{\mathcal B_m}\cdots\otimes_{\mathcal B_m}\mathcal A_m\bigr)
+=|\mathcal R_m^{(q)}|
+=\sum_{x\in X_m}d_m(x)^q
+=S_q(m).
+\]
+\end{proposition}
+
+\begin{proof}
+由 \(\mathcal B_m\) 的正交幂等基 \(\{\widetilde P_x\}_{x\in X_m}\) 与关系 \(P_\omega\widetilde P_x=\delta_{\Fold_m(\omega),x}P_\omega\)：
+若 \(x_i:=\Fold_m(\omega_i)\) 不全相等，则存在某个 \(x\) 使 \(\widetilde P_x\) 在某个因子上作用为 \(1\) 而在相邻因子上作用为 \(0\)。
+相对张量关系
+\(
+(P_{\omega_i}\widetilde P_x)\otimes P_{\omega_{i+1}}=P_{\omega_i}\otimes(\widetilde P_xP_{\omega_{i+1}})
+\)
+遂迫使该基元为零。
+因此相对张量幂由且仅由同纤维 \(q\)-元组张成，并由上述指示函数给出一组规范基。
+维数即为同纤维 \(q\)-元组总数 \(\sum_x |F_x|^q=\sum_x d_m(x)^q\)。证毕。
+\end{proof}
+
 \endinput
