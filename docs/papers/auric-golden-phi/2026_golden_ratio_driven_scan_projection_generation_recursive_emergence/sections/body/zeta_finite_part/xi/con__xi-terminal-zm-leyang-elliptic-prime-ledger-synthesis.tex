@@ -227,6 +227,51 @@ Kummer 理论给出
 并且对应符号翻转向量满足偶校验约束。证毕。
 \end{proof}
 
+\begin{proposition}[二次输运模板的全局偶校验]\label{prop:xi-quadratic-transport-global-even-parity}
+设 \(K\) 为特征不为 \(2\) 的域，取 \(u,v\in K^\times\)。
+令 \(P(z)\in K[z]\) 为次数 \(n\ge 1\) 的可分多项式，并定义二次输运结式
+\[
+Q_{u,v}(w):=\operatorname{Res}_z\!\bigl(P(z),\,u z^2-w z+v\bigr)\in K[w].
+\]
+记 \(w_1,\dots,w_n\) 为 \(Q_{u,v}\) 在某一分裂域 \(M\) 中的根（按重数），并置
+\(
+D(w):=w^2-4uv
+\)。
+则在 \(M^\times/(M^\times)^2\) 中恒有
+\[
+\Bigl[\prod_{i=1}^{n}D(w_i)\Bigr]=1.
+\]
+\end{proposition}
+\begin{proof}
+在二次扩张 \(K(\sqrt{uv})\) 中，\(D\) 的根为 \(\alpha_\pm=\pm 2\sqrt{uv}\)。
+对任意符号 \(\pm\)，有
+\[
+u z^2-\alpha_\pm z+v
+=u\Bigl(z\mp \sqrt{v/u}\Bigr)^2
+\qquad\text{于 }K(\sqrt{uv})[z],
+\]
+从而
+\[
+Q_{u,v}(\alpha_\pm)
+=\operatorname{Res}_z\!\Bigl(P(z),\,u\bigl(z\mp \sqrt{v/u}\bigr)^2\Bigr)
+=u^{n}P\!\bigl(\pm \sqrt{v/u}\bigr)^2
+\]
+为 \(K(\sqrt{uv})\) 中的平方。
+另一方面，由结式的根表示且 \(\mathrm{lc}(D)=1\)，有严格恒等式
+\[
+\operatorname{Res}_w(Q_{u,v}(w),D(w))
+=\prod_{D(\alpha)=0}Q_{u,v}(\alpha),
+\]
+故该值在 \(K(\sqrt{uv})\) 中为平方。
+而在分裂域 \(M\) 中同一结式亦可写为
+\[
+\operatorname{Res}_w(Q_{u,v}(w),D(w))
+=(\mathrm{lc}(Q_{u,v}))^{2}\prod_{i=1}^{n}D(w_i),
+\]
+其中 \(\mathrm{lc}(Q_{u,v})\in K^\times\)，故 \((\mathrm{lc}(Q_{u,v}))^{2}\) 在平方类群中平凡。
+于是 \(\prod_i D(w_i)\) 在 \(M^\times/(M^\times)^2\) 中为平凡类，结论成立。证毕。
+\end{proof}
+
 \begin{corollary}[二次纤维上界的改进与 \(D_n\) 型收缩]\label{cor:xi-terminal-zm-jg-fiber-bound-dn-contraction}
 在定理 \ref{thm:xi-terminal-zm-jg-critical-square-even-sign-defect} 第三条设定下，令 \(L/F\) 为 \(P\) 的分裂域。则
 \[
@@ -245,6 +290,59 @@ z=\frac{w_i\pm\sqrt{w_i^2-4}}{2r}
 \)
 与定理 \ref{thm:xi-terminal-zm-jg-critical-square-even-sign-defect} 第三条即得。证毕。
 \end{proof}
+
+\begin{theorem}[二次分支的有符号置换表示与 \(W(D_n)\) 约束]\label{thm:xi-terminal-zm-jg-signed-permutation-representation}
+沿用定理 \ref{thm:xi-terminal-zm-jg-critical-square-even-sign-defect} 第三条的记号。
+对每个 \(i\) 定义两支提升
+\[
+z_i^\pm:=\frac{w_i\pm\sqrt{\Delta_i}}{2r}\in N,
+\qquad
+r(z_i^\pm)^2-w_i z_i^\pm+r^{-1}=0.
+\]
+则 \(\operatorname{Gal}(N/F)\) 在集合
+\(
+\Omega:=\{z_1^+,z_1^-,\dots,z_n^+,z_n^-\}
+\)
+上诱导出忠实作用，并给出自然单射同态
+\[
+\iota:\operatorname{Gal}(N/F)\hookrightarrow (\ZZ/2\ZZ)^n\rtimes S_n.
+\]
+并且在 \(\iota\) 下其符号分量必落在偶校验子群 \((\ZZ/2\ZZ)^{n-1}\subset(\ZZ/2\ZZ)^n\)，从而
+\[
+\iota\bigl(\operatorname{Gal}(N/F)\bigr)\subseteq W(D_n)=(\ZZ/2\ZZ)^{n-1}\rtimes S_n.
+\]
+\end{theorem}
+\begin{proof}
+任取 \(\sigma\in\operatorname{Gal}(N/F)\)。
+因 \(\sigma\) 保持 \(Q_r\) 的根集，存在置换 \(\pi_\sigma\in S_n\) 使 \(\sigma(w_i)=w_{\pi_\sigma(i)}\)。
+又因 \(\sigma\bigl(\sqrt{\Delta_i}\bigr)=\pm \sqrt{\Delta_{\pi_\sigma(i)}}\)，故 \(\sigma\) 将二元集合 \(\{z_i^+,z_i^-\}\) 送至 \(\{z_{\pi_\sigma(i)}^+,z_{\pi_\sigma(i)}^-\}\)，并可能交换内部两元素。
+于是得到同态 \(\iota(\sigma)=(\varepsilon_\sigma,\pi_\sigma)\in(\ZZ/2\ZZ)^n\rtimes S_n\)，其中 \(\varepsilon_\sigma\) 记录各对 \(\{z_i^+,z_i^-\}\) 是否被交换。
+若 \(\iota(\sigma)\) 为恒等，则 \(\sigma\) 固定全部 \(w_i\) 与 \(\sqrt{\Delta_i}\)，从而固定全部 \(z_i^\pm\)，进而固定 \(N\) 的生成元，故 \(\sigma=\mathrm{id}\)。因此 \(\iota\) 单射。
+\par
+偶校验约束由定理 \ref{thm:xi-terminal-zm-jg-critical-square-even-sign-defect} 第三条给出：在 Kummer 对偶语言下，全局平方类关系 \(\sum_i[\Delta_i]=0\) 排除了奇校验符号翻转，故符号分量落入 \((\ZZ/2\ZZ)^{n-1}\)，结论成立。证毕。
+\end{proof}
+
+\begin{corollary}[满置换与满秩二次核迫使 \(W(D_n)\)]\label{cor:xi-terminal-zm-jg-wdn-forced}
+沿用定理 \ref{thm:xi-terminal-zm-jg-critical-square-even-sign-defect} 的设定。
+若 \(Q_r\) 的根置换群在 \(F\) 上满对称（即 \(\operatorname{Gal}(M/F)\cong S_n\)），且二次分支核达到上界（即 \([N:M]=2^{n-1}\)），则
+\[
+\operatorname{Gal}(N/F)\cong W(D_n).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-terminal-zm-jg-signed-permutation-representation}，\(\operatorname{Gal}(N/F)\) 为 \(W(D_n)\) 的子群，并且其在 \(S_n\) 上的投影像等同于 \(\operatorname{Gal}(M/F)\)，故投影满射到 \(S_n\)。
+其核为 \(\operatorname{Gal}(N/M)\)，而假设 \([N:M]=2^{n-1}\) 迫使该核等于 \(W(D_n)\) 的符号核 \((\ZZ/2\ZZ)^{n-1}\)。
+因此该子群为 \(S_n\) 关于 \((\ZZ/2\ZZ)^{n-1}\) 的全前像，只能等于整个 \(W(D_n)\)。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$n=6$}{n=6} 的半立方体符号微态]\label{cor:xi-terminal-zm-jg-demicube-32}
+在推论 \ref{cor:xi-terminal-zm-jg-wdn-forced} 的条件下取 \(n=6\)。
+则二次分支自由度严格为 \(2^{5}=32\)；其自然载体为偶校验符号群
+\[
+\{\pm1\}^6_{\mathrm{even}}=\{(\varepsilon_i)\in\{\pm1\}^6:\ \prod_i\varepsilon_i=1\},
+\]
+亦即 \(6\)-维半立方体（demicube）的顶点群。
+\end{corollary}
 
 \begin{theorem}[代数尺度的有限例外相干性]\label{thm:xi-terminal-zm-jg-algebraic-scale-finite-exception-coherence}
 设 \(K\) 为特征不为 \(2\) 的域，\(P\in K[z]\) 可分离且 \(a_n a_0\neq 0\)，\(r\in K^\times\)。
@@ -362,6 +460,16 @@ N:=M\bigl(\sqrt{\Delta_1},\dots,\sqrt{\Delta_n}\bigr),\ \Delta_i=w_i^2-4.
   \item 上述表示诱导的 Artin 参数为正交型且行列式为 \(1\)，并与适当 \(\mathrm{SO}\)-型自守表示满足函子性对应。
 \end{enumerate}
 \end{conjecture}
+
+\begin{conjecture}[尺度族上的 \(W(D_n)\) 共轭类等分布]\label{conj:xi-terminal-zm-jg-wdn-chebotarev-uniform}
+在猜想 \ref{conj:xi-terminal-zm-jg-generic-dn-langlands-orthogonal} 的设定下，设 \(K=\QQ\) 且取一条由外置账本生成的尺度序列 \((r_T)_{T\ge 1}\subset\QQ_{>1}\)，并令 \(N_T/\QQ\) 为对应的专门化分裂域，满足 \(\operatorname{Gal}(N_T/\QQ)\cong W(D_n)\)。
+则预期当高度趋于无穷并按“好素数”筛除有限分歧集合后，Frobenius 共轭类 \(\operatorname{Frob}_p(N_T/\QQ)\) 在 \(W(D_n)\) 的共轭类空间中满足 Chebotarev 意义下的渐近等分布，并且误差界可在 \(T\) 上保持量化一致。
+\end{conjecture}
+
+\begin{remark}[可计算判别接口的自然目标]\label{rem:xi-terminal-zm-jg-effective-squareclass-test}
+推论 \ref{cor:xi-terminal-zm-jg-wdn-forced} 的两条输入可被视为“置换部分满”与“二次核满秩”的组合判别。
+进一步把该判别写成可计算证书的一个自然方向，是给出在有限精度约化与有限结式/判别式数据下可核验的充分准则，以排除额外平方类关系并稳定锁定 \(W(D_n)\) 型符号核。
+\end{remark}
 
 \input{con__xi-terminal-zm-cdim-leyang-godel-predictive-information}
 

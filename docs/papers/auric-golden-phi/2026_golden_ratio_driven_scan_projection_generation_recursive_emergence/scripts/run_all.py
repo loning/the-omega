@@ -3126,6 +3126,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_residual_gap_constants_phi",
+            script="exp_fold_residual_gap_constants_phi.py",
+            args=["--c-n-max", "200", "--d-n-max", "600"],
+            expected_outputs=[
+                "artifacts/export/fold_residual_gap_constants_phi.json",
+                "sections/generated/eq_fold_residual_gap_constants_phi.tex",
+            ],
+        ),
+        Step(
             name="fold_bulk_resonance_integer_ladder",
             script="exp_fold_bulk_resonance_integer_ladder.py",
             args=["--n-max", "200", "--u-max", "20000", "--store-u-max", "30"],
