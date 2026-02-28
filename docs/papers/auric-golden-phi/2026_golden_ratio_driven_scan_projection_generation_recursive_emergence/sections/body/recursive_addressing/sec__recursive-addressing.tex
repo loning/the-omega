@@ -151,3 +151,159 @@ C^{(L+1)}_{a,t}:=\{x\in X:\mathbf{b}^{(L)}_t(x)=a_0,\dots,\mathbf{b}^{(L)}_{t+\e
 故 \(\mathscr{F}(a)=\varnothing\)，进而读出为 \(\mathsf{NULL}\)。
 证毕。
 \end{proof}
+
+\paragraph{从 \(H^2\) 障碍到带状 gerbe：对象层级的提升}
+命题 \ref{prop:null-as-h2-obstruction} 把 \([\alpha]\neq 0\) 解释为“全局证书对象不存在”的见证。
+为了在结构上保留“局部存在、全局失效”的信息，单纯的集合值（预）层口径并不足够：当粘合在三重重叠上出现二阶结合缺陷时，合适的语义对象是以 \(A\) 为 band 的 \(2\)-层级对象。
+
+\begin{theorem}[Čech-\texorpdfstring{$H^2$}{H2} 障碍的 gerbe 语义]\label{thm:prefix-site-cech-null-gerbe}
+沿用定义 \ref{def:prefix-site-h2-gluing-obstruction} 的设定。
+固定 \(a\in\mathcal{A}_{\mathrm{adm}}\) 与其一组柱覆盖 \(\{b_i\succeq a\}\)，并记二重与三重交为
+\(
+C_{b_{ij}}:=C_{b_i}\cap C_{b_j}
+\)
+与
+\(
+C_{b_{ijk}}:=C_{b_i}\cap C_{b_j}\cap C_{b_k}
+\)。
+设 \(\alpha\in Z^2(\{b_i\},A)\) 为该覆盖上由局部识别数据诱导的 Čech \(2\)-余圈，并记其同调类为 \([\alpha]\)（在加细覆盖下取极限）。
+则存在一个由 \((\{b_i\},\alpha)\) 函子性构造的纤维化群胚 \(\mathcal{G}_\alpha\to \mathcal{A}_{\mathrm{adm}}\)，满足：
+\begin{enumerate}
+  \item \(\mathcal{G}_\alpha\) 为以 \(A\) 为 band 的带状 gerbe：在足够细覆盖下局部非空且局部连通，并且任意对象的自同构群自然同构于 \(A\)。
+  \item \(\mathcal{G}_\alpha\) 的中性化（存在全局对象）与“地址 \(a\) 处存在协议允许的全局证书对象”严格等价。
+  \item \(\mathcal{G}_\alpha\) 的等价类仅由 \([\alpha]\) 决定：更精确地，\(\mathcal{G}_\alpha\) 的带状类与 \([\alpha]\) 在 \(H^2(\{b_i\},A)\) 中一致。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+以覆盖索引集为对象，令 \(\mathcal{G}_\alpha(b_i)\) 的对象为“定义在 \(C_{b_i}\) 上的局部证书对象”，态射为协议允许的局部 gauge 变换。
+在二重交 \(C_{b_{ij}}\) 上以转移数据 \(g_{ij}\) 识别局部对象，并要求在三重交 \(C_{b_{ijk}}\) 上的两种复合 \(g_{ij}g_{jk}\) 与 \(g_{ik}\) 的差异由 \(\alpha_{ijk}\) 给出（以 \(A\) 的作用实现结合缺陷）。
+局部对象的存在性给出局部非空性；在假设“局部证书对象带 \(A\)-纤维的相容结构”下，任意两局部对象在足够细覆盖下局部同构，从而得局部连通性；而自同构的局部群由 \(A\) 决定并在加细下稳定，故得到 \(A\)-带状 gerbe。
+\par
+若存在全局证书对象，则其限制与恒等粘合数据给出中性对象；反之，中性对象给出覆盖上的 descent datum，并且中性化意味着可在允许的 gauge 调整下将结合缺陷严格消去，从而得到全局对象。
+最后，更换局部对象与识别只会把 \(\alpha\) 改变为 Čech 余边界，因此 \(\mathcal{G}_\alpha\) 的等价类仅依赖于 \([\alpha]\)。
+证毕。
+\end{proof}
+
+\paragraph{障碍的最小可见化：通用系数商}
+当 \([\alpha]\neq 0\) 时，中性化失败把读出推向 \(\mathsf{NULL}\)（命题 \ref{prop:null-as-h2-obstruction}）。
+另一方面，若允许把系数群作最小化商化，则可在不改变覆盖与局部数据的前提下把二阶缺陷严格消去，从而将 gerbe 归约到中性情形。
+
+\begin{proposition}[使障碍点态消失的最小系数商]\label{prop:prefix-site-min-visible-quotient}
+在定理 \ref{thm:prefix-site-cech-null-gerbe} 的设定下，令
+\[
+H_\alpha:=\bigl\langle \alpha_{ijk}\ \bigm|\ C_{b_{ijk}}\neq\varnothing \bigr\rangle\le A,
+\qquad
+A_{\mathrm{vis}}:=A/H_\alpha,
+\]
+并记自然投影为 \(\pi:A\twoheadrightarrow A_{\mathrm{vis}}\)。
+则：
+\begin{enumerate}
+  \item \(\alpha\) 推送到 \(A_{\mathrm{vis}}\) 后点态为零：其像 \(\bar\alpha\in Z^2(\{b_i\},A_{\mathrm{vis}})\) 满足 \(\bar\alpha_{ijk}=0\) 对一切 \(C_{b_{ijk}}\neq\varnothing\)。
+  因而对应的 gerbe \(\mathcal{G}_{\bar\alpha}\) 必为中性 gerbe。
+  \item 若 \(\varphi:A\to B\) 为任意阿贝尔群同态，使得 \(\varphi(\alpha_{ijk})=0\) 对所有三重交成立（等价地，\(\alpha\) 在系数 \(B\) 下点态消失），则 \(\varphi\) 唯一因子分解为
+  \[
+  A\twoheadrightarrow A_{\mathrm{vis}}\xrightarrow{\ \exists!\ } B.
+  \]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) 由 \(H_\alpha\) 的生成方式，\(\pi(\alpha_{ijk})=0\) 对所有 \(C_{b_{ijk}}\neq\varnothing\) 成立，故 \(\bar\alpha=0\)。
+在定理 \ref{thm:prefix-site-cech-null-gerbe} 的构造中，\(\bar\alpha=0\) 对应平凡结合子，从而 gerbe 中性。
+\par
+(2) 若 \(\varphi(\alpha_{ijk})=0\) 对一切三重交成立，则 \(H_\alpha\subseteq\ker\varphi\)，因此 \(\varphi\) 通过商 \(A/H_\alpha\) 因子分解且唯一。
+证毕。
+\end{proof}
+
+\paragraph{保留分辨率的代价：外置寄存器的严格下界}
+命题 \ref{prop:prefix-site-min-visible-quotient} 表明：在只允许改变系数群而不引入外置记录轴的制度下，\([\alpha]\) 的可见化最小化为 \(A_{\mathrm{vis}}\)。
+若目标是恢复原始 \(A\) 的分辨率，则必须显式外置承载 \(H_\alpha\) 的信息量。
+
+\begin{theorem}[恢复 \(A\)-分辨率所需的最小寄存器容量]\label{thm:prefix-site-register-lower-bound}
+设 \(A\) 为有限阿贝尔群，并沿用命题 \ref{prop:prefix-site-min-visible-quotient} 的记号。
+若仅允许额外引入一个有限寄存器集合 \(R\)，并要求存在集合嵌入
+\[
+A\hookrightarrow A_{\mathrm{vis}}\times R,
+\]
+则必有
+\[
+\card{R}\ \ge\ \card{H_\alpha}
+\qquad\Longleftrightarrow\qquad
+\log_2\card{R}\ \ge\ \log_2\card{H_\alpha}.
+\]
+并且该下界可达：存在 \(R\) 使得等号成立。
+\end{theorem}
+
+\begin{proof}
+对任意 \(\bar a\in A_{\mathrm{vis}}\)，投影 \(\pi:A\to A_{\mathrm{vis}}\) 的纤维 \(\pi^{-1}(\bar a)\) 为一个 \(H_\alpha\)-陪集，故其基数恒为 \(\card{H_\alpha}\)。
+若存在嵌入 \(A\hookrightarrow A_{\mathrm{vis}}\times R\)，则其在每个纤维上的限制给出
+\(
+\pi^{-1}(\bar a)\hookrightarrow \{\bar a\}\times R\cong R
+\)，
+从而 \(\card{R}\ge \card{H_\alpha}\)。
+\par
+可达性：取 \(R:=H_\alpha\)。
+任选一个集合截面 \(s:A_{\mathrm{vis}}\to A\)（不必为群同态），则每个 \(a\in A\) 可唯一写为 \(a=s(\pi(a))+h(a)\) 且 \(h(a)\in H_\alpha\)。
+令 \(\iota(a):=(\pi(a),h(a))\in A_{\mathrm{vis}}\times H_\alpha\)，则 \(\iota\) 为嵌入且 \(\card{R}=\card{H_\alpha}\)。
+证毕。
+\end{proof}
+
+\paragraph{代数化的读出：扭曲群胚与投影表象}
+二阶结合缺陷亦可被转写为覆盖神经上的扭曲乘法，从而把“局部证书 + 识别数据”的读出链条解释为投影表象而非严格表象。
+
+\begin{proposition}[Čech 群胚的 \(A\)-扭曲与投影表象]\label{prop:prefix-site-projective-rep-twist}
+令 \(\mathfrak N(\{b_i\})\) 为覆盖的神经，并令 \(\Pi\) 为其 \(1\)-骨架生成的 Čech 群胚（对象为指标 \(i\)，态射由二重交 \(C_{b_{ij}}\neq\varnothing\) 生成）。
+则 \(\alpha\) 诱导：
+\begin{enumerate}
+  \item 一个以 \(A\) 为中心的 \(\Pi\) 的 \(2\)-上扩张（等价地，\(\Pi\) 上的 \(A\)-加权结合子），从而定义扭曲群胚代数 \(\CC_\alpha[\Pi]\)（其乘法由 \(\alpha\) 扭曲）。
+  \item 覆盖上的任一 descent 数据（局部对象与二重交识别）自然给出 \(\Pi\) 的一个投影表象，其乘子（multiplier）由 \([\alpha]\) 决定；并且该投影表象可严格化为真实表象当且仅当 \([\alpha]=0\)。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+在 \(\Pi\) 上选择生成态射 \(i\to j\) 表示二重交上的识别。
+三重交上两种复合 \(i\to j\to k\) 与 \(i\to k\) 的差异由 \(A\)-值元素 \(\alpha_{ijk}\) 记录，这正是 \(2\)-范畴意义下结合子的全部数据。
+将该结合子视为乘法扭曲即得到 \(\CC_\alpha[\Pi]\)。
+\par
+对投影表象：任一把局部对象与识别送入线性化实现的选择，在复合路径上得到的算子只在标量乘子（或一般的 \(A\) 作用）意义下相等，乘子由 \(\alpha_{ijk}\) 给定并在余边界改变下保持同调类不变。
+当且仅当 \([\alpha]=0\) 时，存在余边界修正消除该乘子，从而 strictification 为真实表象。
+证毕。
+\end{proof}
+
+\paragraph{对偶下降与谱可定义性：角色通道的可见子群}
+在角色分解口径下，只有能湮灭 \(H_\alpha\) 的角色才可在可审计意义下给出无歧义的全局模式。
+
+\begin{corollary}[可见角色与湮灭子群]\label{cor:prefix-site-visible-characters-annihilator}
+设 \(A\) 为有限阿贝尔群，并记 Pontryagin 对偶 \(\widehat A:=\Hom(A,\TT)\)。
+令 \(H_\alpha\le A\) 与 \(A_{\mathrm{vis}}=A/H_\alpha\) 如命题 \ref{prop:prefix-site-min-visible-quotient}。
+则有自然同构
+\[
+\widehat{A_{\mathrm{vis}}}\ \cong\ H_\alpha^\perp
+:=\{\chi\in\widehat A:\ \chi(h)=1\ \forall h\in H_\alpha\}.
+\]
+并且 \(\chi\in H_\alpha^\perp\) 当且仅当 \(\chi(\alpha_{ijk})=1\) 对所有 \(C_{b_{ijk}}\neq\varnothing\) 成立。
+\end{corollary}
+
+\begin{proof}
+商同态 \(A\twoheadrightarrow A/H_\alpha\) 的对偶同态为嵌入 \(\widehat{A/H_\alpha}\hookrightarrow \widehat A\)，其像恰为湮灭子群 \(H_\alpha^\perp\)。
+又因 \(H_\alpha\) 由 \(\{\alpha_{ijk}\}\) 生成，\(\chi\in H_\alpha^\perp\) 等价于 \(\chi(\alpha_{ijk})=1\) 对所有生成元成立。
+证毕。
+\end{proof}
+
+\begin{theorem}[谱化输出的可定义性判别：只能在 \texorpdfstring{$A_{\mathrm{vis}}$}{Avis} 上无歧义成立]\label{thm:prefix-site-spectral-definability-avis}
+考虑任一“谱化”步骤，其输入为命题 \ref{prop:prefix-site-projective-rep-twist} 的 descent 数据（等价地，扭曲群胚代数 \(\CC_\alpha[\Pi]\)），输出为可审计的谱对象（例如：转移算子族、迹/行列式、\(\zeta\)-函数型不变量或基于角色分解的误差控制）。
+假设该步骤满足最弱的自然性：对允许的局部 gauge 调整（即改变 \(\alpha\) 为同调余边界）最终输出不变。
+则：
+\begin{enumerate}
+  \item 若 \(\chi\in\widehat A\) 不属于 \(H_\alpha^\perp\)，则任何以 \(\chi\) 作为模式的“扭曲谱对象”都不具备 gauge 不变性，从而无法下降为全局可审计对象。
+  \item 若 \(\chi\in H_\alpha^\perp\cong\widehat{A_{\mathrm{vis}}}\)，则上述歧义消失；因此一切基于角色分解的谱命题在形式上只能理解为关于 \(A_{\mathrm{vis}}\) 的命题，而非关于原始 \(A\) 的命题。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:prefix-site-projective-rep-twist}，沿不同复合路径得到的线性化实现相差乘子 \(\chi(\alpha_{ijk})\)。
+若存在某个三重交使 \(\chi(\alpha_{ijk})\neq 1\)，则该乘子在 gauge 调整下不能被消去，从而违背“最终输出 gauge 不变”的可审计性要求，故全局对象不可定义。
+反之，当 \(\chi\in H_\alpha^\perp\) 时，对所有三重交均有 \(\chi(\alpha_{ijk})=1\)，投影乘子消失，谱化输出可下降为无歧义的全局对象；再由推论 \ref{cor:prefix-site-visible-characters-annihilator} 得到其必经由 \(\widehat{A_{\mathrm{vis}}}\)。
+证毕。
+\end{proof}
