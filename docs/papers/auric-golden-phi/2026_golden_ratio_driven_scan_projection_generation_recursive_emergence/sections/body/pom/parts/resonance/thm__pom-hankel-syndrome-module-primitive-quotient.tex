@@ -1,0 +1,124 @@
+\begin{theorem}[Hankel-综合征模的主理想稳定性：Hankel-null 等于最小递推的截断倍乘模]\label{thm:pom-hankel-syndrome-module-kernel-equals-multiples}
+设 \((s_m)_{m\ge 0}\subset\ZZ\) 为整数序列。
+假设存在首一且本原多项式
+\[
+P(\lambda)=\lambda^{d}+p_{d-1}\lambda^{d-1}+\cdots+p_0\in\ZZ[\lambda],
+\]
+以及整数 \(m_0\ge 0\)，使得对一切 \(m\ge m_0\) 有线性递推
+\[
+s_{m+d}+p_{d-1}s_{m+d-1}+\cdots+p_0s_{m}=0,
+\]
+并且在 \(\QQ[\lambda]\) 中，理想
+\(
+\{A(\lambda)\in\QQ[\lambda]:\ A(E)s\equiv 0\ \text{于所有}\ m\ge m_0\}
+\)
+由 \(P\) 生成（即 \(P\) 为从 \(m_0\) 起的最小湮灭多项式）。
+\par
+对任意 \(n\ge d+1\)，定义 Hankel 方块
+\[
+\mathsf H^{(m_0)}_{n}:=\bigl(s_{m_0+i+j}\bigr)_{0\le i,j\le n-1}\in\ZZ^{n\times n},
+\]
+并定义截断倍乘子模
+\[
+\mathcal{M}_n(P):=
+\Bigl\{\operatorname{coeff}_{<n}\!\bigl(Q(\lambda)P(\lambda)\bigr)\in\ZZ^n:\ 
+Q\in\ZZ[\lambda],\ \deg Q<n-d\Bigr\},
+\]
+其中 \(\operatorname{coeff}_{<n}\) 表示截断到 \((\lambda^0,\dots,\lambda^{n-1})\) 的系数向量。
+则成立严格恒等式（作为 \(\ZZ\)-模）
+\[
+\boxed{\;
+\ker_{\ZZ}\bigl((\mathsf H^{(m_0)}_{n})^{\mathsf T}\bigr)
+\;=\;
+\mathcal{M}_n(P)\; }.
+\]
+\end{theorem}
+\begin{proof}
+取任意 \(\alpha=(\alpha_0,\dots,\alpha_{n-1})\in\ker_{\ZZ}((\mathsf H^{(m_0)}_n)^{\mathsf T})\)。
+则对所有 \(0\le k\le n-1\) 有
+\[
+0=\sum_{i=0}^{n-1}\alpha_i\,s_{m_0+k+i}.
+\]
+令残差序列
+\[
+r_k:=\sum_{i=0}^{n-1}\alpha_i\,s_{m_0+k+i}\qquad(k\ge 0),
+\]
+则 \(r_0=\cdots=r_{n-1}=0\)。
+由于 \(s\) 在 \(m\ge m_0\) 上满足 \(P(E)s=0\)，并且 \(P(E)\) 与任意幂 \(E^i\) 交换，得
+\[
+P(E)r
+=\sum_{i=0}^{n-1}\alpha_i\,P(E)E^i s
+=\sum_{i=0}^{n-1}\alpha_i\,E^i P(E)s
+=0,
+\]
+从而 \((r_k)\) 亦满足阶数 \(\le d\) 的同一递推。
+又因 \(n\ge d+1\)，有 \(r_0=\cdots=r_{d}=0\)，递推解由前 \(d\) 项唯一确定，故 \(r_k\equiv 0\)（\(k\ge 0\)）。
+\par
+令
+\(
+A(\lambda):=\sum_{i=0}^{n-1}\alpha_i\lambda^i\in\ZZ[\lambda]
+\)。
+恒等式 \(r_k=0\)（\(k\ge 0\)）等价于 \(A(E)s\equiv 0\) 在所有 \(m\ge m_0\) 成立，
+因此 \(A\) 属于上述在 \(\QQ[\lambda]\) 中的湮灭理想。
+由最小性假设，该理想由 \(P\) 生成，故 \(P\mid A\) 于 \(\QQ[\lambda]\)。
+又因 \(P\) 本原，Gauss 引理推出 \(P\mid A\) 于 \(\ZZ[\lambda]\)，从而 \(A=QP\) 且 \(Q\in\ZZ[\lambda]\)。
+由 \(\deg A<n\) 与 \(\deg P=d\) 得 \(\deg Q<n-d\)，故
+\(
+\alpha=\operatorname{coeff}_{<n}(QP)\in\mathcal{M}_n(P)
+\)，从而 \(\ker\subseteq\mathcal{M}_n(P)\)。
+\par
+反之，若 \(\alpha=\operatorname{coeff}_{<n}(QP)\) 且 \(\deg Q<n-d\)，则 \(QP(E)s=0\) 在 \(m\ge m_0\) 上成立；
+对 \(k=0,\dots,n-1\) 取 \(m=m_0+k\) 即得 \((\mathsf H^{(m_0)}_n)^{\mathsf T}\alpha=0\)，故 \(\mathcal{M}_n(P)\subseteq\ker\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[综合征基的秩与自然生成元]\label{cor:pom-hankel-syndrome-module-rank-and-generators}
+在定理 \ref{thm:pom-hankel-syndrome-module-kernel-equals-multiples} 的设定下，令 \(\Delta:=n-d\)。
+则 \(\ker_{\ZZ}((\mathsf H^{(m_0)}_{n})^{\mathsf T})\) 为秩 \(\Delta\) 的自由阿贝尔群，并且一组自然生成元可取为
+\[
+\Bigl\{\operatorname{coeff}_{<n}\bigl(\lambda^j P(\lambda)\bigr):\ 0\le j\le \Delta-1\Bigr\}.
+\]
+因此任何综合征基（作为 \(\ZZ\)-基）必含且仅含 \(\Delta\) 个向量。
+\end{corollary}
+\begin{proof}
+映射
+\(
+\ZZ[\lambda]_{<\Delta}\to\ZZ^n,\ Q\mapsto \operatorname{coeff}_{<n}(QP)
+\)
+为群同态且其像为 \(\mathcal{M}_n(P)\)；
+由于 \(P\) 首一，\(\deg(QP)<n\) 时由 \(\operatorname{coeff}_{<n}(QP)=0\) 推出 \(QP=0\)，故该同态为单射。
+于是 \(\mathcal{M}_n(P)\cong \ZZ^\Delta\)，再用定理 \ref{thm:pom-hankel-syndrome-module-kernel-equals-multiples} 得结论。
+取 \(Q=\lambda^j\) 即得所示生成元。证毕。
+\end{proof}
+
+\begin{corollary}[综合征子格的唯一规范化：列 Hermite 正规形]\label{cor:pom-hankel-syndrome-hnf-unique}
+在推论 \ref{cor:pom-hankel-syndrome-module-rank-and-generators} 的设定下，
+存在唯一的列 Hermite 正规形矩阵 \(B\in\ZZ^{n\times\Delta}\) 使得
+\[
+\operatorname{colspan}_{\ZZ}(B)=\ker_{\ZZ}\bigl((\mathsf H^{(m_0)}_{n})^{\mathsf T}\bigr)\subset\ZZ^n.
+\]
+\end{corollary}
+\begin{proof}
+任意满秩子格均存在且仅存在列 Hermite 正规形表示。证毕。
+\end{proof}
+
+\begin{proposition}[多模数离线审计的确定性完备性]\label{prop:pom-hankel-syndrome-crt-offline-audit}
+在推论 \ref{cor:pom-hankel-syndrome-module-rank-and-generators} 的设定下，取一组综合征基
+\(\{\alpha^{(j)}\}_{j=1}^{\Delta}\subset\ZZ^n\)。
+对 \(1\le j\le\Delta\)、\(0\le k\le n-1\) 定义
+\[
+e_{j,k}:=\sum_{i=0}^{n-1}\alpha^{(j)}_{i}\,s_{m_0+k+i}\in\ZZ.
+\]
+设存在有效上界 \(U\ge \max_{j,k}|e_{j,k}|\)。
+取两两互素的模数 \(M_1,\dots,M_t\) 使 \(M:=\prod_{r=1}^{t}M_r>2U\)。
+若对所有 \(r,j,k\) 均有
+\[
+e_{j,k}\equiv 0\pmod{M_r},
+\]
+则必有 \(e_{j,k}=0\)（整数意义）对所有 \(j,k\) 成立。
+\end{proposition}
+\begin{proof}
+若某个 \(e_{j,k}\neq 0\) 且对所有 \(r\) 皆有 \(e_{j,k}\equiv 0\pmod{M_r}\)，则由中国剩余定理知 \(e_{j,k}\equiv 0\pmod{M}\)，从而 \(|e_{j,k}|\ge M>2U\)，与 \(|e_{j,k}|\le U\) 矛盾。证毕。
+\end{proof}
+
+\endinput
