@@ -1,0 +1,151 @@
+\paragraph{窗口纤维与随机审计：从确定性 \texorpdfstring{$2d$}{2d} 点锁定到单点评估压缩}
+\label{par:xi-hankel-window-fiber-random-audit}
+下述结论把定理 \ref{thm:dephys-hankel-finite-audit} 的“\(2d\) 点锁定”补足为尖锐性与概率型压缩：长度 \(2d-1\) 的窗口在一般位置上始终保留一维自由度；而一旦允许可控误差，则可将判等进一步压缩为一次生成函数取值比较。
+
+\begin{proposition}[长度 \texorpdfstring{$2d-1$}{2d-1} 的 Hankel 窗口在一般位置上的一维纤维]\label{prop:xi-hankel-window-fiber-1d}
+设 \(k\) 为域，\(d\ge 1\)，并取向量
+\(
+b=(b_0,\dots,b_{2d-2})\in k^{2d-1}
+\)。
+记
+\[
+H_0(b):=(b_{i+j})_{0\le i,j\le d-1}\in M_d(k).
+\]
+若 \(\det H_0(b)\neq 0\)，则对每个 \(x\in k\) 存在唯一序列 \(a^{(x)}=(a^{(x)}_n)_{n\ge 0}\subset k\) 满足：
+\begin{enumerate}
+  \item \(a^{(x)}_n=b_n\)（\(0\le n\le 2d-2\)）且 \(a^{(x)}_{2d-1}=x\)；
+  \item \(a^{(x)}\) 的 Hankel 秩恰为 \(d\)；
+  \item 令
+  \[
+  c(x):=H_0(b)^{-1}\cdot (b_d,b_{d+1},\dots,b_{2d-2},x)^{\mathsf T}\in k^d,
+  \]
+  则对一切 \(n\ge 0\) 有递推
+  \[
+  a^{(x)}_{n+d}=\sum_{j=0}^{d-1} c_j(x)\,a^{(x)}_{n+j}.
+  \]
+\end{enumerate}
+因此截断映射 \(\tau_{2d-1}:a\mapsto(a_0,\dots,a_{2d-2})\) 在开集 \(\{\det H_0\neq 0\}\) 上的每个纤维与 \(k\) 自然双射。
+\end{proposition}
+\begin{proof}
+由 \(\det H_0(b)\neq 0\)，对每个 \(x\) 唯一确定 \(c(x)\)。
+以初值 \(a^{(x)}_0,\dots,a^{(x)}_{d-1}=b_0,\dots,b_{d-1}\) 递推定义 \(a^{(x)}_n\)（\(n\ge d\)）。
+对 \(n=0,\dots,d-2\) 的递推方程给出 \(a^{(x)}_d,\dots,a^{(x)}_{2d-2}\) 与 \(b_d,\dots,b_{2d-2}\) 一致，而 \(n=d-1\) 的方程给出 \(a^{(x)}_{2d-1}=x\)，从而 (1) 成立。
+任意满足阶 \(d\) 常系数递推的序列其 Hankel 秩不超过 \(d\)；另一方面 \(\det H_0(b)\neq 0\) 给出一个 \(d\times d\) Hankel 主块非奇异，故 Hankel 秩至少为 \(d\)，从而为 \(d\)。
+唯一性由递推系数与初值唯一推出。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$2d$}{2d} 点锁定的确定性尖锐性]\label{cor:xi-hankel-2d-sharpness}
+在定理 \ref{thm:dephys-hankel-finite-audit} 的设定下，若仅比较长度为 \(2d-1\) 的任意连续窗口，则在一般位置（\(\det H_0\neq 0\)）上无法确定全序列：存在不同的 Hankel 秩为 \(d\) 的序列共享该窗口。
+因此定理 \ref{thm:dephys-hankel-finite-audit} 的 \(2d\) 点锁定在确定性意义下不可再压缩。
+\end{corollary}
+\begin{proof}
+命题 \ref{prop:xi-hankel-window-fiber-1d} 表明：固定任一长度 \(2d-1\) 窗口后，仍存在以 \(x=a_{2d-1}\) 为参数的一维自由度，且对应序列两两不同。
+另一方面，定理 \ref{thm:dephys-hankel-finite-audit} 给出在证书偏移 \(\ell_q\) 处长度 \(2d\) 窗口的确定性锁定，二者合并即得尖锐性。证毕。
+\end{proof}
+
+\begin{theorem}[单点随机审计：允许可控误差的判等压缩]\label{thm:xi-hankel-single-point-random-audit}
+设 \(k\) 为域，且 \(a=(a_n)_{n\ge 0}\)、\(b=(b_n)_{n\ge 0}\) 为两条 Hankel 秩不超过 \(d\) 的序列。
+令生成函数
+\[
+F_a(z):=\sum_{n\ge 0}a_n z^n,\qquad F_b(z):=\sum_{n\ge 0}b_n z^n.
+\]
+则 \(F_a,F_b\) 皆为分母次数不超过 \(d\) 的有理函数。
+取有限集合 \(S\subset k\)，并从 \(S\) 等概率抽取 \(r\)。
+在 \(r\) 避开二者极点的条件下：
+\begin{enumerate}
+  \item 若 \(a=b\)，则必有 \(F_a(r)=F_b(r)\)；
+  \item 若 \(a\neq b\)，则
+  \[
+  \Pr\bigl[F_a(r)=F_b(r)\bigr]\le \frac{2d-1}{|S|}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 Hankel 秩有限与最小 realization 理论（例如命题 \ref{prop:pom-hankel-realization-protocol} 的同型构造），存在维数不超过 \(d\) 的线性实现使
+\(
+a_n=\alpha_a^{\mathsf T}A_a^n\beta_a
+\)。
+形式幂级数恒等式
+\(
+\sum_{n\ge 0}A^n z^n=(I-zA)^{-1}
+\)
+给出
+\(
+F_a(z)=\alpha_a^{\mathsf T}(I-zA_a)^{-1}\beta_a
+\)，从而 \(F_a=P_a/Q_a\) 且 \(\deg Q_a\le d,\ \deg P_a\le d-1\)；同理对 \(F_b\)。
+于是
+\[
+F_a-F_b=\frac{P_aQ_b-P_bQ_a}{Q_aQ_b},
+\]
+且分子 \(N(z):=P_aQ_b-P_bQ_a\) 为次数不超过 \(2d-1\) 的多项式。
+当 \(a\neq b\) 时 \(F_a-F_b\) 非零，故 \(N\neq 0\)；
+在 \(r\) 避开极点的条件下，\(F_a(r)=F_b(r)\) 当且仅当 \(N(r)=0\)。
+非零一元多项式在域上零点数不超过其次数，故在集合 \(S\) 上至多 \(2d-1\) 个坏点，概率界成立。证毕。
+\end{proof}
+
+\begin{proposition}[Hankel-正规形作为最小 realization 的 \texorpdfstring{$\mathrm{GL}_d$}{GLd} 轨道截面]\label{prop:xi-hankel-nf-gld-slice-stabilizer}
+设 \(k\) 为域，并令 \(\mathcal{R}_d\) 为所有维数 \(d\) 的最小线性实现三元组 \((\alpha,A,\beta)\) 的集合。
+令 \(\mathrm{GL}_d(k)\) 作用为
+\[
+P\cdot(\alpha,A,\beta):=(P^{\mathsf T}\alpha,\ P^{-1}AP,\ P^{-1}\beta).
+\]
+对任意使 \(H_0=(a_{i+j})_{0\le i,j\le d-1}\) 可逆的序列 \(a_n=\alpha^{\mathsf T}A^n\beta\)，
+记 Hankel-正规形构造给出的
+\(
+A_H:=H_0^{-1}H_1
+\),
+\(
+\alpha_H^{\mathsf T}:=(a_0,\dots,a_{d-1})
+\),
+\(
+\beta_H:=e_0
+\)。
+令可达矩阵
+\[
+C:=\big[\beta,\ A\beta,\ \dots,\ A^{d-1}\beta\big]\in M_d(k).
+\]
+则 \(C\in\mathrm{GL}_d(k)\) 且
+\[
+C\cdot(\alpha,A,\beta)=(\alpha_H,A_H,\beta_H).
+\]
+并且若 \((A_H,e_0)\) 可达（即 \(\{A_H^j e_0\}_{j=0}^{d-1}\) 张成 \(k^d\)），则切片稳定子
+\[
+\mathrm{Stab}:=\{G\in \mathrm{GL}_d(k):\ G^{-1}A_HG=A_H,\ G^{-1}e_0=e_0\}
+\]
+仅含单位元。
+\end{proposition}
+\begin{proof}
+令
+\(
+O:=[\alpha^{\mathsf T};\alpha^{\mathsf T}A;\dots;\alpha^{\mathsf T}A^{d-1}]
+\)。
+则对 \(0\le i,j\le d-1\) 有
+\(
+H_0{}_{ij}=a_{i+j}=(\alpha^{\mathsf T}A^i)(A^j\beta)
+\)，从而 \(H_0=OC\)；同理 \(H_1=OAC\)。
+最小 realization 蕴含可达/可观测，故 \(C,O\) 皆可逆，因而
+\(
+A_H=H_0^{-1}H_1=C^{-1}AC
+\),
+\(
+\beta_H=e_0=C^{-1}\beta
+\),
+\(
+\alpha_H^{\mathsf T}=e_0^{\mathsf T}H_0=\alpha^{\mathsf T}C
+\)。
+于是 \(C\cdot(\alpha,A,\beta)=(\alpha_H,A_H,e_0)\)。
+若 \(G^{-1}A_HG=A_H\) 且 \(G^{-1}e_0=e_0\)，则对一切 \(j\ge 0\) 有
+\(
+G^{-1}A_H^je_0=A_H^jG^{-1}e_0=A_H^je_0
+\)。
+当 \(\{A_H^je_0\}_{j=0}^{d-1}\) 生成 \(k^d\) 时，\(G\) 在一组基上为恒等，故 \(G=I\)。证毕。
+\end{proof}
+
+\begin{remark}[窗口等价的语义压缩]\label{rem:xi-hankel-window-compile-equivalence}
+一旦 \((d,\ell_q)\) 与 \(\mathrm{HANKELNF}_q\) 作为可审计证书给定，定理 \ref{thm:dephys-hankel-finite-audit} 与命题 \ref{prop:xi-hankel-window-fiber-1d} 表明：
+确定性判等的最小信息载体是长度 \(2d\) 的连续窗口；
+而在允许可控误差的情形，定理 \ref{thm:xi-hankel-single-point-random-audit} 进一步把该窗口压缩为一次生成函数取值比较。
+\end{remark}
+
+\endinput
+

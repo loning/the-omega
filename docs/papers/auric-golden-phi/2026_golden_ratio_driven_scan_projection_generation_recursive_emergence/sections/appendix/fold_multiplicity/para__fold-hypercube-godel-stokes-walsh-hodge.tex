@@ -1,0 +1,259 @@
+\paragraph{Gödel--Stokes 体--界字典：通量偏差、Walsh 全息与回路扭量}
+\label{par:fold-hypercube-godel-stokes-walsh-hodge}
+本段在超立方体粗粒化的边界邻接多图 \(\mathsf B_f\) 上，给出一条完全离散的“边界 \(\to\) 体积”读出链：单坐标方向的有向通量严格等于体积偏差；Fourier--Walsh 系数可由边界有向 \(1\)-形式积分全息读出；固定体积偏差后边界层仍保留的自由度精确形成以 \(H_1(\mathsf B_f;\ZZ)\) 为平移群的扭量；并且上述数据可由素数寄存器作乘法外置，同时在加权能量下诱导显式椭球可行域。
+
+\begin{proposition}[单坐标离散 Stokes 恒等式：有向通量等于体积偏差]\label{prop:fold-hypercube-godel-stokes-flux-bias}
+设 \(n\ge 1\) 且 \(\Omega_n:=\{0,1\}^n\)。
+对 \(i\in\{1,\dots,n\}\)，记 \(\omega^{(i)}\) 为将 \(\omega\) 的第 \(i\) 位翻转后的顶点。
+对任意 \(S\subseteq\Omega_n\)，定义第 \(i\) 坐标方向的有向边界计数
+\[
+N_i^+(S):=\#\{\omega\in S:\ \omega_i=0,\ \omega^{(i)}\notin S\},
+\qquad
+N_i^-(S):=\#\{\omega\in S:\ \omega_i=1,\ \omega^{(i)}\notin S\},
+\]
+并定义体积偏差
+\[
+b_i(S):=\#(S\cap\{\omega_i=0\})-\#(S\cap\{\omega_i=1\})
+=\sum_{\omega\in S}(-1)^{\omega_i}\in\ZZ.
+\]
+则对一切 \(i\) 有严格恒等式
+\[
+\boxed{\;N_i^+(S)-N_i^-(S)=b_i(S)\;}
+\]
+从而无向边界数 \(c_i(S):=N_i^+(S)+N_i^-(S)\) 满足
+\[
+c_i(S)\ge |b_i(S)|.
+\]
+\end{proposition}
+\begin{proof}
+固定 \(i\)。映射 \(\{\omega:\omega_i=0\}\to\{\omega:\omega_i=1\}\)、\(\omega\mapsto\omega^{(i)}\) 为双射，故
+\[
+N_i^+(S)-N_i^-(S)
+=\sum_{\omega:\omega_i=0}\bigl(\mathbf 1_S(\omega)-\mathbf 1_S(\omega^{(i)})\bigr)
+=\#(S\cap\{\omega_i=0\})-\#(S\cap\{\omega_i=1\})
+=b_i(S).
+\]
+再由 \(|a+b|\ge ||a|-|b||\)（取 \(a=N_i^+(S),b=N_i^-(S)\)）得 \(c_i(S)\ge |b_i(S)|\)。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\ell^1$}{l1} 边界下界与坐标单调性的等号刻画]\label{cor:fold-hypercube-boundary-l1-bias-monotone}
+在命题 \ref{prop:fold-hypercube-godel-stokes-flux-bias} 的记号下，记 \(\partial S\) 为超立方体图上 \(S\) 的无向边界边集（定义如 \eqref{eq:hypercube-gauge-volume-renyi-upperbound} 的证明中所用）。
+则
+\[
+|\partial S|=\sum_{i=1}^n c_i(S)\ \ge\ \sum_{i=1}^n |b_i(S)|.
+\]
+并且对给定的 \(i\) 有
+\[
+c_i(S)=|b_i(S)|
+\quad\Longleftrightarrow\quad
+N_i^+(S)N_i^-(S)=0,
+\]
+亦即第 \(i\) 坐标方向的全部边界边在同一方向上外流。
+若对所有 \(i\) 同时取等号，则存在坐标翻转自同构
+\(
+\omega_i\mapsto 1-\omega_i
+\)
+使得变换后的集合成为坐标偏序下的上闭集（逐坐标单调）。
+\end{corollary}
+\begin{proof}
+第一条由逐坐标不等式 \(c_i(S)\ge |b_i(S)|\) 求和得到。
+等号条件来自 \(|a+b|=||a|-|b||\iff ab=0\)（\(a,b\ge 0\)）。
+当每个坐标方向的边界边均同向时，按坐标逐层检验可得：在适当坐标翻转后，沿任一坐标由 \(0\) 到 \(1\) 的邻接翻转不会离开集合，从而集合为上闭。证毕。
+\end{proof}
+
+\begin{proposition}[Gödel 边界通量码与乘法体积读出]\label{prop:fold-hypercube-godel-flux-multiplicative-volume}
+取一组互异素数 \((p_i)_{i=1}^n\)，并定义 Gödel 边界通量码
+\[
+\Phi_p(S):=\prod_{i=1}^n p_i^{\,N_i^+(S)-N_i^-(S)}\in\QQ_{>0}.
+\]
+则 \(\Phi_p(S)=\prod_{i=1}^n p_i^{\,b_i(S)}\)，因而仅由体积偏差向量 \((b_1(S),\dots,b_n(S))\) 决定。
+进一步定义顶点 Gödel 编码
+\[
+G(\omega):=\prod_{i=1}^n p_i^{\omega_i}\in\NN_{>0},
+\]
+则有严格恒等式
+\[
+\boxed{\;
+\prod_{\omega\in S}G(\omega)
+=\prod_{i=1}^n p_i^{\,\#(S\cap\{\omega_i=1\})}
+=\prod_{i=1}^n p_i^{\frac{|S|-b_i(S)}{2}}\in\NN_{>0}.
+\;}
+\]
+因此 \(\prod_{\omega\in S}G(\omega)\) 被 \(|S|\) 与 \(\Phi_p(S)\) 等价确定（在对数坐标上为一条线性关系）。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:fold-hypercube-godel-stokes-flux-bias} 得 \(N_i^+-N_i^-=b_i\)，代回即得 \(\Phi_p\) 的表达式。
+另一方面，
+\[
+\prod_{\omega\in S}G(\omega)
+=\prod_{\omega\in S}\prod_{i=1}^n p_i^{\omega_i}
+=\prod_{i=1}^n p_i^{\sum_{\omega\in S}\omega_i}
+=\prod_{i=1}^n p_i^{\#(S\cap\{\omega_i=1\})}.
+\]
+又由
+\(
+b_i(S)=\#(S\cap\{\omega_i=0\})-\#(S\cap\{\omega_i=1\})=|S|-2\#(S\cap\{\omega_i=1\})
+\)
+得 \(\#(S\cap\{\omega_i=1\})=(|S|-b_i(S))/2\)，代回即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[粗粒化切割面积的偏差下界]\label{cor:fold-hypercube-cutedges-bias-l1}
+沿用定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的满射粗粒化 \(f:\Omega_n\twoheadrightarrow X\)，并记纤维 \(S_x=f^{-1}(x)\)。
+则
+\[
+2A(f)=\sum_{x\in X}|\partial S_x|
+\ \ge\
+\sum_{x\in X}\sum_{i=1}^n |b_i(S_x)|.
+\]
+\end{corollary}
+\begin{proof}
+对每个纤维 \(S_x\) 用推论 \ref{cor:fold-hypercube-boundary-l1-bias-monotone} 的下界 \(|\partial S_x|\ge \sum_i |b_i(S_x)|\)。
+再注意每条切割边恰在两条纤维边界中各计一次，故 \(\sum_x|\partial S_x|=2A(f)\)。证毕。
+\end{proof}
+
+\begin{theorem}[加权 Walsh 模式的广义 Stokes 公式：Fourier 系数的边界全息读出]\label{thm:fold-hypercube-weighted-walsh-stokes}
+在超立方体上赋予坐标边权 \(w_i>0\)，并定义加权拉普拉斯算子
+\[
+(\Delta_w\psi)(\omega):=\sum_{i=1}^n w_i\bigl(\psi(\omega)-\psi(\omega^{(i)})\bigr).
+\]
+对非空指标集 \(I\subseteq\{1,\dots,n\}\)，令 Walsh 字符
+\[
+\chi_I(\omega):=(-1)^{\sum_{i\in I}\omega_i}.
+\]
+则 \(\chi_I\) 为 \(\Delta_w\) 的本征函数，且
+\[
+\Delta_w\chi_I=2\Bigl(\sum_{i\in I}w_i\Bigr)\chi_I.
+\]
+对任意 \(S\subseteq\Omega_n\)，令 \(\partial^{\to}S\) 表示从 \(S\) 指向补集的外法向有向边集合。
+定义边界上的有向 \(1\)-形式
+\[
+\alpha_{I,w}(\omega\to\omega^{(i)})
+:=\frac{w_i}{2\sum_{j\in I}w_j}\bigl(\chi_I(\omega^{(i)})-\chi_I(\omega)\bigr),
+\qquad (\omega\to\omega^{(i)})\in\partial^{\to}S.
+\]
+则成立广义离散 Stokes 公式
+\[
+\boxed{\;\sum_{\omega\in S}\chi_I(\omega)=\sum_{e\in \partial^{\to}S}\alpha_{I,w}(e).\;}
+\]
+特别地，对 \(f=\mathbf 1_S\) 的 Fourier--Walsh 系数
+\(
+\widehat f(I)=2^{-n}\sum_{\omega\in\Omega_n}f(\omega)\chi_I(\omega)
+\)
+有边界积分表达
+\[
+2^n\widehat{\mathbf 1_S}(I)=\sum_{e\in \partial^{\to}S}\alpha_{I,w}(e).
+\]
+\end{theorem}
+\begin{proof}
+由本征关系，
+\[
+2\Bigl(\sum_{i\in I}w_i\Bigr)\sum_{\omega\in S}\chi_I(\omega)
+=\sum_{\omega\in S}(\Delta_w\chi_I)(\omega)
+=\sum_{\omega\in S}\sum_{i=1}^n w_i\bigl(\chi_I(\omega)-\chi_I(\omega^{(i)})\bigr).
+\]
+将内层求和按无向边配对，内部边贡献相消，仅剩跨越 \(S\) 与补集的边；并按外向取向把每条割边写成 \((\omega\to\omega^{(i)})\in\partial^{\to}S\)，得到
+\[
+\sum_{\omega\in S}(\Delta_w\chi_I)(\omega)
+=\sum_{(\omega\to\omega^{(i)})\in\partial^{\to}S}w_i\bigl(\chi_I(\omega)-\chi_I(\omega^{(i)})\bigr).
+\]
+两边同除 \(2\sum_{i\in I}w_i\) 即得所述公式（与 \(\alpha_{I,w}\) 仅差号，已由定义吸收）。证毕。
+\end{proof}
+
+\begin{proposition}[Gödel--Hodge 扭量：固定偏差后的边界自由度由回路群承载]\label{prop:fold-hypercube-godel-hodge-torsor}
+沿用定义 \ref{def:hypercube-boundary-multigraph} 的边界邻接多图 \(\mathsf B_f\)，并取其一维链群 \(C_1(\mathsf B_f;\ZZ)\) 与边界算子 \(\partial:C_1\to C_0\)。
+对每个坐标 \(i\)，定义纤维偏差向量
+\[
+b^{(i)}\in C_0(\mathsf B_f;\ZZ),
+\qquad
+b^{(i)}_x:=b_i(S_x).
+\]
+则存在一个自然整数流 \(F^{(i)}\in C_1(\mathsf B_f;\ZZ)\)（由超立方体的第 \(i\) 坐标割边按 \(0\to 1\) 取向并推前到 \(\mathsf B_f\) 得到），满足
+\[
+\partial F^{(i)}=b^{(i)}.
+\]
+并且若解集
+\[
+\mathcal S_i:=\{F\in C_1(\mathsf B_f;\ZZ):\ \partial F=b^{(i)}\}
+\]
+非空，则其为仿射格（torsor）
+\[
+\mathcal S_i=F^{(i)}+\ker\partial,
+\qquad
+\ker\partial\cong H_1(\mathsf B_f;\ZZ).
+\]
+从而对全部坐标同时固定 \((b^{(1)},\dots,b^{(n)})\) 时，残留的全局边界自由度构成以 \(H_1(\mathsf B_f;\ZZ)^n\) 为平移群的扭量；其自由秩为
+\[
+\operatorname{rank}_{\ZZ}H_1(\mathsf B_f;\ZZ)^n
+=n\bigl(A(f)-|X|+c(\mathsf B_f)\bigr)
+\]
+（命题 \ref{prop:hypercube-boundary-multigraph-h1-cdim}）。
+\end{proposition}
+\begin{proof}
+把超立方体的第 \(i\) 坐标割边按 \(0\to 1\) 方向计为有向 \(1\)-链，并通过端点纤维标记 \(f:\Omega_n\to X\) 推前到 \(\mathsf B_f\) 的边链，得 \(F^{(i)}\)。
+对任一顶点 \(x\in X\)，\((\partial F^{(i)})_x\) 等于从纤维 \(S_x\) 发出的 \(0\to 1\) 边数减去 \(1\to 0\) 边数，按命题 \ref{prop:fold-hypercube-godel-stokes-flux-bias} 恰为 \(b_i(S_x)=b_x^{(i)}\)。
+若 \(F,F'\) 同为解，则 \(\partial(F-F')=0\)，故差落入 \(\ker\partial\)；反之加上任意 \(Z\in\ker\partial\) 仍为解，得到扭量结构。
+最后 \(\ker\partial\cong H_1(\mathsf B_f;\ZZ)\) 与秩公式由命题 \ref{prop:hypercube-boundary-multigraph-h1-cdim} 给出。证毕。
+\end{proof}
+
+\begin{proposition}[回路自由度的素数预算下界：自由秩不可压缩]\label{prop:fold-hypercube-h1-prime-budget-minimal}
+沿用命题 \ref{prop:fold-hypercube-godel-hodge-torsor} 记号，并令
+\[
+r:=\operatorname{rank}_{\ZZ}H_1(\mathsf B_f;\ZZ)=A(f)-|X|+c(\mathsf B_f).
+\]
+则 \(H_1(\mathsf B_f;\ZZ)^n\cong \ZZ^{nr}\)。
+取互异素数族 \(\{q_{i,j}\}_{1\le i\le n,\,1\le j\le r}\)，并定义映射
+\[
+\Gamma:\ \ZZ^{nr}\longrightarrow \QQ_{>0},
+\qquad
+(a_{i,j})\longmapsto \prod_{i=1}^n\prod_{j=1}^r q_{i,j}^{a_{i,j}}.
+\]
+则 \(\Gamma\) 为单射群同态。
+并且若 \(A\) 为任意自由阿贝尔群且存在单射 \(\ZZ^{nr}\hookrightarrow A\)，则必有 \(\operatorname{rank}_{\ZZ}A\ge nr\)；
+等价地，以互异素数作为独立乘法通道对 \(H_1(\mathsf B_f;\ZZ)^n\) 作 Gödel 外置时，所需通道数下界恰为 \(nr\)。
+\end{proposition}
+\begin{proof}
+由唯一分解定理，\(\langle q_{i,j}\rangle\subset\QQ_{>0}\) 的自由部分同构于 \(\ZZ^{nr}\)，故 \(\Gamma\) 单射。
+对最小性，任意单射 \(B\hookrightarrow A\)（\(A,B\) 自由阿贝尔）在 \(\QQ\)-张量下诱导线性单射 \(B\otimes\QQ\hookrightarrow A\otimes\QQ\)，故 \(\dim_{\QQ}(B\otimes\QQ)\le \dim_{\QQ}(A\otimes\QQ)\)，即 \(\operatorname{rank}_{\ZZ}A\ge \operatorname{rank}_{\ZZ}B=nr\)。证毕。
+\end{proof}
+
+\begin{proposition}[加权边界能量诱导的椭球约束]\label{prop:fold-hypercube-weighted-energy-ellipsoid-bias}
+对权重 \(w_i>0\) 定义加权边界能量
+\[
+E_w(S):=\sum_{i=1}^n w_i\,c_i(S),
+\]
+其中 \(c_i(S)\) 为第 \(i\) 坐标方向无向边界数（命题 \ref{prop:fold-hypercube-godel-stokes-flux-bias}）。
+则成立二次型下界
+\[
+\boxed{\;
+E_w(S)\ \ge\ 2^{1-n}\sum_{i=1}^n w_i\,b_i(S)^2.
+\;}
+\]
+从而在给定 \(E_w(S)\) 时，偏差向量 \(b(S)\) 必落入轴对齐椭球
+\[
+\sum_{i=1}^n w_i\,b_i^2\ \le\ 2^{n-1}E_w(S).
+\]
+\end{proposition}
+\begin{proof}
+令 \(f=\mathbf 1_S\)。由于 \(f(\omega)-f(\omega^{(i)})\in\{0,\pm 1\}\)，有
+\[
+E_w(S)=\sum_{i=1}^n w_i\sum_{\omega\in\Omega_n}\bigl(f(\omega)-f(\omega^{(i)})\bigr)^2.
+\]
+将其按 \(2^{-n}\) 归一化得到加权 Dirichlet 形式
+\(
+\mathcal E_w(f)=2^{-n}E_w(S)
+\)。
+在 Walsh 基底上（参见定理 \ref{thm:discussion-hypercube-stokes-fourier-binomial} 的谱层展开口径），有
+\[
+\mathcal E_w(f)=\sum_{\varnothing\ne I\subseteq[n]}2\Bigl(\sum_{i\in I}w_i\Bigr)\,|\widehat f(I)|^2
+\ \ge\
+\sum_{i=1}^n 2w_i\,|\widehat f(\{i\})|^2.
+\]
+又 \(\widehat{\mathbf 1_S}(\{i\})=2^{-n}\sum_{\omega\in S}(-1)^{\omega_i}=b_i(S)/2^n\)，故
+\[
+2^{-n}E_w(S)\ge \sum_{i=1}^n 2w_i\frac{b_i(S)^2}{2^{2n}},
+\]
+移项即得结论。证毕。
+\end{proof}
+
+\endinput
+

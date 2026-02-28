@@ -133,6 +133,78 @@ C\,2^{-m}\exp\!\bigl(C\|A\|_{L^\infty(R_1)}\bigr)
 即得到所示界。证毕。
 \end{proof}
 
+\begin{theorem}[三维非交换 Stokes--Bianchi 立方体证书与四阶误差界]\label{thm:conclusion-nonabelian-stokes-bianchi-cube-certificate}
+设 \(G\subset \mathrm{GL}_N(\mathbb C)\) 为矩阵李群，\(\mathfrak g\) 为其李代数，\(\|\cdot\|\) 为算子范数。
+令
+\[
+A:=A_1\,\mathrm d x_1+A_2\,\mathrm d x_2+A_3\,\mathrm d x_3
+\]
+为定义在包含闭立方体 \([x,x+h]^3\) 的开邻域上的 \(\mathfrak g\)-值 \(C^3\) \(1\)-形式（\(h>0\) 足够小），并记曲率 \(F:=\mathrm d A+A\wedge A\) 与协变导数 \(\nabla_A F\)。
+对 \(i=1,2,3\) 定义沿坐标边的平行移动
+\[
+U_i(x):=\mathcal P\exp\!\left(\int_0^h A_i(x+t e_i)\,\mathrm d t\right)\in G,
+\]
+并对 \(1\le i<j\le 3\) 定义基点在 \(x\) 的面元 holonomy
+\[
+U_{ij}(x):=U_i(x)\,U_j(x+h e_i)\,U_i(x+h e_j)^{-1}\,U_j(x)^{-1}\in G.
+\]
+再定义立方体 Bianchi 缺陷
+\begin{align}\label{eq:conclusion-bianchi-defect-cube}
+B_h(x):={}&U_{12}(x)\,U_{23}(x)\,U_{31}(x)\nonumber\\
+&\cdot\bigl(U_3(x)\,U_{12}(x+h e_3)\,U_3(x)^{-1}\bigr)^{-1}
+\cdot\bigl(U_1(x)\,U_{23}(x+h e_1)\,U_1(x)^{-1}\bigr)^{-1}\nonumber\\
+&\cdot\bigl(U_2(x)\,U_{31}(x+h e_2)\,U_2(x)^{-1}\bigr)^{-1}.\nonumber
+\end{align}
+则存在仅依赖于 \(N\) 的常数 \(C>0\) 使得当 \(h\,\|A\|_{L^\infty([x,x+h]^3)}\le 1/10\) 时，\(B_h(x)\) 落入 \(\exp\) 的局部可逆邻域内，从而主支对数 \(\log B_h(x)\in\mathfrak g\) 定义且满足估计
+\begin{equation}\label{eq:conclusion-bianchi-defect-order4}
+\boxed{\;
+\|\log B_h(x)\|
+\le
+C\,h^4\Bigl(\|F\|_{C^1([x,x+h]^3)}^{2}+\|\nabla_A F\|_{C^0([x,x+h]^3)}\Bigr)\; }.
+\end{equation}
+更强地，存在三阶主导展开
+\begin{equation}\label{eq:conclusion-bianchi-defect-leading}
+\boxed{\;
+\log B_h(x)
+=h^3\bigl(\dd_A F\bigr)_{123}(x)
+O\!\left(h^4\Bigl(\|F\|_{C^1([x,x+h]^3)}^{2}+\|\nabla_A F\|_{C^0([x,x+h]^3)}\Bigr)\right)\; }.
+\end{equation}
+由于 Bianchi 恒等式 \(\dd_A F\equiv 0\) 对任意光滑连接成立，\eqref{eq:conclusion-bianchi-defect-leading} 立即推出 \eqref{eq:conclusion-bianchi-defect-order4} 的四阶衰减：\(B_h(x)\) 给出“协变闭性”的可审计立方体证书。
+\end{theorem}
+\begin{proof}[证明要点]
+对每个面元 holonomy \(U_{ij}(x)\) 用路径有序指数的 Dyson/Magnus 展开得到二阶主项
+\(
+U_{ij}(x)=I+h^2F_{ij}(x)+O(h^3)
+\)。
+将对顶面元搬运回同一基点所产生的共轭项展开到三阶，可把 \(\partial_kF_{ij}+[A_k,F_{ij}]\) 归并为 \((\nabla_{A,k}F_{ij})(x)\)。
+把这些展开代入 \eqref{eq:conclusion-bianchi-defect-cube}，二阶曲率项在乘积中完全抵消，三阶项收束为
+\(
+\nabla_{A,3}F_{12}+\nabla_{A,1}F_{23}+\nabla_{A,2}F_{31}
+=(\dd_A F)_{123}
+\)。
+其余项由 BCH 公式与三阶展开的余项估计控制；非交换修正从交换子起始，至少为 \(O(h^4\|F\|^2)\)，并与 \(\|\nabla_A F\|_{C^0}\) 一并被 \eqref{eq:conclusion-bianchi-defect-leading} 右端吸收。
+在 \(h\|A\|_{L^\infty}\le 1/10\) 下，\(\log\) 在单位元邻域内 Lipschitz，从而得到 \eqref{eq:conclusion-bianchi-defect-order4}。证毕。
+\end{proof}
+
+\begin{corollary}[dyadic 三维网格上的 Bianchi 审计阈值]\label{cor:conclusion-nonabelian-bianchi-dyadic-audit-threshold}
+在定理 \ref{thm:conclusion-nonabelian-stokes-bianchi-cube-certificate} 的设定下，令 \(h_m:=2^{-m}\) 并定义
+\[
+\mathcal B_m
+:=\sup_{x\in h_m\ZZ^{3}\cap[0,1-h_m]^3}\|\log B_{h_m}(x)\|.
+\]
+则存在常数 \(C>0\) 使当 \(m\) 充分大时
+\[
+\boxed{\;
+\mathcal B_m
+\le
+C\,2^{-4m}\Bigl(\|F\|_{C^1([0,1]^3)}^{2}+\|\nabla_A F\|_{C^0([0,1]^3)}\Bigr)\; }.
+\]
+因此若某一数值实现对大 \(m\) 的观测衰减指数严格小于 \(4\)，则该实现与协变 Stokes--Bianchi 结构不相容，并构成离散化破坏协变性的直接否证证书。
+\end{corollary}
+\begin{proof}
+对每个 dyadic 小立方体 \([x,x+h_m]^3\) 应用 \eqref{eq:conclusion-bianchi-defect-order4} 并取上确界即可。证毕。
+\end{proof}
+
 \begin{theorem}[相对斯托克斯与圆维缺陷：由边界积分实现的同调维数刻画]\label{thm:conclusion-relative-stokes-torus-defect}
 设 \(f:G\to H\) 为有限生成阿贝尔群同态，记 \(K:=\ker f\)、\(I:=\operatorname{im}f\)。
 令 \(\widehat{(\cdot)}\) 表 Pontryagin 对偶，并令 \(T_X\) 表示紧交换群 \(\widehat X\) 的恒等分量（故 \(T_X\) 为某一实环面）。

@@ -178,6 +178,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_xh_ed_t_model_and_pointcount_certificate",
+            script="exp_xi_xh_ed_t_model_and_pointcount_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_xh_ed_t_model_and_pointcount_certificate.json",
+            ],
+        ),
+        Step(
             name="replica_softcore_exceptional_charpoly_galois_audit",
             script="exp_replica_softcore_exceptional_charpoly_galois_audit.py",
             args=[],
@@ -226,6 +234,15 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/xi_leyang_qapp_s5_disjointness_audit.json",
+            ],
+        ),
+        Step(
+            name="pom_xi_s5_primitive_element_minpoly_certificate",
+            script="exp_pom_xi_s5_primitive_element_minpoly_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_xi_s5_primitive_element_minpoly_certificate.json",
+                "artifacts/export/pom_xi_s5_primitive_element_minpoly_certificate.txt",
             ],
         ),
         Step(
