@@ -114,6 +114,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_degree11_Et_S11_audit",
+            script="exp_xi_degree11_Et_S11_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_degree11_Et_S11_audit.json",
+            ],
+        ),
+        Step(
             name="xi_exceptional_reciprocal_fibonacci_partition_audit",
             script="exp_xi_exceptional_reciprocal_fibonacci_partition_audit.py",
             args=[],

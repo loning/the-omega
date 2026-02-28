@@ -192,6 +192,129 @@ v_{p_t}(\mathcal N(w))\ge 1
 在互异素数集合中，\(\prod_{t=1}^{T}p_t\) 的最小值由取前 \(T\) 个素数实现；同时 \(q_t\) 含额外素因子或更高幂只会增大最坏情形规模，故最优为 \(q_t=p_t\)。
 \end{proof}
 
+\begin{corollary}[有限字典 Gödel 码的比特长度为 \texorpdfstring{$\Theta(T\log T)$}{Theta(T log T)}]\label{cor:fold-godel-finite-dictionary-bitlength-theta-TlogT}
+固定 \(B\in\NN_{\ge 1}\)，令字母表 \(A_B:=\{1,\dots,B\}\)。
+对 \(T\ge 1\) 定义位址型 Gödel 编码
+\[
+G_{B,T}:A_B^T\longrightarrow \NN_{\ge 1},
+\qquad
+G_{B,T}(a_1,\dots,a_T):=\prod_{t=1}^{T}\mathfrak p_t^{a_t},
+\]
+其中 \(\mathfrak p_t\) 为第 \(t\) 个素数，并记 primorial \(\mathfrak P_T:=\prod_{t=1}^{T}\mathfrak p_t\)。
+则对任意 \(a\in A_B^T\) 有
+\[
+\mathfrak P_T\le G_{B,T}(a)\le (\mathfrak P_T)^B.
+\]
+从而其二进制长度 \(L(a):=\lfloor \log_2 G_{B,T}(a)\rfloor+1\) 满足
+\[
+\log_2\mathfrak P_T\ \le\ L(a)\ \le\ B\log_2\mathfrak P_T+1.
+\]
+特别地，当 \(T\to\infty\) 时有 \(L(a)=\Theta(T\log T)\)，且常数因子落在区间 \([1,B]\)。
+\end{corollary}
+\begin{proof}
+由 \(a_t\in\{1,\dots,B\}\) 直接得到
+\(
+G_{B,T}(a)\ge \prod_{t=1}^{T}\mathfrak p_t=\mathfrak P_T
+\)
+与
+\(
+G_{B,T}(a)\le \prod_{t=1}^{T}\mathfrak p_t^{B}=(\mathfrak P_T)^B
+\)。
+取 \(\log_2\) 即得长度夹逼。
+最后由 primorial 渐近 \(\log\mathfrak P_T\sim T\log T\) 得 \(L(a)=\Theta(T\log T)\)。证毕。
+\end{proof}
+
+\begin{theorem}[有限字典 Gödel 像的 Dirichlet 分配函数与全纯收敛域]\label{thm:fold-godel-finite-dictionary-dirichlet-partition-holomorphic}
+固定 \(B\in\NN_{\ge 1}\)，定义 Gödel 影像集合
+\[
+\mathcal G_B:=\bigcup_{T\ge 0}\left\{\ \prod_{t=1}^{T}\mathfrak p_t^{a_t}:\ a_t\in\{1,\dots,B\}\ \right\}\subset \NN_{\ge 1},
+\]
+其中 \(T=0\) 时乘积约定为 \(1\)。
+定义其 Dirichlet 分配函数
+\[
+Z_B(s):=\sum_{n\in\mathcal G_B} n^{-s}\qquad (s\in\CC).
+\]
+则对所有满足 \(\Re(s)>0\) 的 \(s\)，级数 \(Z_B(s)\) 绝对收敛，并具有分层分解
+\[
+Z_B(s)=\sum_{T=0}^{\infty}\ \prod_{t=1}^{T}\left(\sum_{a=1}^{B}\mathfrak p_t^{-as}\right).
+\]
+因此 \(Z_B\) 在半平面 \(\Re(s)>0\) 上全纯。
+\end{theorem}
+\begin{proof}
+设 \(\sigma=\Re(s)>0\)。
+对每个 \(t\) 有
+\[
+\sum_{a=1}^{B}\left|\mathfrak p_t^{-as}\right|
+=\sum_{a=1}^{B}\mathfrak p_t^{-a\sigma}
+\le B\,\mathfrak p_t^{-\sigma}.
+\]
+从而对每个 \(T\ge 0\) 有
+\[
+\prod_{t=1}^{T}\left(\sum_{a=1}^{B}\mathfrak p_t^{-a\sigma}\right)
+\le
+B^T\prod_{t=1}^{T}\mathfrak p_t^{-\sigma}
+=
+B^T\,\mathfrak P_T^{-\sigma}.
+\]
+又由 \(\mathfrak p_t\ge t+1\) 得 \(\mathfrak P_T\ge (T+1)!\)，故
+\[
+B^T\,\mathfrak P_T^{-\sigma}\le B^T\,((T+1)!)^{-\sigma}.
+\]
+而 \(\sum_{T\ge 0} B^T/((T+1)!)^{\sigma}\) 由阶乘支配收敛，故 \(Z_B(s)\) 在 \(\Re(s)>0\) 绝对收敛。
+对任意紧子集上一致收敛由同一估计给出，从而由 Weierstrass 判别法得 \(Z_B\) 在该半平面全纯。
+分层分解由按长度 \(T\) 分组并使用有限乘积展开的交换性得到。证毕。
+\end{proof}
+
+\begin{theorem}[Gödel--\texorpdfstring{$\zeta$}{zeta} Gibbs 因子化：长度与位条件独立]\label{thm:fold-godel-finite-dictionary-gibbs-factorization}
+取 \(\sigma>0\) 并令 \(\mathbf A_B^{\ast}:=\bigcup_{T\ge 0}A_B^{T}\) 为有限字典的自由幺半群。
+按定理 \ref{thm:fold-godel-finite-dictionary-dirichlet-partition-holomorphic} 的 \(Z_B(\sigma)\) 定义概率测度
+\[
+\PP_{\sigma,B}(a_1,\dots,a_T)
+:=
+\frac{\left(\prod_{t=1}^{T}\mathfrak p_t^{a_t}\right)^{-\sigma}}{Z_B(\sigma)}
+\qquad\bigl((a_1,\dots,a_T)\in A_B^T,\ T\ge 0\bigr),
+\]
+其中 \(T=0\) 对应空字。
+记随机变量 \(T\) 为字长，并在条件 \(T=T_0\) 下记 \((A_t)_{t=1}^{T_0}\) 为位数字。
+则：
+\begin{enumerate}
+  \item \(T\) 的分布为
+  \[
+  \PP_{\sigma,B}(T=T_0)=\frac{W_{T_0}(\sigma)}{Z_B(\sigma)},
+  \qquad
+  W_T(\sigma):=\prod_{t=1}^{T} w_t(\sigma),
+  \qquad
+  w_t(\sigma):=\sum_{a=1}^{B}\mathfrak p_t^{-a\sigma}.
+  \]
+  \item 在条件 \(T=T_0\) 下，\((A_t)_{t=1}^{T_0}\) 相互独立，且边际为
+  \[
+  \PP_{\sigma,B}(A_t=a\mid T=T_0)
+  =
+  \frac{\mathfrak p_t^{-a\sigma}}{\sum_{u=1}^{B}\mathfrak p_t^{-u\sigma}}
+  \qquad (a\in\{1,\dots,B\}).
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对固定 \(T_0\) 有
+\[
+\sum_{(a_1,\dots,a_{T_0})\in A_B^{T_0}}\prod_{t=1}^{T_0}\mathfrak p_t^{-a_t\sigma}
+\;=\;
+\prod_{t=1}^{T_0}\left(\sum_{a=1}^{B}\mathfrak p_t^{-a\sigma}\right)
+\;=\;
+W_{T_0}(\sigma),
+\]
+故长度分布为 \(W_{T_0}(\sigma)/Z_B(\sigma)\)。
+在条件 \(T=T_0\) 下，权重 \(\prod_{t=1}^{T_0}\mathfrak p_t^{-a_t\sigma}\) 对坐标 \(t\) 完全分离，归一化后即得到乘积分布与所示边际。证毕。
+\end{proof}
+
+\begin{conjecture}[有限字典 Dirichlet 分配函数的自然边界与有效温度匹配]\label{conj:fold-godel-finite-dictionary-natural-boundary-temperature-match}
+对任意 \(B\ge 2\)，猜想 \(Z_B(s)\) 在直线 \(\Re(s)=0\) 上存在自然边界：不存在穿越该直线的解析延拓。
+此外，若某一可审计 prime-register 外置方案在宏观上产生证书整数族 \(N_m\) 并满足步数/密度律（例如定理 \ref{thm:fold-local-rewrite-ldp-lower-tail-barrier} 的线性下界口径），
+则预期存在唯一 \(\sigma^\ast>0\) 使得经适当归一化后的 \(\log N_m\) 的偏差原理与 \(Z_B(\sigma)\) 的 Legendre 对偶在 \(\sigma=\sigma^\ast\) 处匹配；
+等价地，可将 \(\sigma^\ast\) 视为使得外置证书的长度统计在主阶上逼近定理 \ref{thm:fold-godel-finite-dictionary-gibbs-factorization} 所诱导的 Gibbs 因子化机制的有效温度参数。
+\end{conjecture}
+
 \begin{theorem}[坐标可分 Gödel 整数化的不可压缩胀量]\label{thm:fold-gauge-anomaly-godel-coprime-inflation}
 令 \((q_k)_{k\ge1}\subset\NN_{\ge2}\) 两两互素。
 对任意二进模式 \(b=(b_k)_{k\ge1}\in\{0,1\}^{\NN}\)，定义前缀 Gödel 整数
@@ -268,6 +391,58 @@ A_m\sim m\log m
 \(
 \alpha=g_\ast(p)
 \) 得到。证毕。
+\end{proof}
+
+\begin{corollary}[局部重写步数下界强制 \texorpdfstring{$m\log m$}{m log m} 级 prime-certificate 比特胀量]\label{cor:fold-local-rewrite-prime-certificate-bit-inflation}
+在定理 \ref{thm:fold-local-rewrite-ldp-lower-tail-barrier} 的设定下，令 \(T_m(\mathsf S)\) 为局部重写正规化算法 \(\mathsf S\) 的步数。
+设一类可审计 prime-register 证书把每一步编码为一位素数轴上的正指数，从而存在 \(a_t\ge 1\) 使证书整数可写为
+\[
+N_m=\prod_{t=1}^{T_m(\mathsf S)}\mathfrak p_t^{a_t}.
+\]
+则几乎处处成立下界
+\[
+\liminf_{m\to\infty}\frac{\log_2 N_m}{m\log_2 m}\ \ge\ \frac{4}{9R}.
+\]
+因此该类逐步可审计的整数证书在典型尺度上必为 \(\Omega(m\log m)\) 比特。
+\end{corollary}
+\begin{proof}
+由 \(a_t\ge 1\) 得
+\(
+N_m\ge \prod_{t=1}^{T_m(\mathsf S)}\mathfrak p_t=\mathfrak P_{T_m(\mathsf S)}
+\)，故 \(\log_2 N_m\ge \log_2\mathfrak P_{T_m(\mathsf S)}\)。
+由 primorial 渐近 \(\log \mathfrak P_n\sim n\log n\) 得
+\(
+\log_2\mathfrak P_{T_m}\ge (1+o(1))\,T_m\log_2 T_m
+\)。
+另一方面，定理 \ref{thm:fold-local-rewrite-ldp-lower-tail-barrier}(2) 给出
+\(
+T_m(\mathsf S)\ge (\frac{4}{9R}+o(1))m
+\)
+几乎处处成立，从而 \(\log T_m\sim \log m\)。
+合并即得
+\(
+\log_2 N_m\ge (\frac{4}{9R}+o(1))m\log_2 m
+\)。证毕。
+\end{proof}
+
+\begin{proposition}[算术可审计性与信息论旁信息下界之间的发散缺口]\label{prop:fold-prime-certificate-vs-it-gap-diverges}
+令 \(\omega\sim\mathrm{Unif}(\Omega_m)\) 且令 \(x:=\Fold_m(\omega)\in X_m\) 为确定性折叠读出（其中 \(|\Omega_m|=2^m\)、\(|X_m|=F_{m+2}\)）。
+则条件熵满足
+\[
+H(\omega\mid x)=H(\omega)-H(x)\le m\log 2-\log|X_m|=O(m).
+\]
+另一方面，在推论 \ref{cor:fold-local-rewrite-prime-certificate-bit-inflation} 的设定下，任一逐步可审计 prime-register 证书的比特长度为 \(\Omega(m\log m)\)。
+因此其与信息论旁信息下界之比满足
+\[
+\frac{\mathrm{Len}_2(\mathrm{certificate})}{H(\omega\mid x)}\xrightarrow[m\to\infty]{}\infty,
+\]
+并且至少以 \(\Omega(\log m)\) 速度发散。
+\end{proposition}
+\begin{proof}
+由 \(x\) 为 \(\omega\) 的确定函数，\(H(\omega\mid x)=H(\omega)-H(x)\)。
+又 \(H(\omega)=m\log 2\) 且 \(H(x)\ge 0\)，并且 \(\log|X_m|=\Theta(m)\)（由 \(|X_m|=F_{m+2}\asymp\varphi^{m}\)），故 \(H(\omega\mid x)=O(m)\)。
+另一方面，\(\Omega(m\log m)\) 的证书比特下界由推论 \ref{cor:fold-local-rewrite-prime-certificate-bit-inflation} 给出。
+相除得到发散，并由主阶比较得到至少 \(\Omega(\log m)\) 的速度。证毕。
 \end{proof}
 
 \begin{proposition}[素数寄存器诱导的随机椭球体积律]\label{prop:fold-gauge-anomaly-godel-ellipsoid-volume}
