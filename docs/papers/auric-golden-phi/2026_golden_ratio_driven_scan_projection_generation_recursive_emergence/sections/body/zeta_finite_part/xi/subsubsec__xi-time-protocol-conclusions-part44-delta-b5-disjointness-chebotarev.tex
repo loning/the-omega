@@ -43,6 +43,238 @@ L_{p_7}\cap L_5=\QQ,
 线性互不相交推出直积伽罗瓦群同构。证毕。
 \end{proof}
 
+\paragraph{\texorpdfstring{$p_7$}{p7} 的 \texorpdfstring{$S_5$}{S5} 分裂域：三类典型中间域的 \texorpdfstring{$\zeta$}{zeta}--Artin 分解与 Chebotarev 全剖面}
+令 \(L:=L_{p_7}\) 为 \(p_7\) 的分裂域（命题 \ref{prop:pom-a4-galois-s5}），并固定同构 \(\Gal(L/\QQ)\cong S_5\)。
+令
+\[
+K_{5}:=L^{S_4},\qquad
+K_{10}:=L^{S_2\times S_3},\qquad
+K_{20}:=L^{S_3},
+\]
+其中 \(S_4\) 为一点稳定子，\(S_2\times S_3\) 为二子集稳定子，\(S_3\) 为有序对稳定子。
+记 \(S_5\) 的三个有理不可约表示（Specht 模）为
+\[
+\rho_{4}:=S^{(4,1)},\qquad
+\rho_{5}:=S^{(3,2)},\qquad
+\rho_{6}:=S^{(3,1,1)},
+\]
+并以 \(L(s,\rho_i)\) 表示相应 Artin \(L\)-函数。
+
+\begin{theorem}[三类中间域的 Dedekind \texorpdfstring{$\zeta$}{zeta} 的 Artin--Dedekind 分解]\label{thm:xi-p7-s5-minimal-artin-dedekind-zeta-factorization}
+在上述记号下成立完全显式的分解恒等式
+\[
+\zeta_{K_{5}}(s)=\zeta(s)\,L(s,\rho_4),
+\qquad
+\zeta_{K_{10}}(s)=\zeta(s)\,L(s,\rho_4)\,L(s,\rho_5),
+\]
+\[
+\zeta_{K_{20}}(s)=\zeta(s)\,L(s,\rho_4)^{2}\,L(s,\rho_5)\,L(s,\rho_6).
+\]
+从而得到不可约分量的最短比值表达
+\[
+L(s,\rho_5)=\frac{\zeta_{K_{10}}(s)}{\zeta_{K_{5}}(s)},
+\qquad
+L(s,\rho_6)=\frac{\zeta(s)\,\zeta_{K_{20}}(s)}{\zeta_{K_{10}}(s)\,\zeta_{K_{5}}(s)}.
+\]
+\end{theorem}
+\begin{proof}
+对任意中间域 \(K=L^H\)（\(H\le S_5\)），Artin 形式给出
+\[
+\zeta_K(s)=L\!\left(s,\Ind_{H}^{S_5}\mathbf 1\right),
+\]
+其中 \(\Ind_{H}^{S_5}\mathbf 1\) 为 \(S_5\) 在左陪集集 \(S_5/H\) 上的置换表示。
+因此只需对三类 \(H\) 给出置换表示的 Specht 分解。
+\par
+当 \(H=S_4\) 时，\(S_5/H\) 可识别为 \(5\) 点集合，置换表示分解为
+\(
+\Ind_{S_4}^{S_5}\mathbf 1\cong \mathbf 1\oplus \rho_4
+\)。
+当 \(H=S_2\times S_3\) 时，\(S_5/H\) 可识别为 \(10\) 个二子集，置换表示分解为
+\(
+\Ind_{S_2\times S_3}^{S_5}\mathbf 1\cong \mathbf 1\oplus \rho_4\oplus \rho_5
+\)。
+\par
+当 \(H=S_3\) 时，\(S_5/H\) 可识别为 \(20\) 个有序对。
+将有序对集合按“无向边”与“定向翻转”分解，可得
+\[
+\Ind_{S_3}^{S_5}\mathbf 1
+\cong
+\Ind_{S_2\times S_3}^{S_5}\mathbf 1\ \oplus\ \Ind_{S_2\times S_3}^{S_5}\mathrm{sgn}_{S_2},
+\]
+其中 \(\mathrm{sgn}_{S_2}\) 为二点交换的符号表示。
+后一项同构于 \(\bigwedge^2(\mathbf 1\oplus \rho_4)\cong \rho_4\oplus \rho_6\)，从而得到
+\[
+\Ind_{S_3}^{S_5}\mathbf 1\cong \mathbf 1\oplus 2\rho_4\oplus \rho_5\oplus \rho_6.
+\]
+将以上分解代入 Artin \(L\)-函数的乘法性即得所示三条 Dedekind \(\zeta\) 分解与两条比值恒等式。
+可复现核验脚本：\texttt{scripts/exp\_xi\_p7\_s5\_artin\_dedekind\_chebotarev\_certificate.py}。证毕。
+\end{proof}
+
+\begin{theorem}[三类中间域的 Chebotarev 分裂型全剖面]\label{thm:xi-p7-s5-k5-k10-k20-splitting-type-table}
+令 \(p\nmid 2\Disc_x(p_7)\) 为不分歧素数，并令 \(\mathrm{Frob}_p\subset S_5\) 为其 Frobenius 共轭类。
+则 \(p\) 在 \(K_5,K_{10},K_{20}\) 中的分解型完全由 \(\mathrm{Frob}_p\) 的循环型决定，且对应自然密度为该共轭类在 \(S_5\) 中所占比例：
+\begin{enumerate}
+  \item \((1^5)\)（密度 \(1/120\)）：
+  \[
+  K_5:1^5;\qquad K_{10}:1^{10};\qquad K_{20}:1^{20}.
+  \]
+  \item \((2\cdot 1^3)\)（密度 \(1/12\)）：
+  \[
+  K_5:2\cdot 1^3;\qquad K_{10}:2^3\cdot 1^4;\qquad K_{20}:2^7\cdot 1^6.
+  \]
+  \item \((2^2\cdot 1)\)（密度 \(1/8\)）：
+  \[
+  K_5:2^2\cdot 1;\qquad K_{10}:2^4\cdot 1^2;\qquad K_{20}:2^{10}.
+  \]
+  \item \((3\cdot 1^2)\)（密度 \(1/6\)）：
+  \[
+  K_5:3\cdot 1^2;\qquad K_{10}:3^3\cdot 1;\qquad K_{20}:3^6\cdot 1^2.
+  \]
+  \item \((3\cdot 2)\)（密度 \(1/6\)）：
+  \[
+  K_5:3\cdot 2;\qquad K_{10}:6\cdot 3\cdot 1;\qquad K_{20}:6^2\cdot 3^2\cdot 2.
+  \]
+  \item \((4\cdot 1)\)（密度 \(1/4\)）：
+  \[
+  K_5:4\cdot 1;\qquad K_{10}:4^2\cdot 2;\qquad K_{20}:4^5.
+  \]
+  \item \((5)\)（密度 \(1/5\)）：
+  \[
+  K_5:5;\qquad K_{10}:5^2;\qquad K_{20}:5^4.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对 \(p\nmid \Disc(L)\)，\(p\) 在 \(K=L^H\) 中的素分解剩余度序列等于 \(\mathrm{Frob}_p\) 在 \(S_5/H\) 上的循环长度多重集。
+分别取 \(H=S_4\)（\(5\) 点）、\(H=S_2\times S_3\)（\(10\) 个二子集）、\(H=S_3\)（\(20\) 个有序对），对 \(S_5\) 的七个循环型代表元计算其在三组集合上的循环分解，即得所列分解型。
+密度由 Chebotarev 定理给出，等于共轭类大小除以 \(|S_5|=120\)。
+可复现核验脚本同定理 \ref{thm:xi-p7-s5-minimal-artin-dedekind-zeta-factorization}。证毕。
+\end{proof}
+
+\begin{theorem}[二次塔 \texorpdfstring{$K_{20}/K_{10}$}{K20/K10} 的定向翻转判别与惰性统计]\label{thm:xi-p7-s5-k20-over-k10-oriented-flip-inertia-profile}
+在上述设定下，扩张 \(K_{20}/K_{10}\) 为二次扩张。
+令 \(p\nmid 2\Disc_x(p_7)\)，取 \(\sigma\in \mathrm{Frob}_p\subset S_5\)，并令 \(\mathfrak P\) 为 \(K_{10}\) 中位于 \(p\) 上方的一素理想。
+把 \(\mathfrak P\) 视为 \(\sigma\) 在二子集集合上的某一轨道，并记该轨道长度为 \(m\)。
+则在二次扩张 \(K_{20}/K_{10}\) 中：
+\begin{itemize}
+  \item \(\mathfrak P\) 分裂当且仅当 \(\sigma^{m}\) 在该二子集上点态固定；
+  \item \(\mathfrak P\) 惰性当且仅当 \(\sigma^{m}\) 交换该二子集的两端点。
+\end{itemize}
+并且按 \(\mathrm{Frob}_p\) 的循环型，惰性素理想的“数目—剩余度”剖面精确为：
+\begin{itemize}
+  \item \((1^5)\)：无惰性；
+  \item \((2\cdot 1^3)\)：恰有 \(1\) 个剩余度 \(1\) 的素理想惰性；
+  \item \((2^2\cdot 1)\)：恰有 \(2\) 个剩余度 \(1\) 的素理想惰性；
+  \item \((3\cdot 1^2)\)：无惰性；
+  \item \((3\cdot 2)\)：恰有 \(1\) 个剩余度 \(1\) 的素理想惰性；
+  \item \((4\cdot 1)\)：恰有 \(1\) 个剩余度 \(2\) 的素理想惰性；
+  \item \((5)\)：无惰性。
+\end{itemize}
+\end{theorem}
+\begin{proof}
+由稳定子链 \(S_3\le S_2\times S_3\le S_5\) 且 \([S_2\times S_3:S_3]=2\)，可知 \(K_{20}/K_{10}\) 为二次扩张。
+集合论上，\(K_{20}\) 对应有序对而 \(K_{10}\) 对应无序对；有序对到无序对为二重覆盖，其 deck 变换为“翻转方向”。
+\par
+对 \(\sigma\) 在无序对轨道（长度 \(m\)）上的作用，提升到有序对后：若绕轨道一圈返回时方向保持，则得到两条长度 \(m\) 的定向循环（对应分裂）；
+若返回时方向翻转，则得到一条长度 \(2m\) 的定向循环（对应惰性）。
+这正等价于判别式中 \(\sigma^m\) 是否交换该二子集两端点。
+将该判别应用于定理 \ref{thm:xi-p7-s5-k5-k10-k20-splitting-type-table} 的循环剖面逐类核验，即得惰性统计。
+可复现核验脚本同定理 \ref{thm:xi-p7-s5-minimal-artin-dedekind-zeta-factorization}。证毕。
+\end{proof}
+
+\begin{theorem}[唯一奇分歧素数处的判别式指数与 Artin 导子]\label{thm:xi-p7-s5-odd-ramification-discriminant-and-conductor}
+记
+\[
+q:=985219.
+\]
+则 \(L/\QQ\) 的奇素分歧集合恰为 \(\{q\}\)，且 \(q\) 在 \(L/\QQ\) 为温和分歧，惯性群由一换位 \(\tau\in S_5\) 生成。
+对三类中间域的判别式奇部分指数满足
+\[
+\nu_q\!\bigl(\Disc(K_{5})\bigr)=1,\qquad
+\nu_q\!\bigl(\Disc(K_{10})\bigr)=3,\qquad
+\nu_q\!\bigl(\Disc(K_{20})\bigr)=7.
+\]
+并且对 \(\rho_4,\rho_5,\rho_6\) 的 Artin 导子指数满足
+\[
+a_q(\rho_4)=1,\qquad a_q(\rho_5)=2,\qquad a_q(\rho_6)=3.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-a4-galois-s5}，\(\Disc_x(p_7)=-2^4\cdot 985219=-2^4\cdot q\)，其平方自由部分为 \(-q\)，故 \(L/\QQ\) 的分歧素数仅可能在 \(\{2,q\}\) 内，从而奇分歧仅为 \(q\)。
+对 \(q\) 的模分解出现恰一重根且其余根单纯，故局部分歧指数为 \(2\)，从而为温和分歧，惯性群同构于 \(C_2\) 并可取生成元为换位 \(\tau\)。
+\par
+温和情形下，对任意 \(K=L^H\) 的判别式指数满足
+\[
+\nu_q(\Disc(K))=\dim\Ind_H^{S_5}\mathbf 1-\dim(\Ind_H^{S_5}\mathbf 1)^{\langle\tau\rangle}
+=\#(S_5/H)-\#\bigl(\tau\text{ 在 }S_5/H\text{ 上的轨道数}\bigr).
+\]
+对 \(H=S_4\)（\(5\) 点作用）换位轨道数为 \(4\)，故得 \(5-4=1\)；
+对 \(H=S_2\times S_3\)（二子集作用）轨道数为 \(7\)，故得 \(10-7=3\)；
+对 \(H=S_3\)（有序对作用）轨道数为 \(13\)，故得 \(20-13=7\)。
+\par
+对 \(C_2=\langle\tau\rangle\) 的温和导子公式为
+\[
+a_q(\rho)=\dim\rho-\dim\rho^{\langle\tau\rangle}=\frac{\dim\rho-\chi_\rho(\tau)}{2}.
+\]
+由置换表示分解 \(\Ind_{S_4}^{S_5}\mathbf 1\cong \mathbf 1\oplus\rho_4\) 可得
+\(
+\chi_{\rho_4}(\tau)=\chi_{\Ind_{S_4}^{S_5}\mathbf 1}(\tau)-1
+\)；
+而换位在 \(5\) 点上固定 \(3\) 点，故 \(\chi_{\rho_4}(\tau)=2\)，从而 \(a_q(\rho_4)=(4-2)/2=1\)。
+同理由 \(\Ind_{S_2\times S_3}^{S_5}\mathbf 1\cong \mathbf 1\oplus\rho_4\oplus\rho_5\) 及换位在二子集上固定 \(4\) 个二子集，得 \(\chi_{\rho_5}(\tau)=4-1-2=1\)，从而 \(a_q(\rho_5)=(5-1)/2=2\)。
+再由 \(\Ind_{S_3}^{S_5}\mathbf 1\cong \mathbf 1\oplus 2\rho_4\oplus\rho_5\oplus\rho_6\) 及换位在有序对上固定 \(6\) 个有序对，得
+\(\chi_{\rho_6}(\tau)=6-1-2\cdot 2-1=0\)，从而 \(a_q(\rho_6)=(6-0)/2=3\)。
+可复现核验脚本同定理 \ref{thm:xi-p7-s5-minimal-artin-dedekind-zeta-factorization}。证毕。
+\end{proof}
+
+\begin{theorem}[分歧素数处局部 Euler 因子的三重同形]\label{thm:xi-p7-s5-local-euler-factor-triple-isomorphism-at-q}
+在定理 \ref{thm:xi-p7-s5-odd-ramification-discriminant-and-conductor} 的设定下，
+在 \(\FF_q\) 上 \(p_7\) 完全分裂且仅出现一个二重根。
+因此 \(q\) 在分裂域 \(L\) 的任一素处的剩余度皆为 \(1\)，从而分解群与惯性群相等并满足
+\[
+D_q(L/\QQ)=I_q(L/\QQ)\cong C_2.
+\]
+于是对任意 Artin 表示 \(\rho\)，其在 \(q\) 处的局部 Euler 因子由惯性不变子空间维数完全决定：
+\[
+L_q(s,\rho)=\bigl(1-q^{-s}\bigr)^{-\dim \rho^{I_q}}.
+\]
+特别地，
+\[
+\dim \rho_4^{I_q}=\dim \rho_5^{I_q}=\dim \rho_6^{I_q}=3,
+\]
+从而三条互不同构的不可约表示在同一分歧素处给出同形局部因子
+\[
+L_q(s,\rho_4)=L_q(s,\rho_5)=L_q(s,\rho_6)=\bigl(1-q^{-s}\bigr)^{-3}.
+\]
+相应地，三条 Dedekind \(\zeta\) 的 \(q\)-局部因子为
+\[
+\zeta_{K_5,q}(s)=\bigl(1-q^{-s}\bigr)^{-4},\qquad
+\zeta_{K_{10},q}(s)=\bigl(1-q^{-s}\bigr)^{-7},\qquad
+\zeta_{K_{20},q}(s)=\bigl(1-q^{-s}\bigr)^{-13}.
+\]
+\end{theorem}
+\begin{proof}
+由于 \(p_7\bmod q\) 在 \(\FF_q\) 上完全分裂且仅一处二重根，分裂域的剩余域不扩张，故任一 \(q\)-上素处的剩余度为 \(1\)，从而分解群等于惯性群。
+当 \(D_q=I_q\) 时局部 Frobenius 在 \(\rho^{I_q}\) 上恒等，故局部因子为 \((1-q^{-s})^{-\dim\rho^{I_q}}\)。
+\par
+由定理 \ref{thm:xi-p7-s5-odd-ramification-discriminant-and-conductor} 的特征标计算，
+对 \(C_2=\langle\tau\rangle\) 有
+\[
+\dim\rho^{I_q}=\dim\rho^{\langle\tau\rangle}=\frac{\dim\rho+\chi_\rho(\tau)}{2},
+\]
+从而
+\(
+\dim\rho_4^{I_q}=(4+2)/2=3
+\)，
+\(
+\dim\rho_5^{I_q}=(5+1)/2=3
+\)，
+\(
+\dim\rho_6^{I_q}=(6+0)/2=3
+\)。
+最后对 \(K=L^H\) 的 Dedekind \(\zeta\) 由定理 \ref{thm:xi-p7-s5-minimal-artin-dedekind-zeta-factorization} 的 Artin 分解取局部因子并相乘，得到所列指数 \(4,7,13\)（亦等于定理 \ref{thm:xi-p7-s5-odd-ramification-discriminant-and-conductor} 中的 \(\tau\)-轨道数）。证毕。
+\end{proof}
+
 \begin{conclusion}[三条 \texorpdfstring{$S_3$}{S3} 三次分裂域与四阶核五次 \texorpdfstring{$S_5$}{S5} 分裂域的线性互不相交及完全分裂密度]\label{con:xi-p7-three-s3-linearly-disjoint-chebotarev}
 令
 \[

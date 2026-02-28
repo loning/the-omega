@@ -254,6 +254,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_p7_s5_artin_dedekind_chebotarev_certificate",
+            script="exp_xi_p7_s5_artin_dedekind_chebotarev_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_p7_s5_artin_dedekind_chebotarev_certificate.json",
+            ],
+        ),
+        Step(
             name="xi_pick_poisson_phi_m_homothetic_spectrum_ledger_audit",
             script="exp_xi_pick_poisson_phi_m_homothetic_spectrum_ledger_audit.py",
             args=[],
@@ -275,6 +283,22 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/xi_leyang_delta_node_tangent_wreath_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_basepoint_scan_finite_rank_rkhs_anchoring_certificate",
+            script="exp_xi_basepoint_scan_finite_rank_rkhs_anchoring_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_basepoint_scan_finite_rank_rkhs_anchoring_certificate.json",
+            ],
+        ),
+        Step(
+            name="pom_bc_uniform_lift_cocycle_residual_certificate",
+            script="exp_pom_bc_uniform_lift_cocycle_residual_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_bc_uniform_lift_cocycle_residual_certificate.json",
             ],
         ),
         Step(
