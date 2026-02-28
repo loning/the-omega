@@ -1,0 +1,268 @@
+\subsection{折叠量子信道与碰撞矩：最小环境维数、Choi 谱与容量}\label{subsec:op-algebra-fold-quantum-channel}
+本段在附录 \ref{subsec:op-algebra-fold-audit-spectrum}--\ref{subsec:op-algebra-fold-watatani-index} 的“折叠条件期望/基本构造”口径之外，引入一个与之自然一致的量子信息版本：以 \(\Omega_m\) 的标准基为计算基，把“按折叠纤维做条件化并在纤维内去相干”提升为作用在 \(\mathcal{B}(\mathcal{H}_m)\) 上的完全正映射。
+该量子信道的最小 Kraus 秩（等价于最小 Stinespring 环境维数）精确等于二阶碰撞矩 \(S_2(m)\)，其 Choi 谱与互信息可由纤维多重度场 \(\{d_m(x)\}\) 完全显式给出，并与正文关于“隐藏比特预算/可见比特”指标严格对齐。
+
+\providecommand{\ket}[1]{\lvert #1\rangle}
+\providecommand{\bra}[1]{\langle #1\rvert}
+
+\paragraph{量子化的折叠条件化算子。}
+固定 \(m\ge 1\)。
+令 \(\Omega_m=\{0,1\}^m\)，\(X_m\) 为稳定类型集，\(\Fold_m:\Omega_m\to X_m\) 为折叠映射，并记纤维多重度
+\[
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|,\qquad x\in X_m,
+\]
+以及二阶碰撞矩（定义 \ref{def:pom-s2}）
+\[
+S_2(m):=\sum_{x\in X_m} d_m(x)^2.
+\]
+令 \(\mathcal{H}_m:=\CC^{\Omega_m}\) 并取正交基 \(\{\lvert\omega\rangle\}_{\omega\in\Omega_m}\)。
+对每个 \(x\in X_m\) 定义纤维投影
+\[
+\Pi_x:=\sum_{\omega:\ \Fold_m(\omega)=x}\lvert\omega\rangle\langle\omega\rvert\ \in\ \mathcal{B}(\mathcal{H}_m).
+\]
+定义完全正且迹保持的线性映射
+\begin{equation}\label{eq:op-algebra-fold-quantum-channel-def}
+\mathcal{E}_m:\mathcal{B}(\mathcal{H}_m)\to\mathcal{B}(\mathcal{H}_m),\qquad
+\mathcal{E}_m(\rho):=\sum_{x\in X_m}\frac{\Tr(\Pi_x\rho)}{d_m(x)}\,\Pi_x.
+\end{equation}
+该映射是“先以 \(\{\Pi_x\}\) 测量稳定类型，再在对应纤维子空间内制备最大混合态”的测量--制备信道，因此为幺正保持（unital）且纠缠破坏（entanglement-breaking）。
+
+\begin{theorem}[最小 Stinespring 环境维数的碰撞矩刻画]\label{thm:op-algebra-fold-quantum-channel-minimal-environment-equals-s2}
+设 \(\mathcal{E}_m\) 如 \eqref{eq:op-algebra-fold-quantum-channel-def}。
+则 \(\mathcal{E}_m\) 的最小 Kraus 秩（等价于最小 Choi 秩）满足
+\[
+\rank J(\mathcal{E}_m)=\min\{\text{Kraus 个数}\}=S_2(m).
+\]
+因此 \(\mathcal{E}_m\) 的最小 Stinespring 环境 Hilbert 空间维数亦恰为 \(S_2(m)\)。
+并且存在达到该最小值的 Kraus 表示，可取
+\[
+K^{(x)}_{\omega,\omega'}:=\frac{\lvert\omega\rangle\langle\omega'\rvert}{\sqrt{d_m(x)}},
+\qquad
+\omega,\omega'\in\Fold_m^{-1}(x),\ x\in X_m,
+\]
+其总数为 \(\sum_x d_m(x)^2=S_2(m)\)。
+\end{theorem}
+\begin{proof}
+先验证所给 Kraus 族实现 \(\mathcal{E}_m\)：
+对固定 \(x\) 与 \(\omega,\omega'\in\Fold_m^{-1}(x)\)，有
+\[
+K^{(x)}_{\omega,\omega'}\,\rho\,\bigl(K^{(x)}_{\omega,\omega'}\bigr)^\ast
+=\frac{1}{d_m(x)}\ket{\omega}\!\bra{\omega}\cdot \bra{\omega'}\rho\ket{\omega'}.
+\]
+对 \(\omega'\) 求和得到 \(\frac{1}{d_m(x)}\Tr(\Pi_x\rho)\ket{\omega}\!\bra{\omega}\)，再对 \(\omega\) 求和得到 \(\frac{\Tr(\Pi_x\rho)}{d_m(x)}\Pi_x\)，最后对 \(x\) 求和即为 \(\mathcal{E}_m(\rho)\)。
+且
+\[
+\sum_{x\in X_m}\ \sum_{\omega,\omega'\in\Fold_m^{-1}(x)}
+\bigl(K^{(x)}_{\omega,\omega'}\bigr)^\ast K^{(x)}_{\omega,\omega'}
+=\sum_{x\in X_m}\sum_{\omega'\in\Fold_m^{-1}(x)}\ket{\omega'}\!\bra{\omega'}
+=\sum_{x\in X_m}\Pi_x=I,
+\]
+从而迹保持成立。
+
+为证最小性，计算 Choi 矩阵 \(J(\mathcal{E}_m)=\sum_{i,j}\ket{i}\!\bra{j}\otimes \mathcal{E}_m(\ket{i}\!\bra{j})\)（以 \(\Omega_m\) 的标准基为参考基）。
+若 \(i\neq j\) 则 \(\Tr(\Pi_x\ket{i}\!\bra{j})=0\)，故 \(\mathcal{E}_m(\ket{i}\!\bra{j})=0\)；
+若 \(i=j\) 且 \(\Fold_m(i)=x\)，则 \(\Tr(\Pi_x\ket{i}\!\bra{i})=1\) 且
+\(
+\mathcal{E}_m(\ket{i}\!\bra{i})=\Pi_x/d_m(x)
+\)。
+于是
+\[
+J(\mathcal{E}_m)
+=\sum_{x\in X_m}\ \sum_{i\in\Fold_m^{-1}(x)} \ket{i}\!\bra{i}\otimes \frac{\Pi_x}{d_m(x)}.
+\]
+该矩阵在参考系统上按 \(i\) 分块正交直和；对固定 \(x\) 与 \(i\in\Fold_m^{-1}(x)\)，张量因子 \(\Pi_x/d_m(x)\) 的秩为 \(d_m(x)\)。
+因此
+\[
+\rank J(\mathcal{E}_m)
+=\sum_{x\in X_m} \bigl|\Fold_m^{-1}(x)\bigr|\cdot d_m(x)
+=\sum_{x\in X_m} d_m(x)^2
+=S_2(m).
+\]
+而完全正映射的最小 Kraus 个数等于 Choi 秩，故最小 Stinespring 环境维数亦为 \(S_2(m)\)。
+上一步 Kraus 族的个数恰为 \(S_2(m)\)，从而达到下界。证毕。
+\end{proof}
+
+\begin{corollary}[最小环境比特速率由 \texorpdfstring{$\rho(A_2)$}{rho(A2)} 给出]\label{cor:op-algebra-fold-quantum-channel-environment-rate}
+设 \(\mathcal{E}_m\) 如 \eqref{eq:op-algebra-fold-quantum-channel-def}，并令 \(r_2:=\rho(A_2)\) 为二阶碰撞核 \(A_2\) 的 Perron 根（命题 \ref{prop:pom-s2-recurrence}；数值见表 \ref{tab:collision_kernel_A2_finite_part}）。
+则最小 Stinespring 环境的比特速率极限存在且满足
+\[
+\lim_{m\to\infty}\frac{1}{m}\log_2\Bigl(\min\dim(\text{Stinespring 环境})\Bigr)=\log_2 r_2.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:op-algebra-fold-quantum-channel-minimal-environment-equals-s2}，最小环境维数等于 \(S_2(m)\)。
+由命题 \ref{prop:pom-s2-recurrence} 给出的非负矩阵 realization，\(S_2(m)=\Theta(r_2^m)\)（Perron--Frobenius 定理）。
+取二进制对数并除以 \(m\) 即得极限为 \(\log_2 r_2\)。证毕。
+\end{proof}
+
+\begin{theorem}[Choi 谱与互信息的显式公式]\label{thm:op-algebra-fold-quantum-channel-choi-spectrum-mi}
+令 \(n:=|\Omega_m|=2^m\)，并记 \(\rho_{RB}:=J(\mathcal{E}_m)/n\) 为 \(\mathcal{E}_m\) 的归一化 Choi 态。
+再令 \(\pi_m\) 为 \(\Omega_m\) 上均匀分布经 \(\Fold_m\) 推送到 \(X_m\) 的分布，即
+\[
+\pi_m(x)=\frac{d_m(x)}{2^m}.
+\]
+则：
+\begin{enumerate}
+  \item \(\rho_{RB}\) 为可分态，因而 \(\mathcal{E}_m\) 为纠缠破坏通道；
+  \item \(\rho_{RB}\) 的全部非零特征值为
+  \[
+  \lambda_x=\frac{1}{2^m\,d_m(x)}\qquad (x\in X_m),
+  \]
+  且每个 \(\lambda_x\) 的重数恰为 \(d_m(x)^2\)；
+  \item Choi 互信息满足精确恒等式
+  \[
+  I(R\!:\!B)_{\rho}=H(\pi_m),
+  \]
+  其中 \(H(\cdot)\) 为 Shannon 熵（以自然对数计）。等价地，
+  \[
+  I(R\!:\!B)_{\rho}=m\log 2-\sum_{x\in X_m}\frac{d_m(x)}{2^m}\log d_m(x).
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由上式 Choi 矩阵表达，
+\[
+\rho_{RB}=\frac{1}{n}\sum_{x\in X_m}\ \sum_{i\in\Fold_m^{-1}(x)} \ket{i}\!\bra{i}\otimes \frac{\Pi_x}{d_m(x)}.
+\]
+该态显然是若干乘积态 \(\ket{i}\!\bra{i}\otimes(\Pi_x/d_m(x))\) 的凸组合，故可分，纠缠破坏结论随之成立。
+
+对固定 \(x\) 与 \(i\in\Fold_m^{-1}(x)\)，算子 \(\Pi_x/d_m(x)\) 在其支撑子空间上等于 \((1/d_m(x))I_{d_m(x)}\)，故其特征值为 \(1/d_m(x)\)，重数 \(d_m(x)\)。
+乘上整体归一化因子 \(1/n\) 得 \(\lambda_x=1/(n d_m(x))\)；
+且对每个 \(i\) 有上述重数 \(d_m(x)\)，而这样的 \(i\) 有 \(d_m(x)\) 个，于是总重数为 \(d_m(x)^2\)。
+
+边缘态计算为
+\[
+\rho_R=\Tr_B\rho_{RB}=\frac{1}{n}\sum_{i\in\Omega_m}\ket{i}\!\bra{i}=\frac{I}{n},
+\qquad
+\rho_B=\Tr_R\rho_{RB}=\frac{1}{n}\sum_{x\in X_m}\Pi_x=\frac{I}{n},
+\]
+故 \(S(\rho_R)=S(\rho_B)=\log n=m\log 2\)。
+另一方面，由谱分解得
+\[
+S(\rho_{RB})
+=-\sum_{x\in X_m} d_m(x)^2\cdot \frac{1}{n d_m(x)}\log\!\Bigl(\frac{1}{n d_m(x)}\Bigr)
+=\sum_{x\in X_m}\frac{d_m(x)}{n}\log\bigl(n d_m(x)\bigr).
+\]
+代入互信息定义 \(I(R\!:\!B)=S(\rho_R)+S(\rho_B)-S(\rho_{RB})\) 得
+\[
+I(R\!:\!B)_{\rho}
+=\log n-\sum_{x\in X_m}\pi_m(x)\log d_m(x).
+\]
+而
+\[
+H(\pi_m)=-\sum_x \pi_m(x)\log \pi_m(x)
+=\log n-\sum_x \pi_m(x)\log d_m(x),
+\]
+故 \(I(R\!:\!B)_{\rho}=H(\pi_m)\)。证毕。
+\end{proof}
+
+\begin{theorem}[容量的极值：经典容量为 \texorpdfstring{$\log|X_m|$}{log|Xm|}，量子容量为零]\label{thm:op-algebra-fold-quantum-channel-capacity}
+设 \(\mathcal{E}_m\) 如 \eqref{eq:op-algebra-fold-quantum-channel-def}。
+则：
+\begin{enumerate}
+  \item \(\mathcal{E}_m\) 的量子容量 \(Q(\mathcal{E}_m)=0\)，且私密容量亦为 \(0\)；
+  \item \(\mathcal{E}_m\) 的经典容量满足
+  \[
+  C(\mathcal{E}_m)=\log |X_m|=\log F_{m+2}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:op-algebra-fold-quantum-channel-choi-spectrum-mi}，\(\mathcal{E}_m\) 为纠缠破坏通道，故其量子容量与私密容量均为零。
+
+经典容量方面：令 \(\mathcal{M}(\rho):=\sum_{x\in X_m}\Tr(\Pi_x\rho)\ket{x}\!\bra{x}\) 为以 \(\{\Pi_x\}\) 为 POVM 的量子--经典测量通道，令 \(\mathcal{P}(\ket{x}\!\bra{x}):=\Pi_x/d_m(x)\) 为对应制备通道，则 \(\mathcal{E}_m=\mathcal{P}\circ\mathcal{M}\)。
+因此任意经 \(\mathcal{E}_m\) 传输的信息必经由字母表大小为 \(|X_m|\) 的经典寄存器 \(x\)，从而 \(C(\mathcal{E}_m)\le \log|X_m|\)。
+另一方面，对每个 \(x\in X_m\) 取任意纯态 \(\rho_x\) 支撑于 \(\Pi_x\mathcal{H}_m\)，则 \(\Tr(\Pi_{x'}\rho_x)=\delta_{x,x'}\)，故 \(\mathcal{M}(\rho_x)=\ket{x}\!\bra{x}\) 可被零误差区分，于是 \(C(\mathcal{E}_m)\ge \log|X_m|\)。
+两侧合并得等式。证毕。
+\end{proof}
+
+\begin{proposition}[OAQEC 视角下的最大可恢复代数]\label{prop:op-algebra-fold-quantum-channel-max-recoverable-algebra}
+把 \(\mathcal{E}_m\) 视作噪声通道。
+在算子代数量子纠错（operator-algebra quantum error correction, OAQEC）意义下，其可恢复的最大 \(C^\ast\)-子代数为
+\[
+\mathcal{Z}_m:=\Span\{\Pi_x:\ x\in X_m\}\ \cong\ \CC^{X_m},
+\]
+且任意可恢复 \(\ast\)-子代数都包含于 \(\mathcal{Z}_m\)。
+此外 \(\mathcal{Z}_m\) 点态固定：对一切 \(a\in\mathcal{Z}_m\) 有 \(\mathcal{E}_m(a)=a\)，故恢复可取恒等映射。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:op-algebra-fold-quantum-channel-minimal-environment-equals-s2} 的 Kraus 族 \(\{K^{(x)}_{\omega,\omega'}\}\)（其中 \(\omega,\omega'\in\Fold_m^{-1}(x)\)），可直接计算
+\[
+\bigl(K^{(x)}_{\omega,\omega'}\bigr)^\ast K^{(x)}_{\eta,\eta'}
+=\frac{1}{d_m(x)}\,\delta_{\omega,\eta}\,\ket{\omega'}\!\bra{\eta'}.
+\]
+因此 \(\Span\{K_i^\ast K_j\}\) 线性张成
+\(
+\bigoplus_{x\in X_m}\mathcal{B}(\Pi_x\mathcal{H}_m)
+\)，其交换子代数恰为每个块上的标量算子，即 \(\mathcal{Z}_m\)。
+OAQEC 的 Knill--Laflamme 型判据表明：若 \(\mathcal{A}\subset\mathcal{B}(\mathcal{H}_m)\) 可恢复，则必须满足 \(K_i^\ast K_j\in \mathcal{A}'\)（对一切 \(i,j\)），从而 \(\mathcal{A}\subseteq \bigl(\Span\{K_i^\ast K_j\}\bigr)'=\mathcal{Z}_m\)（参见 \cite{DauphinaisKribsVasmer2024StabilizerFormalismOAQEC}）。
+反向方向：任取 \(a=\sum_x \alpha_x\Pi_x\in\mathcal{Z}_m\)，代入 \eqref{eq:op-algebra-fold-quantum-channel-def} 得 \(\mathcal{E}_m(a)=a\)，故 \(\mathcal{Z}_m\) 可恢复且恢复可取恒等映射。证毕。
+\end{proof}
+
+\begin{theorem}[纤维群胚的弱 Hopf 代数化与量子操作实现]\label{thm:op-algebra-fold-quantum-channel-weak-hopf-groupoid}
+定义折叠纤维群胚（等价关系群胚）
+\[
+\mathcal{G}_m:=\Omega_m\times_{X_m}\Omega_m
+=\bigl\{(\omega,\omega')\in\Omega_m^2:\ \Fold_m(\omega)=\Fold_m(\omega')\bigr\}.
+\]
+令 \(\CC[\mathcal{G}_m]\) 为其复群胚代数，以基元 \(e_{\omega,\omega'}\)（\((\omega,\omega')\in\mathcal{G}_m\)）张成，并以
+\[
+e_{\omega,\omega'}e_{\eta,\eta'}=\delta_{\omega',\eta}\,e_{\omega,\eta'},
+\qquad
+e_{\omega,\omega'}^\ast=e_{\omega',\omega}
+\]
+定义乘法与 \(\ast\)。
+则：
+\begin{enumerate}
+  \item \(\CC[\mathcal{G}_m]\) 自然成为有限维弱 Hopf \(\ast\)-代数，其余结构映射可取为
+  \[
+  \Delta(e_{\omega,\omega'})=\sum_{u:\ \Fold_m(u)=\Fold_m(\omega)} e_{\omega,u}\otimes e_{u,\omega'},
+  \qquad
+  \varepsilon(e_{\omega,\omega'})=\delta_{\omega,\omega'}.
+  \]
+  \item \(\CC[\mathcal{G}_m]\) 分解为纤维块的满矩阵代数直和
+  \[
+  \CC[\mathcal{G}_m]\ \cong\ \bigoplus_{x\in X_m} M_{d_m(x)}(\CC),
+  \]
+  因而 \(\dim_{\CC}\CC[\mathcal{G}_m]=\sum_x d_m(x)^2=S_2(m)\)。
+  \item 令 \(\Phi:\CC[\mathcal{G}_m]\to \End(\mathcal{B}(\mathcal{H}_m))\) 为由基元诱导的完全正表示
+  \[
+  \Phi(e_{\omega,\omega'})(\rho):=\ket{\omega}\!\bra{\omega'}\,\rho\,\ket{\omega'}\!\bra{\omega},
+  \]
+  并令
+  \[
+  h_m:=\sum_{x\in X_m}\ \frac{1}{d_m(x)}\sum_{\omega,\omega'\in\Fold_m^{-1}(x)} e_{\omega,\omega'}\ \in\ \CC[\mathcal{G}_m].
+  \]
+  则 \(\mathcal{E}_m=\Phi(h_m)\)。
+  因此 \(\mathcal{E}_m\) 可视为该弱 Hopf 对称在局域算符上的“量子操作型作用”，在可计算意义下给出非可逆对称以完全正映射作用于算符的显式模型（比较 \cite{OkadaTachikawa2024NonInvertibleQuantumOperations}）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{(1)}--\textbf{(2)} 群胚代数的弱 Hopf 结构为标准构造；并且在每条纤维 \(\Fold_m^{-1}(x)\) 上，\(\mathcal{G}_m\) 的箭头集合给出“配对群胚”，其代数同构于 \(M_{d_m(x)}(\CC)\)，不同 \(x\) 间无可合成态，故为直和分解。
+该分解也可由附录 \ref{subsubsec:op-algebra-fold-jones-basic-construction} 的矩阵单位 \(\{E_{\omega,\omega'}\}\) 直接给出：映射 \(e_{\omega,\omega'}\mapsto E_{\omega,\omega'}\) 在每条纤维上实现 \(M_{d_m(x)}(\CC)\) 的同构。
+
+\textbf{(3)} 对任意 \(\rho\) 有
+\[
+\Phi(h_m)(\rho)
+=\sum_{x\in X_m}\frac{1}{d_m(x)}\sum_{\omega,\omega'\in\Fold_m^{-1}(x)}
+\ket{\omega}\!\bra{\omega'}\,\rho\,\ket{\omega'}\!\bra{\omega}.
+\]
+对固定 \(x\) 先对 \(\omega'\) 求和得到 \(\Tr(\Pi_x\rho)\) 的系数，再对 \(\omega\) 求和得到 \(\Tr(\Pi_x\rho)\Pi_x\)，从而
+\(
+\Phi(h_m)(\rho)=\sum_x \frac{\Tr(\Pi_x\rho)}{d_m(x)}\Pi_x=\mathcal{E}_m(\rho)
+\)。
+证毕。
+\end{proof}
+
+\begin{conjecture}[分辨率极限下的折叠量子群胚收敛与 stable-type 算术的范畴对偶]\label{conj:op-algebra-fold-quantum-channel-limit-groupoid}
+令 \(\CC[\mathcal{G}_m]\) 如定理 \ref{thm:op-algebra-fold-quantum-channel-weak-hopf-groupoid}，并以正文的跨分辨率兼容嵌入口径在 \(m\) 上建立一致的归一化与完成。
+则存在一个测度化量子群胚极限对象 \(\CC[\mathcal{G}_\infty]\)（弱 Hopf--von Neumann 代数意义），满足：
+\begin{enumerate}
+  \item \(\CC[\mathcal{G}_\infty]\) 为 \(\{\CC[\mathcal{G}_m]\}_{m\ge 1}\) 的极限对象，并在 \(L^2\) 型空间上给出分辨率一致的非可逆对称作用；
+  \item \(\CC[\mathcal{G}_\infty]\) 的有限生成核表示范畴的 Grothendieck 半环与正文的 stable-type 半环 \((X_\infty,\oplus,\otimes)\) 同构；
+  \item 碰撞矩核的 Perron 谱 \(\{r_q\}_{q\ge 2}\) 可表示为 \(\CC[\mathcal{G}_\infty]\) 正则对象的范畴矩，从而把“碰撞谱扫描”提升为可检验的对称谱数据。
+\end{enumerate}
+\end{conjecture}
+
+\endinput
+

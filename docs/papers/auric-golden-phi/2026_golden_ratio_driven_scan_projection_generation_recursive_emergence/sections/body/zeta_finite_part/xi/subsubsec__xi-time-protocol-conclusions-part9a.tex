@@ -126,6 +126,47 @@ n
 令 \(\eta\downarrow 0\) 即得所示上界。证毕。
 \end{proof}
 
+\begin{conclusion}[前缀自由族上的统一相干证书：可计算停时与显式 I 类错误上界]\label{con:xi-prefixfree-universal-coherence-certificate}
+设 \(b\ge 2\)，\(\Sigma_b:=\{0,1,\dots,b-1\}\)，并固定一台输出字母表为 \(\Sigma_b\) 的前缀自由通用机 \(U\)。
+对任意显著性水平 \(\alpha\in(0,1)\)，存在一个可计算的顺序判别过程 \(\mathcal T_\alpha\)，其输入为无限序列 \(x\in\Sigma_b^{\NN}\)，并满足：
+\begin{enumerate}
+  \item 若零假设为 \(x\sim \mathrm{Unif}(\Sigma_b)^{\otimes \NN}\)（独立同分布均匀），则
+  \[
+  \PP\bigl(\mathcal T_\alpha\ \text{在有限时刻停止}\bigr)\le \alpha.
+  \]
+  \item 若存在程序 \(p\in\mathrm{dom}(U)\) 使得 \(U(p)=x\)（逐符号输出 \(x\)），则 \(\mathcal T_\alpha\) 在有限时刻停止，并输出某个与 \(x\) 前缀一致的程序（可取停时刻的最短者）。
+  更具体地，令
+  \[
+  n_\alpha(p):=|p|+\left\lceil \log_b\frac1\alpha\right\rceil,
+  \]
+  则过程在读入 \(x\upharpoonright n_\alpha(p)\) 后必停止。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}
+对每个程序 \(p\in\mathrm{dom}(U)\) 定义事件
+\[
+E_p:=\bigl\{x\in\Sigma_b^{\NN}:\ x\upharpoonright n_\alpha(p)=U(p)\upharpoonright n_\alpha(p)\bigr\},
+\]
+其中若 \(U(p)\) 在输出 \(n_\alpha(p)\) 个符号前停机则视 \(E_p=\varnothing\)。
+在零假设下，\(U(p)\upharpoonright n_\alpha(p)\) 为确定的长度 \(n_\alpha(p)\) 字串，故
+\[
+\PP(E_p)=b^{-n_\alpha(p)}
+=b^{-|p|}\cdot b^{-\lceil\log_b(1/\alpha)\rceil}
+\le \alpha\,b^{-|p|}.
+\]
+由并合界与前缀自由的 Kraft 不等式 \(\sum_{p\in\mathrm{dom}(U)} b^{-|p|}\le 1\) 得
+\[
+\PP\Bigl(\bigcup_{p\in\mathrm{dom}(U)}E_p\Bigr)
+\le
+\sum_{p\in\mathrm{dom}(U)}\PP(E_p)
+\le
+\alpha\sum_{p\in\mathrm{dom}(U)}b^{-|p|}
+\le \alpha,
+\]
+从而可取 \(\mathcal T_\alpha\) 为“首次命中事件族 \(\{E_p\}\)”的顺序检验：当读入 \(x\upharpoonright n\) 时，并行枚举并模拟全部 \(p\) 并尝试生成 \(U(p)\upharpoonright n\)，一旦存在 \(p\) 使得 \(n\ge n_\alpha(p)\) 且 \(U(p)\upharpoonright n=x\upharpoonright n\)，即停止并输出其中 \(|p|\) 最小者。上述构造可计算且其停止事件包含于 \(\bigcup_p E_p\)，故第 (1) 条成立。
+若 \(U(p)=x\)，则恒有 \(x\upharpoonright n_\alpha(p)=U(p)\upharpoonright n_\alpha(p)\)，故当过程读到长度 \(n_\alpha(p)\) 时，枚举到 \(p\) 并完成到该长度的模拟比对即可验证并停止，从而第 (2) 条成立。证毕。
+\end{proof}
+
 \begin{proposition}[有限多对一投影下的全息聚合界]\label{prop:xi-finite-to-one-holographic-aggregation-bound}
 设 \(\mathcal C\) 为微观概念族，带前缀自由码长 \(\ell:\mathcal C\to\mathbb N\)。
 设投影 \(\Pi:\mathcal C\to\bar{\mathcal C}\) 满足统一纤维上界

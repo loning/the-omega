@@ -254,20 +254,242 @@ r:=\cdim(G),\qquad d:=\cdim(G)-\cdim(H)\ (\ge 0).
 二者并集即为判据。证毕。
 \end{proof}
 
-\begin{conjecture}[异常正则形的函子性分裂]\label{conj:cdim-anomaly-functorial-splitting}
+\begin{theorem}[异常正则形的函子性分裂不成立]\label{conj:cdim-anomaly-functorial-splitting}
 设 \(\mathbf{Ab}_{\mathrm{fg}}\) 为有限生成离散交换群范畴，并记
 \[
-\mathcal A(-)=H^2(-,\TT):\mathbf{Ab}_{\mathrm{fg}}^{\mathrm{op}}\to\mathbf{CptAb}.
-\]
-猜想存在自然同构
-\[
-\mathcal A(G)\simeq \mathcal A(G)^0\times \mathcal D(G),
+\mathcal A(-)=H^2(-,\TT):\mathbf{Ab}_{\mathrm{fg}}^{\mathrm{op}}\to\mathbf{CptAb},
 \qquad
-\mathcal D(G):=\pi_0(\mathcal A(G)),
+\mathcal D(G):=\pi_0(\mathcal A(G)).
 \]
-并且该分裂与任意同态诱导的拉回 \(u^\ast\) 交换。
-换言之，“连续异常相位”与“离散异常账本”可在全函子层面给出统一正则形。
-\end{conjecture}
+则不存在自然同构
+\[
+\mathcal A(G)\ \cong\ \mathcal A(G)^0\times \mathcal D(G)
+\]
+使其与任意同态诱导的拉回 \(u^\ast\) 交换。
+并且最小反例可取
+\(
+G=\ZZ^2\oplus C_2
+\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:cdim-anomaly-quadratic-law} 的证明，\(\mathcal A(G)\cong \Hom(\wedge^2G,\TT)\)。
+取
+\(
+G=\ZZ^2\oplus C_2
+\)，令 \((e_1,e_2)\) 为 \(\ZZ^2\) 的基，\(t\) 为 \(C_2\) 的生成元。
+则
+\[
+\wedge^2G\cong
+\langle a:=e_1\wedge e_2\rangle
+\oplus
+\langle b_1:=e_1\wedge t,\ b_2:=e_2\wedge t\rangle,
+\]
+其中 \(a\) 为无穷阶元，\(b_1,b_2\) 为 \(2\)-挠元。
+因而
+\(
+\mathcal A(G)^0\cong \Hom(\langle a\rangle,\TT)\cong \TT
+\)，且
+\(
+\mathcal D(G)\cong \Hom(\langle b_1,b_2\rangle,\TT)\cong C_2^2
+\)。
+
+定义自同构 \(\varphi\in\Aut(G)\) 为
+\[
+\varphi(e_1)=e_1+t,\qquad
+\varphi(e_2)=e_2,\qquad
+\varphi(t)=t.
+\]
+其在外积上诱导
+\[
+\wedge^2\varphi(a)=(e_1+t)\wedge e_2=a+b_2,
+\qquad
+\wedge^2\varphi(b_1)=b_1,\qquad
+\wedge^2\varphi(b_2)=b_2.
+\]
+故对任意 \(\chi\in\mathcal A(G)=\Hom(\wedge^2G,\TT)\) 有
+\[
+(\varphi^\ast\chi)(a)=\chi(a+b_2)=\chi(a)+\chi(b_2),
+\qquad
+(\varphi^\ast\chi)|_{\langle b_1,b_2\rangle}=\chi|_{\langle b_1,b_2\rangle}.
+\]
+由命题 \ref{prop:cdim-discrete-anomaly-ledger}，\(\mathcal D(G)\) 由对 \(\ZZ^2\otimes C_2\)（等价于 \(\langle b_1,b_2\rangle\)）的限制刻画，因而 \(\varphi^\ast\) 在 \(\mathcal D(G)\) 上为恒等。
+
+若存在所述自然同构，则等价于存在自然分裂截面
+\(
+s_G:\mathcal D(G)\to\mathcal A(G)
+\)
+使投影 \(\pi:\mathcal A(G)\twoheadrightarrow\mathcal D(G)\) 满足 \(\pi\circ s_G=\mathrm{id}\)。
+自然性要求对任意 \(\varphi\in\Aut(G)\) 有
+\(
+\varphi^\ast\circ s_G=s_G\circ (\varphi^\ast|_{\mathcal D(G)})=s_G
+\)。
+取 \(d\in\mathcal D(G)\) 使 \(d(b_2)=\tfrac12\) 且 \(d(b_1)=0\)，令 \(\chi:=s_G(d)\)。
+则 \(\chi(b_2)=\tfrac12\)，而由 \(\varphi^\ast\chi=\chi\) 得
+\[
+\chi(a)=(\varphi^\ast\chi)(a)=\chi(a)+\chi(b_2)=\chi(a)+\tfrac12,
+\]
+矛盾。
+故自然分裂不存在，从而自然直积分裂不成立。证毕。
+\end{proof}
+
+\begin{theorem}[分裂失败的结构条件]\label{thm:cdim-anomaly-functorial-splitting-obstruction-rge2-tor}
+设 \(G\cong \ZZ^r\oplus F\)（\(F=\Tor(G)\) 有限，\(r=\cdim(G)\)）。
+则以下命题等价：
+\begin{enumerate}
+  \item 存在自然同构 \(\mathcal A(G)\cong \mathcal A(G)^0\times \mathcal D(G)\) 与拉回同态交换；
+  \item \(r\le 1\) 或 \(F=0\)。
+\end{enumerate}
+特别地，当 \(r\ge 2\) 且 \(F\neq 0\) 时，上述自然分裂必不存在。
+\end{theorem}
+\begin{proof}
+若 \(F=0\)，则 \(\mathcal D(G)=0\) 且 \(\mathcal A(G)=\mathcal A(G)^0\)，自然分裂平凡成立。
+若 \(r\le 1\)，则 \(\wedge^2\ZZ^r=0\)，由命题 \ref{prop:cdim-discrete-anomaly-ledger} 得 \(\mathcal A(G)^0=0\) 且 \(\mathcal A(G)\cong\mathcal D(G)\)，自然分裂亦平凡成立。
+
+反之，设 \(r\ge 2\) 且 \(F\neq 0\)。
+取 \(0\neq t\in F\)，其阶记为 \(n\ge 2\)。
+令 \(L:=G/F\cong \ZZ^r\)，取线性无关 \(u,v\in L\) 并取满射 \(\ell:L\to \ZZ/n\ZZ\) 使 \(\ell(u)=1,\ \ell(v)=0\)。
+记自然商映射 \(q:G\to L\)，定义自同构
+\[
+\varphi(g):=g+\ell(q(g))\,t,\qquad g\in G,
+\]
+则 \(\varphi\) 在 \(L\) 与 \(F\) 上均诱导恒等，从而在 \(\mathcal D(G)\) 上诱导恒等。
+取 \(u,v\) 的 lifts \(\tilde u,\tilde v\in G\)，则
+\[
+\wedge^2\varphi(\tilde u\wedge \tilde v)
+=(\tilde u+t)\wedge \tilde v
+=\tilde u\wedge \tilde v+t\wedge \tilde v.
+\]
+交叉项 \(t\wedge \tilde v\) 在分解 \(\wedge^2G\cong \wedge^2\ZZ^r\oplus(\ZZ^r\otimes F)\oplus\wedge^2F\) 中对应 \(v\otimes t\in \ZZ^r\otimes F\)。
+选取 \(d\in \Hom(\ZZ^r\otimes F,\TT)\subset \mathcal D(G)\) 使 \(d(v\otimes t)=\tfrac1n\neq 0\)。
+若存在自然分裂 \(s_G\)，令 \(\chi:=s_G(d)\)，则 \(\varphi^\ast\chi=\chi\)，但上式推出
+\[
+(\varphi^\ast\chi)(\tilde u\wedge \tilde v)
+=\chi(\tilde u\wedge \tilde v)+d(v\otimes t),
+\]
+与不动性矛盾。
+故自然分裂不存在。证毕。
+\end{proof}
+
+\begin{corollary}[障碍的素数支撑刻画]\label{cor:cdim-anomaly-splitting-prime-support}
+设 \(G\cong \ZZ^r\oplus F\) 且 \(r\ge 2\)，并写主分解 \(F=\bigoplus_{p}F_{(p)}\)。
+则自然分裂不存在当且仅当存在素数 \(p\) 使 \(F_{(p)}\neq 0\)。
+并且对每个满足 \(F_{(p)}\neq 0\) 的素数 \(p\)，存在一族自同构在 \(\mathcal D(G)\) 上诱导恒等而在 \(\mathcal A(G)^0\) 上诱导非平凡平移，从而排除任何 \(\Aut(G)\)-不变分裂截面。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:cdim-anomaly-functorial-splitting-obstruction-rge2-tor}，自然分裂不存在当且仅当 \(F\neq 0\)。
+而 \(F\neq 0\) 等价于存在素数 \(p\) 使 \(F_{(p)}\neq 0\)。
+给定 \(p\) 时，取 \(t\in F_{(p)}\) 的阶为 \(p^k\)，重复定理 \ref{thm:cdim-anomaly-functorial-splitting-obstruction-rge2-tor} 证明中的扭切自同构构造即可得到所述平移机制。证毕。
+\end{proof}
+
+\begin{proposition}[分裂截面的 torsor 与同调障碍类]\label{prop:cdim-anomaly-splitting-torsor-obstruction}
+对任意有限生成离散交换群 \(G\)，记短正合列
+\[
+0\longrightarrow \mathcal A(G)^0\longrightarrow \mathcal A(G)\overset{\pi}{\longrightarrow}\mathcal D(G)\longrightarrow 0.
+\]
+令
+\[
+\mathrm{Spl}(G):=\left\{s:\mathcal D(G)\to\mathcal A(G)\ \middle|\ \pi\circ s=\mathrm{id},\ s\ \text{为连续群同态}\right\}.
+\]
+则 \(\mathrm{Spl}(G)\neq\varnothing\)，且在点态加法下为 \(\Hom(\mathcal D(G),\mathcal A(G)^0)\) 的主齐次空间。
+并且 \(\Aut(G)\) 的拉回作用在 \(\mathrm{Spl}(G)\) 上诱导一个同调类
+\[
+\kappa_G\in H^1\!\bigl(\Aut(G),\,\Hom(\mathcal D(G),\mathcal A(G)^0)\bigr),
+\]
+满足 \(\kappa_G=0\) 当且仅当存在 \(\Aut(G)\)-不变的分裂截面。
+\end{proposition}
+\begin{proof}
+由于 \(\mathcal D(G)\) 有限离散，连续同态等同于抽象群同态。
+又 \(\TT\) 可除，从而 \(\Hom(-,\TT)\) 在有限交换群上给出充足的提升；结合 \(\mathcal A(G)\cong\Hom(\wedge^2G,\TT)\) 的显式模型可构造分裂截面，故 \(\mathrm{Spl}(G)\neq\varnothing\)。
+
+若 \(s,s'\in\mathrm{Spl}(G)\)，则 \(\pi\circ(s'-s)=0\)，故 \((s'-s)(\mathcal D(G))\subseteq \mathcal A(G)^0\)，从而 \(s'-s\in\Hom(\mathcal D(G),\mathcal A(G)^0)\)。
+反之，任取 \(h\in\Hom(\mathcal D(G),\mathcal A(G)^0)\)，则 \(s+h\) 仍满足 \(\pi\circ(s+h)=\mathrm{id}\)。
+故 \(\mathrm{Spl}(G)\) 为所述 torsor。
+
+取任意 \(s\in\mathrm{Spl}(G)\)，对 \(\alpha\in\Aut(G)\) 定义
+\[
+\kappa_s(\alpha):=\alpha^\ast\circ s\circ(\alpha^\ast|_{\mathcal D(G)})^{-1}-s\in\Hom(\mathcal D(G),\mathcal A(G)^0).
+\]
+直接计算可知 \(\kappa_s\) 为 \(1\)-余循环；更换 \(s\mapsto s+h\) 仅改变一个余界，故同调类 \([\kappa_s]\) 与选择无关，记为 \(\kappa_G\)。
+当且仅当存在 \(s\) 使 \(\kappa_s\equiv 0\) 时，存在 \(\Aut(G)\)-不变截面。证毕。
+\end{proof}
+
+\begin{theorem}[异常正则形的仿射化：分裂 torsor 的局部直积坐标]\label{thm:cdim-anomaly-affine-regular-form}
+在命题 \ref{prop:cdim-anomaly-splitting-torsor-obstruction} 的记号下，对每个 \(s\in\mathrm{Spl}(G)\) 定义映射
+\[
+\Phi_s:\mathcal A(G)^0\times \mathcal D(G)\longrightarrow \mathcal A(G),
+\qquad
+\Phi_s(a,d):=a+s(d).
+\]
+则 \(\Phi_s\) 为紧交换群同构。
+并且若 \(s'=s+h\)（其中 \(h\in\Hom(\mathcal D(G),\mathcal A(G)^0)\)），则有恒等式
+\[
+\Phi_{s'}=\Phi_s\circ T_h,
+\qquad
+T_h(a,d):=(a+h(d),d).
+\]
+因此，虽然不存在使 \(\Phi_s\) 在 \(\mathbf{Ab}_{\mathrm{fg}}^{\mathrm{op}}\) 上自然化的全局选择 \(s\)，但对每个固定对象 \(G\)，\(\mathrm{Spl}(G)\) 提供了一个以 \(\Hom(\mathcal D(G),\mathcal A(G)^0)\) 为结构群的仿射坐标族；其在 \(\Aut(G)\) 下的不变性由障碍类 \(\kappa_G\) 完全刻画。
+\end{theorem}
+\begin{proof}
+由 \(\pi\circ s=\mathrm{id}\) 可知 \(\Phi_s\) 为满射且核为 \(\{0\}\times\{0\}\)，故为同构；连续性由紧性与有限性立即得到。
+若 \(s'=s+h\)，则
+\[
+\Phi_{s'}(a,d)=a+s(d)+h(d)=\Phi_s(a+h(d),d)=\Phi_s(T_h(a,d)),
+\]
+得所示恒等式。
+最后一段由命题 \ref{prop:cdim-anomaly-splitting-torsor-obstruction} 中 torsor 与障碍类的定义直接给出。证毕。
+\end{proof}
+
+\begin{theorem}[扭切自同构的双线性耦合公式]\label{thm:cdim-anomaly-twist-ledger-bilinear-coupling}
+设 \(G=\ZZ^r\oplus F\)（\(F\) 有限），并采用命题 \ref{prop:cdim-discrete-anomaly-ledger} 的分解
+\[
+\mathcal A(G)\cong
+\TT^{\binom r2}\times \Hom(\ZZ^r\otimes F,\TT)\times \Hom(\wedge^2F,\TT).
+\]
+对任意 \(\lambda\in\Hom(\ZZ^r,F)\)，定义扭切自同构
+\[
+\psi_\lambda(x,f):=(x,f+\lambda(x)).
+\]
+则存在规范双线性映射
+\[
+\tau_G:\Hom(\ZZ^r,F)\times \Hom(\ZZ^r\otimes F,\TT)\longrightarrow \Hom(\wedge^2\ZZ^r,\TT)
+\]
+使对一切 \((\theta,d,\eta)\in \mathcal A(G)\) 有
+\[
+\psi_\lambda^\ast(\theta,d,\eta)=\bigl(\theta+\tau_G(\lambda,d),\ d,\ \eta\bigr),
+\]
+并且坐标公式为
+\[
+\bigl[\tau_G(\lambda,d)\bigr](x\wedge y)=d(x\otimes \lambda(y))-d(y\otimes \lambda(x)),
+\qquad x,y\in\ZZ^r.
+\]
+\end{theorem}
+\begin{proof}
+在 \(\wedge^2G\cong \wedge^2\ZZ^r\oplus(\ZZ^r\otimes F)\oplus\wedge^2F\) 的分解下，\(\psi_\lambda\) 在 \(F\) 上为恒等，故 \(\wedge^2F\) 分量不变；并且 \(\psi_\lambda\) 在 \(\ZZ^r\otimes F\) 上诱导恒等。
+对 \(x,y\in\ZZ^r\subset G\) 有
+\[
+\psi_\lambda(x,0)\wedge\psi_\lambda(y,0)
+=(x,\lambda(x))\wedge(y,\lambda(y))
+=x\wedge y+x\wedge\lambda(y)-y\wedge\lambda(x)+\lambda(x)\wedge\lambda(y).
+\]
+其中交叉项在 \(\ZZ^r\otimes F\) 分量上对应 \(x\otimes\lambda(y)-y\otimes\lambda(x)\)，从而对 \((\theta,d,\eta)\) 的拉回在 \(\wedge^2\ZZ^r\) 分量上增加上述反对称化，得到所述坐标公式；其余两分量不变。证毕。
+\end{proof}
+
+\begin{corollary}[秩 \(2\) 情形的满挠平移与不变截面不存在]\label{cor:cdim-anomaly-rank2-full-torsion-translation}
+令 \(G=\ZZ^2\oplus C_n\)（\(n\ge 2\)）。
+则扭切自同构子群 \(\Hom(\ZZ^2,C_n)\) 在 \(\mathcal A(G)^0\cong\TT\) 上诱导的平移包含全部 \(n\)-挠子 \(\TT[n]\)。
+因此不存在 \(\Aut(G)\)-不变的分裂截面。
+\end{corollary}
+\begin{proof}
+取 \(\ZZ^2\) 的基 \((e_1,e_2)\) 与 \(C_n=\langle t\rangle\)。
+取 \(\lambda\) 使 \(\lambda(e_1)=t,\ \lambda(e_2)=0\)。
+取 \(d\in\Hom(\ZZ^2\otimes C_n,\TT)\) 使 \(d(e_2\otimes t)=\tfrac1n\) 且 \(d(e_1\otimes t)=0\)。
+由定理 \ref{thm:cdim-anomaly-twist-ledger-bilinear-coupling}，
+\[
+\tau_G(\lambda,d)(e_1\wedge e_2)=d(e_1\otimes\lambda(e_2))-d(e_2\otimes\lambda(e_1))=-\tfrac1n.
+\]
+故 \(\mathcal A(G)^0\) 出现 \(\tfrac1n\) 平移，从而由迭代得到 \(\TT[n]\)。
+若存在 \(\Aut(G)\)-不变截面，则其像必须在上述平移下不变，与 \(\TT[n]\) 的自由平移矛盾。证毕。
+\end{proof}
 
 \input{sections/generated/eq_cdim_hom_completion_anomaly_audit}
 \input{sections/generated/tab_cdim_hom_completion_examples}
