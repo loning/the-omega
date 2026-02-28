@@ -270,6 +270,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_branchpoint_rational_b_invariant_audit",
+            script="exp_fold_gauge_anomaly_branchpoint_rational_b_invariant_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_branchpoint_rational_b_invariant_audit.json",
+                "sections/generated/eq_fold_gauge_anomaly_branchpoint_rational_b_invariant_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_trigonal_mu_audit",
             script="exp_fold_gauge_anomaly_trigonal_mu_audit.py",
             args=[],
@@ -3228,6 +3237,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_delta_projection_a5b5_audit.json",
                 "sections/generated/eq_fold_zm_delta_projection_a5b5_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_delta_b5_arithmetic_audit",
+            script="exp_fold_zm_delta_b5_arithmetic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_delta_b5_arithmetic_audit.json",
+                "sections/generated/eq_fold_zm_delta_b5_arithmetic_audit.tex",
             ],
         ),
         Step(
