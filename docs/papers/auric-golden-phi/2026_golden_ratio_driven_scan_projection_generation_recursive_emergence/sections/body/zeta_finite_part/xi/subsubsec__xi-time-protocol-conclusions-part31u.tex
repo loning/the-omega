@@ -151,6 +151,51 @@ c(\pi)=\frac{m}{\ell(\pi)}\cdot\frac{\ell(\pi)!}{\prod_s m_s!}.
 对全部分拆求和即得结论。
 \end{proof}
 
+\begin{theorem}[例外谱倒数幂和的环分解公式]\label{thm:xi-replica-softcore-reciprocal-moment-ring-decomposition}
+固定 \(m\ge 1\)。令
+\[
+s_n:=(-1)^{nq}F_{n-1}^{\,q}\qquad(n\ge 0),
+\]
+并约定 \(F_{-1}=1\)。
+则对任意 \(q\ge 2\) 成立等价闭式
+\[
+\boxed{\;
+S_{-m}(q)
+=2^m\Omega_m^{(-)}(q)
+\sum_{k=1}^{m}(-1)^k\,2^{m-k}\,\frac{m}{k}
+\sum_{\substack{n_1+\cdots+n_k=m-k\\ n_j\ge 0}}
+\ \prod_{j=1}^{k}s_{n_j}\; }.
+\]
+特别地，\(S_{-m}(q)\in\ZZ\) 对一切 \(m\ge 1\)、\(q\ge 2\) 成立。
+\end{theorem}
+\begin{proof}
+沿用定理 \ref{thm:xi-replica-softcore-reciprocal-moment-partition-closed-form} 证明中的展开
+\(
+(A^{(q)})^{-m}=(U^{(q)}-E)^m
+\)
+与循环类归并，但不再按分拆 \(\pi\) 进一步合并。
+
+\par
+设在某一项中 \(E\) 出现 \(k\ge 1\) 次。
+由迹的循环不变性，可把该循环类唯一编码为一个 \(k\)-元非负整数组合 \((n_1,\dots,n_k)\) 满足 \(\sum_{j=1}^{k}n_j=m-k\)，其意义为相邻两次 \(E\) 之间出现 \(U^{(q)}\) 的次数。
+每个循环类在长度为 \(m\) 的线性展开中出现次数为 \(m/k\)。
+又由
+\[
+E\bigl(U^{(q)}\bigr)^{n}E=\bigl(U^{(q)}\bigr)^{n}_{0,0}\,E
+=2^n(-1)^{nq}F_{n-1}^{\,q}\,E
+\]
+（定理 \ref{thm:xi-replica-softcore-reciprocal-corner-fibonacci-power-law}，并用延拓约定使 \(n=0\) 时一致），得到该循环类对迹的贡献为
+\[
+(-1)^k\,2^{m-k}\prod_{j=1}^{k}\bigl((-1)^{n_jq}F_{n_j-1}^{\,q}\bigr),
+\]
+其中 \((-1)^k\) 来自选取 \((-E)\) 的符号。
+对所有 \(k\) 与 \((n_1,\dots,n_k)\) 求和并加上无 \(E\) 的项 \(2^m\Omega_m^{(-)}(q)\)，即得所述公式。
+整数性由 \( (A^{(q)})^{-1}\in\ZZ^{(q+1)\times(q+1)} \) 推出：
+\(
+S_{-m}(q)=\Tr(((A^{(q)})^{-1})^m)\in\ZZ
+\)。
+\end{proof}
+
 \begin{corollary}[倒数三至六次矩的显式闭式]\label{cor:xi-replica-softcore-reciprocal-moment-m3-m6-closed}
 对任意 \(q\ge2\)，成立
 \[
@@ -173,6 +218,86 @@ S_{-6}(q)=64\,\Omega_6^{(-)}(q)+96\cdot 2^q-192(-1)^q3^q-48(-1)^q+73\; }.
 \begin{proof}
 在定理 \ref{thm:xi-replica-softcore-reciprocal-moment-partition-closed-form} 中分别取 \(m=3,4,5,6\)。
 含部件 \(2\) 的分拆项因 \(F_0=0\) 全部消失；其余有限项直接化简即得。
+\end{proof}
+
+\begin{corollary}[倒数一次至八次矩的完全闭式]\label{cor:xi-replica-softcore-reciprocal-moment-m1-m8-closed}
+对任意 \(q\ge 2\)，成立
+\[
+\boxed{\;
+S_{-1}(q)=2\,\Omega_1^{(-)}(q)-1=2(-1)^qF_{q+1}-1\;},
+\]
+\[
+\boxed{\;
+S_{-2}(q)=4\,\Omega_2^{(-)}(q)+1=4F_{2q+2}+1\;},
+\]
+以及推论 \ref{cor:xi-replica-softcore-reciprocal-moment-m3-m6-closed} 的 \(m=3,4,5,6\) 公式；并且
+\[
+\boxed{\;
+S_{-7}(q)=128\,\Omega_7^{(-)}(q)-448\cdot 5^{q}+224(-1)^q 3^{q}-112\cdot 2^{q}+280(-1)^q-141\;},
+\]
+\[
+\boxed{\;
+S_{-8}(q)=256\,\Omega_8^{(-)}(q)-1024(-1)^q 8^{q}+512\cdot 5^{q}-256(-1)^q 3^{q}+640\cdot 2^{q}-576(-1)^q+481\; }.
+\]
+\end{corollary}
+\begin{proof}
+在定理 \ref{thm:xi-replica-softcore-reciprocal-moment-partition-closed-form} 中分别取 \(m=1,2,7,8\)。
+当 \(m=1\) 时仅保留 \(\ell(\pi)=1\) 的常数项，得到 \(S_{-1}(q)=2\Omega_1^{(-)}(q)-1\)；
+当 \(m=2\) 时仅出现 \(\Psi(\pi)\in\{F_{-1},F_0\}\) 且 \(F_0=0\) 使非平凡分拆项消失，得到 \(S_{-2}(q)=4\Omega_2^{(-)}(q)+1\)。
+当 \(m=7,8\) 时同理由有限分拆项直接化简得到所示闭式。
+\end{proof}
+
+\begin{theorem}[全矩阵逆幂迹的 Lucas 主项与有限修正]\label{thm:xi-replica-softcore-full-trace-negative-power-lucas-finite-correction}
+令 \(q\ge 2\)，并记 Lucas 数列 \(L_0=2\)、\(L_1=1\)、\(L_{m+1}=L_m+L_{m-1}\)。
+则对任意整数 \(m\ge 1\) 成立
+\[
+\boxed{\;
+\Tr\!\bigl((T^{(q)})^{-m}\bigr)
+=2^m(-1)^{mq}L_m^{\,q}
+\sum_{k=1}^{m}(-1)^k\,2^{m-k}\,\frac{m}{k}
+\sum_{\substack{n_1+\cdots+n_k=m-k\\ n_j\ge 0}}
+\ \prod_{j=1}^{k}\Bigl((-1)^{n_jq}F_{n_j-1}^{\,q}\Bigr)\; }.
+\]
+从而对 \(m=1,\dots,8\)（其中 \(L_1=1,L_2=3,L_3=4,L_4=7,L_5=11,L_6=18,L_7=29,L_8=47\)）有完全闭式
+\[
+\begin{aligned}
+\Tr\!\bigl((T^{(q)})^{-1}\bigr)&=2(-1)^q-1,\\
+\Tr\!\bigl((T^{(q)})^{-2}\bigr)&=4\cdot 3^q+1,\\
+\Tr\!\bigl((T^{(q)})^{-3}\bigr)&=8(-1)^q\cdot 4^q-13,\\
+\Tr\!\bigl((T^{(q)})^{-4}\bigr)&=16\cdot 7^q+17-32(-1)^q,\\
+\Tr\!\bigl((T^{(q)})^{-5}\bigr)&=32(-1)^q\cdot 11^q-80\cdot 2^q-21+40(-1)^q,\\
+\Tr\!\bigl((T^{(q)})^{-6}\bigr)&=64\cdot 18^q+96\cdot 2^q-192(-1)^q 3^q+73-48(-1)^q,\\
+\Tr\!\bigl((T^{(q)})^{-7}\bigr)&=128(-1)^q\cdot 29^q-448\cdot 5^q+224(-1)^q 3^q-112\cdot 2^q+280(-1)^q-141,\\
+\Tr\!\bigl((T^{(q)})^{-8}\bigr)&=256\cdot 47^q-1024(-1)^q 8^q+512\cdot 5^q-256(-1)^q 3^q+640\cdot 2^q-576(-1)^q+481.
+\end{aligned}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-replica-softcore-full-spectrum-direct-sum} 的例外--体谱直和分解，
+\[
+\Tr\!\bigl((T^{(q)})^{-m}\bigr)
+=S_{-m}(q)+\sum_{i=0}^{q}\Bigl(\binom{q}{i}-1\Bigr)\Bigl(\frac{2}{\mu_i^{(q)}}\Bigr)^{m},
+\qquad
+\mu_i^{(q)}=\varphi^{\,q-i}\psi^{\,i}.
+\]
+体谱部分满足
+\[
+\sum_{i=0}^{q}\binom{q}{i}\bigl(\mu_i^{(q)}\bigr)^{-m}
+=(\varphi^{-m}+\psi^{-m})^q
+=\bigl((-1)^mL_m\bigr)^q
+=(-1)^{mq}L_m^{\,q},
+\]
+而
+\(
+\sum_{i=0}^{q}\bigl(\mu_i^{(q)}\bigr)^{-m}
+=\Tr\!\bigl((C^{(q)})^{-m}\bigr)=\Omega_m^{(-)}(q)
+\)
+（见本段定义）。
+因此体谱贡献为
+\(
+2^m\bigl((-1)^{mq}L_m^{\,q}-\Omega_m^{(-)}(q)\bigr)
+\)。
+将其与定理 \ref{thm:xi-replica-softcore-reciprocal-moment-ring-decomposition} 中的 \(S_{-m}(q)\) 相加，\(\Omega_m^{(-)}(q)\) 项严格相消，得到一般公式；将 \(m=1,\dots,8\) 的有限和逐一化简即可得到列出的闭式。证毕。
 \end{proof}
 
 \begin{theorem}[固定阶倒数矩的 \(q\)-方向递推因子]\label{thm:xi-replica-softcore-reciprocal-moment-q-recurrence}

@@ -64,6 +64,198 @@ S(\theta)=a(L)\cos\theta+\mathrm{i}b(L)\sin\theta
 当 \(L=1\) 时 \(S(\theta)=2\cos\theta\)，以 \(\theta\) 在 \([0,2\pi)\) 上均匀并按两支覆盖换元得到弧正弦密度；端点陈述由 \(\mathcal C(\infty)=-1\) 与 \(J_1(-1)=-2\) 直接给出。
 \end{proof}
 
+\begin{proposition}[\texorpdfstring{$s\mapsto 1-s$}{s->1-s} 对合下的 Cayley 共轭与对数微分恒等式]\label{prop:xi-cayley-tau-conjugacy-logdiff}
+令 \(\tau:\PP^1(\CC)\to\PP^1(\CC)\) 为对合 \(\tau(s)=1-s\)，并定义 Möbius 变换
+\[
+\mathcal C_\tau(s):=\frac{s}{1-s}\qquad (s\neq 1).
+\]
+则成立：
+\begin{enumerate}
+  \item \(\mathcal C_\tau\circ\tau=\iota\circ\mathcal C_\tau\)，其中 \(\iota(w)=1/w\)。等价地，
+  \[
+  \mathcal C_\tau(1-s)=\frac{1}{\mathcal C_\tau(s)}\qquad (s\neq 0,1).
+  \]
+  \item 临界线 \(\Re(s)=\tfrac12\) 在 \(\mathcal C_\tau\) 下的像为单位圆 \(|w|=1\)，并且
+  \[
+  \Re(s)>\tfrac12\iff |\mathcal C_\tau(s)|>1,\qquad
+  \Re(s)<\tfrac12\iff |\mathcal C_\tau(s)|<1.
+  \]
+  \item 在三点穿孔球面 \(\PP^1\setminus\{0,1,\infty\}\) 上有精确的 \(1\)-形式恒等式
+  \[
+  \frac{\dd s}{s(1-s)}=\frac{\dd w}{w},\qquad w=\mathcal C_\tau(s).
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+直接计算得
+\(
+\mathcal C_\tau(1-s)=\frac{1-s}{s}=1/\mathcal C_\tau(s)
+\)，从而 (1) 成立。
+写 \(s=\sigma+\mathrm{i}t\)，则
+\[
+|\mathcal C_\tau(s)|^2=\frac{\sigma^2+t^2}{(1-\sigma)^2+t^2},
+\]
+故 \(|\mathcal C_\tau(s)|=1\) 当且仅当 \(\sigma=\tfrac12\)，并且 \(\sigma\gtrless \tfrac12\) 等价于 \(|\mathcal C_\tau(s)|\gtrless 1\)，得到 (2)。
+对 (3)，由反解 \(s=\frac{w}{1+w}\) 得
+\[
+\dd s=\frac{\dd w}{(1+w)^2},\qquad s(1-s)=\frac{w}{(1+w)^2},
+\]
+从而 \(\dd s/(s(1-s))=\dd w/w\)。证毕。
+\end{proof}
+
+\begin{corollary}[临界线的圆周参数化与 Cauchy 权重的角测度规一化]\label{cor:xi-critical-line-circle-cauchy-uniformization}
+在命题 \ref{prop:xi-cayley-tau-conjugacy-logdiff} 的记号下，取 \(w=e^{\mathrm{i}\theta}\)（\(\theta\in(-\pi,\pi)\)）并令
+\[
+s(\theta):=\frac{w}{1+w}.
+\]
+则有显式参数化
+\[
+s(\theta)=\frac12+\frac{\mathrm{i}}{2}\tan\frac{\theta}{2}.
+\]
+因此若写 \(s=\tfrac12+\mathrm{i}t\)，则
+\begin{equation}\label{eq:xi-critical-line-t-theta}
+t=\frac12\tan\frac{\theta}{2},\qquad
+\dd\theta=\frac{\dd t}{t^2+\tfrac14}.
+\end{equation}
+并且在缩放变量 \(x:=2t\) 下，
+\begin{equation}\label{eq:xi-critical-line-cauchy-scale2}
+\frac{\dd\theta}{2\pi}=\frac{\dd x}{\pi(1+x^2)}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+由
+\(
+1+e^{\mathrm{i}\theta}=2\cos(\theta/2)e^{\mathrm{i}\theta/2}
+\)
+得
+\[
+s(\theta)=\frac{e^{\mathrm{i}\theta}}{1+e^{\mathrm{i}\theta}}
+=\frac{e^{\mathrm{i}\theta/2}}{2\cos(\theta/2)}
+=\frac12+\frac{\mathrm{i}}{2}\tan(\theta/2).
+\]
+进而
+\(
+\dd t=\frac14\sec^2(\theta/2)\dd\theta
+\)
+且
+\(
+t^2+\tfrac14=\tfrac14\sec^2(\theta/2)
+\)，从而得到 \eqref{eq:xi-critical-line-t-theta}。
+令 \(x=2t\) 则 \(\dd\theta=\frac{2\,\dd x}{1+x^2}\)，即 \eqref{eq:xi-critical-line-cauchy-scale2}。证毕。
+\end{proof}
+
+\begin{theorem}[奇异环 Jensen 恒等式与临界线缺陷的标量化]\label{thm:xi-singular-ring-jensen-identity-defect}
+设 \(f\) 为整函数并满足对称关系 \(f(s)=f(1-s)\) 以及 \(f(0)\neq 0\)。
+假设对数平均
+\begin{equation}\label{eq:xi-singular-ring-jensen-Jf-def}
+\mathfrak J(f):=\frac{1}{2\pi}\int_{-\infty}^{\infty}\log\bigl|f(\tfrac12+\mathrm{i}t)\bigr|\,
+\frac{\dd t}{t^2+\tfrac14}
+\end{equation}
+存在且有限。
+则有恒等式
+\begin{equation}\label{eq:xi-singular-ring-jensen-Jf-zeros}
+\mathfrak J(f)=\log|f(0)|+\sum_{\rho:\ f(\rho)=0,\ \Re(\rho)<\tfrac12}\log\left|\frac{1-\rho}{\rho}\right|,
+\end{equation}
+其中求和按零点重数计，并且右端为非负级数。
+特别地，定义缺陷
+\begin{equation}\label{eq:xi-singular-ring-jensen-defect}
+\Delta(f):=\mathfrak J(f)-\log|f(0)|\ \ge\ 0,
+\end{equation}
+则 \(\Delta(f)=0\) 当且仅当 \(f\) 的全部零点满足 \(\Re(\rho)=\tfrac12\)。
+\end{theorem}
+\begin{proof}
+定义
+\[
+s(w):=\frac{w}{1+w},\qquad F(w):=f(s(w))\qquad(|w|<1),
+\]
+则 \(F\) 在 \(\mathbb D\) 内解析且 \(F(0)=f(0)\neq 0\)。
+由推论 \ref{cor:xi-critical-line-circle-cauchy-uniformization}，
+\(
+s(e^{\mathrm{i}\theta})=\tfrac12+\frac{\mathrm{i}}{2}\tan(\theta/2)
+\)
+且 \(\dd\theta=\dd t/(t^2+\tfrac14)\)，从而
+\[
+\mathfrak J(f)=\frac{1}{2\pi}\int_{-\pi}^{\pi}\log|F(e^{\mathrm{i}\theta})|\,\dd\theta
+=\frac{1}{2\pi}\int_{0}^{2\pi}\log|F(e^{\mathrm{i}\theta})|\,\dd\theta.
+\]
+由 Jensen 公式，
+\[
+\frac{1}{2\pi}\int_{0}^{2\pi}\log|F(e^{\mathrm{i}\theta})|\,\dd\theta
+=\log|F(0)|+\sum_{a:\ F(a)=0,\ |a|<1}\log\frac{1}{|a|}.
+\]
+另一方面，\(F(a)=0\) 等价于 \(f(\rho)=0\) 且 \(\rho=\frac{a}{1+a}\)，亦即 \(a=\frac{\rho}{1-\rho}=\mathcal C_\tau(\rho)\)。
+并且由命题 \ref{prop:xi-cayley-tau-conjugacy-logdiff}(2)，\(|a|<1\) 当且仅当 \(\Re(\rho)<\tfrac12\)。
+最后注意
+\(
+\log\frac1{|a|}=\log\left|\frac{1-\rho}{\rho}\right|
+\)，代回即得 \eqref{eq:xi-singular-ring-jensen-Jf-zeros}，并推出 \eqref{eq:xi-singular-ring-jensen-defect}。
+由于 \(f(s)=f(1-s)\) 强制零点在 \(\rho\mapsto 1-\rho\) 下成对出现，故不存在 \(\Re(\rho)<\tfrac12\) 的零点等价于不存在 \(\Re(\rho)>\tfrac12\) 的零点，从而 \(\Delta(f)=0\) 当且仅当全部零点落在 \(\Re(\rho)=\tfrac12\)。证毕。
+\end{proof}
+
+\begin{proposition}[离临界线偏移的缺陷下界]\label{prop:xi-singular-ring-defect-delta-lowerbound}
+在定理 \ref{thm:xi-singular-ring-jensen-identity-defect} 的设定下，设 \(\rho=\beta+\mathrm{i}\gamma\) 为零点且 \(\beta<\tfrac12\)，并记 \(\delta:=\tfrac12-\beta>0\)。
+则
+\begin{equation}\label{eq:xi-singular-ring-defect-single-lowerbound}
+\log\left|\frac{1-\rho}{\rho}\right|
+=\frac12\log\!\left(1+\frac{2\delta}{|\rho|^2}\right)
+\ge \frac{\delta}{|\rho|^2+2\delta}.
+\end{equation}
+从而有下界
+\begin{equation}\label{eq:xi-singular-ring-defect-sum-lowerbound}
+\Delta(f)\ge \sum_{\rho:\ \Re(\rho)<\tfrac12}\frac{\tfrac12-\Re(\rho)}{|\rho|^2+2(\tfrac12-\Re(\rho))}.
+\end{equation}
+若进一步满足 \(\Re(\rho)\in[0,1]\)（对所有零点），则
+\begin{equation}\label{eq:xi-singular-ring-defect-sum-lowerbound-simplified}
+\Delta(f)\ge \sum_{\rho:\ \Re(\rho)<\tfrac12}\frac{\tfrac12-\Re(\rho)}{|\rho|^2+1}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+计算得
+\[
+\left|\frac{1-\rho}{\rho}\right|^2
+=\frac{(1-\beta)^2+\gamma^2}{\beta^2+\gamma^2}
+=1+\frac{1-2\beta}{|\rho|^2}
+=1+\frac{2\delta}{|\rho|^2},
+\]
+从而得到 \eqref{eq:xi-singular-ring-defect-single-lowerbound} 的第一等式。
+对 \(x>0\) 使用不等式 \(\log(1+x)\ge \frac{x}{1+x}\) 并取 \(x=2\delta/|\rho|^2\) 得到第二个不等式。
+对所有满足 \(\Re(\rho)<\tfrac12\) 的零点求和并与 \eqref{eq:xi-singular-ring-jensen-defect} 对照即可得到 \eqref{eq:xi-singular-ring-defect-sum-lowerbound}。
+若 \(\delta\le \tfrac12\)，则 \(|\rho|^2+2\delta\le |\rho|^2+1\)，故得到 \eqref{eq:xi-singular-ring-defect-sum-lowerbound-simplified}。证毕。
+\end{proof}
+
+\begin{proposition}[缺陷预算导出的离线零点计数约束]\label{prop:xi-singular-ring-defect-counting-bound}
+在命题 \ref{prop:xi-singular-ring-defect-delta-lowerbound} 的设定下，给定 \(R>0\)、\(\eta>0\)。
+则满足
+\[
+|\rho|\le R,\qquad \Re(\rho)\le \tfrac12-\eta
+\]
+的零点个数（按重数计）满足上界
+\begin{equation}\label{eq:xi-singular-ring-defect-counting-bound}
+\#\Bigl\{\rho:\ |\rho|\le R,\ \Re(\rho)\le \tfrac12-\eta\Bigr\}
+\le \Delta(f)\cdot\frac{R^2+2\eta}{\eta}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+对满足条件的每个零点有 \(\delta\ge \eta\) 且 \(|\rho|^2+2\delta\le R^2+2\eta\)，故由
+\eqref{eq:xi-singular-ring-defect-sum-lowerbound} 得单项贡献不少于 \(\eta/(R^2+2\eta)\)。
+将该下界乘以零点个数并与 \(\Delta(f)\) 比较即得 \eqref{eq:xi-singular-ring-defect-counting-bound}。证毕。
+\end{proof}
+
+\begin{proposition}[缺陷的乘法性]\label{prop:xi-singular-ring-defect-multiplicative}
+设 \(f,g\) 满足定理 \ref{thm:xi-singular-ring-jensen-identity-defect} 的全部条件，且 \((fg)(0)\neq 0\)。
+则
+\begin{equation}\label{eq:xi-singular-ring-defect-additive}
+\Delta(fg)=\Delta(f)+\Delta(g),
+\qquad
+\Delta(f^n)=n\,\Delta(f)\ \ (n\in\NN).
+\end{equation}
+\end{proposition}
+\begin{proof}
+由定义 \eqref{eq:xi-singular-ring-jensen-Jf-def} 与 \(\log|fg|=\log|f|+\log|g|\) 得
+\(\mathfrak J(fg)=\mathfrak J(f)+\mathfrak J(g)\)，并且 \(\log|(fg)(0)|=\log|f(0)|+\log|g(0)|\)。
+代入 \eqref{eq:xi-singular-ring-jensen-defect} 即得 \eqref{eq:xi-singular-ring-defect-additive}。证毕。
+\end{proof}
+
 \begin{proposition}[Langlands--Satake 迹椭圆与 tempered 退化的奇异环边界]\label{prop:xi-satake-trace-ellipse-tempered-segment}
 取 \(\alpha\in\CC^\times\)，令 \(L:=|\alpha|^2\) 并置 \(\beta:=\alpha^{-1}\)（故 \(\alpha\beta=1\)）。
 定义迹参数

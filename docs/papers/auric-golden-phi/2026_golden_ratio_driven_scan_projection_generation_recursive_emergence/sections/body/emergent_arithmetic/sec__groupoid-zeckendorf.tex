@@ -119,6 +119,71 @@ C(a)=a_2,
 其复群胚代数 \(\CC[\mathcal{R}_m]\) 取为由 \(\mathcal{R}_m\) 的箭头生成的有限维 \(\ast\)-代数（卷积乘法与反向取逆为 \(\ast\)）。
 \end{definition}
 
+\begin{definition}[推前分布、碰撞矩与 \texorpdfstring{$q$}{q}-Rényi 偏离]\label{def:fold-pushforward-renyi-collision-moment}
+在均匀微态基线 \(A\sim\mathrm{Unif}(\Omega_m)\) 下，记折叠推前分布
+\[
+\pi_m(x):=\PP\bigl(\Fold_m(A)=x\bigr)=\frac{d_m(x)}{2^m}\qquad(x\in X_m),
+\]
+并令 \(u_m\) 为 \(X_m\) 上的均匀分布 \(u_m(x)=|X_m|^{-1}\)。
+对任意实数 \(q>0\)，定义 \(q\)-碰撞矩（\(q\)-阶多重度矩）
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q.
+\]
+当 \(q>1\) 时，记 \(q\)-Rényi 散度
+\(
+D_q(\pi_m\Vert u_m)
+\)
+为标准定义
+\(
+D_q(\pi\Vert u)=\frac{1}{q-1}\log\sum_x \pi(x)^q u(x)^{1-q}
+\)。
+\end{definition}
+
+\begin{proposition}[碰撞矩与 Rényi 偏离的严格恒等式]\label{prop:fold-renyi-collision-identity}
+在定义 \ref{def:fold-pushforward-renyi-collision-moment} 的记号下，对任意 \(q>1\) 有严格恒等式
+\begin{equation}\label{eq:fold-renyi-collision-identity}
+D_q(\pi_m\Vert u_m)
+=\frac{1}{q-1}\Bigl(\log S_q(m)-q\,m\log 2+(q-1)\log|X_m|\Bigr).
+\end{equation}
+\end{proposition}
+\begin{proof}
+由 \(\pi_m(x)=d_m(x)/2^m\)、\(u_m(x)=|X_m|^{-1}\)，有
+\[
+\sum_{x\in X_m}\pi_m(x)^q\,u_m(x)^{1-q}
+=\sum_{x\in X_m}\Bigl(\frac{d_m(x)}{2^m}\Bigr)^q\,|X_m|^{q-1}
+=|X_m|^{q-1}2^{-mq}S_q(m).
+\]
+代入 Rényi 散度定义即得 \eqref{eq:fold-renyi-collision-identity}。证毕。
+\end{proof}
+
+\begin{proposition}[大纤维计数的纯矩上界]\label{prop:fold-large-fiber-moment-upperbounds}
+沿定义 \ref{def:fold-pushforward-renyi-collision-moment}，对阈值 \(D\ge 1\) 定义大纤维集合
+\[
+\mathcal L_m(D):=\{x\in X_m:\ d_m(x)\ge D\}.
+\]
+则对任意 \(q>0\) 有确定性不等式
+\begin{equation}\label{eq:fold-large-fiber-count-upperbound}
+|\mathcal L_m(D)|\ \le\ \frac{S_q(m)}{D^q}.
+\end{equation}
+此外对任意 \(q>1\) 有推前概率上界
+\begin{equation}\label{eq:fold-large-fiber-mass-upperbound}
+\pi_m(\mathcal L_m(D))
+=\sum_{x\in\mathcal L_m(D)}\frac{d_m(x)}{2^m}
+\ \le\ \frac{S_q(m)}{2^m\,D^{q-1}}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+由 \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\ge \sum_{x\in\mathcal L_m(D)}d_m(x)^q\ge |\mathcal L_m(D)|D^q\) 得 \eqref{eq:fold-large-fiber-count-upperbound}。
+当 \(q>1\) 且 \(d_m(x)\ge D\) 时有 \(d_m(x)\le d_m(x)^q/D^{q-1}\)，故
+\[
+\pi_m(\mathcal L_m(D))
+=2^{-m}\sum_{x\in\mathcal L_m(D)}d_m(x)
+\le 2^{-m}\sum_{x\in\mathcal L_m(D)}\frac{d_m(x)^q}{D^{q-1}}
+\le \frac{S_q(m)}{2^mD^{q-1}},
+\]
+即 \eqref{eq:fold-large-fiber-mass-upperbound}。证毕。
+\end{proof}
+
 \begin{proposition}[Wedderburn 分解与纤维多重度直方图]\label{prop:fold-groupoid-wedderburn}
 沿定义 \ref{def:fold-equivalence-groupoid-algebra}，有自然的 \(\ast\)-同构
 \[
