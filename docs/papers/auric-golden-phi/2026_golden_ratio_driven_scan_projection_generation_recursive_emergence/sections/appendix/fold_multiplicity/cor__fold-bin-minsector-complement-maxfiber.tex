@@ -51,6 +51,63 @@ d_{\min}(m)=F_{m/2},
 注意 \(\varphi^3=2+\sqrt5>4\)，从而 \(\varphi^{3/2}>2\)，故存在 \(m_0\) 使对所有偶数 \(m\ge m_0\) 有 \(F_{m+2}F_{m/2}>2^m\)，与上式矛盾。证毕。
 \end{proof}
 
+\begin{corollary}[最小退化 Fibonacci 律的显式截止阈值]\label{cor:fold-bin-min-degeneracy-fib-explicit-cutoff}
+沿用推论 \ref{cor:fold-bin-min-degeneracy-fib-nonpersistent} 的记号。
+对任意偶数 \(m\ge 24\)，等式
+\[
+d_{\min}(m)=F_{m/2}
+\]
+不可能成立。
+\end{corollary}
+\begin{proof}
+若 \(d_{\min}(m)=F_{m/2}\)，则由推论 \ref{cor:fold-bin-min-degeneracy-fib-nonpersistent} 的推导必有
+\begin{equation}\label{eq:fold-bin-min-degeneracy-product-ineq}
+2^m\ \ge\ F_{m+2}\,F_{m/2}.
+\end{equation}
+取 \(m=24\)，直接计算得到
+\[
+F_{26}F_{12}=121393\cdot 144=17480592\ >\ 2^{24}=16777216,
+\]
+从而 \eqref{eq:fold-bin-min-degeneracy-product-ineq} 在 \(m=24\) 已矛盾。
+\par
+下面说明对所有更大的偶数亦不可能。
+令
+\[
+R(m):=\frac{F_{m+2}F_{m/2}}{2^m}\qquad(m\ \text{为偶数}).
+\]
+则
+\[
+\frac{R(m+2)}{R(m)}
+=\frac{F_{m+4}}{F_{m+2}}\cdot \frac{F_{m/2+1}}{F_{m/2}}\cdot \frac{1}{4}.
+\]
+利用 \(\varphi=[1;1,1,1,\dots]\) 的连分数收敛子性质：对任意 \(n\ge 1\) 有
+\[
+\left|\frac{F_{n+1}}{F_n}-\varphi\right|<\frac{1}{F_n^2},
+\]
+从而当 \(n\ge 12\) 时
+\[
+\frac{F_{n+1}}{F_n}>\varphi-\frac{1}{F_{12}^2},
+\qquad
+\frac{F_{n+2}}{F_n}=1+\frac{F_{n+1}}{F_n}>\varphi^2-\frac{1}{F_{12}^2}.
+\]
+当 \(m\ge 24\) 时同时有 \(m/2\ge 12\) 与 \(m+2\ge 26\ge 12\)，故
+\[
+\frac{R(m+2)}{R(m)}
+>\frac{\bigl(\varphi^2-\frac{1}{F_{12}^2}\bigr)\bigl(\varphi-\frac{1}{F_{12}^2}\bigr)}{4}.
+\]
+注意 \(F_{12}=144\)，令 \(\varepsilon:=1/F_{12}^2=1/20736\)。
+则
+\[
+\bigl(\varphi^2-\varepsilon\bigr)\bigl(\varphi-\varepsilon\bigr)
+=\varphi^3-\varepsilon(\varphi^2+\varphi)+\varepsilon^2
+>4,
+\]
+因为 \(\varphi^3=2+\sqrt5\) 且 \(\varepsilon(\varphi^2+\varphi)<5/20736\)。
+因此 \(\frac{R(m+2)}{R(m)}>1\)，即 \(R(m)\) 在所有偶数 \(m\ge 24\) 上严格递增。
+既然 \(R(24)>1\)，便对所有偶数 \(m\ge 24\) 都有 \(R(m)>1\)，亦即 \(F_{m+2}F_{m/2}>2^m\)，与 \eqref{eq:fold-bin-min-degeneracy-product-ineq} 矛盾。
+证毕。
+\end{proof}
+
 \begin{corollary}[子覆盖同构外推下的最小扇区密度极限]\label{cor:fold-bin-minsector-density-phi-minus2}
 沿用定义 \ref{def:fold-bin-degeneracy-sectors} 的记号。
 若“子覆盖同构”恒等式

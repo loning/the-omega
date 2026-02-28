@@ -237,6 +237,79 @@ N_{m,d}:=\#\{x\in X_m:\ d_m(x)=d\}
 于是 \(\ZZ/d_m(x)\ZZ\) 含阶 \(p\) 元素，从而整体基本群含阶 \(p\) 元素。证毕。
 \end{proof}
 
+\begin{theorem}[退化谱决定连通连续对称的有理同伦型]\label{thm:fold-groupoid-aut0-rational-cohomology}
+令
+\[
+K_m:=\mathrm{Aut}^{\ast}(\CC[\mathcal{R}_m])_0\ \cong\ \prod_{x\in X_m}\mathrm{PU}\bigl(d_m(x)\bigr)
+\]
+为折叠群胚代数的恒等连通分量（定理 \ref{thm:fold-collision2-aut-lie-dimension-rank}）。
+则其有理上同调环为外代数
+\[
+H^\ast(K_m;\QQ)
+\ \cong\
+\bigotimes_{x\in X_m}H^\ast(\mathrm{PU}(d_m(x));\QQ)
+\ \cong\
+\Lambda\!\left(\bigoplus_{x\in X_m}\ \bigoplus_{j=2}^{d_m(x)} \QQ\cdot u_{x,j}\right),
+\qquad
+\deg(u_{x,j})=2j-1.
+\]
+从而 Poincar\'e 多项式满足乘积闭式
+\[
+P_{K_m}(t)
+:=\sum_{k\ge 0}\dim_{\QQ}H^k(K_m;\QQ)\,t^k
+=\prod_{x\in X_m}\ \prod_{j=2}^{d_m(x)}\bigl(1+t^{2j-1}\bigr).
+\]
+\end{theorem}
+\begin{proof}
+对每个 \(d\ge 2\)，经典结论给出 \(H^\ast(\mathrm{SU}(d);\QQ)\cong \Lambda(\alpha_3,\alpha_5,\dots,\alpha_{2d-1})\)。
+又 \(\mathrm{PU}(d)\cong \mathrm{SU}(d)/\mu_d\) 仅差有限中心商，因此其有理上同调与 \(\mathrm{SU}(d)\) 相同，仍为次数 \(3,5,\dots,2d-1\) 上的外代数。
+由 K\"unneth 定理，有限直积的有理上同调为张量积，从而得到所示分解与生成元次数；Poincar\'e 多项式的乘法性给出乘积闭式。证毕。
+\end{proof}
+
+\begin{corollary}[纤维谱尾分布的拓扑读出]\label{cor:fold-tail-topological-readout}
+令
+\[
+T_m(k):=\#\{x\in X_m:\ d_m(x)\ge k\}\qquad(k\ge 1)
+\]
+为纤维多重度的尾计数函数。则对每个 \(k\ge 1\)，有理上同调 \(H^\ast(K_m;\QQ)\) 中次数 \(2k-1\) 的外代数生成元个数恰为 \(T_m(k+1)\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-groupoid-aut0-rational-cohomology}，对每个 \(x\) 的因子 \(\mathrm{PU}(d_m(x))\) 在次数集合 \(\{3,5,\dots,2d_m(x)-1\}\) 上各贡献一个生成元。
+因此次数 \(2k-1\) 处出现生成元当且仅当 \(d_m(x)\ge k+1\)，逐因子累加即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[补对偶诱导的 \texorpdfstring{$C_2$}{C2} 外自同构与固定点子群]\label{prop:fold-groupoid-aut0-complement-fixed-subgroup}
+令 \(K_m\) 如上，并令 \(\jmath_m:X_m\to X_m\) 为命题 \ref{prop:fold-complement-duality} 给出的稳定类型对合。
+由其在指标集上的置换作用定义群自同构
+\[
+\sigma_m:K_m\to K_m,\qquad
+\sigma_m\bigl((g_x)_{x\in X_m}\bigr):=(g_{\jmath_m^{-1}(x)})_{x\in X_m}.
+\]
+则 \(\sigma_m^2=\mathrm{id}\)，并且若把 \(X_m\) 分解为
+\(
+X_m=\mathrm{Fix}(\jmath_m)\ \sqcup\ \bigsqcup_{\alpha\in\mathcal O_2}\{x_\alpha,\jmath_m(x_\alpha)\}
+\)
+（\(\mathcal O_2\) 为二点轨道集合），则固定点子群满足自然同构
+\[
+K_m^{\sigma_m}\ \cong\
+\Bigl(\prod_{x\in \mathrm{Fix}(\jmath_m)}\mathrm{PU}(d_m(x))\Bigr)\times
+\Bigl(\prod_{\alpha\in\mathcal O_2}\mathrm{PU}(d_m(x_\alpha))\Bigr),
+\]
+其中二点轨道因子通过对角嵌入实现。
+并且其实 Lie 维数满足
+\[
+\dim_{\RR}K_m^{\sigma_m}
+=\frac12\Bigl(\dim_{\RR}K_m+\sum_{x\in \mathrm{Fix}(\jmath_m)}(d_m(x)^2-1)\Bigr).
+\]
+\end{proposition}
+\begin{proof}
+\(\sigma_m\) 仅重排同型因子且 \(\jmath_m\) 为对合，因此 \(\sigma_m^2=\mathrm{id}\)。
+对二点轨道 \(\{x,\jmath_m(x)\}\)，固定点条件强制 \((g_x,g_{\jmath_m(x)})\) 落在对角 \(\mathrm{PU}(d_m(x))\subseteq \mathrm{PU}(d_m(x))\times \mathrm{PU}(d_m(x))\)；
+对固定点轨道则无额外约束。
+逐轨道取直积得到结构分解。
+维数公式由 \(\dim(\mathrm{diag}\,H)=\dim H\) 与直积可加性直接给出。证毕。
+\end{proof}
+
 \begin{theorem}[离散规范群的双指数律]\label{thm:fold-discrete-gauge-group-double-exponential}
 定义折叠的离散规范群（纤维内置换群）
 \[
