@@ -154,6 +154,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_symq_fibonacci_vandermonde_resultant_hankel_audit",
+            script="exp_xi_symq_fibonacci_vandermonde_resultant_hankel_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_symq_fibonacci_vandermonde_resultant_hankel_audit.json",
+            ],
+        ),
+        Step(
             name="xi_cayley_joukowsky_hecke_dirichlet_audit",
             script="exp_xi_cayley_joukowsky_hecke_dirichlet_audit.py",
             args=[],
@@ -323,6 +331,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_gauge_anomaly_branch_points.json",
                 "sections/generated/eq_fold_gauge_anomaly_branch_points.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_deformed_quartic_branchpoint_audit",
+            script="exp_fold_gauge_anomaly_deformed_quartic_branchpoint_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_deformed_quartic_branchpoint_audit.json",
             ],
         ),
         Step(
@@ -2489,6 +2505,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_poisson_cauchy_cayley_multipole_audit",
+            script="exp_xi_poisson_cauchy_cayley_multipole_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_cauchy_cayley_multipole_audit.json",
+            ],
+        ),
+        Step(
             name="xi_offline_neumann_trace_cauchy_semigroup_audit",
             script="exp_xi_offline_neumann_trace_cauchy_semigroup_audit.py",
             args=[],
@@ -3308,6 +3332,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_delta_projection_a5b5_audit.json",
                 "sections/generated/eq_fold_zm_delta_projection_a5b5_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_delta_a5_discriminant_audit",
+            script="exp_fold_zm_delta_a5_discriminant_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_delta_a5_discriminant_audit.json",
             ],
         ),
         Step(

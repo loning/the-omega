@@ -320,5 +320,81 @@ B_m:=\{x\in\RR^m:\ |x|_2\le1\},\qquad E_m:=D_m(B_m).
 在变换 \(x\mapsto x/2\) 下立即推出。证毕。
 \end{proof}
 
+\begin{theorem}[Gödel 素数外置的 Benford 极限定律]\label{thm:fold-godel-prime-register-benford}
+设整数底 \(b\ge 2\)，并取参数 \(q\in(0,1)\)。
+令 \((B_k)_{k\ge 1}\) 为独立同分布的 Bernoulli\((q)\) 随机变量，并以第 \(k\) 个素数 \(\mathfrak p_k\) 定义 Gödel 化素数外置寄存器
+\[
+R_n:=\prod_{k=1}^{n}\mathfrak p_k^{B_k}\qquad(n\ge 1).
+\]
+记 \(\{x\}:=x-\lfloor x\rfloor\) 为小数部分。
+则随机变量 \(\{\log_b R_n\}\) 在分布意义下收敛到 \([0,1)\) 上的均匀分布。
+从而 \(R_n\) 在底 \(b\) 表示下的首位数字分布收敛到 Benford 律：对 \(d\in\{1,\dots,b-1\}\)，
+\[
+\lim_{n\to\infty}\PP(\text{首位数字}=d)=\log_b\!\Bigl(1+\frac{1}{d}\Bigr).
+\]
+\end{theorem}
+\begin{proof}
+令 \(\alpha_k:=\log_b\mathfrak p_k\)，则
+\(
+\log_b R_n=\sum_{k=1}^{n}B_k\alpha_k
+\)。
+由分布型 Weyl 判别准则，只需证明对任意非零整数 \(\ell\)，其 Fourier 系数
+\[
+\phi_n(\ell):=\EE\bigl[\exp(2\pi i\ell \log_b R_n)\bigr]
+\]
+满足 \(\phi_n(\ell)\to 0\)。
+由独立性，
+\[
+\phi_n(\ell)
+=\prod_{k=1}^{n}\EE\bigl[\exp(2\pi i\ell B_k\alpha_k)\bigr]
+=\prod_{k=1}^{n}\Bigl((1-q)+q\,\exp(2\pi i\ell\alpha_k)\Bigr).
+\]
+对任意实数 \(\theta\) 有恒等式
+\[
+\bigl|(1-q)+q\,\exp(2\pi i\theta)\bigr|^2
+=1-4q(1-q)\sin^2(\pi\theta),
+\]
+再用不等式 \(\sqrt{1-x}\le e^{-x/2}\)（\(x\in[0,1]\)）得
+\[
+\bigl|(1-q)+q\,\exp(2\pi i\theta)\bigr|
+\le
+\exp\!\bigl(-2q(1-q)\sin^2(\pi\theta)\bigr).
+\]
+于是
+\[
+|\phi_n(\ell)|
+\le
+\exp\!\Bigl(-2q(1-q)\sum_{k=1}^{n}\sin^2(\pi\ell\alpha_k)\Bigr).
+\]
+因此只需证级数 \(\sum_{k\ge 1}\sin^2(\pi\ell\log_b \mathfrak p_k)\) 发散。
+\par
+取 \(\eta>0\) 足够小使 \(0<|\ell|\log_b(1+2\eta)<1\)，并记
+\[
+\delta_1:=|\ell|\log_b(1+\eta),\qquad
+\delta_2:=|\ell|\log_b(1+2\eta),
+\]
+则 \(0<\delta_1<\delta_2<1\)。
+连续函数 \(t\mapsto \sin^2(\pi t)\) 在紧区间 \([\delta_1,\delta_2]\) 上取到正最小值
+\[
+c:=\min_{t\in[\delta_1,\delta_2]}\sin^2(\pi t)>0.
+\]
+对任意充分大的整数 \(m\)，考虑区间
+\[
+I_m:=[\,b^{m/|\ell|}(1+\eta),\ b^{m/|\ell|}(1+2\eta)\,].
+\]
+其长度为 \(\eta\,b^{m/|\ell|}\)，由素数定理可知 \(I_m\) 中的素数个数随 \(m\to\infty\) 发散；故对无穷多个 \(m\)，可取 \(\mathfrak p\in I_m\) 为素数。
+写 \(\mathfrak p=b^{m/|\ell|}u\) 其中 \(u\in(1+\eta,1+2\eta)\)，则
+\[
+|\ell|\log_b \mathfrak p=m+|\ell|\log_b u,
+\]
+其小数部分落在 \([\delta_1,\delta_2]\)，从而
+\(
+\sin^2(\pi\ell\log_b \mathfrak p)\ge c
+\)。
+因此该发散级数有无穷多个项 \(\ge c\)，故必发散。
+于是 \(|\phi_n(\ell)|\to 0\)，从而 \(\{\log_b R_n\}\Rightarrow \mathrm{Unif}[0,1)\)。
+Benford 首位数字分布是均匀小数部分的直接推论。证毕。
+\end{proof}
+
 \endinput
 

@@ -15,6 +15,78 @@
 \]
 从而“要在模 \(m\) 上看到稳定等分布”自然对应扩散阈值 \(n\gg m^2\)。
 
+\begin{theorem}[阿贝尔模塔的扩散型 Chebotarev：尺度化误差的充分条件]\label{thm:xi-abelian-diffusive-chebotarev-sufficient}
+设在每个模数层 \(m\ge 2\) 上存在一族一维单位根扭曲通道 \(B(\mathrm{e}^{\mathrm{i}\theta})\)（\(\theta\) 在 \(\theta=0\) 的邻域内连续），并令
+\[
+\lambda_m:=\rho\bigl(B(1)\bigr)>1,
+\qquad
+\Lambda_m:=\max_{1\le k\le m-1}\rho\bigl(B(\omega_m^k)\bigr).
+\]
+假设：
+\begin{enumerate}
+  \item \textbf{（解析主支）} 在 \(\theta=0\) 处，主特征值存在解析分支 \(\lambda(\theta)\) 且 \(\lambda(0)=\lambda_m\) 为单 Perron 根；
+  \item \textbf{（非共边界方差）} 扭曲生成的整数值可加 cocycle 在平衡态下具有严格正的渐近方差 \(\sigma^2>0\)，从而有二阶展开
+  \[
+  \log \lambda(\theta)=\log\lambda_m+\mathrm{i}\mu\theta-\frac{\sigma^2}{2}\theta^2+O(\theta^3)\qquad(\theta\to 0)
+  \]
+  （其中 \(\mu\in\RR\)）。
+\end{enumerate}
+则存在常数 \(c>0\) 与至多多项式增长的因子 \(C(m)\) 使得：
+\begin{enumerate}
+  \item \(\Lambda_m\le \lambda_m\exp(-c/m^2)\)；
+  \item 对任意由模 \(m\) 寄存器定义的同余 cylinder 事件 \(U=\pi_m^{-1}(A)\)，其 primitive Chebotarev 计数满足
+  \[
+  B_{n,U}
+  =\mu_{\mathrm{Haar}}(U)\frac{\lambda_m^n}{n}
+  +O\!\left(\frac{\lambda_m^n}{n}\,C(m)\,\exp\!\Bigl(-c\,\frac{n}{m^2}\Bigr)\right)
+  \qquad(n\ge 1).
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+由二阶展开对 \(\theta_k:=2\pi k/m\)（\(1\le k\le m-1\)）得到
+\[
+\bigl|\lambda(\theta_k)\bigr|
+=\lambda_m\exp\!\left(-\frac{\sigma^2}{2}\theta_k^2+O(\theta_k^3)\right)
+\le
+\lambda_m\exp\!\left(-\frac{c_0}{m^2}\right)
+\]
+其中把 \(O(\theta_k^3)\) 吸收进常数并用 \(|\theta_k|\ge 2\pi/m\)。
+由 \(\sigma^2>0\) 的非共边界性，\(|\lambda(\theta)|\) 在 \(\theta=0\) 的邻域内严格小于 \(\lambda_m\)（除 \(\theta=0\) 外），从而由紧性与连续性可将同一指数压缩统一延拓到全部 \(k\in\{1,\dots,m-1\}\)，得到 \(\Lambda_m\le \lambda_m e^{-c/m^2}\)。
+最后，将 \(\Lambda_m\) 代入核的 Chebotarev 误差模板（定理 \ref{thm:kernel-chebotarev-exp} 的阿贝尔角色通道口径），并把对 \(\widehat{G_m}\) 的求和及对 \(A\subseteq G_m\) 的 Fourier 展开所带来的角色数因子并入 \(C(m)\)，即得所示误差式。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$m^2$}{m^2} 扩散屏障与采样律：阈值的充分性与最优性]\label{cor:xi-diffusive-m2-barrier-sampling}
+在定理 \ref{thm:xi-abelian-diffusive-chebotarev-sufficient} 的假设下，存在常数 \(c_1,c_2,c_0>0\) 使得：
+\begin{enumerate}
+  \item 若 \(n\ge c_1 m^2\log\!\bigl(C(m)/\delta\bigr)\)，则对所有 cylinder \(U=\pi_m^{-1}(A)\) 有
+  \[
+  \left|
+  \frac{B_{n,U}}{\mu_{\mathrm{Haar}}(U)\lambda_m^n/n}-1
+  \right|
+  \le \delta.
+  \]
+  \item 存在某些 cylinder \(U=\pi_m^{-1}(A)\) 使得当 \(n\le c_2 m^2\) 时，
+  \[
+  \left|
+  \frac{B_{n,U}}{\mu_{\mathrm{Haar}}(U)\lambda_m^n/n}-1
+  \right|
+  \ge c_0.
+  \]
+\end{enumerate}
+特别地，\(\Lambda_m/\lambda_m\to 1\) 且 \(1-\Lambda_m/\lambda_m\asymp m^{-2}\)，从而任何试图在全部 \(m\) 上强制统一平方根谱隙的方案与该扩散贴边渐近不相容（亦与推论 \ref{cor:abelian-tower-no-go} 的否定性结论同型）。
+\end{corollary}
+
+\begin{proof}
+第一条由定理 \ref{thm:xi-abelian-diffusive-chebotarev-sufficient} 的误差项令其不超过 \(\delta\) 直接得到。
+第二条取最小非平凡扭曲 \(k=1\)（\(\theta=2\pi/m\)）并由二阶展开得到下界
+\(
+\rho(B(\omega_m))\ge \lambda_m\exp(-C/m^2)
+\)。
+再由 Fourier 反演选取 \(A\subseteq G_m\) 使其第一 Fourier 模态与该扭曲对齐，则 Chebotarev 误差的主导项由该模态控制并给出 \(\exp(-C n/m^2)\) 级下界；取 \(n\le c_2 m^2\) 即得常数级偏差。最后的贴边渐近与“无统一谱隙”结论随即推出。证毕。
+\end{proof}
+
 \paragraph{\texorpdfstring{$s$}{s}-平面 near-\texorpdfstring{$1$}{1} 极点的扩散律（含漂移项）}
 上面的二次律不仅给出 \(\eta_m\) 的贴近速度，也可把“最慢扭曲通道的主奇点”直接拉回到
 \(s\)-平面，从而解释 near-\(1\) pole 图的几何形状，并把常数完全锁定到文稿中可计算的
