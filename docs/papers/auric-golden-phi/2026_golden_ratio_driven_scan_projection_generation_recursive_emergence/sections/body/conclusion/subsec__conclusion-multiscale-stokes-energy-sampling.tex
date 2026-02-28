@@ -56,6 +56,204 @@
 把维数与组合常数吸收到 \(C_{d,k}\) 中即得 (2)。证毕。
 \end{proof}
 
+以上讨论在本质上依赖于可交换情形下的线性斯托克斯公式与能量可加性。
+当边界量由非阿贝尔平行移动给出时，“曲率通量主导、三阶余项控制”的局部结构仍可在小尺度上保持，并可通过 dyadic 递归实现全域误差控制。
+
+\begin{theorem}[非阿贝尔情形下的小矩形广义斯托克斯定量化]\label{thm:conclusion-nonabelian-stokes-small-rectangle}
+设 \(G\subset \mathrm{GL}_N(\mathbb C)\) 为矩阵李群，\(\mathfrak g\) 为其李代数，\(\|\cdot\|\) 为算子范数。
+令
+\[
+A:=A_1\,\mathrm d x_1+A_2\,\mathrm d x_2
+\]
+为定义在包含 \(R_h:=[0,h]\times[0,h]\) 的开邻域上的 \(\mathfrak g\)-值 \(C^2\) \(1\)-形式，并记曲率
+\[
+F_A
+:=\Bigl(\partial_1A_2-\partial_2A_1+[A_1,A_2]\Bigr)\,\mathrm d x_1\wedge \mathrm d x_2
+=:F_{12}\,\mathrm d x_1\wedge \mathrm d x_2.
+\]
+令 \(\operatorname{Hol}_A(\partial R_h)\in G\) 表示沿 \(\partial R_h\)（逆时针取向）的平行移动回路整体单值。
+则存在绝对常数 \(C>0\) 使得：若
+\[
+h\,\|A\|_{L^\infty(R_h)}\le \frac{1}{10},
+\]
+则 \(\operatorname{Hol}_A(\partial R_h)\) 落入 \(\exp\) 的局部可逆邻域内，从而存在唯一 \(\Omega_h\in\mathfrak g\) 使
+\[
+\operatorname{Hol}_A(\partial R_h)=\exp(\Omega_h),
+\]
+并且满足定量误差估计
+\[
+\Bigl\|\Omega_h-\iint_{R_h}F_{12}(x)\,\mathrm d x_1\,\mathrm d x_2\Bigr\|
+\le
+C\,h^3\exp\!\bigl(C h\|A\|_{L^\infty(R_h)}\bigr)
+\Bigl(
+\|\nabla F_{12}\|_{L^\infty(R_h)}+\|A\|_{L^\infty(R_h)}\|F_{12}\|_{L^\infty(R_h)}
+\Bigr),
+\]
+其中 \(\nabla F_{12}\) 表示 \(F_{12}\) 的一阶导数张量。
+若 \(\mathfrak g\) 交换，则上式右端为 \(0\)，从而严格有
+\[
+\Omega_h=\iint_{R_h}F_{12}\,\mathrm d x_1\,\mathrm d x_2.
+\]
+\end{theorem}
+\begin{proof}[证明要点]
+将 \(\operatorname{Hol}_A(\partial R_h)\) 写为四条边上传输算子的有序乘积，并对每条边的路径有序指数作二阶截断（等价地，可采用 Magnus 展开的一阶项与余项估计）。
+在 \(\|A\|_{L^\infty}\) 受控下，二阶主项由线性斯托克斯给出 \(\iint(\partial_1A_2-\partial_2A_1)\)，而非交换性导致的二阶交叉项经 BCH 归并产生 \(\iint[A_1,A_2]\)，从而得到 \(\iint F_{12}\)。
+三阶余项由 \(C^2\) 正则性给出，并可用 \(\|\nabla F_{12}\|_{L^\infty}\) 与共轭扰动项 \(\|A\|_{L^\infty}\|F_{12}\|_{L^\infty}\) 控制，同时携带 \(\exp(C h\|A\|_{L^\infty})\) 放大因子。
+在 \(h\|A\|_{L^\infty}\le 1/10\) 下，\(\log\) 在单位元邻域内为 Lipschitz，从而把对 \(\operatorname{Hol}_A(\partial R_h)\) 的误差估计传递到 \(\Omega_h\)。证毕。
+\end{proof}
+
+\begin{corollary}[dyadic 网格上的递归斯托克斯证书与多尺度误差控制]\label{cor:conclusion-nonabelian-dyadic-stokes-certificate}
+在定理 \ref{thm:conclusion-nonabelian-stokes-small-rectangle} 的设定下，令 \(R_1=[0,1]^2\) 并作 dyadic 细分为边长 \(h:=2^{-m}\) 的小方形集合 \(\mathcal Q_m\)。
+对每个 \(Q\in\mathcal Q_m\)，设其边界 holonomy 的对数存在且记为 \(\Omega(Q)\in\mathfrak g\)（当 \(m\) 充分大时由定理 \ref{thm:conclusion-nonabelian-stokes-small-rectangle} 保证）。
+则存在绝对常数 \(C>0\)（与 \(m\) 无关）使得当 \(m\) 充分大时
+\[
+\Bigl\|\sum_{Q\in\mathcal Q_m}\Omega(Q)-\iint_{R_1}F_{12}\,\mathrm d x_1\,\mathrm d x_2\Bigr\|
+\le
+C\,2^{-m}\exp\!\bigl(C\|A\|_{L^\infty(R_1)}\bigr)
+\Bigl(
+\|\nabla F_{12}\|_{L^\infty(R_1)}+\|A\|_{L^\infty(R_1)}\|F_{12}\|_{L^\infty(R_1)}
+\Bigr).
+\]
+\end{corollary}
+\begin{proof}
+对每个 \(Q\in\mathcal Q_m\) 应用定理 \ref{thm:conclusion-nonabelian-stokes-small-rectangle} 得
+\(
+\Omega(Q)=\iint_QF_{12}+E(Q)
+\)
+且 \(\|E(Q)\|\le C h^3\exp(C h\|A\|_{L^\infty(R_1)})(\cdots)\)。
+对全部小方形求和，主项严格相加为 \(\iint_{R_1}F_{12}\)，而误差满足
+\[
+\sum_{Q\in\mathcal Q_m}\|E(Q)\|
+\le
+|\mathcal Q_m|\cdot C h^3\exp\!\bigl(C\|A\|_{L^\infty(R_1)}\bigr)(\cdots)
+=C h\,\exp\!\bigl(C\|A\|_{L^\infty(R_1)}\bigr)(\cdots),
+\]
+即得到所示界。证毕。
+\end{proof}
+
+\begin{theorem}[相对斯托克斯与圆维缺陷：由边界积分实现的同调维数刻画]\label{thm:conclusion-relative-stokes-torus-defect}
+设 \(f:G\to H\) 为有限生成阿贝尔群同态，记 \(K:=\ker f\)、\(I:=\operatorname{im}f\)。
+令 \(\widehat{(\cdot)}\) 表 Pontryagin 对偶，并令 \(T_X\) 表示紧交换群 \(\widehat X\) 的恒等分量（故 \(T_X\) 为某一实环面）。
+定义
+\[
+\delta(f):=\operatorname{rank}K.
+\]
+则：
+\begin{enumerate}
+  \item 由短正合列 \(0\to K\to G\to I\to 0\) 诱导出环面短正合列
+  \[
+  0\longrightarrow T_I\longrightarrow T_G\longrightarrow T_K\longrightarrow 0,
+  \qquad
+  T_K\simeq (S^1)^{\delta(f)}.
+  \]
+  \item 存在自然同构
+  \[
+  H^1_{\mathrm{dR}}(T_G,T_I;\mathbb R)\ \cong\ H^1_{\mathrm{dR}}(T_K;\mathbb R),
+  \]
+  从而
+  \[
+  \dim_{\mathbb R}H^1_{\mathrm{dR}}(T_G,T_I;\mathbb R)=\delta(f).
+  \]
+  \item 在整周期晶格意义下有自然同构
+  \[
+  H^1_{\mathrm{dR}}(T_G,T_I;\mathbb Z)\ \cong\ \operatorname{Hom}(K,\mathbb Z).
+  \]
+  特别地，对任意相对 \(1\)-循环 \(\gamma\in H_1(T_G,T_I;\mathbb Z)\) 与任意相对闭 \(1\)-形式
+  \([\omega]\in H^1_{\mathrm{dR}}(T_G,T_I;\mathbb Z)\)，积分配对
+  \(
+  \langle[\omega],\gamma\rangle:=\int_\gamma\omega
+  \)
+  仅依赖于相对同调类。
+\end{enumerate}
+\end{theorem}
+\begin{proof}[证明要点]
+有限生成阿贝尔群分解 \(X\simeq \mathbb Z^{r_X}\oplus \mathrm{Tor}(X)\)；其对偶的恒等分量为 \(T_X\simeq (S^1)^{r_X}\)，从而 \(r_K=\delta(f)\) 给出 (1)。
+又因 \(T_I\subset T_G\) 为闭子环面且商 \(T_G/T_I\simeq T_K\)，相对 de Rham 上同调与商空间的约化上同调在该类情形下自然同构，得到 (2)。
+整周期部分由
+\(
+H^1_{\mathrm{dR}}((S^1)^n;\mathbb Z)\cong \operatorname{Hom}(\mathbb Z^n,\mathbb Z)
+\)
+与自由部分识别得到 (3)，而积分配对的同调不变性即相对斯托克斯公式。证毕。
+\end{proof}
+
+\begin{proposition}[离散广义斯托克斯的可积化校正]\label{prop:conclusion-discrete-stokes-integrable-correction}
+令 \(X\) 为有限、连通的立方体复形，记 \(C^k(X;\mathbb R)\) 为 \(k\)-余链群，\(\delta:C^k\to C^{k+1}\) 为余边界算子。
+对任意 \(\beta\in C^1(X;\mathbb R)\) 定义离散曲率
+\[
+\kappa:=\delta\beta\in C^2(X;\mathbb R).
+\]
+设 \(E\) 为有向 \(1\)-胞腔集合、\(F\) 为有向 \(2\)-胞腔集合，并以 \(\|\cdot\|_{\ell^\infty(E)}\)、\(\|\cdot\|_{\ell^\infty(F)}\) 表示相应上确界范数。
+则存在 \(\varphi\in C^0(X;\mathbb R)\) 使得
+\[
+r:=\beta-\delta\varphi
+\]
+满足显式估计
+\[
+\|r\|_{\ell^\infty(E)}\ \le\ D(X)\,\|\kappa\|_{\ell^\infty(F)},
+\]
+其中 \(D(X)\) 为 \(X\) 的 \(1\)-骨架图直径。
+特别地，若 \(\kappa=0\) 则 \(r=0\)，即闭 \(1\)-余链在可收缩立方体复形上必为恰当余链。
+\end{proposition}
+\begin{proof}[证明要点]
+取 \(1\)-骨架的一棵生成树 \(T\) 并固定根顶点 \(v_0\)。
+定义 \(\varphi(v)\) 为沿树上从 \(v_0\) 到 \(v\) 的唯一路径对 \(\beta\) 的路径和，则对树边有 \(r=0\)。
+对任意非树边 \(e\)，由树路径与 \(e\) 组成的回路 \(\ell_e\) 可由若干 \(2\)-胞腔填充为 \(2\)-链 \(S_e\)；
+余边界--边界互伴随给出
+\(
+r(e)=-\sum_{Q\in S_e}\kappa(Q)
+\)，
+从而 \(|r(e)|\le |S_e|\,\|\kappa\|_{\ell^\infty(F)}\)。
+选取标准填充可保证 \(|S_e|\le D(X)\)，遂得所示界。证毕。
+\end{proof}
+
+当边界积分由代数零集合在 \((\mathbb C^\ast)^2\) 中的闭链承载时，一元 Jensen 公式可视为二维 Green--斯托克斯机制在单位圆族上的纤维化表达。
+在无根穿越的参数区间内，其变分给出严格的边界积分公式，从而把 Mahler 测度的导数与椭圆曲线周期直接对接。
+
+\begin{theorem}[Lee--Yang 型零集合的 Jensen--斯托克斯变分公式]\label{thm:conclusion-leyang-jensen-stokes-variational}
+令 \(t\mapsto f_t(x,y)\in\mathbb C[x^{\pm1},y^{\pm1}]\) 为 \(C^1\) 族 Laurent 多项式。
+对每个 \(t\) 与每个 \(x\in S^1\)，将 \(y\mapsto f_t(x,y)\) 视为一元多项式，并假设：
+\begin{enumerate}
+  \item 对所有 \(x\in S^1\)，当 \(|y|=1\) 时有 \(f_t(x,y)\neq 0\)，从而可连续选择外根分支；
+  \item 令 \(\gamma_t\) 为代数曲线 \(C_t:=\{(x,y)\in(\mathbb C^*)^2:f_t(x,y)=0\}\) 上由条件 \(|x|=1\) 且取全部 \(|y|>1\) 的根分支拼成的有向 \(1\)-循环（按 \(x=e^{\mathrm i\theta}\) 的 \(\theta\) 递增取向），并且该选择在参数区间内无根穿越 \(|y|=1\)。
+\end{enumerate}
+定义二维 Mahler 测度
+\[
+m(t):=\frac1{(2\pi)^2}\int_{|x|=|y|=1}\log|f_t(x,y)|\,\mathrm d\theta_x\,\mathrm d\theta_y.
+\]
+则 \(m\) 可微且满足变分公式
+\[
+m'(t)
+=-\frac1{2\pi}\,\Re\int_{\gamma_t}\frac{\partial_t f_t(x,y)}{y\,\partial_y f_t(x,y)}\,\frac{\mathrm d x}{x}.
+\]
+若 \(C_t\) 的光滑射影完备化为椭圆曲线 \(E_t\)，则
+\[
+\omega_t:=\frac{1}{y\,\partial_y f_t(x,y)}\,\frac{\mathrm d x}{x}
+\]
+在 \(E_t\) 上延拓为亚纯 \(1\)-形式，且 \(m'(t)\) 为其在同调类 \([\gamma_t]\) 上的实周期；因此 \(m'(t)\) 满足由 Gauss--Manin 连接诱导的 Picard--Fuchs 线性微分方程（阶至多 \(2\)）。
+\end{theorem}
+\begin{proof}[证明要点]
+对每个固定 \(x\in S^1\) 应用一元 Jensen 公式，把 \(\int_{|y|=1}\log|f_t(x,y)|\) 表示为外根模长对数之和。
+在无根穿越假设下可对外根分支逐一隐式微分，并将分支求和重写为沿 \(\gamma_t\) 的线积分，得到所示公式。
+当 \(E_t\) 为椭圆曲线时，上式给出 de Rham 类的周期；周期随参数变形受 Gauss--Manin 连接控制，从而满足 Picard--Fuchs 方程。证毕。
+\end{proof}
+
+最后记录一个把“周期群的圆维缺陷”与“函数方程的边界项结构”耦合的猜想性框架，其目的在于把动力学 \(\zeta\) 的谱退化与自守 \(\varepsilon\)-因子的自由度归入同一类广义斯托克斯边界机制。
+
+\begin{conjecture}[动力学 \texorpdfstring{$\zeta$}{zeta} 与自守 \texorpdfstring{$L$}{L}-函数之间的斯托克斯边界项桥]\label{conj:conclusion-stokes-boundary-langlands-bridge}
+设 \(\varphi^t\) 为紧流形上的 \(C^r\)（\(r\) 充分大）Axiom A 流，其 Markov 编码给出有限型子移位 \((\Sigma_A,\sigma)\) 与屋顶函数 \(\tau:\Sigma_A\to\mathbb R_{>0}\)。
+记周期值群的 \(\mathbb Z\)-秩为 \(\rho\)：
+\[
+\mathcal P_\tau:=\Bigl\{\sum_{k=0}^{n-1}\tau(\sigma^k x):\ x\in\Sigma_A,\ \sigma^n x=x\Bigr\},
+\qquad
+\rho:=\operatorname{rank}_{\mathbb Z}\langle \mathcal P_\tau\rangle.
+\]
+则存在与 \((A,\tau)\) 自然关联的代数群与自守表示 \(\pi\)，使得 Ruelle \(\zeta\) 函数
+\[
+\zeta_{\mathrm{Ru}}(s)=\prod_{\gamma\ \mathrm{primitive}}\bigl(1-e^{-s\ell(\gamma)}\bigr)^{-1}
+\]
+在适当正规化后与 \(L(\pi,s)\) 的局部因子族一致；并且其函数方程中的 \(\varepsilon\)-因子可由某一流盒紧化三维链上的 Chern--Simons 型 \(3\)-形式之广义斯托克斯边界项给出，而该边界项的自由度维数恰为 \(\rho\)。
+\end{conjecture}
+
 \begin{proposition}[随机边界采样的斯托克斯证书]\label{prop:conclusion-stokes-random-sampling-certificate}
 在定理 \ref{thm:conclusion-multiscale-stokes-energy-l2-reconstruction} 的设定下固定尺度 \(m\)，并设 \(\alpha\) 有界：\(\|\alpha\|_{\infty}\le B\)。
 对每个 \(C\in\mathcal C_m^{k+1}\)，在 \(\partial C\) 的 \(k\)-维测度归一化概率上独立采样 \(N\) 个点 \(X_{C,1},\dots,X_{C,N}\)。

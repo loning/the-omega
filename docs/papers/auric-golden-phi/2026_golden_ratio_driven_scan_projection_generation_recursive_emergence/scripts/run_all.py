@@ -340,6 +340,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_ed_t_primitive_element_audit",
+            script="exp_xi_ed_t_primitive_element_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_ed_t_primitive_element_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_reversekl_cyclic_symmetrization_padic_cascade_audit",
+            script="exp_xi_reversekl_cyclic_symmetrization_padic_cascade_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_reversekl_cyclic_symmetrization_padic_cascade_audit.json",
+            ],
+        ),
+        Step(
             name="fold_zm_s4_a4_v4_etale_prym_split_audit",
             script="exp_fold_zm_s4_a4_v4_etale_prym_split_audit.py",
             args=[],
@@ -1202,6 +1218,15 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_fold_collision_observable_minpoly_galois_certificate_q9_13.tex",
                 "sections/generated/eq_fold_collision_observable_minpoly_negative_real_dominance_q9_13.tex",
                 "sections/generated/tab_fold_collision_observable_minpoly_ramified_primes_q9_13.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_moment_charpoly_irreducible_q9_17",
+            script="exp_fold_collision_moment_charpoly_irreducible_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_charpoly_irreducible_q9_17.json",
+                "sections/generated/tab_fold_collision_moment_charpoly_irreducible_certificate_q9_17.tex",
             ],
         ),
         Step(
@@ -3445,6 +3470,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/m2_level3_bielliptic_involution_counts.json",
                 "sections/generated/eq_m2_level3_bielliptic_involution_counts.tex",
+            ],
+        ),
+        Step(
+            name="m2_level3_xi_delta0_order6_inertia_audit",
+            script="exp_m2_level3_xi_delta0_order6_inertia_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m2_level3_xi_delta0_order6_inertia_audit.json",
             ],
         ),
         Step(
