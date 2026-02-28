@@ -319,6 +319,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="conclusion_singlephase_prime_ledger_precision_audit",
+            script="exp_conclusion_singlephase_prime_ledger_precision_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/conclusion_singlephase_prime_ledger_precision_audit.json",
+                "sections/generated/tab_conclusion_singlephase_prime_ledger_precision_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_truncation_curvature",
             script="exp_fold_truncation_curvature.py",
             args=[],
@@ -449,6 +458,15 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_gauge_anomaly_rate_curve_discriminant_q19_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_rate_curve_singularity_audit",
+            script="exp_fold_gauge_anomaly_rate_curve_singularity_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_rate_curve_singularity_audit.json",
+                "sections/generated/eq_fold_gauge_anomaly_rate_curve_singularity_audit.tex",
             ],
         ),
         Step(
