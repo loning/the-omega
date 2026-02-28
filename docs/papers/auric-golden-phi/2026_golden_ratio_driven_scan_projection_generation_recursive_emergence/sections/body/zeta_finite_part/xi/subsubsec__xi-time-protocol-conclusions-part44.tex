@@ -100,32 +100,195 @@ y_0(y_0-1)(8y_0-3)(16y_0+11)(32y_0+19)P_{\mathrm{LY}}(y_0)=0.
 可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_q5\_a7\_subresultant\_galois\_audit.py}。证毕。
 \end{proof}
 
-\begin{theorem}[特征 \texorpdfstring{$31$}{31} 的唯一总坍缩纤维]\label{thm:xi-fdelta-char31-total-collapse}
-对奇素数 \(p\neq 2\)，考虑 \(F_\delta(T;y)\) 在 \(\FF_p\) 上的约化。
-存在 \(y_0\in\FF_p\) 使
+\begin{theorem}[\texorpdfstring{$P_{\mathrm{LY}}$}{PLY} 与 \texorpdfstring{$Q_5$}{Q5} 的干涉素数刻画]\label{thm:xi-ply-q5-resultant-interference-primes}
+记 \(\mathrm{PLY}(y):=P_{\mathrm{LY}}(y)\)。
+则关于 \(y\) 的 Sylvester 结果式满足
 \[
-F_\delta(T;y_0)\equiv T^4\quad\text{于}\ \FF_p[T]
+\operatorname{Res}_{y}\!\bigl(\mathrm{PLY}(y),Q_{5}(y)\bigr)
+=2^{20}\cdot 3^{12}\cdot 31^{4}\cdot 73.
 \]
-当且仅当 \(p=31\)；此时唯一解为 \(y_0\equiv 12\pmod{31}\)。
+因此对任意素数 \(p\nmid 2\cdot 3\cdot 31\cdot 73\)，有
+\[
+\gcd\!\bigl(\overline{\mathrm{PLY}},\overline{Q_{5}}\bigr)=1
+\quad\text{于}\quad \FF_p[y],
+\]
+从而零点方案 \(V(\overline{\mathrm{PLY}})\) 与 \(V(\overline{Q_5})\) 在 \(\PP^1_{\FF_p}\) 上不相交。
 \end{theorem}
 \begin{proof}
-等式 \(F_\delta(T;y_0)\equiv T^4\) 等价于三条系数同时为零：
+由结果式判别准则，
+\(
+\gcd(\overline{\mathrm{PLY}},\overline{Q_5})\neq 1
+\)
+当且仅当
+\(
+p\mid \operatorname{Res}_{y}(\mathrm{PLY},Q_5)
+\)。
+直接计算 Sylvester 行列式并分解即得所示恒等式。
+可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_ply\_q5\_a7\_interference\_geometry\_audit.py}。证毕。
+\end{proof}
+
+\begin{corollary}[奇素数上的公共根：仅 \texorpdfstring{$31$}{31} 与 \texorpdfstring{$73$}{73} 非平凡]\label{cor:xi-ply-q5-common-roots-prime31-73}
+令 \(p\ge 5\) 为素数。
+则存在 \(\bar y\in\FF_p\) 使
+\[
+\mathrm{PLY}(\bar y)\equiv Q_5(\bar y)\equiv 0\pmod p
+\]
+当且仅当 \(p\in\{31,73\}\)。
+并且：
+\begin{enumerate}
+  \item 若 \(p=73\)，唯一公共根为 \(\bar y\equiv -10\pmod{73}\)，且在两者中均为一次根；
+  \item 若 \(p=31\)，唯一公共根为 \(\bar y\equiv 12\pmod{31}\)，且在两者中均为二次根。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-ply-q5-resultant-interference-primes}，对 \(p\ge 5\) 的公共根只可能出现在 \(p=31,73\)。
+直接在有限域中分解可得：
+\[
+\overline{\mathrm{PLY}}=(y+10)(y+13)(y-4),\quad
+\overline{Q_5}=(y+10)\cdot(\text{四次因子})\quad(\bmod 73),
+\]
+\[
+\overline{\mathrm{PLY}}=(y-6)(y-12)^2,\quad
+\overline{Q_5}=(y-4)(y-12)^2(y^2+8y-8)\quad(\bmod 31).
+\]
+故结论成立。证毕。
+\end{proof}
+
+\begin{theorem}[二级退化除子与主分支除子的交叉素数全集]\label{thm:xi-dprim-dsec-intersection-primes}
+定义
+\[
+D_{\mathrm{prim}}(y):=y(y-1)\mathrm{PLY}(y),
+\qquad
+D_{\mathrm{sec}}(y):=Q_5(y).
+\]
+则存在 \(\bar y\in\FF_p\) 使
+\[
+D_{\mathrm{prim}}(\bar y)\equiv D_{\mathrm{sec}}(\bar y)\equiv 0\pmod p
+\]
+当且仅当
+\[
+p\in\{2,3,5,13,31,73\}.
+\]
+其中对奇素数 \(p\in\{5,13,31,73\}\) 的交点可取为
+\[
+(p,\bar y)=(5,0),\ (13,1),\ (31,12),\ (73,-10).
+\]
+\end{theorem}
+\begin{proof}
+首先
+\[
+Q_5(0)=80=2^4\cdot 5,\qquad
+Q_5(1)=5616=2^4\cdot 3^3\cdot 13.
+\]
+故由 \(y=0,1\) 两条分支可得素数 \(2,3,5,13\)。
+其次，由推论 \ref{cor:xi-ply-q5-common-roots-prime31-73}，\(\mathrm{PLY}\) 与 \(Q_5\) 的交叉只在 \(31,73\) 出现，对应根分别为 \(12,-10\)。
+合并即得全集。证毕。
+\end{proof}
+
+\begin{theorem}[特征 \texorpdfstring{$73$}{73} 的横截干涉与普通节点]\label{thm:xi-fdelta-char73-transverse-node}
+在 \(\FF_{73}\) 中取 \(\bar y\equiv -10\)，则
+\[
+\overline{F_\delta}(T;\bar y)=T^2(T-5)^2.
+\]
+令 \(\overline{C_\delta}\subset\AA^2_{\FF_{73}}\) 由 \(\overline{F_\delta}(T;y)=0\) 定义，则：
+\begin{enumerate}
+  \item 点 \((T,y)=(5,-10)\) 为普通二重点（\(A_1\)-节点）；
+  \item 点 \((T,y)=(0,-10)\) 为光滑点。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+代入 \(y=-10\) 直接得到分解式。
+在点 \((5,-10)\) 处取局部坐标 \(t:=T-5,\ s:=y+10\)，则
+\[
+\overline{F_\delta}(t+5;s-10)
+=25t^2+6ts-5s^2+\text{(总次数 }\ge 3\text{ 项)}.
+\]
+其二次主部判别式为
+\[
+6^2-4\cdot 25\cdot(-5)\equiv 25\not\equiv 0\pmod{73},
+\]
+故二次主部对应两条不同切线，奇点为普通节点。
+另一方面在 \((0,-10)\) 处，
+\[
+\partial_T\overline{F_\delta}(0,-10)=0,\qquad
+\partial_y\overline{F_\delta}(0,-10)\equiv 47\not\equiv 0\pmod{73},
+\]
+由 Jacobian 判据得该点光滑。证毕。
+\end{proof}
+
+\begin{theorem}[特征 \texorpdfstring{$31$}{31} 的唯一总坍缩纤维与几何 \texorpdfstring{$A_3$}{A3} 触节点]\label{thm:xi-fdelta-char31-total-collapse}
+对奇素数 \(p\neq 2\)，考虑 \(F_\delta(T;y)\) 在 \(\FF_p\) 上的约化。
+则：
+\begin{enumerate}
+  \item 存在 \(y_0\in\FF_p\) 使
+  \[
+  F_\delta(T;y_0)\equiv T^4\quad\text{于}\ \FF_p[T]
+  \]
+  当且仅当 \(p=31\)，且唯一解为 \(y_0\equiv 12\pmod{31}\)；
+  \item 在 \(\overline{C_\delta}:\overline{F_\delta}(T;y)=0\subset\AA^2_{\FF_{31}}\) 上，点 \((T,y)=(0,12)\) 的几何解析类型为 \(A_3\)（触节点）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+第一部分与系数消零判别相同：\(F_\delta(T;y_0)\equiv T^4\) 等价于
 \[
 8y_0-3\equiv 0,\qquad
 2y_0^2-34y_0-4\equiv 0,\qquad
-y_0(y_0-1)P_{\mathrm{LY}}(y_0)\equiv 0
-\quad(\bmod p).
+y_0(y_0-1)P_{\mathrm{LY}}(y_0)\equiv 0\ (\bmod p).
 \]
-第一式给出 \(y_0\equiv 3/8\)。
-代入第二式得到 \(-527/32\)，故必须 \(p\mid 527\)，即 \(p\in\{17,31\}\)。
-第三式在 \(y_0\not\equiv 0,1\) 时等价于 \(P_{\mathrm{LY}}(3/8)\equiv 0\pmod p\)。
-直接计算
+前两式给出 \(y_0\equiv 3/8\) 且 \(p\in\{17,31\}\)。
+再用
 \[
-P_{\mathrm{LY}}\!\left(\frac38\right)=\frac{10571}{64}=\frac{11\cdot 31^2}{2^6},
+P_{\mathrm{LY}}\!\left(\frac{3}{8}\right)=\frac{10571}{64}=\frac{11\cdot 31^2}{2^6}
 \]
-故仅在 \(p=31\) 时成立。
-再由 \(8^{-1}\equiv 4\pmod{31}\) 得 \(y_0\equiv 3\cdot 4\equiv 12\pmod{31}\)。
-可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_q5\_a7\_subresultant\_galois\_audit.py}。证毕。
+可知仅 \(p=31\) 成立；由 \(8^{-1}\equiv 4\pmod{31}\) 得 \(y_0\equiv 12\)。
+
+第二部分取局部坐标 \(t:=T,\ s:=y-12\)。在 \(\FF_{31}\) 上展开：
+\[
+\overline{F_\delta}(t;12+s)
+=-12s^2+14t^2s+t^4+8t^3s+2t^2s^2+10s^3-15s^4-8s^5.
+\]
+令 \(s_1:=s+2t^2\)（可逆坐标变换），得到
+\[
+\overline{F_\delta}
+=-12s_1^2-13t^4+\text{(加权次数 }\ge 5,\ \text{其中 }w(t)=1,w(s_1)=2\text{)}.
+\]
+故其加权初始主部为非退化型 \(u^2-\lambda v^4\)（\(\lambda\neq 0\)），
+即与标准形 \(u^2=v^4\) 同解析类型，因而为 \(A_3\) 触节点。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\operatorname{Res}_y(Q_5,A_7)$}{Res\_y(Q5,A7)} 分解与多重碰撞障碍素数]\label{thm:xi-q5-a7-resultant-double-collision-primes}
+关于 \(y\) 的结果式满足
+\[
+\operatorname{Res}_{y}\!\bigl(Q_5(y),A_7(y)\bigr)
+=-2^{47}\cdot 3^{16}\cdot 5\cdot 13\cdot 31^{8}\cdot 73.
+\]
+因此对任意素数 \(p\nmid 2\cdot 3\cdot 5\cdot 13\cdot 31\cdot 73\)，有
+\[
+\gcd(\overline{Q_5},\overline{A_7})=1
+\quad\text{于}\quad \FF_p[y].
+\]
+于是任意 \(\bar y\) 满足 \(\overline{Q_5}(\bar y)=0\) 时必有 \(\overline{A_7}(\bar y)\neq 0\)，
+从而 \(\overline{F_\delta}(T;\bar y)\) 不能出现“两处不同二重根”。
+另一方面：
+\[
+\overline{F_\delta}(T;0)=T^2(T+1)^2\ \text{于}\ \FF_5,\qquad
+\overline{F_\delta}(T;1)=T^2(T-4)^2\ \text{于}\ \FF_{13},
+\]
+\[
+\overline{F_\delta}(T;-10)=T^2(T-5)^2\ \text{于}\ \FF_{73},
+\]
+而在 \(p=31,\ \bar y=12\) 处有
+\[
+\overline{F_\delta}(T;12)=T^4,
+\]
+其几何类型由定理 \ref{thm:xi-fdelta-char31-total-collapse} 给出为 \(A_3\)。
+\end{theorem}
+\begin{proof}
+结果式分解与互素判别由 Sylvester 理论直接给出。
+对 \(p\nmid 2\cdot 3\cdot 5\cdot 13\cdot 31\cdot 73\)，\(\overline{Q_5}\) 与 \(\overline{A_7}\) 互素，
+配合定理 \ref{thm:xi-fdelta-subresultant-unique-double-root} 的一阶子结式公式，
+可知在 \(\overline{Q_5}(\bar y)=0\) 处不存在“二处不同二重根”情形。
+对 \(p=5,13,73,31\) 的显式分解由逐点代入 \(y=0,1,-10,12\) 直接核验。证毕。
 \end{proof}
 
 \begin{theorem}[主分歧三次与二级退化五次的线性互不相交与联合密度]\label{thm:xi-leyang-ply-q5-linearly-disjoint-chebotarev}
