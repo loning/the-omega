@@ -16,6 +16,69 @@ Fibonacci cube \(\Gamma_n\) 是超立方体 \(Q_n\) 的标准 partial cube（等
 最后，按定义 \(\mathcal F_x\) 的一条边即对某个独立集 \(S\) 施行一次“开关”使其对称差大小为 \(1\)，故 \(|S|\) 的奇偶性沿边翻转并诱导二分分解。证毕。
 \end{proof}
 
+\begin{theorem}[正交体的边界--体积下界与对数轴长方差]\label{thm:pom-orthotope-surface-volume-variance}
+令 \(d\ge 2\)，取 \(\ell_1,\dots,\ell_d\in[1,\infty)\) 并定义 \(d\)-维正交体
+\[
+\mathcal O(\ell):=\prod_{i=1}^{d}[0,\ell_i].
+\]
+记体积 \(V(\ell):=\prod_{i=1}^{d}\ell_i\) 与边界 \((d-1)\)-测度（表面积）
+\[
+S(\ell):=2\sum_{i=1}^{d}\prod_{j\ne i}\ell_j
+=2V(\ell)\sum_{i=1}^{d}\ell_i^{-1}.
+\]
+并定义
+\[
+\Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr)
+:=\frac1d\sum_{i=1}^{d}\left(\log\ell_i-\frac1d\log V(\ell)\right)^2.
+\]
+则成立不等式
+\[
+S(\ell)\ \ge\ 2d\,V(\ell)^{\frac{d-1}{d}}
+\ +\ d\,\Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr),
+\]
+且等号成立当且仅当 \(\ell_1=\cdots=\ell_d\)。
+\end{theorem}
+\begin{proof}
+记 \(u_i:=\log\ell_i\in[0,\log V(\ell)]\)，并令 \(\mu:=\frac1d\sum_{i=1}^{d}u_i=\frac1d\log V(\ell)\)。
+则
+\[
+\frac{S(\ell)}{2V(\ell)}=\sum_{i=1}^{d}e^{-u_i}.
+\]
+令 \(f(u):=e^{-u}\)。在区间 \([0,\log V(\ell)]\) 上有
+\[
+f''(u)=e^{-u}\ge e^{-\log V(\ell)}=V(\ell)^{-1},
+\]
+从而 \(f\) 在该区间上为 \(m\)-强凸函数，且 \(m=V(\ell)^{-1}\)。
+将强凸 Jensen 缺陷下界应用于均匀分布在 \(\{u_1,\dots,u_d\}\) 上的随机变量 \(U\)，得到
+\[
+\frac1d\sum_{i=1}^{d}e^{-u_i}-e^{-\mu}\ \ge\ \frac{1}{2V(\ell)}\,\Var(u_1,\dots,u_d).
+\]
+两边同乘 \(2V(\ell)d\) 得
+\[
+S(\ell)\ge 2V(\ell)d\,e^{-\mu}+d\,\Var(u_1,\dots,u_d)
+=2d\,V(\ell)^{\frac{d-1}{d}}+d\,\Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr),
+\]
+即为所求。不等号取等当且仅当 \(u_1=\cdots=u_d\)，等价于 \(\ell_1=\cdots=\ell_d\)。
+\end{proof}
+
+\begin{conjecture}[椭球等周亏损的方差控制]\label{conj:pom-ellipsoid-isoperimetric-variance}
+令 \(d\ge 2\) 且取 \(\ell_1,\dots,\ell_d>0\)。
+定义椭球
+\[
+\mathcal E(\ell):=\left\{x\in\RR^d:\ \sum_{i=1}^{d}(x_i/\ell_i)^2\le 1\right\},
+\]
+其体积为 \(V(\ell)=\kappa_d\prod_{i=1}^{d}\ell_i\)（\(\kappa_d\) 为单位球体积），表面积 \(S(\ell)\) 为其 \((d-1)\)-维 Hausdorff 测度。
+预期存在仅依赖于维数的常数 \(c_d>0\)，使得对所有 \(\ell\) 成立
+\[
+S(\ell)-d\,\kappa_d^{1/d}\,V(\ell)^{\frac{d-1}{d}}
+\ \ge\
+c_d\,V(\ell)^{\frac{d-1}{d}}\,
+\Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr),
+\]
+且等号成立当且仅当 \(\ell_1=\cdots=\ell_d\)。
+在素数寄存器约束 \(\ell_i=p_i^{\alpha_i}\)（\(p_i\) 为互异素数，\(\alpha_i\in\ZZ_{\ge 0}\)）下，方差项取值集合为离散集，因此若该不等式成立，则对非各向同性轴长族将诱导正的等周亏损下界间隙。
+\end{conjecture}
+
 \begin{corollary}[Fibonacci 立方面母函数的谱半径闭式与指数增长常数]\label{cor:pom-fibcube-fpoly-growth-constant}
 令 \(C_n(u)=\sum_{k\ge 0}C(n,k)u^k\) 为定义 \ref{def:pom-fibcube-fvector} 的 \(f\)-多项式。
 则由定理 \ref{thm:pom-fibcube-fvector-closed} 中给出的有理型生成函数表示，可得一元递推

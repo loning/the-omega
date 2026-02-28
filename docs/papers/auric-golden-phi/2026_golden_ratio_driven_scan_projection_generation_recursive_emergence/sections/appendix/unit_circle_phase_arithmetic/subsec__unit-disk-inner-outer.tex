@@ -194,3 +194,153 @@ j_{\mathrm{in}}(\pi)=\sum_k P_{a_k}(-1)
 对有限乘积 \(B=\prod_{k=1}^{N}b_{a_k}\) 逐项相加，即得 \eqref{eq:app-endpoint-blaschke-radial-absorption}；
 最后一句由 \(P_{a_k}(-1)>0\) 的逐项正性推出。证毕。
 \end{proof}
+
+\begin{theorem}[任意边界点的径向吸收律与 Julia--Carath\'eodory 指标]\label{thm:app-boundary-absorption-julia-caratheodory}
+令 \(B\) 为有限 Blaschke 乘积，零点多重集为 \(\{a_k\}_{k=1}^{N}\subset\mathbb{D}\)。
+对任意 \(\xi\in\partial\mathbb{D}\) 定义边界吸收系数
+\[
+\Phi_{\xi}(B):=\sum_{k=1}^{N}P_{a_k}(\xi),
+\qquad
+P_a(\xi)=\frac{1-|a|^2}{|\xi-a|^2}.
+\]
+则：
+\begin{enumerate}
+  \item 当 \(r\uparrow 1\) 时沿径向 \(z=r\xi\) 有
+  \[
+  \log|B(r\xi)|=-(1-r)\,\Phi_{\xi}(B)+o(1-r).
+  \]
+  \item Julia--Carath\'eodory 指标
+  \[
+  \mathcal{J}_{\xi}(B):=\lim_{r\uparrow 1}\frac{1-|B(r\xi)|^2}{1-r^2}
+  \]
+  存在且满足
+  \[
+  \boxed{\;\mathcal{J}_{\xi}(B)=\Phi_{\xi}(B)\;}
+  \]
+  并且角导数 \(B'(\xi)\) 存在、\(|B(\xi)|=1\)，且有严格恒等式
+  \[
+  \boxed{\;\xi\,\frac{B'(\xi)}{B(\xi)}=\Phi_{\xi}(B)\in\RR_{+}\; }.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+取圆盘旋转自同构 \(R_{\xi}(z):=-\overline{\xi}\,z\)，则 \(R_{\xi}(\xi)=-1\) 且 \(R_{\xi}(r\xi)=-r\)。
+令 \(\widetilde B:=B\circ R_{\xi}^{-1}\)，则 \(\widetilde B(-r)=B(r\xi)\)。
+并且 \(\widetilde B\) 的零点为 \(\widetilde a_k:=R_{\xi}(a_k)=-\overline{\xi}\,a_k\)，从而
+\[
+P_{\widetilde a_k}(-1)=\frac{1-|\widetilde a_k|^2}{|1+\widetilde a_k|^2}
+=\frac{1-|a_k|^2}{|1-\overline{\xi}a_k|^2}
+=\frac{1-|a_k|^2}{|\xi-a_k|^2}
+=P_{a_k}(\xi).
+\]
+于是 \(\Phi_{-1}(\widetilde B)=\Phi_{\xi}(B)\)。
+将命题 \ref{prop:app-endpoint-blaschke-radial-absorption} 应用于 \(\widetilde B\) 即得 (1)。
+再将定理 \ref{thm:xi-endpoint-julia-indicator-equals-absorption} 的端点指标结论应用于 \(\widetilde B\)，并用 \(\widetilde B(-r)=B(r\xi)\) 与 \(\Phi_{-1}(\widetilde B)=\Phi_{\xi}(B)\)，得到 \(\mathcal{J}_{\xi}(B)=\Phi_{\xi}(B)\)。
+\par
+最后，有限 Blaschke 乘积在每个 \(\xi\in\partial\mathbb{D}\) 处具有角导数。
+由链式法则
+\[
+\widetilde B'(-1)=B'(\xi)\cdot(R_{\xi}^{-1})'(-1)=B'(\xi)\cdot(-\xi),
+\qquad
+\widetilde B(-1)=B(\xi),
+\]
+并由端点角导数刻画（定理 \ref{thm:xi-endpoint-julia-indicator-equals-absorption}）得
+\[
+\Phi_{\xi}(B)=\Phi_{-1}(\widetilde B)=\Re\!\left(-\frac{\widetilde B'(-1)}{\widetilde B(-1)}\right)
+=\Re\!\left(\xi\,\frac{B'(\xi)}{B(\xi)}\right).
+\]
+另一方面，直接对 \(B\) 的对数导数公式在 \(|\xi|=1\) 处取值可得
+\(
+\xi\,\frac{B'(\xi)}{B(\xi)}=\sum_k\frac{1-|a_k|^2}{|\xi-a_k|^2}
+\),
+故其为正实数，且等于 \(\Phi_{\xi}(B)\)。证毕。
+\end{proof}
+
+\begin{corollary}[幂拉回下的吸收系数重标定]\label{cor:app-absorption-adams-boundary-rescaling}
+令 \(\pi_m(w)=w^m\)（\(m\in\NN\)），并令 \(B^{(m)}:=B\circ\pi_m\)。
+则对任意 \(\xi\in\partial\mathbb{D}\) 有精确恒等式
+\[
+\Phi_{\xi}\!\bigl(B^{(m)}\bigr)=m\,\Phi_{\xi^{m}}(B),
+\qquad
+\mathcal{J}_{\xi}\!\bigl(B^{(m)}\bigr)=m\,\mathcal{J}_{\xi^{m}}(B).
+\]
+\end{corollary}
+
+\begin{proof}
+对单个零点 \(a=re^{\mathrm{i}\varphi}\) 记其 \(m\) 次根为
+\[
+a_j:=r^{1/m}\exp\!\Bigl(\frac{\mathrm{i}(\varphi+2\pi j)}{m}\Bigr),
+\qquad j=0,1,\dots,m-1.
+\]
+Poisson 核的 Fourier 展开为
+\[
+P_{re^{\mathrm{i}\varphi}}(e^{\mathrm{i}\theta})
+=1+2\sum_{n\ge 1}r^n\cos\bigl(n(\theta-\varphi)\bigr).
+\]
+对固定 \(n\) 利用单位根求和可知 \(\sum_{j=0}^{m-1}e^{-\frac{2\pi\mathrm{i}}{m}nj}=0\)（当 \(m\nmid n\)）且为 \(m\)（当 \(m\mid n\)），从而仅保留 \(n=m\ell\) 的谐波并得到
+\[
+\sum_{j=0}^{m-1}P_{a_j}(e^{\mathrm{i}\theta})
+=m\,P_{a}(e^{\mathrm{i}m\theta}).
+\]
+对 \(B\) 的所有零点逐项求和即得 \(\Phi_{e^{\mathrm{i}\theta}}(B^{(m)})=m\,\Phi_{e^{\mathrm{i}m\theta}}(B)\)，等价于所示 \(\Phi\) 恒等式。
+再由定理 \ref{thm:app-boundary-absorption-julia-caratheodory} 的 \(\mathcal{J}_{\xi}=\Phi_{\xi}\) 得 \(\mathcal{J}\) 的同式重标定。证毕。
+\end{proof}
+
+\begin{proposition}[吸收剖面的 Fourier--Newton 可辨识性与零点多集重构]\label{prop:app-absorption-profile-fourier-newton-identifiability}
+令 \(B\) 为次数 \(N\) 的有限 Blaschke 乘积，零点多重集为 \(\{a_k\}_{k=1}^{N}\subset\mathbb{D}\)。
+定义吸收剖面
+\[
+\Phi_B(\theta):=\Phi_{e^{\mathrm{i}\theta}}(B)=\sum_{k=1}^{N}P_{a_k}(e^{\mathrm{i}\theta}).
+\]
+则其 Fourier 系数满足：对 \(n\ge 1\),
+\[
+\widehat{\Phi_B}(n)=\sum_{k=1}^{N}\overline{a_k}^{\,n},
+\qquad
+\widehat{\Phi_B}(-n)=\sum_{k=1}^{N}a_k^{n},
+\qquad
+\widehat{\Phi_B}(0)=N.
+\]
+因此幂和序列 \(s_n:=\widehat{\Phi_B}(-n)=\sum_{k=1}^{N}a_k^{n}\)（\(1\le n\le N\)）
+通过 Newton 恒等式唯一确定基本对称多项式系数，进而唯一确定多项式
+\[
+p(z):=\prod_{k=1}^{N}(z-a_k),
+\]
+从而唯一确定零点多集 \(\{a_k\}\)；因此 \(B\) 亦由 \(\Phi_B\) 唯一确定（至多相差一个单位模常数因子）。
+\end{proposition}
+
+\begin{proof}
+对单个 \(a=re^{\mathrm{i}\varphi}\) 有
+\[
+P_{a}(e^{\mathrm{i}\theta})
+=\frac{1-r^2}{1-2r\cos(\theta-\varphi)+r^2}
+=1+\sum_{n\ge 1}\bigl(\overline{a}^{\,n}e^{\mathrm{i}n\theta}+a^n e^{-\mathrm{i}n\theta}\bigr),
+\]
+从而逐项求和得到 \(\widehat{\Phi_B}\) 的显式公式。
+令 \(s_n=\sum_k a_k^n\)。
+Newton 恒等式给出 \(s_1,\dots,s_N\) 与基本对称多项式 \(e_1,\dots,e_N\) 的递归关系，因此由 \(s_1,\dots,s_N\) 唯一确定 \(e_1,\dots,e_N\)，进而唯一确定 \(p(z)=z^N-e_1z^{N-1}+\cdots+(-1)^N e_N\)。
+其根多集即为 \(\{a_k\}\)（按重数计）。
+有限 Blaschke 乘积由零点多集唯一确定（至多差一个单位模常数因子），故结论成立。证毕。
+\end{proof}
+
+\begin{corollary}[吸收剖面的 Adams 别名—抽取律]\label{cor:app-absorption-profile-adams-alias-extraction}
+沿用推论 \ref{cor:app-absorption-adams-boundary-rescaling} 的记号，对 \(B^{(m)}:=B\circ\pi_m\) 定义
+\(\Phi_{B^{(m)}}(\theta):=\Phi_{e^{\mathrm{i}\theta}}(B^{(m)})\)。
+则有精确恒等式
+\[
+\Phi_{B^{(m)}}(\theta)=m\,\Phi_B(m\theta),
+\]
+并且其 Fourier 系数满足抽取律
+\[
+\widehat{\Phi_{B^{(m)}}}(n)=
+\begin{cases}
+m\,\widehat{\Phi_B}(n/m),& m\mid n,\\
+0,& m\nmid n.
+\end{cases}
+\]
+\end{corollary}
+
+\begin{proof}
+由推论 \ref{cor:app-absorption-adams-boundary-rescaling} 取 \(\xi=e^{\mathrm{i}\theta}\) 得 \(\Phi_{B^{(m)}}(\theta)=m\,\Phi_B(m\theta)\)。
+对两边取 Fourier 系数即可得到抽取律：\(\theta\mapsto \Phi_B(m\theta)\) 仅保留频率为 \(m\) 的倍数的模态并发生指标缩放。证毕。
+\end{proof}
