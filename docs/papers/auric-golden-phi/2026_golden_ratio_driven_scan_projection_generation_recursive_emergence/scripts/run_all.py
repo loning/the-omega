@@ -278,6 +278,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_second_trigonal_p9_galois_audit",
+            script="exp_fold_gauge_anomaly_second_trigonal_p9_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_second_trigonal_p9_galois_audit.json",
+                "sections/generated/tab_fold_gauge_anomaly_second_trigonal_p9_galois_certificate.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_jordan_correlations",
             script="exp_fold_gauge_anomaly_jordan_correlations.py",
             args=[],
@@ -3210,6 +3219,24 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_zm_elliptic_leyang_cover_geometry_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_delta_projection_a5b5_audit",
+            script="exp_fold_zm_delta_projection_a5b5_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_delta_projection_a5b5_audit.json",
+                "sections/generated/eq_fold_zm_delta_projection_a5b5_audit.tex",
+            ],
+        ),
+        Step(
+            name="boolean_two_layer_kernel_zeta_mu_snf_inverse_audit",
+            script="exp_boolean_two_layer_kernel_zeta_mu_snf_inverse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/boolean_two_layer_kernel_zeta_mu_snf_inverse_audit.json",
+                "sections/generated/eq_boolean_two_layer_kernel_zeta_mu_snf_inverse_audit.tex",
             ],
         ),
         Step(

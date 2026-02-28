@@ -321,6 +321,156 @@ B_0:=A[T]\big/(F_\delta(T;y)).
 以及归一化覆盖的分歧判别得到。证毕。
 \end{proof}
 
+\begin{proposition}[\texorpdfstring{$\delta$}{delta}-投影判别式的分歧--结点分离分解]\label{prop:xi-terminal-zm-delta-discy-factorization-a5b5}
+将 \(F_\delta(T;y)\) 视为 \(\QQ[T]\) 上关于变量 \(y\) 的五次多项式。则其 \(y\)-判别式在 \(\ZZ[T]\) 中满足精确分解
+\begin{equation}\label{eq:xi-terminal-zm-delta-discy-factorization-a5b5}
+\boxed{\;
+\mathrm{Disc}_{y}\!\bigl(F_\delta(T;y)\bigr)
+=16\,(T-4)\,A_5(T)^2\,B_5(T)\; } ,
+\end{equation}
+其中
+\[
+\begin{aligned}
+A_5(T)
+&:=4096T^5-47360T^4+186992T^3-231939T^2-200880T+482112,\\
+B_5(T)
+&:=50000T^5+136112T^4+60776T^3-26712T^2+38961T+35964.
+\end{aligned}
+\]
+因此 \(\mathrm{Disc}_{y}(F_\delta)\) 的平方因子恰为 \(A_5(T)^2\)，而其平方自由部分为 \(16\,(T-4)\,B_5(T)\)。
+\end{proposition}
+\begin{proof}
+直接计算 \(\mathrm{Disc}_{y}(F_\delta(T;y))\) 并在 \(\ZZ[T]\) 中分解即可得到 \eqref{eq:xi-terminal-zm-delta-discy-factorization-a5b5}。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_delta\_projection\_a5b5\_audit.py}。证毕。
+\end{proof}
+
+\begin{proposition}[结点子概形的全消元形与坐标域互换同构]\label{prop:xi-terminal-zm-delta-nodes-elimination-a5}
+记 \(\mathcal C_\delta\subset\mathbb A^2_{(y,T)}\) 由 \(F_\delta(T;y)=0\) 给出，并令
+\[
+I_{\mathrm{sing}}:=(F_\delta,\partial_yF_\delta,\partial_TF_\delta)\subset \QQ[y,T].
+\]
+则 \(\mathcal C_\delta\) 的奇点子概形 \(\mathrm{Sing}(\mathcal C_\delta)\) 由理想 \(I_{\mathrm{sing}}\) 给出，并满足以下两组完全消元形：
+\begin{enumerate}
+  \item 在消去 \(T\) 后有
+  \[
+  I_{\mathrm{sing}}\cap \QQ[y]=(Q_5(y)),
+  \qquad
+  Q_{5}(y)=4096y^{5}+5376y^{4}-464y^{3}-2749y^{2}-723y+80,
+  \]
+  并且在 \(\QQ[y,T]/I_{\mathrm{sing}}\) 中出现一次关系
+  \begin{equation}\label{eq:xi-terminal-zm-delta-node-linear-T}
+  \boxed{\;
+  93\,T=\bigl(8192y^{4}+5888y^{3}-3680y^{2}-2848y+152\bigr)\; } .
+  \end{equation}
+  \item 在消去 \(y\) 后有
+  \[
+  I_{\mathrm{sing}}\cap \QQ[T]=(A_5(T)),
+  \]
+  其中 \(A_5(T)\) 见命题 \ref{prop:xi-terminal-zm-delta-discy-factorization-a5b5}；并且在 \(\QQ[y,T]/I_{\mathrm{sing}}\) 中出现一次关系
+  \begin{equation}\label{eq:xi-terminal-zm-delta-node-linear-y}
+  \boxed{\;
+  353664\,y+1863680T^{4}-16240384T^{3}+38835472T^{2}+5074731T-77031720=0\; } .
+  \end{equation}
+\end{enumerate}
+从而结点的 \(y\)-坐标全体恰为 \(Q_5\) 的根集，结点的 \(T\)-坐标全体恰为 \(A_5\) 的根集。并且对任一结点 \((y_0,T_0)\) 成立严格域等式
+\begin{equation}\label{eq:xi-terminal-zm-delta-node-coordinate-field-swap}
+\QQ(y_0)=\QQ(T_0).
+\end{equation}
+\end{proposition}
+\begin{proof}
+理想刻画由雅可比判据给出。消元形 \eqref{eq:xi-terminal-zm-delta-node-linear-T} 已在定理 \ref{thm:xi-terminal-zm-delta-closure-plane-quintic} 的证明中出现；
+而 \eqref{eq:xi-terminal-zm-delta-node-linear-y} 与 \(I_{\mathrm{sing}}\cap\QQ[T]=(A_5(T))\) 可由对 \(I_{\mathrm{sing}}\) 取 \(y\succ T\) 的字典序 Gröbner 消元得到。
+由 \eqref{eq:xi-terminal-zm-delta-node-linear-T} 立得 \(T_0\in\QQ(y_0)\)，由 \eqref{eq:xi-terminal-zm-delta-node-linear-y} 立得 \(y_0\in\QQ(T_0)\)，从而得到 \eqref{eq:xi-terminal-zm-delta-node-coordinate-field-swap}。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_delta\_projection\_a5b5\_audit.py}。证毕。
+\end{proof}
+
+\begin{theorem}[两个五次多项式的全对称算术单值化与分裂域一致]\label{thm:xi-terminal-zm-delta-a5-b5-galois-s5}
+命题 \ref{prop:xi-terminal-zm-delta-discy-factorization-a5b5} 中的 \(A_5(T)\) 与 \(B_5(T)\) 在 \(\QQ\) 上不可约，且其伽罗瓦群均为全对称群 \(S_5\)。
+并且 \(Q_5(y)\) 与 \(A_5(T)\) 具有相同分裂域；特别地，
+\[
+\Gal\bigl(A_5/\QQ\bigr)\cong \Gal\bigl(Q_5/\QQ\bigr)\cong S_5.
+\]
+\end{theorem}
+\begin{proof}
+先证 \(A_5\)。取素数 \(p=7\)，由 \(A_5\bmod 7\) 在 \(\FF_7[T]\) 中保持五次不可约可知 \(A_5\) 在 \(\QQ\) 上不可约，故其伽罗瓦群 \(G_A\le S_5\) 传递。
+再取素数 \(p=61\)，可验证 \(A_5\bmod 61\) 的分解型为 \((2)(3)\)，故 \(G_A\) 含有一个 \(3\)-循环。
+同时 \(\mathrm{Disc}(A_5)\) 在 \(\ZZ\) 中非平方，故 \(G_A\nsubseteq A_5\)。
+由含 \(3\)-循环的传递子群分类可得 \(G_A=S_5\)。
+\par
+对 \(B_5\) 亦同理：取 \(p=59\) 得 \(B_5\bmod 59\) 不可约，故 \(G_B\) 传递；取 \(p=7\) 得分解型 \((2)(3)\) 从而含 \(3\)-循环；并由 \(\mathrm{Disc}(B_5)\) 非平方排除 \(A_5\)，遂 \(G_B=S_5\)。
+\par
+最后，由命题 \ref{prop:xi-terminal-zm-delta-nodes-elimination-a5} 的域互换同构 \eqref{eq:xi-terminal-zm-delta-node-coordinate-field-swap}：对任一结点 \((y_0,T_0)\) 有 \(\QQ(y_0)=\QQ(T_0)\)。
+因此 \(A_5\) 的根生成的分裂域与 \(Q_5\) 的根生成的分裂域一致，从而两者的伽罗瓦群同构。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_delta\_projection\_a5b5\_audit.py}。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\delta:E\to\PP^1_\delta$}{delta-map} 的分歧护照与几何单值群]\label{thm:xi-terminal-zm-delta-map-hurwitz-passport-s5}
+将 \(\delta=\dd y/\dd u=4XY+3X^2-1\in\QQ(E)\) 视为 \(E\) 上的有理函数，并记由其诱导的有限态射
+\[
+\pi_\delta:\ E\longrightarrow \PP^1_\delta .
+\]
+则：
+\begin{enumerate}
+  \item \(\delta\) 的极点除子满足 \((\delta)_\infty=5O\)。因此 \(\deg(\pi_\delta)=5\)，并且在 \(\delta=\infty\) 处全分歧（分歧指数 \(e_O=5\)）。
+  \item \(\pi_\delta\) 的有限分歧点恰由 \(\dd \delta=0\) 给出；其 \(X\)-坐标满足完全分解
+  \[
+  (X+1)\bigl(100X^5-136X^4+16X^3+40X^2-13X+1\bigr)=0,
+  \]
+  且其 \(Y\)-坐标由
+  \[
+  Y=\frac{-10X^3+6X-1}{6X}
+  \]
+  唯一确定。上述六点均为简单分歧点（分歧指数 \(2\)）。
+  \item 有限分歧值集合为
+  \[
+  \{\delta=4\}\ \cup\ \{\delta\in\overline{\QQ}:\ B_5(\delta)=0\},
+  \]
+  其中 \(B_5\) 如命题 \ref{prop:xi-terminal-zm-delta-discy-factorization-a5b5}。
+  更精确地，消去 \(X\) 得到严格结果式恒等式
+  \begin{equation}\label{eq:xi-terminal-zm-delta-branch-resultant-b5}
+  \boxed{\;
+  \mathrm{Res}_X\!\left(
+  100X^5-136X^4+16X^3+40X^2-13X+1,\ \ 3\delta+20X^3-9X^2-12X+5
+  \right)=4860\,B_5(\delta)\; }.
+  \end{equation}
+  \item 该覆盖的几何单值群同构于 \(S_5\)。等价地，函数域扩张 \(\QQ(E)/\QQ(\delta)\) 的伽罗瓦闭包群为 \(S_5\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 \(\operatorname{ord}_O(X)=-2\)、\(\operatorname{ord}_O(Y)=-3\) 得
+\(
+\operatorname{ord}_O(\delta)=-(2+3)=-5
+\)，从而 \((\delta)_\infty=5O\) 并得到第一条。
+\par
+取 \(\omega=\dd X/(2Y)\) 并用 \(\dd Y=(3X^2-1)\omega\)、\(\dd X=2Y\omega\) 微分 \(\delta=4XY+3X^2-1\)，得
+\[
+\dd\delta=2\bigl(10X^3+6XY-6X+1\bigr)\,\omega.
+\]
+从而有限分歧点由 \(10X^3+6XY-6X+1=0\) 给出，并解得所示 \(Y\) 的闭式；
+代回 \(Y^2=X^3-X+\tfrac14\) 化简即得 \(X\)-坐标多项式的完全分解，得到第二条。
+由 Riemann--Hurwitz 公式，度为 \(5\) 的覆盖 \(E\to\PP^1\) 的总分歧度为 \(2\deg(\pi_\delta)=10\)；
+无穷远点贡献 \(e_O-1=4\)，故有限分歧总贡献为 \(6\)，与上述六个有限分歧点一致，从而它们均为简单分歧点。
+\par
+第三条中，\(\delta\) 在 \(X=-1\) 的分歧点处取值为 \(4\)；
+对五次因子根消去 \(X\) 即得 \eqref{eq:xi-terminal-zm-delta-branch-resultant-b5}，从而其分歧值满足 \(B_5(\delta)=0\)。
+\par
+第四条由分歧循环型给出：\(\delta=\infty\) 处全分歧对应一个 \(5\)-循环；任一有限分歧值处为简单分歧，对应换位。
+包含 \(5\)-循环与换位的传递子群必为 \(S_5\)。证毕。
+\end{proof}
+
+\begin{proposition}[特征 \texorpdfstring{$37$}{37} 上的分歧塌缩：\texorpdfstring{$B_5$}{B5} 的双重根]\label{prop:xi-terminal-zm-delta-badprime-37-b5-double-root}
+令 \(B_5(\delta)\) 如命题 \ref{prop:xi-terminal-zm-delta-discy-factorization-a5b5}。
+则在 \(\FF_{37}[\delta]\) 中有精确分解
+\[
+B_5(\delta)\equiv 13\,\delta^2\bigl(\delta^3+2\delta^2-4\delta+3\bigr)\pmod{37}.
+\]
+因此 \(\pi_\delta\) 的有限分歧值在特征 \(37\) 的约化中发生并合，等价地，\(\delta\)-分歧多项式在 \(p=37\) 处出现重根并导致该覆盖不具良分歧约化。
+\end{proposition}
+\begin{proof}
+对 \(B_5\) 的系数作模 \(37\) 化简并因式分解即可得到所示恒等式。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_delta\_projection\_a5b5\_audit.py}。证毕。
+\end{proof}
+
 \begin{corollary}[有限节点集的伽罗瓦传递性]\label{cor:xi-terminal-zm-delta-nodes-single-galois-orbit}
 \(\overline{\mathcal C}_\delta^{\mathrm{bi}}\) 的五个有限节点在 \(\operatorname{Gal}(\overline{\QQ}/\QQ)\) 作用下构成单一轨道；特别地，\(\overline{\mathcal C}_\delta^{\mathrm{bi}}\) 在 \(\QQ\) 上不存在有限有理奇点。
 \end{corollary}
