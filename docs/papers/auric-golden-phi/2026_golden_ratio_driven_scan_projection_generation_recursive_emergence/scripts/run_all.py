@@ -181,19 +181,11 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="xi_leyang_ply_q5_a7_interference_geometry_audit",
-            script="exp_xi_leyang_ply_q5_a7_interference_geometry_audit.py",
+            name="xi_leyang_node_preimage_r10_wreath_audit",
+            script="exp_xi_leyang_node_preimage_r10_wreath_audit.py",
             args=[],
             expected_outputs=[
-                "artifacts/export/xi_leyang_ply_q5_a7_interference_geometry_audit.json",
-            ],
-        ),
-        Step(
-            name="xi_poisson_cauchy_lp_fdiv_cayley_jensen_audit",
-            script="exp_xi_poisson_cauchy_lp_fdiv_cayley_jensen_audit.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/xi_poisson_cauchy_lp_fdiv_cayley_jensen_audit.json",
+                "artifacts/export/xi_leyang_node_preimage_r10_wreath_audit.json",
             ],
         ),
         Step(
@@ -286,15 +278,6 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="fold_gauge_anomaly_branchpoint_rational_b_invariant_audit",
-            script="exp_fold_gauge_anomaly_branchpoint_rational_b_invariant_audit.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/fold_gauge_anomaly_branchpoint_rational_b_invariant_audit.json",
-                "sections/generated/eq_fold_gauge_anomaly_branchpoint_rational_b_invariant_audit.tex",
-            ],
-        ),
-        Step(
             name="fold_gauge_anomaly_trigonal_mu_audit",
             script="exp_fold_gauge_anomaly_trigonal_mu_audit.py",
             args=[],
@@ -340,21 +323,19 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="fold_gauge_anomaly_rate_curve_singularity_audit",
-            script="exp_fold_gauge_anomaly_rate_curve_singularity_audit.py",
+            name="fold_gauge_anomaly_rate_curve_discriminant_q19_audit",
+            script="exp_fold_gauge_anomaly_rate_curve_discriminant_q19_audit.py",
             args=[],
             expected_outputs=[
-                "artifacts/export/fold_gauge_anomaly_rate_curve_singularity_audit.json",
-                "sections/generated/eq_fold_gauge_anomaly_rate_curve_singularity_audit.tex",
+                "artifacts/export/fold_gauge_anomaly_rate_curve_discriminant_q19_audit.json",
             ],
         ),
         Step(
-            name="conclusion_singlephase_prime_ledger_precision_audit",
-            script="exp_conclusion_singlephase_prime_ledger_precision_audit.py",
+            name="fold_gauge_anomaly_covariance_hankel_certificate_audit",
+            script="exp_fold_gauge_anomaly_covariance_hankel_certificate_audit.py",
             args=[],
             expected_outputs=[
-                "artifacts/export/conclusion_singlephase_prime_ledger_precision_audit.json",
-                "sections/generated/tab_conclusion_singlephase_prime_ledger_precision_audit.tex",
+                "artifacts/export/fold_gauge_anomaly_covariance_hankel_certificate_audit.json",
             ],
         ),
         Step(
@@ -640,22 +621,6 @@ def build_steps() -> List[Step]:
                 "artifacts/export/xi_prime_register_semidirect_two_shadow_audit.json",
                 "sections/generated/eq_xi_prime_register_semidirect_two_shadow_audit.tex",
                 "sections/generated/tab_xi_elliptic_two_shadow_invariants_audit.tex",
-            ],
-        ),
-        Step(
-            name="xi_window6_center_sheetflip_ps_sm_audit",
-            script="exp_xi_window6_center_sheetflip_ps_sm_audit.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/xi_window6_center_sheetflip_ps_sm_audit.json",
-            ],
-        ),
-        Step(
-            name="xi_prime_register_zg_density_leyang_spectrum_audit",
-            script="exp_xi_prime_register_zg_density_leyang_spectrum_audit.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/xi_prime_register_zg_density_leyang_spectrum_audit.json",
             ],
         ),
         Step(
@@ -3290,15 +3255,6 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
-            name="fold_zm_delta_b5_arithmetic_audit",
-            script="exp_fold_zm_delta_b5_arithmetic_audit.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/fold_zm_delta_b5_arithmetic_audit.json",
-                "sections/generated/eq_fold_zm_delta_b5_arithmetic_audit.tex",
-            ],
-        ),
-        Step(
             name="boolean_two_layer_kernel_zeta_mu_snf_inverse_audit",
             script="exp_boolean_two_layer_kernel_zeta_mu_snf_inverse_audit.py",
             args=[],
@@ -3330,14 +3286,6 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_zm_elliptic_translation_q_biquartic_audit.json",
-            ],
-        ),
-        Step(
-            name="fold_zm_elliptic_translation_r_s4_d4_audit",
-            script="exp_fold_zm_elliptic_translation_r_s4_d4_audit.py",
-            args=[],
-            expected_outputs=[
-                "artifacts/export/fold_zm_elliptic_translation_r_s4_d4_audit.json",
             ],
         ),
         Step(

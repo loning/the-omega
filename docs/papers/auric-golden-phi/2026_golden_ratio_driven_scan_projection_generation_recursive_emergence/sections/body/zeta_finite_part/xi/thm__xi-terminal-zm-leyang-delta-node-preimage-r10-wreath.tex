@@ -1,0 +1,136 @@
+上述五个有限节点在归一化曲线 \(E\) 上各分裂为两支预像，从而在 \(E(\overline{\QQ})\) 上给出次数 \(10\) 的闭点集合。
+其谱坐标 \(X\)-层不仅可被一次消元化为显式十次式，而且该十次层的总体伽罗瓦闭包达到与五节点块系相容的最大对称。
+
+\begin{theorem}[节点预像的二次中介式与十次消元]\label{thm:xi-terminal-zm-delta-node-preimage-elimination-r10}
+令 \(\nu:E\to\overline{\mathcal C}_\delta\) 为定理 \ref{thm:xi-terminal-zm-delta-generalized-jacobian-semiabelian} 中的归一化映射，并令
+\[
+\Sigma:=\nu^{-1}\!\bigl(\mathrm{Sing}(\overline{\mathcal C}_\delta)\bigr)\subset E(\overline{\QQ})
+\]
+为有限节点的规范化预像（按重数计为 \(10\) 个点）。
+则在 \((X,y)\)-平面上成立以下完全消元刻画：
+\begin{enumerate}
+  \item 记 \(Q_5(y)\) 为节点消元五次式
+  \[
+  Q_{5}(y)=4096y^{5}+5376y^{4}-464y^{3}-2749y^{2}-723y+80.
+  \]
+  则 \(\Sigma\) 的 \((X,y)\)-投影恰由 \(Q_5(y)=0\) 与下式联立刻画：
+  \begin{equation}\label{eq:xi-terminal-zm-delta-node-preimage-quadratic-mediator}
+  \boxed{\;
+  279X^{2}+\bigl(65536y^{4}+47104y^{3}-35392y^{2}-22412y+1774\bigr)X
+  +\bigl(110592y^{4}+67584y^{3}-60096y^{2}-32496y+3075\bigr)=0\; } .
+  \end{equation}
+  \item 进一步对 \(y\) 消元后，\(\Sigma\) 的 \(X\)-坐标全体为十次多项式 \(R_{10}(X)\) 的全部根：
+  \begin{equation}\label{eq:xi-terminal-zm-delta-node-preimage-r10}
+  \boxed{\;
+  \begin{aligned}
+  R_{10}(X)=\;&4096X^{10}-10240X^{9}+4864X^{8}+16384X^{7}-26320X^{6}\\
+  &+2744X^{5}+20657X^{4}-14144X^{3}-4730X^{2}+5768X+505.
+  \end{aligned}\; } .
+  \end{equation}
+  等价地，
+  \[
+  X(\Sigma)=\{\alpha\in\overline{\QQ}:\ R_{10}(\alpha)=0\},
+  \]
+  按重数计为 \(10\) 个点。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[证明要点]
+由 \(y=X^{2}+Y-\tfrac12\) 消去 \(Y\) 并代入 \(E:Y^{2}=X^{3}-X+\tfrac14\) 得到谱四次消元式
+\[
+\Pi(X,y)=X^{4}-X^{3}-(2y+1)X^{2}+X+y(y+1)=0,
+\]
+其即 \(\pi_y:E\to\PP^1_y\) 的代数消去式（见定理 \ref{thm:xi-terminal-zm-delta-spectral-x-inversion}）。
+\par
+另一方面，由命题 \ref{prop:xi-terminal-zm-delta-nodes-elimination-a5} 的节点消元形 \eqref{eq:xi-terminal-zm-delta-node-linear-T} 可知：有限节点满足 \(Q_5(y)=0\) 且其 \(\delta\)-坐标满足一次闭式 \(93\,\delta=P_4(y)\)，其中
+\[
+P_4(y)=8192y^{4}+5888y^{3}-3680y^{2}-2848y+152.
+\]
+将 \(\delta=4XY+3X^{2}-1\) 与 \(Y=y-X^{2}+\tfrac12\) 代入上式，把节点条件拉回到 \(\QQ[X,y]\) 上；再与 \(\Pi(X,y)=0\) 联立形成有限生成理想。
+对该理想作字典序 Gröbner 消元（例如取 \(X\succ y\)）即可得到消元基底在 \(\QQ[X,y]\) 中由 \(\{Q_5(y),\ \eqref{eq:xi-terminal-zm-delta-node-preimage-quadratic-mediator}\}\) 生成，从而得到第一条。
+\par
+再对 \(y\) 消元（例如对 \(Q_5\) 与 \eqref{eq:xi-terminal-zm-delta-node-preimage-quadratic-mediator} 取关于 \(y\) 的结果式并约去整系数公因子）即得十次式 \eqref{eq:xi-terminal-zm-delta-node-preimage-r10}。
+可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_node\_preimage\_r10\_wreath\_audit.py}。证毕。
+\end{proof}
+
+\begin{remark}[节点层的最小代数连结]\label{rem:xi-terminal-zm-delta-node-preimage-minimal-algebraic-bridge}
+五次层 \(Q_5(y)=0\) 与十次层 \(R_{10}(X)=0\) 之间通过中介二次式 \eqref{eq:xi-terminal-zm-delta-node-preimage-quadratic-mediator} 严格连接；
+该二次式在每个节点 \(y_0\) 之上给出两支预像的 \(X\)-坐标，从而把节点分裂方向转写为 \((C_2)^5\) 型的二次层数据，并为数域计算与分支单值分析提供可直接使用的最小代数表示。
+\end{remark}
+
+\begin{theorem}[十次层判别式与二次分裂的分歧支撑]\label{thm:xi-terminal-zm-delta-node-preimage-discriminant-and-norm}
+令 \(R_{10}(X)\) 如 \eqref{eq:xi-terminal-zm-delta-node-preimage-r10}。
+则：
+\begin{enumerate}
+  \item \(R_{10}\) 在 \(\QQ\) 上不可约。
+  \item 其多项式判别式满足严格分解
+  \begin{equation}\label{eq:xi-terminal-zm-delta-node-preimage-disc-r10}
+  \boxed{\;\Disc(R_{10})=-2^{88}\cdot 3^{17}\cdot 11^{4}\cdot 31^{2}\cdot 727^{2}\cdot 5146068463^{2}\;} .
+  \end{equation}
+  因而 \(\Disc(R_{10})\) 的平方自由核为 \(-3\)，并且素数 \(37\) 不在判别式支撑中出现。
+  \item 令 \(L=\QQ(y)\)（其中 \(y\) 为 \(Q_5\) 的一根），并令 \(K=L(X)\) 由二次中介式 \eqref{eq:xi-terminal-zm-delta-node-preimage-quadratic-mediator} 生成。
+  记该二次式对 \(X\) 的判别式为
+  \begin{equation}\label{eq:xi-terminal-zm-delta-node-preimage-Delta-y}
+  \Delta_X(y)
+  :=\bigl(65536y^{4}+47104y^{3}-35392y^{2}-22412y+1774\bigr)^{2}
+  -4\cdot 279\cdot\bigl(110592y^{4}+67584y^{3}-60096y^{2}-32496y+3075\bigr).
+  \end{equation}
+  则其在 \(L/\QQ\) 下的范数满足纯素支撑恒等式
+  \begin{equation}\label{eq:xi-terminal-zm-delta-node-preimage-norm-Delta}
+  \boxed{\;\mathrm N_{L/\QQ}\!\bigl(\Delta_X(y)\bigr)=-3^{25}\cdot 31^{10}\;} .
+  \end{equation}
+  从而二次层 \(K/L\) 的分歧仅可能出现在素数 \(3\) 与 \(31\) 上方。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+不可约性可由素数 \(p=17\) 的模约化给出：\(R_{10}\bmod 17\) 在 \(\FF_{17}[X]\) 中保持十次不可约因子，从而由 Gauss 引理推出 \(R_{10}\) 在 \(\QQ\) 上不可约。
+\par
+判别式分解 \eqref{eq:xi-terminal-zm-delta-node-preimage-disc-r10} 为整系数多项式判别式的直接计算与素因子分解。
+平方自由核仅由奇次幂素因子与符号贡献，故为 \(-3\)；判别式支撑中不出现 \(37\) 即说明 \(37\) 不分歧。
+\par
+对范数恒等式 \eqref{eq:xi-terminal-zm-delta-node-preimage-norm-Delta}，用一般的范数--结式公式（\(\deg\Delta_X=8\) 且 \(Q_5\) 的首项系数为 \(4096\)）：
+\[
+\mathrm N_{L/\QQ}\!\bigl(\Delta_X(y)\bigr)=4096^{-8}\cdot \Res_{y}\!\bigl(Q_5(y),\Delta_X(y)\bigr).
+\]
+直接计算结式并约去 \(4096^{8}=2^{96}\) 即得 \eqref{eq:xi-terminal-zm-delta-node-preimage-norm-Delta}。
+可复现核验脚本：\texttt{scripts/exp\_xi\_leyang\_node\_preimage\_r10\_wreath\_audit.py}。证毕。
+\end{proof}
+
+\begin{theorem}[节点预像十次层的花环积伽罗瓦对称]\label{thm:xi-terminal-zm-delta-node-preimage-galois-wreath}
+令 \(G\) 为 \(R_{10}(X)\) 在 \(\QQ\) 上的分裂域的伽罗瓦群，其自然作用于 \(10\) 个根集合。
+则
+\[
+G\cong C_2\wr S_5\cong (C_2)^{5}\rtimes S_5,
+\qquad
+|G|=2^{5}\cdot 5!=3840.
+\]
+等价地，\(G\) 同构于 \(B_5\) 型 Weyl 群（超八面体群），其 \(10\) 点作用为五个二元块上的完全花环作用。
+\end{theorem}
+
+\begin{proof}[证明要点]
+由定理 \ref{thm:xi-terminal-zm-delta-node-preimage-elimination-r10}，对任一根 \(\alpha\)（\(R_{10}(\alpha)=0\)），存在 \(\beta:=y(\alpha)\) 满足 \(Q_5(\beta)=0\)，且 \(\alpha\) 在 \(\QQ(\beta)\) 上满足二次中介式 \eqref{eq:xi-terminal-zm-delta-node-preimage-quadratic-mediator}。
+因此 \([\QQ(\beta):\QQ]=5\)、\([\QQ(\alpha):\QQ(\beta)]=2\)，并且 \(G\) 的 \(10\) 点作用存在大小为 \(2\) 的不变块系（同一 \(\beta\) 之上的两根 \(\alpha\) 形成一块），从而
+\[
+G\subseteq C_2\wr S_5.
+\]
+又由定理 \ref{thm:xi-terminal-zm-delta-a5-b5-galois-s5} 可知 \(\Gal(Q_5/\QQ)\cong S_5\)，故块置换商群为 \(S_5\)，并得到短正合列
+\[
+1\longrightarrow K\longrightarrow G\longrightarrow S_5\longrightarrow 1,
+\qquad
+K\subseteq (C_2)^5.
+\]
+\par
+由 \eqref{eq:xi-terminal-zm-delta-node-preimage-disc-r10}，\(\Disc(R_{10})\notin\QQ^{\times 2}\)，故 \(G\nsubseteq A_{10}\)。
+另一方面，来自块置换的 \(S_5\) 在 \(10\) 点上的提升恒为偶置换，因而奇偶性只能来自核 \(K\) 中的“块内换位”。
+这排除 \(K\) 为偶和子群（其仅产生偶置换），从而 \(K\) 仅可能为对角子群或全体 \((C_2)^5\)。
+\par
+取素数 \(p=101\)。由 \eqref{eq:xi-terminal-zm-delta-node-preimage-disc-r10} 可知 \(101\nmid\Disc(R_{10})\)，故在分裂域中不分歧。
+计算 \(R_{10}\bmod 101\) 的不可约因子次数分拆得到 \((1)(1)(8)\)，对应 Frobenius 元在 \(10\) 点上的循环型为 \((1)(1)(8)\)。
+而在“仅允许全局块内同时交换”的对角核情形下，任一元素要么为纯块置换（其循环长度在 \(10\) 点上成对出现），要么与全局交换复合（从而不可能保留固定点）。
+故循环型 \((1)(1)(8)\) 在该情形下不可能出现，遂排除对角核，必有 \(K=(C_2)^5\)。
+综上 \(G=(C_2)^5\rtimes S_5=C_2\wr S_5\)。证毕。
+\end{proof}
+
+\endinput
+
