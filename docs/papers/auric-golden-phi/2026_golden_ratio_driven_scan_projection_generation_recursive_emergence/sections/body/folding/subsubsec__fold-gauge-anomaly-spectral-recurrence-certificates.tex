@@ -41,6 +41,50 @@ C(z)=\sum_{k\ge 1}C_k z^k
 将 \(z=s\) 与 \(z=s^{-1}\) 代入并作代数化简，即得 \eqref{eq:fold-gauge-anomaly-psd-rational}。证毕。
 \end{proof}
 
+\begin{corollary}[分母的完全因子分解与协方差闭式]\label{cor:fold-gauge-anomaly-psd-denominator-factorization-cov}
+在定理 \ref{thm:fold-gauge-anomaly-psd-rational} 的记号下，功率谱 \eqref{eq:fold-gauge-anomaly-psd-rational} 的分母多项式满足完全分解
+\[
+8s^6+20s^5-26s^4-85s^3-26s^2+20s+8
+=(s-2)(s+2)^2(2s-1)(2s+1)^2.
+\]
+因此 \(\mathcal S_g\) 在单位圆内的极点仅为 \(s=\tfrac12\) 的一重极点与 \(s=-\tfrac12\) 的二重极点。
+由留数抽取可得协方差闭式：对一切 \(k\ge 1\)，
+\[
+C_k=\mathrm{Cov}(g_t,g_{t+k})
+=\frac18\Big(\frac12\Big)^k+\Big(\frac{7}{648}+\frac{k}{108}\Big)\Big(-\frac12\Big)^k,
+\qquad
+C_0=\frac{20}{81}.
+\]
+\end{corollary}
+\begin{proof}
+对分母多项式直接代数展开验证分解式。
+由 \(|s|=1\) 的 Fourier 系数抽取公式，
+\(
+C_k=\frac{1}{2\pi i}\oint_{|s|=1}\mathcal S_g(\omega)\,s^{k-1}\,\dd s
+\)，
+而分解式表明单位圆内仅有 \(s=\tfrac12\) 与 \(s=-\tfrac12\) 两类极点，其中后者为二重极点。
+应用留数定理并对二重极点使用导数留数公式即可得到所示闭式；
+其结果与定理 \ref{thm:fold-gauge-anomaly-autocov-closed} 的协方差闭式一致。证毕。
+\end{proof}
+
+\begin{proposition}[协方差序列的三阶整系数递推与 Hankel 秩证书]\label{prop:fold-gauge-anomaly-covariance-recurrence-integers-hankel-rank3}
+令 \(C_k=\mathrm{Cov}(g_t,g_{t+k})\)（\(k\ge 0\)）。
+则对一切 \(k\ge 1\) 成立三阶整系数递推
+\[
+8C_{k+3}+4C_{k+2}-2C_{k+1}-C_k=0.
+\]
+从而无限 Hankel 矩阵 \(H=(C_{i+j+1})_{i,j\ge 0}\) 的秩恰为 \(3\)；
+等价地，任意 \(4\times 4\) Hankel 子式行列式恒为零，而存在某个 \(3\times 3\) Hankel 子式非零。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:fold-gauge-anomaly-hankel-rank3}，令 \(d_k:=\mathrm{Cov}(g_t,g_{t+k})\)（\(k\ge 1\)），则
+\(
+d_{k+3}=-\frac12d_{k+2}+\frac14d_{k+1}+\frac18d_k
+\)。
+对该递推两边同乘 \(8\) 即得所述整系数形式（并将 \(d_k\) 记回 \(C_k\)）。
+Hankel 秩结论与定理 \ref{thm:fold-gauge-anomaly-hankel-rank3} 等价。证毕。
+\end{proof}
+
 \begin{proposition}[总规范差的四阶递推：概率生成函数由固定特征多项式封闭]\label{prop:fold-gauge-anomaly-mgf-order4-recurrence}
 令 \(G_m:=\sum_{t=1}^{m} g_t\)，并对 \(u>0\) 定义概率生成函数
 \[

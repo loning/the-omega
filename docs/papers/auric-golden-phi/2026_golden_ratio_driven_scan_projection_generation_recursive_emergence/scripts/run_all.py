@@ -213,6 +213,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_leyang_b6_s6_discriminant_audit",
+            script="exp_xi_leyang_b6_s6_discriminant_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_b6_s6_discriminant_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_leyang_qapp_s5_disjointness_audit",
+            script="exp_xi_leyang_qapp_s5_disjointness_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_qapp_s5_disjointness_audit.json",
+            ],
+        ),
+        Step(
             name="xi_leyang_node_preimage_r10_wreath_audit",
             script="exp_xi_leyang_node_preimage_r10_wreath_audit.py",
             args=[],
@@ -226,6 +242,22 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/xi_leyang_delta_node_tangent_wreath_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_pressure_cumulants5",
+            script="exp_fold_gauge_anomaly_pressure_cumulants5.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_pressure_cumulants5.json",
+            ],
+        ),
+        Step(
+            name="spg_dyadic_boundary_holography_audit",
+            script="exp_spg_dyadic_boundary_holography_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/spg_dyadic_boundary_holography_audit.json",
             ],
         ),
         Step(

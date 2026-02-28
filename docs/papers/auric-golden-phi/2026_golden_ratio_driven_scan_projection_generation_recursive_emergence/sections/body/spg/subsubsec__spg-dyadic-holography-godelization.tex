@@ -1,0 +1,138 @@
+% Dyadic cubical holography and Gödel arithmetization for outer approximations.
+
+\subsubsection{dyadic 立方复形的边界单射与 Gödel 字典}\label{subsubsec:spg-dyadic-holography-godelization}
+定理 \ref{thm:spg-dyadic-outer-approx-stokes-gain-minkowski-readout} 已给出：dyadic 外近似 \(U_m(A)\) 的体积可由单一 Stokes 探针 \(\omega_0\) 的边界通量精确读出。
+本小节进一步补齐两条与“可审计算术化”直接对齐的离散结论：
+其一是固定 dyadic 立方复形下顶维边界算子的单射性（顶维无同调），从而体链由边界链唯一决定；
+其二是将 dyadic 占据向量做平方自由 Gödel 编码后，其双对数增长率与占据数的指数率一致，从而把“边界 \(\to\) 体积 \(\to\) Gödel 整数 \(\to\) 指数”闭合为一条可复算链。
+
+\begin{theorem}[dyadic 立方复形上的边界--体积强全息：顶维边界算子单射]\label{thm:spg-dyadic-cubical-boundary-injective}
+令 \(I^n=[0,1]^n\)。
+对任意 \(m\ge 1\)，记 \(\mathcal Q_m\) 为将 \(I^n\) 按边长 \(2^{-m}\) 的 dyadic \(n\)-立方体剖分得到的有限 \(n\)-维立方复形；
+令 \(C_k(\mathcal Q_m;\ZZ)\) 为其取定取向的 \(k\)-维胞腔链群，\(\partial_k:C_k\to C_{k-1}\) 为胞腔边界算子。
+则顶维边界算子
+\[
+\partial_n:C_n(\mathcal Q_m;\ZZ)\longrightarrow C_{n-1}(\mathcal Q_m;\ZZ)
+\]
+为单射。
+因此，对任意 dyadic polycube（即由 \(\mathcal Q_m\) 的 \(n\)-胞腔以系数 \(0/1\) 取并所对应的 \(n\)-链）\(U\)，其边界链 \(\partial_n[U]\) 唯一决定 \([U]\)；
+特别地，对外近似 \(U_m(A)\)（定义 \ref{thm:spg-dyadic-outer-approx-stokes-gain-minkowski-readout}）而言，\(\partial U_m(A)\) 在链意义上唯一确定 \(U_m(A)\)。
+\end{theorem}
+\begin{proof}
+作为胞腔复形，\(|\mathcal Q_m|=I^n\) 可缩，故其胞腔同调满足 \(H_n(\mathcal Q_m;\ZZ)=0\)。
+又由于 \(\mathcal Q_m\) 无 \((n+1)\)-胞腔，故 \(C_{n+1}(\mathcal Q_m;\ZZ)=0\) 并且 \(\mathrm{im}(\partial_{n+1})=0\)。
+由定义
+\[
+H_n(\mathcal Q_m;\ZZ)=\ker(\partial_n)/\mathrm{im}(\partial_{n+1})=\ker(\partial_n),
+\]
+从而 \(\ker(\partial_n)=0\)，即 \(\partial_n\) 单射。
+其余断言由单射性直接推出。证毕。
+\end{proof}
+
+\begin{theorem}[Stokes--Gödel 双对数维：体积外逼近的 Gödel 整数化指数率仅由占据数决定]\label{thm:spg-stokes-godel-doublelog-dimension}
+沿用 dyadic 外近似 \(U_m(A)\subset I^n\) 的记号，并令
+\[
+N_m(A):=\#\{Q\in\mathcal Q_m:\ Q\subset U_m(A)\}
+=2^{mn}\operatorname{Vol}(U_m(A)),
+\]
+其中 \(\operatorname{Vol}\) 为 Lebesgue 体积。
+固定素数序列 \((p_j)_{j\ge 1}\)。
+将 \(U_m(A)\) 的 dyadic 占据向量 \(b^{(m)}\in\{0,1\}^{2^{mn}}\)（按任意固定枚举识别 \(\mathcal Q_m\)）作平方自由 Gödel 编码
+\[
+G_m(A):=\prod_{j=1}^{2^{mn}} p_j^{\,b^{(m)}_j}\in\NN.
+\]
+则当 \(m\to\infty\) 时成立渐近恒等式
+\[
+\log\log G_m(A)=\log N_m(A)+O(\log m).
+\]
+从而定义
+\[
+d_G(A):=\limsup_{m\to\infty}\frac{\log\log G_m(A)}{m\log 2},
+\qquad
+d_V(A):=\limsup_{m\to\infty}\frac{\log N_m(A)}{m\log 2},
+\]
+有 \(d_G(A)=d_V(A)\)。
+\end{theorem}
+\begin{proof}
+记 \(S_m:=\{j:\ b^{(m)}_j=1\}\)，则 \(|S_m|=N_m(A)\) 且
+\[
+\log G_m(A)=\sum_{j\in S_m}\log p_j.
+\]
+由于 \(\log p_j\ge \log 2\) 对一切 \(j\) 成立，得下界
+\[
+\log G_m(A)\ge N_m(A)\log 2.
+\]
+另一方面，对 \(j\le 2^{mn}\) 有 \(\log p_j\le \log p_{2^{mn}}\)，故
+\[
+\log G_m(A)\le N_m(A)\log p_{2^{mn}}.
+\]
+取对数得到
+\[
+\log N_m(A)+\log\log 2
+\le
+\log\log G_m(A)
+\le
+\log N_m(A)+\log\!\Big(\frac{\log p_{2^{mn}}}{\log 2}\Big).
+\]
+由素数的粗上界（例如对充分大 \(k\) 有 \(p_k\le k^2\)），可得
+\(
+\log p_{2^{mn}}\le 2mn\log 2
+\)，从而 \(\log(\log p_{2^{mn}})=O(\log m)\)。
+于是得到
+\(
+\log\log G_m(A)=\log N_m(A)+O(\log m)
+\)。
+两边除以 \(m\log 2\) 并取 \(\limsup\) 得 \(d_G(A)=d_V(A)\)。证毕。
+\end{proof}
+
+\begin{corollary}[单一 Stokes 探针与 Gödel 双对数的维数一致性]\label{cor:spg-stokes-godel-dimension-chain}
+沿用定理 \ref{thm:spg-stokes-godel-doublelog-dimension} 的记号，并记 \(\omega_0\) 为 \eqref{eq:spg-universal-stokes-probe-form}。
+则
+\[
+d_G(A)=d_V(A)=n+\limsup_{m\to\infty}\frac{\log\!\left(\int_{\partial U_m(A)}\omega_0\right)}{m\log 2},
+\]
+其中最后一项由 \eqref{eq:spg-probe-volume-identity} 直接等于
+\(
+n+\limsup_{m\to\infty}\frac{\log\operatorname{Vol}(U_m(A))}{m\log 2}
+\)，并与 \eqref{eq:spg-minkowski-dimension-single-probe} 的通量读出一致。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:spg-stokes-godel-doublelog-dimension}，\(d_G(A)=d_V(A)\)。
+又由 \(N_m(A)=2^{mn}\operatorname{Vol}(U_m(A))\)，有
+\[
+\frac{\log N_m(A)}{m\log 2}
+=n+\frac{\log\operatorname{Vol}(U_m(A))}{m\log 2}.
+\]
+再由 \eqref{eq:spg-probe-volume-identity} 得 \(\operatorname{Vol}(U_m(A))=\int_{\partial U_m(A)}\omega_0\)，代入即得。证毕。
+\end{proof}
+
+\begin{theorem}[边界 Gödelization 的可逆全息字典：由边界素因子分解重构 dyadic polycube]\label{thm:spg-boundary-godelization-holographic-dictionary}
+固定 \(m,n\) 并令 \(\mathcal F_{m}^{n-1}\) 为 \(\mathcal Q_m\) 的全部 \((n-1)\)-胞腔（面）。
+对每一条有向 \((n-1)\)-面 \(\vec f\) 赋予互异素数 \(q_{\vec f}\)。
+对任意 dyadic polycube \(U\subset I^n\)，其边界链可写为
+\[
+\partial_n[U]=\sum_{\vec f\in \overrightarrow{\mathcal F_{m}^{n-1}}} \varepsilon_{\vec f}\,\vec f,
+\qquad \varepsilon_{\vec f}\in\{0,1\},
+\]
+其中 \(\varepsilon_{\vec f}=1\) 表示该有向面在边界中以正系数出现（若以负系数出现，则等价地由其反向取向面承载）。
+据此定义边界 Gödel 码
+\[
+H_m(U):=\prod_{\vec f} q_{\vec f}^{\,\varepsilon_{\vec f}}\in\NN.
+\]
+则映射 \(U\mapsto H_m(U)\) 在 dyadic polycube 全体上为单射。
+并且 \(U\) 可由 \(H_m(U)\) 的素因子分解显式重构：分解给出 \(\partial_n[U]\) 的取向面支撑，再由 \(\partial_n\) 的单射性得到唯一的 \(n\)-链 \([U]\)。
+\end{theorem}
+\begin{proof}
+由素因子分解唯一性，\(H_m(U)\) 唯一确定指数族 \((\varepsilon_{\vec f})\)，从而唯一确定边界链 \(\partial_n[U]\)。
+由定理 \ref{thm:spg-dyadic-cubical-boundary-injective}，\(\partial_n\) 单射，故 \(\partial_n[U]\) 唯一确定 \([U]\)，进而确定 dyadic polycube \(U\)。
+构造性重构过程即为：对 \(H_m(U)\) 作素因子分解得到 \(\partial_n[U]\)，再解线性方程组 \(\partial_n x=\partial_n[U]\)（在 \(\ZZ\) 上）得到唯一解 \(x=[U]\)。证毕。
+\end{proof}
+
+\begin{remark}[离散全息字典的链层刚性]\label{rem:spg-dyadic-holography-chain-level}
+定理 \ref{thm:spg-dyadic-cubical-boundary-injective} 与定理 \ref{thm:spg-boundary-godelization-holographic-dictionary} 的要点在于：
+在固定 dyadic 立方复形中，顶维同调为零使得不存在非零闭顶维链，从而顶维体链由其边界链唯一决定；
+将边界链再算术化为一个整数的素因子分解，得到一个在严格意义下可逆的“边界 \(\leftrightarrow\) bulk”字典。
+\end{remark}
+
+\endinput
+

@@ -408,6 +408,46 @@ Q(1\mid 0)=\varphi^{-2},\qquad Q(0\mid 0)=\varphi^{-1},\qquad Q(0\mid 1)=1.
 \input{sections/generated/tab_fold_gauge_anomaly_mc}
 \input{sections/generated/eq_fold_gauge_anomaly_clt_variance}
 \input{sections/generated/eq_fold_gauge_anomaly_pressure}
+\begin{proposition}[压力函数的全阶有理累积量与五阶显式展开]\label{prop:fold-gauge-anomaly-pressure-cumulants-up-to-5}
+在命题 \ref{prop:fold-gauge-anomaly-pressure} 的均匀基线设定下，压力函数
+\[
+P_G(\theta)=\log\rho(A_\theta)=\log\!\left(\frac{\mu(e^\theta)}{2}\right)
+\]
+在 \(\theta=0\) 的某邻域内解析，并且其 Taylor 系数全为有理数；等价地，密度累积量
+\[
+\kappa_r:=P_G^{(r)}(0)\qquad (r\ge 1)
+\]
+均属于 \(\QQ\)。
+更进一步，\(P_G\) 在五阶截断下具有完全显式展开
+\[
+P_G(\theta)
+=\frac49\,\theta+\frac{59}{243}\,\theta^2-\frac{587}{6561}\,\theta^3-\frac{4445}{236196}\,\theta^4+\frac{1729457}{19131876}\,\theta^5+O(\theta^6),
+\]
+从而
+\[
+\kappa_1=\frac49,\qquad
+\kappa_2=\frac{118}{243},\qquad
+\kappa_3=-\frac{1174}{2187},\qquad
+\kappa_4=-\frac{8890}{19683},\qquad
+\kappa_5=\frac{17294570}{1594323}.
+\]
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:fold-gauge-anomaly-pressure}，\(\mu(u)\) 在 \(u=1\) 的邻域满足整系数四次方程 \(F(\mu,u)=0\)，且 \(\mu(1)=2\) 为其最大实根。
+并且在 \((\mu,u)=(2,1)\) 处有 \(\partial_\mu F(2,1)\neq 0\)；
+故由隐函数定理存在唯一解析分支 \(u\mapsto \mu(u)\)。
+于是 \(P_G(\theta)=\log(\mu(e^\theta)/2)\) 在 \(\theta=0\) 邻域解析。
+\par
+由于 \(F\) 的系数在 \(\ZZ\) 中，且初值 \(\mu(1)=2\in\QQ\)，对恒等式
+\(
+F(\mu(e^\theta),e^\theta)\equiv 0
+\)
+逐阶比较幂级数系数可递归解出 \(\mu(e^\theta)\) 的各阶 Taylor 系数；
+这些系数由有限次四则运算作用于整数与已知低阶系数得到，因而均为有理数。
+对 \(\log(\cdot)\) 的复合不引入新的超越分母因子，故 \(P_G\) 的 Taylor 系数同样全为有理数。
+将该递推计算至五阶即得所示显式展开与 \(\kappa_1,\dots,\kappa_5\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_gauge\_anomaly\_pressure\_cumulants5.py}。证毕。
+\end{proof}
 \input{sections/generated/eq_fold_gauge_anomaly_branch_points}
 \input{sections/generated/eq_fold_gauge_anomaly_jordan_correlations}
 \input{prop__fold-gauge-anomaly-covariance-distribution-hankel}
@@ -418,6 +458,7 @@ Q(1\mid 0)=\varphi^{-2},\qquad Q(0\mid 0)=\varphi^{-1},\qquad Q(0\mid 1)=1.
 \input{sections/generated/eq_fold_gauge_anomaly_ldp_rate}
 
 \input{subsubsec__fold-gauge-anomaly-bernoulli-p-baseline}
+\input{subsubsec__fold-gauge-anomaly-bernoulli-p-thresholds}
 \input{subsubsec__fold-gauge-anomaly-bernoulli-p-closed-form-parry-chain}
 \input{subsubsec__fold-gauge-anomaly-bernoulli-p-recursive-jordan-discriminant}
 
