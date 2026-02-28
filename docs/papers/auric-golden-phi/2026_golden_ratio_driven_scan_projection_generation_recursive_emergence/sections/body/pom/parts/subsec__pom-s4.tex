@@ -351,8 +351,9 @@ p_7(x)=\det(xI-A_4)=x^5-2x^4-7x^3-2x+2.
 从而并非 \(\QQ\) 中平方。
 \end{proposition}
 \begin{proof}
-模 \(5\) 约化时 \(p_7\) 在 \(\FF_5[x]\) 上不可约，从而其 Frobenius 置换包含一个 \(5\)-循环；模 \(29\) 约化时 \(p_7\) 在 \(\FF_{29}[x]\) 上分解为一个不可约二次因子与三个一次因子，从而其 Frobenius 置换包含一个换位（\(2\)-循环）。
-因此 \(\mathrm{Gal}(p_7/\QQ)\) 作为 \(S_5\) 的一个传递子群同时含 \(5\)-循环与换位，必为 \(S_5\)。
+模 \(5\) 约化时 \(p_7\bmod 5\) 在 \(\FF_5[x]\) 上不可约，从而相应的 Frobenius 置换包含一个 \(5\)-循环，故 \(\mathrm{Gal}(p_7/\QQ)\) 在 \(5\) 个根上的作用是传递的。
+另一方面，模 \(3\) 约化时 \(p_7\bmod 3\) 分解为一不可约二次因子与一不可约三次因子，因此相应 Frobenius 置换在 \(S_5\) 中具有循环型 \((2)(3)\)，从而含有阶为 \(6\) 的元素。
+含 \(5\)-循环的传递子群仅可能为 \(C_5,D_5,\mathrm{AGL}(1,5),A_5,S_5\)；其中 \(C_5,D_5,\mathrm{AGL}(1,5)\) 不含阶 \(6\) 元，而 \(A_5\) 不含循环型 \((2)(3)\) 的元素（其为奇置换），故只能为 \(S_5\)。
 判别式的显式值可由直接消元计算得到（可复现脚本：\texttt{scripts/exp\_collision\_kernel\_A234\_operator\_algebra\_flow\_invariants.py}）。证毕。
 \end{proof}
 
@@ -405,45 +406,8 @@ $$
 \input{sections/generated/tab_collision_kernel_A4_primitive}
 \input{sections/generated/tab_collision_kernel_A4_finite_part}
 
-\par
-\medskip\noindent\textbf{审计结论（主极点留数常数 \(C\) 的导数公式与代数证书：\(A_2,A_3,A_4\)）}
-令 \(A\) 为有限状态碰撞核（SFT 邻接矩阵），其特征多项式取首项为 \(1\) 的
-\[
-\chi_A(\lambda):=\det(\lambda I-A),\qquad d:=\deg\chi_A,
-\]
-并设 Perron 根 \(r=\rho(A)\) 为单根。记
-\(
-\zeta_A(z)=\det(I-zA)^{-1}
-\)、\(z_\star=1/r\)，并按表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} 的口径定义主极点留数常数
-\[
-C(A):=\lim_{z\to z_\star}(1-rz)\,\zeta_A(z).
-\]
-则该常数仅由 \((\chi_A,r)\) 决定，并满足闭式恒等式
-\[
-\boxed{\;
-C(A)=\frac{r^{d-1}}{\chi_A'(r)}
-\;=\;
-\prod_{\lambda_j\in\sigma(A)\setminus\{r\}}\left(1-\frac{\lambda_j}{r}\right)^{-1}\; }.
-\]
-因此，一旦 \(\chi_A\) 与 \(r\) 已被独立审计（例如由递推分母/特征多项式与 Perron 根证书给出），则 \(C(A)\) 可在不做留数极限、亦无需显式求全谱的前提下被精确重建；并且任何保持同一 \(\chi_A\) 的非负整数 realization（见注 \ref{rem:pom-a3-alternative-realization}）都必须给出同一 \(C(A)\)。
-\par
-进一步地，对本文三枚已给出特征多项式的碰撞核
-\[
-\chi_{A_2}(\lambda)=\lambda^3-2\lambda^2-2\lambda+2,\qquad
-\chi_{A_3}(\lambda)=\lambda^3-2\lambda^2-4\lambda+2,\qquad
-\chi_{A_4}(\lambda)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2,
-\]
-由上式与消元可将表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} 中的三枚十进制常数 \(C(A_q)\) 升格为整系数方程级审计证书：它们分别满足如下最小多项式（且在 \((0,1)\) 上各有唯一实根）：
-\[
-\boxed{\;
-37C^3-37C^2+C+1=0\quad(C=C(A_2)),\qquad
-141C^3-141C^2+23C+1=0\quad(C=C(A_3)),}
-\]
-\[
-\boxed{\;
-3940876C^5-3940876C^4+920083C^3-33522C^2+168C+4=0\quad(C=C(A_4)).}
-\]
-由此得到一个无需小数对齐的强审计协议：对每个 \(A_q\)，只需公开（i）\(\chi_{A_q}\in\ZZ[\lambda]\)，（ii）\(C(A_q)\) 的最小多项式 \(P_{C_q}\in\ZZ[C]\)；并配合表中 \texttt{tail proxy} 作为 \(\log\mathfrak{M}\) 尾截断误差的数值证书，即可把“可复现性”提升为整系数方程级约束。
+\input{parts/prop__pom-a4-newman-u4-certificate}
+\input{parts/para__pom-a234-residue-and-error-certificates}
 
 \paragraph{符号动力学与算子代数不变量：Bowen--Franks 群、流等价与 Cuntz--Krieger \texorpdfstring{$K$}{K}-理论}
 除 \(\zeta\)、primitive 谱与有限部常数外，整数邻接矩阵还携带一组对流等价（flow equivalence）与稳定同构分类高度敏感的整格不变量（参见附录 \ref{app:op-algebra} 与附录中真实输入核的对应讨论）。
@@ -571,7 +535,7 @@ K_0(\mathcal O_{A_q})\cong\mathrm{coker}(I-A_q^\mathsf T)\cong\mathrm{coker}(I-A
  在数值上接近一半。
 该比值提供一个\textbf{独立于指数主尺度 \(r_q\)} 的细结构指纹：当把碰撞从三重提升到四重时，
 除了 Perron 根 \(r_q\) 的指数尺度改变之外，primitive 主项的常数级漂移（Mertens 常数）也显著收缩。
-并且表中 \texttt{tail proxy} 极小，说明该 finite-part 常数的抽取在数值上高度稳定、适合作为跨阶稀有性刻度。
+并且表中 \texttt{tail bound} 极小，说明该 finite-part 常数的抽取在误差层面具备可审计的稳定性、适合作为跨阶稀有性刻度。
 \end{remark}
 
 \begin{remark}[有限部常数的步长加速（\(A_2\to A_4\)）]\label{rem:pom-collision-mertens-accel}

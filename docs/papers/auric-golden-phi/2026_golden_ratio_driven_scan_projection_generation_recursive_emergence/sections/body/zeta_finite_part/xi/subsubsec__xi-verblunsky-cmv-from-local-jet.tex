@@ -79,6 +79,36 @@ S_1(w)=\frac{1}{w}\frac{S(w)-\alpha_0}{1-\overline{\alpha_0}\,S(w)}
 最后由命题 \ref{prop:app-horizon-coeff-local}，每个 \(c_k\) 由有限个 \(\ell\)-喷射数据有理生成，从而 \(\alpha_n\) 亦然。证毕。
 \end{proof}
 
+\begin{corollary}[二阶喷射的有限阶否证见证：\texorpdfstring{$(\alpha_0,\alpha_1)$}{(alpha0,alpha1)} 的越界判据]\label{cor:xi-horizon-order2-reflection-falsifier}
+沿用定理 \ref{thm:xi-verblunsky-from-local-jet} 的记号，并假设 \(c_0>0\)。
+若 Toeplitz--PSD 层级对该喷射成立（从而处于 RH 相的 Carath\'eodory/Schur 口径），则必须有
+\[
+\boxed{\;
+|c_1|\le c_0,\qquad
+|c_0c_2-c_1^2|\le c_0^2-|c_1|^2.\;}
+\]
+因此一旦出现任一违背
+\[
+|c_1|>c_0
+\quad\text{或}\quad
+|c_0c_2-c_1^2|>c_0^2-|c_1|^2,
+\]
+则有限阶 Toeplitz 证书必在 \(N\le 2\) 的层级上失败，从而给出可离线复核的有限否证。
+\end{corollary}
+\begin{proof}
+Toeplitz--PSD 蕴含 \(|\alpha_n|\le 1\)（定理 \ref{thm:xi-toeplitz-det-verblunsky}），特别地 \(|\alpha_0|\le 1\)。
+由定理 \ref{thm:xi-verblunsky-from-local-jet} 的闭式
+\(
+\alpha_0=c_1/c_0
+\)
+得到 \(|c_1|\le c_0\)。
+当 \(|c_1|<c_0\) 时分母 \(c_0^2-|c_1|^2>0\)，并可由同一定理的闭式
+\(
+\alpha_1=(c_0c_2-c_1^2)/(c_0^2-|c_1|^2)
+\)
+（一般复结构时的分母形式），即可得到所示两条不等式。逆否命题给出有限阶失败见证。证毕。
+\end{proof}
+
 \begin{corollary}[Toeplitz--PSD 的喷射标量化：失败可消元为有限个显式代数不等式]\label{cor:xi-toeplitz-psd-jet-semialgebraic}
 沿用定理 \ref{thm:xi-verblunsky-from-local-jet} 的记号，固定 \(N\ge 1\)，并在非退化口径下假设
 \(\det\mathbf{T}_m>0\) 对所有 \(0\le m\le N\) 成立。
@@ -150,6 +180,69 @@ Schur 算法的有限步可行性判据给出：在 \(\det\mathbf{T}_m>0\) 的�
 \]
 两式相除即得 \(\Delta_{N+1}\Delta_{N-1}/\Delta_N^2=1-|\alpha_N|^2\)。
 对数凹性由 \(1-|\alpha_N|^2\le 1\) 立得。证毕。
+\end{proof}
+
+\begin{proposition}[反射谱的 \texorpdfstring{$\ell^2$}{l2} 能量与行列式离散曲率总量的等价]\label{prop:xi-toeplitz-curvature-energy-equivalence}
+沿用推论 \ref{cor:xi-toeplitz-principal-minor-logconcavity} 的记号，并假设 \(\mathbf{T}_N\succ 0\) 对所有 \(N\) 成立。
+令 \(\Delta_N:=\det\mathbf{T}_N>0\)，并定义离散曲率序列
+\[
+\mathcal{K}_N:=-\log\!\left(\frac{\Delta_{N+1}\Delta_{N-1}}{\Delta_N^{2}}\right)
+=-\log(1-|\alpha_N|^2)\in[0,\infty)\qquad(N\ge 1).
+\]
+则成立等价关系
+\[
+\boxed{\;
+\sum_{N\ge 1}|\alpha_N|^2<\infty
+\quad\Longleftrightarrow\quad
+\sum_{N\ge 1}\mathcal{K}_N<\infty.\;}
+\]
+\end{proposition}
+\begin{proof}
+记 \(x_N:=|\alpha_N|^2\in[0,1)\)，则 \(\mathcal{K}_N=-\log(1-x_N)\)。
+若 \(\sum x_N<\infty\)，则 \(x_N\to 0\)，从某个 \(N_0\) 起有 \(x_N\le \tfrac12\)。
+利用基本不等式
+\[
+x\ \le\ -\log(1-x)\ \le\ 2x\qquad(0\le x\le\tfrac12),
+\]
+并将有限个首项吸收到常数中，即得 \(\sum \mathcal{K}_N<\infty\)。
+反向同理：若 \(\sum\mathcal{K}_N<\infty\)，则 \(\mathcal{K}_N\to 0\) 从而 \(x_N\to 0\) 并最终落入 \(x_N\le\tfrac12\) 区间；同一比较不等式给出 \(\sum x_N<\infty\)。证毕。
+\end{proof}
+
+\begin{proposition}[行列式比率极限与反射谱 \texorpdfstring{$\ell^2$}{l2} 的等价刻画]\label{prop:xi-toeplitz-determinant-ratio-limit-l2}
+在命题 \ref{prop:xi-toeplitz-curvature-energy-equivalence} 的假设下，定义行列式比率
+\[
+r_N:=\frac{\Delta_N}{\Delta_{N-1}}\qquad(N\ge 1).
+\]
+则由 \eqref{eq:xi-toeplitz-det-product} 有闭式
+\[
+\boxed{\;
+r_N=c_0\prod_{k=0}^{N-1}\bigl(1-|\alpha_k|^2\bigr).\;}
+\]
+因此 \((r_N)\) 单调递减且存在极限 \(r_\infty\in[0,c_0]\)。更进一步，
+\[
+\boxed{\;
+r_\infty>0
+\quad\Longleftrightarrow\quad
+\sum_{k\ge 0}|\alpha_k|^2<\infty.\;}
+\]
+并且在 \(r_\infty>0\) 的情形下，
+\[
+\boxed{\;\lim_{N\to\infty}\Delta_N^{1/N}=r_\infty.\;}
+\]
+\end{proposition}
+\begin{proof}
+比率公式由 \eqref{eq:xi-toeplitz-det-product} 直接计算得出。
+取对数得到
+\(
+\log r_N=\log c_0+\sum_{k=0}^{N-1}\log(1-|\alpha_k|^2)
+\)。
+故 \(r_\infty>0\) 当且仅当级数 \(\sum_{k\ge 0}-\log(1-|\alpha_k|^2)\) 收敛；
+由命题 \ref{prop:xi-toeplitz-curvature-energy-equivalence}，这等价于 \(\sum|\alpha_k|^2<\infty\)。
+最后，\(\Delta_N=\Delta_0\prod_{n=1}^N r_n\)，取对数并用 Ces\`aro 平均得
+\[
+\frac{1}{N}\log\Delta_N=\frac{1}{N}\log\Delta_0+\frac{1}{N}\sum_{n=1}^N\log r_n\ \longrightarrow\ \log r_\infty,
+\]
+从而 \(\Delta_N^{1/N}\to r_\infty\)。证毕。
 \end{proof}
 
 \begin{remark}[与 \texorpdfstring{$\ZZ/2$}{Z/2} 扇区失败定位的相容性]\label{rem:xi-verblunsky-z2-compatible}

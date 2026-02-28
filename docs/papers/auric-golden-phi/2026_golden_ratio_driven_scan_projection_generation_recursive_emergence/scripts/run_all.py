@@ -3157,6 +3157,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_newman_u4_certificate",
+            script="exp_collision_kernel_A4_newman_u4_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_u4_certificate.json",
+                "sections/generated/eq_collision_kernel_A4_newman_u4_minpoly.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_primitive",
             script="exp_collision_kernel_A4_primitive.py",
             args=[],
