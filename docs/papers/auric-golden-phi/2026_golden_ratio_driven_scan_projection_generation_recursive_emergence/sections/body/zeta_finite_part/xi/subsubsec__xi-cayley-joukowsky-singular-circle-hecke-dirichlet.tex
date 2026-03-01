@@ -64,6 +64,61 @@ S(\theta)=a(L)\cos\theta+\mathrm{i}b(L)\sin\theta
 当 \(L=1\) 时 \(S(\theta)=2\cos\theta\)，以 \(\theta\) 在 \([0,2\pi)\) 上均匀并按两支覆盖换元得到弧正弦密度；端点陈述由 \(\mathcal C(\infty)=-1\) 与 \(J_1(-1)=-2\) 直接给出。
 \end{proof}
 
+\begin{proposition}[椭圆环平均的离散残数公式与壁穿越跳跃]\label{prop:xi-elliptic-ring-average-residue-wallcrossing}
+令 \(f\) 为有理函数。对 \(r>0\) 定义椭圆环平均
+\[
+\mathcal L_{r^2}(f):=\frac{1}{2\pi}\int_{0}^{2\pi} f\!\left(re^{\mathrm{i}\theta}+r^{-1}e^{-\mathrm{i}\theta}\right)\,\dd\theta,
+\]
+并定义置换
+\[
+g(z):=f(z+z^{-1}),\qquad h(z):=\frac{g(z)}{z}.
+\]
+若 \(r\) 不等于 \(h\) 的任何非零极点的模长，则有离散残数公式
+\[
+\boxed{\;
+\mathcal L_{r^2}(f)=\Res_{z=0}h(z)+\sum_{0<|a|<r}\Res_{z=a}h(z)\;}
+\]
+（求和取遍满足 \(0<|a|<r\) 的全部极点并按重数计）。
+此外，当 \(r\) 穿越某个模长为 \(r_\star\) 的极点簇时，\(\mathcal L_{r^2}(f)\) 的跳量恰等于该模长圆周上全部残数之和
+\[
+\mathcal L_{r_+^2}(f)-\mathcal L_{r_-^2}(f)=\sum_{|a|=r_\star}\Res_{z=a}h(z),
+\]
+其中 \(r_-<r_\star<r_+\) 且 \((r_-,r_+)\) 内无其它非零极点模长。
+\end{proposition}
+\begin{proof}
+令 \(z=re^{\mathrm{i}\theta}\)。则 \(\dd\theta=\dd z/(\mathrm{i}z)\)，并且
+\[
+\mathcal L_{r^2}(f)=\frac{1}{2\pi \mathrm{i}}\oint_{|z|=r} f(z+z^{-1})\,\frac{\dd z}{z}
+=\frac{1}{2\pi\mathrm{i}}\oint_{|z|=r}h(z)\,\dd z.
+\]
+当 \(r\) 避开非零极点模长时，按留数定理，该积分等于圆盘 \(|z|<r\) 内全部留数之和，即得到所示公式。
+跳跃恒等式由积分路径从 \(|z|=r_-\) 连续变形到 \(|z|=r_+\) 并跨过 \(|z|=r_\star\) 的极点圆周时的留数补偿项给出。证毕。
+\end{proof}
+
+\begin{theorem}[椭圆环平均的两值壁穿越判别]\label{thm:xi-elliptic-ring-average-two-valued-wallcrossing}
+在命题 \ref{prop:xi-elliptic-ring-average-residue-wallcrossing} 的设定下，取开区间 \(I\subset(0,\infty)\)，并令
+\(\{r_1<\cdots<r_N\}\) 为 \(h\) 在 \(I\) 内全部 \emph{非零} 极点模长的互异集合。
+对每条壁定义总跳量
+\[
+S_j:=\sum_{|a|=r_j}\Res_{z=a}h(z)\qquad(j=1,\dots,N),
+\]
+并令部分和 \(T_j:=\sum_{k\le j}S_k\)（约定 \(T_0:=0\)）。
+则函数 \(r\mapsto\mathcal L_{r^2}(f)\) 在 \(I\setminus\{r_1,\dots,r_N\}\) 上至多取两点值，当且仅当存在 \(\Delta\in\CC\) 使得对一切 \(j=1,\dots,N\) 有
+\[
+\boxed{\;T_j\in\{0,\Delta\}\;}
+\]
+在此情形下，忽略 \(S_j=0\) 的壁，则每个非零跳量必满足 \(S_j\in\{+\Delta,-\Delta\}\)，且其符号沿 \(j\) 严格交替；反之该交替条件亦充分。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:xi-elliptic-ring-average-residue-wallcrossing}，在每个连通分支 \((r_j,r_{j+1})\subset I\) 上有
+\[
+\mathcal L_{r^2}(f)=C_0+\sum_{k\le j}S_k=C_0+T_j,
+\]
+其中 \(C_0\) 为最左分支上的常值。
+因此 \(\mathcal L_{r^2}(f)\) 在 \(I\setminus\{r_j\}\) 上至多取两值当且仅当 \(T_j\) 在 \(\{0,\Delta\}\) 中取值（取 \(\Delta\) 为两值之差）。
+在该条件下，若 \(S_j\neq 0\) 则 \(S_j=T_j-T_{j-1}\) 强制 \(S_j=\Delta\) 当且仅当 \(T_{j-1}=0\)，且 \(S_j=-\Delta\) 当且仅当 \(T_{j-1}=\Delta\)，故符号交替；反向蕴含同理由 \(T_j\) 的二值性推出。证毕。
+\end{proof}
+
 \input{subsubsec__xi-godel-joukowsky-elliptic-gate-arcsine-cauchy-chebyshev}
 
 \begin{proposition}[\texorpdfstring{$s\mapsto 1-s$}{s->1-s} 对合下的 Cayley 共轭与对数微分恒等式]\label{prop:xi-cayley-tau-conjugacy-logdiff}

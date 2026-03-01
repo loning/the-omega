@@ -30,6 +30,70 @@ A:=\{j:\ \ell_j\equiv 1\pmod 3\}.
 据此分情形：\(|A|\ge 2\) 时所有指数为偶；\(|A|=1\) 时仅 \(j=k\) 给出奇指数；\(|A|=0\) 时所有指数为奇，得到所示三式。证毕。
 \end{proof}
 
+\begin{theorem}[扫描元符号的边数奇偶刻画]\label{thm:pom-toggle-scan-sign-edge-parity}
+设 \(\Gamma_x\cong\bigsqcup_{j=1}^r P_{\ell_j}\)，并令 \(\mathcal F_x\) 为定义 \ref{def:pom-fiber-reconstruction-graph} 的纤维重构图。
+则成立严格恒等式
+\[
+\operatorname{sgn}(c_x)=(-1)^{|E(\mathcal F_x)|}.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-reconstruction-cartesian-product}，
+\(
+\mathcal F_x\cong\prod_{j=1}^r \Gamma_{\ell_j}
+\)。
+对有限图的 Cartesian 乘积有一般恒等式
+\[
+|E(\textstyle\prod_{j=1}^r G_j)|
+=\sum_{j=1}^r |E(G_j)|\prod_{i\ne j}|V(G_i)|.
+\]
+取 \(G_j=\Gamma_{\ell_j}\) 得
+\[
+|E(\mathcal F_x)|
+=\sum_{j=1}^r |E(\Gamma_{\ell_j})|\prod_{i\ne j}|V(\Gamma_{\ell_i})|.
+\]
+另一方面，由定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 的证明，
+\[
+\operatorname{sgn}(c_x)=\prod_{j=1}^r \operatorname{sgn}(c_{\ell_j})^{\prod_{i\ne j}|V(\Gamma_{\ell_i})|}.
+\]
+而对单分量，定理 \ref{thm:pom-toggle-scan-sign-mod6} 给出 \(\operatorname{sgn}(c_\ell)=(-1)^{e(\ell)}\)，并且推论 \ref{cor:pom-toggle-fibcube-edge-parity} 给出
+\(
+|E(\Gamma_\ell)|\equiv e(\ell)\pmod 2
+\)；
+故
+\(
+\operatorname{sgn}(c_\ell)=(-1)^{|E(\Gamma_\ell)|}
+\)。
+将其代入上式并合并指数，得到
+\[
+\operatorname{sgn}(c_x)
+=\prod_{j=1}^r (-1)^{|E(\Gamma_{\ell_j})|\prod_{i\ne j}|V(\Gamma_{\ell_i})|}
+=(-1)^{|E(\mathcal F_x)|},
+\]
+即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[可缩纤维中的偶性刚性]\label{cor:pom-toggle-contractible-parity-rigidity}
+设 \(\Gamma_x\cong\bigsqcup_{j=1}^r P_{\ell_j}\)，并沿定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 记 \(A:=\{j:\ell_j\equiv 1\pmod 3\}\)。
+令 \(K_x\) 为定理 \ref{thm:pom-fiber-independence-complex-classification} 的独立集复形。
+若 \(|K_x|\) 可缩，则 \(A\neq\varnothing\)，并且：
+\begin{enumerate}
+  \item 若 \(|A|\ge 2\)，则 \(\operatorname{sgn}(c_x)=+1\)；
+  \item 若 \(|A|=1\) 且 \(A=\{k\}\)，则
+  \[
+  \operatorname{sgn}(c_x)=-1
+  \quad\Longleftrightarrow\quad
+  \ell_k\equiv 1\pmod 6.
+  \]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-independence-complex-classification}，\(|K_x|\) 可缩当且仅当存在某分量满足 \(\ell_j\equiv 1\pmod 3\)，故 \(A\neq\varnothing\)。
+而定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 给出：\(|A|\ge 2\) 时 \(\operatorname{sgn}(c_x)=+1\)；
+若 \(|A|=1\) 且 \(A=\{k\}\)，则 \(\operatorname{sgn}(c_x)=(-1)^{e(\ell_k)}\)。
+在约束 \(\ell_k\equiv 1\pmod 3\) 下，\(e(\ell_k)=1\) 当且仅当 \(\ell_k\equiv 1\pmod 6\)，从而得到所示等价。证毕。
+\end{proof}
+
 \begin{theorem}[一般纤维时间反演对合的奇偶分解]\label{thm:pom-toggle-time-reversal-sign-general-fiber}
 在定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 的设定下，定义纤维时间反演
 \[
@@ -51,6 +115,66 @@ A:=\{j:\ \ell_j\equiv 1\pmod 3\}.
 \operatorname{sgn}(\iota_x)=\prod_{j=1}^r \delta(\ell_j)^{\prod_{i\ne j}n_i}
 \)
 且指数 \(\prod_{i\ne j}n_i\) 的奇偶性仅由 \(A\) 的基数决定，从而得到三种情形。证毕。
+\end{proof}
+
+\begin{theorem}[时间反演的不动点乘积公式与符号闭式]\label{thm:pom-toggle-time-reversal-fixedpoints-sign-closed-form}
+设 \(\Gamma_x\cong\bigsqcup_{j=1}^r P_{\ell_j}\)。
+记
+\[
+N_x:=|F_x|=|V(\mathcal F_x)|=\prod_{j=1}^r |\mathsf{Ind}(P_{\ell_j})|.
+\]
+令
+\[
+\mathrm{Fix}(\iota_x):=\{\omega\in \Fold_m^{-1}(x):\ \iota_x(\omega)=\omega\}.
+\]
+则：
+\begin{enumerate}
+  \item 存在严格乘积公式
+  \[
+  |\mathrm{Fix}(\iota_x)|=\prod_{j=1}^r f(\ell_j),
+  \qquad
+  f(2k)=F_{k+1},\quad f(2k+1)=F_{k+3}.
+  \]
+  \item 有闭式
+  \[
+  \operatorname{sgn}(\iota_x)=(-1)^{\frac{N_x-|\mathrm{Fix}(\iota_x)|}{2}}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-indset-factorization} 的分量分解与定理 \ref{thm:pom-toggle-time-reversal-sign-general-fiber} 中的定义，
+\(
+\iota_x=\prod_{j=1}^r \iota_{\ell_j}
+\)
+且各 \(\iota_{\ell_j}\) 仅作用于第 \(j\) 个分量并彼此交换。
+因此 \(\omega=(\omega_1,\dots,\omega_r)\) 为 \(\iota_x\) 的不动点当且仅当每个 \(\omega_j\) 为 \(\iota_{\ell_j}\) 的不动点，从而
+\[
+|\mathrm{Fix}(\iota_x)|=\prod_{j=1}^r |\mathrm{Fix}(\iota_{\ell_j})|.
+\]
+而定理 \ref{thm:pom-toggle-time-reversal-sign-mod12} 的证明给出单路径情形的不动点计数：
+若 \(\ell=2k\) 则 \(|\mathrm{Fix}(\iota_\ell)|=F_{k+1}\)，若 \(\ell=2k+1\) 则 \(|\mathrm{Fix}(\iota_\ell)|=F_{k+3}\)。
+代入即得乘积公式。
+\par
+对符号闭式：\(\iota_x\) 为对合，其循环分解仅含不动点与互不相交的换位；设换位数为 \(t\)，则 \(\operatorname{sgn}(\iota_x)=(-1)^t\)。
+同时被移动点数为 \(2t=N_x-|\mathrm{Fix}(\iota_x)|\)，故 \(t=(N_x-|\mathrm{Fix}(\iota_x)|)/2\)，从而得到所示闭式。证毕。
+\end{proof}
+
+\begin{proposition}[取向指纹的几何审计闭式]\label{prop:pom-orientation-fingerprint-geometry-audit}
+对任意 \(x\in X_m\)，记
+\[
+V_x:=|V(\mathcal F_x)|,\qquad
+E_x:=|E(\mathcal F_x)|,\qquad
+P_x:=|\mathrm{Fix}(\iota_x)|.
+\]
+则由命题 \ref{prop:fold-groupoid-z2x2-sector-by-orientation} 定义的扫描—反演取向指纹满足
+\[
+\chi(x)=\bigl((-1)^{E_x},\,(-1)^{\frac{V_x-P_x}{2}}\bigr).
+\]
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:pom-toggle-scan-sign-edge-parity}，\(\operatorname{sgn}(c_x)=(-1)^{E_x}\)。
+由定理 \ref{thm:pom-toggle-time-reversal-fixedpoints-sign-closed-form}，\(\operatorname{sgn}(\iota_x)=(-1)^{(V_x-P_x)/2}\)（注意 \(V_x=N_x\)）。
+再由 \(\chi(x)\) 的定义 \(\chi(x)=(\operatorname{sgn}(c_x),\operatorname{sgn}(\iota_x))\) 得结论。证毕。
 \end{proof}
 
 \begin{definition}[Pisano-\(1\) 分量计数]\label{def:pom-pisano1-component-count}

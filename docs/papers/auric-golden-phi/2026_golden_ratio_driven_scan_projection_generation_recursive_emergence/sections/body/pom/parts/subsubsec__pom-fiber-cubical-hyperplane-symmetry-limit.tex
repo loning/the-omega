@@ -87,6 +87,92 @@ m_\ell:=\#\{\,i:\ \ell_i=\ell\,\}
 
 \paragraph{超平面统计：\(\Theta\)-类大小与 \(k\)-点函数}
 
+\begin{definition}[\(\Theta\)-半空间坐标与立方体嵌入]\label{def:pom-theta-halfspace-coordinates}
+令 \(G\) 为有限 partial cube（等价于某个 CAT(0) 立方复形的 \(1\)-骨架），并记其 \(\Theta\)-类集合为
+\[
+\mathrm{Hyp}(G):=\{\text{\(G\) 的 Djokovi\'c--Winkler \(\Theta\)-等价类}\}.
+\]
+取基点 \(v_0\in V(G)\)。
+对每个 \(H\in\mathrm{Hyp}(G)\)，删去 \(H\) 的边后图 \(G\setminus H\) 分裂为两个半空间分量；记 \(H^+\) 为包含 \(v_0\) 的半空间分量的补半空间（固定一侧约定）。
+定义半空间坐标化
+\[
+\iota_{v_0}:V(G)\to\{0,1\}^{\mathrm{Hyp}(G)},\qquad
+\bigl(\iota_{v_0}(v)\bigr)_H:=\mathbf 1_{\{v\in H^+\}}.
+\]
+\end{definition}
+
+\begin{theorem}[\(\Theta\)-坐标化的等距性与素数赋值等距字典]\label{thm:pom-theta-godelization-prime-valuation-isometry}
+取任意稳定类型 \(x\in X_m\)，并在同构 \(V(\mathcal F_x)\cong \mathsf{Ind}(\Gamma_x)\) 下把纤维重构图 \(\mathcal F_x\) 视为 partial cube（推论 \ref{cor:pom-fiber-reconstruction-median-partialcube-cat0}）。
+取基点 \(v_0\in V(\mathcal F_x)\)，并令 \(\iota:=\iota_{v_0}\) 为定义 \ref{def:pom-theta-halfspace-coordinates} 的半空间坐标化。
+则对任意 \(u,v\in V(\mathcal F_x)\) 有严格恒等式
+\[
+\boxed{\;
+d_{\mathcal F_x}(u,v)=\sum_{H\in\mathrm{Hyp}(\mathcal F_x)}
+\bigl|\iota(u)_H-\iota(v)_H\bigr|. \;}
+\]
+进一步，取任意单射标号 \(\lambda:\mathrm{Hyp}(\mathcal F_x)\hookrightarrow\mathbb P\)（\(\mathbb P\) 为素数集），并定义 \(\Theta\)--Gödel 标度
+\[
+g_\lambda:V(\mathcal F_x)\to\QQ_{>0},\qquad
+g_\lambda(v):=\prod_{H\in\mathrm{Hyp}(\mathcal F_x)}\lambda(H)^{\iota(v)_H}.
+\]
+则：
+\begin{enumerate}
+  \item \(g_\lambda\) 为单射，且对每个 \(H\in\mathrm{Hyp}(\mathcal F_x)\) 有
+  \[
+  v_{\lambda(H)}\bigl(g_\lambda(v)\bigr)=\iota(v)_H\in\{0,1\};
+  \]
+  \item 若定义素数赋值的 \(\ell^1\) 距离
+  \[
+  d_\lambda(u,v):=\sum_{H\in\mathrm{Hyp}(\mathcal F_x)}
+  \left|v_{\lambda(H)}(g_\lambda(u))-v_{\lambda(H)}(g_\lambda(v))\right|,
+  \]
+  则对一切 \(u,v\in V(\mathcal F_x)\) 有 \(d_\lambda(u,v)=d_{\mathcal F_x}(u,v)\)。
+\end{enumerate}
+因此 \(\mathcal F_x\) 的图距离可等距地算术化为素数赋值向量的 \(\ell^1\) 距离。
+\end{theorem}
+\begin{proof}
+partial cube 的标准结构定理表明：两点的图距离等于分离它们的超平面数，亦即半空间坐标的 Hamming 距离；这给出第一式。
+对 \(g_\lambda\)，由唯一分解可知对每个 \(H\) 有 \(v_{\lambda(H)}(g_\lambda(v))=\iota(v)_H\)；若 \(g_\lambda(u)=g_\lambda(v)\) 则所有赋值坐标相等，从而 \(\iota(u)=\iota(v)\) 且 \(u=v\)，故单射。
+最后把赋值恒等式代回距离表达式即得 \(d_\lambda=d_{\mathcal F_x}\)。证毕。
+\end{proof}
+
+\begin{corollary}[椭圆门的乘法几何外置：超平面翻转 \texorpdfstring{$\leftrightarrow$}{<->} 素数尺度更新]\label{cor:pom-theta-godelization-ellipse-multiplicative-embedding}
+沿用定理 \ref{thm:pom-theta-godelization-prime-valuation-isometry} 的设定，并取椭圆门族 \(\{E_r\}_{r>0}\) 的乘法律 \(E_r\odot E_s=E_{rs}\)（定理 \ref{thm:group-jg-ellipse-prime-homomorphism}）。
+若进一步取 \(\lambda\) 使得 \(g_\lambda(v)\in\QQ_{>0}\)（例如令 \(\lambda(H)\) 为互异素数），则映射
+\[
+\mathcal E_\lambda:V(\mathcal F_x)\to\{E_r\}_{r>0},\qquad v\longmapsto E_{g_\lambda(v)}
+\]
+为单射。
+并且在 \(\mathcal F_x\) 上跨越一条超平面 \(H\) 的基本边操作，对应于 \(g_\lambda\) 在素数 \(\lambda(H)\) 上的乘/除更新，从而把纤维内部的立方体几何嵌入到椭圆参数的乘法几何之中。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-theta-godelization-prime-valuation-isometry}，\(g_\lambda\) 单射。
+而 \(r\mapsto E_r\) 在乘法律下为单射参数化（同一族内不同尺度对应不同参数），故 \(\mathcal E_\lambda\) 单射。
+边操作跨越唯一的 \(\Theta\)-类意味着恰有一个坐标翻转，等价于对 \(g_\lambda\) 乘/除对应素数；由 \(E_r\odot E_s=E_{rs}\) 即得椭圆尺度更新解释。证毕。
+\end{proof}
+
+\begin{theorem}[median 的多数表决与素数赋值的相干聚合]\label{thm:pom-fiber-median-majority-prime-valuation}
+沿用定理 \ref{thm:pom-theta-godelization-prime-valuation-isometry} 的设定。
+由于 \(\mathcal F_x\) 为 median graph，对任意 \(a,b,c\in V(\mathcal F_x)\) 存在唯一 median 点 \(\mathrm{med}(a,b,c)\)。
+定义三元素数多数算子
+\[
+\mathrm{Maj}(r,s,t)
+:=\prod_{p\ \mathrm{prime}}
+p^{\left\lfloor\frac{v_p(r)+v_p(s)+v_p(t)}{2}\right\rfloor}.
+\]
+则对任意 \(a,b,c\in V(\mathcal F_x)\) 有严格恒等式
+\[
+\boxed{\;
+g_\lambda(\mathrm{med}(a,b,c))
+=\mathrm{Maj}\bigl(g_\lambda(a),g_\lambda(b),g_\lambda(c)\bigr). \;}
+\]
+在本节的 \(0/1\) 赋值坐标下，上式等价于超平面坐标的逐坐标多数表决。
+\end{theorem}
+\begin{proof}
+median graph 的等价刻画表明：在任一 partial-cube 嵌入的 \(\{0,1\}\)-坐标中，\(\mathrm{med}(a,b,c)\) 的坐标等于三者坐标的逐坐标多数。
+由定理 \ref{thm:pom-theta-godelization-prime-valuation-isometry}，素数赋值向量与 \(\Theta\)-坐标一一对应（且取值于 \(\{0,1\}\)），故逐坐标多数在算术上等价于逐素数的多数聚合，即给出所示恒等式。证毕。
+\end{proof}
+
 \begin{theorem}[\(\Theta\)-类边数的闭式]\label{thm:pom-fibcube-theta-class-size}
 将 \(\Gamma_n\subseteq\{0,1\}^n\) 视为 partial cube，并对每个坐标 \(1\le i\le n\) 记 \(\Theta_i\) 为沿第 \(i\) 坐标翻转的边集（即第 \(i\) 个 \(\Theta\)-类/超平面）。
 取 Fibonacci 数列满足 \(F_0=0,F_1=1\)。
