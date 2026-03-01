@@ -130,9 +130,9 @@ def _write_tex(path: Path, rows5: List[ModFactorization], rows29: List[ModFactor
             rf"p_{{{row.t_value}}}(x)&\equiv {fac_tex}\pmod{{{row.modulus}}},"
         )
     lines.append(
-        rf"Q(0)&\equiv {qmod(0, 29)}\pmod{{29}},\quad"
-        rf"Q(1)\equiv {qmod(1, 29)}\pmod{{29}},\quad"
-        rf"Q(7)\equiv {qmod(7, 29)}\pmod{{29}},\quad"
+        rf"Q(0)&\equiv {qmod(0, 29)}\pmod{{29}},\quad "
+        rf"Q(1)\equiv {qmod(1, 29)}\pmod{{29}},\quad "
+        rf"Q(7)\equiv {qmod(7, 29)}\pmod{{29}},\quad "
         rf"Q(28)\equiv {qmod(28, 29)}\pmod{{29}}."
     )
 

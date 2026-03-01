@@ -53,14 +53,89 @@ A:=\{j:\ \ell_j\equiv 1\pmod 3\}.
 且指数 \(\prod_{i\ne j}n_i\) 的奇偶性仅由 \(A\) 的基数决定，从而得到三种情形。证毕。
 \end{proof}
 
-\begin{conjecture}[奇置换扇区的指数稀薄性]\label{conj:pom-toggle-odd-sector-exponential-thinness}
+\begin{definition}[Pisano-\(1\) 分量计数]\label{def:pom-pisano1-component-count}
+对 \(x\in X_m\) 设候选位点诱导图分解为路径不交并 \(\Gamma_x\cong\bigsqcup_{j=1}^r P_{\ell_j(x)}\)。
+定义
+\[
+N_m(x):=\#\{j:\ \ell_j(x)\equiv 1\pmod 3\}.
+\]
+该量刻画了在模 \(2\) Pisano 周期为 \(3\) 的意义下，诱导分量长度落入 “\(1\)” 同余类的出现次数；并且在定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 与 \ref{thm:pom-toggle-time-reversal-sign-general-fiber} 的记号下，\(N_m(x)=|A|\)。
+\end{definition}
+
+\begin{theorem}[Pisano-\(1\) 分量计数的指数型大偏差与线性增殖]\label{thm:pom-pisano1-components-ldp-linear}
+在 \(X_m\) 上取均匀分布 \(U_m=\mathrm{Unif}(X_m)\)。
+则存在常数 \(\mu>0\) 与 \(c>0\) 使得对任意固定 \(\varepsilon\in(0,\mu)\)，当 \(m\) 充分大时有指数型偏差界
+\[
+\PP_{x\sim U_m}\!\bigl[N_m(x)\le \varepsilon m\bigr]\ \le\ e^{-c m}.
+\]
+\end{theorem}
+\begin{proof}
+由折叠核的有限状态在线归一化实现（有限延迟的逐位归一化与逆归一化同步），可在读取 \(x\in X_m\) 的同时以有限状态扩张跟踪 \(\Gamma_x\) 的分量边界与当前分量长度在 \(\bmod 3\) 下的余类。
+因此存在有限状态有向图 \(\mathcal G\) 与边可观测 \(\phi:E(\mathcal G)\to\{0,1\}\)，使得对每个 \(x\in X_m\)，其在 \(\mathcal G\) 中诱导的状态路径 \(\gamma(x)\) 满足
+\[
+N_m(x)=\sum_{t=1}^{m} \phi\bigl(\gamma_t(x)\bigr)+O(1),
+\]
+其中 \(O(1)\) 仅来自端点初始化与截断的有限步修正。
+\par
+对 \(\theta\in\RR\) 令 \(B_\theta\) 为 \(\mathcal G\) 的加权邻接矩阵：若存在边 \(e:u\to v\)，则令 \((B_\theta)_{uv}\) 的对应贡献为 \(e^{\theta\phi(e)}\)，并按多重边求和。
+由 Perron--Frobenius 理论，谱半径 \(\rho(B_\theta)\) 为正且随 \(\theta\) 实解析，并给出对数矩母函数
+\[
+\Lambda(\theta):=\lim_{m\to\infty}\frac{1}{m}\log \EE_{U_m}\!\bigl[e^{\theta N_m(X)}\bigr]
+=\log\rho(B_\theta)-\log\rho(B_0).
+\]
+由于 \(\phi\) 非恒零（存在 \(x\) 使得 \(\Gamma_x\) 含 \(\ell\equiv 1\pmod 3\) 的分量，从而某些边上 \(\phi=1\)），并且 \(\mathcal G\) 的强连通性保证该事件在指数尺度上具有非零频率，故 \(\mu:=\Lambda'(0)>0\)。
+由 \(\Lambda\) 的凸性与 Chernoff 界，对任意 \(\varepsilon\in(0,\mu)\) 可取某个 \(\theta<0\) 使得
+\[
+\PP_{U_m}\!\bigl[N_m\le \varepsilon m\bigr]\le
+\exp\!\bigl(m(\Lambda(\theta)-\theta\varepsilon)+O(1)\bigr)
+\le e^{-cm}
+\]
+对充分大 \(m\) 成立，其中 \(c=c(\varepsilon)>0\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[奇置换扇区的指数稀薄性]\label{thm:pom-toggle-odd-sector-exponential-thinness}
 对每个 \(m\ge 1\) 在 \(X_m\) 上取均匀分布。
-则存在常数 \(\kappa>0\) 使得
+则存在常数 \(\kappa>0\) 使得当 \(m\) 充分大时有
 \[
 \PP\bigl(\operatorname{sgn}(c_x)=-1\bigr)\ \le\ e^{-\kappa m},
 \qquad
 \PP\bigl(\operatorname{sgn}(\iota_x)=-1\bigr)\ \le\ e^{-\kappa m}.
 \]
-\end{conjecture}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 与 \ref{thm:pom-toggle-time-reversal-sign-general-fiber}，若 \(\operatorname{sgn}(c_x)=-1\) 或 \(\operatorname{sgn}(\iota_x)=-1\)，则必有 \(|A|\le 1\)，亦即 \(N_m(x)\le 1\)。
+取定理 \ref{thm:pom-pisano1-components-ldp-linear} 的任意 \(\varepsilon\in(0,\mu)\)，当 \(m\) 充分大时 \(1\le \varepsilon m\)，从而
+\[
+\PP\bigl(\operatorname{sgn}(c_x)=-1\bigr)\le \PP\bigl(N_m(x)\le 1\bigr)\le \PP\bigl(N_m(x)\le \varepsilon m\bigr)\le e^{-cm},
+\]
+对 \(\operatorname{sgn}(\iota_x)\) 同理。令 \(\kappa:=c\) 即得。
+证毕。
+\end{proof}
+
+\begin{corollary}[纤维多重度的线性 \texorpdfstring{$2$}{2}-adic 可分性]\label{cor:pom-fiber-multiplicity-linear-2adic-divisibility}
+令 \(d_m(x)=|\Fold_m^{-1}(x)|\) 为纤维多重度。
+则存在常数 \(\alpha>0\) 与 \(c'>0\) 使得对充分大 \(m\) 有
+\[
+\PP_{x\sim\mathrm{Unif}(X_m)}\!\bigl[v_2\bigl(d_m(x)\bigr)\le \alpha m\bigr]\ \le\ e^{-c' m}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-fiber-indset-factorization} 的分量乘积表达式 \(d_m(x)=\prod_{j=1}^r F_{\ell_j(x)+2}\)，并用 Fibonacci 数列模 \(2\) 的 Pisano 周期为 \(3\)，知
+\(
+F_{\ell+2}\equiv 0\pmod 2
+\iff
+\ell\equiv 1\pmod 3
+\)。
+因此每个满足 \(\ell_j(x)\equiv 1\pmod 3\) 的分量至少贡献一个 \(2\)-因子，得到
+\[
+v_2\bigl(d_m(x)\bigr)\ \ge\ N_m(x).
+\]
+取定理 \ref{thm:pom-pisano1-components-ldp-linear} 的任意 \(\alpha\in(0,\mu)\)，则
+\(
+\{v_2(d_m(x))\le \alpha m\}\subseteq \{N_m(x)\le \alpha m\}
+\)；
+应用该定理即可得到所述指数界。证毕。
+\end{proof}
 
 \endinput
