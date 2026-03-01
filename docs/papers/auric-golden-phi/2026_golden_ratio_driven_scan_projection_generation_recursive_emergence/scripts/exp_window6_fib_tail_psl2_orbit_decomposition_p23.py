@@ -197,7 +197,7 @@ def write_outputs(*, json_out: Path, tex_eq: Path, tex_tab: Path) -> None:
     for j, o in enumerate(orbits, start=1):
         cyc_tex = "(" + ",\\ ".join(_point_tex(x) for x in o.cycle) + ")"
         rep_tex = _point_tex(o.rep)
-        rows.append(rf"{j} & {rep_tex} & {cyc_tex}\\")
+        rows.append(rf"{j} & ${rep_tex}$ & ${cyc_tex}$\\")
 
     tex_tab.parent.mkdir(parents=True, exist_ok=True)
     tex_tab.write_text(
