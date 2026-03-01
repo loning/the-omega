@@ -2449,6 +2449,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="addition_collision_q2_minpoly_galois_certificate",
+            script="exp_addition_collision_q2_minpoly_galois_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/addition_collision_q2_minpoly_galois_certificate.json",
+                "sections/generated/eq_addition_collision_real_input40_r2_minpoly.tex",
+                "sections/generated/eq_addition_collision_sync10_r2_minpoly.tex",
+                "sections/generated/tab_addition_collision_q2_minpoly_galois_certificate.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity_charge_closed_form",
             script="exp_sync_kernel_real_input_40_arity_charge_closed_form.py",
             args=[],

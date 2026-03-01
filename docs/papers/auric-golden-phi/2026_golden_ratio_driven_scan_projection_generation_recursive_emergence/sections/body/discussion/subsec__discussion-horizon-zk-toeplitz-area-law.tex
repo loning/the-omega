@@ -294,6 +294,51 @@ H_N(w):=\bigl(c_0(w),c_1(w),\dots,c_N(w)\bigr),
 于是对所有 \(w\) 有 \(\mathrm{View}^\Pi(w)\equiv \mathsf{S}_N(H_N(w))\)。证毕。
 \end{proof}
 
+\begin{theorem}[\texorpdfstring{$\varepsilon$}{eps}-零知识的条件互信息界与可学习误差改进上界]\label{thm:discussion-epszk-cmi-and-risk-improvement-bound}
+令 \(\omega\) 为微观态随机变量，\(y=\pi(\omega)\) 为可观测读出，\(\tau\) 为转录（transcript）。
+假设存在一族核 \((S_y)_{y}\) 使得对一切 \(\omega\) 都有
+\[
+D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega)\,\Vert\, S_{\pi(\omega)}\bigr)\le \varepsilon.
+\]
+则：
+\begin{enumerate}
+  \item 条件互信息满足
+  \[
+  I(\omega;\tau\mid y)\le \varepsilon.
+  \]
+  \item 对任意损失函数 \(\ell:\Omega\times\mathcal A\to[0,1]\)，记
+  \(R^\ast(y)\) 为仅依赖 \(y\) 的最优 Bayes 风险，\(R^\ast(y,\tau)\) 为可依赖 \((y,\tau)\) 的最优 Bayes 风险，则
+  \[
+  R^\ast(y,\tau)\ \ge\ R^\ast(y)\ -\sqrt{\frac{\varepsilon}{2}}.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+固定 \(y\)。由相对熵分解恒等式，
+\[
+\EE\!\left[D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega,y)\,\Vert\, S_y\bigr)\,\big|\,y\right]
+=I(\omega;\tau\mid y)+D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid y)\,\Vert\, S_y\bigr),
+\]
+且右端第二项非负，故
+\(
+I(\omega;\tau\mid y)
+\le
+\EE\!\left[D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega,y)\,\Vert\, S_y\bigr)\mid y\right]
+\le \varepsilon
+\)；
+取期望得第一条。
+
+再由 Pinsker 不等式，对一切 \(\omega\) 有
+\[
+\bigl\|\mathcal L(\tau\mid \omega)-S_{\pi(\omega)}\bigr\|_{\mathrm{TV}}
+\le \sqrt{\frac12 D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega)\,\Vert\,S_{\pi(\omega)}\bigr)}
+\le \sqrt{\frac{\varepsilon}{2}}.
+\]
+对任意决策规则 \(a=g(y,\tau)\)，用 \(\tau'\sim S_y\) 替代 \(\tau\) 后的条件风险之差由全变差控制，且不超过 \(\sqrt{\varepsilon/2}\)。
+在 \(\tau'\) 情形下有 \(\tau'\perp\!\!\!\perp \omega\mid y\)，最优风险即 \(R^\ast(y)\)，取 \(g\) 最优即得第二条。证毕。
+\end{proof}
+
 \begin{proposition}[带单原子负缺陷的 Toeplitz--PSD 阈值律]\label{prop:discussion-toeplitz-negative-atom-threshold}
 令 \(\mu_+\) 为 \(\TT\) 上正测度，并假设其相对于 Haar 测度 \(\dd\theta/(2\pi)\) 绝对连续且密度满足
 \[
