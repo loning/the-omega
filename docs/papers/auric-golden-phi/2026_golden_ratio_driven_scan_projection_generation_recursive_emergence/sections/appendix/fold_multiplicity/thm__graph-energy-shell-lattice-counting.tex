@@ -1,0 +1,84 @@
+% Energy-shell lattice counting on affine cycle lattices; bit lower bound.
+
+\begin{theorem}[回路圆维驱动的椭球格点计数：固定离散 Stokes 数据后的能量壳微观态熵]\label{thm:graph-energy-shell-lattice-counting}
+令 \(G\) 为有限连通无自环多重图，并固定一组取向，使
+\[
+C_1(G;\ZZ)\cong \ZZ^{E},
+\qquad
+C_0(G;\ZZ)\cong \ZZ^{V},
+\]
+其中 \(E:=|E(G)|\)、\(V:=|V(G)|\)。
+记边界算子（入射算子）为 \(\partial:C_1(G;\ZZ)\to C_0(G;\ZZ)\)，并记回路圆维
+\[
+r:=\operatorname{rank}_{\ZZ}H_1(G;\ZZ)=\operatorname{rank}_{\ZZ}\ker(\partial)=E-V+1.
+\]
+给定任意 \(\delta\in \mathrm{im}(\partial)\subset C_0(G;\ZZ)\)，任选一解 \(\varphi_0\in C_1(G;\ZZ)\) 使得 \(\partial\varphi_0=\delta\)。
+取权重 \(w:E(G)\to(0,\infty)\)，并定义加权能量二次型
+\[
+\mathcal E_w(\varphi):=\sum_{e\in E(G)} w_e\,\varphi_e^2.
+\]
+考虑能量壳内的整数 \(1\)-形式计数
+\[
+N_{\delta,w}(E):=\card{\left\{\varphi\in C_1(G;\ZZ):\ \partial\varphi=\delta,\ \mathcal E_w(\varphi)\le E\right\}}.
+\]
+则存在正定矩阵 \(A\in\mathrm{Sym}_r^+(\RR)\)（仅依赖于 \(G\) 的回路格与权重 \(w\)，且与 \(\varphi_0\) 的选取无关）使得当 \(E\to\infty\) 时
+\[
+N_{\delta,w}(E)=\frac{\operatorname{Vol}(B_r)}{\sqrt{\det A}}\,E^{r/2}+O\!\left(E^{(r-1)/2}\right),
+\]
+其中 \(\operatorname{Vol}(B_r)=\pi^{r/2}/\Gamma(r/2+1)\) 为 \(\RR^r\) 中单位欧氏球体积。
+因此在固定 \(\delta\) 后，能量 \(E\) 内微观态熵满足
+\[
+\log N_{\delta,w}(E)=\frac r2\log E-\frac12\log\det A+O(1),
+\]
+其主阶系数仅由回路圆维 \(r\) 决定。
+\end{theorem}
+\begin{proof}
+由于 \(\delta\in\mathrm{im}(\partial)\)，解集非空且为仿射格
+\[
+\{\varphi\in C_1(G;\ZZ):\ \partial\varphi=\delta\}=\varphi_0+\ker(\partial).
+\]
+取 \(\ker(\partial)\) 的一组 \(\ZZ\)-基并记相应基矩阵为 \(T\in\ZZ^{E\times r}\)，使得 \(\ker(\partial)=T\ZZ^r\)。
+于是任意解可写为 \(\varphi=\varphi_0+Tk\)（\(k\in\ZZ^r\)）。
+记 \(W:=\mathrm{diag}(w_e)\in\mathrm{Sym}_E^+(\RR)\)，则
+\[
+\mathcal E_w(\varphi_0+Tk)=(\varphi_0+Tk)^{\mathsf T}W(\varphi_0+Tk)
+=k^{\mathsf T}(T^{\mathsf T}WT)k+2b^{\mathsf T}k+c,
+\]
+其中 \(A:=T^{\mathsf T}WT\in\mathrm{Sym}_r^+(\RR)\)、\(b:=T^{\mathsf T}W\varphi_0\)、\(c:=\varphi_0^{\mathsf T}W\varphi_0\)。
+完成平方可将约束 \(\mathcal E_w(\varphi_0+Tk)\le E\) 改写为
+\[
+(k+\kappa)^{\mathsf T}A(k+\kappa)\le E',
+\]
+其中 \(\kappa\in\RR^r\) 与 \(E'=E+O(1)\) 由 \(A,b,c\) 决定。
+因此 \(N_{\delta,w}(E)\) 等于一个以 \(A\) 定义的椭球与平移格 \(\ZZ^r+\kappa\) 的交点数。
+对固定 \(A\) 的椭球族，Lipschitz 原理（体积近似）给出格点数等于椭球体积加上边界量级误差：
+\[
+N_{\delta,w}(E)=\operatorname{Vol}\{x\in\RR^r:\ x^{\mathsf T}Ax\le E'\}+O\!\left((E')^{(r-1)/2}\right).
+\]
+而体积可显式计算为
+\[
+\operatorname{Vol}\{x:\ x^{\mathsf T}Ax\le E'\}=\frac{\operatorname{Vol}(B_r)}{\sqrt{\det A}}\,(E')^{r/2}
+=\frac{\operatorname{Vol}(B_r)}{\sqrt{\det A}}\,E^{r/2}+O\!\left(E^{(r-1)/2}\right).
+\]
+将误差并入即可得到主式。
+由于 \(A=T^{\mathsf T}WT\) 仅依赖于回路格 \(\ker(\partial)\) 与权重 \(w\)，与特解 \(\varphi_0\) 无关。
+对对数式，将主项取对数并吸收相对误差得到 \(\log N_{\delta,w}(E)=\frac r2\log E-\frac12\log\det A+O(1)\)。证毕。
+\end{proof}
+
+\begin{corollary}[能量约束下的全息比特下界：圆维给出的有效自由度]\label{cor:graph-energy-shell-bit-lower-bound}
+在定理 \ref{thm:graph-energy-shell-lattice-counting} 的设定下，任意能够区分集合
+\[
+\left\{\varphi\in C_1(G;\ZZ):\ \partial\varphi=\delta,\ \mathcal E_w(\varphi)\le E\right\}
+\]
+中全部元素的单射编码，其最小信息量（以比特计）满足
+\[
+\mathrm{bits}(E)\ \ge\ \log_2 N_{\delta,w}(E)=\frac r2\log_2 E+O(1).
+\]
+\end{corollary}
+\begin{proof}
+任意单射编码对 \(N_{\delta,w}(E)\) 个不同对象至少需要 \(\log_2 N_{\delta,w}(E)\) 比特。
+再代入定理 \ref{thm:graph-energy-shell-lattice-counting} 的渐近式即得。证毕。
+\end{proof}
+
+\endinput
+

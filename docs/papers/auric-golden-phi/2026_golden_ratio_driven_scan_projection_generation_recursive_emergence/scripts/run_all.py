@@ -164,6 +164,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_weight_tripling_index_squarefree_audit",
+            script="exp_xi_weight_tripling_index_squarefree_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_weight_tripling_index_squarefree_audit.json",
+            ],
+        ),
+        Step(
             name="pom_fractran_primecore_finite_partial_functions_audit",
             script="exp_pom_fractran_primecore_finite_partial_functions_audit.py",
             args=[],
@@ -1565,6 +1573,14 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_collision_moment_charpoly_irreducible_q9_17.json",
                 "sections/generated/tab_fold_collision_moment_charpoly_irreducible_certificate_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="pom_resonance_galois_q16_q17_transposition_disjointness_chebotarev",
+            script="exp_pom_resonance_galois_q16_q17_transposition_disjointness_chebotarev.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_resonance_galois_q16_q17_transposition_disjointness_chebotarev.json",
             ],
         ),
         Step(
