@@ -1151,6 +1151,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="path_toggle_scan_closed_form_audit",
+            script="exp_path_toggle_scan_closed_form_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/path_toggle_scan_closed_form_audit.json",
+            ],
+        ),
+        Step(
             name="fence_order_poly_spectral_audit",
             script="exp_fence_order_poly_spectral_audit.py",
             args=["--k-max", "12", "--l-max", "18"],
