@@ -1,0 +1,39 @@
+\begin{theorem}[Fourier--Walsh 系数的离散 Stokes 读出]\label{thm:spg-walsh-discrete-stokes-holography}
+对任意 \(n\ge 1\)，令 \(\Omega_n:=\{0,1\}^n\)。
+取任意子集 \(S\subseteq\Omega_n\)，并令 \(f:=\ind_S\)。
+对坐标 \(i\in\{1,\dots,n\}\) 定义翻转 \(\omega\mapsto \omega^{(i)}\)（第 \(i\) 位取反），并定义离散差分算子
+\[
+(\Delta_i f)(\omega):=f(\omega)-f(\omega^{(i)}).
+\]
+对任意指标集 \(I=\{i_1,\dots,i_k\}\subseteq\{1,\dots,n\}\)，令 \(\Delta_I:=\Delta_{i_1}\cdots\Delta_{i_k}\)（算子可交换，顺序无关）。
+再定义 \(I\)-阶 Walsh 偏差
+\[
+b_I(S):=\sum_{\omega\in\Omega_n} f(\omega)\,(-1)^{\sum_{i\in I}\omega_i}.
+\]
+则成立严格恒等式
+\[
+\boxed{\;
+b_I(S)=\sum_{\omega:\ \omega_i=0\ \forall\, i\in I} (\Delta_I f)(\omega)\; }.
+\]
+因此全部 Fourier--Walsh 系数 \(\widehat f(I)=2^{-n}b_I(S)\) 可由局部差分数据 \(\{(\Delta_I f)(\omega)\}\) 完全重建；并且 \((\Delta_I f)(\omega)\) 仅可能在 \(I\)-方向上穿越集合边界处取非零值，从而各阶谱信息可被视作由“边界不一致”所全息承载。
+\end{theorem}
+\begin{proof}
+先证 \(|I|=1\) 的情形。对 \(I=\{i\}\)，分层得
+\[
+b_{\{i\}}(S)=\sum_{\omega:\ \omega_i=0} f(\omega)-\sum_{\omega:\ \omega_i=1} f(\omega).
+\]
+利用 \(\omega\mapsto \omega^{(i)}\) 在两层之间的双射，得
+\[
+b_{\{i\}}(S)=\sum_{\omega:\ \omega_i=0}\bigl(f(\omega)-f(\omega^{(i)})\bigr)
+=\sum_{\omega:\ \omega_i=0}(\Delta_i f)(\omega).
+\]
+\par
+一般情形取 \(I=\{i_1,\dots,i_k\}\)。
+对 \(\omega_{i_1}\) 做同样的二层分解并把符号因子中关于 \(\omega_{i_1}\) 的依赖吸收为一次差分，得到
+\[
+b_I(S)=\sum_{\omega:\ \omega_{i_1}=0}(\Delta_{i_1}f)(\omega)\,(-1)^{\sum_{i\in I\setminus\{i_1\}}\omega_i}.
+\]
+对集合 \(I\setminus\{i_1\}\) 重复该过程（每一步只使用层间双射与差分定义），归纳即得所示公式。证毕。
+\end{proof}
+
+\endinput
