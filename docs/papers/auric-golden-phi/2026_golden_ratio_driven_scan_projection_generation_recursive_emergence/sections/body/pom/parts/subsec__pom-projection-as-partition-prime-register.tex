@@ -186,37 +186,50 @@ F_\pi\subseteq F_\sigma\iff \mathsf{Code}(F_\pi)\mid \mathsf{Code}(F_\sigma)
 另一方面，若允许固定闭包算法 \(\mathrm{cl}\) 作为 join/合成的唯一额外计算，则每个分割 \(\pi\) 存在线性规模的最小外置编码，其素数占用严格等于 \(n-|\pi|\)（定理 \ref{thm:pom-partition-skeleton-compression}）。
 \end{corollary}
 
-\begin{theorem}[等价闭包的二元 Horn 规则基最小性]\label{thm:pom-eq-closure-horn-binary-min}
-将边集 \(E_n\) 视为命题变量集合。考虑仅含二元前提的 Horn 蕴含规则族 \(\mathcal{R}\)，每条规则形如
+\begin{theorem}[等价闭包的 Horn 蕴涵基全局最小性与唯一性刻画]\label{thm:pom-eq-closure-horn-binary-min}
+将边集 \(E_n\) 视为命题变量集合。
+令 \(\mathcal{IB}(\mathrm{cl})\) 表示所有 Horn 蕴涵规则基 \(\mathcal{R}\) 的集合，使得由 \(\mathcal{R}\) 的前向推演所诱导的闭包算子 \(\mathrm{cl}_{\mathcal{R}}\) 满足
 \[
-\{e_1,e_2\}\to e_3,\qquad e_1,e_2,e_3\in E_n.
+\mathrm{cl}_{\mathcal{R}}=\mathrm{cl}\quad\text{在 }2^{E_n}\text{ 上恒等}.
 \]
-由 \(\mathcal{R}\) 生成的闭包算子记为 \(\mathrm{cl}_{\mathcal{R}}\)。
-若要求
+则对任意 \(\mathcal{R}\in\mathcal{IB}(\mathrm{cl})\) 都有
 \[
-\mathrm{cl}_{\mathcal{R}}=\mathrm{cl}\quad\text{在 }2^{E_n}\text{ 上恒等},
+\boxed{\ |\mathcal{R}|\ \ge\ 3\binom{n}{3}\ }.
 \]
-则 \(|\mathcal{R}|\) 的最小可能值为
+并且当且仅当 \(\mathcal{R}\) 恰由全部三角补全规则组成时取等号：对每个 \(1\le i<j<k\le n\)，包含三条规则
 \[
-\boxed{\ |\mathcal{R}|_{\min}=3\binom{n}{3}=\frac{n(n-1)(n-2)}{2}\ }.
+\{ij,jk\}\to ik,\qquad
+\{ij,ik\}\to jk,\qquad
+\{ik,jk\}\to ij.
 \]
-并且（在边重标号意义下）唯一达到该最小值的规则基为三角补全族
-\[
-\mathcal{R}_{\triangle}:=\bigl\{\ \{ij,jk\}\to ik:\ i,j,k\ \text{两两不同}\ \bigr\},
-\]
-其中 \(ij\) 表示边 \(\{i,j\}\)。
+因此，在边重标号同构意义下，达到最小规模的 Horn 蕴涵基唯一。
 \end{theorem}
 \begin{proof}
-规则族 \(\mathcal{R}_{\triangle}\) 生成 \(\mathrm{cl}\)：
-任取连通分支内一条长度为 \(2\) 的路径 \(i\!-\!j\!-\!k\)，由规则推出边 \(ik\)；迭代可补全分支为团，得到 \(\mathrm{cl}\)。
-因此存在规则基规模上界 \(|\mathcal{R}|\le 3\binom{n}{3}\)。
+先验证三角补全规则基确实生成 \(\mathrm{cl}\)。
+任取 \(F\subseteq E_n\) 并考虑图 \(([n],F)\) 的任一连通分支 \(C\)。
+对任意 \(u,v\in C\)，存在路径 \(u=v_0-v_1-\cdots-v_\ell=v\) 使 \(\{v_{t-1}v_t\}\subseteq F\)。
+沿路径逐步应用三角补全规则可推出 \(v_0v_2,v_0v_3,\dots,v_0v_\ell\)，从而推出 \(uv\)。
+因此推演闭包补全每个连通分支为团，恰为 \(\mathrm{cl}(F)\)，故三角补全规则基属于 \(\mathcal{IB}(\mathrm{cl})\)，并给出上界 \(|\mathcal{R}|\le 3\binom{n}{3}\)。
 \par
-为证下界，固定互异三点 \(i,j,k\)，取初始边集 \(F=\{ij,jk\}\)。
-由定义 \ref{def:pom-edge-closure}，有 \(ik\in \mathrm{cl}(F)\)。
-若 \(\mathrm{cl}_{\mathcal{R}}=\mathrm{cl}\)，则在 \(\mathrm{cl}_{\mathcal{R}}\) 的推演中必须从 \(F\) 推出 \(ik\)。
-由于每条规则前提大小为 \(2\)，且在首次产生任何新边之前可用前提只能是 \(\{ij,jk\}\)，因此规则库中必须包含 \(\{ij,jk\}\to ik\)。
-对所有互异 \(i,j,k\) 同理，故 \(\mathcal{R}\) 必包含全部三角补全规则，条数至少为 \(3\binom{n}{3}\)。
-唯一性由该强制性立即得到。证毕。
+为证下界与唯一性，取任意 \(\mathcal{R}\in\mathcal{IB}(\mathrm{cl})\)。
+固定互异三点 \(1\le i<j<k\le n\)，并令
+\(
+F:=\{ij,jk\}
+\)。
+由定义 \ref{def:pom-edge-closure}，有
+\(
+\mathrm{cl}(F)=\{ij,jk,ik\}
+\)，从而 \(ik\in \mathrm{cl}_{\mathcal{R}}(F)\)。
+考虑从 \(F\) 出发的前向推演。
+在首次推出 \(ik\) 之前，系统中仅包含 \(F\) 中的边，故必存在一条规则 \(A\to ik\in\mathcal{R}\) 使其前提满足 \(A\subseteq F\)。
+于是 \(A\) 只能是 \(\varnothing\)、\(\{ij\}\)、\(\{jk\}\) 或 \(\{ij,jk\}\)。
+前三种情形分别迫使 \(ik\in \mathrm{cl}_{\mathcal{R}}(\varnothing)\)、\(ik\in \mathrm{cl}_{\mathcal{R}}(\{ij\})\) 或 \(ik\in \mathrm{cl}_{\mathcal{R}}(\{jk\})\)，与
+\(\mathrm{cl}(\varnothing)=\varnothing\) 与 \(\mathrm{cl}(\{ij\})=\{ij\}\)、\(\mathrm{cl}(\{jk\})=\{jk\}\) 矛盾。
+因此必有 \(A=\{ij,jk\}\)，从而 \(\{ij,jk\}\to ik\in\mathcal{R}\)。
+\par
+对同一三元组，分别从 \(\{ij,ik\}\) 推出 \(jk\)，以及从 \(\{ik,jk\}\) 推出 \(ij\)，得到另外两条强制规则。
+故每个三元组 \(\{i,j,k\}\) 都贡献至少三条互不相同的规则，推出 \(|\mathcal{R}|\ge 3\binom{n}{3}\)。
+若取等号，则 \(\mathcal{R}\) 只能由这些被强制的三角补全规则组成，不允许额外规则，故达到最小规模的规则基在边重标号意义下唯一。证毕。
 \end{proof}
 
 \begin{theorem}[素数表语义：自同态的生成元赋值与幂等性判定]\label{thm:pom-idempotent-projection-prime-determined}
@@ -287,14 +300,9 @@ f(n)=\prod f(p)^{\nu_p(n)}=\prod_{p\in S}p^{\nu_p(n)}
 证毕。
 \end{proof}
 
-\begin{conjecture}[Horn 规则基的全局最小性]\label{conj:pom-horn-basis-global-min}
-令 \(\mathrm{cl}\) 为定义 \ref{def:pom-edge-closure} 的等价闭包。记 \(\mathrm{IB}(\mathrm{cl})\) 为所有 Horn 蕴含规则基（允许任意有限前提大小）中能生成 \(\mathrm{cl}\) 的规则族集合。
-猜想对任意 \(n\ge 3\) 与任意 \(\mathcal{R}\in \mathrm{IB}(\mathrm{cl})\) 都有
-\[
-|\mathcal{R}|\ \ge\ 3\binom{n}{3},
-\]
-且等号仅由三角补全规则族 \(\mathcal{R}_\triangle\)（在重标号意义下）达到。
-\end{conjecture}
+\begin{remark}\label{rem:pom-horn-basis-global-min}
+对定义 \ref{def:pom-edge-closure} 的等价闭包，定理 \ref{thm:pom-eq-closure-horn-binary-min} 给出了 Horn 蕴涵基在允许任意有限前提大小时的全局下界与唯一性刻画，并表明三角补全规则族在规模意义下不可改进。
+\end{remark}
 
 \endinput
 
