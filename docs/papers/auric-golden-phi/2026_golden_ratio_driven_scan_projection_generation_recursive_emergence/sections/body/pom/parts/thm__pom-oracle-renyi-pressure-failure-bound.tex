@@ -1,0 +1,69 @@
+\begin{theorem}[预言机可逆容量的 R\'enyi--压力失败上界]\label{thm:pom-oracle-renyi-pressure-failure-bound}
+固定分辨率 \(m\) 并记 \(\Omega_m=\{0,1\}^m\)。
+对预算 \(B\ge 0\)，令预言机可逆容量与成功率定义为
+\[
+C_m(B):=\sum_{x\in X_m}\min\bigl(d_m(x),2^B\bigr),
+\qquad
+\mathrm{Succ}_m(B):=\frac{C_m(B)}{2^m},
+\qquad
+\mathrm{Fail}_m(B):=1-\mathrm{Succ}_m(B).
+\]
+对任意 \(q>1\) 与任意 \(B\ge 0\) 成立 R\'enyi 型失败界
+\[
+\boxed{\;
+\mathrm{Fail}_m(B)\ \le\ 2^{-(q-1)B}\cdot \frac{S_q(m)}{2^m},
+\qquad
+S_q(m):=\sum_{x\in X_m}d_m(x)^q.\;}
+\]
+若进一步假设压力极限
+\(
+P_q=\lim_{m\to\infty}\frac{1}{m}\log S_q(m)
+\)
+存在，并取 \(B=\lfloor bm\rfloor\)，则
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log \mathrm{Fail}_m(\lfloor bm\rfloor)
+\le
+P_q-\log 2-(q-1)b\log 2,
+\]
+从而误差指数满足
+\[
+\liminf_{m\to\infty}-\frac{1}{m}\log \mathrm{Fail}_m(\lfloor bm\rfloor)
+\ge
+\sup_{q>1}\Bigl((q-1)b\log 2-\bigl(P_q-\log 2\bigr)\Bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+令 \(\pi_m(x):=d_m(x)/2^m\) 并记阈值 \(t:=2^B/2^m\)。
+由
+\(
+\mathrm{Succ}_m(B)=\sum_x \min(\pi_m(x),t)
+\)
+得到
+\(
+\mathrm{Fail}_m(B)=\sum_x (\pi_m(x)-t)_+
+\)。
+对任意 \(q>1\)，点态不等式 \((u-t)_+\le t^{1-q}u^q\)（\(u\ge 0\)）成立，故
+\[
+\mathrm{Fail}_m(B)
+=\sum_x (\pi_m(x)-t)_+
+\le t^{1-q}\sum_x \pi_m(x)^q.
+\]
+又
+\(
+\sum_x \pi_m(x)^q
+=2^{-mq}\sum_x d_m(x)^q
+=2^{-mq}S_q(m)
+\)
+并且
+\(
+t^{1-q}=(2^{B-m})^{1-q}=2^{-(q-1)B}2^{(q-1)m}
+\)，代回得
+\[
+\mathrm{Fail}_m(B)\le 2^{-(q-1)B}\cdot \frac{S_q(m)}{2^m}.
+\]
+取 \(B=\lfloor bm\rfloor\)，对数除以 \(m\) 并令 \(m\to\infty\) 得到压力形式的不等式；最后对 \(q\) 取上确界即得误差指数下界。
+证毕。
+\end{proof}
+
+\endinput

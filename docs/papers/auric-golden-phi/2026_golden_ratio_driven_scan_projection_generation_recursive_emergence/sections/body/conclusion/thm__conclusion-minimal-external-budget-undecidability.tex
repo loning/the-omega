@@ -62,4 +62,22 @@ b(\pi):=\min\Bigl\{B\in\NN_{\ge 1}:\ \exists\ \widetilde\pi:D\hookrightarrow Y\t
 若集合 \(\{\pi:\ b(\pi)=1\}\) 为递归可枚举，则由同一定理中的构造可递归可枚举集合 \(\{(M,x):M(x)\text{不停机}\}\)，与经典结论矛盾。证毕。
 \end{proof}
 
+\begin{corollary}[有限素支撑可验证性与停机问题的等价归约]\label{cor:conclusion-squarefree-prime-register-halting-reduction}
+对 \(L\ge 2\) 定义平方自由素数寄存器证书空间
+\[
+\mathcal C_L:=\{n\in\NN_{\ge 1}:\ n\ \text{平方自由且所有素因子}\le L\},
+\]
+则 \(|\mathcal C_L|=2^{\pi(L)}\) 为有限集。
+设 \(U\) 为一台通用图灵机。对任意程序索引 \(e\)，令 \(\Omega_e\) 为其计算前缀配置集（按时间步枚举），并令 \(\pi:\Omega_e\to\{\ast\}\) 为常值读出。
+则存在某个 \(L\) 与单射证书 \(r:\Omega_e\hookrightarrow \mathcal C_L\) 使得扩展读出 \((\pi,r)\) 在对象层为单射，当且仅当 \(U(e)\) 停机。
+因此，判定“是否存在有限素上界 \(L\) 使得该程序实例可被平方自由素数寄存器完备外置”在计算论意义下不可判定。
+\end{corollary}
+
+\begin{proof}
+若 \(U(e)\) 于 \(T\) 步停机，则 \(\Omega_e\) 为有限集且 \(|\Omega_e|=T+1\)。
+取 \(L\) 使 \(2^{\pi(L)}\ge T+1\)，即可构造单射 \(r:\Omega_e\hookrightarrow \mathcal C_L\)，从而 \((\pi,r)\) 单射。
+若 \(U(e)\) 不停机，则 \(\Omega_e\) 可数无穷；但任意 \(L\) 下 \(\mathcal C_L\) 有限，故不存在单射 \(r\)。
+两向蕴含成立，而停机问题不可判定，故上述判定问题亦不可判定。证毕。
+\end{proof}
+
 \endinput

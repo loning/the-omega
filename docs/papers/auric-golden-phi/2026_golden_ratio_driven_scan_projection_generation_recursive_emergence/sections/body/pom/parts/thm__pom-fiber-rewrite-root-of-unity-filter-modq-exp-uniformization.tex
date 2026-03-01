@@ -1,6 +1,12 @@
-\begin{theorem}[任意模数下的根单位滤波与指数级均匀化]\label{thm:pom-fiber-rewrite-root-of-unity-filter-modq-exp-uniformization}
-固定整数 \(q\ge 2\)，令 \(\zeta_q:=e^{2\pi i/q}\)。
-对任意 \(m\ge 1\) 与 \(x\in X_m\)，在纤维 \(\Fold_m^{-1}(x)\) 上取均匀分布并记
+\begin{theorem}[任意活动度下的根单位滤波与指数级均匀化]\label{thm:pom-fiber-rewrite-root-of-unity-filter-modq-exp-uniformization}
+固定整数 \(q\ge 2\) 并令 \(\zeta_q:=e^{2\pi i/q}\)。
+对任意 \(m\ge 1\)、\(x\in X_m\) 与活动度 \(t>0\)，在纤维 \(\Fold_m^{-1}(x)\) 上取 hard-core 权重分布
+\[
+\PP_t(\omega\mid x):=\frac{t^{r(\omega)}}{Z_x(t)},
+\qquad
+Z_x(t):=\sum_{\omega\in\Fold_m^{-1}(x)} t^{r(\omega)},
+\]
+并记
 \[
 R_x:=r(\omega)\in\ZZ_{\ge 0},
 \qquad
@@ -8,16 +14,30 @@ R_x^{(q)}:=R_x\bmod q\in \ZZ/q\ZZ.
 \]
 则对任意 \(a\in\ZZ/q\ZZ\) 有精确公式
 \[
-\PP(R_x^{(q)}=a\mid x)
-=\frac{1}{q\,Z_x(1)}\sum_{k=0}^{q-1}\zeta_q^{-ak}\,Z_x(\zeta_q^{k}).
+\PP_t(R_x^{(q)}=a\mid x)
+:=\frac{1}{q\,Z_x(t)}\sum_{k=0}^{q-1}\zeta_q^{-ak}\,Z_x(t\zeta_q^{k}).
 \]
-并且存在常数 \(\theta_q\in(0,1)\)（仅依赖于 \(q\)）使得对所有 \(x\in X_m\) 与所有 \(a\in\ZZ/q\ZZ\) 成立
+令传递矩阵与谱半径
 \[
-\left|\PP(R_x^{(q)}=a\mid x)-\frac{1}{q}\right|
-\le \frac{q-1}{q}\,\theta_q^{\,|V(\Gamma_x)|},
+A(w):=
+\begin{pmatrix}
+1 & w\\
+1 & 0
+\end{pmatrix},
 \qquad
-\left\|\mathcal L(R_x^{(q)}\mid x)-\mathrm{Unif}(\ZZ/q\ZZ)\right\|_{\mathrm{TV}}
-\le \frac{q-1}{2}\,\theta_q^{\,|V(\Gamma_x)|}.
+\rho(w):=\rho\bigl(A(w)\bigr),
+\]
+并定义收缩率
+\[
+\vartheta(t,q):=\max_{1\le k\le q-1}\frac{\rho(t\zeta_q^k)}{\rho(t)}\in[0,1).
+\]
+则存在常数 \(C(t,q)\in(0,\infty)\)（仅依赖于 \(t,q\)）使得对所有 \(x\in X_m\) 与所有 \(a\in\ZZ/q\ZZ\) 成立
+\[
+\left|\PP_t(R_x^{(q)}=a\mid x)-\frac{1}{q}\right|
+\le \frac{q-1}{q}\,C(t,q)^{c(x)}\,\vartheta(t,q)^{\,|V(\Gamma_x)|},
+\qquad
+\left\|\mathcal L_t(R_x^{(q)}\mid x)-\mathrm{Unif}(\ZZ/q\ZZ)\right\|_{\mathrm{TV}}
+\le \frac{q-1}{2}\,C(t,q)^{c(x)}\,\vartheta(t,q)^{\,|V(\Gamma_x)|}.
 \]
 \end{theorem}
 
@@ -29,62 +49,55 @@ Z_x(t)=\sum_{j\ge 0}N_j(x)\,t^j,
 \qquad
 N_j(x):=\card{\{\omega\in\Fold_m^{-1}(x):\ r(\omega)=j\}}.
 \]
-则
+则对任意 \(t>0\) 有
 \[
-\card{\{\omega:\ r(\omega)\equiv a\ (\bmod\ q)\}}
-=\sum_{j\equiv a\ (q)}N_j(x)
-=\frac{1}{q}\sum_{k=0}^{q-1}\zeta_q^{-ak}\sum_{j\ge 0}N_j(x)\,\zeta_q^{kj}
-=\frac{1}{q}\sum_{k=0}^{q-1}\zeta_q^{-ak}\,Z_x(\zeta_q^k),
+\sum_{j\equiv a\ (q)}N_j(x)\,t^j
+=\frac{1}{q}\sum_{k=0}^{q-1}\zeta_q^{-ak}\sum_{j\ge 0}N_j(x)\,(t\zeta_q^k)^{j}
+=\frac{1}{q}\sum_{k=0}^{q-1}\zeta_q^{-ak}\,Z_x(t\zeta_q^k),
 \]
-除以 \(Z_x(1)=\sum_j N_j(x)\) 得到概率公式。
+除以 \(Z_x(t)=\sum_j N_j(x)t^j\) 即得概率公式。
 \par
 \textbf{指数级均匀化.}
-由定理 \ref{thm:pom-fiber-indset-factorization}，若 \(\Gamma_x\simeq \bigsqcup_{i=1}^r P_{\ell_i}\)，则
+由定理 \ref{thm:pom-fiber-indset-factorization}，若 \(\Gamma_x\simeq \bigsqcup_{i=1}^{c(x)} P_{\ell_i}\)，则
 \[
-Z_x(t)=\prod_{i=1}^r I_{\ell_i}(t),
+Z_x(w)=\prod_{i=1}^{c(x)} I_{\ell_i}(w),
 \qquad
-Z_x(1)=\prod_{i=1}^r I_{\ell_i}(1)=\prod_{i=1}^r F_{\ell_i+2},
-\qquad
-|V(\Gamma_x)|=\sum_{i=1}^r \ell_i.
+|V(\Gamma_x)|=\sum_{i=1}^{c(x)} \ell_i.
 \]
-并且每个 \(I_{\ell}(t)\) 具有严格非负系数且 \(I_\ell(0)=1\)、\([t]I_\ell(t)>0\)（见定义 \ref{def:pom-fiber-adm-path} 与命题 \ref{prop:pom-path-indset-thermo-constants} 的递推）。
-因此对任意单位圆上 \(u\in\CC\) 且 \(u\neq 1\)，有严格不等式
+对固定 \(w\in\CC\)，独立集多项式 \(I_\ell(w)\) 满足二阶线性递推，因而可写成矩阵幂的矩阵元：
 \[
-|I_\ell(u)|<I_\ell(1)\qquad(\ell\ge 1).
+\binom{I_\ell(w)}{I_{\ell-1}(w)}=A(w)^{\ell-1}\binom{1+w}{1}\qquad(\ell\ge 1).
 \]
-对固定 \(q\) 与 \(k\in\{1,\dots,q-1\}\)，令线性递推矩阵
+从而存在常数 \(C_w\in(0,\infty)\) 使得对所有 \(\ell\ge 1\) 有 \(|I_\ell(w)|\le C_w\,\rho(w)^\ell\)。
+对给定的 \(t>0\) 与有限集合 \(\{t\zeta_q^k:0\le k\le q-1\}\) 取
 \[
-M(t):=
-\begin{pmatrix}
-1 & t\\
-1 & 0
-\end{pmatrix},
-\qquad
-\binom{I_\ell(t)}{I_{\ell-1}(t)}=M(t)^{\ell-1}\binom{1+t}{1}\qquad(\ell\ge 1).
+C(t,q):=\max_{0\le k\le q-1}\max(C_{t\zeta_q^k},1)
 \]
-记 \(\lambda_+(t)\) 为 \(M(t)\) 的特征根中模最大的一个（当 \(t=1\) 时 \(\lambda_+(1)=\varphi\)）。
-当 \(t=\zeta_q^k\neq 1\) 时，由谱半径连续性与上式的严格三角不等式可得
+即可使界对所有 \(k\) 同时成立。
+\par
+当 \(1\le k\le q-1\) 时，矩阵 \(A(t\zeta_q^k)\) 的非负模矩阵为 \(|A(t\zeta_q^k)|=A(t)\)。
+由 Perron--Frobenius 型比较 \(\rho(A)\le \rho(|A|)\) 得 \(\rho(t\zeta_q^k)\le \rho(t)\)；
+并且由于 \(t\zeta_q^k\) 含非平凡相位，该不等式严格成立，从而 \(\vartheta(t,q)<1\)。
+于是对所有 \(\ell\ge 1\) 有
 \[
-\rho\bigl(M(\zeta_q^k)\bigr)=|\lambda_+(\zeta_q^k)|<\rho(M(1))=\varphi.
+\left|\frac{I_\ell(t\zeta_q^k)}{I_\ell(t)}\right|
+\le
+C(t,q)\left(\frac{\rho(t\zeta_q^k)}{\rho(t)}\right)^\ell
+\le
+C(t,q)\,\vartheta(t,q)^\ell.
 \]
-因此存在 \(C_{q,k}>0\) 与 \(\vartheta_{q,k}\in(0,1)\) 使得对所有 \(\ell\ge 1\) 有
+由乘积分解得到
 \[
-\frac{|I_\ell(\zeta_q^k)|}{I_\ell(1)}
-\le C_{q,k}\,\vartheta_{q,k}^{\,\ell}.
-\]
-令 \(\theta_q\in(0,1)\) 取为 \(\max_{1\le k\le q-1}\vartheta_{q,k}\) 的任意严格上界（吸收常数 \(C_{q,k}\) 到 \(\theta_q\) 的有限次幂中即可），则
-\[
-\frac{|Z_x(\zeta_q^k)|}{Z_x(1)}
-=\prod_{i=1}^r \frac{|I_{\ell_i}(\zeta_q^k)|}{I_{\ell_i}(1)}
-\le \prod_{i=1}^r \theta_q^{\ell_i}
-=\theta_q^{\sum_i\ell_i}
-=\theta_q^{|V(\Gamma_x)|}.
+\left|\frac{Z_x(t\zeta_q^k)}{Z_x(t)}\right|
+=\prod_{i=1}^{c(x)}\left|\frac{I_{\ell_i}(t\zeta_q^k)}{I_{\ell_i}(t)}\right|
+\le C(t,q)^{c(x)}\,\vartheta(t,q)^{\sum_i\ell_i}
+=C(t,q)^{c(x)}\,\vartheta(t,q)^{|V(\Gamma_x)|}.
 \]
 代回根单位滤波式并对 \(k=1,\dots,q-1\) 求和得到
 \[
-\left|\PP(R_x^{(q)}=a\mid x)-\frac{1}{q}\right|
-\le \frac{1}{q}\sum_{k=1}^{q-1}\frac{|Z_x(\zeta_q^k)|}{Z_x(1)}
-\le \frac{q-1}{q}\,\theta_q^{|V(\Gamma_x)|}.
+\left|\PP_t(R_x^{(q)}=a\mid x)-\frac{1}{q}\right|
+\le \frac{1}{q}\sum_{k=1}^{q-1}\left|\frac{Z_x(t\zeta_q^k)}{Z_x(t)}\right|
+\le \frac{q-1}{q}\,C(t,q)^{c(x)}\,\vartheta(t,q)^{|V(\Gamma_x)|}.
 \]
 总变差界由恒等式
 \(
