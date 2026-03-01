@@ -1276,6 +1276,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4t_integral_charpoly_galois_modp_certificate",
+            script="exp_collision_kernel_A4t_integral_charpoly_galois_modp_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4t_integral_charpoly_galois_modp_certificate.json",
+                "sections/generated/eq_collision_kernel_A4t_integral_charpoly_galois_modp_certificate.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_unit_circle_branchpoints",
             script="exp_collision_kernel_A4_unit_circle_branchpoints.py",
             args=[],
