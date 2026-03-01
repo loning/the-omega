@@ -51,6 +51,57 @@ F(U)=\sum_{i=1}^n F_i(U)\ \ge\ 2\sum_{i=1}^n\card{\pi_i(S)}.
 代回即得 \(F(U)\ge 2n\,|S|^{(n-1)/n}=2n\,N(U)^{(n-1)/n}\)。证毕。
 \end{proof}
 
+\begin{theorem}[轴向共面积不等式：dyadic polycube 的线性边界--体积上界与极值唯一性]\label{thm:spg-dyadic-polyclube-axial-coarea}
+设 \(n\ge 1\) 且 \(m\ge 1\)，并记 \(L:=2^{m}\)。
+在 dyadic 剖分 \(\mathcal Q_m\) 上令 \(U\subset I^n=[0,1]^n\) 为 dyadic polycube，并记
+\[
+N(U):=\card{\{Q\in\mathcal Q_m:\ Q\subset U\}},
+\qquad
+F(U):=\#\operatorname{supp}(\partial_n[U]).
+\]
+则成立严格不等式
+\[
+N(U)\ \le\ \frac{L}{2n}\,F(U).
+\]
+等价地，令
+\[
+\operatorname{Vol}(U):=\frac{N(U)}{L^{n}},
+\qquad
+\operatorname{Area}(\partial U):=\frac{F(U)}{L^{n-1}},
+\]
+则
+\[
+\operatorname{Vol}(U)\ \le\ \frac{1}{2n}\,\operatorname{Area}(\partial U).
+\]
+并且常数 \(1/(2n)\) 为最优；等号成立当且仅当 \(U=\varnothing\) 或 \(U=I^n\)（即占据全部 \(m\)-dyadic \(n\)-立方体）。
+\end{theorem}
+\begin{proof}
+固定坐标方向 \(i\in\{1,\dots,n\}\)。
+将 \(m\)-dyadic 立方体按格点索引写作集合 \(S\subset\{0,\dots,L-1\}^n\)，其中 \(|S|=N(U)\)。
+对每个 \(a\in\{0,\dots,L-1\}^{n-1}\)（表示除第 \(i\) 坐标外的全部坐标），考虑纤维截面
+\[
+S_{a}:=\{t\in\{0,\dots,L-1\}:\ (a_1,\dots,a_{i-1},t,a_i,\dots,a_{n-1})\in S\}.
+\]
+作为 \(\{0,\dots,L-1\}\) 的子集，\(S_a\) 可唯一分解为互不相交的离散区间（连通块）之并。
+令该纤维的连通块数为 \(c_a\)。
+则每个连通块贡献的 \(i\)-正交外露 \((n-1)\)-面恰为 \(2\) 张（区间两端各一张；端点贴到 \(I^n\) 的外边界时仍计为外露面），从而该纤维在方向 \(i\) 上贡献的外露面数为 \(2c_a\)。
+另一方面有显然上界 \(|S_a|\le L\,c_a\)。
+因此
+\[
+|S_a|\le \frac{L}{2}\cdot (2c_a).
+\]
+对所有 \(a\) 求和得到
+\[
+N(U)=|S|\le \frac{L}{2}\,F_i(U),
+\]
+其中 \(F_i(U)\) 表示法向平行于 \(\pm e_i\) 的外露 \((n-1)\)-面总数。
+再对 \(i=1,\dots,n\) 求和并除以 \(n\)，并用 \(\sum_{i=1}^n F_i(U)=F(U)\)，得到所示不等式。
+\par
+常数最优性由 \(U=I^n\) 取等号给出。
+若等号成立，则对每个 \(i\) 与每条纤维 \(S_a\) 必有 \(|S_a|=L\,c_a\)，从而每个非空纤维只能是一整段 \(\{0,\dots,L-1\}\)。
+因此 \(S\) 在每一坐标方向上均对该方向的纤维取值为“全或无”，从而 \(S\) 只能为空集或全体 \(\{0,\dots,L-1\}^n\)，即 \(U=\varnothing\) 或 \(U=I^n\)。证毕。
+\end{proof}
+
 \begin{proposition}[边界 Gödel 码的双对数标度]\label{prop:spg-dyadic-boundary-godel-doublelog-scale}
 固定 \(m,n\) 并令 \(\mathcal F_{m}^{n-1}\) 为 \(\mathcal Q_m\) 的全部 \((n-1)\)-胞腔（面）。
 为每一条有向面 \(\vec f\in\overrightarrow{\mathcal F_m^{n-1}}\) 赋予两两不同的素数 \(q_{\vec f}\)，并对任意 dyadic polycube \(U\) 定义边界 Gödel 整数
@@ -79,6 +130,39 @@ H_m(U):=\prod_{\vec f} q_{\vec f}^{\,\varepsilon_{\vec f}},
 =F(U)\cdot O(m).
 \]
 于是 \(\log\log H_m(U)\le \log F(U)+O(\log m)\)。合并即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[边界 Gödel 编码的体积全息上界：\texorpdfstring{$\log H/\log\log H$}{logH/loglogH} 控制 bulk 规模]\label{cor:spg-dyadic-boundary-godel-volume-upperbound}
+沿用定理 \ref{thm:spg-dyadic-polyclube-axial-coarea} 的记号。
+对每个 dyadic \((n-1)\)-面 \(f\) 指派一枚互异素数 \(q_f\)，并定义边界的平方自由 Gödel 整数
+\[
+H(U):=\prod_{f\subset \partial U} q_f.
+\]
+记 \(\omega(H(U))\) 为其素因子个数，则 \(\omega(H(U))=F(U)\)。
+当 \(F(U)\to\infty\) 时有渐近估计
+\[
+F(U)\ \le\ (1+o(1))\,\frac{\log H(U)}{\log\log H(U)},
+\]
+从而
+\[
+N(U)\ \le\ \frac{L}{2n}\,(1+o(1))\,\frac{\log H(U)}{\log\log H(U)}.
+\]
+\end{corollary}
+\begin{proof}
+令 \(B:=F(U)=\omega(H(U))\)。
+在由 \(B\) 个互异素数组成的乘积中，最小者为第 \(B\) 个 primorial
+\(
+p_B^\#:=\prod_{k=1}^{B}p_k
+\)。
+由于 \(H(U)\) 为 \(B\) 个互异素数之积，必有 \(H(U)\ge p_B^\#\)，从而
+\[
+\log H(U)\ge \log p_B^\#.
+\]
+由素数分布的经典渐近 \(\log p_B^\#=(1+o(1))\,B\log B\)，可反解得到
+\[
+B\le (1+o(1))\,\frac{\log H(U)}{\log\log H(U)}.
+\]
+最后将 \(B=F(U)\) 代入并结合定理 \ref{thm:spg-dyadic-polyclube-axial-coarea} 的不等式 \(N(U)\le \frac{L}{2n}F(U)\) 即得结论。证毕。
 \end{proof}
 
 \begin{theorem}[体--边界 Gödel 维的全息夹逼]\label{thm:spg-bulk-boundary-godel-dimension-sandwich}

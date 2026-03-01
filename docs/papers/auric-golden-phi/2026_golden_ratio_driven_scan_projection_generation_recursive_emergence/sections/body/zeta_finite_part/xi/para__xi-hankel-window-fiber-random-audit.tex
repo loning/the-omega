@@ -34,6 +34,71 @@ H_0(b):=(b_{i+j})_{0\le i,j\le d-1}\in M_d(k).
 唯一性由递推系数与初值唯一推出。证毕。
 \end{proof}
 
+\begin{theorem}[Hankel 一维纤维的 Möbius 刚性：单点评估决定全部扩展]\label{thm:xi-hankel-fiber-mobius-rigidity}
+在命题 \ref{prop:xi-hankel-window-fiber-1d} 的设定下，记
+\[
+F_x(z):=\sum_{n\ge 0}a_n^{(x)}z^n\in k[[z]].
+\]
+则 \(F_x(z)\) 关于参数 \(x\) 为分式线性函数：存在次数不超过 \(d\) 的多项式 \(A,B,C,D\in k[z]\) 使得
+\[
+F_x(z)=\frac{A(z)x+B(z)}{C(z)x+D(z)}.
+\]
+并且行列式多项式
+\[
+\Delta(z):=A(z)D(z)-B(z)C(z)
+\]
+非零。
+令
+\[
+\mathcal E:=\{z\in\bar k:\ \Delta(z)=0\},
+\]
+其中 \(\bar k\) 为 \(k\) 的代数闭包。
+则对任意 \(z\in\bar k\setminus\mathcal E\)，在定义域 \(\{x\in\bar k:\ C(z)x+D(z)\neq 0\}\) 上，映射 \(x\mapsto F_x(z)\) 为单射；从而若 \(F_x(z)=F_{x'}(z)\)，则 \(x=x'\)，并且对应的扩展序列 \(a^{(x)}\) 与 \(a^{(x')}\) 完全一致。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:xi-hankel-window-fiber-1d}，序列 \(a^{(x)}\) 满足阶 \(d\) 的常系数递推，其中系数向量 \(c(x)\in k^d\) 关于 \(x\) 仿射。
+标准生成函数恒等式给出
+\[
+F_x(z)=\frac{N_x(z)}{D_x(z)},
+\qquad
+D_x(z)=1-\sum_{j=0}^{d-1}c_j(x)\,z^{d-j},
+\]
+其中 \(N_x(z)\) 为次数不超过 \(d-1\) 的多项式，其系数由初值 \((a_0^{(x)},\dots,a_{d-1}^{(x)})=(b_0,\dots,b_{d-1})\) 与 \(c_j(x)\) 线性生成。
+由 \(c_j(x)\) 对 \(x\) 的仿射性可知 \(N_x,D_x\) 皆对 \(x\) 仿射，故可写为
+\[
+N_x(z)=A(z)x+B(z),\qquad D_x(z)=C(z)x+D(z),
+\]
+从而 \(F_x(z)=(A(z)x+B(z))/(C(z)x+D(z))\)。
+\par
+由构造 \(a_{2d-1}^{(x)}=x\)，故形式幂级数 \(F_x\) 非常值依赖于 \(x\)，从而 \(\Delta\not\equiv 0\)。
+对任意 \(z\notin\mathcal E\)，若 \(F_x(z)=F_{x'}(z)\) 且分母不为零，则交叉相乘得 \(\Delta(z)(x-x')=0\)，即 \(x=x'\)。
+由于 \(a^{(x)}\) 由初值与递推唯一确定，故 \(x=x'\) 推出序列完全一致。证毕。
+\end{proof}
+
+\begin{corollary}[单点评估的稳定反演：可控误差下的参数 Lipschitz 估计]\label{cor:xi-hankel-fiber-single-eval-stability}
+在定理 \ref{thm:xi-hankel-fiber-mobius-rigidity} 的设定下，取 \(z\in\bar k\setminus\mathcal E\)，并令 \(|\cdot|\) 为 \(\bar k\) 上任意满足乘法性的赋值。
+若对给定 \(x\) 有 \(|C(z)x+D(z)|\ge \lambda>0\)，则对任意满足 \(|C(z)x'+D(z)|\ge \lambda\) 的 \(x'\) 成立稳定估计
+\[
+|x-x'|
+\le
+\frac{\lambda^{-2}}{|\Delta(z)|}\,\bigl|F_x(z)-F_{x'}(z)\bigr|.
+\]
+\end{corollary}
+\begin{proof}
+由分式线性恒等式
+\[
+F_x(z)-F_{x'}(z)
+=\frac{(A(z)x+B(z))(C(z)x'+D(z))-(A(z)x'+B(z))(C(z)x+D(z))}{(C(z)x+D(z))(C(z)x'+D(z))}
+=\frac{\Delta(z)\,(x-x')}{(C(z)x+D(z))(C(z)x'+D(z))},
+\]
+取绝对值得
+\(
+|F_x(z)-F_{x'}(z)|
+=|\Delta(z)|\,|x-x'|\,|C(z)x+D(z)|^{-1}|C(z)x'+D(z)|^{-1}
+\)。
+结合分母下界 \(\lambda\) 即得所示不等式。证毕。
+\end{proof}
+
 \begin{corollary}[\texorpdfstring{$2d$}{2d} 点锁定的确定性尖锐性]\label{cor:xi-hankel-2d-sharpness}
 在定理 \ref{thm:dephys-hankel-finite-audit} 的设定下，若仅比较长度为 \(2d-1\) 的任意连续窗口，则在一般位置（\(\det H_0\neq 0\)）上无法确定全序列：存在不同的 Hankel 秩为 \(d\) 的序列共享该窗口。
 因此定理 \ref{thm:dephys-hankel-finite-audit} 的 \(2d\) 点锁定在确定性意义下不可再压缩。
