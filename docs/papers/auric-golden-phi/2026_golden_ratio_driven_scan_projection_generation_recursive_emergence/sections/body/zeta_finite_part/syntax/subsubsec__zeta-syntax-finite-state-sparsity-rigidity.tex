@@ -1,0 +1,157 @@
+\subsubsection{有限状态的稀疏刚性与单位圆解析障碍}\label{subsubsec:zeta-syntax-finite-state-sparsity-rigidity}
+本段给出若干与“有限状态/常数内存”范畴直接兼容、且可在本文的 \(\zeta\)–行列式与 primitive Euler 乘积接口上即时调用的刚性结论。
+核心点在于：在二元字母表上，有限自动机与有限禁止模式的计数密度只能出现指数尺度的稀疏或周期性的正密度；而若以素数型（Euler）乘积试图在单位圆上形成无穷支撑，则会强制出现稠密极点并形成自然边界，从而与有限矩阵的有理 \(\zeta\) 机制不相容。
+
+\begin{theorem}[确定性有限自动机的密度谱：指数稀疏或周期性正密度]\label{thm:zeta-syntax-dfa-density-dichotomy}
+令 \(\Sigma=\{0,1\}\)，并令 \(\mathcal A=(Q,\Sigma,\delta,q_0,F)\) 为任意完备确定性有限自动机（DFA）。
+对每个 \(m\ge 0\) 定义长度 \(m\) 的接受词计数
+\[
+a_m:=\#\{w\in\Sigma^m:\ \mathcal A\ \text{接受 }w\}.
+\]
+则存在整数 \(p\ge 1\)、常数 \(c_0,\dots,c_{p-1}\ge 0\)（不全为零）与 \(\theta\in(0,1)\)，使得当 \(m\to\infty\) 时有
+\[
+\frac{a_m}{2^m}=c_{m\bmod p}+O(\theta^m).
+\]
+特别地，以下二者恰有其一成立：
+\begin{enumerate}
+  \item 存在 \(\eta\in(0,1)\) 使得 \(a_m=O\bigl((2\eta)^m\bigr)\)，从而 \(\frac{a_m}{2^m}=O(\eta^m)\) 指数趋零；
+  \item 存在同余类 \(r\ (\bmod\ p)\) 使 \(\inf_{k\ge 0}\frac{a_{r+kp}}{2^{r+kp}}>0\)，从而密度在某一无穷子列上有正下界。
+\end{enumerate}
+因此，不存在 DFA 使得 \(\frac{a_m}{2^m}\) 具有严格介于上述两类之间的多项式稀疏渐近（例如 \(\frac{a_m}{2^m}\asymp m^{-\alpha}\)）。
+\end{theorem}
+\begin{proof}
+对每个字母 \(b\in\{0,1\}\) 定义转移矩阵 \(T_b\in\{0,1\}^{|Q|\times|Q|}\)，令 \((T_b)_{ij}=1\) 当且仅当 \(\delta(i,b)=j\)。
+令
+\[
+B:=T_0+T_1\in \ZZ_{\ge 0}^{|Q|\times|Q|}.
+\]
+由于 \(\mathcal A\) 完备且确定，矩阵 \(B\) 的每一行和恒为 \(2\)。
+令 \(u\) 为初态指示向量、\(v\) 为终态集合 \(F\) 的指示向量，则
+\[
+a_m=u^{\mathsf T}B^m v.
+\]
+因此 \((a_m)\) 满足由 \(\chi_B\) 给出的常系数线性递推，并可写作有限和
+\(
+a_m=\sum_j P_j(m)\lambda_j^m
+\)，其中 \(\lambda_j\) 枚举 \(B\) 的特征值、\(P_j\) 为次数受控多项式。
+\par
+由 \(B\mathbf 1=2\mathbf 1\) 得 \(2\) 是 \(B\) 的特征值，且对任一可达闭类对应的子矩阵同样成立；然而 \(u^{\mathsf T}B^m v\) 的主项系数可能在所有周期类上同时消失，从而有效增长率严格小于 \(2^m\)。
+令 \(\widetilde B:=\tfrac12 B\)，则 \(\widetilde B\) 为行随机矩阵。
+把状态空间分解为瞬态部分与闭类之并；在闭类上，\(\widetilde B\) 为有限状态马尔可夫链的转移矩阵。
+对每个闭类的周期 \(p\)，经典分解定理给出：存在同余类上的极限投影，使得 \(\widetilde B^m\) 在每个同余类 \(m\equiv r\ (\bmod\ p)\) 上以指数速度收敛到相应投影（\(\widetilde B\) 的谱隙保证误差为 \(O(\theta^m)\)）。
+将各闭类的贡献与瞬态项的指数衰减合并，即得
+\(
+u^{\mathsf T}\widetilde B^m v=c_{m\bmod p}+O(\theta^m)
+\)
+并从而得到所述展开；二分结论由 \(c_r\) 是否在某个同余类上严格为零决定。证毕。
+\end{proof}
+
+\begin{corollary}[有限自动机无法精确识别二进制素数集合]\label{cor:zeta-syntax-dfa-prime-symmetric-diff}
+令 \(\mathcal P_m\subseteq\{0,1\}^m\) 表示长度为 \(m\) 的二进制表示对应的素数集合（约定首位为 \(1\) 以排除前导零），并记
+\(
+p_m:=|\mathcal P_m|.
+\)
+对任意固定 DFA \(\mathcal A\)，令 \(L_m:=L(\mathcal A)\cap\{0,1\}^m\)。
+则存在常数 \(c>0\) 与 \(m_0\) 使对所有 \(m\ge m_0\),
+\[
+|L_m\triangle \mathcal P_m|\ \ge\ c\,\frac{2^m}{m}.
+\]
+并且若 \(L_m\) 的密度落入定理 \ref{thm:zeta-syntax-dfa-density-dichotomy}(2) 的情形，则存在无穷多 \(m\) 与常数 \(c'>0\) 使
+\[
+|L_m\triangle \mathcal P_m|\ \ge\ c'\,2^m.
+\]
+\end{corollary}
+\begin{proof}
+由素数定理的标准等价形式可取常数 \(C_1,C_2>0\) 使对充分大 \(m\) 有
+\[
+C_1\,\frac{2^m}{m}\ \le\ p_m\ \le\ C_2\,\frac{2^m}{m}.
+\]
+由定理 \ref{thm:zeta-syntax-dfa-density-dichotomy}，\(|L_m|\) 要么指数稀疏，要么沿某同余类有正密度下界。
+\par
+若 \(|L_m|=O((2\eta)^m)\)（\(\eta<1\)），则对充分大 \(m\) 有 \(|L_m|\ll 2^m/m\)，从而即使 \(L_m\subseteq\mathcal P_m\)，亦至少漏掉 \(p_m-|L_m|\gg 2^m/m\) 个素数，得到第一条下界。
+若沿无穷子列有 \(|L_m|\ge \alpha 2^m\)，则对该子列充分大 \(m\) 有
+\(
+|L_m|-p_m\ge \alpha 2^m-C_2 2^m/m\ge (\alpha/2)2^m
+\)，这些额外项必为合数误报，故给出第二条下界；第一条下界对一般情形取 \(c\) 足够小即可同时覆盖两种分支。证毕。
+\end{proof}
+
+\begin{theorem}[Euler 型乘积的单位圆自然边界：素数支撑导致稠密极点]\label{thm:zeta-syntax-euler-product-natural-boundary}
+令 \((b_n)_{n\ge 1}\subset\ZZ_{\ge 0}\) 为一列非负整数，并假设存在无穷多素数 \(p\) 使得 \(b_p>0\)。
+进一步假设乘积
+\[
+Z_b(z):=\prod_{n\ge 1}(1-z^n)^{-b_n}.
+\]
+在开单位圆盘内定义了一个全纯函数（例如对任意 \(0<r<1\) 有 \(\sum_{n\ge 1}b_n r^n<\infty\)，从而 \(\log Z_b(z)=\sum_{n\ge 1}\frac{b_n}{n}\frac{z^n}{1-z^n}\) 逐项收敛）。
+则：
+\begin{enumerate}
+  \item 对每个满足 \(b_p>0\) 的素数 \(p\)，\(Z_b\) 在全部 \(p\) 次单位根 \(z=e^{2\pi i k/p}\ (k=0,\dots,p-1)\) 处具有极点；
+  \item 这些极点在单位圆 \(|z|=1\) 上稠密，因此单位圆是 \(Z_b\) 的自然边界；
+  \item 因而 \(Z_b\) 不可能是有理函数，特别地不可能形如 \(\det(I-zM)^{-1}\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+若 \(b_p>0\)，则因子 \((1-z^p)^{-b_p}\) 在 \(z^p=1\) 的每个解处为极点。
+乘积中其余因子在该点至多贡献有限值（或进一步加强发散），故 \(Z_b\) 在每个 \(p\) 次单位根处必为极点。
+\par
+稠密性：任取单位圆上一点 \(e^{i\theta}\) 与任意 \(\varepsilon>0\)。
+取足够大的素数 \(p>\pi/\varepsilon\)，并令 \(k\) 为最接近 \(p\theta/(2\pi)\) 的整数，则
+\(
+|\theta-2\pi k/p|\le \pi/p<\varepsilon
+\)。
+由于满足 \(b_p>0\) 的素数无穷多，极点在单位圆稠密。
+稠密极点蕴含单位圆为自然边界；而有理函数在紧致集上不可能具有无穷稠密极点，故 \(Z_b\) 非有理。证毕。
+\end{proof}
+
+\begin{remark}[与有限状态 \texorpdfstring{$\zeta$}{zeta} 接口的冲突]\label{rem:zeta-syntax-natural-boundary-obstruction}
+在本文的有限图（SFT/sofic）口径下，动力学 \(\zeta\) 具有有限矩阵的行列式表示 \(\zeta_M(z)=\det(I-zM)^{-1}\)，从而为有理函数（\S\ref{subsec:zeta-syntax-zeta}）。
+因此，若某一 primitive 侧的 Euler 型乘积机制在素数长度上具有无穷支撑并以非负指数进入乘积，则按定理 \ref{thm:zeta-syntax-euler-product-natural-boundary} 必强制单位圆自然边界，从而无法来自任何有限状态 \(\zeta\) 机制。
+\end{remark}
+
+\begin{proposition}[常数内存机制的指数遗忘与每比特互信息塌缩]\label{prop:zeta-syntax-constant-memory-exponential-forgetting}
+令 \(\mathcal T\) 为任意有限状态在线转导器（Mealy 机），状态集 \(Q\) 有限。
+对任意全支撑 i.i.d. 输入分布 \(\mu\)，令 \(S_m\in Q\) 为读入 \(m\) 个输入符号后的内部状态。
+若由 \(\mu\) 诱导的状态马尔可夫链不可约且非周期，则存在唯一平稳分布 \(\pi\)，并存在常数 \(C<\infty\)、\(\gamma\in(0,1)\) 使对任意初态分布 \(\nu\) 与任意 \(m\ge 0\),
+\[
+\|\nu P^m-\pi\|_{\mathrm{TV}}\ \le\ C\,\gamma^m.
+\]
+从而对任意有界可观测 \(f:Q\to\RR\),
+\[
+\bigl|\EE_\nu[f(S_m)]-\EE_\pi[f(S)]\bigr|
+\ \le\ 2\|f\|_\infty\,C\,\gamma^m.
+\]
+此外，对输入前缀 \(X_1^m\) 有互信息上界
+\[
+I(X_1^m;S_m)\ \le\ \log |Q|,
+\qquad\text{从而}\qquad
+\frac{1}{m}I(X_1^m;S_m)\ \xrightarrow[m\to\infty]{}\ 0.
+\]
+\end{proposition}
+\begin{proof}
+有限不可约非周期马尔可夫链为 primitive，故谱隙与标准耦合/Doeblin 论证给出总变差的指数收敛上界。
+对任意有界 \(f\)，由 \(|\EE_\nu f-\EE_{\nu'}f|\le 2\|f\|_\infty\|\nu-\nu'\|_{\mathrm{TV}}\) 得到第二式。
+互信息上界为信息论恒等式：\(I(X_1^m;S_m)\le H(S_m)\le \log|Q|\)。证毕。
+\end{proof}
+
+\begin{proposition}[有限禁止模式的显式指数稀疏上界]\label{prop:zeta-syntax-finite-forbidden-exp-sparse}
+设 \(F\) 为一组非空的有限禁止子词，最大长度为 \(\ell\)。
+令
+\[
+X_m(F):=\{w\in\{0,1\}^m:\ w\ \text{不含任何 }F\text{ 中子词}\}.
+\]
+则对所有 \(m\) 成立
+\[
+|X_m(F)|\ \le\ 2^m\Bigl(1-2^{-\ell}\Bigr)^{\lfloor m/\ell\rfloor},
+\qquad
+\frac{|X_m(F)|}{2^m}\ \le\ \exp\bigl(-\Theta(m)\bigr).
+\]
+\end{proposition}
+\begin{proof}
+取不相交块起点集合 \(\{1,1+\ell,1+2\ell,\dots\}\)。
+固定取 \(F\) 中某个长度为 \(\ell\) 的禁止词（若 \(F\) 中长度不齐，则取最大长度并将较短者纳入更强的排除条件，所得上界不弱）。
+对每个块起点处的长度 \(\ell\) 子词，\(2^\ell\) 种可能中至少有 \(1\) 种被排除，故每个块最多保留比例 \(1-2^{-\ell}\)。
+将 \(\lfloor m/\ell\rfloor\) 个不相交块的约束相乘即得所示上界。证毕。
+\end{proof}
+
+\par
+以上结论共同说明：在二元有限状态范畴中，计数密度与 \(\zeta\) 的解析结构均具有强刚性；素数集合在长度层面的规模为 \(p_m\asymp 2^m/m\)，既非有限禁止模式的指数稀疏，也无法被任何固定 DFA 在指数尺度上逼近，更与素数型 Euler 乘积在单位圆上的稠密奇点结构形成结构性分离。
+

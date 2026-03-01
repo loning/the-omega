@@ -1,5 +1,16 @@
-\paragraph{一轴 \texorpdfstring{$p$}{p}-进寄存器的普适可实现性与最小性}
-本段记录一条把“有限对一折叠”在审计纪律下外置可逆化为单一 \(p\)-进轴的通用构造，并给出在任意深度歧义存在时的一轴必要性下界。
+\paragraph{一轴 \texorpdfstring{$p$}{p}-进寄存器的可逆化与最小资源界}
+本段聚焦于如下问题：在“有限对一折叠”导致的不可逆性中，何时可通过外置 prime-register 将因子映射提升为可回放的单射嵌入，以及该外置资源在 \(\operatorname{pcdim}\) 意义下的最小门槛。
+在本文语境下，“审计纪律”指寄存器态空间属于交换 profinite 群的逆极限范畴，并且对任意有限商像（例如模 \(p^N\) 的余数）均可由有限深度信息确定，从而寄存器可被有限深度读出且可由逆极限结构复核。
+\par
+\begin{conjecture}[一轴 prime-register 的普适可实现性与 \texorpdfstring{$\operatorname{pcdim}=1$}{pcdim=1} 资源阈值]\label{conj:conclusion-uniaxial-prime-register-universality}
+设 \(f:\Omega\to X\) 为零维紧致系统之间的连续有限对一因子映射，并要求外置寄存器 \(r\) 满足上述审计纪律。
+则存在某一素数 \(p\) 与连续映射 \(r:\Omega\to \ZZ_p\subset \widehat{\ZZ}\) 使 \(\omega\mapsto (f(\omega),r(\omega))\) 单射。
+并且若 \(f\) 非单射，则由 \(r(\Omega)\) 在 \(\ZZ_p\) 中生成的闭子群
+\(
+K:=\overline{\langle r(\Omega)\rangle}
+\)
+为无限闭子群，从而 \(\operatorname{pcdim}(K)=1\)。
+\end{conjecture}
 
 \begin{theorem}[有限状态可审计范畴下的一轴 \texorpdfstring{$\ZZ_p$}{Zp} 可逆化]\label{thm:conclusion-uniaxial-zp-replay-reversibilization}
 设 \(\Omega\subseteq A^{\NN}\) 为有限字母表 \(A\) 上的零维紧致系统，\(X\subseteq B^{\NN}\) 为另一有限字母表 \(B\) 上的零维紧致系统。
@@ -7,7 +18,7 @@
 \par
 则存在素数 \(p\) 与连续映射
 \[
-r:\Omega\longrightarrow \ZZ_p
+r:\Omega\longrightarrow \ZZ_p\subset \widehat{\ZZ}
 \]
 使得
 \[
@@ -70,17 +81,25 @@ f(\omega)=f(\omega')\qquad\text{且}\qquad \omega_{[1,N]}=\omega'_{[1,N]}.
 由任意深度歧义，取 \(N=N_0\) 可得 \(\omega\neq\omega'\) 使 \(f(\omega)=f(\omega')\) 且 \(\omega_{[1,N_0]}=\omega'_{[1,N_0]}\)，从而 \(r(\omega)=r(\omega')\)，与单射性矛盾。证毕。
 \end{proof}
 
-\begin{proposition}[有限字母表轨道的单轴 \texorpdfstring{$p$}{p}-进回放编码]\label{prop:conclusion-uniaxial-padic-trace-encoding}
+\begin{proposition}[有限字母表审计轨道的单轴 \texorpdfstring{$p$}{p}-进回放编码]\label{prop:conclusion-uniaxial-padic-trace-encoding}
 设 \(E\) 为有限集合，考虑轨道空间 \(E^{\NN}\)（积拓扑）。
 则存在素数 \(p>|E|\) 与连续单射
 \[
 \mathrm{Enc}:E^{\NN}\longrightarrow \ZZ_p
 \]
 满足：对任意 \(N\ge 1\)，\(\mathrm{Enc}(\mathbf e)\bmod p^N\) 仅依赖于 \(\mathbf e\) 的前 \(N\) 项。
-因此，任何由有限状态审计机产生的有限字母表标记轨道，在不损失回放能力的前提下可等价压缩为单一 \(p\)-进轴的寄存器坐标。
+\par
+因此，若某一审计/策略机在有限边集（或一般有限标记集）上生成的标记轨道 \(\mathbf e(\omega)\in E^{\NN}\) 满足
+\(\omega\mapsto\bigl(f(\omega),\mathbf e(\omega)\bigr)\) 单射（即标记轨道与纤维索引等价），
+则 \(\tilde r(\omega):=\mathrm{Enc}\bigl(\mathbf e(\omega)\bigr)\in\ZZ_p\) 给出同样的可回放嵌入：
+\[
+\omega\longmapsto \bigl(f(\omega),\tilde r(\omega)\bigr)
+\quad\text{仍为单射，且 }\tilde r(\omega)\bmod p^N\text{ 由有限前缀数据确定。}
+\]
 \end{proposition}
 \begin{proof}
 取素数 \(p>|E|\) 并固定单射 \(\delta:E\hookrightarrow\{0,1,\dots,p-1\}\)。
+如需将有限长度轨道统一为 \(E^{\NN}\) 形式，可向 \(E\) 增添一个吸收标记并在停机后重复该标记，从而不改变可回放信息。
 定义
 \[
 \mathrm{Enc}\bigl((e_t)_{t\ge 1}\bigr):=\sum_{t\ge 1}\delta(e_t)\,p^{t-1}\in\ZZ_p.
@@ -112,7 +131,7 @@ f(\omega)=f(\omega')\qquad\text{且}\qquad \omega_{[1,N]}=\omega'_{[1,N]}.
 \]
 若 \(f(\omega)=f(\omega')\)，则 \(\iota(\omega)\) 与 \(\iota(\omega')\) 第一坐标相同，并且
 \[
-\bigl(f(\omega),r(\omega)\bigr)+\bigl(0,r(\omega')-r(\omega)\bigr)=\bigl(f(\omega'),r(\omega')\bigr),
+\bigl(f(\omega),\,r(\omega)+\bigl(r(\omega')-r(\omega)\bigr)\bigr)=\bigl(f(\omega'),r(\omega')\bigr),
 \]
 故 \(\Phi\) 良定且保持单位与合成。
 \par
@@ -125,4 +144,7 @@ f(\omega)=f(\omega')\qquad\text{且}\qquad \omega_{[1,N]}=\omega'_{[1,N]}.
 命题 \ref{prop:conclusion-relation-groupoid-reduction-zp} 将“多对一折叠所诱导的非可逆等价关系”重写为在扩展空间 \(X\times \ZZ_p\) 上由可逆的一维 profinite 群作用所给出的约化。
 在仅关心形式结构的层面，该机制与对非可逆/范畴对称进行对称性扩张并用可逆对象实现的通用框架在语言上兼容（例如 SymTFT 语境中对非可逆对称的处理可参照 \cite{SchaferNamekiTiwariWarmanZhang2025SymTFTMixedStatesNonInvertible}）。
 \end{remark}
+
+\par
+由定理 \ref{thm:conclusion-uniaxial-zp-replay-reversibilization} 与命题 \ref{prop:conclusion-pcdim-lowerbound-deep-ambiguity} 可见，在有限状态可审计的折叠范畴中，一轴 \(\ZZ_p\) 既给出普适的可回放可逆化实现，也在任意深度歧义存在时构成不可再降的最小 \(\operatorname{pcdim}\) 资源门槛；命题 \ref{prop:conclusion-uniaxial-padic-trace-encoding} 与 \ref{prop:conclusion-relation-groupoid-reduction-zp} 进一步表明，该一轴化既可作用于审计轨道的可回放编码，也可在群胚层面实现对折叠等价关系的可逆化约化。
 
