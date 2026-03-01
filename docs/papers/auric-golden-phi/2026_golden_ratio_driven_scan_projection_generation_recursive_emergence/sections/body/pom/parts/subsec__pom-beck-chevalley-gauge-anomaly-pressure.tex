@@ -151,6 +151,165 @@ L_hL_fL_g\nu
 比较逐点系数即得所示恒等式；取对数得到 \(\delta\beta=0\)。证毕。
 \end{proof}
 
+\subsubsection{离散微分形式与上同调观点：纤维势、曲率与 Stokes 配对}\label{subsubsec:pom-bc-discrete-forms-stokes}
+本小节把上述“均匀提升的非函子性”与“缺陷即曲率”的结构进一步抽象为一套离散微分形式--上同调--Stokes 框架：纤维基数的对数给出 \(1\)-上链（势），其外微分给出 \(2\)-上链（曲率），而缺陷/相对熵为曲率在相应分布下的可观测平均。
+
+\begin{definition}[纤维势与曲率 \(2\)-上链]\label{def:pom-bc-fiber-potential-curvature}
+对任意满射 \(h:U\twoheadrightarrow V\)，定义纤维势 \(1\)-上链（在 \(U\) 上的函数）
+\[
+A_h(u):=\log d_h(h(u)),\qquad u\in U.
+\]
+对任意可复合满射 \(f:X\twoheadrightarrow Y\)、\(g:Y\twoheadrightarrow Z\)，定义曲率 \(2\)-上链（在 \(X\) 上的函数）
+\[
+\Omega_{f,g}(x):=\log d_{g\circ f}(g(f(x)))-\log d_g(g(f(x)))-\log d_f(f(x)),\qquad x\in X.
+\]
+\end{definition}
+
+\begin{proposition}[Radon--Nikodym 精确表达式]\label{prop:pom-bc-radon-nikodym-curvature}
+在定理 \ref{thm:pom-bc-amgm-defect-identity} 的设定下，令 \(P=L_fL_g\nu\)、\(Q=L_{g\circ f}\nu\)。
+则对一切 \(x\in X\) 有点态恒等式
+\[
+\boxed{\;\log\frac{P(x)}{Q(x)}=\Omega_{f,g}(x)\;}
+\]
+且右端仅由纤维基数 \(d_f,d_g,d_{g\circ f}\) 决定，与 \(\nu\) 无关。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:pom-bc-amgm-defect-identity} 的计算式
+\(
+P(x)=\nu(z)/(d_g(z)d_f(y))
+\)、
+\(
+Q(x)=\nu(z)/d_{g\circ f}(z)
+\)
+（其中 \(y=f(x)\)、\(z=g(y)\)），相除取对数即得。
+\end{proof}
+
+\begin{corollary}[缺陷作为曲率的可观测平均]\label{cor:pom-bc-kl-as-curvature-average}
+沿用命题 \ref{prop:pom-bc-radon-nikodym-curvature} 的记号，则
+\[
+\boxed{\;
+D_{\mathrm{KL}}(P\|Q)=\mathbb E_{X\sim P}\bigl[\Omega_{f,g}(X)\bigr].\;}
+\]
+\end{corollary}
+\begin{proof}
+由相对熵定义 \(D_{\mathrm{KL}}(P\|Q)=\sum_x P(x)\log\frac{P(x)}{Q(x)}\)，代入命题 \ref{prop:pom-bc-radon-nikodym-curvature} 即得。
+\end{proof}
+
+\begin{proposition}[曲率的上同调闭性与离散 Bianchi 恒等式]\label{prop:pom-bc-bianchi}
+令 \(\mathbf{Surj}\) 的 nerve 上的上链微分 \(\delta\) 作用于 \(1\)-上链 \(A\) 的典型形式为
+\[
+(\delta A)_{f,g}(x):=A_g(f(x))+A_f(x)-A_{g\circ f}(x).
+\]
+则在定义 \ref{def:pom-bc-fiber-potential-curvature} 下有点态恒等式
+\[
+\boxed{\;\Omega_{f,g}=-\,(\delta A)_{f,g}\;}
+\]
+从而 \(\delta\Omega=0\)；等价地，对任意可复合三元组
+\(
+X\xrightarrow{f}Y\xrightarrow{g}Z\xrightarrow{h}W
+\)
+在 \(X\) 上成立离散 Bianchi 恒等式
+\[
+\Omega_{g,h}(f(x))-\Omega_{g\circ f,h}(x)+\Omega_{f,h\circ g}(x)-\Omega_{f,g}(x)=0.
+\]
+\end{proposition}
+\begin{proof}
+由定义，
+\[
+A_g(f(x))+A_f(x)-A_{g\circ f}(x)
+=\log d_g(g(f(x)))+\log d_f(f(x))-\log d_{g\circ f}(g(f(x))),
+\]
+故 \(\Omega_{f,g}=-(\delta A)_{f,g}\)。
+再由 \(\delta^2=0\) 得 \(\delta\Omega=-\delta^2A=0\)，将其展开即为所示 Bianchi 恒等式。
+\end{proof}
+
+\begin{theorem}[广义离散 Stokes 公式（满射 nerve 上的链--上链配对）]\label{thm:pom-bc-discrete-stokes}
+取 \(\mathbf{Surj}\) 的任意有限子复形并在其上取链群 \(C_\bullet\) 与上链群 \(C^\bullet\)。
+对 \(2\)-链 \(\Sigma\in C_2\) 与曲率上链 \(\Omega\in C^2\) 的自然配对记作 \(\langle\Omega,\Sigma\rangle\)。
+则有
+\[
+\boxed{\;\langle \Omega,\Sigma\rangle=-\langle A,\partial\Sigma\rangle\;}
+\]
+其中 \(A\) 为纤维势 \(1\)-上链、\(\partial\) 为链边界算子。
+特别地，若 \(\partial\Sigma=0\)，则 \(\langle\Omega,\Sigma\rangle=0\)。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-bc-bianchi} 有 \(\Omega=-\delta A\)，故
+\(
+\langle\Omega,\Sigma\rangle=-\langle\delta A,\Sigma\rangle
+\)。
+由 \(\delta\) 与 \(\partial\) 的伴随关系（链--上链配对的定义）得
+\(
+\langle\delta A,\Sigma\rangle=\langle A,\partial\Sigma\rangle
+\)，从而得到结论。
+\end{proof}
+
+\begin{theorem}[投影塔上的全局平坦性判据：乘法纤维结构的充要条件]\label{thm:pom-bc-tower-flatness}
+给定满射塔
+\[
+X_0 \xrightarrow{f_1} X_1 \xrightarrow{f_2} \cdots \xrightarrow{f_n} X_n,
+\qquad F:=f_n\circ\cdots\circ f_1.
+\]
+对任意 \(\nu\in\Delta(X_n)\) 定义
+\[
+P_{\mathrm{seq}}:=L_{f_1}L_{f_2}\cdots L_{f_n}\nu\in\Delta(X_0),\qquad
+P_{\mathrm{tot}}:=L_F\nu\in\Delta(X_0).
+\]
+则对任意 \(x_0\in X_0\)，令 \(x_i=f_i(x_{i-1})\)（\(1\le i\le n\)），有点态恒等式
+\[
+\boxed{\;
+\log\frac{P_{\mathrm{seq}}(x_0)}{P_{\mathrm{tot}}(x_0)}
+=\log d_F(x_n)-\sum_{i=1}^n \log d_{f_i}(x_i)\; }.
+\]
+并且下列命题等价：
+\begin{enumerate}
+  \item 对所有 \(\nu\in\Delta(X_n)\) 皆有 \(P_{\mathrm{seq}}=P_{\mathrm{tot}}\)；
+  \item 对所有 \(x_0\in X_0\) 皆有 \(d_F(x_n)=\prod_{i=1}^n d_{f_i}(x_i)\)；
+  \item 对每一相邻对 \((f_i,f_{i+1})\) 有 \(\Omega_{f_i,f_{i+1}}\equiv 0\)（点态为零）；
+  \item 对每个 \(i\) 与每个 \(x_{i+1}\in X_{i+1}\)，函数 \(d_{f_i}(\cdot)\) 在 \(f_{i+1}^{-1}(x_{i+1})\subset X_i\) 上为常数。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由均匀提升的定义反复展开可得
+\(
+P_{\mathrm{seq}}(x_0)=\nu(x_n)\big/\prod_{i=1}^n d_{f_i}(x_i)
+\)、
+\(
+P_{\mathrm{tot}}(x_0)=\nu(x_n)\big/d_F(x_n)
+\)，相除取对数即得首个恒等式。
+\par
+\((1)\Leftrightarrow(2)\) 由点态恒等式立得。
+\((2)\Leftrightarrow(3)\) 由 \(\Omega\) 的定义与对数加性展开并作归纳即得。
+\((3)\Leftrightarrow(4)\) 由 \(\Omega_{f_i,f_{i+1}}\equiv 0\) 等价于
+\(
+d_{f_{i+1}\circ f_i}(x_{i+1})=d_{f_{i+1}}(x_{i+1})\,d_{f_i}(x_i)
+\)
+对所有 \(x_i\in f_{i+1}^{-1}(x_{i+1})\) 成立，而左端仅依赖 \(x_{i+1}\)，从而迫使 \(d_{f_i}\) 在每个 \(f_{i+1}\)-纤维上常值；反向推理同理。证毕。
+\end{proof}
+
+\begin{proposition}[线性化严格函子性与规范平直化]\label{prop:pom-bc-linearized-functoriality}
+对任意满射 \(f:X\twoheadrightarrow Y\) 定义线性算子 \(U_f:\RR^Y\to\RR^X\) 与对角乘子 \(D_f:\RR^X\to\RR^X\)：
+\[
+(U_f\pi)(x):=\pi(f(x)),\qquad (D_f\varphi)(x):=d_f(f(x))\cdot \varphi(x).
+\]
+则对任意可复合 \(f,g\) 有严格等式 \(U_fU_g=U_{g\circ f}\)，并且在概率单纯形的线性延拓意义下
+\[
+\boxed{\;U_f=D_f\circ L_f.\;}
+\]
+因此，均匀提升的非函子性完全由对角归一化 \(D_f\) 的选择诱导；其曲率 \(2\)-上链由 \(\log D_f\) 的离散外微分给出，并在定理 \ref{thm:pom-bc-discrete-stokes} 的意义下对闭 \(2\)-链必然消失。
+\end{proposition}
+\begin{proof}
+逐点计算得
+\(
+(U_fU_g\pi)(x)=\pi(g(f(x)))=(U_{g\circ f}\pi)(x)
+\)，故 \(U_fU_g=U_{g\circ f}\)。
+另一方面，
+\(
+(D_fL_f\pi)(x)=d_f(f(x))\cdot \pi(f(x))/d_f(f(x))=\pi(f(x))=(U_f\pi)(x)
+\)，从而 \(U_f=D_f\circ L_f\)。
+最后一条断言由命题 \ref{prop:pom-bc-bianchi} 与定理 \ref{thm:pom-bc-discrete-stokes} 直接推出。证毕。
+\end{proof}
+
 \begin{theorem}[均匀提升的伪函子严格化：对角 \(2\)-态射的五边形一致性]\label{thm:pom-bc-uniform-lift-pseudofunctor}
 构造 \(2\)-范畴 \(\mathbf{Stoch}^{\times}\) 如下：
 \begin{itemize}
