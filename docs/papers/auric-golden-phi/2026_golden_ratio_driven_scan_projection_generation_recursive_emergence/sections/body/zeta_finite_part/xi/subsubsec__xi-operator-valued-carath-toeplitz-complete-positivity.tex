@@ -68,6 +68,95 @@ F_\pi(w)=\mathrm{i}\beta_\pi+\int_{\TT}\frac{\xi+w}{\xi-w}\,d\mu_\pi(\xi)
 同理，\(\mathbf{T}^{\mathcal{A}}_N(F)\succeq 0\) 当且仅当对所有 \(\pi\) 有 \(\pi(\mathbf{T}^{\mathcal{A}}_N(F))=\mathbf{T}_N(F_\pi)\succeq 0\)，从而得到 \((1)\Leftrightarrow(3)\)。证毕。
 \end{proof}
 
+\paragraph{算子值端点探针的 Hausdorff--Bochner 表示与完全单调性}
+端点热核探针在标量口径由 \S\ref{subsubsec:xi-endpoint-heat-kernel-probe-toeplitz} 给出；在算子值 Carath\'eodory 语义下，同一二项式模板可在块 Toeplitz 截断上定义为 \(\mathcal{A}\) 的正元，并进一步获得 \([0,1]\) 上的 \(\mathcal{A}\)-值 Hausdorff 矩表示，从而把“端点质量 \(-1\)”与“谱隙半径”统一组织为一个完全单调的正序列。
+
+\begin{definition}[块 Toeplitz 端点探针]\label{def:xi-operator-endpoint-probe}
+在定理 \ref{thm:xi-operator-herglotz-toeplitz-completeness} 的设定下，令 \(b^{(N)}\in\RR^{N+1}\) 为二项式系数向量
+\[
+b^{(N)}_k:=(-1)^k\binom{N}{k}\qquad(0\le k\le N),
+\]
+并把 \(b^{(N)}\otimes 1_{\mathcal{A}}\) 视为 \(M_{N+1,1}(\mathcal{A})\) 的列向量。
+定义端点探针为
+\begin{equation}\label{eq:xi-operator-endpoint-probe-def}
+\boxed{\;
+a_N:=4^{-N}\,(b^{(N)}\otimes 1_{\mathcal{A}})^\ast\,\mathbf{T}^{\mathcal{A}}_N(F)\,(b^{(N)}\otimes 1_{\mathcal{A}})\ \in\ \mathcal{A}_+.\;}
+\end{equation}
+若 \(\boldsymbol\mu\) 为 \eqref{eq:xi-operator-herglotz} 中的 \(\mathcal{A}\)-值正测度，则定义端点原子
+\[
+\mathbf{M}_{-1}:=\boldsymbol\mu(\{-1\})\in\mathcal{A}_+.
+\]
+\end{definition}
+
+\begin{theorem}[Hausdorff--Bochner 表示与完全单调差分]\label{thm:xi-operator-endpoint-probe-hausdorff-bochner-complete-monotone}
+在定义 \ref{def:xi-operator-endpoint-probe} 的记号下，存在一个 \(\mathcal{A}\)-值正测度 \(\boldsymbol\nu\) 于 \([0,1]\) 上，使得对一切 \(N\ge 0\) 成立
+\[
+\boxed{\;
+a_N=\int_{0}^{1}x^{N}\,d\boldsymbol\nu(x),\qquad
+\boldsymbol\nu(\{1\})=\mathbf{M}_{-1}.\;}
+\]
+并且序列 \(s_N:=a_N-\mathbf{M}_{-1}\in\mathcal{A}_+\) 在 \(\mathcal{A}_+\) 的正序中完全单调：对任意 \(N,k\ge 0\)，
+\[
+\boxed{\;(-1)^k\Delta^k s_N\in\mathcal{A}_+,\;}
+\]
+其中 \(\Delta\) 为向前差分算子。
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:xi-operator-herglotz} 与 \eqref{eq:xi-operator-carath-series} 的系数对齐，可取
+\(
+c_h=\int_{\TT}\xi^{-h}\,d\boldsymbol\mu(\xi)
+\)
+（\(h\in\ZZ\)），从而块 Toeplitz 截断满足逐项积分表示。
+将 \eqref{eq:xi-operator-endpoint-probe-def} 展开并用与命题 \ref{prop:xi-endpoint-heat-probe-toeplitz-herglotz-identity} 同型的二项式恒等式
+\(
+\sum_{k=0}^{N}b^{(N)}_k\xi^{k}=(1-\xi)^N
+\)，得到
+\[
+a_N=\int_{\TT}\left(\frac{|1-\xi|^{2}}{4}\right)^{N}\,d\boldsymbol\mu(\xi).
+\]
+令 \(r(\xi):=\frac{|1-\xi|^2}{4}\in[0,1]\)，并定义推前测度 \(\boldsymbol\nu:=r_\#\boldsymbol\mu\)（即 \(\boldsymbol\nu(E):=\boldsymbol\mu(r^{-1}(E))\)），则
+\(
+a_N=\int_{0}^{1}x^N\,d\boldsymbol\nu(x)
+\)。
+由于 \(r(\xi)=1\iff \xi=-1\)，故 \(\boldsymbol\nu(\{1\})=\boldsymbol\mu(\{-1\})=\mathbf{M}_{-1}\)。
+最后，
+\[
+(-1)^k\Delta^k(a_N-\mathbf{M}_{-1})
+=\int_{[0,1)}x^{N}(1-x)^{k}\,d\boldsymbol\nu(x)\ \in\ \mathcal{A}_+,
+\]
+由 \(\boldsymbol\nu\) 的正性即得。证毕。
+\end{proof}
+
+\begin{proposition}[逐态谱维数的下包络规律]\label{prop:xi-statewise-endpoint-dimension-lower-envelope}
+在定理 \ref{thm:xi-operator-endpoint-probe-hausdorff-bochner-complete-monotone} 的设定下，令 \(s_N:=a_N-\mathbf{M}_{-1}\in\mathcal{A}_+\)。
+假设对每个态 \(\omega\) 都存在指数 \(d_{-1}(\omega)\ge 0\) 使得
+\[
+\omega(s_N)\asymp N^{-d_{-1}(\omega)/2}\qquad(N\to\infty).
+\]
+则对任意有限凸组合 \(\omega=\sum_{i=1}^{M}t_i\omega_i\)（\(t_i>0,\sum t_i=1\)）有
+\[
+\boxed{\;d_{-1}(\omega)=\min_{1\le i\le M}d_{-1}(\omega_i).\;}
+\]
+从而 \(d_{-1}\) 由其在纯态集上的取值经“取最小值”唯一确定；任何全态一致的下界核验可约化为纯态核验。
+\end{proposition}
+\begin{proof}
+令 \(x_N:=s_N\)。
+由假设，存在常数 \(c_i^\pm>0\) 与 \(N_0\) 使对所有 \(N\ge N_0\) 成立
+\[
+c_i^-N^{-d_{-1}(\omega_i)/2}\le \omega_i(x_N)\le c_i^+N^{-d_{-1}(\omega_i)/2}.
+\]
+写 \(d_{\min}:=\min_i d_{-1}(\omega_i)\)，取达到最小值的某个 \(i_\ast\) 得
+\(
+\omega(x_N)\ge t_{i_\ast}c_{i_\ast}^-N^{-d_{\min}/2}
+\)；
+另一方面由于对所有 \(i\) 有 \(N^{-d_{-1}(\omega_i)/2}\le N^{-d_{\min}/2}\)，故
+\(
+\omega(x_N)\le (\sum_i t_ic_i^+)N^{-d_{\min}/2}
+\)。
+由两侧幂律夹逼唯一性得到 \(d_{-1}(\omega)=d_{\min}\)。
+纯态约化由有限维 \(C^\ast\)-代数的态空间为纯态闭凸包（有限维 Krein--Milman）得到。证毕。
+\end{proof}
+
 \paragraph{Fourier--Pontryagin 分解：逐通道 PSD 与完全正块 PSD}
 在 \(\mathcal{A}=\CC[H]\)（有限群代数）情形，\eqref{eq:xi-A-peter-weyl} 可取为群代数的 Peter--Weyl 分解；
 若 \(H\) 为有限阿贝尔群，则进一步退化为 Fourier--Pontryagin 对偶分解 \(\CC[H]\cong \CC[\widehat H]\)（对角化）。
