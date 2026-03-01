@@ -82,6 +82,7 @@ def _check_p7_s7_witness() -> CheckResult:
     expr_q2 = sp.expand(P7_q2.as_expr())
 
     degs_mod23 = _factor_degrees_mod(expr_q2, L, 23)
+    fac_mod5 = sp.factor(expr_q2, modulus=5)
     disc_q2 = int(sp.discriminant(P7_q2, L))
     disc_fac = sp.factorint(disc_q2)
     v5 = _v_p(disc_q2, 5)
@@ -93,6 +94,7 @@ def _check_p7_s7_witness() -> CheckResult:
         details={
             "P7_q2": str(expr_q2),
             "factor_degrees_mod_23": degs_mod23,
+            "factor_mod_5": str(fac_mod5),
             "disc_q2": str(disc_q2),
             "disc_q2_factorint": {str(k): int(v) for k, v in disc_fac.items()},
             "v_5_disc_q2": v5,
@@ -224,11 +226,12 @@ def _check_discriminant_D_s17_certificate() -> CheckResult:
     disc_id_ok = sp.factor(disc_L + 4 * q * D) == 0
 
     degs_mod157 = _factor_degrees_mod(D, q, 157)
+    degs_mod29 = _factor_degrees_mod(D, q, 29)
     disc_D = int(sp.discriminant(sp.Poly(D, q, domain=sp.ZZ), q))
     v929 = _v_p(disc_D, 929)
     gcd_deg_mod929 = _gcd_degree_mod(D, q, 929)
 
-    ok = disc_id_ok and (degs_mod157 == [17]) and (v929 == 1) and (gcd_deg_mod929 == 1)
+    ok = disc_id_ok and (degs_mod157 == [17]) and (degs_mod29 == [14, 3]) and (v929 == 1) and (gcd_deg_mod929 == 1)
     return CheckResult(
         ok=ok,
         details={
@@ -236,8 +239,58 @@ def _check_discriminant_D_s17_certificate() -> CheckResult:
             "disc_identity_ok": bool(disc_id_ok),
             "D": str(D),
             "factor_degrees_mod_157": degs_mod157,
+            "factor_degrees_mod_29": degs_mod29,
             "v_929_disc_D": v929,
             "gcd_degree_mod_929": gcd_deg_mod929,
+        },
+    )
+
+
+def _check_projective_infty_tacnode_and_infty_fiber() -> CheckResult:
+    x, t = sp.symbols("x t")
+    L, q = sp.symbols("Lambda q")
+    P7 = _P7(L, q)
+
+    H = sp.expand(x**7 * t**2 * P7.subs({L: 1 / x, q: 1 / t}))
+
+    # Weighted initial form at (x,t)=(0,0) with w(x)=1, w(t)=2.
+    poly_xt = sp.Poly(H, x, t, domain=sp.ZZ)
+    min_w = None
+    init = 0
+    for (ex, et), coeff in poly_xt.terms():
+        w = int(ex) + 2 * int(et)
+        if min_w is None or w < min_w:
+            min_w = w
+            init = 0
+        if w == min_w:
+            init += coeff * x ** int(ex) * t ** int(et)
+    init = sp.expand(init)
+
+    init_fac = sp.factor(init)
+
+    H_t = sp.diff(H, t)
+    H_t0 = sp.Poly(sp.expand(H_t.subs(t, 0)), x, domain=sp.ZZ)
+    H0 = sp.Poly(sp.expand(H.subs(t, 0)), x, domain=sp.ZZ)
+
+    # Identify the cubic factor governing the three finite-Lambda points over q=∞.
+    cubic = sp.Poly(x**3 - 4 * x**2 + 4 * x - 6, x, domain=sp.ZZ)
+    # Check H(x,0) equals -x^4 * cubic.
+    infty_fiber_ok = sp.expand(H0.as_expr() + x**4 * cubic.as_expr()) == 0
+    # Check those three points are not critical for the projection (Ht != 0 there): gcd(cubic, Ht(x,0))=1.
+    gcd_ok = sp.gcd(cubic, H_t0).degree() == 0
+
+    ok = (sp.expand(init - (t**2 - 5 * t * x**2 + 6 * x**4)) == 0) and infty_fiber_ok and gcd_ok
+    return CheckResult(
+        ok=ok,
+        details={
+            "H": str(H),
+            "weighted_initial_form_wx1_wt2": str(init),
+            "weighted_initial_form_factor": str(init_fac),
+            "H_x0_t0": str(H0.as_expr()),
+            "infty_fiber_factor_cubic": str(cubic.as_expr()),
+            "infty_fiber_factorization_ok": bool(infty_fiber_ok),
+            "Ht_x_t0": str(H_t0.as_expr()),
+            "gcd_cubic_Ht0_is_1": bool(gcd_ok),
         },
     )
 
@@ -255,6 +308,7 @@ def main() -> None:
     hyp = _check_hyperelliptic_model()
     f_s10 = _check_f_s10_certificate()
     disc_s17 = _check_discriminant_D_s17_certificate()
+    infty = _check_projective_infty_tacnode_and_infty_fiber()
 
     out = {
         "schema_version": 1,
@@ -263,8 +317,9 @@ def main() -> None:
             "hyperelliptic_model_Y2_eq_f": asdict(hyp),
             "f_galois_S10_certificate": asdict(f_s10),
             "DiscLambda_P7_identity_and_D_galois_S17_certificate": asdict(disc_s17),
+            "projective_infty_tacnode_and_infty_fiber_certificate": asdict(infty),
         },
-        "overall_ok": bool(p7_s7.ok and hyp.ok and f_s10.ok and disc_s17.ok),
+        "overall_ok": bool(p7_s7.ok and hyp.ok and f_s10.ok and disc_s17.ok and infty.ok),
     }
 
     jout = Path(args.json_out)

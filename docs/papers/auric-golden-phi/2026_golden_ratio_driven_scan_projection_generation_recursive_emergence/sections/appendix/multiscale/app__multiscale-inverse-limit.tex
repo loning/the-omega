@@ -24,6 +24,87 @@
 在若干几何接口（例如有限覆盖塔、solenoid 型逆极限与多尺度胞腔分解）中，还需要一个与逆塔相容的\emph{归一化积分口径}：
 它把“层间覆盖次数的膨胀”吸收到同一个可审计的标度中，使得积分型不变量在逆系统中保持层无关性。
 
+\begin{theorem}[高秩 solenoid 的 Pontryagin 复原与 Stokes 周期模块的完全性]\label{thm:app-high-rank-solenoid-pontryagin-stokes-period-module}
+该结论与后续用于归一化逆塔 Stokes 口径的离散周期表述一致，参见 \cite{Internal2026HighRankStokesSolenoidPontryaginCompleteness}。
+设 \(r\ge 1\) 并取一列整数矩阵 \(B_0,B_1,B_2,\dots\in M_r(\ZZ)\) 满足 \(|\det B_n|\ge 2\)。
+令
+\[
+\TT^r:=\RR^r/\ZZ^r,\qquad
+f_{B_n}:\TT^r\to\TT^r,\quad [x]\mapsto [B_nx],
+\]
+并定义逆极限紧连通交换群
+\[
+\mathcal S:=\varprojlim\bigl(\TT^r\xleftarrow{f_{B_0}}\TT^r\xleftarrow{f_{B_1}}\TT^r\xleftarrow{f_{B_2}}\cdots\bigr).
+\]
+记累积矩阵 \(A_0:=I_r\)、\(A_n:=B_{n-1}\cdots B_0\)（\(n\ge 1\)），并定义 Stokes 周期模块
+\[
+\Pi_{\mathrm{St}}(\mathcal S)
+:=
+\bigcup_{n\ge 0}(A_n^{\mathsf T})^{-1}\ZZ^r\ \subset\ \QQ^r,
+\]
+右端视为离散加法群。
+则成立：
+\begin{enumerate}
+  \item 存在自然同构
+  \[
+  \widehat{\mathcal S}:=\mathrm{Hom}_{\mathrm{cont}}(\mathcal S,\TT)\ \cong\ \Pi_{\mathrm{St}}(\mathcal S).
+  \]
+  \item 对任意两组数据 \((B_n)\)、\((B'_n)\) 所得 solenoid \(\mathcal S,\mathcal S'\)，有
+  \[
+  \mathcal S\cong \mathcal S'
+  \quad\Longleftrightarrow\quad
+  \Pi_{\mathrm{St}}(\mathcal S)\cong \Pi_{\mathrm{St}}(\mathcal S')
+  \]
+  （右侧为抽象交换群同构）。
+  更具体地，若将两者都嵌入 \(\QQ^r\) 的满秩子群，则上述同构等价于存在 \(Q\in\GL_r(\QQ)\) 使
+  \[
+  Q^{\mathsf T}\Pi_{\mathrm{St}}(\mathcal S)=\Pi_{\mathrm{St}}(\mathcal S').
+  \]
+  \item 当 \(r=1\) 时，\(\Pi_{\mathrm{St}}(\mathcal S)=\bigcup_{n\ge 0}\frac1{A_n}\ZZ\subset\QQ\)，与秩一逆塔覆盖下的周期模块刻画一致。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+回忆 \(\widehat{\TT^r}\cong\ZZ^r\)：任取 \(k\in\ZZ^r\)，字符 \(\chi_k:\TT^r\to\TT\) 由
+\[
+\chi_k([x])=[k^{\mathsf T}x]\quad(\mathrm{mod}\ \ZZ)
+\]
+给出。
+对覆盖 \(f_{B_n}\)，其对偶同态为
+\[
+\widehat{f_{B_n}}:\widehat{\TT^r}\to\widehat{\TT^r},\qquad k\mapsto B_n^{\mathsf T}k,
+\]
+从而对偶系统为直极限
+\(
+\varinjlim\bigl(\ZZ^r\xrightarrow{B_0^{\mathsf T}}\ZZ^r\xrightarrow{B_1^{\mathsf T}}\cdots\bigr)
+\)。
+Pontryagin 对偶把逆极限送到直极限，故
+\[
+\widehat{\mathcal S}\ \cong\ \varinjlim\bigl(\ZZ^r\xrightarrow{B_0^{\mathsf T}}\ZZ^r\xrightarrow{B_1^{\mathsf T}}\cdots\bigr).
+\]
+\par
+将该直极限显式嵌入 \(\QQ^r\)：把第 \(n\) 层的 \(\ZZ^r\) 中元素 \(v\) 送入 \((A_n^{\mathsf T})^{-1}v\in\QQ^r\)。
+若 \(v\in\ZZ^r\) 与 \(v'\in\ZZ^r\) 在直极限中相等，则存在 \(m\ge n,n'\) 使
+\(
+A_{m,n}^{\mathsf T}v=A_{m,n'}^{\mathsf T}v'
+\)
+（其中 \(A_{m,n}:=B_{m-1}\cdots B_n\)），从而在 \(\QQ^r\) 中
+\[
+(A_n^{\mathsf T})^{-1}v
+=(A_m^{\mathsf T})^{-1}A_{m,n}^{\mathsf T}v
+=(A_m^{\mathsf T})^{-1}A_{m,n'}^{\mathsf T}v'
+=(A_{n'}^{\mathsf T})^{-1}v'.
+\]
+因此该映射良定义，其像正是 \(\bigcup_{n\ge 0}(A_n^{\mathsf T})^{-1}\ZZ^r\)。
+反之，任取 \(u\in(A_n^{\mathsf T})^{-1}\ZZ^r\)，可写为 \(u=(A_n^{\mathsf T})^{-1}v\) 且 \(v\in\ZZ^r\)，其等价类来自直极限第 \(n\) 层。
+于是 \(\widehat{\mathcal S}\cong \Pi_{\mathrm{St}}(\mathcal S)\)，得 (1)。
+\par
+(2) 由 Pontryagin 对偶的反变等价性：紧交换群同构当且仅当其对偶离散群同构。
+因此 \(\mathcal S\cong\mathcal S'\iff \widehat{\mathcal S}\cong\widehat{\mathcal S'}\iff \Pi_{\mathrm{St}}(\mathcal S)\cong \Pi_{\mathrm{St}}(\mathcal S')\)。
+当把两者视为 \(\QQ^r\) 的满秩子群时，任一抽象群同构可延拓为 \(\QQ\)-线性同构，从而由某个 \(Q\in\GL_r(\QQ)\) 表示，得到所述具体化。
+(3) 由定义直接化简得到。证毕。
+\end{proof}
+
 \begin{theorem}[有限覆盖逆塔的归一化广义斯托克斯公式]\label{thm:app-normalized-stokes-finite-cover-inverse-tower}
 令 \(\bigl((M_n,\pi_n)\bigr)_{n\ge 0}\) 为一列定向紧致光滑 \(m\)-维带角流形（允许边界与角），其中
 \[

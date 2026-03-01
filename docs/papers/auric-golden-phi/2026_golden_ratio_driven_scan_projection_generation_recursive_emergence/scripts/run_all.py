@@ -401,6 +401,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_stokes_defect_haar_mixing_audit",
+            script="exp_fold_stokes_defect_haar_mixing_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_stokes_defect_haar_mixing_audit.json",
+            ],
+        ),
+        Step(
             name="conclusion_zeckendorf_15_16_family_lock_audit",
             script="exp_conclusion_zeckendorf_15_16_family_lock_audit.py",
             args=[],
