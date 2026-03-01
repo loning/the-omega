@@ -1,0 +1,64 @@
+\section{Observer as Parameterized Readout Operator and Adaptive Update}
+
+\subsection{Readout Operator Family (D7.1)}
+
+Model the observer as a readout operator family with parameter $\theta\in\Theta$:
+\[
+\mathcal{R}_{\theta}:\ (\sigma,u_t)\mapsto Y_t,
+\]
+where $\theta$ can include: window kernel $K_{\varepsilon}$, physical-space kernel $\phi_{\delta}$, partition $\mathcal{P}$, window length $m$, and sampling mechanism, etc. The stabilized output $x_t$ is viewed as a class of normalized coordinates of $Y_t$.
+
+\begin{assumption}[Fixed Bandwidth in Main Text]\label{assump:m6-fixed-framework}
+Unless otherwise stated, the main text fixes $m=6$ and $\Fold=\Fold_6$.
+\end{assumption}
+
+Under the fixed-bandwidth calibration, rigorously formulate the ``observer--spacetime duality'' as operator--image correspondence: let $q_6$ be finite-window readout of length $6$, $\Pi_{\theta}$ be the factor map induced by geometric selection, internal phase, and toroidal scanning/bipartition; then we can write
+$$
+\mathcal{R}_{\theta,6}=\Fold_6\circ q_6\circ \Pi_{\theta},
+$$
+and objectify the visible ``spacetime image'' as $\mathrm{Im}(\mathcal{R}_{\theta,6})$ and its induced structures (transition kernel, reachability graph, and cylinder-set condition structures).
+
+\subsection{Multi-Scale Consistency: Readout Factorization and Cross-Scale Compatibility Calibration (D7.1$^\ast$)}
+
+When comparing outputs with different window lengths $m$, ``consistency'' must be precisely defined as cross-scale compatibility, not raw output equality. Set $X_m^{\mathrm Z}$ as the Zeckendorf stable type space of length $m$. For $m_2\ge m_1$, take the natural restriction projection
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z}\to X_{m_1}^{\mathrm Z},
+\]
+whose action is to truncate the low-resolution part of the stable type (finite bit-index range/finite prefix).
+
+\begin{assumption}[Scale Compatibility (Readout Factorization)]\label{assump:framework-scale-factorization}
+For any $m_2\ge m_1$, the readout operator family satisfies
+\[
+\pi_{m_2\to m_1}\circ \mathcal{R}_{\theta,m_2}=\mathcal{R}_{\theta,m_1}\qquad (\mu\text{-a.e. or pointwise}).
+\]
+\end{assumption}
+
+Under this calibration, outputs at larger $m$ reproduce the outputs at smaller $m$ when projected to smaller $m$; differences only manifest as longer prefixes and the finer condition structures induced thereby.
+
+\subsection{Adaptive Update and Feedback Loop (H7.2)}
+
+To characterize measurement protocol updates with data feedback, adopt the replaceable assumption:
+\[
+\theta_{t+1}=\mathcal{U}(\theta_t,Y_t),
+\]
+where $\mathcal{U}$ can be defined by rules such as minimizing prediction error, minimizing inconsistency, or constrained projection. If the objective function satisfies standard convergence conditions, the parameter sequence can converge to a fixed point or attractor (relevant technical conditions and common forms are in Appendix \ref{app:adaptive}).
+
+\subsection{Scanning with Non-Local Kernel and Correlation Bounds (D7.3, T7.3)}
+
+If readout has non-local response with respect to protocol time, it can be written as
+\[
+Y_t=\sum_{\tau\in\ZZ} G_{\theta_t}(\tau)\,\mathcal{S}(\sigma,u_{t+\tau}),
+\]
+where $G_{\theta_t}$ is the response kernel. Define the ``forward weight''
+\[
+\Gamma_+(t):=\sum_{\tau>0}\abs{G_{\theta_t}(\tau)}.
+\]
+Then the intensity of ``future affecting past conditional correlation'' between any two time points is at most controlled by $\Gamma_+(t)$ in the norm sense, and decays as the kernel becomes more localized. This conclusion is a general linear system inequality template; its verifiability consists in: changing the apparatus response function should systematically modulate the correlation intensity (Section \ref{sec:falsifiable}).
+
+\subsection{Internal Gauge Fiber Extension (\texorpdfstring{$\mathrm{SU}(3)$}{SU(3)})}
+
+The six-dimensional hyperspace dimension in this paper is used only for rank-$6$ geometrically closed representation; internal gauge degrees of freedom are incorporated via fiber extension without raising the hyperspace rank. Let the geometric state space be $\Sigma_{\mathrm{geo}}$, introduce the internal fiber $\mathcal{V}\cong\CC^3$, and take the extended state space $\Sigma\subseteq\Sigma_{\mathrm{geo}}\times\mathcal{V}$. Let $G=\mathrm{SU}(3)$ act on $\mathcal{V}$, and prescribe that the readout protocol factors through gauge equivalence classes: there exists
+$$
+(\Sigma_{\mathrm{geo}}\times\mathcal{V})/G\to X_6^{\mathrm Z},
+$$
+such that any observable output depends only on gauge-invariant information.

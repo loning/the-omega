@@ -1,0 +1,149 @@
+\section{Fourth Register Counter-Proof Framework: Untypability of Radial Mode}\label{sec:fourth-register}
+
+\subsection{Radial mode and additional degrees of freedom}
+By Proposition \ref{prop:critical-line-unitary-slice}, the critical line corresponds to $\abs{u_L(s)}=1$. If we consider offcritical points where $\Re(s)\neq\tfrac12$, then $\abs{u_L(s)}\neq 1$, necessitating introduction in the parameter domain of
+$$
+u=re^{i\theta},\qquad r\neq 1,
+$$
+i.e., additional radial degrees of freedom $\rho:=\log r$. However, in the normalization closure of Section \ref{prop:critical-line-unitary-slice}, the visible continuous parameter axis is only $\theta$; the radial parameter is not within the visible axis unless the state space is explicitly extended and an additional register introduced to carry $\rho$ (this paper calls it the fourth register).\par
+
+From the perspective of conformal/hyperbolic geometry invariants, radial offset corresponds to conjugation-invariant hyperbolic displacement length, thus cannot be absorbed by conjugation and constant-layer strictification containing only angle variables; this geometric characterization is consistent with unitary slice certificate type extension propositions in Appendix \ref{app:phase-compactification-register-unification}.\par
+
+From "compression geometry" perspective, offcritical-line displacement necessarily corresponds to some radial degrees of freedom: once $\Re(s)\neq\tfrac12$, we have $\abs{u_L(s)}\neq 1$, i.e., $u$ must fall on the radial mode of $\{re^{i\theta}:r\neq 1\}$. Thus under the semantics of three-register closure permitting only unitary slice (boundary phase axis), this radial degree of freedom is likewise untypable.\par
+
+More formally: in certificate verification procedures of unitary slice, auditable address domain is strongly typed to
+$$
+\Addr_{\mathrm{US}}=\{(L,\theta,p)\}
+$$
+(Appendix \ref{app:inject-code-audit}), so any assertion requiring explicit dependence on $\rho$ cannot be expressed in the existing certificate type system; to make it certificatable, one must extend certificate types to carry $\rho$, equivalent in register semantics to introducing additional continuous register (see Section \ref{sec:conclusion-cluster}, Theorem \ref{thm:cc-fourth-register-certs}).\par
+
+\subsection{Algebraic obstacle: divisible groups and free abelian structure incompatibility}\label{subsec:fourth-register-divisible}
+The above "certificate type extension" provides the mechanism-layer rejection chain for fourth register. We now provide an independent algebraic obstacle: even if radial information is allowed to be written to arbitrary coordinates of prime-register, as long as the group completion of prime-register remains free abelian structure, non-trivial divisible degrees of freedom cannot be losslessly carried.\par
+
+\paragraph{Group-theoretic ontology of radial mode}
+The complex multiplicative group decomposes as
+$$
+\CC^\times\cong \RR_{>0}\times \TT,
+$$
+where $\TT$ is phase (unitary slice) and $\RR_{>0}$ is radial mode. In three-register closure, the phase register carries visible continuous parameters of $\TT$; the group completion of prime-register is
+$$
+P^\times:=\ZZ^{(\mathcal{P})},
+$$
+which is the free abelian group with primes as base (finite-support integer exponent vectors).\par
+On the other hand, the radial group $\RR_{>0}$ is isomorphic via logarithm to $(\RR,+)$, thus possessing divisibility.\par
+
+\begin{definition}[Divisible abelian group]\label{def:divisible-group}
+An abelian group $D$ is called \textbf{divisible} if for any $d\in D$ and any positive integer $n\ge 1$, the equation $nx=d$ always has a solution $x\in D$ in $D$.\par
+\end{definition}
+
+\begin{theorem}[Free abelian groups have no non-zero divisible subgroups]\label{thm:free-abelian-no-divisible}
+Let $F\cong \ZZ^{(I)}$ be a free abelian group (finite-support integer vectors). Then any divisible subgroup of $F$ must be trivial; equivalently, if $D$ is a non-zero divisible abelian group, there exists no injective homomorphism $D\hookrightarrow F$.\par
+\end{theorem}
+
+\begin{proof}
+Take $0\neq f\in F$. Since $f$ has only finite support, we can view its non-zero coordinates as a set of integers and take their greatest common divisor as $g\ge 1$. Choose any $n\ge 2$ with $n\nmid g$ (e.g., take $n=g+1$). If $nx=f$ has solution $x\in F$, then each coordinate of $x$ must be the corresponding coordinate divided by $n$ as an integer, so $n$ must divide all coordinates and divide their greatest common divisor $g$, a contradiction. Thus $f$ is not a divisible element. Since $f\neq 0$ was arbitrary, the only divisible element of $F$ is $0$, so any divisible subgroup can only be trivial. This completes the proof.\par
+\end{proof}
+
+\begin{corollary}[Algebraic necessity of fourth register]\label{cor:fourth-register-divisible}
+If semantics require carrying a non-trivial radial divisible degrees of freedom (e.g., $\RR_{>0}$ or its divisible subgroup $\exp(\QQ)$), and require preserving its (multiplicative) group structure, then this degree of freedom cannot be losslessly internalized within the prime-register group completion $P^\times$. Thus the radial mode leaving unitary slice either triggers additional register expansion (fourth register), or is type-rejected and reads $\NULL$ within three-register closure.\par
+\end{corollary}
+
+\begin{remark}[Correspondence with budget lower bounds]\label{rem:fourth-register-budget-link}
+If allowing finite-bit approximation of compactified coordinates to carry radial degrees of freedom, then the "necessity" of fourth register can be quantified as prime-register budget lower bounds: the error $\epsilon$ of compactified coordinates and radial parameter $x$ will force at least
+$$
+\log_2(1/\epsilon)+\log_2(1+x^2)
+$$
+magnitude additional certificate bits (Theorem \ref{thm:cc-radial-bit-lowerbound}), and when carried by prime-register, transcodes to linear lower bounds of $\mathrm{Bud}_P(r)$ (Corollary \ref{cor:cc-radial-prime-budget}). Thus "fourth register" can be derived both from group-theoretic obstacles preserving structure and from budget lower bounds of certificatable precision load.\par
+\end{remark}
+
+\subsection{Quantitative obstacles: precision potential, error amplification, and fixed-precision boundedness}\label{subsec:fourth-register-quantitative}
+This section advances "radial degrees of freedom untypability" from structural rejection to \textbf{auditable quantitative lower bounds}: even if compactifying radial degrees of freedom to bounded coordinates, if precision indices are globally bounded, the addressable radial domain must be bounded.\par
+
+\begin{definition}[Compactified coordinates and precision potential]\label{def:radial-compactification-potential}
+Take compactified coordinates
+$$
+\upsilon(x):=\frac{1}{\pi}\arctan(x)\in\Bigl(-\frac12,\frac12\Bigr),
+\qquad
+\vartheta(x):=2\arctan(x)\in(-\pi,\pi),
+$$
+and denote Cayley embedding
+$$
+\iota(x):=e^{i\vartheta(x)}=\frac{1+ix}{1-ix}\in\TT.
+$$
+Then
+$$
+\frac{\dd\upsilon}{\dd x}=\frac{1}{\pi(1+x^2)}.
+$$
+Define the precision potential (information ledger term)
+$$
+P(x):=-\log\Bigl|\frac{\dd\upsilon}{\dd x}\Bigr|=\log\pi+\log(1+x^2).
+$$
+This potential function characterizes: as $|x|$ grows, the final-bit precision of compactified coordinates must grow by $\log(1+x^2)$ magnitude to maintain repeatable auditable single-valued read (see Section \ref{sec:conclusion-cluster}, Section \ref{subsubsec:cc-dual-phase-compactification}, and Appendix \ref{app:phase-compactification-register-unification}).\par
+\end{definition}
+
+\begin{proposition}[Error amplification law (Jacobian)]\label{prop:radial-error-amplification}
+Let $x\in\RR$ and carry radial information via compactified coordinate $u=\upsilon(x)$. If the certificate approximation error of $u$ satisfies $|\tilde u-u|\le\delta$, then all candidate $x'$ compatible with this certificate form the interval
+$$
+I_\delta(x)=[\upsilon^{-1}(u-\delta),\upsilon^{-1}(u+\delta)].
+$$
+Moreover, on the bounded domain $|x|,|x'|\le X$, compactification error on the real axis is amplified at most by the Jacobian: if $x'=\upsilon^{-1}(u')$ and $|u'-u|\le\delta$, then
+$$
+|x'-x|\ \le\ \pi(1+X^2)\,\delta.
+$$
+\end{proposition}
+
+\begin{proof}
+By $\upsilon(x)=\pi^{-1}\arctan(x)$ and intermediate value theorem, there exists $\xi$ between $x$ and $x'$ such that
+$$
+|u'-u|=|\upsilon(x')-\upsilon(x)|=\frac{1}{\pi(1+\xi^2)}|x'-x|.
+$$
+When $|x|,|x'|\le X$ we have $1+\xi^2\le 1+X^2$, yielding the stated inequality. This completes the proof.\par
+\end{proof}
+
+\begin{theorem}[Radial addressable domain is bounded under fixed precision]\label{thm:radial-addressability-bounded}
+Let the radial parameter $x\in\RR$ be certificated only via $n$-bit binary approximation of compactified value $\upsilon(x)$ (i.e., $|\tilde u-\upsilon(x)|\le 2^{-n}$), and require repeatable auditable single-valued read with absolute error not exceeding $\epsilon\in(0,1]$. Then the necessary condition is (see Theorem \ref{thm:cc-radial-bit-lowerbound})
+$$
+n\ \ge\ \log_2\Bigl(\frac{1}{\epsilon}\Bigr)+\log_2(1+x^2)+\log_2(4\pi),
+$$
+so the addressable radial domain under given $(n,\epsilon)$ must be a bounded set: any $x$ covered by this precision certificate satisfies
+$$
+|x|\ \le\ \sqrt{\frac{2^{n}\epsilon}{4\pi}-1}.
+$$
+In particular, there exists no uniform finite precision index $n$ capable of certificating all $x\in\RR$ within fixed error bounds; exceeding requires degenerating to multi-valued/non-auditable and triggers $\NULL$.\par
+\noindent\textnormal{\textbf{Depends on:} compactified coordinates and precision potential (Definition \ref{def:radial-compactification-potential}), and radial certificate capacity lower bounds (Theorem \ref{thm:cc-radial-bit-lowerbound}).}\par
+\end{theorem}
+
+\begin{proof}
+The first formula is a direct application of Theorem \ref{thm:cc-radial-bit-lowerbound}. Rewriting yields
+$$
+2^n \ge (1/\epsilon)(1+x^2)(4\pi),
+$$
+i.e.,
+$$
+1+x^2\le 2^n\epsilon/(4\pi),
+$$
+thus obtaining the stated upper bound.\par
+\end{proof}
+
+\begin{remark}[Quantitative meaning of fourth register]
+Theorem \ref{thm:radial-addressability-bounded} provides quantitative characterization of "fourth register": if we want to incorporate radial degrees of freedom leaving unitary slice into the auditable object domain, we must either allow precision indices to grow with reasoning (paying precision potential ledger), or introduce additional record-axis factor to carry endpoint precision load ($r_{\mathrm{end}}$ in Theorem \ref{thm:record-axis-four-factor}); otherwise full-domain addressability cannot be realized under uniform finite precision.\par
+\end{remark}
+
+\subsection{Double-checker rejection: root intervals and strictification}
+Under unitary slice mechanism, the system can realize two classes of rejection mechanisms:
+\begin{enumerate}
+  \item Root interval checker: reduces the completed object to algebraic object and outputs mechanically auditable root interval certificates; its core is transcoding "zero on critical line" to roots of some polynomial satisfying interval or unit circle criteria (e.g., unitary-root/interval root criteria in Appendix \ref{app:xi-certificate-layer} and proof-carrying templates in Appendix \ref{app:godel-wsos-rouche}).
+  \item Constant-layer strictification checker: allowed counterterms can only absorb finite-part anomalies in constant layer without changing main scale/pole structure; if radial dependence changes main scale, it cannot be absorbed by strictification and must be carried by additional register.
+\end{enumerate}
+Both checkers jointly establish the rejection chain "untypable $\Rightarrow \NULL$". More concretely, "critical-line zeros" can be reduced to polynomial root criteria: there exists completed polynomial $P_L$ such that "zero on critical line" is equivalent to "all roots in $[-2,2]$" or "on unit circle", thus providing repeatable algebraic certificate discrimination criteria; while strictification's allowed class is restricted to constant-layer translation of anomaly signatures, not changing exponential main scale.\par
+
+\subsection{Fourth register proposition}
+\begin{proposition}[Fourth register requirement]\label{prop:fourth-register-need}
+Under three-register closure (scale $S_\varphi$, phase $T$, prime $P$), the existing auditable certificate type system permits only single-parameter input $\theta$ of unitary slice. Thus, any offline zero certificate requiring $\abs{u_L(s)}\neq 1$ radial mode (i.e., needing explicit dependence on $\rho=\log\abs{u}$) must extend certificate types and expand visible parameter domain to carry $\rho$; this extension fails the double checker, so the certificate is untypable in the closure and reads $\NULL$.\par
+\end{proposition}
+
+\begin{proof}
+If the certificate requires $\abs{u_L(s)}\neq 1$, its auditing must depend on both $\theta$ and $\rho=\log\abs{u}$. By closure constraint of Section \ref{prop:critical-line-unitary-slice} that "visible axis is only $\theta$", $\rho$ cannot be expressed in the existing mechanism unless state is extended and register added. For this extension: the root interval checker judges it violating unit circle/interval root conditions; the strictification checker judges it failing constant-layer absorption of radial dependence. Failure of either leads to untypability; by existence semantics the read is null.\par
+\end{proof}
+
+This proposition provides a reusable counter-proof framework: if some object tries to introduce radial mode $\abs{u}\neq 1$ while preserving self-dual completion form, it inevitably triggers additional degrees of freedom requirements and degenerates to $\NULL$ under three-register auditing closure.\par

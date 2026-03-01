@@ -1,0 +1,132 @@
+\section{Appendices}
+
+\subsection{Appendix A: Notation and Stratification Convention}
+\label{app:notation}
+
+\begin{itemize}
+  \item $\mathcal{L}=\ZZ^6$: six-dimensional lattice; $\sigma:\mathcal{L}\to\mathcal{A}$: finite information coloring.
+  \item $E_{\parallel}\oplus E_{\perp}$: 3-3 decomposition; $\pi_{\parallel},\pi_{\perp}$: orthogonal projections.
+  \item $W\subset E_{\perp}$: window; $u$: internal phase; $\Lambda(W,u)$: model set.
+  \item $K_{\varepsilon}$: internal kernel; $\phi_{\delta}$: physical kernel; $\Psi_{\varepsilon,u}$, $\psi_{\varepsilon,u}$, $I_{\varepsilon,u}$: amplitude/intensity readout.
+  \item $\theta_t$: toroidal factor phase; $\omega_t$: binary readout; $\omega_t^{(m)}$: window word of length $m$.
+  \item $X_m$: Zeckendorf legal language; $\Fold_m$: stabilization kernel; $\mathcal{F}_m(x)$: time fiber.
+  \item (D/T/H/I) are labels for definitions/theorems/assumptions/semantic-mapping respectively.
+\end{itemize}
+
+\subsection{Appendix B: General Position and Statistical Invariants of Model Sets (Outline)}
+\label{app:general-position}
+
+\begin{enumerate}
+  \item \textbf{General position.} Zero measure of window boundary and non-degeneracy of projection ensure that for almost every $u$, the coincidence of $\pi_{\parallel}$ on the set of lattice points satisfying the window constraint is a zero-measure phenomenon, thus inducing well-defined labeling.
+  \item \textbf{Patch frequency.} Under the condition that the translation action on the hull satisfies unique ergodicity, patch frequency is invariant for typical $u$, and time-averaging equals space-averaging.
+  \item \textbf{Reproducibility interface.} Using patch frequency, two-point correlation, and diffraction spectral peaks as statistics, one can establish null hypotheses and confidence intervals for observational reproducibility.
+\end{enumerate}
+
+\subsection{Appendix C: Discrepancy and Recurrence Scale of Golden Branch (Operational Template)}
+\label{app:golden-branch}
+
+For one-dimensional rotation $\theta_{t+1}=\theta_t+\alpha\ (\mathrm{mod}\ 1)$:
+\begin{enumerate}
+  \item Convergent denominators $q_k$ of continued fractions control near-recurrence scale: $\abs{q_k\alpha-p_k}$ is minimal.
+  \item The golden branch corresponds to partial quotients constantly equal to $1$, $q_k$ is the Fibonacci sequence, thus near-recurrence scales naturally fall on Fibonacci hierarchy.
+  \item For numerical verification, we recommend using $q_k$ as segmentation scale to compute autocorrelation peaks and discrepancy bounds, and compare with random/periodic controls.
+\end{enumerate}
+
+\subsection{Appendix D: Complexity Verification Procedure for Sturmian Words}
+\label{app:sturmian-test}
+
+Given sample sequence $\omega_0,\dots,\omega_{N-1}$, for $1\le n\le n_{\max}$:
+\begin{enumerate}
+  \item Enumerate all subwords of length $n$;
+  \item Compute cardinality $p(n)$;
+  \item Use the deviation curve $p(n)-(n+1)$ as verification statistic;
+  \item Compare full-scale deviation structure against periodic and Bernoulli control sequences as null models.
+\end{enumerate}
+
+\subsection{Appendix E: Zeckendorf Legal Language Counting and Construction of \texorpdfstring{$\Fold_m$}{Fold\_m}}
+\label{app:zeckendorf-fold}
+
+\paragraph{E.1 Counting Theorem Proof}
+Let $a_m=|X_m|$. Decompose by highest bit:
+\begin{itemize}
+  \item If the first bit is $0$, remainder is arbitrary legal word: $a_{m-1}$;
+  \item If the first bit is $1$, the second bit must be $0$, remainder is arbitrary legal word: $a_{m-2}$.
+\end{itemize}
+Thus the recurrence is $a_m=a_{m-1}+a_{m-2}$, with $a_1=2,a_2=3$, hence $a_m=F_{m+2}$.
+
+\paragraph{E.2 Local Rewriting System of $\Fold_m$ (Illustrative)}
+View $w\in\{0,1\}^m$ as a non-canonical representation on Fibonacci weights. Adopt a local rule set $\mathcal{R}$:
+\begin{itemize}
+  \item Core rule: when substring $011$ appears, rewrite as $100$ (corresponding to Fibonacci carry);
+  \item Boundary rule: for overflow at window endpoints, introduce external register or use truncation and count overflow toward degeneracy statistics.
+\end{itemize}
+Take the potential function as ``count of adjacent 1's''
+\[
+\Psi(w)=\#\{i: w_iw_{i+1}=1\}.
+\]
+Each rewriting strictly decreases $\Psi$, hence it terminates. Terminal state has no adjacent 1's, belongs to $X_m$. If two different terminal states correspond to the same weight value, it violates Zeckendorf unique representation, hence canonical form is unique.
+
+\subsection{Appendix F: Proof of Time Fiber Closure Fixed-Point Theorem}
+\label{app:closure-proof}
+
+For $S\subseteq\{0,1\}^m$, write $\Fold_m(S)=\{\Fold_m(w):w\in S\}\subseteq X_m$.
+\begin{enumerate}
+  \item Extensiveness: any $w\in S$ satisfies $w\in \Fold_m^{-1}(\Fold_m(w))\subseteq \Phi(S)$, thus $S\subseteq\Phi(S)$.
+  \item Monotonicity: if $S\subseteq T$, then $\Fold_m(S)\subseteq\Fold_m(T)$, taking preimages gives $\Phi(S)\subseteq\Phi(T)$.
+  \item Idempotence: $\Phi(\Phi(S))=\Fold_m^{-1}(\Fold_m(\Phi(S)))=\Fold_m^{-1}(\Fold_m(S))=\Phi(S)$.
+  \item Fixed-point characterization: if $\Phi(S)=S$, let $A=\Fold_m(S)$, then for any $x\in A$, $\mathcal{F}_m(x)\subseteq S$, thus $S=\bigcup_{x\in A}\mathcal{F}_m(x)$. The converse is obvious.
+\end{enumerate}
+
+\subsection{Appendix G: SMB Template Correspondence in This Framework}
+\label{app:smb}
+
+Let $(X,\mathcal{B},\mu,T)$ be an ergodic system and $\xi$ a finitely-generated partition. The cylinder set
+\[
+\xi^{(n)}=\bigvee_{k=0}^{n-1}T^{-k}\xi
+\]
+corresponds to length-$n$ history constraints. SMB gives: for $\mu$-almost every $x$,
+\[
+-\frac1n\log\mu(\xi^{(n)}(x))\to h_{\mu}(T,\xi)=h_{\mu}(T).
+\]
+In this paper, if the stabilized output $(x_t)$ is induced by some generating partition, then the measure decay rate of the ``history-consistent set'' aligns with entropy rate, thus we can define the temporal arrow as the direction of exponential contraction of posterior cylinder sets.
+
+\subsection{Appendix H: One Auditable Convergence Template for Adaptive Update}
+\label{app:adaptive}
+
+Take the objective as online prediction error
+\[
+\widehat J_t(\theta)=\abs{Y_t-\widehat Y_t(\theta)}^2.
+\]
+Adopt projected gradient update
+\[
+\theta_{t+1}=\Pi_{\Theta}\big(\theta_t-\gamma_t\nabla_{\theta}\widehat J_t(\theta_t)\big).
+\]
+Under Lipschitz gradient and Robbins--Monro step-size conditions, $\theta_t$ can converge to a neighborhood of the stable set in the mean-square sense. This template provides an audit interface for ``observer parameter plasticity'': given recorded data, one can verify whether errors monotonically decrease or whether feasibility constraints are maintained.
+
+\subsection{Appendix I: Feistel Construction of Reversible Microscopic Update (For Discrete Prototype)}
+\label{app:feistel}
+
+Let $Y_m=\{0,1\}^m$ and choose any round function $f:Y_m\to Y_m$. Define local transformation
+\[
+(h,c)\mapsto(h',c')=(c,\ h\oplus f(c)),
+\]
+where $\oplus$ is bitwise XOR. This mapping is invertible, with inverse transformation
+\[
+(c=h',\ h=c'\oplus f(h')).
+\]
+Hence global update composed of local Feistel and bit permutation is a permutation, thus preserves uniform distribution. This property supports the degeneracy spectrum frequency law in Section 8 as a null model conclusion amenable to exhaustive verification.
+
+\subsection{Appendix J: Implementation Details for Statistical Verification (Recommendations)}
+\label{app:tests}
+
+\begin{enumerate}
+  \item \textbf{Complexity budget.} All claims of ``low-complexity rigidity'' or ``minimal parameters'' need fixed search domains (window length, kernel families, integer coefficient ranges, etc.), and report uniqueness or optimality within that domain.
+  \item \textbf{Control null models.} Include at least three classes: periodic approximants (rational rotation numbers), Bernoulli sequences, and permutation models with the same marginal distribution.
+  \item \textbf{Identifiability.} For parameters such as kernel width $\varepsilon$, response kernel $G$, and partition $\mathcal{P}$, provide identifiability analysis from data to parameters or report non-identifiable intervals.
+  \item \textbf{Error budget.} Separately report finite-sample error, kernel truncation error, and model bias, avoid replacing structural verification with single fitting error.
+\end{enumerate}
+
+\subsection{Appendix K: References (For Journal Formatting)}
+\label{app:refs}
+
+The bibliographic entries cited in this paper appear in the bibliography table at the end (Bib\TeX{}).

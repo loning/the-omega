@@ -1,0 +1,99 @@
+\section{Stable Sectors, Type Folding, and Protocol-Layer Characterization}
+
+\subsection{Local Window and Microstate Space}
+
+For any time step $t$, consider a local readout window on the three-dimensional observable set $\Sigma_t$ (such as a finite neighborhood or fixed-length bit window). Abstract it as a binary microstate word of length $m$:
+\[
+\Omega_m:=\{0,1\}^{m},\qquad |\Omega_m|=2^{m}.
+\]
+This $\Omega_m$ should not be understood as true particle states, but rather as ``local symbolic microstates recordable after finite-resolution readout.''
+
+\subsection{Constraint Channel and Stable Type Set}
+
+Introduce a group of verifiable ``stable constraint channels'' to select type sets that maintain syntactic stability under protocol readout. To provide a computable prototype, this paper adopts the classical ``forbidden-word grammar'' paradigm: define the stable type set as
+\[
+X_m^{\mathrm Z}:=\Big\{w\in\{0,1\}^{m}:\ \text{does not contain substring }11\Big\}.
+\]
+This is a prototype finite-type subshift in symbolic dynamical systems. Its cardinality satisfies Fibonacci recursion:
+\[
+|X_m^{\mathrm Z}|=F_{m+2},
+\]
+where $F_{n}$ is the Fibonacci sequence ($F_1=F_2=1$). This cardinality can serve as a quantitative index of ``the capacity of types to sustain long-term stability under local constraints.''
+
+\subsection{Folding Map: From Microstates to Stable Types}
+
+Define a folding operator from microstates to stable types as
+\[
+\Fold_m:\Omega_m \twoheadrightarrow X_m^{\mathrm Z},
+\]
+whose action maps microstates that do not satisfy stable syntax to the nearest stable type via some standardized normalization rule. To ensure auditability, this paper provides in the appendix a canonical folding scheme based on Ostrowski/Zeckendorf representations, making $\Fold_m$ computable with explicit degenerate structure (different microstates can fold to the same stable type). The degenerate structure can be understood as ``equivalence classes arising from insufficient readout resolution.''
+
+\subsection{Multi-Scale Consistency (Inverse Systems/Inverse Limits): Resolution-Independent Unified Object}
+
+This subsection formalizes the meaning of ``the ontology and resolution $m$ are independent; results at different $m$ are consistent, only differing in precision'': $m$ does not change the ontological-layer object (the ontology exists on $\Sigma$), but only changes the coarsening degree of protocol-layer readout/folding; the ``sameness'' across $m$ should be understood as \textbf{compatibility/factorization}, rather than that output spaces for different $m$ are completely identical.
+
+\begin{definition}[Scale projection (truncation)]\label{def:static-pi}
+For any $m_2\ge m_1$, define the truncation map
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z}\to X_{m_1}^{\mathrm Z},\qquad
+\pi_{m_2\to m_1}(x_1,\dots,x_{m_2})=(x_1,\dots,x_{m_1}).
+\]
+\end{definition}
+
+\begin{lemma}[Well-definedness and Consistency]\label{lem:static-pi-basic}
+The map $\pi_{m_2\to m_1}$ is well-defined and surjective, satisfying
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+The forbidden-word constraint is local, so truncation preserves legality and is well-defined; any element of $X_{m_1}^{\mathrm Z}$ can be extended to an element of $X_{m_2}^{\mathrm Z}$ by padding zeros at the tail, hence surjectivity; consistency follows directly from the truncation definition.
+\end{proof}
+
+\begin{definition}[Infinite Zeckendorf Subshift]\label{def:static-XinfZ}
+Define the resolution-independent object
+\[
+X_\infty^{\mathrm Z}:=\{(x_i)_{i\ge 1}\in\{0,1\}^{\mathbb{N}}:\ x_ix_{i+1}=0\ \text{for all}\ i\ge 1\},
+\]
+and define the natural projection $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z}$ by $\pi_m^\infty((x_i)_{i\ge 1})=(x_1,\dots,x_m)$.
+\end{definition}
+
+\begin{theorem}[Inverse Limit Isomorphism (Scale Consistency)]\label{thm:static-inverse-limit}
+There exists a natural isomorphism
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z},
+\]
+and satisfies the commutation relation $\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty$ (for $m_2\ge m_1$).
+\end{theorem}
+
+\begin{proof}
+Infinite legal sequences yield a consistent family via their prefix families; consistent families are uniquely pasted together to infinite sequences by prefix compatibility; both constructions are mutually inverse and natural.
+\end{proof}
+
+\begin{assumption}[Readout Factorization (Scale Compatibility)]\label{assump:static-readout-factorization}
+When comparing folded outputs at different $m$, require the folding maps to be compatible under truncation: for original window readout $\omega^{(m)}$, taking the truncation $\omega^{(m_1)}$ when $m_2\ge m_1$, require
+\[
+\pi_{m_2\to m_1}\bigl(\Fold_{m_2}(\omega^{(m_2)})\bigr)=\Fold_{m_1}(\omega^{(m_1)}).
+\]
+\end{assumption}
+
+\subsection{Stable Types, Preimage Fibers, and Protocol-Layer Characterization}
+
+Under given resolution and constraint channel, a stable type $x\in X_m^{\mathrm Z}$ is the visible output; its preimage fiber
+\[
+\mathcal{F}_m(x)=\Fold_m^{-1}(x)\subseteq\Omega_m
+\]
+objectifies the residual indistinguishable differences under this resolution. The protocol-layer characterization of ``persistence/re-identifiability'' can be expressed through statistical stability of stable types under scan iterations (such as occurrence frequency, adjacency statistics, or defect budget control). Correspondingly:
+\begin{itemize}
+  \item ``Materiality'' in this paper is not stated as fundamental ontological-layer entity, but as protocol-layer \textbf{persistence and reproducibility of stable type statistics};
+  \item ``Interaction'' in this paper appears only as a protocol-layer testable interface: compensatory rules or connection structures needed to maintain cross-location/cross-scale consistency (such as constraint consistency conditions).
+\end{itemize}
+
+\subsection{Objectifying the ``Future'': Conditional Uncertainty and Posterior Contraction}
+
+For the stabilized visible process $(x_t)$, strictly objectify ``future'' as the uncertainty magnitude of the conditional distribution, such as conditional entropy
+\[
+H(x_{t+1}\mid x_{\le t}),
+\]
+or more generally the contraction degree of posterior cylinder set measures. This calibration places ``future'' within the observational-theory construction (conditioning/refinement) rather than reifying the unrecoverable remainder as a new ontological object.

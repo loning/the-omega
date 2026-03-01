@@ -1,0 +1,159 @@
+\section{POMmin: Minimal Axioms and Semantic Theorems}\label{sec:pommin}
+
+\subsection{The Axiom Set of POMmin}
+The minimal axioms of POMmin can be organized as follows (their formalized versions appear in Appendix \ref{app:pommin-formal}):
+\begin{enumerate}[label=(A\arabic*), ref=A\arabic*]
+  \item \label{ax:pommin-a1}
+  Define microstate space $\Omega_m$ and its probability simplex $\Delta(\Omega_m)$ using standard set-theoretic objects; POM does not replace set theory but rather uses it as the carrier for syntax and semantics.\par
+
+  \item \label{ax:pommin-a2}
+  Address primacy and undefined semantics: read is a partial function $\Read:\Addr\rightharpoonup \mathrm{ValDom}$; when read is undefined we denote it $\NULL$ ($\NULL\notin\mathrm{ValDom}$, and $\NULL\neq 0$).\par
+
+  \item \label{ax:pommin-a3}
+  Stable syntax $X_m$ and fold operator $\Fold_m:\Omega_m\twoheadrightarrow X_m$, satisfying canonicity, idempotence, and surjectivity, with auditable termination and confluence implementation (unique normal form).\par
+
+  \item \label{ax:pommin-a4}
+  Cross-resolution compatibility: there exist restriction maps $\rho_{m\to n}:X_m\to X_n$ ($m\ge n$), forming an inverse system and yielding inverse limit $X_\infty$, and fold commutes with resolution lowering.\par
+
+  \item \label{ax:pommin-a5}
+  Existence semantics: an object exists if and only if there exists an address producing a non-null value read.\par
+
+  \item \label{ax:pommin-a6}
+  Projection word (PW) certificate system: there exists a computable fragment with normal form and decidable equality mechanisms.\par
+
+  \item \label{ax:pommin-a7}
+  Prime-register lossless lifting: there exists injective lifting
+  $$
+  \widehat{\Fold}_m:\Omega_m\hookrightarrow X_m\times P
+  $$
+  such that projection onto $X_m$ agrees with $\Fold_m$.\par
+
+  \item \label{ax:pommin-a8}
+  Existence of minimal gate set and constructive maps: in the computable fragment, read, normalization, and certificate verification are executable.\par
+\end{enumerate}
+This axiom set forms the foundation of subsequent reasoning.\par
+
+\subsection{Resolution tower and "thumbnail" law: inverse limit consistency and prefix ultrametric}\label{subsec:thumbnail-inverselimit}
+Cross-resolution compatibility (Axiom \ref{ax:pommin-a4}) formalizes "scanning longer yields longer prefixes" as an inverse system structure: finite-resolution reads must be self-consistent under restriction maps, thus corresponding to finite truncations of some inverse limit element.\par
+
+\begin{theorem}[Scan prefix consistency $\Rightarrow$ inverse limit thumbnail consistency]\label{thm:thumbnail-inverselimit}
+Suppose for each $m\ge 1$ we have microstate $\omega^{(m)}\in\Omega_m$ satisfying prefix consistency: for any $m\ge n$,
+$$
+\pi_{m\to n}\!\left(\omega^{(m)}\right)=\omega^{(n)},
+$$
+where $\pi_{m\to n}:\Omega_m\to\Omega_n$ is truncation to first $n$ bits. Let
+$$
+x_m:=\Fold_m\!\left(\omega^{(m)}\right)\in X_m.
+$$
+Then the read family $\{x_m\}_{m\ge 1}$ projects consistently under restriction maps: for any $m\ge n$,
+$$
+\rho_{m\to n}(x_m)=x_n.
+$$
+Therefore there exists a unique inverse limit element $x_\infty\in X_\infty=\varprojlim_m X_m$ such that for all $m$,
+$$
+\pi_m(x_\infty)=x_m,
+$$
+where $\pi_m:X_\infty\to X_m$ is the $m$-th projection map of the inverse limit (equivalently, taking first $m$ bits).\par
+\end{theorem}
+
+\begin{proof}
+By "fold and restriction commute" from Axiom \ref{ax:pommin-a4}, for $m\ge n$ we have
+$$
+\rho_{m\to n}\circ \Fold_m=\Fold_n\circ \pi_{m\to n}.
+$$
+Therefore
+$$
+\rho_{m\to n}(x_m)
+=\rho_{m\to n}\!\left(\Fold_m(\omega^{(m)})\right)
+=\Fold_n\!\left(\pi_{m\to n}(\omega^{(m)})\right)
+=\Fold_n(\omega^{(n)})
+=x_n,
+$$
+establishing projection consistency. By definition of the inverse limit $X_\infty$, any consistent family $\{x_m\}$ satisfying $\rho_{m\to n}(x_m)=x_n$ uniquely corresponds to an element $x_\infty$, with $\pi_m(x_\infty)=x_m$. This completes the proof.\par
+\end{proof}
+
+\begin{corollary}[Cylinder diameter law under prefix ultrametric]\label{cor:ultrametric-cylinder-diameter}
+Define on $X_\infty$ the prefix ultrametric: for $x\neq y$, let
+$$
+k(x,y):=\max\bigl\{k\ge 0:\ \pi_k(x)=\pi_k(y)\bigr\}\in\NN,
+$$
+where we stipulate that $\pi_0(x)$ is the empty prefix (same for all $x$). Set $d(x,x)=0$ and $d(x,y)=2^{-k(x,y)}$ for $x\neq y$. For any $m$ and any $x_m\in X_m$, define the cylinder set
+$$
+U_m(x_m):=\{x\in X_\infty:\ \pi_m(x)=x_m\}.
+$$
+Then
+$$
+\mathrm{diam}\bigl(U_m(x_m)\bigr)\le 2^{-m}.
+$$
+In particular, if $x_\infty$ is the unique inverse limit element corresponding to $\{x_m\}$ in Theorem \ref{thm:thumbnail-inverselimit}, then $x_\infty\in U_m(x_m)$, and for any $x\in U_m(x_m)$ we have $d(x,x_\infty)\le 2^{-m}$.\par
+\end{corollary}
+
+\begin{proof}
+For any $x,y\in U_m(x_m)$, we have $\pi_m(x)=\pi_m(y)=x_m$, so $k(x,y)\ge m$, thus $d(x,y)\le 2^{-m}$, giving $\mathrm{diam}(U_m(x_m))\le 2^{-m}$. If $\pi_m(x_\infty)=x_m$, then $x_\infty\in U_m(x_m)$; by the same reasoning, from $k(x,x_\infty)\ge m$ we get $d(x,x_\infty)\le 2^{-m}$. This completes the proof.\par
+\end{proof}
+
+\subsection{An auditable canonical model}\label{subsec:canonical-model}
+To show that the above axiom set is consistent in ordinary set theory, this subsection provides a minimal, completely explicit model. This model is used only for "auditable consistency" and introduces no additional claims; subsequent theorems do not depend on the specialized details of this model.\par
+
+\paragraph{Address domain and mechanical decoding}
+Take the address domain as all finite binary strings
+$$
+\Addr:=\{0,1\}^{<\omega}.
+$$
+Define the partial decoding operator
+$$
+\mathrm{Dec}:\Addr\rightharpoonup \bigsqcup_{m\ge 1}\Omega_m
+$$
+as follows: for $a\in\Addr$, if $a$ can be uniquely written as $a=1^m 0\,\omega$ with $\omega\in\{0,1\}^m$, then let $\mathrm{Dec}(a)=\omega$; otherwise $\mathrm{Dec}(a)$ is undefined. This decoding process can be checked mechanically and explicitly distinguishes "undefined" from value domain elements.\par
+
+\begin{theorem}[Prefix-free and Kraft slackness of decodable addresses]\label{thm:canonical-prefixfree-kraft}
+Let
+$$
+\mathcal{L}:=\bigl\{\,1^m0\omega:\ m\ge 1,\ \omega\in\{0,1\}^m\,\bigr\}\subset \{0,1\}^{<\omega}=\Addr
+$$
+be the decodable language of the above $\mathrm{Dec}$, then:
+\begin{enumerate}
+  \item $\mathcal{L}$ is a prefix-free language;
+  \item Its Kraft sum satisfies
+  $$
+  \sum_{a\in\mathcal{L}}2^{-|a|}=\frac12.
+  $$
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(1)} Suppose $a=1^{m}0\omega$ and $b=1^{m'}0\omega'$, where $m,m'\ge 1$, $\omega\in\{0,1\}^{m}$, $\omega'\in\{0,1\}^{m'}$. If $m<m'$, then bit $(m+1)$ of $a$ is $0$ while bit $(m+1)$ of $b$ is $1$, so $a$ cannot be a prefix of $b$. Swapping $m,m'$ gives the same result; if $m=m'$, then $|a|=|b|$ and the strict prefix relation also cannot hold. Thus $\mathcal{L}$ is prefix-free.\par
+\textbf{(2)} For fixed $m$, there are $2^{m}$ words of the form $1^{m}0\omega$, each of length $|a|=2m+1$. Therefore
+$$
+\sum_{a\in\mathcal{L}}2^{-|a|}
+=\sum_{m\ge 1}2^{m}\cdot 2^{-(2m+1)}
+=\sum_{m\ge 1}2^{-(m+1)}
+=\frac12.
+$$
+This completes the proof.\par
+\end{proof}
+
+\begin{remark}[Structural interpretation: extensible coding margin]
+The Kraft sum in Theorem \ref{thm:canonical-prefixfree-kraft} is strictly less than 1, providing explicit "extensible margin": without breaking instantaneous decodability (prefix-free property), we can incorporate additional disjoint prefix code regions into the address space to carry self-describing packed information such as ledger-axes and certificates. This margin is a structural fact of the coding layer, not an implementation detail.\par
+\end{remark}
+
+\paragraph{Read and fold}
+For addresses satisfying $\mathrm{Dec}(a)=\omega\in\Omega_m$, define the read as
+$$
+\Read(a):=\Fold_m(\omega)\in X_m;
+$$
+for all other addresses let $\Read(a)$ be undefined and denote it $\NULL$ by convention. Here the concrete implementation of $\Fold_m$ comes from the local rewriting system in Appendix \ref{app:fold-rewriting}: its termination/confluence guarantees unique normal form, so $\Fold_m$ can be computed by a deterministic algorithm and satisfies Axiom \ref{ax:pommin-a3} (idempotence and surjectivity follow directly from "$\Fold_m(x)=x$ for $x\in X_m$" and "for any $x\in X_m$, taking $\omega=x$ gives its preimage").\par
+
+\paragraph{Cross-resolution and lifting}
+The restriction map $\rho_{m\to n}:X_m\to X_n$ takes the first $n$ bits; by locality of the fold rewriting rules, the "fold and resolution lowering commute" cross-resolution compatibility can be verified (details in Appendices \ref{app:pommin-formal} and \ref{app:fold-rewriting}). The prime-register lossless lifting $\widehat{\Fold}_m$ comes from the trajectory coding construction in Appendix \ref{app:prime-uplift}, satisfying Axiom \ref{ax:pommin-a7}.\par
+
+In summary, POMmin has at least one explicitly auditable model, so the combination "address prior to value—fold normalization—ledger-axis injectification—certificate auditing" is consistent under ordinary mathematics.\par
+
+\subsection{Semantic theorems: existence and addressability}
+\begin{proposition}[Existence semantics]\label{prop:existence-semantics}
+Under POMmin, if an object $O$ is declared to "exist" in the object domain, then there exists an address $a\in\Addr$ such that the partial function read $\Read(a)$ is \emph{defined} and $\Read(a)=O$ (equivalently: $\Read(a)\neq \NULL$).\par
+\end{proposition}
+
+\begin{proof}
+This proposition internalizes Axiom (A5): existence is defined via addressable read, not an additional inference.\par
+\end{proof}

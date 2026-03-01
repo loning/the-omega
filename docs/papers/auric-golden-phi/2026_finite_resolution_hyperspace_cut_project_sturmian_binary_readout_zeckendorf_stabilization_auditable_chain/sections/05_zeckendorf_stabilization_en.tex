@@ -1,0 +1,70 @@
+\section{Zeckendorf Steady State: Legal Language and Stabilization Kernel}
+
+\subsection{Zeckendorf Representation and Legal Language}
+
+\begin{definition}[Zeckendorf representation]\label{def:zeckendorf}
+Let the Fibonacci sequence be $F_1=F_2=1$, $F_{n+1}=F_n+F_{n-1}$. For any positive integer $N$, there exists a unique sequence $(c_k)_{k\ge 1}\subset\{0,1\}$ such that
+\[
+N=\sum_{k\ge 1} c_k F_{k+1},\qquad c_k c_{k+1}=0.
+\]
+Call $(c_k)$ the Zeckendorf digits of $N$.
+\end{definition}
+
+\begin{definition}[Zeckendorf legal language of length $m$]\label{def:zeckendorf-language}
+Let
+\[
+X_m^{\mathrm Z}:=\{x\in\{0,1\}^m:\ x\ \text{contains no subword}\ 11\}.
+\]
+Call $X_m^{\mathrm Z}$ the golden-mean admissible set.
+\end{definition}
+
+\begin{theorem}[Counting]\label{thm:zeckendorf-count}
+\[
+\card{X_m^{\mathrm Z}}=F_{m+2}.
+\]
+\end{theorem}
+
+\begin{remark}
+Proof outline is given in Appendix \ref{app:zeckendorf-fold} (recursion comes from decomposition by final bit being $0/1$ with no-adjacent constraint).
+\end{remark}
+
+\subsection{Definition and Properties of Stabilization Kernel}
+
+To compress the original binary window readout to the steady state space, we need a normalization map from $\{0,1\}^m$ to $X_m^{\mathrm Z}$.
+
+\begin{definition}[Stabilization kernel $\mathrm{Fold}_m$]\label{def:fold}
+For any $\omega=(\omega_1,\dots,\omega_m)\in\{0,1\}^m$, define its Fibonacci weighted value
+\[
+N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}.
+\]
+Let $(c_k)_{k\ge 1}$ be the Zeckendorf digits of $N(\omega)$. Define
+\[
+\mathrm{Fold}_m(\omega):=(c_1,\dots,c_m)\in X_m^{\mathrm Z}.
+\]
+\end{definition}
+
+\begin{theorem}[Well-definedness, Termination, and Canonicity]\label{thm:fold-properties}
+The map $\mathrm{Fold}_m$ is well-defined and satisfies:
+\begin{enumerate}
+  \item \textbf{(Canonicity)} $\mathrm{Fold}_m(\omega)\in X_m^{\mathrm Z}$;
+  \item \textbf{(Idempotence)} For all $x\in X_m^{\mathrm Z}$, we have $\mathrm{Fold}_m(x)=x$;
+  \item \textbf{(Surjectivity)} $\mathrm{Fold}_m$ as a map $\{0,1\}^m\twoheadrightarrow X_m^{\mathrm Z}$ is surjective.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}
+Proof outline is given in Appendix \ref{app:zeckendorf-fold}. Items 1--2 follow directly from Zeckendorf uniqueness; item 3 is obtained by taking $N=\sum_{k=1}^m x_k F_{k+1}$ for given $x\in X_m^{\mathrm Z}$.
+\end{remark}
+
+\subsection{Stabilization Output of Observation Process}
+
+\begin{definition}[Sliding window stabilization readout]\label{def:sliding-fold}
+Given a binary sequence $w=(w_t)$, define the window word of length $m$
+\[
+\omega_t^{(m)}:=(w_t,w_{t+1},\dots,w_{t+m-1})\in\{0,1\}^m.
+\]
+Define the stabilization output process
+\[
+x_t:=\mathrm{Fold}_m(\omega_t^{(m)})\in X_m^{\mathrm Z}.
+\]
+\end{definition}

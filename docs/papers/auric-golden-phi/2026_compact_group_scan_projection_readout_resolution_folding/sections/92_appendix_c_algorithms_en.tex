@@ -1,0 +1,29 @@
+\section{Appendix C: Algorithmic Descriptions (Pseudocode)}
+
+\subsection{C.1 Zeckendorf Greedy Normalization (for constructing $\Fold$)}
+
+\textbf{Input:} Non-negative integer $N$. \\
+\textbf{Output:} Zeckendorf digits $(c_k)\in\{0,1\}$ satisfying $N=\sum_{k\ge1}c_kF_{k+1}$ with $c_kc_{k+1}=0$.
+
+\begin{enumerate}
+  \item If $N=0$, return all zeros.
+  \item Generate Fibonacci weights $F_{k+1}$ until $F_{K+1}\le N<F_{K+2}$.
+  \item Initialize $c_k=0$.
+  \item For $k=K,K-1,\dots,1$:
+  \begin{itemize}
+    \item If $F_{k+1}\le N$, set $c_k=1$ and update $N\leftarrow N-F_{k+1}$; simultaneously skip the next position to enforce adjacent zeros.
+  \end{itemize}
+  \item Output $(c_k)$.
+\end{enumerate}
+
+\subsection{C.2 Construction of $\Fold_m$}
+
+Interpret the input string/index as a Fibonacci-weight representation, execute C.1 normalization to obtain Zeckendorf digit sequence, truncate the first $m$ positions as the output word of $\Fold_m$. This output naturally satisfies the no-adjacent-$1$'s constraint.
+
+\subsection{C.3 Discrepancy Certificate Computation (1D)}
+
+For point set $\{x_0,\dots,x_{N-1}\}$, sort to obtain $y_1\le\cdots\le y_N$. Then
+\[
+D_N^*=\max\Big\{\max_{1\le i\le N}\left(\frac{i}{N}-y_i\right),\ \max_{1\le i\le N}\left(y_i-\frac{i-1}{N}\right)\Big\}.
+\]
+For any $f$ (bounded variation), the deterministic certificate is given by $\big|N^{-1}\sum f(x_n)-\int f\big|\le\Var(f)D_N^*$.

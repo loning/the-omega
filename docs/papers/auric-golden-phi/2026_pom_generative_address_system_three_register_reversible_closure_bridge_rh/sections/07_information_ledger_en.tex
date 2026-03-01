@@ -1,0 +1,136 @@
+\section{Information Conservation: Lossless Lifting, Reversible Replay, and Information Ledger}\label{sec:ledger}
+
+\subsection{Many-to-one structure of fold and fiber counting}
+Fix $m$. The fold $\Fold_m:\Omega_m\twoheadrightarrow X_m$ is many-to-one. For $x\in X_m$ define the fiber size
+$$
+d_m(x):=\card{\Fold_m^{-1}(x)}.
+$$
+The "irreversibility" of fold is characterized by the non-triviality of $d_m(x)$, whose logarithm can be viewed as invisible capacity budget.\par
+
+\subsection{Pushforward and fiber-uniform lifting}
+Define the pushforward (macroscopic) operator
+$$
+P_m := (\Fold_m)_*:\Delta(\Omega_m)\to \Delta(X_m).
+$$
+For any $\pi\in\Delta(X_m)$, define fiber-uniform lifting
+$$
+Q_m\pi := \mu^e\in\Delta(\Omega_m),
+$$
+which is conditionally uniform on each fiber $\Fold_m^{-1}(x)$ and satisfies $P_m\circ Q_m=\mathrm{id}$. This dual relationship is the rigorous correspondence between "macroscopic histogram and microscopic maximum entropy lifting".\par
+
+\subsection{Information ledger identity}
+\begin{theorem}[Information ledger identity]\label{thm:ledger-identity}
+Take any $\mu\in\Delta(\Omega_m)$, denote its stable pushforward $\pi:=P_m\mu \in \Delta(X_m)$, and let $\mu^e:=Q_m\pi$ be the fiber-uniform lifting. Define Shannon entropy
+$$
+H(\nu):=-\sum_{s} \nu(s)\log \nu(s),
+$$
+and KL divergence
+$$
+D_{\mathrm{KL}}(\mu\|\nu):=\sum_{s} \mu(s)\log\frac{\mu(s)}{\nu(s)}.
+$$
+Then we have the strict identity
+$$
+H(\mu)=H(\pi)+\EE_{\pi}[\log d_m(X)]-D_{\mathrm{KL}}(\mu\|\mu^e).
+$$
+\par\noindent\textnormal{\textbf{Depends on:} definition of $d_m(x)$, construction of pushforward $P_m$ and fiber-uniform lifting $Q_m$, and KL expansion identity.}\par
+\end{theorem}
+
+\begin{proof}
+Expanding $D_{\mathrm{KL}}(\mu\|\mu^e)$ and using
+$$
+\mu^e(a)=\frac{\pi(x)}{d_m(x)},\qquad x=\Fold_m(a),
+$$
+grouping by fibers and identifying the terms $H(\pi)$ and $\EE_\pi[\log d_m(X)]$ yields the identity.\par
+\end{proof}
+
+This identity provides a three-term decomposition of "microscopic information": macroscopic entropy $H(\pi)$ is the stably visible part; the fiber volume term $\EE_\pi[\log d_m]$ is the invisible capacity budget; the KL residual term characterizes "intra-fiber non-uniformity" information offset from maximum entropy lifting. Standard references on notation and properties of entropy and divergence appear in \cite{CoverThomas2006}.\par
+
+\begin{corollary}[Maximum entropy lifting and strict meaning of "information non-loss"]\label{cor:maxent}
+For any $\mu\in\Delta(\Omega_m)$ and $\pi=P_m\mu$, we have
+$$
+H(\mu)\le H(\pi)+\EE_\pi[\log d_m(X)],
+$$
+with equality if and only if $\mu=\mu^e$ (i.e., conditionally uniform on each fiber).\par
+\end{corollary}
+
+\subsection{Prime fiber (prime-register) external residuals and lossless lifting}
+Fold as many-to-one projection necessarily loses "intra-fiber labels". POM's strategy is not to deny this loss, but rather to externalize it to an addressable residual space, making the overall evolution reversible on the extended space.\par
+
+\begin{definition}[Prime-carried residuals]\label{def:prime-residual}
+Any finite set can be embedded into finite-support prime power coordinates; thus the prime fiber $P$ (prime-register) can serve as a universal carrier axis, transferring fold fiber differences into addressable ontological coordinates, rewriting "information loss" as "cross-fiber storage".\par
+\end{definition}
+
+\begin{proposition}[Existence of lossless fold lifting]\label{prop:lossless-uplift}
+There exists an injection
+$$
+\widehat{\Fold}_m:\Omega_m\hookrightarrow X_m\times P
+$$
+satisfying
+$$
+\mathrm{pr}_{X_m}\circ\widehat{\Fold}_m = \Fold_m.
+$$
+\end{proposition}
+
+This proposition corresponds to Axiom (A7). One concrete construction encodes the trajectory of local operations in fold normalization as a prime exponent vector, recovering the microstate according to the inverse trajectory during replay (see Appendix \ref{app:prime-uplift}).\par
+
+\begin{remark}[Lower bound on residual size (explanatory)]
+Under the baseline of uniform random input, the number of prime axes that residuals need to activate generally has a linear lower bound; thus "information conservation" in certificated implementation is typically accompanied by non-negligible residual size.\par
+\end{remark}
+
+\subsection{Record-axis injectification and budget lower bounds (collision-induced undefined)}\label{subsec:injectivization-budget}
+To rewrite "losslessness" from ontological inverse mappings to auditable semantic objects, this paper employs record-axis injectification language: for many-to-one observations, externalize side information to make extended read injective.\par
+
+\begin{definition}[Record-axis and injectification extension]\label{def:record-axis-injectivization}
+Let observation be fold $\Pi=\Fold_m:\Omega_m\twoheadrightarrow X_m$. A mapping $r:\Omega_m\to R$ is called a \textbf{record-axis}; the corresponding extended observation is defined as
+$$
+\Pi^{\mathrm e}(\omega):=\bigl(\Pi(\omega),\,r(\omega)\bigr)\in X_m\times R.
+$$
+If $\Pi^{\mathrm e}$ is injective, then $r$ is said to \textbf{injectify} observation $\Pi$; at this point "lossless lifting" is rigorously understood as: there exists an auditable replayer recovering $\omega$ from $(\Pi(\omega),r(\omega))$ (see Proposition \ref{prop:lossless-uplift} and Appendix \ref{app:prime-uplift}).\par
+\end{definition}
+
+\begin{proposition}[Fiber criterion for injectification]\label{prop:injectivization-fiber-criterion}
+Record-axis $r$ injectifies $\Pi$ if and only if for any $x\in X_m$, its restriction
+$$
+r\!\restriction_{\Fold_m^{-1}(x)}
+$$
+is injective.\par
+\end{proposition}
+
+\begin{proof}
+$\Pi^{\mathrm e}$ equals on any two points $\omega_1,\omega_2$ if and only if $\Pi(\omega_1)=\Pi(\omega_2)$ and $r(\omega_1)=r(\omega_2)$. Fixing $x=\Pi(\omega_1)=\Pi(\omega_2)$, this is precisely equivalent to no collisions of $r$ on the fiber $\Pi^{-1}(x)$. This completes the proof.\par
+\end{proof}
+
+\begin{corollary}[Record budget lower bound: at least $\log d_m(x)$ per fiber]\label{cor:record-budget-lowerbound}
+If record-axis $r$ injectifies $\Pi=\Fold_m$, then for any $x\in X_m$ we have
+$$
+\card{r\!\left(\Fold_m^{-1}(x)\right)}\ \ge\ d_m(x),
+$$
+so any implementation encoding $r$ as finite bit strings must pay record budget of at least $\log_2 d_m(x)$ magnitude on that fiber. Conversely, if budget is insufficient to distinguish $d_m(x)$ intra-fiber microstates, then by pigeonhole principle collisions must occur, triggering "collision-induced undefined" ($\NULL$).\par
+\end{corollary}
+
+\begin{remark}[Orthogonality between resolution gain and distinguishability gain]
+Cross-resolution compatibility fixes "finite read" as cylinder constraints on the inverse limit: by Theorem \ref{thm:thumbnail-inverselimit} and Corollary \ref{cor:ultrametric-cylinder-diameter}, a resolution-$m$ read $x_m\in X_m$ is equivalent to restriction $x_\infty\in U_m(x_m)$, and the cylinder set has diameter satisfying $\mathrm{diam}(U_m(x_m))\le 2^{-m}$ under prefix ultrametric; thus the deterministic effect of "longer scanning" is shrinking the set of compatible inverse limit candidates to smaller diameter (resolution gain).\par
+On the other hand, the many-to-one nature of fold $\Fold_m$ is characterized by fiber size $d_m(x)$: even if resolution increases, if there still exist fibers with $d_m(x)>1$ under the given mechanism, then the thumbnail $x_m$ alone cannot enforce unique reversibility. Corollary \ref{cor:record-budget-lowerbound} says: eliminating this multiplicity requires introducing record-axis to injectify each fiber, paying side-information budget of at least $\log_2 d_m(x)$ bit magnitude on the corresponding fiber (distinguishability gain).\par
+Thus, in this paper's partial function read semantics, "longer scanning" and "stronger distinguishability" correspond to two logically orthogonal structural constraints: the former is controlled by the $2^{-m}$ law of cylinder diameter, the latter by record budget for fiber injectification; both are indispensable.\par
+\end{remark}
+
+\subsection{Structural synthesis: canonical four-factor record structure and mixed ledger}\label{subsec:four-factor-mixed-ledger}
+When coupled with unitary slice auditing, area-phase compactification, and other mechanisms, record-axis must be not only "large enough" but its \emph{structural type} is also under strict constraint. The following two structural theorems provide unified expressions of this paper's "record structure completeness" and "precision ledger" main lines (proofs and refinements in Appendices \ref{app:structural-synthesis-phase-diagram} and \ref{app:phase-compactification-register-unification}).\par
+
+\begin{theorem}[Canonical four-factor decomposition of minimal record-axis]\label{thm:record-axis-four-factor}
+When the observation chain simultaneously includes: \textbf{(A)} fold/cross-resolution projection, \textbf{(B)} strong single-parameter type auditing of unitary slice, \textbf{(C)} area-phase compactification and endpoint read, then any minimal record-axis satisfying extended conservation (making extended read injective) can be canonically decomposed in isomorphism sense into four mutually uncoupled factors:
+$$
+r\ \cong\ r_{\mathrm{fin}}\times r_{\widehat{\ZZ}}\times r_{\mathrm{wind}}\times r_{\mathrm{end}}.
+$$
+Here $r_{\widehat{\ZZ}}$ corresponds to profinite congruence/prime fiber channel, $r_{\mathrm{end}}$ corresponds to endpoint load (discrete endpoint branch memory $+$ continuous precision load), with the remaining two factors corresponding to finite defect and winding/period-fold compensation.\par
+\noindent\textnormal{\textbf{Depends on:} settings of observation chain (A)--(C) and definition of extended conservation; proof in Appendix \ref{app:structural-synthesis-phase-diagram}.}\par
+\end{theorem}
+
+\begin{theorem}[Mixed ledger of discrete$\times$continuous: minimal average record cost]\label{thm:mixed-ledger-mincost}
+Under decomposition of "discrete fold fiber multiplicity $\times$ continuous scale variable $X$ (via area-phase compactification $u=\upsilon(X)$)", the \textnormal{\textbf{minimal average record cost}} needed for extended conservation to make read injective satisfies an additive mixed conservation law
+$$
+\mathcal{R}_{\min}\ =\ \kappa_m(\pi_m)\ +\ \EE\bigl[P(X)\bigr],
+$$
+where $\pi_m$ denotes the discrete-side fold marginal distribution, $\kappa_m(\pi_m)$ is the induced average fiber logarithmic defect term; and $P(X)=\log\pi+\log(1+X^2)$ (where $\pi$ is pi) is the precision potential from area-phase compactification. Moreover, there exist canonical implementations simultaneously achieving this lower bound: on the discrete side use fiber-uniform lifting to make "non-uniformity debt" entirely borne by KL residual; on the continuous side employ parameter-free area-phase gates to make "tail debt" entirely borne by precision potential.\par
+\noindent\textnormal{\textbf{Depends on:} discrete-side ledger (fiber defect term of Theorem \ref{thm:ledger-identity}) and continuous-side precision potential (Definition \ref{def:radial-compactification-potential}); proofs and refinements in Appendices \ref{app:structural-synthesis-phase-diagram} and \ref{app:phase-compactification-register-unification}.}\par
+\end{theorem}

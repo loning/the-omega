@@ -1,0 +1,111 @@
+\section{Appendix}
+
+\subsection{Appendix A: Notation and Stratified Audit Summary}
+
+\begin{itemize}
+  \item $\Lambda=\ZZ^6$: Six-dimensional integer lattice phase backbone.
+  \item $\RR^6=E_{\parallel}\oplus E_{\perp}$: Observable three-dimensional subspace and complementary subspace decomposition.
+  \item $\pi_{\parallel},\pi_{\perp}$: Corresponding projections.
+  \item $W\subset E_{\perp}$: Compact acceptance window.
+  \item $u\in E_{\perp}$: Complementary phase offset (controllable parameter).
+  \item $\Sigma(u)=\{\pi_{\parallel}(n): n\in\Lambda,\ \pi_{\perp}(n)+u\in W\}$: Three-dimensional model set.
+  \item $t\in\ZZ_{\ge 0}$: Protocol time (scan iteration count).
+  \item $\Omega_m=\{0,1\}^m$: Binary microstate space of length $m$.
+  \item $X_m=\{w\in\{0,1\}^m:\text{does not contain }11\}$: Forbidden-word syntax stable type set.
+  \item $\Fold_m:\Omega_m\twoheadrightarrow X_m$: Folding map from microstates to stable types.
+  \item $\theta$: Readout protocol parameters (projection, window, kernel width, calibration, etc.).
+\end{itemize}
+
+Audit stratification:
+\begin{itemize}
+  \item Mathematical layer depends only on the above objects and explicit rules;
+  \item Identification layer proposes ``type--physical object'' correspondence and falsifiable propositions, which cannot be retroactively used as mathematical layer premises.
+\end{itemize}
+
+\subsection{Appendix B: Aperiodicity Conditions and Basic Properties of Cut-and-Project Model Sets}
+
+\subsubsection{B.1 Aperiodicity Conditions}
+
+If there exists $p\in E_{\parallel}\setminus\{0\}$ such that $\Sigma(u)+p=\Sigma(u)$, then $\Sigma(u)$ has a period. A sufficient condition is $E_{\parallel}\cap\Lambda\neq\{0\}$. Therefore, requiring
+\[
+E_{\parallel}\cap\Lambda=\{0\}
+\]
+can exclude translation periods induced by lattice directions. A stronger condition is that $\pi_{\perp}(\Lambda)$ is dense in $E_{\perp}$, making the complementary phase scan generate rich quasi-periodic deformations.
+
+\subsubsection{B.2 Phase Shift and Geometric Gliding}
+
+For $u,u'\in E_{\perp}$, the difference between $\Sigma(u)$ and $\Sigma(u')$ is determined by the point set satisfying
+\[
+\pi_{\perp}(n)+u\in W\ \ \text{while}\ \ \pi_{\perp}(n)+u'\notin W
+\]
+boundary crossing points. If $u'-u$ is sufficiently small, change concentrates near window boundary, exhibiting controllable ``gliding defect.'' This provides the geometric foundation for formulating ``agency'' as phase shift: changing $u$ does not change $\Lambda$, but changes which points are selected by the window, thus changing the three-dimensional observable structure.
+
+\subsection{Appendix C: Golden Sector, Sturmian Sequences, and Canonical Encoding Interface}
+
+\subsubsection{C.1 One-Dimensional Prototype: Sturmian Sequences and Minimal Complexity}
+
+Consider circle rotation $x_{t+1}=x_t+\alpha\ \mathrm{mod}\ 1$ and interval window $I=[0,\beta)$. Define binary sequence
+\[
+s_t=\ind_I(x_t).
+\]
+When $\alpha\notin\QQ$, $(s_t)$ is a Sturmian sequence with minimal factor complexity $p(n)=n+1$. This provides a canonical prototype for ``non-periodic minimal structure under finite-alphabet readout.''
+
+\subsubsection{C.2 Ostrowski/Zeckendorf Representation as Canonical Coordinate for Scan Time}
+
+For given irrational $\alpha$ and its continued fraction expansion, one can construct Ostrowski representation, such that each integer $t$ has a digit expansion subject to local rules; under specific sectors this representation degenerates to binary expansion with Fibonacci weights (Zeckendorf representation), carrying ``no adjacent $1$'' local syntax. This syntax matches the forbidden-word form of the stable type set $X_m$ in this paper, thus providing canonical interfacing between ``scan time--local stable type.''
+
+\subsection{Appendix D: Fibonacci Counting of Stable Type Sets and a Computable Folding Prototype}
+
+\subsubsection{D.1 Counting}
+
+Let $a_m:=|X_m|$. For binary strings of length $m$ with no adjacent $1$'s, strings ending in $0$ equal the count of legal strings of length $m-1$, and strings ending in $1$ must have preceding bit $0$, thus corresponding to any legal string of length $m-2$, with count $a_{m-2}$. Thus
+\[
+a_m=a_{m-1}+a_{m-2},\qquad a_1=2,\ a_2=3,
+\]
+hence $a_m=F_{m+2}$.
+
+\subsubsection{D.2 Folding Prototype (Canonical Rewriting)}
+
+Given arbitrary $s\in\Omega_m$, if substring ``11'' exists, local rewrite rules can convert it to a legal string (for example, replacing ``011'' with ``100'' and carry propagation to higher bits in a canonical normalization process). When using Fibonacci-weight canonical representation, this process matches Zeckendorf uniqueness: any integer can be uniquely written as a sum of non-adjacent weights. Thus one can construct a computable implementation of $\Fold_m$, satisfying:
+\begin{itemize}
+  \item Output is necessarily in $X_m$;
+  \item For all $w\in X_m$ there exists at least one $s$ such that $\Fold_m(s)=w$;
+  \item Preimage cardinality gives degenerate structure, serving as fingerprint for experimental re-encoding.
+\end{itemize}
+
+\subsection{Appendix E: Variational Update Template for Adaptive Observer}
+
+\subsubsection{E.1 Mismatch Functional}
+
+Given observation sequence $y_{0:t}$, let internal model give prediction distribution $Q_{\theta,u}(\cdot\mid y_{0:t-1})$. Define mismatch as
+\[
+\mathcal{J}(\theta,u;y_{0:t})
+=
+\sum_{\tau=1}^{t} \Big[-\log Q_{\theta,u}(y_{\tau}\mid y_{0:\tau-1})\Big]
+\;+\lambda\,\mathcal{C}(\theta,u),
+\]
+where $\mathcal{C}$ is a resource/stability penalty term, $\lambda\ge0$.
+
+\subsubsection{E.2 Approximate Gradient Update}
+
+If parameter space is differentiable, one can take
+\[
+(\theta_{t+1},u_{t+1})
+=
+(\theta_t,u_t) - \eta \nabla_{(\theta,u)} \mathcal{J}(\theta,u;y_{0:t}),
+\]
+where $\eta>0$ is step size. This update ensures under common regularity conditions that $\mathcal{J}$ decreases monotonically or decreases locally, thus providing ``protocol-driven motivation'': the reason for parameter change is reducing computable mismatch rather than external teleology.
+
+\subsubsection{E.3 Verifiable Consequences of Self-Reference}
+
+Closed-loop update introduces verifiable structure: when external disturbance increases or resource constraints tighten, the system may cross critical threshold and transition from stable-type maintenance region to defect accumulation region. This threshold can be detected via phase-transition-like behavior in stable-type fraction, defect rate, or predicted log-loss.
+
+\subsection{Appendix F: Data-Oriented Re-Encoding Workflow Suggestions (Executable Template)}
+
+\begin{enumerate}
+  \item \textbf{Geometry--sequentialization:} From observational records, construct local window sequences (length-$m$ binary or multi-valued symbol strings).
+  \item \textbf{Folding re-encoding:} Apply $\Fold_m$ to each window, obtaining stable type sequence.
+  \item \textbf{Degeneracy histogram:} Statistically count preimage cardinality for each stable type (or directly obtain theoretical preimage distribution via computable folding rules), compare experimental data with theoretical fingerprint.
+  \item \textbf{Phase-slip verification:} When controllably varying readout settings (changing $u$ or kernel width $\varepsilon$), compare whether stable type migration matrices satisfy accessible constraints given by the folding rule.
+  \item \textbf{Closed-loop stability verification:} If system permits feedback control, record evolution of $\mathcal{J}$ and stable-type fraction over time, locate convergence domains and phase transition boundaries.
+\end{enumerate}

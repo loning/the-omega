@@ -1,0 +1,104 @@
+\section{Multiscale Consistency, Visibility Projection, and Effective Dimension (Extension Layer)}
+
+This chapter divides into closed-layer definable structures and interpretation-layer propositions, with strict separation.
+
+\subsection{Multiscale Stabilization and Inverse Systems (Model Class Assumption)}
+
+To rigorously formalize ``ontology is resolution-$m$ independent; results at different $m$ are consistent only differing in detail,'' we need to provide natural cross-scale maps and organize stable types at various scales as an inverse system.
+
+\begin{definition}[Position-indexed Zeckendorf stable types]\label{def:XmZ-indexed-multiscale}
+To avoid notational ambiguity of ``higher/lower bit left or right,'' this paper represents stable types of length $m$ under multiscale semantics as position-indexed vectors
+\[
+X_m^{\mathrm Z,\#}:=\Bigl\{(x_k)_{2\le k\le m+1}\in\{0,1\}^{\{2,3,\dots,m+1\}}:\ x_kx_{k+1}=0\ \text{for all}\ 2\le k\le m\Bigr\}.
+\]
+For consistency with the representation $X_m^{\mathrm Z}\subset\{0,1\}^m$, we can take the isomorphism $(x_k)_{2\le k\le m+1}\mapsto (x_{m+1},x_m,\dots,x_2)$.
+\end{definition}
+
+\begin{definition}[Scale projection (restriction)]\label{def:pi-m2-m1-multiscale}
+For any $m_2\ge m_1$, define the restriction projection
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z,\#}\to X_{m_1}^{\mathrm Z,\#},\qquad
+\bigl(\pi_{m_2\to m_1}(x)\bigr)_k:=x_k\ \ (2\le k\le m_1+1).
+\]
+\end{definition}
+
+\begin{lemma}[Projection well-defined, surjective, and consistent]\label{lem:multiscale-pi-basic}
+The map $\pi_{m_2\to m_1}$ is well-defined and surjective, and satisfies
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+Restriction preserves local forbidden-word constraints, hence well-defined; any element of $X_{m_1}^{\mathrm Z,\#}$ can be extended to $X_{m_2}^{\mathrm Z,\#}$ by appending zeros to the tail, hence surjective; consistency follows from coordinate-wise definition.
+\end{proof}
+
+The system $\{X_m^{\mathrm Z,\#},\pi_{m_2\to m_1}\}$ forms an inverse system, allowing definition of an inverse limit object.
+
+\begin{definition}[Infinite Zeckendorf subshift]\label{def:XinfZ-multiscale}
+Define the resolution-independent object
+\[
+X_\infty^{\mathrm Z}:=\Bigl\{(x_k)_{k\ge 2}\in\{0,1\}^{\{2,3,\dots\}}:\ x_kx_{k+1}=0\ \text{for all}\ k\ge 2\Bigr\},
+\]
+and define the natural restriction projection $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z,\#}$ by $(\pi_m^\infty(x))_k:=x_k$ ($2\le k\le m+1$).
+\end{definition}
+
+\begin{theorem}[Inverse limit isomorphism (scale consistency)]\label{thm:multiscale-inverse-limit}
+There exists a natural isomorphism
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z,\#},
+\]
+satisfying the commutation relation
+\[
+\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty\qquad(m_2\ge m_1).
+\]
+\end{theorem}
+
+\begin{proof}
+Restriction prefixes of infinite sequences form a compatible family; compatible families are glued into infinite sequences by position-by-position concatenation; the two constructions are mutually inverse and natural.
+\end{proof}
+
+\begin{assumption}[Scale compatibility diagram (readout factorization)]\label{assump:scale-compatibility}
+For original window readout $\omega^{(m)}$, take the restriction (or equivalently truncation) $\omega^{(m_1)}$ when $m_2\ge m_1$, and require the stabilization kernel to satisfy the commutation relation
+\[
+\pi_{m_2\to m_1}\bigl(\mathrm{Fold}_{m_2}(\omega^{(m_2)})\bigr)=\mathrm{Fold}_{m_1}(\omega^{(m_1)}).
+\]
+This condition rigidifies the notion that ``high resolution projects to low resolution consistently''; it does not claim that original output spaces at different $m$ are identical, but rather provides a cross-scale compatibility caliber.
+\end{assumption}
+
+\subsection{Effective Dimension (Theorem-Layer Definition + Interpretation-Layer Discussion)}
+
+\begin{definition}[Entropy dimension of symbol visible space]\label{def:entropy-dimension}
+For length scale $m$, the full binary space has size $2^m$, stable state space has size $\card{X_m^{\mathrm Z}}=F_{m+2}$. Define the entropy dimension
+\[
+d_{\mathrm{ent}}:=\lim_{m\to\infty}\frac{\log \card{X_m^{\mathrm Z}}}{\log 2^m}
+=\lim_{m\to\infty}\frac{\log F_{m+2}}{m\log 2}
+=\frac{\log\varph}{\log 2}.
+\]
+This limit exists and is obtained from the Fibonacci asymptotics $F_{m}\sim \varph^m/\sqrt{5}$.
+\end{definition}
+
+\begin{remark}[Interpretation-layer proposition: candidate explanation of non-integer resource dimension]
+If we view ``the exponent of growth in distinguishable state count with resolution'' as protocol-meaning ``effective dimension,'' then $d_{\mathrm{ent}}$ provides a non-integer dimension index; its value is controlled by the golden ratio. This proposition only illustrates that protocol-layer visibility compression can exhibit fractal scaling, not constituting a theorem conclusion about geometric manifold dimension.
+\end{remark}
+
+\subsection{Visibility Projection and Golden-Ratio Existence State (Interpretation-Layer Proposition)}
+
+To avoid metaphysical expression, the following provides a verifiable formal framework in operator fixed-point language.
+
+\begin{definition}[Visibility projection]\label{def:visibility-projection}
+On finite window length $m$, define the visible subspace as
+\[
+\mathcal{H}^{(m)}_{\mathrm{vis}}:=\ell^2(X_m^{\mathrm Z}),\qquad
+\mathcal{H}^{(m)}_{\mathrm{raw}}:=\ell^2(\{0,1\}^m),
+\]
+and induce a linear map (pushforward operator) by the stabilization kernel
+\[
+(\mathcal{P}_m f)(x):=\sum_{\omega\in \mathcal{F}_m(x)} f(\omega).
+\]
+Define ``visibility'' as the component that remains distinguishable in the stable state space after passing through $\mathcal{P}_m$.
+\end{definition}
+
+\begin{remark}[Interpretation-layer proposition: golden-ratio existence state as Perron--Frobenius fixed point]
+Viewing $X_m^{\mathrm Z}$ as a finite-state graph defined by forbidden word $11$ (golden-mean shift), the principal eigenvalue of its transition adjacency matrix approaches $\varph$, with the corresponding principal eigenvector giving stable cone for symbol frequencies. If we view the ``existence/invisible'' binary category as two base elements of this transition graph (for instance, using $1/0$ as the minimal distinguishing unit), then the principal eigenvector component ratio converges to the golden ratio, providing a ``fixed-point weight ratio'' meaning of the golden-ratio existence state. This proposition is interpretation-layer language: its mathematical part is the Perron--Frobenius theorem and principal eigenstructure of the golden-mean shift; the ``existence'' semantics does not enter closed-layer reasoning.
+\end{remark}

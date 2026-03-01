@@ -1,0 +1,70 @@
+\section{Fixed-Bandwidth Recursive Readout and Partition Refinement (\texorpdfstring{$m=6$}{m=6})}
+
+This section, under the main text constraint of fixed bandwidth $m=6$, strictly formulates ``recursive observation'' as the partition refinement process at the protocol level: rather than increasing $m$, by applying successively conditionalized readouts to the same underlying system, forming nested fiber chains, thereby enhancing effective resolution.
+
+\subsection{Object-Layer Definition}
+
+\begin{definition}[Level-Zero Output]\label{def:fw-rec-level0}
+The main text fixes $m=6$. Denote the stabilized output as
+$$
+x^{(0)}_t:=\Fold_6(\omega_t^{(6)})\in X_6^{\mathrm Z},
+$$
+where $\omega_t^{(6)}\in\{0,1\}^6$ is the sliding window word of length $6$.
+\end{definition}
+
+\begin{definition}[Level-$k$ Conditional Readout and Output]\label{def:fw-rec-levelk}
+Given output history
+$$
+x^{(0:k-1)}=(x^{(0)},x^{(1)},\dots,x^{(k-1)})\in (X_6^{\mathrm Z})^{k},
+$$
+define the level-$k$ conditional readout protocol as a measurable readout under this history:
+$$
+q_6^{(k)}:X\to \{0,1\}^6,
+$$
+and define the level-$k$ output as
+$$
+x^{(k)}=\Fold_6\!\left(q_6^{(k)}(\cdot)\right)\in X_6^{\mathrm Z}.
+$$
+\end{definition}
+
+\begin{definition}[Nested Fiber Chain]\label{def:fw-rec-nested}
+Recursive observation induces the nested chain
+$$
+\mathcal{F}^{(0)}\supseteq \mathcal{F}^{(1)}\supseteq \cdots \supseteq \mathcal{F}^{(K)},
+$$
+where $\mathcal{F}^{(0)}=\Fold_6^{-1}(x^{(0)})$, and $\mathcal{F}^{(k)}$ denotes the visible equivalence class preimage set under the conditioning of previous levels.
+\end{definition}
+
+\subsection{Verifiable Propositions}
+
+\begin{proposition}[R1: Recursive Readout as Successive Partition Refinement]\label{prop:fw-rec-R1}
+Recursive readout produces history-conditioned output equivalent to successive refinement of the observable $\sigma$-algebra: recursive depth $K$ corresponds to a nested partition family whose cylinder sets monotonically refine with $K$.
+\end{proposition}
+
+\begin{proposition}[R2: Monotonicity of Conditional Uncertainty]\label{prop:fw-rec-R2}
+Let $G$ be a target detail quantity. Conditional uncertainty (e.g., conditional entropy)
+$$
+H(G\mid x^{(0:K)})
+$$
+is non-increasing with recursive depth $K$.
+\end{proposition}
+
+\begin{proposition}[R3: Relationship to Increasing $m$ (Information Content Comparison Only)]\label{prop:fw-rec-R3}
+Increasing recursive depth and one-time increase of window length $m$ both enhance the amount of distinguishable information. This paper only uses the two as empirical comparison, and does not claim strict equivalence in generality.
+\end{proposition}
+
+\begin{proposition}[R4: Block Protocol Equivalence under Zeckendorf Semantics]\label{prop:fw-rec-R4-block-equivalence}
+Under Zeckendorf stable language, if recursive conditional readout satisfies ``block protocol'': there exists a single underlying infinite string $\omega^{(\infty)}=(\omega_1,\omega_2,\dots)\in\{0,1\}^{\mathbb{N}}$ such that the level-$k$ readout reads its $k$-th consecutive 6-block
+\[
+q_6^{(k)}=\bigl(\omega_{6k+1},\omega_{6k+2},\dots,\omega_{6k+6}\bigr),
+\]
+and normalized with $\Fold_6$ to obtain $x^{(k)}\in X_6^{\mathrm Z}$, then the recursive output at depth $K$ and the stable output with one-time window length $m=6K$ are informationally equivalent: the two admit a natural bijective correspondence through block encoding, characterized by boundary compatibility conditions between blocks.
+\end{proposition}
+
+\begin{proof}[Proof Outline]
+Let $B:=X_6^{\mathrm Z}$. For $b=(b_1,\dots,b_6)\in B$ define $\mathrm{fst}(b)=b_1$, $\mathrm{lst}(b)=b_6$, and define the compatibility relation $b\to b'$ iff $\mathrm{lst}(b)\,\mathrm{fst}(b')\neq 11$. Then $X_{6K}^{\mathrm Z}$ and the compatible path set
+\[
+\{(b_0,\dots,b_{K-1})\in B^K:\ b_i\to b_{i+1}\ \text{for all}\ 0\le i<K-1\}
+\]
+stand in a natural bijection via ``partition into 6-blocks/concatenate by blocks.'' Recursive output under block protocol corresponds to this path representation, thus achieving strict equivalence.
+\end{proof}

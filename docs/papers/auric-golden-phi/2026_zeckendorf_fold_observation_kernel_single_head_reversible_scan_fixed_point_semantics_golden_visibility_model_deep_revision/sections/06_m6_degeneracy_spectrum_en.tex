@@ -1,0 +1,61 @@
+\section{Minimal Exhaustively Computable Kernel \texorpdfstring{$m=6$}{m=6}: Degeneracy Spectrum Theorem and Linear-Cyclic Splitting}
+
+This section presents one of the core analytically solvable results: the degeneracy spectrum theorem for $\mathrm{Fold}_6$ and its structural interpretation.
+
+\subsection{Window Value Function}
+
+Taking $m=6$, the window corresponds to digits $(z_2,\dots,z_7)$. For $w=(z_7,z_6,z_5,z_4,z_3,z_2)\in X_6$, define the window value
+\[
+V(w)=\sum_{k=2}^{7} z_k F_k
+=13 z_7 + 8 z_6 + 5 z_5 + 3 z_4 + 2 z_3 + z_2.
+\]
+It can be verified that $V$ is a bijection on $X_6$ to $\{0,1,\dots,20\}$.
+
+\subsection{Degeneracy Spectrum Theorem (Analytic Proof)}
+
+For $n\in Y_6=\{0,\dots,63\}$, the Zeckendorf digits involve at most the weight $55$ (since $89>63$). Therefore, the tail can only appear in $(z_8,z_9,z_{10})$, corresponding to weights $(21,34,55)$.
+
+\begin{theorem}[$\mathrm{Fold}_6$ degeneracy spectrum]\label{thm:deg-spectrum-6}
+For any $w\in X_6$, the fiber size satisfies
+\[
+\card{\mathcal{F}_6(w)}=
+\begin{cases}
+4, & z_7(w)=0\ \text{and}\ V(w)\le 8,\\[2pt]
+3, & z_7(w)=0\ \text{and}\ V(w)\ge 9,\\[2pt]
+2, & z_7(w)=1.
+\end{cases}
+\]
+Therefore, the degeneracy spectrum is $4\times 9,3\times 4,2\times 8$, with total sum equal to $64$.
+\end{theorem}
+
+\begin{proof}
+Fix $w\in X_6$. Any $n\in Y_6$ can be written as
+\[
+n=55 z_{10}+34 z_9+21 z_8 + V(w),
+\]
+satisfying the adjacency constraint $z_{10}z_9=0,\ z_9z_8=0,\ z_8z_7=0$, and $n\le 63$.
+
+If $z_7=1$, then $z_8=0$; moreover, $z_{10}=1$ would give $n\ge 68$, infeasible; thus only $z_9\in\{0,1\}$ is selectable, yielding degeneracy $2$.
+
+If $z_7=0$, then hidden contributions $0,21,34,55$ are permissible, where $55$ is feasible if and only if $V(w)\le 8$. Thus degeneracy is $4$ or $3$. \qed
+\end{proof}
+
+\subsection{Linear-Cyclic Consistency Splitting}
+
+Define the cyclic consistency set
+\[
+X_6^{\mathrm{cyc}}=\{w\in X_6:\ \neg(z_7(w)=1\ \wedge\ z_2(w)=1)\}.
+\]
+Then
+\[
+\card{X_6^{\mathrm{cyc}}}=18,\qquad \card{X_6\setminus X_6^{\mathrm{cyc}}}=3,
+\]
+with boundary artifact set
+\[
+B=\{100001,\ 100101,\ 101001\}.
+\]
+More generally, let $a_m=\card{X_m}$ and $c_m=\card{X_m^{\mathrm{cyc}}}$; we can prove that
+\[
+a_m-c_m=F_{m-2},
+\]
+so for $m=6$ the number of boundary artifacts is $F_4=3$ (proof in Appendix \ref{app:linear-cyclic}).

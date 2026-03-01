@@ -1,0 +1,72 @@
+\section{Node--Fiber Incidence Graphs and Observable Function Sub-bundles}
+
+\subsection{Levi Incidence Graph and Fiber-Prioritized Dynamics}
+
+\begin{definition}[Node--fiber Levi graph]\label{def:levi-graph}
+Construct the bipartite graph
+\[
+\mathcal{G}_m=(V_N\sqcup V_F, E),
+\]
+where the node-side vertices are $V_N:=X_m^{\mathrm Z}$, and the fiber-side vertices are
+\[
+V_F:=\{\mathcal{F}_m(x):x\in X_m^{\mathrm Z}\}.
+\]
+The edge set is defined by
+\[
+(x,\mathcal{F}_m(y))\in E\quad \Longleftrightarrow\quad x=y.
+\]
+If we further consider the reachability relation induced by dynamics, we can extend edges to represent ``non-zero transitions between fibers in one (or finite) step of base evolution,'' forming a weighted incidence structure (see \S\ref{sec:induced-observables}).
+\end{definition}
+
+\begin{definition}[Fiber-prioritized closure operator]\label{def:fiber-closure}
+Given a subset of nodes $S\subset X_m^{\mathrm Z}$, define
+\[
+\mathrm{Fib}(S):=\{\mathcal{F}_m(x):x\in S\},\qquad
+\mathrm{Node}(\mathcal{A}):=\{x:\mathcal{F}_m(x)\in\mathcal{A}\}.
+\]
+Define the iterative closure
+\[
+S^{(0)}:=S,\quad S^{(k+1)}:=\mathrm{Node}\bigl(\mathrm{Reach}(\mathrm{Fib}(S^{(k)}))\bigr),
+\]
+where $\mathrm{Reach}$ is the fiber reachability closure operator given by dynamical transition rules (model definition, depending on concrete transition kernel).
+\end{definition}
+
+\begin{theorem}[Finite closure correctness]\label{thm:finite-closure}
+If $\mathrm{Reach}$ is defined on a finite vertex set and is monotone, then the above iteration terminates in finitely many steps and produces the minimal fixed-point closure containing the initial set.
+\end{theorem}
+
+\begin{remark}
+Proof outline is given in Appendix \ref{app:levi-closure-proof}. Finiteness and monotonicity ensure Kleene iteration convergence.
+\end{remark}
+
+\subsection{Observable Quantities Induced by Fiber Statistics (Model Definition)}\label{sec:induced-observables}
+
+The following quantities are candidates for ``observable function sub-bundle'' definitions, belonging to the model layer rather than theorems.
+
+\begin{definition}[Steady-state transition kernel (model)]\label{def:markov-kernel}
+Induce a steady-state Markov approximation (or empirical kernel) from base dynamics and readout process
+\[
+P(y\mid x):=\mathbb{P}(x_{t+1}=y\mid x_t=x),
+\qquad x,y\in X_m^{\mathrm Z}.
+\]
+Define the successor set
+\[
+\mathrm{Succ}(x):=\{y:\ P(y\mid x)>0\}.
+\]
+\end{definition}
+
+\begin{definition}[Mass-like and delay-like quantities (model)]\label{def:class-mass-delay}
+Given a constant $\kappa>0$, define mass-like function sub-bundles (choose one):
+\[
+M_H(x):=\kappa\, H(P(\cdot\mid x)),\qquad
+M_D(x):=\kappa\,\log\card{\mathrm{Succ}(x)},
+\]
+where $H(\cdot)$ denotes discrete Shannon entropy. Define first-passage time and class delay:
+\[
+\tau(x\to y):=\mathbb{E}\Bigl[\inf\{n\ge 1:\ x_{t+n}=y\}\,\Big|\,x_t=x\Bigr].
+\]
+\end{definition}
+
+\begin{remark}
+The above definitions anchor ``observables'' to steady-state transition structure and fiber statistics, applicable to protocol models characterized by finite output states; correspondence between these and physical mass/scattering delay belongs to the interpretation-layer proposition, requiring additional interface assumptions (for instance, how to calibrate from readout kernel and hardware implementation cost to experimental quantities).
+\end{remark}

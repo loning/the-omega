@@ -1,0 +1,38 @@
+\section{Single-Head Scanning Microscopic Dynamics \texorpdfstring{$U$}{U}: Feistel Reversibility and Cyclic Scanning}
+\label{sec:single-head}
+
+\subsection{Microscopic State and Scanning Step}
+
+Fix $L\in\NN$. The microscopic state is
+\[
+s=(i,h,C),
+\]
+where $i\in\ZZ/L\ZZ$, $h\in Y_6$, and $C:\ZZ/L\ZZ\to Y_6$. Choose step size $\delta$ such that $\gcd(\delta,L)=1$, and define scanning $i\leftarrow i+\delta\ (\mathrm{mod}\ L)$.
+
+\subsection{Local Update (Feistel Form)}
+
+Let $c=C(i)$, take an arbitrary round function $f:Y_6\to Y_6$, and define
+\[
+h'=c,\qquad c'=h\oplus f(c),
+\]
+write back $C(i)\leftarrow c'$, and execute the position update.
+
+\begin{theorem}[reversibility]\label{thm:feistel-permutation}
+For any round function $f$, the global update $U$ is a permutation.
+\end{theorem}
+
+\begin{proof}
+The local map $(h,c)\mapsto (c,h\oplus f(c))$ is invertible, with inverse $c=h'$, $h=c'\oplus f(h')$. Composing with position permutation still yields a permutation. \qed
+\end{proof}
+
+\subsection{Visible Readout and Macroscopic Multi-Valuedness}
+
+Define the visible sequence
+\[
+x_t=\mathrm{Fold}_6(h_t)\in X_6.
+\]
+Since $\mathrm{Fold}_6$ is non-injective, macroscopic dynamics is generally not a function; its first-order empirical transition can be described by the relation
+\[
+R\subseteq X_6\times X_6,\quad (a,b)\in R\iff \exists t:\ x_t=a,\ x_{t+1}=b
+\]
+This structure is equivalent to ``deterministic microscopic permutation plus non-injective observation'' with hidden state projection.

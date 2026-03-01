@@ -1,0 +1,46 @@
+\section{Time Fibers and Reality Closure: Lifting Fixed-Point Semantics to Sets}
+
+\subsection{Fibers (Invisible Degrees of Freedom)}
+
+For any $x\in X_m$, define the fiber
+\[
+\mathcal{F}_m(x)=\mathrm{Fold}_m^{-1}(x)\subseteq Y_m.
+\]
+This object precisely represents the set of all primitive readout labels corresponding to the same visible state $x$.
+
+\subsection{Observation Closure Operator \texorpdfstring{$\Phi$}{Phi}}
+
+On the complete lattice $(\mathcal{P}(Y_m),\subseteq)$, define the closure
+\[
+\Phi(S)=\mathrm{Fold}_m^{-1}(\mathrm{Fold}_m(S)),
+\]
+where $\mathrm{Fold}_m(S)=\{\mathrm{Fold}_m(n):n\in S\}\subseteq X_m$.
+
+\begin{lemma}\label{lem:closure-properties}
+$\Phi$ satisfies extensivity, monotonicity, and idempotence:
+\[
+S\subseteq \Phi(S),\quad S\subseteq T\Rightarrow \Phi(S)\subseteq \Phi(T),\quad \Phi(\Phi(S))=\Phi(S).
+\]
+\end{lemma}
+
+\begin{theorem}[closure fixed-point characterization]\label{thm:closure-fix}
+\[
+\Phi(S)=S\iff S=\bigcup_{x\in A}\mathcal{F}_m(x)\ \text{for some}\ A\subseteq X_m.
+\]
+\end{theorem}
+
+\begin{proof}
+If $\Phi(S)=S$, then for any $x\in \mathrm{Fold}_m(S)$, we have $\mathcal{F}_m(x)\subseteq S$, so $S$ is a union of fibers. Conversely, if $S$ is a union of fibers, then $\mathrm{Fold}_m(S)=A$, thus $\Phi(S)=S$. \qed
+\end{proof}
+
+\subsection{Self-Consistent Reality: Composition Operator Fixed Point}
+
+Given microscopic update $U$ (constructed in Section \ref{sec:single-head} as a permutation), define the set lifting $U(S)=\{U(n):n\in S\}$. The composition operator
+\[
+\Psi=\Phi\circ U:\mathcal{P}(Y_m)\to\mathcal{P}(Y_m).
+\]
+We define self-consistent reality as the fixed point
+\[
+S=\Psi(S)=\Phi(U(S)).
+\]
+When $\Psi$ is a monotone operator, complete lattice fixed-point theory guarantees the existence of minimal and maximal fixed points, so ``reality sets'' form a comparable hierarchical structure.

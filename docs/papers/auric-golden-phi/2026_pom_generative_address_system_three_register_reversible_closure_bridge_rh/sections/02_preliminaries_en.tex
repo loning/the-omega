@@ -1,0 +1,70 @@
+\section{Preliminary Notation and Basic Conventions}\label{sec:preliminaries}
+
+\subsection{Basic Notation}
+Unless otherwise specified, $\NN,\ZZ,\QQ,\RR,\CC$ denote natural numbers, integers, rationals, reals, and complex numbers respectively; set and map notations follow standard conventions.\par
+
+\subsection{Microstate read, stable syntax, and fold}
+Fix resolution $m\in\NN_{\ge 1}$ and define the microstate space
+$$
+\Omega_m := \{0,1\}^m.
+$$
+Microstate words can be viewed as length-$m$ binary sequences from a window read of some underlying system. We do not take the underlying system as primitive; the minimal axioms of POMmin only require that there exists "a process where read can be triggered by address and generate finite strings," taking this as the input layer for object generation.\par
+Define the stable type set $X_m\subseteq\Omega_m$ as the subset satisfying local syntax constraints. We focus on golden ratio syntax (forbidding adjacent $11$):
+$$
+X_m := \Bigl\{x\in\{0,1\}^m:\ \text{no adjacent positions are simultaneously }1\Bigr\}.
+$$
+Its inverse limit object $X_\infty$ can be viewed as the space of infinite valid sequences (and is equivalent to Zeckendorf valid digit space under finite support semantics). We will use the fold normalization operator $\Fold_m:\Omega_m\twoheadrightarrow X_m$ and its cross-resolution compatibility (see Section \ref{sec:pommin} and Appendix \ref{app:pommin-formal}).\par
+
+\begin{definition}[Extended domain of fold: from $\Omega_m$ to configuration space $D$]\label{def:fold-extension-domain}
+To unify the expression "bit-by-bit accumulation followed by fold" in the main text, we introduce the finite-support configuration space
+$$
+D:=\Bigl\{a=(a_k)_{k\ge 1}: a_k\in\NN,\ \#\{k:a_k\neq 0\}<\infty\Bigr\}.
+$$
+For $\omega=\omega_1\cdots\omega_m\in\Omega_m$, we denote its standard embedding as
+$$
+\iota_m(\omega):=(\omega_1,\dots,\omega_m,0,0,\dots)\in D.
+$$
+Appendix \ref{app:fold-rewriting} provides a family of local value-preserving rewrite rules $\mathcal{R}_{\Fold}$, whose strong termination and confluence guarantee that for any $a\in D$ there exists a unique irreducible normal form $\mathrm{NF}(a)\in X_\infty$. We thus define the extended fold operator
+$$
+\Fold_\infty:D\to X_\infty,\qquad \Fold_\infty(a):=\mathrm{NF}(a).
+$$
+When $a=\iota_m(\omega)$ comes from the standard embedding of $\omega\in\Omega_m$, $\Fold_m(\omega)$ can equivalently be expressed as truncating the first $m$ bits of $\Fold_\infty(\iota_m(\omega))$ (Appendix \ref{app:fold-rewriting}).\par
+\end{definition}
+
+\subsection{Address, read, and undefined semantics}
+\begin{definition}[Many-sorted value domain and undefined]\label{def:valdom-undefined}
+Take a sorted set $\mathrm{Sort}$ and express the value domain as a many-sorted disjoint union
+$$
+\mathrm{ValDom}:=\bigsqcup_{\tau\in\mathrm{Sort}}\mathrm{Val}_\tau.
+$$
+We stipulate that $\NULL\notin \mathrm{ValDom}$. For partial function read $\Read:\Addr\rightharpoonup \mathrm{ValDom}$, if $\Read(a)$ is undefined, we denote this as $\Read(a)=\NULL$ for the undefined notation; $\NULL$ carries no numeric meaning and is strictly separated from any numeric value (including $0$).\par
+\end{definition}
+
+Let $\Addr$ be a countable set of addresses (e.g., finite binary strings, parametrized projection words, etc.). We write the read as a partial function
+$$
+\Read:\Addr\rightharpoonup \mathrm{ValDom},
+$$
+where $\mathrm{ValDom}$ and the undefined convention are as in Definition \ref{def:valdom-undefined}. We organize object existence and subsequent reasoning using "address prior to value" semantics.\par
+
+\subsection{Auditability and certificates}
+Key terms in this paper are used as follows:
+\begin{enumerate}
+  \item \textbf{Soundness and completeness:} Soundness means "under fixed semantics and verification rules, any assertion that is addressable and auditable must satisfy the corresponding type constraints"; completeness means "target assertions within a fixed closure are all addressable and read non-$\NULL$." Our conclusions regarding classical RH explicitly distinguish the dependency chains of both.\par
+  \item \textbf{Auditable (or re-auditable):} An assertion is said to be auditable if its correctness can be judged by fixed, deterministic verification rules in finite steps, and "verification passes" implies the corresponding mathematical assertion holds.\par
+  \item \textbf{Auditable certificate:} Finite data $c$ is said to be an auditable certificate for assertion $S$ if there exist the above verification rules such that verification passes on input $c$, and from this we can deduce $S$ holds. All "certificates" mentioned in this paper refer to auditable certificates in this sense.\par
+  \item \textbf{Undefined ($\NULL$):} $\NULL$ solely denotes that partial function read is undefined ($\NULL\notin\mathrm{ValDom}$), and by convention is strictly separated from any numeric value (including $0$).\par
+\end{enumerate}
+
+\subsection{Notation commonly used later}
+We will use $L>1$ as a scale parameter and introduce
+$$
+u_L(s):=L^{2s-1},\qquad z_L(s):=L^{-s},
+$$
+and the completed slice of the two-variable determinant object $\Delta(z,u)$
+$$
+\Xi_{\Delta,L}(s):=\Delta\bigl(z_L(s),u_L(s)\bigr).
+$$
+We also denote the unit circle phase set
+$$
+\mathrm{Phase}:=\{u\in\CC:\abs{u}=1\}.
+$$

@@ -1,0 +1,81 @@
+\section{Fixed-Bandwidth Recursive Readout and Partition Refinement (\texorpdfstring{$m=6$}{m=6})}
+
+In this chapter, under the constraint of fixed bandwidth $m=6$ in the main text, we formalize ``recursive observation'' rigorously as a partition refinement process at the protocol layer: not by increasing $m$, but by applying increasingly conditional readouts to the same base system, forming nested fiber chains, thus increasing effective resolution.
+
+\subsection{Object-Layer Definitions}
+
+\begin{definition}[Level-zero output]\label{def:rec-level0}
+The main text fixes $m=6$. Denote the stabilization output as
+$$
+x^{(0)}_t:=\mathrm{Fold}_6(\omega_t^{(6)})\in X_6^{\mathrm Z},
+$$
+where $\omega_t^{(6)}\in\{0,1\}^6$ is the sliding window word of length $6$ (see Definition \ref{def:sliding-fold}).
+\end{definition}
+
+\begin{definition}[Level-$k$ conditional readout and output]\label{def:rec-levelk}
+Given historical output
+$$
+x^{(0:k-1)}=(x^{(0)},x^{(1)},\dots,x^{(k-1)})\in (X_6^{\mathrm Z})^{k},
+$$
+define the level-$k$ conditional readout protocol as a measurable readout under this history
+$$
+q_6^{(k)}:\Omega\to \{0,1\}^6,
+$$
+and define the level-$k$ output
+$$
+x^{(k)}=\mathrm{Fold}_6\!\left(q_6^{(k)}(\cdot)\right)\in X_6^{\mathrm Z}.
+$$
+\end{definition}
+
+\begin{definition}[Nested fiber chain]\label{def:rec-nested-fibers}
+Recursive observation induces the nested chain
+$$
+\mathcal{F}^{(0)}\supseteq \mathcal{F}^{(1)}\supseteq \cdots \supseteq \mathcal{F}^{(K)},
+$$
+where $\mathcal{F}^{(0)}=\mathcal{F}_6(x^{(0)})=\mathrm{Fold}_6^{-1}(x^{(0)})$, and $\mathcal{F}^{(k)}$ denotes the visible equivalence class preimage set under prior-stage conditioning.
+\end{definition}
+
+\subsection{Verifiable Propositions}
+
+\begin{proposition}[R1: Recursive readout equivalent to stepwise partition refinement]\label{prop:rec-R1}
+Under fixed base system and fixed $m=6$, recursive readout produces historical conditioning equivalent to stepwise refinement of the observable $\sigma$-algebra: recursive depth $K$ corresponds to a nested partition family whose cylinder sets refine monotonically with $K$.
+\end{proposition}
+
+\begin{proposition}[R2: Monotonicity of conditional uncertainty]\label{prop:rec-R2}
+Let $G$ be a target detail quantity (measurable function or finite-valued observable). Then conditional uncertainty (such as conditional entropy)
+$$
+H(G\mid x^{(0:K)})
+$$
+is non-increasing in recursive depth $K$.
+\end{proposition}
+
+\begin{proposition}[R3: Relation to increasing $m$ (information quantity comparison only)]\label{prop:rec-R3}
+Both increasing recursive depth and increasing window length $m$ in a single step can enhance distinguishable information. This paper treats both only as empirical comparison: comparing the efficiency of reduction in $H(G\mid x^{(0:K)})$ for a given target quantity $G$, not claiming strict equivalence in generality.
+\end{proposition}
+
+\begin{proposition}[R4: Block protocol strict equivalence under Zeckendorf semantics]\label{prop:rec-R4-block-equivalence}
+Under the Zeckendorf stable language, if recursive conditional readout satisfies a ``block protocol'': there exists a single infinite string $\omega^{(\infty)}=(\omega_1,\omega_2,\dots)\in\{0,1\}^{\mathbb{N}}$ such that the level-$k$ readout reads its $k$-th consecutive 6-block
+\[
+q_6^{(k)}=\bigl(\omega_{6k+1},\omega_{6k+2},\dots,\omega_{6k+6}\bigr),
+\]
+and normalizes via $\mathrm{Fold}_6$ to obtain $x^{(k)}\in X_6^{\mathrm Z}$, then the depth-$K$ recursive output
+\[
+(x^{(0)},x^{(1)},\dots,x^{(K-1)})
+\]
+is informationally equivalent to the single-step window length $m=6K$ stabilization output $\mathrm{Fold}_{6K}(\omega^{(6K)})\in X_{6K}^{\mathrm Z}$: both admit a natural bijection via block coding, characterized by inter-block boundary compatibility conditions.
+\end{proposition}
+
+\begin{proof}[Proof outline]
+View $X_6^{\mathrm Z}$ as the 6-block space $B$. For $b=(b_1,\dots,b_6)\in B$ define $\mathrm{fst}(b)=b_1$, $\mathrm{lst}(b)=b_6$, and the block compatibility relation
+\[
+b\to b'\iff \mathrm{lst}(b)\,\mathrm{fst}(b')\neq 11.
+\]
+Then legal strings of length $6K$ in $X_{6K}^{\mathrm Z}$ correspond bijectively to compatible path sets
+\[
+\{(b_0,\dots,b_{K-1})\in B^K:\ b_i\to b_{i+1}\ \text{for all}\ 0\le i<K-1\}
+\]
+via ``partition by 6 bits / concatenate by blocks.'' Under block protocol, recursive output corresponds exactly to this path representation, hence equivalent to single-step $m=6K$ output.
+\end{proof}
+
+\subsection{Fixed \texorpdfstring{$m=6$}{m=6} Protocol-Layer Motivation (Object-Layer Expression)}
+Fixing $m=6$ is chosen in this paper only as a protocol-layer convention, with motivation: \textbf{(i)} alignment with rank-6 hyperspace closed model class; \textbf{(ii)} parallelism with $(3+3)$ decomposition; \textbf{(iii)} minimal closed verification ($2^6\to F_8$ full enumeration platform).

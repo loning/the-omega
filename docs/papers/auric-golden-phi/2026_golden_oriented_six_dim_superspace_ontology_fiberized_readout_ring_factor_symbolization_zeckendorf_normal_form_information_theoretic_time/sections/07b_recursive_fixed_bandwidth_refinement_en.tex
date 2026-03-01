@@ -1,0 +1,82 @@
+\section{Fixed-Bandwidth Recursive Readout and Partition Refinement}
+
+\subsection{Object-Layer Definition: Fixed-Bandwidth Recursive Readout}
+
+This section introduces the object-layer construction of ``recursive observation (partition refinement)'' under the main text's fixed-bandwidth $m=6$ condition. The core idea is to enhance effective resolution not by increasing $m$, but by applying successively conditioned readouts to the same underlying system, forming nested fiber chains, thereby improving resolution without relying on larger $m$.
+
+\begin{definition}[First-Level Output and Preimage Fiber]\label{def:recursive-level0}
+Under a given observer $O$, denote
+$$
+x^{(0)}_t=\mathcal{R}_{O,6}(s_t)\in X_6^{\mathrm Z}.
+$$
+For any $x^{(0)}\in X_6^{\mathrm Z}$, its preimage fiber is
+$$
+\mathcal{F}^{(0)}(x^{(0)})=\mathcal{F}_6(x^{(0)})=\mathrm{Fold}_6^{-1}(x^{(0)})\subseteq \Omega_6.
+$$
+\end{definition}
+
+\begin{definition}[Conditioned Readout and $k$-th Level Output]\label{def:recursive-conditioned-readout}
+Given the history of outputs
+$$
+x^{(0:k-1)}=(x^{(0)},x^{(1)},\dots,x^{(k-1)})\in (X_6^{\mathrm Z})^{k},
+$$
+define the $k$-th level conditioned readout protocol as the measurable readout under this history:
+$$
+q_6^{(k)}:\Sigma\to \Omega_6,
+$$
+and define the $k$-th level output as
+$$
+x^{(k)}=\mathrm{Fold}_6\!\left(q_6^{(k)}(\cdot)\right)\in X_6^{\mathrm Z}.
+$$
+\end{definition}
+
+\begin{definition}[Nested Fiber Chain]\label{def:nested-fiber-chain}
+For each level output $x^{(k)}$, define the corresponding fiber $\mathcal{F}^{(k)}$ as the preimage set of observationally equivalent classes under previous-level conditioning. Recursive observation induces the nested chain
+$$
+\mathcal{F}^{(0)}\supseteq \mathcal{F}^{(1)}\supseteq \cdots \supseteq \mathcal{F}^{(K)}.
+$$
+\end{definition}
+
+\begin{definition}[Recursive Output Sequence]\label{def:recursive-output-sequence}
+The recursive output with depth $K$ is denoted as
+$$
+(x^{(0)},x^{(1)},\dots,x^{(K)})\in (X_6^{\mathrm Z})^{K+1}.
+$$
+\end{definition}
+
+\subsection{Verifiable Propositions}
+
+\begin{proposition}[R1: Recursive Readout Equivalent to Successive Partition Refinement]\label{prop:R1-refinement}
+Under fixed underlying system and fixed $m=6$, recursive readout yields history-conditioned equivalence equivalent to successive refinement of the observable $\sigma$-algebra: recursive depth $K$ corresponds to a nested partition family whose cylinder families monotonically refine with $K$.
+\end{proposition}
+
+\begin{proposition}[R2: Monotonicity of Conditional Uncertainty]\label{prop:R2-monotone-conditional-uncertainty}
+Let $G$ be a target detail quantity (measurable function or finitely-valued observable). Then conditional uncertainty (e.g., conditional entropy)
+$$
+H(G\mid x^{(0:K)})
+$$
+is non-increasing with recursive depth $K$, i.e., when $K'\ge K$ we have $H(G\mid x^{(0:K')})\le H(G\mid x^{(0:K)})$.
+\end{proposition}
+
+\begin{proposition}[R3: Relationship to Increasing $m$ (Information-Theoretic Order Only)]\label{prop:R3-K-vs-m}
+Under comparable resource scales, both increasing recursive depth and one-step increase of window length $m$ can enhance distinguishable information. This work treats them as empirical comparison: compare the efficiency of decrease of $H(G\mid x^{(0:K)})$ for given target quantity $G$, without claiming strict equivalence in generality.
+\end{proposition}
+
+\begin{proposition}[R4: Strict Equivalence of Block Protocol under Zeckendorf Semantics]\label{prop:R4-block-equivalence}
+Under the Zeckendorf stable language, if recursive conditioned readout satisfies a ``block protocol'': there exists a single original infinite string $\omega^{(\infty)}=(\omega_1,\omega_2,\dots)\in\{0,1\}^{\mathbb{N}}$ such that the $k$-th level readout reads its $k$-th consecutive 6-block
+\[
+q_6^{(k)}=\bigl(\omega_{6k+1},\omega_{6k+2},\dots,\omega_{6k+6}\bigr),
+\]
+and canonicalizes via $\mathrm{Fold}_6$ to get $x^{(k)}\in X_6^{\mathrm Z}$, then the recursive output of depth $K$ and the stable output with one-step window length $m=6K$ are equivalent in information content: they are related by a natural bijection via block encoding and characterized by block boundary compatibility conditions.
+\end{proposition}
+
+\begin{proof}[Proof Sketch]
+Let $B:=X_6^{\mathrm Z}$. For $b=(b_1,\dots,b_6)\in B$, define $\mathrm{fst}(b)=b_1$ and $\mathrm{lst}(b)=b_6$, and define the compatibility relation $b\to b'$ if and only if $\mathrm{lst}(b)\,\mathrm{fst}(b')\neq 11$. Then $X_{6K}^{\mathrm Z}$ and the set of compatible paths
+\[
+\{(b_0,\dots,b_{K-1})\in B^K:\ b_i\to b_{i+1}\ \text{for all}\ 0\le i<K-1\}
+\]
+are related by a natural bijection via ``cutting into 6-bit segments / concatenating by blocks''. Under the block protocol, recursive output corresponds to this path representation, yielding strict equivalence.
+\end{proof}
+
+\subsection{Motivation for Fixed $m=6$ at Protocol Level (Object-Layer Formulation)}
+The choice of fixed $m=6$ in this work is purely a protocol-level convention motivated by: \textbf{(i)} alignment with the rank-$6$ superspace closed model class; \textbf{(ii)} parallelism with the $(3+3)$ decomposition, allowing each readout level to be interpreted as joint encoding of geometric and internal summaries; \textbf{(iii)} minimal closure and verifiability (e.g., the $2^6\to F_8$ exhaustive platform).

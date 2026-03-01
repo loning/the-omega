@@ -1,0 +1,92 @@
+\section{Three-Fiber Structure: Scale, Phase, and Prime (also called Three-Registers)}
+
+This paper formalizes "three fibers" (also called "three registers") as three a priori fibers: scale (appearance) fiber, phase fiber, and prime fiber (prime-register). Their combined role is: while ensuring local normalization, reversible replay, and auditing closure, they provide a minimal set of visible parameters sufficient to express arithmetic and spectral reads.\par
+
+\subsection{Appearance fiber and scale fiber}
+\begin{definition}[Appearance fiber $Z$]\label{def:Z-fiber}
+The appearance fiber takes the Zeckendorf stable address space
+$$
+Z := \Bigl\{(c_k)_{k\ge 1}\in\{0,1\}^{\NN}:\ \forall k,\ c_kc_{k+1}=0,\ \text{and only finitely many }1\Bigr\}.
+$$
+Let the Fibonacci sequence satisfy $F_1=F_2=1$, $F_{k+2}=F_{k+1}+F_k$. Define the value map
+$$
+\mathrm{Val}(c) := \sum_{k\ge 1} c_k F_{k+1}.
+$$
+Then $\mathrm{Val}$ provides an isomorphism between $Z$ and $\NN$, and selects a unique canonical representative for each value class.\par
+\end{definition}
+
+\begin{definition}[Scale fiber $S_\varphi$]\label{def:scale-fiber}
+For the continued fraction expansion $\alpha=[0;a_1,a_2,\dots]$ of an irrational $\alpha\in(0,1)$, the Ostrowski representation \cite{Ostrowski1922} provides a unique digit sequence $(d_n)_{n\ge 1}$ satisfying legal constraints and expressing
+$$
+N=\sum_{n\ge 1} d_n q_{n-1},
+$$
+where $q_n$ is the denominator of convergents. Taking $\alpha=\varphi^{-1}$ (where $\varphi=(1+\sqrt{5})/2$), the legal constraints degenerate to Zeckendorf syntax (forbidding adjacent $11$): the finite-resolution space is $X_m$, and the inverse limit is $X_\infty$. The scale fiber is defined as the address layer formed by this stable syntax and its fold normalization $\Fold_m,\Fold_\infty$.\par
+\end{definition}
+
+The significance of the scale fiber is: it fixes "local normalization" as a rewriting system with termination, confluence, and unique normal form, thus providing a computable canonical representative for arithmetic emergence and visible register semantics (see Appendix \ref{app:fold-rewriting}).\par
+
+\subsection{Phase fiber}
+\begin{definition}[Phase fiber $T$]\label{def:phase-fiber}
+Let the phase space be a compact abelian group (e.g., $\TT^n$), with character basis
+$$
+\chi_k(x)=e^{2\pi i\langle k,x\rangle},\qquad k\in\ZZ^n.
+$$
+The phase fiber $T$ refers to the spectral coordinate layer induced by the character structure, used to lift additive observables to multiplicative weights and implement convolution diagonalization; under the subsequent unitary slice constraint, it appears as an re-auditable phase parameter axis $\theta$.\par
+\end{definition}
+
+The phase fiber provides minimization of "continuous visible parameters": within this paper's closure, continuously auditable parameters are locked to the phase of $u=e^{i\theta}$, without radial degrees of freedom.\par
+
+\subsection{Prime fiber (prime-register)}
+\begin{definition}[Prime fiber $P$ (prime-register)]\label{def:prime-register-fiber}
+Let $\mathcal{P}$ be the set of primes, and define the finite-support exponent vector space
+$$
+P := \NN^{(\mathcal{P})}=\Bigl\{r:\mathcal{P}\to\NN\ \Bigm|\ r(p)=0\ \text{except for finitely many }p\Bigr\}.
+$$
+Define the value map
+$$
+N(r)=\prod_{p\in\mathcal{P}} p^{r(p)}.
+$$
+By the fundamental theorem of arithmetic, $N(\cdot)$ provides an isomorphism between $P$ and $\NN_{\ge 1}$, thus linearizing multiplication to coordinate addition. Since each state activates only finitely many prime axes, this fiber satisfies the "infinite coordinate system + local trigger" realizability constraint.\par
+\end{definition}
+
+Additionally, the prime-register fiber simultaneously serves the role of "residual carrier": folding fiber differences can be embedded into finite-support prime power coordinates, rewriting irreversible compression as cross-fiber storage, thus achieving lossless lifting (see Appendix \ref{app:prime-uplift}).\par
+In the local parallelism setting, the equivalence of the roles of "additive orbit register (orbit residual)" and "multiplicative prime register (unique factorization)" appears in Appendix \ref{app:bridge-rh-obligations}, Proposition \ref{prop:orbit-register-eq-prime-register}; the complete formalization of event coding $\mathrm{code}/\mathrm{decode}$ and numerical certificate construction of unitary slice auditing appear in Appendix \ref{app:inject-code-audit}.\par
+
+\subsection{Three-register closure and minimality question}
+The combination of three fibers explains the appearance of constants like $(\varphi,e,\pi)$ at different levels: $\varphi$ is bound to the count slope and stable syntax of the scale fiber; $e$ and $2\pi$ are bound to character normalization of the phase fiber; the prime structure is bound to the coordinatization and completion axes of the prime-register fiber. More generally, the minimality of three-register closure can be expressed as: if we require simultaneous satisfaction of
+\begin{enumerate}[label=(\roman*), ref=\roman*]
+  \item local normalization executable (finite window/finite state);
+  \item normalization reversible replay (information non-erasure);
+  \item continuous parameters auditable (visible axes verifiable by certificates),
+\end{enumerate}
+then visible degrees of freedom must be restricted to discrete canonical representatives of scale, compact parameters of phase, and discrete carriers of prime residuals; any additional non-compact continuous degrees of freedom will appear as additional register requirements and break type closure (see Section \ref{sec:fourth-register}).\par
+
+\subsection{Typed fiber calculus: sorts, indices, and resource contexts}\label{subsec:typed-fiber-calculus}
+This paper does not understand "type" as programming language syntax, but rather treats it as a mathematical constraint on \textbf{auditable partial readout}:within a fixed closure and auditing protocol, \emph{constructibility} and \emph{computability} themselves form a decidable semantic layer.\par
+The core principle is: \textbf{type incompatibility} is not numerical error, but rather \textbf{partial function indefiniteness}; the implementation layer can carry undefined via explicit markers, but the paper semantics take partial functions as the standard.\par
+Basic value domain and undefined conventions appear in Definition \ref{def:valdom-undefined}.\par
+
+\begin{definition}[Indexed sorts and resource contexts]\label{def:indexed-sorts-resctx}
+To elevate "resolution/precision/budget" to type indices, we introduce three classes of indexed sorts:\par
+\noindent\textbf{(1) Scale sort $\mathsf{Scale}[m]$:} where $m\in\NN$ is the discrete window; its inhabiting terms are stable canonical representatives at resolution $m$ (e.g., $X_m$, or its equivalent fold normal form).\par
+\noindent\textbf{(2) Phase sort $\mathsf{Phase}[p]$:} where $p\in\NN$ is a repeatedly auditable precision index; this paper by default takes the dyadic grid $D_p=\{k/2^p\}$ (or equivalent rational interval endpoint systems) as the re-computable carrier, making continuous input of unitary slice strongly typed as $(L,\theta,p)\in\Addr_{\mathrm{US}}$ (Definition \ref{def:us-typed-address-null}).\par
+\noindent\textbf{(3) Residual sort $\mathsf{Resid}[\beta]$:} where $\beta$ denotes ledger-axis budget (e.g., prime-register modular product/bit budget, or endpoint precision load budget); its inhabiting terms carry side information needed for injectification (see Section \ref{sec:ledger} and Appendix \ref{app:prime-uplift}).\par
+Record current available indices and budgets with resource context $\Gamma:=\mathsf{ResCtx}(m,p,\beta,\dots)$, and use type judgment $\Gamma\vdash t:\tau$ to denote "under given resources, $t$ is an auditable constructible term of type $\tau$".\par
+\end{definition}
+
+\begin{definition}[Common refinement, explicit lifting, and type failure]\label{def:common-refinement-type-failure}
+Any binary operation is defined only when inputs are \emph{explicitly lifted} to common indices and budget covers recording cost. More concretely, for a single sort family $\tau[-]$: if
+$$
+\Gamma\vdash x:\tau[i],\qquad \Gamma\vdash y:\tau[j],
+$$
+then $x\circ y$ is allowed only if there exists auditable lifting certificate making both fall into common index $k\succeq i,j$ (e.g., $k=\max(i,j)$); otherwise the term is semantically undefined and included in the $\NULL$ mechanism.\par
+Therefore, "different precisions cannot compute directly" is interpreted in this paper's semantics as: \textbf{index inconsistency causes term non-constructibility (partial function indefiniteness)}, unless lifting operators (e.g., outward-rounding interval lifting) and their certificated implementations are provided.\par
+\end{definition}
+
+\begin{remark}[Type closure of unitary slice and fourth fiber]\label{rem:unitary-slice-type-closure}
+The unitary slice auditing protocol strongly types continuous visible parameter axes as phase $u=e^{i\theta}$ (Definition \ref{def:unitary-slice-audit-axis}). When argumentation inevitably requires general decomposition $u=re^{i\theta}$ with $r\neq 1$, the type must be extended to
+$$
+\mathsf{Phase}\leadsto \mathsf{Phase}\times \mathsf{Radial},
+$$
+where $\mathsf{Radial}$ as the carrier of additional continuous degrees of freedom corresponds to the "fourth fiber (register)"; its structure and quantitative obstacles appear in Section \ref{sec:fourth-register}.\par
+\end{remark}

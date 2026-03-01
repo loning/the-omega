@@ -1,0 +1,94 @@
+\section{Projection Word (PW) Proof Semantics: Certificate Rewriting and Equality}\label{sec:projword}
+
+\subsection{Generation of PW and 2-morphism certificates}
+Let $\mathcal{G}$ be a set of projection gates (e.g., canonical projections, conditional expectation gates, etc.), and projection words $W$ be elements of the free monoid on $\mathcal{G}$ (with composition as multiplication). The proof semantics of PW is given by 2-morphism certificates:
+\begin{itemize}
+  \item exact certificate: $W\Rightarrow W'$ denotes equivalence within rewriteable equality closure;
+  \item $\varepsilon$-sound certificate: permits approximate equivalence under failure probability $\varepsilon$.
+\end{itemize}
+
+\begin{definition}[$\varepsilon$-sound certificate]\label{def:eps-sound}
+If there exists a bad event $E$ such that $\PP[E]\le \varepsilon$ and reads agree on $E^c$, then we say there exists an $\varepsilon$-sound approximate rewriting certificate, denoted
+$$
+W \Rightarrow_\varepsilon W'.
+$$
+\end{definition}
+
+\begin{proposition}[Additive error budget composition]\label{prop:eps-add}
+If $W\Rightarrow_\varepsilon W'$ and $W'\Rightarrow_\delta W''$, then
+$$
+W\Rightarrow_{\varepsilon+\delta} W''.
+$$
+\end{proposition}
+
+\subsection{Verifier interface: certificate objects and soundness}\label{subsec:pw-verifier-interface}
+This paper fixes "auditability" to a deterministic verification interface, treating "absence of certificate" as partial function indefiniteness ($\NULL$) rather than numerical instability.\par
+
+\begin{definition}[Certificate objects and verifier]\label{def:cert-verify}
+For any mathematical assertion $\varphi$, denote by $\mathsf{Cert}(\varphi)$ the set of its \textbf{finite data certificates} (e.g., finite rewriting chains, interval root isolation data, WSOS/LMI certificate bundles, etc.).\par
+A deterministic process
+$$
+\mathsf{Verify}:\mathsf{Cert}(\varphi)\to\{0,1\}
+$$
+is called a verifier for assertion $\varphi$ if it satisfies soundness: $\mathsf{Verify}(c)=1$ implies $\varphi$ holds. All "certificate verifiers" in this paper (e.g., unitary slice's $\mathsf{Verify}_{\mathrm{US}}$, Definition \ref{def:us-typed-address-null}) operate within this interface framework.\par
+If the semantics of some assertion is driven by "certificate existence" (see Definition \ref{def:us-typed-address-null}), then "absence of any auditable passing certificate" corresponds to undefined read, denoted $\NULL$ by convention; completeness, if not proven, appears only as a conditional assumption.\par
+\end{definition}
+
+\subsection{Termination, confluence, and unique normal form of local fragments}
+On the local fragment
+$$
+\mathrm{PW}_{Z,E}:=\langle P_Z,\{E_m\}_{m\ge 1}\rangle
+$$
+define rewriting rules:
+\begin{enumerate}
+  \item[(RZ)] $P_Z\circ P_Z\Rightarrow P_Z$;
+  \item[(RE)] if $m_2\ge m_1$, then $E_{m_1}\circ E_{m_2}\Rightarrow E_{m_1}$.
+\end{enumerate}
+
+\begin{theorem}[Termination and confluence of read tower rewriting]\label{thm:pw-ze-termination-confluence}
+Under the above rewriting system, any $\mathrm{PW}_{Z,E}$ projection word satisfies:
+\begin{enumerate}
+  \item Termination: no infinite rewriting chains exist;
+  \item (Local) confluence: any two rewriting sequences can merge to the same irreducible word;
+  \item Unique normal form: the normal form is uniquely determined by $E_{m^\star}$ (and at most one $P_Z$ factor) of minimal resolution index.
+\end{enumerate}
+\par\noindent\textnormal{\textbf{Depends on:} local rewriting system of rules (RZ),(RE) and termination/(local) confluence proofs; details and more general fragments in Appendix \ref{app:pw-fragment}.}\par
+\end{theorem}
+
+\begin{corollary}[Equality is decidable]\label{cor:pw-word-problem-decidable}
+Denote the decidable fragment
+$$
+\mathsf{PW}_{\mathrm{dec}}:=\mathrm{PW}_{Z,E}.
+$$
+Given $W_1,W_2\in \mathsf{PW}_{\mathrm{dec}}$, compute their normal forms $N(W_1),N(W_2)$, then
+$$
+W_1\sim W_2 \iff N(W_1)=N(W_2),
+$$
+thus the word problem of this fragment is decidable.\par
+\noindent\textnormal{\textbf{Depends on:} Theorem \ref{thm:pw-ze-termination-confluence} and normal form comparison algorithm (Algorithm \ref{alg:pw-dec-normalize}).}\par
+\end{corollary}
+
+\begin{algorithm}[\texorpdfstring{$\mathsf{PW}_{\mathrm{dec}}$}{PWdec} Normalizer and Equality Checker (minimal version)]\label{alg:pw-dec-normalize}
+\textbf{Input:} projection word $W\in\mathsf{PW}_{\mathrm{dec}}$ (or $W_1,W_2$).\\
+\textbf{Output:} normal form $N(W)$ (or equality result).\\
+\textbf{Steps:}
+\begin{enumerate}
+  \item Parse the generator sequence of $W$; if syntax is invalid, output REJECT.
+  \item Merge all $E_m$ factors into a single $E_{m^\star}$, where $m^\star$ is the minimal index that appeared (rule (RE)).
+  \item Collapse $P_Z$ factors to at most one (rule (RZ)).
+  \item Output canonical representative $N(W)$; for equality, compare whether $N(W_1)$ and $N(W_2)$ are identical.
+\end{enumerate}
+This algorithm corresponds to the executable version of Corollary \ref{cor:pw-word-problem-decidable}; its correctness is guaranteed by termination and (local) confluence (Theorem \ref{thm:pw-ze-termination-confluence}).\par
+\end{algorithm}
+
+The above results provide a minimal prototype of "certificated reduction of proof semantics": equivalence is reduced to a decidable normalization process, and verification depends only on finite steps of deterministic checking. More refined syntax, checkers, and three-generator fragments appear in Appendix \ref{app:pw-fragment}.\par
+
+\paragraph{Audit checker and three-valued output}
+In the audit-priority fragment interfacing with unitary slice verification mechanism, the checker outputs three values
+$$
+\{\mathrm{ACCEPT},\mathrm{REJECT},\NULL\}:
+$$
+\textbf{REJECT} denotes syntax/type or residual inconsistency;
+\textbf{ACCEPT} denotes verification passes under given certificate verification rules;
+\textbf{$\NULL$} denotes undecidable only due to insufficient budget or missing certificates (not "numerical instability").
+This three-valued mechanism realizes "auditability" as a deterministic verification procedure, consistent with this paper's "no address then read is $\NULL$" existence semantics (see Algorithm \ref{alg:pw-aud-checker} in Appendix \ref{app:pw-fragment}).\par

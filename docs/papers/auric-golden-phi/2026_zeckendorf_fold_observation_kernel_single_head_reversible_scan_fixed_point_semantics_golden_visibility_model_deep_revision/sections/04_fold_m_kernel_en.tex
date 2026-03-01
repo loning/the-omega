@@ -1,0 +1,74 @@
+\section{Zeckendorf Window Readout \texorpdfstring{$\mathrm{Fold}_m$}{Fold\_m}: Stable State Counting and Fixed-Point Structure}
+
+\subsection{Definition: Window Readout Map \texorpdfstring{$\mathrm{Fold}_m$}{Fold\_m}}
+
+For $n\in Y_m$, take its Zeckendorf digits $(z_k(n))_{k\ge 2}$. Define the window readout
+\[
+\mathrm{Fold}_m(n)=(z_{m+1}(n),z_m(n),\dots,z_2(n))\in\{0,1\}^m.
+\]
+By the global constraint $z_k(n)\,z_{k+1}(n)=0$, we immediately have $\mathrm{Fold}_m(n)\in X_m$, thus
+\[
+\mathrm{Fold}_m:Y_m\to X_m.
+\]
+We view the tail digits
+\[
+\mathrm{Tail}_m(n)=(z_{m+2}(n),z_{m+3}(n),\dots)
+\]
+as invisible information to the observation layer.
+
+\subsection{Cross-Window-Length Compatibility: Restriction Maps and Inverse Limits}\label{subsec:foldm-compat-inverse}
+
+``Resolution $m$'' in this paper corresponds to Zeckendorf window length: $\mathrm{Fold}_m$ outputs only the finite segment of digits at positions $2,\dots,m+1$. The ``consistency'' of results across different $m$ should be understood as: high-resolution outputs, when restricted to low resolution, recover the low-resolution output.
+
+\begin{definition}[restriction projection]\label{def:foldm-pi}
+For $m_2\ge m_1$, define the restriction projection
+\[
+\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1},\qquad
+\pi_{m_2\to m_1}(x_{m_2+1},x_{m_2},\dots,x_2):=(x_{m_1+1},x_{m_1},\dots,x_2).
+\]
+\end{definition}
+
+\begin{lemma}[pointwise compatibility]\label{lem:foldm-pointwise-compat}
+For any $n\in Y_{m_2}$ and $m_2\ge m_1$, we have
+\[
+\pi_{m_2\to m_1}\bigl(\mathrm{Fold}_{m_2}(n)\bigr)=\mathrm{Fold}_{m_1}(n).
+\]
+\end{lemma}
+
+\begin{proof}
+By definition $\mathrm{Fold}_{m_2}(n)=(z_{m_2+1}(n),\dots,z_2(n))$. The restriction projection retains only the subsegment $(z_{m_1+1}(n),\dots,z_2(n))$, which is precisely $\mathrm{Fold}_{m_1}(n)$. \qed
+\end{proof}
+
+The system $\{X_m,\pi_{m_2\to m_1}\}$ forms an inverse system, and we can define the inverse limit object as a ``resolution-independent'' unified carrier; it naturally isomorphic to the space of infinite Zeckendorf-compliant sequences (the isomorphism is given by ``taking finite restriction prefix families / splicing from a consistent family'').
+
+\subsection{Theorem: Stable State Counting}
+
+\begin{theorem}\label{thm:Xm-count}
+\[
+\card{X_m}=F_{m+2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $a_m=\card{X_m}$. Decomposing by the most significant bit: if $w_m=0$, the remainder is any word in $X_{m-1}$; if $w_m=1$, then $w_{m-1}=0$, and the remainder is any word in $X_{m-2}$. Thus $a_m=a_{m-1}+a_{m-2}$, with initial values $a_0=1,a_1=2$, giving $a_m=F_{m+2}$. \qed
+\end{proof}
+
+\subsection{Idempotence and Fixed-Point Characterization}
+
+To precisely correspond ``stable visible states'' to fixed points, we define a word-level folding operator $\mathrm{Fold}_m^\sharp:\{0,1\}^m\to X_m$, whose action is to reduce any length-$m$ binary word to its canonical form forbidding adjacent $1$'s (this reduction coincides with Zeckendorf normalization within the window). In our $Y_m\to X_m$ semantics, $\mathrm{Fold}_m$ already ensures landing in $X_m$, so the fixed-point characterization primarily applies to $\mathrm{Fold}_m^\sharp$; both jointly express ``self-consistency of canonical form.''
+
+\begin{theorem}\label{thm:fold-sharp-fix}
+$\mathrm{Fold}_m^\sharp$ is idempotent with $\mathrm{Fix}(\mathrm{Fold}_m^\sharp)=X_m$, i.e.,
+\[
+\mathrm{Fold}_m^\sharp(\mathrm{Fold}_m^\sharp(w))=\mathrm{Fold}_m^\sharp(w),\qquad
+\mathrm{Fold}_m^\sharp(w)=w\iff w\in X_m.
+\]
+\end{theorem}
+
+\begin{proof}[proof sketch]
+$\mathrm{Fold}_m^\sharp(w)\in X_m$ is the canonical form; a second reduction leaves it invariant; if reduction leaves it invariant, then the original word must already forbid adjacent $1$'s. \qed
+\end{proof}
+
+\begin{remark}
+All subsequent discussion concerning fibers, degeneracies, and experiments uses $\mathrm{Fold}_m:Y_m\to X_m$ as the observation map; the ``stable set'' in fixed-point semantics is given by the word-level projection $\mathrm{Fold}_m^\sharp$, thus avoiding ``type mismatch from self-composition of the $Y_m\to X_m$ map.''
+\end{remark}

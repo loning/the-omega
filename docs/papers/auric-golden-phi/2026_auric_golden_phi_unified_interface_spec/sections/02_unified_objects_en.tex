@@ -1,0 +1,184 @@
+\section{Unified Objects: From Readout to Fibers to Time}
+
+\subsection{Base System and Observation (Object Layer)}
+
+\begin{definition}[Base system]\label{def:base-system}
+The base system is a measure-preserving dynamical system $(X,\mathcal{B},\mu,T)$, where $T:X\to X$ is measurable and $\mu$-preserving.
+In the compact group setting, one may take $X=G$, $T=T_a$ a translation, and $\mu$ the Haar measure.
+\end{definition}
+
+\begin{definition}[Finite-window readout]\label{def:finite-readout}
+Given a finite alphabet $\mathcal{A}$ (typically $\{0,1\}$ in this directory), and a readout kernel (or observation) function
+\[
+\rho:X\to\mathcal{A},
+\]
+define the sliding-window word of length $m$
+\[
+\omega_t^{(m)}=(\rho(T^t x),\rho(T^{t+1}x),\dots,\rho(T^{t+m-1}x))\in\mathcal{A}^m.
+\]
+\end{definition}
+
+\subsection{Stabilization Kernel and Stable Languages}
+
+\begin{definition}[Stable language (Zeckendorf legal language)]\label{def:XmZ}
+The typical stable language is the Zeckendorf legal set
+\[
+X_m^{\mathrm Z}=\{w\in\{0,1\}^m:\ w\ \text{contains no subword }11\}.
+\]
+Its cardinality satisfies $\card{X_m^{\mathrm Z}}=F_{m+2}$.
+\end{definition}
+
+\subsection{Multi-Scale Consistency: Inverse Systems and Inverse Limits (Resolution-Independent Objects)}
+
+To rigorously express ``the underlying object and readout resolution $m$ are independent; results at different $m$ differ only in refinement,'' one must organize the stabilization type spaces at each scale as finite restrictions of a single object.
+
+\begin{definition}[Position-labeled stabilization type space]\label{def:XmZ-indexed}
+To avoid notational discrepancies between different manuscripts regarding ``high bit on the left/right,'' when comparing across scales, the length-$m$ Zeckendorf stable type is written as a position-indexed vector
+\[
+X_m^{\mathrm Z,\#}:=\Bigl\{(x_k)_{2\le k\le m+1}\in\{0,1\}^{\{2,3,\dots,m+1\}}:\ x_kx_{k+1}=0\ \text{for all}\ 2\le k\le m\Bigr\}.
+\]
+For consistency with ``length-$m$ words,'' an isomorphism $X_m^{\mathrm Z,\#}\cong X_m^{\mathrm Z}$ may be used, for example the map $(x_k)_{2\le k\le m+1}\mapsto (x_{m+1},x_m,\dots,x_2)\in\{0,1\}^m$.
+\end{definition}
+
+\begin{definition}[Scale projection (restriction)]\label{def:pi-m2-m1}
+For any $m_2\ge m_1$, define the scale projection
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z,\#}\to X_{m_1}^{\mathrm Z,\#},\qquad
+\bigl(\pi_{m_2\to m_1}(x)\bigr)_k:=x_k\ \ (2\le k\le m_1+1).
+\]
+\end{definition}
+
+\begin{lemma}[Well-definedness, surjectivity, and consistency]\label{lem:pi-well-defined-surj}
+The map $\pi_{m_2\to m_1}$ is well-defined and surjective, and satisfies functor consistency
+\[
+\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}\qquad (m_3\ge m_2\ge m_1).
+\]
+\end{lemma}
+
+\begin{proof}
+The forbidden-word constraint $x_kx_{k+1}=0$ is a local constraint, and restriction preserves constraints, so it is well-defined; for any $x\in X_{m_1}^{\mathrm Z,\#}$, let its extension $\tilde x\in X_{m_2}^{\mathrm Z,\#}$ be defined by $\tilde x_k=x_k$ ($2\le k\le m_1+1$) and $\tilde x_k=0$ ($m_1+2\le k\le m_2+1$); then $\pi_{m_2\to m_1}(\tilde x)=x$, so it is surjective; consistency follows directly from the coordinate-wise definition.
+\end{proof}
+
+The system $\{X_m^{\mathrm Z,\#},\pi_{m_2\to m_1}\}$ forms an inverse system, and one may define its inverse limit.
+
+\begin{definition}[Infinite Zeckendorf subshift]\label{def:XinfZ}
+Define the resolution-independent infinite stable type object
+\[
+X_\infty^{\mathrm Z}:=\Bigl\{(x_k)_{k\ge 2}\in\{0,1\}^{\{2,3,\dots\}}:\ x_kx_{k+1}=0\ \text{for all}\ k\ge 2\Bigr\}.
+\]
+Define the natural projection $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z,\#}$ as restriction:
+\[
+(\pi_m^\infty(x))_k:=x_k\ \ (2\le k\le m+1).
+\]
+\end{definition}
+
+\begin{theorem}[Inverse limit isomorphism (scale consistency)]\label{thm:inverse-limit-Xinf}
+There exists a natural isomorphism
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z,\#},
+\]
+and for any $m_2\ge m_1$ the commutative relation holds
+\[
+\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty.
+\]
+\end{theorem}
+
+\begin{proof}
+For any $x\in X_\infty^{\mathrm Z}$, its restriction family $(\pi_m^\infty(x))_{m\ge 1}$ satisfies the consistency condition and thus gives an inverse limit element. Conversely, given a consistent family $(x^{(m)})_{m\ge 1}$, by consistency one may define the infinite sequence $x_k:=x^{(m)}_k$ (taking any $m\ge k-1$); well-definedness and consistency ensure this is well-defined and preserves the forbidden-word constraint. The two constructions are mutually inverse and natural.
+\end{proof}
+
+This theorem rigorously encodes the idea that ``results at different $m$ are consistent'': all finite-resolution stabilization type spaces $X_m^{\mathrm Z}$ (or $X_m^{\mathrm Z,\#}$) are finite restrictions of the same resolution-independent object $X_\infty^{\mathrm Z}$; $m$ controls only the ``visible prefix / finite range of position labels,'' and does not change the object itself.
+
+\begin{definition}[Stabilization kernel]\label{def:fold}
+The stabilization kernel is a computable surjection
+\[
+\Fold_m:\{0,1\}^m\twoheadrightarrow X_m^{\mathrm Z},
+\]
+satisfying the canonical form property (idempotence and fixed-point characterization hold in the ``word level'' sense).
+In the integer-label model, one often uses $\Fold_m:Y_m\to X_m^{\mathrm Z}$ ($Y_m=\{0,\dots,2^m-1\}$).
+\end{definition}
+
+\subsection{Preimage Fibers and ``Invisible Degrees of Freedom''}
+
+\begin{definition}[Fiber]\label{def:fiber}
+For $x\in X_m^{\mathrm Z}$, define the fiber (preimage)
+\[
+\mathcal{F}_m(x)=\Fold_m^{-1}(x).
+\]
+A fiber is the minimal objectification of ``invisible degrees of freedom'': the set of all microstates that collapse to the same canonical form at fixed resolution $m$.
+\end{definition}
+
+\subsection{Information-Theoretic Time (Theorem Layer Template)}
+
+\begin{definition}[Cylindric sets and posterior measure]\label{def:cyl}
+Write the stabilized visible process as $x_t=\Fold_m(\omega_t^{(m)})\in X_m^{\mathrm Z}$.
+Given history $x_0^t=(x_0,\dots,x_t)$, define the cylindric set
+\[
+C_t(x_0^t)=\{x\in X:\ x_k(x)=x_k\ \text{for}\ k=0,1,\dots,t\}.
+\]
+Define the posterior information (candidate for the ``time scale'' in information theory)
+\[
+H_t=-\log\mu(C_t(x_0^t)).
+\]
+\end{definition}
+
+\subsection{Observer--Spacetime Duality (Operator--Image Interface)}
+
+\begin{definition}[Observer as readout protocol parameters]\label{def:observer-protocol-spec}
+An observer is defined as a readout protocol parameter tuple
+$$
+O=(\mathcal{S},u,\alpha,\mathcal{P},m,\Fold_m),
+$$
+where $\mathcal{S}$ is a geometric choice, $u$ is an internal phase, $\alpha$ and $\mathcal{P}$ provide loop scan and binary partition, and $m$ is the finite window length.
+\end{definition}
+
+\begin{definition}[Readout operator and spacetime image]\label{def:readout-and-image-spec}
+Let $\Pi_O$ denote the geometric--symbolic factor map induced by $(\mathcal{S},u,\alpha,\mathcal{P})$, and let $q_m$ be the finite-window readout of length $m$. Define
+$$
+\mathcal{R}_{O,m}=\Fold_m\circ q_m\circ \Pi_O.
+$$
+Define the spacetime image as $\mathsf{ST}(O,m)=\mathrm{Im}(\mathcal{R}_{O,m})$ and its induced structures (transition kernels, reachability graphs, cylindric set condition structures).
+\end{definition}
+
+\begin{assumption}[Scale compatibility (readout factorization)]\label{assump:readout-factorization}
+For any $m_2\ge m_1$, there exists a natural coarse-graining (restriction) such that
+\[
+\pi_{m_2\to m_1}\circ \mathcal{R}_{O,m_2}=\mathcal{R}_{O,m_1}\qquad (\mu\text{-a.e. or pointwise, depending on the specific protocol}).
+\]
+The meaning of this condition is: high-resolution output, when projected to low resolution, agrees with the low-resolution output; thus ``result consistency'' should be understood as cross-scale compatibility, not that the raw output spaces at different $m$ are identical.
+\end{assumption}
+
+\subsection{Fixed Bandwidth Recursive Observation (\texorpdfstring{$m=6$}{m=6} Template)}
+
+\begin{definition}[Recursive output sequence]\label{def:recursive-output-seq-spec}
+Fix $m=6$. A recursive output with recursion depth $K$ is defined as
+$$
+(x^{(0)},x^{(1)},\dots,x^{(K)})\in (X_6^{\mathrm Z})^{K+1}.
+$$
+\end{definition}
+
+\begin{definition}[Nested fiber chain]\label{def:nested-fiber-chain-spec}
+Recursive observation induces a nested chain
+$$
+\mathcal{F}^{(0)}\supseteq \mathcal{F}^{(1)}\supseteq \cdots \supseteq \mathcal{F}^{(K)}.
+$$
+\end{definition}
+
+\subsection{Internal Canonical Fiber (\texorpdfstring{$\mathrm{SU}(3)$}{SU(3)} Port)}
+
+\begin{definition}[Canonical fiber extension]\label{def:su3-fiber-port}
+Keep the geometric rank $6$ fixed and introduce an internal fiber $\mathcal{V}\cong\mathbb{C}^3$, with $G=\mathrm{SU}(3)$ acting on $\mathcal{V}$. Specify that the readout protocol factors over canonical equivalence classes: there exists
+$$
+(\Sigma_{\mathrm{geo}}\times\mathcal{V})/G\to X_6^{\mathrm Z},
+$$
+so that the output depends only on $G$-invariant information.
+\end{definition}
+
+\begin{theorem}[SMB/KS time arrow template (invocation port)]\label{thm:smb-template}
+If the base system is ergodic and the observation comes from a generating partition (or satisfies an equivalent condition), then for almost every orbit
+\[
+\lim_{t\to\infty}\frac{1}{t}H_t=h_\mu(T),
+\]
+where $h_\mu(T)$ is the KS entropy. This result encodes the ``time arrow'' as a protocol: the exponential contraction rate of cylindric set posterior measures.
+\end{theorem}
+

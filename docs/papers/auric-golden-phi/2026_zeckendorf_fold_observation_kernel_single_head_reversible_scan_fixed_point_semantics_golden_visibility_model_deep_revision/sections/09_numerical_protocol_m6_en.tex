@@ -1,0 +1,47 @@
+\section{Numerical Experiment: Exhaustive Enumeration and Single-Head Scanning Verification (\texorpdfstring{$m=6$}{m=6})}
+
+\subsection{Exhaustive Enumeration}
+
+We exhaustively compute $\mathrm{Fold}_6$ and fiber sizes over all of $Y_6$, verifying Theorem \ref{thm:deg-spectrum-6}'s degeneracy spectrum, and verifying the splitting $21=18\oplus 3$ and boundary set $B$.
+
+\subsection{Single-Head Scanning Simulation Protocol}
+
+Parameters: $L=1024$, $\delta=1$, number of steps $N=2\times 10^5$. Randomly initialize $i_0,h_0,C_0$. Select round function control groups:
+\[
+f_0(c)=0,
+\]
+\[
+f_{\mathrm{fold}}(c)=\mathrm{enc}(\mathrm{Fold}_6(c)),
+\]
+\[
+f_{\mathrm{mix}}(c)=\mathrm{rotl}(\mathrm{enc}(\mathrm{Fold}_6(c)),1)\oplus \mathrm{rotl}(\mathrm{enc}(\mathrm{Fold}_6(c)),3).
+\]
+Here $\mathrm{enc}:X_6\to Y_6$ denotes a fixed encoding (e.g., viewing $w\in X_6\subset\{0,1\}^6$ as a 6-bit integer), and $\mathrm{rotl}$ is 6-bit cyclic left shift.
+
+\subsection{Metrics}
+
+Error between empirical distribution $\widehat{p}$ and prediction $q$:
+\[
+\norm{e}_{\infty}=\max_{w\in X_6}\abs{\widehat{p}(w)-q(w)},\qquad
+\norm{e}_{1}=\sum_{w\in X_6}\abs{\widehat{p}(w)-q(w)}.
+\]
+Boundary frequency $\widehat{p}(B)$. Head marginal distribution total variation $\norm{\pi-u}_{\TV}$. Visible transition edge support set cardinality $\card{E}$ and strongly connected component decomposition.
+
+\subsection{Results (Sample Numerical)}
+
+Boundary frequency (theoretical value $0.09375$):
+\[
+\widehat{p}_{f_0}(B)=0.0956095,\quad
+\widehat{p}_{f_{\mathrm{fold}}}(B)=0.0940695,\quad
+\widehat{p}_{f_{\mathrm{mix}}}(B)=0.0948495.
+\]
+Degeneracy law error:
+\[
+\norm{e}_{\infty}=\{0.0127552,\ 0.0010553,\ 0.0051397\},\qquad
+\norm{e}_{1}=\{0.141826,\ 0.0086042,\ 0.0285456\}.
+\]
+Head marginal distribution total variation:
+\[
+\norm{\pi-u}_{\TV}=\{0.107003,\ 0.0086925,\ 0.0223378\}.
+\]
+Visible spectrum: for $f_{\mathrm{fold}},f_{\mathrm{mix}}$ we observe $\card{E}=441$ with a single strongly connected component; for $f_0$ we get $\card{E}=369$, with boundary states showing out-degree deficit but still within a single strongly connected component.

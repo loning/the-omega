@@ -1,0 +1,26 @@
+\section{Appendix C: Zeckendorf Representation and Folding Map}
+
+\subsection{Zeckendorf uniqueness}
+
+Every $N\in\ZZ_{\ge 0}$ has a unique binary sequence $(c_k)_{k\ge 1}$ satisfying $c_kc_{k+1}=0$ such that
+\[
+N=\sum_{k\ge 1}c_kF_{k+1}.
+\]
+Uniqueness can be proven by a greedy algorithm and induction: at each step, select the largest Fibonacci weight not exceeding $N$ and prohibit selecting adjacent weights.
+
+\subsection{Window folding and low-range bijection}
+
+Define $\mathrm{Fold}_m(N)=(c_1,\dots,c_m)$. If $0\le N\le F_{m+2}-1$, the Zeckendorf representation does not use weights $F_{m+3}$ or higher, so $\mathrm{Fold}_m$ records the complete representation, giving a bijection
+\[
+\mathrm{Fold}_m:\{0,\dots,F_{m+2}-1\}\ \xrightarrow{\ \sim\ }\ X_m.
+\]
+
+\subsection{\texorpdfstring{$m=6$}{m=6} boundary two-fold-preimage structure (verifiable by exhaustion)}
+
+For $m=6$, the boundary words are $100001,100101,101001$. Their Zeckendorf values are respectively
+\begin{align*}
+V(100001)&=F_2+F_7=1+13=14,\\
+V(100101)&=F_2+F_5+F_7=1+5+13=19,\\
+V(101001)&=F_2+F_4+F_7=1+3+13=17.
+\end{align*}
+Due to the adjacent prohibition structure of $F_8=21$ and $F_9=34$, adding $34$ upward preserves the first six bits unchanged, so each boundary word has exactly two preimages differing by $F_9=34$. This conclusion can be verified by computing Zeckendorf digits for every $N\in\{0,\dots,63\}$ and truncating.

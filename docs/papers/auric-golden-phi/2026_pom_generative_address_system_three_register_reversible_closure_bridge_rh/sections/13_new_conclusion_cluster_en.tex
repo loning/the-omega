@@ -1,0 +1,78 @@
+\section{Unified Encoding Layer and Conclusion Cluster}\label{sec:conclusion-cluster}
+
+This section consolidates self-describing codes, certificate formats, and their interaction with unitary slice auditing to provide the complete proof-carrying and registrability apparatus supporting BridgeRH.
+
+\subsection{Self-describing codes and monocode residuals}
+\begin{definition}[Monocode compression]\label{def:monocode}
+The information ledger's residual information is compressed into monocode format via:
+$$
+\mathsf{code}(\omega)=(x_m,r(\omega))\in X_m\times P,
+$$
+where $x_m=\Fold_m(\omega)$ is the visible part and $r(\omega)$ records fiber-internal labels via prime-register coordinates. The replayer executes
+$$
+\mathsf{decode}(x_m,r):=\Fold_m^{-1}(x_m,r),
+$$
+recovering original microstate $\omega$.
+\end{definition}
+
+The monocode achieves three properties: (i) finiteness—each code is a finite data object; (ii) injectivity—different microstates yield different codes; (iii) repeatability—code/decode is deterministic and auditable.
+
+\subsection{Certificate objects and unitary slice numerics}
+\begin{definition}[Certificate object types for unitary slice]\label{def:us-cert-types}
+Under the typed address domain $\Addr_{\mathrm{US}}=\{(L,\theta,p):L>1,\theta\in\RR,p\in\NN\}$, certificate objects include:
+
+\noindent\textbf{NonZero certificate:} Finite interval list  asserting zero avoidance within dyadic grid $D_p=\{k2^{-p}:k\in\ZZ\}$ at precision $p$.\par
+
+\noindent\textbf{RootInterval certificate:} Disjoint interval partition covering all zeros with multiplicity and separating non-zeros.\par
+
+\noindent\textbf{Null coverage certificate:} Specifies why no auditable certificate exists (e.g., "$\Re(s)\neq 1/2$ hence type-locked outside unitary slice").\par
+
+\noindent\textbf{Rationalized certificate:} Cayley quarter-angle parameter $x$ with cleared-denominator polynomial and root isolation data (Section \ref{rem:us-rational-audit}).
+\end{definition}
+
+\subsection{Repeatability of $\NULL$ and three-valued output}
+\begin{theorem}[Repeatability of $\NULL$ under fixed rules]\label{thm:cc-null-repro}
+If verifier $\mathsf{Verify}_{\mathrm{US}}$ is fixed and $\Addr_{\mathrm{US}}$ is fixed precision-indexed, then for any address $(L,\theta,p)$ and object $\Delta$, the judgment of whether an auditable certificate exists is deterministic and repeatable: if $\Read_{\mathrm{US}}((L,\theta,p))=\NULL$ under rules $\mathcal{R}$, the same address with the same object produces $\NULL$ under repeated application of $\mathcal{R}$.
+\end{theorem}
+
+This enables three-valued output: \textbf{ACCEPT} (certificate found), \textbf{REJECT} (syntax/type error), \textbf{$\NULL$} (no certificate within budget/rules, not instability).
+
+\subsection{Fourth register and radial certificates}
+\begin{theorem}[Fourth register certificate extension]\label{thm:cc-fourth-register-certs}
+If addressing requires explicit radial parameter $\rho=\log|u|$ beyond unitary slice, the certificate type system must extend from $\Addr_{\mathrm{US}}$ to
+$$
+\Addr_{\mathrm{US}}^{(4)}=\{(L,\theta,\rho,p):L>1,\theta,\rho\in\RR,p\in\NN\},
+$$
+with verifier $\mathsf{Verify}^{(4)}$ handling jointly typed phase-radial parameters. The fourth register's structure and guardrails are formalized in Appendix \ref{app:strictification-fourth}.
+\end{theorem}
+
+\subsection{Radial precision budgets and lower bounds}
+\begin{theorem}[Radial bit lower bound]\label{thm:cc-radial-bit-lowerbound}
+Let radial parameter $x\in\RR$ be certificated via $n$-bit approximation of compactified coordinate $\upsilon(x)=\pi^{-1}\arctan(x)$ with error $\delta\le 2^{-n}$. To achieve absolute error $\epsilon$ in real-space candidates, the necessary bit budget is
+$$
+n\ \ge\ \log_2(1/\epsilon) + \log_2(1+x^2) + \log_2(4\pi).
+$$
+\end{theorem}
+
+\begin{corollary}[Radial addressability upper bound]\label{cor:cc-radial-prime-budget}
+Under fixed precision index $p$, the radial domain addressable with error $\epsilon$ is bounded by
+$$
+|x|\ \le\ \sqrt{2^{2^p}\epsilon/(4\pi)-1},
+$$
+necessitating fourth-register extension or accepting $\NULL$ for unbounded $|x|$.
+\end{corollary}
+
+\subsection{Structural synthesis of ledger records}
+\begin{theorem}[Mixed ledger and record-axis four-factor]\label{thm:cc-four-factor-synthesis}
+The complete record-axis synthesizing fold residuals, unitary slice phases, and endpoint loads decomposes canonically as
+$$
+r\ \cong\ r_{\mathrm{fin}} \times r_{\widehat{\ZZ}} \times r_{\mathrm{wind}} \times r_{\mathrm{end}},
+$$
+where: $r_{\widehat{\ZZ}}$ handles profinite congruence classes via prime-register; $r_{\mathrm{end}}$ handles endpoint precision loads; $r_{\mathrm{fin}}, r_{\mathrm{wind}}$ handle finite defects and winding compensation. The minimal average record cost is
+$$
+\mathcal{R}_{\min} = \kappa_m(\pi_m) + \EE[P(X)],
+$$
+with discrete-side ledger $\kappa_m$ and continuous-side precision potential $P(X)=\log(1+X^2)$ (see Theorem \ref{thm:mixed-ledger-mincost}).
+\end{theorem}
+
+This section's results establish the complete apparatus: code/decode with monocode compression, certificate types with four-factor ledgers, repeatability guarantees for $\NULL$, and structural lower bounds on fourth-register necessity. Together with the main text's type-safety and bridge theorems, they provide the proof-carrying infrastructure for auditable mathematics grounded in addressable reads.

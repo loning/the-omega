@@ -1,0 +1,17 @@
+\section{PW Type Safety (Soundness): Offcritical Rejection under Unitary Slice Auditing}
+
+\begin{theorem}[PW Type Safety (Soundness): Offcritical Rejection under Unitary Slice Auditing]\label{thm:type-safety-offcritical}
+Fix $L>1$ and consider
+$$
+\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1}).
+$$
+Within the closure of "three-generator normalizer $+$ anomaly signature mechanism $+$ unitary slice zero auditing" (Definitions \ref{def:unitary-slice-audit-axis} and \ref{def:us-typed-address-null}), any \emph{auditable passing zero certificate event} must satisfy $\abs{u_L(s)}=1$, thus $\Re(s)=\tfrac12$. In particular, if $s_0\in\CC$ satisfies $\Re(s_0)\neq \tfrac12$, then there exists no auditable passing certificate within this closure that objectifies "$\Xi_{\Delta,L}(s_0)=0$" as non-null value read; under null-value semantics, the corresponding read is $\NULL$.\par
+\noindent\textnormal{\textbf{Depends on:} Definitions \ref{def:unitary-slice-audit-axis}--\ref{def:us-typed-address-null}, Proposition \ref{prop:critical-line-unitary-slice}.}\par
+\end{theorem}
+
+\begin{proof}
+By Definitions \ref{def:unitary-slice-audit-axis} and \ref{def:us-typed-address-null}, the zero-auditing protocol in the closure strongly types continuous input to $u=e^{i\theta}\in\mathrm{Phase}$: the verifier accepts only $\Addr_{\mathrm{US}}$ type address parameters $(L,\theta,p)$, and on continuous parameters accesses only the phase $\theta$ of unitary slice. Thus, any zero certificate event that \emph{passes auditing} under this protocol must satisfy that its corresponding auditing point lies on unitary slice, i.e., $\abs{u_L(s)}=1$. By Proposition \ref{prop:critical-line-unitary-slice}, $\abs{u_L(s)}=1\iff \Re(s)=\tfrac12$, so all auditable passing zero certificates are type-locked to the critical line.\par
+If $\Re(s_0)\neq\tfrac12$, then by Proposition \ref{prop:critical-line-unitary-slice} we have $\abs{u_L(s_0)}\neq 1$, so $u_L(s_0)\notin\mathrm{Phase}$, unable to be encoded as visible continuous input of the $\Addr_{\mathrm{US}}$ protocol; thus there exists no auditable passing certificate that objectifies "$\Xi_{\Delta,L}(s_0)=0$" as non-null value read. By certificate existence semantics in Definition \ref{def:us-typed-address-null}, the read in this case is $\NULL$.\par
+\end{proof}
+
+This theorem belongs to soundness: it constrains zero certificates that are "already addressable and auditable" to lie on the critical line, not automatically inferring "all zeros are addressable". Completeness must appear as a bridging assumption or be proven by concrete construction (see Section \ref{sec:bridge-rh}).\par

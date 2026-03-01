@@ -1,0 +1,71 @@
+\section{Resolution Folding and Stable Sectors: The $\varphi$---$\pi$---$e$ Three-Channel Structure}
+
+\subsection{Stable Language and the $\varphi$-Channel}
+
+Define the golden mean language of length $m$
+\[
+X_m=\{w\in\{0,1\}^m:\text{$w$ contains no subword }11\}.
+\]
+The count satisfies $|X_m|=F_{m+2}$, with exponential growth rate $\log\varphi$. This constraint can be viewed as the ``$\varphi$-channel'': it depends only on local grammar (forbidding adjacent $1$'s) and compresses the complexity of the allowed state space from $2^m$ to $F_{m+2}$.
+
+In Hilbert formulation, take $\mathcal{H}_m=\ell^2(\{0,1\}^m)$ and define the orthogonal projection
+\[
+(P_\varphi e_w)=
+\begin{cases}
+e_w,&w\in X_m,\\
+0,&w\notin X_m,
+\end{cases}
+\]
+so that $\mathrm{rank}(P_\varphi)=|X_m|$, giving explicit dimension of the stable subspace.
+
+\subsection{Resolution Folding Map and Degenerate Spectrum}
+
+Finite observers typically first produce $m$-bit primitive strings (understood as ``unregularized'' representation) when encoding ticks/addresses. Compression to the stable language can be done through a resolution folding map
+\[
+\Fold_m:\{0,1\}^m\to X_m,
+\]
+whose principle can be realized through Zeckendorf/Ostrowski normalization: interpret the primitive string as a Fibonacci-weight representation and apply the ``no adjacent $1$'s'' normalization rule to obtain a unique normal form. This map is surjective and many-to-one, with average degeneracy
+\[
+d_m=\frac{2^m}{|X_m|}=\frac{2^m}{F_{m+2}},
+\]
+growing at rate $(2/\varphi)^m$.
+
+More strongly, for specific $m$ we can obtain explicit fiber classification. Taking $m=6$ as example, $2^6=64$ while $|X_6|=F_8=21$, so $\Fold_6$ compresses 64 inputs to 21 stable words, producing a degenerate spectrum taking only $\{2,3,4\}$. This structure not only provides compression, but also provides a natural error-correcting/verification interface: different raw inputs merge into the same stable type after folding.
+
+\subsection{Multi-Scale Consistency: Factorization and Inverse Limit of Folding Channels}
+
+It must be emphasized: as $m$ changes, the size of stable type space $|X_m|$, average degeneracy $d_m$, and other statistical quantities vary systematically, so ``different $m$ results are consistent'' should not be understood as different $m$ having the same primitive output space and statistical structure. The correct rigorous statement is \textbf{cross-scale compatibility}: high-resolution outputs reproduce low-resolution outputs when projected down.
+
+\begin{definition}[restriction projection]\label{def:resfold-pi}
+For $m_2\ge m_1$, define the truncation projection
+\[
+\pi_{m_2\to m_1}:X_{m_2}\to X_{m_1},\qquad
+\pi_{m_2\to m_1}(x_1,\dots,x_{m_2})=(x_1,\dots,x_{m_1}).
+\]
+\end{definition}
+
+\begin{assumption}[scale compatibility (readout factorization)]\label{assump:resfold-factorization}
+For primitive window readout $\omega^{(m)}$ (primitive string of length $m$), take the truncation $\omega^{(m_1)}$ when $m_2\ge m_1$, and require the folding map to satisfy commutativity
+\[
+\pi_{m_2\to m_1}\bigl(\Fold_{m_2}(\omega^{(m_2)})\bigr)=\Fold_{m_1}(\omega^{(m_1)}).
+\]
+\end{assumption}
+
+Under this assumption, $\{X_m,\pi_{m_2\to m_1}\}$ forms an inverse system, thus defining a resolution-independent unified object: its finite restrictions correspond to stable type spaces at each scale. Then, ``different accuracy'' rigorously corresponds to: larger $m$ provides longer visible prefixes and finer conditional structure, while low-resolution content is preserved as a factor of high-resolution.
+
+\subsection{The $\pi$-Channel: Cyclic Closure and Discrete Monodromy}
+
+Local grammar alone is insufficient to guarantee ``periodic orbit compatibility.'' In symbolic dynamics, a length $m$ word corresponds to a periodic orbit segment only if it satisfies cyclic admissibility under wrap-around. For the golden mean constraint, cyclic admissibility is equivalent to excluding $w_mw_1=11$. Define
+\[
+X_m^{\mathrm{cyc}}=\{w\in X_m: w_mw_1\neq 11\},\qquad
+X_m^{\mathrm{bdry}}=X_m\setminus X_m^{\mathrm{cyc}}.
+\]
+This decomposition embodies the ``$\pi$-channel'': it replaces the continuous monodromy/single-valuedness with a discrete closure test, compatible with periodic orbit counting and zeta identities. Taking $m=6$ as example, we see an $18\oplus 3$ split: 18 cyclically admissible, 3 boundary states. This structure provides the combinatorial foundation for subsequent zeta regularization and stable poles.
+
+\subsection{The $e$-Channel: Exponential Regularization, Zeta Poles, and ``Pole Barrier''}
+
+In symbolic dynamics, periodic orbit counting can be encoded by the Artin--Mazur zeta function. For the golden mean shift system, its zeta function has
+\[
+\zeta(z)=\frac{1}{1-z-z^2}.
+\]
+Denominator factorization gives poles at $z=\varphi^{-1}$ and $z=-\varphi$. Taking normalization $z=r/\varphi$, the main pole is pushed to the unit circle $r=1$. This normalization operationally forms the ``$e$-channel'': it aligns growth constants and observable scales using exponential type (geometric series/Abel-type kernel), thus forming comparable stable pole structure in finite-depth readout. This channel simultaneously provides a computable hierarchical time-scale ladder for noise spectrum (e.g., $1/f$ type), as Fibonacci/Zeckendorf hierarchy naturally gives near-geometric families of relaxation times.

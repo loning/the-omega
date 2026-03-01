@@ -1,0 +1,75 @@
+\section{\texorpdfstring{$(\Xi)$}{(Xi)}-Discrimination and Unitary Slice: Internalization of Critical Line Geometry on Parameter Side}\label{sec:xi-unitary-slice}
+
+\subsection{Two-variable determinant object and slice}
+Let $\Delta(z,u)$ be a two-variable determinant object, taking finite-dimensional $\det(I-zB(u))$ or Fredholm determinant form, satisfying the self-dual condition
+$$
+\Delta(z,u)=\Delta(uz,1/u).
+$$
+For $L>1$ and $s\in\CC$, define
+$$
+u_L(s):=L^{2s-1},\qquad z_L(s):=L^{-s},
+$$
+and define the completed slice
+$$
+\Xi_{\Delta,L}(s):=\Delta\bigl(z_L(s),u_L(s)\bigr)=\Delta(L^{-s},L^{2s-1}).
+$$
+
+\subsection{Critical line and equivalence with unitary slice}
+\begin{proposition}\label{prop:critical-line-unitary-slice}
+For any $L>1$, we have
+$$
+\Re(s)=\tfrac12 \iff \abs{u_L(s)}=1 \iff u_L(s)\in \mathrm{Phase}:=\{u\in\CC:\abs{u}=1\}.
+$$
+\end{proposition}
+
+\begin{proof}
+Write $s=\sigma+it$ (where $\sigma,t\in\RR$). Since
+$$
+u_L(s)=L^{2s-1}=L^{2\sigma-1}\,L^{2it}=L^{2\sigma-1}\,e^{i(2t\log L)},
+$$
+we obtain
+$$
+\abs{u_L(s)}=L^{2\sigma-1}.
+$$
+Since $L>1$, we have $\abs{u_L(s)}=1 \iff 2\sigma-1=0 \iff \sigma=\tfrac12$. The last equivalence $\abs{u_L(s)}=1\iff u_L(s)\in\mathrm{Phase}$ follows directly from the definition of $\mathrm{Phase}$.\par
+\end{proof}
+
+This equivalence rewrites "critical line geometry" as "unit circle slice" on the parameter domain. Therefore, if the auditing mechanism only allows operation on $\mathrm{Phase}$, then auditable zeros can only be presented as phase parameter $u=e^{i\theta}$.\par
+
+Under the self-dual condition $\Delta(z,u)=\Delta(uz,1/u)$, the completed slice further satisfies the functional equation $\Xi_{\Delta,L}(s)=\Xi_{\Delta,L}(1-s)$ and can be algebraized further on unitary slice to reciprocal polynomials and interval root criteria, thus connecting to parallelizable finite certificate layers (Appendix \ref{app:xi-certificate-layer}; proof-carrying WSOS/Rouché certificate templates in Appendix \ref{app:godel-wsos-rouche}). Structural results directly related to this auditing mechanism (self-describing codes, residual monocode compression, unified construction of operations, and repeatability of unitary slice numerical certificates) are concentrated in Section \ref{sec:conclusion-cluster}.\par
+
+\subsection{Three-generator normalization closure and visible parameter axis}
+\begin{definition}[Unitary slice auditing protocol and visible continuous parameter axis]\label{def:unitary-slice-audit-axis}
+This paper fixes the $\Xi$-auditing mechanism with unitary slice as the \textbf{protocol layer} constraint: continuous input permits only single-parameter phase $\theta$, with
+$$
+u=e^{i\theta}\in\mathrm{Phase}
+$$
+as the unique auditable continuous parameter channel; the radial parameter $r$ in general decomposition $u=re^{i\theta}$ does not belong to the visible input type of this protocol. The three-generator normalization fragment and certificated rewriting rules compatible with this appear in Appendix \ref{app:pw-fragment}; the formalized compression of the type-safety rejection chain appears in Appendix \ref{app:type-safety-details}.\par
+
+In the typed fiber language of Section \ref{subsec:typed-fiber-calculus}, this protocol constraint is equivalent to: continuous input is strongly typed to indexed phase sort $\mathsf{Phase}[p]$, where the precision index $p$ is carried by addresses and determines the certificate layer for repeatable auditing; radial degrees of freedom must be carried via additional type/fiber extension.\par
+\end{definition}
+
+\begin{remark}[Rational input and zero-floating-point certificates (algebraic sub-language)]\label{rem:us-rational-audit}
+When the audit object on unitary slice is compressible to interval polynomial $P_{\Delta,L}(S)$ and falls into a coefficient ring with exact computation, we can use Cayley quarter-angle parameter $x$ as rational coordinate input for phase, making
+$$
+S(x)=2\frac{1-x^2}{1+x^2}
+$$
+a rational function of $x$, reducing zero auditing to real root isolation certificates of the cleared-denominator polynomial $P_{\Delta,L}^\sharp(x)$ (Appendix \ref{app:xi-certificate-layer}, Section \ref{subsec:xi-cayley-rational}). This path is independent of any floating-point rounding model and complements interval certificate protocols.\par
+\end{remark}
+
+\begin{definition}[Typed address domain and $\NULL$ semantics]\label{def:us-typed-address-null}
+Under unitary slice auditing protocol, the typed address domain is
+$$
+\Addr_{\mathrm{US}}:=\{(L,\theta,p):\ L>1,\ \theta\in\RR,\ p\in\NN\}.
+$$
+Fix a family of deterministic verification rules $\mathsf{Verify}_{\mathrm{US}}$: its input is $(\Delta,L,\theta,p,c)$ (where $c$ is finite data certificate), output is pass/reject, and "pass" implies the corresponding mathematical assertion holds. The format of corresponding certificate objects (e.g., interval certificates for NonZero and RootInterval, covering-form $\NULL$ certificates, etc.) appear in Section \ref{sec:conclusion-cluster}, Section \ref{subsec:cc-us-cert}, and Appendix \ref{app:inject-code-audit}.\par
+Thus, unitary slice's read can be understood as a "certificate existence"-driven partial function: there exists a partial function read $\Read_{\mathrm{US}}:\Addr_{\mathrm{US}}\rightharpoonup \mathrm{ValDom}$, which for given $(L,\theta,p)$, if there exists some certificate $c$ such that $\mathsf{Verify}_{\mathrm{US}}(\Delta,L,\theta,p,c)$ passes, returns the corresponding label output (e.g., "nonzero/zero-containing interval", etc.); if no auditable passing certificate exists, the read is undefined and denoted $\NULL$ by convention.\par
+\end{definition}
+
+On the three-generator fragment $(\mathrm{PROJ}_u,E_m,\mathrm{LIFT}_G)$, any projection word can be reduced to canonical form
+$$
+\mathrm{LIFT}_G\circ \mathrm{PROJ}_u\circ E_m,
+$$
+converging non-commuting residuals to anomaly signature $\mathrm{Anom}_G(K;\theta)$. When this normal form connects to the $\Xi$-auditing mechanism, the only continuously auditable parameter axis is the phase $\theta$ of unitary slice, not the radial-phase two-parameter structure of general decomposition $u=re^{i\theta}$. Thus, addressable zero certificates in this closure can only appear as single-parameter expressions of $\theta$.\par
+
+Composability laws of anomaly signatures, cohomological quotient taking, and ASC (amplify--split--cancel) auditing procedures appear in Appendix \ref{app:anom-cohomology-asc}.\par

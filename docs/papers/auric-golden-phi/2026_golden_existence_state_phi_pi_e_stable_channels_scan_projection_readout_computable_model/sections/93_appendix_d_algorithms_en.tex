@@ -1,0 +1,27 @@
+\section{Appendix D: Algorithm Interfaces (Pseudocode)}
+
+\subsection{Zeckendorf decomposition and \texorpdfstring{$\mathrm{Fold}_m$}{Fold\_m}}
+
+\begin{Verbatim}
+Input: integer N >= 0, window length m
+Output: word w in X_m
+
+1. Precompute Fibonacci weights F_{k+1} until F_{m+K} >= N for a sufficient K.
+2. Initialize digits c_k = 0 for all needed k.
+3. For k from largest down to 1:
+     if F_{k+1} <= N and c_{k+1} == 0:
+         c_k = 1
+         N = N - F_{k+1}
+4. Return w = (c_1, ..., c_m) (pad zeros if needed).
+\end{Verbatim}
+
+\subsection{Generation of golden existence state}
+
+\begin{Verbatim}
+Input: window length m
+Output: normalized vector |Phi_m> supported on X_m
+
+1. Enumerate all binary words w in {0,1}^m.
+2. Keep those with no adjacent substring "11" to form X_m.
+3. Output uniform superposition |Phi_m> = |X_m|^{-1/2} sum_{w in X_m} |w>.
+\end{Verbatim}

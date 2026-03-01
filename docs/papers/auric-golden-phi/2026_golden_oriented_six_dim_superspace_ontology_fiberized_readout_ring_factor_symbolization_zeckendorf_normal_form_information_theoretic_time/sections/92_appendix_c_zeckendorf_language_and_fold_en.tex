@@ -1,0 +1,72 @@
+\section{Appendix C: Zeckendorf Legitimate Language Counting and Stabilization Kernel Construction}
+\label{app:zeckendorf-fold}
+
+Combinatorial proofs that the count of valid strings without adjacent $1$s satisfies Fibonacci recursion and gives $\card{X_m^{\mathrm Z}}=F_{m+2}$ are found in \cite{PlanetMathZeckendorfCombinatorial}.
+Formalized versions of the Zeckendorf theorem and uniqueness statements are found in \cite{AFPZeckendorf}.
+
+\subsection{Multi-Scale Consistency: Restriction Inverse Systems and Inverse Limit Isomorphism}
+
+To rigorously formalize compatibility across window lengths $m$, this appendix provides the inverse system and inverse limit description of Zeckendorf stable-type spaces.
+
+\begin{definition}[Position-Indexed Stable-Type Space]\label{def:app-XmZ-indexed}
+For $m\in\NN$, define
+\[
+X_m^{\mathrm Z,\#}:=\Bigl\{(x_k)_{2\le k\le m+1}\in\{0,1\}^{\{2,3,\dots,m+1\}}:\ x_kx_{k+1}=0\ \text{for all}\ 2\le k\le m\Bigr\}.
+\]
+This is naturally isomorphic to the word representation $X_m^{\mathrm Z}\subset\{0,1\}^m$ via $(x_k)_{2\le k\le m+1}\mapsto (x_{m+1},x_m,\dots,x_2)$.
+\end{definition}
+
+\begin{definition}[Restriction Projection]\label{def:app-pi}
+For $m_2\ge m_1$, define
+\[
+\pi_{m_2\to m_1}:X_{m_2}^{\mathrm Z,\#}\to X_{m_1}^{\mathrm Z,\#},\qquad
+\bigl(\pi_{m_2\to m_1}(x)\bigr)_k:=x_k\ \ (2\le k\le m_1+1).
+\]
+\end{definition}
+
+\begin{lemma}[Basic Properties]\label{lem:app-pi-basic}
+$\pi_{m_2\to m_1}$ is well-defined and surjective, and satisfies $\pi_{m_3\to m_1}=\pi_{m_2\to m_1}\circ \pi_{m_3\to m_2}$ for $m_3\ge m_2\ge m_1$.
+\end{lemma}
+
+\begin{proof}
+Restriction preserves the local forbidden-word constraint, so it is well-defined; any element can be extended by padding with zeros at the tail, so it is surjective; consistency follows directly from the coordinate-wise definition.
+\end{proof}
+
+\begin{definition}[Infinite Zeckendorf Subshift]\label{def:app-XinfZ}
+Define
+\[
+X_\infty^{\mathrm Z}:=\Bigl\{(x_k)_{k\ge 2}\in\{0,1\}^{\{2,3,\dots\}}:\ x_kx_{k+1}=0\ \text{for all}\ k\ge 2\Bigr\},
+\]
+and define $\pi_m^\infty:X_\infty^{\mathrm Z}\to X_m^{\mathrm Z,\#}$ as restriction: $(\pi_m^\infty(x))_k:=x_k$ for $2\le k\le m+1$.
+\end{definition}
+
+\begin{theorem}[Inverse Limit Isomorphism]\label{thm:app-inverse-limit}
+There exists a natural isomorphism
+\[
+X_\infty^{\mathrm Z}\ \cong\ \varprojlim X_m^{\mathrm Z,\#},
+\]
+satisfying the commutation relation $\pi_{m_2\to m_1}\circ \pi_{m_2}^\infty=\pi_{m_1}^\infty$ for $m_2\ge m_1$.
+\end{theorem}
+
+\begin{proof}
+For $x\in X_\infty^{\mathrm Z}$, take its restriction family $(\pi_m^\infty(x))_{m\ge 1}$, which gives a compatible family. Conversely, given a compatible family $(x^{(m)})_{m\ge 1}$, define $x_k:=x^{(m)}_k$ for any $m\ge k-1$; compatibility guarantees well-definition and preservation of the forbidden-word constraint. The two constructions are mutual inverses and natural.
+\end{proof}
+
+\subsection{Block Encoding Bijection: Fixed $m=6$ Recursive Readout Aligned with $m=6K$}
+
+Let $B:=X_6^{\mathrm Z}$ be viewed as the 6-block space. For $b=(b_1,\dots,b_6)\in B$, define $\mathrm{fst}(b)=b_1$ and $\mathrm{lst}(b)=b_6$, and define the boundary compatibility relation
+\[
+b\to b'\iff \mathrm{lst}(b)\,\mathrm{fst}(b')\neq 11.
+\]
+
+\begin{proposition}[Block Encoding Bijection]\label{prop:app-block-bijection}
+For any $K\in\NN$, there exists a natural bijection
+\[
+X_{6K}^{\mathrm Z}\ \longleftrightarrow\ \{(b_0,\dots,b_{K-1})\in B^K:\ b_i\to b_{i+1}\ \text{for all}\ 0\le i<K-1\},
+\]
+with the correspondence given by ``cutting into 6-bit segments'' and ``concatenating by blocks''.
+\end{proposition}
+
+\begin{proof}
+For $w\in X_{6K}^{\mathrm Z}$, cut it into $K$ consecutive 6-blocks $b_0,\dots,b_{K-1}$. The validity within each block follows immediately from $w\in X_{6K}^{\mathrm Z}$, giving $b_i\in X_6^{\mathrm Z}$. The only possible location for the forbidden word $11$ to appear at block boundaries is at the boundary-adjacent positions, so the validity of $w$ is equivalent to $b_i\to b_{i+1}$ for all $i$. Conversely, given a compatible path $(b_i)$, concatenate by blocks to get a length-$6K$ string; within-block validity and boundary compatibility together guarantee that the concatenation contains no subword $11$. Cutting and concatenating are mutual inverses, giving a bijection.
+\end{proof}

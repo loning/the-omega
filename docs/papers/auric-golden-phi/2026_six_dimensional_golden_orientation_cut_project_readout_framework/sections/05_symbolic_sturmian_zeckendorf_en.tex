@@ -1,0 +1,87 @@
+\section{Symbolic Readout, Sturmian Invariants, and Zeckendorf Stabilization}\label{sec:symbolic}
+
+\subsection{One-Dimensional Toroidal Factor and Binary Symbolization (H5.1, D5.1)}
+
+To project internal scanning onto verifiable discrete output, adopt the replaceable assumption:
+\begin{itemize}
+  \item \textbf{(H5.1)} There exists a measurable factor map $\phi:E_{\perp}/\Gamma\to \TT^{1}=\RR/\ZZ$ such that $\theta_t:=\phi(u_t)$ approximately satisfies circle rotation
+  \[
+  \theta_{t+1}=\theta_t+\alpha\ (\mathrm{mod}\ 1),
+  \]
+  where $\alpha\in(0,1)$ is the rotation number. Take a bipartition $\mathcal{P}=\{I_0,I_1\}$ (measurable, disjoint, covering $\TT^1$) and define binary readout
+  \[
+  \omega_t:=\ind_{I_1}(\theta_t)\in\{0,1\}.
+  \]
+\end{itemize}
+A window word of length $m$ is defined as
+\[
+\omega^{(m)}_t:=(\omega_t,\omega_{t+1},\dots,\omega_{t+m-1})\in\{0,1\}^{m}.
+\]
+
+\subsection{Sturmian Complexity and Fibonacci Branch (T5.2)}
+
+\begin{itemize}
+  \item \textbf{(T5.2)} Under irrational rotation and the condition that the bipartition boundary trajectory has zero measure, $(\omega_t)$ is a Sturmian sequence with factor complexity satisfying
+  \[
+  p(n)=\#\{\text{distinct subwords of length }n\}=n+1,\qquad \forall n\ge 1.
+  \]
+  \item At the golden branch value, $(\omega_t)$ is a Fibonacci-type Sturmian word, and its return structure exhibits Fibonacci-scale stratification in typical statistics (Appendix \ref{app:sturmian-test}).
+\end{itemize}
+The above invariants provide reference checks: periodic sequences and general random sequences do not satisfy the full-scale linear law $p(n)=n+1$.
+
+\subsection{Zeckendorf Legal Language (D5.3)}
+
+Define the Zeckendorf legal language of length $m$ as
+\[
+X_m:=\{x\in\{0,1\}^{m}:\text{no substring }11\}.
+\]
+This language can also be viewed as a finite-window truncation of the golden-mean shift.
+
+\begin{proposition}[Counting]\label{prop:zeckendorf-count}
+(T5.3) We have
+\[
+|X_m|=F_{m+2},
+\]
+where $F_k$ is the Fibonacci sequence.
+\end{proposition}
+The proof is provided in Appendix \ref{app:zeckendorf-fold}.
+
+\subsection{Stabilization Kernel \texorpdfstring{$\Fold_m$}{Fold\_m} (D5.4, T5.4)}
+
+To normalize the raw window word $\omega^{(m)}_t$ to $X_m$, define a surjection
+\[
+\Fold_m:\{0,1\}^{m}\twoheadrightarrow X_m,
+\]
+satisfying:
+\begin{enumerate}
+  \item $\Fold_m(x)=x$ for all $x\in X_m$ (fixed-point property);
+  \item $\Fold_m$ is implemented by a local rewriting system and terminates in finitely many steps;
+  \item The terminal state is unique (canonical form is unique).
+\end{enumerate}
+In a standard class of constructions, the core rewriting rules can be chosen as local transformations of the ``carry-elimination of adjacency'' type (e.g., with $011\mapsto 100$ as the prototype accompanied by boundary truncation), with termination and uniqueness guaranteed by potential function descent and Zeckendorf unique representation (Appendix \ref{app:zeckendorf-fold}).
+
+Let the stabilized output be
+\[
+x_t:=\Fold_m(\omega^{(m)}_t)\in X_m.
+\]
+This paper calls $(x_t)$ the ``stabilized readout sequence.''
+
+\subsection{Time Fibers and Closure Fixed-Point Semantics (D5.5, T5.5)}
+
+For any stable state $x\in X_m$, define the time fiber (preimage)
+\[
+\mathcal{F}_m(x):=\Fold_m^{-1}(x)\subseteq\{0,1\}^{m}.
+\]
+Define the closure operator $\Phi$ acting on $\mathcal{P}(\{0,1\}^{m})$ as:
+\[
+\Phi(S):=\Fold_m^{-1}\big(\Fold_m(S)\big).
+\]
+
+\begin{theorem}[Closure and Fixed-Point Characterization]\label{thm:closure-fixed-points}
+(T5.5) $\Phi$ is a closure operator (extensive, monotone, idempotent), and
+\[
+\Phi(S)=S\quad \Longleftrightarrow\quad
+S=\bigcup_{x\in A}\mathcal{F}_m(x)\ \text{for some}\ A\subseteq X_m.
+\]
+\end{theorem}
+The proof is provided in Appendix \ref{app:closure-proof}. This conclusion objectifies the relationship between the ``visible stable state set'' and the ``indistinguishable realization families'' as a fixed-point structure.

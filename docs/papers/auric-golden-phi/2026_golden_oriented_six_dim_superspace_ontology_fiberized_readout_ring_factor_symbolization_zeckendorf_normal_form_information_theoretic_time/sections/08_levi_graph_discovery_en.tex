@@ -1,0 +1,29 @@
+\section{Levi Graph and Fiber-Prioritized Discovery Process}
+
+\subsection{Levi Graph}
+
+The Levi graph (incidence graph) is defined as a bipartite graph associated with an incidence structure: each point and each line (or more generally, object) corresponds to a vertex, and incidence relations correspond to edges \cite{WikipediaLeviGraph}.
+
+\subsection{Node--Fiber Incidency}
+
+Take the node set as $X_m^{\mathrm Z}$, take the fiber node set as a representative family of constraints $\mathfrak{F}$ (e.g., preimage fibers and their statistical summaries), and define the incidence relation $\mathcal{I}\subseteq X_m^{\mathrm Z}\times\mathfrak{F}$, obtaining the Levi graph
+\[
+B=(X_m^{\mathrm Z}\sqcup\mathfrak{F},\mathcal{I}).
+\]
+
+\subsection{Closure Operator}
+
+Define the adjacency operators
+\[
+N_X(\mathfrak{F}')=\{x:\exists f\in\mathfrak{F}',(x,f)\in\mathcal{I}\},\quad
+N_{\mathfrak{F}}(X')=\{f:\exists x\in X',(x,f)\in\mathcal{I}\}.
+\]
+Iterating the closure
+\[
+X_{t+1}=X_t\cup N_X(\mathfrak{F}_t),\qquad
+\mathfrak{F}_{t+1}=\mathfrak{F}_t\cup N_{\mathfrak{F}}(X_{t+1})
+\]
+yields a ``fiber-prioritized'' discovery process. Its correctness follows from graph-theoretic reachability closure results (Appendix \ref{app:levi-closure}).
+
+\subsection{Hierarchical Interpretation of Recursive Observation}
+Fixed-bandwidth recursive readout induces at the protocol level a family of successively refined constraints. Viewing the $k$-th level recursive output $x^{(k)}$ as an additional condition applied to the underlying system, one can associate it to finer constraint node families in the Levi graph: increasing recursive depth is equivalent to restricting the incidence relation $\mathcal{I}$ to finer reachability sub-relations, causing the reachability closure to converge to smaller candidate sets at finer resolution. This correspondence depends only on the object-layer fact that ``constraints monotonically strengthen with hierarchy level'' and requires no additional semantic assumptions.

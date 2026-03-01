@@ -1,0 +1,68 @@
+\section{Completeness and Bridging Assumptions: From Internal $\Xi$-RH to Classical RH}\label{sec:bridge-rh}
+
+\subsection{Address completeness assumption and internal $\Xi$-RH}
+\begin{assumption}[$\Xi$-Slice address completeness]\label{ass:xi-address-completeness}
+For fixed $L>1$, every zero point $s\in\CC$ of $\Xi_{\Delta,L}$ is addressable and auditable under the PW closure of this paper; equivalently, no zero point reads as $\NULL$ under this closure.\par
+\end{assumption}
+
+\begin{corollary}[Address completeness implies internal $\Xi$-RH]\label{cor:xi-rh}
+Under Assumption \ref{ass:xi-address-completeness}, all zeros of $\Xi_{\Delta,L}$ satisfy $\Re(s)=\tfrac12$.\par
+\noindent\textnormal{\textbf{Depends on:} Assumption \ref{ass:xi-address-completeness}, Theorem \ref{thm:type-safety-offcritical}.}\par
+\end{corollary}
+
+\begin{proof}
+By Assumption \ref{ass:xi-address-completeness}, every zero is addressable; by Theorem \ref{thm:type-safety-offcritical}, every addressable zero must satisfy $\Re(s)=\tfrac12$.\par
+\end{proof}
+
+\subsection{BridgeRH: classical zero addressability bridging condition}
+Let the classical completed function be
+$$
+\Xi_\zeta(s):=\tfrac12 s(s-1)\pi^{-s/2}\Gamma\!\left(\tfrac{s}{2}\right)\zeta(s),
+$$
+whose zero set (with multiplicity) corresponds to non-trivial zeros of the Riemann $\zeta$. Classical RH can be stated as: if $\Xi_\zeta(s_0)=0$ and $0<\Re(s_0)<1$, then $\Re(s_0)=\tfrac12$.\par
+
+\begin{assumption}[BridgeRH: classical zero addressability bridging condition (obligation list)]\label{ass:bridge-rh}
+There exists a core family induced by SPG/PW pipeline and a two-variable determinant object $\Delta(z,u)$ (finite-dimensional or Fredholm determinant cases both allowed), and there exists $L>1$, such that classical completion zero events can be organized as "addressified reads" in the auditable object domain of this paper. More precisely, the following four classes of obligations should all be auditable under fixed verification rules using \textnormal{\textbf{finite certificate objects}}: when passing, output offline re-computable certificate bundles; when failing, output auditable \textnormal{\textbf{local failure witnesses}} (indicating where violation occurs). Refined vocabulary, certificate formats, and controlled examples appear in Appendix \ref{app:bridge-rh-obligations}.\par
+\begin{enumerate}[label=(B\arabic*), ref=B\arabic*]
+  \item \label{bridge:b1}
+  \textnormal{\textbf{Object alignment:}} provide an auditable verification path and matching criterion such that the completed slice $\Xi_{\Delta,L}(s)=\Delta(L^{-s},L^{2s-1})$ is compatible with classical $\Xi_\zeta(s)$ in the required sense (e.g., same zero set/same multiplicity) and can be lifted by analytic rigidity to target domain; trace/primitive/Euler strict exchange bridge structure and self-dual completion condition as auditable inputs for this alignment.\par
+
+  \item \label{bridge:b2}
+  \textnormal{\textbf{Event injection and addressable read:}} for any zero event (as external auditable input) satisfying $\Xi_\zeta(s_0)=0$ and $0<\Re(s_0)<1$, there exists projection word address $W(s_0)\in\mathrm{PW}$ such that it reduces to canonical form within the auditable fragment and produces non-$\NULL$ read; this read must be auditable under the identification criterion of (B1) to determine $\Xi_{\Delta,L}(s_0)=0$. The basic form of failure witness is: provide some $s_0$ such that any candidate address can only output $\NULL$ or fail auditing.\par
+
+  \item \label{bridge:b3}
+  \textnormal{\textbf{Protocol lock (unitary slice lock):}} auditing any zero event must go through the typed auditing interface of unitary slice (Definitions \ref{def:unitary-slice-audit-axis} and \ref{def:us-typed-address-null}), so zero address parameters satisfy $\abs{u_L(s_0)}=1$. The basic form of failure witness is: auditing inevitably depends on radial degrees of freedom (requiring additional certificate type/register), degenerating to $\NULL$ within three-register closure.\par
+
+  \item \label{bridge:b4}
+  \textnormal{\textbf{Specification \& regression:}} the bridging object satisfies auditable specification conditions to support auditable regression mechanisms for "zeros and multiplicities" (e.g., closed holomorphy, integer multiplicity/residue certificate NonCancel, and Abel-first/finite-part compatibility, etc.); any specification violation should output auditable counter-example certificate to terminate the corresponding bridging corollary chain.\par
+\end{enumerate}
+\end{assumption}
+
+\begin{definition}[Falsifiable specification of BridgeRH: failure witness interface]\label{def:bridge-failure-witness}
+BridgeRH as external input specification, each of its obligations must possess "falsifiable" failure witness format: for each (B$i$) ($i=1,2,3,4$), there exists a family of finite objects $\mathsf{Wit}_{B i}$ and deterministic checker $\mathsf{Verify}_{B i}^{\mathrm{fail}}$ such that for any witness $w\in\mathsf{Wit}_{B i}$,
+$$
+\mathsf{Verify}_{B i}^{\mathrm{fail}}(w)=1\ \Longrightarrow\ \text{(B$i$) does not hold},
+$$
+and this judgment can be verified in finite steps.\par
+In this paper's context, typical failure witnesses correspond to: \textbf{(B1)} providing inconsistent certificates on alignment path (e.g., counter-examples for zero set/multiplicity regression); \textbf{(B2)} providing some classical zero event $s_0$ such that any candidate address can only produce $\NULL$ or fail auditing; \textbf{(B3)} providing auditable explanation that auditing inevitably depends on radial degrees of freedom (needing additional certificate type/fourth fiber); \textbf{(B4)} providing counter-example certificates for specification violations to terminate the corresponding reduction chain.\par
+\end{definition}
+
+The itemized condition list of BridgeRH, auditing vocabulary, and minimal controlled examples appear in Appendix \ref{app:bridge-rh-obligations}; unified coding and certificate object formats directly related appear in Section \ref{sec:conclusion-cluster} and Appendix \ref{app:inject-code-audit}.\par
+
+\begin{remark}[Logical status and condition strength of BridgeRH]\label{rem:bridge-rh-strength}
+The role of Assumption \ref{ass:bridge-rh} is to concentrate classical-side difficulty as a group of line-by-line auditable sufficient conditions: \textbf{(B1)} provides verification path and analytic rigidity needed for classical target alignment (making $\Xi_{\Delta,L}$ and $\Xi_\zeta$ have same zero set/multiplicity in required sense); \textbf{(B2)} injects each classical zero event into PW closure outputting non-null value read; \textbf{(B3)} locks the auditing protocol to visible parameter axis and typed address domain of unitary slice (Definitions \ref{def:unitary-slice-audit-axis} and \ref{def:us-typed-address-null}), enabling type-safety Theorem \ref{thm:type-safety-offcritical} to impose critical line constraint on target-side zero set.\par
+Thus, Theorem \ref{thm:bridge-rh-implies-rh} is a conditional inference of "target-side injection $+$ protocol lock": this paper does not construct or prove realizability of (B1)--(B4) at main text level, but provides formalized dependency chains such that once they hold, classical RH follows; auditable violation of any condition terminates the corresponding bridging inference chain.\par
+\end{remark}
+
+\begin{theorem}[BridgeRH implies classical RH]\label{thm:bridge-rh-implies-rh}
+If Assumption \ref{ass:bridge-rh} holds, then classical RH holds: any zero satisfying $\Xi_\zeta(s_0)=0$ and $0<\Re(s_0)<1$ must satisfy $\Re(s_0)=\tfrac12$.\par
+\noindent\textnormal{\textbf{Depends on:} Assumption \ref{ass:bridge-rh} (especially \ref{bridge:b2},\ref{bridge:b3}), Theorem \ref{thm:type-safety-offcritical}, Proposition \ref{prop:critical-line-unitary-slice}, and typed address domain/undefined semantics of unitary slice (Definitions \ref{def:unitary-slice-audit-axis}--\ref{def:us-typed-address-null}).}\par
+\end{theorem}
+
+\begin{proof}
+Suppose there exists $s_0$ satisfying $\Xi_\zeta(s_0)=0$, $0<\Re(s_0)<1$, and $\Re(s_0)\neq \tfrac12$. By (B2), this zero event has addressable address in PW producing non-$\NULL$ auditable read. By (B3), auditing must pass through unitary slice, so zero address parameters must satisfy $\abs{u_L(s_0)}=1$. On the other hand, since $u_L(s)=L^{2s-1}$, $\Re(s_0)\neq\tfrac12$ implies $\abs{u_L(s_0)}\neq 1$, contradicting type lock; alternatively, by Theorem \ref{thm:type-safety-offcritical} and Definition \ref{def:us-typed-address-null}, when $\Re(s_0)\neq\tfrac12$, no auditable passing zero certificate exists objectifying "$\Xi_{\Delta,L}(s_0)=0$" as non-null value read, so the read is $\NULL$, contradicting the non-$\NULL$ read of (B2). Thus no such $s_0$ exists, so classical RH holds.\par
+\end{proof}
+
+\begin{remark}[On classical-side equivalence criteria]
+The core conclusion of this section is: when BridgeRH's addressable/auditable bridging conditions hold, once classical zero events enter unitary slice auditing mechanism, they are type-locked to $\abs{u_L(s)}=1$, inferring $\Re(s)=\tfrac12$. Various equivalent formulations of classical RH (e.g., holomorphy in disk, zero exclusion, or boundary-averaged forms) can serve as candidate verification paths for (B1); their specific forms do not affect the formal inference of this section.\par
+\end{remark}

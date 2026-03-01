@@ -1,0 +1,93 @@
+\section{Stratified Framework and Fundamental Objects}
+
+\subsection{Ontological layer: Normalized global state}
+
+Let $\mathcal H$ be a complex Hilbert space and $\lvert\Omega\rangle\in\mathcal H$ be a unit vector with $\norm{\Omega}=1$. The ontological layer assumes only the existence of $\lvert\Omega\rangle$ and its preservation of norm under unitary transformations; this layer introduces no external time parameters or linear additive primacy.
+
+\subsection{Scanning layer: Unitary access sequences and phase orbits}
+
+We introduce a unitary operator $\Theta$ (the scan operator) to represent access sequences via discrete iteration count $t\in\ZZ_{\ge 0}$. A minimal model can take the Koopman form on $\mathcal H=L^2(\RR/\ZZ)$
+\[
+(\Theta f)(x)=f(x+\alpha)\quad(\mathrm{mod}\ 1),
+\]
+where $\alpha\notin\QQ$. Orbit points are given by $x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)$.
+
+\subsection{Readout layer: Window projection and binary results}
+
+Given a window $W\subset\RR/\ZZ$, we define the readout projection
+\[
+b_t=\ind_W(x_t)\in\{0,1\},
+\]
+yielding a binary sequence $b_0b_1b_2\cdots$. When $W$ is an interval and $\alpha$ is irrational, this sequence is a mechanistic word (a special case of Sturmian sequences) and satisfies low complexity and good uniformity properties.
+
+\subsection{Stability principle: Finite-window syntax and repeatable types}
+
+Let the window length be $m$ and truncate the continuous readout as local words
+\[
+w=b_t b_{t+1}\cdots b_{t+m-1}\in\{0,1\}^m.
+\]
+Define the syntactic constraint (golden mean constraint):
+\[
+X_m:=\{w\in\{0,1\}^m:\ w\ \text{contains no substring}\ 11\}.
+\]
+We view $X_m$ as a stable type space: only words satisfying the local prohibition law are considered ``stably repeatable'' readout types.
+
+\subsection{Index complementarity: Beatty's complementary theorem and golden branch}\label{subsec:beatty-complement}
+
+This subsection provides an ``index-side'' arithmetic characterization: under interval-window binary readout, hit times and miss times can be described by a pair of complementary Beatty sequences. This conclusion completes the ``readout complementarity'' from the symbolic language side (space $X_m$ of stable words of length $m$) to the natural number index side (complementary partition of time coordinates).
+
+\begin{definition}[Standard mechanistic word and hit index set]\label{def:standard-mechanical-word}
+Take $0<\alpha<1$ with $\alpha\notin\QQ$ and set
+\[
+x_t=x_0+t\alpha\ (\mathrm{mod}\ 1)\in\RR/\ZZ,\qquad t\in\ZZ_{\ge 0}.
+\]
+Take the standard semi-open interval window $W_\alpha=[1-\alpha,1)$ (endpoint conventions affect only finite translation or complementarity) and define the readout
+\[
+b_t=\ind_{W_\alpha}(x_t)\in\{0,1\}.
+\]
+Define the hit/miss index sets (in positive integer indexing):
+\[
+A:=\{t+1\in\NN:\ b_t=1\},\qquad B:=\{t+1\in\NN:\ b_t=0\}.
+\]
+\end{definition}
+
+\begin{proposition}[Hit/miss indices form complementary Beatty sequences]\label{prop:beatty-complement-indices}
+In the setting of Definition \ref{def:standard-mechanical-word}, let
+\[
+r:=\frac{1}{\alpha}>1,\qquad s:=\frac{1}{1-\alpha}>1.
+\]
+Then there exist $\gamma\in[0,1)$ and $\gamma'\in[0,1)$ such that
+\[
+A=\big\{\big\lfloor (n+\gamma)r\big\rfloor:\ n\in\NN\big\},\qquad
+B=\big\{\big\lfloor (n+\gamma')s\big\rfloor:\ n\in\NN\big\}.
+\]
+Moreover, since $1/r+1/s=\alpha+(1-\alpha)=1$, by Beatty's complementary theorem $A$ and $B$ are disjoint and their union is $\NN$. In particular, for the golden branch $\alpha=\varphi^{-1}$, we have $r=\varphi$ and $s=\varphi^{2}$, so hit/miss indices are given by the complementary Beatty pair $(\varphi,\varphi^2)$.\cite{Beatty1926}
+\end{proposition}
+
+\begin{proof}
+For arbitrary $k\in\NN$, denote the cumulative hit count
+\[
+N_1(k):=\sum_{t=0}^{k-1} b_t.
+\]
+By the standard floor-function representation of interval rotation (corresponding to the semi-open convention of window $[1-\alpha,1)$), there exists $\rho\in[0,1)$ such that
+\[
+N_1(k)=\big\lfloor k\alpha+\rho\big\rfloor-\big\lfloor\rho\big\rfloor.
+\]
+Thus $k\in A$ is equivalent to $b_{k-1}=1$, i.e., $N_1(k)-N_1(k-1)=1$, which is equivalent to
+\[
+\big\lfloor k\alpha+\rho\big\rfloor-\big\lfloor (k-1)\alpha+\rho\big\rfloor=1.
+\]
+Let $n:=\lfloor k\alpha+\rho\rfloor$. From the above and $0<\alpha<1$, we derive
+\[
+n-1< (k-1)\alpha+\rho < n \le k\alpha+\rho < n+1,
+\]
+which simplifies to
+\[
+\frac{n-\rho}{\alpha}\le k < \frac{n+1-\rho}{\alpha}.
+\]
+Setting $r=1/\alpha$ and $\gamma:=1-\rho\ (\mathrm{mod}\ 1)$, the above interval of length $r$ yields $k=\lfloor (n+\gamma)r\rfloor$. Therefore,
+\[
+A=\{\lfloor (n+\gamma)r\rfloor:\ n\in\NN\}.
+\]
+For $B$, the same reasoning applies (or by complementarity directly), and Beatty's complementary theorem completes the result.
+\end{proof}

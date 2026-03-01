@@ -1,0 +1,67 @@
+\section{Minimal Hypotheses and Reusable Theorem Templates}
+
+\subsection{Minimal Hypothesis Hierarchy (Audit Table)}
+
+\begin{itemize}
+  \item \textbf{A0 (Measure-Preserving Dynamical System)}: $(X,\mathcal{B},\mu,T)$ is a measure-preserving system.
+  \item \textbf{A1 (Finite Readout)}: $\rho:X\to\{0,1\}$ is measurable; window length $m$ is fixed.
+  \item \textbf{A2 (Stabilization Kernel)}: $\Fold_m$ is computable, surjective, and realizes the canonical form ``no adjacent $1$'s'' (Zeckendorf logic).
+  \item \textbf{A3 (Statistical Port)}: Ergodicity + generating partition (for invoking SMB/KS).
+\end{itemize}
+
+All remaining structures (e.g., specific geometric realization of cut-and-project, optimality of golden slope, Hecke/\(\zeta\) interface, HPA alignment) should appear as additional assumptions / extension ports listed separately and should not be implicitly embedded in A0--A3.
+
+\subsection{Optional Extension Hypothesis: Multi-Scale Consistency (Scale Interface)}
+
+\begin{assumption}[A4 (Scale compatibility / factorization)]\label{assump:A4-scale}
+When comparing outputs at different window lengths $m$, one must additionally provide the scale interface: for any $m_2\ge m_1$, there exists a natural projection (restriction) $\pi_{m_2\to m_1}$ such that the stabilization type spaces $\{X_m^{\mathrm Z},\pi_{m_2\to m_1}\}$ form an inverse system, and the readout satisfies the factorization relation
+\[
+\pi_{m_2\to m_1}\circ \mathcal{R}_{O,m_2}=\mathcal{R}_{O,m_1}\qquad (\mu\text{-a.e. or pointwise}).
+\]
+Under this interpretation, ``result consistency'' should be understood as cross-scale compatibility; differences at different $m$ correspond to visible prefix length and the condition structure induced thereby.
+\end{assumption}
+
+\begin{remark}[Main-text fixed bandwidth template]
+In papers whose model class is delimited by rank-$6$ hyperspace closure, the main text may fix $m=6$ and push the general parameterization in $m$ to appendices / protocol sections. When $m$ is fixed, resolution refinement should be expressed preferentially through recursive readout (partition refinement) rather than through increasing $m$.
+\end{remark}
+
+\subsection{Template T1: Two-Valued / Three-Valued Return Time Spectrum (Torus Induction)}
+
+When the base system is irrational rotation and the readout window is an interval, the induced first-return structure gives a finite-valued return time spectrum (at most three values); the two-valued degenerate case corresponds to induction as a $2$-IET, which is conjugate to rotation measure. This template is used in this directory to align ``stabilization conditions of the readout protocol'' with ``continued fractions / renormalization updates.''
+
+\subsection{Template T2: Sturmian Minimal Complexity (Circle Factor Binary Symbolization)}
+
+When $\rho$ comes from encoding an irrational rotation by two intervals on the circle, we obtain a Sturmian process whose complexity function satisfies $p(n)=n+1$.
+This template appears in geometric / protocol papers as a ``minimal complexity readout certificate.''
+
+\subsection{Template T3: Zeckendorf Legal Language Counting and Folding}
+
+The cardinality of the legal language $X_m^{\mathrm Z}$ satisfies a Fibonacci recurrence and gives $\card{X_m^{\mathrm Z}}=F_{m+2}$;
+the folding kernel $\Fold_m$ provides an auditable compression from $2^m$ to $F_{m+2}$ and fiber degeneracy structure.
+This template simultaneously supports:
+\begin{itemize}
+  \item ``Existence/stability'' as projection conditioning (visible states);
+  \item ``Invisible degrees of freedom'' as fiber objects;
+  \item ``Boundary/cycling inconsistency'' as the difference between linear-window semantics and closed semantics (Lucas/Fibonacci identities).
+\end{itemize}
+
+\subsection{Template T4: Closure and Fixed-Point Semantics (Realization Sets)}
+
+On $\mathcal{P}(Y_m)$ define the closure
+\[
+\Phi(S)=\Fold_m^{-1}(\Fold_m(S)),
+\]
+then the set of fixed points is precisely the fiber union.
+After adding a reversible micro-update $U$, the fixed points of the composite operator $\Psi=\Phi\circ U$ give a discrete prototype of ``self-consistent closure--evolution reality.''
+
+\subsection{Template T5: Information-Theoretic Time (SMB/KS)}
+
+Under condition A3, the exponential contraction rate of cylindric set posterior measures equals the KS entropy rate, used to encode the ``time arrow'' rigorously as a computable information rate, rather than as an imposed external parameter.
+
+\subsection{Template T6: Verification Caliber for Fixed-Bandwidth Recursive Observation}
+
+Given a target quantity $G$ (e.g., finer local patch types, transition kernel spectrum, first arrival time distribution, etc.), construct a recursive output $x^{(0:K)}$ under fixed $m=6$, and use the conditional uncertainty curve
+$$
+H(G\mid x^{(0:K)})
+$$
+whose descent with $K$ serves as a verification metric. One may further set a control: a one-time increase in $m$ for empirical comparison (as performance control only, without theoretical equivalence claim).
