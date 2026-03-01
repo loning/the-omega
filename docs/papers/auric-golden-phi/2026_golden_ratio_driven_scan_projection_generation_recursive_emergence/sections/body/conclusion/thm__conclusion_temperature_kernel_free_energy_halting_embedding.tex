@@ -1,0 +1,104 @@
+\begin{theorem}[停机问题嵌入温度门软核的谱自由能]\label{thm:conclusion-temperature-kernel-free-energy-halting-embedding}
+取常数 \(\alpha\in(0,1-\log_2\varphi)\)。
+对任意图灵机 \(M\) 与输入 \(x\)，令
+\[
+H_{M,x}(q):=\mathbf 1_{\{M(x)\ \text{在 }q\text{ 步内停机}\}}\qquad(q\in\NN),
+\]
+并定义停机驱动温度调度
+\[
+p_q(M,x):=2^{-\alpha q}\bigl(1-H_{M,x}(q)\bigr)\in\{0,2^{-\alpha q}\}.
+\]
+则序列 \(q\mapsto p_q(M,x)\) 为可计算序列，并且极限
+\[
+F_{M,x}:=\lim_{q\to\infty}\frac1q\log\rho\!\bigl(T^{(q)}_{p_q(M,x)}\bigr)
+\]
+存在且满足二值化：
+\[
+F_{M,x}=
+\begin{cases}
+\log\varphi, & M(x)\ \text{停机},\\[2pt]
+(1-\alpha)\log 2, & M(x)\ \text{不停机}.
+\end{cases}
+\]
+因此映射 \((M,x)\mapsto F_{M,x}\) 不可计算；并且集合 \(\{(M,x):F_{M,x}=(1-\alpha)\log 2\}\) 不是递归可枚举集。
+\end{theorem}
+
+\begin{proof}
+谓词“在 \(q\) 步内停机”可由对 \(M(x)\) 的 \(q\)-步模拟判定，故 \(p_q(M,x)\) 可计算。
+\par
+若 \(M(x)\) 于某时刻 \(T\) 停机，则对一切 \(q\ge T\) 有 \(H_{M,x}(q)=1\)，从而 \(p_q(M,x)=0\)。
+于是 \(T^{(q)}_{p_q(M,x)}=T^{(q)}_{0}=K^{\otimes q}\)，并由 \(\rho(K^{\otimes q})=\varphi^q\) 得
+\(
+q^{-1}\log\rho(T^{(q)}_{p_q(M,x)})=\log\varphi
+\)
+对所有充分大 \(q\) 成立，故 \(F_{M,x}=\log\varphi\)。
+\par
+若 \(M(x)\) 不停机，则对所有 \(q\) 有 \(H_{M,x}(q)=0\)，从而 \(p_q(M,x)=2^{-\alpha q}\)。
+由定理 \ref{thm:pom-replica-softcore-temperature-free-energy-phase-transition} 得
+\[
+F_{M,x}=F(\alpha)=\max\{\log\varphi,(1-\alpha)\log 2\}=(1-\alpha)\log 2,
+\]
+其中最后等号由 \(\alpha<1-\log_2\varphi\) 等价于 \((1-\alpha)\log 2>\log\varphi\) 得出。
+\par
+若 \((M,x)\mapsto F_{M,x}\) 可计算，则可由其值判定停机与否，从而与停机问题不可判定性矛盾。
+最后，“不是递归可枚举”由集合 \(\{(M,x):F_{M,x}=(1-\alpha)\log 2\}\) 与非停机集合一致推出。证毕。
+\end{proof}
+
+\begin{corollary}[谱自由能的高精度近似不可判定]\label{cor:conclusion-temperature-kernel-free-energy-nonapproximable}
+沿用定理 \ref{thm:conclusion-temperature-kernel-free-energy-halting-embedding} 的设定，并取任意
+\[
+0<\delta<\frac12\Bigl((1-\alpha)\log 2-\log\varphi\Bigr).
+\]
+则不存在算法：对任意 \((M,x)\)，输出一个长度 \(<\delta\) 的有理区间 \(I_{M,x}\) 并保证 \(F_{M,x}\in I_{M,x}\)。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-temperature-kernel-free-energy-halting-embedding}，\(F_{M,x}\) 仅取两值 \(\log\varphi\) 与 \((1-\alpha)\log 2\)，且二者间距严格大于 \(2\delta\)。
+若存在上述算法，则由输出区间可判定 \(F_{M,x}\) 属于哪一常数值，从而判定 \(M(x)\) 是否停机，矛盾。证毕。
+\end{proof}
+
+\begin{proposition}[可逆辅助位指数与最小外置预算的二进制等价]\label{prop:conclusion-reversible-aux-bits-equals-log-budget}
+对任意全定义可计算映射 \(\pi:D\to Y\) 且 \(D(\pi)<\infty\)，定义其可逆辅助位指数
+\[
+\kappa(\pi):=\min\Bigl\{k\in\NN:\exists\ \widetilde\pi:D\hookrightarrow Y\times\{0,1\}^k\ \text{单射},\ \operatorname{pr}_1\circ\widetilde\pi=\pi\Bigr\}.
+\]
+则有严格等式
+\[
+\kappa(\pi)=\bigl\lceil\log_2 b(\pi)\bigr\rceil,
+\]
+其中 \(b(\pi)\) 为定理 \ref{thm:conclusion-minimal-external-budget-undecidable} 定义的最小外置预算。
+从而在族 \(\{\pi_{M,x}\}\) 上，判定命题 \(\kappa(\pi)=0\) 不可判定，且其真例集合不是递归可枚举集。
+\end{proposition}
+
+\begin{proof}
+若 \(b(\pi)\le B\)，则存在单射提升 \(\widehat\pi:D\hookrightarrow Y\times\{0,\dots,B-1\}\)。
+将 \(\{0,\dots,B-1\}\) 二进制编码嵌入 \(\{0,1\}^{\lceil\log_2 B\rceil}\)，得到单射提升至 \(Y\times\{0,1\}^{\lceil\log_2 B\rceil}\)，故
+\(
+\kappa(\pi)\le \lceil\log_2 b(\pi)\rceil
+\)。
+反之，若存在 \(\widetilde\pi:D\hookrightarrow Y\times\{0,1\}^k\) 单射提升，则每条输出纤维至多分裂为 \(2^k\) 种标签，故 \(b(\pi)\le 2^k\)，从而 \(\lceil\log_2 b(\pi)\rceil\le k\)。
+取最小 \(k\) 得等式。
+最后，定理 \ref{thm:conclusion-minimal-external-budget-undecidable} 给出 \(b(\pi_{M,x})\in\{1,2\}\) 的停机刻画，代入即得 \(\kappa(\pi_{M,x})\in\{0,1\}\) 的不可判定性与非递归可枚举性。证毕。
+\end{proof}
+
+\begin{proposition}[最小锁存器数与最小状态数的对数等价]\label{prop:conclusion-min-latches-equals-log-states}
+设 \(\pi:L\to L\) 为全定义序贯转导（定义域为正则语言）。
+记 \(s(\pi)\) 为实现 \(\pi\) 的最小确定性有限状态转导器的状态数。
+定义其最小锁存器数
+\[
+m(\pi):=\min\Bigl\{m\in\NN:\ \pi\ \text{可由含 \(m\) 位状态寄存器的同步序贯布尔电路实现}\Bigr\}.
+\]
+则成立精确等式
+\[
+m(\pi)=\bigl\lceil\log_2 s(\pi)\bigr\rceil.
+\]
+从而在定理 \ref{thm:conclusion-minimal-state-complexity-halting} 的族 \(\{\pi_{M,x}\}\) 上，映射 \((M,x)\mapsto m(\pi_{M,x})\) 不可计算。
+\end{proposition}
+
+\begin{proof}
+若某同步序贯电路含 \(m\) 位寄存器，则其可达内部配置数至多为 \(2^m\)，从而诱导的确定性转导器状态数满足 \(s(\pi)\le 2^m\)，即 \(m\ge\lceil\log_2 s(\pi)\rceil\)。
+反之，若存在 \(s(\pi)\)-状态的确定性有限状态转导器，则以 \(m=\lceil\log_2 s(\pi)\rceil\) 位对状态集合编码，并将状态转移与输出函数视为布尔函数实现，即得到含 \(m\) 位寄存器的同步序贯实现，故 \(m(\pi)\le\lceil\log_2 s(\pi)\rceil\)。
+合并得等式。
+最后由定理 \ref{thm:conclusion-minimal-state-complexity-halting} 的停机时间编码，得到 \((M,x)\mapsto m(\pi_{M,x})\) 不可计算。证毕。
+\end{proof}
+

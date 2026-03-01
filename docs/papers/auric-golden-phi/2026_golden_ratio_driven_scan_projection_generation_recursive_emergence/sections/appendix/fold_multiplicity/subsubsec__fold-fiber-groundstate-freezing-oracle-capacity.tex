@@ -189,6 +189,54 @@ h_\infty(a)=g_*.
 反向构造可逐纤维实现该上界：对每个 \(x\) 任取 \(\min(d_m(x),2^B)\) 个纤维内微态并赋予互异码字，由此定义 \({\rm enc}\) 与 \({\rm dec}\) 即达等号。证毕。
 \end{proof}
 
+\begin{theorem}[典型纤维指数膨胀下的零比例可恢复性]\label{thm:fold-oracle-capacity-vanishing-under-typical-exponential-fibers}
+沿用定理 \ref{thm:fold-oracle-capacity-closed-form} 的设定。
+令 \(\omega\sim\mathrm{Unif}(\Omega_m)\)，并记随机变量
+\[
+D_m:=d_m(\Fold_m(\omega)).
+\]
+则有表示
+\[
+{\rm Succ}_m(B)=\mathbb E\left[\min\!\left(1,\frac{2^B}{D_m}\right)\right].
+\]
+设存在常数 \(\alpha>0\) 使得
+\[
+\mathbb P\bigl(\log_2 D_m\ge \alpha m\bigr)\xrightarrow[m\to\infty]{}1.
+\]
+则对任意满足 \(B=o(m)\) 的侧信息预算序列 \(B=B(m)\)，有
+\[
+\frac{\mathcal C_m(B)}{2^m}={\rm Succ}_m(B)\xrightarrow[m\to\infty]{}0.
+\]
+更强地，若存在 \(\eta\in(0,1)\) 使
+\(
+\limsup_{m\to\infty}{\rm Succ}_m(B)\ge \eta
+\)，
+则必有
+\[
+B\ \ge\ \alpha m+\log_2\eta+o(1).
+\]
+\end{theorem}
+\begin{proof}
+对任意 \(B\ge 0\)，由定义
+\(
+{\rm Succ}_m(B)=\mathbb E\bigl[\min(1,2^B/D_m)\bigr]
+\)。
+令事件 \(E_m:=\{D_m\ge 2^{\alpha m}\}\)，则
+\[
+{\rm Succ}_m(B)
+\le \mathbb P(E_m^c)\cdot 1+\mathbb E\!\left[\frac{2^B}{D_m}\mathbf 1_{E_m}\right]
+\le \mathbb P(E_m^c)+2^{B-\alpha m}.
+\]
+在假设下 \(\mathbb P(E_m^c)\to 0\)；若 \(B=o(m)\) 则 \(2^{B-\alpha m}\to 0\)，故 \({\rm Succ}_m(B)\to 0\)。
+\par
+反之，若 \(\limsup_{m\to\infty}{\rm Succ}_m(B)\ge \eta\)，则由上式取上极限并用 \(\mathbb P(E_m^c)\to 0\) 得
+\(
+\eta\le \limsup_{m\to\infty}2^{B-\alpha m}
+\)，
+从而 \(B-\alpha m\ge \log_2\eta+o(1)\)。
+证毕。
+\end{proof}
+
 \paragraph{连续阈值化与直方图的可逆读出}
 把阈值从 \(2^B\) 连续化。对 \(T>0\) 定义
 \begin{equation}\label{eq:fold-oracle-capacity-continuous-threshold}

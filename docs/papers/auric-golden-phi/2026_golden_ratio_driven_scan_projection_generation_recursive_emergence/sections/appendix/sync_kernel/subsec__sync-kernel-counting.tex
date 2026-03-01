@@ -117,6 +117,55 @@ P(s,s'):=\mathbb{P}\bigl(\delta(s,D_0)=s'\bigr),\qquad s,s'\in Q,
 证毕。
 \end{proof}
 
+\begin{proposition}[i.i.d. 输入下的复位等待时间尾界与期望界]\label{prop:sync10-reset-waitingtime-iid-bound}
+沿用推论 \ref{cor:sync10-regeneration-correlation-bound} 的记号。
+设输入 \((D_t)_{t\ge 0}\) 独立同分布，并设存在同步复位词 \(w_0\in\{0,1,2\}^L\) 使得 \(\delta(Q,w_0)\) 为单点集（于是读入 \(w_0\) 后同步状态完全忘却初态）。
+记
+\[
+\pi_0:=\mathbb P(D_0D_1\cdots D_{L-1}=w_0)\in(0,1].
+\]
+令
+\[
+T:=\inf\{t\ge 0:\ D_tD_{t+1}\cdots D_{t+L-1}=w_0\}\in\NN\cup\{\infty\}
+\]
+为第一次出现复位词的起点等待时间。
+则对任意 \(t\ge 0\) 有尾界
+\[
+\mathbb P(T>t)\ \le\ (1-\pi_0)^{\lfloor t/L\rfloor},
+\]
+并且期望满足
+\[
+\mathbb E[T]\ \le\ \frac{L}{\pi_0}.
+\]
+\end{proposition}
+\begin{proof}
+将时间轴按块 \(0,1,\dots\) 分解为长度 \(L\) 的不交区间 \([jL,(j+1)L-1]\)。
+若在每个块的起点处均不出现 \(w_0\)，则必有 \(T>kL\)。
+由于输入独立同分布，事件 \(\{D_{jL}\cdots D_{jL+L-1}=w_0\}\) 在不同 \(j\) 上独立，且各自概率为 \(\pi_0\)。
+因此
+\[
+\mathbb P(T>kL)\le (1-\pi_0)^k,
+\]
+从而对一般 \(t\) 取 \(k=\lfloor t/L\rfloor\) 得到尾界。
+期望界由
+\[
+\mathbb E[T]=\sum_{t\ge 0}\mathbb P(T>t)\le \sum_{k\ge 0}\sum_{t=kL}^{(k+1)L-1}\mathbb P(T>t)
+\le \sum_{k\ge 0}L(1-\pi_0)^k=\frac{L}{\pi_0}
+\]
+推出。证毕。
+\end{proof}
+
+\begin{corollary}[10 态同步核在稀疏零输入下的记忆视界增长]\label{cor:sync10-memory-horizon-input-statistics}
+在 \(10\) 态同步核上，命题 \ref{prop:sync10-reset-length-5} 给出同步复位词 \(w_0=\texttt{00000}\) 且 \(L=5\)。
+若输入独立同分布且 \(\mathbb P(D_0=0)=q>0\)，则 \(\pi_0=q^5\)，从而
+\[
+\mathbb P(T>t)\le (1-q^5)^{\lfloor t/5\rfloor},
+\qquad
+\mathbb E[T]\le 5q^{-5}.
+\]
+因此在 \(q\downarrow 0\) 的稀疏零输入极限下，尽管状态数固定为 \(10\)，由复位词触发的统计遗忘时间尺度仍可无界增长。
+\end{corollary}
+
 \begin{proposition}[复位深度谱的“几乎全常量”性质与常量映射长度直径]\label{prop:sync10-reset-depth-spectrum}
 对任一目标态 \(t\in Q\) 定义复位深度
 \[

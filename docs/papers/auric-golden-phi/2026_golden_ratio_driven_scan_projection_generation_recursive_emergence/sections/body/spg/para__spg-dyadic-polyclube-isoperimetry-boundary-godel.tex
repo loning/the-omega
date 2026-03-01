@@ -51,6 +51,65 @@ F(U)=\sum_{i=1}^n F_i(U)\ \ge\ 2\sum_{i=1}^n\card{\pi_i(S)}.
 代回即得 \(F(U)\ge 2n\,|S|^{(n-1)/n}=2n\,N(U)^{(n-1)/n}\)。证毕。
 \end{proof}
 
+\begin{theorem}[随机体的边界饱和：全息压缩为指数罕见事件]\label{thm:spg-random-bulk-boundary-saturation}
+固定 \(n\ge 1\) 与 \(m\ge 1\)，令 \(\mathcal C_n\) 为 \(\mathcal Q_m\) 的全部 \(n\)-胞腔集合（\(|\mathcal C_n|=2^{nm}\)）。
+取 \(\FF_2\) 系数并令随机 \(n\)-链
+\[
+U:=\sum_{c\in\mathcal C_n}\xi_c\,c,
+\qquad
+\xi_c\overset{\mathrm{i.i.d.}}{\sim}\mathrm{Bernoulli}\Bigl(\frac12\Bigr).
+\]
+记 \(\partial U\in C_{n-1}(\mathcal Q_m;\FF_2)\)，并定义边界面数
+\[
+|\partial U|
+:=\#\{\text{\((n-1)\)-胞腔 }f:\ (\partial U)(f)=1\}.
+\]
+再令
+\[
+N_{n-1}(m):=\#\mathcal F_{n-1}(\mathcal Q_m)=n(2^m+1)\,2^{(n-1)m}.
+\]
+则：
+\begin{enumerate}
+\normalfont
+  \item 期望满足精确恒等式
+  \[
+  \mathbb E|\partial U|=\frac12\,N_{n-1}(m).
+  \]
+  \item 对任意 \(t>0\) 有集中不等式
+  \[
+  \mathbb P\Bigl(\bigl||\partial U|-\mathbb E|\partial U|\bigr|\ge t\Bigr)
+  \le
+  2\exp\!\left(-\frac{2t^2}{(2n)^2\,2^{nm}}\right).
+  \]
+  因而对任意固定 \(\delta\in(0,\tfrac12)\)，有
+  \[
+  \mathbb P\Bigl(|\partial U|\le (\tfrac12-\delta)N_{n-1}(m)\Bigr)
+  \le
+  2\exp\!\bigl(-\Omega_\delta(2^{nm})\bigr).
+  \]
+\end{enumerate}
+因此，在典型意义下随机体的边界规模为 \(\Theta\!\bigl(n2^{nm}\bigr)\)。
+与之对照，几何上“平滑”占据链（例如 \(U=I^n\)）的边界面数为 \(2n\,2^{(n-1)m}\)；
+从而在 dyadic 网格模型中，边界层虽在全息意义上携带全部体信息（推论 \ref{cor:spg-dyadic-boundary-syndrome-fillability}），但其典型支撑规模并不处于“低边界”区域，后者在随机体模型下为指数罕见子族。
+\end{theorem}
+\begin{proof}
+\textbf{(1)}
+对任意固定 \((n-1)\)-胞腔 \(f\)，\((\partial U)(f)\) 等于与 \(f\) 相邻的一个或两个 \(n\)-胞腔系数之异或（外边界处等价于与外部 \(0\) 异或）。
+由于相邻系数为独立 \(\mathrm{Bernoulli}(1/2)\)，其异或仍为 \(\mathrm{Bernoulli}(1/2)\)，故 \(\mathbb P((\partial U)(f)=1)=1/2\)。
+对全部 \(f\) 求和得 \(\mathbb E|\partial U|=\frac12 N_{n-1}(m)\)。
+\par
+\textbf{(2)}
+将 \(F((\xi_c)_{c\in\mathcal C_n}):=|\partial U|\) 视为独立伯努利变量上的函数。
+翻转单个 \(\xi_c\) 仅改变该 \(n\)-胞腔的 \(2n\) 个面在边界中的出现/消失，故 \(F\) 的单坐标 Lipschitz 常数至多为 \(2n\)。
+由 McDiarmid（有界差分）不等式，
+\[
+\mathbb P(|F-\mathbb EF|\ge t)\le 2\exp\!\left(-\frac{2t^2}{\sum_{c\in\mathcal C_n}(2n)^2}\right)
+=2\exp\!\left(-\frac{2t^2}{(2n)^2\,2^{nm}}\right).
+\]
+令 \(t=\delta N_{n-1}(m)\) 即得最后一条估计。
+证毕。
+\end{proof}
+
 \begin{theorem}[轴向共面积不等式：dyadic polycube 的线性边界--体积上界与极值唯一性]\label{thm:spg-dyadic-polyclube-axial-coarea}
 设 \(n\ge 1\) 且 \(m\ge 1\)，并记 \(L:=2^{m}\)。
 在 dyadic 剖分 \(\mathcal Q_m\) 上令 \(U\subset I^n=[0,1]^n\) 为 dyadic polycube，并记
