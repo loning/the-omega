@@ -210,6 +210,150 @@ I(\gamma,\mathcal{E})
 本文在 bin-fold/稳定类型口径下给出两条彼此独立、但同样仅依赖分辨率参数 \(m\) 的可观测结构约束：其一是 boundary 扇区的 Fibonacci 计数律 \(|X^{\mathrm{bdry}}_m|=F_{m-2}\)，其二是折叠同余压缩所导出的同余半环同构 \(\Omega_m/\!\equiv_m\cong \ZZ/(F_{m+2}\ZZ)\)（定理 \ref{thm:fold-congruence-mod-semirings}）。
 以下将二者在“\(12\)”这一离散规模上所诱导的刚性并置记录。
 
+\paragraph{四步平移的算术化：Fibonacci 尾矩阵的 \texorpdfstring{$Q^4$}{Q4} 右乘律}\label{par:resolution-shift4-fib-matrix-q4}
+令 \((F_n)_{n\ge 0}\) 为 Fibonacci 数列（\(F_0=0,F_1=1\)），并取黄金矩阵
+\[
+Q:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},
+\qquad
+Q^4=\begin{pmatrix}5&3\\[2pt]3&2\end{pmatrix}.
+\]
+对任意整数 \(m\ge 2\)，定义 Fibonacci 尾矩阵
+\[
+G_m:=\begin{pmatrix}F_{m+3}&F_{m+2}\\[2pt]F_{m+4}&F_{m+3}\end{pmatrix}.
+\]
+
+\begin{proposition}[四阶分辨率重整化的严格矩阵律]\label{prop:resolution-shift4-fib-matrix-law}
+对任意 \(m\ge 2\) 恒有
+\[
+G_{m+4}=G_m\,Q^4.
+\]
+\end{proposition}
+\begin{proof}
+由 Fibonacci 加法公式（等价于 \(Q^k\) 的标准表达）
+\[
+F_{n+k}=F_nF_{k+1}+F_{n-1}F_k,
+\]
+取 \(k=4\) 得
+\[
+F_{n+4}=F_nF_5+F_{n-1}F_4,\qquad
+F_{n+3}=F_nF_4+F_{n-1}F_3.
+\]
+注意 \(Q^4=\begin{psmallmatrix}F_5&F_4\\ F_4&F_3\end{psmallmatrix}\)。
+于是直接计算
+\[
+G_mQ^4
+=
+\begin{pmatrix}F_{m+3}&F_{m+2}\\[2pt]F_{m+4}&F_{m+3}\end{pmatrix}
+\begin{pmatrix}F_5&F_4\\[2pt]F_4&F_3\end{pmatrix}
+=
+\begin{pmatrix}F_{m+7}&F_{m+6}\\[2pt]F_{m+8}&F_{m+7}\end{pmatrix}
+=G_{m+4}.
+\]
+证毕。
+\end{proof}
+
+\begin{remark}\label{rem:shift4-uplift-q4-arithmetic-shadow}
+定理 \ref{thm:boundary-shift4-uplift-isomorphism} 给出的 uplift 规范同构 \(\iota_n(v)=10\,v\,01\) 在分辨率参数上是严格的 \(+4\) 平移。
+命题 \ref{prop:resolution-shift4-fib-matrix-law} 表明，在 Fibonacci 尾部的 \(2\times 2\) 计数骨架上，同一 \(+4\) 平移对应于对固定元 \(Q^4\) 的右乘；因此“边界层平移同构”与“尾部 Fibonacci 递推”在算术层面共享同一四步尺度律。
+\end{remark}
+
+\begin{proposition}[可逆性：规范 \texorpdfstring{$\ZZ_2$}{Z2} 反演的严格共轭]\label{prop:fib-tail-reversibility}
+令
+\[
+R:=\begin{pmatrix}-1&0\\[2pt]0&1\end{pmatrix}.
+\]
+若 \(m\) 为偶数，则 \(G_m\in \mathrm{SL}_2(\ZZ)\) 且满足
+\[
+R\,G_m\,R^{-1}=G_m^{-1}.
+\]
+\end{proposition}
+\begin{proof}
+由 Cassini 恒等式 \(F_{n+1}F_{n-1}-F_n^2=(-1)^n\)，取 \(n=m+3\) 得
+\[
+\det(G_m)=F_{m+3}^2-F_{m+2}F_{m+4}=(-1)^{m+4}.
+\]
+当 \(m\) 偶数时 \(\det(G_m)=1\)，从而 \(G_m\in\mathrm{SL}_2(\ZZ)\)。
+又由于 \(\det(G_m)=1\)，有
+\[
+G_m^{-1}=\begin{pmatrix}F_{m+3}&-F_{m+2}\\[2pt]-F_{m+4}&F_{m+3}\end{pmatrix},
+\]
+并且直接计算
+\[
+R\,G_m\,R
+=
+\begin{pmatrix}-1&0\\[2pt]0&1\end{pmatrix}
+\begin{pmatrix}F_{m+3}&F_{m+2}\\[2pt]F_{m+4}&F_{m+3}\end{pmatrix}
+\begin{pmatrix}-1&0\\[2pt]0&1\end{pmatrix}
+=
+\begin{pmatrix}F_{m+3}&-F_{m+2}\\[2pt]-F_{m+4}&F_{m+3}\end{pmatrix}
+=G_m^{-1}.
+\]
+证毕。
+\end{proof}
+
+\begin{proposition}[三重性素数判别：\texorpdfstring{$\mathrm{PSL}_2(\FF_p)$}{PSL2(Fp)} 中的阶 \(3\) 由迹同余控制]\label{prop:fib-tail-order3-trace}
+设 \(m\) 为偶数，\(p\neq 3\) 为素数。记 \(\overline{G}_m\) 为 \(G_m\) 在 \(\FF_p\) 上的约化。
+则在 \(\mathrm{PSL}_2(\FF_p)\) 中有等价关系
+\[
+\operatorname{ord}(\overline{G}_m)=3
+\quad\Longleftrightarrow\quad
+p\mid(2F_{m+3}+1).
+\]
+\end{proposition}
+\begin{proof}
+由于 \(m\) 偶数时 \(\det(G_m)=1\)（命题 \ref{prop:fib-tail-reversibility} 的证明），故 \(\overline{G}_m\in \mathrm{SL}_2(\FF_p)\)。
+其特征多项式为
+\[
+\chi(t)=t^2-\operatorname{tr}(\overline{G}_m)\,t+1.
+\]
+当 \(p\neq 3\) 时，\(\overline{G}_m\) 在 \(\mathrm{PSL}_2(\FF_p)\) 中阶为 \(3\) 当且仅当其像非恒等且满足
+\(
+\overline{G}_m^2+\overline{G}_m+I=0
+\)，亦即其极小多项式为 \(t^2+t+1\)；
+从而必有 \(\chi(t)=t^2+t+1\)，等价于
+\[
+\operatorname{tr}(\overline{G}_m)\equiv -1\pmod p.
+\]
+而 \(\operatorname{tr}(G_m)=2F_{m+3}\)，故上述同余等价于 \(2F_{m+3}+1\equiv 0\pmod p\)。
+反向推理同理：若 \(p\mid(2F_{m+3}+1)\)，则 \(\chi(t)=t^2+t+1\)，进而 \(\overline{G}_m^3=I\) 且 \(\overline{G}_m\neq I\)，故其在 \(\mathrm{PSL}_2(\FF_p)\) 中阶为 \(3\)。证毕。
+\end{proof}
+
+\begin{corollary}[从三重性到 \texorpdfstring{$S_3$}{S3}：模 \texorpdfstring{$p$}{p} 上的最小非阿贝尔闭合]\label{cor:fib-tail-s3-closure}
+设 \(m\) 为偶数，\(p\neq 3\) 为素数且满足 \(p\mid(2F_{m+3}+1)\)。
+令 \(\overline{R}\) 为 \(R\) 在 \(\FF_p\) 上的约化。
+则 \(\langle \overline{G}_m,\overline{R}\rangle\subset \mathrm{PGL}_2(\FF_p)\) 同构于二面体群 \(D_3\cong S_3\)。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:fib-tail-order3-trace} 得 \(\overline{G}_m^3=1\) 于 \(\mathrm{PSL}_2(\FF_p)\)。
+另一方面，命题 \ref{prop:fib-tail-reversibility} 的共轭关系在模 \(p\) 下保持：
+\[
+\overline{R}\,\overline{G}_m\,\overline{R}^{-1}=\overline{G}_m^{-1},
+\qquad
+\overline{R}^2=1.
+\]
+故 \(\overline{G}_m,\overline{R}\) 满足二面体群的标准关系 \(a^3=r^2=1,\,rar=a^{-1}\)，从而生成群同构于 \(D_3\cong S_3\)。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$m=6$}{m=6} 与 \texorpdfstring{$p=23$}{p=23}：射影直线上的 \(3\)-循环轨道剖分]\label{prop:fib-tail-p23-orbits}
+取 \(m=6\) 并令 \(p=23\)。
+则 \(\overline{G}_6\) 在 \(\mathrm{PSL}_2(\FF_{23})\) 中阶为 \(3\)，并且其 Möbius 作用在射影直线 \(\PP^1(\FF_{23})\)（共 \(24\) 点）上的轨道分解为 \(8\) 个互不相交的 \(3\)-循环。
+\end{proposition}
+\begin{proof}
+由 \(F_9=34\) 得 \(2F_9+1=69\) 被 \(23\) 整除，故由命题 \ref{prop:fib-tail-order3-trace} 知 \(\operatorname{ord}(\overline{G}_6)=3\) 于 \(\mathrm{PSL}_2(\FF_{23})\)。
+\par
+若 \(\PP^1(\FF_{23})\) 上存在不动点，则 \(\overline{G}_6\) 在 \(\FF_{23}\) 上存在特征直线，因而特征多项式 \(t^2+t+1\) 在 \(\FF_{23}\) 上有根。
+但 \(\FF_{23}^\times\) 的阶为 \(22\)，不存在阶为 \(3\) 的元，故 \(t^2+t+1\) 在 \(\FF_{23}\) 上不可约，从而无不动点。
+因此 \(\langle \overline{G}_6\rangle\)（阶 \(3\)）在 \(24\) 点集合上的每条轨道都必须为长度 \(3\) 的循环，轨道数为 \(24/3=8\)。证毕。
+\end{proof}
+式 \eqref{eq:window6_fib_tail_p23_p1_orbit_decomposition} 与表 \ref{tab:window6_fib_tail_p23_p1_orbits} 给出该轨道剖分的可复核证书输出。
+\input{sections/generated/eq_window6_fib_tail_p23_p1_orbit_decomposition}
+\input{sections/generated/tab_window6_fib_tail_p23_p1_orbits}
+
+\begin{remark}\label{rem:fib-tail-p23-eightfold-alignment}
+命题 \ref{prop:fib-tail-p23-orbits} 的轨道数 \(8\) 与 \(\dim\mathfrak{su}(3)=8\) 在计数层面发生同数值共现；
+在本文仅以离散证书为输入的口径下，该共现提供一种可审计的“八重分块”候选来源，其触发条件仅依赖于 \(m=6\) 的 Fibonacci 尾部算术与模素数的三重性锁定。
+\end{remark}
+
 \begin{theorem}[三窗边界计数和为 \(12\) 的偶窗三元组唯一性]\label{thm:bdry-three-window-sum12-unique-even-triple}
 令
 \(

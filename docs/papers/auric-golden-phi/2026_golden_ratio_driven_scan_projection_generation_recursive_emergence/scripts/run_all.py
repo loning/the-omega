@@ -777,6 +777,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_fib_tail_psl2_orbit_decomposition_p23",
+            script="exp_window6_fib_tail_psl2_orbit_decomposition_p23.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_fib_tail_psl2_orbit_decomposition_p23.json",
+                "sections/generated/eq_window6_fib_tail_p23_p1_orbit_decomposition.tex",
+                "sections/generated/tab_window6_fib_tail_p23_p1_orbits.tex",
+            ],
+        ),
+        Step(
             name="window6_edge_flux_skeleton",
             script="exp_window6_edge_flux_skeleton.py",
             args=[],
