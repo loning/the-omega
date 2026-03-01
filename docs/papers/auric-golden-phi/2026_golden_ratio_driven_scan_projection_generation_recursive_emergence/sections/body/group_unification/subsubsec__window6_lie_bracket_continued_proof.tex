@@ -1,13 +1,28 @@
 % This file is intended to be \input{} from subsubsec__window6_lie_bracket_closure.tex.
 
-\paragraph{Window-\(6\) 续证：推送交换子包络与内禀括号的证书化推进}
-在定义 \ref{def:window6-coordinate-pushforward-lie-envelope} 的对象口径下，
-window-\(6\) 的“交换子包络”与“内禀括号”应区分为两条互补但不混同的定理链。
-前者是 \(\mathfrak{gl}(V)\) 内的交换子闭包识别问题；
-后者是固定基 \(X_6\) 上结构常数的存在唯一性问题。
-两条链都可以在有限离散数据上组织为可复核证书。
+\paragraph{Window-\(6\) 续证：6D 超立方体推送交换子包络与兼容闭合的唯一性链}
+本段续接“window-\(6\) 的李括号构造与唯一闭合”的证明链条，并将论证拆分为两段互补但不混同的对象链。
+第一段在 \(6\) 维超立方体 \(Q_6\) 与 dyadic bin-fold 标号 \(F_6\) 的推送口径下，
+给出由有限边计数完全决定的交换子包络，从而把李括号固定为矩阵交换子 \([A,B]=AB-BA\)，并给出可复核的闭合识别证书。
+第二段在 orbit--Levi 分块与阈值轻/重分裂要求同一包络结构兼容闭合时，推出标准模型型 Levi 子结构的强制出现与同构意义唯一性。
+\par
+为便于核验，沿用定义 \ref{def:window6-coordinate-pushforward-lie-envelope} 的符号，并回忆：
+\[
+\Omega_6:=\{0,1\}^6,\qquad
+\mathrm{int}_6(\omega_1\cdots\omega_6):=\sum_{k=1}^{6}\omega_k\,2^{6-k}\in\{0,\dots,63\},
+\qquad
+F_6(\omega):=\mathrm{Fold}^{\mathrm{bin}}_6(\mathrm{int}_6(\omega))\in X_6.
+\]
+对每个坐标方向 \(i\in\{1,\dots,6\}\) 的翻转边 \(\omega\mapsto \omega\oplus e_i\)，推送计数算子 \(L_i\) 由
+\[
+(L_i)_{uv}=\#\{\omega\in\Omega_6:\ F_6(\omega)=u,\ F_6(\omega\oplus e_i)=v\}\qquad (u,v\in X_6)
+\]
+确定，并以交换子作为李括号定义
+\(
+\mathfrak g_6:=\Lie\langle L_1,\dots,L_6\rangle\subset\mathfrak{gl}(V)
+\)。
 
-\begin{theorem}[推送交换子包络的可核验升级]\label{thm:window6-push-envelope-certificate-upgrade}
+\begin{theorem}[推送交换子包络的可核验闭合]\label{thm:window6-push-envelope-certificate-upgrade}
 令 \(V=\RR\langle X_6\rangle\) 且 \(|X_6|=21\)。
 对定义 \ref{def:window6-coordinate-pushforward-lie-envelope} 的生成元 \(\{L_i\}_{i=1}^{6}\)，有
 \[
@@ -25,11 +40,15 @@ window-\(6\) 的“交换子包络”与“内禀括号”应区分为两条互�
 给出可复核证书。
 \end{theorem}
 \begin{proof}
-交换子部分由定理 \ref{thm:window6-lie-envelope-so21-from-commutators} 给出。
-全包络部分由定理 \ref{thm:window6-lie-envelope-sl21} 给出。
-两式中的维数恒等式与中心/导出/Killing 秩审计由生成公式
-\eqref{eq:window6_lie_envelope_orthogonal_part_dim}
-及 \eqref{eq:window6_lie_envelope_invariants} 离线复核。证毕。
+由引理 \ref{lem:window6-li-symmetric}，生成元 \(L_i\) 为对称矩阵，
+因而任意交换子 \([L_i,L_j]\) 为斜对称矩阵并落在 \(\mathfrak{so}(V)\)。
+由引理 \ref{lem:window6-li-traceless}，每个 \(L_i\) 均迹零，故 \(\mathfrak g_6\subseteq\mathfrak{sl}(V)\)。
+\par
+交换子部分 \(\mathfrak{k}_6=\mathfrak{so}(V)\) 由定理 \ref{thm:window6-lie-envelope-so21-from-commutators} 给出；
+全包络部分 \(\mathfrak{g}_6=\mathfrak{sl}(V)\) 由定理 \ref{thm:window6-lie-envelope-sl21} 给出。
+相应维数证书可由模素数闭包核验输出（脚本 \texttt{\detokenize{scripts/exp_window6_lie_envelope_orthogonal_part.py}} 与 \texttt{\detokenize{scripts/exp_window6_lie_envelope.py}}），
+并以 \eqref{eq:window6_lie_envelope_orthogonal_part_dim} 与 \eqref{eq:window6_lie_envelope_invariants} 的形式嵌入正文供离线复核。
+证毕。
 \end{proof}
 
 \begin{remark}[与低秩预期对象的差异定位]\label{rem:window6-conjectural-gap-object-layer}
@@ -42,6 +61,21 @@ window-\(6\) 的“交换子包络”与“内禀括号”应区分为两条互�
   \item 在 \(\mathfrak{sl}_{21}\) 内加入可观测压缩/兼容约束后抽取的紧致子对象（猜想 \ref{conj:window6-sm-gauge-as-minimal-compact-observable}）。
 \end{enumerate}
 这一定义层分离与注记 \ref{rem:window6-conj-10170-object-correction} 一致。
+\end{remark}
+
+\begin{remark}[orbit--Levi 与阈值轻/重分裂的兼容闭合强制 SM Levi]\label{rem:window6-orbit-levi-threshold-compatible-closure}
+交换子包络链条给出的是最大闭合背景 \(\mathfrak g_6=\mathfrak{sl}(V)\)，其本身不产生低秩紧致规范对象（命题 \ref{prop:window6-lowrank-needs-observable-compression}）。
+因此，“唯一闭合”的可读紧致子结构必须来自在该最大背景上施加的实现无关兼容约束。
+\par
+在 window-\(6\) 的离散审计口径下，orbit--Levi 分块 \(21=15\oplus 3\oplus 3\) 与阈值轻/重分裂 \(X_6=1\oplus 8\oplus 12\) 为两条彼此独立的分解接口。
+当要求二者在同一连续包络/可观测语义下同时出现并兼容闭合，且轻扇区 \(1\oplus 8\) 在 \(15\) 维块内闭合时，
+命题 \ref{prop:window6-common-refinement-sm-levi} 强制给出 SM 型 Levi 子结构
+\(
+\mathfrak{su}(3)\oplus\mathfrak{su}(2)_L\oplus\mathfrak u(1)
+\)
+的出现与同构意义唯一性。
+进一步的 \(\mathfrak u(1)\) 方向刚性可由 \(\mathfrak{su}(4)\supset \mathfrak{su}(3)\oplus\mathfrak u(1)\) 的嵌入共轭唯一性（推论 \ref{cor:window6-su4-embedding-rigidity}）
+以及几何 \(\ZZ_2\)/sheet parity 的审计输入共同锁定（推论 \ref{cor:window6-levi-rigidity-sm-residual}）。
 \end{remark}
 
 \begin{proposition}[内禀括号存在唯一性的有限整数系统归约]\label{prop:window6-intrinsic-bracket-finite-integer-reduction}
