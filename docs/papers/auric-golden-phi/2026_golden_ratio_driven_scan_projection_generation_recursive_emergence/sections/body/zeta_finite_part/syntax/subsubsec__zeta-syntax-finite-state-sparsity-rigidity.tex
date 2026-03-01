@@ -75,6 +75,106 @@ C_1\,\frac{2^m}{m}\ \le\ p_m\ \le\ C_2\,\frac{2^m}{m}.
 \)，这些额外项必为合数误报，故给出第二条下界；第一条下界对一般情形取 \(c\) 足够小即可同时覆盖两种分支。证毕。
 \end{proof}
 
+\begin{proposition}[正则前缀码的 Kraft 和为有理数]\label{prop:zeta-syntax-regular-prefixfree-kraft-rational}
+令 \(L\subseteq\{0,1\}^\ast\) 为前缀无歧义（prefix-free）语言，并设 \(L\) 为正则语言。
+定义 Kraft 和
+\[
+K(L):=\sum_{w\in L}2^{-|w|}.
+\]
+则 \(K(L)\in\QQ\)，并且给定识别 \(L\) 的 DFA，可通过解一个系数属于 \(\tfrac12\ZZ\) 的线性方程组构造性得到 \(K(L)\)。
+\end{proposition}
+\begin{proof}
+取识别 \(L\) 的完备 DFA \(\mathcal A=(Q,\{0,1\},\delta,q_0,F)\)。
+令 \(\omega=(\omega_1,\omega_2,\dots)\) 为独立同分布随机比特流，满足 \(\PP(\omega_i=0)=\PP(\omega_i=1)=\tfrac12\)。
+记事件
+\[
+E:=\{\exists n\ge 1:\ \omega_1\cdots\omega_n\in L\}.
+\]
+由于 \(L\) prefix-free，圆柱集合 \([[\!w\!]]:=\{\omega:\ \omega_1\cdots\omega_{|w|}=w\}\)（\(w\in L\)）两两不交，且 \(\PP([[\!w\!]])=2^{-|w|}\)。
+因此 \(\PP(E)=\sum_{w\in L}\PP([[\!w\!]])=K(L)\)。
+\par
+另一方面，令 \(p(q)\) 表示从状态 \(q\in Q\) 出发，在该随机输入驱动下“某时刻进入接受集合 \(F\)”的概率。
+则 \(p(q)\) 满足有限线性方程组
+\[
+p(q)=1\quad(q\in F),
+\qquad
+p(q)=\frac{p(\delta(q,0))+p(\delta(q,1))}{2}\quad(q\notin F).
+\]
+其系数属于 \(\tfrac12\ZZ\)，故解（取最小非负解）为有理数；并且可由消元法显式求得。
+由定义 \(K(L)=\PP(E)=p(q_0)\in\QQ\)。
+\end{proof}
+
+\begin{theorem}[停机概率给出常数内存不可达的严格证据]\label{thm:zeta-syntax-omega-regular-impossible}
+取任意通用前缀自由图灵机 \(U\)，令其停机程序集合为 \(\mathrm{HALT}_U\subseteq\{0,1\}^\ast\)，并定义 Chaitin 停机概率
+\[
+\Omega_U:=\sum_{p\in \mathrm{HALT}_U}2^{-|p|}.
+\]
+则 \(\mathrm{HALT}_U\) 不是正则语言；因此不存在有限自动机（常数内存过程）能在该前缀编码下精确识别 \(U\) 的停机性。
+\end{theorem}
+\begin{proof}
+集合 \(\mathrm{HALT}_U\) 为 prefix-free。
+若 \(\mathrm{HALT}_U\) 为正则语言，则由命题 \ref{prop:zeta-syntax-regular-prefixfree-kraft-rational} 得 \(\Omega_U=K(\mathrm{HALT}_U)\in\QQ\)，并且可由 DFA 的线性方程组构造性计算。
+然而 \(\Omega_U\) 为不可计算实数（算法信息论中的经典事实），矛盾。
+故 \(\mathrm{HALT}_U\) 不正则，且任何有限自动机不可能精确识别 \(\mathrm{HALT}_U\)。
+\end{proof}
+
+\begin{theorem}[left-c.e.\ 实数作为 dyadic 密度与有限状态的有理刚性]\label{thm:zeta-syntax-leftce-dyadic-density}
+对集合 \(S\subseteq\NN\) 定义 dyadic 密度
+\[
+d_2(S):=\lim_{m\to\infty}\frac{|S\cap[0,2^m)|}{2^m},
+\]
+若极限存在。
+称 \(\alpha\in[0,1]\) 为 left-c.e.\ 实数，若存在可计算且单调递增的有理序列 \((q_s)_{s\ge 0}\subseteq \QQ\cap[0,1]\) 使 \(q_s\uparrow\alpha\)。
+则：
+\begin{enumerate}
+  \item 对任意 left-c.e.\ 的 \(\alpha\in[0,1]\)，存在可判定集合 \(S_\alpha\subseteq\NN\)，使 \(d_2(S_\alpha)\) 存在且 \(d_2(S_\alpha)=\alpha\)；
+  \item 若集合 \(S\subseteq\NN\) 在“长度 \(m\) 的补零二进制表示”口径下可由某个固定 DFA 识别，且 \(d_2(S)\) 存在，则 \(d_2(S)\in\QQ\)；
+  \item 取 \(\alpha=\Omega_U\)，则得到一个可判定但不具常数内存识别机制的集合 \(S_{\Omega_U}\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textit{(1)} 给定 \(q_s\uparrow\alpha\)。
+取严格递增整数序列 \((m_s)\)（\(m_0=0\)）使 \(2^{m_s}\ge 2^s\)（\(s\ge 1\)），并记 \(N_s:=2^{m_s}\)。
+递归定义 \(S_\alpha\cap[0,N_s)\)。
+设已定义到阶段 \(s\)，并记 \(A_s:=|S_\alpha\cap[0,N_s)|\)。
+在新区间 \([N_s,N_{s+1})\) 内，令
+\[
+B_{s+1}:=\big\lfloor q_{s+1}N_{s+1}\big\rfloor-A_s,
+\]
+并把该新区间的前 \(B_{s+1}\) 个整数并入 \(S_\alpha\)。
+由于 \(N_{s+1}\) 可取足够大，可保证 \(0\le B_{s+1}\le N_{s+1}-N_s\)。
+从而
+\(
+|S_\alpha\cap[0,N_{s+1})|=\lfloor q_{s+1}N_{s+1}\rfloor
+\)，并且
+\[
+\left|\frac{|S_\alpha\cap[0,N_s)|}{N_s}-q_s\right|\le \frac1{N_s}.
+\]
+由 \(q_s\to\alpha\) 且 \(N_s\to\infty\)，得到 \(\frac{|S_\alpha\cap[0,2^{m_s})|}{2^{m_s}}\to\alpha\)。
+结合 \((m_s)\to\infty\) 可推出 dyadic 密度极限存在且等于 \(\alpha\)。
+此外，给定 \(n\)，可计算唯一 \(s\) 使 \(N_s\le n<N_{s+1}\)，并比较 \(n-N_s<B_{s+1}\) 判定 \(n\in S_\alpha\)，故 \(S_\alpha\) 可判定。
+\par
+\textit{(2)} 令 \(S\) 由完备 DFA \(\mathcal A\) 在长度 \(m\) 的补零二进制表示上识别。
+记 \(a_m:=|S\cap[0,2^m)|\)，则存在行随机矩阵 \(\widetilde B\)（条目属于 \(\{0,\tfrac12,1\}\)）及向量 \(u,v\) 使
+\[
+\frac{a_m}{2^m}=u^{\mathsf T}\widetilde B^m v.
+\]
+若极限 \(d_2(S)\) 存在，则由定理 \ref{thm:zeta-syntax-dfa-density-dichotomy} 的周期展开可知该极限等于某个闭类上的平稳分布对接受集合的质量。
+平稳分布解线性方程组 \(\pi=\pi \widetilde B\)，系数皆为有理数，故可取 \(\pi\in\QQ^{Q}\)，从而 \(d_2(S)\in\QQ\)。
+\par
+\textit{(3)} 由定理 \ref{thm:zeta-syntax-omega-regular-impossible}，\(\Omega_U\) 不可计算，特别不为有理数。
+由 (1) 存在可判定集合 \(S_{\Omega_U}\) 使 \(d_2(S_{\Omega_U})=\Omega_U\)。
+若 \(S_{\Omega_U}\) 可由某固定 DFA 识别，则由 (2) 得 \(d_2(S_{\Omega_U})\in\QQ\)，矛盾。
+\end{proof}
+
+\begin{conjecture}[素数识别的状态复杂度必须指数增长]\label{conj:zeta-syntax-prime-dfa-exponential}
+令 \(\mathsf{DFA}(m)\) 表示“对所有 \(m\) 位二进制整数（首位为 \(1\)）均正确判定素性”的 DFA 所需的最少状态数。
+则存在常数 \(c>0\) 使
+\[
+\mathsf{DFA}(m)\ \ge\ \exp(c m)\qquad(m\to\infty).
+\]
+\end{conjecture}
+
 \begin{theorem}[Euler 型乘积的单位圆自然边界：素数支撑导致稠密极点]\label{thm:zeta-syntax-euler-product-natural-boundary}
 令 \((b_n)_{n\ge 1}\subset\ZZ_{\ge 0}\) 为一列非负整数，并假设存在无穷多素数 \(p\) 使得 \(b_p>0\)。
 进一步假设乘积
@@ -153,5 +253,7 @@ X_m(F):=\{w\in\{0,1\}^m:\ w\ \text{不含任何 }F\text{ 中子词}\}.
 \end{proof}
 
 \par
-以上结论共同说明：在二元有限状态范畴中，计数密度与 \(\zeta\) 的解析结构均具有强刚性；素数集合在长度层面的规模为 \(p_m\asymp 2^m/m\)，既非有限禁止模式的指数稀疏，也无法被任何固定 DFA 在指数尺度上逼近，更与素数型 Euler 乘积在单位圆上的稠密奇点结构形成结构性分离。
+以上结论共同说明：在二元有限状态范畴中，长度层计数密度、Kraft 和与 dyadic 密度都被有限维线性机制强制落入极窄的刚性类（指数稀疏/周期性正密度、以及在极限存在时的有理性）。
+素数集合在长度层面的规模为 \(p_m\asymp 2^m/m\)，既不属于有限禁止模式的指数稀疏，也不可能与任何固定 DFA 的密度谱兼容；而停机概率 \(\Omega_U\) 与由其实现的 dyadic 密度进一步给出一种不可由常数内存抵达的严格证据。
+这类刚性同时在解析侧体现为有限矩阵 \(\zeta\) 的有理性，与素数支撑的 Euler 型乘积在单位圆上的稠密奇点/自然边界机制形成结构性分离。
 

@@ -143,6 +143,167 @@ X_m^\times:=\{w\in X_m:\ \exists\,w^{-1}\in X_m\ \text{s.t.}\ w\boxtimes_m w^{-1
 \end{itemize}
 \end{remark}
 
+\subsubsection{跨分辨率半环同态、最小统一分辨率与联合读出退化度数}\label{subsubsec:finite-resolution-morphisms-and-joint-readout}
+本小节把定理 \ref{thm:finite-resolution-mod} 的单窗模结构提升为一个跨分辨率的同态范畴：对象为 \(\mathsf X_m:=(X_m,\boxplus_m,\boxtimes_m)\)，态射为保持 \(0,1\) 的半环同态。
+该提升的核心是：由于 \(\mathsf X_m\cong \ZZ/(F_{m+2}\ZZ)\) 为环对象，任何保持单位元的同态被模数整除关系强制为“唯一降模”；从而多窗联合读出对应于标准同余纤维积，其像与纤维度数均具有闭式。
+
+\begin{lemma}[Fibonacci 整除的充要条件]\label{lem:fib-divisibility-iff}
+对任意整数 \(a,b\ge 1\)，成立等价性
+\[
+F_a\mid F_b\quad\Longleftrightarrow\quad a\mid b.
+\]
+\end{lemma}
+\begin{proof}
+由 Fibonacci 最大公因子恒等式 \(\gcd(F_a,F_b)=F_{\gcd(a,b)}\)（已在命题 \ref{prop:crt-235-min-depth} 的证明中使用），有
+\[
+F_a\mid F_b
+\quad\Longleftrightarrow\quad
+\gcd(F_a,F_b)=F_a
+\quad\Longleftrightarrow\quad
+F_{\gcd(a,b)}=F_a
+\quad\Longleftrightarrow\quad
+\gcd(a,b)=a
+\quad\Longleftrightarrow\quad
+a\mid b.
+\]
+\end{proof}
+
+\begin{theorem}[跨分辨率半环同态的整除刚性与唯一性]\label{thm:finite-resolution-morphism-divisibility-rigidity}
+设 \(m,n\ge 1\)，并记 \(\mathsf X_k:=(X_k,\boxplus_k,\boxtimes_k)\)。
+则存在保持 \(0,1\) 的半环同态
+\[
+\Phi:\mathsf X_n\longrightarrow \mathsf X_m,
+\qquad
+\Phi(0_n)=0_m,\ \Phi(1_n)=1_m
+\]
+当且仅当
+\[
+F_{m+2}\mid F_{n+2}\quad\Longleftrightarrow\quad (m+2)\mid(n+2).
+\]
+在该条件成立时，此同态唯一，且由值模同构显式给出：
+\begin{equation}\label{eq:finite-resolution-morphism-explicit}
+\boxed{\;
+\Phi(x)=w\!\Bigl(V_n(x)\bmod F_{m+2}\Bigr)
+=V_m^{-1}\!\Bigl(V_n(x)\bmod F_{m+2}\Bigr)\qquad(x\in X_n).\;}
+\end{equation}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:finite-resolution-mod}，\(V_k\)（\(k=m,n\)）给出半环同构
+\(
+\mathsf X_k\cong \ZZ/(F_{k+2}\ZZ)
+\)。
+因此 \(\Phi\) 等价于一个保持单位元的环同态
+\[
+\widetilde\Phi:\ZZ/(F_{n+2}\ZZ)\longrightarrow \ZZ/(F_{m+2}\ZZ),
+\qquad \widetilde\Phi(\overline 1)=\overline 1.
+\]
+任取 \(\overline t\in \ZZ/(F_{n+2}\ZZ)\)，由 \(\overline t=t\cdot \overline 1\) 得
+\(
+\widetilde\Phi(\overline t)=t\cdot \widetilde\Phi(\overline 1)=\overline t
+\)（在 \(\ZZ/(F_{m+2}\ZZ)\) 中取类）。
+因此良定性等价于 \(\overline{F_{n+2}}=0\) 在 \(\ZZ/(F_{m+2}\ZZ)\) 中成立，即 \(F_{m+2}\mid F_{n+2}\)。
+由引理 \ref{lem:fib-divisibility-iff} 得到 \((m+2)\mid(n+2)\) 的等价性。
+在整除成立时，\(\widetilde\Phi\) 只能是自然降模映射，故唯一；再由 \(V_m^{-1}\circ \widetilde\Phi\circ V_n\) 回拉到 \(X\)-语言，即得 \eqref{eq:finite-resolution-morphism-explicit}。证毕。
+\end{proof}
+
+\begin{corollary}[有限分辨率算术的内部自同构刚性]\label{cor:finite-resolution-automorphism-rigidity}
+对任意 \(m\ge 1\)，保持 \(0,1\) 的半环自同构必为恒等：
+\[
+\operatorname{Aut}_{\mathrm{Semiring}}(\mathsf X_m)=\{\mathrm{id}\}.
+\]
+\end{corollary}
+\begin{proof}
+取定理 \ref{thm:finite-resolution-morphism-divisibility-rigidity} 中 \(n=m\)。
+此时同态存在且唯一，故自同构只能是恒等。证毕。
+\end{proof}
+
+\begin{definition}[有限签名的最小统一分辨率]\label{def:finite-signature-min-unified-resolution}
+令 \(S\subset\NN_{\ge 1}\) 为有限集合。
+定义
+\[
+\boxed{\;
+L(S):=\operatorname{lcm}\{\,m+2:\ m\in S\,\}-2\; }.
+\]
+\end{definition}
+
+\begin{theorem}[统一分辨率的存在性、唯一性与最小性]\label{thm:finite-signature-unified-resolution-minimal}
+令 \(S\subset\NN_{\ge 1}\) 有限，并令 \(L=L(S)\)。
+则对每个 \(m\in S\)，存在唯一保持 \(0,1\) 的半环满同态
+\[
+\rho_{S\to m}:\mathsf X_{L}\twoheadrightarrow \mathsf X_m.
+\]
+并且 \(L\) 为最小的统一分辨率：若 \(k\ge 1\) 满足对所有 \(m\in S\) 都存在保持 \(0,1\) 的半环满同态 \(\mathsf X_k\twoheadrightarrow \mathsf X_m\)，则必有 \(k\ge L\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:finite-resolution-morphism-divisibility-rigidity}，\(\mathsf X_{L}\to \mathsf X_m\) 存在当且仅当 \(F_{m+2}\mid F_{L+2}\)，而由引理 \ref{lem:fib-divisibility-iff} 这等价于 \((m+2)\mid(L+2)\)。
+由定义 \ref{def:finite-signature-min-unified-resolution}，\(L+2\) 是 \(\{m+2:m\in S\}\) 的最小公倍数，故对每个 \(m\in S\) 成立 \((m+2)\mid(L+2)\)，从而 \(\rho_{S\to m}\) 存在且由唯一性给出唯一确定；又因对应的降模映射为满射，故为满同态。
+
+若 \(\mathsf X_k\twoheadrightarrow \mathsf X_m\) 对所有 \(m\in S\) 成立，则对每个 \(m\in S\) 有 \((m+2)\mid(k+2)\)。
+故 \(\operatorname{lcm}\{m+2:m\in S\}\mid (k+2)\)，即 \((L+2)\mid(k+2)\)，从而 \(k\ge L\)。证毕。
+\end{proof}
+
+\begin{theorem}[多分辨率联合读出的像与退化度数]\label{thm:finite-signature-joint-readout-image-fiber}
+取有限集合 \(S=\{m_1,\dots,m_s\}\subset\NN_{\ge 1}\)，令 \(L=L(S)\) 并记
+\[
+M:=F_{L+2},\qquad A_i:=F_{m_i+2}\ (1\le i\le s),\qquad A:=\operatorname{lcm}(A_1,\dots,A_s).
+\]
+考虑联合读出同态
+\[
+\rho_S:\mathsf X_{L}\longrightarrow \prod_{i=1}^s \mathsf X_{m_i},
+\qquad
+\rho_S(x):=\bigl(\rho_{S\to m_1}(x),\dots,\rho_{S\to m_s}(x)\bigr).
+\]
+则成立：
+\begin{enumerate}
+  \item \textbf{像的结构：}\(\operatorname{Im}(\rho_S)\) 作为半环同构于 \(\ZZ/(A\ZZ)\)。
+  \item \textbf{像的判别：}\(\operatorname{Im}(\rho_S)\) 恰为满足一致性同余的 \(s\)-元组 \((x_i)\in\prod_i X_{m_i}\)：
+  \[
+  V_{m_i}(x_i)\equiv V_{m_j}(x_j)\pmod{\gcd(A_i,A_j)}\qquad(\forall\,i,j).
+  \]
+  \item \textbf{纤维度数（退化度数）：}\(\rho_S\) 的每一条纤维基数相同，并且
+  \[
+  \#\rho_S^{-1}\bigl((x_i)\bigr)=\frac{M}{A}\qquad\bigl((x_i)\in\operatorname{Im}(\rho_S)\bigr).
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+在 \(V\)-坐标下，\(\mathsf X_L\cong \ZZ/(M\ZZ)\) 且 \(\mathsf X_{m_i}\cong \ZZ/(A_i\ZZ)\)。
+并且 \(\rho_{S\to m_i}\) 等价于标准降模映射 \(\ZZ/(M\ZZ)\to \ZZ/(A_i\ZZ)\)。
+因此 \(\rho_S\) 等价于同态
+\[
+\ZZ/(M\ZZ)\longrightarrow \prod_{i=1}^s\ZZ/(A_i\ZZ),\qquad
+\overline r\longmapsto (\overline r\bmod A_i)_i.
+\]
+其核为同时被所有 \(A_i\) 整除的类，即被 \(A=\mathrm{lcm}(A_i)\) 整除的类；故核大小为 \(M/A\)。
+从而像大小为 \(A\)，且 \(\operatorname{Im}(\rho_S)\cong \ZZ/(A\ZZ)\)，并且每条纤维基数恒为 \(M/A\)。
+像在直积中的一致性刻画是非互素中国剩余定理的标准形式：一组同余系统可解当且仅当各分量在两两最大公因子模下相容。
+最后通过 \(V\)-同构搬回 \(X\)-语言即得。证毕。
+\end{proof}
+
+\begin{corollary}[标准模型签名的统一尺度与不可观测退化度数]\label{cor:finite-signature-sm-unified-scale-degeneracy}
+取分辨率签名 \(S=\{4,6,8\}\)。
+则最小统一分辨率为 \(L(S)=118\)，并且
+\[
+\#X_{118}=F_{120}=5358359254990966640871840.
+\]
+由于 \(\#X_4=F_6=8\)、\(\#X_6=F_8=21\)、\(\#X_8=F_{10}=55\) 两两互素，故
+\[
+A=\operatorname{lcm}(8,21,55)=9240,
+\qquad
+\#\operatorname{Im}(\rho_S)=9240,
+\qquad
+\#\rho_S^{-1}(x_4,x_6,x_8)=\frac{F_{120}}{9240}=579909010280407645116.
+\]
+\end{corollary}
+\begin{proof}
+由定义 \ref{def:finite-signature-min-unified-resolution}，
+\(
+L(S)+2=\mathrm{lcm}(6,8,10)=120
+\)，故 \(L(S)=118\)，并有 \(\#X_{118}=F_{120}\)。
+其余各式由定理 \ref{thm:finite-signature-joint-readout-image-fiber} 代入 \(A_1=8,A_2=21,A_3=55\) 得到；
+互素性保证联合读出像在直积中为全像，且纤维度数为 \(F_{120}/9240\)。证毕。
+\end{proof}
+
 \subsubsection{可完成的跨尺度统一：Fibonacci-adic 逆极限环}\label{subsubsec:fib-adic-inverse-limit}
 一般地，分辨率 $m$ 的模数为 $M_m:=F_{m+2}$，但序列 $(M_m)_{m\ge 1}$ 并不形成整除链；
 因此若想把“跨尺度兼容”严格化为一个逆极限对象，必须选取一个使模数成整除链的分辨率子塔。
