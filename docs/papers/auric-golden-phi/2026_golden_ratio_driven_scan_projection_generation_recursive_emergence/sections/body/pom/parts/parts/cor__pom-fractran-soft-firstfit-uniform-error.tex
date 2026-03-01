@@ -1,0 +1,65 @@
+\begin{corollary}[软 first-fit 的输入无关正确率下界]\label{cor:pom-fractran-soft-firstfit-uniform-error}
+沿用注 \ref{rem:pom-fractran-zero-temp} 与命题 \ref{prop:pom-fractran-soft-firstfit-analytic-dominance} 的记号：对固定状态 \(r\)，令
+\(
+I(r):=\{i:\ r\ge \beta_i\}
+\)，并记硬 first-fit 选择
+\(
+i^\ast(r):=\min I(r)
+\)（若 \(I(r)=\varnothing\) 则停机）。
+当 \(I(r)\neq\varnothing\) 时，软 first-fit 分布
+\(
+\Pr_u(i\mid r)\propto u^i\,\ind[i\in I(r)]
+\)
+满足对任意 \(u\in(0,1)\) 的统一下界
+\[
+\Pr_u\bigl(i^\ast(r)\mid r\bigr)\ \ge\ 1-u,
+\qquad
+\Pr_u\bigl(i\neq i^\ast(r)\mid r\bigr)\ \le\ u.
+\]
+\end{corollary}
+\begin{proof}
+令 \(i^\ast=i^\ast(r)\)。由于 \(i^\ast\) 为 \(I(r)\) 的最小元素，有
+\[
+\sum_{i\in I(r)}u^i
+\le
+u^{i^\ast}\sum_{j=0}^{\infty}u^j
+=
+\frac{u^{i^\ast}}{1-u}.
+\]
+因此
+\[
+\Pr_u(i^\ast\mid r)
+=
+\frac{u^{i^\ast}}{\sum_{i\in I(r)}u^i}
+\ge
+1-u.
+\]
+余者为补事件概率。证毕。
+\end{proof}
+
+\begin{corollary}[温度—时间权衡：固定温度下的累积失败界]\label{cor:pom-fractran-soft-firstfit-temp-time-tradeoff}
+考虑用软 first-fit（温度参数固定为 \(u\in(0,1)\)）替代硬 first-fit 的随机执行过程，并将“选中非硬 first-fit 指令”视为一次失败事件。
+则对任意步数 \(T\ge 1\)，全程无失败的成功概率满足
+\[
+\Pr(\text{前 }T\text{ 步全程选对})\ \ge\ (1-u)^T,
+\]
+并因此有统一上界
+\[
+\Pr(\text{前 }T\text{ 步至少一次选错})\ \le\ 1-(1-u)^T\ \le\ Tu.
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:pom-fractran-soft-firstfit-uniform-error}，对任意时刻与任意历史条件，下一步条件成功率均不小于 \(1-u\)。
+对条件概率做逐步展开即可得
+\(
+\Pr(\text{前 }T\text{ 步全程选对})\ge (1-u)^T
+\)。
+其余两式分别为补事件概率与不等式 \(1-(1-u)^T\le Tu\)（例如由 Bernoulli 不等式或并界）给出。证毕。
+\end{proof}
+
+\begin{conjecture}[硬序门的确定性必要性：固定温度无法承载无界可靠控制流]\label{conj:pom-soft-order-fixed-temp-not-deterministic}
+令 \(P_{\le}\) 表示零温（硬）序门，并以 \(\mathrm{PROJ}_u\) 表示温度参数 \(u\in(0,1)\) 的软序门（其中 soft first-fit 给出一个可计算实例）。
+猜想：若 \(u\) 被固定为常数 \(u_0\in(0,1)\)，则任何仅由 \(\mathrm{PROJ}_{u_0}\) 与确定性投影算子（折叠、提升、清理等）构成的控制流层，都无法在所有输入上实现硬 first-fit 的确定性语义；更强地，在允许无界迭代的语义中，它无法以输入无关的方式将总失败概率压到 \(0\)。
+推论 \ref{cor:pom-fractran-soft-firstfit-temp-time-tradeoff} 给出一条与输入无关的温度—时间标度律，提示固定正温下的累积失败不可消去，而要获得无界可靠控制则需允许零温硬化极限 \(u\downarrow 0\) 或随规模/时间退火。
+\end{conjecture}
+

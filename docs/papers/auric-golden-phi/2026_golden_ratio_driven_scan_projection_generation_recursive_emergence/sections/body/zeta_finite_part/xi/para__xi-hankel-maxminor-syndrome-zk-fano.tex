@@ -1,0 +1,147 @@
+\begin{theorem}[最大子式综合征的 Hankel-正规形与唯一递推]\label{thm:xi-hankel-maximal-minor-syndrome-normal-form-uniqueness}
+设 \(k\) 为域，\((a_n)_{n\ge 0}\subset k\) 的 Hankel 秩为 \(d<\infty\)，并假设 Hankel 主块
+\[
+H_0:=\bigl(a_{i+j}\bigr)_{0\le i,j\le d-1}\in M_d(k)
+\]
+可逆。
+令扩展 Hankel 块
+\[
+\widehat H:=\bigl(a_{i+j}\bigr)_{\substack{0\le i\le d-1\\ 0\le j\le d}}\in M_{d,d+1}(k).
+\]
+对 \(0\le j\le d\)，记 \(\widehat H^{(j)}\) 为从 \(\widehat H\) 中删去第 \(j\) 列所得的 \(d\times d\) 子块，并定义最大子式综合征向量
+\[
+\Delta_j:=(-1)^{d+j}\det\!\bigl(\widehat H^{(j)}\bigr),
+\qquad
+\Delta:=(\Delta_0,\dots,\Delta_d)^{\mathsf T}\in k^{d+1}.
+\]
+则成立：
+\begin{enumerate}
+  \item \(\Delta\neq 0\) 且 \(\ker(\widehat H)=k\cdot \Delta\)；
+  \item \(\Delta_d=\det(H_0)\neq 0\)。令
+  \[
+  p_j:=\Delta_j/\Delta_d\quad(0\le j\le d-1),
+  \qquad
+  p_d:=1,
+  \]
+  则存在唯一的首一 \(d\) 阶常系数递推满足
+  \[
+  \sum_{j=0}^{d}p_j\,a_{n+j}=0\qquad(\forall\,n\ge 0).
+  \]
+  \item 令
+  \[
+  H_1:=\bigl(a_{i+j+1}\bigr)_{0\le i,j\le d-1}\in M_d(k),
+  \qquad
+  A:=H_0^{-1}H_1\in M_d(k),
+  \]
+  并令多项式
+  \[
+  P(\lambda):=\sum_{j=0}^{d}p_j\,\lambda^{j}\in k[\lambda].
+  \]
+  则 \(P(A)=0\)；因此 \(A\) 的最小湮灭多项式为 \(d\) 次并与递推阶一致。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) 由于 \(H_0\) 可逆，\(\widehat H\) 的秩为 \(d\)，从而 \(\dim\ker(\widehat H)=1\)。
+将 \(\widehat H\) 的列向量记为 \(v_0,\dots,v_d\in k^d\)。
+由 Laplace 展开恒等式（即 \(\bigwedge^{d+1}k^d=0\) 的坐标表达）得
+\[
+\sum_{j=0}^{d}(-1)^j\,v_j\det(v_0,\dots,\widehat v_j,\dots,v_d)=0.
+\]
+按定义 \(\Delta_j=(-1)^{d}\cdot (-1)^j\det(v_0,\dots,\widehat v_j,\dots,v_d)\)，故 \(\widehat H\Delta=0\)。
+由 \(\dim\ker(\widehat H)=1\) 得 \(\ker(\widehat H)=k\cdot\Delta\)。
+又因 \(\widehat H\) 的秩为 \(d\)，至少存在一个 \(d\times d\) 最大子式非零，故 \(\Delta\neq 0\)。
+\par
+(2) 由构造 \(\widehat H^{(d)}=H_0\)，故 \(\Delta_d=\det(H_0)\neq 0\)。
+由 \(\widehat H\Delta=0\) 的第 \(i\) 行（\(0\le i\le d-1\)）得到
+\(
+\sum_{j=0}^{d}\Delta_j a_{i+j}=0
+\)，等价于 \(\sum_{j=0}^{d}p_j a_{i+j}=0\)。
+将无限 Hankel 矩阵的第 \(j\) 列记为
+\(
+c_j:=(a_{i+j})_{i\ge 0}
+\)。
+因 \(H_0\) 可逆，\(\{c_0,\dots,c_{d-1}\}\) 线性无关，并且存在唯一 \(p_0,\dots,p_{d-1}\) 使
+\[
+c_d+\sum_{j=0}^{d-1}p_j\,c_j=0.
+\]
+对该列关系施加移位算子（去掉首项）并归纳得到
+\(
+c_{n+d}+\sum_{j=0}^{d-1}p_j c_{n+j}=0
+\)
+对一切 \(n\ge 0\) 成立。
+取第 \(0\) 个坐标即得 \(\sum_{j=0}^{d}p_j a_{n+j}=0\)（\(\forall n\ge 0\)）。
+若另有首一 \(d\) 阶递推系数 \(p'_j\) 满足同一恒等式，则得到两组不同列关系，使 \(\{c_0,\dots,c_{d-1}\}\) 线性相关，矛盾；故递推唯一。
+\par
+(3) 由 \(H_0A=H_1\)，对 \(0\le j\le d-2\) 有
+\[
+H_0(Ae_j)=H_1e_j=\text{\(\widehat H\) 的第 \(j+1\) 列}=H_0e_{j+1},
+\]
+从而 \(Ae_j=e_{j+1}\)。
+另一方面，由 (2) 的列关系可得
+\(
+\widehat H^{(d)}p+ \text{第 \(d\) 列}=0
+\)，即
+\(
+H_0(p_0,\dots,p_{d-1})^{\mathsf T}+(a_d,\dots,a_{2d-1})^{\mathsf T}=0
+\)；
+注意 \((a_d,\dots,a_{2d-1})^{\mathsf T}\) 恰为 \(H_1e_{d-1}\)，故
+\[
+H_0(p_0,\dots,p_{d-1})^{\mathsf T}+H_1e_{d-1}=0
+\quad\Rightarrow\quad
+Ae_{d-1}=-(p_0,\dots,p_{d-1})^{\mathsf T}.
+\]
+因此 \(A\) 为递推多项式 \(P(\lambda)=\lambda^d+p_{d-1}\lambda^{d-1}+\cdots+p_0\) 的伴随矩阵形式，直接计算得到 \(P(A)=0\)。
+又由 (2) 递推阶为 \(d\)，可知 \(A\) 的最小湮灭多项式次数至少为 \(d\)；而 \(\deg P=d\) 且 \(P(A)=0\) 给出次数至多为 \(d\)，故次数恰为 \(d\)。证毕。
+\end{proof}
+
+\begin{theorem}[低于 \texorpdfstring{$2d$}{2d} 窗口的完美零知识不可判别性]\label{thm:xi-hankel-window-2dminus1-perfect-zk-indistinguishability}
+设 \(k\) 为域，取 \(b\in k^{2d-1}\) 满足 \(\det H_0(b)\neq 0\)，并令
+\[
+\mathcal F_b:=\bigl\{a\in k^{\NN}:\ \mathrm{rankH}(a)=d,\ \tau_{2d-1}(a)=b\bigr\}.
+\]
+设一族转录分布 \(\{P_a\}_{a\in\mathcal F_b}\) 给出某一审计协议的输出（验证器为对转录的可测判定函数）。
+若该协议相对于 \(\pi:=\tau_{2d-1}\) 为完美零知识，即存在某个仅依赖 \(b\) 的分布 \(S_b\) 使得
+\[
+P_a=S_b\qquad(\forall\,a\in\mathcal F_b),
+\]
+则对任意非平凡子集 \(\varnothing\subsetneq \mathcal Q\subsetneq \mathcal F_b\)，不存在验证器 \(V\) 使得
+\[
+\Pr[V\ \mathrm{accept}\mid a]=1\ \ (\forall\,a\in\mathcal Q),
+\qquad
+\Pr[V\ \mathrm{accept}\mid a]=0\ \ (\forall\,a\in\mathcal F_b\setminus\mathcal Q).
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:xi-hankel-window-fiber-1d}，\(\mathcal F_b\) 至少含两条不同序列。
+令 \(V\) 为任意验证器（可测函数），其接受概率为
+\(
+\Pr[V\ \mathrm{accept}\mid a]=\int V(t)\,\dd P_a(t)
+\)。
+完美零知识假设给出 \(P_a=S_b\) 对所有 \(a\in\mathcal F_b\) 成立，故上式在 \(\mathcal F_b\) 上恒等于 \(\int V\,\dd S_b\)，与 \(a\) 无关。
+因此 \(V\) 不可能在同一纤维 \(\mathcal F_b\) 上对非平凡 \(\mathcal Q\) 给出全对全错判别。证毕。
+\end{proof}
+
+\begin{theorem}[纤维内误差恢复所需的信息泄漏下界]\label{thm:xi-hankel-fiber-fano-information-leakage}
+令 \(k=\FF_Q\) 为有限域，取 \(b\in k^{2d-1}\) 满足 \(\det H_0(b)\neq 0\)。
+由命题 \ref{prop:xi-hankel-window-fiber-1d}，存在自然双射 \(x\mapsto a^{(x)}\) 使得
+\(\mathcal F_b=\{a^{(x)}:\ x\in\FF_Q\}\)。
+令 \(X\sim\mathrm{Unif}(\FF_Q)\)，并令随机转录 \(T\) 由协议在输入 \(a^{(X)}\) 时生成。
+若存在估计器 \(\widehat X=\widehat X(T)\) 满足 \(\Pr[\widehat X\neq X]\le \varepsilon\)（\(0<\varepsilon<1\)），则互信息满足
+\[
+\mathbf I(X;T)\ \ge\ \log Q\ -\ h(\varepsilon)\ -\ \varepsilon\log(Q-1),
+\]
+其中 \(h(\varepsilon):=-\varepsilon\log\varepsilon-(1-\varepsilon)\log(1-\varepsilon)\) 为二元熵函数（与 \(\log\) 取同一底）。
+\end{theorem}
+\begin{proof}
+Fano 不等式给出
+\[
+H(X\mid T)\le h(\varepsilon)+\varepsilon\log(Q-1),
+\]
+且 \(H(X)=\log Q\)。
+故
+\[
+\mathbf I(X;T)=H(X)-H(X\mid T)\ge \log Q-h(\varepsilon)-\varepsilon\log(Q-1).
+\]
+证毕。
+\end{proof}
+

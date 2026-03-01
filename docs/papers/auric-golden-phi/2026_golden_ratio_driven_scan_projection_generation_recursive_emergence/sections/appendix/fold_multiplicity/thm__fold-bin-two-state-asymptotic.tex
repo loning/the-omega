@@ -423,6 +423,53 @@ F_{m+2}-1,& L\ \text{偶}.
 \]
 \end{corollary}
 
+\begin{corollary}[饱和判别的余数窗口形式：顶端区间条件]\label{cor:fold-bin-saturation-residue-window}
+沿用推论 \ref{cor:fold-bin-saturation} 的记号，令 \(K=K(m)\) 并置
+\[
+r_m:=(2^m-1)-F_{K+1}\ \in\ \{0,1,\dots,F_K-1\}.
+\]
+则推论 \ref{cor:fold-bin-saturation} 的饱和条件
+\(
+2^m-1\ge S_{\max}(m)
+\)
+等价于如下“顶端窗口”条件：
+\[
+r_m\in\bigl[F_K-F_{m+1},\,F_K-1\bigr]\quad (L\ \text{奇}),
+\qquad
+r_m\in\bigl[F_K-F_{m+2},\,F_K-1\bigr]\quad (L\ \text{偶}).
+\]
+因此饱和并非由 \(2^m\) 的规模决定，而由其相对 Fibonacci 阶梯 \(F_{K+1}\) 的余数落点所决定。
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:fold-bin-Smax-closed} 与 \(F_{K+2}=F_{K+1}+F_K\)，
+不等式 \(2^m-1\ge S_{\max}(m)\) 等价于
+\[
+(2^m-1)-F_{K+1}\ \ge\
+\begin{cases}
+F_K-F_{m+1},& L\ \text{奇},\\
+F_K-F_{m+2},& L\ \text{偶},
+\end{cases}
+\]
+即所示余数窗口条件。证毕。
+\end{proof}
+
+\begin{corollary}[饱和窗口的相对尺度与指数衰减]\label{cor:fold-bin-saturation-window-density}
+在推论 \ref{cor:fold-bin-saturation-residue-window} 的余数表示下，饱和条件仅要求 \(r_m\) 落入长度
+\[
+\ell_m=
+\begin{cases}
+F_{m+1},& L\ \text{奇},\\
+F_{m+2},& L\ \text{偶}
+\end{cases}
+\]
+的顶端窗口中；相对于全余数区间长度 \(F_K\)，其占比为 \(\ell_m/F_K\)。
+由于 \(K(m)=m\log_{\varphi}2+O(1)\)，该占比满足
+\[
+\frac{\ell_m}{F_{K(m)}}=\Theta\!\bigl(\varphi^{m-K(m)}\bigr)=\Theta\!\bigl(\varphi^{-(K(m)-m)}\bigr),
+\]
+从而随 \(m\) 指数级衰减；该“顶端窗口”图景与注 \ref{rem:fold-bin-finite} 的对数线性形式刚性在机制层面一致。
+\end{corollary}
+
 \begin{theorem}[最大纤维指数与 \texorpdfstring{$\log(2/\varphi)$}{log(2/phi)}（bin-fold）]\label{thm:fold-bin-max-fiber-exponent}
 令 \(d^{\mathrm{bin}}_{\max}(m):=\max_{w\in X_m} d^{\mathrm{bin}}_m(w)\)。
 则极限存在并满足
@@ -469,6 +516,11 @@ F_{K(m)+1}\le 2^m-1 < F_{K(m)+2}
 \)。
 合并上下界即得极限同一性。证毕。
 \end{proof}
+
+\begin{remark}[不可约步长常数的硬约束]\label{rem:fold-bin-delta-min-hard-constraint}
+定理 \ref{thm:fold-bin-max-fiber-exponent} 给出：在 bin-fold 的纤维结构不变的前提下，最大可见冗余增长率的指数常数被强制为 \(\log(2/\varphi)\)。
+因此，若某一方案在同一折叠纪律下声称实现严格小于 \(\log(2/\varphi)\) 的不可约步长（正文命题 \ref{prop:beta-quantization-step} 的意义），则与最大纤维指数定理所提供的增长率证书发生结构性冲突。
+\end{remark}
 
 \begin{remark}[指数级 Diophantine 近似与“仅有限次饱和”]\label{rem:fold-bin-finite}
 由 \eqref{eq:fold-bin-Smax-closed} 可见，饱和条件强迫 \(2^m\) 与某个 Fibonacci 数 \(F_{K(m)+2}\) \emph{异常接近}。

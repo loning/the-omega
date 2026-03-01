@@ -176,6 +176,171 @@ A=H_0^{-1}H_1=\frac{\mathrm{adj}(H_0)\,H_1}{\det(H_0)}.
 在本文的具体数据上，相应的 \(p\)-进刚性信号可由 Hankel 见证块行列式的赋值直接读出（注 \ref{rem:pom-hankel-stiffness-p5}）。
 \end{remark}
 
+\begin{theorem}[Smith 精度势与最小整化因子]\label{thm:pom-hankel-smith-minimal-denominator}
+在命题 \ref{prop:pom-hankel-realization-protocol} 的整数情形下，设 \(H_0,H_1\in M_d(\ZZ)\) 且 \(\det(H_0)\neq 0\)，并令
+\[
+A:=H_0^{-1}H_1\in M_d(\QQ).
+\]
+取 \(H_0\) 的 Smith 正规形：存在 \(U,V\in \mathrm{GL}_d(\ZZ)\) 使
+\[
+U H_0 V=D:=\mathrm{diag}(s_1,\dots,s_d),
+\qquad
+s_1\mid s_2\mid\cdots\mid s_d,\quad s_i\in\ZZ_{>0}.
+\]
+令 \(C:=U H_1\in M_d(\ZZ)\)，并对每一行定义
+\[
+g_i:=\gcd(C_{i1},C_{i2},\dots,C_{id})\in\ZZ_{>0}\qquad(1\le i\le d).
+\]
+再令
+\[
+e_i:=\frac{s_i}{\gcd(s_i,g_i)}\in\ZZ_{>0},
+\qquad
+N_\ast:=\operatorname{lcm}(e_1,\dots,e_d).
+\]
+则：
+\begin{enumerate}
+  \item \(N_\ast\) 是使 \(A\) 整化的最小正整数，即
+  \[
+  N_\ast=\min\{N\in\ZZ_{>0}:\ NA\in M_d(\ZZ)\}.
+  \]
+  \item 对任意素数 \(p\)，有显式公式
+  \[
+  v_p(N_\ast)=\max_{1\le i\le d}\max\{0,\ v_p(s_i)-v_p(g_i)\}.
+  \]
+  \item 严格整除链成立：
+  \[
+  N_\ast\mid s_d,
+  \qquad
+  N_\ast\mid \det(H_0),
+  \qquad
+  v_p(N_\ast)\le v_p(\det(H_0))=\mathsf{Stiff}_p\ \ (p\ \text{为素数}).
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 \(U H_0 V=D\) 得 \(H_0^{-1}=V D^{-1}U\)，故
+\[
+A=H_0^{-1}H_1=V D^{-1}C.
+\]
+因 \(V\in \mathrm{GL}_d(\ZZ)\)，对任意 \(N\in\ZZ_{>0}\) 有
+\(
+NA\in M_d(\ZZ)\iff N D^{-1}C\in M_d(\ZZ)
+\)。
+而 \(D^{-1}C\) 的第 \(i\) 行为 \(\frac{1}{s_i}C_{i\bullet}\)。
+将该行按最大公因子分解为 \(C_{i\bullet}=g_i\,\widetilde C_{i\bullet}\) 且 \(\gcd(\widetilde C_{i1},\dots,\widetilde C_{id})=1\)，则
+\[
+\frac{1}{s_i}C_{i\bullet}=\frac{g_i}{s_i}\,\widetilde C_{i\bullet}.
+\]
+在最简意义下清分母所需的最小因子恰为 \(e_i=s_i/\gcd(s_i,g_i)\)。
+因此 \(N D^{-1}C\) 为整数矩阵当且仅当对所有 \(i\) 有 \(e_i\mid N\)，等价于 \(N_\ast\mid N\)，从而得到最小性与第 (1) 点。
+第 (2) 点由
+\(
+v_p(e_i)=v_p(s_i)-v_p(\gcd(s_i,g_i))=\max\{0,v_p(s_i)-v_p(g_i)\}
+\)
+与 \(v_p(\operatorname{lcm}_i e_i)=\max_i v_p(e_i)\) 得到。
+第 (3) 点由 \(e_i\mid s_i\mid s_d\) 推出 \(N_\ast\mid s_d\)，再由 \(\det(H_0)=\prod_i s_i\) 得 \(s_d\mid \det(H_0)\)，从而 \(N_\ast\mid \det(H_0)\) 且 \(v_p(N_\ast)\le v_p(\det(H_0))\)。
+\end{proof}
+
+\begin{corollary}[Hankel 最小实现的整性判据]\label{cor:pom-hankel-integer-realization-criterion}
+沿用定理 \ref{thm:pom-hankel-smith-minimal-denominator} 的记号，则下列命题等价：
+\begin{enumerate}
+  \item \(A\in M_d(\ZZ)\)；
+  \item \(N_\ast=1\)；
+  \item 对所有 \(1\le i\le d\) 有 \(s_i\mid g_i\)（等价地，\(C\) 的第 \(i\) 行各条目均被 \(s_i\) 整除）；
+  \item 对所有素数 \(p\) 有 \(v_p(N_\ast)=0\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-hankel-smith-minimal-denominator}(1) 知 \(A\) 整当且仅当最小整化因子 \(N_\ast\) 为 \(1\)。
+而 \(N_\ast=1\) 当且仅当各 \(e_i=1\)，当且仅当 \(s_i=\gcd(s_i,g_i)\)，即 \(s_i\mid g_i\)。
+最后 \(v_p(N_\ast)\equiv 0\) 对所有素数等价于 \(N_\ast=1\)。
+\end{proof}
+
+\begin{theorem}[模 \(p^k\) 的 Hankel 线性系统：可解性与解空间规模]\label{thm:pom-hankel-modpk-solvability-count}
+沿用定理 \ref{thm:pom-hankel-smith-minimal-denominator} 的 \(U,V,D,C\)。
+给定素数 \(p\) 与整数 \(k\ge 1\)，考虑同余矩阵方程
+\[
+H_0X\equiv H_1\pmod{p^k},
+\qquad
+X\in M_d(\ZZ/p^k\ZZ).
+\]
+则：
+\begin{enumerate}
+  \item 该方程可解当且仅当对每个 \(1\le i\le d\)，行向量 \(C_{i\bullet}\) 的每个条目均被 \(p^{\min(v_p(s_i),k)}\) 整除；
+  \item 在可解的前提下，解的总数满足精确计数
+  \[
+  \#\{X\bmod p^k:\ H_0X\equiv H_1\}=
+  p^{\,d\sum_{i=1}^{d}\min(v_p(s_i),k)}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+令 \(Y:=V^{-1}X\)（模 \(p^k\) 下 \(V^{-1}\) 仍可逆），则
+\[
+H_0X\equiv H_1\pmod{p^k}
+\quad\Longleftrightarrow\quad
+D Y\equiv C\pmod{p^k}.
+\]
+按列分解，对每个 \(j\) 需解
+\(
+s_i y_{ij}\equiv c_{ij}\ (\mathrm{mod}\ p^k)
+\)（\(1\le i\le d\)）。
+一元同余可解当且仅当 \(\gcd(s_i,p^k)\mid c_{ij}\)，即 \(p^{\min(v_p(s_i),k)}\mid c_{ij}\)，得到第 (1) 点。
+在可解时，解数为 \(\gcd(s_i,p^k)=p^{\min(v_p(s_i),k)}\)；对 \(i\) 相乘再对 \(d\) 列独立相乘即得第 (2) 点。
+\end{proof}
+
+\begin{theorem}[Smith 精度势驱动的确定性模审计阈值]\label{thm:pom-hankel-deterministic-mod-audit-threshold}
+在定理 \ref{thm:pom-hankel-smith-minimal-denominator} 的设定下，设给定候选矩阵 \(\widehat A\in M_d(\QQ)\) 满足分母界
+\[
+N_\ast\,\widehat A\in M_d(\ZZ),
+\]
+并定义误差
+\[
+E:=H_0\widehat A-H_1\in M_d(\QQ),
+\qquad
+F:=N_\ast E\in M_d(\ZZ).
+\]
+令 \(\|F\|_\infty:=\max_{i,j}|F_{ij}|\)。
+取有限素数集 \(\mathcal P\) 并令 \(P:=\prod_{p\in\mathcal P}p\)，满足 \(\gcd(P,N_\ast)=1\)。
+若对每个 \(p\in\mathcal P\) 都有同余核验
+\[
+F\equiv 0\pmod p
+\qquad(\text{等价于 }H_0\widehat A\equiv H_1\pmod p),
+\]
+且同时满足
+\[
+P>2\|F\|_\infty,
+\]
+则必有 \(\widehat A=A\)。
+\end{theorem}
+\begin{proof}
+若 \(\widehat A\neq A\)，则 \(E\neq 0\)，从而 \(F\neq 0\)。
+取一非零条目 \(f\) 满足 \(|f|\le \|F\|_\infty\)。
+由同余核验，得对每个 \(p\in\mathcal P\) 有 \(p\mid f\)，因此 \(P\mid f\)。
+但 \(P>2\|F\|_\infty\ge 2|f|\) 时，仅可能 \(f=0\)，矛盾。
+故 \(F=0\)，从而 \(H_0\widehat A=H_1\)，左乘 \(H_0^{-1}\) 得 \(\widehat A=A\)。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\mathsf{Stiff}_p$}{Stiffp} 的解空间熵解释与精度势分解]\label{prop:pom-hankel-stiffness-entropy-decomposition}
+在定理 \ref{thm:pom-hankel-modpk-solvability-count} 的设定下，若模 \(p^k\) 方程可解，定义其解空间对数规模（按列归一化）为
+\[
+\mathsf H_p(k):=\frac{1}{d}\log_p\#\{X\bmod p^k:\ H_0X\equiv H_1\}.
+\]
+则
+\[
+\mathsf H_p(k)=\sum_{i=1}^{d}\min(v_p(s_i),k),
+\qquad
+\lim_{k\to\infty}\mathsf H_p(k)=\sum_{i=1}^{d}v_p(s_i)=v_p(\det(H_0))=\mathsf{Stiff}_p.
+\]
+另一方面，定理 \ref{thm:pom-hankel-smith-minimal-denominator} 给出的 \(v_p(N_\ast)\) 是最小整化分母的 \(p\)-进指数。
+因此同一 \(p\)-轴同时承载两类互补量：\(\mathsf{Stiff}_p\) 记录模提升时解空间的总分支指数，而 \(v_p(N_\ast)\) 记录在可消去项剥离后的真实分母门槛。
+\end{proposition}
+\begin{proof}
+第一式由定理 \ref{thm:pom-hankel-modpk-solvability-count}(2) 直接得到。
+令 \(k\to\infty\)，得 \(\sum_i \min(v_p(s_i),k)\to \sum_i v_p(s_i)\)，而 \(\det(H_0)=\prod_i s_i\)，故极限等于 \(v_p(\det(H_0))\)，与 \(\mathsf{Stiff}_p\) 的定义一致。
+关于 \(v_p(N_\ast)\) 的陈述即定理 \ref{thm:pom-hankel-smith-minimal-denominator}(2)。
+\end{proof}
+
 \begin{remark}[非负整数碰撞核的搜索口径（建议作为新实验协议）]\label{rem:pom-nonneg-kernel-search-protocol}
 命题 \ref{prop:pom-hankel-realization-protocol} 给出的 \(A\) 一般带有符号（或出现负条目），但它携带“最小线性实现”的确定结构。
 为得到可解释的“有限状态碰撞核”\(A_q\)，可在 \(\mathrm{GL}_d(\ZZ)\) 上做可审计的相似变换搜索：
@@ -186,6 +351,15 @@ A_q=P^{-1}AP,\qquad P\in\mathrm{GL}_d(\ZZ),
 由于 \(P\) 为 unimodular，\(P^{-1}\in M_d(\ZZ)\)，该相似变换不会引入新的分母；若能找到使 \(A_q\in M_d(\ZZ_{\ge 0})\) 的 \(P\)，则该纯整基变换在保持最小维数的同时把分母完全消去（对比注 \ref{rem:pom-hankel-denominator-stiffness}）。
 这一路径在 \(q=4\) 的五态核上已被脚本 \texttt{scripts/exp\_fold\_collision\_hankel\_realization\_q4.py} 以完全可复现方式实现；对更高阶 \(q\) 可按同一范式推广，并以“最小维数、最小最大条目、最小拓扑熵”等作为搜索准则，形成一个可无限上推的碰撞核谱系实验线路。
 \end{remark}
+
+\begin{conjecture}[最小 Hankel 实现的可组合核化原则]\label{conj:pom-minimal-hankel-kernelization}
+固定 \(q\ge 2\)，设 \(S_q(m)\) 的 Hankel 秩为 \(d_q\)，并令 \(A_q^{\mathrm{min}}\in M_{d_q}(\QQ)\) 为由 Hankel realization 得到的最小实现矩阵（命题 \ref{prop:pom-hankel-realization-protocol}）。
+猜想存在 \(P\in\mathrm{GL}_{d_q}(\ZZ)\) 使得
+\[
+P^{-1}A_q^{\mathrm{min}}P\in M_{d_q}(\ZZ_{\ge 0}).
+\]
+亦即，在保持最小实现维数不变的前提下，总可选取一个同维数的非负整数邻接矩阵作为 realization，从而把碰撞矩序列的最小线性实现提升为同维数的可组合有限图解释。
+\end{conjecture}
 
 \begin{corollary}[常数成本自由能求值器：由 Hankel 最小实现锁定 \texorpdfstring{$r_q$}{rq}]\label{cor:pom-hankel-free-energy-evaluator}
 在命题 \ref{prop:pom-hankel-realization-protocol} 的设定下，记最小维数为 \(d\)。

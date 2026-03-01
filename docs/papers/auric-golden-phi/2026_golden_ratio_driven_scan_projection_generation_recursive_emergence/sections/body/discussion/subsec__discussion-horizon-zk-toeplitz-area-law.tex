@@ -3,7 +3,7 @@
 \par
 需要强调的是：本文对“零知识”的使用仅限于\textbf{信息论可模拟性}这一可审计含义；它并不引入外部密码学假设，而是把“可观测约束下验证者能学到的全部信息”等价重写为“视界毛发的完备性”这一已在正文 no-hair 语境中反复出现的制度陈述（参见 \S\ref{subsec:dephysicalized-horizon-timefiber-nohair} 与 \S\ref{subsubsec:discussion-bulk-horizon-dictionary}）。
 \par
-本小节所用的视界多极矩 \(c_n\) 与 Toeplitz 主子矩阵 \(\mathbf{T}_N\) 与附录 \S\ref{subsec:unit-disk-rh-equivalence}、\S\ref{subsubsec:app-horizon-weyl-carath-toeplitz} 完全一致；其中离切片深度（端点 horocycle 坐标）由 \(\mathcal{B}_{-1}(w)\) 与 \(h(\rho)=1-|w_\rho|^2\) 刻画（\S\ref{subsec:unit-disk-rh-equivalence} 及段落 \ref{par:app-horocycle-busemann}）。
+本小节所用的视界多极矩 \(c_n\) 与 Toeplitz 主子矩阵 \(\mathbf{T}_N\) 与附录 \S\ref{subsec:unit-disk-rh-equivalence}、\S\ref{subsubsec:app-horizon-weyl-carath-toeplitz} 完全一致；其中离切片深度（端点 horocycle 坐标）由 \(B^{-1}(w)\) 与 \(h(\rho)=1-|w_\rho|^2\) 刻画（\S\ref{subsec:unit-disk-rh-equivalence} 及段落 \ref{par:app-horocycle-busemann}）。
 \par
 
 \paragraph{Cayley 圆盘化接口的三重闭合：unitary-slice、端点二次通道与内因子毛发}
@@ -17,7 +17,7 @@ w_\rho=\mathcal{C}(\gamma+\mathrm{i}\delta)\in\mathbb{D}
   \item \textbf{相位闭包（phase-closure / unitary-slice）：}幺正切片唯一性把可见域钉死在 \(|u|=1\)（等价于 \(\Re(s)=\tfrac12\)），并把零点事件束缚为固定切片上的可核验读出（\S\ref{subsubsec:xi-mellin-unitary-slice}，\S\ref{subsubsec:ramanujan-phase-lift-symmetry}）。
   \item \textbf{端点 \texorpdfstring{$w=-1$}{w=-1} 的二次径向通道：}端点 Busemann/Poisson 坐标满足闭式
   \[
-  \delta=\mathcal{B}_{-1}(w_\rho)=\frac{1-|w_\rho|^2}{|1+w_\rho|^2},
+  \delta=B^{-1}(w_\rho)=\frac{1-|w_\rho|^2}{|1+w_\rho|^2},
   \qquad
   1-|w_\rho|^2=\delta\,|1+w_\rho|^2
   \]
@@ -292,6 +292,51 @@ H_N(w):=\bigl(c_0(w),c_1(w),\dots,c_N(w)\bigr),
 由 (1) 知该定义与 \(w_c\) 的选择无关，从而 \(\mathsf{S}_N\) 良定义。
 若不存在见证使 \(H_N(w)=c\)，则任取一分布作为 \(\mathsf{S}_N(c)\)（该值在实际调用中不会被触及）。
 于是对所有 \(w\) 有 \(\mathrm{View}^\Pi(w)\equiv \mathsf{S}_N(H_N(w))\)。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\varepsilon$}{eps}-零知识的条件互信息界与可学习误差改进上界]\label{thm:discussion-epszk-cmi-and-risk-improvement-bound}
+令 \(\omega\) 为微观态随机变量，\(y=\pi(\omega)\) 为可观测读出，\(\tau\) 为转录（transcript）。
+假设存在一族核 \((S_y)_{y}\) 使得对一切 \(\omega\) 都有
+\[
+D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega)\,\Vert\, S_{\pi(\omega)}\bigr)\le \varepsilon.
+\]
+则：
+\begin{enumerate}
+  \item 条件互信息满足
+  \[
+  I(\omega;\tau\mid y)\le \varepsilon.
+  \]
+  \item 对任意损失函数 \(\ell:\Omega\times\mathcal A\to[0,1]\)，记
+  \(R^\ast(y)\) 为仅依赖 \(y\) 的最优 Bayes 风险，\(R^\ast(y,\tau)\) 为可依赖 \((y,\tau)\) 的最优 Bayes 风险，则
+  \[
+  R^\ast(y,\tau)\ \ge\ R^\ast(y)\ -\sqrt{\frac{\varepsilon}{2}}.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+固定 \(y\)。由相对熵分解恒等式，
+\[
+\EE\!\left[D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega,y)\,\Vert\, S_y\bigr)\,\big|\,y\right]
+=I(\omega;\tau\mid y)+D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid y)\,\Vert\, S_y\bigr),
+\]
+且右端第二项非负，故
+\(
+I(\omega;\tau\mid y)
+\le
+\EE\!\left[D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega,y)\,\Vert\, S_y\bigr)\mid y\right]
+\le \varepsilon
+\)；
+取期望得第一条。
+
+再由 Pinsker 不等式，对一切 \(\omega\) 有
+\[
+\bigl\|\mathcal L(\tau\mid \omega)-S_{\pi(\omega)}\bigr\|_{\mathrm{TV}}
+\le \sqrt{\frac12 D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega)\,\Vert\,S_{\pi(\omega)}\bigr)}
+\le \sqrt{\frac{\varepsilon}{2}}.
+\]
+对任意决策规则 \(a=g(y,\tau)\)，用 \(\tau'\sim S_y\) 替代 \(\tau\) 后的条件风险之差由全变差控制，且不超过 \(\sqrt{\varepsilon/2}\)。
+在 \(\tau'\) 情形下有 \(\tau'\perp\!\!\!\perp \omega\mid y\)，最优风险即 \(R^\ast(y)\)，取 \(g\) 最优即得第二条。证毕。
 \end{proof}
 
 \begin{proposition}[带单原子负缺陷的 Toeplitz--PSD 阈值律]\label{prop:discussion-toeplitz-negative-atom-threshold}

@@ -164,6 +164,88 @@ K_T\cap K_\varphi=\mathbb Q,
 在四块骨架证书 \eqref{eq:window6_edge_flux_skeleton} 的记号下，令 \(\mathcal{G}_{\mathrm{blk}}\) 为加权无向多重图：顶点为 \(\{U_2,U_1,U_L,U_R\}\)，且当 \(\alpha\neq\beta\) 时边重数为 \(E_{\alpha\beta}\)（忽略块内自环）。
 记其加权 Laplace 矩阵为 \(L_{\mathrm{blk}}\)（对角为度数、非对角为负边重数），并令 \(L_{\mathrm{blk}}^{(\alpha)}\) 为删去同一行列所得主余子式。
 
+\begin{theorem}[回路格的电阻型 Gram 行列式与生成树权]\label{thm:xi-flow-lattice-gram-determinant-tree-weight}
+令 \(G=(V,E)\) 为有限连通（允许多重边）无向图，并固定一组定向以定义去掉一行的有向关联矩阵
+\(
+B\in\ZZ^{(|V|-1)\times|E|}
+\)
+（于是 \(\mathrm{rank}\,B=|V|-1\)）。
+给定边权 \(w_e>0\)，令 \(W:=\mathrm{diag}(w_e)_{e\in E}\)。
+定义整数流格
+\[
+\Lambda_{\mathrm{fl}}:=\ker(B)\cap\ZZ^{E}\subset \RR^E,
+\]
+并在 \(\RR^E\) 上取电阻型二次型
+\[
+\langle x,y\rangle_{W^{-1}}:=x^{\mathsf T}W^{-1}y.
+\]
+记 \(\tau_w(G)\) 为加权生成树总权（对每棵生成树取边权乘积并求和）。
+则 \(\Lambda_{\mathrm{fl}}\) 在该二次型下的 Gram 行列式满足精确恒等式
+\[
+\det\!\bigl(\mathrm{Gram}_{W^{-1}}(\Lambda_{\mathrm{fl}})\bigr)=\frac{\tau_w(G)}{\det(W)}.
+\]
+等价地，其协体积为
+\[
+\mathrm{covol}_{W^{-1}}(\Lambda_{\mathrm{fl}})=\sqrt{\tau_w(G)/\det(W)}.
+\]
+\end{theorem}
+\begin{proof}
+取任一生成树 \(T\subseteq E\)，令弦边集 \(C:=E\setminus T\)，并按 \(E=T\sqcup C\) 重排列边。
+相应写 \(B=[B_T\ B_C]\) 与 \(W=\mathrm{diag}(W_T,W_C)\)。
+由于 \(T\) 为生成树，\(B_T\in\ZZ^{(|V|-1)\times(|V|-1)}\) 为可逆整矩阵且 \(\det(B_T)=\pm 1\)。
+令
+\[
+C_*:=\begin{pmatrix}-B_T^{-1}B_C\\ I\end{pmatrix}\in\ZZ^{E\times|C|},
+\]
+则 \(BC_*=0\)，且其列向量给出 \(\Lambda_{\mathrm{fl}}\) 的一组整基。
+故 Gram 矩阵为
+\[
+G_*:=C_*^{\mathsf T}W^{-1}C_*
+=W_C^{-1}+B_C^{\mathsf T}B_T^{-\mathsf T}W_T^{-1}B_T^{-1}B_C.
+\]
+由矩阵行列式引理与 Sylvester 恒等式 \(\det(I+AB)=\det(I+BA)\)，得
+\[
+\det(G_*)
+=\det(W_C^{-1})\cdot
+\det\!\Bigl(I+(B_TW_TB_T^{\mathsf T})^{-1}B_CW_CB_C^{\mathsf T}\Bigr).
+\]
+另一方面，加权约化拉普拉斯为
+\[
+L_w:=BW B^{\mathsf T}=B_TW_TB_T^{\mathsf T}+B_CW_CB_C^{\mathsf T},
+\]
+并有分解
+\[
+\det(L_w)=\det(B_TW_TB_T^{\mathsf T})\cdot
+\det\!\Bigl(I+(B_TW_TB_T^{\mathsf T})^{-1}B_CW_CB_C^{\mathsf T}\Bigr).
+\]
+由于 \(\det(B_TW_TB_T^{\mathsf T})=\det(W_T)\)（因 \(\det(B_T)=\pm1\)），比较两式得到
+\[
+\det(G_*)
+=\det(W_C^{-1})\cdot\frac{\det(L_w)}{\det(W_T)}
+=\frac{\det(L_w)}{\det(W_T)\det(W_C)}
+=\frac{\det(L_w)}{\det(W)}.
+\]
+加权矩阵树定理给出 \(\det(L_w)=\tau_w(G)\)，从而结论成立。证毕。
+\end{proof}
+
+\begin{corollary}[固定边界偏差后的整数流扭量协体积]\label{cor:xi-affine-flow-torsor-covolume}
+在定理 \ref{thm:xi-flow-lattice-gram-determinant-tree-weight} 的设定下，给定任意 \(b\in\ZZ^{|V|-1}\) 使得同余方程 \(BF=b\) 在 \(\ZZ^E\) 中可解。
+取一解 \(F^{(0)}\in\ZZ^E\)，并令
+\[
+S(b):=\{F\in\ZZ^E:\ BF=b\}=F^{(0)}+\Lambda_{\mathrm{fl}}.
+\]
+则 \(S(b)\) 为以 \(\Lambda_{\mathrm{fl}}\) 为平移群的仿射格。
+因此在二次型 \(\langle\cdot,\cdot\rangle_{W^{-1}}\) 下，解集的自由度密度由
+\[
+\mathrm{covol}_{W^{-1}}(\Lambda_{\mathrm{fl}})=\sqrt{\tau_w(G)/\det(W)}
+\]
+精确控制。
+\end{corollary}
+\begin{proof}
+若 \(F\in S(b)\)，则 \(B(F-F^{(0)})=0\)，即 \(F-F^{(0)}\in\Lambda_{\mathrm{fl}}\)，反之亦然，故 \(S(b)=F^{(0)}+\Lambda_{\mathrm{fl}}\)。
+协体积等式由定理 \ref{thm:xi-flow-lattice-gram-determinant-tree-weight} 直接给出。证毕。
+\end{proof}
+
 \begin{corollary}[window-\(6\) 四块商图的加权树数分解与审计素数 \texorpdfstring{$p_\star=571$}{p*=571}]\label{cor:xi-window6-block-tree-number-audit-prime}
 对任意块 \(\alpha\in\{2,1,L,R\}\)，主余子式的行列式一致且等于同一加权树数
 \[

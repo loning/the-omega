@@ -6,7 +6,7 @@ This script is English-only by repository convention.
 
 We generate Z_m(y) exactly from the verified order-4 recurrence and check (m<=m_max):
   - all zeros are real, negative, and simple;
-  - zeros of Z_m and Z_{m+1} strictly interlace.
+  - zeros of Z_m and Z_{m+2} (fixed parity) strictly interlace.
 
 Output (default):
   - artifacts/export/fold_zm_sturm_real_roots_audit.json
@@ -101,7 +101,7 @@ class PolyAudit:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Audit real-rootedness and interlacing for Z_m(y).")
-    parser.add_argument("--m-max", type=int, default=60, help="Max m to audit (default: 60).")
+    parser.add_argument("--m-max", type=int, default=100, help="Max m to audit (default: 100).")
     parser.add_argument("--digits", type=int, default=90, help="Decimal digits for nroots (default: 90).")
     parser.add_argument("--maxsteps", type=int, default=200, help="Max Newton steps for nroots (default: 200).")
     parser.add_argument("--tol-imag", type=float, default=1e-30, help="Imaginary-part tolerance (default: 1e-30).")

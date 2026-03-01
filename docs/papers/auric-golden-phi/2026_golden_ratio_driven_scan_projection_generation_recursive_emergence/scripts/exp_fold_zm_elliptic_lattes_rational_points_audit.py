@@ -11,8 +11,13 @@ This script is English-only by repository convention.
 We verify:
   - Lattès map on x-coordinate induced by [2]:
       Phi(X) = x([2]P) = (X^4 + 2 X^2 - 2 X + 1) / (4 X^3 - 4 X + 1).
+  - 2-division polynomial square pullback under Phi:
+      D(Phi(X)) = C(X)^2 / D(X)^3, where D(X)=4X^3-4X+1 and
+      C(X)=2X^6-10X^4+10X^3-10X^2+2X+1.
   - Critical polynomial of Phi:
       Phi'(X)=0  <=>  2X^6 - 10X^4 + 10X^3 - 10X^2 + 2X + 1 = 0.
+  - y-coordinate doubling uses the same critical sextic:
+      Y([2]P) = C(X) / (16 Y^3) in Q(E).
   - Arithmetic closure of the critical sextic:
       Disc(C) = -2^8 * 37^5, and Gal(Split(C)/Q) has order 48 (octahedral type S4 x C2).
   - Weight pullback under doubling is linear in y with critical coefficient:
@@ -31,6 +36,9 @@ We verify:
     and we reproduce the first six terms.
   - Bad prime 37 stable reduction degree-drop of Phi:
       mod 37, numerator and denominator share (X-5)^2 and the reduced map has degree 2.
+  - Bad prime 37 Chebyshev conjugacy and cycle spectrum on P^1(F_37):
+      M o overline{Phi} o M^{-1} = (X^2 - 2) and the full cycle decomposition
+      consists of one 9-cycle, one 3-cycle, and three fixed points {5,22,∞}.
 
 Outputs:
   - artifacts/export/fold_zm_elliptic_lattes_rational_points_audit.json
@@ -163,11 +171,18 @@ class TableRow:
 @dataclass(frozen=True)
 class Payload:
     phi_formula_ok: bool
+    phi_2division_pullback_square_ok: bool
     phi_mod37_degree_drop_ok: bool
     phi_mod37_gcd: str
     phi_mod37_reduced_map: str
     g_mod37_factor_ok: bool
     phi_prime_critical_poly_ok: bool
+    phi_critval_resultant_ok: bool
+    phi_fiber_square_splitting_ok: bool
+    critical_sextic_quadratic_factor_ok: bool
+    norm_3a2_minus1_ok: bool
+    norm_3a2_minus1: str
+    phi_Y_doubling_ok: bool
     critical_poly_disc: int
     critical_poly_disc_factorization: Dict[str, int]
     critical_poly_galois_degree: int
@@ -188,6 +203,9 @@ class Payload:
     mw_anchor_points: Dict[str, str]
     mw_anchor_relations_ok: bool
     table_first6: List[TableRow]
+    phi_mod37_chebyshev_conjugacy_ok: bool
+    phi_mod37_cycle_spectrum_ok: bool
+    phi_mod37_cycles_p1: List[List[int]]
 
 
 def main() -> None:
@@ -232,6 +250,101 @@ def main() -> None:
     phi_mod37_gcd = gcd_mod.as_expr()
     phi_mod37_reduced_map = sp.together(num_red.as_expr() / den_red.as_expr())
 
+    # --- Bad prime 37: Chebyshev conjugacy and cycle spectrum on P^1(F_37) ---
+    def _inv_mod(a: int, p: int) -> int:
+        a %= p
+        if a == 0:
+            raise ZeroDivisionError("inverse of 0")
+        return pow(a, p - 2, p)
+
+    def _overphi_p1(x: int | None, p: int) -> int | None:
+        # overline{Phi}(x) = (x^2+10x+3)/(4x+3), with infinity represented by None
+        if x is None:
+            return None
+        num = (x * x + 10 * x + 3) % p
+        den = (4 * x + 3) % p
+        if den == 0:
+            return None
+        return (num * _inv_mod(den, p)) % p
+
+    def _mobius_M(x: int | None, p: int) -> int | None:
+        # M(x) = (2x+13)/(x-5)
+        if x is None:
+            return 2 % p
+        den = (x - 5) % p
+        if den == 0:
+            return None
+        num = (2 * x + 13) % p
+        return (num * _inv_mod(den, p)) % p
+
+    def _mobius_Minv(x: int | None, p: int) -> int | None:
+        # M^{-1}(x) = (5x+13)/(x-2)
+        if x is None:
+            return 5 % p
+        den = (x - 2) % p
+        if den == 0:
+            return None
+        num = (5 * x + 13) % p
+        return (num * _inv_mod(den, p)) % p
+
+    def _T2(x: int | None, p: int) -> int | None:
+        if x is None:
+            return None
+        return (x * x - 2) % p
+
+    pts_p1 = [None] + list(range(p_bad))
+    phi_mod37_chebyshev_conjugacy_ok = True
+    for x in pts_p1:
+        lhs = _mobius_M(_overphi_p1(_mobius_Minv(x, p_bad), p_bad), p_bad)
+        rhs = _T2(x, p_bad)
+        if lhs != rhs:
+            phi_mod37_chebyshev_conjugacy_ok = False
+            break
+
+    # Cycle decomposition (record each cycle once; ignore preperiodic tails).
+    seen: set[int | None] = set()
+    cycles: List[List[int | None]] = []
+    for x in pts_p1:
+        if x in seen:
+            continue
+        seq: List[int | None] = []
+        cur = x
+        while cur not in seen and cur not in seq:
+            seq.append(cur)
+            cur = _overphi_p1(cur, p_bad)
+        if cur in seen:
+            for u in seq:
+                seen.add(u)
+            continue
+        # New cycle: cur repeats inside seq.
+        i0 = seq.index(cur)
+        cycles.append(seq[i0:])
+        for u in seq:
+            seen.add(u)
+
+    # Normalize cycles for stable JSON comparisons: rotate to the minimal element (∞ last), sort by length.
+    def _key(u: int | None) -> Tuple[int, int]:
+        return (1, 0) if u is None else (0, int(u))
+
+    def _rot_min(cyc: List[int | None]) -> List[int | None]:
+        ks = [_key(u) for u in cyc]
+        j = min(range(len(cyc)), key=lambda i: ks[i])
+        return cyc[j:] + cyc[:j]
+
+    cycles_norm = [_rot_min(c) for c in cycles]
+    cycles_norm.sort(key=lambda c: (len(c), [_key(u) for u in c]))
+    cycles_json: List[List[int]] = [[-1 if u is None else int(u) for u in c] for c in cycles_norm]
+    phi_mod37_cycle_spectrum_ok = bool(
+        cycles_json
+        == [
+            [5],
+            [22],
+            [-1],
+            [3, 25, 29],
+            [1, 2, 26, 15, 6, 16, 30, 17, 31],
+        ]
+    )
+
     # --- Bad prime 37: cubic g(X)=16X^3-9X^2+1 double-root collapse ---
     g_cubic = 16 * X**3 - 9 * X**2 + 1
     g_cubic_mod_expected = 16 * (X - 16) * (X - 5) ** 2
@@ -247,6 +360,33 @@ def main() -> None:
     _, prim_nump = poly_nump.primitive()
     nump_prim = sp.factor(prim_nump.as_expr())
     crit_ok = bool(sp.factor(nump_prim - crit_expected) == 0 or sp.factor(nump_prim + crit_expected) == 0)
+
+    # --- Critical value elimination via resultant (PCF portrait certificate) ---
+    T = sp.Symbol("T")
+    res_critval = sp.factor(sp.resultant(crit_expected, N - T * D, X))
+    res_critval_expected = (37**3) * (4 * T**3 - 4 * T + 1) ** 2
+    phi_critval_resultant_ok = bool(sp.factor(res_critval - res_critval_expected) == 0)
+
+    # --- Fiber square splitting over the 2-division cubic ---
+    A = sp.Symbol("A")
+    qA = X**2 - 2 * A * X - 2 * A**2 + 1
+    fiber_diff = sp.expand((X**4 + 2 * X**2 - 2 * X + 1) - A * (4 * X**3 - 4 * X + 1) - qA**2)
+    D_A = 4 * A**3 - 4 * A + 1
+    # Equivalent form: fiber_diff = -(A+2X) * D_A, hence vanishes on D_A=0.
+    phi_fiber_square_splitting_ok = bool(sp.factor(fiber_diff + (A + 2 * X) * D_A) == 0)
+
+    # --- Critical sextic quadratic factorization and a norm identity in Q(A) ---
+    fA = A**3 - A + sp.Rational(1, 4)
+    res_quad = sp.factor(sp.resultant(fA, qA, A))
+    critical_sextic_quadratic_factor_ok = bool(sp.factor(2 * res_quad - crit_expected) == 0)
+    norm_3a2_minus1 = sp.resultant(fA, 3 * A**2 - 1, A)
+    norm_3a2_minus1_ok = bool(sp.factor(norm_3a2_minus1 + sp.Rational(37, 16)) == 0)
+
+    # --- 2-division polynomial square pullback under Phi ---
+    D_poly = 4 * X**3 - 4 * X + 1
+    D_at_Phi = sp.together(4 * Phi_expected**3 - 4 * Phi_expected + 1)
+    D_pullback_expected = sp.together(crit_expected**2 / D_poly**3)
+    phi_2division_pullback_square_ok = bool(sp.factor(sp.together(D_at_Phi - D_pullback_expected)) == 0)
 
     # --- Discriminant and Galois group of the critical sextic ---
     crit_disc = int(sp.discriminant(crit_expected, X))
@@ -294,6 +434,13 @@ def main() -> None:
     modY = sp.Poly(Y**2 - fX, Y)
     num_y2_red = sp.rem(sp.Poly(sp.expand(num_y2), Y), modY).as_expr()
     den_y2_red = sp.rem(sp.Poly(sp.expand(den_y2), Y), modY).as_expr()
+
+    # --- Y-coordinate of [2]P uses the same critical sextic ---
+    target_Y2 = sp.together(crit_expected / (16 * Y**3))
+    diff_Y2 = sp.together(Y2 - target_Y2)
+    num_diff_Y2, _den_diff_Y2 = diff_Y2.as_numer_denom()
+    num_diff_Y2_red = sp.rem(sp.Poly(sp.expand(num_diff_Y2), Y), modY).as_expr()
+    phi_Y_doubling_ok = bool(sp.simplify(num_diff_Y2_red) == 0)
 
     Y_sub = y - X**2 + sp.Rational(1, 2)
     expr_xy = sp.together(num_y2_red.subs({Y: Y_sub}) / den_y2_red.subs({Y: Y_sub}))
@@ -397,11 +544,18 @@ def main() -> None:
 
     payload = Payload(
         phi_formula_ok=bool(phi_ok),
+        phi_2division_pullback_square_ok=bool(phi_2division_pullback_square_ok),
         phi_mod37_degree_drop_ok=bool(phi_mod37_degree_drop_ok),
         phi_mod37_gcd=sp.sstr(phi_mod37_gcd),
         phi_mod37_reduced_map=sp.sstr(phi_mod37_reduced_map),
         g_mod37_factor_ok=bool(g_mod37_factor_ok),
         phi_prime_critical_poly_ok=bool(crit_ok),
+        phi_critval_resultant_ok=bool(phi_critval_resultant_ok),
+        phi_fiber_square_splitting_ok=bool(phi_fiber_square_splitting_ok),
+        critical_sextic_quadratic_factor_ok=bool(critical_sextic_quadratic_factor_ok),
+        norm_3a2_minus1_ok=bool(norm_3a2_minus1_ok),
+        norm_3a2_minus1=sp.sstr(norm_3a2_minus1),
+        phi_Y_doubling_ok=bool(phi_Y_doubling_ok),
         critical_poly_disc=int(crit_disc),
         critical_poly_disc_factorization={str(int(p)): int(e) for p, e in crit_disc_fac.items()},
         critical_poly_galois_degree=G_degree,
@@ -430,6 +584,9 @@ def main() -> None:
         },
         mw_anchor_relations_ok=bool(mw_ok),
         table_first6=rows,
+        phi_mod37_chebyshev_conjugacy_ok=bool(phi_mod37_chebyshev_conjugacy_ok),
+        phi_mod37_cycle_spectrum_ok=bool(phi_mod37_cycle_spectrum_ok),
+        phi_mod37_cycles_p1=cycles_json,
     )
 
     out_json = export_dir() / "fold_zm_elliptic_lattes_rational_points_audit.json"
@@ -440,6 +597,15 @@ def main() -> None:
         "% Auto-generated by scripts/exp_fold_zm_elliptic_lattes_rational_points_audit.py",
         "\\[",
         "\\Phi(X)=\\frac{X^{4}+2X^{2}-2X+1}{4X^{3}-4X+1},\\qquad \\Phi'(X)=0\\iff 2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1=0.",
+        "\\]",
+        "\\[",
+        "D(\\Phi(X))=\\frac{(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1)^{2}}{(4X^{3}-4X+1)^{3}},\\qquad Y([2]P)=\\frac{2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1}{16Y^{3}}.",
+        "\\]",
+        "\\[",
+        "\\mathrm{Res}_{X}\\bigl(2X^{6}-10X^{4}+10X^{3}-10X^{2}+2X+1,\\ (X^{4}+2X^{2}-2X+1)-T(4X^{3}-4X+1)\\bigr)=37^{3}(4T^{3}-4T+1)^{2}.",
+        "\\]",
+        "\\[",
+        "\\operatorname{N}_{\\mathbb{Q}(\\alpha)/\\mathbb{Q}}(3\\alpha^{2}-1)=-\\frac{37}{16}\\ \\text{for }4\\alpha^{3}-4\\alpha+1=0.",
         "\\]",
         "\\[",
         "X^{4}+2X^{2}-2X+1\\equiv (X-5)^{2}(X^{2}+10X+3),\\quad 4X^{3}-4X+1\\equiv (X-5)^{2}(4X+3)\\ (\\mathrm{mod}\\ 37),\\quad \\overline{\\Phi}(X)=\\frac{X^{2}+10X+3}{4X+3}.",
@@ -468,8 +634,11 @@ def main() -> None:
     dt = time.time() - t0
     print(
         "[fold-zm-elliptic-lattes] checks:"
-        f" phi={phi_ok} mod37degdrop={phi_mod37_degree_drop_ok} gmod37={g_mod37_factor_ok}"
-        f" crit={crit_ok} galois48={(G_order == 48)} y2lin={y_pullback_ok} y2cubic={y_pullback_cubic_ok}"
+        f" phi={phi_ok} Dpull={phi_2division_pullback_square_ok} Ydbl={phi_Y_doubling_ok}"
+        f" mod37degdrop={phi_mod37_degree_drop_ok} gmod37={g_mod37_factor_ok}"
+        f" crit={crit_ok} res={phi_critval_resultant_ok} fibsq={phi_fiber_square_splitting_ok}"
+        f" quadfac={critical_sextic_quadratic_factor_ok} norm={norm_3a2_minus1_ok}"
+        f" galois48={(G_order == 48)} y2lin={y_pullback_ok} y2cubic={y_pullback_cubic_ok}"
         f" mw={mw_ok} minpoly={y_minpoly_ok} disc={y_disc_ok} tors_gcd={g} denlaw={all(r.den_law_ok for r in rows)}"
         f" seconds={dt:.3f}",
         flush=True,

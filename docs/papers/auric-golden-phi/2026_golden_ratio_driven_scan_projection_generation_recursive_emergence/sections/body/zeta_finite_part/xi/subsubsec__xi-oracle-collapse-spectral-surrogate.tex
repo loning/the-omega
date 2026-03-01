@@ -33,6 +33,70 @@ T^{(\ell,\theta)}_N=(W^{(\ell,\theta)}_N)^\ast\,T^{(\ell,\theta)}_{N_0}\,W^{(\el
 故“对所有 \(N\)”与“对有限 \(N\le N_0\)”严格等价，且 \(N_0\) 可统一选取。证毕。
 \end{proof}
 
+\begin{corollary}[单一二进截断的全层级强制]\label{cor:xi-oracle-collapse-single-dyadic-truncation}
+在定理 \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation} 的一致维数上界 \(d_{\min}^{(\ell)}(\theta)\le D\) 设定下，
+令
+\[
+N_\bullet:=2^{\lceil\log_2(2D)\rceil}.
+\]
+则对每个固定参数点 \((\ell,\theta)\) 都有严格等价
+\[
+\forall N\ge 0,\;T^{(\ell,\theta)}_N\succeq 0
+\quad\Longleftrightarrow\quad
+T^{(\ell,\theta)}_{N_\bullet}\succeq 0.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation}，存在统一阈值 \(N_0\le 2D\) 使
+\[
+\forall N\ge 0,\;T^{(\ell,\theta)}_N\succeq 0
+\quad\Longleftrightarrow\quad
+T^{(\ell,\theta)}_{N_0}\succeq 0.
+\]
+由定义 \(N_\bullet\ge 2D\ge N_0\)，故 \(T^{(\ell,\theta)}_{N_0}\) 是 \(T^{(\ell,\theta)}_{N_\bullet}\) 的主子矩阵。
+因此 \(T^{(\ell,\theta)}_{N_\bullet}\succeq 0\Rightarrow T^{(\ell,\theta)}_{N_0}\succeq 0\Rightarrow \forall N,\ T^{(\ell,\theta)}_N\succeq 0\)。
+反向方向由全层级半正定性蕴含任意固定阶截断半正定性平凡成立。证毕。
+\end{proof}
+
+\begin{corollary}[单一矩阵的数值--代数混合可审计证书]\label{cor:xi-oracle-collapse-single-matrix-auditable-certificate}
+沿用推论 \ref{cor:xi-oracle-collapse-single-dyadic-truncation} 的设定并固定 \(N_\bullet\)。
+设 \(\widehat T^{(\ell,\theta)}_{N_\bullet}\) 为任意可计算近似 Toeplitz 矩阵（例如由有限喷射或有理近似得到）。
+若存在 \(\eta>0\) 使
+\[
+\lambda_{\min}\!\bigl(\widehat T^{(\ell,\theta)}_{N_\bullet}\bigr)\ge \eta,
+\qquad
+\bigl\|\widehat T^{(\ell,\theta)}_{N_\bullet}-T^{(\ell,\theta)}_{N_\bullet}\bigr\|_{\mathrm{op}}\le \frac{\eta}{2},
+\]
+则 \(T^{(\ell,\theta)}_{N_\bullet}\succeq 0\)，因而 \(\forall N\ge 0,\ T^{(\ell,\theta)}_N\succeq 0\)。
+\par
+若进一步仅能给出系数逐项误差界
+\[
+\max_{0\le n\le N_\bullet}\bigl|\,\widehat c^{(\ell,\theta)}_n-c^{(\ell,\theta)}_n\,\bigr|\le \varepsilon,
+\]
+则充分条件可取
+\[
+(N_\bullet+1)\varepsilon\le \frac{\eta}{2}.
+\]
+\end{corollary}
+\begin{proof}
+由 Weyl 特征值扰动不等式，
+\[
+\lambda_{\min}\!\bigl(T^{(\ell,\theta)}_{N_\bullet}\bigr)
+\ge
+\lambda_{\min}\!\bigl(\widehat T^{(\ell,\theta)}_{N_\bullet}\bigr)
+-\bigl\|\widehat T^{(\ell,\theta)}_{N_\bullet}-T^{(\ell,\theta)}_{N_\bullet}\bigr\|_{\mathrm{op}}
+\ge \frac{\eta}{2}>0,
+\]
+从而 \(T^{(\ell,\theta)}_{N_\bullet}\) 为正定，特别地半正定。再由推论 \ref{cor:xi-oracle-collapse-single-dyadic-truncation} 得全层级半正定性。
+\par
+对逐项误差界，注意 Toeplitz 误差矩阵 \(E:=\widehat T^{(\ell,\theta)}_{N_\bullet}-T^{(\ell,\theta)}_{N_\bullet}\) 满足逐元界 \(|E_{jk}|\le \varepsilon\)。
+因此
+\(
+\|E\|_{\mathrm{op}}\le \|E\|_{1}\le (N_\bullet+1)\varepsilon
+\)
+（其中 \(\|\cdot\|_1\) 为最大列和范数），代回第一段条件即得。证毕。
+\end{proof}
+
 \begin{remark}[无穷约束的有限证书化：在固定有限审计切片上的量词消去]\label{rem:xi-oracle-collapse-finite-certification}
 定理 \ref{thm:xi-oracle-collapse-toeplitz-psd-finite-truncation} 消去的是 Toeplitz--PSD 层级中的“\(\forall N\)”量词：一旦一致维数上界 \(D\) 成立，则每个参数点的无穷 PSD 族可被统一压缩为有限个截断阶的联合核验。
 因此，在本文的有限审计语义（\(\Theta\) 为有限审计切片，见 \S\ref{subsec:pom-three-generator-residual-closure} 中对 \(\Theta\) 的约定）下，凡通过 Toeplitz/Hankel 族（或其等价的 Carath\'eodory/Herglotz 接口）表述的核版 RH/完备性约束，均可在一致有界最小 realization 维数的前提下改写为：对有限集合 \(\Theta\) 与有限阶集合 \(\{0,\dots,N_0\}\) 的联合验证。换言之，“需要对全部层级做无限检查”的预言机需求在逻辑上被坍缩为有限证书对象。

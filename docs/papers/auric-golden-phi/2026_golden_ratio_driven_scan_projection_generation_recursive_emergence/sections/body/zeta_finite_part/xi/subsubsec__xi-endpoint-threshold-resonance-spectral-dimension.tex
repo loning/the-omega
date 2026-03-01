@@ -69,6 +69,202 @@ a_N-\mathfrak m_{-1}\sim 2f(\pi)\sqrt{\frac{\pi}{N}}\qquad(N\to\infty).}
 负侧同理并将 \(K_+\) 替换为 \(K_-\)，合并即得 \eqref{eq:xi-endpoint-laplace-asymptotic}；绝对连续情形取 \(\alpha=0\) 即得特例。证毕。
 \end{proof}
 
+\begin{theorem}[对数端点窗的 Laplace--Stieltjes 渐近]\label{thm:xi-endpoint-logwindow-laplace-stieltjes}
+设 \(\mu_{\neq -1}\) 在端点 \(\xi=-1\) 的对称角窗
+\[
+I_{\varepsilon}:=\Bigl\{\xi=e^{\mathrm{i}\theta}\in\TT:\ |\theta-\pi|<\varepsilon\Bigr\}\qquad(0<\varepsilon<\pi)
+\]
+满足对数型边界层展开：存在常数 \(A_0,B_0\in\RR\) 使得当 \(\varepsilon\downarrow 0\) 时
+\begin{equation}\label{eq:xi-endpoint-logwindow-mass-expansion}
+\mu_{\neq -1}(I_{\varepsilon})
+=A_0\,\varepsilon\log\frac{1}{\varepsilon}+B_0\,\varepsilon+o(\varepsilon).
+\end{equation}
+则端点探针余项满足精确两项渐近
+\begin{equation}\label{eq:xi-endpoint-logwindow-probe-asymptotic}
+\boxed{\;
+a_N-\mathfrak m_{-1}
+=\frac{\sqrt{\pi}}{\sqrt N}\left[\frac{A_0}{2}\bigl(\log N+\gamma_{\mathrm E}-2\bigr)+B_0\right]
++o\!\left(\frac{1}{\sqrt N}\right)\qquad(N\to\infty),\;}
+\end{equation}
+其中 \(\gamma_{\mathrm E}\) 为 Euler--Mascheroni 常数。
+\end{theorem}
+\begin{proof}
+令
+\(
+M(\varepsilon):=\mu_{\neq -1}(I_{\varepsilon})
+\)
+（则 \(M(\varepsilon)=o(1)\) 且 \(M(0)=0\)）。
+由 \(\left|\frac{1-e^{\mathrm{i}\theta}}{2}\right|=\left|\sin(\theta/2)\right|
+=\left|\cos\bigl((\theta-\pi)/2\bigr)\right|\)，
+将 \(\mu_{\neq -1}\) 推前到端点角距变量 \(\varepsilon=|\theta-\pi|\) 得到 Stieltjes 表示
+\[
+a_N-\mathfrak m_{-1}
+=\int_{0}^{\pi}\cos^{2N}\!\left(\frac{\varepsilon}{2}\right)\,\dd M(\varepsilon).
+\]
+对该 Stieltjes 积分分部积分（注意 \(\cos(\pi/2)=0\) 且 \(M(0)=0\)）得到
+\[
+a_N-\mathfrak m_{-1}
+=-\int_{0}^{\pi}M(\varepsilon)\,\dd\!\left(\cos^{2N}\!\left(\frac{\varepsilon}{2}\right)\right)
+=N\int_{0}^{\pi}M(\varepsilon)\tan\!\left(\frac{\varepsilon}{2}\right)\cos^{2N}\!\left(\frac{\varepsilon}{2}\right)\,\dd\varepsilon.
+\]
+由于 \(\cos^{2N}(\varepsilon/2)\) 在 \(\varepsilon\gg N^{-1/2}\) 上指数衰减，主贡献来自 \(\varepsilon=O(N^{-1/2})\)。
+作缩放 \(\varepsilon=2x/\sqrt N\) 并用渐近
+\[
+\tan\!\left(\frac{x}{\sqrt N}\right)=\frac{x}{\sqrt N}+O\!\left(\frac{x^{3}}{N^{3/2}}\right),
+\qquad
+\cos^{2N}\!\left(\frac{x}{\sqrt N}\right)=e^{-x^{2}}\left(1+O\!\left(\frac{x^{4}}{N}\right)\right),
+\]
+可得
+\begin{equation}\label{eq:xi-endpoint-logwindow-scaled-integral}
+a_N-\mathfrak m_{-1}
+=2\int_{0}^{\infty}x\,M\!\left(\frac{2x}{\sqrt N}\right)e^{-x^{2}}\,\dd x
++o\!\left(\frac{1}{\sqrt N}\right).
+\end{equation}
+将 \eqref{eq:xi-endpoint-logwindow-mass-expansion} 代入：
+\[
+M\!\left(\frac{2x}{\sqrt N}\right)
+=\frac{2x}{\sqrt N}\left(A_0\log\frac{\sqrt N}{2x}+B_0+o(1)\right),
+\]
+并代回 \eqref{eq:xi-endpoint-logwindow-scaled-integral}，得到
+\[
+a_N-\mathfrak m_{-1}
+=\frac{4}{\sqrt N}\left[
+A_0\int_{0}^{\infty}x^{2}e^{-x^{2}}\log\frac{\sqrt N}{2x}\,\dd x
++B_0\int_{0}^{\infty}x^{2}e^{-x^{2}}\,\dd x
+\right]
++o\!\left(\frac{1}{\sqrt N}\right).
+\]
+其中
+\(
+\int_{0}^{\infty}x^{2}e^{-x^{2}}\,\dd x=\frac{\sqrt{\pi}}{4}
+\)；
+并且令
+\(
+J:=\int_{0}^{\infty}x^{2}e^{-x^{2}}\log x\,\dd x
+\)，代换 \(t=x^{2}\) 得
+\[
+J=\frac14\int_{0}^{\infty}t^{1/2}e^{-t}\log t\,\dd t=\frac14\Gamma'(3/2)
+=\frac{\sqrt{\pi}}{8}\,\psi(3/2),
+\]
+其中 \(\psi=\Gamma'/\Gamma\) 为 digamma 函数；由 \(\psi(3/2)=2-\gamma_{\mathrm E}-2\log 2\) 得
+\[
+\int_{0}^{\infty}x^{2}e^{-x^{2}}\log\frac{\sqrt N}{2x}\,\dd x
+=\frac{\sqrt{\pi}}{8}\bigl(\log N+\gamma_{\mathrm E}-2\bigr).
+\]
+代回即得 \eqref{eq:xi-endpoint-logwindow-probe-asymptotic}。证毕。
+\end{proof}
+
+\begin{corollary}[视界谱测度的端点探针常数项]\label{cor:xi-horizon-mu-endpoint-probe-constant}
+假设 RH 成立并令 \(\mu_{\zeta}\) 为附录定理 \ref{thm:app-horizon-spectral-measure-atomic} 的视界谱测度。
+则 \(\mu_{\zeta}(\{-1\})=0\)，并且端点探针余项满足
+\begin{equation}\label{eq:xi-horizon-mu-endpoint-probe-logwindow}
+\boxed{\;
+a_N
+=\frac{1}{4\sqrt{\pi N}}\bigl(\log N+\gamma_{\mathrm E}-2\log\pi\bigr)
++o\!\left(\frac{1}{\sqrt N}\right)\qquad(N\to\infty).\;}
+\end{equation}
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:app-horizon-mu-atomic}，\(\mu_{\zeta}\) 的支撑为 \(\{\xi_{\gamma},\xi_{\gamma}^{-1}:\gamma\in\Gamma_+\}\subset\TT\setminus\{-1\}\)，故 \(\mu_{\zeta}(\{-1\})=0\)。
+又由附录定理 \ref{thm:app-horizon-endpoint-window-mass}，
+\[
+\mu_{\zeta}(I_{\varepsilon})
+=\frac{\varepsilon}{2\pi}\left(\log\frac{1}{\pi\varepsilon}+1\right)+o(\varepsilon)
+=\frac{1}{2\pi}\varepsilon\log\frac{1}{\varepsilon}+\frac{1-\log\pi}{2\pi}\varepsilon+o(\varepsilon).
+\]
+将 \(A_0=\frac{1}{2\pi}\)、\(B_0=\frac{1-\log\pi}{2\pi}\)、\(\mathfrak m_{-1}=0\) 代入定理 \ref{thm:xi-endpoint-logwindow-laplace-stieltjes} 的渐近式并化简，即得 \eqref{eq:xi-horizon-mu-endpoint-probe-logwindow}。证毕。
+\end{proof}
+
+\begin{proposition}[对数端点窗诱导的深度下界]\label{prop:xi-endpoint-logwindow-depth-lower-bound}
+在定理 \ref{thm:xi-endpoint-logwindow-laplace-stieltjes} 的设定下，进一步假设 \(A_0>0\)。
+则当 \(\varepsilon\downarrow 0\) 时，若某个 \(N\) 满足
+\(
+|a_N-\mathfrak m_{-1}|\le \varepsilon
+\)，
+则必有
+\begin{equation}\label{eq:xi-endpoint-logwindow-depth-lb}
+N\ \ge\ \frac{\pi A_0^{2}}{4\varepsilon^{2}}(\log N)^{2}\,(1+o(1)).
+\end{equation}
+特别地，对 \(\mu=\mu_{\zeta}\)（从而 \(A_0=\frac{1}{2\pi}\)）得到
+\[
+N\ \ge\ \frac{1}{16\pi\,\varepsilon^{2}}(\log N)^{2}\,(1+o(1)).
+\]
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:xi-endpoint-logwindow-probe-asymptotic}，
+\[
+|a_N-\mathfrak m_{-1}|
+=\left(\frac{A_0\sqrt{\pi}}{2}+o(1)\right)\frac{\log N}{\sqrt N},
+\]
+从而条件 \(|a_N-\mathfrak m_{-1}|\le \varepsilon\) 蕴含
+\(
+\sqrt N\ge \left(\frac{A_0\sqrt{\pi}}{2}+o(1)\right)\frac{\log N}{\varepsilon}
+\)。
+平方并整理即得 \eqref{eq:xi-endpoint-logwindow-depth-lb}；\(\mu_{\zeta}\) 的特例代入 \(A_0=\frac{1}{2\pi}\) 得到。证毕。
+\end{proof}
+
+\begin{theorem}[红移权重尾项的主项可积化]\label{thm:xi-redshift-tail-main-term}
+令 \(N_{\zeta}(T)\) 表示黎曼 \(\zeta\) 的非平凡零点计数函数（取 \(0<\gamma\le T\)，按重数计），并定义红移权重尾和
+\[
+\mathcal{R}(T):=\sum_{\gamma>T}\frac{\mathrm{mult}(\gamma)}{1+\gamma^2}\qquad(T>0).
+\]
+则当 \(T\to\infty\) 时有显式主项
+\[
+\boxed{\;
+\mathcal{R}(T)=\frac{1}{2\pi}\frac{\log\!\bigl(T/(2\pi)\bigr)+1}{T}
++O\!\left(\frac{\log T}{T^{2}}\right).\;}
+\]
+\end{theorem}
+\begin{proof}
+记 Riemann--von Mangoldt 主项
+\[
+M(t):=\frac{t}{2\pi}\log\frac{t}{2\pi}-\frac{t}{2\pi},
+\qquad
+M'(t)=\frac{1}{2\pi}\log\frac{t}{2\pi}.
+\]
+令误差项 \(E(t):=N_{\zeta}(t)-M(t)\)，则 \(E(t)=O(\log t)\)。
+因此
+\[
+\mathcal{R}(T)
+=\int_{T}^{\infty}\frac{1}{1+t^{2}}\,\dd M(t)+\int_{T}^{\infty}\frac{1}{1+t^{2}}\,\dd E(t).
+\]
+对 \(\int \frac{1}{1+t^2}\dd E(t)\) 分部积分并用 \(E(t)=O(\log t)\) 与 \(\frac{\dd}{\dd t}(1+t^2)^{-1}=O(t^{-3})\) 得
+\(
+\int_{T}^{\infty}\frac{1}{1+t^{2}}\,\dd E(t)=O((\log T)/T^{2})
+\)。
+对主项积分分部积分两次并利用 \(\frac{\dd}{\dd t}(1+t^{2})^{-1}=-2t(1+t^{2})^{-2}\)，得到边界项抵消后的恒等式
+\[
+\int_{T}^{\infty}\frac{1}{1+t^{2}}\,\dd M(t)
+=\int_{T}^{\infty}\frac{M'(t)}{1+t^{2}}\,\dd t
+=\frac{1}{2\pi}\int_{T}^{\infty}\frac{\log(t/(2\pi))}{1+t^{2}}\,\dd t.
+\]
+最后用 \((1+t^{2})^{-1}=t^{-2}+O(t^{-4})\) 得
+\[
+\int_{T}^{\infty}\frac{\log(t/(2\pi))}{1+t^{2}}\,\dd t
+=\int_{T}^{\infty}\frac{\log(t/(2\pi))}{t^{2}}\,\dd t
++O\!\left(\int_{T}^{\infty}\frac{\log t}{t^{4}}\,\dd t\right)
+=\frac{\log(T/(2\pi))+1}{T}
++O\!\left(\frac{\log T}{T^{3}}\right).
+\]
+合并即得所示渐近。证毕。
+\end{proof}
+
+\begin{conjecture}[对数端点窗下端点探针的涨落分布]\label{conj:xi-endpoint-logwindow-fluctuation}
+假设 RH 成立并令 \(\mu_{\zeta}\) 为视界谱测度。
+定义归一化端点探针
+\[
+X_N:=4\sqrt{\pi N}\,a_N-\log N,
+\]
+则由推论 \ref{cor:xi-horizon-mu-endpoint-probe-constant} 有 \(X_N\to \gamma_{\mathrm E}-2\log\pi\)。
+猜想存在常数 \(\sigma^{2}>0\)，使得对任意连续有界函数 \(F:\RR\to\RR\) 有 Ces\`aro 极限
+\[
+\frac{1}{M}\sum_{N=1}^{M}
+F\!\left(\sqrt{\log N}\Bigl(X_N-(\gamma_{\mathrm E}-2\log\pi)\Bigr)\right)
+\xrightarrow[M\to\infty]{}
+\int_{\RR}F(x)\,\frac{1}{\sqrt{2\pi}\sigma}e^{-x^{2}/(2\sigma^{2})}\,\dd x .
+\]
+\end{conjecture}
+
 \begin{definition}[端点谱维数]\label{def:xi-endpoint-spectral-dimension}
 在定理 \ref{thm:xi-endpoint-spectral-dimension-laplace} 的幂律口径下，定义端点“谱维数”
 \[
@@ -81,7 +277,7 @@ a_N-\mathfrak m_{-1}\asymp N^{-d_{-1}/2}.}
 
 \paragraph{视界重整化的本征指数：端点原子模态与连续模态的互补收缩率}
 附录 \eqref{eq:scale-psi-m} 的 Möbius 半群 \(\{\psi_m\}_{m>0}\subset\mathrm{Aut}(\mathbb{D})\) 在端点坐标中严格线性化，并满足
-\(\mathcal{B}_{-1}(\psi_m(w))=m\,\mathcal{B}_{-1}(w)\)（定理 \ref{thm:xi-endpoint-poisson-weight-scaling}）。
+\(B^{-1}(\psi_m(w))=m\,B^{-1}(w)\)（定理 \ref{thm:xi-endpoint-poisson-weight-scaling}）。
 另一方面，Carath\'eodory 表示给出 \(\Re \mathscr{C}_{\zeta}(w)=\int_{\TT}P_w(\xi)\,d\mu(\xi)\)（Poisson 积分）。
 将二者合并可把端点谱维数 \(d_{-1}\) 提升为重整化轨道上的本征收缩指数。
 
@@ -92,13 +288,13 @@ a_N-\mathfrak m_{-1}\asymp N^{-d_{-1}/2}.}
 \[
 \sup_{w\in K}\left|
 m^{-n}\Re \mathscr{C}_{\zeta}\!\bigl(\psi_{m^n}(w)\bigr)
--\mathfrak m_{-1}\,\mathcal{B}_{-1}(w)
+-\mathfrak m_{-1}\,B^{-1}(w)
 \right|
 \le C_K\,m^{-n d_{-1}/2}.
 \]
 特别地：若 \(\mathfrak m_{-1}>0\)，则端点原子产生不衰减阈值模态
 \(
-m^{-n}\Re \mathscr{C}_{\zeta}(\psi_{m^n}(w))\to \mathfrak m_{-1}\mathcal{B}_{-1}(w)
+m^{-n}\Re \mathscr{C}_{\zeta}(\psi_{m^n}(w))\to \mathfrak m_{-1}B^{-1}(w)
 \)；
 若 \(\mathfrak m_{-1}=0\)，则 \(m^{-n}\Re \mathscr{C}_{\zeta}(\psi_{m^n}(w))=O(m^{-n d_{-1}/2})\)。
 \end{theorem}
@@ -111,9 +307,9 @@ m^{-n}\Re \mathscr{C}_{\zeta}(\psi_{m^n}(w))\to \mathfrak m_{-1}\mathcal{B}_{-1}
 \)。
 对端点原子项 \(\xi=-1\)，由定理 \ref{thm:xi-endpoint-poisson-weight-scaling} 得
 \(
-P_{\psi_{m^n}(w)}(-1)=m^n P_w(-1)=m^n\mathcal{B}_{-1}(w)
-\)，故其在 \(m^{-n}\) 归一化后恰为 \(\mathfrak m_{-1}\mathcal{B}_{-1}(w)\)。
-对余项，\(w\in K\) 时 \(\mathcal{B}_{-1}(w)\) 有界，从而 \(\psi_{m^n}(w)\) 的端点层深度与 \(m^n\) 同阶；
+P_{\psi_{m^n}(w)}(-1)=m^n P_w(-1)=m^n B^{-1}(w)
+\)，故其在 \(m^{-n}\) 归一化后恰为 \(\mathfrak m_{-1}B^{-1}(w)\)。
+对余项，\(w\in K\) 时 \(B^{-1}(w)\) 有界，从而 \(\psi_{m^n}(w)\) 的端点层深度与 \(m^n\) 同阶；
 Poisson 核在端点邻域的有效角宽度为 \(m^{-n/2}\)，其对 \(\mu_{\neq-1}\) 的作用等价于一类端点热核平均。
 由定理 \ref{thm:xi-endpoint-spectral-dimension-laplace} 的 Laplace 幂律分型即可得到 \(m^{-n d_{-1}/2}\) 的一致衰减界。证毕。
 \end{proof}

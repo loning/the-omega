@@ -17,8 +17,7 @@ def run() -> str:
         g = gauge_anomaly_Gm(m, w, F)
         if g != m:
             raise AssertionError(
-                f"Worst-case family verification failed: m={m}, G_m={g}, "
-                f"expected {m}, omega^*={''.join(map(str, w))}"
+                f"最坏情形族验证失败：m={m}, G_m={g}, 期待 {m}, omega^*={''.join(map(str,w))}"
             )
 
     return f"Worst-case OK (omega^* gives G_m=m for m=1..{max_m})"

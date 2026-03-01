@@ -1,0 +1,236 @@
+\section{Elliptic normalization and arithmetic structure}\label{app:elliptic}
+
+This appendix records an additional geometric--arithmetic viewpoint on the quartic spectral curve
+\(\Pi(\lambda,y)=0\) from Section~\ref{sec:model}.
+It explains the branch locus \(\Branch\) of Theorem~\ref{thm:disc-factor} as the ramification image of a
+degree-\(4\) function on a conductor-\(37\) elliptic curve.
+
+\subsection{Ellipticization of the quartic spectral curve}
+
+Let \(C\subset \mathbb{A}^2_{\lambda,y}\) be the affine curve cut out by \(\Pi(\lambda,y)=0\).
+
+\begin{theorem}[Ellipticization]\label{thm:ellipticization}
+Under the polynomial change of coordinates
+\[
+(\lambda,y)\longmapsto (\lambda,\xi:=y-\lambda^2),
+\]
+the affine curve \(C\) is carried isomorphically onto the affine Weierstrass curve
+\begin{equation}\label{eq:elliptic-E}
+E:\qquad \xi^2+\xi=\lambda^3-\lambda.
+\end{equation}
+Consequently, the smooth projective model of \(C\) is an elliptic curve over \(\QQ\).
+Moreover, in the integral minimal model \eqref{eq:elliptic-E} one has
+\[
+\Delta(E)=37,\qquad j(E)=\frac{110592}{37},
+\]
+and \(E\) lies in the conductor-\(37\) isogeny class (Cremona label \(37\mathrm{a}\)).
+\end{theorem}
+
+\begin{proof}
+Viewing \(\Pi(\lambda,y)\) as a quadratic in \(y\) gives
+\[
+y^2+(1-2\lambda^2)y+\bigl(\lambda^4-\lambda^3-\lambda^2+\lambda\bigr)=0.
+\]
+Substituting \(y=\lambda^2+\xi\) yields
+\[
+(\xi+\lambda^2)^2+(1-2\lambda^2)(\xi+\lambda^2)+(\lambda^4-\lambda^3-\lambda^2+\lambda)=0,
+\]
+and the \(\lambda\)-dependent terms cancel, leaving \(\xi^2+\xi=\lambda^3-\lambda\), i.e.\ \eqref{eq:elliptic-E}.
+Since the coordinate change is invertible with inverse \((\lambda,\xi)\mapsto(\lambda,y=\lambda^2+\xi)\),
+it restricts to an isomorphism of affine curves.
+
+For the invariants, \eqref{eq:elliptic-E} is a Weierstrass equation with coefficients
+\((a_1,a_2,a_3,a_4,a_6)=(0,0,1,-1,0)\), hence \(\Delta=37\) and \(j=110592/37\) by the standard formulas.
+The identification with the classical conductor-\(37\) curve is well known (e.g.\ Cremona/LMFDB tables).
+\end{proof}
+
+\subsection{The parameter \texorpdfstring{\(y\)}{y} as a degree-\texorpdfstring{\(4\)}{4} map and its branch locus}
+
+On \(E\) define the rational function
+\begin{equation}\label{eq:y-as-function}
+y=\lambda^2+\xi\in \QQ(E),
+\end{equation}
+and let \(\varphi:E\to \mathbb{P}^1_y\) be the associated morphism.
+
+\begin{theorem}[Branch locus as a ramification image]\label{thm:ramification-image}
+The map \(\varphi:E\to \mathbb{P}^1_y\) has degree \(4\).
+Its fiber over \(y=\infty\) is the single point \(O\in E\) (the point at infinity), with ramification index \(e_O=4\).
+Among finite values, the branch locus of \(\varphi\) is exactly
+\[
+\{y=0\}\cup\{y=1\}\cup\{c(y)=0\},
+\qquad
+c(y)=256y^3+411y^2+165y+32,
+\]
+in agreement with Theorem~\ref{thm:disc-factor}.
+More precisely, the ramification points \(P\in E\) with \(\dd y(P)=0\) have \(\lambda\)-coordinate satisfying
+\begin{equation}\label{eq:dy-critical-lambda}
+(\lambda-1)(\lambda+1)\bigl(16\lambda^3-9\lambda^2+1\bigr)=0,
+\end{equation}
+and \(\lambda=\pm 1\) map to the branch values \(y=0,1\), respectively.
+\end{theorem}
+
+\begin{proof}
+At the point at infinity \(O\) of the Weierstrass model \eqref{eq:elliptic-E}, one has the standard pole orders
+\(\operatorname{ord}_O(\lambda)=-2\) and \(\operatorname{ord}_O(\xi)=-3\).
+Therefore
+\[
+\operatorname{ord}_O(y)=\operatorname{ord}_O(\lambda^2+\xi)=\min(-4,-3)=-4,
+\]
+so \(y\) has a unique pole of order \(4\), which implies \(\deg(\varphi)=4\) and that \(y=\infty\) is totally ramified with \(e_O=4\).
+
+Differentiate \eqref{eq:elliptic-E} to obtain
+\[
+(2\xi+1)\,\dd \xi=(3\lambda^2-1)\,\dd \lambda.
+\]
+From \(y=\lambda^2+\xi\) we get
+\[
+\dd y=\Bigl(2\lambda+\frac{3\lambda^2-1}{2\xi+1}\Bigr)\dd \lambda
+=\frac{2\lambda(2\xi+1)+3\lambda^2-1}{2\xi+1}\,\dd \lambda.
+\]
+Thus \(\dd y=0\) is equivalent to
+\[
+2\lambda(2\xi+1)+3\lambda^2-1=0
+\quad\Longleftrightarrow\quad
+\xi=\frac{1-2\lambda-3\lambda^2}{4\lambda}\qquad(\lambda\ne 0).
+\]
+Substituting this \(\xi\) into \eqref{eq:elliptic-E} and clearing denominators yields the factorization
+\eqref{eq:dy-critical-lambda}.
+For \(\lambda=1\) the critical-point condition gives \(\xi=-1\), hence \(y=\lambda^2+\xi=0\);
+for \(\lambda=-1\) it gives \(\xi=0\), hence \(y=1\).
+The remaining three critical points have \(\lambda\)-coordinates among the roots of \(16\lambda^3-9\lambda^2+1\);
+their images in the \(y\)-line are therefore the three remaining branch values, which must be the roots of \(c(y)\) by
+Theorem~\ref{thm:disc-factor}.
+\end{proof}
+
+\subsection{Monodromy and the generic Galois group}
+
+\begin{proposition}\label{prop:galois-s4}
+Viewing \(\Pi(\lambda,y)\) as a quartic in \(\lambda\) with coefficients in \(\QQ(y)\),
+its Galois group over \(\QQ(y)\) is the full symmetric group:
+\[
+\mathrm{Gal}\bigl(\Pi(\lambda,y)/\QQ(y)\bigr)\cong S_4.
+\]
+Equivalently, the geometric monodromy group of \(\varphi:E\to\mathbb{P}^1_y\) is \(S_4\).
+\end{proposition}
+
+\begin{proof}
+Since \(\Disc_\lambda \Pi(\lambda,y)=-y(y-1)c(y)\) by Theorem~\ref{thm:disc-factor}, the discriminant is not a square in \(\QQ(y)\),
+so the Galois group is not contained in \(A_4\).
+
+Now specialize at \(y=2\), where \(\Pi(\lambda,2)=\lambda^4-\lambda^3-5\lambda^2+\lambda+6\) is irreducible over \(\QQ\).
+Reducing modulo \(5\) yields an irreducible quartic (hence a Frobenius element of cycle type \((4)\));
+reducing modulo \(3\) yields
+\(\Pi(\lambda,2)\equiv \lambda(\lambda^3-\lambda^2+\lambda+1)\pmod{3}\),
+with the cubic factor irreducible (hence a Frobenius element of cycle type \((1)(3)\)).
+Since \(3,5\nmid \Disc\bigl(\Pi(\lambda,2)\bigr)\), these cycle types occur in \(\mathrm{Gal}\bigl(\Pi(\lambda,2)/\QQ\bigr)\),
+so that group contains both a \(4\)-cycle and a \(3\)-cycle, forcing it to be \(S_4\).
+Specialization yields a subgroup of the generic Galois group, hence
+\(\mathrm{Gal}\bigl(\Pi(\lambda,y)/\QQ(y)\bigr)\cong S_4\).
+\end{proof}
+
+\subsection{A divisor-theoretic constraint on fibers}
+
+\begin{corollary}\label{cor:fiber-sum-zero}
+Let \(y_0\in\CC\) be a non-branch value of \(\varphi\) (i.e.\ \(y_0\notin\Branch\)).
+Write \(\varphi^{-1}(y_0)=\{P_1,P_2,P_3,P_4\}\subset E(\CC)\).
+Then, in the group law on \(E\),
+\[
+P_1+P_2+P_3+P_4=O.
+\]
+\end{corollary}
+
+\begin{proof}
+The rational function \(y-y_0\) on \(E\) has pole divisor \(4O\) by \(\operatorname{ord}_O(y)=-4\),
+and its zero divisor is \(\sum_{i=1}^4 P_i\) (counted with multiplicity).
+Thus
+\(\operatorname{div}(y-y_0)=\sum_{i=1}^4 P_i-4O\) is a principal divisor, hence trivial in \(\mathrm{Pic}^0(E)\simeq E\),
+which gives \(\sum_i P_i=O\).
+\end{proof}
+
+\subsection{Local square-root branching and an explicit amplitude}
+
+\begin{theorem}\label{thm:puiseux-amplitude}
+Let \(y_\star\) be a simple finite branch value of \(\varphi\), and let \(P_\star\in E\) be the corresponding ramification point.
+Then there exists a local parameter \(t\) at \(P_\star\) such that
+\[
+y-y_\star=c\,t^2+O(t^3),\qquad c\ne 0.
+\]
+Consequently, any local spectral branch \(\lambda(y)\) of \(\Pi(\lambda,y)=0\) near \(y_\star\) has a square-root expansion
+\[
+\lambda(y)=\lambda_\star \pm \kappa_\star \sqrt{y-y_\star}+O(y-y_\star),
+\]
+where \((\lambda_\star,y_\star)\) is the branch point in \(\mathbb{A}^2\).
+If \(y_\star\) is one of the three nontrivial branch values (i.e.\ \(c(y_\star)=0\)), then \(\lambda_\star\) satisfies
+\(16\lambda_\star^3-9\lambda_\star^2+1=0\), and the amplitude obeys the closed form
+\[
+\kappa_\star^{2}=\frac{2(3\lambda_\star^{2}-1)}{3(\lambda_\star^{2}-1)}.
+\]
+\end{theorem}
+
+\begin{proof}
+The local form \(y-y_\star=c t^2+O(t^3)\) is standard for a simple ramification point of a holomorphic map between Riemann surfaces,
+and implies the asserted square-root structure after inversion.
+
+For the explicit amplitude, work in \(\mathbb{A}^2_{\lambda,y}\) with \(\Pi(\lambda,y)=0\).
+At a simple branch point \((\lambda_\star,y_\star)\) one has
+\[
+\Pi(\lambda_\star,y_\star)=0,\qquad
+\partial_\lambda \Pi(\lambda_\star,y_\star)=0,\qquad
+\partial_y\Pi(\lambda_\star,y_\star)\neq 0,\qquad
+\partial^2_{\lambda\lambda}\Pi(\lambda_\star,y_\star)\neq 0.
+\]
+Taylor expanding \(\Pi\) around \((\lambda_\star,y_\star)\) and using \(\partial_\lambda\Pi=0\) gives
+\[
+0=\partial_y\Pi(\lambda_\star,y_\star)(y-y_\star)
+\frac12\partial^2_{\lambda\lambda}\Pi(\lambda_\star,y_\star)(\lambda-\lambda_\star)^2
+O\bigl(|y-y_\star|^{3/2}\bigr),
+\]
+so
+\[
+(\lambda-\lambda_\star)^2=-2\frac{\partial_y\Pi(\lambda_\star,y_\star)}{\partial^2_{\lambda\lambda}\Pi(\lambda_\star,y_\star)}(y-y_\star)
+O\bigl(|y-y_\star|^{3/2}\bigr),
+\]
+and hence \(\kappa_\star^2=-2\,\partial_y\Pi/\partial^2_{\lambda\lambda}\Pi\) at the branch point.
+
+For the present \(\Pi\), one has \(\partial_y\Pi(\lambda,y)=-2\lambda^2+2y+1\) and
+\(\partial^2_{\lambda\lambda}\Pi(\lambda,y)=12\lambda^2-6\lambda-2(2y+1)\).
+On the nontrivial ramification locus from Theorem~\ref{thm:ramification-image},
+\(\xi=y-\lambda^2=(1-2\lambda-3\lambda^2)/(4\lambda)\) and \(16\lambda^3-9\lambda^2+1=0\).
+Substituting these relations and simplifying yields the stated formula.
+\end{proof}
+
+\subsection{A Langlands companion and a discriminant coincidence}
+
+\begin{theorem}[Modularity at level \(37\)]\label{thm:modularity}
+Let \(E/\QQ\) be the elliptic curve \eqref{eq:elliptic-E}.
+Then there exists a weight-\(2\) newform \(f\in S_2(\Gamma_0(37))\) such that
+\[
+L(E,s)=L(f,s).
+\]
+Equivalently, the spectral curve determines a \(GL_2/\QQ\) Langlands object (a weight-\(2\) cuspidal automorphic representation)
+with level \(37\).
+\end{theorem}
+
+\begin{proof}
+The curve \eqref{eq:elliptic-E} is the classical conductor-\(37\) elliptic curve.
+By the modularity theorem (Wiles--Taylor et al.), every elliptic curve over \(\QQ\) is modular, and the level of the associated
+weight-\(2\) newform equals the conductor of the curve. Hence \(L(E,s)=L(f,s)\) for some \(f\in S_2(\Gamma_0(37))\).
+\end{proof}
+
+\begin{proposition}\label{prop:cubic-disc}
+For the Lee--Yang branch cubic \(c(y)=256y^3+411y^2+165y+32\), the discriminant satisfies
+\[
+\Disc(c)= -3^{9}\cdot 31^{2}\cdot 37.
+\]
+In particular, the prime \(37\) ramifies in the cubic field \(\QQ(y_\star)\) for any root \(y_\star\) of \(c(y)\).
+\end{proposition}
+
+\begin{proof}
+For a cubic \(ay^3+by^2+cy+d\), the discriminant is
+\[
+b^{2}c^{2}-4ac^{3}-4b^{3}d-27a^{2}d^{2}+18abcd.
+\]
+Substituting \((a,b,c,d)=(256,411,165,32)\) gives \(\Disc(c)=-699868431=-3^{9}\cdot 31^{2}\cdot 37\).
+The ramification claim follows from the basic relation between field discriminants and ramified primes.
+\end{proof}
+

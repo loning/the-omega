@@ -15,6 +15,8 @@ N(\omega):=\sum_{k=1}^{m}\omega_k F_{k+1}\ \in\ \NN.
 \]
 \end{definition}
 
+\input{subsubsec__fold-zeckendorf-mod-topbits}
+
 \subsubsection{折叠的局部重写实现：终止、合流与顺序无关}\label{subsec:fold-local-rewrite}
 定义 \ref{def:fold-word} 以“先取值、再取 Zeckendorf 规范形”给出 $\Fold_m$。为将其落实为\textbf{局部、可执行}的归一化过程，并澄清“归约顺序不影响正规形”，我们把输入窗口嵌入到允许中间态出现冗余数字的配置空间上实施值保持重写。
 
@@ -65,6 +67,29 @@ F_{k+1}+F_{k+2}=F_{k+3},
 
 \paragraph{不可约项与 Zeckendorf 规范形}
 记 $X_\infty=\{(c_1,c_2,\dots)\in\{0,1\}^{\mathbb{N}}:\ c_kc_{k+1}=0\}$。上述规则恰在出现相邻 $11$ 或某位数字 $\ge 2$ 时可用，因此不可约项当且仅当属于 $X_\infty$。
+
+\begin{proposition}[分辨率稳定类型的逆极限本体]\label{prop:fold-inverse-limit-xm-xinfty}
+对每个 \(m\ge 1\) 令 \(r_{m+1\to m}:X_{m+1}\to X_m\) 为前缀截断 \(r_{m+1\to m}(a_1\cdots a_{m+1})=a_1\cdots a_m\)。
+则 \((X_m,r_{m+1\to m})\) 构成逆系统，并存在自然同构
+\[
+\varprojlim_m X_m\ \cong\ X_\infty,
+\]
+其中 \(X_\infty\to X_m\) 的结构映射为取前 \(m\) 位前缀。
+此外，对任意 \(m\ge 1\)，Zeckendorf 截断映射
+\(
+N\mapsto \pi_m(Z(N))
+\)
+在区间 \(\{0,1,\dots,F_{m+2}-1\}\) 上与 \(X_m\) 构成双射，其逆映射为 \(w\mapsto V_m(w)\)（\S\ref{subsec:emergent-arithmetic-zeckendorf-value-address}；并见引理 \ref{lem:zeckendorf-range-bijection}）。
+\end{proposition}
+\begin{proof}
+由于“无相邻 \(11\)”对前缀封闭，\(r_{m+1\to m}\) 良定义，从而得到逆系统。
+给定相容族 \((w_m)_{m\ge 1}\in\varprojlim_m X_m\)，对每个坐标 \(i\ge 1\) 令 \(a_i\) 为任意 \(m\ge i\) 时 \(w_m\) 的第 \(i\) 位。
+相容性保证该定义与 \(m\) 的选择无关，因此得到唯一的无限词 \(a=(a_i)_{i\ge 1}\in\{0,1\}^{\NN}\)；
+又因每个 \(w_m\) 无相邻 \(11\)，故 \(a\in X_\infty\)。
+反之，对任意 \(a\in X_\infty\)，其前缀 \(\pi_m(a)\in X_m\) 形成相容族 \((\pi_m(a))_m\in\varprojlim X_m\)。
+两构造互为逆，得到同构。
+最后一条双射性由 \(V_m\) 的范围双射与 Zeckendorf 唯一性给出（引理 \ref{lem:zeckendorf-range-bijection}）。证毕。
+\end{proof}
 
 \begin{proposition}[终止性、局部合流与合流（纽曼引理）]\label{prop:fold-rewrite-newman}
 上述重写系统在 $\mathcal{D}$ 上强终止，且局部合流；由纽曼引理可得其合流性。因此每个 $a\in\mathcal{D}$ 的正规形存在且唯一，记为 $\mathrm{NF}(a)\in X_\infty$，并满足

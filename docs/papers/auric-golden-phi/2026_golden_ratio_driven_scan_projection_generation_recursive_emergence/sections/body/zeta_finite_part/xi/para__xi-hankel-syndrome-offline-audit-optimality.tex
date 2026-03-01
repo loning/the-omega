@@ -1,0 +1,211 @@
+\paragraph{原始综合征、单素数模审计与离线最短公钥量纲：Hankel 低秩的可核验接口}\label{par:xi-hankel-syndrome-offline-audit-optimality}
+本段把 Hankel 低秩所释放的核向量视为\emph{综合征}对象，并给出三类互补的可核验接口：
+其一在整数域上由格点 Siegel 引理给出原始综合征的显式范数界；
+其二给出单素数模上的零误差审计机制与位复杂度上界；
+其三在有限域成员判定语义下给出验证参数的不可约信息论下界与近最短实现。
+此外，线性递推约束与生成函数运算的闭合律（Cauchy 卷积、Hadamard 乘积）在综合征多项式层面可由结果式完全刻画。
+
+\begin{theorem}[Hankel 低秩的原始综合征与显式 \(\ell_\infty\) 界]\label{thm:xi-hankel-primitive-syndrome-siegel-bound}
+设 \(h\in\NN\)，令 \(n:=h+1\)。
+给定整数序列 \((a_k)_{k=0}^{2h}\subset\ZZ\)，定义 Hankel 矩阵
+\[
+H:=H_h(a)=(a_{i+j})_{0\le i,j\le h}\in\ZZ^{n\times n}.
+\]
+若 \(\mathrm{rank}_{\QQ}(H)=\rho<n\)，令 \(\delta:=n-\rho\ge 1\)，并假设 \(|a_k|\le B\)（\(0\le k\le 2h\)）。
+则存在非零整数向量 \(s\in\ker_{\QQ}(H)\cap\ZZ^n\) 使得 \(\gcd(s_0,\dots,s_{n-1})=1\) 且
+\[
+|s|_\infty\ \le\ (nB)^{\rho/\delta}.
+\]
+当 \(\delta=1\) 时，\(\ker_{\QQ}(H)\cap\ZZ^n\) 作为秩 \(1\) 的 \(\ZZ\)-模由唯一的原始生成元 \(\pm s^\ast\) 生成，并可取
+\[
+|s^\ast|_\infty\ \le\ n^{(n-1)/2}\,B^{\,n-1}.
+\]
+\end{theorem}
+\begin{proof}
+取 \(H\) 的 \(\rho\) 行构成的满秩子矩阵 \(A\in\ZZ^{\rho\times n}\)，则 \(\ker_{\QQ}(A)=\ker_{\QQ}(H)\)。
+由格点版 Siegel 引理（或等价的 Minkowski 体积论证），存在非零 \(x\in\ZZ^n\) 使 \(Ax=0\) 且
+\(
+|x|_\infty\le (nB)^{\rho/(n-\rho)}=(nB)^{\rho/\delta}
+\)。
+令 \(s:=x/\gcd(x_0,\dots,x_{n-1})\) 得原始向量，且不增大 \(|\cdot|_\infty\)。
+\par
+当 \(\delta=1\) 时，\(\mathrm{rank}_{\QQ}(H)=n-1\) 且 \(\det(H)=0\)。
+由恒等式 \(H\operatorname{adj}(H)=\det(H)I=0\)，\(\operatorname{adj}(H)\) 的任一非零列向量属于 \(\ker(H)\cap\ZZ^n\)。
+其坐标为 \((n-1)\times(n-1)\) 余子式行列式；由 Hadamard 不等式，任一余子式的绝对值不超过
+\(
+n^{(n-1)/2}B^{n-1}
+\)。
+核维数为 \(1\) 保证原始生成元唯一（至多差符号）。证毕。
+\end{proof}
+
+\begin{proposition}[单素数模审计的零误差化与位复杂度上界]\label{prop:xi-hankel-single-prime-audit-zero-error}
+沿用定理 \ref{thm:xi-hankel-primitive-syndrome-siegel-bound} 的记号。
+给定任意整数向量 \(s\in\ZZ^n\)，令
+\[
+v:=Hs\in\ZZ^n,\qquad M:=n^2B\,|s|_\infty.
+\]
+则对任意素数 \(p>M\)，有等价性
+\[
+Hs\equiv 0\pmod p\quad\Longleftrightarrow\quad Hs=0\ \text{于}\ \ZZ^n.
+\]
+并且当 \(M\ge 2\) 时存在素数 \(p\) 满足 \(M<p<2M\)，从而可取
+\[
+\log_2 p\ \le\ \log_2(2M)=O\!\bigl(\log n+\log B+\log|s|_\infty\bigr).
+\]
+\end{proposition}
+\begin{proof}
+对每个分量 \(v_i=\sum_{j=0}^{n-1}a_{i+j}s_j\)，有
+\[
+|v_i|
+\le \sum_{j=0}^{n-1}|a_{i+j}|\,|s_j|
+\le nB\,|s|_1
+\le n^2B\,|s|_\infty
+=M.
+\]
+若 \(p>M\) 且 \(v\neq 0\)，则存在 \(i\) 使 \(0<|v_i|<p\)，从而 \(v_i\not\equiv 0\pmod p\)。
+反向方向显然。
+素数存在性由 Bertrand--Chebyshev 定理给出。证毕。
+\end{proof}
+
+\input{subsubsec__xi-hankel-syndrome-random-prime-single-round-refutation}
+
+\begin{proposition}[线性递推约束的局部核验与拒绝率下界（按违反率）]\label{prop:xi-linear-recurrence-local-test-by-violation-rate}
+令 \(\FF\) 为任意域，取 \(r\ge 1\) 与 \(c=(c_0,\dots,c_r)\in\FF^{r+1}\) 满足 \(c_0c_r\neq 0\)。
+对任意长度 \(N>r\) 定义线性约束族
+\[
+\mathcal C_N(c):=\Bigl\{a=(a_0,\dots,a_{N-1})\in\FF^N:\ \sum_{j=0}^r c_j a_{i+j}=0,\ \forall\,0\le i\le N-r-1\Bigr\}.
+\]
+对任意 \(a\in\FF^N\)，定义违反约束的索引集合
+\[
+V(a):=\Bigl\{0\le i\le N-r-1:\ \sum_{j=0}^r c_j a_{i+j}\ne 0\Bigr\},
+\qquad
+\delta_{\mathrm{viol}}(a):=\frac{|V(a)|}{N-r}\in[0,1].
+\]
+若以均匀随机方式抽取 \(t\) 个索引 \(i\in\{0,\dots,N-r-1\}\) 检查相应约束，则拒绝概率至少为
+\[
+1-(1-\delta_{\mathrm{viol}}(a))^t.
+\]
+特别地，当 \(\delta_{\mathrm{viol}}(a)\ge\varepsilon>0\) 时，取
+\(
+t\ge \lceil \varepsilon^{-1}\log 3\rceil
+\)
+即可保证拒绝概率 \(\ge 2/3\)，且该抽样复杂度与 \(N\) 无关。
+\end{proposition}
+\begin{proof}
+对单次均匀抽样，命中违反索引的概率恰为 \(\delta_{\mathrm{viol}}(a)\)。
+独立重复抽样给出通过概率至多 \((1-\delta_{\mathrm{viol}}(a))^t\)，从而得到拒绝概率下界。
+最后一条由 \((1-\varepsilon)^t\le 1/3\) 等价改写得到。证毕。
+\end{proof}
+
+\begin{theorem}[Cauchy 卷积在既约分母上的闭合律]\label{thm:xi-cauchy-convolution-denominator-gcd-law}
+设 \(K\) 为特征 \(0\) 的域。
+令两列序列 \((a_n)_{n\ge 0},(b_n)_{n\ge 0}\subset K\) 的生成函数分别为既约有理函数
+\[
+A(z)=\sum_{n\ge 0}a_n z^n=\frac{U_a(z)}{V_a(z)},\qquad
+B(z)=\sum_{n\ge 0}b_n z^n=\frac{U_b(z)}{V_b(z)},
+\]
+其中 \(U_a,V_a,U_b,V_b\in K[z]\)、\(\gcd(U_a,V_a)=\gcd(U_b,V_b)=1\)，并假设 \(V_a(0)=V_b(0)=1\)。
+定义 Cauchy 卷积 \(c_n:=\sum_{k=0}^n a_k b_{n-k}\) 及 \(C(z)=\sum_{n\ge 0}c_n z^n=A(z)B(z)\)。
+则 \(C(z)\) 的既约分母满足精确公式
+\[
+V_c(z)\ =\ \frac{V_a(z)V_b(z)}{\gcd\!\bigl(V_a(z),U_b(z)\bigr)\cdot \gcd\!\bigl(V_b(z),U_a(z)\bigr)}.
+\]
+特别地，若 \(\gcd(V_a,U_b)=\gcd(V_b,U_a)=1\)，则 \(V_c=V_aV_b\)，从而卷积后的递推阶数严格加和（等于 \(\deg V_a+\deg V_b\)）。
+\end{theorem}
+\begin{proof}
+由 \(C(z)=U_a(z)U_b(z)/(V_a(z)V_b(z))\)。
+约分仅可能来自分母因子与分子共享的不可约因子。
+由于 \(\gcd(U_a,V_a)=1\)，\(V_a\) 的任一不可约因子不可能与 \(U_a\) 共有；同理 \(V_b\) 不与 \(U_b\) 共有。
+因此一切可约分因子只能来自交叉项 \(\gcd(V_a,U_b)\) 与 \(\gcd(V_b,U_a)\)，并分别整除 \(V_a\)、\(V_b\)，从而互不干扰。
+故既约分母为所示商。证毕。
+\end{proof}
+
+\begin{theorem}[Hadamard 乘积的综合征多项式与结果式闭式]\label{thm:xi-hadamard-product-resultant-multiplicative-convolution}
+设 \(K\) 为代数闭域。
+令两列序列 \((a_n)_{n\ge 0},(b_n)_{n\ge 0}\subset K\) 具有有限指数表示
+\[
+a_n=\sum_{i=1}^{r_a}\alpha_i\lambda_i^{n},\qquad
+b_n=\sum_{j=1}^{r_b}\beta_j\mu_j^{n},
+\]
+其中 \(\alpha_i,\beta_j\neq 0\)，且 \(\lambda_i,\mu_j\in K^\times\) 两两互异。
+定义 Hadamard 乘积序列 \(h_n:=a_n b_n\)。
+则 \(h\) 仍为有限指数表示，并满足
+\[
+h_n=\sum_{i=1}^{r_a}\sum_{j=1}^{r_b}(\alpha_i\beta_j)\,(\lambda_i\mu_j)^{n}.
+\]
+令
+\[
+P_a(t):=\prod_{i=1}^{r_a}(t-\lambda_i),\qquad
+P_b(t):=\prod_{j=1}^{r_b}(t-\mu_j),
+\]
+并定义
+\[
+P_h(t)\ :=\ \operatorname{Res}_{x}\!\Bigl(P_a(x),\ x^{r_b}P_b\!\bigl(t/x\bigr)\Bigr)\in K[t].
+\]
+则恒等式
+\[
+P_h(t)=\prod_{i=1}^{r_a}\prod_{j=1}^{r_b}(t-\lambda_i\mu_j)
+\]
+成立；从而 \(P_h\) 消去序列 \(h\)。
+若进一步假设所有乘积 \(\lambda_i\mu_j\) 两两互异，则 \(P_h\) 为 \(h\) 的最小特征多项式，递推阶数达到 \(r_ar_b\)。
+\end{theorem}
+\begin{proof}
+由指数展开立得
+\(
+h_n=\sum_{i,j}(\alpha_i\beta_j)(\lambda_i\mu_j)^n
+\)，从而任一以 \(\{\lambda_i\mu_j\}\) 为根集的多项式必消去 \(h\)。
+\par
+对结果式，记
+\[
+Q_t(x):=x^{r_b}P_b(t/x)=\prod_{j=1}^{r_b}(t-\mu_j x)\in K[t][x].
+\]
+由于 \(P_a\) 首一，结果式的根值表述给出
+\[
+\operatorname{Res}_x(P_a(x),Q_t(x))=\prod_{i=1}^{r_a}Q_t(\lambda_i)
+=\prod_{i=1}^{r_a}\prod_{j=1}^{r_b}(t-\mu_j\lambda_i),
+\]
+即所示闭式。
+当乘积根互异时，指数基底的 Vandermonde 非退化性给出最小性。证毕。
+\end{proof}
+
+\begin{theorem}[离线成员判定的不可约信息论下界（Grassmann 计数）]\label{thm:xi-offline-membership-grassmann-lower-bound}
+设 \(p\) 为素数，\(\FF_p\) 为有限域，取 \(n\in\NN\) 与 \(0\le r<n\)，并令 \(k:=n-r\)。
+考虑如下离线成员判定任务：存在未知 \(k\)-维子空间 \(K\le \FF_p^n\)，发布比特串 \(\sigma\in\{0,1\}^\ell\) 作为验证参数，使得对任意查询向量 \(x\in\FF_p^n\)，验证者仅凭 \((\sigma,x)\) 即可零误差判定命题 \(x\in K\)。
+则任何满足零误差成员判定的发布机制都必须满足
+\[
+\ell\ \ge\ \log_2\#\mathrm{Gr}(k,n;\FF_p)\ \ge\ k(n-k)\log_2 p\ =\ r(n-r)\log_2 p,
+\]
+其中 \(\mathrm{Gr}(k,n;\FF_p)\) 为 \(k\)-维子空间的 Grassmann 集。
+\end{theorem}
+\begin{proof}
+若存在两不同子空间 \(K_1\neq K_2\) 对应同一 \(\sigma\)，取 \(x\in K_1\setminus K_2\) 则成员判定在输入 \((\sigma,x)\) 上必同时给出“真”与“假”，矛盾。
+故发布映射必须在 Grassmann 集上单射，从而 \(\ell\ge \log_2\#\mathrm{Gr}(k,n;\FF_p)\)。
+\par
+由高斯二项式公式，
+\[
+\#\mathrm{Gr}(k,n;\FF_p)=\prod_{i=0}^{k-1}\frac{p^n-p^i}{p^k-p^i}
+=\prod_{i=0}^{k-1}p^{n-k}\cdot\frac{1-p^{i-n}}{1-p^{i-k}}
+\ge \prod_{i=0}^{k-1}p^{n-k}
+=p^{k(n-k)}.
+\]
+取对数得第二个不等式。证毕。
+\end{proof}
+
+\begin{corollary}[子空间规范编码实现的近最短性：主阶达到 Grassmann 下界]\label{cor:xi-offline-membership-near-optimal-encoding}
+在定理 \ref{thm:xi-offline-membership-grassmann-lower-bound} 的设定下，若将验证参数取为 \(K\) 的一个规范表示（例如给出 \(K\) 的行最简形基矩阵并附带主元位置编码），则存在零误差成员判定实现，其编码长度满足
+\[
+\ell\ \le\ r(n-r)\log_2 p\ +\ O(n\log n).
+\]
+因此在 \(p\) 固定而 \(n\to\infty\) 的主阶意义下，该编码达到 Grassmann 计数下界；子空间 \(K\) 在离线审计语义下构成近最短公钥。
+\end{corollary}
+
+\input{subsubsec__xi-syndrome-shift-invariant-saturated-lattices}
+\begin{proof}
+行最简形给出子空间的规范代表。
+其自由参数可组织为一个 \(k\times(n-k)\) 的矩阵（自由列上的系数），共 \(k(n-k)=r(n-r)\) 个 \(\FF_p\) 元素；其存储成本为 \(r(n-r)\log_2 p\) 比特。
+主元列集合的编码可在 \(O(n\log n)\) 比特内完成。
+成员判定可由该规范代表构造线性方程组并作确定性消元实现，且零误差。证毕。
+\end{proof}
+
+\endinput
+

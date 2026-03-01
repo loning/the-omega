@@ -89,9 +89,42 @@ def perron_root_r4(iters: int = 80) -> float:
     return x
 
 
+def negative_real_root_mu_minus(iters: int = 80) -> float:
+    # Unique negative real root of x^5 - 2x^4 - 7x^3 - 2x + 2 = 0 via Newton.
+    def f(x: float) -> float:
+        return x**5 - 2.0 * x**4 - 7.0 * x**3 - 2.0 * x + 2.0
+
+    def df(x: float) -> float:
+        return 5.0 * x**4 - 8.0 * x**3 - 21.0 * x**2 - 2.0
+
+    x = -1.96
+    for _ in range(iters):
+        x = x - f(x) / df(x)
+    return x
+
+
+def mertens_tail_bound_A4(k_max: int, r4: float, lambda4: float, k_cap: int = 200000) -> float:
+    # Unconditional bound from |log(1-w)| <= |w|/(1-|w|), using |mu1|=r4 and
+    # |mu_j|<=lambda4 for j!=1. This bounds:
+    #   R_{>K} = Σ_{k>K} μ(k)/k * log ζ_A4(r4^{-k})
+    # by a positive series with μ(k) replaced by 1 in absolute value.
+    s = 0.0
+    for k in range(k_max + 1, k_cap + 1):
+        a = r4 ** (1 - k)
+        t1 = a / (1.0 - a)
+        b = lambda4 / (r4**k)
+        t2 = b / (1.0 - b)
+        term = (1.0 / float(k)) * (t1 + 4.0 * t2)
+        s += term
+        if term < 1e-220:
+            break
+    return s
+
+
 @dataclass(frozen=True)
 class FinitePart:
     r4: float
+    lambda4: float
     z_star: float
     C: float
     log_mathfrak_M: float
@@ -102,6 +135,8 @@ class FinitePart:
 
 def compute_finite_part(k_max: int, tail_tol: float, prog: Progress) -> FinitePart:
     r4 = perron_root_r4()
+    mu_minus = negative_real_root_mu_minus()
+    lambda4 = abs(mu_minus)
     z_star = 1.0 / r4
     C = 1.0 / (-z_star * delta_prime(z_star))
 
@@ -121,12 +156,13 @@ def compute_finite_part(k_max: int, tail_tol: float, prog: Progress) -> FinitePa
     gamma = 0.577215664901532860606512090082402431  # Euler–Mascheroni
     mertens_M = gamma + log_mathfrak_M
 
-    tail_bound = 10.0 * (z_star ** (k_max + 1))
+    tail_bound = mertens_tail_bound_A4(k_max=k_max, r4=r4, lambda4=lambda4)
     if tail_bound > tail_tol:
         prog.tick(f"WARNING tail_bound ~ {tail_bound:.3e} > tail_tol {tail_tol:.3e}")
 
     return FinitePart(
         r4=r4,
+        lambda4=lambda4,
         z_star=z_star,
         C=C,
         log_mathfrak_M=log_mathfrak_M,
@@ -154,12 +190,13 @@ def write_table_tex(path: Path, fp: FinitePart) -> None:
     lines.append("Quantity & Value\\\\")
     lines.append("\\midrule")
     lines.append(f"$r_4=\\rho(A_4)$ & {fp.r4:.12f}\\\\")
+    lines.append(f"$\\Lambda_4$ & {fp.lambda4:.12f}\\\\")
     lines.append(f"$z_\\star=1/r_4$ & {fp.z_star:.12f}\\\\")
     lines.append(f"$C$ & {fp.C:.12f}\\\\")
     lines.append(f"$\\log\\mathfrak{{M}}$ & {fp.log_mathfrak_M:.12f}\\\\")
     lines.append(f"$\\mathsf{{M}}=\\gamma+\\log\\mathfrak{{M}}$ & {fp.mertens_M:.12f}\\\\")
     lines.append(f"$k_{{\\max}}$ & {fp.k_max}\\\\")
-    lines.append(f"tail proxy & {fp.tail_bound:.3e}\\\\")
+    lines.append(f"tail bound & {fp.tail_bound:.3e}\\\\")
     lines.append("\\bottomrule")
     lines.append("\\end{tabular}")
     lines.append("\\end{table}")
@@ -190,8 +227,9 @@ def main() -> None:
 
     payload: Dict[str, object] = {
         "k_max": fp.k_max,
-        "tail_proxy": fp.tail_bound,
+        "tail_bound": fp.tail_bound,
         "r4": fp.r4,
+        "Lambda4": fp.lambda4,
         "z_star": fp.z_star,
         "C": fp.C,
         "log_mathfrak_M": fp.log_mathfrak_M,

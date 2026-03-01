@@ -1,0 +1,585 @@
+\subsection{素数寄存器实现：Fibonacci 估值、折叠正规形与外置账本}\label{subsec:emergent-arithmetic-prime-register-fib-valuation}
+
+延续注 \ref{rem:two-coordinate-monoids} 所强调的“两套自由交换幺半群坐标”并存视角，本小节将 \S\ref{subsec:emergent-arithmetic-fib-congruence} 的 Fibonacci 值不变量与 \S\ref{sec:groupoid-zeckendorf} 的折叠正规形机制，直接实现到乘法幺半群 \((\NN_{>0},\times)\) 的素数指数寄存器中；并据此给出一份与归一化路径无关的外置账本对象，以及其稠密几何化。
+
+\begin{remark}[与 Zeckendorf 型 Gödel 编码的语境区分]\label{rem:zeckendorf-godel-disambiguation}
+已有工作以 Zeckendorf 表示构造 Gödel 编码并研究弱算术中的 \(\Delta_0\) 可定义性与替代机制（例如 \cite{Rosko2025FibonacciBasedGodelNumbering}）。
+本文以下使用的接口不同：以素数指数向量作为自由交换坐标系，在其上引入 Fibonacci 加权估值与折叠正规形，并将被折叠压缩掉的区分信息外置为一个可计算的自由阿贝尔账本群；随后给出该账本群在一类面积保持椭圆空间中的稠密实现。
+\end{remark}
+
+\begin{definition}[Fibonacci--素数估值与 Zeckendorf--Gödel 素数码]\label{def:prime-register-fib-valuation-zg-code}
+令 \((p_k)_{k\ge 1}\) 为递增素数列。对 \(n\in\NN_{>0}\) 令
+\[
+v_k(n):=v_{p_k}(n)\in\NN
+\]
+为 \(p_k\) 在 \(n\) 的素因子分解中的指数，并记其指数向量为 \(\nu(n):=(v_k(n))_{k\ge 1}\in\mathcal D\)（\(\mathcal D\) 见 \S\ref{subsec:emergent-arithmetic-fib-congruence}）。
+定义 \textbf{Fibonacci--素数估值}（Fibonacci 加权的完全可加不变量）为
+\[
+\boxed{\;
+\mathrm{Val}_{\mathrm{pr}}(n):=\sum_{k\ge 1} v_k(n)\,F_{k+1}\in\NN\; }.
+\]
+对任意 \(N\in\NN\)，记其 Zeckendorf 数字为
+\(
+Z(N)=(z_1(N),z_2(N),\dots)\in X_\infty
+\)
+（\cite{Zeckendorf1972}），即
+\[
+N=\sum_{k\ge 1} z_k(N)\,F_{k+1},\qquad z_k(N)\in\{0,1\},\quad z_k(N)z_{k+1}(N)=0.
+\]
+定义 \textbf{Zeckendorf--Gödel 素数码}（将 Zeckendorf 数字外置到素数指数寄存器）为
+\[
+\boxed{\;
+\mathsf{g}(N):=\prod_{k\ge 1} p_k^{\,z_k(N)}\in\NN_{>0}\; }.
+\]
+并记其像集为
+\[
+\mathrm{ZG}:=\mathsf{g}(\NN)\subset\NN_{>0}.
+\]
+等价地，\(a\in\mathrm{ZG}\) 当且仅当 \(a\) 平方自由且不含相邻素数因子：对一切 \(k\ge 1\)，
+\(
+v_k(a)\in\{0,1\}
+\)
+且
+\(
+v_k(a)\,v_{k+1}(a)=0
+\)。
+\end{definition}
+
+\begin{definition}[素数寄存器上的折叠正规化]\label{def:prime-register-normal-form}
+定义正规化算子
+\[
+\boxed{\;
+\mathrm{NF}_{\mathrm{pr}}(n):=\mathsf{g}\bigl(\mathrm{Val}_{\mathrm{pr}}(n)\bigr)\in \mathrm{ZG}\;}
+\]
+并在 \(\mathrm{ZG}\) 上定义二元运算
+\[
+a\boxplus_{\mathrm{pr}} b:=\mathrm{NF}_{\mathrm{pr}}(ab)\qquad(a,b\in\mathrm{ZG}).
+\]
+\end{definition}
+
+\begin{theorem}[乘法归一化实现可加结构的严格同构]\label{thm:prime-register-multiplicative-normalization-additive-iso}
+在上述记号下，\((\mathrm{ZG},\boxplus_{\mathrm{pr}})\) 为交换幺半群（单位元为 \(1\)），且映射
+\[
+\mathsf{g}:\ (\NN,+)\longrightarrow (\mathrm{ZG},\boxplus_{\mathrm{pr}})
+\]
+为交换幺半群同构。
+\end{theorem}
+
+\begin{proof}
+首先，由 \(v_k(ab)=v_k(a)+v_k(b)\) 得
+\[
+\mathrm{Val}_{\mathrm{pr}}(ab)=\sum_{k\ge 1}(v_k(a)+v_k(b))F_{k+1}
+=\mathrm{Val}_{\mathrm{pr}}(a)+\mathrm{Val}_{\mathrm{pr}}(b),
+\]
+故 \(\mathrm{Val}_{\mathrm{pr}}\) 为完全可加函数。
+其次，对任意 \(N\in\NN\)，由定义 \(\mathsf{g}(N)\in\mathrm{ZG}\) 且
+\[
+\mathrm{Val}_{\mathrm{pr}}(\mathsf{g}(N))
+=\sum_{k\ge 1} z_k(N)\,F_{k+1}
+=N,
+\]
+即 \(\mathrm{Val}_{\mathrm{pr}}\circ \mathsf{g}=\mathrm{id}_{\NN}\)，从而 \(\mathrm{NF}_{\mathrm{pr}}\) 在 \(\mathrm{ZG}\) 上为恒等映射。
+
+现取 \(a=\mathsf{g}(M)\)、\(b=\mathsf{g}(N)\in\mathrm{ZG}\)。则
+\[
+a\boxplus_{\mathrm{pr}} b
+=\mathrm{NF}_{\mathrm{pr}}(ab)
+=\mathsf{g}\bigl(\mathrm{Val}_{\mathrm{pr}}(ab)\bigr)
+=\mathsf{g}\bigl(\mathrm{Val}_{\mathrm{pr}}(a)+\mathrm{Val}_{\mathrm{pr}}(b)\bigr)
+=\mathsf{g}(M+N).
+\]
+因此 \(\mathsf{g}\) 为幺半群同态。其单射性由 Zeckendorf 表示唯一性推出：若 \(\mathsf{g}(M)=\mathsf{g}(N)\)，则素数指数向量一致，故 \(Z(M)=Z(N)\)，从而 \(M=N\)。
+满射性由 \(\mathrm{ZG}=\mathsf{g}(\NN)\) 的定义成立。综上 \(\mathsf{g}\) 为交换幺半群同构。
+\end{proof}
+
+\begin{proposition}[素数替换重写系的终止合流与正规形判定]\label{prop:prime-register-rewrite-confluent-normal-form}
+在 \(\NN_{>0}\) 上考虑如下重写规则（\(k\ge 1\)）：
+\begin{itemize}
+  \item 若 \(p_kp_{k+1}\mid n\)，则
+  \[
+  n\ \longrightarrow\ n\cdot \frac{p_{k+2}}{p_kp_{k+1}} ;
+  \]
+  \item 若 \(p_1^2\mid n\)，则
+  \[
+  n\ \longrightarrow\ n\cdot \frac{p_2}{p_1^2};
+  \]
+  \item 若 \(p_2^2\mid n\)，则
+  \[
+  n\ \longrightarrow\ n\cdot \frac{p_1p_3}{p_2^2};
+  \]
+  \item 若 \(k\ge 3\) 且 \(p_k^2\mid n\)，则
+  \[
+  n\ \longrightarrow\ n\cdot \frac{p_{k-2}p_{k+1}}{p_k^2}.
+  \]
+\end{itemize}
+则：
+\begin{enumerate}
+  \item 每一步重写严格保持 \(\mathrm{Val}_{\mathrm{pr}}\) 不变；
+  \item 该重写系在 \(\NN_{>0}\) 上强终止，并且具有唯一正规形（因而合流）；
+  \item 对任意 \(n\in\NN_{>0}\)，其唯一正规形恰为 \(\mathrm{NF}_{\mathrm{pr}}(n)\in\mathrm{ZG}\)。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{(1)} 以第一条为例，指数向量的局部变化为
+\(
+(v_k,v_{k+1},v_{k+2})\mapsto (v_k-1,v_{k+1}-1,v_{k+2}+1)
+\)，
+故 \(\mathrm{Val}_{\mathrm{pr}}\) 的变化量为
+\(
+-F_{k+1}-F_{k+2}+F_{k+3}=0
+\)（Fibonacci 递推）。
+其余三条分别对应权重恒等式
+\(
+2F_2=F_3
+\)、\(
+2F_3=F_2+F_4
+\)、\(
+2F_{k+1}=F_{k-1}+F_{k+2}\ (k\ge 3)
+\)，同理得不变性。
+
+\textbf{(2)--(3)} 记 \(\nu(n)=(v_k(n))_{k\ge 1}\in\mathcal D\)。
+上述四类整数重写在指数向量层恰对应 \S\ref{subsec:directed-rewrite} 的定向化归一化规则
+(\ref{rule:fold:adj})--(\ref{rule:fold:dedupk})：
+每一步把指数向量做一次局部“合并/去重”的折叠式搬运。
+由命题 \ref{prop:directed-rewrite-termination}，该向量重写强终止且终止形唯一，并且终止形等于 \(\Fold_\infty(\nu(n))=Z(\mathrm{Val}(\nu(n)))\)。
+另一方面，由定义 \ref{def:val-on-D} 与定义 \ref{def:prime-register-fib-valuation-zg-code} 有
+\[
+\mathrm{Val}(\nu(n))=\sum_{k\ge 1}v_k(n)F_{k+1}=\mathrm{Val}_{\mathrm{pr}}(n).
+\]
+因此向量正规形的整数化像为
+\[
+\prod_{k\ge 1} p_k^{\,z_k(\mathrm{Val}_{\mathrm{pr}}(n))}
+=\mathsf{g}\bigl(\mathrm{Val}_{\mathrm{pr}}(n)\bigr)
+=\mathrm{NF}_{\mathrm{pr}}(n),
+\]
+从而 \(n\) 的重写正规形存在且唯一，且等于 \(\mathrm{NF}_{\mathrm{pr}}(n)\in\mathrm{ZG}\)。
+唯一正规形蕴含合流性。
+\end{proof}
+
+\begin{theorem}[丢失信息的自由阿贝尔账本：值核与残差分数群]\label{thm:prime-register-residual-ledger-group}
+令 \(A:=\bigoplus_{k\ge 1}\ZZ e_k\) 为有限支撑整数序列的自由阿贝尔群，并令群同态
+\[
+\varphi:A\to\ZZ,\qquad \varphi(e_k)=F_{k+1}.
+\]
+记核 \(K:=\ker\varphi\)。
+
+\begin{enumerate}
+  \item 设
+  \[
+  b_0:=e_2-2e_1,\qquad b_k:=e_{k+2}-e_{k+1}-e_k\quad (k\ge 1).
+  \]
+  则 \(\{b_0,b_1,b_2,\dots\}\) 构成 \(K\) 的一组 \(\ZZ\)-基；特别地，
+  \(K\simeq \bigoplus_{k\ge 0}\ZZ\) 为可数秩自由阿贝尔群。
+
+  \item 令 \(H\subset\QQ_{>0}\) 为素数分数群
+  \[
+  H:=\Bigl\{\prod_{k\ge 1} p_k^{\delta_k}:\ \delta=(\delta_k)_{k\ge 1}\in K\Bigr\}.
+  \]
+  则 \(H\) 亦为可数秩自由阿贝尔群，并由生成元
+  \[
+  h_0:=\frac{p_2}{p_1^2},\qquad h_k:=\frac{p_{k+2}}{p_{k+1}p_k}\ (k\ge 1)
+  \]
+  自由生成。
+
+  \item 对任意 \(n\in\NN_{>0}\)，定义残差分数（外置账本）
+  \[
+  R(n):=\frac{n}{\mathrm{NF}_{\mathrm{pr}}(n)}\in\QQ_{>0}.
+  \]
+  则 \(R(n)\in H\)，并且映射
+  \[
+  \Theta:\NN_{>0}\to \mathrm{ZG}\times H,\qquad \Theta(n):=(\mathrm{NF}_{\mathrm{pr}}(n),R(n))
+  \]
+  为单射。
+  此外，\(\nu(n)-Z(\mathrm{Val}_{\mathrm{pr}}(n))\in K\) 在基 \(\{b_i\}_{i\ge 0}\) 上的坐标（唯一存在）给出一份与归一化路径无关的 carry 账本，刻画由正规化投影所丢失的区分信息。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(1)} 先证 \(b_i\in K\)。
+由 \(\varphi(b_0)=F_3-2F_2=0\)，且对 \(k\ge 1\) 有 \(\varphi(b_k)=F_{k+3}-F_{k+2}-F_{k+1}=0\)，故 \(b_i\in K\)。
+
+对任意 \(N\ge 2\)，令 \(A_N:=\bigoplus_{k=1}^N\ZZ e_k\)，\(\varphi_N:=\varphi|_{A_N}\)，\(K_N:=\ker\varphi_N\)。
+则 \(\mathrm{rank}(A_N)=N\)，而 \(\varphi_N\) 非零，故 \(\mathrm{rank}(K_N)=N-1\)。
+集合
+\(
+\mathcal B_N:=\{b_0,b_1,\dots,b_{N-2}\}\subset K_N
+\)
+含 \(N-1\) 个元素。
+若 \(\sum_{i=0}^{N-2} c_i b_i=0\)，则 \(e_N\) 的系数仅来自 \(b_{N-2}\) 且为 \(c_{N-2}\)，故 \(c_{N-2}=0\)；
+向下递推得 \(c_i=0\)（最终由 \(e_2\) 的系数得 \(c_0=0\)）。
+故 \(\mathcal B_N\) 线性无关，遂为 \(K_N\) 的一组基。
+由于 \(K=\bigcup_N K_N\)（有限支撑性），可得 \(\{b_i\}_{i\ge 0}\) 生成且线性无关，从而为 \(K\) 的一组 \(\ZZ\)-基。
+
+\textbf{(2)} 由算术基本定理，映射
+\(
+(\delta_k)_{k\ge 1}\mapsto \prod_{k\ge 1}p_k^{\delta_k}
+\)
+给出 \(A\simeq \langle p_k\rangle\subset\QQ_{>0}\) 的群同构（其中右侧为由素数生成的有限支撑指数分数群），从而 \(H\simeq K\) 为自由阿贝尔群。
+并且
+\[
+\prod_{k\ge 1} p_k^{b_0}=\frac{p_2}{p_1^2}=h_0,\qquad
+\prod_{k\ge 1} p_k^{b_k}=\frac{p_{k+2}}{p_{k+1}p_k}=h_k,
+\]
+故基 \(\{b_i\}\) 在 \(H\) 中对应自由生成元 \(\{h_i\}\)。
+
+\textbf{(3)} 令
+\(
+n=\prod_{k\ge 1} p_k^{v_k(n)}
+\)
+且
+\(
+\mathrm{NF}_{\mathrm{pr}}(n)=\prod_{k\ge 1} p_k^{z_k(\mathrm{Val}_{\mathrm{pr}}(n))}
+\)。
+则
+\[
+R(n)=\prod_{k\ge 1} p_k^{\delta_k(n)},\qquad
+\delta_k(n):=v_k(n)-z_k(\mathrm{Val}_{\mathrm{pr}}(n)).
+\]
+由命题 \ref{prop:prime-register-rewrite-confluent-normal-form} 知
+\(\mathrm{Val}_{\mathrm{pr}}(\mathrm{NF}_{\mathrm{pr}}(n))=\mathrm{Val}_{\mathrm{pr}}(n)\)，故
+\[
+\sum_{k\ge 1}\delta_k(n)\,F_{k+1}
+=\mathrm{Val}_{\mathrm{pr}}(n)-\mathrm{Val}_{\mathrm{pr}}(\mathrm{NF}_{\mathrm{pr}}(n))
+=0,
+\]
+即 \(\delta(n):=(\delta_k(n))\in K\)，从而 \(R(n)\in H\)。
+单射性显然：\(\Theta(n)=(a,r)\) 等价于指数向量分解
+\(
+\nu(n)=\nu(a)+\nu(r)
+\)，
+而 \(a\in\mathrm{ZG}\) 与 \(r\in H\) 的指数向量均为有限支撑整数序列，逐坐标相加唯一恢复 \(\nu(n)\)，继而唯一恢复 \(n\)。
+最后，\(\delta(n)\in K\) 在基 \(\{b_i\}\) 上坐标唯一存在，且完全由 \(n\) 与其正规形 \(\mathrm{NF}_{\mathrm{pr}}(n)\) 决定，因此与任何具体重写路径无关。
+\end{proof}
+
+\begin{theorem}[值保持算法群的稠密椭圆化]\label{thm:prime-register-dense-ellipticization}
+令 \(H\) 如定理 \ref{thm:prime-register-residual-ledger-group}(2)。
+考虑映射
+\[
+\Psi: H\to \mathrm{SL}(2,\RR),\qquad r\longmapsto
+\begin{pmatrix}
+r & 0\\[2pt]
+0 & r^{-1}
+\end{pmatrix}.
+\]
+并令 \(\mathcal E\) 为所有与坐标轴对齐且面积为 \(\pi\) 的椭圆集合，即
+\[
+\mathcal E=\{\Psi(r)(S^1): r>0\},
+\qquad
+S^1:=\{(x,y)\in\RR^2:\ x^2+y^2=1\}.
+\]
+则：
+\begin{enumerate}
+  \item \(\Psi(H)\) 在 \(\Psi(\RR_{>0})\) 中稠密；等价地，\(\{\Psi(r)(S^1):r\in H\}\) 在 \(\mathcal E\) 中稠密（Hausdorff 距离或参数 \(r\) 的通常拓扑均可）。
+  \item 每个 \(r\in H\) 唯一决定椭圆 \(\Psi(r)(S^1)\)，且该椭圆的轴比为 \(r^2\)。因此 \(n\mapsto \Psi(R(n))(S^1)\) 给出一条将外置账本 \(R(n)\) 几何化为面积保持椭圆的可计算函子。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(2)} 对角矩阵作用将单位圆送到半轴长度分别为 \(r\) 与 \(r^{-1}\) 的椭圆，面积为 \(\pi rr^{-1}=\pi\)，轴比为 \(r/r^{-1}=r^2\)，且由轴比可唯一反解 \(r>0\)。
+
+\textbf{(1)} 只需证 \(H\) 在 \(\RR_{>0}\) 中稠密。取两元素
+\[
+a:=\frac{p_2}{p_1^2}=\frac 34\in H,\qquad
+b:=\frac{p_3}{p_1^3}=\frac 58\in H,
+\]
+其中 \(b\in H\) 对应核元 \((-3,0,1,0,\dots)\in K\)，因为 \(-3F_2+F_4=-3+3=0\)。
+记 \(\alpha:=\log a\)、\(\beta:=\log b\)。
+若 \(\alpha/\beta\in\QQ\)，则存在非零整数 \(m,n\) 使 \(m\alpha+n\beta=0\)，即 \(a^m b^n=1\)。
+但
+\[
+a^m b^n
+=\left(\frac{3}{2^2}\right)^m\left(\frac{5}{2^3}\right)^n
+=\frac{3^m 5^n}{2^{2m+3n}},
+\]
+由唯一素因子分解得 \(m=n=0\)，矛盾。
+故 \(\alpha/\beta\notin\QQ\)。
+
+于是加法子群
+\(
+L:=\{m\alpha+n\beta:\ m,n\in\ZZ\}\subset\RR
+\)
+为稠密子集：给定 \(x\in\RR\) 与 \(\varepsilon>0\)，由于 \(\beta/\alpha\) 非有理，序列 \(\{n\beta\bmod \alpha\}\) 在 \([0,|\alpha|)\) 中稠密，故可取 \(n\) 使 \(x-n\beta\) 与某个整数倍 \(m\alpha\) 的差小于 \(\varepsilon\)，即 \(|x-(m\alpha+n\beta)|<\varepsilon\)。
+因此 \(L\) 稠密。指数化得
+\[
+\exp(L)=\{a^m b^n:\ m,n\in\ZZ\}\subset H
+\]
+在 \(\RR_{>0}\) 中稠密，从而 \(H\) 稠密。
+由 \(r\mapsto \Psi(r)\) 连续性，\(\Psi(H)\) 在 \(\Psi(\RR_{>0})\) 中稠密；椭圆像稠密性同理。
+\end{proof}
+
+\subsubsection{Gödel--Joukowsky 椭圆化门：素数外置尺度的解析不可见性与零点输运}\label{subsec:prime-register-godel-joukowsky}
+本小节给出一条与素数指数外置口径直接兼容的\textbf{复迹椭圆化}：将素数寄存器中的乘法尺度 \(r\) 视为可审计外置量，并以 Joukowsky 型投影把单位圆 \(\TT\) 的相位信息输运到焦点固定的椭圆族 \(\{\mathcal E_r\}\subset\CC\) 上。该椭圆族在解析观测（Cauchy 变换/解析矩）下呈现刚性不可见性，而在径向非解析观测下保持可逆。
+
+\begin{definition}[Gödel 尺度与 Joukowsky--Gödel 投影]\label{def:prime-register-godel-scale-joukowsky}
+记 \(\ZZ^{(\PP)}\) 为仅有限支撑的素数指数向量群：
+\[
+\ZZ^{(\PP)}:=\Bigl\{a=(a_p)_{p\in\PP}:\ a_p\in\ZZ,\ a_p=0\text{ 除有限多素数外}\Bigr\}.
+\]
+定义\textbf{Gödel 尺度}（素数指数外置的乘法求值）为
+\begin{equation}\label{eq:prime-register-godel-scale}
+\boxed{\;
+\mathsf{G}(a):=\prod_{p\in\PP}p^{a_p}\in\QQ_{>0}\; }.
+\end{equation}
+并记 \(\NN^{(\PP)}:=\{a\in\ZZ^{(\PP)}:\ a_p\ge 0\ \forall p\}\) 为其非负子幺半群（对应 \(\NN_{>0}\) 的素因子指数寄存器）。
+\par
+对任意 \(r>0\) 定义\textbf{Joukowsky--Gödel 投影}
+\begin{equation}\label{eq:prime-register-joukowsky-godel}
+\boxed{\;
+J_r:\ \TT\to\CC,\qquad
+J_r(e^{\mathrm{i}\theta})
+:=r e^{\mathrm{i}\theta}+r^{-1}e^{-\mathrm{i}\theta}\; }.
+\end{equation}
+并记其像为
+\[
+\mathcal E_r:=J_r(\TT)\subset\CC.
+\]
+令 \(\mu_r\) 为 Haar 测度 \(\frac{d\theta}{2\pi}\) 在 \(J_r\) 下的推前概率测度（支撑于 \(\mathcal E_r\)）。
+\end{definition}
+
+\begin{proposition}[Gödel--Joukowsky 椭圆化：素数寄存器决定椭圆]\label{prop:prime-register-godel-joukowsky-ellipse}
+对任意 \(r>0\)，集合 \(\mathcal E_r\) 为平面椭圆（退化情形 \(r=1\) 为线段 \([-2,2]\)），并满足：
+\begin{enumerate}
+  \item \(\mathcal E_r=\mathcal E_{1/r}\)。在规范 \(r\ge 1\) 下，椭圆 \(\mathcal E_r\) 唯一确定参数 \(r\)。
+  \item \(\mathcal E_r\) 的焦点为 \(\pm 2\)。在 \(r\ge 1\) 下，其半长轴与半短轴分别为
+  \[
+  A(r)=r+r^{-1},\qquad B(r)=r-r^{-1}.
+  \]
+  \item 在 \(r\ge 1\) 的规范下令椭圆族上的二元运算 \(\odot\) 为
+  \[
+  \mathcal E_r\odot \mathcal E_s:=\mathcal E_{rs}\qquad (r,s\ge 1).
+  \]
+  则在非负素数指数寄存器口径 \(a\in\NN^{(\PP)}\) 上，映射
+  \[
+  \Phi:\ \NN^{(\PP)}\to \{\mathcal E_r:\ r\ge 1\},\qquad a\longmapsto \mathcal E_{\mathsf{G}(a)}
+  \]
+  为交换幺半群同态：\(\Phi(a+b)=\Phi(a)\odot\Phi(b)\)。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:prime-register-joukowsky-godel} 直接展开得
+\[
+J_r(e^{\mathrm{i}\theta})
+=(r+r^{-1})\cos\theta+\mathrm{i}(r-r^{-1})\sin\theta,
+\]
+从而 \(\mathcal E_r\) 满足
+\[
+\left(\frac{\Re w}{r+r^{-1}}\right)^2+\left(\frac{\Im w}{|r-r^{-1}|}\right)^2=1,
+\]
+故为椭圆；若 \(r=1\)，则 \(\Im w\equiv 0\) 且 \(\Re w=2\cos\theta\)，像为 \([-2,2]\)。
+上式仅依赖于 \(\{r,r^{-1}\}\)，遂 \(\mathcal E_r=\mathcal E_{1/r}\)。
+\par
+当 \(r\ge 1\) 时 \(B(r)\ge 0\)。并且
+\[
+A(r)^2-B(r)^2=(r+r^{-1})^2-(r-r^{-1})^2=4,
+\]
+故焦距为 \(4\)，焦点为 \(\pm 2\)。
+又由 \(A(r)+B(r)=2r\) 得 \(r=(A(r)+B(r))/2\)，故在 \(r\ge 1\) 规范下椭圆唯一确定 \(r\)。
+\par
+最后，对 \(a,b\in\NN^{(\PP)}\) 有 \(\mathsf{G}(a+b)=\mathsf{G}(a)\mathsf{G}(b)\)，代入 \(\odot\) 的定义即得
+\(\Phi(a+b)=\mathcal E_{\mathsf{G}(a+b)}=\mathcal E_{\mathsf{G}(a)\mathsf{G}(b)}=\Phi(a)\odot\Phi(b)\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[Cauchy 变换刚性：外置尺度对解析观测不可见]\label{thm:prime-register-joukowsky-cauchy-rigidity}
+在定义 \ref{def:prime-register-godel-scale-joukowsky} 的记号下，对 \(z\in\CC\setminus \mathcal E_r\) 定义 Cauchy 变换
+\[
+G_r(z):=\int_{\mathcal E_r}\frac{1}{z-w}\,d\mu_r(w).
+\]
+取平方根分支使 \(\sqrt{z^2-4}\sim z\)（\(z\to\infty\)）。则：
+\begin{enumerate}
+  \item 若 \(z\) 属于 \(\CC\setminus\mathcal E_r\) 的无界连通分支（椭圆外部），则
+  \[
+  \boxed{\;G_r(z)=\frac{1}{\sqrt{z^2-4}}\;}
+  \]
+  因而在该解析观测下完全不依赖于 \(r\)。
+  \item 若 \(r\ne 1\) 且 \(z\) 位于 \(\mathcal E_r\) 围成的内部（有界分支），则
+  \[
+  \boxed{\;G_r(z)=0\; }.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+注意到
+\(
+J_{1/r}(e^{\mathrm{i}\theta})=r^{-1}e^{\mathrm{i}\theta}+r e^{-\mathrm{i}\theta}
+=J_r(e^{-\mathrm{i}\theta})
+\)。
+由 Haar 测度在 \(\theta\mapsto-\theta\) 下的不变性可知 \(\mu_{1/r}=\mu_r\)，并且显然 \(\mathcal E_{1/r}=\mathcal E_r\)。
+因此可无损假设 \(r\ge 1\)。
+\par
+由推前测度的定义与代换 \(w=J_r(\zeta)\)、\(\zeta=e^{\mathrm{i}\theta}\) 得
+\[
+G_r(z)
+=\frac{1}{2\pi}\int_{0}^{2\pi}\frac{1}{z-(r e^{\mathrm{i}\theta}+r^{-1}e^{-\mathrm{i}\theta})}\,d\theta
+=\frac{1}{2\pi\mathrm{i}}\oint_{|\zeta|=1}\frac{1}{z-(r\zeta+r^{-1}\zeta^{-1})}\frac{d\zeta}{\zeta}.
+\]
+化简为
+\[
+G_r(z)=\frac{1}{2\pi\mathrm{i}}\oint_{|\zeta|=1}\frac{d\zeta}{-r\zeta^2+z\zeta-r^{-1}}.
+\]
+令
+\[
+D(\zeta):=-r\zeta^2+z\zeta-r^{-1},
+\qquad
+\zeta_{\pm}:=\frac{z\pm\sqrt{z^2-4}}{2r},
+\]
+则 \(D(\zeta)=-r(\zeta-\zeta_+)(\zeta-\zeta_-)\)，并且 \(\zeta_+\zeta_-=r^{-2}\)。
+当且仅当存在 \(|\zeta|=1\) 使 \(z=r\zeta+r^{-1}\zeta^{-1}\) 时，\(z\in\mathcal E_r\)，亦即 \(\zeta_\pm\) 至少一根落在 \(|\zeta|=1\) 上。
+因此对 \(z\notin\mathcal E_r\)，两根均不在单位圆上，可用留数定理计算。
+\par
+\textbf{外部情形：}
+对充分大 \(z\) 有 \(\zeta_+\sim z/r\) 与 \(\zeta_-\sim 1/(rz)\)，故恰有一根在单位圆内。
+外部无界分支连通，且根模长在 \(z\) 变化下连续；若发生 \(|\zeta_\pm|=1\) 的穿越，必有 \(z\in\mathcal E_r\) 与假设矛盾。
+于是对任意外部 \(z\)，恰有一根（记为 \(\zeta_-\)）满足 \(|\zeta_-|<1\)。
+故
+\[
+G_r(z)=\operatorname{Res}_{\zeta=\zeta_-}\frac{1}{D(\zeta)}
+=\frac{1}{D'(\zeta_-)}
+=\frac{1}{z-2r\zeta_-}.
+\]
+代入 \(\zeta_-=\frac{z-\sqrt{z^2-4}}{2r}\) 得
+\(
+z-2r\zeta_-=\sqrt{z^2-4}
+\)，从而 \(G_r(z)=1/\sqrt{z^2-4}\)。
+\par
+\textbf{内部情形：}
+设 \(r\ne 1\)。取 \(z=0\) 时 \(\zeta_\pm=\pm \mathrm{i}/r\)，两根均在单位圆内。
+内部有界分支连通，且同样由连续性与 \(z\notin\mathcal E_r\) 排除穿越，故对任意内部 \(z\) 有 \(|\zeta_\pm|<1\)。
+此时留数和为
+\[
+\frac{1}{z-2r\zeta_-}+\frac{1}{z-2r\zeta_+}
+=\frac{1}{\sqrt{z^2-4}}+\frac{1}{-\sqrt{z^2-4}}
+=0,
+\]
+故 \(G_r(z)=0\)。证毕。
+\end{proof}
+
+\begin{corollary}[解析矩完全同一：中心二项系数律]\label{cor:prime-register-joukowsky-analytic-moments}
+令解析矩
+\[
+m_n(r):=\int_{\mathcal E_r} w^n\,d\mu_r(w).
+\]
+则对一切 \(r>0\) 与 \(k\ge 0\) 有
+\[
+m_{2k+1}(r)=0,
+\qquad
+m_{2k}(r)=\binom{2k}{k}.
+\]
+特别地 \(\{m_n(r)\}_{n\ge 0}\) 与 \(r\) 无关。
+\end{corollary}
+\begin{proof}
+对充分大 \(|z|\)，由几何级数展开
+\[
+G_r(z)=\int\frac{1}{z-w}\,d\mu_r(w)
+=\frac{1}{z}\sum_{n\ge 0}\frac{m_n(r)}{z^n}.
+\]
+另一方面，由定理 \ref{thm:prime-register-joukowsky-cauchy-rigidity} 得 \(G_r(z)=1/\sqrt{z^2-4}\)，且
+\[
+\frac{1}{\sqrt{z^2-4}}
+=\frac{1}{z}\frac{1}{\sqrt{1-4/z^2}}
+=\frac{1}{z}\sum_{k\ge 0}\binom{2k}{k}\frac{1}{z^{2k}}.
+\]
+比较系数即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[最小非解析见证：二阶径向矩反演尺度]\label{prop:prime-register-joukowsky-radial-moment-invert}
+令
+\[
+R_2(r):=\int_{\mathcal E_r}|w|^2\,d\mu_r(w).
+\]
+则
+\[
+R_2(r)=r^2+r^{-2}.
+\]
+并且在规范 \(r\ge 1\) 下，\(r\) 可由单一标量 \(R_2(r)\) 显式唯一恢复：
+\[
+\boxed{\;
+r=\sqrt{\frac{R_2(r)+\sqrt{R_2(r)^2-4}}{2}}\; }.
+\]
+\end{proposition}
+\begin{proof}
+由 \(w=r e^{\mathrm{i}\theta}+r^{-1}e^{-\mathrm{i}\theta}\) 得
+\[
+|w|^2
+=(r e^{\mathrm{i}\theta}+r^{-1}e^{-\mathrm{i}\theta})(r e^{-\mathrm{i}\theta}+r^{-1}e^{\mathrm{i}\theta})
+=r^2+r^{-2}+e^{2\mathrm{i}\theta}+e^{-2\mathrm{i}\theta}
+=r^2+r^{-2}+2\cos(2\theta).
+\]
+对 \(\theta\) 作平均即得 \(R_2(r)=r^2+r^{-2}\)。
+令 \(x=r^2\ge 1\)，则 \(x+x^{-1}=R_2\)。
+解二次方程 \(x^2-R_2 x+1=0\) 得
+\(
+x=\frac{R_2+\sqrt{R_2^2-4}}{2}
+\)，
+从而 \(r=\sqrt{x}\)。证毕。
+\end{proof}
+
+\begin{theorem}[Lee--Yang 单位圆零点的 Joukowsky--Gödel 椭圆输运（结式消元）]\label{thm:prime-register-leyang-joukowsky-transport}
+设 \(K\subseteq \CC\) 为子域，\(P(z)\in K[z]\) 为次数 \(n\) 多项式，且其全部零点 \(\{z_j\}\subset \CC\) 满足 \(|z_j|=1\)（Lee--Yang 单位圆性质）。
+对实参数 \(r>0\) 定义输运多项式
+\[
+Q_r(w):=\operatorname{Res}_{z}\!\bigl(P(z),\ r z^2-w z+r^{-1}\bigr)\ \in\ K(r)[w].
+\]
+则：
+\begin{enumerate}
+  \item \(Q_r(w)\) 的每个零点 \(w\) 必落在椭圆 \(\mathcal E_r\) 上；
+  \item 若 \(r\in K\)，则 \(Q_r(w)\in K[w]\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由结式的定义，\(Q_r(w)=0\) 当且仅当存在 \(z\in\CC\) 同时满足
+\[
+P(z)=0,\qquad r z^2-w z+r^{-1}=0.
+\]
+第二式等价于
+\(
+w=r z+r^{-1}z^{-1}
+\)。
+若 \(|z|=1\)，则 \(z=e^{\mathrm{i}\theta}\)，从而 \(w=J_r(e^{\mathrm{i}\theta})\in\mathcal E_r\)，得 (1)。
+(2) 由结式是两多项式系数的多项式函数（可由 Sylvester 行列式表出）立即推出。证毕。
+\end{proof}
+
+\begin{corollary}[有理 Gödel 尺度的整系数闭包：素数分解可审计]\label{cor:prime-register-rational-godel-integer-closure}
+若 \(P(z)\in\ZZ[z]\)，且 \(r=a/b\in\QQ_{>0}\)（\(\gcd(a,b)=1\)），定义去分母的输运多项式
+\[
+\widetilde Q_{a,b}(w)
+:=\operatorname{Res}_{z}\!\bigl(P(z),\ a^2 z^2-a b\,w z+b^2\bigr)\ \in\ \ZZ[w].
+\]
+则 \(\widetilde Q_{a,b}\) 的零点仍全部落在 \(\mathcal E_{a/b}\) 上，并且其构造在素数指数外置口径下仅依赖于 \(a\) 与 \(b\) 的素因子指数寄存器（从而可被逐素数审计复算）。
+\end{corollary}
+\begin{proof}
+多项式 \(a^2 z^2-a b\,w z+b^2\) 的系数属于 \(\ZZ[w]\)，结式由 Sylvester 行列式给出，故 \(\widetilde Q_{a,b}\in\ZZ[w]\)。
+若 \(\widetilde Q_{a,b}(w)=0\)，则存在 \(|z|=1\) 使 \(P(z)=0\) 且 \(a^2 z^2-a b\,w z+b^2=0\)，于是
+\(
+w=(a/b)z+(b/a)z^{-1}
+=J_{a/b}(z)\in\mathcal E_{a/b}
+\)。
+最后一句由唯一素因子分解与 \eqref{eq:prime-register-godel-scale} 的显式求值直接推出。证毕。
+\end{proof}
+
+\begin{theorem}[椭圆化外置的可逆性：几何量确定素数尺度]\label{thm:prime-register-ellipse-invert-godel}
+在规范 \(r\ge 1\) 下，下述任一类观测足以唯一恢复尺度 \(r\)，从而在 \(r\in\QQ_{>0}\) 时唯一恢复其素数指数向量 \(a\in\ZZ^{(\PP)}\)（即外置寄存器内容）：
+\begin{enumerate}
+  \item 观测椭圆 \(\mathcal E_r\) 的半轴 \((A,B)\)。则 \(r=(A+B)/2\)；
+  \item 观测推前测度 \(\mu_r\) 的二阶径向矩 \(R_2(r)\)。则 \(r\) 由命题 \ref{prop:prime-register-joukowsky-radial-moment-invert} 的闭式给出。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) 由命题 \ref{prop:prime-register-godel-joukowsky-ellipse} 中 \(A(r)=r+r^{-1}\)、\(B(r)=r-r^{-1}\) 立得 \(A+B=2r\)。
+(2) 由命题 \ref{prop:prime-register-joukowsky-radial-moment-invert}。
+最后，当 \(r\in\QQ_{>0}\) 时，由算术基本定理存在且仅存在有限支撑 \(a\in\ZZ^{(\PP)}\) 使 \(r=\mathsf{G}(a)\)。证毕。
+\end{proof}
+
+\input{para__emergent-arithmetic-godel-busemann-time}
+
+\begin{remark}[可观测正规形与外置账本的分解接口]\label{rem:prime-register-observable-vs-ledger}
+定理 \ref{thm:prime-register-residual-ledger-group} 给出一条可直接核验的分解：
+\(\mathrm{NF}_{\mathrm{pr}}(n)\in\mathrm{ZG}\) 是由值不变量决定的可观测正规形（平方自由且无相邻素因子），而 \(R(n)\in H\) 则携带被正规化投影压缩掉的区分信息。
+二者合并为单射 \(\Theta(n)=(\mathrm{NF}_{\mathrm{pr}}(n),R(n))\)，从而将“信息守恒”落实为一份显式的因子分解与最小外置。
+此外，定义 \ref{def:prime-register-godel-scale-joukowsky}--定理 \ref{thm:prime-register-ellipse-invert-godel} 给出与该外置口径一致的复迹椭圆化接口：解析观测在外部支上对尺度 \(r\) 呈现刚性不可见性，而径向二阶矩给出单标量可逆读出。
+\end{remark}
+
+\input{subsubsec__emergent-arithmetic-brauer-prime-register}
+
+\endinput

@@ -38,6 +38,54 @@ G_\infty^{\mathrm{BC}}=\varprojlim_m G_m^{\mathrm{BC}}
 \)
 （推论 \ref{cor:pom-bc-inverse-system}）因此提供一个\emph{内禀 profinite 载体}：它在无限分辨率极限下仍与折叠塔严格相容，并天然携带 Haar 测度与 cylinder 事件坐标（参见 \S\ref{subsec:op-algebra-cylinder-properdatum} 以及 \S\ref{subsec:operator-zeta-interface} 中“柱投影—最大熵态—谱/\(\zeta\)”的算子代数接口；并见 \cite{CuntzKrieger1980}）。
 
+\begin{theorem}[柱语义保持对称的 profinite 重构]\label{thm:pom-bc-profinite-reconstruction-homeo-cyl}
+令 \(X_\infty\) 为黄金均值移位，并令 \(\mathcal P_m\) 表示由长度 \(m\) 柱集给出的有限 clopen 分割。
+对每个 \(m\) 令 \(G_m^{\mathrm{BC}}\) 作用于 \(\mathcal P_m\)（由其对可见柱坐标的定义给出），并令投影 \(G_{m+1}^{\mathrm{BC}}\twoheadrightarrow G_m^{\mathrm{BC}}\) 与分割细化相容（推论 \ref{cor:pom-bc-inverse-system}）。
+记逆极限 \(G_\infty^{\mathrm{BC}}=\varprojlim_m G_m^{\mathrm{BC}}\)。
+则存在自然的连续忠实同态
+\[
+\iota:\ G_\infty^{\mathrm{BC}}\hookrightarrow \mathrm{Homeo}(X_\infty),
+\]
+其像恰等于保持每一级柱分割结构并在第 \(m\) 层诱导 \(G_m^{\mathrm{BC}}\) 作用的自同胚群
+\[
+\mathrm{Homeo}_{\mathrm{cyl}}(X_\infty)
+:=\Bigl\{h\in\mathrm{Homeo}(X_\infty):\ \forall m,\ h(\mathcal P_m)=\mathcal P_m\ \text{且诱导置换属于 }G_m^{\mathrm{BC}}\Bigr\}.
+\]
+因此 \(\mathrm{Homeo}_{\mathrm{cyl}}(X_\infty)\) 为 profinite 群并与 \(G_\infty^{\mathrm{BC}}\) 拓扑同构。
+\end{theorem}
+\begin{proof}
+对 \(g=(g_m)_m\in G_\infty^{\mathrm{BC}}\) 与 \(x\in X_\infty\)，令 \(P_m(x)\in\mathcal P_m\) 为包含 \(x\) 的唯一分割块。
+定义
+\[
+\iota(g)(x):=\bigcap_{m\ge 1} g_m(P_m(x)).
+\]
+由分割细化与相容性，集合链 \(g_m(P_m(x))\) 随 \(m\) 单调嵌套；而柱分割生成 \(X_\infty\) 的拓扑，故该交集为单点，从而 \(\iota(g)\) 良定。
+\(\iota\) 的连续性与同胚性由 clopen 基与“有限层决定”的局部性给出；群同态性由逐层一致性推出；忠实性由柱分割分离点得到。
+\par
+反向地，若 \(h\in\mathrm{Homeo}_{\mathrm{cyl}}(X_\infty)\)，则其在每层 \(\mathcal P_m\) 上诱导的置换给出相容族 \((h_m)_m\in\varprojlim_m G_m^{\mathrm{BC}}=G_\infty^{\mathrm{BC}}\)，并按上式重构回 \(h\)。
+故 \(\iota\) 为同构到其像，且像等于 \(\mathrm{Homeo}_{\mathrm{cyl}}(X_\infty)\)。证毕。
+\end{proof}
+
+\begin{theorem}[profinite 规范群的连续表示范畴为有限层表示的滤过余极限]\label{thm:pom-repcont-profinite-colimit}
+令 \(G=\varprojlim_m G_m\) 为 profinite 群，\(\mathrm{Rep}_{\mathrm{cont}}(G)\) 为其有限维复连续表示所成张量范畴。
+则存在自然的张量范畴等价
+\[
+\mathrm{Rep}_{\mathrm{cont}}(G)\ \simeq\ \varinjlim_m \mathrm{Rep}(G_m),
+\]
+其中右端沿投影 \(G\twoheadrightarrow G_m\) 的拉回函子取滤过余极限。
+\end{theorem}
+\begin{proof}
+任取连续表示 \(\rho:G\to\GL(V)\)（\(\dim V<\infty\)），则 \(\ker\rho\) 为开正规子群。
+对 profinite 群，开正规子群族构成单位元邻域基，故存在 \(m\) 使 \(\ker(\pi_m)\subseteq\ker(\rho)\)（\(\pi_m:G\to G_m\) 为投影），从而 \(\rho\) 因子化为 \(\rho=\rho_m\circ \pi_m\)。
+态射同理：\(G\)-同态在足够大的有限层上已经是 \(G_m\)-同态。
+张量积与对偶结构在两侧均与拉回相容，因此得到张量范畴等价。证毕。
+\end{proof}
+
+\begin{remark}[有限分辨率生成性：连续扇区的可审计闭包]\label{rem:pom-profinite-sector-generated-by-finite-layers}
+定理 \ref{thm:pom-repcont-profinite-colimit} 的直接含义是：若把“对称扇区”组织为连续表示范畴的对象，则任何有限维连续扇区都必在某一有限层 \(G_m\) 上已完成生成与判等。
+因此，在 \(G_\infty^{\mathrm{BC}}\) 的 profinite 口径下，“连续对称”并不引入额外不可审计自由度；其全部有限维可见内容可被压缩为有限分辨率数据上的离散核对问题。
+\end{remark}
+
 \begin{remark}[Tannaka--Krein 型重构（路线图；接口化陈述）]\label{rem:pom-tannaka-krein-roadmap}
 在本文口径下，“规范对称”可被理解为：保持 cylinder 语义（由柱投影/前缀坐标生成的可见 \(\sigma\)-代数）并与折叠塔兼容的自然自同构群（注 \ref{rem:symmetry-projection-automorphism}）。
 在有界切片内，\(\mathbf{PW}^{\ast}_{\le}\) 及其语义函子 \(\mathsf{Sem}\)（定义 \ref{def:pom-sem-functor}）提供了一个可操作的“纤维函子”替身：

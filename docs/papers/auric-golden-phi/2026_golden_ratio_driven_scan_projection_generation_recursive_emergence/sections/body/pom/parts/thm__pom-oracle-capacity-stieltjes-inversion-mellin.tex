@@ -1,0 +1,79 @@
+\begin{theorem}[预言机容量曲线的 Stieltjes 反演：多重度谱的可识别性与 Mellin 表示]\label{thm:pom-oracle-capacity-stieltjes-inversion-mellin}
+固定分辨率 \(m\)。
+令 \(X_m\) 为折叠诱导的有限状态空间，并记纤维多重度
+\[
+d_m(x):=\card{\Fold_m^{-1}(x)}\qquad(x\in X_m).
+\]
+定义预言机容量计数（同定理 \ref{thm:pom-oracle-success-variational-laplace} 的记号）
+\[
+\mathcal{C}^{\mathrm{orc}}_m(B):=\sum_{x\in X_m}\min\{d_m(x),2^B\}\qquad(B\in\ZZ_{\ge 0}),
+\]
+并引入连续化容量曲线
+\[
+C_m(t):=\sum_{x\in X_m}\min\{d_m(x),t\}\qquad(t\ge 0),
+\]
+以及尾计数函数
+\[
+N_m(u):=\card{\{x\in X_m:\ d_m(x)\ge u\}}\qquad(u\ge 0).
+\]
+则成立：
+\begin{enumerate}
+  \item \textbf{（容量--尾分布恒等式）}
+  \[
+  C_m(t)=\int_{0}^{t}N_m(u)\,\dd u\qquad(t\ge 0),
+  \]
+  从而 \(N_m(t)=\frac{\dd}{\dd t^+}C_m(t)\)（右导数意义下）。
+  \item \textbf{（谱的可识别性）}
+  多重集 \(\{d_m(x):x\in X_m\}\) 由 \(C_m(\cdot)\) 唯一确定；更具体地，对任意整数 \(k\ge 1\)，
+  \[
+  \card{\{x\in X_m:\ d_m(x)=k\}}=N_m(k)-N_m(k+1).
+  \]
+  \item \textbf{（Mellin--Stieltjes 表示）}
+  对任意实数 \(a>0\)，幂和
+  \[
+  S_m(a):=\sum_{x\in X_m}d_m(x)^a
+  \]
+  满足
+  \[
+  S_m(a)=a\int_{0}^{\infty}u^{a-1}N_m(u)\,\dd u.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+对任意 \(d,t\ge 0\) 有恒等式
+\[
+\min\{d,t\}=\int_{0}^{t}\mathbf 1_{\{u<d\}}\,\dd u,
+\]
+从而
+\[
+C_m(t)
+=\sum_{x\in X_m}\int_{0}^{t}\mathbf 1_{\{u<d_m(x)\}}\,\dd u
+=\int_{0}^{t}\sum_{x\in X_m}\mathbf 1_{\{d_m(x)\ge u\}}\,\dd u
+=\int_{0}^{t}N_m(u)\,\dd u,
+\]
+得到第一条；右导数关系由 \(N_m\) 的右连续阶梯性直接推出。
+\par
+对第二条，对整数 \(k\ge 1\) 有
+\[
+\card{\{x:\ d_m(x)=k\}}
+=\card{\{x:\ d_m(x)\ge k\}}-\card{\{x:\ d_m(x)\ge k+1\}}
+=N_m(k)-N_m(k+1),
+\]
+因而由 \(N_m=\dd C_m/\dd t^+\) 可恢复全部频数，从而多重度谱由 \(C_m\) 唯一确定。
+\par
+对第三条，恒等式
+\[
+d^a=a\int_{0}^{d}u^{a-1}\,\dd u\qquad(d\ge 0)
+\]
+给出
+\[
+S_m(a)
+=a\sum_{x\in X_m}\int_{0}^{d_m(x)}u^{a-1}\,\dd u
+=a\int_{0}^{\infty}u^{a-1}\sum_{x\in X_m}\mathbf 1_{\{d_m(x)\ge u\}}\,\dd u
+=a\int_{0}^{\infty}u^{a-1}N_m(u)\,\dd u.
+\]
+证毕。
+\end{proof}
+
+\endinput

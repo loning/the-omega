@@ -50,12 +50,12 @@ def run() -> str:
     """
     A = pair_sofic_adjacency()
     pm = compute_parry_measure(A)
-    assert_equal(pm.lam, 2, "Perron root should be 2.")
+    assert_equal(pm.lam, 2, "Perron 根应为 2。")
 
     edges, Q, w, G = _edge_chain_for_discrepancy(pm.P, pm.pi)
     ones = sp.Matrix([1] * len(edges))
     mu = sp.simplify((w.T * G)[0])
-    assert_equal(mu, R(4, 9), "Mean of discrepancy indicator should be 4/9.")
+    assert_equal(mu, R(4, 9), "差异指示过程的均值应为 4/9。")
 
     Gc = sp.simplify(G - mu * ones)
 
@@ -65,7 +65,7 @@ def run() -> str:
         return sp.simplify((w.T * sp.Matrix([Gc[i] * v[i] for i in range(len(edges))]))[0])
 
     c0 = cov_j(0)
-    assert_equal(c0, R(20, 81), "c0 should be 20/81.")
+    assert_equal(c0, R(20, 81), "c0 应为 20/81。")
 
     # Verify closed form for j>=1:
     # c_j = 2^{-j} * ( 1/8 + (-1)^j * (7/648 + j/108) ).
@@ -75,7 +75,7 @@ def run() -> str:
             (R(1, 2) ** j)
             * (R(1, 8) + ((-1) ** j) * (R(7, 648) + R(j, 108)))
         )
-        assert_equal(cj, closed, f"Covariance closed form mismatch: j={j}")
+        assert_equal(cj, closed, f"协方差闭式不匹配：j={j}")
 
     # Green--Kubo asymptotic variance via fundamental matrix on centered chain
     Pi = ones * w.T  # projector
@@ -86,7 +86,7 @@ def run() -> str:
     sum_ge1 = sp.simplify(sum_ge0 - Gc)
     sum_c_ge1 = sp.simplify((w.T * sp.Matrix([Gc[i] * sum_ge1[i] for i in range(len(edges))]))[0])
     sigma2 = sp.simplify(c0 + 2 * sum_c_ge1)
-    assert_equal(sigma2, R(118, 243), "CLT asymptotic variance sigma^2 should be 118/243.")
+    assert_equal(sigma2, R(118, 243), "CLT 渐近方差 sigma^2 应为 118/243。")
 
     # PSD derivation from closed-form covariance series (symbolic)
     omega = sp.Symbol("omega", real=True)
@@ -122,10 +122,10 @@ def run() -> str:
         )
         / (9 * (4 * sp.cos(omega) - 5) * (4 * sp.cos(omega) + 5) ** 2)
     )
-    assert_simplify_zero(S_omega - expected, "PSD closed form mismatch with expected rational expression.")
+    assert_simplify_zero(S_omega - expected, "功率谱闭式与期望有理式不一致。")
 
     S0 = sp.simplify(S_omega.subs({omega: 0}))
-    assert_equal(S0, R(118, 243), "S(0) should equal 118/243 (Green--Kubo/Wiener--Khinchin consistency).")
+    assert_equal(S0, R(118, 243), "S(0) 应等于 118/243（Green--Kubo/Wiener--Khinchin 一致性）。")
 
     return "Spectrum OK (cov closed form; sigma^2=118/243; PSD rational; S(0) matches)"
 

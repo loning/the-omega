@@ -349,13 +349,13 @@ r_{\mathsf S}(\omega)(p)=0\ \text{对其余 }p.
 由算术基本定理，向量 \(r\) 的有限支撑坐标 \(\{r(p_t)\}_{t\le T}\) 唯一确定一个有限序列 \((\mathrm{code}(e_1),\dots,\mathrm{code}(e_T))\)，从而唯一确定事件序列 \((e_1,\dots,e_T)\)。
 又由编码约定，每个 \(e_t\) 都携带足够信息以在配置上施加对应的逆原子重写。
 因此从正规形 \(\iota_m(x)\) 出发，按 \(t=T,T{-}1,\dots,1\) 逆序回放这些逆原子重写，唯一恢复初始配置 \(a_0=\iota_m(\omega)\)，从而恢复 \(\omega\)。
-故 \((x,r)\) 至多对应一个 \(\omega\)，即 \(\widetilde{\Fold}^{\mathsf S}_m\) 为单射。
-\end{proof}
-
-\begin{remark}["不丢信息"的严格版本：丢失被外置为可寻址残差]\label{rem:pom-fold-lossless}
+故 \((x,r)\) 至多对应一个 \(\omega\)，即 \(\widetilde{\Fold}^{\mathsf S}_m\) 为单射。证毕。
+\end{proof}\begin{remark}[“不丢信息”的严格版本：丢失被外置为可寻址残差]\label{rem:pom-fold-lossless}
 命题 \ref{prop:pom-fold-prime-lift-injective} 给出“空间换时间”的最干净形式之一：折叠作为规范投影门 \(P_Z\) 本身多对一，但只要愿意在 \(\mathcal P\) 上外置一份稀疏残差账本（prime-register），就能把它提升为可逆门。
 因此“信息丢失”不是不可控的湮灭，而是被编译为一份可寻址、可回放的外置证书；其空间占用由残差支撑大小（原子事件条数）计数，而其可回放性由唯一分解与确定性策略保证。
 \end{remark}
+
+\input{parts/para__pom-fold-prime-register-rigidity-forest-trace-index}
 
 \begin{corollary}[可逆化不免费：prime-register 残差的线性下界（均匀基线）]\label{cor:pom-prime-residual-linear-lb}
 沿用定义 \ref{def:pom-fold-prime-lift}：对输入 $\omega\in\Omega_{m+1}$，令 $T_{m+1}^{\mathsf S}(\omega)$ 为策略 $\mathsf S$ 产生的原子重写事件步数，并令 $r_{\mathsf S}(\omega)\in\mathcal P$ 为对应 prime-register 残差向量。
@@ -387,10 +387,8 @@ T_{m+1}^{\mathsf S}(\omega)\ \ge\ \left\lceil \frac{G_m(\omega)}{3}\right\rceil 
 \lim_{m\to\infty}\mathbb E[G_m(\omega)]/m=4/9
 \)，
 得 $\liminf_{m\to\infty}\mathbb E[T_{m+1}^{\mathsf S}(\omega)]/m\ge 4/27$。
-最后，由定义 \ref{def:pom-fold-prime-lift}，对 $1\le t\le T$ 有 $r_{\mathsf S}(\omega)(p_t)=\mathrm{code}(e_t(\omega))\in\NN_{\ge 1}$，因此残差向量的非零坐标数恰为 $T_{m+1}^{\mathsf S}(\omega)$。
-\end{proof}
-
-\begin{remark}[生长但不丢信息：保守细化与残差外置]\label{rem:pom-growth-no-loss}
+最后，由定义 \ref{def:pom-fold-prime-lift}，对 $1\le t\le T$ 有 $r_{\mathsf S}(\omega)(p_t)=\mathrm{code}(e_t(\omega))\in\NN_{\ge 1}$，因此残差向量的非零坐标数恰为 $T_{m+1}^{\mathsf S}(\omega)$。证毕。
+\end{proof}\begin{remark}[生长但不丢信息：保守细化与残差外置]\label{rem:pom-growth-no-loss}
 本文中“体系在生长”的严格对应物不是“永远不做投影”，而是把信息损失从不可控的丢弃改写为\emph{可计数、可搬运、可回收}的残差坐标，同时把生长落实为分辨率与语义的保守细化。其要点可由三条规范化接口约束固定：
 \begin{enumerate}
   \item \textbf{对象层（分辨率保守细化）：}稳定地址空间在截断映射 \(\pi_{m+1\to m}:X_{m+1}\to X_m\) 下形成逆系统，并满足
@@ -400,11 +398,192 @@ T_{m+1}^{\mathsf S}(\omega)\ \ge\ \left\lceil \frac{G_m(\omega)}{3}\right\rceil 
   （定理 \ref{thm:pom-inverse-limit}）。因此增加分辨率只是在同一对象 \(X_\infty\) 上延长可见前缀，并不更换本体对象。
   \item \textbf{语义层（保守扩张）：}新概念只通过既有可观测事件的柱集细化与代数组合产生；在代数语言下，这体现为柱事件延拓导致的包含塔
   \(
-  \mathcal{A}_{m_1}\subseteq\mathcal{A}_{m_2},\
+  \mathcal{A}_{m_1}\subseteq\mathcal{A}_{m_2},\ 
   \mathcal{B}_{m_1}\subseteq\mathcal{B}_{m_2}
   \)
   以及条件期望塔 \(E_{m_1}\circ E_{m_2}=E_{m_1}\)。因此旧层可判定的事件在新层仍保持可判定性，新层仅增加可寻址的组合与细化，而不抹除旧真值。
   \item \textbf{机制层（遗忘显式化为纤维残差）：}投影 \(P_Z\) 的“丢失”发生在有限分辨率：\(\Fold_m:\Omega_m\to X_m\) 必然多对一，其纤维多重度 \(d_m(x)\) 与条件期望 \(E_m\) 给出沿纤维平均的 coarse-graining 接口。因此丢失不再是黑箱，而是由可计数的纤维自由度显式量化；并且该残差可通过额外轴束（例如素数寄存器纤维 \(\mathcal{P}\)；注 \ref{rem:pom-prime-carry}）外置存储，从而在更高态空间中实现“信息守恒”的可审计版本。
 \end{enumerate}
 以上三点把“生长但不丢信息”精确化为：主尺度（本体对象与熵率）保持不变，差异被转写为可追踪的残差坐标；体系的增长体现在分辨率与语义表达的保守细化上，而不体现为对旧结构的覆盖。
+\end{remark}
+
+\subsection{可回放外置的算术下界：素数轴占用与 Gödel 位长代价}\label{subsec:pom-replayable-externalization-arithmetic-lower-bounds}
+上一小节把“通过 prime-register 残差实现可回放单射化”的必要事件步数 \(T_{m+1}^{\mathsf S}\) 与规范差 \(G_m\) 对齐，并在均匀基线下给出线性下界（推论 \ref{cor:pom-prime-residual-linear-lb}）。
+本小节进一步在整数层给出两类不可约的算术代价：在线幅度约束下的素数轴占用下界，以及在时间索引互素账本口径下的 primorial 位长下界；二者合并后给出 prime-register 回放 Gödel 整数的超线性位长下界。
+
+\paragraph{在线乘法外置与素数轴占用}
+令 \(\Sigma\) 为有限字母表，\(|\Sigma|=A\ge 2\)。
+给定一族映射 \(h_t:\Sigma\to\NN_{\ge 2}\ (t=1,2,\dots,T)\)，定义在线乘法编码
+\[
+G_T:\Sigma^T\to\NN_{\ge 1},\qquad
+G_T(a_1,\dots,a_T):=\prod_{t=1}^{T} h_t(a_t).
+\]
+记由该编码在 \(1\le t\le T\) 内所动用的素因子集合为
+\[
+S_T:=\Bigl\{p\in\mathbb{P}:\ \exists\,t\le T,\ \exists\,a\in\Sigma\ \text{使}\ p\mid h_t(a)\Bigr\}.
+\]
+
+\begin{theorem}[多项式幅度约束下的素数轴下界]\label{thm:pom-online-multiplicative-prime-support-lb}
+沿用上述记号，并假设：
+\begin{enumerate}
+  \item 对每个 \(t\le T\)，映射 \(h_t\) 为单射；
+  \item 编码 \(G_T\) 为单射；
+  \item 存在常数 \(\kappa>0\) 使得对所有 \(t\le T\) 与所有 \(a\in\Sigma\) 都有 \(h_t(a)\le t^{\kappa}\)。
+\end{enumerate}
+则成立下界
+\[
+\boxed{\;
+|S_T|
+\ \ge\
+\frac{T\log A}{\log\!\Bigl(1+\frac{\kappa}{\log 2}\log(T!)\Bigr)}\;}
+\]
+并且当 \(T\to\infty\) 时有渐近
+\[
+|S_T|=\Omega\!\left(\frac{T}{\log T}\right).
+\]
+\end{theorem}
+\begin{proof}
+对素数 \(p\) 记 \(v_p(n)\) 为 \(p\)-进指数。
+由幅度约束与 \(p\ge 2\)，对任意 \(t\le T\) 与 \(a\in\Sigma\) 有
+\[
+v_p\!\bigl(h_t(a)\bigr)\le \log_p h_t(a)\le \frac{\log h_t(a)}{\log 2}\le \frac{\kappa\log t}{\log 2}.
+\]
+因此对任意序列 \((a_1,\dots,a_T)\) 与任意 \(p\in S_T\)，有
+\[
+v_p\!\bigl(G_T(a_1,\dots,a_T)\bigr)
+\le \frac{\kappa}{\log 2}\sum_{t=1}^{T}\log t
+=\frac{\kappa}{\log 2}\log(T!).
+\]
+于是每个坐标 \(v_p(G_T(\cdot))\) 的可取值个数至多为
+\(
+1+\frac{\kappa}{\log 2}\log(T!)
+\)。
+由算术基本定理，任意 \(n\in\mathrm{Im}(G_T)\) 被指数向量 \((v_p(n))_{p\in S_T}\) 唯一确定，从而
+\[
+|\mathrm{Im}(G_T)|
+\le
+\Bigl(1+\tfrac{\kappa}{\log 2}\log(T!)\Bigr)^{|S_T|}.
+\]
+另一方面，\(G_T\) 单射蕴含 \(|\mathrm{Im}(G_T)|=|\Sigma^T|=A^T\)。
+取对数并整理即得所示下界。
+最后，\(\log(T!)\sim T\log T\) 给出
+\(\log\!\bigl(1+\frac{\kappa}{\log 2}\log(T!)\bigr)=\Theta(\log T)\)，从而得到 \(|S_T|=\Omega(T/\log T)\)。
+\end{proof}
+
+\input{parts/para__pom-commutative-ledger-order-obstruction-noncommutative-2x2}
+
+\paragraph{互素时间索引账本与 primorial 位长}
+在回放型外置中，常见制度是把时间索引 \(t\) 解释为一条互不混叠的离散轴：即每一时刻使用与其它时刻互素的底数，避免跨时刻共享同一素因子而引入不可审计的纠缠。
+下述定理给出该制度在位长意义下的最优选择与不可改进下界。
+
+\begin{theorem}[互素时间索引账本的 primorial 最优性]\label{thm:pom-coprime-ledger-primorial-optimality}
+沿用上述 \(\Sigma,A,T\)。
+设存在整数 \(M\ge 1\)、一族两两互素的整数 \((q_t)_{t=1}^{T}\)（即 \(\gcd(q_i,q_j)=1\) 若 \(i\ne j\)），以及映射 \(c_t:\Sigma\to\{1,2,\dots,M\}\) 使得
+\[
+h_t(a)=q_t^{\,c_t(a)}\qquad(a\in\Sigma,\ 1\le t\le T).
+\]
+并假设每个 \(t\) 都满足 \(\max_{a\in\Sigma}c_t(a)=M\)。
+令 \(p_1<p_2<\cdots\) 为素数序列，并记 primorial
+\(
+p_T\#:=\prod_{t=1}^{T}p_t
+\)。
+则对任意此类系统都有最坏情形位长下界
+\[
+\boxed{\;
+\max_{(a_1,\dots,a_T)\in\Sigma^T}\ \log G_T(a_1,\dots,a_T)
+\ \ge\
+M\log(p_T\#)\;}
+\]
+并且在所有满足两两互素约束的 \((q_t)\) 中，使该最坏情形达到最小的选择可取为
+\[
+q_t=p_t\qquad(1\le t\le T).
+\]
+此外由素数定理的标准推论 \(\log(p_T\#)\sim T\log T\)，任一互素账本都满足
+\(
+\max \log G_T=\Omega(T\log T)
+\)，而 \(q_t=p_t\) 实现 \(\Theta(T\log T)\)（精确到常数因子）。
+\end{theorem}
+\begin{proof}
+记 \(m_t:=\max_{a\in\Sigma}c_t(a)=M\)。
+则
+\[
+\max_{(a_1,\dots,a_T)} \log G_T(a_1,\dots,a_T)
+=\sum_{t=1}^{T}\max_{a\in\Sigma}c_t(a)\,\log q_t
+=M\sum_{t=1}^{T}\log q_t
+=M\log\!\Bigl(\prod_{t=1}^{T}q_t\Bigr).
+\]
+对每个 \(t\) 取 \(r_t\) 为 \(q_t\) 的任一素因子，则 \(r_t\) 为素数。
+两两互素性保证 \(r_1,\dots,r_T\) 两两不同，因此
+\[
+\prod_{t=1}^{T}q_t\ \ge\ \prod_{t=1}^{T}r_t\ \ge\ \prod_{t=1}^{T}p_t\ =\ p_T\#.
+\]
+代回即得所示下界。
+当取 \(q_t=p_t\) 时，上述链式不等式在“选取 \(T\) 个两两不同素数之积”意义下达到最小，从而使最坏位长达到最小。
+最后，\(\log(p_T\#)\sim T\log T\) 为素数定理推论，得到渐近断言。
+\end{proof}
+
+\paragraph{应用：\texorpdfstring{$\widetilde{\Fold}^{\mathsf S}_m$}{Fold} 的 prime-register 回放位长}
+定义 \ref{def:pom-fold-prime-lift} 把原子事件序列外置到 prime-register 残差 \(r_{\mathsf S}(\omega)\in\mathcal P\)，并由命题 \ref{prop:pom-fold-prime-lift-injective} 给出回放单射化。
+下述定理表明：在该制度下，Gödel 整数 \(N(r_{\mathsf S}(\omega))\) 的位长必须呈现超线性增长。
+
+\begin{theorem}[prime-register 回放的 Gödel 位长超线性下界]\label{thm:pom-fold-prime-godel-bitlength-superlinear}
+沿用定义 \ref{def:pom-prime-fiber} 与定义 \ref{def:pom-fold-prime-lift} 的记号。
+对输入 \(\omega\in\Omega_{m+1}\) 记事件步数为 \(T_{m+1}^{\mathsf S}(\omega)\)，并令 primorial \(p_T\#=\prod_{t=1}^{T}p_t\)。
+则对每个 \(\omega\) 都有点态下界
+\[
+\boxed{\;
+\log N\!\bigl(r_{\mathsf S}(\omega)\bigr)\ \ge\ \log\!\bigl(p_{T_{m+1}^{\mathsf S}(\omega)}\#\bigr)\;}
+\]
+并且在均匀基线 \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) 下存在绝对常数 \(c>0\) 使
+\[
+\EE\!\left[\log N\!\bigl(r_{\mathsf S}(\omega)\bigr)\right]
+\ \ge\
+c\,m\log m\ +\ o(m\log m)
+\qquad(m\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+由定义 \ref{def:pom-fold-prime-lift}，对 \(1\le t\le T:=T_{m+1}^{\mathsf S}(\omega)\) 有
+\(
+r_{\mathsf S}(\omega)(p_t)=\mathrm{code}(e_t(\omega))\in\NN_{\ge 1}
+\)；
+因此
+\[
+N\!\bigl(r_{\mathsf S}(\omega)\bigr)
+=\prod_{p\in\mathbb{P}}p^{r_{\mathsf S}(\omega)(p)}
+\ge \prod_{t=1}^{T} p_t
+=p_T\#,
+\]
+得到点态下界。
+\par
+由素数定理推论 \(\log(p_T\#)\sim T\log T\)，存在 \(T_0\) 使得对所有 \(T\ge T_0\) 有
+\(
+\log(p_T\#)\ge \tfrac12\,T\log T
+\)。
+于是对足够大的 \(m\)，将 \(T<T_0\) 的贡献吸收进 \(o(m\log m)\) 得
+\[
+\EE\!\left[\log N(r_{\mathsf S}(\omega))\right]
+\ge \frac12\,\EE\!\left[T_{m+1}^{\mathsf S}(\omega)\,\log T_{m+1}^{\mathsf S}(\omega)\right]
++o(m\log m).
+\]
+注意函数 \(x\mapsto x\log x\) 在 \((0,\infty)\) 上凸，故由 Jensen 不等式
+\[
+\EE[T\log T]\ \ge\ \EE[T]\log\EE[T]
+\qquad\bigl(T=T_{m+1}^{\mathsf S}(\omega)\bigr).
+\]
+再由推论 \ref{cor:pom-prime-residual-linear-lb} 的
+\(
+\EE[T_{m+1}^{\mathsf S}(\omega)]\ge \frac{4}{27}m+o(m)
+\)
+得到
+\(
+\EE[T]\log\EE[T]\ge c'\,m\log m+o(m\log m)
+\)
+对某个常数 \(c'>0\)。
+合并即得结论。
+\end{proof}
+
+\begin{remark}[制度含义：回放型外置的位长主项]\label{rem:pom-replayable-externalization-bitlength}
+定理 \ref{thm:pom-fold-prime-godel-bitlength-superlinear} 表明：在以 prime-register 作为可回放外置轴、并把事件序列以素数坐标逐步外置的制度下，Gödel 整数位长的主项被强制提升为 \(m\log m\) 量纲。
+该量纲约束并非由“单射化原则”本身直接给出（命题 \ref{prop:pom-fold-prime-lift-injective}），而是由“时间索引互素轴 \(\Rightarrow\) primorial 位长”与“均匀基线下事件数线性增长”（推论 \ref{cor:pom-prime-residual-linear-lb}）合成推出的算术后果。
 \end{remark}

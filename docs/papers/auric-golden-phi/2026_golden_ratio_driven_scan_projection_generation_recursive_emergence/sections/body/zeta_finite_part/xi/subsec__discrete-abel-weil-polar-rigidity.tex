@@ -176,4 +176,246 @@ N\ \gtrsim\ \frac{T\log b}{2\pi}
 \]
 即可把 \(\{E_b(0),\dots,E_b(N-1)\}\) 作为输入，使用 Prony、矩阵铅笔、ESPRIT 等标准频率估计工具近似恢复频率集合 \(\{\gamma\log b\}\)，再除以 \(\log b\) 得到 \(\gamma\) 的估计。余项 \(O(b^{-n/2})\) 给出一个天然的噪声地板，并随 \(n\) 几何衰减。
 
+\paragraph{Hardy 能量的一阶重整化：普适常数与 Li 系数接口}
+由定义 \ref{def:Abel-damped}，\(\mathcal A_{b,\delta}\) 的 Hardy 范数平方为
+\[
+\|\mathcal A_{b,\delta}\|_{H^2(\mathbb D)}^2
+=\sum_{n\ge 0}\bigl|E_b(n)\bigr|^2\,b^{-2\delta n},
+\]
+可视作“对数采样误差序列”的 \(\delta\)-正则化能量。
+在 RH 下，\(\delta>0\) 的任意固定值足以将极点推出单位圆外侧（定理 \ref{thm:hardy-criterion-delta}），从而能量有限；
+而当 \(\delta\downarrow 0\) 时，能量发生不可避免的一阶爆炸。
+下述定理给出该爆炸的普适首项常数，并将其识别为 Li 系数的能量型重整化不变量。
 
+\begin{theorem}[\texorpdfstring{$\delta$}{δ}-正则化 Abel 生成函数的 Hardy 能量：普适一阶重整化常数]\label{thm:abel-harddamped-universal-renorm-constant}
+固定 \(b>1\)，并在 RH 成立且全部非平凡零点为单零点的前提下，定义 Hardy 能量
+\[
+\mathcal E_b(\delta):=\|\mathcal A_{b,\delta}\|_{H^2(\mathbb D)}^2
+=\sum_{n\ge 0}\bigl|E_b(n)\bigr|^2\,b^{-2\delta n}
+\qquad(\delta>0).
+\]
+则存在极限
+\begin{equation}\label{eq:abel-harddamped-renorm-limit}
+\boxed{\;
+\lim_{\delta\downarrow 0}(2\delta\log b)\,\mathcal E_b(\delta)
+=\sum_{\rho}\frac{1}{\rho(1-\rho)}
+=2+\gamma-\log(4\pi)\;}
+\end{equation}
+其中 \(\gamma\) 为欧拉常数，求和对全部非平凡零点按共轭与 \(\rho\mapsto 1-\rho\) 的对称性取主值。
+因此
+\begin{equation}\label{eq:abel-harddamped-first-order-asymptotic}
+\boxed{\;
+\mathcal E_b(\delta)=\frac{2+\gamma-\log(4\pi)}{2\,\delta\,\log b}+O_b(1)\qquad(\delta\downarrow 0).\;}
+\end{equation}
+\end{theorem}
+\begin{proof}[证明要点]
+由命题 \ref{prop:damped-poles} 的阻尼 Abel--Weil 分解，在 RH 下可写
+\[
+\mathcal A_{b,\delta}(r)
+=-\sum_{\rho}\frac{1}{\rho}\cdot\frac{1}{1-r\,b^{\rho-(\frac12+\delta)}}\;+\;H_{b,\delta}(r),
+\qquad |r|<1,
+\]
+其中 \(H_{b,\delta}\) 在 \(|r|<b^{1/2+\delta}\) 内解析，因而 \(\|H_{b,\delta}\|_{H^2}=O_b(1)\) 且对 \(\delta\downarrow 0\) 有一致界。
+记
+\(
+\alpha_\rho:=b^{\rho-(\frac12+\delta)}
+\)，
+则 \(|\alpha_\rho|=b^{-\delta}<1\)，并且
+\(
+\frac{1}{1-\alpha_\rho r}=\sum_{n\ge 0}\alpha_\rho^{\,n}r^n
+\)
+为 \(H^2(\mathbb D)\) 的再生核型函数，满足
+\[
+\left\|\frac{1}{1-\alpha_\rho r}\right\|_{H^2}^2=\sum_{n\ge 0}|\alpha_\rho|^{2n}=\frac{1}{1-b^{-2\delta}}
+\sim \frac{1}{2\delta\log b}.
+\]
+对不同零点 \(\rho\neq\rho'\)，其核内积为
+\[
+\left\langle \frac{1}{1-\alpha_\rho r},\frac{1}{1-\alpha_{\rho'} r}\right\rangle_{H^2}
+=\frac{1}{1-\overline{\alpha_\rho}\alpha_{\rho'}}
+=\frac{1}{1-b^{-2\delta}e^{i(\gamma'-\gamma)\log b}},
+\]
+在 \(\delta\downarrow 0\) 时保持有界（按主值理解的角频率碰撞除外）。
+因此在乘上 \(1-b^{-2\delta}\sim 2\delta\log b\) 的重整化后，非对角项被压灭，仅留下对角主项：
+\[
+(1-b^{-2\delta})\,\mathcal E_b(\delta)\to \sum_{\rho}\frac{1}{|\rho|^2}
+=\sum_{\rho}\frac{1}{\rho(1-\rho)}.
+\]
+最后，令 Riemann 完成化函数
+\(
+\Xi_\zeta(s):=\frac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)
+\)。
+由 \(\Xi_\zeta\) 的 Hadamard 因子分解，在按共轭与 \(s\mapsto 1-s\) 的对称性取主值的正规化下可取
+\(
+\Xi_\zeta(s)=\Xi_\zeta(0)\prod_\rho(1-s/\rho)
+\)，
+从而
+\(
+\sum_\rho \frac{1}{\rho}=-\Xi_\zeta'(0)/\Xi_\zeta(0)
+\)，
+而对称性给出 \(\sum_\rho \frac{1}{\rho(1-\rho)}=2\sum_\rho \frac{1}{\rho}\)。
+直接在 \(s=0\) 处对 \(\log\Xi_\zeta(s)\) 展开并使用 \(\zeta(0)=-\tfrac12\)、\(\zeta'(0)=-\tfrac12\log(2\pi)\)（由函数方程推出）得到
+\(
+2\sum_\rho \frac{1}{\rho}=2+\gamma-\log(4\pi)
+\)，
+从而得到 \eqref{eq:abel-harddamped-renorm-limit} 与 \eqref{eq:abel-harddamped-first-order-asymptotic}。证毕。
+\end{proof}
+
+\begin{remark}[Li 系数的能量型读出]\label{rem:abel-harddamped-li1}
+由 Li 系数的标准生成定义（见附录 \S\ref{subsec:op-algebra-hzom-unitary-slice-rh}），第一 Li 系数 \(\Lambda_1\) 满足
+\(
+\Lambda_1=\sum_\rho \rho^{-1}
+\)（按对称性取主值），故 \eqref{eq:abel-harddamped-renorm-limit} 的常数亦可写为
+\[
+\sum_{\rho}\frac{1}{\rho(1-\rho)}=2\Lambda_1.
+\]
+因此，\(\delta\)-正则化 Hardy 能量的重整化首项常数给出一个实现中立的 Li--\(1\) 证书接口。
+\end{remark}
+
+\paragraph{底数递归作为重整化群：极点半径的指数放大}
+对整数 \(m\ge 1\)，底数替换 \(b\mapsto b^m\) 把对数采样步长放大 \(m\) 倍，从而在 \(r\)-平面上把极点半径作幂次共轭。
+该机制把“离临界线偏移 \(\varepsilon\)”重写为可审计的尺度律 \(\varepsilon\mapsto m\varepsilon\)，并将边界层扰动压入单位圆内的显式奇性位置。
+
+\begin{proposition}[底数递归恒等式与极点半径的幂次共轭]\label{prop:abel-base-recursion-pole-conjugacy}
+固定 \(b>1\)。
+对任意整数 \(m\ge 1\) 与 \(n\ge 0\) 有严格恒等式
+\[
+\boxed{\ E_{b^m}(n)=E_b(mn)\ }.
+\]
+从而在形式幂级数意义下成立 root-of-unity 抽取恒等式
+\[
+\boxed{\ \mathcal A_{b^m}(r)=\sum_{n\ge 0}E_b(mn)\,r^n
+=\frac{1}{m}\sum_{j=0}^{m-1}\mathcal A_b\!\left(\omega^j r^{1/m}\right),\qquad \omega=e^{2\pi i/m}. }
+\]
+并且对任意 \(\delta\ge 0\) 有同型抽取
+\[
+\boxed{\ \mathcal A_{b^m,\delta}(r)
+=\frac{1}{m}\sum_{j=0}^{m-1}\mathcal A_{b,\delta}\!\left(\omega^j r^{1/m}\right)\ }.
+\]
+若 \(\rho\) 为非平凡零点，则其在 \(\mathcal A_b\) 中诱导的极点 \(r_\rho(b)=b^{-(\rho-\frac12)}\) 满足
+\[
+\boxed{\ r_\rho(b^m)=r_\rho(b)^{\,m}\ }.
+\]
+更一般地，对阻尼口径的极点 \(r_{\rho,\delta}(b)=b^{-(\rho-(\frac12+\delta))}\) 有
+\[
+\boxed{\ r_{\rho,\delta}(b^m)=r_{\rho,\delta}(b)^{\,m}\ }.
+\]
+\end{proposition}
+\begin{proof}
+由定义 \(E_{b^m}(n)=(b^m)^{-n/2}(\psi_0((b^m)^n)-(b^m)^n)=b^{-mn/2}(\psi_0(b^{mn})-b^{mn})=E_b(mn)\)。
+root-of-unity 抽取恒等式是“保留 \(m\) 的倍数项”的标准滤波：对任意形式幂级数 \(F(r)=\sum_{k\ge 0}c_k r^k\) 有
+\(
+\frac1m\sum_{j=0}^{m-1}F(\omega^j r^{1/m})=\sum_{n\ge 0}c_{mn}r^n
+\)；
+分别取 \(F=\mathcal A_b\) 与 \(F=\mathcal A_{b,\delta}\) 即得。
+极点幂次共轭由 \(r_\rho(b)=b^{-(\rho-\frac12)}\) 与 \((b^m)^{-(\rho-\frac12)}=(b^{-(\rho-\frac12)})^m\) 直接推出；阻尼口径同理。证毕。
+\end{proof}
+
+\begin{corollary}[离线偏移在底数递归下的指数显影]\label{cor:abel-offcritical-exponential-radius-amplification}
+设存在零点 \(\rho\) 满足 \(\Re\rho=\tfrac12+\varepsilon\)（\(\varepsilon>0\)）。
+取任意 \(\delta\in[0,\varepsilon)\) 并记 \(\eta\in(0,1)\)。
+则只要
+\[
+m\ \ge\ \frac{\log(1/\eta)}{(\varepsilon-\delta)\log b},
+\]
+就有
+\[
+|r_{\rho,\delta}(b^m)|=b^{-m(\varepsilon-\delta)}\le \eta,
+\]
+从而 \(\mathcal A_{b^m,\delta}\) 在单位圆盘内出现一个半径至多为 \(\eta\) 的内域极点。
+在 RH 成立时（\(\varepsilon=0\)），所有阻尼极点均满足 \(|r_{\rho,\delta}(b^m)|=b^\delta>1\)，底数递归不会在单位圆盘内生成新极点。
+\end{corollary}
+
+\input{subsubsec__xi-discrete-abel-weil-growth-energy-semigroup-rigidity}
+
+\input{subsubsec__xi-discrete-abel-weil-resolution-projection-spectrum}
+
+\input{para__xi-discrete-abel-weil-renormalization-channels}
+\input{para__xi-discrete-abel-weil-congruence-residue-locking-audit}
+
+\paragraph{递归放大后的 Hankel--谱诊断：有限窗口的可核验可识别性}
+当 \(\mathcal A_{b^m,\delta}\) 在 \(|r|<1\) 内出现可分离的单一最内域极点时，其 Taylor 系数在有限窗口上呈现指数主导项，从而可由 Hankel 奇异值的显式谱隙判据离线核验。
+下述定理将该机制抽象为一条与实现细节无关的有限维线性代数证书。
+
+\begin{theorem}[单极点主导的 Hankel--谱诊断：显式谱隙阈值与稳定反演]\label{thm:abel-hankel-spectral-gap-single-pole}
+设 \(f(r)=\sum_{n\ge 0}a_n r^n\) 在 \(|r|<1\) 内亚纯，且存在分解
+\[
+f(r)=\frac{c}{1-r/r_0}+g(r),
+\qquad 0<|r_0|<1,\quad c\neq 0,\quad g\in H^\infty(\mathbb D),
+\]
+记 \(C:=\|g\|_{H^\infty}\)。
+对 \(N\ge 1\) 定义 Hankel 矩阵 \(H_N=(a_{i+j})_{0\le i,j<N}\)。
+则存在分解
+\[
+H_N=c\,u_Nu_N^{\top}+E_N,
+\qquad (u_N)_k:=r_0^{-k}\ (0\le k<N),
+\qquad \|E_N\|_{\mathrm{op}}\le C N,
+\]
+并且奇异值满足
+\[
+\sigma_1(H_N)\ \ge\ |c|\,\|u_N\|_2^2-CN,
+\qquad
+\sigma_2(H_N)\ \le\ CN.
+\]
+特别地，若满足显式阈值
+\[
+|c|\,\|u_N\|_2^2\ \ge\ 3CN,
+\]
+则出现可核验谱隙
+\[
+\boxed{\ \sigma_1(H_N)\ge 2CN,\qquad \sigma_2(H_N)\le CN\ }.
+\]
+并且在 \(N\to\infty\) 时有增长律
+\[
+\log \sigma_1(H_N)=2N\log(1/|r_0|)+O(1),
+\]
+从而 \(|r_0|\) 可由 \(\sigma_1(H_N)\) 的指数增长率稳定反演。
+\end{theorem}
+\begin{proof}
+由 Cauchy 估计，\(g(r)=\sum_{n\ge 0}e_n r^n\) 的系数满足 \(|e_n|\le C\)。
+并且 \(\frac{c}{1-r/r_0}=\sum_{n\ge 0}c\,r_0^{-n}r^n\)，故 \(a_n=c\,r_0^{-n}+e_n\)，从而
+\(
+H_N=c\,u_Nu_N^\top+E_N
+\)
+其中 \((E_N)_{ij}=e_{i+j}\)。
+矩阵 \(E_N\) 的每个元素绝对值 \(\le C\)，故由 \(\|E_N\|_{\mathrm{op}}\le \|E_N\|_{1}\le CN\)（或行和界）得 \(\|E_N\|_{\mathrm{op}}\le CN\)。
+\par
+秩一矩阵 \(c\,u_Nu_N^\top\) 的唯一非零奇异值为 \(|c|\,\|u_N\|_2^2\)。
+由 Weyl 不等式得
+\(
+\sigma_1(H_N)\ge \sigma_1(cu_Nu_N^\top)-\|E_N\|_{\mathrm{op}}
+\)
+与
+\(
+\sigma_2(H_N)\le \|E_N\|_{\mathrm{op}}
+\)。
+阈值条件下即得谱隙。
+最后，\(\|u_N\|_2^2=\sum_{k=0}^{N-1}|r_0|^{-2k}=\Theta(|r_0|^{-2N})\)，取对数得到增长律。证毕。
+\end{proof}
+
+\input{subsubsec__xi-discrete-abel-weil-local-recursion-chebyshev-closure}
+\input{subsubsec__xi-discrete-abel-weil-right-edge-gap-recursion-natural-boundary}
+
+\paragraph{均方线性律：由 \texorpdfstring{$\delta^{-1}$}{δ^{-1}} 发散经 Tauberian 反演得到}
+定理 \ref{thm:abel-harddamped-universal-renorm-constant} 的一阶发散不仅给出能量型不变量，而且可经非负 Tauberian 定理反演为几何网格上的均方预算常数律。
+
+\begin{corollary}[几何格点上误差的均方线性律]\label{cor:abel-tauberian-mean-square-linear-law}
+在定理 \ref{thm:abel-harddamped-universal-renorm-constant} 的假设下，令非负序列 \(a_n:=|E_b(n)|^2\)。
+则当 \(N\to\infty\) 时有
+\[
+\boxed{\;
+\sum_{n=0}^{N} |E_b(n)|^2
+=\frac{2+\gamma-\log(4\pi)}{2\log b}\,N+o(N).\;}
+\]
+\end{corollary}
+\begin{proof}
+由 \(\mathcal E_b(\delta)=\sum_{n\ge 0}a_n e^{-(2\delta\log b)n}\) 与 \eqref{eq:abel-harddamped-first-order-asymptotic}，
+\(
+\mathcal E_b(\delta)\sim \frac{2+\gamma-\log(4\pi)}{2\delta\log b}
+\)（\(\delta\downarrow 0\)）。
+对非负序列的 Karamata 型 Tauberian 定理适用，推出部分和满足
+\(
+\sum_{n\le N}a_n\sim \frac{2+\gamma-\log(4\pi)}{2\log b}\,N
+\)。
+证毕。
+\end{proof}

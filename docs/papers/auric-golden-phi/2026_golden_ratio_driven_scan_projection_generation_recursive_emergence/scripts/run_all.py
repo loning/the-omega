@@ -82,6 +82,161 @@ def _outputs_ok(step: Step) -> Tuple[bool, List[str]]:
 def build_steps() -> List[Step]:
     return [
         Step(
+            name="window6_lie_envelope",
+            script="exp_window6_lie_envelope.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_lie_envelope.json",
+                "sections/generated/eq_window6_lie_envelope_invariants.tex",
+            ],
+        ),
+        Step(
+            name="window6_lie_envelope_orthogonal_part",
+            script="exp_window6_lie_envelope_orthogonal_part.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_lie_envelope_orthogonal_part.json",
+                "sections/generated/eq_window6_lie_envelope_orthogonal_part_dim.tex",
+            ],
+        ),
+        Step(
+            name="replica_softcore_binary_necklace_trace_audit",
+            script="exp_replica_softcore_binary_necklace_trace_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/replica_softcore_binary_necklace_trace_audit.json",
+            ],
+        ),
+        Step(
+            name="replica_softcore_cycle_subgraph_cyccomp_audit",
+            script="exp_replica_softcore_cycle_subgraph_cyccomp_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/replica_softcore_cycle_subgraph_cyccomp_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_exceptional_integer_model_Mq_audit",
+            script="exp_xi_exceptional_integer_model_Mq_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_exceptional_integer_model_Mq_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_exceptional_integer_model_Mq_galois_audit",
+            script="exp_xi_exceptional_integer_model_Mq_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_exceptional_integer_model_Mq_galois_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_degree11_Et_S11_audit",
+            script="exp_xi_degree11_Et_S11_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_degree11_Et_S11_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_exceptional_reciprocal_fibonacci_partition_audit",
+            script="exp_xi_exceptional_reciprocal_fibonacci_partition_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_exceptional_reciprocal_fibonacci_partition_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_hankel_rigidity_dp_audit",
+            script="exp_xi_hankel_rigidity_dp_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_hankel_rigidity_dp_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_hankel_recurrence_jacobian_certificate",
+            script="exp_xi_hankel_recurrence_jacobian_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_hankel_recurrence_jacobian_certificate.json",
+            ],
+        ),
+        Step(
+            name="xi_weight_tripling_index_squarefree_audit",
+            script="exp_xi_weight_tripling_index_squarefree_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_weight_tripling_index_squarefree_audit.json",
+            ],
+        ),
+        Step(
+            name="pom_fractran_primecore_finite_partial_functions_audit",
+            script="exp_pom_fractran_primecore_finite_partial_functions_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_fractran_primecore_finite_partial_functions_audit.json",
+            ],
+        ),
+        Step(
+            name="symq_golden_involution_matrix_audit",
+            script="exp_symq_golden_involution_matrix_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/symq_golden_involution_matrix_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_symq_fibonacci_binomial_power_audit",
+            script="exp_xi_symq_fibonacci_binomial_power_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_symq_fibonacci_binomial_power_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_symq_fibonacci_vandermonde_resultant_hankel_audit",
+            script="exp_xi_symq_fibonacci_vandermonde_resultant_hankel_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_symq_fibonacci_vandermonde_resultant_hankel_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_cayley_joukowsky_hecke_dirichlet_audit",
+            script="exp_xi_cayley_joukowsky_hecke_dirichlet_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_cayley_joukowsky_hecke_dirichlet_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_fib_congruence_diffusion_inverse_audit",
+            script="exp_xi_fib_congruence_diffusion_inverse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_fib_congruence_diffusion_inverse_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_xh_ed_t_model_and_pointcount_certificate",
+            script="exp_xi_xh_ed_t_model_and_pointcount_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_xh_ed_t_model_and_pointcount_certificate.json",
+            ],
+        ),
+        Step(
+            name="replica_softcore_exceptional_charpoly_galois_audit",
+            script="exp_replica_softcore_exceptional_charpoly_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/replica_softcore_exceptional_charpoly_galois_audit.json",
+                "sections/generated/tab_replica_softcore_exceptional_charpoly_galois_audit.tex",
+            ],
+        ),
+        Step(
             name="rotation_microstate_kl_certificate",
             script="exp_rotation_microstate_kl_certificate.py",
             args=[],
@@ -100,12 +255,166 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_leyang_q5_a7_subresultant_galois_audit",
+            script="exp_xi_leyang_q5_a7_subresultant_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_q5_a7_subresultant_galois_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_leyang_b6_s6_discriminant_audit",
+            script="exp_xi_leyang_b6_s6_discriminant_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_b6_s6_discriminant_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_leyang_qapp_s5_disjointness_audit",
+            script="exp_xi_leyang_qapp_s5_disjointness_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_qapp_s5_disjointness_audit.json",
+            ],
+        ),
+        Step(
+            name="pom_xi_s5_primitive_element_minpoly_certificate",
+            script="exp_pom_xi_s5_primitive_element_minpoly_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_xi_s5_primitive_element_minpoly_certificate.json",
+                "artifacts/export/pom_xi_s5_primitive_element_minpoly_certificate.txt",
+            ],
+        ),
+        Step(
+            name="xi_p7_three_s3_disjointness_chebotarev_certificate",
+            script="exp_xi_p7_three_s3_disjointness_chebotarev_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_p7_three_s3_disjointness_chebotarev_certificate.json",
+            ],
+        ),
+        Step(
+            name="xi_p7_s5_artin_dedekind_chebotarev_certificate",
+            script="exp_xi_p7_s5_artin_dedekind_chebotarev_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_p7_s5_artin_dedekind_chebotarev_certificate.json",
+            ],
+        ),
+        Step(
+            name="xi_p7_dyadic_integral_basis_certificate",
+            script="exp_xi_p7_dyadic_integral_basis_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_p7_dyadic_integral_basis_certificate.json",
+            ],
+        ),
+        Step(
+            name="xi_pick_poisson_phi_m_homothetic_spectrum_ledger_audit",
+            script="exp_xi_pick_poisson_phi_m_homothetic_spectrum_ledger_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_pick_poisson_phi_m_homothetic_spectrum_ledger_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_leyang_node_preimage_r10_wreath_audit",
+            script="exp_xi_leyang_node_preimage_r10_wreath_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_node_preimage_r10_wreath_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_leyang_delta_node_tangent_wreath_audit",
+            script="exp_xi_leyang_delta_node_tangent_wreath_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_delta_node_tangent_wreath_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_basepoint_scan_finite_rank_rkhs_anchoring_certificate",
+            script="exp_xi_basepoint_scan_finite_rank_rkhs_anchoring_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_basepoint_scan_finite_rank_rkhs_anchoring_certificate.json",
+            ],
+        ),
+        Step(
+            name="pom_bc_uniform_lift_cocycle_residual_certificate",
+            script="exp_pom_bc_uniform_lift_cocycle_residual_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_bc_uniform_lift_cocycle_residual_certificate.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_pressure_cumulants5",
+            script="exp_fold_gauge_anomaly_pressure_cumulants5.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_pressure_cumulants5.json",
+            ],
+        ),
+        Step(
+            name="spg_dyadic_boundary_holography_audit",
+            script="exp_spg_dyadic_boundary_holography_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/spg_dyadic_boundary_holography_audit.json",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly",
             script="exp_fold_gauge_anomaly.py",
             args=[],
             expected_outputs=[
                 "artifacts/export/fold_gauge_anomaly_stats.json",
                 "sections/generated/tab_fold_gauge_anomaly_stats.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_fibonacci_low_defect_endpoints_audit",
+            script="exp_fold_gauge_anomaly_fibonacci_low_defect_endpoints_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_fibonacci_low_defect_endpoints_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_endpoint_gf_closedform_audit",
+            script="exp_fold_gauge_anomaly_endpoint_gf_closedform_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_endpoint_gf_closedform_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zeckendorf_mod_topbits_audit",
+            script="exp_fold_zeckendorf_mod_topbits_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zeckendorf_mod_topbits_audit.json",
+            ],
+        ),
+        Step(
+            name="conclusion_zeckendorf_15_16_family_lock_audit",
+            script="exp_conclusion_zeckendorf_15_16_family_lock_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/conclusion_zeckendorf_15_16_family_lock_audit.json",
+            ],
+        ),
+        Step(
+            name="conclusion_singlephase_prime_ledger_precision_audit",
+            script="exp_conclusion_singlephase_prime_ledger_precision_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/conclusion_singlephase_prime_ledger_precision_audit.json",
+                "sections/generated/tab_conclusion_singlephase_prime_ledger_precision_audit.tex",
             ],
         ),
         Step(
@@ -172,6 +481,40 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_branch_points",
+            script="exp_fold_gauge_anomaly_branch_points.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_branch_points.json",
+                "sections/generated/eq_fold_gauge_anomaly_branch_points.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_deformed_quartic_branchpoint_audit",
+            script="exp_fold_gauge_anomaly_deformed_quartic_branchpoint_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_deformed_quartic_branchpoint_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_trigonal_mu_audit",
+            script="exp_fold_gauge_anomaly_trigonal_mu_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_trigonal_mu_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_second_trigonal_p9_galois_audit",
+            script="exp_fold_gauge_anomaly_second_trigonal_p9_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_second_trigonal_p9_galois_audit.json",
+                "sections/generated/tab_fold_gauge_anomaly_second_trigonal_p9_galois_certificate.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_jordan_correlations",
             script="exp_fold_gauge_anomaly_jordan_correlations.py",
             args=[],
@@ -200,11 +543,152 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_rate_curve_discriminant_q19_audit",
+            script="exp_fold_gauge_anomaly_rate_curve_discriminant_q19_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_rate_curve_discriminant_q19_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_rate_curve_singularity_audit",
+            script="exp_fold_gauge_anomaly_rate_curve_singularity_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_rate_curve_singularity_audit.json",
+                "sections/generated/eq_fold_gauge_anomaly_rate_curve_singularity_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_covariance_hankel_certificate_audit",
+            script="exp_fold_gauge_anomaly_covariance_hankel_certificate_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_covariance_hankel_certificate_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_s4_hurwitz_tower_audit",
+            script="exp_fold_gauge_anomaly_s4_hurwitz_tower_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_s4_hurwitz_tower_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_s4_v4_fixedfield_s3_chain_audit",
+            script="exp_fold_zm_s4_v4_fixedfield_s3_chain_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_s4_v4_fixedfield_s3_chain_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_ed_discriminant_pullback_factorization_audit",
+            script="exp_xi_ed_discriminant_pullback_factorization_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_ed_discriminant_pullback_factorization_audit.json",
+                "sections/generated/eq_xi_ed_discriminant_pullback_factorization.tex",
+            ],
+        ),
+        Step(
+            name="xi_ed_h_to_htilde_varphi_audit",
+            script="exp_xi_ed_h_to_htilde_varphi_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_ed_h_to_htilde_varphi_audit.json",
+                "sections/generated/eq_xi_ed_h_to_htilde_varphi.tex",
+            ],
+        ),
+        Step(
+            name="xi_ed_t_primitive_element_audit",
+            script="exp_xi_ed_t_primitive_element_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_ed_t_primitive_element_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_reversekl_cyclic_symmetrization_padic_cascade_audit",
+            script="exp_xi_reversekl_cyclic_symmetrization_padic_cascade_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_reversekl_cyclic_symmetrization_padic_cascade_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_s4_a4_v4_etale_prym_split_audit",
+            script="exp_fold_zm_s4_a4_v4_etale_prym_split_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_s4_a4_v4_etale_prym_split_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_s4_s3_nielsen_monodromy_audit",
+            script="exp_fold_zm_s4_s3_nielsen_monodromy_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_s4_s3_nielsen_monodromy_audit.json",
+            ],
+        ),
+        Step(
+            name="fibonacci_poisson_kl_rh_discretization_audit",
+            script="exp_fibonacci_poisson_kl_rh_discretization_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fibonacci_poisson_kl_rh_discretization_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit",
+            script="exp_fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit.json",
+                "sections/generated/eq_fold_gauge_anomaly_spectral_quartic_jacobian_L7_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_spectral_quartic_jacobian_L13_audit",
+            script="exp_fold_gauge_anomaly_spectral_quartic_jacobian_L13_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_spectral_quartic_jacobian_L13_audit.json",
+                "sections/generated/eq_fold_gauge_anomaly_spectral_quartic_jacobian_L13_audit.tex",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_ldp_rate",
             script="exp_fold_gauge_anomaly_ldp_rate.py",
             args=[],
             expected_outputs=[
                 "sections/generated/eq_fold_gauge_anomaly_ldp_rate.tex",
+            ],
+        ),
+        Step(
+            name="fold_gauge_anomaly_bernoulli_p_closed_form",
+            script="exp_fold_gauge_anomaly_bernoulli_p_closed_form.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_bernoulli_p_closed_form.json",
+            ],
+        ),
+        Step(
+            name="fold_bernoulli_p_pressure_curve_local_ldp_audit",
+            script="exp_fold_bernoulli_p_pressure_curve_local_ldp_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bernoulli_p_pressure_curve_local_ldp_audit.json",
+            ],
+        ),
+        Step(
+            name="pom_replica_softcore_fibonacci_moment_collapse_audit",
+            script="exp_pom_replica_softcore_fibonacci_moment_collapse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_replica_softcore_fibonacci_moment_collapse_audit.json",
             ],
         ),
         Step(
@@ -283,6 +767,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_fractran_fold_compiler_audit",
+            script="exp_fold_fractran_fold_compiler_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_fractran_fold_compiler_audit.json",
+            ],
+        ),
+        Step(
             name="boundary_uplift_m10_b3c3_dictionary",
             script="exp_boundary_uplift_m10_b3c3_dictionary.py",
             args=[],
@@ -309,6 +801,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_fib_tail_psl2_orbit_decomposition_p23",
+            script="exp_window6_fib_tail_psl2_orbit_decomposition_p23.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_fib_tail_psl2_orbit_decomposition_p23.json",
+                "sections/generated/eq_window6_fib_tail_p23_p1_orbit_decomposition.tex",
+                "sections/generated/tab_window6_fib_tail_p23_p1_orbits.tex",
+            ],
+        ),
+        Step(
             name="window6_edge_flux_skeleton",
             script="exp_window6_edge_flux_skeleton.py",
             args=[],
@@ -331,6 +833,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_mod571_spectral_collision_audit",
+            script="exp_window6_mod571_spectral_collision_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_mod571_spectral_collision_audit.json",
+                "sections/generated/eq_window6_mod571_spectral_collision_audit.tex",
+            ],
+        ),
+        Step(
             name="window6_ur_first_return_time",
             script="exp_window6_ur_first_return_time.py",
             args=[],
@@ -346,6 +857,88 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/window6_pushforward_markov_spectral_gap.json",
                 "sections/generated/eq_window6_pushforward_markov_spectral_gap.tex",
+            ],
+        ),
+        Step(
+            name="window_pushforward_markov_full_symmetric_galois_audit",
+            script="exp_window_pushforward_markov_full_symmetric_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window_pushforward_markov_full_symmetric_galois_audit_m5_m9.json",
+                "sections/generated/eq_window6_pushforward_markov_charpoly_q6.tex",
+                "sections/generated/tab_window_pushforward_markov_full_symmetric_galois_audit_m5_m9.tex",
+            ],
+        ),
+        Step(
+            name="xi_prime_register_semidirect_two_shadow_audit",
+            script="exp_xi_prime_register_semidirect_two_shadow_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_semidirect_two_shadow_audit.json",
+                "sections/generated/eq_xi_prime_register_semidirect_two_shadow_audit.tex",
+                "sections/generated/tab_xi_elliptic_two_shadow_invariants_audit.tex",
+            ],
+        ),
+        Step(
+            name="xi_prime_register_zg_density_leyang_spectrum_audit",
+            script="exp_xi_prime_register_zg_density_leyang_spectrum_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_zg_density_leyang_spectrum_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_prime_register_zg_dirichlet_log_renormalization_audit",
+            script="exp_xi_prime_register_zg_dirichlet_log_renormalization_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_zg_dirichlet_log_renormalization_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_prime_register_zg_hardcore_zeta_factorization_constant_audit",
+            script="exp_xi_prime_register_zg_hardcore_zeta_factorization_constant_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_prime_register_zg_hardcore_zeta_factorization_constant_audit.json",
+            ],
+        ),
+        Step(
+            name="conclusion_endpoint_horizon_arcsine_kl_audit",
+            script="exp_conclusion_endpoint_horizon_arcsine_kl_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/conclusion_endpoint_horizon_arcsine_kl_audit.json",
+            ],
+        ),
+        Step(
+            name="group_jg_radial_quadratic_identifiability_audit",
+            script="exp_group_jg_radial_quadratic_identifiability_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/group_jg_radial_quadratic_identifiability_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_belyi_full_symmetric_puiseux_audit",
+            script="exp_xi_belyi_full_symmetric_puiseux_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_belyi_full_symmetric_puiseux_audit.json",
+                "sections/generated/eq_xi_belyi_family_discriminant_recurrence_r3.tex",
+                "sections/generated/tab_xi_belyi_branch_discriminant_group_audit_r2_r9.tex",
+                "sections/generated/tab_xi_belyi_scaling_limit_audit.tex",
+            ],
+        ),
+        Step(
+            name="cdim_hom_completion_anomaly_audit",
+            script="exp_cdim_hom_completion_anomaly_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/cdim_hom_completion_anomaly_audit.json",
+                "sections/generated/eq_cdim_hom_completion_anomaly_audit.tex",
+                "sections/generated/tab_cdim_hom_completion_examples.tex",
+                "sections/generated/tab_cdim_discrete_anomaly_primary_examples.tex",
             ],
         ),
         Step(
@@ -383,6 +976,14 @@ def build_steps() -> List[Step]:
                 "artifacts/export/foldbin6_fiber_hamming_min_distance.json",
                 "sections/generated/eq_foldbin6_fiber_hamming_min_distance_value_counts.tex",
                 "sections/generated/tab_foldbin6_fiber_hamming_min_distance.tex",
+            ],
+        ),
+        Step(
+            name="foldbin6_two_point_fiber_direction_spectrum",
+            script="exp_foldbin6_two_point_fiber_direction_spectrum.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_two_point_fiber_direction_spectrum.json",
             ],
         ),
         Step(
@@ -574,6 +1175,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="path_toggle_scan_closed_form_audit",
+            script="exp_path_toggle_scan_closed_form_audit.py",
+            args=["--n-max", "12"],
+            expected_outputs=[
+                "artifacts/export/path_toggle_scan_closed_form_audit.json",
+            ],
+        ),
+        Step(
             name="fence_order_poly_spectral_audit",
             script="exp_fence_order_poly_spectral_audit.py",
             args=["--k-max", "12", "--l-max", "18"],
@@ -709,6 +1318,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4t_integral_charpoly_galois_modp_certificate",
+            script="exp_collision_kernel_A4t_integral_charpoly_galois_modp_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4t_integral_charpoly_galois_modp_certificate.json",
+                "sections/generated/eq_collision_kernel_A4t_integral_charpoly_galois_modp_certificate.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_unit_circle_branchpoints",
             script="exp_collision_kernel_A4_unit_circle_branchpoints.py",
             args=[],
@@ -777,6 +1395,15 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/collision_kernel_A4_newman_octic_field_arithmetic.json",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_linear_response_constant",
+            script="exp_collision_kernel_A4_newman_linear_response_constant.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_linear_response_constant.json",
+                "sections/generated/eq_collision_kernel_A4_newman_linear_response_constant.tex",
             ],
         ),
         Step(
@@ -937,6 +1564,23 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_fold_collision_observable_minpoly_galois_certificate_q9_13.tex",
                 "sections/generated/eq_fold_collision_observable_minpoly_negative_real_dominance_q9_13.tex",
                 "sections/generated/tab_fold_collision_observable_minpoly_ramified_primes_q9_13.tex",
+            ],
+        ),
+        Step(
+            name="fold_collision_moment_charpoly_irreducible_q9_17",
+            script="exp_fold_collision_moment_charpoly_irreducible_q9_17.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_charpoly_irreducible_q9_17.json",
+                "sections/generated/tab_fold_collision_moment_charpoly_irreducible_certificate_q9_17.tex",
+            ],
+        ),
+        Step(
+            name="pom_resonance_galois_q16_q17_transposition_disjointness_chebotarev",
+            script="exp_pom_resonance_galois_q16_q17_transposition_disjointness_chebotarev.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_resonance_galois_q16_q17_transposition_disjointness_chebotarev.json",
             ],
         ),
         Step(
@@ -1227,6 +1871,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_diagonal_rate_maxent_markov_spectrum_audit",
+            script="exp_pom_diagonal_rate_maxent_markov_spectrum_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_maxent_markov_spectrum_audit.json",
+            ],
+        ),
+        Step(
             name="pom_projword_three_gen_kb_completion_audit",
             script="exp_pom_projword_three_gen_kb_completion_audit.py",
             args=[],
@@ -1242,6 +1894,50 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/pom_multiplicity_lambdaq_taylor_q0_constants.json",
                 "sections/generated/eq_pom_multiplicity_lambdaq_taylor_q0_constants.tex",
+            ],
+        ),
+        Step(
+            name="pom_diagonal_rate_scalar_collapse_audit",
+            script="exp_pom_diagonal_rate_scalar_collapse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_scalar_collapse_audit.json",
+                "sections/generated/eq_pom_diagonal_rate_scalar_collapse_audit.tex",
+            ],
+        ),
+        Step(
+            name="pom_diagonal_rate_diagonal_observation_audit",
+            script="exp_pom_diagonal_rate_diagonal_observation_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_diagonal_observation_audit.json",
+                "sections/generated/eq_pom_diagonal_rate_diagonal_observation_audit.tex",
+            ],
+        ),
+        Step(
+            name="pom_diagonal_rate_hitting_star_commute_audit",
+            script="exp_pom_diagonal_rate_hitting_star_commute_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_hitting_star_commute_audit.json",
+            ],
+        ),
+        Step(
+            name="pom_diagonal_rate_two_orbit_cubic_audit",
+            script="exp_pom_diagonal_rate_two_orbit_cubic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_two_orbit_cubic_audit.json",
+                "sections/generated/eq_pom_diagonal_rate_two_orbit_cubic_audit.tex",
+            ],
+        ),
+        Step(
+            name="pom_diagonal_rate_coarsegrain_tensor_bounds_audit",
+            script="exp_pom_diagonal_rate_coarsegrain_tensor_bounds_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_diagonal_rate_coarsegrain_tensor_bounds_audit.json",
+                "sections/generated/eq_pom_diagonal_rate_coarsegrain_tensor_bounds_audit.tex",
             ],
         ),
         Step(
@@ -1516,6 +2212,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_10_state_mealy_minimality",
+            script="exp_sync_kernel_10_state_mealy_minimality.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_10_state_mealy_minimality.json",
+                "sections/generated/eq_sync_kernel_10_state_mealy_minimality.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_cyclotomic_elimination",
             script="exp_sync_kernel_cyclotomic_elimination.py",
             args=[],
@@ -1744,6 +2449,17 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="addition_collision_q2_minpoly_galois_certificate",
+            script="exp_addition_collision_q2_minpoly_galois_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/addition_collision_q2_minpoly_galois_certificate.json",
+                "sections/generated/eq_addition_collision_real_input40_r2_minpoly.tex",
+                "sections/generated/eq_addition_collision_sync10_r2_minpoly.tex",
+                "sections/generated/tab_addition_collision_q2_minpoly_galois_certificate.tex",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity_charge_closed_form",
             script="exp_sync_kernel_real_input_40_arity_charge_closed_form.py",
             args=[],
@@ -1756,6 +2472,14 @@ def build_steps() -> List[Step]:
                 "sections/generated/tab_real_input_40_arity_charge_coboundary_audit.tex",
                 "sections/generated/tab_real_input_40_arity_charge_density_audit.tex",
                 "sections/generated/eq_real_input_40_arity_charge_B_charpoly.tex",
+            ],
+        ),
+        Step(
+            name="sync_kernel_real_input_40_p7_spectral_curve_galois_audit",
+            script="exp_sync_kernel_real_input_40_p7_spectral_curve_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_p7_spectral_curve_galois_audit.json",
             ],
         ),
         Step(
@@ -2022,6 +2746,55 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/arity_335_n2_poisson_richardson_validate.json",
                 "sections/generated/tab_real_input_40_arity_335_n2_poisson_richardson_validate.tex",
+            ],
+        ),
+        Step(
+            name="xi_poisson_cauchy_harmonic_multipole_kl_audit",
+            script="exp_xi_poisson_cauchy_harmonic_multipole_kl_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_cauchy_harmonic_multipole_kl_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_poisson_defect_measure_complex_multipole_kl_audit",
+            script="exp_xi_poisson_defect_measure_complex_multipole_kl_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_defect_measure_complex_multipole_kl_audit.json",
+                "sections/generated/eq_xi_poisson_defect_measure_complex_multipole_kl_audit.tex",
+            ],
+        ),
+        Step(
+            name="xi_poisson_cauchy_complex_stieltjes_rigidity_audit",
+            script="exp_xi_poisson_cauchy_complex_stieltjes_rigidity_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_cauchy_complex_stieltjes_rigidity_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_poisson_cauchy_sharp_constants_audit",
+            script="exp_xi_poisson_cauchy_sharp_constants_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_cauchy_sharp_constants_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_poisson_cauchy_cayley_multipole_audit",
+            script="exp_xi_poisson_cauchy_cayley_multipole_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_poisson_cauchy_cayley_multipole_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_offline_neumann_trace_cauchy_semigroup_audit",
+            script="exp_xi_offline_neumann_trace_cauchy_semigroup_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_offline_neumann_trace_cauchy_semigroup_audit.json",
             ],
         ),
         Step(
@@ -2481,12 +3254,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_residual_gap_constants_phi",
+            script="exp_fold_residual_gap_constants_phi.py",
+            args=["--c-n-max", "200", "--d-n-max", "600"],
+            expected_outputs=[
+                "artifacts/export/fold_residual_gap_constants_phi.json",
+                "sections/generated/eq_fold_residual_gap_constants_phi.tex",
+            ],
+        ),
+        Step(
             name="fold_bulk_resonance_integer_ladder",
             script="exp_fold_bulk_resonance_integer_ladder.py",
             args=["--n-max", "200", "--u-max", "20000", "--store-u-max", "30"],
             expected_outputs=[
                 "artifacts/export/fold_bulk_resonance_integer_ladder.json",
                 "sections/generated/eq_fold_bulk_resonance_integer_ladder_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_bulk_resonance_fibonacci_directional_limits",
+            script="exp_fold_bulk_resonance_fibonacci_directional_limits.py",
+            args=["--k-max", "200"],
+            expected_outputs=[
+                "artifacts/export/fold_bulk_resonance_fibonacci_directional_limits.json",
+                "sections/generated/eq_fold_bulk_resonance_fibonacci_directional_limits_numeric.tex",
             ],
         ),
         Step(
@@ -2620,6 +3411,38 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="collision_kernel_A4_newman_u4_certificate",
+            script="exp_collision_kernel_A4_newman_u4_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_u4_certificate.json",
+                "sections/generated/eq_collision_kernel_A4_newman_u4_minpoly.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_newman_u4_discriminant_certificate",
+            script="exp_collision_kernel_A4_newman_u4_discriminant_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_newman_u4_discriminant_certificate.json",
+                "sections/generated/eq_collision_kernel_A4_newman_u4_discriminant_factorization.tex",
+            ],
+        ),
+        Step(
+            name="collision_kernel_A4_root_ratio_r20_r10_certificate",
+            script="exp_collision_kernel_A4_root_ratio_r20_r10_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/collision_kernel_A4_root_ratio_r20_r10_certificate.json",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_r20_minpoly.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_r10_minpoly.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_resultant_square_identity.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_r20_discriminant_factorization.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_r10_discriminant_factorization.tex",
+                "sections/generated/eq_collision_kernel_A4_root_ratio_norm_s2_minus_4.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_primitive",
             script="exp_collision_kernel_A4_primitive.py",
             args=[],
@@ -2651,6 +3474,493 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_zm_bivariate_partition_audit.json",
                 "sections/generated/eq_fold_zm_bivariate_partition_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_sturm_real_roots_audit",
+            script="exp_fold_zm_sturm_real_roots_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_sturm_real_roots_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_double_root_diffusive_sinc_limit_audit",
+            script="exp_fold_zm_double_root_diffusive_sinc_limit_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_double_root_diffusive_sinc_limit_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_audit",
+            script="exp_fold_zm_elliptic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_exponential_time_differential_closure_audit",
+            script="exp_fold_zm_leyang_exponential_time_differential_closure_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_exponential_time_differential_closure_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_y_doubling_mobius_cocycle_audit",
+            script="exp_fold_zm_elliptic_y_doubling_mobius_cocycle_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_y_doubling_mobius_cocycle_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_weight_doubling_audit",
+            script="exp_fold_zm_elliptic_weight_doubling_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_weight_doubling_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_H.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_Rminus.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_discriminant.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_inverse.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_norm.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_weight_doubling_rational_lift_psi_audit",
+            script="exp_fold_zm_elliptic_weight_doubling_rational_lift_psi_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_weight_doubling_rational_lift_psi_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_weight_doubling_psi.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_weight_tripling_audit",
+            script="exp_fold_zm_elliptic_weight_tripling_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_weight_tripling_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_weight_tripling_M3.tex",
+                "sections/generated/eq_fold_zm_elliptic_weight_tripling_discriminant.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_weight_doubling_2torsion_translation_collision_audit",
+            script="exp_fold_zm_elliptic_weight_doubling_2torsion_translation_collision_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_weight_doubling_2torsion_translation_collision_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_3torsion_y_image_octic_audit",
+            script="exp_fold_zm_elliptic_3torsion_y_image_octic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_3torsion_y_image_octic_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_3torsion_y_image_octic_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_4division_weight_image_audit",
+            script="exp_fold_zm_elliptic_4division_weight_image_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_4division_weight_image_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_4division_weight_image_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_odd_torsion_mod37_collapse_audit",
+            script="exp_fold_zm_elliptic_odd_torsion_mod37_collapse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_odd_torsion_mod37_collapse_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_odd_torsion_mod37_collapse_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit",
+            script="exp_fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_5torsion_discriminant_quadratic_character_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_leyang_arithmetic_audit",
+            script="exp_fold_zm_elliptic_leyang_arithmetic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_leyang_arithmetic_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_leyang_arithmetic_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_collision_s2_e2_field_isomorphism_audit",
+            script="exp_fold_zm_collision_s2_e2_field_isomorphism_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_collision_s2_e2_field_isomorphism_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_leyang_cubic_modp_splitting_audit",
+            script="exp_fold_zm_elliptic_leyang_cubic_modp_splitting_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_leyang_cubic_modp_splitting_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_lattes_joint_splitting_density_audit",
+            script="exp_fold_zm_leyang_lattes_joint_splitting_density_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_lattes_joint_splitting_density_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_leyang_resy_spectral_decomposition_audit",
+            script="exp_fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_leyang_resy_spectral_decomposition_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_leyang_cover_geometry_audit",
+            script="exp_fold_zm_elliptic_leyang_cover_geometry_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_leyang_cover_geometry_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_delta_projection_a5b5_audit",
+            script="exp_fold_zm_delta_projection_a5b5_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_delta_projection_a5b5_audit.json",
+                "sections/generated/eq_fold_zm_delta_projection_a5b5_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_delta_a5_discriminant_audit",
+            script="exp_fold_zm_delta_a5_discriminant_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_delta_a5_discriminant_audit.json",
+            ],
+        ),
+        Step(
+            name="boolean_two_layer_kernel_zeta_mu_snf_inverse_audit",
+            script="exp_boolean_two_layer_kernel_zeta_mu_snf_inverse_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/boolean_two_layer_kernel_zeta_mu_snf_inverse_audit.json",
+                "sections/generated/eq_boolean_two_layer_kernel_zeta_mu_snf_inverse_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_perron_fuchs_operator_audit",
+            script="exp_fold_zm_leyang_perron_fuchs_operator_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_perron_fuchs_operator_audit.json",
+                "sections/generated/eq_fold_zm_leyang_perron_fuchs_operator.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_perron_p3_renormalization_audit",
+            script="exp_fold_zm_leyang_perron_p3_renormalization_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_perron_p3_renormalization_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_translation_q_biquartic_audit",
+            script="exp_fold_zm_elliptic_translation_q_biquartic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_translation_q_biquartic_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_translation_t_discriminant_c3_audit",
+            script="exp_fold_zm_elliptic_translation_t_discriminant_c3_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_translation_t_discriminant_c3_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_trace_dual_delta_audit",
+            script="exp_fold_zm_elliptic_trace_dual_delta_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_trace_dual_delta_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_pi_real_bifurcation_asymptotics_audit",
+            script="exp_fold_zm_pi_real_bifurcation_asymptotics_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_pi_real_bifurcation_asymptotics_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_branch_puiseux_coeff_cubic_audit",
+            script="exp_fold_zm_branch_puiseux_coeff_cubic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_branch_puiseux_coeff_cubic_audit.json",
+                "sections/generated/eq_fold_zm_branch_puiseux_coeff_cubic_audit.tex",
+            ],
+        ),
+        Step(
+            name="xi_leyang_kappa_square_quadratic_reconstruction_audit",
+            script="exp_xi_leyang_kappa_square_quadratic_reconstruction_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_leyang_kappa_square_quadratic_reconstruction_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_pi_specialization_discriminant_ab_audit",
+            script="exp_fold_zm_pi_specialization_discriminant_ab_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_pi_specialization_discriminant_ab_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_phase_resonance_resultant_chebyshev_audit",
+            script="exp_fold_zm_phase_resonance_resultant_chebyshev_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_phase_resonance_resultant_chebyshev_audit.json",
+                "sections/generated/eq_fold_zm_phase_resonance_resultant_chebyshev.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_phase_compression_discriminant_square_audit",
+            script="exp_fold_zm_phase_compression_discriminant_square_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_phase_compression_discriminant_square_audit.json",
+                "sections/generated/eq_fold_zm_phase_compression_discriminant_square.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_fiber_root_counting_audit",
+            script="exp_fold_zm_elliptic_fiber_root_counting_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_fiber_root_counting_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_modular_y_qexp_audit",
+            script="exp_fold_zm_elliptic_modular_y_qexp_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_modular_y_qexp_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_modular_y_qexp_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_s4_chebotarev_splitting_distribution_audit",
+            script="exp_fold_zm_s4_chebotarev_splitting_distribution_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_s4_chebotarev_splitting_distribution_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_lattes_rational_points_audit",
+            script="exp_fold_zm_elliptic_lattes_rational_points_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_lattes_rational_points_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_lattes_rational_points_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_discriminant_curve_local_factor_audit",
+            script="exp_fold_zm_leyang_discriminant_curve_local_factor_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_discriminant_curve_local_factor_audit.json",
+                "sections/generated/eq_fold_zm_leyang_discriminant_curve_local_factor_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_discriminant_ridge_difference_square_audit",
+            script="exp_fold_zm_leyang_discriminant_ridge_difference_square_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_discriminant_ridge_difference_square_audit.json",
+                "sections/generated/eq_fold_zm_leyang_discriminant_ridge_difference_square_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_leyang_compression_chebyshev_conjugacy_audit",
+            script="exp_fold_zm_leyang_compression_chebyshev_conjugacy_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_leyang_compression_chebyshev_conjugacy_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_discriminant_ridge_bad_reduction_31_37_audit",
+            script="exp_fold_zm_discriminant_ridge_bad_reduction_31_37_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_bad_reduction_31_37_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_bad_reduction_31_37_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_mw_height_denominator_growth_audit",
+            script="exp_fold_zm_elliptic_mw_height_denominator_growth_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_mw_height_denominator_growth_audit.json",
+                "sections/generated/eq_fold_zm_elliptic_mw_height_denominator_growth_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_elliptic_rational_fiber_cubic_factor_audit",
+            script="exp_fold_zm_elliptic_rational_fiber_cubic_factor_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_elliptic_rational_fiber_cubic_factor_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_discriminant_ridge_jacobian_frobenius_audit",
+            script="exp_fold_zm_discriminant_ridge_jacobian_frobenius_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_jacobian_frobenius_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_jacobian_frobenius_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_discriminant_ridge_3torsion_frobenius_mod3_audit",
+            script="exp_fold_zm_discriminant_ridge_3torsion_frobenius_mod3_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_3torsion_frobenius_mod3_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_3torsion_frobenius_mod3_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit",
+            script="exp_fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_jacobian_endomorphism_ring_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_discriminant_ridge_jacobian_torsion_upper_bound_audit",
+            script="exp_fold_zm_discriminant_ridge_jacobian_torsion_upper_bound_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_jacobian_torsion_upper_bound_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_jacobian_torsion_upper_bound_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_discriminant_ridge_rational_points_height200_audit",
+            script="exp_fold_zm_discriminant_ridge_rational_points_height200_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_discriminant_ridge_rational_points_height200_audit.json",
+                "sections/generated/eq_fold_zm_discriminant_ridge_rational_points_height200_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_s4_galois_closure_representation_audit",
+            script="exp_fold_zm_s4_galois_closure_representation_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_s4_galois_closure_representation_audit.json",
+                "sections/generated/eq_fold_zm_s4_galois_closure_representation_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_trace_galois_audit",
+            script="exp_fold_zm_trace_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_trace_galois_audit.json",
+                "sections/generated/eq_fold_zm_trace_galois_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_resolvent_cubic_weierstrass_audit",
+            script="exp_fold_zm_resolvent_cubic_weierstrass_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_resolvent_cubic_weierstrass_audit.json",
+                "sections/generated/eq_fold_zm_resolvent_cubic_weierstrass_audit.tex",
+            ],
+        ),
+        Step(
+            name="m2_level3_boundary_transvection_counts",
+            script="exp_m2_level3_boundary_transvection_counts.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m2_level3_boundary_transvection_counts.json",
+                "sections/generated/eq_m2_level3_boundary_transvection_counts.tex",
+            ],
+        ),
+        Step(
+            name="m2_level3_bielliptic_involution_counts",
+            script="exp_m2_level3_bielliptic_involution_counts.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m2_level3_bielliptic_involution_counts.json",
+                "sections/generated/eq_m2_level3_bielliptic_involution_counts.tex",
+            ],
+        ),
+        Step(
+            name="m2_level3_xi_delta0_order6_inertia_audit",
+            script="exp_m2_level3_xi_delta0_order6_inertia_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/m2_level3_xi_delta0_order6_inertia_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_zm_hard_boundary_coeffs_audit",
+            script="exp_fold_zm_hard_boundary_coeffs_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_hard_boundary_coeffs_audit.json",
+                "sections/generated/eq_fold_zm_hard_boundary_coeffs_audit.tex",
+            ],
+        ),
+        Step(
+            name="fold_zm_low_weight_quasipolynomial_audit",
+            script="exp_fold_zm_low_weight_quasipolynomial_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_zm_low_weight_quasipolynomial_audit.json",
+                "sections/generated/eq_fold_zm_low_weight_quasipolynomial_audit.tex",
             ],
         ),
         Step(
@@ -2789,6 +4099,25 @@ def build_steps() -> List[Step]:
     ]
 
 
+def _postprocess_strip_comment_timestamps() -> float:
+    """Always run the timestamp-comment stripping pass.
+
+    This is intentionally outside the step cache because upstream steps may be
+    skipped by cache while manuscript sources could still contain (or regain)
+    auto-inserted timestamp comments.
+    """
+    script_path = scripts_dir() / "util_strip_comment_timestamps.py"
+    if not script_path.is_file():
+        print(f"[run_all] WARN missing postprocess script: {script_path}", flush=True)
+        return 0.0
+
+    cmd = [sys.executable, str(script_path), "--root", str(paper_root())]
+    print(f"[run_all] POST strip_comment_timestamps: {' '.join(cmd)}", flush=True)
+    t0 = time.time()
+    subprocess.check_call(cmd, cwd=str(paper_root()))
+    return float(time.time() - t0)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Run reproducible experiment pipeline (with step cache)."
@@ -2862,6 +4191,9 @@ def main() -> None:
         steps_cache[st.name] = sig
         cache["steps"] = steps_cache
         _write_cache(cache)
+
+    dt_post = _postprocess_strip_comment_timestamps()
+    step_times["post_strip_comment_timestamps"] = float(dt_post)
 
     dt_all = time.time() - t0_all
     print(f"[run_all] ALL DONE elapsed_s={dt_all:.3f}", flush=True)

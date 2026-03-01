@@ -1,0 +1,125 @@
+\subsection{折叠纤维的复制中心化代数与有色分划图式：置换对称的显式图式模型}\label{subsec:op-algebra-fold-replication-centralizer}
+本小节将折叠纤维的“置换对称”提升为一族完全可计算的中心化代数，并给出其由分划图式生成的显式模型。
+核心对象是 \(G_m\) 在 \(\mathcal{H}_m^{\otimes q}\) 上的对角作用之交换子代数；该代数按折叠类型计数向量分块，并在每个颜色分量上退化为对称群置换模张量幂的中心化代数，从而与分划代数/平面代数图式严格对齐。
+
+\providecommand{\ket}[1]{\lvert #1\rangle}
+\providecommand{\bra}[1]{\langle #1\rvert}
+\providecommand{\Mult}{\mathrm{Mult}}
+
+\paragraph{纤维分解与置换对称。}
+沿用 \S\ref{subsec:op-algebra-fold-quantum-channel} 的记号：\(\Omega_m=\{0,1\}^m\)，\(X_m\) 为稳定类型集，\(\Fold_m:\Omega_m\to X_m\) 为折叠映射，\(\mathcal{H}_m=\CC^{\Omega_m}\) 带标准基 \(\{\ket{\omega}\}_{\omega\in\Omega_m}\)，且
+\[
+F_x:=\Fold_m^{-1}(x),\qquad d_m(x):=\card{F_x},\qquad \mathcal{H}_x:=\Pi_x\mathcal{H}_m=\Span\{\ket{\omega}:\omega\in F_x\}.
+\]
+则 \(\mathcal{H}_m=\bigoplus_{x\in X_m}\mathcal{H}_x\) 且 \(\dim\mathcal{H}_x=d_m(x)\)。
+定义纤维置换群
+\[
+G_m:=\prod_{x\in X_m}\mathrm{Sym}(F_x)\ \cong\ \prod_{x\in X_m}S_{d_m(x)},
+\]
+其按“在每个 \(\mathcal{H}_x\) 内置换标准基向量”的方式作用于 \(\mathcal{H}_m\)，并在任意张量幂 \(\mathcal{H}_m^{\otimes q}\) 上取对角作用。
+
+\begin{definition}[复制中心化代数]\label{def:op-algebra-replication-centralizer}
+对 \(q\in\NN\) 定义
+\[
+\mathcal{C}_{m,q}:=\End_{G_m}\!\bigl(\mathcal{H}_m^{\otimes q}\bigr).
+\]
+\end{definition}
+
+\paragraph{分块与分划代数分量。}
+对计数向量 \(\mathbf n=(n_x)_{x\in X_m}\in\NN^{X_m}\) 满足 \(\sum_{x}n_x=q\)，记多重度
+\[
+\mathrm{Mult}(\mathbf n):=\frac{q!}{\prod_{x\in X_m}n_x!}.
+\]
+并对 \(d\in\NN\)、\(n\in\NN\) 记
+\[
+\mathsf{P}_n(d):=\End_{S_d}\!\bigl((\CC^{d})^{\otimes n}\bigr),
+\]
+其中 \(S_d\) 作用于 \(\CC^d\) 的置换表示并在张量幂上取对角作用。
+该中心化代数可由分划代数的标准图式作用给出，并且当 \(d\ge 2n\) 时该图式表示忠实（参见 \cite{BenkartHalverson2017PartitionInvariants,BowmanDotyMartin2022IntegralSchurWeylPartition}）。
+
+\begin{theorem}[复制中心化代数的有色分块分解]\label{thm:op-algebra-replication-centralizer-decomposition}
+设 \(\mathcal{C}_{m,q}\) 如定义 \ref{def:op-algebra-replication-centralizer}。
+则存在自然的 \(\ast\)-同构
+\[
+\boxed{\;
+\mathcal{C}_{m,q}\ \cong\ \bigoplus_{\mathbf n:\ \sum_x n_x=q}
+M_{\mathrm{Mult}(\mathbf n)}(\CC)\ \otimes\ \bigotimes_{x\in X_m}\mathsf{P}_{n_x}\!\bigl(d_m(x)\bigr).\;}
+\]
+\end{theorem}
+\begin{proof}
+由 \(\mathcal{H}_m=\bigoplus_x\mathcal{H}_x\)，有
+\[
+\mathcal{H}_m^{\otimes q}\cong\bigoplus_{(x_1,\dots,x_q)\in X_m^q}\mathcal{H}_{x_1}\otimes\cdots\otimes \mathcal{H}_{x_q}.
+\]
+\(G_m=\prod_x \mathrm{Sym}(F_x)\) 的对角作用仅依赖于序列中每个 \(x\) 的出现次数 \(\mathbf n=(n_x)\)。
+固定 \(\mathbf n\)。具有相同计数向量 \(\mathbf n\) 的序列数目为 \(\mathrm{Mult}(\mathbf n)\)，并且对应直和块同构于
+\(
+\CC^{\mathrm{Mult}(\mathbf n)}\otimes \bigotimes_x \mathcal{H}_x^{\otimes n_x}
+\)，其中 \(G_m\) 在 \(\CC^{\Mult(\mathbf n)}\) 上作用平凡，在第二因子上按直积分量对角作用。
+因此
+\[
+\End_{G_m}\!\Bigl(\CC^{\mathrm{Mult}(\mathbf n)}\otimes \bigotimes_x \mathcal{H}_x^{\otimes n_x}\Bigr)
+\cong
+M_{\mathrm{Mult}(\mathbf n)}(\CC)\otimes \End_{G_m}\!\Bigl(\bigotimes_x \mathcal{H}_x^{\otimes n_x}\Bigr).
+\]
+又 \(G_m\) 为直积且 \(\mathcal{H}_x^{\otimes n_x}\) 为对应分量的表示张量幂，故
+\(
+\End_{G_m}(\bigotimes_x \mathcal{H}_x^{\otimes n_x})
+\cong
+\bigotimes_x \End_{S_{d_m(x)}}(\mathcal{H}_x^{\otimes n_x})
+\cong
+\bigotimes_x \mathsf{P}_{n_x}(d_m(x))
+\)。
+对所有 \(\mathbf n\) 求直和即得所示同构。证毕。
+\end{proof}
+
+\paragraph{维数与限制 Bell 数。}
+记 \(B_k^{(\le d)}\) 为将 \(k\) 元集合分划为至多 \(d\) 个块的分划数（限制 Bell 数）。
+则 \(\dim \mathsf{P}_n(d)=B_{2n}^{(\le d)}\)，且当 \(d\ge 2n\) 时 \(\dim \mathsf{P}_n(d)=B_{2n}\)（参见 \cite{BenkartHalverson2017PartitionInvariants}）。
+
+\begin{corollary}[中心化代数维数的闭式]\label{cor:op-algebra-replication-centralizer-dimension}
+对任意 \(q\in\NN\) 有
+\[
+\boxed{\;
+\dim \mathcal{C}_{m,q}
+=\sum_{\mathbf n:\ \sum_x n_x=q}\Bigl(\Mult(\mathbf n)\Bigr)^2
+\prod_{x\in X_m} B_{2n_x}^{(\le d_m(x))}. \;}
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:op-algebra-replication-centralizer-decomposition}，
+\[
+\dim\mathcal{C}_{m,q}
+=\sum_{\mathbf n}\dim M_{\Mult(\mathbf n)}(\CC)\cdot\prod_x \dim\mathsf{P}_{n_x}(d_m(x))
+=\sum_{\mathbf n}\Bigl(\Mult(\mathbf n)\Bigr)^2\prod_x B_{2n_x}^{(\le d_m(x))}.
+\]
+证毕。
+\end{proof}
+
+\paragraph{有色分划图式与非可逆对称的显式模型。}
+将 \(X_m\) 视为“颜色集”。
+对每个 \(q\ge 0\) 的 \(2q\) 边界点分划图式，允许对每个分划块赋予颜色 \(x\in X_m\)，并规定闭回路（内圈）若颜色为 \(x\) 则按标量 \(d_m(x)\) 赋值。
+在该规则下，由图式拼接与上下反射诱导的运算生成一族 \(\ast\)-代数，记为 \(\mathsf{PA}_m(q)\)。
+
+\begin{proposition}[有色分划图式的算子表示与中心化刻画]\label{prop:op-algebra-colored-partition-planar-algebra}
+对每个 \(q\ge 0\)，存在自然的 \(\ast\)-同态
+\[
+\varrho_{m,q}:\mathsf{PA}_m(q)\longrightarrow \End\!\bigl(\mathcal{H}_m^{\otimes q}\bigr)
+\]
+使得
+\[
+\boxed{\ \varrho_{m,q}\bigl(\mathsf{PA}_m(q)\bigr)=\mathcal{C}_{m,q}\ }.
+\]
+因此 \(\{\mathcal{C}_{m,q}\}_{q\ge 0}\) 形成一座由多重度场 \(\{d_m(x)\}_{x\in X_m}\) 控制回路权重的有色分划图式代数塔；其在图式层面给出纤维置换对称的显式模型，可被视为非可逆对称的可计算样本族之一（参见 \cite{Shao2308.00747NonInvertibleTASI}）。
+\end{proposition}
+\begin{proof}
+在每个固定颜色 \(x\) 上，分划图式通过“指标相等约束与求和”的标准方式作用于 \((\CC^{d_m(x)})^{\otimes n}\)，其像为 \(\End_{S_{d_m(x)}}((\CC^{d_m(x)})^{\otimes n})\)（参见 \cite{BenkartHalverson2017PartitionInvariants}）。
+将该构造对所有 \(x\in X_m\) 逐分量实施，并按计数向量 \(\mathbf n\) 的分块分解组织，得到 \(\varrho_{m,q}\)。
+其像在每个 \(\mathbf n\) 分块上生成
+\(
+M_{\Mult(\mathbf n)}(\CC)\otimes\bigotimes_x \mathsf{P}_{n_x}(d_m(x))
+\)，从而由定理 \ref{thm:op-algebra-replication-centralizer-decomposition} 得到像恰为 \(\mathcal{C}_{m,q}\)。证毕。
+\end{proof}
+
+\endinput
+

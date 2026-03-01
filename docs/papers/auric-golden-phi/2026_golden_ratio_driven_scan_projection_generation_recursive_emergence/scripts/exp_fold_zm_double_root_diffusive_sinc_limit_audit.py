@@ -8,6 +8,11 @@ We numerically audit the scaling statement (paper):
 
   (2/m) * Z_m( -u / m^2 )  ->  sinc( sqrt(u/2) )
 
+and we also report the same comparison under the exact normalization by
+Z_m(0)=floor(m/2)+1:
+
+  Z_m( -u / m^2 ) / Z_m(0)  ->  sinc( sqrt(u/2) )
+
 for u on a real grid (a compact subset of C), and we also locate the first few
 scaled near-zero roots via u = -m^2 * y, comparing them to 2*pi^2*j^2.
 
@@ -73,15 +78,31 @@ def _scaled_f(m: int, u: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
     return (mp.mpf(2) / m) * _zm_eval(m, y)
 
 
-def _grid_max_error(m: int, u_grid: List[mp.mpf]) -> Tuple[mp.mpf, mp.mpf]:
-    max_err = mp.mpf(0)
-    argmax_u = u_grid[0] if u_grid else mp.mpf(0)
+def _zm0(m: int) -> mp.mpf:
+    # Exact closed form (paper): Z_m(0) = floor(m/2) + 1.
+    return mp.mpf((m // 2) + 1)
+
+
+def _scaled_g(m: int, u: mp.mpf | mp.mpc) -> mp.mpf | mp.mpc:
+    y = -(u / (m * m))
+    return _zm_eval(m, y) / _zm0(m)
+
+
+def _grid_max_error_pair(m: int, u_grid: List[mp.mpf]) -> Tuple[mp.mpf, mp.mpf, mp.mpf, mp.mpf]:
+    max_err_f = mp.mpf(0)
+    argmax_u_f = u_grid[0] if u_grid else mp.mpf(0)
+    max_err_g = mp.mpf(0)
+    argmax_u_g = u_grid[0] if u_grid else mp.mpf(0)
     for u in u_grid:
-        err = abs(_scaled_f(m, u) - _target(u))
-        if err > max_err:
-            max_err = err
-            argmax_u = u
-    return max_err, argmax_u
+        err_f = abs(_scaled_f(m, u) - _target(u))
+        if err_f > max_err_f:
+            max_err_f = err_f
+            argmax_u_f = u
+        err_g = abs(_scaled_g(m, u) - _target(u))
+        if err_g > max_err_g:
+            max_err_g = err_g
+            argmax_u_g = u
+    return max_err_f, argmax_u_f, max_err_g, argmax_u_g
 
 
 def _try_bracket_root(
@@ -203,15 +224,17 @@ def main() -> None:
 
     grid_errors: List[Dict[str, object]] = []
     for m in m_values:
-        max_err, argmax_u = _grid_max_error(m, u_grid)
+        max_err_f, argmax_u_f, max_err_g, argmax_u_g = _grid_max_error_pair(m, u_grid)
         grid_errors.append(
             {
                 "m": m,
                 "u_min": float(u_min),
                 "u_max": float(u_max),
                 "u_grid_n": u_grid_n,
-                "max_abs_error": float(max_err),
-                "argmax_u": float(argmax_u),
+                "max_abs_error_2_over_m": float(max_err_f),
+                "argmax_u_2_over_m": float(argmax_u_f),
+                "max_abs_error_norm_by_zm0": float(max_err_g),
+                "argmax_u_norm_by_zm0": float(argmax_u_g),
             }
         )
 
@@ -242,6 +265,7 @@ def main() -> None:
         "notes": {
             "limit_target": "sinc(sqrt(u/2))",
             "scaling": "evaluate Z_m at y=-u/m^2 and scale by 2/m",
+            "scaling_alt": "evaluate Z_m at y=-u/m^2 and normalize by Z_m(0)=floor(m/2)+1",
             "root_scaling": "u = -m^2*y_root should approach 2*pi^2*j^2",
         },
     }

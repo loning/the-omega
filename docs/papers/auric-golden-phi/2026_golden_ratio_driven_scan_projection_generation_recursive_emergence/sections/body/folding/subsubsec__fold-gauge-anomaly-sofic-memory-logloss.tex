@@ -1,0 +1,101 @@
+\paragraph{有限上下文对数损失的不可消去缺口：由 \texorpdfstring{$\varepsilon$}{ε}-机尾部给出的显式下界}\label{par:fold-gauge-anomaly-sofic-memory-logloss}
+沿用 \S\ref{par:fold-gauge-anomaly-sofic-memory} 的记号：\((g_t)\) 为均匀基线下的失配指示过程，其 \(\varepsilon\)-机状态集为 \(\mathcal S=\{B,C,A\}\cup\{R_n:n\in\NN_0\}\)，并满足
+\[
+\alpha_n:=\PP(g_{t+1}=1\mid R_n)=\frac{F_{n+2}}{2F_{n+4}},
+\qquad
+\pi(R_n)=\frac{F_{n+4}}{36\cdot 2^n},
+\]
+以及对 \(k\ge 2\),
+\[
+q_k:=\PP(g_{t+1}=1\mid g_{t-k+1}\cdots g_t=0^k)=\frac{F_{k+3}}{2F_{k+5}}
+\]
+（分别见定理 \ref{thm:fold-gauge-anomaly-epsilon-machine-fibonacci-mobius}、定理 \ref{thm:fold-gauge-anomaly-epsilon-machine-stationary-fibonacci-tail} 与定理 \ref{thm:fold-gauge-anomaly-zero-run-fibonacci}）。
+
+\begin{theorem}[\texorpdfstring{$k$}{k}-上下文预测的对数损失缺口下界（Fibonacci 显式）]\label{thm:fold-gauge-anomaly-logloss-context-gap}
+令 \(k\ge 2\)，并令 \(\mathcal Q_k\) 为所有 \(k\)-上下文概率预测器
+\[
+\mathcal Q_k:=\Bigl\{q:\{0,1\}^k\to(0,1)\Bigr\}.
+\]
+对任意 \(q\in\mathcal Q_k\)，定义其单步期望对数损失（自然对数）为
+\[
+\mathcal L(q):=
+\EE\Bigl[-\log q(g_{t-k+1}\cdots g_t)\cdot \mathbf 1_{\{g_{t+1}=1\}}
+-\log\bigl(1-q(g_{t-k+1}\cdots g_t)\bigr)\cdot \mathbf 1_{\{g_{t+1}=0\}}\Bigr].
+\]
+令
+\(
+\mathcal L_k:=\inf_{q\in\mathcal Q_k}\mathcal L(q)
+\)
+并令 \(\mathcal L_\infty\) 表示允许使用全历史的 Bayes 最优对数损失（等于熵率，见命题 \ref{prop:fold-gauge-anomaly-epsilon-machine-entropy-rate-complexity} 的 unifilar 表达）。
+则成立显式下界
+\[
+\boxed{\;
+\mathcal L_k-\mathcal L_\infty
+\ \ge\
+\pi(R_{k-1})\cdot
+D_{\mathrm{KL}}\!\Bigl(\mathrm{Bern}(\alpha_{k-1})\ \big\|\ \mathrm{Bern}(q_k)\Bigr)\;},
+\]
+其中
+\[
+\pi(R_{k-1})=\frac{F_{k+3}}{36\cdot 2^{k-1}},
+\qquad
+\alpha_{k-1}=\frac{F_{k+1}}{2F_{k+3}},
+\qquad
+q_k=\frac{F_{k+3}}{2F_{k+5}}.
+\]
+并且存在常数 \(c>0\) 与 \(k_0\) 使得对所有 \(k\ge k_0\) 成立指数下界
+\[
+\mathcal L_k-\mathcal L_\infty\ \ge\ c\cdot (2\varphi^3)^{-k}.
+\]
+\end{theorem}
+\begin{proof}
+对数损失的 Bayes 分解给出
+\[
+\mathcal L(q)-\mathcal L_\infty
+=
+\EE\Bigl[
+D_{\mathrm{KL}}\!\Bigl(\PP(g_{t+1}\in\cdot\mid g_{-\infty}^t)\ \big\|\ \mathrm{Bern}(q(g_{t-k+1}\cdots g_t))\Bigr)
+\Bigr],
+\]
+其中右端的“真条件律”由全历史决定。
+对任意 \(k\ge 2\)，在事件 \(\{S_t\in R_{k-1}\}\) 上，\(\varepsilon\)-机给出
+\(
+\PP(g_{t+1}=1\mid g_{-\infty}^t)=\PP(g_{t+1}=1\mid R_{k-1})=\alpha_{k-1}
+\)；
+并且由 \(R_n\xrightarrow{0}R_{n+1}\) 的结构可知在该事件上最近 \(k\) 个输出为 \(0^k\)，从而 \(g_{t-k+1}\cdots g_t=0^k\)。
+因此
+\[
+\mathcal L(q)-\mathcal L_\infty
+\ \ge\
+\PP(R_{k-1})\cdot
+D_{\mathrm{KL}}\!\Bigl(\mathrm{Bern}(\alpha_{k-1})\ \big\|\ \mathrm{Bern}(q(0^k))\Bigr).
+\]
+当取 \(q\) 为 \(\mathcal Q_k\) 的最优解时，由对数损失的点态 Bayes 最优性必有 \(q(0^k)=\PP(g_{t+1}=1\mid 0^k)=q_k\)，得到第一条不等式。
+代入 \(\PP(R_{k-1})=\pi(R_{k-1})\) 的闭式即得所示显式下界。
+\par
+最后，对 \(k\to\infty\) 由 Binet 渐近 \(F_n\asymp \varphi^n\) 得 \(\pi(R_{k-1})\asymp (\varphi/2)^k\)，并且 \(|\alpha_{k-1}-q_k|\asymp \varphi^{-2k}\)。
+由于两者均收敛到 \(\frac{1}{2\varphi^2}\in(0,1)\)，Bernoulli 的 \(D_{\mathrm{KL}}\) 在小偏差下具有二次型下界 \(D_{\mathrm{KL}}(\mathrm{Bern}(p)\|\mathrm{Bern}(p+\Delta))\gtrsim \Delta^2\)；
+故 \(\mathcal L_k-\mathcal L_\infty\gtrsim (\varphi/2)^k\cdot\varphi^{-4k}=(2\varphi^3)^{-k}\)，从而存在 \(c,k_0\) 使对所有 \(k\ge k_0\) 成立。证毕。
+\end{proof}
+
+\begin{corollary}[达到指定误差阈值所需的上下文深度]\label{cor:fold-gauge-anomaly-logloss-context-depth}
+在定理 \ref{thm:fold-gauge-anomaly-logloss-context-gap} 的指数下界下，对任意 \(\varepsilon\in(0,1)\)，若 \(\mathcal L_k-\mathcal L_\infty\le \varepsilon\) 且 \(k\ge k_0\)，则必有
+\[
+k\ \ge\ \frac{\log(c/\varepsilon)}{\log(2\varphi^3)}.
+\]
+\end{corollary}
+
+\begin{conjecture}[对数损失缺口的精确指数率与主导项]\label{conj:fold-gauge-anomaly-logloss-gap-asymptotic}
+沿用定理 \ref{thm:fold-gauge-anomaly-logloss-context-gap} 的记号。
+猜想存在常数 \(C>0\) 使当 \(k\to\infty\) 时
+\[
+\mathcal L_k-\mathcal L_\infty\ \sim\ C\cdot (2\varphi^3)^{-k},
+\]
+并且主导贡献由 \(\varepsilon\)-机尾部单态 \(R_{k-1}\) 的项
+\(
+\pi(R_{k-1})\cdot D_{\mathrm{KL}}\bigl(\mathrm{Bern}(\alpha_{k-1})\|\mathrm{Bern}(q_k)\bigr)
+\)
+所承载。
+\end{conjecture}
+
+\endinput
