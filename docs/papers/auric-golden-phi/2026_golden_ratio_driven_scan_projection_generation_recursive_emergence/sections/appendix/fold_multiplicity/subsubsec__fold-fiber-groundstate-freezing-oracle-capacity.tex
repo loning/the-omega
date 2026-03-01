@@ -189,6 +189,42 @@ h_\infty(a)=g_*.
 反向构造可逐纤维实现该上界：对每个 \(x\) 任取 \(\min(d_m(x),2^B)\) 个纤维内微态并赋予互异码字，由此定义 \({\rm enc}\) 与 \({\rm dec}\) 即达等号。证毕。
 \end{proof}
 
+\paragraph{连续阈值化与直方图的可逆读出}
+把阈值从 \(2^B\) 连续化。对 \(T>0\) 定义
+\begin{equation}\label{eq:fold-oracle-capacity-continuous-threshold}
+\mathcal{C}_m(T):=\sum_{x\in X_m}\min\bigl(d_m(x),T\bigr),
+\end{equation}
+则 \(\mathcal{C}_m(2^B)=\mathcal{C}_m(B)\)。
+记纤维直方图
+\[
+N_{m,d}:=\#\{x\in X_m:\ d_m(x)=d\}\qquad(d\in\NN_{\ge 1}).
+\]
+
+\begin{proposition}[容量曲线的斜率跳跃完全刻画直方图]\label{prop:fold-oracle-capacity-slope-jumps-determine-histogram}
+函数 \(T\mapsto \mathcal{C}_m(T)\) 连续、分段线性且为凸函数。
+对任意正则点 \(T\notin\{d:\ N_{m,d}>0\}\)，其导数存在并满足
+\[
+\boxed{\;
+\mathcal{C}_m'(T)=\#\{x\in X_m:\ d_m(x)>T\}
+=\sum_{d>T}N_{m,d}.\;}
+\]
+并且对任意整数 \(d\ge 1\)，左右导数的跳跃量给出精确反演公式
+\[
+\boxed{\;
+N_{m,d}=\mathcal{C}_m'(d-0)-\mathcal{C}_m'(d+0).\;}
+\]
+因此 \(\mathcal{C}_m(\cdot)\) 作为 \(T\) 的函数完全决定多重集 \(\{d_m(x)\}_{x\in X_m}\)（等价地决定全部 \(N_{m,d}\)）。
+\end{proposition}
+\begin{proof}
+对单项函数 \(f_d(T):=\min(d,T)\)，当 \(T<d\) 时 \(f_d'(T)=1\)，当 \(T>d\) 时 \(f_d'(T)=0\)；在 \(T=d\) 处不可导且左右导数分别为 \(1,0\)。
+对有限和 \(\mathcal{C}_m(T)=\sum_x f_{d_m(x)}(T)\) 在正则点逐项求导得到
+\(
+\mathcal{C}_m'(T)=\sum_x \mathbf 1_{\{d_m(x)>T\}}
+\)。
+当 \(T\) 穿越整数 \(d\) 时，恰有 \(d_m(x)=d\) 的那些项导数从 \(1\) 跳到 \(0\)，故跳跃量为 \(N_{m,d}\)；从而反演式成立。
+连续性、分段线性与凸性由每个 \(f_d\) 的同类性质以及有限和保持这些性质得到。证毕。
+\end{proof}
+
 \input{subsubsec__fold-oracle-renyi-nonasymptotic}
 
 \begin{corollary}[全态可逆的比特阈值与渐近速率]\label{cor:fold-oracle-full-invertibility-threshold}

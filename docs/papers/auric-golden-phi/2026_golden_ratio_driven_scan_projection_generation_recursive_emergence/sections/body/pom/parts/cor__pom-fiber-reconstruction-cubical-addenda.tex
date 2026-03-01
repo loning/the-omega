@@ -16,6 +16,53 @@ Fibonacci cube \(\Gamma_n\) 是超立方体 \(Q_n\) 的标准 partial cube（等
 最后，按定义 \(\mathcal F_x\) 的一条边即对某个独立集 \(S\) 施行一次“开关”使其对称差大小为 \(1\)，故 \(|S|\) 的奇偶性沿边翻转并诱导二分分解。证毕。
 \end{proof}
 
+\begin{theorem}[纤维三元中值的多数闭式]\label{thm:pom-fiber-triple-median-majority}
+固定 \(m\ge 2\) 与 \(x\in X_m\)。
+在纤维 \(\Fold_m^{-1}(x)\) 上定义归一化距离
+\[
+d_x(\omega,\omega'):=\frac13\,|\omega\oplus\omega'|_0.
+\]
+则对任意三点 \(\omega^{(1)},\omega^{(2)},\omega^{(3)}\in \Fold_m^{-1}(x)\)，函数
+\[
+\omega\ \longmapsto\ \sum_{a=1}^3 d_x(\omega^{(a)},\omega)
+\]
+在 \(\Fold_m^{-1}(x)\) 上存在唯一极小点，记为 \(\operatorname{med}_x(\omega^{(1)},\omega^{(2)},\omega^{(3)})\)。
+令 \(\Theta_x:\Fold_m^{-1}(x)\to \mathsf{Ind}(\Gamma_x)\) 为定理 \ref{thm:pom-fiber-indset-factorization} 的规范双射，并记 \(S_a:=\Theta_x(\omega^{(a)})\)。
+则该中值点满足显式闭式
+\[
+\Theta_x\!\bigl(\operatorname{med}_x(\omega^{(1)},\omega^{(2)},\omega^{(3)})\bigr)
+\ =\
+\operatorname{Maj}(S_1,S_2,S_3)
+\ :=\
+(S_1\cap S_2)\cup(S_2\cap S_3)\cup(S_1\cap S_3).
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-fiber-hamming-triple-isometry}，对任意 \(\omega,\omega'\in\Fold_m^{-1}(x)\) 有
+\[
+d_x(\omega,\omega')
+=\bigl|\Theta_x(\omega)\triangle \Theta_x(\omega')\bigr|.
+\]
+因此中值问题等价于在集合空间 \(\mathsf{Ind}(\Gamma_x)\) 上、以 \(d(S,T):=|S\triangle T|\) 为度量的三元 Fr\'echet 问题。
+\par
+先证闭合性：设 \(uv\) 为 \(\Gamma_x\) 的一条边。
+若 \(\operatorname{Maj}(S_1,S_2,S_3)\) 同时包含 \(u,v\)，则至少有两组 \(S_a\) 含 \(u\)，且至少有两组 \(S_b\) 含 \(v\)；
+由抽屉原理，存在某个 \(S_c\) 同时含 \(u\) 与 \(v\)，与 \(S_c\in\mathsf{Ind}(\Gamma_x)\) 矛盾。
+故 \(\operatorname{Maj}(S_1,S_2,S_3)\in\mathsf{Ind}(\Gamma_x)\)。
+\par
+再证极小性与唯一性。
+将集合 \(S\subseteq V(\Gamma_x)\) 视为其指示向量 \(1_S\in\{0,1\}^{V(\Gamma_x)}\)，则
+\(
+|S\triangle T|
+=\mathrm{Ham}(1_S,1_T)
+\)。
+对任意固定坐标 \(v\in V(\Gamma_x)\)，令 \((b_1,b_2,b_3)\in\{0,1\}^3\) 为 \((1_{S_1}(v),1_{S_2}(v),1_{S_3}(v))\)。
+对任意候选值 \(b\in\{0,1\}\)，该坐标对总和 \(\sum_{a=1}^3 \mathrm{Ham}(1_{S_a}(v),b)\) 的贡献为 \(\#\{a:\ b_a\ne b\}\)，其唯一最小值由多数值 \(b=\operatorname{Maj}(b_1,b_2,b_3)\) 取得。
+逐坐标相加即得：在全体 \(\{0,1\}^{V(\Gamma_x)}\) 中，\(\operatorname{Maj}(S_1,S_2,S_3)\) 为目标函数的唯一极小点。
+由于该点属于 \(\mathsf{Ind}(\Gamma_x)\)，它也是在 \(\mathsf{Ind}(\Gamma_x)\) 上的唯一极小点。
+最后由 \(\Theta_x\) 的双射性，把该唯一极小点拉回纤维即得结论。证毕。
+\end{proof}
+
 \begin{definition}[离心率、半径、图心与反极点集]\label{def:pom-fibcube-ecc-rad-center-antipodes}
 设 \(G\) 为有限连通图，图距离记为 \(d_G\)。
 对 \(v\in V(G)\) 定义离心率
