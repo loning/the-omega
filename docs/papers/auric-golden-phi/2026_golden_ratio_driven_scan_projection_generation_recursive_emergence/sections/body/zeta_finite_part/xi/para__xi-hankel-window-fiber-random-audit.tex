@@ -43,6 +43,98 @@ H_0(b):=(b_{i+j})_{0\le i,j\le d-1}\in M_d(k).
 另一方面，定理 \ref{thm:dephys-hankel-finite-audit} 给出在证书偏移 \(\ell_q\) 处长度 \(2d\) 窗口的确定性锁定，二者合并即得尖锐性。证毕。
 \end{proof}
 
+\begin{theorem}[递推参数化的 Hankel 行列式 Jacobian 恒等式]\label{thm:xi-hankel-recurrence-jacobian-identity}
+设 \(k\) 为域，\(d\ge 1\)，并固定初值向量 \((a_0,\dots,a_{d-1})\in k^d\)。
+对任意系数向量 \(c=(c_0,\dots,c_{d-1})\in k^d\)，令 \((a_n(c))_{n\ge 0}\) 为由常系数递推
+\[
+a_{n+d}(c)+\sum_{j=0}^{d-1}c_j\,a_{n+j}(c)=0\qquad(n\ge 0)
+\]
+唯一确定的序列（其中 \(a_0,\dots,a_{d-1}\) 视为常数）。
+定义多项式映射
+\[
+\Phi:k^d\to k^d,\qquad \Phi(c):=(a_d(c),a_{d+1}(c),\dots,a_{2d-1}(c)),
+\]
+并记 \(d\times d\) Hankel 主块
+\[
+H(c):=\bigl(a_{i+j}(c)\bigr)_{0\le i,j\le d-1}\in M_d(k).
+\]
+则其 Jacobian 行列式满足严格恒等式
+\[
+\det\bigl(D\Phi(c)\bigr)=(-1)^d\,\det\bigl(H(c)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+将未知量 \(b=(b_0,\dots,b_{d-1})\in k^d\) 视为 \(b_i=a_{d+i}(c)\)，并对 \(0\le n\le d-1\) 定义方程
+\[
+F_n(c,b):=b_n+\sum_{j=0}^{d-1}c_j\,a_{n+j}(c,b)=0,
+\]
+其中 \(a_{n+j}(c,b)\) 若 \(n+j<d\) 则为固定初值 \(a_{n+j}\)，若 \(n+j\ge d\) 则为相应的 \(b_{n+j-d}\)。
+于是 \(F(c,b)=0\) 在 Zariski 开稠密处以隐函数方式刻画 \(b=\Phi(c)\)。
+\par
+计算偏导矩阵 \(L:=\partial F/\partial b\)：在每个 \(F_n\) 中 \(b_n\) 的系数为 \(1\)，其余 \(b_i\) 仅可能以 \(c_\ast b_i\) 的形式在 \(i<n\) 时出现，故 \(L\) 为单位下三角矩阵，从而 \(\det L=1\)。
+另一方面，对任意 \(0\le j\le d-1\) 有
+\[
+\frac{\partial F_n}{\partial c_j}=a_{n+j}(c,b),
+\]
+故矩阵 \(\partial F/\partial c\) 恰为 \(H(c)\)。
+对恒等式 \(F(c,\Phi(c))\equiv 0\) 取微分得
+\[
+\frac{\partial F}{\partial c}+\frac{\partial F}{\partial b}\,D\Phi(c)=0,
+\]
+即 \(H(c)+L\,D\Phi(c)=0\)，从而 \(D\Phi(c)=-L^{-1}H(c)\)。
+取行列式并用 \(\det L=1\)，得到 \(\det(D\Phi(c))=(-1)^d\det(H(c))\)。证毕。
+\end{proof}
+
+\begin{proposition}[Jacobian 的 Toeplitz--Hankel 因子分解]\label{prop:xi-hankel-jacobian-toeplitz-hankel-factorization}
+沿用定理 \ref{thm:xi-hankel-recurrence-jacobian-identity} 的设定。
+令
+\[
+Q(t):=1+c_{d-1}t+c_{d-2}t^2+\cdots+c_0t^d\in k[t],
+\]
+并在 \(k[[t]]\) 中取逆元
+\[
+\frac{1}{Q(t)}=\sum_{m\ge 0}s_m(c)\,t^m.
+\]
+记 \(T(c)\in k^{d\times d}\) 为下三角 Toeplitz 矩阵，使得
+\[
+T(c)_{n,i}=s_{n-i}(c)\quad(0\le i\le n\le d-1),\qquad T(c)_{n,i}=0\ (i>n).
+\]
+则 Jacobian 矩阵具有完全因子分解
+\[
+D\Phi(c)=-\,T(c)\,H(c).
+\]
+\end{proposition}
+\begin{proof}
+定理 \ref{thm:xi-hankel-recurrence-jacobian-identity} 的证明中已得到 \(D\Phi(c)=-L^{-1}H(c)\)，其中 \(L=\partial F/\partial b\) 为单位下三角 Toeplitz 矩阵。
+将向量 \(b\) 识别为截断多项式 \(B(t)=\sum_{i=0}^{d-1}b_it^i\)，则 \(Lb\) 等同于 \(Q(t)B(t)\bmod t^d\) 的系数向量。
+因此 \(L^{-1}\) 等同于乘以 \(1/Q(t)\) 并截断到次数 \(<d\) 的算子，其矩阵即 \(T(c)\)。
+代回即得 \(D\Phi(c)=-T(c)H(c)\)。
+可复现核验脚本：\texttt{scripts/exp\_xi\_hankel\_recurrence\_jacobian\_certificate.py}。证毕。
+\end{proof}
+
+\begin{corollary}[Hankel 判别除子即递推窗口参数化的临界集]\label{cor:xi-hankel-discriminant-divisor-parameterization-critical-locus}
+设参数空间 \(\mathcal P_d:=k^d\times k^d\)（坐标为 \((c,a_0,\dots,a_{d-1})\)），并令 \(\mathcal W_{2d}:=k^{2d}\) 表示长度 \(2d\) 的窗口 \((a_0,\dots,a_{2d-1})\)。
+由递推定义得到多项式映射
+\[
+F:\mathcal P_d\to \mathcal W_{2d},\qquad F(c,a_0,\dots,a_{d-1})=(a_0,\dots,a_{2d-1}).
+\]
+记
+\[
+H:=\bigl(a_{i+j}\bigr)_{0\le i,j\le d-1},
+\]
+其中 \(a_0,\dots,a_{2d-2}\) 由输出窗口给定。
+则在 Jacobian 意义下有精确恒等式
+\[
+\det(DF)=(-1)^d\det(H).
+\]
+因此 \(F\) 在开集 \(\{\det(H)\neq 0\}\subset\mathcal P_d\) 上为 \'etale，且 \(\det(H)=0\) 的像（及其拉回）刻画了该参数化失去局部可逆性的全部退化点。
+\end{corollary}
+\begin{proof}
+映射 \(F\) 对初值坐标 \((a_0,\dots,a_{d-1})\) 的前 \(d\) 个输出坐标为恒等，故 \(DF\) 为分块下三角矩阵，其右下 \(d\times d\) 主块即为定理 \ref{thm:xi-hankel-recurrence-jacobian-identity} 的 \(D\Phi\)。
+于是 \(\det(DF)=\det(D\Phi)=(-1)^d\det(H)\)。
+当 \(\det(H)\neq 0\) 时 Jacobian 判据给出 \'etale；反之 Jacobian 为零处必为临界点。证毕。
+\end{proof}
+
 \begin{theorem}[单点随机审计：允许可控误差的判等压缩]\label{thm:xi-hankel-single-point-random-audit}
 设 \(k\) 为域，且 \(a=(a_n)_{n\ge 0}\)、\(b=(b_n)_{n\ge 0}\) 为两条 Hankel 秩不超过 \(d\) 的序列。
 令生成函数
@@ -147,6 +239,34 @@ G^{-1}A_H^je_0=A_H^jG^{-1}e_0=A_H^je_0
 而在允许可控误差的情形，定理 \ref{thm:xi-hankel-single-point-random-audit} 进一步把该窗口压缩为一次生成函数取值比较。
 \end{remark}
 
+\begin{proposition}[模素数审计下的 Hankel-正规形可定义性与秩保持]\label{prop:xi-hankel-good-bad-prime-dichotomy}
+设 \((a_n)_{n\ge 0}\subset\ZZ\) 为一整数序列，且其在 \(\QQ\) 上的 Hankel 秩为 \(d\)。
+取某一偏移 \(\ell\ge 0\) 使得 \(d\times d\) Hankel 主块
+\[
+H_\ell:=\bigl(a_{\ell+i+j}\bigr)_{0\le i,j\le d-1}\in M_d(\ZZ)
+\]
+在 \(\QQ\) 上可逆，并记 \(\Delta_\ell:=\det(H_\ell)\in\ZZ\setminus\{0\}\)。
+对素数 \(p\) 记约化 \(\overline a_n:=a_n\bmod p\in\FF_p\) 与 \(\overline H_\ell:=H_\ell\bmod p\)。
+则：
+\begin{enumerate}
+  \item 若 \(p\nmid \Delta_\ell\)，则 \(\overline H_\ell\) 在 \(\FF_p\) 上可逆，从而 Hankel-正规形恢复（例如 \(\overline A:=\overline H_\ell^{-1}\overline H_{\ell+1}\)）在 \(\FF_p\) 上无歧义存在，并且 \((\overline a_n)\) 在 \(\FF_p\) 上的 Hankel 秩恰为 \(d\)。
+  \item 若 \(p\mid \Delta_\ell\)，则 \(\overline H_\ell\) 奇异；因此以该偏移 \(\ell\) 定义的 Hankel-正规形恢复在 \(\FF_p\) 上失效，并出现非平凡的局部 Hankel-null 关系 \(\overline H_\ell x=0\)（\(x\neq 0\)）。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(1) 中，\(\overline H_\ell\) 可逆给出 \(\mathrm{rank}_{\FF_p}H(\overline a)\ge d\)；另一方面由 \(\overline A=\overline H_\ell^{-1}\overline H_{\ell+1}\) 可构造维数 \(d\) 的线性实现，从而 \(\mathrm{rank}_{\FF_p}H(\overline a)\le d\)。
+故 Hankel 秩恰为 \(d\)。
+(2) 中，\(\overline H_\ell\) 奇异等价于存在非零核向量 \(x\)，并且 \(\overline H_\ell^{-1}\) 不存在使得正规形恢复在该偏移处不可定义。证毕。
+\end{proof}
+
+\begin{corollary}[坏素数集合有限：除有限集合外模 \texorpdfstring{$p$}{p} Hankel 秩稳定]\label{cor:xi-hankel-finite-bad-primes-rank-stability}
+在命题 \ref{prop:xi-hankel-good-bad-prime-dichotomy} 的设定下，仅有有限多个素数 \(p\) 使得 \(p\mid \Delta_\ell\)。
+因此对除去该有限集合外的一切素数 \(p\)，序列 \((a_n\bmod p)\) 的 Hankel 秩仍为 \(d\)，并且以偏移 \(\ell\) 的 Hankel-正规形恢复在 \(\FF_p\) 上始终可定义。
+\end{corollary}
+\begin{proof}
+整数 \(\Delta_\ell\neq 0\) 仅含有限多个素因子；对其余素数 \(p\) 有 \(p\nmid \Delta_\ell\)，结论由命题 \ref{prop:xi-hankel-good-bad-prime-dichotomy}(1) 立即推出。证毕。
+\end{proof}
+
 \input{para__xi-hankel-syndrome-offline-audit-optimality}
 
 \begin{proposition}[素数幂模下的线性同余可解性：Smith 正规形判别与解数]\label{prop:xi-smith-pk-congruence-solvability-count}
@@ -214,6 +334,16 @@ F\equiv 0\pmod p
 故 \(F=0\)，即 \(M_0\widehat A=M_1\)。
 在 \(\QQ\) 上左乘 \(M_0^{-1}\) 得 \(\widehat A=A\)。证毕。
 \end{proof}
+
+\begin{conjecture}[Hankel 缺口与信息论零知识交互轮数的同阶性]\label{conj:xi-hankel-gap-zk-round-complexity}
+设 \(k\) 为域，\(H\in M_n(k)\) 为 Hankel 型矩阵，并记缺口 \(\delta:=n-\mathrm{rank}(H)\)（即 Hankel-null 空间维数）。
+考虑如下验证任务：证明者持有某个见证对象 \(w\)（例如线性实现、生成机理或等价的正规形数据）使得由 \(w\) 导出的公开观测矩阵等于 \(H\)，验证者仅持有 \(H\)，目标是在信息论零知识意义下使验证者确信 \(\delta\ge 1\)（或更强的 \(\delta=\delta_0\)）。
+则预期在一般位置上存在常数 \(c,C>0\) 使得任意信息论完备零知识协议的最小交互轮数 \(R_{\min}\) 满足
+\[
+c\,\delta\ \le\ R_{\min}\ \le\ C\,\delta,
+\]
+并且该线性量纲由 \(\delta\) 个独立 Hankel-null 方向所诱导的不可压缩挑战维度所强制。
+\end{conjecture}
 
 \endinput
 

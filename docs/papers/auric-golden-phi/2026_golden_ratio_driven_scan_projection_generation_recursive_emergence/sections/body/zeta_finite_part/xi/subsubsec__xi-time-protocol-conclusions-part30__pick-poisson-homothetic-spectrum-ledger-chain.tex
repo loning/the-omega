@@ -168,6 +168,145 @@ V_{\partial}(m)=V_{\partial}(1)-\log m
 求和恒等式由 \(\det\mathsf P=\prod_r\pi_r\) 与 \(I_{\partial}=S_{\partial}+\kappa V_{\partial}\) 直接推出。证毕。
 \end{proof}
 
+\begin{conclusion}[尺度不变量的谱型 KL 表示与等号刻画]\label{con:xi-terminal-pick-poisson-scale-invariant-spectral-kl}
+设 \(\mathsf P\succ 0\) 的特征值为 \(\lambda_1,\dots,\lambda_\kappa>0\)，并令
+\[
+p_\Sigma:=\mathrm{tr}(\mathsf P)=\sum_{j=1}^{\kappa}\lambda_j,
+\qquad
+\mu_j:=\frac{\lambda_j}{p_\Sigma}\ \ (1\le j\le\kappa).
+\]
+记 \(U_\kappa\) 为 \(\{1,\dots,\kappa\}\) 上的均匀分布，则尺度不变量满足严格恒等式
+\[
+\boxed{\;
+I_{\partial}
+\;=\;
+\kappa\log\kappa+\kappa\,D_{\mathrm{KL}}(U_\kappa\Vert \mu)\; } ,
+\]
+其中
+\[
+D_{\mathrm{KL}}(U_\kappa\Vert \mu)
+:=\sum_{j=1}^{\kappa}\frac1\kappa\log\frac{1/\kappa}{\mu_j}\ \ge\ 0.
+\]
+从而得到谱不等式
+\[
+\boxed{\;
+\det\mathsf P\ \le\ \left(\frac{\mathrm{tr}(\mathsf P)}{\kappa}\right)^{\kappa}\; } ,
+\]
+且等号当且仅当 \(\mu_1=\cdots=\mu_\kappa=\frac1\kappa\)，亦即
+\[
+\mathsf P=\frac{\mathrm{tr}(\mathsf P)}{\kappa}\,I_\kappa .
+\]
+\end{conclusion}
+\begin{proof}
+由 \(\det\mathsf P=\prod_{j=1}^{\kappa}\lambda_j=(p_\Sigma)^\kappa\prod_{j=1}^{\kappa}\mu_j\) 得
+\[
+I_{\partial}
+:=-\log\!\left(\frac{\det\mathsf P}{(\mathrm{tr}\,\mathsf P)^{\kappa}}\right)
+=-\sum_{j=1}^{\kappa}\log\mu_j.
+\]
+另一方面，
+\[
+D_{\mathrm{KL}}(U_\kappa\Vert \mu)
+=\sum_{j=1}^{\kappa}\frac1\kappa\log\frac{1/\kappa}{\mu_j}
+=-\log\kappa-\frac1\kappa\sum_{j=1}^{\kappa}\log\mu_j,
+\]
+故 \(-\sum_j\log\mu_j=\kappa\log\kappa+\kappa D_{\mathrm{KL}}(U_\kappa\Vert \mu)\)，代回即得所示恒等式。
+由 \(D_{\mathrm{KL}}\ge 0\) 得 \(-\sum_j\log\mu_j\ge \kappa\log\kappa\)，等价于 \(\prod_j\mu_j\le \kappa^{-\kappa}\)，从而得到 \(\det\mathsf P\le (\mathrm{tr}(\mathsf P)/\kappa)^\kappa\)。
+等号条件 \(D_{\mathrm{KL}}=0\) 等价于 \(\mu\) 为均匀分布，亦即 \(\mathsf P\) 的谱完全平坦，从而 \(\mathsf P=(\mathrm{tr}(\mathsf P)/\kappa)I_\kappa\)。证毕。
+\end{proof}
+
+\begin{conclusion}[显影复杂度的 KL--互能--标度三项分解]\label{con:xi-terminal-pick-poisson-visibility-complexity-kl-energy-split}
+记端点 Poisson 权重
+\(
+p_j:=\mathsf P_{jj}=P_{a_j}(-1)
+\)
+并令 \(p_\Sigma=\sum_{j=1}^{\kappa}p_j=\mathrm{tr}(\mathsf P)\)，再定义归一化权重分布
+\[
+q_j:=\frac{p_j}{p_\Sigma}\qquad(1\le j\le\kappa).
+\]
+则显影复杂度
+\(
+\mathscr{C}_{\partial}=S_{\partial}+(\kappa-1)V_{\partial}
+\)
+满足严格恒等式
+\[
+\boxed{\;
+\mathscr{C}_{\partial}
+=\kappa\log\kappa-\log p_\Sigma
+\;+\;\kappa\,D_{\mathrm{KL}}(U_\kappa\Vert q)
+\;+\;2\sum_{1\le j<k\le\kappa}\bigl(-\log\rho(a_j,a_k)\bigr)\; } .
+\]
+其中第一项为纯标度项，第二项为端点权重的均匀性偏差，第三项为伪双曲互能。
+\end{conclusion}
+\begin{proof}
+由结论 \ref{con:xi-terminal-negative-spectrum-det-invariant} 的行列式分解
+\[
+\det\mathsf P=\Bigl(\prod_{j=1}^{\kappa}p_j\Bigr)\Bigl(\prod_{j<k}\rho(a_j,a_k)^2\Bigr)
+\]
+得
+\[
+S_{\partial}=-\log\det\mathsf P
+=-\sum_{j=1}^{\kappa}\log p_j
+2\sum_{j<k}\bigl(-\log\rho(a_j,a_k)\bigr).
+\]
+于是
+\[
+\mathscr{C}_{\partial}
+=S_{\partial}+(\kappa-1)\log p_\Sigma
+=-\sum_{j=1}^{\kappa}\log p_j+(\kappa-1)\log p_\Sigma
+2\sum_{j<k}\bigl(-\log\rho(a_j,a_k)\bigr).
+\]
+又 \(-\sum_j\log p_j=-\kappa\log p_\Sigma-\sum_j\log q_j\)，故
+\[
+\mathscr{C}_{\partial}
+=-\log p_\Sigma-\sum_{j=1}^{\kappa}\log q_j
+2\sum_{j<k}\bigl(-\log\rho(a_j,a_k)\bigr).
+\]
+最后
+\[
+D_{\mathrm{KL}}(U_\kappa\Vert q)
+=-\log\kappa-\frac1\kappa\sum_{j=1}^{\kappa}\log q_j
+\]
+给出 \(-\sum_j\log q_j=\kappa\log\kappa+\kappa D_{\mathrm{KL}}(U_\kappa\Vert q)\)，代回即得结论。证毕。
+\end{proof}
+
+\begin{conclusion}[Schur 外部化的归一化乘积恒等式与有限步塌缩见证]\label{con:xi-terminal-pick-poisson-schur-vandermonde-externalization}
+对任意排列 \(\sigma\in\mathfrak S_\kappa\)，令 \(\mathsf P^{(m)}_\sigma\) 为按顺序 \(\sigma(1),\dots,\sigma(m)\) 取出的主子矩阵，并定义相应 Schur 补通量
+\[
+\pi_m(\sigma)
+:=\det(\mathsf P^{(m)}_\sigma)\Big/\det(\mathsf P^{(m-1)}_\sigma)
+\qquad(1\le m\le\kappa),
+\]
+其中约定 \(\det(\mathsf P^{(0)}_\sigma)=1\)。
+则满足严格归一化恒等式
+\[
+\boxed{\;
+\prod_{m=1}^{\kappa}\frac{\pi_m(\sigma)}{p_{\sigma(m)}}
+=\prod_{1\le j<k\le\kappa}\rho(a_j,a_k)^2\; } .
+\]
+因此若记 \(\rho_{\min}:=\min_{j<k}\rho(a_j,a_k)\in(0,1)\)，则对任意排列 \(\sigma\) 必存在某个 \(m\) 使
+\[
+\boxed{\;
+\frac{\pi_m(\sigma)}{p_{\sigma(m)}}\le \rho_{\min}^{\,\kappa-1}\; } .
+\]
+\end{conclusion}
+\begin{proof}
+由 Schur 补链式分解可得 \(\det\mathsf P=\prod_{m=1}^{\kappa}\pi_m(\sigma)\)（对置换后的矩阵施行同一分解）。
+另一方面，结论 \ref{con:xi-terminal-negative-spectrum-det-invariant} 给出
+\(
+\det\mathsf P=(\prod_j p_j)(\prod_{j<k}\rho(a_j,a_k)^2)
+\)。
+将两式相除并注意 \(\prod_m p_{\sigma(m)}=\prod_j p_j\)，得到归一化乘积恒等式。
+\par
+再由 \(\prod_{j<k}\rho(a_j,a_k)^2\le \rho_{\min}^{\,\kappa(\kappa-1)}\) 得
+\[
+\prod_{m=1}^{\kappa}\frac{\pi_m(\sigma)}{p_{\sigma(m)}}
+\le \rho_{\min}^{\,\kappa(\kappa-1)}.
+\]
+若对所有 \(m\) 都有 \(\pi_m(\sigma)/p_{\sigma(m)}>\rho_{\min}^{\,\kappa-1}\)，则左端 \(>\rho_{\min}^{\,\kappa(\kappa-1)}\)，矛盾。
+故存在某个 \(m\) 满足所示不等式。证毕。
+\end{proof}
+
 \begin{conclusion}[Toeplitz 负谱几何均值的严格同伦缩放]\label{con:xi-terminal-toeplitz-negative-geometric-mean-homothety}
 设 Toeplitz 主子矩阵 \(\mathbf{T}_N\) 进入稳定显影区间且其负特征值（按重数）为 \(\{\lambda_j^{-}(\mathbf{T}_N)\}_{j=1}^{\kappa}\)，则
 \[
