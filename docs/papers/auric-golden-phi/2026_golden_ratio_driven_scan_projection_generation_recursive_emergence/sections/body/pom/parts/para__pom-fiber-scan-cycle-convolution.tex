@@ -42,3 +42,58 @@ A_m(x)=\sum_{\substack{m_1,\dots,m_r\ge 1\\ \mathrm{lcm}(m_1,\dots,m_r)=m}}
 对所有满足 \(\mathrm{lcm}(m_1,\dots,m_r)=m\) 的 \((m_1,\dots,m_r)\) 求和即得公式。证毕。
 \end{proof}
 
+\begin{theorem}[ghost 坐标的乘法化：\(\mathrm{lcm}\)-卷积的除子和线性化]\label{thm:pom-toggle-scan-cycle-ghost-multiplicativity}
+沿用命题 \ref{prop:pom-toggle-scan-cycle-convolution} 的记号。
+定义“循环质量”算术函数
+\[
+f_\ell(m):=m\,a_m(\ell),\qquad
+f_x(m):=m\,A_m(x),
+\]
+并定义 \(\mathrm{lcm}\)-卷积
+\[
+(f\star_{\mathrm{lcm}}h)(n):=\sum_{\mathrm{lcm}(a,b)=n} f(a)\,h(b),
+\]
+以及 ghost 变换（除子和）
+\[
+g_\ell(n):=\sum_{d\mid n} f_\ell(d),\qquad
+g_x(n):=\sum_{d\mid n} f_x(d).
+\]
+则：
+\begin{enumerate}
+  \item \(f_x\) 是 \((f_{\ell_1},\dots,f_{\ell_r})\) 的迭代 \(\mathrm{lcm}\)-卷积：
+  \[
+  f_x=f_{\ell_1}\star_{\mathrm{lcm}}\cdots\star_{\mathrm{lcm}} f_{\ell_r}.
+  \]
+  \item ghost 变换将 \(\mathrm{lcm}\)-卷积线性化为点乘：对任意 \(n\ge 1\)，
+  \[
+  \boxed{\;
+  g_x(n)=\prod_{j=1}^r g_{\ell_j}(n)\; }.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:pom-toggle-scan-cycle-convolution} 的闭式，两端同乘 \(m\) 得
+\[
+f_x(m)
+=\sum_{\substack{m_1,\dots,m_r\ge 1\\ \mathrm{lcm}(m_1,\dots,m_r)=m}}
+\prod_{j=1}^r f_{\ell_j}(m_j),
+\]
+这正是迭代 \(\mathrm{lcm}\)-卷积，得 (1)。
+\par
+对 (2)，对任意 \(n\ge 1\) 有
+\[
+g_x(n)
+=\sum_{d\mid n} f_x(d)
+=\sum_{\mathrm{lcm}(m_1,\dots,m_r)\mid n}\ \prod_{j=1}^r f_{\ell_j}(m_j).
+\]
+而 \(\mathrm{lcm}(m_1,\dots,m_r)\mid n\) 当且仅当对所有 \(j\) 都有 \(m_j\mid n\)。
+因此
+\[
+g_x(n)
+=\sum_{m_1\mid n}\cdots\sum_{m_r\mid n}\prod_{j=1}^r f_{\ell_j}(m_j)
+=\prod_{j=1}^r\left(\sum_{m_j\mid n} f_{\ell_j}(m_j)\right)
+=\prod_{j=1}^r g_{\ell_j}(n),
+\]
+证毕。
+\end{proof}
+

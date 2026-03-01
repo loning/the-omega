@@ -19,6 +19,65 @@ h_{x_0}(\rho)\ge 2^{-p},
 \end{equation}
 其中左式成立表示该零点在预算 \(p\) 下可被稳定区分，反之不可被统一区分。
 
+\begin{proposition}[半径预算盲区与二次红移尺度：高高度离切片偏移的不可见条件]\label{prop:xi-radius-budget-blind-zone-quadratic-redshift}
+沿用 \eqref{eq:xi-comoving-prefix-endpoint-margin} 的记号，令
+\[
+r_{\rho,x_0}:=|w_{\rho,x_0}|\in(0,1).
+\]
+则有恒等式
+\[
+1-r_{\rho,x_0}
+=\frac{1-r_{\rho,x_0}^2}{1+r_{\rho,x_0}}
+=\frac{h_{x_0}(\rho)}{1+r_{\rho,x_0}},
+\]
+从而对任意 \(\rho\) 都成立夹逼
+\begin{equation}\label{eq:xi-radius-gap-vs-margin}
+\boxed{\;
+\frac12\,h_{x_0}(\rho)\ \le\ 1-r_{\rho,x_0}\ \le\ h_{x_0}(\rho).\;}
+\end{equation}
+特别地，在无共动修正（取 \(x_0=0\)）时，结合 \eqref{eq:xi-comoving-prefix-endpoint-margin} 得到显式二次尺度
+\begin{equation}\label{eq:xi-radius-gap-quadratic-redshift-explicit}
+\boxed{\;
+\frac{2\delta(\rho)}{\gamma^2+(1+\delta(\rho))^2}
+\ \le\ 1-r_{\rho,0}\ \le\
+\frac{4\delta(\rho)}{\gamma^2+(1+\delta(\rho))^2}\;}
+\end{equation}
+并且当 \(|\gamma|\to\infty\)、\(\delta(\rho)\) 有界时，\(1-r_{\rho,0}\asymp \delta(\rho)/\gamma^2\)。
+\par
+令 \(\varrho_{\max}\in(0,1)\) 为半径采样的最大预算，并记 \(\Delta:=1-\varrho_{\max}\)。
+若
+\[
+\varrho_{\max}\le r_{\rho,x_0}\qquad(\text{等价于 }\Delta\ge 1-r_{\rho,x_0}),
+\]
+则任何仅访问半径区间 \((0,\varrho_{\max}]\) 的审计（例如仅依赖 Jensen 缺陷剖面 \(\varrho\mapsto D_\zeta(\varrho)\) 在该区间的取值，见 \S\ref{subsubsec:xi-addressability-resolution-law}）都无法给出排除该零点的正缺陷见证：在该可见数据上，包含该零点与不包含该零点的候选在审计意义下不可区分。
+\end{proposition}
+\begin{proof}
+第一式由 \(1-r^2=(1-r)(1+r)\) 恒等变形得到；\eqref{eq:xi-radius-gap-vs-margin} 由 \(1<1+r_{\rho,x_0}<2\) 立得。
+取 \(x_0=0\) 并代入 \eqref{eq:xi-comoving-prefix-endpoint-margin} 得 \eqref{eq:xi-radius-gap-quadratic-redshift-explicit}。
+\par
+对最后一段，若 \(\varrho_{\max}\le r_{\rho,x_0}\)，则半径 \(\varrho\le\varrho_{\max}\) 的圆周/圆盘采样不包含点 \(w_{\rho,x_0}\)。
+因此任何以“是否穿过 \(w_{\rho,x_0}\)”为必要触发条件的缺陷读出（例如 Jensen 求和式中“仅对 \(|a_k|<\varrho\)”求和的结构）在该预算下不会改变取值，从而无法产生可离线复核的排除见证。
+\end{proof}
+
+\begin{corollary}[固定预算的不完备性：常数端点厚度与常数 dyadic 深度无法全高度排除离线偏移]\label{cor:xi-fixed-budget-incomplete-offcritical-exclusion}
+固定常数半径预算 \(\Delta\in(0,1)\) 与常数 dyadic 深度 \(m\ge 1\)（相位地址 \(A_m\)，见 \S\ref{subsubsec:xi-phase-prefix-resolution-law}）。
+则存在 \(T_0\) 使得对所有 \(T\ge T_0\)，在高度尺度 \(|\gamma|\asymp T\) 上必发生如下两类失败之一：
+\begin{enumerate}
+  \item \textbf{半径端盲区：}对任意满足
+  \(
+  \delta(\rho)\ \lesssim\ \Delta\,T^2
+  \)
+  的离切片偏移，均有 \(\varrho_{\max}=1-\Delta\le r_{\rho,0}\)，从而该偏移落入半径预算盲区（命题 \ref{prop:xi-radius-budget-blind-zone-quadratic-redshift}）；
+  \item \textbf{地址端碰撞强制：}若 \(2^m\not\gtrsim T^2\log T\)，则高度带 \((T,2T]\) 内相位地址必发生碰撞，无法实现单射寻址（定理 \ref{thm:xi-phase-prefix-collision-lower-bound}）。
+\end{enumerate}
+因此，在保持 \((\Delta,m)\) 为常数的制度中，不存在对所有高度一致有效的“离线排除离切片偏移”机制；其可审计能力必然局限于有限高度窗。
+\end{corollary}
+\begin{proof}
+第一点由 \eqref{eq:xi-radius-gap-quadratic-redshift-explicit} 与 \(\Delta\ge 1-r_{\rho,0}\iff \varrho_{\max}\le r_{\rho,0}\) 直接推出。
+第二点为定理 \ref{thm:xi-phase-prefix-collision-lower-bound} 的直接应用。
+当 \(m\) 固定而 \(T\to\infty\) 时，\(2^m\not\gtrsim T^2\log T\) 必最终成立，从而地址端碰撞在结构上不可避免；与此同时，半径端盲区刻画给出一族在给定 \(\Delta\) 下不可见的偏移尺度。证毕。
+\end{proof}
+
 \begin{theorem}[量化共动前缀下的端点屏障削减律]\label{thm:xi-comoving-prefix-endpoint-barrier-law}
 固定 \(\delta_0\in(0,\tfrac12]\)、\(T\ge 1\)，并考虑候选族
 \[
