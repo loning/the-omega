@@ -97,6 +97,61 @@ b_i(S)=\#(S\cap\{\omega_i=0\})-\#(S\cap\{\omega_i=1\})=|S|-2\#(S\cap\{\omega_i=1
 得 \(\#(S\cap\{\omega_i=1\})=(|S|-b_i(S))/2\)，代回即得结论。证毕。
 \end{proof}
 
+\begin{proposition}[体积约束诱导的偏差二次约束与 Gödel 码长椭球上界]\label{prop:fold-hypercube-bias-ellipsoid-godel-length}
+设 \(S\subseteq\Omega_n\) 且 \(|S|=s\)，并仍记体积偏差 \(b_i(S)=\sum_{\omega\in S}(-1)^{\omega_i}\)（命题 \ref{prop:fold-hypercube-godel-stokes-flux-bias}）。
+则成立严格二次型约束
+\[
+\boxed{\;\sum_{i=1}^n b_i(S)^2\ \le\ s(2^n-s).\;}
+\]
+进一步，对任意互异素数族 \((p_i)_{i=1}^n\) 定义 Gödel 外置码长
+\[
+\mathcal{L}_{\mathrm G}(S)
+:=\log\Bigl(\prod_{i=1}^n p_i^{|b_i(S)|}\Bigr)
+=\sum_{i=1}^n |b_i(S)|\log p_i,
+\]
+则有椭球型上界
+\[
+\boxed{\;\mathcal{L}_{\mathrm G}(S)\ \le\
+\Bigl(\sum_{i=1}^n(\log p_i)^2\Bigr)^{1/2}\cdot \sqrt{s(2^n-s)}.\;}
+\]
+\end{proposition}
+\begin{proof}
+令 \(f:=\mathbf 1_S\)，并在 \(\Omega_n\) 上取均匀期望 \(\EE\)。
+则对单点集合 \(\{i\}\) 的 Fourier--Walsh 系数有
+\[
+\widehat f(\{i\})
+=\EE\bigl[f(\omega)(-1)^{\omega_i}\bigr]
+=2^{-n}\sum_{\omega\in S}(-1)^{\omega_i}
+=2^{-n}b_i(S).
+\]
+Parseval 恒等式给出
+\[
+\sum_{I\subseteq[n]}\widehat f(I)^2=\EE[f^2]=\EE[f]=\frac{s}{2^n}=:p,
+\qquad
+\widehat f(\varnothing)=p,
+\]
+从而
+\[
+\sum_{I\neq\varnothing}\widehat f(I)^2=p-p^2=p(1-p).
+\]
+特别地，
+\[
+\sum_{i=1}^n \widehat f(\{i\})^2\le p(1-p).
+\]
+两边乘以 \(2^{2n}\) 得
+\[
+\sum_{i=1}^n b_i(S)^2\le 2^{2n}p(1-p)=s(2^n-s).
+\]
+对码长，用 Cauchy--Schwarz 不等式
+\[
+\mathcal{L}_{\mathrm G}(S)
+=\sum_i |b_i(S)|\log p_i
+\le
+\Bigl(\sum_i b_i(S)^2\Bigr)^{1/2}\Bigl(\sum_i(\log p_i)^2\Bigr)^{1/2},
+\]
+并代入前式即得。证毕。
+\end{proof}
+
 \begin{corollary}[粗粒化切割面积的偏差下界]\label{cor:fold-hypercube-cutedges-bias-l1}
 沿用定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的满射粗粒化 \(f:\Omega_n\twoheadrightarrow X\)，并记纤维 \(S_x=f^{-1}(x)\)。
 则
@@ -157,6 +212,75 @@ b_i(S)=\#(S\cap\{\omega_i=0\})-\#(S\cap\{\omega_i=1\})=|S|-2\#(S\cap\{\omega_i=1
 =\sum_{(\omega\to\omega^{(i)})\in\partial^{\to}S}w_i\bigl(\chi_I(\omega)-\chi_I(\omega^{(i)})\bigr).
 \]
 两边同除 \(2\sum_{i\in I}w_i\) 即得所述公式（与 \(\alpha_{I,w}\) 仅差号，已由定义吸收）。证毕。
+\end{proof}
+
+\begin{theorem}[全 Walsh 纤维谱的边界可微性：谱向量落入切空间并诱导回路扭量]\label{thm:fold-hypercube-fiber-walsh-divergence-torsor}
+沿用定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的满射粗粒化 \(f:\Omega_n\twoheadrightarrow X\) 及其边界邻接多图 \(\mathsf B_f\)（定义 \ref{def:hypercube-boundary-multigraph}）。
+对任意非空 \(I\subseteq[n]\)，定义纤维 Walsh 谱向量
+\[
+C_I\in \RR^{X},
+\qquad
+C_I(x):=\sum_{\omega\in S_x}\chi_I(\omega),
+\]
+其中 \(S_x=f^{-1}(x)\)。
+将 \(C_0(\mathsf B_f;\RR)\) 与 \(\RR^{X}\) 视为同一对象，并取边界算子 \(\partial:C_1(\mathsf B_f;\RR)\to C_0(\mathsf B_f;\RR)\)。
+则：
+\begin{enumerate}
+  \item \label{it:fiber-walsh-div-existence} 存在 \(F_I\in C_1(\mathsf B_f;\RR)\) 使得
+  \[
+  \boxed{\;\partial F_I=C_I.\;}
+  \]
+  并且 \(F_I\) 可由定理 \ref{thm:fold-hypercube-weighted-walsh-stokes} 的边界 \(1\)-形式 \(\alpha_{I,w}\) 通过将超立方体切割边逐条推前到 \(\mathsf B_f\) 的有向多重边并加总得到。
+  \item \label{it:fiber-walsh-torsor} 解集为仿射空间
+  \[
+  \{F\in C_1(\mathsf B_f;\RR):\ \partial F=C_I\}
+  =F_I+\ker(\partial),
+  \qquad
+  \ker(\partial)\cong H_1(\mathsf B_f;\RR).
+  \]
+  \item \label{it:fiber-walsh-dim-collapse} 维数塌缩：记 \(c(\mathsf B_f)\) 为连通分量数，则
+  \[
+  \boxed{\;\dim_{\RR}\operatorname{span}\{C_I:\ I\neq\varnothing\}\le |X|-c(\mathsf B_f).\;}
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\textbf{（\ref{it:fiber-walsh-div-existence}）}
+固定 \(I\neq\varnothing\) 并任取 \(\mathsf B_f\) 的一组取向，使每条无向多重边被定向为某个有向边 \(e=(x\to y)\)。
+对该有向边，令 \(E_{x\to y}\) 为所有从纤维 \(S_x\) 指向纤维 \(S_y\) 的超立方体有向割边集合：
+\[
+E_{x\to y}:=\{(\omega\to\omega^{(i)}):\ f(\omega)=x,\ f(\omega^{(i)})=y\}.
+\]
+在 \(C_1(\mathsf B_f;\RR)\) 上定义 \(F_I\) 的边系数为
+\[
+F_I(x\to y):=\sum_{e\in E_{x\to y}}\alpha_{I,w}(e),
+\]
+其中 \(\alpha_{I,w}\) 取自定理 \ref{thm:fold-hypercube-weighted-walsh-stokes}，并按多重边逐条加总。
+对任意 \(x\in X\)，由边界算子定义，
+\[
+(\partial F_I)(x)
+=\sum_{y}F_I(x\to y)-\sum_{y}F_I(y\to x)
+=\sum_{e\in\partial^{\to}S_x}\alpha_{I,w}(e),
+\]
+其中最后一步利用：对跨越 \(S_x\) 与补集的每条无向割边，其在第二项中以相反取向出现；而 \(\alpha_{I,w}\) 对反向边取相反值，故两项合并恰为 \(S_x\) 的外法向边界求和。
+由定理 \ref{thm:fold-hypercube-weighted-walsh-stokes} 取 \(S=S_x\) 即得
+\(
+(\partial F_I)(x)=\sum_{\omega\in S_x}\chi_I(\omega)=C_I(x)
+\)。
+由于 \(x\) 任意，得 \(\partial F_I=C_I\)。
+
+\textbf{（\ref{it:fiber-walsh-torsor}）}
+若 \(\partial F=\partial F'\)，则 \(\partial(F-F')=0\)，故差落入 \(\ker(\partial)\)；
+反之对任意 \(Z\in\ker(\partial)\) 有 \(\partial(F_I+Z)=C_I\)，从而解集为 \(F_I+\ker(\partial)\)。
+图作为一维 CW 复形满足 \(\mathrm{im}(\partial_2)=0\)，故 \(\ker(\partial)\cong H_1(\mathsf B_f;\RR)\)。
+
+\textbf{（\ref{it:fiber-walsh-dim-collapse}）}
+由 \(\partial F_I=C_I\) 得 \(C_I\in\mathrm{im}(\partial)\)。
+而对任意一维 CW 复形，有
+\(
+\dim_{\RR}\mathrm{im}(\partial)=|X|-c(\mathsf B_f)
+\)；
+因此 \(\operatorname{span}\{C_I\}\subseteq \mathrm{im}(\partial)\) 给出所述维数上界。证毕。
 \end{proof}
 
 \begin{proposition}[Gödel--Hodge 扭量：固定偏差后的边界自由度由回路群承载]\label{prop:fold-hypercube-godel-hodge-torsor}

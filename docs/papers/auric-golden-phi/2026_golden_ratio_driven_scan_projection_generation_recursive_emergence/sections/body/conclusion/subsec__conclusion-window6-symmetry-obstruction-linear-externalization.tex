@@ -46,6 +46,140 @@ G_m(\omega)\le R\,T_m(S)\qquad(\forall\,\omega,m),
 证毕。
 \end{proof}
 
+\begin{corollary}[prime-register 残差支持的线性下界与指数下尾]\label{cor:conclusion-prime-register-residual-support-linear-incompressibility}
+设 \(\Omega_{m+1}=\{0,1\}^{m+1}\)，并在 \(\omega\in\Omega_{m+1}\) 上考虑任意局部重写正规化策略 \(S\)。
+令 \(T_{m+1}^{S}(\omega)\) 为其原子重写步数，并假设每一步至多影响 \(3\) 个坐标，使得
+\[
+G_m(\omega)\le 3\,T_{m+1}^{S}(\omega)\qquad(\forall\,\omega,m),
+\]
+其中 \(G_m(\omega)\) 为规范差。
+若外置 prime-register 残差以“一步写入一条新坐标”的制度记录该重写轨迹，则残差向量 \(r^{S}(\omega)\) 的支撑大小满足
+\(
+\#\mathrm{supp}(r^{S}(\omega))=T_{m+1}^{S}(\omega)
+\)。
+因此几乎处处成立
+\[
+\liminf_{m\to\infty}\frac{\#\mathrm{supp}(r^{S}(\omega))}{m}\ \ge\ \frac{4}{27},
+\]
+并且对任意 \(a<\frac{4}{27}\) 存在 \(c(a)>0\) 使
+\[
+\PP\!\left(\frac{\#\mathrm{supp}(r^{S}(\omega))}{m}\le a\right)\ \le\ e^{-c(a)m}
+\qquad(m\ \text{充分大}).
+\]
+\end{corollary}
+\begin{proof}
+由假设 \(G_m(\omega)\le 3T_{m+1}^{S}(\omega)\) 与定理 \ref{thm:conclusion-linear-externalization-liminf}（取 \(R=3\)）直接得到
+\(
+\liminf T_{m+1}^{S}(\omega)/m\ge 4/27
+\)（几乎处处）及其左尾指数衰减。
+最后用 \(\#\mathrm{supp}(r^{S}(\omega))=T_{m+1}^{S}(\omega)\) 代换即可。证毕。
+\end{proof}
+
+\begin{corollary}[CLT 尺度下尾上界：量化的不可压缩]\label{cor:conclusion-prime-register-residual-support-clt-quantified}
+在推论 \ref{cor:conclusion-prime-register-residual-support-linear-incompressibility} 的设定下，记
+\[
+\sigma_G^2:=\frac{118}{243}.
+\]
+则对任意固定 \(t\in\RR\)，成立
+\[
+\limsup_{m\to\infty}
+\PP\!\left(
+\#\mathrm{supp}(r^{S}(\omega))
+\ \le\
+\frac{4}{27}m+t\sqrt m
+\right)
+\ \le\
+\Phi\!\left(\frac{3t}{\sigma_G}\right),
+\]
+其中 \(\Phi\) 为标准正态分布函数。
+\end{corollary}
+\begin{proof}
+由 \(G_m(\omega)\le 3T_{m+1}^{S}(\omega)=3\,\#\mathrm{supp}(r^{S}(\omega))\)，得事件包含
+\[
+\left\{\#\mathrm{supp}(r^{S})\le \frac{4}{27}m+t\sqrt m\right\}
+\subseteq
+\left\{G_m\le \frac49 m+3t\sqrt m+O(1)\right\}.
+\]
+而均匀基线下 \(G_m\) 满足中心极限定理
+\[
+\frac{G_m-\frac49 m}{\sqrt m}\Rightarrow \mathcal N\!\left(0,\frac{118}{243}\right)
+\]
+（见定理 \ref{thm:fold-gauge-anomaly-clt} 或其多步版本定理 \ref{thm:fold-gauge-anomaly-kstep-invariance} 在 \(k=1\) 的情形）。
+对右侧事件取上极限即得所述不等式。证毕。
+\end{proof}
+
+\begin{theorem}[可逆侧信息的长度下界：有限字母表无法压缩折叠纤维的信息缺口]\label{thm:conclusion-side-info-length-lower-bound}
+设 \(\Fold_m:\Omega_m=\{0,1\}^m\twoheadrightarrow X_m\) 为满射，并满足 \(|X_m|=F_{m+2}\)。
+令 \(\Sigma\) 为有限字母表，\(|\Sigma|=M\ge 2\)。
+考虑任意确定性可逆提升
+\[
+\Psi_m:\Omega_m\longrightarrow X_m\times \Sigma^{\le L_m}
+\]
+满足 \(\mathrm{pr}_{X_m}\circ \Psi_m=\Fold_m\)，且 \(\Psi_m\) 为单射。
+则必有
+\[
+\boxed{\;
+L_m\ \ge\ \left\lceil \log_M\!\Bigl(\frac{2^m}{F_{m+2}}\Bigr)\right\rceil-1\; }.
+\]
+并且
+\[
+\liminf_{m\to\infty}\frac{L_m}{m}\ \ge\ \frac{\log(2/\varphi)}{\log M},
+\]
+其中 \(\varphi\) 为黄金比例。
+\end{theorem}
+\begin{proof}
+由满射性与计数，存在 \(x\in X_m\) 使纤维大小满足
+\[
+|\Fold_m^{-1}(x)|\ \ge\ \frac{|\Omega_m|}{|X_m|}
+=\frac{2^m}{F_{m+2}}.
+\]
+在该纤维上，\(\Psi_m\) 限制为单射
+\(
+\Fold_m^{-1}(x)\hookrightarrow \{x\}\times \Sigma^{\le L_m}
+\)，故
+\[
+\frac{2^m}{F_{m+2}}
+\le
+|\Sigma^{\le L_m}|
+=\sum_{\ell=0}^{L_m}M^\ell
+=\frac{M^{L_m+1}-1}{M-1}
+<M^{L_m+1}.
+\]
+取 \(\log_M\) 得
+\(
+L_m\ge \lceil \log_M(2^m/F_{m+2})\rceil-1
+\)。
+最后由 \(F_{m+2}=\Theta(\varphi^m)\) 得
+\(
+\lim_{m\to\infty}\frac1m\log(2^m/F_{m+2})=\log(2/\varphi)
+\)，从而得到极限下界。证毕。
+\end{proof}
+
+\begin{corollary}[有限事件类型门槛：线性密度级的可逆重写迫使 \texorpdfstring{$M\ge 5$}{M>=5}]\label{cor:conclusion-alphabet-threshold-mge5}
+在推论 \ref{cor:conclusion-prime-register-residual-support-linear-incompressibility} 的设定下，
+若希望存在一族可逆提升 \(\Psi_m\) 使其最坏情形侧信息长度满足
+\[
+L_m\ \le\ \Bigl(\frac{4}{27}+o(1)\Bigr)m,
+\]
+并且每步仅写入一个事件符号（字母表大小为 \(M\)），则必有 \(M\ge 5\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-side-info-length-lower-bound}，
+\[
+\liminf_{m\to\infty}\frac{L_m}{m}\ \ge\ \frac{\log(2/\varphi)}{\log M}.
+\]
+若 \(M\le 4\)，则 \(\log M\le \log 4\)，从而
+\[
+\liminf_{m\to\infty}\frac{L_m}{m}
+\ge
+\frac{\log(2/\varphi)}{\log 4}
+\approx 0.15288
+\ >\ \frac{4}{27}\approx 0.14815,
+\]
+与 \(L_m\le(\frac{4}{27}+o(1))m\) 矛盾。
+故必有 \(M\ge 5\)。证毕。
+\end{proof}
+
 \begin{theorem}[window-\(6\) 下 \(\mathfrak{su}(5)\) 连通因子禁阻]\label{thm:conclusion-window6-su5-obstruction}
 对任意稳定类型 \(w\in X_6\)，其二进制折叠纤维满足表示
 \[

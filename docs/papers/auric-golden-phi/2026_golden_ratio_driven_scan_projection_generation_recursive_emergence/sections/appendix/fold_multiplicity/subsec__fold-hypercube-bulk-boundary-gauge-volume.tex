@@ -22,6 +22,65 @@ A(f):=\card{\{\{u,v\}\in E_n:\ f(u)\neq f(v)\}}.
 \]
 \end{definition}
 
+\begin{theorem}[Shannon--Stirling 双展开与体--界熵缺口恒等式]\label{thm:hypercube-gauge-volume-shannon-stirling-gap}
+在定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的设定下，令推前分布 \(p_x:=d_x/2^n\)（\(x\in X\)），并记 Shannon 熵
+\[
+H(p):=-\sum_{x\in X}p_x\log p_x.
+\]
+则存在显式余项 \(R(f)\ge 0\) 使得严格恒等式成立：
+\[
+\boxed{\;
+g(f)=n\log 2-1-H(p)
+\;+\;\frac1{2^{n+1}}\sum_{x\in X}\log(2\pi d_x)
+\;+\;R(f).
+\;}
+\]
+并且余项满足统一上界
+\[
+0\le R(f)\le \frac{|X|}{12\cdot 2^n}.
+\]
+因此
+\[
+\bigl|g(f)-(n\log 2-1-H(p))\bigr|
+\le
+\frac{|X|}{2^{n+1}}\log(2\pi 2^n)+\frac{|X|}{12\cdot 2^n}.
+\]
+特别地，若 \(|X|/2^n\to 0\)（当 \(n\to\infty\)），则
+\(
+g(f)=n\log 2-1-H(p)+o(1)
+\)。
+\end{theorem}
+\begin{proof}
+对整数 \(m\ge 1\) 取带余项的 Stirling 展开
+\[
+\log(m!)=m\log m-m+\tfrac12\log(2\pi m)+\theta_m,
+\qquad
+0\le \theta_m\le \frac1{12m}.
+\]
+将其代入 \(g(f)=2^{-n}\sum_x\log(d_x!)\) 并逐项求和得
+\[
+g(f)
+=2^{-n}\sum_x\bigl(d_x\log d_x-d_x\bigr)
+\;+\;\frac1{2^{n+1}}\sum_x\log(2\pi d_x)
+\;+\;2^{-n}\sum_x\theta_{d_x}.
+\]
+注意 \(\sum_x d_x=2^n\)，故 \(2^{-n}\sum_x d_x=1\)，并且
+\[
+2^{-n}\sum_x d_x\log d_x
+=\sum_x p_x\log(2^n p_x)
+=n\log 2+\sum_x p_x\log p_x
+=n\log 2-H(p).
+\]
+令
+\(
+R(f):=2^{-n}\sum_x\theta_{d_x}
+\)，则 \(R(f)\ge 0\) 且
+\[
+0\le R(f)\le 2^{-n}\sum_x\frac1{12d_x}\le \frac{|X|}{12\cdot 2^n}.
+\]
+从而得到所述恒等式与误差界。证毕。
+\end{proof}
+
 \begin{proposition}[规范体积密度的 Rényi 型上界（由碰撞矩直接控制）]\label{prop:hypercube-gauge-volume-renyi-upperbound}
 在定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的设定下，令推前分布 \(p_x:=d_x/2^n\)（\(x\in X\)）。
 对任意 \(q>1\) 定义 \(q\)-碰撞矩
@@ -199,6 +258,163 @@ H_1(\mathsf B_f;\ZZ)\ \cong\ \ZZ^{\,A(f)-\card{X}+c(\mathsf B_f)}.
 \)。
 代入 \(\card{E}=A(f)\)、\(\card{V}=\card{X}\) 即得秩公式，并得同构 \(H_1(\mathsf B_f;\ZZ)\cong \ZZ^{\operatorname{rank}H_1}\)。
 最后由 \(\cdim(\ZZ^r)=r\) 得圆维等式。证毕。
+\end{proof}
+
+\begin{theorem}[边界回路格的 \texorpdfstring{$\Theta$}{Theta} 函数极限律：圆维主项与树数校正]\label{thm:hypercube-cycle-lattice-theta-asymptotic}
+令 \(G=(V,E)\) 为有限连通多重图，固定一组取向并将 \(1\)-链视作 \(\ZZ^{E}\subset\RR^{E}\)。
+令 \(B\in\ZZ^{V\times E}\) 为取向关联矩阵，并令 \(\tilde B\in\ZZ^{(|V|-1)\times E}\) 为删去一行后的约化关联矩阵。
+定义回路格
+\[
+\Lambda(G):=\ker(\tilde B)\cap\ZZ^{E},
+\qquad
+r:=\operatorname{rank}_{\ZZ}\Lambda(G)=|E|-|V|+1.
+\]
+以 \(\RR^{E}\) 的标准内积诱导 Euclid 范数 \(|\cdot|\)，并定义回路格的 theta 函数
+\[
+\Theta_G(t):=\sum_{z\in\Lambda(G)}e^{-\pi t|z|^2},
+\qquad t>0.
+\]
+记 \(\tau(G)\) 为 \(G\) 的生成树个数（Kirchhoff 复杂度）。
+则存在常数 \(c(G)>0\) 使得当 \(t\downarrow 0\) 时有渐近展开
+\[
+\boxed{\;
+\Theta_G(t)=t^{-r/2}\,\tau(G)^{-1/2}\Bigl(1+O\bigl(e^{-c(G)/t}\bigr)\Bigr).
+\;}
+\]
+从而
+\[
+\boxed{\;
+\log\Theta_G(t)=\frac r2\log\frac1t-\frac12\log\tau(G)+O\bigl(e^{-c(G)/t}\bigr).
+\;}
+\]
+特别地，取 \(G=\mathsf B_f\) 时，\(r=\cdim(H_1(\mathsf B_f;\ZZ))\)（命题 \ref{prop:hypercube-boundary-multigraph-h1-cdim}），故上述自由能主项系数即为边界回路圆维。
+\end{theorem}
+\begin{proof}
+\textbf{（i）回路格协体积与树数）}
+选取 \(G\) 的一棵生成树 \(T\subseteq E\)。
+记 \(E= T\sqcup C\) 为边集分解，其中 \(|T|=|V|-1\)、\(|C|=r\)。
+按该分解将 \(\tilde B\) 分块写成
+\(
+\tilde B=[\tilde B_T\ \ \tilde B_C]
+\)。
+由于 \(T\) 为树，\(\tilde B_T\in\ZZ^{(|V|-1)\times(|V|-1)}\) 可逆且 \(\det(\tilde B_T)=\pm 1\)（关联矩阵的树子式为 \(\pm 1\)）。
+于是对任意 \(u\in\ZZ^{r}\)，向量
+\[
+z(u):=\begin{pmatrix}
+ -\tilde B_T^{-1}\tilde B_C\,u\\
+ u
+\end{pmatrix}\in\ZZ^{E}
+\]
+满足 \(\tilde B z(u)=0\)，并且 \(u\mapsto z(u)\) 给出 \(\Lambda(G)\) 的一组 \(\ZZ\)-基。
+令 \(Z\in\ZZ^{E\times r}\) 为该基矩阵，则回路格的协体积平方为
+\[
+\operatorname{covol}(\Lambda(G))^2=\det(Z^\top Z).
+\]
+写 \(X:=-\tilde B_T^{-1}\tilde B_C\)，则 \(Z=\binom{X}{I_r}\)，从而
+\[
+\det(Z^\top Z)=\det(I_r+X^\top X)=\det(I_{|V|-1}+XX^\top),
+\]
+其中最后一步用 Sylvester 行列式恒等式。
+进一步
+\[
+XX^\top=\tilde B_T^{-1}\tilde B_C\tilde B_C^\top(\tilde B_T^{-1})^\top,
+\]
+故
+\[
+\det(I_{|V|-1}+XX^\top)
+=\det(\tilde B_T\tilde B_T^\top)^{-1}\det(\tilde B_T\tilde B_T^\top+\tilde B_C\tilde B_C^\top).
+\]
+而 \(\det(\tilde B_T\tilde B_T^\top)=\det(\tilde B_T)^2=1\)，并且
+\(
+\tilde B_T\tilde B_T^\top+\tilde B_C\tilde B_C^\top=\tilde B\tilde B^\top
+\)
+为约化 Laplacian。
+因此
+\[
+\operatorname{covol}(\Lambda(G))^2=\det(\tilde B\tilde B^\top).
+\]
+由 Kirchhoff 矩阵树定理，\(\det(\tilde B\tilde B^\top)=\tau(G)\)，从而
+\(
+\operatorname{covol}(\Lambda(G))=\sqrt{\tau(G)}
+\)。
+
+\textbf{（ii）Poisson 求和与极限）}
+令 \(\Lambda\subset\RR^{r}\) 为任意满秩欧氏格，\(\Lambda^\ast\) 为其对偶格。
+对高斯函数 \(\phi_t(x):=e^{-\pi t|x|^2}\) 有 Fourier 变换 \(\widehat\phi_t(\xi)=t^{-r/2}e^{-\pi|\xi|^2/t}\)。
+应用 Poisson 求和公式得
+\[
+\Theta_\Lambda(t)=\sum_{z\in\Lambda}\phi_t(z)
+=\frac{1}{\operatorname{covol}(\Lambda)}\sum_{y\in\Lambda^\ast}\widehat\phi_t(y)
+=t^{-r/2}\operatorname{covol}(\Lambda)^{-1}\Theta_{\Lambda^\ast}(1/t).
+\]
+当 \(t\downarrow 0\) 时，\(1/t\uparrow\infty\)，并且
+\[
+\Theta_{\Lambda^\ast}(1/t)=1+O\bigl(e^{-\pi \lambda_1(\Lambda^\ast)^2/t}\bigr),
+\]
+其中 \(\lambda_1(\Lambda^\ast)\) 为对偶格最短非零向量长度。
+取 \(c(G):=\pi\lambda_1(\Lambda(G)^\ast)^2\) 并代入 \(\operatorname{covol}(\Lambda(G))=\sqrt{\tau(G)}\) 即得所述两式。证毕。
+\end{proof}
+
+\begin{corollary}[回路格球截断的体积主项与 Gödel 外置对数规模]\label{cor:hypercube-cycle-lattice-counting-godel-log}
+在定理 \ref{thm:hypercube-cycle-lattice-theta-asymptotic} 的设定下，对 \(R>0\) 定义球截断
+\[
+\Lambda(G;R):=\{z\in\Lambda(G):\ |z|\le R\}.
+\]
+则存在常数 \(C_G>0\) 使得当 \(R\to\infty\) 时有渐近计数
+\[
+\boxed{\;
+|\Lambda(G;R)|
+=\frac{\operatorname{vol}(B_r)}{\sqrt{\tau(G)}}\,R^r+O(R^{r-1}).
+\;}
+\]
+其中 \(\operatorname{vol}(B_r)\) 为 \(\RR^{r}\) 中单位球体积。
+进一步，取任意 Gödel 外置单射 \(\Gamma:\Lambda(G)\hookrightarrow\NN\)，则
+\[
+\boxed{\;
+\log|\Gamma(\Lambda(G;R))|
+=r\log R-\tfrac12\log\tau(G)+O(1).
+\;}
+\]
+\end{corollary}
+\begin{proof}
+记 \(\Lambda:=\Lambda(G)\subset \RR^{E}\)，其秩为 \(r\) 且 \(\operatorname{covol}(\Lambda)=\sqrt{\tau(G)}\)（定理 \ref{thm:hypercube-cycle-lattice-theta-asymptotic}）。
+取 \(\Lambda\) 在其张成子空间上的一个基本平行体 \(P\)（可取由一组格基生成），并记其直径为 \(D\)。
+令 \(B(R)\) 为该子空间中的半径 \(R\) 球。
+\par
+\textbf{（体积夹逼）}
+由于 \(\{z+P:z\in\Lambda\}\) 构成无交叠的平移铺砌，有
+\[
+|\Lambda\cap B(R)|\cdot \operatorname{vol}(P)
+\le \operatorname{vol}(B(R+D)).
+\]
+同理，若 \(z\in\Lambda\cap B(R-D)\)，则 \(z+P\subset B(R)\)，因此
+\[
+\operatorname{vol}(B(R-D))
+\le |\Lambda\cap B(R)|\cdot \operatorname{vol}(P).
+\]
+合并并用 \(\operatorname{vol}(P)=\operatorname{covol}(\Lambda)\) 得
+\[
+\frac{\operatorname{vol}(B(R-D))}{\operatorname{covol}(\Lambda)}
+\le |\Lambda(G;R)|
+\le \frac{\operatorname{vol}(B(R+D))}{\operatorname{covol}(\Lambda)}.
+\]
+利用 \(\operatorname{vol}(B(R))=\operatorname{vol}(B_r)R^r\) 与二项展开，
+\[
+\operatorname{vol}(B(R\pm D))
+=\operatorname{vol}(B_r)\,(R\pm D)^r
+=\operatorname{vol}(B_r)R^r+O(R^{r-1}),
+\]
+从而得到首式，且隐含常数仅依赖于 \(G\)。
+\par
+\textbf{（Gödel 对数）}
+由于 \(\Gamma\) 为单射，\(|\Gamma(\Lambda(G;R))|=|\Lambda(G;R)|\)。
+对首式取对数即得
+\[
+\log|\Lambda(G;R)|
+=\log\Bigl(\frac{\operatorname{vol}(B_r)}{\sqrt{\tau(G)}}R^r\bigl(1+O(R^{-1})\bigr)\Bigr)
+=r\log R-\tfrac12\log\tau(G)+O(1).
+\]
+证毕。
 \end{proof}
 
 \begin{corollary}[回路圆维与规范体积的互补下界]\label{cor:hypercube-loop-cdim-gauge-volume-complement}

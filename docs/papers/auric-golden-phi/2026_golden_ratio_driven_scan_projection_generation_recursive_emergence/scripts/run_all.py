@@ -2448,6 +2448,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="sync_kernel_real_input_40_p7_spectral_curve_galois_audit",
+            script="exp_sync_kernel_real_input_40_p7_spectral_curve_galois_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/sync_kernel_real_input_40_p7_spectral_curve_galois_audit.json",
+            ],
+        ),
+        Step(
             name="sync_kernel_real_input_40_arity_2d",
             script="exp_sync_kernel_real_input_40_arity_2d.py",
             args=[],

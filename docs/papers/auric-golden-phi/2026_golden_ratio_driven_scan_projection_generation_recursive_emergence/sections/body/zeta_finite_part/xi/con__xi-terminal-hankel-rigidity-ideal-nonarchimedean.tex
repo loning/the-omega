@@ -237,3 +237,45 @@ v_{\mathfrak p}(D_n)=v_{\mathfrak p}\!\bigl(\mathfrak H_n(a,\omega)\bigr).
 \]
 \end{conjecture}
 
+\begin{theorem}[\texorpdfstring{$p$}{p}-进精度损耗律：Hankel 标准形的最小可恢复精度]\label{thm:xi-terminal-hankel-standard-form-padic-loss}
+设 \((a_n)_{n\ge 0}\subset\ZZ\) 具有 Hankel 秩 \(d\)，并令
+\[
+H_0:=(a_{i+j})_{0\le i,j\le d-1},\qquad
+H_1:=(a_{i+j+1})_{0\le i,j\le d-1}.
+\]
+假设 \(\det(H_0)\neq 0\)，并定义 Hankel 标准形矩阵
+\[
+A:=H_0^{-1}H_1\in\QQ^{d\times d}.
+\]
+固定素数 \(p\)，令
+\(
+s:=v_p(\det H_0)
+\)。
+若观测到 \(H_0,H_1\) 的全部条目在模 \(p^E\) 意义下确定（等价于 \(a_0,\dots,a_{2d-1}\) 在模 \(p^E\) 意义下确定），
+则 \(A\) 在 \(\QQ_p\) 中被确定到模 \(p^{E-s}\) 的精度；
+并且一般情形下该损耗 \(s\) 不可改进。
+\end{theorem}
+\begin{proof}
+由伴随矩阵恒等式
+\[
+A=H_0^{-1}H_1=\frac{\mathrm{adj}(H_0)\,H_1}{\det(H_0)},
+\]
+每个矩阵元 \(A_{ij}\) 可由 Cramer 法则表示为“分子行列式除以 \(\det(H_0)\)”。
+分子是 \(H_0,H_1\) 条目的整系数多项式，因此当 \(H_0,H_1\) 在模 \(p^E\) 下确定时，各分子在模 \(p^E\) 下确定。
+而分母 \(\det(H_0)\) 的 \(p\)-进赋值为 \(s\)，故在 \(\QQ_p\) 中除法至多损失 \(s\) 位精度，从而 \(A\) 在模 \(p^{E-s}\) 意义下确定。
+\par
+不可改进性：在泛型情形下可取某个 \(A_{ij}\) 使其分子行列式对 \(p\) 为单位（\(v_p=0\)）。
+对 \(H_1\) 中相应条目施加 \(p^E\) 级别扰动将引起分子同阶扰动；除以 \(\det(H_0)\) 后恰产生 \(p^{E-s}\) 级别的 \(A_{ij}\) 扰动，
+因此无法保证优于 \(E-s\) 的恢复精度。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$p=5$}{p=5} 的刚性阈值：七位损耗的不可消去性]\label{cor:xi-terminal-hankel-standard-form-p5-threshold}
+在表 \ref{tab:fold_collision_moment_hankel_rank} 的 \(k=5\) Hankel 见证块 \(H_{k=5}\) 中，
+\[
+\det(H_{k=5})=2^{13}\cdot 3^5\cdot 5^7,
+\]
+故 \(v_5(\det(H_{k=5}))=7\)。
+因此若仅以 \(5\)-进精度 \(5^E\) 观测到对应的 \(2d\) 项窗口数据，则由定理 \ref{thm:xi-terminal-hankel-standard-form-padic-loss}，
+相应 Hankel 标准形矩阵至多可恢复到 \(5^{E-7}\) 的精度；该七位损耗一般不可消去。
+\end{corollary}
+
