@@ -1,5 +1,6 @@
 \subsection{折叠条件期望的 Watatani 指标元：纤维多重度场的中心值闭式}\label{subsec:op-algebra-fold-watatani-index}
 在附录 \ref{app:op-algebra-fold-subalgebra} 的有限维交换设定中，折叠诱导的条件期望 \(E_m:\mathcal{A}_m\to\mathcal{B}_m\)（命题 \ref{prop:fold-conditional-expectation}）具有显式的 Watatani 指标元，其在稳定层上给出一条自然的“多重度场”。
+该语言也与近年非可逆对称/范畴对称框架中对“条件期望（类群平均）与指数（对称破缺刻度）”的算子代数化角色分配一致；可参见综述 \href{https://arxiv.org/abs/2509.18072}{arXiv:2509.18072} 的相关讨论。
 
 \begin{theorem}[Watatani 指标元的闭式：\texorpdfstring{$d_m$}{dm} 作为中心值指数场]\label{thm:op-algebra-fold-watatani-index-equals-multiplicity-field}
 沿用命题 \ref{prop:fold-conditional-expectation} 的记号，记 \(\Omega_m=\{0,1\}^m\)、\(X_m\subseteq\Omega_m\) 以及折叠 \(\Fold_m:\Omega_m\to X_m\)。
@@ -127,6 +128,65 @@ P_b e_m P_b
 最后，将矩阵单位与箭头 \((a,b)\in F_x\times F_x\) 对应即可与群胚卷积代数的标准基一致。证毕。
 \end{proof}
 
+\begin{theorem}[中心值条件期望与二次碰撞矩]\label{thm:op-algebra-fold-center-expectation-index-collision2}
+沿用定理 \ref{thm:op-algebra-fold-basic-construction-pair-groupoid} 的记号，并在 \(\mathcal A_{m,1}\cong\bigoplus_{x\in X_m}M_{d_m(x)}(\CC)\) 下记最小中心投影为 \(\{p_x\}_{x\in X_m}\)（对应各直和块单位元）。
+定义中心值条件期望
+\[
+\mathcal E_{m,1}:\mathcal A_{m,1}\to Z(\mathcal A_{m,1})\cong \bigoplus_{x\in X_m}\CC\,p_x
+\]
+为逐块归一化迹
+\[
+\mathcal E_{m,1}\bigl((A_x)_{x\in X_m}\bigr)
+:=\sum_{x\in X_m}\frac{\Tr(A_x)}{d_m(x)}\,p_x.
+\]
+则 \(\mathcal E_{m,1}\) 为忠实条件期望，并且其 Watatani 指标元满足
+\[
+\mathrm{Ind}_{\mathrm W}(\mathcal E_{m,1})
+=\sum_{x\in X_m} d_m(x)\,p_x.
+\]
+此外，定义 \(\mathcal A_{m,1}\) 上的规范迹态为
+\[
+\tau_{m,1}\bigl((A_x)_{x\in X_m}\bigr):=\frac{1}{2^m}\sum_{x\in X_m}\Tr(A_x),
+\]
+则二次碰撞矩满足闭式
+\[
+\tau_{m,1}\!\left(\mathrm{Ind}_{\mathrm W}(\mathcal E_{m,1})\right)=\frac{1}{2^m}\sum_{x\in X_m}d_m(x)^2=\frac{S_2(m)}{2^m}.
+\]
+\end{theorem}
+\begin{proof}
+逐块归一化迹显然是正的、幂等的、保持单位元且为中心双模的映射，故为条件期望；忠实性由各块上的忠实性直接推出。
+\par
+对单块 \(M_d(\CC)\to \CC\cdot I_d\)（\(d=d_m(x)\)），取矩阵单位 \(\{e_{ij}\}\) 并令
+\(
+u_{ij}:=\sqrt d\,e_{ij}
+\)。
+则对任意 \(A\in M_d(\CC)\)，有
+\[
+\sum_{i,j} u_{ij}\,\mathcal E(u_{ij}^\ast A)
+=\sum_{i,j}\sqrt d\,e_{ij}\cdot \frac{\Tr(\sqrt d\,e_{ji}A)}{d}\,I_d
+=\sum_{i,j} e_{ij}\Tr(e_{ji}A)
+=A,
+\]
+从而 \(\{u_{ij}\}\) 为准基，并且
+\(
+\mathrm{Ind}_{\mathrm W}(\mathcal E)=\sum_{i,j}u_{ij}u_{ij}^\ast
+=\sum_{i,j} d\,e_{ij}e_{ji}
+=d\,I_d
+\)。
+对直和情形取各块准基并集，即得
+\(
+\mathrm{Ind}_{\mathrm W}(\mathcal E_{m,1})=\sum_x d_m(x)p_x
+\)。
+\par
+最后，由 \(\tau_{m,1}(p_x)=2^{-m}\Tr(I_{d_m(x)})=d_m(x)/2^m\)，得
+\[
+\tau_{m,1}\!\left(\mathrm{Ind}_{\mathrm W}(\mathcal E_{m,1})\right)
+=\sum_x d_m(x)\,\tau_{m,1}(p_x)
+=\frac{1}{2^m}\sum_x d_m(x)^2.
+\]
+证毕。
+\end{proof}
+
 \begin{corollary}[Watatani 指标元的谱矩与碰撞矩一致]\label{cor:op-algebra-fold-watatani-index-moments}
 沿用定理 \ref{thm:op-algebra-fold-watatani-index-equals-multiplicity-field} 的记号。
 对任意整数 \(q\ge 1\) 有
@@ -185,6 +245,40 @@ P_{\omega_1}\otimes\cdots\otimes P_{\omega_q}\ \longmapsto\ \mathbf 1_{(\omega_1
 遂迫使该基元为零。
 因此相对张量幂由且仅由同纤维 \(q\)-元组张成，并由上述指示函数给出一组规范基。
 维数即为同纤维 \(q\)-元组总数 \(\sum_x |F_x|^q=\sum_x d_m(x)^q\)。证毕。
+\end{proof}
+
+\begin{proposition}[中间 coarse-graining 的分类与指数单调性]\label{prop:op-algebra-intermediate-coarsegraining-index-monotone}
+沿用附录 \ref{app:op-algebra-fold-subalgebra} 的交换设定，记 \(\mathcal A_m\cong\CC^{\Omega_m}\)、\(\mathcal B_m\cong\CC^{X_m}\subset\mathcal A_m\)，并记由折叠诱导的纤维等价关系为
+\(
+a\sim b\iff \Fold_m(a)=\Fold_m(b)
+\)。
+\begin{enumerate}
+  \item 对任意子代数 \(\mathcal C\) 满足 \(\mathcal B_m\subseteq \mathcal C\subseteq \mathcal A_m\)，存在唯一等价关系 \(\approx\) 使
+  \[
+  (=)\ \subseteq\ \approx\ \subseteq\ (\sim),
+  \]
+  且
+  \[
+  \mathcal C=\{f\in\CC^{\Omega_m}:\ f \text{ 在每个 }\approx\text{-类上常值}\}.
+  \]
+  \item 记 \(E_{\approx}:\mathcal A_m\to \mathcal C\) 为对 \(\approx\)-类作算术平均的条件期望（逐块均匀化）。
+  则其 Watatani 指标元在 \(\mathcal C\cong\CC^{\Omega_m/\approx}\) 的识别下对应函数
+  \[
+  [a]_{\approx}\ \longmapsto\ |[a]_{\approx}|.
+  \]
+  \item 若 \(\approx_1\subseteq \approx_2\)（即 \(\approx_2\) 更粗），则对应指标元在中心序上单调：
+  \[
+  \mathrm{Ind}_{\mathrm W}(E_{\approx_1})\ \le\ \mathrm{Ind}_{\mathrm W}(E_{\approx_2}),
+  \]
+  并且当且仅当存在至少一个 \(\approx_2\)-类由两个不同的 \(\approx_1\)-类合并而成时为严格不等式。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第 (1) 点是有限集合函数代数的标准对应：交换子代数 \(\mathcal C\subseteq\CC^{\Omega_m}\) 等价于一个分割（等价关系）\(\approx\)，并且包含关系 \(\mathcal B_m\subseteq \mathcal C\subseteq \mathcal A_m\) 等价于分割细化关系 \((=)\subseteq\approx\subseteq(\sim)\)。
+\par
+第 (2) 点由定理 \ref{thm:op-algebra-fold-watatani-index-equals-multiplicity-field} 的同型计算直接得到：对任意 \(\approx\)-类 \(C\subseteq\Omega_m\)，把 \(\widetilde P_C:=\sum_{a\in C}P_a\) 视为 \(\mathcal C\) 的块投影，则准基可取为 \(\{\sqrt{|[a]_{\approx}|}\,P_a\}_{a\in\Omega_m}\)，从而指标元在该块上的取值为 \(|[a]_{\approx}|\)。
+\par
+第 (3) 点对每个 \(\approx_2\)-类分别验证即可：若 \(\approx_2\)-类由 \(\approx_1\)-类 \(C_1,\dots,C_r\) 的不交并给出，则 \(\mathrm{Ind}_{\mathrm W}(E_{\approx_1})\) 在各 \(C_j\) 上取值 \(|C_j|\)，而 \(\mathrm{Ind}_{\mathrm W}(E_{\approx_2})\) 在整体上取值 \(\sum_j|C_j|\)，故逐点比较得单调性；严格性当且仅当存在 \(r\ge 2\) 的合并。证毕。
 \end{proof}
 
 \endinput

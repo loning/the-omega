@@ -45,6 +45,26 @@ d_kd_{k+1}=0.
 因此 \(\mathrm{Fold}^{\mathrm{bin}}_6\) 可用低位 Zeckendorf 数字实现，而纤维参数化与文稿给出的尾部立方截面描述一致。证毕。
 \end{proof}
 
+\begin{lemma}[window-\(6\) 纤维的差分谱]\label{lem:window6-foldbin6-fiber-difference-spectrum}
+设 \(w\in X_6\)，并记其二进制折叠纤维为
+\(
+\mathrm{Fold}^{\mathrm{bin}}_6{}^{-1}(w)\subset\{0,\dots,63\}
+\)。
+则同一纤维中任意两点之差必属于集合
+\[
+\Delta_6:=\{0,\pm 13,\pm 21,\pm 34,\pm 55\}.
+\]
+\end{lemma}
+\begin{proof}
+命题 \ref{prop:terminal-foldbin6-tail-cube-section} 表明：任意纤维在尾部三权重 \((21,34,55)\) 的口径下可写为一个偏移集合的平移，并且该偏移集合包含于 \(\{0,21,34,55\}\)。
+因此，同一纤维中两点之差为两偏移之差，落在
+\(
+\{0,\pm 21,\pm 34,\pm 55,\pm(34-21)\}
+=\{0,\pm 21,\pm 34,\pm 55,\pm 13\}
+\)。
+证毕。
+\end{proof}
+
 \begin{theorem}[最小交换子闭包的存在与唯一性]\label{thm:window6-lie-envelope-existence-uniqueness}
 令 \(S:=\{L_1,\dots,L_6\}\subset\mathfrak{gl}(V)\)。
 则存在唯一 Lie 子代数
@@ -90,15 +110,38 @@ d_kd_{k+1}=0.
 \begin{proof}
 记 \(n=\mathrm{int}_6(\omega)\in\{0,\dots,63\}\)。翻转第 \(i\) 位等价于 \(n\mapsto n\oplus 2^{6-i}\)，其差值的绝对值属于 \(\{1,2,4,8,16,32\}\)。
 若存在 \(u\in X_6\) 使得 \((L_i)_{uu}>0\)，则存在 \(\omega\) 使 \(F_6(\omega)=F_6(\omega\oplus e_i)=u\)，等价于存在同一纤维中的两点 \(n,n\oplus 2^{6-i}\in \mathrm{Fold}^{\mathrm{bin}}_6{}^{-1}(u)\)。
-而命题 \ref{prop:terminal-foldbin6-tail-cube-section} 表明任意纤维的偏移集合包含于 \(\{0,21,34,55\}\)，因此同一纤维中任意两点差值只能落在
-\(
-\{21,34,55,34-21\}=\{21,34,55,13\}
-\)。
+由引理 \ref{lem:window6-foldbin6-fiber-difference-spectrum}，同一纤维中两点之差只能落在 \(\Delta_6=\{0,\pm 13,\pm 21,\pm 34,\pm 55\}\)。
 由于 \(\{1,2,4,8,16,32\}\cap\{13,21,34,55\}=\varnothing\)，矛盾。
 故 \((L_i)_{uu}=0\) 对所有 \(u\) 成立。
 迹为零随即成立。\par
 又因 \(\tr([A,B])=0\) 且 \(\mathfrak{sl}(V)\) 在交换子下封闭，故由 \(L_i\) 生成的 Lie 子代数包含于 \(\mathfrak{sl}(V)\)。证毕。
 \end{proof}
+
+\begin{remark}[对称/反对称分解与交换子闭合]\label{rem:window6-sl-decomposition-so-sym0}
+设 \(\dim V=21\) 且特征不为 \(2\)。
+记
+\[
+\mathrm{Sym}_0(V):=\{S\in\mathfrak{sl}(V):\ S^{\mathsf T}=S\},
+\qquad
+\mathfrak{so}(V):=\{K\in\mathfrak{sl}(V):\ K^{\mathsf T}=-K\}.
+\]
+则有向量空间直和分解
+\[
+\mathfrak{sl}(V)=\mathfrak{so}(V)\oplus \mathrm{Sym}_0(V),
+\qquad
+\dim\mathfrak{so}(V)=210,\ \dim \mathrm{Sym}_0(V)=230.
+\]
+并且交换子满足
+\(
+[\mathrm{Sym}_0,\mathrm{Sym}_0]\subset \mathfrak{so}
+\)、
+\(
+[\mathfrak{so},\mathrm{Sym}_0]\subset \mathrm{Sym}_0
+\)、
+\(
+[\mathfrak{so},\mathfrak{so}]\subset \mathfrak{so}
+\)。
+\end{remark}
 
 \begin{theorem}[交换子派生部分的正交闭合（window-\(6\)）]\label{thm:window6-lie-envelope-so21-from-commutators}
 在定义 \ref{def:window6-coordinate-pushforward-lie-envelope} 的设定下，令
@@ -113,8 +156,12 @@ d_kd_{k+1}=0.
 [L_i,L_j]^{\mathsf T}=-[L_i,L_j]
 \)，故 \([L_i,L_j]\in\mathfrak{so}(V)\)。
 因此 \(\mathfrak{k}_6\subseteq\mathfrak{so}(V)\)，从而 \(\dim\mathfrak{k}_6\le \dim\mathfrak{so}(V)=21\cdot 20/2=210\)。\par
-另一方面，脚本 \texttt{\detokenize{scripts/exp_window6_lie_envelope_orthogonal_part.py}} 以有限穷举构造 \(L_i\) 并在模素数口径下对 \(\mathfrak{k}_6\) 的闭包维数给出满维证书（见 \eqref{eq:window6_lie_envelope_orthogonal_part_dim}）。
-结合引理 \ref{lem:modp-independence-lift} 的提升论证，可将该模素数线性无关性提升到特征 \(0\)，从而得到 \(\dim\mathfrak{k}_6\ge 210\)。
+另一方面，脚本 \texttt{\detokenize{scripts/exp_window6_lie_envelope_orthogonal_part.py}} 以有限穷举构造 \(L_i\)，并在模素数口径下对约化子代数 \((\mathfrak{k}_6)_p\subset \mathfrak{gl}(V_{\FF_p})\) 的闭包维数给出满维证书（见 \eqref{eq:window6_lie_envelope_orthogonal_part_dim}），即 \(\dim_{\FF_p}(\mathfrak{k}_6)_p=210\)。
+令 \(V_{\QQ}:=\QQ\langle X_6\rangle\)，并记
+\(
+\mathfrak{k}_{6,\QQ}:=\Lie_{\QQ}\langle [L_i,L_j]:\,1\le i<j\le 6\rangle\subset\mathfrak{gl}(V_{\QQ})
+\)。
+由引理 \ref{lem:modp-lie-dimension-upperbound} 的维数提升不等式，得到 \(\dim_{\QQ}\mathfrak{k}_{6,\QQ}\ge 210\)，从而 \(\dim_{\RR}\mathfrak{k}_{6}=\dim_{\QQ}\mathfrak{k}_{6,\QQ}\ge 210\)。
 故 \(\dim\mathfrak{k}_6=210\)，并由包含关系 \(\mathfrak{k}_6\subseteq\mathfrak{so}(V)\) 得 \(\mathfrak{k}_6=\mathfrak{so}(V)\)。证毕。
 \end{proof}
 
@@ -127,6 +174,27 @@ d_kd_{k+1}=0.
 模 \(p\) 化得到 \(\sum_i \overline{c}_i\,\overline{A}_i=0\)，其中至少一个 \(\overline{c}_i\neq 0\)，与 \(\{\overline{A}_i\}\) 的线性无关矛盾。证毕。
 \end{proof}
 
+\begin{lemma}[模素数维数证书的特征 \(0\) 提升]\label{lem:modp-lie-dimension-upperbound}
+设 \(A_1,\dots,A_k\in\mathfrak{sl}(n,\ZZ)\)，并定义
+\[
+\mathfrak{g}_{\QQ}:=\Lie_{\QQ}\langle A_1,\dots,A_k\rangle\ \subset\ \mathfrak{sl}(n,\QQ).
+\]
+对任意素数 \(p\)，令 \(\overline{A}_i\) 为 \(A_i\) 在 \(\FF_p\) 上的约化，并定义
+\[
+\mathfrak{g}_{p}:=\Lie_{\FF_p}\langle \overline{A}_1,\dots,\overline{A}_k\rangle\ \subset\ \mathfrak{sl}(n,\FF_p).
+\]
+则有不等式
+\[
+\dim_{\FF_p}\mathfrak{g}_{p}\ \le\ \dim_{\QQ}\mathfrak{g}_{\QQ}.
+\]
+\end{lemma}
+\begin{proof}
+取 \(\mathfrak{g}_{\QQ}\) 的一组 \(\QQ\)-基并通分，可得一个自由 \(\ZZ\)-模 \(\Lambda\subset \mathfrak{sl}(n,\ZZ)\) 满足 \(\Lambda\otimes_{\ZZ}\QQ=\mathfrak{g}_{\QQ}\)。
+将 \(\Lambda\) 模 \(p\) 约化得到 \(\overline{\Lambda}\subset\mathfrak{sl}(n,\FF_p)\)，其 \(\FF_p\)-线性张成维数至多为 \(\rank_{\ZZ}\Lambda=\dim_{\QQ}\mathfrak{g}_{\QQ}\)。
+另一方面，\(\mathfrak{g}_{p}\) 由 \(\{\overline{A}_i\}\) 的 Lie 词张成，且每一 Lie 词都来自整数矩阵 Lie 词的约化，故包含于 \(\Span_{\FF_p}(\overline{\Lambda})\)。
+于是 \(\dim_{\FF_p}\mathfrak{g}_{p}\le \dim_{\QQ}\mathfrak{g}_{\QQ}\)。证毕。
+\end{proof}
+
 \begin{theorem}[window-\(6\) 推送交换子包络的结构识别]\label{thm:window6-lie-envelope-sl21}
 在定义 \ref{def:window6-coordinate-pushforward-lie-envelope} 的设定下，\(|X_6|=21\)。
 并且
@@ -137,10 +205,20 @@ d_kd_{k+1}=0.
 \]
 \end{theorem}
 \begin{proof}
-由引理 \ref{lem:window6-li-traceless}，\(\mathfrak{g}_6\subseteq\mathfrak{sl}(V)\)，故 \(\dim\mathfrak{g}_6\le \dim\mathfrak{sl}(V)=21^2-1\)。\par
-另一方面，脚本 \texttt{\detokenize{scripts/exp_window6_lie_envelope.py}} 以有限穷举构造 \(L_i\)，并给出一组位于 \(\mathfrak{g}_6\) 中的矩阵族，其模素数约化在线性意义下达到维数上界（证书片段见 \eqref{eq:window6_lie_envelope_invariants}）。
-由引理 \ref{lem:modp-independence-lift}，该线性无关性证书可提升到特征 \(0\)，从而得到 \(\dim_{\QQ}\mathfrak{g}_6\ge 440\)。
-结合上界 \(\dim\mathfrak{g}_6\le 440\) 得 \(\dim\mathfrak{g}_6=440\)，故 \(\mathfrak{g}_6=\mathfrak{sl}(V)\)。证毕。
+由引理 \ref{lem:window6-li-traceless}，\(\mathfrak{g}_6\subseteq\mathfrak{sl}(V)\)，故 \(\dim\mathfrak{g}_6\le \dim\mathfrak{sl}(V)=21^2-1=440\)。\par
+令 \(V_{\QQ}:=\QQ\langle X_6\rangle\)，并记 \(\mathfrak{g}_{6,\QQ}:=\Lie_{\QQ}\langle L_1,\dots,L_6\rangle\subseteq \mathfrak{sl}(V_{\QQ})\)。
+则 \(\mathfrak{g}_6=\mathfrak{g}_{6,\QQ}\otimes_{\QQ}\RR\)，从而 \(\dim_{\RR}\mathfrak{g}_6=\dim_{\QQ}\mathfrak{g}_{6,\QQ}\)。\par
+取任意奇素数 \(p\)。
+将整数矩阵 \(L_i\in \Mat_{21}(\ZZ)\) 模 \(p\) 约化得到 \(\overline{L}_i\in \Mat_{21}(\FF_p)\)，并记
+\(
+(\mathfrak{g}_6)_p:=\Lie_{\FF_p}\langle \overline{L}_1,\dots,\overline{L}_6\rangle\subseteq \mathfrak{sl}(21,\FF_p)
+\)。
+脚本 \texttt{\detokenize{scripts/exp_window6_lie_envelope.py}} 对 \((\mathfrak{g}_6)_p\) 的闭包维数给出证书化输出（见 \eqref{eq:window6_lie_envelope_invariants}），其结果为
+\(
+\dim_{\FF_p}(\mathfrak{g}_6)_p=440
+\)。
+由引理 \ref{lem:modp-lie-dimension-upperbound}，得到 \(\dim_{\QQ}\mathfrak{g}_{6,\QQ}\ge 440\)。
+结合上界 \(\dim\mathfrak{g}_6\le 440\)，可得 \(\dim\mathfrak{g}_6=440\)，从而 \(\mathfrak{g}_6=\mathfrak{sl}(V)\)。证毕。
 \end{proof}
 
 \begin{remark}[结构层闭合的含义]\label{rem:window6-lie-envelope-compact-substructure}

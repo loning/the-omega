@@ -292,6 +292,56 @@ S_{q_1}(m)=u^{\mathsf T}A^{m-m_0}v
 则称该编译在阶 \(b\) 上\textbf{第一变分保真}，若 \(\Pi\) 在 \(\mathcal{E}^{(1)}_{b}(A)\) 上不恒为零。
 \end{definition}
 
+\begin{theorem}[近似 intertwining 的伪谱放大：第一变分的稳定证书]\label{thm:pom-first-variation-pseudospectrum-amplification}
+设 \(A\in M_d(\RR_{\ge 0})\) 为原始矩阵，Perron 根为 \(\rho=\rho(A)>0\)。
+取任一非 Perron 特征值 \(\mu\in\mathrm{spec}(A)\setminus\{\rho\}\) 并记 \(\eta:=|\mu|>0\)。
+对整数 \(b\ge 2\)，令 \(T_b:=\mathrm{Sym}^b(A)\)。
+设给定线性映射 \(\Pi:\mathrm{Sym}^b(\CC^d)\to \CC^n\)、矩阵 \(B\in M_n(\CC)\) 与误差算子 \(R\) 使得
+\[
+\Pi\,T_b\ =\ B\,\Pi\ +\ R.
+\]
+设存在常数 \(\varepsilon_b,\sigma_b>0\) 与向量 \(x\in\mathcal{E}^{(1)}_b(A)\) 满足 \(\|x\|=1\)、\(\|Rx\|\le \varepsilon_b\) 且 \(\|\Pi x\|\ge \sigma_b\)。
+则复数
+\[
+z:=\rho^{\,b-1}\mu
+\]
+属于 \(B\) 的 \(\delta_b\)-伪谱，其中 \(\delta_b:=\varepsilon_b/\sigma_b\)；亦即存在 \(y\neq 0\) 使得
+\[
+\|(B-zI)y\|\ \le\ \delta_b\,\|y\|.
+\]
+若进一步 \(B\) 为正规矩阵，则存在 \(\lambda\in\mathrm{spec}(B)\) 满足 \(\mathrm{dist}(z,\lambda)\le \delta_b\)。
+\end{theorem}
+\begin{proof}
+由 \(x\in\mathcal{E}^{(1)}_b(A)\) 的定义，可取 Perron 特征向量 \(u\) 与 \(\mu\)-特征向量 \(v\) 使 \(x=u^{\odot(b-1)}\odot v\)。
+由 \(Au=\rho u\)、\(Av=\mu v\) 得 \(T_bx=\rho^{b-1}\mu\,x\)，即 \((T_b-zI)x=0\)。
+将近似 intertwining 关系作用于 \(x\) 得
+\[
+(B-zI)(\Pi x)=\Pi(T_b-zI)x-Rx=-Rx.
+\]
+令 \(y:=\Pi x\neq 0\)。
+则 \(\|(B-zI)y\|=\|Rx\|\le \varepsilon_b\) 且 \(\|y\|=\|\Pi x\|\ge \sigma_b\)，故
+\(
+\|(B-zI)y\|\le (\varepsilon_b/\sigma_b)\|y\|
+\)。
+正规情形下，谱距离估计由正规矩阵的伪谱性质给出。证毕。
+\end{proof}
+
+\begin{corollary}[平方根谱界在近似 MOM 乘法升级下的不可兼容性]\label{cor:pom-first-variation-pseudospectrum-breaks-sqrt-bound}
+沿定理 \ref{thm:pom-first-variation-pseudospectrum-amplification}。
+设 \(B\) 为正规矩阵且满足 \(\rho(B)=\rho^b\)，并且误差比 \(\delta_b=\varepsilon_b/\sigma_b\) 满足 \(\delta_b=o(\rho^{b/2})\)。
+则当 \(b\) 充分大时，\(B\) 必存在非 Perron 特征值 \(\lambda\) 使
+\[
+|\lambda|\ >\ \sqrt{\rho(B)}=\rho^{b/2}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-first-variation-pseudospectrum-amplification}，存在 \(\lambda\in\mathrm{spec}(B)\) 使
+\(
+|\lambda|\ge |z|-\delta_b=\rho^{b-1}\eta-\delta_b
+\)。
+当 \(b\) 充分大时，\(\rho^{b-1}\eta\) 相对 \(\rho^{b/2}\) 呈指数优势且 \(\delta_b=o(\rho^{b/2})\)，故有 \(\rho^{b-1}\eta-\delta_b>\rho^{b/2}\)，从而得到结论。证毕。
+\end{proof}
+
 \begin{theorem}[第一变分保真 \texorpdfstring{$\Rightarrow$}{=>} 高阶核版 RH 不可能：MOM 乘法升级的致命放大]\label{thm:pom-first-variation-fidelity-rh-breaking}
 固定整数 \(a\ge 1\)。
 设 \(A_a\) 为原始非负矩阵，记 \(\rho_a:=\rho(A_a)>1\) 且 \(\eta_a:=\max_{\mu\ne\rho_a}|\mu|>0\)。
