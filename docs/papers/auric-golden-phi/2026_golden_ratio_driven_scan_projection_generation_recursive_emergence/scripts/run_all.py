@@ -156,6 +156,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_hankel_recurrence_jacobian_certificate",
+            script="exp_xi_hankel_recurrence_jacobian_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_hankel_recurrence_jacobian_certificate.json",
+            ],
+        ),
+        Step(
             name="pom_fractran_primecore_finite_partial_functions_audit",
             script="exp_pom_fractran_primecore_finite_partial_functions_audit.py",
             args=[],
@@ -285,6 +293,14 @@ def build_steps() -> List[Step]:
             args=[],
             expected_outputs=[
                 "artifacts/export/xi_p7_s5_artin_dedekind_chebotarev_certificate.json",
+            ],
+        ),
+        Step(
+            name="xi_p7_dyadic_integral_basis_certificate",
+            script="exp_xi_p7_dyadic_integral_basis_certificate.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_p7_dyadic_integral_basis_certificate.json",
             ],
         ),
         Step(
