@@ -254,6 +254,61 @@ U_N^\ast\mathbf{T}_N(C)U_N=\mathrm{diag}(P_N,-I_{\kappa})
 最后一式由 \(\nu_-(P_N)=0\) 与 \(\nu_-( -\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1})=\mathrm{rank}(\mathsf H_{\kappa-1})\) 立得。证毕。
 \end{proof}
 
+\begin{proposition}[扫描 Hankel 指纹的负方向显式见证]\label{prop:xi-toeplitz-negative-witness-from-scan-hankel}
+在推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 的设定下，
+对任意 \(v\in\CC^{\kappa}\setminus\{0\}\) 令
+\[
+z:=\binom{0}{v}\in\CC^{N+1},
+\qquad
+x:=R_N z\in\CC^{N+1}.
+\]
+则严格负见证恒等式成立：
+\[
+\boxed{\;
+x^\ast\,\mathbf{T}_N(C)\,x
+=-\,\|\mathsf H_{\kappa-1}v\|_2^2\ <\ 0. \;}
+\]
+\end{proposition}
+\begin{proof}
+由推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 的块对角合同分解，
+\[
+x^\ast\mathbf{T}_N(C)x
+=z^\ast\!\left(R_N^\ast\mathbf{T}_N(C)R_N\right)\!z
+=v^\ast\!\left(-\,\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1}\right)\!v
+=-\,\|\mathsf H_{\kappa-1}v\|_2^2.
+\]
+又由 \(\mathrm{rank}(\mathsf H_{\kappa-1})=\kappa\) 得 \(\mathsf H_{\kappa-1}\) 可逆，故 \(v\neq 0\Rightarrow \|\mathsf H_{\kappa-1}v\|_2>0\)。证毕。
+\end{proof}
+
+\begin{corollary}[负谱裕度的指纹--条件数下界]\label{cor:xi-toeplitz-negative-margin-from-hankel-fingerprint}
+沿用命题 \ref{prop:xi-toeplitz-negative-witness-from-scan-hankel} 的设定。
+记
+\(
+\sigma_{\min}:=\sigma_{\min}(\mathsf H_{\kappa-1})
+\)
+以及
+\(
+\|R_N\|:=\|R_N\|_{\mathrm{op}}
+\)。
+则 Toeplitz 截断的最小特征值满足定量负谱裕度估计
+\[
+\boxed{\;
+\lambda_{\min}\!\bigl(\mathbf{T}_N(C)\bigr)\ \le\ -\,\frac{\sigma_{\min}^2}{\|R_N\|^2}. \;}
+\]
+\end{corollary}
+\begin{proof}
+取 \(v\) 为 \(\mathsf H_{\kappa-1}\) 的最小奇异向量，令 \(\|v\|_2=1\) 且 \(\|\mathsf H_{\kappa-1}v\|_2=\sigma_{\min}\)。
+对相应 \(x=R_N\binom{0}{v}\)，由 Rayleigh--Ritz 原理与命题 \ref{prop:xi-toeplitz-negative-witness-from-scan-hankel} 得
+\[
+\lambda_{\min}(\mathbf{T}_N(C))
+\le \frac{x^\ast\mathbf{T}_N(C)x}{\|x\|_2^2}
+=-\frac{\|\mathsf H_{\kappa-1}v\|_2^2}{\|R_N\binom{0}{v}\|_2^2}
+\le -\frac{\sigma_{\min}^2}{\|R_N\|_{\mathrm{op}}^2\cdot \|\binom{0}{v}\|_2^2}
+=-\frac{\sigma_{\min}^2}{\|R_N\|^2}.
+\]
+证毕。
+\end{proof}
+
 \paragraph{视界重整化二律：指数不变而端点通量线性放大}
 附录 \eqref{eq:scale-psi-m} 引入保持 \(\{\pm 1\}\) 不动点的 Möbius 半群 \(\{\psi_m\}_{m>0}\subset\mathrm{Aut}(\mathbb{D})\)，其端点 Poisson/Busemann 权重满足严格缩放律 \(P_{\psi_m(a)}(-1)=mP_a(-1)\)（定理 \ref{thm:xi-endpoint-poisson-weight-scaling}）。
 该半群对真共振指数给出一条“指数不变—端点通量放大”的互补二律。

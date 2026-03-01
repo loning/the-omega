@@ -43,6 +43,8 @@ H_0(b):=(b_{i+j})_{0\le i,j\le d-1}\in M_d(k).
 另一方面，定理 \ref{thm:dephys-hankel-finite-audit} 给出在证书偏移 \(\ell_q\) 处长度 \(2d\) 窗口的确定性锁定，二者合并即得尖锐性。证毕。
 \end{proof}
 
+\input{para__xi-hankel-maxminor-syndrome-zk-fano}
+
 \begin{theorem}[递推参数化的 Hankel 行列式 Jacobian 恒等式]\label{thm:xi-hankel-recurrence-jacobian-identity}
 设 \(k\) 为域，\(d\ge 1\)，并固定初值向量 \((a_0,\dots,a_{d-1})\in k^d\)。
 对任意系数向量 \(c=(c_0,\dots,c_{d-1})\in k^d\)，令 \((a_n(c))_{n\ge 0}\) 为由常系数递推
@@ -233,11 +235,92 @@ G^{-1}A_H^je_0=A_H^jG^{-1}e_0=A_H^je_0
 当 \(\{A_H^je_0\}_{j=0}^{d-1}\) 生成 \(k^d\) 时，\(G\) 在一组基上为恒等，故 \(G=I\)。证毕。
 \end{proof}
 
+\input{para__xi-hankel-kernelization-idealclass-obstruction}
+
 \begin{remark}[窗口等价的语义压缩]\label{rem:xi-hankel-window-compile-equivalence}
 一旦 \((d,\ell_q)\) 与 \(\mathrm{HANKELNF}_q\) 作为可审计证书给定，定理 \ref{thm:dephys-hankel-finite-audit} 与命题 \ref{prop:xi-hankel-window-fiber-1d} 表明：
 确定性判等的最小信息载体是长度 \(2d\) 的连续窗口；
 而在允许可控误差的情形，定理 \ref{thm:xi-hankel-single-point-random-audit} 进一步把该窗口压缩为一次生成函数取值比较。
 \end{remark}
+
+\begin{proposition}[Hankel 行列式的可达--可观测分解与 \texorpdfstring{$p$}{p}-进总刚性]\label{prop:xi-hankel-det-reach-observe-factorization-padic}
+设 \(k\) 为域，\((a_n)_{n\ge 0}\subset k\) 具有维数 \(d\) 的最小线性实现
+\[
+a_n=\alpha^{\mathsf T}A^n\beta,
+\qquad
+\alpha,\beta\in k^d,\ A\in M_d(k),
+\]
+并且 \(H_0=(a_{i+j})_{0\le i,j\le d-1}\) 可逆。
+定义可观测矩阵与可达矩阵
+\[
+\mathcal O:=
+\begin{pmatrix}
+\alpha^{\mathsf T}\\
+\alpha^{\mathsf T}A\\
+\vdots\\
+\alpha^{\mathsf T}A^{d-1}
+\end{pmatrix}\in M_d(k),
+\qquad
+\mathcal C:=
+\begin{pmatrix}
+\beta & A\beta & \cdots & A^{d-1}\beta
+\end{pmatrix}\in M_d(k).
+\]
+则有严格分解
+\[
+H_0=\mathcal O\,\mathcal C,
+\qquad\text{从而}\qquad
+\det(H_0)=\det(\mathcal O)\det(\mathcal C).
+\]
+若进一步 \(k=\QQ_p\)（或 \(k\subseteq\QQ_p\)）并令
+\(
+\mathrm{Stiff}^{\mathrm{obs}}_p:=v_p(\det\mathcal O)
+\)、\(
+\mathrm{Stiff}^{\mathrm{ctr}}_p:=v_p(\det\mathcal C)
+\)，
+则
+\[
+v_p(\det H_0)=\mathrm{Stiff}^{\mathrm{obs}}_p+\mathrm{Stiff}^{\mathrm{ctr}}_p,
+\]
+并且在基变换 \(S\in \GL_d(k)\) 下有互补变换律
+\[
+\mathrm{Stiff}^{\mathrm{obs}}_p\mapsto \mathrm{Stiff}^{\mathrm{obs}}_p+v_p(\det S),
+\qquad
+\mathrm{Stiff}^{\mathrm{ctr}}_p\mapsto \mathrm{Stiff}^{\mathrm{ctr}}_p-v_p(\det S),
+\]
+从而总刚性 \(v_p(\det H_0)\) 不变。
+\end{proposition}
+\begin{proof}
+对 \(0\le i,j\le d-1\)，有
+\[
+(\mathcal O\mathcal C)_{ij}=(\alpha^{\mathsf T}A^i)(A^j\beta)=\alpha^{\mathsf T}A^{i+j}\beta=a_{i+j}=H_0{}_{ij},
+\]
+故 \(H_0=\mathcal O\mathcal C\)。
+取行列式即得分解。
+\par
+对基变换 \(S\in\GL_d(k)\)，令
+\(
+A':=S^{-1}AS
+\)、\(
+\alpha'^{\mathsf T}:=\alpha^{\mathsf T}S
+\)、\(
+\beta':=S^{-1}\beta
+\)，
+则
+\(
+\mathcal O'=\mathcal OS
+\)、\(
+\mathcal C'=S^{-1}\mathcal C
+\)。
+因此
+\(
+\det(\mathcal O')=\det(\mathcal O)\det(S)
+\)、
+\(
+\det(\mathcal C')=\det(S)^{-1}\det(\mathcal C)
+\)，
+取 \(v_p\) 得互补变换律，且两者之和不变并等于 \(v_p(\det H_0)\)。证毕。
+\end{proof}
 
 \begin{proposition}[模素数审计下的 Hankel-正规形可定义性与秩保持]\label{prop:xi-hankel-good-bad-prime-dichotomy}
 设 \((a_n)_{n\ge 0}\subset\ZZ\) 为一整数序列，且其在 \(\QQ\) 上的 Hankel 秩为 \(d\)。
@@ -304,6 +387,63 @@ s_i\,Y_{ij}\equiv C_{ij}\pmod{p^k}.
 该同余可解当且仅当 \(\gcd(s_i,p^k)\mid C_{ij}\)，等价地 \(v_p(C_{ij})\ge \min\{v_p(s_i),k\}\)，从而得到可解条件。
 在可解时，对固定 \(i,j\) 的解数恰为 \(\gcd(s_i,p^k)\)；并且不同 \(j\) 的选择相互独立，故第 \(i\) 行贡献 \((\gcd(s_i,p^k))^d\) 个解。
 对 \(i=1,\dots,n\) 相乘即得总解数公式。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$p^k$}{p^k} 解空间熵反演 Smith 不变量]\label{thm:xi-smith-entropy-inverts-vp-invariants}
+取 \(d\ge 1\)，令 \(H_0\in M_d(\ZZ)\) 在 \(\QQ\) 上可逆，并设其 Smith 标准形不变量为
+\(
+s_1\mid s_2\mid\cdots\mid s_d
+\)。
+对素数 \(p\) 与 \(k\ge 1\)，考虑同余系统
+\[
+H_0X\equiv H_1\pmod{p^k},\qquad X\in M_d(\ZZ/p^k\ZZ),
+\]
+并假设其可解。
+定义解空间熵（以 \(\log_p\) 计）
+\[
+H_p(k):=\frac{1}{d}\log_p\#\bigl\{X\bmod p^k:\ H_0X\equiv H_1\bigr\},
+\qquad H_p(0):=0.
+\]
+则对一切 \(k\ge 1\) 有精确公式
+\[
+H_p(k)=\sum_{i=1}^{d}\min\bigl(v_p(s_i),k\bigr).
+\]
+并且仅由数列 \(\{H_p(k)\}_{k\ge 1}\) 可完全重构多重集 \(\{v_p(s_i)\}_{i=1}^{d}\)：令
+\[
+\delta_k:=H_p(k)-H_p(k-1)\qquad(k\ge 1),
+\]
+则
+\[
+\delta_k=\#\{i:\ v_p(s_i)\ge k\},
+\qquad
+\#\{i:\ v_p(s_i)=k\}=\delta_k-\delta_{k+1}.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:xi-smith-pk-congruence-solvability-count}（取 \(n=d\) 且列数亦为 \(d\)），在可解时
+\[
+\#\{X:\ H_0X\equiv H_1\}
+=\prod_{i=1}^{d}\bigl(\gcd(s_i,p^k)\bigr)^{d}.
+\]
+取 \(\log_p\) 并除以 \(d\) 得
+\[
+H_p(k)=\sum_{i=1}^{d}\log_p\gcd(s_i,p^k)
+=\sum_{i=1}^{d}\min\bigl(v_p(s_i),k\bigr).
+\]
+进一步，对每个 \(i\) 有
+\[
+\min(v_p(s_i),k)-\min(v_p(s_i),k-1)=
+\begin{cases}
+1,& v_p(s_i)\ge k,\\
+0,& v_p(s_i)< k,
+\end{cases}
+\]
+对 \(i\) 求和即得 \(\delta_k=\#\{i:\ v_p(s_i)\ge k\}\)。
+最后用恒等式
+\(
+\#\{v_p(s_i)=k\}=\#\{v_p(s_i)\ge k\}-\#\{v_p(s_i)\ge k+1\}
+\)
+得到反演公式。证毕。
 \end{proof}
 
 \begin{proposition}[有限素数证伪的审计原则：有理候选在有限模一致性下的唯一性]\label{prop:xi-finite-prime-refutation-audit}

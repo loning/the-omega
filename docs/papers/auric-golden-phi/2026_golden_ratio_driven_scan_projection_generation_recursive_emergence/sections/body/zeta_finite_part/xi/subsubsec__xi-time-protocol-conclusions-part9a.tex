@@ -406,6 +406,128 @@ u^{d_H(a,x)}
 代回并对 \(a\) 求和即得首式；以 \(t=(1-u)/(1+u)\) 复写即得第二式。证毕。
 \end{proof}
 
+\paragraph{坐标权超立方体的热迹与树复杂度：欧拉型因子化与可逆读出}
+定理 \ref{thm:xi-hypercube-walsh-joukowsky-leyang-explicit} 以 Walsh 展开刻画了 Hamming 代价核的 Möbius 归一化零点结构。
+同一组 Walsh 字符亦对角化坐标权拉普拉斯，从而将热迹与树复杂度压缩为严格乘积，并在权重取对数素数时呈现欧拉型分解。
+
+\begin{theorem}[坐标权拉普拉斯的 Walsh 谱分解与热迹因子化]\label{thm:xi-hypercube-weighted-laplacian-heat-trace-factorization}
+沿用定理 \ref{thm:xi-hypercube-walsh-joukowsky-leyang-explicit} 的记号，取权向量 \(\mathbf w=(w_1,\dots,w_k)\in(0,\infty)^k\)。
+在 \(\mathcal H_k\) 上定义坐标权拉普拉斯算子
+\[
+(\Delta_{\mathbf w}f)(\omega):=\sum_{i=1}^{k}w_i\bigl(f(\omega)-f(\omega^{(i)})\bigr),
+\]
+其中 \(\omega^{(i)}\) 表示把 \(\omega\) 的第 \(i\) 位翻转后的顶点。
+则 \(\{\chi_S\}_{S\subseteq[k]}\) 为 \(\Delta_{\mathbf w}\) 的共同特征基，并满足
+\[
+\Delta_{\mathbf w}\chi_S=2\Bigl(\sum_{i\in S}w_i\Bigr)\chi_S.
+\]
+从而对任意 \(t>0\) 有热迹完全因子化
+\[
+\Tr\bigl(e^{-t\Delta_{\mathbf w}}\bigr)
+=\sum_{S\subseteq[k]}\exp\!\left(-2t\sum_{i\in S}w_i\right)
+=\prod_{i=1}^{k}\bigl(1+e^{-2tw_i}\bigr).
+\]
+\end{theorem}
+\begin{proof}
+对任意 \(S\subseteq[k]\)，若 \(i\notin S\) 则 \(\chi_S(\omega^{(i)})=\chi_S(\omega)\)；
+若 \(i\in S\) 则 \(\chi_S(\omega^{(i)})=-\chi_S(\omega)\)。
+代入定义得到
+\(
+(\Delta_{\mathbf w}\chi_S)(\omega)=\sum_{i\in S}2w_i\,\chi_S(\omega)
+=2(\sum_{i\in S}w_i)\chi_S(\omega)
+\)，从而给出谱分解。
+热迹为全部特征值的指数和，故
+\[
+\Tr\bigl(e^{-t\Delta_{\mathbf w}}\bigr)
+=\sum_{S\subseteq[k]}\exp\!\left(-2t\sum_{i\in S}w_i\right).
+\]
+取 \(a_i:=e^{-2tw_i}\) 并用子集展开恒等式
+\(
+\sum_{S\subseteq[k]}\prod_{i\in S}a_i=\prod_{i=1}^k(1+a_i)
+\)
+即得乘积式。证毕。
+\end{proof}
+
+\begin{corollary}[素数对数权的欧拉型热迹]\label{cor:xi-prime-log-weighted-hypercube-heat-trace-euler}
+在定理 \ref{thm:xi-hypercube-weighted-laplacian-heat-trace-factorization} 的设定下，若取 \(w_i=\log p_i\)（\(p_i\) 为第 \(i\) 个素数），则
+\[
+\Tr\bigl(e^{-t\Delta_{\log p}}\bigr)=\prod_{i=1}^{k}\bigl(1+p_i^{-2t}\bigr).
+\]
+\end{corollary}
+\begin{proof}
+由 \(e^{-2t\log p_i}=p_i^{-2t}\) 直接代入乘积式即得。证毕。
+\end{proof}
+
+\begin{theorem}[热迹的权重刚性：边界配分函数唯一解码多重集]\label{thm:xi-hypercube-heat-trace-weight-rigidity}
+在定理 \ref{thm:xi-hypercube-weighted-laplacian-heat-trace-factorization} 的设定下，令
+\[
+Z_{\mathbf w}(t):=\Tr\bigl(e^{-t\Delta_{\mathbf w}}\bigr)=\prod_{i=1}^{k}\bigl(1+e^{-2tw_i}\bigr),\qquad t>0.
+\]
+则函数 \(Z_{\mathbf w}:(0,\infty)\to(1,\infty)\) 唯一决定多重集 \(\{w_1,\dots,w_k\}\)（含重数）。
+具体地，若存在 \(\mathbf w'=(w'_1,\dots,w'_m)\in(0,\infty)^m\) 使 \(Z_{\mathbf w}(t)\equiv Z_{\mathbf w'}(t)\) 对一切 \(t>0\) 成立，则必有 \(m=k\)，且两组权重一致到重排。
+\end{theorem}
+\begin{proof}
+令 \(a:=\min_i w_i\)，并记其重数为 \(r:=\#\{i:\ w_i=a\}\)。
+展开
+\(
+Z_{\mathbf w}(t)=\prod_i(1+e^{-2tw_i})
+\)
+得
+\[
+Z_{\mathbf w}(t)-1=\sum_{i=1}^{k}e^{-2tw_i}+O\!\left(e^{-2t(w_{(1)}+w_{(2)})}\right)\qquad(t\to\infty),
+\]
+其中 \(w_{(1)}\le w_{(2)}\le\cdots\) 为从小到大排序。
+故
+\[
+\lim_{t\to\infty}-\frac{1}{2t}\log\bigl(Z_{\mathbf w}(t)-1\bigr)=a,
+\qquad
+\lim_{t\to\infty}e^{2at}\bigl(Z_{\mathbf w}(t)-1\bigr)=r.
+\]
+因此 \(a\) 与 \(r\) 可由 \(Z_{\mathbf w}\) 唯一恢复。
+令
+\[
+\widetilde Z(t):=\frac{Z_{\mathbf w}(t)}{(1+e^{-2at})^{r}},
+\]
+则 \(\widetilde Z(t)=\prod_{w_i>a}(1+e^{-2tw_i})\)。
+对 \(\widetilde Z\) 重复同一提取过程即可递归恢复全部权重及其重数，从而得到结论。证毕。
+\end{proof}
+
+\begin{theorem}[加权超立方体生成树的谱乘积闭式]\label{thm:xi-hypercube-weighted-spanning-tree-spectrum-product}
+令 \(Q_k\) 为顶点集 \(\mathcal H_k\) 的 \(k\)-维超立方体图，并令每条第 \(i\) 坐标方向的边赋权 \(w_i>0\)。
+记 \(\tau_{\mathbf w}(Q_k)\) 为按 Kirchhoff--Matrix Tree 口径定义的加权生成树总权（对每棵生成树取边权乘积并求和）。
+则有完全闭式
+\[
+\tau_{\mathbf w}(Q_k)
+=\frac{1}{2^k}\prod_{\varnothing\neq S\subseteq[k]}2\sum_{i\in S}w_i
+=2^{2^k-k-1}\prod_{\varnothing\neq S\subseteq[k]}\Bigl(\sum_{i\in S}w_i\Bigr).
+\]
+若进一步取 \(w_i=\log p_i\)，则
+\[
+\tau_{\log p}(Q_k)
+=2^{2^k-k-1}\prod_{\varnothing\neq S\subseteq[k]}\log\!\Bigl(\prod_{i\in S}p_i\Bigr).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-hypercube-weighted-laplacian-heat-trace-factorization}，
+\(\Delta_{\mathbf w}\) 的非零特征值为
+\(
+\lambda_S=2\sum_{i\in S}w_i
+\)
+（\(\varnothing\neq S\subseteq[k]\)）。
+加权矩阵树定理给出
+\[
+\tau_{\mathbf w}(Q_k)
+=\frac{1}{|\mathcal H_k|}\prod_{\lambda_S\neq 0}\lambda_S
+=\frac{1}{2^k}\prod_{\varnothing\neq S\subseteq[k]}2\sum_{i\in S}w_i,
+\]
+化简常数因子即得第一式。
+素数特例由
+\(
+\sum_{i\in S}\log p_i=\log\prod_{i\in S}p_i
+\)
+直接代入。证毕。
+\end{proof}
+
 \input{sections/body/zeta_finite_part/xi/subsubsec__xi-leyang-cartesian-power-atomic-clt}
 
 \begin{conjecture}[Gödel 权重下相干零点的普适圆周律与时间读出谱测]\label{conj:xi-godel-weighted-leyang-universal-circle-law}
