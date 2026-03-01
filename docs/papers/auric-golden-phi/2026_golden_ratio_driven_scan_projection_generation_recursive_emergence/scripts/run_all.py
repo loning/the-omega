@@ -82,6 +82,24 @@ def _outputs_ok(step: Step) -> Tuple[bool, List[str]]:
 def build_steps() -> List[Step]:
     return [
         Step(
+            name="window6_lie_envelope",
+            script="exp_window6_lie_envelope.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_lie_envelope.json",
+                "sections/generated/eq_window6_lie_envelope_invariants.tex",
+            ],
+        ),
+        Step(
+            name="window6_lie_envelope_orthogonal_part",
+            script="exp_window6_lie_envelope_orthogonal_part.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_lie_envelope_orthogonal_part.json",
+                "sections/generated/eq_window6_lie_envelope_orthogonal_part_dim.tex",
+            ],
+        ),
+        Step(
             name="replica_softcore_binary_necklace_trace_audit",
             script="exp_replica_softcore_binary_necklace_trace_audit.py",
             args=[],
