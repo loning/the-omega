@@ -1,0 +1,121 @@
+\begin{lemma}[多步曲率由单步曲率事件支配]\label{lem:pom-multistep-curvature-dominated}
+对任意整数 $n>m\ge 1$，令
+\[
+\tau_{n\to m}:=\tau_{m+1\to m}\circ\cdots\circ\tau_{n\to n-1},
+\qquad
+\pi_{n\to m}:=\pi_{m+1\to m}\circ\cdots\circ\pi_{n\to n-1},
+\]
+并定义多步不交换指示量
+\[
+\mathcal K_{n\to m}(\omega):=\mathbf 1\!\Big[\Fold_m(\tau_{n\to m}(\omega))\neq \pi_{n\to m}(\Fold_n(\omega))\Big]\qquad(\omega\in\Omega_n).
+\]
+则对所有 $\omega\in\Omega_n$ 成立
+\[
+\mathcal K_{n\to m}(\omega)\ \le\ \sum_{k=m}^{n-1}\mathcal K_{k+1\to k}\!\bigl(\tau_{n\to k+1}(\omega)\bigr).
+\]
+\end{lemma}
+\begin{proof}
+若右端为 $0$，则对每个 $k\in\{m,\dots,n-1\}$ 与 $\omega_{k+1}:=\tau_{n\to k+1}(\omega)\in\Omega_{k+1}$，由定义 $\mathcal K_{k+1\to k}(\omega_{k+1})=0$ 得
+\[
+\Fold_k(\tau_{k+1\to k}(\omega_{k+1}))=\pi_{k+1\to k}(\Fold_{k+1}(\omega_{k+1})).
+\]
+注意 $\tau_{k+1\to k}(\omega_{k+1})=\tau_{n\to k}(\omega)$。从 $k=m$ 起迭代并在每一步对等式两侧左复合相应的投影，利用逆系统的复合律 $\pi_{n\to m}=\pi_{k+1\to m}\circ\pi_{n\to k+1}$，可得
+\[
+\Fold_m(\tau_{n\to m}(\omega))=\pi_{n\to m}(\Fold_n(\omega)),
+\]
+即 $\mathcal K_{n\to m}(\omega)=0$。取逆否命题即得所示上界。证毕。
+\end{proof}
+
+\begin{theorem}[曲率事件可和性推出几乎处处的最终交换]\label{thm:pom-curvature-summable-eventual-commutation}
+令 $\Omega_\infty:=\{0,1\}^{\NN}$，并以 $\tau_{\infty\to m}:\Omega_\infty\to\Omega_m$ 表示取前 $m$ 位前缀。
+给定 $\Omega_\infty$ 上任意概率测度 $\PP$，定义事件
+\[
+A_m:=\Bigl\{\omega\in\Omega_\infty:\ \mathcal K_{m+1\to m}(\tau_{\infty\to m+1}(\omega))=1\Bigr\}.
+\]
+若满足可和性条件 $\sum_{m\ge 1}\PP(A_m)<\infty$，则存在 $\Omega_\infty^\star\subset\Omega_\infty$ 使 $\PP(\Omega_\infty^\star)=1$，且对每个 $\omega\in\Omega_\infty^\star$ 存在 $m_0(\omega)$ 使对所有 $m\ge m_0(\omega)$ 都有
+\[
+\Fold_m(\tau_{\infty\to m}(\omega))
+=\pi_{m+1\to m}\!\Bigl(\Fold_{m+1}(\tau_{\infty\to m+1}(\omega))\Bigr).
+\]
+从而对每个 $\omega\in\Omega_\infty^\star$，存在唯一的逆极限点 $x_\infty(\omega)\in X_\infty\simeq\varprojlim X_m$ 满足
+\[
+\pi_m(x_\infty(\omega))=\Fold_m(\tau_{\infty\to m}(\omega))\qquad(m\ge m_0(\omega)).
+\]
+\end{theorem}
+\begin{proof}
+由第一 Borel--Cantelli 引理，$\sum_m\PP(A_m)<\infty$ 蕴含 $\PP(A_m\ \mathrm{i.o.})=0$。因此对几乎处处的 $\omega$，存在 $m_0(\omega)$ 使得对所有 $m\ge m_0(\omega)$ 都有 $\omega\notin A_m$，即 $\mathcal K_{m+1\to m}(\tau_{\infty\to m+1}(\omega))=0$，展开定义得到所示最终交换恒等式。
+
+令 $x_m(\omega):=\Fold_m(\tau_{\infty\to m}(\omega))$。对 $m\ge m_0(\omega)$，上式等价于 $\pi_{m+1\to m}(x_{m+1}(\omega))=x_m(\omega)$，从而 $(x_m(\omega))_{m\ge m_0(\omega)}$ 给出逆系统的一条相容尾部。对 $m<m_0(\omega)$ 再令 $x_m(\omega):=\pi_{m_0(\omega)\to m}(x_{m_0(\omega)}(\omega))$，得到全体 $m\ge 1$ 的相容族，于是由逆极限的泛性质对应唯一的 $x_\infty(\omega)\in X_\infty$。证毕。
+\end{proof}
+
+\begin{proposition}[曲率概率给出的总变差最优上界]\label{prop:pom-curvature-tv-optimal}
+固定 $m\ge 1$，令 $\mu\in\Delta(\Omega_{m+1})$ 为任意分布，并在同一微态 $\omega\sim\mu$ 下定义
+\[
+X:=\Fold_m(\tau_{m+1\to m}(\omega))\in X_m,
+\qquad
+Y:=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\in X_m,
+\]
+以及 $\varepsilon:=\PP_\mu[X\neq Y]=\PP_\mu[\mathcal K_{m+1\to m}(\omega)=1]$。
+则
+\[
+D_{\mathrm{TV}}\bigl(\mathcal L(X),\mathcal L(Y)\bigr)\ \le\ \varepsilon,
+\]
+且该常数在一般情形下不可再改进。
+\end{proposition}
+\begin{proof}
+对任意集合 $B\subseteq X_m$，有
+\[
+\bigl|\PP[X\in B]-\PP[Y\in B]\bigr|
+=\bigl|\EE(\mathbf 1_B(X)-\mathbf 1_B(Y))\bigr|
+\le \EE\,|\mathbf 1_B(X)-\mathbf 1_B(Y)|
+\le \PP[X\neq Y]=\varepsilon.
+\]
+取上确界得到总变差上界。最优性可由支持几乎不交且 $\PP[X\neq Y]=\varepsilon$ 的构造实现，从而达到 $D_{\mathrm{TV}}=\varepsilon$。证毕。
+\end{proof}
+
+\begin{proposition}[曲率门槛对信息注入的可审计上界]\label{prop:pom-curvature-conditional-entropy-bound}
+在命题 \ref{prop:pom-curvature-tv-optimal} 的设定下，令 $E:=\mathbf 1[X\neq Y]$，并记二元熵函数
+\[
+h(\varepsilon):=-\varepsilon\log\varepsilon-(1-\varepsilon)\log(1-\varepsilon),
+\]
+其中对数底任取但须一致。
+则条件熵满足
+\[
+H(Y\mid X)\ \le\ h(\varepsilon)+\varepsilon\log\bigl(|X_m|-1\bigr).
+\]
+若进一步令末位比特 $B:=\omega_{m+1}\in\{0,1\}$，则
+\[
+I(B;Y\mid X)\ \le\ h(\varepsilon)+\varepsilon\log\bigl(|X_m|-1\bigr).
+\]
+\end{proposition}
+\begin{proof}
+在事件 $\{E=0\}$ 上有 $Y=X$，故 $H(Y\mid X,E=0)=0$。在事件 $\{E=1\}$ 上，给定 $X$ 时随机变量 $Y$ 的取值落在 $X_m\setminus\{X\}$，从而 $H(Y\mid X,E=1)\le \log(|X_m|-1)$。于是
+\[
+H(Y\mid X)\le H(E\mid X)+\PP(E=1)\,H(Y\mid X,E=1)
+\le h(\varepsilon)+\varepsilon\log(|X_m|-1).
+\]
+又 $I(B;Y\mid X)=H(Y\mid X)-H(Y\mid X,B)\le H(Y\mid X)$，得到第二式。证毕。
+\end{proof}
+
+\begin{proposition}[独立曲率尾部下的朴素坐标几乎处处失效]\label{prop:pom-curvature-independent-divergent}
+在定理 \ref{thm:pom-curvature-summable-eventual-commutation} 的设定下仍记 $A_m=\{\mathcal K_{m+1\to m}(\tau_{\infty\to m+1}(\omega))=1\}$。
+若进一步假设 $(A_m)_{m\ge 1}$ 相互独立且 $\sum_{m\ge 1}\PP(A_m)=\infty$，则 $\PP(A_m\ \mathrm{i.o.})=1$。
+因此对 $\PP$-几乎处处的 $\omega$，序列 $x_m(\omega):=\Fold_m(\tau_{\infty\to m}(\omega))$ 违反相容条件 $\pi_{m+1\to m}(x_{m+1}(\omega))=x_m(\omega)$ 无穷多次，从而以朴素截断 $\tau_{\infty\to m}$ 作为跨分辨率坐标口径几乎处处不能产生逆极限坐标。
+\end{proposition}
+\begin{proof}
+由第二 Borel--Cantelli 引理，在独立性与 $\sum_m\PP(A_m)=\infty$ 下有 $\PP(A_m\ \mathrm{i.o.})=1$。而 $A_m$ 的发生等价于 $\pi_{m+1\to m}(x_{m+1}(\omega))\neq x_m(\omega)$，故相容性失败无穷多次。证毕。
+\end{proof}
+
+\begin{conjecture}[均匀微态基线下曲率概率的极限与指数收敛]\label{conj:pom-curvature-uniform-limit}
+令 $\PP$ 为 $\Omega_\infty$ 上的 i.i.d.\ Bernoulli$(\tfrac12)$ 乘积测度，并令
+\[
+\varepsilon_m:=\PP\!\left[\mathcal K_{m+1\to m}(\tau_{\infty\to m+1}(\omega))=1\right].
+\]
+则 $\varepsilon_m$ 收敛到一个非零常数，并且收敛误差呈指数衰减。
+在均匀枚举范围 $m\le 20$ 的数据中（注 \ref{rem:pom-gauge-curvature-audit}；表 \ref{tab:fold_truncation_curvature_stats}），该极限与 $1/3$ 一致。
+\end{conjecture}
+
+\begin{remark}[曲率尾部门槛与逆极限粒子化判据]\label{rem:pom-curvature-particleization}
+跨分辨率比较若以朴素前缀 $\tau$ 为坐标口径，则曲率事件控制了“先截断再折叠”与“先折叠再限制”的不一致频率，从而把伪不变量风险转化为可审计的尾部门槛。
+在给定微态基线 $\PP$ 下，可将可讨论的稳定本体限定为满足曲率尾部可和（或最终为零）的逆极限子集：其不同分辨率坐标 $\pi_m(x_\infty)$ 才能被视为同一对象在稳定逆系统口径下的一致投影。
+\end{remark}
