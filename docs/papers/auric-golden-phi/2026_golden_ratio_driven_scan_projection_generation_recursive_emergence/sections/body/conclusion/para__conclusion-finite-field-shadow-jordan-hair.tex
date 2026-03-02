@@ -11,6 +11,25 @@
   在更低阶的已核验窗口 \(4\le q\le 11\) 内，指数对进一步凝结为闭式
   \(b_q=2\lfloor (q+1)/4\rfloor\)、\(a_q=3+2\,\ind\{q\ \mathrm{even},\ q\ge 6\}\)，并呈现 \(q\mapsto q+4\) 的台阶相（命题 \ref{prop:pom-charpoly-mod2-closed-exponent-law-q4-11}）。
 
+  \begin{proposition}[\(\FF_2\) 上差分幂零所强制的二项式基多项式性]\label{prop:conclusion-f2-binomial-basis-from-delta-nilpotent}
+  令 \((a_m)_{m\ge 0}\) 为取值于 \(\FF_2\) 的序列，并记前移算子 \(E(a)_m=a_{m+1}\) 与差分算子 \(\Delta:=E+1\)（特征 \(2\) 下亦可写为 \(E-1\)）。
+  若存在整数 \(b\ge 1\) 使得对充分大的 \(m\) 有
+  \[
+  \Delta^{b}a_m=0,
+  \]
+  则存在常数 \(c_0,\dots,c_{b-1}\in\FF_2\) 使得对充分大的 \(m\) 有
+  \[
+  a_m=\sum_{j=0}^{b-1}c_j\binom{m}{j}\quad(\mathrm{mod}\ 2).
+  \]
+  \end{proposition}
+
+  \begin{proof}
+  组合恒等式给出 \(\Delta\binom{m}{j}=\binom{m}{j-1}\)，从而 \(\Delta^b\binom{m}{j}=0\) 当且仅当 \(j<b\)。
+  若 \(\Delta^b a_m=0\) 在后段成立，则 \(\Delta^{b-1}a_m\) 在后段为常值，记为 \(c_{b-1}\)。
+  令 \(a^{(1)}_m:=a_m-c_{b-1}\binom{m}{b-1}\)，则 \(\Delta^{b-1}a^{(1)}_m=0\) 在后段成立。
+  递归下降直至阶数 \(0\)，得到所示表示。证毕。
+  \end{proof}
+
   \item \textbf{模 \texorpdfstring{$3$}{3} 的两扇区分解：常相多项式与交替相多项式的直和压缩。}
   当 \(P_q(\lambda)\equiv \lambda^2(\lambda-1)^4(\lambda+1)^5\ (\mathrm{mod}\ 3)\)（例如 \(q=13,15\)；注 \ref{rem:pom-charpoly-mod3-selection}）时，对 \(\widetilde S_q:=E^2S_q\) 有
   \((E-1)^4(E+1)^5\widetilde S_q\equiv 0\ (\mathrm{mod}\ 3)\)，从而存在次数分别受 \((4,5)\) 指数对控制的两类广义相位模态：一类为关于 \(m\) 的次数 \(\le 3\) 多项式，另一类为 \((-1)^m\) 乘以次数 \(\le 4\) 多项式（命题 \ref{prop:pom-moment-mod3-two-phase}；表 \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}）。
@@ -38,4 +57,26 @@
   统一给出（注 \ref{rem:pom-charpoly-modp-audit-method}；表 \ref{tab:fold_collision_charpoly_mod7_selection_q13_15}--\ref{tab:fold_collision_charpoly_mod13_fingerprint_q13}）。
   其中额外因子 \(p\) 与 \(\mathrm{repeat?}=1\) 等价地刻画了非平方自由性，从而等价刻画了有限域递推的 Jordan/广义本征向量贡献；并且 \(\varepsilon_{q,p}\) 可通过 \(\gcd(\widetilde P_q,\partial_\lambda\widetilde P_q)\) 直接读出，无需对 \(P_q\) 进行完整因子分解。
 \end{enumerate}
+
+\begin{corollary}[模 \(2\) 影子差分阶数的台阶跃迁与碰撞矩奇偶动力学的可检验分级]\label{cor:conclusion-fold-collision-mod2-step-jump-q7}
+在模 \(2\) 影子分解
+\(
+P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\ (\mathrm{mod}\ 2)
+\)
+与湮灭式 \(E^{a_q}(E+1)^{b_q}S_q\equiv 0\ (\mathrm{mod}\ 2)\) 的设定下，
+对每个固定 \(q\) 记 \(\Delta:=E+1\)。
+则 \(S_q(m+a_q)\bmod 2\) 在后段满足 \(\Delta^{b_q}S_q(m+a_q)=0\)，从而由命题 \ref{prop:conclusion-f2-binomial-basis-from-delta-nilpotent} 得到二项式基多项式表示，其次数严格小于 \(b_q\)。
+特别地，在已核验切片中 \(q\in\{4,5,6\}\) 对应 \(b_q=2\)，而从 \(q=7\) 起（在所给审计范围内）出现 \(b_q=4\)；
+因此模 \(2\) 的差分幂零阶数在 \(q=7\) 处发生可复核的台阶跃迁：由最终仿射相跃迁到最终至多三次相。
+\end{corollary}
+
+\begin{conjecture}[模 \(2\) 塌缩指数的幂次塔：差分幂零深度的无界性]\label{conj:conclusion-fold-collision-mod2-power-tower}
+令 \(b_q\) 为模 \(2\) 影子分解 \(P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\ (\mathrm{mod}\ 2)\) 的指数。
+猜想：
+\begin{enumerate}
+  \item \(b_q\) 仅取 \(2\) 的幂，并随 \(q\) 非减；
+  \item 存在无穷增序列 \(q_1<q_2<\cdots\) 使 \(b_{q_{n+1}}=2b_{q_n}\)；
+  \item 对每个 \(q\)，\(b_q\) 同时给出 \(S_q(m)\bmod 2\) 的最小差分幂零阶：在后段有 \(\Delta^{b_q}S_q=0\) 且 \(\Delta^{b_q/2}S_q\not\equiv 0\)。
+\end{enumerate}
+\end{conjecture}
 

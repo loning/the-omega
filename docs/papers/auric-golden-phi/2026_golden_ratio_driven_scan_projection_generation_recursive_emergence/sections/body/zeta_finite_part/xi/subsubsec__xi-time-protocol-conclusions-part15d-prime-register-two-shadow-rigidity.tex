@@ -149,6 +149,76 @@ z^p+1=(z+1)\Phi_{2p}(z),
 因此在 \(\mathcal L(r)\) 的不可约分解中，每个 \(\Phi_{2p}\)（\(p\) 为奇素数）出现的指数恰为 \(r(p)\)，而 \(\Phi_4\) 出现的指数为 \(r(2)\)，从而 \(r\) 由 \(\mathcal L(r)\) 唯一确定，故 \(\mathcal L\) 单射。
 \end{proof}
 
+\begin{theorem}[Gödel--Lee--Yang 对数振幅的逐素频全息反演]\label{thm:xi-leyang-logamplitude-prime-frequency-inversion}
+在定理 \ref{thm:xi-leyang-godel-prime-register-algebraic-identifiability} 的记号下，对任意 \(r\in\NN^{(\mathcal P)}\) 定义单位圆上的对数振幅
+\[
+\mathcal A_r(\theta):=\log\abs{\mathcal L(r)(e^{i\theta})}\qquad(\theta\in[-\pi,\pi]).
+\]
+则 \(\mathcal A_r\in L^1([-\pi,\pi])\)。
+并且对每个素数 \(p\) 成立严格反演公式
+\[
+\boxed{\quad
+r(p)=\frac1\pi\int_{-\pi}^{\pi}\mathcal A_r(\theta)\cos(p\theta)\,\dd\theta.\quad}
+\]
+因此 \(\{\mathcal A_r(\theta)\}_{\theta\in[-\pi,\pi]}\) 在测度意义下逐素数唯一确定寄存器 \(r\)。
+\end{theorem}
+\begin{proof}
+由于 \(r\) 仅有限支撑，
+\[
+\mathcal A_r(\theta)=\sum_{p\in\mathcal P}r(p)\log\abs{1+e^{ip\theta}}.
+\]
+对任意 \(\rho\in(0,1)\)，在单位圆盘内取主值对数并取实部，得到一致可积展开
+\[
+\Re\log(1+\rho e^{ix})
+=\sum_{k\ge 1}\frac{(-1)^{k+1}}{k}\rho^k\cos(kx).
+\]
+令 \(\rho\uparrow 1\) 可得在 \(L^2([-\pi,\pi])\)（从而 \(L^1\)）意义下的余弦级数
+\[
+\log\abs{1+e^{ix}}
+=\sum_{k\ge 1}\frac{(-1)^{k+1}}{k}\cos(kx)
+\qquad(x\in[-\pi,\pi]\text{ a.e.}).
+\]
+代入 \(x=p\theta\) 并对有限个 \(p\) 求和（可交换求和次序）得到
+\[
+\mathcal A_r(\theta)
+=\sum_{p}r(p)\sum_{k\ge 1}\frac{(-1)^{k+1}}{k}\cos(kp\theta).
+\]
+因此 \(\mathcal A_r\) 的第 \(n\) 个余弦系数为
+\[
+\frac1\pi\int_{-\pi}^{\pi}\mathcal A_r(\theta)\cos(n\theta)\,\dd\theta
+=\sum_{p\mid n} r(p)\,\frac{(-1)^{n/p+1}}{n/p}.
+\]
+当 \(n=p\) 为素数时右端仅含 \(p\) 一项且 \(n/p=1\)，从而该余弦系数等于 \(r(p)\)，即得所述反演公式。证毕。
+\end{proof}
+
+\begin{corollary}[整数刚性阈值：\(L^2\) 误差控制下的逐素数精确恢复]\label{cor:xi-leyang-logamplitude-rounding-threshold}
+在定理 \ref{thm:xi-leyang-logamplitude-prime-frequency-inversion} 的设定下，令 \(\widetilde{\mathcal A}\in L^2([-\pi,\pi])\) 为任意观测/学习得到的对数振幅近似，并对素数 \(p\) 定义
+\[
+\widetilde r(p):=\operatorname{Round}\!\left(\frac1\pi\int_{-\pi}^{\pi}\widetilde{\mathcal A}(\theta)\cos(p\theta)\,\dd\theta\right)\in\ZZ,
+\]
+其中 \(\operatorname{Round}\) 表示四舍五入到最近整数。
+若满足误差阈值
+\[
+\norm{\widetilde{\mathcal A}-\mathcal A_r}_{L^2([-\pi,\pi])}<\frac{\sqrt\pi}{2},
+\]
+则对所有素数 \(p\) 均有 \(\widetilde r(p)=r(p)\)。
+\end{corollary}
+\begin{proof}
+记
+\[
+c_p(F):=\frac1\pi\int_{-\pi}^{\pi}F(\theta)\cos(p\theta)\,\dd\theta.
+\]
+由 Cauchy--Schwarz 不等式并注意 \(\norm{\cos(p\theta)}_{L^2([-\pi,\pi])}=\sqrt\pi\)，得到
+\[
+\abs{c_p(\widetilde{\mathcal A})-c_p(\mathcal A_r)}
+\le \frac1\pi\norm{\widetilde{\mathcal A}-\mathcal A_r}_{L^2}\,\norm{\cos(p\theta)}_{L^2}
+=\frac1{\sqrt\pi}\norm{\widetilde{\mathcal A}-\mathcal A_r}_{L^2}
+<\frac12.
+\]
+而由定理 \ref{thm:xi-leyang-logamplitude-prime-frequency-inversion}，\(c_p(\mathcal A_r)=r(p)\in\ZZ\)。
+因此 \(c_p(\widetilde{\mathcal A})\) 与整数 \(r(p)\) 的距离严格小于 \(1/2\)，四舍五入必回到 \(r(p)\)。证毕。
+\end{proof}
+
 \begin{definition}[素数根均匀测度与零点经验测度]\label{def:xi-leyang-prime-root-measures}
 对每个素数 \(p\)，令 \(\eta_p\) 为方程 \(z^p=-1\) 的 \(p\) 个解上的均匀概率测度：
 \[
@@ -336,6 +406,34 @@ Haar 测度满足 \(\widehat{m_{S^1}}(n)=0\)（\(n\neq 0\)），故 \(\mu_m\Righ
 而这与第三条等价（符号项不影响绝对值阶）。
 第三条显然推出第二条（取 \(n=q\)）。
 第二条推出第三条是因为 \(n\) 的素因子集合有限，\(\sum_{p\mid n}r_m(p)p/D_m\) 为有限项之和，逐项趋于 \(0\) 即整体趋于 \(0\)。
+\end{proof}
+
+\begin{theorem}[零点普适律与对数振幅保持律的严格分裂]\label{thm:xi-leyang-bulk-boundary-splitting-haar-vs-logamplitude}
+设 \((r_N)_{N\ge 1}\subset \NN^{(\mathcal P)}\setminus\{0\}\)，并令 \(\mu_{r_N}\) 与
+\[
+D_N:=D(r_N)=\sum_{p\in\mathcal P} r_N(p)\,p
+\]
+如定义 \ref{def:xi-leyang-prime-root-measures} 所示。
+假设 \(D_N\to\infty\)，且对每个固定素数 \(p\)，序列 \((r_N(p))_{N}\) 有界。
+则：
+\begin{enumerate}
+  \item 零点经验测度满足 \(\mu_{r_N}\Rightarrow m_{S^1}\)（单位圆上的 Haar 概率测度）；
+  \item 与此同时，若记 \(\mathcal A_{r_N}(\theta)=\log|\mathcal L(r_N)(e^{i\theta})|\)，则对每个素数 \(p\) 恒有
+  \[
+  \frac1\pi\int_{-\pi}^{\pi}\mathcal A_{r_N}(\theta)\cos(p\theta)\,\dd\theta=r_N(p),
+  \]
+  因而 \((\mathcal A_{r_N})_N\) 不可能在 \(L^2([-\pi,\pi])\) 中收敛到某个与 \(r_N\) 无关的“普适极限”（除非 \(r_N(p)\) 在每个素数处逐点稳定）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对任意固定素数 \(q\)，由有界性得 \(r_N(q)\,q=O_q(1)\)，而 \(D_N\to\infty\)，故
+\(
+\frac{r_N(q)\,q}{D_N}\to 0
+\)。
+由定理 \ref{thm:xi-leyang-prime-register-haar-criterion} 即得 \(\mu_{r_N}\Rightarrow m_{S^1}\)，从而得到 (1)。
+\par
+(2) 由定理 \ref{thm:xi-leyang-logamplitude-prime-frequency-inversion} 对每个 \(N\) 与每个素数 \(p\) 的反演恒等式直接给出。
+若 \(\mathcal A_{r_N}\to \mathcal A\) 于 \(L^2\)，则其每个余弦系数必收敛，因而 \(r_N(p)\) 必对每个 \(p\) 收敛；若要极限不依赖于序列 \((r_N)\)，则只能在逐素数意义下稳定。证毕。
 \end{proof}
 
 \begin{conjecture}[外置诱导素数账本的质量不凝聚与普适差分阶]\label{conj:xi-leyang-prime-register-universal-nonconcentration}

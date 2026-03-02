@@ -89,6 +89,53 @@ x(v)=x(u)+\eta(uv)\quad(\bmod 2),
 最后由 \(\partial_n\) 的单射性（定理 \ref{thm:spg-dyadic-cubical-boundary-injective}）可知满足该边界的顶维链唯一，故 \(x=[U]\)。证毕。
 \end{proof}
 
+\begin{theorem}[整系数体--界回放的线性时间算法与不一致证书]\label{thm:spg-integer-bulk-decode-or-cycle-certificate}
+令 \(\partial_n:C_n(\mathcal Q_m;\ZZ)\to C_{n-1}(\mathcal Q_m;\ZZ)\) 为 dyadic \(n\)-立方复形上的边界算子，并令 \(\Gamma\) 为定理 \ref{thm:spg-linear-time-bulk-decode-from-boundary} 中的 \(n\)-胞腔邻接图（含外部顶点 \(\infty\)）。
+则存在确定性算法：输入任意 \((n-1)\)-链 \(b\in C_{n-1}(\mathcal Q_m;\ZZ)\)，在时间 \(O(|E(\Gamma)|)\) 内输出下列二者之一：
+\begin{enumerate}
+  \item 唯一的 \(n\)-链 \(c\in C_n(\mathcal Q_m;\ZZ)\) 使 \(\partial_n c=b\)；
+  \item 一条显式闭回路 \(\gamma\subset\Gamma\)（由 \((n-1)\)-面对应的边组成），满足
+  \[
+  \sum_{e\in\gamma}\operatorname{sgn}_\gamma(e)\,\eta_b(e)\neq 0,
+  \]
+  从而推出 \(b\notin \mathrm{im}(\partial_n)\)。
+\end{enumerate}
+其中 \(\eta_b:E(\Gamma)\to\ZZ\) 为由 \(b\) 诱导的边标记（见证明中的定义），\(\operatorname{sgn}_\gamma(e)\in\{\pm1\}\) 为回路行进方向与边定向的一致性符号。
+此外，在情形 (1) 中所得 \(c\) 唯一性由 \(\partial_n\) 的单射性（定理 \ref{thm:spg-dyadic-cubical-boundary-injective}）保证。
+\end{theorem}
+\begin{proof}
+对每条边 \(e\in E(\Gamma)\)（对应某个有向 \((n-1)\)-面 \(\vec f\)），令 \(\eta_b(e)\in\ZZ\) 为 \(b\) 在该有向面上的系数；对外边 \(v\infty\) 亦同样以外侧面取向定义 \(\eta_b(v\infty)\)。
+设 \(c=\sum_{Q}u(Q)\,Q\in C_n(\mathcal Q_m;\ZZ)\)（\(Q\) 遍历 \(n\)-胞腔）为未知体链。
+由立方复形的定向约定，若 \(e=(Q\to Q')\) 为内部相邻边（两胞腔共用同一 \((n-1)\)-面），则对应面在 \(\partial_n Q\) 与 \(\partial_n Q'\) 中符号相反，从而
+\[
+(\partial_n c)(e)=u(Q)-u(Q').
+\]
+若 \(e=(Q\to\infty)\) 为外边，则
+\(
+(\partial_n c)(e)=u(Q)
+\)。
+因此方程 \(\partial_n c=b\) 等价于在图 \(\Gamma\) 上求势函数 \(u:V(\Gamma)\to\ZZ\)（约定 \(u(\infty)=0\)）使得对每条有向边 \(e=(x\to y)\) 满足
+\[
+u(x)-u(y)=\eta_b(e).
+\]
+\par
+取 \(\Gamma\) 的一棵生成树 \(T\)，以 \(\infty\) 为根；沿 \(T\) 自根递推定义 \(u\)：若 \(e=(x\to y)\in T\) 且 \(u(x)\) 已定，则令 \(u(y):=u(x)-\eta_b(e)\)。
+该过程访问每条树边一次，时间 \(O(|T|)\)。
+\par
+随后对每条非树边 \(e=(x\to y)\notin T\) 检验一致性。
+若发现 \(u(x)-u(y)\neq \eta_b(e)\)，则令 \(\gamma\) 为由树中唯一路径 \(x\rightsquigarrow y\) 与边 \(e\) 拼成的基本回路，并按回路行进方向赋予 \(\operatorname{sgn}_\gamma(\cdot)\)。
+沿回路求和得到
+\[
+\sum_{e'\in\gamma}\operatorname{sgn}_\gamma(e')\,\eta_b(e')
+=u(x)-u(y)-\eta_b(e)\neq 0,
+\]
+从而 \(\gamma\) 为不一致证书；由于任意势函数的环路差分和必须为 \(0\)，可知无解，亦即 \(b\notin\mathrm{im}(\partial_n)\)。
+\par
+若所有非树边均通过检验，则差分约束在全图成立，故由 \(u\) 构造的 \(c=\sum_Q u(Q)Q\) 满足 \(\partial_n c=b\)。
+总时间为树递推 \(O(|T|)\) 加非树边检验 \(O(|E(\Gamma)|)\)，即 \(O(|E(\Gamma)|)\)。
+最后，若存在解则由定理 \ref{thm:spg-dyadic-cubical-boundary-injective} 的单射性知解唯一。证毕。
+\end{proof}
+
 \begin{theorem}[边界 Gödel 整数的多项式矩全读出：边界一整数确定任意单项式体积分]\label{thm:spg-boundary-godel-moment-readout}
 设 \(U\subset I^n\) 为 dyadic polycube。
 对任意多重指标 \(\alpha=(\alpha_1,\dots,\alpha_n)\in\NN^n\)，定义 \((n-1)\)-形式

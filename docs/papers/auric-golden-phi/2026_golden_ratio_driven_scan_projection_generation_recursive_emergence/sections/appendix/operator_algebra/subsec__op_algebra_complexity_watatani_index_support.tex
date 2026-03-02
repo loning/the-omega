@@ -1,0 +1,233 @@
+% Complexity-theoretic interpretation of fold multiplicities via Watatani index and basic construction.
+%
+\subsection{复杂度的折叠—指数表述：NP 的支撑判别与 \texorpdfstring{$\#P$}{#P} 的系数场}\label{subsec:op-algebra-complexity-watatani-index-support}
+本节在附录 \ref{subsec:op-algebra-fold-subalgebra}--\ref{subsec:op-algebra-fold-quantum-channel} 的有限维交换口径上，
+将“折叠纤维多重度场”与经典复杂度类作一一对应的可审计翻译：
+NP 的可满足性判别等价于某个中心正元（Watatani 指标元）的支撑判别，而 \(\#P\) 计数函数等价于该中心正元在极小中心投影上的系数字段。
+同一纤维多重度的二次矩进一步等价于测量--制备折叠信道的最小环境维数（Choi/Kraus 秩）。
+
+\paragraph{一般折叠与有限维交换包含。}
+令 \(\Omega,Y\) 为有限集合，取满射映射 \(\Fold:\Omega\to Y\)，并令
+\[
+A:=\CC^{\Omega},\qquad B:=\CC^{Y}.
+\]
+以 \(\{P_\omega\}_{\omega\in\Omega}\) 表示 \(A\) 的极小投影基（点投影），并对 \(y\in Y\) 定义纤维投影
+\[
+\widetilde P_y:=\sum_{\omega:\ \Fold(\omega)=y}P_\omega\in A.
+\]
+定义纤维多重度 \(d(y):=|\Fold^{-1}(y)|\) 以及纤维平均条件期望 \(E:A\to B\)（与命题 \ref{prop:fold-conditional-expectation} 同型）：
+\[
+E(P_\omega):=\frac{1}{d(\Fold(\omega))}\,\widetilde P_{\Fold(\omega)}.
+\]
+在此设定下，Watatani 指标元与纤维多重度场的闭式完全由定理 \ref{thm:op-algebra-fold-watatani-index-equals-multiplicity-field} 的证明逐字推出。
+
+\begin{definition}[NP 验证器折叠]\label{def:np-verifier-fold}
+设 \(L\subseteq\{0,1\}^\ast\) 为一 NP 语言。
+取标准验证器表示：存在多项式 \(p\) 与确定性多项式时间谓词
+\[
+V:\{0,1\}^n\times \{0,1\}^{p(n)}\to\{0,1\}
+\]
+满足对每个 \(x\in\{0,1\}^n\),
+\[
+x\in L\quad\Longleftrightarrow\quad \exists\,w\in\{0,1\}^{p(n)}\ \text{使}\ V(x,w)=1.
+\]
+定义验证器折叠
+\[
+\Fold_{V,n}:\Omega_{V,n}\to Y_n,
+\qquad
+\Omega_{V,n}:=\{0,1\}^n\times\{0,1\}^{p(n)},
+\qquad
+Y_n:=\{0,1\}^n\sqcup\{\bot\},
+\]
+并令
+\[
+\Fold_{V,n}(x,w):=
+\begin{cases}
+x, & V(x,w)=1,\\
+\bot, & V(x,w)=0.
+\end{cases}
+\]
+\end{definition}
+
+\begin{theorem}[NP 语言的 Watatani 指标支撑刻画]\label{thm:np-watatani-index-support-characterization}
+沿用定义 \ref{def:np-verifier-fold}。
+令 \(A_n:=\CC^{\Omega_{V,n}}\)、\(B_n:=\CC^{Y_n}\)，并令 \(E_{V,n}:A_n\to B_n\) 为纤维平均条件期望。
+则 Watatani 指标元满足显式闭式
+\[
+\mathrm{Ind}_{\mathrm W}(E_{V,n})
+=\sum_{y\in Y_n} d_{V,n}(y)\,\widetilde P_y,
+\qquad
+d_{V,n}(y):=\bigl|\Fold_{V,n}^{-1}(y)\bigr|.
+\]
+并且对任意 \(x\in\{0,1\}^n\) 有
+\[
+d_{V,n}(x)=\#\{w\in\{0,1\}^{p(n)}:\ V(x,w)=1\},
+\]
+从而
+\[
+x\in L
+\quad\Longleftrightarrow\quad
+d_{V,n}(x)>0
+\quad\Longleftrightarrow\quad
+\widetilde P_x\ \text{在}\ \mathrm{Ind}_{\mathrm W}(E_{V,n})\ \text{的支撑中。}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:op-algebra-fold-watatani-index-equals-multiplicity-field} 的证明（其仅依赖“有限集分块 + 纤维平均”），将 \((\Omega_m,X_m,\Fold_m)\) 换为 \((\Omega_{V,n},Y_n,\Fold_{V,n})\) 立得指标闭式。
+对 \(x\in\{0,1\}^n\)，其纤维正是 \(\{(x,w):V(x,w)=1\}\)，故 \(d_{V,n}(x)\) 等于见证计数。
+最后等价链由 NP 定义 \(x\in L\iff \exists w\ V(x,w)=1\iff d_{V,n}(x)>0\) 给出。
+证毕。
+\end{proof}
+
+\begin{definition}[指数支撑判别与系数读出]\label{def:index-support-and-coeff-problems}
+在上述有限维交换包含设定下，令输入由一族可有效构造的三元组 \((A_x\supseteq B_x,\ E_x)\) 与指定极小中心投影 \(p_x\in B_x\) 给出。
+定义两个问题：
+\begin{enumerate}
+\normalfont
+  \item \(\mathrm{INDEX\text{-}SUPPORT}\)：判定 \(p_x\) 是否落在 \(\mathrm{Ind}_{\mathrm W}(E_x)\) 的支撑中（等价于其系数是否非零）。
+  \item \(\mathrm{INDEX\text{-}COEFF}\)：输出 \(\mathrm{Ind}_{\mathrm W}(E_x)\) 在 \(p_x\) 上的系数。
+\end{enumerate}
+\end{definition}
+
+\begin{corollary}[SAT 的支撑判别与 \texorpdfstring{$\#\mathrm{SAT}$}{#SAT} 系数读出]\label{cor:index-support-sat-np-hard-index-coeff-sharpP}
+存在多项式时间可构造的映射 \(\varphi\mapsto(A_\varphi\supseteq B_\varphi,\ E_\varphi,\ \widetilde P_\varphi)\)，使得：
+\begin{enumerate}
+\normalfont
+  \item \(\varphi\) 可满足当且仅当 \(\widetilde P_\varphi\) 落在 \(\mathrm{Ind}_{\mathrm W}(E_\varphi)\) 的支撑中；
+  \item \(\mathrm{Ind}_{\mathrm W}(E_\varphi)\) 在 \(\widetilde P_\varphi\) 上的系数恰等于 \(\#\mathrm{SAT}(\varphi)\)。
+\end{enumerate}
+因此 \(\mathrm{INDEX\text{-}SUPPORT}\) 至少 NP-困难，而 \(\mathrm{INDEX\text{-}COEFF}\) 至少 \(\#P\)-困难（在保持计数的多项式时间归约口径下）。
+\end{corollary}
+\begin{proof}
+取 \(L=\mathrm{SAT}\) 并令 \(V(\varphi,w)\) 为“赋值 \(w\) 是否满足公式 \(\varphi\)”的多项式时间谓词。
+将定理 \ref{thm:np-watatani-index-support-characterization} 应用于该验证器折叠，即得到
+\(
+d(\varphi)=\#\{w:V(\varphi,w)=1\}=\#\mathrm{SAT}(\varphi)
+\)
+以及“\(d(\varphi)>0\iff\varphi\) 可满足”的支撑判别。
+证毕。
+\end{proof}
+
+\begin{theorem}[Jones 基本构造的见证块分解]\label{thm:np-jones-basic-construction-witness-blocks}
+在定理 \ref{thm:np-watatani-index-support-characterization} 的设定下，令 \(\tau_n\) 为 \(A_n\) 上的标准迹态，并令
+\[
+A_{n,1}:=\langle A_n,e_{V,n}\rangle
+\]
+为由 \(E_{V,n}\) 实现的 Jones 投影 \(e_{V,n}\) 所生成的基本构造代数。
+则存在规范 \(\ast\)-同构
+\[
+A_{n,1}\ \cong\ \bigoplus_{y\in Y_n} M_{d_{V,n}(y)}(\CC),
+\]
+其中对每个 \(x\in\{0,1\}^n\)，块维数 \(d_{V,n}(x)\) 等于 \(x\) 的见证计数。
+\end{theorem}
+\begin{proof}
+这是定理 \ref{thm:op-algebra-fold-basic-construction-pair-groupoid} 在一般折叠 \(\Fold_{V,n}\) 上的同型表述：GNS 空间按纤维 \(\Fold_{V,n}^{-1}(y)\) 作正交直和分解，Jones 投影在每条纤维上为一维平均投影，因此生成代数逐纤维为全矩阵代数，块大小为纤维基数。
+证毕。
+\end{proof}
+
+\begin{theorem}[测量--制备折叠信道的最小 Kraus 秩等于二次碰撞矩]\label{thm:fold-channel-choi-rank-equals-s2-general}
+令 \(\Fold:\Omega\to Y\) 为任意有限集合满射，并令 \(\mathcal{H}:=\CC^{\Omega}\)。
+对 \(y\in Y\) 定义纤维投影 \(\Pi_y:=\sum_{\Fold(\omega)=y}\ket{\omega}\bra{\omega}\)。
+定义测量--制备信道
+\[
+\mathcal E(\rho):=\sum_{y\in Y}\frac{\Tr(\Pi_y\rho)}{d(y)}\,\Pi_y,
+\qquad d(y)=|\Fold^{-1}(y)|.
+\]
+则其 Choi 秩（等价于最小 Kraus 秩、最小 Stinespring 环境维数）满足
+\[
+\rank J(\mathcal E)=\sum_{y\in Y}d(y)^2.
+\]
+\end{theorem}
+\begin{proof}
+与定理 \ref{thm:op-algebra-fold-quantum-channel-minimal-environment-equals-s2} 的证明完全一致：按纤维块计算 Choi 矩阵的秩并求和即可。
+证毕。
+\end{proof}
+
+\begin{corollary}[折叠信道 Kraus 秩的 NP/\texorpdfstring{$\#P$}{#P} 困难性模板]\label{cor:fold-channel-kraus-rank-hardness-template}
+存在从 SAT 实例到折叠信道的多项式时间变换 \(\varphi\mapsto\mathcal E_\varphi\)，使得：
+\begin{enumerate}
+\normalfont
+  \item 判定 \(\rank J(\mathcal E_\varphi)=4^{n+1}\)（其中 \(n\) 为变量数）为 NP-困难；
+  \item 计算 \(\rank J(\mathcal E_\varphi)\) 为 \(\#P\)-困难，并且 \(\#\mathrm{SAT}(\varphi)\) 可由该秩在多项式时间内显式反演恢复。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+给定含 \(n\) 个变量的公式 \(\varphi\)，令
+\[
+\Omega_\varphi:=\{0,1\}^n\times\{0,1\},
+\qquad
+Y_\varphi:=\{\varphi\}\sqcup\{\bot\},
+\]
+并定义折叠
+\[
+\Fold_\varphi(w,b):=
+\begin{cases}
+\varphi, & b=0\ \text{且}\ w\models\varphi,\\
+\bot, & \text{否则}.
+\end{cases}
+\]
+记 \(s:=\#\mathrm{SAT}(\varphi)\)，则 \(d(\varphi)=s\) 且 \(d(\bot)=2^{n+1}-s\)。
+由定理 \ref{thm:fold-channel-choi-rank-equals-s2-general}，
+\[
+\rank J(\mathcal E_\varphi)=s^2+(2^{n+1}-s)^2=:S_2(\varphi).
+\]
+由于 \(0\le s\le 2^n<2^{n+1}\)，有 \(S_2(\varphi)=4^{n+1}\) 当且仅当 \(s=0\)，即 \(\varphi\) 不可满足，故得到 NP-困难性。
+\par
+并且
+\(
+S_2(\varphi)=2s^2-2^{n+2}s+4^{n+1}
+\)
+视为关于 \(s\) 的一元二次式，在区间 \(0\le s\le 2^n\) 上具有唯一反演根；因此精确计算 \(\rank J(\mathcal E_\varphi)\) 可在多项式时间恢复 \(s=\#\mathrm{SAT}(\varphi)\)，从而为 \(\#P\)-困难。
+证毕。
+\end{proof}
+
+\begin{definition}[对数可寻址见证]\label{def:log-addressable-witness}
+设 \(L\in \mathrm{NP}\) 由验证器 \(V(x,w)\) 给出。
+称 \(V\) 具有\textbf{对数可寻址见证}性质，若存在常数 \(c\) 与两族多项式时间算法 \((\mathrm{enc},\mathrm{dec})\) 使对所有 \(x\in\{0,1\}^n\)：
+\begin{enumerate}
+\normalfont
+  \item 对任意满足 \(V(x,w)=1\) 的 \(w\)，\(\mathrm{enc}(x,w)\in\{0,1\}^{\le c\log n}\) 定义且映射 \(w\mapsto \mathrm{enc}(x,w)\) 在可接受见证集上单射；
+  \item 对任意满足 \(V(x,w)=1\) 的 \(w\)，有 \(\mathrm{dec}(x,\mathrm{enc}(x,w))=w\)。
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}[对数可寻址见证在 NP-完全层面强迫 \texorpdfstring{$P=NP$}{P=NP}]\label{thm:log-addressable-witness-implies-P-equals-NP}
+若某个 NP-完全语言 \(L\) 存在满足定义 \ref{def:log-addressable-witness} 的验证器，则 \(L\in P\)，从而 \(P=NP\)。
+\end{theorem}
+\begin{proof}
+给定输入 \(x\in\{0,1\}^n\)，枚举所有长度不超过 \(c\log n\) 的编码串 \(r\)（数目至多 \(n^c\)）。
+对每个 \(r\) 计算 \(w_r:=\mathrm{dec}(x,r)\) 并检验 \(V(x,w_r)\)。
+若存在 \(r\) 使 \(V(x,w_r)=1\) 则接受，否则拒绝。
+由单射可寻址性，若 \(x\in L\) 则必存在某个见证 \(w\) 的编码 \(r=\mathrm{enc}(x,w)\) 被枚举到并通过验证；若 \(x\notin L\) 则无 \(r\) 可通过。
+总运行时间为多项式，故 \(L\in P\)。证毕。
+\end{proof}
+
+\begin{definition}[\texorpdfstring{$\mathsf{FOLD\#}$}{FOLD#}：多项式时间可计算折叠族的纤维计数类]\label{def:FOLDsharp}
+称 \(\{\Fold_n\}_{n\ge 1}\) 为\textbf{多项式时间可计算折叠族}，若存在多项式 \(m(n)\)、一族有限集合 \(\Omega_n\subseteq\{0,1\}^{m(n)}\) 与一族可多项式编码的有限集合 \(Y_n\)，并且给定 \((\omega,n)\) 可在 \(\mathrm{poly}(n)\) 时间内计算 \(\Fold_n(\omega)\in Y_n\)。
+定义函数类
+\[
+\mathsf{FOLD\#}
+:=\left\{f:\{0,1\}^\ast\to\NN\ \middle|\ \exists\ \text{多项式时间可计算折叠族}\ \Fold_n:\Omega_n\to Y_n,\ \forall x\in\{0,1\}^n,\ f(x)=|\Fold_n^{-1}(x)|\right\}.
+\]
+\end{definition}
+
+\begin{theorem}[\texorpdfstring{$\mathsf{FOLD\#}=\#P$}{FOLD# = #P}]\label{thm:FOLDsharp-equals-sharpP}
+\(\mathsf{FOLD\#}=\#P\)。
+更精确地：对任意多项式时间可计算折叠族 \(\Fold_n\)，函数 \(x\mapsto |\Fold_n^{-1}(x)|\) 属于 \(\#P\)；反之，任意 \(\#P\) 函数都可实现为某个验证器折叠 \(\Fold_{V,n}\) 的纤维多重度函数。
+\end{theorem}
+\begin{proof}
+\textbf{包含 \(\mathsf{FOLD\#}\subseteq \#P\).}
+给定折叠族 \(\Fold_n\)，关系
+\(
+R(x,\omega)\iff (\Fold_n(\omega)=x)
+\)
+可在多项式时间判定，且 \(\omega\) 的长度为 \(m(n)=\mathrm{poly}(n)\)。
+因此 \(f(x)=\#\{\omega:\ R(x,\omega)\}\) 为 \(\#P\) 函数。
+\par
+\textbf{包含 \(\#P\subseteq \mathsf{FOLD\#}\).}
+任取 \(\#P\) 函数 \(g(x)=\#\{w:\ V(x,w)=1\}\)（其中 \(V\) 为多项式时间谓词）。
+构造验证器折叠 \(\Fold_{V,n}\) 如定义 \ref{def:np-verifier-fold}，则对每个 \(x\) 有 \(d_{V,n}(x)=g(x)\)。
+于是 \(g\in\mathsf{FOLD\#}\)。
+证毕。
+\end{proof}
+
