@@ -50,6 +50,54 @@ L_k:=3N_1(c)+2k=3n-3-4k.
 另一方面，任一轨道长度皆整除某个 \(L_k\)（或等于上述端点长度 \(2,3\)），故置换阶为其循环长度集合的最小公倍数，即所示闭式。证毕。
 \end{proof}
 
+\begin{theorem}[扫描内禀周期的精确指数阶]\label{thm:pom-toggle-scan-order-log-asymptotic}
+令 \(T(n):=\mathrm{ord}(c_n)\) 为定义 \ref{def:pom-toggle-coxeter-element} 的路径扫描元内禀周期（\(n\ge 4\)）。
+则当 \(n\to\infty\) 时成立渐近公式
+\[
+\log T(n)=n+o(n),
+\]
+从而 \(T(n)^{1/n}\to e\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-toggle-scan-order-closed-form}，\(T(n)\) 为步长 \(4\) 的等差序列若干项（连同至多两个常数因子 \(2,3\)）的最小公倍数。
+因此存在整数 \(m_n\asymp n\) 与互素于 \(4\) 的整数 \(a_n\)（在 \(n\) 奇偶固定时可取常数），使得
+\[
+T(n)=\mathrm{lcm}\bigl(\{a_n+4j:\ 0\le j\le m_n\}\cup\{2,3\}\bigr).
+\]
+对任意满足 \(\gcd(a,4)=1\) 的等差序列 \(\{a+4j:0\le j\le m\}\)，其最小公倍数的对数满足渐近律
+\[
+\log \mathrm{lcm}_{0\le j\le m}(a+4j)=\frac{4}{\varphi(4)}\,m+o(m)=2m+o(m),
+\]
+该结论可由模 \(4\) 的素数定理与标准的 \(\log\mathrm{lcm}\) 分解（按素幂计数）推得。
+取 \(m=m_n\asymp n/2\) 即得 \(\log T(n)=n+o(n)\)；并入有限集合 \(\{2,3\}\) 不改变主项。证毕。
+\end{proof}
+
+\begin{proposition}[内禀周期的素幂饱和阈与显式 \(p\)-进下界]\label{prop:pom-toggle-scan-order-padic-lower-bound}
+对任意 \(n\ge 4\) 与任意奇素数幂 \(p^k\le \big\lfloor\frac{n-1}{2}\big\rfloor\)，皆有
+\[
+p^k\mid T(n),
+\]
+从而
+\[
+v_p(T(n))\ \ge\ \Big\lfloor \log_p\Big\lfloor\frac{n-1}{2}\Big\rfloor\Big\rfloor.
+\]
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:pom-toggle-scan-order-closed-form}，\(T(n)\) 为某步长 \(4\) 的等差序列
+\(
+\{a+4j:\ 0\le j\le m\}
+\)
+（连同至多两个常数因子）的最小公倍数，且 \(m\ge \lfloor (n-3)/2\rfloor\)。
+对奇素数 \(p\) 有 \(\gcd(p,4)=1\)，故同余
+\(
+a+4j\equiv 0\pmod{p^k}
+\)
+在模 \(p^k\) 上存在唯一解类 \(j\equiv j_0\pmod{p^k}\)。
+当 \(m\ge p^k-1\) 时（由 \(p^k\le\lfloor\frac{n-1}{2}\rfloor\) 保证），区间 \([0,m]\) 含某个满足该同余的 \(j\)，从而等差序列中存在一项被 \(p^k\) 整除。
+因此 \(p^k\mid \mathrm{lcm}_{0\le j\le m}(a+4j)\mid T(n)\)。
+最后的 \(v_p\) 下界由“对一切 \(p^k\le M\) 均有 \(p^k\mid T(n)\)”等价改写得到。证毕。
+\end{proof}
+
 \begin{theorem}[轨道长度谱：完全刻画]\label{thm:pom-toggle-scan-orbit-length-spectrum}
 设 \(n\ge 4\)。
 对每个整数 \(k\) 定义
