@@ -968,6 +968,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="foldbin6_geo_gauge_centralizer",
+            script="exp_foldbin6_geo_gauge_centralizer.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin6_geo_gauge_centralizer.json",
+                "sections/generated/eq_foldbin6_geo_gauge_centralizer.tex",
+            ],
+        ),
+        Step(
             name="foldbin6_strong_lumpability_counterexample",
             script="exp_foldbin6_strong_lumpability_counterexample.py",
             args=[],

@@ -1,0 +1,158 @@
+\paragraph{纤维谱驱动的单射化侧信息、预言机容量与条件描述谱}\label{subsubsec:pom-injectivization-sideinfo-kolmogorov}
+本节把纤维多重度谱 \(\{d_f(x)\}_{x\in X}\) 的三种接口统一到同一计数对象：单射化所需的侧信息预算、\(T\)-元预言机反演容量、以及条件 Kolmogorov 描述谱的聚合计数。
+\par
+
+\begin{proposition}[单射化所需侧信息字母表预算的精确值与可实现性]\label{prop:pom-injectivization-sideinfo-exact-alphabet}
+设 \(f:\Omega\to X\) 为有限映射，并记 \(d_f(x):=\card{f^{-1}(x)}\)。
+称一条记录轴 \(r:\Omega\to R\) 使扩展读出 \((f,r):\Omega\to X\times R\) 为单射为\emph{单射化}。
+令
+\[
+D_f:=\max_{x\in X}d_f(x).
+\]
+则在所有使 \((f,r)\) 单射的记录轴中，\(\card{R}\) 的最小可能值恰为 \(D_f\)。
+\end{proposition}
+
+\begin{proof}
+必要性：固定 \(x\in X\)。
+若 \((f,r)\) 单射，则 \(r\) 在纤维 \(f^{-1}(x)\) 上必须取互异值，故 \(\card{r(f^{-1}(x))}\ge d_f(x)\)，从而 \(\card{R}\ge \max_x d_f(x)=D_f\)。
+\par
+充分性：对每个 \(x\in X\) 选取一条注入编号 \(\iota_x:f^{-1}(x)\hookrightarrow\{0,1,\dots,D_f-1\}\)，并定义 \(r(\omega):=\iota_{f(\omega)}(\omega)\)。
+则同一纤维内不同 \(\omega\) 获得不同标签，故 \((f,r)\) 单射，且 \(R\subseteq\{0,\dots,D_f-1\}\)。
+与必要性合并即得最小值为 \(D_f\)。证毕。
+\end{proof}
+
+\begin{proposition}[单射化的平均侧信息熵预算无松弛]\label{prop:pom-injectivization-sideinfo-exact-entropy}
+沿用命题 \ref{prop:pom-injectivization-sideinfo-exact-alphabet} 的设定，并取任意宏观分布 \(\pi\in\Delta(X)\)。
+令 \(A\sim \pi^{e}\) 为纤维均匀提升，即 \(X:=f(A)\sim\pi\) 且对每个 \(x\in X\)，条件分布 \(A\mid(X=x)\) 在 \(f^{-1}(x)\) 上均匀。
+若 \(r:\Omega\to R\) 使 \((f,r)\) 单射，则有严格恒等式
+\[
+H(r(A)\mid X)=H(A\mid X)=\EE_{\pi}\!\bigl[\log d_f(X)\bigr].
+\]
+因此在二进制单位下，任何单射化方案的平均侧信息预算必须且仅须为 \(\EE_{\pi}[\log d_f(X)]/\log 2\) 比特。
+\end{proposition}
+
+\begin{proof}
+由 \((f,r)\) 的单射性，存在确定性逆映射 \(\Psi\) 使 \(A=\Psi(X,r(A))\)，因此
+\[
+H(A\mid X)\le H(r(A)\mid X).
+\]
+另一方面 \(r(A)\) 为 \(A\) 的确定性函数，故由信息不增性 \(H(r(A)\mid X)\le H(A\mid X)\)，两式合并得 \(H(r(A)\mid X)=H(A\mid X)\)。
+\par
+在纤维均匀提升下，对每个 \(x\) 有 \(H(A\mid X=x)=\log d_f(x)\)，故
+\(
+H(A\mid X)=\EE_{\pi}[\log d_f(X)]
+\)。
+证毕。
+\end{proof}
+
+\begin{definition}[\texorpdfstring{$T$}{T}-元预言机反演机制与容量]\label{def:pom-tary-oracle-inversion-capacity}
+设 \(f:\Omega\to X\) 为有限映射，并取整数 \(T\ge 1\)。
+称一对映射 \((\mathrm{enc},\mathrm{dec})\) 为\emph{\(T\)-元预言机反演机制}，若存在集合 \(G\subseteq\Omega\) 使得
+\[
+\mathrm{dec}\bigl(f(\omega),\mathrm{enc}(\omega)\bigr)=\omega\quad(\forall\,\omega\in G),
+\qquad
+f(\mathrm{dec}(x,t))=x\quad(\forall\,x\in X,\ t\in[T]).
+\]
+定义其容量为
+\[
+C_f(T):=\max\{\card{G}:\ \exists\ (\mathrm{enc},\mathrm{dec})\ \text{满足上述条件}\}.
+\]
+\end{definition}
+
+\begin{theorem}[\texorpdfstring{$T$}{T}-元预言机容量闭式与纤维谱的可逆重构]\label{thm:pom-tary-oracle-capacity-and-inversion}
+在定义 \ref{def:pom-tary-oracle-inversion-capacity} 的设定下，记 \(d_f(x):=\card{f^{-1}(x)}\)。
+则：
+\begin{enumerate}
+  \item \textbf{（容量闭式）}
+  \[
+  C_f(T)=\sum_{x\in X}\min\bigl(d_f(x),T\bigr).
+  \]
+  \item \textbf{（纤维谱重构）}
+  令 \(N_f(t):=\card{\{x\in X:\ d_f(x)\ge t\}}\)（\(t\in\NN_{\ge 1}\)），并约定 \(C_f(0)=0\)。
+  则对 \(t\ge 1\) 有
+  \[
+  N_f(t)=C_f(t)-C_f(t-1),
+  \qquad
+  \card{\{x\in X:\ d_f(x)=t\}}=N_f(t)-N_f(t+1).
+  \]
+  因而整数点函数 \(T\mapsto C_f(T)\) 完全决定多重集 \(\{d_f(x)\}_{x\in X}\)。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+先证容量闭式。对任意固定 \(x\in X\)，由于 \(\mathrm{dec}(x,t)\in f^{-1}(x)\) 且 \(t\) 仅有 \(T\) 个取值，
+集合 \(G\cap f^{-1}(x)\) 中至多有 \(\min(d_f(x),T)\) 个元素能被赋予互异码字并满足解码正确；故
+\[
+\card{G}\le \sum_{x\in X}\min(d_f(x),T).
+\]
+反向构造：对每个 \(x\) 选取子集 \(S_x\subseteq f^{-1}(x)\) 使 \(\card{S_x}=\min(d_f(x),T)\)，并把 \(S_x\) 双射编码到 \([T]\) 的一部分；令 \(\mathrm{dec}(x,t)\) 为对应元素（未用到的 \(t\) 任取纤维内元素补齐），即可令 \(G=\bigsqcup_x S_x\) 达到上界，从而闭式成立。
+\par
+再证重构公式。直接计算离散差分
+\[
+C_f(t)-C_f(t-1)
+=\sum_{x\in X}\bigl(\min(d_f(x),t)-\min(d_f(x),t-1)\bigr)
+=\sum_{x\in X}\mathbf 1_{\{d_f(x)\ge t\}}
+=N_f(t),
+\]
+并由 \(\card{\{d_f=t\}}=N_f(t)-N_f(t+1)\) 得第二条。证毕。
+\end{proof}
+
+\begin{theorem}[预言机容量与条件 Kolmogorov 描述谱的聚合等价]\label{thm:pom-oracle-capacity-kolmogorov-spectrum}
+设 \(f:\Omega\to X\) 为在某个固定编码下可计算的有限映射，并固定一台通用前缀自由机 \(U\)。
+对 \(x\in X\) 与 \(B\in\ZZ_{\ge 0}\) 定义
+\[
+\mathcal K_x(B):=\{\omega\in f^{-1}(x):\ K_U(\omega\mid x)\le B\}.
+\]
+则存在常数 \(c\in\NN\)（仅依赖于 \(U\) 与 \(f\) 的描述）使得对所有 \(x\in X,B\ge 0\) 同时成立
+\[
+\card{\mathcal K_x(B)}\le 2^B,
+\qquad
+\card{\mathcal K_x(B+c)}\ge \min\bigl(d_f(x),2^B\bigr).
+\]
+从而在聚合意义上，
+\[
+\sum_{x\in X}\min(d_f(x),2^B)
+\ \le\
+\sum_{x\in X}\card{\mathcal K_x(B+c)}
+\ \le\
+2^c\sum_{x\in X}\min(d_f(x),2^B).
+\]
+\end{theorem}
+
+\begin{proof}
+上界：若 \(K_U(\omega\mid x)\le B\)，则存在长度 \(\le B\) 的前缀自由程序 \(p\) 使 \(U(x,p)=\omega\)。
+对固定 \(x\)，不同 \(\omega\) 的最短程序互异，而长度 \(\le B\) 的前缀自由程序个数至多为 \(2^B\)，故 \(\card{\mathcal K_x(B)}\le 2^B\)。
+\par
+下界：由于 \(f\) 可计算且 \(\Omega\) 有限，可构造一条可计算枚举 \(e(x,i)\)（例如遍历 \(\Omega\) 并筛选 \(f(\omega)=x\)）使
+\[
+\{e(x,0),e(x,1),\dots,e(x,d_f(x)-1)\}=f^{-1}(x),
+\]
+且 \(i\mapsto e(x,i)\) 为单射。
+令解释器程序 \(\pi\)（长度为常数 \(c\)）在输入 \((x,i)\) 时输出 \(e(x,i)\)。
+于是对任意 \(i<\min(d_f(x),2^B)\)，取长度 \(B\) 的二进制串编码 \(i\) 得 \(K_U(e(x,i)\mid x)\le B+c\)，从而
+\(\card{\mathcal K_x(B+c)}\ge \min(d_f(x),2^B)\)。
+聚合不等式由逐点不等式求和并注意 \(\card{\mathcal K_x(B+c)}\le 2^c\cdot 2^B\) 的粗界给出。证毕。
+\end{proof}
+
+\begin{corollary}[有限语义层的正规形最小化与图灵层预算最小化的分界]\label{cor:pom-normalform-vs-turing-budget-undecidable}
+在投影词片段的固定分辨率语义层中，重写系统的终止与合流保证等价类存在可计算的唯一正规形，因而审计门数等有限代价的最小化为可判定问题（参见定理 \ref{thm:pom-rewrite-termination-confluence} 与推论 \ref{cor:pom-rewrite-normalform-minimal-audit}）。
+另一方面，把同一单射化预算推广到一般全定义可计算映射 \(\pi:D\to Y\) 的外置预算 \(b(\pi)\)，则即便在有限纤维上界类中亦不可判定（定理 \ref{thm:conclusion-minimal-external-budget-undecidable}）。
+\end{corollary}
+
+\begin{corollary}[可逆提升所需旁带位数的停机不可判定性与不可近似性]\label{cor:pom-ancilla-halting-inapproximability}
+对全定义可计算映射 \(\pi:D\to Y\) 的最小外置预算 \(b(\pi)\)（定理 \ref{thm:conclusion-minimal-external-budget-undecidable}），定义旁带位数
+\[
+a(\pi):=\left\lceil \log_2 b(\pi)\right\rceil.
+\]
+则在该定理构造的族 \(\{\pi_{M,x}\}\) 上有 \(a(\pi_{M,x})\in\{0,1\}\)，且判定命题 \(a(\pi)=0\) 不可判定。
+并且不存在任何算法能在所有输入上把 \(a(\pi)\) 以严格小于 \(1\) 的加性误差近似；更强地，不存在任何保证乘性因子 \(<2\) 的近似算法。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-minimal-external-budget-undecidable}，对该族有 \(b(\pi_{M,x})\in\{1,2\}\) 且 \(b(\pi_{M,x})=1\) 当且仅当不停机；故 \(a(\pi_{M,x})=\lceil\log_2 b(\pi_{M,x})\rceil\in\{0,1\}\)，并且判定 \(a(\pi)=0\) 等价于判定不停机，从而不可判定。
+\par
+若存在加性误差 \(<1\) 的近似算法 \(\widehat a(\pi)\)，则在该族上 \(\widehat a(\pi)\) 必能区分 \(a(\pi)=0\) 与 \(a(\pi)=1\)，从而可判定停机矛盾。
+乘性因子 \(<2\) 的情形同理：因 \(a(\pi)\in\{0,1\}\)，任何严格小于 \(2\) 的乘性保证亦将强制区分两种情形，仍导出停机可判定矛盾。证毕。
+\end{proof}
+
+\endinput
