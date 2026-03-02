@@ -36,4 +36,49 @@ b_I(S)=\sum_{\omega:\ \omega_{i_1}=0}(\Delta_{i_1}f)(\omega)\,(-1)^{\sum_{i\in I
 对集合 \(I\setminus\{i_1\}\) 重复该过程（每一步只使用层间双射与差分定义），归纳即得所示公式。证毕。
 \end{proof}
 
+\begin{corollary}[单坐标互信息的边界通量下界]\label{cor:spg-mutual-information-boundary-flux-lower-bound}
+沿用定理 \ref{thm:spg-walsh-discrete-stokes-holography} 的记号。
+令 \(\Omega_n\) 赋予均匀分布，取二值随机变量 \(X:=\ind_S\)，并记 \(p:=\PP(X=1)=|S|/2^n\)。
+令第 \(i\) 个坐标位 \(B_i(\omega):=\omega_i\)。
+则对任意 \(i\in\{1,\dots,n\}\)，互信息满足下界
+\[
+\boxed{\;
+I(X;B_i)\ \ge\ \frac{b_{\{i\}}(S)^2}{2^{2n+1}\,p(1-p)}\;}
+\]
+其中 \(I(\cdot;\cdot)\) 取自然对数口径。
+并且由定理 \ref{thm:spg-walsh-discrete-stokes-holography} 的 \(|I|=1\) 情形，可将 \(b_{\{i\}}(S)\) 解释为 \(i\)-方向的离散 Stokes 通量（沿 \(i\)-方向穿越边界的有向差分总量）。
+\end{corollary}
+\begin{proof}
+在均匀底测度下 \(\PP(B_i=1)=\PP(B_i=0)=1/2\)。
+并且
+\[
+\PP(B_i=1\mid X=1)=\frac{|S_i^1|}{|S|}
+=\frac12\left(1-\frac{|S_i^0|-|S_i^1|}{|S|}\right)
+=\frac12\left(1-\frac{b_{\{i\}}(S)}{|S|}\right),
+\]
+故二点分布的全变差满足
+\[
+\mathrm{TV}\bigl(\mathcal L(B_i\mid X=1),\mathcal L(B_i)\bigr)
+=\frac{|b_{\{i\}}(S)|}{2|S|}.
+\]
+由 Pinsker 不等式 \(D_{\mathrm{KL}}(P\|Q)\ge 2\,\mathrm{TV}(P,Q)^2\) 得
+\[
+D_{\mathrm{KL}}\bigl(\mathcal L(B_i\mid X=1)\,\|\,\mathcal L(B_i)\bigr)\ge \frac{b_{\{i\}}(S)^2}{2|S|^2},
+\qquad
+D_{\mathrm{KL}}\bigl(\mathcal L(B_i\mid X=0)\,\|\,\mathcal L(B_i)\bigr)\ge \frac{b_{\{i\}}(S)^2}{2(2^n-|S|)^2}.
+\]
+再用互信息分解
+\[
+I(X;B_i)
+=p\,D_{\mathrm{KL}}\bigl(\mathcal L(B_i\mid X=1)\,\|\,\mathcal L(B_i)\bigr)
+(1-p)\,D_{\mathrm{KL}}\bigl(\mathcal L(B_i\mid X=0)\,\|\,\mathcal L(B_i)\bigr),
+\]
+代入并化简得到
+\[
+I(X;B_i)\ge \frac{b_{\{i\}}(S)^2}{2|S|(2^n-|S|)}
+=\frac{b_{\{i\}}(S)^2}{2^{2n+1}\,p(1-p)}.
+\]
+最后一条解释由定理 \ref{thm:spg-walsh-discrete-stokes-holography} 在 \(I=\{i\}\) 时的恒等式给出。证毕。
+\end{proof}
+
 \endinput

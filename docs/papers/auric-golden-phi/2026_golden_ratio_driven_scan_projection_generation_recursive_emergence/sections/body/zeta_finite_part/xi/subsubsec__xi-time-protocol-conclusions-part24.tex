@@ -390,29 +390,35 @@ K(r_{m,S}(\omega)\mid X)\le \log_2 d_m(X)+O(1),
 吸收常数即得结论。证毕。
 \end{proof}
 
-\begin{theorem}[prime-register 向量的 Gödel 整数化具有不可避免的对数开销]\label{thm:xi-godel-integerization-log-overhead}
+\begin{theorem}[prime-register 向量的 Gödel 整数化具有不可约的超线性位长]\label{thm:xi-godel-integerization-log-overhead}
 设 \(\tau=(a_1,\dots,a_T)\) 为长度 \(T\) 的事件码序列，且 \(a_t\in\NN_{\ge1}\)。
 定义 Gödel 整数
 \[
 G(\tau):=\prod_{t=1}^{T}p_t^{a_t},
 \]
-其中 \(p_t\) 为第 \(t\) 个素数。则存在绝对常数 \(c_0>0\) 与 \(T_0\)，使对 \(T\ge T_0\) 有
+其中 \(p_t\) 为第 \(t\) 个素数。
+则存在绝对常数 \(c_0,c_1>0\)，使对一切 \(T\ge 1\) 成立
 \[
-\log_2 G(\tau)\ge c_0\,T\log_2 T.
+\log_2 G(\tau)\ \ge\ T\log_2 T-c_0T-c_1.
 \]
-因而，把长度 \(T\) 的寄存器向量压成单整数的位长下界为 \(\Omega(T\log T)\)。
+因此把长度 \(T\) 的寄存器向量压缩为单整数时，其最小可能位长必为 \(\Omega(T\log T)\)。
 \end{theorem}
 \begin{proof}
 由 \(a_t\ge 1\) 得
 \[
-\log G(\tau)\ge \sum_{t=1}^{T}\log p_t=\vartheta(p_T),
+G(\tau)\ \ge\ \prod_{t=1}^{T}p_t.
 \]
-其中 \(\vartheta(x)=\sum_{p\le x}\log p\) 为 Chebyshev 函数。
-由素数定理的等价形式 \(\vartheta(x)\sim x\) 与 \(p_T\sim T\log T\)，可得
+又因第 \(t\) 个素数满足 \(p_t\ge t+1\)，故
 \[
-\sum_{t=1}^{T}\log p_t\sim T\log T.
+\prod_{t=1}^{T}p_t\ \ge\ \prod_{t=1}^{T}(t+1)\ =\ \frac{(T+1)!}{2}.
 \]
-换底到 \(\log_2\) 即得结论。证毕。
+取二进对数并用 Stirling 型下界（存在绝对常数 \(C_0,C_1>0\) 使对一切 \(n\ge 1\) 有
+\(\log_2(n!)\ge n\log_2 n-C_0n-C_1\)），得到
+\[
+\log_2 G(\tau)\ \ge\ \log_2\bigl((T+1)!/2\bigr)
+\ \ge\ (T+1)\log_2(T+1)-C_0(T+1)-C_1-1.
+\]
+将右端改写为 \(T\log_2T-c_0T-c_1\) 的形式并吸收常数即可。证毕。
 \end{proof}
 
 \begin{corollary}[Gödel 整数化的位长与条件复杂度之间的对数鸿沟]\label{cor:xi-godel-integerization-vs-conditional-complexity-gap}
@@ -421,9 +427,9 @@ G(\tau):=\prod_{t=1}^{T}p_t^{a_t},
 \[
 \frac{\log_2 G(\tau(\omega))}{K(r\mid X)}
 \ \ge\
-\frac{c_0\,T\log_2 T}{\lceil\log_2 d_m(X)\rceil+O(1)},
+\frac{T\log_2 T-O(T)}{\lceil\log_2 d_m(X)\rceil+O(1)},
 \]
-其中 \(c_0>0\) 为定理 \ref{thm:xi-godel-integerization-log-overhead} 的常数。
+其中 \(O(T)\) 的常数仅依赖于定理 \ref{thm:xi-godel-integerization-log-overhead} 中的绝对常数。
 特别地，当 \(T\ge \alpha m\)（某个常数 \(\alpha>0\)）时，
 \[
 \frac{\log_2 G(\tau(\omega))}{K(r\mid X)}\ \ge\ c\,\log_2 m-O(1)
@@ -432,7 +438,7 @@ G(\tau):=\prod_{t=1}^{T}p_t^{a_t},
 \end{corollary}
 \begin{proof}
 由定理 \ref{thm:xi-godel-integerization-log-overhead} 得
-\(\log_2 G(\tau(\omega))\ge c_0T\log_2 T\)（\(T\) 充分大）。
+\(\log_2 G(\tau(\omega))\ge T\log_2 T-O(T)\)。
 另一方面由定理 \ref{thm:xi-register-conditional-complexity-vs-fiber-volume}，
 \[
 K(r\mid X)\le \lceil\log_2 d_m(X)\rceil+O(1)\le m+O(1).
