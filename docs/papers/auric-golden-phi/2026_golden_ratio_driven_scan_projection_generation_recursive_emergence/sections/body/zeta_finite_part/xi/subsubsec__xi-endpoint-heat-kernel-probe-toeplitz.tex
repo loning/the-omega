@@ -54,6 +54,113 @@ a_N
 最后由 \(\mu\) 正性得 \(a_N\ge 0\)。证毕。
 \end{proof}
 
+\begin{theorem}[谱裕度对端点热核的显式下界]\label{thm:xi-endpoint-heat-probe-spectral-margin-lower-bound}
+沿用 \eqref{eq:xi-endpoint-heat-probe-bN-aN} 的记号。
+对任意 \(N\ge 1\) 记 \(\lambda_{\min}(\mathbf{T}_N)\) 为 Hermitian Toeplitz 主子矩阵 \(\mathbf{T}_N\) 的最小特征值，则有
+\begin{equation}\label{eq:xi-endpoint-heat-probe-spectral-margin-lb}
+\boxed{\;
+a_N\ \ge\ \lambda_{\min}(\mathbf{T}_N)\cdot \frac{\binom{2N}{N}}{4^N}\; }.
+\end{equation}
+特别地，若 \(\lambda_{\min}(\mathbf{T}_N)\ge \eta>0\)，则
+\[
+a_N\ \ge\ \eta\cdot \frac{\binom{2N}{N}}{4^N}
+\ \sim\ \frac{\eta}{\sqrt{\pi N}}\qquad(N\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+由 Rayleigh 商与 \(\mathbf{T}_N\succeq \lambda_{\min}(\mathbf{T}_N)I\) 得
+\[
+(b^{(N)})^\ast\mathbf{T}_N b^{(N)}\ \ge\ \lambda_{\min}(\mathbf{T}_N)\,\norm{b^{(N)}}_2^2.
+\]
+将其除以 \(4^N\) 并使用 \eqref{eq:xi-endpoint-heat-probe-bN-aN} 得
+\(
+a_N\ge \lambda_{\min}(\mathbf{T}_N)\,\norm{b^{(N)}}_2^2/4^N
+\)。
+最后由 Vandermonde 恒等式
+\(
+\norm{b^{(N)}}_2^2=\sum_{k=0}^N\binom{N}{k}^2=\binom{2N}{N}
+\)
+得到 \eqref{eq:xi-endpoint-heat-probe-spectral-margin-lb}。证毕。
+\end{proof}
+
+\begin{corollary}[无端点原子时谱裕度必然坍缩]\label{cor:xi-endpoint-heat-probe-spectral-margin-collapse-no-atom}
+沿用以上记号，并记 \(m_{-1}:=\mu(\{-1\})\)。
+若 \(m_{-1}=0\)，则 Toeplitz 谱裕度无法保持统一正下界：对任意 \(\eta>0\)，存在无穷多个 \(N\) 使
+\[
+\lambda_{\min}(\mathbf{T}_N)\ <\ \eta.
+\]
+更具体地，对任意 \(N\ge 1\) 有
+\[
+\lambda_{\min}(\mathbf{T}_N)\ \le\ a_N\cdot \frac{4^N}{\binom{2N}{N}}
+\ \sim\ a_N\sqrt{\pi N}\qquad(N\to\infty),
+\]
+从而在 \(m_{-1}=0\) 时右端随 \(N\to\infty\) 趋于 \(0\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-endpoint-heat-probe-spectral-margin-lower-bound} 立即得到
+\(
+\lambda_{\min}(\mathbf{T}_N)\le a_N\,4^N/\binom{2N}{N}
+\)。
+若 \(m_{-1}=0\)，则由推论 \ref{cor:xi-endpoint-heat-probe-monotone-limit-gap} 的极限 \(a_N\downarrow m_{-1}\) 得 \(a_N\to 0\)，故右端趋零，从而谱裕度坍缩。证毕。
+\end{proof}
+
+\begin{theorem}[分辨率—精度张力：确定性离线核验的硬约束]\label{thm:xi-endpoint-heat-probe-resolution-accuracy-hard-constraint}
+设输入层仅给出 Toeplitz 系数的近似 \(\{\widehat c_h\}_{|h|\le N}\)，满足逐项误差
+\(
+|\widehat c_h-c_h|\le \delta
+\)（\(|h|\le N\)）。
+令 \(\widehat{\mathbf{T}}_N:=(\widehat c_{j-k})_{0\le j,k\le N}\)。
+则存在绝对常数 \(C>0\) 使
+\begin{equation}\label{eq:xi-endpoint-heat-probe-opnorm-entrywise}
+\boxed{\;
+\norm{\widehat{\mathbf{T}}_N-\mathbf{T}_N}_{\mathrm{op}}\ \le\ C(N+1)\delta\;}
+\end{equation}
+（例如可取 \(C=1\)）。
+\par
+若某一确定性方案试图在同一阶 \(N\) 上同时满足：
+\begin{enumerate}
+  \item \textbf{谱裕度闭合：}存在 \(\eta>0\) 使 \(\lambda_{\min}(\widehat{\mathbf{T}}_N)\ge \eta\) 且 \(\norm{\widehat{\mathbf{T}}_N-\mathbf{T}_N}_{\mathrm{op}}\le \eta/2\)，从而推出 \(\mathbf{T}_N\succeq 0\)；
+  \item \textbf{端点上界证书：}通过端点热核探针给出 \(m_{-1}\le \varepsilon\) 的上界（例如以 \(a_N\le \varepsilon\) 作为证据，并利用 \(a_N\downarrow m_{-1}\)）；
+\end{enumerate}
+则必有
+\begin{equation}\label{eq:xi-endpoint-heat-probe-delta-hard}
+\boxed{\;
+\delta\ \le\ c\,\frac{\varepsilon}{\sqrt N}\;}
+\end{equation}
+其中 \(c>0\) 为与 \(C\) 仅相差常数因子的绝对常数。
+进一步，若在某个态 \(\omega\) 下存在端点谱维数 \(d_{-1}(\omega)>0\) 使
+\(
+\omega(a_N-m_{-1})\lesssim N^{-d_{-1}(\omega)/2}
+\)
+且 \(m_{-1}=0\)，并取 \(N\asymp \varepsilon^{-2/d_{-1}(\omega)}\) 以实现 \(\omega(a_N)\lesssim \varepsilon\)，则必有
+\[
+\delta\ \lesssim\ \varepsilon^{\,1+1/d_{-1}(\omega)}.
+\]
+\end{theorem}
+\begin{proof}
+由 \(\norm{A}_{\mathrm{op}}\le \sqrt{\norm{A}_1\norm{A}_\infty}\)，并注意到 \(\widehat{\mathbf{T}}_N-\mathbf{T}_N\) 的每一行（列）绝对和至多为 \((N+1)\delta\)，得到 \eqref{eq:xi-endpoint-heat-probe-opnorm-entrywise}（可取 \(C=1\)）。
+\par
+谱裕度闭合条件给出 \(\norm{\widehat{\mathbf{T}}_N-\mathbf{T}_N}_{\mathrm{op}}\le \eta/2\)。
+另一方面由 Weyl 不等式，
+\[
+\lambda_{\min}(\mathbf{T}_N)\ \ge\ \lambda_{\min}(\widehat{\mathbf{T}}_N)-\norm{\widehat{\mathbf{T}}_N-\mathbf{T}_N}_{\mathrm{op}}
+\ \ge\ \eta/2,
+\]
+即 \(\eta\le 2\lambda_{\min}(\mathbf{T}_N)\)。
+若又以 \(a_N\le \varepsilon\) 作为端点上界证书，则由定理 \ref{thm:xi-endpoint-heat-probe-spectral-margin-lower-bound} 得
+\[
+\lambda_{\min}(\mathbf{T}_N)\ \le\ a_N\cdot \frac{4^N}{\binom{2N}{N}}
+\ \le\ \varepsilon\cdot \frac{4^N}{\binom{2N}{N}}
+\ \sim\ \varepsilon\sqrt{\pi N}.
+\]
+从而 \(\eta\lesssim \varepsilon\sqrt N\)，再与
+\(
+C(N+1)\delta\le \eta/2
+\)
+合并即得 \eqref{eq:xi-endpoint-heat-probe-delta-hard}。
+最后一条由 \(N\asymp \varepsilon^{-2/d_{-1}(\omega)}\) 代入 \(\delta\lesssim \varepsilon/\sqrt N\) 得到。证毕。
+\end{proof}
+
 \paragraph{单调极限、谱隙指数界与端点质量}
 记端点原子质量 \(m_{-1}:=\mu(\{-1\})\)。
 
@@ -86,6 +193,57 @@ a_N\downarrow m_{-1}\quad(N\to\infty).\;}
 a_N-m_{-1}=\int_{\TT\setminus\{-1\}}r(\xi)^N\,\dd\mu(\xi)\le r_\star^N\mu(\TT\setminus\{-1\})
 \)
 得到。证毕。
+\end{proof}
+
+\paragraph{Adams 扭曲端点核：\texorpdfstring{$(-1)$}{(-1)} 的 \texorpdfstring{$d$}{d} 次根原子质量读出}
+\begin{theorem}[Adams 扭曲下的端点热核族]\label{thm:xi-endpoint-heat-probe-adams-twist-roots}
+对任意整数 \(d\ge 1\)，定义 \(d\)-扭曲矩
+\[
+c^{(d)}_h:=c_{dh}\qquad(h\in\ZZ),
+\]
+并令
+\(
+\mathbf{T}^{(d)}_N:=(c^{(d)}_{j-k})_{0\le j,k\le N}
+\)。
+以同一二项式向量 \(b^{(N)}\) 定义扭曲端点热核探针
+\[
+a_N^{(d)}:=4^{-N}\,(b^{(N)})^\ast\,\mathbf{T}^{(d)}_N\,b^{(N)}.
+\]
+则对所有 \(N\ge 0\) 成立严格恒等式
+\[
+\boxed{\;
+a_N^{(d)}=\int_{\TT}\left(\frac{|1-\xi^d|^2}{4}\right)^{N}\,\dd\mu(\xi)\ \ge\ 0\;}
+\]
+并且 \((a_N^{(d)})_{N\ge 0}\) 单调下降且满足
+\[
+\boxed{\;
+a_N^{(d)}\ \downarrow\ \mu\bigl(\{\xi\in\TT:\ \xi^d=-1\}\bigr)\qquad(N\to\infty).\;}
+\]
+\end{theorem}
+\begin{proof}
+由
+\(
+(1-\xi^d)^N=\sum_{k=0}^{N}(-1)^k\binom{N}{k}\xi^{dk}
+\)
+展开并按命题 \ref{prop:xi-endpoint-heat-probe-toeplitz-herglotz-identity} 的同一计算，得到
+\[
+4^{-N}(b^{(N)})^\ast\mathbf{T}^{(d)}_N b^{(N)}
+=\frac{1}{4^N}\int_{\TT}|1-\xi^d|^{2N}\,\dd\mu(\xi)
+=\int_{\TT}\left(\frac{|1-\xi^d|^2}{4}\right)^{N}\,\dd\mu(\xi).
+\]
+对任意 \(\xi\in\TT\) 有 \(|1-\xi^d|\le 2\)，且 \(|1-\xi^d|=2\) 当且仅当 \(\xi^d=-1\)。
+因此核函数 \(\left(|1-\xi^d|^2/4\right)^{N}\) 随 \(N\) 单调下降到指示函数 \(\ind_{\{\xi^d=-1\}}\)。
+由单调收敛定理得到极限等于 \(\mu(\{\xi^d=-1\})\)。证毕。
+\end{proof}
+
+\begin{corollary}[半角纤维的可核验质量]\label{cor:xi-endpoint-heat-probe-adams-twist-halfangle}
+在定理 \ref{thm:xi-endpoint-heat-probe-adams-twist-roots} 中取 \(d=2\)，则
+\[
+a_N^{(2)}\ \downarrow\ \mu(\{i\})+\mu(\{-i\})\qquad(N\to\infty).
+\]
+\end{corollary}
+\begin{proof}
+由 \(\xi^2=-1\iff \xi\in\{\pm i\}\) 直接代入得到。证毕。
 \end{proof}
 
 \paragraph{谱隙半径的极限刻画与内部校验约束}
