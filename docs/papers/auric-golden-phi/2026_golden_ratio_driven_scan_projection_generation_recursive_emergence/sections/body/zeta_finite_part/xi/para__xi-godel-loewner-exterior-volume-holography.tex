@@ -77,6 +77,77 @@ A:=\mathrm{diag}\Bigl(\frac{L_I}{2}\Bigr)_{I\in\mathcal I_{k,t}},
 即得线性权重恒等式。证毕。
 \end{proof}
 
+\begin{theorem}\label{thm:xi-local-exterior-box-loewner-tomography-inversion}
+设 \(k\ge 2\) 且 \(1\le t\le k-1\)，并取向量 \(L=(L_1,\dots,L_k)\) 满足 \(L_i>0\)。
+对每个 \(i\in\{1,\dots,k\}\) 定义局部指标族与维数
+\[
+\mathcal I_{k,t}(i):=\{I\subseteq\{1,\dots,k\}:\ |I|=t,\ i\in I\},
+\qquad
+N:=|\mathcal I_{k,t}(i)|=\binom{k-1}{t-1}.
+\]
+并对每个 \(I\subseteq\{1,\dots,k\}\) 记 \(L_I:=\prod_{j\in I}L_j\)。
+考虑局部外幂盒体
+\[
+K_{k,t}^{(i)}(L):=\prod_{I\in \mathcal I_{k,t}(i)}[0,L_I]\ \subset\ \RR^{N},
+\]
+并令 \(E_{k,t}^{(i)}(L)\) 表示包含 \(K_{k,t}^{(i)}(L)\) 的最小体积外接椭球（Löwner 椭球），\(\kappa_N:=\operatorname{vol}(B_2^N)\)。
+则向量
+\(
+\bigl(\operatorname{vol}(E_{k,t}^{(1)}(L)),\dots,\operatorname{vol}(E_{k,t}^{(k)}(L))\bigr)
+\)
+唯一确定 \(L\)，并且存在显式反演式：令
+\[
+R_i:=\log\operatorname{vol}(E_{k,t}^{(i)}(L))-\log\kappa_N-\frac{N}{2}\log N+N\log 2,
+\qquad (1\le i\le k),
+\]
+并记
+\[
+\alpha:=\binom{k-2}{t-1},
+\qquad
+\beta:=\binom{k-2}{t-2}.
+\]
+则对每个 \(i\in\{1,\dots,k\}\) 有
+\[
+\log L_i
+=\frac{1}{\alpha}R_i-\frac{\beta}{\alpha(\alpha+k\beta)}\sum_{j=1}^k R_j,
+\]
+从而 \(L_i=\exp(\log L_i)\) 可由局部 Löwner 体量一次性复原。
+\end{theorem}
+\begin{proof}
+对轴对齐盒体 \(\prod_{m=1}^{N}[0,a_m]\subset\RR^N\)，其 Löwner 椭球为对角线性像 \(A(B_2^N(\sqrt N))\)（\(A=\mathrm{diag}(a_m/2)\)），故
+\[
+\log\operatorname{vol}(E)
+=\log\kappa_N+\frac N2\log N-N\log2+\sum_{m=1}^{N}\log a_m.
+\]
+应用于 \(K_{k,t}^{(i)}(L)\) 得
+\[
+R_i=\sum_{I\in\mathcal I_{k,t}(i)}\log L_I.
+\]
+而
+\[
+\sum_{I\in\mathcal I_{k,t}(i)}\log L_I
+=\sum_{I\ni i}\ \sum_{j\in I}\log L_j
+=\binom{k-1}{t-1}\log L_i+\binom{k-2}{t-2}\sum_{j\ne i}\log L_j
+=\alpha\log L_i+\beta\sum_{j=1}^k\log L_j,
+\]
+其中最后一步使用
+\(
+\binom{k-1}{t-1}-\binom{k-2}{t-2}=\binom{k-2}{t-1}=\alpha
+\)。
+于是 \(R=(R_i)_{i=1}^k\) 与 \(x=(\log L_i)_{i=1}^k\) 满足线性关系
+\[
+R=(\alpha I_k+\beta J_k)x,
+\qquad
+J_k:=\mathbf 1\mathbf 1^{\mathsf T}.
+\]
+因 \(\alpha>0\) 且 \(\alpha+k\beta>0\)，矩阵 \(\alpha I_k+\beta J_k\) 可逆，并且
+\[
+(\alpha I_k+\beta J_k)^{-1}
+=\frac{1}{\alpha}I_k-\frac{\beta}{\alpha(\alpha+k\beta)}J_k.
+\]
+右乘 \(R\) 即得所述反演式，从而 \(L\) 由 \(\{\operatorname{vol}(E_{k,t}^{(i)}(L))\}_{i=1}^k\) 唯一确定。证毕。
+\end{proof}
+
 \begin{corollary}[两阶体量的全息反演：边界对数和由体积唯一确定]\label{cor:xi-godel-loewner-two-level-holographic-inversion}
 在定理 \ref{thm:xi-godel-loewner-exterior-box-loewner-holographic-weight} 的记号下，取任意 \(1\le t_1<t_2\le k\)，令 \(N_j:=\binom{k}{t_j}\)。
 则边界量
