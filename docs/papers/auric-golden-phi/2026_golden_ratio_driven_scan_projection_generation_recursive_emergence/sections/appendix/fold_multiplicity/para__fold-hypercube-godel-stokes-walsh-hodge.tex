@@ -260,6 +260,8 @@ Parseval 恒等式给出
 两边同除 \(2\sum_{i\in I}w_i\) 即得所述公式（与 \(\alpha_{I,w}\) 仅差号，已由定义吸收）。证毕。
 \end{proof}
 
+\input{sections/appendix/fold_multiplicity/thm__fold-hypercube-green-inversion-unique-reconstruction}
+
 \begin{theorem}[全 Walsh 纤维谱的边界可微性：谱向量落入切空间并诱导回路扭量]\label{thm:fold-hypercube-fiber-walsh-divergence-torsor}
 沿用定义 \ref{def:hypercube-coarsegraining-area-gauge-volume} 的满射粗粒化 \(f:\Omega_n\twoheadrightarrow X\) 及其边界邻接多图 \(\mathsf B_f\)（定义 \ref{def:hypercube-boundary-multigraph}）。
 对任意非空 \(I\subseteq[n]\)，定义纤维 Walsh 谱向量
@@ -461,21 +463,21 @@ E_w(S)\ \ge\ 2^{1-n}\sum_{i=1}^n w_i\,b_i(S)^2.
 \begin{proof}
 令 \(f=\mathbf 1_S\)。由于 \(f(\omega)-f(\omega^{(i)})\in\{0,\pm 1\}\)，有
 \[
-E_w(S)=\sum_{i=1}^n w_i\sum_{\omega\in\Omega_n}\bigl(f(\omega)-f(\omega^{(i)})\bigr)^2.
+2E_w(S)=\sum_{i=1}^n w_i\sum_{\omega\in\Omega_n}\bigl(f(\omega)-f(\omega^{(i)})\bigr)^2.
 \]
 将其按 \(2^{-n}\) 归一化得到加权 Dirichlet 形式
 \(
-\mathcal E_w(f)=2^{-n}E_w(S)
+\mathcal E_w(f)=2^{-n}\cdot 2E_w(S)=2^{1-n}E_w(S)
 \)。
 在 Walsh 基底上（参见定理 \ref{thm:discussion-hypercube-stokes-fourier-binomial} 的谱层展开口径），有
 \[
-\mathcal E_w(f)=\sum_{\varnothing\ne I\subseteq[n]}2\Bigl(\sum_{i\in I}w_i\Bigr)\,|\widehat f(I)|^2
+\mathcal E_w(f)=\sum_{\varnothing\ne I\subseteq[n]}4\Bigl(\sum_{i\in I}w_i\Bigr)\,|\widehat f(I)|^2
 \ \ge\
-\sum_{i=1}^n 2w_i\,|\widehat f(\{i\})|^2.
+\sum_{i=1}^n 4w_i\,|\widehat f(\{i\})|^2.
 \]
 又 \(\widehat{\mathbf 1_S}(\{i\})=2^{-n}\sum_{\omega\in S}(-1)^{\omega_i}=b_i(S)/2^n\)，故
 \[
-2^{-n}E_w(S)\ge \sum_{i=1}^n 2w_i\frac{b_i(S)^2}{2^{2n}},
+2^{1-n}E_w(S)\ge \sum_{i=1}^n 4w_i\frac{b_i(S)^2}{2^{2n}},
 \]
 移项即得结论。证毕。
 \end{proof}
@@ -527,9 +529,9 @@ E_{\log p}(S)\ge 2^{1-n}\sum_{i=1}^n(\log p_i)\,b_i(S)^2
 下面刻画等号情形。由命题 \ref{prop:fold-hypercube-weighted-energy-ellipsoid-bias} 的证明可见，
 不等式来自谱展开中
 \[
-\sum_{\varnothing\ne I\subseteq[n]}2\Bigl(\sum_{i\in I}w_i\Bigr)|\widehat f(I)|^2
+\sum_{\varnothing\ne I\subseteq[n]}4\Bigl(\sum_{i\in I}w_i\Bigr)|\widehat f(I)|^2
 \ge
-\sum_{i=1}^n 2w_i|\widehat f(\{i\})|^2,
+\sum_{i=1}^n 4w_i|\widehat f(\{i\})|^2,
 \qquad f=\mathbf 1_S,
 \]
 故在 \(w_i=\log p_i>0\) 下取等号当且仅当 \(\widehat f(I)=0\) 对所有 \(|I|\ge 2\) 成立。
@@ -553,7 +555,7 @@ S=\{\omega:\ \omega_j=\varepsilon\}
 \begin{theorem}[能量截止下的 Walsh--Stokes 全息重构与最优误差上界]\label{thm:fold-hypercube-walsh-stokes-energy-cutoff-reconstruction}
 在定理 \ref{thm:fold-hypercube-weighted-walsh-stokes} 的设定下，令 \(S\subseteq\Omega_n\)、\(f=\mathbf 1_S\)，并记
 \[
-\lambda_I:=2\sum_{i\in I}w_i,\qquad I\subseteq[n].
+\lambda_I:=4\sum_{i\in I}w_i,\qquad I\subseteq[n].
 \]
 对任意截止参数 \(\Lambda>0\)，令谱投影
 \[
@@ -563,13 +565,13 @@ R_{\Lambda}f:=f-P_{\Lambda}f.
 \]
 则在归一化 \(L^2\) 范数 \(\|g\|_2^2:=2^{-n}\sum_{\omega\in\Omega_n}g(\omega)^2\) 下成立误差界
 \[
-\boxed{\;\|R_{\Lambda}f\|_2^2\ \le\ \frac{\mathcal E_w(f)}{\Lambda}\ =\ \frac{2^{-n}E_w(S)}{\Lambda}.\;}
+\boxed{\;\|R_{\Lambda}f\|_2^2\ \le\ \frac{\mathcal E_w(f)}{\Lambda}\ =\ \frac{2^{1-n}E_w(S)}{\Lambda}.\;}
 \]
 并且 \(P_\Lambda f\) 仅依赖于所有满足 \(\lambda_I\le \Lambda\) 的边界全息观测量
 \(
 \sum_{e\in\partial^{\to}S}\alpha_{I,w}(e)
 \)
-（定理 \ref{thm:fold-hypercube-weighted-walsh-stokes}），从而可由截止谱内的边界数据在 \(L^2\) 意义下重构 \(f\) 到误差不超过 \(2^{-n}E_w(S)/\Lambda\)。
+（定理 \ref{thm:fold-hypercube-weighted-walsh-stokes}），从而可由截止谱内的边界数据在 \(L^2\) 意义下重构 \(f\) 到误差不超过 \(2^{1-n}E_w(S)/\Lambda\)。
 \end{theorem}
 \begin{proof}
 由 Parseval 恒等式，
@@ -584,7 +586,7 @@ R_{\Lambda}f:=f-P_{\Lambda}f.
 \le
 \frac{1}{\Lambda}\sum_{I\ne\varnothing}\lambda_I|\widehat f(I)|^2.
 \]
-而 \(\sum_{I\ne\varnothing}\lambda_I|\widehat f(I)|^2=\mathcal E_w(f)=2^{-n}E_w(S)\) 已在命题 \ref{prop:fold-hypercube-weighted-energy-ellipsoid-bias} 的谱展开口径中给出，故得到所示界。
+而 \(\sum_{I\ne\varnothing}\lambda_I|\widehat f(I)|^2=\mathcal E_w(f)=2^{1-n}E_w(S)\) 已在命题 \ref{prop:fold-hypercube-weighted-energy-ellipsoid-bias} 的谱展开口径中给出，故得到所示界。
 最后由定理 \ref{thm:fold-hypercube-weighted-walsh-stokes} 的边界读出式 \(2^n\widehat f(I)=\sum_{e\in\partial^{\to}S}\alpha_{I,w}(e)\)，可知 \(P_\Lambda f\) 的全部系数由截止谱内的边界数据确定。证毕。
 \end{proof}
 

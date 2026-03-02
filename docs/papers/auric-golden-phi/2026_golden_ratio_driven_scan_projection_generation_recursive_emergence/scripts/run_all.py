@@ -1609,6 +1609,16 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="pom_resonance_q16_q17_galois_newman_discriminant_support",
+            script="exp_pom_resonance_q16_q17_galois_newman_discriminant_support.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/pom_resonance_q16_q17_galois_newman_discriminant_support.json",
+                "sections/generated/tab_fold_collision_moment_charpoly_galois_certificate_q16_17.tex",
+                "sections/generated/eq_pom_resonance_disc_factorization_q16_q17.tex",
+            ],
+        ),
+        Step(
             name="fold_collision_charpoly_mod2_shadow_q2_10",
             script="exp_fold_collision_charpoly_mod2_shadow_q2_10.py",
             args=[],
