@@ -409,6 +409,7 @@ $$
 
 \input{sections/generated/tab_collision_kernel_A4_primitive}
 \input{sections/generated/tab_collision_kernel_A4_finite_part}
+\input{sections/generated/tab_full_shift_9_finite_part}
 
 \input{parts/prop__pom-a4-newman-u4-certificate}
 \input{parts/para__pom-a234-residue-and-error-certificates}
@@ -462,6 +463,37 @@ K_1(\mathcal O_A)\cong \ker(I-A^\mathsf T)
 (X_{A_4(t)},\sigma)\ \sim_{\mathrm{flow}}\ \text{full }(t+2)\text{-shift}\qquad(t\in\ZZ_{\ge 0}).
 \]
 \end{corollary}
+
+\begin{proposition}[有限部常数不是流等价不变量：\texorpdfstring{$A_4$}{A4} 与 full \(9\)-shift 的对照]\label{prop:pom-mertens-not-flow-invariant}
+取四阶碰撞核 \(A_4=A_4(7)\)（命题 \ref{prop:pom-s4-recurrence}）。
+由推论 \ref{cor:pom-collision-flow-equivalence-full-shift}，其移位 \((X_{A_4},\sigma)\) 与 one-vertex full \(9\)-shift 流等价。
+令 \(A_{\mathrm{full},9}=[9]\) 表示该 full \(9\)-shift 的邻接矩阵。
+则 Abel/Mertens 有限部常数满足严格不等：
+\[
+\log\mathfrak{M}(A_4)\neq \log\mathfrak{M}(A_{\mathrm{full},9}),
+\qquad
+\mathsf{M}(A_4)\neq \mathsf{M}(A_{\mathrm{full},9}).
+\]
+特别地，由表 \ref{tab:collision_kernel_A4_finite_part} 与表 \ref{tab:full_shift_9_finite_part} 的可审计输出，
+\[
+\mathsf{M}(A_4)=0.073098\ldots,
+\qquad
+\mathsf{M}(A_{\mathrm{full},9})=0.514155\ldots,
+\]
+从而 \(\mathsf{M}(\cdot)\) 不是流等价不变量。
+\end{proposition}
+\begin{proof}
+full \(9\)-shift 的 \(\zeta\)-函数为 \(\zeta(z)=(1-9z)^{-1}\)，其主极点留数常数为 \(C=1\)。
+因此
+\[
+\log\mathfrak{M}(A_{\mathrm{full},9})
+=\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta\!\left(9^{-k}\right)
+=-\sum_{k\ge 2}\frac{\mu(k)}{k}\log\!\left(1-9^{1-k}\right),
+\]
+且 \(\mathsf{M}(A_{\mathrm{full},9})=\gamma+\log\mathfrak{M}(A_{\mathrm{full},9})\)。
+表 \ref{tab:full_shift_9_finite_part} 由脚本 \texttt{scripts/exp\_full\_shift\_9\_finite\_part.py} 对该绝对收敛级数作截断与尾界审计得到。
+与表 \ref{tab:collision_kernel_A4_finite_part} 的 \(\mathsf{M}(A_4)\) 数值不一致，故有限部常数不由流等价类型决定。证毕。
+\end{proof}
 
 \begin{remark}[流等价不变量的塌缩与细谱信息的不可见性]\label{rem:pom-collision-flow-collapse}
 推论 \ref{cor:pom-collision-flow-equivalence-full-shift} 表明：尽管低阶碰撞核在谱分解与算术证书层面呈现出非平凡细结构（例如负实模态触发的反相慢振荡、四阶核族的非实谱稳定存在以及 near-RH 贴线等现象），Franks 不变量在流等价层面仅识别出一顶点全移位的流等价型。

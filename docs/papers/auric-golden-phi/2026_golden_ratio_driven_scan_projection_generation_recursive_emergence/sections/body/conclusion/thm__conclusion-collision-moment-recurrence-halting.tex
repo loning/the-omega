@@ -1,0 +1,130 @@
+\begin{theorem}[二值纤维阈值序贯转导的碰撞矩序列与最小递推阶]\label{thm:conclusion-collision-moment-minrec-halting-time}
+沿用定理 \ref{thm:conclusion-minimal-state-complexity-halting} 中 \(\pi_{M,x}:L\to L\) 的构造与记号，并记停机时间 \(T=T(M,x)\in\NN\cup\{\infty\}\)（不停机记为 \(\infty\)）。
+对任意整数 \(q\ge 2\)，定义 \(q\) 阶碰撞矩序列
+\[
+S_q^{(M,x)}(n)
+:=\sum_{y\in L}\Bigl|\pi_{M,x}^{-1}(y)\cap\{1^n\#0,1^n\#1\}\Bigr|^q,
+\qquad n\ge 0.
+\]
+则：
+\begin{enumerate}
+  \item 若 \(T=\infty\)，则 \(S_q^{(M,x)}(n)\equiv 2\)，并且其满足的最小齐次常系数线性递推阶为 \(1\)。
+  \item 若 \(T<\infty\)，则
+  \[
+  S_q^{(M,x)}(n)=
+  \begin{cases}
+  2,& 0\le n<T,\\
+  2^q,& n\ge T,
+  \end{cases}
+  \]
+  并且其满足的最小齐次常系数线性递推阶恰为 \(T+1\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-minimal-state-complexity-halting} 中 \(\pi_{M,x}\) 的定义可知：当 \(n<T\) 时，\(\pi_{M,x}(1^n\#0)\) 与 \(\pi_{M,x}(1^n\#1)\) 的末位分别为 \(0\) 与 \(1\)，两点不碰撞，故两条纤维贡献为 \(1^q+1^q=2\)；
+当 \(n\ge T\) 时两点同像于 \(0^n\#0\) 并构成大小为 \(2\) 的纤维，故贡献为 \(2^q\)。
+于是闭式成立。
+
+若 \(T=\infty\)，则序列常值且对 \(n\ge 1\) 满足阶 \(1\) 递推 \(S(n)-S(n-1)=0\)；阶 \(0\) 的齐次递推只能强制 \(S\equiv 0\)，与 \(S\equiv 2\) 矛盾，故最小阶为 \(1\)。
+
+以下设 \(T<\infty\)，并写 \(a_n:=S_q^{(M,x)}(n)\)。
+若存在阶 \(r\le T\) 的齐次常系数递推
+\[
+a_n=\sum_{i=1}^{r}c_i a_{n-i}\qquad(n\ge r),
+\]
+则该递推同时适用于 \(n=T\) 与 \(n=2T\)。
+对 \(n=T\)，有 \(a_T=2^q\) 且 \(a_{T-i}=2\ (1\le i\le r)\)，故
+\[
+2^q=2\sum_{i=1}^{r}c_i.
+\]
+对 \(n=2T\)，由于 \(2T-i\ge T\)（因为 \(i\le r\le T\)），从而 \(a_{2T}=2^q\) 且 \(a_{2T-i}=2^q\)，于是
+\[
+2^q=2^q\sum_{i=1}^{r}c_i.
+\]
+由此得 \(\sum_{i=1}^{r}c_i=1\)，代回即推出 \(2^q=2\)，与 \(q\ge 2\) 矛盾。
+故最小递推阶 \(>T\)，即至少为 \(T+1\)。
+
+另一方面，由于 \(a_n\) 在 \(n\ge T\) 时恒等于 \(2^q\)，故对 \(n\ge T+1\) 有 \(a_n=a_{n-1}\)，从而存在阶 \(T+1\) 的齐次递推（取 \(c_1=1\) 且其余系数为 \(0\)）。
+合并上下界得到最小阶为 \(T+1\)。证毕。
+\end{proof}
+
+\begin{proposition}[碰撞矩序列的非负矩阵表示维数与不可计算性]\label{prop:conclusion-collision-moment-nn-realization-dim}
+固定 \(q\ge 2\)，对定理 \ref{thm:conclusion-collision-moment-minrec-halting-time} 的序列 \(S_q^{(M,x)}(n)\) 定义其非负矩阵表示维数
+\[
+d_q(M,x)
+:=\min\Bigl\{d\in\NN:\exists\,A\in\NN^{d\times d},\ u,v\in\NN^d\ \text{s.t.}\ S_q^{(M,x)}(n)=u^\top A^n v,\ \forall n\ge 0\Bigr\}.
+\]
+则
+\[
+d_q(M,x)=
+\begin{cases}
+1,& T(M,x)=\infty,\\
+T(M,x)+1,& T(M,x)<\infty.
+\end{cases}
+\]
+特别地，映射 \((M,x)\mapsto d_q(M,x)\) 不可计算；并且对任意常数 \(K\)，性质 \(d_q(M,x)\le K\) 在该族上不可判定。
+\end{proposition}
+\begin{proof}
+先证上界。
+若 \(T=\infty\)，取 \(d=1\)、\(A=[1]\)、\(u=[1]\)、\(v=[2]\)，则 \(u^\top A^n v\equiv 2\) 与 \(S_q^{(M,x)}\) 一致，故 \(d_q(M,x)\le 1\)。
+若 \(T<\infty\)，取 \(d=T+1\)，并令 \(A\in\NN^{d\times d}\) 为“链—吸收”矩阵：
+\[
+A_{i,i+1}=1\ (0\le i<T),\qquad A_{T,T}=1,
+\qquad\text{其余为 }0.
+\]
+取 \(u=e_0\)（第 \(0\) 个标准基），并取
+\[
+v=(\underbrace{2,2,\ldots,2}_{T\ \text{次}},2^q)^\top\in\NN^{d}.
+\]
+则 \(u^\top A^n v=v_n\) 给出
+\(
+u^\top A^n v=2
+\)
+（\(n<T\)）与
+\(
+u^\top A^n v=2^q
+\)
+（\(n\ge T\)），与定理 \ref{thm:conclusion-collision-moment-minrec-halting-time} 的闭式一致，故 \(d_q(M,x)\le T+1\)。
+
+再证下界。
+任意表示 \(S_q^{(M,x)}(n)=u^\top A^n v\)（\(A\in\NN^{d\times d}\)）蕴含 \(S_q^{(M,x)}\) 满足阶至多 \(d\) 的齐次常系数线性递推：由 Cayley--Hamilton 定理，\(A\) 的特征多项式 \(p(\lambda)=\lambda^d+\sum_{i=0}^{d-1}\alpha_i\lambda^i\) 满足 \(p(A)=0\)，两边左乘 \(u^\top A^{n-d}\) 右乘 \(v\) 得
+\[
+S_q^{(M,x)}(n)+\sum_{i=0}^{d-1}\alpha_i S_q^{(M,x)}(n-d+i)=0\qquad(n\ge d).
+\]
+故最小递推阶 \(\le d\)。
+结合定理 \ref{thm:conclusion-collision-moment-minrec-halting-time}：当 \(T=\infty\) 时最小递推阶为 \(1\)，从而 \(d\ge 1\)；
+当 \(T<\infty\) 时最小递推阶为 \(T+1\)，从而 \(d\ge T+1\)。
+与上界合并即得 \(d_q(M,x)\) 的闭式。
+
+最后，若 \((M,x)\mapsto d_q(M,x)\) 可计算，则由 \(d_q(M,x)=1\) 等价于 \(T(M,x)=\infty\) 可判定不停机集合，与停机问题不可判定性矛盾；因此亦得阈值谓词 \(d_q(M,x)\le K\) 不可判定。证毕。
+\end{proof}
+
+\begin{corollary}[指数尺度碰撞谱指纹对停机时间不敏感]\label{cor:conclusion-collision-moment-perron-blindness}
+对固定 \(q\ge 2\) 定义指数尺度碰撞率
+\[
+\lambda_q(M,x):=\limsup_{n\to\infty}\frac{1}{n}\log S_q^{(M,x)}(n),
+\qquad
+r_q(M,x):=\exp(\lambda_q(M,x)).
+\]
+则对所有 \((M,x)\) 都有 \(\lambda_q(M,x)=0\) 与 \(r_q(M,x)=1\)。
+然而当 \(T(M,x)<\infty\) 时，由定理 \ref{thm:conclusion-minimal-state-complexity-halting} 有 \(s(\pi_{M,x})=T(M,x)+1\)，可取任意大。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-collision-moment-minrec-halting-time}，\(S_q^{(M,x)}(n)\) 在所有情形下均被常数 \(\max\{2,2^q\}\) 上界，故 \(\lambda_q(M,x)=0\) 且 \(r_q(M,x)=1\)。
+而 \(s(\pi_{M,x})\) 的增长由定理 \ref{thm:conclusion-minimal-state-complexity-halting} 直接给出。证毕。
+\end{proof}
+
+\begin{corollary}[有限碰撞谱指纹不可能构成完备不变量]\label{cor:conclusion-finite-collision-spectrum-incomplete}
+存在无限多对 \((M,x)\neq(M',x')\) 使得 \(\pi_{M,x}\not\equiv \pi_{M',x'}\)（外延不相等），但对任意有限集合 \(Q\subset\{2,3,\dots\}\) 都有
+\[
+\bigl(r_q(M,x)\bigr)_{q\in Q}=\bigl(r_q(M',x')\bigr)_{q\in Q}=(1,1,\dots,1).
+\]
+因此任何仅依赖有限多个 \(\{r_q\}_{q\in Q}\) 的谱指纹映射都不可能在该族上区分外延不等价对象。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:conclusion-collision-moment-perron-blindness}，对所有 \((M,x)\) 与所有 \(q\ge 2\) 均有 \(r_q(M,x)=1\)，故任意有限 \(Q\) 上的指纹恒同。
+另一方面，若 \(T(M,x)\neq T(M',x')\)（或一者停机一者不停机），则取 \(n=\min\{T(M,x),T(M',x')\}\) 可由 \(\pi_{M,x}(1^n\#1)\) 的末位输出与 \(\pi_{M',x'}(1^n\#1)\) 的末位输出不同而区分两转导，故外延不等价而谱指纹一致的实例无限多。证毕。
+\end{proof}
+
+\endinput
+

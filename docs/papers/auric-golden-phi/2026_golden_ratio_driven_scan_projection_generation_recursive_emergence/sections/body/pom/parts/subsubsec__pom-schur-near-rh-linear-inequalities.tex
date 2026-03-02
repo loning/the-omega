@@ -138,4 +138,63 @@ c(\nu):=(c_1(\nu),\dots,c_q(\nu))\in\NN_0^q
 最后一条 near-RH 约束为把 \(\log\rho(B_{q,\lambda})\le P(q)/2\) 写成支撑函数不等式并取最大。证毕。
 \end{proof}
 
+\paragraph{乘法升级与平方根门槛的结构性不相容：张量谱的必然放大}
+near-RH 以“非 Perron 模长 \(\le \sqrt{\rho}\)”为门槛。
+下述结论指出：一旦高阶核可被视为某种张量化升级并且\emph{不抹去}低阶的次主模态，则平方根门槛在足够大阶上必破产。
+该结论不依赖具体的分拆/特征标制度，仅使用张量谱的基本乘法结构。
+
+\begin{theorem}[张量化乘法升级下的次主谱放大：平方根门槛在大阶必失效]\label{thm:pom-multiplicative-upgrade-fatal-amplification}
+设 \(A\in M_d(\NN)\) 为本原非负矩阵，\(\rho:=\rho(A)>1\) 为 Perron 根。
+令 \(\eta:=\max\{|\mu|:\ \mu\in\sigma(A),\ \mu\neq\rho\}\) 为非 Perron 最大模特征值，并取满足 \(Av=\mu v\)、\(|\mu|=\eta\) 的特征向量 \(v\neq 0\)。
+对任意整数 \(b\ge 2\)，令 \(\mathcal H_b\) 为某个有限维实向量空间，并设存在满射线性映射
+\[
+\Pi_b:\ (\RR^d)^{\otimes b}\twoheadrightarrow \mathcal H_b
+\]
+与线性算子 \(A_b:\mathcal H_b\to\mathcal H_b\) 使得互换关系成立：
+\begin{equation}\label{eq:pom-multiplicative-upgrade-intertwining}
+\boxed{\;A_b\,\Pi_b=\Pi_b\,(A^{\otimes b}).\;}
+\end{equation}
+若进一步满足\textbf{次主模态不被湮灭}：
+\begin{equation}\label{eq:pom-multiplicative-upgrade-first-order-faithful}
+\boxed{\;\Pi_b\bigl(u^{\otimes(b-1)}\otimes v\bigr)\neq 0\;}
+\end{equation}
+其中 \(u\) 为 \(A\) 的 Perron 特征向量（\(Au=\rho u\)），则 \(A_b\) 的谱包含特征值 \(\rho^{b-1}\mu\)，从而
+\[
+\max_{\lambda\in\sigma(A_b),\ \lambda\neq\rho(A_b)}|\lambda|
+\ \ge\ \rho^{b-1}\eta.
+\]
+在此情形下若还满足 Perron 标度 \(\rho(A_b)=\rho(A^{\otimes b})=\rho^b\)，则存在 \(b_0\) 使对所有 \(b\ge b_0\) 均有
+\[
+\max_{\lambda\in\sigma(A_b),\ \lambda\neq\rho(A_b)}|\lambda|\ >\ \sqrt{\rho(A_b)}.
+\]
+\end{theorem}
+\begin{proof}
+由张量谱的乘法性，向量
+\(
+x:=u^{\otimes(b-1)}\otimes v
+\)
+满足
+\[
+(A^{\otimes b})x=(\rho^{b-1}\mu)\,x.
+\]
+对其作用 \(\Pi_b\) 并用互换关系 \eqref{eq:pom-multiplicative-upgrade-intertwining} 得
+\[
+A_b\bigl(\Pi_b x\bigr)=\Pi_b\bigl((A^{\otimes b})x\bigr)=(\rho^{b-1}\mu)\,\Pi_b x.
+\]
+由 \eqref{eq:pom-multiplicative-upgrade-first-order-faithful}，\(\Pi_b x\neq 0\)，故 \(\rho^{b-1}\mu\in\sigma(A_b)\)，从而次主谱模长至少为 \(\rho^{b-1}\eta\)。
+\par
+若另有 \(\rho(A_b)=\rho^b\)，则
+\[
+\frac{\rho^{b-1}\eta}{\sqrt{\rho(A_b)}}=\eta\,\rho^{b/2-1}\xrightarrow[b\to\infty]{}\infty
+\qquad(\rho>1,\ \eta>0),
+\]
+故对充分大 \(b\) 有 \(\rho^{b-1}\eta>\sqrt{\rho(A_b)}\)，从而平方根门槛必失效。证毕。
+\end{proof}
+
+\begin{corollary}[正规升级的直接谱点推出]\label{cor:pom-multiplicative-upgrade-normal-direct-spectrum}
+在定理 \ref{thm:pom-multiplicative-upgrade-fatal-amplification} 的设定下，若进一步假设 \(A_b\) 为正规算子（在某个内积下满足 \(A_bA_b^\ast=A_b^\ast A_b\)），
+则 \(\rho^{b-1}\mu\) 不仅作为谱半径下界出现，而且是 \(A_b\) 的真实特征值；
+因此一旦 \(\rho(A_b)=\rho^b\) 且 \(\Pi_b(u^{\otimes(b-1)}\otimes v)\neq 0\)，则平方根门槛失效无需任何伪谱/稳定性估计。
+\end{corollary}
+
 \input{sections/body/pom/parts/subsubsec__pom-schur-near-rh-linear-inequalities-part2}

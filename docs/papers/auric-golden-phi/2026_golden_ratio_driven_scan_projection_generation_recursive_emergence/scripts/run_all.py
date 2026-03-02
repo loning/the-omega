@@ -3419,6 +3419,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="full_shift_9_finite_part",
+            script="exp_full_shift_9_finite_part.py",
+            args=[],
+            expected_outputs=[
+                "sections/generated/tab_full_shift_9_finite_part.tex",
+            ],
+        ),
+        Step(
             name="collision_kernel_A4_newman_u4_certificate",
             script="exp_collision_kernel_A4_newman_u4_certificate.py",
             args=[],
