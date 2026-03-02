@@ -1,0 +1,159 @@
+\subsubsection{Toeplitz 负惯性的最小采样阈值、正定铅笔重建与一素数审计}\label{subsubsec:xi-toeplitz-minimal-sampling-gramshift-one-prime}
+在 Toeplitz--扫描 Hankel 同构分解（推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition}）的稳定区间内，Toeplitz 层级的负方向由 Hankel 指纹块 \(\mathsf H_{\kappa-1}\) 的 Gram \(\mathsf H_{\kappa-1}^\ast\mathsf H_{\kappa-1}\) 完全确定。
+本段抽取三类可核验后果：其一给出负惯性判定所需样本长度的严格最小阈值；其二给出完全正定的 Gram--shift 广义特征值铅笔以重建缺陷节点谱；其三给出将满秩核验压缩为单个模素数证书的算术审计接口，并把连续缺陷熵与离散负块谱质量建立不可压缩的定量链接。
+
+\begin{theorem}[负惯性判定的最小采样阈值]\label{thm:xi-toeplitz-negative-inertia-minimal-sampling}
+在有限缺陷口径下，令扫描谱指纹为 \(\{u_n\}_{n\ge 0}\) 并定义 Hankel 窗口
+\[
+\mathsf H_M:=(u_{p+q})_{0\le p,q\le M}.
+\]
+假设进入稳定区间：存在 \(N_0\) 使对一切充分大 \(N\) 有 \(\nu_-(\mathbf{T}_N(C))=\kappa\)，并且 \(\mathrm{rank}(\mathsf H_{\kappa-1})=\kappa\)（从而推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 可用）。
+则：
+\begin{enumerate}
+  \item Hankel 指纹块 \(\mathsf H_{\kappa-1}\) 的全部条目仅依赖有限样本族 \(\{u_n\}_{0\le n\le 2\kappa-2}\)；
+  因而 Toeplitz 层级的负惯性与负子空间在稳定区间内可由该有限样本族完全确定。
+  \item 该样本长度在一般位置意义下严格最小：存在 Zariski 开稠密集合，使得任何仅依赖 \(\{u_n\}_{0\le n\le 2\kappa-3}\) 的判定过程，不能在该集合上决定 \(\mathrm{rank}(\mathsf H_{\kappa-1})\)（从而不能决定 \(\nu_-(\mathbf{T}_N(C))\) 是否等于 \(\kappa\)）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+第一条由定义直接给出：\((\mathsf H_{\kappa-1})_{p+1,q+1}=u_{p+q}\)，其中 \(0\le p+q\le 2\kappa-2\)。
+在稳定区间内，推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 给出
+\(
+\nu_-(\mathbf{T}_N(C))=\mathrm{rank}(\mathsf H_{\kappa-1})
+\)
+以及负子空间的合同刻画，因此负惯性与负子空间均由 \(\mathsf H_{\kappa-1}\) 决定，从而由 \(\{u_n\}_{0\le n\le 2\kappa-2}\) 决定。
+\par
+对第二条，固定任意前缀数据 \((u_0,\dots,u_{2\kappa-3})\)。
+注意 \(\det(\mathsf H_{\kappa-1})\) 作为变量 \(u_{2\kappa-2}\) 的函数是一次仿射的：\(u_{2\kappa-2}\) 仅出现在右下角条目 \((\kappa,\kappa)\)。
+因此存在仅依赖 \((u_0,\dots,u_{2\kappa-3})\) 的常数 \(A,B\) 使
+\[
+\det(\mathsf H_{\kappa-1})=A\,u_{2\kappa-2}+B.
+\]
+当 \(A\neq 0\) 时，既可选择 \(u_{2\kappa-2}\) 使 \(\det(\mathsf H_{\kappa-1})=0\)，亦可选择另一 \(u'_{2\kappa-2}\) 使 \(\det(\mathsf H_{\kappa-1})\neq 0\)；
+而两种选择在 \(\{u_n\}_{0\le n\le 2\kappa-3}\) 上完全一致。
+系数 \(A\) 是相应余子式的多项式函数，故 \(\{A\neq 0\}\) 为 Zariski 开集；只要存在一个实例使 \(A\neq 0\)，该开集即非空从而开稠密。
+于是一般位置下，\(\{u_n\}_{0\le n\le 2\kappa-3}\) 无法决定 \(\det(\mathsf H_{\kappa-1})\) 是否为零，进而无法决定 \(\mathrm{rank}(\mathsf H_{\kappa-1})\)；
+由推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition}，这等价于无法决定 Toeplitz 负惯性是否达到 \(\kappa\)。证毕。
+\end{proof}
+
+\begin{theorem}[Gram--shift 正定铅笔的缺陷节点谱]\label{thm:xi-gram-shift-positive-pencil-node-spectrum}
+在定理 \ref{thm:xi-toeplitz-negative-inertia-minimal-sampling} 的稳定区间设定下，定义两块移位 Hankel 窗口
+\[
+H_0:=(u_{p+q})_{0\le p,q\le \kappa-1}=\mathsf H_{\kappa-1},
+\qquad
+H_1:=(u_{p+q+1})_{0\le p,q\le \kappa-1}.
+\]
+并令
+\[
+G_0:=H_0^\ast H_0\succ0,\qquad G_1:=H_0^\ast H_1.
+\]
+定义移位实现矩阵 \(A:=H_0^{-1}H_1\)。
+则：
+\begin{enumerate}
+  \item 存在严格恒等式 \(G_1=G_0A\)，从而 \(A=G_0^{-1}G_1\)；
+  并且 \(A\) 的谱等于正定铅笔 \((G_1,G_0)\) 的广义特征值集合。
+  \item 若进一步满足有限指数分解 \eqref{eq:xi-scan-fingerprint-exponential-sum}（定理 \ref{thm:xi-dethankel-vandermonde-square-finite-blaschke} 的设定），则 \(A\) 与对角阵 \(\mathrm{diag}(z_1,\dots,z_\kappa)\) 相似，且 \(\sigma(A)=\{z_1,\dots,z_\kappa\}\) 给出缺陷节点谱。
+  因而节点重建可归约为求解完全正定的广义特征值问题 \(G_1v=\lambda G_0v\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 \(H_1=H_0A\) 左乘 \(H_0^\ast\) 得 \(G_1=H_0^\ast H_1=H_0^\ast H_0A=G_0A\)，从而 \(A=G_0^{-1}G_1\)。
+若 \(Av=\lambda v\)，则 \(G_1v=G_0Av=\lambda G_0v\)，故 \(\lambda\) 为铅笔 \((G_1,G_0)\) 的广义特征值；反向同理。
+\par
+在 \eqref{eq:xi-scan-fingerprint-exponential-sum} 下，令 Vandermonde 矩阵 \(V\) 如定理 \ref{thm:xi-dethankel-vandermonde-square-finite-blaschke}，并记 \(W:=\mathrm{diag}(w_1,\dots,w_\kappa)\)、\(Z:=\mathrm{diag}(z_1,\dots,z_\kappa)\)。
+直接计算得
+\[
+H_0=(4\pi)\,VWV^{\mathsf T},
+\qquad
+H_1=(4\pi)\,VWZV^{\mathsf T}.
+\]
+从而
+\[
+A=H_0^{-1}H_1
+=\bigl(V^{-{\mathsf T}}W^{-1}V^{-1}\bigr)\,\bigl(VWZV^{\mathsf T}\bigr)
+=V^{-{\mathsf T}}ZV^{\mathsf T},
+\]
+故 \(A\) 与 \(Z\) 相似并具有相同谱 \(\{z_j\}\)。证毕。
+\end{proof}
+
+\begin{corollary}[节点谱的噪声稳定性：矩阵差到谱差再到对数参数差]\label{cor:xi-node-spectrum-noise-stability}
+沿用定理 \ref{thm:xi-gram-shift-positive-pencil-node-spectrum} 的记号。
+给定噪声观测 \(\tilde u_n=u_n+\delta_n\) 并据此构造 \(\widetilde H_0,\widetilde H_1\) 与 \(\widetilde A:=\widetilde H_0^{-1}\widetilde H_1\)。
+若满足小扰动门槛
+\[
+\|H_0^{-1}\|\,\|\widetilde H_0-H_0\|\le \frac12,
+\]
+则由命题 \ref{prop:xi-hankel-inversion-noise-stability-neumann-bauerfike} 得到显式扰动界
+\[
+\|\widetilde A-A\|
+\le 4\,\|H_0^{-1}\|\Bigl(\|\widetilde H_1-H_1\|+\|A\|\,\|\widetilde H_0-H_0\|\Bigr),
+\]
+并且当 \(A\) 可对角化 \(A=PDP^{-1}\) 时，任意 \(\widetilde A\) 的特征值 \(\widetilde\lambda\) 满足 Bauer--Fike 型谱稳定界
+\[
+\mathrm{dist}\bigl(\widetilde\lambda,\sigma(A)\bigr)\le \kappa(P)\,\|\widetilde A-A\|,
+\qquad \kappa(P):=\|P\|\,\|P^{-1}\|.
+\]
+若另有谱下界 \(\inf_{\lambda\in\sigma(A)}|\lambda|\ge r>0\) 且 \(|\widetilde\lambda-\lambda|\le r/2\)，则对数参数满足
+\[
+|\log\widetilde\lambda-\log\lambda|\le \frac{2}{r}\,|\widetilde\lambda-\lambda|.
+\]
+\end{corollary}
+\begin{proof}
+前两条由命题 \ref{prop:xi-hankel-inversion-noise-stability-neumann-bauerfike} 将 \(H_0,H_1\) 专门化为本段的移位 Hankel 窗口即得。
+最后一条由解析函数估计得到：在闭环域 \(\{z:|z|\ge r/2\}\) 上有 \(|(\log z)'|=1/|z|\le 2/r\)，故 \(\log\) 在该域上为 Lipschitz。证毕。
+\end{proof}
+
+\begin{proposition}[Hankel 满秩的一素数审计]\label{prop:xi-hankel-fullrank-one-prime-audit}
+设 \(H_0\in \Mat_\kappa(\QQ)\)。
+取公共分母 \(D\in\NN\) 使 \(\widehat H_0:=DH_0\in \Mat_\kappa(\ZZ)\)。
+则：
+\begin{enumerate}
+  \item \(H_0\) 在 \(\QQ\) 上可逆当且仅当 \(\det(\widehat H_0)\neq 0\)（整数意义）。
+  \item 若存在素数 \(p\nmid D\) 使 \(\det(\widehat H_0)\not\equiv 0\ (\mathrm{mod}\ p)\)，则 \(\det(\widehat H_0)\neq 0\)，从而 \(H_0\) 在 \(\QQ\) 上可逆。
+  \item 若 \(\det(\widehat H_0)\neq 0\)，则满足 \(\det(\widehat H_0)\equiv 0\ (\mathrm{mod}\ p)\) 的素数集合有限，且必包含于 \(\det(\widehat H_0)\) 的素因子集合。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第一条由 \(\det(\widehat H_0)=D^\kappa\det(H_0)\) 立得。
+第二条：若 \(\det(\widehat H_0)=0\) 作为整数成立，则其模任意素数皆为零，与假设矛盾。
+第三条：若 \(p\mid \det(\widehat H_0)\)，则必有 \(\det(\widehat H_0)\equiv 0\ (\mathrm{mod}\ p)\)；反之模零亦推出整除。
+由于非零整数仅有有限个素因子，故坏素数集合有限。证毕。
+\end{proof}
+
+\begin{corollary}[缺陷熵迫使负块谱质量非退化]\label{cor:xi-defect-entropy-forces-negative-block-mass}
+在推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 的稳定区间内，负块为
+\(
+G_{\kappa-1}:=\mathsf H_{\kappa-1}^\ast\mathsf H_{\kappa-1}\succeq 0
+\)。
+则其算子范数满足严格下界
+\[
+\|G_{\kappa-1}\|_{\mathrm{op}}
+\ \ge\
+\frac{|u_0|^2}{\kappa}.
+\]
+并且由命题 \ref{prop:xi-defect-entropy-hyperbolic-area-law-4pi} 的 \(4\pi\) 规一化，
+\(
+u_0=\widehat H(0)=\int_{\RR}H(x)\,\dd x=4\pi S_{\mathrm{def}}
+\)，从而
+\[
+\|G_{\kappa-1}\|_{\mathrm{op}}\ \ge\ \frac{(4\pi S_{\mathrm{def}})^2}{\kappa}.
+\]
+\end{corollary}
+\begin{proof}
+由 \(G_{\kappa-1}=\mathsf H_{\kappa-1}^\ast\mathsf H_{\kappa-1}\) 得
+\(
+\|G_{\kappa-1}\|_{\mathrm{op}}=\sigma_{\max}(\mathsf H_{\kappa-1})^2
+\)。
+又由 Frobenius 范数与奇异值关系，
+\[
+\sigma_{\max}(\mathsf H_{\kappa-1})^2
+\ge \frac{1}{\kappa}\sum_{i=1}^{\kappa}\sigma_i(\mathsf H_{\kappa-1})^2
+=\frac{\|\mathsf H_{\kappa-1}\|_F^2}{\kappa}
+\ge \frac{|(\mathsf H_{\kappa-1})_{1,1}|^2}{\kappa}
+=\frac{|u_0|^2}{\kappa},
+\]
+得到第一条不等式。
+最后将 \(u_0=4\pi S_{\mathrm{def}}\) 代入即得第二条不等式。证毕。
+\end{proof}
+
+\endinput
