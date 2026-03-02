@@ -296,3 +296,61 @@ A=H_0^{-1}H_1=\frac{\mathrm{adj}(H_0)\,H_1}{\det(H_0)},
 相应 Hankel 标准形矩阵至多可恢复到 \(5^{E-7}\) 的精度；该七位损耗一般不可消去。
 \end{corollary}
 
+\begin{theorem}[有限精度势的 Smith 计数律：\texorpdfstring{$\ker/\mathrm{coker}$}{ker/coker} 的阶与分支计数]\label{thm:xi-hankel-finite-precision-potential-smith-kernel-coker}
+保持定理 \ref{thm:xi-terminal-hankel-standard-form-padic-loss} 的设定，并假设 \(H_0\in M_d(\ZZ)\) 满秩。
+取其 Smith 正规形
+\[
+UH_0V=\mathrm{diag}(s_1,\dots,s_d),\qquad
+s_1\mid s_2\mid\cdots\mid s_d,\quad U,V\in \mathrm{GL}_d(\ZZ).
+\]
+对素数 \(p\) 与整数 \(k\ge 1\) 定义有限精度势
+\[
+H_p(k):=\sum_{i=1}^{d}\min\bigl(v_p(s_i),k\bigr).
+\]
+则有完全显式恒等式
+\[
+\#\ker\!\Bigl(H_0:(\ZZ/p^k\ZZ)^d\to(\ZZ/p^k\ZZ)^d\Bigr)=p^{H_p(k)},
+\]
+并且同样
+\[
+\#\mathrm{coker}\!\Bigl(H_0:(\ZZ/p^k\ZZ)^d\to(\ZZ/p^k\ZZ)^d\Bigr)=p^{H_p(k)}.
+\]
+特别地，
+\[
+\lim_{k\to\infty}H_p(k)=\sum_{i=1}^{d}v_p(s_i)=v_p(\det H_0).
+\]
+\end{theorem}
+\begin{proof}
+在 \(\ZZ/p^k\ZZ\) 上，\(U,V\) 仍为可逆变换，故核与余核的阶不变；因此可将 \(H_0\) 替换为对角矩阵 \(\mathrm{diag}(s_i)\)。
+对单坐标映射 \(x\mapsto s_ix\) 于 \(\ZZ/p^k\ZZ\) 上，其核大小为 \(p^{\min(v_p(s_i),k)}\)；
+核在直积上相乘即得第一式。
+对满秩方阵在有限环上，核与余核的阶相等；在对角情形下可逐坐标直接验证，从而得到第二式。
+极限式由 \(\min(v,k)\to v\) 逐项收敛与 \(\prod_i s_i=\pm\det(H_0)\) 得到。证毕。
+\end{proof}
+
+\begin{corollary}[模 \texorpdfstring{$p^k$}{p^k} 的矩阵重建多解度：右核的 \texorpdfstring{$d$}{d} 次直和]\label{cor:xi-hankel-lifting-branch-count-affine-solution-space}
+令 \(H_1'\in M_d(\ZZ)\) 给定，并考虑线性方程 \(H_0B=H_1'\) 在模 \(p^k\) 下的解集
+\[
+\mathcal S_k:=\Bigl\{X\in M_d(\ZZ/p^k\ZZ):\ (H_0\bmod p^k)\,X\equiv (H_1'\bmod p^k)\Bigr\}.
+\]
+若 \(\mathcal S_k\neq\varnothing\)，则 \(\mathcal S_k\) 为一个仿射空间，其平移空间为右核 \(\ker(H_0\bmod p^k)\) 的 \(d\) 次直和；
+并且其基数满足
+\[
+\#\mathcal S_k=p^{d\,H_p(k)},
+\]
+其中 \(H_p(k)\) 如定理 \ref{thm:xi-hankel-finite-precision-potential-smith-kernel-coker}。
+\end{corollary}
+\begin{proof}
+考虑线性映射
+\[
+\Phi_k:M_d(\ZZ/p^k\ZZ)\to M_d(\ZZ/p^k\ZZ),\qquad
+\Phi_k(X)=(H_0\bmod p^k)\,X.
+\]
+其核由每一列独立满足 \((H_0\bmod p^k)x=0\) 的条件组成，故
+\(
+\#\ker\Phi_k=(\#\ker(H_0\bmod p^k))^d
+\)。
+由定理 \ref{thm:xi-hankel-finite-precision-potential-smith-kernel-coker} 得 \(\#\ker(H_0\bmod p^k)=p^{H_p(k)}\)，从而 \(\#\ker\Phi_k=p^{dH_p(k)}\)。
+若 \(\mathcal S_k\) 非空，则它是任一特解加上 \(\ker\Phi_k\) 的陪集，故其基数等于 \(\#\ker\Phi_k\)。证毕。
+\end{proof}
+

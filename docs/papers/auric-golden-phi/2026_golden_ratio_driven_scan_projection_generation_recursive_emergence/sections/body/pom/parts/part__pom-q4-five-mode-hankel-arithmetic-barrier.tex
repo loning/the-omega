@@ -36,3 +36,66 @@ v_p(\det(H_0))
 从而 \(v_5(\det(H_{k=5}))=7\) 在 \(k=5\) 处形成一条硬阈值；它与同一表中 \(k=5\) 的体积势 \(\log|\det(H_{k=5})|\) 并行地决定“可审计重建”的总信息预算。
 \end{remark}
 
+\begin{theorem}[最小整化因子的余核指数刻画：从分母公式到障碍子群]\label{thm:pom-minimal-integerization-factor-coker-exponent}
+沿用上条注的设定，并假设 \(H_0\in M_d(\ZZ)\) 满秩。
+取 Smith 分解
+\[
+UH_0V=\mathrm{diag}(s_1,\dots,s_d),\qquad s_1\mid s_2\mid\cdots\mid s_d,\quad U,V\in \mathrm{GL}_d(\ZZ),
+\]
+记 \(C:=UH_1\)，并令
+\[
+g_i:=\gcd(C_{i1},\dots,C_{id}),\qquad
+e_i:=\frac{s_i}{\gcd(s_i,g_i)},\qquad
+N^\ast:=\mathrm{lcm}(e_1,\dots,e_d).
+\]
+则 \(N^\ast\) 为使 \(A=H_0^{-1}H_1\) 整化的最小正整数，即
+\[
+N^\ast A\in M_d(\ZZ)
+\quad\text{且}\quad
+\forall N\in\ZZ_{>0},\ NA\in M_d(\ZZ)\Rightarrow N^\ast\mid N.
+\]
+进一步，令有限阿贝尔群
+\[
+\mathrm{coker}(H_0):=\ZZ^d/H_0\ZZ^d,
+\]
+并定义诱导同态
+\[
+\psi:\ZZ^d\to \mathrm{coker}(H_0),
+\qquad
+\psi(v):=[H_1v].
+\]
+令 \(W:=\mathrm{im}(\psi)\subset \mathrm{coker}(H_0)\)。
+则有指数恒等式
+\[
+\boxed{\;N^\ast=\mathrm{exp}(W)\;}
+\]
+其中 \(\mathrm{exp}(W)\) 为 \(W\) 的指数（最小正整数使其湮灭）。
+\end{theorem}
+\begin{proof}
+对任意 \(N\in\ZZ_{>0}\)，条件 \(NA\in M_d(\ZZ)\) 等价于对所有列向量 \(v\in\ZZ^d\) 成立 \(NH_1v\in H_0\ZZ^d\)，亦即 \(\psi(v)\) 被 \(N\) 湮灭。
+因此可行的 \(N\) 集合恰为湮灭子群 \(W=\mathrm{im}(\psi)\) 的正整数集合，最小者即为 \(\mathrm{exp}(W)\)。
+\par
+另一方面，Smith 基底下 \(\mathrm{coker}(H_0)\cong\bigoplus_i \ZZ/s_i\ZZ\)，而 \(C=UH_1\) 的第 \(i\) 行给出 \(W\) 在第 \(i\) 个循环因子上的坐标集合。
+该集合所生成子群在 \(\ZZ/s_i\ZZ\) 中的指数等于 \(e_i=s_i/\gcd(s_i,g_i)\)，故湮灭所有这些坐标生成子群的最小正整数为 \(\mathrm{lcm}(e_i)=N^\ast\)。
+与前段最小性判据比较即得 \(N^\ast=\mathrm{exp}(W)\)。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\mathsf{Stiff}_p$}{Stiffp} 与 \texorpdfstring{$v_p(N^\ast)$}{vp(N*)} 的分离：超度量压缩不等式]\label{cor:pom-stiffness-vs-integerization-separation}
+沿用定理 \ref{thm:pom-minimal-integerization-factor-coker-exponent} 的记号，并令 \(W_{(p)}\) 为 \(W\) 的 \(p\)-Sylow 分量。
+则对任意素数 \(p\) 有
+\[
+v_p(N^\ast)=\log_p\mathrm{exp}(W_{(p)}),
+\qquad
+\mathsf{Stiff}_p=v_p(\det(H_0))=\log_p\#\mathrm{coker}(H_0)_{(p)},
+\]
+从而必有
+\[
+\boxed{\;v_p(N^\ast)\le \mathsf{Stiff}_p.\;}
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-minimal-integerization-factor-coker-exponent}，\(N^\ast=\mathrm{exp}(W)\)，故 \(v_p(N^\ast)=\log_p\mathrm{exp}(W_{(p)})\)。
+另一方面，\(\#\mathrm{coker}(H_0)_{(p)}=p^{v_p(\det(H_0))}\) 为 Smith 形的直接推论。
+任意有限 \(p\)-群 \(G\) 满足 \(\mathrm{exp}(G)\le \#G\)，取 \(G=W_{(p)}\subseteq \mathrm{coker}(H_0)_{(p)}\) 并取对数即得不等式。证毕。
+\end{proof}
+
