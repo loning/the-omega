@@ -271,6 +271,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_j_sextic_ellipticization_a6_hyperelliptic_audit",
+            script="exp_xi_j_sextic_ellipticization_a6_hyperelliptic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_j_sextic_ellipticization_a6_hyperelliptic_audit.json",
+            ],
+        ),
+        Step(
             name="xi_leyang_qapp_s5_disjointness_audit",
             script="exp_xi_leyang_qapp_s5_disjointness_audit.py",
             args=[],
