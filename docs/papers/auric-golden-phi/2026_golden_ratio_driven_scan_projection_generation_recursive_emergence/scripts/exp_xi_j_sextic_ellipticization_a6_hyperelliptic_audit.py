@@ -133,6 +133,14 @@ def main() -> None:
 
     id1 = sp.simplify(j - 1728 + 64 * s**2 / ((a - 1) ** 2 * r))
     id2 = sp.simplify(j**2 + 1862 * j + 161792 - (2048 * p**2 * H) / ((a - 1) ** 4 * r**2))
+    jprime = sp.simplify(sp.diff(j, a))
+    id3 = sp.simplify(
+        jprime
+        + 4096
+        * (a**2 - a + 1) ** 2
+        * (s * p)
+        / ((a - 1) ** 3 * r**2)
+    )
 
     # --- Discriminants and resultant
     disc_r = int(sp.discriminant(sp.Poly(r, a, domain=sp.ZZ).as_expr(), a))
@@ -195,10 +203,13 @@ def main() -> None:
         },
         "identities": {
             "j(a)": str(sp.simplify(j)),
+            "jprime(a)": str(jprime),
             "id_j_minus_1728_residual": str(id1),
             "id_quadratic_factor_residual": str(id2),
+            "id_jprime_residual": str(id3),
             "id1_is_zero": bool(id1 == 0),
             "id2_is_zero": bool(id2 == 0),
+            "id3_is_zero": bool(id3 == 0),
         },
         "hyperelliptic_branch_poly": {
             "disc_r": disc_r,

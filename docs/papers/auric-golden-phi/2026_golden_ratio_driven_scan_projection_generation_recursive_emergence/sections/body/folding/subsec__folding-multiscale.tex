@@ -330,13 +330,43 @@ $$
 \end{proof}
 
 \begin{corollary}[任意“只修末端常数位”的降分辨率补丁都不完备]\label{cor:fold-tail-patch-incomplete}
-固定常数 \(R\ge 0\)。设某一替代映射 \(T_{m,R}:\Omega_{m+1}\to\Omega_m\) 满足：对任意 \(\omega\in\Omega_{m+1}\)，字符串 \(T_{m,R}(\omega)\) 与直接截断 \(r_{m+1\to m}(\omega)\) 的不同位只可能落在末端 \(R\) 个坐标上（即最多改动末端 \(R\) 位）。
-则对所有 \(m>R\)，存在 \(\omega\in\Omega_{m+1}\) 使得 \(T_{m,R}(\omega)\ne \widetilde r_{m+1\to m}(\omega)\)。
+固定常数 \(R\ge 0\)。设某一替代映射 \(T_{m,R}:\Omega_{m+1}\to\Omega_m\) 满足：对任意 \(\omega\in\Omega_{m+1}\)，字符串 \(T_{m,R}(\omega)\) 与直接截断 \(r_{m+1\to m}(\omega)\) 的不同位只可能落在末端 \(R\) 个坐标上（即
+\(\bigl|r_{m+1\to m}(\omega)\oplus T_{m,R}(\omega)\bigr|_0\le R\)）。
+若进一步要求 \(T_{m,R}\) 在微态层面实现折叠塔交换，即对一切 \(\omega\) 有
+\[
+\Fold_m\!\bigl(T_{m,R}(\omega)\bigr)=\pi_{m+1\to m}\!\bigl(\Fold_{m+1}(\omega)\bigr),
+\]
+并且 \(T_{m,R}(\omega)\in X_m\)（等价地 \(\Fold_m(T_{m,R}(\omega))=T_{m,R}(\omega)\)），
+则对所有 \(m>R\) 必存在 \(\omega\in\Omega_{m+1}\) 使得 \(T_{m,R}(\omega)\ne \widetilde r_{m+1\to m}(\omega)\)；
+特别地，不存在与 \(m\) 无关的常数 \(R\) 使得这类“末端局域补丁”对所有分辨率同时成立。
 \end{corollary}
 
 \begin{proof}
-取定理 \ref{thm:fold-gauge-anomaly-max} 的 \(\omega^\star(m)\)。
-由于 \(r_{m+1\to m}(\omega^\star)\) 与 \(\widetilde r_{m+1\to m}(\omega^\star)\) 在前 \(m\) 位逐位全异，而 \(T_{m,R}\) 最多只能改动末端 \(R\) 位，故 \(T_{m,R}(\omega^\star)\) 至少在前 \(m-R\) 位与 \(\widetilde r_{m+1\to m}(\omega^\star)\) 不同，从而不可能相等。证毕。
+在 \(T_{m,R}(\omega)\in X_m\) 且交换图成立的假设下，对任意 \(\omega\) 有
+\[
+T_{m,R}(\omega)
+=\Fold_m\!\bigl(T_{m,R}(\omega)\bigr)
+=\pi_{m+1\to m}\!\bigl(\Fold_{m+1}(\omega)\bigr)
+=\widetilde r_{m+1\to m}(\omega),
+\]
+故 \(T_{m,R}\) 被强制等于折叠感知 restriction \(\widetilde r_{m+1\to m}\)。
+于是对每个 \(\omega\) 有
+\(
+\bigl|r_{m+1\to m}(\omega)\oplus \widetilde r_{m+1\to m}(\omega)\bigr|_0\le R
+\)，
+即 \(G_m(\omega)\le R\)（定义 \ref{def:fold-gauge-anomaly}）。
+取定理 \ref{thm:fold-gauge-anomaly-max} 的 \(\omega^\star(m)\) 使 \(G_m(\omega^\star)=m\)，当 \(m>R\) 时矛盾。
+因此必存在 \(\omega\) 使 \(T_{m,R}(\omega)\neq \widetilde r_{m+1\to m}(\omega)\)。
+\par
+同时，上述推导给出一个定量下界：若对给定 \(m\) 的某个 \(T_{m,R}\) 仍要求 \(T_{m,R}\equiv \widetilde r_{m+1\to m}\)，则必有
+\(
+R\ge \sup_{\omega}G_m(\omega)=m
+\)，并且在任意概率基线下也有
+\(
+R\ge \EE[G_m]=\bar G_m
+\)
+（例如均匀基线下由定理 \ref{thm:fold-gauge-anomaly-mean-finite-closed} 得 \(\bar G_m=\frac49m+O(1)\)）。
+证毕。
 \end{proof}
 
 \begin{remark}[有限尾补丁不完备与不可局部消除的 \texorpdfstring{$\mathsf{NULL}$}{NULL} 范式]\label{rem:fold-tail-patch-null-nonlocal}

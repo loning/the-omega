@@ -19,6 +19,165 @@ S_q(m):=\sum_{x\in X_m}d_m(x)^q,
 M_q(m):=\sum_{x\in X_m}w_m(x)^q=\frac{S_q(m)}{2^{qm}}.
 \]
 
+\paragraph{对比分离损失的可审计闭式}
+\begin{theorem}[一般分区下的 InfoNCE 最优闭式]\label{thm:pom-infonce-partition-optimal-closed-form}
+设 \(\Omega\) 为有限样本空间并赋予均匀分布。
+给定满射分区 \(g:\Omega\twoheadrightarrow\mathcal Y\)，记纤维 \(C_y:=g^{-1}(y)\) 且 \(|C_y|=:c_y\)。
+令
+\[
+U\sim\mathrm{Unif}(\Omega),\qquad Y:=g(U),
+\qquad
+V\mid (Y=y)\sim \mathrm{Unif}(C_y).
+\]
+并令负样本 \(W_1,\dots,W_{K-1}\stackrel{\mathrm{i.i.d.}}{\sim}\mathrm{Unif}(\Omega)\) 与 \((U,V)\) 独立。
+对任意打分函数 \(s:\Omega\times\Omega\to\RR\cup\{-\infty\}\)，定义 InfoNCE 损失
+\[
+L_K(s):=\EE\Biggl[-\log\frac{e^{s(U,V)}}{e^{s(U,V)}+\sum_{i=1}^{K-1}e^{s(U,W_i)}}\Biggr].
+\]
+令同类负样本计数
+\[
+J:=\#\{\,1\le i\le K-1:\ g(W_i)=g(U)\,\}.
+\]
+则成立精确最优值公式
+\[
+\inf_{s}L_K(s)=\EE\bigl[\log(1+J)\bigr],
+\qquad
+J\mid(Y=y)\sim \mathrm{Binomial}\!\left(K-1,\frac{c_y}{|\Omega|}\right).
+\]
+并且最优打分可取为硬同类判别器
+\[
+s^\star(u,v):=
+\begin{cases}
+0,& g(u)=g(v),\\
+-\infty,& g(u)\neq g(v).
+\end{cases}
+\]
+\end{theorem}
+\begin{proof}
+固定 \(U=u\) 与集合 \(\{V,W_1,\dots,W_{K-1}\}\) 的一次实现，记 \(y=g(u)\)，并令同类候选指标集合
+\[
+I_y:=\{0\}\cup\{\,i:\ g(W_i)=y\,\},
+\]
+其中 \(0\) 对应候选 \(V\)。
+在给定 \(u\) 与 \(I_y\) 的条件下，集合 \(\{V\}\cup\{W_i:i\in I_y\setminus\{0\}\}\) 为 \(C_y\) 上的 i.i.d.\ 均匀样本，因此“正样本索引”为 \(0\) 的条件概率在 \(I_y\) 上均匀，等于 \(|I_y|^{-1}=(1+J)^{-1}\)。
+于是任一（含 softmax）预测器在对数损失下的条件 Bayes 风险为 \(\log|I_y|=\log(1+J)\)，从而
+\(
+L_K(s)\ge \EE[\log(1+J)]
+\)。
+\par
+对 \(s^\star\)，softmax 概率在同类候选上均匀、异类候选上为零，故逐点达到该条件 Bayes 风险并取到下界。
+最后，\(J\mid(Y=y)\) 为 \(K-1\) 次独立抽样命中 \(C_y\) 的计数，故服从所示二项分布。
+证毕。
+\end{proof}
+
+\begin{corollary}[外置余项比特对 InfoNCE 的精确作用律]\label{cor:pom-infonce-fold-ledger-remainder-bits}
+在分辨率 \(m\) 上取 \(\Omega_m=\{0,1\}^m\) 与折叠 \(\Fold_m:\Omega_m\twoheadrightarrow X_m\)，并令 \(d_m(x)=|\Fold_m^{-1}(x)|\)。
+沿用定理 \ref{thm:xi-fold-algorithmic-holographic-ledger} 的账本编码 \(E_m(\omega)=(x,i)\)（其中 \(x=\Fold_m(\omega)\)、\(0\le i<d_m(x)\)）。
+对 \(B\in\NN\) 定义余项
+\[
+R_B(\omega):= i(\omega)\bmod 2^B,
+\qquad
+g_B(\omega):=\bigl(\Fold_m(\omega),R_B(\omega)\bigr).
+\]
+令正样本按 \(g_B\)-纤维重采样（负样本仍均匀独立），并记对应的 InfoNCE 损失为 \(L_{K,B}(s)\)。
+则
+\[
+\inf_s L_{K,B}(s)=\EE\bigl[\log(1+J_B)\bigr],
+\]
+其中在条件 \((X,R)=(x,r)\) 下有
+\[
+J_B\mid(X=x,R=r)\sim \mathrm{Binomial}\!\left(K-1,\frac{d_{m,B}(x,r)}{2^m}\right),
+\qquad
+d_{m,B}(x,r):=\bigl|\{\omega:\ \Fold_m(\omega)=x,\ R_B(\omega)=r\}\bigr|.
+\]
+并且对每个固定 \(x\in X_m\)，集合 \(\{0,\dots,d_m(x)-1\}\) 在模 \(2^B\) 的余类占用数满足二点取值律：
+\[
+d_{m,B}(x,r)\in\Bigl\{\Big\lfloor\frac{d_m(x)}{2^B}\Big\rfloor,\ \Big\lceil\frac{d_m(x)}{2^B}\Big\rceil\Bigr\},
+\]
+且恰有 \(d_m(x)\bmod 2^B\) 个余类取上取整，其余取下取整。
+因此得到无近似夹逼
+\[
+\EE\!\Big[\log\bigl(1+\mathrm{Bin}(K-1,\lfloor d_m(X)/2^B\rfloor/2^m)\bigr)\Big]
+\le
+\inf_s L_{K,B}(s)
+\le
+\EE\!\Big[\log\bigl(1+\mathrm{Bin}(K-1,\lceil d_m(X)/2^B\rceil/2^m)\bigr)\Big],
+\]
+其中 \(X=\Fold_m(U)\)、\(U\sim\mathrm{Unif}(\Omega_m)\)。
+此外该最优值关于 \(B\) 单调不增：
+\[
+\inf_s L_{K,B+1}(s)\ \le\ \inf_s L_{K,B}(s).
+\]
+\end{corollary}
+\begin{proof}
+对第一组等式，直接将定理 \ref{thm:pom-infonce-partition-optimal-closed-form} 应用于 \(g=g_B\) 即得。
+\par
+对二点取值律：对任意整数 \(d\ge 0\)，映射 \(i\mapsto i\bmod 2^B\) 把区间 \(\{0,\dots,d-1\}\) 分配到 \(2^B\) 个余类，每个余类的占用数只能相差至多 \(1\)；
+并且上取整出现次数恰等于余数 \(d\bmod 2^B\)。
+应用于每个纤维大小 \(d=d_m(x)\) 得到所示结构。
+\par
+夹逼由二项分布 \(\mathrm{Bin}(K-1,p)\) 对参数 \(p\) 的单调性与 \(\log(1+\cdot)\) 的单调性给出。
+\par
+对单调性：分区 \(g_{B+1}\) 细化 \(g_B\)，故逐个负样本满足
+\(
+\mathbf 1[g_{B+1}(W_i)=g_{B+1}(U)]\le \mathbf 1[g_B(W_i)=g_B(U)]
+\)，从而 \(J_{B+1}\le J_B\)。
+取期望即得。
+证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$B$}{B}-比特外置下的 Rényi 碰撞占用极值]\label{thm:pom-remainder-bits-renyi-collision-extremal}
+固定整数 \(d\ge 0\) 与桶数 \(M:=2^B\)。
+对任意占用向量 \((n_1,\dots,n_M)\in\NN^M\) 满足 \(\sum_{j=1}^M n_j=d\)，及任意实数 \(q\ge 1\)，令
+\[
+\Phi_q(n_1,\dots,n_M):=\sum_{j=1}^{M} n_j^q.
+\]
+记 \(a=\lfloor d/M\rfloor\)、\(r=d\bmod M\)。
+则：
+\begin{enumerate}
+  \item \textbf{（平衡极小）}\(\Phi_q\) 的最小值为
+  \[
+  \min\Phi_q=r(a+1)^q+(M-r)a^q,
+  \]
+  且当且仅当 \((n_j)\) 由 \(r\) 个 \(a+1\) 与 \(M-r\) 个 \(a\) 组成时取到。
+  \item \textbf{（极端极大）}若 \(d\ge M\)，则
+  \[
+  \max\Phi_q=(d-M+1)^q+(M-1)\cdot 1^q;
+  \]
+  若 \(d<M\)，则 \(\max\Phi_q=d\)（即 \(d\) 个 \(1\) 其余为 \(0\)）。
+\end{enumerate}
+将其应用于任意 \(B\)-比特外置映射 \(R:\Omega_m\to\{0,1\}^B\)：对每个 \(x\in X_m\) 记
+\[
+n_{x,r}:=\bigl|\{\omega:\ \Fold_m(\omega)=x,\ R(\omega)=r\}\bigr|,
+\qquad \sum_r n_{x,r}=d_m(x).
+\]
+则对每个 \(q\ge 1\) 有逐纤维下界
+\[
+\sum_r n_{x,r}^q\ \ge\ r_x(a_x+1)^q+(2^B-r_x)a_x^q,
+\qquad
+a_x=\Big\lfloor\frac{d_m(x)}{2^B}\Big\rfloor,\ \ r_x=d_m(x)\bmod 2^B,
+\]
+并且该下界可由某个 \(R\) 在每个 \(x\) 上同时取到（在纤维内实施平衡分配）。
+\end{theorem}
+\begin{proof}
+当 \(q=1\) 时 \(\Phi_1\equiv d\) 常值，结论平凡。
+下设 \(q>1\)。
+\par
+对极小值：若存在 \(n_i\ge n_j+2\)，则由函数 \(t\mapsto t^q\) 的严格凸性有
+\[
+(n_i^q+n_j^q)-\bigl((n_i-1)^q+(n_j+1)^q\bigr)>0,
+\]
+故把 \(1\) 个单位从大桶移向小桶会严格降低 \(\Phi_q\)。
+迭代直至所有桶差至多 \(1\) 即得平衡形态；该形态由整数除法唯一决定，故给出闭式并刻画所有达到者。
+\par
+对极大值：同样由凸性，固定总和时 \(\Phi_q\) 在主序意义下由最集中分配达到最大，即尽可能把质量压到一个桶、其余尽可能小。
+当 \(d\ge M\) 时取 \((d-M+1,1,\dots,1)\)；当 \(d<M\) 时取 \((1,\dots,1,0,\dots,0)\)。
+\par
+应用到纤维：对每个固定 \(x\)，将 \((n_{x,r})_{r\in\{0,1\}^B}\) 视为占用向量并代入上述极小闭式即得逐纤维下界。
+最后，“同时取到”由在每个纤维内独立构造平衡分配并拼接为全局映射 \(R\) 得到。
+证毕。
+\end{proof}
+
 \begin{theorem}[解析占用泛函的碰撞矩展开律]\label{thm:pom-occupancy-functional-collision-expansion}
 令 \(\psi:\CC\to\CC\) 为整函数，并取任意整数 \(n\ge 0\)。
 则成立严格恒等式

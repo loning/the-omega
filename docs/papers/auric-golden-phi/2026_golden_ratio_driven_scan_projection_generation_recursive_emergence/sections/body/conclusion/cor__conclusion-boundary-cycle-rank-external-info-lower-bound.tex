@@ -1,4 +1,4 @@
-\begin{corollary}[边界回路秩给出的外置信息硬下界]\label{cor:conclusion-boundary-cycle-rank-external-info-lower-bound}
+\begin{corollary}[散度完成化的最小外置寄存预算]\label{cor:conclusion-boundary-cycle-rank-external-info-lower-bound}
 设 \(f:\Omega_n=\{0,1\}^n\twoheadrightarrow X\) 为任意满射粗粒化，并令 \(\mathsf B_f\) 为其边界邻接多图（定义 \ref{def:hypercube-boundary-multigraph}）。
 记
 \[
@@ -14,22 +14,37 @@ r:=\operatorname{rank}_{\ZZ}H_1(\mathsf B_f;\ZZ)=A(f)-|X|+c(\mathsf B_f)
 \[
 \boxed{\ |\mathcal F_p(\delta)|=p^{r}\ }.
 \]
-从而在固定散度数据（等价地固定体积偏差通道；命题 \ref{prop:hypercube-discrete-holographic-stokes-gauge-area}）后，边界层仍保留的自由度至少为 \(r\) 个 \(\FF_p\)-自由坐标。
-特别地，对任意单射编码
+称一个有限集合 \(R\) 与映射 \(\ell:C_1(\mathsf B_f;\FF_p)\to R\) 为\emph{散度完成化寄存器}，若映射
 \[
-\mathrm{Enc}:\mathcal F_p(\delta)\hookrightarrow \{0,1\}^M,
+\Phi:\ C_1(\mathsf B_f;\FF_p)\ \to\ \operatorname{im}(\partial_p)\times R,
+\qquad
+\Phi(\varphi):=\bigl(\partial_p\varphi,\ell(\varphi)\bigr)
 \]
-必有纯计数下界 \(2^M\ge |\mathcal F_p(\delta)|=p^r\)，从而
+为单射。
+该口径与内部审计文档 \cite{Internal2026BoundaryDivergenceCompletionization} 的散度完成化定义一致。
+则任何散度完成化寄存器都满足
 \[
-\boxed{\ M\ge r\log_2 p\ }.
+\boxed{\ |R|\ \ge\ p^{r}\ },
 \]
-因此任何试图用有限外置寄存器在模 \(p\) 层面唯一化该自由度的方案，其外置信息量门槛至少为 \(r\log_2 p\) 比特。
+并且存在 \(|R|=p^r\) 的散度完成化寄存器；因此最小外置寄存预算恰为 \(|R|_{\min}=p^r\)，等价地最小信息量为 \(r\log_2 p\) 比特。
 \end{corollary}
 \begin{proof}
 若 \(\mathcal F_p(\delta)\) 非空，取一特解 \(\varphi_0\)，则任一解可写为 \(\varphi_0+\psi\)，其中 \(\psi\in\ker(\partial_p)\)；
 反之对任意 \(\psi\in\ker(\partial_p)\) 有 \(\partial_p(\varphi_0+\psi)=\delta\)，故 \(\mathcal F_p(\delta)=\varphi_0+\ker(\partial_p)\)。
 而 \(\ker(\partial_p)\cong H_1(\mathsf B_f;\FF_p)\) 且其 \(\FF_p\)-维数等于 \(\operatorname{rank}_{\ZZ}H_1(\mathsf B_f;\ZZ)=r\)，由命题 \ref{prop:hypercube-boundary-multigraph-h1-cdim} 及其链复形表述可得。
-因此 \(|\ker(\partial_p)|=p^{r}\)，从而 \(|\mathcal F_p(\delta)|=p^{r}\)。证毕。
+因此 \(|\ker(\partial_p)|=p^{r}\)，从而 \(|\mathcal F_p(\delta)|=p^{r}\)。
+\par
+若 \(\Phi\) 为单射，则其限制到 \(\ker(\partial_p)=\mathcal F_p(0)\) 上同样单射，故 \(\ell\) 在 \(\ker(\partial_p)\) 上必须单射，从而 \(|R|\ge |\ker(\partial_p)|=p^r\)。
+\par
+反过来，由有限维 \(\FF_p\)-向量空间分解可取直和
+\(
+C_1(\mathsf B_f;\FF_p)=\ker(\partial_p)\oplus W
+\)
+并令 \(\pi:C_1(\mathsf B_f;\FF_p)\to \ker(\partial_p)\) 为沿 \(W\) 的线性投影。
+取 \(R:=\ker(\partial_p)\) 并定义 \(\ell:=\pi\)，则若 \(\partial_p\varphi=\partial_p\psi\) 且 \(\ell(\varphi)=\ell(\psi)\)，有 \(\varphi-\psi\in\ker(\partial_p)\) 且 \(\pi(\varphi-\psi)=0\)；
+但 \(\pi|_{\ker(\partial_p)}=\mathrm{id}\)，故 \(\varphi=\psi\)，从而 \(\Phi\) 单射。
+因此存在 \(|R|=p^r\) 的完成化寄存器。
+证毕。
 \end{proof}
 
 \begin{corollary}[面积密度非退化时回路秩的指数尺度]\label{cor:conclusion-boundary-cycle-rank-density-explosion}
@@ -56,6 +71,25 @@ r_n\ge A(f_n)-|X_n|
 \)。
 在假设下右端为 \(\Theta(n2^{n-1})\)。
 另一方面 \(r_n\le |E(\mathsf B_{f_n})|=A(f_n)\le n2^{n-1}\)，故 \(r_n=\Theta(n2^{n-1})\)。证毕。
+\end{proof}
+
+\begin{corollary}[面积密度非退化下的回路秩饱和]\label{cor:conclusion-boundary-cycle-rank-saturation}
+在推论 \ref{cor:conclusion-boundary-cycle-rank-density-explosion} 的假设下，记 \(A_n:=A(f_n)\)，则
+\[
+\frac{r_n}{A_n}\longrightarrow 1\qquad(n\to\infty).
+\]
+\end{corollary}
+\begin{proof}
+由 \(r_n=A_n-|X_n|+c(\mathsf B_{f_n})\) 且 \(c(\mathsf B_{f_n})\le |X_n|\) 得
+\[
+1-\frac{|X_n|}{A_n}\ \le\ \frac{r_n}{A_n}\ \le\ 1.
+\]
+又 \(A_n=n2^{n-1}a_n\) 且 \(\liminf a_n>0\)、\(|X_n|/2^n\to 0\) 蕴含
+\[
+\frac{|X_n|}{A_n}
+=\frac{|X_n|/2^n}{a_n}\cdot\frac{2}{n}\longrightarrow 0,
+\]
+故夹逼得结论。证毕。
 \end{proof}
 
 \endinput

@@ -470,6 +470,83 @@ N_3(x):=\#\{j:\ \ell_j\equiv 3\pmod 6\}.
 第三条与定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 的证明同理（逐层分解为 \(\sigma_j\times \mathrm{id}\) 并累乘指数）。证毕。
 \end{proof}
 
+\begin{theorem}[最大纤维族的取向指纹刚性与显式周期分类]\label{thm:pom-maxfiber-orientation-charge-periodic}
+令最大纤维达到者集合
+\[
+\mathcal{M}_m:=\{x\in X_m:\ d_m(x)=D_m\}.
+\]
+在定理 \ref{thm:pom-max-achievers-phase-stabilization} 的稳定阈值区间内，存在唯一的 \(\chi_m\in\{\pm1\}^2\) 使得
+\[
+\chi(x)=\chi_m\qquad(\forall\,x\in \mathcal{M}_m),
+\]
+其中 \(\chi(x)=(\operatorname{sgn}(c_x),\operatorname{sgn}(\iota_x))\) 如命题 \ref{prop:pom-orientation-fingerprint-geometry-audit}。
+并且 \(\chi_m\) 具有如下周期律：
+\begin{enumerate}
+\normalfont
+  \item 若 \(m=2k\)，则 \(\chi_m\) 仅依赖于 \(k\bmod 12\)，并满足
+  \[
+  \chi_m=
+  \begin{cases}
+  (+,+), & k\equiv 0,5,10,11\pmod{12},\\
+  (-,+), & k\equiv 1,9\pmod{12},\\
+  (+,-), & k\equiv 2,4,6,8\pmod{12},\\
+  (-,-), & k\equiv 3,7\pmod{12}.
+  \end{cases}
+  \]
+  \item 若 \(m=2k+1\)，则第二分量恒为 \(+1\)，并且
+  \[
+  \chi_m=
+  \begin{cases}
+  (+,+), & m\equiv 5\pmod{6}\ \ (\Leftrightarrow\ k\equiv 2\pmod3),\\
+  (-,+), & m\equiv 1,3\pmod{6}\ \ (\Leftrightarrow\ k\equiv 0,1\pmod3).
+  \end{cases}
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由注 \ref{rem:pom-max-achievers-graph-structure}，在稳定阈值区间内若 \(m=2k\) 则
+\(\mathcal{M}_m\) 中的任意 \(x\) 满足 \(\Gamma_x\cong P_k\)，从而 \(\chi(x)=(\operatorname{sgn}(c_k),\operatorname{sgn}(\iota_k))\)；
+若 \(m=2k+1\) 则 \(\Gamma_x\cong P_{k-1}\sqcup P_1\)。
+因此 \(\chi\) 在 \(\mathcal{M}_m\) 上只依赖于该同构型，必为常值，从而存在唯一 \(\chi_m\)。
+\par
+对偶数 \(m=2k\)，由定理 \ref{thm:pom-toggle-scan-sign-mod6} 与定理 \ref{thm:pom-toggle-time-reversal-sign-mod12} 得
+\(\operatorname{sgn}(c_k)\) 仅依赖于 \(k\bmod 6\)，而 \(\operatorname{sgn}(\iota_k)\) 仅依赖于 \(k\bmod 12\)；
+将两者合并即可得到 \(k\bmod 12\) 的显式枚举表。
+\par
+对奇数 \(m=2k+1\)，写分量长度为 \((\ell_1,\ell_2)=(k-1,1)\)。
+若 \(k\equiv 2\pmod3\)，则 \(\ell_1\equiv 1\pmod3\) 且 \(\ell_2\equiv 1\pmod3\)，于是 \(A\) 含两元；由定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 与 \ref{thm:pom-toggle-time-reversal-sign-general-fiber} 的第一种情形可得
+\(\operatorname{sgn}(c_x)=\operatorname{sgn}(\iota_x)=+1\)。
+若 \(k\not\equiv 2\pmod3\)，则仅有 \(\ell_2=1\) 落入 \(\ell\equiv 1\pmod3\) 同余类，从而 \(|A|=1\)；
+由定理 \ref{thm:pom-toggle-scan-sign-general-fiber} 得 \(\operatorname{sgn}(c_x)=(-1)^{e(1)}=-1\)，并由定理 \ref{thm:pom-toggle-time-reversal-sign-general-fiber} 得 \(\operatorname{sgn}(\iota_x)=\delta(1)=+1\)，从而得到所示分类。证毕。
+\end{proof}
+
+\begin{corollary}[最大纤维族上的带符号指数灭绝律与 \(6\) 周期表]\label{cor:pom-maxfiber-signed-index-extinction-periodic}
+沿用定理 \ref{thm:pom-maxfiber-orientation-charge-periodic} 的记号，并令 \(\mathfrak{s}_m(x):=Z_x(-1)\)（定义 \ref{def:pom-fiber-signed-index}）。
+则在稳定阈值区间内，对任意 \(x\in\mathcal{M}_m\) 有：
+\begin{enumerate}
+\normalfont
+  \item 若 \(m\) 为奇数，则 \(\mathfrak{s}_m(x)=0\)。
+  \item 若 \(m=2k\) 为偶数，则 \(\mathfrak{s}_m(x)=J_k\)，其中 \(J_\ell:=I_\ell(-1)\) 为定理 \ref{thm:pom-fiber-signed-index-periodicity} 的 \(6\) 周期序列；等价地
+  \[
+  \mathfrak{s}_m(x)=
+  \begin{cases}
+  +1, & k\equiv 0,5\pmod 6,\\
+  -1, & k\equiv 2,3\pmod 6,\\
+  0, & k\equiv 1,4\pmod 6.
+  \end{cases}
+  \]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由注 \ref{rem:pom-max-achievers-graph-structure}：若 \(m=2k\)，则 \(\Gamma_x\cong P_k\)，故 \(Z_x(t)=I_k(t)\) 且 \(\mathfrak{s}_m(x)=I_k(-1)=J_k\)；
+若 \(m=2k+1\)，则 \(\Gamma_x\cong P_{k-1}\sqcup P_1\)，从而
+\(
+\mathfrak{s}_m(x)=J_{k-1}\cdot J_1
+\)；
+而 \(J_1=0\)（定理 \ref{thm:pom-fiber-signed-index-periodicity}），故 \(\mathfrak{s}_m(x)=0\)。
+最后一条分情形表即为 \(6\) 周期序列 \(J_k\) 的取值表。证毕。
+\end{proof}
+
 \begin{conjecture}[非平凡取向扇区的指数常数与 Perron 根]\label{conj:pom-nontrivial-orientation-sector-perron-root}
 记取向指纹 \(\chi(x)=(\operatorname{sgn}(c_x),\operatorname{sgn}(\iota_x))\in\{\pm 1\}^2\)（命题 \ref{prop:pom-orientation-fingerprint-geometry-audit}）。
 猜想存在 \(0<\rho_{\mathrm{odd}},\rho_{\mathrm{nt}}<\varphi\) 使得
