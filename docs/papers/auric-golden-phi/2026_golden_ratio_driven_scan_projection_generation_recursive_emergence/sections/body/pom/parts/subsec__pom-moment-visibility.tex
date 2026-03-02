@@ -56,6 +56,60 @@ d_q=\dim V_q^{\mathrm{vis}}\ \le\ 2\lfloor q/2\rfloor+1,
 这一跳变为后续追踪“模 \(5\)”类算术效应提供了一个可复核的起点指标（例如随 \(k\) 增大继续记录 \(\mathsf{Stiff}_5(k)\) 的增长与共振缺口 \(\Delta(k)\) 的对照）。
 \end{remark}
 
+\begin{theorem}[\texorpdfstring{$\mathsf{Stiff}_p=0$}{Stiffp=0} 的良约化判据：Hankel 最小实现的 \texorpdfstring{$p$}{p}-整性与维数稳定]\label{thm:pom-stiff0-hankel-good-reduction-dim-stability}
+设 \((a_n)_{n\ge 0}\subset\ZZ\) 为一整数序列并具有有限 Hankel 秩。
+取最小的 \(d\ge 1\) 使得 Hankel 主块
+\[
+H_0:=(a_{i+j})_{0\le i,j\le d-1}\in M_d(\ZZ)
+\qquad\text{在}\ \QQ\ \text{上可逆},
+\]
+并令
+\[
+H_1:=(a_{i+j+1})_{0\le i,j\le d-1}\in M_d(\ZZ),
+\qquad
+A:=H_0^{-1}H_1\in M_d(\QQ).
+\]
+对素数 \(p\) 定义刚性指数
+\[
+\mathsf{Stiff}_p:=v_p(\det H_0).
+\]
+若 \(\mathsf{Stiff}_p=0\)，则：
+\begin{enumerate}
+  \item \(A\in M_d(\ZZ_p)\)；
+  \item 记 \(\bar a_n:=a_n\bmod p\in\FF_p\)，则序列 \((\bar a_n)_{n\ge 0}\) 在 \(\FF_p\) 上的 Hankel 秩仍为 \(d\)；等价地，其在 \(\FF_p\) 上的最小线性实现维数保持为 \(d\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由伴随矩阵恒等式
+\[
+A=\frac{\mathrm{adj}(H_0)\,H_1}{\det(H_0)}
+\]
+可见 \(A\) 的各条目属于 \(\ZZ[\det(H_0)^{-1}]\)。
+若 \(\mathsf{Stiff}_p=0\)，则 \(\det(H_0)\in\ZZ_p^\times\)，从而 \(A\in M_d(\ZZ_p)\)，得到第一条。
+\par
+对第二条，\(\det(H_0)\not\equiv 0\ (\mathrm{mod}\ p)\) 蕴含 \(\bar H_0\in\mathrm{GL}_d(\FF_p)\)，故 \((\bar a_n)\) 的 Hankel 矩阵在 \(\FF_p\) 上至少具有秩 \(d\)（因为其 \(d\times d\) 主块 \(\bar H_0\) 可逆）。
+另一方面，由第一条可在 \(\FF_p\) 上约化得到 \(\bar A:=A\bmod p\in M_d(\FF_p)\)；并且 \(H_0A=H_1\) 的约化给出 \(\bar H_0\bar A=\bar H_1\)。
+由 Hankel realization 的标准等价刻画（定理 \ref{thm:hankel-rank-minimal}），\((\bar a_n)\) 具有维数 \(\le d\) 的线性实现，故其 Hankel 秩至多为 \(d\)。
+两侧合并得到 Hankel 秩恰为 \(d\)，从而最小实现维数稳定。证毕。
+\end{proof}
+
+\begin{corollary}[Fold 碰撞矩的坏素锁定：\texorpdfstring{$k=4,5$}{k=4,5} 的审计维数在几乎所有素数上稳定]\label{cor:pom-fold-collision-moment-bad-primes-locked-by-hankel}
+沿用表 \ref{tab:fold_collision_moment_hankel_rank} 的 Hankel 见证块 \(H_{k=4}\) 与 \(H_{k=5}\)，并用注 \ref{rem:pom-hankel-stiffness-p5} 的分解
+\[
+\det(H_{k=4})=2^{17}\cdot 3^2,
+\qquad
+\det(H_{k=5})=2^{13}\cdot 3^5\cdot 5^7.
+\]
+则：
+\begin{enumerate}
+  \item 对一切素数 \(p\ge 5\)，有 \(\mathsf{Stiff}_p(4)=0\)，从而 \(S_4(m)\bmod p\) 的 Hankel 秩（亦即最小实现维数）保持为审计维数 \(d_4=5\)；
+  \item 对一切素数 \(p\ge 7\)，有 \(\mathsf{Stiff}_p(5)=0\)，从而 \(S_5(m)\bmod p\) 的 Hankel 秩（亦即最小实现维数）保持为审计维数 \(d_5=5\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由素因子分解直接判别 \(\mathsf{Stiff}_p(k)=v_p(\det(H_k))\) 是否为零；在 \(\mathsf{Stiff}_p(k)=0\) 的素数上应用定理 \ref{thm:pom-stiff0-hankel-good-reduction-dim-stability} 即得结论。证毕。
+\end{proof}
+
 \begin{conjecture}[刚性指数跳跃的有限素数支撑与缺陷量子化对齐]\label{conj:pom-stiffness-jump-quantized-defect}
 对每个整数 \(q\ge 2\)，令 \(d_q\) 为 \(m\mapsto S_q(m)\) 的最小整系数递推阶数（命题 \ref{prop:pom-moment-minrecurrence-hankel}），并令
 \[
