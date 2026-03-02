@@ -36,6 +36,52 @@ N_i^+(S)-N_i^-(S)
 再由 \(|a+b|\ge ||a|-|b||\)（取 \(a=N_i^+(S),b=N_i^-(S)\)）得 \(c_i(S)\ge |b_i(S)|\)。证毕。
 \end{proof}
 
+\begin{proposition}\label{prop:fold-hypercube-weighted-discrete-flux-identity}
+设 \(n\ge 1\)，取参数 \(a=(a_1,\dots,a_n)\in(0,\infty)^n\)，并定义指数型权重
+\[
+w_a(\omega):=\prod_{j=1}^n a_j^{\omega_j},
+\qquad
+\omega\in\Omega_n.
+\]
+对任意 \(S\subseteq\Omega_n\) 与坐标 \(i\in\{1,\dots,n\}\)，定义加权定向边界通量
+\[
+N_i^+(S;a):=\sum_{\substack{\omega\in S\\ \omega_i=0,\ \omega^{(i)}\notin S}} w_a(\omega),
+\qquad
+N_i^-(S;a):=\sum_{\substack{\omega\in S\\ \omega_i=1,\ \omega^{(i)}\notin S}} w_a(\omega).
+\]
+则成立精确恒等式
+\[
+a_i\,N_i^+(S;a)-N_i^-(S;a)
+=a_i\sum_{\substack{\omega\in S\\ \omega_i=0}}w_a(\omega)-\sum_{\substack{\omega\in S\\ \omega_i=1}}w_a(\omega).
+\]
+\end{proposition}
+\begin{proof}
+令 \(f=\mathbf 1_S\)，并考虑求和
+\[
+\Sigma:=\sum_{\omega:\ \omega_i=0} w_a(\omega)\bigl(f(\omega)-f(\omega^{(i)})\bigr).
+\]
+一方面按边界分解得
+\[
+\Sigma
+=\sum_{\substack{\omega\in S\\ \omega_i=0,\ \omega^{(i)}\notin S}}w_a(\omega)
+-\sum_{\substack{\omega\notin S\\ \omega_i=0,\ \omega^{(i)}\in S}}w_a(\omega)
+=N_i^+(S;a)-\sum_{\substack{v\in S\\ v_i=1,\ v^{(i)}\notin S}}w_a(v^{(i)}).
+\]
+注意当 \(v_i=1\) 时 \(w_a(v^{(i)})=w_a(v)/a_i\)，故
+\[
+\Sigma=N_i^+(S;a)-\frac{1}{a_i}N_i^-(S;a).
+\]
+另一方面直接重排得
+\[
+\Sigma
+=\sum_{\substack{\omega\in S\\ \omega_i=0}}w_a(\omega)
+-\sum_{\substack{v\in S\\ v_i=1}}w_a(v^{(i)})
+=\sum_{\substack{\omega\in S\\ \omega_i=0}}w_a(\omega)
+-\frac{1}{a_i}\sum_{\substack{v\in S\\ v_i=1}}w_a(v).
+\]
+令两式相等并同乘 \(a_i\) 即得结论。证毕。
+\end{proof}
+
 \begin{corollary}[\texorpdfstring{$\ell^1$}{l1} 边界下界与坐标单调性的等号刻画]\label{cor:fold-hypercube-boundary-l1-bias-monotone}
 在命题 \ref{prop:fold-hypercube-godel-stokes-flux-bias} 的记号下，记 \(\partial S\) 为超立方体图上 \(S\) 的无向边界边集（定义如 \eqref{eq:hypercube-gauge-volume-renyi-upperbound} 的证明中所用）。
 则
@@ -432,6 +478,76 @@ E_w(S)=\sum_{i=1}^n w_i\sum_{\omega\in\Omega_n}\bigl(f(\omega)-f(\omega^{(i)})\b
 2^{-n}E_w(S)\ge \sum_{i=1}^n 2w_i\frac{b_i(S)^2}{2^{2n}},
 \]
 移项即得结论。证毕。
+\end{proof}
+
+\begin{theorem}\label{thm:fold-hypercube-godel-ellipsoid-volume-energy-rigidity}
+取互异素数 \(p_1,\dots,p_n\)，并定义对数权重能量
+\[
+E_{\log p}(S):=\sum_{i=1}^n (\log p_i)\,c_i(S),
+\]
+其中 \(c_i(S)\) 为第 \(i\) 坐标方向的无向边界数（命题 \ref{prop:fold-hypercube-godel-stokes-flux-bias}）。
+对任意 \(S\subseteq\Omega_n\)，令
+\(
+r_i(S):=b_i(S)^2
+\)
+并构造轴对齐 Gödel 椭球
+\[
+\mathcal E_n(r(S))
+:=\Bigl\{x\in\RR^n:\ \sum_{i=1}^n \frac{x_i^2}{p_i^{r_i(S)}}\le 1\Bigr\}.
+\]
+则其体积满足
+\[
+\log\operatorname{vol}\bigl(\mathcal E_n(r(S))\bigr)
+=\log\kappa_n+\frac12\sum_{i=1}^n (\log p_i)\,r_i(S),
+\]
+并且成立严格上界
+\[
+\log\operatorname{vol}\bigl(\mathcal E_n(r(S))\bigr)
+\le
+\log\kappa_n+2^{n-2}\,E_{\log p}(S).
+\]
+若 \(S\) 非平凡（即 \(\varnothing\ne S\ne\Omega_n\)），则上式取等号当且仅当 \(S\) 为某一坐标的余维 \(1\) 面：
+\[
+S=\{\omega\in\Omega_n:\ \omega_j=\varepsilon\}
+\quad\text{对某个 }j\in\{1,\dots,n\},\ \varepsilon\in\{0,1\}.
+\]
+\end{theorem}
+\begin{proof}
+体积公式来自轴对齐椭球的基本计算：
+\(
+\operatorname{vol}(\mathcal E_n(r))=\kappa_n\prod_{i=1}^n p_i^{r_i/2}
+\)，取对数即得。
+由命题 \ref{prop:fold-hypercube-weighted-energy-ellipsoid-bias} 取权重 \(w_i=\log p_i\) 得
+\[
+E_{\log p}(S)\ge 2^{1-n}\sum_{i=1}^n(\log p_i)\,b_i(S)^2
+=2^{1-n}\sum_{i=1}^n(\log p_i)\,r_i(S),
+\]
+两边同乘 \(2^{n-2}\) 并代入体积公式即可得到上界。
+\par
+下面刻画等号情形。由命题 \ref{prop:fold-hypercube-weighted-energy-ellipsoid-bias} 的证明可见，
+不等式来自谱展开中
+\[
+\sum_{\varnothing\ne I\subseteq[n]}2\Bigl(\sum_{i\in I}w_i\Bigr)|\widehat f(I)|^2
+\ge
+\sum_{i=1}^n 2w_i|\widehat f(\{i\})|^2,
+\qquad f=\mathbf 1_S,
+\]
+故在 \(w_i=\log p_i>0\) 下取等号当且仅当 \(\widehat f(I)=0\) 对所有 \(|I|\ge 2\) 成立。
+于是存在实数 \(a_0,a_1,\dots,a_n\) 使得
+\[
+f(\omega)=a_0+\sum_{i=1}^n a_i(-1)^{\omega_i}.
+\]
+由于 \(f(\omega)\in\{0,1\}\) 对一切 \(\omega\) 成立，若存在 \(i\ne j\) 使 \(a_i,a_j\ne 0\)，
+则通过令 \((\omega_i,\omega_j)\) 取四种组合可使 \(f\) 取到 \(a_0\pm a_i\pm a_j\) 四个值，必有至少一值落在 \(\{0,1\}\) 之外，矛盾。
+故至多一个 \(a_j\) 非零。
+在 \(S\) 非平凡时必有某个 \(a_j\ne 0\)，并由二值约束可知
+\(
+f(\omega)=\frac12(1\pm (-1)^{\omega_j})
+\)，等价于
+\(
+S=\{\omega:\ \omega_j=\varepsilon\}
+\)。
+反之，此类集合直接检验可使谱仅支撑在一次项上，从而取等号。证毕。
 \end{proof}
 
 \begin{theorem}[能量截止下的 Walsh--Stokes 全息重构与最优误差上界]\label{thm:fold-hypercube-walsh-stokes-energy-cutoff-reconstruction}

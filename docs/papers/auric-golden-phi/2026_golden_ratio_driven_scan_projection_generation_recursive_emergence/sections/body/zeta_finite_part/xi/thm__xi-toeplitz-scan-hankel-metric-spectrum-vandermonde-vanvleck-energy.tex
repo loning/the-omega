@@ -142,6 +142,59 @@ V_{p+1,j}:=z_j^{p}\qquad(0\le p\le \kappa-1).
 最后将 \eqref{eq:xi-dethankel-vandermonde-square} 代入 \eqref{eq:xi-product-negative-eigs-dethankel} 得 \eqref{eq:xi-product-negative-eigs-explicit-vandermonde}。证毕。
 \end{proof}
 
+\begin{proposition}[无穷 Hankel 的 Hilbert--Schmidt 能量闭式与质量--能量下界]\label{prop:xi-hankel-hs-energy-closed-form-mass-energy}
+在 \eqref{eq:xi-scan-fingerprint-exponential-sum} 的设定下，定义无穷 Hankel 矩阵
+\[
+\mathsf H_\infty:=(u_{p+q})_{p,q\ge 0}.
+\]
+则其 Hilbert--Schmidt 能量满足闭式
+\[
+\|\mathsf H_\infty\|_{\mathrm{HS}}^2
+=\sum_{p,q\ge 0}|u_{p+q}|^2
+=\sum_{j,k=1}^{\kappa}(4\pi)^2 w_j w_k\,\frac{1}{(1-z_j\overline z_k)^2}.
+\]
+并且存在完全消去节点 \((z_j)\) 的下界
+\[
+\|\mathsf H_\infty\|_{\mathrm{HS}}^2\ \ge\ \frac{1}{\kappa}\,|u_0|^2
+\qquad\Bigl(u_0=4\pi\sum_{j=1}^{\kappa}w_j\Bigr).
+\]
+\end{proposition}
+\begin{proof}
+由反对角线计数恒等式，
+\[
+\sum_{p,q\ge 0}|u_{p+q}|^2=\sum_{n\ge 0}(n+1)|u_n|^2.
+\]
+将 \(u_n=(4\pi)\sum_j w_j z_j^n\) 代入得
+\[
+|u_n|^2=(4\pi)^2\sum_{j,k}w_j w_k (z_j\overline z_k)^n.
+\]
+由于 \(|z_j\overline z_k|<1\)，可交换求和并用几何级数公式
+\(
+\sum_{n\ge 0}(n+1)r^n=(1-r)^{-2}
+\)
+得到闭式。
+下界由忽略交叉项并用 Cauchy--Schwarz 得
+\[
+\|\mathsf H_\infty\|_{\mathrm{HS}}^2
+\ge \sum_{n\ge 0}(n+1)(4\pi)^2\sum_{j=1}^{\kappa}w_j^2|z_j|^{2n}
+\ge (4\pi)^2\sum_{j=1}^{\kappa}w_j^2
+\ge \frac{(4\pi)^2}{\kappa}\Bigl(\sum_{j=1}^{\kappa}w_j\Bigr)^2
+=\frac{1}{\kappa}|u_0|^2.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[峰值与二次能量约束的独立性]\label{cor:xi-peak-vs-energy-audit-independence}
+在命题 \ref{prop:xi-hankel-hs-energy-closed-form-mass-energy} 的设定下，
+\(\|u\|_{1}:=\sum_{j=1}^{\kappa}w_j\)（等价于 \(|u_0|=4\pi\|u\|_1\)）固定时，
+Hilbert--Schmidt 能量满足
+\(
+\|\mathsf H_\infty\|_{\mathrm{HS}}^2\ge \kappa^{-1}|u_0|^2
+\)。
+另一方面，固定同一质量口径下，缺陷峰值可以随 \(\kappa_{\mathrm{ind}}\) 增大而按 \(O(\kappa_{\mathrm{ind}}^{-1})\) 下降（定理 \ref{thm:xi-defect-entropy-peak-compressibility-extremal} 与推论 \ref{cor:xi-defect-entropy-mass-peak-decoupling}）。
+因此，仅依赖峰值的约束与仅依赖二次能量/谱隙的约束在结构上彼此独立：质量不变时峰值可趋于零，而二次能量仍受不可消去的下界约束。
+\end{corollary}
+
 \begin{theorem}[Van Vleck 留数线性矩约束强制的残差能量下界]\label{thm:xi-vanvleck-residue-l2-lower-bound}
 沿用命题 \ref{prop:xi-basepoint-scan-van-vleck-residue-moment01} 的设定。
 令 \(p_k=s_k+\mathrm{i}t_k\in\CC\)（\(s_k,t_k\in\RR\)）与 \(r_k\in\CC\) 满足线性矩约束
