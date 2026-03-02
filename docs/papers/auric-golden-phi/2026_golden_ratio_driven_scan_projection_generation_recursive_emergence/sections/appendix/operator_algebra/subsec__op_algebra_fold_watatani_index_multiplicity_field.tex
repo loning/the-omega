@@ -207,6 +207,67 @@ u_{ij}:=\sqrt d\,e_{ij}
 代入即得。证毕。
 \end{proof}
 
+\begin{theorem}[碰撞矩 \texorpdfstring{$\Rightarrow$}{=>} 指数场谱的可辨识性]\label{thm:op-algebra-watatani-index-spectrum-identifiable-from-collision-moments}
+固定 \(m\ge 1\)，记 \(N:=|X_m|\)。
+令纤维多重度多重集合为
+\[
+\mathcal D_m:=\{d_m(x):x\in X_m\}\quad(\text{按重数计}).
+\]
+则以下数据等价：
+\begin{enumerate}
+  \item \(\mathcal D_m\)（等价地，中心元 \(\mathrm{Ind}_{\mathrm W}(E_m)=\sum_{x}d_m(x)\widetilde P_x\) 的谱，按重数计）；
+  \item 碰撞矩有限段 \(\{S_q(m)\}_{1\le q\le N}\)，其中 \(S_q(m)=\sum_{x\in X_m}d_m(x)^q\)；
+  \item 迹矩有限段 \(\{\tau_m(\mathrm{Ind}_{\mathrm W}(E_m)^{q-1})\}_{1\le q\le N}\)。
+\end{enumerate}
+更精确地：由 Newton 恒等式，\(\{S_q(m)\}_{1\le q\le N}\) 唯一确定多项式
+\[
+Q_m(z):=\prod_{x\in X_m}(1-d_m(x)z)\in\ZZ[z],
+\]
+其根（按重数计）为集合 \(\{d_m(x)^{-1}\}_{x\in X_m}\)，从而唯一恢复 \(\mathcal D_m\)。
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:op-algebra-fold-watatani-index-moments}，
+\(
+\tau_m(\mathrm{Ind}_{\mathrm W}(E_m)^{q-1})=2^{-m}S_q(m)
+\)，故（2）与（3）等价。
+\par
+记 \(p_q:=S_q(m)\) 为幂和对称多项式，记 \(e_k\) 为 \(\{d_m(x)\}\) 的初等对称多项式，则 Newton 恒等式递归地以 \(\{p_q\}_{1\le q\le N}\) 唯一确定 \(\{e_k\}_{1\le k\le N}\)。
+而
+\(
+Q_m(z)=\sum_{k=0}^{N}(-1)^k e_k z^k
+\)
+即得。
+最后由 \(Q_m\) 的根值表述可恢复 \(\{d_m(x)^{-1}\}\)（带重数），从而恢复 \(\mathcal D_m\)。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$p$}{p}-进审计：由 Newton 多边形读出素因子指数谱]\label{prop:op-algebra-watatani-index-newton-polygon-padic-audit}
+沿用定理 \ref{thm:op-algebra-watatani-index-spectrum-identifiable-from-collision-moments} 的记号。
+对任意素数 \(p\)，在 \(\QQ_p\) 上考虑多项式 \(Q_m(z)=\prod_{x}(1-d_m(x)z)\)。
+则 \(\{v_p(d_m(x))\}_{x\in X_m}\)（按重数计）由 \(Q_m\) 的 \(p\)-进 Newton 多边形的斜率集合唯一确定。
+等价地，若以 \(Q_m(z)=\sum_{k=0}^{N}(-1)^k a_k z^k\) 表示，则从系数估值 \(\{v_p(a_k)\}\) 形成的 Newton 多边形即可恢复 \(\{v_p(d_m(x))\}\)。
+\end{proposition}
+\begin{proof}
+将 \(Q_m(z)\) 分解为一次因子 \(1-d_m(x)z\)，其根为 \(z=d_m(x)^{-1}\)。
+Newton 多边形理论给出：\(Q_m\) 的根的 \(p\)-进估值多重集合由 Newton 多边形的斜率（带水平长度）刻画。
+而 \(v_p(d_m(x)^{-1})=-v_p(d_m(x))\)，故斜率集合等价地确定 \(\{v_p(d_m(x))\}\)。证毕。
+\end{proof}
+
+\begin{conjecture}[Newton 多边形的热带极限形状与 \texorpdfstring{$p$}{p}-进圆维谱]\label{conj:op-algebra-watatani-index-newton-tropical-limit-shape}
+对每个素数 \(p\)，定义经验测度
+\[
+\nu_{m,p}:=\frac{1}{|X_m|}\sum_{x\in X_m}\delta_{\frac1m v_p(d_m(x))}.
+\]
+并定义（若极限存在）\(p\)-进压力函数
+\[
+\Psi_p(\theta):=\lim_{m\to\infty}\frac1m\log\left(\frac1{|X_m|}\sum_{x\in X_m}p^{-\theta v_p(d_m(x))}\right).
+\]
+在“典型折叠”制度下，猜想 \((\nu_{m,p})_m\) 满足大偏差原理，其速率函数为 Legendre--Fenchel 变换
+\[
+I_p(\alpha)=\sup_{\theta\in\RR}\bigl\{\theta\alpha\log p-\Psi_p(\theta)\bigr\}.
+\]
+并且归一化 Newton 多边形 \(\frac1m\,\mathrm{NP}_p(Q_m)\) 在 Hausdorff 意义下收敛到由 \(I_p\) 决定的确定凸曲线（热带极限形状）。
+\end{conjecture}
+
 \begin{proposition}[\texorpdfstring{$q$}{q}-重折叠碰撞空间与相对张量幂的规范基]\label{prop:op-algebra-fold-relative-tensor-power-fiber-product}
 对整数 \(q\ge 1\)，定义 \(q\)-重折叠纤维积
 \[
