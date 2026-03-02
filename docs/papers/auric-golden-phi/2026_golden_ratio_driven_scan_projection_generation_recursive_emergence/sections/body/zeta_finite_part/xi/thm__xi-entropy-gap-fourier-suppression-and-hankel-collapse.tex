@@ -1,0 +1,122 @@
+% Entropy gap suppression and Hankel collapse bounds.
+
+\begin{theorem}[熵缺口对非零谱指纹的指数抑制]\label{thm:xi-entropy-gap-exponential-suppression-nonzero-fingerprint}
+沿用 \eqref{eq:xi-comoving-scan-fourier} 的有限缺陷口径，并取采样步长 \(\Delta=1\)，令
+\(
+u_n:=\widehat H(n)
+\)
+为离散谱指纹序列。
+记整数缺陷指数 \(\kappa_{\mathrm{ind}}:=\sum_{j=1}^{\kappa}m_j\) 与缺陷熵 \(S_{\mathrm{def}}\)（\eqref{eq:xi-defect-entropy-closed-form}），并定义熵缺口
+\[
+\kappa_{\mathrm{ind}}-S_{\mathrm{def}}
+=\sum_{j=1}^{\kappa}\frac{m_j}{1+\delta_j}
+\qquad\text{（见 \eqref{eq:xi-defect-entropy-index-decomposition}）}.
+\]
+则对每个整数 \(n\ge 1\) 成立显式上界
+\[
+|u_n|
+\ \le\
+4\pi\,e^{-n}\,(\kappa_{\mathrm{ind}}-S_{\mathrm{def}}).
+\]
+\end{theorem}
+\begin{proof}
+由 \eqref{eq:xi-comoving-scan-fourier}（取 \(\Delta=1\)）可写
+\[
+u_n
+=4\pi\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{1+\delta_j}\,e^{-(1+\delta_j)n}\,e^{-\mathrm{i}\gamma_j n}.
+\]
+取模并分离指数因子得
+\[
+|u_n|
+\le
+4\pi\,e^{-n}\sum_{j=1}^{\kappa}m_j\,\frac{\delta_j}{1+\delta_j}\,(e^{-\delta_j})^{n}.
+\]
+对任意 \(\delta>0\) 有 \(e^\delta\ge 1+\delta\)，从而 \(e^{-\delta}\le (1+\delta)^{-1}\)；
+于是对 \(n\ge 1\),
+\(
+(e^{-\delta_j})^{n}\le (1+\delta_j)^{-n}\le (1+\delta_j)^{-1}
+\)。
+代回并用 \(\frac{\delta_j}{1+\delta_j}\le 1\) 得
+\[
+|u_n|
+\le
+4\pi\,e^{-n}\sum_{j=1}^{\kappa}m_j\,\frac{1}{1+\delta_j}
+=
+4\pi\,e^{-n}\,(\kappa_{\mathrm{ind}}-S_{\mathrm{def}}),
+\]
+其中最后一步使用 \eqref{eq:xi-defect-entropy-index-decomposition}。证毕。
+\end{proof}
+
+\begin{proposition}[熵缺口驱动的 Hankel 主子式塌缩上界]\label{prop:xi-entropy-gap-hankel-determinant-collapse-upper-bound}
+令 \(\mathsf H_{\kappa-1}:=(u_{p+q})_{0\le p,q\le \kappa-1}\) 为 Toeplitz--扫描 Hankel 框架中的 Hankel 指纹块，并定义
+\[
+B:=\sup_{n\ge 1}|u_n|.
+\]
+则行列式满足组合学型上界
+\[
+|\det(\mathsf H_{\kappa-1})|
+\ \le\
+(\kappa-1)!\,|u_0|\,B^{\kappa-1}+\bigl(\kappa!-(\kappa-1)!\bigr)\,B^{\kappa}
+\ \le\
+\kappa!\bigl(|u_0|\,B^{\kappa-1}+B^{\kappa}\bigr).
+\]
+特别地，在定理 \ref{thm:xi-entropy-gap-exponential-suppression-nonzero-fingerprint} 的设定下，若 \(S_{\mathrm{def}}\) 固定而 \(\kappa_{\mathrm{ind}}-S_{\mathrm{def}}\to 0\)，则存在仅依赖 \(\kappa\) 的常数使
+\[
+|\det(\mathsf H_{\kappa-1})|\ \ll_{\kappa}\ (\kappa_{\mathrm{ind}}-S_{\mathrm{def}})^{\kappa-1}.
+\]
+\end{proposition}
+\begin{proof}
+以排列展开式写
+\[
+\det(\mathsf H_{\kappa-1})
+=\sum_{\pi\in S_{\kappa}}\mathrm{sgn}(\pi)\prod_{p=0}^{\kappa-1}u_{p+\pi(p)}.
+\]
+注意 \(p+\pi(p)=0\) 仅可能在 \(p=0\) 且 \(\pi(0)=0\) 时发生，因此每一单项式至多含一个因子 \(u_0\)。
+若 \(\pi(0)=0\)，其余因子指标皆满足 \(p+\pi(p)\ge 1\)，故
+\[
+\Bigl|\prod_{p=0}^{\kappa-1}u_{p+\pi(p)}\Bigr|
+\le
+|u_0|\,B^{\kappa-1}.
+\]
+此类排列恰有 \((\kappa-1)!\) 个。
+若 \(\pi(0)\neq 0\)，则全部指标 \(\ge 1\)，从而
+\[
+\Bigl|\prod_{p=0}^{\kappa-1}u_{p+\pi(p)}\Bigr|
+\le
+B^{\kappa},
+\]
+此类排列数为 \(\kappa!-(\kappa-1)!\)。
+求和得第一条不等式，第二条由粗略放大系数得到。
+\par
+最后一条由定理 \ref{thm:xi-entropy-gap-exponential-suppression-nonzero-fingerprint} 给出 \(B\ll (\kappa_{\mathrm{ind}}-S_{\mathrm{def}})\)，并结合 \(u_0=4\pi S_{\mathrm{def}}\)（命题 \ref{prop:xi-defect-entropy-closed-form-invariant}）代入即得。证毕。
+\end{proof}
+
+\begin{proposition}[熵缺口控制节点模长的加权几何平均]\label{prop:xi-entropy-gap-controls-geometric-mean-radius}
+在 \eqref{eq:xi-comoving-scan-fourier} 的有限缺陷口径下取 \(\Delta=1\)，并令
+\[
+\rho_j:=e^{-(1+\delta_j)}\in(0,e^{-1})\qquad(1\le j\le \kappa).
+\]
+则按重数加权的几何平均满足显式上界
+\[
+\Bigl(\prod_{j=1}^{\kappa}\rho_j^{m_j}\Bigr)^{1/\kappa_{\mathrm{ind}}}
+\ \le\
+e^{-1}\cdot\frac{\kappa_{\mathrm{ind}}-S_{\mathrm{def}}}{\kappa_{\mathrm{ind}}}.
+\]
+\end{proposition}
+\begin{proof}
+由 \(e^{\delta}\ge 1+\delta\) 得 \(e^{-\delta}\le (1+\delta)^{-1}\)，从而
+\(
+\rho_j=e^{-1}e^{-\delta_j}\le e^{-1}(1+\delta_j)^{-1}
+\)。
+对按重数展开后的 \(\kappa_{\mathrm{ind}}\) 个因子应用 AM--GM 不等式，
+\[
+\Bigl(\prod_{j=1}^{\kappa}(1+\delta_j)^{-m_j}\Bigr)^{1/\kappa_{\mathrm{ind}}}
+\le
+\frac{1}{\kappa_{\mathrm{ind}}}\sum_{j=1}^{\kappa}\frac{m_j}{1+\delta_j}
+=\frac{\kappa_{\mathrm{ind}}-S_{\mathrm{def}}}{\kappa_{\mathrm{ind}}},
+\]
+其中最后一步使用 \eqref{eq:xi-defect-entropy-index-decomposition}。
+合并即得结论。证毕。
+\end{proof}
+
+\endinput

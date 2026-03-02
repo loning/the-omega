@@ -305,22 +305,204 @@ S(\ell)\ge 2V(\ell)d\,e^{-\mu}+d\,\Var(u_1,\dots,u_d)
 即为所求。不等号取等当且仅当 \(u_1=\cdots=u_d\)，等价于 \(\ell_1=\cdots=\ell_d\)。
 \end{proof}
 
-\begin{conjecture}[椭球等周亏损的方差控制]\label{conj:pom-ellipsoid-isoperimetric-variance}
-令 \(d\ge 2\) 且取 \(\ell_1,\dots,\ell_d>0\)。
-定义椭球
+\begin{theorem}[椭球等周亏损的对数轴长方差下界]\label{thm:pom-ellipsoid-isoperimetric-variance}
+令 \(d\ge 2\) 且取 \(\ell=(\ell_1,\dots,\ell_d)\in(0,\infty)^d\)。
+定义轴对齐椭球
 \[
 \mathcal E(\ell):=\left\{x\in\RR^d:\ \sum_{i=1}^{d}(x_i/\ell_i)^2\le 1\right\},
 \]
-其体积为 \(V(\ell)=\kappa_d\prod_{i=1}^{d}\ell_i\)（\(\kappa_d\) 为单位球体积），表面积 \(S(\ell)\) 为其 \((d-1)\)-维 Hausdorff 测度。
-预期存在仅依赖于维数的常数 \(c_d>0\)，使得对所有 \(\ell\) 成立
+其体积为 \(V(\ell)=\kappa_d\prod_{i=1}^{d}\ell_i\)（\(\kappa_d\) 为单位球体积），表面积 \(S(\ell):=\mathcal H^{d-1}(\partial \mathcal E(\ell))\)。
+置
+\[
+\Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr)
+:=\frac1d\sum_{i=1}^{d}\left(\log\ell_i-\frac1d\sum_{j=1}^d\log\ell_j\right)^2.
+\]
+则成立定量等周亏损不等式
 \[
 S(\ell)-d\,\kappa_d^{1/d}\,V(\ell)^{\frac{d-1}{d}}
 \ \ge\
-c_d\,V(\ell)^{\frac{d-1}{d}}\,
+\frac{d}{d+2}\,\kappa_d^{1/d}\,V(\ell)^{\frac{d-1}{d}}\,
 \Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr),
 \]
 且等号成立当且仅当 \(\ell_1=\cdots=\ell_d\)。
-在素数寄存器约束 \(\ell_i=p_i^{\alpha_i}\)（\(p_i\) 为互异素数，\(\alpha_i\in\ZZ_{\ge 0}\)）下，方差项取值集合为离散集，因此若该不等式成立，则对非各向同性轴长族将诱导正的等周亏损下界间隙。
+\end{theorem}
+\begin{proof}
+令 \(A=\mathrm{diag}(\ell_1,\dots,\ell_d)\)，则 \(\mathcal E(\ell)=A(B_2^d)\)，其中 \(B_2^d\) 为单位欧氏球。
+记 \(\sigma\) 为 \(S^{d-1}\) 上的 \((d-1)\)-维面积测度，\(|S^{d-1}|=d\kappa_d\)。
+对任意 \(u\in S^{d-1}\)，线性映射 \(A\) 在切空间 \(u^\perp\) 上的 \((d-1)\)-Jacobian 满足恒等式
+\[
+J_{d-1}\!\left(A\mid_{u^\perp}\right)=\det(A)\,\|A^{-{\mathsf T}}u\|_2.
+\]
+由面积变换公式得到
+\[
+S(\ell)=\det(A)\int_{S^{d-1}}\|A^{-{\mathsf T}}u\|_2\,d\sigma(u)
+=\Bigl(\prod_{i=1}^d\ell_i\Bigr)\int_{S^{d-1}}\Bigl(\sum_{i=1}^d\frac{u_i^2}{\ell_i^2}\Bigr)^{1/2}d\sigma(u).
+\]
+令几何平均 \(g:=(\prod_i\ell_i)^{1/d}\)，并写 \(\ell_i=ga_i\) 使 \(\prod_i a_i=1\)。
+置 \(b_i:=\log a_i\)，则 \(\sum_i b_i=0\) 且
+\(
+\Var(\log\ell_1,\dots,\log\ell_d)=\frac1d\sum_i b_i^2
+\)。
+记 \(u\sim\mathrm{Unif}(S^{d-1})\) 并写 \(w_i:=u_i^2\)，则 \(\sum_i w_i=1\) 且
+\[
+\frac{S(\ell)}{d\kappa_d g^{d-1}}
+=\mathbb E\!\left[\left(\sum_{i=1}^d w_i e^{-2b_i}\right)^{1/2}\right].
+\]
+加权 AM--GM 给出
+\[
+\sum_{i=1}^d w_ie^{-2b_i}\ge \exp\!\left(-2\sum_{i=1}^d w_ib_i\right),
+\qquad
+\left(\sum_{i=1}^d w_ie^{-2b_i}\right)^{1/2}\ge \exp\!\left(-\sum_{i=1}^d w_ib_i\right).
+\]
+令 \(X:=-\sum_i w_ib_i\)，则由 \( \mathbb E[w_i]=1/d \) 与 \(\sum_i b_i=0\) 得 \(\mathbb E[X]=0\)。
+用初等不等式 \(e^X\ge 1+X+\frac12X^2\) 得
+\[
+\mathbb E\!\left[\exp(X)\right]\ge 1+\frac12\,\mathbb E[X^2]
+=1+\frac12\,\mathbb E\!\left[\left(\sum_{i=1}^d b_i u_i^2\right)^2\right].
+\]
+由球面对称性（例如由高斯表示 \(u=g/\|g\|_2\)）可得矩恒等式
+\[
+\mathbb E[u_i^4]=\frac{3}{d(d+2)},\qquad
+\mathbb E[u_i^2u_j^2]=\frac{1}{d(d+2)}\ (i\ne j).
+\]
+从而
+\[
+\mathbb E\!\left[\left(\sum_{i=1}^d b_i u_i^2\right)^2\right]
+=\frac{2}{d(d+2)}\sum_{i=1}^d b_i^2
+=\frac{2}{d+2}\,\Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr).
+\]
+综合以上不等式得
+\[
+\frac{S(\ell)}{d\kappa_d g^{d-1}}
+\ge
+1+\frac{1}{d+2}\,\Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr),
+\]
+即
+\[
+S(\ell)-d\kappa_d g^{d-1}
+\ge
+\frac{d}{d+2}\,\kappa_d g^{d-1}\,\Var\!\bigl(\log\ell_1,\dots,\log\ell_d\bigr).
+\]
+又 \(V(\ell)=\kappa_d g^d\)，故 \(\kappa_d g^{d-1}=\kappa_d^{1/d}V(\ell)^{(d-1)/d}\)，从而得到所述结论。
+等号情形由 AM--GM 与 \(e^X\ge 1+X+\frac12X^2\) 的取等条件推出，等价于 \(b_i=0\)（所有 \(i\)），即 \(\ell_1=\cdots=\ell_d\)。证毕。
+\end{proof}
+
+\begin{corollary}[纯边界通量的等周证书]\label{cor:pom-ellipsoid-isoperimetric-boundary-certificate}
+令 \(d\ge 2\)，并取 \(Q\in\mathrm{Sym}_d^+\)。
+设椭球 \(E_Q\subset\RR^d\) 及边界通量 \((B_0,B)\) 如定理 \ref{thm:spg-ellipsoid-boundary-flux-reconstruction}。
+记 \(\lambda_1,\dots,\lambda_d\) 为 \(Q\) 的特征值，并置
+\[
+\Var\!\bigl(\log\lambda_1,\dots,\log\lambda_d\bigr)
+:=\frac1d\sum_{i=1}^{d}\left(\log\lambda_i-\frac1d\sum_{j=1}^d\log\lambda_j\right)^2.
+\]
+则有完全由 \((B_0,B)\) 决定的下界
+\[
+S(E_Q)-d\,\kappa_d^{1/d}\left(\frac{B_0}{d}\right)^{\frac{d-1}{d}}
+\ \ge\
+\frac{d}{4(d+2)}\,\kappa_d^{1/d}\left(\frac{B_0}{d}\right)^{\frac{d-1}{d}}\,
+\Var\!\Bigl(\log\lambda_1,\dots,\log\lambda_d\Bigr),
+\]
+其中 \((\lambda_1,\dots,\lambda_d)=\operatorname{spec}\!\left(\frac{d}{B_0}B\right)\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:spg-ellipsoid-boundary-flux-reconstruction}，有 \(\operatorname{Vol}(E_Q)=B_0/d\) 且 \(Q=(d/B_0)B\)，故 \(\lambda_i\) 为 \((d/B_0)B\) 的谱。
+令半轴长 \(\ell_i:=\sqrt{\lambda_i}\)，则
+\[
+\Var(\log\ell_1,\dots,\log\ell_d)=\frac14\,\Var(\log\lambda_1,\dots,\log\lambda_d).
+\]
+将定理 \ref{thm:pom-ellipsoid-isoperimetric-variance} 应用于 \(\ell\)，并以 \(\operatorname{Vol}(E_Q)=B_0/d\) 代入即可。证毕。
+\end{proof}
+
+\begin{proposition}[Gödel 轴编码不强制方差谱隙]\label{prop:pom-godel-axis-variance-no-gap}
+固定互异素数 \(p_1,\dots,p_d\) 并令 \(\theta_i:=1/\log p_i\)。
+则存在一列整数 \(q_k\to\infty\) 与整数向量 \(\alpha^{(k)}=(\alpha^{(k)}_1,\dots,\alpha^{(k)}_d)\in\ZZ_{\ge 0}^d\) 使得
+\[
+\max_{1\le i\le d}\bigl|q_k\theta_i-\alpha_i^{(k)}\bigr|\le q_k^{-1/d}.
+\]
+令 \(\ell_i^{(k)}:=p_i^{\alpha_i^{(k)}}\)，则有上界
+\[
+\Var\!\bigl(\log\ell^{(k)}_1,\dots,\log\ell^{(k)}_d\bigr)
+\ \le\
+4\bigl(\max_{1\le i\le d}\log p_i\bigr)^2\,q_k^{-2/d}\xrightarrow[k\to\infty]{}0.
+\]
+因而在 Gödel 轴编码约束下，\(\Var(\log\ell)\) 在 \(0\) 的邻域中仍可形成聚点，且由定理 \ref{thm:pom-ellipsoid-isoperimetric-variance} 得同体积归一化下的等周亏损亦可趋于 \(0\)。
+\end{proposition}
+\begin{proof}
+Dirichlet 的同时逼近定理给出：对任意 \(N\ge 1\)，存在整数 \(1\le q\le N\) 与 \(\alpha_1,\dots,\alpha_d\in\ZZ\) 使得 \(\max_i|q\theta_i-\alpha_i|\le N^{-1/d}\)。\cite{Cassels1957}
+取 \(N=q\) 并沿 \(N\to\infty\) 取一无穷子列得到所述 \((q_k,\alpha^{(k)})\)；当 \(k\) 充分大时 \(\alpha_i^{(k)}\ge 0\) 自动成立。
+\par
+令 \(b_i^{(k)}:=\alpha_i^{(k)}\log p_i\)，则由 \(|q_k\theta_i-\alpha_i^{(k)}|\le q_k^{-1/d}\) 得
+\[
+|b_i^{(k)}-q_k|\le (\log p_i)\,q_k^{-1/d}\le \bigl(\max_j\log p_j\bigr)\,q_k^{-1/d}.
+\]
+记 \(\bar b^{(k)}:=\frac1d\sum_i b_i^{(k)}\)，则同样有 \(|\bar b^{(k)}-q_k|\le (\max_j\log p_j)\,q_k^{-1/d}\)，从而
+\[
+|b_i^{(k)}-\bar b^{(k)}|\le 2\bigl(\max_j\log p_j\bigr)\,q_k^{-1/d}.
+\]
+因此
+\[
+\Var\!\bigl(\log\ell^{(k)}_1,\dots,\log\ell^{(k)}_d\bigr)
+=\frac1d\sum_i \bigl(b_i^{(k)}-\bar b^{(k)}\bigr)^2
+\le 4\bigl(\max_j\log p_j\bigr)^2\,q_k^{-2/d}\xrightarrow[k\to\infty]{}0.
+\]
+最后一条由 \(\Var(\log\ell)\) 的尺度不变性与定理 \ref{thm:pom-ellipsoid-isoperimetric-variance} 直接推出。证毕。
+\end{proof}
+
+\begin{theorem}[回路格高斯和的 Poisson 对偶与生成树归一化]\label{thm:pom-cycle-lattice-theta-poisson-duality}
+令 \(G=(V,E)\) 为有限连通定向图。
+令 \(\partial:\ZZ^{E}\to\ZZ^{V}\) 为关联矩阵，并固定一个顶点删去后把 \(\partial\) 视为 \(\ZZ^{E}\to\ZZ^{V\setminus\{v_0\}}\)。
+记整回路格
+\[
+\Lambda:=\ker(\partial)\cap\ZZ^{E}\ \cong\ H_1(G;\ZZ),
+\qquad
+g:=\mathrm{rank}(\Lambda)=|E|-|V|+1.
+\]
+取边权 \(w:E\to(0,\infty)\)，写 \(W=\mathrm{diag}(w_e)\)，并令二次型 \(Q(x):=x^{\mathsf T}W x=\sum_{e\in E}w_e x_e^2\)。
+对任意余类 \(x_0+\Lambda\subset \RR^{E}\) 与任意 \(\beta>0\)，定义高斯 \(\theta\)-级数
+\[
+Z_{\mathrm{bulk}}(\beta;x_0):=\sum_{x\in x_0+\Lambda}\exp\!\bigl(-\pi\beta\,Q(x)\bigr).
+\]
+令 \(\Lambda^\ast\) 为 \(\Lambda\) 关于标准内积的对偶格，令 \(Q^\ast\) 为由 \(W^{-1}\) 在 \(\Lambda^\ast\otimes\RR\) 上诱导的对偶二次型，并令 \(\det_{\Lambda}(Q)\) 表示 \(Q\) 在 \(\Lambda\) 上的格行列式。
+则 Poisson 求和给出严格对偶公式
+\[
+Z_{\mathrm{bulk}}(\beta;x_0)
+=
+\beta^{-g/2}\,(\det_{\Lambda}Q)^{-1/2}
+\sum_{y\in \Lambda^\ast}
+\exp\!\bigl(-\pi\beta^{-1}Q^\ast(y)\bigr)\,e^{2\pi i\langle y,x_0\rangle}.
+\]
+进一步，令导纳 \(c_e:=1/w_e\) 并记加权生成树枚举
+\(
+\tau_c(G):=\sum_T\prod_{e\in T}c_e
+\)
+（对全部生成树 \(T\) 求和），则有显式归一化恒等式
+\[
+\det_{\Lambda}(Q)=\Bigl(\prod_{e\in E}w_e\Bigr)\tau_c(G).
+\]
+\end{theorem}
+\begin{proof}
+把 \(Q\) 限制到实线性空间 \(U:=\mathrm{span}_{\RR}(\Lambda)\cong\RR^g\) 上，\(x\mapsto e^{-\pi\beta Q(x)}\) 为 \(U\) 上 Schwartz 函数，其 Fourier 变换仍为高斯并满足尺度反演；在格余类 \(x_0+\Lambda\) 上应用 Poisson 求和公式即可得到对偶恒等式。\cite{Iwaniec2002SpectralMethods}
+\par
+关于 \(\det_{\Lambda}(Q)\) 的生成树表达式，可取一棵生成树 \(T\) 并以相应基本回路给出 \(\Lambda\) 的整数基；在该基下 \(Q\) 的 Gram 行列式可写为一显式 Schur 补，从而与导纳加权的约化 Laplacian 行列式一致；由 Kirchhoff--Matrix--Tree 定理该行列式等于 \(\tau_c(G)\)，并伴随边权缩放因子 \(\prod_{e\in E}w_e\)。
+该推导为图上格行列式与生成树复杂度之间的标准同一性。\cite{TerrasZetaGraphs}
+证毕。
+\end{proof}
+
+\begin{conjecture}[Gödel--Stokes 扭量的非高斯计数渐近与生成树归一化]\label{conj:pom-godel-stokes-torsor-nongaussian-holography}
+在定理 \ref{thm:pom-cycle-lattice-theta-poisson-duality} 的设定下，令 \(c_e:=1/w_e\)，并对 \(R>0\) 置
+\[
+\mathcal F(R):=\left\{x\in x_0+\Lambda:\ Q(x)\le R\right\}.
+\]
+则当 \(R\to\infty\) 时预期存在格点计数的严格渐近
+\[
+\#\mathcal F(R)
+\sim
+\operatorname{vol}(\mathbb B_g)\,\frac{R^{g/2}}{\sqrt{\det_{\Lambda}(Q)}}
+=
+\operatorname{vol}(\mathbb B_g)\,\frac{R^{g/2}}{\sqrt{\bigl(\prod_{e\in E}w_e\bigr)\tau_c(G)}},
+\]
+其中 \(\mathbb B_g\) 为 \(g\)-维单位欧氏球。
+在以边界导纳 \(c\) 为规范输入的尺度约定下，该主导项可等价表述为“以生成树复杂度 \(\tau_c(G)\) 为一环归一化的回路扭量熵指数律”。
 \end{conjecture}
 
 \begin{corollary}[Fibonacci 立方面母函数的谱半径闭式与指数增长常数]\label{cor:pom-fibcube-fpoly-growth-constant}

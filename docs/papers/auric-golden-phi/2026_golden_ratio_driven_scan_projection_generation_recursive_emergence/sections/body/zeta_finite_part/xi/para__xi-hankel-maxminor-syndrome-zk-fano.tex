@@ -94,6 +94,114 @@ Ae_{d-1}=-(p_0,\dots,p_{d-1})^{\mathsf T}.
 又由 (2) 递推阶为 \(d\)，可知 \(A\) 的最小湮灭多项式次数至少为 \(d\)；而 \(\deg P=d\) 且 \(P(A)=0\) 给出次数至多为 \(d\)，故次数恰为 \(d\)。证毕。
 \end{proof}
 
+\begin{theorem}[Hankel 奇异性的三步公开币完美零知识证明]\label{thm:xi-hankel-singularity-hvzk}
+令 \(p\) 为素数，令 \(H\in \FF_p^{n\times n}\) 为 Hankel 矩阵，并记缺口
+\[
+\delta:=n-\mathrm{rank}(H)\ge 1.
+\]
+则存在一个三步公开币的 honest-verifier 完美零知识交互证明系统，用以证明语言谓词“\(\delta\ge 1\)”：
+\begin{enumerate}
+  \item \textbf{完备性：}接受概率至少为 \(1-p^{-\delta}\)。
+  \item \textbf{健全性：}对任意不在语言内的输入（即 \(\mathrm{rank}(H)=n\)），单次交互的误受骗概率至多为 \(1/p\)。
+  \item \textbf{零知识：}验证者视图可由不依赖任何核向量见证的模拟器精确生成（分布一致）。
+\end{enumerate}
+一种实现如下。验证者采样 \(u\sim \mathrm{Unif}(\FF_p^n)\) 并发送 \(u\)。
+证明者在可行时取 \(s\in\ker(H)\) 使 \(u^{\mathsf T}s=1\)（若不存在则重启该轮），再采样 \(r\sim\mathrm{Unif}(\FF_p^n)\) 并发送承诺
+\[
+t:=(Hr,\ u^{\mathsf T}r)\in \FF_p^n\times \FF_p.
+\]
+验证者再采样挑战 \(e\sim\mathrm{Unif}(\FF_p)\)，证明者回应 \(z:=r+es\)。
+验证者接受当且仅当
+\[
+Hz=Hr,\qquad u^{\mathsf T}z=u^{\mathsf T}r+e.
+\]
+\end{theorem}
+\begin{proof}
+设 \(\ker(H)\) 的维数为 \(\delta\)。
+对随机 \(u\)，线性泛函 \(\ell_u:\ker(H)\to \FF_p\)、\(s\mapsto u^{\mathsf T}s\) 为零映射当且仅当 \(u\in(\ker(H))^\perp\)。
+由于 \(\dim(\ker(H))^\perp=n-\delta\)，有
+\(
+\Pr[u\in(\ker(H))^\perp]=p^{-\delta}
+\)。
+因此除去概率 \(p^{-\delta}\) 的例外，存在 \(s\in\ker(H)\) 满足 \(u^{\mathsf T}s=1\)，此时检验恒等式
+\[
+Hz=H(r+es)=Hr,\qquad u^{\mathsf T}z=u^{\mathsf T}r+e
+\]
+成立，从而完备性为 \(1-p^{-\delta}\)。
+\par
+对健全性，设 \(\mathrm{rank}(H)=n\)，则 \(\ker(H)=0\)。
+若对同一承诺 \(t\) 能对两条不同挑战 \(e\neq e'\) 给出通过检验的 \(z,z'\)，则由 \(Hz=Hr=Hz'\) 得 \(H(z-z')=0\)，并由第二条检验式得 \(u^{\mathsf T}(z-z')=e-e'\neq 0\)。
+令 \(s:=(z-z')/(e-e')\)，则 \(Hs=0\) 且 \(u^{\mathsf T}s=1\)，矛盾。
+因此对任意固定承诺 \(t\) 至多有一个挑战 \(e\) 可被接受，挑战均匀即单轮误受骗概率 \(\le 1/p\)。
+\par
+对完美零知识，构造模拟器：均匀采样 \((e,z)\in\FF_p\times\FF_p^n\)，并置
+\[
+t:=(Hz,\ u^{\mathsf T}z-e).
+\]
+则由构造恒有 \(Hz\) 与 \(u^{\mathsf T}z\) 通过检验。
+在真实执行中，给定 \(e\) 时 \(z=r+es\) 随 \(r\) 均匀而在 \(\FF_p^n\) 上均匀；并且 \(t=(Hr,u^{\mathsf T}r)\) 满足 \(Hr=Hz\) 与 \(u^{\mathsf T}r=u^{\mathsf T}z-e\)。
+因此真实分布与模拟分布完全一致，得到 HV 完美零知识。证毕。
+\end{proof}
+
+\begin{corollary}[常数轮与缺口线性轮数的不可兼容性]\label{cor:xi-hankel-hvzk-constant-round-vs-defect-linear-round}
+在定理 \ref{thm:xi-hankel-singularity-hvzk} 的公开币 HVZK 模型下，“\(\mathrm{rank}(H)<n\)”语言存在常数轮交互证明，并且完备性失败概率随缺口 \(\delta\) 以 \(p^{-\delta}\) 衰减。
+因此，任何在同一全信息 HVZK 口径下宣称最小交互轮数满足线性规律
+\(
+R_{\min}\asymp \delta
+\)
+的结论，都必须依赖额外的验证接口约束（例如：非交互口径、受限探测、流式一次读取或受限内存等），而不能由标准 HVZK 模型推出。
+\end{corollary}
+
+\begin{corollary}[整数 Hankel 缺口的圆维解释与最小补账轴数]\label{cor:xi-hankel-defect-cdim-minimal-ledger}
+令 \(H\in\ZZ^{n\times n}\) 为整数 Hankel 矩阵，并视其为有限生成离散交换群同态
+\[
+f_H:\ZZ^n\to\ZZ^n,\qquad v\mapsto Hv.
+\]
+则其圆维缺陷满足
+\[
+\delta(f_H)=\cdim(\ker f_H)=n-\mathrm{rank}_{\QQ}(H).
+\]
+并且使 \((f_H,r):\ZZ^n\to\ZZ^n\oplus R\) 单射所需的最小补账轴数（即最小 \(\cdim(R)\)）恰等于该缺陷（定理 \ref{thm:xi-cdim-minimal-ledger-cost}）。
+\end{corollary}
+\begin{proof}
+由 \(\cdim(A)=\dim_{\QQ}(A\otimes_{\ZZ}\QQ)\)（定义 \ref{def:circle-dimension} 的等价口径）与 \(\ker(f_H)\otimes\QQ=\ker(H:\QQ^n\to\QQ^n)\) 得
+\[
+\cdim(\ker f_H)=\dim_{\QQ}\ker(H:\QQ^n\to\QQ^n)=n-\mathrm{rank}_{\QQ}(H).
+\]
+最小补账轴数断言由定理 \ref{thm:xi-cdim-minimal-ledger-cost} 直接推出。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$p$}{p}-进求值的精度损失由 \texorpdfstring{$\det(H_0)$}{det(H0)} 精确控制]\label{prop:xi-hankel-padics-precision-loss-detH0}
+令 \(p\) 为素数，取 \(d\ge 1\)。
+设 \(H_0,H_1\in \ZZ_{p}^{d\times d}\) 且 \(\det(H_0)\neq 0\)，并令
+\[
+A:=H_0^{-1}H_1\in \QQ_{p}^{d\times d},
+\qquad
+s:=v_p(\det(H_0)).
+\]
+若仅给定 \(H_0,H_1\) 的模 \(p^N\) 截断（即在 \((\ZZ/p^N\ZZ)^{d\times d}\) 中的像），则在一般情形下最多只能确定
+\[
+A\pmod{p^{N-s}}.
+\]
+并且该精度损失 \(s\) 为尖锐：存在 \(d=1\) 的例子使得在给定同一模 \(p^N\) 数据条件下，\(A\) 的不确定性恰发生在 \(p^{N-s}\) 阶，无法提升到 \(p^{N-s+1}\)。
+\end{proposition}
+\begin{proof}
+由伴随矩阵公式 \(H_0^{-1}=\mathrm{adj}(H_0)/\det(H_0)\) 得
+\[
+A=\frac{\mathrm{adj}(H_0)\,H_1}{\det(H_0)}.
+\]
+若 \(H_0,H_1\) 已知至模 \(p^N\)，则分子 \(\mathrm{adj}(H_0)H_1\) 亦至多确定到模 \(p^N\)。
+除以 \(\det(H_0)=p^s\cdot u\)（\(u\in\ZZ_p^\times\)）使精度至多损失 \(s\) 位，从而 \(A\) 至多确定到模 \(p^{N-s}\)。
+\par
+尖锐性取 \(d=1\)：令 \(H_0=p^s\)，取 \(H_1=1\) 与 \(H_1'=1+p^N\)。
+则 \(H_1\equiv H_1'\pmod{p^N}\)，但
+\[
+A=\frac{1}{p^s},\qquad
+A'=\frac{1+p^N}{p^s}=A+p^{N-s},
+\]
+故不确定性不可消去于 \(p^{N-s}\) 阶。证毕。
+\end{proof}
+
 \begin{theorem}[低于 \texorpdfstring{$2d$}{2d} 窗口的完美零知识不可判别性]\label{thm:xi-hankel-window-2dminus1-perfect-zk-indistinguishability}
 设 \(k\) 为域，取 \(b\in k^{2d-1}\) 满足 \(\det H_0(b)\neq 0\)，并令
 \[
