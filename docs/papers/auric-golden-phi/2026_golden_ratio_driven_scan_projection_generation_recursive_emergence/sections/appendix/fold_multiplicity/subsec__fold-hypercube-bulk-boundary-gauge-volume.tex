@@ -262,6 +262,59 @@ H_1(\mathsf B_f;\ZZ)\ \cong\ \ZZ^{\,A(f)-\card{X}+c(\mathsf B_f)}.
 
 \input{sections/appendix/fold_multiplicity/thm__graph-coarsegraining-cycle-rank-decomposition}
 
+\begin{theorem}[加权回路格判别式的矩阵树恒等式]\label{thm:graph-cycle-lattice-weighted-discriminant}
+令 \(G=(V,E)\) 为有限连通无自环多重图，固定一组取向并把 \(1\)-链识别为 \(\ZZ^{E}\)。
+令 \(\partial:\ZZ^{E}\to \ZZ^{V}\) 为边界算子，并令
+\[
+\Lambda(G):=\ker(\partial)\subset \ZZ^{E},
+\qquad
+r:=\rank_{\ZZ}\Lambda(G)=\rank_{\ZZ}H_1(G;\ZZ)=|E|-|V|+1.
+\]
+给定正权 \(\rho:E\to(0,\infty)\)，定义二次型
+\[
+Q_\rho(z):=\sum_{e\in E}\rho_e\,z_e^2,\qquad z=(z_e)_{e\in E}\in\RR^{E}.
+\]
+取任意 \(\ZZ\)-基 \(c_1,\dots,c_r\) 生成 \(\Lambda(G)\)，并令 \(C\in\ZZ^{r\times |E|}\) 为基矩阵（第 \(j\) 行为 \(c_j^{\mathsf T}\)）。
+定义
+\[
+\Gamma_\rho:=C\,\mathrm{diag}(\rho_e)\,C^{\mathsf T}\in \mathrm{Sym}_r^+(\RR).
+\]
+则 \(\det(\Gamma_\rho)\) 与基的选择无关，且满足精确恒等式
+\[
+\boxed{\;
+\det(\Gamma_\rho)=\Bigl(\prod_{e\in E}\rho_e\Bigr)\,\tau_{1/\rho}(G),
+\qquad
+\tau_{1/\rho}(G):=\sum_{T\ \mathrm{spanning\ tree}}\ \prod_{e\in T}\rho_e^{-1}.
+\;}
+\]
+\end{theorem}
+\begin{proof}
+基不变性来自：更换 \(\ZZ\)-基等价于 \(C\mapsto UC\)（\(U\in\GL_r(\ZZ)\)），从而 \(\Gamma_\rho\mapsto U\Gamma_\rho U^{\mathsf T}\)，其行列式不变。
+\par
+取 \(G\) 的一棵生成树 \(T_0\subseteq E\) 并由此构造基本回路基，使得存在 unimodular 矩阵 \(M\in\GL_{|E|}(\ZZ)\)，其上方 \(|V|-1\) 行为删去一行后的约化关联矩阵 \(\tilde B\in\ZZ^{(|V|-1)\times |E|}\)，下方 \(r\) 行恰为某个回路基矩阵 \(C\)，从而 \(\tilde B C^{\mathsf T}=0\)。
+\par
+对 \(\Gamma_\rho=C\,\mathrm{diag}(\rho_e)\,C^{\mathsf T}\) 应用 Cauchy--Binet 公式，得
+\[
+\det(\Gamma_\rho)
+=\sum_{S\subseteq E,\ |S|=r}\det(C_S)^2\prod_{e\in S}\rho_e,
+\]
+其中 \(C_S\) 为取列集 \(S\) 的 \(r\times r\) 子矩阵。
+由于 \(M\) unimodular，其互补子式满足
+\(
+\det(C_S)=\pm\det(\tilde B_{E\setminus S})
+\)，
+其中 \(\tilde B_{E\setminus S}\) 为 \(\tilde B\) 取列集 \(E\setminus S\) 的 \((|V|-1)\times(|V|-1)\) 子矩阵。
+由矩阵树定理的标准整数形式（关联矩阵全酉模性质），\(\det(\tilde B_{E\setminus S})=\pm 1\) 当且仅当 \(E\setminus S\) 构成生成树，否则为 \(0\)。
+因此
+\[
+\det(\Gamma_\rho)
+=\sum_{T\ \mathrm{spanning\ tree}}\ \prod_{e\in E\setminus T}\rho_e
+=\Bigl(\prod_{e\in E}\rho_e\Bigr)\sum_{T}\prod_{e\in T}\rho_e^{-1}
+=\Bigl(\prod_{e\in E}\rho_e\Bigr)\tau_{1/\rho}(G).
+\]
+证毕。
+\end{proof}
+
 \begin{theorem}[边界回路格的 \texorpdfstring{$\Theta$}{Theta} 函数极限律：圆维主项与树数校正]\label{thm:hypercube-cycle-lattice-theta-asymptotic}
 令 \(G=(V,E)\) 为有限连通多重图，固定一组取向并将 \(1\)-链视作 \(\ZZ^{E}\subset\RR^{E}\)。
 令 \(B\in\ZZ^{V\times E}\) 为取向关联矩阵，并令 \(\tilde B\in\ZZ^{(|V|-1)\times E}\) 为删去一行后的约化关联矩阵。
@@ -358,6 +411,29 @@ XX^\top=\tilde B_T^{-1}\tilde B_C\tilde B_C^\top(\tilde B_T^{-1})^\top,
 \end{proof}
 
 \input{sections/appendix/fold_multiplicity/thm__graph-energy-shell-lattice-counting}
+
+\begin{remark}[离散面积律的圆维主项与生成树行列式校正]\label{rem:hypercube-boundary-cycle-entropy-area-law-tree-correction}
+将定理 \ref{thm:graph-energy-shell-lattice-counting} 应用于边界邻接多图 \(G=\mathsf B_f\) 并固定散度数据（例如由体偏差或 Walsh 读出诱导的 \(\delta\)），可得能量阈值 \(E\) 内的可兼容边界整数 \(1\)-形式计数满足
+\[
+\log N_{\delta,w}(E)
+=\frac{1}{2}\cdim\bigl(H_1(\mathsf B_f;\ZZ)\bigr)\log E
+-\frac12\sum_{e\in E(\mathsf B_f)}\log w_e
+-\frac12\log\tau_{1/w}(\mathsf B_f)
+ +O(1),
+\]
+其中 \(\tau_{1/w}(\mathsf B_f)=\sum_{T}\prod_{e\in T}w_e^{-1}\) 为导通权 \(1/w\) 下的加权生成树多项式值（定理 \ref{thm:graph-cycle-lattice-weighted-discriminant}）。
+该分解把“由边界回路圆维控制的幂律态数增长”与“由 Kirchhoff 复杂度给出的行列式修正”在同一可审计公式中对齐，并为正文关于面积律/纠缠语义接口的视界模型（例如 \S\ref{subsec:dephysicalized-horizon-timefiber-nohair} 的 AdS/CFT 解释性接口）提供一条纯离散的可计算原型。
+\end{remark}
+
+\begin{conjecture}[生成树行列式的连续谱极限接口]\label{conj:boundary-tree-determinant-spectral-limit}
+设 \(\{\mathsf B^{(m)}_f\}_{m\ge 1}\) 为某一 dyadic 细化极限下的边界邻接多图序列，并取与边界归一化 Stokes 逆塔一致的权重归一化方案（参见附录 \ref{app:multiscale-normalized-stokes-inverse-tower}）。
+记 \(L^{(m)}\) 为 \(\mathsf B^{(m)}_f\) 的加权 Laplacian（导通权为 \(1/w^{(m)}\)），并令 \(\tau_{1/w^{(m)}}(\mathsf B^{(m)}_f)=\det\bigl((L^{(m)})_{\mathrm{red}}\bigr)\) 为其加权生成树多项式值（Kirchhoff 定理）。
+则在适当的重整化下，\(-\tfrac12\log\tau_{1/w^{(m)}}(\mathsf B^{(m)}_f)\) 收敛到某个极限量，该极限与连续边界算子（例如 Dirichlet-to-Neumann 映射或 Laplacian）的 \(\zeta\)-正则化行列式 \(\det_\zeta\) 相一致：
+\[
+-\frac12\log\tau_{1/w^{(m)}}(\mathsf B^{(m)}_f)\ \longrightarrow\ -\frac12\log\det_\zeta(\mathcal L_{\partial}).
+\]
+在该意义下，\(-\tfrac12\log\tau_{1/w}(\mathsf B_f)\) 可被视为对由圆维主项给出的“面积律”项的离散行列式修正。
+\end{conjecture}
 
 \begin{corollary}[回路格球截断的体积主项与 Gödel 外置对数规模]\label{cor:hypercube-cycle-lattice-counting-godel-log}
 在定理 \ref{thm:hypercube-cycle-lattice-theta-asymptotic} 的设定下，对 \(R>0\) 定义球截断

@@ -123,6 +123,56 @@ Hs\equiv 0\pmod p\quad\Longleftrightarrow\quad Hs=0\ \text{于}\ \ZZ^n.
 素数存在性由 Bertrand--Chebyshev 定理给出。证毕。
 \end{proof}
 
+\begin{theorem}[多素数离线审计：以乘积模数替代单一大素数]\label{thm:xi-hankel-multiprime-offline-audit}
+沿用命题 \ref{prop:xi-hankel-single-prime-audit-zero-error} 的记号，并令
+\(
+v:=Hs\in\ZZ^n
+\)、
+\(
+M:=n^2B\,|s|_\infty
+\)。
+取两两不同素数 \(q_1,\dots,q_K\) 并记
+\[
+Q:=\prod_{i=1}^{K}q_i.
+\]
+若 \(Q>2M\)，则下列命题等价：
+\begin{enumerate}
+  \item \(Hs=0\)（在整数上）；
+  \item \(Hs\equiv 0\pmod{q_i}\) 对所有 \(i=1,\dots,K\) 成立。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\((1)\Rightarrow(2)\) 平凡。
+若 \((2)\) 成立，则 \(v\equiv 0\pmod{q_i}\) 对所有 \(i\) 成立，从而 \(v\equiv 0\pmod Q\)。
+由命题 \ref{prop:xi-hankel-single-prime-audit-zero-error} 的估计，对每个分量 \(v_j\) 有 \(|v_j|\le M<Q/2\)。
+而整数满足 \(v_j\equiv 0\pmod Q\) 且 \(|v_j|<Q/2\) 时只能 \(v_j=0\)。
+故 \(v=0\)，即 \(Hs=0\)。证毕。
+\end{proof}
+
+\begin{corollary}[最大模素数受限时的最优对数尺度]\label{cor:xi-hankel-offline-audit-max-prime-logscale}
+在定理 \ref{thm:xi-hankel-multiprime-offline-audit} 的设定下，若以“最小化最大模素数 \(\max_i q_i\)”为设计准则并保持素数互异，则最优值 \(q_{\max}^\ast\) 由 Chebyshev 函数
+\(
+\vartheta(x)=\sum_{p\le x}\log p
+\)
+刻画为
+\[
+q_{\max}^\ast=\inf\{x\ge 2:\ \vartheta(x)\ge \log(2M)\}.
+\]
+因此当 \(M\to\infty\) 时有渐近
+\[
+q_{\max}^\ast\sim \log(2M),
+\qquad
+K^\ast\sim \frac{\log(2M)}{\log\log(2M)},
+\]
+其中 \(K^\ast\) 为达到 \(Q>2M\) 所需的最小素数轴数量。
+\end{corollary}
+\begin{proof}
+由于要满足 \(Q>2M\)，必要条件是 \(\sum_i\log q_i>\log(2M)\)。
+在素数互异且最小化最大值的准则下，取不超过某个 \(x\) 的全部素数能最大化 \(\sum\log p\)，其上界正是 \(\vartheta(x)\)，故最优最大素数满足所示刻画。
+当 \(M\to\infty\) 时，由 \(\vartheta(x)\sim x\) 得 \(q_{\max}^\ast\sim \log(2M)\)。
+又 \(K^\ast=\pi(q_{\max}^\ast)\)，由 \(\pi(x)\sim x/\log x\) 得 \(K^\ast\sim \log(2M)/\log\log(2M)\)。证毕。
+\end{proof}
+
 \input{subsubsec__xi-hankel-syndrome-random-prime-single-round-refutation}
 
 \begin{proposition}[线性递推约束的局部核验与拒绝率下界（按违反率）]\label{prop:xi-linear-recurrence-local-test-by-violation-rate}

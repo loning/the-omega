@@ -21,4 +21,50 @@
 推出。证毕。
 \end{proof}
 
+\begin{corollary}[避开坏素数的短位长素数总存在]\label{cor:xi-hankel-short-prime-avoids-badset}
+沿用推论 \ref{cor:xi-hankel-badprime-selection-probability} 的记号，固定整数 \(\Delta_\ell\in\ZZ\setminus\{0\}\)。
+则当 \(|\Delta_\ell|\) 充分大时，存在素数
+\[
+p\ \le\ (\log|\Delta_\ell|)^2
+\qquad\text{且}\qquad
+p\nmid \Delta_\ell.
+\]
+因此可在位长 \(O(\log\log|\Delta_\ell|)\) 的模轴上实现一次“良素数”审计。
+\end{corollary}
+\begin{proof}
+由 \(\omega(\Delta_\ell)\le \log_2|\Delta_\ell|\)（推论 \ref{cor:xi-hankel-badprime-selection-probability} 的证明）可知坏素数集合大小至多为 \(\log_2|\Delta_\ell|\)。
+取 \(N:=(\log|\Delta_\ell|)^2\)。
+由素数计数函数的经典下界，存在 \(N_0\) 使当 \(N\ge N_0\) 时
+\[
+\pi(N)\ge \frac{N}{\log N+2}.
+\]
+当 \(|\Delta_\ell|\) 充分大时，\(N\) 亦充分大且 \(\pi(N)>\log_2|\Delta_\ell|\ge \omega(\Delta_\ell)\)。
+因此在所有 \(\le N\) 的素数中必存在至少一枚不整除 \(\Delta_\ell\) 的素数 \(p\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[区间素数抽样的失败概率上界]\label{cor:xi-hankel-badprime-interval-selection-probability}
+沿用命题 \ref{prop:xi-hankel-good-bad-prime-dichotomy} 的设定并固定 \(\Delta_\ell\in\ZZ\setminus\{0\}\)。
+给定 \(Y\ge 2\)，从区间 \([Y,2Y]\) 内的素数集合中按均匀分布抽取一枚素数 \(p\)。
+则失败概率满足
+\[
+\Pr[p\mid \Delta_\ell]
+\ \le\
+\frac{\omega(\Delta_\ell)}{\pi(2Y)-\pi(Y)}
+\ \le\
+\frac{\lfloor \log_2|\Delta_\ell|\rfloor}{\pi(2Y)-\pi(Y)}.
+\]
+并且当 \(Y\) 充分大时，利用 \(\pi(2Y)-\pi(Y)\gg Y/\log Y\) 可得
+\[
+\Pr[p\mid \Delta_\ell]
+\ =\
+O\!\left(\frac{\log|\Delta_\ell|\cdot \log Y}{Y}\right).
+\]
+\end{corollary}
+\begin{proof}
+区间内坏素数个数至多为 \(\omega(\Delta_\ell)\)，而候选素数总数为 \(\pi(2Y)-\pi(Y)\)，故概率至多其比值。
+再用 \(\omega(\Delta_\ell)\le \lfloor\log_2|\Delta_\ell|\rfloor\) 得第二个不等式。
+最后一式由素数定理的弱形式下界 \(\pi(2Y)-\pi(Y)\gg Y/\log Y\) 代入得到。证毕。
+\end{proof}
+
 \endinput

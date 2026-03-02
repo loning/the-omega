@@ -219,6 +219,73 @@ K=
 证毕。
 \end{proof}
 
+\begin{theorem}[多级 CRT 阈值的加性控制律：最大素数由总对数预算决定]\label{thm:xi-multistage-crt-max-prime-additive-control}
+给定整数 \(k\ge 1\) 与阈值 \(A_1,\dots,A_k>1\)。
+考虑选择两两不交的素数集合 \(S_1,\dots,S_k\) 使得
+\[
+\prod_{p\in S_i}p\ \ge\ A_i\qquad(1\le i\le k),
+\]
+并最小化全局最大素数
+\[
+p_{\max}:=\max\!\Bigl(\bigcup_{i=1}^{k}S_i\Bigr).
+\]
+记 Chebyshev 函数
+\(
+\vartheta(x):=\sum_{p\le x}\log p
+\)。
+则最优值满足精确刻画
+\[
+\boxed{\;
+p_{\max}^{\ast}
+\ =\
+\inf\!\left\{x\ge 2:\ \vartheta(x)\ge \sum_{i=1}^{k}\log A_i\right\}.
+\;}
+\]
+并且当 \(\sum_{i=1}^{k}\log A_i\to\infty\) 时，由 \(\vartheta(x)\sim x\) 得
+\[
+p_{\max}^{\ast}\sim \sum_{i=1}^{k}\log A_i.
+\]
+\end{theorem}
+\begin{proof}
+必要性：任意可行解满足
+\[
+\sum_{i=1}^{k}\log A_i
+\le
+\sum_{i=1}^{k}\sum_{p\in S_i}\log p
+=
+\sum_{p\in\cup_i S_i}\log p
+\le
+\sum_{p\le p_{\max}}\log p
+=\vartheta(p_{\max}),
+\]
+故若 \(\vartheta(x)<\sum_i\log A_i\)，则不存在可行解，得到下界。
+\par
+充分性：取 \(x\) 使 \(\vartheta(x)\ge\sum_i\log A_i\)，并将所有 \(\le x\) 的素数按从小到大排列，依次分配到 \(S_1,S_2,\dots,S_k\)，使得对每个 \(i\) 都在首次达到
+\(\sum_{p\in S_i}\log p\ge \log A_i\)
+处停止并转入下一组。
+由于总和不少于目标总和，该过程在用完素数前必完成全部 \(k\) 个阈值；且构造保证集合两两不交并满足 \(p_{\max}\le x\)。
+于是最优值等于所示下确界。
+\par
+渐近式由 \(\vartheta(x)\sim x\) 立得。证毕。
+\end{proof}
+
+\begin{corollary}[多级阈值下的素数轴数量标度]\label{cor:xi-multistage-crt-axis-count-scaling}
+在定理 \ref{thm:xi-multistage-crt-max-prime-additive-control} 的设定下，令
+\[
+L:=\sum_{i=1}^{k}\log A_i,
+\]
+并假设 \(L\to\infty\)。
+令 \(K^\ast\) 为达到最优最大素数 \(p_{\max}^\ast\) 所需的总素数轴数量，则
+\[
+K^\ast\sim \pi(p_{\max}^\ast)\sim \frac{L}{\log L}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-multistage-crt-max-prime-additive-control}，\(p_{\max}^\ast\sim L\)。
+而素数轴数量为不超过 \(p_{\max}^\ast\) 的素数个数，即 \(K^\ast=\pi(p_{\max}^\ast)\)。
+由素数定理 \(\pi(x)\sim x/\log x\) 得 \(K^\ast\sim L/\log L\)。证毕。
+\end{proof}
+
 \begin{theorem}[素数轴分解下的可逆化合成与素数张量积结构]\label{thm:xi-prime-axis-tensorized-replay-composition}
 设有两级投影
 \[
