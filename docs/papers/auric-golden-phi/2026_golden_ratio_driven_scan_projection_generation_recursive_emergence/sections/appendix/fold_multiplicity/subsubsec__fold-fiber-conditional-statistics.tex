@@ -77,6 +77,48 @@ b_L=(-1)^L b_0+\sum_{j=0}^{L-1}(-1)^{L-1-j}d_j
 与闭合条件 \(b_L=b_0\) 比较：当 \(L\) 偶时 \(1-(-1)^L=0\) 使得 \(b_0\) 系数消失，从而闭合条件等价于交替和为零；当 \(L\) 奇时 \(1-(-1)^L=2\) 给出唯一的 \(b_0\) 并唯一确定全轨道。证毕。
 \end{proof}
 
+\input{thm__fold-translation-equation-orbit-solution-space}
+\input{prop__fold-translation-kernel-fourier-sgM}
+\input{prop__fold-fiber-single-coordinate-minimal-augmentation}
+
+\begin{corollary}[Fibonacci 模长下的自由度由 \texorpdfstring{$\gcd(m+2,k+1)$}{gcd(m+2,k+1)} 精确控制]\label{cor:fold-fiber-single-coordinate-fibonacci-gcd-freedom}
+在命题 \ref{prop:fold-fiber-single-coordinate-affine-difference} 的设定下，令 \(M=F_{m+2}\)、\(w=F_{k+1}\)，并记
+\[
+g_{m,k}:=\gcd(F_{m+2},F_{k+1})=F_{\gcd(m+2,k+1)}.
+\]
+则齐次自由度满足
+\[
+\dim_{\CC}\ker(I+T_{F_{k+1}})
+=
+\begin{cases}
+0,&\text{若 } \frac{F_{m+2}}{g_{m,k}}\text{ 为奇数},\\
+g_{m,k},&\text{若 } \frac{F_{m+2}}{g_{m,k}}\text{ 为偶数}.
+\end{cases}
+\]
+从而在 \(\frac{F_{m+2}}{g_{m,k}}\) 为偶数且方程可解时，解空间为 \(g_{m,k}\)-维仿射空间。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:fold-translation-equation-orbit-solution-space} 与命题 \ref{prop:fold-translation-kernel-fourier-sgM}，\(\dim\ker(I+T_w)=0\) 当且仅当 \(M/\gcd(M,w)\) 为奇数；否则维数等于 \(g=\gcd(M,w)\)。
+取 \(M=F_{m+2}\)、\(w=F_{k+1}\) 得第一条断言。
+第二条恒等式为 Fibonacci 的经典最大公因子恒等式 \(\gcd(F_a,F_b)=F_{\gcd(a,b)}\) 取 \(a=m+2\)、\(b=k+1\)。
+最后一段为仿射空间维数的直接语义重述。证毕。
+\end{proof}
+
+\begin{corollary}[偶模长的最小不可消自由度与奇偶角色]\label{cor:fold-fiber-even-modulus-minimal-defect-parity-character}
+若 \(M=F_{m+2}\) 为偶数，则取 \(k=1\)（\(w=F_2=1\)）时有
+\[
+\dim_{\CC}\ker(I+T_{1})=1,
+\]
+并且核空间由唯一的二阶角色生成：\(\ker(I+T_1)=\CC\cdot \chi_{M/2}\)（其中 \(\chi_{M/2}(r)=(-1)^r\)）。
+\end{corollary}
+
+\begin{proof}
+取 \(w=1\) 时 \(g=\gcd(M,1)=1\)，且 \(M\) 为偶数蕴含 \(M/g\) 为偶数。
+由命题 \ref{prop:fold-translation-kernel-fourier-sgM} 得 \(\dim\ker(I+T_1)=g=1\)，并且满足 \(\chi_t(1)=-1\) 的唯一频率为 \(t\equiv M/2\pmod M\)。
+因此核由 \(\chi_{M/2}(r)=e^{2\pi i (M/2)r/M}=(-1)^r\) 张成。证毕。
+\end{proof}
+
 \paragraph{多坐标约束的卷积分解与奇模长可逆性}
 取非空坐标子集 \(I\subseteq\{1,\dots,m\}\)。
 定义“全零子纤维计数”

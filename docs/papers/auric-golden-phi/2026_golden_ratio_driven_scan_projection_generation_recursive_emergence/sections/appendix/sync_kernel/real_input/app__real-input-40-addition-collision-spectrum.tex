@@ -52,6 +52,40 @@ r_2^{\oplus,\mathrm{real}}\approx 3.9985433445,
 因此 \(40\) 状态核不仅更“真实”，而且在空间损失谱层面确有独立信息贡献。
 \end{remark}
 
+\begin{theorem}[输入约束导致碰撞 Perron 根严格下降]\label{thm:addition-collision-perron-drop-real-vs-sync}
+对每个整数 \(q\ge 2\)，令 \(A^{\oplus,\mathrm{sync10}}_q\) 与 \(A^{\oplus,\mathrm{real}}_q\) 分别表示在
+\begin{itemize}
+  \item \(10\) 状态归一化核（忽略真实输入合法性筛选），以及
+  \item 真实输入 \(40\) 状态核（把 \(x,y\in X\) 的 \(11\) 禁词约束并入状态）
+\end{itemize}
+两种口径下，由 moment-kernel 编译得到的 \(q\)-阶碰撞核（命题 \ref{prop:pom-moment-kernel-exists} 的同型构造，适用于“加法作为投影”的转导语义）。
+记 Perron 根
+\[
+r_q^{\oplus,\mathrm{sync10}}:=\rho\!\left(A^{\oplus,\mathrm{sync10}}_q\right),
+\qquad
+r_q^{\oplus,\mathrm{real}}:=\rho\!\left(A^{\oplus,\mathrm{real}}_q\right).
+\]
+则对所有 \(q\ge 2\) 有严格不等式
+\[
+\boxed{\; r_q^{\oplus,\mathrm{real}}<r_q^{\oplus,\mathrm{sync10}}.\;}
+\]
+\end{theorem}
+
+\begin{proof}
+真实输入核在每一步仅允许那些由两条黄金均值输入 \((x,y)\in X\times X\) 产生的输入对延拓；相对于“全移位输入”的归一化核口径，这在底层路径集合上给出真子集约束。
+在 moment-kernel 编译中，\(A_q\) 的条目编码的是“\(q\) 路并行演化在输出层逐步碰撞”的可行迁移计数/权重；
+因此当底层可行迁移被删减时，编译所得的每一步可行 \(q\)-迁移也只能减少不增，从而在逐项偏序下满足
+\[
+0\le A^{\oplus,\mathrm{real}}_q \le A^{\oplus,\mathrm{sync10}}_q,
+\qquad
+A^{\oplus,\mathrm{real}}_q\neq A^{\oplus,\mathrm{sync10}}_q.
+\]
+对同步核口径，取其本质强连通分量后得到的 moment-kernel 为原始（Perron--Frobenius 主特征向量严格正），
+从而非负矩阵谱半径对逐项偏序严格单调：若 \(0\le A<B\) 且 \(B\) 原始，则 \(\rho(A)<\rho(B)\)。
+应用该引理即得
+\(\rho(A^{\oplus,\mathrm{real}}_q)<\rho(A^{\oplus,\mathrm{sync10}}_q)\)，证毕。
+\end{proof}
+
 \paragraph{可复算协议}
 表 \ref{tab:sync-kernel-addition-collision-spectrum} 报告上述常数与派生量；其生成脚本为
 \texttt{scripts/exp\_sync\_kernel\_addition\_collision\_spectrum.py}（已纳入 \texttt{scripts/run\_all.py} 管线）。
