@@ -253,33 +253,72 @@ H^1_{\mathrm{dR}}((S^1)^n;\mathbb Z)\cong \operatorname{Hom}(\mathbb Z^n,\mathbb
 \end{proof}
 
 \begin{proposition}[离散广义斯托克斯的可积化校正]\label{prop:conclusion-discrete-stokes-integrable-correction}
-令 \(X\) 为有限、连通的立方体复形，记 \(C^k(X;\mathbb R)\) 为 \(k\)-余链群，\(\delta:C^k\to C^{k+1}\) 为余边界算子。
-对任意 \(\beta\in C^1(X;\mathbb R)\) 定义离散曲率
+令 \(X\) 为有限、连通的立方体复形，记 \(C^k(X;\RR)\) 为 \(k\)-余链群，\(\delta:C^k\to C^{k+1}\) 为余边界算子。
+对任意 \(k\ge 1\) 与任意 \(\beta\in C^k(X;\RR)\)，存在 \(\alpha\in C^{k-1}(X;\RR)\) 使得残差
 \[
-\kappa:=\delta\beta\in C^2(X;\mathbb R).
+r:=\beta-\delta\alpha
 \]
-设 \(E\) 为有向 \(1\)-胞腔集合、\(F\) 为有向 \(2\)-胞腔集合，并以 \(\|\cdot\|_{\ell^\infty(E)}\)、\(\|\cdot\|_{\ell^\infty(F)}\) 表示相应上确界范数。
-则存在 \(\varphi\in C^0(X;\mathbb R)\) 使得
+满足统一控制
 \[
-r:=\beta-\delta\varphi
+\|r\|_{\ell^\infty(\mathcal C_k)}\ \le\ \mathrm{diam}(X)\,\|\delta\beta\|_{\ell^\infty(\mathcal C_{k+1})},
 \]
-满足显式估计
-\[
-\|r\|_{\ell^\infty(E)}\ \le\ D(X)\,\|\kappa\|_{\ell^\infty(F)},
-\]
-其中 \(D(X)\) 为 \(X\) 的 \(1\)-骨架图直径。
-特别地，若 \(\kappa=0\) 则 \(r=0\)，即闭 \(1\)-余链在可收缩立方体复形上必为恰当余链。
+其中 \(\mathcal C_j\) 表示 \(X\) 的定向 \(j\)-胞腔集合，\(\mathrm{diam}(X)\) 为 \(1\)-骨架的图距离直径。
+并且当 \(\delta\beta=0\) 时可取 \(r=0\)，从而在可收缩立方体复形上闭 \(k\)-余链必为恰当余链。
 \end{proposition}
 \begin{proof}[证明要点]
-取 \(1\)-骨架的一棵生成树 \(T\) 并固定根顶点 \(v_0\)。
-定义 \(\varphi(v)\) 为沿树上从 \(v_0\) 到 \(v\) 的唯一路径对 \(\beta\) 的路径和，则对树边有 \(r=0\)。
-对任意非树边 \(e\)，由树路径与 \(e\) 组成的回路 \(\ell_e\) 可由若干 \(2\)-胞腔填充为 \(2\)-链 \(S_e\)；
-余边界--边界互伴随给出
+取 \(1\)-骨架上一棵生成树 \(T\) 并固定根顶点 \(v_0\)。
+对每个定向 \(k\)-胞腔 \(\sigma\)，选取其某个顶点 \(v(\sigma)\)，并令 \(\gamma_{v(\sigma)}\) 为 \(T\) 中从 \(v_0\) 到 \(v(\sigma)\) 的唯一路径；其长度不超过 \(\mathrm{diam}(X)\)。
+在立方体复形中可构造链同伦锥算子 \(\mathrm{Cone}:C_k(X)\to C_{k+1}(X)\)，使
+\[
+\partial\,\mathrm{Cone}+\mathrm{Cone}\,\partial=\mathrm{id}_{C_k(X)}\qquad(k\ge 1),
+\]
+且对每个 \(\sigma\) 的锥链由至多 \(\mathrm{diam}(X)\) 个 \((k+1)\)-胞腔组成。
+对偶化令 \(H:=\mathrm{Cone}^\ast:C^k(X)\to C^{k-1}(X)\)，则
+\[
+\delta H+H\delta=\mathrm{id}_{C^k(X)}\qquad(k\ge 1),
+\qquad
+\|H\|_{\ell^\infty\to\ell^\infty}\le \mathrm{diam}(X).
+\]
+取 \(\alpha:=H\beta\)，则
 \(
-r(e)=-\sum_{Q\in S_e}\kappa(Q)
-\)，
-从而 \(|r(e)|\le |S_e|\,\|\kappa\|_{\ell^\infty(F)}\)。
-选取标准填充可保证 \(|S_e|\le D(X)\)，遂得所示界。证毕。
+r=\beta-\delta\alpha=\beta-\delta H\beta=H\delta\beta
+\)，从而
+\(
+\|r\|_\infty\le \|H\|\,\|\delta\beta\|_\infty\le \mathrm{diam}(X)\|\delta\beta\|_\infty
+\)。
+当 \(\delta\beta=0\) 时得 \(r=0\)。证毕。
+\end{proof}
+
+\begin{theorem}[均匀网格上的量化 Stokes--Poincar\'e 分解与尺度常数]\label{thm:conclusion-uniform-grid-quantized-stokes-poincare-scale}
+令 \(I^n=[0,1]^n\)，并取网格尺度 \(h=2^{-m}\) 的均匀立方剖分 \(\mathcal Q_h\)。
+对 \(k\)-余链 \(\beta\in C^k(\mathcal Q_h;\RR)\) 定义密度范数
+\[
+\|\beta\|_{\infty,h}:=\max_{\sigma^k\in\mathcal Q_h}\frac{|\beta(\sigma^k)|}{\mathrm{vol}(\sigma^k)}
+\qquad(\mathrm{vol}(\sigma^k)=h^k).
+\]
+则对任意 \(k\ge 1\) 存在线性算子
+\[
+H_{k,h}:C^k(\mathcal Q_h;\RR)\longrightarrow C^{k-1}(\mathcal Q_h;\RR)
+\]
+满足同伦恒等式
+\[
+\delta H_{k,h}+H_{k+1,h}\delta=\mathrm{id}_{C^k(\mathcal Q_h)}
+\]
+以及尺度最优的算子范数控制
+\[
+\|H_{k,h}\|_{(\infty,h)\to(\infty,h)}\ \le\ \frac{h}{2k}.
+\]
+从而对任意 \(\beta\in C^k(\mathcal Q_h;\RR)\)，取 \(\alpha:=H_{k,h}\beta\) 有
+\[
+\|\alpha\|_{\infty,h}\le \frac{h}{2k}\|\beta\|_{\infty,h},
+\qquad
+\|\beta-\delta\alpha\|_{\infty,h}\le \frac{h}{2k}\|\delta\beta\|_{\infty,h}.
+\]
+\end{theorem}
+\begin{proof}[证明要点]
+对单位立方复形的余链复形，定理 \ref{thm:spg-cubical-quantized-stokes-poincare-linf-optimal} 给出同伦算子与 \(\ell^\infty\) 最优常数 \(\frac{1}{2k}\)。
+将任一边长 \(h\) 的小立方体通过仿射缩放同构到单位立方体，\(\delta\) 与同伦恒等式在该同构下保持不变，而密度范数在缩放下按长度线性缩放，从而常数相应乘以 \(h\)。
+在全体小立方体上以一致方式拼接该局部算子即可得到 \(H_{k,h}\)；算子范数与同伦恒等式由局部构造与立方剖分的兼容性给出。证毕。
 \end{proof}
 
 当边界积分由代数零集合在 \((\mathbb C^\ast)^2\) 中的闭链承载时，一元 Jensen 公式可视为二维 Green--斯托克斯机制在单位圆族上的纤维化表达。

@@ -319,6 +319,61 @@ b^{(i)}_x:=b_i(S_x).
 最后 \(\ker\partial\cong H_1(\mathsf B_f;\ZZ)\) 与秩公式由命题 \ref{prop:hypercube-boundary-multigraph-h1-cdim} 给出。证毕。
 \end{proof}
 
+\begin{theorem}[边界邻接多图的有效电阻范数与最小能量原理]\label{thm:fold-hypercube-boundary-multigraph-effective-resistance-min-energy}
+设 \(G=(V,E)\) 为连通有限无向多图，取一组取向将其视作有向边集 \(E\)。
+记边界算子 \(\partial:\RR^{E}\to \RR^{V}\) 为对应的入射（incidence）线性算子。
+给定导纳（conductance）\(c_e>0\)（\(e\in E\)），令 \(C:=\mathrm{diag}(c_e)_{e\in E}\)，并定义加权 Laplace 算子
+\[
+L_c:=\partial\,C\,\partial^{\mathsf T}:\RR^{V}\to \RR^{V}.
+\]
+对满足 \(\sum_{v\in V}\delta(v)=0\) 的散度数据 \(\delta\in\RR^{V}\)，定义有效电阻范数
+\[
+\|\delta\|_{\mathrm{eff}}^{2}:=\delta^{\mathsf T}L_c^{+}\delta,
+\]
+其中 \(L_c^{+}\) 为 \(L_c\) 的 Moore--Penrose 伪逆。
+则在所有满足 \(\partial\phi=\delta\) 的实值流 \(\phi\in\RR^{E}\) 中，二次能量
+\[
+\mathcal E_c(\phi):=\sum_{e\in E}\frac{\phi(e)^2}{c_e}
+\]
+存在唯一极小值，并满足
+\[
+\boxed{\;\min_{\partial\phi=\delta}\mathcal E_c(\phi)=\|\delta\|_{\mathrm{eff}}^{2}.\;}
+\]
+极小流必为梯度流：存在势函数 \(u\in\RR^{V}\) 使得
+\[
+\phi^\star=C\,\partial^{\mathsf T}u,
+\qquad
+L_cu=\delta,
+\]
+其中 \(u\) 唯一到加常数。
+特别地，对边界邻接多图 \(G=\mathsf B_f\) 取 \(c_e\) 为对应无向多重边的重数，并对每个坐标 \(i\) 取命题 \ref{prop:fold-hypercube-godel-hodge-torsor} 的偏差向量 \(b^{(i)}\) 与整数流 \(F^{(i)}\)，则
+\[
+\|b^{(i)}\|_{\mathrm{eff}}^{2}\ \le\ \mathcal E_c(F^{(i)}).
+\]
+若进一步对每条边 \(e\) 有 \(0\le F^{(i)}(e)\le c_e\)（例如 \(F^{(i)}\) 由超立方体第 \(i\) 坐标割边推前得到时成立），则还满足
+\[
+\mathcal E_c(F^{(i)})\le \sum_{e\in E}F^{(i)}(e).
+\]
+\end{theorem}
+\begin{proof}
+约束集 \(\{\phi\in\RR^{E}:\ \partial\phi=\delta\}\) 为仿射子空间，\(\mathcal E_c\) 为严格凸二次型，故极小解存在且唯一。
+对拉格朗日函数
+\(
+\mathcal L(\phi,u)=\sum_e \phi(e)^2/c_e+2\langle u,\delta-\partial\phi\rangle
+\)
+取一阶条件得
+\(
+2C^{-1}\phi-2\partial^{\mathsf T}u=0
+\)，即 \(\phi=C\partial^{\mathsf T}u\)。
+代入约束得 \(L_cu=\partial C\partial^{\mathsf T}u=\delta\)，解唯一到常数（因 \(G\) 连通且 \(\ker L_c=\langle \mathbf 1\rangle\)）。
+将 \(\phi^\star=C\partial^{\mathsf T}u\) 代回能量并用伪逆表述可得
+\[
+\mathcal E_c(\phi^\star)=u^{\mathsf T}\delta=\delta^{\mathsf T}L_c^{+}\delta=\|\delta\|_{\mathrm{eff}}^{2}.
+\]
+对特殊化 \((\delta,\phi)=(b^{(i)},F^{(i)})\)，由极小性立即得 \(\|b^{(i)}\|_{\mathrm{eff}}^{2}\le \mathcal E_c(F^{(i)})\)。
+若对每条边有 \(0\le F^{(i)}(e)\le c_e\)，则 \(F^{(i)}(e)^2/c_e\le F^{(i)}(e)\)，逐边求和得到 \(\mathcal E_c(F^{(i)})\le \sum_e F^{(i)}(e)\)。证毕。
+\end{proof}
+
 \begin{proposition}[回路自由度的素数预算下界：自由秩不可压缩]\label{prop:fold-hypercube-h1-prime-budget-minimal}
 沿用命题 \ref{prop:fold-hypercube-godel-hodge-torsor} 记号，并令
 \[
@@ -377,6 +432,44 @@ E_w(S)=\sum_{i=1}^n w_i\sum_{\omega\in\Omega_n}\bigl(f(\omega)-f(\omega^{(i)})\b
 2^{-n}E_w(S)\ge \sum_{i=1}^n 2w_i\frac{b_i(S)^2}{2^{2n}},
 \]
 移项即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[能量截止下的 Walsh--Stokes 全息重构与最优误差上界]\label{thm:fold-hypercube-walsh-stokes-energy-cutoff-reconstruction}
+在定理 \ref{thm:fold-hypercube-weighted-walsh-stokes} 的设定下，令 \(S\subseteq\Omega_n\)、\(f=\mathbf 1_S\)，并记
+\[
+\lambda_I:=2\sum_{i\in I}w_i,\qquad I\subseteq[n].
+\]
+对任意截止参数 \(\Lambda>0\)，令谱投影
+\[
+P_{\Lambda}f:=\sum_{\lambda_I\le \Lambda}\widehat f(I)\chi_I,
+\qquad
+R_{\Lambda}f:=f-P_{\Lambda}f.
+\]
+则在归一化 \(L^2\) 范数 \(\|g\|_2^2:=2^{-n}\sum_{\omega\in\Omega_n}g(\omega)^2\) 下成立误差界
+\[
+\boxed{\;\|R_{\Lambda}f\|_2^2\ \le\ \frac{\mathcal E_w(f)}{\Lambda}\ =\ \frac{2^{-n}E_w(S)}{\Lambda}.\;}
+\]
+并且 \(P_\Lambda f\) 仅依赖于所有满足 \(\lambda_I\le \Lambda\) 的边界全息观测量
+\(
+\sum_{e\in\partial^{\to}S}\alpha_{I,w}(e)
+\)
+（定理 \ref{thm:fold-hypercube-weighted-walsh-stokes}），从而可由截止谱内的边界数据在 \(L^2\) 意义下重构 \(f\) 到误差不超过 \(2^{-n}E_w(S)/\Lambda\)。
+\end{theorem}
+\begin{proof}
+由 Parseval 恒等式，
+\[
+\|R_{\Lambda}f\|_2^2=\sum_{\lambda_I>\Lambda}|\widehat f(I)|^2.
+\]
+对每项用 \(\lambda_I>\Lambda\Rightarrow |\widehat f(I)|^2\le \Lambda^{-1}\lambda_I|\widehat f(I)|^2\) 得
+\[
+\|R_{\Lambda}f\|_2^2
+\le
+\frac{1}{\Lambda}\sum_{\lambda_I>\Lambda}\lambda_I|\widehat f(I)|^2
+\le
+\frac{1}{\Lambda}\sum_{I\ne\varnothing}\lambda_I|\widehat f(I)|^2.
+\]
+而 \(\sum_{I\ne\varnothing}\lambda_I|\widehat f(I)|^2=\mathcal E_w(f)=2^{-n}E_w(S)\) 已在命题 \ref{prop:fold-hypercube-weighted-energy-ellipsoid-bias} 的谱展开口径中给出，故得到所示界。
+最后由定理 \ref{thm:fold-hypercube-weighted-walsh-stokes} 的边界读出式 \(2^n\widehat f(I)=\sum_{e\in\partial^{\to}S}\alpha_{I,w}(e)\)，可知 \(P_\Lambda f\) 的全部系数由截止谱内的边界数据确定。证毕。
 \end{proof}
 
 \endinput
