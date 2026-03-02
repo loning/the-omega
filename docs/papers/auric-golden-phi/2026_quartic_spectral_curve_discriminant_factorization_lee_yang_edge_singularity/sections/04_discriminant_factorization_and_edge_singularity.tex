@@ -1,29 +1,28 @@
-\section{Discriminant factorization and a Lee--Yang-type edge singularity}\label{sec:disc}
+\section{Discriminant factorization and the branch locus}\label{sec:disc}
 
 \subsection{Complete description of the branch locus}
 
-View \(\Pi(\lambda,y)\) in \eqref{eq:spectral-poly} as a degree-\(4\) polynomial in \(\lambda\).
-Spectral branching occurs precisely when two (or more) roots in \(\lambda\) collide, which is controlled by the discriminant.
+View $\Pi(\lambda,y)$ in \eqref{eq:spectral-poly} as a degree-$4$ polynomial in $\lambda$.
+Spectral branching---a qualitative change in the root configuration---occurs precisely when two or more roots in $\lambda$ collide, which is controlled by the discriminant.
+Computing the discriminant of the spectral polynomial to determine the critical boundary is a standard and well-established technique in the analysis of partition-function zeros; see Sokal~\cite{Sokal2001} for chromatic polynomials and Chang--Shrock~\cite{ChangShrock2001} for transfer-matrix models.
 
 \begin{theorem}\label{thm:disc-factor}
-The discriminant of \(\Pi(\lambda,y)\) with respect to \(\lambda\) admits the complete factorization
+The discriminant of $\Pi(\lambda,y)$ with respect to $\lambda$ admits the complete factorization
 \begin{equation}\label{eq:disc-factor}
 \Disc_{\lambda}\Pi(\lambda,y)=-y(y-1)\bigl(256y^3+411y^2+165y+32\bigr).
 \end{equation}
-Hence the parameter values where the root configuration of \(\Pi(\cdot,y)\) is non-simple are contained in
+Hence the parameter values where the root configuration of $\Pi(\cdot,y)$ is non-simple are exactly
 \[
 \Branch=\{y=0\}\cup\{y=1\}\cup\{256y^3+411y^2+165y+32=0\}.
 \]
 \end{theorem}
 
 \begin{proof}
-The discriminant of a quartic polynomial can be written as a resultant:
-\(\Disc_{\lambda}\Pi=\Res_{\lambda}\bigl(\Pi,\partial_{\lambda}\Pi\bigr)\).
-For the explicit \(\Pi\) in \eqref{eq:spectral-poly}, the Sylvester determinant can be computed and completely factored, yielding \eqref{eq:disc-factor}.
-Details are given in Appendix~\ref{app:disc}.
+The discriminant of a monic degree-$4$ polynomial equals, up to sign, the resultant $\Res_{\lambda}(\Pi,\partial_\lambda\Pi)$, which is the determinant of a $7\times 7$ Sylvester matrix.
+The explicit computation and full factorization are given in Appendix~\ref{app:disc}.
 \end{proof}
 
-\subsection{A nontrivial real-axis edge singularity}
+\subsection{The nontrivial branch cubic and its unique real root}
 
 Let
 \begin{equation}\label{eq:cubic}
@@ -31,17 +30,48 @@ c(y)=256y^3+411y^2+165y+32.
 \end{equation}
 
 \begin{proposition}\label{prop:unique-real-root}
-The cubic \(c(y)\) has exactly one real root, denoted \(\yLY\), and it satisfies
+The cubic $c(y)$ has exactly one real root, denoted $\yLY$, and it satisfies
 \[
 \yLY\in(-1.13446,-1.13445).
 \]
 \end{proposition}
 
 \begin{proof}
-The discriminant of the cubic \(c\) is negative, hence \(c\) has a unique real root.
-Moreover, direct evaluation gives \(c(-1.13446)<0<c(-1.13445)\), which certifies the stated interval containment.
+The discriminant of the cubic $c$ is $\Disc(c)=-3^9\cdot 31^2\cdot 37<0$ (see Proposition~\ref{prop:cubic-disc} in Appendix~\ref{app:elliptic}), so $c$ has one real root and two complex conjugate roots.
+Direct evaluation gives $c(-1.13446)<0<c(-1.13445)$, certifying the stated interval.
 \end{proof}
 
-Except for the endpoint degeneracies \(y\in\{0,1\}\), the real axis therefore contains a unique nontrivial branch point \(\yLY<0\).
-We refer to \(\yLY\) as the \emph{Lee--Yang-type real-axis edge singularity} of the present quartic spectral-closure model: it is an algebraic, certificate-friendly anchor point of the critical boundary.
+Excluding the endpoint degeneracies $y\in\{0,1\}$, the real axis therefore contains a unique nontrivial branch point $\yLY<0$.
+
+\subsection{Spectral-root collision at $\yLY$}
+
+\begin{proposition}\label{prop:yLY-collision}
+At $y=\yLY$, exactly two spectral roots of $\Pi(\lambda,y)$ collide.
+For $y$ slightly above $\yLY$, the colliding pair consists of two distinct real roots; for $y$ slightly below $\yLY$, the pair becomes a complex conjugate pair.
+These are \emph{subdominant} roots: numerical evaluation confirms that, in a neighborhood of $\yLY$, the two dominant spectral roots (a complex conjugate pair of modulus $\approx 1.43$) remain strictly larger in modulus than the colliding pair (of modulus $\approx 0.27$).
+\end{proposition}
+
+\begin{proof}
+At $y=\yLY$, the discriminant $\Disc_\lambda\Pi$ vanishes by Theorem~\ref{thm:disc-factor}, so at least two roots collide.
+Since $c(\yLY)=0$ while $\yLY\neq 0,1$, the branch point arises from the cubic factor, which generically produces a simple double root (i.e., exactly two roots collide).
+
+For the real-to-complex transition: the polynomial $\Pi(\lambda,y)$ has real coefficients for real~$y$, so non-real roots occur in conjugate pairs.
+Near a simple collision of two real roots, the local Puiseux expansion (Theorem~\ref{thm:puiseux-amplitude} in Appendix~\ref{app:elliptic}) shows that
+$\lambda(y)\approx \lambda_\star\pm \kappa_\star\sqrt{y-\yLY}$,
+with $\kappa_\star^2\in\RR$.
+If $\kappa_\star^2>0$, then for $y>\yLY$ the two branches are distinct reals, and for $y<\yLY$ they form a complex conjugate pair.
+Numerical evaluation at the relevant ramification point confirms $\kappa_\star^2>0$.
+
+For the dominance structure: at $y=\yLY$, the four spectral root moduli are approximately $1.428,\, 1.428,\, 0.273,\, 0.273$.
+The dominant pair (the complex conjugate pair of modulus~$\approx 1.43$) is distinct from the colliding pair (at modulus~$\approx 0.27$).
+By continuity, this dominance ordering persists in a neighborhood of $\yLY$.
+\end{proof}
+
+\begin{remark}\label{rmk:equimodular-transition}
+The dominant spectral roots form a complex conjugate pair (hence equimodular) for all $y$ on the negative real axis below approximately $y\approx -0.16$.
+This equimodular dominance is established at a non-branch point where a real dominant root and a complex conjugate pair exchange dominance.
+The branch point $\yLY\approx -1.13$ lies well inside the equimodular region and marks a transition in the \emph{subdominant} structure, not the dominant one.
+Consequently, the zero-accumulation geometry predicted by the Beraha--Kahane--Weiss theorem (Section~\ref{sec:zeros}) is governed by the dominant equimodular pair, which persists throughout the interval $(-\infty,\yLY)\cup(\yLY,y_{\mathrm{eq}})$ on the real axis.
+The role of $\yLY$ in the full complex-plane zero-accumulation topology---as an endpoint of equimodular curves emanating into~$\CC$---remains an interesting open question.
+\end{remark}
 

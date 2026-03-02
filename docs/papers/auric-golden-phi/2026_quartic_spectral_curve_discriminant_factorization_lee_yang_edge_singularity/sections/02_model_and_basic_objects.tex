@@ -3,7 +3,7 @@
 \subsection{Generating function}
 \label{subsec:ogf}
 
-Let \(y\in\CC\) be a complex parameter. Define the ordinary generating function
+Let $y\in\CC$ be a complex parameter. Define the ordinary generating function
 \[
 Z(t,y)=\sum_{m\ge 0} Z_m(y)t^m,
 \qquad
@@ -14,19 +14,19 @@ where
 N(t,y) &= 1+yt+(y^2-y-1)t^2+(y^3-2y)t^3,\\
 D(t,y) &= 1-t-(2y+1)t^2+t^3+y(y+1)t^4.
 \end{align*}
-The coefficients \(Z_m(y)\) are uniquely determined by \(D(t,y)Z(t,y)=N(t,y)\) and satisfy \(Z_m(y)\in\ZZ[y]\).
-At \(y=1\) we have \(Z(t,1)=1/(1-2t)\), hence \(Z_m(1)=2^m\).
+The coefficients $Z_m(y)$ are uniquely determined by $D(t,y)Z(t,y)=N(t,y)$ and satisfy $Z_m(y)\in\ZZ[y]$.
+At $y=1$ the generating function simplifies to $Z(t,1)=1/(1-2t)$, yielding $Z_m(1)=2^m$.
 
 \paragraph{Initial values.}
-Comparing coefficients in \(D(t,y)Z(t,y)=N(t,y)\) gives
+Comparing coefficients in $D(t,y)Z(t,y)=N(t,y)$ gives
 \[
 Z_0(y)=1,\qquad Z_1(y)=y+1,\qquad Z_2(y)=(y+1)^2,\qquad Z_3(y)=(y+1)^3.
 \]
 
-\subsection{Order-\texorpdfstring{\(4\)}{4} recurrence and the spectral polynomial}
+\subsection{Order-\texorpdfstring{$4$}{4} recurrence and the spectral polynomial}
 \label{subsec:recurrence}
 
-From \(D(t,y)Z(t,y)=N(t,y)\) we obtain, for all \(m\ge 4\), the order-\(4\) linear recurrence
+From $D(t,y)Z(t,y)=N(t,y)$ we obtain, for all $m\ge 4$, the order-$4$ linear recurrence
 \begin{equation}\label{eq:recurrence}
 Z_m(y)-Z_{m-1}(y)-(2y+1)Z_{m-2}(y)+Z_{m-3}(y)+y(y+1)Z_{m-4}(y)=0.
 \end{equation}
@@ -35,6 +35,15 @@ The associated characteristic (spectral) polynomial is
 \begin{equation}\label{eq:spectral-poly}
 \Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1),
 \end{equation}
-which satisfies \(\Pi(\lambda,y)=\lambda^4 D(1/\lambda,y)\).
-Let \(\lambda_1(y),\dots,\lambda_4(y)\) be the roots of \(\Pi(\lambda,y)=0\), counted with multiplicity.
+which satisfies $\Pi(\lambda,y)=\lambda^4 D(1/\lambda,y)$.
+Let $\lambda_1(y),\dots,\lambda_4(y)$ be the roots of $\Pi(\lambda,y)=0$, counted with multiplicity.
+
+\begin{remark}[Nonnegativity of coefficients]\label{rmk:nonneg-coeffs}
+For all $m\ge 0$, the polynomial $Z_m(y)$ has nonnegative integer coefficients when expanded in powers of~$y$.
+This is immediate for $m\le 3$ from the initial values.
+For $m\ge 4$, the recurrence~\eqref{eq:recurrence} contains subtractive terms, which prevents a straightforward inductive argument.
+We verify nonnegativity computationally by propagating the recurrence in~$\ZZ[y]$ for $m\le 300$; every coefficient is strictly positive (Appendix~\ref{app:degeneracies}).
+A combinatorial proof---which would follow from a counting interpretation of $Z_m(y)$---remains an open question (see Section~\ref{sec:discussion}).
+This property is used in Section~\ref{sec:free} to define the probabilistic model.
+\end{remark}
 
