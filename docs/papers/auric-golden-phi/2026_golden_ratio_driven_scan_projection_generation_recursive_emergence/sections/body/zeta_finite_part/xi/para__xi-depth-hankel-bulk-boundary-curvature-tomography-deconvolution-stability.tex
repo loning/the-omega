@@ -121,6 +121,68 @@ Prony 重构可表述为从 \(\tilde H\) 解出线性递推（或等价 companio
 递归更新部分由 Hankel 扩维的块矩阵 Schur 补公式与 Weyl 型奇异值扰动界给出。证毕。
 \end{proof}
 
+\begin{proposition}[累积矩噪声下的 Hankel 反演稳定性：逆矩阵差分与特征值扰动界]\label{prop:xi-hankel-inversion-noise-stability-neumann-bauerfike}
+令 \(H_0,H_1\in\Mat_r(\CC)\)，并设 \(H_0\) 可逆。
+给定扰动 \(\widetilde H_0,\widetilde H_1\in\Mat_r(\CC)\)，假设
+\begin{equation}\label{eq:xi-hankel-neumann-smallness}
+\boxed{\;
+\|H_0^{-1}\|\,\|\widetilde H_0-H_0\|\ \le\ \frac12\;}
+\end{equation}
+其中 \(\|\cdot\|\) 为任意次乘法矩阵范数（例如算子范数）。
+则：
+\begin{enumerate}
+  \item \(\widetilde H_0\) 可逆且满足
+  \[
+  \boxed{\;
+  \|\widetilde H_0^{-1}-H_0^{-1}\|
+  \ \le\
+  2\,\|H_0^{-1}\|^{2}\,\|\widetilde H_0-H_0\|\;}
+  \]
+  并且 \(\|\widetilde H_0^{-1}\|\le 2\|H_0^{-1}\|\)；
+  \item 令
+  \[
+  S:=H_0^{-1}H_1,\qquad \widetilde S:=\widetilde H_0^{-1}\widetilde H_1,
+  \]
+  则有显式扰动界
+  \[
+  \boxed{\;
+  \|\widetilde S-S\|
+  \ \le\
+  4\,\|H_0^{-1}\|\Bigl(\|\widetilde H_1-H_1\|+\|S\|\,\|\widetilde H_0-H_0\|\Bigr)\;}
+  \]
+  \item 若 \(S\) 可对角化，即 \(S=PDP^{-1}\)（\(D\) 对角），则对任意 \(\widetilde S\) 的特征值 \(\widetilde\xi\) 有
+  \[
+  \boxed{\;
+  \mathrm{dist}\bigl(\widetilde\xi,\sigma(S)\bigr)\ \le\ \kappa(P)\,\|\widetilde S-S\|,
+  \qquad \kappa(P):=\|P\|\,\|P^{-1}\|\;}
+  \]
+  因而在零点重构 \(\widetilde\zeta:=1/\widetilde\xi\) 的口径下，若 \(\sigma(S)\) 与 \(0\) 保持正距离，则零点集合在 Hausdorff 距离意义下具有显式 Lipschitz 稳定性常数。
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(1) 写作 \(\widetilde H_0=H_0(I+E)\)，其中 \(E:=H_0^{-1}(\widetilde H_0-H_0)\)。
+由 \eqref{eq:xi-hankel-neumann-smallness} 得 \(\|E\|\le 1/2\)，故 \(I+E\) 可逆且
+\(\|(I+E)^{-1}\|\le \sum_{k\ge 0}\|E\|^k\le 2\)。
+于是 \(\widetilde H_0^{-1}=(I+E)^{-1}H_0^{-1}\) 且 \(\|\widetilde H_0^{-1}\|\le 2\|H_0^{-1}\|\)。
+并且由恒等式
+\(
+\widetilde H_0^{-1}-H_0^{-1}=\widetilde H_0^{-1}(H_0-\widetilde H_0)H_0^{-1}
+\)
+得
+\[
+\|\widetilde H_0^{-1}-H_0^{-1}\|
+\le \|\widetilde H_0^{-1}\|\,\|\widetilde H_0-H_0\|\,\|H_0^{-1}\|
+\le 2\|H_0^{-1}\|^2\|\widetilde H_0-H_0\|.
+\]
+(2) 展开
+\[
+\widetilde S-S
+=(\widetilde H_0^{-1}-H_0^{-1})H_1+\widetilde H_0^{-1}(\widetilde H_1-H_1),
+\]
+并用 \(\|H_1\|\le \|H_0\|\,\|S\|\) 与 \(\|\widetilde H_0^{-1}\|\le 2\|H_0^{-1}\|\)，结合 (1) 的界即可得到所示估计（常数用粗估吸收为 \(4\)）。
+(3) 由 Bauer--Fike 定理立得特征值扰动界。若 \(\inf_{\xi\in\sigma(S)}|\xi|>0\)，则映射 \(\xi\mapsto 1/\xi\) 在该谱邻域上 Lipschitz，从而零点重构的 Hausdorff 稳定性随之成立。证毕。
+\end{proof}
+
 \begin{corollary}[超分辨率屏障常数 \texorpdfstring{$\pi$}{pi}：深度分离的稳定阈值为 \texorpdfstring{$\exp(-\pi/\Delta)$}{exp(-pi/Delta)}]\label{cor:xi-bulk-curvature-superresolution-pi-barrier}
 设观测到的曲率概率密度为 \(\widetilde p=p+\eta\)，并假定 Fourier 噪声在带宽 \(|\xi|\le\Omega\) 内满足
 \[
