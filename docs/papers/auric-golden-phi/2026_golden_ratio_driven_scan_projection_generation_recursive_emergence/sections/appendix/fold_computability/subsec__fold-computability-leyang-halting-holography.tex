@@ -116,6 +116,128 @@ k(e):=e+3+\left\lceil\log_2 q_e\right\rceil.
 于是 \(e\in\mathcal H\) 可由有限步模拟判定，矛盾。证毕。
 \end{proof}
 
+\paragraph{语义等价的规范形选择与证书完备性障碍}
+下面给出两条与“停机集不可判定”同型的抽象障碍：一旦把等价关系提升到图灵完备的语义层（外延相等），则不存在可计算的规范形选取，也不存在递归可枚举的完备有限证书系统。
+这与正文投影词框架中“等价 = 可组合的 \(2\)-态射证书”（定义 \ref{def:pom-projword-2cat}）的制度取向一致：在该口径下，等价被定义为\emph{存在证书}而非宣称覆盖全部语义等价类。
+
+\begin{theorem}[语义等价类不存在可计算的规范形选取]\label{thm:fold-computability-no-computable-normal-form-selector}
+令 \(\mathcal F\) 为一类全定义可计算函数的有效编码族（例如 \(\NN\to\{0,1\}\) 的全定义可计算函数），并以外延相等
+\[
+f\equiv g\quad\Longleftrightarrow\quad \forall n\in\NN,\ f(n)=g(n)
+\]
+定义其语义等价。
+则不存在全定义可计算映射 \(\mathrm{NF}:\mathcal F\to\mathcal F\) 同时满足：
+\begin{enumerate}
+\normalfont
+  \item \(\mathrm{NF}(f)\equiv f\)；
+  \item \(\mathrm{NF}(f)=\mathrm{NF}(g)\iff f\equiv g\)。
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+若存在此 \(\mathrm{NF}\)，则对任意 \((f,g)\) 可计算 \(\mathrm{NF}(f),\mathrm{NF}(g)\) 并以语法相等判定 \(f\equiv g\)。
+但外延相等判定在该类上不可判定：例如对任意图灵机 \(M\) 与输入 \(x\) 构造全定义可计算函数
+\[
+f_{M,x}(n):=
+\begin{cases}
+0,& M(x)\ \text{于 }n\text{ 步内停机},\\
+1,& \text{否则},
+\end{cases}
+\qquad
+g(n)\equiv 1,
+\]
+则 \(f_{M,x}\equiv g\) 当且仅当 \(M(x)\) 不停机。
+若可判定 \(f_{M,x}\equiv g\)，即可判定停机问题，矛盾。证毕。
+\end{proof}
+
+\begin{theorem}[语义等价不存在递归可枚举的完备有限证书系统]\label{thm:fold-computability-no-re-complete-certificates-for-extensional-equality}
+在定理 \ref{thm:fold-computability-no-computable-normal-form-selector} 的设定下，
+不存在谓词 \(\mathrm{Cert}(f,g,\pi)\)（其中 \(\pi\in\{0,1\}^\ast\) 为有限证书）使得：
+\begin{enumerate}
+\normalfont
+  \item \(\mathrm{Cert}\) 对 \((f,g,\pi)\) 可判定；
+  \item 对任意 \(f,g\in\mathcal F\)，有
+  \[
+  f\equiv g\quad \Longleftrightarrow\quad \exists \pi\ \mathrm{Cert}(f,g,\pi).
+  \]
+\end{enumerate}
+换言之，关系 \(\equiv\) 不是递归可枚举的，因而不可能由“有限可核验证书”完备刻画。
+\end{theorem}
+
+\begin{proof}
+若存在上述 \(\mathrm{Cert}\)，则集合 \(\{(f,g): f\equiv g\}\) 递归可枚举。
+取上一证明中的 \(f_{M,x}\) 与常值 \(g\equiv 1\)，有
+\(
+f_{M,x}\equiv g \Longleftrightarrow M(x)\ \text{不停机}
+\)。
+于是集合 \(\{(M,x):M(x)\ \text{不停机}\}\) 亦递归可枚举，这与经典结论矛盾。证毕。
+\end{proof}
+
+\paragraph{\texorpdfstring{$\varepsilon$}{eps}-sound 距离的二进制谱嵌入}
+把停机时间压缩为区间 \([0,1]\) 上的离散谱值，可用一个最小预算型距离完成。
+
+\begin{theorem}[\texorpdfstring{$\varepsilon$}{eps}-sound 距离的离散值域与停机时间谱线]\label{thm:fold-computability-eps-sound-distance-halting-spectrum}
+取几何分布 \(\mu\) 于 \(\NN\)：
+\[
+\mu(\{n\})=2^{-(n+1)}\qquad(n\ge 0).
+\]
+对任意确定性函数 \(f,g:\NN\to\{0,1\}\)，定义其 \(\mu\)-\(\varepsilon\)-sound 距离
+\[
+d_\mu(f,g):=\inf\Bigl\{\varepsilon\ge 0:\ \exists E\subseteq\NN,\ \mu(E)\le \varepsilon,\ \forall n\notin E,\ f(n)=g(n)\Bigr\}.
+\]
+则：
+\begin{enumerate}
+\normalfont
+  \item 恒有 \(d_\mu(f,g)=\mu(\{n:\ f(n)\neq g(n)\})\)。
+  \item 对上一段中的 \(f_{M,x}\) 与 \(g\equiv 1\)，有
+  \[
+  d_\mu(f_{M,x},g)=
+  \begin{cases}
+  0,& T(M,x)=\infty,\\[2mm]
+  2^{-T(M,x)},& T(M,x)\in\NN,
+  \end{cases}
+  \]
+  其中 \(T(M,x)\) 为停机时间（不停机记为 \(\infty\)）。
+  因而 \(d_\mu\) 的取值集合严格等于
+  \(
+  \{0\}\cup\{2^{-t}:t\in\NN\}
+  \)，且在 \(T(M,x)<\infty\) 时有整数谱线读出
+  \[
+  -\log_2 d_\mu(f_{M,x},g)=T(M,x).
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+对确定性函数，满足“在坏事件外相等”的最小预算显然等于分歧集合的测度：
+\(
+d_\mu(f,g)=\mu(\{n:\ f(n)\ne g(n)\})
+\)，得 (1)。
+若 \(T(M,x)=\infty\)，则 \(f_{M,x}(n)\equiv 1\)，分歧集为空，距离为 \(0\)。
+若 \(T(M,x)=T<\infty\)，则 \(f_{M,x}(n)\ne g(n)\) 当且仅当 \(n\ge T\)，故
+\[
+d_\mu(f_{M,x},g)=\sum_{n=T}^{\infty}2^{-(n+1)}=2^{-T}.
+\]
+其余断言立得。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\varepsilon$}{eps}-sound 距离的不可计算性与强不可近似性]\label{cor:fold-computability-eps-sound-distance-noncomputable-inapproximable}
+映射 \((M,x)\mapsto d_\mu(f_{M,x},g)\) 不可计算。
+更强地，不存在算法 \(\mathcal A\) 对所有 \((M,x)\) 输出有理数 \(q\ge 0\) 使得：
+\begin{enumerate}
+\normalfont
+  \item 若 \(T(M,x)=\infty\)，则 \(q=0\)；
+  \item 若 \(T(M,x)<\infty\)，则 \(\tfrac12 d_\mu(f_{M,x},g)\le q\le 2\,d_\mu(f_{M,x},g)\)。
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+若 \(d_\mu\) 可计算，则可判定 \(d_\mu(f_{M,x},g)=0\) 与否，从而判定 \(T(M,x)=\infty\) 与否，矛盾。
+对强不可近似性：当 \(T<\infty\) 时 \(d_\mu=2^{-T}\) 且 \(q\in[2^{-(T+1)},2^{-(T-1)}]\)，故 \(-\log_2 q\in[T-1,T+1]\)；
+取最近整数即可恢复 \(T\)，而 \(q=0\) 等价于不停机。
+因此 \(\mathcal A\) 将判定停机问题，矛盾。证毕。
+\end{proof}
+
 \paragraph{可数强分离相似 IFS 的停机完备维数}
 \begin{theorem}[可枚举自相似吸引子的 Hausdorff 维数停机完备性]\label{thm:fold-computability-countable-ifs-halting-complete-dimension}
 构造区间 \([0,1]\) 上的可数相似 IFS 如下。

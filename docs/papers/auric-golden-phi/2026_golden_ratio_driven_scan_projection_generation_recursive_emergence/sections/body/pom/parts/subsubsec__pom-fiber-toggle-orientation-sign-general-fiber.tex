@@ -159,6 +159,123 @@ N_x:=|F_x|=|V(\mathcal F_x)|=\prod_{j=1}^r |\mathsf{Ind}(P_{\ell_j})|.
 同时被移动点数为 \(2t=N_x-|\mathrm{Fix}(\iota_x)|\)，故 \(t=(N_x-|\mathrm{Fix}(\iota_x)|)/2\)，从而得到所示闭式。证毕。
 \end{proof}
 
+\begin{corollary}[时间反演对合的轨道数闭式]\label{cor:pom-time-reversal-orbit-count}
+在定理 \ref{thm:pom-toggle-time-reversal-fixedpoints-sign-closed-form} 的设定下，令 \(\langle \iota_x\rangle\) 作用于有限集合 \(F_x\)。
+则其轨道数满足
+\[
+\card{F_x/\langle \iota_x\rangle}
+=\frac{\card{F_x}+\card{\mathrm{Fix}(\iota_x)}}{2}
+=\frac{d_m(x)+\card{\mathrm{Fix}(\iota_x)}}{2}.
+\]
+\end{corollary}
+
+\begin{proof}
+对合的轨道分解仅由不动点与 \(2\)-点轨道组成；设 \(2\)-点轨道数为 \(t_x\)，则
+\(
+\card{F_x}=\card{\mathrm{Fix}(\iota_x)}+2t_x
+\)，而轨道总数为 \(\card{\mathrm{Fix}(\iota_x)}+t_x\)。
+消去 \(t_x\) 得所示公式。证毕。
+\end{proof}
+
+\begin{proposition}[对称独立集多项式的闭式与分量乘法分解]\label{prop:pom-time-reversal-symmetric-indset-polynomial}
+对路径 \(P_\ell\) 定义独立集多项式与对称独立集多项式
+\[
+I_\ell(t):=\sum_{S\in \mathsf{Ind}(P_\ell)}t^{|S|},
+\qquad
+J_\ell(t):=\sum_{S\in \mathrm{Fix}(\iota_\ell)}t^{|S|}.
+\]
+则对任意 \(n\ge 1\) 有
+\[
+J_{2n}(t)=I_{n-1}(t^2),
+\qquad
+J_{2n+1}(t)=I_{n}(t^2)+t\,I_{n-1}(t^2).
+\]
+并且对任意 \(x\in X_m\)，若 \(\Gamma_x\cong\bigsqcup_{j=1}^r P_{\ell_j}\)，则
+\[
+J_x(t):=\sum_{\omega\in \mathrm{Fix}(\iota_x)} t^{R_x(\omega)}
+=\prod_{j=1}^r J_{\ell_j}(t),
+\]
+其中 \(R_x(\omega)\) 为定理 \ref{thm:pom-fiber-indset-factorization} 的独立集坐标下的选取数（亦即逆代换次数；定义 \ref{def:pom-fiber-rewrite-rv}）。
+\end{proposition}
+
+\begin{proof}
+\textbf{偶数路径。}
+令 \(\ell=2n\) 并记反演 \(r(i)=2n+1-i\)。
+若 \(S\in\mathrm{Fix}(\iota_{2n})\)，则 \(i\in S\Rightarrow r(i)\in S\)。
+由于 \(\{n,n+1\}\) 为边，故 \(S\cap\{n,n+1\}=\varnothing\)。
+令 \(T:=S\cap\{1,\dots,n-1\}\)，则 \(T\in\mathsf{Ind}(P_{n-1})\)，并且 \(S\) 唯一由 \(T\) 给出为 \(S=T\sqcup r(T)\)。
+因此 \(|S|=2|T|\)，得到 \(J_{2n}(t)=\sum_{T\in\mathsf{Ind}(P_{n-1})}(t^2)^{|T|}=I_{n-1}(t^2)\)。
+\par
+\textbf{奇数路径。}
+令 \(\ell=2n+1\)，中点为 \(n+1\)，反演为 \(r(i)=2n+2-i\)。
+对 \(S\in\mathrm{Fix}(\iota_{2n+1})\) 分两类：
+若 \(n+1\notin S\)，则 \(S\) 由 \(T:=S\cap\{1,\dots,n\}\in\mathsf{Ind}(P_n)\) 唯一决定，且 \(|S|=2|T|\)，贡献为 \(I_n(t^2)\)；
+若 \(n+1\in S\)，则邻点 \(n,n+2\) 不可取，从而 \(T:=S\cap\{1,\dots,n-1\}\in\mathsf{Ind}(P_{n-1})\) 唯一决定 \(S\)，且 \(|S|=2|T|+1\)，贡献为 \(tI_{n-1}(t^2)\)。
+相加得到公式。
+\par
+\textbf{一般纤维。}
+由分量分解 \(F_x\cong \prod_{j=1}^r \mathsf{Ind}(P_{\ell_j})\)，且 \(\iota_x=\prod_j \iota_{\ell_j}\) 逐分量作用，故不动点集合分解为直积；
+同时 \(R_x\) 为各分量选取数之和，故权计数多项式严格乘法分解。证毕。
+\end{proof}
+
+\begin{proposition}[时间反演定点占比的乘法律与指数稀疏]\label{prop:pom-time-reversal-fixedpoint-ratio-decay}
+对路径分量定义定点占比
+\[
+p(\ell):=\frac{\card{\mathrm{Fix}(\iota_\ell)}}{\card{\mathsf{Ind}(P_\ell)}}.
+\]
+则对任意 \(x\in X_m\) 若 \(\Gamma_x\cong\bigsqcup_{j=1}^r P_{\ell_j}\)，有严格乘法分解
+\[
+\frac{\card{\mathrm{Fix}(\iota_x)}}{d_m(x)}=\prod_{j=1}^r p(\ell_j).
+\]
+此外存在常数 \(C>0\) 使对所有 \(\ell\ge 1\) 有
+\[
+p(\ell)\le C\,\varphi^{-\ell/2},
+\]
+其中 \(\varphi=(1+\sqrt5)/2\)。
+更精确地，对偶数 \(\ell=2n\) 有
+\[
+p(2n)=\frac{F_{n+1}}{F_{2n+2}}=\frac{1}{L_{n+1}},
+\]
+其中 Lucas 数列 \((L_k)\) 满足 \(L_0=2,L_1=1\) 且 \(L_{k+1}=L_k+L_{k-1}\)。
+\end{proposition}
+
+\begin{proof}
+乘法分解由定理 \ref{thm:pom-toggle-time-reversal-fixedpoints-sign-closed-form} 的不动点乘积公式与 \(d_m(x)=\prod_j F_{\ell_j+2}\)（定理 \ref{thm:pom-fiber-indset-factorization}）直接推出。
+\par
+对偶数情形，定理 \ref{thm:pom-toggle-time-reversal-fixedpoints-sign-closed-form} 给出
+\(
+\card{\mathrm{Fix}(\iota_{2n})}=F_{n+1}
+\)，且 \(\card{\mathsf{Ind}(P_{2n})}=F_{2n+2}\)。
+利用恒等式 \(F_{2k}=F_k L_k\)（由 Binet 公式或标准递推恒等式推出），得 \(F_{2n+2}=F_{n+1}L_{n+1}\)，从而 \(p(2n)=1/L_{n+1}\)。
+由于 \(L_{n}\asymp \varphi^{n}\)，得到 \(p(2n)\asymp \varphi^{-n}=\varphi^{-\ell/2}\)。
+奇数情形由 \(\card{\mathrm{Fix}(\iota_{2n+1})}=F_{n+3}\) 与 \(F_{2n+3}\asymp \varphi^{2n+3}\) 同样给出指数率上界，故存在统一常数 \(C\)。证毕。
+\end{proof}
+
+\begin{proposition}[时间反演定点数的两类极端情形]\label{prop:pom-time-reversal-fixedpoints-extremes}
+设 \(\Gamma_x\cong\bigsqcup_{j=1}^r P_{\ell_j}\)。
+则：
+\begin{enumerate}
+\normalfont
+  \item \(\card{\mathrm{Fix}(\iota_x)}=d_m(x)\) 当且仅当 \(\ell_j=1\) 对所有 \(j\) 成立；此时 \(d_m(x)=2^{r}\) 且 \(\iota_x\) 为恒等置换。
+  \item \(\card{\mathrm{Fix}(\iota_x)}=1\) 当且仅当 \(\ell_j=2\) 对所有 \(j\) 成立（或 \(r=0\) 的平凡情形）；此时 \(d_m(x)=3^{r}\) 且纤维中唯一时间反演对称点对应空独立集。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:pom-toggle-time-reversal-fixedpoints-sign-closed-form}，
+\(
+\card{\mathrm{Fix}(\iota_x)}=\prod_j f(\ell_j)
+\)
+且
+\(
+d_m(x)=\prod_j F_{\ell_j+2}
+\)。
+对单路径可直接核对：当 \(\ell=1\) 时 \(f(1)=2=F_3\)；当 \(\ell=2\) 时 \(f(2)=1\) 且 \(F_4=3\)；并且当 \(\ell\ge 2\) 时恒有 \(1\le f(\ell)<F_{\ell+2}\)（例如由 \(p(\ell)<1\) 的严格性，见命题 \ref{prop:pom-time-reversal-fixedpoint-ratio-decay}）。
+因此乘积等号 \(\prod_j f(\ell_j)=\prod_j F_{\ell_j+2}\) 当且仅当每个分量均取到唯一的等号情形 \(\ell_j=1\)；
+而乘积为 \(1\) 当且仅当每个分量均满足 \(f(\ell_j)=1\)，即 \(\ell_j=2\)（或无分量）。
+对应的 \(d_m(x)\) 由 \(F_3=2\) 与 \(F_4=3\) 立得。证毕。
+\end{proof}
+
 \begin{proposition}[取向指纹的几何审计闭式]\label{prop:pom-orientation-fingerprint-geometry-audit}
 对任意 \(x\in X_m\)，记
 \[

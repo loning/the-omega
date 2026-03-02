@@ -40,5 +40,36 @@ b,& M(x)\ \text{在 }n\text{ 步内未停机},\\
 最后，若 \((M,x)\mapsto s(\pi_{M,x})\) 可计算，则可由 \(s(\pi_{M,x})\) 判定 \(T(M,x)\) 是否有限并恢复其值，与停机问题不可判定性矛盾。证毕。
 \end{proof}
 
+\begin{corollary}[最小寄存器数的不可计算性：弱硬件判据已足以编码停机性]\label{cor:conclusion-min-register-halting}
+固定一种标准同步序贯电路模型：以 NAND 作为唯一组合逻辑门，并以 \(k\) 个二值寄存器（触发器）作为状态记忆。
+对任意序贯转导 \(\pi\) 定义
+\[
+k_{\min}(\pi):=\min\Bigl\{k:\ \exists\ \text{上述模型的电路实现 }\pi\Bigr\}.
+\]
+则映射 \((M,x)\mapsto k_{\min}(\pi_{M,x})\) 不可计算。
+并且存在一个全定义可计算的前置变换 \((M,x)\mapsto(M^{(+1)},x)\)（先执行一步空操作再模拟 \(M\)），使得
+\[
+k_{\min}(\pi_{M^{(+1)},x})=
+\begin{cases}
+0,&T(M,x)=\infty,\\
+\ge 1,&T(M,x)<\infty,
+\end{cases}
+\]
+从而“是否需要至少一个记忆触发器”这一极弱判据已足以编码停机性。
+\end{corollary}
+
+\begin{proof}
+任何含 \(k\) 个二值寄存器的确定性同步序贯电路，其可达内部状态数至多为 \(2^k\)。
+因此对任意 \(\pi\) 有下界
+\(
+k_{\min}(\pi)\ge \lceil\log_2 s(\pi)\rceil
+\)。
+由定理 \ref{thm:conclusion-minimal-state-complexity-halting}，当 \(T(M,x)=T<\infty\) 时 \(s(\pi_{M,x})=T+1\)，从而 \(k_{\min}(\pi_{M,x})\ge \lceil\log_2(T+1)\rceil\)；
+而当 \(T(M,x)=\infty\) 时 \(\pi_{M,x}\) 退化为常数状态可实现的逐符号转导，故 \(k_{\min}(\pi_{M,x})=0\)。
+对加一填充 \(M^{(+1)}\)，若 \(T(M,x)<\infty\) 则 \(T(M^{(+1)},x)\ge 1\)，从而 \(s(\pi_{M^{(+1)},x})\ge 2\) 并强制 \(k_{\min}\ge 1\)；
+若 \(T(M,x)=\infty\) 则仍保持 \(k_{\min}=0\)。
+因此若 \((M,x)\mapsto k_{\min}(\pi_{M,x})\) 可计算，即可判定停机性，矛盾。证毕。
+\end{proof}
+
 \endinput
 
