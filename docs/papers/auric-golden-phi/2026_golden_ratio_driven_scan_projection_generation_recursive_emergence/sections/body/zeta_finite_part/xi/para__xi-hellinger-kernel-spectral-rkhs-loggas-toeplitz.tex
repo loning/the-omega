@@ -451,6 +451,22 @@ A(n\Delta)=\frac{n\Delta}{2\sinh(n\Delta/2)}
 取 \(z=\theta/2\) 并用 \(\partial_\theta^{2}=(1/4)\partial_z^{2}\) 即得导数闭式。证毕。
 \end{proof}
 
+\begin{remark}[椭圆延拓与半周期二阶极点晶格]\label{rem:xi-hellinger-toeplitz-elliptic-extension-halfperiod-poles}
+把 \(\sigma_\Delta(\theta)\) 视为复变量 \(\theta\) 的函数。
+由 \(\vartheta_4\) 的准周期性可知 \(\partial_\theta^2\log\vartheta_4(\theta/2,q)\) 消去仿射漂移项，从而 \(\sigma_\Delta\) 具有基本周期 \(2\pi\) 与 \(\mathrm{i}\Delta\)。
+记矩形晶格
+\[
+\Lambda_\Delta:=2\pi\ZZ+\mathrm{i}\Delta\ZZ,
+\qquad
+E_\Delta:=\CC/\Lambda_\Delta.
+\]
+则 \(\sigma_\Delta\) 在椭圆曲线 \(E_\Delta\) 上诱导一个亚纯函数；
+并且由命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson} 的 Poisson 周期和表示可知其极点均为二阶极点且恰位于半周期平移晶格
+\[
+\theta\in \mathrm{i}\Delta\Bigl(\ZZ+\tfrac12\Bigr)+2\pi\ZZ.
+\]
+\end{remark}
+
 \begin{remark}[模对偶尺度 \texorpdfstring{$\Delta\leftrightarrow 2\pi^{2}/\Delta$}{Delta <-> 2pi^2/Delta}：Poisson 尖峰与 Fourier 衰减的强制等价]\label{rem:xi-hellinger-toeplitz-modular-duality-scale}
 在命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson} 中令 \(\tau:=\mathrm{i}\Delta/(2\pi)\)，则 nome \(q=e^{\mathrm{i}\pi\tau}=e^{-\Delta/2}\)。
 Jacobi 变换 \(\tau\mapsto -1/\tau\) 导出对偶 nome
@@ -482,6 +498,41 @@ G_\kappa(\Delta)=(A((j-k)\Delta))_{1\le j,k\le \kappa}
 并且由于 \(\sigma_\Delta(\theta)>0\)（\(\theta\in[-\pi,\pi]\)）且解析函数连续，任取 \(0<\varepsilon<\Delta/2\)，在闭带 \(|\Im\theta|\le \Delta/2-\varepsilon\) 上有一致下界 \(\inf|\sigma_\Delta|>0\)。
 因此 \(1/\sigma_\Delta\) 在该闭带内解析且有界，其 Fourier 系数以速率 \(e^{-(\Delta/2-\varepsilon)|n|}\) 衰减。
 对无限 Toeplitz 算子，逆核的 Toeplitz 系数即为 \(1/\sigma_\Delta\) 的 Fourier 系数；有限截断 \(G_\kappa(\Delta)^{-1}\) 的矩阵元衰减由同一 Wiener 代数闭包与有限截断稳定性推出。证毕。
+\end{proof}
+
+\begin{proposition}[解析带宽 \texorpdfstring{$\Delta/2$}{Delta/2} 的尖锐性与指数门槛不可超越]\label{prop:xi-hellinger-toeplitz-bandwidth-sharpness}
+在命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson} 的等距设定下，定义解析带宽
+\[
+a_{\max}:=\sup\Bigl\{a>0:\ \sigma_\Delta\ \text{在}\ |\Im\theta|<a\ \text{内解析}\Bigr\}.
+\]
+则 \(a_{\max}=\Delta/2\)。
+并且不存在 \(\delta>0\) 使得对所有 \(\kappa\) 与所有 \(1\le j,k\le \kappa\) 有一致界
+\[
+\bigl|\bigl(G_\kappa(\Delta)^{-1}\bigr)_{jk}\bigr|\ \le\ C\,e^{-(\Delta/2+\delta)|j-k|}.
+\]
+\end{proposition}
+\begin{proof}
+由 Poisson 周期和表示
+\(
+\sigma_\Delta(\theta)=\Delta^{-1}\sum_{k\in\ZZ}\pi^2\cosh^{-2}(\pi(\theta+2\pi k)/\Delta)
+\)
+与 \(\cosh(u)=0\iff u=\mathrm{i}\pi(\tfrac12+n)\)（\(n\in\ZZ\)）可知，\(\sigma_\Delta\) 在
+\(
+\theta=-2\pi k+\mathrm{i}\Delta(\tfrac12+n)
+\)
+处具有二阶极点。
+因此在任意 \(a>\Delta/2\) 的条带 \(|\Im\theta|<a\) 内必包含极点，\(\sigma_\Delta\) 不可能解析；结合命题 \ref{prop:xi-hellinger-toeplitz-inverse-localization} 中 \(|\Im\theta|<\Delta/2\) 的解析性，得到 \(a_{\max}=\Delta/2\)。
+\par
+若存在 \(\delta>0\) 与常数 \(C\) 使所示一致界成立，则在 \(\kappa\to\infty\) 的 Toeplitz 有限截断稳定口径下，双边 Toeplitz 卷积算子 \(T_\Delta\) 的逆核系数将以速率 \(e^{-(\Delta/2+\delta)|n|}\) 绝对可和，从而 \(1/\sigma_\Delta\) 属于带权 Wiener 代数
+\(
+\sum_{n\in\ZZ}\abs{\widehat{(1/\sigma_\Delta)}(n)}\,e^{(\Delta/2+\delta)|n|}<\infty
+\)。
+由 Wiener 引理，对应的逆元 \(\sigma_\Delta\) 亦必须属于同一带权代数。
+但命题 \ref{prop:xi-hellinger-toeplitz-symbol-poisson} 给出 \(\sigma_\Delta(\theta)=\sum_{n\in\ZZ}A(n\Delta)e^{\mathrm{i}n\theta}\)，而 \(A(n\Delta)\sim n\Delta\,e^{-n\Delta/2}\)（\(n\to\infty\)）使得
+\(
+\sum_{n\ge 1}A(n\Delta)\,e^{(\Delta/2+\delta)n}=+\infty
+\)，矛盾。
+证毕。
 \end{proof}
 
 \begin{theorem}[Toeplitz 热力学极限：等距体积熵密度由单一符号积分封口]\label{thm:xi-hellinger-toeplitz-szego-thermo-limit}

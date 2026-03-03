@@ -160,6 +160,97 @@ p_m=\sum_{i=1}^r Q_i(m)\lambda_i^m
 故 \(\mathcal P\) 非 sofic。证毕。
 \end{proof}
 
+\begin{theorem}[Zeckendorf 语法内正则集合的估值幂律计数]\label{thm:zeta-syntax-zeckendorf-regular-valuation-powerlaw}
+令 \(\mathcal Z\subseteq\{0,1\}^\ast\) 为 Zeckendorf 规范有限词语言：禁止相邻子词 \(11\)，并要求末位为 \(1\)。
+对 \(w=x_1\cdots x_m\in\mathcal Z\) 定义估值
+\[
+\mathrm{val}(w):=\sum_{k=1}^{m}x_k F_{k+1}.
+\]
+若 \(L\subseteq\mathcal Z\) 为正则语言，则存在常数 \(\alpha\in[0,1]\) 使得计数函数
+\[
+N_L(T):=\#\{w\in L:\ \mathrm{val}(w)\le T\}
+\]
+满足渐近
+\[
+N_L(T)=T^{\alpha+o(1)}\qquad(T\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+令 \(a_m:=\#\{w\in L:\ |w|=m\}\)。
+取识别 \(L\) 的 DFA \(\mathcal A\) 并用其转移矩阵表示可得 \(a_m=u^{\mathsf T}B^m v\)，其中 \(B\in\ZZ_{\ge 0}^{d\times d}\) 为某个非负整数矩阵、\(u,v\) 为指示向量。
+由 Perron--Frobenius 与强连通分解，存在 \(\lambda\ge 0\) 与整数 \(d_0\ge 0\) 使
+\[
+a_m=\Theta(m^{d_0}\lambda^m)\qquad(m\to\infty),
+\]
+其中若 \(L\) 有限则可取 \(\lambda=0\)（此时 \(a_m=0\) 对充分大 \(m\) 成立）。
+\par
+另一方面，由 \(\mathcal Z\subseteq X_m\)（禁止 \(11\)）且末位为 \(1\) 可知 \(a_m\le |X_m^{(1)}|=F_{m+1}=\Theta(\varphi^m)\)，因此当 \(L\) 无穷时必有 \(\lambda\le \varphi\)。
+\par
+取 \(n\) 使 \(F_{n+1}\le T<F_{n+2}\)。
+对任意 \(w\in\mathcal Z\) 且 \(|w|=m\)，由 Zeckendorf 估值的基本界
+\[
+F_{m+1}\le \mathrm{val}(w)\le F_{m+2}-1,
+\]
+得：若 \(\mathrm{val}(w)\le T\) 则必有 \(|w|\le n\)；而若 \(|w|\le n-1\) 则 \(\mathrm{val}(w)\le F_{n+1}-1\le T\)。
+因此
+\[
+\sum_{m\le n-1}a_m\ \le\ N_L(T)\ \le\ \sum_{m\le n}a_m.
+\]
+由 \(a_m=\Theta(m^{d_0}\lambda^m)\) 知上述两端均为 \(\Theta(n^{d_0}\lambda^n)\)。
+又 \(F_{n+1}=\Theta(\varphi^n)\) 给出 \(n=\log_\varphi T+O(1)\)，从而
+\[
+N_L(T)=\Theta\!\bigl((\log T)^{d_0}\lambda^{\log_\varphi T+O(1)}\bigr)
+=T^{\log_\varphi\lambda}\,(\log T)^{d_0+O(1)}
+=T^{\alpha+o(1)},
+\]
+其中 \(\alpha:=\log_\varphi\lambda\in[0,1]\)（有限语言情形可取 \(\alpha=0\)）。
+证毕。
+\end{proof}
+
+\begin{corollary}[Zeckendorf 素数语言非正则]\label{cor:zeta-syntax-zeckendorf-primes-not-regular}
+令
+\[
+\mathcal P_{\mathcal Z}:=\{\mathrm{Zeck}(p)\in\mathcal Z:\ p\ \text{为素数}\},
+\]
+其中 \(\mathrm{Zeck}(n)\) 表示 \(n\) 的规范 Zeckendorf 表示（禁止相邻 \(11\) 且末位为 \(1\)）。
+则 \(\mathcal P_{\mathcal Z}\) 不是正则语言。
+\end{corollary}
+\begin{proof}
+若 \(\mathcal P_{\mathcal Z}\) 为正则语言，则由定理 \ref{thm:zeta-syntax-zeckendorf-regular-valuation-powerlaw}，存在 \(\alpha\in[0,1]\) 使
+\[
+N_{\mathcal P_{\mathcal Z}}(T)=T^{\alpha+o(1)}.
+\]
+另一方面，Zeckendorf 表示在正整数上为双射，故 \(N_{\mathcal P_{\mathcal Z}}(T)=\pi(T)\)。
+由素数定理 \(\pi(T)\sim T/\log T\) 可知：对任意 \(\alpha<1\) 有 \(\pi(T)/T^\alpha\to\infty\)，而 \(\pi(T)/T\to 0\)。
+因此不存在常数 \(\alpha\in[0,1]\) 使 \(\pi(T)=T^{\alpha+o(1)}\)，矛盾。
+故 \(\mathcal P_{\mathcal Z}\) 非正则。证毕。
+\end{proof}
+
+\begin{corollary}[有限状态预处理加正则判别无法精确识别 Zeckendorf 素性]\label{cor:zeta-syntax-zeckendorf-primes-mealy-regular-impossible}
+令 \(T:\mathcal Z\to\{0,1\}^\ast\) 为任意确定性 Mealy 转导器（有限状态、逐位读入、逐位输出），并令 \(L\subseteq\{0,1\}^\ast\) 为正则语言。
+则原像
+\[
+T^{-1}(L):=\{w\in\mathcal Z:\ T(w)\in L\}
+\]
+为正则语言。
+特别地，不存在一对 \((T,L)\) 使对所有 \(w\in\mathcal Z\) 成立
+\[
+w\in\mathcal P_{\mathcal Z}\quad\Longleftrightarrow\quad T(w)\in L.
+\]
+\end{corollary}
+\begin{proof}
+取识别 \(L\) 的 DFA \(D_L=(Q_L,\{0,1\},\delta_L,q_L^{(0)},F_L)\)，并设 \(T\) 的状态集为 \(Q_T\)，其转移与输出规则分别为
+\[
+q_T\xrightarrow{a}q_T',\qquad \mathrm{out}(q_T,a)\in\{0,1\}.
+\]
+构造直积自动机 \(D\) ，其状态空间为 \(Q_T\times Q_L\)，初态为 \((q_T^{(0)},q_L^{(0)})\)。
+读入字母 \(a\in\{0,1\}\) 时，由 \(T\) 给出输出 \(b=\mathrm{out}(q_T,a)\) 与新状态 \(q_T'\)，并令 \(D_L\) 同时按 \(b\) 更新到 \(q_L':=\delta_L(q_L,b)\)；
+于是 \((q_T,q_L)\mapsto(q_T',q_L')\) 定义了 \(D\) 的转移。
+令终态集合为 \(Q_T\times F_L\)，则 \(D\) 在输入端精确识别集合 \(T^{-1}(L)\)。
+因此 \(T^{-1}(L)\) 为正则语言。
+最后一条若成立则 \(\mathcal P_{\mathcal Z}=T^{-1}(L)\) 为正则，与推论 \ref{cor:zeta-syntax-zeckendorf-primes-not-regular} 矛盾。证毕。
+\end{proof}
+
 \begin{proposition}[正则前缀码的 Kraft 和为有理数]\label{prop:zeta-syntax-regular-prefixfree-kraft-rational}
 令 \(L\subseteq\{0,1\}^\ast\) 为前缀无歧义（prefix-free）语言，并设 \(L\) 为正则语言。
 定义 Kraft 和
@@ -291,6 +382,48 @@ Z_b(z):=\prod_{n\ge 1}(1-z^n)^{-b_n}.
 在本文的有限图（SFT/sofic）口径下，动力学 \(\zeta\) 具有有限矩阵的行列式表示 \(\zeta_M(z)=\det(I-zM)^{-1}\)，从而为有理函数（\S\ref{subsec:zeta-syntax-zeta}）。
 因此，若某一 primitive 侧的 Euler 型乘积机制在素数长度上具有无穷支撑并以非负指数进入乘积，则按定理 \ref{thm:zeta-syntax-euler-product-natural-boundary} 必强制单位圆自然边界，从而无法来自任何有限状态 \(\zeta\) 机制。
 \end{remark}
+
+\begin{theorem}[有限核 \texorpdfstring{$\zeta$}{zeta} 的虚周期刚性]\label{thm:zeta-syntax-finite-zeta-imaginary-periodicity}
+令 \(M\) 为有限非负矩阵，并记有限核 \(\zeta\)-函数
+\[
+\zeta_M(z):=\det(I-zM)^{-1}.
+\]
+定义变量代换后的函数 \(F_M(s):=\zeta_M(e^{-s})\)。
+则 \(F_M\) 满足整虚周期
+\[
+F_M(s+2\pi i)=F_M(s).
+\]
+另一方面，经典 Riemann \(\zeta\) 函数在半平面 \(\Re(s)>1\) 上不具该周期性：存在 \(s\) 使 \(\zeta(s+2\pi i)\ne \zeta(s)\)。
+因此不存在任何有限矩阵 \(M\) 使得 \(\zeta(s)=F_M(s)\) 在 \(\Re(s)>1\) 上成立。
+\end{theorem}
+\begin{proof}
+第一式由恒等式 \(e^{-(s+2\pi i)}=e^{-s}\) 直接推出。
+\par
+对第二式，取实数 \(\sigma>1\)。
+由 Dirichlet 级数在 \(\Re(s)>1\) 的绝对收敛性，有
+\[
+\zeta(\sigma+2\pi i)-\zeta(\sigma)
+=
+\sum_{n\ge 2}n^{-\sigma}\bigl(e^{-2\pi i\log n}-1\bigr).
+\]
+记常数 \(c_0:=|e^{-2\pi i\log 2}-1|>0\)。
+则
+\[
+\bigl|2^{-\sigma}(e^{-2\pi i\log 2}-1)\bigr|=c_0\,2^{-\sigma}.
+\]
+另一方面，对尾项有估计
+\[
+\left|\sum_{n\ge 3}n^{-\sigma}\bigl(e^{-2\pi i\log n}-1\bigr)\right|
+\le
+2\sum_{n\ge 3}n^{-\sigma}
+\le
+2\frac{3^{-\sigma}}{1-3^{-1}}
+=3\cdot 3^{-\sigma}.
+\]
+由于 \((2/3)^\sigma\to 0\)，可取充分大 \(\sigma\) 使 \(3\cdot 3^{-\sigma}<\tfrac12 c_0\,2^{-\sigma}\)。
+对该 \(\sigma\) 有 \(\zeta(\sigma+2\pi i)\ne \zeta(\sigma)\)。
+从而 \(\zeta\) 在 \(\Re(s)>1\) 上不具 \(2\pi i\) 周期性，遂不可能与任意 \(F_M\) 相等。证毕。
+\end{proof}
 
 \begin{conjecture}[Euler 乘积的有限状态不可达性：有理 \texorpdfstring{$\zeta$}{zeta} 族无法逼近经典乘积拓扑]\label{conj:zeta-syntax-euler-topology-unreachable}
 设 \(\{\zeta_{M_k}\}_k\) 为一族有限状态机制的动力学 \(\zeta\)-函数，其中

@@ -20,6 +20,34 @@ S_2(m):=\sum_{x\in X_m} d_m(x)^2.
 \[
 \Pi_x:=\sum_{\omega:\ \Fold_m(\omega)=x}\lvert\omega\rangle\langle\omega\rvert\ \in\ \mathcal{B}(\mathcal{H}_m).
 \]
+
+\begin{proposition}[\texorpdfstring{$q$}{q}-重碰撞投影的秩刻画]\label{prop:op-algebra-fold-q-collision-projector-rank}
+对任意整数 \(q\ge 2\)，定义 \(q\)-碰撞矩
+\[
+S_q(m):=\sum_{x\in X_m} d_m(x)^q,
+\]
+以及 \(q\)-重碰撞投影算子
+\[
+\Pi_m^{(q)}:=\sum_{x\in X_m}\Pi_x^{\otimes q}\ \in\ \mathcal{B}(\mathcal{H}_m^{\otimes q}).
+\]
+则 \(\Pi_m^{(q)}\) 为正交投影，且其秩满足
+\[
+\rank\bigl(\Pi_m^{(q)}\bigr)=S_q(m).
+\]
+\end{proposition}
+\begin{proof}
+由于 \(\{\Pi_x\}_{x\in X_m}\) 两两正交且 \(\sum_x\Pi_x=I_{\mathcal{H}_m}\)，故 \(\{\Pi_x^{\otimes q}\}_{x\in X_m}\) 两两正交且均为投影，从而其和 \(\Pi_m^{(q)}\) 仍为投影。
+又 \(\rank(\Pi_x)=d_m(x)\)，故
+\[
+\rank(\Pi_m^{(q)})
+=\sum_{x\in X_m}\rank(\Pi_x^{\otimes q})
+=\sum_{x\in X_m}\bigl(\rank(\Pi_x)\bigr)^q
+=\sum_{x\in X_m} d_m(x)^q
+=S_q(m).
+\]
+证毕。
+\end{proof}
+
 定义完全正且迹保持的线性映射
 \begin{equation}\label{eq:op-algebra-fold-quantum-channel-def}
 \mathcal{E}_m:\mathcal{B}(\mathcal{H}_m)\to\mathcal{B}(\mathcal{H}_m),\qquad
@@ -220,18 +248,31 @@ K\ge \rank J(\mathcal{E}_m)=S_2(m).
 取二进制对数并除以 \(m\) 即得极限为 \(\log_2 r_2\)。证毕。
 \end{proof}
 
-\begin{theorem}[Choi 谱与互信息的显式公式]\label{thm:op-algebra-fold-quantum-channel-choi-spectrum-mi}
+\begin{theorem}[Choi 矩阵的纤维块分解与谱公式]\label{thm:op-algebra-fold-quantum-channel-choi-spectrum-mi}
 令 \(n:=|\Omega_m|=2^m\)，并记 \(\rho_{RB}:=J(\mathcal{E}_m)/n\) 为 \(\mathcal{E}_m\) 的归一化 Choi 态。
+则 Choi 矩阵满足严格分解
+\[
+J(\mathcal{E}_m)=\sum_{x\in X_m}\frac{1}{d_m(x)}\,\Pi_x\otimes \Pi_x,
+\qquad
+\rho_{RB}=\frac{1}{n}\sum_{x\in X_m}\frac{1}{d_m(x)}\,\Pi_x\otimes \Pi_x.
+\]
 再令 \(\pi_m\) 为 \(\Omega_m\) 上均匀分布经 \(\Fold_m\) 推送到 \(X_m\) 的分布，即
 \[
 \pi_m(x)=\frac{d_m(x)}{2^m}.
 \]
 则：
 \begin{enumerate}
-  \item \(\rho_{RB}\) 为可分态，因而 \(\mathcal{E}_m\) 为纠缠破坏通道；
-  \item \(\rho_{RB}\) 的全部非零特征值为
+  \item \(\rho_{RB}\) 为可分态，因而 \(\mathcal{E}_m\) 为纠缠破坏通道；并且其边缘态满足
   \[
-  \lambda_x=\frac{1}{2^m\,d_m(x)}\qquad (x\in X_m),
+  \rho_R=\rho_B=\frac{I}{n};
+  \]
+  \item \(J(\mathcal{E}_m)\) 的全部非零特征值为
+  \[
+  \frac{1}{d_m(x)}\qquad (x\in X_m),
+  \]
+  且每个特征值的重数恰为 \(d_m(x)^2\)；等价地，\(\rho_{RB}\) 的全部非零特征值为
+  \[
+  \lambda_x=\frac{1}{n\,d_m(x)}\qquad (x\in X_m),
   \]
   且每个 \(\lambda_x\) 的重数恰为 \(d_m(x)^2\)；
   \item Choi 互信息满足精确恒等式
@@ -245,15 +286,21 @@ K\ge \rank J(\mathcal{E}_m)=S_2(m).
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-由上式 Choi 矩阵表达，
+由定理 \ref{thm:op-algebra-fold-quantum-channel-minimal-environment-equals-s2} 的 Choi 计算，
 \[
-\rho_{RB}=\frac{1}{n}\sum_{x\in X_m}\ \sum_{i\in\Fold_m^{-1}(x)} \ket{i}\!\bra{i}\otimes \frac{\Pi_x}{d_m(x)}.
+J(\mathcal{E}_m)
+=\sum_{x\in X_m}\ \sum_{i\in\Fold_m^{-1}(x)} \ket{i}\!\bra{i}\otimes \frac{\Pi_x}{d_m(x)}
+=\sum_{x\in X_m}\frac{1}{d_m(x)}\,\Pi_x\otimes \Pi_x,
 \]
-该态显然是若干乘积态 \(\ket{i}\!\bra{i}\otimes(\Pi_x/d_m(x))\) 的凸组合，故可分，纠缠破坏结论随之成立。
+从而得到 \(\rho_{RB}=J(\mathcal{E}_m)/n\) 的分解式。该态显然是若干乘积态 \(\ket{i}\!\bra{i}\otimes(\Pi_x/d_m(x))\) 的凸组合，故可分，纠缠破坏结论随之成立。
 
-对固定 \(x\) 与 \(i\in\Fold_m^{-1}(x)\)，算子 \(\Pi_x/d_m(x)\) 在其支撑子空间上等于 \((1/d_m(x))I_{d_m(x)}\)，故其特征值为 \(1/d_m(x)\)，重数 \(d_m(x)\)。
-乘上整体归一化因子 \(1/n\) 得 \(\lambda_x=1/(n d_m(x))\)；
-且对每个 \(i\) 有上述重数 \(d_m(x)\)，而这样的 \(i\) 有 \(d_m(x)\) 个，于是总重数为 \(d_m(x)^2\)。
+由
+\(
+J(\mathcal{E}_m)=\sum_x (1/d_m(x))\,\Pi_x\otimes\Pi_x
+\)
+与 \(\Pi_x\otimes\Pi_x\) 的正交分解可知：
+对每个 \(x\)，\(\Pi_x\otimes\Pi_x\) 为秩 \(d_m(x)^2\) 的正交投影，且该谱块的唯一非零特征值为 \(1/d_m(x)\)，重数为 \(d_m(x)^2\)。
+归一化后即得 \(\rho_{RB}\) 的特征值 \(\lambda_x=1/(n d_m(x))\) 与重数。
 
 边缘态计算为
 \[
@@ -279,6 +326,56 @@ H(\pi_m)=-\sum_x \pi_m(x)\log \pi_m(x)
 =\log n-\sum_x \pi_m(x)\log d_m(x),
 \]
 故 \(I(R\!:\!B)_{\rho}=H(\pi_m)\)。证毕。
+\end{proof}
+
+\begin{corollary}[Rényi--谱矩与纤维统计量]\label{cor:op-algebra-fold-quantum-channel-choi-renyi-moments}
+令 \(n:=|\Omega_m|=2^m\)，并记 \(\rho_{RB}:=J(\mathcal{E}_m)/n\)。
+对任意实数 \(\alpha>0\)（\(\alpha\neq 1\)）有
+\[
+\Tr(\rho_{RB}^\alpha)=n^{-\alpha}\sum_{x\in X_m} d_m(x)^{2-\alpha},
+\qquad
+H_\alpha(\rho_{RB})=\frac{1}{1-\alpha}\log\!\Bigl(n^{-\alpha}\sum_{x\in X_m} d_m(x)^{2-\alpha}\Bigr),
+\]
+其中 \(H_\alpha\) 为 Rényi 熵。
+特别地，令
+\[
+d_m^{\min}:=\min_{x\in X_m}d_m(x),
+\qquad
+D_m:=\max_{x\in X_m}d_m(x),
+\]
+则
+\[
+\|\rho_{RB}\|_\infty=\frac{1}{n\,d_m^{\min}},
+\qquad
+\lambda_{\min}^{+}(\rho_{RB})=\frac{1}{n\,D_m},
+\qquad
+\Tr(\rho_{RB}^2)=\frac{|X_m|}{n^2}.
+\]
+此外 von Neumann 熵满足闭式
+\[
+S(\rho_{RB})=\log n+\sum_{x\in X_m}\frac{d_m(x)}{n}\log d_m(x).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:op-algebra-fold-quantum-channel-choi-spectrum-mi}，\(\rho_{RB}\) 的非零特征值为 \(\lambda_x=1/(n d_m(x))\)，重数为 \(d_m(x)^2\)。
+因此
+\[
+\Tr(\rho_{RB}^\alpha)=\sum_{x\in X_m} d_m(x)^2\Bigl(\frac{1}{n d_m(x)}\Bigr)^\alpha
+=n^{-\alpha}\sum_{x\in X_m} d_m(x)^{2-\alpha},
+\]
+从而 Rényi 熵公式成立。
+\(\|\rho_{RB}\|_\infty\) 与 \(\lambda_{\min}^+(\rho_{RB})\) 分别由最大/最小非零特征值给出，得到与 \(d_m^{\min}\)、\(D_m\) 的对应关系。
+当 \(\alpha=2\) 时得到
+\(
+\Tr(\rho_{RB}^2)=n^{-2}\sum_x d_m(x)^{0}=|X_m|/n^2
+\)。
+von Neumann 熵由谱和给出：
+\[
+S(\rho_{RB})
+=-\sum_{x\in X_m}d_m(x)^2\cdot \frac{1}{n d_m(x)}\log\!\Bigl(\frac{1}{n d_m(x)}\Bigr)
+=\log n+\sum_{x\in X_m}\frac{d_m(x)}{n}\log d_m(x).
+\]
+证毕。
 \end{proof}
 
 \begin{theorem}[容量的极值：经典容量为 \texorpdfstring{$\log|X_m|$}{log|Xm|}，量子容量为零]\label{thm:op-algebra-fold-quantum-channel-capacity}

@@ -41,6 +41,33 @@ S_q(m):=\sum_{x\in X_m}d_m(x)^q=2^{qm}M_q(m)\qquad(q\ge 1),
 由定理 \ref{thm:op-algebra-watatani-index-spectrum-identifiable-from-collision-moments}，该有限段碰撞矩唯一确定多重集合 \(\{d_m(x)\}_{x\in X_m}\)，从而亦确定 \(\{w_m(x)\}_{x\in X_m}\)。证毕。
 \end{proof}
 
+\begin{corollary}[损失塔的 Newton--Prony 完备性：权重谱、碰撞矩与直方图]\label{cor:fold-infonce-loss-tower-newton-prony-completeness}
+在定理 \ref{thm:fold-infonce-loss-spectrum-identifiability} 的设定下，记 \(p_r:=M_r(m)=\sum_{x\in X_m}w_m(x)^r\) 且 \(p_1=1\)。
+则最优损失谱 \(\{L_m^{K,\star}\}_{K=2}^{N}\) 代数确定如下对象：
+\begin{enumerate}
+  \item \textnormal{(Newton)} 单项首一多项式
+  \[
+  Q_m(z):=\prod_{x\in X_m}(z-w_m(x)),
+  \]
+  其根（按重数计）给出多重集合 \(\{w_m(x):x\in X_m\}\)，并由 \(d_m(x)=2^m w_m(x)\) 恢复 \(\{d_m(x)\}\)；
+  \item \textnormal{(Collision moments)} 对任意整数 \(q\ge 1\)，碰撞矩
+  \[
+  S_q(m):=\sum_{x\in X_m}d_m(x)^q
+  =2^{qm}p_q
+  \]
+  可由损失谱有限前缀 \(\{L_m^{K,\star}\}_{K=2}^{q}\) 递推计算得到；
+  \item \textnormal{(Histogram)} 若 \(\{d_m(x)\}\) 的不同取值为 \(D_1<\cdots<D_r\) 且
+  \(n_i:=\#\{x\in X_m:\ d_m(x)=D_i\}\)，
+  则有限矩列 \(\{S_k(m)\}_{k=0}^{2r-1}\) 在代数意义下唯一恢复 \(\{(D_i,n_i)\}_{i=1}^{r}\)
+  （Prony--Hankel 反演；参见命题 \ref{prop:conclusion-tqft-genus-linear-recurrence-recovery} 的同型机制）。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-infonce-loss-spectrum-identifiability} 可恢复 \(\{p_2,\dots,p_N\}\)，再由 Newton 恒等式以 \(\{p_1,\dots,p_N\}\) 唯一恢复 \(Q_m\)，得 (1)。
+由 \(d_m(x)=2^m w_m(x)\) 得 (2) 的缩放恒等式，而 \(p_q\) 首次出现在 \(K=q\) 的下三角关系中，故只需有限前缀即可递推求出。
+最后 (3) 为有限指数和矩量反演的标准结论。证毕。
+\end{proof}
+
 \begin{corollary}[由 InfoNCE 损失谱恢复指数元、配分函数与预言机容量]\label{cor:fold-infonce-loss-spectrum-determines-index-tqft-capacity}
 在定理 \ref{thm:fold-infonce-loss-spectrum-identifiability} 的设定下，给定最优损失谱 \(\{L_m^{K,\star}\}_{K=2}^{N}\) 进而唯一确定：
 \begin{enumerate}
@@ -61,6 +88,19 @@ S_q(m):=\sum_{x\in X_m}d_m(x)^q=2^{qm}M_q(m)\qquad(q\ge 1),
   \)
   与 \({\rm Succ}_m(B)=\mathcal{C}_m(B)/2^m\)
   （定理 \ref{thm:fold-oracle-capacity-closed-form}），并可将 \(\sum_x w_m(x)^q\) 代入定理 \ref{thm:oracle-renyi-nonasymptotic-error-bound} 得到任意 \(q>1\) 的非渐近失败证书。
+  \item 令
+  \[
+  D_m:=\max_{x\in X_m}d_m(x),
+  \qquad
+  N_m^\star:=\min\{N\in\NN_{\ge 1}:\ d(N)\ge D_m\},
+  \]
+  其中 \(d(\cdot)\) 为约数函数（定义 \ref{def:conclusion-truncated-prime-register}--定理 \ref{thm:conclusion-divisor-lattice-optimal-bit-scaling} 的约数格证书库口径）。
+  则最优损失谱唯一确定 \(D_m\)，从而唯一确定最小 prime-register 状态预算 \(N_m^\star\) 及其比特预算 \(\log_2 N_m^\star\)；
+  并且当 \(m\to\infty\) 时满足尺度律
+  \[
+  \log_2 N_m^\star
+  =\left(\frac{\log_2\varphi}{2}+o(1)\right)m\log_2 m.
+  \]
 \end{enumerate}
 \par
 此外，把 \eqref{eq:fold-infonce-loss-spectrum-triangular} 与推论 \ref{cor:op-algebra-fold-watatani-index-moments} 代回可得显式“矩变换”恒等式：对任意 \(2\le K\le N\)，
