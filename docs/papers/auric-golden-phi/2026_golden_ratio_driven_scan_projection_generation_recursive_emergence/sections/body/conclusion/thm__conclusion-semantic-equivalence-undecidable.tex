@@ -41,4 +41,31 @@ A\equiv B\quad\Longleftrightarrow\quad \mathrm{Inv}(A)=\mathrm{Inv}(B),
 这与定理 \ref{thm:conclusion-semantic-equivalence-undecidable} 的不可判定性矛盾。证毕。
 \end{proof}
 
+\begin{corollary}[图灵完备门演算不存在可计算的完备正规形]\label{cor:conclusion-no-computable-complete-normal-form}
+设 \(\mathcal A\) 为任意语义上图灵完备的投影/门电路模型，使其可编译实现定理 \ref{thm:conclusion-semantic-equivalence-undecidable} 的 \(\mathcal F\)。
+则不存在全定义可计算算子
+\(
+\mathrm{NF}:\mathcal A\to\mathcal A
+\)
+使得同时满足：
+\begin{enumerate}
+\normalfont
+  \item 对任意 \(a\in\mathcal A\)，有 \(\mathrm{NF}(a)\equiv a\)；
+  \item 对任意 \(a,b\in\mathcal A\)，有
+  \[
+  a\equiv b\quad\Longleftrightarrow\quad \mathrm{NF}(a)=\mathrm{NF}(b),
+  \]
+  其中右端为语法相等。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+若 \(\mathrm{NF}\) 存在，则给定 \(a,b\) 可计算 \(\mathrm{NF}(a),\mathrm{NF}(b)\) 并判定其语法相等性，从而判定 \(a\equiv b\)。
+与定理 \ref{thm:conclusion-semantic-equivalence-undecidable} 的不可判定性矛盾。证毕。
+\end{proof}
+
+\begin{remark}
+在若干严格受限片段（例如固定有界切片）内，终止且合流的重写系统确实给出可计算的唯一正规形，从而词问题与门级代价最小化均落入可判定范畴（定理 \ref{thm:pom-rewrite-termination-confluence}，推论 \ref{cor:pom-rewrite-normalform-minimal-audit}）。
+上述推论说明：此类“局部可正规化”的机制无法延拓为覆盖图灵完备语义的全域完备正规形。
+\end{remark}
+
 \endinput
