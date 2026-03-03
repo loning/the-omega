@@ -1,6 +1,6 @@
 \section{Pseudocode templates}\label{app:pseudocode}
 
-\subsection{Single-point evaluation of \texorpdfstring{\(Z_m(y)\)}{Z\_m(y)}}
+\subsection{Single-point evaluation of \texorpdfstring{$Z_m(y)$}{Z\_m(y)}}
 
 \begin{verbatim}
 Input: m in N, y in C.
@@ -17,10 +17,36 @@ For k = 4,5,...,m:
 Output: Zm.
 \end{verbatim}
 
-\subsection{Certified isolation of the branch point \texorpdfstring{\(\yLY\)}{yLY}}
+\paragraph{Minimality certificate (exact).}
+The script
+\[
+\texttt{scripts/minimal\_denominator\_gcd\_certificate.pl}
+\]
+implements the symbolic two-step Euclidean chain
+\[
+\Pi-\lambda N_\lambda,\quad ( \Pi-\lambda N_\lambda)+(y+1)N_\lambda=y(y+1)^2(y-1),
+\]
+and checks that this gives \(\gcd(\Pi,N_\lambda)=1\) for \(y\notin\{-1,0,1\}\), where
+\[
+N_\lambda(\lambda,y)=\lambda^3N(1/\lambda,y).
+\]
+
+\subsection{Certified isolation of the branch point \texorpdfstring{$y_{\mathrm{LY}}$}{y\_LY}}
 
 Let \(c(y)=256y^3+411y^2+165y+32\). Since \(c\) has exactly one real root, any rational interval \((\alpha,\beta)\) with
 \(c(\alpha)c(\beta)<0\) certifies \(\yLY\in(\alpha,\beta)\).
+
+\paragraph{Example.}
+The rationals
+\[
+\alpha=-\frac{113446}{100000},\qquad \beta=-\frac{113445}{100000}
+\]
+give a certified enclosure:
+\[
+c(\alpha)=-\frac{1766421977216}{10^{15}}<0,\qquad
+c(\beta)=\frac{442426892000}{10^{15}}>0,\qquad
+\alpha<\yLY<\beta.
+\]
 
 \begin{verbatim}
 Input: rationals alpha < beta.

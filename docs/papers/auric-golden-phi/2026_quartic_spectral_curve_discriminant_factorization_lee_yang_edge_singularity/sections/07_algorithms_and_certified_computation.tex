@@ -5,12 +5,20 @@
 For any fixed $y\in\CC$, the recurrence \eqref{eq:recurrence} evaluates $Z_m(y)$ in $O(m)$ arithmetic operations after initializing $Z_0,\dots,Z_3$.
 When evaluating $Z_m$ at many points (e.g.\ along a contour in the complex plane), the same linear-time computation can be performed independently at each sample point.
 
-\subsection{Localization of the branch set and the branch point $\yLY$}
+\subsection{Localization of the branch set and the branch point \texorpdfstring{$\yLY$}{y\_LY}}
 
 The branch locus $\Branch$ is explicitly determined by Theorem~\ref{thm:disc-factor}.
 The points $y=0$ and $y=1$ are rational and hence exact.
 The branch point $\yLY$ is the unique real root of the cubic $c(y)$ in \eqref{eq:cubic}.
-An interval isolation is obtained by any rational interval $(\alpha,\beta)$ such that $c(\alpha)c(\beta)<0$; the interval $(-1.13446,-1.13445)$ is one such witness.
+An interval isolation is obtained by any rational interval $(\alpha,\beta)$ such that $c(\alpha)c(\beta)<0$; one explicit witness is
+\[
+\alpha=-\frac{113446}{100000},\qquad
+\beta=-\frac{113445}{100000}.
+\]
+Indeed
+\[
+c(\alpha)<0,\qquad c(\beta)>0.
+\]
 Standard bisection then yields arbitrarily fine rational enclosures.
 
 \subsection{Zero localization}
@@ -22,4 +30,23 @@ Two standard zero-localization routes are available:
   \item \textbf{Sampling route.} Sample $Z_m(y)$ on a closed contour $\Gamma\subset\CC$, estimate the number of enclosed zeros via the argument principle, and refine $\Gamma$ to localize zero clusters.
 \end{enumerate}
 Both routes can be compared with the algebraic boundary $\Branch$, providing a consistency check on the zero-cloud geometry predicted by the Beraha--Kahane--Weiss framework (Section~\ref{sec:zeros}).
+
+For reproducibility, the repository contains the following scripts in the local \texttt{scripts} directory:
+\begin{itemize}
+  \item \texttt{scripts/coeff\_nonneg\_check.pl}: exact finite-range verification of nonnegative coefficients of $Z_m(y)$ in $\ZZ[y]$ (supports Theorem~\ref{thm:coeff-nonneg}; a reproducibility certificate is also recorded in Appendix~\ref{app:degeneracies});
+  \item \texttt{scripts/branch\_root\_certificate.pl}: exact integer checks of the branch-cubic certificate
+        $\Disc(c)=-3^9\cdot 31^2\cdot 37<0$ and the rational sign flip at $\alpha,\beta$ above, giving
+        $\yLY\in(-1.13446,-1.13445)$.
+\item A minimal reproducibility command set is
+      \begin{verbatim}
+perl scripts/coeff_nonneg_check.pl 5000
+perl scripts/branch_root_certificate.pl
+      \end{verbatim}
+\end{itemize}
+In addition, the same directory can be used to regenerate the discriminant factors and the branch point isolation:
+\begin{itemize}
+  \item $c(y)=256y^3+411y^2+165y+32$ and $y_{\mathrm{LY}}$ are checked using exact rational arithmetic in $\QQ$;
+  \item numerator/denominator cancellations at $y\in\{-1,0,1\}$ are verifiable directly from `N(t,y)` and `D(t,y)`;
+  \item numerical coefficient data can be regenerated for any target $(m,k)$ grid for external verification of Theorem~\ref{thm:coeff-nonneg}.
+\end{itemize}
 

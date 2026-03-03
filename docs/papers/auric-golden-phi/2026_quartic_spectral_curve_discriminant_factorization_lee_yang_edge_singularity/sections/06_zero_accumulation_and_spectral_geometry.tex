@@ -2,50 +2,64 @@
 
 \subsection{Background: the Beraha--Kahane--Weiss theorem}
 
+For fixed \(y\), write the characteristic roots of the recurrence as
+\[
+\lambda_1(y),\dots,\lambda_4(y),
+\]
+and let \(a_i(y)\) be the spectral coefficients so that
+\[
+Z_m(y)=\sum_{i=1}^4 a_i(y)\lambda_i(y)^m,\qquad (y\in\CC\setminus\Branch)
+\]
+for each \(m\ge0\).
+
 The accumulation behavior of zeros of recursively defined polynomial families is governed by the classical theorem of Beraha, Kahane, and Weiss~\cite{BerahaKahaneWeiss1975,BerahaKahaneWeiss1980}.
-In its simplest form, the theorem states that if $\{P_m(y)\}$ satisfies a fixed-order linear recurrence with polynomial coefficients, then the limiting set of zeros (as $m\to\infty$) consists of parameter values $y$ for which two or more dominant roots of the characteristic polynomial are equimodular.
-This result has been applied extensively in graph theory and statistical mechanics: Beraha, Kahane, and Weiss~\cite{BerahaKahaneWeiss1980} used it to study accumulation points of chromatic-polynomial zeros, and Sokal~\cite{Sokal2001} applied related techniques to antiferromagnetic Potts models.
+In a specialized form:
 
-For our model, the characteristic polynomial is $\Pi(\lambda,y)$ and the family $\{Z_m(y)\}$ is defined by the order-$4$ recurrence~\eqref{eq:recurrence}.
-We state the relevant specialization below.
-
-\subsection{Application to the present model}
-
-For each fixed $y$, the sequence $\{Z_m(y)\}$ admits a spectral representation
+\begin{theorem}[BKW-type zero accumulation]\label{thm:bkw}
+Let \(y_0\in\CC\setminus\Branch\) be such that the roots \(\lambda_i(y_0)\) of \(\Pi(\cdot,y_0)\) are simple.
+If there exist distinct indices \(i,j\) with
 \[
-Z_m(y)=\sum_{i=1}^4 a_i(y)\lambda_i(y)^m,
+\left|\lambda_i(y_0)\right|=\left|\lambda_j(y_0)\right|=\max_{1\le k\le4}\left|\lambda_k(y_0)\right|,
 \]
-with $\lambda_i(y)$ the roots of $\Pi(\lambda,y)$ and coefficient functions $a_i(y)$ determined by the initial values.
-When $y$ varies, the limiting geometry of the zero sets $\{y: Z_m(y)=0\}$ is controlled by equimodular competition among the dominant roots.
+and \(a_i(y_0)a_j(y_0)\neq0\), then \(y_0\) belongs to the limiting zero accumulation set of \(Z_m\), i.e.
+every neighborhood of \(y_0\) contains zeros of \(Z_m\) for arbitrarily large \(m\).
 
-\begin{theorem}[Beraha--Kahane--Weiss-type zero accumulation]\label{thm:bkw}
-Assume $y\in\CC\setminus\Branch$ and that the roots $\lambda_i(y)$ of $\Pi(\cdot,y)$ are simple.
-If there exist indices $i\neq j$ such that
-\[
-\abs{\lambda_i(y)}=\abs{\lambda_j(y)}=\max_k \abs{\lambda_k(y)},
-\]
-and the corresponding coefficient functions do not vanish simultaneously, then $y$ belongs to the limiting accumulation set of zeros of $\{Z_m\}$ as $m\to\infty$.
-Moreover, points in the branch locus $\Branch$ may arise as endpoints of such accumulation curves in the complex $y$-plane.
+Conversely, if \(y_0\notin\Branch\) is an accumulation point of zeros, then for every neighborhood of \(y_0\) there are \(m\)-indices where the dominant roots are tied in modulus and nonvanishing.
 \end{theorem}
 
 \begin{remark}
-Theorem~\ref{thm:bkw} is a direct specialization of the general Beraha--Kahane--Weiss theory~\cite{BerahaKahaneWeiss1975,BerahaKahaneWeiss1980} to the present order-$4$ setting.
-The theorem itself is not new; our contribution is the observation that for this particular spectral polynomial, the branch locus $\Branch$ is completely determined by Theorem~\ref{thm:disc-factor}, which makes the endpoint structure of the equimodular curves explicitly computable.
+Theorem~\ref{thm:bkw} is the standard BKW localization principle specialized to order~4 recurrences and polynomial initial data, as in~\cite{Sokal2001}.
 \end{remark}
 
-\subsection{Equimodular structure on the real axis}
+\subsection{Application to our model}
 
-In the present model, the discriminant factorization (Theorem~\ref{thm:disc-factor}) gives a complete algebraic description of $\Branch$.
-Numerical root-tracking reveals the following picture for $y$ on the real axis:
+For our family \(\{Z_m\}\), Theorem~\ref{thm:disc-factor} shows that the branch locus is
+\[
+\Branch=\{0,1\}\cup\{c(y)=0\}.
+\]
+Hence any non-branch parameter lies in an open interval of the real axis or a real-analytic region of \(\CC\) where the root moduli are locally constant up to orderings.
 
-\begin{enumerate}
-\item For $y>0$ sufficiently close to $1$, the dominant spectral root $\lambda_+(y)$ is real and strictly larger in modulus than all other roots (Theorem~\ref{thm:lambda-plus}).
-\item As $y$ decreases through $0$ (a degenerate branch point), the root configuration reorganizes: for $y$ slightly below $0$, a complex conjugate pair emerges among the spectral roots.
-\item At a non-branch parameter value $y_{\mathrm{eq}}\approx -0.16$, the modulus of this complex conjugate pair overtakes the real dominant root, creating a pair of equimodular dominant roots.
-Since complex conjugate roots of a real polynomial automatically satisfy $\abs{\lambda_i}=\abs{\bar\lambda_i}$, the equimodular condition holds for all $y<y_{\mathrm{eq}}$.
-\item This equimodular dominance persists through the branch point $\yLY\approx -1.13$, where the subdominant pair undergoes a real-to-complex transition (Proposition~\ref{prop:yLY-collision}), and continues for all $y<\yLY$.
-\end{enumerate}
+\begin{proposition}[Exact real branch geometry]\label{prop:real-branch-endpoints}
+The nontrivial real branch endpoint is the unique real root \(\yLY\in(-1.13446,-1.13445)\) of \(c(y)\) (Proposition~\ref{prop:unique-real-root}).
+By Proposition~\ref{prop:yLY-collision}, one spectral pair collides at \(\yLY\), and this collision is the only nontrivial real branch-point event for \(y\in\RR\).
+\end{proposition}
 
-By Theorem~\ref{thm:bkw}, zeros of $Z_m(y)$ accumulate along the negative real axis in the region where the dominant pair is equimodular.
-The branch locus $\Branch$ controls the endpoints and topology of equimodular curves in the full complex $y$-plane; a complete numerical study of these curves is beyond the scope of this paper.
+\begin{proof}
+From Theorem~\ref{thm:disc-factor}, \(\Disc_\lambda\Pi=0\) exactly at \(y=0,1\) or \(c(y)=0\).
+The cubic discriminant computation in Proposition~\ref{prop:unique-real-root} gives \(c(y)\) one real root \(\yLY\) and two nonreal roots.
+Proposition~\ref{prop:yLY-collision} identifies the local collision type at \(y=\yLY\).
+No other real branch value exists.
+\end{proof}
 
+\begin{remark}\label{rmk:equimodular-numeric}
+\textbf{Numerical observation (non-rigorous):} additional branch competition pattern on the negative real axis:
+on \((\yLY,0)\) the real root dominates, while below \(\yLY\) the complex-conjugate pair tends to dominate.
+This pattern is only reported as computational evidence and is not assumed in any theorem.
+\end{remark}
+
+\subsection{Complex-plane geometry}
+
+\noindent
+In the full complex plane, zero accumulation curves are expected to form equimodular competition sets from Theorem~\ref{thm:bkw}; their endpoints and junctions are constrained by \(\Branch\) and by the branch-type collision at~\(\yLY\) (Proposition~\ref{prop:yLY-collision}).
+A complete analytic characterization of all such curves is beyond the scope of this paper.
+The computational workflow in Section~\ref{sec:algo} and Appendix~\ref{app:pseudocode} compares both coefficient-propagation and contour-counting descriptions against this constrained boundary.

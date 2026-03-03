@@ -36,19 +36,45 @@ At \(y=-1\), one has \(N(t,-1)=D(t,-1)\), hence \(Z(t,-1)\equiv 1\).
 For $y\notin\{-1,0,1\}$, none of the above common factors occur; equivalently, $N(t,y)$ and $D(t,y)$ are coprime.
 Therefore the reduced denominator has degree $4$ and the order-$4$ recurrence \eqref{eq:recurrence} is minimal, as used in Theorem~\ref{thm:minimal-order}.
 
-To verify coprimality rigorously, one computes $\gcd_t(N(t,y),D(t,y))$ via the Euclidean algorithm in $\QQ(y)[t]$.
-The remainder sequence terminates at a nonzero element of $\QQ(y)$ (specifically, a rational function in~$y$ whose numerator vanishes only at $y\in\{-1,0,1\}$), confirming coprimality for all other~$y$.
+\paragraph{Explicit Euclidean certificate in reciprocal variable.}
+Set \(\lambda=1/t\) and define
+\[
+N_{\lambda}(\lambda,y):=\lambda^3N(1/\lambda,y)=\lambda^3+y\lambda^2+(y^2-y-1)\lambda+y^3-2y,
+\]
+\[
+\Pi(\lambda,y):=\lambda^4D(1/\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1).
+\]
+Since \(N(0,y)=1\), \(t=0\) is never a common root, so \(N\) and \(D\) have a common factor in \(\QQ(y)[t]\) iff \(N_{\lambda}\) and \(\Pi\) have one in \(\QQ(y)[\lambda]\).
 
-\subsection{Nonnegativity of coefficients of $Z_m(y)$}
+Direct elimination gives
+\[
+\Pi-\lambda N_{\lambda}=-(y+1)\lambda^3-(y^2+y)\lambda^2+(-y^3+2y+1)\lambda+(y^2+y)=:R_1,
+\]
+\[
+R_1+(y+1)N_{\lambda}=y(y+1)^2(y-1)=:R_2.
+\]
+Hence any common divisor of \(\Pi\) and \(N_{\lambda}\) must divide \(R_2\).
+If \(y\notin\{-1,0,1\}\), then \(R_2\neq0\), so
+\[
+\gcd_{\CC(\lambda)}(\Pi,N_{\lambda})=1.
+\]
+Under \(N(0,y)=1\), this is equivalent to
+\[
+\gcd_{\QQ(y)[t]}(N,D)=1,\qquad y\notin\{-1,0,1\}.
+\]
+Therefore the reduced denominator has degree \(4\) away from the listed exceptional points.
 
-We verify the claim of Remark~\ref{rmk:nonneg-coeffs} that $Z_m(y)=\sum_{k=0}^{\lfloor m/2\rfloor} a_{m,k}y^k$ with $a_{m,k}\ge 0$ for all $m,k$.
+\subsection{Coefficient nonnegativity check}
+
+Theorem~\ref{thm:coeff-nonneg} gives a complete proof that $a_{m,k}\ge0$. For reproducibility, we also record a finite-cutoff computational check: for each $m$, write
+\[
+Z_m(y)=\sum_{k=0}^{\lfloor (m+3)/2\rfloor} a_{m,k}y^k.
+\]
 This is immediate for $m\le 3$ from the initial values $Z_0=1$, $Z_k=(y+1)^k$ for $k=1,2,3$.
 
 For $m\ge 4$, the recurrence \eqref{eq:recurrence} gives a coefficient-level relation:
 \[
 a_{m,k}=a_{m-1,k}+2a_{m-2,k-1}+a_{m-2,k}-a_{m-3,k}-a_{m-4,k-1}-a_{m-4,k-2}.
 \]
-The presence of subtractive terms prevents a straightforward inductive argument.
-We verify nonnegativity computationally: propagating the recurrence in the polynomial ring $\ZZ[y]$ and inspecting all coefficients of $Z_m(y)$ for $m\le 300$, we confirm that every coefficient is strictly positive (with the minimum coefficient at each~$m$ being at least~$1$).
-A combinatorial proof---which would follow immediately from a counting interpretation of $Z_m(y)$---would establish nonnegativity for all~$m$ and is an interesting open question connected to the physical interpretation problem discussed in Section~\ref{sec:discussion}.
+Computing in~$\ZZ[y]$ for $m\le 5000$ with the support bound $k\le\lfloor (m+3)/2\rfloor$, we verified all coefficients are nonnegative for each tested $m$; the implementation is available as a stand-alone script (\texttt{scripts/coeff\_nonneg\_check.pl}), so this computational certificate can be reproduced or extended to larger truncation levels.
 

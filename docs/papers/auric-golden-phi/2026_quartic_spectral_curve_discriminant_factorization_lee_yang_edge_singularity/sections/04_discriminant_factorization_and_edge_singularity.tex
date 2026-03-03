@@ -22,11 +22,22 @@ The discriminant of a monic degree-$4$ polynomial equals, up to sign, the result
 The explicit computation and full factorization are given in Appendix~\ref{app:disc}.
 \end{proof}
 
+\begin{remark}[Elliptic origin of the factorization]\label{rmk:elliptic-origin}
+The factorization~\eqref{eq:disc-factor} admits a divisor-theoretic explanation developed in Appendix~\ref{app:elliptic}.
+The spectral curve $\Pi(\lambda,y)=0$ is isomorphic to the elliptic curve $E:\xi^2+\xi=\lambda^3-\lambda$ of conductor~$37$ (Theorem~\ref{thm:ellipticization}), with $y=\lambda^2+\xi$ defining a degree-$4$ morphism $\varphi:E\to\mathbb{P}^1_y$.
+The discriminant $\Disc_\lambda(\Pi)$ equals the norm $\mathrm{N}_{\QQ(E)/\QQ(y)}(\partial_\lambda\Pi)$ of the different of the function field extension (Corollary~\ref{cor:norm-identity}), and the branch cubic $c(y)$ is the resultant image of the ramification locus of~$\varphi$:
+\[
+\operatorname{Res}_\lambda\!\bigl(16\lambda^3-9\lambda^2+1,\;4\lambda y-(4\lambda^3-3\lambda^2-2\lambda+1)\bigr)=-64\,c(y).
+\]
+The factors $y$ and $y-1$ correspond to the rational ramification points $(1,-1)$ and $(-1,0)$ on~$E$, while the cubic factor $c(y)$ encodes the three non-rational ramification points.
+This decomposition into rational and non-rational ramification is intrinsic to the elliptic morphism $\varphi$ and explains the irreducibility of the cubic factor over~$\QQ$.
+\end{remark}
+
 \subsection{The nontrivial branch cubic and its unique real root}
 
 Let
 \begin{equation}\label{eq:cubic}
-c(y)=256y^3+411y^2+165y+32.
+c(y):=256y^3+411y^2+165y+32=P_{\mathrm{LY}}(y).
 \end{equation}
 
 \begin{proposition}\label{prop:unique-real-root}
@@ -37,41 +48,62 @@ The cubic $c(y)$ has exactly one real root, denoted $\yLY$, and it satisfies
 \end{proposition}
 
 \begin{proof}
-The discriminant of the cubic $c$ is $\Disc(c)=-3^9\cdot 31^2\cdot 37<0$ (see Proposition~\ref{prop:cubic-disc} in Appendix~\ref{app:elliptic}), so $c$ has one real root and two complex conjugate roots.
-Direct evaluation gives $c(-1.13446)<0<c(-1.13445)$, certifying the stated interval.
+Using the cubic discriminant formula for $a y^3+b y^2+c y+d$, we obtain
+\[
+\Disc(c)=b^2c^2-4ac^3-4b^3d-27a^2d^2+18abcd= -3^9\cdot 31^2\cdot 37<0
+\]
+for $(a,b,c,d)=(256,411,165,32)$, so $c$ has one real root and two complex conjugate roots.
+Direct evaluation gives
+\[
+c\!\left(-\frac{113446}{100000}\right)=-\frac{1766421977216}{10^{15}}<0,\qquad
+c\!\left(-\frac{113445}{100000}\right)=\frac{442426892000}{10^{15}}>0,
+\]
+so $\yLY\in(-1.13446,-1.13445)$ is a certified rational enclosure.
 \end{proof}
 
 Excluding the endpoint degeneracies $y\in\{0,1\}$, the real axis therefore contains a unique nontrivial branch point $\yLY<0$.
 
-\subsection{Spectral-root collision at $\yLY$}
+\begin{remark}[Arithmetic of the branch cubic]\label{rmk:branch-cubic-arithmetic}
+The discriminant $\Disc(c)=-3^9\cdot 31^2\cdot 37$ has squarefree part $-3\cdot 37=-111$.
+The cubic number field $K=\QQ(\yLY)$ has field discriminant $\Disc(K/\QQ)=-3^3\cdot 37=-999$, so the ramification set of~$K$ is $\{3,37\}$---the same primes that control the conductor of the elliptic curve~$E$ (conductor~$37$) and its reduction type.
+The unique quadratic subfield of the Galois closure is $\QQ(\sqrt{-111})$, which is the third quadratic subfield of the biquadratic extension $\QQ(\sqrt{-3},\sqrt{37})$; here $\QQ(\sqrt{-3})$ marks the self-inversive channel of $\Pi$ and $\QQ(\sqrt{37})$ is the quadratic resolvent of the $2$-division polynomial of~$E$.
+The detailed arithmetic is developed in Appendix~\ref{app:elliptic}, Propositions~\ref{prop:cubic-isomorphism}--\ref{prop:cubic-disc}.
+\end{remark}
+
+\subsection{Spectral-root collision at \texorpdfstring{$\yLY$}{y\_LY}}
 
 \begin{proposition}\label{prop:yLY-collision}
 At $y=\yLY$, exactly two spectral roots of $\Pi(\lambda,y)$ collide.
 For $y$ slightly above $\yLY$, the colliding pair consists of two distinct real roots; for $y$ slightly below $\yLY$, the pair becomes a complex conjugate pair.
-These are \emph{subdominant} roots: numerical evaluation confirms that, in a neighborhood of $\yLY$, the two dominant spectral roots (a complex conjugate pair of modulus $\approx 1.43$) remain strictly larger in modulus than the colliding pair (of modulus $\approx 0.27$).
+We do not assign a dominance status in this theorem.
 \end{proposition}
 
 \begin{proof}
 At $y=\yLY$, the discriminant $\Disc_\lambda\Pi$ vanishes by Theorem~\ref{thm:disc-factor}, so at least two roots collide.
-Since $c(\yLY)=0$ while $\yLY\neq 0,1$, the branch point arises from the cubic factor, which generically produces a simple double root (i.e., exactly two roots collide).
+Since $c(\yLY)=0$ while $\yLY\neq 0,1$, the branch point arises from the cubic factor.
+By Corollary~\ref{cor:double-root-linear} (in Appendix~\ref{app:elliptic}), for each branch value of $c(y)=0$ there is a unique linear relation in $\lambda$ determining the repeated root, hence at $y=\yLY$ exactly two roots collide.
 
 For the real-to-complex transition: the polynomial $\Pi(\lambda,y)$ has real coefficients for real~$y$, so non-real roots occur in conjugate pairs.
 Near a simple collision of two real roots, the local Puiseux expansion (Theorem~\ref{thm:puiseux-amplitude} in Appendix~\ref{app:elliptic}) shows that
 $\lambda(y)\approx \lambda_\star\pm \kappa_\star\sqrt{y-\yLY}$,
 with $\kappa_\star^2\in\RR$.
 If $\kappa_\star^2>0$, then for $y>\yLY$ the two branches are distinct reals, and for $y<\yLY$ they form a complex conjugate pair.
-Numerical evaluation at the relevant ramification point confirms $\kappa_\star^2>0$.
+From Theorem~\ref{thm:puiseux-amplitude}, $\kappa_\star^2=u$ is a root of
+\[
+324u^3-540u^2+333u-74=0.
+\]
+This cubic has negative discriminant, so it has exactly one real root. Since
+\[
+324\cdot 0^3-540\cdot 0^2+333\cdot 0-74<0,\qquad
+324\cdot 1^3-540\cdot 1^2+333\cdot 1-74>0,
+\]
+the real root satisfies $u\in(0,1)$, so $\kappa_\star^2>0$.
 
-For the dominance structure: at $y=\yLY$, the four spectral root moduli are approximately $1.428,\, 1.428,\, 0.273,\, 0.273$.
-The dominant pair (the complex conjugate pair of modulus~$\approx 1.43$) is distinct from the colliding pair (at modulus~$\approx 0.27$).
-By continuity, this dominance ordering persists in a neighborhood of $\yLY$.
 \end{proof}
 
 \begin{remark}\label{rmk:equimodular-transition}
-The dominant spectral roots form a complex conjugate pair (hence equimodular) for all $y$ on the negative real axis below approximately $y\approx -0.16$.
-This equimodular dominance is established at a non-branch point where a real dominant root and a complex conjugate pair exchange dominance.
-The branch point $\yLY\approx -1.13$ lies well inside the equimodular region and marks a transition in the \emph{subdominant} structure, not the dominant one.
-Consequently, the zero-accumulation geometry predicted by the Beraha--Kahane--Weiss theorem (Section~\ref{sec:zeros}) is governed by the dominant equimodular pair, which persists throughout the interval $(-\infty,\yLY)\cup(\yLY,y_{\mathrm{eq}})$ on the real axis.
-The role of $\yLY$ in the full complex-plane zero-accumulation topology---as an endpoint of equimodular curves emanating into~$\CC$---remains an interesting open question.
+Remark~\ref{rmk:equimodular-numeric} records a numerical picture on the negative real axis.
+Under that computationally observed regime, the branch point $\yLY\approx -1.13$ lies in the complex-dominant part and thus marks a transition in the \emph{subdominant} structure.
+In this paper we do not elevate this pattern to a theorem; it is kept as a reproducible target for future global modulus-order analysis.
 \end{remark}
 

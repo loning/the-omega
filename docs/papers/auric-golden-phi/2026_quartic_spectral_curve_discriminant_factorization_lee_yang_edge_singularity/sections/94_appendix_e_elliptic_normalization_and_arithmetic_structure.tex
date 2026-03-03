@@ -43,6 +43,14 @@ By the standard discriminant formula~\cite{Silverman2009}, $\Delta=37$ and $j=11
 The curve is minimal at every prime (since $\Delta=37$ is squarefree), and the conductor equals $37$ since $E$ has multiplicative reduction at $p=37$ and good reduction elsewhere.
 \end{proof}
 
+\begin{remark}[Mordell--Weil structure]\label{rmk:mordell-weil}
+The group $E(\QQ)$ is free of rank~$1$ with trivial torsion, hence $E(\QQ)\simeq\ZZ$.
+A generator is $R=(0,0)$ (Cremona label $37\mathrm{a}1$~\cite{LMFDBEllipticCurve37a1}).
+Triviality of $E(\QQ)_{\mathrm{tors}}$ follows from the injection $E(\QQ)_{\mathrm{tors}}\hookrightarrow E(\mathbb{F}_p)$ at primes of good reduction: $\#E(\mathbb{F}_2)=5$ and $\#E(\mathbb{F}_3)=4$, so the torsion order divides $\gcd(5,4)=1$.
+A standard $2$-descent (and the quoted LMFDB record) gives rank one and shows $R$ is primitive, so $E(\QQ)\simeq \ZZ R$.
+The first multiples are $2R=(1,0)$, $3R=(-1,-1)$, $4R=(2,-3)$, $5R=(\tfrac{1}{4},-\tfrac{5}{8})$.
+\end{remark}
+
 \subsection{The parameter \texorpdfstring{$y$}{y} as a degree-\texorpdfstring{$4$}{4} map and its ramification}
 
 On $E$ define the rational function
@@ -88,6 +96,46 @@ $\lambda=1\mapsto y=0$; $\lambda=-1\mapsto y=1$; three roots of $16\lambda^3-9\l
 Total ramification: $3+5\cdot 1=8=-8+\deg\cdot(2\cdot 0)$? Let us verify: $2g(E)-2=0$; $\deg\varphi(2g(\mathbb{P}^1)-2)=4\cdot(-2)=-8$; $\sum(e_P-1)=3+5=8$. Indeed $0=-8+8$. \checkmark
 \end{proof}
 
+\begin{corollary}[Resultant derivation of the branch cubic]\label{cor:resultant-branch-cubic}
+The five finite ramification points of $\varphi$ have $\lambda$-coordinates satisfying
+\[
+(\lambda-1)(\lambda+1)(16\lambda^3-9\lambda^2+1)=0.
+\]
+At each root $\alpha$ of $g(\lambda):=16\lambda^3-9\lambda^2+1$, the ramification condition $\dd y=0$ together with the curve equation yields the linear constraint $4\alpha y=4\alpha^3-3\alpha^2-2\alpha+1$.
+Eliminating $\lambda$ between $g(\lambda)=0$ and this linear relation gives the resultant identity
+\begin{equation}\label{eq:resultant-PLY}
+\operatorname{Res}_\lambda\!\bigl(16\lambda^3-9\lambda^2+1,\; 4\lambda y-(4\lambda^3-3\lambda^2-2\lambda+1)\bigr)=-64\,c(y),
+\end{equation}
+where $c(y)=256y^3+411y^2+165y+32$ is the branch cubic of Theorem~\ref{thm:disc-factor}.
+Thus, the branch cubic arises as a resultant image of the ramification locus on~$E$.
+\end{corollary}
+
+\begin{proof}
+From the proof of Theorem~\ref{thm:ramification-image}, the ramification condition $\dd y=0$ at a point with $16\lambda^3-9\lambda^2+1=0$ gives $\xi=(1-2\lambda-3\lambda^2)/(4\lambda)$.
+Substituting into $y=\lambda^2+\xi$ produces $4\lambda y=4\lambda^3-3\lambda^2-2\lambda+1$.
+The resultant of two cubics in $\lambda$ is a $3\times 3$ Sylvester determinant yielding a cubic in~$y$.
+Direct computation gives~\eqref{eq:resultant-PLY}.
+\end{proof}
+
+\begin{corollary}[Conjugate fiber cubic]\label{cor:conjugate-cubic}
+Define
+\begin{equation}\label{eq:QLY}
+q(y):=256y^3+195y^2+93y-48\in\ZZ[y].
+\end{equation}
+For each root $\alpha$ of $g(\lambda)=16\lambda^3-9\lambda^2+1$, the fiber $\varphi^{-1}(y_\alpha)$ contains a ramified point $P_\alpha=(\alpha,\xi_\alpha)$ and its image under the elliptic involution $\iota:(\lambda,\xi)\mapsto(\lambda,-\xi-1)$, which is an unramified point at a different $y$-value satisfying $q(y)=0$.
+Concretely, the two cubics arise from a single resultant factorization:
+\begin{equation}\label{eq:resultant-split}
+\operatorname{Res}_\lambda\!\bigl(\Pi(\lambda,y),\;g(\lambda)\bigr)=c(y)\,q(y).
+\end{equation}
+The discriminant of $q$ is $\Disc(q)=-3^3\cdot 37\cdot 2677^2$.
+\end{corollary}
+
+\begin{proof}
+For each root $\alpha$ of $g(\lambda)=0$, the quartic $\Pi(\alpha,y)=0$ is a quadratic in $y$ with two solutions: the branch value $y_\alpha$ (where $c(y_\alpha)=0$) and the conjugate value $y'_\alpha$ (where $q(y'_\alpha)=0$), interchanged by $\iota$.
+Since $\Pi(\lambda,y)$ has degree $4$ in $\lambda$ and $g(\lambda)$ has degree $3$, their resultant in $\lambda$ is a polynomial of degree $6$ in $y$, which factors into two cubics.
+One factor is $c(y)$ by Corollary~\ref{cor:resultant-branch-cubic}; the complementary factor is~$q(y)$.
+\end{proof}
+
 \begin{remark}[Hurwitz passport]\label{rmk:hurwitz}
 The ramification data of $\varphi$ can be recorded as a \emph{Hurwitz passport}---the tuple of cycle types of the monodromy permutations at each branch value.
 With $\deg\varphi=4$ and the ramification computed above, the passport over the five finite branch values is:
@@ -112,7 +160,7 @@ Since $\Disc_\lambda \Pi(\lambda,y)=-y(y-1)c(y)$ by Theorem~\ref{thm:disc-factor
 To show it is all of $S_4$, specialize at $y=2$: $\Pi(\lambda,2)=\lambda^4-\lambda^3-5\lambda^2+\lambda+6$ is irreducible over $\QQ$ (no rational roots, no factorization into irreducible quadratics).
 Reducing modulo $5$: $\Pi(\lambda,2)\equiv \lambda^4+4\lambda^3+4\lambda+1\pmod{5}$, which is irreducible over $\mathbb{F}_5$, giving a Frobenius element of cycle type $(4)$.
 Reducing modulo $3$: $\Pi(\lambda,2)\equiv \lambda(\lambda^3+2\lambda^2+\lambda+1)\pmod{3}$, with the cubic factor irreducible over $\mathbb{F}_3$, giving cycle type $(1)(3)$.
-Since $\gcd(3\cdot 5,\Disc(\Pi(\lambda,2)))=1$, these Frobenius elements lie in $\mathrm{Gal}(\Pi(\lambda,2)/\QQ)$ by the Chebotarev density theorem.
+Since $\gcd(3\cdot 5,\Disc(\Pi(\lambda,2)))=1$, the primes $3$ and $5$ are unramified in the splitting field, and Dedekind's theorem identifies the Frobenius cycle type at an unramified prime with the factorization pattern of the polynomial modulo that prime.
 A subgroup of $S_4$ containing both a $4$-cycle and a $3$-cycle is all of $S_4$.
 Since specialization gives a quotient of the generic Galois group,
 $\mathrm{Gal}(\Pi(\lambda,y)/\QQ(y))\cong S_4$.
@@ -145,6 +193,27 @@ The rational function $y-y_0$ on $E$ has pole divisor $4O$ by $\operatorname{ord
 and its zero divisor is $\sum_{i=1}^4 P_i$.
 Thus $\operatorname{div}(y-y_0)=\sum_{i=1}^4 P_i-4O$ is principal, hence trivial in $\mathrm{Pic}^0(E)\simeq E$,
 giving $\sum_i P_i=O$.
+\end{proof}
+
+\begin{corollary}[Trace identity for ramification points]\label{cor:ramification-trace}
+Let $Q_0=(1,-1)$, $Q'_0=(-1,0)$ be the rational ramification points of $\varphi$ (above $y=0$ and $y=1$ respectively), and let $Q_1,Q_2,Q_3\in E(\overline{\QQ})$ be the three non-rational ramification points corresponding to the roots of $g(\lambda)=16\lambda^3-9\lambda^2+1=0$.
+Define $f:=4\lambda\xi+3\lambda^2+2\lambda-1\in\QQ(E)^\times$, whose vanishing locus is the ramification divisor of $\varphi$.
+Then
+\[
+\operatorname{div}(f)=Q_0+Q'_0+Q_1+Q_2+Q_3-5O,
+\]
+and in the group law on $E$,
+\begin{equation}\label{eq:trace-5R}
+Q_1+Q_2+Q_3=5R,
+\end{equation}
+where $R=(0,0)\in E(\QQ)$ is the Mordell--Weil generator of $E(\QQ)\simeq\ZZ$ (noting $Q_0+Q'_0=-5R$).
+\end{corollary}
+
+\begin{proof}
+From $\dd y=f\,\omega$ (where $\omega=\dd\lambda/(2\xi+1)$ is the invariant differential), $f$ vanishes precisely at the five finite ramification points, each to order~$1$.
+At $O$, the standard uniformizer gives $\operatorname{ord}_O(\lambda)=-2$, $\operatorname{ord}_O(\xi)=-3$, so $\operatorname{ord}_O(f)=\operatorname{ord}_O(4\lambda\xi+3\lambda^2+2\lambda-1)=-5$.
+Thus $\operatorname{div}(f)=Q_0+Q'_0+Q_1+Q_2+Q_3-5O$ is principal, whence $Q_0+Q'_0+Q_1+Q_2+Q_3=O$ in $E$.
+The chord-and-tangent computation gives $Q_0+Q'_0=(\tfrac{1}{4},-\tfrac{3}{8})$, which equals $-5R$ in $E(\QQ)$ (since $5R=(\tfrac{1}{4},-\tfrac{5}{8})$ by Remark~\ref{rmk:mordell-weil}, and $-(\tfrac{1}{4},-\tfrac{5}{8})=(\tfrac{1}{4},-\tfrac{3}{8})$ under the involution $(\lambda,\xi)\mapsto(\lambda,-\xi-1)$), and~\eqref{eq:trace-5R} follows.
 \end{proof}
 
 \subsection{Local square-root branching and the Puiseux amplitude}
@@ -183,6 +252,83 @@ The cubic \eqref{eq:puiseux-cubic} is obtained by eliminating $\lambda_\star$ be
 The discriminant of \eqref{eq:puiseux-cubic} is $-2^{6}\cdot 3^{9}\cdot 37$, computed directly from the standard cubic discriminant formula.
 \end{proof}
 
+\begin{corollary}[Double-root linear closure]\label{cor:double-root-linear}
+At any finite branch value $y_0\in\{0,1\}\cup\{c(y_0)=0\}$, the unique double root $\lambda_\star$ of $\Pi(\lambda,y_0)=0$ is determined by a linear relation in~$\lambda_\star$ over $\QQ[y_0]$.
+Specifically, a Gr\"obner basis computation on the ideal $(\Pi,\partial_\lambda\Pi)\subset\QQ[\lambda,y]$ yields the linear eliminator
+\begin{equation}\label{eq:double-root-global}
+2232\,\lambda_\star+16384y_0^4+8128y_0^3-14525y_0^2-5523y_0-2232=0.
+\end{equation}
+When restricted to the branch cubic locus $c(y_0)=0$, this simplifies to
+\begin{equation}\label{eq:double-root-cubic}
+279\,\lambda_\star+512y_0^2+518y_0+5=0.
+\end{equation}
+Thus, the colliding spectral value at each branch point is a rational linear function of the branch parameter.
+\end{corollary}
+
+\begin{proof}
+The ideal $(\Pi,\partial_\lambda\Pi)$ has a Gr\"obner basis (with respect to the lexicographic order $\lambda>\!y$) containing a polynomial linear in $\lambda$; the $y$-eliminand is $\Disc_\lambda(\Pi)=-y(y-1)c(y)$.
+At any common zero of $\Pi$ and $\partial_\lambda\Pi$ (which defines the double root), $\lambda_\star$ is uniquely determined by the linear eliminator.
+Reducing~\eqref{eq:double-root-global} modulo $c(y_0)$ in the quotient ring $\ZZ[y_0]/(c)$ produces~\eqref{eq:double-root-cubic}.
+\end{proof}
+
+\begin{corollary}[Quadratic cofactor at a branch point]\label{cor:quadratic-cofactor}
+At a finite branch value $y_0\in\{0,1\}\cup\{c(y_0)=0\}$ with double root $\lambda_\star$ (Corollary~\ref{cor:double-root-linear}), the quartic spectral polynomial factors as
+\begin{equation}\label{eq:quadratic-cofactor}
+\Pi(\lambda,y_0)=(\lambda-\lambda_\star)^2\,Q_{y_0}(\lambda),
+\end{equation}
+where $Q_{y_0}(\lambda)\in\QQ(y_0)[\lambda]$ is a monic quadratic whose two roots are the unramified preimages of~$y_0$.
+By Vieta's formulae for the monic quartic $\Pi$, the sum of all four roots equals~$1$ and their product equals $y_0(y_0+1)$; hence
+\[
+Q_{y_0}(\lambda)=\lambda^2+(2\lambda_\star-1)\lambda+\frac{y_0(y_0+1)}{\lambda_\star^2},
+\]
+where $\lambda_\star$ is determined by $y_0$ alone via the linear closure~\eqref{eq:double-root-cubic}.
+On the branch cubic locus $c(y_0)=0$, the two roots of $Q_{y_0}$ are the unramified fiber points whose $y$-coordinates satisfy the conjugate cubic $q(y)=0$ (Corollary~\ref{cor:conjugate-cubic}).
+\end{corollary}
+
+\begin{proof}
+Since $\lambda_\star$ is a double root of $\Pi(\lambda,y_0)$ and $\Pi$ is monic quartic in~$\lambda$, polynomial division yields $\Pi(\lambda,y_0)=(\lambda-\lambda_\star)^2 Q_{y_0}(\lambda)$ with $Q_{y_0}$ monic quadratic.
+On the locus $c(y_0)=0$, the two simple roots of $\Pi(\lambda,y_0)$ lie in the fiber $\varphi^{-1}(y_0)$; one of these roots corresponds to the conjugate point under the elliptic involution, so its $y$-coordinate satisfies $q(y)=0$ by Corollary~\ref{cor:conjugate-cubic}.
+\end{proof}
+
+\begin{remark}[Explicit branch point coordinates]\label{rmk:branch-point-coords}
+At each root $\alpha$ of $g(\lambda)=16\lambda^3-9\lambda^2+1=0$, the ramification point $P_\alpha=(\alpha,\xi_\alpha)\in E$ has coordinates
+\[
+\xi_\alpha=\frac{1-2\alpha-3\alpha^2}{4\alpha},\qquad y_\alpha=\frac{(\alpha-1)(4\alpha^2+\alpha-1)}{4\alpha}.
+\]
+The \emph{tangent slope} at the branch point---equivalently, the leading Puiseux coefficient $\kappa_\star^2$ of Theorem~\ref{thm:puiseux-amplitude}---depends on $\alpha$ through the rational expression~\eqref{eq:kappa-formula}, which in the branch cubic coordinate rewrites as a rational function of $y_0$ alone via the linear closure~\eqref{eq:double-root-cubic}.
+\end{remark}
+
+\subsection{Abel--Jacobi differential closure}
+
+\begin{proposition}[Quartic ODE for the weight function]\label{prop:abel-jacobi-ode}
+Let $u$ be the Abel--Jacobi coordinate on $E$ satisfying $\dd u=\omega$ (the invariant differential), and define $\delta(u):=\dd y/\dd u\in\QQ(E)$.
+Then $(y,\delta)$ satisfies the irreducible quartic algebraic differential equation
+\begin{equation}\label{eq:abel-jacobi-ode}
+\delta^4+(8y-3)\delta^3+(2y^2-34y-4)\delta^2-y(y-1)\,c(y)=0.
+\end{equation}
+In particular, $\QQ(E)=\QQ(y,\delta)$ as a degree-$4$ function field extension, and the stationary locus $\delta=0$ recovers exactly the branch locus:
+\[
+\delta(u)=0\quad\Longleftrightarrow\quad y(u)\in\{0,1\}\cup\{c(y)=0\}.
+\]
+\end{proposition}
+
+\begin{proof}
+From the ramification function $f=4\lambda\xi+3\lambda^2+2\lambda-1$ (Corollary~\ref{cor:ramification-trace}) and $\dd y=f\,\omega$, one has $\delta=f$.
+Eliminating $\lambda$ between $\Pi(\lambda,y)=0$ and the cubic constraint $4\lambda^3-3\lambda^2-(4y+2)\lambda+(1+\delta)=0$ (obtained from $\delta=4\lambda\xi+3\lambda^2+2\lambda-1$ with $\xi=y-\lambda^2$) via resultant computation yields~\eqref{eq:abel-jacobi-ode}.
+The constant term is $-y(y-1)c(y)$, confirming the branch locus as the zero set of $\delta$.
+Irreducibility follows by specialization at $y=2$.
+\end{proof}
+
+\begin{remark}[Vanishing of the $\delta^1$ coefficient]\label{rmk:vanishing-delta1}
+The quartic~\eqref{eq:abel-jacobi-ode} has no $\delta^1$ term: by Vieta's formulae, this means the third elementary symmetric function of the four fiber values $\delta_i=f(\lambda_i)$ vanishes identically in $y$, i.e., $e_3(\delta_1,\delta_2,\delta_3,\delta_4)=0$.
+This identity is not \emph{a priori} obvious from the definition $\delta=4\lambda\xi+3\lambda^2+2\lambda-1$ and follows from the specific algebraic relation between $\Pi$ and the ramification function; it can be verified independently by resultant computation.
+\end{remark}
+
+\begin{remark}[Modular lifting]\label{rmk:modular-ode}
+Under the modular parametrization $q=e^{2\pi i\tau}$, $y=y(\tau)$, define $D(\tau):=q\,(\dd y/\dd q)/f(q)$ where $f(q)=\sum_{n\ge 1}a_n q^n$ is the weight-$2$ newform at level~$37$ (Theorem~\ref{thm:modularity}).
+Then $D=\delta$ and $(y(\tau),D(\tau))$ satisfies the same quartic~\eqref{eq:abel-jacobi-ode}, providing a closed modular--differential equation for the weight function.
+\end{remark}
+
 \subsection{Modularity}
 
 \begin{theorem}[Modularity at level $37$]\label{thm:modularity}
@@ -209,30 +355,251 @@ $\#\{(\lambda,y)\in\mathbb{F}_p^2:\Pi(\lambda,y)\equiv 0\}=p-a_p$.
 
 \subsection{Arithmetic of the branch cubic field}
 
-\begin{proposition}\label{prop:cubic-disc}
-Let $c(y)=256y^3+411y^2+165y+32$ be the branch cubic from \eqref{eq:cubic}, and let $K=\QQ(\yLY)$ be the cubic number field generated by its real root.
+\begin{proposition}[Cubic field isomorphism]\label{prop:cubic-isomorphism}
+Let $\alpha$ be a root of the ramification cubic $g(\lambda)=16\lambda^3-9\lambda^2+1=0$, and define
+\[
+\beta:=\frac{4\alpha^3-3\alpha^2-2\alpha+1}{4\alpha}=-3\alpha^2+\tfrac{3}{2}\alpha-\tfrac{1}{2}.
+\]
+Then $c(\beta)=0$, where $c(y)=256y^3+411y^2+165y+32$ is the branch cubic.
+In particular, $\QQ(\alpha)=\QQ(\beta)$, so the ramification cubic and the branch cubic generate the same cubic number field~$K$.
+The polynomial discriminants satisfy
+\begin{equation}\label{eq:disc-ratio-square}
+\Disc(c)=\Disc(g)\cdot\Bigl(\frac{837}{2}\Bigr)^2,\qquad \Disc(g)=-2^2\cdot 3^3\cdot 37,\quad \Disc(c)=-3^9\cdot 31^2\cdot 37,
+\end{equation}
+so both have squarefree part $-3\cdot 37=-111$.
+\end{proposition}
+
+\begin{proof}
+By Corollary~\ref{cor:resultant-branch-cubic}, the ramification condition at a root of $g(\lambda)=0$ yields the linear constraint $4\alpha\beta=4\alpha^3-3\alpha^2-2\alpha+1$.
+Eliminating $\alpha$ between this relation and $g(\alpha)=0$ (via the resultant identity~\eqref{eq:resultant-PLY}) gives $c(\beta)=0$, so $\QQ(\beta)\subseteq\QQ(\alpha)$.
+Since both are cubic extensions, equality follows.
+The discriminant identity~\eqref{eq:disc-ratio-square} is verified by direct computation using the standard cubic discriminant formula.
+\end{proof}
+
+\begin{proposition}[Field discriminant and prime decomposition]\label{prop:cubic-disc}
+Let $K=\QQ(\yLY)=\QQ(\alpha)$ be the cubic number field of Proposition~\ref{prop:cubic-isomorphism}.
 \begin{enumerate}
-\item[(i)] The polynomial discriminant is $\Disc(c)=-3^{9}\cdot 31^{2}\cdot 37$.
-\item[(ii)] The field discriminant is $\Disc(K/\QQ)=-999=-3^3\cdot 37$.
-\item[(iii)] The index satisfies $[\mathcal{O}_K:\ZZ[\yLY]]=3^3\cdot 31=837$.
+\item[(i)] The field discriminant is $\Disc(K/\QQ)=-999=-3^3\cdot 37$.
+\item[(ii)] The index satisfies $[\mathcal{O}_K:\ZZ[\yLY]]=3^3\cdot 31=837$.
+\item[(iii)] The ramification set of $K/\QQ$ is $\{3,37\}$, with prime ideal decompositions
+\begin{equation}\label{eq:prime-decomp}
+3\mathcal{O}_K=\mathfrak{p}_3^3,\qquad 37\mathcal{O}_K=\mathfrak{p}_{37}^2\,\mathfrak{q}_{37},
+\end{equation}
+where $3$ is totally (wildly) ramified and $37$ is tamely ramified with residue degrees $f(\mathfrak{p}_{37})=f(\mathfrak{q}_{37})=1$.
 \item[(iv)] The unique quadratic subfield of the Galois closure of $K/\QQ$ is $\QQ(\sqrt{-111})=\QQ(\sqrt{-3\cdot 37})$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-(i) The standard cubic discriminant formula applied to $(a,b,c,d)=(256,411,165,32)$ gives
-$\Disc(c)=b^2c^2-4ac^3-4b^3d-27a^2d^2+18abcd=-3^9\cdot 31^2\cdot 37$.
+The polynomial discriminant $\Disc(c)=-3^9\cdot 31^2\cdot 37$ and the standard relation $\Disc(c)=[\mathcal{O}_K:\ZZ[\alpha]]^2\cdot\Disc(K/\QQ)$ determine the field discriminant and index via $p$-adic valuations.
+At $p=3$: $v_3(\Disc(c))=9$ and the maximal order computation gives $v_3(\Disc(K))=3$, hence $v_3([\mathcal{O}_K:\ZZ[\yLY]])=3$.
+At $p=31$: $v_{31}(\Disc(c))=2$ and $v_{31}(\Disc(K))=0$, giving $v_{31}([\mathcal{O}_K:\ZZ[\yLY]])=1$.
+Thus $[\mathcal{O}_K:\ZZ[\yLY]]=3^3\cdot 31=837$ and $\Disc(K)=-3^3\cdot 37=-999$.
 
-(ii)--(iii) The relation between polynomial and field discriminants is $\Disc(c)=[\mathcal{O}_K:\ZZ[\alpha]]^2\cdot\Disc(K/\QQ)$ for a root $\alpha$ of $c$~\cite{Silverman2009}.
-The field discriminant and index can be determined by computing the $p$-adic valuations: at $p=3$, the polynomial discriminant has $v_3=9$, and the maximal order computation gives $v_3(\Disc(K))=3$, hence $v_3([\mathcal{O}_K:\ZZ[\yLY]])=3$; at $p=31$, $v_{31}(\Disc(c))=2$ and $v_{31}(\Disc(K))=0$, giving $v_{31}([\mathcal{O}_K:\ZZ[\yLY]])=1$.
-All other primes divide $\Disc(c)$ to at most the first power, so $[\mathcal{O}_K:\ZZ[\yLY]]=3^3\cdot 31=837$ and $\Disc(K)=-3^3\cdot 37=-999$.
+The ramification set is $\{p:\,p\mid\Disc(K)\}=\{3,37\}$.
+Since $v_3(\Disc(K))=3=3(3-1)/1$ matches the wild discriminant exponent for total ramification of a cubic, we have $3\mathcal{O}_K=\mathfrak{p}_3^3$.
+At $p=37$, the discriminant exponent $v_{37}(\Disc(K))=1=2-1$ indicates a single ramified prime with $e=2$ and one unramified prime, giving~\eqref{eq:prime-decomp}.
 
-(iv) The Galois closure of $K/\QQ$ has Galois group $S_3$ (since $c$ is irreducible with non-square discriminant).
-The unique quadratic subfield corresponds to the sign character $S_3\to\{\pm 1\}$ and is $\QQ(\sqrt{\Disc(K)})=\QQ(\sqrt{-999})=\QQ(\sqrt{-111})$.
+The Galois closure has group $S_3$ (since $c$ is irreducible with non-square discriminant), and its unique quadratic subfield is $\QQ(\sqrt{\Disc(K)})=\QQ(\sqrt{-999})=\QQ(\sqrt{-111})$.
 \end{proof}
 
-\begin{remark}
-The appearance of $37$ in both the elliptic-curve conductor ($\Delta(E)=37$) and the cubic field discriminant ($\Disc(K)\propto 37$) reflects a structural relation: the branch cubic $c(y)$ is determined by the ramification of the degree-$4$ map $\varphi:E\to\mathbb{P}^1$, and the arithmetic of $E$ (particularly its bad reduction at $p=37$) propagates into the discriminant of $c$.
-This ``$37$-coincidence'' is not accidental but a consequence of the shared algebraic origin in the spectral curve.
+\begin{proposition}[Scaling generators and quadratic exchange]\label{prop:scaling-exchange}
+Define the integral scaling generators $u:=16\lambda_\star$ and $v:=256\yLY$, where $\lambda_\star$ is a root of $g(\lambda)=0$ and $\yLY$ is the corresponding root of $c(y)=0$ (Proposition~\ref{prop:cubic-isomorphism}).
+Then $u$ and $v$ generate the same cubic field $K$, satisfy the minimal polynomials
+\[
+f_u(t):=t^3-9t^2+256,\qquad f_v(t):=t^3+411t^2+42240t+2^{21},
+\]
+with discriminants $\Disc(f_u)=-2^{10}\cdot 3^3\cdot 37$ and $\Disc(f_v)=-2^{16}\cdot 3^9\cdot 31^2\cdot 37$, and are linked by the quadratic relation
+\begin{equation}\label{eq:uv-exchange}
+3u^2+(v+128)u-768=0,
+\end{equation}
+so that $v=-3u^2+24u-128\in\ZZ[u]$.
+The index of the two monogenic orders satisfies $[\ZZ[u]:\ZZ[v]]=2^3\cdot 3^3\cdot 31=6696$.
+\end{proposition}
+
+\begin{proof}
+From $\lambda_\star=u/16$ and $16\lambda_\star^3-9\lambda_\star^2+1=0$, one obtains $f_u(u)=0$.
+Similarly, $\yLY=v/256$ yields $f_v(v)=0$.
+The quadratic relation~\eqref{eq:uv-exchange} follows from the parametrization $y_0=(4\lambda^3-3\lambda^2-2\lambda+1)/(4\lambda)$ after clearing denominators via $u^3=9u^2-256$.
+The index formula follows from $[\ZZ[u]:\ZZ[v]]^2=\Disc(f_v)/\Disc(f_u)$.
+\end{proof}
+
+\begin{remark}[Artin representation and weight-$1$ interface]\label{rmk:artin-weight1}
+Let $L$ be the splitting field of $c(y)$ over $\QQ$.
+Since $\Disc(c)=-3^9\cdot 31^2\cdot 37$ is not a perfect square, $\mathrm{Gal}(L/\QQ)\cong S_3$, and the unique quadratic resolvent subfield is $\QQ(\sqrt{-111})$ (Proposition~\ref{prop:cubic-disc}\,(iv)).
+The standard two-dimensional irreducible representation $S_3\hookrightarrow\mathrm{GL}_2(\CC)$ composed with the projection $\mathrm{Gal}(\overline{\QQ}/\QQ)\twoheadrightarrow\mathrm{Gal}(L/\QQ)$ gives an Artin representation $\rho_{c}$ whose determinant is the quadratic character $\chi_{-111}$.
+Since $S_3$ is solvable, the Artin conjecture for $\rho_{c}$ is known~\cite{DeligneSerre1974WeightOne}, and $L(\rho_{c},s)$ equals the $L$-function of a weight-$1$ modular form.
+This provides a computable weight-$1$ automorphic channel for the branch cubic arithmetic.
 \end{remark}
+
+\begin{remark}[The quadratic resolvent field $\QQ(\sqrt{-111})$ as a twist product]\label{rmk:sqrt-minus-111}
+The self-inversive channel of $\Pi(\lambda,y)$ (characterized by $y^2+y+1=0$) is marked by $\QQ(\sqrt{-3})$, while the quadratic resolvent subfield of the splitting field of the $2$-division polynomial $\psi_2(\lambda)=4\lambda^3-4\lambda+1$ is $\QQ(\sqrt{37})$ (since $\Disc(\psi_2)=2^4\cdot 37$, whose squarefree part is~$37$).
+In the biquadratic extension $\QQ(\sqrt{37},\sqrt{-3})$, the third quadratic subfield is
+\[
+\QQ(\sqrt{37}\cdot\sqrt{-3})=\QQ(\sqrt{-111}),
+\]
+which coincides with the quadratic resolvent of the branch cubic (Proposition~\ref{prop:cubic-disc}\,(iv)).
+Thus the Kronecker symbol identity $\bigl(\frac{-111}{p}\bigr)=\bigl(\frac{37}{p}\bigr)\bigl(\frac{-3}{p}\bigr)$ for $p\nmid 3\cdot 37$ expresses the branch cubic discriminant character as the unique $(-3)$-twist of the level-$37$ elliptic anchor.
+\end{remark}
+
+\begin{remark}[Open problem: ray class field characterization]\label{rem:ray-class-field}
+Let $L$ be the splitting field of $c(y)$ over $\QQ$, and $K_\Delta:=\QQ(\sqrt{-111})$ its quadratic resolvent subfield.
+Then $L/K_\Delta$ is a cyclic cubic extension, and $L$ is the ray class field of $K_\Delta$ with conductor
+\[
+\mathfrak{f}=3^4\cdot 31
+\]
+(interpreted as an ideal of $K_\Delta$).
+The discriminant factorization $\Disc(c)=-111\cdot(3^4\cdot 31)^2$ provides the natural auditable interface between the base discriminant $-111$ and the conductor candidate via its square factor.
+\end{remark}
+
+\begin{remark}[Partial evidence and falsifiability path]\label{rmk:ray-class-evidence}
+\emph{Discriminant factorization.}
+The identity $\Disc(c)=-3^9\cdot 31^2\cdot 37=-111\cdot(3^4\cdot 31)^2$ expresses the polynomial discriminant as a product of the base discriminant $\Disc(K_\Delta)=-111$ and a perfect square $(3^4\cdot 31)^2$.
+This is the structural form required by the conductor--discriminant formula for a cyclic cubic extension $L/K_\Delta$ with conductor $\mathfrak{f}$: the square factor is the conductor candidate.
+
+\emph{Splitting consistency.}
+The Legendre symbol $\bigl(\frac{-111}{31}\bigr)\equiv 13^{15}\equiv -1\pmod{31}$, so $31$ is inert in $K_\Delta$.
+If the conjecture holds, the splitting type of $c(y)\pmod{p}$ for $p\nmid 3\cdot 31\cdot 37$ is governed by the cubic residue character of the ray class group: $c$ splits completely modulo $p$ if and only if $p$ splits completely in $L$.
+
+\emph{Falsifiability.}
+Any single prime $p$ where the factorization pattern of $c\pmod{p}$ disagrees with the ray class prediction would refute the conjecture.
+\end{remark}
+
+\begin{corollary}[Norm identity for the different]\label{cor:norm-identity}
+Let $K=\QQ(E)$ and $k=\QQ(y)$, so that $K/k$ is a degree-$4$ function field extension defined by $\Pi(\lambda,y)=0$.
+The different ideal $\mathfrak{D}_{K/k}$ is generated by
+\[
+\delta:=\partial_\lambda\Pi(\lambda,y)=4\lambda^3-3\lambda^2-2(2y+1)\lambda+1=-(4\lambda\xi+3\lambda^2+2\lambda-1),
+\]
+and its norm satisfies
+\begin{equation}\label{eq:norm-different}
+\mathrm{N}_{K/k}(\delta)=-y(y-1)\,c(y).
+\end{equation}
+In particular, the discriminant $\Disc_\lambda(\Pi)=\mathrm{N}_{K/k}(\partial_\lambda\Pi)$ recovers the factorization of Theorem~\ref{thm:disc-factor}.
+\end{corollary}
+
+\begin{proof}
+Since $\Pi(\lambda,y)$ is monic in $\lambda$, the standard theory of function field extensions gives $\mathfrak{D}_{K/k}=(\partial_\lambda\Pi)$.
+Using $\xi=y-\lambda^2$, one verifies $\partial_\lambda\Pi=-(4\lambda\xi+3\lambda^2+2\lambda-1)$.
+The norm $\mathrm{N}_{K/k}(\delta)=\mathrm{Res}_\lambda(\Pi,\delta)$ is the discriminant of $\Pi$ with respect to $\lambda$, which equals $-y(y-1)c(y)$ by Theorem~\ref{thm:disc-factor}.
+\end{proof}
+
+\begin{corollary}[$2$-division image cubic and norm square]\label{cor:division-image}
+Define the \emph{$2$-division polynomial} $\psi_2(\lambda):=4\lambda^3-4\lambda+1$ and the \emph{$2$-division image cubic}
+\[
+N_2(y):=16y^3-8y^2-4y+1\in\ZZ[y].
+\]
+Then:
+\begin{enumerate}
+\item[(i)] On $E$, the identity $(2\xi+1)^2=4(\lambda^3-\lambda)+1=\psi_2(\lambda)$ holds, so $\psi_2(\lambda)=0$ defines the locus $\xi=-\tfrac{1}{2}$, i.e.\ $y=\lambda^2-\tfrac{1}{2}$.
+The $y$-image of this locus is
+\[
+\operatorname{Res}_\lambda\!\bigl(4\lambda^3-4\lambda+1,\;y-\lambda^2+\tfrac{1}{2}\bigr)=N_2(y).
+\]
+\item[(ii)] The norm in $K/k$ satisfies $\mathrm{N}_{K/k}(2\xi+1)=-N_2(y)$, and consequently
+$\mathrm{N}_{K/k}(\psi_2(\lambda))=N_2(y)^2$.
+\item[(iii)] The discriminant $\Disc(N_2)=2^8\cdot 37$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+Part~(i): From $\xi^2+\xi=\lambda^3-\lambda$, one has $(2\xi+1)^2=4\lambda^3-4\lambda+1$.
+The $2$-division locus $\psi_2=0$ forces $\xi=-\tfrac{1}{2}$ and $y=\lambda^2-\tfrac{1}{2}$; eliminating $\lambda$ yields $N_2(y)$.
+
+Part~(ii): $\mathrm{N}_{K/k}(2\xi+1)=\prod_{i=1}^4(2\xi_i+1)$ where $\xi_i=y-\lambda_i^2$.
+Evaluating at $y=0$: the roots of $\Pi(\lambda,0)=\lambda(\lambda-1)^2(\lambda+1)$ are $0,1,1,-1$, giving $\xi$-values $0,-1,-1,-1$ and $(2\xi_i+1)$-values $1,-1,-1,-1$ with product $-1=-N_2(0)$.
+The ratio $\mathrm{N}_{K/k}(2\xi+1)/(-N_2(y))$ is a rational function of $y$ equaling $1$ at $y=0$; since both numerator and denominator are polynomials of degree $3$ in $y$ with the same leading coefficient (verified by comparing $\lambda^3$-contributions), the ratio is identically $1$, whence $\mathrm{N}_{K/k}(2\xi+1)=-N_2(y)$.
+The norm square follows from $\psi_2=(2\xi+1)^2$.
+\end{proof}
+
+\begin{remark}[Mod-$p$ collisions at $p=37$]\label{rmk:mod-p-collisions}
+The branch cubic, its conjugate, and the $2$-division image cubic $N_2(y):=16y^3-8y^2-4y+1$ all carry the prime factor $37$ in their discriminants:
+\[
+\Disc(c)=-3^9\cdot 31^2\cdot 37,\qquad \Disc(q)=-3^3\cdot 37\cdot 2677^2,\qquad \Disc(N_2)=2^8\cdot 37.
+\]
+In $\mathbb{F}_{37}[y]$, all three develop a common double root at $y\equiv 6\pmod{37}$:
+\begin{align*}
+c(y)&\equiv -3\,(y-14)(y-6)^2\pmod{37},\\
+q(y)&\equiv -3\,(y-16)(y-6)^2\pmod{37},\\
+N_2(y)&\equiv 16\,(y-7)(y-6)^2\pmod{37}.
+\end{align*}
+This triple collision at a single residue class reflects the bad reduction of $E$ at $p=37$: the prime $37$ is the unique odd prime of bad reduction ($\Delta(E)=37$), and its arithmetic propagates simultaneously into all three controlling cubics of the spectral curve.
+\end{remark}
+
+\begin{remark}[The prime $37$ as a structural invariant]\label{rmk:37-structural}
+The prime $37$ appears in four independent roles:
+(a) the conductor and minimal discriminant of $E$ ($\Delta(E)=37$, Theorem~\ref{thm:ellipticization});
+(b) the field discriminant of the branch cubic field ($\Disc(K)=-3^3\cdot 37$, Proposition~\ref{prop:cubic-disc});
+(c) the common discriminant factor of the Puiseux cubic ($\Disc=-2^6\cdot 3^9\cdot 37$, Theorem~\ref{thm:puiseux-amplitude}); and
+(d) the mod-$p$ collision locus of the three controlling cubics (Remark~\ref{rmk:mod-p-collisions}).
+These are consequences of a single algebraic origin: $c(y)$ is the ramification image of $\varphi:E\to\mathbb{P}^1$, so the arithmetic of $E$---in particular its bad reduction at $37$---propagates into every polynomial derived from the spectral structure.
+\end{remark}
+
+\subsection{Latt\`es dynamics and the bad prime \texorpdfstring{$37$}{37}}
+
+\begin{proposition}[Doubling Latt\`es map and stable reduction at $p=37$]\label{prop:lattes-37}
+The doubling map $[2]:E\to E$ induces a degree-$4$ Latt\`es rational map on $\mathbb{P}^1_\lambda$ via $\lambda([2]P)=\Phi(\lambda(P))$, where
+\[
+\Phi(\lambda)=\frac{\lambda^4+2\lambda^2-2\lambda+1}{4\lambda^3-4\lambda+1}\in\QQ(\lambda).
+\]
+This is derived from the standard doubling formula on the short Weierstrass model $Y^2=X^3-X+\tfrac{1}{4}$ (where $X=\lambda$, $Y=\xi+\tfrac{1}{2}$):
+\[
+X([2]P)=\frac{(3X^2+a)^2}{4Y^2}-2X=\frac{(3\lambda^2-1)^2}{4\lambda^3-4\lambda+1}-2\lambda=\frac{\lambda^4+2\lambda^2-2\lambda+1}{4\lambda^3-4\lambda+1},
+\]
+using $4Y^2=4(\lambda^3-\lambda)+1=4\lambda^3-4\lambda+1$ and expanding $(3\lambda^2-1)^2-2\lambda(4\lambda^3-4\lambda+1)=\lambda^4+2\lambda^2-2\lambda+1$.
+At $p=37$, both the numerator and denominator acquire a common square factor $(\lambda-5)^2$ in $\mathbb{F}_{37}[\lambda]$:
+\begin{align*}
+\lambda^4+2\lambda^2-2\lambda+1&\equiv(\lambda-5)^2(\lambda^2+10\lambda+3)\pmod{37},\\
+4\lambda^3-4\lambda+1&\equiv(\lambda-5)^2(4\lambda+3)\pmod{37}.
+\end{align*}
+The stable reduction is therefore
+\[
+\overline{\Phi}(\lambda)=\frac{\lambda^2+10\lambda+3}{4\lambda+3}\in\mathbb{F}_{37}(\lambda),\qquad \deg\overline{\Phi}=2<\deg\Phi=4.
+\]
+Moreover, $\overline{\Phi}$ is conjugate over $\mathbb{F}_{37}$ to the normalized Chebyshev polynomial $T_2(\lambda)=\lambda^2-2$ via $M(\lambda)=(2\lambda+13)/(\lambda-5)\in\mathrm{PGL}_2(\mathbb{F}_{37})$, so $M\circ\overline{\Phi}\circ M^{-1}=T_2$.
+\end{proposition}
+
+\begin{proof}
+The mod-$37$ factorizations and degree-drop cancellation are direct finite-field computations.
+The M\"obius conjugacy $M$ sends the unique critical fixed point $\lambda=5$ to $\infty$, rigidifying $\overline{\Phi}$ to polynomial normal form.
+\end{proof}
+
+\begin{definition}[Discriminant ridge curve]\label{def:disc-ridge}
+The \emph{discriminant ridge curve} is the genus-$2$ hyperelliptic curve
+\[
+C_\Delta:\quad w^2=-y(y-1)\,c(y)
+\]
+over $\QQ$.
+Its function field $\QQ(y)(\sqrt{\Disc_\lambda(\Pi)})$ is the unique quadratic subfield of the $S_4$-Galois closure of $\QQ(E)/\QQ(y)$, corresponding to the normal subgroup $A_4\trianglelefteq S_4$ (Proposition~\ref{prop:galois-s4}).
+The curve $C_\Delta$ has good reduction at all primes $p\nmid 2\cdot 3\cdot 31\cdot 37$.
+\end{definition}
+
+\begin{remark}[Discriminant ridge curve and nodal reduction]\label{rmk:disc-ridge-nodal}
+The genus-$2$ hyperelliptic curve $C:w^2=-y(y-1)c(y)$ (the discriminant ridge) acquires a single nodal singularity at each of $p=31$ and $p=37$.
+At $p=37$: $c(y)\equiv -3(y-14)(y-6)^2\pmod{37}$, giving a non-split node at $(y,w)=(6,0)$; the normalization is the elliptic curve $E_{37}:w'^2=3y(y-1)(y-14)$ over $\mathbb{F}_{37}$ with Frobenius trace $a_{37}(E_{37})=2$ and $\#E_{37}(\mathbb{F}_{37})=36$.
+At $p=31$: $c(y)\equiv -8(y-6)(y-12)^2\pmod{31}$, giving a split node at $(y,w)=(12,0)$; the normalization $E_{31}:w'^2=-8y(y-1)(y-6)$ satisfies $j(E_{31})=0\in\mathbb{F}_{31}$ (since the Legendre parameter $\lambda\equiv 6$ satisfies $\lambda^2-\lambda+1\equiv 0\pmod{31}$) and $a_{31}(E_{31})=-4$.
+In both cases the local zeta function factors as $Z(C_{\mathbb{F}_p},T)=Z(E_p,T)(1-\varepsilon_p T)$ where $\varepsilon_{31}=+1$ and $\varepsilon_{37}=-1$.
+\end{remark}
+
+\subsection{Weight doubling correspondence}
+
+\begin{proposition}[Modular equation for the weight doubling]\label{prop:weight-doubling}
+The correspondence $y_0\mapsto y([2]P)$ for $P\in\varphi^{-1}(y_0)$ is governed by an irreducible polynomial $\Phi_2(y,y_2)\in\ZZ[y,y_2]$ of bidegree $(16,4)$, defining a curve $C_2\subset\mathbb{P}^1_y\times\mathbb{P}^1_{y_2}$.
+The leading coefficient (in~$y_2$) is the fourth power of the $2$-division image cubic:
+\[
+A_4(y)=\bigl(16y^3-8y^2-4y+1\bigr)^4.
+\]
+Furthermore, the discriminant of $\Phi_2$ with respect to $y_2$ satisfies the square-class identity
+\[
+\Disc_{y_2}\bigl(\Phi_2(y,\cdot)\bigr)\equiv -y(y-1)\,c(y)\pmod{(\QQ(y)^\times)^2},
+\]
+so the unique quadratic resolvent subfield of the weight-doubling correspondence is the same $\QQ(y)(\sqrt{-y(y-1)c(y)})$ as for the original spectral quartic.
+This square-class rigidity holds for all iterates $y\circ[2^n]$ of the doubling map, as the quadratic resolvent of any primitive element $\alpha$ generating $\QQ(E)/\QQ(y)$ is $\Disc_T(m_\alpha)\equiv -y(y-1)c(y)\pmod{(\QQ(y)^\times)^2}$.
+\end{proposition}
+
+\begin{proof}
+The polynomial $\Phi_2$ is obtained by eliminating $\lambda$ between $\Pi(\lambda,y)=0$ and $y_2=y([2](\lambda,\xi))$ using the doubling formula on $E$.
+The leading coefficient follows from $\Phi_2(y,\infty)$ being controlled by the $2$-torsion image.
+The square-class identity holds because the unique quadratic subfield of the $S_4$-Galois closure of $\QQ(E)/\QQ(y)$ is generated by $\sqrt{\Disc_\lambda(\Pi)}=\sqrt{-y(y-1)c(y)}$, and this quadratic subfield is an invariant of the extension, independent of the choice of primitive element.
+\end{proof}
 

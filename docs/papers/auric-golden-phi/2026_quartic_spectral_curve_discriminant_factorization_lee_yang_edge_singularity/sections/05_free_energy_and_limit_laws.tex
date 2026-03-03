@@ -13,44 +13,101 @@ Z_m(y)=\sum_{i=1}^4 a_i(y)\lambda_i(y)^m,
 where $\lambda_i(y)$ are the roots of $\Pi(\lambda,y)=0$ and $a_i(y)$ are determined by the initial conditions.
 When a unique dominant root (in modulus) exists and its coefficient does not vanish, it controls the exponential growth rate.
 
-\begin{theorem}\label{thm:lambda-plus}
-There exists an open neighborhood $U\subset\CC\setminus\Branch$ of $y=1$ and a function $\lambda_+(y)$ analytic on $U$ such that
+\begin{lemma}[Dominant-root separation near $y=1$]\label{lem:dominant-root-separation}
+At $y=1$, the roots of $\Pi(\lambda,y)$ are $2,1,-1,-1$.
+Hence exactly one root has modulus strictly larger than $\frac{3}{2}$.
+There exists a neighborhood $U$ of $1$ such that for every $y\in U$:
+\begin{enumerate}
+  \item there is exactly one root $\lambda_+(y)$ of $\Pi(\lambda,y)$ with $|\lambda_+(y)|>\frac32$;
+  \item the other three roots satisfy $|\lambda_i(y)|<\frac32$;
+  \item $\lambda_+(y)$ is analytic in $y$ with $\lambda_+(1)=2$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+At $(\lambda,y)=(2,1)$, $\partial_\lambda\Pi(2,1)=9\neq0$, so the implicit function theorem gives a unique analytic branch $\lambda_+(y)$ with $\lambda_+(1)=2$.
+The remaining roots depend continuously on $y$ as well.
+Since at $y=1$ all non-dominant roots satisfy $|\lambda|<\frac32$ and the root $\lambda_+(1)=2$ satisfies $|\lambda_+(1)|>\frac32$, continuity of roots implies a preserved modulus gap for $y$ close to $1$.
+\end{proof}
+
+\begin{lemma}[Dominant coefficient is nonzero]\label{lem:dominant-coeff}
+For $y$ in a sufficiently small punctured neighborhood $U\setminus\Branch$ around $1$, let
+\[
+Z_m(y)=\sum_{i=1}^4 a_i(y)\lambda_i(y)^m,\qquad \lambda_+(y):=\lambda_1(y),
+\]
+be the spectral decomposition with $\lambda_i(y)$ the four roots of $\Pi(\lambda,y)$.
+Then $a_+(y):=a_1(y)$ is nonzero on that neighborhood and $a_+(1)=1$.
+
+\begin{proof}
+For $y\in U\setminus\Branch$, the roots are simple, so $(a_1,\dots,a_4)$ solves a Vandermonde linear system from
+\[
+\bigl(Z_0(y),\dots,Z_3(y)\bigr)^T=V(y)\,(a_1(y),\dots,a_4(y))^T,\quad
+V_{kj}(y)=\lambda_j(y)^k,
+\]
+hence each $a_i(y)$ is a rational function of $\lambda_j(y)$ with denominator $\det V(y)\neq0$.
+Thus each $a_i(y)$ is analytic on $U\setminus\Branch$.
+
+At $y=1$, the roots are $2,1,-1,-1$ and the explicit specialization $Z_m(1)=2^m$ forces the expansion
+\[
+2^m=\sum_{i=1}^4 a_i(1)\lambda_i(1)^m=a_1(1)2^m+(a_3(1)+a_4(1)m)(-1)^m+a_2(1),
+\]
+so $a_1(1)=1$.
+By continuity, $a_+(y)$ remains nonzero for $y$ close to $1$ outside $\Branch$.
+\end{proof}
+\end{lemma}
+
+In the following theorem, we write $\lambda_+(y)$ for the branch from
+Lemma~\ref{lem:dominant-root-separation} and $a_+(y)$ for its coefficient in the spectral expansion.
+\begin{theorem}[Dominant spectral branch]\label{thm:lambda-plus}
+There exists an open neighborhood $U\subset\CC$ of $y=1$ and a function $\lambda_+(y)$
+analytic on $U$ such that
 \[
 \Pi(\lambda_+(y),y)=0,\qquad \lambda_+(1)=2.
 \]
-Moreover, for $y\in U\cap(0,\infty)$, the free energy exists and satisfies
+Moreover, for all $y\in U\cap(0,\infty)\setminus\Branch$, the free energy exists and satisfies
 \[
 f(y)=\log \lambda_+(y).
 \]
 \end{theorem}
 
 \begin{proof}
-At $y=1$ the spectral polynomial factors as
-\[
-\Pi(\lambda,1)=(\lambda-2)(\lambda-1)(\lambda+1)^2,
-\]
-so $\lambda=2$ is a simple root with $\partial_\lambda\Pi(2,1)=-7\neq 0$.
-By the analytic implicit function theorem, there is a unique analytic branch $\lambda_+(y)$ defined near $y=1$ with $\lambda_+(1)=2$, and $U$ can be chosen to avoid the branch locus $\Branch$.
-For $y>0$ sufficiently close to $1$, continuity of the roots implies $\abs{\lambda_+(y)}$ is strictly larger than the moduli of the other roots.
+By Lemma~\ref{lem:dominant-root-separation}, shrink $U$ so that for every
+$y\in U\setminus\Branch$ there is a unique root $\lambda_+(y)$ with strict
+modulus dominance over the three other roots.
+Lemma~\ref{lem:dominant-coeff} gives $a_+(1)=1$ and $a_+(y)\neq0$ near $1$.
 
-It remains to verify that the coefficient $a_+(y)$ of $\lambda_+(y)^m$ in the spectral expansion does not vanish.
-At $y=1$ the roots are $\lambda_1=2$, $\lambda_2=1$, $\lambda_3=\lambda_4=-1$ (with multiplicity~$2$).
-Since $Z_m(1)=2^m$ for all $m$, the spectral expansion reduces to $a_1\cdot 2^m + a_2\cdot 1^m + (a_3+a_4 m)\cdot(-1)^m = 2^m$, which forces $a_1=1$, $a_2=a_3=a_4=0$.
-Hence $a_+(1)=1\neq 0$, and by continuity $a_+(y)\neq 0$ for $y$ near~$1$.
-The free energy formula then follows: $Z_m(y)=a_+(y)\lambda_+(y)^m(1+o(1))$, so $f(y)=\log\lambda_+(y)$.
+For such $y$, let $\lambda_2(y),\lambda_3(y),\lambda_4(y)$ denote the other
+three roots and write the spectral decomposition
+\[
+Z_m(y)=a_+(y)\lambda_+(y)^m+\sum_{i=2}^4 a_i(y)\lambda_i(y)^m.
+\]
+Define
+\[
+r(y):=\max_{i=2,3,4}\left|\frac{\lambda_i(y)}{\lambda_+(y)}\right|<1.
+\]
+Then
+\[
+Z_m(y)=a_+(y)\lambda_+(y)^m\!\left(1+\sum_{i=2}^4 \frac{a_i(y)}{a_+(y)}\left(\frac{\lambda_i(y)}{\lambda_+(y)}\right)^m\right),
+\]
+so
+\[
+\frac{1}{m}\log Z_m(y)=\log\lambda_+(y)+\frac{1}{m}\log\!\left(1+O(r(y)^m)\right)\to\log\lambda_+(y).
+\]
+The free energy formula follows.
 \end{proof}
 
 \subsection{An exponential family and the limiting log-mgf}
 
-Let $H_m$ be a random variable taking values in $\{0,1,\dots,m\}$ whose moment generating function is defined by
+The probabilistic statements below use Theorem~\ref{thm:coeff-nonneg}, which gives nonnegative coefficients $a_{m,k}\ge0$, so $Z_m(e^s)/Z_m(1)$ is a true moment generating function.
+Let $H_m$ be a random variable taking values in $\{0,1,\dots,\lfloor (m+3)/2\rfloor\}$ whose moment generating function is defined by
 \begin{equation}\label{eq:mgf-def}
 \mathbb{E}\bigl[e^{sH_m}\bigr]=\frac{Z_m(e^s)}{Z_m(1)}.
 \end{equation}
-Since $Z_m(1)=2^m$ and $Z_m(y)=\sum_{k=0}^{\lfloor m/2\rfloor} a_{m,k}y^k$ with $a_{m,k}\ge 0$ (verified computationally for $m\le 300$; see Remark~\ref{rmk:nonneg-coeffs} and Appendix~\ref{app:degeneracies}), we have
+Since $Z_m(1)=2^m$ and $Z_m(y)=\sum_{k=0}^{\lfloor (m+3)/2\rfloor} a_{m,k}y^k$ with $a_{m,k}\ge 0$ (Theorem~\ref{thm:coeff-nonneg} and Appendix~\ref{app:degeneracies}), we have
 \[
-\frac{Z_m(e^s)}{Z_m(1)}=\sum_{k=0}^m \frac{a_{m,k}}{2^m}\,e^{sk},
+\frac{Z_m(e^s)}{Z_m(1)}=\sum_{k=0}^{\lfloor (m+3)/2\rfloor} \frac{a_{m,k}}{2^m}\,e^{sk},
 \]
-and the weights $p_{m,k}:=a_{m,k}/2^m$ form a probability distribution on $\{0,1,\dots,m\}$ (since they are nonnegative and sum to~$1$).
+and the weights $p_{m,k}:=a_{m,k}/2^m$ form a probability distribution on $\{0,1,\dots,\lfloor (m+3)/2\rfloor\}$ (since they are nonnegative and sum to~$1$).
 Thus $H_m$ is a well-defined random variable with $\Pr(H_m=k)=a_{m,k}/2^m$.
 
 Define the limiting log-moment generating function, when it exists,
@@ -58,7 +115,7 @@ Define the limiting log-moment generating function, when it exists,
 \Lambda(s)=\lim_{m\to\infty}\frac{1}{m}\log \mathbb{E}\bigl[e^{sH_m}\bigr].
 \]
 
-\begin{theorem}\label{thm:lambda-mgf}
+\begin{theorem}[Log-mgf]\label{thm:lambda-mgf}
 There exists a complex neighborhood $V$ of $s=0$ such that for all $s\in V$,
 \[
 \Lambda(s)=\log \lambda_+(e^s)-\log \lambda_+(1)=\log \lambda_+(e^s)-\log 2.
@@ -76,7 +133,7 @@ Subtracting and dividing by $m$ in \eqref{eq:mgf-def} yields the claim.
 
 Let $\mu=\Lambda'(0)$ and $\sigma^2=\Lambda''(0)$.
 
-\begin{theorem}\label{thm:lln-clt}
+\begin{theorem}[LLN and CLT]\label{thm:lln-clt}
 We have
 \[
 \mu=\frac{5}{18},\qquad \sigma^2=\frac{67}{972}.

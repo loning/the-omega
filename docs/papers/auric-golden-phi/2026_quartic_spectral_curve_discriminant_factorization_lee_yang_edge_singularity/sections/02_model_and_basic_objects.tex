@@ -30,6 +30,7 @@ From $D(t,y)Z(t,y)=N(t,y)$ we obtain, for all $m\ge 4$, the order-$4$ linear rec
 \begin{equation}\label{eq:recurrence}
 Z_m(y)-Z_{m-1}(y)-(2y+1)Z_{m-2}(y)+Z_{m-3}(y)+y(y+1)Z_{m-4}(y)=0.
 \end{equation}
+In particular, the recurrence has the minimal possible order among all $\QQ(y)$-coefficient linear recurrences for $\{Z_m(y)\}$ whenever $y\notin\{-1,0,1\}$; this is a direct consequence of Definition~\ref{def:minimal-spectral-closure} and Theorem~\ref{thm:minimal-order}.
 
 The associated characteristic (spectral) polynomial is
 \begin{equation}\label{eq:spectral-poly}
@@ -37,13 +38,187 @@ The associated characteristic (spectral) polynomial is
 \end{equation}
 which satisfies $\Pi(\lambda,y)=\lambda^4 D(1/\lambda,y)$.
 Let $\lambda_1(y),\dots,\lambda_4(y)$ be the roots of $\Pi(\lambda,y)=0$, counted with multiplicity.
+\begin{lemma}[Degree growth]\label{lem:deg-growth}
+For every $m\ge0$, $Z_m(y)$ is a polynomial in $y$ of degree at most $\lfloor (m+3)/2\rfloor$.
+\begin{proof}
+Set $d_m:=\deg_y Z_m(y)$ with the convention $d_m=-\infty$ for $m<0$.
+From the recurrence for $m\ge4$,
+\[
+Z_m=Z_{m-1}+(2y+1)Z_{m-2}-Z_{m-3}-y(y+1)Z_{m-4},
+\]
+we have
+\[
+d_m\le \max\{d_{m-1},1+d_{m-2},d_{m-3},2+d_{m-4}\}.
+\]
+With initial values $d_0=0,d_1=1,d_2=2,d_3=3$, direct induction gives
+$d_m\le \lfloor (m+3)/2\rfloor$ for all $m\ge0$.
+\end{proof}
+\end{lemma}
 
-\begin{remark}[Nonnegativity of coefficients]\label{rmk:nonneg-coeffs}
-For all $m\ge 0$, the polynomial $Z_m(y)$ has nonnegative integer coefficients when expanded in powers of~$y$.
-This is immediate for $m\le 3$ from the initial values.
-For $m\ge 4$, the recurrence~\eqref{eq:recurrence} contains subtractive terms, which prevents a straightforward inductive argument.
-We verify nonnegativity computationally by propagating the recurrence in~$\ZZ[y]$ for $m\le 300$; every coefficient is strictly positive (Appendix~\ref{app:degeneracies}).
-A combinatorial proof---which would follow from a counting interpretation of $Z_m(y)$---remains an open question (see Section~\ref{sec:discussion}).
-This property is used in Section~\ref{sec:free} to define the probabilistic model.
-\end{remark}
+\begin{equation}\label{eq:PLY-def}
+P_{\mathrm{LY}}(y):=256y^3+411y^2+165y+32.
+\end{equation}
+This cubic reappears as the nontrivial factor $c(y)$ in the discriminant factorization (Theorem~\ref{thm:disc-factor}), and its roots are the ramification image of a degree-$4$ morphism on the elliptic curve underlying the spectral curve (Appendix~\ref{app:elliptic}).
 
+\subsection{Trace representation and denominator compression}
+\label{subsec:trace-compression}
+
+Let \(K=\QQ(y,\lambda)\) where \(\lambda\) is any root of \(\Pi(\lambda,y)=0\), and let
+\[
+s_m(y):=\Tr_{K/\QQ(y)}(\lambda^m)=\sum_{i=1}^4\lambda_i(y)^m
+\]
+denote the \(m\)th power-sum in the roots.
+
+\begin{theorem}[Trace representation]\label{thm:trace-representation}
+There exists \(u(\lambda)\in K\) such that for all \(m\ge 0\),
+\begin{equation}\label{eq:trace-repr}
+Z_m(y)=\Tr_{K/\QQ(y)}\!\bigl(u(\lambda)\lambda^m\bigr).
+\end{equation}
+One convenient choice is
+\[
+\begin{aligned}
+u(\lambda)&=\frac{-19y^3-75y^2-42y-8}{P_{\mathrm{LY}}(y)}
+ \\
+&\quad+\frac{80y^4-20y^3-82y^2-42y-8}{y\,P_{\mathrm{LY}}(y)}\lambda
+ \\
+&\quad+\frac{87y^2+48y+9}{P_{\mathrm{LY}}(y)}\lambda^2
+\;\\
+&\quad+\frac{-16y^3+49y^2+31y+8}{y\,P_{\mathrm{LY}}(y)}\lambda^3.
+\end{aligned}
+\]
+\end{theorem}
+
+\begin{proof}
+Any linear recurrence sequence with characteristic polynomial \(\Pi(\cdot,y)\) can be written as a fixed \(\QQ(y)\)-linear combination of \((s_m,s_{m+1},s_{m+2},s_{m+3})\).
+Writing
+\[
+Z_m(y)=\alpha_0(y)s_m(y)+\alpha_1(y)s_{m+1}(y)+\alpha_2(y)s_{m+2}(y)+\alpha_3(y)s_{m+3}(y),
+\]
+for \(m\ge 0\), substituting \(m=0,1,2,3\), and solving a \(4\times4\) linear system gives the displayed choice of \(u\).
+\end{proof}
+
+\begin{corollary}[Denominator compression]\label{cor:denominator-compression}
+Multiplying \eqref{eq:trace-repr} by \(yP_{\mathrm{LY}}(y)\) yields
+\begin{equation}\label{eq:denom-compress}
+yP_{\mathrm{LY}}(y)\,Z_m(y)=
+A_0(y)s_m(y)+A_1(y)s_{m+1}(y)+A_2(y)s_{m+2}(y)+A_3(y)s_{m+3}(y),
+\end{equation}
+where
+\[
+\begin{aligned}
+A_0(y)&=-19y^4-75y^3-42y^2-8y,\\
+A_1(y)&=80y^4-20y^3-82y^2-42y-8,\\
+A_2(y)&=87y^3+48y^2+9y,\\
+A_3(y)&=-16y^3+49y^2+31y+8.
+\end{aligned}
+\]
+Hence possible singularities of \(Z_m\) in \(y\) are confined to \(y\in\{0,1,-1\}\cup\{P_{\mathrm{LY}}(y)=0\}\), matching the branch locus from Theorem~\ref{thm:disc-factor}.
+\end{corollary}
+
+\begin{theorem}[Nonnegative coefficients]\label{thm:coeff-nonneg}
+For each $m\ge 0$, write
+\[
+Z_m(y)=\sum_{k=0}^{\lfloor (m+3)/2\rfloor} a_{m,k}y^k,\qquad a_{m,k}\in\ZZ.
+\]
+\[
+a_{m,k}\ge 0\quad\text{for all }m,k.
+\]
+\begin{proof}
+\[
+N(t,y)=\sum_{k\ge0}N_k(t)y^k,\quad
+D(t,y)=\sum_{k\ge0}D_k(t)y^k,
+\]
+and
+\[
+N_0=1-t^2,\quad
+N_1=t-t^2-2t^3,\quad
+N_2=t^2,\quad
+N_3=t^3,\quad
+N_k=0\ (k\ge4),
+\]
+\[
+D_0=1-t-t^2+t^3=(1-t)(1-t^2),\quad
+D_1=-2t^2+t^4,\quad
+D_2=t^4,\quad
+D_k=0\ (k\ge3).
+\]
+
+Write
+\[
+Z(t,y)=\sum_{k\ge0}A_k(t)y^k,\qquad
+A_k(t)=\sum_{m\ge0}a_{m,k}t^m.
+\]
+For each fixed $k$ the coefficient equation $D_0A_k=B_k$ gives
+\[
+\begin{aligned}
+D_0A_0&=N_0,\\
+D_0A_1&=N_1- D_1A_0,\\
+D_0A_k&=N_k+(2t^2-t^4)A_{k-1}-t^4A_{k-2}\qquad(k\ge2),
+\end{aligned}
+\]
+and we set $A_k=0$ for $k<0$.
+
+Define
+\[
+B_k(t):=D_0A_k(t)=\sum_{m\ge0}b_{m,k}t^m,\qquad
+A_k(t)=\sum_{m\ge0}a_{m,k}t^m.
+\]
+With $b_{m,k}=0$ for $m<0$, for
+\[
+\frac1{D_0}=\frac1{(1-t)(1-t^2)}=\sum_{r\ge0}\kappa_r t^r,\qquad \kappa_r=\left\lfloor\frac r2\right\rfloor+1\ge0,
+\]
+we have
+\[
+a_{m,k}=\sum_{j=0}^m\kappa_{m-j}b_{j,k}
+\quad\text{and}\quad
+a_{m,k}-a_{m-2,k}=\sum_{j=0}^m b_{j,k}.
+\]
+Hence $b_{j,k}\ge0$ for all $j$ implies $a_{m,k}\ge0$ and $a_{m,k}-a_{m-2,k}\ge0$ for all $m$.
+
+For bookkeeping define
+\[
+M_{m,k}:=a_{m,k}-a_{m-2,k},\qquad
+d_{m,k}:=a_{m,k}-a_{m-2,k-1},
+\]
+with $a_{\ell,\cdot}=0$ for $\ell<0$.
+Let $n_{m,k}=[t^m]N_k(t)$. Using the $k$-equation above,
+\[
+b_{m,k}
+=n_{m,k}+2a_{m-2,k-1}-a_{m-4,k-1}-a_{m-4,k-2}
+=n_{m,k}+M_{m-2,k-1}+d_{m-2,k-1}.
+\]
+From $D_0A_k=B_k$,
+\[
+a_{m,k}=b_{m,k}+a_{m-1,k}+a_{m-2,k}-a_{m-3,k},
+\]
+so
+\[
+M_{m,k}=M_{m-1,k}+b_{m,k},\qquad
+d_{m,k}=n_{m,k}+M_{m-1,k}+d_{m-2,k}+d_{m-2,k-1}.
+\]
+
+We prove by induction on $k\ge0$ that all $a_{m,k}$, $M_{m,k}$ and $d_{m,k}$ are nonnegative for every $m\ge0$.
+
+For $k=0$, $D_0A_0=N_0$ gives $A_0=1/(1-t)$, so $a_{m,0}=1\ge0$ and therefore $M_{m,0}\ge0,d_{m,0}=a_{m,0}\ge0$.
+
+For $k=1$, with $A_0=1/(1-t)$,
+\[
+B_1:=N_1+(2t^2-t^4)A_0=t+t^2+\sum_{n\ge4}t^n,
+\]
+so $b_{m,1}\ge0$ and thus $a_{m,1},M_{m,1}\ge0$ by the kernel identity above. Since
+\[
+d_{0,1}=0,\quad d_{1,1}=1,\quad d_{2,1}=1,\quad d_{3,1}=2,
+\]
+the recurrence $d_{m,1}=n_{m,1}+M_{m-1,1}+d_{m-2,1}+d_{m-2,0}$ gives $d_{m,1}\ge0$ for all $m$ by induction on $m$.
+
+For $k\ge2$, $n_{m,k}\ge0$ (indeed $n_{2,2}=1$, $n_{3,3}=1$, else $0$), and by induction on $k-1$, $M_{m,k-1},d_{m,k-1}\ge0$.
+Therefore $b_{m,k}\ge0$ for all $m$, and then
+\[
+M_{m,k}=M_{m-1,k}+b_{m,k}\ge0,\qquad
+a_{m,k}=M_{m,k}+a_{m-2,k}\ge0,\qquad
+d_{m,k}=n_{m,k}+M_{m-1,k}+d_{m-2,k}+d_{m-2,k-1}\ge0.
+\]
+
+Hence for every $m,k$, $a_{m,k}\ge0$, and therefore $Z_m(y)\in\RR_{\ge0}[y]$.
+\end{proof}
+\end{theorem}
