@@ -61,3 +61,29 @@ If c(alpha)c(beta) < 0:
 For a fixed m, one may estimate the number of zeros of \(Z_m(y)\) inside a closed contour \(\Gamma\subset\CC\) by sampling \(Z_m\) along \(\Gamma\) and accumulating the change in argument.
 Refining \(\Gamma\) (or subdividing the domain) localizes zero clusters and allows consistency checks against the certified branch locus \(\Branch\).
 
+\subsection{Reproducible figure generation script}
+
+The audit figures in Section~\ref{sec:algo} are generated from one JavaScript driver
+\[
+\texttt{scripts/generate\_audit\_figures.js}.
+\]
+\begin{verbatim}
+node scripts/generate_audit_figures.js
+\end{verbatim}
+
+The script deterministically:
+\begin{enumerate}
+  \item evaluates the branch cubic and its roots;
+  \item computes spectral root moduli on real and complex grids;
+  \item extracts collision data near \(\yLY\);
+  \item computes zero clouds for \(m=12,20,28,36\);
+  \item computes tracked-root equimodular contours and writes 3 segment files.
+\end{enumerate}
+
+All numerical outputs are written to \texttt{figs/data/} and are read directly by
+\texttt{sections/07\_algorithms\_and\_certified\_computation.tex} when compiling this paper.
+The summary certificate produced with every run is:
+\[
+\texttt{figs/data/fig\_generation\_summary.txt}.
+\]
+
