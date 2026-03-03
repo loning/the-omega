@@ -44,6 +44,58 @@
 唯一性由 \(\mathcal G_k\) 由 \([p_\sigma]\) 生成且乘法关系仅来自指数模 \(2\) 加法给出。证毕。
 \end{proof}
 
+\begin{proposition}[平方类支撑距离与 Hamming 距离的一致性]\label{prop:spg-squareclass-support-hamming-isometry}
+沿用定理 \ref{thm:spg-dyadic-squareclass-chain-complex} 的记号，固定 \(k\in\{0,\dots,n\}\)。
+对 \(H\in\mathcal G_k\) 定义其素支撑
+\[
+\mathrm{supp}(H):=\{\sigma\in\mathcal F_k(\mathcal Q_m):\ [p_\sigma]\ \text{在 }H\text{ 的平方自由代表中出现}\}.
+\]
+并定义平方类支撑距离
+\[
+d_{\square}(H_1,H_2):=\card{\mathrm{supp}(H_1H_2^{-1})}.
+\]
+则对任意 \(c_1,c_2\in C_k(\mathcal Q_m;\FF_2)\) 有
+\[
+\boxed{\;
+d_{\square}\bigl(\mathbf G_k(c_1),\mathbf G_k(c_2)\bigr)
+\ =\
+d_H(c_1,c_2)\;},
+\]
+其中 \(d_H\) 为系数向量的 Hamming 距离。
+\end{proposition}
+\begin{proof}
+写 \(c_i=\sum_{\sigma}\varepsilon^{(i)}_\sigma\,\sigma\)（\(\varepsilon^{(i)}_\sigma\in\{0,1\}\)）。
+由定义
+\[
+\mathbf G_k(c_1)\mathbf G_k(c_2)^{-1}
+=\prod_{\sigma}[p_\sigma]^{\varepsilon^{(1)}_\sigma-\varepsilon^{(2)}_\sigma}
+=\prod_{\sigma}[p_\sigma]^{\varepsilon^{(1)}_\sigma\oplus\varepsilon^{(2)}_\sigma}.
+\]
+因此 \(\mathrm{supp}(\mathbf G_k(c_1)\mathbf G_k(c_2)^{-1})=\{\sigma:\varepsilon^{(1)}_\sigma\neq \varepsilon^{(2)}_\sigma\}\)，其基数即为 Hamming 距离 \(d_H(c_1,c_2)\)。证毕。
+\end{proof}
+
+\begin{corollary}[边界 Gödel 比值的平方类等距性]\label{cor:spg-boundary-godel-ratio-squareclass-isometry}
+取 \(k=n-1\)。
+对 dyadic polycube \(U,V\subset I^n\)，令 \(H_m(U),H_m(V)\) 为定理 \ref{thm:spg-boundary-godelization-holographic-dictionary} 的边界 Gödel 整数，并以 \([\cdot]\) 表示其在 \(\QQ^\times/(\QQ^\times)^2\) 中的平方类。
+定义平方类比值
+\[
+R_m(U,V):=[H_m(U)]\,[H_m(V)]^{-1}.
+\]
+则有
+\[
+\boxed{\;
+d_{\square}\bigl([H_m(U)],[H_m(V)]\bigr)
+\ =\
+\card{\mathrm{supp}(R_m(U,V))}
+\ =\
+d_H\bigl(\partial_n[U],\partial_n[V]\bigr)\; }.
+\]
+\end{corollary}
+\begin{proof}
+定理 \ref{thm:spg-boundary-godelization-holographic-dictionary} 的编码恰对应于定理 \ref{thm:spg-dyadic-squareclass-chain-complex} 在 \(k=n-1\) 的情形：\([H_m(U)]=\mathbf G_{n-1}(\partial_n[U])\)。
+因此由命题 \ref{prop:spg-squareclass-support-hamming-isometry} 立得。证毕。
+\end{proof}
+
 \begin{corollary}[边界 Gödel 码的局部综合征刻画：可填充当且仅当局部闭合，且填充唯一]\label{cor:spg-dyadic-boundary-syndrome-fillability}
 沿用定理 \ref{thm:spg-dyadic-squareclass-chain-complex} 的记号，并取 \(k=n-1\)。
 令 \(H\in\mathcal G_{n-1}\) 对应 \((n-1)\)-链 \(b=\mathbf G_{n-1}^{-1}(H)\in C_{n-1}(\mathcal Q_m;\FF_2)\)。
@@ -205,6 +257,33 @@ w_\alpha(\vec f):=\int_{\vec f}\omega_\alpha
 \textbf{(2)}
 在立方格点局部，一个 \((n-2)\)-胞腔位于两条坐标方向的交叉处，恰被四个 \((n-1)\)-胞腔围绕；因此 \(\partial_{n-1}\) 的对应一行支撑大小为 \(4\)。
 另一方面，每个 \((n-1)\)-胞腔的边界含 \(2(n-1)\) 个 \((n-2)\)-胞腔，故变量度为 \(2(n-1)\)。证毕。
+\end{proof}
+
+\begin{corollary}[dyadic 边界像的最小距离]\label{cor:spg-dyadic-boundary-image-min-distance}
+在定理 \ref{thm:spg-dyadic-boundary-image-ldpc} 的记号下，以 Hamming 重量
+\[
+\mathrm{wt}(b):=\#\{\sigma\in\mathcal F_{n-1}(\mathcal Q_m):\ b(\sigma)=1\}
+\qquad\bigl(b\in C_{n-1}(\mathcal Q_m;\FF_2)\bigr)
+\]
+定义 \(\mathcal C_{m,n}\) 的最小距离
+\(
+d_{\min}(\mathcal C_{m,n}):=\min\{\mathrm{wt}(b):b\in\mathcal C_{m,n}\setminus\{0\}\}
+\)。
+则对一切 \(m\ge 1\) 与 \(n\ge 1\) 有
+\[
+\boxed{\ d_{\min}(\mathcal C_{m,n})=2n\ }.
+\]
+\end{corollary}
+\begin{proof}
+取任一 \(n\)-胞腔 \(Q\in\mathcal F_n(\mathcal Q_m)\)，则 \(\partial_n Q\in\mathcal C_{m,n}\setminus\{0\}\) 且其支撑恰由 \(Q\) 的 \(2n\) 张 \((n-1)\)-面构成，故 \(d_{\min}(\mathcal C_{m,n})\le 2n\)。
+\par
+反之，取任意非零 \(b=\partial_n x\in\mathcal C_{m,n}\) 且 \(x\in C_n(\mathcal Q_m;\FF_2)\) 非零。
+把 \(x\) 的支撑视为非空 \(n\)-胞腔集合 \(S\subset\mathcal F_n(\mathcal Q_m)\)。
+对每个坐标方向 \(i\in\{1,\dots,n\}\)，取 \(S\) 中在第 \(i\) 坐标上达到最小值的一个胞腔 \(Q_i^{-}\)；
+则其 \((-e_i)\)-外侧面不可能与另一胞腔相邻（否则第 \(i\) 坐标还能更小），因而在 \(\partial_n x\) 中出现。
+同理取达到最大值的一个胞腔 \(Q_i^{+}\) 得到一张 \((+e_i)\)-外侧面亦在 \(\partial_n x\) 中出现。
+对不同的 \(i\) 与不同符号得到的外侧面两两不同，故 \(\mathrm{wt}(b)\ge 2n\)。
+于是 \(d_{\min}(\mathcal C_{m,n})\ge 2n\)，合并得等号。证毕。
 \end{proof}
 
 \endinput

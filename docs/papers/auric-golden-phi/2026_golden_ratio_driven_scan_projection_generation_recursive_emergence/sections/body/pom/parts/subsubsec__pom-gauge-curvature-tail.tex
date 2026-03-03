@@ -212,6 +212,75 @@ D_{n\to m}(\omega):=\Fold_m(\tau_{n\to m}(\omega))\oplus \pi_{n\to m}(\Fold_n(\o
 最后一段由推论 \ref{cor:pom-curvature-uniform-limit-closed} 给出的非零极限概率与定义 \ref{def:pom-fold-aware-restriction} 的严格交换图表合并得到。证毕。
 \end{proof}
 
+\begin{lemma}[朴素截断口径下缺陷的余圈组合律]\label{lem:pom-truncation-defect-cocycle}
+在命题 \ref{prop:pom-identity-cone-requires-curvature-reduction} 的记号下，把 \(X_j\subseteq\{0,1\}^j\) 视为二元向量空间 \(V_j:=(\ZZ/2)^j\) 的子集，并将 \(\pi_{j\to i}\) 延拓为前缀投影 \(V_j\to V_i\)。
+则对任意 \(n\ge k\ge m\ge 1\) 与任意 \(\omega\in\Omega_n\) 有严格恒等式
+\[
+\boxed{\;
+D_{n\to m}(\omega)
+\ =\
+D_{k\to m}\!\bigl(\tau_{n\to k}(\omega)\bigr)\ \oplus\ \pi_{k\to m}\!\bigl(D_{n\to k}(\omega)\bigr)\; }.
+\]
+并且 \(D_{m\to m}\equiv 0\)。
+\end{lemma}
+\begin{proof}
+取 \(\omega\in\Omega_n\)。
+由定义
+\[
+D_{n\to m}(\omega)=\Fold_m(\tau_{n\to m}(\omega))\oplus \pi_{n\to m}(\Fold_n(\omega)).
+\]
+在 \(\ZZ/2\) 上插入并消去同一项 \(\pi_{k\to m}(\Fold_k(\tau_{n\to k}(\omega)))\)，并用 \(\tau_{n\to m}=\tau_{k\to m}\circ\tau_{n\to k}\)、\(\pi_{n\to m}=\pi_{k\to m}\circ\pi_{n\to k}\) 得
+\[
+\begin{aligned}
+D_{n\to m}(\omega)
+&=
+\Bigl(\Fold_m(\tau_{k\to m}(\tau_{n\to k}\omega))\oplus \pi_{k\to m}(\Fold_k(\tau_{n\to k}\omega))\Bigr)\\
+&\qquad\oplus
+\pi_{k\to m}\Bigl(\Fold_k(\tau_{n\to k}\omega)\oplus \pi_{n\to k}(\Fold_n(\omega))\Bigr).
+\end{aligned}
+\]
+第一括号按定义等于 \(D_{k\to m}(\tau_{n\to k}(\omega))\)，第二括号等于 \(\pi_{k\to m}(D_{n\to k}(\omega))\)，合并即得。
+最后 \(D_{m\to m}(\omega)=\Fold_m(\omega)\oplus \Fold_m(\omega)=0\)。证毕。
+\end{proof}
+
+\begin{proposition}[缺陷余圈的 gauge 扭曲与余边界型变换]\label{prop:pom-truncation-defect-gauge-coboundary}
+沿用上述记号。
+给定任意 \(0\)-上链族 \(a=(a_m)_{m\ge 1}\)，其中 \(a_m:\Omega_m\to\{0,1\}^m\)。
+定义 gauge 扭曲后的折叠族
+\[
+\Fold_m^{(a)}(\omega):=\Fold_m(\omega)\oplus a_m(\omega).
+\]
+令 \(D_{n\to m}^{(a)}\) 为由 \(\Fold^{(a)}\) 诱导的缺陷向量：
+\[
+D^{(a)}_{n\to m}(\omega):=\Fold_m^{(a)}(\tau_{n\to m}(\omega))\oplus \pi_{n\to m}(\Fold_n^{(a)}(\omega)).
+\]
+则对一切 \(n\ge m\) 与 \(\omega\in\Omega_n\) 有
+\[
+\boxed{\;
+D_{n\to m}^{(a)}(\omega)
+\ =\
+D_{n\to m}(\omega)\ \oplus\ a_m(\tau_{n\to m}(\omega))\ \oplus\ \pi_{n\to m}\!\bigl(a_n(\omega)\bigr)\; }.
+\]
+\end{proposition}
+\begin{proof}
+直接代入定义并用 \(\pi_{n\to m}(u\oplus v)=\pi_{n\to m}(u)\oplus\pi_{n\to m}(v)\)（在 \(V_n\) 上）得到：
+\[
+\begin{aligned}
+D^{(a)}_{n\to m}(\omega)
+&=\bigl(\Fold_m(\tau_{n\to m}\omega)\oplus a_m(\tau_{n\to m}\omega)\bigr)\ \oplus\ 
+\pi_{n\to m}\bigl(\Fold_n(\omega)\oplus a_n(\omega)\bigr)\\
+&=D_{n\to m}(\omega)\ \oplus\ a_m(\tau_{n\to m}\omega)\ \oplus\ \pi_{n\to m}(a_n(\omega)).
+\end{aligned}
+\]
+证毕。
+\end{proof}
+
+\begin{conjecture}[Zeckendorf 规约口径下的缺陷类非平凡性]\label{conj:pom-zeckendorf-defect-class-nontrivial}
+设 \((\Fold_m)_{m\ge 1}\) 来自某个满足终止性、合流性且以 Zeckendorf 正规形为唯一正常形的二元局部重写实现（命题 \ref{prop:xi-local-binary-normalization-fibonacci-rigidity}）。
+则朴素截断口径下的缺陷族 \((D_{n\to m})\)（引理 \ref{lem:pom-truncation-defect-cocycle}）在上述 gauge 扭曲意义下不平凡：不存在 \(0\)-上链族 \(a=(a_m)\) 使得对所有 \(n\ge m\) 恒有 \(D^{(a)}_{n\to m}\equiv 0\)。
+等价地，缺陷余圈的 gauge 等价类张成一个非零的 \(\ZZ_2\)-一维子空间，并且仅依赖于 Zeckendorf 正规形体系而与具体重写策略无关。
+\end{conjecture}
+
 \begin{remark}[曲率尾部门槛与逆极限粒子化判据]\label{rem:pom-curvature-particleization}
 跨分辨率比较若以朴素前缀 $\tau$ 为坐标口径，则曲率事件控制了“先截断再折叠”与“先折叠再限制”的不一致频率，从而把伪不变量风险转化为可审计的尾部门槛。
 在给定微态基线 $\PP$ 下，可将可讨论的稳定本体限定为满足曲率尾部可和（或最终为零）的逆极限子集：其不同分辨率坐标 $\pi_m(x_\infty)$ 才能被视为同一对象在稳定逆系统口径下的一致投影。

@@ -1,5 +1,5 @@
 \paragraph{容量反演、可并性缺陷与 dyadic uplift 的可审计闭式律}
-本段将若干在不同接口处出现的有限层对象统一为可直接调用的陈述：强可并性的失败给出一阶马尔可夫逼近的不可约误差下界；在“分边性”制度下，纤维瞬时热化核由超立方体边计数唯一确定并自动满足详细平衡；在 \(m=6\) 的 bin-fold 中，dyadic uplift 位移 \(F_9=34\) 的进位链触发一条纤维内汉明距离闭式公式；同时，规范群体积可写成由尾计数函数驱动的离散 Stieltjes 求和，从而被容量曲线所编码。
+本段将若干在不同接口处出现的有限层对象统一为可直接调用的陈述：强可并性的失败给出一阶马尔可夫逼近的不可约误差下界；在“分边性”制度下，纤维瞬时热化核由超立方体边计数唯一确定并自动满足详细平衡；在 \(m=6\) 的 bin-fold 中，dyadic uplift 位移 \(F_9=34\) 的进位链触发一条纤维内汉明距离闭式公式；同时，规范群体积可写成由尾计数函数驱动的离散 Stieltjes 求和，从而被容量曲线所编码，并允许由二次碰撞矩对阈值尾计数给出统一上界。
 
 \begin{theorem}[强可并性缺陷的定量下界：\(m=6\) 的最优一阶马尔可夫逼近误差]\label{thm:foldbin6-strong-lumpability-minimax-markov-error}
 设 \(Q_6\) 为 \(6\)-维超立方体图，其顶点集 \(\Omega_6=\{0,1\}^6\) 以汉明距离 \(1\) 为邻接关系。
@@ -167,7 +167,16 @@ N(k):=\card{\{w\in X_m:\ d(w)\ge k\}}.
 \[
 C(t):=\sum_{w\in X_m}\min\{d(w),t\}\qquad(t\ge 0),
 \]
-则 \(N(k)\) 可由 \(C\) 的右导数恢复，因而 \(\log|\mathcal{G}^{\mathrm{bin}}_m|\) 由 \(C(\cdot)\) 唯一确定。
+则对任意整数 \(k\ge 1\) 有
+\[
+N(k)=C(k)-C(k-1),
+\]
+从而亦有离散差分形式
+\[
+\log|\mathcal{G}^{\mathrm{bin}}_m|
+=\sum_{k=1}^{2^m}\bigl(C(k)-C(k-1)\bigr)\log k,
+\]
+并且 \(\log|\mathcal{G}^{\mathrm{bin}}_m|\) 由 \(C(0),C(1),\dots,C(2^m)\) 唯一确定。
 \end{proposition}
 
 \begin{proof}
@@ -179,8 +188,92 @@ C(t):=\sum_{w\in X_m}\min\{d(w),t\}\qquad(t\ge 0),
 =\sum_{k\ge 1}(\log k)\,N(k).
 \]
 又 \(d(w)\le 2^m\)（因为 \(\mathrm{Fold}^{\mathrm{bin}}_m\) 的定义域大小为 \(2^m\)），故求和可截断到 \(k\le 2^m\)。
-最后一条由定理 \ref{thm:pom-oracle-capacity-stieltjes-inversion-mellin} 的容量--尾计数恒等式在有限离散情形的直接应用得到。证毕。
+最后对任意整数 \(k\ge 1\)，对任意 \(d\in\NN\) 有
+\(
+\min(d,k)-\min(d,k-1)=\mathbf 1_{\{d\ge k\}}
+\)。
+对 \(w\in X_m\) 求和得
+\(
+C(k)-C(k-1)=\sum_{w\in X_m}\mathbf 1_{\{d(w)\ge k\}}=N(k)
+\)，代回即得命题的离散差分形式。证毕。
 \end{proof}
+
+\begin{proposition}[二次碰撞矩对阈值尾计数的普适上界]\label{prop:foldbin-tailcount-bound-from-s2}
+沿用命题 \ref{prop:fold-bin-gauge-volume-stieltjes-sum} 的记号。
+定义二次碰撞矩
+\[
+S_2^{\mathrm{bin}}(m):=\sum_{w\in X_m}d(w)^2.
+\]
+则对任意整数 \(k\ge 2\) 恒有
+\[
+\boxed{\;
+N(k)\ \le\ \frac{S_2^{\mathrm{bin}}(m)-|X_m|}{k^2-1}\; }.
+\]
+\end{proposition}
+\begin{proof}
+将 \(X_m\) 分为两部分：\(A_k:=\{w:\ d(w)\ge k\}\) 与其补集 \(A_k^{c}\)。
+对 \(w\in A_k\) 有 \(d(w)^2\ge k^2\)，对 \(w\in A_k^{c}\) 有 \(d(w)\ge 1\) 从而 \(d(w)^2\ge 1\)。
+因此
+\[
+S_2^{\mathrm{bin}}(m)=\sum_{w\in X_m}d(w)^2
+\ge
+k^2\,|A_k|+1\cdot|A_k^{c}|
+=|X_m|+(k^2-1)N(k).
+\]
+移项即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[中心 \texorpdfstring{$2$}{2}-扩张数目的矩谱证书]\label{cor:foldbin-central-2extension-moment-certificate}
+在命题 \ref{prop:foldbin-tailcount-bound-from-s2} 的记号下，令
+\[
+A_m:=\left\lfloor\frac{S_2^{\mathrm{bin}}(m)-|X_m|}{3}\right\rfloor,
+\qquad
+B_m:=\left\lfloor\frac{S_2^{\mathrm{bin}}(m)-|X_m|}{15}\right\rfloor.
+\]
+则 \(N(2)\le A_m\)、\(N(4)\le B_m\)，并且由定理 \ref{thm:window6-foldbin-gauge-low-degree-homology} 得
+\[
+\dim_{\ZZ_2}H_2(\mathcal{G}^{\mathrm{bin}}_m;\ZZ)
+\le
+B_m+\binom{A_m}{2},
+\]
+\[
+\card{H^2(\mathcal{G}^{\mathrm{bin}}_m;\ZZ_2)}
+\le
+2^{\,B_m+\binom{A_m+1}{2}}.
+\]
+\end{corollary}
+\begin{proof}
+命题 \ref{prop:foldbin-tailcount-bound-from-s2} 取 \(k=2,4\) 即得 \(N(2)\le (S_2^{\mathrm{bin}}(m)-|X_m|)/3\) 与 \(N(4)\le (S_2^{\mathrm{bin}}(m)-|X_m|)/15\)，取下整得 \(N(2)\le A_m\)、\(N(4)\le B_m\)。
+再由定理 \ref{thm:window6-foldbin-gauge-low-degree-homology} 的恒等式
+\(
+\dim_{\ZZ_2}H_2=N(4)+\binom{N(2)}{2}
+\)
+与
+\(
+\dim_{\ZZ_2}H^2=N(4)+\binom{N(2)+1}{2}
+\)
+并用单调性放缩即可。证毕。
+\end{proof}
+
+\begin{conjecture}[二值同调饱和与二次级中心扩张爆炸]\label{conj:foldbin-gauge-homology-saturation}
+存在 \(m_0\) 使得当 \(m\ge m_0\) 时满足
+\[
+N(2)=|X_m|
+\qquad\text{且}\qquad
+\liminf_{m\to\infty}\frac{N(4)}{|X_m|}>0,
+\]
+其中 \(N(k)=\#\{w\in X_m:\ d^{\mathrm{bin}}_m(w)\ge k\}\)。
+若该猜想成立，则由定理 \ref{thm:window6-foldbin-gauge-low-degree-homology} 得
+\[
+\dim_{\ZZ_2}H_1(\mathcal{G}^{\mathrm{bin}}_m;\ZZ)\asymp |X_m|,
+\qquad
+\dim_{\ZZ_2}H_2(\mathcal{G}^{\mathrm{bin}}_m;\ZZ)\sim \frac{|X_m|^2}{2},
+\]
+并且
+\(
+\card{H^2(\mathcal{G}^{\mathrm{bin}}_m;\ZZ_2)}=2^{\Theta(|X_m|^2)}
+\)。
+\end{conjecture}
 
 \begin{conjecture}[分辨率--动力学的不可马尔可夫化普适下界]\label{conj:fold-markovization-defect-universal-lower-bound}
 对任意 \(m\ge 6\)，令 \(W_t\) 为超立方体 \(Q_m\) 上的简单随机游走，并令 \(X_t:=F_m(W_t)\) 为某一折叠标签观测过程。
