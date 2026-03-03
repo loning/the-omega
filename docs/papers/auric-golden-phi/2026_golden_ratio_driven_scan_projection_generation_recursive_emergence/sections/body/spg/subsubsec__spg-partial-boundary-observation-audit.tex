@@ -4,6 +4,43 @@
 在定理 \ref{thm:spg-boundary-godelization-holographic-dictionary} 的“全边界可见”情形下，顶维边界单射给出严格可逆的离散全息字典。
 当仅能观测部分取向面（屏幕）时，信息缺口由一个相对同调群精确刻画，并且其秩同时控制最小审计补全成本与可达的 Gödel 型补账寄存器维数。
 
+\begin{theorem}[可计算双向编码下的 Kolmogorov 复杂度守恒：Stokes--Gödel 全息完备性]\label{thm:spg-stokes-godel-algorithmic-holographic-completeness}
+固定 \(m,n\ge 1\)，并令 \(\mathcal Q_m\) 为 \(I^n=[0,1]^n\) 的 \(m\)-级 dyadic 立方复形。
+取系数域 \(\FF_2\)，并记顶维边界算子为
+\[
+\partial_n:\ C_n(\mathcal Q_m;\FF_2)\longrightarrow C_{n-1}(\mathcal Q_m;\FF_2).
+\]
+由定理 \ref{thm:spg-dyadic-cubical-boundary-injective} 及 \(H_n(\mathcal Q_m;\FF_2)=0\) 可知 \(\partial_n\) 为单射。
+令 \(G:C_{n-1}(\mathcal Q_m;\FF_2)\to\NN\) 为任意可计算且在其像上可计算可逆的平方自由 Gödel 整数化（例如对每条取向 \((n{-}1)\)-面分配互异素数并取其乘积），并定义
+\[
+\Phi:=G\circ \partial_n:\ C_n(\mathcal Q_m;\FF_2)\longrightarrow \NN.
+\]
+取任意固定的前缀型 Kolmogorov 复杂度 \(K(\,\cdot\,|\,\cdot\,)\)（相对于某个固定的通用前缀机）。
+则存在仅依赖于 \(n\) 与所选编码/译码机的常数 \(C>0\)（与 \(m\) 与输入无关），使得对任意 \(u\in C_n(\mathcal Q_m;\FF_2)\) 都有
+\[
+\bigl|K(u\mid n,m)-K(\Phi(u)\mid n,m)\bigr|\le C,
+\qquad
+K(u\mid \Phi(u),n,m)\le C.
+\]
+并且存在可计算泛函 \(V:\NN\to\QQ_{\ge 0}\) 使得
+\[
+V(\Phi(u))=\operatorname{Vol}(u),
+\]
+其中 \(\operatorname{Vol}(u)\) 表示由 \(u\) 的占据数给出的 dyadic 体积（每个 \(n\)-胞腔体积取 \(2^{-mn}\)）。
+\end{theorem}
+\begin{proof}
+由于 \(\partial_n\) 可计算且 \(G\) 可计算，\(\Phi\) 可计算，故 \(K(\Phi(u)\mid n,m)\le K(u\mid n,m)+O(1)\)。
+另一方面，\(\partial_n\) 在 \(\FF_2\) 上单射且 \(\mathcal Q_m\) 有限，故 \(\partial_n^{-1}\) 在 \(\mathrm{im}(\partial_n)\) 上可由穷举/线性代数实现为可计算函数；
+又由假设 \(G\) 在其像上可计算可逆，故 \(\Phi^{-1}\) 在 \(\mathrm{im}(\Phi)\) 上可计算。
+于是 \(u\) 可由 \(\Phi(u)\) 与参数 \((n,m)\) 可计算恢复，给出
+\(
+K(u\mid \Phi(u),n,m)=O(1)
+\)
+并推出 \(K(u\mid n,m)\le K(\Phi(u)\mid n,m)+O(1)\)。
+合并两侧不等式即得复杂度差为 \(O(1)\)。
+最后，由 \(\Phi(u)\) 可计算得到 \(u\)，而 \(\operatorname{Vol}(u)\) 由 \(u\) 的占据数可计算给出，故存在可计算泛函 \(V\) 满足所示等式。证毕。
+\end{proof}
+
 \begin{theorem}[部分边界观测的屏幕核与相对顶维同调]\label{thm:spg-partial-boundary-screen-kernel-relative-homology}
 固定 \(m,n\ge 1\) 并沿用定理 \ref{thm:spg-dyadic-cubical-boundary-injective} 的 dyadic 立方复形 \(\mathcal Q_m\) 与链群 \(C_k(\mathcal Q_m;\ZZ)\) 记号。
 令 \(\overrightarrow{\mathcal F_{m}^{n-1}}\) 为全部取向 \((n-1)\)-胞腔所成的标准基。
@@ -36,6 +73,31 @@ f_S:=\Pi_S\circ\partial_n:\ C_n(\mathcal Q_m;\ZZ)\longrightarrow \ZZ^{S}.
 H_n(\mathcal Q_m,A_{\neg S};\ZZ)=Z_n(\mathcal Q_m,A_{\neg S};\ZZ)/B_n(\mathcal Q_m,A_{\neg S};\ZZ)\cong \ker f_S.
 \]
 证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$\FF_2$}{F2} 计数下的纤维基数：相对 Betti 数的精确公式]\label{cor:spg-partial-boundary-fiber-cardinality-f2}
+在定理 \ref{thm:spg-partial-boundary-screen-kernel-relative-homology} 的设定下，将系数域改为 \(\FF_2\)，并把 \(f_S\) 视为线性映射
+\[
+f_S:\ C_n(\mathcal Q_m;\FF_2)\longrightarrow \FF_2^{S}.
+\]
+对任意 \(y\in \mathrm{im}(f_S)\)，其纤维基数满足精确恒等式
+\[
+\card{f_S^{-1}(y)}=2^{\beta_n(\mathcal Q_m,A_{\neg S};\FF_2)},
+\qquad
+\beta_n(\mathcal Q_m,A_{\neg S};\FF_2):=\dim_{\FF_2}H_n(\mathcal Q_m,A_{\neg S};\FF_2).
+\]
+特别地，上式右端与 \(y\) 无关，仅依赖于屏幕 \(S\)。
+\end{corollary}
+\begin{proof}
+由于 \(f_S\) 为 \(\FF_2\)-线性映射，任意非空纤维 \(f_S^{-1}(y)\) 为仿射子空间，故
+\(
+\card{f_S^{-1}(y)}=2^{\dim_{\FF_2}\ker f_S}
+\)。
+由定理 \ref{thm:spg-partial-boundary-screen-kernel-relative-homology} 的论证在 \(\FF_2\) 系数下同样成立，并且由于 \(\mathcal Q_m\) 无 \((n+1)\)-胞腔，仍有
+\(
+H_n(\mathcal Q_m,A_{\neg S};\FF_2)\cong \ker f_S
+\)。
+代入即得结论。证毕。
 \end{proof}
 
 \begin{corollary}[最小审计补全成本等于屏幕核秩]\label{cor:spg-partial-boundary-min-audit-cost-kernel-rank}
