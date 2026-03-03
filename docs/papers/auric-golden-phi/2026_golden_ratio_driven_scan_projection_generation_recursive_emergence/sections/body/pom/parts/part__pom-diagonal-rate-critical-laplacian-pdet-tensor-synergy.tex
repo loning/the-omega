@@ -74,3 +74,34 @@ C(\cdot)=e^{H_{1/2}(\cdot)}-1
 最后一条由 \(C=e^{H_{1/2}}-1\) 直接改写。证毕。
 \end{proof}
 
+\begin{proposition}[概率单纯形的协方差拉普拉斯的伪行列式闭式]\label{prop:covariance-laplacian-pdet-closed-form}
+取 \(k\ge 2\) 并令 \(q=(q_1,\dots,q_k)\in\RR_{>0}^k\) 满足 \(\sum_{i=1}^{k}q_i=1\)。
+定义
+\[
+L(q):=\mathrm{diag}(q)-qq^{\mathsf T}.
+\]
+则 \(L(q)\) 半正定且 \(\ker L(q)=\Span\{\ind\}\)，并且其伪行列式满足闭式
+\[
+\boxed{\;\det{}'(L(q))=k\prod_{i=1}^{k}q_i.\;}
+\]
+\end{proposition}
+\begin{proof}
+由 \(\sum_i q_i=1\) 得 \(L(q)\ind=0\)，故 \(\ind\in\ker L(q)\)。
+又对任意 \(x\in\RR^k\) 有
+\(
+x^{\mathsf T}L(q)x=\sum_i q_i x_i^2-(\sum_i q_i x_i)^2\ge 0
+\)，
+因此 \(L(q)\) 半正定且 \(\rank L(q)=k-1\)。
+\par
+令 \(w_{ij}:=q_iq_j\ (i\neq j)\) 并考虑带权完全图 \(K_k\) 的 Laplacian \(L_w\)：
+其对角元为 \( (L_w)_{ii}=\sum_{j\neq i}w_{ij}=q_i(1-q_i)\)，非对角元为 \((L_w)_{ij}=-w_{ij}=-q_iq_j\)。
+因此 \(L_w=L(q)\)。
+\par
+由矩阵树定理，任一代数余子式等于带权生成树权重和 \(\tau\)，并且 \(\det{}'(L)=k\,\tau\)。
+对边权具乘积分解 \(w_{ij}=a_ia_j\) 的完全图，Prüfer 编码给出
+\(
+\tau=(\sum_i a_i)^{k-2}\prod_i a_i
+\)。
+取 \(a_i=q_i\) 且 \(\sum_i q_i=1\)，得到 \(\tau=\prod_i q_i\)，从而 \(\det{}'(L(q))=k\prod_i q_i\)。证毕。
+\end{proof}
+
