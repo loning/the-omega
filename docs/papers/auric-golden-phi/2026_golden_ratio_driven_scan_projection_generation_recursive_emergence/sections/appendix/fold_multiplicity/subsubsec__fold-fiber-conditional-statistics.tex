@@ -308,5 +308,59 @@ r^{-1}(r)\leftrightarrow r^{-1}(\tau_m(r))
 化简即得能量公式。证毕。
 \end{proof}
 
+\begin{theorem}[同残差碰撞对的汉明相似度与条件偏置能量恒等式]\label{thm:fold-fiber-collision-hamming-similarity-bias-energy-identity}
+取 \(\omega,\omega'\overset{\mathrm{i.i.d.}}{\sim}\mathrm{Unif}(\Omega_m)\)，并令事件
+\[
+E:=\{\,r(\omega)=r(\omega')\,\}
+\]
+表示“残差碰撞”。
+记其碰撞概率
+\[
+c_m:=\PP(E)=\sum_{r\in\ZZ/(M\ZZ)}\mu_m(r)^2,
+\qquad \mu_m(r):=\frac{d_m(r)}{2^m}.
+\]
+则条件汉明距离满足严格恒等式
+\[
+\boxed{\;
+\EE\!\bigl[d_H(\omega,\omega')\mid E\bigr]
+=\frac{m}{2}-\frac{1}{2c_m}\sum_{k=1}^m\sum_{r\in\ZZ/(M\ZZ)}\nu_{m,k}(r)^2\; } ,
+\]
+其中 \(\nu_{m,k}\) 为命题 \ref{prop:fold-fiber-bias-fourier-multiplier-energy} 中的条件偏置密度
+\(
+\nu_{m,k}(r)=\mu_m(r)(2p_k(r)-1)
+\)。
+并且由 Parseval 恒等式，内层能量可写为
+\[
+\sum_{r}\nu_{m,k}(r)^2=\frac1M\sum_{t\in\ZZ/(M\ZZ)}\bigl|\widehat{\nu}_{m,k}(t)\bigr|^2,
+\]
+其中 \(\widehat{\nu}_{m,k}\) 的 Fourier 乘子闭式由命题 \ref{prop:fold-fiber-bias-fourier-multiplier-energy} 给出。
+\end{theorem}
+\begin{proof}
+令 \(\sigma_k(\omega):=2\omega_k-1\in\{\pm1\}\)。
+则
+\[
+\mathbf 1_{\{\omega_k\neq \omega'_k\}}=\frac{1-\sigma_k(\omega)\sigma_k(\omega')}{2},
+\qquad
+d_H(\omega,\omega')=\sum_{k=1}^m \mathbf 1_{\{\omega_k\neq \omega'_k\}}
+=\frac{m-\sum_{k=1}^m \sigma_k(\omega)\sigma_k(\omega')}{2}.
+\]
+对任意 \(r\)，在条件 \(\{r(\omega)=r(\omega')=r\}\) 下，\(\omega,\omega'\) 条件独立且同分布，从而
+\[
+\EE\!\bigl[\sigma_k(\omega)\sigma_k(\omega')\mid r(\omega)=r(\omega')=r\bigr]
+=\EE[\sigma_k(\omega)\mid r(\omega)=r]^2
+=(2p_k(r)-1)^2.
+\]
+由 Bayes 分解
+\(
+\PP(r(\omega)=r(\omega')=r)=\mu_m(r)^2
+\)，得到
+\[
+\EE\!\bigl[\sigma_k(\omega)\sigma_k(\omega')\mid E\bigr]
+=\sum_{r}\frac{\mu_m(r)^2}{c_m}(2p_k(r)-1)^2
+=\frac{1}{c_m}\sum_r \nu_{m,k}(r)^2.
+\]
+将其代回 \(d_H\) 的表示并对 \(k\) 求和即得结论。证毕。
+\end{proof}
+
 \endinput
 

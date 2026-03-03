@@ -62,4 +62,80 @@ d_x=\sum_i \left\lceil\frac{\ell_i}{2}\right\rceil,
 证毕。
 \end{proof}
 
+\begin{corollary}[充分统计外置与可逆外置不相容的完全退化分类]\label{cor:pom-sufficient-statistic-injective-degeneracy-classification}
+沿用命题 \ref{prop:pom-sufficient-statistic-residual-noninvertibility} 的记号，并设 \(\mathcal R(\omega)=g(r(\omega))\) 在纤维 \(\Fold_m^{-1}(x)\) 上仅依赖充分统计 \(r(\omega)\)。
+则除下列两类退化情形外，恒有严格不等式 \(d_m(x)>d_x+1\)（从而 \(\omega\mapsto(x,\mathcal R(\omega))\) 不可能在该纤维上单射）：
+\begin{enumerate}
+  \item \textup{若 \(d_x=0\)，则 \(Z_x\) 为常数多项式且 \(d_m(x)=1=d_x+1\)；}
+  \item \textup{若 \(d_x=1\) 且 \(\Gamma_x\simeq P_1\)，则 \(d_m(x)=F_3=2=d_x+1\)。}
+\end{enumerate}
+更强地，对所有满足 \(d_x\ge 2\) 的稳定类型，成立指数下界
+\[
+\boxed{\ d_m(x)\ \ge\ 2^{d_x}\ >\ d_x+1\ }.
+\]
+\end{corollary}
+\begin{proof}
+先证引理：对一切整数 \(\ell\ge 1\) 有
+\[
+F_{\ell+2}\ \ge\ 2^{\lceil \ell/2\rceil}.
+\]
+对 \(\ell=1,2\) 直接检验成立。
+若该不等式对 \(\ell,\ell+1\) 成立，则由 Fibonacci 递推 \(F_{\ell+4}=F_{\ell+3}+F_{\ell+2}\) 得
+\[
+F_{\ell+4}\ \ge\ 2^{\lceil (\ell+1)/2\rceil}+2^{\lceil \ell/2\rceil}
+\ \ge\ 2^{\lceil (\ell+2)/2\rceil},
+\]
+其中最后一步由对 \(\ell\) 奇偶分类可直接验证；故引理对一切 \(\ell\) 成立。
+\par
+回到分量分解 \(\Gamma_x\simeq\bigsqcup_i P_{\ell_i}\)。
+由命题 \ref{prop:pom-sufficient-statistic-residual-noninvertibility} 的闭式
+\(
+d_m(x)=\prod_i F_{\ell_i+2}
+\) 与
+\(
+d_x=\sum_i\lceil \ell_i/2\rceil
+\)，结合上述引理得到
+\[
+d_m(x)
+=\prod_i F_{\ell_i+2}
+\ \ge\ \prod_i 2^{\lceil \ell_i/2\rceil}
+=2^{\sum_i\lceil \ell_i/2\rceil}
+=2^{d_x}.
+\]
+当 \(d_x\ge 2\) 时有 \(2^{d_x}\ge 4>d_x+1\)，得到严格不等式。
+\par
+当 \(d_x=0\) 时必无分量，故 \(d_m(x)=1\)。
+当 \(d_x=1\) 时仅存在单一分量且 \(\lceil \ell/2\rceil=1\) 强制 \(\ell\in\{1,2\}\)；
+\(\ell=1\) 时 \(d_m(x)=F_3=2\) 恰取等，而 \(\ell=2\) 时 \(d_m(x)=F_4=3>2\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[充分统计外置与可逆外置之间的线性熵鸿沟]\label{cor:pom-sufficient-vs-invertible-externalization-entropy-gap}
+沿用命题 \ref{prop:pom-sufficient-statistic-residual-noninvertibility} 的分量分解 \(\Gamma_x\simeq\bigsqcup_{i=1}^c P_{\ell_i}\)，并记总顶点数
+\[
+L:=\sum_{i=1}^{c}\ell_i.
+\]
+则有下界
+\[
+\boxed{\;
+\log d_m(x)-\log(d_x+1)
+\ \ge\
+(\log\varphi)\,L\ -\ 2c\log\varphi\ -\ \log(L+c+2)\; }.
+\]
+特别地，当分量数 \(c\) 在某一类稳定类型上被一致上界时，上式给出一个主项为 \(L\log\varphi\) 的线性鸿沟，而修正项至多为 \(O(\log L)\)。
+\end{corollary}
+\begin{proof}
+由标准 Fibonacci 下界 \(F_n\ge \varphi^{n-2}\)（\(n\ge 2\)）与 \(d_m(x)=\prod_i F_{\ell_i+2}\)，得
+\[
+\log d_m(x)=\sum_{i=1}^{c}\log F_{\ell_i+2}
+\ \ge\ \sum_{i=1}^{c}\ell_i\log\varphi-2c\log\varphi
+=L\log\varphi-2c\log\varphi.
+\]
+另一方面 \(d_x=\sum_i\lceil \ell_i/2\rceil\le (L+c)/2\)，故
+\(
+\log(d_x+1)\le \log((L+c)/2+1)\le \log(L+c+2)
+\)。
+两式相减即得结论。证毕。
+\end{proof}
+
 \endinput

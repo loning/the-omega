@@ -1570,6 +1570,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_collision_moment_charpoly_galois_audit_q5",
+            script="exp_fold_collision_moment_charpoly_galois_audit_q5.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_collision_moment_charpoly_galois_audit_q5.json",
+            ],
+        ),
+        Step(
             name="fold_collision_moment_recursions_moddp_9_17_precomputed",
             script="exp_fold_collision_moment_recursions_mod_dp.py",
             args=["--precomputed"],
