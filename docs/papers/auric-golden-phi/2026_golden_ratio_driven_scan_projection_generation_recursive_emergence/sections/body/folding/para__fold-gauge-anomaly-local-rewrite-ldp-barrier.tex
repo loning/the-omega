@@ -35,6 +35,53 @@ g_\ast:=\lim_{m\to\infty}\frac{\EE G_m}{m}=\frac49
 仅有限次发生，从而得到 (2)。证毕。
 \end{proof}
 
+\begin{theorem}[Bernoulli\texorpdfstring{$(p)$}{(p)} 基线下的局部重写步数下界与指数下尾]\label{thm:fold-local-rewrite-ldp-lower-tail-barrier-bernoulli-p}
+取 \(p\in(0,1)\)，并令输入 \(\omega\in\Omega_{m+1}=\{0,1\}^{m+1}\) 按 IID Bernoulli\((p)\) 采样。
+令 \(G_m(\omega)\) 为 Berstel--Zeckendorf 失配加性泛函（定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws}，式 \eqref{eq:fold-gauge-anomaly-bernoulli-p-mismatch-sum}），并记其均值密度
+\[
+g_\ast(p):=\lim_{m\to\infty}\frac{\EE G_m}{m}=\frac{p^2(3-2p)}{1+p^3}
+\qquad(\text{定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws}}),
+\]
+以及其大偏差率函数 \(I_p\)（命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-ldp}）。
+考虑任意局部重写正规化算法 \(\mathsf S\)，并设存在常数 \(R\in\NN\) 使得对任意输入、任意一步，算法最多消除 \(R\) 个单位规范差；记步数为 \(T_m(\mathsf S)\)。
+若 \(G_m\le R\,T_m(\mathsf S)\) 恒成立，则：
+\begin{enumerate}
+  \item 对任意 \(a<g_\ast(p)/R\)，有指数下尾
+  \[
+  \limsup_{m\to\infty}\frac{1}{m}\log \PP\!\left(\frac{T_m(\mathsf S)}{m}\le a\right)
+  \le -I_p(Ra)\ <0.
+  \]
+  \item 线性下界在 Bernoulli\((p)\) 基线下几乎处处成立：
+  \[
+  \liminf_{m\to\infty}\frac{T_m(\mathsf S)}{m}\ \ge\ \frac{g_\ast(p)}{R}
+  \qquad\text{几乎必然}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+与定理 \ref{thm:fold-local-rewrite-ldp-lower-tail-barrier} 同理，由 \(G_m\le R\,T_m(\mathsf S)\) 得
+\[
+\left\{\frac{T_m(\mathsf S)}{m}\le a\right\}
+\subseteq
+\left\{\frac{G_m}{m}\le Ra\right\}.
+\]
+对右侧事件应用命题 \ref{prop:fold-gauge-anomaly-bernoulli-p-ldp} 的大偏差上界即得 (1)。
+再由 Borel--Cantelli 引理推出：对任意 \(\varepsilon>0\)，事件
+\(
+\{T_m/m\le g_\ast(p)/R-\varepsilon\}
+\)
+仅有限次发生，从而得到 (2)。证毕。
+\end{proof}
+
+\begin{corollary}[可调偏置下的最强步数密度下界]\label{cor:fold-local-rewrite-bernoulli-p-optimally-biased-lower-bound}
+在定理 \ref{thm:fold-local-rewrite-ldp-lower-tail-barrier-bernoulli-p} 的设定下，若允许在 IID Bernoulli\((p)\) 输入族上调节 \(p\in(0,1)\)，则由推论 \ref{cor:fold-gauge-anomaly-bernoulli-p-density-unimodal} 的唯一极大点 \(p_\star\) 得到最强线性下界常数：
+\[
+\liminf_{m\to\infty}\frac{T_m(\mathsf S)}{m}\ \ge\ \frac{\max_{p\in(0,1)}g_\ast(p)}{R}
+\ =\ \frac{p_\star^2}{R}
+\qquad\text{（在选取 }p=p_\star\text{ 的基线下几乎处处）}.
+\]
+\end{corollary}
+
 \begin{theorem}[\texorpdfstring{$4/9$}{4/9}--\texorpdfstring{$R$}{R} 饱和下界的步效率刚性]\label{thm:fold-local-rewrite-saturation-step-efficiency-rigidity}
 设 \(\mathsf S\) 为局部重写正规化算法，并存在 \(R\in\NN\) 使得在任意输入上每一步至多消去 \(R\) 个单位规范差。
 对每个 \(m\) 与输入 \(\omega\in\Omega_{m+1}\)，记算法步数为 \(T_m^{\mathsf S}(\omega)\)。
@@ -310,11 +357,28 @@ D_m\ \ge\ \frac{2^m}{|X_m|}=\frac{2^m}{F_{m+2}}.
 \[
 \liminf_{m\to\infty}\frac{L_m}{m}\ \ge\ \frac{\log(2/\varphi)}{\log M}.
 \]
-与上界 \(\limsup_m L_m/m\le 4/(9R)\) 联立得到
+另一方面，若在某一基线分布下满足步数密度上界
 \[
-M\ \ge\ \Bigl(\frac{2}{\varphi}\Bigr)^{\frac{9R}{4}}.
+\frac{L_m}{m}\ \le\ \frac{g}{R}+o(1)
 \]
-该界只使用平均压缩率 \(|\Omega_m|/|X_m|\)，而不涉及最大纤维的 Perron 指数。
+（例如：每步输出一符号且总输出长度不超过渐近最优步数密度，其中 \(g\) 为对应基线下的 \(\lim_{m\to\infty}\EE[G_m]/m\)），
+则联立上述平均缺口下界给出字母表门槛
+\[
+\boxed{\;
+\frac{\log(2/\varphi)}{\log M}\ \le\ \frac{g}{R}
+\qquad\Longleftrightarrow\qquad
+M\ \ge\ \Bigl(\frac{2}{\varphi}\Bigr)^{R/g}\; }.
+\]
+在 IID Bernoulli\((p)\) 基线下，\(g=g_\ast(p)\)（定理 \ref{thm:fold-gauge-anomaly-bernoulli-p-laws}），从而
+\[
+M\ \ge\ \Bigl(\frac{2}{\varphi}\Bigr)^{R/g_\ast(p)}.
+\]
+并且由推论 \ref{cor:fold-gauge-anomaly-bernoulli-p-density-unimodal}，当 \(p=p_\star\)（即 \(g_\ast(p_\star)=\max_{p\in(0,1)}g_\ast(p)=p_\star^2\)）时门槛最小：
+\[
+M\ \ge\ \Bigl(\frac{2}{\varphi}\Bigr)^{R/p_\star^2}.
+\]
+例如在 \(R=3\) 时有 \(\bigl(\frac{2}{\varphi}\bigr)^{3/p_\star^2}\approx 2.915\)，故任何满足上述“渐近步数最优 + 一步一符号 + 单射提升”的方案都强制 \(M\ge 3\)；
+而在 \(p=\tfrac12\)（\(g_\ast(1/2)=4/9\)）时得到 \(M\ge 5\)。
 \end{remark}
 
 \begin{theorem}[均匀基线下的 \texorpdfstring{$B$}{B}-比特反演上界与阈值分离]\label{thm:fold-bbit-inversion-avg-worst-gap}
