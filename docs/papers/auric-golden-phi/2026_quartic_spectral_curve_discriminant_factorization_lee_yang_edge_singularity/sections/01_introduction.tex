@@ -1,26 +1,30 @@
 \section{Introduction}
 
-The geometry of partition-function zeros provides a unifying description of critical phenomena in statistical physics and analytic combinatorics.
-Classical approaches often rely on large-state numerical approximations, whereas finite-dimensional \emph{spectral-closure} models allow one to turn the localization of a ``critical boundary'' into exact algebraic and spectral computations.
+The geometry of partition-function zeros links statistical mechanics and analytic combinatorics.
+Classical treatments often rely on numerical asymptotics, whereas finite-dimensional \emph{spectral-closure} models in this note give a fully algebraic, reproducible pipeline:
+\emph{minimal recurrence and Hankel rank} \(\to\) \emph{branch locus} \(\to\) \emph{probability limit laws} \(\to\) \emph{computable verification}.
 
-In this note we study a family of partition functions \(\{Z_m(y)\}_{m\ge 0}\) controlled by a quartic spectral curve.
-The main features are, in the required minimality-first order:
+\subsection*{Main theorems}
 \begin{enumerate}
-  \item the sequence is fully determined by a \emph{minimal} reduced rational generating function (Definition~\ref{def:minimal-spectral-closure}), hence satisfies a minimal linear recurrence of fixed order and has fixed Hankel rank;
-  \item the branch locus is given by a complete factorization of the discriminant of a quartic spectral polynomial; the nontrivial real branch point \(\yLY<0\) is the unique real root of \(c(y)\) and is a collision point where a real pair transitions to a complex pair (Proposition~\ref{prop:yLY-collision});
-  \item the negative real-axis equimodular anchor is \(\yEQ\approx-0.16009\), where a negative real branch and a complex conjugate branch have equal modulus; this is a non-bifurcating equimodular point (Theorem~\ref{thm:yeq}), while \(y=\yLY\) is a branch point;
-  \item an explicit field-trace representation (with denominator compression to \(\{0,1,-1\}\cup\{c(y)=0\}\)) makes the exact algebraic dependency on \(y\) explicit and keeps the analyticity set auditable (Theorem~\ref{thm:trace-representation}, Corollary~\ref{cor:denominator-compression});
-  \item a limiting log-moment generating function induced by the dominant spectral branch yields closed-form fluctuation constants, producing auditable limit laws by Theorem~\ref{thm:coeff-nonneg};
-  \item all key quantities can be computed (and certified) by finitely many algebraic operations together with an order-\(4\) recurrence, giving a parameter-size-independent verification pipeline;
-  \item the spectral curve \(\Pi(\lambda,y)=0\) is isomorphic to the elliptic curve \(E:\xi^2+\xi=\lambda^3-\lambda\) of conductor~\(37\) (Cremona \(37\mathrm{a}1\)); the parameter \(y=\lambda^2+\xi\) defines a degree-\(4\) morphism \(\varphi:E\to\mathbb{P}^1\) whose ramification locus maps onto the branch cubic \(c(y)\) via a resultant identity, and the discriminant of~\(\Pi\) equals the norm of the different of the function field extension \(\QQ(E)/\QQ(y)\); the generic Galois group is~\(S_4\), and the Puiseux amplitudes at nontrivial branch points are governed by a cubic sharing the arithmetic invariant \(3^9\cdot 37\) with the branch cubic discriminant (Appendix~\ref{app:elliptic}).
+  \item
+  The ordinary generating function \(Z(t,y)=\sum_{m\ge0}Z_m(y)t^m\) is reduced and its denominator degree is \(4\) away from \(y\in\{-1,0,1\}\), yielding a minimal order-\(4\) recurrence and fixed Hankel rank (\(4\)) for generic parameters (Definition~\ref{def:minimal-spectral-closure}, Theorem~\ref{thm:minimal-order}).
+  \item
+  The quartic spectral polynomial \(\Pi(\lambda,y)\) has complete discriminant factorization
+  \[
+  \Disc_\lambda \Pi(\lambda,y)=-y(y-1)c(y),\qquad c(y)=256y^3+411y^2+165y+32,
+  \]
+  so the only branch values are \(y=0,1\) and \(c(y)=0\); the nontrivial real branch point \(\yLY\) is the unique real root of \(c(y)\) (Theorem~\ref{thm:disc-factor}, Proposition~\ref{prop:unique-real-root}).
+  \item
+  On the negative real axis there is a unique non-bifurcating equimodular point \(\yEQ\approx-0.16009\) (Theorem~\ref{thm:yeq}, Definition~\ref{def:equimodular-negative}), and it appears in the zero-accumulation geometry through BKW with nonvanishing competing coefficients.
+  \item
+  The dominant spectral branch \(\lambda_+(y)\) controls the limiting log-mgf, giving closed-form constants \(\mu=5/18\) and \(\sigma^2=67/972\) for LLN/CLT (Theorem~\ref{thm:lambda-mgf}, Theorem~\ref{thm:lln-clt}) together with the coefficient nonnegativity foundation in Theorem~\ref{thm:coeff-nonneg}.
+  \item
+  The arithmetic normalization to the elliptic curve \(E:\xi^2+\xi=\lambda^3-\lambda\) (conductor \(37\)) and conductor-\(37\) corollaries are developed in Appendix~\ref{app:elliptic} to keep the core argument focused on minimality, discriminant, and zeros.
 \end{enumerate}
 
 The paper is organized as follows.
-Section~\ref{sec:model} defines the model and the associated quartic spectral polynomial.
-Section~\ref{sec:hankel} establishes minimality of the order-\(4\) spectral closure and the fixed Hankel rank.
-Section~\ref{sec:disc} computes and factors the discriminant, characterizing the branch locus and the spectral-root collision at~\(\yLY\).
-Section~\ref{sec:zeros} introduces the algebraic non-bifurcating equimodular anchor \(\yEQ\), then states the BKW consequences.
-Section~\ref{sec:free} derives the free energy and the limiting log-moment generating function, and, by Theorem~\ref{thm:coeff-nonneg}, gives a law of large numbers and a central limit theorem with explicit constants.
-Sections~\ref{sec:zeros}--\ref{sec:algo} discuss zero accumulation, and give an auditable computational workflow.
-Appendix~\ref{app:elliptic} develops the elliptic normalization and arithmetic structure underlying the spectral curve: ellipticization, ramification and Galois theory, the Abel--Jacobi differential closure, modularity at level~\(37\), the cubic number field of the branch locus, and the Latt\`es dynamics at the bad prime.
+Section~\ref{sec:model} defines the model and the quartic spectral polynomial.
+Sections~\ref{sec:hankel}--\ref{sec:free} develop the minimality, discriminant, and limit-law chain in the order above.
+Section~\ref{sec:zeros} states the BKW consequences; Section~\ref{sec:algo} gives a reproducible and fully certifiable numerical workflow.
+Appendix~\ref{app:elliptic} collects the arithmetic normalization and conductor-\(37\) material that supports, but does not drive, the main combinatorial-analytic argument.
 
