@@ -140,6 +140,135 @@ J(q,p):=-J(p,q),
 两式合并即得对偶恒等式与取等构造。证毕。
 \end{proof}
 
+\begin{theorem}[粗粒化推前下的 Stokes 结构交换律]\label{thm:conclusion-coarsegraining-stokes-beck-chevalley}
+沿用定理 \ref{thm:conclusion-stokes-stein-weighted-graph-minflow} 的设定。
+给定任意满射 \(\Phi:V\twoheadrightarrow \bar V\)，定义粗粒化顶点权与导通率为
+\[
+\bar\pi(\bar x):=\sum_{\Phi(x)=\bar x}\pi(x),
+\qquad
+\bar c_{\bar x\bar y}:=\sum_{\substack{\{x,y\}\in E\\ \Phi(x)=\bar x,\ \Phi(y)=\bar y}}c_{xy}
+\qquad(\bar x,\bar y\in\bar V),
+\]
+并记粗图为 \(\bar G=(\bar V,\bar E)\)，其中 \(\bar E:=\{\{\bar x,\bar y\}:\bar c_{\bar x\bar y}>0,\ \bar x\neq \bar y\}\)。
+对任意 \(J\in C^1_{\mathrm{as}}(G)\)，定义其导通率加权推前流 \(\Phi_!J\in C^1_{\mathrm{as}}(\bar G)\) 为
+\[
+(\Phi_!J)(\bar x,\bar y):=
+\begin{cases}
+\bar c_{\bar x\bar y}^{-1}
+\displaystyle\sum_{\substack{\{x,y\}\in E\\ \Phi(x)=\bar x,\ \Phi(y)=\bar y}}
+c_{xy}\,J(x,y),
+&\bar c_{\bar x\bar y}>0,\\[2ex]
+0,&\bar c_{\bar x\bar y}=0,
+\end{cases}
+\]
+并对任意 \(\bar f\in C^0(\bar G)\) 定义拉回 \(\Phi^\ast\bar f:=\bar f\circ\Phi\in C^0(G)\)。
+则对任意 \(\bar f\in C^0(\bar G)\) 与任意 \(J\in C^1_{\mathrm{as}}(G)\) 成立严格交换恒等式：
+\[
+\langle d(\Phi^\ast\bar f),J\rangle_c=\langle \bar d\,\bar f,\ \Phi_!J\rangle_{\bar c},
+\qquad
+\langle \Phi^\ast\bar f,\delta J\rangle_\pi=\langle \bar f,\ \bar\delta(\Phi_!J)\rangle_{\bar\pi},
+\]
+其中 \((\bar d,\bar\delta,\langle\cdot,\cdot\rangle_{\bar\pi},\langle\cdot,\cdot\rangle_{\bar c})\) 按定理
+\ref{thm:conclusion-stokes-stein-weighted-graph-minflow} 对 \((\bar G,\bar\pi,\bar c)\) 的同式定义给出。
+因此对任意 \(J\) 都有粗层广义斯托克斯恒等式
+\[
+\langle \bar f,\bar\delta(\Phi_!J)\rangle_{\bar\pi}=-\langle \bar d\,\bar f,\Phi_!J\rangle_{\bar c}.
+\]
+\end{theorem}
+\begin{proof}
+由定义展开并按 \((\Phi(x),\Phi(y))\) 分组，有
+\begin{align*}
+\langle d(\Phi^\ast\bar f),J\rangle_c
+&=\frac12\sum_{\{x,y\}\in E}c_{xy}\bigl(\bar f(\Phi(y))-\bar f(\Phi(x))\bigr)J(x,y)\\
+&=\frac12\sum_{\{\bar x,\bar y\}\in\bar E}\bigl(\bar f(\bar y)-\bar f(\bar x)\bigr)
+\sum_{\substack{\{x,y\}\in E\\ \Phi(x)=\bar x,\ \Phi(y)=\bar y}}c_{xy}\,J(x,y)\\
+&=\frac12\sum_{\{\bar x,\bar y\}\in\bar E}\bar c_{\bar x\bar y}\,(\bar d\bar f)(\bar x,\bar y)\,(\Phi_!J)(\bar x,\bar y)
+=\langle \bar d\,\bar f,\Phi_!J\rangle_{\bar c},
+\end{align*}
+得到第一式。
+\par
+第二式由两次应用 Stokes 恒等式得到：由定理 \ref{thm:conclusion-stokes-stein-weighted-graph-minflow}(1) 有
+\[
+\langle \Phi^\ast\bar f,\delta J\rangle_\pi=-\langle d(\Phi^\ast\bar f),J\rangle_c
+=-\langle \bar d\,\bar f,\Phi_!J\rangle_{\bar c},
+\]
+而对粗图 \(\bar G\) 再应用同一定理的 (1)（以 \(\bar f,\Phi_!J\) 代入）得
+\(
+-\langle \bar d\,\bar f,\Phi_!J\rangle_{\bar c}=\langle \bar f,\bar\delta(\Phi_!J)\rangle_{\bar\pi}
+\)，从而得到第二式。
+最后一式即为粗图上的 Stokes 恒等式。证毕。
+\end{proof}
+
+\begin{proposition}[推前约束下的能量下确界：粗能量作为微能量的精确消去]\label{prop:conclusion-coarsegraining-energy-infimum}
+在定理 \ref{thm:conclusion-coarsegraining-stokes-beck-chevalley} 的设定下，定义微观与粗观能量
+\[
+\mathcal E(J):=\langle J,J\rangle_c=\frac12\sum_{\{x,y\}\in E}c_{xy}\,J(x,y)^2,
+\qquad
+\bar{\mathcal E}(\bar J):=\langle \bar J,\bar J\rangle_{\bar c}
+=\frac12\sum_{\{\bar x,\bar y\}\in\bar E}\bar c_{\bar x\bar y}\,\bar J(\bar x,\bar y)^2.
+\]
+对任意给定 \(\bar J\in C^1_{\mathrm{as}}(\bar G)\)，令
+\(
+\mathfrak J(\bar J):=\{J\in C^1_{\mathrm{as}}(G):\ \Phi_!J=\bar J\}
+\)。
+则成立严格等式
+\[
+\inf_{J\in\mathfrak J(\bar J)}\mathcal E(J)=\bar{\mathcal E}(\bar J).
+\]
+并且极小元唯一：对每条粗边 \(\{\bar x,\bar y\}\in\bar E\)，其在全部连接纤维 \(\Phi^{-1}(\bar x)\) 与 \(\Phi^{-1}(\bar y)\) 的微边上取常值
+\[
+J(x,y)=\bar J(\bar x,\bar y)\qquad
+\bigl(\{x,y\}\in E,\ \Phi(x)=\bar x,\ \Phi(y)=\bar y\bigr),
+\]
+且在同一纤维内的边上取 \(J\equiv 0\)。
+\end{proposition}
+\begin{proof}
+固定一条粗边 \(\{\bar x,\bar y\}\in\bar E\)，记其下所有跨纤维微边集合为
+\(
+E_{\bar x\bar y}:=\{\{x,y\}\in E:\Phi(x)=\bar x,\ \Phi(y)=\bar y\}
+\)。
+设 \(j_e:=J(x,y)\)（按 \(\bar x\to\bar y\) 的取向记号）且 \(c_e:=c_{xy}\)。
+推前约束 \(\Phi_!J=\bar J\) 等价于
+\[
+\sum_{e\in E_{\bar x\bar y}}c_e\,j_e=\bar c_{\bar x\bar y}\,\bar J(\bar x,\bar y),
+\qquad
+\bar c_{\bar x\bar y}=\sum_{e\in E_{\bar x\bar y}}c_e.
+\]
+由 Cauchy--Schwarz 不等式，
+\[
+\Bigl(\sum_{e\in E_{\bar x\bar y}}c_e\,j_e\Bigr)^2
+\le
+\Bigl(\sum_{e\in E_{\bar x\bar y}}c_e\Bigr)\Bigl(\sum_{e\in E_{\bar x\bar y}}c_e\,j_e^2\Bigr)
+=\bar c_{\bar x\bar y}\sum_{e\in E_{\bar x\bar y}}c_e\,j_e^2,
+\]
+从而
+\[
+\frac12\sum_{e\in E_{\bar x\bar y}}c_e\,j_e^2
+\ge
+\frac12\,\bar c_{\bar x\bar y}\,\bar J(\bar x,\bar y)^2.
+\]
+对所有粗边求和，并注意同纤维内边不影响推前约束且能量非负，得
+\(
+\mathcal E(J)\ge \bar{\mathcal E}(\bar J)
+\)。
+\par
+当且仅当每个 \(\{\bar x,\bar y\}\) 上等号成立时取到下界；而 Cauchy--Schwarz 取等当且仅当
+\(
+j_e
+\)
+在 \(E_{\bar x\bar y}\) 上为常数。
+由推前约束该常数必为 \(\bar J(\bar x,\bar y)\)。
+同时同纤维内边取 \(J\equiv 0\) 是达到全局最小能量的必要条件。
+于是给出唯一极小元并实现 \(\inf\mathcal E=\bar{\mathcal E}\)。证毕。
+\end{proof}
+
+\begin{remark}[折叠的具体化与粗层导通图]\label{rem:conclusion-fold-stokes-coarsegraining}
+在本文的折叠语义中可取 \(\Phi=\Fold_m:\Omega_m=\{0,1\}^m\twoheadrightarrow X_m\)。
+若以 \(\Omega_m\) 上的超立方体骨架为微观图 \(G\)，并取自然权 \((\pi,c)\)，
+则定理 \ref{thm:conclusion-coarsegraining-stokes-beck-chevalley} 诱导出仅由折叠纤维与跨纤维边计数决定的粗层导通图 \((X_m,\bar c)\)，并在其上得到严格的 Stokes 交换律。
+另一方面，附录 \ref{app:op-algebra-fold-subalgebra} 中 \(L^2(\mathcal A_m,\tau_m)\) 的纤维正交分解与 Jones 投影在每条纤维上为秩一平均投影的结构，为上述“粗层算子是微层算子的函子像”提供了与基本构造一致的算子代数实现接口。
+\end{remark}
+
 \begin{theorem}[Lee--Yang 零测度诱导的大偏差谱 Stokes 反演]\label{thm:conclusion-leyang-zero-measure-stokes-inversion-ldp}
 令 \(\{Z_m(u)\}_{m\ge 1}\) 为非零复多项式序列，\(Z_m\) 的零点（按重数）记为 \(\{\zeta_{m,j}\}_{j=1}^{N_m}\)，并定义归一化零计数测度
 \[

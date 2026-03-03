@@ -308,6 +308,155 @@ r^{-1}(r)\leftrightarrow r^{-1}(\tau_m(r))
 化简即得能量公式。证毕。
 \end{proof}
 
+\begin{theorem}[条件偏置的频域运输恒等式与谱平均能量]\label{thm:fold-fiber-bias-frequency-transport-identity}
+沿用命题 \ref{prop:fold-fiber-bias-fourier-multiplier-energy} 的记号，并定义残差分布的特征函数
+\[
+\widehat\mu_m(t):=\sum_{r\in\ZZ/(M\ZZ)}\mu_m(r)\,e^{-2\pi i tr/M}
+=\frac{\widehat d_m(t)}{2^m}
+\qquad (t\in\ZZ/(M\ZZ)).
+\]
+则对任意 \(1\le k\le m\) 与任意 \(t\in\ZZ/(M\ZZ)\)，成立严格恒等式
+\[
+\boxed{\;
+\Bigl(1+e^{-2\pi i tF_{k+1}/M}\Bigr)\widehat\nu_{m,k}(t)
+=\frac12\Bigl(e^{-2\pi i tF_{k+1}/M}-1\Bigr)\widehat\mu_m(t)\; }.
+\]
+特别地，若记条件偏置能量
+\[
+E_{m,k}:=\sum_{r\in\ZZ/(M\ZZ)}\nu_{m,k}(r)^2,
+\]
+则其具有等价的谱平均表达
+\[
+\boxed{\;
+E_{m,k}
+=\frac{1}{4M}\sum_{t\in\ZZ/(M\ZZ)}
+\Biggl(\frac{1-\cos(2\pi tF_{k+1}/M)}{1+\cos(2\pi tF_{k+1}/M)}\Biggr)\,
+\bigl|\widehat\mu_m(t)\bigr|^2\; } ,
+\]
+其中约定当分母为零时该项取 \(0\)；此时 \(1+e^{-2\pi i tF_{k+1}/M}=0\) 进而 \(\widehat\mu_m(t)=0\)，故该约定与极限一致。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:fold-fiber-bias-fourier-multiplier-energy} 的乘子闭式
+\[
+\widehat\nu_{m,k}(t)
+=\frac{1}{2^{m+1}}\Bigl(e^{-2\pi i tF_{k+1}/M}-1\Bigr)
+\prod_{j\ne k}\Bigl(1+e^{-2\pi i tF_{j+1}/M}\Bigr),
+\]
+两边同乘 \(\bigl(1+e^{-2\pi i tF_{k+1}/M}\bigr)\) 得
+\[
+\Bigl(1+e^{-2\pi i tF_{k+1}/M}\Bigr)\widehat\nu_{m,k}(t)
+=\frac{1}{2^{m+1}}\Bigl(e^{-2\pi i tF_{k+1}/M}-1\Bigr)\widehat d_m(t)
+=\frac12\Bigl(e^{-2\pi i tF_{k+1}/M}-1\Bigr)\widehat\mu_m(t),
+\]
+即第一式。
+\par
+为得到谱平均式，先由 Parseval 恒等式
+\(
+E_{m,k}=\frac1M\sum_t|\widehat\nu_{m,k}(t)|^2
+\)
+并对每个 \(\theta\) 使用恒等式
+\[
+\left|\frac{e^{-i\theta}-1}{e^{-i\theta}+1}\right|^2=\frac{1-\cos\theta}{1+\cos\theta}
+\]
+（当 \(e^{-i\theta}+1\neq 0\) 时）：
+由第一式可将
+\(
+\widehat\nu_{m,k}(t)=\frac12\frac{e^{-i\theta}-1}{e^{-i\theta}+1}\widehat\mu_m(t)
+\)
+（其中 \(\theta=2\pi tF_{k+1}/M\)）。
+代入 Parseval 并取模平方即得所示谱平均表达；当分母为零时 \(\widehat\mu_m(t)=0\) 由 \(\widehat d_m\) 的 \(k\)-因子消失推出，故取零约定一致。
+证毕。
+\end{proof}
+
+\begin{theorem}[擦除因子后的碰撞概率增量等于条件偏置能量]\label{thm:fold-fiber-bias-energy-erasure-identity}
+沿用上述记号，令 \(\mu_m\) 为包含全部 \(m\) 个 Bernoulli 增量的残差分布。
+对固定 \(k\in\{1,\dots,m\}\) 定义“擦除分布” \(\mu_m^{(-k)}\) 为去掉第 \(k\) 个因子后的分布，其特征函数为
+\[
+\widehat\mu_m^{(-k)}(t)
+:=\frac{1}{2^{m-1}}\prod_{j\ne k}\Bigl(1+e^{-2\pi i tF_{j+1}/M}\Bigr),
+\qquad t\in\ZZ/(M\ZZ).
+\]
+记碰撞概率（Parseval--Riesz 形式）
+\[
+\mathsf{Col}_m:=\sum_{r}\mu_m(r)^2=\frac1M\sum_{t}\bigl|\widehat\mu_m(t)\bigr|^2,
+\qquad
+\mathsf{Col}_m^{(-k)}:=\sum_{r}\mu_m^{(-k)}(r)^2=\frac1M\sum_{t}\bigl|\widehat\mu_m^{(-k)}(t)\bigr|^2.
+\]
+则对每个 \(k\) 有严格恒等式
+\[
+\boxed{\;E_{m,k}=\mathsf{Col}_m^{(-k)}-\mathsf{Col}_m.\;}
+\]
+从而 \(E_{m,k}\ge 0\) 且 \(\mathsf{Col}_m\le \mathsf{Col}_m^{(-k)}\le 1\)。
+\end{theorem}
+\begin{proof}
+由 \(\widehat\mu_m(t)=\frac{1}{2}\bigl(1+e^{-2\pi i tF_{k+1}/M}\bigr)\widehat\mu_m^{(-k)}(t)\)，得
+\[
+\bigl|\widehat\mu_m^{(-k)}(t)\bigr|^2-\bigl|\widehat\mu_m(t)\bigr|^2
+=\left(1-\cos^2\!\Bigl(\pi tF_{k+1}/M\Bigr)\right)\prod_{j\ne k}\cos^2\!\Bigl(\pi tF_{j+1}/M\Bigr)
+=\sin^2\!\Bigl(\pi tF_{k+1}/M\Bigr)\prod_{j\ne k}\cos^2\!\Bigl(\pi tF_{j+1}/M\Bigr).
+\]
+对 \(t\) 求和并除以 \(M\)，再与命题 \ref{prop:fold-fiber-bias-fourier-multiplier-energy} 的 Parseval 能量公式
+\(
+E_{m,k}=\frac1M\sum_t\sin^2(\pi tF_{k+1}/M)\prod_{j\ne k}\cos^2(\pi tF_{j+1}/M)
+\)
+对照，即得 \(\mathsf{Col}_m^{(-k)}-\mathsf{Col}_m=E_{m,k}\)。
+不等式由碰撞概率的定义与 \(E_{m,k}\ge 0\) 立即推出。证毕。
+\end{proof}
+
+\begin{proposition}[条件偏置能量的决策论刻画]\label{prop:fold-fiber-bias-energy-decision-theoretic}
+对固定 \(k\in\{1,\dots,m\}\)，定义两条件分布
+\[
+\mu_{m,k}^{(1)}(r):=\PP\bigl(r(\omega)=r\mid \omega_k=1\bigr),
+\qquad
+\mu_{m,k}^{(0)}(r):=\PP\bigl(r(\omega)=r\mid \omega_k=0\bigr),
+\qquad r\in\ZZ/(M\ZZ),
+\]
+其中 \(\omega\sim\mathrm{Unif}(\Omega_m)\)。
+则有显式表达
+\[
+\mu_{m,k}^{(1)}(r)=\frac{b_{m,k}(r)}{2^{m-1}},
+\qquad
+\mu_{m,k}^{(0)}(r)=\frac{d_m(r)-b_{m,k}(r)}{2^{m-1}},
+\]
+并且能量 \(E_{m,k}=\sum_r \nu_{m,k}(r)^2\) 满足
+\[
+\boxed{\;E_{m,k}=\frac14\,\bigl\|\mu_{m,k}^{(1)}-\mu_{m,k}^{(0)}\bigr\|_{\ell^2(\ZZ/(M\ZZ))}^{2}.\;}
+\]
+特别地，总变差距离满足
+\[
+\bigl\|\mu_{m,k}^{(1)}-\mu_{m,k}^{(0)}\bigr\|_{\mathrm{TV}}
+\le \sqrt{M\,E_{m,k}}.
+\]
+\end{proposition}
+\begin{proof}
+由 \(b_{m,k}(r)=\card\{\omega:\ r(\omega)=r,\ \omega_k=1\}\) 的定义，条件于 \(\{\omega_k=1\}\) 后 \(\omega\) 在该半空间上均匀，故
+\(\mu_{m,k}^{(1)}(r)=b_{m,k}(r)/2^{m-1}\)。
+同理
+\(\mu_{m,k}^{(0)}(r)=(d_m(r)-b_{m,k}(r))/2^{m-1}\)。
+从而
+\[
+\mu_{m,k}^{(1)}(r)-\mu_{m,k}^{(0)}(r)
+=\frac{2b_{m,k}(r)-d_m(r)}{2^{m-1}}
+=2\,\nu_{m,k}(r),
+\]
+其中最后一步使用命题 \ref{prop:fold-fiber-bias-fourier-multiplier-energy} 中 \(\nu_{m,k}(r)=(2b_{m,k}(r)-d_m(r))/2^m\) 的定义。
+两边取 \(\ell^2\) 范数平方并求和即得
+\(
+\|\mu_{m,k}^{(1)}-\mu_{m,k}^{(0)}\|_2^2=4\sum_r\nu_{m,k}(r)^2=4E_{m,k}
+\)。
+\par
+对总变差距离，由 Cauchy--Schwarz
+\[
+\|\Delta\|_{\mathrm{TV}}
+=\frac12\sum_r|\Delta(r)|
+\le \frac12\sqrt{M}\,\|\Delta\|_2,
+\qquad
+\Delta:=\mu_{m,k}^{(1)}-\mu_{m,k}^{(0)},
+\]
+再代入 \(\|\Delta\|_2=2\sqrt{E_{m,k}}\) 得 \(\|\Delta\|_{\mathrm{TV}}\le \sqrt{M E_{m,k}}\)。
+证毕。
+\end{proof}
+
 \begin{theorem}[同残差碰撞对的汉明相似度与条件偏置能量恒等式]\label{thm:fold-fiber-collision-hamming-similarity-bias-energy-identity}
 取 \(\omega,\omega'\overset{\mathrm{i.i.d.}}{\sim}\mathrm{Unif}(\Omega_m)\)，并令事件
 \[

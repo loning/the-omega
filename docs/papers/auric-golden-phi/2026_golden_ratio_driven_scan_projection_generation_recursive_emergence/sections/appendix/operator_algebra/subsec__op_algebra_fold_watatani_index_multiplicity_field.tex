@@ -128,6 +128,61 @@ P_b e_m P_b
 最后，将矩阵单位与箭头 \((a,b)\in F_x\times F_x\) 对应即可与群胚卷积代数的标准基一致。证毕。
 \end{proof}
 
+\begin{proposition}[索引加权 Jones 交换子能量恒等式]\label{prop:op-algebra-fold-index-weighted-commutator-energy}
+沿用上述 \(\mathcal B_m\subset\mathcal A_m\)、折叠条件期望 \(E_m:\mathcal A_m\to\mathcal B_m\) 与 Jones 投影 \(e_m\) 的记号。
+对任意 \(f\in\mathcal A_m\) 记 \(M_f\) 为其在 \(L^2(\mathcal A_m,\tau_m)\) 上的乘法算子。
+在基本构造代数 \(\mathcal A_{m,1}=\langle\mathcal A_m,e_m\rangle\subset\mathcal B(L^2(\mathcal A_m,\tau_m))\) 上取归一化 Hilbert--Schmidt 内积
+\[
+\langle S,T\rangle_{\mathsf{HS}}
+:=2^{-m}\Tr(S^\ast T),
+\qquad
+\|T\|_{\mathsf{HS}}:=\sqrt{\langle T,T\rangle_{\mathsf{HS}}}.
+\]
+并定义索引加权“外微分”
+\[
+\partial_m(f):=\mathrm{Ind}_{\mathrm W}(E_m)^{1/2}\,[e_m,M_f]\ \in\ \mathcal A_{m,1}.
+\]
+则成立严格恒等式
+\[
+\boxed{\;\frac12\,\|\partial_m(f)\|_{\mathsf{HS}}^{2}=\tau_m\!\bigl(|f-E_m f|^2\bigr).\;}
+\]
+换言之，\(f\) 在纤维不变子代数 \(\mathcal B_m\) 的 \(L^2(\tau_m)\) 正交残差能量，恰等于 Jones 投影交换子的索引加权 Hilbert--Schmidt 能量。
+\end{proposition}
+\begin{proof}
+由 \(L^2(\mathcal A_m,\tau_m)\cong\bigoplus_{x\in X_m}\ell^2(F_x)\) 的纤维正交分解（定理 \ref{thm:op-algebra-fold-basic-construction-pair-groupoid} 的证明），\(e_m\) 在每个 \(\ell^2(F_x)\) 上为投影到常值向量所张成的一维子空间。
+因此对 \(a,b\in F_x\)（记 \(d:=d_m(x)\)）有矩阵元恒等式
+\[
+[e_m,M_f]_{a,b}=\frac{1}{d}\bigl(f(b)-f(a)\bigr),
+\]
+而 \(\mathrm{Ind}_{\mathrm W}(E_m)\) 在同一块上为标量 \(d\)，从而
+\[
+\bigl(\partial_m(f)\bigr)_{a,b}=\sqrt d\,[e_m,M_f]_{a,b}=\frac{f(b)-f(a)}{\sqrt d},
+\qquad
+\bigl(\partial_m(f)\bigr)_{a,b}=0\ \text{若 }a,b\text{不在同一纤维}.
+\]
+于是
+\[
+\|\partial_m(f)\|_{\mathsf{HS}}^2
+=2^{-m}\sum_{x\in X_m}\ \sum_{a,b\in F_x}\frac{|f(b)-f(a)|^2}{d_m(x)}.
+\]
+对固定纤维 \(F_x\) 令
+\(
+\bar f_x:=\frac1{d_m(x)}\sum_{a\in F_x}f(a)=(E_m f)(x)
+\)。
+则有限维方差恒等式给出
+\[
+\sum_{a,b\in F_x}|f(b)-f(a)|^2
+=2d_m(x)\sum_{a\in F_x}|f(a)-\bar f_x|^2.
+\]
+代回并整理得
+\[
+\|\partial_m(f)\|_{\mathsf{HS}}^2
+=2\cdot 2^{-m}\sum_{x\in X_m}\sum_{a\in F_x}|f(a)-E_m f(x)|^2
+=2\,\tau_m\!\bigl(|f-E_m f|^2\bigr),
+\]
+从而得到所示恒等式。证毕。
+\end{proof}
+
 \input{prop__op_algebra_hiddenbit_sheet_subgroupoid_index}
 
 \begin{theorem}[中心值条件期望与二次碰撞矩]\label{thm:op-algebra-fold-center-expectation-index-collision2}

@@ -163,6 +163,39 @@ def main() -> None:
         r = _repeated_linear_root_mod_p(f, p=p, var=delta)
         assert r is not None and int(r) == int(semistable_roots_expected[p])
 
+    # Collision primes P2: explicit node splitting parameter u_p and sign ε_p.
+    # Here r_p is the unique double root of B5 mod p, hence also of f mod p away from δ=4.
+    collision_primes_P2 = [17, 37, 223, 3739, 7333]
+    expected_collision_u = {17: 15, 37: 29, 223: 10, 3739: 3694, 7333: 6699}
+    expected_collision_eps = {17: +1, 37: -1, 223: -1, 3739: -1, 7333: -1}
+    d_quadratic = -140267  # = -17*37*223
+
+    B5pp = sp.Poly(sp.diff(B5.as_expr(), delta, 2), delta, domain=sp.ZZ)
+    collision_u: Dict[str, int] = {}
+    collision_eps: Dict[str, int] = {}
+    collision_u_over_d_is_square: Dict[str, bool] = {}
+
+    for p in collision_primes_P2:
+        rp = int(semistable_roots_expected[p]) % p
+        inv2 = pow(2, -1, p)
+        u = ((rp - 4) % p) * (int(B5pp.eval(rp)) % p) % p
+        u = (u * inv2) % p
+        assert u != 0
+
+        eps = +1 if _legendre_symbol(u, p) == 1 else -1
+
+        assert u == (expected_collision_u[p] % p)
+        assert eps == expected_collision_eps[p]
+
+        collision_u[str(p)] = int(u)
+        collision_eps[str(p)] = int(eps)
+
+        if p in (3739, 7333):
+            dinv = pow(d_quadratic % p, -1, p)
+            w = (u * dinv) % p
+            collision_u_over_d_is_square[str(p)] = bool(_legendre_symbol(w, p) == 1)
+            assert collision_u_over_d_is_square[str(p)]
+
     # Local data at the primes requested in the manuscript table.
     primes = [11, 13, 17, 223, 3739, 7333]
     expected_j = {11: 5, 13: 2, 17: 15, 223: 98, 3739: 188, 7333: 5450}
@@ -208,12 +241,18 @@ def main() -> None:
         "B5_coeffs_high_to_low": [int(c) for c in B5.all_coeffs()],
         "disc_B5": int(disc_B5),
         "disc_B5_factorization": disc_B5_fac,
+        "quadratic_discriminant_field_d": int(d_quadratic),
         "B5_at_4": int(B5_4),
         "B5_at_4_factorization": B5_4_fac,
         "disc_f": int(disc_f),
         "disc_f_factorization": disc_f_fac,
         "odd_semistable_primes_p_ne_3": semistable_primes_expected,
         "odd_semistable_double_roots_delta0": {str(k): int(v) for k, v in semistable_roots_expected.items()},
+        "collision_primes_P2": collision_primes_P2,
+        "collision_double_roots_r_p": {str(p): int(semistable_roots_expected[p]) for p in collision_primes_P2},
+        "collision_node_u_p": collision_u,
+        "collision_node_eps_p": collision_eps,
+        "collision_u_over_d_is_square": collision_u_over_d_is_square,
         "local_data": [asdict(d) for d in local_data],
     }
 

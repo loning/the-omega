@@ -121,6 +121,53 @@ e_{j,k}\equiv 0\pmod{M_r},
 若某个 \(e_{j,k}\neq 0\) 且对所有 \(r\) 皆有 \(e_{j,k}\equiv 0\pmod{M_r}\)，则由中国剩余定理知 \(e_{j,k}\equiv 0\pmod{M}\)，从而 \(|e_{j,k}|\ge M>2U\)，与 \(|e_{j,k}|\le U\) 矛盾。证毕。
 \end{proof}
 
+\begin{theorem}[确定性同余审计阈值的最优性]\label{thm:pom-deterministic-congruence-audit-threshold-optimal}
+设 \(U\in\ZZ_{>0}\)、\(M\in\ZZ_{>0}\)，并令 \(A,B\in\Mat_{d\times d}(\ZZ)\) 满足逐项界
+\[
+|A_{ij}|\le U,\qquad |B_{ij}|\le U\qquad(1\le i,j\le d).
+\]
+若 \(A\equiv B\pmod M\)（逐项同余），则在 \(M>2U\) 时必有 \(A=B\)。
+反之，当 \(M\le 2U\) 时，对任意 \(d\ge 1\) 存在 \(A\neq B\) 仍满足上述逐项界并且 \(A\equiv B\pmod M\)。
+\end{theorem}
+\begin{proof}
+设 \(D:=A-B\)。
+若 \(M>2U\)，则对任意 \(i,j\) 有 \(D_{ij}\in M\ZZ\) 且 \(|D_{ij}|\le 2U<M\)，故 \(D_{ij}=0\)，从而 \(A=B\)。
+\par
+反向：取 \(d=1\)。
+若 \(M\) 为偶数，令 \(a=M/2\)、\(b=-M/2\)，则 \(|a|,|b|\le U\) 且 \(a\equiv b\pmod M\) 但 \(a\neq b\)。
+若 \(M\) 为奇数，取 \(a=(M-1)/2\)、\(b=-(M+1)/2\)，在 \(M\le 2U-1\) 时同样满足 \(|a|,|b|\le U\) 且 \(a\equiv b\pmod M\)。
+将该标量构造嵌入至任意维度 \(d\)（仅令某一条目取 \((a,b)\) 而其余条目相同）即得结论。证毕。
+\end{proof}
+
+\begin{remark}[零性审计与同余提升的阈值差异]\label{rem:pom-congruence-zero-vs-lift-threshold}
+若仅需判定一个未知整数 \(e\) 是否为 \(0\)，并且已知 \(|e|\le U\)，则条件 \(M>U\) 已足以由 \(e\equiv 0\pmod M\) 推出 \(e=0\)。
+但当要比较两未知对象 \(A,B\) 且仅知各自的逐项幅度上界时，其差的逐项幅度上界为 \(2U\)；
+定理 \ref{thm:pom-deterministic-congruence-audit-threshold-optimal} 表明在该对称信息口径下阈值 \(M>2U\) 不可再降。
+\end{remark}
+
+\begin{theorem}[模同余的 \texorpdfstring{$2d$}{2d} 锁定：C-finite 序列的离线全恢复]\label{thm:pom-congruence-2d-locking-cfinite}
+设整数序列 \((a_m)_{m\ge 0}\subset\ZZ\) 自某一偏移 \(m_0\) 起满足阶数为 \(d\) 的整系数线性递推
+\[
+a_{m+d}=\sum_{j=0}^{d-1}\beta_j a_{m+j},\qquad \beta_j\in\ZZ,\quad m\ge m_0,
+\]
+并且存在先验界 \(U\in\ZZ_{\ge 0}\) 使
+\[
+|a_{m_0+i}|\le U\qquad(0\le i<2d).
+\]
+令 \(M>2U\)。
+若仅给出窗口的模数据
+\[
+a_{m_0+i}\bmod M,\qquad i=0,1,\dots,2d-1,
+\]
+则可唯一确定 \((a_{m_0},\dots,a_{m_0+2d-1})\) 的整数取值，从而唯一确定全序列 \((a_m)_{m\ge m_0}\)。
+此外，若 \((b_m)\) 亦满足同一递推且在该窗口上有 \(b_{m_0+i}\equiv a_{m_0+i}\pmod M\)，则对所有 \(m\ge m_0\) 有 \(b_m=a_m\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-deterministic-congruence-audit-threshold-optimal} 的标量特例（取 \(d=1\)）可知：当 \(M>2U\) 时，区间 \([-U,U]\) 内的整数由其模 \(M\) 余数唯一确定。
+故可从窗口模数据唯一提升出 \((a_{m_0},\dots,a_{m_0+2d-1})\) 的真实整数值，随后递推关系唯一确定全部后续项。
+最后一条由同样的提升唯一性与递推闭合性立得。证毕。
+\end{proof}
+
 \begin{theorem}[综合征子格对最小递推的反演唯一性]\label{thm:pom-hankel-syndrome-inversion-unique}
 设 \(n\ge 2\)。
 对任意首一且本原多项式 \(P(\lambda)\in\ZZ[\lambda]\)（\(\deg P=d<n\)）定义截断倍乘子模 \(\mathcal M_n(P)\subset\ZZ^n\) 如 \eqref{thm:pom-hankel-syndrome-module-kernel-equals-multiples} 所示。
