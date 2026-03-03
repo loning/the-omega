@@ -189,8 +189,8 @@ order: topo
 ```text
 name: auric_sections
 root: docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/sections
-include: **/*.tex
-exclude: **/generated/**
+include: *.tex,**/*.tex
+exclude: generated/*.tex,**/generated/**
 hash: sha256
 ```
 
@@ -199,7 +199,7 @@ hash: sha256
 ```text
 name: auric_scripts
 root: docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/scripts
-include: **/*.py
+include: *.py,**/*.py
 hash: sha256
 ```
 
@@ -216,9 +216,10 @@ hash: sha256
 
 1. 脚本变更：新增 `tp-method` Atom（载荷可直接是脚本副本）。
 2. 脚本生成 `.tex/.csv/.json`：新增 `tp-artifact` Atom。
-3. 若产物形成新结论：再新增 `tp-exp/tp-claim/tp-thm` Atom。
-4. `from` 至少包含：理论父节点 + 方法 Atom（必要时再加 artifact Atom）。
-5. 源文件删除：不删 Atom，新增 `tp-errata/tp-retract` 候选任务。
+3. 源 `.tex`（非 generated）使用 `pylatexenc` 做 AST 解析，按 `definition/lemma/theorem/corollary/proof/...` 环境切分为知识最小单元（每个单元一个 task -> 一个 atom）。
+4. 每个 `.tex` 知识单元从 `\ref/\eqref/\autoref/\cref` 提取依赖，映射到父 atom，写入 `from`。
+5. 若产物形成新结论：再新增 `tp-exp/tp-claim/tp-thm` Atom。
+6. 源文件删除：不删 Atom，新增 `tp-errata/tp-retract` 候选任务。
 
 ---
 
@@ -259,11 +260,20 @@ hash: sha256
 3. `subfiles`（局部编译）
 4. `xr-hyper`（跨文档引用）
 5. `BibTeX`（默认）
+6. `pylatexenc`（知识单元抽取：LaTeX AST 解析）
 
 推荐命令：
 
 ```bash
 latexmk -pdfxe -interaction=nonstopmode -halt-on-error -file-line-error main.tex
+```
+
+安装 `pylatexenc`（macOS/Homebrew Python）：
+
+```bash
+python3 -m pip install --user --break-system-packages pylatexenc
+# 或
+python3 -m pip install --user --break-system-packages -r knowledgegraph/requirements.txt
 ```
 
 ---
