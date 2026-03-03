@@ -24,6 +24,7 @@ import kg_build_index as build_index  # noqa: E402
 import kg_compile as kg_compile  # noqa: E402
 import kg_emit_llm_tasks as emit_tasks  # noqa: E402
 import kg_ingest_atoms as ingest_atoms  # noqa: E402
+import kg_latexpand_merge as latexpand_merge  # noqa: E402
 import kg_watch_sources as watch_sources  # noqa: E402
 
 HAS_PYLATEXENC = importlib.util.find_spec("pylatexenc") is not None
@@ -206,6 +207,73 @@ class KGScriptsUnitTest(unittest.TestCase):
         else:
             with self.assertRaises(RuntimeError):
                 emit_tasks.extract_tex_knowledge_units("\\begin{theorem}x\\end{theorem}", "sample")
+
+    def test_emit_bundle_parser_extracts_units_by_source_file(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        tex_dir = self.repo_root / "src"
+        tex_dir.mkdir(parents=True, exist_ok=True)
+        f1 = tex_dir / "a.tex"
+        f2 = tex_dir / "b.tex"
+        f1.write_text(
+            "\\begin{lemma}\\label{lem:a}A.\\end{lemma}\n"
+            "\\begin{theorem}\\label{thm:a}By \\ref{lem:a}.\\end{theorem}\n",
+            encoding="utf-8",
+        )
+        f2.write_text(
+            "\\begin{definition}\\label{def:b}B.\\end{definition}\n",
+            encoding="utf-8",
+        )
+
+        records = [
+            {"change_type": "modified", "path": str(f1)},
+            {"change_type": "modified", "path": str(f2)},
+        ]
+        bundle_tex, bundle_entries = emit_tasks.build_tex_bundle([f1, f2])
+        units_index = emit_tasks.build_units_index_from_bundle(bundle_tex, bundle_entries)
+        units_by_path = emit_tasks.collect_bundle_units_for_records(records, units_index)
+        self.assertIn(f1.resolve().as_posix(), units_by_path)
+        self.assertIn(f2.resolve().as_posix(), units_by_path)
+        self.assertEqual(len(units_by_path[f1.resolve().as_posix()]), 2)
+        self.assertEqual(len(units_by_path[f2.resolve().as_posix()]), 1)
+
+    def test_emit_resolve_merged_paths_requires_explicit_existing_inputs(self) -> None:
+        merged_tex = self.repo_root / "merged.tex"
+        merged_map = self.repo_root / "merged.map.json"
+
+        with self.assertRaises(RuntimeError):
+            emit_tasks.resolve_merged_paths(merged_tex, merged_map)
+
+        merged_tex.write_text("% merged\n", encoding="utf-8")
+        merged_map.write_text(
+            json.dumps({"entries": [{"path": str(merged_tex), "start": 0, "end": 8}]}),
+            encoding="utf-8",
+        )
+        tex_p, map_p = emit_tasks.resolve_merged_paths(merged_tex, merged_map)
+        self.assertEqual(tex_p, merged_tex.resolve())
+        self.assertEqual(map_p, merged_map.resolve())
+
+    def test_latexpand_entry_parser_tracks_source_segments(self) -> None:
+        main_tex = (self.repo_root / "paper" / "main.tex").resolve()
+        expanded = (
+            "P0\n"
+            "% start input sections/a.tex\n"
+            "A1\n"
+            "A2\n"
+            "% end input sections/a.tex\n"
+            "P1\n"
+            "% start input sections/b.tex\n"
+            "B1\n"
+            "% end input sections/b.tex\n"
+            "P2\n"
+        )
+        entries = latexpand_merge.parse_latexpand_entries(expanded, main_tex)
+        self.assertGreaterEqual(len(entries), 3)
+        self.assertEqual(entries[0]["path"], main_tex.as_posix())
+        sources = [str(e["path"]) for e in entries]
+        self.assertIn((main_tex.parent / "sections" / "a.tex").resolve().as_posix(), sources)
+        self.assertIn((main_tex.parent / "sections" / "b.tex").resolve().as_posix(), sources)
 
     def test_ingest_non_dry_run_creates_atom_file(self) -> None:
         queue = self.kg_root / ".kgcache" / "llm_queue"
@@ -785,6 +853,12 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn("\\bibliographystyle{amsplain}", payload)
         self.assertIn((self.repo_root / "docs" / "references_alpha").as_posix(), payload)
         self.assertIn((self.repo_root / "docs" / "references_beta").as_posix(), payload)
+
+    def test_repair_unbalanced_display_math_closes_before_blank_line(self) -> None:
+        tex = "\\begin{remark}\n$$\na+b\n\n\\end{remark}\n"
+        repaired, reason = build_index.repair_unbalanced_display_math(tex)
+        self.assertIsNotNone(reason)
+        self.assertIn("$$\na+b\n$$\n\n\\end{remark}\n", repaired)
 
 
 if __name__ == "__main__":

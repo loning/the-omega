@@ -17,6 +17,7 @@
 4. Typed Atom：每个 Atom 必须有类型（定义/定理/脚本/产物/纠错等）。
 5. Dynamic Index：书/章/专题是索引视图，可重建可重排。
 6. DAG Constraint：推理边必须无环。
+7. Merged-First：TeX 抽取统一基于 `latexpanded.tex + map.json`。
 
 ---
 
@@ -46,18 +47,23 @@ knowledgegraph/
     kg_scan_atoms.py
     kg_check_dag.py
     kg_watch_sources.py
+    kg_latexpand_merge.py
     kg_emit_llm_tasks.py
     kg_ingest_atoms.py
     kg_build_index.py
     kg_compile.py
     kg_analyze_build_log.py
   .kgcache/                          # 临时缓存，可忽略提交
+    merged/
+      *.latexpanded.tex
+      *.latexpanded.map.json
 ```
 
 说明：
 - `atoms/` 是唯一真相层。
 - `index_nodes/` 仅用于展示与编译，不承载知识真相。
 - `source_specs/` 定义需要持续监测 hash 的源目录。
+- `.kgcache/merged/*` 是 TeX 抽取唯一输入（单一事实源）。
 
 ---
 
@@ -227,14 +233,15 @@ hash: sha256
 2. 计算内容 hash，与上次快照比较。
 3. 产出 `added/modified/deleted/renamed`。
 4. 写入 `.kgcache/source/<name>/delta_<timestamp>.jsonl`。
-5. `kg_emit_llm_tasks.py` 生成 `.kgcache/llm_queue/`。
-6. `kg_ingest_atoms.py`（LLM 结果落地）只新增 Atom 文件。
+5. `kg_latexpand_merge.py` 生成 `.kgcache/merged/*.latexpanded.tex` 与 `*.map.json`。
+6. `kg_emit_llm_tasks.py` **仅基于 merged 文件**（显式 `--merged-tex/--merged-map`）生成 `.kgcache/llm_queue/`。
+7. `kg_ingest_atoms.py`（LLM 结果落地）只新增 Atom 文件。
 
 ### 8.3 脚本与脚本产物入图规则
 
 1. 脚本变更：新增 `tp-method` Atom（载荷可直接是脚本副本）。
 2. 脚本生成 `.tex/.csv/.json`：新增 `tp-artifact` Atom。
-3. 源 `.tex`（非 generated）使用 `pylatexenc` 做 AST 解析，按 `definition/lemma/theorem/corollary/proof/...` 环境切分为知识最小单元（每个单元一个 task -> 一个 atom）。
+3. 源 `.tex`（非 generated）先由 `latexpand` 合并，再对 merged `.tex` 用 `pylatexenc` 做 AST 解析；按 `definition/lemma/theorem/corollary/proof/...` 环境切分为知识最小单元（每个单元一个 task -> 一个 atom），并通过 `map.json` 回映射到源文件。
 4. 每个 `.tex` 知识单元从 `\ref/\eqref/\autoref/\cref` 提取依赖，映射到父 atom，写入 sidecar JSON 的 `parents`。
 5. `proof` 单元必须绑定声明节点（定义/定理/引理/命题等）；无可解析父节点时不入图（跳过 orphan proof atom）。
 6. 为兼容原文 label 未统一改写，ingest 会使用 sidecar 中 `source_tex_label` 作为别名映射来解析 `source_refs`。
@@ -288,12 +295,34 @@ hash: sha256
 4. `xr-hyper`（跨文档引用）
 5. `BibTeX`（默认）
 6. `pylatexenc`（知识单元抽取：LaTeX AST 解析）
+7. `latexpand`（将 `main.tex` 展开为单一 merged tex）
 
 推荐命令：
 
 ```bash
 latexmk -pdfxe -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
+
+先合并源 TeX（保留 `% start input ...` 来源标记，便于回映射）：
+
+```bash
+python3 knowledgegraph/scripts/kg_latexpand_merge.py \
+  --kg-root knowledgegraph \
+  --main docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/main.tex \
+  --output knowledgegraph/.kgcache/merged/grg_main.latexpanded.tex \
+  --map-output knowledgegraph/.kgcache/merged/grg_main.latexpanded.map.json
+```
+
+基于 merged 文件生成 LLM 队列（必须显式传入 merged 路径）：
+
+```bash
+python3 knowledgegraph/scripts/kg_emit_llm_tasks.py \
+  --kg-root knowledgegraph \
+  --merged-tex knowledgegraph/.kgcache/merged/grg_main.latexpanded.tex \
+  --merged-map knowledgegraph/.kgcache/merged/grg_main.latexpanded.map.json
+```
+
+注意：`kg_emit_llm_tasks.py` 不再现场展开源 TeX，且不再自动选择“最新 merged”；必须显式提供 `--merged-tex` 与 `--merged-map`。
 
 全量索引编译（推荐默认复用缓存）：
 
@@ -378,9 +407,10 @@ python3 -m pip install --user --break-system-packages -r knowledgegraph/requirem
 7. `scripts/kg_ingest_atoms.py`
 8. `scripts/kg_build_index.py`
 9. `scripts/kg_compile.py`
-10. `index_specs/book_grg.idx`
-11. `source_specs/auric_sections.src`
-12. `source_specs/auric_scripts.src`
+10. `scripts/kg_latexpand_merge.py`
+11. `index_specs/book_grg.idx`
+12. `source_specs/auric_sections.src`
+13. `source_specs/auric_scripts.src`
 
 这套闭环满足：
 - 脚本与脚本产物都是 Atom（第一类节点）。

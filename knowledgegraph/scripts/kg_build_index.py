@@ -33,6 +33,7 @@ BEGIN_DOC_RE = re.compile(r"\\begin\s*\{\s*document\s*\}")
 END_DOC_RE = re.compile(r"\\end\s*\{\s*document\s*\}")
 DOCUMENTCLASS_RE = re.compile(r"\\documentclass\b")
 UNESCAPED_DOUBLE_DOLLAR_RE = re.compile(r"(?<!\\)\$\$")
+BUILD_INDEX_VERSION = "2026-03-04-r3"
 
 
 def latex_escape(text: str) -> str:
@@ -249,17 +250,43 @@ def sanitize_non_fragment_tex(atom: Atom) -> Tuple[Optional[str], str]:
 
 
 def repair_unbalanced_display_math(tex: str) -> Tuple[str, Optional[str]]:
-    dbl = len(UNESCAPED_DOUBLE_DOLLAR_RE.findall(tex))
-    if dbl % 2 == 0:
+    total_dbl = len(UNESCAPED_DOUBLE_DOLLAR_RE.findall(tex))
+    if total_dbl % 2 == 0:
         return tex, None
 
-    closing = "\n$$\n"
-    end_env = re.search(r"(\n\\end\{[A-Za-z*@]+\}\s*)\Z", tex)
-    if end_env:
-        repaired = tex[: end_env.start()] + closing + tex[end_env.start() :]
-    else:
-        repaired = tex.rstrip("\n") + closing
-    return repaired, "repaired odd unescaped $$ pair by appending closing $$"
+    lines = tex.splitlines()
+    repaired_lines: List[str] = []
+    in_display = False
+    changed = False
+
+    for line in lines:
+        if in_display and not line.strip():
+            repaired_lines.append("$$")
+            in_display = False
+            changed = True
+
+        repaired_lines.append(line)
+
+        toggles = len(UNESCAPED_DOUBLE_DOLLAR_RE.findall(line))
+        if toggles % 2 == 1:
+            in_display = not in_display
+
+    if in_display:
+        if repaired_lines and re.match(r"^\s*\\end\{[A-Za-z*@]+\}\s*$", repaired_lines[-1]):
+            repaired_lines.insert(len(repaired_lines) - 1, "$$")
+        else:
+            repaired_lines.append("$$")
+        changed = True
+
+    if not changed:
+        # Safety fallback: append closing $$ at end.
+        repaired_lines.append("$$")
+        changed = True
+
+    repaired = "\n".join(repaired_lines)
+    if tex.endswith("\n"):
+        repaired += "\n"
+    return repaired, "repaired odd unescaped $$ pair by inserting closing $$"
 
 
 def collect_tex_crossref_index(
@@ -407,6 +434,8 @@ def selection_fingerprint(
 ) -> str:
     hasher = hashlib.sha256()
     hasher.update(spec_path.resolve().as_posix().encode("utf-8"))
+    hasher.update(b"\n")
+    hasher.update(BUILD_INDEX_VERSION.encode("utf-8"))
     hasher.update(b"\n")
     hasher.update(
         json.dumps(

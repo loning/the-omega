@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import argparse
+import bisect
 import hashlib
 import json
+from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List
 
@@ -48,6 +50,18 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Emit LLM tasks from source delta files.")
     parser.add_argument("--kg-root", type=Path, default=None, help="Knowledgegraph root")
     parser.add_argument(
+        "--merged-tex",
+        type=Path,
+        required=True,
+        help="Merged TeX file from kg_latexpand_merge.py (required)",
+    )
+    parser.add_argument(
+        "--merged-map",
+        type=Path,
+        required=True,
+        help="Merged source map JSON from kg_latexpand_merge.py (required)",
+    )
+    parser.add_argument(
         "--delta",
         action="append",
         default=[],
@@ -60,6 +74,61 @@ def parse_args() -> argparse.Namespace:
         help="Maximum tasks to emit per delta file",
     )
     return parser.parse_args()
+
+
+def resolve_merged_paths(
+    merged_tex_arg: Path,
+    merged_map_arg: Path,
+) -> tuple[Path, Path]:
+    merged_tex = merged_tex_arg.resolve()
+    merged_map = merged_map_arg.resolve()
+    if not merged_tex.exists():
+        raise RuntimeError(f"merged TeX does not exist: {merged_tex}")
+    if not merged_map.exists():
+        raise RuntimeError(f"merged map does not exist: {merged_map}")
+
+    return merged_tex.resolve(), merged_map.resolve()
+
+
+def load_merged_bundle(merged_tex_path: Path, merged_map_path: Path) -> tuple[str, List[Dict[str, object]]]:
+    bundle_tex = read_full_text(merged_tex_path, max_chars=200_000_000)
+    if not bundle_tex:
+        raise RuntimeError(f"merged TeX is empty or unreadable: {merged_tex_path}")
+
+    try:
+        payload = json.loads(merged_map_path.read_text(encoding="utf-8"))
+    except OSError as exc:
+        raise RuntimeError(f"failed reading merged map: {merged_map_path}: {exc}") from exc
+    raw_entries = payload.get("entries")
+    if not isinstance(raw_entries, list):
+        raise RuntimeError(f"merged map missing entries list: {merged_map_path}")
+
+    entries: List[Dict[str, object]] = []
+    for idx, raw in enumerate(raw_entries):
+        if not isinstance(raw, dict):
+            continue
+        source = str(raw.get("path") or "").strip()
+        start = raw.get("start")
+        end = raw.get("end")
+        if not source:
+            continue
+        try:
+            start_i = int(start)
+            end_i = int(end)
+        except (TypeError, ValueError):
+            raise RuntimeError(f"invalid start/end in merged map entry #{idx}: {raw}") from None
+        entries.append(
+            {
+                "path": Path(source).resolve().as_posix(),
+                "start": start_i,
+                "end": end_i,
+            }
+        )
+
+    if not entries:
+        raise RuntimeError(f"merged map has no usable entries: {merged_map_path}")
+    entries.sort(key=lambda e: int(e["start"]))
+    return bundle_tex, entries
 
 
 def expand_delta_paths(kg_root: Path, patterns: Iterable[str]) -> List[Path]:
@@ -280,9 +349,216 @@ def extract_tex_knowledge_units(tex: str, source_stem: str) -> List[Dict[str, ob
     return units
 
 
+def build_tex_bundle(tex_paths: List[Path]) -> tuple[str, List[Dict[str, object]]]:
+    parts: List[str] = []
+    entries: List[Dict[str, object]] = []
+    cursor = 0
+
+    for path in tex_paths:
+        resolved = path.resolve()
+        header = f"% KG_BUNDLE_FILE_BEGIN {resolved.as_posix()}\n"
+        parts.append(header)
+        cursor += len(header)
+
+        text = read_full_text(resolved)
+        start = cursor
+        parts.append(text)
+        cursor += len(text)
+        if not text.endswith("\n"):
+            parts.append("\n")
+            cursor += 1
+        end = cursor
+
+        footer = f"% KG_BUNDLE_FILE_END {resolved.as_posix()}\n"
+        parts.append(footer)
+        cursor += len(footer)
+
+        entries.append(
+            {
+                "path": str(resolved),
+                "start": start,
+                "end": end,
+            }
+        )
+
+    return "".join(parts), entries
+
+
+def _bundle_entry_for_pos(
+    pos: int,
+    entries: List[Dict[str, object]],
+    starts: List[int],
+) -> Dict[str, object] | None:
+    idx = bisect.bisect_right(starts, pos) - 1
+    if idx < 0:
+        return None
+    entry = entries[idx]
+    start = int(entry["start"])
+    end = int(entry["end"])
+    if start <= pos < end:
+        return entry
+    return None
+
+
+def extract_tex_knowledge_units_from_bundle(
+    bundle_tex: str,
+    bundle_entries: List[Dict[str, object]],
+) -> List[Dict[str, object]]:
+    if LatexWalker is None:
+        raise RuntimeError(
+            "pylatexenc is required for TeX atom extraction. "
+            "Install with: python3 -m pip install --user --break-system-packages pylatexenc"
+        )
+
+    if not bundle_entries:
+        return []
+
+    walker = LatexWalker(bundle_tex)
+    root_nodes, _, _ = walker.get_latex_nodes(pos=0)
+    env_nodes = sorted(
+        list(_iter_environment_nodes(root_nodes)),
+        key=lambda node: getattr(node, "pos", 0),
+    )
+
+    starts = [int(e["start"]) for e in bundle_entries]
+    units: List[Dict[str, object]] = []
+    per_file_counter: Dict[str, int] = defaultdict(int)
+    last_anchor_ref_by_file: Dict[str, str] = defaultdict(str)
+
+    for env_node in env_nodes:
+        env_raw = env_node.environmentname or ""
+        env_base = env_raw[:-1] if env_raw.endswith("*") else env_raw
+        if env_base not in ENV_TO_TYPE:
+            continue
+
+        pos = int(getattr(env_node, "pos", -1))
+        entry = _bundle_entry_for_pos(pos, bundle_entries, starts)
+        if entry is None:
+            continue
+
+        source_path = str(entry["path"])
+        source_stem = Path(source_path).stem
+        block = bundle_tex[env_node.pos : env_node.pos + env_node.len]
+        labels, refs = _collect_labels_refs(env_node)
+        source_label = labels[0] if labels else ""
+
+        per_file_counter[source_path] += 1
+        canonical = compact_label(
+            slugify(source_label)
+            if source_label
+            else slugify(f"{source_stem}-{env_base}-{per_file_counter[source_path]:04d}")
+        )
+
+        if env_base == "proof":
+            if not refs and last_anchor_ref_by_file[source_path]:
+                refs = [last_anchor_ref_by_file[source_path]]
+            if not refs:
+                continue
+
+        units.append(
+            {
+                "env": env_base,
+                "node_type": ENV_TO_TYPE[env_base],
+                "source_label": source_label,
+                "canonical_label": canonical,
+                "source_refs": refs,
+                "unit_tex": block,
+                "source_path": source_path,
+            }
+        )
+
+        if env_base in ANCHOR_ENV_TYPES:
+            last_anchor_ref_by_file[source_path] = source_label or canonical
+
+    return units
+
+
+def build_units_index_from_bundle(
+    bundle_tex: str,
+    bundle_entries: List[Dict[str, object]],
+) -> Dict[str, List[Dict[str, object]]]:
+    units = extract_tex_knowledge_units_from_bundle(bundle_tex, bundle_entries)
+    by_path: Dict[str, List[Dict[str, object]]] = defaultdict(list)
+    for unit in units:
+        source_path = Path(str(unit["source_path"])).resolve().as_posix()
+        normalized = dict(unit)
+        normalized["source_path"] = source_path
+        by_path[source_path].append(normalized)
+    return by_path
+
+
+def should_bundle_parse_record(rec: Dict[str, object]) -> bool:
+    change_type = str(rec.get("change_type") or "")
+    path = str(rec.get("path") or rec.get("new_path") or "")
+    if change_type not in {"added", "modified", "renamed"}:
+        return False
+    if not path:
+        return False
+    source_file = Path(path)
+    if source_file.suffix.lower() != ".tex":
+        return False
+    if "/generated/" in source_file.as_posix():
+        return False
+    return source_file.exists() and source_file.is_file()
+
+
+def collect_bundle_units_for_records(
+    records: List[Dict[str, object]],
+    units_by_path: Dict[str, List[Dict[str, object]]],
+) -> Dict[str, List[Dict[str, object]]]:
+    tex_paths: List[Path] = []
+    seen = set()
+    for rec in records:
+        if not should_bundle_parse_record(rec):
+            continue
+        path = Path(str(rec.get("path") or rec.get("new_path") or "")).resolve()
+        key = path.as_posix()
+        if key in seen:
+            continue
+        seen.add(key)
+        tex_paths.append(path)
+
+    if not tex_paths:
+        return {}
+
+    changed_set = {p.resolve().as_posix() for p in tex_paths}
+    by_path: Dict[str, List[Dict[str, object]]] = {}
+    for source_path in changed_set:
+        units = units_by_path.get(source_path, [])
+        if units:
+            by_path[source_path] = units
+    return by_path
+
+
 def main() -> int:
     args = parse_args()
     kg_root = args.kg_root.resolve() if args.kg_root else default_kg_root(__file__)
+
+    try:
+        merged_tex_path, merged_map_path = resolve_merged_paths(
+            args.merged_tex,
+            args.merged_map,
+        )
+        bundle_tex, bundle_entries = load_merged_bundle(merged_tex_path, merged_map_path)
+        merged_units_by_path = build_units_index_from_bundle(bundle_tex, bundle_entries)
+    except Exception as exc:
+        print(f"Failed to load merged TeX bundle: {exc}")
+        print(
+            "Run kg_latexpand_merge.py first, then pass --merged-tex/--merged-map explicitly.\n"
+            "Example merge:\n"
+            "  python3 knowledgegraph/scripts/kg_latexpand_merge.py "
+            "--kg-root knowledgegraph "
+            "--main docs/papers/auric-golden-phi/"
+            "2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/main.tex "
+            "--output knowledgegraph/.kgcache/merged/grg_main.latexpanded.tex "
+            "--map-output knowledgegraph/.kgcache/merged/grg_main.latexpanded.map.json\n"
+            "Example emit:\n"
+            "  python3 knowledgegraph/scripts/kg_emit_llm_tasks.py "
+            "--kg-root knowledgegraph "
+            "--merged-tex knowledgegraph/.kgcache/merged/grg_main.latexpanded.tex "
+            "--merged-map knowledgegraph/.kgcache/merged/grg_main.latexpanded.map.json"
+        )
+        return 2
 
     delta_paths = expand_delta_paths(kg_root, args.delta)
     if not delta_paths:
@@ -301,6 +577,8 @@ def main() -> int:
     for delta_path in delta_paths:
         records = load_delta_records(delta_path)
         emitted_for_delta = 0
+        bundle_units_by_path = collect_bundle_units_for_records(records, merged_units_by_path)
+        emitted_tex_unit_paths: set[str] = set()
         for idx, rec in enumerate(records, start=1):
             if emitted_for_delta >= args.max_per_delta:
                 break
@@ -316,54 +594,52 @@ def main() -> int:
             base_label = compact_label(slugify(Path(path).stem if path else f"change-{idx}"))
             proposed_label = f"{base_label}-{suffix_hash}" if suffix_hash else base_label
 
-            # For source TeX files, emit one task per knowledge unit (theorem/lemma/...).
-            if (
-                source_file
-                and change_type in {"added", "modified", "renamed"}
-                and source_file.suffix.lower() == ".tex"
-                and "/generated/" not in source_file.as_posix()
-            ):
-                tex = read_full_text(source_file)
-                units = extract_tex_knowledge_units(tex, source_file.stem)
-                if units:
-                    for uidx, unit in enumerate(units, start=1):
-                        if emitted_for_delta >= args.max_per_delta:
-                            break
-                        unit_hash = hashlib.sha256(str(unit["unit_tex"]).encode("utf-8")).hexdigest()[:12]
-                        unit_proposed = (
-                            f"{unit['canonical_label']}-{unit_hash}"
-                            if unit_hash
-                            else str(unit["canonical_label"])
-                        )
-                        task = {
-                            "task_id": f"TASK-{ts}-{emitted + 1:06d}",
-                            "created_at": ts,
-                            "delta_file": str(delta_path),
-                            "source_name": rec.get("source_name"),
-                            "change_type": change_type,
-                            "source_path": source_path,
-                            "old_hash": old_hash,
-                            "new_hash": new_hash,
-                            "diff_excerpt": str(unit["unit_tex"])[:2000],
-                            "candidate_parent_labels": [slugify(r) for r in unit["source_refs"]],
-                            "suggested_node_type": unit["node_type"],
-                            "proposed_label": unit_proposed,
-                            "status": "pending",
-                            "task_kind": "tex_knowledge_unit",
-                            "unit_index": uidx,
-                            "unit_env": unit["env"],
-                            "canonical_label": unit["canonical_label"],
-                            "source_tex_label": unit["source_label"],
-                            "source_refs": unit["source_refs"],
-                            "unit_tex": unit["unit_tex"],
-                        }
-                        task_path = queue_dir / f"task_{ts}_{emitted + 1:06d}.json"
-                        task_path.write_text(
-                            json.dumps(task, ensure_ascii=False, indent=2), encoding="utf-8"
-                        )
-                        emitted += 1
-                        emitted_for_delta += 1
-                    continue
+            # For source TeX files, emit one task per unit extracted from merged.tex
+            # and mapped back to this source file.
+            if source_file and source_file.suffix.lower() == ".tex" and change_type in {"added", "modified", "renamed"}:
+                source_key = source_file.resolve().as_posix()
+                if source_key not in emitted_tex_unit_paths:
+                    units = bundle_units_by_path.get(source_key, [])
+                    if units:
+                        for uidx, unit in enumerate(units, start=1):
+                            if emitted_for_delta >= args.max_per_delta:
+                                break
+                            unit_hash = hashlib.sha256(str(unit["unit_tex"]).encode("utf-8")).hexdigest()[:12]
+                            unit_proposed = (
+                                f"{unit['canonical_label']}-{unit_hash}"
+                                if unit_hash
+                                else str(unit["canonical_label"])
+                            )
+                            task = {
+                                "task_id": f"TASK-{ts}-{emitted + 1:06d}",
+                                "created_at": ts,
+                                "delta_file": str(delta_path),
+                                "source_name": rec.get("source_name"),
+                                "change_type": change_type,
+                                "source_path": source_key,
+                                "old_hash": old_hash,
+                                "new_hash": new_hash,
+                                "diff_excerpt": str(unit["unit_tex"])[:2000],
+                                "candidate_parent_labels": [slugify(r) for r in unit["source_refs"]],
+                                "suggested_node_type": unit["node_type"],
+                                "proposed_label": unit_proposed,
+                                "status": "pending",
+                                "task_kind": "tex_knowledge_unit",
+                                "unit_index": uidx,
+                                "unit_env": unit["env"],
+                                "canonical_label": unit["canonical_label"],
+                                "source_tex_label": unit["source_label"],
+                                "source_refs": unit["source_refs"],
+                                "unit_tex": unit["unit_tex"],
+                            }
+                            task_path = queue_dir / f"task_{ts}_{emitted + 1:06d}.json"
+                            task_path.write_text(
+                                json.dumps(task, ensure_ascii=False, indent=2), encoding="utf-8"
+                            )
+                            emitted += 1
+                            emitted_for_delta += 1
+                        emitted_tex_unit_paths.add(source_key)
+                        continue
 
             task = {
                 "task_id": f"TASK-{ts}-{emitted + 1:06d}",
