@@ -43,8 +43,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--index-ref-mode",
         choices=["stable", "strict"],
-        default="stable",
-        help="Index mode reference behavior: stable=degrade \\ref/\\cite for robustness, strict=keep native refs.",
+        default="strict",
+        help=(
+            "Index mode reference behavior: strict=keep native refs/cites; "
+            "stable=keep refs native when resolvable and only fallback on unresolved refs."
+        ),
+    )
+    parser.add_argument(
+        "--degrade-cite",
+        action="store_true",
+        help=(
+            "Only used with --index-ref-mode stable: degrade \\cite-family commands "
+            "to raw keys instead of running bibliography resolution."
+        ),
     )
     parser.add_argument(
         "--latexmk-cmd",
@@ -65,7 +76,12 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def build_main_tex(inputs: Sequence[Path], *, fragment_ref_mode: bool = False) -> str:
+def build_main_tex(
+    inputs: Sequence[Path],
+    *,
+    fragment_ref_mode: bool = False,
+    degrade_cite: bool = False,
+) -> str:
     lines: List[str] = []
     lines.append("\\ifdefined\\pdfoutput\\pdfoutput=1\\fi")
     lines.append("\\documentclass[11pt,letterpaper,fontset=fandol]{ctexart}")
@@ -163,9 +179,10 @@ def build_main_tex(inputs: Sequence[Path], *, fragment_ref_mode: bool = False) -
         lines.append("\\newcommand{\\kgrawref}[1]{\\texttt{#1}}")
         lines.append("\\hbadness=10000")
         lines.append("\\hfuzz=1000pt")
-        lines.append("\\renewcommand{\\cite}[1]{\\kgrawref{#1}}")
-        lines.append("\\@ifundefined{citep}{\\providecommand{\\citep}[1]{\\kgrawref{#1}}}{}")
-        lines.append("\\@ifundefined{citet}{\\providecommand{\\citet}[1]{\\kgrawref{#1}}}{}")
+        if degrade_cite:
+            lines.append("\\renewcommand{\\cite}[1]{\\kgrawref{#1}}")
+            lines.append("\\@ifundefined{citep}{\\providecommand{\\citep}[1]{\\kgrawref{#1}}}{}")
+            lines.append("\\@ifundefined{citet}{\\providecommand{\\citet}[1]{\\kgrawref{#1}}}{}")
         lines.append("\\@ifundefined{autoref}{\\providecommand{\\autoref}[1]{\\kgrawref{#1}}}{}")
         lines.append("\\@ifundefined{cref}{\\providecommand{\\cref}[1]{\\kgrawref{#1}}}{}")
         lines.append("\\@ifundefined{Cref}{\\providecommand{\\Cref}[1]{\\kgrawref{#1}}}{}")
@@ -502,7 +519,11 @@ def main() -> int:
     main_tex = build_dir / "main.tex"
     use_fragment_ref_mode = args.mode == "index" and args.index_ref_mode == "stable"
     main_tex.write_text(
-        build_main_tex(resolved_inputs, fragment_ref_mode=use_fragment_ref_mode),
+        build_main_tex(
+            resolved_inputs,
+            fragment_ref_mode=use_fragment_ref_mode,
+            degrade_cite=args.degrade_cite,
+        ),
         encoding="utf-8",
     )
     print(f"Generated {main_tex}")

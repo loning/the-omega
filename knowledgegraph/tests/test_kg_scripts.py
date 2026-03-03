@@ -611,10 +611,11 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn("\\kginput{", content)
         self.assertIn("result", content)
         self.assertNotIn("tp-method", content)
-        self.assertIn("Skipped Root TeX Atoms", content)
-        self.assertIn("rootdoc", content)
+        self.assertIn("mode=sanitized", content)
+        self.assertIn("Reference Closure Summary", content)
         manifest = json.loads((out_tex.parent / "manifest.json").read_text(encoding="utf-8"))
         self.assertIn("selection_fingerprint", manifest)
+        self.assertEqual(manifest["sanitized_tex_atom_count"], 1)
 
         mtime_before = out_tex.stat().st_mtime_ns
         time.sleep(1.1)
@@ -648,7 +649,142 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn("\\hbadness=10000", template)
         self.assertIn("\\hfuzz=1000pt", template)
         self.assertNotIn("\\renewcommand{\\ref}", template)
-        self.assertIn("\\renewcommand{\\cite}", template)
+        self.assertNotIn("\\renewcommand{\\cite}", template)
+
+        template_degrade_cite = kg_compile.build_main_tex(
+            [Path("/tmp/dummy.tex")],
+            fragment_ref_mode=True,
+            degrade_cite=True,
+        )
+        self.assertIn("\\renewcommand{\\cite}", template_degrade_cite)
+
+    def test_extract_tex_crossrefs_ignores_comments(self) -> None:
+        tex = (
+            "\\label{sec:ok}\n"
+            "% \\label{sec:commented}\n"
+            "By \\ref{sec:ok,sec:next} and \\eqref{eq:one}. % \\ref{sec:hidden}\n"
+            "\\cite{A1, B2}\n"
+        )
+        labels, refs, cites = common.extract_tex_crossrefs(tex)
+        self.assertEqual(labels, {"sec:ok"})
+        self.assertEqual(refs, {"sec:ok", "sec:next", "eq:one"})
+        self.assertEqual(cites, {"A1", "B2"})
+
+    def test_build_index_reference_closure_adds_excluded_type(self) -> None:
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0001",
+            label="def-base",
+            atom_type="tp-def",
+            ext="tex",
+            content="\\begin{definition}\\label{def:base}Base\\end{definition}\n",
+        )
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0002",
+            label="thm-main",
+            atom_type="tp-thm",
+            parents=("def-base",),
+            ext="tex",
+            content="\\begin{theorem}\\label{thm:main}Use \\ref{prop:helper}.\\end{theorem}\n",
+        )
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0003",
+            label="prop-helper",
+            atom_type="tp-prop",
+            parents=("def-base",),
+            ext="tex",
+            content="\\begin{proposition}\\label{prop:helper}Helper\\end{proposition}\n",
+        )
+
+        spec = self.kg_root / "index_specs" / "closure.idx"
+        spec.write_text(
+            "\n".join(
+                [
+                    "name: closure",
+                    "roots: thm-main",
+                    "include_types: tp-def,tp-thm",
+                    "reference_closure: true",
+                    "reference_closure_max_rounds: 6",
+                    "order: topo",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        out_tex = build_index.build_single_spec(self.kg_root, spec)
+        content = out_tex.read_text(encoding="utf-8")
+        self.assertIn("thm-main", content)
+        self.assertIn("prop-helper", content)
+
+        closure_report = json.loads(
+            (out_tex.parent / "reference_closure_report.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(closure_report["added_atom_count"], 1)
+        self.assertEqual(closure_report["final_missing_ref_count"], 0)
+
+    def test_build_index_sanitizes_wrapper_and_rewrites_bibliography_paths(self) -> None:
+        src_dir = self.repo_root / "docs" / "sections" / "backmatter"
+        src_dir.mkdir(parents=True, exist_ok=True)
+        (self.repo_root / "docs" / "references_alpha.bib").write_text(
+            "@article{A, title={A}}\n", encoding="utf-8"
+        )
+        (self.repo_root / "docs" / "references_beta.bib").write_text(
+            "@article{B, title={B}}\n", encoding="utf-8"
+        )
+        source_file = src_dir / "main.tex"
+        source_file.write_text("% src\n", encoding="utf-8")
+
+        wrapper_path = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0099",
+            label="backmatter-main",
+            atom_type="tp-note",
+            ext="tex",
+            content=(
+                "\\documentclass[../../main.tex]{subfiles}\n"
+                "\\begin{document}\n"
+                "\\bibliographystyle{amsplain}\n"
+                "\\bibliography{\\subfix{../../references_alpha},\\subfix{../../references_beta}}\n"
+                "\\end{document}\n"
+            ),
+        )
+        common.write_json(
+            common.atom_sidecar_path(wrapper_path),
+            {
+                "kg_id": "KG-20260303-0099",
+                "label": "backmatter-main",
+                "atom_type": "tp-note",
+                "parents": [],
+                "source_path": str(source_file),
+            },
+        )
+
+        spec = self.kg_root / "index_specs" / "wrapper.idx"
+        spec.write_text(
+            "\n".join(
+                [
+                    "name: wrapper",
+                    "roots: backmatter-main",
+                    "include_types: tp-note",
+                    "reference_closure: false",
+                    "include_wrapper_fragments: true",
+                    "order: topo",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        out_tex = build_index.build_single_spec(self.kg_root, spec)
+        out_dir = out_tex.parent
+        alias_file = out_dir / "atoms" / "KG-20260303-0099.tex"
+        self.assertTrue(alias_file.exists())
+        payload = alias_file.read_text(encoding="utf-8")
+        self.assertNotIn("\\documentclass", payload)
+        self.assertIn("\\bibliographystyle{amsplain}", payload)
+        self.assertIn((self.repo_root / "docs" / "references_alpha").as_posix(), payload)
+        self.assertIn((self.repo_root / "docs" / "references_beta").as_posix(), payload)
 
 
 if __name__ == "__main__":

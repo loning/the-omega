@@ -104,17 +104,62 @@ def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
+LABEL_RE = re.compile(r"\\label\{([^}]+)\}")
+REF_RE = re.compile(
+    r"\\(?:ref|eqref|autoref|cref|Cref|pageref|vref|nameref)\{([^}]+)\}"
+)
+CITE_RE = re.compile(r"\\(?:cite|citet|citep)\{([^}]+)\}")
+
+
+def strip_tex_comments(text: str) -> str:
+    lines: List[str] = []
+    for raw in text.splitlines():
+        line = raw
+        cut = None
+        for idx, ch in enumerate(line):
+            if ch != "%":
+                continue
+            if idx > 0 and line[idx - 1] == "\\":
+                continue
+            cut = idx
+            break
+        if cut is not None:
+            line = line[:cut]
+        lines.append(line)
+    out = "\n".join(lines)
+    if text.endswith("\n"):
+        out += "\n"
+    return out
+
+
+def split_latex_csv(value: str) -> List[str]:
+    out: List[str] = []
+    for part in value.split(","):
+        item = part.strip()
+        if item:
+            out.append(item)
+    return out
+
+
+def extract_tex_crossrefs(text: str) -> Tuple[Set[str], Set[str], Set[str]]:
+    cleaned = strip_tex_comments(text)
+    labels = set(LABEL_RE.findall(cleaned))
+    refs: Set[str] = set()
+    for raw in REF_RE.findall(cleaned):
+        refs.update(split_latex_csv(raw))
+    cites: Set[str] = set()
+    for raw in CITE_RE.findall(cleaned):
+        cites.update(split_latex_csv(raw))
+    return labels, refs, cites
+
+
 def tex_input_fragment_status(path: Path) -> Tuple[bool, Optional[str]]:
     """Return whether a TeX file is safe to include via \\input in a parent document."""
     if path.suffix.lower() != ".tex":
         return False, "not a .tex file"
 
     text = read_text(path)
-    cleaned_lines = []
-    for line in text.splitlines():
-        # Ignore comments to avoid false positives from documentation text.
-        cleaned_lines.append(line.split("%", 1)[0])
-    cleaned = "\n".join(cleaned_lines)
+    cleaned = strip_tex_comments(text)
 
     checks = (
         (r"\\documentclass\b", "contains \\documentclass"),
