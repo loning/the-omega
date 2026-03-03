@@ -159,6 +159,40 @@ p(x):=\frac{1}{d_m(x)}\Tr(\Pi_xD_x),
 第二条由 \(E_m\) 的显式公式直接给出系数读出关系。证毕。
 \end{proof}
 
+\begin{proposition}[\(\ZZ/2\ZZ\) 单角色偏置与 \(\#\mathrm{SAT}\) 的线性读出]\label{prop:block-foldsat-single-character-bias-sharp-sat}
+取群 \(G=\ZZ/2\ZZ\) 并令其非平凡角色 \(\chi:G\to\{\pm 1\}\) 满足 \(\chi(0)=1,\ \chi(1)=-1\)。
+对 \(x=x(\varphi)\) 定义提升标记 \(\ell_x:\Fold_m^{-1}(x)\to G\)：
+\[
+\ell_x(\omega)=1\ \Longleftrightarrow\ D_x|\omega\rangle=|\omega\rangle,
+\qquad
+\ell_x(\omega)=0\ \text{否则}.
+\]
+定义纤维内单角色偏置
+\[
+\mu_{\chi}(x):=\frac{1}{d_m(x)}\sum_{\omega:\ \Fold_m(\omega)=x}\chi(\ell_x(\omega)).
+\]
+则成立精确恒等式
+\[
+\mu_{\chi}(x)=1-2p(x)=1-\frac{2\,N(x)}{d_m(x)},
+\]
+其中 \(p(x)=\frac{1}{d_m(x)}\Tr(\Pi_xD_x)\) 为条件接受率，\(N(x)=\Tr(\Pi_xD_x)\) 为通过验证的微态计数（定理 \ref{thm:block-foldsat-sharpP-complete}）。
+特别地，对任意 CNF 公式 \(\varphi\) 有
+\[
+\mu_{\chi}(x(\varphi))=1-\frac{2\,\#\mathrm{SAT}(\varphi)}{d_m(x(\varphi))}.
+\]
+\end{proposition}
+
+\begin{proof}
+由 \(\chi\) 的取值与 \(\ell_x\) 的定义，纤维求和分裂为
+\[
+\sum_{\Fold_m(\omega)=x}\chi(\ell_x(\omega))
+=(d_m(x)-N(x))\cdot 1+N(x)\cdot(-1)
+=d_m(x)-2N(x).
+\]
+两侧除以 \(d_m(x)\) 得 \(\mu_{\chi}(x)=1-2N(x)/d_m(x)=1-2p(x)\)。
+再由定理 \ref{thm:block-foldsat-sharpP-complete} 的 \(N(x(\varphi))=\#\mathrm{SAT}(\varphi)\) 得最后一式。证毕。
+\end{proof}
+
 \begin{proposition}[指数精度接受率估计的 NP 困难性]\label{prop:block-foldsat-estimation-np-hard}
 考虑估计任务 \(\mathrm{Est}_{1/2}\)：输入为满足解析条件的 \(x\in X_m\)，输出有理数 \(\widehat p(x)\) 满足
 \[
@@ -181,6 +215,55 @@ x\in\mathrm{Block}\text{-}\mathrm{FoldSAT}
 而由定理 \ref{thm:pom-fiber-indset-factorization}，\(d_m(x)\) 可由 \(\Gamma_x\) 的分量长度 \((\ell_i)\) 计算为 \(\prod_i F_{\ell_i+2}\)；
 在固定的规范回放口径下 \(\mathsf{Adm}(x)\) 及分量分解可由一次线性扫描构造，从而 \(d_m(x)\) 在输入规模 \(m\) 上可多项式时间计算。
 因此可多项式时间决定 \(\mathrm{Block}\text{-}\mathrm{FoldSAT}\)。证毕。
+\end{proof}
+
+\begin{theorem}[二值指数权重把指数精度困难提升为常数精度困难]\label{thm:block-foldsat-constant-precision-hardness}
+取 \(x=x(\varphi)\) 并令 \(D_x\) 为验证投影、\(p(x)\) 为条件接受率。
+定义对角算符
+\[
+W_x:=I+(2^m-1)D_x\in\mathcal B(H_m).
+\]
+则由命题 \ref{prop:block-foldsat-trace-criterion} 的条件期望 \(E_m\) 有
+\[
+\|E_m(W_x)\|_{\infty}=1+(2^m-1)p(x).
+\]
+因此存在常数阈值 \(\tau=\tfrac32\) 使得
+\[
+\|E_m(W_{x(\varphi)})\|_{\infty}>\tau
+\quad\Longleftrightarrow\quad
+\varphi\ \text{可满足}.
+\]
+更进一步，若存在多项式时间算法在输入 \(x(\varphi)\) 上以加性误差 \(<\tfrac14\) 近似 \(\|E_m(W_{x(\varphi)})\|_{\infty}\)，则 \(\mathrm{P}=\mathrm{NP}\)。
+\end{theorem}
+
+\begin{proof}
+由 \(D_x\) 的定义知其支撑包含于纤维 \(x\)，故对任意 \(y\neq x\) 有 \(\Tr(\Pi_yD_x)=0\)，而 \(\Tr(\Pi_yI)=d_m(y)\)。
+于是
+\[
+\frac{\Tr(\Pi_yW_x)}{d_m(y)}=
+\begin{cases}
+1,& y\neq x,\\[2mm]
+\dfrac{d_m(x)+(2^m-1)\Tr(\Pi_xD_x)}{d_m(x)}=1+(2^m-1)p(x),& y=x.
+\end{cases}
+\]
+代回 \(E_m\) 的显式公式得到
+\[
+E_m(W_x)=\sum_{y\neq x}\Pi_y+\bigl(1+(2^m-1)p(x)\bigr)\Pi_x
+=I+(2^m-1)p(x)\Pi_x,
+\]
+故 \(\|E_m(W_x)\|_\infty=1+(2^m-1)p(x)\)。
+\par
+若 \(\varphi\) 不可满足，则 \(N(x(\varphi))=\Tr(\Pi_xD_x)=0\)，从而 \(p(x(\varphi))=0\) 且范数为 \(1\)。
+若 \(\varphi\) 可满足，则 \(N(x(\varphi))\ge 1\) 从而 \(p(x(\varphi))\ge 1/d_m(x(\varphi))\)。
+又 \(d_m(x(\varphi))\le |\Omega_m|=2^m\)，故
+\[
+\|E_m(W_{x(\varphi)})\|_\infty
+\ge 1+\frac{2^m-1}{d_m(x(\varphi))}
+\ge 2-2^{-m}
+>\frac32.
+\]
+从而阈值等价性成立。
+若存在加性误差 \(<\tfrac14\) 的多项式时间近似，则可把不可满足实例的输出（位于 \((\tfrac34,\tfrac54)\)）与可满足实例的输出（位于 \((\tfrac74,\infty)\)）在常数间隔上区分，从而多项式时间判定 SAT，推出 \(\mathrm{P}=\mathrm{NP}\)。证毕。
 \end{proof}
 
 \begin{proposition}[均匀抽样--验证策略的指数下界]\label{prop:block-foldsat-uniform-sampling-exp-lb}

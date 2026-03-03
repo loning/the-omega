@@ -200,6 +200,94 @@ m=3n,\qquad x=x^\star\!\upharpoonright_{3n}
 故满足解数严格保持，从而得到 \(\#\mathrm{P}\)-完备。证毕。
 \end{proof}
 
+\paragraph{单标量谱量的常数精度 \(\mathrm{NP}\) 难度与单角色矩的 \(\#\mathrm{P}\) 读出}
+下面把定理 \ref{thm:conclusion-fiber-cnf-npcomplete-periodic}--\ref{thm:conclusion-sharp-fiber-cnf-sharpPcomplete-parsimonious} 的纤维内约束编译，压缩为两类仅依赖单一稳定类型 \(x=x^\star\!\upharpoonright_{3n}\) 的标量读出：一个为“测量--制备”条件期望的算子范数（常数精度），另一个为 \(\ZZ/2\ZZ\) 非平凡角色的单一矩（精确线性读出 \(\#\mathrm{SAT}\)）。
+
+\begin{definition}[固定周期纤维上的验证投影与接受率]\label{def:conclusion-periodic-fiber-verifier}
+取 \(m=3n\) 与 \(x=x^\star\!\upharpoonright_{3n}\)。
+令 \(\Pi_y:=\sum_{\omega:\ \Fold_m(\omega)=y}|\omega\rangle\langle\omega|\) 为纤维投影（见命题 \ref{prop:block-foldsat-trace-criterion} 的同型定义）。
+对任意关于 \(\Omega_m\) 的 CNF 公式 \(\Psi\)，令 \(D_\Psi\) 为对角投影：
+\[
+D_\Psi|\omega\rangle=|\omega\rangle
+\quad\Longleftrightarrow\quad
+\Psi(\omega)=1.
+\]
+并定义纤维条件接受率
+\[
+p_\Psi:=\frac{1}{d_m(x)}\Tr(\Pi_xD_\Psi)\in[0,1].
+\]
+\end{definition}
+
+\begin{theorem}[固定周期稳定类型上的常数阈值可满足性判别]\label{thm:conclusion-periodic-fiber-constant-threshold-np-hard}
+在定义 \ref{def:conclusion-periodic-fiber-verifier} 的设定下，定义“测量--制备”条件期望
+\[
+E_m(\rho):=\sum_{y\in X_m}\frac{\Tr(\Pi_y\rho)}{d_m(y)}\,\Pi_y,
+\]
+并对 \(x=x^\star\!\upharpoonright_{3n}\) 定义对角算符
+\[
+W_\Psi:=I+(2^{m}-1)D_\Psi.
+\]
+则
+\[
+\|E_m(W_\Psi)\|_{\infty}=1+(2^{m}-1)p_\Psi.
+\]
+并且存在常数阈值 \(\tau=\tfrac32\) 使得：对由定理 \ref{thm:conclusion-fiber-cnf-npcomplete-periodic} 的归约产生的 \(\Psi=B_n\wedge\varphi^\sharp\)，有
+\[
+\|E_m(W_\Psi)\|_{\infty}>\tau
+\quad\Longleftrightarrow\quad
+\varphi\ \text{可满足}.
+\]
+因此，SAT 可在多项式时间内归约为对单一固定稳定类型 \(x=x^\star\!\upharpoonright_{3n}\) 的一个算子范数标量的常数阈值判定；更进一步，任何以加性误差 \(<\tfrac14\) 近似 \(\|E_m(W_\Psi)\|_\infty\) 的多项式时间算法都将推出 \(\mathrm{P}=\mathrm{NP}\)。
+\end{theorem}
+
+\begin{proof}
+由 \(D_\Psi\) 的定义可知其支撑包含于纤维 \(x\)，故当 \(y\neq x\) 时 \(\Tr(\Pi_yD_\Psi)=0\)，而 \(\Tr(\Pi_yI)=d_m(y)\)。
+于是与定理 \ref{thm:block-foldsat-constant-precision-hardness} 的计算同型，得到
+\(
+E_m(W_\Psi)=I+(2^m-1)p_\Psi\,\Pi_x
+\)
+并从而 \(\|E_m(W_\Psi)\|_\infty=1+(2^m-1)p_\Psi\)。
+\par
+对 \(\Psi=B_n\wedge\varphi^\sharp\)，由定理 \ref{thm:conclusion-sharp-fiber-cnf-sharpPcomplete-parsimonious} 的保解数归约，\(\Tr(\Pi_xD_\Psi)=\#\mathrm{SAT}(\varphi)\)。
+若 \(\varphi\) 不可满足，则 \(p_\Psi=0\) 从而范数为 \(1\)；
+若 \(\varphi\) 可满足，则 \(p_\Psi\ge 1/d_m(x)\)。
+而由定理 \ref{thm:conclusion-period3-fiber-exact-multiplicity}，\(d_m(x)=2^n\le 2^{3n}=2^m\)，故
+\(
+\|E_m(W_\Psi)\|_\infty\ge 2-2^{-m}>\tfrac32
+\)。
+阈值等价性与加性误差推论随之成立。证毕。
+\end{proof}
+
+\begin{proposition}[固定周期纤维上的单角色矩给出 \texorpdfstring{\(\#\mathrm{SAT}\)}{\#SAT} 的精确线性读出]\label{prop:conclusion-periodic-fiber-single-character-moment}
+取 \(G=\ZZ/2\ZZ\) 并令其非平凡角色 \(\chi\) 满足 \(\chi(0)=1,\chi(1)=-1\)。
+在定义 \ref{def:conclusion-periodic-fiber-verifier} 的设定下，定义提升标记 \(\ell_\Psi:\Fold_m^{-1}(x)\to G\)：
+\[
+\ell_\Psi(\omega)=1\ \Longleftrightarrow\ D_\Psi|\omega\rangle=|\omega\rangle,
+\qquad
+\ell_\Psi(\omega)=0\ \text{否则},
+\]
+并定义纤维内单角色矩
+\[
+\mu_\chi(x;\Psi):=\frac{1}{d_m(x)}\sum_{\omega:\ \Fold_m(\omega)=x}\chi(\ell_\Psi(\omega)).
+\]
+则有精确恒等式
+\[
+\mu_\chi(x;\Psi)=1-\frac{2\,\Tr(\Pi_xD_\Psi)}{d_m(x)}.
+\]
+对归约实例 \(\Psi=B_n\wedge\varphi^\sharp\)（其中 \(m=3n,\ x=x^\star\!\upharpoonright_{3n}\)），由 \(\Tr(\Pi_xD_\Psi)=\#\mathrm{SAT}(\varphi)\) 与 \(d_m(x)=2^n\) 得
+\[
+\mu_\chi(x;\Psi)=1-\frac{2\,\#\mathrm{SAT}(\varphi)}{2^n}.
+\]
+\end{proposition}
+
+\begin{proof}
+与命题 \ref{prop:block-foldsat-single-character-bias-sharp-sat} 的纤维求和恒等式同型：
+\(
+\sum_{\Fold_m(\omega)=x}\chi(\ell_\Psi(\omega))=d_m(x)-2\Tr(\Pi_xD_\Psi)
+\)。
+两侧除以 \(d_m(x)\) 即得第一式；第二式由定理 \ref{thm:conclusion-period3-fiber-exact-multiplicity} 与保解数归约代入得到。证毕。
+\end{proof}
+
 \begin{proposition}[周期纤维内的秩 \texorpdfstring{\(n\)}{n} 布尔区间与 Möbius 证书]\label{prop:conclusion-periodic-fiber-boolean-interval-mobius}
 取 \(m=3n\) 与 \(x=x^\star\!\upharpoonright_{3n}\)，并令纤维格 \(\mathcal L_x\) 为定理 \ref{thm:pom-fiber-birkhoff-fence-ideal-lattice} 所赋予的分布式格结构。
 定义两端点微态 \(\omega^{\varnothing},\omega^{[n]}\in\Omega_{3n}\) 为逐块取值

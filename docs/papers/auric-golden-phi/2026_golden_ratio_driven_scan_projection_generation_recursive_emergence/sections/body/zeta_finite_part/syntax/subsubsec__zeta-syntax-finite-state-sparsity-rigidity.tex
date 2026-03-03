@@ -75,6 +75,44 @@ C_1\,\frac{2^m}{m}\ \le\ p_m\ \le\ C_2\,\frac{2^m}{m}.
 \)，这些额外项必为合数误报，故给出第二条下界；第一条下界对一般情形取 \(c\) 足够小即可同时覆盖两种分支。证毕。
 \end{proof}
 
+\begin{corollary}[二进制素数的有限状态检索崩塌：召回率与精确率不可同时保持]\label{cor:zeta-syntax-dfa-prime-recall-precision-collapse}
+在推论 \ref{cor:zeta-syntax-dfa-prime-symmetric-diff} 的记号下，令 \(L_m:=L(\mathcal A)\cap\{0,1\}^m\) 为 DFA \(\mathcal A\) 的长度 \(m\) 接受切片，并令 \(\mathcal P_m\) 为长度 \(m\) 的二进制素数集合。
+定义
+\[
+\mathrm{Rec}_m:=\frac{|L_m\cap \mathcal P_m|}{|\mathcal P_m|},
+\qquad
+\mathrm{Prec}_m:=\frac{|L_m\cap \mathcal P_m|}{|L_m|}
+\quad(|L_m|>0).
+\]
+则必有其一成立：
+\begin{enumerate}
+  \item \(\mathrm{Rec}_m\to 0\) 指数收敛；
+  \item 存在整数 \(p\ge 1\) 与同余类 \(r\ (\mathrm{mod}\ p)\)，使得沿子列 \(m\equiv r\ (\mathrm{mod}\ p)\) 有 \(\mathrm{Prec}_m\to 0\)。
+\end{enumerate}
+特别地，对任意固定 \(\varepsilon>0\)，不存在单一 DFA 能在无穷多个长度 \(m\) 上同时满足 \(\mathrm{Rec}_m\ge \varepsilon\) 与 \(\mathrm{Prec}_m\ge \varepsilon\)。
+\end{corollary}
+
+\begin{proof}
+记 \(a_m:=|L_m|\)、\(p_m:=|\mathcal P_m|\)。
+由定理 \ref{thm:zeta-syntax-dfa-density-dichotomy}，要么 \(a_m=O((2\eta)^m)\)（某 \(\eta\in(0,1)\)），要么沿某一无穷同余子列 \(m\equiv r\ (\mathrm{mod}\ p)\) 有 \(a_m\ge \alpha 2^m\)（某 \(\alpha>0\)）。
+\par
+在第一种情形，\(\mathrm{Rec}_m\le a_m/p_m\)。
+由推论 \ref{cor:zeta-syntax-dfa-prime-symmetric-diff} 证明中的素数定理窗估计 \(p_m\asymp 2^m/m\)，得
+\[
+\mathrm{Rec}_m\ \ll\ \eta^m\,m,
+\]
+从而指数趋零。
+\par
+在第二种情形，对该同余子列上 \(m\) 且 \(a_m>0\)，有
+\[
+\mathrm{Prec}_m
+\le \frac{p_m}{a_m}
+\ll \frac{2^m/m}{\alpha 2^m}
+=O\!\left(\frac{1}{m}\right)\to 0.
+\]
+两种情形覆盖全部 DFA。最后结论由反证法立得：若两者在无穷多个 \(m\) 上同时 \(\ge\varepsilon\)，则既排除 \(\mathrm{Rec}_m\) 指数趋零，也排除 \(\mathrm{Prec}_m\) 在某同余子列趋零。证毕。
+\end{proof}
+
 \begin{theorem}[Zeckendorf 语法内的素数语言非 sofic]\label{thm:zeta-syntax-zeckendorf-primes-not-sofic}
 令 \(X_\infty\subseteq\{0,1\}^{\mathbb N}\) 为黄金均值（Zeckendorf）移位：禁止相邻子词 \(11\)，并记其长度 \(m\) 的合法块集合为
 \(

@@ -165,6 +165,33 @@ T_{\le}=\Omega(k)
 后半部分为本文既有结果的直接实例化。证毕。
 \end{proof}
 
+\begin{theorem}[固定温度软序门加入后的概率有限态性与分布等价可判定性]\label{thm:conclusion-fixed-temp-soft-order-probabilistic-finite-state-decidable}
+在定理 \ref{thm:conclusion-finite-state-gate-fragment-decidable-order-gate-role} 的有限态确定性片段基础上，加入有限个固定温度的软序门 \(\mathrm{PROJ}_{u_0}\)（\(u_0\in(0,1)\) 为常数，且其一步读出由有限状态马尔可夫核给出，例如 soft first-fit 实例）。
+令 \(\mathcal C_{\mathrm{prob}}(\Gamma,u_0)\) 为在允许串联、并联与扇出下生成的电路类，并以“输出分布”为其语义。
+则：
+\begin{enumerate}
+  \item \(\mathcal C_{\mathrm{prob}}(\Gamma,u_0)\) 中任一电路都实现有限状态的概率转导器（等价于有限维线性表示的加权自动机/隐马尔可夫型模型）；
+  \item 若所有门参数与转移概率属于可判定数域（例如代数数域 \(\overline{\QQ}\)），则两电路的分布语义等价是可判定问题。
+\end{enumerate}
+因此固定温度随机化不会跨越“语义图灵完备”的可判定性边界；跨越边界的结构地位仍由硬序门 \(P_{\le}\)（或等价的零温极限）所占据。
+\end{theorem}
+\begin{proof}
+对 (1)，固定温度软序门 \(\mathrm{PROJ}_{u_0}\) 在每一步诱导一个有限状态的随机转移与随机输出机制；确定性有限态门是其退化特例。
+在串联、并联与扇出下，内部状态空间仅作有限直积并作有限商，因而仍为有限状态随机系统。
+\par
+对 (2)，对任一有限状态概率转导器，可为每个输入符号 \(a\) 写出对应的随机转移矩阵 \(P_a\)，并以线性泛函 \(L\) 表示所关心的输出分布坐标；对任意输入字 \(w=a_1\cdots a_m\)，输出分布坐标可写为
+\[
+L\bigl(\pi_0 P_{a_1}\cdots P_{a_m}\bigr),
+\]
+其中 \(\pi_0\) 为初始分布行向量。
+两电路分布等价当且仅当上述表达对所有 \(w\in\Sigma^\ast\) 恒等。
+由于状态维数有限，集合 \(\{\pi_0P_w:\ w\in\Sigma^\ast\}\) 张成的线性子空间维数至多为状态数 \(N\)，可通过可达子空间迭代在有限步内得到一组基，从而把“对所有 \(w\)”的等式检验化为有限多个线性等式检验。
+当矩阵元素属于可判定数域时，有限个线性表达式的零判定可由有限算法完成，故分布等价可判定。
+\par
+最后一段结论由：若固定温度片段已语义图灵完备，则语义等价应不可判定；与 (2) 矛盾。
+与本文中硬 first-fit 依赖 \(P_{\le}\) 并引入不可并行增长的结构性对照一致。证毕。
+\end{proof}
+
 \begin{theorem}[图灵完备类对“异常严格化终止”的强阻碍]\label{thm:conclusion-turing-completeness-obstructs-eventual-omega-vanishing}
 设 \(\mathcal G_{\le B}\) 为预算过滤群胚，\(\mathrm{Anom}_{\le B}\) 为异常系数，\(\omega_B\in H^3(\mathcal G_{\le B};\mathrm{Anom}_{\le B})\) 为三阶结合障碍（见结论 \ref{con:xi-connectivity-third-order-strictification-obstruction}）。
 若存在 \(B_0\) 使得对所有 \(B\ge B_0\) 有 \(\omega_B=0\)，且同时满足：

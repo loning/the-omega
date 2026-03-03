@@ -136,4 +136,143 @@ k:=\min\bigl(|p^{-1}(0)|,\ |p^{-1}(1)|\bigr).
 当 \(k=d/2\)（\(d\) 偶）时，\(A\) 与补集在 \(\mathcal P_d(F)\) 中同类，故需再除以 \(2\)。证毕。
 \end{proof}
 
+\begin{proposition}[取向 torsor 的行列式实现与跳跃类]\label{prop:bdry-orientation-torsor-determinant-realization-jumpclass}
+设 \(S\) 为有限集合，\(|S|=d\ge 1\)，并令
+\[
+V(S):=\RR^{S}
+\]
+为以 \(S\) 为基的实向量空间。
+记 \(\mathrm{Or}_{\det}(V(S))\) 为 \(V(S)\) 的取向集合（两点集合，视为 \(\ZZ_2\)-torsor）。
+则存在关于 \(S\) 双射自然的规范同构（\(\ZZ_2\)-torsor 意义下）
+\[
+\Phi_S:\ \mathrm{Or}(S)\ \xrightarrow{\ \sim\ }\ \mathrm{Or}_{\det}(V(S)).
+\]
+\par
+进一步，设 \(Y\) 连通，\(\pi:\widetilde Y\to Y\) 为常度数 \(d\) 的局部有限层覆叠，并令 \(S_y=\pi^{-1}(y)\)。
+则 \(y\mapsto \mathrm{Or}(S_y)\) 组装成 \(Y\) 上的 \(\ZZ_2\)-局部系统（主 \(\ZZ_2\)-丛），从而对应一个上同调类
+\[
+j(\pi)\in H^1(Y;\ZZ_2).
+\]
+将 \(\pi_\ast\RR\) 视为由纤维置换作用诱导的秩 \(d\) 实局部系统，则有恒等式
+\[
+j(\pi)=w_1\bigl(\det(\pi_\ast\RR)\bigr)\in H^1(Y;\ZZ_2),
+\]
+其中 \(\det(\pi_\ast\RR)\) 为行列式线局部系统，\(w_1\) 为第一 Stiefel--Whitney 类。
+\end{proposition}
+\begin{proof}
+取一标号 \(b\in\mathrm{Bij}([d],S)\)，则有序列 \((b(1),\dots,b(d))\) 给出 \(V(S)\) 的一组有序基，从而给出取向。
+若以偶置换右乘 \(b\)，基变换的行列式为 \(+1\)，故取向不变。
+因此取向仅依赖于 \(b\) 在 \(\mathfrak A_d\) 右陪集中的像，得到良定义映射 \(\Phi_S\)；
+其为双射且与任意双射 \(f:S\to S'\) 交换，故为自然同构。
+\par
+对覆叠 \(\pi\)，沿环路的解析延拓给出纤维的单值化置换 \(\rho(\gamma)\in\mathfrak S_d\)。
+由定义 \(\mathrm{Or}(S_y)=\mathrm{Bij}([d],S_y)/\mathfrak A_d\)，其单值化恰通过符号同态 \(\mathrm{sgn}(\rho(\gamma))\in\ZZ_2\)，从而得到 \(j(\pi)\)。
+另一方面，局部系统 \(\pi_\ast\RR\) 的单值化为相应置换矩阵表示，其行列式即 \(\mathrm{sgn}(\rho(\gamma))\)，故 \(\det(\pi_\ast\RR)\) 的 \(w_1\) 与 \(j(\pi)\) 表示同一 \(\pi_1(Y)\to\ZZ_2\) 同态，从而在 \(H^1(Y;\ZZ_2)\) 中相等。证毕。
+\end{proof}
+
+\begin{proposition}[纤维积的跳跃类乘法律与偶度稳定化湮灭]\label{prop:bdry-orientation-jumpclass-fiberproduct-multiplicativity}
+设 \(Y\) 连通，\(\pi_i:\widetilde Y_i\to Y\)（\(i=1,2\)）为常度数有限覆叠，\(\deg(\pi_i)=d_i\)。
+设纤维积 \(\widetilde Y:=\widetilde Y_1\times_Y\widetilde Y_2\) 在 \(Y\) 上仍为覆叠，并记诱导覆叠为 \(\pi:\widetilde Y\to Y\)，则
+\[
+j(\pi)\equiv (d_2\bmod 2)\,j(\pi_1)+(d_1\bmod 2)\,j(\pi_2)\qquad\text{于 }H^1(Y;\ZZ_2).
+\]
+特别地若 \(d_1\) 为偶数，则 \(j(\pi)=(d_2\bmod 2)\,j(\pi_1)\)；
+若 \(d_1,d_2\) 皆为偶数，则 \(j(\pi)=0\)。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:bdry-orientation-torsor-determinant-realization-jumpclass}，
+\(
+j(\pi)=w_1(\det(\pi_\ast\RR))
+\)。
+对常度数覆叠有自然同构
+\[
+(\pi_\ast\RR)\ \cong\ (\pi_{1\ast}\RR)\otimes(\pi_{2\ast}\RR),
+\]
+并且对有限维实局部系统 \(U,W\) 有行列式恒等式
+\[
+\det(U\otimes W)\ \cong\ \det(U)^{\otimes \dim W}\otimes \det(W)^{\otimes \dim U}.
+\]
+取 \(U=\pi_{1\ast}\RR\)、\(W=\pi_{2\ast}\RR\) 并用 \(w_1(L^{\otimes n})\equiv (n\bmod 2)\,w_1(L)\)（\(\ZZ_2\) 系数）即得所示公式；偶度情形为其直接推论。证毕。
+\end{proof}
+
+\begin{proposition}[取向函子的对称单子结构与 Koszul 符号]\label{prop:bdry-orientation-functor-symmetric-monoidal-koszul}
+令 \(\mathbf{FinSet}^{\cong}\) 为有限集合与双射构成的群胚，张量结构为不交并 \(\sqcup\)。
+令 \(\mathbf{Tors}(\ZZ_2)\) 为 \(\ZZ_2\)-torsor 的 Picard 群胚，张量为 torsor 乘积 \(\otimes\)。
+则取向函子 \(\mathrm{Or}:\mathbf{FinSet}^{\cong}\to \mathbf{Tors}(\ZZ_2)\) 可提升为对称单子函子：对任意有限集 \(S,T\) 存在自然同构
+\[
+\mu_{S,T}:\ \mathrm{Or}(S\sqcup T)\xrightarrow{\ \sim\ }\mathrm{Or}(S)\otimes\mathrm{Or}(T),
+\]
+并且对标准交换双射 \(\beta_{S,T}:S\sqcup T\to T\sqcup S\) 有
+\[
+\mu_{T,S}\circ \mathrm{Or}(\beta_{S,T})\circ \mu_{S,T}^{-1}
+=(-1)^{|S||T|}\cdot\mathrm{id}_{\mathrm{Or}(S)\otimes \mathrm{Or}(T)},
+\]
+其中 \((-1)\) 表示 \(\mathbf{Tors}(\ZZ_2)\) 中非平凡自同构。
+\end{proposition}
+\begin{proof}
+取 \(d=|S|\)、\(e=|T|\)。
+任取标号 \(b_S:[d]\xrightarrow{\sim}S\)、\(b_T:[e]\xrightarrow{\sim}T\)，拼接得
+\(
+b_{S\sqcup T}:[d+e]\xrightarrow{\sim}S\sqcup T
+\)
+并诱导 \(\mu_{S,T}\)。
+交换双射 \(\beta_{S,T}\) 在 \([d+e]\) 上对应把前 \(d\) 个元素整体移到末端的块置换，其奇偶性等于 \((-1)^{de}\)，从而在 \(\mathrm{Or}\) 上诱导 \((-1)^{de}\) 的 torsor 自同构。
+自然性与独立于标号选择由定义的商结构直接验证。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$t$}{t}-子集构形覆叠的取向传递系数]\label{prop:bdry-orientation-tsubset-transfer-binomial}
+设 \(S\) 为有限集合，\(|S|=k\ge 2\)，并记
+\[
+\binom{S}{t}:=\{A\subset S:\ |A|=t\}\qquad(1\le t\le k-1).
+\]
+则存在关于 \((S,t)\) 自然的规范同构
+\[
+\mathrm{Or}\!\left(\binom{S}{t}\right)\ \cong\ \mathrm{Or}(S)^{\otimes\,\binom{k-2}{t-1}}.
+\]
+等价地，对任意 \(\sigma\in \mathfrak S_k\) 的自然作用有
+\[
+\mathrm{sgn}\bigl(\sigma\curvearrowright \tbinom{S}{t}\bigr)=\mathrm{sgn}(\sigma)^{\binom{k-2}{t-1}}.
+\]
+\end{proposition}
+\begin{proof}
+由于 \(\mathfrak S_k^{\mathrm{ab}}\cong \ZZ_2\)，对称群在任何有限集上的符号特征仅可能为平凡或 \(\mathrm{sgn}\) 的幂，因此只需计算一个换位的作用。
+取换位 \(\tau\in\mathfrak S_k\)。
+在 \(t\)-子集上，\(\tau\) 的不动点是同时含被交换两元或同时不含两元的子集；其余子集按“恰含其一”成对互换。
+而“含第一元不含第二元”的子集数为 \(\binom{k-2}{t-1}\)，故 \(\tau\) 在 \(\binom{S}{t}\) 上分解为 \(\binom{k-2}{t-1}\) 个互不相交的换位，从而
+\(
+\mathrm{sgn}(\tau\curvearrowright \binom{S}{t})=(-1)^{\binom{k-2}{t-1}}
+\)。
+于是整体符号特征为 \(\mathrm{sgn}^{\binom{k-2}{t-1}}\)，与定理 \ref{thm:bdry-binary-jump-orientation-functor-uniqueness} 的唯一性分类相容，得到所示同构。证毕。
+\end{proof}
+
+\begin{corollary}[Lucas 奇偶判据与 \texorpdfstring{$t$}{t}-子集操作的跳跃保留/湮灭]\label{cor:bdry-orientation-tsubset-lucas-parity}
+沿用命题 \ref{prop:bdry-orientation-tsubset-transfer-binomial} 的记号，\(\binom{k-2}{t-1}\) 为奇数当且仅当 \(t-1\) 的二进制展开逐位不超过 \(k-2\)（Lucas 定理的模 \(2\) 判据）。
+因此对任意常度数覆叠 \(\pi:\widetilde Y\to Y\)，若令 \(\pi^{(t)}\) 为诱导的 \(t\)-子集构形覆叠，则
+\[
+j(\pi^{(t)})\equiv \binom{k-2}{t-1}\,j(\pi)\qquad\text{于 }H^1(Y;\ZZ_2),
+\]
+从而 \(\binom{k-2}{t-1}\) 偶时诱导跳跃类必湮灭，奇时与原跳跃类同类。
+\end{corollary}
+\begin{proof}
+第一句为 Lucas 定理在模 \(2\) 的标准推论。
+第二句由命题 \ref{prop:bdry-orientation-tsubset-transfer-binomial} 与命题 \ref{prop:bdry-orientation-torsor-determinant-realization-jumpclass} 立即得到：诱导覆叠的单值化置换作用把符号特征提升为 \(\mathrm{sgn}^{\binom{k-2}{t-1}}\)，从而在 \(H^1(Y;\ZZ_2)\) 中乘以同一奇偶系数。证毕。
+\end{proof}
+
+\begin{proposition}[显式 \texorpdfstring{$t$}{t}-层选择的最小同变寄存器度数]\label{prop:bdry-equvariant-register-min-degree-choose}
+固定 \(k\ge 3\) 与 \(1\le t\le k-1\)，并记 \(C_t:=\binom{[k]}{t}\) 为传递的 \(\mathfrak S_k\)-集合。
+设 \(R\) 为一有限传递 \(\mathfrak S_k\)-集合，并设存在 \(\mathfrak S_k\)-同变映射 \(f:R\to C_t\)。
+则必有
+\[
+|R|\ \ge\ |C_t|\ =\ \binom{k}{t},
+\]
+且该下界可达：取 \(R=C_t\)、\(f=\mathrm{id}\) 即取等。
+因此任何在置换自然性约束下实现显式 \(t|(k-t)\) 分级的机制，都至少需要 \(\log_2\binom{k}{t}\) 比特的外加寄存器容量。
+\end{proposition}
+\begin{proof}
+由传递性可写 \(R\cong \mathfrak S_k/H\)、\(C_t\cong \mathfrak S_k/H_t\)，其中 \(H\) 为某一稳定子，且 \(H_t\cong \mathfrak S_t\times \mathfrak S_{k-t}\)。
+存在 \(\mathfrak S_k\)-同变映射 \(\mathfrak S_k/H\to \mathfrak S_k/H_t\) 当且仅当 \(H\) 共轭包含于 \(H_t\)；
+因此 \([\,\mathfrak S_k:H\,]\ge [\,\mathfrak S_k:H_t\,]=\binom{k}{t}\)，即得 \(|R|\ge \binom{k}{t}\)。
+取 \(H=H_t\) 得可达性；比特下界为取对数的直接翻译。证毕。
+\end{proof}
+
 \endinput

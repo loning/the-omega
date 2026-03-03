@@ -44,6 +44,115 @@ F_{M,x}=F(\alpha)=\max\{\log\varphi,(1-\alpha)\log 2\}=(1-\alpha)\log 2,
 最后，“不是递归可枚举”由集合 \(\{(M,x):F_{M,x}=(1-\alpha)\log 2\}\) 与非停机集合一致推出。证毕。
 \end{proof}
 
+\begin{corollary}[二点谱的常数对可编译性]\label{cor:conclusion-temperature-kernel-free-energy-two-point-any-constants}
+沿用定理 \ref{thm:conclusion-temperature-kernel-free-energy-halting-embedding} 的设定，并记
+\[
+F_0:=\log\varphi,
+\qquad
+F_1:=(1-\alpha)\log 2,
+\qquad
+F_1-F_0>0.
+\]
+则对任意实常数 \(a<b\)，存在一个一致可计算的后处理编译，使得对每个 \((M,x)\) 可构造一族非负矩阵 \(\widetilde T_{M,x}^{(q)}\)（\(q\ge 1\)）并定义
+\[
+\widetilde F_{M,x}:=\lim_{q\to\infty}\frac1q\log\rho\!\bigl(\widetilde T^{(q)}_{M,x}\bigr),
+\]
+满足严格二值化
+\[
+M(x)\ \text{停机}\Longrightarrow \widetilde F_{M,x}=a,
+\qquad
+M(x)\ \text{不停机}\Longrightarrow \widetilde F_{M,x}=b.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-temperature-kernel-free-energy-halting-embedding}，对每个 \(q\) 可取
+\(
+T^{(q)}_{M,x}:=T^{(q)}_{p_q(M,x)}
+\)
+使
+\(
+q^{-1}\log\rho(T^{(q)}_{M,x})\to F_{M,x}\in\{F_0,F_1\}.
+\)
+\par
+取整数 \(k\ge \lceil (b-a)/(F_1-F_0)\rceil\)，并定义放大族
+\[
+U^{(q)}_{M,x}:=\bigl(T^{(q)}_{M,x}\bigr)^{\otimes k},
+\]
+则 \(\rho(U^{(q)}_{M,x})=\rho(T^{(q)}_{M,x})^{k}\)，故
+\(
+q^{-1}\log\rho(U^{(q)}_{M,x})\to kF_{M,x}.
+\)
+\par
+取常数 \(d:=b-kF_1\)，并对每个 \(q\) 令 \(C_d^{(q)}:=[e^{dq}]\) 为 \(1\times 1\) 标量矩阵。
+置
+\[
+V^{(q)}_{M,x}:=U^{(q)}_{M,x}\otimes C_d^{(q)},
+\]
+则 \(\rho(V^{(q)}_{M,x})=e^{dq}\rho(U^{(q)}_{M,x})\)，从而
+\(
+q^{-1}\log\rho(V^{(q)}_{M,x})\to kF_{M,x}+d
+\)
+并满足
+\[
+kF_1+d=b,
+\qquad
+kF_0+d=b-k(F_1-F_0)\le a.
+\]
+\par
+最后令 \(C_a^{(q)}:=[e^{aq}]\) 并取块对角直和
+\[
+\widetilde T^{(q)}_{M,x}:=C_a^{(q)}\oplus V^{(q)}_{M,x}.
+\]
+由 \(\rho(A\oplus B)=\max\{\rho(A),\rho(B)\}\) 得
+\[
+\frac1q\log\rho(\widetilde T^{(q)}_{M,x})
+=\max\!\left\{a,\ \frac1q\log\rho(V^{(q)}_{M,x})\right\},
+\]
+从而极限 \(\widetilde F_{M,x}=\max\{a,kF_{M,x}+d\}\)。
+若不停机，则 \(kF_{M,x}+d=b>a\)，故 \(\widetilde F_{M,x}=b\)；若停机，则 \(kF_{M,x}+d\le a\)，故 \(\widetilde F_{M,x}=a\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[谱自由能门系对单调布尔逻辑的完备嵌入]\label{thm:conclusion-free-energy-monotone-boolean-embedding}
+取推论 \ref{cor:conclusion-temperature-kernel-free-energy-two-point-any-constants} 的特例 \(a=0,b=1\)，并记
+\[
+Z(M,x):=\widetilde F_{M,x}\in\{0,1\}.
+\]
+则对任意单调布尔函数 \(f:\{0,1\}^n\to\{0,1\}\)，存在一个由下列三类操作生成的谱自由能门系模板，使得对任意输入 \((M_i,x_i)\)（\(1\le i\le n\)）有
+\[
+F_{\mathrm{out}}=f\bigl(Z(M_1,x_1),\dots,Z(M_n,x_n)\bigr)\in\{0,1\}.
+\]
+其中三类操作为：张量积（对应自由能加法）、块对角直和（对应自由能取 \(\max\)）、以及常数门（自由能恒为给定常数）。
+\end{theorem}
+\begin{proof}
+任意单调布尔函数存在单调析取范式
+\[
+f(z)=\bigvee_{j=1}^{m}\ \bigwedge_{i\in S_j} z_i,
+\qquad S_j\subseteq[n].
+\]
+对 \(S\subseteq[n]\) 定义
+\[
+A_S(z):=\max\Bigl\{0,\ \sum_{i\in S}z_i-(|S|-1)\Bigr\},
+\qquad
+T_f(z):=\max_{1\le j\le m}A_{S_j}(z).
+\]
+当 \(z\in\{0,1\}^n\) 时，直接验算 \(A_S(z)=\bigwedge_{i\in S}z_i\) 且 \(T_f(z)=f(z)\)。
+\par
+由推论 \ref{cor:conclusion-temperature-kernel-free-energy-two-point-any-constants}（取 \(a=0,b=1\)）得到输入谱比特 \(Z_i:=Z(M_i,x_i)\)。
+再利用张量积使自由能相加、常数门实现平移、块对角直和实现 \(\max\)，即可逐层编译上述由 \((+,\max,\text{常数})\) 生成的实函数 \(T_f\) 并得到所需恒等式。
+证毕。
+\end{proof}
+
+\begin{proposition}[谱自由能门系的单调性障碍]\label{prop:conclusion-free-energy-gates-monotonicity-obstruction}
+由张量积、块对角直和与常数门有限次复合得到的输出自由能函数，对每个输入变量均单调不减。
+因此当其限制在 \(\{0,1\}^n\) 并取值于 \(\{0,1\}\) 时，必对应单调布尔函数；特别地否定门与奇偶门不可由该闭包实现。
+\end{proposition}
+\begin{proof}
+加法与 \(\max\) 均为逐坐标单调不减运算，与常数相加不改变单调性，有限次复合保持单调不减。
+因此其在 \(\{0,1\}^n\) 上诱导的 \(\{0,1\}\)-值函数必为单调布尔函数；否定与奇偶均非单调，故不可表示。
+证毕。
+\end{proof}
+
 \begin{corollary}[谱自由能的高精度近似不可判定]\label{cor:conclusion-temperature-kernel-free-energy-nonapproximable}
 沿用定理 \ref{thm:conclusion-temperature-kernel-free-energy-halting-embedding} 的设定，并取任意
 \[

@@ -157,6 +157,38 @@ C(1,\alpha^{p}),& k=0,
 从而 Big-Witt 的抽象运算可被编译为迹类算子的可审计组合运算（直和/张量积），并与推论 \ref{cor:cyclic-euler-product-complex-section} 的 Fredholm \(\zeta\)-接口严格相容。
 \end{theorem}
 
+\begin{theorem}[Fredholm \texorpdfstring{$\zeta$}{zeta} 界面的等同性判定不可判定]\label{thm:operator-fredholm-zeta-equality-undecidable}
+存在一类满足迹类可执行性条件的原子数据流 \(\mathcal D\)（以可计算方式生成），使得如下判定问题不可判定：
+给定两份可计算原子数据流 \(\mathcal D_0,\mathcal D_1\)，判定其 Euler 乘积
+\[
+\zeta_{\mathcal D_0}(r)=\prod_{j}(1-\beta^{(0)}_j r^{n^{(0)}_j})^{-m^{(0)}_j},
+\qquad
+\zeta_{\mathcal D_1}(r)=\prod_{j}(1-\beta^{(1)}_j r^{n^{(1)}_j})^{-m^{(1)}_j}
+\]
+在某个圆盘 \(|r|<r_0\) 上作为解析函数是否恒等相等。
+等价地，借助循环块直和实现（推论 \ref{cor:cyclic-euler-product-complex-section}），判定
+\(
+\det(I-rL_{\mathcal D_0})^{-1}\equiv \det(I-rL_{\mathcal D_1})^{-1}
+\)
+是否成立亦不可判定。
+\end{theorem}
+
+\begin{proof}
+对任意图灵机 \(M\) 与输入 \(x\)，构造一份可计算原子数据流 \(\mathcal D_{M,x}\)：
+按步数 \(t=1,2,\dots\) 枚举并模拟 \(M(x)\) 至多 \(t\) 步；若在第 \(t\) 步首次停机，则输出单个原子因子 \((\beta,n,m)=(2^{-t},t,1)\)，并在其后输出空数据；若未停机则始终输出空数据。
+该流显然满足迹类可执行性（至多输出一个因子），且
+\[
+\zeta_{\mathcal D_{M,x}}(r)=
+\begin{cases}
+(1-2^{-t}r^{t})^{-1},& M(x)\ \text{于第 }t\text{ 步停机},\\
+1,& M(x)\ \text{不停机}.
+\end{cases}
+\]
+因此判定 \(\zeta_{\mathcal D_{M,x}}(r)\equiv 1\) 等价于判定 \(M(x)\) 是否停机，从而不可判定。
+将 \(\mathcal D_0=\mathcal D_{M,x}\)、\(\mathcal D_1=\varnothing\)（空数据，对应 \(\zeta\equiv 1\)）代入即得结论。
+Fredholm 行列式表述由推论 \ref{cor:cyclic-euler-product-complex-section} 把 \(\zeta_{\mathcal D}\) 实现为 \(\det(I-rL_{\mathcal D})^{-1}\) 立即推出。证毕。
+\end{proof}
+
 \begin{remark}[卷积--Fourier 对角化与 Witt--ghost 的统一解释]\label{rem:operator-fourier-witt-unification}
 注 \ref{rem:twist-commuting-cube} 已表明：折叠多重度的角色扭曲 \(\mathrm{Tw}_\chi\) 同时对齐 Fourier 对角化与 Witt/Euler 交换图。
 定理 \ref{thm:atomic-witt-into-tc1} 进一步给出一个可执行的“算子化提升”观点：在原子闭包子类上，可将 ghost 坐标（迹序列）视为某个迹类算子的 \(\Tr(L^n)\)，

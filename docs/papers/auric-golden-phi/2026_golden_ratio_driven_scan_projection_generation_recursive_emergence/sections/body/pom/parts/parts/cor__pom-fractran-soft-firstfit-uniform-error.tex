@@ -57,9 +57,48 @@ u^{i^\ast}\sum_{j=0}^{\infty}u^j
 其余两式分别为补事件概率与不等式 \(1-(1-u)^T\le Tu\)（例如由 Bernoulli 不等式或并界）给出。证毕。
 \end{proof}
 
+\begin{theorem}[温度预算的全程可靠性上界与输入无关设计准则]\label{thm:pom-fractran-soft-firstfit-annealed-budget}
+考虑一条温度调度序列 \((u_t)_{t\ge 1}\subset(0,1)\)，并令第 \(t\) 步使用温度参数 \(u_t\) 的软 first-fit 分布 \(\Pr_{u_t}(\cdot\mid r_t)\)。
+令事件 \(E_t\) 表示第 \(t\) 步偏离硬 first-fit（即选择 \(i\neq i^\ast(r_t)\)）。
+则对任意 \(T\ge 1\) 有
+\[
+\Pr\Bigl(\bigcup_{t=1}^{T}E_t\Bigr)\ \le\ \sum_{t=1}^{T}u_t,
+\qquad
+\Pr\Bigl(\bigcup_{t\ge 1}E_t\Bigr)\ \le\ \sum_{t\ge 1}u_t.
+\]
+因此若希望对任意未知停机时刻 \(T\) 仍保证全程正确概率不少于 \(1-\varepsilon\)，一个充分条件是
+\[
+\sum_{t\ge 1}u_t\ \le\ \varepsilon.
+\]
+\end{theorem}
+\begin{proof}
+对任意 \(t\) 与任意可达状态 \(r_t\)，由推论 \ref{cor:pom-fractran-soft-firstfit-uniform-error}（将 \(u\) 替换为 \(u_t\)）得
+\(\Pr(E_t\mid r_t)\le u_t\)。
+取全期望得 \(\Pr(E_t)\le u_t\)。
+由并界（Boole 不等式）
+\[
+\Pr\Bigl(\bigcup_{t=1}^{T}E_t\Bigr)\le \sum_{t=1}^{T}\Pr(E_t)\le \sum_{t=1}^{T}u_t.
+\]
+令 \(T\to\infty\) 得第二式。证毕。
+\end{proof}
+
+\begin{corollary}[多项式退火阈值与显式 \texorpdfstring{$\varepsilon$}{epsilon}-预算调度]\label{cor:pom-fractran-soft-firstfit-cooling-threshold}
+在定理 \ref{thm:pom-fractran-soft-firstfit-annealed-budget} 的设定下，取多项式退火 \(u_t=ct^{-p}\)（\(c>0\)）。
+则当 \(p>1\) 时 \(\sum_{t\ge 1}u_t=c\zeta(p)<\infty\)，从而
+\[
+\Pr\Bigl(\bigcup_{t\ge 1}E_t\Bigr)\le c\zeta(p),
+\]
+并可取 \(c\le \varepsilon/\zeta(p)\) 使总失败概率不超过 \(\varepsilon\)。
+当 \(p\le 1\) 时 \(\sum_{t\ge 1}u_t=+\infty\)，上述输入无关并界不再给出与 \(T\) 无关的非平凡全程成功下界。
+此外，指数预算 \(u_t=\varepsilon\,2^{-t}\) 满足 \(\sum_{t\ge 1}u_t=\varepsilon\)，因而 \(\Pr(\cup_{t\ge 1}E_t)\le \varepsilon\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-fractran-soft-firstfit-annealed-budget} 将问题化为级数收敛性；其余为初等分析。证毕。
+\end{proof}
+
 \begin{conjecture}[硬序门的确定性必要性：固定温度无法承载无界可靠控制流]\label{conj:pom-soft-order-fixed-temp-not-deterministic}
 令 \(P_{\le}\) 表示零温（硬）序门，并以 \(\mathrm{PROJ}_u\) 表示温度参数 \(u\in(0,1)\) 的软序门（其中 soft first-fit 给出一个可计算实例）。
 猜想：若 \(u\) 被固定为常数 \(u_0\in(0,1)\)，则任何仅由 \(\mathrm{PROJ}_{u_0}\) 与确定性投影算子（折叠、提升、清理等）构成的控制流层，都无法在所有输入上实现硬 first-fit 的确定性语义；更强地，在允许无界迭代的语义中，它无法以输入无关的方式将总失败概率压到 \(0\)。
-推论 \ref{cor:pom-fractran-soft-firstfit-temp-time-tradeoff} 给出一条与输入无关的温度—时间标度律，提示固定正温下的累积失败不可消去，而要获得无界可靠控制则需允许零温硬化极限 \(u\downarrow 0\) 或随规模/时间退火。
+推论 \ref{cor:pom-fractran-soft-firstfit-temp-time-tradeoff} 给出固定温度下的温度—时间标度律，而定理 \ref{thm:pom-fractran-soft-firstfit-annealed-budget} 则表明：若允许随时间退火并满足 \(\sum_{t\ge 1}u_t<\infty\)，则可得到输入无关的全程失败预算控制；与之对照，固定正温下的累积失败无法以输入无关方式消去，因而获得无界可靠控制须允许零温硬化极限 \(u\downarrow 0\) 或退火调度。
 \end{conjecture}
 
