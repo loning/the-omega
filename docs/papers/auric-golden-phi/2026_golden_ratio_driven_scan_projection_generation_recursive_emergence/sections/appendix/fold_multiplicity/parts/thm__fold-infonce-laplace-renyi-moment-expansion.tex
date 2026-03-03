@@ -92,9 +92,58 @@ e^{-t}(1-e^{-t})^j=\sum_{k=0}^{j}(-1)^k\binom{j}{k}e^{-(k+1)t}.
 最后一句由定理 \ref{thm:fold-infonce-laplace-renyi-moment-expansion} 的有限展开直接推出。证毕。
 \end{proof}
 
+\begin{proposition}[Bayes--InfoNCE 的幂和展开与通用差分系数]\label{prop:fold-infonce-bayes-infonce-power-sum-expansion}
+固定分辨率 \(m\) 并令 \(p_r:=M_r(m)=\sum_{x\in X_m}w_m(x)^r\)（\(r\ge 1\)）。
+对每个整数 \(r\ge 2\) 定义差分系数
+\[
+b_r:=\sum_{j=0}^{r-1}(-1)^{r-1-j}\binom{r-1}{j}\log(j+1).
+\]
+则对任意整数 \(K\ge 2\) 有幂和展开
+\[
+L_m^{K,\star}=\sum_{r=2}^{K}\binom{K-1}{r-1}\,b_r\,p_r.
+\]
+并且 \(b_r\) 具有积分表示
+\[
+b_r=(-1)^r\int_{0}^{\infty}\frac{e^{-t}(1-e^{-t})^{r-1}}{t}\,\dd t,
+\]
+从而 \(b_r\neq 0\) 且 \(\mathrm{sign}(b_r)=(-1)^r\)（\(r\ge 2\)）。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:fold-infonce-laplace-renyi-moment-expansion} 的有限展开，令 \(r=j+1\) 得
+\[
+L_m^{K,\star}
+=\sum_{r=2}^{K}(-1)^{r-2}\binom{K-1}{r-1}\,\alpha_{r-1}\,p_r.
+\]
+定义 \(b_r:=(-1)^r\alpha_{r-1}\)（注意 \(r-2\equiv r\pmod 2\)），即得所示幂和展开。
+由推论 \ref{cor:fold-infonce-alpha-log-closed-form} 可知
+\(
+\alpha_{r-1}=-\sum_{j=0}^{r-1}(-1)^j\binom{r-1}{j}\log(j+1)
+\)，从而得到 \(b_r\) 的差分闭式。
+积分表示由 \(\alpha_{r-1}\) 的积分定义与 \(b_r=(-1)^r\alpha_{r-1}\) 得到。
+由于被积函数严格正，\(\alpha_{r-1}>0\) 且 \(\mathrm{sign}(b_r)=(-1)^r\)。证毕。
+\end{proof}
+
+\begin{corollary}[损失塔对幂和的三角反演]\label{cor:fold-infonce-loss-tower-triangular-inversion-power-sums}
+在命题 \ref{prop:fold-infonce-bayes-infonce-power-sum-expansion} 的记号下，对每个整数 \(q\ge 2\) 有递推反演
+\[
+p_q
+=\frac{1}{b_q}\left(
+L_m^{q,\star}-\sum_{k=2}^{q-1}\binom{q-1}{k-1}\,b_k\,p_k
+\right).
+\]
+因此对任意 \(Q\ge 2\)，有限前缀 \(\{L_m^{2,\star},\dots,L_m^{Q,\star}\}\) 唯一确定 \(\{p_2,\dots,p_Q\}\)。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:fold-infonce-bayes-infonce-power-sum-expansion} 在 \(K=q\) 的特例，
+\(
+L_m^{q,\star}=\sum_{k=2}^{q}\binom{q-1}{k-1}b_k p_k
+\)。
+注意对角系数 \(\binom{q-1}{q-1}b_q=b_q\neq 0\)，移项即得递推式。证毕。
+\end{proof}
+
 \input{sections/appendix/fold_multiplicity/parts/thm__fold-infonce-loss-spectrum-identifiability}
-\begin{corollary}[Bayes--InfoNCE 极小值序列对碰撞矩谱的三角反演]\label{cor:fold-infonce-triangular-inversion-collision-spectrum}
-沿用定理 \ref{thm:fold-infonce-laplace-renyi-moment-expansion} 的记号，并令
+\begin{corollary}[等价形式：差分算子表示与前差分系数]\label{cor:fold-infonce-triangular-inversion-collision-spectrum}
+沿用命题 \ref{prop:fold-infonce-bayes-infonce-power-sum-expansion} 的记号，并令
 \[
 f(j):=\log(1+j),\qquad (\Delta f)(j):=f(j+1)-f(j)
 \quad(j\in\ZZ_{\ge 0}).
@@ -104,7 +153,7 @@ f(j):=\log(1+j),\qquad (\Delta f)(j):=f(j+1)-f(j)
 L_m^{n+1,\star}
 =\sum_{t=1}^{n}\binom{n}{t}\,(\Delta^t f)(0)\,M_{t+1}(m),
 \qquad
-(\Delta^t f)(0)=\sum_{j=0}^{t}(-1)^{t-j}\binom{t}{j}\log(1+j).
+(\Delta^t f)(0)=\sum_{j=0}^{t}(-1)^{t-j}\binom{t}{j}\log(1+j)=b_{t+1}.
 \]
 并且最高阶系数非退化：\((\Delta^{n}f)(0)=(-1)^{n+1}\alpha_n\neq 0\)。
 因此得到显式递归反演：对每个 \(n\ge 1\)，

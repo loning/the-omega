@@ -74,6 +74,81 @@ P_N & 0\\
 最后，由 Rayleigh 极值刻画立得 \eqref{eq:xi-rayleigh-negative-extrema-sigma}。证毕。
 \end{proof}
 
+\begin{proposition}[Toeplitz 负谱裕度的 Vandermonde\texorpdfstring{$^{4}$}{^4} 量化下界]\label{prop:xi-toeplitz-negative-margin-vandermonde4-lowerbound}
+在定理 \ref{thm:xi-toeplitz-metric-spectrum-normal-form} 的设定下，定义 Toeplitz 最负特征值裕度
+\[
+\delta_N:=-\lambda_{\min}\!\bigl(\mathbf{T}_N(C)\bigr)\ >\ 0.
+\]
+则有显式下界
+\[
+\delta_N\ \ge\ \frac{\sigma_{\min}(\mathsf H_{\kappa-1})^2}{\|R_N\|_{\mathrm{op}}^{2}}
+\ \ge\
+\frac{\bigl|\det(\mathsf H_{\kappa-1})\bigr|^2}{\|R_N\|_{\mathrm{op}}^{2}\,\|\mathsf H_{\kappa-1}\|_{\mathrm{op}}^{2\kappa-2}}.
+\]
+若进一步满足有限指数分解 \eqref{eq:xi-scan-fingerprint-exponential-sum}，则由 \eqref{eq:xi-dethankel-vandermonde-square} 得
+\[
+\delta_N\ \ge\
+\frac{(4\pi)^{2\kappa}\Bigl(\prod_{j=1}^{\kappa}w_j^{2}\Bigr)\Bigl(\prod_{1\le i<j\le\kappa}|z_j-z_i|^{4}\Bigr)}
+{\|R_N\|_{\mathrm{op}}^{2}\,\|\mathsf H_{\kappa-1}\|_{\mathrm{op}}^{2\kappa-2}}.
+\]
+因此在权重与算子范数受控时，Toeplitz 最负特征值的绝对值携带不可消去的 Vandermonde\({}^{4}\) 分离信息。
+\end{proposition}
+\begin{proof}
+由合同分解 \eqref{eq:xi-toeplitz-congruence-block-split}，对任意 \(v\in\CC^{\kappa}\) 令 \(z=(0\oplus v)\) 且 \(x:=R_N z\)，则
+\[
+x^{\ast}\mathbf{T}_N(C)x=z^{\ast}\begin{pmatrix}P_N&0\\0&-\,\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1}\end{pmatrix}z
+=-\,\|\mathsf H_{\kappa-1}v\|_2^2.
+\]
+取 \(\|v\|_2=1\) 并最小化右端得到
+\(
+x^{\ast}\mathbf{T}_N(C)x\le -\sigma_{\min}(\mathsf H_{\kappa-1})^2
+\)。
+另一方面，\(\|x\|_2\le \|R_N\|_{\mathrm{op}}\|z\|_2=\|R_N\|_{\mathrm{op}}\|v\|_2=\|R_N\|_{\mathrm{op}}\)。
+令 \(y:=x/\|x\|_2\)，则
+\[
+\lambda_{\min}\!\bigl(\mathbf{T}_N(C)\bigr)
+\le y^{\ast}\mathbf{T}_N(C)y
+=\frac{x^{\ast}\mathbf{T}_N(C)x}{\|x\|_2^2}
+\le -\,\frac{\sigma_{\min}(\mathsf H_{\kappa-1})^2}{\|R_N\|_{\mathrm{op}}^{2}},
+\]
+从而 \(\delta_N\ge \sigma_{\min}(\mathsf H_{\kappa-1})^2/\|R_N\|_{\mathrm{op}}^{2}\)。
+\par
+对任意 \(\kappa\times\kappa\) 方阵 \(H\)，奇异值满足
+\(
+|\det H|=\prod_{i=1}^{\kappa}\sigma_i(H)\le \|H\|_{\mathrm{op}}^{\kappa-1}\sigma_{\min}(H)
+\)，
+故
+\(
+\sigma_{\min}(H)\ge |\det H|/\|H\|_{\mathrm{op}}^{\kappa-1}
+\)。
+代回即得第二个不等式；最后一式由 \eqref{eq:xi-dethankel-vandermonde-square} 代入得到。证毕。
+\end{proof}
+
+\begin{proposition}[负谱裕度强迫 Gram--shift 铅笔的不可避免病态]\label{prop:xi-gramshift-illconditioning-forced-by-toeplitz-margin}
+在定理 \ref{thm:xi-toeplitz-metric-spectrum-normal-form} 的设定下，负块 Gram 矩阵
+\(
+G_{\kappa-1}:=\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1}\succ 0
+\)
+满足
+\[
+\|G_{\kappa-1}^{-1}\|_{\mathrm{op}}=\frac{1}{\sigma_{\min}(\mathsf H_{\kappa-1})^2}.
+\]
+并且对 \(\delta_N=-\lambda_{\min}(\mathbf{T}_N(C))\) 有强制下界
+\[
+\boxed{\;
+\|G_{\kappa-1}^{-1}\|_{\mathrm{op}}\ \ge\ \frac{1}{\|R_N\|_{\mathrm{op}}^{2}\,\delta_N}\; }.
+\]
+因此当 Toeplitz 证书趋于“几乎半正定”使 \(\delta_N\downarrow 0\) 时，Hankel/Gram 反演步骤的最坏放大因子必以 \(\delta_N^{-1}\) 的量纲发散，且该发散不能被统一常数吸收。
+\end{proposition}
+\begin{proof}
+第一式为 \(\lambda_{\min}(H^{\ast}H)=\sigma_{\min}(H)^2\) 的等价改写。
+由命题 \ref{prop:xi-toeplitz-negative-margin-vandermonde4-lowerbound} 的第一不等式，
+\(
+\sigma_{\min}(\mathsf H_{\kappa-1})^2\le \|R_N\|_{\mathrm{op}}^{2}\delta_N
+\)，
+两边取倒数即得所示下界。证毕。
+\end{proof}
+
 \begin{corollary}[负谱乘积的 Hankel 行列式模平方不变量]\label{cor:xi-negative-spectrum-product-dethankel-square}
 在定理 \ref{thm:xi-toeplitz-metric-spectrum-normal-form} 的设定下，\(\kappa\) 个负广义特征值满足
 \begin{equation}\label{eq:xi-product-negative-eigs-dethankel}

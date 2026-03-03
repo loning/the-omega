@@ -203,6 +203,60 @@ d(\widehat{\mu}_{N,\varepsilon},\mu)<\varepsilon.
 因此 \(e\in\mathcal H\) 可由有限计算判定，矛盾。证毕。
 \end{proof}
 
+\paragraph{统一电路族的首次碰撞时间}
+停机不可计算性不仅能通过 Lee--Yang 边界的极限原子谱读出，也可在完全离散的有限门模型中以“纤维阈值首次穿越”实现。
+
+\begin{theorem}[统一电路族的首次碰撞时间不可计算]\label{thm:fold-computability-uniform-circuit-first-collision-time}
+存在一个可计算变换，将任意图灵机 \(M\) 与输入 \(x\) 映为一个统一（uniform）电路生成器 \(G_{M,x}\)。
+该生成器在输入 \(t\in\NN\) 上输出布尔电路
+\[
+C_t:\{0,1\}^{m(t)}\to\{0,1\}^{m(t)}
+\]
+并停机，其中 \(m(t):=t+1\)。
+记
+\[
+D(C_t):=\max_{y\in\{0,1\}^{m(t)}}\bigl|C_t^{-1}(y)\bigr|.
+\]
+则：
+\begin{enumerate}
+\normalfont
+  \item 若 \(M(x)\) 不停机，则对一切 \(t\)，\(C_t=\mathrm{id}\)，从而 \(D(C_t)=1\)；
+  \item 若 \(M(x)\) 在恰好 \(T\) 步停机，则对一切 \(t<T\)，\(C_t=\mathrm{id}\)（从而 \(D(C_t)=1\)），而对一切 \(t\ge T\)，\(C_t\) 为常值映射（从而 \(D(C_t)=2^{m(t)}\ge 2\)）。
+\end{enumerate}
+因此函数
+\[
+t^\ast(M,x):=\min\{t\in\NN:\ D(C_t)\ge 2\}
+\quad(\text{若集合为空则记 }t^\ast=\infty)
+\]
+满足 \(t^\ast(M,x)=T\)（若停机）或 \(t^\ast(M,x)=\infty\)（若不停机），从而 \(t^\ast\) 不可计算；并且判定性质 \(\exists t,\ D(C_t)\ge 2\) 与停机问题等价，因而在算术层级意义下为 \(\Sigma^0_1\)-完备。
+\end{theorem}
+\begin{proof}
+构造 \(G_{M,x}\) 如下。
+给定 \(t\)，令 \(m(t):=t+1\)。
+生成器输出电路 \(C_t\)，其在输入 \(w\in\{0,1\}^{m(t)}\) 上先计算布尔标志
+\[
+h_t=
+\begin{cases}
+1,&\text{若 }M(x)\text{ 在至多 }t\text{ 步内停机},\\
+0,&\text{否则}.
+\end{cases}
+\]
+该标志可由对 \(M(x)\) 的 \(t\) 步时间截断模拟得到；由于截断步数为 \(t\)，该模拟可被展开为规模 \(\mathrm{poly}(t)\) 的布尔电路并由生成器有效输出（标准电路化编译）。
+随后令
+\[
+C_t(w)=
+\begin{cases}
+w,& h_t=0,\\
+0^{m(t)},& h_t=1.
+\end{cases}
+\]
+若 \(M(x)\) 不停机，则对所有 \(t\) 有 \(h_t=0\)，故 \(C_t=\mathrm{id}\)，从而 \(D(C_t)=1\)。
+若 \(M(x)\) 在 \(T\) 步停机，则当 \(t<T\) 时 \(h_t=0\) 故 \(C_t=\mathrm{id}\)；当 \(t\ge T\) 时 \(h_t=1\) 故 \(C_t\) 为常值映射，且 \(D(C_t)=|\{0,1\}^{m(t)}|=2^{m(t)}\ge 2\)。
+因此首次出现 \(D(C_t)\ge 2\) 的 \(t\) 恰为 \(T\)，即 \(t^\ast(M,x)=T\)；若 \(M(x)\) 不停机则集合为空而 \(t^\ast=\infty\)。
+若 \(t^\ast\) 可计算，则停机时间可计算，矛盾；故 \(t^\ast\) 不可计算。
+另一方面，\(\exists t,\ D(C_t)\ge 2\) 等价于 \(\exists t,\ h_t=1\) 等价于 \(M(x)\) 停机，从而该性质与停机问题 many-one 等价，故为 \(\Sigma^0_1\)-完备。证毕。
+\end{proof}
+
 \paragraph{语义等价的规范形选择与证书完备性障碍}
 下面给出两条与“停机集不可判定”同型的抽象障碍：一旦把等价关系提升到图灵完备的语义层（外延相等），则不存在可计算的规范形选取，也不存在递归可枚举的完备有限证书系统。
 这与正文投影词框架中“等价 = 可组合的 \(2\)-态射证书”（定义 \ref{def:pom-projword-2cat}）的制度取向一致：在该口径下，等价被定义为\emph{存在证书}而非宣称覆盖全部语义等价类。

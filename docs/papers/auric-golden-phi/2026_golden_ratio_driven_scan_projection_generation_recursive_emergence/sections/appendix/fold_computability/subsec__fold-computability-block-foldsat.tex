@@ -159,6 +159,48 @@ p(x):=\frac{1}{d_m(x)}\Tr(\Pi_xD_x),
 第二条由 \(E_m\) 的显式公式直接给出系数读出关系。证毕。
 \end{proof}
 
+\begin{proposition}[Watatani 指标的清分母整数化：对角验证计数的中心系数读出]\label{prop:block-foldsat-watatani-denominator-clearing}
+沿上段记号，令
+\(
+B_m:=\Span\{\Pi_x\}_{x\in X_m}\cong \CC^{X_m}
+\)
+并以 \(\{\Pi_x\}\) 为其极小中心投影基。
+在该交换代数中令
+\[
+\mathrm{Ind}_{\mathrm W}(E_m):=\sum_{x\in X_m} d_m(x)\,\Pi_x\in B_m,
+\qquad
+d_m(x)=|\Fold_m^{-1}(x)|.
+\]
+则对任意在微态基底上对角的正算子 \(D\in\mathcal B(H_m)\)（即 \(D=\sum_{\omega\in\Omega_m}D(\omega)\,|\omega\rangle\langle\omega|\) 且 \(D(\omega)\ge 0\)）有严格恒等式
+\[
+\boxed{\;
+\mathrm{Ind}_{\mathrm W}(E_m)\,E_m(D)
+=\sum_{x\in X_m}\Tr(\Pi_x D)\,\Pi_x.\;}
+\]
+特别地，当 \(D\) 为对角 \(0/1\) 投影时，各系数 \(\Tr(\Pi_xD)\in\ZZ_{\ge 0}\) 为纤维内通过判据的微态计数。
+对构造型输入 \(x=x(\varphi)\) 取 \(D=D_x\) 时，
+\[
+\bigl(\mathrm{Ind}_{\mathrm W}(E_m)\,E_m(D_x)\bigr)\ \text{在}\ \Pi_{x(\varphi)}\ \text{上的系数}
+=\Tr(\Pi_{x(\varphi)}D_{x(\varphi)})
+=\#\mathrm{SAT}(\varphi)
+\]
+（最后一式见定理 \ref{thm:block-foldsat-sharpP-complete}）。
+\end{proposition}
+\begin{proof}
+由命题 \ref{prop:block-foldsat-trace-criterion}(2) 的显式公式，
+\[
+E_m(D)=\sum_{x\in X_m}\frac{\Tr(\Pi_xD)}{d_m(x)}\,\Pi_x.
+\]
+而在 \(B_m\) 中有 \(\Pi_x\Pi_y=\delta_{xy}\Pi_x\)，故
+\[
+\mathrm{Ind}_{\mathrm W}(E_m)\,E_m(D)
+=\sum_x d_m(x)\Pi_x\cdot \sum_y \frac{\Tr(\Pi_yD)}{d_m(y)}\Pi_y
+=\sum_x \Tr(\Pi_xD)\,\Pi_x.
+\]
+当 \(D\) 为对角 \(0/1\) 投影时，\(\Tr(\Pi_xD)\) 为纤维内满足谓词的点数，故为非负整数。
+最后一条对 \(D_x\) 取 \(x=x(\varphi)\) 并引用定理 \ref{thm:block-foldsat-sharpP-complete} 即得。证毕。
+\end{proof}
+
 \begin{proposition}[\(\ZZ/2\ZZ\) 单角色偏置与 \(\#\mathrm{SAT}\) 的线性读出]\label{prop:block-foldsat-single-character-bias-sharp-sat}
 取群 \(G=\ZZ/2\ZZ\) 并令其非平凡角色 \(\chi:G\to\{\pm 1\}\) 满足 \(\chi(0)=1,\ \chi(1)=-1\)。
 对 \(x=x(\varphi)\) 定义提升标记 \(\ell_x:\Fold_m^{-1}(x)\to G\)：
@@ -265,6 +307,79 @@ E_m(W_x)=\sum_{y\neq x}\Pi_y+\bigl(1+(2^m-1)p(x)\bigr)\Pi_x
 从而阈值等价性成立。
 若存在加性误差 \(<\tfrac14\) 的多项式时间近似，则可把不可满足实例的输出（位于 \((\tfrac34,\tfrac54)\)）与可满足实例的输出（位于 \((\tfrac74,\infty)\)）在常数间隔上区分，从而多项式时间判定 SAT，推出 \(\mathrm{P}=\mathrm{NP}\)。证毕。
 \end{proof}
+
+\paragraph{拒绝能量的低温配分函数：常数精度近似的 NP 困难性}
+对满足解析条件的输入 \(x=x(\varphi)\)，沿用验证投影 \(D_x\) 并定义拒绝能量算子
+\[
+H_x:=I-D_x.
+\]
+对逆温参数 \(\beta\ge 0\) 定义纤维配分函数
+\[
+Z_x(\beta):=\Tr\!\bigl(\Pi_x e^{-\beta H_x}\bigr).
+\]
+
+\begin{theorem}[低温配分函数的常数加性精度近似强迫 \texorpdfstring{$P=NP$}{P=NP}]\label{thm:block-foldsat-low-temperature-partition-function-additive-hardness}
+对满足解析条件的 \(x\in X_m\) 定义
+\[
+\beta(x):=\left\lceil\log\bigl(4d_m(x)\bigr)\right\rceil.
+\]
+若存在确定性多项式时间算法：对任意输入对 \((x,\beta(x))\) 输出 \(\widehat Z\) 满足
+\[
+\bigl|\widehat Z-Z_x(\beta(x))\bigr|\le \tfrac18,
+\]
+则 \(\mathrm{P}=\mathrm{NP}\)。
+\end{theorem}
+\begin{proof}
+由于 \(H_x\) 在接受微态上取 \(0\)，在拒绝微态上取 \(1\)，故
+\[
+e^{-\beta H_x}=D_x+e^{-\beta}(I-D_x).
+\]
+从而
+\[
+Z_x(\beta)=\Tr(\Pi_xD_x)+e^{-\beta}\bigl(d_m(x)-\Tr(\Pi_xD_x)\bigr).
+\]
+若 \(x\notin\mathrm{Block}\text{-}\mathrm{FoldSAT}\)，则由命题 \ref{prop:block-foldsat-trace-criterion}(1) 有 \(\Tr(\Pi_xD_x)=0\)，故
+\[
+Z_x(\beta(x))=e^{-\beta(x)}d_m(x)\le \frac{1}{4}.
+\]
+若 \(x\in\mathrm{Block}\text{-}\mathrm{FoldSAT}\)，则 \(\Tr(\Pi_xD_x)\ge 1\)，故 \(Z_x(\beta(x))\ge 1\)。
+因此加性误差 \(\le 1/8\) 的估计可在常数间隔上区分两类输入，从而判定 \(\mathrm{Block}\text{-}\mathrm{FoldSAT}\) 的成员资格。
+由定理 \ref{thm:block-foldsat-np-complete}，该语言为 NP 完备，故推出 \(\mathrm{P}=\mathrm{NP}\)。
+此外，由命题 \ref{prop:block-foldsat-estimation-np-hard} 的证明，\(d_m(x)\) 可在输入规模 \(m\) 上多项式时间计算，从而 \(\beta(x)\) 可多项式时间给出。证毕。
+\end{proof}
+
+\begin{corollary}[自由能的常数精度近似亦为 NP 困难]\label{cor:block-foldsat-free-energy-additive-hardness}
+对满足解析条件的 \(x\in X_m\) 定义
+\[
+\beta'(x):=\left\lceil\log\bigl(2d_m(x)\bigr)\right\rceil,
+\qquad
+F_x:=\log Z_x(\beta'(x)).
+\]
+若存在确定性多项式时间算法输出 \(\widehat F\) 使
+\[
+\bigl|\widehat F-F_x\bigr|<\tfrac12\log 2,
+\]
+则 \(\mathrm{P}=\mathrm{NP}\)。
+\end{corollary}
+\begin{proof}
+若 \(x\notin\mathrm{Block}\text{-}\mathrm{FoldSAT}\)，则 \(\Tr(\Pi_xD_x)=0\)，从而
+\(
+Z_x(\beta')=e^{-\beta'}d_m(x)\le 1/2
+\)，故 \(F_x\le -\log 2\)。
+若 \(x\in\mathrm{Block}\text{-}\mathrm{FoldSAT}\)，则 \(Z_x(\beta')\ge 1\)，故 \(F_x\ge 0\)。
+两类情形间间隙至少为 \(\log 2\)，因此误差严格小于 \(\tfrac12\log 2\) 的估计可判定成员资格，进而推出 \(\mathrm{P}=\mathrm{NP}\)（同定理 \ref{thm:block-foldsat-low-temperature-partition-function-additive-hardness} 的归约口径）。证毕。
+\end{proof}
+
+\begin{conjecture}[Block--FoldSAT 的计算温度阈值由 \texorpdfstring{$\log d_m(x)$}{log d} 控制]\label{conj:block-foldsat-computational-temperature-threshold}
+沿用配分函数 \(Z_x(\beta)=\Tr(\Pi_x e^{-\beta(I-D_x)})\) 的记号。
+猜想存在常数 \(c\in(0,1)\) 使得对任意满足解析条件的 Block--FoldSAT 实例族 \(x\)：
+\begin{enumerate}
+\normalfont
+  \item \textbf{高温可近似性（采样区）：}当 \(\beta\le (1-c)\log d_m(x)\) 时，存在一致的随机多项式时间算法在相对误差 \(1/\mathrm{poly}(m)\) 意义下近似 \(Z_x(\beta)\)；
+  \item \textbf{低温不可近似性（困难区）：}当 \(\beta\ge (1+c)\log d_m(x)\) 时，即便对 \(Z_x(\beta)\) 的常数因子近似亦为 NP-困难。
+\end{enumerate}
+该阈值形式把可计算性边界压缩为温度抑制项 \(e^{-\beta}\) 与纤维体积 \(d_m(x)\) 的竞争尺度，并与定理 \ref{thm:block-foldsat-low-temperature-partition-function-additive-hardness} 在 \(\beta\simeq \log d_m(x)\) 的常数精度困难性相容。
+\end{conjecture}
 
 \begin{proposition}[均匀抽样--验证策略的指数下界]\label{prop:block-foldsat-uniform-sampling-exp-lb}
 取 \(x=x(\varphi)\) 并假设 \(\varphi\) 具有唯一满足赋值。

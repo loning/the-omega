@@ -1150,6 +1150,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="foldbin4_groupoid_aut_pi1_torsion_exponent",
+            script="exp_foldbin4_groupoid_aut_pi1_torsion_exponent.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/foldbin4_groupoid_aut_pi1_torsion_exponent.json",
+                "sections/generated/eq_foldbin4_groupoid_aut_pi1_torsion_exponent.tex",
+            ],
+        ),
+        Step(
             name="foldbin_fold_complement_identity_m6_m12",
             script="exp_foldbin_fold_complement_identity_m6_m12.py",
             args=[],

@@ -38,3 +38,59 @@ T:=\inf\{t\ge 5:\ (d_{t-4},d_{t-3},d_{t-2},d_{t-1},d_t)=(0,0,0,0,0)\}
 最后，若 \(e_t\)（或 \(J_t\)）为状态与输入的可测函数，则在上述耦合下两条输出过程亦在同步时刻之后完全一致，从而同一 \(\PP(T>n)\) 上界传递到其边缘分布的 \(\mathrm{TV}\) 距离。证毕。
 \end{proof}
 
+\begin{corollary}[同步字等待时间的尾界与期望界（一般 i.i.d.\ 输入）]\label{cor:sync-kernel-reset-word-waiting-time-general-iid}
+设输入字母序列 \((d_t)_{t\ge 1}\) 独立同分布，取值于有限字母表 \(\Sigma\)，并设存在同步字 \(w_0\in\Sigma^{L}\)（长度 \(L\ge 1\)）满足：对任意初始状态，一旦读入连续 \(L\) 步输入块等于 \(w_0\)，则核状态被复位到同一确定状态。
+令
+\[
+T:=\inf\{t\ge L:\ (d_{t-L+1},\dots,d_t)=w_0\}
+\]
+为首次出现同步字的等待时间。
+记
+\(
+\pi_0:=\PP\bigl((d_1,\dots,d_L)=w_0\bigr)>0
+\)。
+则对任意 \(k\in\NN\) 有尾界
+\[
+\PP(T>kL)\ \le\ (1-\pi_0)^{k},
+\]
+并且期望满足
+\[
+\EE[T]\ \le\ \frac{L}{\pi_0}.
+\]
+\end{corollary}
+\begin{proof}
+将输入序列按互不重叠的 \(L\)-块分组：
+\((d_1,\dots,d_L),(d_{L+1},\dots,d_{2L}),\dots,(d_{(k-1)L+1},\dots,d_{kL})\)。
+若 \(T>kL\)，则前 \(k\) 个块均不等于 \(w_0\)，故
+\[
+\PP(T>kL)\le (1-\pi_0)^k,
+\]
+其中使用了 i.i.d.\ 导致的块独立性。
+\par
+由尾分布求和公式与上界，
+\[
+\EE[T]=\sum_{t\ge 0}\PP(T>t)
+\le \sum_{k\ge 0}\sum_{t=kL}^{(k+1)L-1}\PP(T>kL)
+\le L\sum_{k\ge 0}(1-\pi_0)^k
+=\frac{L}{\pi_0}.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[固定状态同步核的遗忘时间尺度可无界]\label{cor:sync-kernel-reset-time-unbounded-under-small-q}
+在命题 \ref{prop:sync-kernel-explicit-syncword-mixing-rate} 的同步核设定下，取同步字 \(w_0=00000\)（\(L=5\)）。
+若输入满足独立同分布且 \(\PP(d_t=0)=q>0\)，则
+\[
+\EE[T]\ \le\ 5q^{-5},
+\]
+从而在 \(q\downarrow 0\) 时 \(\EE[T]\) 发散。
+因此，固定状态数的同步核并不强制“统计遗忘时间尺度”的统一上界：该尺度可随输入分布的稀疏化而无界增长。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:sync-kernel-reset-word-waiting-time-general-iid}，此时
+\(
+\pi_0=\PP(d_1=\cdots=d_5=0)=q^5
+\)，代入即得 \(\EE[T]\le 5/q^5\)。
+发散性由 \(q\downarrow 0\) 立得。证毕。
+\end{proof}
+
