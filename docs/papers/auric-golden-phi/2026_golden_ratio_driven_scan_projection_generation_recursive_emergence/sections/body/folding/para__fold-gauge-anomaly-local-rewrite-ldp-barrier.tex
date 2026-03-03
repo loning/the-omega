@@ -97,4 +97,116 @@ G_m(\omega_m)=\sum_{i=1}^{T_m}\Delta_{m,i}
 两边除以 \(m\) 并取 \(\liminf\)，再用 \(\lim_{m\to\infty}G_m(\omega_m)/m=g_\ast\) 即得结论。证毕。
 \end{proof}
 
+\begin{corollary}[速度饱和与可逆事件字母表的下界]\label{cor:fold-local-rewrite-reversible-event-alphabet-lower-bound}
+令 \(\Sigma\) 为有限字母表，\(|\Sigma|=M\ge 2\)。
+设存在一族单射提升
+\[
+\Psi_m:\Omega_m\hookrightarrow X_m\times \Sigma^{L_m},
+\qquad
+\operatorname{pr}_1\circ\Psi_m=\Fold_m,
+\]
+其中 \(\Sigma^{L_m}\) 表示长度恰为 \(L_m\) 的事件词集合。
+记最大纤维
+\[
+D_m:=\max_{x\in X_m}\card{\Fold_m^{-1}(x)}.
+\]
+则对所有 \(m\) 有
+\[
+L_m\ \ge\ \left\lceil \log_M D_m\right\rceil.
+\]
+并且由定理 \ref{thm:pom-max-fiber} 的渐近 \(D_m=\Theta(\varphi^{m/2})\) 得
+\[
+\liminf_{m\to\infty}\frac{L_m}{m}\ \ge\ \frac{\tfrac12\log\varphi}{\log M}.
+\]
+若进一步满足
+\[
+\frac{L_m}{m}\ \le\ \frac{4}{9R}+o(1),
+\]
+则必有
+\[
+M\ \ge\ \varphi^{\frac{9R}{8}}.
+\]
+在 \(R=3\) 时，\(\varphi^{27/8}\approx 5.07\)，从而 \(M\ge 6\)。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:pom-injectivization-mary-auxlength-exact}（取 \(f=\Fold_m\)）得
+\(
+L_m\ge \lceil \log_M D_m\rceil
+\)。
+由定理 \ref{thm:pom-max-fiber} 得 \(\log D_m=\frac{m}{2}\log\varphi+O(1)\)，两边除以 \(m\) 并取 \(\liminf\) 即得第二式。
+\par
+在附加上界下，取 \(\limsup\) 得 \(\limsup_m L_m/m\le 4/(9R)\)，从而
+\[
+\frac{\tfrac12\log\varphi}{\log M}\ \le\ \liminf_{m\to\infty}\frac{L_m}{m}
+\ \le\ \limsup_{m\to\infty}\frac{L_m}{m}\ \le\ \frac{4}{9R}.
+\]
+整理得到 \(\log M\ge \frac{9R}{8}\log\varphi\)，即 \(M\ge \varphi^{9R/8}\)。证毕。
+\end{proof}
+
+\begin{corollary}[重写密度强制 prime-register 位长的 \texorpdfstring{$\Omega(m\log m)$}{Omega(m log m)} 下界]\label{cor:fold-prime-register-bitlength-omega-mlogm}
+沿用定理 \ref{thm:fold-local-rewrite-ldp-lower-tail-barrier} 的设定，并进一步假设存在一类 prime-register 外置制度满足：
+对每个分辨率 \(m\) 与输入 \(\omega\in\Omega_{m+1}\)，其日志支持满足
+\[
+\#\mathrm{supp}\bigl(r_{\mathsf S}(\omega)\bigr)=T_{m+1}^{\mathsf S}(\omega),
+\]
+并且支持中的每个坐标对应一个模数 \(q_{m,t}\ge 2\)，且 \(\{q_{m,t}\}_{t\in \mathrm{supp}(r_{\mathsf S}(\omega))}\) 两两互素。
+令总模数乘积
+\[
+P_m(\omega):=\prod_{t\in \mathrm{supp}(r_{\mathsf S}(\omega))} q_{m,t}.
+\]
+则几乎处处成立
+\[
+\boxed{\;
+\liminf_{m\to\infty}\frac{\log_2 P_m(\omega)}{m\log_2 m}\ \ge\ \frac{4}{9R}\; }.
+\]
+特别地在 \(R=3\) 时，
+\(
+\liminf_{m\to\infty}\frac{\log_2 P_m(\omega)}{m\log_2 m}\ge \frac{4}{27}
+\)。
+\end{corollary}
+\begin{proof}
+记 \(t_m(\omega):=\#\mathrm{supp}(r_{\mathsf S}(\omega))=T_{m+1}^{\mathsf S}(\omega)\)。
+由两两互素性，每个 \(q_{m,t}\) 至少贡献一个互异素因子，故
+\[
+P_m(\omega)\ \ge\ \prod_{j=1}^{t_m(\omega)} p_j,
+\]
+其中 \(p_j\) 为第 \(j\) 个素数（右端为 primorial）。
+由素数定理的等价形式，
+\(
+\log\prod_{j=1}^{t}p_j=(1+o(1))\,t\log t
+\)，
+从而
+\[
+\log_2 P_m(\omega)
+\ge (1+o(1))\,t_m(\omega)\,\log_2 t_m(\omega).
+\]
+另一方面，由定理 \ref{thm:fold-local-rewrite-ldp-lower-tail-barrier}(2) 得几乎处处
+\(
+\liminf_{m\to\infty}\frac{t_m(\omega)}{m}\ge \frac{4}{9R}
+\)。
+并且当 \(t_m(\omega)\asymp m\) 时有 \(\log_2 t_m(\omega)/\log_2 m\to 1\)。
+将上述不等式除以 \(m\log_2 m\) 并取 \(\liminf\)，得到所示结论。证毕。
+\end{proof}
+
+\begin{remark}[平均缺口驱动的字母表下界]\label{rem:fold-local-rewrite-average-gap-alphabet-bound}
+由恒等式 \(\sum_{x\in X_m}d_m(x)=2^m\) 与 \(d_m(x)\le D_m\) 得
+\[
+D_m\ \ge\ \frac{2^m}{|X_m|}=\frac{2^m}{F_{m+2}}.
+\]
+因此若 \(\Psi_m\) 如推论 \ref{cor:fold-local-rewrite-reversible-event-alphabet-lower-bound}，则亦有
+\[
+\liminf_{m\to\infty}\frac{L_m}{m}\ \ge\ \frac{\log(2/\varphi)}{\log M}.
+\]
+与上界 \(\limsup_m L_m/m\le 4/(9R)\) 联立得到
+\[
+M\ \ge\ \Bigl(\frac{2}{\varphi}\Bigr)^{\frac{9R}{4}}.
+\]
+该界只使用平均压缩率 \(|\Omega_m|/|X_m|\)，而不涉及最大纤维的 Perron 指数。
+\end{remark}
+
+\begin{conjecture}[三局部约束下的最小可逆事件字母表]\label{conj:fold-local-rewrite-minimal-reversible-event-alphabet}
+在 \(R=3\) 的局部约束下，存在一类可逆局部重写策略，使得其事件日志以每步一符号的方式外置，并且其步数密度达到 \(\frac{4}{27}\)。
+在该口径下，事件字母表的最小基数为 \(6\)。
+\end{conjecture}
+
 \endinput

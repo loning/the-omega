@@ -52,6 +52,111 @@ A_m\bigl(\mathbf 1_{\omega^{00}(u)}-\mathbf 1_{\omega^{11}(u)}\bigr)
 即 \(A_m\circ \Phi_{i,j}=\Phi_{i,j}\circ A_{m-2}\)。证毕。
 \end{proof}
 
+\begin{theorem}[仿射对合的 Walsh--谱手征分解]\label{thm:window6-affine-chiral-walsh-decomposition}
+沿用定理 \ref{thm:window6-chiral-compression-hypercube-adjacency} 的设定，并记
+\(
+V_m^+:=\{f\in V_m:\ \sigma_{i,j}\cdot f=f\}
+\)。
+对任意 \(S\subseteq[m]\) 定义 Walsh 字符
+\[
+\chi_S(\omega):=(-1)^{\sum_{k\in S}\omega_k}\qquad(\omega\in\Omega_m).
+\]
+令 \(R:=[m]\setminus\{i,j\}\)。则对任意 \(J\subseteq R\)：
+\begin{enumerate}
+  \item \(\chi_J\in V_m^+\) 且 \(\chi_{J\cup\{i,j\}}\in V_m^+\)；
+  \item 定义
+  \[
+  \psi_J^+:=\chi_{J\cup\{i\}}-\chi_{J\cup\{j\}},
+  \qquad
+  \psi_J^-:=\chi_{J\cup\{i\}}+\chi_{J\cup\{j\}},
+  \]
+  则 \(\psi_J^+\in V_m^+\) 且 \(\psi_J^-\in V_m^-\)。
+\end{enumerate}
+并且集合
+\[
+\mathcal B^+:=\Bigl\{\chi_J,\ \chi_{J\cup\{i,j\}},\ \psi_J^+:\ J\subseteq R\Bigr\}
+\]
+构成 \(V_m^+\) 的一组 Walsh--正交基，而
+\[
+\mathcal B^-:=\Bigl\{\psi_J^-:\ J\subseteq R\Bigr\}
+\]
+构成 \(V_m^-\) 的一组 Walsh--正交基。
+特别地，
+\[
+\dim V_m^+=3\cdot 2^{m-2},
+\qquad
+\dim V_m^-=2^{m-2},
+\qquad
+V_m=V_m^+\oplus V_m^-.
+\]
+\end{theorem}
+\begin{proof}
+对任意 \(J\subseteq R\)，由于 \(\sigma_{i,j}\) 保持 \(R\) 上坐标不变且在 \((i,j)\) 两位的“交换并取补”只引入偶数次取补贡献，直接计算得
+\(
+\chi_J\circ\sigma_{i,j}=\chi_J
+\)
+与
+\(
+\chi_{J\cup\{i,j\}}\circ\sigma_{i,j}=\chi_{J\cup\{i,j\}}
+\)，从而二者属于 \(V_m^+\)。
+进一步，
+\(
+\chi_{J\cup\{i\}}\circ\sigma_{i,j}=-\chi_{J\cup\{j\}}
+\)
+与
+\(
+\chi_{J\cup\{j\}}\circ\sigma_{i,j}=-\chi_{J\cup\{i\}}
+\)，
+故 \(\psi_J^\pm\) 分别落在 \(V_m^\pm\) 中。
+\par
+Walsh 字符族 \(\{\chi_S\}_{S\subseteq[m]}\) 在 \(\ell^2(\Omega_m)\) 中两两正交，
+且 \(\psi_J^\pm\) 为同一维数层上的线性组合并在不同 \(J\) 上仍保持正交。
+基数计数给出 \(|\mathcal B^-|=2^{m-2}\)、\(|\mathcal B^+|=3\cdot 2^{m-2}\)，并与 \(\dim V_m=2^m\) 相容，从而两组正交集分别为 \(V_m^\pm\) 的基，且 \(V_m=V_m^+\oplus V_m^-\)。证毕。
+\end{proof}
+
+\begin{theorem}[手征子空间上的热迹闭式与 \texorpdfstring{$\Phi_3$}{Phi3} 因子]\label{thm:window6-chiral-heat-trace-phi3}
+在 \(\Omega_m\) 上定义无权超立方体拉普拉斯算子
+\[
+(\Delta f)(\omega):=\sum_{r=1}^{m}\bigl(f(\omega)-f(\omega^{(r)})\bigr),
+\]
+其中 \(\omega^{(r)}\) 表示翻转第 \(r\) 位后的顶点。
+由于 \(\sigma_{i,j}\) 为 \(Q_m\) 的自同构，\(\Delta\) 与 \(\sigma_{i,j}\) 可交换，从而可在 \(V_m^\pm\) 上定义手征热迹
+\[
+Z^\pm(t):=\Tr_{V_m^\pm}\!\bigl(e^{-t\Delta}\bigr)\qquad(t>0).
+\]
+则有闭式
+\[
+Z^-(t)=e^{-2t}(1+e^{-2t})^{m-2},
+\qquad
+Z^+(t)=(1+e^{-2t})^{m-2}\bigl(1+e^{-2t}+e^{-4t}\bigr).
+\]
+令 \(q:=e^{-2t}\)，则
+\[
+Z^-(q)=q(1+q)^{m-2},
+\qquad
+Z^+(q)=(1+q)^{m-2}(1+q+q^2),
+\]
+其中 \(1+q+q^2=\Phi_3(q)\) 为三次分圆多项式。
+\end{theorem}
+\begin{proof}
+Walsh 字符 \(\chi_S\)（\(S\subseteq[m]\)）对角化 \(\Delta\)，并满足
+\(
+\Delta\chi_S=2|S|\cdot \chi_S
+\)。
+由定理 \ref{thm:window6-affine-chiral-walsh-decomposition}，在 \(V_m^-\) 上的正交基可取为 \(\{\psi_J^-:\ J\subseteq R\}\)，且每个 \(\psi_J^-\) 由 \(|J|+1\) 阶 Walsh 字符线性生成，故其特征值为 \(2(|J|+1)\)。
+因此
+\[
+Z^-(t)=\sum_{J\subseteq R}e^{-2t(|J|+1)}=e^{-2t}\sum_{J\subseteq R}e^{-2t|J|}
+=e^{-2t}(1+e^{-2t})^{m-2}.
+\]
+同理，\(V_m^+\) 的正交基可取为 \(\{\chi_J,\psi_J^+,\chi_{J\cup\{i,j\}}:\ J\subseteq R\}\)，其特征值分别为 \(2|J|\)、\(2(|J|+1)\)、\(2(|J|+2)\)，从而
+\[
+Z^+(t)=\sum_{J\subseteq R}\Bigl(e^{-2t|J|}+e^{-2t(|J|+1)}+e^{-2t(|J|+2)}\Bigr)
+=(1+e^{-2t})^{m-2}(1+e^{-2t}+e^{-4t}).
+\]
+令 \(q=e^{-2t}\) 即得 \(q\)-形式与 \(\Phi_3\) 因子。证毕。
+\end{proof}
+
 \begin{corollary}[window-\(6\) 的规范 \(16\) 维手征载体携带 \(Q_4\) 的精确谱指纹]\label{cor:window6-chiral-sector-q4-spectrum}
 在 window-\(6\) 的几何稳定子对合 \(\sigma_{\mathrm{geo}}\) 下（定理 \ref{thm:foldbin6-geo-stabilizer-z2}），令
 \[

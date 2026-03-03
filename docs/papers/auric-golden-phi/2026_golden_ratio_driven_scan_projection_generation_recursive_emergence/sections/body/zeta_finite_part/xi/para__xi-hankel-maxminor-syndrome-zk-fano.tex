@@ -94,6 +94,58 @@ Ae_{d-1}=-(p_0,\dots,p_{d-1})^{\mathsf T}.
 又由 (2) 递推阶为 \(d\)，可知 \(A\) 的最小湮灭多项式次数至少为 \(d\)；而 \(\deg P=d\) 且 \(P(A)=0\) 给出次数至多为 \(d\)，故次数恰为 \(d\)。证毕。
 \end{proof}
 
+\begin{theorem}[最大子式综合征的偏移射影不变性与规范化唯一性]\label{thm:xi-hankel-maximal-minor-syndrome-offset-projective-invariance}
+设 \(k\) 为域，\((a_n)_{n\ge 0}\subset k\) 的 Hankel 秩为 \(d<\infty\)。
+对任意偏移 \(\ell\ge 0\)，定义移位 Hankel 主块与扩展块
+\[
+H_0^{(\ell)}:=\bigl(a_{\ell+i+j}\bigr)_{0\le i,j\le d-1}\in M_d(k),
+\qquad
+\widehat H^{(\ell)}:=\bigl(a_{\ell+i+j}\bigr)_{\substack{0\le i\le d-1\\ 0\le j\le d}}\in M_{d,d+1}(k).
+\]
+当 \(\det(H_0^{(\ell)})\neq 0\) 时，对 \(0\le j\le d\) 记 \(\widehat H^{(\ell,j)}\) 为从 \(\widehat H^{(\ell)}\) 中删去第 \(j\) 列所得的 \(d\times d\) 子块，并定义综合征向量
+\[
+\Delta_j^{(\ell)}:=(-1)^{d+j}\det\!\bigl(\widehat H^{(\ell,j)}\bigr),
+\qquad
+\Delta^{(\ell)}:=(\Delta_0^{(\ell)},\dots,\Delta_d^{(\ell)})^{\mathsf T}\in k^{d+1}.
+\]
+则存在与 \(\ell\) 无关的唯一向量 \(p=(p_0,\dots,p_{d-1},1)\in k^{d+1}\)，使得对一切满足 \(\det(H_0^{(\ell)})\neq 0\) 的 \(\ell\) 都有
+\[
+\boxed{\;\Delta^{(\ell)}=\det\!\bigl(H_0^{(\ell)}\bigr)\cdot p.\;}
+\]
+因此射影类 \([\Delta^{(\ell)}]\in\mathbf P^d(k)\) 与偏移 \(\ell\) 无关；等价地，由最大子式综合征抽取的首一 \(d\) 阶递推多项式在所有可逆偏移处完全一致。
+\end{theorem}
+\begin{proof}
+固定满足 \(\det(H_0^{(\ell)})\neq 0\) 的 \(\ell\)，并考虑移位序列 \(a^{(\ell)}_n:=a_{\ell+n}\)。
+此时 \(a^{(\ell)}\) 的 Hankel 秩仍为 \(d\)，且其对应主块正是 \(H_0^{(\ell)}\)，故可对 \(a^{(\ell)}\) 应用定理 \ref{thm:xi-hankel-maximal-minor-syndrome-normal-form-uniqueness}：
+向量 \(\Delta^{(\ell)}\) 生成 \(\ker(\widehat H^{(\ell)})\)，并给出唯一首一递推系数
+\[
+p_j^{(\ell)}:=\frac{\Delta_j^{(\ell)}}{\Delta_d^{(\ell)}}\quad(0\le j\le d-1),
+\qquad
+p_d^{(\ell)}:=1,
+\]
+使得
+\(
+\sum_{j=0}^{d}p_j^{(\ell)}a_{\ell+n+j}=0
+\)
+对一切 \(n\ge 0\) 成立。
+\par
+现取任意两偏移 \(\ell_1,\ell_2\) 满足 \(\det(H_0^{(\ell_i)})\neq 0\)。
+不妨设 \(\ell_2\ge \ell_1\)。
+将 \(\ell_1\) 处递推在 \(n\mapsto n+(\ell_2-\ell_1)\) 后与 \(\ell_2\) 处递推相减，得到对一切 \(n\ge 0\) 成立的关系
+\[
+\sum_{j=0}^{d-1}\bigl(p_j^{(\ell_1)}-p_j^{(\ell_2)}\bigr)\,a_{\ell_2+n+j}=0.
+\]
+若 \(p^{(\ell_1)}\neq p^{(\ell_2)}\)，则右端给出一个阶 \(\le d-1\) 的非平凡常系数递推，对移位序列 \((a_{\ell_2+n})_{n\ge 0}\) 处处成立；
+这与 \(\det(H_0^{(\ell_2)})\neq 0\) 所强制的 Hankel 秩为 \(d\)（从而最小递推阶为 \(d\)）矛盾。
+故 \(p^{(\ell)}\) 必与 \(\ell\) 无关，记其公共值为 \(p\)。
+\par
+最后注意 \(\widehat H^{(\ell,d)}=H_0^{(\ell)}\)，故 \(\Delta_d^{(\ell)}=\det(H_0^{(\ell)})\neq 0\)，并且按定义
+\(
+\Delta^{(\ell)}=\Delta_d^{(\ell)}\cdot(p_0,\dots,p_{d-1},1)^{\mathsf T}
+\)。
+代入 \(\Delta_d^{(\ell)}=\det(H_0^{(\ell)})\) 即得盒中恒等式。证毕。
+\end{proof}
+
 \begin{theorem}[Hankel 奇异性的三步公开币完美零知识证明]\label{thm:xi-hankel-singularity-hvzk}
 令 \(p\) 为素数，令 \(H\in \FF_p^{n\times n}\) 为 Hankel 矩阵，并记缺口
 \[
