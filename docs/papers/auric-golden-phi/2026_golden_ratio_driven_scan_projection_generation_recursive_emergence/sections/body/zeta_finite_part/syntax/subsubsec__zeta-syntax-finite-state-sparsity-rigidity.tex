@@ -75,6 +75,53 @@ C_1\,\frac{2^m}{m}\ \le\ p_m\ \le\ C_2\,\frac{2^m}{m}.
 \)，这些额外项必为合数误报，故给出第二条下界；第一条下界对一般情形取 \(c\) 足够小即可同时覆盖两种分支。证毕。
 \end{proof}
 
+\begin{theorem}[Zeckendorf 语法内的素数语言非 sofic]\label{thm:zeta-syntax-zeckendorf-primes-not-sofic}
+令 \(X_\infty\subseteq\{0,1\}^{\mathbb N}\) 为黄金均值（Zeckendorf）移位：禁止相邻子词 \(11\)，并记其长度 \(m\) 的合法块集合为
+\(
+X_m=\{w\in\{0,1\}^m:\text{不含子词 }11\}
+\)。
+对 \(x=x_1\cdots x_m\in X_m\) 定义其 Zeckendorf 值
+\[
+V_m(x):=\sum_{k=1}^m x_k F_{k+1}.
+\]
+令
+\[
+\mathcal P_m:=\{x\in X_m:\ V_m(x)\ \text{为素数}\},
+\qquad
+p_m:=|\mathcal P_m|,
+\qquad
+\mathcal P:=\bigcup_{m\ge 1}\mathcal P_m\subset X_\infty.
+\]
+则 \(\mathcal P\) 不是 sofic 移位；等价地，不存在有限标记图（亦即常数内存机制）能在 Zeckendorf 数字流上精确识别素性。
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:fold-inverse-limit-xm-xinfty}（Zeckendorf 截断在 \([0,F_{m+2})\) 上与 \(X_m\) 构成双射）可知
+\[
+\{V_m(x):\ x\in X_m\}=\{0,1,\dots,F_{m+2}-1\},
+\]
+从而除去 \(0,1\) 的边界项后有
+\(
+p_m=\pi(F_{m+2})+O(1)
+\)，其中 \(\pi(\cdot)\) 为素数计数函数。
+由素数定理与 \(F_{m+2}\asymp \varphi^m\) 得
+\[
+p_m\ \asymp\ \frac{F_{m+2}}{\log F_{m+2}}
+\ \asymp\ \frac{\varphi^m}{m}.
+\]
+\par
+反设 \(\mathcal P\) 为 sofic 移位。
+则其长度计数序列 \((p_m)_{m\ge 1}\) 为某个有限矩阵幂的线性泛函，因而满足常系数线性递推；
+等价地，
+\(
+p_m=\sum_{i=1}^r Q_i(m)\lambda_i^m
+\)，其中 \(\lambda_i\) 为代数数、\(Q_i\) 为次数属于 \(\ZZ_{\ge 0}\) 的多项式（次数由极点重数决定）。
+取主导模长 \(\Lambda:=\max_i|\lambda_i|>0\)。
+则 \(p_m\) 的主项必为 \(m^k\Lambda^m\) 形式（\(k\in\ZZ_{\ge 0}\)），不可能出现 \(m^{-1}\Lambda^m\) 的主导因子。
+这与上式 \(p_m\asymp \varphi^m/m\) 矛盾。
+故 \(\mathcal P\) 非 sofic。证毕。
+\end{proof}
+
 \begin{proposition}[正则前缀码的 Kraft 和为有理数]\label{prop:zeta-syntax-regular-prefixfree-kraft-rational}
 令 \(L\subseteq\{0,1\}^\ast\) 为前缀无歧义（prefix-free）语言，并设 \(L\) 为正则语言。
 定义 Kraft 和
@@ -206,6 +253,16 @@ Z_b(z):=\prod_{n\ge 1}(1-z^n)^{-b_n}.
 在本文的有限图（SFT/sofic）口径下，动力学 \(\zeta\) 具有有限矩阵的行列式表示 \(\zeta_M(z)=\det(I-zM)^{-1}\)，从而为有理函数（\S\ref{subsec:zeta-syntax-zeta}）。
 因此，若某一 primitive 侧的 Euler 型乘积机制在素数长度上具有无穷支撑并以非负指数进入乘积，则按定理 \ref{thm:zeta-syntax-euler-product-natural-boundary} 必强制单位圆自然边界，从而无法来自任何有限状态 \(\zeta\) 机制。
 \end{remark}
+
+\begin{conjecture}[Euler 乘积的有限状态不可达性：有理 \texorpdfstring{$\zeta$}{zeta} 族无法逼近经典乘积拓扑]\label{conj:zeta-syntax-euler-topology-unreachable}
+设 \(\{\zeta_{M_k}\}_k\) 为一族有限状态机制的动力学 \(\zeta\)-函数，其中
+\(
+\zeta_{M_k}(z)=\det(I-zM_k)^{-1}
+\)
+为有理函数；并设该族的延迟上界有界且状态数至多多项式增长。
+将“Euler 乘积结构”视为对 primitive 系数序列在 \(n^{-1}\) 权下的收敛拓扑（等价地，对 \(\log\zeta\) 的系数在 \(n^{-1}\) 权下的收敛）。
+则预期该拓扑下不存在收敛子列能逼近经典 Riemann \(\zeta\) 的 Euler 乘积：Euler 乘积的算术复杂性在该意义下强制状态复杂度超多项式增长。
+\end{conjecture}
 
 \begin{proposition}[常数内存机制的指数遗忘与每比特互信息塌缩]\label{prop:zeta-syntax-constant-memory-exponential-forgetting}
 令 \(\mathcal T\) 为任意有限状态在线转导器（Mealy 机），状态集 \(Q\) 有限。

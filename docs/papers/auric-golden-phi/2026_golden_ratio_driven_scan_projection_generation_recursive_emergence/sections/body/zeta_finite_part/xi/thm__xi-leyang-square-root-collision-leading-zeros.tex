@@ -138,6 +138,113 @@ u_{n,k}
 取 \(k=0,1\) 即得前两式；线性消元得到 \(\widehat u_c(n)\) 的表达式，\(\widehat C(n)\) 由差分读出。证毕。
 \end{proof}
 
+\begin{theorem}[三零点端点外推的 \texorpdfstring{$O(n^{-6})$}{O(n^-6)} 误差改进]\label{thm:xi-leyang-three-leading-zeros-extrapolate-uc-n6}
+设在某端点机制下，存在常数 \(u_c\in\CC\)、\(C\neq 0\)、\(D\in\CC\)，使得对固定的 \(k\in\{0,1,2\}\) 有渐近展开
+\[
+u_{n,k}
+=
+u_c
+-\frac{C}{n^{2}}(2k+1)^{2}
+-\frac{D}{n^{4}}(2k+1)^{4}
+O(n^{-6})
+\qquad(n\to\infty).
+\]
+定义三零点外推量
+\[
+\boxed{\
+\widehat u_{c}^{(n)}
+:=\frac{75}{64}\,u_{n,0}-\frac{25}{128}\,u_{n,1}+\frac{3}{128}\,u_{n,2}.
+}
+\]
+则成立严格误差改进
+\[
+\boxed{\ \widehat u_{c}^{(n)}=u_{c}+O(n^{-6}).\ }
+\]
+\end{theorem}
+\begin{proof}
+令 \(a_k:=(2k+1)^2\)，则 \(a_0=1,a_1=9,a_2=25\)。
+取系数 \(\alpha_0,\alpha_1,\alpha_2\) 满足
+\[
+\alpha_0+\alpha_1+\alpha_2=1,\qquad
+\alpha_0a_0+\alpha_1a_1+\alpha_2a_2=0,\qquad
+\alpha_0a_0^2+\alpha_1a_1^2+\alpha_2a_2^2=0.
+\]
+该 Vandermonde 线性系统唯一解为
+\(
+(\alpha_0,\alpha_1,\alpha_2)=(75/64,\,-25/128,\,3/128)
+\)。
+将展开式代入 \(\sum_{k=0}^2\alpha_k u_{n,k}\)，由约束恰消去 \(n^{-2}\) 与 \(n^{-4}\) 两阶项，余项阶为 \(O(n^{-6})\)。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$(M+1)$}{M+1} 点端点外推的闭式权重与最优误差阶]\label{thm:xi-leyang-mplus1-point-extrapolate-uc-optimal}
+在与定理 \ref{thm:xi-leyang-three-leading-zeros-extrapolate-uc-n6} 同型的端点机制下，固定整数 \(M\ge 1\)，并令
+\[
+a_k:=(2k+1)^2\qquad (k=0,1,\dots,M).
+\]
+定义 Lagrange 权重
+\[
+\boxed{\
+\alpha_{k}^{(M)}
+:=
+\prod_{\substack{0\le i\le M\\ i\ne k}}
+\frac{-a_{i}}{a_{k}-a_{i}}
+\qquad(k=0,\dots,M),
+}
+\]
+以及外推估计量
+\[
+\boxed{\
+\widehat u_{c,M}^{(n)}:=\sum_{k=0}^{M}\alpha_{k}^{(M)}\,u_{n,k}.
+}
+\]
+若存在常数 \(C_1,\dots,C_{M+1}\in\CC\) 使得对每个固定 \(k\in\{0,1,\dots,M\}\) 有
+\[
+u_{n,k}
+=
+u_c+\sum_{j=1}^{M+1}\frac{C_j}{n^{2j}}\,a_k^{j}+O(n^{-2M-4}),
+\qquad(n\to\infty),
+\]
+则
+\[
+\boxed{\ \widehat u_{c,M}^{(n)}=u_c+O(n^{-2M-2}).\ }
+\]
+并且在“仅使用 \(\{u_{n,0},\dots,u_{n,M}\}\) 并要求消去前 \(M\) 个偶阶项”的信息模型下，上述权重是唯一解，从而达到该模型内的最优误差阶。
+\end{theorem}
+\begin{proof}
+在假设展开中，截断到 \(n^{-2M-2}\) 的部分在变量 \(a_k\) 上是次数至多 \(M+1\) 的多项式，并且 \(u_c\) 对应于 \(a=0\) 处的取值。
+因此 \(\widehat u_{c,M}^{(n)}\) 等价于对节点 \(\{a_0,\dots,a_M\}\) 的 Lagrange 插值多项式在 \(a=0\) 的取值，其权重即为 \(L_k(0)\)，从而给出闭式 \(\alpha_k^{(M)}\)。
+插值误差由最高项 \(a^{M+1}\) 控制，对应尺度 \(n^{-2M-2}\)，得到误差阶。
+唯一性来自 Vandermonde 矩阵非退化。证毕。
+\end{proof}
+
+\begin{corollary}[由三零点同时恢复主标度常数与次阶常数]\label{cor:xi-leyang-recover-C-D-from-three-leading-zeros}
+在定理 \ref{thm:xi-leyang-three-leading-zeros-extrapolate-uc-n6} 的假设下，令 \(\widehat u_c^{(n)}\) 为其三零点外推量，并定义
+\[
+B_k:=n^{2}\bigl(\widehat u_{c}^{(n)}-u_{n,k}\bigr)\qquad(k=0,1).
+\]
+则常数 \(C,D\) 可由显式公式一致估计：
+\[
+\boxed{\
+\widehat C^{(n)}:=\frac{81B_{0}-B_{1}}{72}
+\ =\ C+O(n^{-4}),\ }
+\qquad
+\boxed{\
+\widehat D^{(n)}:=\frac{n^{2}(B_{1}-9B_{0})}{72}
+\ =\ D+O(n^{-2}).\ }
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-leyang-three-leading-zeros-extrapolate-uc-n6}，
+\(
+\widehat u_c^{(n)}=u_c+O(n^{-6})
+\)。
+结合 \(a_0=1,a_1=9\) 与展开式可得
+\[
+B_k=C\,a_k+\frac{D}{n^2}\,a_k^2+O(n^{-4})\qquad(k=0,1).
+\]
+对 \(k=0,1\) 作线性消元：\(\widehat C^{(n)}\) 消去 \(D/n^2\) 项而达到 \(O(n^{-4})\)，\(\widehat D^{(n)}\) 由差分提取 \(D\) 并得到 \(O(n^{-2})\)。证毕。
+\end{proof}
+
 \begin{proposition}[平方根分歧点的等模曲线切线方向]\label{prop:xi-leyang-equimodular-tangent-square-root}
 在定理 \ref{thm:xi-leyang-square-root-collision-leading-zeros-n2} 的记号下，定义局部等模集合
 \[

@@ -37,6 +37,40 @@ h^{\mathrm{add}}_2=\log\!\left(\frac{16}{r^{\mathrm{add}}_2}\right).
 若要求两条输入流本身为合法 Zeckendorf 轨道（各自禁止相邻 \(11\)），则可把该约束并入状态，得到 40 状态真实输入同步核 \(K_{\mathrm{real}}\)（表 \ref{tab:sync-kernel-A-compare}）。
 在该核上对同一“加法投影”做相同的碰撞 moment 编译，得到真实输入下的 \(r^{\mathrm{add,real}}_q\)。
 
+\begin{proposition}[输入合法性约束对碰撞主尺度的单调压缩]\label{prop:add-collision-spectrum-sofic-monotone-perron}
+对任意整数 \(q\ge 2\)，令 \(A_q^{\mathrm{add,sync}}\) 表示“无约束同步口径”下的 \(q\)-碰撞 moment-kernel realization，并令 \(A_q^{\mathrm{add,real}}\) 表示将输入从全移位收缩到任意 sofic 子语言（例如两条输入流各自禁止相邻 \(11\)）后得到的真实输入 moment-kernel realization。
+则可取两者满足逐项不等式
+\[
+0\le A_q^{\mathrm{add,real}}\ \le\ A_q^{\mathrm{add,sync}}
+\]
+从而其 Perron 主尺度满足
+\[
+\rho\!\left(A_q^{\mathrm{add,real}}\right)\ \le\ \rho\!\left(A_q^{\mathrm{add,sync}}\right).
+\]
+若该收缩确实删去了一条在 Perron 支撑上可达的同步碰撞路径，则严格不等号成立。
+\end{proposition}
+\begin{proof}
+将输入语言从全移位收缩到 sofic 子语言，等价于在“同步直积并施加逐步同输出约束”所得到的计数图上删去一族允许的输入边/状态；因此真实输入核可视为同步核的一个（可能带零化的）主子核，满足逐项不等式 \(0\le A^{\mathrm{add,real}}_q\le A^{\mathrm{add,sync}}_q\)。
+对非负矩阵，谱半径对逐项不等式单调（例如由 Collatz--Wielandt 公式直接推出），故得主尺度不等式。
+严格性由 Perron--Frobenius 理论：若差异边/态位于 Perron 正特征向量的支撑可达部分，则谱半径严格下降。证毕。
+\end{proof}
+
+\begin{corollary}[输入约束提高 Rényi 指纹率]\label{cor:add-collision-spectrum-renyi-monotone}
+沿用命题 \ref{prop:add-collision-spectrum-sofic-monotone-perron} 的记号，并以输入字母表 \(\Sigma_{\mathrm{in}}=\{0,1\}^2\) 计数定义
+\[
+h_q^{\mathrm{add}}:=\log\!\left(\frac{|\Sigma_{\mathrm{in}}|^{q}}{r_q^{\mathrm{add}}}\right)
+\qquad (q\ge 2).
+\]
+则对所有 \(q\ge 2\) 有
+\[
+h_q^{\mathrm{add,real}}\ \ge\ h_q^{\mathrm{add,sync}}.
+\]
+\end{corollary}
+\begin{proof}
+在 \(|\Sigma_{\mathrm{in}}|\) 固定时，\(h_q^{\mathrm{add}}\) 随 \(r_q^{\mathrm{add}}\) 单调递减。
+由命题 \ref{prop:add-collision-spectrum-sofic-monotone-perron} 得 \(r_q^{\mathrm{add,real}}\le r_q^{\mathrm{add,sync}}\)，代入即得结论。证毕。
+\end{proof}
+
 \begin{remark}[常数级差异（可复现）]\label{rem:add-collision-spectrum-10-vs-40}
 用仓库脚本 \texttt{scripts/exp\_add\_collision\_spectrum\_10\_vs\_40.py}（基于对称商/系数提取的 histogram-DP moment-kernel 实现）可复现计算：
 \(\;r^{\mathrm{add}}_2\approx 8.743\;\)、

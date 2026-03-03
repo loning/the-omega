@@ -255,6 +255,47 @@ B_{\max}(n):=\sup\{\beta(p):\ p\in\mathcal F,\ |p|\le n\}
 故此类 \(g\) 不存在；等价表述由支配关系定义直接得到。证毕。
 \end{proof}
 
+\begin{theorem}[有限检验深度的 Busy--Beaver 下界]\label{thm:conclusion-finite-test-depth-busybeaver}
+固定一种有效编码，使每个程序 \(p\) 计算一个全定义函数 \(f_p:\NN\to\{0,1\}\)，并以 \(|p|\) 表示其描述长度。
+定义两程序的首个分歧位置
+\[
+\Delta(p,q):=\min\{n\in\NN:\ f_p(n)\neq f_q(n)\},
+\]
+若 \(f_p\equiv f_q\) 则令 \(\Delta(p,q)=\infty\)。
+\par
+若存在函数 \(\Phi:\NN\to\NN\) 使对所有 \(|p|,|q|\le L\) 成立
+\[
+f_p\not\equiv f_q\quad\Longrightarrow\quad \Delta(p,q)\le \Phi(L),
+\]
+则存在常数 \(c\)（仅依赖于编码）使对所有 \(L\) 有
+\[
+\Phi(L)\ \ge\ \mathrm{BB}(L-c),
+\]
+其中 \(\mathrm{BB}(m)\) 为 Busy--Beaver 函数（长度/状态数 \(\le m\) 的停机机在其停机输入上的最大停机时间）。
+特别地，\(\Phi\) 不能为可计算函数。
+\end{theorem}
+\begin{proof}
+对任意图灵机 \(M\) 与输入 \(x\)，定义全定义函数
+\[
+f_{M,x}(n):=
+\begin{cases}
+0,& M(x)\ \text{在 }n\text{ 步内停机},\\
+1,& \text{否则},
+\end{cases}
+\qquad n\in\NN.
+\]
+令 \(g(n)\equiv 1\) 为常值函数，并取一个定长程序 \(q\) 计算 \(g\)。
+若 \(M(x)\) 于时刻 \(T\) 停机，则对所有 \(n<T\) 有 \(f_{M,x}(n)=1\) 且 \(f_{M,x}(T)=0\neq 1=g(T)\)，从而 \(\Delta(p_{M,x},q)=T\)，其中 \(p_{M,x}\) 为计算 \(f_{M,x}\) 的程序。
+并且存在常数 \(c\) 使得 \(|p_{M,x}|\le |(M,x)|+c\) 且 \(|q|\le c\)。
+\par
+若题设 \(\Phi\) 存在，则对任意停机的 \((M,x)\) 有
+\[
+T(M,x)=\Delta(p_{M,x},q)\ \le\ \Phi(|(M,x)|+c).
+\]
+对所有 \(|(M,x)|\le L-c\) 的停机实例取停机时间上确界即得 \(\mathrm{BB}(L-c)\le \Phi(L)\)。
+由于 \(\mathrm{BB}\) 超越任意可计算函数，故 \(\Phi\) 不可计算。证毕。
+\end{proof}
+
 \begin{conjecture}[审计预算主尺度的 Busy--Beaver 同阶律]\label{conj:conclusion-audit-budget-busy-beaver-scale}
 沿定理 \ref{thm:conclusion-audit-budget-escapes-all-computable-growth} 的记号，记
 \[

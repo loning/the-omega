@@ -28,4 +28,77 @@
 最后一段的“局部层数 \(\ge 3\) 唯一性”由定理 \ref{thm:bdry-binary-jump-orientation-functor-uniqueness} 的分类结论给出。证毕。
 \end{proof}
 
+\begin{theorem}[布尔二值跳跃核的张量谱与互补反演]\label{thm:xi-boolean-binary-jump-kernels-tensor-spectrum}
+固定整数 \(q\ge 1\)，并记 \(\Omega_q:=\{0,1\}^q\)。
+对 \(u,v\in\Omega_q\) 记按位运算 \(u\vee v\)、\(u\wedge v\)，并记 \(\mathbf{1}=(1,\dots,1)\)、\(\mathbf{0}=(0,\dots,0)\)。
+定义两类二值跳跃核（大小 \(2^q\times 2^q\)）：
+\[
+\mathsf{C}_q(u,v):=\mathbf{1}_{\{u\vee v=\mathbf{1}\}},
+\qquad
+\mathsf{D}_q(u,v):=\mathbf{1}_{\{u\wedge v=\mathbf{0}\}}.
+\]
+令
+\[
+A:=\begin{pmatrix}0&1\\[2pt]1&1\end{pmatrix},
+\qquad
+B:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},
+\qquad
+\varphi:=\frac{1+\sqrt5}{2}.
+\]
+则：
+\begin{enumerate}
+  \item \textbf{张量分解：}在标准基下有 \(\mathsf{C}_q=A^{\otimes q}\)、\(\mathsf{D}_q=B^{\otimes q}\)。
+  \item \textbf{黄金比例谱闭式：}\(\mathsf{C}_q\) 与 \(\mathsf{D}_q\) 具有同一特征值多重集：
+  \[
+  \lambda_k^{(q)}=\varphi^k(-\varphi^{-1})^{\,q-k}=(-1)^{q-k}\varphi^{\,2k-q}\qquad(k=0,1,\dots,q),
+  \]
+  且每个 \(\lambda_k^{(q)}\) 的重数为 \(\binom{q}{k}\)。
+  特别地，谱半径满足 \(\rho(\mathsf{C}_q)=\rho(\mathsf{D}_q)=\varphi^q\)。
+  \item \textbf{行列式与整模性：}
+  \[
+  \det(\mathsf{C}_q)=\det(\mathsf{D}_q)=(-1)^{q2^{q-1}}.
+  \]
+  因而当 \(q\ge 2\) 时二者为幺模矩阵，逆矩阵为整数矩阵。
+  \item \textbf{逆核的显式支持：}在按坐标分解的乘积基下有
+  \[
+  \mathsf{C}_q^{-1}(u,v)=(-1)^{\#\{i:\ u_i=v_i=0\}}\mathbf{1}_{\{u\wedge v=\mathbf{0}\}},
+  \qquad
+  \mathsf{D}_q^{-1}(u,v)=(-1)^{|u\wedge v|}\mathbf{1}_{\{u\vee v=\mathbf{1}\}}.
+  \]
+  \item \textbf{互补共轭：}令 \(\kappa:\Omega_q\to\Omega_q\) 为按位补集 \(\kappa(u)=\mathbf{1}-u\)，并令 \(P_\kappa\) 为其置换矩阵。
+  则 \(\mathsf{C}_q=P_\kappa\,\mathsf{D}_q\,P_\kappa^{\mathsf T}\)，从而两者谱完全一致。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对 \(q=1\) 直接核对得到 \(A_{u,v}=\mathbf{1}_{\{u\vee v=1\}}\)、\(B_{u,v}=\mathbf{1}_{\{u\wedge v=0\}}\)。
+对一般 \(q\)，由逐坐标分解
+\(
+\mathbf{1}_{\{u\vee v=\mathbf{1}\}}=\prod_{i=1}^q \mathbf{1}_{\{u_i\vee v_i=1\}}
+\)
+与
+\(
+\mathbf{1}_{\{u\wedge v=\mathbf{0}\}}=\prod_{i=1}^q \mathbf{1}_{\{u_i\wedge v_i=0\}}
+\)
+可得张量分解。
+\par
+矩阵 \(A,B\) 具有同一特征多项式 \(\lambda^2-\lambda-1\)，故特征值为 \(\varphi\) 与 \(-\varphi^{-1}\)。
+Kronecker 幂的谱为基矩阵谱的乘积多重集，取 \(\varphi\) 的次数为 \(k\) 的组合数为 \(\binom{q}{k}\)，从而得到谱闭式。
+\par
+行列式公式由 \(\det(M\otimes N)=\det(M)^{\dim N}\det(N)^{\dim M}\) 迭代得到，故 \(\det(M^{\otimes q})=\det(M)^{q2^{q-1}}\)；而 \(\det(A)=\det(B)=-1\)，即得结论。
+当 \(q\ge 2\) 时行列式为 \(+1\)，从而逆为整数矩阵。
+\par
+最后，利用 \((M^{\otimes q})^{-1}=(M^{-1})^{\otimes q}\) 与
+\(
+A^{-1}=\begin{psmallmatrix}-1&1\\[2pt]1&0\end{psmallmatrix},
+\;
+B^{-1}=\begin{psmallmatrix}0&1\\[2pt]1&-1\end{psmallmatrix}
+\)
+逐坐标相乘即可得到逆核的支持条件与符号因子。
+互补共轭由恒等式
+\(
+(1-u_i)\wedge(1-v_i)=0\iff u_i\vee v_i=1
+\)
+逐坐标推出。证毕。
+\end{proof}
+
 \endinput

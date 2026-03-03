@@ -134,6 +134,41 @@ K\bigl(\tau_{\infty\to m}(\omega)\mid x_\infty,m\bigr)
 证毕。
 \end{proof}
 
+\begin{proposition}[路径分量纤维的 rank/unrank 线性时间实现]\label{prop:fold-fiber-rank-unrank-linear}
+对整数 \(\ell\ge 0\)，令
+\[
+\mathcal{L}_\ell:=\{s\in\{0,1\}^{\ell}:\ s\ \text{不含相邻子串 }11\},
+\qquad
+\card{\mathcal{L}_\ell}=F_{\ell+2}.
+\]
+存在确定性算法 \(\mathrm{rank}_\ell:\mathcal{L}_\ell\to[0,F_{\ell+2}-1]\) 与 \(\mathrm{unrank}_\ell:[0,F_{\ell+2}-1]\to\mathcal{L}_\ell\)，互为逆，并且二者均在 \(O(\ell)\) 时间内可计算。
+进一步，若某纤维在某一规范双射下分解为有限直积
+\[
+\Fold_m^{-1}(x)\ \cong\ \prod_{i=1}^{r}\mathcal{L}_{\ell_i},
+\qquad
+d_m(x)=\prod_{i=1}^{r}F_{\ell_i+2},
+\]
+则可用混合进制分解把纤维内的 rank/unrank 归约为分量 rank/unrank，从而在 \(O(\sum_i\ell_i)=O(m)\) 时间内实现纤维内的 rank/unrank。
+\end{proposition}
+\begin{proof}
+对 \(\mathcal{L}_\ell\) 的 rank/unrank 用 Fibonacci 递推实现。
+对任意 \(s=s_1\cdots s_\ell\in\mathcal{L}_\ell\)，若 \(s_1=0\)，则其在字典序下与 \(\mathcal{L}_{\ell-1}\) 的尾串秩一致；若 \(s_1=1\)，则必有 \(s_2=0\)，并且以 \(0\) 起始的合法串共有 \(\card{\mathcal{L}_{\ell-1}}=F_{\ell+1}\) 个，故
+\[
+\mathrm{rank}_\ell(s)=F_{\ell+1}+\mathrm{rank}_{\ell-2}(s_3\cdots s_\ell).
+\]
+反秩同理：给定 \(j\in[0,F_{\ell+2}-1]\)，若 \(j<F_{\ell+1}\) 则取首位为 \(0\) 并递归于 \(\ell-1\)；否则取前两位为 \(10\) 并递归于 \(\ell-2\) 的余数 \(j-F_{\ell+1}\)。
+每步长度减少 \(1\) 或 \(2\)，故时间为 \(O(\ell)\)。
+\par
+对直积情形，令 \(N_i:=F_{\ell_i+2}\)。
+任意 \(j\in[0,\prod_i N_i-1]\) 唯一分解为混合进制坐标
+\(
+j=\sum_i j_i\prod_{k<i}N_k
+\)
+（其中 \(0\le j_i<N_i\)）。
+对每个分量执行 \(\mathrm{unrank}_{\ell_i}(j_i)\) 并拼接即得全局 unrank；rank 由逐分量 rank 得到 \((j_i)\) 后再作同一混合进制合成。
+总时间为 \(O(\sum_i\ell_i)=O(m)\)。证毕。
+\end{proof}
+
 \begin{proposition}[终止性、局部合流与合流（纽曼引理）]\label{prop:fold-rewrite-newman}
 上述重写系统在 $\mathcal{D}$ 上强终止，且局部合流；由纽曼引理可得其合流性。因此每个 $a\in\mathcal{D}$ 的正规形存在且唯一，记为 $\mathrm{NF}(a)\in X_\infty$，并满足
 \[

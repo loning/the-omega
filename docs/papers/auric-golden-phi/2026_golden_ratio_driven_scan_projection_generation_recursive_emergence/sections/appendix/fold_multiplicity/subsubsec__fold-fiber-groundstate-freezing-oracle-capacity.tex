@@ -503,3 +503,88 @@ S_q(m):=\sum_{x\in X_m} d_m(x)^q
 反之，若已知足够丰富的矩谱并可重建 \(N_m\)，则 \(\mathcal{C}_m^{\mathrm{cont}}\) 亦可唯一恢复（命题 \ref{prop:fold-capacity-tail-equivalence}）。
 \end{corollary}
 
+\begin{proposition}[负阶幂和的容量表示与二进夹逼]\label{prop:fold-negative-moments-capacity-mellin}
+对任意实 \(p>0\) 有严格恒等式
+\[
+\sum_{x\in X_m} d_m(x)^{-p}
+=
+-p|X_m|+p(p+1)\int_{1}^{\infty}\mathcal{C}_m^{\mathrm{cont}}(T)\,T^{-p-2}\,\dd T.
+\]
+特别地，对整数 \(g\ge 2\)，取 \(p:=2g-2\) 并记
+\(
+Z_m(\Sigma_g):=\sum_{x\in X_m}d_m(x)^{2-2g}=\sum_x d_m(x)^{-p}
+\)，则上述恒等式给出 \(Z_m(\Sigma_g)\) 的容量表述。
+\par
+进一步，令整数 \(B\ge 0\) 上的二进容量为
+\[
+\mathcal{C}_m(B):=\mathcal{C}_m^{\mathrm{cont}}(2^B)=\sum_{x\in X_m}\min\bigl(d_m(x),2^B\bigr),
+\]
+并令
+\[
+A_p:=p\Bigl(1-2^{-(p+1)}\Bigr).
+\]
+则成立双侧夹逼
+\[
+-p|X_m|+A_p\sum_{B\ge 0}2^{-B(p+1)}\,\mathcal{C}_m(B)
+\ \le\
+\sum_{x\in X_m} d_m(x)^{-p}
+\ \le\
+-p|X_m|+A_p\sum_{B\ge 0}2^{-B(p+1)}\,\mathcal{C}_m(B+1).
+\]
+\end{proposition}
+\begin{proof}
+对每个 \(d\ge 1\) 有
+\(
+d^{-p}=p\int_{d}^{\infty}t^{-p-1}\dd t
+\)，
+故交换求和与积分得
+\[
+\sum_x d_m(x)^{-p}
+=p\int_{1}^{\infty}N_m(t)\,t^{-p-1}\,\dd t.
+\]
+由命题 \ref{prop:fold-capacity-tail-equivalence}，\(\mathcal{C}_m^{\mathrm{cont}}(T)=\int_{0}^{T}N_m(t)\dd t\)。
+对 \(u(T)=\mathcal{C}_m^{\mathrm{cont}}(T)\)、\(v(T)=T^{-p-1}\) 分部积分，并用 \(u(1)=|X_m|\)、\(\lim_{T\to\infty}u(T)\,T^{-p-1}=0\)（因为 \(u(T)\le |X_m|T\) 且 \(p>0\)）得到第一式。
+\par
+对二侧夹逼，将积分拆分为 \(\sum_{B\ge 0}\int_{2^B}^{2^{B+1}}\cdots\)，并用 \(\mathcal{C}_m^{\mathrm{cont}}\) 的单调性在每个二进区间内以端点容量上下界夹逼：
+\[
+\int_{2^B}^{2^{B+1}}\mathcal{C}_m^{\mathrm{cont}}(T)\,T^{-p-2}\dd T
+\in
+\left[\mathcal{C}_m(B),\ \mathcal{C}_m(B+1)\right]\cdot \int_{2^B}^{2^{B+1}}T^{-p-2}\dd T.
+\]
+而
+\(
+\int_{2^B}^{2^{B+1}}T^{-p-2}\dd T
+=\frac{1-2^{-(p+1)}}{p+1}\,2^{-B(p+1)}
+\)。
+代入并乘以 \(p(p+1)\) 得到所示夹逼，其中系数即为 \(A_p\)。证毕。
+\end{proof}
+
+\begin{corollary}[属二配分函数控制的反向 KL 上界]\label{cor:fold-reversekl-controlled-by-genus2-partition}
+令 \(U_m=\mathrm{Unif}(X_m)\) 且 \(w_m(x)=d_m(x)/2^m\) 为折叠推前分布。
+则有不等式
+\[
+D_{\mathrm{KL}}(U_m\|w_m)
+\le
+m\log 2-\frac{3}{2}\log|X_m|+\frac{1}{2}\log Z_m(\Sigma_2),
+\qquad
+Z_m(\Sigma_2)=\sum_{x\in X_m}d_m(x)^{-2}.
+\]
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:pom-reverse-kl-bound-by-dispersion}，
+\(
+D_{\mathrm{KL}}(U_m\|w_m)\le \log\mathfrak{D}(w_m)
+\)，其中
+\[
+\mathfrak{D}(w_m)=\frac{1}{|X_m|^2}\sum_{x\in X_m}\frac{1}{w_m(x)}
+=\frac{2^m}{|X_m|^2}\sum_{x\in X_m}\frac{1}{d_m(x)}.
+\]
+由 Cauchy--Schwarz 不等式，
+\(
+\sum_x d_m(x)^{-1}\le \sqrt{|X_m|\sum_x d_m(x)^{-2}}=\sqrt{|X_m|\,Z_m(\Sigma_2)}
+\)。
+代入并取对数得到结论。证毕。
+\end{proof}
+
+\endinput
+
