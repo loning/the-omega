@@ -36,40 +36,6 @@
 由推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition}，这等价于无法决定 Toeplitz 负惯性是否达到 \(\kappa\)。证毕。
 \end{proof}
 
-\begin{corollary}[一素数审计与唯一坏残类]\label{cor:xi-toeplitz-one-prime-audit-unique-bad-residue-class}
-沿用定理 \ref{thm:xi-toeplitz-negative-inertia-minimal-sampling} 的记号，并固定前缀样本 \((u_0,\dots,u_{2\kappa-3})\)。
-将末样本 \(u_{2\kappa-2}\) 视为变量，则存在常数 \(A,B\in\ZZ\)（依赖于该前缀）使
-\[
-\Delta:=\det(\mathsf H_{\kappa-1})=A\,u_{2\kappa-2}+B.
-\]
-若 \(\Delta\neq 0\)（整数意义），则存在素数
-\[
-p\ \le\ \max\{3,(\log|\Delta|)^2\}
-\qquad\text{且}\qquad
-\Delta\not\equiv 0\pmod p；
-\]
-因此在位长 \(O(\log\log|\Delta|)\) 的模轴上验证 \(\Delta\not\equiv 0\) 即可完成对 \(\det(\mathsf H_{\kappa-1})\neq 0\) 的外部审计，从而据推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 得到 \(\nu_-(\mathbf T_N(C))=\kappa\)（稳定区间内）。
-\par
-更强地，若 \(p\nmid A\)，则在 \(\FF_p\) 上方程
-\(
-A\,u_{2\kappa-2}+B\equiv 0\pmod p
-\)
-至多有一个解 \(u_{2\kappa-2}\bmod p\)；
-换言之，导致 \(\det(\mathsf H_{\kappa-1})\equiv 0\pmod p\) 的末样本坏残类至多一个。
-\end{corollary}
-\begin{proof}
-仿射表示 \(\Delta=A\,u_{2\kappa-2}+B\) 已在定理 \ref{thm:xi-toeplitz-negative-inertia-minimal-sampling} 的证明中给出。
-若 \(|\Delta|\) 充分大，则由推论 \ref{cor:xi-hankel-short-prime-avoids-badset}（把其中的 \(\Delta_\ell\) 专门化为该整数 \(\Delta\)）可取素数 \(p\le (\log|\Delta|)^2\) 使 \(p\nmid\Delta\)。
-若 \(|\Delta|\) 有界，则存在某个素数 \(p\le 3\) 不整除 \(\Delta\)，从而统一得到
-\(
-p\le \max\{3,(\log|\Delta|)^2\}
-\)
-且 \(\Delta\not\equiv 0\pmod p\)。
-结合命题 \ref{prop:xi-hankel-fullrank-one-prime-audit}（取 \(H_0=\mathsf H_{\kappa-1}\)）即可得到“一素数审计”的断言；再由推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 把 Hankel 满秩转译为 Toeplitz 负惯性结论。
-\par
-最后一段：在 \(p\nmid A\) 时，\(A\) 在 \(\FF_p\) 中可逆，故一次同余线性方程 \(A\,u+B\equiv 0\) 至多有一个解类。证毕。
-\end{proof}
-
 \begin{theorem}[Gram--shift 正定铅笔的缺陷节点谱]\label{thm:xi-gram-shift-positive-pencil-node-spectrum}
 在定理 \ref{thm:xi-toeplitz-negative-inertia-minimal-sampling} 的稳定区间设定下，定义两块移位 Hankel 窗口
 \[
@@ -108,6 +74,63 @@ A=H_0^{-1}H_1
 =V^{-{\mathsf T}}ZV^{\mathsf T},
 \]
 故 \(A\) 与 \(Z\) 相似并具有相同谱 \(\{z_j\}\)。证毕。
+\end{proof}
+
+\begin{theorem}[Hankel 行列式的 Gram--shift 判别式恒等式]\label{thm:xi-hankel-determinant-gramshift-discriminant-identity}
+在定理 \ref{thm:xi-gram-shift-positive-pencil-node-spectrum} 的稳定区间设定下，
+若进一步满足有限指数分解 \eqref{eq:xi-scan-fingerprint-exponential-sum}，
+则对 \(A:=H_0^{-1}H_1\) 的特征多项式
+\[
+\chi_A(\lambda):=\det(\lambda I_\kappa-A)=\prod_{j=1}^{\kappa}(\lambda-z_j)
+\]
+的（无符号）判别式
+\[
+\operatorname{Disc}(\chi_A):=\prod_{1\le i<j\le \kappa}(z_j-z_i)^2
+\]
+成立严格恒等式
+\[
+\det(H_0)
+=(4\pi)^{\kappa}\Bigl(\prod_{j=1}^{\kappa} w_j\Bigr)\operatorname{Disc}(\chi_A).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-gram-shift-positive-pencil-node-spectrum} 的证明，存在 Vandermonde 矩阵 \(V\) 使
+\(
+H_0=(4\pi)\,V W V^{\mathsf T}
+\)，其中 \(W=\mathrm{diag}(w_1,\dots,w_\kappa)\)。
+取行列式得
+\[
+\det(H_0)=(4\pi)^\kappa\det(V)^2\prod_{j=1}^{\kappa}w_j.
+\]
+而 \(\det(V)=\prod_{1\le i<j\le\kappa}(z_j-z_i)\)，故 \(\det(V)^2=\operatorname{Disc}(\chi_A)\)，代回即得结论。证毕。
+\end{proof}
+
+\begin{proposition}[Vandermonde 对角化的不可规避病态下界]\label{prop:xi-vandermonde-conditioning-lower-bound-disc}
+在定理 \ref{thm:xi-gram-shift-positive-pencil-node-spectrum} 的设定下，
+设 \(V\in\CC^{\kappa\times\kappa}\) 为节点 \(\{z_j\}_{j=1}^{\kappa}\) 的 Vandermonde 矩阵
+\(
+V_{ij}:=z_j^{\,i-1}
+\)（\(1\le i,j\le \kappa\)），并令 \(r:=\max_j|z_j|\)。
+则其 \(2\)-范数条件数满足
+\[
+\kappa_2(V)
+\ge \frac{\max_j\|{\rm col}_j(V)\|_2}{|\det(V)|^{1/\kappa}}
+\ge \frac{\sqrt{\sum_{i=0}^{\kappa-1}r^{2i}}}{|\operatorname{Disc}(\chi_A)|^{1/(2\kappa)}}.
+\]
+\end{proposition}
+\begin{proof}
+记 \(V\) 的奇异值为 \(\sigma_1\ge\cdots\ge\sigma_\kappa>0\)。
+由 \(|\det(V)|=\prod_{i=1}^{\kappa}\sigma_i\) 与 \(\sigma_i\ge \sigma_\kappa\) 得
+\(
+\sigma_\kappa^\kappa\le |\det(V)|
+\)，从而 \(\sigma_\kappa\le |\det(V)|^{1/\kappa}\)。
+又由算子范数定义有 \(\sigma_1=\|V\|_2\ge \max_j\|{\rm col}_j(V)\|_2\)。
+故
+\[
+\kappa_2(V)=\frac{\sigma_1}{\sigma_\kappa}\ge \frac{\max_j\|{\rm col}_j(V)\|_2}{|\det(V)|^{1/\kappa}}.
+\]
+取 \(|z_j|=r\) 的列可得 \(\|{\rm col}_j(V)\|_2^2=\sum_{i=0}^{\kappa-1}r^{2i}\)。
+再由 \(|\det(V)|^2=|\operatorname{Disc}(\chi_A)|\) 得到所示不等式。证毕。
 \end{proof}
 
 \begin{corollary}[有限窗口的有理重构：节点多项式与谱不变量]\label{cor:xi-node-polynomial-rational-reconstruction}
@@ -161,6 +184,51 @@ p\nmid \operatorname{Disc}(\widehat\Pi_\kappa),
 在 \(\FF_p[T]\) 中成立，这等价于判别式 \(\operatorname{Disc}(\widehat\Pi_\kappa)\) 在 \(\FF_p\) 中非零。
 故在所述条件下 \(\widehat\Pi_\kappa\bmod p\) 可分，节点约化不发生合并。
 最后一条由“坏素数必须整除某个非零整数”得到：若 \(p\) 不整除该积，则同时避开两类坏情形。证毕。
+\end{proof}
+
+\begin{corollary}[有限 \(p\)-进精度下的 Gram--shift 有效分辨率]\label{cor:xi-gramshift-padic-effective-precision}
+沿用命题 \ref{prop:xi-node-polynomial-good-reduction-discriminant} 的记号。
+固定素数 \(p\)，并设 \((\widehat H_0,\widehat H_1)\in\Mat_\kappa(\ZZ_p)^2\) 为一组 \(p\)-进提升，使其在模 \(p^N\) 意义下与给定数据一致，且 \(\det(\widehat H_0)\ne 0\)。
+令
+\[
+s:=v_p\!\bigl(\det(\widehat H_0)\bigr).
+\]
+则由同余数据 \((\widehat H_0,\widehat H_1)\bmod p^N\) 所确定的移位实现矩阵 \(\widehat A:=\widehat H_0^{-1}\widehat H_1\) 在 \(\Mat_\kappa(\ZZ_p/p^{N-s}\ZZ_p)\) 中是唯一的。
+更具体地，若 \((\widehat H_0',\widehat H_1')\) 为另一组满足同一模 \(p^N\) 数据且 \(\det(\widehat H_0')\ne 0\) 的提升，并记 \(\widehat A':=\widehat H_0'^{-1}\widehat H_1'\)，则
+\[
+\widehat A\equiv \widehat A'\pmod{p^{N-s}}.
+\]
+此外，若在某一分裂扩张中存在 Prony 分解 \(s_m=\sum_{j=1}^{\kappa}\omega_j a_j^m\) 使
+\(
+\widehat H_0=(s_{i+j})_{0\le i,j\le \kappa-1}
+\)，
+则由推论 \ref{cor:xi-hankel-first-block-determinant-discriminant-weight} 得
+\[
+s=\sum_{j=1}^{\kappa}v_p(\omega_j)\;+\;v_p\!\left(\prod_{1\le i<j\le\kappa}(a_j-a_i)^2\right).
+\]
+\end{corollary}
+\begin{proof}
+由伴随矩阵公式
+\(
+\widehat H_0^{-1}=\operatorname{adj}(\widehat H_0)/\det(\widehat H_0)
+\)，有
+\[
+\widehat A=\frac{\operatorname{adj}(\widehat H_0)\widehat H_1}{\det(\widehat H_0)}.
+\]
+注意 \(\operatorname{adj}(\widehat H_0)\widehat H_1\) 的每个条目均为 \(\widehat H_0,\widehat H_1\) 条目的整系数多项式，故同余条件
+\(
+(\widehat H_0,\widehat H_1)\equiv(\widehat H_0',\widehat H_1')\pmod{p^N}
+\)
+推出
+\(
+\operatorname{adj}(\widehat H_0)\widehat H_1\equiv \operatorname{adj}(\widehat H_0')\widehat H_1'\pmod{p^N}
+\)。
+再由 \(v_p(\det(\widehat H_0))=s\)（以及同余下 \(s=v_p(\det(\widehat H_0'))\)）可知分母提取出 \(p^s\) 后余因子为单位，故相除只损失 \(s\) 位精度，从而
+\(
+\widehat A\equiv \widehat A'\pmod{p^{N-s}}
+\)。
+末尾估值分解为推论 \ref{cor:xi-hankel-first-block-determinant-discriminant-weight} 的直接取赋值。证毕。
+\end{proof}
 
 \paragraph{盘内极点参数与指数节点参数的闭合互译}
 在有限点状缺陷—Toeplitz/扫描 Hankel 双接口的稳定区间内，同一缺陷原子既可由 Toeplitz 侧的盘内极点 \(a_j\in\mathbb{D}\) 表示，亦可由扫描侧的指数节点 \(z_j(\Delta)\in\mathbb{D}\) 表示（参见 \eqref{eq:xi-comoving-scan-fourier} 的指数谱闭式与 \eqref{eq:xi-scan-node-from-gamma-delta} 的节点定义）。

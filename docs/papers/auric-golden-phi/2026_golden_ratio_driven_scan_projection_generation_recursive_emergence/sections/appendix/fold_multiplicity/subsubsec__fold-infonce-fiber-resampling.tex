@@ -144,6 +144,191 @@ L_m^{K,\star}
 即得所示二阶展开。证毕。
 \end{proof}
 
+\begin{theorem}[Rényi 碰撞幂和给出的 Bayes--InfoNCE 多矩上界]\label{thm:fold-infonce-renyi-collision-upper-envelope}
+在定理 \ref{thm:fold-infonce-entropy-degeneration-second-order} 的设定下，
+对任意整数 \(q\ge 2\) 定义归一化碰撞幂和
+\[
+M_q(m):=\sum_{x\in X_m}w_m(x)^q.
+\]
+则对任意 \(K\ge 2\) 成立显式上界
+\[
+L_{m}^{K,\star}\ \le\
+\frac{q-2}{q-1}\log 2\ +\ \frac{1}{q-1}\log\!\Bigl(1+(K-1)^{q-1}M_q(m)\Bigr).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:fold-infonce-entropy-degeneration-second-order} 证明中的凹性 Jensen 上界，
+\[
+\EE[\log(1+J)\mid X]\le \log\bigl(1+(K-1)w_m(X)\bigr).
+\]
+对任意 \(u\ge 0\) 与整数 \(q\ge 2\)，由凸性与二点插值得
+\[
+\left(\frac{1+u}{2}\right)^{q-1}\le \frac{1+u^{q-1}}{2},
+\qquad\Longrightarrow\qquad
+(1+u)^{q-1}\le 2^{q-2}(1+u^{q-1}),
+\]
+从而
+\[
+\log(1+u)\le \frac{q-2}{q-1}\log 2+\frac{1}{q-1}\log(1+u^{q-1}).
+\]
+取 \(u=(K-1)w_m(X)\) 并取期望。注意到 \(z\mapsto \log(1+Az)\)（\(A>0\)）在 \(z\ge 0\) 上凹，
+故
+\[
+\EE\log\bigl(1+(K-1)^{q-1}w_m(X)^{q-1}\bigr)
+\le
+\log\!\Bigl(1+(K-1)^{q-1}\EE[w_m(X)^{q-1}]\Bigr).
+\]
+而 \(\EE[w_m(X)^{q-1}]=\sum_x w_m(x)^q=M_q(m)\)。
+合并即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[指数负样本尺度下的分段线性上包络]\label{cor:fold-infonce-exponential-negative-phase-envelope}
+沿用定理 \ref{thm:fold-infonce-renyi-collision-upper-envelope} 的记号。
+设对某个整数 \(q\ge 2\) 极限
+\[
+P_q:=\lim_{m\to\infty}\frac{1}{m}\log S_q(m),
+\qquad
+S_q(m):=\sum_{x\in X_m}d_m(x)^q
+\]
+存在，并记
+\[
+r_q:=e^{P_q}=\lim_{m\to\infty}S_q(m)^{1/m},
+\qquad
+h_q:=q\log 2-\log r_q.
+\]
+对任意指数负样本序列 \(K_m=\lceil e^{\gamma m}\rceil\)（\(\gamma\ge 0\)）有
+\[
+\limsup_{m\to\infty}\frac{1}{m}L_{m}^{K_m,\star}
+\le
+\left(\gamma-\frac{h_q}{q-1}\right)_{+},
+\qquad
+(t)_{+}:=\max\{t,0\}.
+\]
+因此
+\[
+\limsup_{m\to\infty}\frac{1}{m}L_{m}^{K_m,\star}
+\le
+\inf_{q\ge 2}\left(\gamma-\frac{h_q}{q-1}\right)_{+},
+\]
+并由 \(\gamma=\frac{h_q}{q-1}\) 给出一族临界直线的分段线性上包络。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-infonce-renyi-collision-upper-envelope}，并用
+\(
+M_q(m)=S_q(m)/2^{qm}
+\)，得
+\[
+\frac{1}{m}L_{m}^{K_m,\star}
+\le
+\frac{q-2}{q-1}\cdot\frac{\log 2}{m}
+\;+\;
+\frac{1}{q-1}\cdot\frac{1}{m}\log\!\Bigl(1+(K_m-1)^{q-1}\frac{S_q(m)}{2^{qm}}\Bigr).
+\]
+令 \(m\to\infty\)，首项消失。
+并且 \(\frac{1}{m}\log(K_m-1)\to\gamma\)、\(\frac{1}{m}\log S_q(m)\to\log r_q\)，故括号内指数主阶为
+\[
+(q-1)\gamma+\log r_q-q\log 2=(q-1)\left(\gamma-\frac{h_q}{q-1}\right).
+\]
+由 \(\log(1+e^{m a+o(m)})/m\to a_{+}\) 得到所示上界；对所有 \(q\ge 2\) 取下确界即得第二式。证毕。
+\end{proof}
+
+\begin{corollary}[碰撞谱给出的 Shannon 熵率下界]\label{cor:fold-shannon-entropy-rate-lower-bound-from-rq}
+令 \(H(w_m):=-\sum_{x\in X_m}w_m(x)\log w_m(x)\)。
+若对某个整数 \(q\ge 2\) 存在 \(r_q=\lim_{m\to\infty}S_q(m)^{1/m}\)，并令 \(h_q=q\log 2-\log r_q\)，则
+\[
+\liminf_{m\to\infty}\frac{1}{m}H(w_m)\ \ge\ \frac{h_q}{q-1}.
+\]
+\end{corollary}
+\begin{proof}
+对任意 \(q>1\)，Shannon 熵支配 Rényi 熵 \(H_q(w_m)\)：
+\(
+H(w_m)\ge H_q(w_m)
+\)。
+而
+\[
+H_q(w_m):=\frac{1}{1-q}\log\sum_x w_m(x)^q
+=\frac{1}{1-q}\log M_q(m)
+=\frac{q\log 2}{q-1}-\frac{1}{(q-1)m}\log S_q(m).
+\]
+取 \(\liminf_{m\to\infty}\) 并代入 \(\lim_{m\to\infty}\frac{1}{m}\log S_q(m)=\log r_q\)，得到
+\(
+\liminf \frac{1}{m}H(w_m)\ge (q\log 2-\log r_q)/(q-1)=h_q/(q-1)
+\)。
+证毕。
+\end{proof}
+
+\begin{proposition}[对数多重度的压力导数恒等式]\label{prop:fold-logmultiplicity-pressure-derivative}
+令
+\[
+\kappa_m(w_m):=\EE_{X\sim w_m}\bigl[\log d_m(X)\bigr],
+\qquad
+S_a(m):=\sum_{x\in X_m}d_m(x)^a\quad(a\in\RR).
+\]
+则在每个固定 \(m\) 上成立恒等式
+\[
+\kappa_m(w_m)=\left.\frac{\dd}{\dd a}\log S_a(m)\right|_{a=1}.
+\]
+若进一步假设极限压力
+\[
+P(a):=\lim_{m\to\infty}\frac{1}{m}\log S_a(m)
+\]
+在 \(a=1\) 处可导，则
+\[
+\lim_{m\to\infty}\frac{1}{m}\kappa_m(w_m)=P'(1),
+\qquad
+\lim_{m\to\infty}\frac{1}{m}H(w_m)=\log 2-P'(1).
+\]
+\end{proposition}
+\begin{proof}
+由
+\(
+\frac{\dd}{\dd a}\log S_a(m)=\frac{\sum_x d_m(x)^a\log d_m(x)}{\sum_x d_m(x)^a}
+\)，
+代入 \(a=1\) 并用 \(\sum_x d_m(x)=2^m\)、\(w_m(x)=d_m(x)/2^m\) 得
+\[
+\left.\frac{\dd}{\dd a}\log S_a(m)\right|_{a=1}
+=\frac{1}{2^m}\sum_x d_m(x)\log d_m(x)
+=\sum_x w_m(x)\log d_m(x)
+=\kappa_m(w_m).
+\]
+若 \(P\) 在 \(1\) 处可导，则按定义
+\(
+P'(1)=\lim_{m\to\infty}\frac{1}{m}\kappa_m(w_m)
+\)。
+另一方面
+\(
+H(w_m)=m\log 2-\kappa_m(w_m)
+\)，两边同除以 \(m\) 并取极限即得第二式。证毕。
+\end{proof}
+
+\begin{corollary}[指数负样本双极限的稳定展开与临界阈值]\label{cor:fold-infonce-exponential-K-stable-expansion}
+取 \(K_m=\lceil e^{\gamma m}\rceil\)。
+若 \(\gamma>\log\varphi\)，则存在常数 \(C_\gamma>0\) 使对所有充分大 \(m\) 有
+\[
+\Bigl|L_{m}^{K_m,\star}-\bigl(\log(K_m-1)-H(w_m)\bigr)\Bigr|
+\le C_\gamma\,e^{-(\gamma-\log\varphi)m}.
+\]
+若进一步假设熵率 \(h:=\lim_{m\to\infty}\frac{1}{m}H(w_m)\) 存在，则
+\[
+\lim_{m\to\infty}\frac{1}{m}L_{m}^{K_m,\star}=\gamma-h.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-infonce-entropy-degeneration-second-order} 的双边估计，
+\[
+\Bigl|L_{m}^{K,\star}-\bigl(\log(K-1)-H(w_m)\bigr)\Bigr|
+\le
+\frac{3|X_m|}{2(K-1)}\ \vee\ \frac{|X_m|}{K-1}
+\le
+\frac{3|X_m|}{2(K-1)}.
+\]
+又由 \(|X_m|=F_{m+2}=\Theta(\varphi^m)\) 与 \(K_m\asymp e^{\gamma m}\) 得
+\(
+|X_m|/(K_m-1)\le C_\gamma e^{-(\gamma-\log\varphi)m}
+\)（\(\gamma>\log\varphi\)）。
+从而得到稳定展开。若熵率存在，则两边除以 \(m\) 并令 \(m\to\infty\) 即得极限。证毕。
+\end{proof}
+
 \input{sections/appendix/fold_multiplicity/parts/thm__fold-infonce-laplace-renyi-moment-expansion}
 
 \endinput

@@ -96,6 +96,66 @@ d_H\bigl(\partial_n[U],\partial_n[V]\bigr)\; }.
 因此由命题 \ref{prop:spg-squareclass-support-hamming-isometry} 立得。证毕。
 \end{proof}
 
+\begin{theorem}[边界 Gödel 码的算术化差分距离与 Stokes 读出的 Lipschitz 稳定性]\label{thm:spg-godel-boundary-gcd-lipschitz-stability}
+沿用定理 \ref{thm:spg-boundary-godelization-holographic-dictionary} 的边界 Gödel 编码并固定 \(m,n\ge 1\)。
+记 \(\omega(N)\) 为正整数 \(N\) 的互异素因子个数。
+对任意 dyadic polycube \(U,V\subset I^n\)，定义 Gödel 对称差计数
+\[
+\operatorname{Dist}_m(U,V)
+:=\omega\!\left(\frac{H_m(U)\,H_m(V)}{\gcd\!\bigl(H_m(U),H_m(V)\bigr)^2}\right).
+\]
+则成立：
+\begin{enumerate}
+  \item \textbf{（边界差的面积等式）}
+        若将 \(\partial U-\partial V\) 视为取向 \((n-1)\)-面上的整数链并令
+        \[
+        \operatorname{Area}(\partial U-\partial V)
+        :=2^{-m(n-1)}\bigl\|\partial_n[U]-\partial_n[V]\bigr\|_{\ell^1},
+        \]
+        则有精确恒等式
+        \[
+        \operatorname{Area}(\partial U-\partial V)=2^{-m(n-1)}\,\operatorname{Dist}_m(U,V).
+        \]
+  \item \textbf{（体积读出的 Lipschitz 控制）}
+        令 \(\omega_0\) 为 \eqref{eq:spg-universal-stokes-probe-form} 中满足 \(\dd\omega_0=\dd x_1\cdots\dd x_n\) 的通用 Stokes 探针，则
+        \[
+        \bigl|\operatorname{Vol}(U)-\operatorname{Vol}(V)\bigr|
+        =\left|\int_{\partial U-\partial V}\omega_0\right|
+        \le 2^{-m(n-1)}\,\operatorname{Dist}_m(U,V).
+        \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由于 \(H_m(U)\) 与 \(H_m(V)\) 皆为平方自由整数，其最大公因子 \(\gcd(H_m(U),H_m(V))\) 的素因子集合恰为两者边界支撑的交；
+因而
+\(
+H_m(U)H_m(V)/\gcd(H_m(U),H_m(V))^2
+\)
+的素因子集合恰为两者边界支撑的对称差。
+另一方面，\(\partial_n[U]-\partial_n[V]\) 在每个取向 \((n-1)\)-面上的系数属于 \(\{-1,0,1\}\)，其 \(\ell^1\) 范数正是该对称差的基数。
+由推论 \ref{cor:spg-boundary-godel-ratio-squareclass-isometry}，该基数也等于 \(\card{\mathrm{supp}(R_m(U,V))}\)，从而
+\(
+\|\partial_n[U]-\partial_n[V]\|_{\ell^1}=\operatorname{Dist}_m(U,V)
+\)。
+乘以单个 dyadic \((n-1)\)-面的面积 \(2^{-m(n-1)}\) 即得第一式。
+\par
+第二式由 Stokes 读出恒等式 \(\operatorname{Vol}(W)=\int_{\partial W}\omega_0\)（见 \eqref{eq:spg-probe-volume-identity}）给出
+\[
+\operatorname{Vol}(U)-\operatorname{Vol}(V)=\int_{\partial U-\partial V}\omega_0.
+\]
+又由 \eqref{eq:spg-universal-stokes-probe-form} 可取 \(\|\omega_0\|_\infty\le 1\)，故对任意取向面 \(\vec f\) 有
+\(
+\bigl|\int_{\vec f}\omega_0\bigr|\le \int_{\vec f}1\,\dd S=2^{-m(n-1)}
+\)。
+将 \(\partial U-\partial V\) 分解为取向面之和并用三角不等式即得
+\[
+\left|\int_{\partial U-\partial V}\omega_0\right|
+\le 2^{-m(n-1)}\bigl\|\partial_n[U]-\partial_n[V]\bigr\|_{\ell^1}
+=2^{-m(n-1)}\,\operatorname{Dist}_m(U,V).
+\]
+证毕。
+\end{proof}
+
 \begin{corollary}[边界 Gödel 码的局部综合征刻画：可填充当且仅当局部闭合，且填充唯一]\label{cor:spg-dyadic-boundary-syndrome-fillability}
 沿用定理 \ref{thm:spg-dyadic-squareclass-chain-complex} 的记号，并取 \(k=n-1\)。
 令 \(H\in\mathcal G_{n-1}\) 对应 \((n-1)\)-链 \(b=\mathbf G_{n-1}^{-1}(H)\in C_{n-1}(\mathcal Q_m;\FF_2)\)。
@@ -220,6 +280,41 @@ w_\alpha(\vec f):=\int_{\vec f}\omega_\alpha
 直接计算可得 \( \dd\omega_\alpha=x^\alpha\,\dd x_1\cdots \dd x_n \)。
 由 Stokes 定理 \(\int_U \dd\omega_\alpha=\int_{\partial U}\omega_\alpha\) 即得第一式。
 第二式由积分的线性性与 \(\partial U\) 的面分解推出；而 \(\varepsilon_{\vec f}\) 的支撑与 \(H_m(U)\) 的素因子支撑一一对应。证毕。
+\end{proof}
+
+\begin{corollary}[单项式矩的抗扰动误差界：由 \texorpdfstring{$\gcd$}{gcd} 显式读出]\label{cor:spg-godel-moment-robust-gcd-bound}
+在定理 \ref{thm:spg-godel-boundary-gcd-lipschitz-stability} 的设定下，固定 \(\alpha=(\alpha_1,\dots,\alpha_n)\in\NN^n\) 并令
+\[
+\omega_{\alpha}^{(1)}:=\frac{x^{\alpha+e_1}}{\alpha_1+1}\,\dd x_2\wedge\cdots\wedge \dd x_n,
+\qquad
+\dd\omega_{\alpha}^{(1)}=x^\alpha\,\dd x_1\cdots\dd x_n.
+\]
+则对任意 dyadic polycube \(U,V\subset I^n\) 有
+\[
+\left|\int_U x^\alpha\,\dd x_1\cdots\dd x_n-\int_V x^\alpha\,\dd x_1\cdots\dd x_n\right|
+=\left|\int_{\partial U-\partial V}\omega_{\alpha}^{(1)}\right|
+\le \frac{2^{-m(n-1)}}{\alpha_1+1}\,\operatorname{Dist}_m(U,V),
+\]
+其中 \(\operatorname{Dist}_m(U,V)\) 由定理 \ref{thm:spg-godel-boundary-gcd-lipschitz-stability} 中的 \(\gcd\)-算术表达显式给出。
+\end{corollary}
+\begin{proof}
+由 Stokes 定理得
+\(
+\int_U x^\alpha\,\dd x-\int_V x^\alpha\,\dd x=\int_{\partial U-\partial V}\omega_{\alpha}^{(1)}
+\)。
+对任意 dyadic 取向 \((n-1)\)-面 \(\vec f\)，有 \(|x^{\alpha+e_1}|\le 1\) 且 \(\vec f\) 的 \((n-1)\)-测度为 \(2^{-m(n-1)}\)，从而
+\[
+\left|\int_{\vec f}\omega_{\alpha}^{(1)}\right|
+\le \frac{1}{\alpha_1+1}\int_{\vec f}1\,\dd S
+=\frac{2^{-m(n-1)}}{\alpha_1+1}.
+\]
+将 \(\partial U-\partial V\) 分解为取向面之和并用三角不等式得到
+\[
+\left|\int_{\partial U-\partial V}\omega_{\alpha}^{(1)}\right|
+\le \frac{2^{-m(n-1)}}{\alpha_1+1}\bigl\|\partial_n[U]-\partial_n[V]\bigr\|_{\ell^1}
+=\frac{2^{-m(n-1)}}{\alpha_1+1}\,\operatorname{Dist}_m(U,V),
+\]
+其中最后一步用定理 \ref{thm:spg-godel-boundary-gcd-lipschitz-stability}。证毕。
 \end{proof}
 
 \begin{theorem}[dyadic 边界像的 LDPC 码结构：局部校验子为共面四元关系]\label{thm:spg-dyadic-boundary-image-ldpc}
