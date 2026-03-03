@@ -29,11 +29,10 @@ knowledgegraph/
     kg-macros.tex
     kg-node-template.tex
   atoms/                             # 真相层（统一 Atom，append-only）
-    KG-20260303-0001__lbl-scan-axiom__tp-def__from-root__h-a1b2c3d4e5f6.tex
-    KG-20260303-0002__lbl-fold-map__tp-def__from-scan-axiom__h-b2c3d4e5f6a1.tex
-    KG-20260303-0101__lbl-fold-method-v1__tp-method__from-fold-map__h-c3d4e5f6a1b2.py
-    KG-20260303-0102__lbl-fold-table-v1__tp-artifact__from-fold-method-v1+fold-map__h-d4e5f6a1b2c3.tex
-    KG-20260304-0001__lbl-main-theorem-errata__tp-errata__from-main-theorem__h-e5f6a1b2c3d4.tex
+    KG-20260303-0001__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex
+    KG-20260303-0001__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex.meta.json
+    KG-20260303-0101__lbl-fold-method-v1-hc3d4e5f6a1b2__tp-method__h-c3d4e5f6a1b2.py
+    KG-20260303-0101__lbl-fold-method-v1-hc3d4e5f6a1b2__tp-method__h-c3d4e5f6a1b2.py.meta.json
   index_specs/                       # 索引规则（可改）
     book_grg.idx
     chapter_folding.idx
@@ -51,6 +50,7 @@ knowledgegraph/
     kg_ingest_atoms.py
     kg_build_index.py
     kg_compile.py
+    kg_analyze_build_log.py
   .kgcache/                          # 临时缓存，可忽略提交
 ```
 
@@ -61,19 +61,36 @@ knowledgegraph/
 
 ---
 
-## 3. Atom 文件名语法（关系+类型+哈希）
+## 3. Atom 文件名语法（标识+类型+哈希）
 
 ```text
-<ID>__lbl-<SELF>__tp-<TYPE>__from-<PARENTS>__h-<SHA12>.<ext>
+<ID>__lbl-<SELF>__tp-<TYPE>__h-<SHA12>.<ext>
 ```
 
 字段：
 1. `<ID>`：`KG-YYYYMMDD-NNNN`，全局唯一。
 2. `<SELF>`：Atom label slug（建议 `[a-z0-9-]`）。
 3. `<TYPE>`：Atom 类型。
-4. `<PARENTS>`：父节点 label，用 `+` 分隔；根节点写 `root`。
-5. `<SHA12>`：内容 `sha256` 前 12 位（用于不可变校验）。
-6. `<ext>`：载荷格式（`.tex/.py/.sh/.json/.csv/.md` 等）。
+4. `<SHA12>`：内容 `sha256` 前 12 位（用于不可变校验）。
+5. `<ext>`：载荷格式（`.tex/.py/.sh/.json/.csv/.md` 等）。
+
+关系字段迁移到 sidecar JSON：
+
+```text
+<payload_filename>.meta.json
+```
+
+示例：
+
+```json
+{
+  "kg_id": "KG-20260303-0002",
+  "label": "thm-main-hdf363889c236",
+  "atom_type": "tp-thm",
+  "parents": ["lem-base-h3123dca2ca16"],
+  "source_path": ".../sections/body/xxx.tex"
+}
+```
 
 约束：
 - 默认不按年份分目录；必要时仅做无语义分片（如按 ID 前缀）。
@@ -112,18 +129,19 @@ knowledgegraph/
 % KG_ID: KG-20260303-0003
 % KG_LABEL: main-theorem
 % KG_TYPE: thm
-% KG_FROM: fold-map+scan-axiom
+% KG_PARENTS: fold-map,scan-axiom
 % KG_HASH: f1a2b3c4d5e6
 
 \begin{theorem}[Main Theorem]
-\label{kg:main-theorem}
+\label{thm:main-theorem}
 ...
 \end{theorem}
 ```
 
 规则：
-1. `.tex` Atom 必须包含 `\label{kg:<SELF>}`。
-2. 文件名是主数据源；头注释用于审计。
+1. `.tex` Atom 建议保留原始 `\label{...}`（如 theorem/proof 内 label）。
+2. ingest 会自动注入短锚点（`kgid:<12hex>`）与 `% kg-label:<SELF>` 注释，供审计与编译兼容。
+3. 文件名是主数据源；头注释用于审计。
 
 ### 5.2 非 `.tex` Atom（脚本/产物类）
 
@@ -163,8 +181,8 @@ order: topo
 
 `kg_scan_atoms.py`：
 1. 扫描 `atoms/*`（不限扩展名）。
-2. 从文件名解析 `id/lbl/tp/from/hash/ext`。
-3. 构造推理边 `self -> parent`。
+2. 从文件名解析 `id/lbl/tp/hash/ext`。
+3. 从 `*.meta.json` 读取 `parents`，构造推理边 `self -> parent`。
 4. 校验：
    - ID 唯一
    - label 唯一
@@ -217,9 +235,11 @@ hash: sha256
 1. 脚本变更：新增 `tp-method` Atom（载荷可直接是脚本副本）。
 2. 脚本生成 `.tex/.csv/.json`：新增 `tp-artifact` Atom。
 3. 源 `.tex`（非 generated）使用 `pylatexenc` 做 AST 解析，按 `definition/lemma/theorem/corollary/proof/...` 环境切分为知识最小单元（每个单元一个 task -> 一个 atom）。
-4. 每个 `.tex` 知识单元从 `\ref/\eqref/\autoref/\cref` 提取依赖，映射到父 atom，写入 `from`。
-5. 若产物形成新结论：再新增 `tp-exp/tp-claim/tp-thm` Atom。
-6. 源文件删除：不删 Atom，新增 `tp-errata/tp-retract` 候选任务。
+4. 每个 `.tex` 知识单元从 `\ref/\eqref/\autoref/\cref` 提取依赖，映射到父 atom，写入 sidecar JSON 的 `parents`。
+5. `proof` 单元必须绑定声明节点（定义/定理/引理/命题等）；无可解析父节点时不入图（跳过 orphan proof atom）。
+6. 为兼容原文 label 未统一改写，ingest 会使用 sidecar 中 `source_tex_label` 作为别名映射来解析 `source_refs`。
+7. 若产物形成新结论：再新增 `tp-exp/tp-claim/tp-thm` Atom。
+8. 源文件删除：不删 Atom，新增 `tp-errata/tp-retract` 候选任务。
 
 ---
 
@@ -241,7 +261,14 @@ hash: sha256
 
 行为：
 1. 由 `.idx` 生成 `index_nodes`。
-2. 编译索引 PDF。
+2. `index_nodes/<spec>/atoms/` 自动生成短名软链（避免超长 `\input` 路径导致 TeX pool 超限）。
+3. 编译索引 PDF。
+4. 可选 `--index-ref-mode stable|strict`：
+   - `stable`（默认）：降级 `\ref/\eqref/\cite`，优先保证超大图可编译。
+   - `strict`：保留原始引用语义，可能更慢或在超大图上失败。
+5. 默认复用固定构建目录（例如 `knowledgegraph/.kgcache/build/index_book_grg/`），可复用 `.aux/.fdb_latexmk`，重复编译更快。
+6. 默认将 LaTeX 详细输出写入 `latexmk.stdout.log`（减少终端 I/O 开销）；调试时可加 `--verbose-latex`。
+7. 若需要冷启动全新构建目录，使用 `--fresh-build`。
 
 ### 9.3 局部编译
 
@@ -268,6 +295,36 @@ hash: sha256
 latexmk -pdfxe -interaction=nonstopmode -halt-on-error -file-line-error main.tex
 ```
 
+全量索引编译（推荐默认复用缓存）：
+
+```bash
+python3 knowledgegraph/scripts/kg_compile.py \
+  --kg-root knowledgegraph \
+  --mode index \
+  --spec book_grg \
+  --index-ref-mode stable
+```
+
+冷启动（不复用旧 build 目录）：
+
+```bash
+python3 knowledgegraph/scripts/kg_compile.py \
+  --kg-root knowledgegraph \
+  --mode index \
+  --spec book_grg \
+  --index-ref-mode stable \
+  --fresh-build
+```
+
+日志体检（统计 warning/error）：
+
+```bash
+python3 knowledgegraph/scripts/kg_analyze_build_log.py \
+  --kg-root knowledgegraph \
+  --build-tag index_book_grg \
+  --top 30
+```
+
 安装 `pylatexenc`（macOS/Homebrew Python）：
 
 ```bash
@@ -280,9 +337,9 @@ python3 -m pip install --user --break-system-packages -r knowledgegraph/requirem
 
 ## 11. 引用策略
 
-1. `.tex` Atom：使用 `\kgref{label}` -> `\ref{kg:label}`。
-2. 非 `.tex` Atom：用 `\texttt{KG-...}` 或自定义 `\kgid{...}` 显示引用。
-3. 局部编译可自动生成临时 `labels_stub.tex`（在 `.kgcache/`）。
+1. 原始数学引用优先保留源标签：`\ref{thm:...}` / `\eqref{eq:...}`。
+2. 系统锚点使用短标签 `\label{kgid:<12hex>}`，并在注释保留 `% kg-label:<SELF>` 映射。
+3. 非 `.tex` Atom：用 `\texttt{KG-...}` 或自定义宏显示引用。
 
 ---
 

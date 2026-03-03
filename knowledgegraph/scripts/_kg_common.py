@@ -12,11 +12,23 @@ from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 from typing import Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
-ATOM_RE = re.compile(
-    r"^(?P<id>KG-\d{8}-\d{4})"
+# Legacy format (kept for backward compatibility):
+#   <id>__lbl-<label>__tp-<type>__from-<parents>__h-<hash>.<ext>
+ATOM_RE_LEGACY = re.compile(
+    r"^(?P<id>KG-\d{8}-\d{4,})"
     r"__lbl-(?P<label>[a-z0-9-]+)"
     r"__tp-(?P<type>[a-z0-9-]+)"
     r"__from-(?P<parents>[a-z0-9-+]+)"
+    r"__h-(?P<hash>[0-9a-f]{12})"
+    r"\.(?P<ext>[A-Za-z0-9._-]+)$"
+)
+
+# Current format (relations stored in sidecar JSON):
+#   <id>__lbl-<label>__tp-<type>__h-<hash>.<ext>
+ATOM_RE = re.compile(
+    r"^(?P<id>KG-\d{8}-\d{4,})"
+    r"__lbl-(?P<label>[a-z0-9-]+)"
+    r"__tp-(?P<type>[a-z0-9-]+)"
     r"__h-(?P<hash>[0-9a-f]{12})"
     r"\.(?P<ext>[A-Za-z0-9._-]+)$"
 )
@@ -77,6 +89,17 @@ def slugify(text: str) -> str:
     return slug or "atom"
 
 
+def compact_label(label: str, max_len: int = 56) -> str:
+    """Keep labels filename-safe while preserving readable prefix."""
+    label = slugify(label)
+    if len(label) <= max_len:
+        return label
+    suffix = hashlib.sha256(label.encode("utf-8")).hexdigest()[:8]
+    head_len = max(8, max_len - 9)
+    head = label[:head_len].rstrip("-")
+    return f"{head}-{suffix}"
+
+
 def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
@@ -97,6 +120,16 @@ def tex_input_fragment_status(path: Path) -> Tuple[bool, Optional[str]]:
         (r"\\documentclass\b", "contains \\documentclass"),
         (r"\\begin\s*\{\s*document\s*\}", "contains \\begin{document}"),
         (r"\\end\s*\{\s*document\s*\}", "contains \\end{document}"),
+        (
+            r"\\if(?:x|num|dim|odd|vmode|hmode|mmode|inner|cat|defined|csname|true|false|case|void|hbox|vbox|eof)?(?![A-Za-z@])",
+            "contains TeX conditional control (\\if...)",
+        ),
+        (r"\\fi(?![A-Za-z@])", "contains TeX conditional control (\\fi)"),
+        (r"\\makeatletter\b", "contains \\makeatletter"),
+        (r"\\makeatother\b", "contains \\makeatother"),
+        (r"\\ExplSyntaxOn\b", "contains \\ExplSyntaxOn"),
+        (r"\\ExplSyntaxOff\b", "contains \\ExplSyntaxOff"),
+        (r"\\catcode\b", "contains \\catcode"),
     )
     for pattern, reason in checks:
         if re.search(pattern, cleaned):
@@ -132,24 +165,37 @@ def hash12_for_bytes(data: bytes) -> str:
 
 def parse_atom_filename(path: Path) -> Optional[Tuple[str, str, str, Tuple[str, ...], str, str]]:
     match = ATOM_RE.match(path.name)
-    if not match:
-        return None
-    kg_id = match.group("id")
-    label = match.group("label")
-    atom_type = f"tp-{match.group('type')}"
-    raw_parents = match.group("parents")
-    parents: Tuple[str, ...]
-    if raw_parents == "root":
-        parents = tuple()
-    else:
-        parts = [x for x in raw_parents.split("+") if x]
-        parents = tuple(parts)
-    hash12 = match.group("hash")
-    ext = match.group("ext")
-    return kg_id, label, atom_type, parents, hash12, ext
+    if match:
+        kg_id = match.group("id")
+        label = match.group("label")
+        atom_type = f"tp-{match.group('type')}"
+        hash12 = match.group("hash")
+        ext = match.group("ext")
+        # New format stores parents in sidecar JSON.
+        return kg_id, label, atom_type, tuple(), hash12, ext
+
+    legacy = ATOM_RE_LEGACY.match(path.name)
+    if legacy:
+        kg_id = legacy.group("id")
+        label = legacy.group("label")
+        atom_type = f"tp-{legacy.group('type')}"
+        raw_parents = legacy.group("parents")
+        if raw_parents == "root":
+            parents = tuple()
+        else:
+            parts = [x for x in raw_parents.split("+") if x]
+            parents = tuple(parts)
+        hash12 = legacy.group("hash")
+        ext = legacy.group("ext")
+        return kg_id, label, atom_type, parents, hash12, ext
+    return None
 
 
-def scan_atoms(kg_root: Path) -> Tuple[List[Atom], List[str]]:
+def atom_sidecar_path(atom_payload_path: Path) -> Path:
+    return atom_payload_path.with_name(atom_payload_path.name + ".meta.json")
+
+
+def scan_atoms(kg_root: Path, verify_hash: bool = True) -> Tuple[List[Atom], List[str]]:
     atoms_dir = kg_root / "atoms"
     errors: List[str] = []
     atoms: List[Atom] = []
@@ -160,17 +206,43 @@ def scan_atoms(kg_root: Path) -> Tuple[List[Atom], List[str]]:
     for path in sorted(atoms_dir.rglob("*")):
         if not path.is_file():
             continue
+        if path.name.endswith(".meta.json"):
+            continue
         parsed = parse_atom_filename(path)
         if parsed is None:
             errors.append(f"invalid atom filename: {path}")
             continue
 
         kg_id, label, atom_type, parents, hash12, ext = parsed
-        sha = compute_sha256(path)
-        if sha[:12] != hash12:
-            errors.append(
-                f"hash mismatch for {path.name}: filename={hash12} actual={sha[:12]}"
-            )
+        is_new_format = ATOM_RE.match(path.name) is not None
+        if is_new_format:
+            sidecar = atom_sidecar_path(path)
+            if sidecar.exists():
+                try:
+                    meta = json.loads(sidecar.read_text(encoding="utf-8"))
+                except Exception as exc:  # noqa: BLE001
+                    errors.append(f"invalid sidecar json for {path.name}: {exc}")
+                    meta = {}
+                meta_parents = meta.get("parents")
+                if isinstance(meta_parents, list):
+                    parents = tuple(slugify(str(x)) for x in meta_parents if str(x).strip())
+                elif meta_parents is None:
+                    parents = tuple()
+                else:
+                    errors.append(f"invalid parents in sidecar for {path.name}: expected list")
+                    parents = tuple()
+            else:
+                errors.append(f"missing sidecar meta json for {path.name}: {sidecar.name}")
+
+        if verify_hash:
+            sha = compute_sha256(path)
+            if sha[:12] != hash12:
+                errors.append(
+                    f"hash mismatch for {path.name}: filename={hash12} actual={sha[:12]}"
+                )
+        else:
+            # Trust filename hash for fast scan paths (compile/index hot path).
+            sha = hash12
 
         atoms.append(
             Atom(
@@ -247,9 +319,14 @@ def validate_atoms(atoms: Sequence[Atom]) -> Dict[str, List[str]]:
 
         if atom.ext == "tex":
             text = read_text(atom.path)
-            wanted = f"\\label{{kg:{atom.label}}}"
-            if wanted not in text:
-                warnings.append(f"tex atom missing canonical label {wanted}: {atom.path}")
+            wanted_old = f"\\label{{kg:{atom.label}}}"
+            short = hashlib.sha256(atom.label.encode("utf-8")).hexdigest()[:12]
+            wanted_short = f"\\label{{kgid:{short}}}"
+            wanted_comment = f"% kg-label:{atom.label}"
+            if wanted_old not in text and wanted_short not in text and wanted_comment not in text:
+                warnings.append(
+                    f"tex atom missing canonical label marker ({wanted_old} or {wanted_short}): {atom.path}"
+                )
 
     valid_labels = set(label_seen.keys())
     for atom in atoms:
@@ -325,9 +402,9 @@ def next_kg_id(kg_root: Path, now: Optional[datetime] = None) -> str:
             name = path.name
             if not name.startswith(prefix):
                 continue
-            seq = name[len(prefix) : len(prefix) + 4]
-            if seq.isdigit():
-                max_seq = max(max_seq, int(seq))
+            m = re.match(rf"^{re.escape(prefix)}(?P<seq>\d+)", name)
+            if m:
+                max_seq = max(max_seq, int(m.group("seq")))
     return f"{prefix}{max_seq + 1:04d}"
 
 

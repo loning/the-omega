@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Dict, Iterable, List
 
 from _kg_common import (
+    compact_label,
     default_kg_root,
     now_utc_compact,
     scan_atoms,
@@ -40,6 +41,7 @@ ENV_TO_TYPE = {
 }
 
 ENV_NAMES = sorted(ENV_TO_TYPE.keys(), key=len, reverse=True)
+ANCHOR_ENV_TYPES = {k for k in ENV_TO_TYPE.keys() if k != "proof"}
 
 
 def parse_args() -> argparse.Namespace:
@@ -237,7 +239,12 @@ def extract_tex_knowledge_units(tex: str, source_stem: str) -> List[Dict[str, ob
     root_nodes, _, _ = walker.get_latex_nodes(pos=0)
     units: List[Dict[str, object]] = []
 
-    for env_node in _iter_environment_nodes(root_nodes):
+    env_nodes = sorted(
+        list(_iter_environment_nodes(root_nodes)),
+        key=lambda node: getattr(node, "pos", 0),
+    )
+    last_anchor_ref = ""
+    for env_node in env_nodes:
         env_raw = env_node.environmentname or ""
         env_base = env_raw[:-1] if env_raw.endswith("*") else env_raw
         if env_base not in ENV_TO_TYPE:
@@ -246,11 +253,17 @@ def extract_tex_knowledge_units(tex: str, source_stem: str) -> List[Dict[str, ob
         block = tex[env_node.pos : env_node.pos + env_node.len]
         labels, refs = _collect_labels_refs(env_node)
         source_label = labels[0] if labels else ""
-        canonical = (
+        canonical = compact_label(
             slugify(source_label)
             if source_label
             else slugify(f"{source_stem}-{env_base}-{len(units) + 1:04d}")
         )
+        if env_base == "proof":
+            if not refs and last_anchor_ref:
+                refs = [last_anchor_ref]
+            # Drop orphan proofs: proof atoms must be attached to a statement atom.
+            if not refs:
+                continue
         units.append(
             {
                 "env": env_base,
@@ -261,6 +274,8 @@ def extract_tex_knowledge_units(tex: str, source_stem: str) -> List[Dict[str, ob
                 "unit_tex": block,
             }
         )
+        if env_base in ANCHOR_ENV_TYPES:
+            last_anchor_ref = source_label or canonical
 
     return units
 
@@ -298,7 +313,7 @@ def main() -> int:
             new_hash = rec.get("new_hash")
             old_hash = rec.get("old_hash")
             suffix_hash = str(new_hash or old_hash or "")[:12]
-            base_label = slugify(Path(path).stem if path else f"change-{idx}")
+            base_label = compact_label(slugify(Path(path).stem if path else f"change-{idx}"))
             proposed_label = f"{base_label}-{suffix_hash}" if suffix_hash else base_label
 
             # For source TeX files, emit one task per knowledge unit (theorem/lemma/...).

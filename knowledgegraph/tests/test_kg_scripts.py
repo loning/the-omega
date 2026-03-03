@@ -11,6 +11,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -124,6 +125,18 @@ class KGScriptsUnitTest(unittest.TestCase):
         validation = common.validate_atoms(atoms)
         self.assertTrue(any("cycle detected" in x for x in validation["errors"]))
 
+    def test_scan_atoms_fast_mode_skips_hash_check(self) -> None:
+        atoms_dir = self.kg_root / "atoms"
+        atoms_dir.mkdir(parents=True, exist_ok=True)
+        bad = atoms_dir / "KG-20260303-0001__lbl-a__tp-claim__from-root__h-000000000000.tex"
+        bad.write_text("\\paragraph{a}\n", encoding="utf-8")
+
+        _, errors_strict = common.scan_atoms(self.kg_root, verify_hash=True)
+        self.assertTrue(any("hash mismatch" in e for e in errors_strict))
+
+        _, errors_fast = common.scan_atoms(self.kg_root, verify_hash=False)
+        self.assertFalse(any("hash mismatch" in e for e in errors_fast))
+
     def test_load_source_spec_fallback_to_repo_root(self) -> None:
         docs_dir = self.repo_root / "docs" / "papers"
         docs_dir.mkdir(parents=True, exist_ok=True)
@@ -180,13 +193,16 @@ class KGScriptsUnitTest(unittest.TestCase):
             tex = (
                 "\\begin{lemma}\\label{lem:base}Base.\\end{lemma}\n"
                 "\\begin{theorem}\\label{thm:main}By \\ref{lem:base}.\\end{theorem}\n"
+                "\\begin{proof}Done.\\end{proof}\n"
             )
             units = emit_tasks.extract_tex_knowledge_units(tex, "sample")
-            self.assertEqual(len(units), 2)
+            self.assertEqual(len(units), 3)
             self.assertEqual(units[0]["env"], "lemma")
             self.assertEqual(units[0]["source_label"], "lem:base")
             self.assertEqual(units[1]["env"], "theorem")
             self.assertEqual(units[1]["source_refs"], ["lem:base"])
+            self.assertEqual(units[2]["env"], "proof")
+            self.assertEqual(units[2]["source_refs"], ["thm:main"])
         else:
             with self.assertRaises(RuntimeError):
                 emit_tasks.extract_tex_knowledge_units("\\begin{theorem}x\\end{theorem}", "sample")
@@ -285,7 +301,255 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIsNotNone(parsed)
         self.assertTrue(parsed[1].startswith("thm-main-h"))
         self.assertEqual(parsed[2], "tp-thm")
-        self.assertEqual(parsed[3], (parent_label,))
+        atoms, scan_errors = common.scan_atoms(self.kg_root)
+        self.assertEqual(scan_errors, [])
+        by_label = {a.label: a for a in atoms}
+        self.assertIn(parsed[1], by_label)
+        self.assertEqual(by_label[parsed[1]].parents, (parent_label,))
+
+    def test_ingest_tex_unit_resolves_parent_via_source_label_alias(self) -> None:
+        parent_label = "opaque-parent-h111111111111"
+        parent_path = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0001",
+            label=parent_label,
+            atom_type="tp-lemma",
+            parents=tuple(),
+            ext="tex",
+            content="\\begin{lemma}Base\\end{lemma}\n",
+        )
+        common.write_json(
+            common.atom_sidecar_path(parent_path),
+            {
+                "kg_id": "KG-20260303-0001",
+                "label": parent_label,
+                "atom_type": "tp-lemma",
+                "parents": [],
+                "source_tex_label": "lem:legacy-base",
+            },
+        )
+
+        queue = self.kg_root / ".kgcache" / "llm_queue"
+        queue.mkdir(parents=True, exist_ok=True)
+        task = {
+            "task_id": "TASK-TEX-ALIAS-1",
+            "created_at": "20260303T000000Z",
+            "source_name": "test",
+            "change_type": "modified",
+            "source_path": str(self.repo_root / "paper.tex"),
+            "old_hash": "abc",
+            "new_hash": "def",
+            "suggested_node_type": "tp-thm",
+            "task_kind": "tex_knowledge_unit",
+            "canonical_label": "thm-main",
+            "source_tex_label": "thm:main",
+            "source_refs": ["lem:legacy-base"],
+            "unit_tex": "\\begin{theorem}\\label{thm:main}By \\ref{lem:legacy-base}.\\end{theorem}",
+            "status": "pending",
+        }
+        task_path = queue / "task_000011.json"
+        task_path.write_text(json.dumps(task, ensure_ascii=False), encoding="utf-8")
+
+        cmd = [
+            "python3",
+            str((SCRIPT_DIR / "kg_ingest_atoms.py").resolve()),
+            "--kg-root",
+            str(self.kg_root),
+            "--task",
+            str(task_path),
+            "--limit",
+            "1",
+        ]
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, msg=proc.stdout + "\n" + proc.stderr)
+
+        atoms, scan_errors = common.scan_atoms(self.kg_root)
+        self.assertEqual(scan_errors, [])
+        created = [a for a in atoms if a.label.startswith("thm-main-h")]
+        self.assertEqual(len(created), 1)
+        self.assertEqual(created[0].parents, (parent_label,))
+
+    def test_ingest_tex_knowledge_unit_sanitizes_orphan_fi(self) -> None:
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0001",
+            label="lem-base-h111111111111",
+            atom_type="tp-lemma",
+            parents=tuple(),
+            ext="tex",
+            content="\\begin{lemma}\\label{kg:lem-base-h111111111111}Base\\end{lemma}\n",
+        )
+        queue = self.kg_root / ".kgcache" / "llm_queue"
+        queue.mkdir(parents=True, exist_ok=True)
+        task = {
+            "task_id": "TASK-TEX-2",
+            "created_at": "20260303T000000Z",
+            "source_name": "test",
+            "change_type": "modified",
+            "source_path": str(self.repo_root / "paper.tex"),
+            "old_hash": "abc",
+            "new_hash": "def",
+            "suggested_node_type": "tp-proof",
+            "task_kind": "tex_knowledge_unit",
+            "canonical_label": "proof-main",
+            "source_tex_label": "",
+            "source_refs": ["lem:base"],
+            "unit_tex": "\\begin{proof}X\\end{proof}\n\\ifnum1=1\n\\fi\n",
+            "status": "pending",
+        }
+        task_path = queue / "task_000002.json"
+        task_path.write_text(json.dumps(task, ensure_ascii=False), encoding="utf-8")
+
+        cmd = [
+            "python3",
+            str((SCRIPT_DIR / "kg_ingest_atoms.py").resolve()),
+            "--kg-root",
+            str(self.kg_root),
+            "--task",
+            str(task_path),
+            "--limit",
+            "1",
+        ]
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, msg=proc.stdout + "\n" + proc.stderr)
+
+        atom_files = sorted((self.kg_root / "atoms").glob("KG-*.tex"))
+        self.assertEqual(len(atom_files), 2)
+        content = atom_files[-1].read_text(encoding="utf-8")
+        self.assertNotIn("\n\\fi\n", content)
+        self.assertNotIn("\n\\ifnum1=1\n", content)
+        self.assertIn("\\paragraph{Proof.}", content)
+        self.assertNotIn("\\begin{proof}", content)
+
+    def test_ingest_tex_knowledge_unit_repairs_unbalanced_envs(self) -> None:
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0001",
+            label="lem-base-h111111111111",
+            atom_type="tp-lemma",
+            parents=tuple(),
+            ext="tex",
+            content="\\begin{lemma}\\label{kg:lem-base-h111111111111}Base\\end{lemma}\n",
+        )
+        queue = self.kg_root / ".kgcache" / "llm_queue"
+        queue.mkdir(parents=True, exist_ok=True)
+        task = {
+            "task_id": "TASK-TEX-3",
+            "created_at": "20260303T000000Z",
+            "source_name": "test",
+            "change_type": "modified",
+            "source_path": str(self.repo_root / "paper.tex"),
+            "old_hash": "abc",
+            "new_hash": "def",
+            "suggested_node_type": "tp-proof",
+            "task_kind": "tex_knowledge_unit",
+            "canonical_label": "proof-unbalanced",
+            "source_tex_label": "",
+            "source_refs": ["lem:base"],
+            "unit_tex": "\\begin{proof}A\\begin{remark}B\\end{remark}\n",
+            "status": "pending",
+        }
+        task_path = queue / "task_000003.json"
+        task_path.write_text(json.dumps(task, ensure_ascii=False), encoding="utf-8")
+
+        cmd = [
+            "python3",
+            str((SCRIPT_DIR / "kg_ingest_atoms.py").resolve()),
+            "--kg-root",
+            str(self.kg_root),
+            "--task",
+            str(task_path),
+            "--limit",
+            "1",
+        ]
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, msg=proc.stdout + "\n" + proc.stderr)
+
+        atom_files = sorted((self.kg_root / "atoms").glob("KG-*.tex"))
+        self.assertEqual(len(atom_files), 2)
+        content = atom_files[-1].read_text(encoding="utf-8")
+        self.assertIn("\\paragraph{Proof.}", content)
+        self.assertIn("\\begin{remark}", content)
+        self.assertIn("\\end{remark}", content)
+        self.assertNotIn("\\end{proof}", content)
+
+    def test_ingest_skips_orphan_proof_atom_without_parent(self) -> None:
+        queue = self.kg_root / ".kgcache" / "llm_queue"
+        queue.mkdir(parents=True, exist_ok=True)
+        task = {
+            "task_id": "TASK-TEX-ORPHAN-PROOF",
+            "created_at": "20260303T000000Z",
+            "source_name": "test",
+            "change_type": "modified",
+            "source_path": str(self.repo_root / "paper.tex"),
+            "old_hash": "abc",
+            "new_hash": "def",
+            "suggested_node_type": "tp-proof",
+            "task_kind": "tex_knowledge_unit",
+            "canonical_label": "proof-orphan",
+            "source_tex_label": "",
+            "source_refs": [],
+            "unit_tex": "\\begin{proof}orphan\\end{proof}\n",
+            "status": "pending",
+        }
+        task_path = queue / "task_000099.json"
+        task_path.write_text(json.dumps(task, ensure_ascii=False), encoding="utf-8")
+
+        cmd = [
+            "python3",
+            str((SCRIPT_DIR / "kg_ingest_atoms.py").resolve()),
+            "--kg-root",
+            str(self.kg_root),
+            "--task",
+            str(task_path),
+            "--limit",
+            "1",
+        ]
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, msg=proc.stdout + "\n" + proc.stderr)
+        atom_files = sorted((self.kg_root / "atoms").glob("KG-*.tex"))
+        self.assertEqual(len(atom_files), 0)
+
+    def test_ingest_generic_tex_wraps_lonely_item(self) -> None:
+        source = self.repo_root / "frag.tex"
+        source.write_text("\\item one\n\\item two\n", encoding="utf-8")
+
+        queue = self.kg_root / ".kgcache" / "llm_queue"
+        queue.mkdir(parents=True, exist_ok=True)
+        task = {
+            "task_id": "TASK-TEX-4",
+            "created_at": "20260303T000000Z",
+            "source_name": "test",
+            "change_type": "modified",
+            "source_path": str(source),
+            "old_hash": "abc",
+            "new_hash": "def",
+            "suggested_node_type": "tp-claim",
+            "proposed_label": "frag-claim",
+            "status": "pending",
+        }
+        task_path = queue / "task_000004.json"
+        task_path.write_text(json.dumps(task, ensure_ascii=False), encoding="utf-8")
+
+        cmd = [
+            "python3",
+            str((SCRIPT_DIR / "kg_ingest_atoms.py").resolve()),
+            "--kg-root",
+            str(self.kg_root),
+            "--task",
+            str(task_path),
+            "--limit",
+            "1",
+        ]
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(proc.returncode, 0, msg=proc.stdout + "\n" + proc.stderr)
+
+        atom_files = sorted((self.kg_root / "atoms").glob("KG-*.tex"))
+        self.assertEqual(len(atom_files), 1)
+        content = atom_files[0].read_text(encoding="utf-8")
+        self.assertIn("\\begin{itemize}", content)
+        self.assertIn("\\item one", content)
+        self.assertIn("\\end{itemize}", content)
 
     def test_build_index_and_collect_compile_inputs(self) -> None:
         write_atom(
@@ -344,11 +608,20 @@ class KGScriptsUnitTest(unittest.TestCase):
 
         out_tex = build_index.build_single_spec(self.kg_root, spec)
         content = out_tex.read_text(encoding="utf-8")
-        self.assertIn("\\input{", content)
+        self.assertIn("\\kginput{", content)
         self.assertIn("result", content)
         self.assertNotIn("tp-method", content)
         self.assertIn("Skipped Root TeX Atoms", content)
         self.assertIn("rootdoc", content)
+        manifest = json.loads((out_tex.parent / "manifest.json").read_text(encoding="utf-8"))
+        self.assertIn("selection_fingerprint", manifest)
+
+        mtime_before = out_tex.stat().st_mtime_ns
+        time.sleep(1.1)
+        out_tex_2 = build_index.build_single_spec(self.kg_root, spec)
+        mtime_after = out_tex_2.stat().st_mtime_ns
+        self.assertEqual(out_tex_2, out_tex)
+        self.assertEqual(mtime_before, mtime_after)
 
         inputs, skipped = kg_compile.collect_tex_atoms_for_label(self.kg_root, "rootdoc")
         self.assertEqual(len(inputs), 2)
@@ -357,6 +630,15 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertEqual(input_labels, ["base", "result"])
         skipped_label = common.parse_atom_filename(Path(skipped[0][0]))[1]
         self.assertEqual(skipped_label, "rootdoc")
+
+    def test_compile_template_stable_mode_ref_suppression(self) -> None:
+        template = kg_compile.build_main_tex(
+            [Path("/tmp/dummy.tex")],
+            fragment_ref_mode=True,
+        )
+        self.assertIn("\\def\\@setref", template)
+        self.assertIn("\\hbadness=10000", template)
+        self.assertIn("\\hfuzz=100pt", template)
 
 
 if __name__ == "__main__":
