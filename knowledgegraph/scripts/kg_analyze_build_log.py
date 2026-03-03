@@ -33,7 +33,36 @@ def read_log(args: argparse.Namespace, kg_root: Path) -> tuple[Path, str]:
     if args.log_path:
         path = args.log_path.resolve()
     else:
-        path = (kg_root / ".kgcache" / "build" / args.build_tag / "main.log").resolve()
+        build_root = (kg_root / ".kgcache" / "build").resolve()
+        candidates: list[Path] = []
+        complete: list[Path] = []
+        def is_complete(log_path: Path) -> bool:
+            build_dir = log_path.parent
+            pdf = build_dir / "main.pdf"
+            latexmk_log = build_dir / "latexmk.stdout.log"
+            if not pdf.exists() or not latexmk_log.exists():
+                return False
+            text = latexmk_log.read_text(encoding="utf-8", errors="replace")
+            return ("Latexmk: All targets" in text) or ("Output written on" in text)
+
+        exact = build_root / args.build_tag / "main.log"
+        if exact.exists():
+            candidates.append(exact)
+            if is_complete(exact):
+                complete.append(exact)
+        for d in build_root.glob(f"{args.build_tag}_*"):
+            p = d / "main.log"
+            if p.exists():
+                candidates.append(p)
+                if is_complete(p):
+                    complete.append(p)
+        if not candidates:
+            path = exact.resolve()
+        elif complete:
+            path = max(complete, key=lambda p: p.stat().st_mtime).resolve()
+        else:
+            # Prefer the newest available build log to avoid reading stale warnings.
+            path = max(candidates, key=lambda p: p.stat().st_mtime).resolve()
     if not path.exists():
         raise FileNotFoundError(f"log not found: {path}")
     return path, path.read_text(encoding="utf-8", errors="replace")

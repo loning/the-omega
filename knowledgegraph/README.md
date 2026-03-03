@@ -264,8 +264,8 @@ hash: sha256
 2. `index_nodes/<spec>/atoms/` 自动生成短名软链（避免超长 `\input` 路径导致 TeX pool 超限）。
 3. 编译索引 PDF。
 4. 可选 `--index-ref-mode stable|strict`：
-   - `stable`（默认）：降级 `\ref/\eqref/\cite`，优先保证超大图可编译。
-   - `strict`：保留原始引用语义，可能更慢或在超大图上失败。
+   - `stable`（默认）：保留可解析的 `\ref/\eqref`；未解析标签回退为文本占位；`\cite` 回退为文本占位，优先保证超大图可编译。
+   - `strict`：保留原始引用语义（含引用告警），可能更慢或在超大图上失败。
 5. 默认复用固定构建目录（例如 `knowledgegraph/.kgcache/build/index_book_grg/`），可复用 `.aux/.fdb_latexmk`，重复编译更快。
 6. 默认将 LaTeX 详细输出写入 `latexmk.stdout.log`（减少终端 I/O 开销）；调试时可加 `--verbose-latex`。
 7. 若需要冷启动全新构建目录，使用 `--fresh-build`。
@@ -324,6 +324,8 @@ python3 knowledgegraph/scripts/kg_analyze_build_log.py \
   --build-tag index_book_grg \
   --top 30
 ```
+
+说明：日志分析默认优先选择“最近一次成功完成”的 build（有 `main.pdf` 且 `latexmk` 完成标记），避免误读中断构建日志。
 
 安装 `pylatexenc`（macOS/Homebrew Python）：
 
