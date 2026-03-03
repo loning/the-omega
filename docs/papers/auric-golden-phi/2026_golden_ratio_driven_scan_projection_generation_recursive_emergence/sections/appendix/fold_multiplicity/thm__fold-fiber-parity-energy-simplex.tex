@@ -1,0 +1,222 @@
+% Collision-conditioned parity energies over Fibonacci residues.
+
+\paragraph{碰撞条件下的 Walsh 奇偶能量分解}
+沿用本段的残差映射 \(r:\Omega_m\to \ZZ/(M\ZZ)\)（\(M=F_{m+2}\)）与推前分布 \(\mu_m(r)=d_m(r)/2^m\)。
+
+\begin{corollary}[切片碰撞分解：能量即切片碰撞超额的一半]\label{cor:fold-fiber-slice-collision-decomposition}
+固定 \(k\in\{1,\dots,m\}\)，沿用命题 \ref{prop:fold-fiber-bias-energy-decision-theoretic} 的两条件分布
+\[
+\mu_{m,k}^{(1)}(r):=\PP\bigl(r(\omega)=r\mid \omega_k=1\bigr),
+\qquad
+\mu_{m,k}^{(0)}(r):=\PP\bigl(r(\omega)=r\mid \omega_k=0\bigr).
+\]
+定义对应切片碰撞概率
+\[
+\mathsf{Col}^{(b)}_{m,k}:=\sum_{r\in\ZZ/(M\ZZ)}\bigl(\mu^{(b)}_{m,k}(r)\bigr)^2
+\qquad(b\in\{0,1\}).
+\]
+则有严格恒等式
+\[
+\boxed{\;
+E_{m,k}=\frac12\Bigl(\mathsf{Col}^{(0)}_{m,k}+\mathsf{Col}^{(1)}_{m,k}\Bigr)-\mathsf{Col}_m\;}
+\]
+其中 \(\mathsf{Col}_m=\sum_r\mu_m(r)^2\) 为碰撞概率（见定理 \ref{thm:fold-fiber-bias-energy-erasure-identity}），而 \(E_{m,k}=\sum_r\nu_{m,k}(r)^2\) 为条件偏置能量（见定理 \ref{thm:fold-fiber-bias-frequency-transport-identity}）。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:fold-fiber-bias-energy-decision-theoretic}，
+\(
+\mu_{m,k}^{(1)}-\mu_{m,k}^{(0)}=2\nu_{m,k}
+\)
+且
+\(
+\mu_m=\frac12(\mu_{m,k}^{(1)}+\mu_{m,k}^{(0)})
+\)。
+因此逐点可写
+\(
+\mu_{m,k}^{(1)}=\mu_m+\nu_{m,k}
+\)、
+\(
+\mu_{m,k}^{(0)}=\mu_m-\nu_{m,k}
+\)。
+于是
+\[
+\mathsf{Col}^{(1)}_{m,k}+\mathsf{Col}^{(0)}_{m,k}
+=\sum_r(\mu_m+\nu_{m,k})^2+\sum_r(\mu_m-\nu_{m,k})^2
+=2\sum_r\mu_m(r)^2+2\sum_r\nu_{m,k}(r)^2
+=2\mathsf{Col}_m+2E_{m,k},
+\]
+整理即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[任意 Walsh 奇偶字符的偏置密度与 Riesz--Parseval 能量公式]\label{thm:fold-fiber-parity-bias-riesz-parseval-energy}
+对任意子集 \(I\subseteq[m]:=\{1,\dots,m\}\)，定义 Walsh 字符
+\[
+\chi_I(\omega):=(-1)^{\sum_{i\in I}\omega_i}\qquad(\omega\in\Omega_m),
+\]
+并定义 \(I\)-偏置密度与能量
+\[
+\nu_{m,I}(r):=2^{-m}\sum_{\omega\in\Omega_m:\ r(\omega)=r}\chi_I(\omega)
+=\mu_m(r)\,\EE\!\bigl[\chi_I(\omega)\mid r(\omega)=r\bigr],
+\qquad
+E_{m,I}:=\sum_{r\in\ZZ/(M\ZZ)}\nu_{m,I}(r)^2.
+\]
+令离散 Fourier 变换取为
+\(
+\widehat f(t)=\sum_{r\in\ZZ/(M\ZZ)} f(r)\,e^{-2\pi i tr/M}
+\)。
+则：
+\begin{enumerate}
+  \item \textbf{（乘积分解）}对任意 \(t\in\ZZ/(M\ZZ)\) 有
+  \[
+  \boxed{\;
+  \widehat{\nu}_{m,I}(t)
+  =2^{-m}\prod_{j=1}^{m}\Bigl(1+s_j\,e^{-2\pi i tF_{j+1}/M}\Bigr),\qquad
+  s_j:=\begin{cases}-1,& j\in I,\\ +1,& j\notin I.\end{cases}\;}
+  \]
+  \item \textbf{（Riesz--Parseval 能量）}能量具有显式有限乘积表示
+  \[
+  \boxed{\;
+  E_{m,I}
+  =\frac1{M}\sum_{t\in\ZZ/(M\ZZ)}
+  \Biggl(\prod_{j\in I}\sin^2\!\Bigl(\pi tF_{j+1}/M\Bigr)\Biggr)
+  \Biggl(\prod_{j\notin I}\cos^2\!\Bigl(\pi tF_{j+1}/M\Bigr)\Biggr).\;}
+  \]
+\end{enumerate}
+特别地，\(I=\varnothing\) 时 \(E_{m,\varnothing}=\mathsf{Col}_m\)；而当 \(I=\{k\}\) 时，\(E_{m,\{k\}}=E_{m,k}\) 且与命题 \ref{prop:fold-fiber-bias-fourier-multiplier-energy} 的单坐标公式一致（两者的 \(\nu\) 仅差一个符号）。
+\end{theorem}
+\begin{proof}
+由定义，
+\[
+\widehat{\nu}_{m,I}(t)
+=\sum_r \nu_{m,I}(r)e^{-2\pi i tr/M}
+=2^{-m}\sum_{\omega\in\Omega_m}\chi_I(\omega)\,e^{-2\pi i t r(\omega)/M}.
+\]
+并且
+\(
+r(\omega)\equiv\sum_{j=1}^m\omega_jF_{j+1}\ (\mathrm{mod}\ M)
+\)
+与
+\(
+\chi_I(\omega)=\prod_{j=1}^{m}s_j^{\omega_j}
+\)
+（其中 \(s_j=-1\iff j\in I\)）给出坐标分解：
+\[
+\widehat{\nu}_{m,I}(t)
+=2^{-m}\prod_{j=1}^{m}\sum_{\omega_j\in\{0,1\}} s_j^{\omega_j}\,e^{-2\pi i t\omega_jF_{j+1}/M}
+=2^{-m}\prod_{j=1}^{m}\Bigl(1+s_j e^{-2\pi i tF_{j+1}/M}\Bigr),
+\]
+得到乘积分解。
+\par
+再由离散 Parseval 恒等式
+\(
+E_{m,I}=\sum_r\nu_{m,I}(r)^2=\frac1M\sum_t|\widehat\nu_{m,I}(t)|^2
+\)，
+并使用
+\(
+|1+e^{-i\theta}|^2=4\cos^2(\theta/2)
+\)、
+\(
+|1-e^{-i\theta}|^2=4\sin^2(\theta/2)
+\)
+化简即得乘积能量公式。
+最后两条特例分别取 \(I=\varnothing\) 与 \(I=\{k\}\) 并对照命题 \ref{prop:fold-fiber-bias-fourier-multiplier-energy} 即得。证毕。
+\end{proof}
+
+\begin{corollary}[全体奇偶能量的概率单纯形分解]\label{cor:fold-fiber-parity-energy-simplex}
+在定理 \ref{thm:fold-fiber-parity-bias-riesz-parseval-energy} 的设定下，成立严格归一化恒等式
+\[
+\sum_{I\subseteq[m]}E_{m,I}=1.
+\]
+从而
+\[
+E_{m,\varnothing}=\mathsf{Col}_m,
+\qquad
+\sum_{\varnothing\neq I\subseteq[m]}E_{m,I}=1-\mathsf{Col}_m.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-fiber-parity-bias-riesz-parseval-energy} 的能量公式，对每个固定 \(t\) 令 \(\theta_{j,t}:=\pi tF_{j+1}/M\)，则
+\[
+\sum_{I\subseteq[m]}
+\Bigl(\prod_{j\in I}\sin^2\theta_{j,t}\Bigr)\Bigl(\prod_{j\notin I}\cos^2\theta_{j,t}\Bigr)
+=\prod_{j=1}^{m}\bigl(\sin^2\theta_{j,t}+\cos^2\theta_{j,t}\bigr)=1.
+\]
+对 \(t\) 作平均即得 \(\sum_I E_{m,I}=1\)。
+而 \(I=\varnothing\) 时 \(E_{m,\varnothing}=\mathsf{Col}_m\) 已在定理 \ref{thm:fold-fiber-parity-bias-riesz-parseval-energy} 中说明，故其余结论立得。证毕。
+\end{proof}
+
+\begin{corollary}[碰撞条件下的任意奇偶相关由 \texorpdfstring{$(E_{m,I})$}{E_{m,I}} 完全刻画]\label{cor:fold-fiber-collision-parity-correlation}
+取 \(\omega,\omega'\overset{\mathrm{i.i.d.}}{\sim}\mathrm{Unif}(\Omega_m)\) 并令碰撞事件 \(\mathsf C:=\{r(\omega)=r(\omega')\}\)。
+则对任意 \(I\subseteq[m]\) 有
+\[
+\EE\!\left[\chi_I(\omega)\chi_I(\omega')\mid \mathsf C\right]
+=\frac{E_{m,I}}{\mathsf{Col}_m},
+\qquad
+\PP\!\left(\chi_I(\omega)=\chi_I(\omega')\mid \mathsf C\right)
+=\frac12\Bigl(1+\frac{E_{m,I}}{\mathsf{Col}_m}\Bigr).
+\]
+特别地，对任意 \(k\in[m]\) 有
+\[
+\PP(\omega_k=\omega'_k\mid \mathsf C)
+=\frac12\Bigl(1+\frac{E_{m,k}}{\mathsf{Col}_m}\Bigr),
+\qquad
+\PP(\omega_k\neq \omega'_k\mid \mathsf C)
+=\frac12\Bigl(1-\frac{E_{m,k}}{\mathsf{Col}_m}\Bigr).
+\]
+\end{corollary}
+\begin{proof}
+对任意 \(r\in\ZZ/(M\ZZ)\)，在条件 \(\{r(\omega)=r(\omega')=r\}\) 下，\(\omega,\omega'\) 条件独立且同分布，从而
+\[
+\EE\!\left[\chi_I(\omega)\chi_I(\omega')\mid r(\omega)=r(\omega')=r\right]
+=\EE[\chi_I(\omega)\mid r(\omega)=r]^2.
+\]
+再用 Bayes 分解 \(\PP(r(\omega)=r(\omega')=r)=\mu_m(r)^2\) 与 \(\PP(\mathsf C)=\sum_r\mu_m(r)^2=\mathsf{Col}_m\)，得
+\[
+\EE\!\left[\chi_I(\omega)\chi_I(\omega')\mid \mathsf C\right]
+=\sum_r\frac{\mu_m(r)^2}{\mathsf{Col}_m}\,\EE[\chi_I(\omega)\mid r(\omega)=r]^2
+=\frac{1}{\mathsf{Col}_m}\sum_r\nu_{m,I}(r)^2
+=\frac{E_{m,I}}{\mathsf{Col}_m}.
+\]
+由于 \(\chi_I(\omega)\chi_I(\omega')\in\{\pm 1\}\) 且取值为 \(+1\) 当且仅当二者相等，故第二式由
+\(
+\PP(\chi_I(\omega)=\chi_I(\omega')\mid \mathsf C)=\frac12(1+\EE[\chi_I(\omega)\chi_I(\omega')\mid \mathsf C])
+\)
+立得。证毕。
+\end{proof}
+
+\begin{proposition}[奇偶能量的生成函数与频率混合的独立模型]\label{prop:fold-fiber-parity-energy-partition-function-mixture}
+定义生成函数
+\[
+G_m(z):=\sum_{I\subseteq[m]}E_{m,I}\,z^{|I|}.
+\]
+则有闭式表示
+\[
+\boxed{\;
+G_m(z)=\frac1{M}\sum_{t\in\ZZ/(M\ZZ)}
+\prod_{j=1}^{m}\Bigl(\cos^2\theta_{j,t}+z\,\sin^2\theta_{j,t}\Bigr),\qquad
+\theta_{j,t}:=\pi t\frac{F_{j+1}}{M}.\;}
+\]
+从而在 \(\mathcal P([m])\) 上按 \(\PP(I)=E_{m,I}\) 取随机子集 \(I\) 时，其分布可写为“频率混合的独立模型”：先取 \(t\) 在 \(\ZZ/(M\ZZ)\) 上均匀，再在给定 \(t\) 时令各坐标 \(j\) 独立地以概率 \(\sin^2\theta_{j,t}\) 被纳入 \(I\)。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:fold-fiber-parity-bias-riesz-parseval-energy} 的能量公式，
+\[
+E_{m,I}=\frac1M\sum_{t\in\ZZ/(M\ZZ)}\Bigl(\prod_{j\in I}\sin^2\theta_{j,t}\Bigr)\Bigl(\prod_{j\notin I}\cos^2\theta_{j,t}\Bigr),
+\qquad
+\theta_{j,t}:=\pi t\frac{F_{j+1}}{M}.
+\]
+乘以 \(z^{|I|}\) 并对 \(I\subseteq[m]\) 求和，利用逐坐标展开得到
+\[
+\sum_{I\subseteq[m]}z^{|I|}\Bigl(\prod_{j\in I}\sin^2\theta_{j,t}\Bigr)\Bigl(\prod_{j\notin I}\cos^2\theta_{j,t}\Bigr)
+=\prod_{j=1}^{m}\bigl(\cos^2\theta_{j,t}+z\,\sin^2\theta_{j,t}\bigr).
+\]
+再对 \(t\) 作平均即得闭式表达。
+最后的混合表述由 \(E_{m,I}\) 的表示
+\(
+E_{m,I}=\frac1M\sum_t \prod_{j\in I}\sin^2\theta_{j,t}\prod_{j\notin I}\cos^2\theta_{j,t}
+\)
+直接识别为对 \(t\) 的均匀混合与条件 Bernoulli 乘积测度的乘积分解。证毕。
+\end{proof}
+
+\endinput
+

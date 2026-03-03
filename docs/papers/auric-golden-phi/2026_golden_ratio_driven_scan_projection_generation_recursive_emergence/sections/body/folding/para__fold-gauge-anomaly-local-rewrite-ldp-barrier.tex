@@ -143,6 +143,119 @@ L_m\ge \lceil \log_M D_m\rceil
 整理得到 \(\log M\ge \frac{9R}{8}\log\varphi\)，即 \(M\ge \varphi^{9R/8}\)。证毕。
 \end{proof}
 
+\begin{remark}[变长事件词的计数版本]\label{rem:fold-local-rewrite-variable-length-event-words}
+在推论 \ref{cor:fold-local-rewrite-reversible-event-alphabet-lower-bound} 的同一设定下，若将事件词允许为变长集合 \(\Sigma^{\le L_m}\)，即
+\[
+\Psi_m:\Omega_m\hookrightarrow X_m\times \Sigma^{\le L_m},
+\qquad
+\operatorname{pr}_1\circ\Psi_m=\Fold_m,
+\]
+则同一计数法给出
+\[
+L_m\ \ge\ \left\lceil \log_M D_m\right\rceil-1.
+\]
+因此
+\(
+\liminf_{m\to\infty}L_m/m\ge \frac{\tfrac12\log\varphi}{\log M}
+\)
+仍成立，并且由 \(L_m/m\le 4/(9R)+o(1)\) 所诱导的字母表门槛保持不变。
+\end{remark}
+\begin{proof}
+固定 \(x\in X_m\)。
+由于 \(\Psi_m\) 为单射且第一坐标固定为 \(\Fold_m\)，在同一纤维 \(\Fold_m^{-1}(x)\) 上第二坐标必须两两不同，故
+\[
+d_m(x)\le |\Sigma^{\le L_m}|=\sum_{\ell=0}^{L_m}M^\ell=\frac{M^{L_m+1}-1}{M-1}<M^{L_m+1}.
+\]
+取 \(x\) 为最大纤维达到者即得 \(D_m\le M^{L_m+1}\)，从而 \(L_m\ge \lceil\log_M D_m\rceil-1\)。
+渐近式与门槛结论直接由推论 \ref{cor:fold-local-rewrite-reversible-event-alphabet-lower-bound} 的证明中同一极限比较得到。证毕。
+\end{proof}
+
+\begin{theorem}[有限字母表下最大纤维的强逆界]\label{thm:fold-local-rewrite-maxfiber-strong-converse-finite-alphabet}
+令 \(\Sigma\) 为有限字母表，\(|\Sigma|=M\ge 2\)。
+对每个 \(m\) 给定任意编码 \(\mathrm{enc}_m:\Omega_m\to \Sigma^{\le L_m}\) 与任意译码器
+\[
+\mathrm{dec}_m:\ X_m\times \Sigma^{\le L_m}\longrightarrow \Omega_m,
+\qquad
+\Fold_m(\mathrm{dec}_m(x,s))=x
+\]
+（对所有 \((x,s)\) 满足 \(\mathrm{dec}_m(x,s)\) 定义）。
+取任意最大纤维达到者 \(x_m^\star\in X_m\) 满足 \(d_m(x_m^\star)=D_m\)，并在条件分布
+\(
+\omega\sim \mathrm{Unif}(\Fold_m^{-1}(x_m^\star))
+\)
+下考虑成功概率。
+则对所有 \(m\) 有上界
+\[
+\PP\!\left(\mathrm{dec}_m(x_m^\star,\mathrm{enc}_m(\omega))=\omega\ \middle|\ X=x_m^\star\right)
+\le
+\frac{|\Sigma^{\le L_m}|}{D_m}
+<
+\frac{M^{L_m+1}}{D_m}.
+\]
+若进一步满足 \(L_m\le \frac{4}{27}m+O(1)\)，则由定理 \ref{thm:pom-max-fiber} 得存在常数 \(C>0\) 使
+\[
+\PP\!\left(\mathrm{dec}_m(x_m^\star,\mathrm{enc}_m(\omega))=\omega\ \middle|\ X=x_m^\star\right)
+\le
+\exp\!\left(-\Bigl(\frac12\log\varphi-\frac{4}{27}\log M\Bigr)m+C\right).
+\]
+特别地，当 \(M=5\) 时指数率常数
+\[
+c_5:=\frac12\log\varphi-\frac{4}{27}\log 5
+\]
+严格为正，从而最大纤维上的条件成功率以 \(e^{-c_5m+O(1)}\) 衰减。
+\end{theorem}
+\begin{proof}
+对固定 \(x=x_m^\star\)，把纤维 \(\Fold_m^{-1}(x)\) 按码字 \(s=\mathrm{enc}_m(\omega)\) 分组。
+对每个给定的 \((x,s)\)，译码器 \(\mathrm{dec}_m(x,s)\) 至多输出一个候选微态；因此在同一组内至多有一个元素能被正确恢复。
+故在该纤维上可被正确恢复的微态总数不超过该纤维上出现的不同码字数，进而不超过 \(|\Sigma^{\le L_m}|\)。
+在 \(\mathrm{Unif}(\Fold_m^{-1}(x))\) 下得到
+\[
+\PP\!\left(\mathrm{dec}_m(x,\mathrm{enc}_m(\omega))=\omega\ \middle|\ X=x\right)
+\le \frac{|\Sigma^{\le L_m}|}{d_m(x)}
+=\frac{|\Sigma^{\le L_m}|}{D_m}.
+\]
+又有 \(|\Sigma^{\le L_m}|<M^{L_m+1}\)，得到第一条上界。
+\par
+若 \(L_m\le \frac{4}{27}m+O(1)\)，则 \(M^{L_m+1}\le \exp((\frac{4}{27}\log M)m+O(1))\)。
+另一方面，定理 \ref{thm:pom-max-fiber} 给出 \(\log D_m=\frac{m}{2}\log\varphi+O(1)\)。
+代入并整理即得指数上界与常数 \(c_5>0\) 的结论。证毕。
+\end{proof}
+
+\begin{proposition}[秩编码给出的可逆事件词提升]\label{prop:fold-local-rewrite-rank-encoding-reversible-lift}
+令 \(\Sigma\) 为有限字母表，\(|\Sigma|=M\ge 2\)，并令
+\(
+D_m=\max_{x\in X_m}|\Fold_m^{-1}(x)|
+\)。
+取
+\[
+L_m:=\left\lceil \log_M D_m\right\rceil.
+\]
+则存在一族单射提升
+\[
+\Psi_m:\Omega_m\hookrightarrow X_m\times \Sigma^{L_m},
+\qquad
+\operatorname{pr}_1\circ\Psi_m=\Fold_m.
+\]
+特别地，当 \(M=6\) 时有
+\[
+\limsup_{m\to\infty}\frac{L_m}{m}\ \le\ \frac{\tfrac12\log\varphi}{\log 6},
+\qquad
+\frac{\tfrac12\log\varphi}{\log 6}\ <\ \frac{4}{27}.
+\]
+\end{proposition}
+\begin{proof}
+对每个 \(m\) 与每个 \(x\in X_m\)，固定纤维 \(\Fold_m^{-1}(x)\) 的一个全序，并令 \(\mathrm{rank}_x:\Fold_m^{-1}(x)\xrightarrow{\sim}\{0,1,\dots,d_m(x)-1\}\) 为对应秩标号。
+令 \(\mathrm{Enc}_M:[0,M^{L_m}-1]\to \Sigma^{L_m}\) 为长度 \(L_m\) 的 \(M\)-进制确定性编码（对不足位数作左端补零），它是单射。
+定义
+\[
+\Psi_m(\omega):=\bigl(\Fold_m(\omega),\ \mathrm{Enc}_M(\mathrm{rank}_{\Fold_m(\omega)}(\omega))\bigr).
+\]
+对固定的 \(x\)，\(\mathrm{rank}_x\) 为双射且 \(d_m(x)\le D_m\le M^{L_m}\)，故纤维内单射成立；从而整体 \(\Psi_m\) 为单射，并满足 \(\operatorname{pr}_1\circ\Psi_m=\Fold_m\)。
+\par
+当 \(M=6\) 时，定理 \ref{thm:pom-max-fiber} 给出 \(\log D_m=\frac{m}{2}\log\varphi+O(1)\)，代入 \(L_m=\lceil \log_6 D_m\rceil\) 得 \(\limsup L_m/m\le \frac{\tfrac12\log\varphi}{\log 6}\)。
+最后由直接常数比较 \(\frac{\tfrac12\log\varphi}{\log 6}<\frac{4}{27}\) 得结论。证毕。
+\end{proof}
+
 \begin{corollary}[重写密度强制 prime-register 位长的 \texorpdfstring{$\Omega(m\log m)$}{Omega(m log m)} 下界]\label{cor:fold-prime-register-bitlength-omega-mlogm}
 沿用定理 \ref{thm:fold-local-rewrite-ldp-lower-tail-barrier} 的设定，并进一步假设存在一类 prime-register 外置制度满足：
 对每个分辨率 \(m\) 与输入 \(\omega\in\Omega_{m+1}\)，其日志支持满足
@@ -204,9 +317,53 @@ M\ \ge\ \Bigl(\frac{2}{\varphi}\Bigr)^{\frac{9R}{4}}.
 该界只使用平均压缩率 \(|\Omega_m|/|X_m|\)，而不涉及最大纤维的 Perron 指数。
 \end{remark}
 
+\begin{theorem}[均匀基线下的 \texorpdfstring{$B$}{B}-比特反演上界与阈值分离]\label{thm:fold-bbit-inversion-avg-worst-gap}
+固定分辨率 \(m\ge 1\)，令 \(\omega\sim \mathrm{Unif}(\Omega_m)\)，并记 \(X=\Fold_m(\omega)\)。
+给定任意 \(B\ge 0\)，令编码 \(b:\Omega_m\to\{0,1\}^B\) 与译码器
+\[
+\widehat\omega:\ X_m\times\{0,1\}^B\longrightarrow \Omega_m
+\]
+满足 \(\Fold_m(\widehat\omega(x,u))=x\)（对所有 \((x,u)\) 使 \(\widehat\omega(x,u)\) 定义）。
+则成功概率满足粗界
+\[
+\PP(\widehat\omega(X,b(\omega))=\omega)\ \le\ \frac{|X_m|\cdot 2^B}{|\Omega_m|}
+=\frac{F_{m+2}\cdot 2^B}{2^m}.
+\]
+因此若 \(B\le (m-\log_2|X_m|)-t\)，则 \(\PP(\widehat\omega=\omega)\le 2^{-t+O(1)}\)，从而要使成功率不趋于 \(0\) 必须满足
+\[
+\frac{B}{m}\ \ge\ \log_2\!\left(\frac{2}{\varphi}\right)+o(1).
+\]
+另一方面，若要求存在零误差可逆提升 \(\Omega_m\hookrightarrow X_m\times\{0,1\}^B\) 且第一坐标等于 \(\Fold_m\)，则必有
+\[
+B\ \ge\ \left\lceil\log_2 D_m\right\rceil
+=\Bigl(\tfrac12\log_2\varphi+o(1)\Bigr)m.
+\]
+两条阈值的差为严格正的常数：
+\[
+\frac12\log_2\varphi-\log_2\!\left(\frac{2}{\varphi}\right)
+=\log_2\!\left(\frac{\varphi^{3/2}}{2}\right)
+\approx 0.04136,
+\]
+与注 \ref{rem:pom-defect-gap} 的“最坏/平均偏离基数”一致。
+\end{theorem}
+\begin{proof}
+对每个输入对 \((x,u)\in X_m\times\{0,1\}^B\)，译码器至多输出一个微态。
+因此可被正确恢复的微态总数不超过可见输入对的总数 \(|X_m|\cdot 2^B\)，从而在 \(\Omega_m\) 上均匀抽样得到
+\[
+\PP(\widehat\omega=\omega)\le \frac{|X_m|\cdot 2^B}{|\Omega_m|}.
+\]
+代入 \(|\Omega_m|=2^m\)、\(|X_m|=F_{m+2}\) 得第一式；其余不等式由直接移项得到。
+再由 \(F_{m+2}\sim \varphi^m/\sqrt5\) 得 \(\log_2|X_m|=m\log_2\varphi+O(1)\)，从而 \(m-\log_2|X_m|=m\log_2(2/\varphi)+O(1)\)，给出所示必要下界。
+\par
+对零误差要求，取最大纤维达到者 \(x^\star\) 满足 \(d_m(x^\star)=D_m\)。
+在纤维 \(\Fold_m^{-1}(x^\star)\) 上实现单射化需为每个微态分配互异的 \(B\)-比特标签，故 \(2^B\ge D_m\)，即 \(B\ge \lceil\log_2 D_m\rceil\)。
+由定理 \ref{thm:pom-max-fiber} 得 \(\log_2 D_m=\frac{m}{2}\log_2\varphi+O(1)\)，从而得到最坏情形阈值。
+最后常数差值恒等式为直接代数化简。证毕。
+\end{proof}
+
 \begin{conjecture}[三局部约束下的最小可逆事件字母表]\label{conj:fold-local-rewrite-minimal-reversible-event-alphabet}
 在 \(R=3\) 的局部约束下，存在一类可逆局部重写策略，使得其事件日志以每步一符号的方式外置，并且其步数密度达到 \(\frac{4}{27}\)。
-在该口径下，事件字母表的最小基数为 \(6\)。
+并且在同一类协议约束下，\(\frac{4}{27}\) 为可达到的最优线性密度常数；同时事件字母表的最小基数为 \(6\)。
 \end{conjecture}
 
 \endinput
