@@ -622,6 +622,14 @@ class KGScriptsUnitTest(unittest.TestCase):
         mtime_after = out_tex_2.stat().st_mtime_ns
         self.assertEqual(out_tex_2, out_tex)
         self.assertEqual(mtime_before, mtime_after)
+        alias_dir = out_tex.parent / "atoms"
+        one_alias = next(alias_dir.glob("KG-*.tex"))
+        one_alias.unlink()
+        time.sleep(1.1)
+        out_tex_3 = build_index.build_single_spec(self.kg_root, spec)
+        self.assertEqual(out_tex_3, out_tex)
+        self.assertTrue(one_alias.exists())
+        self.assertGreater(out_tex_3.stat().st_mtime_ns, mtime_after)
 
         inputs, skipped = kg_compile.collect_tex_atoms_for_label(self.kg_root, "rootdoc")
         self.assertEqual(len(inputs), 2)
@@ -638,7 +646,9 @@ class KGScriptsUnitTest(unittest.TestCase):
         )
         self.assertIn("\\def\\@setref", template)
         self.assertIn("\\hbadness=10000", template)
-        self.assertIn("\\hfuzz=100pt", template)
+        self.assertIn("\\hfuzz=1000pt", template)
+        self.assertNotIn("\\renewcommand{\\ref}", template)
+        self.assertIn("\\renewcommand{\\cite}", template)
 
 
 if __name__ == "__main__":

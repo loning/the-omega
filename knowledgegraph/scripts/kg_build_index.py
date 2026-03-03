@@ -203,7 +203,9 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         except (OSError, json.JSONDecodeError):
             previous_manifest = {}
         if previous_manifest.get("selection_fingerprint") == fingerprint:
-            return out_tex
+            expected_aliases = [alias_dir / f"{atom.kg_id}.tex" for atom in includable_tex_atoms]
+            if all(p.exists() for p in expected_aliases):
+                return out_tex
 
     if alias_dir.exists():
         shutil.rmtree(alias_dir)
