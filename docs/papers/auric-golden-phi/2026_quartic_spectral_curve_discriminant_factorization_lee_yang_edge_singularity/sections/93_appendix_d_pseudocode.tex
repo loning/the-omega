@@ -1,4 +1,4 @@
-\section{Pseudocode templates}\label{app:pseudocode}
+﻿\section{Pseudocode templates}\label{app:pseudocode}
 
 \subsection{Single-point evaluation of \texorpdfstring{$Z_m(y)$}{Z\_m(y)}}
 
@@ -16,20 +16,74 @@ For k = 4,5,...,m:
 
 Output: Zm.
 \end{verbatim}
+\paragraph{Certificate form.}
+This is an exact arithmetic procedure: if all operations are carried out in \(\QQ(i)\) and all loop bounds are fixed, the returned \(Z_m(y)\) is a certified polynomial evaluation at the chosen parameter.
+
+\subsection{Auditable certificate specifications}
+
+\paragraph{Algorithm~1 (Minimality certificate).}
+\textbf{Input:} \(\Pi(\lambda,y)=\lambda^4D(1/\lambda,y)\), \(N_\lambda(\lambda,y)=\lambda^3N(1/\lambda,y)\).\par
+\textbf{Output:} proof that for \(y\notin\{-1,0,1\}\), \(\gcd_{\CC(y)}(\Pi,N_\lambda)=1\).\par
+\textbf{Steps:}
+\begin{enumerate}
+  \item compute \(R_1=\Pi-\lambda N_\lambda\),
+  \item compute \(R_2=R_1+(y+1)N_\lambda=y(y+1)^2(y-1)\),
+  \item output the certificate that any common divisor of \(\Pi,N_\lambda\) divides \(R_2\), hence is \(1\) unless \(y\in\{-1,0,1\}\).
+\end{enumerate}
+The concrete implementation is
+\texttt{scripts/minimal\_denominator\_gcd\_certificate.pl}.
+
+\paragraph{Algorithm~2 (Branch-root isolation certificate).}
+\textbf{Input:} polynomial \(c(y)\) and rationals \(\alpha,\beta\) with \(c(\alpha)c(\beta)<0\).\par
+\textbf{Output:} rational interval \((\alpha,\beta)\) containing \(\yLY\), and a Sturm sequence certificate of \(\#\{y\in\mathbb R:c(y)=0\}=1\).\par
+\textbf{Steps:}
+\begin{enumerate}
+  \item compute \(c(\alpha),c(\beta)\) exactly in \(\QQ\),
+  \item verify sign change, and
+  \item optionally bisect to refine the interval.
+\end{enumerate}
+The concrete implementation is
+\texttt{scripts/branch\_root\_certificate.pl}.
+
+\paragraph{Algorithm~3 (Coefficient nonnegativity certificate up to truncation).}
+\textbf{Input:} a cutoff \(M\) and the coefficient recurrence of \(Z_m(y)\).\par
+\textbf{Output:} a rigorous check that \(a_{m,k}\ge0\) for all \(m\le M\).\par
+\textbf{Steps:} propagate \(Z_m\) in \(\ZZ[y]\), expand coefficients, and verify each coefficient is nonnegative.\par
+The implementation is
+\texttt{scripts/coeff\_nonneg\_check.pl}.
+
+\paragraph{Algorithm~4 (Negative-axis non-bifurcating equimodular certificate).}
+\textbf{Input:} the equations
+\[
+\Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1)=0,\qquad
+\{\lambda,-\lambda,\overline{\lambda}\}\ \text{non-real conjugate pattern}.
+\]
+\textbf{Output:} a proof of Theorem~\ref{thm:yeq}.
+\textbf{Steps:}
+\begin{enumerate}
+  \item Introduce \(r>0\), \(u\in(-1,1)\), \(\gamma\in\RR\), \(\lambda_1=-r\), \(\lambda_{2,3}=re^{\pm i\theta}=r(u\pm i\sqrt{1-u^2})\), \(\lambda_4=\gamma\).
+  \item Impose Vieta's relations and eliminate \(r,\gamma,u\) by resultant elimination.
+  \item Verify that the resulting eliminant is \(\pm C\,p_{\mathrm{eq}}(y)\,c(y)^2\) with \(C\in\QQ^\times\), where
+        \(c(y)=256y^3+411y^2+165y+32\).
+  \item Conclude algebraically: any non-bifurcating negative-axis equimodular point satisfies \(p_{\mathrm{eq}}(y)=0\) or \(c(y)=0\).
+  \item Compute \(\operatorname{Res}_y(c(y),p_{\mathrm{eq}}(y))\neq0\), proving these two cubics are coprime.
+  \item Use a Sturm sequence for \(p_{\mathrm{eq}}\) to prove one real root and certify
+  \[
+  -\frac{160092}{10^6}<\yEQ<-\frac{160091}{10^6}.
+  \]
+\end{enumerate}
+This gives a self-contained algebraic certificate that the non-bifurcating negative-axis equimodular point is not in \(\{c(y)=0\}\), hence not a branch point.
 
 \paragraph{Minimality certificate (exact).}
-The script
-\[
-\texttt{scripts/minimal\_denominator\_gcd\_certificate.pl}
-\]
-implements the symbolic two-step Euclidean chain
+The symbolic two-step Euclidean chain
 \[
 \Pi-\lambda N_\lambda,\quad ( \Pi-\lambda N_\lambda)+(y+1)N_\lambda=y(y+1)^2(y-1),
 \]
-and checks that this gives \(\gcd(\Pi,N_\lambda)=1\) for \(y\notin\{-1,0,1\}\), where
+is used to check \(\gcd(\Pi,N_\lambda)=1\) for \(y\notin\{-1,0,1\}\), where
 \[
 N_\lambda(\lambda,y)=\lambda^3N(1/\lambda,y).
 \]
+
 
 \subsection{Certified isolation of the branch point \texorpdfstring{$y_{\mathrm{LY}}$}{y\_LY}}
 
@@ -86,4 +140,5 @@ The summary certificate produced with every run is:
 \[
 \texttt{figs/data/fig\_generation\_summary.txt}.
 \]
+
 

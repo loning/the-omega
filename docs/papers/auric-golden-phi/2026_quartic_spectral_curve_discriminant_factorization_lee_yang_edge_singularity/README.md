@@ -71,7 +71,16 @@ The script writes files under `figs/data/`:
 Paper figures are rendered directly from these `.dat` files in
 `sections/07_algorithms_and_certified_computation.tex`.
 
-## 4) Notes
+## 4) Translation bridge appendix
+
+This branch contains a dedicated bridge appendix:
+
+- `sections/95_appendix_f_chinese_bridge.tex`: extracted and translated results from `cn_source` that are directly compatible with the English proof chain.
+
+  - explicit \(u\)-parametrization of the three nontrivial Puiseux slopes and the \(u\mapsto\frac{25}{21}-u\) involution;
+  - finite-field point-count transfer \( \#C_p(\mathbf F_p)=\#E_{0,p}(\mathbf F_p)-1 \) and Legendre-symbol trace formula.
+
+## 5) Notes
 
 - `tmp_*.pl` files are scratch scripts and are ignored by git.
 - If new visuals are needed, update only `scripts/generate_audit_figures.js` and re-run section 3.
