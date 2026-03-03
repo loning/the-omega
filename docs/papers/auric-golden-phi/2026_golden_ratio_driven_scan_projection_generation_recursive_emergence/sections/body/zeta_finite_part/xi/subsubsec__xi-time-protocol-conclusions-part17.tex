@@ -137,6 +137,46 @@ N_k(\mu)=\Bigl\lfloor \frac{2k+1}{2\pi}\theta(\mu)+\frac12\Bigr\rfloor,
 见定理 \ref{thm:xi-spectral-margin-finite-psd-certificate}。证毕。
 \end{proof}
 
+\begin{theorem}[Toeplitz--PSD 的鲁棒共终端审计：误差封口与谱裕度向下传播]\label{thm:xi-toeplitz-psd-robust-cofinal-audit}
+沿用 Toeplitz 主子矩阵 \(\mathbf{T}_N=(c_{j-k})_{0\le j,k\le N}\) 的记号。
+令 \(\{N_k\}_{k\ge 1}\) 为任意共终端严格递增子序列。
+假设对每个 \(k\) 给出一对审计输入 \((\widehat{\mathbf{T}}_{N_k},\varepsilon_k)\)，并存在 \(\eta_k>0\) 使
+\[
+\lambda_{\min}(\widehat{\mathbf{T}}_{N_k})\ge \eta_k,
+\qquad
+\|\widehat{\mathbf{T}}_{N_k}-\mathbf{T}_{N_k}\|_{\mathrm{op}}\le \varepsilon_k\le \eta_k/2.
+\]
+则成立：
+\begin{enumerate}
+  \item 对所有 \(N\ge 0\) 均有 \(\mathbf{T}_N\succeq 0\)；
+  \item 对任意 \(k\) 与任意 \(0\le N\le N_k\)，有谱裕度下界
+  \[
+  \boxed{\ \lambda_{\min}(\mathbf{T}_N)\ \ge\ \eta_k/2\ }.
+  \]
+  特别地，若 \(\inf_k\eta_k>0\)，则存在统一下界 \(\lambda_{\min}(\mathbf{T}_N)\ge \frac12\inf_k\eta_k\) 对一切 \(N\) 成立。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-spectral-margin-finite-psd-certificate} 的封口规则，对每个 \(k\) 有 \(\mathbf{T}_{N_k}\succeq 0\)。
+再由定理 \ref{thm:xi-toeplitz-psd-cofinal-sparsification} 的共终端稀疏化等价性，推出对所有 \(N\ge 0\) 均有 \(\mathbf{T}_N\succeq 0\)。
+\par
+对谱裕度传播：由 Weyl 扰动界，
+\[
+\lambda_{\min}(\mathbf{T}_{N_k})
+\ge
+\lambda_{\min}(\widehat{\mathbf{T}}_{N_k})-\|\widehat{\mathbf{T}}_{N_k}-\mathbf{T}_{N_k}\|_{\mathrm{op}}
+\ge
+\eta_k-\varepsilon_k
+\ge
+\eta_k/2.
+\]
+而当 \(N\le N_k\) 时，\(\mathbf{T}_N\) 为 \(\mathbf{T}_{N_k}\) 的左上主子矩阵，故由 Cauchy 交错定理
+\(
+\lambda_{\min}(\mathbf{T}_N)\ge \lambda_{\min}(\mathbf{T}_{N_k})
+\)。
+合并即得所示下界。证毕。
+\end{proof}
+
 \begin{conclusion}[单原子负缺陷的可否证阈值是 \texorpdfstring{$1/(N+1)$}{1/(N+1)} 级且为锐界：视界阶数的最小信息预算被精确锁定]\label{con:xi-terminal-toeplitz-negative-atom-threshold-sharp}
 在视界 Toeplitz 证书口径下，考虑背景正测度与单原子负缺陷 \(\varepsilon\,\delta_{\xi_0}\) 的对抗。
 存在密度下界 \(m_0\) 与上界 \(M_0\) 使得：
