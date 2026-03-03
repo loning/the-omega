@@ -167,14 +167,13 @@ v_2\!\left(\frac{\card{\mathcal{G}_m^{(2)}}}{\card{\mathcal{G}_m}^{\,2}}\right)\
 \pi:\Omega_{m+1}\twoheadrightarrow\Omega_m,\qquad
 (\omega_1\cdots \omega_{m+1})\mapsto(\omega_1\cdots\omega_m),
 \]
-以及稳定语法的前缀投影
+并假设存在满射限制映射
 \[
-\rho:X_{m+1}\twoheadrightarrow X_m,\qquad
-(x_1\cdots x_{m+1})\mapsto(x_1\cdots x_m).
+\widetilde r:X_{m+1}\twoheadrightarrow X_m
 \]
-则相容关系
+使得相容关系
 \[
-\rho\circ\Fold_{m+1}=\Fold_m\circ\pi
+\widetilde r\circ\Fold_{m+1}=\Fold_m\circ\pi
 \]
 成立。
 记纤维多重度
@@ -193,7 +192,7 @@ d_m(w):=\card{\Fold_m^{-1}(w)},\qquad w\in X_m,
 \frac{\card{\mathcal{G}_m^{(2)}}}{\card{\mathcal{G}_{m+1}}}
 =
 \prod_{w\in X_m}
-\binom{2d_m(w)}{\bigl(d_{m+1}(u)\bigr)_{u\in\rho^{-1}(w)}}
+\binom{2d_m(w)}{\bigl(d_{m+1}(u)\bigr)_{u\in\widetilde r^{-1}(w)}}
 \in\NN.
 \;}
 \]
@@ -207,19 +206,19 @@ d_m(w):=\card{\Fold_m^{-1}(w)},\qquad w\in X_m,
 \Delta_p(m)
 =
 \sum_{w\in X_m}
-\mathrm{Carr}_p\!\Bigl(\bigl(d_{m+1}(u)\bigr)_{u\in\rho^{-1}(w)}\Bigr),
+\mathrm{Carr}_p\!\Bigl(\bigl(d_{m+1}(u)\bigr)_{u\in\widetilde r^{-1}(w)}\Bigr),
 \;}
 \]
 其中 \(\mathrm{Carr}_p(n_1,\dots,n_r)\) 表示把 \((n_1,\dots,n_r)\) 在 \(p\)-进制逐位相加得到 \(\sum_i n_i\) 时产生的总进位次数。
 \end{theorem}
 
 \begin{proof}
-令 \(h:=\rho\circ\Fold_{m+1}=\Fold_m\circ\pi:\Omega_{m+1}\twoheadrightarrow X_m\)。
+令 \(h:=\Fold_m\circ\pi=\widetilde r\circ\Fold_{m+1}:\Omega_{m+1}\twoheadrightarrow X_m\)。
 由于 \(\pi^{-1}(\omega)\) 对每个 \(\omega\in\Omega_m\) 恰含两点，且 \(h\) 仅依赖于前缀 \(\pi(\cdot)\)，故对任意 \(w\in X_m\) 有
 \[
 \card{h^{-1}(w)}=2\,\card{\Fold_m^{-1}(w)}=2d_m(w).
 \]
-对满射 \(\Fold_{m+1}:\Omega_{m+1}\twoheadrightarrow X_{m+1}\) 与 \(\rho:X_{m+1}\twoheadrightarrow X_m\) 应用定理 \ref{thm:fiber-gauge-volume-chain-factorization}，
+对满射 \(\Fold_{m+1}:\Omega_{m+1}\twoheadrightarrow X_{m+1}\) 与 \(\widetilde r:X_{m+1}\twoheadrightarrow X_m\) 应用定理 \ref{thm:fiber-gauge-volume-chain-factorization}，
 并代入 \(\card{h^{-1}(w)}=2d_m(w)\) 与
 \(
 \card{\mathcal{G}(h)}=\prod_{w\in X_m}\card{h^{-1}(w)}!=\card{\mathcal{G}_m^{(2)}}
@@ -227,5 +226,112 @@ d_m(w):=\card{\Fold_m^{-1}(w)},\qquad w\in X_m,
 
 再对素数 \(p\) 取 \(v_p\)，并对每个 \(w\) 应用定理 \ref{thm:multinomial-vp-carry-signature}，
 即可将每一项多项式系数的 \(p\)-进赋值识别为相应纤维簇内计数之和的总进位次数，从而得到 \(\Delta_p(m)\) 的进位表述。证毕。
+\end{proof}
+
+\begin{theorem}[条件熵的 Gödel--carry 微正则恒等式]\label{thm:fold-godel-carry-conditional-entropy}
+在定理 \ref{thm:fold-multiscale-carry-defect} 的设定下，令 \(\omega\) 在 \(\Omega_{m+1}\) 上均匀分布，并定义随机变量
+\[
+W:=h(\omega)\in X_m,
+\qquad
+U:=\Fold_{m+1}(\omega)\in X_{m+1},
+\qquad
+h:=\Fold_m\circ\pi=\widetilde r\circ\Fold_{m+1}.
+\]
+定义层间 Gödel 整数
+\[
+\boxed{\;
+\mathcal H_m
+:=
+\prod_{w\in X_m}
+\binom{2d_m(w)}{\bigl(d_{m+1}(u)\bigr)_{u\in\widetilde r^{-1}(w)}}
+\;=\;
+\frac{\card{\mathcal{G}_m^{(2)}}}{\card{\mathcal{G}_{m+1}}}
+\in\NN\; }.
+\]
+则条件 Shannon 熵（自然对数）满足非渐近 Stirling 夹逼
+\[
+\boxed{\;
+\left|\,H(U\mid W)-\frac{1}{2^{m+1}}\log\mathcal H_m\,\right|
+\le
+\frac{C_0}{2^{m+1}}\Bigl(|X_m|+|X_{m+1}|\Bigr)\log(2^{m+1})
+\;}
+\]
+其中 \(C_0>0\) 为与 \(m\) 无关的绝对常数。
+\end{theorem}
+\begin{proof}
+对任意 \(w\in X_m\)，由 \(h=\widetilde r\circ \Fold_{m+1}\) 得到不交并分解
+\[
+h^{-1}(w)=\bigsqcup_{u\in\widetilde r^{-1}(w)}\Fold_{m+1}^{-1}(u),
+\qquad
+\card{h^{-1}(w)}=\sum_{u\in\widetilde r^{-1}(w)} d_{m+1}(u)=2d_m(w).
+\]
+因此
+\[
+\PP(W=w)=\frac{2d_m(w)}{2^{m+1}},
+\qquad
+\PP(U=u\mid W=w)=\frac{d_{m+1}(u)}{2d_m(w)}\quad(u\in\widetilde r^{-1}(w)).
+\]
+从而
+\[
+H(U\mid W)=
+\sum_{w\in X_m}\frac{2d_m(w)}{2^{m+1}}
+\left(
+-\sum_{u\in\widetilde r^{-1}(w)}\frac{d_{m+1}(u)}{2d_m(w)}\log\frac{d_{m+1}(u)}{2d_m(w)}
+\right).
+\]
+另一方面，
+\[
+\frac{1}{2^{m+1}}\log\mathcal H_m
+=
+\frac{1}{2^{m+1}}
+\sum_{w\in X_m}
+\left(
+\log(2d_m(w))!
+\;-\;
+\sum_{u\in\widetilde r^{-1}(w)}\log(d_{m+1}(u))!
+\right).
+\]
+对每个阶乘使用带余项的 Stirling 估计
+\(
+\log n!=n\log n-n+O(\log(n+1))
+\)
+（其中 \(O(\cdot)\) 的常数绝对），并在每个 \(w\) 上利用
+\(
+\sum_{u\in\widetilde r^{-1}(w)}d_{m+1}(u)=2d_m(w)
+\)
+消去线性项，即可将主项严格化简为 \(H(U\mid W)\)。
+余项为有限个 \(O(\log(n+1))\) 的求和：每个 \(w\) 贡献一项 \(O(\log(2d_m(w)+1))\)，每个 \(u\in X_{m+1}\) 贡献一项 \(O(\log(d_{m+1}(u)+1))\)。
+注意 \(1\le d_{m+1}(u)\le 2^{m+1}\) 且 \(1\le 2d_m(w)\le 2^{m+1}\)，故各对数项均被 \(O(\log(2^{m+1}))\) 控制。
+合并并除以 \(2^{m+1}\) 得到所示界，其中常数可并入 \(C_0\)。证毕。
+\end{proof}
+
+\begin{corollary}[素数进位谱分解与条件熵读出]\label{cor:fold-godel-carry-spectrum-conditional-entropy}
+沿用定理 \ref{thm:fold-godel-carry-conditional-entropy} 的记号。
+对任意素数 \(p\) 令 \(\Delta_p(m):=v_p(\mathcal H_m)\)。
+则有素因子分解恒等式
+\[
+\log\mathcal H_m=\sum_{p\ \mathrm{prime}}\Delta_p(m)\log p,
+\]
+并且对每个 \(p\) 有进位表达式
+\[
+\Delta_p(m)
+=
+\sum_{w\in X_m}
+\mathrm{Carr}_p\!\Bigl(\bigl(d_{m+1}(u)\bigr)_{u\in\widetilde r^{-1}(w)}\Bigr).
+\]
+此外，
+\[
+H(U\mid W)=\frac{1}{2^{m+1}}\sum_{p}\Delta_p(m)\log p\;+\;o_{m\to\infty}(1),
+\]
+其中 \(o_{m\to\infty}(1)\) 在 \(|X_m|+|X_{m+1}|=o(2^{m+1}/\log(2^{m+1}))\) 的任意情形下一致趋于零。
+\end{corollary}
+\begin{proof}
+第一式由 \(\mathcal H_m\in\NN\) 的唯一素因子分解直接给出。
+第二式由定理 \ref{thm:fold-multiscale-carry-defect}（对 \(\mathcal H_m=\card{\mathcal{G}_m^{(2)}}/\card{\mathcal{G}_{m+1}}\) 的逐纤维多项式系数分解）与定理 \ref{thm:multinomial-vp-carry-signature}（Kummer--Legendre 进位恒等式）逐项合成得到。
+最后一式由定理 \ref{thm:fold-godel-carry-conditional-entropy} 的误差界与
+\(
+\log(2^{m+1})\,(|X_m|+|X_{m+1}|)/2^{m+1}\to 0
+\)
+推出。证毕。
 \end{proof}
 
