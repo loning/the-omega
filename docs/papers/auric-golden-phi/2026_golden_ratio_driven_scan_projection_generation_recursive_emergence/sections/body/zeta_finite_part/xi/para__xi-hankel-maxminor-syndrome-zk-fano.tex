@@ -171,6 +171,52 @@ f_H:\ZZ^n\to\ZZ^n,\qquad v\mapsto Hv.
 最小补账轴数断言由定理 \ref{thm:xi-cdim-minimal-ledger-cost} 直接推出。证毕。
 \end{proof}
 
+\begin{theorem}[单素数提升的整数 Hankel 缺口 HVZK 证书与显式误接受上界]\label{thm:xi-hankel-singularity-one-prime-lift-hvzk}
+令 \(\widehat H\in\ZZ^{n\times n}\) 为整数 Hankel 矩阵，并定义语言
+\[
+\mathcal L_{\QQ}:=\bigl\{\widehat H:\ \mathrm{rank}_{\QQ}(\widehat H)<n\bigr\}.
+\]
+取一有限素数集合 \(\mathcal P\)，并令验证者公开抽样 \(p\sim\mathrm{Unif}(\mathcal P)\)。
+令
+\(
+H_p:=\widehat H\bmod p\in\FF_p^{n\times n}
+\)。
+在给定 \(p\) 后，双方运行定理 \ref{thm:xi-hankel-singularity-hvzk} 的三步公开币 HVZK 协议以证明谓词 \(\mathrm{rank}(H_p)<n\)，并以其接受作为复合协议的接受判据。
+则：
+\begin{enumerate}
+  \item 若 \(\widehat H\in\mathcal L_{\QQ}\)，则对任意 \(p\in\mathcal P\) 都有 \(\mathrm{rank}(H_p)<n\)，并且在条件于该 \(p\) 时复合协议接受概率至少为 \(1-p^{-\delta_p}\)，其中 \(\delta_p:=n-\mathrm{rank}(H_p)\ge 1\)。
+  \item 若 \(\widehat H\notin\mathcal L_{\QQ}\)，令 \(\Delta:=\det(\widehat H)\in\ZZ\setminus\{0\}\)，则误接受概率满足
+  \[
+  \Pr[\text{误接受}]
+  \ \le\
+  \Pr_{p\sim\mathcal P}[\,p\mid \Delta\,]\ +\ \EE_{p\sim\mathcal P}\!\left[\frac{1}{p}\right].
+  \]
+  特别地，当 \(\mathcal P\) 为区间 \([B,2B]\) 内素数并作均匀抽样时，有
+  \[
+  \Pr[\text{误接受}]
+  \ \le\
+  \frac{\omega(\Delta)}{\#\mathcal P}\ +\ \frac{1}{B},
+  \]
+  其中 \(\omega(\Delta):=\#\{p:\ p\mid \Delta\}\) 为 \(\Delta\) 的不同素因子个数。
+  \item 复合协议为 honest-verifier 完美零知识：存在模拟器先按同分布抽取 \(p\)，再调用定理 \ref{thm:xi-hankel-singularity-hvzk} 的模拟器生成交互记录；其分布与真实执行完全一致。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+若 \(\widehat H\in\mathcal L_{\QQ}\)，则 \(\det(\widehat H)=0\)，从而 \(\det(H_p)\equiv 0\pmod p\) 对任意 \(p\) 成立，故 \(\delta_p\ge 1\)。
+条件于 \(p\) 时的接受率下界由定理 \ref{thm:xi-hankel-singularity-hvzk} 的完备性给出。
+\par
+若 \(\widehat H\notin\mathcal L_{\QQ}\)，则 \(\Delta\neq 0\)。
+当 \(p\nmid \Delta\) 时，\(\det(H_p)\not\equiv 0\pmod p\)，从而 \(\mathrm{rank}(H_p)=n\)，内层命题为假；由定理 \ref{thm:xi-hankel-singularity-hvzk} 的健全性得条件接受概率 \(\le 1/p\)。
+当 \(p\mid \Delta\) 时，内层命题为真，不能用健全性压制；对两类事件并合取上界即得
+\[
+\Pr[\text{误接受}]
+\le \Pr_{p\sim\mathcal P}[\,p\mid \Delta\,]+\EE_{p\sim\mathcal P}[1/p].
+\]
+当 \(\mathcal P\) 为 \([B,2B]\) 内素数时，\(\EE[1/p]\le 1/B\)，且区间内满足 \(p\mid\Delta\) 的素数至多 \(\omega(\Delta)\) 个，故得到所示显式界。
+\par
+零知识部分由公开抽样 \(p\) 与内层 HVZK 的可模拟性直接组合：先抽 \(p\)，再模拟内层转录，分布保持一致。证毕。
+\end{proof}
+
 \begin{proposition}[\texorpdfstring{$p$}{p}-进求值的精度损失由 \texorpdfstring{$\det(H_0)$}{det(H0)} 精确控制]\label{prop:xi-hankel-padics-precision-loss-detH0}
 令 \(p\) 为素数，取 \(d\ge 1\)。
 设 \(H_0,H_1\in \ZZ_{p}^{d\times d}\) 且 \(\det(H_0)\neq 0\)，并令

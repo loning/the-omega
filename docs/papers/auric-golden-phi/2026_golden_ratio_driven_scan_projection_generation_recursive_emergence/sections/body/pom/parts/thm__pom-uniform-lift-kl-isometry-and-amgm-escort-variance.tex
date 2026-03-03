@@ -73,6 +73,69 @@ T(\pi)=\sum_y\pi(y)T(\delta_y)=\sum_y\pi(y)L_f\delta_y=L_f\pi
 证毕。
 \end{proof}
 
+\begin{theorem}[离散雅可比修正：将 Beck--Chevalley 缺陷严格化为交换]\label{thm:pom-bc-discrete-jacobian-strictification}
+设 \(f:X\twoheadrightarrow Y\)、\(g:Y\twoheadrightarrow Z\) 为有限集上的满射，并沿用纤维基数记号
+\[
+d_f(y):=\lvert f^{-1}(y)\rvert,\qquad
+d_{g\circ f}(z):=\lvert(g\circ f)^{-1}(z)\rvert=\sum_{y\in g^{-1}(z)}d_f(y).
+\]
+定义依赖上游满射 \(f\) 的修正提升核 \(\widetilde L_{g,f}:\Delta(Z)\to\Delta(Y)\) 为
+\[
+(\widetilde L_{g,f}\nu)(y):=\nu(g(y))\,\frac{d_f(y)}{d_{g\circ f}(g(y))}\qquad(y\in Y).
+\]
+则：
+\begin{enumerate}
+  \item 作为算子 \(\Delta(Z)\to\Delta(X)\)，成立严格恒等式
+  \[
+  \boxed{\;L_f\,\widetilde L_{g,f}=L_{g\circ f}.\;}
+  \]
+  \item 若 \(\mathsf K:\Delta(Z)\to\Delta(Y)\) 为任意 Markov 核且对一切 \(\nu\in\Delta(Z)\) 满足
+  \(
+  L_f\,\mathsf K\nu=L_{g\circ f}\nu
+  \)，
+  则必有 \(\mathsf K=\widetilde L_{g,f}\)。
+  \item 对任意 \(\nu\in\Delta(Z)\)，Beck--Chevalley 缺陷满足
+  \[
+  \boxed{\;
+  D_{\mathrm{KL}}(L_fL_g\nu\|L_{g\circ f}\nu)
+  =D_{\mathrm{KL}}(L_g\nu\|\widetilde L_{g,f}\nu)
+  =\mathbb E_{Z\sim\nu}\!\left[\log\frac{\mathrm{AM}_Z}{\mathrm{GM}_Z}\right],\;}
+  \]
+  其中 \(\mathrm{AM}_z,\mathrm{GM}_z\) 与定理 \ref{thm:pom-bc-amgm-defect-identity} 同一。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+先证 \(\widetilde L_{g,f}\) 为 Markov 核：对任意 \(z\in Z\)，有
+\[
+\sum_{y\in g^{-1}(z)}(\widetilde L_{g,f}\delta_z)(y)
+=\sum_{y\in g^{-1}(z)}\frac{d_f(y)}{d_{g\circ f}(z)}
+=1.
+\]
+\par
+(1) 对任意 \(x\in X\)，记 \(y=f(x)\)、\(z=g(y)\)。则
+\[
+(L_f\widetilde L_{g,f}\nu)(x)
+=\frac{(\widetilde L_{g,f}\nu)(f(x))}{d_f(f(x))}
+=\frac{\nu(z)\,d_f(y)}{d_{g\circ f}(z)\,d_f(y)}
+=\frac{\nu((g\circ f)(x))}{d_{g\circ f}((g\circ f)(x))}
+=(L_{g\circ f}\nu)(x).
+\]
+\par
+(2) 取 \(\nu=\delta_z\)。由 \(L_{g\circ f}\delta_z\) 在 \((g\circ f)^{-1}(z)\) 上均匀可知：对任意 \(y\in g^{-1}(z)\) 与任意 \(x\in f^{-1}(y)\)，
+\[
+(L_f\mathsf K\delta_z)(x)=\frac{(\mathsf K\delta_z)(y)}{d_f(y)}=\frac1{d_{g\circ f}(z)}.
+\]
+从而 \((\mathsf K\delta_z)(y)=d_f(y)/d_{g\circ f}(z)\)，即 \(\mathsf K\delta_z=\widetilde L_{g,f}\delta_z\)。
+由 Markov 核的仿射性，推广到任意 \(\nu\) 得 \(\mathsf K=\widetilde L_{g,f}\)。
+\par
+(3) 由定理 \ref{thm:pom-uniform-lift-kl-isometry-uniqueness} 的 KL 等距性，
+\[
+D_{\mathrm{KL}}(L_fL_g\nu\|L_f\widetilde L_{g,f}\nu)=D_{\mathrm{KL}}(L_g\nu\|\widetilde L_{g,f}\nu).
+\]
+再由 (1) 的严格交换 \(L_f\widetilde L_{g,f}\nu=L_{g\circ f}\nu\) 得到第一处等号。
+最后一处等号由定理 \ref{thm:pom-bc-amgm-defect-identity} 给出。证毕。
+\end{proof}
+
 \begin{proposition}[Beck--Chevalley 的 AM--GM 缺陷之 escort 方差能量表示]\label{prop:pom-bc-amgm-defect-escort-variance-energy}
 在定理 \ref{thm:pom-bc-amgm-defect-identity} 的设定下，固定任意 \(z\in Z\) 并令 \(A_z:=g^{-1}(z)\)。
 定义

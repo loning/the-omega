@@ -92,7 +92,47 @@ e^{-t}(1-e^{-t})^j=\sum_{k=0}^{j}(-1)^k\binom{j}{k}e^{-(k+1)t}.
 最后一句由定理 \ref{thm:fold-infonce-laplace-renyi-moment-expansion} 的有限展开直接推出。证毕。
 \end{proof}
 
+<<<<<<< Current (Your changes)
 \input{sections/appendix/fold_multiplicity/parts/thm__fold-infonce-loss-spectrum-identifiability}
+=======
+\begin{corollary}[Bayes--InfoNCE 极小值序列对碰撞矩谱的三角反演]\label{cor:fold-infonce-triangular-inversion-collision-spectrum}
+沿用定理 \ref{thm:fold-infonce-laplace-renyi-moment-expansion} 的记号，并令
+\[
+f(j):=\log(1+j),\qquad (\Delta f)(j):=f(j+1)-f(j)
+\quad(j\in\ZZ_{\ge 0}).
+\]
+则对任意整数 \(n\ge 1\)（即取 \(K=n+1\)），有严格三角表示
+\[
+L_m^{n+1,\star}
+=\sum_{t=1}^{n}\binom{n}{t}\,(\Delta^t f)(0)\,M_{t+1}(m),
+\qquad
+(\Delta^t f)(0)=\sum_{j=0}^{t}(-1)^{t-j}\binom{t}{j}\log(1+j).
+\]
+并且最高阶系数非退化：\((\Delta^{n}f)(0)=(-1)^{n+1}\alpha_n\neq 0\)。
+因此得到显式递归反演：对每个 \(n\ge 1\)，
+\[
+M_{n+1}(m)
+=\frac{1}{(\Delta^{n}f)(0)}
+\left(
+L_m^{n+1,\star}-\sum_{t=1}^{n-1}\binom{n}{t}\,(\Delta^{t}f)(0)\,M_{t+1}(m)
+\right).
+\]
+从而有限序列 \(\{L_m^{2,\star},\dots,L_m^{Q+1,\star}\}\) 唯一确定 \(\{M_2(m),\dots,M_{Q+1}(m)\}\)。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-infonce-laplace-renyi-moment-expansion}，
+\[
+L_m^{n+1,\star}
+=\sum_{j=1}^{n}(-1)^{j-1}\binom{n}{j}\,\alpha_j\,M_{j+1}(m).
+\]
+另一方面由推论 \ref{cor:fold-infonce-alpha-log-closed-form} 与 \((\Delta^j f)(0)=\sum_{k=0}^{j}(-1)^{j-k}\binom{j}{k}\log(1+k)\) 得
+\(
+(-1)^{j-1}\alpha_j=(\Delta^j f)(0)
+\)，代回即得三角表示。
+又由定理 \ref{thm:fold-infonce-laplace-renyi-moment-expansion} 的积分定义知 \(\alpha_n>0\)，故 \((\Delta^n f)(0)=(-1)^{n+1}\alpha_n\neq 0\)，从而可按 \(n\) 递归解出 \(M_{n+1}(m)\)。
+证毕。
+\end{proof}
+>>>>>>> Incoming (Background Agent changes)
 
 \begin{theorem}[学习相变边界的不可判定性：停机问题嵌入 Bayes--InfoNCE 速率]\label{thm:fold-infonce-rate-undecidable}
 固定 \(\alpha\in(0,1)\)，并令 \(K_m:=2^{\alpha m}\)。

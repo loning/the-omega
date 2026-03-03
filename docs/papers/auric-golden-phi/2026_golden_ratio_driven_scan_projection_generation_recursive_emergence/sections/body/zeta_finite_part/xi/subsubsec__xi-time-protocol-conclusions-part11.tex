@@ -210,9 +210,78 @@ a_{i+j}=(\tilde\beta^{\mathsf T}\tilde A^{i})(\tilde A^{j}\tilde\alpha)
 \)
 给出 Hankel 矩阵为秩至多 \(r\) 的分解，故 \(\mathrm{rank}\,\mathrm{Hankel}(a)\le r\)。
 \par
-若 \(\mathrm{rank}\,\mathrm{Hankel}(a)=d\) 且 \(H_0\) 可逆，则 Hankel 列空间由前 \(d\) 列生成且其在前 \(d\) 个坐标上的截断给出一组基；令 \(c_j:=(a_{i+j})_{0\le i\le d-1}\in\RR^{d}\)，并定义线性算子 \(A\) 使 \(Ac_j=c_{j+1}\)（\(0\le j\le d-2\)）。
-矩阵恒等式 \(AH_0=H_1\) 给出 \(A=H_0^{-1}H_1\)。
-取 \(\alpha=e_0=c_0\) 与 \(\beta\) 为前 \(d\) 项向量即可得到 \(a_m=\beta^{\mathsf T}A^{m}\alpha\)。
+若 \(\mathrm{rank}\,\mathrm{Hankel}(a)=d\) 且 \(H_0\) 可逆，则 Hankel 列空间由前 \(d\) 列生成且其在前 \(d\) 个坐标上的截断给出一组基；令 \(c_j^{\mathsf T}:=(a_{i+j})_{0\le i\le d-1}\in\RR^{d}\)，并定义线性算子 \(A\) 使 \(c_j^{\mathsf T}A=c_{j+1}^{\mathsf T}\)（\(0\le j\le d-2\)）。
+矩阵恒等式 \(H_0A=H_1\) 给出 \(A=H_0^{-1}H_1\)。
+取 \(\alpha=e_0\) 与 \(\beta\) 为前 \(d\) 项向量即可得到 \(a_m=\beta^{\mathsf T}A^{m}\alpha\)。
+\end{proof}
+
+\begin{theorem}[Hankel 主块几何律的算术强制：\texorpdfstring{$\det(A)\in\ZZ$}{det(A) in Z} 与 \texorpdfstring{$p$}{p}-进仿射漂移]\label{thm:xi-hankel-shift-det-integrality-padic-drift}
+设 \((a_m)_{m\ge 0}\subset\ZZ\) 为整数序列，满足 \(\mathrm{rank}\,\mathrm{Hankel}(a)=d<\infty\) 且
+\(
+H_0=(a_{i+j})_{0\le i,j\le d-1}
+\)
+可逆，并沿定理 \ref{thm:xi-hankel-rank-minimal-linear-realization} 记
+\(
+H_1=(a_{i+j+1})_{0\le i,j\le d-1}
+\)
+与 \(A:=H_0^{-1}H_1\)。
+对 \(r\ge 0\) 定义移位 Hankel 主块
+\[
+H_r:=\bigl(a_{i+j+r}\bigr)_{0\le i,j\le d-1}\in\ZZ^{d\times d}.
+\]
+若 \(A\) 可逆（等价于 \(\det(H_1)\neq 0\)），则：
+\begin{enumerate}
+  \item \(\det(A)\in\ZZ\setminus\{0\}\)，并且对一切 \(r\ge 0\) 有
+  \[
+  H_r=H_0A^{r},
+  \qquad
+  \det(H_r)=\det(H_0)\,\det(A)^{r}.
+  \]
+  \item 对任意素数 \(p\)，令 \(v_p\) 为标准 \(p\)-进赋值，则
+  \[
+  v_p(\det(H_r))=v_p(\det(H_0))+r\,v_p(\det(A)),
+  \qquad
+  v_p(\det(A))\ge 0.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由 Hankel 秩为 \(d\) 可知列向量族 \(c_j:=(a_{i+j})_{0\le i\le d-1}\in\QQ^{d}\) 的线性包络为 \(d\) 维，且 \(H_0=[c_0\,\cdots\,c_{d-1}]\) 可逆。
+定义移位算子 \(S\) 于该 \(d\) 维包络上，使 \(S(c_j)=c_{j+1}\)（\(j\ge 0\)）；因 \(\{c_0,\dots,c_{d-1}\}\) 为一组基且每个 \(c_{j+1}\) 都在其张成空间中，故 \(S\) 为良定义的线性算子。
+设 \(A\) 为 \(S\) 在基 \(\{c_0,\dots,c_{d-1}\}\) 下的矩阵，则第 \(j\) 列为 \(c_{j+1}\) 在该基下的坐标，从而 \(H_0A=H_1\)（亦即 \(A=H_0^{-1}H_1\)）。
+由 \(S^r(c_j)=c_{r+j}\) 得
+\(
+H_0A^{r}=[S^r(c_0)\ \cdots\ S^r(c_{d-1})]=[c_r\ \cdots\ c_{r+d-1}]=H_r
+\)。
+取行列式即得 \(\det(H_r)=\det(H_0)\det(A)^{r}\)。
+\par
+写 \(\det(A)=u/v\in\QQ\) 为既约分数（\(u\in\ZZ,\ v\in\ZZ_{>0},\ \gcd(u,v)=1\)）。
+由上式
+\[
+\det(H_r)=\det(H_0)\,\frac{u^{r}}{v^{r}}\in\ZZ\setminus\{0\}\qquad(\forall r\ge 0).
+\]
+故 \(v^{r}\mid \det(H_0)\) 对一切 \(r\) 成立，迫使 \(v=1\)，从而 \(\det(A)=u\in\ZZ\setminus\{0\}\)。
+对等式取 \(v_p\) 即得仿射律；并且因 \(\det(A)\in\ZZ\setminus\{0\}\)，故 \(v_p(\det(A))\ge 0\)。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$p$}{p}-进刚度漂移的二分律与“坏素数”判据]\label{cor:xi-hankel-padic-stiffness-drift-dichotomy-badprimes}
+在定理 \ref{thm:xi-hankel-shift-det-integrality-padic-drift} 的设定下，对任意素数 \(p\)：
+\begin{itemize}
+  \item 若 \(p\nmid\det(A)\)，则 \(v_p(\det(H_r))\) 对 \(r\ge 0\) 恒定不变；
+  \item 若 \(p\mid\det(A)\)，则 \(v_p(\det(H_r))\) 随 \(r\) 严格线性增长。
+\end{itemize}
+从而存在某个 \(r\ge 0\) 使 \(\det(H_r)\equiv 0\pmod p\) 当且仅当
+\[
+p\mid \det(H_0)\det(A).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-hankel-shift-det-integrality-padic-drift} 的仿射律，
+\(
+v_p(\det(H_r))=v_p(\det(H_0))+r\,v_p(\det(A))
+\)。
+当 \(v_p(\det(A))=0\) 时右端与 \(r\) 无关；当 \(v_p(\det(A))>0\) 时右端随 \(r\) 严格增大。
+最后一条等价于“存在 \(r\) 使 \(v_p(\det(H_r))\ge 1\)”并与仿射表达式等价，即得结论。证毕。
 \end{proof}
 
 \begin{proposition}[有限 Hankel 证书原则：全域一致性可由有限前缀与移位约束封口]\label{prop:xi-hankel-finite-certificate-principle}

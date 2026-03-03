@@ -35,4 +35,66 @@ g_\ast:=\lim_{m\to\infty}\frac{\EE G_m}{m}=\frac49
 仅有限次发生，从而得到 (2)。证毕。
 \end{proof}
 
+\begin{theorem}[\texorpdfstring{$4/9$}{4/9}--\texorpdfstring{$R$}{R} 饱和下界的步效率刚性]\label{thm:fold-local-rewrite-saturation-step-efficiency-rigidity}
+设 \(\mathsf S\) 为局部重写正规化算法，并存在 \(R\in\NN\) 使得在任意输入上每一步至多消去 \(R\) 个单位规范差。
+对每个 \(m\) 与输入 \(\omega\in\Omega_{m+1}\)，记算法步数为 \(T_m^{\mathsf S}(\omega)\)。
+令 \(G_{m}^{(0)}(\omega):=G_m(\omega)\)，并令 \(G_m^{(i)}(\omega)\) 为执行第 \(i\) 步后（\(0\le i\le T_m^{\mathsf S}(\omega)\)）的剩余规范差总量；定义单步净消去量
+\[
+\Delta_{m,i}(\omega):=G_m^{(i-1)}(\omega)-G_m^{(i)}(\omega)\in\{0,1,\dots,R\}.
+\]
+则 \(\sum_{i=1}^{T_m^{\mathsf S}(\omega)}\Delta_{m,i}(\omega)=G_m(\omega)\)。
+若存在一列输入 \(\omega_m\in\Omega_{m+1}\) 使得
+\[
+\lim_{m\to\infty}\frac{G_m(\omega_m)}{m}=g_\ast=\frac49,
+\qquad
+\lim_{m\to\infty}\frac{T_m^{\mathsf S}(\omega_m)}{m}=\frac{g_\ast}{R},
+\]
+则对任意 \(\varepsilon>0\) 都有
+\[
+\lim_{m\to\infty}\frac{1}{T_m^{\mathsf S}(\omega_m)}\,
+\#\Bigl\{1\le i\le T_m^{\mathsf S}(\omega_m):\ \Delta_{m,i}(\omega_m)\le R-\varepsilon\Bigr\}=0.
+\]
+\end{theorem}
+\begin{proof}
+由 \(\sum_{i=1}^{T_m}\Delta_{m,i}=G_m\) 得步均净消去率
+\[
+\frac{1}{T_m}\sum_{i=1}^{T_m}\Delta_{m,i}=\frac{G_m}{T_m}\xrightarrow[m\to\infty]{}\frac{g_\ast}{g_\ast/R}=R,
+\]
+其中 \(T_m:=T_m^{\mathsf S}(\omega_m)\)、\(G_m:=G_m(\omega_m)\)。
+又恒有 \(\Delta_{m,i}\le R\)。
+若存在 \(\varepsilon>0\) 与 \(\eta>0\) 及子列 \(m_k\) 使得
+\[
+\frac{1}{T_{m_k}}\#\{i:\ \Delta_{m_k,i}\le R-\varepsilon\}\ge \eta,
+\]
+则
+\[
+\frac{1}{T_{m_k}}\sum_{i=1}^{T_{m_k}}\Delta_{m_k,i}
+\le (R-\varepsilon)\eta+R(1-\eta)=R-\varepsilon\eta<R,
+\]
+与步均净消去率极限为 \(R\) 矛盾。
+故所示占比极限为 \(0\)。证毕。
+\end{proof}
+
+\begin{corollary}[饱和失败的定量代价]\label{cor:fold-local-rewrite-saturation-failure-quantitative-cost}
+在定理 \ref{thm:fold-local-rewrite-saturation-step-efficiency-rigidity} 的设定下，
+若存在 \(\varepsilon>0\)、\(\eta>0\) 使得对无穷多 \(m\) 有
+\[
+\frac{1}{T_m^{\mathsf S}(\omega_m)}\#\Bigl\{1\le i\le T_m^{\mathsf S}(\omega_m):\ \Delta_{m,i}(\omega_m)\le R-\varepsilon\Bigr\}\ge \eta,
+\]
+则必有严格次优的线性下界
+\[
+\liminf_{m\to\infty}\frac{T_m^{\mathsf S}(\omega_m)}{m}\ \ge\ \frac{g_\ast}{R-\varepsilon\eta}\ >\ \frac{g_\ast}{R}=\frac{4}{9R}.
+\]
+\end{corollary}
+\begin{proof}
+由占比条件与 \(\Delta_{m,i}\le R\) 得
+\[
+G_m(\omega_m)=\sum_{i=1}^{T_m}\Delta_{m,i}
+\le (R-\varepsilon)\eta\,T_m+R(1-\eta)\,T_m=(R-\varepsilon\eta)\,T_m,
+\]
+其中 \(T_m:=T_m^{\mathsf S}(\omega_m)\)。
+故 \(T_m\ge G_m(\omega_m)/(R-\varepsilon\eta)\)。
+两边除以 \(m\) 并取 \(\liminf\)，再用 \(\lim_{m\to\infty}G_m(\omega_m)/m=g_\ast\) 即得结论。证毕。
+\end{proof}
+
 \endinput

@@ -164,6 +164,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_delta_ca5_semistable_local_factors_audit",
+            script="exp_xi_delta_ca5_semistable_local_factors_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_delta_ca5_semistable_local_factors_audit.json",
+            ],
+        ),
+        Step(
+            name="fold_hypercube_weighted_energy_spectrum_audit",
+            script="exp_fold_hypercube_weighted_energy_spectrum_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_hypercube_weighted_energy_spectrum_audit.json",
+            ],
+        ),
+        Step(
             name="xi_weight_tripling_index_squarefree_audit",
             script="exp_xi_weight_tripling_index_squarefree_audit.py",
             args=[],
