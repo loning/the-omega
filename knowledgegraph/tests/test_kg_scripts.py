@@ -1203,6 +1203,19 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn("\\genfraglabel{thm:missing-a}", "".join(lines))
         self.assertIn("\\genfraglabel{prop:missing-b}", "".join(lines))
 
+    def test_compile_extracts_dag_bibliography_tail_lines(self) -> None:
+        bib_dir = self.kg_root / "bibliography"
+        bib_dir.mkdir(parents=True, exist_ok=True)
+        (bib_dir / "references.bib").write_text("@book{a,title={A}}\n", encoding="utf-8")
+        (bib_dir / "zeta.bib").write_text("@book{z,title={Z}}\n", encoding="utf-8")
+
+        lines = kg_compile.extract_dag_bibliography_tail_lines(self.kg_root)
+        self.assertTrue(lines)
+        self.assertEqual(lines[0], "\\bibliographystyle{amsplain}")
+        self.assertIn("\\bibliography{", lines[1])
+        self.assertIn((bib_dir / "references").resolve().as_posix(), lines[1])
+        self.assertIn((bib_dir / "zeta").resolve().as_posix(), lines[1])
+
     def test_compile_normalize_repairs_nested_display_math_delimiters(self) -> None:
         raw = (
             "\\[\n"

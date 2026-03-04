@@ -657,6 +657,7 @@ def build_main_tex(
     degrade_cite: bool = False,
     source_main_tex: Path | None = None,
     tail_lines: Sequence[str] = (),
+    include_toc_frontmatter: bool = False,
 ) -> str:
     lines: List[str] = []
     lines.append("\\ifdefined\\pdfoutput\\pdfoutput=1\\fi")
@@ -732,12 +733,30 @@ def build_main_tex(
         lines.append("\\providecommand{\\norm}[1]{\\left\\lVert #1\\right\\rVert}")
     else:
         lines.append("\\documentclass[11pt,letterpaper,fontset=fandol]{ctexart}")
+        lines.append("% Silence spurious missing-char noise in large merged builds.")
+        lines.append("\\tracinglostchars=0\\relax")
         lines.append("\\usepackage{geometry}")
         lines.append("\\geometry{letterpaper, margin=1in}")
         lines.append("\\usepackage{amsmath,amssymb,amsthm}")
         lines.append("\\usepackage{mathtools}")
         lines.append("\\usepackage{amscd}")
-        lines.append("\\usepackage{graphicx}")
+        lines.append("\\makeatletter")
+        lines.append("\\@ifundefined{FASTBUILD}{%")
+        lines.append("  \\usepackage{graphicx}%")
+        lines.append("}{%")
+        lines.append("  \\usepackage[draft]{graphicx}%")
+        lines.append("}%")
+        lines.append("\\makeatother")
+        lines.append("\\makeatletter")
+        lines.append("\\let\\origincludegraphics\\includegraphics")
+        lines.append("\\renewcommand{\\includegraphics}[2][]{%")
+        lines.append("  \\IfFileExists{#2}{%")
+        lines.append("    \\origincludegraphics[#1]{#2}%")
+        lines.append("  }{%")
+        lines.append("    \\fbox{\\ttfamily missing graphic: \\detokenize{#2}}%")
+        lines.append("  }%")
+        lines.append("}%")
+        lines.append("\\makeatother")
         lines.append("\\usepackage{hyperref}")
         lines.append("\\usepackage{subfiles}")
         lines.append("\\usepackage{cite}")
@@ -832,6 +851,11 @@ def build_main_tex(
         lines.append("\\newcommand{\\abs}[1]{\\left\\lvert #1\\right\\rvert}")
         lines.append("\\newcommand{\\norm}[1]{\\left\\lVert #1\\right\\rVert}")
         lines.append("\\newcommand{\\kgref}[1]{\\ref{kg:#1}}")
+    lines.append("\\makeatletter")
+    lines.append("\\@ifundefined{c@genfrag}{\\newcounter{genfrag}[section]}{}")
+    lines.append("\\makeatother")
+    lines.append("\\renewcommand{\\thegenfrag}{\\thesection.\\arabic{genfrag}}")
+    lines.append("\\providecommand{\\genfraglabel}[1]{\\refstepcounter{genfrag}\\label{#1}}")
     if fragment_ref_mode:
         lines.append("\\makeatletter")
         lines.append("\\newcommand{\\kgrawref}[1]{\\texttt{#1}}")
@@ -860,6 +884,15 @@ def build_main_tex(
     lines.append("\\begin{document}")
     lines.append("\\sloppy")
     lines.append("\\hfuzz=\\maxdimen\\relax")
+    if include_toc_frontmatter:
+        lines.append("\\begingroup")
+        lines.append("\\tracinglostchars=0\\relax")
+        lines.append("\\makeatletter")
+        lines.append("\\let\\input@path\\@empty")
+        lines.append("\\makeatother")
+        lines.append("\\tableofcontents")
+        lines.append("\\endgroup")
+        lines.append("\\newpage")
     if source_main_tex is not None:
         # Keep entrypoint framing close to source book output quality.
         lines.append("\\maketitle")
@@ -1177,6 +1210,20 @@ def extract_bibliography_tail_lines(
     return out
 
 
+def extract_dag_bibliography_tail_lines(kg_root: Path) -> List[str]:
+    bib_dir = kg_root / "bibliography"
+    if not bib_dir.exists():
+        return []
+    bib_files = sorted(p for p in bib_dir.glob("*.bib") if p.is_file())
+    if not bib_files:
+        return []
+    bib_roots = [p.resolve().with_suffix("").as_posix() for p in bib_files]
+    return [
+        r"\bibliographystyle{amsplain}",
+        r"\bibliography{" + ",".join(bib_roots) + "}",
+    ]
+
+
 def build_missing_ref_anchor_lines(index_path: Path) -> List[str]:
     report_path = index_path.parent / "reference_closure_report.json"
     if not report_path.exists():
@@ -1353,6 +1400,7 @@ def main() -> int:
     pending_marker_state: Path | None = None
     pending_marker_ts: str | None = None
     extra_texinputs: List[Path] = []
+    print("DAG-only compile: source preamble/texinputs/bibliography are disabled.")
 
     index_entry_path: Path | None = None
     if args.mode == "audit":
@@ -1360,19 +1408,16 @@ def main() -> int:
             raise SystemExit("--root is required for --mode audit")
         inputs, skipped = collect_tex_atoms_for_label(kg_root, args.root)
         target_name = f"audit_{args.root}"
-        extra_texinputs = collect_extra_texinputs_for_labels(kg_root, {args.root})
     elif args.mode == "partial":
         if not args.label:
             raise SystemExit("--label is required for --mode partial")
         inputs, skipped = collect_tex_atoms_for_label(kg_root, args.label)
         target_name = f"partial_{args.label}"
-        extra_texinputs = collect_extra_texinputs_for_labels(kg_root, {args.label})
     else:
         index_path = resolve_index_entry(kg_root, args.spec)
         index_entry_path = index_path
         spec_name = Path(args.spec).stem if args.spec else "index"
         index_labels = parse_index_labels(index_path)
-        extra_texinputs = collect_extra_texinputs_for_labels(kg_root, index_labels)
         if args.changed_only:
             deltas = discover_source_deltas(kg_root)
             state_path = compile_state_path(kg_root, spec_name)
@@ -1459,20 +1504,18 @@ def main() -> int:
 
     # Use absolute paths in generated main.tex to avoid relative path ambiguity.
     resolved_inputs = [Path(str(p)) for p in inputs]
-    source_main_tex = discover_source_main_tex(extra_texinputs) if args.mode == "index" else None
-    tail_lines: List[str] = []
+    source_main_tex: Path | None = None
+    post_body_lines: List[str] = []
     if args.mode == "index" and args.index_ref_mode == "strict":
         if index_entry_path is not None:
             anchor_lines = build_missing_ref_anchor_lines(index_entry_path)
             if anchor_lines:
-                tail_lines.extend(anchor_lines)
+                post_body_lines.extend(anchor_lines)
                 print(f"Injecting synthetic ref anchors: {len(anchor_lines) - 1}")
-        merged_tex_path = discover_merged_tex_from_emit_state(kg_root)
-        bib_tail = extract_bibliography_tail_lines(merged_tex_path, source_main_tex)
-        if bib_tail:
-            tail_lines.extend(bib_tail)
-        if bib_tail and merged_tex_path is not None:
-            print(f"Using bibliography tail from merged: {merged_tex_path}")
+        dag_bib_tail = extract_dag_bibliography_tail_lines(kg_root)
+        if dag_bib_tail:
+            post_body_lines.extend(dag_bib_tail)
+            print(f"Using DAG bibliography files: {len(dag_bib_tail) - 1} command block")
 
     main_tex = build_dir / "main.tex"
     use_fragment_ref_mode = args.mode == "index" and args.index_ref_mode == "stable"
@@ -1482,12 +1525,11 @@ def main() -> int:
             fragment_ref_mode=use_fragment_ref_mode,
             degrade_cite=args.degrade_cite,
             source_main_tex=source_main_tex,
-            tail_lines=tail_lines,
+            tail_lines=post_body_lines,
+            include_toc_frontmatter=(args.mode == "index"),
         ),
         encoding="utf-8",
     )
-    if source_main_tex is not None:
-        print(f"Using source preamble: {source_main_tex}")
     print(f"Generated {main_tex}")
 
     if args.dry_run:

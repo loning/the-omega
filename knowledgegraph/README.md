@@ -34,6 +34,9 @@ knowledgegraph/
     KG-20260303-0001__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex.meta.json
     KG-20260303-0101__lbl-fold-method-v1-hc3d4e5f6a1b2__tp-method__h-c3d4e5f6a1b2.py
     KG-20260303-0101__lbl-fold-method-v1-hc3d4e5f6a1b2__tp-method__h-c3d4e5f6a1b2.py.meta.json
+  bibliography/                      # DAG 内部参考文献库（编译仅使用这里的 .bib）
+    references.bib
+    references_*.bib
   index_specs/                       # 索引规则（可改）
     book_grg.idx
     chapter_folding.idx
@@ -60,6 +63,7 @@ knowledgegraph/
 说明：
 - `atoms/` 是唯一真相层。
 - `index_nodes/` 仅用于展示与编译，不承载知识真相。
+- `bibliography/` 是 DAG-only 编译时唯一 BibTeX 输入目录。
 - `.kgcache/merged/*` 是 TeX 抽取唯一输入（单一事实源）。
 
 ---
@@ -265,13 +269,16 @@ order: topo
 行为：
 1. 由 `.idx` 生成 `index_nodes`。
 2. `index_nodes/<spec>/atoms/` 自动生成 `KG-*.tex` 短名软链（避免超长 `\input` 路径导致 TeX pool 超限）。
-3. 编译索引 PDF。
-4. 可选 `--index-ref-mode stable|strict`：
+3. **强制 DAG-only 编译**：`kg_compile.py` 不读取源目录 preamble、不注入源目录 bibliography、不向源目录补 `TEXINPUTS`。
+4. 编译索引 PDF。
+5. 可选 `--index-ref-mode stable|strict`：
    - `stable`（默认）：保留可解析的 `\ref/\eqref`；未解析标签回退为文本占位；`\cite` 回退为文本占位，优先保证超大图可编译。
    - `strict`：保留原始引用语义（含引用告警），可能更慢或在超大图上失败。
-5. 默认复用固定构建目录（例如 `knowledgegraph/.kgcache/build/index_book_grg/`），可复用 `.aux/.fdb_latexmk`，重复编译更快。
-6. 默认将 LaTeX 详细输出写入 `latexmk.stdout.log`（减少终端 I/O 开销）；调试时可加 `--verbose-latex`。
-7. 若需要冷启动全新构建目录，使用 `--fresh-build`。
+6. strict 模式会自动注入 `reference_closure_report.json` 中缺失标签的合成锚点，保证大图可收敛。
+7. 若 `knowledgegraph/bibliography/*.bib` 存在，strict 模式自动注入 DAG 内 bibliography 命令并运行 BibTeX。
+8. 默认复用固定构建目录（例如 `knowledgegraph/.kgcache/build/index_book_grg/`），可复用 `.aux/.fdb_latexmk`，重复编译更快。
+9. 默认将 LaTeX 详细输出写入 `latexmk.stdout.log`（减少终端 I/O 开销）；调试时可加 `--verbose-latex`。
+10. 若需要冷启动全新构建目录，使用 `--fresh-build`。
 
 ### 9.3 局部编译
 
@@ -337,7 +344,7 @@ python3 knowledgegraph/scripts/kg_compile.py \
   --kg-root knowledgegraph \
   --mode index \
   --spec book_grg \
-  --index-ref-mode stable
+  --index-ref-mode strict
 ```
 
 冷启动（不复用旧 build 目录）：
@@ -347,8 +354,16 @@ python3 knowledgegraph/scripts/kg_compile.py \
   --kg-root knowledgegraph \
   --mode index \
   --spec book_grg \
-  --index-ref-mode stable \
+  --index-ref-mode strict \
   --fresh-build
+```
+
+将源工程 `.bib` 一次性迁移到 DAG 内部文献库（仅迁移，不在编译阶段回源）：
+
+```bash
+mkdir -p knowledgegraph/bibliography
+cp -f docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references*.bib \
+  knowledgegraph/bibliography/
 ```
 
 日志体检（统计 warning/error）：
