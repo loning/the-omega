@@ -34,6 +34,8 @@ END_DOC_RE = re.compile(r"\\end\s*\{\s*document\s*\}")
 DOCUMENTCLASS_RE = re.compile(r"\\documentclass\b")
 UNESCAPED_DOUBLE_DOLLAR_RE = re.compile(r"(?<!\\)\$\$")
 BUILD_INDEX_VERSION = "2026-03-04-r3"
+VERSIONED_LABEL_RE = re.compile(r"^(?P<canonical>[a-z0-9-]+)-h(?P<hash>[0-9a-f]{12})$")
+KG_ID_RE = re.compile(r"^KG-(?P<date>\d{8})-(?P<seq>\d+)$")
 
 
 def latex_escape(text: str) -> str:
@@ -115,6 +117,12 @@ def parse_types(value: str) -> Set[str]:
     return out
 
 
+def parse_csv_tokens(value: str) -> Set[str]:
+    if not value:
+        return set()
+    return {x.strip() for x in value.split(",") if x.strip()}
+
+
 def parse_int(value: str, default: int) -> int:
     try:
         return int(value.strip())
@@ -150,6 +158,119 @@ def source_basename_for_atom(atom: Atom) -> str:
     if src.suffix.lower() != ".tex":
         return ""
     return src.name
+
+
+def parse_kg_id_key(kg_id: str) -> Tuple[str, int]:
+    m = KG_ID_RE.match(kg_id)
+    if not m:
+        return "", -1
+    return m.group("date"), int(m.group("seq"))
+
+
+def canonical_from_atom_label(label: str) -> str:
+    m = VERSIONED_LABEL_RE.match(label)
+    if not m:
+        return label
+    return m.group("canonical")
+
+
+def select_latest_versioned_atoms(atoms: Sequence[Atom]) -> Tuple[List[Atom], int]:
+    latest_by_canonical: Dict[str, Atom] = {}
+    for atom in atoms:
+        m = VERSIONED_LABEL_RE.match(atom.label)
+        if not m:
+            continue
+        canonical = m.group("canonical")
+        prev = latest_by_canonical.get(canonical)
+        if prev is None or parse_kg_id_key(atom.kg_id) > parse_kg_id_key(prev.kg_id):
+            latest_by_canonical[canonical] = atom
+
+    keep_versioned_labels = {atom.label for atom in latest_by_canonical.values()}
+    selected: List[Atom] = []
+    dropped = 0
+    for atom in atoms:
+        if VERSIONED_LABEL_RE.match(atom.label):
+            if atom.label in keep_versioned_labels:
+                selected.append(atom)
+            else:
+                dropped += 1
+        else:
+            selected.append(atom)
+    return selected, dropped
+
+
+def latest_merged_sha_from_state(kg_root: Path) -> Optional[str]:
+    state_path = kg_root / ".kgcache" / "merged" / "emit_state.json"
+    if not state_path.exists():
+        return None
+    try:
+        payload = json.loads(state_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    value = str(payload.get("merged_sha256") or "").strip()
+    return value or None
+
+
+def latest_extractor_version_from_state(kg_root: Path) -> Optional[str]:
+    state_path = kg_root / ".kgcache" / "merged" / "emit_state.json"
+    if not state_path.exists():
+        return None
+    try:
+        payload = json.loads(state_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    value = str(payload.get("extractor_version") or "").strip()
+    return value or None
+
+
+def resolve_merged_sha_filter(raw_value: str, kg_root: Path) -> Optional[str]:
+    value = raw_value.strip()
+    if not value:
+        return None
+    if value.lower() == "latest":
+        return latest_merged_sha_from_state(kg_root)
+    return value
+
+
+def resolve_extractor_version_filter(raw_value: str, kg_root: Path) -> Optional[str]:
+    value = raw_value.strip()
+    if not value:
+        return None
+    if value.lower() == "latest":
+        return latest_extractor_version_from_state(kg_root)
+    return value
+
+
+def select_latest_atoms_by_source_tex_label(atoms: Sequence[Atom]) -> Tuple[List[Atom], int]:
+    latest_by_source_label: Dict[str, Atom] = {}
+    for atom in atoms:
+        if atom.ext != "tex":
+            continue
+        meta = load_atom_meta(atom)
+        source_tex_label = str(meta.get("source_tex_label") or "").strip()
+        if not source_tex_label:
+            continue
+        prev = latest_by_source_label.get(source_tex_label)
+        if prev is None or parse_kg_id_key(atom.kg_id) > parse_kg_id_key(prev.kg_id):
+            latest_by_source_label[source_tex_label] = atom
+
+    keep_labels = {atom.label for atom in latest_by_source_label.values()}
+    selected: List[Atom] = []
+    dropped = 0
+    for atom in atoms:
+        if atom.ext != "tex":
+            selected.append(atom)
+            continue
+        meta = load_atom_meta(atom)
+        source_tex_label = str(meta.get("source_tex_label") or "").strip()
+        if not source_tex_label:
+            selected.append(atom)
+            continue
+        if atom.label in keep_labels:
+            selected.append(atom)
+        else:
+            dropped += 1
+    return selected, dropped
 
 
 def rewrite_bibliography_command(line: str, source_dir: Optional[Path]) -> str:
@@ -201,10 +322,25 @@ def rewrite_bibliography_command(line: str, source_dir: Optional[Path]) -> str:
 
 
 def unwrap_document_body(text: str) -> str:
-    begin = BEGIN_DOC_RE.search(text)
-    end = END_DOC_RE.search(text)
-    if begin and end and end.start() > begin.end():
-        return text[begin.end() : end.start()]
+    # Keep concatenated bodies when a wrapper contains multiple nested
+    # \begin{document}...\end{document} segments (common in subfile-expanded
+    # fragments). The previous first-pair slicing dropped later segments and
+    # lost section labels needed for cross-references.
+    if not BEGIN_DOC_RE.search(text):
+        return text
+    out_lines: List[str] = []
+    in_doc = False
+    for line in text.splitlines():
+        if BEGIN_DOC_RE.search(line):
+            in_doc = True
+            continue
+        if END_DOC_RE.search(line):
+            in_doc = False
+            continue
+        if in_doc:
+            out_lines.append(line)
+    if out_lines:
+        return "\n".join(out_lines) + "\n"
     return text
 
 
@@ -426,6 +562,12 @@ def selection_fingerprint(
     closure_max_rounds: int,
     include_wrapper_fragments: bool,
     expose_source_aliases: bool,
+    tex_task_kind_filter: Set[str],
+    latest_version_only: bool,
+    latest_source_label_only: bool,
+    merged_sha_filter: Optional[str],
+    extractor_version_filter: Optional[str],
+    drop_unused_label_anchors: bool,
     ordered_atoms: Sequence[Atom],
     includable_entries: Sequence[Tuple[Atom, str]],
     skipped_tex_atoms: Sequence[Tuple[Atom, str]],
@@ -448,6 +590,12 @@ def selection_fingerprint(
                 "closure_max_rounds": int(closure_max_rounds),
                 "include_wrapper_fragments": bool(include_wrapper_fragments),
                 "expose_source_aliases": bool(expose_source_aliases),
+                "tex_task_kind_filter": sorted(tex_task_kind_filter),
+                "latest_version_only": bool(latest_version_only),
+                "latest_source_label_only": bool(latest_source_label_only),
+                "merged_sha_filter": merged_sha_filter or "",
+                "extractor_version_filter": extractor_version_filter or "",
+                "drop_unused_label_anchors": bool(drop_unused_label_anchors),
             },
             ensure_ascii=False,
             sort_keys=True,
@@ -490,10 +638,74 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
     closure_max_rounds = max(1, min(parse_int(data.get("reference_closure_max_rounds", "12"), 12), 64))
     include_wrapper_fragments = parse_bool(data.get("include_wrapper_fragments", "true"), default=True)
     expose_source_aliases = parse_bool(data.get("expose_source_aliases", "true"), default=True)
+    tex_task_kind_filter = parse_csv_tokens(data.get("tex_task_kind_filter", ""))
+    latest_version_only = parse_bool(data.get("latest_version_only", "true"), default=True)
+    latest_source_label_only = parse_bool(data.get("latest_source_label_only", "true"), default=True)
+    drop_unused_label_anchors = parse_bool(
+        data.get("drop_unused_label_anchors", "false"),
+        default=False,
+    )
+    merged_sha_filter = resolve_merged_sha_filter(data.get("merged_sha_filter", "").strip(), kg_root)
+    extractor_version_filter = resolve_extractor_version_filter(
+        data.get("extractor_version_filter", "").strip(), kg_root
+    )
 
     atoms, scan_errors = scan_atoms(kg_root, verify_hash=False)
     if scan_errors:
         raise RuntimeError("scan errors:\n" + "\n".join(scan_errors))
+
+    dropped_by_merged_sha = 0
+    if merged_sha_filter:
+        filtered: List[Atom] = []
+        for atom in atoms:
+            if atom.ext != "tex":
+                filtered.append(atom)
+                continue
+            meta = load_atom_meta(atom)
+            merged_sha = str(meta.get("merged_sha256") or "").strip()
+            if merged_sha == merged_sha_filter:
+                filtered.append(atom)
+            else:
+                dropped_by_merged_sha += 1
+        atoms = filtered
+
+    dropped_by_extractor_version = 0
+    if extractor_version_filter:
+        filtered: List[Atom] = []
+        for atom in atoms:
+            if atom.ext != "tex":
+                filtered.append(atom)
+                continue
+            meta = load_atom_meta(atom)
+            extractor_version = str(meta.get("extractor_version") or "").strip()
+            if extractor_version == extractor_version_filter:
+                filtered.append(atom)
+            else:
+                dropped_by_extractor_version += 1
+        atoms = filtered
+
+    dropped_by_task_kind = 0
+    if tex_task_kind_filter:
+        filtered: List[Atom] = []
+        for atom in atoms:
+            if atom.ext != "tex":
+                filtered.append(atom)
+                continue
+            meta = load_atom_meta(atom)
+            task_kind = str(meta.get("task_kind") or "").strip()
+            if task_kind in tex_task_kind_filter:
+                filtered.append(atom)
+            else:
+                dropped_by_task_kind += 1
+        atoms = filtered
+
+    dropped_older_versions = 0
+    if latest_version_only:
+        atoms, dropped_older_versions = select_latest_versioned_atoms(atoms)
+
+    dropped_source_label_duplicates = 0
+    if latest_source_label_only:
+        atoms, dropped_source_label_duplicates = select_latest_atoms_by_source_tex_label(atoms)
 
     by_label = {a.label: a for a in atoms}
     if roots:
@@ -541,6 +753,48 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         }
 
     selected_atoms = [a for a in atoms if a.label in selected_labels]
+
+    dropped_unused_label_anchors = 0
+    if drop_unused_label_anchors:
+        referenced_source_labels: Set[str] = set()
+        for atom in selected_atoms:
+            if atom.ext != "tex":
+                continue
+            rec = tex_ref_index.get(atom.label)
+            if rec:
+                referenced_source_labels.update(rec.get("refs", set()))
+
+        pruned_atoms: List[Atom] = []
+        for atom in selected_atoms:
+            if atom.ext != "tex":
+                pruned_atoms.append(atom)
+                continue
+            meta = load_atom_meta(atom)
+            unit_env = str(meta.get("unit_env") or "").strip()
+            if unit_env != "label_anchor":
+                pruned_atoms.append(atom)
+                continue
+
+            rec = tex_ref_index.get(atom.label)
+            defined_labels = set(rec.get("labels", set())) if rec else set()
+            keep = atom.label in roots or bool(defined_labels & referenced_source_labels)
+            if keep:
+                pruned_atoms.append(atom)
+            else:
+                dropped_unused_label_anchors += 1
+
+        selected_atoms = pruned_atoms
+        selected_labels = {a.label for a in selected_atoms}
+
+        # Keep final closure stats aligned with the final selected atom set.
+        final_defined, final_refs, final_cites = selection_ref_sets(selected_labels, by_label, tex_ref_index)
+        final_missing = sorted(final_refs - final_defined)
+        closure_report["final_defined_label_count"] = len(final_defined)
+        closure_report["final_unique_ref_count"] = len(final_refs)
+        closure_report["final_missing_ref_count"] = len(final_missing)
+        closure_report["final_missing_refs"] = final_missing
+        closure_report["final_unique_cite_count"] = len(final_cites)
+    closure_report["dropped_unused_label_anchors"] = dropped_unused_label_anchors
 
     if order == "topo":
         ordered = topological_order(atoms, subset={a.label for a in selected_atoms})
@@ -619,6 +873,12 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         closure_max_rounds=closure_max_rounds,
         include_wrapper_fragments=include_wrapper_fragments,
         expose_source_aliases=expose_source_aliases,
+        tex_task_kind_filter=tex_task_kind_filter,
+        latest_version_only=latest_version_only,
+        latest_source_label_only=latest_source_label_only,
+        merged_sha_filter=merged_sha_filter,
+        extractor_version_filter=extractor_version_filter,
+        drop_unused_label_anchors=drop_unused_label_anchors,
         ordered_atoms=ordered,
         includable_entries=includable_entries,
         skipped_tex_atoms=skipped_tex_atoms,
@@ -706,6 +966,41 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
 
     lines.append("\\subsection*{Reference Closure Summary}")
     lines.append("\\begin{itemize}")
+    if merged_sha_filter:
+        lines.append(
+            "\\item "
+            f"merged sha filter=\\texttt{{{merged_sha_filter}}}, "
+            f"dropped by merged sha=\\texttt{{{dropped_by_merged_sha}}}"
+        )
+    if extractor_version_filter:
+        lines.append(
+            "\\item "
+            f"extractor version filter=\\texttt{{{extractor_version_filter}}}, "
+            f"dropped by extractor version=\\texttt{{{dropped_by_extractor_version}}}"
+        )
+    if tex_task_kind_filter:
+        lines.append(
+            "\\item "
+            f"tex task kind filter=\\texttt{{{latex_escape(','.join(sorted(tex_task_kind_filter)))}}}, "
+            f"dropped by task kind=\\texttt{{{dropped_by_task_kind}}}"
+        )
+    lines.append(
+        "\\item "
+        f"latest version only=\\texttt{{{str(bool(latest_version_only)).lower()}}}, "
+        f"dropped older versions=\\texttt{{{dropped_older_versions}}}"
+    )
+    if latest_source_label_only:
+        lines.append(
+            "\\item "
+            f"latest source label only=\\texttt{{true}}, "
+            f"dropped source-label duplicates=\\texttt{{{dropped_source_label_duplicates}}}"
+        )
+    if drop_unused_label_anchors:
+        lines.append(
+            "\\item "
+            f"drop unused label anchors=\\texttt{{true}}, "
+            f"dropped label anchors=\\texttt{{{dropped_unused_label_anchors}}}"
+        )
     lines.append(
         "\\item "
         f"closure enabled=\\texttt{{{str(bool(reference_closure)).lower()}}}, "
@@ -738,6 +1033,18 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         "reference_closure_max_rounds": closure_max_rounds,
         "include_wrapper_fragments": bool(include_wrapper_fragments),
         "expose_source_aliases": bool(expose_source_aliases),
+        "merged_sha_filter": merged_sha_filter or "",
+        "dropped_by_merged_sha": dropped_by_merged_sha,
+        "extractor_version_filter": extractor_version_filter or "",
+        "dropped_by_extractor_version": dropped_by_extractor_version,
+        "tex_task_kind_filter": sorted(tex_task_kind_filter),
+        "dropped_by_task_kind": dropped_by_task_kind,
+        "latest_version_only": bool(latest_version_only),
+        "dropped_older_versions": dropped_older_versions,
+        "latest_source_label_only": bool(latest_source_label_only),
+        "dropped_source_label_duplicates": dropped_source_label_duplicates,
+        "drop_unused_label_anchors": bool(drop_unused_label_anchors),
+        "dropped_unused_label_anchors": dropped_unused_label_anchors,
         "selection_fingerprint": fingerprint,
         "atom_count": len(ordered),
         "tex_atom_count": len(tex_atoms_ordered),

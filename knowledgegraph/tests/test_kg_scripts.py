@@ -178,18 +178,7 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertEqual(renames[0][0], "old.txt")
         self.assertEqual(renames[0][1], "new.txt")
 
-    def test_emit_task_helpers(self) -> None:
-        self.assertEqual(emit_tasks.suggested_type("deleted", "a.tex"), "tp-errata")
-        self.assertEqual(emit_tasks.suggested_type("modified", "x.py"), "tp-method")
-        self.assertEqual(
-            emit_tasks.suggested_type("modified", "sections/generated/z.tex"),
-            "tp-artifact",
-        )
-
-        labels = ["fold-map", "scan-axiom", "something-else"]
-        candidates = emit_tasks.find_candidate_labels("fold/map_script.py", labels)
-        self.assertIn("fold-map", candidates)
-
+    def test_emit_tex_ast_helpers(self) -> None:
         if HAS_PYLATEXENC:
             tex = (
                 "\\begin{lemma}\\label{lem:base}Base.\\end{lemma}\n"
@@ -207,6 +196,24 @@ class KGScriptsUnitTest(unittest.TestCase):
         else:
             with self.assertRaises(RuntimeError):
                 emit_tasks.extract_tex_knowledge_units("\\begin{theorem}x\\end{theorem}", "sample")
+
+    def test_emit_skips_nested_target_env_and_keeps_outer_label(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        tex = (
+            "\\begin{theorem}\\label{thm:outer}\n"
+            "Outer\n"
+            "\\begin{equation}\\label{eq:inner}a=b\\end{equation}\n"
+            "\\end{theorem}\n"
+            "\\begin{equation}\\label{eq:standalone}c=d\\end{equation}\n"
+        )
+        units = emit_tasks.extract_tex_knowledge_units(tex, "sample")
+        self.assertEqual(len(units), 2)
+        self.assertEqual(units[0]["env"], "theorem")
+        self.assertEqual(units[0]["source_label"], "thm:outer")
+        self.assertEqual(units[1]["env"], "equation")
+        self.assertEqual(units[1]["source_label"], "eq:standalone")
 
     def test_emit_bundle_parser_extracts_units_by_source_file(self) -> None:
         if not HAS_PYLATEXENC:
@@ -232,11 +239,240 @@ class KGScriptsUnitTest(unittest.TestCase):
         ]
         bundle_tex, bundle_entries = emit_tasks.build_tex_bundle([f1, f2])
         units_index = emit_tasks.build_units_index_from_bundle(bundle_tex, bundle_entries)
-        units_by_path = emit_tasks.collect_bundle_units_for_records(records, units_index)
+        changed_paths = {
+            Path(str(r["path"])).resolve().as_posix()
+            for r in records
+        }
+        units_by_path = {p: units_index[p] for p in changed_paths if p in units_index}
         self.assertIn(f1.resolve().as_posix(), units_by_path)
         self.assertIn(f2.resolve().as_posix(), units_by_path)
         self.assertEqual(len(units_by_path[f1.resolve().as_posix()]), 2)
         self.assertEqual(len(units_by_path[f2.resolve().as_posix()]), 1)
+
+    def test_emit_bundle_adds_label_anchor_for_labels_outside_target_env(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        tex_dir = self.repo_root / "src_anchor"
+        tex_dir.mkdir(parents=True, exist_ok=True)
+        f1 = tex_dir / "a.tex"
+        f1.write_text(
+            "\\section{S}\\label{sec:outside}\n"
+            "\\begin{theorem}\\label{thm:in}\n"
+            "\\begin{equation}\\label{eq:nested}a=b\\end{equation}\n"
+            "\\end{theorem}\n",
+            encoding="utf-8",
+        )
+
+        bundle_tex, bundle_entries = emit_tasks.build_tex_bundle([f1])
+        units_index = emit_tasks.build_units_index_from_bundle(bundle_tex, bundle_entries)
+        units = units_index[f1.resolve().as_posix()]
+
+        labels = [u.get("source_label") for u in units]
+        envs = [u.get("env") for u in units]
+        self.assertIn("thm:in", labels)
+        self.assertIn("sec:outside", labels)
+        self.assertTrue("label_anchor" in envs or "gap_note" in envs)
+        self.assertNotIn("eq:nested", labels)
+
+    def test_emit_bundle_ignores_template_like_invalid_labels(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        tex_dir = self.repo_root / "src_invalid_label"
+        tex_dir.mkdir(parents=True, exist_ok=True)
+        f1 = tex_dir / "a.tex"
+        f1.write_text(
+            "\\newcommand{\\foo}[1]{\\label{#1}}\n"
+            "\\section{S}\\label{sec:ok}\n",
+            encoding="utf-8",
+        )
+
+        bundle_tex, bundle_entries = emit_tasks.build_tex_bundle([f1])
+        units_index = emit_tasks.build_units_index_from_bundle(bundle_tex, bundle_entries)
+        labels = [u.get("source_label") for u in units_index[f1.resolve().as_posix()]]
+        self.assertIn("sec:ok", labels)
+        self.assertNotIn("#1", labels)
+
+    def test_emit_normalize_latexpand_explain_markers(self) -> None:
+        raw = (
+            "\\begin{remark}\n"
+            "% start input /abs/a.tex\n"
+            "Body.\n"
+            "  % end input /abs/a.tex\n"
+            "\\end{remark}\n"
+        )
+        cleaned = emit_tasks.normalize_latexpand_artifacts_with_ast(raw)
+        self.assertNotIn("% start input", cleaned)
+        self.assertNotIn("% end input", cleaned)
+        self.assertIn("Body.", cleaned)
+
+    def test_emit_normalize_latexpand_collapses_verb_expanded_input(self) -> None:
+        raw = (
+            "\\begin{remark}\n"
+            "\\verb|% start input /abs/a.tex\n"
+            "A\n"
+            "B\n"
+            "% end input /abs/a.tex\n"
+            "\\end{remark}\n"
+        )
+        cleaned = emit_tasks.normalize_latexpand_artifacts_with_ast(raw)
+        self.assertIn("\\verb|\\input{/abs/a.tex}|", cleaned)
+        self.assertNotIn("% start input", cleaned)
+        self.assertNotIn("% end input", cleaned)
+
+    def test_emit_marks_payload_normalizer_for_broken_verb_input(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        tex = (
+            "\\begin{remark}\\label{rem:badverb}\n"
+            "\\verb|% start input /abs/a.tex\n"
+            "A\n"
+            "\\end{remark}\n"
+        )
+        units = emit_tasks.extract_tex_knowledge_units(tex, "sample")
+        self.assertEqual(len(units), 1)
+        self.assertEqual(units[0]["env"], "remark")
+        self.assertEqual(units[0].get("payload_normalizer_version"), "tex-verb-sanitize-v1")
+
+    def test_emit_merged_only_splits_oversized_gap_and_keeps_non_gap(self) -> None:
+        huge_unit = {
+            "env": "gap_note",
+            "node_type": "tp-note",
+            "source_label": "rem:ok",
+            "canonical_label": "rem-ok",
+            "source_refs": [],
+            "unit_tex": "x" * 250000,
+            "source_path": "/tmp/nonexistent.tex",
+        }
+        huge_non_gap = {
+            "env": "remark",
+            "node_type": "tp-note",
+            "source_label": "rem:keep",
+            "canonical_label": "rem-keep",
+            "source_refs": [],
+            "unit_tex": "\\begin{remark}" + ("y" * 250000) + "\\end{remark}\n",
+            "source_path": "/tmp/nonexistent.tex",
+        }
+        filtered, stats = emit_tasks.enforce_merged_only_unit_limits(
+            [huge_unit, huge_non_gap], max_unit_tex_chars=200000
+        )
+        self.assertGreaterEqual(len(filtered), 2)
+        self.assertEqual(stats["oversized_split"], 1)
+        self.assertEqual(stats["oversized_kept"], 1)
+        self.assertEqual(stats["oversized_dropped"], 0)
+
+    def test_emit_skips_suspicious_huge_target_env_and_recurses_nested(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        huge_body = "x" * (emit_tasks.SUSPICIOUS_TARGET_ENV_CHARS + 1000)
+        tex = (
+            "\\begin{remark}\\label{rem:outer}\n"
+            + huge_body
+            + "\n\\begin{theorem}\\label{thm:inside}I\\end{theorem}\n"
+            "\\end{remark}\n"
+        )
+        units = emit_tasks.extract_tex_knowledge_units(tex, "sample")
+        envs = [u.get("env") for u in units]
+        self.assertIn("theorem", envs)
+        self.assertTrue(any(u.get("source_label") == "thm:inside" for u in units))
+        self.assertFalse(
+            any(u.get("env") == "remark" and u.get("source_label") == "rem:outer" for u in units)
+        )
+
+    def test_emit_chunk_gap_text_respects_size_limit(self) -> None:
+        fragment = ("Para A.\n\n" * 12000).strip()
+        chunks = emit_tasks._chunk_gap_text(fragment, max_chars=5000)
+        self.assertTrue(chunks)
+        self.assertTrue(all(len(c) <= 5001 for c in chunks))
+
+    def test_emit_merged_only_drops_unsplittable_oversized_gap(self) -> None:
+        giant = {
+            "env": "gap_note",
+            "node_type": "tp-note",
+            "source_label": "",
+            "canonical_label": "gap",
+            "source_refs": [],
+            "unit_tex": "z" * 250000,
+            "source_path": "/tmp/nonexistent.tex",
+        }
+        filtered, stats = emit_tasks.enforce_merged_only_unit_limits(
+            [giant], max_unit_tex_chars=200000
+        )
+        self.assertTrue(filtered)
+        self.assertEqual(stats["oversized_split"], 1)
+
+    def test_emit_merged_only_keeps_oversized_non_gap(self) -> None:
+        huge_non_gap = {
+            "env": "remark",
+            "node_type": "tp-note",
+            "source_label": "rem:keep",
+            "canonical_label": "rem-keep",
+            "source_refs": [],
+            "unit_tex": "\\begin{remark}" + ("y" * 250000) + "\\end{remark}\n",
+            "source_path": "/tmp/nonexistent.tex",
+        }
+        filtered, stats = emit_tasks.enforce_merged_only_unit_limits(
+            [huge_non_gap], max_unit_tex_chars=200000
+        )
+        self.assertEqual(len(filtered), 1)
+        self.assertEqual(stats["oversized_kept"], 1)
+        self.assertEqual(stats["oversized_dropped"], 0)
+
+    def test_emit_legacy_oversized_drop_behavior_removed(self) -> None:
+        huge_unit = {
+            "env": "remark",
+            "node_type": "tp-note",
+            "source_label": "rem:ok",
+            "canonical_label": "rem-ok",
+            "source_refs": [],
+            "unit_tex": "\\begin{remark}" + ("x" * 250000) + "\\end{remark}\n",
+            "source_path": "/tmp/nonexistent.tex",
+        }
+        filtered, stats = emit_tasks.enforce_merged_only_unit_limits(
+            [huge_unit], max_unit_tex_chars=200000
+        )
+        self.assertEqual(stats["oversized_dropped"], 0)
+        self.assertEqual(len(filtered), 1)
+
+    def test_emit_build_units_index_from_bundle_does_not_require_source_file(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        missing_src = (self.repo_root / "missing_source.tex").resolve()
+        bundle_tex = "\\begin{theorem}\\label{thm:cross}Recovered.\\end{theorem}\n"
+        bundle_entries = [
+            {
+                "path": missing_src.as_posix(),
+                "start": 0,
+                "end": len(bundle_tex),
+            }
+        ]
+        units_index = emit_tasks.build_units_index_from_bundle(bundle_tex, bundle_entries)
+        self.assertIn(missing_src.as_posix(), units_index)
+        units = units_index[missing_src.as_posix()]
+        self.assertEqual(len(units), 1)
+        self.assertEqual(units[0]["env"], "theorem")
+        self.assertEqual(units[0]["source_label"], "thm:cross")
+
+    def test_build_index_unwrap_document_body_keeps_multiple_segments(self) -> None:
+        raw = (
+            "preamble\n"
+            "\\begin{document}\n"
+            "A\\label{sec:one}\n"
+            "\\end{document}\n"
+            "middle\n"
+            "\\begin{document}\n"
+            "\\section{S}\\label{sec:two}\n"
+            "\\end{document}\n"
+        )
+        body = build_index.unwrap_document_body(raw)
+        self.assertIn("\\label{sec:one}", body)
+        self.assertIn("\\label{sec:two}", body)
+        self.assertNotIn("\\begin{document}", body)
+        self.assertNotIn("\\end{document}", body)
 
     def test_emit_resolve_merged_paths_requires_explicit_existing_inputs(self) -> None:
         merged_tex = self.repo_root / "merged.tex"
@@ -375,6 +611,23 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn(parsed[1], by_label)
         self.assertEqual(by_label[parsed[1]].parents, (parent_label,))
 
+    def test_ingest_compute_tex_task_label_can_use_payload_normalizer_version(self) -> None:
+        base_task = {
+            "canonical_label": "proof-main",
+            "source_tex_label": "proof:main",
+            "unit_tex": "\\begin{proof}A\\end{proof}\n",
+        }
+        old_label = ingest_atoms.compute_tex_task_label(base_task)
+        new_label = ingest_atoms.compute_tex_task_label(
+            {
+                **base_task,
+                "payload_normalizer_version": "proof-env-preserve-v1",
+            }
+        )
+        self.assertNotEqual(old_label, new_label)
+        self.assertTrue(old_label.startswith("proof-main-h"))
+        self.assertTrue(new_label.startswith("proof-main-h"))
+
     def test_ingest_tex_unit_resolves_parent_via_source_label_alias(self) -> None:
         parent_label = "opaque-parent-h111111111111"
         parent_path = write_atom(
@@ -462,6 +715,7 @@ class KGScriptsUnitTest(unittest.TestCase):
             "canonical_label": "proof-main",
             "source_tex_label": "",
             "source_refs": ["lem:base"],
+            "unit_env": "proof",
             "unit_tex": "\\begin{proof}X\\end{proof}\n\\ifnum1=1\n\\fi\n",
             "status": "pending",
         }
@@ -486,8 +740,8 @@ class KGScriptsUnitTest(unittest.TestCase):
         content = atom_files[-1].read_text(encoding="utf-8")
         self.assertNotIn("\n\\fi\n", content)
         self.assertNotIn("\n\\ifnum1=1\n", content)
-        self.assertIn("\\paragraph{Proof.}", content)
-        self.assertNotIn("\\begin{proof}", content)
+        self.assertIn("\\begin{proof}", content)
+        self.assertIn("\\end{proof}", content)
 
     def test_ingest_tex_knowledge_unit_repairs_unbalanced_envs(self) -> None:
         write_atom(
@@ -514,6 +768,7 @@ class KGScriptsUnitTest(unittest.TestCase):
             "canonical_label": "proof-unbalanced",
             "source_tex_label": "",
             "source_refs": ["lem:base"],
+            "unit_env": "proof",
             "unit_tex": "\\begin{proof}A\\begin{remark}B\\end{remark}\n",
             "status": "pending",
         }
@@ -536,12 +791,22 @@ class KGScriptsUnitTest(unittest.TestCase):
         atom_files = sorted((self.kg_root / "atoms").glob("KG-*.tex"))
         self.assertEqual(len(atom_files), 2)
         content = atom_files[-1].read_text(encoding="utf-8")
-        self.assertIn("\\paragraph{Proof.}", content)
+        self.assertIn("\\begin{proof}", content)
         self.assertIn("\\begin{remark}", content)
         self.assertIn("\\end{remark}", content)
-        self.assertNotIn("\\end{proof}", content)
+        self.assertIn("\\end{proof}", content)
 
-    def test_ingest_skips_orphan_proof_atom_without_parent(self) -> None:
+    def test_ingest_sanitizes_unclosed_verb_line(self) -> None:
+        raw = (
+            "\\begin{remark}\n"
+            "See \\verb|/tmp/demo\n"
+            "\\end{remark}\n"
+        )
+        norm = ingest_atoms.normalize_tex_fragment(raw, preserve_proof_env=False)
+        self.assertNotIn("\\verb|/tmp/demo", norm)
+        self.assertIn("\\texttt{", norm)
+
+    def test_ingest_keeps_orphan_proof_atom_with_root_parent(self) -> None:
         queue = self.kg_root / ".kgcache" / "llm_queue"
         queue.mkdir(parents=True, exist_ok=True)
         task = {
@@ -576,7 +841,11 @@ class KGScriptsUnitTest(unittest.TestCase):
         proc = subprocess.run(cmd, capture_output=True, text=True)
         self.assertEqual(proc.returncode, 0, msg=proc.stdout + "\n" + proc.stderr)
         atom_files = sorted((self.kg_root / "atoms").glob("KG-*.tex"))
-        self.assertEqual(len(atom_files), 0)
+        self.assertEqual(len(atom_files), 1)
+        meta = json.loads(common.atom_sidecar_path(atom_files[0]).read_text(encoding="utf-8"))
+        self.assertEqual(meta.get("atom_type"), "tp-proof")
+        self.assertEqual(meta.get("parents"), [])
+        self.assertTrue(bool(meta.get("proof_orphan")))
 
     def test_ingest_generic_tex_wraps_lonely_item(self) -> None:
         source = self.repo_root / "frag.tex"
@@ -791,6 +1060,186 @@ class KGScriptsUnitTest(unittest.TestCase):
         )
         self.assertEqual(closure_report["added_atom_count"], 1)
         self.assertEqual(closure_report["final_missing_ref_count"], 0)
+
+    def test_build_index_can_filter_tex_task_kind_and_keep_latest_version_only(self) -> None:
+        old_path = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0001",
+            label="thm-main-h111111111111",
+            atom_type="tp-thm",
+            ext="tex",
+            content="\\begin{theorem}\\label{thm:main-old}Old\\end{theorem}\n",
+        )
+        common.write_json(
+            common.atom_sidecar_path(old_path),
+            {
+                "kg_id": "KG-20260303-0001",
+                "label": "thm-main-h111111111111",
+                "atom_type": "tp-thm",
+                "parents": [],
+                "task_kind": "tex_knowledge_unit",
+            },
+        )
+
+        new_path = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0002",
+            label="thm-main-h222222222222",
+            atom_type="tp-thm",
+            ext="tex",
+            content="\\begin{theorem}\\label{thm:main-new}New\\end{theorem}\n",
+        )
+        common.write_json(
+            common.atom_sidecar_path(new_path),
+            {
+                "kg_id": "KG-20260303-0002",
+                "label": "thm-main-h222222222222",
+                "atom_type": "tp-thm",
+                "parents": [],
+                "task_kind": "tex_knowledge_unit",
+            },
+        )
+
+        legacy_path = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0003",
+            label="legacy-plain",
+            atom_type="tp-note",
+            ext="tex",
+            content="\\begin{remark}\\label{rem:legacy}Legacy\\end{remark}\n",
+        )
+        common.write_json(
+            common.atom_sidecar_path(legacy_path),
+            {
+                "kg_id": "KG-20260303-0003",
+                "label": "legacy-plain",
+                "atom_type": "tp-note",
+                "parents": [],
+                "task_kind": "",
+            },
+        )
+
+        spec = self.kg_root / "index_specs" / "latest_only.idx"
+        spec.write_text(
+            "\n".join(
+                [
+                    "name: latest_only",
+                    "roots:",
+                    "include_types: tp-thm,tp-note",
+                    "reference_closure: false",
+                    "tex_task_kind_filter: tex_knowledge_unit",
+                    "latest_version_only: true",
+                    "order: alpha",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        out_tex = build_index.build_single_spec(self.kg_root, spec)
+        content = out_tex.read_text(encoding="utf-8")
+        self.assertIn("thm-main-h222222222222", content)
+        self.assertNotIn("thm-main-h111111111111", content)
+        self.assertNotIn("legacy-plain", content)
+
+        manifest = json.loads((out_tex.parent / "manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["dropped_older_versions"], 1)
+        self.assertEqual(manifest["tex_task_kind_filter"], ["tex_knowledge_unit"])
+
+    def test_build_index_can_drop_unused_label_anchor_atoms(self) -> None:
+        thm_path = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0001",
+            label="thm-main-haaaaaaaaaaaa",
+            atom_type="tp-thm",
+            ext="tex",
+            content=(
+                "\\begin{theorem}\\label{thm:main}"
+                "By \\ref{sec:keep}.\\end{theorem}\n"
+            ),
+        )
+        common.write_json(
+            common.atom_sidecar_path(thm_path),
+            {
+                "kg_id": "KG-20260303-0001",
+                "label": "thm-main-haaaaaaaaaaaa",
+                "atom_type": "tp-thm",
+                "parents": [],
+                "task_kind": "tex_knowledge_unit",
+                "unit_env": "theorem",
+            },
+        )
+
+        keep_anchor_path = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0002",
+            label="sec-keep-hbbbbbbbbbbbb",
+            atom_type="tp-note",
+            ext="tex",
+            content="\\label{sec:keep}\\ignorespaces\n",
+        )
+        common.write_json(
+            common.atom_sidecar_path(keep_anchor_path),
+            {
+                "kg_id": "KG-20260303-0002",
+                "label": "sec-keep-hbbbbbbbbbbbb",
+                "atom_type": "tp-note",
+                "parents": [],
+                "task_kind": "tex_knowledge_unit",
+                "unit_env": "label_anchor",
+                "source_tex_label": "sec:keep",
+            },
+        )
+
+        unused_anchor_path = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0003",
+            label="sec-unused-hcccccccccccc",
+            atom_type="tp-note",
+            ext="tex",
+            content="\\label{sec:unused}\\ignorespaces\n",
+        )
+        common.write_json(
+            common.atom_sidecar_path(unused_anchor_path),
+            {
+                "kg_id": "KG-20260303-0003",
+                "label": "sec-unused-hcccccccccccc",
+                "atom_type": "tp-note",
+                "parents": [],
+                "task_kind": "tex_knowledge_unit",
+                "unit_env": "label_anchor",
+                "source_tex_label": "sec:unused",
+            },
+        )
+
+        spec = self.kg_root / "index_specs" / "drop_anchors.idx"
+        spec.write_text(
+            "\n".join(
+                [
+                    "name: drop_anchors",
+                    "roots:",
+                    "include_types: tp-thm,tp-note",
+                    "reference_closure: false",
+                    "drop_unused_label_anchors: true",
+                    "order: alpha",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        out_tex = build_index.build_single_spec(self.kg_root, spec)
+        content = out_tex.read_text(encoding="utf-8")
+        self.assertIn("thm-main-haaaaaaaaaaaa", content)
+        self.assertIn("sec-keep-hbbbbbbbbbbbb", content)
+        self.assertNotIn("sec-unused-hcccccccccccc", content)
+
+        manifest = json.loads((out_tex.parent / "manifest.json").read_text(encoding="utf-8"))
+        self.assertTrue(manifest["drop_unused_label_anchors"])
+        self.assertEqual(manifest["dropped_unused_label_anchors"], 1)
+
+        closure_report = json.loads(
+            (out_tex.parent / "reference_closure_report.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(closure_report["dropped_unused_label_anchors"], 1)
 
     def test_build_index_sanitizes_wrapper_and_rewrites_bibliography_paths(self) -> None:
         src_dir = self.repo_root / "docs" / "sections" / "backmatter"

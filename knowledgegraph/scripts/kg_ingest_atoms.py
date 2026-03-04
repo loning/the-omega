@@ -199,6 +199,44 @@ def wrap_lonely_items(tex: str) -> str:
 BEGIN_END_RE = re.compile(r"\\(?P<kind>begin|end)\{(?P<env>[A-Za-z*@]+)\}")
 PROOF_BEGIN_RE = re.compile(r"\\begin\s*\{\s*proof\*?\s*\}(?:\[[^\]]*\])?")
 PROOF_END_RE = re.compile(r"\\end\s*\{\s*proof\*?\s*\}")
+VERB_TOKEN_RE = re.compile(r"\\verb\*?(?P<delim>[^A-Za-z0-9\s])")
+
+
+def _escape_texttt(text: str) -> str:
+    out = text.replace("\\", r"\textbackslash{}")
+    out = out.replace("{", r"\{").replace("}", r"\}")
+    out = out.replace("%", r"\%").replace("&", r"\&").replace("#", r"\#")
+    out = out.replace("_", r"\_")
+    return out
+
+
+def sanitize_unclosed_verb_lines(tex: str) -> str:
+    out_lines: List[str] = []
+    for raw_line in tex.splitlines(keepends=True):
+        line = raw_line
+        cursor = 0
+        chunks: List[str] = []
+        while True:
+            m = VERB_TOKEN_RE.search(line, cursor)
+            if not m:
+                chunks.append(line[cursor:])
+                break
+            chunks.append(line[cursor : m.start()])
+            delim = m.group("delim")
+            end = line.find(delim, m.end())
+            if end < 0:
+                tail = line[m.end() :].strip()
+                if tail:
+                    chunks.append("\\texttt{" + _escape_texttt(tail[:240]) + "}")
+                else:
+                    chunks.append("\\texttt{[verbatim]}")
+                if line.endswith("\n"):
+                    chunks.append("\n")
+                break
+            chunks.append(line[m.start() : end + 1])
+            cursor = end + 1
+        out_lines.append("".join(chunks))
+    return "".join(out_lines)
 
 
 def repair_tex_environment_balance(tex: str) -> str:
@@ -234,19 +272,28 @@ def repair_tex_environment_balance(tex: str) -> str:
     return "".join(out)
 
 
-def finalize_tex_payload(unit_tex: str, label: str, source_path: str) -> bytes:
-    safe_tex = normalize_tex_fragment(unit_tex)
-    payload_text = (
-        f"% auto-generated atom\n"
-        f"% source: {source_path}\n"
-        f"{inject_canonical_kg_label(safe_tex, label)}\n"
-    )
+def finalize_tex_payload(unit_tex: str, label: str, source_path: str, unit_env: str = "") -> bytes:
+    safe_tex = normalize_tex_fragment(unit_tex, preserve_proof_env=(unit_env == "proof"))
+    if unit_env == "label_anchor":
+        payload_text = (
+            f"% auto-generated label anchor\n"
+            f"% source: {source_path}\n"
+            f"{safe_tex.rstrip()}\\ignorespaces\n"
+        )
+    else:
+        payload_text = (
+            f"% auto-generated atom\n"
+            f"% source: {source_path}\n"
+            f"{inject_canonical_kg_label(safe_tex, label)}\n"
+        )
     return payload_text.encode("utf-8")
 
 
-def normalize_tex_fragment(tex: str) -> str:
+def normalize_tex_fragment(tex: str, *, preserve_proof_env: bool = False) -> str:
     safe_tex = sanitize_tex_unit(tex)
-    safe_tex = flatten_proof_environment(safe_tex)
+    safe_tex = sanitize_unclosed_verb_lines(safe_tex)
+    if not preserve_proof_env:
+        safe_tex = flatten_proof_environment(safe_tex)
     safe_tex = repair_tex_environment_balance(safe_tex)
     safe_tex = wrap_lonely_items(safe_tex)
     return safe_tex
@@ -260,12 +307,14 @@ def flatten_proof_environment(tex: str) -> str:
 
 def compute_tex_task_label(task: Dict[str, object]) -> str:
     unit_tex = str(task.get("unit_tex") or "")
+    payload_norm_ver = str(task.get("payload_normalizer_version") or "")
     canonical = compact_label(slugify(str(task.get("canonical_label") or ""))) or compact_label(slugify(
         str(task.get("source_tex_label") or "")
     ))
     if not canonical:
         canonical = compact_label(slugify(str(task.get("proposed_label") or "tex-unit")))
-    unit_hash12 = compute_sha256_bytes(unit_tex.encode("utf-8"))[:12]
+    hash_input = unit_tex if not payload_norm_ver else f"{unit_tex}\n% kg-normalizer:{payload_norm_ver}\n"
+    unit_hash12 = compute_sha256_bytes(hash_input.encode("utf-8"))[:12]
     return f"{canonical}-h{unit_hash12}"
 
 
@@ -334,6 +383,42 @@ def resolve_payload(task: Dict[str, object], atom_type: str, label: str) -> Tupl
     return stub.encode("utf-8"), "tex"
 
 
+def merge_task_metadata_into_sidecar(
+    *,
+    meta_path: Path,
+    task: Dict[str, object],
+    fallback: Dict[str, object],
+) -> None:
+    try:
+        existing = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
+    except (OSError, json.JSONDecodeError):
+        existing = {}
+    if not isinstance(existing, dict):
+        existing = {}
+
+    merged = dict(existing)
+    merged.update(fallback)
+    merged["source_path"] = str(task.get("source_path") or merged.get("source_path") or "")
+    merged["source_tex_label"] = str(task.get("source_tex_label") or merged.get("source_tex_label") or "")
+    merged["canonical_label"] = str(task.get("canonical_label") or merged.get("canonical_label") or "")
+    merged["task_id"] = str(task.get("task_id") or merged.get("task_id") or "")
+    merged["task_kind"] = str(task.get("task_kind") or merged.get("task_kind") or "")
+    merged["merged_sha256"] = str(task.get("merged_sha256") or merged.get("merged_sha256") or "")
+    merged["merged_tex_path"] = str(task.get("merged_tex_path") or merged.get("merged_tex_path") or "")
+    merged["merged_map_path"] = str(task.get("merged_map_path") or merged.get("merged_map_path") or "")
+    merged["unit_fingerprint"] = str(task.get("unit_fingerprint") or merged.get("unit_fingerprint") or "")
+    merged["unit_env"] = str(task.get("unit_env") or merged.get("unit_env") or "")
+    merged["payload_normalizer_version"] = str(
+        task.get("payload_normalizer_version")
+        or merged.get("payload_normalizer_version")
+        or ""
+    )
+    merged["extractor_version"] = str(
+        task.get("extractor_version") or merged.get("extractor_version") or ""
+    )
+    write_json(meta_path, merged)
+
+
 def next_kg_id_factory(kg_root: Path, now: datetime):
     date_part = now.strftime("%Y%m%d")
     prefix = f"KG-{date_part}-"
@@ -373,6 +458,7 @@ def main() -> int:
 
     existing_atoms, _ = scan_atoms(kg_root)
     used_labels = {a.label for a in existing_atoms}
+    atom_by_label = {a.label: a for a in existing_atoms}
     canonical_latest = build_latest_label_by_canonical(existing_atoms)
     label_to_type = {a.label: a.atom_type for a in existing_atoms}
     parent_graph: Dict[str, List[str]] = {a.label: list(a.parents) for a in existing_atoms}
@@ -424,6 +510,7 @@ def main() -> int:
         raw_type = str(task.get("suggested_node_type") or "tp-claim")
         full_type, type_token = normalize_type(raw_type)
         task_kind = str(task.get("task_kind") or "")
+        proof_orphan = False
 
         parent_list: List[str]
         payload: bytes
@@ -433,12 +520,26 @@ def main() -> int:
         if task_kind == "tex_knowledge_unit":
             unit_tex = str(task.get("unit_tex") or "")
             source_path = str(task.get("source_path") or "")
+            unit_env = str(task.get("unit_env") or "")
             label = compute_tex_task_label(task)
-            payload = finalize_tex_payload(unit_tex, label, source_path)
+            payload = finalize_tex_payload(unit_tex, label, source_path, unit_env=unit_env)
             hash12 = compute_sha256_bytes(payload)[:12]
 
             if label in used_labels:
                 print(f"skip existing tex knowledge atom label: {label}")
+                if not args.dry_run:
+                    existing_atom = atom_by_label.get(label)
+                    if existing_atom is not None:
+                        merge_task_metadata_into_sidecar(
+                            meta_path=atom_sidecar_path(existing_atom.path),
+                            task=task,
+                            fallback={
+                                "kg_id": existing_atom.kg_id,
+                                "label": existing_atom.label,
+                                "atom_type": existing_atom.atom_type,
+                                "parents": list(existing_atom.parents),
+                            },
+                        )
                 if args.move_processed and not args.dry_run:
                     processed_dir.mkdir(parents=True, exist_ok=True)
                     shutil.move(str(task_path), str(processed_dir / task_path.name))
@@ -456,12 +557,14 @@ def main() -> int:
                 parent_list = truncate_parent_list(parent_list)
             if not parent_list:
                 if full_type == "tp-proof":
-                    print(f"skip proof atom without resolvable parent: {label}")
-                    if args.move_processed and not args.dry_run:
-                        processed_dir.mkdir(parents=True, exist_ok=True)
-                        shutil.move(str(task_path), str(processed_dir / task_path.name))
-                    continue
-                parent_list = ["root"]
+                    # Keep proof atoms as roots when no anchor can be resolved.
+                    # This preserves merged coverage and allows later repair by
+                    # adding better parent links in newer atom versions.
+                    print(f"orphan proof atom (fallback root parent): {label}")
+                    parent_list = ["root"]
+                    proof_orphan = True
+                else:
+                    parent_list = ["root"]
 
             used_labels.add(label)
 
@@ -514,6 +617,13 @@ def main() -> int:
                     "canonical_label": str(task.get("canonical_label") or ""),
                     "task_id": str(task.get("task_id") or ""),
                     "task_kind": str(task.get("task_kind") or ""),
+                    "merged_sha256": str(task.get("merged_sha256") or ""),
+                    "merged_tex_path": str(task.get("merged_tex_path") or ""),
+                    "merged_map_path": str(task.get("merged_map_path") or ""),
+                    "unit_fingerprint": str(task.get("unit_fingerprint") or ""),
+                    "unit_env": str(task.get("unit_env") or ""),
+                    "extractor_version": str(task.get("extractor_version") or ""),
+                    "proof_orphan": bool(proof_orphan),
                 },
             )
             # Validate the hash suffix after write.

@@ -1,26 +1,33 @@
 #!/usr/bin/env python3
-"""Convert source deltas into LLM task files."""
+"""Emit LLM task files from merged TeX knowledge units."""
 
 from __future__ import annotations
 
 import argparse
-import bisect
 import hashlib
 import json
+import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, Iterable, List
+from typing import Dict, List
 
 from _kg_common import (
     compact_label,
     default_kg_root,
     now_utc_compact,
-    scan_atoms,
     slugify,
 )
 try:
-    from pylatexenc.latexwalker import LatexEnvironmentNode, LatexMacroNode, LatexWalker
+    from pylatexenc.latexwalker import (
+        LatexCharsNode,
+        LatexCommentNode,
+        LatexEnvironmentNode,
+        LatexMacroNode,
+        LatexWalker,
+    )
 except ImportError:
+    LatexCharsNode = None
+    LatexCommentNode = None
     LatexEnvironmentNode = None
     LatexMacroNode = None
     LatexWalker = None
@@ -44,10 +51,15 @@ ENV_TO_TYPE = {
 
 ENV_NAMES = sorted(ENV_TO_TYPE.keys(), key=len, reverse=True)
 ANCHOR_ENV_TYPES = {k for k in ENV_TO_TYPE.keys() if k != "proof"}
+EXTRACTOR_VERSION = "pylatexenc-top-level-v15-oversize-safe-recursive-gap-chunk"
+VALID_LABEL_RE = re.compile(r"^[A-Za-z0-9:._/@+\-]+$")
+MAX_UNIT_TEX_CHARS = 200_000
+GAP_SPLIT_RE = re.compile(r"\n\s*\n+")
+SUSPICIOUS_TARGET_ENV_CHARS = 300_000
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Emit LLM tasks from source delta files.")
+    parser = argparse.ArgumentParser(description="Emit LLM tasks from merged TeX knowledge units.")
     parser.add_argument("--kg-root", type=Path, default=None, help="Knowledgegraph root")
     parser.add_argument(
         "--merged-tex",
@@ -62,16 +74,22 @@ def parse_args() -> argparse.Namespace:
         help="Merged source map JSON from kg_latexpand_merge.py (required)",
     )
     parser.add_argument(
-        "--delta",
-        action="append",
-        default=[],
-        help="Delta file path or glob (repeatable). If omitted, uses latest deltas per source.",
+        "--max-tasks",
+        type=int,
+        default=0,
+        help="Maximum tasks to emit in one run (0 means no limit)",
     )
     parser.add_argument(
-        "--max-per-delta",
-        type=int,
-        default=1000,
-        help="Maximum tasks to emit per delta file",
+        "--state-file",
+        type=Path,
+        default=None,
+        help="Emit state file path "
+        "(default: <kg-root>/.kgcache/merged/emit_state.json)",
+    )
+    parser.add_argument(
+        "--reset-state",
+        action="store_true",
+        help="Ignore previous emit state and emit all merged units",
     )
     return parser.parse_args()
 
@@ -131,58 +149,53 @@ def load_merged_bundle(merged_tex_path: Path, merged_map_path: Path) -> tuple[st
     return bundle_tex, entries
 
 
-def expand_delta_paths(kg_root: Path, patterns: Iterable[str]) -> List[Path]:
-    out: List[Path] = []
-    if patterns:
-        for pat in patterns:
-            p = Path(pat)
-            if p.is_absolute() and p.exists():
-                out.append(p)
-                continue
-            matched = list(kg_root.glob(pat))
-            if matched:
-                out.extend(matched)
-                continue
-            candidate = kg_root / pat
-            if candidate.exists():
-                out.append(candidate)
-    else:
-        source_root = kg_root / ".kgcache" / "source"
-        if source_root.exists():
-            for source_dir in sorted(source_root.iterdir()):
-                if not source_dir.is_dir():
-                    continue
-                deltas = sorted(source_dir.glob("delta_*.jsonl"))
-                if deltas:
-                    out.append(deltas[-1])
-
-    return sorted(set(p.resolve() for p in out if p.exists()))
+def default_emit_state_path(kg_root: Path) -> Path:
+    return kg_root / ".kgcache" / "merged" / "emit_state.json"
 
 
-def suggested_type(change_type: str, path: str) -> str:
-    if change_type == "deleted":
-        return "tp-errata"
-
-    ext = Path(path).suffix.lower()
-    if ext in {".py", ".sh", ".ipynb"}:
-        return "tp-method"
-    if ext in {".csv", ".json", ".yaml", ".yml", ".tsv", ".log", ".txt"}:
-        return "tp-artifact"
-    if ext == ".tex":
-        if "/generated/" in path.replace("\\", "/"):
-            return "tp-artifact"
-        return "tp-claim"
-    return "tp-artifact"
-
-
-def read_excerpt(path: Path, max_chars: int = 2000) -> str:
-    if not path.exists() or not path.is_file():
-        return ""
+def load_emit_state(path: Path) -> Dict[str, object]:
+    if not path.exists():
+        return {}
     try:
-        text = path.read_text(encoding="utf-8", errors="replace")
-    except OSError:
-        return ""
-    return text[:max_chars]
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def write_emit_state(path: Path, payload: Dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def hash_text_sha256(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def unit_fingerprint(unit: Dict[str, object]) -> str:
+    source_path = str(unit.get("source_path") or "")
+    env = str(unit.get("env") or "")
+    source_label = str(unit.get("source_label") or "")
+    refs = ",".join(str(x) for x in (unit.get("source_refs") or []))
+    unit_tex = str(unit.get("unit_tex") or "")
+    raw = f"{source_path}\n{env}\n{source_label}\n{refs}\n{unit_tex}"
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()[:16]
+
+
+def flatten_units(units_by_path: Dict[str, List[Dict[str, object]]]) -> List[Dict[str, object]]:
+    out: List[Dict[str, object]] = []
+    for source_path in sorted(units_by_path.keys()):
+        units = units_by_path[source_path]
+        sorted_units = sorted(
+            units,
+            key=lambda u: (
+                str(u.get("canonical_label") or ""),
+                str(u.get("env") or ""),
+                hashlib.sha256(str(u.get("unit_tex") or "").encode("utf-8")).hexdigest()[:12],
+            ),
+        )
+        out.extend(sorted_units)
+    return out
 
 
 def read_full_text(path: Path, max_chars: int = 2_000_000) -> str:
@@ -195,32 +208,6 @@ def read_full_text(path: Path, max_chars: int = 2_000_000) -> str:
     return text[:max_chars]
 
 
-def tokenize(text: str) -> List[str]:
-    return [t for t in slugify(text).split("-") if t]
-
-
-def find_candidate_labels(path: str, atom_labels: List[str], top_k: int = 6) -> List[str]:
-    path_tokens = set(tokenize(Path(path).stem) + tokenize(path))
-    scored = []
-    for label in atom_labels:
-        label_tokens = set(label.split("-"))
-        score = len(path_tokens & label_tokens)
-        if score > 0:
-            scored.append((score, label))
-    scored.sort(key=lambda x: (-x[0], x[1]))
-    return [label for _, label in scored[:top_k]]
-
-
-def load_delta_records(delta_path: Path) -> List[Dict[str, object]]:
-    records: List[Dict[str, object]] = []
-    for line in delta_path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        records.append(json.loads(line))
-    return records
-
-
 def split_ref_labels(raw: str) -> List[str]:
     out = []
     for part in raw.split(","):
@@ -228,6 +215,16 @@ def split_ref_labels(raw: str) -> List[str]:
         if label:
             out.append(label)
     return out
+
+
+def is_valid_tex_label(label: str) -> bool:
+    if not label:
+        return False
+    if "#" in label or "\\" in label:
+        return False
+    if any(ch.isspace() for ch in label):
+        return False
+    return VALID_LABEL_RE.match(label) is not None
 
 
 def unique_keep_order(values: List[str]) -> List[str]:
@@ -238,6 +235,107 @@ def unique_keep_order(values: List[str]) -> List[str]:
             continue
         seen.add(value)
         out.append(value)
+    return out
+
+
+def _is_latexpand_explain_comment(node) -> bool:
+    if not LatexCommentNode or not isinstance(node, LatexCommentNode):
+        return False
+    comment = (node.comment or "").strip()
+    return comment.startswith("start input ") or comment.startswith("end input ")
+
+
+def normalize_latexpand_artifacts_with_ast(tex: str) -> str:
+    """Clean latexpand explain artifacts via AST edits (no TeX regex parsing)."""
+    if LatexWalker is None:
+        return tex
+
+    walker = LatexWalker(tex)
+    root_nodes, _, _ = walker.get_latex_nodes(pos=0)
+    edits: List[tuple[int, int, str]] = []
+
+    def recurse(nodes) -> None:
+        if not nodes:
+            return
+        idx = 0
+        while idx < len(nodes):
+            node = nodes[idx]
+            if _is_latexpand_explain_comment(node):
+                edits.append((node.pos, node.pos + node.len, ""))
+                idx += 1
+                continue
+
+            # latexpand known bug: \verb|\input{...}| may be expanded into
+            # \verb|% start input ... <expanded body> % end input ...
+            if (
+                LatexMacroNode
+                and LatexCharsNode
+                and isinstance(node, LatexMacroNode)
+                and node.macroname == "verb"
+            ):
+                verbatim_text = getattr(node.nodeargd, "verbatim_text", None) if node.nodeargd else None
+                # Case A: latexpand bug produced giant verbatim payload that swallowed
+                # expanded \input body; collapse back to literal \input text.
+                if isinstance(verbatim_text, str):
+                    stripped = verbatim_text.lstrip()
+                    if stripped.startswith("% start input ") and "end input " in stripped:
+                        first_line = stripped.splitlines()[0] if stripped.splitlines() else stripped
+                        path = first_line[len("% start input ") :].strip()
+                        literal = f"\\input{{{path}}}"
+                        if "|" in literal:
+                            literal = literal.replace("|", "/")
+                        edits.append((node.pos, node.pos + node.len, f"\\verb|{literal}|"))
+                        idx += 1
+                        continue
+
+                # Case B: parser could not parse \verb payload and left delimiter/body
+                # as separate sibling nodes.
+                if not node.nodeargd or verbatim_text is None:
+                    if idx + 2 < len(nodes):
+                        delim_node = nodes[idx + 1]
+                        start_comment_node = nodes[idx + 2]
+                        if (
+                            isinstance(delim_node, LatexCharsNode)
+                            and delim_node.chars.startswith("|")
+                            and isinstance(start_comment_node, LatexCommentNode)
+                        ):
+                            start_comment = (start_comment_node.comment or "").strip()
+                            if start_comment.startswith("start input "):
+                                path = start_comment[len("start input ") :].strip()
+                                end_idx = idx + 2
+                                while end_idx + 1 < len(nodes):
+                                    end_idx += 1
+                                    end_node = nodes[end_idx]
+                                    if (
+                                        isinstance(end_node, LatexCommentNode)
+                                        and (end_node.comment or "").strip().startswith("end input ")
+                                    ):
+                                        break
+                                end_pos = nodes[end_idx].pos + nodes[end_idx].len
+                                literal = f"\\input{{{path}}}"
+                                if "|" in literal:
+                                    literal = literal.replace("|", "/")
+                                edits.append((node.pos, end_pos, f"\\verb|{literal}|"))
+                                idx = end_idx + 1
+                                continue
+
+            if hasattr(node, "nodelist") and node.nodelist:
+                recurse(node.nodelist)
+            if LatexMacroNode and isinstance(node, LatexMacroNode) and node.nodeargd:
+                for arg in node.nodeargd.argnlist:
+                    if arg is not None and hasattr(arg, "nodelist") and arg.nodelist:
+                        recurse(arg.nodelist)
+            idx += 1
+
+    recurse(root_nodes)
+    if not edits:
+        return tex
+
+    out = tex
+    for start, end, repl in sorted(edits, key=lambda x: (x[0], x[1]), reverse=True):
+        if start < 0 or end < start or end > len(out):
+            continue
+        out = out[:start] + repl + out[end:]
     return out
 
 
@@ -255,23 +353,36 @@ def _macro_first_arg_text(node) -> str:
     return text.strip()
 
 
-def _iter_nodes_recursive(nodes):
+def _iter_nodes_recursive(nodes, *, skip_nested_target_envs: bool = False):
     for node in nodes or []:
         yield node
+        if LatexEnvironmentNode and isinstance(node, LatexEnvironmentNode):
+            env_raw = node.environmentname or ""
+            env_base = env_raw[:-1] if env_raw.endswith("*") else env_raw
+            if skip_nested_target_envs and env_base in ENV_TO_TYPE:
+                continue
         # Dive into normal child nodes.
         if hasattr(node, "nodelist") and node.nodelist:
-            yield from _iter_nodes_recursive(node.nodelist)
+            yield from _iter_nodes_recursive(
+                node.nodelist, skip_nested_target_envs=skip_nested_target_envs
+            )
         # Dive into macro arguments where refs/labels may appear.
         if LatexMacroNode and isinstance(node, LatexMacroNode) and node.nodeargd:
             for arg in node.nodeargd.argnlist:
                 if arg is not None and hasattr(arg, "nodelist") and arg.nodelist:
-                    yield from _iter_nodes_recursive(arg.nodelist)
+                    yield from _iter_nodes_recursive(
+                        arg.nodelist, skip_nested_target_envs=skip_nested_target_envs
+                    )
 
 
-def _collect_labels_refs(env_node) -> tuple[List[str], List[str]]:
+def _collect_labels_refs(
+    env_node, *, include_nested_target_envs: bool = False
+) -> tuple[List[str], List[str]]:
     labels: List[str] = []
     refs: List[str] = []
-    for node in _iter_nodes_recursive(getattr(env_node, "nodelist", None)):
+    for node in _iter_nodes_recursive(
+        getattr(env_node, "nodelist", None), skip_nested_target_envs=not include_nested_target_envs
+    ):
         if not LatexMacroNode or not isinstance(node, LatexMacroNode):
             continue
         macro = node.macroname
@@ -279,25 +390,168 @@ def _collect_labels_refs(env_node) -> tuple[List[str], List[str]]:
         if not arg:
             continue
         if macro == "label":
-            labels.append(arg)
+            if is_valid_tex_label(arg):
+                labels.append(arg)
         elif macro in {"ref", "eqref", "autoref", "cref", "Cref"}:
-            refs.extend(split_ref_labels(arg))
+            refs.extend([x for x in split_ref_labels(arg) if is_valid_tex_label(x)])
     return unique_keep_order(labels), unique_keep_order(refs)
 
 
-def _iter_environment_nodes(nodes):
+def _collect_labels_refs_from_fragment(tex_fragment: str) -> tuple[List[str], List[str]]:
+    if not tex_fragment.strip():
+        return [], []
+    try:
+        walker = LatexWalker(tex_fragment)
+        nodes, _, _ = walker.get_latex_nodes(pos=0)
+    except Exception:
+        return [], []
+    holder = type("NodeHolder", (), {"nodelist": nodes})()
+    return _collect_labels_refs(holder, include_nested_target_envs=True)
+
+
+def _clean_gap_text(tex_fragment: str) -> str:
+    lines: List[str] = []
+    for line in tex_fragment.splitlines():
+        if line.lstrip().startswith("%"):
+            continue
+        lines.append(line)
+    return "\n".join(lines).strip()
+
+
+def _node_verbatim_slice(tex: str, node) -> str:
+    pos = getattr(node, "pos", None)
+    nlen = getattr(node, "len", None)
+    if isinstance(pos, int) and isinstance(nlen, int) and pos >= 0 and nlen >= 0:
+        end = pos + nlen
+        if end <= len(tex):
+            return tex[pos:end]
+    if hasattr(node, "latex_verbatim"):
+        try:
+            return node.latex_verbatim()
+        except Exception:
+            return ""
+    return ""
+
+
+def _split_large_text_fragments(text: str, *, max_chars: int) -> List[str]:
+    cleaned = text.strip()
+    if not cleaned:
+        return []
+    chunks: List[str] = []
+    cursor = 0
+    while cursor < len(cleaned):
+        upper = min(len(cleaned), cursor + max_chars)
+        if upper < len(cleaned):
+            cut = cleaned.rfind("\n\n", cursor, upper)
+            if cut <= cursor:
+                cut = cleaned.rfind("\n", cursor, upper)
+            if cut <= cursor:
+                cut = upper
+        else:
+            cut = upper
+        piece = cleaned[cursor:cut].strip()
+        if piece:
+            chunks.append(piece + "\n")
+        cursor = cut
+        while cursor < len(cleaned) and cleaned[cursor].isspace():
+            cursor += 1
+    return chunks
+
+
+def _chunk_gap_text(tex_fragment: str, *, max_chars: int = 80_000) -> List[str]:
+    cleaned = _clean_gap_text(tex_fragment)
+    if not cleaned:
+        return []
+    if LatexWalker is None:
+        return _split_large_text_fragments(cleaned, max_chars=max_chars)
+    try:
+        walker = LatexWalker(cleaned)
+        nodes, _, _ = walker.get_latex_nodes(pos=0)
+    except Exception:
+        return _split_large_text_fragments(cleaned, max_chars=max_chars)
+
+    chunks: List[str] = []
+    current_parts: List[str] = []
+    current_len = 0
+
+    def flush() -> None:
+        nonlocal current_len
+        if not current_parts:
+            return
+        merged = "".join(current_parts).strip()
+        if merged:
+            chunks.append(merged + "\n")
+        current_parts.clear()
+        current_len = 0
+
+    for node in nodes:
+        part = _node_verbatim_slice(cleaned, node)
+        if not part:
+            continue
+        if len(part) > max_chars:
+            flush()
+            chunks.extend(_split_large_text_fragments(part, max_chars=max_chars))
+            continue
+        if current_len + len(part) > max_chars and current_parts:
+            flush()
+        current_parts.append(part)
+        current_len += len(part)
+
+    flush()
+    return [c for c in chunks if c.strip()]
+
+
+def _iter_top_level_target_environment_nodes(nodes, *, in_target_env: bool = False):
     for node in nodes or []:
-        if LatexEnvironmentNode and isinstance(node, LatexEnvironmentNode):
-            yield node
+        is_env = LatexEnvironmentNode and isinstance(node, LatexEnvironmentNode)
+        env_base = ""
+        selected_as_top_level_target = False
+        if is_env:
+            env_raw = node.environmentname or ""
+            env_base = env_raw[:-1] if env_raw.endswith("*") else env_raw
+            is_target = env_base in ENV_TO_TYPE
+            env_len = int(getattr(node, "len", 0) or 0)
+            if is_target and not in_target_env and env_len <= SUSPICIOUS_TARGET_ENV_CHARS:
+                yield node
+                selected_as_top_level_target = True
+
+        # Do not recurse into already-selected target envs; avoids nested duplication.
+        child_in_target = in_target_env or selected_as_top_level_target
+        if selected_as_top_level_target:
+            continue
+
         if hasattr(node, "nodelist") and node.nodelist:
-            yield from _iter_environment_nodes(node.nodelist)
+            yield from _iter_top_level_target_environment_nodes(
+                node.nodelist, in_target_env=child_in_target
+            )
         if LatexMacroNode and isinstance(node, LatexMacroNode) and node.nodeargd:
             for arg in node.nodeargd.argnlist:
                 if arg is not None and hasattr(arg, "nodelist") and arg.nodelist:
-                    yield from _iter_environment_nodes(arg.nodelist)
+                    yield from _iter_top_level_target_environment_nodes(
+                        arg.nodelist, in_target_env=child_in_target
+                    )
 
 
-def extract_tex_knowledge_units(tex: str, source_stem: str) -> List[Dict[str, object]]:
+def _env_needs_verb_payload_repair(env_node) -> bool:
+    for node in _iter_nodes_recursive(getattr(env_node, "nodelist", None)):
+        if not LatexMacroNode or not isinstance(node, LatexMacroNode):
+            continue
+        if node.macroname != "verb":
+            continue
+        if not node.nodeargd:
+            return True
+        verbatim_text = getattr(node.nodeargd, "verbatim_text", None)
+        if isinstance(verbatim_text, str) and verbatim_text.lstrip().startswith("% start input "):
+            return True
+    return False
+
+
+def extract_tex_knowledge_units(
+    tex: str,
+    source_stem: str,
+    *,
+    include_label_anchors: bool = False,
+) -> List[Dict[str, object]]:
     if LatexWalker is None:
         raise RuntimeError(
             "pylatexenc is required for TeX atom extraction. "
@@ -309,10 +563,12 @@ def extract_tex_knowledge_units(tex: str, source_stem: str) -> List[Dict[str, ob
     units: List[Dict[str, object]] = []
 
     env_nodes = sorted(
-        list(_iter_environment_nodes(root_nodes)),
+        list(_iter_top_level_target_environment_nodes(root_nodes)),
         key=lambda node: getattr(node, "pos", 0),
     )
     last_anchor_ref = ""
+    covered_labels: set[str] = set()
+    env_ranges: List[tuple[int, int]] = []
     for env_node in env_nodes:
         env_raw = env_node.environmentname or ""
         env_base = env_raw[:-1] if env_raw.endswith("*") else env_raw
@@ -320,7 +576,11 @@ def extract_tex_knowledge_units(tex: str, source_stem: str) -> List[Dict[str, ob
             continue
 
         block = tex[env_node.pos : env_node.pos + env_node.len]
-        labels, refs = _collect_labels_refs(env_node)
+        block = normalize_latexpand_artifacts_with_ast(block)
+        env_ranges.append((env_node.pos, env_node.pos + env_node.len))
+        labels, refs = _collect_labels_refs(env_node, include_nested_target_envs=False)
+        covered_labels_nested, _ = _collect_labels_refs(env_node, include_nested_target_envs=True)
+        covered_labels.update(covered_labels_nested)
         source_label = labels[0] if labels else ""
         canonical = compact_label(
             slugify(source_label)
@@ -333,18 +593,92 @@ def extract_tex_knowledge_units(tex: str, source_stem: str) -> List[Dict[str, ob
             # Drop orphan proofs: proof atoms must be attached to a statement atom.
             if not refs:
                 continue
+        payload_normalizer_version = "tex-verb-sanitize-v1" if _env_needs_verb_payload_repair(env_node) else ""
         units.append(
-            {
-                "env": env_base,
-                "node_type": ENV_TO_TYPE[env_base],
-                "source_label": source_label,
-                "canonical_label": canonical,
-                "source_refs": refs,
-                "unit_tex": block,
-            }
-        )
+                {
+                    "env": env_base,
+                    "node_type": ENV_TO_TYPE[env_base],
+                    "source_label": source_label,
+                    "canonical_label": canonical,
+                    "source_refs": refs,
+                    "unit_tex": block,
+                    "span_start": int(env_node.pos),
+                    "payload_normalizer_version": payload_normalizer_version,
+                }
+            )
         if env_base in ANCHOR_ENV_TYPES:
             last_anchor_ref = source_label or canonical
+
+    gap_unit_index = 0
+
+    def append_gap_units(raw_gap: str, gap_start_pos: int) -> None:
+        nonlocal gap_unit_index, last_anchor_ref
+        for chunk in _chunk_gap_text(raw_gap):
+            if not chunk.strip():
+                continue
+            chunk = normalize_latexpand_artifacts_with_ast(chunk)
+            labels, refs = _collect_labels_refs_from_fragment(chunk)
+            covered_labels.update(labels)
+            source_label = labels[0] if labels else ""
+            gap_unit_index += 1
+            canonical = compact_label(
+                slugify(source_label)
+                if source_label
+                else slugify(f"{source_stem}-gap-{gap_unit_index:04d}")
+            )
+            source_refs = unique_keep_order(refs)
+            if not source_refs and last_anchor_ref:
+                source_refs = [last_anchor_ref]
+            units.append(
+                {
+                    "env": "gap_note",
+                    "node_type": "tp-note",
+                    "source_label": source_label,
+                    "canonical_label": canonical,
+                    "source_refs": source_refs,
+                    "unit_tex": chunk,
+                    "span_start": int(gap_start_pos),
+                }
+            )
+            if source_label:
+                last_anchor_ref = source_label
+
+    cursor = 0
+    for start, end in sorted(env_ranges, key=lambda x: x[0]):
+        if start > cursor:
+            append_gap_units(tex[cursor:start], cursor)
+        if end > cursor:
+            cursor = end
+    if cursor < len(tex):
+        append_gap_units(tex[cursor:], cursor)
+
+    if include_label_anchors:
+        anchor_seen: set[str] = set()
+        for node in _iter_nodes_recursive(root_nodes):
+            if not LatexMacroNode or not isinstance(node, LatexMacroNode):
+                continue
+            if node.macroname != "label":
+                continue
+            label = _macro_first_arg_text(node)
+            if not label or not is_valid_tex_label(label):
+                continue
+            if label in covered_labels:
+                continue
+            if label in anchor_seen:
+                continue
+            anchor_seen.add(label)
+            canonical = compact_label(slugify(label) if label else slugify(f"{source_stem}-label-anchor"))
+            units.append(
+                {
+                    "env": "label_anchor",
+                    "node_type": "tp-note",
+                    "source_label": label,
+                    "canonical_label": canonical,
+                    "source_refs": [],
+                    "unit_tex": f"\\label{{{label}}}\n",
+                    "span_start": int(getattr(node, "pos", 0)),
+                }
+            )
 
     return units
 
@@ -384,150 +718,105 @@ def build_tex_bundle(tex_paths: List[Path]) -> tuple[str, List[Dict[str, object]
     return "".join(parts), entries
 
 
-def _bundle_entry_for_pos(
-    pos: int,
-    entries: List[Dict[str, object]],
-    starts: List[int],
-) -> Dict[str, object] | None:
-    idx = bisect.bisect_right(starts, pos) - 1
-    if idx < 0:
-        return None
-    entry = entries[idx]
-    start = int(entry["start"])
-    end = int(entry["end"])
-    if start <= pos < end:
-        return entry
-    return None
-
-
-def extract_tex_knowledge_units_from_bundle(
-    bundle_tex: str,
-    bundle_entries: List[Dict[str, object]],
-) -> List[Dict[str, object]]:
-    if LatexWalker is None:
-        raise RuntimeError(
-            "pylatexenc is required for TeX atom extraction. "
-            "Install with: python3 -m pip install --user --break-system-packages pylatexenc"
-        )
-
-    if not bundle_entries:
-        return []
-
-    walker = LatexWalker(bundle_tex)
-    root_nodes, _, _ = walker.get_latex_nodes(pos=0)
-    env_nodes = sorted(
-        list(_iter_environment_nodes(root_nodes)),
-        key=lambda node: getattr(node, "pos", 0),
-    )
-
-    starts = [int(e["start"]) for e in bundle_entries]
-    units: List[Dict[str, object]] = []
-    per_file_counter: Dict[str, int] = defaultdict(int)
-    last_anchor_ref_by_file: Dict[str, str] = defaultdict(str)
-
-    for env_node in env_nodes:
-        env_raw = env_node.environmentname or ""
-        env_base = env_raw[:-1] if env_raw.endswith("*") else env_raw
-        if env_base not in ENV_TO_TYPE:
-            continue
-
-        pos = int(getattr(env_node, "pos", -1))
-        entry = _bundle_entry_for_pos(pos, bundle_entries, starts)
-        if entry is None:
-            continue
-
-        source_path = str(entry["path"])
-        source_stem = Path(source_path).stem
-        block = bundle_tex[env_node.pos : env_node.pos + env_node.len]
-        labels, refs = _collect_labels_refs(env_node)
-        source_label = labels[0] if labels else ""
-
-        per_file_counter[source_path] += 1
-        canonical = compact_label(
-            slugify(source_label)
-            if source_label
-            else slugify(f"{source_stem}-{env_base}-{per_file_counter[source_path]:04d}")
-        )
-
-        if env_base == "proof":
-            if not refs and last_anchor_ref_by_file[source_path]:
-                refs = [last_anchor_ref_by_file[source_path]]
-            if not refs:
+def enforce_merged_only_unit_limits(
+    units: List[Dict[str, object]],
+    *,
+    max_unit_tex_chars: int = MAX_UNIT_TEX_CHARS,
+) -> tuple[List[Dict[str, object]], Dict[str, int]]:
+    out: List[Dict[str, object]] = []
+    stats = {"oversized_dropped": 0, "oversized_split": 0, "oversized_kept": 0}
+    for unit in units:
+        unit_tex = str(unit.get("unit_tex") or "")
+        if len(unit_tex) > max_unit_tex_chars:
+            env = str(unit.get("env") or "")
+            if env in {"gap_note", "label_anchor"}:
+                chunks = _chunk_gap_text(unit_tex, max_chars=max_unit_tex_chars)
+                if not chunks:
+                    stats["oversized_dropped"] += 1
+                    continue
+                base = compact_label(str(unit.get("canonical_label") or "gap"))
+                for idx, chunk in enumerate(chunks, start=1):
+                    sub = dict(unit)
+                    sub["unit_tex"] = chunk
+                    sub["canonical_label"] = compact_label(f"{base}-part-{idx:03d}")
+                    if idx > 1:
+                        sub["source_label"] = ""
+                    out.append(sub)
+                stats["oversized_split"] += 1
                 continue
-
-        units.append(
-            {
-                "env": env_base,
-                "node_type": ENV_TO_TYPE[env_base],
-                "source_label": source_label,
-                "canonical_label": canonical,
-                "source_refs": refs,
-                "unit_tex": block,
-                "source_path": source_path,
-            }
-        )
-
-        if env_base in ANCHOR_ENV_TYPES:
-            last_anchor_ref_by_file[source_path] = source_label or canonical
-
-    return units
+            stats["oversized_kept"] += 1
+        out.append(unit)
+    return out, stats
 
 
 def build_units_index_from_bundle(
     bundle_tex: str,
     bundle_entries: List[Dict[str, object]],
 ) -> Dict[str, List[Dict[str, object]]]:
-    units = extract_tex_knowledge_units_from_bundle(bundle_tex, bundle_entries)
-    by_path: Dict[str, List[Dict[str, object]]] = defaultdict(list)
-    for unit in units:
-        source_path = Path(str(unit["source_path"])).resolve().as_posix()
-        normalized = dict(unit)
-        normalized["source_path"] = source_path
-        by_path[source_path].append(normalized)
-    return by_path
-
-
-def should_bundle_parse_record(rec: Dict[str, object]) -> bool:
-    change_type = str(rec.get("change_type") or "")
-    path = str(rec.get("path") or rec.get("new_path") or "")
-    if change_type not in {"added", "modified", "renamed"}:
-        return False
-    if not path:
-        return False
-    source_file = Path(path)
-    if source_file.suffix.lower() != ".tex":
-        return False
-    if "/generated/" in source_file.as_posix():
-        return False
-    return source_file.exists() and source_file.is_file()
-
-
-def collect_bundle_units_for_records(
-    records: List[Dict[str, object]],
-    units_by_path: Dict[str, List[Dict[str, object]]],
-) -> Dict[str, List[Dict[str, object]]]:
-    tex_paths: List[Path] = []
-    seen = set()
-    for rec in records:
-        if not should_bundle_parse_record(rec):
+    # Parse the merged TeX as one coherent stream. Then map each extracted unit
+    # back to its source file using merged-map position ranges.
+    ranges: List[tuple[int, int, str]] = []
+    for entry in sorted(bundle_entries, key=lambda e: int(e.get("start", 0))):
+        try:
+            start = int(entry.get("start", 0))
+            end = int(entry.get("end", 0))
+        except (TypeError, ValueError):
             continue
-        path = Path(str(rec.get("path") or rec.get("new_path") or "")).resolve()
-        key = path.as_posix()
-        if key in seen:
+        if start < 0 or end <= start:
             continue
-        seen.add(key)
-        tex_paths.append(path)
+        source_path = Path(str(entry.get("path") or "")).resolve().as_posix()
+        ranges.append((start, end, source_path))
 
-    if not tex_paths:
+    if not ranges:
         return {}
 
-    changed_set = {p.resolve().as_posix() for p in tex_paths}
-    by_path: Dict[str, List[Dict[str, object]]] = {}
-    for source_path in changed_set:
-        units = units_by_path.get(source_path, [])
-        if units:
-            by_path[source_path] = units
-    return by_path
+    units = extract_tex_knowledge_units(
+        bundle_tex,
+        "merged",
+        include_label_anchors=True,
+    )
+
+    mapped_units: List[Dict[str, object]] = []
+    ridx = 0
+    for unit in units:
+        pos = int(unit.get("span_start") or 0)
+        while ridx + 1 < len(ranges) and pos >= ranges[ridx][1]:
+            ridx += 1
+        if ranges[ridx][0] <= pos < ranges[ridx][1]:
+            source_path = ranges[ridx][2]
+        else:
+            source_path = ranges[-1][2]
+            for start, end, path in ranges:
+                if start <= pos < end:
+                    source_path = path
+                    break
+        rec = dict(unit)
+        rec["source_path"] = source_path
+        mapped_units.append(rec)
+
+    mapped_units, stats = enforce_merged_only_unit_limits(mapped_units)
+    oversized_dropped_total = stats["oversized_dropped"]
+    oversized_split_total = stats.get("oversized_split", 0)
+    oversized_kept_total = stats.get("oversized_kept", 0)
+
+    by_path_units: Dict[str, List[Dict[str, object]]] = defaultdict(list)
+    run_seen: set[str] = set()
+    for unit in mapped_units:
+        fp = unit_fingerprint(unit)
+        if fp in run_seen:
+            continue
+        run_seen.add(fp)
+        by_path_units[str(unit.get("source_path") or "")].append(unit)
+
+    if oversized_dropped_total > 0 or oversized_split_total > 0 or oversized_kept_total > 0:
+        print(
+            "Strict merged-only audit: "
+            f"oversized_dropped={oversized_dropped_total} "
+            f"oversized_split={oversized_split_total} "
+            f"oversized_kept={oversized_kept_total}"
+        )
+
+    return by_path_units
 
 
 def main() -> int:
@@ -560,109 +849,86 @@ def main() -> int:
         )
         return 2
 
-    delta_paths = expand_delta_paths(kg_root, args.delta)
-    if not delta_paths:
-        print("No delta files found.")
-        return 1
-
-    atoms, _ = scan_atoms(kg_root)
-    atom_labels = sorted([a.label for a in atoms])
-
+    merged_sha256 = hash_text_sha256(bundle_tex)
+    all_units = flatten_units(merged_units_by_path)
     queue_dir = kg_root / ".kgcache" / "llm_queue"
     queue_dir.mkdir(parents=True, exist_ok=True)
+    state_path = args.state_file.resolve() if args.state_file else default_emit_state_path(kg_root)
+    prior_state = {} if args.reset_state else load_emit_state(state_path)
+    emitted_fingerprints = set(
+        str(x)
+        for x in (prior_state.get("emitted_unit_fingerprints") or [])
+        if isinstance(x, str) and x
+    )
 
     emitted = 0
+    skipped_existing = 0
     ts = now_utc_compact()
+    for uidx, unit in enumerate(all_units, start=1):
+        if args.max_tasks > 0 and emitted >= args.max_tasks:
+            break
 
-    for delta_path in delta_paths:
-        records = load_delta_records(delta_path)
-        emitted_for_delta = 0
-        bundle_units_by_path = collect_bundle_units_for_records(records, merged_units_by_path)
-        emitted_tex_unit_paths: set[str] = set()
-        for idx, rec in enumerate(records, start=1):
-            if emitted_for_delta >= args.max_per_delta:
-                break
-            change_type = str(rec.get("change_type", ""))
-            path = str(rec.get("path") or rec.get("new_path") or "")
-            source_path = path
-            source_file = Path(path) if path else None
-            excerpt = read_excerpt(source_file) if source_file else ""
-            s_type = suggested_type(change_type, path)
-            new_hash = rec.get("new_hash")
-            old_hash = rec.get("old_hash")
-            suffix_hash = str(new_hash or old_hash or "")[:12]
-            base_label = compact_label(slugify(Path(path).stem if path else f"change-{idx}"))
-            proposed_label = f"{base_label}-{suffix_hash}" if suffix_hash else base_label
+        unit_fp = unit_fingerprint(unit)
+        if unit_fp in emitted_fingerprints:
+            skipped_existing += 1
+            continue
 
-            # For source TeX files, emit one task per unit extracted from merged.tex
-            # and mapped back to this source file.
-            if source_file and source_file.suffix.lower() == ".tex" and change_type in {"added", "modified", "renamed"}:
-                source_key = source_file.resolve().as_posix()
-                if source_key not in emitted_tex_unit_paths:
-                    units = bundle_units_by_path.get(source_key, [])
-                    if units:
-                        for uidx, unit in enumerate(units, start=1):
-                            if emitted_for_delta >= args.max_per_delta:
-                                break
-                            unit_hash = hashlib.sha256(str(unit["unit_tex"]).encode("utf-8")).hexdigest()[:12]
-                            unit_proposed = (
-                                f"{unit['canonical_label']}-{unit_hash}"
-                                if unit_hash
-                                else str(unit["canonical_label"])
-                            )
-                            task = {
-                                "task_id": f"TASK-{ts}-{emitted + 1:06d}",
-                                "created_at": ts,
-                                "delta_file": str(delta_path),
-                                "source_name": rec.get("source_name"),
-                                "change_type": change_type,
-                                "source_path": source_key,
-                                "old_hash": old_hash,
-                                "new_hash": new_hash,
-                                "diff_excerpt": str(unit["unit_tex"])[:2000],
-                                "candidate_parent_labels": [slugify(r) for r in unit["source_refs"]],
-                                "suggested_node_type": unit["node_type"],
-                                "proposed_label": unit_proposed,
-                                "status": "pending",
-                                "task_kind": "tex_knowledge_unit",
-                                "unit_index": uidx,
-                                "unit_env": unit["env"],
-                                "canonical_label": unit["canonical_label"],
-                                "source_tex_label": unit["source_label"],
-                                "source_refs": unit["source_refs"],
-                                "unit_tex": unit["unit_tex"],
-                            }
-                            task_path = queue_dir / f"task_{ts}_{emitted + 1:06d}.json"
-                            task_path.write_text(
-                                json.dumps(task, ensure_ascii=False, indent=2), encoding="utf-8"
-                            )
-                            emitted += 1
-                            emitted_for_delta += 1
-                        emitted_tex_unit_paths.add(source_key)
-                        continue
+        source_path = str(unit.get("source_path") or "")
+        unit_hash = hashlib.sha256(str(unit["unit_tex"]).encode("utf-8")).hexdigest()[:12]
+        unit_proposed = (
+            f"{unit['canonical_label']}-{unit_hash}"
+            if unit_hash
+            else str(unit["canonical_label"])
+        )
+        payload_normalizer_version = str(unit.get("payload_normalizer_version") or "")
+        if not payload_normalizer_version and str(unit.get("env") or "") == "proof":
+            payload_normalizer_version = "proof-env-preserve-v1"
+        task = {
+            "task_id": f"TASK-{ts}-{emitted + 1:06d}",
+            "created_at": ts,
+            "source_name": "merged_tex",
+            "change_type": "modified",
+            "source_path": source_path,
+            "old_hash": None,
+            "new_hash": merged_sha256,
+            "diff_excerpt": str(unit["unit_tex"])[:2000],
+            "candidate_parent_labels": [slugify(r) for r in unit["source_refs"]],
+            "suggested_node_type": unit["node_type"],
+            "proposed_label": unit_proposed,
+            "status": "pending",
+            "task_kind": "tex_knowledge_unit",
+            "unit_index": uidx,
+            "unit_env": unit["env"],
+            "canonical_label": unit["canonical_label"],
+            "source_tex_label": unit["source_label"],
+            "source_refs": unit["source_refs"],
+            "unit_tex": unit["unit_tex"],
+            "unit_fingerprint": unit_fp,
+            "payload_normalizer_version": payload_normalizer_version,
+            "merged_tex_path": str(merged_tex_path),
+            "merged_map_path": str(merged_map_path),
+            "merged_sha256": merged_sha256,
+            "extractor_version": EXTRACTOR_VERSION,
+        }
+        task_path = queue_dir / f"task_{ts}_{emitted + 1:06d}.json"
+        task_path.write_text(json.dumps(task, ensure_ascii=False, indent=2), encoding="utf-8")
+        emitted_fingerprints.add(unit_fp)
+        emitted += 1
 
-            task = {
-                "task_id": f"TASK-{ts}-{emitted + 1:06d}",
-                "created_at": ts,
-                "delta_file": str(delta_path),
-                "source_name": rec.get("source_name"),
-                "change_type": change_type,
-                "source_path": source_path,
-                "old_hash": old_hash,
-                "new_hash": new_hash,
-                "diff_excerpt": excerpt,
-                "candidate_parent_labels": find_candidate_labels(source_path, atom_labels),
-                "suggested_node_type": s_type,
-                "proposed_label": proposed_label,
-                "status": "pending",
-            }
-
-            task_path = queue_dir / f"task_{ts}_{emitted + 1:06d}.json"
-            task_path.write_text(json.dumps(task, ensure_ascii=False, indent=2), encoding="utf-8")
-            emitted += 1
-            emitted_for_delta += 1
-
+    new_state = {
+        "updated_at": ts,
+        "merged_tex_path": str(merged_tex_path),
+        "merged_map_path": str(merged_map_path),
+        "merged_sha256": merged_sha256,
+        "extractor_version": EXTRACTOR_VERSION,
+        "unit_count": len(all_units),
+        "emitted_unit_fingerprints": sorted(emitted_fingerprints),
+    }
+    write_emit_state(state_path, new_state)
+    print(f"Merged units: {len(all_units)}")
+    print(f"Skipped (already emitted): {skipped_existing}")
     print(f"Emitted {emitted} task(s) into {queue_dir}")
+    print(f"State written: {state_path}")
     return 0
 
 

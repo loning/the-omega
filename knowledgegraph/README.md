@@ -40,13 +40,11 @@ knowledgegraph/
   index_nodes/                       # 索引视图生成物（可覆盖）
     book_grg/
       idx_book_grg_main.tex
-  source_specs/                      # 源目录监测配置
-    auric_sections.src
-    auric_scripts.src
   scripts/
     kg_scan_atoms.py
     kg_check_dag.py
-    kg_watch_sources.py
+    kg_atom_health_report.py
+    kg_atom_strict_audit.py
     kg_latexpand_merge.py
     kg_emit_llm_tasks.py
     kg_ingest_atoms.py
@@ -62,7 +60,6 @@ knowledgegraph/
 说明：
 - `atoms/` 是唯一真相层。
 - `index_nodes/` 仅用于展示与编译，不承载知识真相。
-- `source_specs/` 定义需要持续监测 hash 的源目录。
 - `.kgcache/merged/*` 是 TeX 抽取唯一输入（单一事实源）。
 
 ---
@@ -171,8 +168,22 @@ name: chapter_folding
 roots: main-theorem
 include_types: tp-def,tp-lemma,tp-thm,tp-proof,tp-exp,tp-artifact
 auto_include_methods: false
+merged_sha_filter: latest
+extractor_version_filter: latest
+tex_task_kind_filter: tex_knowledge_unit
+latest_version_only: true
+latest_source_label_only: true
+drop_unused_label_anchors: true
 order: topo
 ```
+
+补充：
+1. `merged_sha_filter`：按 merged 文件 hash 过滤 TeX atom；`latest` 表示读取 `.kgcache/merged/emit_state.json` 的最新 `merged_sha256`。
+2. `extractor_version_filter`：按抽取器版本过滤；`latest` 表示读取 `emit_state.json` 的 `extractor_version`。
+3. `tex_task_kind_filter`：仅纳入 sidecar 中 `task_kind` 命中的 `.tex` atom（推荐 `tex_knowledge_unit`，即 merged AST 切分结果）。
+4. `latest_version_only`：对 `label-h<hash>` 版本化节点按 canonical label 只取最新 `KG-ID`，保证 append-only 存储下的“索引视图=最新态”。
+5. `latest_source_label_only`：对同一 `source_tex_label` 仅保留最新 atom，可抑制历史抽取策略变更导致的重复标签污染。
+6. `drop_unused_label_anchors`：仅保留被当前选集中 `\ref/\eqref/...` 实际需求到的 `label_anchor`，降低图谱噪声和编译负担。
 
 ### 6.2 索引生成
 
@@ -200,53 +211,38 @@ order: topo
 - 基于扫描结果做门禁。
 - 不依赖手工 JSON 边表。
 
+补充审计脚本：
+1. `kg_atom_health_report.py`
+   - 统计知识节点命名覆盖、证明覆盖、孤立 proof 等健康度指标。
+2. `kg_atom_strict_audit.py`
+   - 对每个作用域节点给出严格 PASS/FAIL；
+   - 默认规则：statement 需 proof 支撑，proof 需挂载到 statement 父节点；
+   - 输出 `analysis_atom_strict_audit.json` 便于后续自动修复流程消费。
+
 ---
 
-## 8. 源目录哈希监测与 LLM 增量入图
+## 8. Merged TeX 增量入图
 
-目标：当源目录文件 hash 变化时，自动产出 LLM 任务，最终以“新增 Atom”方式入图。
+目标：以 `merged.tex + map.json` 为唯一 TeX 源，增量产出 LLM 任务并追加到 Atom 图谱。
 
-### 8.1 跟踪配置
+### 8.1 流程
 
-例：`source_specs/auric_sections.src`
+1. `kg_latexpand_merge.py` 生成 `.kgcache/merged/*.latexpanded.tex` 与 `*.map.json`。
+2. `kg_emit_llm_tasks.py` **仅基于 merged 文件**（显式 `--merged-tex/--merged-map`）生成 `.kgcache/llm_queue/`。
+3. `kg_emit_llm_tasks.py` 使用 `.kgcache/merged/emit_state.json` 做增量去重（同一知识单元不会重复发任务）。
+4. `kg_ingest_atoms.py`（LLM 结果落地）只新增 Atom 文件。
 
-```text
-name: auric_sections
-root: docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/sections
-include: *.tex,**/*.tex
-exclude: generated/*.tex,**/generated/**
-hash: sha256
-```
+### 8.2 TeX 入图规则
 
-例：`source_specs/auric_scripts.src`
-
-```text
-name: auric_scripts
-root: docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/scripts
-include: *.py,**/*.py
-hash: sha256
-```
-
-### 8.2 监测流程
-
-1. `kg_watch_sources.py --spec source_specs/*.src`
-2. 计算内容 hash，与上次快照比较。
-3. 产出 `added/modified/deleted/renamed`。
-4. 写入 `.kgcache/source/<name>/delta_<timestamp>.jsonl`。
-5. `kg_latexpand_merge.py` 生成 `.kgcache/merged/*.latexpanded.tex` 与 `*.map.json`。
-6. `kg_emit_llm_tasks.py` **仅基于 merged 文件**（显式 `--merged-tex/--merged-map`）生成 `.kgcache/llm_queue/`。
-7. `kg_ingest_atoms.py`（LLM 结果落地）只新增 Atom 文件。
-
-### 8.3 脚本与脚本产物入图规则
-
-1. 脚本变更：新增 `tp-method` Atom（载荷可直接是脚本副本）。
-2. 脚本生成 `.tex/.csv/.json`：新增 `tp-artifact` Atom。
-3. 源 `.tex`（非 generated）先由 `latexpand` 合并，再对 merged `.tex` 用 `pylatexenc` 做 AST 解析；按 `definition/lemma/theorem/corollary/proof/...` 环境切分为知识最小单元（每个单元一个 task -> 一个 atom），并通过 `map.json` 回映射到源文件。
-4. 每个 `.tex` 知识单元从 `\ref/\eqref/\autoref/\cref` 提取依赖，映射到父 atom，写入 sidecar JSON 的 `parents`。
-5. `proof` 单元必须绑定声明节点（定义/定理/引理/命题等）；无可解析父节点时不入图（跳过 orphan proof atom）。
-6. 为兼容原文 label 未统一改写，ingest 会使用 sidecar 中 `source_tex_label` 作为别名映射来解析 `source_refs`。
-7. 若产物形成新结论：再新增 `tp-exp/tp-claim/tp-thm` Atom。
-8. 源文件删除：不删 Atom，新增 `tp-errata/tp-retract` 候选任务。
+1. merged `.tex` 是唯一 TeX 源；解析只对 merged 进行。
+2. 使用 `pylatexenc` AST 按 `definition/lemma/theorem/corollary/proof/...` 切分知识最小单元（每个单元一个 task -> 一个 atom）。
+3. 对 `latexpand --explain` 注入的 `% start/end input ...` 标记做提取前清理，避免污染知识单元文本。
+4. 对异常单元（超大跨度、跨源文件跨度）优先回退到对应源文件重提取并替换，无法恢复时丢弃异常单元。
+5. 通过 `map.json` 将知识单元回映射到原始源文件路径。
+6. 每个知识单元从 AST 中的 `\ref/\eqref/\autoref/\cref` 提取依赖，映射到 sidecar JSON 的 `parents`。
+7. `proof` 单元必须绑定声明节点；无可解析父节点时跳过（不入图）。
+8. 为兼容原文 label 未统一改写，ingest 使用 sidecar 的 `source_tex_label` 别名解析 `source_refs`。
+9. `proof` 单元支持 payload normalizer 版本盐值（append-only 下生成新 label），用于无损演化 proof 载荷规范。
 
 ---
 
@@ -322,7 +318,17 @@ python3 knowledgegraph/scripts/kg_emit_llm_tasks.py \
   --merged-map knowledgegraph/.kgcache/merged/grg_main.latexpanded.map.json
 ```
 
-注意：`kg_emit_llm_tasks.py` 不再现场展开源 TeX，且不再自动选择“最新 merged”；必须显式提供 `--merged-tex` 与 `--merged-map`。
+注意：`kg_emit_llm_tasks.py` 不再现场展开源 TeX，且不再自动选择“最新 merged”；必须显式提供 `--merged-tex` 与 `--merged-map`。默认使用 `emit_state.json` 做增量去重。
+
+需要强制重发全部 merged 单元时：
+
+```bash
+python3 knowledgegraph/scripts/kg_emit_llm_tasks.py \
+  --kg-root knowledgegraph \
+  --merged-tex knowledgegraph/.kgcache/merged/grg_main.latexpanded.tex \
+  --merged-map knowledgegraph/.kgcache/merged/grg_main.latexpanded.map.json \
+  --reset-state
+```
 
 全量索引编译（推荐默认复用缓存）：
 
@@ -388,11 +394,11 @@ python3 -m pip install --user --break-system-packages -r knowledgegraph/requirem
 - `docs/papers/auric-golden-phi/2026_golden_ratio_driven_scan_projection_generation_recursive_emergence`
 
 步骤：
-1. 从 `sections/body` 提取声明类 `.tex`，生成 `tp-def/tp-thm/...` Atom。
-2. 从 `scripts` 导入方法类，生成 `tp-method` Atom。
-3. 从 `sections/generated` 与产物目录导入 `tp-artifact` Atom。
-4. 跑 `kg_check_dag.py` 修复环和缺失父节点。
-5. 建立 `index_specs/*.idx` 生成专著/章节视图。
+1. 先运行 `kg_latexpand_merge.py` 生成统一的 merged tex + map。
+2. 运行 `kg_emit_llm_tasks.py`（显式传 merged 路径）生成知识单元任务。
+3. 运行 `kg_ingest_atoms.py` 将任务落地为 append-only Atom。
+4. 运行 `kg_check_dag.py` 校验无环与父节点可解析。
+5. 建立 `index_specs/*.idx` 生成专著/章节视图并编译。
 
 ---
 
@@ -402,17 +408,14 @@ python3 -m pip install --user --break-system-packages -r knowledgegraph/requirem
 2. `schema/kg-node-template.tex`
 3. `scripts/kg_scan_atoms.py`
 4. `scripts/kg_check_dag.py`
-5. `scripts/kg_watch_sources.py`
+5. `scripts/kg_latexpand_merge.py`
 6. `scripts/kg_emit_llm_tasks.py`
 7. `scripts/kg_ingest_atoms.py`
 8. `scripts/kg_build_index.py`
 9. `scripts/kg_compile.py`
-10. `scripts/kg_latexpand_merge.py`
-11. `index_specs/book_grg.idx`
-12. `source_specs/auric_sections.src`
-13. `source_specs/auric_scripts.src`
+10. `index_specs/book_grg.idx`
 
 这套闭环满足：
-- 脚本与脚本产物都是 Atom（第一类节点）。
+- TeX 知识单元统一由 merged 源驱动入图。
 - 章节只是动态索引视图。
 - 任何变化都通过新增 Atom 演化。

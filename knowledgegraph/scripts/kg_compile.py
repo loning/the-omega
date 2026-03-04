@@ -14,12 +14,103 @@ from typing import List, Sequence, Set
 
 from _kg_common import (
     ancestor_closure,
+    atom_sidecar_path,
     default_kg_root,
     now_utc_compact,
     scan_atoms,
     tex_input_fragment_status,
     topological_order,
 )
+
+BEGIN_DOCUMENT_RE = re.compile(r"\\begin\s*\{\s*document\s*\}")
+KGINPUT_LINE_RE = re.compile(r"^\s*\\kginput\{(?P<rel>atoms/KG-[^}]+\.tex)\}\s*$")
+KGID_LABEL_LINE_RE = re.compile(r"^\s*\\label\{kgid:[^}]+\}\s*$")
+LIST_ENV_BEGIN_RE = re.compile(r"^\s*\\begin\{(?:itemize|enumerate|description)\}")
+LIST_ENV_END_RE = re.compile(r"^\s*\\end\{(?:itemize|enumerate|description)\}")
+ITEM_LINE_RE = re.compile(r"^\s*\\item(?:\s|$|\[)")
+AUTO_ITEMIZE_CLOSE_HINT_RE = re.compile(
+    r"^\s*\\(?:kgcloseproofifopen|part|chapter|section|subsection|subsubsection|paragraph|subparagraph)\b|"
+    r"^\s*\\begin\{(?:theorem|lemma|proposition|corollary|definition|remark|example|proof|conjecture|conclusion|algorithm|auditthm|auditcor|auditprop|auditlem)\}"
+)
+
+
+def extract_source_preamble(source_main_tex: Path) -> str:
+    try:
+        text = source_main_tex.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return ""
+    m = BEGIN_DOCUMENT_RE.search(text)
+    if not m:
+        return ""
+    return text[: m.start()].rstrip()
+
+
+def normalize_atom_tex_for_packed_index(text: str) -> str:
+    out: List[str] = []
+    explicit_list_depth = 0
+    auto_itemize_open = False
+    list_item_started: List[bool] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("%"):
+            continue
+        if stripped == r"\phantomsection":
+            continue
+        if KGID_LABEL_LINE_RE.match(stripped):
+            continue
+        if auto_itemize_open and AUTO_ITEMIZE_CLOSE_HINT_RE.match(stripped):
+            out.append(r"\end{itemize}")
+            auto_itemize_open = False
+        if LIST_ENV_BEGIN_RE.match(stripped):
+            explicit_list_depth += 1
+            list_item_started.append(False)
+        if ITEM_LINE_RE.match(stripped) and explicit_list_depth == 0 and not auto_itemize_open:
+            out.append(r"\begin{itemize}")
+            auto_itemize_open = True
+        if ITEM_LINE_RE.match(stripped) and list_item_started:
+            list_item_started[-1] = True
+        if (
+            list_item_started
+            and not list_item_started[-1]
+            and stripped
+            and not LIST_ENV_BEGIN_RE.match(stripped)
+            and not LIST_ENV_END_RE.match(stripped)
+        ):
+            # List environments that start with raw text are invalid in LaTeX.
+            # Promote the first content line to an explicit item.
+            out.append(r"\item " + stripped)
+            list_item_started[-1] = True
+        else:
+            out.append(line)
+        if LIST_ENV_END_RE.match(stripped):
+            explicit_list_depth = max(0, explicit_list_depth - 1)
+            if list_item_started:
+                list_item_started.pop()
+    if auto_itemize_open:
+        out.append(r"\end{itemize}")
+    return "\n".join(out).strip() + "\n"
+
+
+def build_packed_index_input(index_path: Path, build_dir: Path) -> Path:
+    lines = index_path.read_text(encoding="utf-8", errors="replace").splitlines()
+    packed_lines: List[str] = []
+    for line in lines:
+        m = KGINPUT_LINE_RE.match(line)
+        if not m:
+            # Drop generated mapping comments to reduce TeX string-pool pressure.
+            if line.lstrip().startswith("% KG-"):
+                continue
+            packed_lines.append(line)
+            continue
+        rel = m.group("rel")
+        atom_link = (index_path.parent / rel)
+        atom_path = atom_link.resolve(strict=True)
+        atom_text = atom_path.read_text(encoding="utf-8", errors="replace")
+        packed_lines.append(normalize_atom_tex_for_packed_index(atom_text).rstrip())
+        packed_lines.append(r"\kgcloseproofifopen")
+    packed_path = build_dir / f"{index_path.stem}.packed.tex"
+    packed_path.write_text("\n".join(packed_lines).rstrip() + "\n", encoding="utf-8")
+    return packed_path
 
 
 def parse_args() -> argparse.Namespace:
@@ -72,6 +163,21 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Stream latexmk output. Default writes latex output to file for faster builds.",
     )
+    parser.add_argument(
+        "--single-pass",
+        action="store_true",
+        help="Run a single XeLaTeX pass instead of latexmk (faster, less reference convergence).",
+    )
+    parser.add_argument(
+        "--fail-fast",
+        action="store_true",
+        help="Fail on first TeX error using single-pass XeLaTeX (debug mode).",
+    )
+    parser.add_argument(
+        "--full-latexmk",
+        action="store_true",
+        help="Disable fail-fast default and use latexmk multi-pass mode.",
+    )
     parser.add_argument("--dry-run", action="store_true", help="Only generate tex, do not run latexmk")
     return parser.parse_args()
 
@@ -81,99 +187,182 @@ def build_main_tex(
     *,
     fragment_ref_mode: bool = False,
     degrade_cite: bool = False,
+    source_main_tex: Path | None = None,
 ) -> str:
     lines: List[str] = []
     lines.append("\\ifdefined\\pdfoutput\\pdfoutput=1\\fi")
-    lines.append("\\documentclass[11pt,letterpaper,fontset=fandol]{ctexart}")
-    lines.append("\\usepackage{geometry}")
-    lines.append("\\geometry{letterpaper, margin=1in}")
-    lines.append("\\usepackage{amsmath,amssymb,amsthm}")
-    lines.append("\\usepackage{mathtools}")
-    lines.append("\\usepackage{amscd}")
-    lines.append("\\usepackage{graphicx}")
-    lines.append("\\usepackage{hyperref}")
-    lines.append("\\usepackage{subfiles}")
-    lines.append("\\usepackage{cite}")
-    lines.append("\\usepackage{xcolor}")
-    lines.append("\\usepackage{float}")
-    lines.append("\\usepackage{placeins}")
-    lines.append("\\usepackage{booktabs}")
-    lines.append("\\usepackage{array}")
-    lines.append("\\usepackage{adjustbox}")
-    lines.append("\\usepackage{etoolbox}")
-    lines.append("\\usepackage{fvextra}")
-    lines.append("\\usepackage{verbatim}")
-    lines.append("\\usepackage{url}")
-    lines.append("\\usepackage[strings]{underscore}")
-    lines.append("\\usepackage{mathrsfs}")
-    lines.append("\\usepackage{dsfont}")
-    lines.append("\\newtheorem{theorem}{Theorem}[section]")
-    lines.append("\\newtheorem{lemma}[theorem]{Lemma}")
-    lines.append("\\newtheorem{definition}[theorem]{Definition}")
-    lines.append("\\newtheorem{proposition}[theorem]{Proposition}")
-    lines.append("\\newtheorem{corollary}[theorem]{Corollary}")
-    lines.append("\\newtheorem{conjecture}[theorem]{Conjecture}")
-    lines.append("\\newtheorem{conclusion}[theorem]{Conclusion}")
-    lines.append("\\newtheorem{example}[theorem]{Example}")
-    lines.append("\\newtheorem{algorithm}[theorem]{Algorithm}")
-    lines.append("\\newtheorem{auditthm}{Theorem}")
-    lines.append("\\newtheorem{auditcor}[auditthm]{Corollary}")
-    lines.append("\\newtheorem{auditprop}[auditthm]{Proposition}")
-    lines.append("\\newtheorem{remark}[theorem]{Remark}")
-    lines.append("\\DeclareMathOperator{\\tr}{tr}")
-    lines.append("\\DeclareMathOperator{\\Ind}{Ind}")
-    lines.append("\\DeclareMathOperator{\\Disc}{Disc}")
-    lines.append("\\newcommand{\\RR}{\\mathbb{R}}")
-    lines.append("\\newcommand{\\CC}{\\mathbb{C}}")
-    lines.append("\\newcommand{\\QQ}{\\mathbb{Q}}")
-    lines.append("\\newcommand{\\FF}{\\mathbb{F}}")
-    lines.append("\\newcommand{\\ZZ}{\\mathbb{Z}}")
-    lines.append("\\newcommand{\\NN}{\\mathbb{N}}")
-    lines.append("\\newcommand{\\PP}{\\mathbb{P}}")
-    lines.append("\\newcommand{\\TT}{\\mathbb{T}}")
-    lines.append("\\newcommand{\\EE}{\\mathbb{E}}")
-    lines.append("\\providecommand{\\E}{\\mathbb{E}}")
-    lines.append("\\newcommand{\\Var}{\\mathrm{Var}}")
-    lines.append("\\newcommand{\\Cov}{\\operatorname{Cov}}")
-    lines.append("\\newcommand{\\Sol}{\\Sigma_{\\mathrm{sol}}}")
-    lines.append("\\newcommand{\\dd}{\\mathrm{d}}")
-    lines.append("\\newcommand{\\ind}{\\mathbf{1}}")
-    lines.append("\\newcommand{\\card}[1]{\\left\\lvert #1\\right\\rvert}")
-    lines.append("\\newcommand{\\Tr}{\\mathrm{Tr}}")
-    lines.append("\\newcommand{\\Span}{\\mathrm{Span}}")
-    lines.append("\\newcommand{\\Mat}{\\mathrm{Mat}}")
-    lines.append("\\newcommand{\\Fold}{\\mathrm{Fold}}")
-    lines.append("\\providecommand{\\End}{\\operatorname{End}}")
-    lines.append("\\providecommand{\\Hom}{\\operatorname{Hom}}")
-    lines.append("\\providecommand{\\Ext}{\\operatorname{Ext}}")
-    lines.append("\\providecommand{\\Aut}{\\operatorname{Aut}}")
-    lines.append("\\providecommand{\\Gal}{\\operatorname{Gal}}")
-    lines.append("\\providecommand{\\Tor}{\\operatorname{Tor}}")
-    lines.append("\\providecommand{\\Lie}{\\operatorname{Lie}}")
-    lines.append("\\providecommand{\\GL}{\\operatorname{GL}}")
-    lines.append("\\providecommand{\\rank}{\\operatorname{rank}}")
-    lines.append("\\providecommand{\\Spec}{\\operatorname{Spec}}")
-    lines.append("\\providecommand{\\Pic}{\\operatorname{Pic}}")
-    lines.append("\\providecommand{\\Div}{\\operatorname{Div}}")
-    lines.append("\\providecommand{\\ord}{\\operatorname{ord}}")
-    lines.append("\\providecommand{\\Res}{\\operatorname{Res}}")
-    lines.append("\\providecommand{\\Jac}{\\operatorname{Jac}}")
-    lines.append("\\providecommand{\\Prym}{\\operatorname{Prym}}")
-    lines.append("\\providecommand{\\Sym}{\\operatorname{Sym}}")
-    lines.append("\\providecommand{\\cdim}{\\operatorname{cdim}}")
-    lines.append("\\providecommand{\\pcdim}{\\operatorname{pcdim}}")
-    lines.append("\\providecommand{\\Den}{\\operatorname{Den}}")
-    lines.append("\\providecommand{\\dashmapsto}{\\mapsto}")
-    lines.append("\\providecommand{\\longtwoheadrightarrow}{\\relbar\\joinrel\\twoheadrightarrow}")
-    lines.append("\\providecommand{\\Log}{\\log}")
-    lines.append("\\providecommand{\\Mult}{\\operatorname{Mult}}")
-    lines.append("\\providecommand{\\ket}[1]{\\left\\lvert #1\\right\\rangle}")
-    lines.append("\\providecommand{\\bra}[1]{\\left\\langle #1\\right\\rvert}")
-    lines.append("\\providecommand{\\braket}[1]{\\left\\langle #1\\right\\rangle}")
-    lines.append("\\providecommand{\\ketbra}[2]{\\left\\lvert #1\\right\\rangle\\left\\langle #2\\right\\rvert}")
-    lines.append("\\newcommand{\\abs}[1]{\\left\\lvert #1\\right\\rvert}")
-    lines.append("\\newcommand{\\norm}[1]{\\left\\lVert #1\\right\\rVert}")
-    lines.append("\\newcommand{\\kgref}[1]{\\ref{kg:#1}}")
+    if source_main_tex is not None:
+        source_preamble = extract_source_preamble(source_main_tex)
+        if source_preamble:
+            lines.append(source_preamble)
+        else:
+            lines.append("\\documentclass[11pt,letterpaper,fontset=fandol]{ctexart}")
+            lines.append("\\usepackage{amsmath,amssymb,amsthm}")
+            lines.append("\\usepackage{hyperref}")
+            lines.append("\\usepackage{subfiles}")
+        # When source preamble is used, avoid redeclaring theorem/macros.
+        lines.append("\\providecommand{\\kgref}[1]{\\ref{kg:#1}}")
+        # Safe fallback symbols for atom fragments that may not be in source preamble.
+        lines.append("\\providecommand{\\RR}{\\mathbb{R}}")
+        lines.append("\\providecommand{\\CC}{\\mathbb{C}}")
+        lines.append("\\providecommand{\\QQ}{\\mathbb{Q}}")
+        lines.append("\\providecommand{\\FF}{\\mathbb{F}}")
+        lines.append("\\providecommand{\\ZZ}{\\mathbb{Z}}")
+        lines.append("\\providecommand{\\NN}{\\mathbb{N}}")
+        lines.append("\\providecommand{\\PP}{\\mathbb{P}}")
+        lines.append("\\providecommand{\\TT}{\\mathbb{T}}")
+        lines.append("\\providecommand{\\EE}{\\mathbb{E}}")
+        lines.append("\\providecommand{\\E}{\\mathbb{E}}")
+        lines.append("\\providecommand{\\Var}{\\operatorname{Var}}")
+        lines.append("\\providecommand{\\Cov}{\\operatorname{Cov}}")
+        lines.append("\\providecommand{\\Tr}{\\operatorname{Tr}}")
+        lines.append("\\providecommand{\\Span}{\\operatorname{Span}}")
+        lines.append("\\providecommand{\\Mat}{\\operatorname{Mat}}")
+        lines.append("\\providecommand{\\Fold}{\\operatorname{Fold}}")
+        lines.append("\\providecommand{\\tr}{\\operatorname{tr}}")
+        lines.append("\\providecommand{\\Ind}{\\operatorname{Ind}}")
+        lines.append("\\providecommand{\\Disc}{\\operatorname{Disc}}")
+        lines.append("\\providecommand{\\End}{\\operatorname{End}}")
+        lines.append("\\providecommand{\\Hom}{\\operatorname{Hom}}")
+        lines.append("\\providecommand{\\Ext}{\\operatorname{Ext}}")
+        lines.append("\\providecommand{\\Aut}{\\operatorname{Aut}}")
+        lines.append("\\providecommand{\\Gal}{\\operatorname{Gal}}")
+        lines.append("\\providecommand{\\Tor}{\\operatorname{Tor}}")
+        lines.append("\\providecommand{\\Lie}{\\operatorname{Lie}}")
+        lines.append("\\providecommand{\\GL}{\\operatorname{GL}}")
+        lines.append("\\providecommand{\\rank}{\\operatorname{rank}}")
+        lines.append("\\providecommand{\\Spec}{\\operatorname{Spec}}")
+        lines.append("\\providecommand{\\Pic}{\\operatorname{Pic}}")
+        lines.append("\\providecommand{\\Div}{\\operatorname{Div}}")
+        lines.append("\\providecommand{\\ord}{\\operatorname{ord}}")
+        lines.append("\\providecommand{\\Res}{\\operatorname{Res}}")
+        lines.append("\\providecommand{\\Jac}{\\operatorname{Jac}}")
+        lines.append("\\providecommand{\\Prym}{\\operatorname{Prym}}")
+        lines.append("\\providecommand{\\Sym}{\\operatorname{Sym}}")
+        lines.append("\\providecommand{\\Inn}{\\operatorname{Inn}}")
+        lines.append("\\providecommand{\\Out}{\\operatorname{Out}}")
+        lines.append("\\providecommand{\\ad}{\\operatorname{ad}}")
+        lines.append("\\providecommand{\\Ad}{\\operatorname{Ad}}")
+        lines.append("\\providecommand{\\Fix}{\\operatorname{Fix}}")
+        lines.append("\\providecommand{\\Stab}{\\operatorname{Stab}}")
+        lines.append("\\providecommand{\\Orb}{\\operatorname{Orb}}")
+        lines.append("\\providecommand{\\Supp}{\\operatorname{Supp}}")
+        lines.append("\\providecommand{\\id}{\\operatorname{id}}")
+        lines.append("\\providecommand{\\diag}{\\operatorname{diag}}")
+        lines.append("\\providecommand{\\sgn}{\\operatorname{sgn}}")
+        lines.append("\\providecommand{\\cdim}{\\operatorname{cdim}}")
+        lines.append("\\providecommand{\\pcdim}{\\operatorname{pcdim}}")
+        lines.append("\\providecommand{\\Den}{\\operatorname{Den}}")
+        lines.append("\\providecommand{\\Log}{\\log}")
+        lines.append("\\providecommand{\\Mult}{\\operatorname{Mult}}")
+        lines.append("\\providecommand{\\ket}[1]{\\left\\lvert #1\\right\\rangle}")
+        lines.append("\\providecommand{\\bra}[1]{\\left\\langle #1\\right\\rvert}")
+        lines.append("\\providecommand{\\braket}[1]{\\left\\langle #1\\right\\rangle}")
+        lines.append("\\providecommand{\\ketbra}[2]{\\left\\lvert #1\\right\\rangle\\left\\langle #2\\right\\rvert}")
+        lines.append("\\providecommand{\\abs}[1]{\\left\\lvert #1\\right\\rvert}")
+        lines.append("\\providecommand{\\norm}[1]{\\left\\lVert #1\\right\\rVert}")
+    else:
+        lines.append("\\documentclass[11pt,letterpaper,fontset=fandol]{ctexart}")
+        lines.append("\\usepackage{geometry}")
+        lines.append("\\geometry{letterpaper, margin=1in}")
+        lines.append("\\usepackage{amsmath,amssymb,amsthm}")
+        lines.append("\\usepackage{mathtools}")
+        lines.append("\\usepackage{amscd}")
+        lines.append("\\usepackage{graphicx}")
+        lines.append("\\usepackage{hyperref}")
+        lines.append("\\usepackage{subfiles}")
+        lines.append("\\usepackage{cite}")
+        lines.append("\\usepackage{xcolor}")
+        lines.append("\\usepackage{float}")
+        lines.append("\\usepackage{placeins}")
+        lines.append("\\usepackage{booktabs}")
+        lines.append("\\usepackage{array}")
+        lines.append("\\usepackage{adjustbox}")
+        lines.append("\\usepackage{etoolbox}")
+        lines.append("\\usepackage{fvextra}")
+        lines.append("\\usepackage{verbatim}")
+        lines.append("\\usepackage{url}")
+        lines.append("\\usepackage[strings]{underscore}")
+        lines.append("\\usepackage{mathrsfs}")
+        lines.append("\\usepackage{dsfont}")
+        lines.append("\\newtheorem{theorem}{Theorem}[section]")
+        lines.append("\\newtheorem{lemma}[theorem]{Lemma}")
+        lines.append("\\newtheorem{definition}[theorem]{Definition}")
+        lines.append("\\newtheorem{proposition}[theorem]{Proposition}")
+        lines.append("\\newtheorem{corollary}[theorem]{Corollary}")
+        lines.append("\\newtheorem{conjecture}[theorem]{Conjecture}")
+        lines.append("\\newtheorem{conclusion}[theorem]{Conclusion}")
+        lines.append("\\newtheorem{example}[theorem]{Example}")
+        lines.append("\\newtheorem{algorithm}[theorem]{Algorithm}")
+        lines.append("\\newtheorem{auditthm}{Theorem}")
+        lines.append("\\newtheorem{auditcor}[auditthm]{Corollary}")
+        lines.append("\\newtheorem{auditprop}[auditthm]{Proposition}")
+        lines.append("\\newtheorem{remark}[theorem]{Remark}")
+        lines.append("\\DeclareMathOperator{\\tr}{tr}")
+        lines.append("\\DeclareMathOperator{\\Ind}{Ind}")
+        lines.append("\\DeclareMathOperator{\\Disc}{Disc}")
+        lines.append("\\newcommand{\\RR}{\\mathbb{R}}")
+        lines.append("\\newcommand{\\CC}{\\mathbb{C}}")
+        lines.append("\\newcommand{\\QQ}{\\mathbb{Q}}")
+        lines.append("\\newcommand{\\FF}{\\mathbb{F}}")
+        lines.append("\\newcommand{\\ZZ}{\\mathbb{Z}}")
+        lines.append("\\newcommand{\\NN}{\\mathbb{N}}")
+        lines.append("\\newcommand{\\PP}{\\mathbb{P}}")
+        lines.append("\\newcommand{\\TT}{\\mathbb{T}}")
+        lines.append("\\newcommand{\\EE}{\\mathbb{E}}")
+        lines.append("\\providecommand{\\E}{\\mathbb{E}}")
+        lines.append("\\newcommand{\\Var}{\\mathrm{Var}}")
+        lines.append("\\newcommand{\\Cov}{\\operatorname{Cov}}")
+        lines.append("\\newcommand{\\Sol}{\\Sigma_{\\mathrm{sol}}}")
+        lines.append("\\newcommand{\\dd}{\\mathrm{d}}")
+        lines.append("\\newcommand{\\ind}{\\mathbf{1}}")
+        lines.append("\\newcommand{\\card}[1]{\\left\\lvert #1\\right\\rvert}")
+        lines.append("\\newcommand{\\Tr}{\\mathrm{Tr}}")
+        lines.append("\\newcommand{\\Span}{\\mathrm{Span}}")
+        lines.append("\\newcommand{\\Mat}{\\mathrm{Mat}}")
+        lines.append("\\newcommand{\\Fold}{\\mathrm{Fold}}")
+        lines.append("\\providecommand{\\End}{\\operatorname{End}}")
+        lines.append("\\providecommand{\\Hom}{\\operatorname{Hom}}")
+        lines.append("\\providecommand{\\Ext}{\\operatorname{Ext}}")
+        lines.append("\\providecommand{\\Aut}{\\operatorname{Aut}}")
+        lines.append("\\providecommand{\\Gal}{\\operatorname{Gal}}")
+        lines.append("\\providecommand{\\Tor}{\\operatorname{Tor}}")
+        lines.append("\\providecommand{\\Lie}{\\operatorname{Lie}}")
+        lines.append("\\providecommand{\\GL}{\\operatorname{GL}}")
+        lines.append("\\providecommand{\\rank}{\\operatorname{rank}}")
+        lines.append("\\providecommand{\\Spec}{\\operatorname{Spec}}")
+        lines.append("\\providecommand{\\Pic}{\\operatorname{Pic}}")
+        lines.append("\\providecommand{\\Div}{\\operatorname{Div}}")
+        lines.append("\\providecommand{\\ord}{\\operatorname{ord}}")
+        lines.append("\\providecommand{\\Res}{\\operatorname{Res}}")
+        lines.append("\\providecommand{\\Jac}{\\operatorname{Jac}}")
+        lines.append("\\providecommand{\\Prym}{\\operatorname{Prym}}")
+        lines.append("\\providecommand{\\Sym}{\\operatorname{Sym}}")
+        lines.append("\\providecommand{\\Inn}{\\operatorname{Inn}}")
+        lines.append("\\providecommand{\\Out}{\\operatorname{Out}}")
+        lines.append("\\providecommand{\\ad}{\\operatorname{ad}}")
+        lines.append("\\providecommand{\\Ad}{\\operatorname{Ad}}")
+        lines.append("\\providecommand{\\Fix}{\\operatorname{Fix}}")
+        lines.append("\\providecommand{\\Stab}{\\operatorname{Stab}}")
+        lines.append("\\providecommand{\\Orb}{\\operatorname{Orb}}")
+        lines.append("\\providecommand{\\Supp}{\\operatorname{Supp}}")
+        lines.append("\\providecommand{\\id}{\\operatorname{id}}")
+        lines.append("\\providecommand{\\diag}{\\operatorname{diag}}")
+        lines.append("\\providecommand{\\sgn}{\\operatorname{sgn}}")
+        lines.append("\\providecommand{\\cdim}{\\operatorname{cdim}}")
+        lines.append("\\providecommand{\\pcdim}{\\operatorname{pcdim}}")
+        lines.append("\\providecommand{\\Den}{\\operatorname{Den}}")
+        lines.append("\\providecommand{\\dashmapsto}{\\mapsto}")
+        lines.append("\\providecommand{\\longtwoheadrightarrow}{\\relbar\\joinrel\\twoheadrightarrow}")
+        lines.append("\\providecommand{\\Log}{\\log}")
+        lines.append("\\providecommand{\\Mult}{\\operatorname{Mult}}")
+        lines.append("\\providecommand{\\ket}[1]{\\left\\lvert #1\\right\\rangle}")
+        lines.append("\\providecommand{\\bra}[1]{\\left\\langle #1\\right\\rvert}")
+        lines.append("\\providecommand{\\braket}[1]{\\left\\langle #1\\right\\rangle}")
+        lines.append("\\providecommand{\\ketbra}[2]{\\left\\lvert #1\\right\\rangle\\left\\langle #2\\right\\rvert}")
+        lines.append("\\newcommand{\\abs}[1]{\\left\\lvert #1\\right\\rvert}")
+        lines.append("\\newcommand{\\norm}[1]{\\left\\lVert #1\\right\\rVert}")
+        lines.append("\\newcommand{\\kgref}[1]{\\ref{kg:#1}}")
     if fragment_ref_mode:
         lines.append("\\makeatletter")
         lines.append("\\newcommand{\\kgrawref}[1]{\\texttt{#1}}")
@@ -199,12 +388,6 @@ def build_main_tex(
     lines.append("}")
     lines.append("\\newcommand{\\kginput}[1]{\\input{#1}\\kgcloseproofifopen}")
     lines.append("\\makeatother")
-    lines.append("\\makeatletter")
-    lines.append("\\let\\kgoriginput\\input")
-    lines.append(
-        "\\renewcommand{\\input}[1]{\\IfFileExists{#1}{\\kgoriginput{#1}}{\\par\\fbox{\\ttfamily missing input: \\detokenize{#1}}}}"
-    )
-    lines.append("\\makeatother")
     lines.append("\\begin{document}")
     for p in inputs:
         lines.append(f"\\input{{{p.as_posix()}}}")
@@ -218,9 +401,33 @@ def compile_with_latexmk(
     latexmk_cmd: str,
     kg_root: Path,
     inputs: Sequence[Path],
+    extra_texinputs: Sequence[Path] = (),
     verbose_latex: bool = False,
 ) -> tuple[int, Path]:
-    cmd = shlex.split(latexmk_cmd) + [main_tex.name]
+    env = build_texinputs_env(kg_root, inputs, extra_texinputs)
+    # Force the local build entrypoint; avoid TEXINPUTS "main.tex" shadowing.
+    cmd = shlex.split(latexmk_cmd) + [f"./{main_tex.name}"]
+    latex_log_path = build_dir / "latexmk.stdout.log"
+    if verbose_latex:
+        proc = subprocess.run(cmd, cwd=build_dir, env=env)
+    else:
+        with latex_log_path.open("w", encoding="utf-8") as fh:
+            proc = subprocess.run(
+                cmd,
+                cwd=build_dir,
+                env=env,
+                stdout=fh,
+                stderr=subprocess.STDOUT,
+                text=True,
+            )
+    return proc.returncode, latex_log_path
+
+
+def build_texinputs_env(
+    kg_root: Path,
+    inputs: Sequence[Path],
+    extra_texinputs: Sequence[Path] = (),
+) -> dict:
     env = os.environ.copy()
     texinputs = env.get("TEXINPUTS", "")
     search_dirs: List[str] = []
@@ -237,10 +444,31 @@ def compile_with_latexmk(
         atoms_alias = p.parent / "atoms"
         if atoms_alias.exists():
             add_dir(atoms_alias)
+    for p in extra_texinputs:
+        add_dir(p)
 
     prefix = ":".join(search_dirs)
     env["TEXINPUTS"] = f"{prefix}:{texinputs}" if texinputs else f"{prefix}:"
-    latex_log_path = build_dir / "latexmk.stdout.log"
+    return env
+
+
+def compile_single_pass_xelatex(
+    build_dir: Path,
+    main_tex: Path,
+    kg_root: Path,
+    inputs: Sequence[Path],
+    extra_texinputs: Sequence[Path] = (),
+    verbose_latex: bool = False,
+) -> tuple[int, Path]:
+    env = build_texinputs_env(kg_root, inputs, extra_texinputs)
+    cmd = [
+        "xelatex",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-file-line-error",
+        f"./{main_tex.name}",
+    ]
+    latex_log_path = build_dir / "xelatex.stdout.log"
     if verbose_latex:
         proc = subprocess.run(cmd, cwd=build_dir, env=env)
     else:
@@ -321,6 +549,67 @@ def parse_index_labels(index_path: Path) -> Set[str]:
         if len(parts) >= 3 and parts[0].startswith("KG-"):
             labels.add(parts[1])
     return labels
+
+
+def discover_tex_project_root(source_path: Path) -> Path | None:
+    cur = source_path.parent.resolve()
+    while True:
+        if (cur / "main.tex").exists():
+            return cur
+        if cur.parent == cur:
+            return None
+        cur = cur.parent
+
+
+def discover_source_main_tex(extra_texinputs: Sequence[Path]) -> Path | None:
+    candidates: List[Path] = []
+    for path in extra_texinputs:
+        main_tex = path / "main.tex"
+        if main_tex.exists():
+            candidates.append(main_tex.resolve())
+    if not candidates:
+        return None
+    return sorted(candidates, key=lambda p: len(p.as_posix()))[0]
+
+
+def collect_extra_texinputs_for_labels(kg_root: Path, labels: Set[str]) -> List[Path]:
+    if not labels:
+        return []
+    atoms, scan_errors = scan_atoms(kg_root, verify_hash=False)
+    if scan_errors:
+        raise RuntimeError("scan errors:\n" + "\n".join(scan_errors))
+    by_label = {a.label: a for a in atoms}
+
+    out: Set[Path] = set()
+    for label in labels:
+        atom = by_label.get(label)
+        if atom is None:
+            continue
+        meta_path = atom_sidecar_path(atom.path)
+        if not meta_path.exists():
+            continue
+        try:
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+
+        source_path_raw = str(meta.get("source_path") or "").strip()
+        if not source_path_raw:
+            continue
+        source_path = Path(source_path_raw).expanduser()
+        if not source_path.is_absolute():
+            source_path = (kg_root / source_path).resolve()
+        else:
+            source_path = source_path.resolve()
+        if source_path.suffix.lower() != ".tex":
+            continue
+
+        out.add(source_path.parent)
+        project_root = discover_tex_project_root(source_path)
+        if project_root is not None:
+            out.add(project_root)
+
+    return sorted(out)
 
 
 DELTA_FILE_RE = re.compile(r"^delta_(?P<ts>\d{8}T\d{6}Z)\.jsonl$")
@@ -418,24 +707,36 @@ def collect_changed_labels_from_meta(kg_root: Path, changed_source_paths: Set[st
 
 def main() -> int:
     args = parse_args()
+    if args.full_latexmk:
+        args.single_pass = False
+    elif args.fail_fast:
+        args.single_pass = True
+    elif not args.single_pass:
+        # Default mode: fail-fast single-pass compile.
+        args.single_pass = True
     kg_root = args.kg_root.resolve() if args.kg_root else default_kg_root(__file__)
 
     pending_marker_state: Path | None = None
     pending_marker_ts: str | None = None
+    extra_texinputs: List[Path] = []
 
     if args.mode == "audit":
         if not args.root:
             raise SystemExit("--root is required for --mode audit")
         inputs, skipped = collect_tex_atoms_for_label(kg_root, args.root)
         target_name = f"audit_{args.root}"
+        extra_texinputs = collect_extra_texinputs_for_labels(kg_root, {args.root})
     elif args.mode == "partial":
         if not args.label:
             raise SystemExit("--label is required for --mode partial")
         inputs, skipped = collect_tex_atoms_for_label(kg_root, args.label)
         target_name = f"partial_{args.label}"
+        extra_texinputs = collect_extra_texinputs_for_labels(kg_root, {args.label})
     else:
         index_path = resolve_index_entry(kg_root, args.spec)
         spec_name = Path(args.spec).stem if args.spec else "index"
+        index_labels = parse_index_labels(index_path)
+        extra_texinputs = collect_extra_texinputs_for_labels(kg_root, index_labels)
         if args.changed_only:
             deltas = discover_source_deltas(kg_root)
             state_path = compile_state_path(kg_root, spec_name)
@@ -466,8 +767,6 @@ def main() -> int:
             if scan_errors:
                 raise RuntimeError("scan errors:\n" + "\n".join(scan_errors))
             by_label = {a.label: a for a in atoms}
-            index_labels = parse_index_labels(index_path)
-
             seed_labels = sorted(changed_labels & index_labels)
             if not seed_labels:
                 if newest_ts:
@@ -513,8 +812,18 @@ def main() -> int:
         build_dir = kg_root / ".kgcache" / "build" / target_name
     build_dir.mkdir(parents=True, exist_ok=True)
 
+    if args.mode == "index" and not args.changed_only:
+        if len(inputs) != 1:
+            raise RuntimeError(
+                f"index mode expects exactly one index input, got {len(inputs)}"
+            )
+        packed_index = build_packed_index_input(inputs[0], build_dir)
+        print(f"Packed index input: {packed_index}")
+        inputs = [packed_index]
+
     # Use absolute paths in generated main.tex to avoid relative path ambiguity.
     resolved_inputs = [Path(str(p)) for p in inputs]
+    source_main_tex = discover_source_main_tex(extra_texinputs) if args.mode == "index" else None
 
     main_tex = build_dir / "main.tex"
     use_fragment_ref_mode = args.mode == "index" and args.index_ref_mode == "stable"
@@ -523,29 +832,44 @@ def main() -> int:
             resolved_inputs,
             fragment_ref_mode=use_fragment_ref_mode,
             degrade_cite=args.degrade_cite,
+            source_main_tex=source_main_tex,
         ),
         encoding="utf-8",
     )
+    if source_main_tex is not None:
+        print(f"Using source preamble: {source_main_tex}")
     print(f"Generated {main_tex}")
 
     if args.dry_run:
         return 0
 
-    rc, latex_log_path = compile_with_latexmk(
-        build_dir,
-        main_tex,
-        args.latexmk_cmd,
-        kg_root,
-        resolved_inputs,
-        verbose_latex=args.verbose_latex,
-    )
+    if args.single_pass:
+        rc, latex_log_path = compile_single_pass_xelatex(
+            build_dir,
+            main_tex,
+            kg_root,
+            resolved_inputs,
+            extra_texinputs=extra_texinputs,
+            verbose_latex=args.verbose_latex,
+        )
+    else:
+        rc, latex_log_path = compile_with_latexmk(
+            build_dir,
+            main_tex,
+            args.latexmk_cmd,
+            kg_root,
+            resolved_inputs,
+            extra_texinputs=extra_texinputs,
+            verbose_latex=args.verbose_latex,
+        )
     if rc != 0:
-        print(f"latexmk failed with code {rc}")
+        mode_name = "xelatex(single-pass)" if args.single_pass else "latexmk"
+        print(f"{mode_name} failed with code {rc}")
         if not args.verbose_latex:
-            print(f"latexmk log: {latex_log_path}")
+            print(f"{mode_name} log: {latex_log_path}")
             tail = tail_lines(latex_log_path)
             if tail:
-                print("---- latexmk tail ----")
+                print("---- compile tail ----")
                 print(tail)
         return rc
 
@@ -554,7 +878,8 @@ def main() -> int:
         print(f"Updated changed-only marker: {pending_marker_state} -> {pending_marker_ts}")
 
     if not args.verbose_latex:
-        print(f"latexmk log: {latex_log_path}")
+        mode_name = "xelatex(single-pass)" if args.single_pass else "latexmk"
+        print(f"{mode_name} log: {latex_log_path}")
     pdf_path = build_dir / "main.pdf"
     if pdf_path.exists():
         print(f"PDF: {pdf_path}")
