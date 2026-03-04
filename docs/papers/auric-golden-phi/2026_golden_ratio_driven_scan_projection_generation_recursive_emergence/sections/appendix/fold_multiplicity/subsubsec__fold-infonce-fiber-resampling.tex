@@ -144,6 +144,36 @@ L_m^{K,\star}
 即得所示二阶展开。证毕。
 \end{proof}
 
+\begin{corollary}[二阶碰撞概率刻画 \texorpdfstring{$K=2$}{K=2} 最优损失与三阶递推闭包]\label{cor:fold-infonce-k2-collision-recurrence-closure}
+沿用定义 \ref{def:fold-pushforward-weight-wm} 的推前分布 \(w_m\)，并令
+\[
+\mathsf{Col}_m:=\sum_{x\in X_m}w_m(x)^2=\frac{S_2(m)}{4^m}
+\]
+为碰撞概率（定义 \ref{def:pom-s2}）。
+则 \(K=2\) 的 Bayes 最优 InfoNCE 损失满足严格恒等式
+\[
+\boxed{\;
+L_m^{2,\star}=(\log 2)\,\mathsf{Col}_m=(\log 2)\,\frac{S_2(m)}{4^m}.\;}
+\]
+并且由命题 \ref{prop:pom-s2-recurrence} 的三阶递推可知，当 \(m\ge 5\) 时序列 \(\{L_m^{2,\star}\}\) 满足缩放递推
+\[
+\boxed{\;
+L_m^{2,\star}=\frac12 L_{m-1}^{2,\star}+\frac14 L_{m-2}^{2,\star}-\frac18 L_{m-3}^{2,\star}.\;}
+\]
+\end{corollary}
+
+\begin{proof}
+当 \(K=2\) 时，条件分布 \(J\mid X\sim\mathrm{Binomial}(1,w_m(X))\) 等价于 Bernoulli\((w_m(X))\)，故
+\[
+\EE[\log(1+J)\mid X]=\log 2\cdot \EE[J\mid X]=(\log 2)\,w_m(X).
+\]
+再对 \(X\sim w_m\) 取期望，得到
+\(
+L_m^{2,\star}=(\log 2)\EE_{X\sim w_m}[w_m(X)]=(\log 2)\sum_x w_m(x)^2
+\)，即第一式。
+第二式由命题 \ref{prop:pom-s2-recurrence} 的递推两边同除以 \(4^m\) 并乘以 \(\log 2\) 得到。证毕。
+\end{proof}
+
 \begin{theorem}[Rényi 碰撞幂和给出的 Bayes--InfoNCE 多矩上界]\label{thm:fold-infonce-renyi-collision-upper-envelope}
 在定理 \ref{thm:fold-infonce-entropy-degeneration-second-order} 的设定下，
 对任意整数 \(q\ge 2\) 定义归一化碰撞幂和

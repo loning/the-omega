@@ -208,6 +208,75 @@ A=\bigcup_j d_j^{-1}\ZZ
 因此 \(\Sigma(A)\) 逐素数刻画了允许出现的分母幂次上界，从而完全决定该 \(\QQ\) 的子群；若 \(\Sigma(A)=\Sigma(B)\) 则 \(A=B\)，从而 \(A\cong B\)。证毕。
 \end{proof}
 
+\begin{corollary}[Fibonacci 覆盖塔的逆极限溶子与 \texorpdfstring{$\widehat{\QQ}$}{Q-hat} 同构]\label{cor:conclusion-fibonacci-solenoid-dual-q}
+令 \(\TT=\RR/\ZZ\)，并令 \(d_n:=F_{n+2}\)（\(F_n\) 为 Fibonacci 数列）。
+考虑覆盖同态
+\[
+\varphi_n:\TT\to\TT,\qquad x\longmapsto d_n x\pmod 1,
+\]
+并定义逆极限紧交换群
+\[
+S_F:=\varprojlim(\TT,\varphi_n).
+\]
+则其 Pontryagin 对偶为直极限
+\[
+\widehat{S_F}\ \cong\ \varinjlim(\ZZ,\times d_n)
+=\bigcup_{N\ge 1}\frac1{D_N}\ZZ,
+\qquad D_N:=\prod_{n=0}^{N-1}d_n,
+\]
+并且 \(\widehat{S_F}\cong\QQ\)。
+从而 \(S_F\cong \widehat{\QQ}\)；在局部紧交换群的对偶范畴中亦可识别为
+\(
+S_F\cong \mathbb A_\QQ/\QQ
+\)。
+\end{corollary}
+
+\begin{proof}
+逆极限与 Pontryagin 对偶把乘法覆盖 \(\varphi_n\) 送到 \(\ZZ\xrightarrow{\times d_n}\ZZ\) 的直极限，得到第一式。
+下证该直极限等于 \(\QQ\)。
+对任意素数 \(p\)，Fibonacci 数列在模 \(p\) 的状态对 \((F_n,F_{n+1})\in(\ZZ/p\ZZ)^2\) 上由递推确定且可逆，故从初态 \((0,1)\) 出发必回到 \((0,1)\)，从而存在 \(m\ge 1\) 使 \(F_m\equiv 0\pmod p\)。
+因此 \(p\) 整除无穷多个 \(d_n\)，从而在乘积 \(D_N\) 中的 \(p\)-进赋值随 \(N\to\infty\) 发散。
+于是对任意 \(k\ge 1\) 存在 \(N\) 使 \(p^k\mid D_N\)，即 \(p^{-k}\in \bigcup_N D_N^{-1}\ZZ\)。
+由于对一切素数 \(p\) 均如此，该并集包含所有有限分母的有理数，故等于 \(\QQ\)。
+最后的识别由 \(\widehat{\QQ}\cong \mathbb A_\QQ/\QQ\) 的标准 Pontryagin 对偶结论得到。证毕。
+\end{proof}
+
+\begin{theorem}[乘法自同构在 \texorpdfstring{$\widehat{\QQ}$}{Q-hat} 上的遍历性与强混合]\label{thm:conclusion-qhat-multiplication-ergodic-mixing}
+令 \(S_F\) 如推论 \ref{cor:conclusion-fibonacci-solenoid-dual-q}，并以 \(\mu\) 记其 Haar 概率测度。
+对任意整数 \(n\ge 2\)，令
+\[
+T_n:S_F\to S_F
+\]
+为与 \(\QQ\) 上的乘法自同构 \(q\mapsto nq\) 对偶的紧群自同构。
+则 \(T_n\) 关于 \(\mu\) 遍历且强混合。
+因此对任意 \(f\in L^1(S_F,\mu)\)，Birkhoff 平均几乎处处收敛：
+\[
+\lim_{N\to\infty}\frac1N\sum_{k=0}^{N-1} f\circ T_n^k
+=\int_{S_F} f\,d\mu.
+\]
+\end{theorem}
+
+\begin{proof}
+由推论 \ref{cor:conclusion-fibonacci-solenoid-dual-q}，字符群 \(\widehat{S_F}\cong\QQ\)，并且 \(\{\chi_q:q\in\QQ\}\) 在 \(L^2(S_F,\mu)\) 中构成正交基。
+对偶作用满足 \(\chi_q\circ T_n=\chi_{nq}\)。
+\par
+遍历性：若 \(g\in L^2\) 满足 \(g\circ T_n=g\)，写 Fourier 展开 \(g=\sum_q \widehat g(q)\chi_q\)。
+则 \(\widehat g(q)=\widehat g(nq)\) 对所有 \(q\) 成立。
+对任意 \(q\neq 0\)，轨道 \(\{n^k q:k\ge 0\}\) 无穷且互异；
+而 \(\sum_q|\widehat g(q)|^2<\infty\)，故只能有 \(\widehat g(q)=0\)（否则在无穷互异频率上出现相同的非零系数，违反平方可和性）。
+因此 \(g\) 仅余常数项，遍历性成立。
+\par
+混合性：对任意 \(q,q'\in\QQ\)，有
+\[
+\langle \chi_q\circ T_n^k,\chi_{q'}\rangle
+=\langle \chi_{n^k q},\chi_{q'}\rangle
+=\ind_{\{n^k q=q'\}}.
+\]
+当 \(q\neq 0\) 或 \(q'\neq 0\) 时，等式 \(n^k q=q'\) 最多在至多一个 \(k\) 上成立，故内积在 \(k\to\infty\) 时趋于 \(0\)；
+再由三角多项式在 \(L^2\) 的稠密性得到对一般 \(L^2\) 函数的强混合。
+最后的时间平均收敛由遍历性与 Birkhoff 定理推出。证毕。
+\end{proof}
+
 \begin{remark}[圆维含义：无限素数方向信息不提升相位圆维]\label{rem:conclusion-rank1-solenoid-circle-dimension}
 对紧阿贝尔群 \(K\) 记 \(\cdim_{\QQ}^{\vee}(K)=\dim_{\QQ}(\widehat K\otimes_{\ZZ}\QQ)\)（见定理 \ref{thm:conclusion-lie-solenoid-prime-ledger-dichotomy}(3)）。
 由 \(\widehat{\widehat{A}}=A\) 与 \(\cdim_{\QQ}(A)=1\) 得
