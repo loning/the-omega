@@ -16,7 +16,9 @@ from _kg_common import (
     compact_label,
     compute_sha256,
     default_kg_root,
+    normalize_parent_labels,
     normalize_type,
+    parse_parent_labels_from_meta,
     scan_atoms,
     slugify,
     write_json,
@@ -417,7 +419,46 @@ def merge_task_metadata_into_sidecar(
     merged["extractor_version"] = str(
         task.get("extractor_version") or merged.get("extractor_version") or ""
     )
+    if "parent_edges" not in merged:
+        merged["parent_edges"] = [
+            {
+                "parent": parent,
+                "edge_type": "inference_ref"
+                if str(merged.get("task_kind") or "") == "tex_knowledge_unit"
+                else "inference_candidate",
+                "edge_source": "kg_ingest_atoms",
+                "edge_reason": "legacy_parents_projection",
+            }
+            for parent in parse_parent_labels_from_meta(merged)
+        ]
+    merged["parents"] = normalize_parent_labels(parse_parent_labels_from_meta(merged))
+    merged["edge_schema_version"] = "v2"
     write_json(meta_path, merged)
+
+
+def build_parent_edges_for_ingest(
+    parent_labels: List[str],
+    *,
+    task_kind: str,
+    child_type: str,
+) -> List[Dict[str, object]]:
+    if not parent_labels:
+        return []
+    if task_kind == "tex_knowledge_unit":
+        edge_type = "inference_proof_anchor" if child_type == "tp-proof" else "inference_ref"
+        edge_reason = "source_refs"
+    else:
+        edge_type = "inference_candidate"
+        edge_reason = "candidate_parent_labels"
+    return [
+        {
+            "parent": parent,
+            "edge_type": edge_type,
+            "edge_source": "kg_ingest_atoms",
+            "edge_reason": edge_reason,
+        }
+        for parent in parent_labels
+    ]
 
 
 def next_kg_id_factory(kg_root: Path, now: datetime):
@@ -605,6 +646,12 @@ def main() -> int:
         if args.dry_run:
             print(f"[DRY-RUN] create {atom_path}")
         else:
+            normalized_parents = [] if parent_list == ["root"] else normalize_parent_labels(parent_list)
+            parent_edges = build_parent_edges_for_ingest(
+                normalized_parents,
+                task_kind=task_kind,
+                child_type=full_type,
+            )
             atom_path.write_bytes(payload)
             write_json(
                 meta_path,
@@ -612,7 +659,9 @@ def main() -> int:
                     "kg_id": kg_id,
                     "label": label,
                     "atom_type": f"tp-{type_token}",
-                    "parents": [] if parent_list == ["root"] else parent_list,
+                    "parents": normalized_parents,
+                    "parent_edges": parent_edges,
+                    "edge_schema_version": "v2",
                     "source_path": str(task.get("source_path") or ""),
                     "source_tex_label": str(task.get("source_tex_label") or ""),
                     "canonical_label": str(task.get("canonical_label") or ""),
@@ -634,7 +683,7 @@ def main() -> int:
             print(f"created {atom_path}")
             canonical_latest[canonical_from_atom_label(label)] = label
             label_to_type[label] = f"tp-{type_token}"
-            parent_graph[label] = [] if parent_list == ["root"] else list(parent_list)
+            parent_graph[label] = list(normalized_parents)
 
         if args.move_processed and not args.dry_run:
             processed_dir.mkdir(parents=True, exist_ok=True)

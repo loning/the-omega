@@ -389,6 +389,28 @@ python3 knowledgegraph/scripts/kg_analyze_build_log.py \
   --top 30
 ```
 
+一键执行 DAG 重连 + 校验 + 可视化（含全量 PNG）：
+
+```bash
+python3 knowledgegraph/scripts/kg_relink_pipeline.py --kg-root knowledgegraph
+```
+
+说明：默认包含 `component bridge` 步骤（把多连通分量合并为单连通图）与 `edge schema upgrade` 步骤（维护 `parent_edges` 逐边类型化记录）。
+
+边关系 schema 升级（`parents` -> `parent_edges`）：
+
+```bash
+python3 knowledgegraph/scripts/kg_upgrade_edge_schema.py --kg-root knowledgegraph --apply
+```
+
+说明：`parent_edges` 为逐边记录（`parent/edge_type/edge_source/edge_reason`），`parents` 保留为兼容投影。
+
+可选：仅刷新报告与可视化，不执行重连：
+
+```bash
+python3 knowledgegraph/scripts/kg_relink_pipeline.py --kg-root knowledgegraph --skip-relink
+```
+
 说明：日志分析默认优先选择“最近一次成功完成”的 build（有 `main.pdf` 且 `latexmk` 完成标记），避免误读中断构建日志。
 
 安装 `pylatexenc`（macOS/Homebrew Python）：

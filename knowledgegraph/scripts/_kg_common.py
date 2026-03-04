@@ -342,6 +342,52 @@ def atom_sidecar_path(atom_payload_path: Path) -> Path:
     return atom_payload_path.with_name(atom_payload_path.name + ".meta.json")
 
 
+def normalize_parent_labels(values: Iterable[object]) -> List[str]:
+    out: List[str] = []
+    seen: Set[str] = set()
+    for raw in values:
+        token = slugify(str(raw))
+        if not token or token in seen:
+            continue
+        seen.add(token)
+        out.append(token)
+    return out
+
+
+def parse_parent_edges(meta: Dict[str, object]) -> List[Dict[str, object]]:
+    raw_edges = meta.get("parent_edges")
+    if not isinstance(raw_edges, list):
+        return []
+    out: List[Dict[str, object]] = []
+    seen: Set[str] = set()
+    for raw in raw_edges:
+        if not isinstance(raw, dict):
+            continue
+        parent = slugify(str(raw.get("parent") or ""))
+        if not parent or parent in seen:
+            continue
+        seen.add(parent)
+        row = dict(raw)
+        row["parent"] = parent
+        out.append(row)
+    return out
+
+
+def parse_parent_labels_from_meta(meta: Dict[str, object]) -> List[str]:
+    # Prefer typed edge list, then include legacy parents as fallback/补集.
+    from_edges = [str(x.get("parent") or "") for x in parse_parent_edges(meta)]
+    from_parents = normalize_parent_labels(meta.get("parents") or [])
+    out: List[str] = []
+    seen: Set[str] = set()
+    for parent in from_edges + from_parents:
+        token = slugify(parent)
+        if not token or token in seen:
+            continue
+        seen.add(token)
+        out.append(token)
+    return out
+
+
 def scan_atoms(kg_root: Path, verify_hash: bool = True) -> Tuple[List[Atom], List[str]]:
     atoms_dir = kg_root / "atoms"
     errors: List[str] = []
@@ -370,13 +416,15 @@ def scan_atoms(kg_root: Path, verify_hash: bool = True) -> Tuple[List[Atom], Lis
                 except Exception as exc:  # noqa: BLE001
                     errors.append(f"invalid sidecar json for {path.name}: {exc}")
                     meta = {}
-                meta_parents = meta.get("parents")
-                if isinstance(meta_parents, list):
-                    parents = tuple(slugify(str(x)) for x in meta_parents if str(x).strip())
-                elif meta_parents is None:
+                if isinstance(meta.get("parents"), list) or isinstance(meta.get("parent_edges"), list):
+                    parents = tuple(parse_parent_labels_from_meta(meta))
+                elif meta.get("parents") is None and meta.get("parent_edges") is None:
                     parents = tuple()
                 else:
-                    errors.append(f"invalid parents in sidecar for {path.name}: expected list")
+                    errors.append(
+                        f"invalid parent fields in sidecar for {path.name}: "
+                        "expected parents(list) and/or parent_edges(list)"
+                    )
                     parents = tuple()
             else:
                 errors.append(f"missing sidecar meta json for {path.name}: {sidecar.name}")
