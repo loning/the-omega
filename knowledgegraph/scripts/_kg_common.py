@@ -12,6 +12,12 @@ from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 from typing import Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
+try:
+    from pylatexenc.latexwalker import LatexMacroNode, LatexWalker
+except ImportError:
+    LatexMacroNode = None
+    LatexWalker = None
+
 # Legacy format (kept for backward compatibility):
 #   <id>__lbl-<label>__tp-<type>__from-<parents>__h-<hash>.<ext>
 ATOM_RE_LEGACY = re.compile(
@@ -105,10 +111,14 @@ def read_text(path: Path) -> str:
 
 
 LABEL_RE = re.compile(r"\\label\{([^}]+)\}")
+GENFRAG_LABEL_RE = re.compile(r"\\genfraglabel\{([^}]+)\}")
 REF_RE = re.compile(
     r"\\(?:ref|eqref|autoref|cref|Cref|pageref|vref|nameref)\{([^}]+)\}"
 )
 CITE_RE = re.compile(r"\\(?:cite|citet|citep)\{([^}]+)\}")
+REF_MACROS = {"ref", "eqref", "autoref", "cref", "Cref", "pageref", "vref", "nameref"}
+LABEL_MACROS = {"label", "genfraglabel"}
+CITE_MACROS = {"cite", "citet", "citep"}
 
 
 def strip_tex_comments(text: str) -> str:
@@ -141,15 +151,107 @@ def split_latex_csv(value: str) -> List[str]:
     return out
 
 
+def _macro_first_braced_arg_text(node) -> str:
+    if LatexMacroNode is None or not isinstance(node, LatexMacroNode):
+        return ""
+    if not node.nodeargd or not node.nodeargd.argnlist:
+        return ""
+    for arg in node.nodeargd.argnlist:
+        if arg is None or not hasattr(arg, "latex_verbatim"):
+            continue
+        raw = arg.latex_verbatim().strip()
+        if raw.startswith("{") and raw.endswith("}"):
+            return raw[1:-1].strip()
+    return ""
+
+
+def _iter_nodes_recursive(nodes):
+    for node in nodes or []:
+        yield node
+        if hasattr(node, "nodelist") and node.nodelist:
+            yield from _iter_nodes_recursive(node.nodelist)
+        if LatexMacroNode is not None and isinstance(node, LatexMacroNode) and node.nodeargd:
+            for arg in node.nodeargd.argnlist:
+                if arg is not None and hasattr(arg, "nodelist") and arg.nodelist:
+                    yield from _iter_nodes_recursive(arg.nodelist)
+
+
+def _label_aliases(label: str) -> Set[str]:
+    value = label.strip()
+    out = {value}
+    if ":" in value:
+        out.add(value.replace(":", "__"))
+    if "__" in value:
+        out.add(value.replace("__", ":"))
+    return {x for x in out if x}
+
+
 def extract_tex_crossrefs(text: str) -> Tuple[Set[str], Set[str], Set[str]]:
-    cleaned = strip_tex_comments(text)
-    labels = set(LABEL_RE.findall(cleaned))
+    if LatexWalker is None:
+        cleaned = strip_tex_comments(text)
+        labels = set(LABEL_RE.findall(cleaned))
+        labels.update(GENFRAG_LABEL_RE.findall(cleaned))
+        refs: Set[str] = set()
+        for raw in REF_RE.findall(cleaned):
+            refs.update(split_latex_csv(raw))
+        cites: Set[str] = set()
+        for raw in CITE_RE.findall(cleaned):
+            cites.update(split_latex_csv(raw))
+        aliased_labels: Set[str] = set()
+        for lb in labels:
+            aliased_labels.update(_label_aliases(lb))
+        return aliased_labels, refs, cites
+
+    labels: Set[str] = set()
     refs: Set[str] = set()
+    cites: Set[str] = set()
+    try:
+        nodes, _, _ = LatexWalker(text).get_latex_nodes(pos=0)
+    except Exception:
+        cleaned = strip_tex_comments(text)
+        labels = set(LABEL_RE.findall(cleaned))
+        labels.update(GENFRAG_LABEL_RE.findall(cleaned))
+        refs = set()
+        for raw in REF_RE.findall(cleaned):
+            for ref in split_latex_csv(raw):
+                refs.update(_label_aliases(ref))
+        cites = set()
+        for raw in CITE_RE.findall(cleaned):
+            cites.update(split_latex_csv(raw))
+        aliased_labels: Set[str] = set()
+        for lb in labels:
+            aliased_labels.update(_label_aliases(lb))
+        return aliased_labels, refs, cites
+
+    for node in _iter_nodes_recursive(nodes):
+        if LatexMacroNode is None or not isinstance(node, LatexMacroNode):
+            continue
+        macro = node.macroname
+        arg = _macro_first_braced_arg_text(node)
+        if not arg:
+            continue
+        if macro in LABEL_MACROS:
+            for label in split_latex_csv(arg):
+                labels.update(_label_aliases(label))
+        elif macro in REF_MACROS:
+            refs.update(split_latex_csv(arg))
+        elif macro in CITE_MACROS:
+            cites.update(split_latex_csv(arg))
+
+    # Some custom macros may be unknown to LatexWalker and keep raw braces in
+    # char nodes. Merge a comment-stripped regex fallback for completeness.
+    cleaned = strip_tex_comments(text)
+    for raw in LABEL_RE.findall(cleaned):
+        for label in split_latex_csv(raw):
+            labels.update(_label_aliases(label))
+    for raw in GENFRAG_LABEL_RE.findall(cleaned):
+        for label in split_latex_csv(raw):
+            labels.update(_label_aliases(label))
     for raw in REF_RE.findall(cleaned):
         refs.update(split_latex_csv(raw))
-    cites: Set[str] = set()
     for raw in CITE_RE.findall(cleaned):
         cites.update(split_latex_csv(raw))
+
     return labels, refs, cites
 
 

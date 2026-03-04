@@ -29,6 +29,7 @@ knowledgegraph/
   schema/
     kg-macros.tex
     kg-node-template.tex
+    reference_aliases.json            # 历史/重命名 label 对齐表（ref -> canonical label）
   atoms/                             # 真相层（统一 Atom，append-only）
     KG-20260303-0001__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex
     KG-20260303-0001__lbl-scan-axiom-hf1a2b3c4d5e6__tp-def__h-a1b2c3d4e5f6.tex.meta.json
@@ -232,6 +233,7 @@ order: topo
 ### 8.1 流程
 
 1. `kg_latexpand_merge.py` 生成 `.kgcache/merged/*.latexpanded.tex` 与 `*.map.json`。
+   - 若 latexpand 仍残留 `\input/\include/\subfile`，脚本会用 `pylatexenc` AST 递归补展开并回写 `% start/end input ...` 标记。
 2. `kg_emit_llm_tasks.py` **仅基于 merged 文件**（显式 `--merged-tex/--merged-map`）生成 `.kgcache/llm_queue/`。
 3. `kg_emit_llm_tasks.py` 使用 `.kgcache/merged/emit_state.json` 做增量去重（同一知识单元不会重复发任务）。
 4. `kg_ingest_atoms.py`（LLM 结果落地）只新增 Atom 文件。
@@ -275,10 +277,11 @@ order: topo
    - `stable`（默认）：保留可解析的 `\ref/\eqref`；未解析标签回退为文本占位；`\cite` 回退为文本占位，优先保证超大图可编译。
    - `strict`：保留原始引用语义（含引用告警），可能更慢或在超大图上失败。
 6. strict 模式会自动注入 `reference_closure_report.json` 中缺失标签的合成锚点，保证大图可收敛。
-7. 若 `knowledgegraph/bibliography/*.bib` 存在，strict 模式自动注入 DAG 内 bibliography 命令并运行 BibTeX。
-8. 默认复用固定构建目录（例如 `knowledgegraph/.kgcache/build/index_book_grg/`），可复用 `.aux/.fdb_latexmk`，重复编译更快。
-9. 默认将 LaTeX 详细输出写入 `latexmk.stdout.log`（减少终端 I/O 开销）；调试时可加 `--verbose-latex`。
-10. 若需要冷启动全新构建目录，使用 `--fresh-build`。
+7. `kg_build_index.py` 会读取 `schema/reference_aliases.json`，把历史标签名/重命名标签映射到当前 canonical label（用于引用闭包对齐）。
+8. 若 `knowledgegraph/bibliography/*.bib` 存在，strict 模式自动注入 DAG 内 bibliography 命令并运行 BibTeX。
+9. 默认复用固定构建目录（例如 `knowledgegraph/.kgcache/build/index_book_grg/`），可复用 `.aux/.fdb_latexmk`，重复编译更快。
+10. 默认将 LaTeX 详细输出写入 `latexmk.stdout.log`（减少终端 I/O 开销）；调试时可加 `--verbose-latex`。
+11. 若需要冷启动全新构建目录，使用 `--fresh-build`。
 
 ### 9.3 局部编译
 
@@ -336,6 +339,17 @@ python3 knowledgegraph/scripts/kg_emit_llm_tasks.py \
   --merged-map knowledgegraph/.kgcache/merged/grg_main.latexpanded.map.json \
   --reset-state
 ```
+
+若索引 spec 使用 `merged_sha_filter: latest`，且 merged 文件 hash 变化后要让全部旧 atom 对齐到新 hash：
+
+```bash
+python3 knowledgegraph/scripts/kg_ingest_atoms.py \
+  --kg-root knowledgegraph \
+  --move-processed \
+  --limit 5000
+```
+
+按批次重复执行到 `.kgcache/llm_queue/` 无 pending task。
 
 全量索引编译（推荐默认复用缓存）：
 

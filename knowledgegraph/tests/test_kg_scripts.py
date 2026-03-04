@@ -633,6 +633,37 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn((main_tex.parent / "sections" / "a.tex").resolve().as_posix(), sources)
         self.assertIn((main_tex.parent / "sections" / "b.tex").resolve().as_posix(), sources)
 
+    def test_latexpand_expand_residual_inputs_from_mapped_source(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        paper = (self.repo_root / "paper").resolve()
+        sections = paper / "sections"
+        sections.mkdir(parents=True, exist_ok=True)
+        main_tex = paper / "main.tex"
+        main_tex.write_text("\\input{sections/a}\n", encoding="utf-8")
+
+        a_tex = sections / "a.tex"
+        a_tex.write_text("\\input{b}\\input{c}\n", encoding="utf-8")
+        (sections / "b.tex").write_text("\\label{thm:from-b}\n", encoding="utf-8")
+        (sections / "c.tex").write_text("\\label{thm:from-c}\n", encoding="utf-8")
+
+        merged = (
+            "% start input sections/a.tex\n"
+            "\\input{b}\\input{c}\n"
+            "% end input sections/a.tex\n"
+        )
+        expanded, expanded_count, unresolved = latexpand_merge.expand_residual_inputs(
+            merged,
+            main_tex=main_tex,
+        )
+        self.assertGreaterEqual(expanded_count, 2)
+        self.assertEqual(unresolved, 0)
+        self.assertIn("\\label{thm:from-b}", expanded)
+        self.assertIn("\\label{thm:from-c}", expanded)
+        self.assertNotIn("\\input{b}", expanded)
+        self.assertNotIn("\\input{c}", expanded)
+
     def test_ingest_non_dry_run_creates_atom_file(self) -> None:
         queue = self.kg_root / ".kgcache" / "llm_queue"
         queue.mkdir(parents=True, exist_ok=True)
@@ -1087,7 +1118,6 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn("result", content)
         self.assertNotIn("tp-method", content)
         self.assertIn("mode=sanitized", content)
-        self.assertIn("Reference Closure Summary", content)
         manifest = json.loads((out_tex.parent / "manifest.json").read_text(encoding="utf-8"))
         self.assertIn("selection_fingerprint", manifest)
         self.assertEqual(manifest["sanitized_tex_atom_count"], 1)
@@ -1215,6 +1245,49 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn("\\bibliography{", lines[1])
         self.assertIn((bib_dir / "references").resolve().as_posix(), lines[1])
         self.assertIn((bib_dir / "zeta").resolve().as_posix(), lines[1])
+
+    def test_compile_rewrite_ref_aliases(self) -> None:
+        text = (
+            "See \\ref{cor:old} and \\cref{thm:keep,thm:old}.\n"
+            "Also \\eqref{eq:old}.\n"
+        )
+        out = kg_compile.rewrite_ref_aliases(
+            text,
+            {
+                "cor:old": "thm:new",
+                "thm:old": "thm:new2",
+                "eq:old": "eq:new",
+            },
+        )
+        self.assertIn("\\ref{thm:new}", out)
+        self.assertIn("\\cref{thm:keep,thm:new2}", out)
+        self.assertIn("\\eqref{eq:new}", out)
+
+    def test_compile_build_packed_index_input_applies_ref_aliases(self) -> None:
+        idx_dir = self.repo_root / "idx"
+        atoms_dir = idx_dir / "atoms"
+        atoms_dir.mkdir(parents=True, exist_ok=True)
+        atom_path = atoms_dir / "KG-20260303-00001.tex"
+        atom_path.write_text(
+            "\\begin{theorem}\\label{thm:src}By \\ref{cor:old}.\\end{theorem}\n",
+            encoding="utf-8",
+        )
+
+        index_path = idx_dir / "idx_test_main.tex"
+        index_path.write_text(
+            "\\kginput{atoms/KG-20260303-00001.tex}\n",
+            encoding="utf-8",
+        )
+        build_dir = self.repo_root / "build"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        packed = kg_compile.build_packed_index_input(
+            index_path,
+            build_dir,
+            alias_map={"cor:old": "thm:new"},
+        )
+        content = packed.read_text(encoding="utf-8")
+        self.assertIn("\\ref{thm:new}", content)
+        self.assertNotIn("\\ref{cor:old}", content)
 
     def test_compile_normalize_repairs_nested_display_math_delimiters(self) -> None:
         raw = (
@@ -1349,6 +1422,31 @@ class KGScriptsUnitTest(unittest.TestCase):
         normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
         self.assertIn("\\text{Kodaira 型 (I\\_2)}", normalized)
 
+    def test_compile_normalize_drops_endinput_terminator(self) -> None:
+        raw = (
+            "\\paragraph{A}\\label{a}\n"
+            "\\endinput\n"
+            "\\paragraph{B}\\label{b}\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertNotIn("\\endinput", normalized)
+        self.assertIn("\\label{a}", normalized)
+        self.assertIn("\\label{b}", normalized)
+
+    def test_compile_normalize_drops_latexpand_artifact_text_lines(self) -> None:
+        raw = (
+            "\\paragraph{A}\n"
+            "\\texttt{\\% start input /Users/auric/project/sections/a.tex}\n"
+            "real content\n"
+            "% end input /Users/auric/project/sections/a.tex\n"
+            "\\paragraph{B}\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertNotIn("start input /Users/auric/project/sections/a.tex", normalized)
+        self.assertNotIn("end input /Users/auric/project/sections/a.tex", normalized)
+        self.assertIn("real content", normalized)
+        self.assertIn("\\paragraph{B}", normalized)
+
     def test_compile_normalize_degrades_math_macros_inside_cjk_text_macro(self) -> None:
         raw = (
             "\\[\n"
@@ -1376,9 +1474,19 @@ class KGScriptsUnitTest(unittest.TestCase):
             "\\cite{A1, B2}\n"
         )
         labels, refs, cites = common.extract_tex_crossrefs(tex)
-        self.assertEqual(labels, {"sec:ok"})
+        self.assertEqual(labels, {"sec:ok", "sec__ok"})
         self.assertEqual(refs, {"sec:ok", "sec:next", "eq:one"})
         self.assertEqual(cites, {"A1", "B2"})
+
+    def test_extract_tex_crossrefs_supports_genfraglabel_and_colon_alias(self) -> None:
+        tex = (
+            "\\genfraglabel{tab:demo}\n"
+            "See \\ref{subsubsec__fold-zeckendorf-mod-topbits}.\n"
+        )
+        labels, refs, _ = common.extract_tex_crossrefs(tex)
+        self.assertIn("tab:demo", labels)
+        self.assertIn("tab__demo", labels)
+        self.assertIn("subsubsec__fold-zeckendorf-mod-topbits", refs)
 
     def test_build_index_reference_closure_adds_excluded_type(self) -> None:
         write_atom(
@@ -1433,6 +1541,54 @@ class KGScriptsUnitTest(unittest.TestCase):
         )
         self.assertEqual(closure_report["added_atom_count"], 1)
         self.assertEqual(closure_report["final_missing_ref_count"], 0)
+
+    def test_build_index_reference_closure_resolves_alias_mapping(self) -> None:
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0101",
+            label="thm-target",
+            atom_type="tp-thm",
+            ext="tex",
+            content="\\begin{theorem}\\label{thm:target}T\\end{theorem}\n",
+        )
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0102",
+            label="thm-user",
+            atom_type="tp-thm",
+            ext="tex",
+            content="\\begin{theorem}\\label{thm:user}By \\ref{cor:target}.\\end{theorem}\n",
+        )
+
+        schema_dir = self.kg_root / "schema"
+        schema_dir.mkdir(parents=True, exist_ok=True)
+        (schema_dir / "reference_aliases.json").write_text(
+            json.dumps({"cor:target": "thm:target"}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+
+        spec = self.kg_root / "index_specs" / "alias.idx"
+        spec.write_text(
+            "\n".join(
+                [
+                    "name: alias",
+                    "roots: thm-user",
+                    "include_types: tp-thm",
+                    "reference_closure: true",
+                    "reference_closure_max_rounds: 4",
+                    "order: topo",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        out_tex = build_index.build_single_spec(self.kg_root, spec)
+        closure_report = json.loads(
+            (out_tex.parent / "reference_closure_report.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(closure_report["final_missing_ref_count"], 0)
+        self.assertGreaterEqual(int(closure_report.get("resolved_by_alias_count", 0)), 1)
+        self.assertEqual(closure_report.get("resolved_by_alias", {}).get("cor:target"), "thm:target")
 
     def test_build_index_can_filter_tex_task_kind_and_keep_latest_version_only(self) -> None:
         old_path = write_atom(

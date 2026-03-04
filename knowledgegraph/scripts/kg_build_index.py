@@ -33,10 +33,16 @@ BEGIN_DOC_RE = re.compile(r"\\begin\s*\{\s*document\s*\}")
 END_DOC_RE = re.compile(r"\\end\s*\{\s*document\s*\}")
 DOCUMENTCLASS_RE = re.compile(r"\\documentclass\b")
 UNESCAPED_DOUBLE_DOLLAR_RE = re.compile(r"(?<!\\)\$\$")
-BUILD_INDEX_VERSION = "2026-03-04-r6-no-aliases"
+BUILD_INDEX_VERSION = "2026-03-05-r1-ref-aliases"
 VERSIONED_LABEL_RE = re.compile(r"^(?P<canonical>[a-z0-9-]+)-h(?P<hash>[0-9a-f]{12})$")
 KG_ID_RE = re.compile(r"^KG-(?P<date>\d{8})-(?P<seq>\d+)$")
 DEPRECATED_SPEC_KEYS = {"source_alias_mode", "expose_source_aliases"}
+REFERENCE_ALIAS_DEFAULTS = {
+    "cor:terminal-foldbin6-64-to-21-hist": "thm:terminal-foldbin6-64-to-21-hist",
+    "thm:bdry-uplift-orientation-torsor-parity": "cor:bdry-uplift-orientation-parity",
+    "thm:xi-terminal-zm-leyang-elliptic-37-modularity-monodromy-langlands":
+        "thm:xi-terminal-zm-leyang-elliptic-modularity-37",
+}
 
 
 def latex_escape(text: str) -> str:
@@ -138,6 +144,65 @@ def parse_int(value: str, default: int) -> int:
         return int(value.strip())
     except Exception:
         return default
+
+
+def normalize_label_alias_forms(label: str) -> Set[str]:
+    value = label.strip()
+    out = {value}
+    if ":" in value:
+        out.add(value.replace(":", "__"))
+    if "__" in value:
+        out.add(value.replace("__", ":"))
+    return {x for x in out if x}
+
+
+def load_reference_aliases(kg_root: Path) -> Dict[str, str]:
+    aliases: Dict[str, str] = dict(REFERENCE_ALIAS_DEFAULTS)
+    alias_path = kg_root / "schema" / "reference_aliases.json"
+    if alias_path.exists():
+        try:
+            payload = json.loads(alias_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            payload = {}
+        if isinstance(payload, dict):
+            for raw_key, raw_value in payload.items():
+                key = str(raw_key or "").strip()
+                value = str(raw_value or "").strip()
+                if key and value:
+                    aliases[key] = value
+
+    expanded: Dict[str, str] = {}
+    for src, dst in aliases.items():
+        for src_form in normalize_label_alias_forms(src):
+            expanded[src_form] = dst
+    return expanded
+
+
+def resolve_ref_to_atom_label(
+    ref: str,
+    source_label_to_atom: Dict[str, str],
+    reference_aliases: Dict[str, str],
+) -> Tuple[Optional[str], Optional[str]]:
+    target = source_label_to_atom.get(ref)
+    if target:
+        return target, None
+
+    for alt in normalize_label_alias_forms(ref):
+        target = source_label_to_atom.get(alt)
+        if target:
+            return target, None
+
+    alias_target_label = reference_aliases.get(ref)
+    if alias_target_label:
+        dst_forms = [alias_target_label]
+        for alt in sorted(normalize_label_alias_forms(alias_target_label)):
+            if alt not in dst_forms:
+                dst_forms.append(alt)
+        for dst in dst_forms:
+            target = source_label_to_atom.get(dst)
+            if target:
+                return target, dst
+    return None, None
 
 
 def load_atom_meta(atom: Atom) -> Dict[str, object]:
@@ -501,31 +566,46 @@ def apply_reference_closure(
     by_label: Dict[str, Atom],
     tex_ref_index: Dict[str, Dict[str, Set[str]]],
     source_label_to_atom: Dict[str, str],
+    reference_aliases: Dict[str, str],
     max_rounds: int,
 ) -> Tuple[Set[str], Dict[str, object]]:
     selected = set(selected_labels)
     added_labels: Set[str] = set()
     rounds: List[Dict[str, object]] = []
 
+    def ref_is_directly_defined(ref: str, defined_labels: Set[str]) -> bool:
+        if ref in defined_labels:
+            return True
+        for alt in normalize_label_alias_forms(ref):
+            if alt in defined_labels:
+                return True
+        return False
+
     for ridx in range(1, max_rounds + 1):
         defined_labels, refs, _ = selection_ref_sets(selected, by_label, tex_ref_index)
-        missing_refs = sorted(refs - defined_labels)
-
         seed_atoms: Set[str] = set()
-        unresolved: List[str] = []
-        for ref in missing_refs:
-            target = source_label_to_atom.get(ref)
-            if target:
-                if target not in selected:
-                    seed_atoms.add(target)
-            else:
-                unresolved.append(ref)
+        unresolved_count = 0
+        closable_count = 0
+        for ref in sorted(refs):
+            if ref_is_directly_defined(ref, defined_labels):
+                continue
+            target, alias_target = resolve_ref_to_atom_label(
+                ref,
+                source_label_to_atom,
+                reference_aliases,
+            )
+            if target is None:
+                unresolved_count += 1
+                continue
+            closable_count += 1
+            if target not in selected:
+                seed_atoms.add(target)
 
         if not seed_atoms:
             rounds.append(
                 {
                     "round": ridx,
-                    "missing_refs": len(missing_refs),
+                    "missing_refs": unresolved_count + closable_count,
                     "added_seed_atoms": 0,
                     "added_total_atoms": 0,
                 }
@@ -537,7 +617,7 @@ def apply_reference_closure(
         rounds.append(
             {
                 "round": ridx,
-                "missing_refs": len(missing_refs),
+                "missing_refs": unresolved_count + closable_count,
                 "added_seed_atoms": len(seed_atoms),
                 "added_total_atoms": len(new_atoms),
             }
@@ -550,7 +630,21 @@ def apply_reference_closure(
         added_labels.update(new_atoms)
 
     final_defined, final_refs, final_cites = selection_ref_sets(selected, by_label, tex_ref_index)
-    final_missing = sorted(final_refs - final_defined)
+    final_missing: List[str] = []
+    alias_resolved_refs: Dict[str, str] = {}
+    for ref in sorted(final_refs):
+        if ref_is_directly_defined(ref, final_defined):
+            continue
+        target, alias_target = resolve_ref_to_atom_label(
+            ref,
+            source_label_to_atom,
+            reference_aliases,
+        )
+        if target is not None and target in selected:
+            if alias_target:
+                alias_resolved_refs[ref] = alias_target
+            continue
+        final_missing.append(ref)
 
     report: Dict[str, object] = {
         "closure_enabled": True,
@@ -558,6 +652,8 @@ def apply_reference_closure(
         "rounds": rounds,
         "added_atom_labels": sorted(added_labels),
         "added_atom_count": len(added_labels),
+        "resolved_by_alias_count": len(alias_resolved_refs),
+        "resolved_by_alias": dict(sorted(alias_resolved_refs.items())),
         "final_defined_label_count": len(final_defined),
         "final_unique_ref_count": len(final_refs),
         "final_missing_ref_count": len(final_missing),
@@ -823,6 +919,7 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
 
     tex_atoms = [a for a in atoms if a.ext == "tex"]
     tex_ref_index, source_label_to_atom, parse_errors = collect_tex_crossref_index(tex_atoms)
+    reference_aliases = load_reference_aliases(kg_root)
 
     if reference_closure:
         selected_labels, closure_report = apply_reference_closure(
@@ -830,6 +927,7 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
             by_label,
             tex_ref_index,
             source_label_to_atom,
+            reference_aliases,
             closure_max_rounds,
         )
     else:
@@ -987,8 +1085,7 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
     lines: List[str] = []
     lines.append("% Auto-generated by kg_build_index.py")
     lines.append(f"% spec: {spec_path}")
-    lines.append(f"\\section*{{Index: {latex_escape(name)}}}")
-    lines.append("\\subsection*{Included TeX Atoms}")
+    lines.append(f"% index: {name}")
 
     if includable_entries:
         for atom, mode in includable_entries:
@@ -1008,81 +1105,7 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
             lines.append(f"% {atom.kg_id} {atom.label} {atom.atom_type} mode={mode}")
             lines.append(f"\\kginput{{{tex_path}}}")
     else:
-        lines.append("\\emph{No TeX atoms selected.}")
-
-    lines.append("\\subsection*{Skipped TeX Atoms}")
-    if skipped_tex_atoms:
-        lines.append("\\begin{itemize}")
-        for atom, reason in skipped_tex_atoms:
-            lines.append(
-                "\\item "
-                f"\\texttt{{{atom.kg_id}}} ({atom.atom_type}) "
-                f"label=\\texttt{{{atom.label}}}, reason=\\texttt{{{latex_escape(reason)}}}"
-            )
-        lines.append("\\end{itemize}")
-    else:
-        lines.append("\\emph{None.}")
-
-    lines.append("\\subsection*{Non-TeX Atoms}")
-    if non_tex_atoms:
-        lines.append("\\begin{itemize}")
-        for atom in non_tex_atoms:
-            lines.append(
-                f"\\item \\texttt{{{atom.kg_id}}} ({atom.atom_type}) label=\\texttt{{{atom.label}}}"
-            )
-        lines.append("\\end{itemize}")
-    else:
-        lines.append("\\emph{None.}")
-
-    lines.append("\\subsection*{Reference Closure Summary}")
-    lines.append("\\begin{itemize}")
-    if merged_sha_filter:
-        lines.append(
-            "\\item "
-            f"merged sha filter=\\texttt{{{merged_sha_filter}}}, "
-            f"dropped by merged sha=\\texttt{{{dropped_by_merged_sha}}}"
-        )
-    if extractor_version_filter:
-        lines.append(
-            "\\item "
-            f"extractor version filter=\\texttt{{{extractor_version_filter}}}, "
-            f"dropped by extractor version=\\texttt{{{dropped_by_extractor_version}}}"
-        )
-    if tex_task_kind_filter:
-        lines.append(
-            "\\item "
-            f"tex task kind filter=\\texttt{{{latex_escape(','.join(sorted(tex_task_kind_filter)))}}}, "
-            f"dropped by task kind=\\texttt{{{dropped_by_task_kind}}}"
-        )
-    lines.append(
-        "\\item "
-        f"latest version only=\\texttt{{{str(bool(latest_version_only)).lower()}}}, "
-        f"dropped older versions=\\texttt{{{dropped_older_versions}}}"
-    )
-    if latest_source_label_only:
-        lines.append(
-            "\\item "
-            f"latest source label only=\\texttt{{true}}, "
-            f"dropped source-label duplicates=\\texttt{{{dropped_source_label_duplicates}}}"
-        )
-    if drop_unused_label_anchors:
-        lines.append(
-            "\\item "
-            f"drop unused label anchors=\\texttt{{true}}, "
-            f"dropped label anchors=\\texttt{{{dropped_unused_label_anchors}}}"
-        )
-    lines.append(
-        "\\item "
-        f"closure enabled=\\texttt{{{str(bool(reference_closure)).lower()}}}, "
-        f"added atoms=\\texttt{{{closure_report.get('added_atom_count', 0)}}}"
-    )
-    lines.append(
-        "\\item "
-        f"defined labels=\\texttt{{{closure_report.get('final_defined_label_count', 0)}}}, "
-        f"unique refs=\\texttt{{{closure_report.get('final_unique_ref_count', 0)}}}, "
-        f"missing refs=\\texttt{{{closure_report.get('final_missing_ref_count', 0)}}}"
-    )
-    lines.append("\\end{itemize}")
+        lines.append("% no includable tex atoms")
 
     out_tex.write_text("\n".join(lines) + "\n", encoding="utf-8")
 

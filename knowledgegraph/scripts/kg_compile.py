@@ -10,7 +10,7 @@ import re
 import shlex
 import subprocess
 from pathlib import Path
-from typing import List, Sequence, Set
+from typing import Dict, List, Sequence, Set
 
 from _kg_common import (
     ancestor_closure,
@@ -28,9 +28,20 @@ BIB_COMMAND_LINE_RE = re.compile(r"^\s*\\bibliography\{.+\}\s*$")
 BIB_SUBFIX_ITEM_RE = re.compile(r"\\subfix\{([^{}]+)\}")
 KGINPUT_LINE_RE = re.compile(r"^\s*\\kginput\{(?P<rel>atoms/KG-[^}]+\.tex)\}\s*$")
 KGID_LABEL_LINE_RE = re.compile(r"^\s*\\label\{kgid:[^}]+\}\s*$")
+REF_MACRO_WITH_ARG_RE = re.compile(
+    r"\\(?P<cmd>ref|eqref|autoref|cref|Cref|pageref|vref|nameref)\{(?P<arg>[^{}]+)\}"
+)
 LIST_ENV_BEGIN_RE = re.compile(r"^\s*\\begin\{(?:itemize|enumerate|description)\}")
 LIST_ENV_END_RE = re.compile(r"^\s*\\end\{(?:itemize|enumerate|description)\}")
 ITEM_LINE_RE = re.compile(r"^\s*\\item(?:\s|$|\[)")
+ENDINPUT_LINE_RE = re.compile(r"^\s*\\endinput(?:\s|%|$)")
+LATEXPAND_ARTIFACT_LINE_RE = re.compile(
+    r"^\s*%+\s*(?:start|end)\s+input\b|"
+    r"\\%\s*(?:start|end)\s+input\b|"
+    r"start\s+input\s+/Users/|"
+    r"end\s+input\s+/Users/",
+    re.IGNORECASE,
+)
 AUTO_ITEMIZE_CLOSE_HINT_RE = re.compile(
     r"^\s*\\(?:kgcloseproofifopen|part|chapter|section|subsection|subsubsection|paragraph|subparagraph)\b|"
     r"^\s*\\begin\{(?:theorem|lemma|proposition|corollary|definition|remark|example|proof|conjecture|conclusion|algorithm|auditthm|auditcor|auditprop|auditlem)\}"
@@ -516,6 +527,12 @@ def normalize_atom_tex_for_packed_index(text: str) -> str:
         stripped = line.strip()
         if stripped.startswith("%"):
             continue
+        if LATEXPAND_ARTIFACT_LINE_RE.search(line):
+            # Drop latexpand explain markers that leaked into fragment payload.
+            continue
+        if ENDINPUT_LINE_RE.match(stripped):
+            # \endinput terminates file reading and would truncate packed index builds.
+            continue
         if stripped == r"\phantomsection":
             continue
         if KGID_LABEL_LINE_RE.match(stripped):
@@ -559,7 +576,70 @@ def normalize_atom_tex_for_packed_index(text: str) -> str:
     return normalized
 
 
-def build_packed_index_input(index_path: Path, build_dir: Path) -> Path:
+def split_ref_labels_for_rewrite(raw: str) -> List[str]:
+    out: List[str] = []
+    for part in raw.split(","):
+        token = part.strip()
+        if token:
+            out.append(token)
+    return out
+
+
+def normalize_label_alias_forms(label: str) -> Set[str]:
+    value = label.strip()
+    out = {value}
+    if ":" in value:
+        out.add(value.replace(":", "__"))
+    if "__" in value:
+        out.add(value.replace("__", ":"))
+    return {x for x in out if x}
+
+
+def load_reference_alias_map(kg_root: Path) -> Dict[str, str]:
+    alias_path = kg_root / "schema" / "reference_aliases.json"
+    if not alias_path.exists():
+        return {}
+    try:
+        payload = json.loads(alias_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    if not isinstance(payload, dict):
+        return {}
+
+    out: Dict[str, str] = {}
+    for raw_src, raw_dst in payload.items():
+        src = str(raw_src or "").strip()
+        dst = str(raw_dst or "").strip()
+        if not src or not dst:
+            continue
+        for src_form in normalize_label_alias_forms(src):
+            out[src_form] = dst
+    return out
+
+
+def rewrite_ref_aliases(text: str, alias_map: Dict[str, str]) -> str:
+    if not alias_map:
+        return text
+
+    def repl(match: re.Match[str]) -> str:
+        cmd = match.group("cmd")
+        arg = match.group("arg")
+        labels = split_ref_labels_for_rewrite(arg)
+        if not labels:
+            return match.group(0)
+        rewritten = [alias_map.get(lb, lb) for lb in labels]
+        return "\\" + cmd + "{" + ",".join(rewritten) + "}"
+
+    return REF_MACRO_WITH_ARG_RE.sub(repl, text)
+
+
+def build_packed_index_input(
+    index_path: Path,
+    build_dir: Path,
+    *,
+    alias_map: Dict[str, str] | None = None,
+) -> Path:
+    aliases = alias_map or {}
     lines = index_path.read_text(encoding="utf-8", errors="replace").splitlines()
     packed_lines: List[str] = []
     for line in lines:
@@ -574,7 +654,9 @@ def build_packed_index_input(index_path: Path, build_dir: Path) -> Path:
         atom_link = (index_path.parent / rel)
         atom_path = atom_link.resolve(strict=True)
         atom_text = atom_path.read_text(encoding="utf-8", errors="replace")
-        packed_lines.append(normalize_atom_tex_for_packed_index(atom_text).rstrip())
+        normalized = normalize_atom_tex_for_packed_index(atom_text)
+        normalized = rewrite_ref_aliases(normalized, aliases)
+        packed_lines.append(normalized.rstrip())
         packed_lines.append(r"\kgcloseproofifopen")
     packed_path = build_dir / f"{index_path.stem}.packed.tex"
     packed_path.write_text("\n".join(packed_lines).rstrip() + "\n", encoding="utf-8")
@@ -1498,7 +1580,11 @@ def main() -> int:
             raise RuntimeError(
                 f"index mode expects exactly one index input, got {len(inputs)}"
             )
-        packed_index = build_packed_index_input(inputs[0], build_dir)
+        packed_index = build_packed_index_input(
+            inputs[0],
+            build_dir,
+            alias_map=load_reference_alias_map(kg_root),
+        )
         print(f"Packed index input: {packed_index}")
         inputs = [packed_index]
 
