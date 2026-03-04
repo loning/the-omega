@@ -27,17 +27,46 @@ Consequently, the minimal linear recurrence order of $\{Z_m(y)\}_{m\ge 0}$ is $4
 \end{theorem}
 
 \begin{proof}
-Suppose $N(t,y)$ and $D(t,y)$ have a nontrivial common factor in $\CC[t]$.
-Then there exists $t_0\in\CC$ with $N(t_0,y)=D(t_0,y)=0$, and the reduced denominator of $Z(t,y)$ has degree at most~$3$, yielding a linear recurrence of order at most~$3$.
-We show in Appendix~\ref{app:degeneracies} that the only parameters where such cancellation occurs are $y\in\{-1,0,1\}$: at $y=-1$ one has $N(t,-1)\equiv D(t,-1)$; at $y=0$ and $y=1$ specific factors cancel, and for $y\notin\{-1,0,1\}$ the two-step Euclidean chain in reciprocal variable \( \lambda=1/t \) gives
-\[
-\gcd_{\CC(y)[\lambda]}(\Pi,N_\lambda)=1.
-\]
-Here \(N_\lambda(\lambda,y)=\lambda^3N(1/\lambda,y)\) and \(\Pi(\lambda,y)=\lambda^4D(1/\lambda,y)\).
-Therefore for \(y\notin\{-1,0,1\}\), the reduced denominator has degree~$4$, and the minimal recurrence order is~$4$.
+Assume $N$ and $D$ have a nontrivial common factor in $\CC[t]$.
+Then there exists $t_0\in\CC$ with $N(t_0,y)=D(t_0,y)=0$, so the reduced denominator degree is at most~$3$ and the recurrence order is below~$4$.
 
-For the Hankel rank, we invoke the classical equivalence between reduced rational generating functions and finite-rank Hankel matrices (see Flajolet and Sedgewick~\cite[Theorem~IV.9]{FlajoletSedgewick2009} or Stanley~\cite[Proposition~4.2.3]{Stanley1999}): a sequence $\{Z_m\}$ has a reduced rational generating function with denominator of degree~$d$ if and only if the infinite Hankel matrix $(Z_{i+j})_{i,j\ge 0}$ has rank~$d$.
-Applying this with $d=4$ yields the stated Hankel rank.
+Set
+\[
+\lambda=\frac1t,\quad
+N_\lambda(\lambda,y):=\lambda^3N(1/\lambda,y),\quad
+\Pi(\lambda,y):=\lambda^4D(1/\lambda,y).
+\]
+Since \(N(0,y)=1\), \(t=0\) is not a common root and
+\[
+\gcd_{\QQ(y)[t]}(N,D)=1\iff \gcd_{\CC(y)[\lambda]}(N_\lambda,\Pi)=1.
+\]
+\[
+N_\lambda(\lambda,y)=\lambda^3+y\lambda^2+(y^2-y-1)\lambda+y^3-2y,
+\]
+\[
+\Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1).
+\]
+Direct elimination gives
+\[
+\Pi-\lambda N_\lambda=-(y+1)\lambda^3-(y^2+y)\lambda^2+(-y^3+2y+1)\lambda+(y^2+y)=:R_1,
+\]
+\[
+R_1+(y+1)N_\lambda=y(y+1)^2(y-1)=:R_2.
+\]
+Hence any common divisor of \(N_\lambda\) and \(\Pi\) must divide \(R_2\).
+If \(y\notin\{-1,0,1\}\), then \(R_2\neq0\), so
+\[
+\gcd_{\CC(y)[\lambda]}(N_\lambda,\Pi)=1.
+\]
+By \(N(0,y)=1\), this is equivalent to
+\[
+\gcd_{\QQ(y)[t]}(N,D)=1,\qquad y\notin\{-1,0,1\}.
+\]
+For these \(y\), the reduced denominator of \(Z(t,y)\) has degree~$4$, so the minimal recurrence order is~$4$.
+At \(y=0,1,-1\), explicit cancellations occur (Appendix~\ref{app:degeneracies}).
+
+For the Hankel rank, we use the standard equivalence between reduced rational generating functions and finite-rank Hankel matrices (see Flajolet and Sedgewick~\cite[Theorem~IV.9]{FlajoletSedgewick2009} or Stanley~\cite[Proposition~4.2.3]{Stanley1999}): a sequence has a reduced rational generating function with denominator degree~$d$ iff its infinite Hankel matrix has rank~$d$.
+Applying this with \(d=4\) gives the stated rank.
 \end{proof}
 
 \subsection{Transfer matrix from the minimal closure}

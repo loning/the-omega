@@ -5,6 +5,8 @@
 For any fixed $y\in\CC$, the recurrence \eqref{eq:recurrence} evaluates $Z_m(y)$ in $O(m)$ arithmetic operations after initializing $Z_0,\dots,Z_3$.
 When evaluating $Z_m$ at many points (e.g.\ along a contour in the complex plane), the same linear-time computation can be performed independently at each sample point.
 
+These computations are reproducibility-oriented and numerical only: all visual diagnostics are empirical evidence and are not used as input to theorems in the analytic part of the paper.
+
 \subsection{Localization of the branch set and the branch point \texorpdfstring{$\yLY$}{y\_LY}}
 
 The branch locus $\Branch$ is explicitly determined by Theorem~\ref{thm:disc-factor}.
@@ -34,13 +36,20 @@ Both routes can be compared with the algebraic boundary $\Branch$, providing a c
 For reproducibility, the repository contains the following scripts in the local \texttt{scripts} directory:
 \begin{itemize}
   \item \texttt{scripts/coeff\_nonneg\_check.pl}: exact finite-range verification of nonnegative coefficients of $Z_m(y)$ in $\ZZ[y]$ (supports Theorem~\ref{thm:coeff-nonneg}; a reproducibility certificate is also recorded in Appendix~\ref{app:degeneracies});
-  \item \texttt{scripts/branch\_root\_certificate.pl}: exact integer checks of the branch-cubic certificate
-        $\Disc(c)=-3^9\cdot 31^2\cdot 37<0$ and the rational sign flip at $\alpha,\beta$ above, giving
-        $\yLY\in(-1.13446,-1.13445)$.
-\item A minimal reproducibility command set is
+  \item \texttt{scripts/branch\_root\_certificate.pl}: exact integer certificates for both branch-cubic and non-bifurcating equimodular data:
+        \begin{itemize}
+          \item verifies the branch-cubic sign flip at $\alpha,\beta$, yielding \(\yLY\in(-1.13446,-1.13445)\);
+          \item optionally checks \(p_{\mathrm{eq}}(-160092/10^6)<0<p_{\mathrm{eq}}(-160091/10^6)\), yielding
+                \(\yEQ\in(-160092/10^6,\,-160091/10^6)\);
+          \item with \texttt{--check-sturm} gives a full Sturm certificate that \(p_{\mathrm{eq}}\) has exactly one real root;
+          \item with \texttt{--check-coprime} verifies \(\operatorname{Res}_y(c,p_{\mathrm{eq}})\neq0\).
+        \end{itemize}
+  \item A minimal reproducibility command set is
       \begin{verbatim}
 perl scripts/coeff_nonneg_check.pl 5000
 perl scripts/branch_root_certificate.pl
+perl scripts/branch_root_certificate.pl --check-equimodular --check-sturm
+perl scripts/branch_root_certificate.pl --check-equimodular --check-coprime
       \end{verbatim}
 \end{itemize}
 In addition, the same directory can be used to regenerate the discriminant factors and the branch point isolation:
@@ -72,7 +81,7 @@ node scripts/generate_audit_figures.js
 \addplot[red, only marks, mark=*, mark size=2pt] coordinates {(-1.134452,0)};
 \end{axis}
 \end{tikzpicture}
-\caption{Branch cubic profile $c(y)=256 y^3+411y^2+165y+32$ on the real axis.}
+\caption{Branch cubic profile $c(y)=256 y^3+411y^2+165y+32$ on the real axis (numerical evidence).}
 \label{fig:branch-cubic-real}
 \end{figure}
 \begin{figure}[H]
@@ -89,7 +98,7 @@ node scripts/generate_audit_figures.js
 \addplot[only marks,blue, mark=*, mark size=2.0pt] table[x index=0,y index=1,col sep=space] {figs/data/fig02_branch_roots_complex.dat};
 \end{axis}
 \end{tikzpicture}
-\caption{Complex roots of the branch cubic $c(y)$.}
+\caption{Complex roots of the branch cubic $c(y)$ (numerical evidence).}
 \label{fig:branch-cubic-roots}
 \end{figure}
 \begin{figure}[H]
@@ -110,7 +119,7 @@ node scripts/generate_audit_figures.js
 \legend{$\log|\lambda_1|$,$\log|\lambda_2|$,$\log|\lambda_3|$,$\log|\lambda_4|$}
 \end{axis}
 \end{tikzpicture}
-\caption{Logarithmic root moduli on the real axis.}
+\caption{Logarithmic root moduli on the real axis (numerical evidence).}
 \label{fig:root-moduli-real}
 \end{figure}
 \begin{figure}[H]
@@ -131,7 +140,7 @@ node scripts/generate_audit_figures.js
 \legend{$\Re r_1$,$\Im r_1$,$\Re r_2$,$\Im r_2$}
 \end{axis}
 \end{tikzpicture}
-\caption{Local colliding pair of spectral roots as $y$ varies across $\yLY$.}
+\caption{Local colliding pair of spectral roots as $y$ varies across $\yLY$ (numerical evidence).}
 \label{fig:local-collision}
 \end{figure}
 \begin{figure}[H]
@@ -168,7 +177,7 @@ node scripts/generate_audit_figures.js
 \addplot[only marks,blue, mark=*, mark size=0.8pt] table[x index=0,y index=1,col sep=space] {figs/data/fig06_zero_cloud_m12.dat};
 \end{axis}
 \end{tikzpicture}
-\caption{Zero cloud for $Z_{12}(y)$.}
+\caption{Zero cloud for $Z_{12}(y)$ (numerical evidence).}
 \label{fig:zero-cloud-m12}
 \end{figure}
 \begin{figure}[H]
@@ -184,7 +193,7 @@ node scripts/generate_audit_figures.js
 ]
 \addplot[only marks,blue, mark=*, mark size=0.8pt] table[x index=0,y index=1,col sep=space] {figs/data/fig07_zero_cloud_m20.dat};
 \end{axis}\end{tikzpicture}
-\caption{Zero cloud for $Z_{20}(y)$.}
+\caption{Zero cloud for $Z_{20}(y)$ (numerical evidence).}
 \label{fig:zero-cloud-m20}
 \end{figure}
 \begin{figure}[H]
@@ -200,7 +209,7 @@ node scripts/generate_audit_figures.js
 ]
 \addplot[only marks,blue, mark=*, mark size=0.8pt] table[x index=0,y index=1,col sep=space] {figs/data/fig08_zero_cloud_m28.dat};
 \end{axis}\end{tikzpicture}
-\caption{Zero cloud for $Z_{28}(y)$.}
+\caption{Zero cloud for $Z_{28}(y)$ (numerical evidence).}
 \label{fig:zero-cloud-m28}
 \end{figure}
 \begin{figure}[H]
@@ -216,7 +225,7 @@ node scripts/generate_audit_figures.js
 ]
 \addplot[only marks,blue, mark=*, mark size=0.8pt] table[x index=0,y index=1,col sep=space] {figs/data/fig09_zero_cloud_m36.dat};
 \end{axis}\end{tikzpicture}
-\caption{Zero cloud for $Z_{36}(y)$.}
+\caption{Zero cloud for $Z_{36}(y)$ (numerical evidence).}
 \label{fig:zero-cloud-m36}
 \end{figure}
 \begin{figure}[H]
@@ -232,7 +241,7 @@ node scripts/generate_audit_figures.js
 ]
 \addplot[blue, thick, unbounded coords=jump] table[x index=0,y index=1,col sep=space] {figs/data/fig10_eq12_contour.dat};
 \end{axis}\end{tikzpicture}
-\caption{Tracked-root equimodular contour from the local-1/2 gap.
+\caption{Tracked-root equimodular contour from the local-1/2 gap (numerical evidence).
 }
 \label{fig:eq-contour-12}
 \end{figure}
@@ -250,7 +259,7 @@ node scripts/generate_audit_figures.js
 \addplot[blue, thick, unbounded coords=jump] table[x index=0,y index=1,col sep=space] {figs/data/fig11_eq13_contour.dat};
 \addplot[red, thin, dashed, unbounded coords=jump] table[x index=0,y index=1,col sep=space] {figs/data/fig12_eq23_contour.dat};
 \end{axis}\end{tikzpicture}
-\caption{Tracked-root equimodular contours from gaps $1$-$3$ and $2$-$3$.}
+\caption{Tracked-root equimodular contours from gaps $1$-$3$ and $2$-$3$ (numerical evidence).}
 \label{fig:eq-contour-13-23}
 \end{figure}
 \begin{figure}[H]
@@ -266,7 +275,7 @@ node scripts/generate_audit_figures.js
 ]
 \addplot[blue, thick, unbounded coords=jump] table[x index=0,y index=1,col sep=space] {figs/data/fig12_eq23_contour.dat};
 \end{axis}\end{tikzpicture}
-\caption{Tracked-root equimodular contour from gap $2$-$3$.}
+\caption{Tracked-root equimodular contour from gap $2$-$3$ (numerical evidence).}
 \label{fig:eq-contour-23}
 \end{figure}
 
