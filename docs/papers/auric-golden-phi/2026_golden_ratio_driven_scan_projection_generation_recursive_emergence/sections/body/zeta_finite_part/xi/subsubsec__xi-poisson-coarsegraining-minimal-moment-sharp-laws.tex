@@ -246,7 +246,7 @@ D_{\mathrm{KL}}(h_t\mid g_t)
 \eqref{eq:xi-poisson-two-parameter-kl-sharp-quadratic}
 立即给出。
 
-在该条件下，\(T^{-2}\) 主项抵消，需取三阶展开：
+在该条件下，\(T^{-2}\) 主项抵消，三阶项给出六阶主导：
 \[
 \delta_t(y):=\frac{h_t(Ty)}{g_t(Ty)}-1
 =\frac{1}{T^3}\bigl[\alpha\,p(y)+\beta\,q(y)\bigr]+o(T^{-3}),
@@ -280,20 +280,181 @@ D_{\mathrm{KL}}(h_t\mid g_t)
 即 \eqref{eq:xi-two-param-sixth-leading-complex-third}。
 \end{proof}
 
+\begin{proposition}[Poisson--Cauchy 导数比的傅里叶二项式正规形]\label{prop:xi-poisson-cauchy-derivative-ratio-fourier-binomials}
+令 \(P_T(X):=\pi^{-1}\frac{T}{X^2+T^2}\)，并置
+\[
+\theta:=\arctan\!\Bigl(\frac{X}{T}\Bigr)\in\Bigl(-\frac{\pi}{2},\frac{\pi}{2}\Bigr),
+\qquad
+\mathcal S_m(\theta):=\sum_{k=1}^{m}\binom{m-1}{k-1}e^{-2\mathrm{i}k\theta}\quad(m\ge 1).
+\]
+则对任意整数 \(m\ge 1\) 点态恒有
+\begin{equation}\label{eq:xi-poisson-cauchy-derivative-ratio-fourier-binomials}
+\boxed{\;
+T^{m}\frac{\partial_X^{m}P_T(X)}{P_T(X)}
+=2^{-(m-1)}\,\Re\!\Bigl((-\mathrm{i})^{m}m!\,\mathcal S_m(\theta)\Bigr)\; }.
+\end{equation}
+并且具有正交范数闭式
+\begin{equation}\label{eq:xi-poisson-cauchy-binomial-parseval-norms}
+\frac{1}{\pi}\int_{-\pi/2}^{\pi/2}\bigl|\mathcal S_m(\theta)\bigr|^2\,\dd\theta=\binom{2m-2}{m-1},
+\qquad
+\frac{1}{\pi}\int_{-\pi/2}^{\pi/2}\bigl(\Re\mathcal S_m(\theta)\bigr)^2\,\dd\theta=\frac12\binom{2m-2}{m-1}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+由分解式
+\[
+P_T(X)=\frac{1}{2\pi}\Bigl(\frac{1}{T-\mathrm{i}X}+\frac{1}{T+\mathrm{i}X}\Bigr)
+\]
+可得
+\[
+\partial_X^mP_T(X)=\frac{m!}{2\pi}\Bigl((-\mathrm{i})^{m}(T-\mathrm{i}X)^{-(m+1)}+\mathrm{i}^{m}(T+\mathrm{i}X)^{-(m+1)}\Bigr).
+\]
+在 \(\theta\) 变量下 \(T\pm \mathrm{i}X=T\sec\theta\,e^{\pm \mathrm{i}\theta}\) 且 \(P_T(X)=\frac{1}{\pi T}\cos^2\theta\)，从而
+\[
+T^{m}\frac{\partial_X^{m}P_T(X)}{P_T(X)}
+=2^{-(m-1)}\Re\!\Bigl((-\mathrm{i})^{m}m!\,e^{-2\mathrm{i}\theta}\bigl(e^{-2\mathrm{i}\theta}+1\bigr)^{m-1}\Bigr).
+\]
+对 \((e^{-2\mathrm{i}\theta}+1)^{m-1}\) 作二项展开即得 \eqref{eq:xi-poisson-cauchy-derivative-ratio-fourier-binomials}。
+式 \eqref{eq:xi-poisson-cauchy-binomial-parseval-norms} 由指数基的正交性与恒等式
+\(
+\sum_{k=0}^{m-1}\binom{m-1}{k}^2=\binom{2m-2}{m-1}
+\)
+立得。证毕。
+\end{proof}
+
+\begin{theorem}[最小非零复矩支配的高阶相对熵谱指纹]\label{thm:xi-poisson-two-parameter-minimal-complex-moment-kl}
+仍在定理 \ref{thm:xi-poisson-two-parameter-kl-sharp-quadratic} 的设定下，记
+\[
+T:=t+\bar\delta,\qquad X:=x-\bar\gamma,\qquad
+Z:=A+\mathrm{i}B,\qquad M_k:=\E[Z^k]\ (k\in\mathbb N).
+\]
+设存在整数 \(m\ge 2\) 使得
+\[
+\E|Z|^{m+1}<\infty,
+\qquad
+M_1=\cdots=M_{m-1}=0,
+\qquad
+M_m\neq 0.
+\]
+则存在锐极限
+\begin{equation}\label{eq:xi-two-parameter-minimal-complex-moment-kl}
+\boxed{\;
+\lim_{t\to\infty} (t+\bar\delta)^{2m}\,D_{\mathrm{KL}}(h_t\mid g_t)
+=\frac{\binom{2m-2}{m-1}}{4^{m}}\;|M_m|^2\; }.
+\end{equation}
+\end{theorem}
+\begin{proof}
+令 \(y:=X/T=\tan\theta\)，\(\theta\in(-\pi/2,\pi/2)\)。由
+\(
+g_t(x)\,\dd x=\pi^{-1}\dd\theta
+\)
+且
+\[
+P_T(X)=\frac{1}{2\pi}\Bigl(\frac{1}{T-\mathrm{i}X}+\frac{1}{T+\mathrm{i}X}\Bigr),
+\]
+可将
+\(
+P_{T+B}(X-A)
+\)
+写为
+\[
+P_{T+B}(X-A)
+=\frac{1}{2\pi}\Bigl(\frac{1}{(T-\mathrm{i}X)+(B+\mathrm{i}A)}+\frac{1}{(T+\mathrm{i}X)+(B-\mathrm{i}A)}\Bigr).
+\]
+在 \(|Z|/T\) 小的区域按几何级数展开并取期望，利用 \(B+\mathrm{i}A=\mathrm{i}\overline{Z}\)、\(B-\mathrm{i}A=-\mathrm{i}Z\)，并结合假设 \(M_1=\cdots=M_{m-1}=0\)，可得密度比
+\(
+\delta_t:=h_t/g_t-1
+\)
+在 \(\theta\) 变量下的主项为
+\begin{equation}\label{eq:xi-two-parameter-minimal-complex-moment-delta}
+\delta_t(\theta)
+=T^{-m}\,2^{-(m-1)}\,
+\Re\!\Bigl(\mathrm{i}^{m}M_m\,\mathcal S_m(\theta)\Bigr)
++O(T^{-(m+1)}),
+\end{equation}
+其中 \(\mathcal S_m\) 如命题 \ref{prop:xi-poisson-cauchy-derivative-ratio-fourier-binomials} 所定义。
+由于 \(\int g_t\delta_t\,\dd x=0\) 且 \(\delta_t=O(T^{-m})\)，展开
+\(
+(1+u)\log(1+u)=u+\frac12u^2+O(u^3)
+\)
+得
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)=\frac12\int_{\RR} g_t\,\delta_t^2\,\dd x+o(T^{-2m}).
+\]
+将 \eqref{eq:xi-two-parameter-minimal-complex-moment-delta} 代入并用
+\(
+g_t\,\dd x=\pi^{-1}\dd\theta
+\)，再用 \(\mathcal S_m\) 仅含非零频率从而
+\(
+\int (\Re F)^2=\frac12\int |F|^2
+\)，结合 \eqref{eq:xi-poisson-cauchy-binomial-parseval-norms}，得到
+\[
+\frac12\int g_t\,\delta_t^2\,\dd x
+=\frac12\cdot T^{-2m}\cdot 2^{-2(m-1)}\cdot \frac12\cdot |M_m|^2\binom{2m-2}{m-1}
++o(T^{-2m}),
+\]
+即为 \eqref{eq:xi-two-parameter-minimal-complex-moment-kl}。证毕。
+\end{proof}
+
+\begin{corollary}[超 \texorpdfstring{$2m$}{2m} 衰减的刚性]\label{cor:xi-two-parameter-minimal-complex-moment-rigidity}
+在定理 \ref{thm:xi-poisson-two-parameter-minimal-complex-moment-kl} 的条件下，若进一步满足
+\[
+D_{\mathrm{KL}}(h_t\mid g_t)=o\!\bigl((t+\bar\delta)^{-2m}\bigr)\qquad(t\to\infty),
+\]
+则必有 \(M_m=\E[Z^m]=0\)。
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:xi-two-parameter-minimal-complex-moment-kl} 的极限式直接推出。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$f$}{f}-散度与 Fisher 耗散的统一谱指纹]\label{cor:xi-two-parameter-minimal-complex-moment-fdiv-fisher}
+在定理 \ref{thm:xi-poisson-two-parameter-minimal-complex-moment-kl} 的条件下，
+令 \(f\in C^3\) 且满足 \(f(1)=f'(1)=0\)、\(f''(1)>0\)，并定义
+\[
+D_f(h_t\mid g_t):=\int_{\RR} g_t(x)\,f\!\left(\frac{h_t(x)}{g_t(x)}\right)\dd x.
+\]
+则有
+\[
+\lim_{t\to\infty}(t+\bar\delta)^{2m}D_f(h_t\mid g_t)
+=f''(1)\,\frac{\binom{2m-2}{m-1}}{4^{m}}\,|M_m|^2.
+\]
+此外，若定义
+\(
+I_1(t):=-\frac{\dd}{\dd t}D_{\mathrm{KL}}(h_t\mid g_t)
+\)，则
+\[
+\lim_{t\to\infty}(t+\bar\delta)^{2m+1}I_1(t)
+=2m\,\frac{\binom{2m-2}{m-1}}{4^{m}}\,|M_m|^2.
+\]
+\end{corollary}
+\begin{proof}
+由 \(\delta_t=O(T^{-m})\) 与 \(f(1+u)=\frac{f''(1)}{2}u^2+O(u^3)\) 得
+\(
+D_f(h_t\mid g_t)=\frac{f''(1)}{2}\int g_t\delta_t^2\,\dd x+o(T^{-2m})
+\)。
+而 KL 情形满足 \(f''(1)=1\)，其主项由定理 \ref{thm:xi-poisson-two-parameter-minimal-complex-moment-kl} 给出，从而得到第一条极限式。
+第二条极限式由
+\(
+D_{\mathrm{KL}}(h_t\mid g_t)\sim C\,T^{-2m}
+\)
+对 \(t\) 求导得到
+\(
+I_1(t)\sim 2m\,C\,T^{-(2m+1)}
+\)。
+证毕。
+\end{proof}
+
 \begin{remark}[与缺陷测度—共动 Poisson 场的融合]\label{rem:xi-poisson-two-parameter-defect-measure-fusion}
 把 \eqref{eq:xi-offcritical-defect-measure-nu} 归一化为概率测度，并以其随机样本定义 \((\Gamma,\Delta)\) 时，
 \eqref{eq:xi-poisson-two-parameter-kl-sharp-quadratic}
-与 \eqref{eq:xi-two-param-sixth-leading-complex-third}
-分别给出二阶可见不变量
+与 \eqref{eq:xi-two-parameter-minimal-complex-moment-kl}
+分别给出二阶可见不变量与更高阶的谱指纹证书。
+其中二阶项为
 \[
 \frac{(\Var\Gamma-\Var\Delta)^2}{8}
 +\frac{\Cov(\Gamma,\Delta)^2}{2}
 \]
-与超四次 regime 的六阶证书
-\[
-\frac{3}{32}\,|\E[(A+\mathrm{i}B)^3]|^2.
-\]
-因此大尺度下的可分辨结构可按“二阶二次型主导；二阶各向同性抵消后由复三阶矩模平方接管”的层级顺序审计。
+而在 \(M_2=\E[Z^2]=0\) 的退化情形下，高阶主导阶次与锐常数由最小非零复矩 \(M_m\) 决定，并由 \eqref{eq:xi-two-parameter-minimal-complex-moment-kl} 与推论 \ref{cor:xi-two-parameter-minimal-complex-moment-fdiv-fisher} 统一刻画。
 \end{remark}
 
 \endinput

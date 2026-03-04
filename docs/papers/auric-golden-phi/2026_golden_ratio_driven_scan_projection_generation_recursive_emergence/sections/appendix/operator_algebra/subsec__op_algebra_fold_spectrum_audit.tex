@@ -141,3 +141,92 @@ P_\omega e_m P_{\omega'}\delta_{\omega'}
 于是直接计算得到矩阵单位乘法关系与伴随关系；这与标准矩阵单位 \(e_{\omega,\omega'}\) 在基 \(\{\delta_\omega\}\) 下的作用完全一致。证毕。
 \end{proof}
 
+\begin{proposition}[容量曲线的折点与纤维谱的层数]\label{prop:op-algebra-capacity-kinks-equal-spectrum-levels}
+对固定分辨率 \(m\)，令纤维谱为多重集合 \(\{d_m(x)\}_{x\in X_m}\)。
+定义连续容量曲线
+\[
+\mathcal C_m^{\mathrm{cont}}(T):=\sum_{x\in X_m}\min\bigl(d_m(x),T\bigr),\qquad T\ge 0,
+\]
+并定义尾计数函数
+\[
+N_m(T):=\#\{x\in X_m:\ d_m(x)\ge T\},\qquad T\ge 0.
+\]
+则 \(\mathcal C_m^{\mathrm{cont}}\) 为分段线性凹函数，且几乎处处满足
+\[
+\frac{\dd}{\dd T}\mathcal C_m^{\mathrm{cont}}(T)=N_m(T).
+\]
+其不可导点集合恰为纤维谱的不同取值集合 \(\{d_m(x):x\in X_m\}\)。
+特别地，\(\mathcal C_m^{\mathrm{cont}}\) 的折点数（不计 \(T=0\)）等于纤维谱不同取值的个数。
+\end{proposition}
+\begin{proof}
+对任意整数 \(d\ge 0\)，函数 \(T\mapsto \min(d,T)\) 在 \(T=d\) 处出现斜率跳变，其余处线性；其导数几乎处处等于 \(\mathbf 1_{\{T\le d\}}\)。
+对 \(x\in X_m\) 求和即得 \((\mathcal C_m^{\mathrm{cont}})'(T)=\sum_x \mathbf 1_{\{T\le d_m(x)\}}=N_m(T)\) 于几乎处处成立。
+因此 \(\mathcal C_m^{\mathrm{cont}}\) 的斜率跳变点仅可能位于某个 \(d_m(x)\) 处；反之若某值 \(t\) 在谱中出现，则对应项在 \(T=t\) 处产生非零斜率跳变，故 \(t\) 必为折点。证毕。
+\end{proof}
+
+\begin{theorem}[限秩投影的变分极值与连续容量曲线]\label{thm:op-algebra-oracle-projection-variational-capacity}
+沿用定理 \ref{thm:fold-jones-basic-construction-directsum} 的分解
+\(
+\langle A_m,e_m\rangle\cong\bigoplus_{x\in X_m}M_{d_m(x)}(\CC)
+\)。
+对整数 \(L\ge 0\)，令 \(\mathcal P_m(L)\) 为所有满足逐块秩约束的投影集合：
+\[
+\mathcal P_m(L):=
+\Bigl\{
+p\in \langle A_m,e_m\rangle:\ p^2=p=p^\ast,\ 
+\mathrm{rank}(p|_{M_{d_m(x)}(\CC)})\le L,\ \forall x\in X_m
+\Bigr\}.
+\]
+则有严格变分恒等式
+\[
+\max_{p\in\mathcal P_m(L)}\ \sum_{x\in X_m}\mathrm{rank}\bigl(p|_{M_{d_m(x)}(\CC)}\bigr)
+=\sum_{x\in X_m}\min\bigl(d_m(x),L\bigr)
+=\mathcal C_m^{\mathrm{cont}}(L).
+\]
+并且对每个 \(x\) 的块内极大化子在酉共轭意义下唯一：其块分量可取为秩 \(\min(d_m(x),L)\) 的标准对角投影。
+\end{theorem}
+\begin{proof}
+在直和分解下，任一投影 \(p\) 等价于一族块投影 \(p_x\in M_{d_m(x)}(\CC)\)。
+约束 \(\mathrm{rank}(p_x)\le L\) 逐块独立，而目标函数 \(\sum_x \mathrm{rank}(p_x)\) 亦为逐块可加。
+因此全局最大化分解为对每个 \(x\) 分别最大化 \(\mathrm{rank}(p_x)\)。
+在 \(M_d(\CC)\) 中，投影的秩可取 \(0,1,\dots,d\) 的整数，故在约束 \(\le L\) 下最大秩为 \(\min(d,L)\)；
+对所有块求和即得
+\(
+\max \sum_x \mathrm{rank}(p_x)=\sum_x \min(d_m(x),L)=\mathcal C_m^{\mathrm{cont}}(L)
+\)。
+块内唯一性由“同秩投影在 \(M_d(\CC)\) 中必酉共轭”等价分类给出。证毕。
+\end{proof}
+
+\begin{corollary}[容量曲线的离散可逆性：由整数点取值恢复纤维谱多重集合]\label{cor:op-algebra-capacity-curve-complete-invariant}
+令 \(\mathcal C_m^{\mathrm{cont}}(T)=\sum_{x\in X_m}\min(d_m(x),T)\)。
+则仅由整数点序列 \(\{\mathcal C_m^{\mathrm{cont}}(t)\}_{t\in\NN}\) 可唯一恢复纤维谱的多重集合：
+\begin{enumerate}
+  \item 对 \(t\ge 1\)，有尾计数恢复公式
+  \[
+  N_m(t)=\mathcal C_m^{\mathrm{cont}}(t)-\mathcal C_m^{\mathrm{cont}}(t-1).
+  \]
+  \item 对 \(t\ge 1\)，出现次数满足
+  \[
+  \#\{x\in X_m:\ d_m(x)=t\}=N_m(t)-N_m(t+1).
+  \]
+\end{enumerate}
+因此 \(\mathcal C_m^{\mathrm{cont}}\) 与 \(\{d_m(x)\}_{x\in X_m}\) 互相唯一确定；
+结合定理 \ref{thm:fold-jones-basic-construction-directsum}，\(\mathcal C_m^{\mathrm{cont}}\) 在固定 \(m\) 上等价决定 Jones 基本构造代数 \(\langle A_m,e_m\rangle\) 的 \(^\ast\)-同构类型。
+\end{corollary}
+\begin{proof}
+对单项 \(c_d(t):=\min(d,t)\)（\(t\in\NN\)），其差分满足
+\(
+c_d(t)-c_d(t-1)=\mathbf 1_{\{d\ge t\}}
+\)。
+对 \(x\) 求和得
+\(
+\mathcal C_m^{\mathrm{cont}}(t)-\mathcal C_m^{\mathrm{cont}}(t-1)=\sum_x \mathbf 1_{\{d_m(x)\ge t\}}=N_m(t)
+\)，得到第一式。
+第二式由
+\(
+\#\{d=t\}=\#\{d\ge t\}-\#\{d\ge t+1\}
+\)
+立得。
+最后，“有限维 \(C^\ast\)-代数的 \(^\ast\)-同构分类由矩阵块大小多重集合决定”，与定理 \ref{thm:fold-jones-basic-construction-directsum} 合并即得结论。证毕。
+\end{proof}
+

@@ -126,6 +126,47 @@ n
 令 \(\eta\downarrow 0\) 即得所示上界。证毕。
 \end{proof}
 
+\begin{conclusion}[前缀自由族上的统一相干证书：可计算停时与显式 I 类错误上界]\label{con:xi-prefixfree-universal-coherence-certificate}
+设 \(b\ge 2\)，\(\Sigma_b:=\{0,1,\dots,b-1\}\)，并固定一台输出字母表为 \(\Sigma_b\) 的前缀自由通用机 \(U\)。
+对任意显著性水平 \(\alpha\in(0,1)\)，存在一个可计算的顺序判别过程 \(\mathcal T_\alpha\)，其输入为无限序列 \(x\in\Sigma_b^{\NN}\)，并满足：
+\begin{enumerate}
+  \item 若零假设为 \(x\sim \mathrm{Unif}(\Sigma_b)^{\otimes \NN}\)（独立同分布均匀），则
+  \[
+  \PP\bigl(\mathcal T_\alpha\ \text{在有限时刻停止}\bigr)\le \alpha.
+  \]
+  \item 若存在程序 \(p\in\mathrm{dom}(U)\) 使得 \(U(p)=x\)（逐符号输出 \(x\)），则 \(\mathcal T_\alpha\) 在有限时刻停止，并输出某个与 \(x\) 前缀一致的程序（可取停时刻的最短者）。
+  更具体地，令
+  \[
+  n_\alpha(p):=|p|+\left\lceil \log_b\frac1\alpha\right\rceil,
+  \]
+  则过程在读入 \(x\upharpoonright n_\alpha(p)\) 后必停止。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}
+对每个程序 \(p\in\mathrm{dom}(U)\) 定义事件
+\[
+E_p:=\bigl\{x\in\Sigma_b^{\NN}:\ x\upharpoonright n_\alpha(p)=U(p)\upharpoonright n_\alpha(p)\bigr\},
+\]
+其中若 \(U(p)\) 在输出 \(n_\alpha(p)\) 个符号前停机则视 \(E_p=\varnothing\)。
+在零假设下，\(U(p)\upharpoonright n_\alpha(p)\) 为确定的长度 \(n_\alpha(p)\) 字串，故
+\[
+\PP(E_p)=b^{-n_\alpha(p)}
+=b^{-|p|}\cdot b^{-\lceil\log_b(1/\alpha)\rceil}
+\le \alpha\,b^{-|p|}.
+\]
+由并合界与前缀自由的 Kraft 不等式 \(\sum_{p\in\mathrm{dom}(U)} b^{-|p|}\le 1\) 得
+\[
+\PP\Bigl(\bigcup_{p\in\mathrm{dom}(U)}E_p\Bigr)
+\le
+\sum_{p\in\mathrm{dom}(U)}\PP(E_p)
+\le
+\alpha\sum_{p\in\mathrm{dom}(U)}b^{-|p|}
+\le \alpha,
+\]
+从而可取 \(\mathcal T_\alpha\) 为“首次命中事件族 \(\{E_p\}\)”的顺序检验：当读入 \(x\upharpoonright n\) 时，并行枚举并模拟全部 \(p\) 并尝试生成 \(U(p)\upharpoonright n\)，一旦存在 \(p\) 使得 \(n\ge n_\alpha(p)\) 且 \(U(p)\upharpoonright n=x\upharpoonright n\)，即停止并输出其中 \(|p|\) 最小者。上述构造可计算且其停止事件包含于 \(\bigcup_p E_p\)，故第 (1) 条成立。
+若 \(U(p)=x\)，则恒有 \(x\upharpoonright n_\alpha(p)=U(p)\upharpoonright n_\alpha(p)\)，故当过程读到长度 \(n_\alpha(p)\) 时，枚举到 \(p\) 并完成到该长度的模拟比对即可验证并停止，从而第 (2) 条成立。证毕。
+\end{proof}
+
 \begin{proposition}[有限多对一投影下的全息聚合界]\label{prop:xi-finite-to-one-holographic-aggregation-bound}
 设 \(\mathcal C\) 为微观概念族，带前缀自由码长 \(\ell:\mathcal C\to\mathbb N\)。
 设投影 \(\Pi:\mathcal C\to\bar{\mathcal C}\) 满足统一纤维上界
@@ -364,6 +405,133 @@ u^{d_H(a,x)}
 \]
 代回并对 \(a\) 求和即得首式；以 \(t=(1-u)/(1+u)\) 复写即得第二式。证毕。
 \end{proof}
+
+\input{sections/body/zeta_finite_part/xi/thm__xi-hypercube-fourier-walsh-boundary-parseval}
+\input{sections/body/zeta_finite_part/xi/thm__xi-hypercube-leyang-stokes-holography-orbifold}
+
+\paragraph{坐标权超立方体的热迹与树复杂度：欧拉型因子化与可逆读出}
+定理 \ref{thm:xi-hypercube-walsh-joukowsky-leyang-explicit} 以 Walsh 展开刻画了 Hamming 代价核的 Möbius 归一化零点结构。
+同一组 Walsh 字符亦对角化坐标权拉普拉斯，从而将热迹与树复杂度压缩为严格乘积，并在权重取对数素数时呈现欧拉型分解。
+
+\begin{theorem}[坐标权拉普拉斯的 Walsh 谱分解与热迹因子化]\label{thm:xi-hypercube-weighted-laplacian-heat-trace-factorization}
+沿用定理 \ref{thm:xi-hypercube-walsh-joukowsky-leyang-explicit} 的记号，取权向量 \(\mathbf w=(w_1,\dots,w_k)\in(0,\infty)^k\)。
+在 \(\mathcal H_k\) 上定义坐标权拉普拉斯算子
+\[
+(\Delta_{\mathbf w}f)(\omega):=\sum_{i=1}^{k}w_i\bigl(f(\omega)-f(\omega^{(i)})\bigr),
+\]
+其中 \(\omega^{(i)}\) 表示把 \(\omega\) 的第 \(i\) 位翻转后的顶点。
+则 \(\{\chi_S\}_{S\subseteq[k]}\) 为 \(\Delta_{\mathbf w}\) 的共同特征基，并满足
+\[
+\Delta_{\mathbf w}\chi_S=2\Bigl(\sum_{i\in S}w_i\Bigr)\chi_S.
+\]
+从而对任意 \(t>0\) 有热迹完全因子化
+\[
+\Tr\bigl(e^{-t\Delta_{\mathbf w}}\bigr)
+=\sum_{S\subseteq[k]}\exp\!\left(-2t\sum_{i\in S}w_i\right)
+=\prod_{i=1}^{k}\bigl(1+e^{-2tw_i}\bigr).
+\]
+\end{theorem}
+\begin{proof}
+对任意 \(S\subseteq[k]\)，若 \(i\notin S\) 则 \(\chi_S(\omega^{(i)})=\chi_S(\omega)\)；
+若 \(i\in S\) 则 \(\chi_S(\omega^{(i)})=-\chi_S(\omega)\)。
+代入定义得到
+\(
+(\Delta_{\mathbf w}\chi_S)(\omega)=\sum_{i\in S}2w_i\,\chi_S(\omega)
+=2(\sum_{i\in S}w_i)\chi_S(\omega)
+\)，从而给出谱分解。
+热迹为全部特征值的指数和，故
+\[
+\Tr\bigl(e^{-t\Delta_{\mathbf w}}\bigr)
+=\sum_{S\subseteq[k]}\exp\!\left(-2t\sum_{i\in S}w_i\right).
+\]
+取 \(a_i:=e^{-2tw_i}\) 并用子集展开恒等式
+\(
+\sum_{S\subseteq[k]}\prod_{i\in S}a_i=\prod_{i=1}^k(1+a_i)
+\)
+即得乘积式。证毕。
+\end{proof}
+
+\begin{corollary}[素数对数权的欧拉型热迹]\label{cor:xi-prime-log-weighted-hypercube-heat-trace-euler}
+在定理 \ref{thm:xi-hypercube-weighted-laplacian-heat-trace-factorization} 的设定下，若取 \(w_i=\log p_i\)（\(p_i\) 为第 \(i\) 个素数），则
+\[
+\Tr\bigl(e^{-t\Delta_{\log p}}\bigr)=\prod_{i=1}^{k}\bigl(1+p_i^{-2t}\bigr).
+\]
+\end{corollary}
+\begin{proof}
+由 \(e^{-2t\log p_i}=p_i^{-2t}\) 直接代入乘积式即得。证毕。
+\end{proof}
+
+\begin{theorem}[热迹的权重刚性：边界配分函数唯一解码多重集]\label{thm:xi-hypercube-heat-trace-weight-rigidity}
+在定理 \ref{thm:xi-hypercube-weighted-laplacian-heat-trace-factorization} 的设定下，令
+\[
+Z_{\mathbf w}(t):=\Tr\bigl(e^{-t\Delta_{\mathbf w}}\bigr)=\prod_{i=1}^{k}\bigl(1+e^{-2tw_i}\bigr),\qquad t>0.
+\]
+则函数 \(Z_{\mathbf w}:(0,\infty)\to(1,\infty)\) 唯一决定多重集 \(\{w_1,\dots,w_k\}\)（含重数）。
+具体地，若存在 \(\mathbf w'=(w'_1,\dots,w'_m)\in(0,\infty)^m\) 使 \(Z_{\mathbf w}(t)\equiv Z_{\mathbf w'}(t)\) 对一切 \(t>0\) 成立，则必有 \(m=k\)，且两组权重一致到重排。
+\end{theorem}
+\begin{proof}
+令 \(a:=\min_i w_i\)，并记其重数为 \(r:=\#\{i:\ w_i=a\}\)。
+展开
+\(
+Z_{\mathbf w}(t)=\prod_i(1+e^{-2tw_i})
+\)
+得
+\[
+Z_{\mathbf w}(t)-1=\sum_{i=1}^{k}e^{-2tw_i}+O\!\left(e^{-2t(w_{(1)}+w_{(2)})}\right)\qquad(t\to\infty),
+\]
+其中 \(w_{(1)}\le w_{(2)}\le\cdots\) 为从小到大排序。
+故
+\[
+\lim_{t\to\infty}-\frac{1}{2t}\log\bigl(Z_{\mathbf w}(t)-1\bigr)=a,
+\qquad
+\lim_{t\to\infty}e^{2at}\bigl(Z_{\mathbf w}(t)-1\bigr)=r.
+\]
+因此 \(a\) 与 \(r\) 可由 \(Z_{\mathbf w}\) 唯一恢复。
+令
+\[
+\widetilde Z(t):=\frac{Z_{\mathbf w}(t)}{(1+e^{-2at})^{r}},
+\]
+则 \(\widetilde Z(t)=\prod_{w_i>a}(1+e^{-2tw_i})\)。
+对 \(\widetilde Z\) 重复同一提取过程即可递归恢复全部权重及其重数，从而得到结论。证毕。
+\end{proof}
+
+\begin{theorem}[加权超立方体生成树的谱乘积闭式]\label{thm:xi-hypercube-weighted-spanning-tree-spectrum-product}
+令 \(Q_k\) 为顶点集 \(\mathcal H_k\) 的 \(k\)-维超立方体图，并令每条第 \(i\) 坐标方向的边赋权 \(w_i>0\)。
+记 \(\tau_{\mathbf w}(Q_k)\) 为按 Kirchhoff--Matrix Tree 口径定义的加权生成树总权（对每棵生成树取边权乘积并求和）。
+则有完全闭式
+\[
+\tau_{\mathbf w}(Q_k)
+=\frac{1}{2^k}\prod_{\varnothing\neq S\subseteq[k]}2\sum_{i\in S}w_i
+=2^{2^k-k-1}\prod_{\varnothing\neq S\subseteq[k]}\Bigl(\sum_{i\in S}w_i\Bigr).
+\]
+若进一步取 \(w_i=\log p_i\)，则
+\[
+\tau_{\log p}(Q_k)
+=2^{2^k-k-1}\prod_{\varnothing\neq S\subseteq[k]}\log\!\Bigl(\prod_{i\in S}p_i\Bigr).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-hypercube-weighted-laplacian-heat-trace-factorization}，
+\(\Delta_{\mathbf w}\) 的非零特征值为
+\(
+\lambda_S=2\sum_{i\in S}w_i
+\)
+（\(\varnothing\neq S\subseteq[k]\)）。
+加权矩阵树定理给出
+\[
+\tau_{\mathbf w}(Q_k)
+=\frac{1}{|\mathcal H_k|}\prod_{\lambda_S\neq 0}\lambda_S
+=\frac{1}{2^k}\prod_{\varnothing\neq S\subseteq[k]}2\sum_{i\in S}w_i,
+\]
+化简常数因子即得第一式。
+素数特例由
+\(
+\sum_{i\in S}\log p_i=\log\prod_{i\in S}p_i
+\)
+直接代入。证毕。
+\end{proof}
+
+\input{sections/body/zeta_finite_part/xi/subsubsec__xi-leyang-cartesian-power-atomic-clt}
 
 \begin{conjecture}[Gödel 权重下相干零点的普适圆周律与时间读出谱测]\label{conj:xi-godel-weighted-leyang-universal-circle-law}
 设 \(\mathfrak C\) 为可枚举概念类，每个概念给出可计算生成子，并以前缀自由 Gödel 码长 \(\ell\) 赋权 \(2^{-\ell}\)。

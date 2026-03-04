@@ -273,6 +273,8 @@ q\equiv 1,2\pmod 4\Rightarrow -2^{-q}.
 即得结论。证毕。
 \end{proof}
 
+\input{thm__conclusion_temperature_kernel_free_energy_halting_embedding}
+
 \begin{proposition}[固定 \texorpdfstring{$m$}{m} 的 \texorpdfstring{$q$}{q} 向有限阶线性递推]\label{prop:conclusion-softcore-fixedm-qrecurrence-annihilator}
 固定 \(m\ge 1\)，定义
 \[
@@ -367,4 +369,153 @@ B_q:=\frac12\operatorname{Sym}^q(K).
 =\frac12\min \sigma\!\bigl(\operatorname{Sym}^q(K)\bigr).
 \]
 证毕。
+\end{proof}
+
+\paragraph{两参数不交核的二尺度自相似与例外因子拼接律}
+为把 \(\operatorname{Sym}^q\)-例外谱的字迹机制与两参数不交核的世俗方程对齐，以下断言将 \(q\)-方向的缩放结构压缩为一组完全显式的函子恒等式。
+沿用 \eqref{eq:xi-two-param-disjointness-definition}--\eqref{eq:xi-two-param-disjointness-secular} 的记号：令 \(B^{(q)}(a,b)\) 为两参数不交矩阵，\(d=a-b\)，并令
+\[
+\mu_i^{(q)}:=\varphi^{\,q-i}\psi^{\,i}\qquad(0\le i\le q),
+\qquad
+\alpha:=1+\frac{2}{\sqrt5},\ \beta:=1-\frac{2}{\sqrt5},
+\qquad
+w_i:=\binom{q}{i}\alpha^{q-i}\beta^{i},
+\]
+以及
+\[
+G_{q,d}(\lambda):=\prod_{i=0}^{q}\bigl(\lambda-d\mu_i^{(q)}\bigr),\qquad
+\mathcal F_q(\lambda):=\sum_{i=0}^{q}\frac{w_i}{\lambda-d\mu_i^{(q)}},
+\qquad
+P_{q,a,b}(\lambda)=G_{q,d}(\lambda)\bigl(1-b\mathcal F_q(\lambda)\bigr).
+\]
+
+\input{thm__conclusion-disjointness-word-decomposition-rankone-resultant-inverse}
+
+\begin{proposition}[割线函数的二尺度自相似递推]\label{prop:conclusion-disjointness-secant-selfsimilar-recurrence}
+对任意 \(q\ge 0\) 与任意 \(\lambda\)（避开极点）成立严格恒等式
+\[
+\mathcal F_{q+1}(\lambda)
+=\frac{\alpha}{\varphi}\,\mathcal F_q\!\left(\frac{\lambda}{\varphi}\right)
+\frac{\beta}{\psi}\,\mathcal F_q\!\left(\frac{\lambda}{\psi}\right).
+\]
+等价地，利用
+\(
+\frac{\alpha}{\varphi}=\frac12+\frac{3\sqrt5}{10}
+\)
+与
+\(
+\frac{\beta}{\psi}=\frac12-\frac{3\sqrt5}{10}
+\)，可将递推写为无 \((\alpha,\beta)\) 形式。
+\end{proposition}
+\begin{proof}
+利用节点缩放分裂
+\[
+\mu_i^{(q+1)}=\varphi\,\mu_i^{(q)}\ (0\le i\le q),
+\qquad
+\mu_{i+1}^{(q+1)}=\psi\,\mu_i^{(q)}\ (0\le i\le q),
+\]
+以及权重的 Pascal 分解
+\[
+w_i^{(q+1)}
+=\binom{q+1}{i}\alpha^{q+1-i}\beta^i
+=\alpha\,w_i^{(q)}+\beta\,w_{i-1}^{(q)}
+\qquad(0\le i\le q+1),
+\]
+将 \(\mathcal F_{q+1}(\lambda)=\sum_{i=0}^{q+1}w_i^{(q+1)}/(\lambda-d\mu_i^{(q+1)})\) 分拆为两段并作指标平移：
+第一段对应 \(\varphi\mu_i^{(q)}\)，得到
+\[
+\sum_{i=0}^{q}\frac{\alpha\,w_i^{(q)}}{\lambda-d\varphi\mu_i^{(q)}}
+=\frac{\alpha}{\varphi}\sum_{i=0}^{q}\frac{w_i^{(q)}}{\lambda/\varphi-d\mu_i^{(q)}}
+=\frac{\alpha}{\varphi}\,\mathcal F_q(\lambda/\varphi).
+\]
+第二段对应 \(\psi\mu_i^{(q)}\)，得到
+\[
+\sum_{i=0}^{q}\frac{\beta\,w_i^{(q)}}{\lambda-d\psi\mu_i^{(q)}}
+=\frac{\beta}{\psi}\sum_{i=0}^{q}\frac{w_i^{(q)}}{\lambda/\psi-d\mu_i^{(q)}}
+=\frac{\beta}{\psi}\,\mathcal F_q(\lambda/\psi).
+\]
+相加即得所述递推。证毕。
+\end{proof}
+
+\begin{proposition}[例外特征因子的缩放--拼接递推]\label{prop:conclusion-disjointness-exceptional-poly-scaling-splice}
+对任意 \(q\ge 0\)，例外因子多项式 \(P_{q,a,b}\) 满足严格泛函递推
+\[
+P_{q+1,a,b}(\lambda)
+=\alpha\,\varphi^{q}\bigl(\lambda-d\psi^{q+1}\bigr)\,
+P_{q,a,b}\!\left(\frac{\lambda}{\varphi}\right)
+\beta\,\psi^{q}\bigl(\lambda-d\varphi^{q+1}\bigr)\,
+P_{q,a,b}\!\left(\frac{\lambda}{\psi}\right),
+\qquad q\ge 0,
+\]
+其初值为 \(P_{0,a,b}(\lambda)=\lambda-a\)。
+\end{proposition}
+\begin{proof}
+由 \(G_{q,d}(\lambda)=\prod_{i=0}^{q}(\lambda-d\mu_i^{(q)})\) 的节点缩放分裂，有恒等式
+\[
+G_{q+1,d}(\lambda)
+=\varphi^{q+1}\bigl(\lambda-d\psi^{q+1}\bigr)\,G_{q,d}(\lambda/\varphi)
+=\psi^{q+1}\bigl(\lambda-d\varphi^{q+1}\bigr)\,G_{q,d}(\lambda/\psi).
+\]
+另一方面，由命题 \ref{prop:conclusion-disjointness-secant-selfsimilar-recurrence} 与
+\(\frac{\alpha}{\varphi}+\frac{\beta}{\psi}=1\)，得到
+\[
+1-b\mathcal F_{q+1}(\lambda)
+=\frac{\alpha}{\varphi}\bigl(1-b\mathcal F_q(\lambda/\varphi)\bigr)
+\frac{\beta}{\psi}\bigl(1-b\mathcal F_q(\lambda/\psi)\bigr).
+\]
+将两式代回
+\(
+P_{q+1,a,b}=G_{q+1,d}(1-b\mathcal F_{q+1})
+\)
+并分别用 \(P_{q,a,b}(\lambda/\varphi)=G_{q,d}(\lambda/\varphi)(1-b\mathcal F_q(\lambda/\varphi))\)、
+\(P_{q,a,b}(\lambda/\psi)=G_{q,d}(\lambda/\psi)(1-b\mathcal F_q(\lambda/\psi))\) 代换，即得所示递推。
+初值由 \(q=0\) 时 \(B^{(0)}(a,b)=[a]\) 直接给出。证毕。
+\end{proof}
+
+\begin{proposition}[逐对刚性结果式：\texorpdfstring{$\sqrt5$}{sqrt5} 与 \texorpdfstring{$(\alpha,\beta)$}{(alpha,beta)} 的消隐]\label{prop:conclusion-disjointness-pairwise-resultant-rigidity}
+设 \(q\ge 2\) 且 \(0\le i\le \lfloor (q-1)/2\rfloor\)。
+定义二次因子
+\[
+Q_{q,i}(\lambda):=\lambda^2-d(-1)^iL_{q-2i}\lambda+d^2(-1)^q,
+\]
+其根恰为 \(d\mu_i^{(q)}\) 与 \(d\mu_{q-i}^{(q)}\)（命题 \ref{prop:conclusion-lucas-quadratic-factorization} 在 \((S,P)=(1,-1)\) 的特化）。
+则有严格闭式
+\[
+\Res\bigl(P_{q,a,b},Q_{q,i}\bigr)
+=(-1)^{\frac{i(i+1)+(q-i)(q-i+1)}{2}}\,
+b^{2}\,d^{2q}\,\binom{q}{i}^{2}\,
+\left(\prod_{k=1}^{i}F_k\prod_{k=1}^{q-i}F_k\right)^{\!2}.
+\]
+若 \(q\) 为偶数，则 \(G_{q,d}\) 另含一次因子 \((\lambda-d(-1)^{q/2})\)，并且
+\[
+P_{q,a,b}\bigl(d(-1)^{q/2}\bigr)
+=-(-1)^{\,\frac{q}{2}(q+1)-\binom{\frac{q}{2}+1}{2}}\,
+b\,d^{q}\,\binom{q}{q/2}\,
+\left(\prod_{k=1}^{q/2}F_k\right)^{\!2}.
+\]
+\end{proposition}
+\begin{proof}
+由节点取值公式 \eqref{eq:xi-two-param-disjointness-exceptional-poly-nodes}，
+\[
+P_{q,a,b}(d\mu_r^{(q)})
+=-b\,d^{q}\,w_r\prod_{j\ne r}\bigl(\mu_r^{(q)}-\mu_j^{(q)}\bigr).
+\]
+对 \(r=i\) 与 \(r=q-i\) 相乘，并用
+\(
+w_iw_{q-i}=\binom{q}{i}^2(\alpha\beta)^q=\binom{q}{i}^2 5^{-q}
+\)；
+同时对差积使用 \eqref{eq:xi-two-param-disjointness-mu-vandermonde-fibonacci}，可得
+\[
+\prod_{j\ne i}\bigl(\mu_i^{(q)}-\mu_j^{(q)}\bigr)\,
+\prod_{j\ne q-i}\bigl(\mu_{q-i}^{(q)}-\mu_j^{(q)}\bigr)
+=(-1)^{\frac{i(i+1)+(q-i)(q-i+1)}{2}}\,
+5^{q}\,
+\left(\prod_{k=1}^{i}F_k\prod_{k=1}^{q-i}F_k\right)^{\!2},
+\]
+其中 \(\varphi\)-幂在共轭配对下抵消。
+代回即得结果式闭式，并且 \(5^{q}\) 与 \(5^{-q}\) 精确相消，从而消去 \(\sqrt5\) 与 \((\alpha,\beta)\)。
+\par
+若 \(q\) 为偶数，取 \(r=q/2\) 则 \(\mu_{q/2}^{(q)}=(\varphi\psi)^{q/2}=(-1)^{q/2}\in\ZZ\)。
+对该节点直接应用同一节点取值公式并使用 \(w_{q/2}=\binom{q}{q/2}(\alpha\beta)^{q/2}=\binom{q}{q/2}5^{-q/2}\)，
+再与差积的 \((\sqrt5)^{q}\) 因子抵消，即得所示一次节点闭式。证毕。
 \end{proof}

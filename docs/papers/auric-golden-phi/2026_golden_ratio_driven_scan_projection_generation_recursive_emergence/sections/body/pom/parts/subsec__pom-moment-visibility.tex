@@ -56,6 +56,85 @@ d_q=\dim V_q^{\mathrm{vis}}\ \le\ 2\lfloor q/2\rfloor+1,
 这一跳变为后续追踪“模 \(5\)”类算术效应提供了一个可复核的起点指标（例如随 \(k\) 增大继续记录 \(\mathsf{Stiff}_5(k)\) 的增长与共振缺口 \(\Delta(k)\) 的对照）。
 \end{remark}
 
+\input{sections/body/pom/parts/prop__pom-first-joint-nonsemisimple-threshold-p5-q5}
+
+\begin{theorem}[\texorpdfstring{$\mathsf{Stiff}_p=0$}{Stiffp=0} 的良约化判据：Hankel 最小实现的 \texorpdfstring{$p$}{p}-整性与维数稳定]\label{thm:pom-stiff0-hankel-good-reduction-dim-stability}
+设 \((a_n)_{n\ge 0}\subset\ZZ\) 为一整数序列并具有有限 Hankel 秩。
+取最小的 \(d\ge 1\) 使得 Hankel 主块
+\[
+H_0:=(a_{i+j})_{0\le i,j\le d-1}\in M_d(\ZZ)
+\qquad\text{在}\ \QQ\ \text{上可逆},
+\]
+并令
+\[
+H_1:=(a_{i+j+1})_{0\le i,j\le d-1}\in M_d(\ZZ),
+\qquad
+A:=H_0^{-1}H_1\in M_d(\QQ).
+\]
+对素数 \(p\) 定义刚性指数
+\[
+\mathsf{Stiff}_p:=v_p(\det H_0).
+\]
+若 \(\mathsf{Stiff}_p=0\)，则：
+\begin{enumerate}
+  \item \(A\in M_d(\ZZ_p)\)；
+  \item 记 \(\bar a_n:=a_n\bmod p\in\FF_p\)，则序列 \((\bar a_n)_{n\ge 0}\) 在 \(\FF_p\) 上的 Hankel 秩仍为 \(d\)；等价地，其在 \(\FF_p\) 上的最小线性实现维数保持为 \(d\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由伴随矩阵恒等式
+\[
+A=\frac{\mathrm{adj}(H_0)\,H_1}{\det(H_0)}
+\]
+可见 \(A\) 的各条目属于 \(\ZZ[\det(H_0)^{-1}]\)。
+若 \(\mathsf{Stiff}_p=0\)，则 \(\det(H_0)\in\ZZ_p^\times\)，从而 \(A\in M_d(\ZZ_p)\)，得到第一条。
+\par
+对第二条，\(\det(H_0)\not\equiv 0\ (\mathrm{mod}\ p)\) 蕴含 \(\bar H_0\in\mathrm{GL}_d(\FF_p)\)，故 \((\bar a_n)\) 的 Hankel 矩阵在 \(\FF_p\) 上至少具有秩 \(d\)（因为其 \(d\times d\) 主块 \(\bar H_0\) 可逆）。
+另一方面，由第一条可在 \(\FF_p\) 上约化得到 \(\bar A:=A\bmod p\in M_d(\FF_p)\)；并且 \(H_0A=H_1\) 的约化给出 \(\bar H_0\bar A=\bar H_1\)。
+由 Hankel realization 的标准等价刻画（定理 \ref{thm:hankel-rank-minimal}），\((\bar a_n)\) 具有维数 \(\le d\) 的线性实现，故其 Hankel 秩至多为 \(d\)。
+两侧合并得到 Hankel 秩恰为 \(d\)，从而最小实现维数稳定。证毕。
+\end{proof}
+
+\begin{corollary}[Fold 碰撞矩的坏素锁定：\texorpdfstring{$k=4,5$}{k=4,5} 的审计维数在几乎所有素数上稳定]\label{cor:pom-fold-collision-moment-bad-primes-locked-by-hankel}
+沿用表 \ref{tab:fold_collision_moment_hankel_rank} 的 Hankel 见证块 \(H_{k=4}\) 与 \(H_{k=5}\)，并用注 \ref{rem:pom-hankel-stiffness-p5} 的分解
+\[
+\det(H_{k=4})=2^{17}\cdot 3^2,
+\qquad
+\det(H_{k=5})=2^{13}\cdot 3^5\cdot 5^7.
+\]
+则：
+\begin{enumerate}
+  \item 对一切素数 \(p\ge 5\)，有 \(\mathsf{Stiff}_p(4)=0\)，从而 \(S_4(m)\bmod p\) 的 Hankel 秩（亦即最小实现维数）保持为审计维数 \(d_4=5\)；
+  \item 对一切素数 \(p\ge 7\)，有 \(\mathsf{Stiff}_p(5)=0\)，从而 \(S_5(m)\bmod p\) 的 Hankel 秩（亦即最小实现维数）保持为审计维数 \(d_5=5\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由素因子分解直接判别 \(\mathsf{Stiff}_p(k)=v_p(\det(H_k))\) 是否为零；在 \(\mathsf{Stiff}_p(k)=0\) 的素数上应用定理 \ref{thm:pom-stiff0-hankel-good-reduction-dim-stability} 即得结论。证毕。
+\end{proof}
+
+\begin{conjecture}[刚性指数跳跃的有限素数支撑与缺陷量子化对齐]\label{conj:pom-stiffness-jump-quantized-defect}
+对每个整数 \(q\ge 2\)，令 \(d_q\) 为 \(m\mapsto S_q(m)\) 的最小整系数递推阶数（命题 \ref{prop:pom-moment-minrecurrence-hankel}），并令
+\[
+\Delta(q):=(2\lfloor q/2\rfloor+1)-d_q
+\]
+为共振缺口（表 \ref{tab:fold_collision_resonance_gap_delta_q_9_17}）。
+对素数 \(p\) 定义 \(p\)-进刚性指数
+\[
+\mathsf{Stiff}_p(q):=v_p\!\bigl(\det(H_q)\bigr),
+\]
+其中 \(H_q\) 为表 \ref{tab:fold_collision_moment_hankel_rank} 中用于 \(S_q\) 的 Hankel 见证块。
+则存在有限素数集 \(S(q)\) 使得：
+\begin{enumerate}
+  \item 对所有 \(p\notin S(q)\)，刚性序列在缺口附近保持稳定，即在相应的共振窗口内 \(\mathsf{Stiff}_p(\cdot)\) 不发生跳跃；
+  \item 对所有 \(p\in S(q)\)，刚性指数出现离散跳跃，并且跳跃总量满足
+  \[
+  \sum_{p\in S(q)}\Bigl(\mathsf{Stiff}_p(q)-\mathsf{Stiff}_p(q-1)\Bigr)=\Delta(q),
+  \]
+  从而缺口 \(\Delta(q)\) 可由有限多个素数通道上的 \(p\)-进跳跃总量给出。
+\end{enumerate}
+该等式把“可见缺陷”压缩为有限多个素数通道上的 \(p\)-进跳跃总量，从而给出一种可离线核验的算术指纹对齐。
+\end{conjecture}
+
 \input{parts/part__pom-q4-five-mode-hankel-arithmetic-barrier}
 
 \subsubsection{任意阶碰撞矩的 moment-kernel 构造与多重分形谱}\label{subsec:pom-moment-general}
@@ -120,6 +199,33 @@ S_q(m)=\sum_{j=1}^{d_q} c_{q,j}\,S_q(m-j)\qquad(m\ge m_0),
 因此在 Fold 的碰撞统计中，Rényi 阶数 \(q\) 与最小状态复杂度 \(d_q\) 在概念上可分离：更高阶矩可能暴露出维数下降的结构性指纹，而非单调地提升“状态数”。
 \end{remark}
 
+\begin{conjecture}[\texorpdfstring{$(2/3)$}{(2/3)} 斜率的六周期仿射阶数律]\label{conj:pom-moment-order-two-thirds-slope-affine-6period}
+令 \(d_q\) 为命题 \ref{prop:pom-moment-minrecurrence-hankel} 中 \(m\mapsto S_q(m)\) 的最小整系数递推阶数。
+猜想对一切 \(q\ge 9\)，存在仅依赖于 \(q\bmod 6\) 的常数 \(c_r\ (r=0,1,2,3,4,5)\) 使得
+\[
+\boxed{\ d_q=\frac{2q+c_{q\bmod 6}}{3}\ }.
+\]
+更具体地，可取
+\[
+(c_0,c_1,c_2,c_3,c_4,c_5)=(15,7,11,3,7,5),
+\]
+即
+\[
+\begin{aligned}
+q\equiv 0\ (\mathrm{mod}\ 6)&:\ d_q=\frac{2q+15}{3},\qquad
+q\equiv 1\ (\mathrm{mod}\ 6):\ d_q=\frac{2q+7}{3},\\
+q\equiv 2\ (\mathrm{mod}\ 6)&:\ d_q=\frac{2q+11}{3},\qquad
+q\equiv 3\ (\mathrm{mod}\ 6):\ d_q=\frac{2q+3}{3},\\
+q\equiv 4\ (\mathrm{mod}\ 6)&:\ d_q=\frac{2q+7}{3},\qquad
+q\equiv 5\ (\mathrm{mod}\ 6):\ d_q=\frac{2q+5}{3}.
+\end{aligned}
+\]
+该律与已核验表格（例如表 \ref{tab:fold_collision_moment_recursions_9_17} 与表 \ref{tab:fold_collision_moment_recursions_18_23}）在 \(q=9,\dots,23\) 的数据一致；若其在所有 \(q\ge 9\) 上成立，则主阶上给出
+\(
+d_q\sim \frac{2}{3}q
+\)，与名义闭包维数上界 \(2\lfloor q/2\rfloor+1\) 的线性尺度不同。
+\end{conjecture}
+
 \begin{algorithm}[递推多项式作为 moment-kernel 的原始谱接口（无矩阵抽取）]\label{alg:pom-recurrence-polynomial-spectral-extraction}
 固定 \(q\ge 2\)，给定有限采样 \(\{S_q(m)\}\)（长度满足 \(>\!2d_q\) 的冗余），可在不构造任何 realization 矩阵的前提下恢复谱指纹：
 \begin{enumerate}
@@ -161,6 +267,31 @@ S_q(m)=\sum_{j=1}^{d_q} c_{q,j}\,S_q(m-j)\qquad(m\ge m_0),
 该缺口可被视为“对称幂商核的名义模态维数”与“序列语义真实可见维数”之间的不可约差异：
 它对应于一组由 Hankel 秩下降强制出现的共振线性约束（见表 \ref{tab:fold_collision_resonance_nullmodes_q9_17}），从而把“乘法式的 \(q\)-重交互”在可审计层面压缩为一个整数缺口证书与一组显式约束向量。
 \end{remark}
+
+\begin{theorem}[对称幂压缩给出 Hankel 秩的多项式上界]\label{thm:pom-sympower-hankel-polynomial-upper-bound}
+设 \(K\) 为任意有限状态确定性核，其内部状态集大小为 \(|Q|=N\)。
+对每个整数 \(q\ge 2\)，令 \(S_q(m)\) 表示由该核诱导的 \(q\)-阶碰撞幂和（等价地由 \(q\)-重碰撞 moment-kernel 驱动的矩序列）。
+则存在维数不超过
+\[
+\binom{q+N-1}{N-1}
+\]
+的非负矩阵 \(L_q\) 以及非负向量 \(u_q,v_q\)，使得 \(S_q(m)\) 可由 \(L_q^m\) 线性读出（在适当起点后成立）。
+从而 \(m\mapsto S_q(m)\) 的最小整系数线性递推阶（等价于 Hankel 秩/最小 realization 维数）满足
+\[
+\boxed{\;
+d_q\ \le\ \binom{q+N-1}{N-1}\; }.
+\]
+特别地，对固定 \(N\)，该上界随 \(q\) 至多按 \(q^{N-1}\) 多项式增长。
+\end{theorem}
+
+\begin{proof}
+固定 \(q\) 后，\(q\)-重碰撞的朴素编译对应于在态空间 \(Q^q\) 上的同步直积核，其计数语义对 \(q\) 份拷贝的置换作用不变。
+因此可在对称群 \(S_q\) 的轨道空间上取商，并以占据数向量 \(\mathbf n=(n_1,\dots,n_N)\in\NN^N\)（满足 \(\sum_i n_i=q\)）作为商态空间坐标。
+该态空间的基数为组合数 \(\binom{q+N-1}{N-1}\)，从而得到同一计数语义的一个非负矩阵 realization \(L_q\)（维数不超过该组合数）。
+\par
+任一维数为 \(D\) 的矩阵 realization 所生成的标量序列满足阶数不超过 \(D\) 的线性递推（Cayley--Hamilton）。
+取 \(D=\binom{q+N-1}{N-1}\) 即得所示 Hankel 秩上界。证毕。
+\end{proof}
 
 \input{parts/part__pom-compile-volume-vs-visible-dimension-separation}
 
@@ -291,6 +422,56 @@ S_{q_1}(m)=u^{\mathsf T}A^{m-m_0}v
 若存在满射 intertwiner \(\Pi:\mathrm{Sym}^b(A)\twoheadrightarrow B\) 使 \(\Pi\circ \mathrm{Sym}^b(A)=B\circ\Pi\)，
 则称该编译在阶 \(b\) 上\textbf{第一变分保真}，若 \(\Pi\) 在 \(\mathcal{E}^{(1)}_{b}(A)\) 上不恒为零。
 \end{definition}
+
+\begin{theorem}[近似 intertwining 的伪谱放大：第一变分的稳定证书]\label{thm:pom-first-variation-pseudospectrum-amplification}
+设 \(A\in M_d(\RR_{\ge 0})\) 为原始矩阵，Perron 根为 \(\rho=\rho(A)>0\)。
+取任一非 Perron 特征值 \(\mu\in\mathrm{spec}(A)\setminus\{\rho\}\) 并记 \(\eta:=|\mu|>0\)。
+对整数 \(b\ge 2\)，令 \(T_b:=\mathrm{Sym}^b(A)\)。
+设给定线性映射 \(\Pi:\mathrm{Sym}^b(\CC^d)\to \CC^n\)、矩阵 \(B\in M_n(\CC)\) 与误差算子 \(R\) 使得
+\[
+\Pi\,T_b\ =\ B\,\Pi\ +\ R.
+\]
+设存在常数 \(\varepsilon_b,\sigma_b>0\) 与向量 \(x\in\mathcal{E}^{(1)}_b(A)\) 满足 \(\|x\|=1\)、\(\|Rx\|\le \varepsilon_b\) 且 \(\|\Pi x\|\ge \sigma_b\)。
+则复数
+\[
+z:=\rho^{\,b-1}\mu
+\]
+属于 \(B\) 的 \(\delta_b\)-伪谱，其中 \(\delta_b:=\varepsilon_b/\sigma_b\)；亦即存在 \(y\neq 0\) 使得
+\[
+\|(B-zI)y\|\ \le\ \delta_b\,\|y\|.
+\]
+若进一步 \(B\) 为正规矩阵，则存在 \(\lambda\in\mathrm{spec}(B)\) 满足 \(\mathrm{dist}(z,\lambda)\le \delta_b\)。
+\end{theorem}
+\begin{proof}
+由 \(x\in\mathcal{E}^{(1)}_b(A)\) 的定义，可取 Perron 特征向量 \(u\) 与 \(\mu\)-特征向量 \(v\) 使 \(x=u^{\odot(b-1)}\odot v\)。
+由 \(Au=\rho u\)、\(Av=\mu v\) 得 \(T_bx=\rho^{b-1}\mu\,x\)，即 \((T_b-zI)x=0\)。
+将近似 intertwining 关系作用于 \(x\) 得
+\[
+(B-zI)(\Pi x)=\Pi(T_b-zI)x-Rx=-Rx.
+\]
+令 \(y:=\Pi x\neq 0\)。
+则 \(\|(B-zI)y\|=\|Rx\|\le \varepsilon_b\) 且 \(\|y\|=\|\Pi x\|\ge \sigma_b\)，故
+\(
+\|(B-zI)y\|\le (\varepsilon_b/\sigma_b)\|y\|
+\)。
+正规情形下，谱距离估计由正规矩阵的伪谱性质给出。证毕。
+\end{proof}
+
+\begin{corollary}[平方根谱界在近似 MOM 乘法升级下的不可兼容性]\label{cor:pom-first-variation-pseudospectrum-breaks-sqrt-bound}
+沿定理 \ref{thm:pom-first-variation-pseudospectrum-amplification}。
+设 \(B\) 为正规矩阵且满足 \(\rho(B)=\rho^b\)，并且误差比 \(\delta_b=\varepsilon_b/\sigma_b\) 满足 \(\delta_b=o(\rho^{b/2})\)。
+则当 \(b\) 充分大时，\(B\) 必存在非 Perron 特征值 \(\lambda\) 使
+\[
+|\lambda|\ >\ \sqrt{\rho(B)}=\rho^{b/2}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:pom-first-variation-pseudospectrum-amplification}，存在 \(\lambda\in\mathrm{spec}(B)\) 使
+\(
+|\lambda|\ge |z|-\delta_b=\rho^{b-1}\eta-\delta_b
+\)。
+当 \(b\) 充分大时，\(\rho^{b-1}\eta\) 相对 \(\rho^{b/2}\) 呈指数优势且 \(\delta_b=o(\rho^{b/2})\)，故有 \(\rho^{b-1}\eta-\delta_b>\rho^{b/2}\)，从而得到结论。证毕。
+\end{proof}
 
 \begin{theorem}[第一变分保真 \texorpdfstring{$\Rightarrow$}{=>} 高阶核版 RH 不可能：MOM 乘法升级的致命放大]\label{thm:pom-first-variation-fidelity-rh-breaking}
 固定整数 \(a\ge 1\)。

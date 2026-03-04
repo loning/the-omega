@@ -224,6 +224,62 @@ L\subseteq M\bigl(\sqrt{w_1^2-4},\dots,\sqrt{w_n^2-4}\bigr).
 伽罗瓦群结论随之成立。证毕。
 \end{proof}
 
+\begin{theorem}[群作用下的二值跳跃选择与账本不可约下界]\label{thm:xi-equivariant-binary-jump-ledger-lower-bound}
+令有限群 \(G\) 作用于有限集合 \(\Omega\)。
+设观测输入在 \(G\) 作用下不可区分（等价地：输入仅给出该 \(G\)-集合的同构类型），并允许协议额外读取一段外置二进制账本 \(B\in\{0,1\}^b\)，随后输出 \(\omega\in\Omega\)。
+称协议满足等变自然性，若存在映射 \(\Phi:\{0,1\}^b\to\Omega\) 使得对一切 \(g\in G\) 有
+\[
+\Phi(B)\ \mapsto\ g\cdot \Phi(B)
+\]
+与输入在 \(g\) 作用下的同一化相容；换言之，协议在 \(G\)-对称下不引入额外破缺数据时，其所有可能输出必须由账本 \(B\) 完全枚举。
+则对任意轨道 \(\mathcal O(\omega)=G\cdot\omega\) 有不可逾越下界
+\[
+\boxed{\;b\ \ge\ \left\lceil \log_2|\mathcal O(\omega)|\right\rceil.\;}
+\]
+特别地，若作用传递，则 \(b\ge \lceil\log_2|\Omega|\rceil\)；
+并且若 \(\Omega\) 无全局不动点，则在 \(b=0\) 的 choice-free 口径下不存在满足自然性的协议。
+\end{theorem}
+\begin{proof}
+在无外部破缺数据的前提下，协议对给定 \(B\) 的输出为某个确定的 \(\Phi(B)\in\Omega\)。
+因此在所有账本取值上，协议可产生的输出至多为 \(2^b\) 个。
+若要求协议能覆盖某一轨道中的所有选择，则必有 \(2^b\ge |\mathcal O(\omega)|\)，从而得到所示下界。
+\par
+若 \(b=0\)，则输出为某个固定点 \(\omega_\ast\in\Omega\)。自然性强制其在任意 \(g\in G\) 下保持不变，即 \(g\cdot\omega_\ast=\omega_\ast\)，故 \(\omega_\ast\) 必为全局不动点；若无不动点则不可能。证毕。
+\end{proof}
+
+\begin{theorem}[二值跳跃半直积的 Abel 化与可观测位坍缩]\label{thm:xi-binary-jump-semidirect-abelianization-coinvariants}
+令 \(I\) 为有限集合，并令 \(V:=(\ZZ_2)^I\)（视为 \(I\) 上的 \(\ZZ_2\)-值函数群）。
+设有限群 \(G\) 作用于 \(I\)，并以坐标置换诱导作用于 \(V\)。令半直积
+\[
+W:=V\rtimes G.
+\]
+记 coinvariants
+\[
+V_G:=V\big/\langle v-g\cdot v:\ v\in V,\ g\in G\rangle.
+\]
+则存在规范同构
+\[
+\boxed{\;W^{\mathrm{ab}}\ \cong\ V_G\ \oplus\ G^{\mathrm{ab}}.\;}
+\]
+进一步，若 \(I\) 的轨道分解为 \(I=\bigsqcup_{j=1}^{k}\mathcal O_j\)，则
+\[
+\boxed{\;V_G\ \cong\ (\ZZ_2)^{k},\;}
+\]
+其基可取为各轨道指示函数在 coinvariants 中的像。
+因此在不携带 \(I\) 的标号信息时，\(V\) 的可交换可观测二值自由度至多保留“每个轨道的总翻转”一比特，其余 \(I\)-逐点分支位在 Abel 层面必然坍缩。
+\end{theorem}
+\begin{proof}
+由 \(V\) 交换，交换子仅来自 \([(v,1),(0,g)]\)。
+直接计算得
+\[
+[(v,1),(0,g)]=(v-g\cdot v,1),
+\]
+故 \([W,W]\cap V=\langle v-g\cdot v\rangle\)，并且 \(W/[W,W]\cong (V/[V,G])\oplus (G/[G,G])=V_G\oplus G^{\mathrm{ab}}\)。
+\par
+对 \(V_G\) 的维数：在单一轨道上，任意两单位基向量在 coinvariants 中同类，故该轨道贡献一维；不同轨道互不识别，故总维数为轨道数 \(k\)。
+取轨道指示函数即可给出一组基。证毕。
+\end{proof}
+
 \begin{conjecture}[Gödel 尺度族上的 Hilbert 相干性]\label{conj:xi-jg-hilbert-coherence-godel-scales}
 设 \(P\in\ZZ[z]\) 可分离，且 \(\operatorname{Gal}(P/\QQ)\) 为给定传递子群（典型情形为 \(S_n\)）。
 定义 Gödel 尺度子集
@@ -239,5 +295,22 @@ L\subseteq M\bigl(\sqrt{w_1^2-4},\dots,\sqrt{w_n^2-4}\bigr).
 \operatorname{Gal}(Q_r/\QQ)\cong \operatorname{Gal}(P/\QQ),
 \]
 并且例外尺度组成薄集，可由有限个代数曲线的有理点参数化。
+\end{conjecture}
+
+\begin{conjecture}[输运分支的满秩账本与单比特可观测性的并发]\label{conj:xi-jg-branch-ledger-fullrank-vs-coinvariant-collapse}
+在命题 \ref{prop:xi-jg-algebraic-scale-binary-fiber-bound} 的设定下，设 \(M\) 为 \(Q_r\) 的分裂域，令
+\[
+L:=M\bigl(\sqrt{w_1^2-4},\dots,\sqrt{w_n^2-4}\bigr),
+\qquad
+H:=\operatorname{Gal}(L/M)\ \le\ (\ZZ_2)^n.
+\]
+猜想对“泛”尺度参数 \(r\)（例如在适当稀疏例外集之外）同时满足：
+\begin{enumerate}
+\normalfont
+  \item \textbf{满秩账本：}\(H\cong(\ZZ_2)^n\)，等价地 \([L:M]=2^n\)，从而任何要在无标号口径下指定一条全局分支选择的协议其外置账本复杂度可达 \(n\) 比特量级；
+  \item \textbf{单比特可观测性：}设 \(G:=\operatorname{Gal}(M/K(r))\) 在根指标集 \(I=\{1,\dots,n\}\) 上的作用为传递（或仅有常数个轨道），则由定理 \ref{thm:xi-binary-jump-semidirect-abelianization-coinvariants}，
+  半直积 \(H\rtimes G\) 的 Abel 层面对分支位的可观测维数至多为轨道数（典型为 \(1\)），其余分支位在不携带标号信息时不可由任何可交换不变量读出。
+\end{enumerate}
+该并发现象给出一条“账本复杂度最大化 \(\leftrightarrow\) 可观测位最小化”的二值跳跃对偶性：全息重建所需的外置分支账本可达到满秩，而内禀可交换可观测信息却坍缩为常数阶。
 \end{conjecture}
 

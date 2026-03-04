@@ -1,0 +1,182 @@
+\subsubsection{均匀基线下规范差的有限长度矩闭式}\label{subsubsec:fold-gauge-anomaly-uniform-finite-moment-closures}
+在定义 \ref{def:fold-gauge-anomaly} 的符号下，取
+\[
+G_m(\omega)=\bigl|\,r_{m+1\to m}(\omega)\oplus \widetilde r_{m+1\to m}(\omega)\,\bigr|_0,\qquad
+\omega\sim\mathrm{Unif}(\Omega_{m+1}).
+\]
+并记
+\[
+\bar G_m:=\mathbb E[G_m],\qquad
+M_m(u):=\mathbb E[u^{G_m}],\qquad
+\widetilde M_m(u):=2^m M_m(u).
+\]
+采用空窗约定 \(m=0\) 时 \(G_0\equiv 0\)，以下闭式对一切 \(m\ge 0\) 成立。
+
+\begin{theorem}[均值的精确有限长度闭式]\label{thm:fold-gauge-anomaly-mean-finite-closed}
+规范差均值满足
+\[
+\boxed{\;
+\bar G_m
+=\frac49\,m-\frac{29}{54}
++\frac58\,2^{-m}
++\Bigl(\frac{m}{36}-\frac{19}{216}\Bigr)\Bigl(-\frac12\Bigr)^m
+\; }.
+\]
+因此
+\[
+\bar G_m=\frac49\,m-\frac{29}{54}+O(m2^{-m}),
+\qquad
+\frac{\bar G_m}{m}=\frac49-\frac{29}{54m}+O(2^{-m}).
+\]
+\end{theorem}
+
+\begin{proof}
+由有限状态换能器路径权重求和，\(\widetilde M_m(u)\) 满足四阶递推
+\[
+\widetilde M_{m+4}
+=\widetilde M_{m+3}+(2u+1)\widetilde M_{m+2}+(u^3-2u)\widetilde M_{m+1}-2u\,\widetilde M_m.
+\]
+对 \(u\) 求导并代入 \(u=1\)。由 \(M_m(1)=1\) 得 \(\widetilde M_m(1)=2^m\)。设
+\[
+B_m:=\widetilde M_m'(1)=2^m\bar G_m,
+\]
+则
+\[
+B_{m+4}=B_{m+3}+3B_{m+2}-B_{m+1}-2B_m+2^{m+3}.
+\]
+其齐次特征多项式为
+\[
+\mu^4-\mu^3-3\mu^2+\mu+2=(\mu-2)(\mu-1)(\mu+1)^2,
+\]
+故通解型为
+\[
+B_m=(\alpha m+\beta)2^m+\gamma+(\delta+\varepsilon m)(-1)^m.
+\]
+由定义直接枚举 \(m=0,1,2,3,4\) 可得
+\[
+\bar G_0=0,\quad
+\bar G_1=\frac14,\quad
+\bar G_2=\frac12,\quad
+\bar G_3=\frac78,\quad
+\bar G_4=\frac{41}{32},
+\]
+解得常数并化简为
+\[
+B_m=\Bigl(\frac49m-\frac{29}{54}\Bigr)2^m+\frac58+\Bigl(\frac{m}{36}-\frac{19}{216}\Bigr)(-1)^m.
+\]
+两边除以 \(2^m\) 即得结论。
+\end{proof}
+
+\begin{proposition}[均值密度的全局单调性]\label{prop:fold-gauge-anomaly-mean-density-monotone}
+序列 \(\bigl(\bar G_m/m\bigr)_{m\ge 1}\) 单调不减，且
+\[
+\frac{\bar G_{m+1}}{m+1}>\frac{\bar G_m}{m}\quad(m\ge 2),
+\]
+并有
+\[
+\lim_{m\to\infty}\frac{\bar G_m}{m}=\frac49.
+\]
+\end{proposition}
+
+\begin{proof}
+由定理 \ref{thm:fold-gauge-anomaly-mean-finite-closed} 直接计算
+\[
+\frac{\bar G_{m+1}}{m+1}-\frac{\bar G_m}{m}
+=
+\frac{
+232\cdot 2^m-135m-270+(-1)^m(-18m^2+39m+38)
+}{
+432\cdot 2^m\,m(m+1)
+}.
+\]
+分母恒正，只需考察分子 \(N_m\)。
+
+当 \(m\) 为偶数时，
+\[
+N_m=232\cdot 2^m-18m^2-96m-232.
+\]
+对 \(m\ge 2\) 有 \(2^m\ge 4\)，故
+\[
+N_m\ge 232\cdot 4-18\cdot 2^2-96\cdot 2-232>0.
+\]
+
+当 \(m\) 为奇数时，
+\[
+N_m=232\cdot 2^m+18m^2-174m-308.
+\]
+代入 \(m=1\) 得 \(N_1=0\)，即 \(\bar G_2/2=\bar G_1\)；对 \(m\ge 3\) 有 \(N_m>0\)。
+于是得到“单调不减且 \(m\ge 2\) 后严格递增”。
+极限由定理 \ref{thm:fold-gauge-anomaly-mean-finite-closed} 的渐近式立即给出。
+\end{proof}
+
+\begin{theorem}[二阶阶乘矩的精确闭式]\label{thm:fold-gauge-anomaly-second-factorial-finite-closed}
+对一切 \(m\ge 0\)，有
+\[
+\boxed{\;
+\mathbb E\!\bigl[G_m(G_m-1)\bigr]
+=\frac{16}{81}m^2-\frac{106}{243}m+\frac{443}{729}
+-\Bigl(\frac{5}{16}m+\frac12\Bigr)2^{-m}
++\Bigl(-\frac{m^3}{648}+\frac{m^2}{27}-\frac{m}{432}-\frac{157}{1458}\Bigr)\Bigl(-\frac12\Bigr)^m
+\; }.
+\]
+\end{theorem}
+
+\begin{proof}
+令
+\[
+C_m:=\widetilde M_m''(1)=2^m\,\mathbb E\!\bigl[G_m(G_m-1)\bigr].
+\]
+对 \(\widetilde M_m\) 的四阶递推二次求导并代入 \(u=1\)，得到
+\[
+C_{m+4}=C_{m+3}+3C_{m+2}-C_{m+1}-2C_m
++4B_{m+2}+2B_{m+1}-4B_m+6\cdot 2^{m+1},
+\]
+其中 \(B_m=\widetilde M_m'(1)\)。
+由定理 \ref{thm:fold-gauge-anomaly-mean-finite-closed} 可将右端完全改写为 \(m\) 的显式线性组合。
+该非齐次递推的齐次特征因子仍为 \((\mu-2)(\mu-1)(\mu+1)^2\)，故 \(C_m\) 必可写为
+\[
+C_m
+=2^m(\alpha m^2+\beta m+\gamma)
++\delta m+\kappa
++(-1)^m(\varepsilon m^3+\zeta m^2+\eta m+\theta).
+\]
+代回递推确定 \(\alpha,\beta,\delta,\varepsilon,\zeta\)，再由 \(m=0,1,2,3\) 的直接枚举确定其余常数，整理并除以 \(2^m\) 即得结论。
+\end{proof}
+
+\begin{theorem}[方差的精确有限长度闭式]\label{thm:fold-gauge-anomaly-variance-finite-window-closed}
+对一切 \(m\ge 0\)，规范差方差满足
+\[
+\boxed{\;
+\begin{aligned}
+\mathrm{Var}(G_m)
+={}&\frac{118}{243}\,m-\frac{635}{2916}
++\Bigl(\frac{43}{54}-\frac{125}{144}m\Bigr)2^{-m}\\
+&+\Bigl(-\frac{m^3}{648}+\frac{m^2}{81}+\frac{173}{1296}m-\frac{47}{162}\Bigr)\Bigl(-\frac12\Bigr)^m\\
+&+\Bigl(-\frac{m^2}{1296}+\frac{19}{3888}m-\frac{9293}{23328}\Bigr)4^{-m}
++\Bigl(-\frac{5}{144}m+\frac{95}{864}\Bigr)\Bigl(-\frac14\Bigr)^m.
+\end{aligned}
+\; }.
+\]
+因此
+\[
+\mathrm{Var}(G_m)=\frac{118}{243}\,m-\frac{635}{2916}+O(m^3 2^{-m}).
+\]
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:fold-gauge-anomaly-second-factorial-finite-closed}，
+\[
+\mathbb E[G_m^2]=\mathbb E[G_m(G_m-1)]+\mathbb E[G_m].
+\]
+再由定理 \ref{thm:fold-gauge-anomaly-mean-finite-closed}，
+\[
+\mathrm{Var}(G_m)=\mathbb E[G_m^2]-\bigl(\mathbb E[G_m]\bigr)^2.
+\]
+将两式代入并作代数化简即可得到所述闭式与渐近式。
+\end{proof}
+
+\begin{remark}[与平稳和口径的关系]\label{rem:fold-gauge-anomaly-finite-vs-stationary-moments}
+本小节闭式针对有限窗口均匀基线 \(\omega\sim\mathrm{Unif}(\Omega_{m+1})\) 下由定义 \ref{def:fold-gauge-anomaly} 直接给出的 \(G_m(\omega)\)。
+定理 \ref{thm:fold-gauge-anomaly-var-finite-closed} 采用的是平稳逐位过程口径 \(G_m=\sum_{t=1}^m g_t\)。
+二者共享相同的一阶与二阶线性系数 \(\frac49\) 与 \(\frac{118}{243}\)，而有限长度修正项反映了不同边界条件下的可观测差异。
+\end{remark}

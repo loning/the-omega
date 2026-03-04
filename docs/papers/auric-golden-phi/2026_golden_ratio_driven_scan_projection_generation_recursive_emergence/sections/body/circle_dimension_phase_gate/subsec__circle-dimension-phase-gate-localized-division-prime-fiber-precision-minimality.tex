@@ -101,6 +101,10 @@ a_{k+1}\equiv a_k\ (\mathrm{mod}\ N^k)
 故两边素数支撑一致。证毕。
 \end{proof}
 
+\input{defprop__cdim-multiprime-divisible-spectrum}
+\input{thm__cdim-mobius-inversion-localization-multiset-classification}
+\input{prop__cdim-higher-spectrum-not-determined-by-marginals}
+
 \begin{theorem}[素数纤维实现层极限压缩：procyclic 与最小生成元数]\label{thm:cdim-zn-procyclic-and-min-generators}
 设 \(N\ge 2\)。
 则：
@@ -123,6 +127,107 @@ a_{k+1}\equiv a_k\ (\mathrm{mod}\ N^k)
 \]
 给出；右端有限交换群的最小生成元数为 \(r\)，故左端任意拓扑生成集基数至少 \(r\)。
 合并得等号。证毕。
+\end{proof}
+
+\begin{theorem}[相位编码的 Diophantine 分辨下界与外置寄存器阈值]\label{thm:cdim-phase-diophantine-resolution-lower-bound}
+取 \(\alpha\in\RR\setminus\QQ\)，定义相位编码
+\[
+\pi_\alpha:\ZZ\to \TT,\qquad \pi_\alpha(n):=e^{2\pi i\alpha n}.
+\]
+记到最近整数距离
+\[
+\|x\|_{\RR/\ZZ}:=\min_{k\in\ZZ}|x-k|,
+\qquad
+\delta_N(\alpha):=\min_{1\le |k|\le N}\|k\alpha\|_{\RR/\ZZ}.
+\]
+设 \((p_j/q_j)_{j\ge 0}\) 为 \(\alpha\) 的连分数收敛分数（\(q_j\) 为收敛分母）。
+若 \(q_j\le N<q_{j+1}\)，则有夹逼（参见 \cite{Cassels1957}）
+\[
+\frac{1}{q_{j+1}+q_j}\ <\ \delta_N(\alpha)\ \le\ \frac{1}{q_{j+1}}.
+\]
+从而对任意误差容忍 \(\varepsilon>0\)，若要求存在仅依赖观测相位 \(\pi_\alpha(n)\) 的解码器在所有 \(|n|\le N\) 上唯一恢复 \(n\)，则必须满足
+\[
+\varepsilon\ <\ \frac12\,\delta_{2N}(\alpha)
+\ \le\ \frac{1}{2q_{j+1}}
+\ \le\ \frac{1}{2N}.
+\]
+反之，当 \(N\) 超过 \(1/\varepsilon\) 的尺度时，必存在不同的 \(|n|,|m|\le N\) 使得 \(\pi_\alpha(n)\) 与 \(\pi_\alpha(m)\) 在 \(\varepsilon\) 误差内不可消歧。
+在保持审计可逆性的实现层口径下，任何此类碰撞都必须由外置寄存器区分，而其最紧致的尺度可取为模 \(q_{j+1}\) 的离散标签。
+\end{theorem}
+\begin{proof}
+对 \(n\neq m\)，有
+\[
+|\pi_\alpha(n)-\pi_\alpha(m)|
+=\left|e^{2\pi i\alpha n}-e^{2\pi i\alpha m}\right|
+=2\left|\sin\!\bigl(\pi\alpha(n-m)\bigr)\right|
+=2\left|\sin\!\bigl(\pi\| (n-m)\alpha\|_{\RR/\ZZ}\bigr)\right|.
+\]
+令 \(k=n-m\)，则 \(|k|\le 2N\)。
+若存在 \(|k|\le 2N\) 使 \(\|(k\alpha)\|_{\RR/\ZZ}\le 2\varepsilon\)，则上式给出两点相位在 \(O(\varepsilon)\) 量级内不可消歧；
+因此“对所有 \(|n|\le N\) 唯一恢复”强制
+\(
+2\varepsilon<\delta_{2N}(\alpha)
+\)。
+这给出所述必要条件。
+\par
+连分数理论给出：当 \(q_j\le N<q_{j+1}\) 时，\(\|q_j\alpha\|_{\RR/\ZZ}\) 实现了 \(\delta_N(\alpha)\)，并且满足
+\[
+\frac{1}{q_{j+1}+q_j}<\|q_j\alpha\|_{\RR/\ZZ}\le \frac{1}{q_{j+1}}.
+\]
+代入即得夹逼与由此推出的 \(\varepsilon\) 下界链。
+\par
+当 \(N\gg 1/\varepsilon\) 时，上述必要条件失败，故存在碰撞对。
+为保持可逆性，必须引入外置离散标签把碰撞类分开；而收敛分母 \(q_{j+1}\) 给出区分这些近邻的自然标度（其在 \(\ZZ\) 上诱导模 \(q_{j+1}\) 的粗粒化坐标），从而得到所述寄存器阈值表述。证毕。
+\end{proof}
+
+\begin{theorem}[单位圆坐标门的 Möbius 刚性：由反演内禀化唯一刻画 Cayley/Arctan]\label{thm:cdim-mobius-cayley-arctan-rigidity}
+记 \(\widehat{\RR}:=\RR\cup\{\infty\}\) 为实射影直线。
+设 Möbius 变换
+\[
+\iota(x)=\frac{ax+b}{cx+d},
+\qquad
+ad-bc\neq 0,
+\]
+满足：
+\begin{enumerate}
+  \item \(\iota(\widehat{\RR})\subseteq \TT\)（将实边界送入单位圆）；
+  \item 反演内禀化：对一切 \(x\in\widehat{\RR}\setminus\{0,\infty\}\) 有
+  \[
+  \iota(-1/x)=-\iota(x).
+  \]
+\end{enumerate}
+则存在 \(\theta\in\RR\) 使得
+\[
+\iota(x)=e^{i\theta}\,\frac{x-i}{x+i}.
+\]
+因此若以相位坐标 \(u(x):=\frac{1}{2\pi}\arg(\iota(x))\) 作为单位圆门的实轴参数，则
+\[
+u(x)=\frac{1}{\pi}\arctan(x)+\textup{常数},
+\]
+从而与本节采用的 \(u(x)=\frac1\pi\arctan x\) 规范一致，且在上述两条结构公理下唯一到全局旋转。
+\end{theorem}
+
+\begin{proof}
+任一把 \(\widehat{\RR}\) 双射到 \(\TT\) 的 Möbius 变换可写为
+\[
+\iota(x)=e^{i\theta}\,\frac{x-z_0}{x-\overline{z_0}},
+\qquad z_0\in\mathbb H,
+\]
+其中 \(\mathbb H\) 为上半平面。
+将反演条件代入并对任意实 \(x\neq 0\) 化简：
+\[
+\frac{-1/x-z_0}{-1/x-\overline{z_0}}
+=-\frac{x-z_0}{x-\overline{z_0}}
+\quad\Longleftrightarrow\quad
+(1+x z_0)(x-\overline{z_0})=-(1+x\overline{z_0})(x-z_0).
+\]
+写 \(z_0=a+ib\)（\(b>0\)）并展开，上式等价于关于 \(x\) 的恒等式
+\[
+a\,x^2+x\bigl(1-(a^2+b^2)\bigr)-a=0\qquad(\forall x\in\RR).
+\]
+故系数全为零，得到 \(a=0\) 且 \(a^2+b^2=1\)，从而 \(z_0=i\)。
+代回即得 \(\iota(x)=e^{i\theta}\frac{x-i}{x+i}\)。
+最后由 \(\arg\frac{x-i}{x+i}=2\arctan(x)\)（取连续支）得到相位坐标的 \(\arctan\) 形式。证毕。
 \end{proof}
 
 \begin{theorem}[精度势的编码极小性：相位前缀重建的 \(\delta\)-一致码长下界]\label{thm:cdim-precision-potential-delta-coding-optimality}
@@ -202,6 +307,125 @@ k\log Q\ge \log M.
 零误差可逆要求不同输入对应不同量化输出，故 \(M\le Q^k\)。
 取对数即得。证毕。
 \end{proof}
+
+\begin{theorem}[自由秩的 Gödel 素数编码位长下界]\label{thm:cdim-godel-prime-bitlength-lowerbound}
+令 \(r\ge 1\)，并设 \(\Gamma:\ZZ^{r}\hookrightarrow \QQ_{>0}\) 为单射群同态。
+将任意 \(q\in\QQ_{>0}\) 写为既约分数 \(q=a/b\)（\(a,b\in\NN_{>0}\)、\(\gcd(a,b)=1\)），定义其二进位长为
+\[
+\mathcal L_2(q):=\log_2\max\{a,b\}.
+\]
+则存在绝对常数 \(c>0\)，使得对任意整数 \(M\ge 1\) 成立
+\[
+\max_{\|x\|_\infty\le M}\ \mathcal L_2\bigl(\Gamma(x)\bigr)\ \ge\ c\,M\,r\,\log(r+1).
+\]
+并且该数量级可达：取前 \(r\) 个素数 \(p_1<\cdots<p_r\) 并令
+\[
+\Gamma_0(x):=\prod_{i=1}^r p_i^{x_i},
+\]
+则
+\[
+\max_{\|x\|_\infty\le M}\ \mathcal L_2\bigl(\Gamma_0(x)\bigr)
+=
+\Theta\!\bigl(M\,r\,\log(r+1)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+由唯一分解定理，\(\QQ_{>0}\) 的乘法群同构于自由阿贝尔群
+\[
+\QQ_{>0}\ \cong\ \bigoplus_{p\ \mathrm{prime}}\ZZ,\qquad
+q\longmapsto (v_p(q))_{p},
+\]
+其中 \(v_p\) 为 \(p\)-进赋值且每个 \(q\) 仅有有限多坐标非零。
+令 \(V:=v\circ\Gamma:\ZZ^r\to\ZZ^{(\mathbb P)}\)。
+由于 \(\Gamma\) 单射，\(V\) 亦单射；并且 \(V(\ZZ^r)\) 落在某个有限坐标子格 \(\ZZ^{S}\) 中（\(S\subset\mathbb P\) 有限），于是可取 \(r\) 个素数 \(p_1,\dots,p_r\in S\) 使得限制到这些坐标的矩阵
+\[
+A\in\ZZ^{r\times r},\qquad A_{ij}:=v_{p_i}(\Gamma(e_j)),
+\]
+满足 \(\det A\neq 0\)，从而 \(|\det A|\ge 1\)。
+\par
+对 \(x\in\ZZ^r\) 记 \(y:=Ax\in\ZZ^r\)。
+由素因子支撑分离，存在某个与 \(p_1,\dots,p_r\) 互素的 \(u(x)\in\QQ_{>0}\) 使
+\[
+\Gamma(x)=\left(\prod_{i=1}^r p_i^{y_i}\right)\cdot u(x),
+\]
+且该分解在既约分数层面不发生约简，故
+\[
+\mathcal L_2\bigl(\Gamma(x)\bigr)
+\ge
+\mathcal L_2\!\left(\prod_{i=1}^r p_i^{y_i}\right).
+\]
+写 \(q(y):=\prod_{i=1}^r p_i^{y_i}=a(y)/b(y)\) 为既约分数，其中
+\[
+\log_2 a(y)=\sum_{i=1}^r \max(y_i,0)\log_2 p_i,\qquad
+\log_2 b(y)=\sum_{i=1}^r \max(-y_i,0)\log_2 p_i.
+\]
+于是
+\[
+\mathcal L_2\bigl(q(y)\bigr)
+=\max\{\log_2 a(y),\log_2 b(y)\}
+\ge
+\frac12\sum_{i=1}^r |y_i|\,\log_2 p_i.
+\]
+\par
+令 \(D:=\operatorname{diag}(\log_2 p_1,\dots,\log_2 p_r)\)，并记立方体 \(C_M:=[-M,M]^r\subset\RR^r\)。
+若对所有整数点 \(x\in\ZZ^r\cap C_M\) 都有 \(\mathcal L_2(\Gamma(x))\le L\)，则由上式得
+\[
+\|DAx\|_1=\sum_{i=1}^r |(DAx)_i|\le 2L
+\qquad(\forall x\in \ZZ^r\cap C_M),
+\]
+从而 \(DA(C_M)\subseteq B_1(2L):=\{z\in\RR^r:\ \|z\|_1\le 2L\}\)。
+体积比较给出
+\[
+|\det(DA)|\,(2M)^r
+=
+\operatorname{vol}\bigl(DA(C_M)\bigr)
+\le
+\operatorname{vol}\bigl(B_1(2L)\bigr)
+=
+\frac{(4L)^r}{r!}.
+\]
+注意 \(|\det(DA)|=|\det A|\prod_{i=1}^r\log_2 p_i\ge \prod_{i=1}^r\log_2 p_i\)，故
+\[
+(2M)^r\prod_{i=1}^r\log_2 p_i\ \le\ \frac{(4L)^r}{r!},
+\qquad
+L\ \ge\ \frac{M}{2}\,(r!)^{1/r}\left(\prod_{i=1}^r\log_2 p_i\right)^{1/r}.
+\]
+由 Stirling 估计 \((r!)^{1/r}\ge r/e\)，并且对任意 \(r\) 个互异素数有
+将 \(\{p_i\}\) 依大小重排为 \(p_{(1)}<\cdots<p_{(r)}\)。由互异性有 \(p_{(j)}\ge j+1\)，从而 \(\log p_{(j)}\ge \log(j+1)\)。
+当 \(r\ge 4\) 时，对所有 \(j\in[\lceil\sqrt r\rceil,r]\) 有 \(\log(j+1)\ge \tfrac12\log(r+1)\)，故
+\[
+\left(\prod_{i=1}^r\log p_i\right)^{1/r}
+\ge
+\left(\prod_{j=\lceil\sqrt r\rceil}^{r}\log p_{(j)}\right)^{1/r}
+\ge
+\left(\tfrac12\log(r+1)\right)^{1-\frac{1}{\sqrt r}}
+\ge
+\tfrac14\log(r+1).
+\]
+将有限个小 \(r\) 的情形吸收到常数中，存在绝对常数 \(c_0>0\) 使
+\(
+(\prod_{i=1}^r\log p_i)^{1/r}\ge c_0\log(r+1)
+\)
+对所有 \(r\ge 1\) 成立。
+结合 \(\log_2 p=(\log p)/\log 2\) 与上式即得存在绝对常数 \(c>0\) 使 \(L\ge cMr\log(r+1)\)。
+这等价于 \(\max_{\|x\|_\infty\le M}\mathcal L_2(\Gamma(x))\ge cMr\log(r+1)\)。
+\par
+最后，对可达性构造 \(\Gamma_0(x)=\prod_{i=1}^r p_i^{x_i}\)，取 \(x=(M,\dots,M)\) 得
+\[
+\mathcal L_2(\Gamma_0(x))
+=
+\log_2\prod_{i=1}^r p_i^{M}
+=
+M\sum_{i=1}^r \log_2 p_i.
+\]
+由 Chebyshev 函数 \(\vartheta\) 的标准估计（等价于素数定理）可知 \(\sum_{i=1}^r \log p_i=\Theta(r\log r)\)，从而上式为 \(\Theta(Mr\log(r+1))\)；
+而 \(\|x\|_\infty\le M\) 下的最大值同阶，得到所述可达性。证毕。
+\end{proof}
+
+\begin{remark}[圆维的位长倍率含义]\label{rem:cdim-godel-prime-bitlength-multiplier}
+对有限生成阿贝尔群 \(A\cong \ZZ^r\oplus T\)，由定义 \ref{def:circle-dimension} 与命题 \ref{prop:circle-dimension-laws} 有 \(\cdim(A)=r\)。
+定理 \ref{thm:cdim-godel-prime-bitlength-lowerbound} 表明：即便允许任意精巧的素数混编，单射 Gödel 外置在最大位长上仍必须承受 \(\cdim(A)\log(\cdim(A)+1)\) 的不可规避放大。
+\end{remark}
 
 \begin{conjecture}[Adelic 型圆维分解原则]\label{conj:cdim-adelic-circle-dimension-decomposition}
 对任意实现层可审计的离散加法对象 \(A\)（例如由有限生成 \(\ZZ\)-模经有限次局部化/完成化生成的对象类），其对偶紧群 \(\widehat A\) 存在自然短正合列

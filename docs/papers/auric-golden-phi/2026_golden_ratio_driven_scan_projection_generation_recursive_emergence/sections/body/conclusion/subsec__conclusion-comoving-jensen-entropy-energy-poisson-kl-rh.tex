@@ -153,6 +153,71 @@ D_{\mathrm{KL}}(\nu_{x,t}\mid \nu_{x,t}^{f})
 非负性由相对熵基本性质给出。证毕。
 \end{proof}
 
+\begin{proposition}[Cayley 模长的 Poisson 原函数表示]\label{prop:conclusion-cayley-modulus-poisson-primitive}
+令 \(u\in\RR\)、\(\delta>0\)，并置 \(z=u+i\delta\in\mathbb H\)。
+定义 Cayley 变换
+\[
+C:\mathbb H\to\mathbb D,\qquad C(z)=\frac{1+iz}{1-iz},
+\]
+以及 Poisson--Cauchy 核
+\[
+P_s(u):=\frac{s}{\pi(u^2+s^2)}\qquad(s\in\RR).
+\]
+则成立精确恒等式
+\begin{equation}\label{eq:conclusion-cayley-modulus-poisson-primitive}
+\boxed{\;
+-\log|C(u+i\delta)|
+=\pi\int_{1-\delta}^{1+\delta}P_s(u)\,\dd s
+=\frac12\log\frac{u^2+(1+\delta)^2}{u^2+(1-\delta)^2}.\;}
+\end{equation}
+其中当 \(1-\delta<0\) 时按有向积分理解（因 \(s/(u^2+s^2)\) 在 \(s=0\) 连续）。
+\end{proposition}
+\begin{proof}
+直接计算得到
+\[
+|C(u+i\delta)|^2=\frac{u^2+(1-\delta)^2}{u^2+(1+\delta)^2},
+\]
+从而
+\[
+-\log|C(u+i\delta)|
+=\frac12\log\frac{u^2+(1+\delta)^2}{u^2+(1-\delta)^2}.
+\]
+另一方面，
+\[
+\frac{\dd}{\dd s}\log(u^2+s^2)=\frac{2s}{u^2+s^2}=2\pi P_s(u),
+\]
+对 \(s\in[1-\delta,1+\delta]\) 积分即得
+\[
+\pi\int_{1-\delta}^{1+\delta}P_s(u)\,\dd s
+=\frac12\log\frac{u^2+(1+\delta)^2}{u^2+(1-\delta)^2}.
+\]
+合并即得 \eqref{eq:conclusion-cayley-modulus-poisson-primitive}。证毕。
+\end{proof}
+
+\begin{corollary}[有限 Cayley 零点的 Jensen 缺陷尺度切片公式]\label{cor:conclusion-jensen-defect-poisson-slice-finite}
+在定理 \ref{thm:conclusion-jensen-defect-zero-stock-identity} 的设定下，进一步假设 \(F\) 在 \(\mathbb D\) 内仅有有限个零点 \(\{a_k\}\)（按重数 \(m_k\)），并且每个零点可写为
+\[
+a_k=C(u_k+i\delta_k),\qquad u_k\in\RR,\ \delta_k>0.
+\]
+则
+\[
+\lim_{r\uparrow 1}D_F(r)
+=\sum_k m_k\bigl(-\log|a_k|\bigr)
+=\pi\sum_k m_k\int_{1-\delta_k}^{1+\delta_k}P_s(u_k)\,\dd s.
+\]
+\end{corollary}
+\begin{proof}
+由 Jensen 公式，
+\[
+D_F(r)=\sum_{|a_k|<r}m_k\log\frac{r}{|a_k|}.
+\]
+零点有限时，当 \(r\uparrow 1\) 右端最终包含全部零点，且 \(\log r\to 0\)，故
+\[
+\lim_{r\uparrow 1}D_F(r)=\sum_k m_k\bigl(-\log|a_k|\bigr).
+\]
+再由 \eqref{eq:conclusion-cayley-modulus-poisson-primitive} 对每个 \(a_k=C(u_k+i\delta_k)\) 逐项代入即得尺度切片表示。证毕。
+\end{proof}
+
 \begin{theorem}[RH 的熵--能量饱和一致判据]\label{thm:conclusion-rh-entropy-energy-saturation-criterion}
 对每个 \((x_0,\varrho)\)（\(x_0\in\RR,\ 0<\varrho<1\)）定义
 \[

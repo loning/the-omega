@@ -1,0 +1,49 @@
+\begin{theorem}[单参对数读出与对角多通道读出的分辨率分岔：常数精度的必要代价]\label{thm:spg-single-parameter-log-readout-vs-diagonal-multichannel-bifurcation}
+取互异素数 \(p_1,\dots,p_k\) 并令 \(b\in\{0,1\}^k\) 表示 \(k\)-比特 Gödel 寄存器。
+定义单参对数读出
+\[
+u(b):=\sum_{i=1}^k b_i\log p_i.
+\]
+则存在 \(b\neq b'\) 使得
+\[
+\abs{u(b)-u(b')}
+\ \le\
+\frac{1}{2^k-1}\sum_{i=1}^k \log p_i.
+\]
+因此，任何仅观测单标量 \(u(b)\) 且具有误差尺度不小于上述最小间距量级的机制，都不可能对全部 \(b\in\{0,1\}^k\) 保证唯一译码；若要求无碰撞译码，则精度预算必随 \(k\) 指数增长。
+\par
+相对地，在推论 \ref{cor:spg-godel-axis-boundary-invertibility} 与定理 \ref{thm:spg-godel-boundary-decoding-relative-error-threshold} 的设定下，若可获得对角多通道比值
+\[
+r_i:=\frac{dB_{ii}}{B_0}=p_i^{2b_i},
+\]
+并满足相对误差模型
+\(
+\widetilde B_0=B_0(1+\delta_0),\ 
+\widetilde B_{ii}=B_{ii}(1+\delta_i)
+\)
+且 \(|\delta_0|,|\delta_i|\le\varepsilon\)，则当
+\[
+\varepsilon<\frac{p_{\min}-1}{p_{\min}+1},
+\qquad
+p_{\min}:=\min_i p_i,
+\]
+最近整数译码
+\[
+\widetilde b_i:=\left\lfloor \frac{1}{2\log p_i}\log\!\left(\frac{d\,\widetilde B_{ii}}{\widetilde B_0}\right)\right\rceil
+\]
+可保证对所有 \(i\) 精确恢复 \(b_i\)。
+从而，在“单参坐标”与“多通道对角坐标”之间存在严格分岔：前者的无碰撞译码要求指数级精度，后者可在与 \(k\) 无关的常数相对误差阈值下实现逐坐标精确译码。
+\end{theorem}
+\begin{proof}
+把集合 \(\{u(b):b\in\{0,1\}^k\}\) 视为实轴上的 \(2^k\) 个点，且
+\(
+0\le u(b)\le \sum_{i=1}^k\log p_i
+\)。
+由鸽巢原理，区间 \([0,\sum_i\log p_i]\) 被这 \(2^k\) 个点划分出的相邻间距最小值不超过区间长度除以 \(2^k-1\)，从而存在 \(b\neq b'\) 满足所示不等式。
+对单参读出的不可唯一性结论由“误差大于最小间距则发生碰撞”直接推出。
+\par
+多通道情形由定理 \ref{thm:spg-godel-boundary-decoding-relative-error-threshold} 直接给出。证毕。
+\end{proof}
+
+\endinput
+

@@ -131,6 +131,8 @@ S=S_\pi\sqcup s_\Omega(S_\tau).
 对应哥德尔整数因子分别仅含 \(\mathbb P_\pi\) 与 \(\mathbb P_\tau\) 的素因子，故互素。证毕。
 \end{proof}
 
+\input{thm__conclusion-jg-ellipse-arithmetic-invertibility-completeness}
+
 \begin{theorem}[纤维内最小哥德尔代价与调和 KL 分解]\label{thm:conclusion-fiber-minimal-godel-cost-harmonic-kl}
 设 \(A\) 为有限集，\(|A|=m\ge 1\)，\(p\) 为 \(A\) 上概率分布。
 对任意单射编码 \(c:A\hookrightarrow \NN_{\ge 1}\)，定义
@@ -243,6 +245,50 @@ D_{\mathrm{KL}}\!\bigl(p_{(\cdot)}\|h^{(m)}\bigr)
 最后一行由 \(H_m\le 1+\log m\) 与 Jensen 单调性得证。证毕。
 \end{proof}
 
+\begin{theorem}[相对熵率刻画无误差纤维补码的最小比特率]\label{thm:conclusion-relative-entropy-minimal-sidebit-rate}
+设 \((X,\mathcal B,\mu,T)\) 为遍历可逆测度保持系统，\((Y,\mathcal C,\nu,S)\) 为其因子，并以可测满射 \(\pi:X\to Y\) 满足 \(\pi\circ T=S\circ \pi\) 与 \(\nu=\mu\circ\pi^{-1}\)。
+取一有限生成分割 \(\alpha\)（使得 \(\bigvee_{n\in\ZZ}T^{-n}\alpha\) 生成 \(\mathcal B\)），并记相对熵率
+\[
+h:=h_\mu(T,\alpha\mid \pi^{-1}\mathcal C).
+\]
+对 \(n\ge 1\) 令
+\(
+\alpha^{n-1}_0:=\bigvee_{j=0}^{n-1}T^{-j}\alpha
+\)
+为长度 \(n\) 的名称分割。
+若存在可测编码
+\[
+\mathrm{Enc}_n:X\to\{0,1\}^{b_n}
+\]
+与可测解码
+\[
+\mathrm{Dec}_n:Y\times\{0,1\}^{b_n}\to X
+\]
+使得对 \(\mu\)-几乎处处 \(x\in X\)，点 \(\mathrm{Dec}_n(\pi(x),\mathrm{Enc}_n(x))\) 与 \(x\) 落在同一 \(\alpha^{n-1}_0\)-原子中（等价于：给定因子观测与 \(b_n\) 比特附加信息可无误差恢复长度 \(n\) 名称），则必有
+\[
+\liminf_{n\to\infty}\frac{b_n}{n}\ \ge\ \frac{h}{\log 2}.
+\]
+反之，存在一组 \((\mathrm{Enc}_n,\mathrm{Dec}_n)\) 使得
+\[
+\limsup_{n\to\infty}\frac{b_n}{n}\ \le\ \frac{h}{\log 2}.
+\]
+因此，相对熵率 \(h\) 精确刻画了“因子压缩在无误差可逆意义下所需的最小纤维比特率”。
+\end{theorem}
+\begin{proof}
+令随机变量 \(W_n\) 为 \(\alpha^{n-1}_0\) 的原子索引（长度 \(n\) 名称），并将 \(Y\) 视为 \(\pi\) 诱导的可见 \(\sigma\)-代数。
+标准一致性给出
+\[
+\lim_{n\to\infty}\frac{1}{n}H(W_n\mid Y)=h,
+\]
+其中 \(H(\cdot\mid\cdot)\) 为 Shannon 条件熵（自然对数）。
+若 \(\mathrm{Enc}_n\) 与 \(\mathrm{Dec}_n\) 实现无误差名称恢复，则在每条纤维上 \(\mathrm{Enc}_n\) 给出对 \(W_n\) 的无误差描述，故由条件无误差源编码下界得
+\(
+b_n\log 2\ge H(W_n\mid Y)
+\)；
+两边除以 \(n\) 并取 \(\liminf\) 得下界。
+上界由条件 Shannon--Fano/算术编码在每个 \(y\) 上对 \(W_n\) 的典型集合实施无误差编码给出，使 \(b_n\log 2\le H(W_n\mid Y)+o(n)\)；取 \(\limsup\) 即得。证毕。
+\end{proof}
+
 \begin{theorem}[\(\zeta\)-正则化素数独立律与熵极值原理]\label{thm:conclusion-zeta-regularized-prime-independence-maxent}
 记 \(v_p(n)\) 为 \(p\)-进赋值。对 \(\beta>1\)，定义
 \[
@@ -332,6 +378,35 @@ H(n)=\sum_p H(V_p),\qquad
 在 \((1,\infty)\) 上连续严格递减，且值域为 \((0,\infty)\)。证毕。
 \end{proof}
 
+\begin{theorem}[截断素数寄存器的碰撞概率闭式]\label{thm:conclusion-truncated-prime-register-collision-product}
+在定理 \ref{thm:conclusion-zeta-regularized-prime-independence-maxent} 的记号下，取 \(N,N'\overset{\mathrm{i.i.d.}}{\sim}q_\beta\)（\(\beta>1\)）。
+对任意阈值 \(P\) 定义截断素数寄存器
+\[
+\mathrm{TR}_P(n):=\bigl(v_p(n)\bigr)_{p\le P}.
+\]
+则其碰撞概率具有完全乘积闭式
+\[
+\boxed{\;
+\PP\!\bigl(\mathrm{TR}_P(N)=\mathrm{TR}_P(N')\bigr)
+=\prod_{p\le P}\frac{1-p^{-\beta}}{1+p^{-\beta}}\; }.
+\]
+\end{theorem}
+\begin{proof}
+由素数独立律，
+\[
+\PP\!\bigl(\mathrm{TR}_P(N)=\mathrm{TR}_P(N')\bigr)
+=\prod_{p\le P}\PP\!\bigl(v_p(N)=v_p(N')\bigr).
+\]
+对固定 \(p\)，由几何分布 \(\PP(v_p=k)=(1-p^{-\beta})p^{-\beta k}\) 得
+\[
+\PP\!\bigl(v_p(N)=v_p(N')\bigr)
+=\sum_{k\ge 0}(1-p^{-\beta})^2p^{-2\beta k}
+=\frac{(1-p^{-\beta})^2}{1-p^{-2\beta}}
+=\frac{1-p^{-\beta}}{1+p^{-\beta}}.
+\]
+相乘即得。证毕。
+\end{proof}
+
 \begin{theorem}[单位圆--椭圆--素数寄存器的可加几何同构]\label{thm:conclusion-unit-circle-ellipse-prime-register-isomorphism}
 对每个 \(n\in\NN_{\ge 1}\) 定义
 \[
@@ -397,6 +472,8 @@ d(I,B)=\|\log B\|_F.
 最后一行由定理 \ref{thm:conclusion-fiber-minimal-godel-cost-harmonic-kl} 的不等式直接得到。证毕。
 \end{proof}
 
+\input{thm__conclusion-prime-valuation-median-rigidity}
+
 \begin{proposition}[投影词的哥德尔半直积表示]\label{prop:conclusion-projection-word-godel-semidirect}
 设 \(\Sigma\) 为有限字母表，\(\kappa:\Sigma\hookrightarrow\NN_{\ge 1}\) 为单射。
 对词 \(w=\sigma_1\cdots\sigma_\ell\in\Sigma^\ast\)，定义
@@ -446,6 +523,11 @@ G(w):=\prod_{i=1}^{|w|}p_i^{\kappa(\sigma_i)},
 
 对 \(G(w)\)，由算术基本定理可唯一恢复每个 \(v_{p_i}(G(w))=\kappa(\sigma_i)\)（\(1\le i\le |w|\)）及尾部零赋值，故 \(w\) 唯一恢复。证毕。
 \end{proof}
+
+\input{para__conclusion-prime-register-shift-commuting-polynomial-algorithms}
+\input{para__conclusion-prime-register-godel-orbit-l1-lipschitz-asymptotics}
+
+\input{thm__conclusion-semantic-equivalence-undecidable}
 
 \begin{conjecture}[扩展保存下的最大熵证书选择律]\label{conj:conclusion-extension-preserving-maxent-zeta-selection}
 在扩展保存框架下，若可见接口仅施加对象层可核验单射化与一条可加平均预算（例如 \(\EE[\log n]\) 预算），而不引入额外结构先验，则 prime-register 证书轴的极限分布将由某个 \(q_\beta\) 选择：

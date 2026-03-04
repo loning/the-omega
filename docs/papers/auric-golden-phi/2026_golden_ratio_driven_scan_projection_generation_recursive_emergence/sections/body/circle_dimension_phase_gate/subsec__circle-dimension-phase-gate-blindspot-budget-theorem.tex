@@ -142,6 +142,83 @@ b\ \ge\ 2\log_2T+\log_2\log T-O(1).
 \]
 该二次门槛与半径盲区预算同阶：二者均由端点压缩的 \(T^{-2}\) 量纲强制产生，分别作用于阈值显影与寻址分离；从而提升 \(b\) 不能替代提升 \(\varrho_{\max}\)，反之亦然（定理 \ref{thm:cdim-budget-failure-separation}）。
 
+\begin{theorem}[端点压缩下的“地址--外置账本”联合预算下界]\label{thm:cdim-address-ledger-joint-budget-lower-bound}
+在高度窗 \((T,2T]\) 中令 \(\gamma\) 运行于零点集合（按 \S\ref{subsec:cdim-blindspot-budget-theorem} 的可见域口径）。
+固定 dyadic 深度 \(b\in\NN\) 并采用端点压缩地址
+\[
+A_b(\gamma):=\bigl\lfloor 2^b\widetilde u(\gamma)\bigr\rfloor,
+\qquad
+\widetilde u(t)=\upsilon(t)+\frac12.
+\]
+再附加一个外置账本标签 \(R(\gamma)\in\{1,\dots,P\}\)（不对其构造作任何限制）。
+若组合编码
+\[
+\gamma \longmapsto \bigl(A_b(\gamma),R(\gamma)\bigr)\in \{0,\dots,2^b-1\}\times \{1,\dots,P\}
+\]
+在窗 \((T,2T]\) 的零点集上为单射，则存在常数 \(c>0\) 使当 \(T\) 足够大时必有
+\[
+2^b\,P\ \ge\ c\,T^2\log T.
+\]
+\end{theorem}
+
+\begin{proof}
+由命题 \ref{prop:cdim-phase-prefix-occupancy-barrier}，存在常数 \(c>0\) 使对充分大 \(T\) 必存在某一地址 \(a\in\{0,\dots,2^b-1\}\) 满足
+\[
+\#\{\gamma\in(T,2T]:A_b(\gamma)=a\}\ \ge\ c\,\frac{T^2\log T}{2^b}.
+\]
+若 \(\gamma\mapsto(A_b(\gamma),R(\gamma))\) 在 \((T,2T]\) 上为单射，则在该固定 \(a\) 的纤维中，\(R(\gamma)\) 必须两两不同，从而
+\[
+P\ \ge\ c\,\frac{T^2\log T}{2^b},
+\]
+即 \(2^bP\ge cT^2\log T\)。证毕。
+\end{proof}
+
+\begin{corollary}[半径盲区预算与联合离散预算的正交必要条件]\label{cor:cdim-radius-blindspot-and-joint-discrete-budget-orthogonal}
+设存在离临界线偏移 \(\delta>0\) 的零点 \(\rho=\tfrac12+\delta+\mathrm{i}\gamma\)，并在高度尺度 \(|\gamma|\sim T\) 上以固定半径采样集合 \(\{\varrho_j\}_{j=1}^{M}\subset(0,1)\) 构造缺陷证书后端（\S\ref{subsubsec:cdim-blindspot-budget-radius}）。
+令 \(\varrho_{\max}:=\max_j\varrho_j\) 且 \(\Delta_{\varrho}:=1-\varrho_{\max}\)。
+若某检测机制同时满足：
+\begin{itemize}
+  \item 可见性：缺陷证书在 \(\delta\neq 0\) 与 \(\delta=0\) 两情形可区分；
+  \item 地址可分离：在窗 \((T,2T]\) 的零点集上存在外置账本标签 \(R(\gamma)\in\{1,\dots,P\}\) 使 \(\gamma\mapsto(A_b(\gamma),R(\gamma))\) 为单射，
+\end{itemize}
+则当 \(T\) 足够大时必满足两条互不替代的必要条件
+\[
+\Delta_{\varrho}\ \lesssim\ \frac{\delta}{T^2}
+\qquad\text{与}\qquad
+2^b\,P\ \gtrsim\ T^2\log T.
+\]
+\end{corollary}
+
+\begin{proof}
+第一条由 \S\ref{subsubsec:cdim-blindspot-budget-radius} 的边界层近似 \(1-r_\rho\asymp \delta/\gamma^2\) 给出：可见性要求 \(\varrho_{\max}>r_\rho\)，即 \(\Delta_{\varrho}\lesssim \delta/\gamma^2\)，而在 \(|\gamma|\sim T\) 上得到 \(\Delta_{\varrho}\lesssim \delta/T^2\)。
+第二条即定理 \ref{thm:cdim-address-ledger-joint-budget-lower-bound}。证毕。
+\end{proof}
+
+\begin{corollary}[素数支撑数的最小增长律：端点压缩可分离的外置代价]\label{cor:cdim-ledger-prime-support-min-growth}
+在推论 \ref{cor:cdim-radius-blindspot-and-joint-discrete-budget-orthogonal} 的地址可分离设定中，进一步假设外置账本容量 \(P\) 为平方自由且由 \(k\) 个互异素数支撑：
+\[
+P=\prod_{j=1}^{k} p_j,\qquad p_i\neq p_j.
+\]
+则对充分大 \(T\)，若联合编码在 \((T,2T]\) 上为单射，则必有
+\[
+k\ \ge\ (1-o(1))\,
+\frac{2\log T+\log\log T-b\log 2}{\log\log T}.
+\]
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:cdim-address-ledger-joint-budget-lower-bound} 得 \(\log P\ge 2\log T+\log\log T-b\log 2+O(1)\)。
+在固定 \(k\) 的情形下，平方自由乘积 \(\prod_{j=1}^{k}p_j\) 的最小值由前 \(k\) 个素数的乘积 \(p_k^\#\) 给出；由素数定理的标准推论有
+\[
+\log p_k^\#=(1+o(1))\,k\log k.
+\]
+因此
+\(
+k\log k\ge (1-o(1))(2\log T+\log\log T-b\log 2)
+\)。
+并且右端主阶为 \(\log T\)，从而 \(\log k\le (1+o(1))\log\log T\)，代回反解即得所示下界。证毕。
+\end{proof}
+
 \subsubsection{端点原子质量的单调提取与误差界：端点热核预算}\label{subsubsec:cdim-blindspot-budget-endpoint-atom}
 在 Toeplitz--PSD（Carath\'eodory）语义内，端点热核量满足单调极限 \(a_N\downarrow\mu(\{-1\})\)（定理 \ref{thm:xi-endpoint-heat-kernel-probe}）。
 因此：

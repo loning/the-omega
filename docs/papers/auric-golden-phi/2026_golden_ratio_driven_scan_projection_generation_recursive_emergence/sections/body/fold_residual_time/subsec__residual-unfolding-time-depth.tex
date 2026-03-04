@@ -47,6 +47,72 @@ H(\mu)-H(\pi)=\mathbb{E}_{\pi}\!\bigl[\log d_m(X)\bigr]\;-\;D_{\mathrm{KL}}(\mu\
 \]
 在均匀微态基线（\(\mu\) 在每条纤维上条件均匀）下有 \(D_{\mathrm{KL}}(\mu\|\mu^e)=0\)，故残差完全由纤维预算 \(\mathbb{E}_{\pi}[\log d_m]\) 承载；而当纤维内部仍含结构时，平均纤维 KL 精确刻画“预算扣除量”。
 
+\begin{proposition}[条件均匀提升的 KL 等距嵌入]\label{prop:frt-conditional-uniform-lift-kl-isometry}
+固定 \(m\ge 1\)，并沿用 \(Q_m:\Delta(X_m)\to\Delta(\Omega_m)\) 的条件均匀提升。
+则对任意 \(\pi,\eta\in\Delta(X_m)\) 有严格恒等式
+\[
+\boxed{\;
+D_{\mathrm{KL}}(Q_m\pi\ \|\ Q_m\eta)=D_{\mathrm{KL}}(\pi\ \|\ \eta)\; }.
+\]
+\end{proposition}
+\begin{proof}
+按定义，对 \(a\in\Omega_m\) 写 \(x_a:=\Fold_m(a)\) 与 \(d(x):=d_m(x)\)，则
+\(
+(Q_m\pi)(a)=\pi(x_a)/d(x_a)
+\)、
+\(
+(Q_m\eta)(a)=\eta(x_a)/d(x_a)
+\)。
+因此
+\[
+\begin{aligned}
+D_{\mathrm{KL}}(Q_m\pi\|Q_m\eta)
+&=\sum_{a\in\Omega_m}\frac{\pi(x_a)}{d(x_a)}\log\frac{\pi(x_a)/d(x_a)}{\eta(x_a)/d(x_a)}
+=\sum_{a\in\Omega_m}\frac{\pi(x_a)}{d(x_a)}\log\frac{\pi(x_a)}{\eta(x_a)}\\
+&=\sum_{x\in X_m}\left(\sum_{a:\,x_a=x}\frac{\pi(x)}{d(x)}\right)\log\frac{\pi(x)}{\eta(x)}
+=\sum_{x\in X_m}\pi(x)\log\frac{\pi(x)}{\eta(x)}
+=D_{\mathrm{KL}}(\pi\|\eta).
+\end{aligned}
+\]
+证毕。
+\end{proof}
+
+\begin{proposition}[折叠 KL 几何的 Pythagoras 分解与 I-投影唯一性]\label{prop:frt-fold-kl-pythagoras-iprojection}
+固定 \(m\ge 1\)，对任意 \(\mu\in\Delta(\Omega_m)\) 令 \(\pi:=P_m\mu\in\Delta(X_m)\)，并记条件均匀提升 \(\mu^e:=Q_m\pi\)。
+则对任意 \(\eta\in\Delta(X_m)\) 有严格分解
+\[
+\boxed{\;
+D_{\mathrm{KL}}(\mu\ \|\ Q_m\eta)
+=D_{\mathrm{KL}}(\mu\ \|\ \mu^e)+D_{\mathrm{KL}}(\pi\ \|\ \eta)\; }.
+\]
+从而 \(\mu^e\) 是流形 \(\{Q_m\eta:\eta\in\Delta(X_m)\}\) 上对 \(\mu\) 的唯一 I-投影：它唯一最小化 \(D_{\mathrm{KL}}(\mu\|Q_m\eta)\)，并且最小值等于 \(D_{\mathrm{KL}}(\mu\|\mu^e)\)。
+\end{proposition}
+\begin{proof}
+仍写 \(x_a=\Fold_m(a)\)、\(d(x)=d_m(x)\)，则
+\(
+\mu^e(a)=\pi(x_a)/d(x_a)
+\)、
+\(
+(Q_m\eta)(a)=\eta(x_a)/d(x_a)
+\)，从而
+\(
+\log\frac{\mu^e(a)}{(Q_m\eta)(a)}=\log\frac{\pi(x_a)}{\eta(x_a)}
+\)。
+于是
+\[
+\begin{aligned}
+D_{\mathrm{KL}}(\mu\|Q_m\eta)-D_{\mathrm{KL}}(\mu\|\mu^e)
+&=\sum_{a\in\Omega_m}\mu(a)\log\frac{\mu^e(a)}{(Q_m\eta)(a)}\\
+&=\sum_{a\in\Omega_m}\mu(a)\log\frac{\pi(x_a)}{\eta(x_a)}
+=\sum_{x\in X_m}\left(\sum_{a:\,x_a=x}\mu(a)\right)\log\frac{\pi(x)}{\eta(x)}\\
+&=\sum_{x\in X_m}\pi(x)\log\frac{\pi(x)}{\eta(x)}
+=D_{\mathrm{KL}}(\pi\|\eta),
+\end{aligned}
+\]
+即得所示分解。
+由 \(D_{\mathrm{KL}}(\pi\|\eta)\ge 0\) 且等号当且仅当 \(\eta=\pi\) 可知最小化点唯一，并且 \(\arg\min_{\eta}D_{\mathrm{KL}}(\mu\|Q_m\eta)=\pi\)，对应 \(Q_m\pi=\mu^e\)。证毕。
+\end{proof}
+
 \subsubsection{时间作为解析深度：前缀超度量与分辨率分离}\label{subsubsec:frt-time-as-depth}
 第 \ref{sec:spg} 节已将“时间”固定为迭代计数，并在符号柱集上引入前缀超度量 \(d_{\mathrm{pre}}\)（段落 \ref{par:spg-prefix-ultrametric}），其球等同于柱集，从而“前缀细化 \(\Leftrightarrow\) 半径收缩”。在地址语义侧，dyadic 前缀相容深度与地址超度量 \(d_{\mathrm{addr}}\) 的定义见定义 \ref{def:xi-dyadic-prefix-depth-ultrametric}。\par
 本节的“时间尺度”即在上述前缀几何上引入折叠读出后的\emph{可分离层级}：纤维内差别并非在固定分辨率上一次性可见，而是随着分辨率 \(m\) 的推进逐层外化为可判别差别。为避免与正文中自同构 \(\tau\) 的记号冲突，定义如下分离深度。

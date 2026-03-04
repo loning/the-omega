@@ -7,6 +7,8 @@
 谱指纹与 Hankel 证书（定理 \ref{thm:fold-gauge-anomaly-hankel-rank3}），以及大偏差端点与代数速率曲线（命题 \ref{prop:fold-gauge-anomaly-ldp} 与命题 \ref{prop:fold-gauge-anomaly-rate-curve-param}）。
 本段把这些结果进一步压缩为三类\emph{有限数据即可核验}的接口：频域功率谱的有理指纹、有限长度矩生成函数的四阶封闭递推，以及折叠条件期望的有限指数（最大纤维多重度）。
 
+\input{para__fold-gauge-anomaly-local-rewrite-ldp-barrier}
+
 \begin{theorem}[Jordan 频谱指纹：逐位规范差指示过程的功率谱为有理函数]\label{thm:fold-gauge-anomaly-psd-rational}
 在命题 \ref{prop:fold-gauge-anomaly-pressure} 的均匀基线与平稳口径下，
 令 \(g_t=\mathbf 1\{X_t\neq Y_t\}\in\{0,1\}\)，并记
@@ -37,6 +39,50 @@ C(z)=\sum_{k\ge 1}C_k z^k
 \mathcal S_g(\omega)=C_0+C(e^{i\omega})+C(e^{-i\omega})
 \)。
 将 \(z=s\) 与 \(z=s^{-1}\) 代入并作代数化简，即得 \eqref{eq:fold-gauge-anomaly-psd-rational}。证毕。
+\end{proof}
+
+\begin{corollary}[分母的完全因子分解与协方差闭式]\label{cor:fold-gauge-anomaly-psd-denominator-factorization-cov}
+在定理 \ref{thm:fold-gauge-anomaly-psd-rational} 的记号下，功率谱 \eqref{eq:fold-gauge-anomaly-psd-rational} 的分母多项式满足完全分解
+\[
+8s^6+20s^5-26s^4-85s^3-26s^2+20s+8
+=(s-2)(s+2)^2(2s-1)(2s+1)^2.
+\]
+因此 \(\mathcal S_g\) 在单位圆内的极点仅为 \(s=\tfrac12\) 的一重极点与 \(s=-\tfrac12\) 的二重极点。
+由留数抽取可得协方差闭式：对一切 \(k\ge 1\)，
+\[
+C_k=\mathrm{Cov}(g_t,g_{t+k})
+=\frac18\Big(\frac12\Big)^k+\Big(\frac{7}{648}+\frac{k}{108}\Big)\Big(-\frac12\Big)^k,
+\qquad
+C_0=\frac{20}{81}.
+\]
+\end{corollary}
+\begin{proof}
+对分母多项式直接代数展开验证分解式。
+由 \(|s|=1\) 的 Fourier 系数抽取公式，
+\(
+C_k=\frac{1}{2\pi i}\oint_{|s|=1}\mathcal S_g(\omega)\,s^{k-1}\,\dd s
+\)，
+而分解式表明单位圆内仅有 \(s=\tfrac12\) 与 \(s=-\tfrac12\) 两类极点，其中后者为二重极点。
+应用留数定理并对二重极点使用导数留数公式即可得到所示闭式；
+其结果与定理 \ref{thm:fold-gauge-anomaly-autocov-closed} 的协方差闭式一致。证毕。
+\end{proof}
+
+\begin{proposition}[协方差序列的三阶整系数递推与 Hankel 秩证书]\label{prop:fold-gauge-anomaly-covariance-recurrence-integers-hankel-rank3}
+令 \(C_k=\mathrm{Cov}(g_t,g_{t+k})\)（\(k\ge 0\)）。
+则对一切 \(k\ge 1\) 成立三阶整系数递推
+\[
+8C_{k+3}+4C_{k+2}-2C_{k+1}-C_k=0.
+\]
+从而无限 Hankel 矩阵 \(H=(C_{i+j+1})_{i,j\ge 0}\) 的秩恰为 \(3\)；
+等价地，任意 \(4\times 4\) Hankel 子式行列式恒为零，而存在某个 \(3\times 3\) Hankel 子式非零。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:fold-gauge-anomaly-hankel-rank3}，令 \(d_k:=\mathrm{Cov}(g_t,g_{t+k})\)（\(k\ge 1\)），则
+\(
+d_{k+3}=-\frac12d_{k+2}+\frac14d_{k+1}+\frac18d_k
+\)。
+对该递推两边同乘 \(8\) 即得所述整系数形式（并将 \(d_k\) 记回 \(C_k\)）。
+Hankel 秩结论与定理 \ref{thm:fold-gauge-anomaly-hankel-rank3} 等价。证毕。
 \end{proof}
 
 \begin{proposition}[总规范差的四阶递推：概率生成函数由固定特征多项式封闭]\label{prop:fold-gauge-anomaly-mgf-order4-recurrence}
@@ -70,6 +116,101 @@ F(\mu,u)=\det(\mu I-B_u)
 由 Cayley--Hamilton 定理得 \(F(B_u,u)=0\)。
 而对固定 \(u\)，计数型生成函数 \(\widetilde M_m(u)\) 可写为有限状态换能器的路径权重和，等价地为某个线性泛函作用在 \(B_u^m\) 上；
 将 \(F(B_u,u)=0\) 左右乘以相应向量并取该线性泛函，得到 \eqref{eq:fold-gauge-anomaly-Mm-order4}。证毕。
+\end{proof}
+
+\begin{theorem}[生成函数的显式有理性与整系数递推]\label{thm:fold-gauge-anomaly-gf-rational-integral-recurrence}
+在命题 \ref{prop:fold-gauge-anomaly-parry-kernel-mismatch-label} 的 Parry 转移核 \(P\) 与边标记 \(g\) 下，
+令
+\[
+D_m(u):=\EE\!\left[u^{G_m}\right]=\sum_{k=0}^{m}p_{m,k}u^k,\qquad
+p_{m,k}:=\PP(G_m=k),
+\]
+并定义步长母函数
+\[
+\mathcal F(z,u):=\sum_{m\ge 0} D_m(u)\,z^m.
+\]
+则 \(\mathcal F\) 为显式有理函数，且满足
+\[
+\mathcal F(z,u)=\frac{N(z,u)}{9\,\Delta(z,u)},
+\]
+其中
+\[
+\Delta(z,u)=8-4z-(4u+2)z^2+(2u-u^3)z^3+u z^4,
+\]
+\[
+\begin{aligned}
+N(z,u)=\;&72+4z-12z^2-2z^3+32u z-24u z^2-10u z^3\\
+&\quad+18u^2 z^2+4u^2 z^3-u^3 z^3.
+\end{aligned}
+\]
+等价地，对一切 \(m\ge 4\) 有四阶递推
+\[
+8D_m(u)=4D_{m-1}(u)+(4u+2)D_{m-2}(u)+(u^3-2u)D_{m-3}(u)-uD_{m-4}(u).
+\]
+更强地，令
+\[
+H_m(u):=9\cdot 2^m D_m(u)=9\,\widetilde M_m(u),
+\]
+则对所有 \(m\ge 0\) 有 \(H_m(u)\in\ZZ[u]\)，并且对一切 \(m\ge 4\) 有整系数递推
+\[
+H_m(u)=H_{m-1}(u)+(2u+1)H_{m-2}(u)+(u^3-2u)H_{m-3}(u)-2u\,H_{m-4}(u).
+\]
+因此对每个 \(m,k\) 皆有 \(9\cdot 2^m\,p_{m,k}\in\ZZ\)。
+\end{theorem}
+
+\begin{proof}
+由 Markov 结构与倾斜核 \(Q(u)_{ij}:=P_{ij}u^{g(i,j)}\)，有
+\(
+D_m(u)=\pi^\top Q(u)^m\mathbf 1
+\)，其中 \(\pi\) 为 \(P\) 的平稳分布。
+因此
+\(
+\mathcal F(z,u)=\pi^\top (I-zQ(u))^{-1}\mathbf 1
+\)
+为有理函数。
+对本 \(4\) 态模型直接展开 \(\det(I-zQ(u))\) 得到 \(\Delta(z,u)\)，并由伴随矩阵条目计算得到 \(N(z,u)\)。
+将恒等式 \(9\Delta(z,u)\mathcal F(z,u)=N(z,u)\) 逐项比较 \(z^m\) 系数得到 \(D_m\) 的四阶递推；该递推与命题 \ref{prop:fold-gauge-anomaly-mgf-order4-recurrence} 对 \(\widetilde M_m\) 的递推在缩放下等价。
+将递推乘以 \(9\cdot 2^m\) 并整理得到 \(H_m\) 的整系数递推。
+由 \(H_0,\dots,H_3\) 的有限枚举可知其属于 \(\ZZ[u]\)，递推闭合推出 \(H_m\in\ZZ[u]\) 对所有 \(m\) 成立，从而 \(9\cdot 2^m p_{m,k}\in\ZZ\)。证毕。
+\end{proof}
+
+\begin{theorem}[端点事件的精确闭式：Fibonacci 端点与 \texorpdfstring{$\bmod 3$}{mod 3} 律]\label{thm:fold-gauge-anomaly-endpoint-fibonacci-mod3}
+沿用定理 \ref{thm:fold-gauge-anomaly-gf-rational-integral-recurrence} 的记号。
+令 Fibonacci 数列满足 \(F_0=0,F_1=1,F_{n+2}=F_{n+1}+F_n\)。
+则端点事件概率满足
+\[
+\PP(G_m=0)=
+\begin{cases}
+1,& m=0,\\[2pt]
+\frac59,& m=1,\\[6pt]
+\displaystyle \frac{F_{m+5}}{9\cdot 2^m},& m\ge 2,
+\end{cases}
+\]
+并且对任意 \(m\ge 1\)，满长端点满足
+\[
+\PP(G_m=m)=
+\begin{cases}
+2^{-m},& m\equiv 2\pmod 3,\\[4pt]
+\frac89\,2^{-m},& m\equiv 0,1\pmod 3.
+\end{cases}
+\]
+\end{theorem}
+
+\begin{proof}
+由定义 \(\PP(G_m=0)=D_m(0)\)。
+将定理 \ref{thm:fold-gauge-anomaly-gf-rational-integral-recurrence} 的四阶递推代入 \(u=0\) 并化简可得：对 \(m\ge 4\)，序列
+\(
+U_m:=9\cdot 2^m D_m(0)
+\)
+满足二阶递推 \(U_m=U_{m-1}+U_{m-2}\)。
+直接计算 \(U_2=13\)、\(U_3=21\) 得 \(U_m=F_{m+5}\)（\(m\ge 2\)），从而得到 \(\PP(G_m=0)=F_{m+5}/(9\cdot 2^m)\)。
+\(m=0\) 时 \(G_0=0\) 给出 \(\PP(G_0=0)=1\)；\(m=1\) 时由 \(\EE[g_t]=4/9\) 得 \(\PP(G_1=0)=1-\EE[g_1]=5/9\)。
+\par
+对 \(\PP(G_m=m)\)，由命题 \ref{prop:fold-gauge-anomaly-parry-kernel-mismatch-label} 知 \(g=1\) 的允许边仅为
+\((a,b)\)、\((b,c)\)、\((c,a)\)，故事件 \(\{G_m=m\}\) 强制隐藏链沿 \(a\to b\to c\to a\) 的 \(3\)-循环确定性行走。
+该循环上一步概率依次为 \(P_{ab}=\frac14\)、\(P_{bc}=1\)、\(P_{ca}=\frac12\)，每三步乘积为 \(2^{-3}\)。
+按起点 \(S_0\in\{a,b,c\}\) 与余数 \(m\bmod 3\) 分情形计算满循环乘积，并以平稳分布
+\(\pi=(\pi_a,\pi_b,\pi_c,\pi_d)=(\frac49,\frac29,\frac29,\frac19)\) 加权求和，即得所示 \(\bmod 3\) 分段公式。证毕。
 \end{proof}
 
 \begin{theorem}[单位圆扭结的 Perron--Frobenius 刚性与严格谱隙]\label{thm:fold-gauge-anomaly-unit-circle-rigidity}

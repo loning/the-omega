@@ -272,6 +272,19 @@ H_N(w):=\bigl(c_0(w),c_1(w),\dots,c_N(w)\bigr),
 \]
 \end{definition}
 
+\begin{conjecture}[同态型对数最优外置与 \texorpdfstring{$\mathrm{P}$}{P}--\texorpdfstring{$\mathrm{NP}$}{NP} 的一致性]\label{conj:discussion-homomorphic-log-opt-externalization-pnp}
+设 \(L\in\mathrm{NP}\)，并固定一条多项式时间可验证关系 \(R\subseteq X\times W\)，其中对每个 \(x\in X\) 的见证集合 \(W(x):=\{w\in W:(x,w)\in R\}\) 满足 \(\card{W(x)}<\infty\)。
+称一族外置机制 \(\mathcal{E}\) 为\emph{同态型对数最优外置}，若存在一类在组合运算下封闭的代数对象族 \(\mathcal{A}_x\)（例如交换幺半群或半环）使得：
+\begin{enumerate}
+\normalfont
+  \item \textbf{结构封闭：}对每个 \(x\)，映射 \(w\mapsto \mathcal{E}(x,w)\in\mathcal{A}_x\) 具有同态封闭性（与 \(\mathcal{A}_x\) 的自然运算相容）；
+  \item \textbf{对数最优：}存在常数 \(c>0\) 使对所有 \(x\) 与所有 \(w\in W(x)\) 都有码长上界 \(\ell(\mathcal{E}(x,w))\le c\log\card{W(x)}\)；
+  \item \textbf{可解码：}存在统一多项式时间算法 \(\mathrm{Dec}\) 使 \(\mathrm{Dec}(x,\mathcal{E}(x,w))=w\) 对所有 \((x,w)\in R\) 成立。
+\end{enumerate}
+猜想：对任意 \(\mathrm{NP}\)-完全语言 \(L\)，不存在满足上述三条的同态型对数最优外置机制。
+并且，若对某个 \(\mathrm{NP}\)-完全语言存在此类机制，则推出 \(\mathrm{P}=\mathrm{NP}\)。
+\end{conjecture}
+
 \begin{proposition}[无毛发 \texorpdfstring{$\Longleftrightarrow$}{<->} 零知识（可观测约束下的等价刻画）]\label{prop:discussion-nohair-iff-zk}
 在定义 \ref{def:discussion-horizon-observable-zk} 的设定下，下列两条陈述等价：
 \begin{enumerate}
@@ -292,6 +305,51 @@ H_N(w):=\bigl(c_0(w),c_1(w),\dots,c_N(w)\bigr),
 由 (1) 知该定义与 \(w_c\) 的选择无关，从而 \(\mathsf{S}_N\) 良定义。
 若不存在见证使 \(H_N(w)=c\)，则任取一分布作为 \(\mathsf{S}_N(c)\)（该值在实际调用中不会被触及）。
 于是对所有 \(w\) 有 \(\mathrm{View}^\Pi(w)\equiv \mathsf{S}_N(H_N(w))\)。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\varepsilon$}{eps}-零知识的条件互信息界与可学习误差改进上界]\label{thm:discussion-epszk-cmi-and-risk-improvement-bound}
+令 \(\omega\) 为微观态随机变量，\(y=\pi(\omega)\) 为可观测读出，\(\tau\) 为转录（transcript）。
+假设存在一族核 \((S_y)_{y}\) 使得对一切 \(\omega\) 都有
+\[
+D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega)\,\Vert\, S_{\pi(\omega)}\bigr)\le \varepsilon.
+\]
+则：
+\begin{enumerate}
+  \item 条件互信息满足
+  \[
+  I(\omega;\tau\mid y)\le \varepsilon.
+  \]
+  \item 对任意损失函数 \(\ell:\Omega\times\mathcal A\to[0,1]\)，记
+  \(R^\ast(y)\) 为仅依赖 \(y\) 的最优 Bayes 风险，\(R^\ast(y,\tau)\) 为可依赖 \((y,\tau)\) 的最优 Bayes 风险，则
+  \[
+  R^\ast(y,\tau)\ \ge\ R^\ast(y)\ -\sqrt{\frac{\varepsilon}{2}}.
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+固定 \(y\)。由相对熵分解恒等式，
+\[
+\EE\!\left[D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega,y)\,\Vert\, S_y\bigr)\,\big|\,y\right]
+=I(\omega;\tau\mid y)+D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid y)\,\Vert\, S_y\bigr),
+\]
+且右端第二项非负，故
+\(
+I(\omega;\tau\mid y)
+\le
+\EE\!\left[D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega,y)\,\Vert\, S_y\bigr)\mid y\right]
+\le \varepsilon
+\)；
+取期望得第一条。
+
+再由 Pinsker 不等式，对一切 \(\omega\) 有
+\[
+\bigl\|\mathcal L(\tau\mid \omega)-S_{\pi(\omega)}\bigr\|_{\mathrm{TV}}
+\le \sqrt{\frac12 D_{\mathrm{KL}}\!\bigl(\mathcal L(\tau\mid \omega)\,\Vert\,S_{\pi(\omega)}\bigr)}
+\le \sqrt{\frac{\varepsilon}{2}}.
+\]
+对任意决策规则 \(a=g(y,\tau)\)，用 \(\tau'\sim S_y\) 替代 \(\tau\) 后的条件风险之差由全变差控制，且不超过 \(\sqrt{\varepsilon/2}\)。
+在 \(\tau'\) 情形下有 \(\tau'\perp\!\!\!\perp \omega\mid y\)，最优风险即 \(R^\ast(y)\)，取 \(g\) 最优即得第二条。证毕。
 \end{proof}
 
 \begin{proposition}[带单原子负缺陷的 Toeplitz--PSD 阈值律]\label{prop:discussion-toeplitz-negative-atom-threshold}

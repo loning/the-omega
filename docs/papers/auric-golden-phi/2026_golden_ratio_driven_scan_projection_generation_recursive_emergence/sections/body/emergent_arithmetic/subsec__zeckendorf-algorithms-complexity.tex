@@ -43,6 +43,8 @@ m:=\max\{k:\ c_k=1\text{ 或 }d_k=1\}.
   \item \textbf{稳定乘法：}分辨率口径为“值层乘法成本 + $O(m)$”；比特口径为 $O(M(m)+m^2)$，其中 $M(m)$ 为 $\\Theta(m)$ 比特整数乘法成本（学校乘法为 $O(m^2)$）。
 \end{itemize}
 
+\input{para__zeckendorf-parallel-propagation-lower-bound}
+
 \subsubsection{单趟在线延迟 \texorpdfstring{$3$}{3}：统一转导器}\label{subsec:online-delay}
 存在\textbf{单趟在线}转导器（延迟 3）直接实现归一化；其同步部分可用“余量守恒”给出（\cite{Frougny1999OnlineAddition}）。
 
@@ -96,6 +98,24 @@ Q=\{000,001,002,010,100,101,0\overline{1}2,1\overline{1}2,01\overline{1},11\over
 
 \textbf{证明：}
 守恒式保证值不变量，末端函数输出落在 $X_m$；由定理 \ref{thm:zeckendorf-transversal} 的横截面唯一性得 $\Fold_\infty(s)$。同步图与附录 B 的状态/转移一致。证毕。
+
+\begin{theorem}[同步核 Mealy 转导器的状态最小性]\label{thm:online-delay-fold-sync-mealy-minimality}
+令 \(\mathcal K=(Q,\delta,\eta)\) 为上文给出的确定性 Mealy 转导器（输入字母表 \(\{0,1,2\}\)，输出字母表 \(\{0,1\}\)），并令 \(F:\{0,1,2\}^\ast\to\{0,1\}^\ast\) 为其所诱导的序贯函数（含延迟窗口的末端函数 \(\omega\) 所完成的终端归一化；定理 \ref{thm:online-delay-fold}）。
+则任意实现同一序贯函数 \(F\) 的确定性 Mealy 转导器，其同步部分在序贯等价意义下的状态数不小于 \(|Q|=10\)；并且 \(\mathcal K\) 达到该下界。
+\end{theorem}
+\begin{proof}
+对任意状态 \(q\in Q\)，定义从 \(q\) 出发的残差序贯函数 \(F_q:\{0,1,2\}^\ast\to\{0,1\}^\ast\) 为“以 \(q\) 为初态运行 \(\mathcal K\)（并在末端施加同一 \(\omega\)）所得到的输出函数”。
+定义状态等价关系
+\[
+q\sim q'\iff F_q=F_{q'}.
+\]
+对确定性 Mealy 转导器，\(q\sim q'\) 等价于对所有输入符号 \(d\in\{0,1,2\}\) 同时满足 \(\eta(q,d)=\eta(q',d)\) 且 \(\delta(q,d)\sim \delta(q',d)\)；因此 \(\sim\) 为一类以“输出一致 + 后继等价”闭包刻画的最大不动点关系。
+任何实现 \(F\) 的确定性 Mealy 转导器都必须区分不同的残差函数，故其状态数不小于等价类数 \(|Q/{\sim}|\)。
+\par
+对上文给出的显式边表，可在有限状态空间上对 \(\sim\) 作确定性细化计算，并输出分裂证书（为每一对不等价状态给出一条分离输入词，使两者输出词不同）。
+该细化结果给出 \(|Q/{\sim}|=10\) 的等价类计数与分离词长度上界（见生成片段 \eqref{eq:sync_kernel_10_state_mealy_minimality}），即所有 \(q\in Q\) 两两不等价，从而任意实现 \(F\) 的确定性转导器状态数至少为 \(10\)。
+由于 \(\mathcal K\) 恰有 \(10\) 个状态并实现 \(F\)，故其为最小实现。证毕。
+\end{proof}
 
 \subsubsection{统计指纹：最大熵输入驱动下的平稳分布、输入--输出耦合、反持续与输出熵率}\label{subsec:sync10-stat-fingerprint}
 上面的同步核是\emph{确定性}转导器：给定当前状态 $s_t\in Q$ 与输入 $d_t\in\{0,1,2\}$，则输出位 $e_t\in\{0,1\}$ 与下一状态 $s_{t+1}$ 唯一确定（见边表的 $d/e$ 标记）。

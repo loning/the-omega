@@ -160,6 +160,50 @@ k+\overline{\cdim}_{\mathrm{res}}(\mathcal{R}_\bullet)\ \ge\ \cdim(G).
 综上得到 \(\rho_k^{\min}(G)\le \max\{r-k,0\}\)，与下界合并即证。证毕。
 \end{proof}
 
+\begin{corollary}[非交换系统的交换化圆维瓶颈]\label{cor:cdim-abelianization-bottleneck}
+令 \(\Gamma\) 为有限生成群，\(\Gamma_{\mathrm{ab}}:=\Gamma/[\Gamma,\Gamma]\) 为其交换化。
+记
+\(
+r:=\cdim(\Gamma_{\mathrm{ab}})
+\)
+（等价地，\(\Gamma_{\mathrm{ab}}\simeq \ZZ^r\oplus T\) 的自由秩）。
+对给定整数 \(k\ge 0\)，设存在一族深度 \(b\) 的实现层单射
+\[
+\Phi_b:\ \Gamma_{\mathrm{ab}}/2^b\Gamma_{\mathrm{ab}}\hookrightarrow \mathrm{Phase}_b^{(k)}\times \mathcal{R}_b
+\qquad(b\ge 1),
+\]
+其中 \((\mathcal{R}_b)_{b\ge 1}\) 为有限残差寄存器族。
+则必有
+\[
+\liminf_{b\to\infty}\frac{\log_2\card{\mathcal{R}_b}}{b}
+\ \ge\
+\max\{r-k,0\}.
+\]
+特别地，若 \(k<r\)，则 \(\card{\mathcal{R}_b}\) 不可能一致有界。
+\end{corollary}
+
+\begin{proof}
+由有限生成交换群结构定理，取 \(\Gamma_{\mathrm{ab}}\simeq \ZZ^r\oplus T\)（\(T\) 有限）。
+则对每个 \(b\ge 1\),
+\[
+\Gamma_{\mathrm{ab}}/2^b\Gamma_{\mathrm{ab}}
+\;\simeq\;
+(\ZZ/2^b\ZZ)^r\oplus (T/2^bT),
+\qquad
+\card{T/2^bT}\le \card{T}.
+\]
+由单射 \(\Phi_b\) 得
+\[
+2^{br}\ \le\ \card{\Gamma_{\mathrm{ab}}/2^b\Gamma_{\mathrm{ab}}}
+\ \le\ 
+\card{\mathrm{Phase}_b^{(k)}}\card{\mathcal{R}_b}
+\ =\ 
+2^{bk}\card{\mathcal{R}_b},
+\]
+从而 \(\log_2\card{\mathcal{R}_b}\ge (r-k)b\)。
+当 \(r\le k\) 时右端为非正，结论平凡；当 \(r>k\) 时两边除以 \(b\) 并取 \(\liminf\) 即得所示下界。
+\end{proof}
+
 \begin{theorem}[残差熵的线性下界]\label{thm:cdim-residual-entropy-lower-bound}
 在定理 \ref{thm:cdim-phase-residual-budget-lower-bound} 的设定下，
 令 \(X_b\) 为 \(W_b(G)\) 上的均匀分布随机变量，并记
@@ -319,6 +363,30 @@ G/nG\simeq (\ZZ/n\ZZ)^r\oplus (T/nT)
 于是该素数的局部因子与 \(\zeta(s-r)\) 完全一致；偏离仅来自有限集合 \(\{p:p\mid e\}\)，其修正因子聚为有限乘积。
 (3) \(\zeta(s-r)\) 在 \(s=r+1\) 处有单极点且在更右侧解析；
 有限乘积 \(\prod_{p\mid e}L_p(s)\) 在该点解析且非零，故 \(\zeta_G\) 的最右端极点与 \(\zeta(s-r)\) 同位同阶。证毕。
+\end{proof}
+
+\begin{theorem}[挠点计数的 Tauber 型主项]\label{thm:cdim-zeta-tauber-asymptotic}
+沿用定义 \ref{def:cdim-zeta-function} 的 \(a_n(G)=\card{\operatorname{Hom}(G,\ZZ/n\ZZ)}\)，并记部分和
+\[
+A_G(N):=\sum_{n\le N}a_n(G).
+\]
+设 \(G\simeq \ZZ^r\oplus T\) 且 \(r=\cdim(G)\)。
+则存在常数 \(C_G>0\) 使
+\[
+A_G(N)=\frac{C_G}{r+1}\,N^{r+1}+o\!\left(N^{r+1}\right)\qquad(N\to\infty).
+\]
+其中 \(C_G\) 可取为 \(\zeta_G(s)\) 在 \(s=r+1\) 处的留数：
+\[
+C_G=\operatorname*{Res}_{s=r+1}\zeta_G(s).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:cdim-zeta-euler-pole}，\(\zeta_G(s)\) 在 \(s=r+1\) 处具有唯一最右端单极点且留数为正数 \(C_G\)，并在 \(\Re(s)\ge r+1\) 的其余点解析。
+对非负系数 Dirichlet 级数应用 Ikehara--Wiener 型 Tauber 定理，得到
+\(
+\sum_{n\le N}a_n(G)\sim C_G N^{r+1}/(r+1)
+\)。
+证毕。
 \end{proof}
 
 \paragraph{统一口径}

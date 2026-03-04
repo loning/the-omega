@@ -76,12 +76,68 @@ v^{\otimes q}.
 因此加权路径总和恰为 \(\alpha_q^{\mathsf T}(A_q^{\mathrm{ten}})^m\beta_q\)。证毕。
 \end{proof}
 
+\input{sections/body/pom/parts/thm__pom-momq-permutation-symmetry-schur-weyl}
+
 \paragraph{不交张量底座：\texorpdfstring{$M^{\otimes q}$}{M^⊗q} 的谱显式与四阶整数临界}
 令
 \(
 M:=G_0+G_1=\bigl(\begin{smallmatrix}1&1\\[2pt]1&0\end{smallmatrix}\bigr)
 \)。
 该两态矩阵不仅编码黄金均值语法骨架，亦给出一个更原初的张量硬核对象：不交图的邻接算子。
+
+\begin{theorem}[两态骨架的中心化半环与 Fibonacci 融合律]\label{thm:pom-centralizer-semiring-fibonacci-fusion}
+令
+\[
+M:=\begin{pmatrix}1&1\\[2pt]1&0\end{pmatrix},
+\qquad
+\mathcal C_+(M):=\{A\in M_2(\ZZ_{\ge 0}):\ AM=MA\}.
+\]
+则存在半环同构
+\[
+\boxed{\;
+\mathcal C_+(M)\ \cong\ \ZZ_{\ge 0}[\tau]/(\tau^2-\tau-1),\;}
+\]
+其同构由 \(\tau\mapsto M\) 实现。
+特别地，\(\mathcal C_+(M)\) 由 \(I\) 与 \(M\) 生成并满足
+\[
+M^2=M+I,
+\]
+从而其乘法结构与 Fibonacci 融合环的去范畴化融合律同型。
+\end{theorem}
+\begin{proof}
+任取 \(A=\bigl(\begin{smallmatrix}p&q\\ r&s\end{smallmatrix}\bigr)\in M_2(\ZZ)\)。直接计算
+\[
+AM=\begin{pmatrix}p+q&p\\ r+s&r\end{pmatrix},
+\qquad
+MA=\begin{pmatrix}p+r&q+s\\ p&q\end{pmatrix}.
+\]
+令 \(AM=MA\) 得方程组
+\(
+q=r,\ p=q+s
+\)。
+因此
+\[
+A=\begin{pmatrix}q+s&q\\ q&s\end{pmatrix}=s\,I+q\,M.
+\]
+若进一步要求 \(A\in M_2(\ZZ_{\ge 0})\)，则 \(q,s\ge 0\)，于是
+\(
+\mathcal C_+(M)=\{\,aI+bM:\ a,b\in\ZZ_{\ge 0}\,\}
+\)。
+另一方面，由直接乘法得 \(M^2=M+I\)。因此映射 \(\ZZ_{\ge 0}[\tau]\to\mathcal C_+(M)\)（\(\tau\mapsto M\)）为满射半环同态，其核包含 \((\tau^2-\tau-1)\)，并由表示 \(aI+bM\) 的唯一性知核恰为该主理想，故得所示同构。证毕。
+\end{proof}
+
+\begin{corollary}[Frobenius--Perron 维数的黄金参数]\label{cor:pom-centralizer-fpdim-golden}
+令 \(\mathrm{FPdim}(\tau)\) 以谱半径刻画，则
+\[
+\mathrm{FPdim}(\tau)=\rho(M)=\varphi,
+\]
+其中 \(\varphi=(1+\sqrt5)/2\)。
+\end{corollary}
+\begin{proof}
+\(M\) 的特征多项式为 \(\lambda^2-\lambda-1\)，其 Perron 根为 \(\varphi\)。证毕。
+\end{proof}
+
+\input{sections/body/pom/parts/prop__pom-centralizer-det-norm-mod5}
 
 \begin{proposition}[不交图的张量幂刻画与 \texorpdfstring{$\QQ(\sqrt5)$}{Q(sqrt5)} 的普适谱底座]\label{prop:pom-disjointness-graph-tensor-power-spectrum}
 令 \(\mathcal{D}_q\) 为顶点集 \(2^{[q]}\) 上的不交图：对 \(S,T\subseteq[q]\)，令 \(S\sim T\) 当且仅当 \(S\cap T=\varnothing\)。

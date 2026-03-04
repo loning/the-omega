@@ -204,6 +204,24 @@ A\in\left[1,\frac{3}{2}\right].
 若强制 \(A\in\ZZ_{\ge 1}\)，则由同样的单调性可知 \(A\ge 3\) 均被 \(A=2\) 严格支配，从而整数帕累托集合缩减为 \(\{1,2\}\)。
 \end{remark}
 
+\begin{conjecture}[Pisot 规范化的末位支配：bin-\texorpdfstring{$\beta$}{beta}-fold 的一比特指数等价]\label{conj:ostrowski-pisot-last-digit-dominance-lecam}
+设 \(\beta>1\) 为 Pisot 数，并考虑与 \(\beta\)-展开/相应 Ostrowski 合法语法相容的有限窗规范化折叠
+\(
+\mathrm{Fold}^{(\beta)}_m:\Omega_m^{(\beta)}\to X_m^{(\beta)}
+\)。
+令 \(U_m^{(\beta)}:=\mathrm{Unif}(X_m^{(\beta)})\)，并令 \(\mu_m^{(\beta)}\) 为 bin-\(\beta\)-fold 在 \(X_m^{(\beta)}\) 上的推前分布。
+取末位统计量 \(\ell(x)\) 为最末一位数字（或等价的末位合法状态标签）。
+则猜想存在常数 \(c_\beta\in(0,1)\) 与参数序列 \(\beta_m^{(\beta)}\to\log\beta\)，使得指数族近似
+\[
+\bar\mu_m^{(\beta)}(x)\ \propto\ U_m^{(\beta)}(x)\,\exp\!\bigl(-\beta_m^{(\beta)}\,\ell(x)\bigr)
+\]
+满足
+\[
+D_{\mathrm{TV}}\bigl(\mu_m^{(\beta)},\bar\mu_m^{(\beta)}\bigr)\ \le\ C_\beta\,c_\beta^{\,m},
+\]
+并且在 Le Cam 意义下，二点实验 \((\mu_m^{(\beta)},U_m^{(\beta)})\) 与其末位推前实验 \((\ell_\#\mu_m^{(\beta)},\ell_\#U_m^{(\beta)})\) 指数等价：全信息的最优检验误差在指数精度上由末位完全承载。
+\end{conjecture}
+
 \begin{corollary}[最大投影压缩的“语法熵锁定”：\texorpdfstring{$\lambda=2$}{lambda=2}]\label{cor:metallic-compression-locking-lambda2}
 命题 \ref{prop:metallic-compression-extremum} 的连续极大点 \(A_\star=3/2\) 等价于
 \[
@@ -380,6 +398,8 @@ N_c\approx 3.42058.
 若主目标是“最大投影压缩”，则应在连续最优 \(\lambda=2\)（或整数最优 \(A=2\)）附近选取参数。
 \end{remark}
 
+\input{subsubsec__ostrowski_metallic_mean_local_normalization_and_truncation_mismatch}
+
 \subsubsection{一般折叠算子 \texorpdfstring{$\Fold_m^{(\alpha)}$}{Fold\_m(alpha)}}
 
 为了与本文的“折叠 = 取值 + 取规范形”机制保持一致，我们把一般 Ostrowski 折叠定义为：先将“未规范数字”（允许违反相邻最大值约束）赋一个可审计整数值，再取 Ostrowski 规范形并截断。
@@ -456,3 +476,51 @@ $\Fold_m^{(\alpha)}$ 良定义且满足：
 \begin{remark}[与本文二元读出的关系]
 本文的主线实验固定二元读出与黄金语法（便于得到闭式 PF/Parry/$\zeta$ 基线）。上述一般化表明：若允许更一般的计数/地址字母表（或更一般的观测通道），则“折叠 = 取值 + Ostrowski 规范形”的机制可原则化推广；黄金分支只是其中最简、最可闭式分析的特例。
 \end{remark}
+
+\begin{theorem}[二次无理 \texorpdfstring{$\alpha$}{alpha} 下折叠可观测的有限状态矩阵化：压力函数的解析性与代数可计算性]\label{thm:ostrowski-quadratic-irrational-pressure-matrix-algebraicity}
+设 \(\alpha\in(0,1)\) 为二次无理数，并取定义 \ref{def:fold-alpha} 的 Ostrowski 折叠 \(\Fold_m^{(\alpha)}\)。
+固定一个长度 \(m\) 的可加观测量 \(G_m\)，其由规范化/折叠过程的有限窗口局部贡献逐步累加得到（例如由朴素截断与折叠感知截断之间的逐位失配指示所加和；在二元 Fold 的情形可取定义 \ref{def:fold-gauge-anomaly} 的规范差 \(G_m\)）。
+\par
+令 \(\mathbb P\) 为一族乘积分布，使输入数字 \(\omega_n\) 独立且其边缘分布仅依赖于相位 \(n\bmod p\)（某个固定 \(p\ge 1\)），并在每个允许取值上赋正概率。
+定义对数矩母函数
+\[
+\Lambda_\alpha(\theta):=\lim_{m\to\infty}\frac1m\log \mathbb E_{\mathbb P}\!\big[e^{\theta G_m}\big],
+\]
+若极限存在。
+则：
+\begin{enumerate}
+  \item \(\Lambda_\alpha(\theta)\) 在 \(\theta\) 的某邻域内存在且解析；
+  \item 存在有限维非负矩阵 \(M_\alpha(\theta)\)，其元素属于由
+  \(\{e^\theta\}\cup\{\mathbb P(\omega_n=\cdot)\}\) 生成的系数扩张，使得
+  \[
+  \Lambda_\alpha(\theta)=\log \rho\bigl(M_\alpha(\theta)\bigr),
+  \]
+  其中 \(\rho(\cdot)\) 为 Perron--Frobenius 谱半径；
+  \item 密度极限
+  \[
+  g_\alpha:=\lim_{m\to\infty}\frac1m\,\mathbb E_{\mathbb P}[G_m]
+  \]
+  存在且满足 \(g_\alpha=\Lambda_\alpha'(0)\)；并且当基线概率为有理数时，\(g_\alpha\) 属于上述系数扩张的代数闭包（特别地为代数数）。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+二次无理 \(\alpha\) 的连分数展开最终周期性意味着 Ostrowski 规范化的进位/借位规则在“相位 \(n\bmod p\)”意义下为有限型；
+因此存在一个有限状态在线转导器，其状态可取为“局部寄存器（携带规范化所需的有限记忆）\(+\) 相位”，输入为 \(\omega\)，输出为 \(\Fold^{(\alpha)}(\omega)\)，并同步产生每一步对 \(G_m\) 的局部贡献。
+\par
+对任意 \(\theta\) 在该有限状态图上对每条转移边赋权
+\[
+w_\theta(\text{edge})
+=\mathbb P(\text{该输入符号})\cdot e^{\theta\cdot(\text{该步贡献})},
+\]
+得到加权邻接矩阵 \(M_\alpha(\theta)\)。
+于是存在向量 \(\mathbf u,\mathbf v\) 使
+\(
+\mathbb E[e^{\theta G_m}]=\mathbf u^\top M_\alpha(\theta)^m\mathbf v
+\)。
+由于 \(M_\alpha(\theta)\) 非负且在 \(\theta\) 的小邻域内保持原始性（由全支持与强连通性保证），Perron--Frobenius 定理给出
+\[
+\lim_{m\to\infty}\frac1m\log \mathbf u^\top M_\alpha(\theta)^m\mathbf v=\log\rho(M_\alpha(\theta)),
+\]
+并且主特征值随 \(\theta\) 解析变化，从而得到 (1)(2)。
+对 \(\theta\) 在 \(0\) 处求导并用解析性确保交换极限与导数，即得 (3)。证毕。
+\end{proof}

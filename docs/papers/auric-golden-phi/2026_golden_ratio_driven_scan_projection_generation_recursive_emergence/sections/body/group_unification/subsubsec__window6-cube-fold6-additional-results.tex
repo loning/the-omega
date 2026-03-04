@@ -59,6 +59,35 @@ X^{\mathrm{bdry}}_6:=\{w\in X_6:\ w_1=w_6=1\}
 因此 \(\mathrm{Fold}^{\mathrm{bin}}_6\) 的所有非平凡纤维别名可解释为：在二进制截断区间 \([0,2^6)\) 内，金分割旋转的三项相邻近返时所诱导的有限别名被 Zeckendorf 前缀正规化以确定方式吸收。
 \end{corollary}
 
+\begin{proposition}[\texorpdfstring{$\{21,34,55\}$}{\{21,34,55\}} 内生的 \texorpdfstring{$\mathrm{SL}_2(\ZZ)$}{SL2(Z)} 双曲元]\label{prop:terminal-window6-sl2z-hyperbolic-from-tail-triple}
+在 window-\(6\) 锚点上，尾部偏移三元组 \((F_8,F_9,F_{10})=(21,34,55)\) 诱导整数矩阵
+\[
+A:=\begin{pmatrix}34&21\\55&34\end{pmatrix}.
+\]
+则 \(A\in \mathrm{SL}_2(\ZZ)\) 且为双曲元，其特征值为
+\[
+34\pm \sqrt{1155},
+\]
+谱半径为 \(\rho(A)=34+\sqrt{1155}\)，并由此给出二维代数熵
+\(
+h(A)=\log(34+\sqrt{1155})
+\)。
+\end{proposition}
+\begin{proof}
+直接计算
+\(
+\det(A)=34^2-21\cdot 55=1156-1155=1
+\)，
+故 \(A\in \mathrm{SL}_2(\ZZ)\)。
+其特征多项式为 \(x^2-(\mathrm{tr}\,A)x+1=x^2-68x+1\)，故特征值为
+\(
+\frac{68\pm\sqrt{68^2-4}}{2}=34\pm \sqrt{1155}
+\)。
+由于 \(34+\sqrt{1155}>1\) 且两特征值互为倒数，\(A\) 为双曲元，并且谱半径为 \(34+\sqrt{1155}\)；
+熵为其对数即得。证毕。
+\end{proof}
+\input{subsubsec__window6_fib_sl2_mod23_order3}
+
 \begin{corollary}[二进制深度与 Fibonacci 深度之间的确定性重标定]\label{cor:terminal-Km-depth-rescaling}
 令 \(K(m)\) 如定义 \ref{def:K-of-m}。
 则有
@@ -117,6 +146,7 @@ x\in\{\texttt{010000},\ \texttt{100100}\},
 \emph{核验要点：}脚本 \texttt{\detokenize{scripts/exp_foldbin6_geo_orbit_charge.py}} 逐点枚举 \(\Omega_6\) 并输出表 \ref{tab:foldbin6_geo_orbit_charge} 与 JSON 证书。
 \end{corollary}
 \input{sections/generated/tab_foldbin6_geo_orbit_charge}
+\input{subsubsec__window6-geo-fixed-algebra-gauge-centralizer}
 
 \begin{corollary}[唯一几何稳定子的循环型与 \texorpdfstring{$48$}{48} 轨道商]\label{cor:terminal-foldbin6-geo-cycle-quotient-48}
 沿用推论 \ref{cor:terminal-foldbin6-geo-orbit-charge} 的记号。
@@ -140,11 +170,58 @@ x\in\{\texttt{010000},\ \texttt{100100}\},
 轨道商的基数等于轨道个数 \(32+16=48\)。证毕。
 \end{proof}
 
+\begin{theorem}[几何稳定子的符号等变分量：规范的 \(16\) 维手征载体]\label{thm:terminal-foldbin6-geo-sign-antiinvariant-16}
+令 \(V:=\CC^{\Omega_6}\) 为 \(\Omega_6\) 上复值函数空间，并以
+\[
+(\sigma_{\mathrm{geo}}\cdot f)(\omega):=f(\sigma_{\mathrm{geo}}^{-1}\omega)
+\qquad(\omega\in\Omega_6)
+\]
+赋予 \(V\) 置换表示。
+定义符号（\((-1)\)-特征）等变分量
+\[
+V^{-}:=\{\,f\in V:\ \sigma_{\mathrm{geo}}\cdot f=-f\,\}.
+\]
+则有：
+\[
+\dim_{\CC} V^{-}=16.
+\]
+并且 \(V^{-}\) 存在无需额外选择的规范基：以 \(\sigma_{\mathrm{geo}}\) 的 \(2\)-循环轨道 \(\{\omega,\sigma_{\mathrm{geo}}(\omega)\}\) 为指标，每个 \(2\)-循环贡献一个反对称基向量
+\[
+e_{\{\omega,\sigma_{\mathrm{geo}}(\omega)\}}
+:\ =\ \mathbf 1_{\omega}-\mathbf 1_{\sigma_{\mathrm{geo}}(\omega)},
+\]
+这些向量构成 \(V^{-}\) 的一组基，从而 \(V^{-}\) 与“\(2\)-循环轨道集上的函数空间”自然同构。
+\end{theorem}
+
+\begin{proof}
+由推论 \ref{cor:terminal-foldbin6-geo-cycle-quotient-48}，\(\sigma_{\mathrm{geo}}\) 的循环型为 \(1^{32}2^{16}\)。
+对每个 \(2\)-循环 \(\{\omega,\omega'\}\)（其中 \(\omega'=\sigma_{\mathrm{geo}}(\omega)\)），其线性化在 \(\CC\)-向量空间 \(\Span\{\mathbf 1_\omega,\mathbf 1_{\omega'}\}\) 上分解为对称向量 \(\mathbf 1_\omega+\mathbf 1_{\omega'}\)（特征值 \(+1\)）与反对称向量 \(\mathbf 1_\omega-\mathbf 1_{\omega'}\)（特征值 \(-1\)）。
+不动点仅贡献特征值 \(+1\) 的方向。
+因此 \(-1\) 特征空间维数等于 \(2\)-循环个数 \(16\)，并由上述反对称向量给出一组规范基。证毕。
+\end{proof}
+
+\input{parts/thm__window6-chiral-compression-hypercube-adjacency}
+
 \begin{remark}[关于 \texorpdfstring{$48$}{48} 的两套独立审计路径]\label{rem:terminal-foldbin6-geo-quotient-weyl-shadow}
 推论 \ref{cor:terminal-foldbin6-geo-cycle-quotient-48} 给出：\(48\) 可被解释为 6D 微态空间 \(\Omega_6\) 在唯一非平凡几何对称 \(\langle\sigma_{\mathrm{geo}}\rangle\cong\ZZ_2\) 作用下的轨道商基数。
 另一方面，推论 \ref{cor:window6-weyl-family-equipotential} 以 \(W(B_3)\) 的正则轨道把同一数 \(48\) 识别为 \(|W(B_3)|\)。
 因此在 window-\(6\) 锚点上，\(48\) 同时具有“几何商计数”与“Weyl 阶数计数”两套彼此独立、且均可由有限穷举证书追溯的来源；本文在此仅将其记录为一条结构性对齐现象。
 \end{remark}
+
+\begin{conjecture}[Weyl--orbit 托瑟结构：\texorpdfstring{$48$}{48} 的刚性对齐提升为作用同构]\label{conj:terminal-window6-weyl-orbit-torsor}
+沿推论 \ref{cor:terminal-foldbin6-geo-cycle-quotient-48} 的记号，令
+\(
+Q:=\Omega_6/\langle\sigma_{\mathrm{geo}}\rangle
+\)
+为轨道商集（\(|Q|=48\)）。
+同时令 \(W:=W(B_3)\) 为 \(B_3\) 的 Weyl 群（\(|W|=48\)，见 \S\ref{subsec:bdry-tower-zeck-gut} 的根--Cartan 字典接口）。
+猜想存在一个在自然同构意义下刚性的结构，使得：
+\begin{enumerate}
+  \item \(Q\) 可被赋予一个自由且传递的 \(W\)-作用，从而 \(Q\) 成为 \(W\) 的 principal homogeneous space（托瑟）；
+  \item 该 \(W\)-作用与文稿中 \(X_6^{\mathrm{cyc}}\to \Phi(B_3)\) 的根字典（表 \ref{tab:fold6_b3c3_root_dictionary_b3}）以及由 \(Q_6\) 推送核导出的 edge--flux skeleton 的离散审计输出在函子意义下相容：根型分层、轨道计数与可观测电荷格的投影在该同构下被同时保持。
+\end{enumerate}
+因此“\(48\)”不再仅作为两套独立计数的数值相遇，而被提升为一个可证伪的作用同构断言：任意候选对齐若无法在有限对象上同时满足 Coxeter 关系与自由传递性，即被该猜想否定。
+\end{conjecture}
 
 \begin{proposition}[window-\(6\) 的强可并性失败：折叠观测不闭合为无记忆动力学]\label{prop:terminal-foldbin6-strong-lumpability-fails}
 令 \((W_t)_{t\ge 0}\) 为 \(Q_6\) 上的标准简单随机游走（每步等概率翻转一位），并令观测过程
@@ -160,6 +237,33 @@ X_t:=F_6(W_t)\in X_6
 强可并性要求：对任意 \(x,y\in X_6\)，以及任意 \(\omega,\omega'\in F_6^{-1}(x)\)，从 \(\omega\) 与 \(\omega'\) 出发的一步转移落入纤维 \(F_6^{-1}(y)\) 的概率必须相同；在简单随机游走口径下这等价于“一步邻点标签多重集”在纤维内为常数。
 生成片段 \eqref{eq:foldbin6_strong_lumpability_counterexample} 给出一个显式反例，从而推出结论。证毕。
 \end{proof}
+
+\begin{corollary}[强可并性反例中的二值见证：首个被截断的 Zeckendorf 尾位]\label{cor:terminal-foldbin6-strong-lumpability-binary-witness}
+在命题 \ref{prop:terminal-foldbin6-strong-lumpability-fails} 的设定下，把 \(\omega\in\Omega_6\) 识别为整数 \(n=\mathrm{int}_6(\omega)\in\{0,\dots,63\}\)，并记其 Zeckendorf 数字为
+\[
+Z(n)=(z_1,z_2,\dots)\in X_\infty,
+\qquad
+n=\sum_{k\ge 1} z_k F_{k+1}.
+\]
+定义二进制区间折叠的“首个被截断尾位”
+\[
+b^{\mathrm{bin}}_6(\omega):=z_{7}\in\{0,1\},
+\]
+即对应权重 \(F_8\) 的那一位（在 \(F_6(\omega)=\pi_6(Z(n))\) 的前缀投影中被丢弃）。
+则生成式 \eqref{eq:foldbin6_strong_lumpability_counterexample} 给出的同纤维两点
+\(\omega=\texttt{000000}\) 与 \(\omega'=\texttt{010101}\) 满足
+\[
+b^{\mathrm{bin}}_6(\omega)=0,\qquad b^{\mathrm{bin}}_6(\omega')=1.
+\]
+因此任何试图把纤维分割精化为强可并分割的方案，都必须将这两点分离；换言之，\(b^{\mathrm{bin}}_6\) 在该纤维上给出一个不可约的二值见证。
+\end{corollary}
+
+\begin{proof}
+由 \(\mathrm{int}_6(\texttt{000000})=0\) 与 \(\mathrm{int}_6(\texttt{010101})=21=F_8\)，其 Zeckendorf 数字分别为 \(Z(0)=0^\infty\) 与 \(Z(21)=0^6 1 0^\infty\)，故 \(z_7\) 取值如上。
+而 \eqref{eq:foldbin6_strong_lumpability_counterexample} 已给出：两点虽落在同一纤维 \(F_6^{-1}(x)\)，但其一步邻域在 \(X_6\) 上的计数分布不同。
+因此任何不把 \(\omega,\omega'\) 分离的分割都保留该差异，无法满足强可并性。
+由 \(b^{\mathrm{bin}}_6(\omega)\neq b^{\mathrm{bin}}_6(\omega')\) 可用该二值函数完成分离，故其为所述纤维上的二值见证。证毕。
+\end{proof}
 \input{sections/generated/eq_foldbin6_strong_lumpability_counterexample}
 
 \begin{corollary}[纤维瞬时热化的最小马尔可夫闭包：可逆 \(21\) 态核与谱隙常数]\label{cor:terminal-foldbin6-minimal-markov-closure-gap}
@@ -172,6 +276,10 @@ X_t:=F_6(W_t)\in X_6
 \]
 \end{corollary}
 \input{sections/generated/eq_window6_pushforward_markov_spectral_gap}
+\input{parts/thm__window6-strong-lumpability-spectral-rigidity}
+\input{subsubsec__window6_pushforward_mixing_time_transcendence}
+
+\input{thm__foldbin6_equitable_lumpability_spectral_rigidity}
 
 \begin{remark}[推送核 \texorpdfstring{$P_6$}{P6} 的协议不变谱指纹]\label{rem:terminal-p6-protocol-invariant-spectral-fingerprint}
 推送核 \(P_6\) 由加权邻接多重度矩阵 \(A\) 唯一确定（定理 \ref{thm:terminal-foldbin6-pushforward-markov}），而 \(A\) 的标号刚性由推论 \ref{cor:terminal-gamma6-multiplicity-rigidity} 给出。
@@ -261,6 +369,7 @@ a^{-1}b=(n-1\;\;n)\in G
 \(\mathrm{Gal}(q_6/\QQ)\cong S_{20}\) 在根集上传递，故根集仅有一个轨道。
 因此任一根的极小多项式都等于 \(q_6\)，并且任意两根互为代数共轭。证毕。
 \end{proof}
+\input{subsubsec__window6_pushforward_commutant_mode_selection}
 
 \begin{corollary}[根域的原始性与不可根式求解]\label{cor:terminal-window6-q6-root-field-primitive-nonsolvable}
 设 \(\alpha\) 为 \(q_6\) 的任一根，并令 \(K_6:=\QQ(\alpha)\)。
@@ -323,12 +432,15 @@ q_m\ \text{在}\ \QQ[\lambda]\ \text{上不可约},\qquad
 \]
 表 \ref{tab:window_pushforward_markov_full_symmetric_galois_audit_m5_m9} 在 \(m=5,6,7,8,9\) 上给出一致证据：每个 \(q_m\) 都出现 \([F_{m+2}-1]\) 与 \([F_{m+2}-2,1]\) 的模素数次数型证书。
 \end{conjecture}
+\input{subsubsec__window_pushforward_commutant_torus}
+\input{subsubsec__window6_pushforward_rational_commutant_rigidity}
 
 \begin{corollary}[纤维码距谱的计数直方图（window-\(6\)）]\label{cor:terminal-foldbin6-fiber-hamming-min-distance-histogram}
 在定理 \ref{thm:terminal-foldbin6-fiber-hamming-three-valued} 的记号下，window-\(6\) 的纤维最小汉明距离三值谱
 \(\delta_{\min}(w)\in\{2,3,5\}\) 的出现次数为固定常数，并由生成片段 \eqref{eq:foldbin6_fiber_hamming_min_distance_value_counts} 给出。
 \end{corollary}
 \input{sections/generated/eq_foldbin6_fiber_hamming_min_distance_value_counts}
+\input{subsubsec__window6-cube-fold6-two-point-fiber-direction-spectrum}
 
 \begin{theorem}[独立位翻转噪声下的 \texorpdfstring{$\mathrm{Fold}^{\mathrm{bin}}_6$}{Foldbin6} 精确稳定多项式]\label{thm:terminal-foldbin6-bitflip-stability-polynomial}
 令 \(W\sim\mathrm{Unif}(\Omega_6)\)，并令 \(\widetilde W\) 由独立位翻转信道得到：对每一坐标以概率 \(p\in[0,1]\) 独立翻转。
@@ -442,64 +554,7 @@ M_{xx}:=0,
 而由 \eqref{eq:window6_fiber_edge_coupling_det}，\(|\det(M)|=2^{12}\cdot 3^{2}\cdot 5\cdot 23\)，故 \(\mathcal{C}_6\) 的 \(23\)-Sylow 子群阶为 \(23\)。
 阶为素数的有限群必为循环群，故该 \(23\)-Sylow 子群同构于 \(\ZZ/23\ZZ\)。证毕。
 \end{proof}
+\input{subsubsec__window6_response_kernel_mod23}
 
-\paragraph{交换子包络与可观测紧致部分：从边计数算子到连续包络的可审计路线图}
-下述两条猜想把 window-\(6\) 的“边计数审计对象”进一步提升为一个可计算的交换子 Lie 包络，并将标准模型规范代数的出现表述为在有限证书约束下的唯一可观测紧致子结构。
-
-\begin{definition}[坐标翻转推送算子与交换子 Lie 包络]\label{def:window6-coordinate-pushforward-lie-envelope}
-令 \(V:=\RR^{X_6}\)。
-对每个坐标方向 \(i\in\{1,\dots,6\}\)，令 \(L_i\in \mathrm{End}(V)\) 为由 \(Q_6\) 的第 \(i\) 位翻转边推送到 \(X_6\) 所得的计数算子：其矩阵元定义为
-\[
-(L_i)_{uv}:=\#\bigl\{\omega\in\Omega_6:\ F_6(\omega)=u,\ F_6(\omega\oplus e_i)=v\bigr\}
-\qquad (u,v\in X_6),
-\]
-其中 \(e_i\) 为第 \(i\) 位标准基向量。
-定义其交换子 Lie 包络为
-\[
-\mathfrak{g}_6:=\mathrm{Lie}\langle L_1,\dots,L_6\rangle\ \subset\ \mathfrak{gl}(V),
-\]
-即由 \(L_i\) 在交换子括号 \([A,B]=AB-BA\) 下生成的最小 Lie 子代数。
-\end{definition}
-
-\begin{conjecture}[edge--flux skeleton 诱导的 Lie 代数闭合（window-\(6\)）]\label{conj:window6-lie-envelope-b3c3}
-在定义 \ref{def:window6-coordinate-pushforward-lie-envelope} 的设定下，
-由有限穷举确定的 window-\(6\) 审计约束（包括四块 edge--flux skeleton 的矩阵与谱指纹，定理 \ref{thm:terminal-window6-edge-flux-skeleton}；以及 \(B_3/C_3\) 根字典与 \(|W|=48\) 的轨道核验，\S\ref{subsec:bdry-tower-zeck-gut}）应强制交换子包络满足：
-\[
-\mathfrak{g}_6\ \text{在复化后为秩 }3\text{ 的简单 Lie 代数，其根型与 }B_3/C_3\text{ 字典一致。}
-\]
-等价地，预期 \(\dim\mathfrak{g}_6=21\)，从而 \(\mathfrak{g}_6\otimes_\RR\CC\) 的 Dynkin 型只能为 \(B_3\) 或 \(C_3\)。
-\end{conjecture}
-
-\begin{conjecture}[标准模型规范代数的涌现刻画：作为 \texorpdfstring{$(\mathfrak{g}_6,\ZZ_2)$}{(g6,Z2)} 的唯一可观测极小紧致子代数]\label{conj:window6-sm-gauge-as-minimal-compact-observable}
-在猜想 \ref{conj:window6-lie-envelope-b3c3} 的设定下，并联立 window-\(6\) 的唯一几何 \(\ZZ_2\)（定理 \ref{thm:foldbin6-geo-stabilizer-z2}）及其在 boundary 上诱导的 sheet parity 分级（推论 \ref{cor:terminal-delta-parity-rule}），
-考虑所有与该 \(\ZZ_2\) 分级相容、且与三通道最小紧核 \(U(3)\) 的通道闭合口径相容的紧致约化子代数。
-则在“秩保持且不引入额外同构自由度”的最小化准则下，预期存在唯一（至同构）极小候选，其根型为
-\[
-A_2\oplus A_1\oplus A_0,
-\qquad\text{亦即}\qquad
-\mathfrak{su}(3)\oplus\mathfrak{su}(2)\oplus\mathfrak{u}(1),
-\]
-并且该唯一性与 window-\(6\) 的类型重标号刚性（推论 \ref{cor:terminal-gamma6-multiplicity-rigidity}）相容：类型层不允许额外的“标签 gauge”吸收非唯一性。
-\end{conjecture}
-
-\begin{conjecture}[括号唯一性与低秩子代数强迫（window-\(6\)）]\label{conj:window6-bracket-uniqueness-sm}
-设 \(\RR\langle X_6\rangle\) 为以 \(X_6\) 为基的实向量空间。
-猜想存在（且在同构意义下唯一）一个反对称双线性运算
-\[
-[-,-]_6:\RR\langle X_6\rangle\times \RR\langle X_6\rangle\to \RR\langle X_6\rangle
-\]
-满足以下可审计约束：
-\begin{enumerate}
-  \item \textbf{（局域性/函子性）}\([-,-]_6\) 的结构常数仅依赖于由 \(Q_6\) 一跳推送诱导的邻接关系与边多重度（命题 \ref{prop:terminal-gamma6-rigidity}、推论 \ref{cor:terminal-gamma6-multiplicity-rigidity}）。
-  \item \textbf{（\(\delta=34\) 分级相容）}\([-,-]_6\) 与 boundary 的 sheet parity 分级相容（推论 \ref{cor:terminal-delta-parity-rule}；推论 \ref{cor:bdry-sheet-parity-diagonal}）。
-  \item \textbf{（根--Cartan 闭包）}在 \(18\oplus 3\) 根--Cartan 字典下（\S\ref{subsec:bdry-tower-zeck-gut}），cyclic 的 \(18\) 模态在 \([-,-]_6\) 下闭合为 rank-\(3\) 简单根型 \(B_3/C_3\) 的根向量生成子，而 boundary 的 \(3\) 模态闭合为 Cartan 子空间。
-  \item \textbf{（Levi 分块相容）}在 \(21=15\oplus 3\oplus 3\) 的 orbit--Levi 骨架与 \(9\oplus 6\oplus 3\oplus 3\) 的 edge--flux 四块分解下（定理 \ref{thm:terminal-window6-edge-flux-skeleton}），\([-,-]_6\) 的分块闭包诱导 Levi 型包络的可审计一致性。
-\end{enumerate}
-在该猜想成立时，window-\(6\) 的最小非平凡“可观测紧致部分”将被强制选出，并与 \(\mathfrak{su}(3)\oplus\mathfrak{su}(2)\oplus\mathfrak{u}(1)\) 的根型 \(A_2\oplus A_1\oplus A_0\) 相容（猜想 \ref{conj:window6-sm-gauge-as-minimal-compact-observable}）。
-\end{conjecture}
-
-\begin{remark}[可审计实现路径：由有限边计数生成 Lie 包络]\label{rem:window6-lie-envelope-audit-route}
-定义 \ref{def:window6-coordinate-pushforward-lie-envelope} 中的 \(L_i\) 完全由有限边计数确定，因此 \(\mathfrak{g}_6\) 的生成与闭包可被归约为有限矩阵代数的确定性计算。
-脚本 \texttt{\detokenize{scripts/exp_window6_lie_envelope.py}} 给出一条证书化路线：生成六个 \(L_i\)，并在交换子闭包下输出 \(\mathfrak{g}_6\) 的基本不变量（维数、中心维数、导出代数维数、Killing 形式秩以及伴随表示的交换子维数），以便将猜想 \ref{conj:window6-lie-envelope-b3c3} 升级为完全可复核的定理陈述。
-\end{remark}
+\input{subsubsec__window6_lie_bracket_closure}
 

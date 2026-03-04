@@ -7,11 +7,16 @@ timestamps (e.g. "日期与时间：YYYY-MM-DD HH:MM:SS" or "Time (local timezon
 These lines are metadata and should not appear in the manuscript sources.
 
 Policy implemented here:
-  - Only remove full-line comments (LaTeX: '% ...', Python: '# ...').
-  - Remove a line if (and only if) it looks like a timestamp record:
-      * contains "日期与时间" or "当前时间", OR
+  - Remove full-line comments (LaTeX: '% ...', Python: '# ...') that look like
+    timestamp records.
+  - Additionally, for LaTeX sources, remove standalone provenance lines that
+    are clearly timestamps even when they were inserted as non-comment text
+    (e.g. "当前时间：YYYY-MM-DD HH:MM:SS（Asia/Singapore）").
+  - A line is treated as a timestamp record if (and only if) it satisfies one
+    of the following:
+      * starts with "日期与时间" or "当前时间" (with a ':' or '：'), OR
+      * starts with "Time (local timezone):", OR
       * contains an ISO date pattern (YYYY-MM-DD), with or without a time-of-day.
-  - Do not touch non-comment content.
   - Additionally, for LaTeX sources, remove editorial timestamp notes inside
     `\\footnote{...}` when they are clearly provenance metadata, e.g.:
       * contains "版本记录"  -> drop the whole footnote
@@ -40,6 +45,10 @@ class Change:
 
 _ISO_DATE_RE = re.compile(r"\b\d{4}-\d{2}-\d{2}\b")
 _CN_TIME_LABEL_RE = re.compile(r"(日期与时间|当前时间)")
+_CN_TIME_STANDALONE_LINE_RE = re.compile(
+    r"^\s*(?:日期与时间|当前时间(?:日期)?)\s*[:：]"
+)
+_EN_TIME_STANDALONE_LINE_RE = re.compile(r"^\s*Time\s*\(local timezone\)\s*:")
 
 
 def _iter_files(root: Path, include_dirs: Sequence[str], exts: Sequence[str]) -> Iterable[Path]:
@@ -196,6 +205,14 @@ def _process_file(path: Path) -> Tuple[bool, int]:
     removed = 0
     out_lines: List[str] = []
     for ln in lines:
+        # For LaTeX sources, drop standalone timestamp provenance lines even if
+        # they were inserted as non-comment text.
+        if path.suffix == ".tex":
+            s0 = ln.strip()
+            if s0 and (_CN_TIME_STANDALONE_LINE_RE.match(s0) or _EN_TIME_STANDALONE_LINE_RE.match(s0)):
+                removed += 1
+                continue
+
         s = ln.lstrip()
         if s.startswith(prefix) and _should_strip_comment_line(s):
             removed += 1

@@ -1,6 +1,7 @@
 \subsection{Joukowsky--Gödel 输运的结式分解与双尺度可逆结构}\label{subsec:group-unification-joukowsky-godel}
 
 为将“扫描--投影--重建”链条压缩为可直接调用的代数证书，本小节给出一组围绕结式、判别式与双尺度反演的严格恒等式。其作用是把单尺度 Joukowsky 读出、双尺度几何闭包与碰撞谱半径统一到同一消元框架中，并与本节既有的谱隙/边界审计接口形成互补。
+语义—算术层面上，以规范化交换幺半群外置范畴 \(\mathrm{Extcmon}(\pi,s)\) 及其在可数情形下由素数寄存器实现的 Gödel 嵌入为背景；几何层面上，以 Joukowsky--Gödel 输运多项式 \(Q_r\) 与其诱导的椭圆边界族为背景。
 
 \begin{theorem}[Joukowsky--Gödel 输运的回拉分解恒等式]\label{thm:group-jg-pullback-factorization}
 设 \(K\) 为特征 \(0\) 的域，\(P(z)\in K[z]\) 为次数 \(n\ge 1\) 的多项式，
@@ -73,6 +74,8 @@ Q_r(w):=\operatorname{Res}_{z}\!\bigl(P(z),r z^2-w z+r^{-1}\bigr),
 \[
 P(z)=a_n z^n+a_{n-1}z^{n-1}+\cdots+a_0\in K[z],\qquad a_n a_0\neq 0.
 \]
+
+\input{thm__group-jg-leyang-elliptic-mahler-free-energy}
 
 \begin{theorem}[输运结式首项系数刚性]\label{thm:group-jg-lc-rigidity}
 在上述记号下，
@@ -293,6 +296,25 @@ a_p\in\mathbb{Z},\ a_p=0\ \text{对除有限个素数外全部成立}
 而例外尺度形成薄集，并可由有限个代数曲线的有理点参数化。
 \end{conjecture}
 
+\begin{conjecture}[外置账本的高度原则：对数 Gödel 尺度与 N\'eron--Tate 高度的线性关系]\label{conj:group-jg-ledger-nt-height-principle}
+对 \(a\in\NN^{(\PP)}\) 定义 Gödel 尺度
+\(
+G(a):=\prod_{p\in\PP}p^{a_p}\in\NN_{>0}
+\)，并以 Joukowsky 映射 \(J_r(z)=r z+r^{-1}z^{-1}\)（\(r>1\)）生成椭圆族 \(E_r:=J_r(\TT)\)。
+预期存在一个由本文的折叠外置结构自然诱导、且可审计的代数对应
+\[
+\Theta:\ \{E_{G(a)}\}_{a\in\NN^{(\PP)}}\dashrightarrow E_0(\overline{\QQ}),
+\qquad
+E_0:\ y_0^2+y_0=x^3-x,
+\]
+使得对由折叠策略产生的账本序列 \(a=a(\omega|_m)\) 所对应的点 \(P_m:=\Theta(E_{G(a(\omega|_m))})\)，其标准 N\'eron--Tate 高度满足
+\[
+\widehat h(P_m)=c\cdot \log G\bigl(a(\omega|_m)\bigr)+O(1),
+\]
+其中常数 \(c>0\) 与策略选择无关。
+并且在局部高度分解中出现的算术敏感素数集合可被约束为两类门槛的并：一类为 Lee--Yang 椭圆锚点的坏素数（典型地包含 \(\{2,3,31,37\}\) 的子集），另一类为外置读出所选用的素数坐标轴（例如 \((q_m)\)）。
+\end{conjecture}
+
 \begin{theorem}[两尺度全息可逆性：由两条椭圆边界唯一重建]\label{thm:group-two-scale-holographic-recovery}
 在定理 \ref{thm:group-jg-pullback-factorization} 的设定下，令 \(K=\CC\)，并进一步假设
 \[
@@ -330,6 +352,46 @@ F_r(z)=P(z)\,P^{\vee}(r^2 z).
 =P.
 \]
 将 \(P\) 取首一代表即得唯一性。
+\end{proof}
+
+\begin{theorem}[径向分离下的两尺度重建]\label{thm:group-two-scale-holographic-recovery-radial-separation}
+在定理 \ref{thm:group-jg-pullback-factorization} 的设定下，令 \(K=\CC\)，并令 \(P\in\CC[z]\) 满足 \(P(0)\neq 0\)。
+取两尺度 \(r_1,r_2>1\) 且 \(r_1\neq r_2\)，并定义
+\[
+F_r(z):=r^n z^n Q_r\!\left(r z+r^{-1}z^{-1}\right)\in\CC[z].
+\]
+记 \(Z(P)\) 为 \(P\) 的零点多重集合，并记 \(Z(P)^{-1}:=\{z^{-1}:z\in Z(P)\}\)（按重数计）。
+假设满足径向分离条件
+\[
+Z(P)\cap r_i^{-2}Z(P)^{-1}=\varnothing\quad(i=1,2),
+\qquad
+r_1^{-2}Z(P)^{-1}\cap r_2^{-2}Z(P)^{-1}=\varnothing.
+\]
+则在 \(\CC[z]\) 中 \(\gcd(F_{r_1},F_{r_2})\) 与 \(P\) 相差一非零常数因子；因此在取首一规范后，\(P\) 可由两尺度回拉对象 \((F_{r_1},F_{r_2})\) 唯一确定。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:group-jg-pullback-factorization} 有分解
+\[
+F_r(z)=P(z)\,P^\vee(r^2 z).
+\]
+其中 \(P^\vee(r^2 z)\) 的零点恰为集合 \(r^{-2}Z(P)^{-1}\)（按重数计）。
+径向分离条件的第一部分给出
+\[
+Z(P)\cap Z\bigl(P^\vee(r_i^2 z)\bigr)=\varnothing\quad(i=1,2),
+\]
+从而 \(P\) 与 \(P^\vee(r_i^2 z)\) 在 \(\CC[z]\) 中互素。
+径向分离条件的第二部分给出
+\[
+Z\bigl(P^\vee(r_1^2 z)\bigr)\cap Z\bigl(P^\vee(r_2^2 z)\bigr)=\varnothing,
+\]
+从而 \(P^\vee(r_1^2 z)\) 与 \(P^\vee(r_2^2 z)\) 互素。
+于是
+\[
+\gcd(F_{r_1},F_{r_2})
+=\gcd\bigl(P\cdot P^\vee(r_1^2 z),\ P\cdot P^\vee(r_2^2 z)\bigr)
+=P\cdot \gcd\bigl(P^\vee(r_1^2 z),P^\vee(r_2^2 z)\bigr)
+\]
+与 \(P\) 相差一非零常数因子，结论成立。
 \end{proof}
 
 \begin{theorem}[输运结式判别式的完全分解与碰撞谱]\label{thm:group-jg-discriminant-factorization}

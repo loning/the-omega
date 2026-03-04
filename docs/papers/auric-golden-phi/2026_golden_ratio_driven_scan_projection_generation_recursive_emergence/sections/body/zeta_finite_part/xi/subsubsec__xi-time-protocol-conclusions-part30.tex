@@ -50,6 +50,8 @@ V_{\partial}:=\log\mathrm{tr}(\mathsf P),
 代入 \(\mathscr{C}_{\partial}=S_{\partial}+(\kappa-1)V_{\partial}\) 即得结论；详见推论 \ref{cor:xi-toeplitz-visibility-complexity-anomaly}。
 \end{proof}
 
+\input{subsubsec__xi-time-protocol-conclusions-part30__pick-poisson-homothetic-spectrum-ledger-chain}
+
 \begin{conclusion}[负谱体积势的静电学刻画：\texorpdfstring{$-\log\det\mathsf P$}{-log det P} 等价于上半平面 Dirichlet Green 镜像能量]\label{con:xi-terminal-pick-poisson-green-mirror-energy}
 在上半平面坐标 \(z_j=\mathcal{C}^{-1}(a_j)\in\mathbb{H}\) 下，令
 \(
@@ -112,6 +114,8 @@ S_{\mathrm{gen}}=-\sum_{m=1}^{\kappa}\log\pi_m\; }.
 见命题 \ref{prop:xi-pick-poisson-schur-flux-ledger}。
 \end{proof}
 
+\input{subsubsec__xi-time-protocol-conclusions-part30__schur-ledger-subprobability-gap}
+
 \begin{conclusion}[谱裕度与病态封口：\texorpdfstring{$\lambda_{\min}(\mathsf P)$}{lambda_min(P)} 与条件数在贴边/碰撞极限下同步塌缩]\label{con:xi-terminal-pick-poisson-conditioning-collapse}
 对扫描谱点集诱导的 Pick--Poisson 矩阵 \(\mathsf P(t)\)（命题 \ref{prop:xi-scan-toeplitz-conditioning-by-separation}），记端点权重 \(p_j(t):=P_{a_j(t)}(-1)\) 与伪双曲距离 \(\rho_{jk}(t):=\rho(a_j(t),a_k(t))\)。
 则其最小特征值满足显式夹逼：一方面
@@ -164,7 +168,16 @@ Hankel 行列式的 Vandermonde 分解与病态发散见命题 \ref{prop:xi-dept
 Pick--Poisson 的同型乘积律见命题 \ref{prop:xi-pick-poisson-det-factorization}。
 \end{proof}
 
+\input{thm__xi-prony-moment-map-jacobian-delta4}
+\input{cor__xi-hankel-vs-prony-square-gap}
+\input{thm__xi-nonarchimedean-prony-hensel-newton-inversion}
+
 \input{con__xi-terminal-hankel-rigidity-ideal-nonarchimedean}
+
+\input{thm__xi-hankel-determinantal-radical-eq-rigidity}
+\input{prop__xi-unweighted-rigidity-quartic-ideal-pordering}
+\input{cor__xi-pom-minreal-vs-spectral-budget-separation}
+\input{conj__xi-nonarchimedean-minimizer-skeleton-uniqueness}
 
 \begin{conclusion}[Toeplitz--PSD 证书的最小失败定位：等价于 CMV 反射谱前缀越界]\label{con:xi-terminal-toeplitz-psd-failure-cmv-prefix}
 令 \(\mathbf{T}_m\) 为由视界 Carath\'eodory 矩 \((c_n)\) 生成的 Toeplitz 主子矩阵，并令 \((\alpha_n)_{n\ge 0}\) 为相应 Schur 算法给出的反射系数（Verblunsky 参数）。
@@ -281,6 +294,67 @@ Rényi 熵率塌缩见定理 \ref{thm:fold-bin-renyi-rate-collapse}。
 \begin{proof}[证明要点]
 见命题 \ref{prop:fold-bin-digit-dp}。
 \end{proof}
+
+\begin{proposition}[bin-fold 纤维计数的壁穿越表示：尾部谱 \texorpdfstring{$\Rightarrow$}{=>} 椭圆平均二值跳跃]\label{prop:xi-foldbin-fiber-wallcrossing-representation}
+固定 \(m\ge 1\)。
+对每个末位 \(b\in\{0,1\}\)，存在一个有限集合 \(\mathcal{S}_{m,b}\subset\NN_{\ge 1}\)（称为该末位约束下的\emph{尾部权重谱}）使得对任意 \(w\in X_m\) 满足 \(w_m=b\)，令
+\[
+\mathrm{slack}(w):=2^m-1-V_m(w)\in\NN_{\ge 0},
+\]
+则 bin-fold 纤维基数满足
+\[
+d_m^{\mathrm{bin}}(w)
+\;=\;
+1+\#\{s\in\mathcal{S}_{m,b}:\ s\le \mathrm{slack}(w)\}.
+\]
+并且存在有理测试函数 \(f_{m,b}\in\CC(w)\)，使对任意 \(w\in X_m\) 满足 \(w_m=b\) 都有
+\[
+\boxed{\;
+d_m^{\mathrm{bin}}(w)
+\;=\;
+1+\mathcal{L}_{e^{2(\mathrm{slack}(w)+1/2)}}\!\left(f_{m,b}\right)\; },
+\]
+其中 \(\mathcal{L}_L\) 为定理 \ref{thm:xi-singular-ring-ellipse-wallcrossing-rational} 的奇异环椭圆平均。
+\end{proposition}
+\begin{proof}
+尾部谱的存在性与第一式来自命题 \ref{prop:fold-bin-digit-dp}：digit DP 计数可视为在固定有限约束下枚举“尾部权重和”不超过 \(\mathrm{slack}(w)\) 的可行解个数，并与零尾部（恒存在）相加得到纤维基数。
+\par
+令 \(\mathcal{A}_{m,b}:=\{e^s:\ s\in\mathcal{S}_{m,b}\}\subset(1,\infty)\)，并对每个 \(a=e^s\in\mathcal{A}_{m,b}\) 赋权 \(c_a:=1\)。
+由定理 \ref{thm:xi-singular-ring-ellipse-wallcrossing-rational} 的留数壁穿越构造（命题 \ref{prop:xi-singular-ring-ellipse-wallcrossing-atomic-measure} 所刻画的径向原子测度口径），存在有理函数 \(f_{m,b}\in\CC(w)\) 使得对一切 \(r>1\) 且 \(r\notin\mathcal{A}_{m,b}\) 有
+\[
+\mathcal{L}_{r^2}(f_{m,b})=\#\{a\in\mathcal{A}_{m,b}:\ a<r\}.
+\]
+取 \(r=e^{\mathrm{slack}(w)+1/2}\)（从而 \(r\notin \mathcal{A}_{m,b}\)），则右端等于 \(\#\{s\in\mathcal{S}_{m,b}: s\le \mathrm{slack}(w)\}\)，代回即得所示公式。证毕。
+\end{proof}
+
+\begin{corollary}[离散差分恢复尾部权重谱]\label{cor:xi-foldbin-tail-spectrum-discrete-difference}
+在命题 \ref{prop:xi-foldbin-fiber-wallcrossing-representation} 的设定下，固定 \(m\) 与 \(b\in\{0,1\}\)，定义计数函数
+\[
+d_{m,b}(R):=\#\{s\in\mathcal{S}_{m,b}:\ s\le R\}\qquad(R\in\NN_{\ge 0}),
+\]
+并约定 \(d_{m,b}(-1)=0\)。
+则对所有 \(R\ge 0\) 有
+\[
+d_{m,b}(R)-d_{m,b}(R-1)=\mathbf{1}_{\{R\in\mathcal{S}_{m,b}\}},
+\]
+从而 \(\mathcal{S}_{m,b}\) 可由单个计数函数 \(d_{m,b}\) 完全重构。
+\end{corollary}
+\begin{proof}
+由定义，差分恰为计数在 \(R\) 处新增的点数，即 \(\#\{s\in\mathcal{S}_{m,b}:\ s=R\}\in\{0,1\}\)。证毕。
+\end{proof}
+
+\begin{conjecture}[dyadic--Fibonacci 归一化尾部谱的奇异连续极限]\label{conj:xi-foldbin-tail-spectrum-singular-limit}
+固定末位 \(b\in\{0,1\}\)，并以命题 \ref{prop:xi-foldbin-fiber-wallcrossing-representation} 的尾部权重谱 \(\mathcal{S}_{m,b}\) 为基础，定义归一化点集
+\[
+\widetilde{\mathcal{S}}_{m,b}:=\left\{\frac{s}{2^m}:\ s\in\mathcal{S}_{m,b}\right\}\subset[0,1],
+\]
+以及对应的经验分布函数
+\[
+F_{m,b}(t):=\frac{1}{|\mathcal{S}_{m,b}|}\#\left\{s\in\mathcal{S}_{m,b}:\ \frac{s}{2^m}\le t\right\}\qquad(t\in[0,1]).
+\]
+猜想存在非平凡极限分布函数 \(F_b\) 与稠密子集 \(T\subset[0,1]\)，使得对每个 \(t\in T\) 有 \(F_{m,b}(t)\to F_b(t)\)，并且 \(F_b\) 严格递增但奇异连续（Lebesgue a.e. 导数为 \(0\)）。
+此外，\(F_b\) 的多重分形标度由 dyadic--Fibonacci 比率 \(\log_\varphi 2\) 控制，并与本文中由压力函数/反演核诱导的谱对象保持一致性接口。
+\end{conjecture}
 
 \paragraph{\texorpdfstring{$q$}{q}-复制软核传递矩阵的整系数结构：多尺度转级数、补集自对偶反演与 Smith 形刚性}
 沿用命题 \ref{prop:pom-multiplicity-composition-replica-softcore-transfer} 的状态空间 \(U_q=\{0,1\}^q\) 与软核传递矩阵 \(T^{(q)}\)（\(T^{(q)}_{u,v}=2^{-\mathbf{1}_{\{u\wedge v\neq 0\}}}\)），并记增长常数

@@ -128,6 +128,59 @@ C(w)=c_0+2\sum_{n\ge 1}c_n w^n,\qquad c_{-n}:=c_n^\ast\;}
 在本文的有限型口径中（盘内极点有限且边界无极点），定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa} 表明该指数为有限整数，且可由高阶截断的稳定负惯性直接读出。
 \end{definition}
 
+\begin{proposition}[纯虚常数的不可见性：Carath\'eodory 核与 Toeplitz 惯性不变]\label{prop:xi-carath-imag-constant-invisible}
+设 \(C\) 在 \(\mathbb{D}\) 上亚纯，并定义 Carath\'eodory 核
+\[
+K_C(w,z):=\frac{C(w)+\overline{C(z)}}{1-w\overline z}\qquad(w,z\in\mathbb{D}).
+\]
+对任意实数 \(\eta\in\RR\) 令 \(\widetilde C(w):=C(w)+\mathrm{i}\eta\)。
+则 \(K_{\widetilde C}\equiv K_C\)。
+因此所有由该核诱导的有限维 Gram 矩阵（包括 Toeplitz 截断 \(\mathbf{T}_N\) 的惯性指标）保持不变，特别地
+\[
+\kappa_{\mathrm{Car}}(\widetilde C)=\kappa_{\mathrm{Car}}(C).
+\]
+\end{proposition}
+\begin{proof}
+由定义
+\[
+K_{\widetilde C}(w,z)=\frac{C(w)+\mathrm{i}\eta+\overline{C(z)+\mathrm{i}\eta}}{1-w\overline z}
+=\frac{C(w)+\overline{C(z)}}{1-w\overline z}
+=K_C(w,z),
+\]
+故核恒等成立。
+核相等意味着其在任意有限点集上的 Gram 矩阵完全相同，从而惯性指标与由其定义的 \(\kappa_{\mathrm{Car}}\) 不变。证毕。
+\end{proof}
+
+\begin{theorem}[径向指标的壁穿越律：\texorpdfstring{$\kappa_{\mathrm{Car}}$}{kappaCar} 与盘内极点计数的阶梯跳跃]\label{thm:xi-carath-radial-wallcrossing}
+设 \(C\) 属于广义 Carath\'eodory 类 \(\mathcal{C}_{\kappa}\)，并且在某个圆盘 \(\{w:|w|<R\}\) 内仅有有限个极点。
+进一步假设：对任意 \(r\in(0,R)\)，函数 \(C\) 在圆周 \(|w|=r\) 上无极点。
+对每个 \(r\in(0,R)\)，定义径向缩放
+\[
+C^{(r)}(w):=C(rw),\qquad |w|<1.
+\]
+则 \(C^{(r)}\) 在 \(\mathbb{D}\) 上亚纯且在 \(\partial\mathbb{D}\) 上无极点，并满足
+\begin{equation}\label{eq:xi-carath-radial-wallcrossing-eq}
+\boxed{\;
+\kappa_{\mathrm{Car}}\!\bigl(C^{(r)}\bigr)
+=\kappa_{\mathrm{pole}}\!\bigl(C^{(r)}\bigr)
+=\sum_{\substack{a\ \mathrm{pole\ of}\ C\\ |a|<r}}\operatorname{ord}_{a}(C).\;}
+\end{equation}
+从而 \(r\mapsto \kappa_{\mathrm{Car}}(C^{(r)})\) 为单调不减、右连续的整数值阶梯函数；并且当 \(r\) 穿越某个极点模长 \(|a|\) 时，其跳跃量恰等于该极点的阶数 \(\operatorname{ord}_{a}(C)\)。
+\end{theorem}
+\begin{proof}
+由定义，\(C^{(r)}\) 在 \(\mathbb{D}\) 内的极点集合恰为
+\[
+\left\{\frac{a}{r}:\ a\ \text{为 }C\text{ 的极点且 }|a|<r\right\},
+\]
+且对应的极点阶数保持不变。
+由于假设 \(C\) 在 \(|w|=r\) 上无极点，故 \(C^{(r)}\) 在 \(\partial\mathbb{D}\) 上无极点。
+因此可应用定理 \ref{thm:xi-poles-negative-squares-equivalence}（极点计数 \(\Longleftrightarrow\) 负平方指数）与定理 \ref{thm:xi-toeplitz-inertia-stabilizes-to-kappa}（Toeplitz 惯性稳定读出）到 \(C^{(r)}\)，得到
+\(\kappa_{\mathrm{Car}}(C^{(r)})=\kappa_{\mathrm{pole}}(C^{(r)})\)；
+而后者按上式极点字典等于 \(|w|<r\) 内 \(C\) 的极点总重数，从而得到 \eqref{eq:xi-carath-radial-wallcrossing-eq}。
+\par
+随 \(r\) 增大，集合 \(\{|a|<r\}\) 以“穿越极点模长”的离散方式增长，因此 \(\kappa_{\mathrm{pole}}(C^{(r)})\)（从而 \(\kappa_{\mathrm{Car}}(C^{(r)})\)）为右连续阶梯函数，且每次穿越的跳跃量等于该极点的阶数。证毕。
+\end{proof}
+
 \begin{theorem}[Toeplitz 负惯性的稳定读出]\label{thm:xi-toeplitz-inertia-stabilizes-to-kappa}
 设 \(C\in\mathcal{C}_{\kappa}\) 且在 \(\mathbb{D}\) 内仅有有限多个极点（并在 \(\partial\mathbb{D}\) 上无极点）。
 则存在 \(N_0\) 使得对所有 \(N\ge N_0\) 成立
@@ -254,6 +307,61 @@ U_N^\ast\mathbf{T}_N(C)U_N=\mathrm{diag}(P_N,-I_{\kappa})
 最后一式由 \(\nu_-(P_N)=0\) 与 \(\nu_-( -\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1})=\mathrm{rank}(\mathsf H_{\kappa-1})\) 立得。证毕。
 \end{proof}
 
+\begin{proposition}[扫描 Hankel 指纹的负方向显式见证]\label{prop:xi-toeplitz-negative-witness-from-scan-hankel}
+在推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 的设定下，
+对任意 \(v\in\CC^{\kappa}\setminus\{0\}\) 令
+\[
+z:=\binom{0}{v}\in\CC^{N+1},
+\qquad
+x:=R_N z\in\CC^{N+1}.
+\]
+则严格负见证恒等式成立：
+\[
+\boxed{\;
+x^\ast\,\mathbf{T}_N(C)\,x
+=-\,\|\mathsf H_{\kappa-1}v\|_2^2\ <\ 0. \;}
+\]
+\end{proposition}
+\begin{proof}
+由推论 \ref{cor:xi-toeplitz-scan-hankel-congruence-decomposition} 的块对角合同分解，
+\[
+x^\ast\mathbf{T}_N(C)x
+=z^\ast\!\left(R_N^\ast\mathbf{T}_N(C)R_N\right)\!z
+=v^\ast\!\left(-\,\mathsf H_{\kappa-1}^{\ast}\mathsf H_{\kappa-1}\right)\!v
+=-\,\|\mathsf H_{\kappa-1}v\|_2^2.
+\]
+又由 \(\mathrm{rank}(\mathsf H_{\kappa-1})=\kappa\) 得 \(\mathsf H_{\kappa-1}\) 可逆，故 \(v\neq 0\Rightarrow \|\mathsf H_{\kappa-1}v\|_2>0\)。证毕。
+\end{proof}
+
+\begin{corollary}[负谱裕度的指纹--条件数下界]\label{cor:xi-toeplitz-negative-margin-from-hankel-fingerprint}
+沿用命题 \ref{prop:xi-toeplitz-negative-witness-from-scan-hankel} 的设定。
+记
+\(
+\sigma_{\min}:=\sigma_{\min}(\mathsf H_{\kappa-1})
+\)
+以及
+\(
+\|R_N\|:=\|R_N\|_{\mathrm{op}}
+\)。
+则 Toeplitz 截断的最小特征值满足定量负谱裕度估计
+\[
+\boxed{\;
+\lambda_{\min}\!\bigl(\mathbf{T}_N(C)\bigr)\ \le\ -\,\frac{\sigma_{\min}^2}{\|R_N\|^2}. \;}
+\]
+\end{corollary}
+\begin{proof}
+取 \(v\) 为 \(\mathsf H_{\kappa-1}\) 的最小奇异向量，令 \(\|v\|_2=1\) 且 \(\|\mathsf H_{\kappa-1}v\|_2=\sigma_{\min}\)。
+对相应 \(x=R_N\binom{0}{v}\)，由 Rayleigh--Ritz 原理与命题 \ref{prop:xi-toeplitz-negative-witness-from-scan-hankel} 得
+\[
+\lambda_{\min}(\mathbf{T}_N(C))
+\le \frac{x^\ast\mathbf{T}_N(C)x}{\|x\|_2^2}
+=-\frac{\|\mathsf H_{\kappa-1}v\|_2^2}{\|R_N\binom{0}{v}\|_2^2}
+\le -\frac{\sigma_{\min}^2}{\|R_N\|_{\mathrm{op}}^2\cdot \|\binom{0}{v}\|_2^2}
+=-\frac{\sigma_{\min}^2}{\|R_N\|^2}.
+\]
+证毕。
+\end{proof}
+
 \paragraph{视界重整化二律：指数不变而端点通量线性放大}
 附录 \eqref{eq:scale-psi-m} 引入保持 \(\{\pm 1\}\) 不动点的 Möbius 半群 \(\{\psi_m\}_{m>0}\subset\mathrm{Aut}(\mathbb{D})\)，其端点 Poisson/Busemann 权重满足严格缩放律 \(P_{\psi_m(a)}(-1)=mP_a(-1)\)（定理 \ref{thm:xi-endpoint-poisson-weight-scaling}）。
 该半群对真共振指数给出一条“指数不变—端点通量放大”的互补二律。
@@ -305,6 +413,50 @@ N\ \gtrsim\ \frac{1}{h}\;}
 
 \begin{proof}
 这是附录定理 \ref{thm:app-horizon-toeplitz-detection-threshold} 的直接推论：对离切片零点 \(\rho\) 的圆盘像 \(w_\rho=a\) 定义品质因数 \(Q=(1-|a|^2)^{-1}\asymp h^{-1}\)，并将其代入 \eqref{eq:app-horizon-toeplitz-detect-threshold} 即得所示门槛；粗尺度下由 \(Q\asymp h^{-1}\) 立得 \(N\gtrsim h^{-1}\)。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$\varphi$}{phi}-稀疏 Toeplitz 审计的对数迭代超额]\label{thm:xi-phi-sparse-toeplitz-audit-loglog-overhead}
+在定理 \ref{thm:xi-toeplitz-length-vs-boundary-depth} 的设定下，令 \(a\in\mathbb{D}\) 为盘内极点，记
+\[
+Q:=\frac{1}{1-|a|^2},\qquad
+\delta:=B^{-1}(a),\qquad
+\varphi:=\frac{1+\sqrt5}{2}.
+\]
+取指数稀疏审计阶序列
+\[
+N_k:=\lceil \varphi^k\rceil,\qquad k\ge 1.
+\]
+令 \(k_\ast\) 为满足
+\[
+N_{k_\ast}\ \ge\ C^{-1}\,Q\,\log\!\bigl(1+\delta Q\bigr)
+\]
+的最小整数（其中 \(C\) 为定理 \ref{thm:xi-toeplitz-length-vs-boundary-depth} 的常数）。
+则 \(k_\ast\) 满足显式上界
+\[
+\boxed{\;
+k_\ast
+\ \le\
+\Bigl\lceil \log_\varphi Q\Bigr\rceil
+\;+\;
+\Bigl\lceil \log_\varphi\log\!\bigl(1+\delta Q\bigr)\Bigr\rceil
+\;+\;2\; }.
+\]
+因此，相对于主尺度 \(\lceil\log_\varphi Q\rceil\)，指数稀疏化仅引入 \(O(\log\log(1+\delta Q))\) 的加性超额。
+\end{theorem}
+\begin{proof}
+由 \(N_k=\lceil \varphi^k\rceil\ge \varphi^k\) 可知 \(N_k\ge X\) 蕴含 \(k\ge \log_\varphi X\)；
+反之若 \(\varphi^k\ge X\) 则 \(N_k\ge X\)。
+令
+\(
+X:=C^{-1}Q\log(1+\delta Q)
+\)，
+则满足 \(N_{k_\ast}\ge X\) 的最小整数 \(k_\ast\) 至多为 \(\lceil \log_\varphi X\rceil+1\)。
+写
+\[
+\log_\varphi X
+=\log_\varphi Q+\log_\varphi\log(1+\delta Q)-\log_\varphi C,
+\]
+并将常数项 \(-\log_\varphi C\) 吸收为一个与 \(Q,\delta\) 无关的加性常数，再取整即可得到所示上界。证毕。
 \end{proof}
 
 \begin{proposition}[负谱量的几何下界：最小负特征值控制可见深度]\label{prop:xi-toeplitz-min-eig-controls-depth}

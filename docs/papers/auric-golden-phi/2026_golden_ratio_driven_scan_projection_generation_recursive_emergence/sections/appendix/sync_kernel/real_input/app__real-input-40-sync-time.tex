@@ -16,6 +16,37 @@ S_n=\delta(S_0,d_1d_2\cdots d_n)\subseteq Q.
 在 Parry 测度下，\((S_n,m_n)\) 构成有限状态吸收马尔可夫链：\(m_n\) 为 \(X\times X\) 的 4 状态骨架链，而 \(S_{n+1}\) 由 \(d_{n+1}\) 对 \(S_n\) 的确定映射给出。
 \end{definition}
 
+\begin{proposition}[同步复位词诱导的几何尾界与均值上界]\label{prop:sync-reset-word-geometric-tail}
+令 \(\mathcal A=(Q,\Sigma,\delta)\) 为任意同步确定自动机，并设存在复位词 \(w_0\in\Sigma^L\) 使 \(\delta(Q,w_0)\) 为单点。
+令输入为 i.i.d.\ 字母流 \((X_k)_{k\ge 1}\) 且字母分布为 \(\nu\)，并记
+\[
+p:=\nu([w_0])=\prod_{i=1}^{L}\nu(w_{0,i}).
+\]
+令 \(\tau\) 为首次出现一个长度 \(L\) 的对齐块等于 \(w_0\) 的时刻（从而状态被强制复位）。
+则对一切 \(t\ge 0\) 有
+\[
+\PP(\tau>t)\le (1-p)^{\lfloor t/L\rfloor},
+\qquad
+\EE[\tau]\le \frac{L}{p}.
+\]
+\end{proposition}
+
+\begin{proof}
+把时间轴按不相交块分割为 \(B_k:=(X_{(k-1)L+1},\dots,X_{kL})\)（\(k\ge 1\)）。
+则事件 \(\{B_k=w_0\}\) 的概率为 \(p\)，且不同块之间独立。
+若前 \(k\) 块均不等于 \(w_0\)，则 \(\tau>kL\)。
+因此
+\(
+\PP(\tau>kL)\le (1-p)^k
+\)，
+对一般 \(t\) 取 \(k=\lfloor t/L\rfloor\) 得尾界。
+再由尾和公式 \(\EE[\tau]=\sum_{n\ge 0}\PP(\tau>n)\) 并用上述块界估计得到
+\(
+\EE[\tau]\le \sum_{k\ge 0}L(1-p)^k=L/p
+\)。
+证毕。
+\end{proof}
+
 \begin{proposition}[同步时间的均值/方差、指数尾率与分位数]\label{prop:real-input-40-sync-time-moments}
 在定义 \ref{def:real-input-40-sync-time-absorbing} 的吸收链下，考虑两种自然初始不确定性：
 \begin{itemize}

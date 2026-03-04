@@ -78,6 +78,84 @@
 其余断言由定义解释立得。证毕。
 \end{proof}
 
+\begin{theorem}[圆维缺口的条件 Kolmogorov 不可消去性：相位通道不足时残差典型不可压缩]\label{thm:xi-cdim-kolm-residual-gap}
+设 \(G\cong \ZZ^{r}\oplus T\) 为有限生成交换群，其中 \(T\) 有限。
+对每个精度 \(b\ge 1\) 定义窗口
+\[
+W_b(G):=\{0,1,\dots,2^b-1\}^{r}\times T,
+\qquad
+|W_b(G)|=2^{br}|T|.
+\]
+令相位字母表为 \(\mathrm{Phase}(k)_b:=(\ZZ/2^b\ZZ)^k\)。
+设存在一族可计算单射
+\[
+\mathrm{Enc}_b:W_b(G)\hookrightarrow \mathrm{Phase}(k)_b\times R_b,
+\]
+其中 \(R_b\) 为有限残差寄存器集合。
+记 \(\mathrm{Enc}_b(x)=(\pi_b(x),\rho_b(x))\) 为相位与残差分量。
+固定一台前缀自由通用机，并以 \(K(\cdot\mid\cdot)\) 表示条件 Kolmogorov 复杂度。
+则对任意 \(t\ge 1\)，存在常数 \(C>0\)（与 \(b,t\) 无关，仅依赖所选通用机与 \(\mathrm{Enc}_b\) 的实现范式）使得
+\[
+\card{\Bigl\{x\in W_b(G):\ K\bigl(\rho_b(x)\mid \pi_b(x),b\bigr)
+<
+(r-k)b+\log_2|T|-t-C\log b\Bigr\}}
+\ \le\ 2^{-t}\,|W_b(G)|.
+\]
+特别地，若 \(X\sim\mathrm{Unif}(W_b(G))\)，则
+\[
+\PP\Bigl[
+K\bigl(\rho_b(X)\mid \pi_b(X),b\bigr)
+\ge
+(r-k)b+\log_2|T|-t-C\log b
+\Bigr]\ \ge\ 1-2^{-t}.
+\]
+\end{theorem}
+\begin{proof}
+记 \(N_b:=|W_b(G)|=2^{br}|T|\)，并取
+\[
+m:=\log_2 N_b-t-C_0
+=br+\log_2|T|-t-C_0.
+\]
+由 Kolmogorov 复杂度的计数性质，满足 \(K(x\mid b)<m\) 的 \(x\in W_b(G)\) 至多 \(<2^m=2^{-t}N_b\) 个。
+因此除至多 \(2^{-t}N_b\) 个例外外，都有
+\begin{equation}\label{eq:xi-kolm-residual-gap-lb-Kx}
+K(x\mid b)\ \ge\ br+\log_2|T|-t-C_0.
+\end{equation}
+对任意满足 \eqref{eq:xi-kolm-residual-gap-lb-Kx} 的 \(x\)，由于 \(\mathrm{Enc}_b\) 可计算且为单射，有
+\[
+K(x\mid b)\le K\bigl(\pi_b(x),\rho_b(x)\mid b\bigr)+O(1).
+\]
+再由链式不等式（吸收自描述开销）存在常数 \(C_1\) 使
+\[
+K\bigl(\pi_b(x),\rho_b(x)\mid b\bigr)
+\le
+K\bigl(\pi_b(x)\mid b\bigr)+K\bigl(\rho_b(x)\mid \pi_b(x),b\bigr)+C_1\log b.
+\]
+又因 \(\pi_b(x)\in \mathrm{Phase}(k)_b\) 且 \(|\mathrm{Phase}(k)_b|=2^{bk}\)，存在常数 \(C_2\) 使
+\[
+K\bigl(\pi_b(x)\mid b\bigr)\le bk+C_2.
+\]
+合并并整理，得到
+\[
+K\bigl(\rho_b(x)\mid \pi_b(x),b\bigr)
+\ge
+(r-k)b+\log_2|T|-t-C\log b,
+\]
+其中 \(C\) 吸收 \(C_0,C_1,C_2\) 与 \(O(1)\) 项。
+因此满足严格小于该下界者只能落在上述例外集合中，其大小被 \(2^{-t}N_b\) 控制，计数与概率式同时成立。证毕。
+\end{proof}
+
+\begin{corollary}[单相位通道的指数残差下界：缺失圆因子以条件算法信息外置]\label{cor:xi-cdim-kolm-single-phase}
+在定理 \ref{thm:xi-cdim-kolm-residual-gap} 的设定下取 \(k=1\) 且 \(r\ge 2\)。
+则对任意 \(t\ge 1\)，除至多 \(2^{-t}\) 比例的窗口元素外，均满足
+\[
+K\bigl(\rho_b(x)\mid \pi_b(x),b\bigr)\ \ge\ (r-1)b+\log_2|T|-t-C\log b.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-cdim-kolm-residual-gap} 直接代入 \(k=1\) 即得。证毕。
+\end{proof}
+
 \begin{example}[Basic examples / 基本例子]
 \label{ex:cdim-signature}
 \begin{enumerate}
@@ -107,6 +185,37 @@
 \end{example}
 
 \input{para__xi-cdim-circle-spectrum-finite-abelian-ledger}
+\input{para__xi-discriminant-ledger-trace-lattice-smith-fourier}
+
+\begin{theorem}[最大纤维生成乘法半群的圆维无界]\label{thm:xi-max-fiber-monoid-circle-dimension-unbounded}
+在折叠语义下令 \(D_m:=\max_{x\in X_m}d_m(x)\) 为分辨率 \(m\) 的最大纤维多重度。
+对 \(N\ge 1\) 定义乘法幺半群
+\[
+\mathcal{M}_N:=\langle D_1,D_2,\dots,D_N\rangle_{\times}\ \subset\ \NN_{\ge 1},
+\]
+并令 \(G_N\subset \QQ_{>0}^{\times}\) 为其群完成（等价地：由 \(\mathcal{M}_N\) 生成的乘法子群）。
+则 \(\cdim(G_N)\) 随 \(N\) 取值无界。
+\end{theorem}
+\begin{proof}
+对任意有限集合 \(S\subset\NN_{\ge 1}\)，由素数赋值分解得 \(\langle S\rangle\subset\QQ_{>0}^{\times}\) 为有限生成自由交换群，
+其自由秩等于出现于 \(\{s:\ s\in S\}\) 的不同素数个数；由有限生成交换群的圆维公式 \(\cdim(G)=\dim_{\QQ}(G\otimes_{\ZZ}\QQ)\)，该自由秩即等于 \(\cdim(\langle S\rangle)\)。
+因此若记
+\(
+\mathcal{P}_N:=\{p\ \text{素数}:\ p\mid D_m\ \text{对某个}\ m\le N\}
+\)，
+则 \(\cdim(G_N)=|\mathcal{P}_N|\)。
+\par
+由最大纤维的闭式（定理 \ref{thm:pom-max-fiber}），对 \(k\ge 0\) 有
+\(
+D_{2k}=F_{k+2}
+\) 与
+\(
+D_{2k+1}=2F_{k+1}
+\)。
+而 Fibonacci 数列满足原始素因子强迫：除有限例外外，每个 \(F_n\) 存在一素数 \(p_n\mid F_n\) 且 \(p_n\nmid \prod_{1\le j<n}F_j\)（Zsigmondy/Carmichael 型结论；亦见命题 \ref{prop:pom-collision-aq-fibonacci-bf-primitive-prime-divisor} 的同类用法）。
+取 \(n=k+2\) 得：当 \(k\) 充分大时，\(D_{2k}=F_{k+2}\) 含有一个此前未出现的素数因子。
+因此 \(|\mathcal{P}_{2k}|\to\infty\)，从而 \(\cdim(G_N)=|\mathcal{P}_N|\) 随 \(N\) 无界。证毕。
+\end{proof}
 
 \paragraph{有限原子零色散：常数项曲线的闭式与折点结构}
 在零色散口径下，常数偏置尺度的最优成功率极限可由一个正随机变量 \(Z\) 统一刻画：

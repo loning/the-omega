@@ -101,6 +101,98 @@ D_{\mathrm{KL}}(\mu\|\mu_\infty)\le \log\mathrm{Ind}(E_m)
 与第一式合并即得结论。证毕。
 \end{proof}
 
+\begin{proposition}[Stokes--Stein 变分对偶与纤维均匀化残差的边界证书]\label{prop:xi-fiber-uniformization-stokes-stein-duality-boundary-certificate}
+沿用本段记号，令 \(\mu\in\Delta(\Omega_m)\)、\(\mu_\infty:=K_m\mu\)，并定义密度比
+\[
+r:=\frac{\dd\mu}{\dd\mu_\infty},\qquad g:=r-1.
+\]
+则对 \(\mu_\infty(a)>0\) 的原子 \(a\in\Omega_m\) 有 \(r(a)=\mu(a)/\mu_\infty(a)\)，并且 \(E_m r=\mathbf 1\)（故 \(E_m g=0\)）。
+令
+\[
+\mathcal H^0:=L^2(\Omega_m,\mu_\infty),
+\]
+并令 \(\mathcal H^1\) 为如下纤维内反对称流空间：
+\[
+\mathcal H^1:=\Bigl\{J:\Omega_m\times\Omega_m\to\RR:\ J(a,b)=-J(b,a),\ J(a,b)=0\ \text{若}\ \Fold_m(a)\neq \Fold_m(b)\Bigr\},
+\]
+配以内积
+\[
+\langle J,K\rangle_{\mathcal H^1}
+:=\frac12\sum_{x\in X_m}\frac{\mu_\infty(x)}{d_m(x)}
+\sum_{a,b\in F_x}J(a,b)K(a,b),
+\qquad F_x:=\Fold_m^{-1}(x),\ \mu_\infty(x):=\sum_{a\in F_x}\mu_\infty(a).
+\]
+定义纤维内“外微分” \(\partial_m:\mathcal H^0\to\mathcal H^1\) 为
+\[
+(\partial_m f)(a,b):=
+\frac{f(b)-f(a)}{\sqrt{d_m(\Fold_m(a))}}
+\qquad(a,b\in F_x\ \text{同一纤维}),
+\]
+并令 \(\delta_m:\mathcal H^1\to\mathcal H^0\) 为其 Hilbert 空间伴随的负号（即对任意 \(f\in\mathcal H^0\)、\(J\in\mathcal H^1\)）
+\[
+\langle \partial_m f, J\rangle_{\mathcal H^1}=-\langle f,\delta_m J\rangle_{L^2(\mu_\infty)}.
+\]
+则：
+\begin{enumerate}
+  \item \(\ker(\partial_m)=L^2(X_m,\mu_\infty)\)（纤维常值函数空间），从而 \(\mathrm{Im}(\delta_m)=(\ker\partial_m)^\perp\)。
+  \item 对任意满足 \(E_m g=0\) 的 \(g\in\mathcal H^0\)，成立精确对偶恒等式
+  \[
+  \boxed{\;
+  \|g\|_{L^2(\mu_\infty)}^2
+  =\sup_{J\in\mathcal H^1}\Bigl(2\,\Re\langle g,\delta_m J\rangle_{L^2(\mu_\infty)}-\|J\|_{\mathcal H^1}^2\Bigr)
+  =\inf_{\substack{f\in\mathcal H^0\\ \delta_m\partial_m f=g}}\ \|\partial_m f\|_{\mathcal H^1}^2\; }.
+  \]
+  \item 在本段的 \(g=r-1\) 情形下，有 \(\chi^2(\mu\mid \mu_\infty)=\|r-1\|_{L^2(\mu_\infty)}^2\)，并且进一步满足边界证书形式
+  \[
+  \boxed{\;
+  D_{\mathrm{KL}}(\mu\|\mu_\infty)
+  \le
+  \sup_{J\in\mathcal H^1}\Bigl(2\,\Re\,\EE_{\mu}\!\bigl[\delta_m J\bigr]-\|J\|_{\mathcal H^1}^2\Bigr).\;}
+  \]
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+第 (1) 条由定义直接得到：\(\partial_m f=0\) 当且仅当 \(f\) 在每条纤维 \(F_x\) 上常值，即 \(f\) 仅依赖于 \(x=\Fold_m(a)\)。
+由 \(\delta_m=-\partial_m^\ast\) 得 \(\mathrm{Im}(\delta_m)=\mathrm{Im}(\partial_m^\ast)=(\ker\partial_m)^\perp\)。
+\par
+对第 (2) 条，Hilbert 空间中的恒等式
+\(
+\|g\|^2=\sup_{h}(2\Re\langle g,h\rangle-\|h\|^2)
+\)
+应用到闭子空间 \(\mathrm{Im}(\delta_m)=(\ker\partial_m)^\perp\) 即得第一等号；
+第二等号为最小范数解的标准表述：在 \((\ker\partial_m)^\perp\) 上算子 \(\delta_m\partial_m\) 为正自伴随且可逆，故 \(g\) 的最小能解由 \(f=(\delta_m\partial_m)^{-1}g\) 给出。
+\par
+对第 (3) 条，因 \(E_m r=\mathbf 1\) 有 \(\EE_{\mu_\infty}[g]=0\)，故
+\(
+\chi^2(\mu\mid\mu_\infty)=\EE_{\mu_\infty}[g^2]=\|g\|_{L^2(\mu_\infty)}^2
+\)。
+再由基本不等式 \(\log t\le t-1\)（\(t>0\)）得
+\[
+D_{\mathrm{KL}}(\mu\|\mu_\infty)
+=\EE_{\mu_\infty}[r\log r]
+\le \EE_{\mu_\infty}[r(r-1)]
+=\EE_{\mu_\infty}[(r-1)^2]
+=\|g\|_{L^2(\mu_\infty)}^2.
+\]
+另一方面，由定义 \(\langle \mathbf 1,\delta_m J\rangle_{L^2(\mu_\infty)}=-\langle \partial_m\mathbf 1,J\rangle_{\mathcal H^1}=0\)，故 \(\EE_{\mu_\infty}[\delta_m J]=0\)，从而
+\[
+\langle g,\delta_m J\rangle_{L^2(\mu_\infty)}
+=\EE_{\mu_\infty}\bigl[(r-1)\delta_m J\bigr]
+=\EE_\mu[\delta_m J]-\EE_{\mu_\infty}[\delta_m J]
+=\EE_\mu[\delta_m J].
+\]
+将其代入第 (2) 条的第一等号并与 \(D_{\mathrm{KL}}\le \|g\|_2^2\) 合并，即得所示边界证书上界。证毕。
+\end{proof}
+
+\begin{remark}[与 Jones 基本构造交换子模型的一致性]\label{rem:xi-fiber-uniformization-stokes-stein-jones-commutator}
+在纤维均匀参考态取为 \(\mu_\infty=\mathrm{Unif}(\Omega_m)\) 的情形，上述 \(\partial_m\) 的纤维差分结构可等价实现为基本构造中的索引加权交换子
+\(
+\mathrm{Ind}_{\mathrm W}(E_m)^{1/2}[e_m,M_f]
+\)
+（命题 \ref{prop:op-algebra-fold-index-weighted-commutator-energy}）；
+从而本命题的对偶上界可被理解为“不可见 \(L^2\) 残差 \(\leftrightarrow\) 交换子能量”的强对偶证书化表述。
+\end{remark}
+
 \begin{corollary}[Moment 语义下的缺口线性放大与随机性成本]\label{cor:xi-momq-gap-linear-amplification-randomness-cost}
 设某一去耦/去链接接口的指数缺口为 \(\Gamma\ge 0\)（附录 \ref{subsubsec:op-algebra-jones-scalar-twirl-cost-renyi-flatness}），并在 \(\mathrm{MOM}_q\) 的 \(q\)-重并置语义下形成放大缺口 \(\Gamma^{(q)}\)。
 则在张量化/并置语义下有线性律

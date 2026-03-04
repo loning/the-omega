@@ -54,6 +54,7 @@ u(u-1)P_{10}(u)=0
 平面光滑四次曲线亏格为 \(3\) 且必非超椭圆。证毕。
 \end{proof}
 
+\input{subsubsec__fold-gauge-anomaly-spectral-quartic-automorphism-triviality}
 \input{subsubsec__fold-gauge-anomaly-spectral-quartic-jacobian}
 
 \begin{proposition}[判别式十次因子的满对称伽罗瓦性与判别式分解]\label{prop:fold-gauge-anomaly-P10-galois-discriminant}
@@ -185,34 +186,9 @@ K=L^{A_{10}}=\QQ(\sqrt{66269989})
 
 \input{subsubsec__fold-gauge-anomaly-p10-leyang-chebotarev-independence}
 
-\begin{proposition}[重根谱值多项式与 \texorpdfstring{$P_{10}$}{P10} 的 Tschirnhaus 同域同构]\label{prop:fold-gauge-anomaly-Q10-tschirnhaus}
-考虑系统
-\[
-F(\mu,u)=0,\qquad \partial_{\mu}F(\mu,u)=0.
-\]
-消去 \(u\) 并剔除 \(u\in\{0,1\}\) 的平凡分歧贡献后，得到关于 \(\mu\) 的次数 \(10\) 多项式
-\[
-\begin{aligned}
-Q_{10}(\mu)=\;&27\mu^{10}-81\mu^{9}+90\mu^{8}-46\mu^{7}+11\mu^{6}-\mu^{5}\\
-&-32\mu^{4}+32\mu^{3}+16\mu+16,
-\end{aligned}
-\]
-其根精确刻画所有非平凡分支点处的重根谱值（即同时满足 \(F=\partial_{\mu}F=0\) 的 \(\mu\)-坐标）。
-并且
-\[
-\mathrm{Gal}\bigl(Q_{10}/\QQ\bigr)\cong S_{10},\qquad
-\mathrm{Disc}\bigl(Q_{10}\bigr)=2^{42}3^{16}5^{8}\cdot 1931\cdot 34319.
-\]
-更强地，\(P_{10}\) 与 \(Q_{10}\) 生成同一个次数 \(10\) 数域：存在显式的 Tschirnhaus 变换
-\[
-\begin{aligned}
-u=\frac{1}{200}\bigl(&-189\mu^{9}+540\mu^{8}-360\mu^{7}-308\mu^{6}+329\mu^{5}\\
-&+304\mu^{4}-104\mu^{3}-196\mu^{2}-128\mu-16\bigr),
-\end{aligned}
-\]
-使得对任意满足 \(Q_{10}(\mu)=0\) 的根，上式给出的 \(u\) 自动满足 \(P_{10}(u)=0\)。
-因此分歧位置的数域与谱碰撞值的数域在算术意义上完全识别。
-\end{proposition}
+\input{prop__fold-gauge-anomaly-q10-branch-duality-tschirnhaus-inverse}
+
+\input{subsubsec__fold-gauge-anomaly-leyang-branchpoint-rational-b-invariant}
 
 \begin{corollary}[判别式平方比值的同域证书]\label{cor:fold-gauge-anomaly-disc-square-ratio}
 在命题 \ref{prop:fold-gauge-anomaly-P10-galois-discriminant} 与命题 \ref{prop:fold-gauge-anomaly-Q10-tschirnhaus} 的记号下，
@@ -255,6 +231,21 @@ H(u)=\;&137781u^{19}+629856u^{18}+934578u^{17}-1546209u^{16}-6187752u^{15}+14027
 \]
 该性质表明：\(\mathrm{Disc}_{\alpha}(R)\) 中的平方因子并非来自低阶可解对称性，而在伽罗瓦意义上同样处于满对称的一般情形。
 \end{proposition}
+
+\begin{conjecture}[平方因子的满对称泛型性与 Chebotarev 独立性]\label{conj:fold-gauge-anomaly-squarefactor-genericity-independence}
+设 \(R(\alpha,u)\in\ZZ[\alpha,u]\) 为一类消元证书，并假设其关于 \(\alpha\) 的判别式在 \(\ZZ[u]\) 中分解为
+\[
+\mathrm{Disc}_{\alpha}(R)=\textup{(显式幂因子)}\cdot B(u)^{2e}\cdot C(u)^{2f},
+\]
+其中 \(B(u)\) 为平方自由因子（承载实际分歧支撑），而 \(C(u)\) 为以纯平方指数出现的因子（反映整闭性或指数障碍）。
+在不可约且非退化的泛型条件下，预期成立：
+\begin{enumerate}
+  \item \(\mathrm{Gal}(B/\QQ)\cong S_{\deg B}\) 且 \(\mathrm{Gal}(C/\QQ)\cong S_{\deg C}\)；
+  \item \(\mathrm{Spl}(B)\cap \mathrm{Spl}(C)=\QQ\)（等价于线性互素性）；
+  \item 因而 \(B\bmod p\) 与 \(C\bmod p\) 的分解型在 Chebotarev 意义下渐近独立。
+\end{enumerate}
+该猜想在本节的显式样本 \(B=P_{10}\)、\(C=H\) 上由命题 \ref{prop:fold-gauge-anomaly-P10-galois-discriminant}、命题 \ref{prop:fold-gauge-anomaly-H-galois-discriminant} 与命题 \ref{prop:fold-gauge-anomaly-P10-H-linear-disjointness} 实现为可核验实例。
+\end{conjecture}
 
 \begin{proposition}[谱四次的三次预解式与判别式恒等]\label{prop:fold-gauge-anomaly-cubic-resolvent-discriminant}
 对谱四次 \(F(\mu,u)\) 取标准三次预解式，得到
@@ -503,6 +494,8 @@ F(\mu,u_0)\in\QQ[\mu]
 该多项式在模 \(3\) 下不可约且在模 \(11\) 下分解型为 \((3,1)\)，并且判别式非平方；
 故其特化伽罗瓦群为 \(S_4\)，从而泛型亦为 \(S_4\)。
 \end{proof}
+
+\input{subsubsec__fold-gauge-anomaly-rate-curve-normalization-singularity-index}
 
 \begin{conclusion}[\texorpdfstring{$\mathcal C_F$}{CF} 的无穷远有理点与三重覆盖结构]\label{con:fold-gauge-anomaly-trigonal-structure}
 曲线 \(\mathcal C_F\subset\PP^2_{[\mu:u:w]}\) 在无穷远直线 \(w=0\) 上恰含两点 \(\QQ\)-有理点

@@ -82,6 +82,11 @@ Q_{5}(y)=4096y^{5}+5376y^{4}-464y^{3}-2749y^{2}-723y+80\in\ZZ[y].
 可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_elliptic\_leyang\_cover\_geometry\_audit.py}。证毕。
 \end{proof}
 
+\input{subsubsec__xi-terminal-zm-leyang-delta-closure-plane-quintic}
+\input{cor__xi-terminal-zm-delta-node-tangent-parity-law}
+\input{subsubsec__xi-terminal-zm-leyang-delta-branch-quintic-arithmetic}
+\input{subsubsec__xi-terminal-zm-delta-node-order-discriminant-index}
+
 \begin{conclusion}[二级退化五次的全局算术指纹：新的平方自由敏感素数 \texorpdfstring{$727$}{727}]\label{con:xi-terminal-zm-leyang-q5-discriminant-727}
 令 \(Q_5(y)\) 如结论 \ref{con:xi-terminal-zm-leyang-delta-quartic-discriminant-reflexive}。
 则其判别式满足严格素因子分解
@@ -277,6 +282,174 @@ F_{\lambda}(2,0)=\partial_{\lambda}\Pi(2,1)=9
 于是对所有 \(p\neq 3\) 的 \(p\)-整性同时成立，分母仅可能含素因子 \(3\)。证毕。
 \end{proof}
 
+\begin{theorem}[\texorpdfstring{$p=3$}{p=3} 的 \(27\)-尺度良约化与 \(3\)-进 Hensel 可解性]\label{thm:xi-terminal-zm-leyang-perron-p3-renormalization-hensel}
+在结论 \ref{con:xi-terminal-zm-leyang-perron-global-pintegrality} 的设定下，素数 \(p=3\) 为唯一使 \(F_\lambda(2,0)\notin\ZZ_p^\times\) 的例外。
+令
+\[
+t=27u,\qquad \lambda=2+3v.
+\]
+则恒有分解
+\[
+\Pi(2+3v,1+27u)=27\,H(u,v),
+\]
+其中
+\[
+H(u,v)=27u^{2}-18uv^{2}-24uv-5u+3v^{4}+7v^{3}+5v^{2}+v\in\ZZ[u,v].
+\]
+并且
+\[
+\partial_v H(0,0)=1\in\ZZ_3^\times.
+\]
+因此存在唯一的 \(v(u)\in\ZZ_3[[u]]\) 满足
+\[
+H(u,v(u))=0,\qquad v(0)=0,
+\]
+从而
+\[
+\Lambda(27u)=2+3v(u)\in 2+3\,\ZZ_3[[u]].
+\]
+\end{theorem}
+\begin{proof}
+把 \(\lambda=2+3v\)、\(t=27u\) 代入 \(F(\lambda,t)=\Pi(\lambda,1+t)\) 并在 \(\ZZ[u,v]\) 中展开整理，即得所示恒等式与多项式 \(H(u,v)\)。
+对 \(H\) 求偏导并在 \((u,v)=(0,0)\) 处取值可得 \(\partial_vH(0,0)=1\)，故在完备局部环 \(\ZZ_3[[u]]\) 中为单位。
+由形式隐函数定理（等价于对 \(\ZZ_3[[u]]\) 的 Hensel 型提升），存在且仅存在唯一的 \(v(u)\in\ZZ_3[[u]]\) 解 \(H(u,v)=0\) 且满足 \(v(0)=0\)。
+由 \(\Pi(\Lambda(t),1+t)=0\) 的形式解唯一性知 \(t=27u\) 的代入与上述解一致，即 \(\Lambda(27u)=2+3v(u)\)。
+可复现核验脚本：\texttt{scripts/exp\_fold\_zm\_leyang\_perron\_p3\_renormalization\_audit.py}。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$27$}{27} 的最小性：\texorpdfstring{$t=9u$}{t=9u} 不产生 \texorpdfstring{$3$}{3}-进整系数展开]\label{prop:xi-terminal-zm-leyang-perron-p3-minimal-27}
+不存在 \(\widetilde\Lambda(u)\in\ZZ_3[[u]]\) 使得
+\[
+\Pi(\widetilde\Lambda(u),1+9u)=0,\qquad \widetilde\Lambda(0)=2.
+\]
+等价地，\(\Lambda(9u)\notin\ZZ_3[[u]]\)。
+\end{proposition}
+\begin{proof}
+在 \(\FF_3\) 上约化。
+由于 \(9u\equiv 0\pmod 3\)，有
+\[
+\Pi(\lambda,1+9u)\equiv \Pi(\lambda,1)\pmod 3.
+\]
+又
+\[
+\Pi(\lambda,1)=\lambda^4-\lambda^3-3\lambda^2+\lambda+2\equiv \lambda^4-\lambda^3+\lambda-1
+=(\lambda-1)(\lambda+1)^3\quad(\bmod\,3).
+\]
+若存在 \(\widetilde\Lambda(u)\in\ZZ_3[[u]]\) 满足命题条件，则其模 \(3\) 约化 \(\overline{\widetilde\Lambda}(u)\in\FF_3[[u]]\) 满足
+\((\overline{\widetilde\Lambda}(u)-1)(\overline{\widetilde\Lambda}(u)+1)^3=0\)。
+由于 \(\FF_3[[u]]\) 为整环，推出 \(\overline{\widetilde\Lambda}(u)=\pm 1\)；
+而 \(\widetilde\Lambda(0)=2\equiv-1\pmod 3\)，故 \(\overline{\widetilde\Lambda}(u)\equiv-1\)，从而可写
+\[
+\widetilde\Lambda(u)=2+3v(u),\qquad v(u)\in\ZZ_3[[u]].
+\]
+将 \(\lambda=2+3v\)、\(t=9u\) 代入并在 \(\ZZ[u,v]\) 中展开得
+\[
+\Pi(2+3v,1+9u)=9\,H_9(u,v),
+\]
+其中
+\[
+H_9(u,v)=9u^{2}-18uv^{2}-24uv-5u+9v^{4}+21v^{3}+15v^{2}+3v\in\ZZ[u,v].
+\]
+模 \(3\) 约化时含 \(v\) 的各项系数均被 \(3\) 整除而消失，且 \(-5u\equiv u\pmod 3\)，故
+\[
+H_9(u,v)\equiv u\quad(\bmod\,3).
+\]
+于是 \(H_9(u,v(u))=0\) 在 \(\FF_3[[u]]\) 中强制 \(u=0\)，与 \(u\) 为形式变量矛盾。证毕。
+\end{proof}
+
+\begin{corollary}[Perron 分支系数的 \(3\)-进估值线性下界]\label{cor:xi-terminal-zm-leyang-perron-v3-linear-bound}
+写
+\[
+\Lambda(t)=2+\sum_{n\ge 1}a_n t^n\qquad(a_n\in\QQ).
+\]
+则对任意 \(n\ge 1\) 有
+\[
+v_3(a_n)\ge 1-3n.
+\]
+等价地，存在 \(b_n\in\ZZ_3\) 使得
+\[
+a_n=\frac{b_n}{3^{3n-1}}\qquad(n\ge 1).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-terminal-zm-leyang-perron-p3-renormalization-hensel}，存在 \(v(u)=\sum_{n\ge 1}b_nu^n\in\ZZ_3[[u]]\) 使
+\[
+\Lambda(27u)=2+3v(u).
+\]
+比较系数得
+\[
+2+\sum_{n\ge 1}a_n(27u)^n
+=2+3\sum_{n\ge 1}b_nu^n,
+\]
+从而 \(a_n=\frac{3b_n}{27^n}=\frac{b_n}{3^{3n-1}}\)，且 \(b_n\in\ZZ_3\)。证毕。
+\end{proof}
+
+\begin{theorem}[特征 \(3\) 的显式约化方程与自动结构]\label{thm:xi-terminal-zm-leyang-perron-p3-mod3-algebraic-automatic}
+令 \(v(u)\in\ZZ_3[[u]]\) 为定理 \ref{thm:xi-terminal-zm-leyang-perron-p3-renormalization-hensel} 的唯一解，并记其逐项模 \(3\) 约化为 \(\overline v(u)\in\FF_3[[u]]\)。
+则 \(\overline v(u)\) 满足显式三次代数方程
+\[
+\overline v(u)^3-\overline v(u)^2+\overline v(u)+u=0,
+\qquad
+\overline v(0)=0,
+\]
+并由初值条件确定唯一解。
+因此 \(\overline v(u)\) 在 \(\FF_3(u)\) 上代数，其系数序列为 \(3\)-自动序列（等价地，具有有限 \(3\)-核）。
+\end{theorem}
+\begin{proof}
+将定理 \ref{thm:xi-terminal-zm-leyang-perron-p3-renormalization-hensel} 的 \(H(u,v)\) 模 \(3\) 约化。
+由于 \(27,18,24,3\equiv 0\pmod 3\)，且 \(-5\equiv 1\)、\(7\equiv 1\)、\(5\equiv -1\) 于 \(\FF_3\)，得
+\[
+H(u,v)\equiv u+v^3-v^2+v\quad(\bmod\,3),
+\]
+从而 \(\overline v\) 满足 \(\overline v^3-\overline v^2+\overline v+u=0\)。
+又 \(\partial_v(u+v^3-v^2+v)|_{(0,0)}=1\neq 0\) 于 \(\FF_3\)，形式隐函数定理给出满足 \(\overline v(0)=0\) 的唯一解。
+代数性推出自动性由 Christol 定理给出。证毕。
+\end{proof}
+
+\begin{theorem}[Perron 分支在 \texorpdfstring{$\QQ_3$}{Q3} 上的收敛半径]\label{thm:xi-terminal-zm-leyang-perron-p3-radius}
+将 \(\Lambda(t)\) 视为 \(\QQ_3\) 上的幂级数，则其 \(3\)-进收敛半径严格等于
+\[
+R_3(\Lambda)=3^{-3}.
+\]
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:xi-terminal-zm-leyang-perron-v3-linear-bound}，\(v_3(a_n)\ge 1-3n\)，故
+\(
+|a_n|_3\le 3^{3n-1}
+\)
+并推出 \(R_3(\Lambda)\ge 3^{-3}\)。
+另一方面，若仅有有限多个 \(n\) 使 \(b_n\not\equiv 0\pmod 3\)，则 \(\overline v(u)\) 为多项式；
+但方程 \(\overline v^3-\overline v^2+\overline v+u=0\) 不存在非零多项式解（比较次数即可），矛盾。
+故存在无穷多个 \(n\) 使 \(b_n\not\equiv 0\pmod 3\)，从而对这无穷多 \(n\) 有 \(v_3(a_n)=1-3n\)。
+因此
+\[
+\limsup_{n\to\infty}|a_n|_3^{1/n}=3^{3},
+\]
+从而 \(R_3(\Lambda)\le 3^{-3}\)。
+合并两端不等式得到 \(R_3(\Lambda)=3^{-3}\)。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$p=3$}{p=3} 处的局部半稳定化与覆盖度降阶]\label{cor:xi-terminal-zm-leyang-perron-p3-semistable-degree-drop}
+将 \(\ZZ_3\) 上的平面曲线族 \(\Pi(\lambda,1+t)=0\) 视为 \((\lambda,t)=(2,0)\) 的形式邻域内的局部模型。
+在变量替换 \(t=27u\)、\(\lambda=2+3v\) 下，该形式邻域可写为 \(H(u,v)=0\) 且 \(\partial_vH(0,0)\in\ZZ_3^\times\)，因而在 \(\ZZ_3\) 上正则。
+其特殊纤维（模 \(3\) 约化）由
+\[
+u=-v^3+v^2-v
+\]
+给出，从而在特征 \(3\) 上诱导出一般可分的三次覆盖 \(v\mapsto u\)。
+\end{corollary}
+\begin{proof}
+正则性由 \(\partial_vH(0,0)\in\ZZ_3^\times\) 的隐函数口径直接得到。
+模 \(3\) 约化由
+\(
+H(u,v)\equiv u+v^3-v^2+v
+\)
+立得。
+最后，\(\frac{d}{dv}(-v^3+v^2-v)= -3v^2+2v-1\equiv 2v-1\) 于 \(\FF_3\) 非恒零，故该三次映射在一般点可分。证毕。
+\end{proof}
+
+\input{subsubsec__xi-terminal-zm-leyang-perron-p3-ramification-inertia}
+
 \begin{conclusion}[累积量密度序列的分母支撑仅含 \texorpdfstring{$\{2,3\}$}{\{2,3\}}]\label{con:xi-terminal-zm-leyang-perron-cumulant-denominator-2-3}
 定义
 \[
@@ -346,16 +519,4 @@ V=\mathrm{span}_{\CC}\{f_1,f_2,f_3,f_4\}
 其在 \((f_1,\dots,f_4)\) 上为指标置换作用，并保持和为零超平面，得到标准三维表示。
 该表示忠实，故诱导单值群同构于 \(S_4\)。证毕。
 \end{proof}
-
-\begin{remark}[公开索引同形检索说明]\label{rem:xi-terminal-zm-leyang-perron-fuchs-public-index-check}
-对五次多项式
-\(
-Q(y)=168y^5+1260y^4-422y^3-183y^2-639y-76
-\)
-及
-\(
-W(y)^2\propto Q(y)^2/\bigl(y^3(y-1)^3P_{\mathrm{LY}}(y)^3\bigr)
-\)
-的组合结构进行公开索引关键词检索，未见与本算子同形的可检索条目。
-\end{remark}
 

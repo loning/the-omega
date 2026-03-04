@@ -158,6 +158,103 @@ U_p:=\PP^1(\FF_p)\setminus B(\FF_p),
 条件概率由 \((2)(2)\) 与 \((4)\) 两类在 \(N=0\) 事件中的相对基数比 \(3:6\) 直接给出。证毕。
 \end{proof}
 
+\begin{theorem}[Hecke 迹的 KL--信息误差控制界]\label{thm:conclusion-leyang-hecke-trace-kl-bound}
+沿用推论 \ref{cor:conclusion-leyang-s4-joint-chebotarev-double-observable} 的记号，并设 \(p\neq 37\) 为良素。
+令
+\[
+U_p^{\mathrm{aff}}:=\FF_p\setminus \bigl(B(\overline{\FF}_p)\cap \mathbb A^1_y\bigr)
+\]
+为去除有限分歧值后的仿射参数集。
+对 \(y\in U_p^{\mathrm{aff}}\) 记
+\(
+N_p(y):=\card{\{\lambda\in\FF_p:\Pi(\lambda,y)=0\}}\in\{0,1,2,4\}
+\)，并令 \(\mu_p\) 为 \(N_p(y)\) 在 \(U_p^{\mathrm{aff}}\) 上的经验分布：
+\[
+\mu_p(k):=\frac{1}{|U_p^{\mathrm{aff}}|}\card{\{y\in U_p^{\mathrm{aff}}:\ N_p(y)=k\}},
+\qquad k\in\{0,1,2,4\}.
+\]
+令 \(\pi\) 为 \(N\) 的 \(S_4\)-极限分布（由推论 \ref{cor:conclusion-leyang-s4-joint-chebotarev-double-observable} 的联合分布取边缘）：
+\[
+\pi_0=\frac{3}{8},\qquad
+\pi_1=\frac{1}{3},\qquad
+\pi_2=\frac{1}{4},\qquad
+\pi_4=\frac{1}{24},
+\qquad
+\EE_\pi[N]=1.
+\]
+则存在仅依赖于分歧集合 \(B\) 的常数 \(C<\infty\)，使得
+\[
+\boxed{\;
+|a_p|
+\le
+\frac{3}{\sqrt 2}\,p\,\sqrt{D_{\mathrm{KL}}(\mu_p\Vert \pi)}
+\ +\ C\; }.
+\]
+\end{theorem}
+
+\begin{proof}
+由结论 \ref{con:xi-terminal-zm-elliptic-finite-field-point-count}，
+\[
+\#C_p(\FF_p)=p-a_p,
+\qquad
+\sum_{y\in\FF_p}N_p(y)=\#C_p(\FF_p),
+\]
+从而
+\[
+\sum_{y\in\FF_p}\bigl(N_p(y)-1\bigr)=-a_p.
+\]
+将和拆分为 \(U_p^{\mathrm{aff}}\) 与其补集，并注意 \(\card{\FF_p\setminus U_p^{\mathrm{aff}}}\le \card{B}\) 且对任意 \(y\) 有 \(|N_p(y)-1|\le 3\)，得到
+\[
+\left|\EE_{\mu_p}[N]-1\right|
+=\left|\frac{1}{|U_p^{\mathrm{aff}}|}\sum_{y\in U_p^{\mathrm{aff}}}(N_p(y)-1)\right|
+\le
+\frac{|a_p|}{p}+O\!\left(\frac{1}{p}\right),
+\]
+其中隐含常数仅依赖于 \(\card{B}\)。
+\par
+另一方面，由 \(N\in\{0,1,2,4\}\) 得对任意两分布 \(\mu,\nu\) 有
+\[
+\bigl|\EE_\mu[N]-\EE_\nu[N]\bigr|
+\le
+3\,\mathrm{TV}(\mu,\nu),
+\]
+其中 \(\mathrm{TV}\) 为全变差距离。
+取 \(\nu=\pi\) 并使用 Pinsker 不等式
+\(
+\mathrm{TV}(\mu_p,\pi)\le \sqrt{\tfrac12 D_{\mathrm{KL}}(\mu_p\Vert\pi)}
+\)，得
+\[
+\left|\EE_{\mu_p}[N]-1\right|
+\le
+\frac{3}{\sqrt 2}\sqrt{D_{\mathrm{KL}}(\mu_p\Vert\pi)}.
+\]
+合并两式并乘以 \(p\)，将 \(O(1)\) 项并入常数 \(C\) 即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[Chebotarev 统计误差推出 Hasse 级别的迹界]\label{cor:conclusion-leyang-chebotarev-hasse-via-kl}
+在定理 \ref{thm:conclusion-leyang-hecke-trace-kl-bound} 的设定下，若存在常数 \(B<\infty\) 使
+\[
+\max_{k\in\{0,1,2,4\}}|\mu_p(k)-\pi_k|\le \frac{B}{\sqrt p},
+\]
+则存在只依赖于 \(\pi\) 的常数 \(A(\pi)<\infty\) 与只依赖于分歧集合 \(B\) 的常数 \(C<\infty\)，使得
+\[
+\boxed{\;
+|a_p|
+\le
+\frac{3}{\sqrt 2}\,\sqrt{A(\pi)}\,B\,\sqrt p
+\ +\ C\; }.
+\]
+特别地，若 \(\mu_p=\pi+O(p^{-1/2})\)，则 \(D_{\mathrm{KL}}(\mu_p\Vert\pi)=O(p^{-1})\)，从而 \(|a_p|=O(\sqrt p)\)。
+\end{corollary}
+
+\begin{proof}
+在有限字母表上，\(\mu=\pi+\delta\) 且 \(\max_k|\delta_k|\le \epsilon\) 蕴含
+\[
+D_{\mathrm{KL}}(\mu\Vert\pi)\le A(\pi)\,\epsilon^2
+\]
+其中可取 \(A(\pi)=\sum_k \pi_k^{-1}\) 的一个常数倍；将 \(\epsilon=B/\sqrt p\) 代入并应用定理 \ref{thm:conclusion-leyang-hecke-trace-kl-bound} 即得所示界。证毕。
+\end{proof}
+
 \begin{theorem}[Abel--Jacobi 时间读出的三采样可辨识与圆维下界]\label{thm:conclusion-leyang-time-identifiability-three-sampling}
 沿用结论 \ref{con:xi-terminal-zm-leyang-abel-jacobi-ode} 的时间坐标 \(u\) 与 \(\delta=\frac{\dd y}{\dd u}\)。
 在归一化 Lee--Yang 口径下，考虑抽象微分代数关系

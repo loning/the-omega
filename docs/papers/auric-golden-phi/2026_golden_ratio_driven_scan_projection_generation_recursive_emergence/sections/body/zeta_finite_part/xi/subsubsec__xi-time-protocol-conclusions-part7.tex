@@ -131,6 +131,37 @@ P_m^\star(M_m)=\mathbb E_{\mu_m}\!\left[\min\!\left\{1,\frac{M_m}{d_m^{\mathrm{b
 又 \(M_m/d_m^{\mathrm{bin}}(W_m)=e^{c}/Z+o(1)\)（在分布意义下），把 \(\min\{1,e^{c}/Z\}\) 在两点 \(Z\) 上逐点计算并按 \(c\) 的阈值分段，即得所示极限公式。
 \end{proof}
 
+\begin{corollary}[基数预算的强反界与线性阈值斜率]\label{cor:xi-reconstruction-cardinality-strong-converse}
+在定理 \ref{thm:xi-optimal-reconstruction-success-probability-constant-bias} 的设定下，对任意 \(M_m\in\NN\) 有
+\[
+P_m^\star(M_m)\ \le\ \frac{M_m\,|X_m|}{2^m}.
+\]
+因此若要求存在方案使 \(\mathbb P[\widehat\omega=U_m]\ge \delta\)（\(\delta\in(0,1)\) 固定），则必有
+\[
+\log M_m\ \ge\ m\log 2-\log|X_m|+\log\delta
+\ =\ m\log 2-\log F_{m+2}+\log\delta.
+\]
+等价地，在比特尺度 \(L:=\log_2 M_m\) 下，
+\[
+L\ \ge\ m-\log_2|X_m|+\log_2\delta
+\ =\ m-\log_2F_{m+2}+\log_2\delta.
+\]
+由 Binet 渐近 \(F_{m+2}=\varphi^{m+2}/\sqrt5+O(\varphi^{-m})\) 得到线性阈值
+\[
+L\ \ge\ \Bigl(\log_2\frac{2}{\varphi}\Bigr)m+O(1).
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-optimal-reconstruction-success-probability-constant-bias} 的闭式，
+\(
+P_m^\star(M_m)=2^{-m}\sum_{x\in X_m}\min\{d_m^{\mathrm{bin}}(x),M_m\}
+\le 2^{-m}\sum_{x\in X_m}M_m
+=M_m|X_m|/2^m
+\)。
+将其与成功率下界 \(\delta\) 联立并取对数即得前两条不等式。
+最后一条由 \(\log_2F_{m+2}=(m+2)\log_2\varphi-\frac12\log_25+o(1)\) 直接整理得到。证毕。
+\end{proof}
+
 \begin{corollary}[常数项 \texorpdfstring{$b(\varepsilon)$}{b(eps)} 的闭式反演：零色散二阶项的精确量化]\label{cor:xi-constant-bias-inversion-b-eps}
 令 \(L_m(\varepsilon)\) 为在平均错误率 \(\le\varepsilon\) 下所需的最小附加信息量（自然对数），即最小 \(L\) 使存在编码解码满足成功率 \(\ge 1-\varepsilon\) 且 \(|\mathrm{aux}|\le e^{L}\)。
 则存在常数项 \(b(\varepsilon)\) 使
@@ -486,4 +517,6 @@ R_\star=\log\!\Bigl(\frac{2}{\varphi}\Bigr),
 \(\lim_{m\to\infty}m^{-1}\log d_{\max}^{\mathrm{bin}}(m)=\log(2/\varphi)\)（定理 \ref{thm:fold-bin-max-fiber-exponent}）。
 因此，“折叠信息丢失的指数率”“可逆化所需的临界附加信息率”与“模尺度相对于微观熵率的缺口”被迫塌缩为同一数值不变量 \(\log(2/\varphi)\)，形成可对外引用的三域等价链：信息论阈值＝模论熵缺口＝组合最大退化指数。
 \end{theorem}
+
+\input{subsubsec__xi-time-protocol-conclusions-part7a-zeckendorf-bratteli-a4-af-subfactor}
 

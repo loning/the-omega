@@ -29,6 +29,8 @@
   \]
   （定理 \ref{thm:fold-bin-gauge-volume-stirling}）。
   该结论把“规范体积（阶乘乘积）”与“折叠缺陷（\(d\log d\) 平均）”严格联结为同一热力学量的两种正规化，其误差为指数小量。
+
+  \input{parts/thm__window6-binfold-lastbit-lecam-kl}
   \par
   在 window-\(6\) 锚点上，纤维尺寸直方图为 \(2:8,3:4,4:9\)（推论 \ref{cor:fold-bin-m6-fiber-hist}），因此
   \(
@@ -40,6 +42,53 @@
   \)
   （推论 \ref{cor:fold-bin-gauge-m6}）。
   通过纤维符号映射 \(\mathrm{sgn}_6\)（定义 \ref{def:fold-bin-gauge-sign} 与推论 \ref{cor:fold-bin-gauge-sign}），该电荷格可被解释为 \(X_6\) 上的 \(21\) 个独立“纤维奇偶荷”（视界比特）；并且 boundary sheet-flip 在其中给出一个规范的 \((\ZZ_2)^3\) 坐标子格（推论 \ref{cor:fold-bin-boundary-center-z2}）。
+
+  \begin{theorem}[二进制区间折叠规范群的 Abel 化与全局偶置约束]\label{thm:window6-foldbin-gauge-abelianization-even-parity}
+  对一般分辨率 \(m\ge 1\)，记
+  \(\mathcal{G}^{\mathrm{bin}}_m=\Aut(\Fold^{\mathrm{bin}}_m)\)
+  且记纤维多重度 \(d^{\mathrm{bin}}_m(w):=\card{(\Fold^{\mathrm{bin}}_m)^{-1}(w)}\)（\(w\in X_m\)）。
+  令
+  \[
+  r_m:=\#\{w\in X_m:\ d^{\mathrm{bin}}_m(w)\ge 2\},
+  \]
+  即具有非平凡对称群的纤维数。
+  则有自然同构
+  \[
+  \boxed{\;(\mathcal{G}^{\mathrm{bin}}_m)^{\mathrm{ab}}\ \cong\ (\ZZ_2)^{r_m}.\;}
+  \]
+  此外令
+  \[
+  (\mathcal{G}^{\mathrm{bin}}_m)^{+}
+  :=\mathcal{G}^{\mathrm{bin}}_m\cap \mathfrak{A}_{2^m}
+  =\{\sigma\in\mathcal{G}^{\mathrm{bin}}_m:\ \operatorname{sgn}(\sigma)=+1\},
+  \]
+  其中 \(\mathfrak{A}_{2^m}\) 为 \(\Omega_m\) 上偶置换群。
+  则 \((\mathcal{G}^{\mathrm{bin}}_m)^{+}\) 为指数 \(2\) 的正规子群；并且当 \(r_m\ge 1\) 时
+  \[
+  \boxed{\;\bigl((\mathcal{G}^{\mathrm{bin}}_m)^{+}\bigr)^{\mathrm{ab}}\ \cong\ (\ZZ_2)^{r_m-1}.\;}
+  \]
+  等价地：在“全局偶置”约束下，逐纤维的 \(\ZZ_2\) 符号电荷出现唯一一条线性关系，其总积必须为 \(+1\)。
+  \end{theorem}
+
+  \begin{proof}
+  由 \(\Fold^{\mathrm{bin}}_m\) 的纤维分解，整体规范群分解为纤维对称群的直积
+  \(
+  \mathcal{G}^{\mathrm{bin}}_m\cong \prod_{w\in X_m}\mathfrak{S}_{d^{\mathrm{bin}}_m(w)}
+  \)。
+  而当 \(d\ge 2\) 时 \(\mathfrak{S}_d^{\mathrm{ab}}\cong \ZZ_2\)（由符号同态给出），当 \(d=1\) 时 Abel 化平凡；故直积 Abel 化即为 \((\ZZ_2)^{r_m}\)。
+  \par
+  对全局偶置：任意 \(\sigma\in\mathcal{G}^{\mathrm{bin}}_m\) 在 \(\Omega_m\) 上是按纤维不交并的置换直积，其全局符号等于各纤维符号之积，
+  因而 \((\mathcal{G}^{\mathrm{bin}}_m)^{+}\) 恰为“纤维符号总积为 \(+1\)”的核，指数为 \(2\) 且正规。
+  将 Abel 化识别为 \((\ZZ_2)^{r_m}\) 后，该核对应于求和映射 \((\ZZ_2)^{r_m}\to\ZZ_2\) 的核，维数降 \(1\)，即得到 \((\ZZ_2)^{r_m-1}\)。
+  证毕。
+  \end{proof}
+
+  \input{parts/cor__window6-foldbin-global-even-parity-orientation-torsor}
+  \input{parts/thm__window6-foldbin-gauge-low-degree-homology}
+  \input{parts/prop__window6-foldbin-gauge-center-and-charge-separation}
+  \input{parts/thm__window6-bdry-sheet-parity-nonfunctorial-extension}
+  \input{parts/thm__window6-center-2rank-excludes-simple-groups}
+  \input{parts/prop__window6-no-translation-quotient-fiber}
 
   \item \textbf{最大纤维的组合上界何时饱和：显式判别式与有限共振窗。}
   记
@@ -467,6 +516,20 @@
   \)
   （表 \ref{tab:nap_selector_so10} 与式 \ref{eq_nap_selector_so10}）。
   该构造把“统一维数”提升为可审计的离散层签名函子，并给出完全离散、可复核的统一代数选择器。
+
+  \begin{corollary}[NAP 与局域 uplift 的联合锁定]\label{cor:nap-local-uplift-forces-so10}
+  若在 NAP 约束 \(\{6,8\}\subset\Sigma(\mathfrak g)\) 之外，进一步要求统一顶层由 window-\(6\) 的局域几何 uplift 实现，
+  即除平凡位移外仅允许 \(\delta=\pm 34\)（推论 \ref{cor:terminal-window6-local-uplift-admissibility}），
+  则顶层 Zeckendorf 项被锁定为 \(F_9=34\)，从而签名必须包含 \(m=11\)。
+  因此 \(\{6,8,11\}\subset \Sigma(\mathfrak g)\)，并在简单李代数扫描域内由表 \ref{tab:nap_selector_so10} 的极小性结论强制得到
+  \(\mathfrak g=\mathfrak{so}(10)\) 为唯一最小候选。
+  \end{corollary}
+  \begin{proof}
+  推论 \ref{cor:terminal-window6-local-uplift-admissibility} 给出：在局域几何可实现性口径下，window-\(6\) 的非零 uplift 位移只能为 \(34\)，对应的顶层 Zeckendorf 项只能取 \(F_9\)，等价于签名包含 \(m=9+2=11\)。
+  与 NAP 约束 \(\{6,8\}\subset \Sigma(\mathfrak g)\) 合并即得 \(\{6,8,11\}\subset \Sigma(\mathfrak g)\)。
+  在简单李代数扫描域内，表 \ref{tab:nap_selector_so10} 与式 \ref{eq_nap_selector_so10} 给出满足该必含层约束的最小维数解为 \(\mathfrak{so}(10)\)，并且其签名恰为 \(\{6,8,11\}\)。
+  证毕。
+  \end{proof}
 
   \item \textbf{高退化尾部的多重分形骨架：上包络（Legendre）与下包络（Paley--Zygmund）的同构接口。}
   令 \(\gamma_m(x)=(1/m)\log d_m(x)\)，并按定义 \ref{def:pom-fiber-spectrum} 定义谱函数 \(f(\gamma)\)。

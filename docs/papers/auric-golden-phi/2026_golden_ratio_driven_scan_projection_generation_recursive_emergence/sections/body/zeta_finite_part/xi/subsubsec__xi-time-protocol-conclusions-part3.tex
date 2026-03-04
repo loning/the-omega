@@ -21,6 +21,38 @@ x:=\Fold_m(\omega)
 上界由带侧信息的前缀编码构造（按 \(x\) 的条件码族）给出，冗余不超过一个码字长度单位。
 \end{proof}
 
+\begin{theorem}[有限侧信息预算下的强反命题：Fold 精确反演成功率的指数上界]\label{thm:xi-fold-inversion-strong-converse-sideinfo}
+取 \(m\ge 1\)，令 \(\omega\sim\mathrm{Unif}(\Omega_m)\) 且 \(X:=\Fold_m(\omega)\in X_m\)。
+设编码器给出侧信息消息 \(\mathsf M=\mathsf E(\omega)\) 且 \(|\mathcal M|\le 2^{L}\)（即消息长至多 \(L\) 比特）。
+解码器观察 \((X,\mathsf M)\) 并输出 \(\widehat\omega=\mathsf D(X,\mathsf M)\)。
+则对任意 \(\mathsf E,\mathsf D\) 恒有强反界
+\[
+\PP(\widehat\omega=\omega)\ \le\ 2^{L}\cdot\frac{|X_m|}{2^{m}}.
+\]
+在本文的 Fibonacci 稳定类型尺度 \(|X_m|=F_{m+2}\) 下，
+\[
+\PP(\widehat\omega=\omega)\ \le\ 2^{L}\cdot\frac{F_{m+2}}{2^{m}}
+=2^{L}\cdot\left(\frac{\varphi}{2}\right)^{m}(1+o(1)),
+\qquad
+\varphi=\frac{1+\sqrt5}{2}.
+\]
+因此当 \(L=o(m)\) 时，任何精确反演的成功概率都至多以 \((\varphi/2)^{m}\) 的指数速度衰减。
+\end{theorem}
+\begin{proof}
+对任意固定 \(x\in X_m\)，纤维 \(\Fold_m^{-1}(x)\) 的大小为 \(d_m(x)\)。
+由于 \(|\mathcal M|\le 2^L\)，在给定 \(x\) 的条件下至多有 \(2^L\) 个微态可被消息完全区分并被解码为真值，故
+\[
+\PP(\widehat\omega=\omega\mid X=x)\le \min\Bigl\{1,\frac{2^L}{d_m(x)}\Bigr\}\le \frac{2^L}{d_m(x)}.
+\]
+取全概率并注意 \(\PP(X=x)=d_m(x)/2^m\) 得
+\[
+\PP(\widehat\omega=\omega)
+\le \sum_{x\in X_m}\frac{d_m(x)}{2^m}\cdot\frac{2^L}{d_m(x)}
+=2^L\cdot\frac{|X_m|}{2^m}.
+\]
+最后的渐近由 \(F_{m+2}=\Theta(\varphi^m)\) 给出。
+\end{proof}
+
 \begin{theorem}[时间可加性的有限可判据：二同调障碍由临界方块完全生成]\label{thm:xi-time-additivity-finite-critical-square-criterion}
 设 \(\mathbf{PW}\) 由有限生成收敛重写系统给出（终止且合流），并令
 \[

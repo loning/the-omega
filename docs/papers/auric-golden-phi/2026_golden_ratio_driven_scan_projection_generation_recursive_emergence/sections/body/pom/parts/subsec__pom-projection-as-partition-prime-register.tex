@@ -186,37 +186,171 @@ F_\pi\subseteq F_\sigma\iff \mathsf{Code}(F_\pi)\mid \mathsf{Code}(F_\sigma)
 另一方面，若允许固定闭包算法 \(\mathrm{cl}\) 作为 join/合成的唯一额外计算，则每个分割 \(\pi\) 存在线性规模的最小外置编码，其素数占用严格等于 \(n-|\pi|\)（定理 \ref{thm:pom-partition-skeleton-compression}）。
 \end{corollary}
 
-\begin{theorem}[等价闭包的二元 Horn 规则基最小性]\label{thm:pom-eq-closure-horn-binary-min}
-将边集 \(E_n\) 视为命题变量集合。考虑仅含二元前提的 Horn 蕴含规则族 \(\mathcal{R}\)，每条规则形如
+\begin{theorem}[等价闭包的 Horn 蕴涵基全局最小性与唯一性刻画]\label{thm:pom-eq-closure-horn-binary-min}
+将边集 \(E_n\) 视为命题变量集合。
+令 \(\mathcal{IB}(\mathrm{cl})\) 表示所有 Horn 蕴涵规则基 \(\mathcal{R}\) 的集合，使得由 \(\mathcal{R}\) 的前向推演所诱导的闭包算子 \(\mathrm{cl}_{\mathcal{R}}\) 满足
 \[
-\{e_1,e_2\}\to e_3,\qquad e_1,e_2,e_3\in E_n.
+\mathrm{cl}_{\mathcal{R}}=\mathrm{cl}\quad\text{在 }2^{E_n}\text{ 上恒等}.
 \]
-由 \(\mathcal{R}\) 生成的闭包算子记为 \(\mathrm{cl}_{\mathcal{R}}\)。
-若要求
+则对任意 \(\mathcal{R}\in\mathcal{IB}(\mathrm{cl})\) 都有
 \[
-\mathrm{cl}_{\mathcal{R}}=\mathrm{cl}\quad\text{在 }2^{E_n}\text{ 上恒等},
+\boxed{\ |\mathcal{R}|\ \ge\ 3\binom{n}{3}\ }.
 \]
-则 \(|\mathcal{R}|\) 的最小可能值为
+并且当且仅当 \(\mathcal{R}\) 恰由全部三角补全规则组成时取等号：对每个 \(1\le i<j<k\le n\)，包含三条规则
 \[
-\boxed{\ |\mathcal{R}|_{\min}=3\binom{n}{3}=\frac{n(n-1)(n-2)}{2}\ }.
+\{ij,jk\}\to ik,\qquad
+\{ij,ik\}\to jk,\qquad
+\{ik,jk\}\to ij.
 \]
-并且（在边重标号意义下）唯一达到该最小值的规则基为三角补全族
-\[
-\mathcal{R}_{\triangle}:=\bigl\{\ \{ij,jk\}\to ik:\ i,j,k\ \text{两两不同}\ \bigr\},
-\]
-其中 \(ij\) 表示边 \(\{i,j\}\)。
+因此，在边重标号同构意义下，达到最小规模的 Horn 蕴涵基唯一。
 \end{theorem}
 \begin{proof}
-规则族 \(\mathcal{R}_{\triangle}\) 生成 \(\mathrm{cl}\)：
-任取连通分支内一条长度为 \(2\) 的路径 \(i\!-\!j\!-\!k\)，由规则推出边 \(ik\)；迭代可补全分支为团，得到 \(\mathrm{cl}\)。
-因此存在规则基规模上界 \(|\mathcal{R}|\le 3\binom{n}{3}\)。
+先验证三角补全规则基确实生成 \(\mathrm{cl}\)。
+任取 \(F\subseteq E_n\) 并考虑图 \(([n],F)\) 的任一连通分支 \(C\)。
+对任意 \(u,v\in C\)，存在路径 \(u=v_0-v_1-\cdots-v_\ell=v\) 使 \(\{v_{t-1}v_t\}\subseteq F\)。
+沿路径逐步应用三角补全规则可推出 \(v_0v_2,v_0v_3,\dots,v_0v_\ell\)，从而推出 \(uv\)。
+因此推演闭包补全每个连通分支为团，恰为 \(\mathrm{cl}(F)\)，故三角补全规则基属于 \(\mathcal{IB}(\mathrm{cl})\)，并给出上界 \(|\mathcal{R}|\le 3\binom{n}{3}\)。
 \par
-为证下界，固定互异三点 \(i,j,k\)，取初始边集 \(F=\{ij,jk\}\)。
-由定义 \ref{def:pom-edge-closure}，有 \(ik\in \mathrm{cl}(F)\)。
-若 \(\mathrm{cl}_{\mathcal{R}}=\mathrm{cl}\)，则在 \(\mathrm{cl}_{\mathcal{R}}\) 的推演中必须从 \(F\) 推出 \(ik\)。
-由于每条规则前提大小为 \(2\)，且在首次产生任何新边之前可用前提只能是 \(\{ij,jk\}\)，因此规则库中必须包含 \(\{ij,jk\}\to ik\)。
-对所有互异 \(i,j,k\) 同理，故 \(\mathcal{R}\) 必包含全部三角补全规则，条数至少为 \(3\binom{n}{3}\)。
-唯一性由该强制性立即得到。证毕。
+为证下界与唯一性，取任意 \(\mathcal{R}\in\mathcal{IB}(\mathrm{cl})\)。
+固定互异三点 \(1\le i<j<k\le n\)，并令
+\(
+F:=\{ij,jk\}
+\)。
+由定义 \ref{def:pom-edge-closure}，有
+\(
+\mathrm{cl}(F)=\{ij,jk,ik\}
+\)，从而 \(ik\in \mathrm{cl}_{\mathcal{R}}(F)\)。
+考虑从 \(F\) 出发的前向推演。
+在首次推出 \(ik\) 之前，系统中仅包含 \(F\) 中的边，故必存在一条规则 \(A\to ik\in\mathcal{R}\) 使其前提满足 \(A\subseteq F\)。
+于是 \(A\) 只能是 \(\varnothing\)、\(\{ij\}\)、\(\{jk\}\) 或 \(\{ij,jk\}\)。
+前三种情形分别迫使 \(ik\in \mathrm{cl}_{\mathcal{R}}(\varnothing)\)、\(ik\in \mathrm{cl}_{\mathcal{R}}(\{ij\})\) 或 \(ik\in \mathrm{cl}_{\mathcal{R}}(\{jk\})\)，与
+\(\mathrm{cl}(\varnothing)=\varnothing\) 与 \(\mathrm{cl}(\{ij\})=\{ij\}\)、\(\mathrm{cl}(\{jk\})=\{jk\}\) 矛盾。
+因此必有 \(A=\{ij,jk\}\)，从而 \(\{ij,jk\}\to ik\in\mathcal{R}\)。
+\par
+对同一三元组，分别从 \(\{ij,ik\}\) 推出 \(jk\)，以及从 \(\{ik,jk\}\) 推出 \(ij\)，得到另外两条强制规则。
+故每个三元组 \(\{i,j,k\}\) 都贡献至少三条互不相同的规则，推出 \(|\mathcal{R}|\ge 3\binom{n}{3}\)。
+若取等号，则 \(\mathcal{R}\) 只能由这些被强制的三角补全规则组成，不允许额外规则，故达到最小规模的规则基在边重标号意义下唯一。证毕。
+\end{proof}
+
+\begin{corollary}[强制规则与不可约分解]\label{cor:pom-eq-closure-unavoidable-triangles}
+在定理 \ref{thm:pom-eq-closure-horn-binary-min} 的设定下，任取 \(\mathcal{R}\in\mathcal{IB}(\mathrm{cl})\) 与任意互异 \(i,j,k\in[n]\)，三角补全规则
+\[
+\{ij,jk\}\to ik
+\]
+在 \(\mathcal{R}\) 中必然出现；并且 \(\mathcal{R}\) 在规则层面具有唯一的不可约分解：
+\[
+\boxed{\ \mathcal{R}=\mathcal{R}_{\triangle}\ \sqcup\ \mathcal{R}_{\mathrm{red}}\ },
+\]
+其中 \(\mathcal{R}_{\triangle}\) 为全体三角补全规则之集合，而 \(\mathcal{R}_{\mathrm{red}}\) 为冗余部分：移除 \(\mathcal{R}_{\mathrm{red}}\) 后闭包算子仍保持为 \(\mathrm{cl}\)。
+\end{corollary}
+\begin{proof}
+强制性结论即定理 \ref{thm:pom-eq-closure-horn-binary-min} 证明中对固定三元组 \(\{i,j,k\}\) 的推理：若 \(\mathcal{R}\) 生成 \(\mathrm{cl}\)，则从 \(F=\{ij,jk\}\) 出发的前向推演在首次产生 \(ik\) 的时刻，必触发某条前提 \(A\subseteq F\) 的规则 \(A\to ik\)，而除 \(A=\{ij,jk\}\) 外均与 \(\mathrm{cl}\) 在 \(\varnothing,\{ij\},\{jk\}\) 上的取值矛盾。
+因此 \(\mathcal{R}_{\triangle}\subseteq \mathcal{R}\)。
+令 \(\mathcal{R}_{\mathrm{red}}:=\mathcal{R}\setminus \mathcal{R}_{\triangle}\)，则由于 \(\mathcal{R}_{\triangle}\in \mathcal{IB}(\mathrm{cl})\)，有 \(\mathrm{cl}_{\mathcal{R}_{\triangle}}=\mathrm{cl}\)，从而 \(\mathrm{cl}_{\mathcal{R}}=\mathrm{cl}_{\mathcal{R}_{\triangle}}\)。
+这表明 \(\mathcal{R}_{\mathrm{red}}\) 对闭包算子不产生额外贡献，可视为冗余项。证毕。
+\end{proof}
+
+\begin{definition}[并行前向推演算子、前提宽度与深度]\label{def:pom-horn-width-depth}
+对任意 Horn 规则族 \(\mathcal{R}\) 与 \(S\subseteq E_n\)，定义一次并行推演算子
+\[
+T_{\mathcal{R}}(S):=S\ \cup\ \{b\in E_n:\ \exists(A\to b)\in\mathcal{R}\text{ 且 }A\subseteq S\}.
+\]
+定义 \(\mathcal{R}\) 的\textbf{前提宽度}
+\[
+w(\mathcal{R}):=\max\{|A|:\ (A\to b)\in\mathcal{R}\},
+\]
+并对任意初始边集 \(F\subseteq E_n\) 定义序列 \(S_0:=F\)、\(S_{t+1}:=T_{\mathcal{R}}(S_t)\)。
+令
+\[
+d_{\mathcal{R}}(F):=\min\{t\ge 0:\ S_t=\mathrm{cl}_{\mathcal{R}}(F)\},
+\qquad
+d(\mathcal{R}):=\sup_{F\subseteq E_n} d_{\mathcal{R}}(F),
+\]
+其中 \(\mathrm{cl}_{\mathcal{R}}(F):=\bigcup_{t\ge 0} S_t\)。
+\end{definition}
+
+\begin{theorem}[等价闭包的“宽度—深度”互补律]\label{thm:pom-eq-closure-width-depth-complement}
+设 \(n\ge 3\)，并令 \(\mathcal{R}\in\mathcal{IB}(\mathrm{cl})\)。
+对任意整数 \(r\ge 2\)，在约束 \(w(\mathcal{R})\le r\) 下成立下界
+\[
+\boxed{\ d(\mathcal{R})\ \ge\ \left\lceil \log_r(n-1)\right\rceil\ }.
+\]
+此外，存在显式构造的 Horn 规则族 \(\mathcal{R}^{(r)}\in\mathcal{IB}(\mathrm{cl})\) 满足 \(w(\mathcal{R}^{(r)})=r\) 且
+\[
+\boxed{\ d(\mathcal{R}^{(r)})\ =\ \left\lceil \log_r(n-1)\right\rceil\ }.
+\]
+\end{theorem}
+\begin{proof}
+\textbf{下界.}
+考虑路径边集
+\[
+F_{\mathrm{path}}:=\{12,23,\dots,(n-1)n\}\subseteq E_n.
+\]
+由定义 \ref{def:pom-edge-closure}，\(\mathrm{cl}(F_{\mathrm{path}})=E_n\)。
+对任意边 \(uv\in E_n\) 定义跨度 \(\ell(uv):=|u-v|\)。
+断言对所有 \(t\ge 0\) 有
+\[
+\max\{\ell(e):\ e\in S_t\}\ \le\ r^t,
+\]
+其中 \(S_t\) 为定义 \ref{def:pom-horn-width-depth} 所引入的并行推演序列，且假设 \(w(\mathcal{R})\le r\)。
+用归纳法证明：初始 \(S_0=F_{\mathrm{path}}\) 中每条边跨度为 \(1=r^0\)。
+设结论对 \(t\) 成立，并取任意 \(e=uv\in S_{t+1}\setminus S_t\)。
+则存在规则 \(A\to uv\in\mathcal{R}\) 使 \(A\subseteq S_t\) 且 \(|A|\le r\)。
+由于 \(\mathcal{R}\) 生成 \(\mathrm{cl}\)，规则 \(A\to uv\) 在闭包语义下必须有效，因而 \(uv\in \mathrm{cl}(A)\)；按定义 \ref{def:pom-edge-closure}，这等价于 \(u\) 与 \(v\) 在图 \(([n],A)\) 中连通。
+于是存在一条由 \(A\) 的边组成的 \(u\!-\!v\) 路径 \(e_1,\dots,e_m\)，其边数满足 \(m\le |A|\le r\)。
+由归纳假设对每个 \(j\) 有 \(\ell(e_j)\le r^t\)，从而
+\[
+\ell(uv)\le \sum_{j=1}^m \ell(e_j)\le m\cdot r^t\le r^{t+1}.
+\]
+归纳完成。
+因此若 \(S_t=E_n\)，则必须包含边 \(1n\)，其跨度 \(\ell(1n)=n-1\)。
+由上式得到 \(n-1\le r^t\)，即 \(t\ge \lceil \log_r(n-1)\rceil\)。
+从而 \(d(\mathcal{R})\ge d_{\mathcal{R}}(F_{\mathrm{path}})\ge \lceil \log_r(n-1)\rceil\)。
+\par
+\textbf{可达性.}
+定义规则族
+\[
+\mathcal{R}^{(r)}
+:=\Bigl\{\ \{v_0v_1,\dots,v_{m-1}v_m\}\to v_0v_m:\ 2\le m\le r,\ v_0,\dots,v_m\ \text{两两不同}\ \Bigr\}.
+\]
+显然 \(w(\mathcal{R}^{(r)})=r\)，且每条规则的前提在图论上给出一条从 \(v_0\) 到 \(v_m\) 的路径，从而在等价闭包 \(\mathrm{cl}\) 下有效。
+固定 \(F\subseteq E_n\)，设图 \(G_0:=([n],F)\)，并递归令 \(G_{t+1}\) 为在 \(G_t\) 上加上所有“路径长度不超过 \(r\)”的边所得的图。
+由于 \(\mathcal{R}^{(r)}\) 包含所有长度 \(m\le r\) 的路径补边规则，定义 \ref{def:pom-horn-width-depth} 的一次并行推演恰对应 \(G_{t}\mapsto G_{t+1}\)。
+归纳可得：对任意 \(t\ge 0\)，若两点在 \(G_0\) 中的图距离不超过 \(r^t\)，则其间边属于 \(S_t\)。
+当 \(r^t\) 不小于每个连通分支的直径时，\(S_t\) 在该分支上成为团边集，因此 \(S_t=\mathrm{cl}(F)\)。
+最坏情形直径至多 \(n-1\)，故对一切 \(F\) 有 \(d_{\mathcal{R}^{(r)}}(F)\le \lceil \log_r(n-1)\rceil\)，于是 \(d(\mathcal{R}^{(r)})\le \lceil \log_r(n-1)\rceil\)。
+结合下界即得等号成立。证毕。
+\end{proof}
+
+\begin{definition}[一轮闭包基]\label{def:pom-one-round-closure-basis}
+称 \(\mathcal{R}\in\mathcal{IB}(\mathrm{cl})\) 为\textbf{一轮闭包基}，若对所有 \(F\subseteq E_n\) 都有
+\[
+T_{\mathcal{R}}(F)=\mathrm{cl}(F),
+\]
+亦即 \(d(\mathcal{R})=1\)。
+\end{definition}
+
+\begin{theorem}[一轮闭包的规则数下界]\label{thm:pom-one-round-closure-basis-size}
+设 \(\mathcal{R}\in\mathcal{IB}(\mathrm{cl})\) 为一轮闭包基，则
+\[
+\boxed{\ |\mathcal{R}|\ \ge\ \frac{n!}{2}\ },
+\]
+并且 \(\mathcal{R}\) 中至少 \(\frac{n!}{2}\) 条规则的前提规模为 \(n-1\)。
+\end{theorem}
+\begin{proof}
+对任意排列 \(\sigma\in S_n\)，令
+\[
+F_\sigma:=\{\sigma(1)\sigma(2),\ \sigma(2)\sigma(3),\ \dots,\ \sigma(n-1)\sigma(n)\}\subseteq E_n,
+\]
+即一条哈密顿路径的边集。
+该图连通，故 \(\mathrm{cl}(F_\sigma)=E_n\)，从而在一轮闭包假设下 \(T_{\mathcal{R}}(F_\sigma)=E_n\)。
+特别地，边 \(\sigma(1)\sigma(n)\) 必须在一次并行推演中产生，于是存在规则 \(A\to \sigma(1)\sigma(n)\in\mathcal{R}\) 使 \(A\subseteq F_\sigma\)。
+\par
+在路径图 \(F_\sigma\) 中，端点 \(\sigma(1)\) 与 \(\sigma(n)\) 的连通性对边集呈现极小性：删除任意一条边都会使端点不连通。
+由于规则 \(A\to \sigma(1)\sigma(n)\) 在等价闭包语义下有效，必有 \(\sigma(1)\sigma(n)\in \mathrm{cl}(A)\)，等价于端点在 \(([n],A)\) 中连通，因而只能有 \(A=F_\sigma\)。
+故对每个无向哈密顿路径边集 \(F_\sigma\) 都必须出现一条以 \(F_\sigma\) 为前提、以端点边为结论的规则，且其前提规模为 \(n-1\)。
+\par
+无向哈密顿路径条数为 \(n!/2\)（排列与其反向对应同一无向路径边集），从而得到 \(|\mathcal{R}|\ge n!/2\)，并且至少 \(n!/2\) 条规则的前提规模为 \(n-1\)。证毕。
 \end{proof}
 
 \begin{theorem}[素数表语义：自同态的生成元赋值与幂等性判定]\label{thm:pom-idempotent-projection-prime-determined}
@@ -287,14 +421,9 @@ f(n)=\prod f(p)^{\nu_p(n)}=\prod_{p\in S}p^{\nu_p(n)}
 证毕。
 \end{proof}
 
-\begin{conjecture}[Horn 规则基的全局最小性]\label{conj:pom-horn-basis-global-min}
-令 \(\mathrm{cl}\) 为定义 \ref{def:pom-edge-closure} 的等价闭包。记 \(\mathrm{IB}(\mathrm{cl})\) 为所有 Horn 蕴含规则基（允许任意有限前提大小）中能生成 \(\mathrm{cl}\) 的规则族集合。
-猜想对任意 \(n\ge 3\) 与任意 \(\mathcal{R}\in \mathrm{IB}(\mathrm{cl})\) 都有
-\[
-|\mathcal{R}|\ \ge\ 3\binom{n}{3},
-\]
-且等号仅由三角补全规则族 \(\mathcal{R}_\triangle\)（在重标号意义下）达到。
-\end{conjecture}
+\begin{remark}\label{rem:pom-horn-basis-global-min}
+对定义 \ref{def:pom-edge-closure} 的等价闭包，定理 \ref{thm:pom-eq-closure-horn-binary-min} 给出了 Horn 蕴涵基在允许任意有限前提大小时的全局下界与唯一性刻画，并表明三角补全规则族在规模意义下不可改进。
+\end{remark}
 
 \endinput
 

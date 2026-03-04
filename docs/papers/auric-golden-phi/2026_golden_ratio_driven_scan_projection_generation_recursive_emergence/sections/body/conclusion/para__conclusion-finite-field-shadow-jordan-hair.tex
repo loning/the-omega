@@ -11,6 +11,25 @@
   在更低阶的已核验窗口 \(4\le q\le 11\) 内，指数对进一步凝结为闭式
   \(b_q=2\lfloor (q+1)/4\rfloor\)、\(a_q=3+2\,\ind\{q\ \mathrm{even},\ q\ge 6\}\)，并呈现 \(q\mapsto q+4\) 的台阶相（命题 \ref{prop:pom-charpoly-mod2-closed-exponent-law-q4-11}）。
 
+  \begin{proposition}[\(\FF_2\) 上差分幂零所强制的二项式基多项式性]\label{prop:conclusion-f2-binomial-basis-from-delta-nilpotent}
+  令 \((a_m)_{m\ge 0}\) 为取值于 \(\FF_2\) 的序列，并记前移算子 \(E(a)_m=a_{m+1}\) 与差分算子 \(\Delta:=E+1\)（特征 \(2\) 下亦可写为 \(E-1\)）。
+  若存在整数 \(b\ge 1\) 使得对充分大的 \(m\) 有
+  \[
+  \Delta^{b}a_m=0,
+  \]
+  则存在常数 \(c_0,\dots,c_{b-1}\in\FF_2\) 使得对充分大的 \(m\) 有
+  \[
+  a_m=\sum_{j=0}^{b-1}c_j\binom{m}{j}\quad(\mathrm{mod}\ 2).
+  \]
+  \end{proposition}
+
+  \begin{proof}
+  组合恒等式给出 \(\Delta\binom{m}{j}=\binom{m}{j-1}\)，从而 \(\Delta^b\binom{m}{j}=0\) 当且仅当 \(j<b\)。
+  若 \(\Delta^b a_m=0\) 在后段成立，则 \(\Delta^{b-1}a_m\) 在后段为常值，记为 \(c_{b-1}\)。
+  令 \(a^{(1)}_m:=a_m-c_{b-1}\binom{m}{b-1}\)，则 \(\Delta^{b-1}a^{(1)}_m=0\) 在后段成立。
+  递归下降直至阶数 \(0\)，得到所示表示。证毕。
+  \end{proof}
+
   \item \textbf{模 \texorpdfstring{$3$}{3} 的两扇区分解：常相多项式与交替相多项式的直和压缩。}
   当 \(P_q(\lambda)\equiv \lambda^2(\lambda-1)^4(\lambda+1)^5\ (\mathrm{mod}\ 3)\)（例如 \(q=13,15\)；注 \ref{rem:pom-charpoly-mod3-selection}）时，对 \(\widetilde S_q:=E^2S_q\) 有
   \((E-1)^4(E+1)^5\widetilde S_q\equiv 0\ (\mathrm{mod}\ 3)\)，从而存在次数分别受 \((4,5)\) 指数对控制的两类广义相位模态：一类为关于 \(m\) 的次数 \(\le 3\) 多项式，另一类为 \((-1)^m\) 乘以次数 \(\le 4\) 多项式（命题 \ref{prop:pom-moment-mod3-two-phase}；表 \ref{tab:fold_collision_charpoly_mod3_selection_q13_15}）。
@@ -31,11 +50,100 @@
   \item \textbf{period bound 的统一公式与额外 \texorpdfstring{$p$}{p} 因子判据：Jordan 非半单性可无需完全因子分解检测。}
   设
   \(P_q(\lambda)\equiv \lambda^{a_0}\prod_j f_j(\lambda)^{e_j}\ (\mathrm{mod}\ p)\)，其中 \(f_j\neq \lambda\) 不可约且 \(d_j=\deg f_j\)，并令 \(\varepsilon_{q,p}=\ind\{\exists j:\ e_j\ge 2\}\)。
-  则本文表格的粗周期上界按
-  \(
-  \mathrm{PerBound}_p(q)=p^{\varepsilon_{q,p}}\cdot \mathrm{lcm}_j(p^{d_j}-1)
-  \)
-  统一给出（注 \ref{rem:pom-charpoly-modp-audit-method}；表 \ref{tab:fold_collision_charpoly_mod7_selection_q13_15}--\ref{tab:fold_collision_charpoly_mod13_fingerprint_q13}）。
-  其中额外因子 \(p\) 与 \(\mathrm{repeat?}=1\) 等价地刻画了非平方自由性，从而等价刻画了有限域递推的 Jordan/广义本征向量贡献；并且 \(\varepsilon_{q,p}\) 可通过 \(\gcd(\widetilde P_q,\partial_\lambda\widetilde P_q)\) 直接读出，无需对 \(P_q\) 进行完整因子分解。
+  令 \(\widetilde P_q(\lambda):=P_q(\lambda)/\lambda^{a_0}\) 表示非零谱部分。
+  表 \ref{tab:fold_collision_charpoly_mod7_selection_q13_15}--\ref{tab:fold_collision_charpoly_mod13_fingerprint_q13} 的 \emph{period bound} 列采用统一粗界
+  \[
+  \mathrm{PerBound}_p(q):=p^{\varepsilon_{q,p}}\cdot \mathrm{lcm}_j(p^{d_j}-1),
+  \]
+  它只区分“是否出现平方因子”（即 \(\varepsilon_{q,p}\in\{0,1\}\)），并将该非半单性以额外因子 \(p\) 的形式纳入最终周期上界。
+  其中 \(\varepsilon_{q,p}=1\) 与 \(\mathrm{repeat?}=1\) 等价，并且可通过 \(\gcd(\widetilde P_q,\partial_\lambda\widetilde P_q)\neq 1\) 直接读出，而无需对 \(P_q(\lambda)\ (\mathrm{mod}\ p)\) 完整因子分解。
+  更精细地，Jordan 指数 \(e_j\) 的数量级会产生 \(p^{\lceil\log_p e_j\rceil}\) 的 \(p\)-进贡献；相应的精确周期上界见命题 \ref{prop:conclusion-finitefield-jordan-exponent-period-bound}。
 \end{enumerate}
+
+\begin{proposition}[Jordan 指数的 \(p\)-进贡献与最终周期上界]\label{prop:conclusion-finitefield-jordan-exponent-period-bound}
+设 \(p\) 为素数，\((a_m)_{m\ge 0}\) 为取值于 \(\FF_p\) 的序列。
+设存在多项式 \(P(E)\in\FF_p[E]\) 与整数 \(m_0\) 使得对所有 \(m\ge m_0\) 有
+\[
+(P(E)a)_m=0,
+\qquad
+(Ea)_m:=a_{m+1}.
+\]
+将 \(P(E)\) 写成
+\[
+P(E)=E^{a_0}\prod_{j=1}^{J}Q_j(E)^{e_j},
+\]
+其中 \(Q_j\) 两两互素、首一不可约，且 \(e_j\ge 1\)。
+令 \(d_j:=\deg Q_j\) 并记 \(e_{\max}:=\max_j e_j\)。
+则序列 \(a\) 在后段为最终周期序列，其最终周期 \(\mathrm{per}(a)\) 满足整除关系
+\[
+\boxed{\;
+\mathrm{per}(a)\ \mid\ \mathrm{lcm}_{1\le j\le J}\Bigl(p^{\lceil\log_p e_j\rceil}\,(p^{d_j}-1)\Bigr)\; }.
+\]
+从而亦有粗界
+\[
+\boxed{\;
+\mathrm{per}(a)\ \mid\ p^{\lceil\log_p e_{\max}\rceil}\cdot \mathrm{lcm}_{1\le j\le J}(p^{d_j}-1).\;}
+\]
+\end{proposition}
+\begin{proof}
+对充分大的 \(m\)，递推由 companion 动力系统实现：取状态向量 \(v_m\in\FF_p^{\deg P-a_0}\)（由有限个连续项组成）使 \(v_{m+1}=Av_m\)，其中 \(A\) 为相应 companion 矩阵。
+因 \(E^{a_0}\) 仅产生有限瞬态，可将其吸收进起始段并忽略于最终周期的估计中。
+\par
+把 \(\FF_p^{\deg P-a_0}\) 视为 \(\FF_p[E]\)-模（令 \(E\) 作用为 \(A\)），由主分解定理可将其分解为各 \(Q_j\)-初等因子主分量的直和；因此 \(A\) 的最终周期整除各主分量上 \(A\) 的最终周期的最小公倍数。
+\par
+固定某个 \(j\)。在分裂域 \(\FF_{p^{d_j}}\) 上，对应主分量分解为若干 Jordan 块的直和，每个 Jordan 块形如
+\(
+J=\lambda(I+N)
+\)
+其中 \(\lambda\in\FF_{p^{d_j}}^\times\) 且 \(N\) 为幂零矩阵，满足 \(N^{e_j}=0\)。
+取 \(t_j:=\lceil\log_p e_j\rceil\) 则 \(p^{t_j}\ge e_j\)，从而 \(N^{p^{t_j}}=0\)。
+在特征 \(p\) 下由二项式恒等式（Frobenius 取幂）得
+\[
+(I+N)^{p^{t_j}}=I+N^{p^{t_j}}=I,
+\qquad\text{从而}\qquad
+J^{p^{t_j}}=\lambda^{p^{t_j}}I.
+\]
+又 \(\lambda^{p^{d_j}-1}=1\)，故
+\[
+J^{p^{t_j}(p^{d_j}-1)}=(J^{p^{t_j}})^{p^{d_j}-1}=(\lambda^{p^{t_j}}I)^{p^{d_j}-1}=I.
+\]
+因此该主分量上 \(A\) 的周期整除 \(p^{t_j}(p^{d_j}-1)\)。
+对 \(j\) 取最小公倍数得到第一条整除关系；第二条由 \(p^{\lceil\log_p e_j\rceil}\le p^{\lceil\log_p e_{\max}\rceil}\) 直接推出。证毕。
+\end{proof}
+
+\begin{corollary}[模 \(2\) 的 \texorpdfstring{$(E+1)^e$}{(E+1)^e} 周期界]\label{cor:conclusion-mod2-eplus1-power-period}
+设 \((a_m)\) 为取值于 \(\FF_2\) 的序列，并存在整数 \(e\ge 1\) 使得对充分大的 \(m\) 有
+\[
+(E+1)^e a_m=0.
+\]
+则 \(a\) 在后段的最终周期整除 \(2^{\lceil\log_2 e\rceil}\)。
+特别地，当 \(e=8\) 时，最终周期整除 \(8\)。
+\end{corollary}
+\begin{proof}
+对 \(t=\lceil\log_2 e\rceil\) 有 \(e\le 2^{t}\)，因而 \((E+1)^{2^{t}}a=0\) 在后段成立。
+在特征 \(2\) 下有 \((E+1)^{2^{t}}=E^{2^{t}}+1\)，从而 \(E^{2^{t}}a=a\) 在后段成立，得到周期整除 \(2^{t}\)。
+最后一条取 \(e=8\) 得 \(t=3\)。证毕。
+\end{proof}
+
+\begin{corollary}[模 \(2\) 影子差分阶数的台阶跃迁与碰撞矩奇偶动力学的可检验分级]\label{cor:conclusion-fold-collision-mod2-step-jump-q7}
+在模 \(2\) 影子分解
+\(
+P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\ (\mathrm{mod}\ 2)
+\)
+与湮灭式 \(E^{a_q}(E+1)^{b_q}S_q\equiv 0\ (\mathrm{mod}\ 2)\) 的设定下，
+对每个固定 \(q\) 记 \(\Delta:=E+1\)。
+则 \(S_q(m+a_q)\bmod 2\) 在后段满足 \(\Delta^{b_q}S_q(m+a_q)=0\)，从而由命题 \ref{prop:conclusion-f2-binomial-basis-from-delta-nilpotent} 得到二项式基多项式表示，其次数严格小于 \(b_q\)。
+特别地，在已核验切片中 \(q\in\{4,5,6\}\) 对应 \(b_q=2\)，而从 \(q=7\) 起（在所给审计范围内）出现 \(b_q=4\)；
+因此模 \(2\) 的差分幂零阶数在 \(q=7\) 处发生可复核的台阶跃迁：由最终仿射相跃迁到最终至多三次相。
+\end{corollary}
+
+\begin{conjecture}[模 \(2\) 塌缩指数的幂次塔：差分幂零深度的无界性]\label{conj:conclusion-fold-collision-mod2-power-tower}
+令 \(b_q\) 为模 \(2\) 影子分解 \(P_q(\lambda)\equiv \lambda^{a_q}(\lambda+1)^{b_q}\ (\mathrm{mod}\ 2)\) 的指数。
+猜想：
+\begin{enumerate}
+  \item \(b_q\) 仅取 \(2\) 的幂，并随 \(q\) 非减；
+  \item 存在无穷增序列 \(q_1<q_2<\cdots\) 使 \(b_{q_{n+1}}=2b_{q_n}\)；
+  \item 对每个 \(q\)，\(b_q\) 同时给出 \(S_q(m)\bmod 2\) 的最小差分幂零阶：在后段有 \(\Delta^{b_q}S_q=0\) 且 \(\Delta^{b_q/2}S_q\not\equiv 0\)。
+\end{enumerate}
+\end{conjecture}
 

@@ -124,6 +124,157 @@ e_{3}(\tilde y)=\frac{5y(y-1)^{2}}{(y+1)^{4}}.
 \(e_{2}=a_{2}\)、\(e_{3}=-a_{1}\) 即得。证毕。
 \end{proof}
 
+\begin{theorem}[平移点 \texorpdfstring{$Q_0=(0,\tfrac12)$}{Q0=(0,1/2)} 的双四次外置模型]\label{thm:xi-terminal-zm-translation-q0-godel-biquartic}
+设
+\[
+\mathcal E/\QQ:\quad Y^2=X^3-X+\frac14,\qquad Q_0:=(0,\tfrac12)\in \mathcal E(\QQ),
+\]
+并令 \(y:=X^2+Y-\tfrac12\in\QQ(\mathcal E)\)。
+对 \(P\in\mathcal E(\overline{\QQ})\)（在稠密开集上）定义
+\[
+u:=y(P),\qquad v:=y(P+Q_0).
+\]
+则 \((u,v)\) 满足唯一不可约双四次关系
+\[
+F(u,v)=0,
+\]
+其中
+\[
+\begin{aligned}
+F(u,v):={}&u^4v^4+4u^3v^4-u^3v^3-9u^3v^2-5u^3v-u^3\\
+&+6u^2v^4+4u^2v^3+13u^2v^2+10u^2v+3u^2\\
+&+4uv^4+6uv^3-2uv^2-5uv-3u\\
+&+v^4-2v^2+1.
+\end{aligned}
+\]
+若记 \(\mathcal C_{Q_0}\subset\mathbb A^2_{u,v}\) 由 \(F(u,v)=0\) 定义，则映射
+\[
+\Phi_{Q_0}:\mathcal E\dashrightarrow \mathcal C_{Q_0},\qquad
+P\longmapsto \bigl(y(P),y(P+Q_0)\bigr)
+\]
+在稠密开集上为双有理等价。
+\end{theorem}
+\begin{proof}[证明要点]
+由结论 \ref{con:xi-terminal-zm-translation-r-primitive-minpoly} 已得
+\(H_1(y,\tilde y)=0\)（其中 \(\tilde y=y\circ\tau_R\)、\(R=Q_0\)）且 \(H_1\) 在 \(\QQ(y)[\tilde y]\) 不可约。
+将 \(H_1\) 的系数逐项展开并以 \(u=y,\ v=\tilde y\) 代入，恰得上式 \(F(u,v)\)。
+故 \(F\) 不可约，且 \(\QQ(u,v)=\QQ(\mathcal E)\)，从而 \(\Phi_{Q_0}\) 双有理。证毕。
+\end{proof}
+
+\begin{corollary}[判别式分解与新增四次分歧因子]\label{cor:xi-terminal-zm-translation-q0-discriminant-new-quartic}
+将 \(F(u,v)\) 视为 \(\QQ(u)\) 上关于 \(v\) 的四次多项式，则
+\[
+\Disc_{v}(F)
+=-u^3(u-1)^7\mathrm{PLY}(u)\,C(u)^2,
+\]
+其中
+\[
+\mathrm{PLY}(u):=256u^3+411u^2+165u+32,\qquad
+C(u):=u^4-4u^3+6u^2+12u-7.
+\]
+因此在平方自由类上
+\[
+\bigl[\Disc_v(F)\bigr]_{\mathrm{sf}}
+=\bigl[-u(u-1)\mathrm{PLY}(u)\bigr]_{\mathrm{sf}},
+\]
+而 \(C(u)\) 作为新增四次因子以平方幂出现。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-terminal-zm-translation-q0-godel-biquartic} 中 \(F\equiv H_1\) 的展开等价性，
+该式与结论 \ref{con:xi-terminal-zm-translation-r-discriminant-factorization} 完全一致。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$\QQ(u)$}{Q(u)} 上的泛 Galois 群为 \texorpdfstring{$S_4$}{S4}]\label{prop:xi-terminal-zm-translation-q0-generic-galois-s4}
+设 \(K:=\QQ(u)\)，令 \(L:=K(v)\) 由 \(F(u,v)=0\) 给出，并记 \(\widetilde L/K\) 为其分裂域。
+则
+\[
+\Gal(\widetilde L/K)\cong S_4.
+\]
+\end{proposition}
+\begin{proof}[证明要点]
+取特化 \(u=2\)，得
+\[
+f(v):=F(2,v)=81v^4+20v^3-26v^2-10v-1.
+\]
+脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_translation\_r\_s4\_d4\_audit.py}
+核验：\(f\) 在 \(\FF_7[v]\) 不可约，故在 \(\QQ[v]\) 不可约；
+\(\Disc(f)=-20270000\) 非平方，故其 Galois 群不含于 \(A_4\)。
+对首一化四次的标准三次分解式可得
+\[
+R_f(t)=531441t^3+170586t^2+10044t+724,
+\]
+并且 \(R_f\) 在 \(\FF_{19}[t]\) 不可约，从而在 \(\QQ[t]\) 不可约。
+按不可约四次多项式的 Galois 群分类，得 \(\Gal(f/\QQ)\cong S_4\)。
+由专化嵌入 \(\Gal(f/\QQ)\hookrightarrow \Gal(\widetilde L/K)\subseteq S_4\)，只能有
+\(\Gal(\widetilde L/K)=S_4\)。证毕。
+\end{proof}
+
+\begin{theorem}[交换型外置仅保留符号位]\label{thm:xi-terminal-zm-translation-q0-abelian-register-limit}
+在命题 \ref{prop:xi-terminal-zm-translation-q0-generic-galois-s4} 的记号下，
+\[
+\Gal(\widetilde L/K)\cong S_4,\qquad S_4^{\mathrm{ab}}\cong C_2.
+\]
+因此任一与解析延拓相容、取值于交换群的外置同态
+\[
+\chi:S_4\longrightarrow A\quad(A\ \text{交换})
+\]
+必经由符号同态因子化；可交换外置最多保留一位 \(C_2\) 信息，无法承载完整单值化数据。
+\end{theorem}
+\begin{proof}
+交换目标下 \(\chi(S_4)\) 交换，故 \(\ker\chi\supseteq [S_4,S_4]=A_4\)。
+于是 \(\chi\) 经由交换化 \(S_4^{\mathrm{ab}}\) 因子化，而 \(S_4^{\mathrm{ab}}\cong C_2\)。证毕。
+\end{proof}
+
+\begin{corollary}[符号二次子域与属 \texorpdfstring{$2$}{2} 超椭圆模型]\label{cor:xi-terminal-zm-translation-q0-sign-quadratic-subfield}
+在命题 \ref{prop:xi-terminal-zm-translation-q0-generic-galois-s4} 的设定下，\(\widetilde L/K\) 存在唯一二次子扩张
+\[
+K_2
+=K\!\left(\sqrt{\Delta_{\mathrm{sf}}(u)}\right),
+\qquad
+\Delta_{\mathrm{sf}}(u):=-u(u-1)\mathrm{PLY}(u).
+\]
+对应代数曲线可取
+\[
+\mathcal H:\quad w^2=\Delta_{\mathrm{sf}}(u),
+\]
+其为光滑属 \(2\) 曲线。
+\end{corollary}
+\begin{proof}
+由 \(S_4\supset A_4\) 的正规子群对应，唯一指数 \(2\) 子域即符号子域。
+又由推论 \ref{cor:xi-terminal-zm-translation-q0-discriminant-new-quartic}，
+\(\Disc_v(F)\) 的平方自由类正是 \(\Delta_{\mathrm{sf}}(u)\)，故得 \(K_2\)。
+\(\Delta_{\mathrm{sf}}\) 次数为 \(5\) 且平方自由（脚本同证），故 \(w^2=\Delta_{\mathrm{sf}}(u)\) 为光滑超椭圆曲线，属
+\(\lfloor(5-1)/2\rfloor=2\)。证毕。
+\end{proof}
+
+\begin{proposition}[新增四次因子 \texorpdfstring{$C(u)$}{C(u)} 的二面体 Galois 结构与素数 \texorpdfstring{$5$}{5}]\label{prop:xi-terminal-zm-translation-q0-new-quartic-d4-prime5}
+令
+\[
+C(u)=u^4-4u^3+6u^2+12u-7\in\ZZ[u].
+\]
+则：
+\begin{enumerate}
+  \item \(C(u)\) 在 \(\QQ[u]\) 不可约；
+  \item \(\Disc(C)=-2^{16}\cdot 5^2\)；
+  \item \(C(u)\) 的分裂域 Galois 群同构于二面体群 \(D_4\)（阶 \(8\)）。
+\end{enumerate}
+从而 \(5\) 为该新增四次分歧层的唯一奇素分歧素数。
+\end{proposition}
+\begin{proof}[证明要点]
+脚本 \texttt{scripts/exp\_fold\_zm\_elliptic\_translation\_r\_s4\_d4\_audit.py}
+核验 \(C\) 在 \(\QQ[u]\) 不可约，且
+\[
+\Disc(C)=-2^{16}\cdot 5^2.
+\]
+对首一四次的三次分解式计算得
+\[
+R_C(t)=t^3-6t^2-20t-200=(t-10)(t^2+4t+20).
+\]
+同脚本给出的置换群计算显示其分裂域 Galois 群阶为 \(8\) 且为二面体型，
+即 \(\Gal(C/\QQ)\cong D_4\)。
+由判别式素因子分解立得唯一奇素分歧素数为 \(5\)。证毕。
+\end{proof}
+
 \begin{conclusion}[平移 \texorpdfstring{$nR$}{nR}（\texorpdfstring{$n=2,3,4$}{n=2,3,4}）的四次原始关系与统一判别式核]\label{con:xi-terminal-zm-translation-nr-quartic-discriminant}
 对 \(n\in\{2,3,4\}\) 记 \(\tilde y_{n}:=y\circ\tau_{nR}\)。
 则每个 \(\tilde y_n\) 在 \(k=\QQ(y)\) 上均为次数 \(4\) 的原始元，满足不可约关系

@@ -153,6 +153,212 @@ B:=\sum_{i=1}^r \ZZ a_i\cong \ZZ^r.
 直接得到。证毕。
 \end{proof}
 
+\begin{definition}[秩一无挠群的高度签名]\label{def:conclusion-rank1-height-signature}
+称可数阿贝尔群 \(A\) 为\textbf{秩一无挠}，若 \(A\) 无挠且
+\[
+\cdim_{\QQ}(A)=\dim_{\QQ}(A\otimes_{\ZZ}\QQ)=1.
+\]
+在同构意义下可将 \(A\) 缩放嵌入为
+\(
+\ZZ\subseteq A\subseteq \QQ
+\)。
+在该归一化下，对每个素数 \(p\) 定义其\textbf{高度}
+\[
+h_p(A):=\sup\bigl(\{k\in\NN:\ p^{-k}\in A\}\cup\{0\}\bigr)\in(\NN\cup\{0\})\cup\{\infty\},
+\]
+并称 \(\Sigma(A):=(h_p(A))_{p}\) 为 \(A\) 的高度签名。
+\end{definition}
+
+\begin{theorem}[秩一无挠群的高度刚性与一维 solenoid 对偶]\label{thm:conclusion-rank1-height-solenoid-dual}
+令 \(A\) 为秩一无挠可数阿贝尔群。
+则存在整数链 \(d_1\mid d_2\mid\cdots\) 使
+\[
+A=\bigcup_{j\ge 1}\frac{1}{d_j}\ZZ,
+\qquad
+v_p(d_j)\uparrow h_p(A)\ \ (p\ \text{任意素数}),
+\]
+并且其 Pontryagin 对偶具有一维 solenoid 的逆极限表示
+\[
+\widehat{A}\ \cong\ \varprojlim_j\Bigl(\TT \xleftarrow{\,z\mapsto z^{d_{j+1}/d_j}\,}\TT\Bigr).
+\]
+此外，在归一化 \(\ZZ\subseteq A\subseteq\QQ\) 下，\(\Sigma(A)\) 完全决定 \(A\) 的同构类：若 \(A,B\) 均为秩一无挠且 \(\Sigma(A)=\Sigma(B)\)，则 \(A\cong B\)。
+\end{theorem}
+\begin{proof}
+取 \(A\) 的可数生成集合并将每个元素写为既约分数，取其分母集合的递增闭包即可构造整数链 \(d_1\mid d_2\mid\cdots\) 使
+\(
+A=\bigcup_j d_j^{-1}\ZZ
+\)。
+按定义 \(p^{-k}\in A\) 当且仅当存在 \(j\) 使 \(p^k\mid d_j\)，故 \(v_p(d_j)\) 的上确界恰为 \(h_p(A)\)，并可取为单调趋近该上确界的链。
+\par
+对偶表示：对任意 \(d\ge 1\)，离散群 \(d^{-1}\ZZ\) 的 Pontryagin 对偶同构于 \(\TT\)（字符由 \(t\mapsto e^{2\pi i t x}\) 给出）。
+包含 \(d_j^{-1}\ZZ\hookrightarrow d_{j+1}^{-1}\ZZ\) 在对偶侧对应到覆盖映射
+\(
+\TT\to\TT,\ z\mapsto z^{d_{j+1}/d_j}
+\)。
+由于 Pontryagin 对偶把直极限送到逆极限，得到
+\(
+\widehat{A}\cong \varprojlim_j(\TT\xleftarrow{z\mapsto z^{d_{j+1}/d_j}}\TT)
+\)。
+\par
+最后证高度刚性。在归一化 \(\ZZ\subseteq A\subseteq\QQ\) 下，\(A\) 等于
+\[
+\{x\in\QQ:\ v_p(x)\ge -h_p(A)\ \text{对所有 }p\},
+\]
+其中约定 \(h_p(A)=\infty\) 表示对该素数方向不施加下界约束。
+因此 \(\Sigma(A)\) 逐素数刻画了允许出现的分母幂次上界，从而完全决定该 \(\QQ\) 的子群；若 \(\Sigma(A)=\Sigma(B)\) 则 \(A=B\)，从而 \(A\cong B\)。证毕。
+\end{proof}
+
+\begin{corollary}[Fibonacci 覆盖塔的逆极限溶子与 \texorpdfstring{$\widehat{\QQ}$}{Q-hat} 同构]\label{cor:conclusion-fibonacci-solenoid-dual-q}
+令 \(\TT=\RR/\ZZ\)，并令 \(d_n:=F_{n+2}\)（\(F_n\) 为 Fibonacci 数列）。
+考虑覆盖同态
+\[
+\varphi_n:\TT\to\TT,\qquad x\longmapsto d_n x\pmod 1,
+\]
+并定义逆极限紧交换群
+\[
+S_F:=\varprojlim(\TT,\varphi_n).
+\]
+则其 Pontryagin 对偶为直极限
+\[
+\widehat{S_F}\ \cong\ \varinjlim(\ZZ,\times d_n)
+=\bigcup_{N\ge 1}\frac1{D_N}\ZZ,
+\qquad D_N:=\prod_{n=0}^{N-1}d_n,
+\]
+并且 \(\widehat{S_F}\cong\QQ\)。
+从而 \(S_F\cong \widehat{\QQ}\)；在局部紧交换群的对偶范畴中亦可识别为
+\(
+S_F\cong \mathbb A_\QQ/\QQ
+\)。
+\end{corollary}
+
+\begin{proof}
+逆极限与 Pontryagin 对偶把乘法覆盖 \(\varphi_n\) 送到 \(\ZZ\xrightarrow{\times d_n}\ZZ\) 的直极限，得到第一式。
+下证该直极限等于 \(\QQ\)。
+对任意素数 \(p\)，Fibonacci 数列在模 \(p\) 的状态对 \((F_n,F_{n+1})\in(\ZZ/p\ZZ)^2\) 上由递推确定且可逆，故从初态 \((0,1)\) 出发必回到 \((0,1)\)，从而存在 \(m\ge 1\) 使 \(F_m\equiv 0\pmod p\)。
+因此 \(p\) 整除无穷多个 \(d_n\)，从而在乘积 \(D_N\) 中的 \(p\)-进赋值随 \(N\to\infty\) 发散。
+于是对任意 \(k\ge 1\) 存在 \(N\) 使 \(p^k\mid D_N\)，即 \(p^{-k}\in \bigcup_N D_N^{-1}\ZZ\)。
+由于对一切素数 \(p\) 均如此，该并集包含所有有限分母的有理数，故等于 \(\QQ\)。
+最后的识别由 \(\widehat{\QQ}\cong \mathbb A_\QQ/\QQ\) 的标准 Pontryagin 对偶结论得到。证毕。
+\end{proof}
+
+\begin{theorem}[乘法自同构在 \texorpdfstring{$\widehat{\QQ}$}{Q-hat} 上的遍历性与强混合]\label{thm:conclusion-qhat-multiplication-ergodic-mixing}
+令 \(S_F\) 如推论 \ref{cor:conclusion-fibonacci-solenoid-dual-q}，并以 \(\mu\) 记其 Haar 概率测度。
+对任意整数 \(n\ge 2\)，令
+\[
+T_n:S_F\to S_F
+\]
+为与 \(\QQ\) 上的乘法自同构 \(q\mapsto nq\) 对偶的紧群自同构。
+则 \(T_n\) 关于 \(\mu\) 遍历且强混合。
+因此对任意 \(f\in L^1(S_F,\mu)\)，Birkhoff 平均几乎处处收敛：
+\[
+\lim_{N\to\infty}\frac1N\sum_{k=0}^{N-1} f\circ T_n^k
+=\int_{S_F} f\,d\mu.
+\]
+\end{theorem}
+
+\begin{proof}
+由推论 \ref{cor:conclusion-fibonacci-solenoid-dual-q}，字符群 \(\widehat{S_F}\cong\QQ\)，并且 \(\{\chi_q:q\in\QQ\}\) 在 \(L^2(S_F,\mu)\) 中构成正交基。
+对偶作用满足 \(\chi_q\circ T_n=\chi_{nq}\)。
+\par
+遍历性：若 \(g\in L^2\) 满足 \(g\circ T_n=g\)，写 Fourier 展开 \(g=\sum_q \widehat g(q)\chi_q\)。
+则 \(\widehat g(q)=\widehat g(nq)\) 对所有 \(q\) 成立。
+对任意 \(q\neq 0\)，轨道 \(\{n^k q:k\ge 0\}\) 无穷且互异；
+而 \(\sum_q|\widehat g(q)|^2<\infty\)，故只能有 \(\widehat g(q)=0\)（否则在无穷互异频率上出现相同的非零系数，违反平方可和性）。
+因此 \(g\) 仅余常数项，遍历性成立。
+\par
+混合性：对任意 \(q,q'\in\QQ\)，有
+\[
+\langle \chi_q\circ T_n^k,\chi_{q'}\rangle
+=\langle \chi_{n^k q},\chi_{q'}\rangle
+=\ind_{\{n^k q=q'\}}.
+\]
+当 \(q\neq 0\) 或 \(q'\neq 0\) 时，等式 \(n^k q=q'\) 最多在至多一个 \(k\) 上成立，故内积在 \(k\to\infty\) 时趋于 \(0\)；
+再由三角多项式在 \(L^2\) 的稠密性得到对一般 \(L^2\) 函数的强混合。
+最后的时间平均收敛由遍历性与 Birkhoff 定理推出。证毕。
+\end{proof}
+
+\begin{remark}[圆维含义：无限素数方向信息不提升相位圆维]\label{rem:conclusion-rank1-solenoid-circle-dimension}
+对紧阿贝尔群 \(K\) 记 \(\cdim_{\QQ}^{\vee}(K)=\dim_{\QQ}(\widehat K\otimes_{\ZZ}\QQ)\)（见定理 \ref{thm:conclusion-lie-solenoid-prime-ledger-dichotomy}(3)）。
+由 \(\widehat{\widehat{A}}=A\) 与 \(\cdim_{\QQ}(A)=1\) 得
+\[
+\cdim_{\QQ}^{\vee}(\widehat A)=1,
+\]
+即便高度签名 \(\Sigma(A)\) 在素数方向携带无限信息，其结构圆维仍保持为一维；无限性被严格容纳在逆极限纤维的 profinite/solenoidal 结构中，而非表现为无穷多个相位圆因子。
+\end{remark}
+\paragraph{高度序列与归一化周期模}\label{para:conclusion-solenoid-height-normalized-period-module}
+定理 \ref{thm:conclusion-rank1-height-solenoid-dual} 表明，一维 solenoid 的离散侧分类信息可编码为高度序列 \(\Sigma(A)\)。
+在有限覆盖逆塔的层无关积分口径（定理 \ref{thm:app-normalized-stokes-finite-cover-inverse-tower}）下，该分类参数亦可由单一“归一化斯托克斯周期模”完全恢复。
+
+\begin{theorem}[归一化斯托克斯周期模恢复高度签名]\label{thm:conclusion-rank1-solenoid-normalized-stokes-period-module-recovers-height}
+令 \(A\) 为秩一无挠可数阿贝尔群，并取定理 \ref{thm:conclusion-rank1-height-solenoid-dual} 的整数链 \(d_1\mid d_2\mid\cdots\) 与表示
+\[
+\widehat{A}\ \cong\ \varprojlim_j\Bigl(\TT \xleftarrow{\,z\mapsto z^{d_{j+1}/d_j}\,}\TT\Bigr).
+\]
+在 \(\TT\simeq\RR/\ZZ\) 上取标准平移不变闭 \(1\)-形式 \(\mathrm d\theta\)（其周期群为 \(\ZZ\)）。
+定义 \(\widehat{A}\) 的\emph{归一化斯托克斯周期模}
+\[
+\Pi_{\mathrm{St}}(\widehat{A})
+:=
+\bigcup_{j\ge 1}\left\{\frac1{d_j}\int_{\gamma}\mathrm d\theta:\ \gamma\ \text{为 }\TT\text{ 上的分段光滑闭曲线}\right\}
+\subseteq \QQ\subseteq\RR.
+\]
+则 \(\Pi_{\mathrm{St}}(\widehat{A})=A\)（在归一化 \(\ZZ\subseteq A\subseteq\QQ\) 下）。
+并且对每个素数 \(p\)，高度由周期模完全恢复：
+\[
+h_p(A)=\sup\left(\{k\in\NN:\ p^{-k}\in \Pi_{\mathrm{St}}(\widehat{A})\}\cup\{0\}\right)\quad(\text{允许 }=\infty).
+\]
+\end{theorem}
+
+\begin{proof}
+任意闭曲线 \(\gamma\) 在 \(\TT\) 上的绕数 \(\deg(\gamma)\in\ZZ\) 满足
+\(
+\int_\gamma \mathrm d\theta=\deg(\gamma)
+\)。
+故对每个 \(j\)，集合
+\(
+\left\{\frac1{d_j}\int_\gamma \mathrm d\theta\right\}
+=d_j^{-1}\ZZ
+\)。
+取并得
+\[
+\Pi_{\mathrm{St}}(\widehat{A})=\bigcup_{j\ge 1}d_j^{-1}\ZZ=A,
+\]
+其中最后一步使用定理 \ref{thm:conclusion-rank1-height-solenoid-dual} 的离散侧刻画。
+最后，\(p^{-k}\in A\) 当且仅当 \(k\le h_p(A)\)，由此即得恢复式。证毕。
+\end{proof}
+
+\begin{theorem}[profinite 纤维的斯托克斯不可见性]\label{thm:conclusion-profinite-fiber-stokes-invisibility}
+设有紧交换群短正合列
+\[
+0\longrightarrow P\longrightarrow E\stackrel{\pi}{\longrightarrow}\TT^r\longrightarrow 0,
+\]
+其中 \(P\) 为 profinite（紧、全不连通）交换群。
+定义 \(E\) 上的斯托克斯可见形式子空间
+\[
+\Omega^k_{\mathrm{St}}(E):=\pi^\ast\Omega^k(\TT^r).
+\]
+若 \(\alpha\in\Omega^{r-1}_{\mathrm{St}}(E)\)，且 \(C\) 为 \(E\) 中一条 \(r\)-维分段光滑奇异链，满足 \(C\) 在 \(P\) 方向局部常值（从而 \(\partial C\) 亦局部常值），则成立
+\[
+\int_C d\alpha=\int_{\partial C}\alpha.
+\]
+并且该等式仅由 \(\pi(C)\subseteq\TT^r\) 与 \(\pi^\ast\) 的函子性决定，与 \(P\) 的内部结构无关。
+\end{theorem}
+
+\begin{proof}
+由定义 \(\alpha=\pi^\ast\beta\)（某 \(\beta\in\Omega^{r-1}(\TT^r)\)），且 \(d\alpha=\pi^\ast(d\beta)\)。
+当 \(C\) 在 \(P\) 方向局部常值时，\(\pi\) 在链意义下给出 \(\pi_\# C\)，并满足 \(\pi_\#(\partial C)=\partial(\pi_\# C)\)。
+于是
+\[
+\int_C d\alpha
+=\int_C \pi^\ast(d\beta)
+=\int_{\pi_\# C} d\beta
+=\int_{\partial(\pi_\# C)}\beta
+=\int_{\partial C}\pi^\ast\beta
+=\int_{\partial C}\alpha,
+\]
+其中第三个等号为 \(\TT^r\) 上经典广义斯托克斯定理。证毕。
+\end{proof}
+
 \begin{theorem}[有限精度势约束下的圆维单调性]\label{thm:conclusion-jacobian-potential-dimension-monotonicity}
 令 \(U:=(-\tfrac12,\tfrac12)\)。
 设 \(f:U^k\to U^\ell\) 为局部 Lipschitz 映射。
@@ -279,6 +485,22 @@ K_A\hookrightarrow L.
 \mathcal P_{\min}(K)=\{p:\ p\mid \Delta_K\}.
 \]
 等价地，所有不可消去的进位/分歧/纤维缺陷均由 ramified primes 强制，而在 \(\mathcal O_K[\Delta_K^{-1}]\) 上不需引入新素账本轴。
+\end{conjecture}
+
+\begin{conjecture}[Hecke--Stokes 互易接口：solenoid 周期模的本征谱恢复]\label{conj:conclusion-hecke-stokes-reciprocity-solenoid-period-spectrum}
+设 \((X_n,\pi_n)_{n\ge 0}\) 为模曲线的有限覆盖塔（例如 \(X_0(Np^n)\)），并令
+\(
+\mathcal S:=\varprojlim (X_n,\pi_n)
+\)
+为其逆极限 solenoid 型紧空间。
+设 \(f\) 为权 \(2\) 的 Hecke 本征新形式，\(\omega_f\) 为对应的全纯微分。
+考虑由层间拉回并按覆盖次数作归一化所诱导的闭 \(1\)-形式系统，并以此定义 \(\mathcal S\) 上的归一化周期模 \(\Pi_{\mathrm{St}}(\mathcal S,\omega_f)\)（与定理 \ref{thm:app-normalized-stokes-finite-cover-inverse-tower} 同型的层无关积分口径）。
+则猜想：
+\begin{enumerate}
+  \item \(\Pi_{\mathrm{St}}(\mathcal S,\omega_f)\) 在 Hecke 代数作用下稳定；
+  \item Hecke 本征值 \(\{a_\ell(f)\}\) 可由层间转移算子在 \(\Pi_{\mathrm{St}}(\mathcal S,\omega_f)\) 上的特征谱唯一确定；
+  \item 在适当完备化后，\(\Pi_{\mathrm{St}}(\mathcal S,\omega_f)\) 的“周期--转移”结构与 \(H^1\) 的 \(p\)-进实现之局部滤过数据相容，从而把局部因子以可审计的边界周期数据编码。
+\end{enumerate}
 \end{conjecture}
 
 \begin{remark}[与本质素数谱口径的对接]\label{rem:conclusion-discriminant-ledger-interface}

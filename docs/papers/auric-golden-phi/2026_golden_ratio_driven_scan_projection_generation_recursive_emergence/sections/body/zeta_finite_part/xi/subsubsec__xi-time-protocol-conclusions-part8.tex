@@ -101,6 +101,25 @@ f(t)\equiv t^3+9t^2+t+10\pmod{13}
 又因 \(\Delta>0\)，三根互异且均为实数，从而 \(T\) 的三个非平凡本征值均为代数次数 \(3\) 的实数。证毕。
 \end{proof}
 
+\begin{corollary}[判别式分解的审计素数：\texorpdfstring{$23$}{23} 的不可消去出现]\label{cor:xi-window6-four-block-kernel-disc-audit-prime-23}
+沿定理 \ref{thm:xi-window6-four-block-kernel-cubic-field-s3} 的整系数多项式
+\(
+f(t)=48114t^3+7263t^2-506t-55
+\)。
+其判别式满足
+\[
+\boxed{\;
+\Disc(f)
+=2^{2}\cdot 3^{2}\cdot 11^{2}\cdot 13^{2}\cdot 23\;}
+\]
+并且 \(\det(tI-T)\) 的常数项分解含因子
+\(
+23\cdot 11\cdot 5
+\)
+（见证书 \eqref{eq:window6_edge_flux_skeleton_arithmetic}）。
+因此素数 \(23\) 作为四块粗粒化核的代数数论指纹在该口径下不可被规避或坐标变换消去：其出现由判别式与常数项同时锁定。
+\end{corollary}
+
 \begin{corollary}[粗粒化谱数域与黄金尺度域的互素分离：合成域次数为 \(6\)]\label{cor:xi-window6-field-disjointness-degree-six}
 令 \(K_T=\mathbb Q(\lambda)\) 为定理 \ref{thm:xi-window6-four-block-kernel-cubic-field-s3} 的非平凡谱所生成三次数域，
 并令 \(K_\varphi=\mathbb Q(\varphi)\) 为黄金二次数域。
@@ -164,6 +183,88 @@ K_T\cap K_\varphi=\mathbb Q,
 在四块骨架证书 \eqref{eq:window6_edge_flux_skeleton} 的记号下，令 \(\mathcal{G}_{\mathrm{blk}}\) 为加权无向多重图：顶点为 \(\{U_2,U_1,U_L,U_R\}\)，且当 \(\alpha\neq\beta\) 时边重数为 \(E_{\alpha\beta}\)（忽略块内自环）。
 记其加权 Laplace 矩阵为 \(L_{\mathrm{blk}}\)（对角为度数、非对角为负边重数），并令 \(L_{\mathrm{blk}}^{(\alpha)}\) 为删去同一行列所得主余子式。
 
+\begin{theorem}[回路格的电阻型 Gram 行列式与生成树权]\label{thm:xi-flow-lattice-gram-determinant-tree-weight}
+令 \(G=(V,E)\) 为有限连通（允许多重边）无向图，并固定一组定向以定义去掉一行的有向关联矩阵
+\(
+B\in\ZZ^{(|V|-1)\times|E|}
+\)
+（于是 \(\mathrm{rank}\,B=|V|-1\)）。
+给定边权 \(w_e>0\)，令 \(W:=\mathrm{diag}(w_e)_{e\in E}\)。
+定义整数流格
+\[
+\Lambda_{\mathrm{fl}}:=\ker(B)\cap\ZZ^{E}\subset \RR^E,
+\]
+并在 \(\RR^E\) 上取电阻型二次型
+\[
+\langle x,y\rangle_{W^{-1}}:=x^{\mathsf T}W^{-1}y.
+\]
+记 \(\tau_w(G)\) 为加权生成树总权（对每棵生成树取边权乘积并求和）。
+则 \(\Lambda_{\mathrm{fl}}\) 在该二次型下的 Gram 行列式满足精确恒等式
+\[
+\det\!\bigl(\mathrm{Gram}_{W^{-1}}(\Lambda_{\mathrm{fl}})\bigr)=\frac{\tau_w(G)}{\det(W)}.
+\]
+等价地，其协体积为
+\[
+\mathrm{covol}_{W^{-1}}(\Lambda_{\mathrm{fl}})=\sqrt{\tau_w(G)/\det(W)}.
+\]
+\end{theorem}
+\begin{proof}
+取任一生成树 \(T\subseteq E\)，令弦边集 \(C:=E\setminus T\)，并按 \(E=T\sqcup C\) 重排列边。
+相应写 \(B=[B_T\ B_C]\) 与 \(W=\mathrm{diag}(W_T,W_C)\)。
+由于 \(T\) 为生成树，\(B_T\in\ZZ^{(|V|-1)\times(|V|-1)}\) 为可逆整矩阵且 \(\det(B_T)=\pm 1\)。
+令
+\[
+C_*:=\begin{pmatrix}-B_T^{-1}B_C\\ I\end{pmatrix}\in\ZZ^{E\times|C|},
+\]
+则 \(BC_*=0\)，且其列向量给出 \(\Lambda_{\mathrm{fl}}\) 的一组整基。
+故 Gram 矩阵为
+\[
+G_*:=C_*^{\mathsf T}W^{-1}C_*
+=W_C^{-1}+B_C^{\mathsf T}B_T^{-\mathsf T}W_T^{-1}B_T^{-1}B_C.
+\]
+由矩阵行列式引理与 Sylvester 恒等式 \(\det(I+AB)=\det(I+BA)\)，得
+\[
+\det(G_*)
+=\det(W_C^{-1})\cdot
+\det\!\Bigl(I+(B_TW_TB_T^{\mathsf T})^{-1}B_CW_CB_C^{\mathsf T}\Bigr).
+\]
+另一方面，加权约化拉普拉斯为
+\[
+L_w:=BW B^{\mathsf T}=B_TW_TB_T^{\mathsf T}+B_CW_CB_C^{\mathsf T},
+\]
+并有分解
+\[
+\det(L_w)=\det(B_TW_TB_T^{\mathsf T})\cdot
+\det\!\Bigl(I+(B_TW_TB_T^{\mathsf T})^{-1}B_CW_CB_C^{\mathsf T}\Bigr).
+\]
+由于 \(\det(B_TW_TB_T^{\mathsf T})=\det(W_T)\)（因 \(\det(B_T)=\pm1\)），比较两式得到
+\[
+\det(G_*)
+=\det(W_C^{-1})\cdot\frac{\det(L_w)}{\det(W_T)}
+=\frac{\det(L_w)}{\det(W_T)\det(W_C)}
+=\frac{\det(L_w)}{\det(W)}.
+\]
+加权矩阵树定理给出 \(\det(L_w)=\tau_w(G)\)，从而结论成立。证毕。
+\end{proof}
+
+\begin{corollary}[固定边界偏差后的整数流扭量协体积]\label{cor:xi-affine-flow-torsor-covolume}
+在定理 \ref{thm:xi-flow-lattice-gram-determinant-tree-weight} 的设定下，给定任意 \(b\in\ZZ^{|V|-1}\) 使得同余方程 \(BF=b\) 在 \(\ZZ^E\) 中可解。
+取一解 \(F^{(0)}\in\ZZ^E\)，并令
+\[
+S(b):=\{F\in\ZZ^E:\ BF=b\}=F^{(0)}+\Lambda_{\mathrm{fl}}.
+\]
+则 \(S(b)\) 为以 \(\Lambda_{\mathrm{fl}}\) 为平移群的仿射格。
+因此在二次型 \(\langle\cdot,\cdot\rangle_{W^{-1}}\) 下，解集的自由度密度由
+\[
+\mathrm{covol}_{W^{-1}}(\Lambda_{\mathrm{fl}})=\sqrt{\tau_w(G)/\det(W)}
+\]
+精确控制。
+\end{corollary}
+\begin{proof}
+若 \(F\in S(b)\)，则 \(B(F-F^{(0)})=0\)，即 \(F-F^{(0)}\in\Lambda_{\mathrm{fl}}\)，反之亦然，故 \(S(b)=F^{(0)}+\Lambda_{\mathrm{fl}}\)。
+协体积等式由定理 \ref{thm:xi-flow-lattice-gram-determinant-tree-weight} 直接给出。证毕。
+\end{proof}
+
 \begin{corollary}[window-\(6\) 四块商图的加权树数分解与审计素数 \texorpdfstring{$p_\star=571$}{p*=571}]\label{cor:xi-window6-block-tree-number-audit-prime}
 对任意块 \(\alpha\in\{2,1,L,R\}\)，主余子式的行列式一致且等于同一加权树数
 \[
@@ -201,6 +302,52 @@ Z:=(I-T+\mathbf 1\pi^\top)^{-1}.
 由脚本审计输出 \eqref{eq:window6_green_kernel_audit_prime_571} 与表 \ref{tab:window6_green_kernel_Z}，\(Z\) 的分母谱仅含 \(2,3,p_\star\)。
 又由 Cramer 法则，\(Z\) 的任一矩阵元为 \(\mathrm{adj}(I-T+\mathbf 1\pi^\top)\) 的余子式除以 \(\det(I-T+\mathbf 1\pi^\top)\)。
 由于该行列式既约分子含 \(p_\star\)，且表 \ref{tab:window6_green_kernel_Z} 中确有既约分母含 \(p_\star\) 的矩阵元，故 \(p_\star\) 不能在 Green 核层面被消去。证毕。
+\end{proof}
+
+\begin{theorem}[Markov--导数行列式恒等式：坏素数当且仅当特征多项式在 \(1\) 处模 \(p\) 重根]\label{thm:xi-markov-derivative-determinant-bad-prime}
+设 \(T\) 为 \(N\times N\) 行随机矩阵，\(\pi^\top\) 为其平稳分布（\(\pi^\top T=\pi^\top\)，\(\pi^\top\mathbf 1=1\)），并假设特征值 \(1\) 在 \(\mathbb Q\) 上为单根。
+定义
+\[
+A:=I-T+\mathbf 1\pi^\top,\qquad Z:=A^{-1},
+\qquad
+\chi_T(t):=\det(tI-T).
+\]
+则：
+\begin{enumerate}
+  \item 存在严格恒等式
+  \[
+  \det(A)=\chi_T'(1).
+  \]
+  \item 若 \(T,\pi\) 的分量均为有理数，取一正整数 \(D\) 使 \(DA\in M_N(\mathbb Z)\)，则对任意素数 \(p\nmid D\) 以下条件等价：
+  \[
+  DA\ \text{在 }\mathbb F_p\text{ 上奇异}
+  \quad\Longleftrightarrow\quad
+  \chi_T(t)\equiv (t-1)^2q(t)\pmod p.
+  \]
+  并且一旦成立，则 \(p\) 必出现在 \(Z\) 的既约分母中，即 \(Z\notin M_N(\mathbb Z[1/D])\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+令 \(V=\mathbb Q^N\)。
+由 \(\pi^\top T=\pi^\top\) 可知 \(\ker(\pi^\top)\) 为 \(T\)-不变子空间；且 \(V=\mathbb Q\mathbf 1\oplus \ker(\pi^\top)\) 为直和分解。
+对 \(v\in \ker(\pi^\top)\)，有 \(\mathbf 1\pi^\top v=0\)，故 \(Av=(I-T)v\)；
+对 \(\mathbf 1\)，有 \(A\mathbf 1=\mathbf 1-T\mathbf 1+\mathbf 1\pi^\top\mathbf 1=\mathbf 1\)。
+因此
+\[
+\det(A)=\det(I-T\mid_{\ker(\pi^\top)}).
+\]
+另一方面，由上述直和分解，特征多项式分解为
+\[
+\chi_T(t)=(t-1)\cdot \det(tI-T\mid_{\ker(\pi^\top)}),
+\]
+从而
+\(
+\chi_T'(1)=\det(I-T\mid_{\ker(\pi^\top)})=\det(A)
+\)，得到 (1)。
+\par
+对 (2)，当 \(p\nmid D\) 时，\(DA\) 在 \(\mathbb F_p\) 上奇异当且仅当 \(\det(A)\equiv 0\pmod p\)。
+由 (1) 这等价于 \(\chi_T'(1)\equiv 0\pmod p\)，又因 \(\chi_T(1)=0\)，故等价于 \(t=1\) 在 \(\chi_T(t)\) 中为模 \(p\) 的重根。
+最后 \(Z=A^{-1}=\mathrm{adj}(A)/\det(A)\)，若 \(\det(A)\) 的既约分子被 \(p\) 整除，则 \(Z\) 的既约分母必含素因子 \(p\)。证毕。
 \end{proof}
 
 \input{sections/generated/tab_window6_green_kernel_Z}

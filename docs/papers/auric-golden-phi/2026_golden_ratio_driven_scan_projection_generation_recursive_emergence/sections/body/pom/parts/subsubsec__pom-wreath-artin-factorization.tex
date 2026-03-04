@@ -29,6 +29,59 @@ A_q^{(H)}\ \cong\ \bigoplus_{\rho\in\widehat H}
 命题 \ref{prop:pom-mom-lift-wreath-exchange} 保证：在“无标号复制 + 置换对称”的 moment 语义下，lift 轴的类型正确对象恰为 \(G\wr S_q\)，从而上述分解给出与 moment 编译严格一致的标签通道化指纹。证毕。
 \end{proof}
 
+\begin{theorem}[torsion-\texorpdfstring{$q$}{q} 的 Artin 因子分解与准周期主项的留数傅里叶表示]\label{thm:pom-torsion-q-artin-factorization-residue-fourier}
+令 \(V\) 为有限维复向量空间，\(C_q=\langle g\rangle\) 为阶 \(q\) 的循环群，并设 \(\rho:C_q\to \mathrm{GL}(V)\) 为线性表示。
+令线性算子 \(T:V\to V\) 与该作用对易：\(T\rho(g)=\rho(g)T\)。
+记
+\[
+D(z):=\det(I-zT),
+\qquad
+\zeta(z):=D(z)^{-1}.
+\]
+则：
+\begin{enumerate}
+  \item \textbf{（Artin 分解）} 令 \(\omega_q=e^{2\pi i/q}\) 并按角色 \(\chi_j(g)=\omega_q^j\) 的等分解写
+  \(
+  V=\bigoplus_{j=0}^{q-1}V^{(j)}
+  \)。
+  则
+  \[
+  \boxed{\;
+  D(z)=\prod_{j=0}^{q-1}\det\!\bigl(I-z\,T|_{V^{(j)}}\bigr),
+  \qquad
+  \zeta(z)=\prod_{j=0}^{q-1}\zeta_j(z)\;}
+  \]
+  其中 \(\zeta_j(z):=\det(I-z\,T|_{V^{(j)}})^{-1}\)。
+  \item \textbf{（准周期主项）} 设存在 \(\rho>0\) 使得对每个 \(j\)，算子 \(T|_{V^{(j)}}\) 在模长 \(\rho\) 上有唯一简单特征值
+  \[
+  \lambda_j=\rho\,\omega_q^j,
+  \]
+  且其余谱严格小于 \(\rho\)。
+  定义系数 \(a_n:=[z^n]\zeta(z)\)。
+  则存在常数 \(c_0,\dots,c_{q-1}\in\CC\) 与 \(0<\theta<1\) 使
+  \[
+  \boxed{\;
+  a_n=\rho^n\sum_{j=0}^{q-1}c_j\,\omega_q^{jn}+O\!\bigl(\rho^n\theta^n\bigr)\;}
+  \qquad(n\to\infty),
+  \]
+  其中 \(c_j\) 由 \(\zeta_j\) 在主导极点 \(z=\lambda_j^{-1}\) 的留数给出：
+  \[
+  c_j=\mathrm{Res}_{z=\lambda_j^{-1}}\zeta_j(z).
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+（1）由于 \(T\) 与 \(C_q\) 作用对易，故 \(T\) 保持每个等分量 \(V^{(j)}\)，从而在基下块对角化，行列式乘法分解给出所示因子化。
+\par
+（2）在每个 \(j\) 上，\(\zeta_j(z)\) 在 \(z=\lambda_j^{-1}\) 有简单极点，且其余奇点模长严格大于 \(|\lambda_j|^{-1}=\rho^{-1}\)。
+由留数展开与 Cauchy 系数公式，
+\[
+[z^n]\zeta_j(z)=\mathrm{Res}_{z=\lambda_j^{-1}}\bigl(\zeta_j(z)z^{-n-1}\bigr)+O(\rho^n\theta^n)
+=c_j\,\lambda_j^{\,n}+O(\rho^n\theta^n),
+\]
+对 \(j\) 求和并代入 \(\lambda_j=\rho\omega_q^j\) 得结论。证毕。
+\end{proof}
+
 \paragraph{无限 torsion 对称的刚性崩塌与互素闭包：对称阶乘法闭合 \texorpdfstring{$\Rightarrow$}{=>} 谱秩一退化}
 本段把“扭点表”的极端对称性提升为一个对非 Perron 谱的刚性约束：若非 Perron 部分在无穷多互素阶上同时呈现 torsion 对称，则除零谱外不再允许任何非平凡谱点。
 
@@ -287,6 +340,18 @@ w_m(x)=d_m(x)/2^m
 B_{q,\lambda}=0.
 \]
 因此所有非平凡 Schur 通道的谱半径、\(\zeta\)-型零极结构与 near-RH 判别，皆由 \(\mathcal{P}_s\) 这一有限形状族所控制。
+\end{conjecture}
+
+\begin{conjecture}[对称幂碰撞谱的刚性分类（有限态核）]\label{conj:pom-sympower-collision-spectrum-rigidity}
+考虑一类固定隐藏维数 \(s\) 的有限态、原始、确定性编译族 \(\mathcal K_s\)，其 \(q\)-阶并行 moment 编译满足“对称幂口径”的一致性：对每个整数 \(q\ge 2\)，可从核 \(K\in\mathcal K_s\) 的 \(q\)-并行语义中抽取一个与 \(K\) 等价不变量一致的碰撞谱指纹（例如 Perron 根族 \(\{r_q(K)\}_{q\ge 2}\) 或等价的压力整点 \(\{\log r_q(K)\}\)）。
+\par
+猜想存在仅依赖于 \(s\) 的整数 \(Q(s)\ge 2\)，使得对任意 \(K_1,K_2\in\mathcal K_s\)，若
+\[
+r_q(K_1)=r_q(K_2)\qquad(2\le q\le Q(s)),
+\]
+则 \(K_1,K_2\) 在该有限态类内 \(2\)-同构（从而给出同一投影词语义的实现）。
+\par
+该猜想与语义图灵完备类上的有限指纹不可能性不冲突：后者排除的是在图灵完备语义上以有限输出完备判定语义等价的可计算不变量（定理 \ref{thm:conclusion-finite-spectral-moment-fingerprint-not-complete} 与定理 \ref{thm:conclusion-semantic-equivalence-undecidable}），而本猜想仅主张在固定有限态机制类 \(\mathcal K_s\) 内存在一个由有限对称幂谱指纹闭合的分类窗。
 \end{conjecture}
 
 \begin{corollary}[near-RH 的有限检查原则（在有限支撑假设下）]\label{cor:pom-schur-near-rh-finite-check}

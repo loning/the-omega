@@ -261,6 +261,8 @@ p_{t(I)}(I)=I^5-2I^4-t(I)I^3-2I+2=0,
 
 \input{sections/generated/eq_collision_kernel_A4_edge_weight_threshold}
 
+\input{parts/prop__pom-a4t-newman-puiseux-stationary}
+
 \input{parts/prop__pom-a4t-even-zeta-elimination}
 
 在四阶核族 \(A_4(t)\) 的一参数谱几何中，下述分歧分层、单位圆触点、Newman 临界与 ADE 对齐等关系可追溯到内部符号审计记录 \cite{Internal2026POMA4TSpectralAudit20260217}，并在本文通过判别式与结果式消元的整系数证书予以形式化。
@@ -302,6 +304,8 @@ p_t(x)=\det(xI-A_4(t))=x^5-2x^4-tx^3-2x+2.
 由此推出：对每个 \(t\ge 0\)，\(p_t\) 无重根；并且其根型在该区间上保持不变，恰有三个实根与一对共轭非实根。
 该结论表明四阶核族的“非实谱”并非由代数重根/谱碰撞触发，而是在 \(t\ge 0\) 的参数区间内以结构性方式稳定存在。
 \end{remark}
+
+\input{parts/thm__pom-a4t-integral-charpoly-galois-structure}
 
 \input{parts/prop__pom-a4t-unit-circle-branchpoints}
 
@@ -349,10 +353,13 @@ p_7(x)=\det(xI-A_4)=x^5-2x^4-7x^3-2x+2.
 从而并非 \(\QQ\) 中平方。
 \end{proposition}
 \begin{proof}
-模 \(5\) 约化时 \(p_7\) 在 \(\FF_5[x]\) 上不可约，从而其 Frobenius 置换包含一个 \(5\)-循环；模 \(29\) 约化时 \(p_7\) 在 \(\FF_{29}[x]\) 上分解为一个不可约二次因子与三个一次因子，从而其 Frobenius 置换包含一个换位（\(2\)-循环）。
-因此 \(\mathrm{Gal}(p_7/\QQ)\) 作为 \(S_5\) 的一个传递子群同时含 \(5\)-循环与换位，必为 \(S_5\)。
+模 \(5\) 约化时 \(p_7\bmod 5\) 在 \(\FF_5[x]\) 上不可约，从而相应的 Frobenius 置换包含一个 \(5\)-循环，故 \(\mathrm{Gal}(p_7/\QQ)\) 在 \(5\) 个根上的作用是传递的。
+另一方面，模 \(3\) 约化时 \(p_7\bmod 3\) 分解为一不可约二次因子与一不可约三次因子，因此相应 Frobenius 置换在 \(S_5\) 中具有循环型 \((2)(3)\)，从而含有阶为 \(6\) 的元素。
+含 \(5\)-循环的传递子群仅可能为 \(C_5,D_5,\mathrm{AGL}(1,5),A_5,S_5\)；其中 \(C_5,D_5,\mathrm{AGL}(1,5)\) 不含阶 \(6\) 元，而 \(A_5\) 不含循环型 \((2)(3)\) 的元素（其为奇置换），故只能为 \(S_5\)。
 判别式的显式值可由直接消元计算得到（可复现脚本：\texttt{scripts/exp\_collision\_kernel\_A234\_operator\_algebra\_flow\_invariants.py}）。证毕。
 \end{proof}
+
+\input{parts/thm__pom-a4-ordered-root-ratio-tower}
 
 \input{parts/prop__pom-a4-discriminant-quadratic-field-class-number}
 
@@ -402,46 +409,10 @@ $$
 
 \input{sections/generated/tab_collision_kernel_A4_primitive}
 \input{sections/generated/tab_collision_kernel_A4_finite_part}
+\input{sections/generated/tab_full_shift_9_finite_part}
 
-\par
-\medskip\noindent\textbf{审计结论（主极点留数常数 \(C\) 的导数公式与代数证书：\(A_2,A_3,A_4\)）}
-令 \(A\) 为有限状态碰撞核（SFT 邻接矩阵），其特征多项式取首项为 \(1\) 的
-\[
-\chi_A(\lambda):=\det(\lambda I-A),\qquad d:=\deg\chi_A,
-\]
-并设 Perron 根 \(r=\rho(A)\) 为单根。记
-\(
-\zeta_A(z)=\det(I-zA)^{-1}
-\)、\(z_\star=1/r\)，并按表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} 的口径定义主极点留数常数
-\[
-C(A):=\lim_{z\to z_\star}(1-rz)\,\zeta_A(z).
-\]
-则该常数仅由 \((\chi_A,r)\) 决定，并满足闭式恒等式
-\[
-\boxed{\;
-C(A)=\frac{r^{d-1}}{\chi_A'(r)}
-\;=\;
-\prod_{\lambda_j\in\sigma(A)\setminus\{r\}}\left(1-\frac{\lambda_j}{r}\right)^{-1}\; }.
-\]
-因此，一旦 \(\chi_A\) 与 \(r\) 已被独立审计（例如由递推分母/特征多项式与 Perron 根证书给出），则 \(C(A)\) 可在不做留数极限、亦无需显式求全谱的前提下被精确重建；并且任何保持同一 \(\chi_A\) 的非负整数 realization（见注 \ref{rem:pom-a3-alternative-realization}）都必须给出同一 \(C(A)\)。
-\par
-进一步地，对本文三枚已给出特征多项式的碰撞核
-\[
-\chi_{A_2}(\lambda)=\lambda^3-2\lambda^2-2\lambda+2,\qquad
-\chi_{A_3}(\lambda)=\lambda^3-2\lambda^2-4\lambda+2,\qquad
-\chi_{A_4}(\lambda)=\lambda^5-2\lambda^4-7\lambda^3-2\lambda+2,
-\]
-由上式与消元可将表 \ref{tab:collision_kernel_A2_finite_part}--\ref{tab:collision_kernel_A4_finite_part} 中的三枚十进制常数 \(C(A_q)\) 升格为整系数方程级审计证书：它们分别满足如下最小多项式（且在 \((0,1)\) 上各有唯一实根）：
-\[
-\boxed{\;
-37C^3-37C^2+C+1=0\quad(C=C(A_2)),\qquad
-141C^3-141C^2+23C+1=0\quad(C=C(A_3)),}
-\]
-\[
-\boxed{\;
-3940876C^5-3940876C^4+920083C^3-33522C^2+168C+4=0\quad(C=C(A_4)).}
-\]
-由此得到一个无需小数对齐的强审计协议：对每个 \(A_q\)，只需公开（i）\(\chi_{A_q}\in\ZZ[\lambda]\)，（ii）\(C(A_q)\) 的最小多项式 \(P_{C_q}\in\ZZ[C]\)；并配合表中 \texttt{tail proxy} 作为 \(\log\mathfrak{M}\) 尾截断误差的数值证书，即可把“可复现性”提升为整系数方程级约束。
+\input{parts/prop__pom-a4-newman-u4-certificate}
+\input{parts/para__pom-a234-residue-and-error-certificates}
 
 \paragraph{符号动力学与算子代数不变量：Bowen--Franks 群、流等价与 Cuntz--Krieger \texorpdfstring{$K$}{K}-理论}
 除 \(\zeta\)、primitive 谱与有限部常数外，整数邻接矩阵还携带一组对流等价（flow equivalence）与稳定同构分类高度敏感的整格不变量（参见附录 \ref{app:op-algebra} 与附录中真实输入核的对应讨论）。
@@ -493,6 +464,37 @@ K_1(\mathcal O_A)\cong \ker(I-A^\mathsf T)
 \]
 \end{corollary}
 
+\begin{proposition}[有限部常数不是流等价不变量：\texorpdfstring{$A_4$}{A4} 与 full \(9\)-shift 的对照]\label{prop:pom-mertens-not-flow-invariant}
+取四阶碰撞核 \(A_4=A_4(7)\)（命题 \ref{prop:pom-s4-recurrence}）。
+由推论 \ref{cor:pom-collision-flow-equivalence-full-shift}，其移位 \((X_{A_4},\sigma)\) 与 one-vertex full \(9\)-shift 流等价。
+令 \(A_{\mathrm{full},9}=[9]\) 表示该 full \(9\)-shift 的邻接矩阵。
+则 Abel/Mertens 有限部常数满足严格不等：
+\[
+\log\mathfrak{M}(A_4)\neq \log\mathfrak{M}(A_{\mathrm{full},9}),
+\qquad
+\mathsf{M}(A_4)\neq \mathsf{M}(A_{\mathrm{full},9}).
+\]
+特别地，由表 \ref{tab:collision_kernel_A4_finite_part} 与表 \ref{tab:full_shift_9_finite_part} 的可审计输出，
+\[
+\mathsf{M}(A_4)=0.073098\ldots,
+\qquad
+\mathsf{M}(A_{\mathrm{full},9})=0.514155\ldots,
+\]
+从而 \(\mathsf{M}(\cdot)\) 不是流等价不变量。
+\end{proposition}
+\begin{proof}
+full \(9\)-shift 的 \(\zeta\)-函数为 \(\zeta(z)=(1-9z)^{-1}\)，其主极点留数常数为 \(C=1\)。
+因此
+\[
+\log\mathfrak{M}(A_{\mathrm{full},9})
+=\sum_{k\ge 2}\frac{\mu(k)}{k}\log\zeta\!\left(9^{-k}\right)
+=-\sum_{k\ge 2}\frac{\mu(k)}{k}\log\!\left(1-9^{1-k}\right),
+\]
+且 \(\mathsf{M}(A_{\mathrm{full},9})=\gamma+\log\mathfrak{M}(A_{\mathrm{full},9})\)。
+表 \ref{tab:full_shift_9_finite_part} 由脚本 \texttt{scripts/exp\_full\_shift\_9\_finite\_part.py} 对该绝对收敛级数作截断与尾界审计得到。
+与表 \ref{tab:collision_kernel_A4_finite_part} 的 \(\mathsf{M}(A_4)\) 数值不一致，故有限部常数不由流等价类型决定。证毕。
+\end{proof}
+
 \begin{remark}[流等价不变量的塌缩与细谱信息的不可见性]\label{rem:pom-collision-flow-collapse}
 推论 \ref{cor:pom-collision-flow-equivalence-full-shift} 表明：尽管低阶碰撞核在谱分解与算术证书层面呈现出非平凡细结构（例如负实模态触发的反相慢振荡、四阶核族的非实谱稳定存在以及 near-RH 贴线等现象），Franks 不变量在流等价层面仅识别出一顶点全移位的流等价型。
 因此，碰撞核的精细谱/算术信息若要被捕获，必须诉诸比流等价更细的动力学不变量或更强的算子代数层次结构。
@@ -510,6 +512,8 @@ K_1(\mathcal O_A)\cong \ker(I-A^\mathsf T)
 该猜想与命题 \ref{prop:pom-collision-bf-snf-q234} 在 \(q=2,3,4\) 的显式计算相符（\(-1=-F_2\)、\(-3=-F_4\)、\(-8=-F_6\)）。
 若其成立，则 \((X_{A_q},\sigma)\) 与 full \((F_{2q-2}+1)\)-shift 流等价。
 \end{conjecture}
+
+\input{parts/cor__pom-collision-fibonacci-twist-2primary-first-appearance}
 
 \begin{proposition}[低阶碰撞核的 Cuntz--Krieger 代数：与 Cuntz 代数族的完全识别]\label{prop:pom-collision-ck-classification-q234}
 对命题 \ref{prop:pom-collision-bf-snf-q234} 中的三类核，其 Cuntz--Krieger 代数的 \(K\)-群满足
@@ -552,6 +556,8 @@ K_0(\mathcal O_{A_q})\cong\mathrm{coker}(I-A_q^\mathsf T)\cong\mathrm{coker}(I-A
 因此，碰撞核动力学可被直接置于 UCT Kirchberg 代数范畴，并以带单位类的 \(K\)-理论数据实现完全识别。
 \end{remark}
 
+\input{parts/prop__pom-collision-ck-fibonacci-collapse}
+
 \begin{remark}[常数层稀有性尺度：\texorpdfstring{$\mathsf{M}(A_4)/\mathsf{M}(A_3)$}{M(A4)/M(A3)} 的近减半]\label{rem:pom-collision-mertens-halving}
 表 \ref{tab:collision_kernel_A3_finite_part} 与表 \ref{tab:collision_kernel_A4_finite_part} 给出
 \(
@@ -569,7 +575,7 @@ K_0(\mathcal O_{A_q})\cong\mathrm{coker}(I-A_q^\mathsf T)\cong\mathrm{coker}(I-A
  在数值上接近一半。
 该比值提供一个\textbf{独立于指数主尺度 \(r_q\)} 的细结构指纹：当把碰撞从三重提升到四重时，
 除了 Perron 根 \(r_q\) 的指数尺度改变之外，primitive 主项的常数级漂移（Mertens 常数）也显著收缩。
-并且表中 \texttt{tail proxy} 极小，说明该 finite-part 常数的抽取在数值上高度稳定、适合作为跨阶稀有性刻度。
+并且表中 \texttt{tail bound} 极小，说明该 finite-part 常数的抽取在误差层面具备可审计的稳定性、适合作为跨阶稀有性刻度。
 \end{remark}
 
 \begin{remark}[有限部常数的步长加速（\(A_2\to A_4\)）]\label{rem:pom-collision-mertens-accel}

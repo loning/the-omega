@@ -140,6 +140,47 @@ S_q(m):=\sum_{x\in X_m} d_m(x)^q
 当 \(b-1\) 为偶数时，上述体积因子可改写为 \(4^{(b-1)/2}\)，从而在对数账本中呈现强制的 \(4\)-进量子化层级。
 \end{conclusion}
 
+\begin{proposition}[纤维对称群的熵下界：可辨识性退化的量化]\label{prop:xi-fold-fiber-symmetry-group-entropy-lower}
+对任意满射 \(u:A\twoheadrightarrow B\)，定义纤维对称群
+\[
+G(u):=\prod_{b\in B}\mathrm{Sym}\bigl(u^{-1}(b)\bigr),
+\qquad
+|G(u)|=\prod_{b\in B}|u^{-1}(b)|!.
+\]
+取 \(u=\Fold_m:\Omega_m\twoheadrightarrow X_m\)，并记 \(d_m(x):=|\Fold_m^{-1}(x)|\)、\(N:=|\Omega_m|=2^m\)、\(M:=|X_m|\)、\(\bar d:=N/M\)。
+则有双侧界
+\[
+\Gamma(\bar d+1)^{M}\ \le\ |G(\Fold_m)|\ \le\ N!,
+\]
+从而
+\[
+\log|G(\Fold_m)|
+\ge
+M\log\Gamma(\bar d+1)
+\ge
+N\log\bar d-N+O(M\log\bar d),
+\]
+并在 Fibonacci 稳定类型尺度 \(M=F_{m+2}=\Theta(\varphi^m)\) 下给出
+\(
+\log|G(\Fold_m)|=\Omega(m2^m)
+\)。
+\end{proposition}
+\begin{proof}
+令 \(d_1,\dots,d_M\) 为纤维大小的列举，则 \(\sum_i d_i=N\)。
+由多项式系数
+\(
+\binom{N}{d_1,\dots,d_M}=\frac{N!}{\prod_i d_i!}\in\NN
+\)
+得 \(\prod_i d_i!\le N!\)，即上界。
+\par
+函数 \(x\mapsto \log\Gamma(x)\) 在 \((0,\infty)\) 上凸，Jensen 不等式给出
+\[
+\frac1M\sum_{i=1}^M\log\Gamma(d_i+1)\ge \log\Gamma\!\left(\frac1M\sum_{i=1}^M(d_i+1)\right)=\log\Gamma(\bar d+1),
+\]
+指数化得到下界 \(\prod_i d_i!\ge \Gamma(\bar d+1)^M\)。
+最后一式由 Stirling 展开 \(\log\Gamma(z+1)=z\log z-z+O(\log z)\) 代入 \(z=\bar d\) 得到。
+\end{proof}
+
 \begin{conclusion}[边界相变的熵学判据：两种 KL 的线性增长率给出临界指数]\label{con:xi-boundary-phase-transition-kl-rates}
 若存在常数 \(c_{u\to w},c_{w\to u}\ge 0\) 使
 \[
@@ -349,29 +390,60 @@ K(r_{m,S}(\omega)\mid X)\le \log_2 d_m(X)+O(1),
 吸收常数即得结论。证毕。
 \end{proof}
 
-\begin{theorem}[prime-register 向量的 Gödel 整数化具有不可避免的对数开销]\label{thm:xi-godel-integerization-log-overhead}
+\begin{theorem}[prime-register 向量的 Gödel 整数化具有不可约的超线性位长]\label{thm:xi-godel-integerization-log-overhead}
 设 \(\tau=(a_1,\dots,a_T)\) 为长度 \(T\) 的事件码序列，且 \(a_t\in\NN_{\ge1}\)。
 定义 Gödel 整数
 \[
 G(\tau):=\prod_{t=1}^{T}p_t^{a_t},
 \]
-其中 \(p_t\) 为第 \(t\) 个素数。则存在绝对常数 \(c_0>0\) 与 \(T_0\)，使对 \(T\ge T_0\) 有
+其中 \(p_t\) 为第 \(t\) 个素数。
+则存在绝对常数 \(c_0,c_1>0\)，使对一切 \(T\ge 1\) 成立
 \[
-\log_2 G(\tau)\ge c_0\,T\log_2 T.
+\log_2 G(\tau)\ \ge\ T\log_2 T-c_0T-c_1.
 \]
-因而，把长度 \(T\) 的寄存器向量压成单整数的位长下界为 \(\Omega(T\log T)\)。
+因此把长度 \(T\) 的寄存器向量压缩为单整数时，其最小可能位长必为 \(\Omega(T\log T)\)。
 \end{theorem}
 \begin{proof}
 由 \(a_t\ge 1\) 得
 \[
-\log G(\tau)\ge \sum_{t=1}^{T}\log p_t=\vartheta(p_T),
+G(\tau)\ \ge\ \prod_{t=1}^{T}p_t.
 \]
-其中 \(\vartheta(x)=\sum_{p\le x}\log p\) 为 Chebyshev 函数。
-由素数定理的等价形式 \(\vartheta(x)\sim x\) 与 \(p_T\sim T\log T\)，可得
+又因第 \(t\) 个素数满足 \(p_t\ge t+1\)，故
 \[
-\sum_{t=1}^{T}\log p_t\sim T\log T.
+\prod_{t=1}^{T}p_t\ \ge\ \prod_{t=1}^{T}(t+1)\ =\ \frac{(T+1)!}{2}.
 \]
-换底到 \(\log_2\) 即得结论。证毕。
+取二进对数并用 Stirling 型下界（存在绝对常数 \(C_0,C_1>0\) 使对一切 \(n\ge 1\) 有
+\(\log_2(n!)\ge n\log_2 n-C_0n-C_1\)），得到
+\[
+\log_2 G(\tau)\ \ge\ \log_2\bigl((T+1)!/2\bigr)
+\ \ge\ (T+1)\log_2(T+1)-C_0(T+1)-C_1-1.
+\]
+将右端改写为 \(T\log_2T-c_0T-c_1\) 的形式并吸收常数即可。证毕。
+\end{proof}
+
+\begin{corollary}[Gödel 整数化的位长与条件复杂度之间的对数鸿沟]\label{cor:xi-godel-integerization-vs-conditional-complexity-gap}
+沿用定理 \ref{thm:xi-register-conditional-complexity-vs-fiber-volume} 的设定，令 \(X:=\Fold_m(\omega)\) 且 \(r:=r_{m,S}(\omega)\)。
+若 \(r\) 的非零坐标数为 \(T=\#\mathrm{supp}(r)\) 并且 \(r\) 的时间序列译码为一条长度 \(T\) 的事件码 \(\tau(\omega)\)（其中每个码字 \(\ge 1\)），则有
+\[
+\frac{\log_2 G(\tau(\omega))}{K(r\mid X)}
+\ \ge\
+\frac{T\log_2 T-O(T)}{\lceil\log_2 d_m(X)\rceil+O(1)},
+\]
+其中 \(O(T)\) 的常数仅依赖于定理 \ref{thm:xi-godel-integerization-log-overhead} 中的绝对常数。
+特别地，当 \(T\ge \alpha m\)（某个常数 \(\alpha>0\)）时，
+\[
+\frac{\log_2 G(\tau(\omega))}{K(r\mid X)}\ \ge\ c\,\log_2 m-O(1)
+\]
+对某个常数 \(c>0\) 成立。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-godel-integerization-log-overhead} 得
+\(\log_2 G(\tau(\omega))\ge T\log_2 T-O(T)\)。
+另一方面由定理 \ref{thm:xi-register-conditional-complexity-vs-fiber-volume}，
+\[
+K(r\mid X)\le \lceil\log_2 d_m(X)\rceil+O(1)\le m+O(1).
+\]
+合并即得第一式；若 \(T\ge \alpha m\)，则 \(T\log_2 T\ge \alpha m\log_2 m-O(m)\)，除以 \(m+O(1)\) 得第二式。证毕。
 \end{proof}
 
 \begin{theorem}[单位圆到椭圆的 Gödel 畸变律：条件数的超线性增长]\label{thm:xi-godel-ellipse-condition-number-distortion}
