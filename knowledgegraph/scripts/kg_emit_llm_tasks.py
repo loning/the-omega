@@ -56,6 +56,43 @@ VALID_LABEL_RE = re.compile(r"^[A-Za-z0-9:._/@+\-]+$")
 MAX_UNIT_TEX_CHARS = 200_000
 GAP_SPLIT_RE = re.compile(r"\n\s*\n+")
 SUSPICIOUS_TARGET_ENV_CHARS = 300_000
+GAP_STRUCTURAL_DROP_LINE_RE = re.compile(
+    r"^\s*\\(?:"
+    r"documentclass|usepackage|RequirePackage|"
+    r"geometry|"
+    r"newcommand|renewcommand|providecommand|DeclareMathOperator|"
+    r"newtheorem|theoremstyle|"
+    r"title|author|maketitle|tableofcontents|"
+    r"makeatletter|makeatother|"
+    r"tracinglostchars|hbadness|vbadness|hfuzz|"
+    r"fvset|RecustomVerbatimEnvironment|BeforeBeginEnvironment|AfterEndEnvironment|"
+    r"let|g@addto@macro|"
+    r"input|include|subfile|"
+    r"bibliography|bibliographystyle|"
+    r"begin\{document\}|end\{document\}"
+    r")(?=\b|\s|$)"
+)
+GAP_STRUCTURAL_DROP_WHOLE_LINE_RE = re.compile(r"^\s*\\(?:begingroup|endgroup)\b")
+GAP_STRUCTURAL_DROP_CONTAINS = (
+    r"\documentclass",
+    r"\usepackage",
+    r"\RequirePackage",
+    r"\begin{document}",
+    r"\end{document}",
+    r"\input{",
+    r"\include{",
+    r"\subfile{",
+    r"\bibliography{",
+    r"\bibliographystyle",
+)
+GAP_PREAMBLE_MARKERS = (
+    r"\documentclass",
+    r"\usepackage",
+    r"\maketitle",
+    r"\tableofcontents",
+    r"\begin{abstract}",
+)
+SECTIONING_CMD_RE = re.compile(r"\\(?:part|chapter|section|subsection|subsubsection)\*?\{")
 
 
 def parse_args() -> argparse.Namespace:
@@ -238,6 +275,33 @@ def unique_keep_order(values: List[str]) -> List[str]:
     return out
 
 
+def strip_gap_structural_lines(chunk: str) -> tuple[str, bool]:
+    """Drop TeX wrapper/preamble lines that should never become knowledge atoms."""
+    dropped = False
+    had_preamble_marker = any(token in chunk for token in GAP_PREAMBLE_MARKERS)
+    kept: List[str] = []
+    for line in chunk.splitlines():
+        if GAP_STRUCTURAL_DROP_LINE_RE.match(line):
+            dropped = True
+            continue
+        if GAP_STRUCTURAL_DROP_WHOLE_LINE_RE.match(line):
+            dropped = True
+            continue
+        if any(token in line for token in GAP_STRUCTURAL_DROP_CONTAINS):
+            dropped = True
+            continue
+        kept.append(line)
+    out = "\n".join(kept).strip()
+    if out and had_preamble_marker:
+        m = SECTIONING_CMD_RE.search(out)
+        if m is not None and m.start() > 0:
+            out = out[m.start() :].lstrip()
+            dropped = True
+    if out:
+        out += "\n"
+    return out, dropped
+
+
 def _is_latexpand_explain_comment(node) -> bool:
     if not LatexCommentNode or not isinstance(node, LatexCommentNode):
         return False
@@ -245,10 +309,48 @@ def _is_latexpand_explain_comment(node) -> bool:
     return comment.startswith("start input ") or comment.startswith("end input ")
 
 
+LTX_EXPLAIN_LINE_RE = re.compile(r"^\s*%\s*(?:start|end)\s+input\s+.+$")
+LTX_VERB_START_RE = re.compile(r"^(?P<indent>\s*)\\verb\|%\s*start input\s+(?P<path>.+?)\s*$")
+LTX_VERB_END_RE = re.compile(r"^\s*%\s*end input\s+.+$")
+
+
+def normalize_latexpand_artifacts_fallback(tex: str) -> str:
+    """Best-effort latexpand cleanup when pylatexenc is unavailable."""
+    lines = tex.splitlines()
+    out: List[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        m = LTX_VERB_START_RE.match(line)
+        if m:
+            path = m.group("path").strip()
+            end = i + 1
+            while end < len(lines) and not LTX_VERB_END_RE.match(lines[end]):
+                end += 1
+            if end < len(lines):
+                literal = f"\\input{{{path}}}"
+                if "|" in literal:
+                    literal = literal.replace("|", "/")
+                out.append(f"{m.group('indent')}\\verb|{literal}|")
+                i = end + 1
+                continue
+
+        if LTX_EXPLAIN_LINE_RE.match(line):
+            i += 1
+            continue
+
+        out.append(line)
+        i += 1
+
+    if tex.endswith("\n"):
+        return "\n".join(out) + "\n"
+    return "\n".join(out)
+
+
 def normalize_latexpand_artifacts_with_ast(tex: str) -> str:
     """Clean latexpand explain artifacts via AST edits (no TeX regex parsing)."""
     if LatexWalker is None:
-        return tex
+        return normalize_latexpand_artifacts_fallback(tex)
 
     walker = LatexWalker(tex)
     root_nodes, _, _ = walker.get_latex_nodes(pos=0)
@@ -617,6 +719,9 @@ def extract_tex_knowledge_units(
             if not chunk.strip():
                 continue
             chunk = normalize_latexpand_artifacts_with_ast(chunk)
+            chunk, dropped_structural = strip_gap_structural_lines(chunk)
+            if not chunk.strip():
+                continue
             labels, refs = _collect_labels_refs_from_fragment(chunk)
             covered_labels.update(labels)
             source_label = labels[0] if labels else ""
@@ -629,6 +734,7 @@ def extract_tex_knowledge_units(
             source_refs = unique_keep_order(refs)
             if not source_refs and last_anchor_ref:
                 source_refs = [last_anchor_ref]
+            payload_normalizer_version = "gap-structural-strip-v1" if dropped_structural else ""
             units.append(
                 {
                     "env": "gap_note",
@@ -638,6 +744,7 @@ def extract_tex_knowledge_units(
                     "source_refs": source_refs,
                     "unit_tex": chunk,
                     "span_start": int(gap_start_pos),
+                    "payload_normalizer_version": payload_normalizer_version,
                 }
             )
             if source_label:

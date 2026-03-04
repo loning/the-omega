@@ -13,6 +13,7 @@ import sys
 import tempfile
 import time
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parents[1] / "scripts"
@@ -321,6 +322,52 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertNotIn("% start input", cleaned)
         self.assertNotIn("% end input", cleaned)
 
+    def test_emit_strip_gap_structural_lines(self) -> None:
+        raw = (
+            "\\documentclass{article}\n"
+            "\\usepackage{amsmath}\n"
+            "\\@ifundefined{FASTBUILD}{\\usepackage{graphicx}}{\\usepackage[draft]{graphicx}}\n"
+            "\\makeatletter\\begin{document}\n"
+            "\\begin{abstract}A\\end{abstract}\n"
+            "\\section{Intro}\\label{sec:intro}\n"
+            "Body line.\n"
+            "\\end{document}\n"
+        )
+        cleaned, dropped = emit_tasks.strip_gap_structural_lines(raw)
+        self.assertTrue(dropped)
+        self.assertNotIn("\\documentclass", cleaned)
+        self.assertNotIn("\\usepackage", cleaned)
+        self.assertNotIn("\\@ifundefined", cleaned)
+        self.assertNotIn("\\begin{document}", cleaned)
+        self.assertTrue(cleaned.lstrip().startswith("\\section{Intro}"))
+        self.assertIn("\\section{Intro}", cleaned)
+        self.assertIn("Body line.", cleaned)
+
+    def test_emit_gap_units_drop_structural_preamble_lines(self) -> None:
+        if not HAS_PYLATEXENC:
+            self.skipTest("pylatexenc not available")
+
+        tex = (
+            "\\documentclass{article}\n"
+            "\\usepackage{amsmath}\n"
+            "\\begin{document}\n"
+            "\\section{Intro}\\label{sec:intro}\n"
+            "Intro text.\n"
+            "\\begin{theorem}\\label{thm:a}A\\end{theorem}\n"
+            "\\end{document}\n"
+        )
+        units = emit_tasks.extract_tex_knowledge_units(tex, "sample")
+        gap_units = [u for u in units if u.get("env") == "gap_note"]
+        self.assertTrue(gap_units)
+        self.assertTrue(
+            any(u.get("payload_normalizer_version") == "gap-structural-strip-v1" for u in gap_units)
+        )
+        for unit in gap_units:
+            unit_tex = str(unit.get("unit_tex") or "")
+            self.assertNotIn("\\documentclass", unit_tex)
+            self.assertNotIn("\\usepackage", unit_tex)
+            self.assertNotIn("\\begin{document}", unit_tex)
+
     def test_emit_marks_payload_normalizer_for_broken_verb_input(self) -> None:
         if not HAS_PYLATEXENC:
             self.skipTest("pylatexenc not available")
@@ -474,6 +521,81 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertNotIn("\\begin{document}", body)
         self.assertNotIn("\\end{document}", body)
 
+    def test_build_index_source_order_uses_merged_map_and_task_seq(self) -> None:
+        a = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0001",
+            label="a",
+            atom_type="tp-note",
+            ext="tex",
+            content="A\n",
+        )
+        b = write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0002",
+            label="b",
+            atom_type="tp-note",
+            ext="tex",
+            content="B\n",
+        )
+
+        src1 = (self.repo_root / "paper" / "sec1.tex").resolve()
+        src2 = (self.repo_root / "paper" / "sec2.tex").resolve()
+        src1.parent.mkdir(parents=True, exist_ok=True)
+        src1.write_text("sec1\n", encoding="utf-8")
+        src2.write_text("sec2\n", encoding="utf-8")
+
+        common.atom_sidecar_path(a).write_text(
+            json.dumps(
+                {
+                    "kg_id": "KG-20260303-0001",
+                    "label": "a",
+                    "atom_type": "tp-note",
+                    "parents": [],
+                    "source_path": src2.as_posix(),
+                    "task_id": "TASK-20260304T000000Z-000200",
+                }
+            ),
+            encoding="utf-8",
+        )
+        common.atom_sidecar_path(b).write_text(
+            json.dumps(
+                {
+                    "kg_id": "KG-20260303-0002",
+                    "label": "b",
+                    "atom_type": "tp-note",
+                    "parents": [],
+                    "source_path": src1.as_posix(),
+                    "task_id": "TASK-20260304T000000Z-000100",
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        merged_dir = self.kg_root / ".kgcache" / "merged"
+        merged_dir.mkdir(parents=True, exist_ok=True)
+        merged_map = merged_dir / "m.map.json"
+        merged_map.write_text(
+            json.dumps(
+                {
+                    "entries": [
+                        {"path": src2.as_posix(), "start": 200, "end": 260},
+                        {"path": src1.as_posix(), "start": 100, "end": 150},
+                    ]
+                }
+            ),
+            encoding="utf-8",
+        )
+        (merged_dir / "emit_state.json").write_text(
+            json.dumps({"merged_map_path": merged_map.as_posix()}),
+            encoding="utf-8",
+        )
+
+        atoms, errors = common.scan_atoms(self.kg_root, verify_hash=False)
+        self.assertEqual(errors, [])
+        ordered = build_index.order_atoms_by_source_position(self.kg_root, atoms)
+        self.assertEqual([a.label for a in ordered], ["b", "a"])
+
     def test_emit_resolve_merged_paths_requires_explicit_existing_inputs(self) -> None:
         merged_tex = self.repo_root / "merged.tex"
         merged_map = self.repo_root / "merged.map.json"
@@ -551,6 +673,22 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIsNotNone(parsed)
         self.assertEqual(parsed[1], "sample-claim")
         self.assertEqual(parsed[2], "tp-claim")
+
+    def test_next_kg_id_factory_uses_fixed_five_digit_width(self) -> None:
+        now = datetime(2026, 3, 4, 0, 0, 0, tzinfo=timezone.utc)
+        next_id = ingest_atoms.next_kg_id_factory(self.kg_root, now)
+        self.assertEqual(next_id(), "KG-20260304-00001")
+
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260304-12345",
+            label="existing-seq",
+            atom_type="tp-note",
+            ext="txt",
+            content="x\n",
+        )
+        next_after_existing = ingest_atoms.next_kg_id_factory(self.kg_root, now)
+        self.assertEqual(next_after_existing(), "KG-20260304-12346")
 
     def test_ingest_tex_knowledge_unit_resolves_parents(self) -> None:
         parent_label = "lem-base-h111111111111"
@@ -995,6 +1133,228 @@ class KGScriptsUnitTest(unittest.TestCase):
         )
         self.assertIn("\\renewcommand{\\cite}", template_degrade_cite)
 
+    def test_compile_extracts_bibliography_tail_from_merged(self) -> None:
+        merged = self.repo_root / "merged.latexpanded.tex"
+        merged.write_text(
+            "\n".join(
+                [
+                    "Body",
+                    "\\bibliographystyle{amsplain}",
+                    "\\bibliography{\\subfix{../../references},\\subfix{../../refs_extra.bib},custom_refs}",
+                ]
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        source_main = (self.repo_root / "paper" / "main.tex").resolve()
+        source_main.parent.mkdir(parents=True, exist_ok=True)
+        source_main.write_text("\\documentclass{ctexart}\n\\begin{document}\\end{document}\n", encoding="utf-8")
+
+        tail = kg_compile.extract_bibliography_tail_lines(merged, source_main)
+        self.assertEqual(tail[0], "\\bibliographystyle{amsplain}")
+        self.assertEqual(
+            tail[1],
+            "\\bibliography{"
+            + ",".join(
+                [
+                    (source_main.parent / "../../references").resolve().as_posix(),
+                    (source_main.parent / "../../refs_extra").resolve().as_posix(),
+                    (source_main.parent / "custom_refs").resolve().as_posix(),
+                ]
+            )
+            + "}",
+        )
+
+    def test_compile_discover_merged_tex_from_emit_state(self) -> None:
+        merged_dir = self.kg_root / ".kgcache" / "merged"
+        merged_dir.mkdir(parents=True, exist_ok=True)
+        merged_path = merged_dir / "grg_main.latexpanded.tex"
+        merged_path.write_text("% merged\n", encoding="utf-8")
+        state_path = merged_dir / "emit_state.json"
+        state_path.write_text(
+            json.dumps({"merged_tex_path": merged_path.as_posix()}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+
+        found = kg_compile.discover_merged_tex_from_emit_state(self.kg_root)
+        self.assertEqual(found, merged_path.resolve())
+
+    def test_compile_builds_missing_ref_anchor_lines_from_closure_report(self) -> None:
+        idx_dir = self.kg_root / "index_nodes" / "book_grg"
+        idx_dir.mkdir(parents=True, exist_ok=True)
+        idx_path = idx_dir / "idx_book_grg_main.tex"
+        idx_path.write_text("% index\n", encoding="utf-8")
+        (idx_dir / "reference_closure_report.json").write_text(
+            json.dumps(
+                {
+                    "final_missing_refs": [
+                        "thm:missing-a",
+                        "prop:missing-b",
+                        "thm:missing-a",
+                    ]
+                },
+                ensure_ascii=False,
+            ),
+            encoding="utf-8",
+        )
+
+        lines = kg_compile.build_missing_ref_anchor_lines(idx_path)
+        self.assertTrue(lines)
+        self.assertIn("\\genfraglabel{thm:missing-a}", "".join(lines))
+        self.assertIn("\\genfraglabel{prop:missing-b}", "".join(lines))
+
+    def test_compile_normalize_repairs_nested_display_math_delimiters(self) -> None:
+        raw = (
+            "\\[\n"
+            "\\begin{aligned}\n"
+            "a&=b\n"
+            "\\[\n"
+            "\\begin{aligned}\n"
+            "c&=d\n"
+            "\\end{aligned}\n"
+            "\\]\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertEqual(normalized.count("\\["), normalized.count("\\]"))
+        self.assertIn("a&=b\n\\end{aligned}\\]\\[", normalized)
+
+    def test_compile_normalize_closes_aligned_before_prose(self) -> None:
+        raw = (
+            "\\[\n"
+            "\\begin{aligned}\n"
+            "a&=b\\\\\n"
+            "\n"
+            "中文说明\n"
+            "\\[\n"
+            "c=d\n"
+            "\\]\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\end{aligned}\\]", normalized)
+        self.assertIn("中文说明", normalized)
+        self.assertEqual(normalized.count("\\["), normalized.count("\\]"))
+
+    def test_compile_normalize_drops_orphan_aligned_end(self) -> None:
+        raw = (
+            "Text.\n"
+            "\\[\n"
+            "a=b\n"
+            "\\]\n"
+            "\\end{aligned}\n"
+            "Next.\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertNotIn("\\end{aligned}\n", normalized)
+        self.assertIn("Next.", normalized)
+
+    def test_compile_normalize_repairs_inline_paren_matrix_balance(self) -> None:
+        raw = (
+            "\\(\n"
+            "\\begin{pmatrix}\n"
+            "1 & 2\\\\\n"
+            "3 & 4\n"
+            "\\)\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\end{pmatrix}\\)", normalized)
+
+    def test_compile_normalize_keeps_matrix_row_spacing_command(self) -> None:
+        raw = (
+            "\\[\n"
+            "A=\\begin{pmatrix}1&1\\\\[2pt]1&0\\end{pmatrix}\n"
+            "\\]\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\\\[2pt]", normalized)
+        self.assertNotIn("\\]\\[2pt]", normalized)
+
+    def test_compile_normalize_repairs_cases_before_equation_end(self) -> None:
+        raw = (
+            "\\begin{equation}\n"
+            "x=\\begin{cases}\n"
+            "1,&a\\\\\n"
+            "2,&b\n"
+            "\\end{equation}\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\end{cases}\\end{equation}", normalized)
+
+    def test_compile_normalize_keeps_cases_end_when_balanced(self) -> None:
+        raw = (
+            "\\begin{equation}\n"
+            "\\begin{cases}\n"
+            "1,&a\\\\\n"
+            "2,&b\n"
+            "\\end{cases}\n"
+            "\\end{equation}\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\end{cases}", normalized)
+
+    def test_compile_normalize_second_pass_drops_new_orphan_aligned(self) -> None:
+        raw = (
+            "\\[\n"
+            "\\begin{aligned}\n"
+            "a&=b\n"
+            "中文\n"
+            "\\[\n"
+            "\\begin{aligned}\n"
+            "c&=d\n"
+            "\\end{aligned}\n"
+            "\\]\n"
+            "\\end{aligned}\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\end{aligned}\\]\\[", normalized)
+        self.assertFalse(normalized.rstrip().endswith("\\end{aligned}"))
+
+    def test_compile_normalize_flattens_nested_inline_math_in_display(self) -> None:
+        raw = (
+            "\\[\n"
+            "x=\\text{\\(a^2-a+1=0\\) 的根}\n"
+            "\\]\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("x=\\text{(a\\^2-a+1=0) 的根}", normalized)
+        self.assertNotIn("\\(a^2-a+1=0\\)", normalized)
+
+    def test_compile_normalize_rewrites_text_macro_embedded_math_with_cjk(self) -> None:
+        raw = (
+            "\\[\n"
+            "\\QQ\\bigl(\\text{(P_{\\mathrm{LY}}(y)) 的全部根}\\bigr)\n"
+            "\\]\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\text{$(P_{\\mathrm{LY}}(y))$ 的全部根}", normalized)
+
+    def test_compile_normalize_escapes_underscore_in_text_macro(self) -> None:
+        raw = (
+            "\\[\n"
+            "\\text{Kodaira 型 (I_2)}\n"
+            "\\]\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\text{Kodaira 型 (I\\_2)}", normalized)
+
+    def test_compile_normalize_degrades_math_macros_inside_cjk_text_macro(self) -> None:
+        raw = (
+            "\\[\n"
+            "\\text{作为置换 (c_\\ell\\in\\mathrm{Sym}(\\mathsf{Ind}(P_\\ell))) 的阶}\n"
+            "\\]\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\text{作为置换 (c\\_ell in Sym(Ind(P\\_ell))) 的阶}", normalized)
+        self.assertNotIn("\\mathrm{", normalized)
+        self.assertNotIn("\\mathsf{", normalized)
+
+    def test_compile_normalize_keeps_outer_inline_math_when_inner_inline_in_text(self) -> None:
+        raw = (
+            "此外：对每个 \\(\\alpha\\in\\{\\text{\\(a^2-a+1=0\\) 的根}\\}\\)，两点对应。\n"
+        )
+        normalized = kg_compile.normalize_atom_tex_for_packed_index(raw)
+        self.assertIn("\\text{(a\\^2-a+1=0) 的根}", normalized)
+        self.assertIn("\\}\\)，两点对应", normalized)
+
     def test_extract_tex_crossrefs_ignores_comments(self) -> None:
         tex = (
             "\\label{sec:ok}\n"
@@ -1302,6 +1662,98 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertIn("\\bibliographystyle{amsplain}", payload)
         self.assertIn((self.repo_root / "docs" / "references_alpha").as_posix(), payload)
         self.assertIn((self.repo_root / "docs" / "references_beta").as_posix(), payload)
+
+    def test_build_index_rejects_deprecated_source_alias_keys(self) -> None:
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0101",
+            label="alias-source-atom",
+            atom_type="tp-note",
+            ext="tex",
+            content="\\paragraph{Alias Source}\\label{kg:alias-source-atom}\n",
+        )
+
+        spec = self.kg_root / "index_specs" / "deprecated_alias_keys.idx"
+        spec.write_text(
+            "\n".join(
+                [
+                    "name: deprecated_alias_keys",
+                    "roots: alias-source-atom",
+                    "include_types: tp-note",
+                    "reference_closure: false",
+                    "source_alias_mode: off",
+                    "order: topo",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        with self.assertRaises(ValueError):
+            build_index.build_single_spec(self.kg_root, spec)
+
+        spec.write_text(
+            "\n".join(
+                [
+                    "name: deprecated_alias_keys",
+                    "roots: alias-source-atom",
+                    "include_types: tp-note",
+                    "reference_closure: false",
+                    "expose_source_aliases: true",
+                    "order: topo",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        with self.assertRaises(ValueError):
+            build_index.build_single_spec(self.kg_root, spec)
+
+    def test_build_index_removes_legacy_source_aliases_dir(self) -> None:
+        write_atom(
+            self.kg_root,
+            kg_id="KG-20260303-0102",
+            label="legacy-dir-clean",
+            atom_type="tp-note",
+            ext="tex",
+            content="\\paragraph{Legacy Dir}\\label{kg:legacy-dir-clean}\n",
+        )
+
+        spec = self.kg_root / "index_specs" / "legacy_dir_clean.idx"
+        spec.write_text(
+            "\n".join(
+                [
+                    "name: legacy_dir_clean",
+                    "roots: legacy-dir-clean",
+                    "include_types: tp-note",
+                    "reference_closure: false",
+                    "order: topo",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        out_dir = self.kg_root / "index_nodes" / "legacy_dir_clean"
+        legacy_source_alias_dir = out_dir / "source_aliases"
+        legacy_source_alias_dir.mkdir(parents=True, exist_ok=True)
+        (legacy_source_alias_dir / "old_alias.tex").write_text("% old\n", encoding="utf-8")
+
+        out_tex = build_index.build_single_spec(self.kg_root, spec)
+        self.assertTrue(out_tex.exists())
+        self.assertFalse(legacy_source_alias_dir.exists())
+        self.assertTrue(build_index.atoms_dir_has_only_kg_aliases(out_dir / "atoms"))
+
+    def test_compile_texinputs_env_does_not_include_source_aliases_dir(self) -> None:
+        index_dir = self.kg_root / "index_nodes" / "sample"
+        atoms_dir = index_dir / "atoms"
+        source_alias_dir = index_dir / "source_aliases"
+        atoms_dir.mkdir(parents=True, exist_ok=True)
+        source_alias_dir.mkdir(parents=True, exist_ok=True)
+        index_main = index_dir / "idx_sample_main.tex"
+        index_main.write_text("% index\n", encoding="utf-8")
+
+        env = kg_compile.build_texinputs_env(self.kg_root, [index_main], [])
+        texinputs = env.get("TEXINPUTS", "")
+        self.assertNotIn(source_alias_dir.resolve().as_posix(), texinputs)
 
     def test_repair_unbalanced_display_math_closes_before_blank_line(self) -> None:
         tex = "\\begin{remark}\n$$\na+b\n\n\\end{remark}\n"

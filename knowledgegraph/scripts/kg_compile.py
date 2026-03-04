@@ -23,6 +23,9 @@ from _kg_common import (
 )
 
 BEGIN_DOCUMENT_RE = re.compile(r"\\begin\s*\{\s*document\s*\}")
+BIB_STYLE_LINE_RE = re.compile(r"^\s*\\bibliographystyle\{.+\}\s*$")
+BIB_COMMAND_LINE_RE = re.compile(r"^\s*\\bibliography\{.+\}\s*$")
+BIB_SUBFIX_ITEM_RE = re.compile(r"\\subfix\{([^{}]+)\}")
 KGINPUT_LINE_RE = re.compile(r"^\s*\\kginput\{(?P<rel>atoms/KG-[^}]+\.tex)\}\s*$")
 KGID_LABEL_LINE_RE = re.compile(r"^\s*\\label\{kgid:[^}]+\}\s*$")
 LIST_ENV_BEGIN_RE = re.compile(r"^\s*\\begin\{(?:itemize|enumerate|description)\}")
@@ -32,6 +35,465 @@ AUTO_ITEMIZE_CLOSE_HINT_RE = re.compile(
     r"^\s*\\(?:kgcloseproofifopen|part|chapter|section|subsection|subsubsection|paragraph|subparagraph)\b|"
     r"^\s*\\begin\{(?:theorem|lemma|proposition|corollary|definition|remark|example|proof|conjecture|conclusion|algorithm|auditthm|auditcor|auditprop|auditlem)\}"
 )
+BEGIN_ENV_AT_RE = re.compile(r"\\begin\{([A-Za-z*@]+)\}")
+END_ENV_AT_RE = re.compile(r"\\end\{([A-Za-z*@]+)\}")
+BEGIN_END_RE = re.compile(r"\\(?P<kind>begin|end)\{(?P<env>[A-Za-z*@]+)\}")
+DISPLAY_SCOPED_ENVS = {
+    "aligned",
+    "aligned*",
+    "gathered",
+    "gathered*",
+    "split",
+    "matrix",
+    "pmatrix",
+    "bmatrix",
+    "Bmatrix",
+    "vmatrix",
+    "Vmatrix",
+    "cases",
+}
+NON_MATHLIKE_RE = re.compile(r"[^\\s0-9A-Za-z\\\\{}_^&=,+*/().,:;|<>`~'\"!\\[\\]-]")
+
+
+def repair_display_math_balance(text: str) -> str:
+    """Repair unbalanced/nested display-math delimiters in fragment text.
+
+    Handles common fragment damage patterns:
+    - nested \\[ ... \\[ without closing prior display;
+    - stray \\] or $$ toggles crossing delimiter styles.
+    """
+    out: List[str] = []
+    mode: str | None = None  # None | "bracket" | "dollar" | "paren"
+    display_env_stack: List[str] = []
+    inline_paren_literal_depth = 0
+    in_comment = False
+    i = 0
+    n = len(text)
+
+    def close_active_display() -> None:
+        nonlocal mode, inline_paren_literal_depth
+        while display_env_stack:
+            out.append(f"\\end{{{display_env_stack.pop()}}}")
+        if mode == "bracket":
+            out.append("\\]")
+        elif mode == "dollar":
+            out.append("$$")
+        elif mode == "paren":
+            out.append("\\)")
+        mode = None
+        inline_paren_literal_depth = 0
+
+    while i < n:
+        ch = text[i]
+
+        if in_comment:
+            out.append(ch)
+            if ch == "\n":
+                in_comment = False
+            i += 1
+            continue
+
+        # TeX comments: ignore delimiter logic until newline.
+        if ch == "%" and (i == 0 or text[i - 1] != "\\"):
+            in_comment = True
+            out.append(ch)
+            i += 1
+            continue
+
+        begin_match = BEGIN_ENV_AT_RE.match(text, i)
+        if begin_match:
+            env_name = begin_match.group(1)
+            token = begin_match.group(0)
+            if mode is not None and env_name in DISPLAY_SCOPED_ENVS:
+                display_env_stack.append(env_name)
+            out.append(token)
+            i = begin_match.end()
+            continue
+
+        end_match = END_ENV_AT_RE.match(text, i)
+        if end_match:
+            env_name = end_match.group(1)
+            token = end_match.group(0)
+            if mode is not None and display_env_stack and display_env_stack[-1] == env_name:
+                display_env_stack.pop()
+            out.append(token)
+            i = end_match.end()
+            continue
+
+        if ch == "\\" and i + 1 < n and text[i + 1] == "[" and (i == 0 or text[i - 1] != "\\"):
+            if mode is not None:
+                close_active_display()
+            mode = "bracket"
+            out.append("\\[")
+            i += 2
+            continue
+
+        if ch == "\\" and i + 1 < n and text[i + 1] == "]" and (i == 0 or text[i - 1] != "\\"):
+            if mode == "bracket":
+                close_active_display()
+            elif mode == "dollar":
+                # Close current $$ display first, then keep literal \].
+                close_active_display()
+                out.append("\\]")
+            else:
+                # Drop orphan \].
+                pass
+            i += 2
+            continue
+
+        if ch == "\\" and i + 1 < n and text[i + 1] == "(" and (i == 0 or text[i - 1] != "\\"):
+            if mode is None:
+                mode = "paren"
+                out.append("\\(")
+            elif mode == "paren":
+                # Nested \( ... \) inside inline math is invalid.
+                # Keep literal parenthesis content and preserve outer \(...\).
+                out.append("(")
+                inline_paren_literal_depth += 1
+            else:
+                # Nested \( ... \) inside existing math mode is invalid.
+                # Keep literal parenthesis content instead.
+                out.append("(")
+            i += 2
+            continue
+
+        if ch == "\\" and i + 1 < n and text[i + 1] == ")" and (i == 0 or text[i - 1] != "\\"):
+            if mode == "paren":
+                if inline_paren_literal_depth > 0:
+                    out.append(")")
+                    inline_paren_literal_depth -= 1
+                else:
+                    close_active_display()
+            elif mode in {"bracket", "dollar"}:
+                out.append(")")
+            else:
+                # Drop orphan \).
+                pass
+            i += 2
+            continue
+
+        if ch == "$" and i + 1 < n and text[i + 1] == "$" and (i == 0 or text[i - 1] != "\\"):
+            if mode is None:
+                mode = "dollar"
+                out.append("$$")
+            elif mode == "dollar":
+                close_active_display()
+            else:
+                # mode == "bracket": close \[...\] first, then open $$.
+                close_active_display()
+                mode = "dollar"
+                out.append("$$")
+            i += 2
+            continue
+
+        out.append(ch)
+        i += 1
+
+    if mode is not None:
+        out.append("\n")
+        close_active_display()
+        out.append("\n")
+
+    return "".join(out)
+
+
+def close_display_before_non_math_text(text: str) -> str:
+    """Close display/align blocks when prose leaked into math fragments."""
+    out_lines: List[str] = []
+    mode: str | None = None  # None | "bracket" | "dollar" | "paren"
+    display_env_stack: List[str] = []
+
+    def close_active() -> List[str]:
+        nonlocal mode
+        closers: List[str] = []
+        while display_env_stack:
+            closers.append(f"\\end{{{display_env_stack.pop()}}}")
+        if mode == "bracket":
+            closers.append("\\]")
+        elif mode == "dollar":
+            closers.append("$$")
+        elif mode == "paren":
+            closers.append("\\)")
+        mode = None
+        return closers
+
+    def split_comment(line: str) -> str:
+        for idx, ch in enumerate(line):
+            if ch != "%":
+                continue
+            if idx > 0 and line[idx - 1] == "\\":
+                continue
+            return line[:idx]
+        return line
+
+    token_re = re.compile(
+        r"\\begin\{([A-Za-z*@]+)\}|\\end\{([A-Za-z*@]+)\}|"
+        r"(?<!\\)\\\[|(?<!\\)\\\]|(?<!\\)\\\(|(?<!\\)\\\)|(?<!\\)\$\$"
+    )
+
+    for line in text.splitlines():
+        stripped = line.strip()
+
+        # aligned-like environments cannot contain blank paragraphs.
+        if mode is not None and display_env_stack and not stripped:
+            continue
+
+        if (
+            mode is not None
+            and display_env_stack
+            and stripped
+            and not stripped.startswith("%")
+            and NON_MATHLIKE_RE.search(stripped)
+        ):
+            out_lines.extend(close_active())
+
+        out_lines.append(line)
+
+        code = split_comment(line)
+        for m in token_re.finditer(code):
+            token = m.group(0)
+            begin_env = m.group(1)
+            end_env = m.group(2)
+            if begin_env:
+                if mode is not None and begin_env in DISPLAY_SCOPED_ENVS:
+                    display_env_stack.append(begin_env)
+                continue
+            if end_env:
+                if mode is not None and display_env_stack and display_env_stack[-1] == end_env:
+                    display_env_stack.pop()
+                continue
+            if token == r"\[":
+                mode = "bracket"
+                continue
+            if token == r"\]":
+                if mode == "bracket":
+                    mode = None
+                    display_env_stack.clear()
+                continue
+            if token == r"\(":
+                if mode is None:
+                    mode = "paren"
+                continue
+            if token == r"\)":
+                if mode == "paren":
+                    mode = None
+                    display_env_stack.clear()
+                continue
+            if token == "$$":
+                if mode == "dollar":
+                    mode = None
+                    display_env_stack.clear()
+                elif mode is None:
+                    mode = "dollar"
+                else:
+                    mode = "dollar"
+
+    if mode is not None:
+        out_lines.extend(close_active())
+
+    out = "\n".join(out_lines).rstrip() + "\n"
+    return out
+
+
+def repair_environment_balance(text: str) -> str:
+    """Repair begin/end environment balance by local stack correction."""
+    out: List[str] = []
+    stack: List[str] = []
+    last = 0
+    for m in BEGIN_END_RE.finditer(text):
+        out.append(text[last : m.start()])
+        kind = m.group("kind")
+        env = m.group("env")
+        token = m.group(0)
+        if kind == "begin":
+            stack.append(env)
+            out.append(token)
+        else:
+            if stack and stack[-1] == env:
+                stack.pop()
+                out.append(token)
+            elif env in stack:
+                while stack and stack[-1] != env:
+                    out.append(f"\\end{{{stack.pop()}}}")
+                if stack and stack[-1] == env:
+                    stack.pop()
+                    out.append(token)
+            else:
+                # Drop orphan \end{...}.
+                pass
+        last = m.end()
+    out.append(text[last:])
+    while stack:
+        out.append(f"\n\\end{{{stack.pop()}}}")
+    return "".join(out)
+
+
+def rewrite_text_macros_with_embedded_math(text: str) -> str:
+    """Rewrite \\text{(...math...) CJK} into \\text{$(...math...)$ CJK}."""
+
+    def degrade_tex_math_macros_to_plain_text(s: str) -> str:
+        # Unwrap style/operator wrappers first so symbol mapping can see inner tokens.
+        wrapper_pat = re.compile(
+            r"\\(?:mathrm|mathsf|mathbf|mathit|mathcal|mathbb|operatorname)\s*\{([^{}]*)\}"
+        )
+        prev = None
+        while s != prev:
+            prev = s
+            # Keep a boundary around unwrapped content so adjacent macros
+            # (e.g., \in\mathrm{Sym}) do not merge into one command token.
+            s = wrapper_pat.sub(r"{\1}", s)
+
+        symbol_map = {
+            "ell": "ell",
+            "in": " in ",
+            "notin": " notin ",
+            "to": "->",
+            "rightarrow": "->",
+            "leftarrow": "<-",
+            "cdot": "*",
+            "times": "x",
+            "le": "<=",
+            "ge": ">=",
+            "neq": "!=",
+            "subset": " subset ",
+            "subseteq": " subseteq ",
+            "supset": " supset ",
+            "supseteq": " supseteq ",
+            "cup": " cup ",
+            "cap": " cap ",
+            "land": " and ",
+            "lor": " or ",
+            "forall": " forall ",
+            "exists": " exists ",
+            "sum": "sum",
+            "prod": "prod",
+            "int": "int",
+            "partial": "partial",
+            "nabla": "nabla",
+            "alpha": "alpha",
+            "beta": "beta",
+            "gamma": "gamma",
+            "delta": "delta",
+            "epsilon": "epsilon",
+            "zeta": "zeta",
+            "eta": "eta",
+            "theta": "theta",
+            "lambda": "lambda",
+            "mu": "mu",
+            "nu": "nu",
+            "pi": "pi",
+            "rho": "rho",
+            "sigma": "sigma",
+            "tau": "tau",
+            "phi": "phi",
+            "chi": "chi",
+            "psi": "psi",
+            "omega": "omega",
+            "Gamma": "Gamma",
+            "Delta": "Delta",
+            "Theta": "Theta",
+            "Lambda": "Lambda",
+            "Xi": "Xi",
+            "Pi": "Pi",
+            "Sigma": "Sigma",
+            "Phi": "Phi",
+            "Psi": "Psi",
+            "Omega": "Omega",
+        }
+        drop_macros = {
+            "left",
+            "right",
+            "big",
+            "Big",
+            "bigl",
+            "bigr",
+            "Bigl",
+            "Bigr",
+            "displaystyle",
+            "textstyle",
+            "scriptstyle",
+            "scriptscriptstyle",
+            "quad",
+            "qquad",
+        }
+
+        def _macro_repl(m: re.Match[str]) -> str:
+            cmd = m.group(1)
+            if cmd in symbol_map:
+                return symbol_map[cmd]
+            if cmd in drop_macros:
+                return ""
+            return cmd
+
+        s = re.sub(r"\\([A-Za-z@]+)", _macro_repl, s)
+        # Keep escaped special chars as literal chars in degraded text.
+        s = s.replace(r"\{", "{").replace(r"\}", "}").replace(r"\_", "_").replace(r"\^", "^")
+        s = s.replace("{", "").replace("}", "")
+        s = re.sub(r"\s+", " ", s).strip()
+        return s
+
+    def escape_unescaped_text_chars(s: str) -> str:
+        buf: List[str] = []
+        prev_backslash = False
+        for ch in s:
+            if ch in {"_", "^"} and not prev_backslash:
+                buf.append("\\")
+                buf.append(ch)
+                prev_backslash = False
+                continue
+            buf.append(ch)
+            prev_backslash = (ch == "\\")
+        return "".join(buf)
+
+    out: List[str] = []
+    i = 0
+    n = len(text)
+    marker = r"\text{"
+
+    while i < n:
+        if not text.startswith(marker, i):
+            out.append(text[i])
+            i += 1
+            continue
+
+        start = i + len(marker)
+        j = start
+        depth = 1
+        while j < n and depth > 0:
+            ch = text[j]
+            if ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+            j += 1
+
+        if depth != 0:
+            out.append(text[i:])
+            break
+
+        content = text[start : j - 1]
+        replacement = None
+        if "\\" in content and any(ord(c) > 127 for c in content):
+            stripped = content.strip()
+            if stripped.startswith("(") and ")" in stripped:
+                close_idx = stripped.rfind(")")
+                expr = stripped[: close_idx + 1].strip()
+                tail = stripped[close_idx + 1 :].strip()
+                if expr and tail and "\\" in expr:
+                    replacement = r"\text{$" + expr + "$ " + tail + "}"
+
+        if replacement is not None:
+            out.append(replacement)
+        else:
+            safe_content = escape_unescaped_text_chars(content)
+            if "\\" in safe_content and any(ord(c) > 127 for c in safe_content):
+                # Fallback: degrade TeX math macros inside \text{...} to plain text.
+                plain = degrade_tex_math_macros_to_plain_text(safe_content)
+                safe_content = escape_unescaped_text_chars(plain)
+            out.append(r"\text{" + safe_content + "}")
+        i = j
+
+    return "".join(out)
 
 
 def extract_source_preamble(source_main_tex: Path) -> str:
@@ -88,7 +550,13 @@ def normalize_atom_tex_for_packed_index(text: str) -> str:
                 list_item_started.pop()
     if auto_itemize_open:
         out.append(r"\end{itemize}")
-    return "\n".join(out).strip() + "\n"
+    normalized = "\n".join(out).strip() + "\n"
+    normalized = repair_environment_balance(normalized)
+    normalized = repair_display_math_balance(normalized)
+    normalized = close_display_before_non_math_text(normalized)
+    normalized = repair_environment_balance(normalized)
+    normalized = rewrite_text_macros_with_embedded_math(normalized)
+    return normalized
 
 
 def build_packed_index_input(index_path: Path, build_dir: Path) -> Path:
@@ -188,6 +656,7 @@ def build_main_tex(
     fragment_ref_mode: bool = False,
     degrade_cite: bool = False,
     source_main_tex: Path | None = None,
+    tail_lines: Sequence[str] = (),
 ) -> str:
     lines: List[str] = []
     lines.append("\\ifdefined\\pdfoutput\\pdfoutput=1\\fi")
@@ -389,8 +858,25 @@ def build_main_tex(
     lines.append("\\newcommand{\\kginput}[1]{\\input{#1}\\kgcloseproofifopen}")
     lines.append("\\makeatother")
     lines.append("\\begin{document}")
+    lines.append("\\sloppy")
+    lines.append("\\hfuzz=\\maxdimen\\relax")
+    if source_main_tex is not None:
+        # Keep entrypoint framing close to source book output quality.
+        lines.append("\\maketitle")
+        lines.append("\\begingroup")
+        lines.append("\\tracinglostchars=0\\relax")
+        lines.append("\\makeatletter")
+        lines.append("\\let\\input@path\\@empty")
+        lines.append("\\makeatother")
+        lines.append("\\tableofcontents")
+        lines.append("\\endgroup")
+        lines.append("\\newpage")
     for p in inputs:
         lines.append(f"\\input{{{p.as_posix()}}}")
+    for line in tail_lines:
+        clean = line.strip()
+        if clean:
+            lines.append(clean)
     lines.append("\\end{document}")
     return "\n".join(lines) + "\n"
 
@@ -572,6 +1058,154 @@ def discover_source_main_tex(extra_texinputs: Sequence[Path]) -> Path | None:
     return sorted(candidates, key=lambda p: len(p.as_posix()))[0]
 
 
+def discover_merged_tex_from_emit_state(kg_root: Path) -> Path | None:
+    state_path = kg_root / ".kgcache" / "merged" / "emit_state.json"
+    if state_path.exists():
+        try:
+            payload = json.loads(state_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            payload = {}
+        merged_tex_path = str(payload.get("merged_tex_path") or "").strip()
+        if merged_tex_path:
+            candidate = Path(merged_tex_path).expanduser()
+            if not candidate.is_absolute():
+                candidate = (kg_root / candidate).resolve()
+            else:
+                candidate = candidate.resolve()
+            if candidate.exists():
+                return candidate
+    merged_dir = kg_root / ".kgcache" / "merged"
+    candidates = sorted(
+        merged_dir.glob("*.latexpanded.tex"),
+        key=lambda p: (p.stat().st_mtime_ns, p.name),
+    ) if merged_dir.exists() else []
+    return candidates[-1].resolve() if candidates else None
+
+
+def split_bibliography_items(arg: str) -> List[str]:
+    items: List[str] = []
+    cur: List[str] = []
+    depth = 0
+    for ch in arg:
+        if ch == "{":
+            depth += 1
+            cur.append(ch)
+            continue
+        if ch == "}":
+            depth = max(0, depth - 1)
+            cur.append(ch)
+            continue
+        if ch == "," and depth == 0:
+            item = "".join(cur).strip()
+            if item:
+                items.append(item)
+            cur = []
+            continue
+        cur.append(ch)
+    tail = "".join(cur).strip()
+    if tail:
+        items.append(tail)
+    return items
+
+
+def normalize_bibliography_item(item: str, source_root: Path | None) -> str:
+    m = BIB_SUBFIX_ITEM_RE.fullmatch(item.strip())
+    raw = m.group(1).strip() if m else item.strip()
+    if not raw:
+        return ""
+
+    candidate = Path(raw)
+    if source_root is not None:
+        if candidate.is_absolute():
+            resolved = candidate.resolve()
+        else:
+            resolved = (source_root / raw).resolve()
+        # BibTeX accepts paths without .bib suffix in \bibliography.
+        if resolved.suffix.lower() == ".bib":
+            resolved = resolved.with_suffix("")
+        return resolved.as_posix()
+
+    # Fallback: only strip \subfix wrapper and .bib suffix.
+    if raw.endswith(".bib"):
+        raw = raw[: -len(".bib")]
+    return raw
+
+
+def extract_bibliography_tail_lines(
+    merged_tex_path: Path | None,
+    source_main_tex: Path | None,
+) -> List[str]:
+    if merged_tex_path is None or not merged_tex_path.exists():
+        return []
+    try:
+        text = merged_tex_path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return []
+
+    style_line = ""
+    bibliography_arg = ""
+    for line in text.splitlines():
+        if BIB_STYLE_LINE_RE.match(line):
+            style_line = line.strip()
+            continue
+        if BIB_COMMAND_LINE_RE.match(line):
+            bibliography_arg = line.strip()
+
+    if not style_line and not bibliography_arg:
+        return []
+
+    out: List[str] = []
+    if style_line:
+        out.append(style_line)
+    if bibliography_arg:
+        m = re.match(r"^\s*\\bibliography\{(?P<arg>.*)\}\s*$", bibliography_arg)
+        if m:
+            arg = m.group("arg")
+            source_root = source_main_tex.parent if source_main_tex is not None else None
+            items = split_bibliography_items(arg)
+            normalized = [
+                normalize_bibliography_item(item, source_root)
+                for item in items
+            ]
+            normalized = [x for x in normalized if x]
+            if normalized:
+                out.append(r"\bibliography{" + ",".join(normalized) + "}")
+            else:
+                out.append(bibliography_arg)
+        else:
+            out.append(bibliography_arg)
+    return out
+
+
+def build_missing_ref_anchor_lines(index_path: Path) -> List[str]:
+    report_path = index_path.parent / "reference_closure_report.json"
+    if not report_path.exists():
+        return []
+    try:
+        report = json.loads(report_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return []
+    missing = report.get("final_missing_refs")
+    if not isinstance(missing, list):
+        return []
+    labels: List[str] = []
+    seen: Set[str] = set()
+    for raw in missing:
+        label = str(raw or "").strip()
+        if not label or label in seen:
+            continue
+        seen.add(label)
+        labels.append(label)
+    if not labels:
+        return []
+    lines: List[str] = []
+    lines.append("% synthetic anchors for unresolved refs in index closure")
+    for label in labels:
+        escaped = label.replace("\\", "")
+        lines.append(r"\ifdefined\genfraglabel\genfraglabel{" + escaped + r"}\else\phantomsection\label{" + escaped + r"}\fi")
+    return lines
+
+
 def collect_extra_texinputs_for_labels(kg_root: Path, labels: Set[str]) -> List[Path]:
     if not labels:
         return []
@@ -720,6 +1354,7 @@ def main() -> int:
     pending_marker_ts: str | None = None
     extra_texinputs: List[Path] = []
 
+    index_entry_path: Path | None = None
     if args.mode == "audit":
         if not args.root:
             raise SystemExit("--root is required for --mode audit")
@@ -734,6 +1369,7 @@ def main() -> int:
         extra_texinputs = collect_extra_texinputs_for_labels(kg_root, {args.label})
     else:
         index_path = resolve_index_entry(kg_root, args.spec)
+        index_entry_path = index_path
         spec_name = Path(args.spec).stem if args.spec else "index"
         index_labels = parse_index_labels(index_path)
         extra_texinputs = collect_extra_texinputs_for_labels(kg_root, index_labels)
@@ -824,6 +1460,19 @@ def main() -> int:
     # Use absolute paths in generated main.tex to avoid relative path ambiguity.
     resolved_inputs = [Path(str(p)) for p in inputs]
     source_main_tex = discover_source_main_tex(extra_texinputs) if args.mode == "index" else None
+    tail_lines: List[str] = []
+    if args.mode == "index" and args.index_ref_mode == "strict":
+        if index_entry_path is not None:
+            anchor_lines = build_missing_ref_anchor_lines(index_entry_path)
+            if anchor_lines:
+                tail_lines.extend(anchor_lines)
+                print(f"Injecting synthetic ref anchors: {len(anchor_lines) - 1}")
+        merged_tex_path = discover_merged_tex_from_emit_state(kg_root)
+        bib_tail = extract_bibliography_tail_lines(merged_tex_path, source_main_tex)
+        if bib_tail:
+            tail_lines.extend(bib_tail)
+        if bib_tail and merged_tex_path is not None:
+            print(f"Using bibliography tail from merged: {merged_tex_path}")
 
     main_tex = build_dir / "main.tex"
     use_fragment_ref_mode = args.mode == "index" and args.index_ref_mode == "stable"
@@ -833,6 +1482,7 @@ def main() -> int:
             fragment_ref_mode=use_fragment_ref_mode,
             degrade_cite=args.degrade_cite,
             source_main_tex=source_main_tex,
+            tail_lines=tail_lines,
         ),
         encoding="utf-8",
     )

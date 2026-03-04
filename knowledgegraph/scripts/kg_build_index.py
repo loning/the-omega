@@ -8,7 +8,7 @@ import hashlib
 import json
 import re
 import shutil
-from collections import Counter, defaultdict
+import sys
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence, Set, Tuple
 
@@ -33,9 +33,10 @@ BEGIN_DOC_RE = re.compile(r"\\begin\s*\{\s*document\s*\}")
 END_DOC_RE = re.compile(r"\\end\s*\{\s*document\s*\}")
 DOCUMENTCLASS_RE = re.compile(r"\\documentclass\b")
 UNESCAPED_DOUBLE_DOLLAR_RE = re.compile(r"(?<!\\)\$\$")
-BUILD_INDEX_VERSION = "2026-03-04-r3"
+BUILD_INDEX_VERSION = "2026-03-04-r6-no-aliases"
 VERSIONED_LABEL_RE = re.compile(r"^(?P<canonical>[a-z0-9-]+)-h(?P<hash>[0-9a-f]{12})$")
 KG_ID_RE = re.compile(r"^KG-(?P<date>\d{8})-(?P<seq>\d+)$")
+DEPRECATED_SPEC_KEYS = {"source_alias_mode", "expose_source_aliases"}
 
 
 def latex_escape(text: str) -> str:
@@ -123,6 +124,15 @@ def parse_csv_tokens(value: str) -> Set[str]:
     return {x.strip() for x in value.split(",") if x.strip()}
 
 
+def validate_spec_keys(spec_data: Dict[str, str], spec_path: Path) -> None:
+    used = sorted(DEPRECATED_SPEC_KEYS & set(spec_data.keys()))
+    if used:
+        raise ValueError(
+            f"deprecated keys in {spec_path}: {used}. "
+            "Source-alias compatibility was removed; delete these keys."
+        )
+
+
 def parse_int(value: str, default: int) -> int:
     try:
         return int(value.strip())
@@ -151,20 +161,26 @@ def source_path_for_atom(atom: Atom) -> Optional[Path]:
     return p.resolve()
 
 
-def source_basename_for_atom(atom: Atom) -> str:
-    src = source_path_for_atom(atom)
-    if src is None:
-        return ""
-    if src.suffix.lower() != ".tex":
-        return ""
-    return src.name
-
-
 def parse_kg_id_key(kg_id: str) -> Tuple[str, int]:
     m = KG_ID_RE.match(kg_id)
     if not m:
         return "", -1
     return m.group("date"), int(m.group("seq"))
+
+
+def is_kg_alias_filename(name: str) -> bool:
+    return name.startswith("KG-") and name.endswith(".tex")
+
+
+def atoms_dir_has_only_kg_aliases(atoms_dir: Path) -> bool:
+    if not atoms_dir.exists() or not atoms_dir.is_dir():
+        return False
+    for entry in atoms_dir.iterdir():
+        if entry.is_dir():
+            return False
+        if not is_kg_alias_filename(entry.name):
+            return False
+    return True
 
 
 def canonical_from_atom_label(label: str) -> str:
@@ -561,7 +577,6 @@ def selection_fingerprint(
     reference_closure: bool,
     closure_max_rounds: int,
     include_wrapper_fragments: bool,
-    expose_source_aliases: bool,
     tex_task_kind_filter: Set[str],
     latest_version_only: bool,
     latest_source_label_only: bool,
@@ -572,7 +587,6 @@ def selection_fingerprint(
     includable_entries: Sequence[Tuple[Atom, str]],
     skipped_tex_atoms: Sequence[Tuple[Atom, str]],
     closure_report: Dict[str, object],
-    source_aliases: Dict[str, str],
 ) -> str:
     hasher = hashlib.sha256()
     hasher.update(spec_path.resolve().as_posix().encode("utf-8"))
@@ -589,7 +603,6 @@ def selection_fingerprint(
                 "reference_closure": bool(reference_closure),
                 "closure_max_rounds": int(closure_max_rounds),
                 "include_wrapper_fragments": bool(include_wrapper_fragments),
-                "expose_source_aliases": bool(expose_source_aliases),
                 "tex_task_kind_filter": sorted(tex_task_kind_filter),
                 "latest_version_only": bool(latest_version_only),
                 "latest_source_label_only": bool(latest_source_label_only),
@@ -616,10 +629,6 @@ def selection_fingerprint(
     for atom, reason in skipped_tex_atoms:
         hasher.update(f"{atom.kg_id}|{reason}\n".encode("utf-8"))
 
-    hasher.update(b"#source_aliases\n")
-    for alias, atom_label in sorted(source_aliases.items()):
-        hasher.update(f"{alias}|{atom_label}\n".encode("utf-8"))
-
     hasher.update(b"#closure_report\n")
     hasher.update(json.dumps(closure_report, ensure_ascii=False, sort_keys=True).encode("utf-8"))
     hasher.update(b"\n")
@@ -627,8 +636,96 @@ def selection_fingerprint(
     return hasher.hexdigest()
 
 
+def normalize_abs_path(raw: str) -> str:
+    path = Path(raw).expanduser()
+    if not path.is_absolute():
+        path = path.resolve()
+    else:
+        path = path.resolve()
+    return path.as_posix()
+
+
+def load_merged_source_start_index(kg_root: Path) -> Dict[str, int]:
+    state_path = kg_root / ".kgcache" / "merged" / "emit_state.json"
+    if not state_path.exists():
+        return {}
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    merged_map_path = str(state.get("merged_map_path") or "").strip()
+    if not merged_map_path:
+        return {}
+    merged_map = Path(merged_map_path).expanduser()
+    if not merged_map.is_absolute():
+        merged_map = (kg_root / merged_map).resolve()
+    else:
+        merged_map = merged_map.resolve()
+    if not merged_map.exists():
+        return {}
+
+    try:
+        payload = json.loads(merged_map.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    entries = payload.get("entries")
+    if not isinstance(entries, list):
+        return {}
+
+    out: Dict[str, int] = {}
+    for item in entries:
+        if not isinstance(item, dict):
+            continue
+        raw_path = str(item.get("path") or "").strip()
+        if not raw_path:
+            continue
+        try:
+            start = int(item.get("start"))
+        except (TypeError, ValueError):
+            continue
+        norm = normalize_abs_path(raw_path)
+        prev = out.get(norm)
+        if prev is None or start < prev:
+            out[norm] = start
+    return out
+
+
+TASK_TAIL_RE = re.compile(r"-([0-9]{6,})$")
+
+
+def parse_task_seq(task_id: str) -> int:
+    m = TASK_TAIL_RE.search(task_id.strip())
+    if not m:
+        return sys.maxsize
+    try:
+        return int(m.group(1))
+    except ValueError:
+        return sys.maxsize
+
+
+def order_atoms_by_source_position(kg_root: Path, selected_atoms: Sequence[Atom]) -> List[Atom]:
+    source_index = load_merged_source_start_index(kg_root)
+    if not source_index:
+        return sorted(selected_atoms, key=lambda a: (a.kg_id, a.label))
+
+    def key(atom: Atom) -> Tuple[int, int, str, str]:
+        meta = load_atom_meta(atom)
+        source_path = str(meta.get("source_path") or "").strip()
+        source_rank = (
+            source_index.get(normalize_abs_path(source_path), sys.maxsize)
+            if source_path
+            else sys.maxsize
+        )
+        task_seq = parse_task_seq(str(meta.get("task_id") or ""))
+        return (source_rank, task_seq, atom.kg_id, atom.label)
+
+    return sorted(selected_atoms, key=key)
+
+
 def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
     data = parse_kv_spec(spec_path)
+    validate_spec_keys(data, spec_path)
     name = data.get("name", spec_path.stem)
     roots = parse_roots(data.get("roots", ""))
     include_types = parse_types(data.get("include_types", ""))
@@ -637,7 +734,6 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
     reference_closure = parse_bool(data.get("reference_closure", "true"), default=True)
     closure_max_rounds = max(1, min(parse_int(data.get("reference_closure_max_rounds", "12"), 12), 64))
     include_wrapper_fragments = parse_bool(data.get("include_wrapper_fragments", "true"), default=True)
-    expose_source_aliases = parse_bool(data.get("expose_source_aliases", "true"), default=True)
     tex_task_kind_filter = parse_csv_tokens(data.get("tex_task_kind_filter", ""))
     latest_version_only = parse_bool(data.get("latest_version_only", "true"), default=True)
     latest_source_label_only = parse_bool(data.get("latest_source_label_only", "true"), default=True)
@@ -798,6 +894,8 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
 
     if order == "topo":
         ordered = topological_order(atoms, subset={a.label for a in selected_atoms})
+    elif order == "source":
+        ordered = order_atoms_by_source_position(kg_root, selected_atoms)
     elif order == "alpha":
         ordered = sorted(selected_atoms, key=lambda a: a.label)
     else:
@@ -839,20 +937,6 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
 
     includable_tex_atoms = [atom for atom, _ in includable_entries]
 
-    # Build additional basename aliases for wrapper-level \input{foo}.
-    source_basename_to_labels: Dict[str, List[str]] = defaultdict(list)
-    if expose_source_aliases:
-        for atom in includable_tex_atoms:
-            base = source_basename_for_atom(atom)
-            if base:
-                source_basename_to_labels[base].append(atom.label)
-
-    source_aliases: Dict[str, str] = {}
-    for base, labels in source_basename_to_labels.items():
-        uniq = sorted(set(labels))
-        if len(uniq) == 1:
-            source_aliases[base] = uniq[0]
-
     out_dir = kg_root / "index_nodes" / name
     out_dir.mkdir(parents=True, exist_ok=True)
     out_tex = out_dir / f"idx_{name}_main.tex"
@@ -872,7 +956,6 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         reference_closure=reference_closure,
         closure_max_rounds=closure_max_rounds,
         include_wrapper_fragments=include_wrapper_fragments,
-        expose_source_aliases=expose_source_aliases,
         tex_task_kind_filter=tex_task_kind_filter,
         latest_version_only=latest_version_only,
         latest_source_label_only=latest_source_label_only,
@@ -883,7 +966,6 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         includable_entries=includable_entries,
         skipped_tex_atoms=skipped_tex_atoms,
         closure_report=closure_report,
-        source_aliases=source_aliases,
     )
     if manifest_path.exists() and out_tex.exists() and alias_dir.exists() and closure_report_path.exists():
         try:
@@ -892,14 +974,15 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
             previous_manifest = {}
         if previous_manifest.get("selection_fingerprint") == fingerprint:
             expected_aliases = [alias_dir / f"{atom.kg_id}.tex" for atom in includable_tex_atoms]
-            if all(p.exists() for p in expected_aliases):
+            if all(p.exists() for p in expected_aliases) and atoms_dir_has_only_kg_aliases(alias_dir):
                 return out_tex
 
     if alias_dir.exists():
         shutil.rmtree(alias_dir)
     alias_dir.mkdir(parents=True, exist_ok=True)
-
-    atom_to_alias_name: Dict[str, str] = {}
+    legacy_source_alias_dir = out_dir / "source_aliases"
+    if legacy_source_alias_dir.exists():
+        shutil.rmtree(legacy_source_alias_dir)
 
     lines: List[str] = []
     lines.append("% Auto-generated by kg_build_index.py")
@@ -910,7 +993,6 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
     if includable_entries:
         for atom, mode in includable_entries:
             alias_name = f"{atom.kg_id}.tex"
-            atom_to_alias_name[atom.label] = alias_name
             alias_path = alias_dir / alias_name
 
             if mode == "original":
@@ -925,18 +1007,6 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
             tex_path = (Path("atoms") / alias_name).as_posix()
             lines.append(f"% {atom.kg_id} {atom.label} {atom.atom_type} mode={mode}")
             lines.append(f"\\kginput{{{tex_path}}}")
-
-        for source_alias, atom_label in sorted(source_aliases.items()):
-            target_alias = atom_to_alias_name.get(atom_label)
-            if not target_alias:
-                continue
-            alias_path = alias_dir / source_alias
-            if alias_path.exists():
-                continue
-            try:
-                alias_path.symlink_to(target_alias)
-            except OSError:
-                shutil.copy2(alias_dir / target_alias, alias_path)
     else:
         lines.append("\\emph{No TeX atoms selected.}")
 
@@ -1020,8 +1090,6 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         json.dumps(closure_report, ensure_ascii=False, indent=2), encoding="utf-8"
     )
 
-    ambiguous_alias_count = sum(1 for labels in source_basename_to_labels.values() if len(set(labels)) > 1)
-
     manifest = {
         "name": name,
         "spec": str(spec_path),
@@ -1032,7 +1100,7 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         "reference_closure": bool(reference_closure),
         "reference_closure_max_rounds": closure_max_rounds,
         "include_wrapper_fragments": bool(include_wrapper_fragments),
-        "expose_source_aliases": bool(expose_source_aliases),
+        "atom_alias_dir": str(alias_dir),
         "merged_sha_filter": merged_sha_filter or "",
         "dropped_by_merged_sha": dropped_by_merged_sha,
         "extractor_version_filter": extractor_version_filter or "",
@@ -1053,8 +1121,6 @@ def build_single_spec(kg_root: Path, spec_path: Path) -> Path:
         "repaired_tex_atom_count": sum(1 for _, mode in includable_entries if mode == "repaired"),
         "skipped_tex_atom_count": len(skipped_tex_atoms),
         "non_tex_atom_count": len(non_tex_atoms),
-        "source_alias_count": len(source_aliases),
-        "source_alias_ambiguous_count": ambiguous_alias_count,
         "reference_closure_report": str(closure_report_path),
         "output_tex": str(out_tex),
     }

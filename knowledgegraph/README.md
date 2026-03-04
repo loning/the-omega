@@ -71,7 +71,7 @@ knowledgegraph/
 ```
 
 字段：
-1. `<ID>`：`KG-YYYYMMDD-NNNN`，全局唯一。
+1. `<ID>`：`KG-YYYYMMDD-NNNNN`（5 位序号），全局唯一。
 2. `<SELF>`：Atom label slug（建议 `[a-z0-9-]`）。
 3. `<TYPE>`：Atom 类型。
 4. `<SHA12>`：内容 `sha256` 前 12 位（用于不可变校验）。
@@ -264,7 +264,7 @@ order: topo
 
 行为：
 1. 由 `.idx` 生成 `index_nodes`。
-2. `index_nodes/<spec>/atoms/` 自动生成短名软链（避免超长 `\input` 路径导致 TeX pool 超限）。
+2. `index_nodes/<spec>/atoms/` 自动生成 `KG-*.tex` 短名软链（避免超长 `\input` 路径导致 TeX pool 超限）。
 3. 编译索引 PDF。
 4. 可选 `--index-ref-mode stable|strict`：
    - `stable`（默认）：保留可解析的 `\ref/\eqref`；未解析标签回退为文本占位；`\cite` 回退为文本占位，优先保证超大图可编译。

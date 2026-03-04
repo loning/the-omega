@@ -23,6 +23,7 @@ from _kg_common import (
 )
 
 VERSIONED_LABEL_RE = re.compile(r"^(?P<canonical>[a-z0-9-]+)-h(?P<hash>[0-9a-f]{12})$")
+KG_ID_SEQ_WIDTH = 5
 
 
 def parse_args() -> argparse.Namespace:
@@ -440,7 +441,7 @@ def next_kg_id_factory(kg_root: Path, now: datetime):
     def _next() -> str:
         nonlocal current
         current += 1
-        return f"{prefix}{current:04d}"
+        return f"{prefix}{current:0{KG_ID_SEQ_WIDTH}d}"
 
     return _next
 

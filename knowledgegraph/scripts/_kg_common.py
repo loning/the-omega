@@ -363,15 +363,28 @@ def validate_atoms(atoms: Sequence[Atom]) -> Dict[str, List[str]]:
             label_seen[atom.label] = atom
 
         if atom.ext == "tex":
-            text = read_text(atom.path)
-            wanted_old = f"\\label{{kg:{atom.label}}}"
-            short = hashlib.sha256(atom.label.encode("utf-8")).hexdigest()[:12]
-            wanted_short = f"\\label{{kgid:{short}}}"
-            wanted_comment = f"% kg-label:{atom.label}"
-            if wanted_old not in text and wanted_short not in text and wanted_comment not in text:
-                warnings.append(
-                    f"tex atom missing canonical label marker ({wanted_old} or {wanted_short}): {atom.path}"
-                )
+            # label_anchor atoms intentionally preserve only original \label{...}
+            # and may not carry kgid/kg-label markers.
+            skip_marker_check = False
+            sidecar = atom_sidecar_path(atom.path)
+            if sidecar.exists():
+                try:
+                    meta = json.loads(sidecar.read_text(encoding="utf-8"))
+                except Exception:  # noqa: BLE001
+                    meta = {}
+                if str(meta.get("unit_env") or "").strip() == "label_anchor":
+                    skip_marker_check = True
+
+            if not skip_marker_check:
+                text = read_text(atom.path)
+                wanted_old = f"\\label{{kg:{atom.label}}}"
+                short = hashlib.sha256(atom.label.encode("utf-8")).hexdigest()[:12]
+                wanted_short = f"\\label{{kgid:{short}}}"
+                wanted_comment = f"% kg-label:{atom.label}"
+                if wanted_old not in text and wanted_short not in text and wanted_comment not in text:
+                    warnings.append(
+                        f"tex atom missing canonical label marker ({wanted_old} or {wanted_short}): {atom.path}"
+                    )
 
     valid_labels = set(label_seen.keys())
     for atom in atoms:
