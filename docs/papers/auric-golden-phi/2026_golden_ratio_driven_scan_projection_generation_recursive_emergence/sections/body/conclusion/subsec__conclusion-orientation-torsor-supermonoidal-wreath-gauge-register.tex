@@ -36,6 +36,106 @@ P,& n\ \text{为奇数}.
 奇偶幂结论由 \(\Theta_P\) 迭代直接推出。证毕。
 \end{proof}
 
+\begin{theorem}[交换群目标上的对称幺半跳跃理论仅由 \texorpdfstring{$2$}{2}-扭决定]\label{thm:conclusion-monoidal-jump-theory-a2torsion-classification}
+设 \(A\) 为交换群，并记
+\[
+A[2]:=\{a\in A:\ 2a=0\}.
+\]
+考虑对称幺半函子
+\[
+J:(\mathbf{FinSet}^{\cong},\sqcup)\to (\mathbf{Tors}(A),\otimes),
+\qquad
+J(\varnothing)\ \text{平凡}.
+\]
+则在对称幺半自然同构意义下：
+\begin{enumerate}
+  \item \(J\) 的等价类由唯一元素 \(a_J\in A[2]\) 完全刻画；
+  \item \(a_J=0\) 当且仅当 \(J\) 与平凡函子等价；
+  \item 对任意 \(a_J\in A[2]\)，记 \(\phi_{a_J}:\ZZ_2\to A\) 为唯一同态 \(1\mapsto a_J\)，并定义结构群延拓
+  \[
+  (\phi_{a_J,\ast}\mathrm{Or})(S)
+  :=
+  \mathrm{Or}(S)\times_{\ZZ_2,\phi_{a_J}} A.
+  \]
+  则 \(J\simeq \phi_{a_J,\ast}\mathrm{Or}\)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对每个 \(n\ge 0\) 取骨架对象 \([n]=\{1,\dots,n\}\)。
+由于 \(J([n])\) 为 \(A\)-torsor，其自同构群自然同构于 \(A\)，故 \(J\) 在自同构群上诱导群同态
+\[
+\chi_n:S_n\to \Aut(J([n]))\cong A.
+\]
+对称幺半自然性给出块和可加律
+\[
+\chi_{m+n}(\sigma\oplus\tau)=\chi_m(\sigma)+\chi_n(\tau)
+\qquad
+(\sigma\in S_m,\ \tau\in S_n).
+\]
+令
+\[
+a:=\chi_2((12))\in A.
+\]
+由
+\[
+\chi_n\bigl((12)\oplus\mathrm{id}_{n-2}\bigr)=\chi_2((12))=a
+\]
+可知所有换位在 \(\chi_n\) 下的像都等于 \(a\)：因为任意换位都与 \((12)\oplus\mathrm{id}_{n-2}\) 共轭，而目标 \(A\) 交换。
+再由换位平方为恒等，得
+\[
+2a=0,
+\]
+故 \(a\in A[2]\)。
+
+又因 \(A\) 交换，\(\chi_n\) 必经由交换化
+\[
+S_n^{\mathrm{ab}}\cong \ZZ_2
+\qquad (n\ge 2)
+\]
+因子分解。
+因此存在唯一同态 \(\phi_a:\ZZ_2\to A\) 使
+\[
+\chi_n=\phi_a\circ \operatorname{sgn}
+\qquad (n\ge 2).
+\]
+另一方面，由定理 \ref{thm:xi-time-part9i-monoidal-rigidity-by-two-points} 与命题 \ref{prop:bdry-orientation-functor-symmetric-monoidal-koszul}，
+\(\mathrm{Or}\) 是 \((\mathbf{FinSet}^{\cong},\sqcup)\to(\mathbf{Tors}(\ZZ_2),\otimes)\) 的唯一非平凡二值跳跃原子，并携带对称幺半结构。
+将其经 \(\phi_a\) 作结构群延拓后，得到的 \(A\)-torsor 值函子 \(\phi_{a,\ast}\mathrm{Or}\) 在每个 \([n]\) 上诱导的自同构表示恰为 \(\phi_a\circ\operatorname{sgn}\)，与 \(J\) 的 \(\chi_n\) 完全一致。
+
+最后，\(\mathbf{FinSet}^{\cong}\) 是由单点对象生成的自由对称幺半群胚，而 \(\mathbf{Tors}(A)\) 为 Picard 群胚；
+在单位对象已固定为平凡 torsor 的前提下，一旦各阶层的对称群作用 \(\chi_n\) 固定，对称幺半函子的等价类便唯一确定。
+故 \(J\simeq \phi_{a,\ast}\mathrm{Or}\)。
+取 \(a_J:=a\) 即得唯一分类。
+当 \(a_J=0\) 时，\(\phi_{a_J}\) 为零同态，\(\phi_{a_J,\ast}\mathrm{Or}\) 即为平凡函子，故第 (2) 条成立。证毕。
+\end{proof}
+
+\begin{corollary}[奇素数阶跳跃与连续相位跳跃的禁制律]\label{cor:conclusion-no-oddprime-or-continuous-phase-monoidal-jump}
+沿用定理 \ref{thm:conclusion-monoidal-jump-theory-a2torsion-classification} 的设定。
+\begin{enumerate}
+  \item 若 \(A[2]=0\)（例如 \(A=\ZZ\) 或 \(A=\ZZ/p\ZZ\) 且 \(p\) 为奇素数），则任意
+  \[
+  J:(\mathbf{FinSet}^{\cong},\sqcup)\to (\mathbf{Tors}(A),\otimes),
+  \qquad
+  J(\varnothing)\ \text{平凡},
+  \]
+  都与平凡函子等价。
+  \item 若 \(A=U(1)\)，则任意此类 \(J\) 都经由其 \(2\)-扭子群
+  \[
+  U(1)[2]=\{\pm 1\}
+  \]
+  因子化；等价地，全对称自然性下不存在真正连续的相位跳跃，所有非平凡跳跃都塌缩为二值符号。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+第 (1) 条由定理 \ref{thm:conclusion-monoidal-jump-theory-a2torsion-classification} 中 \(a_J\in A[2]\) 的唯一分类立即得到。
+第 (2) 条中，\(U(1)[2]=\{\pm1\}\)，故同一定理表明任意 \(J\) 必与某个
+\(
+\phi_{a_J,\ast}\mathrm{Or}
+\)
+等价，其中 \(\phi_{a_J}\) 的像包含于 \(\{\pm1\}\)。
+于是所谓“连续相位”在该函子学口径下被强制坍缩为二值符号。证毕。
+\end{proof}
+
 \begin{theorem}[取向函子在不交并下的超对称单子结构]\label{thm:conclusion-orientation-supermonoidal-koszul}
 对有限集 \(S,T\)，存在自然同构
 \[

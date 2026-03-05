@@ -2780,6 +2780,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="arity_pure_collision_cubic_field_decoupling_audit",
+            script="exp_arity_pure_collision_cubic_field_decoupling_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/arity_pure_collision_cubic_field_decoupling_audit.json",
+            ],
+        ),
+        Step(
             name="arity_pure_collision_cubic_beta_asymptotic_rate",
             script="exp_arity_pure_collision_cubic_beta_asymptotic_rate.py",
             args=["--dps", "80"],
