@@ -415,5 +415,71 @@ v_5\!\left(\prod_{k=0}^{q}\binom{q}{k}\right)
 第二式仅将加权和按 \(d=5m\) 与 \(5\nmid d\) 分组改写。证毕。
 \end{proof}
 
+\begin{corollary}[黄金比例特例 Hankel 主子式的 \texorpdfstring{$5$}{5}-进二次增长]\label{cor:conclusion-golden-lucas-hankel-v5-quadratic-growth}
+在定理 \ref{thm:conclusion-golden-lucas-hankel-v5-rigidity} 的记号下，当 \(q\to\infty\) 时有
+\[
+v_5(D_q)=\frac34\,q^2+O(q\log q).
+\]
+因此 \(D_q\) 的 \(5\)-进规模满足 \(v_5(D_q)=(\frac34+o(1))q^2\)，并在该特例下诱导 Hankel/Prony 型恢复的超指数级病态性（除非显式引入非阿基米德分解或结构性消去）。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:conclusion-golden-lucas-hankel-v5-rigidity}，记
+\(
+B_q:=\prod_{k=0}^{q}\binom{q}{k}
+\)
+与 \(M:=\lfloor q/5\rfloor\)，则
+\[
+v_5(D_q)=v_5(B_q)+\frac{q(q+1)}{2}
++2\sum_{m=1}^{M}(q+1-5m)\,v_5(5m).
+\]
+先估计 \(v_5(B_q)\)。
+由恒等式
+\(
+B_q=(q!)^{q+1}/\prod_{k=0}^{q}(k!)^2
+\)
+得
+\[
+v_5(B_q)=(q+1)v_5(q!)-2\sum_{k=0}^{q}v_5(k!).
+\]
+对 \(v_5(n!)\) 施用 Legendre 公式 \(v_5(n!)=(n-s_5(n))/4\)（\(s_5(n)\) 为 \(5\)-进数字和），并用 \(\sum_{k=0}^{q}k=q(q+1)/2\) 可消去二次主项，得到
+\[
+v_5(B_q)=\frac12\sum_{k=0}^{q}s_5(k)-\frac{q+1}{4}\,s_5(q)=O(q\log q).
+\]
+\par
+再对加权和使用 \(v_5(5m)=1+v_5(m)\)：
+\[
+\sum_{m=1}^{M}(q+1-5m)\,v_5(5m)
+=\sum_{m=1}^{M}(q+1-5m)
+\;+\;
+\sum_{m=1}^{M}(q+1-5m)\,v_5(m).
+\]
+其中
+\(
+\sum_{m=1}^{M}(q+1-5m)=M(q+1)-\frac{5}{2}M(M+1)=\frac{q^2}{10}+O(q)
+\)。
+并且由分解 \(v_5(m)=\sum_{j\ge 1}\ind[5^j\mid m]\) 得到
+\[
+\sum_{m\le M}v_5(m)=\sum_{j\ge 1}\Bigl\lfloor\frac{M}{5^j}\Bigr\rfloor=\frac{M}{4}+O(\log M),
+\qquad
+\sum_{m\le M}m\,v_5(m)=\frac{M^2}{8}+O(M\log M).
+\]
+从而
+\[
+\sum_{m=1}^{M}(q+1-5m)\,v_5(m)
+=(q+1)\sum_{m\le M}v_5(m)-5\sum_{m\le M}m\,v_5(m)
+=\frac{q^2}{40}+O(q\log q).
+\]
+综上
+\(
+2\sum_{m=1}^{M}(q+1-5m)v_5(5m)=\frac{q^2}{4}+O(q\log q)
+\)，
+并与 \(\frac{q(q+1)}{2}=\frac12q^2+O(q)\)、\(v_5(B_q)=O(q\log q)\) 合并，即得
+\(
+v_5(D_q)=\frac34q^2+O(q\log q)
+\)。
+证毕。
+\end{proof}
+
 \endinput
 

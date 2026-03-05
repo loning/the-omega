@@ -1,0 +1,113 @@
+% Auto-split to keep each TeX source < 600 lines.
+
+\begin{theorem}[Adams 扭曲与圆分方靶点的端点热核探针]\label{thm:xi-endpoint-heat-probe-adams-twist-roots}
+令 \(\mu\) 为 \(\TT\) 上有限正 Borel 测度，并令 \(c_h:=\int_{\TT}\xi^{-h}\,\dd\mu(\xi)\)（\(h\in\ZZ\)）。
+对任意整数 \(d\ge 1\) 与任意 \(\omega\in\TT\)，定义 \(d\)-扭曲矩
+\[
+c^{(d)}_h:=c_{dh}\qquad(h\in\ZZ),
+\]
+以及相应 Toeplitz 主子矩阵
+\(
+\mathbf{T}^{(d)}_N:=(c^{(d)}_{j-k})_{0\le j,k\le N}
+\)。
+定义圆分方探针向量
+\[
+b^{(N)}(\omega):=\bigl(\binom Nk(-\omega)^k\bigr)_{k=0}^{N}\in\CC^{N+1},
+\]
+并定义扭曲端点热核探针
+\[
+a_N^{(d)}(\omega):=4^{-N}\,(b^{(N)}(\omega))^\ast\,\mathbf{T}^{(d)}_N\,b^{(N)}(\omega).
+\]
+则对所有 \(N\ge 0\) 成立严格恒等式
+\[
+\boxed{\;
+a_N^{(d)}(\omega)=\int_{\TT}\left(\frac{|1-\omega\xi^{d}|^2}{4}\right)^{N}\,\dd\mu(\xi)\ \in\ [0,\mu(\TT)].\;}
+\]
+并且序列 \((a_N^{(d)}(\omega))_{N\ge 0}\) 单调下降且满足极限抽取公式
+\[
+\boxed{\;
+a_N^{(d)}(\omega)\ \downarrow\ \mu\bigl(\Sigma_{d,\omega}\bigr)\qquad(N\to\infty),\;}
+\]
+其中
+\[
+\Sigma_{d,\omega}:=\{\xi\in\TT:\ \omega\,\xi^{d}=-1\}
+=\{\xi\in\TT:\ \xi^{d}=-\overline{\omega}\}.
+\]
+特别地，取 \(\omega=1\) 时恢复 Adams 扭曲读出集合 \(\{\xi^d=-1\}\) 的原子质量。
+\end{theorem}
+
+\begin{proof}
+由二项式展开
+\[
+(1-\omega\xi^{d})^N=\sum_{k=0}^{N}\binom Nk(-\omega)^k\xi^{dk},
+\]
+并按命题 \ref{prop:xi-endpoint-heat-probe-toeplitz-herglotz-identity} 的同型计算，
+\[
+(b^{(N)}(\omega))^\ast \mathbf{T}^{(d)}_N b^{(N)}(\omega)
+=\int_{\TT}\left|\sum_{k=0}^{N}\binom Nk(-\omega)^k\xi^{dk}\right|^2\dd\mu(\xi)
+=\int_{\TT}|1-\omega\xi^{d}|^{2N}\dd\mu(\xi),
+\]
+两边同除以 \(4^N\) 得恒等式。
+\par
+对任意 \(\xi\in\TT\)，有 \(0\le |1-\omega\xi^{d}|\le 2\)，故
+\(
+0\le |1-\omega\xi^{d}|^2/4\le 1
+\)。
+并且 \(|1-\omega\xi^{d}|=2\) 当且仅当 \(\omega\xi^{d}=-1\)，即 \(\xi\in\Sigma_{d,\omega}\)。
+因此核函数 \(\left(|1-\omega\xi^{d}|^2/4\right)^N\) 随 \(N\) 单调下降到 \(\ind_{\Sigma_{d,\omega}}\)。
+由单调收敛定理得到极限等式。证毕。
+\end{proof}
+
+\begin{corollary}[半角纤维的可核验质量]\label{cor:xi-endpoint-heat-probe-adams-twist-halfangle}
+在定理 \ref{thm:xi-endpoint-heat-probe-adams-twist-roots} 中取 \((d,\omega)=(2,1)\)，并记 \(a_N^{(2)}:=a_N^{(2)}(1)\)，则
+\[
+a_N^{(2)}\ \downarrow\ \mu(\{i\})+\mu(\{-i\})\qquad(N\to\infty).
+\]
+\end{corollary}
+
+\begin{proof}
+由 \(\xi^2=-1\iff \xi\in\{\pm i\}\) 直接代入得到。证毕。
+\end{proof}
+
+\begin{theorem}[由单标量探针序列识别补支撑谱半径]\label{thm:xi-endpoint-heat-probe-cyclotomic-complement-radius}
+沿用定理 \ref{thm:xi-endpoint-heat-probe-adams-twist-roots} 的记号并固定 \((d,\omega)\)。
+记
+\[
+m_\infty:=\mu(\Sigma_{d,\omega}),
+\qquad
+t_N:=a_N^{(d)}(\omega)-m_\infty
+=\int_{\TT\setminus\Sigma_{d,\omega}}\left(\frac{|1-\omega\xi^{d}|^2}{4}\right)^{N}\dd\mu(\xi).
+\]
+并定义补支撑的端点能量谱半径
+\[
+r_\ast:=\sup_{\xi\in\supp(\mu)\setminus\Sigma_{d,\omega}}\frac{|1-\omega\xi^{d}|^2}{4}\in[0,1].
+\]
+则有极限上确界公式
+\[
+\boxed{\;\limsup_{N\to\infty} t_N^{1/N}=r_\ast.\;}
+\]
+从而仅由标量流 \(\{a_N^{(d)}(\omega)\}_{N\ge 0}\) 即可同时识别目标原子总质量 \(m_\infty\) 与补支撑谱半径 \(r_\ast\)（决定指数型或亚指数型收敛）。
+\end{theorem}
+
+\begin{proof}
+令
+\(
+\varphi(\xi):=\frac{|1-\omega\xi^{d}|^2}{4}\in[0,1]
+\)，并令 \(\nu\) 为 \(\TT\setminus\Sigma_{d,\omega}\) 在 \(\varphi\) 下的推前测度：
+\[
+\nu(E):=\mu\bigl(\varphi^{-1}(E)\cap(\TT\setminus\Sigma_{d,\omega})\bigr)\qquad(E\subseteq[0,1]\ \text{Borel}).
+\]
+则
+\[
+t_N=\int_{[0,1]} s^{N}\,\dd\nu(s).
+\]
+由 \(\supp(\nu)\subseteq[0,r_\ast]\) 得 \(t_N\le \nu([0,1])\,r_\ast^{\,N}\)，从而 \(\limsup_{N\to\infty}t_N^{1/N}\le r_\ast\)。
+\par
+反之，任取 \(\varepsilon>0\)。由 \(r_\ast=\sup\supp(\nu)\) 可知 \(\nu((r_\ast-\varepsilon,r_\ast])>0\)，于是
+\[
+t_N\ge (r_\ast-\varepsilon)^N\,\nu\bigl((r_\ast-\varepsilon,r_\ast]\bigr),
+\]
+从而 \(\liminf_{N\to\infty}t_N^{1/N}\ge r_\ast-\varepsilon\)。
+令 \(\varepsilon\downarrow 0\) 即得 \(\limsup_{N\to\infty}t_N^{1/N}=r_\ast\)。证毕。
+\end{proof}
+

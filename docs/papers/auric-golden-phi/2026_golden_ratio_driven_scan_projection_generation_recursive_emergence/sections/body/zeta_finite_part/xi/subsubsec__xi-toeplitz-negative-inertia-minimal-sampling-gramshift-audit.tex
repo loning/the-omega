@@ -209,6 +209,32 @@ s_n=\sum_{j=1}^{\kappa}w_j z_j^{n}.
 因此上述正维纤维不能仅由权重自由度贡献，节点本身必随之变化，从而节点多重集不能由长度 \(2\kappa-1\) 的采样窗唯一确定。证毕。
 \end{proof}
 
+\begin{corollary}[Prony 判定--重建的恰差一采样律]\label{cor:xi-prony-decision-reconstruction-one-sample-gap}
+在定理 \ref{thm:xi-toeplitz-negative-inertia-minimal-sampling} 与定理 \ref{thm:xi-node-spectrum-minimal-window-2kappa} 的设定下，
+假设 \((u_n)\) 在一般位置上具有最小 Prony 形式
+\(
+u_n=\sum_{j=1}^{\kappa}w_j z_j^{n}
+\)
+（\(w_j\neq 0\)、\(z_i\neq z_j\)）。
+则三条结论同时成立：
+\begin{enumerate}
+  \item \textnormal{（判定阈值）}给定前缀 \((u_0,\dots,u_{2\kappa-2})\)（长度 \(2\kappa-1\)）即可在一般位置下判定 \(\mathrm{rank}(\mathsf H_{\kappa-1})=\kappa\)（等价于 \(\det(\mathsf H_{\kappa-1})\neq 0\)）；而任何仅依赖 \((u_0,\dots,u_{2\kappa-3})\) 的规则在一般位置下不能完成该判定。
+  \item \textnormal{（纤维维数）}截断映射
+  \[
+  (u_n)_{n\ge 0}\longmapsto (u_0,\dots,u_{2\kappa-2})
+  \]
+  在 Hankel 秩为 \(\kappa\) 的一般位置上具有一维（复）纤维；因此“判定窗”仍保留恰一维自由度。
+  \item \textnormal{（重建阈值）}加入单个额外采样 \(u_{2\kappa-1}\)（长度 \(2\kappa\)）即可在一般位置下唯一重建节点多重集 \(\{z_j\}\) 及权重 \(\{w_j\}\)（至多差一个排列）。
+\end{enumerate}
+从而在一般位置下，“判定”与“重建”之间存在恰差一项采样的不可约间隙。
+\end{corollary}
+
+\begin{proof}
+第一条由定理 \ref{thm:xi-toeplitz-negative-inertia-minimal-sampling} 直接给出。
+第二条由 \(\mathrm{rank}\,D(\pi\circ\Phi_\kappa)=2\kappa-1\)（定理 \ref{thm:xi-node-spectrum-minimal-window-2kappa} 的证明）得到：由于参数空间维数为 \(2\kappa\)，故一般位置纤维维数恰为 \(1\)。
+第三条由定理 \ref{thm:xi-node-spectrum-minimal-window-2kappa} 的充分性部分（构造 \(H_0,H_1\) 从而得到 \(A=H_0^{-1}H_1\) 与 \(\sigma(A)=\{z_j\}\)，再线性解出权重）给出。证毕。
+\end{proof}
+
 \begin{corollary}[有限窗口的有理重构：节点多项式与谱不变量]\label{cor:xi-node-polynomial-rational-reconstruction}
 沿用定理 \ref{thm:xi-gram-shift-positive-pencil-node-spectrum} 的记号，并假设 \(H_0\) 在 \(\CC\) 上可逆。
 令
@@ -490,6 +516,44 @@ u_n
 第二条：若 \(\det(\widehat H_0)=0\) 作为整数成立，则其模任意素数皆为零，与假设矛盾。
 第三条：若 \(p\mid \det(\widehat H_0)\)，则必有 \(\det(\widehat H_0)\equiv 0\ (\mathrm{mod}\ p)\)；反之模零亦推出整除。
 由于非零整数仅有有限个素因子，故坏素数集合有限。证毕。
+\end{proof}
+
+\begin{proposition}[Hankel 线性实现的有限素数支撑与模审计验证器]\label{prop:xi-hankel-linear-realization-finite-prime-support-mod-audit}
+设 \(\widehat H_0,\widehat H_1\in\Mat_{\kappa}(\ZZ)\) 且 \(\det(\widehat H_0)\neq 0\)，并定义有理实现矩阵
+\[
+A:=\widehat H_0^{-1}\widehat H_1\in\Mat_{\kappa}(\QQ).
+\]
+则：
+\begin{enumerate}
+  \item \textnormal{（有限素数支撑）}对任意素数 \(p\nmid\det(\widehat H_0)\) 与任意 \(k\ge 1\)，线性同余
+  \[
+  \widehat H_0X\equiv \widehat H_1\pmod{p^k}
+  \]
+  在 \(\Mat_{\kappa}(\ZZ/p^k\ZZ)\) 中存在唯一解，并且该解满足 \(X\equiv A\pmod{p^k}\)。
+  因而所有实现歧义只能发生在有限集合 \(S:=\{p:\ p\mid \det(\widehat H_0)\}\) 上。
+  \item \textnormal{（压缩模审计）}给定候选 \(\widehat A\in\Mat_{\kappa}(\QQ)\)，取 \(N^\ast\in\NN\) 使 \(N^\ast\widehat A\in\Mat_{\kappa}(\ZZ)\)，并定义
+  \[
+  F:=N^\ast(\widehat H_0\widehat A-\widehat H_1)\in\Mat_{\kappa}(\ZZ),
+  \qquad
+  |F|_\infty:=\max_{i,j}|F_{ij}|.
+  \]
+  若取有限素数集 \(\mathcal P\) 使 \(\prod_{p\in\mathcal P}p>2|F|_\infty\)，并且满足
+  \[
+  F\equiv 0\pmod p\qquad(\forall p\in\mathcal P),
+  \]
+  则必有 \(F=0\)，从而 \(\widehat H_0\widehat A=\widehat H_1\) 并推出 \(\widehat A=A\)。
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+第一条：若 \(p\nmid\det(\widehat H_0)\)，则 \(\widehat H_0\) 在 \(\ZZ/p^k\ZZ\) 上可逆，故同余方程存在唯一解
+\(
+X\equiv \widehat H_0^{-1}\widehat H_1\equiv A\ (\mathrm{mod}\ p^k)
+\)。
+\par
+第二条：若对所有 \(p\in\mathcal P\) 有 \(F\equiv 0\ (\mathrm{mod}\ p)\)，则 \(F\) 的每个条目都被 \(\prod_{p\in\mathcal P}p\) 整除。
+由 \(\prod_{p\in\mathcal P}p>2|F|_\infty\) 得每个条目只能为 \(0\)，故 \(F=0\)。
+于是 \(\widehat H_0\widehat A=\widehat H_1\)，再由 \(\widehat H_0\) 在 \(\QQ\) 上可逆得 \(\widehat A=A\)。证毕。
 \end{proof}
 
 \begin{corollary}[缺陷熵迫使负块谱质量非退化]\label{cor:xi-defect-entropy-forces-negative-block-mass}
