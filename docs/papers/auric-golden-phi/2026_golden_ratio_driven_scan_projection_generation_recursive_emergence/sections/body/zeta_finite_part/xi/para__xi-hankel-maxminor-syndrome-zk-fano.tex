@@ -94,6 +94,37 @@ Ae_{d-1}=-(p_0,\dots,p_{d-1})^{\mathsf T}.
 又由 (2) 递推阶为 \(d\)，可知 \(A\) 的最小湮灭多项式次数至少为 \(d\)；而 \(\deg P=d\) 且 \(P(A)=0\) 给出次数至多为 \(d\)，故次数恰为 \(d\)。证毕。
 \end{proof}
 
+\begin{corollary}[极小递推的 Hankel 主块可逆性与反演系数公式]\label{cor:xi-hankel-minimal-recurrence-inversion-formula}
+设 \(k\) 为域，\((a_m)_{m\ge 0}\subset k\) 满足某个\emph{极小阶}常系数线性递推：存在 \(d\ge 1\) 与系数 \(c_0,\dots,c_{d-1}\in k\) 使
+\[
+a_{m+d}=c_{d-1}a_{m+d-1}+\cdots+c_0a_m\qquad(m\ge 0),
+\]
+并且 \(d\) 在所有满足该性质的阶数中最小。
+定义 Hankel 主块与右端向量
+\[
+H_d:=\bigl(a_{i+j}\bigr)_{0\le i,j\le d-1}\in M_d(k),
+\qquad
+b:=(a_d,a_{d+1},\dots,a_{2d-1})^{\mathsf T}\in k^d.
+\]
+则 \(H_d\) 必可逆，且系数向量 \(c:=(c_0,\dots,c_{d-1})^{\mathsf T}\) 由有限样本唯一确定并满足
+\[
+\boxed{\;c=H_d^{-1}b.\;}
+\]
+\end{corollary}
+\begin{proof}
+对 \(m=0,1,\dots,d-1\) 写出递推式得到线性系统
+\(
+H_d\,c=b
+\)。
+若 \(H_d\) 奇异，则存在 \(0\neq \alpha\in k^d\) 使 \(H_d\alpha=0\)，即
+\(
+\sum_{j=0}^{d-1}\alpha_j a_{i+j}=0
+\)
+对 \(0\le i\le d-1\) 成立。
+由递推闭包可推出该关系对一切 \(i\ge 0\) 成立，从而给出阶 \(\le d-1\) 的非平凡递推，与极小性矛盾。
+故 \(H_d\) 可逆，且 \(c\) 唯一并由 \(c=H_d^{-1}b\) 给出。证毕。
+\end{proof}
+
 \begin{theorem}[最大子式综合征的偏移射影不变性与规范化唯一性]\label{thm:xi-hankel-maximal-minor-syndrome-offset-projective-invariance}
 设 \(k\) 为域，\((a_n)_{n\ge 0}\subset k\) 的 Hankel 秩为 \(d<\infty\)。
 对任意偏移 \(\ell\ge 0\)，定义移位 Hankel 主块与扩展块
@@ -267,6 +298,33 @@ H_p:=\widehat H\bmod p\in\FF_p^{n\times n}
 当 \(\mathcal P\) 为 \([B,2B]\) 内素数时，\(\EE[1/p]\le 1/B\)，且区间内满足 \(p\mid\Delta\) 的素数至多 \(\omega(\Delta)\) 个，故得到所示显式界。
 \par
 零知识部分由公开抽样 \(p\) 与内层 HVZK 的可模拟性直接组合：先抽 \(p\)，再模拟内层转录，分布保持一致。证毕。
+\end{proof}
+
+\begin{proposition}[\texorpdfstring{$p$}{p}-进赋值对模 \texorpdfstring{$p$}{p} 秩坍缩的数量控制]\label{prop:xi-det-vp-controls-rank-drop}
+设 \(A\in\ZZ^{d\times d}\) 满秩，并令 \(\Delta:=\det(A)\in\ZZ\setminus\{0\}\)。
+对任意素数 \(p\) 记 \(A_p:=A\bmod p\in \FF_p^{d\times d}\)，并令
+\[
+\delta_p:=d-\mathrm{rank}_{\FF_p}(A_p).
+\]
+则有不等式
+\[
+\boxed{\;\delta_p\ \le\ v_p(\Delta)\;}
+\]
+并且当 \(p\nmid \Delta\) 时必有 \(\delta_p=0\)（即 \(A_p\) 在 \(\FF_p\) 上仍满秩）。
+\end{proposition}
+\begin{proof}
+取 Smith 正规形：存在 \(U,V\in\mathrm{GL}_d(\ZZ)\) 使
+\[
+UAV=\mathrm{diag}(s_1,\dots,s_d),\qquad s_1\mid s_2\mid\cdots\mid s_d,
+\]
+且 \(\Delta=\prod_{i=1}^{d}s_i\)。
+模 \(p\) 下，\(\mathrm{rank}_{\FF_p}(A_p)\) 等于对角元中不被 \(p\) 整除者的个数，因此秩亏损 \(\delta_p\) 等于满足 \(p\mid s_i\) 的指标个数。
+每出现一次 \(p\mid s_i\) 至少贡献 \(v_p(s_i)\ge 1\)，从而
+\[
+\delta_p=\#\{i:\ p\mid s_i\}\le \sum_{i=1}^{d} v_p(s_i)=v_p(\Delta),
+\]
+得到所示不等式。
+当 \(p\nmid\Delta\) 时 \(v_p(\Delta)=0\)，故 \(\delta_p=0\)。证毕。
 \end{proof}
 
 \begin{proposition}[\texorpdfstring{$p$}{p}-进求值的精度损失由 \texorpdfstring{$\det(H_0)$}{det(H0)} 精确控制]\label{prop:xi-hankel-padics-precision-loss-detH0}
