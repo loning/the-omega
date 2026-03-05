@@ -46,8 +46,110 @@ X_{m+1}-X_m\perp X_m
 把 \(X_m\) 代回 \eqref{eq:conclusion-stokes-energy-conditional-expectation} 即得 \eqref{eq:conclusion-stokes-energy-pythagoras-increments}。证毕。
 \end{proof}
 
+\begin{theorem}[顶维 dyadic 分割下的条件期望表征与跨尺度能量恒等式]\label{thm:conclusion-stokes-energy-dyadic-martingale}
+沿用定理 \ref{thm:conclusion-multiscale-stokes-energy-l2-reconstruction}，并取顶维情形 \(k=d-1\)。
+令 \(\beta=d\alpha\) 并以标准体积形式识别为 \(d\)-维密度 \(f\in L^2(Q)\)：\(\beta=f(x)\,\mathrm dx\)。
+令 \(\mathscr F_m\) 为由 dyadic 顶维立方剖分 \(\mathcal C_m^{d}\) 生成的 \(\sigma\)-代数。
+则成立：
+\begin{enumerate}
+  \item 条件期望表征
+  \[
+  \mathcal E_m(\alpha)=\bigl\|\EE[f\mid \mathscr F_m]\bigr\|_{L^2(Q)}^2.
+  \]
+  \item 精确方差分解
+  \[
+  \|f\|_{L^2(Q)}^2-\mathcal E_m(\alpha)
+  =\sum_{C\in\mathcal C_m^{d}}\int_C\bigl|f-\langle f\rangle_C\bigr|^2,
+  \qquad
+  \langle f\rangle_C:=\frac1{|C|}\int_C f=\mathbf S_m\alpha(C),
+  \]
+  从而 \(m\mapsto \mathcal E_m(\alpha)\) 单调不减且 \(\mathcal E_m(\alpha)\uparrow \|f\|_2^2\)。
+  \item 跨尺度能量恒等式与局部 Haar 增量公式
+  \[
+  \|f\|_2^2=\mathcal E_0(\alpha)+\sum_{m\ge 0}\bigl(\mathcal E_{m+1}(\alpha)-\mathcal E_m(\alpha)\bigr),
+  \qquad
+  \mathcal E_{m+1}(\alpha)-\mathcal E_m(\alpha)
+  =\bigl\|\EE[f\mid\mathscr F_{m+1}]-\EE[f\mid\mathscr F_m]\bigr\|_2^2\ge 0,
+  \]
+  并且每一增量满足完全显式的局部方差公式
+  \[
+  \mathcal E_{m+1}(\alpha)-\mathcal E_m(\alpha)
+  =\sum_{P\in\mathcal C_m^{d}}\frac{|P|}{2^d}\sum_{\substack{C\subset P\\ C\in\mathcal C_{m+1}^{d}}}
+  \bigl|\mathbf S_{m+1}\alpha(C)-\mathbf S_m\alpha(P)\bigr|^2.
+  \]
+  因此尾项误差具有严格证书表达：
+  \(
+  \|f\|_2^2-\mathcal E_M(\alpha)=\sum_{m\ge M}(\mathcal E_{m+1}-\mathcal E_m)
+  \)。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对每个 \(C\in\mathcal C_m^{d}\) 记 \(f_C:=\langle f\rangle_C=\frac1{|C|}\int_C f\)。
+由顶维斯托克斯读出 \(\mathbf S_m\alpha(C)=h^{-d}\int_C\beta=f_C\)，并且
+\(
+\EE[f\mid\mathscr F_m]=\sum_{C\in\mathcal C_m^{d}} f_C\,\ind_C
+\)。
+因此
+\[
+\bigl\|\EE[f\mid\mathscr F_m]\bigr\|_2^2
+=\sum_{C}\int_C |f_C|^2
+=\sum_C |C|\,|f_C|^2
+=h^d\sum_C |\mathbf S_m\alpha(C)|^2
+=\mathcal E_m(\alpha),
+\]
+得 (1)。
+\par
+在每个 \(C\) 上有 \(\int_C f_C(f-f_C)=f_C\int_C(f-f_C)=0\)，故
+\(
+\int_C|f|^2=\int_C|f_C|^2+\int_C|f-f_C|^2
+\)。
+对 \(C\) 求和并识别第一项为 \(\mathcal E_m(\alpha)\) 即得 (2)；
+单调性与 \(\mathcal E_m(\alpha)\uparrow\|f\|_2^2\) 亦可由条件期望范数随细化单调增加推出。
+\par
+令 \(X_m:=\EE[f\mid\mathscr F_m]\)，则 \((X_m)_{m\ge 0}\) 为 \(L^2\) 鞅且
+\(
+\|X_{m+1}\|_2^2-\|X_m\|_2^2=\|X_{m+1}-X_m\|_2^2
+\)。
+代入 (1) 得跨尺度恒等式与非负性。
+局部方差公式由逐父胞腔分解：
+对每个 \(P\in\mathcal C_m^d\) 记其 \(2^d\) 个子胞腔均值为 \(f_C\) 且 \(f_P\) 为父均值，则
+\[
+\sum_{C\subset P}|C|\,|f_C|^2-|P|\,|f_P|^2
+=\sum_{C\subset P}|C|\,|f_C-f_P|^2,
+\]
+其中使用 \(\sum_{C\subset P}|C|(f_C-f_P)=0\)。
+将 \(|C|=|P|/2^d\) 并代回 \(f_C=\mathbf S_{m+1}\alpha(C)\)、\(f_P=\mathbf S_m\alpha(P)\) 即得所示公式。证毕。
+\end{proof}
+
+\begin{corollary}[\(H^1\) 正则性下的二阶尺度误差控制]\label{cor:conclusion-stokes-energy-h1-second-order}
+在定理 \ref{thm:conclusion-stokes-energy-dyadic-martingale} 的设定下，若 \(f\in H^1(Q)\)，则存在仅依赖于维数 \(d\) 的常数 \(C_d>0\) 使得对任意 \(m\ge 0\) 有
+\[
+0\le \|f\|_2^2-\mathcal E_m(\alpha)\le C_d\,2^{-2m}\,\|\nabla f\|_2^2.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-stokes-energy-dyadic-martingale}(2)，误差为 \(\sum_C\int_C|f-\langle f\rangle_C|^2\)。
+对每个边长 \(h=2^{-m}\) 的立方体 \(C\) 用 Poincar\'e 不等式得
+\(
+\int_C|f-\langle f\rangle_C|^2\le C_d\,h^2\int_C|\nabla f|^2
+\)；
+求和即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[顶维胞腔抽样对 \texorpdfstring{$\|d\alpha\|_{L^2}$}{||dα||\_2} 的置信区间]\label{cor:conclusion-stokes-energy-topcell-confidence}
+在命题 \ref{prop:conclusion-stokes-energy-cell-sampling-concentration} 的设定下取 \(k=d-1\)，并记 \(\widehat E_m:=\widehat{\mathcal E}_m(\alpha)\)。
+则对任意 \(0<\delta<1\)，以概率至少 \(1-\delta\) 有
+\[
+\bigl|\widehat E_m-\|d\alpha\|_{L^2(Q)}^2\bigr|
+\le
+\bigl(\|d\alpha\|_{L^2(Q)}^2-\mathcal E_m(\alpha)\bigr)
+ + M^2\sqrt{\frac{\log(2/\delta)}{2N}}.
+\]
+若进一步 \(f\in H^1(Q)\)，则可用推论 \ref{cor:conclusion-stokes-energy-h1-second-order} 将离散化偏差显式上界为 \(C_d\,2^{-2m}\|\nabla f\|_2^2\)。
+\end{corollary}
+
 \begin{proposition}[胞腔抽样下斯托克斯能量的尺度无关集中界]\label{prop:conclusion-stokes-energy-cell-sampling-concentration}
-沿用上述设定，并额外假设 \(d\alpha\in L^\infty(Q)\) 且 \(\|d\alpha\|_\infty\le M\)。
+沿用定理 \ref{thm:conclusion-multiscale-stokes-energy-l2-reconstruction} 的记号，并额外假设 \(d\alpha\in L^\infty(Q)\) 且 \(\|d\alpha\|_\infty\le M\)。
 固定尺度 \(m\)，从 \(\mathcal C_m^{k+1}\) 中独立等概率抽取 \(N\) 个胞腔 \(C_1,\dots,C_N\)，并定义估计量
 \[
 \widehat{\mathcal E}_m(\alpha)

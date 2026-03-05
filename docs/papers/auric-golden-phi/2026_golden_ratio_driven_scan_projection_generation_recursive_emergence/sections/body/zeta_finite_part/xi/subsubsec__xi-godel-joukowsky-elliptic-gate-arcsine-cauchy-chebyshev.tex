@@ -113,6 +113,85 @@ L=\frac{c+\sqrt{c^2-4}}{2}.
 经典势论表明：该外域规一化的首项系数即为容量，故 \(\mathrm{cap}(K_L)=\sqrt{L}\)；同时外域在无穷远处的调和测度沿边界参数 \(z=e^{\mathrm{i}\theta}\) 的推前即为 \(\nu_L\)，并与平衡测度一致。证毕。
 \end{proof}
 
+\begin{theorem}[Joukowsky 椭圆的 Dirichlet--to--Neumann 共轭公式：外域能量的严格边界字典]\label{thm:xi-joukowsky-dtn-conjugacy}
+令 \(L>1\)，并令
+\[
+f_L(z):=\sqrt{L}\,z+L^{-1/2}z^{-1}\qquad(|z|>1)
+\]
+为把外域 \(\{|z|>1\}\) 双全纯映到 \(\CC\setminus K_L\) 的共形映射（见定理 \ref{thm:xi-joukowsky-capacity-equilibrium-measure} 的证明）。
+取 \(f\in H^{1/2}(\TT)\)（实值或复值皆可），并令 \(V\) 为外圆盘上的调和函数，满足边界迹 \(V(e^{\mathrm{i}\theta})=f(e^{\mathrm{i}\theta})\) 且 \(V(z)\to 0\)（\(|z|\to\infty\)）。
+定义椭圆边界数据 \(\tilde f\) 为
+\[
+\tilde f\bigl(f_L(e^{\mathrm{i}\theta})\bigr):=f(e^{\mathrm{i}\theta}),
+\]
+并令 \(U\) 为 \(\CC\setminus K_L\) 上满足 \(U(w)\to 0\)（\(|w|\to\infty\)）且边界迹 \(U|_{E_L}=\tilde f\) 的调和函数。
+记外域 Dirichlet--to--Neumann 算子
+\[
+\Lambda_{\TT}f:=-\partial_{n}V\big|_{\TT},
+\qquad
+\Lambda_{E_L}\tilde f:=-\partial_{n}U\big|_{E_L},
+\]
+其中 \(n\) 均取外法单位法向（指向外域）。
+则对 \(w=f_L(e^{\mathrm{i}\theta})\in E_L\) 有严格共轭恒等式
+\[
+\boxed{\;
+(\Lambda_{E_L}\tilde f)(w)=\frac{1}{|f_L'(e^{\mathrm{i}\theta})|}\,(\Lambda_{\TT}f)(e^{\mathrm{i}\theta}).\;}
+\]
+并且 Dirichlet 能量在共形输运下保持：
+\[
+\int_{\CC\setminus K_L}|\nabla U|^2\,\dd A
+=\int_{|z|>1}|\nabla V|^2\,\dd A
+=\langle f,\Lambda_{\TT}f\rangle_{L^2(\dd\theta)}
+=\langle \tilde f,\Lambda_{E_L}\tilde f\rangle_{L^2(\dd s)}.
+\]
+此外在边界参数化上成立几何因子恒等式
+\[
+|f_L'(e^{\mathrm{i}\theta})|
+=\left|\sqrt{f_L(e^{\mathrm{i}\theta})^{2}-4}\right|,
+\]
+其绝对值正是后文椭圆侧双分支因子 \(\sqrt{w^2-4}\) 的边界模长。
+\end{theorem}
+\begin{proof}
+由共形性，\(U\circ f_L\) 在 \(|z|>1\) 上调和且其边界迹为 \(f\)，并满足无穷远衰减；由解的唯一性知 \(V=U\circ f_L\)。
+\par
+对二维共形映射，Dirichlet 积分不变：以 \(w=f_L(z)\) 代换并用 \(\det Df_L(z)=|f_L'(z)|^2\) 与 \(\nabla_z(V)=Df_L(z)^{\mathsf T}\nabla_w(U)\) 的链式关系，可得
+\(
+|\nabla_w U(w)|^2\,\dd A_w=|\nabla_z V(z)|^2\,\dd A_z
+\)，从而 \(\int_{\CC\setminus K_L}|\nabla U|^2=\int_{|z|>1}|\nabla V|^2\)。
+\par
+法向导数在边界上的变换由共形尺度给出：在 \(z=e^{\mathrm{i}\theta}\) 处有
+\[
+\partial_n U\bigl(f_L(e^{\mathrm{i}\theta})\bigr)=\frac{1}{|f_L'(e^{\mathrm{i}\theta})|}\,\partial_n V(e^{\mathrm{i}\theta}),
+\]
+故 \(\Lambda_{E_L}\tilde f=|f_L'|^{-1}\Lambda_{\TT}f\)。
+最后，Green 恒等式（或能量--边界配对公式）给出
+\(
+\int |\nabla V|^2=\langle f,\Lambda_{\TT}f\rangle
+\) 与
+\(
+\int |\nabla U|^2=\langle \tilde f,\Lambda_{E_L}\tilde f\rangle
+\)。
+\par
+几何因子恒等式由直接计算得到：
+\(
+f_L'(z)=\sqrt{L}-L^{-1/2}z^{-2}
+\)，
+在 \(|z|=1\) 上有
+\(
+|f_L'(e^{\mathrm{i}\theta})|
+=|\sqrt{L}e^{\mathrm{i}\theta}-L^{-1/2}e^{-\mathrm{i}\theta}|
+=|\sqrt{f_L(e^{\mathrm{i}\theta})^2-4}|
+\)。
+证毕。
+\end{proof}
+
+\begin{remark}[外域作用量与 \texorpdfstring{$H^{1/2}$}{H^{1/2}} 边界规范的严格同一]\label{rem:xi-joukowsky-dtn-ads2cft1-dictionary}
+定理 \ref{thm:xi-joukowsky-dtn-conjugacy} 给出两条严格同一：
+（i）外域 Dirichlet 能量与边界 Dirichlet--to--Neumann 配对相等，从而把外域作用量等价转写为边界 \(H^{1/2}\) 半范数；
+（ii）椭圆侧的几何权重由 \(|f_L'|\) 给出，而在边界参数化上 \(|f_L'|=|\sqrt{w^2-4}|\)。
+因此该共轭关系在本文语义中实现了一个无余项的“AdS\(_2\)/CFT\(_1\)”型能量字典，并与后续 Cauchy 变换的双分支因子 \(\sqrt{w^2-4}\) 完全对齐。
+\end{remark}
+
 \paragraph{Cauchy 变换的双分支分解与奇异环输运}
 Joukowsky 二重覆盖以 \([-2,2]\) 为唯一分歧支集（参见命题 \ref{prop:xi-joukowsky-double-cover-uniformization}）；
 因此任何由单位圆测度推前得到的椭圆侧解析对象，都携带一个由 \(\sqrt{w^2-4}\) 控制的双分支结构。

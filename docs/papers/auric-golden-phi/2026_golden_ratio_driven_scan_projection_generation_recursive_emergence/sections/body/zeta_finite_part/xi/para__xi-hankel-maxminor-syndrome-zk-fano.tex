@@ -94,6 +94,41 @@ Ae_{d-1}=-(p_0,\dots,p_{d-1})^{\mathsf T}.
 又由 (2) 递推阶为 \(d\)，可知 \(A\) 的最小湮灭多项式次数至少为 \(d\)；而 \(\deg P=d\) 且 \(P(A)=0\) 给出次数至多为 \(d\)，故次数恰为 \(d\)。证毕。
 \end{proof}
 
+\begin{corollary}[良素数下最小递推多项式的保持性]\label{cor:xi-hankel-minimal-recurrence-good-prime-preservation}
+取 \(k=\QQ\) 并设 \((a_n)_{n\ge 0}\subset\ZZ\) 在 \(\QQ\) 上的 Hankel 秩为 \(d\)，且 \(H_0\in M_d(\ZZ)\) 在 \(\QQ\) 上可逆。
+令 \(P(\lambda)=\sum_{j=0}^{d}p_j\lambda^j\in\QQ[\lambda]\) 为定理 \ref{thm:xi-hankel-maximal-minor-syndrome-normal-form-uniqueness} 给出的唯一首一递推多项式。
+取素数 \(p\nmid \det(H_0)\)，并记 \(\bar a_n:=a_n\bmod p\in\FF_p\) 与 \(\bar P:=P\bmod p\in\FF_p[\lambda]\)。
+则对一切 \(n\ge 0\) 有
+\[
+\sum_{j=0}^{d}\bar p_j\,\bar a_{n+j}=0,
+\]
+并且 \(\bar P\) 为序列 \((\bar a_n)\) 在 \(\FF_p\) 上的最小首一递推多项式（因而其阶仍为 \(d\)）。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-hankel-maximal-minor-syndrome-normal-form-uniqueness}(2)，存在整数 \(\Delta_0,\dots,\Delta_d\in\ZZ\) 使得
+\[
+\sum_{j=0}^{d}\Delta_j a_{n+j}=0\qquad(\forall\,n\ge 0),
+\qquad
+\Delta_d=\det(H_0)\neq 0,
+\]
+且 \(p_j=\Delta_j/\Delta_d\)。
+逐项模 \(p\) 约化得到
+\[
+\sum_{j=0}^{d}\overline{\Delta_j}\,\bar a_{n+j}=0\qquad(\forall\,n\ge 0).
+\]
+由于 \(p\nmid \Delta_d\)，在 \(\FF_p\) 中有 \(\overline{\Delta_d}\neq 0\)，可将上式除以 \(\overline{\Delta_d}\) 得到所示首一递推，且系数恰为 \(\bar p_j\)。
+\par
+另一方面，\(\bar H_0:=H_0\bmod p\) 可逆。
+令 \(\bar c_j:=(\bar a_{i+j})_{i\ge 0}\) 为 \(\FF_p\) 上无限 Hankel 矩阵的第 \(j\) 列。
+若存在阶 \(r<d\) 的首一递推消去 \((\bar a_n)\)，则存在 \(u_0,\dots,u_{r-1}\in\FF_p\) 使得
+\[
+\bar c_r+\sum_{j=0}^{r-1}u_j\,\bar c_j=0,
+\]
+从而 \(\bar c_0,\dots,\bar c_{d-1}\) 线性相关，进而 \(\bar H_0\) 奇异，矛盾。
+故最小阶必为 \(d\)，从而 \(\bar P\) 为最小首一递推多项式。证毕。
+\end{proof}
+
 \begin{corollary}[极小递推的 Hankel 主块可逆性与反演系数公式]\label{cor:xi-hankel-minimal-recurrence-inversion-formula}
 设 \(k\) 为域，\((a_m)_{m\ge 0}\subset k\) 满足某个\emph{极小阶}常系数线性递推：存在 \(d\ge 1\) 与系数 \(c_0,\dots,c_{d-1}\in k\) 使
 \[
@@ -175,6 +210,36 @@ p_d^{(\ell)}:=1,
 \Delta^{(\ell)}=\Delta_d^{(\ell)}\cdot(p_0,\dots,p_{d-1},1)^{\mathsf T}
 \)。
 代入 \(\Delta_d^{(\ell)}=\det(H_0^{(\ell)})\) 即得盒中恒等式。证毕。
+\end{proof}
+
+\begin{corollary}[最小递推系数的共同分母整除所有满秩 Hankel 行列式]\label{cor:xi-hankel-recurrence-common-denominator-divides-determinants}
+取 \(k=\QQ\) 并设 \((a_n)_{n\ge 0}\subset\ZZ\) 在 \(\QQ\) 上 Hankel 秩为 \(d\)。
+令
+\[
+P(\lambda)=\lambda^d+c_{d-1}\lambda^{d-1}+\cdots+c_0\in\QQ[\lambda]
+\]
+为定理 \ref{thm:xi-hankel-maximal-minor-syndrome-normal-form-uniqueness} 抽取的唯一首一最小递推多项式。
+令
+\[
+D:=\min\{N\in\NN:\ Nc_j\in\ZZ\ \forall\,0\le j\le d-1\}
+\]
+为系数共同分母。
+则对任意满足 \(\det(H_0^{(\ell)})\neq 0\) 的偏移 \(\ell\ge 0\) 都有
+\[
+D\mid \det(H_0^{(\ell)}).
+\]
+因此 \(D\mid \gcd_{\ell:\det(H_0^{(\ell)})\neq 0}\det(H_0^{(\ell)})\)。
+特别地，若存在 \(\ell\) 使 \(|\det(H_0^{(\ell)})|=1\)，则 \(P(\lambda)\in\ZZ[\lambda]\)。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-hankel-maximal-minor-syndrome-offset-projective-invariance}，对任意满足 \(\det(H_0^{(\ell)})\neq 0\) 的 \(\ell\) 有
+\[
+c_j=p_j=\frac{\Delta_j^{(\ell)}}{\Delta_d^{(\ell)}}=\frac{\Delta_j^{(\ell)}}{\det(H_0^{(\ell)})}\qquad(0\le j\le d-1),
+\]
+其中 \(\Delta_j^{(\ell)}\in\ZZ\) 且 \(\Delta_d^{(\ell)}=\det(H_0^{(\ell)})\)。
+因此每个 \(c_j\) 的分母都整除 \(\det(H_0^{(\ell)})\)，共同分母 \(D\) 亦整除 \(\det(H_0^{(\ell)})\)。
+最后一条由 \(D\mid \pm 1\Rightarrow D=1\) 立得。证毕。
 \end{proof}
 
 \begin{theorem}[Hankel 奇异性的三步公开币完美零知识证明]\label{thm:xi-hankel-singularity-hvzk}
