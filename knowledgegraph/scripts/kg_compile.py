@@ -1498,13 +1498,14 @@ def collect_changed_labels_from_meta(kg_root: Path, changed_source_paths: Set[st
 
 def main() -> int:
     args = parse_args()
-    if args.full_latexmk:
-        args.single_pass = False
+    if args.single_pass:
+        # Explicit single-pass debug mode.
+        args.single_pass = True
     elif args.fail_fast:
         args.single_pass = True
-    elif not args.single_pass:
-        # Default mode: fail-fast single-pass compile.
-        args.single_pass = True
+    else:
+        # Default mode: multi-pass latexmk for stable TOC/ref/cite convergence.
+        args.single_pass = False
     kg_root = args.kg_root.resolve() if args.kg_root else default_kg_root(__file__)
 
     pending_marker_state: Path | None = None
