@@ -58,6 +58,268 @@ a_N^{(d)}(\omega)\ \downarrow\ \mu\bigl(\Sigma_{d,\omega}\bigr)\qquad(N\to\infty
 由单调收敛定理得到极限等式。证毕。
 \end{proof}
 
+\begin{theorem}[Adams--二项探针在旋相参数上的 Fourier 对角化与矩反演]\label{thm:xi-adams-binomial-probe-fourier-diagonalization}
+在定理 \ref{thm:xi-endpoint-heat-probe-adams-twist-roots} 的设定下，固定整数 \(d\ge 1\) 与阶数 \(N\ge 0\)。
+则函数 \(\omega\mapsto a_N^{(d)}(\omega)\) 在 \(\TT\) 上是次数 \(\le N\) 的 Laurent 多项式，并且具有显式 Fourier 展开
+\begin{equation}\label{eq:xi-adams-binomial-probe-fourier-expansion}
+\boxed{\;
+a_N^{(d)}(\omega)=\sum_{m=-N}^{N}\Bigl((-1)^m\,4^{-N}\binom{2N}{N+m}\,c_{-dm}\Bigr)\,\omega^{m}\qquad(\omega\in\TT).\;}
+\end{equation}
+从而对每个 \(|m|\le N\)，其 Fourier 系数满足
+\begin{equation}\label{eq:xi-adams-binomial-probe-fourier-coefficient}
+\boxed{\;
+\widehat a_{N}^{(d)}(m)
+\,:=\,
+\frac{1}{2\pi}\int_{0}^{2\pi}a_N^{(d)}(e^{\mathrm{i}\theta})\,e^{-\mathrm{i}m\theta}\,\dd\theta
+\;=\;
+(-1)^m\,4^{-N}\binom{2N}{N+m}\,c_{-dm}\;}
+\end{equation}
+并可精确反演得到
+\begin{equation}\label{eq:xi-adams-binomial-probe-moment-inversion}
+\boxed{\;
+c_{-dm}
+\,=\,
+(-1)^m\,\frac{4^{N}}{\binom{2N}{N+m}}\cdot \widehat a_{N}^{(d)}(m)\qquad(|m|\le N).\;}
+\end{equation}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-endpoint-heat-probe-adams-twist-roots}，
+\[
+a_N^{(d)}(\omega)
+=4^{-N}\int_{\TT}(1-\omega\xi^{d})^{N}(1-\overline{\omega}\xi^{-d})^{N}\,\dd\mu(\xi).
+\]
+对两因子作二项展开：
+\[
+(1-\omega\xi^{d})^{N}=\sum_{k=0}^{N}\binom Nk(-\omega)^{k}\xi^{dk},
+\qquad
+(1-\overline{\omega}\xi^{-d})^{N}=\sum_{\ell=0}^{N}\binom N\ell(-\overline{\omega})^{\ell}\xi^{-d\ell}.
+\]
+相乘并积分得到
+\[
+a_N^{(d)}(\omega)
+=4^{-N}\sum_{k,\ell=0}^{N}\binom Nk\binom N\ell (-\omega)^{k}(-\overline{\omega})^{\ell}
+\int_{\TT}\xi^{d(k-\ell)}\,\dd\mu(\xi).
+\]
+由 \(c_h=\int_{\TT}\xi^{-h}\,\dd\mu(\xi)\) 可知
+\(
+\int_{\TT}\xi^{d(k-\ell)}\,\dd\mu(\xi)=c_{-d(k-\ell)}
+\)。
+令 \(m:=k-\ell\)。在 \(\omega\in\TT\) 上有 \(\overline{\omega}=\omega^{-1}\)，因此
+\[
+(-\omega)^{k}(-\overline{\omega})^{\ell}=(-1)^{k+\ell}\omega^{k-\ell}=(-1)^{m}\omega^{m}.
+\]
+从而
+\[
+a_N^{(d)}(\omega)
+=\sum_{m=-N}^{N}(-1)^{m}\omega^{m}\,4^{-N}\,c_{-dm}\sum_{\ell}\binom N{\ell+m}\binom N\ell,
+\]
+其中 \(\ell\) 在使指标合法的范围内求和。
+当 \(|m|\le N\) 时，Vandermonde 型恒等式给出
+\(
+\sum_{\ell}\binom N{\ell+m}\binom N\ell=\binom{2N}{N+m}
+\)，代回即得 \eqref{eq:xi-adams-binomial-probe-fourier-expansion}。
+\par
+再对 \(\omega=e^{\mathrm{i}\theta}\) 取 Fourier 正交提取：对 \(|m|\le N\) 有
+\[
+\frac{1}{2\pi}\int_{0}^{2\pi}e^{\mathrm{i}(m'-m)\theta}\,\dd\theta=\mathbf 1_{\{m'=m\}},
+\]
+故 \eqref{eq:xi-adams-binomial-probe-fourier-coefficient} 由 \eqref{eq:xi-adams-binomial-probe-fourier-expansion} 逐项给出，进而反解得到 \eqref{eq:xi-adams-binomial-probe-moment-inversion}。证毕。
+\end{proof}
+
+\begin{theorem}[二项式探针核的正定性与 Toeplitz--PSD 的等价]\label{thm:xi-adams-binomial-probe-kernel-toeplitz-psd-equivalence}
+在定理 \ref{thm:xi-endpoint-heat-probe-adams-twist-roots} 的设定下，固定 \(d\ge 1\) 与 \(N\ge 0\)，并定义二参数核
+\[
+K_N^{(d)}(\omega,\omega')
+:=4^{-N}\,(b^{(N)}(\omega))^\ast\,\mathbf{T}^{(d)}_N\,b^{(N)}(\omega')
+\qquad(\omega,\omega'\in\TT).
+\]
+则以下两条严格等价：
+\begin{enumerate}
+  \item \(\mathbf{T}^{(d)}_N\succeq 0\)（Hermitian--PSD）；
+  \item \(K_N^{(d)}\) 是 \(\TT\) 上的正定核：对任意有限点列 \(\omega_1,\dots,\omega_M\in\TT\)，矩阵
+  \(
+  \bigl[K_N^{(d)}(\omega_i,\omega_j)\bigr]_{i,j=1}^{M}
+  \)
+  半正定。
+\end{enumerate}
+并且更强：取任意 \(N+1\) 个两两不同的点 \(\omega_0,\dots,\omega_N\in\TT\)，令
+\[
+\mathbf K:=\bigl[K_N^{(d)}(\omega_i,\omega_j)\bigr]_{0\le i,j\le N},
+\]
+则有
+\[
+\boxed{\;
+\mathbf{T}^{(d)}_N\succeq 0\quad\Longleftrightarrow\quad \mathbf K\succeq 0.\;}
+\]
+\end{theorem}
+\begin{proof}
+\textbf{(1)\(\Rightarrow\)(2).}
+对任意 \(\omega_1,\dots,\omega_M\)，令 \(\mathbf B:=[b^{(N)}(\omega_1)\ \cdots\ b^{(N)}(\omega_M)]\in\CC^{(N+1)\times M}\)。
+则由定义
+\[
+\bigl[K_N^{(d)}(\omega_i,\omega_j)\bigr]_{i,j=1}^{M}
+=4^{-N}\,\mathbf B^\ast\,\mathbf{T}^{(d)}_N\,\mathbf B,
+\]
+为 \(\mathbf{T}^{(d)}_N\) 的合同像，故若 \(\mathbf{T}^{(d)}_N\succeq 0\) 则该矩阵半正定。
+\par
+\textbf{(2)\(\Rightarrow\)(1).}
+取 \(N+1\) 个两两不同的点 \(\omega_0,\dots,\omega_N\in\TT\)，并令 \(\mathbf B:=[b^{(N)}(\omega_0)\ \cdots\ b^{(N)}(\omega_N)]\in\CC^{(N+1)\times(N+1)}\)。
+由
+\(
+b^{(N)}(\omega)=(\binom Nk(-1)^k\omega^k)_{k=0}^{N}
+\)
+可得分解
+\[
+\mathbf B
+=\mathrm{diag}\bigl(\binom Nk(-1)^k\bigr)_{k=0}^{N}\cdot \mathbf V,
+\qquad
+\mathbf V_{k,j}:=\omega_j^{\,k}\quad(0\le k,j\le N),
+\]
+其中 \(\mathbf V\) 为 Vandermonde 矩阵。
+由于 \(\omega_j\) 两两不同，\(\det\mathbf V=\prod_{0\le i<j\le N}(\omega_j-\omega_i)\neq 0\)，且对角因子显然可逆，故 \(\mathbf B\) 可逆。
+又由定义 \(\mathbf K=4^{-N}\mathbf B^\ast\mathbf{T}^{(d)}_N\mathbf B\)，从而
+\[
+\mathbf{T}^{(d)}_N=(\mathbf B^{-1})^\ast\,(4^N\mathbf K)\,\mathbf B^{-1}.
+\]
+若 \(\mathbf K\succeq 0\)，则右端为半正定合同像，故 \(\mathbf{T}^{(d)}_N\succeq 0\)。
+这也同时给出所述“单一网格”判别式。证毕。
+\end{proof}
+
+\begin{theorem}[strictification 语义下的探针完备性]\label{thm:xi-adams-binomial-probe-completeness-strictification}
+令 \(C_1,C_2\) 为 \(\mathbb D\) 上 Carath\'eodory 函数，并令 \(\mu_1,\mu_2\) 为其 Herglotz 测度，使得
+\[
+c_{j,h}:=\int_{\TT}\xi^{-h}\,\dd\mu_j(\xi)\qquad(h\in\ZZ,\ j\in\{1,2\}).
+\]
+对每个 \(N\ge 0\) 与 \(\omega\in\TT\) 定义旋相端点探针
+\[
+a_{N,j}(\omega):=\int_{\TT}\left(\frac{|1-\omega\xi|^2}{4}\right)^{N}\dd\mu_j(\xi)\qquad(j\in\{1,2\}).
+\]
+若对一切 \(N\ge 0\) 与一切 \(\omega\in\TT\) 都有 \(a_{N,1}(\omega)=a_{N,2}(\omega)\)，则 \(\mu_1=\mu_2\)。
+从而 \(C_1-C_2\) 必为纯虚常数，且两者诱导的 Pick 核一致：\(K_{C_1}\equiv K_{C_2}\)（见定理 \ref{thm:xi-pick-kernel-gauge-rigidity}）。
+\end{theorem}
+\begin{proof}
+固定任意 \(m\in\ZZ\)，取任意 \(N\ge |m|\)。
+由定理 \ref{thm:xi-adams-binomial-probe-fourier-diagonalization}（取 \(d=1\)）与假设 \(a_{N,1}\equiv a_{N,2}\)，得其 Fourier 系数相等，从而
+\[
+(-1)^m4^{-N}\binom{2N}{N+m}\,c_{1,-m}
+=\widehat a_{N,1}(m)
+=\widehat a_{N,2}(m)
+=(-1)^m4^{-N}\binom{2N}{N+m}\,c_{2,-m}.
+\]
+故 \(c_{1,-m}=c_{2,-m}\)。由于 \(m\in\ZZ\) 任意，得到两测度的全部 Fourier 系数一致，从而 \(\mu_1=\mu_2\)。
+Herglotz 表示的唯一性给出 \(C_1-C_2\) 为纯虚常数；最后一条由定理 \ref{thm:xi-pick-kernel-gauge-rigidity} 直接推出。证毕。
+\end{proof}
+
+\begin{corollary}[惰性随机游走热核表象]\label{cor:xi-adams-binomial-probe-lazy-walk-heat-kernel}
+在定理 \ref{thm:xi-adams-binomial-probe-fourier-diagonalization} 的设定下，
+令 \((X_N)_{N\ge 0}\) 为 \(\ZZ\) 上惰性随机游走：\(X_0=0\) 且增量 \(\Delta_N:=X_N-X_{N-1}\) 满足
+\[
+\PP(\Delta_N=1)=\PP(\Delta_N=-1)=\tfrac14,\qquad \PP(\Delta_N=0)=\tfrac12,
+\]
+并定义交替矩序列 \(\widetilde c_{dm}:=(-1)^m c_{-dm}\)。
+则对任意 \(N\ge 0\) 与 \(\theta\in\RR\) 有
+\[
+\boxed{\;
+\PP(X_N=m)=4^{-N}\binom{2N}{N+m}\qquad(-N\le m\le N),\;}
+\]
+并且
+\[
+\boxed{\;
+a_N^{(d)}(e^{\mathrm{i}\theta})
+=\EE\Bigl[\widetilde c_{dX_N}\,e^{\mathrm{i}\theta X_N}\Bigr].\;}
+\]
+\end{corollary}
+\begin{proof}
+惰性步进的特征多项式为
+\[
+\EE[z^{\Delta_1}]=\frac14(z+2+z^{-1})=\frac{(1+z)^2}{4z},
+\]
+故
+\(
+\EE[z^{X_N}]=\left(\frac{(1+z)^2}{4z}\right)^N
+=4^{-N}z^{-N}(1+z)^{2N}
+\)，比较系数得 \(\PP(X_N=m)=4^{-N}\binom{2N}{N+m}\)。
+第二式由 \eqref{eq:xi-adams-binomial-probe-fourier-expansion} 直接把权重识别为 \(\PP(X_N=m)\) 并改写为期望即得。证毕。
+\end{proof}
+
+\begin{theorem}[断层反演的放大因子相变：中心区可控而边缘区指数病态]\label{thm:xi-adams-binomial-probe-inversion-conditioning-phase-transition}
+沿用定理 \ref{thm:xi-adams-binomial-probe-fourier-diagonalization} 的反演式 \eqref{eq:xi-adams-binomial-probe-moment-inversion}。
+设对某固定 \(d\ge 1\)、某固定阶 \(N\)，以数值方式获得 Fourier 系数近似
+\(
+\widehat a_N^{(d)}(m)+\delta_{N,m}
+\)。
+则反演得到的矩误差满足精确放大律
+\[
+\boxed{\;
+\Delta c_{-dm}
+=(-1)^m\,\frac{4^N}{\binom{2N}{N+m}}\ \delta_{N,m}\qquad(|m|\le N).\;}
+\]
+并且存在绝对常数 \(C_1,C_2>0\) 使得在中心区 \(|m|\le N^{2/3}\) 内有二侧估计
+\[
+\boxed{\;
+C_1\sqrt N\,e^{m^2/N}\ \le\ \frac{4^N}{\binom{2N}{N+m}}\ \le\ C_2\sqrt N\,e^{m^2/N}\; }.
+\]
+另一方面，对任意固定比例 \(\alpha\in(0,1)\)，当 \(|m|\ge \alpha N\) 时存在 \(c(\alpha)>0\) 使
+\[
+\boxed{\;
+\frac{4^N}{\binom{2N}{N+m}}\ \ge\ \exp\bigl(c(\alpha)\,N\bigr),\;}
+\]
+从而高频区反演不可避免地呈指数病态。
+\end{theorem}
+\begin{proof}
+第一式由 \eqref{eq:xi-adams-binomial-probe-moment-inversion} 的线性性直接得到。
+\par
+令
+\(
+w_N(m):=4^{-N}\binom{2N}{N+m}
+\)
+（推论 \ref{cor:xi-adams-binomial-probe-lazy-walk-heat-kernel} 中即 \(\PP(X_N=m)\)）。
+对中心区 \(|m|\le N^{2/3}\)，局部中心极限定理（或 Stirling--de Moivre 近似）给出存在绝对常数 \(A_1,A_2>0\) 使
+\[
+\frac{A_1}{\sqrt N}\,e^{-m^2/N}\ \le\ w_N(m)\ \le\ \frac{A_2}{\sqrt N}\,e^{-m^2/N},
+\]
+取倒数并令 \(C_1=1/A_2\)、\(C_2=1/A_1\) 即得二侧估计。
+\par
+对 \(|m|\ge \alpha N\) 的大偏差区，由 Chernoff--Cram\'er 大偏差界可得
+\(
+w_N(m)\le \exp(-c(\alpha)N)
+\)
+（其中 \(c(\alpha)>0\) 仅依赖于 \(\alpha\)），取倒数即得最后一式。证毕。
+\end{proof}
+
+\begin{proposition}[等分网格的离散反演：有限点采样精确重建 Toeplitz 截断]\label{prop:xi-adams-binomial-probe-discrete-inversion-equispaced-grid}
+在定理 \ref{thm:xi-adams-binomial-probe-fourier-diagonalization} 的设定下，固定 \(d\ge 1\) 与 \(N\ge 0\)。
+取等分网格
+\[
+\omega_j:=\exp\!\left(\frac{2\pi \mathrm{i}j}{2N+1}\right)\qquad(0\le j\le 2N).
+\]
+则仅由采样值 \(\{a_N^{(d)}(\omega_j)\}_{j=0}^{2N}\) 可精确重建全部矩 \(\{c_{-dm}\}_{|m|\le N}\)：
+\[
+\boxed{\;
+c_{-dm}
+=(-1)^m\,\frac{4^N}{\binom{2N}{N+m}}\cdot
+\frac{1}{2N+1}\sum_{j=0}^{2N} a_N^{(d)}(\omega_j)\,\omega_j^{-m}\qquad(|m|\le N).\;}
+\]
+从而 Toeplitz 截断 \(\mathbf{T}^{(d)}_N=(c_{d(j-k)})_{0\le j,k\le N}\) 亦由上述 \(2N+1\) 个标量探针值完全确定。
+\end{proposition}
+\begin{proof}
+由定理 \ref{thm:xi-adams-binomial-probe-fourier-diagonalization}，\(\omega\mapsto a_N^{(d)}(\omega)\) 为次数 \(\le N\) 的 Laurent 多项式
+\(
+a_N^{(d)}(\omega)=\sum_{m=-N}^{N}\widehat a_N^{(d)}(m)\,\omega^{m}
+\)。
+而对等分根单位，正交性给出：对任意整数 \(k\) 满足 \(|k|\le N\)，有
+\[
+\frac{1}{2N+1}\sum_{j=0}^{2N}\omega_j^{\,k}
+=\mathbf 1_{\{k=0\}}.
+\]
+因此离散 Fourier 提取无混叠：
+\[
+\widehat a_N^{(d)}(m)
+=\frac{1}{2N+1}\sum_{j=0}^{2N} a_N^{(d)}(\omega_j)\,\omega_j^{-m}\qquad(|m|\le N).
+\]
+将其代入反演式 \eqref{eq:xi-adams-binomial-probe-moment-inversion} 即得所示闭式。证毕。
+\end{proof}
+
 \begin{corollary}[半角纤维的可核验质量]\label{cor:xi-endpoint-heat-probe-adams-twist-halfangle}
 在定理 \ref{thm:xi-endpoint-heat-probe-adams-twist-roots} 中取 \((d,\omega)=(2,1)\)，并记 \(a_N^{(2)}:=a_N^{(2)}(1)\)，则
 \[

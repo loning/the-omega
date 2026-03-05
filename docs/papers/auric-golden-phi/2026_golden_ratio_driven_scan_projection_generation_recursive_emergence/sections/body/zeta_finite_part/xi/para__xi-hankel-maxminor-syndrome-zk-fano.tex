@@ -160,6 +160,68 @@ H_d\,c=b
 故 \(H_d\) 可逆，且 \(c\) 唯一并由 \(c=H_d^{-1}b\) 给出。证毕。
 \end{proof}
 
+\begin{theorem}[有限窗 Hankel 零空间的截断理想结构]\label{thm:xi-hankel-nullspace-truncated-ideal-structure}
+设 \(k\) 为域，\((a_n)_{n\ge 0}\subset k\) 的 Hankel 秩为 \(d<\infty\)。
+假设存在某个偏移 \(\ell\ge 0\) 使得
+\[
+H_0^{(\ell)}:=\bigl(a_{\ell+i+j}\bigr)_{0\le i,j\le d-1}\in M_d(k)
+\]
+可逆。
+令
+\[
+P(\lambda)=\lambda^{d}+c_{d-1}\lambda^{d-1}+\cdots+c_0\in k[\lambda]
+\]
+为 \(a\) 的首一极小递推多项式（等价地，对一切 \(n\ge 0\) 有 \(\sum_{j=0}^{d}c_j a_{n+j}=0\)，其中 \(c_d=1\)，且 \(d\) 极小）。
+对任意 \(N\ge d\)，令
+\[
+H^{(N)}_{\ell}:=\bigl(a_{\ell+i+j}\bigr)_{0\le i,j\le N-1}\in M_N(k)
+\]
+为长度 \(N\) 的 Hankel 主块。
+则存在自然同构
+\[
+\ker H^{(N)}_{\ell}\ \cong\ (P)\big/(\lambda^{N})\ \subset\ k[\lambda]/(\lambda^{N}),
+\]
+其中右端按 \(k\)-向量空间结构理解，并且该同构可取为：
+对任意 \(\deg Q\le N-d-1\)，将 \(Q(\lambda)\) 送到向量
+\[
+\mathrm{coef}\bigl(Q(\lambda)P(\lambda)\bmod \lambda^{N}\bigr)\in k^{N}.
+\]
+因此 \(\dim_k\ker H^{(N)}_{\ell}=N-d\)，并且每一个长度为 \(N\) 的 Hankel 零向量都唯一对应于某个截断倍多项式 \(Q(\lambda)P(\lambda)\bmod\lambda^{N}\)。
+\end{theorem}
+\begin{proof}
+记线性泛函 \(L:k[\lambda]\to k\) 为 \(L(\lambda^{t})=a_{\ell+t}\)。
+对 \(x=(x_0,\dots,x_{N-1})^{\mathsf T}\in k^N\) 定义多项式
+\(
+Q_x(\lambda):=\sum_{j=0}^{N-1}x_j\lambda^j
+\)。
+则
+\[
+(H^{(N)}_{\ell}x)_i=\sum_{j=0}^{N-1}a_{\ell+i+j}x_j=L(\lambda^{i}Q_x(\lambda))
+\qquad(0\le i\le N-1),
+\]
+从而 \(x\in\ker H^{(N)}_{\ell}\) 等价于 \(L(\lambda^{i}Q_x)=0\) 对所有 \(0\le i\le N-1\) 成立。
+\par
+由极小递推 \(\sum_{j=0}^{d}c_j a_{n+j}=0\) 可知对一切 \(t\ge 0\) 有 \(L(\lambda^{t}P(\lambda))=0\)。
+因此对任意 \(\deg Q\le N-d-1\) 与任意 \(0\le i\le N-1\)，有
+\(
+L(\lambda^{i}Q(\lambda)P(\lambda))=0
+\)；
+又因 \(L(\lambda^{n})\) 仅依赖于幂指数 \(n\)，故截断 \(Q(\lambda)P(\lambda)\bmod \lambda^{N}\) 的系数向量必落在 \(\ker H^{(N)}_{\ell}\)。
+这给出线性映射
+\[
+k[\lambda]_{\le N-d-1}\longrightarrow \ker H^{(N)}_{\ell},
+\qquad
+Q\longmapsto \mathrm{coef}\bigl(QP\bmod \lambda^N\bigr).
+\]
+其像同构于 \((P)/(\lambda^N)\)，并且 \(\dim (P)/(\lambda^N)=N-d\)。
+\par
+另一方面，由 Hankel 秩为 \(d\) 知任意有限 Hankel 块秩不超过 \(d\)，而 \(H_0^{(\ell)}\) 可逆给出 \(\mathrm{rank}(H^{(N)}_{\ell})\ge d\)，故 \(\mathrm{rank}(H^{(N)}_{\ell})=d\) 并得到
+\(
+\dim\ker H^{(N)}_{\ell}=N-d
+\)。
+维数比较迫使上述映射为同构，因而得到所述唯一性。证毕。
+\end{proof}
+
 \begin{theorem}[最大子式综合征的偏移射影不变性与规范化唯一性]\label{thm:xi-hankel-maximal-minor-syndrome-offset-projective-invariance}
 设 \(k\) 为域，\((a_n)_{n\ge 0}\subset k\) 的 Hankel 秩为 \(d<\infty\)。
 对任意偏移 \(\ell\ge 0\)，定义移位 Hankel 主块与扩展块
@@ -421,6 +483,53 @@ A=\frac{1}{p^s},\qquad
 A'=\frac{1+p^N}{p^s}=A+p^{N-s},
 \]
 故不确定性不可消去于 \(p^{N-s}\) 阶。证毕。
+\end{proof}
+
+\begin{theorem}[判别式控制的 \(p\)-进节点分辨率半损耗律]\label{thm:xi-padic-root-resolution-discriminant-half-loss}
+沿用命题 \ref{prop:xi-hankel-padics-precision-loss-detH0} 的设定，并令 \(M:=N-s\)。
+设 \(K/\QQ_p\) 为某个分裂扩张，\(\mathcal O_K\) 为其赋值环，\(\pi\) 为均值元，赋值记为 \(v=v_\pi\)。
+令 \(\chi(T)\in\mathcal O_K[T]\) 为某个首一 \(d\) 次多项式，并假设其在 \(K\) 中分裂为互异根 \(\{z_j\}_{j=1}^{d}\subset\mathcal O_K\)。
+记判别式赋值
+\[
+D:=v\!\bigl(\operatorname{Disc}(\chi)\bigr).
+\]
+若仅给定 \(\chi\) 的系数向量在模 \(\pi^{M}\) 意义下的同余类，则根多重集 \(\{z_j\}\) 在最坏情形下至多可唯一确定到模 \(\pi^{M-\lceil D/2\rceil}\)，并且一般不能提升到模 \(\pi^{M-\lceil D/2\rceil+1}\)。
+在 Gram--shift 实现口径下，将 \(\chi\) 取为 \(A\) 的特征多项式即可得到：在模 \(p^{N}\) 数据之下，节点谱的额外损耗由判别式赋值的半量纲 \(\lceil D/2\rceil\) 强制给出。
+\end{theorem}
+
+\begin{proof}
+把根到系数的 Vieta 映射写为
+\[
+\Psi:\ \mathcal O_K^{d}\longrightarrow \mathcal O_K^{d},\qquad
+(z_1,\dots,z_d)\longmapsto (c_1,\dots,c_d),
+\]
+其中 \(\chi(T)=T^{d}+c_1T^{d-1}+\cdots+c_d\)。
+在互异根处，\(\det(D\Psi)\) 等于 Vandermonde 行列式 \(\prod_{i<j}(z_j-z_i)\) 的单位倍，因此
+\[
+v\!\bigl(\det(D\Psi)\bigr)=\sum_{1\le i<j\le d}v(z_j-z_i)=\frac12\,v\!\Bigl(\prod_{i<j}(z_j-z_i)^2\Bigr)=\frac{D}{2}.
+\]
+因此当系数仅给到模 \(\pi^{M}\) 时，任何试图反演 \(\Psi\) 的过程在最坏情形下都无法在 \(\pi\)-进意义下获得超过 \(M-\lceil D/2\rceil\) 的根分辨率；这是非阿基米德逆函数定理/多变量 Hensel 线性化中由雅可比赋值强制出现的精度损耗量纲。
+\par
+尖锐性可在二次情形显式给出。
+取任意 \(e\ge 1\) 并令
+\(
+\chi(T)=(T-a)(T-a-\pi^{e})
+=T^2-(2a+\pi^{e})T+a(a+\pi^{e})
+\)
+（\(a\in\mathcal O_K\) 任取），则 \(\operatorname{Disc}(\chi)=\pi^{2e}\) 从而 \(D=2e\)。
+对任意满足 \(M\ge 2e+1\) 的整数 \(M\)，令 \(\delta:=\pi^{M-e}\) 并定义另一组互异根
+\[
+z_1':=a+\delta,\qquad z_2':=a+\pi^{e}-\delta.
+\]
+则 \(z_1'+z_2'=2a+\pi^e\) 与 \(z_1'z_2'=a(a+\pi^e)+\delta(\pi^e-\delta)\)。
+由于 \(v(\delta\pi^e)=M\) 且 \(v(\delta^2)=2(M-e)\ge M+1\)，得
+\(
+z_1'z_2'\equiv a(a+\pi^e)\ (\mathrm{mod}\ \pi^{M})
+\)，
+从而以 \(\{z_1',z_2'\}\) 为根的首一二次多项式与 \(\chi\) 的系数向量在模 \(\pi^{M}\) 意义下完全一致。
+另一方面，\(v(z_1'-a)=v(\delta)=M-e\)，故 \(z_1'\not\equiv a\ (\mathrm{mod}\ \pi^{M-e+1})\)（同理 \(z_2'\not\equiv a+\pi^e\ (\mathrm{mod}\ \pi^{M-e+1})\)），
+从而根多重集不能由系数同余类唯一确定到模 \(\pi^{M-e+1}=\pi^{M-\lceil D/2\rceil+1}\)。
+证毕。
 \end{proof}
 
 \begin{theorem}[低于 \texorpdfstring{$2d$}{2d} 窗口的完美零知识不可判别性]\label{thm:xi-hankel-window-2dminus1-perfect-zk-indistinguishability}
