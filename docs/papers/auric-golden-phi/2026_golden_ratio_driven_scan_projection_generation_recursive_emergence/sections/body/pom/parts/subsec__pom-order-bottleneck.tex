@@ -381,6 +381,7 @@ Z_r(u):=\sum_{j\in I(r)}u^{j}\qquad(u\in(0,1])
 \end{proof}
 
 \input{parts/parts/cor__pom-fractran-soft-firstfit-uniform-error}
+\input{parts/parts/thm__pom-soft-order-fixed-temp-nondefinability}
 
 \begin{remark}[控制流外置：状态机即序投影的选择]\label{rem:pom-fractran-controlflow}
 在 FRACTRAN 中，“状态机”不必额外理解为图论对象：可行性谓词 \(r\ge \beta_i\) 给出一族分段线性可达区域，而 first-fit 规则正是对该分解上的\emph{选择投影}（把 \(r\) 映射到索引 \(i^\ast(r)\) 并据此选取更新）。
@@ -410,6 +411,18 @@ T_{\le}\ =\ \Omega(k).
 则硬 first-fit 必须输出 \(i^\ast(r)=k\)。
 在仅允许通过优先级选择序门确定 \(i^\ast(r)\) 的模型中，要排除所有 \(i<k\) 的可行性并确证 \(k\) 为最小可行索引，最坏情形下必须经历对 \(k\) 条指令的优先级扫描；因此 \(T_{\le}\) 至少线性受 \(k\) 控制。
 控制流外置与规范化重写只改变实现的纤维承载与常数层组织（注 \ref{rem:pom-fractran-controlflow}），而不改变“输出必须等于 \(\min I(r)\)”这一选择语义本身；故该下界不可消去。证毕。
+\end{proof}
+
+\begin{corollary}[迭代执行的总序投影聚合深度线性下界]\label{cor:pom-fractran-firstfit-total-serial-depth}
+沿命题 \ref{prop:pom-fractran-firstfit-serial-depth} 的语义模型，固定指令表长度 \(k\)。
+若某实现需要完成 \(t\) 次 hard first-fit 优先级选择（例如执行 \(t\) 步 \texttt{FSTEP} 所包含的 \(t\) 次 \(\mathrm{PROJ\_ORDER}(\text{first-fit})\) 调用），则其最坏情形下的总序投影聚合深度满足
+\[
+T_{\le}^{\mathrm{tot}}\ =\ \Omega(tk).
+\]
+\end{corollary}
+\begin{proof}
+每一次优先级选择都必须在当前状态下确定输出 \(\min I(r)\)，并在最坏情形下需要 \(\Omega(k)\) 的序投影聚合深度（命题 \ref{prop:pom-fractran-firstfit-serial-depth}）。
+在迭代执行中，第 \(s\) 步选择的输出参与确定第 \(s+1\) 步的输入状态，因此这 \(t\) 次选择在因果上串行不可并行化；总聚合深度在最坏情形下至少为各步下界的线性和，从而得到 \(\Omega(tk)\)。证毕。
 \end{proof}
 
 \paragraph{Prime-core 微码原语（FRACTRAN 兼容层）}

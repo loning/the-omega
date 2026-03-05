@@ -228,61 +228,41 @@ a, & \varphi^{(t)}(a)=0.
 因此 \(\varphi\in\mathrm{SAT}\iff D(C_{\varphi^{(t)}})\ge k\)，归约多项式时间可构造，结论成立。证毕。
 \end{proof}
 
-\begin{theorem}[最大纤维的多项式因子近似障碍]\label{thm:circuit-maxfiber-polyfactor-inapprox}
-对任意常数 \(c>0\)，考虑如下函数问题：
-输入布尔电路 \(C:\{0,1\}^n\to\{0,1\}^n\)，输出整数 \(\widehat D\) 满足
+\begin{theorem}[最大纤维的次指数因子近似障碍]\label{thm:circuit-maxfiber-polyfactor-inapprox}
+令 \(f:\NN\to\NN\) 满足 \(\log f(n)=o(n)\)。
+若存在多项式时间算法 \(\mathcal A\)，对任意 \(n\) 位输入输出电路 \(C:\{0,1\}^n\to\{0,1\}^n\) 输出整数 \(\widehat D(C)\) 并满足
 \[
-D(C)\le \widehat D\le |C|^{c}\,D(C),
+D(C)\ \le\ \widehat D(C)\ \le\ f(n)\,D(C),
 \]
-其中 \(|C|\) 为电路规模。
-若该问题存在多项式时间算法，则 \(P=NP\)；因而该近似任务在多项式时间口径下为 NP-困难。
+则 \(P=NP\)。
+特别地，对任意多项式 \(p(n)\)，不存在多项式时间的 \(p(n)\)-因子近似算法，除非 \(P=NP\)。
 \end{theorem}
 \begin{proof}
-对电路 \(C\) 与整数 \(k\ge 1\)，定义张量直积电路
+从 \(\mathrm{SAT}\) 归约。
+给定含 \(n\) 个变量的 CNF 公式 \(\varphi(u)\)，取 \(t:=n\)，并令
 \[
-C^{\otimes k}:\{0,1\}^{kn}\to\{0,1\}^{kn},\qquad
-C^{\otimes k}(x^{(1)},\dots,x^{(k)})=\bigl(C(x^{(1)}),\dots,C(x^{(k)})\bigr).
+\varphi_t(u,z_1,\dots,z_t,z):=\varphi(u)\wedge(z\vee\neg z)\wedge\bigwedge_{i=1}^{t}(z_i\vee\neg z_i).
 \]
-对任意输出 \(y=(y^{(1)},\dots,y^{(k)})\) 有
+沿定理 \ref{thm:circuit-index-ge-k-np-complete} 的模板构造电路
 \(
-\bigl|\bigl(C^{\otimes k}\bigr)^{-1}(y)\bigr|
-=\prod_{i=1}^{k}|C^{-1}(y^{(i)})|
-\)，
-因此
+C_{\varphi_t}:\{0,1\}^{2n+1}\to\{0,1\}^{2n+1}
+\)
+使得 \(\varphi_t(a)=1\) 时输出 \(0^{2n+1}\)，否则输出 \(a\)。
+若 \(\varphi\) 不可满足，则 \(\varphi_t\) 无满足赋值，\(C_{\varphi_t}\) 为恒等映射，故 \(D(C_{\varphi_t})=1\)。
+若 \(\varphi\) 可满足，则存在 \(u\) 使 \(\varphi(u)=1\)，从而对任意 \((z_1,\dots,z_t,z)\in\{0,1\}^{t+1}\) 都有 \(C_{\varphi_t}(u,z_1,\dots,z_t,z)=0^{2n+1}\)，故
 \[
-D(C^{\otimes k})=D(C)^k.
+D(C_{\varphi_t})\ge \bigl|C_{\varphi_t}^{-1}(0^{2n+1})\bigr|\ge 2^{t+1}=2^{n+1}.
 \]
-若 \(C\) 单射，则 \(D(C)=1\) 且 \(D(C^{\otimes k})=1\)；
-若 \(C\) 非单射，则 \(D(C)\ge 2\) 且 \(D(C^{\otimes k})\ge 2^k\)。
-
-设存在多项式时间算法对任意电路 \(F\) 输出 \(\widehat D(F)\) 满足
-\(
-D(F)\le \widehat D(F)\le |F|^{c}D(F)
-\)。
-对输入电路 \(C\)，取
+\par
+由 \(\log f(m)=o(m)\)（取 \(m=2n+1\)）可知存在 \(n_0\) 使对所有 \(n\ge n_0\) 有 \(f(2n+1)<2^{n+1}\)。
+于是当 \(n\ge n_0\) 时，
 \[
-k:=(c+2)\left\lceil \log_2(|C|+2)\right\rceil,
+\varphi\ \text{不可满足}\ \Rightarrow\ \widehat D(C_{\varphi_t})\le f(2n+1)<2^{n+1},
+\qquad
+\varphi\ \text{可满足}\ \Rightarrow\ \widehat D(C_{\varphi_t})\ge D(C_{\varphi_t})\ge 2^{n+1}.
 \]
-并构造 \(C^{\otimes k}\)。
-由于 \(k=O(\log|C|)\)，该构造在多项式时间内完成，且存在常数 \(K>0\) 使得
-\[
-|C^{\otimes k}|\le K\,k\,|C|.
-\]
-于是当 \(|C|\) 充分大时有
-\[
-2^k\ge (|C|+2)^{c+2}>(Kk|C|)^c\ge |C^{\otimes k}|^{c}.
-\]
-在此条件下：
-若 \(C\) 单射，则 \(D(C^{\otimes k})=1\)，从而
-\(
-\widehat D(C^{\otimes k})\le |C^{\otimes k}|^{c}<2^k
-\)；
-若 \(C\) 非单射，则 \(D(C^{\otimes k})\ge 2^k\)，从而
-\(
-\widehat D(C^{\otimes k})\ge 2^k
-\)。
-因此比较 \(\widehat D(C^{\otimes k})\) 与阈值 \(2^k\) 即可在多项式时间内判定 \(C\) 是否非单射，从而解决定理 \ref{thm:circuit-noninjective-np-complete} 的 NP-完全判定问题并推出 \(P=NP\)。
-证毕。
+比较 \(\widehat D(C_{\varphi_t})\) 与阈值 \(2^{n+1}\) 即可在多项式时间内判定 \(\varphi\in\mathrm{SAT}\)，从而 \(P=NP\)。
+对有限个 \(n<n_0\) 可在 \(\varphi\) 上添加哑元作填充，使归约落入 \(n\ge n_0\) 的区间而不改变可满足性。证毕。
 \end{proof}
 
 \begin{theorem}[任意固定阶 \texorpdfstring{$q\ge 2$}{q>=2} 的电路碰撞矩为 \texorpdfstring{\(\#\mathrm{P}\)}{\#P} 完备]\label{thm:circuit-s2-sharpP-complete}
@@ -322,28 +302,32 @@ S_q(C_{\varphi'})=s^q+(N-s).
 故计算 \(S_q(C)\) 为 \(\#\mathrm{P}\)-困难。证毕。
 \end{proof}
 
-\begin{corollary}[电路折叠的 Watatani 指标矩序列继承 \texorpdfstring{\(\#\mathrm{P}\)}{\#P} 完备性]\label{cor:circuit-watatani-moments-sharpP-complete}
-对任意固定整数 \(k\ge 1\)，令 \(C:\{0,1\}^n\to\{0,1\}^n\) 为电路，并令 \(E_C\) 为其折叠条件期望。
-在 \(\tau_n(f)=2^{-n}\sum_{a\in\{0,1\}^n} f(a)\) 的规范迹态下，定义
+\begin{corollary}[Watatani 指标元的坐标迹矩等于电路碰撞矩]\label{cor:circuit-watatani-moments-sharpP-complete}
+对任意固定整数 \(q\ge 2\)，令 \(C:\{0,1\}^n\to\{0,1\}^n\) 为电路，并令 \(E_C\) 为其折叠条件期望。
+在交换识别 \(B\cong \CC^{\{0,1\}^n}\) 上取坐标和迹
 \[
-M_k(C):=2^n\cdot \tau_n\!\left(\mathrm{Ind}_{\mathrm W}(E_C)^k\right).
+\Tr_{\mathrm{out}}(f):=\sum_{y\in\{0,1\}^n} f(y).
 \]
-则 \(M_k(C)=S_{k+1}(C)\)，从而函数问题 \(C\mapsto M_k(C)\) 为 \(\#\mathrm{P}\)-完备。
+则有严格恒等式
+\[
+\Tr_{\mathrm{out}}\!\left(\mathrm{Ind}_{\mathrm W}(E_C)^q\right)=S_q(C),
+\]
+从而函数问题 \(C\mapsto \Tr_{\mathrm{out}}(\mathrm{Ind}_{\mathrm W}(E_C)^q)\) 为 \(\#\mathrm{P}\)-完备。
 \end{corollary}
 \begin{proof}
-由定理 \ref{thm:op-algebra-fold-watatani-index-equals-multiplicity-field} 的闭式，在电路折叠口径下有
+由定理 \ref{thm:op-algebra-fold-watatani-index-equals-multiplicity-field} 的闭式，在电路折叠口径下
 \(
 \mathrm{Ind}_{\mathrm W}(E_C)=\sum_{y} |C^{-1}(y)|\,\widetilde P_y
 \)，
 并由幂等关系 \(\widetilde P_y\widetilde P_{y'}=\delta_{yy'}\widetilde P_y\) 得
 \(
-\mathrm{Ind}_{\mathrm W}(E_C)^k=\sum_y |C^{-1}(y)|^k\,\widetilde P_y
+\mathrm{Ind}_{\mathrm W}(E_C)^q=\sum_y |C^{-1}(y)|^q\,\widetilde P_y
 \)。
-而 \(\tau_n(\widetilde P_y)=|C^{-1}(y)|/2^n\)，故
-\[
-M_k(C)=2^n\sum_y |C^{-1}(y)|^k\,\tau_n(\widetilde P_y)=\sum_y |C^{-1}(y)|^{k+1}=S_{k+1}(C).
-\]
-由定理 \ref{thm:circuit-s2-sharpP-complete}（取 \(q=k+1\)）得 \(\#\mathrm{P}\)-完备性。证毕。
+由于 \(\Tr_{\mathrm{out}}(\widetilde P_y)=1\)，立得
+\(
+\Tr_{\mathrm{out}}(\mathrm{Ind}_{\mathrm W}(E_C)^q)=\sum_y |C^{-1}(y)|^q=S_q(C)
+\)。
+由定理 \ref{thm:circuit-s2-sharpP-complete} 得 \(\#\mathrm{P}\)-完备性。证毕。
 \end{proof}
 
 \begin{theorem}[电路高阶碰撞矩计算的 \texorpdfstring{\(\#\mathrm{P}\)}{\#P} 完备性]\label{thm:circuit-sk-fixedk-sharpP-complete}

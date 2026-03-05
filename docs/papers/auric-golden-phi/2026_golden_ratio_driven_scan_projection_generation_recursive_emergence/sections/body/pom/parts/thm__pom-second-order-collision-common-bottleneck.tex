@@ -55,4 +55,29 @@ L_K^\star(m)=(K-1)\log 2\cdot M_2(m)\,(1+o(1))
 最后一条关于 InfoNCE 的陈述即为定理 \ref{thm:pom-bayes-infonce-second-collision-dominance} 的渐近式。证毕。
 \end{proof}
 
+\begin{corollary}[支持规模上界与指数样本充分条件]\label{cor:pom-second-order-collision-minimax-err-support-bound}
+在定理 \ref{thm:pom-second-order-collision-common-bottleneck} 的设定下，对任意 \(m\) 与任意 \(n\ge 1\) 都有
+\[
+\mathrm{Err}_m^{\mathrm{mm}}(n)\ \le\ \frac{|X_m|}{2n}.
+\]
+特别地，在 Fold 主线 \(|X_m|=F_{m+2}=\varphi^{m+2}/\sqrt5+O(\varphi^{-m})\) 下，若取 \(n_m=\lceil e^{\kappa m}\rceil\) 且 \(\kappa>\log\varphi\)，则
+\[
+\mathrm{Err}_m^{\mathrm{mm}}(n_m)\xrightarrow[m\to\infty]{}0.
+\]
+\end{corollary}
+\begin{proof}
+对任意 \(w\in[0,1]\) 与 \(n\ge 1\)，由 \(1-w\le e^{-w}\) 得 \((1-w)^n\le e^{-nw}\)；
+又由 \(e^{t}\ge 1+t\)（\(t\ge 0\)）得 \(e^{-nw}\le (1+nw)^{-1}\)。
+因此
+\[
+w(1-w)^n\le we^{-nw}\le \frac{w}{1+nw}\le \frac1n.
+\]
+代入定理 \ref{thm:pom-second-order-collision-common-bottleneck} 的精确闭式
+\(
+2\,\mathrm{Err}_m^{\mathrm{mm}}(n)=\sum_x w_m(x)(1-w_m(x))^n
+\)
+并求和即得第一式。
+第二式由 \(|X_m|/n_m\to 0\)（\(\kappa>\log\varphi\)）与第一式直接推出。证毕。
+\end{proof}
+
 \endinput

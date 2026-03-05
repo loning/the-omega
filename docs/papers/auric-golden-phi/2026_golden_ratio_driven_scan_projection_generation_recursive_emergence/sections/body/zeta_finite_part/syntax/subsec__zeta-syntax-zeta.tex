@@ -15,6 +15,48 @@ A=\begin{pmatrix}1&1\\1&0\end{pmatrix}
 \]
 其主极点为 $z_\star=\varphi^{-1}$。
 
+\begin{theorem}[有限核迹序列必为常系数线性递推]\label{thm:zeta-syntax-trace-linear-recurrence}
+令 \(A\in M_d(\CC)\) 为任意有限维矩阵，并定义迹序列
+\(
+a_n:=\Tr(A^n)\ (n\ge 0)
+\)。
+则 \((a_n)_{n\ge 0}\) 满足某个阶数不超过 \(d\) 的常系数线性递推。
+等价地，\(\zeta_A(z)=\det(I-zA)^{-1}\) 的 ghost（迹）系数 \(a_n\) 必落在有限维线性递推范畴中。
+\end{theorem}
+\begin{proof}
+设 \(A\) 的特征多项式为
+\(
+\chi_A(\lambda)=\lambda^d+c_1\lambda^{d-1}+\cdots+c_d
+\)。
+由 Cayley--Hamilton 定理，
+\[
+A^d+c_1A^{d-1}+\cdots+c_d I=0.
+\]
+右乘 \(A^n\) 并取迹，得到对一切 \(n\ge 0\) 成立的递推
+\[
+a_{n+d}+c_1a_{n+d-1}+\cdots+c_d a_n=0,
+\]
+阶数不超过 \(d\)。证毕。
+\end{proof}
+
+\begin{corollary}[有限核 ghost 与经典素数对象不相容]\label{cor:zeta-syntax-ghost-incompatible-with-classical-primes}
+在定理 \ref{thm:zeta-syntax-trace-linear-recurrence} 的记号下，不存在任何有限维矩阵 \(A\) 使得
+\[
+\Tr(A^n)\equiv \Lambda_{\mathrm{vM}}(n)
+\quad\text{或}\quad
+\Tr(A^n)\equiv \mathbf 1_{\mathrm{prime}}(n)
+\qquad(\forall n\ge 1),
+\]
+其中 \(\Lambda_{\mathrm{vM}}\) 为经典 von Mangoldt 函数、\(\mathbf 1_{\mathrm{prime}}\) 为素数指标函数。
+因此任何由有限核 \(\zeta_A(z)=\det(I-zA)^{-1}\) 所给出的 ghost 序列都不可能在“迹层面”与经典素数 Euler 对象同构。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:zeta-syntax-trace-linear-recurrence}，序列 \(a_n=\Tr(A^n)\) 满足常系数线性递推。
+若 \(a_n\equiv \mathbf 1_{\mathrm{prime}}(n)\) 或 \(a_n\equiv \Lambda_{\mathrm{vM}}(n)\)，则其零集合分别包含“合数集合”或“非素数幂集合”，两者在 \(\NN\) 中均具有自然密度 \(1\)（由 \(\pi(x)=o(x)\) 及素数幂计数 \(O(\sqrt x)\) 立得）。
+另一方面，Skolem--Mahler--Lech 定理断言：线性递推序列的零集合为有限集与有限多个算术级数之并；若其自然密度为 \(1\)，则必包含某个步长为 \(1\) 的算术级数，从而 \(a_n\) 在充分大 \(n\) 上恒为 \(0\)。
+这与 \(\mathbf 1_{\mathrm{prime}}(n)\) 与 \(\Lambda_{\mathrm{vM}}(n)\) 均无穷多次非零矛盾。证毕。
+\end{proof}
+
 \begin{remark}[差异对象：degeneracy-$\zeta$ 把 trace 侧与 primitive 侧同时对齐]\label{rem:degeneracy-zeta-bridge}
 为把“无稳定约束”（full $2$-shift）与“黄金稳定约束”的差异压缩为一个可计算对象，记
 \[
