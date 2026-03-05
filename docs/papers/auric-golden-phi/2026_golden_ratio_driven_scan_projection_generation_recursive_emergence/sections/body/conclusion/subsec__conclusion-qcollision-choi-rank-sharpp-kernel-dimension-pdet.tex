@@ -1,0 +1,220 @@
+\subsection{\texorpdfstring{$q$}{q}-重折叠信道的 Choi 秩、单点塌缩困难性与碰撞核维度刚性}\label{subsec:conclusion-qcollision-choi-rank-sharpp-kernel-dimension-pdet}
+本小节在附录关于高阶碰撞矩、折叠信道 Choi 秩与复杂度分界的既有结果之上，给出一组统一的终态命题：其核心是把 \(q\)-重碰撞矩、测量--制备信道的谱阶数量与受限结构下的计算困难性压缩到同一可反演接口。
+
+\begin{theorem}[\texorpdfstring{$q$}{q}-重折叠信道的 Choi 秩等于 \texorpdfstring{$q$}{q}-次碰撞矩]\label{thm:conclusion-qfold-channel-choi-rank-equals-qcollision}
+设 \(\Fold:\Omega\twoheadrightarrow X\) 为有限满射，记纤维多重度
+\[
+d(x):=\card{\Fold^{-1}(x)}\qquad(x\in X).
+\]
+令 \(H:=\CC^\Omega\)，并以标准正交基定义纤维投影
+\[
+\Pi_x:=\sum_{\omega:\ \Fold(\omega)=x}\ket{\omega}\bra{\omega}\in\mathcal B(H).
+\]
+固定整数 \(q\ge 2\)，定义完全正迹保持映射
+\[
+\mathcal E_{\Fold}^{(q)}:\mathcal B(H)\to\mathcal B\!\left(H^{\otimes(q-1)}\right),\qquad
+\mathcal E_{\Fold}^{(q)}(\rho):=\sum_{x\in X}\Tr(\Pi_x\rho)\,\frac{\Pi_x^{\otimes(q-1)}}{d(x)^{q-1}}.
+\]
+则其 Choi 矩阵满足
+\[
+\rank J\!\left(\mathcal E_{\Fold}^{(q)}\right)=\sum_{x\in X}d(x)^q=:S_q(\Fold).
+\]
+\end{theorem}
+\begin{proof}
+由 Choi 定义（输入端参考基取 \(\{\ket{\omega}\}_{\omega\in\Omega}\)）与
+\(
+\mathcal E_{\Fold}^{(q)}(\ket{\omega}\bra{\omega'})
+=0
+\)
+（当 \(\omega\neq\omega'\)）可得
+\[
+J\!\left(\mathcal E_{\Fold}^{(q)}\right)
+=
+\sum_{x\in X}\frac{\Pi_x^{\otimes(q-1)}}{d(x)^{q-1}}\otimes \Pi_x^{\mathsf T}.
+\]
+由于 \(\Pi_x\) 在标准基下为实对角投影，\(\Pi_x^{\mathsf T}=\Pi_x\)；且不同 \(x\) 的支持子空间两两正交，故
+\[
+\rank J\!\left(\mathcal E_{\Fold}^{(q)}\right)
+=\sum_{x\in X}\rank\!\left(\Pi_x^{\otimes(q-1)}\otimes\Pi_x\right)
+=\sum_{x\in X}\rank(\Pi_x)^{q-1}\rank(\Pi_x)
+=\sum_{x\in X}d(x)^q.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[固定阶 \texorpdfstring{$q\ge 2$}{q>=2} 时碰撞矩与对应 Choi 秩计算的 \texorpdfstring{\(\#\mathrm{P}\)}{\#P} 完备性]\label{thm:conclusion-fixed-q-collision-choi-rank-sharpp-complete}
+对任意固定整数 \(q\ge 2\)，给定电路 \(C:\{0,1\}^n\to\{0,1\}^n\)，定义
+\[
+S_q(C):=\sum_{y\in\{0,1\}^n}\card{C^{-1}(y)}^q.
+\]
+则函数问题 \(C\mapsto S_q(C)\) 为 \(\#\mathrm P\)-完备。
+并且令 \(\mathcal E_C^{(q)}\) 为定理 \ref{thm:conclusion-qfold-channel-choi-rank-equals-qcollision} 对 \(\Fold=C\) 的对应信道，则
+\[
+\rank J\!\left(\mathcal E_C^{(q)}\right)=S_q(C),
+\]
+从而 \(C\mapsto \rank J(\mathcal E_C^{(q)})\) 亦为 \(\#\mathrm P\)-完备。
+\end{theorem}
+\begin{proof}
+第一断言即附录定理 \ref{thm:circuit-s2-sharpP-complete}。
+第二断言由定理 \ref{thm:conclusion-qfold-channel-choi-rank-equals-qcollision} 直接代入 \(d(y)=\card{C^{-1}(y)}\) 得到。
+两者合并即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[限制到单点塌缩电路后 \texorpdfstring{\(\#\mathrm P\)}{\#P} 完备性保持]\label{thm:conclusion-single-collapse-collision-sharpp-complete}
+固定整数 \(q\ge 2\)。
+称电路 \(C:\{0,1\}^n\to\{0,1\}^n\) 为单点塌缩型，若存在唯一 \(y_0\) 使 \(\card{C^{-1}(y_0)}\) 可能大于 \(1\)，且对 \(y\neq y_0\) 有 \(\card{C^{-1}(y)}\in\{0,1\}\)。
+则在该受限类上计算 \(S_q(C)\) 仍为 \(\#\mathrm P\)-完备。
+\end{theorem}
+\begin{proof}
+\(\#\mathrm P\) 属于性与定理 \ref{thm:conclusion-fixed-q-collision-choi-rank-sharpp-complete} 相同。
+
+\(\#\mathrm P\)-困难性取附录定理 \ref{thm:circuit-sk-fixedk-sharpP-complete} 证明中的同一归约电路 \(C_{\varphi'}\)：它把所有满足赋值塌缩到单点 \(0^{n+1}\)，其余赋值保持恒等输出，因此属于单点塌缩类。
+按该证明记 \(N:=2^{n+1}\)、\(s:=2\,\#\mathrm{SAT}(\varphi)\in\{0,2,\dots,N\}\)，并有
+\[
+S_q(C_{\varphi'})=s^q+(N-s).
+\]
+在偶数集合上定义 \(g_q(t):=t^q+(N-t)\)。
+对任意偶数 \(t\in[0,N-2]\)，
+\[
+g_q(t+2)-g_q(t)=(t+2)^q-t^q-2\ge 2^q-2>0,
+\]
+故 \(g_q\) 在 \(\{0,2,\dots,N\}\) 上严格单调。
+因此给定 \(S_q(C_{\varphi'})\) 可二分恢复唯一偶数 \(s\)，进而恢复 \(\#\mathrm{SAT}(\varphi)=s/2\)。
+故受限类仍为 \(\#\mathrm P\)-困难，结论成立。证毕。
+\end{proof}
+
+\begin{theorem}[纤维置换体积对数的常数绝对误差近似仍具 \texorpdfstring{\(\#\mathrm P\)}{\#P} 困难性]\label{thm:conclusion-fiber-permutation-logvolume-constant-error-sharpp-hard}
+对有限电路/折叠 \(C:\Omega\to X\) 定义纤维置换群
+\[
+G_{\mathrm{fib}}(C):=\prod_{x\in X}\Sym\!\bigl(C^{-1}(x)\bigr),
+\qquad
+\abs{G_{\mathrm{fib}}(C)}=\prod_{x\in X} d(x)!.
+\]
+令
+\[
+V(C):=\log_2\abs{G_{\mathrm{fib}}(C)}.
+\]
+则对任意常数 \(\varepsilon\in(0,\frac12)\)，在单点塌缩电路类上，给定 \(C\) 输出 \(\widetilde V\) 使
+\[
+\abs{\widetilde V-V(C)}\le \varepsilon
+\]
+为 \(\#\mathrm P\)-困难。
+\end{theorem}
+\begin{proof}
+仍取定理 \ref{thm:conclusion-single-collapse-collision-sharpp-complete} 的归约族 \(C_{\varphi'}\)。
+设唯一非平凡纤维大小为 \(s=2\,\#\mathrm{SAT}(\varphi)\)，其余非空纤维大小均为 \(1\)。
+则
+\[
+\abs{G_{\mathrm{fib}}(C_{\varphi'})}=s!,
+\qquad
+V(C_{\varphi'})=\log_2(s!).
+\]
+对任意偶数 \(t\ge 0\)，
+\[
+\log_2((t+2)!)-\log_2(t!)=\log_2\!\bigl((t+1)(t+2)\bigr)\ge 1.
+\]
+故 \(t\mapsto\log_2(t!)\) 在偶数集合 \(\{0,2,\dots,N\}\) 上相邻值间隔至少 \(1\)。
+当近似绝对误差 \(<\frac12\) 时，可唯一恢复该偶数 \(s\)，进而恢复 \(\#\mathrm{SAT}(\varphi)=s/2\)。
+因此该近似任务为 \(\#\mathrm P\)-困难。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{\(\#\)}{#}ETH 下通用碰撞核矩阵幂表示的指数维度下界]\label{cor:conclusion-collision-kernel-matrix-power-exp-dimension-under-sharpeth}
+假设 \(\#\)ETH（例如不存在 \(2^{o(n)}\) 时间算法计算 \(\#\textsc{3SAT}\)）。
+设存在统一编译器 \(\mathcal K\)，把任意 \(n\)-比特电路 \(C\) 映射到
+\[
+(A_C,u_C,v_C,T(n)),
+\]
+其中 \(A_C\in\ZZ_{\ge 0}^{d(n)\times d(n)}\)、\(u_C,v_C\in\ZZ^{d(n)}\)、\(T(n)=\poly(n)\)，并满足
+\[
+S_2(C)=u_C^{\mathsf T}A_C^{\,T(n)}v_C.
+\]
+则不可能有 \(d(n)=2^{o(n)}\)。
+等价地，存在常数 \(c>0\) 与无穷多个 \(n\) 使
+\[
+d(n)\ge 2^{cn}.
+\]
+\end{corollary}
+\begin{proof}
+反设 \(d(n)=2^{o(n)}\)。
+对 \(n\)-比特电路有 \(0\le S_2(C)\le 2^{2n}\)，故目标值仅需 \(O(n)\) 比特。
+对每个 \(O(n)\)-比特素数 \(p\)，可在模 \(p\) 上以重复平方法计算
+\(
+u_C^{\mathsf T}A_C^{T(n)}v_C\bmod p
+\)，
+单模时间为 \(d(n)^{O(1)}\poly(n)=2^{o(n)}\)。
+取足够多素数使乘积超过 \(2^{2n}\)，再由中国剩余定理恢复精确 \(S_2(C)\)，总时间仍为 \(2^{o(n)}\)。
+
+由附录定理 \ref{thm:circuit-s2-sharpP-complete} 的归约模板（同其证明中的单点塌缩构造），\(\#\textsc{3SAT}\) 可在线性规模映射下归约到 \(S_2\) 计算，从而得到 \(2^{o(n)}\) 时间算法求解 \(\#\textsc{3SAT}\)，与 \(\#\)ETH 矛盾。
+故结论成立。证毕。
+\end{proof}
+
+\begin{theorem}[Choi 伪行列式对数的显式公式与常数误差 \texorpdfstring{\(\#\mathrm P\)}{\#P} 困难性]\label{thm:conclusion-qfold-choi-pdet-log-sharpp-hard}
+沿定理 \ref{thm:conclusion-qfold-channel-choi-rank-equals-qcollision} 的记号，定义
+\[
+\operatorname{pdet}(J):=\prod_{\lambda_i\neq 0}\lambda_i
+\]
+为 \(J=J(\mathcal E_{\Fold}^{(q)})\) 的伪行列式。
+则成立显式恒等式
+\[
+-\log_2\operatorname{pdet}\!\left(J(\mathcal E_{\Fold}^{(q)})\right)
+=(q-1)\sum_{x\in X} d(x)^q\log_2 d(x),
+\]
+其中约定 \(0\log_20:=0\)。
+
+并且对任意固定 \(q\ge 2\)，在单点塌缩电路类上，以绝对误差 \(<\frac12\) 近似上述量为 \(\#\mathrm P\)-困难。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-qfold-channel-choi-rank-equals-qcollision} 的分块表达
+\[
+J=\sum_{x\in X}\frac{1}{d(x)^{q-1}}\,
+\Pi_x^{\otimes(q-1)}\otimes \Pi_x.
+\]
+对固定 \(x\)，该块是标量 \(d(x)^{-(q-1)}\) 乘以秩 \(d(x)^q\) 投影，故其非零特征值全为 \(d(x)^{-(q-1)}\)，重数 \(d(x)^q\)。
+不同 \(x\) 的块正交直和，因而
+\[
+\operatorname{pdet}(J)
+=\prod_{x\in X}\left(d(x)^{-(q-1)}\right)^{d(x)^q}
+=\prod_{x\in X} d(x)^{-(q-1)d(x)^q},
+\]
+取 \(-\log_2\) 即得显式式。
+
+困难性仍取定理 \ref{thm:conclusion-single-collapse-collision-sharpp-complete} 的单点塌缩族 \(C_{\varphi'}\)，记 \(s=2\,\#\mathrm{SAT}(\varphi)\)。
+此时
+\[
+\Psi_q(C_{\varphi'})
+:=-\log_2\operatorname{pdet}\!\left(J(\mathcal E_{C_{\varphi'}}^{(q)})\right)
+=(q-1)s^q\log_2 s
+\]
+（约定 \(s=0\) 时该值为 \(0\)）。
+
+对 \(t\ge 2\) 设 \(F_q(t):=(q-1)t^q\log_2 t\)。
+有
+\[
+F_q'(t)
+=(q-1)t^{q-1}\!\left(q\log_2 t+\frac{1}{\ln 2}\right)
+>0,
+\]
+故 \(F_q\) 严格递增；并且当 \(t\ge 2\) 时 \(F_q'(t)>1\)，从而
+\[
+F_q(t+2)-F_q(t)>2.
+\]
+又 \(F_q(2)-F_q(0)=(q-1)2^q\ge 4\)。
+因此 \(\Psi_q\) 在偶数集合 \(\{0,2,\dots,N\}\) 上相邻值间隔 \(>1\)。
+给定绝对误差 \(<\frac12\) 的近似值可唯一恢复偶数 \(s\)，进而恢复 \(\#\mathrm{SAT}(\varphi)=s/2\)。
+故该近似问题为 \(\#\mathrm P\)-困难。证毕。
+\end{proof}
+
+\begin{conjecture}[碰撞核维度的指数级刚性]\label{conj:conclusion-collision-kernel-exponential-rigidity}
+设 \(\mathcal K\) 为命题 \ref{prop:universal-compilable-collision-kernel-implies-p-np} 的同类编译器框架，但允许输出维数 \(d(n)\) 超多项式增长。
+则存在常数 \(c>0\)，使得对由附录定理 \ref{thm:circuit-noninjective-np-complete} 中单点塌缩归约生成的电路族 \(\{C_{\varphi'}\}\)，任何表示
+\[
+S_2(C_{\varphi'})=u_n^{\mathsf T}A_n^{\,T(n)}v_n
+\]
+（\(A_n\in\ZZ_{\ge 0}^{d(n)\times d(n)}\), \(T(n)=\poly(n)\)）都满足
+\[
+d(n)\ge 2^{cn}
+\]
+对所有充分大的 \(n\) 成立。
+该断言把猜想 \ref{conj:collision-kernel-dimension-obstruction-np} 的“超多项式障碍”提升为定量指数下界。
+\end{conjecture}
+
