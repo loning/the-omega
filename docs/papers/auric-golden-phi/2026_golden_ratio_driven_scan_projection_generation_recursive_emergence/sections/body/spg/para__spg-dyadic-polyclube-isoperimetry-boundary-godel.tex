@@ -191,6 +191,29 @@ H_m(U):=\prod_{\vec f} q_{\vec f}^{\,\varepsilon_{\vec f}},
 于是 \(\log\log H_m(U)\le \log F(U)+O(\log m)\)。合并即得结论。证毕。
 \end{proof}
 
+\begin{theorem}[边界 Gödel 码序列唯一确定闭包]\label{thm:spg-boundary-godel-sequence-determines-closure}
+设 \(A\subset I^n=[0,1]^n\)，并对每个 \(m\ge 1\) 令 \(U_m(A)\) 为尺度 \(2^{-m}\) 的 dyadic 外逼近。
+定义边界 Gödel 整数序列
+\[
+H_m(A):=H_m\!\bigl(U_m(A)\bigr)\in\NN,
+\]
+其中 \(H_m(\cdot)\) 由命题 \ref{prop:spg-dyadic-boundary-godel-doublelog-scale} 给出。
+则序列 \(\{H_m(A)\}_{m\ge 1}\) 唯一确定 \(A\) 的拓扑闭包 \(\overline A\)。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:spg-boundary-godelization-holographic-dictionary}，对每个 \(m\)，整数 \(H_m\!\bigl(U_m(A)\bigr)\) 的素因子分解唯一确定边界链 \(\partial_n[U_m(A)]\)，从而唯一确定 dyadic polycube \(U_m(A)\) 本身。
+因此 \(\{H_m(A)\}_{m\ge 1}\) 唯一确定整个外逼近族 \(\{U_m(A)\}_{m\ge 1}\)。
+\par
+另一方面，对 dyadic 外逼近的定义可直接验证嵌套性 \(U_{m+1}(A)\subseteq U_m(A)\)。
+并且成立集合恒等式
+\[
+\bigcap_{m\ge 1}U_m(A)=\overline A.
+\]
+事实上，若 \(x\in\overline A\)，则对任意 \(m\) 其所在的边长 \(2^{-m}\) dyadic 立方体与 \(A\) 相交，从而 \(x\in U_m(A)\)，故 \(x\in\cap_m U_m(A)\)。
+反之，若 \(x\in\cap_m U_m(A)\)，则对任意 \(m\) 存在 \(a_m\in A\) 落在 \(x\) 所在的边长 \(2^{-m}\) dyadic 立方体中，因而 \(\|a_m-x\|_2\le \sqrt n\,2^{-m}\to 0\)，故 \(x\in\overline A\)。
+综上，\(\{U_m(A)\}\) 的交从而由 \(\{H_m(A)\}\) 唯一确定。证毕。
+\end{proof}
+
 \begin{corollary}[边界 Gödel 编码的体积全息上界：\texorpdfstring{$\log H/\log\log H$}{logH/loglogH} 控制 bulk 规模]\label{cor:spg-dyadic-boundary-godel-volume-upperbound}
 沿用定理 \ref{thm:spg-dyadic-polyclube-axial-coarea} 的记号。
 对每个 dyadic \((n-1)\)-面 \(f\) 指派一枚互异素数 \(q_f\)，并定义边界的平方自由 Gödel 整数
@@ -256,6 +279,48 @@ d_{\partial G}(A):=\limsup_{m\to\infty}\frac{\log\log H_m(U_m(A))}{m\log 2},
 \limsup_{m\to\infty}\frac{\log N_m(A)}{m\log 2}.
 \]
 由定理 \ref{thm:spg-stokes-godel-doublelog-dimension}，\(d_G(A)=\limsup_{m\to\infty}\frac{\log N_m(A)}{m\log 2}\)，代回即得夹逼。证毕。
+\end{proof}
+
+\begin{proposition}[正距分离下的边界 Gödel 维极值律]\label{prop:spg-boundary-godel-dimension-separated-union-max}
+设 \(A,B\subset I^n\) 满足 \(\mathrm{dist}(A,B)>0\)。
+则边界 Gödel 维满足
+\[
+d_{\partial G}(A\cup B)=\max\bigl\{d_{\partial G}(A),\,d_{\partial G}(B)\bigr\}.
+\]
+\end{proposition}
+\begin{proof}
+令 \(\delta:=\mathrm{dist}(A,B)>0\)，并取 \(m_0\) 使得 \(\sqrt n\,2^{-m_0}<\delta\)。
+则对一切 \(m\ge m_0\)，任一边长 \(2^{-m}\) 的 dyadic \(n\)-立方体不可能同时与 \(A\) 与 \(B\) 相交。
+因此
+\(
+U_m(A\cup B)=U_m(A)\sqcup U_m(B)
+\)
+为不交并。
+\par
+由命题 \ref{prop:spg-dyadic-boundary-godel-doublelog-scale} 的定义，\(H_m(U)\) 是边界有向面的素数乘积；
+而当两个 polycube 的边界面集合互不相交时，其并的边界 Gödel 整数满足乘法分解
+\[
+H_m\!\bigl(U_m(A\cup B)\bigr)=H_m\!\bigl(U_m(A)\bigr)\cdot H_m\!\bigl(U_m(B)\bigr)
+\qquad(m\ge m_0).
+\]
+记 \(X_m:=\log H_m(U_m(A))\)、\(Y_m:=\log H_m(U_m(B))\)，则
+\[
+\log\log H_m(U_m(A\cup B))
+=\log(X_m+Y_m).
+\]
+由不等式 \(\max\{X_m,Y_m\}\le X_m+Y_m\le 2\max\{X_m,Y_m\}\)，得
+\[
+\max\{\log X_m,\log Y_m\}
+\le
+\log(X_m+Y_m)
+\le
+\max\{\log X_m,\log Y_m\}+\log 2.
+\]
+两端除以 \(m\log 2\) 并取 \(\limsup_{m\to\infty}\)（注意常数项 \(\log 2/(m\log 2)\to 0\)），即得
+\(
+d_{\partial G}(A\cup B)=\max\{d_{\partial G}(A),d_{\partial G}(B)\}
+\)。
+证毕。
 \end{proof}
 
 \begin{theorem}[Minkowski 维度对边界面增长率的双侧夹逼]\label{thm:spg-minkowski-dimension-boundary-face-growth-sandwich}

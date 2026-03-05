@@ -44,6 +44,97 @@ F_{M,x}=F(\alpha)=\max\{\log\varphi,(1-\alpha)\log 2\}=(1-\alpha)\log 2,
 最后，“不是递归可枚举”由集合 \(\{(M,x):F_{M,x}=(1-\alpha)\log 2\}\) 与非停机集合一致推出。证毕。
 \end{proof}
 
+\begin{theorem}[亚满谱对称门核的停机嵌入泛化]\label{thm:conclusion-temperature-kernel-free-energy-halting-embedding-subfull-spectrum}
+令 \(A\in\RR_{\ge 0}^{d\times d}\) 为实对称非负矩阵，并记 \(\lambda:=\rho(A)\)。
+假设 \(\lambda<d\)，并取任意
+\[
+\alpha\in\bigl(0,\ 1-\log_d\lambda\bigr).
+\]
+对任意图灵机 \(M\) 与输入 \(x\)，定义
+\[
+H_{M,x}(q):=\mathbf 1_{\{M(x)\ \text{在 }q\text{ 步内停机}\}},
+\qquad
+p_q(M,x):=d^{-\alpha q}\bigl(1-H_{M,x}(q)\bigr)\in\{0,d^{-\alpha q}\}.
+\]
+并令 \(T^{(q)}_{p_q(M,x)}(A)\) 由 \eqref{eq:pom-perron-landauer-tensor-soft-kernel} 给出。
+则极限
+\[
+F^{(A)}_{M,x}:=\lim_{q\to\infty}\frac1q\log\rho\!\bigl(T^{(q)}_{p_q(M,x)}(A)\bigr)
+\]
+存在且满足二值化：
+\[
+F^{(A)}_{M,x}=
+\begin{cases}
+\log\lambda, & M(x)\ \text{停机},\\[2pt]
+(1-\alpha)\log d, & M(x)\ \text{不停机}.
+\end{cases}
+\]
+因此映射 \((M,x)\mapsto F^{(A)}_{M,x}\) 不可计算；并且集合 \(\{(M,x):F^{(A)}_{M,x}=(1-\alpha)\log d\}\) 不是递归可枚举集。
+\end{theorem}
+\begin{proof}
+谓词“在 \(q\) 步内停机”可由 \(q\)-步模拟判定，故 \(p_q(M,x)\) 为可计算序列。
+\par
+若 \(M(x)\) 于某时刻 \(T\) 停机，则对一切 \(q\ge T\) 有 \(p_q(M,x)=0\)，从而 \(T^{(q)}_{p_q(M,x)}(A)=A^{\otimes q}\)，并由 \(\rho(A^{\otimes q})=\lambda^q\) 得
+\(
+q^{-1}\log\rho(T^{(q)}_{p_q(M,x)}(A))=\log\lambda
+\)
+对充分大 \(q\) 成立，故 \(F^{(A)}_{M,x}=\log\lambda\)。
+\par
+若 \(M(x)\) 不停机，则对所有 \(q\) 有 \(p_q(M,x)=d^{-\alpha q}\)。
+此时
+\(
+\lim_{q\to\infty}\frac1q\log p_q(M,x)=-\alpha\log d
+\)。
+由定理 \ref{thm:pom-perron-landauer-limit-law}，
+\[
+F^{(A)}_{M,x}=\max\{\log\lambda,(1-\alpha)\log d\}=(1-\alpha)\log d,
+\]
+其中最后等号由 \(\alpha<1-\log_d\lambda\) 等价于 \((1-\alpha)\log d>\log\lambda\) 得出。
+\par
+若 \((M,x)\mapsto F^{(A)}_{M,x}\) 可计算，则可由其值判定停机与否，从而与停机问题不可判定性矛盾。
+最后，集合 \(\{(M,x):F^{(A)}_{M,x}=(1-\alpha)\log d\}\) 与非停机集合一致，故不是递归可枚举集。证毕。
+\end{proof}
+
+\begin{corollary}[可计算温度调度产生不可计算自由能常数]\label{cor:conclusion-temperature-kernel-free-energy-omega-uncomputable}
+令 \(K=\bigl(\begin{smallmatrix}1&1\\[2pt]1&0\end{smallmatrix}\bigr)\) 为 NAND 真值表矩阵（从而 \(\rho(K)=\varphi\)）。
+选取一台通用前缀自由图灵机 \(U\) 满足
+\[
+\Omega_U<1-\log_2\varphi,
+\]
+其中 \(\Omega_U\) 为其 Chaitin 停机概率（定理 \ref{thm:zeta-syntax-omega-regular-impossible}）。
+（通过对任意通用机施加固定前缀重编码，可将停机概率缩放到任意小常数，从而总可实现该不等式。）
+取一条可计算且单调递增的有理序列 \((\alpha_q)_{q\ge 1}\subset\QQ\cap[0,1]\) 使 \(\alpha_q\uparrow\Omega_U\)，并定义可计算温度调度
+\[
+p_q:=2^{-\lceil \alpha_q q\rceil}\in(0,1]\qquad(q\ge 1).
+\]
+则极限
+\[
+F_U:=\lim_{q\to\infty}\frac1q\log\rho\!\bigl(T^{(q)}_{p_q}(K)\bigr)
+\]
+存在且
+\[
+F_U=(1-\Omega_U)\log 2.
+\]
+因此 \(F_U\) 为不可计算实数。
+\end{corollary}
+\begin{proof}
+由枚举 \(\mathrm{HALT}_U\) 并逐步累加 Kraft 权重，可构造性得到 \(\Omega_U\) 的可计算单调递增有理下逼近，故存在所需的 \((\alpha_q)\)。
+由 \(\alpha_q\uparrow\Omega_U\) 与取整误差 \(|\lceil \alpha_q q\rceil-\alpha_q q|\le 1\)，有
+\[
+\frac1q\log p_q
+=-\frac{\lceil \alpha_q q\rceil}{q}\log 2
+\longrightarrow
+-\Omega_U\log 2.
+\]
+将 \(d=2\)、\(A=K\) 代入定理 \ref{thm:pom-perron-landauer-limit-law}，得到
+\[
+\lim_{q\to\infty}\frac1q\log\rho\!\bigl(T^{(q)}_{p_q}(K)\bigr)
+=\max\{\log\varphi,(1-\Omega_U)\log 2\}.
+\]
+由假设 \(\Omega_U<1-\log_2\varphi\) 得 \((1-\Omega_U)\log 2>\log\varphi\)，故右端等于 \((1-\Omega_U)\log 2\)。
+若 \(F_U\) 可计算，则可由等式 \(\Omega_U=1-F_U/\log 2\) 计算 \(\Omega_U\)，矛盾于定理 \ref{thm:zeta-syntax-omega-regular-impossible} 所述不可计算性。证毕。
+\end{proof}
+
 \begin{corollary}[二点谱的常数对可编译性]\label{cor:conclusion-temperature-kernel-free-energy-two-point-any-constants}
 沿用定理 \ref{thm:conclusion-temperature-kernel-free-energy-halting-embedding} 的设定，并记
 \[
