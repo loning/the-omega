@@ -68,6 +68,40 @@ N_m:=\left\{\tau\in\mathrm{Sym}(\Omega_m):\ \exists\, f\in\mathrm{Sym}(X_m)\ \ \
 证毕。
 \end{proof}
 
+\begin{corollary}[纤维谱直方图决定 \(G_m\)、\(N_m\) 的群阶]\label{cor:op-algebra-fold-group-orders}
+沿定理 \ref{thm:op-algebra-fold-fiber-normalizer-wreath} 的记号，并对每个 \(d\ge 1\) 记
+\(
+N_{m,d}:=\card{X_m^{(d)}}=\#\{x\in X_m:\ d_m(x)=d\}
+\)。
+则成立闭式
+\[
+\boxed{\;
+|G_m|=\prod_{x\in X_m} d_m(x)!\ =\ \prod_{d\ge 1}(d!)^{N_{m,d}}\;}
+\]
+以及
+\[
+\boxed{\;
+|N_m|
+\ =\ 
+|G_m|\cdot\bigl|\mathrm{Sym}_{d_m}(X_m)\bigr|
+\ =\ 
+\prod_{d\ge 1}(d!)^{N_{m,d}}\cdot \prod_{d\ge 1}(N_{m,d})!\; }.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:op-algebra-fold-fiber-normalizer-wreath} 的分解
+\(
+G_m\cong\prod_{x\in X_m}\mathfrak S_{d_m(x)}
+\)
+与
+\(
+\mathrm{Sym}_{d_m}(X_m)\cong \prod_{d\ge 1}\mathfrak S_{N_{m,d}}
+\)，
+直接取群阶即得两式。
+亦可由花环分解 \(N_m\cong\prod_{d\ge 1}(\mathfrak S_d\wr \mathfrak S_{N_{m,d}})\) 与
+\(|\mathfrak S_d\wr \mathfrak S_n|=(d!)^{n}\cdot n!\) 推出。证毕。
+\end{proof}
+
 \begin{proposition}[折叠兼容提升的全局符号分解]\label{prop:op-algebra-fold-lift-global-sign-factorization}
 沿定理 \ref{thm:op-algebra-fold-fiber-normalizer-wreath} 的记号。
 令 \(X_m^{\mathrm{odd}}:=\{x\in X_m:\ d_m(x)\equiv 1\ (\mathrm{mod}\ 2)\}\) 为奇纤维层。
@@ -119,6 +153,109 @@ p_x(\tau)\mapsto u_{f(x)}^{-1}p_x(\tau)u_x
 \operatorname{sgn}(\tau_0)=\operatorname{sgn}(f|_{X_m^{\mathrm{odd}}})
 \)。
 合并即得所示恒等式。证毕。
+\end{proof}
+
+\begin{theorem}[花环因子的交换化与 \texorpdfstring{$\{\pm1\}$}{+-1}-角色的完备分类]\label{thm:op-algebra-fold-wreath-abelianization-characters}
+沿定理 \ref{thm:op-algebra-fold-fiber-normalizer-wreath} 的记号，并令
+\(
+N_m^{\mathrm{ab}}:=N_m/[N_m,N_m]
+\)。
+则 \(N_m^{\mathrm{ab}}\) 为有限 \(2\)-群，且由花环分解诱导出同构
+\[
+N_m^{\mathrm{ab}}
+\ \cong\
+\prod_{d\ge 1}\bigl(\mathfrak S_d\wr \mathfrak S_{N_{m,d}}\bigr)^{\mathrm{ab}}.
+\]
+对每个 \(d\ge 1\) 与 \(n\ge 0\) 记 \(W_{d,n}:=\mathfrak S_d\wr \mathfrak S_n\)，则其交换化满足
+\begin{equation}\label{eq:op-algebra-wreath-abelianization-cases}
+W_{d,n}^{\mathrm{ab}}\cong
+\begin{cases}
+\{e\}, & n=0,\\
+\{e\}, & d=1,\ n=1,\\
+\ZZ_2, & d=1,\ n\ge 2,\\
+\ZZ_2, & d\ge 2,\ n=1,\\
+(\ZZ_2)^2, & d\ge 2,\ n\ge 2.
+\end{cases}
+\end{equation}
+等价地，\(\mathrm{Hom}(N_m,\{\pm1\})\) 是一个有限的 \(\ZZ_2\)-向量空间，并由下述两类显式角色（满足相应存在性条件者）给出一组基：
+\begin{enumerate}
+  \item \textbf{可见层符号角色：}
+  对每个满足 \(N_{m,d}\ge 2\) 的 \(d\ge 1\)，定义
+  \[
+  \chi^{\mathrm{vis}}_{d}(\tau):=\operatorname{sgn}\bigl(\pi(\tau)|_{X_m^{(d)}}\bigr),
+  \qquad \tau\in N_m.
+  \]
+  \item \textbf{纤维内符号角色：}
+  对每个满足 \(d\ge 2\) 且 \(N_{m,d}\ge 1\) 的 \(d\)，定义
+  \[
+  \chi^{\mathrm{fib}}_{d}(\tau):=\prod_{x\in X_m^{(d)}}\operatorname{sgn}\bigl(p_x(\tau)\bigr),
+  \qquad \tau\in N_m,
+  \]
+  其中 \(p_x(\tau)\) 如命题 \ref{prop:op-algebra-fold-lift-global-sign-factorization} 定义。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:op-algebra-fold-fiber-normalizer-wreath} 的花环分解，\(N_m\) 为有限直积，故其交换化为对应交换化的直积。
+因此只需计算 \(W_{d,n}^{\mathrm{ab}}\)。
+\par
+\textbf{当 \(d=1\) 时}，\(W_{1,n}\cong \mathfrak S_n\)，且 \(\mathfrak S_n^{\mathrm{ab}}\cong\{e\}\)（\(n\le 1\)）与 \(\mathfrak S_n^{\mathrm{ab}}\cong \ZZ_2\)（\(n\ge 2\)）由符号同态给出，得到 \eqref{eq:op-algebra-wreath-abelianization-cases} 的前三行。
+\par
+\textbf{当 \(d\ge 2\) 时}，写 \(W_{d,n}=B\rtimes \mathfrak S_n\)，其中 \(B:=(\mathfrak S_d)^n\)。
+由于 \(\mathfrak S_d^{\mathrm{ab}}\cong \ZZ_2\)（由 \(\operatorname{sgn}\) 给出），故 \(B^{\mathrm{ab}}\cong (\ZZ_2)^n\)。
+而 \(\mathfrak S_n\) 通过置换 \(n\) 个坐标共轭作用于 \(B\)，于是 \(B^{\mathrm{ab}}\) 的 coinvariants
+\(
+(B^{\mathrm{ab}})_{\mathfrak S_n}
+\)
+同构于 \(\ZZ_2\)（由“坐标和”生成）。
+再由半直积交换化的一般结构
+\(
+(B\rtimes \mathfrak S_n)^{\mathrm{ab}}\cong (B^{\mathrm{ab}})_{\mathfrak S_n}\oplus \mathfrak S_n^{\mathrm{ab}}
+\)，
+并注意 \(\mathfrak S_n^{\mathrm{ab}}\cong\{e\}\) 当 \(n\le 1\)、\(\mathfrak S_n^{\mathrm{ab}}\cong\ZZ_2\) 当 \(n\ge 2\)，即得 \(d\ge 2\) 时的两行，从而得到 \eqref{eq:op-algebra-wreath-abelianization-cases}。
+\par
+最后，对角色的完备性与独立性：
+由 \(N_m\cong\prod_{d\ge 1}(\mathfrak S_d\wr \mathfrak S_{N_{m,d}})\)，有
+\[
+\mathrm{Hom}(N_m,\{\pm1\})
+\ \cong\
+\prod_{d\ge 1}\mathrm{Hom}\!\bigl(W_{d,N_{m,d}},\{\pm1\}\bigr)
+\ \cong\
+\prod_{d\ge 1}\mathrm{Hom}\!\bigl(W_{d,N_{m,d}}^{\mathrm{ab}},\ZZ_2\bigr).
+\]
+当 \(N_{m,d}\ge 2\) 时，\(\chi_d^{\mathrm{vis}}\) 正是投影到 \(\mathfrak S_{N_{m,d}}\) 的符号同态；
+当 \(d\ge 2\) 时，\(\chi_d^{\mathrm{fib}}\) 正是投影到基群 \((\mathfrak S_d)^{N_{m,d}}\) 后取坐标符号并在 coinvariants 上取生成元。
+由 \eqref{eq:op-algebra-wreath-abelianization-cases}，每个 \(d\) 上的角色群为 \(\{e\}\)、\(\ZZ_2\) 或 \((\ZZ_2)^2\)，且在 \((\ZZ_2)^2\) 情形下 \(\chi_d^{\mathrm{vis}}\)、\(\chi_d^{\mathrm{fib}}\) 分别对应两条独立坐标。
+因此由所有非平凡 \(\chi_d^{\mathrm{vis}}\)、\(\chi_d^{\mathrm{fib}}\) 组成的集合在 \(\mathrm{Hom}(N_m,\{\pm1\})\) 中给出一组显式基，完备性与独立性同时成立。证毕。
+\end{proof}
+
+\begin{corollary}[全局符号在角色基下的唯一分解]\label{cor:op-algebra-fold-global-sign-unique-decomposition}
+沿命题 \ref{prop:op-algebra-fold-lift-global-sign-factorization} 与定理 \ref{thm:op-algebra-fold-wreath-abelianization-characters} 的记号。
+则对任意 \(\tau\in N_m\) 有
+\[
+\operatorname{sgn}(\tau)
+=
+\Bigl(\prod_{\substack{d\ge 1\\ d\ \mathrm{odd}}}\chi^{\mathrm{vis}}_{d}(\tau)\Bigr)\cdot
+\Bigl(\prod_{d\ge 2}\chi^{\mathrm{fib}}_{d}(\tau)\Bigr),
+\]
+并且该表达在定理 \ref{thm:op-algebra-fold-wreath-abelianization-characters} 给出的 \(\{\pm1\}\)-角色基下是唯一的。
+\end{corollary}
+\begin{proof}
+由命题 \ref{prop:op-algebra-fold-lift-global-sign-factorization}，
+\(
+\operatorname{sgn}(\tau)=\operatorname{sgn}(f|_{X_m^{\mathrm{odd}}})\cdot \eta(\tau)
+\)。
+又因 \(f\in\mathrm{Sym}_{d_m}(X_m)\) 保持各层 \(X_m^{(d)}\) 并在层间无混合，故
+\(
+\operatorname{sgn}(f|_{X_m^{\mathrm{odd}}})=\prod_{d\ \mathrm{odd}}\operatorname{sgn}(f|_{X_m^{(d)}})
+=\prod_{d\ \mathrm{odd}}\chi_d^{\mathrm{vis}}(\tau)
+\)。
+同时由 \(\eta(\tau)=\prod_{x\in X_m}\operatorname{sgn}(p_x(\tau))\) 与 \(p_x(\tau)\in \mathfrak S_{d_m(x)}\)，得
+\(
+\eta(\tau)=\prod_{d\ge 2}\prod_{x\in X_m^{(d)}}\operatorname{sgn}(p_x(\tau))
+=\prod_{d\ge 2}\chi_d^{\mathrm{fib}}(\tau)
+\)。
+合并即得所示分解。
+唯一性由定理 \ref{thm:op-algebra-fold-wreath-abelianization-characters}：\(\mathrm{Hom}(N_m,\{\pm1\})\) 作为 \(\ZZ_2\)-向量空间由所列角色给出一组基，故任意角色（尤其是全局符号）在该基下的 \(\{0,1\}\) 指数展开唯一。证毕。
 \end{proof}
 
 \begin{corollary}[交错实现与偶/奇提升的等分计数]\label{cor:op-algebra-fold-alternating-lift-counting}

@@ -504,6 +504,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_gauge_anomaly_hankel_mean_variance_certificates",
+            script="exp_fold_gauge_anomaly_hankel_mean_variance_certificates.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_gauge_anomaly_hankel_mean_variance_certificates.json",
+            ],
+        ),
+        Step(
             name="fold_gauge_anomaly_pressure",
             script="exp_fold_gauge_anomaly_pressure.py",
             args=[],

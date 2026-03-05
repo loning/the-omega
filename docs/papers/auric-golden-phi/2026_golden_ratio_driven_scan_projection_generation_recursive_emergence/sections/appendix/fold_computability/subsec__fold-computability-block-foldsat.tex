@@ -59,6 +59,50 @@ B_i:=
 证毕。
 \end{proof}
 
+\begin{theorem}[水库纤维内的常相对距离打包下界]\label{thm:fold-reservoir-fiber-constant-relative-distance-packing}
+取 \(\delta\in(0,\tfrac12)\)，并令 \(m:=4k\) 与 \(\rho_k\in X_m\) 如定义 \ref{def:fold-block-reservoir-code}。
+则存在集合 \(\mathcal C_{m,\delta}\subset \Fold_m^{-1}(\rho_k)\) 使得对任意 \(\omega\neq \omega'\in\mathcal C_{m,\delta}\) 有
+\[
+|\omega\oplus \omega'|_0\ \ge\ \frac{3\delta}{4}\,m,
+\]
+并且其指数规模满足
+\[
+\liminf_{k\to\infty}\frac{1}{m}\log_2|\mathcal C_{m,\delta}|
+\ \ge\
+\frac14\bigl(1-H_2(\delta)\bigr),
+\qquad
+H_2(\delta):=-\delta\log_2\delta-(1-\delta)\log_2(1-\delta).
+\]
+\end{theorem}
+
+\begin{proof}
+先在 \(\{0,1\}^k\) 中构造最小距离 \(\ge \lceil \delta k\rceil\) 的二元码 \(\mathcal B_{k,\delta}\)。
+令 \(t:=\lceil\delta k\rceil-1\) 并记 Hamming 球体积
+\[
+V(k,t):=\sum_{i=0}^{t}\binom{k}{i}.
+\]
+用贪心选取法：每次从剩余集合中取一点并删去其半径 \(t\) 的球，可得
+\[
+|\mathcal B_{k,\delta}|\ \ge\ \frac{2^k}{V(k,t)}.
+\]
+对 \(\delta\in(0,\tfrac12)\)，经典体积渐近给出
+\[
+\frac{1}{k}\log_2 V(k,t)=H_2(\delta)+o(1),
+\]
+从而
+\[
+\liminf_{k\to\infty}\frac{1}{k}\log_2|\mathcal B_{k,\delta}|\ \ge\ 1-H_2(\delta).
+\]
+\par
+令 \(\mathcal C_{m,\delta}:=\mathrm{Enc}_k(\mathcal B_{k,\delta})\subset \Omega_m\)。
+由定理 \ref{thm:fold-block-reservoir-encoding-constant-radius}(1) 得 \(\Fold_m(\mathcal C_{m,\delta})=\{\rho_k\}\)，故 \(\mathcal C_{m,\delta}\subset \Fold_m^{-1}(\rho_k)\)。
+并由定理 \ref{thm:fold-block-reservoir-encoding-constant-radius}(3) 的三倍等距性，对任意 \(\omega=\mathrm{Enc}_k(w)\)、\(\omega'=\mathrm{Enc}_k(w')\) 有
+\[
+|\omega\oplus\omega'|_0=3\,|w\oplus w'|_0\ \ge\ 3\lceil\delta k\rceil\ \ge\ 3\delta k\ =\ \frac{3\delta}{4}\,m,
+\]
+规模估计由 \(|\mathcal C_{m,\delta}|=|\mathcal B_{k,\delta}|\) 与 \(m=4k\) 直接给出。证毕。
+\end{proof}
+
 \paragraph{纤维内可满足性语言}
 固定一个对 CNF 公式的多项式时间可逆二进制编码
 \[
