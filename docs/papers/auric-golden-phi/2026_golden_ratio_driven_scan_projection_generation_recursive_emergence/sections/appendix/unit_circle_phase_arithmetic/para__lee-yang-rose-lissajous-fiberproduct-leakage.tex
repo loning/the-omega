@@ -1,0 +1,437 @@
+\paragraph{玫瑰轨迹的 Lee--Yang 分离平方律}
+沿用本小节的坐标门 \(J\)（\eqref{eq:lee-yang-J-def}）与 Joukowsky 映射 \(W(z)=z+z^{-1}\)，并沿用命题 \ref{prop:jouwkowsky-inverse-square} 的恒等式 \(J(z^2)=-1/W(z)^2\)。
+
+\begin{theorem}[Lee--Yang 分离平方律]\label{thm:leyang-rose-separation-square-law}
+令 \(n,d\in\NN\)。
+对任意 \(w\in\CC^{\times}\) 且满足 \(w^{2n}\neq -1\)（从而 \(1+w^{2n}\neq 0\)），定义
+\[
+\Gamma_{n,d}(w):=\frac12\bigl(w^{d+n}+w^{d-n}\bigr),\qquad
+\tau_n(w):=J(w^{2n})=-\frac{w^{2n}}{(1+w^{2n})^2}.
+\]
+则成立严格恒等式
+\begin{equation}\label{eq:leyang-rose-separation-square-law}
+\boxed{\ 4\,\tau_n(w)\,\Gamma_{n,d}(w)^2=-\,w^{2d}\ }.
+\end{equation}
+特别地，当 \(w\in\TT\) 时有 \(\tau_n(w)\in(-\infty,-\tfrac14]\)，并且
+\[
+\abs{\Gamma_{n,d}(w)}=\frac{1}{2\sqrt{-\tau_n(w)}},
+\qquad
+\arg\bigl(\Gamma_{n,d}(w)^2\bigr)\equiv 2d\,\arg(w)\pmod{2\pi}.
+\]
+\end{theorem}
+\begin{proof}
+由定义可写
+\[
+\Gamma_{n,d}(w)=\frac12\,w^{d-n}\,(1+w^{2n}),
+\]
+从而
+\[
+\Gamma_{n,d}(w)^2=\frac14\,w^{2d-2n}(1+w^{2n})^2.
+\]
+再与 \(\tau_n(w)=-\frac{w^{2n}}{(1+w^{2n})^2}\) 相乘即得
+\(
+\tau_n(w)\Gamma_{n,d}(w)^2=-\frac14 w^{2d}
+\)，从而得到 \eqref{eq:leyang-rose-separation-square-law}。
+当 \(w\in\TT\) 时，由命题 \ref{prop:jouwkowsky-inverse-square}（取 \(z=w^n\)）得 \(\tau_n(w)=J((w^n)^2)\in(-\infty,-\tfrac14]\)；
+对 \eqref{eq:leyang-rose-separation-square-law} 取模与辐角即可得到所示两式。证毕。
+\end{proof}
+
+\begin{corollary}[关于 \(n\) 的守恒量]\label{cor:leyang-rose-n-invariant}
+在定理 \ref{thm:leyang-rose-separation-square-law} 的记号下，令
+\[
+Q_{n,d}(w):=\tau_n(w)\,\Gamma_{n,d}(w)^2.
+\]
+则对一切 \(n\in\NN\) 恒有
+\[
+\boxed{\ Q_{n,d}(w)\equiv-\frac14\,w^{2d}\ }.
+\]
+因此，当 \(w\) 沿单位圆 \(\TT\) 绕行一周时，曲线 \(w\mapsto Q_{n,d}(w)\) 绕原点的净绕数严格等于 \(2d\)，与参数 \(n\) 无关。
+\end{corollary}
+\begin{proof}
+由 \eqref{eq:leyang-rose-separation-square-law} 直接得到 \(Q_{n,d}(w)=-\frac14 w^{2d}\)。
+当 \(w=e^{\mathrm{i}\theta}\)（\(\theta\in[0,2\pi]\)）时，\(w^{2d}\) 的辐角增量为 \(4\pi d\)，故绕数为 \(2d\)。证毕。
+\end{proof}
+
+\paragraph{Lissajous 的扭曲纤维积与消元闭式}
+对 Lissajous 族 \eqref{eq:leyang-lissajous-family}，命题 \ref{prop:leyang-lissajous-unit-circle-uplift} 已给出二维 Lee--Yang 坐标 \(\Lambda_{a,b,\delta}\)。
+本段改用“扭曲粘合”的代数语言刻画其像的 Zariski 闭包，并将该对象与正文的算术奇异环纤维积 \(\mathfrak{R}_S=\Sigma_S\times_{\TT}\TT^S\)（\S\ref{subsubsec:cdim-solenoid-arithmetic-singular-ring}）在结构上对齐为一种纯 Archimedean 两通道特例。
+
+\begin{theorem}[扭曲纤维积的 Lee--Yang 消元方程]\label{thm:leyang-lissajous-twisted-fiberproduct-resultant}
+令 \(a,b\in\ZZ_{>0}\) 且 \(\delta\in\RR\)，并记
+\[
+\xi:=e^{\mathrm{i}2b\delta}\in\TT.
+\]
+定义相位约束子集
+\begin{equation}\label{eq:leyang-lissajous-Kabdelta}
+K_{a,b,\delta}:=\{(u,v)\in\TT^2:\ u^b=\xi\,v^a\}.
+\end{equation}
+并定义其 Lee--Yang 像（扭曲纤维积）
+\[
+\mathcal{R}^{\mathrm{LY}}_{a,b,\delta}
+:=\Bigl\{(T_1,T_2)\in\RR^2:\ \exists(u,v)\in K_{a,b,\delta},\ T_1=J(u),\ T_2=J(v)\Bigr\}.
+\]
+则 \(\mathcal{R}^{\mathrm{LY}}_{a,b,\delta}\subset(-\infty,-\tfrac14]^2\)，并且其 Zariski 闭包包含在代数曲线
+\begin{equation}\label{eq:leyang-lissajous-resultant-curve}
+F_{a,b,\delta}(T_1,T_2)=0
+\end{equation}
+之内，其中 \(F_{a,b,\delta}\in\CC[T_1,T_2]\) 可取为迭代结果式
+\begin{equation}\label{eq:leyang-lissajous-resultant-def}
+\boxed{\;
+F_{a,b,\delta}(T_1,T_2)
+:=\Res_v\!\Bigl(\Res_u\bigl(T_1(1+u)^2+u,\ u^b-\xi v^a\bigr),\ T_2(1+v)^2+v\Bigr)\; } .
+\end{equation}
+此外，\(F_{a,b,\delta}\) 对 \((T_1,T_2)\) 的双次数满足
+\begin{equation}\label{eq:leyang-lissajous-resultant-bidegree-bound}
+\boxed{\ \deg_{T_1}F_{a,b,\delta}\le 2b,\qquad \deg_{T_2}F_{a,b,\delta}\le 2a\ }.
+\end{equation}
+\end{theorem}
+\begin{proof}
+由 \(T=J(u)=-u/(1+u)^2\) 的等价变形得到二次门方程
+\begin{equation}\label{eq:leyang-gate-quadratic}
+T(1+u)^2+u=0,
+\end{equation}
+同理 \(T_2(1+v)^2+v=0\)。
+若 \((T_1,T_2)\in\mathcal{R}^{\mathrm{LY}}_{a,b,\delta}\)，则存在 \((u,v)\in K_{a,b,\delta}\) 同时满足 \eqref{eq:leyang-gate-quadratic}（对 \(T_1,u\)）、其 \(v\)-版本以及 \(u^b-\xi v^a=0\)。
+因此 \((T_1,T_2)\) 必使迭代结果式 \eqref{eq:leyang-lissajous-resultant-def} 为零，从而 \(\overline{\mathcal{R}^{\mathrm{LY}}_{a,b,\delta}}^{\,\mathrm{Zar}}\subseteq V(F_{a,b,\delta})\)。
+双次数上界 \eqref{eq:leyang-lissajous-resultant-bidegree-bound} 由结果式的次数界给出：固定 \(v\) 时，\(\Res_u(\cdot)\) 对 \(T_1\) 的次数不超过 \(2b\)（二次门方程与 \(b\)-次扭曲幂约束消元），再与 \(v\)-门方程作一次结果式消元不增加 \(T_1\) 的次数；对 \(T_2\) 同理得到不超过 \(2a\)。证毕。
+\end{proof}
+
+\begin{proposition}[扭曲约束的连通分支数]\label{prop:leyang-lissajous-K-components}
+设 \(g:=\gcd(a,b)\)，并写 \(a=ga_0\)、\(b=gb_0\) 且 \(\gcd(a_0,b_0)=1\)。
+则集合 \(K_{a,b,\delta}\)（\eqref{eq:leyang-lissajous-Kabdelta}）恰有 \(g\) 个连通分支；每一分支同胚于 \(\TT\)，并且相位参数 \(\delta\) 仅在这些分支之间施加平移（不改变分支数）。
+\end{proposition}
+\begin{proof}
+考虑连续群同态
+\[
+\phi:\TT^2\to\TT,\qquad \phi(u,v)=u^{b_0}v^{-a_0}.
+\]
+由于 \(\gcd(a_0,b_0)=1\)，\(\phi\) 为满射，且 \(\ker\phi\) 为一维子环面（连通）。
+另一方面，约束 \(u^b=\xi v^a\) 等价于 \(\phi(u,v)^g=\xi\)，从而
+\[
+K_{a,b,\delta}=\bigcup_{\omega^g=\xi}\phi^{-1}(\omega).
+\]
+方程 \(\omega^g=\xi\) 在 \(\TT\) 上有且仅有 \(g\) 个解；而每个纤维 \(\phi^{-1}(\omega)\) 为 \(\ker\phi\) 的陪集，因而连通且同胚于 \(\TT\)。
+不同 \(\omega\) 给出不交的纤维并构成连通分支分解，故分支数为 \(g\)。
+参数 \(\delta\) 仅通过 \(\xi=e^{\mathrm{i}2b\delta}\) 改变上述陪集选择而不改变其个数。证毕。
+\end{proof}
+
+\begin{theorem}[迹坐标门下的双奇异环消元与有理性]\label{thm:leyang-lissajous-trace-resultant-rational}
+令 \(a,b\in\ZZ_{>0}\) 与 \(\delta\in\RR\)，并考虑 Lissajous 参数曲线
+\[
+x(t)=\cos(at+\delta),\qquad y(t)=\cos(bt).
+\]
+定义逐坐标 Lee--Yang 变量
+\begin{equation}\label{eq:leyang-lissajous-trace-variables}
+T_x(t):=-\frac{1}{2(1+x(t))},\qquad T_y(t):=-\frac{1}{2(1+y(t))}.
+\end{equation}
+则由定理 \ref{thm:leyang-trace-mobius-invertibility} 有
+\[
+T_x(t)=J\!\left(e^{\mathrm{i}(at+\delta)}\right),\qquad
+T_y(t)=J\!\left(e^{\mathrm{i}bt}\right),
+\qquad (T_x(t),T_y(t))\in(-\infty,-\tfrac14]^2.
+\]
+令 \(z:=e^{\mathrm{i}t}\in\CC^{\times}\)，并定义关于 \(z\) 的多项式
+\begin{equation}\label{eq:leyang-lissajous-trace-polynomials}
+\begin{aligned}
+P_x(z;X)&:=X\,e^{2\mathrm{i}\delta}z^{2a}+(2X+1)e^{\mathrm{i}\delta}z^{a}+X,\\
+P_y(z;Y)&:=Y\,z^{2b}+(2Y+1)z^{b}+Y.
+\end{aligned}
+\end{equation}
+则存在消元多项式
+\[
+\Phi_{a,b,\delta}(X,Y):=\Res_z\bigl(P_x(z;X),P_y(z;Y)\bigr)\in \ZZ[e^{\mathrm{i}\delta},e^{-\mathrm{i}\delta}][X,Y],
+\]
+使得对任意 \(t\in\RR\) 恒有
+\[
+\Phi_{a,b,\delta}\bigl(T_x(t),T_y(t)\bigr)=0.
+\]
+并且像集 \(\{(T_x(t),T_y(t)):\ t\in\RR\}\) 的 Zariski 闭包是一条不可约有理曲线，其归一化同构于 \(\PP^1\)。
+\end{theorem}
+\begin{proof}
+由 \(X=J(v)\iff X(1+v)^2+v=0\) 等价于
+\[
+Xv^2+(2X+1)v+X=0.
+\]
+取 \(v_x=e^{\mathrm{i}(at+\delta)}=e^{\mathrm{i}\delta}z^{a}\) 与 \(v_y=e^{\mathrm{i}bt}=z^{b}\)，分别代入上式得到
+\(
+P_x(z;T_x(t))=0
+\)
+与
+\(
+P_y(z;T_y(t))=0
+\)，其中 \(P_x,P_y\) 如 \eqref{eq:leyang-lissajous-trace-polynomials}。
+因此两多项式在 \(z=e^{\mathrm{i}t}\) 处有公共根，故其结果式在 \((X,Y)=(T_x(t),T_y(t))\) 处为零，即
+\(
+\Phi_{a,b,\delta}(T_x(t),T_y(t))=0
+\)。
+
+其次，由 \(T_x(t)=J(e^{\mathrm{i}\delta}z^a)\)、\(T_y(t)=J(z^b)\) 可知映射
+\[
+\PP^1\dashrightarrow \AA^2,\qquad z\longmapsto \bigl(J(e^{\mathrm{i}\delta}z^a),\,J(z^b)\bigr)
+\]
+为有理映射，且非常值。
+其像的 Zariski 闭包因此为不可约代数曲线；又因其被 \(\PP^1\) 有理参数化，归一化为 \(\PP^1\)，即为有理曲线。证毕。
+\end{proof}
+
+\paragraph{回文谱与零虚泄漏}
+幺正切片上的“驻波分解/正弦模态消失”在附录 \ref{cor:trace-palindrome-completed-real} 已以回文迹振幅给出。
+下述引理给出一个与该结论同型、但允许复系数的纯傅里叶判别，并将“回文谱 \(\Longleftrightarrow\) 纯余弦模态”提升为复共轭对称的必要充分条件。
+
+\begin{lemma}[回文谱与纯余弦振幅]\label{lem:leyang-palindrome-spectrum-real-amplitude}
+令 \(P(z)=\sum_{k=0}^{n}a_k z^k\) 为次数 \(n\) 的多项式（系数允许为复数），并定义
+\[
+A(\theta):=e^{-\mathrm{i}n\theta/2}P(e^{\mathrm{i}\theta})\qquad(\theta\in\RR).
+\]
+则下列条件等价：
+\begin{enumerate}
+  \item 对一切 \(\theta\)，有 \(A(\theta)\in\RR\)；
+  \item 系数满足共轭回文条件 \(a_k=\overline{a_{n-k}}\)（\(0\le k\le n\)）。
+\end{enumerate}
+特别地，当 \(a_k\in\RR\) 时，该共轭回文条件化为 \(a_k=a_{n-k}\)，并推出 \(A(\theta)\) 具有严格纯余弦展开且无任何正弦模态。
+\end{lemma}
+\begin{proof}
+展开
+\[
+A(\theta)=\sum_{k=0}^{n}a_k\,e^{\mathrm{i}(k-n/2)\theta},
+\qquad
+\overline{A(\theta)}=\sum_{k=0}^{n}\overline{a_k}\,e^{-\mathrm{i}(k-n/2)\theta}
+=\sum_{k=0}^{n}\overline{a_{n-k}}\,e^{\mathrm{i}(k-n/2)\theta}.
+\]
+因此 \(A(\theta)=\overline{A(\theta)}\) 对所有 \(\theta\) 成立当且仅当相应 Fourier 系数逐项相等，即 \(a_k=\overline{a_{n-k}}\)。
+当 \(a_k\in\RR\) 时，按 \(k\leftrightarrow n-k\) 配对立即得到纯余弦展开。证毕。
+\end{proof}
+
+\paragraph{Lee--Yang 逆平方门的二面体刻画}
+坐标门 \(J(z^2)=-1/(z+z^{-1})^2\) 同时满足 \(z\mapsto z^{-1}\) 与 \(z\mapsto -z\) 的二面体不变性。
+在排除非本征极点的归一化口径下，该门在二面体不变类中由其极点轨道与无穷远归一化唯一确定。
+
+\begin{proposition}[二面体归一化下的唯一性]\label{prop:leyang-inverse-square-dihedral-uniqueness}
+设 \(R(z)\) 为非常值有理函数，满足
+\[
+R(z)=R(z^{-1})=R(-z),
+\]
+并满足：
+\begin{enumerate}
+  \item \(R\) 在 \(\CC^{\times}\) 上仅在 \(z=\pm \mathrm{i}\) 处具有极点，且两处皆为二阶极点；
+  \item \(R(1)=R(-1)=-\tfrac14\)；
+  \item \(R(\infty)=0\)。
+\end{enumerate}
+则必有
+\[
+\boxed{\ R(z)=J(z^2)=-\frac{1}{(z+z^{-1})^2}\ }.
+\]
+\end{proposition}
+\begin{proof}
+由 \(R(z)=R(z^{-1})\) 与 \(R(z)=R(-z)\) 可知 \(R\) 仅依赖于 \((z+z^{-1})^2\)，从而存在有理函数 \(F\) 使
+\[
+R(z)=F\bigl((z+z^{-1})^2\bigr).
+\]
+记 \(x(z):=(z+z^{-1})^2\)。
+当 \(z=\pm\mathrm{i}\) 时 \(x(z)=0\)，且 \(z\mapsto x(z)\) 在 \(\pm\mathrm{i}\) 处具有二阶零点；由 (a) 知 \(F\) 在 \(x=0\) 处为一阶极点，并且在 \(\widehat{\CC}\setminus\{0\}\) 上无其他极点。
+由第三条得 \(F(\infty)=0\)，故 \(F(x)=c/x\)。
+再由第二条与 \(x(1)=x(-1)=4\) 得 \(c/4=-1/4\)，即 \(c=-1\)。证毕。
+\end{proof}
+
+\paragraph{自互反多项式的 Lee--Yang 实射线化}
+迹坐标 \(s=z+z^{-1}\) 把单位圆谱条件 \(|z|=1\) 压缩为区间 \(s\in[-2,2]\) 上的一元实条件；
+Lee--Yang 逆平方门 \(t=J(z^2)=-1/s^2\) 进一步把该区间压缩为负实射线 \((-\infty,-\tfrac14]\)。
+下述定理给出自互反多项式在该坐标门下的严格等价判别。
+
+\begin{theorem}[自互反多项式的 Lee--Yang 实射线化判据]\label{thm:leyang-selfreciprocal-ray-criterion}
+令 \(P(z)\in\RR[z]\) 为偶次数 \(2m\) 的自互反多项式：
+\[
+z^{2m}P(1/z)=P(z).
+\]
+则存在唯一 \(Q(s)\in\RR[s]\) 使
+\[
+P(z)=z^{m}Q(s),\qquad s:=z+z^{-1}.
+\]
+定义 Lee--Yang 变换
+\[
+\mathcal L_P(t):=t^{m}\,Q(\sqrt{-1/t})\,Q(-\sqrt{-1/t})\in\RR[t],
+\]
+其中乘积保证 \(\mathcal L_P\) 不依赖平方根分支且确为多项式。
+则以下命题等价：
+\begin{enumerate}
+  \item \(P\) 的全部零点均位于单位圆 \(|z|=1\)（按重数计）；
+  \item \(\mathcal L_P\) 的全部零点均位于 Lee--Yang 奇异环 \((-\infty,-\tfrac14]\)（按重数计，射线端点按紧化理解）。
+\end{enumerate}
+在该对应下，若 \(z\) 为 \(P\) 的单位圆零点且 \(s=z+z^{-1}\neq 0\)，则对应的 Lee--Yang 根为
+\[
+t=J(z^2)=-\frac{1}{s^2}\in(-\infty,-\tfrac14],
+\]
+与命题 \ref{prop:jouwkowsky-inverse-square} 的逆平方坐标门一致。
+\end{theorem}
+\begin{proof}
+对合 \(\iota:z\mapsto z^{-1}\) 在 Laurent 环 \(\RR[z,z^{-1}]\) 上的不变量子环为 \(\RR[z+z^{-1}]\)，从而自互反条件等价于 \(z^{-m}P(z)\in \RR[z,z^{-1}]^{\iota}\)，即存在唯一 \(Q(s)\) 使 \(P(z)=z^{m}Q(s)\)。
+令 \(s=z+z^{-1}\)，并由命题 \ref{prop:jouwkowsky-inverse-square} 得
+\[
+t:=J(z^2)=-\frac{1}{(z+z^{-1})^2}=-\frac{1}{s^2}.
+\]
+若 \(|z|=1\)，则 \(s\in[-2,2]\) 且 \(t\in(-\infty,-\tfrac14]\)。
+当 \(P(z)=0\) 且 \(|z|=1\) 时，必有 \(Q(s)=0\)。
+取 \(t=-1/s^2\)，则 \(\sqrt{-1/t}=\pm s\)，从而 \(\mathcal L_P(t)=0\)。
+反之，若 \(t_0\in(-\infty,-\tfrac14]\) 且 \(\mathcal L_P(t_0)=0\)，令 \(s_0:=\sqrt{-1/t_0}\in[0,2]\)，则 \(Q(s_0)=0\) 或 \(Q(-s_0)=0\)。
+取满足 \(z+z^{-1}=s_0\)（或 \(-s_0\)）的单位圆解 \(z\)（二次方程 \(z^2-s_0z+1=0\) 在 \(s_0\in[-2,2]\) 时有单位圆根），即得 \(|z|=1\) 且 \(P(z)=z^{m}Q(z+z^{-1})=0\)。
+因此两条条件等价。证毕。
+\end{proof}
+
+\begin{corollary}[共振窗相位锁定的 Lee--Yang 锚点]\label{cor:leyang-anchor-minus4-qsqrtm15}
+设
+\[
+z_\ast:=\frac{-1-\mathrm{i}\sqrt{15}}{4}\in\TT,
+\qquad
+2z_\ast^2+z_\ast+2=0.
+\]
+则 \(z_\ast+z_\ast^{-1}=-\tfrac12\)，从而
+\[
+J(z_\ast^2)=-\frac{1}{(z_\ast+z_\ast^{-1})^2}=-4.
+\]
+并且 \(\QQ(z_\ast)=\QQ(\sqrt{-15})\)。
+该锚点与正文中共振窗影子谱包的 CM 相位锁定机制（命题 \ref{prop:pom-cm-rigidity-qsqrtm15}）一致。
+\end{corollary}
+\begin{proof}
+由 \(2z_\ast^2+z_\ast+2=0\) 两边除以 \(z_\ast\neq 0\) 得
+\(
+2(z_\ast+z_\ast^{-1})+1=0
+\)，故 \(z_\ast+z_\ast^{-1}=-\tfrac12\)。
+代入 \(J(z^2)=-1/(z+z^{-1})^2\) 即得 \(J(z_\ast^2)=-4\)。
+该二次方程的判别式为 \(-15\)，故 \(\QQ(z_\ast)=\QQ(\sqrt{-15})\)。证毕。
+\end{proof}
+
+\paragraph{单位圆测度在 Lee--Yang 奇异环上的推前密度}
+命题 \ref{prop:singular-ring-limit-measure-density} 已给出由 \(t=-1/(4\cos^2\varphi)\) 推前得到的密度公式。
+下述定理将该结论改写为对 \(J\) 的直接推前变换公式，便于作为积分恒等式在后续计算中调用。
+
+\begin{theorem}[Haar 推前的严格变换公式]\label{thm:leyang-pushforward-density-formula}
+令
+\[
+t(\theta):=J(e^{\mathrm{i}\theta})=-\frac{1}{\bigl(e^{\mathrm{i}\theta/2}+e^{-\mathrm{i}\theta/2}\bigr)^2}
+=-\frac{1}{(2\cos(\theta/2))^2}\in(-\infty,-\tfrac14],
+\qquad \theta\in[0,2\pi].
+\]
+则对任意可积函数 \(f:(-\infty,-\tfrac14]\to\CC\) 成立
+\begin{equation}\label{eq:leyang-pushforward-density-integral}
+\boxed{\;
+\frac{1}{2\pi}\int_{0}^{2\pi} f(t(\theta))\,\dd\theta
+=
+\frac{1}{\pi}\int_{-\infty}^{-1/4} f(t)\,\frac{\dd t}{(-t)\sqrt{-4t-1}}\; }.
+\end{equation}
+\end{theorem}
+\begin{proof}
+令 \(\phi=\theta/2\)，则 \(\dd\theta=2\dd\phi\) 且
+\[
+\frac{1}{2\pi}\int_{0}^{2\pi} f(t(\theta))\,\dd\theta
+=\frac{1}{\pi}\int_{0}^{\pi} f\!\left(-\frac{1}{4\cos^2\phi}\right)\dd\phi
+=\frac{2}{\pi}\int_{0}^{\pi/2} f\!\left(-\frac{1}{4\cos^2\phi}\right)\dd\phi.
+\]
+在 \(\phi\in(0,\pi/2)\) 上作代换 \(t=-\frac{1}{4\cos^2\phi}\)。
+直接计算得
+\(
+\frac{\dd t}{\dd\phi}=2t\sqrt{-4t-1}
+\)，故
+\(
+\dd\phi=\frac{\dd t}{2t\sqrt{-4t-1}}
+\)。
+并且 \(\phi:0\mapsto t:-\tfrac14\)、\(\phi:\pi/2\mapsto t:-\infty\)。
+代入并调整积分方向即得 \eqref{eq:leyang-pushforward-density-integral}。证毕。
+\end{proof}
+
+\begin{theorem}[Lee--Yang 反平方观测的 Haar 普适律]\label{thm:leyang-inverse-square-haar-universality}
+设 \(G\) 为连通紧阿贝尔群，\(m_G\) 为其 Haar 概率测度，\(\chi:G\to\TT\) 为非平凡连续特征。
+令
+\[
+Y(x):=J\!\bigl(\chi(x)^2\bigr)=\tau(\chi(x))\in\RR,
+\]
+其中 \(\tau(z)=J(z^2)\) 如 \eqref{eq:leyang-tau-def}。
+则 \(Y(G)=(-\infty,-\tfrac14]\)。
+并且推前测度 \(\nu:=Y_{\ast}m_G\) 在 \((-\infty,-\tfrac14)\) 上对 Lebesgue 测度绝对连续，且其密度为
+\begin{equation}\label{eq:leyang-haar-universal-density}
+\boxed{\;
+\frac{\dd\nu}{\dd y}(y)=\frac{1}{\pi\,(-y)\,\sqrt{-4y-1}}\qquad(y\in(-\infty,-\tfrac14))\; }.
+\end{equation}
+\end{theorem}
+\begin{proof}
+由于 \(G\) 连通，\(\chi(G)\subset\TT\) 为连通闭子群；\(\chi\) 非平凡蕴含 \(\chi(G)\neq\{1\}\)，故 \(\chi(G)=\TT\)。
+由 Haar 测度的唯一性，\(\chi_{\ast}m_G\) 必为 \(\TT\) 上的 Haar 概率测度 \(\lambda_{\TT}\)。
+因此 \(Y(G)=\tau(\chi(G))=\tau(\TT)=(-\infty,-\tfrac14]\)（见命题 \ref{prop:jouwkowsky-inverse-square}）。
+\par
+对任意可积函数 \(f:(-\infty,-\tfrac14]\to\CC\)，有
+\[
+\int_G f(Y(x))\,\dd m_G(x)
+=\int_{\TT} f(\tau(z))\,\dd\lambda_{\TT}(z).
+\]
+对右端应用定理 \ref{thm:leyang-pushforward-density-formula} 得
+\[
+\int_{\TT} f(\tau(z))\,\dd\lambda_{\TT}(z)
+=\frac{1}{\pi}\int_{-\infty}^{-1/4} f(y)\,\frac{\dd y}{(-y)\sqrt{-4y-1}},
+\]
+从而识别出 \(\nu\) 的密度为 \eqref{eq:leyang-haar-universal-density}。证毕。
+\end{proof}
+
+\begin{corollary}[Haar 推前密度的干涉强度律]\label{cor:leyang-interference-intensity-density}
+令 \(\tau\) 如 \eqref{eq:leyang-tau-def}，并记 \(\lambda_{\TT}\) 为单位圆 \(\TT\) 上的归一化 Haar 测度。
+设 \(\nu:=\tau_{\ast}\lambda_{\TT}\) 为推前测度，则 \(\nu\) 在 \((-\infty,-\tfrac14]\) 上绝对连续，且其密度为
+\begin{equation}\label{eq:leyang-interference-intensity-density}
+\boxed{\;
+\frac{\dd\nu}{\dd t}(t)=\frac{1}{\pi\,|t|\,\sqrt{4|t|-1}}\qquad(t\le -\tfrac14)\; }.
+\end{equation}
+\end{corollary}
+\begin{proof}
+对 \(z=e^{\mathrm{i}\theta}\) 有 \(\tau(z)=J(e^{\mathrm{i}2\theta})=t(2\theta)\)，其中 \(t(\cdot)\) 由 \eqref{eq:leyang-pushforward-density-integral} 给出。
+由 \(t\) 的 \(2\pi\)-周期性与换元 \(\phi=2\theta\) 得
+\[
+\int_{\TT} f(\tau(z))\,\dd\lambda_{\TT}(z)
+=\frac{1}{2\pi}\int_{0}^{2\pi} f(t(2\theta))\,\dd\theta
+=\frac{1}{2\pi}\int_{0}^{2\pi} f(t(\phi))\,\dd\phi,
+\]
+对右端应用定理 \ref{thm:leyang-pushforward-density-formula} 即得推前密度
+\(
+\frac{1}{\pi}\frac{1}{(-t)\sqrt{-4t-1}}
+\)；
+因 \(t\le -1/4\) 时 \((-t)=|t|\) 且 \(\sqrt{-4t-1}=\sqrt{4|t|-1}\)，得到 \eqref{eq:leyang-interference-intensity-density}。证毕。
+\end{proof}
+
+\paragraph{椭圆层的正实穿越}
+命题 \ref{prop:jouwkowsky-inverse-square} 指出当 \(|z|=r\neq 1\) 时，\(W(z)\) 的像为共焦椭圆。
+该椭圆经逆平方门 \(J(z^2)=-1/W(z)^2\) 的像不再被束缚在负实射线上，并在同一半径层上发生正实穿越。
+
+\begin{proposition}[离开单位圆的正实穿越判别]\label{prop:leyang-ellipse-layer-positive-real-crossing}
+固定 \(r\neq 1\)，令 \(z=re^{\mathrm{i}\theta}\)。
+则
+\[
+J(z^2)=-\frac{1}{(re^{\mathrm{i}\theta}+r^{-1}e^{-\mathrm{i}\theta})^2}
+\]
+的像同时与负实轴与正实轴相交，且两处交点为
+\[
+\theta=0:\quad J(z^2)=-\frac{1}{(r+r^{-1})^2}<0,\qquad
+\theta=\frac{\pi}{2}:\quad J(z^2)=\frac{1}{(r-r^{-1})^2}>0.
+\]
+相反，当 \(r=1\) 时，像严格落在 Lee--Yang 奇异环 \((-\infty,-\tfrac14]\) 上。
+\end{proposition}
+\begin{proof}
+由 \eqref{eq:jouwkowsky-inverse-square}，
+\(
+J(z^2)=-1/W(z)^2
+\)。
+当 \(\theta=0\) 时 \(W(z)=r+r^{-1}\in\RR\setminus\{0\}\)，故 \(J(z^2)=-1/(r+r^{-1})^2<0\)。
+当 \(\theta=\pi/2\) 时 \(W(z)=\mathrm{i}(r-r^{-1})\)，故 \(J(z^2)=-1/(\mathrm{i}(r-r^{-1}))^2=1/(r-r^{-1})^2>0\)。
+单位圆情形由命题 \ref{prop:jouwkowsky-inverse-square} 的第二条给出。证毕。
+\end{proof}
+
+\paragraph{Lissajous--奇异环泄漏的放大判别}
+幺正切片上的谱穿越把临界线零点事件压缩为单位圆上同一点 \(1\) 的谱碰撞（例如推论 \ref{cor:xi-hzom-unitary-slice} 与命题 \ref{prop:xi-unitary-slice-spectral-crossing}），并在 Teichm\"uller 切片上由回文谱强制驻波型振幅与零正弦模态（结论 \ref{con:sync-kernel-weighted-teichmueller-standing-wave}；亦见引理 \ref{lem:leyang-palindrome-spectrum-real-amplitude} 的一般判别）。
+另一方面，命题 \ref{prop:leyang-ellipse-layer-positive-real-crossing} 表明一旦离开单位圆，逆平方门像将不可避免地穿越正实轴，从而失去“负实射线束缚”的一维退化结构。
+在该对照下，以下猜想把两通道 Lissajous 读出视为一种可放大的泄漏区分器：临界情形在去相位后退化为一维，而任何非临界偏移将迫使 Lee--Yang 坐标产生真正二维的闭轨，并可由矩放大机制给出可审计的正下界。
+
+\begin{conjecture}[Lissajous--奇异环泄漏判别式]\label{conj:leyang-lissajous-leakage-discriminant}
+在幺正切片—相位门制度下，对任一满足自对偶完成化与谱穿越口径的算术 \(\Xi\)-对象，存在自然的两通道观测（等价于在同一相位轨道上采用两组互素频率读出），使得：
+\begin{enumerate}
+  \item 在临界情形（对应可单位化相位与回文谱驻波约束）下，经行波相位剥离后的观测轨迹在复平面内退化为一维对象，即“虚部泄漏”严格为零；
+  \item 在任意非临界偏移（对应椭圆层 \(|u|\neq 1\)）下，观测轨迹在 Lee--Yang 门像中形成真正二维的闭轨，其有向面积在适当的矩放大/多尺度粗粒化下给出可审计的严格正下界；
+  \item 上述二维面积的严格正性与“非临界零点存在性”在该制度内互为充要条件，从而提供一条可放大的广义 RH 区分器。
+\end{enumerate}
+\end{conjecture}
+
+\endinput
+
