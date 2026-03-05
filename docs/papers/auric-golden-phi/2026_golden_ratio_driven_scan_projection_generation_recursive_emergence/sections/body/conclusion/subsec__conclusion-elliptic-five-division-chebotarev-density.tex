@@ -254,3 +254,140 @@ K_\theta:=\QQ(\theta)
 解得 \(r_2=10\)。证毕。
 \end{proof}
 
+\begin{theorem}[\(\mathrm{GL}_2(\FF_q)\) 的迹层计数]\label{thm:conclusion-gl2fq-trace-strata-count}
+设 \(q\) 为奇素数幂，并记
+\[
+G:=\mathrm{GL}_2(\FF_q).
+\]
+对每个 \(t\in\FF_q\)，令
+\[
+N_q(t):=\#\{g\in G:\ \mathrm{tr}(g)=t\}.
+\]
+则
+\[
+N_q(0)=q^3-q^2,
+\qquad
+N_q(t)=q^3-q^2-q\quad(t\neq 0).
+\]
+从而迹为 \(0\) 的比例与每个非零迹层的比例分别为
+\[
+\frac{q^3-q^2}{(q^2-1)(q^2-q)},
+\qquad
+\frac{q^3-q^2-q}{(q^2-1)(q^2-q)}.
+\]
+\end{theorem}
+\begin{proof}
+固定 \(t\in\FF_q\)。
+满足 \(\mathrm{tr}(g)=t\) 的全部 \(2\times 2\) 矩阵可写为
+\[
+g=
+\begin{pmatrix}
+a & b\\
+c & t-a
+\end{pmatrix},
+\qquad
+a,b,c\in\FF_q,
+\]
+故总数为 \(q^3\)。
+其中奇异条件为
+\[
+\det(g)=a(t-a)-bc=0.
+\]
+对固定 \(a\)，记
+\[
+u(a):=a(t-a).
+\]
+若 \(u(a)=0\)，则方程 \(bc=0\) 有 \(2q-1\) 组解；若 \(u(a)\neq 0\)，则对每个 \(b\neq 0\) 唯一决定 \(c=u(a)/b\)，故共有 \(q-1\) 组解。
+
+当 \(t=0\) 时，\(u(a)=-a^2\) 仅在 \(a=0\) 处为零，因此奇异矩阵总数为
+\[
+(2q-1)+(q-1)(q-1)=q^2.
+\]
+故
+\[
+N_q(0)=q^3-q^2.
+\]
+
+当 \(t\neq 0\) 时，\(u(a)=a(t-a)\) 在 \(a=0,t\) 两处为零，因此奇异矩阵总数为
+\[
+2(2q-1)+(q-2)(q-1)=q^2+q.
+\]
+故
+\[
+N_q(t)=q^3-(q^2+q)=q^3-q^2-q
+\qquad (t\neq 0).
+\]
+最后除以
+\[
+|G|=(q^2-1)(q^2-q)
+\]
+即得密度公式。证毕。
+\end{proof}
+
+\begin{corollary}[\(T_5\) 分裂域上的模 \(5\) Frobenius 迹密度]\label{cor:conclusion-elliptic-t5-frobenius-trace-density-mod5}
+沿用定理 \ref{thm:conclusion-elliptic-t5-galois-gl2f5} 的记号，设 \(L/\QQ\) 为 \(T_5\) 的分裂域。
+对每个在 \(L\) 中不分歧的素数 \(p\)，把 Frobenius 共轭类视为
+\[
+\mathrm{Frob}_p\in \mathrm{Gal}(L/\QQ)\cong \mathrm{GL}_2(\FF_5).
+\]
+则
+\[
+\delta\bigl(\mathrm{tr}(\mathrm{Frob}_p)\equiv 0\!\!\pmod 5\bigr)=\frac{100}{480}=\frac{5}{24},
+\]
+并且对每个 \(t\in\{1,2,3,4\}\) 有
+\[
+\delta\bigl(\mathrm{tr}(\mathrm{Frob}_p)\equiv t\!\!\pmod 5\bigr)=\frac{95}{480}=\frac{19}{96}.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:conclusion-elliptic-t5-galois-gl2f5}，
+\[
+\mathrm{Gal}(L/\QQ)\cong \mathrm{GL}_2(\FF_5),
+\qquad
+|\mathrm{GL}_2(\FF_5)|=(25-1)(25-5)=480.
+\]
+再由定理 \ref{thm:conclusion-gl2fq-trace-strata-count} 在 \(q=5\) 时得到
+\[
+\#\mathrm{tr}^{-1}(0)=5^3-5^2=100,
+\qquad
+\#\mathrm{tr}^{-1}(t)=5^3-5^2-5=95\quad(t\neq 0).
+\]
+Chebotarev 密度定理给出：任一共轭不变子集的自然密度等于其群比例。
+而迹层是共轭不变的，故结论成立。证毕。
+\end{proof}
+
+\begin{conjecture}[Lee--Yang 边界测度与 \(\mathrm{GL}_2\) Satake 参数的代数推送对偶]\label{conj:conclusion-leyang-gl2-satake-boundary-duality}
+沿用定理 \ref{thm:xi-terminal-zm-leyang-elliptic-structure} 的 Lee--Yang 谱曲线
+\[
+\Pi(\lambda,y)=0
+\]
+与定理 \ref{thm:xi-terminal-zm-leyang-elliptic-modularity-37} 的椭圆模性锚点 \(E_0/\QQ\)。
+设对每个良素数 \(p\nmid 37\)，\((\alpha_p,\beta_p)\) 为 \(E_0\) 的 Satake 参数，满足
+\[
+\alpha_p\beta_p=p,
+\qquad
+|\alpha_p|=|\beta_p|=p^{1/2}.
+\]
+则预期存在由 \(\Pi(\lambda,y)\) 的分支数据决定的显式代数映射
+\[
+\Phi:\TT_{\mathrm{Sat}}\to \TT,
+\qquad
+\TT_{\mathrm{Sat}}:=\{(u,u^{-1}):u\in\TT\},
+\]
+使得经验测度
+\[
+\nu_X
+:=
+\frac{1}{\#\{p\le X:\ p\nmid 37\}}
+\sum_{\substack{p\le X\\ p\nmid 37}}
+\delta_{\Phi(\alpha_p/p^{1/2},\,\beta_p/p^{1/2})}
+\]
+在 \(X\to\infty\) 时弱收敛到一个由 Lee--Yang 边界决定的概率测度 \(\mu_{\mathrm{LY}}\)。
+
+并且，这一收敛不应具有统一可计算的 \(W_2\)-误差模。
+事实上，在紧度量空间上有 \(W_1\le W_2\)；故若存在统一可计算的 \(W_2\) 控制，则会推出统一可计算的 \(W_1\) 控制。
+因此，在把 \(\mu_{\mathrm{LY}}\) 识别为附录定理 \ref{thm:fold-computability-halting-no-uniform-w1-learning} 所构造的 Lee--Yang 极限测度的任何实现中，该统一模都与既有的 \(W_1\) 不可统一逼近障碍不相容。
+
+在这一意义下，推论 \ref{cor:conclusion-elliptic-t5-frobenius-trace-density-mod5} 所给出的模 \(5\) 迹密度可视为该推送对偶在有限域层上的离散阴影。
+\end{conjecture}
+
