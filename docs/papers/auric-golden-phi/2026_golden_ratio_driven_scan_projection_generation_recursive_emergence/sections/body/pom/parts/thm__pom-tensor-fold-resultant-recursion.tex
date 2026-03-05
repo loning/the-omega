@@ -1,0 +1,151 @@
+\paragraph{张量折叠的递推结果式与 Hankel 复杂度乘法律}
+在命题 \ref{prop:pom-momq-tensor-kernel-construction} 给出的 Kronecker 型碰撞核之上，若把两条折叠系统作外部张量并要求碰撞矩按尺度逐点相乘，则最小递推特征式不再是抽象存在量，而受一个显式结式严格控制。
+
+\begin{theorem}[张量折叠碰撞矩的结果式递推律]\label{thm:pom-tensor-fold-resultant-recursion}
+固定整数 \(q\ge 1\)。
+设两条折叠系统在矩阶 \(q\) 上的碰撞矩序列分别为
+\[
+\bigl(S_q^{(1)}(m)\bigr)_{m\ge 0},
+\qquad
+\bigl(S_q^{(2)}(m)\bigr)_{m\ge 0},
+\]
+并假设其张量折叠满足严格乘法律
+\[
+S_q^{(\otimes)}(m)=S_q^{(1)}(m)\,S_q^{(2)}(m)\qquad(m\ge 0).
+\]
+记 \(P_q^{(i)}(\lambda)\in\ZZ[\lambda]\) 为 \(\bigl(S_q^{(i)}(m)\bigr)_{m\ge 0}\) 的首一最小递推特征多项式，并令 \(d_i:=\deg P_q^{(i)}\)（\(i=1,2\)）。
+定义
+\[
+\widehat P_q^{(1)}(\lambda,u):=u^{d_1}P_q^{(1)}(\lambda/u)\in\ZZ[\lambda,u],
+\qquad
+R_q(\lambda):=\operatorname{Res}_{u}\!\bigl(\widehat P_q^{(1)}(\lambda,u),\,P_q^{(2)}(u)\bigr)\in\ZZ[\lambda].
+\]
+则张量折叠序列 \(\bigl(S_q^{(\otimes)}(m)\bigr)_{m\ge 0}\) 必满足某条整系数线性递推；
+若其首一最小递推特征多项式记为 \(P_q^{(\otimes)}(\lambda)\)，则
+\[
+P_q^{(\otimes)}(\lambda)\mid R_q(\lambda)\qquad\text{于 }\QQ[\lambda].
+\]
+此外，若在 \(\overline{\QQ}\) 中把
+\[
+P_q^{(1)}(\lambda)=\prod_{i=1}^{d_1}(\lambda-\alpha_i),
+\qquad
+P_q^{(2)}(\lambda)=\prod_{j=1}^{d_2}(\lambda-\beta_j)
+\]
+按重数分解，则有严格因式分解
+\[
+R_q(\lambda)=\prod_{i=1}^{d_1}\prod_{j=1}^{d_2}(\lambda-\alpha_i\beta_j).
+\]
+\end{theorem}
+\begin{proof}
+取 \(P_q^{(i)}\) 的伴随矩阵 \(C_i\in M_{d_i}(\ZZ)\)。
+由于 \(P_q^{(i)}\) 首一且为最小递推特征多项式，存在向量 \(u_i,v_i\) 使
+\[
+S_q^{(i)}(m)=u_i^{\mathsf T}C_i^{\,m}v_i\qquad(m\ge 0),
+\qquad
+\chi_{C_i}(\lambda)=P_q^{(i)}(\lambda).
+\]
+由张量折叠的乘法律，
+\[
+S_q^{(\otimes)}(m)
+=\bigl(u_1\otimes u_2\bigr)^{\mathsf T}
+\bigl(C_1\otimes C_2\bigr)^{m}
+\bigl(v_1\otimes v_2\bigr).
+\]
+因此 \(\bigl(S_q^{(\otimes)}(m)\bigr)\) 是矩阵 \(C_1\otimes C_2\) 的线性读出；于是任一满足
+\(
+F(C_1\otimes C_2)=0
+\)
+的多项式 \(F\in\QQ[\lambda]\) 都诱导一条递推
+\(
+F(E)S_q^{(\otimes)}\equiv 0
+\)。
+
+在 \(\overline{\QQ}\) 中，\(C_1\) 与 \(C_2\) 的特征值多重集分别为 \(\{\alpha_i\}_{i=1}^{d_1}\) 与 \(\{\beta_j\}_{j=1}^{d_2}\)，故
+\[
+\chi_{C_1\otimes C_2}(\lambda)
+=\prod_{i=1}^{d_1}\prod_{j=1}^{d_2}(\lambda-\alpha_i\beta_j).
+\]
+另一方面，
+\[
+\widehat P_q^{(1)}(\lambda,u)
+=u^{d_1}P_q^{(1)}(\lambda/u)
+=\prod_{i=1}^{d_1}(\lambda-\alpha_i u),
+\]
+因而结式恒等式给出
+\[
+R_q(\lambda)
+=\operatorname{Res}_{u}\!\bigl(\widehat P_q^{(1)}(\lambda,u),\,P_q^{(2)}(u)\bigr)
+=\prod_{j=1}^{d_2}\widehat P_q^{(1)}(\lambda,\beta_j)
+=\prod_{i=1}^{d_1}\prod_{j=1}^{d_2}(\lambda-\alpha_i\beta_j).
+\]
+故 \(R_q(\lambda)=\chi_{C_1\otimes C_2}(\lambda)\)。
+由 Cayley--Hamilton 定理，
+\(
+R_q(C_1\otimes C_2)=0
+\)，从而 \(R_q(E)S_q^{(\otimes)}\equiv 0\)。
+由于 \(P_q^{(\otimes)}\) 按定义为该序列的首一最小递推特征多项式，必有
+\(
+P_q^{(\otimes)}\mid R_q
+\)
+于 \(\QQ[\lambda]\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[非碰撞制度下的 Hankel 复杂度严格乘法性]\label{cor:pom-tensor-fold-hankel-rank-multiplicativity}
+沿用定理 \ref{thm:pom-tensor-fold-resultant-recursion} 的设定，并记
+\(
+\operatorname{rank}_H(\cdot)
+\)
+为序列的 Hankel 秩（等价地，其最小递推阶数）。
+若进一步满足：
+\begin{enumerate}
+  \item \(P_q^{(1)}\) 与 \(P_q^{(2)}\) 在 \(\overline{\QQ}\) 上均无重根；
+  \item 按其根展开的谱系数均非零，即存在
+  \[
+  S_q^{(1)}(m)=\sum_{i=1}^{d_1}a_i\alpha_i^m,
+  \qquad
+  S_q^{(2)}(m)=\sum_{j=1}^{d_2}b_j\beta_j^m
+  \qquad(a_i,b_j\neq 0) ;
+  \]
+  \item 谱乘积无碰撞：
+  \[
+  \alpha_i\beta_j=\alpha_{i'}\beta_{j'}
+  \Longrightarrow
+  (i,j)=(i',j').
+  \]
+\end{enumerate}
+则
+\[
+\deg P_q^{(\otimes)}=d_1d_2,
+\qquad
+\operatorname{rank}_H\!\bigl(S_q^{(\otimes)}\bigr)
+=\operatorname{rank}_H\!\bigl(S_q^{(1)}\bigr)\,
+\operatorname{rank}_H\!\bigl(S_q^{(2)}\bigr).
+\]
+\end{corollary}
+\begin{proof}
+由简单根分解与系数非零性，
+\[
+S_q^{(\otimes)}(m)
+=S_q^{(1)}(m)S_q^{(2)}(m)
+=\sum_{i=1}^{d_1}\sum_{j=1}^{d_2}(a_ib_j)\,(\alpha_i\beta_j)^m.
+\]
+由谱乘积无碰撞，\(\{\alpha_i\beta_j\}_{i,j}\) 两两不同。
+对特征零域上的两两不同标量 \(\gamma_1,\dots,\gamma_N\)，指数序列 \(\gamma_k^m\)（\(0\le m\le N-1\)）线性无关；否则 Vandermonde 行列式
+\[
+\det(\gamma_k^{\,m})_{0\le m\le N-1,\ 1\le k\le N}
+=\prod_{1\le k<\ell\le N}(\gamma_\ell-\gamma_k)
+\]
+将为零，矛盾。
+因此 \(\bigl(S_q^{(\otimes)}(m)\bigr)\) 的最小递推阶数至少为 \(d_1d_2\)。
+
+另一方面，定理 \ref{thm:pom-tensor-fold-resultant-recursion} 表明
+\(
+P_q^{(\otimes)}\mid R_q
+\)，而 \(\deg R_q=d_1d_2\)。
+故 \(\deg P_q^{(\otimes)}\le d_1d_2\)。
+两侧合并即得 \(\deg P_q^{(\otimes)}=d_1d_2\)。
+再由 Hankel 秩与最小递推阶数的一致性，即得所示严格乘法律。证毕。
+\end{proof}
+
+\endinput
