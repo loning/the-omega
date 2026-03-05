@@ -12,7 +12,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Sequence, Set, Tuple
 
-from _kg_common import Atom, atom_sidecar_path, default_kg_root, hash12_for_bytes, scan_atoms, write_json
+from _kg_common import (
+    Atom,
+    atom_sidecar_path,
+    default_kg_root,
+    hash12_for_bytes,
+    parallel_kg_id_factory,
+    scan_atoms,
+    write_json,
+)
 
 STATEMENT_TYPES: Set[str] = {
     "tp-def",
@@ -59,29 +67,8 @@ def kg_id_sort_key(kg_id: str) -> Tuple[str, int]:
 
 
 def next_kg_id_factory(kg_root: Path, now: datetime):
-    date_part = now.strftime("%Y%m%d")
-    prefix = f"KG-{date_part}-"
-    atoms_dir = kg_root / "atoms"
-    max_seq = 0
-    if atoms_dir.exists():
-        for path in atoms_dir.rglob("*"):
-            if not path.is_file() or path.name.endswith(".meta.json"):
-                continue
-            name = path.name
-            if not name.startswith(prefix):
-                continue
-            m = re.match(rf"^{re.escape(prefix)}(?P<seq>\d+)", name)
-            if m:
-                max_seq = max(max_seq, int(m.group("seq")))
-
-    current = max_seq
-
-    def _next() -> str:
-        nonlocal current
-        current += 1
-        return f"{prefix}{current:05d}"
-
-    return _next
+    _ = kg_root  # Kept for backward-compatible signature.
+    return parallel_kg_id_factory(now)
 
 
 def build_components(atoms: Sequence[Atom]) -> Tuple[Dict[str, int], Dict[str, int], List[List[str]]]:

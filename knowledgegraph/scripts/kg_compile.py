@@ -507,6 +507,28 @@ def rewrite_text_macros_with_embedded_math(text: str) -> str:
     return "".join(out)
 
 
+def normalize_invalid_star_macro(text: str) -> str:
+    """Replace invalid TeX control symbol \\* with \\ast in fragments.
+
+    Some extracted math snippets use forms like `\\sigma_\\*` for pushforward.
+    `\\*` is not a valid control symbol in this context and breaks compile.
+    """
+
+    if r"\*" not in text:
+        return text
+    return text.replace(r"\*", r"\ast")
+
+
+def normalize_hyperref_title_fragments(text: str) -> str:
+    """Repair fragile hyperref title strings that contain raw #."""
+
+    if "{#}" not in text and r"\texorpdfstring" not in text:
+        return text
+    text = text.replace(r"\texorpdfstring{\(\#\)}{#}", r"\texorpdfstring{\(\#\)}{\#}")
+    text = text.replace("{#}", r"{\#}")
+    return text
+
+
 def extract_source_preamble(source_main_tex: Path) -> str:
     try:
         text = source_main_tex.read_text(encoding="utf-8", errors="replace")
@@ -573,6 +595,8 @@ def normalize_atom_tex_for_packed_index(text: str) -> str:
     normalized = close_display_before_non_math_text(normalized)
     normalized = repair_environment_balance(normalized)
     normalized = rewrite_text_macros_with_embedded_math(normalized)
+    normalized = normalize_invalid_star_macro(normalized)
+    normalized = normalize_hyperref_title_fragments(normalized)
     return normalized
 
 
@@ -800,6 +824,7 @@ def build_main_tex(
         lines.append("\\providecommand{\\Orb}{\\operatorname{Orb}}")
         lines.append("\\providecommand{\\Supp}{\\operatorname{Supp}}")
         lines.append("\\providecommand{\\id}{\\operatorname{id}}")
+        lines.append("\\providecommand{\\Id}{\\operatorname{Id}}")
         lines.append("\\providecommand{\\diag}{\\operatorname{diag}}")
         lines.append("\\providecommand{\\sgn}{\\operatorname{sgn}}")
         lines.append("\\providecommand{\\cdim}{\\operatorname{cdim}}")
@@ -807,6 +832,7 @@ def build_main_tex(
         lines.append("\\providecommand{\\Den}{\\operatorname{Den}}")
         lines.append("\\providecommand{\\Log}{\\log}")
         lines.append("\\providecommand{\\Mult}{\\operatorname{Mult}}")
+        lines.append("\\providecommand{\\poly}{\\operatorname{poly}}")
         lines.append("\\providecommand{\\ket}[1]{\\left\\lvert #1\\right\\rangle}")
         lines.append("\\providecommand{\\bra}[1]{\\left\\langle #1\\right\\rvert}")
         lines.append("\\providecommand{\\braket}[1]{\\left\\langle #1\\right\\rangle}")
@@ -917,6 +943,7 @@ def build_main_tex(
         lines.append("\\providecommand{\\Orb}{\\operatorname{Orb}}")
         lines.append("\\providecommand{\\Supp}{\\operatorname{Supp}}")
         lines.append("\\providecommand{\\id}{\\operatorname{id}}")
+        lines.append("\\providecommand{\\Id}{\\operatorname{Id}}")
         lines.append("\\providecommand{\\diag}{\\operatorname{diag}}")
         lines.append("\\providecommand{\\sgn}{\\operatorname{sgn}}")
         lines.append("\\providecommand{\\cdim}{\\operatorname{cdim}}")
@@ -926,6 +953,7 @@ def build_main_tex(
         lines.append("\\providecommand{\\longtwoheadrightarrow}{\\relbar\\joinrel\\twoheadrightarrow}")
         lines.append("\\providecommand{\\Log}{\\log}")
         lines.append("\\providecommand{\\Mult}{\\operatorname{Mult}}")
+        lines.append("\\providecommand{\\poly}{\\operatorname{poly}}")
         lines.append("\\providecommand{\\ket}[1]{\\left\\lvert #1\\right\\rangle}")
         lines.append("\\providecommand{\\bra}[1]{\\left\\langle #1\\right\\rvert}")
         lines.append("\\providecommand{\\braket}[1]{\\left\\langle #1\\right\\rangle}")

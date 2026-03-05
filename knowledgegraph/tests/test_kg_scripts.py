@@ -705,10 +705,22 @@ class KGScriptsUnitTest(unittest.TestCase):
         self.assertEqual(parsed[1], "sample-claim")
         self.assertEqual(parsed[2], "tp-claim")
 
-    def test_next_kg_id_factory_uses_fixed_five_digit_width(self) -> None:
+    def test_next_kg_id_factory_emits_parallel_safe_numeric_tokens(self) -> None:
         now = datetime(2026, 3, 4, 0, 0, 0, tzinfo=timezone.utc)
         next_id = ingest_atoms.next_kg_id_factory(self.kg_root, now)
-        self.assertEqual(next_id(), "KG-20260304-00001")
+        first = next_id()
+        second = next_id()
+
+        self.assertTrue(first.startswith("KG-20260304-"))
+        self.assertTrue(second.startswith("KG-20260304-"))
+        self.assertNotEqual(first, second)
+
+        first_token = first.split("-", 2)[2]
+        second_token = second.split("-", 2)[2]
+        self.assertTrue(first_token.isdigit())
+        self.assertTrue(second_token.isdigit())
+        self.assertGreaterEqual(len(first_token), 20)
+        self.assertGreater(int(second_token), int(first_token))
 
         write_atom(
             self.kg_root,
@@ -719,7 +731,9 @@ class KGScriptsUnitTest(unittest.TestCase):
             content="x\n",
         )
         next_after_existing = ingest_atoms.next_kg_id_factory(self.kg_root, now)
-        self.assertEqual(next_after_existing(), "KG-20260304-12346")
+        after = next_after_existing()
+        self.assertTrue(after.startswith("KG-20260304-"))
+        self.assertNotEqual(after, "KG-20260304-12346")
 
     def test_ingest_tex_knowledge_unit_resolves_parents(self) -> None:
         parent_label = "lem-base-h111111111111"
@@ -1929,6 +1943,113 @@ class KGScriptsUnitTest(unittest.TestCase):
         repaired, reason = build_index.repair_unbalanced_display_math(tex)
         self.assertIsNotNone(reason)
         self.assertIn("$$\na+b\n$$\n\n\\end{remark}\n", repaired)
+
+    def test_sync_bibliography_atoms_parses_source_and_materializes_bibliography(self) -> None:
+        source_root = self.repo_root / "paper_src"
+        source_root.mkdir(parents=True, exist_ok=True)
+        (source_root / "references_alpha.bib").write_text(
+            "\n".join(
+                [
+                    "@book{RefA,",
+                    "  title = {Alpha Title},",
+                    "  year = {2020}",
+                    "}",
+                    "",
+                    "@inproceedings{RefB,",
+                    "  title = {Beta Title},",
+                    "  crossref = {RefA}",
+                    "}",
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
+        (source_root / "references_beta.bib").write_text(
+            "\n".join(
+                [
+                    "@book{RefA,",
+                    "  title = {Alpha Title},",
+                    "  year = {2020}",
+                    "}",
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        source_specs = self.kg_root / "source_specs"
+        source_specs.mkdir(parents=True, exist_ok=True)
+        (source_specs / "auric_bibliography.src").write_text(
+            "\n".join(
+                [
+                    "name: auric_bibliography",
+                    f"root: {source_root.as_posix()}",
+                    "include: *.bib,**/*.bib",
+                    "hash: sha256",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        cmd = [
+            "python3",
+            str((SCRIPT_DIR / "kg_sync_bibliography_atoms.py").resolve()),
+            "--kg-root",
+            str(self.kg_root),
+        ]
+        first = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(first.returncode, 0, msg=first.stdout + "\n" + first.stderr)
+
+        bib_atoms = sorted((self.kg_root / "atoms").glob("KG-*__tp-bib__h-*.bib"))
+        self.assertGreaterEqual(len(bib_atoms), 2)
+        self.assertTrue((self.kg_root / "bibliography" / "references_alpha.bib").exists())
+        self.assertTrue((self.kg_root / "bibliography" / "references_beta.bib").exists())
+
+        alpha_text = (self.kg_root / "bibliography" / "references_alpha.bib").read_text(encoding="utf-8")
+        self.assertIn("@book{RefA", alpha_text)
+        self.assertIn("@inproceedings{RefB", alpha_text)
+
+        refb_meta_found = False
+        for meta_path in sorted((self.kg_root / "atoms").glob("KG-*.bib.meta.json")):
+            meta = json.loads(meta_path.read_text(encoding="utf-8"))
+            if str(meta.get("citation_key") or "") == "RefB":
+                refb_meta_found = True
+                self.assertTrue(isinstance(meta.get("parents"), list))
+                self.assertGreaterEqual(len(meta.get("parents") or []), 1)
+                break
+        self.assertTrue(refb_meta_found)
+
+        second = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(second.returncode, 0, msg=second.stdout + "\n" + second.stderr)
+        bib_atoms_second = sorted((self.kg_root / "atoms").glob("KG-*__tp-bib__h-*.bib"))
+        self.assertEqual(len(bib_atoms_second), len(bib_atoms))
+
+        (source_root / "references_alpha.bib").write_text(
+            "\n".join(
+                [
+                    "@book{RefA,",
+                    "  title = {Alpha Title Revised},",
+                    "  year = {2021}",
+                    "}",
+                    "",
+                    "@inproceedings{RefB,",
+                    "  title = {Beta Title},",
+                    "  crossref = {RefA}",
+                    "}",
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
+        third = subprocess.run(cmd, capture_output=True, text=True)
+        self.assertEqual(third.returncode, 0, msg=third.stdout + "\n" + third.stderr)
+        bib_atoms_third = sorted((self.kg_root / "atoms").glob("KG-*__tp-bib__h-*.bib"))
+        self.assertGreater(len(bib_atoms_third), len(bib_atoms_second))
+
+        alpha_text_after = (self.kg_root / "bibliography" / "references_alpha.bib").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("Alpha Title Revised", alpha_text_after)
 
 
 if __name__ == "__main__":

@@ -18,6 +18,7 @@ from _kg_common import (
     default_kg_root,
     normalize_parent_labels,
     normalize_type,
+    parallel_kg_id_factory,
     parse_parent_labels_from_meta,
     scan_atoms,
     slugify,
@@ -25,7 +26,7 @@ from _kg_common import (
 )
 
 VERSIONED_LABEL_RE = re.compile(r"^(?P<canonical>[a-z0-9-]+)-h(?P<hash>[0-9a-f]{12})$")
-KG_ID_SEQ_WIDTH = 5
+KG_ID_RE = re.compile(r"^KG-(?P<date>\d{8})-(?P<seq>\d+)$")
 
 
 def parse_args() -> argparse.Namespace:
@@ -104,9 +105,16 @@ def canonical_from_atom_label(label: str) -> str:
     return label
 
 
+def kg_id_sort_key(kg_id: str) -> Tuple[str, int]:
+    m = KG_ID_RE.match(kg_id)
+    if not m:
+        return "", -1
+    return m.group("date"), int(m.group("seq"))
+
+
 def build_latest_label_by_canonical(existing_atoms) -> Dict[str, str]:
     latest: Dict[str, str] = {}
-    for atom in sorted(existing_atoms, key=lambda a: a.kg_id):
+    for atom in sorted(existing_atoms, key=lambda a: kg_id_sort_key(a.kg_id)):
         latest[canonical_from_atom_label(atom.label)] = atom.label
     return latest
 
@@ -462,29 +470,8 @@ def build_parent_edges_for_ingest(
 
 
 def next_kg_id_factory(kg_root: Path, now: datetime):
-    date_part = now.strftime("%Y%m%d")
-    prefix = f"KG-{date_part}-"
-    max_seq = 0
-    atoms_dir = kg_root / "atoms"
-    if atoms_dir.exists():
-        for path in atoms_dir.rglob("*"):
-            if not path.is_file():
-                continue
-            name = path.name
-            if not name.startswith(prefix):
-                continue
-            m = re.match(rf"^{re.escape(prefix)}(?P<seq>\d+)", name)
-            if m:
-                max_seq = max(max_seq, int(m.group("seq")))
-
-    current = max_seq
-
-    def _next() -> str:
-        nonlocal current
-        current += 1
-        return f"{prefix}{current:0{KG_ID_SEQ_WIDTH}d}"
-
-    return _next
+    _ = kg_root  # Kept for backward-compatible signature.
+    return parallel_kg_id_factory(now)
 
 
 def main() -> int:
