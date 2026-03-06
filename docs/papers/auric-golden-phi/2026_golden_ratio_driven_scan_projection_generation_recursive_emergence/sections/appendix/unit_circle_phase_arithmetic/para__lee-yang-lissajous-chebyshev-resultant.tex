@@ -1,44 +1,47 @@
-\begin{theorem}[Lissajous 轨迹的 Lee--Yang 提升：Chebyshev 消元与双次数]\label{thm:leyang-lissajous-chebyshev-resultant}
-令 \(a,b\in\ZZ_{>0}\)，并考虑标准 Lissajous 参数化
+\begin{theorem}[带相位 Lissajous 曲线的 Chebyshev--Lee--Yang 代数闭式方程]\label{thm:leyang-lissajous-chebyshev-resultant}
+令 \(a,b\in\ZZ_{>0}\)、\(\delta\in\RR\)，并考虑参数曲线
 \[
-x(t)=\cos(at),\qquad y(t)=\cos(bt)\qquad(t\in\RR).
+x(t)=\cos(at+\delta),\qquad y(t)=\cos(bt),\qquad t\in\RR.
 \]
-在 \(x(t)y(t)\neq 0\) 处定义 Lee--Yang 逆平方坐标
-\[
-X(t):=J(e^{2\mathrm{i}at})=-\frac{1}{4x(t)^2},\qquad
-Y(t):=J(e^{2\mathrm{i}bt})=-\frac{1}{4y(t)^2}.
-\]
-则 \((X(t),Y(t))\in(-\infty,-\tfrac14]^2\)，且像集的 Zariski 闭包为一条不可约有理曲线。
-记第一类 Chebyshev 多项式 \(T_n\) 满足 \(T_n(\cos t)=\cos(nt)\)，并定义
-\begin{equation}\label{eq:leyang-lissajous-chebyshev-resultant}
-F_{a,b}(X,Y):=\Res_u\Bigl(1+4X\,T_a(u)^2,\ 1+4Y\,T_b(u)^2\Bigr)\in\ZZ[X,Y].
+记 \(T_k,U_k\) 分别为第一类与第二类 Chebyshev 多项式。
+则该曲线的 Zariski 闭包满足单一多项式方程
+\begin{equation}\label{eq:leyang-lissajous-chebyshev-closed-form}
+\boxed{\;
+\bigl(T_a(y)-T_b(x)\cos(b\delta)\bigr)^2
+=
+\bigl(1-x^2\bigr)\,U_{b-1}(x)^2\,\sin^2(b\delta)\; }.
 \end{equation}
-则对所有满足 \(x(t)y(t)\neq 0\) 的 \(t\) 有 \(F_{a,b}(X(t),Y(t))=0\)。
-此外，\(F_{a,b}\) 的双次数满足
-\[
-\deg_X F_{a,b}=2b,\qquad \deg_Y F_{a,b}=2a.
-\]
+在开集 \(\{(x,y):xy\neq 0\}\) 上，再引入逐坐标 Lee--Yang 逆平方坐标
+\begin{equation}\label{eq:leyang-lissajous-singular-square-coordinates}
+t_x:=-\frac{1}{4x^2},\qquad
+t_y:=-\frac{1}{4y^2},
+\end{equation}
+则 \((t_x,t_y)\in(-\infty,-\tfrac14]^2\)，并且 \eqref{eq:leyang-lissajous-chebyshev-closed-form} 在代换 \eqref{eq:leyang-lissajous-singular-square-coordinates} 后清分母，给出定义于奇异环平方上的代数曲线。
 \end{theorem}
 \begin{proof}
-由 \(x(t)=T_a(\cos t)\)、\(y(t)=T_b(\cos t)\) 以及 \(X(t)=-1/(4x(t)^2)\)、\(Y(t)=-1/(4y(t)^2)\) 得
+设 \(\theta:=at+\delta\)，则 \(x=\cos\theta\)。
+由 Chebyshev 恒等式可得
 \[
-1+4X(t)\,T_a(u)^2=0,\qquad 1+4Y(t)\,T_b(u)^2=0
+T_b(x)=\cos(b\theta),\qquad T_a(y)=\cos(abt).
 \]
-在 \(u=\cos t\) 处具有公共根，从而结果式为零，得到 \(F_{a,b}(X(t),Y(t))=0\)。
-\par
-另一方面，有理映射
+注意到 \(b\theta=abt+b\delta\)，故
 \[
-\PP^1\dashrightarrow \AA^2,\qquad
-u\longmapsto \left(-\frac{1}{4T_a(u)^2},\ -\frac{1}{4T_b(u)^2}\right)
+T_a(y)=\cos(b\theta-b\delta)
+=\cos(b\theta)\cos(b\delta)+\sin(b\theta)\sin(b\delta).
 \]
-非常值，故其像的 Zariski 闭包为不可约代数曲线；又因其由 \(\PP^1\) 有理参数化，归一化同构于 \(\PP^1\)，即为有理曲线。
-\par
-双次数由结果式的次数规则给出。
-多项式 \(1+4X\,T_a(u)^2\) 关于 \(u\) 的次数为 \(2a\)，且其首项系数对 \(X\) 为一次；同理 \(1+4Y\,T_b(u)^2\) 关于 \(u\) 的次数为 \(2b\)，且其首项系数对 \(Y\) 为一次。
-因此
-\(\deg_X F_{a,b}=(2b)\cdot 1=2b\)，
-\(\deg_Y F_{a,b}=(2a)\cdot 1=2a\)。
-证毕。
+移项得
+\[
+T_a(y)-T_b(x)\cos(b\delta)=\sin(b\theta)\sin(b\delta).
+\]
+再由
+\[
+\sin(b\theta)=\sin\theta\,U_{b-1}(\cos\theta)=\sin\theta\,U_{b-1}(x)
+\]
+与 \(\sin^2\theta=1-x^2\)，两边平方即得 \eqref{eq:leyang-lissajous-chebyshev-closed-form}。
+由于左端减右端是关于 \((x,y)\) 的多项式，并在参数曲线像上恒为零，该方程亦在其 Zariski 闭包上成立。
+
+最后，在 \(xy\neq 0\) 的开集中，逐坐标代换 \(t_x=-1/(4x^2)\)、\(t_y=-1/(4y^2)\) 直接给出 \((t_x,t_y)\in(-\infty,-\tfrac14]^2\)。
+将 \eqref{eq:leyang-lissajous-chebyshev-closed-form} 作此代换并清分母，便得到定义于奇异环平方上的代数曲线。证毕。
 \end{proof}
 
 \endinput
