@@ -303,6 +303,22 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_branch_rh_zero_temp_galois_chebotarev_audit",
+            script="exp_xi_branch_rh_zero_temp_galois_chebotarev_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_branch_rh_zero_temp_galois_chebotarev_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_real_input_40_collision_ldp_median_twist_audit",
+            script="exp_xi_real_input_40_collision_ldp_median_twist_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_real_input_40_collision_ldp_median_twist_audit.json",
+            ],
+        ),
+        Step(
             name="pom_xi_s5_primitive_element_minpoly_certificate",
             script="exp_pom_xi_s5_primitive_element_minpoly_certificate.py",
             args=[],

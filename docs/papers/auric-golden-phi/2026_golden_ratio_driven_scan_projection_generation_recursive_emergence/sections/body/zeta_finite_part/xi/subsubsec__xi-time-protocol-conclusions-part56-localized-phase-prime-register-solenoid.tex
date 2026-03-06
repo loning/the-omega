@@ -1,0 +1,203 @@
+\paragraph{局部化相位采样、dyadic 盲性与分层 prime-register 的极小性}
+以下条目把有限素数局部化数系的相位采样闭式、dyadic 读出的奇素失明、与有限生成离散交换群的严格不可混同性，以及分层 prime-register 外置在最坏情形下的锐最优性，压缩为同一条可直接调用的终端链条。
+
+\begin{theorem}[局部化数系相位采样函数的闭式与素数剥离律]\label{thm:xi-localized-phase-sampling-closed-form}
+设 \(S\subset\mathbb P\) 为有限素数集，并记
+\[
+G_S:=\ZZ[S^{-1}]
+\]
+为加法群。定义相位采样函数
+\[
+\Sigma^{\mathrm{ph}}_{G_S}(N):=\card{\operatorname{Hom}(G_S,\ZZ/N\ZZ)}
+\qquad(N\ge 1).
+\]
+则对一切 \(N\ge 1\) 都有闭式
+\[
+\boxed{\;
+\Sigma^{\mathrm{ph}}_{G_S}(N)
+=
+\prod_{\substack{q^{v_q(N)}\parallel N\\ q\notin S}}q^{v_q(N)}
+=
+\frac{N}{\prod_{p\in S}p^{v_p(N)}}.\;}
+\]
+等价地，\(\Sigma^{\mathrm{ph}}_{G_S}(N)\) 恰由 \(N\) 去掉全部 \(S\)-主部分得到。特别地，
+\[
+p\in S \iff \Sigma^{\mathrm{ph}}_{G_S}(p)=1,
+\qquad
+p\notin S \iff \Sigma^{\mathrm{ph}}_{G_S}(p)=p.
+\]
+因此 \(\Sigma^{\mathrm{ph}}_{G_S}\) 唯一恢复素数集 \(S\)，并因定理 \ref{thm:killo-localization-circle-dimension-prime-ledger-splitting} 进一步唯一恢复 Pontryagin 对偶短正合列
+\[
+0\to \prod_{p\in S}\ZZ_p\to \widehat{G_S}\to \TT\to 0
+\]
+中的 profinite 核；与此同时 \(\cdim_{\mathrm{fr}}(G_S)=1\) 与 \(S\) 无关。
+\end{theorem}
+\begin{proof}
+定理 \ref{thm:xi-cdim-localization-zeta-AS} 已证明：若把同一加法群记作
+\(
+A_S=\ZZ[S^{-1}]
+\)，则
+\[
+\card{\operatorname{Hom}(A_S,\ZZ/N\ZZ)}
+=
+\prod_{\substack{q^{v_q(N)}\parallel N\\ q\notin S}}q^{v_q(N)}
+=
+\frac{N}{\prod_{p\in S}p^{v_p(N)}}
+\qquad(N\ge 1).
+\]
+将 \(A_S\) 记为 \(G_S\) 即得所述闭式。
+\par
+对任意素数 \(p\)，代入 \(N=p\) 得
+\[
+\Sigma^{\mathrm{ph}}_{G_S}(p)=
+\begin{cases}
+1,& p\in S,\\[1mm]
+p,& p\notin S.
+\end{cases}
+\]
+故 \(S\) 由 \(\Sigma^{\mathrm{ph}}_{G_S}\) 唯一恢复。
+再由定理 \ref{thm:killo-localization-circle-dimension-prime-ledger-splitting}，核
+\(\prod_{p\in S}\ZZ_p\) 的非平凡 \(p\)-主因子与 \(p\in S\) 等价，而 \(\cdim_{\mathrm{fr}}(G_S)=1\) 始终成立。证毕。
+\end{proof}
+
+\begin{corollary}[dyadic 相位谱对奇素支撑的完全失明]\label{cor:xi-localized-dyadic-phase-blindness}
+沿用定理 \ref{thm:xi-localized-phase-sampling-closed-form} 的记号，定义 dyadic 相位谱
+\[
+\Sigma^{(2)}_{G_S}(a):=\Sigma^{\mathrm{ph}}_{G_S}(2^a)
+\qquad(a\ge 1).
+\]
+则有严格二分
+\[
+\boxed{\;
+\Sigma^{(2)}_{G_S}(a)=
+\begin{cases}
+2^a,& 2\notin S,\\[1mm]
+1,& 2\in S.
+\end{cases}\;}
+\]
+因此若有限素数集 \(S,T\subset\mathbb P\) 满足
+\[
+2\in S \iff 2\in T,
+\]
+则
+\[
+\Sigma^{(2)}_{G_S}(a)=\Sigma^{(2)}_{G_T}(a)
+\qquad(a\ge 1).
+\]
+换言之，dyadic 相位谱只能探测 \(2\) 是否进入素数账本，而对全部奇素支撑严格失明。
+\end{corollary}
+\begin{proof}
+把 \(N=2^a\) 代入定理 \ref{thm:xi-localized-phase-sampling-closed-form} 即得
+\[
+\Sigma^{\mathrm{ph}}_{G_S}(2^a)
+=
+\frac{2^a}{\prod_{p\in S}p^{v_p(2^a)}}
+=
+\begin{cases}
+2^a,& 2\notin S,\\[1mm]
+1,& 2\in S.
+\end{cases}
+\]
+而对任意奇素 \(p\) 恒有 \(v_p(2^a)=0\)，故其是否属于 \(S\) 不会改变数值。证毕。
+\end{proof}
+
+\begin{theorem}[非平凡局部化数系与有限生成离散交换群的相位采样不可混同]\label{thm:xi-localized-phase-sampling-not-finitely-generated}
+设 \(S\subset\mathbb P\) 为非空有限集。则不存在有限生成离散交换群 \(H\) 使得
+\[
+\card{\operatorname{Hom}(H,\ZZ/N\ZZ)}
+=
+\Sigma^{\mathrm{ph}}_{G_S}(N)
+\qquad(\forall\,N\ge 1).
+\]
+\end{theorem}
+\begin{proof}
+反设存在
+\(
+H\cong \ZZ^{r}\oplus F
+\)
+满足上述恒等式。对任意素数 \(p\) 与 \(a\ge 1\)，由注 \ref{rem:xi-cdim-hom-quotient-consistency}，
+\[
+\card{\operatorname{Hom}(H,\ZZ/p^a\ZZ)}=\card{H/p^aH}.
+\]
+再由命题 \ref{prop:xi-cdim-local-inversion-delta}，定义
+\[
+c_p(a):=
+v_p\!\bigl(\card{H/p^aH}\bigr)-ar
+=
+\sum_{j=1}^{t_p}\min(\lambda_{p,j},a),
+\]
+其中 \(F_p\cong\bigoplus_{j=1}^{t_p}\ZZ/p^{\lambda_{p,j}}\ZZ\) 为 \(F\) 的 \(p\)-primary 分量。因而 \(c_p(a)\) 对 \(a\) 有界，从而
+\[
+\lim_{a\to\infty}\frac1a
+v_p\!\bigl(\card{\operatorname{Hom}(H,\ZZ/p^a\ZZ)}\bigr)
+=
+r
+\qquad\text{对每个素数 }p\text{ 都成立}.
+\]
+另一方面，由定理 \ref{thm:xi-localized-phase-sampling-closed-form}，
+\[
+\Sigma^{\mathrm{ph}}_{G_S}(p^a)=
+\begin{cases}
+1,& p\in S,\\[1mm]
+p^a,& p\notin S,
+\end{cases}
+\]
+故
+\[
+\frac1a v_p\!\bigl(\Sigma^{\mathrm{ph}}_{G_S}(p^a)\bigr)
+=
+\begin{cases}
+0,& p\in S,\\[1mm]
+1,& p\notin S.
+\end{cases}
+\]
+由于 \(S\) 非空且有限，可同时取到 \(p\in S\) 与 \(q\notin S\)，从而上述极限在素数间取两个不同值 \(0\) 与 \(1\)。这与有限生成离散交换群在全部素数上共享同一秩斜率 \(r\) 矛盾。故不存在这样的 \(H\)。证毕。
+\end{proof}
+
+\begin{theorem}[分层 prime-register 外置的最坏情形下界与自然扩张闭合]\label{thm:xi-layered-prime-register-sharp-natural-extension}
+设 \((X_j)_{j=0}^{k}\) 为可数集合列，\(\pi_j:X_j\twoheadrightarrow X_{j+1}\) 为有限纤维满射，并假设对每个 \(j=0,\dots,k-1\) 都存在 \(y_j\in X_{j+1}\) 使
+\[
+\#\pi_j^{-1}(y_j)\ge 2.
+\]
+考虑任何分层外置
+\[
+\Psi(x_0)=(x_k,H(x_0)),
+\qquad
+H(x_0)=\prod_{j=0}^{k-1}h_j(x_0),
+\]
+其中每个 \(h_j(x_0)\) 的全部素因子均被限制在预先指定的 prime slice \(\mathcal P_j\)。若 \(\Psi\) 为单射，则最坏情形下每一层都必须有效占用对应的 prime slice；等价地，对每个 \(j\) 都存在微态 \(x_0^{(j)}\) 使
+\[
+h_j\bigl(x_0^{(j)}\bigr)\neq 1.
+\]
+另一方面，定理 \ref{thm:killo-layered-prime-slices-finite-depth} 给出恰在每层写入一枚素数的单射构造。故在“每层至少一处分支”的最坏情形下，分层 prime-register 外置所需的最小 prime-slice 数目恰等于层数 \(k\)。
+
+特别地，若 \(T:X\twoheadrightarrow X\) 为非单射有限纤维满射，则任意深度 \(k\) 的前史消歧都至少需要 \(k\) 个有效 prime slices；而定理 \ref{thm:killo-natural-extension-branch-register} 的分支指标寄存器实现把整个无穷前史歧义共轭为右移插入系统，从而把上述有限深度最优外置在逆极限上精确封闭。
+\end{theorem}
+\begin{proof}
+推论 \ref{cor:killo-layered-necessity-minimality} 断言：在每层都存在分支点的前提下，任何单射分层外置都迫使每个 prime slice \(\mathcal P_j\) 在某个微态上非平凡使用。故最坏情形下至少需要 \(k\) 个彼此独立的有效 prime slices。
+\par
+反向上，定理 \ref{thm:killo-layered-prime-slices-finite-depth} 已构造出单射映射
+\[
+\Phi(x_0)=(x_k,G(x_0)),
+\qquad
+G(x_0)=\prod_{j=0}^{k-1}q_j(x_0),
+\qquad
+q_j(x_0)\in\mathcal P_j,
+\]
+并且每层恰写入一枚素数。故上述下界可达，因而最小 prime-slice 数目正是 \(k\)。
+\par
+若 \(T:X\twoheadrightarrow X\) 为非单射有限纤维满射，则存在 \(y\in X\) 使 \(\#T^{-1}(y)\ge 2\)。对任意固定深度 \(k\)，取 \(X_j:=X\) 且 \(\pi_j:=T\)（\(0\le j\le k-1\)），便满足前述最坏情形假设，故至少需要 \(k\) 个有效 prime slices。
+最后，定理 \ref{thm:killo-natural-extension-branch-register} 把自然扩张
+\(
+X^{\leftarrow}
+\)
+与右移插入系统
+\[
+(x,(a_1,a_2,\dots))\longmapsto (T(x),(\beta(x),a_1,a_2,\dots))
+\]
+共轭，从而说明有限深度上的最优分层外置在逆极限上恰由规范分支指标寄存器闭合。证毕。
+\end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part57-freezing-renyi-fullrate-chebotarev}
+
+\endinput
