@@ -1,0 +1,370 @@
+\paragraph{纤维代数、碰撞统计与零温 primitive 谱的统一热力学接口}
+在 bin-fold 的纤维群胚代数、碰撞统计、规范群表示谱以及零温四态极限之间，存在一条可由现有对象直接闭合的接口：有限尺度上的迹态极值由纤维多重度决定，二次碰撞矩正好等于相应半单代数的归一化维数，规范群的不可约表示按纤维分拆完全分离，而零温 primitive 轨道与 fold-gauge 常数的 Bernoulli 层级又分别把 Perron 谱与偶 \(\zeta\)-值固定在同一条热力学账本上。
+
+\begin{theorem}[纤维群胚代数上的最大熵迹态唯一由均匀微态推前给出]\label{thm:xi-foldbin-groupoid-maxent-tracial-state}
+令
+\[
+A_m^{\mathrm{bin}}:=\CC[\mathcal R_m^{\mathrm{bin}}]
+\cong
+\bigoplus_{w\in X_m} M_{d_m^{\mathrm{bin}}(w)}(\CC),
+\qquad
+\mu_m(w):=\frac{d_m^{\mathrm{bin}}(w)}{2^m}.
+\]
+对任意 \(\pi\in\Delta(X_m)\)，定义
+\[
+\tau_\pi\!\left(\bigoplus_{w\in X_m}A_w\right)
+:=
+\sum_{w\in X_m}\pi(w)\,\operatorname{tr}_{d_m^{\mathrm{bin}}(w)}(A_w),
+\]
+其中 \(\operatorname{tr}_d\) 为 \(M_d(\CC)\) 上的归一化矩阵迹。则 \(A_m^{\mathrm{bin}}\) 的全部迹态恰为 \(\{\tau_\pi:\pi\in\Delta(X_m)\}\)，并且其 von Neumann 熵满足
+\[
+S(\tau_\pi)
+=
+H(\pi)+\sum_{w\in X_m}\pi(w)\log d_m^{\mathrm{bin}}(w),
+\qquad
+H(\pi):=-\sum_{w\in X_m}\pi(w)\log\pi(w).
+\]
+此外，
+\[
+m\log 2-S(\tau_\pi)=D_{\mathrm{KL}}(\pi\|\mu_m).
+\]
+特别地，
+\[
+S(\tau_{\mu_m})=m\log 2,
+\]
+且 \(\tau_{\mu_m}\) 是 \(A_m^{\mathrm{bin}}\) 上唯一的最大熵迹态。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:fold-bin-groupoid-algebra-wedderburn}，
+\[
+A_m^{\mathrm{bin}}
+\cong
+\bigoplus_{w\in X_m} M_{d_m^{\mathrm{bin}}(w)}(\CC).
+\]
+每个矩阵块上的迹态唯一等于归一化矩阵迹，故有限直和代数上的任意迹态都唯一写成上述凸组合；其系数恰构成一个概率向量 \(\pi\in\Delta(X_m)\)。
+\par
+对总代数上的普通迹
+\(
+\Tr:=\sum_{w\in X_m}\Tr_{d_m^{\mathrm{bin}}(w)}
+\)，
+状态 \(\tau_\pi\) 的密度矩阵为
+\[
+\rho_\pi
+=
+\bigoplus_{w\in X_m}
+\frac{\pi(w)}{d_m^{\mathrm{bin}}(w)}I_{d_m^{\mathrm{bin}}(w)}.
+\]
+于是
+\[
+\begin{aligned}
+S(\tau_\pi)
+&=-\Tr(\rho_\pi\log\rho_\pi)\\
+&=
+-\sum_{w\in X_m}d_m^{\mathrm{bin}}(w)\,
+\frac{\pi(w)}{d_m^{\mathrm{bin}}(w)}
+\log\!\left(\frac{\pi(w)}{d_m^{\mathrm{bin}}(w)}\right)\\
+&=
+H(\pi)+\sum_{w\in X_m}\pi(w)\log d_m^{\mathrm{bin}}(w).
+\end{aligned}
+\]
+另一方面，
+\[
+\begin{aligned}
+D_{\mathrm{KL}}(\pi\|\mu_m)
+&=
+\sum_{w\in X_m}\pi(w)
+\log\frac{\pi(w)}{d_m^{\mathrm{bin}}(w)/2^m}\\
+&=
+-H(\pi)-\sum_{w\in X_m}\pi(w)\log d_m^{\mathrm{bin}}(w)+m\log 2\\
+&=
+m\log 2-S(\tau_\pi).
+\end{aligned}
+\]
+取 \(\pi=\mu_m\) 即得 \(S(\tau_{\mu_m})=m\log 2\)。又由 \(D_{\mathrm{KL}}(\pi\|\mu_m)\ge 0\) 且等号当且仅当 \(\pi=\mu_m\)，得到唯一最大熵性。证毕。
+\end{proof}
+
+\begin{theorem}[碰撞概率等于纤维群胚代数的归一化维数]\label{thm:xi-foldbin-collision-probability-normalized-groupoid-dimension}
+沿用定理 \ref{thm:xi-foldbin-groupoid-maxent-tracial-state} 的记号。若 \(U,V\) 为 \(\Omega_m=\{0,1\}^m\) 上独立均匀微态，则
+\[
+\PP\!\bigl(\Fold^{\mathrm{bin}}_m(U)=\Fold^{\mathrm{bin}}_m(V)\bigr)
+=
+\sum_{w\in X_m}\mu_m(w)^2
+=
+\frac{\dim_{\CC}A_m^{\mathrm{bin}}}{4^m}.
+\]
+等价地，
+\[
+\dim_{\CC}A_m^{\mathrm{bin}}
+=
+\sum_{w\in X_m}\bigl(d_m^{\mathrm{bin}}(w)\bigr)^2.
+\]
+\end{theorem}
+\begin{proof}
+仍由命题 \ref{prop:fold-bin-groupoid-algebra-wedderburn}，
+\[
+\dim_{\CC}A_m^{\mathrm{bin}}
+=
+\sum_{w\in X_m}
+\dim_{\CC}M_{d_m^{\mathrm{bin}}(w)}(\CC)
+=
+\sum_{w\in X_m}\bigl(d_m^{\mathrm{bin}}(w)\bigr)^2.
+\]
+另一方面，独立均匀抽样给出
+\[
+\PP\!\bigl(\Fold^{\mathrm{bin}}_m(U)=\Fold^{\mathrm{bin}}_m(V)\bigr)
+=
+\sum_{w\in X_m}
+\left(\frac{d_m^{\mathrm{bin}}(w)}{2^m}\right)^2
+=
+\frac{1}{4^m}
+\sum_{w\in X_m}\bigl(d_m^{\mathrm{bin}}(w)\bigr)^2.
+\]
+合并两式即得结论。证毕。
+\end{proof}
+
+\begin{theorem}[bin-fold 规范群的表示分配律与 \texorpdfstring{$m=6$}{m=6} 的精确谱]\label{thm:xi-foldbin-gauge-representation-distribution-law-m6-spectrum}
+令
+\[
+G_m^{\mathrm{bin}}:=\Aut(\Fold^{\mathrm{bin}}_m)
+\cong
+\prod_{w\in X_m}\mathfrak S_{d_m^{\mathrm{bin}}(w)}.
+\]
+则 \(\widehat{G_m^{\mathrm{bin}}}\) 中的不可约复表示与分拆族
+\[
+\{\lambda_w\vdash d_m^{\mathrm{bin}}(w)\}_{w\in X_m}
+\]
+一一对应，因而
+\[
+|\widehat{G_m^{\mathrm{bin}}}|
+=
+\prod_{w\in X_m}p\!\bigl(d_m^{\mathrm{bin}}(w)\bigr),
+\]
+其中 \(p(n)\) 为分拆函数。并且表示 \(\zeta\)-函数具有完全乘积分解
+\[
+\zeta_{G_m^{\mathrm{bin}}}^{\mathrm{irr}}(s)
+:=
+\sum_{\rho\in\widehat{G_m^{\mathrm{bin}}}}(\dim\rho)^{-s}
+=
+\prod_{w\in X_m}
+\left(
+\sum_{\lambda\vdash d_m^{\mathrm{bin}}(w)}(\dim\lambda)^{-s}
+\right).
+\]
+若
+\[
+N_m:=\#\{w\in X_m:\ d_m^{\mathrm{bin}}(w)\ge 2\},
+\]
+则
+\[
+\bigl(G_m^{\mathrm{bin}}\bigr)^{\mathrm{ab}}\cong (\ZZ/2\ZZ)^{N_m},
+\qquad
+\bigl|\Hom(G_m^{\mathrm{bin}},\{\pm 1\})\bigr|=2^{N_m},
+\]
+从而 \(G_m^{\mathrm{bin}}\) 恰有 \(2^{N_m}-1\) 个指数为 \(2\) 的正规子群。
+特别地，在 \(m=6\) 时，
+\[
+G_6^{\mathrm{bin}}
+\cong
+S_2^{\,8}\times S_3^{\,4}\times S_4^{\,9},
+\qquad
+\bigl(G_6^{\mathrm{bin}}\bigr)^{\mathrm{ab}}\cong (\ZZ/2\ZZ)^{21},
+\]
+并且
+\[
+|\widehat{G_6^{\mathrm{bin}}}|
+=
+p(2)^8p(3)^4p(4)^9
+=
+2^8\cdot 3^4\cdot 5^9,
+\qquad
+\bigl|\Hom(G_6^{\mathrm{bin}},\{\pm 1\})\bigr|=2^{21}.
+\]
+\end{theorem}
+\begin{proof}
+命题 \ref{prop:fold-bin-gauge-decomposition} 给出纤维直积分解。有限直积群的不可约表示恰为各因子不可约表示的外张量积，而 \(\mathfrak S_d\) 的不可约复表示由分拆 \(\lambda\vdash d\) 分类，故得到对 \(\widehat{G_m^{\mathrm{bin}}}\) 的参数化以及
+\[
+|\widehat{G_m^{\mathrm{bin}}}|
+=
+\prod_{w\in X_m}p\!\bigl(d_m^{\mathrm{bin}}(w)\bigr).
+\]
+维数在外张量积下相乘，遂有
+\[
+\zeta_{G_m^{\mathrm{bin}}}^{\mathrm{irr}}(s)
+=
+\prod_{w\in X_m}
+\left(
+\sum_{\lambda\vdash d_m^{\mathrm{bin}}(w)}(\dim\lambda)^{-s}
+\right).
+\]
+对一维表示，只需注意：\(\mathfrak S_1\) 只有平凡表示，而 \(\mathfrak S_d\)（\(d\ge 2\)）恰有平凡与符号两种一维表示。
+因此
+\[
+\Hom(G_m^{\mathrm{bin}},\{\pm 1\})
+\cong
+\prod_{w:\,d_m^{\mathrm{bin}}(w)\ge 2}\ZZ/2\ZZ,
+\]
+其基数为 \(2^{N_m}\)，并与 Abel 化同构。
+每个非平凡同态的核都为指数 \(2\) 的正规子群，反之任一指数 \(2\) 正规子群都来自某个非平凡 \(\{\pm1\}\)-角色，故数目为 \(2^{N_m}-1\)。
+最后在 \(m=6\) 时，代入推论 \ref{cor:fold-bin-gauge-m6} 的分解即可。证毕。
+\end{proof}
+
+\begin{theorem}[零温四态极限的 Artin--Mazur \texorpdfstring{$\zeta$}{zeta} 函数、周期点递推与 primitive 轨道主项]\label{thm:xi-zero-temperature-fourstate-artin-mazur-zeta-primitive-asymptotic}
+令 \(\Sigma_\infty\) 为由
+\[
+B_\infty=
+\begin{pmatrix}
+0&1&1&0\\
+0&0&1&0\\
+0&0&3&1\\
+1&0&0&3
+\end{pmatrix}
+\]
+定义的四态一步 SFT，并记其 Perron 根为 \(\rho:=\rho(B_\infty)\)。
+再令
+\[
+a_n:=\#\operatorname{Fix}(\sigma^n|_{\Sigma_\infty})=\Tr(B_\infty^n),
+\qquad
+\pi_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\]
+其中 \(\mu\) 为 Möbius 函数。则
+\[
+\zeta_\infty(z)
+:=
+\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)
+=
+\frac{1}{1-6z+9z^2-z^3-z^4}.
+\]
+此外，序列 \((a_n)_{n\ge 1}\) 满足四阶递推
+\[
+a_{n+4}=6a_{n+3}-9a_{n+2}+a_{n+1}+a_n
+\qquad(n\ge 1),
+\]
+其初值为
+\[
+a_1=6,\qquad a_2=18,\qquad a_3=57,\qquad a_4=190.
+\]
+并且
+\[
+\pi_n\sim \frac{\rho^n}{n},
+\qquad
+h_{\mathrm{top}}(\Sigma_\infty)=\log\rho.
+\]
+等价地，在推论 \ref{cor:real-input-40-ground-entropy} 所采用的原始系统步长上，零温地基每步熵密度为 \(\tfrac12\log\rho\)。
+\end{theorem}
+\begin{proof}
+零温四态极限段已给出
+\[
+\det(I-zB_\infty)=1-6z+9z^2-z^3-z^4.
+\]
+对任意一步 SFT，Artin--Mazur \(\zeta\)-函数满足
+\[
+\zeta(z)=\det(I-zB)^{-1},
+\qquad
+\#\operatorname{Fix}(\sigma^n)=\Tr(B^n),
+\]
+故第一式立即成立。
+\par
+\(B_\infty\) 的特征多项式为
+\[
+\chi(\lambda)=\lambda^4-6\lambda^3+9\lambda^2-\lambda-1.
+\]
+由 Cayley--Hamilton 定理，
+\[
+B_\infty^{n+4}=6B_\infty^{n+3}-9B_\infty^{n+2}+B_\infty^{n+1}+B_\infty^{n}
+\qquad(n\ge 1),
+\]
+两侧取迹即得递推。
+初值由直接矩阵乘法给出
+\[
+\Tr(B_\infty)=6,\qquad
+\Tr(B_\infty^2)=18,\qquad
+\Tr(B_\infty^3)=57,\qquad
+\Tr(B_\infty^4)=190.
+\]
+\par
+由于 \(B_\infty\) 为 primitive 非负整数矩阵，Perron--Frobenius 定理给出
+\[
+a_n=\rho^n+O(\theta^n)
+\]
+对某个 \(\theta<\rho\) 成立。
+再由 Möbius 反演公式
+\[
+\pi_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+\]
+其中 \(d=1\) 给出主项 \(\rho^n/n\)，而其余因子至多贡献 \(O(\rho^{n/2}/n)\)，故 \(\pi_n\sim \rho^n/n\)。
+最后，边移位 \(\Sigma_\infty\) 的拓扑熵等于 \(\log\rho(B_\infty)\)；
+与推论 \ref{cor:real-input-40-ground-entropy} 比较，即得原始系统步长上的熵密度为 \(\tfrac12\log\rho\)。证毕。
+\end{proof}
+
+\begin{theorem}[fold-gauge 常数序列的非 \texorpdfstring{$C$}{C}-有限性与前两阶 \texorpdfstring{$\zeta(2r)$}{zeta(2r)} 重整化极限]\label{thm:xi-foldbin-gauge-constant-not-cfinite-first-two-zeta-limits}
+令
+\[
+u_m:=\log C_m-\log(2\pi),
+\qquad
+q:=\frac{\varphi}{2}.
+\]
+则序列 \((u_m)_{m\ge 1}\) 不是 \(C\)-有限序列。
+并且有两阶显式展开
+\[
+u_m
+=
+\frac{1}{3\varphi}\,q^m
+-\frac{\sqrt5}{180}\,q^{3m}
++O(q^{5m}).
+\]
+因此
+\[
+\lim_{m\to\infty}q^{-m}u_m=\frac{1}{3\varphi},
+\qquad
+\lim_{m\to\infty}q^{-3m}\left(u_m-\frac{1}{3\varphi}q^m\right)
+=
+-\frac{\sqrt5}{180}.
+\]
+从而前两阶重整化极限已足以恢复
+\[
+B_2=\frac16,\qquad B_4=-\frac1{30},
+\]
+并进而恢复
+\[
+\zeta(2)=\frac{\pi^2}{6},
+\qquad
+\zeta(4)=\frac{\pi^4}{90}.
+\]
+\end{theorem}
+\begin{proof}
+非 \(C\)-有限性正是定理 \ref{thm:fold-bin-gauge-constant-not-c-finite} 的内容。
+另一方面，定理 \ref{thm:fold-bin-gauge-constant-stirling-bernoulli-hierarchy} 在 \(R=2\) 时给出
+\[
+u_m
+=
+A_1q^m+A_2q^{3m}+O(q^{5m}),
+\]
+其中
+\[
+A_1=
+\frac{B_2}{1\cdot 1}\bigl(\varphi^{-1}+\varphi^{-1}\bigr)
+=
+\frac16\cdot\frac{2}{\varphi}
+=
+\frac{1}{3\varphi},
+\]
+\[
+A_2=
+\frac{B_4}{2\cdot 3}\bigl(\varphi^{-1}+\varphi\bigr)
+=
+-\frac{1}{30}\cdot\frac{\varphi+\varphi^{-1}}{6}
+=
+-\frac{\sqrt5}{180}.
+\]
+于是得到所示两阶展开与两条重整化极限。
+最后用标准恒等式
+\[
+B_{2r}=(-1)^{r-1}\frac{2(2r)!}{(2\pi)^{2r}}\zeta(2r)
+\]
+即可从 \(B_2,B_4\) 恢复 \(\zeta(2),\zeta(4)\)。
+证毕。
+\end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part49-tail-capacity-localization-order}
+
+\endinput

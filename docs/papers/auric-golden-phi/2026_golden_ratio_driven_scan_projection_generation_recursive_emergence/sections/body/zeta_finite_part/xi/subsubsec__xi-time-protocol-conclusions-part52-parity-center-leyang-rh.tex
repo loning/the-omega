@@ -1,0 +1,523 @@
+% (User input window)
+
+\paragraph{奇偶谱盲点、boundary 中心扇区与 Lee--Yang 分支覆叠}
+下列条目把折叠多重度的奇偶特征、window-\(6\) 的 boundary 中心分解、
+规范体积的 Stirling 指数律，以及 Lee--Yang 振幅域与 RH 临界半径之间的若干
+直接后果并列写成统一的定理化表述。
+
+\begin{theorem}[折叠多重度的严格奇偶平衡]\label{thm:xi-fold-multiplicity-strict-parity-balance}
+沿用命题 \ref{prop:fold-multiplicity-group-algebra} 与定理 \ref{thm:fold-spectrum-factorization}
+的记号。记
+\[
+M:=F_{m+2},
+\qquad
+D_m(x):=\sum_{r=0}^{M-1}d_m(r)x^r\in \CC[x]/(x^M-1),
+\]
+\[
+\widehat d_m(k):=\sum_{r=0}^{M-1} d_m(r)e^{-2\pi i kr/M}.
+\]
+若 \(m\equiv 1\pmod 3\)，则 \(M\) 为偶数，并且
+\[
+\boxed{\;
+\widehat d_m(M/2)=0,
+\qquad
+D_m(-1)=0.\;}
+\]
+等价地，若定义
+\[
+E_m:=\sum_{\substack{0\le r<M\\ r\ \mathrm{even}}}d_m(r),
+\qquad
+O_m:=\sum_{\substack{0\le r<M\\ r\ \mathrm{odd}}}d_m(r),
+\]
+则有严格平衡
+\[
+\boxed{\;
+E_m=O_m=2^{m-1}.\;}
+\]
+\end{theorem}
+\begin{proof}
+Fibonacci 数列模 \(2\) 的奇偶性以 \(3\) 为周期：
+\(
+F_n
+\)
+为偶数当且仅当
+\(
+n\equiv 0\pmod 3
+\)。
+因此当 \(m\equiv 1\pmod 3\) 时，
+\(
+m+2\equiv 0\pmod 3
+\)，故
+\[
+M=F_{m+2}
+\]
+为偶数，从而
+\(
+M/2\in \ZZ
+\)。
+\par
+由定理 \ref{thm:fold-spectrum-factorization}，
+\[
+\widehat d_m(M/2)
+=
+\prod_{j=1}^{m}\Bigl(1+e^{-\pi i F_{j+1}}\Bigr).
+\]
+取 \(j=1\) 即出现因子
+\[
+1+e^{-\pi i F_2}=1+e^{-\pi i}=0,
+\]
+故
+\(
+\widehat d_m(M/2)=0
+\)。
+\par
+另一方面，由 \(M\) 为偶数可知
+\(
+(-1)^M-1=0
+\)，因而取值映射 \(x\mapsto -1\) 在商环
+\(
+\CC[x]/(x^M-1)
+\)
+上良定。
+再由命题 \ref{prop:fold-multiplicity-group-algebra}，
+\[
+D_m(-1)
+=
+\prod_{j=1}^{m}\Bigl(1+(-1)^{F_{j+1}}\Bigr)=0.
+\]
+事实上，
+\[
+D_m(-1)=\sum_{r=0}^{M-1}d_m(r)(-1)^r=\widehat d_m(M/2),
+\]
+故两种表述完全一致。
+\par
+最后，
+\[
+E_m-O_m=\sum_{r=0}^{M-1}d_m(r)(-1)^r=\widehat d_m(M/2)=0,
+\]
+而
+\[
+E_m+O_m=\sum_{r=0}^{M-1}d_m(r)=2^m,
+\]
+因为每个 \(\omega\in\Omega_m=\{0,1\}^m\) 恰贡献一个模 \(M\) 的余类。
+联立即得
+\(
+E_m=O_m=2^{m-1}
+\)。
+证毕。
+\end{proof}
+
+\begin{proposition}[window-\texorpdfstring{$6$}{6} boundary 奇偶荷的八扇区中心分解]\label{prop:xi-window6-boundary-eight-sector-central-decomposition}
+沿用推论 \ref{cor:fold-bin-boundary-center-z2} 的记号。令
+\[
+G_6^{\mathrm{bin}}:=\mathcal G_6^{\mathrm{bin}}=\Aut(\Fold_6^{\mathrm{bin}}),
+\qquad
+Z_{\partial}:=\langle \tau_w:\ w\in X_6^{\mathrm{bdry}}\rangle
+\cong (\ZZ/2\ZZ)^3
+\hookrightarrow Z(G_6^{\mathrm{bin}}),
+\]
+并记其角色群
+\[
+\widehat Z_{\partial}:=\Hom(Z_{\partial},\{\pm1\}),
+\qquad
+|\widehat Z_{\partial}|=8.
+\]
+对每个 \(\chi\in \widehat Z_{\partial}\)，定义
+\[
+e_\chi:=\frac1{8}\sum_{z\in Z_{\partial}}\chi(z)\,z\in \CC[G_6^{\mathrm{bin}}].
+\]
+则每个 \(e_\chi\) 都是中心幂等元，并满足
+\[
+e_\chi e_{\chi'}=\delta_{\chi,\chi'}\,e_\chi,
+\qquad
+\sum_{\chi\in\widehat Z_{\partial}} e_\chi=1.
+\]
+因此复群代数存在规范直和分解
+\[
+\boxed{\;
+\CC[G_6^{\mathrm{bin}}]
+=
+\bigoplus_{\chi\in\widehat Z_{\partial}}
+\CC[G_6^{\mathrm{bin}}]\,e_\chi.\;}
+\]
+进一步，对任意有限维表示 \(V\)，令
+\[
+V_\chi:=e_\chi V.
+\]
+则
+\[
+\boxed{\;
+V=\bigoplus_{\chi\in\widehat Z_{\partial}}V_\chi,\;}
+\]
+并且对任意 \(z\in Z_{\partial}\)，其在 \(V_\chi\) 上的作用为标量 \(\chi(z)\)。
+特别地，三条 boundary sheet-flip 在每个 \(V_\chi\) 上同时对角化，
+其特征值三元组恰由 \(\chi\) 唯一确定。
+\end{proposition}
+\begin{proof}
+由于 \(Z_{\partial}\subset Z(G_6^{\mathrm{bin}})\)，子代数
+\(
+\CC[Z_{\partial}]
+\)
+自然嵌入
+\(
+Z(\CC[G_6^{\mathrm{bin}}])
+\)。
+又因 \(Z_{\partial}\cong(\ZZ/2\ZZ)^3\) 为有限 Abel 群，角色正交关系给出
+\[
+\frac1{8}\sum_{z\in Z_{\partial}}\chi(z)\chi'(z)
+=
+\delta_{\chi,\chi'}
+\qquad
+(\chi,\chi'\in \widehat Z_{\partial}),
+\]
+其中用到了 \(z^{-1}=z\) 与 \(\chi(z)\in\{\pm1\}\)。
+因此标准 Fourier 幂等元满足
+\[
+e_\chi e_{\chi'}=\delta_{\chi,\chi'}e_\chi,
+\qquad
+\sum_{\chi}e_\chi=1.
+\]
+并且每个 \(e_\chi\) 由中心元线性组合而成，故自身亦为中心元。
+\par
+于是
+\[
+\CC[G_6^{\mathrm{bin}}]
+=
+\CC[G_6^{\mathrm{bin}}]\Bigl(\sum_{\chi}e_\chi\Bigr)
+=
+\sum_{\chi}\CC[G_6^{\mathrm{bin}}]e_\chi.
+\]
+由于这些幂等元两两正交，上式实为直和分解。
+\par
+对任意有限维表示 \(V\)，由
+\(
+\sum_\chi e_\chi=1
+\)
+得
+\[
+V=\sum_\chi e_\chi V,
+\]
+而由正交性
+\(
+e_\chi e_{\chi'}=0
+\)
+（\(\chi\neq\chi'\)）知该和为直和。
+记 \(V_\chi:=e_\chi V\)，即得所示分解。
+\par
+最后，对任意 \(z\in Z_{\partial}\) 有
+\[
+ze_\chi
+=
+\frac1{8}\sum_{y\in Z_{\partial}}\chi(y)\,zy
+=
+\frac1{8}\sum_{y'\in Z_{\partial}}\chi(z^{-1}y')\,y'
+=
+\chi(z)e_\chi,
+\]
+其中第二个等号取 \(y'=zy\)，第三个等号用到 \(z^{-1}=z\) 与角色乘法性。
+因此 \(z\) 在 \(V_\chi=e_\chi V\) 上恰以标量 \(\chi(z)\) 作用。
+对三条生成元 \(\tau_w\) 同时应用此式，即得八个 boundary 奇偶荷扇区的中心分解。证毕。
+\end{proof}
+
+\begin{theorem}[规范体积的 Boltzmann--Stirling 指数公式]\label{thm:xi-gauge-volume-boltzmann-stirling-exponential}
+沿用命题 \ref{prop:fold-bin-gauge-volume} 与定理 \ref{thm:fold-bin-gauge-volume-stirling}
+的记号。记
+\[
+\mathcal G_m^{\mathrm{bin}}:=\Aut(\Fold_m^{\mathrm{bin}}),
+\qquad
+g_m:=2^{-m}\log|\mathcal G_m^{\mathrm{bin}}|,
+\]
+\[
+\kappa_m:=2^{-m}\sum_{w\in X_m}d_m^{\mathrm{bin}}(w)\log d_m^{\mathrm{bin}}(w),
+\qquad
+\pi_m(w):=\frac{d_m^{\mathrm{bin}}(w)}{2^m}.
+\]
+则成立指数等价
+\[
+\boxed{\;
+|\mathcal G_m^{\mathrm{bin}}|
+=
+\exp\!\bigl(-2^m+o(2^m)\bigr)\,
+\prod_{w\in X_m}\Bigl(d_m^{\mathrm{bin}}(w)\Bigr)^{d_m^{\mathrm{bin}}(w)}
+\qquad(m\to\infty).\;}
+\]
+等价地，
+\[
+\boxed{\;
+\lim_{m\to\infty}
+\frac{1}{2^m}\log
+\frac{\prod_{w\in X_m}(d_m^{\mathrm{bin}}(w))^{d_m^{\mathrm{bin}}(w)}}{|\mathcal G_m^{\mathrm{bin}}|}
+=1.\;}
+\]
+并且在以 \(\log_2\) 为单位时，
+\[
+\boxed{\;
+\lim_{m\to\infty}
+\left(
+\mathbb E_{\pi_m}\!\bigl[\log_2 d_m^{\mathrm{bin}}(X)\bigr]
+-\frac{1}{2^m\log 2}\log|\mathcal G_m^{\mathrm{bin}}|
+\right)
+=
+\log_2 e.\;}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:fold-bin-gauge-volume-stirling}，
+\[
+g_m=\kappa_m-1+O\!\left(\frac{|X_m|\,m}{2^m}\right).
+\]
+两边乘以 \(2^m\) 得
+\[
+\log|\mathcal G_m^{\mathrm{bin}}|
+=
+\sum_{w\in X_m}d_m^{\mathrm{bin}}(w)\log d_m^{\mathrm{bin}}(w)
+-2^m
++O\!\bigl(|X_m|\,m\bigr).
+\]
+又因
+\[
+\sum_{w\in X_m}d_m^{\mathrm{bin}}(w)\log d_m^{\mathrm{bin}}(w)
+=
+\log \prod_{w\in X_m}\Bigl(d_m^{\mathrm{bin}}(w)\Bigr)^{d_m^{\mathrm{bin}}(w)},
+\]
+且
+\[
+|X_m|=F_{m+2}=\Theta(\varphi^m)=o(2^m),
+\]
+故
+\[
+\log|\mathcal G_m^{\mathrm{bin}}|
+=
+\log \prod_{w\in X_m}\Bigl(d_m^{\mathrm{bin}}(w)\Bigr)^{d_m^{\mathrm{bin}}(w)}
+-2^m+o(2^m).
+\]
+指数化即得第一式。
+\par
+将上式移项后除以 \(2^m\)，得到
+\[
+\frac{1}{2^m}\log
+\frac{\prod_{w\in X_m}(d_m^{\mathrm{bin}}(w))^{d_m^{\mathrm{bin}}(w)}}{|\mathcal G_m^{\mathrm{bin}}|}
+=1+o(1),
+\]
+故第二式成立。
+\par
+最后，由
+\[
+\mathbb E_{\pi_m}\!\bigl[\log_2 d_m^{\mathrm{bin}}(X)\bigr]
+=
+\frac{\kappa_m}{\log 2}
+\]
+与
+\[
+\frac{1}{2^m\log 2}\log|\mathcal G_m^{\mathrm{bin}}|
+=
+\frac{g_m}{\log 2},
+\]
+可得所求差值等于
+\[
+\frac{\kappa_m-g_m}{\log 2}.
+\]
+再由
+\(
+\kappa_m-g_m\to 1
+\)
+得到极限
+\(
+1/\log 2=\log_2 e
+\)。
+证毕。
+\end{proof}
+
+\begin{theorem}[Lee--Yang 振幅常数 \texorpdfstring{$B$}{B} 的六次性与真正二次覆叠]\label{thm:xi-leyang-amplitude-B-true-quadratic-cover}
+沿用定理 \ref{thm:killo-leyang-kappa-square-cubic-field} 与
+\ref{thm:killo-leyang-B-square-cubic-and-rational-intertwine} 的记号。
+记
+\[
+u:=\kappa_\star^2,
+\qquad
+b:=B^2,
+\qquad
+K:=\QQ(b)=\QQ(u)=\QQ(\lambda_\star).
+\]
+则
+\[
+\boxed{\;
+[\QQ(B):\QQ]=6,
+\qquad
+[\QQ(B):\QQ(B^2)]=2,
+\qquad
+B\notin \QQ(u).\;}
+\]
+换言之，振幅常数 \(B\) 本身不属于由分支参数 \(u\) 所生成的三次数域，
+而是在该三次数域之上的一个真正二次覆叠点。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:killo-leyang-B-square-cubic-and-rational-intertwine}，
+\[
+162b^3+1593b^2+1998b+1184=0
+\]
+在 \(\QQ\) 上不可约，且
+\[
+[K:\QQ]=[\QQ(b):\QQ]=3.
+\]
+把该多项式首一化为
+\[
+x^3+\frac{1593}{162}x^2+\frac{1998}{162}x+\frac{1184}{162},
+\]
+于是
+\[
+N_{K/\QQ}(b)
+=
+-\frac{1184}{162}
+=
+-\frac{592}{81}<0.
+\]
+若 \(b\) 在 \(K\) 中为平方，即存在 \(\beta\in K\) 使
+\(
+b=\beta^2
+\)，则
+\[
+N_{K/\QQ}(b)=N_{K/\QQ}(\beta)^2
+\]
+必须是 \(\QQ\) 中的平方，特别应为非负有理数，这与上式矛盾。
+故 \(b\) 在 \(K\) 中不是平方。
+\par
+因此多项式
+\[
+X^2-b\in K[X]
+\]
+不可约，从而
+\[
+[K(B):K]=2.
+\]
+又因 \(B^2=b\in \QQ(B)\)，故
+\(
+K=\QQ(b)\subseteq \QQ(B)
+\)，于是 \(K(B)=\QQ(B)\)。
+由塔式公式得到
+\[
+[\QQ(B):\QQ]=[\QQ(B):K]\,[K:\QQ]=2\cdot 3=6.
+\]
+同时
+\[
+[\QQ(B):\QQ(B^2)]=[\QQ(B):\QQ(b)]=[\QQ(B):K]=2.
+\]
+特别地，若 \(B\in \QQ(u)=K\)，则 \(b=B^2\) 将是 \(K\) 中平方，这与前述矛盾相违。
+故 \(B\notin \QQ(u)\)。
+证毕。
+\end{proof}
+
+\begin{corollary}[分支立方域与振幅平方立方域的共同二次解消子域]\label{cor:xi-leyang-u-b-square-common-quadratic-resolvent}
+沿用定理 \ref{thm:killo-leyang-kappa-square-cubic-field}、
+\ref{thm:killo-leyang-B-square-cubic-and-rational-intertwine} 与
+\ref{thm:xi-leyang-amplitude-B-true-quadratic-cover} 的记号。
+则两条不可约三次模型
+\[
+324u^3-540u^2+333u-74=0,
+\qquad
+162b^3+1593b^2+1998b+1184=0
+\]
+虽然书写不同，却具有同一个唯一二次解消子域
+\[
+\boxed{\;
+\QQ(\sqrt{-111}).\;}
+\]
+等价地，这两个 \(S_3\)-三次模型的 Galois 闭包共享同一二次子域。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:killo-leyang-kappa-square-cubic-field}，
+\[
+\Disc\!\bigl(324u^3-540u^2+333u-74\bigr)
+=-2^{6}\cdot 3^{9}\cdot 37.
+\]
+由定理 \ref{thm:killo-leyang-B-square-cubic-and-rational-intertwine}，
+\[
+\Disc\!\bigl(162b^3+1593b^2+1998b+1184\bigr)
+=-2^{2}\cdot 3^{9}\cdot 11^{2}\cdot 37\cdot 109^{2}.
+\]
+两者去掉平方因子后的平方自由部分同为
+\[
+-3\cdot 37=-111.
+\]
+而对任一不可约 \(S_3\)-三次多项式，其 Galois 闭包中的唯一二次子域恰为
+\[
+\QQ(\sqrt{\Disc}).
+\]
+故上述两条三次模型的唯一二次解消子域都等于
+\[
+\QQ(\sqrt{-111}).
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[核版 RH 临界点先于最近复分歧]\label{thm:xi-rh-critical-before-nearest-complex-branch}
+沿用推论 \ref{cor:real-input-40-collision-branch-radius} 与
+命题 \ref{prop:real-input-40-collision-rhk-window} 的记号。
+令
+\[
+P_2(\theta):=\log \rho(e^\theta).
+\]
+则：
+\begin{enumerate}
+  \item \(P_2(\theta)\) 的代数分歧点恰为
+  \[
+  \theta=\log u_j+2\pi i k,\qquad k\in\ZZ,
+  \]
+  其中 \(u_j\) 遍历三次判别式方程
+  \[
+  \Delta(u)=4u^3+25u^2+88u+8=0
+  \]
+  的三个根；
+  \item 在 \(\theta=0\) 处的 Taylor 收敛半径为
+  \[
+  R_\theta=\min_j\min_{k\in\ZZ}\bigl|\log u_j+2\pi i k\bigr|
+  \approx 2.76230289346087;
+  \]
+  \item 核版 RH/Ramanujan 条件的唯一临界参数满足
+  \[
+  u_R^5+4u_R^4+3u_R^3-96u_R^2-42u_R-14=0,
+  \qquad
+  \theta_R:=\log u_R\approx 1.27888,
+  \]
+  且
+  \[
+  \textsf{RH}(u)\Longleftrightarrow 0<u\le u_R.
+  \]
+\end{enumerate}
+特别地，
+\[
+\boxed{\;
+\theta_R<R_\theta.\;}
+\]
+因此存在非空实区间
+\[
+(\theta_R,R_\theta)\subset \RR_{>0}
+\]
+使得在该区间上 \(P_2(\theta)\) 仍解析，而 kernel RH 条件已经失效。
+换言之，此处 RH 型失效并非由解析边界触发。
+\end{theorem}
+\begin{proof}
+前三条分别是推论 \ref{cor:real-input-40-collision-branch-radius} 与
+命题 \ref{prop:real-input-40-collision-rhk-window} 的直接重述。
+故只需比较显式数值：
+\[
+\theta_R\approx 1.27888
+\qquad\text{而}\qquad
+R_\theta\approx 2.76230289346087.
+\]
+于是立即得到
+\[
+\theta_R<R_\theta.
+\]
+若 \(\theta\in(\theta_R,R_\theta)\)，则一方面 \(|\theta|<R_\theta\)，故
+\(P_2(\theta)\) 仍位于 \(\theta=0\) 的解析收敛盘内；
+另一方面 \(u=e^\theta>u_R\)，由
+\(
+\textsf{RH}(u)\Longleftrightarrow 0<u\le u_R
+\)
+知 kernel RH 条件已失效。
+故所述“解析仍成立而 RH 已失效”的区间确实非空。
+证毕。
+\end{proof}
+
+\endinput
