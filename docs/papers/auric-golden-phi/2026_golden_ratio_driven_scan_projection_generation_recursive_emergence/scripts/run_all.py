@@ -1174,6 +1174,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="fold_bin_critical_tail_zero_lattice_audit",
+            script="exp_fold_bin_critical_tail_zero_lattice_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/fold_bin_critical_tail_zero_lattice_audit.json",
+                "sections/generated/eq_fold_bin_critical_tail_zero_lattice_audit.tex",
+            ],
+        ),
+        Step(
             name="foldbin4_groupoid_aut_pi1_torsion_exponent",
             script="exp_foldbin4_groupoid_aut_pi1_torsion_exponent.py",
             args=[],
@@ -3184,6 +3193,15 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/real_input_40_collision_branch_radius.json",
                 "sections/generated/eq_real_input_40_collision_branch_radius.tex",
+            ],
+        ),
+        Step(
+            name="real_input_40_collision_frequency_prime_shadow_audit",
+            script="exp_real_input_40_collision_frequency_prime_shadow_audit.py",
+            args=["--dps", "80", "--p-max", "2000"],
+            expected_outputs=[
+                "artifacts/export/real_input_40_collision_frequency_prime_shadow_audit.json",
+                "sections/generated/eq_real_input_40_collision_frequency_prime_shadow_audit.tex",
             ],
         ),
         Step(
