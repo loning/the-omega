@@ -292,11 +292,11 @@ E_{\min}[2^n]\cong(\ZZ/2^n\ZZ)^2
 的兼容识别，并使 \([2]\) 将 \(aP_{n+1}+bQ_{n+1}\) 送至 \(aP_n+bQ_n\)。由于 \(P_n,Q_n\) 的阶为 \(2^n\)，系数自然按 \(\bmod 2^n\) 约化。二进截断与该约化一致，故逆极限即 \(\ZZ_2^2\)，并与 Tate 模块定义一致。
 \end{proof}
 
-\begin{theorem}[Gödel 半直积在 \(T_2(E_{\min})\) 上的 \(2^L\)-进仿射表示]\label{thm:killo-godel-semidir-affine-2adic}
+\begin{theorem}[Gödel 半直积在 \(T_2(E_{\min})\) 上的 \(2^L\)-进仿射表示与规范忠实性的最小阈值]\label{thm:killo-godel-semidir-affine-2adic}
 设 \(\mathcal E\) 为有限原子事件集，并固定注入编码
 \[
 \mathrm{code}:\mathcal E\hookrightarrow\NN,\qquad
-M:=\max_{e\in\mathcal E}\mathrm{code}(e),\qquad B:=2^L>M.
+M:=\max_{e\in\mathcal E}\mathrm{code}(e),\qquad B:=2^L\ge 2.
 \]
 记 \((p_t)_{t\ge 1}\) 为素数序列，\(\mathcal R:=\NN^{(\mathbb P)}\) 为素数指标上的有限支撑向量空间，\(\Sigma\) 为素数坐标移位算子，\(H:=\mathcal R\rtimes_{\Sigma}\NN\) 为对应半直积。令
 \[
@@ -317,7 +317,12 @@ T:=T_2(E_{\min})\cong\ZZ_2^2,
 H_{\mathrm{can}}
 :=\{(r,k)\in H:\ \mathrm{supp}(r)\subseteq\{p_1,\dots,p_k\},\ 0\le r(p_t)\le M\},
 \]
-则 \(\Psi|_{H_{\mathrm{can}}}\) 为忠实表示。
+则
+\[
+\Psi|_{H_{\mathrm{can}}}\ \text{为忠实表示}
+\quad\Longleftrightarrow\quad
+B>M.
+\]
 \end{theorem}
 \begin{proof}
 由移位定义可得
@@ -339,7 +344,30 @@ H_{\mathrm{can}}
 \]
 一致，故 \(\Psi\) 为同态。
 
-再证忠实性。若 \((r,k),(s,\ell)\in H_{\mathrm{can}}\) 且 \(\Psi(r,k)=\Psi(s,\ell)\)，比较线性部分得 \(B^k=B^\ell\)，故 \(k=\ell\)。再比较平移部分得 \(\mathrm{ev}_B(r)=\mathrm{ev}_B(s)\)。由 \(H_{\mathrm{can}}\) 的支撑约束，二者仅涉及 \(p_1,\dots,p_k\) 的系数；由 \(0\le r(p_t),s(p_t)\le M<B\) 以及 \(B\)-进展开唯一性，得到 \(r(p_t)=s(p_t)\)（\(1\le t\le k\)），故 \(r=s\)。因此 \(\Psi|_{H_{\mathrm{can}}}\) 忠实。
+先证充分性。设 \(B>M\)，并取 \((r,k),(s,\ell)\in H_{\mathrm{can}}\) 使
+\(
+\Psi(r,k)=\Psi(s,\ell)
+\)。
+比较线性部分得 \(B^k=B^\ell\)，故 \(k=\ell\)。再比较平移部分得 \(\mathrm{ev}_B(r)=\mathrm{ev}_B(s)\)。由 \(H_{\mathrm{can}}\) 的支撑约束，二者仅涉及 \(p_1,\dots,p_k\) 的系数；由 \(0\le r(p_t),s(p_t)\le M<B\) 以及 \(B\)-进展开唯一性，得到 \(r(p_t)=s(p_t)\)（\(1\le t\le k\)），故 \(r=s\)。因此 \(\Psi|_{H_{\mathrm{can}}}\) 忠实。
+
+再证必要性。若 \(B\le M\)，取 \(k=2\)，并定义 \(r,s\in\mathcal R\) 为
+\[
+r(p_1)=B,\qquad r(p_2)=0,
+\]
+\[
+s(p_1)=0,\qquad s(p_2)=1,
+\]
+其余素数坐标全为 \(0\)。则 \((r,2),(s,2)\in H_{\mathrm{can}}\)，因为二者支撑都包含于 \(\{p_1,p_2\}\)，且各坐标都落在区间 \([0,M]\) 中。另一方面，
+\[
+\mathrm{ev}_B(r)=Bv=\mathrm{ev}_B(s),
+\]
+故
+\[
+\Psi(r,2)(x)=B^2x+Bv=\Psi(s,2)(x)
+\qquad (x\in T).
+\]
+但 \((r,2)\neq (s,2)\)，从而 \(\Psi|_{H_{\mathrm{can}}}\) 不忠实。
+综上，规范忠实性当且仅当 \(B>M\)。
 \end{proof}
 
 \begin{corollary}[无限事件流的 \(2^L\)-进全息点与地址读取解释]\label{cor:killo-infinite-stream-2adic-holographic-point}

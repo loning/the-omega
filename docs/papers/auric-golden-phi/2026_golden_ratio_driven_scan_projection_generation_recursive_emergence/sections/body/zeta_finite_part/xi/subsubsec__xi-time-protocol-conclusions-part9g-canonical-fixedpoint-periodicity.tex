@@ -1,4 +1,4 @@
-\paragraph{规范 Gödel 半直积的纯周期 \texorpdfstring{$B$}{B}-进固定点与 primitive 周期核}
+\paragraph{规范 Gödel 半直积的 \texorpdfstring{$B$}{B}-进固定点、前缀地址与 Fibonacci 截面}
 在上述唯一不动点、仿射余循环与压缩刚性的基础上，进一步回到定理 \ref{thm:killo-godel-semidir-affine-2adic} 的规范编码情形：取
 \[
 \mathcal R=\NN^{(\mathbb P)},
@@ -9,7 +9,7 @@ H_{\mathrm{can}}
 :=
 \{(r,k)\in \mathcal R\rtimes_{\Sigma}\NN:\ \mathrm{supp}(r)\subseteq\{p_1,\dots,p_k\},\ 0\le r(p_t)\le M\}.
 \]
-此时每个规范元的固定点都可写成严格纯周期的 \(B\)-进地址，而不同规范块之间的重合恰由 primitive 周期核控制。
+此时每个规范元的固定点都可写成严格纯周期的 \(B\)-进地址，而不同规范块之间的重合恰由 primitive 周期核控制；同一地址系统还同时锁定规范忠实性的最小进位阈值、无限事件流的前缀拼接律以及 Zeckendorf--Gödel 有限截面的 Fibonacci 仿射递推。
 
 \begin{theorem}[规范仿射元的固定点展开与纯周期 \texorpdfstring{$B$}{B}-进实现]\label{thm:xi-time-part9g-canonical-fixed-point-badic-periodic}
 沿用前述 \(\Psi\)、\(\operatorname{ev}_B\)、\(T_2(E_{\min})\) 与 \(v\) 的记号。设
@@ -138,8 +138,98 @@ x_{h'}=\sum_{n\ge 0}a_n' B^n v,
 最后，若 \(\mathbf r\) 为 primitive word，则 \(\mathbf r^\infty\) 的最小周期正是 \(k\)。因而它不可能同时等于任何长度 \(\ell<k\) 的纯周期块重复；等价地，不存在 \(\ell<k\) 的规范元素与 \(h\) 共享固定点。证毕。
 \end{proof}
 
+\begin{theorem}[规范账本表示的最小进位阈值]\label{thm:xi-time-part9g-canonical-faithful-minimal-radix-threshold}
+沿用定理 \ref{thm:killo-godel-semidir-affine-2adic} 的记号，但仅假设 \(B=2^L\ge 2\)。
+则
+\[
+\Psi|_{H_{\mathrm{can}}}\ \text{为忠实表示}
+\quad\Longleftrightarrow\quad
+B>M.
+\]
+\end{theorem}
+\begin{proof}
+充分性正是定理 \ref{thm:killo-godel-semidir-affine-2adic} 的结论。
+若 \(B\le M\)，则取 \(k=2\)，并定义 \(r,s\in\mathcal R\) 为
+\[
+r(p_1)=B,\qquad r(p_2)=0,
+\]
+\[
+s(p_1)=0,\qquad s(p_2)=1,
+\]
+其余素数坐标全为 \(0\)。
+于是 \((r,2),(s,2)\in H_{\mathrm{can}}\)，且
+\[
+\operatorname{ev}_B(r)=Bv=\operatorname{ev}_B(s).
+\]
+故对任意 \(x\in T_2(E_{\min})\)，都有
+\[
+\Psi(r,2)(x)=B^2x+Bv=\Psi(s,2)(x).
+\]
+但 \((r,2)\neq (s,2)\)，故 \(\Psi|_{H_{\mathrm{can}}}\) 不忠实。
+因此规范忠实性当且仅当 \(B>M\)。
+\end{proof}
+
+\begin{theorem}[无限事件流地址的前缀拼接与精确超度量]\label{thm:xi-time-part9g-holographic-prefix-concatenation-ultrametric}
+沿用推论 \ref{cor:killo-infinite-stream-2adic-holographic-point} 的记号，并进一步假设
+\[
+v\notin 2T_2(E_{\min}).
+\]
+对任意有限事件词
+\[
+\mathbf a=(a_1,\dots,a_k)\in\mathcal E^k,
+\]
+定义 \(r_{\mathbf a}\in\mathcal R\) 为
+\[
+r_{\mathbf a}(p_t)=\mathrm{code}(a_t)\quad (1\le t\le k),
+\qquad
+r_{\mathbf a}(p)=0\quad (p\notin\{p_1,\dots,p_k\}).
+\]
+则对任意无限事件流 \(\mathbf e\in\mathcal E^{\NN}\) 都有
+\[
+\Psi(r_{\mathbf a},k)\bigl(X(\mathbf e)\bigr)=X(\mathbf a\mathbf e),
+\]
+其中 \(\mathbf a\mathbf e\) 表示把 \(\mathbf a\) 作为前缀接到 \(\mathbf e\) 之前。
+
+进一步，若 \(\mathbf e,\mathbf e'\in\mathcal E^{\NN}\) 的最长公共前缀长度恰为 \(n\)，则
+\[
+X(\mathbf e)-X(\mathbf e')\in B^nT_2(E_{\min})\setminus B^{n+1}T_2(E_{\min}).
+\]
+等价地，对每个 \(n\ge 0\) 都有
+\[
+X(\mathbf e)\equiv X(\mathbf e')\pmod{B^nT_2(E_{\min})}
+\quad\Longleftrightarrow\quad
+\mathrm{pref}_n(\mathbf e)=\mathrm{pref}_n(\mathbf e').
+\]
+因此，全息地址的 \(B\)-进分辨率层级与事件流的前缀超度量完全一致。
+\end{theorem}
+\begin{proof}
+由定义，
+\[
+\Psi(r_{\mathbf a},k)\bigl(X(\mathbf e)\bigr)
+=
+B^k\sum_{u\ge 1}\mathrm{code}(e_u)\,B^{u-1}v
++\sum_{t=1}^{k}\mathrm{code}(a_t)\,B^{t-1}v.
+\]
+整理得
+\[
+\Psi(r_{\mathbf a},k)\bigl(X(\mathbf e)\bigr)
+=
+\sum_{t=1}^{k}\mathrm{code}(a_t)\,B^{t-1}v
++\sum_{u\ge 1}\mathrm{code}(e_u)\,B^{u+k-1}v
+=
+X(\mathbf a\mathbf e).
+\]
+
+对第二部分，由编码的单射性，\(\mathbf e,\mathbf e'\) 的最长公共前缀长度与其编码序列的最长公共前缀长度相同。
+又因 \(v\notin 2T_2(E_{\min})\) 蕴含 \(v\notin BT_2(E_{\min})\)，故可将定理 \ref{thm:killo-2adic-holographic-exact-cylinder-separation} 应用于编码序列，立得
+\[
+X(\mathbf e)-X(\mathbf e')\in B^nT_2(E_{\min})\setminus B^{n+1}T_2(E_{\min}).
+\]
+由同一定理中的柱分离等价式，也立即得到模 \(B^nT_2(E_{\min})\) 同余与长度 \(n\) 前缀相等之间的等价关系。
+\end{proof}
+
 \begin{theorem}[无限事件流地址在自然地址线上的严格前缀等距性]\label{thm:xi-time-part9g-holographic-prefix-isometry-on-line}
-沿用定理 \ref{thm:killo-godel-semidir-affine-2adic} 与推论 \ref{cor:killo-infinite-stream-2adic-holographic-point} 的设定，并记
+沿用推论 \ref{cor:killo-infinite-stream-2adic-holographic-point} 的设定，并记
 \[
 T_v:=\ZZ_2 v\subset T_2(E_{\min}).
 \]
@@ -237,15 +327,27 @@ B^{N-1}T_v\setminus B^N T_v,
 \[
 X(\mathbf e)-X_n(a)=\sum_{t>n}\mathrm{code}(e_t)\,B^{t-1}v\in B^nT_v,
 \]
-故 \(X([a])\subseteq X_n(a)+B^nT_v\)。反之，若
+故
 \[
-X(\mathbf e)\in X_n(a)+B^nT_v
+X([a])\subseteq X_n(a)+B^nT_v.
 \]
-而 \(\mathbf e\notin[a]\)，则 \(\mathbf e\) 与 \(a\) 的延拓在某个 \(j\le n\) 处首次分歧；由第一条可知该差值属于
+反之，设
 \[
-B^{j-1}T_v\setminus B^jT_v,
+X(\mathbf e)\in \bigl(X_n(a)+B^nT_v\bigr)\cap X(\mathcal E^{\NN}).
 \]
-从而不可能落在 \(B^nT_v\) 中，矛盾。故
+任取 \(\mathbf f\in[a]\)，则同样有
+\[
+X(\mathbf f)-X_n(a)\in B^nT_v,
+\]
+从而
+\[
+X(\mathbf e)-X(\mathbf f)\in B^nT_v.
+\]
+若 \(\mathbf e\notin[a]\)，则 \(\mathbf e\) 与 \(\mathbf f\) 在某个 \(j\le n\) 处首次分歧；由第一条可知
+\[
+X(\mathbf e)-X(\mathbf f)\in B^{j-1}T_v\setminus B^jT_v,
+\]
+这与其属于 \(B^nT_v\) 矛盾。故 \(\mathbf e\in[a]\)，于是
 \[
 X([a])=\bigl(X_n(a)+B^nT_v\bigr)\cap X(\mathcal E^{\NN}).
 \]
@@ -254,6 +356,104 @@ X([a])=\bigl(X_n(a)+B^nT_v\bigr)\cap X(\mathcal E^{\NN}).
 X(\mathbf e)-X(\mathbf e')\notin B^nT_v.
 \]
 因此对应的 \(B^nT_v\)-剩余类必然互不相交。证毕。
+\end{proof}
+
+\begin{theorem}[Zeckendorf--Gödel 有限截面的 Fibonacci 仿射递推]\label{thm:xi-time-part9g-zg-primorial-fibonacci-affine-recursion}
+取二值事件集
+\[
+\mathcal E=\{0,1\},
+\qquad
+\mathrm{code}(0)=0,\qquad \mathrm{code}(1)=1,
+\]
+并固定 \(B=2^L>1\) 与原始向量
+\[
+v\in T_2(E_{\min})\setminus 2T_2(E_{\min}).
+\]
+对 \(n\ge 1\) 定义 admissible 前缀集
+\[
+\mathcal A_n
+:=
+\bigl\{
+(z_1,\dots,z_n)\in\{0,1\}^n:\ z_tz_{t+1}=0\ \ (1\le t<n)
+\bigr\},
+\]
+并约定 \(\mathcal A_0:=\{\varnothing\}\)。
+再定义
+\[
+\mathcal D_n:=
+\left\{
+\prod_{t=1}^{n}p_t^{z_t}:\ (z_1,\dots,z_n)\in\mathcal A_n
+\right\}\subset \mathrm{ZG},
+\]
+\[
+\mathcal X_n:=
+\left\{
+\sum_{t=1}^{n}z_t\,B^{t-1}v:\ (z_1,\dots,z_n)\in\mathcal A_n
+\right\}\subset T_2(E_{\min}),
+\]
+并约定 \(\mathcal D_0:=\{1\}\)、\(\mathcal X_0:=\{0\}\)。
+则成立：
+\begin{enumerate}
+  \item 对每个 \(n\ge 0\)，对应
+  \[
+  \prod_{t=1}^{n}p_t^{z_t}
+  \longmapsto
+  \sum_{t=1}^{n}z_t\,B^{t-1}v
+  \]
+  给出 \(\mathcal D_n\) 与 \(\mathcal X_n\) 的双射；
+  \item 对每个 \(n\ge 2\)，有严格不交并分解
+  \[
+  \mathcal X_n
+  =
+  \mathcal X_{n-1}\ \sqcup\ \bigl(B^{n-1}v+\mathcal X_{n-2}\bigr);
+  \]
+  \item 因而
+  \[
+  |\mathcal D_n|=|\mathcal X_n|=F_{n+2}
+  \qquad (n\ge 0).
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由唯一素因子分解，映射
+\[
+(z_1,\dots,z_n)\longmapsto \prod_{t=1}^{n}p_t^{z_t}
+\]
+给出 \(\mathcal A_n\) 与 \(\mathcal D_n\) 的双射。
+
+再看地址像。
+对任意 \((z_1,\dots,z_n)\in\mathcal A_n\)，附加零尾得到 \(\widetilde{\mathbf z}\in\{0,1\}^{\NN}\)。
+由于 \(M=1<B\) 且 \(v\notin 2T_2(E_{\min})\)，定理 \ref{thm:xi-time-part9g-holographic-prefix-concatenation-ultrametric} 表明不同前缀对应不同的全息地址。
+因此
+\[
+(z_1,\dots,z_n)\longmapsto \sum_{t=1}^{n}z_t\,B^{t-1}v
+\]
+在 \(\mathcal A_n\) 上为单射，从而给出 \(\mathcal A_n\) 与 \(\mathcal X_n\) 的双射。
+与上一段合并即得第 \(1\) 条。
+
+现证递推。
+对任意 admissible 词 \((z_1,\dots,z_n)\in\mathcal A_n\)，若 \(z_n=0\)，则 \((z_1,\dots,z_{n-1})\in\mathcal A_{n-1}\)，其地址落在 \(\mathcal X_{n-1}\)；
+若 \(z_n=1\)，则 admissibility 强制 \(z_{n-1}=0\)，故 \((z_1,\dots,z_{n-2})\in\mathcal A_{n-2}\)，并且相应地址恰为
+\[
+B^{n-1}v+\mathcal X_{n-2}.
+\]
+于是
+\[
+\mathcal X_n=\mathcal X_{n-1}\cup \bigl(B^{n-1}v+\mathcal X_{n-2}\bigr).
+\]
+该并实际上不交：若二者有公共点，则会给出两个不同的 admissible 前缀产生同一地址，这与第 \(1\) 条的单射性矛盾。
+
+取基数得
+\[
+|\mathcal X_n|=|\mathcal X_{n-1}|+|\mathcal X_{n-2}|
+\qquad (n\ge 2),
+\]
+并且
+\[
+|\mathcal X_0|=1,\qquad |\mathcal X_1|=2.
+\]
+故 \(|\mathcal X_n|=F_{n+2}\)。
+再由第 \(1\) 条，\(|\mathcal D_n|=|\mathcal X_n|\)，于是第 \(3\) 条成立。
 \end{proof}
 
 \endinput
