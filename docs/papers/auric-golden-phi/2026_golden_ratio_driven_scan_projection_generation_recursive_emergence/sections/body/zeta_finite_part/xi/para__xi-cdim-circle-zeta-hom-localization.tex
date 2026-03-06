@@ -266,5 +266,164 @@ A_{\mathcal P}:=\ZZ[\mathcal P^{-1}]\subset\QQ
 由素数逐点唯一分解，局部因子类型的分布唯一给出 \(S\)。
 \end{proof}
 
+\begin{theorem}[有限素数集局部化群的 \texorpdfstring{$\mathrm{Hom}$}{Hom}-范畴完全分类]\label{thm:xi-cdim-localization-hom-category-classification}
+对有限素数集 \(S,T\)，定义
+\[
+G_S:=\ZZ[S^{-1}],
+\qquad
+G_T:=\ZZ[T^{-1}]
+\]
+并按加法群理解。则有自然同构
+\[
+\operatorname{Hom}(G_S,G_T)\cong
+\begin{cases}
+G_T,& S\subseteq T,\\[2mm]
+0,& S\not\subseteq T.
+\end{cases}
+\]
+特别地，
+\[
+\operatorname{End}(G_S)\cong G_S,
+\qquad
+\operatorname{Aut}(G_S)\cong
+\Bigl\{\pm\prod_{p\in S}p^{n_p}:n_p\in\ZZ\Bigr\}.
+\]
+因此
+\[
+G_S\cong G_T
+\qquad\Longleftrightarrow\qquad
+S=T.
+\]
+\end{theorem}
+\begin{proof}
+任意群同态 \(\phi:G_S\to G_T\) 被 \(\phi(1)\) 唯一决定。
+事实上，\(G_S\subset\QQ\) 且由元素 \(1/p^n\)（\(p\in S,\ n\ge 0\)）加法生成；由于 \(G_T\subset\QQ\) 无挠，对每个 \(p^n\) 方程
+\(
+p^n y=\phi(1)
+\)
+至多有一个解，因此 \(\phi(1/p^n)\) 一旦存在便唯一确定。
+
+若 \(S\subseteq T\)，任取 \(q\in G_T\)，定义
+\[
+\phi_q(x):=qx\qquad (x\in G_S).
+\]
+因为 \(x\in G_S\) 的分母只含 \(S\) 中素数，而 \(S\subseteq T\)，故 \(qx\in G_T\)，从而 \(\phi_q\) 为良定义群同态。映射
+\(
+q\mapsto \phi_q
+\)
+显然为单射。反之，对任意 \(\phi\) 取 \(q:=\phi(1)\)，上段唯一性说明 \(\phi=\phi_q\)。故 \(\operatorname{Hom}(G_S,G_T)\cong G_T\)。
+
+若 \(S\not\subseteq T\)，取 \(p\in S\setminus T\)。设 \(\phi:G_S\to G_T\) 且 \(\phi(1)=q\neq 0\)。则对每个 \(n\ge 1\)，元素 \(1/p^n\in G_S\) 的像必须满足
+\[
+p^n\phi(1/p^n)=q.
+\]
+由于 \(G_T\subset\QQ\) 且 \(p\notin T\)，元素 \(q/p^n\) 对充分大的 \(n\) 不再属于 \(G_T\)，矛盾。
+因此只能有 \(q=0\)，而上段唯一性随即推出 \(\phi=0\)。故 \(\operatorname{Hom}(G_S,G_T)=0\)。
+
+令 \(T=S\) 即得 \(\operatorname{End}(G_S)\cong G_S\)。其中 \(\phi_q\) 为自同构当且仅当 \(qG_S=G_S\)，等价于 \(q,q^{-1}\in G_S\)，也即 \(q\) 属于局部化环 \(\ZZ[S^{-1}]\) 的单位群
+\[
+G_S^\times=
+\Bigl\{\pm\prod_{p\in S}p^{n_p}:n_p\in\ZZ\Bigr\}.
+\]
+最后，若 \(G_S\cong G_T\)，则存在非零同态 \(G_S\to G_T\) 与 \(G_T\to G_S\)，由上式分别推出 \(S\subseteq T\) 与 \(T\subseteq S\)，故 \(S=T\)；反向蕴含显然。证毕。
+\end{proof}
+
+\begin{theorem}[局部化数系包含关系的商分解与 solenoid 满射分类]\label{thm:xi-cdim-localization-quotient-solenoid-surjections}
+沿用定理 \ref{thm:xi-cdim-localization-hom-category-classification} 的记号，并记
+\[
+\Sigma_S:=\widehat{G_S},
+\qquad
+\Sigma_T:=\widehat{G_T}.
+\]
+若 \(S\subseteq T\)，则存在规范短正合列
+\[
+0\longrightarrow G_S\longrightarrow G_T
+\longrightarrow \bigoplus_{p\in T\setminus S} C_{p^\infty}
+\longrightarrow 0
+\]
+以及其 Pontryagin 对偶
+\[
+0\longrightarrow \prod_{p\in T\setminus S}\ZZ_p
+\longrightarrow \Sigma_T
+\xrightarrow{\ \pi_{T\to S}\ }\Sigma_S
+\longrightarrow 0.
+\]
+此外，连续满同态 \(\Sigma_T\twoheadrightarrow \Sigma_S\) 存在当且仅当 \(S\subseteq T\)。
+
+更强地，当 \(S\subseteq T\) 时，任意连续满同态 \(f:\Sigma_T\twoheadrightarrow \Sigma_S\) 都可写成
+\[
+f=[m]\circ \pi_{T\to S}\circ \alpha
+\]
+的形式，其中 \([m]:\Sigma_S\to\Sigma_S\) 表示乘以 \(m\) 的连续自同态，\(\alpha\in\operatorname{Aut}(\Sigma_T)\)，且 \(m\ge 1\) 的所有素因子均不属于 \(T\)。
+等价地，其核满足
+\[
+\ker(f)\cong
+\left(\prod_{p\in T\setminus S}\ZZ_p\right)\times \ZZ/m\ZZ.
+\]
+特别地，规范满同态 \(\pi_{T\to S}\) 对应于 \(m=1\)，其核恰为
+\(
+\prod_{p\in T\setminus S}\ZZ_p
+\)。
+\end{theorem}
+\begin{proof}
+先证明规范商分解。对任意有限素数集 \(U\)，群 \(G_U/\ZZ\) 可识别为 \(\QQ/\ZZ\) 中“分母只允许落在 \(U\) 内”的子群，因此
+\[
+G_U/\ZZ\cong \bigoplus_{p\in U} C_{p^\infty}.
+\]
+当 \(S\subseteq T\) 时，
+\[
+G_T/G_S\cong (G_T/\ZZ)/(G_S/\ZZ)\cong \bigoplus_{p\in T\setminus S} C_{p^\infty},
+\]
+即得第一条短正合列。对偶化并使用
+\(
+\widehat{C_{p^\infty}}\cong \ZZ_p
+\)
+便得到第二条短正合列。
+
+若 \(S\subseteq T\)，规范投影 \(\pi_{T\to S}\) 已给出一个连续满同态。
+反之，若存在连续满同态 \(f:\Sigma_T\twoheadrightarrow \Sigma_S\)，则对偶化得到单射
+\[
+f^\vee:G_S\hookrightarrow G_T.
+\]
+由定理 \ref{thm:xi-cdim-localization-hom-category-classification}，这只有在 \(S\subseteq T\) 时才可能。故满同态的存在性当且仅当 \(S\subseteq T\)。
+
+现在设 \(S\subseteq T\)，并取任意满同态 \(f:\Sigma_T\twoheadrightarrow \Sigma_S\)。
+其对偶单射 \(f^\vee:G_S\hookrightarrow G_T\) 由同一定理必为某个非零 \(q\in G_T\) 所诱导的乘法映射 \(\phi_q(x)=qx\)。
+把 \(q\) 写成
+\[
+q=u\,m,
+\]
+其中 \(u\in G_T^\times\) 为单位，且 \(m\ge 1\) 的所有素因子均不属于 \(T\)。
+于是
+\[
+\phi_q=(\times u)\circ \iota\circ (\times m),
+\]
+其中 \(\iota:G_S\hookrightarrow G_T\) 为规范包含。
+对偶化即得
+\[
+f=[m]\circ \pi_{T\to S}\circ \alpha,
+\]
+其中 \(\alpha:=\widehat{(\times u)}\in\operatorname{Aut}(\Sigma_T)\)。
+
+最后计算核。由于 \(mG_S\subseteq G_S\subseteq G_T\)，有短正合列
+\[
+0\longrightarrow G_S/mG_S\longrightarrow G_T/mG_S\longrightarrow G_T/G_S\longrightarrow 0.
+\]
+因 \(m\) 的所有素因子都不属于 \(T\)（从而也不属于 \(S\)），局部化不改变模 \(m\) 商，故
+\[
+G_S/mG_S\cong \ZZ/m\ZZ.
+\]
+另一方面，\(G_T/G_S\cong \bigoplus_{p\in T\setminus S} C_{p^\infty}\) 为可除挠群，因而作为阿贝尔群是内射对象；上式分裂，从而
+\[
+\operatorname{coker}(f^\vee)\cong G_T/qG_S\cong \ZZ/m\ZZ\oplus \bigoplus_{p\in T\setminus S} C_{p^\infty}.
+\]
+再取 Pontryagin 对偶便得到
+\[
+\ker(f)\cong
+\left(\prod_{p\in T\setminus S}\ZZ_p\right)\times \ZZ/m\ZZ.
+\]
+证毕。
+\end{proof}
+
 \endinput
 
