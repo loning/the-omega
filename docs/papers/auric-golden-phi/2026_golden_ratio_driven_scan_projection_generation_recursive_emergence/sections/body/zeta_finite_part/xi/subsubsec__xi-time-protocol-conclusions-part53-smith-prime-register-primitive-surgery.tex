@@ -297,6 +297,168 @@ P(z,u)=P_{\mathrm{core}}(z,u)+\sum_{\nu=1}^{s}m_\nu u^{E_\nu}z^{\ell_\nu}.
 当 \(s=1\)、\((m_1,E_1,\ell_1)=(1,1,2)\) 时，即回到真实输入 \(40\) 状态核中命题 \ref{prop:atomic-2-orbit-split-logM} 的长度 \(2\) 原子剥离。
 \end{proof}
 
+\paragraph{有限模层析、ghost 闭式与 Abel 位移}
+
+\begin{theorem}[原子 primitive 轨道手术的有限同余层析]\label{thm:xi-primitive-surgery-finite-congruence-tomography}
+设某个加权有限矩阵族/有限型子移位满足
+\[
+\zeta(z,u)=\frac{1}{(1-u^Ez^\ell)^m}\,\zeta_{\mathrm{core}}(z,u),
+\qquad
+m\in\ZZ_{\ge 1},\ \ell\in\ZZ_{\ge 1},\ E\in\ZZ_{\ge 0},
+\]
+并令 primitive 生成函数满足
+\[
+P(z,u)=P_{\mathrm{core}}(z,u)+m\,u^Ez^\ell.
+\]
+对任意模数 \(q\ge 2\) 与剩余类 \(a\in\ZZ/q\ZZ\)，定义 root-of-unity 滤波的 primitive 生成函数
+\[
+P_{a,q}(z,u):=\frac1q\sum_{j=0}^{q-1}\omega_q^{-aj}P(\omega_q^j z,u),
+\qquad
+\omega_q:=e^{2\pi i/q},
+\]
+并对 \(P_{\mathrm{core}}\) 同样定义 \(P^{\mathrm{core}}_{a,q}(z,u)\)。则成立精确公式
+\[
+\boxed{\;
+P_{a,q}(z,u)-P^{\mathrm{core}}_{a,q}(z,u)
+=
+m\,u^E z^\ell\,
+\mathbf 1_{\{a\equiv \ell\;(\mathrm{mod}\,q)\}}.\;}
+\]
+因此，若取两两互素模数 \(q_1,\dots,q_r\) 满足
+\[
+Q:=q_1\cdots q_r>\ell,
+\]
+并已知对每个 \(q_i\) 都存在唯一剩余类 \(a_i\in\ZZ/q_i\ZZ\) 使
+\[
+P_{a_i,q_i}(z,u)-P^{\mathrm{core}}_{a_i,q_i}(z,u)\neq 0,
+\]
+则由中国剩余定理可唯一恢复 \(\ell\)。进一步，若在两个不同正参数 \(u_1\neq u_2\) 处测得相应非零系数
+\[
+c_i^{(j)}
+:=
+\left[z^\ell\right]
+\bigl(
+P_{a_i,q_i}(z,u_j)-P^{\mathrm{core}}_{a_i,q_i}(z,u_j)
+\bigr)
+=
+m\,u_j^E
+\qquad (j=1,2),
+\]
+则 \(E\) 与 \(m\) 亦由此唯一恢复：
+\[
+E=\frac{\log(c_i^{(2)}/c_i^{(1)})}{\log(u_2/u_1)},
+\qquad
+m=\frac{c_i^{(1)}}{u_1^E}.
+\]
+\end{theorem}
+\begin{proof}
+把
+\[
+P(z,u)-P_{\mathrm{core}}(z,u)=m\,u^Ez^\ell
+\]
+代入 root-of-unity 滤波的定义，得到
+\[
+\begin{aligned}
+P_{a,q}(z,u)-P^{\mathrm{core}}_{a,q}(z,u)
+&=
+\frac1q\sum_{j=0}^{q-1}\omega_q^{-aj}
+\bigl(P(\omega_q^j z,u)-P_{\mathrm{core}}(\omega_q^j z,u)\bigr)\\
+&=
+\frac1q\sum_{j=0}^{q-1}\omega_q^{-aj}\,m\,u^E(\omega_q^j z)^\ell\\
+&=
+m\,u^Ez^\ell\cdot
+\frac1q\sum_{j=0}^{q-1}\omega_q^{j(\ell-a)}.
+\end{aligned}
+\]
+有限 Fourier 求和给出
+\[
+\frac1q\sum_{j=0}^{q-1}\omega_q^{j(\ell-a)}
+=
+\mathbf 1_{\{a\equiv \ell\;(\mathrm{mod}\,q)\}},
+\]
+从而得到所示精确公式。
+
+于是每个模数 \(q_i\) 都唯一暴露 \(\ell\bmod q_i\)。因 \(q_1,\dots,q_r\) 两两互素，中国剩余定理给出唯一的
+\[
+\ell \pmod Q.
+\]
+又因 \(0\le \ell<Q\)，故 \(\ell\) 本身唯一确定。已知 \(\ell\) 后，任何非零滤波系数都等于 \(m\,u^E\)。在两个不同正参数 \(u_1\neq u_2\) 处比较，便唯一恢复
+\[
+E=\frac{\log(c_i^{(2)}/c_i^{(1)})}{\log(u_2/u_1)},
+\qquad
+m=\frac{c_i^{(1)}}{u_1^E}.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[原子手术的 ghost 级数闭式与 Abel 有限部的精确位移]\label{thm:xi-atomic-surgery-ghost-abel-shift-general}
+沿用定理 \ref{thm:xi-primitive-surgery-finite-congruence-tomography} 的设定。定义 periodic/ghost 系数 \(a_n(u)\)、\(a_n^{\mathrm{core}}(u)\) 为
+\[
+\log \zeta(z,u)=\sum_{n\ge 1}\frac{a_n(u)}{n}z^n,
+\qquad
+\log \zeta_{\mathrm{core}}(z,u)=\sum_{n\ge 1}\frac{a_n^{\mathrm{core}}(u)}{n}z^n.
+\]
+则有精确 ghost 修正公式
+\[
+\boxed{\;
+a_n(u)-a_n^{\mathrm{core}}(u)
+=
+m\ell\,u^{En/\ell}\,\mathbf 1_{\{\ell\mid n\}}.\;}
+\]
+进一步，若记主增长率为 \(\lambda(u)=z_\star(u)^{-1}\)，并定义 Abel 有限部常数
+\[
+\log\mathfrak M(u):=\sum_{n\ge 1}\left(\frac{p_n(u)}{\lambda(u)^n}-\frac1n\right),
+\]
+其中 \(P(z,u)=\sum_{n\ge 1}p_n(u)z^n\)，而 \(\log\mathfrak M_{\mathrm{core}}(u)\) 对 \(P_{\mathrm{core}}\) 同样定义，则有
+\[
+\boxed{\;
+\log\mathfrak M(u)-\log\mathfrak M_{\mathrm{core}}(u)
+=
+m\,u^Ez_\star(u)^\ell.\;}
+\]
+\end{theorem}
+\begin{proof}
+由
+\[
+\zeta(z,u)=\frac{1}{(1-u^Ez^\ell)^m}\,\zeta_{\mathrm{core}}(z,u)
+\]
+直接取对数可得
+\[
+\log\zeta(z,u)-\log\zeta_{\mathrm{core}}(z,u)
+=
+-m\log(1-u^Ez^\ell)
+=
+m\sum_{r\ge 1}\frac{u^{Er}z^{\ell r}}{r}.
+\]
+另一方面，
+\[
+\log\zeta(z,u)-\log\zeta_{\mathrm{core}}(z,u)
+=
+\sum_{n\ge 1}\frac{a_n(u)-a_n^{\mathrm{core}}(u)}{n}z^n.
+\]
+比较两边系数，若 \(n=\ell r\) 则
+\[
+\frac{a_n(u)-a_n^{\mathrm{core}}(u)}{n}
+=
+\frac{m\,u^{Er}}{r},
+\]
+亦即
+\[
+a_n(u)-a_n^{\mathrm{core}}(u)
+=
+m\ell\,u^{En/\ell}.
+\]
+若 \(\ell\nmid n\)，则对应系数为 \(0\)。这就得到 ghost 修正公式。
+
+至于 Abel 有限部的位移，定理 \ref{thm:xi-finite-euler-primitive-surgery-additivity} 在单原子情形 \(s=1\) 已经给出
+\[
+\log\mathfrak M(u)-\log\mathfrak M_{\mathrm{core}}(u)
+=
+m\,u^Ez_\star(u)^\ell.
+\]
+证毕。
+\end{proof}
+
 \input{subsubsec__xi-time-protocol-conclusions-part54-lastbit-collapse-padic-kernel-rigidity}
 
 \endinput

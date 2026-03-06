@@ -1,7 +1,7 @@
 \paragraph{碰撞势的局部对偶、素数模阈值与 dyadic 三谱迹}
 碰撞位势 \(P_2(\theta)=\log\rho(e^\theta)\) 已在附录中被压缩为一条三次代数压力链：它一方面给出 \(\theta=0\) 处全部低阶累积量的 \(\sqrt5\)-闭式，另一方面在单位根扭曲与 \(u=-1\) 奇偶通道上保留足够低阶的谱数据，使局部 Legendre 对偶、介观模数阈值与 dyadic 周期迹振荡可以继续闭合为一组不再依赖外加参数化的终端结论。
 
-\begin{theorem}[碰撞速率函数在平衡点的 Cramér--Edgeworth 局部展开]\label{thm:xi-real-input-40-collision-rate-cramer-edgeworth}
+\begin{theorem}[碰撞速率函数在平衡点的四阶 Cramér--Edgeworth 局部几何]\label{thm:xi-real-input-40-collision-rate-cramer-edgeworth}
 沿用命题 \ref{prop:real-input-40-collision-pressure}、推论 \ref{cor:real-input-40-collision-cumulants}、\ref{cor:real-input-40-collision-cumulants-higher} 与注 \ref{rem:real-input-40-collision-ldp-param} 的记号。按注 \ref{rem:real-input-40-collision-ldp-param} 的归一化，定义
 \[
 I_2(\alpha):=\sup_{\theta\in\RR}\bigl(\alpha\theta-(P_2(\theta)-P_2(0))\bigr),
@@ -27,6 +27,29 @@ I_2(\alpha_*+\delta)
 -\frac{\kappa_3}{6\kappa_2^3}\,\delta^3
 +\frac{3\kappa_3^2-\kappa_2\kappa_4}{24\kappa_2^5}\,\delta^4
 +O(\delta^5).\;}
+\]
+并且前三个非平凡局部系数可完全显式写成
+\[
+\boxed{\;
+\frac{1}{2\kappa_2}
+=
+\frac{125}{62}+\frac{75\sqrt5}{31}
+\approx 7.4259709133059428\;}
+\]
+\[
+\boxed{\;
+-\frac{\kappa_3}{6\kappa_2^3}
+=
+-\frac{849375}{59582}-\frac{525250\sqrt5}{89373}
+\approx -27.3970573347852767\;}
+\]
+\[
+\boxed{\;
+\frac{3\kappa_3^2-\kappa_2\kappa_4}{24\kappa_2^5}
+=
+\frac{32390871875}{343549812}
++\frac{4803058125\sqrt5}{114516604}
+\approx 188.068114201582058.\;}
 \]
 特别地，由于 \(\kappa_3>0\)，局部奇次项严格不对称：
 \[
@@ -69,7 +92,7 @@ I_2'(\alpha)=\theta(\alpha)
 \[
 I_2(\alpha_*+\delta)=\int_0^\delta \theta(s)\,\dd s.
 \]
-逐项积分便得盒装展开式。最后以 \(\delta\) 与 \(-\delta\) 相减并保留奇次项，即得第二条盒装式；由于 \(\kappa_3=(9+10\sqrt5)/625>0\)，右侧严格小于左侧。脚本 \texttt{scripts/exp\_xi\_real\_input\_40\_collision\_ldp\_median\_twist\_audit.py} 对反函数系数与速率函数系数给出符号核验。证毕。
+逐项积分便得盒装展开式。再把 \(\kappa_2,\kappa_3,\kappa_4\) 的闭式代入并化简，即得三条显式系数公式。最后以 \(\delta\) 与 \(-\delta\) 相减并保留奇次项，即得第二条盒装式；由于 \(\kappa_3=(9+10\sqrt5)/625>0\)，右侧严格小于左侧。脚本 \texttt{scripts/exp\_xi\_real\_input\_40\_collision\_ldp\_median\_twist\_audit.py} 对反函数系数与速率函数系数给出符号核验。证毕。
 \end{proof}
 
 \begin{corollary}[碰撞计数的 Edgeworth 连续中位点具有显式常数位移]\label{cor:xi-real-input-40-collision-edgeworth-continuous-median-shift}
@@ -310,6 +333,57 @@ a_n(-1)
 \frac1n\log|a_n(-1)|\to\log\rho_-.
 \]
 脚本 \texttt{scripts/exp\_xi\_real\_input\_40\_collision\_ldp\_median\_twist\_audit.py} 对特征多项式分解以及前若干 \(n\) 的迹样本进行逐项核验。证毕。
+\end{proof}
+
+\begin{corollary}[素数模上的平方根门槛呈余有限失效]\label{cor:xi-real-input-40-collision-prime-cofinite-sqrt-failure}
+沿用定理 \ref{thm:xi-real-input-40-collision-prime-twist-p2-threshold} 与
+\ref{thm:xi-real-input-40-collision-mod2-trace-three-spectrum} 的记号。对奇素数 \(p\) 定义
+\[
+\theta_p:=\frac{\log \rho_p}{\log\lambda}.
+\]
+则当 \(p\to\infty\) 时有
+\[
+\boxed{\;
+\theta_p
+=
+1-\frac{c_2}{(\log\lambda)\,p^2}+O(p^{-4}).\;}
+\]
+从而 \(\theta_p\to 1\)。特别地，存在 \(p_0\)，使得对所有奇素数 \(p>p_0\) 都有
+\[
+\theta_p>\frac12.
+\]
+另一方面，模 \(2\) 扭曲指数
+\[
+\theta_2:=\frac{\log\rho_-}{\log\lambda}
+\]
+亦满足
+\[
+\theta_2>\frac12.
+\]
+因此，在素数模集合中，满足 RH 形平方根门槛的 Dirichlet 扭曲误差至多只剩有限个例外；等价地，平方根门槛在素数模方向呈余有限失效。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-real-input-40-collision-prime-twist-p2-threshold}，
+\[
+\log \rho_p
+=
+\log\lambda-\frac{c_2}{p^2}+O(p^{-4}),
+\]
+两边除以 \(\log\lambda\) 即得盒装展开式，故 \(\theta_p\to 1\)，并进一步推出对充分大的奇素数 \(p\) 有 \(\theta_p>\frac12\)。
+
+对模 \(2\) 的情形，由定理 \ref{thm:xi-real-input-40-collision-mod2-trace-three-spectrum}，\(\rho_-\) 是三次方程
+\[
+x^3-2x^2-1=0
+\]
+的最大实根。又该多项式在 \(x=2\) 处取值为 \(-1\)，在 \(x=3\) 处取值为 \(8\)，故
+\[
+\rho_->2>\varphi=\lambda^{1/2}.
+\]
+于是
+\[
+\theta_2=\frac{\log\rho_-}{\log\lambda}>\frac12.
+\]
+综上，素数模上的平方根门槛失效只可能保留有限个例外。证毕。
 \end{proof}
 
 \input{subsubsec__xi-time-protocol-conclusions-part59-bernoulli-zero-natural-extension-resonance}

@@ -138,4 +138,122 @@ x_{h'}=\sum_{n\ge 0}a_n' B^n v,
 最后，若 \(\mathbf r\) 为 primitive word，则 \(\mathbf r^\infty\) 的最小周期正是 \(k\)。因而它不可能同时等于任何长度 \(\ell<k\) 的纯周期块重复；等价地，不存在 \(\ell<k\) 的规范元素与 \(h\) 共享固定点。证毕。
 \end{proof}
 
+\begin{theorem}[无限事件流地址在自然地址线上的严格前缀等距性]\label{thm:xi-time-part9g-holographic-prefix-isometry-on-line}
+沿用定理 \ref{thm:killo-godel-semidir-affine-2adic} 与推论 \ref{cor:killo-infinite-stream-2adic-holographic-point} 的设定，并记
+\[
+T_v:=\ZZ_2 v\subset T_2(E_{\min}).
+\]
+对任意 \(\mathbf e,\mathbf e'\in\mathcal E^{\NN}\)，定义首个分歧位置
+\[
+N(\mathbf e,\mathbf e')
+:=
+\min\{t\ge 1:\ e_t\neq e_t'\}\in\NN\cup\{\infty\}.
+\]
+若 \(\mathbf e\neq \mathbf e'\)，则
+\[
+\boxed{\;
+X(\mathbf e)-X(\mathbf e')
+\in
+B^{N(\mathbf e,\mathbf e')-1}T_v\setminus B^{N(\mathbf e,\mathbf e')}T_v.\;}
+\]
+因此，若定义前缀超度量
+\[
+d_{\mathrm{pref}}(\mathbf e,\mathbf e')
+:=
+\begin{cases}
+0,& \mathbf e=\mathbf e',\\[2pt]
+|B|_2^{\,N(\mathbf e,\mathbf e')-1},& \mathbf e\neq \mathbf e',
+\end{cases}
+\]
+以及 \(T_v\) 上的 \(B\)-进超度量
+\[
+d_B(x,y)
+:=
+\begin{cases}
+0,& x=y,\\[2pt]
+|B|_2^{\,\nu_B(x-y)},& x\neq y,
+\end{cases}
+\qquad
+\nu_B(z):=\max\{n\ge 0:\ z\in B^nT_v\},
+\]
+则
+\[
+\boxed{\;
+d_B\bigl(X(\mathbf e),X(\mathbf e')\bigr)=d_{\mathrm{pref}}(\mathbf e,\mathbf e').\;}
+\]
+进一步，对任意有限前缀
+\[
+a=(e_1,\dots,e_n)\in\mathcal E^n
+\]
+记
+\[
+[a]:=\{\mathbf e\in\mathcal E^{\NN}:\ e_1,\dots,e_n\ \text{固定}\},
+\qquad
+X_n(a):=\sum_{t=1}^{n}\mathrm{code}(e_t)\,B^{t-1}v.
+\]
+则
+\[
+\boxed{\;
+X([a])=\bigl(X_n(a)+B^nT_v\bigr)\cap X(\mathcal E^{\NN}).\;}
+\]
+因此，长度 \(n\) 的 cylinder 在商模 \(T_v/B^nT_v\) 中给出两两不交的剩余类。
+\end{theorem}
+\begin{proof}
+把 \(\mathbf e,\mathbf e'\) 通过编码识别为 digit 序列
+\[
+a_t:=\mathrm{code}(e_t),
+\qquad
+a_t':=\mathrm{code}(e_t').
+\]
+若 \(\mathbf e\neq \mathbf e'\)，记 \(N:=N(\mathbf e,\mathbf e')\)。则
+\[
+X(\mathbf e)-X(\mathbf e')
+=
+\sum_{t\ge N}(a_t-a_t')B^{t-1}v
+=
+B^{N-1}uv,
+\]
+其中
+\[
+u:=(a_N-a_N')+\sum_{t>N}(a_t-a_t')B^{t-N}\in\ZZ_2.
+\]
+由于 \(0\le a_t,a_t'\le M<B\) 且 \(a_N\neq a_N'\)，有
+\[
+u\equiv a_N-a_N'\not\equiv 0\pmod B.
+\]
+故 \(u\notin B\ZZ_2\)，于是
+\[
+uv\in T_v\setminus B T_v.
+\]
+从而
+\[
+X(\mathbf e)-X(\mathbf e')
+\in
+B^{N-1}T_v\setminus B^N T_v,
+\]
+即得第一条。\(d_B\) 与 \(d_{\mathrm{pref}}\) 的等式只是该 \(B\)-进阶数结论的直接重述。
+
+若 \(\mathbf e\in[a]\)，则由推论 \ref{cor:killo-infinite-stream-2adic-holographic-point} 的前缀截断公式，
+\[
+X(\mathbf e)-X_n(a)=\sum_{t>n}\mathrm{code}(e_t)\,B^{t-1}v\in B^nT_v,
+\]
+故 \(X([a])\subseteq X_n(a)+B^nT_v\)。反之，若
+\[
+X(\mathbf e)\in X_n(a)+B^nT_v
+\]
+而 \(\mathbf e\notin[a]\)，则 \(\mathbf e\) 与 \(a\) 的延拓在某个 \(j\le n\) 处首次分歧；由第一条可知该差值属于
+\[
+B^{j-1}T_v\setminus B^jT_v,
+\]
+从而不可能落在 \(B^nT_v\) 中，矛盾。故
+\[
+X([a])=\bigl(X_n(a)+B^nT_v\bigr)\cap X(\mathcal E^{\NN}).
+\]
+若两个长度 \(n\) 的前缀 \(a,b\) 不同，则任取 \(\mathbf e\in[a]\)、\(\mathbf e'\in[b]\)，它们在某个 \(j\le n\) 处首次分歧，故
+\[
+X(\mathbf e)-X(\mathbf e')\notin B^nT_v.
+\]
+因此对应的 \(B^nT_v\)-剩余类必然互不相交。证毕。
+\end{proof}
+
 \endinput

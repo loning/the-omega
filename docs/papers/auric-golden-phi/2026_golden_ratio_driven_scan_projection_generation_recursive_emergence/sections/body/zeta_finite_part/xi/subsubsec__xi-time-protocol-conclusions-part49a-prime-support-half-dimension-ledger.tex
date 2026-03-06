@@ -187,6 +187,156 @@ u\in \ZZ[S^{-1}]^\times
 证毕。
 \end{proof}
 
+\begin{theorem}[局部化数系之间的全部加法同态由局部化乘法完全刻画]\label{thm:xi-localized-integers-cross-hom-classification}
+设 \(S,T\subset\mathbb P\) 为有限素数集，并记
+\[
+G_S:=\ZZ[S^{-1}],
+\qquad
+G_T:=\ZZ[T^{-1}]
+\]
+为其加法群。则成立严格分类
+\[
+\operatorname{Hom}_{\ZZ}(G_S,G_T)\cong
+\begin{cases}
+0,& S\not\subseteq T,\\[1mm]
+G_T,& S\subseteq T,
+\end{cases}
+\]
+其中当 \(S\subseteq T\) 时，同构由
+\[
+x\in G_T\longmapsto m_x,
+\qquad
+m_x(y):=xy
+\]
+给出。
+\end{theorem}
+\begin{proof}
+先设 \(S\subseteq T\)。任取 \(x\in G_T\)，对任意 \(y\in G_S\) 可写成
+\[
+y=\frac{a}{D},
+\qquad
+a\in\ZZ,
+\qquad
+D=\prod_{p\in S}p^{k_p}.
+\]
+由于 \(S\subseteq T\)，\(xy\) 的分母仍只含 \(T\)-素数，故 \(xy\in G_T\)。于是
+\[
+m_x:G_S\to G_T,\qquad y\mapsto xy
+\]
+为良定义加法同态。映射 \(x\mapsto m_x\) 显然保持加法，且由 \(m_x(1)=x\) 可知其单射。
+
+现取任意 \(\phi\in \operatorname{Hom}_{\ZZ}(G_S,G_T)\)，记
+\[
+x:=\phi(1)\in G_T.
+\]
+对任意 \(y=a/D\in G_S\)，在加法群 \(G_S\) 中有关系 \(Dy=a\)。施加 \(\phi\) 得
+\[
+D\,\phi(y)=\phi(a)=ax.
+\]
+由于 \(G_T\subset \QQ\) 无挠，乘以非零整数 \(D\) 的映射单射，故
+\[
+\phi(y)=\frac{ax}{D}=xy=m_x(y).
+\]
+于是 \(\phi=m_x\)，从而 \(\operatorname{Hom}_{\ZZ}(G_S,G_T)\cong G_T\)。
+
+再设 \(S\not\subseteq T\)。取某个素数
+\[
+p\in S\setminus T.
+\]
+任取 \(\phi\in \operatorname{Hom}_{\ZZ}(G_S,G_T)\)，并记 \(x:=\phi(1)\)。由于 \(p^{-k}\in G_S\) 对每个 \(k\ge 1\) 都成立，故
+\[
+p^k\,\phi(p^{-k})=\phi(1)=x,
+\]
+从而 \(x\in p^kG_T\) 对一切 \(k\ge 1\) 都成立。若 \(x\neq 0\)，写其既约形式为
+\[
+x=\frac{a}{b},
+\qquad
+a\in\ZZ\setminus\{0\},
+\qquad
+b\in\NN,
+\]
+且 \(b\) 的全部素因子都属于 \(T\)。由于 \(p\notin T\)，\(b\) 不被 \(p\) 整除。若 \(x\in p^kG_T\)，则存在 \(y_k=c_k/d_k\in G_T\) 使 \(x=p^k y_k\)，其中 \(d_k\) 的全部素因子仍属于 \(T\)。交叉相乘得到
+\[
+ad_k=p^kbc_k.
+\]
+因 \(p\nmid b\) 且 \(p\nmid d_k\)，故 \(p^k\mid a\)。此事对所有 \(k\) 同时成立，只能推出 \(a=0\)，矛盾。故
+\[
+\bigcap_{k\ge 1}p^kG_T=\{0\},
+\qquad\text{从而}\qquad
+x=0.
+\]
+最后任取 \(y=a/D\in G_S\)，仍由 \(Dy=a\) 得
+\[
+D\,\phi(y)=\phi(a)=ax=0.
+\]
+再由 \(G_T\) 无挠，得到 \(\phi(y)=0\)。故 \(\phi=0\)，于是
+\[
+\operatorname{Hom}_{\ZZ}(G_S,G_T)=0.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[局部化数系及其对偶 solenoid 的全部连续可逆自同态恰由局部化单位给出]\label{cor:xi-localized-integers-dual-automorphism-units}
+沿用上述记号。取 \(T=S\) 时，有自然环同构
+\[
+\operatorname{End}_{\ZZ}(G_S)\cong G_S,
+\qquad
+\phi\longmapsto \phi(1),
+\]
+并且
+\[
+\operatorname{Aut}_{\ZZ}(G_S)\cong G_S^\times
+=
+\left\{\pm\prod_{p\in S}p^{n_p}: n_p\in\ZZ,\ \text{仅有限多个 }n_p\neq 0\right\}.
+\]
+若记文稿中的 Pontryagin 对偶短正合列为
+\[
+0\longrightarrow \prod_{p\in S}\ZZ_p\longrightarrow \widehat{G_S}\longrightarrow \TT\longrightarrow 0,
+\]
+再由 Pontryagin 对偶，连续端同态环满足
+\[
+\operatorname{End}_{\mathrm{cts}}(\widehat{G_S})
+\cong
+\operatorname{End}_{\ZZ}(G_S)^{\mathrm{op}}
+\cong
+G_S,
+\]
+而连续自同构群满足
+\[
+\operatorname{Aut}_{\mathrm{cts}}(\widehat{G_S})\cong G_S^\times.
+\]
+因此，\(\widehat{G_S}\) 的全部连续可逆自同态都只对应于 \(S\)-局部化有理数的可逆乘法，不会额外产生新的内部自由度。
+\end{corollary}
+\begin{proof}
+取 \(T=S\) 时，定理 \ref{thm:xi-localized-integers-cross-hom-classification} 立刻给出
+\[
+\operatorname{End}_{\ZZ}(G_S)\cong G_S.
+\]
+其单位群正是定理 \ref{thm:xi-localized-integers-endomorphism-automorphism-explicit} 中所刻画的
+\[
+G_S^\times
+=
+\left\{\pm\prod_{p\in S}p^{n_p}: n_p\in\ZZ,\ \text{仅有限多个 }n_p\neq 0\right\},
+\]
+故 \(\operatorname{Aut}_{\ZZ}(G_S)\cong G_S^\times\)。
+
+Pontryagin 对偶在局部紧交换群范畴中给出精确反变等价，因此
+\[
+\operatorname{End}_{\mathrm{cts}}(\widehat{G_S})
+\cong
+\operatorname{End}_{\ZZ}(G_S)^{\mathrm{op}}.
+\]
+又因 \(G_S\) 为交换环，反环与自身一致，故
+\[
+\operatorname{End}_{\mathrm{cts}}(\widehat{G_S})\cong G_S.
+\]
+单位在对偶等价下恰对应自同构，遂有
+\[
+\operatorname{Aut}_{\mathrm{cts}}(\widehat{G_S})\cong G_S^\times.
+\]
+证毕。
+\end{proof}
+
 \begin{corollary}[有限素数支撑同时决定局部化数系的嵌入偏序与内部对称]\label{cor:xi-localized-integers-order-endomorphism-rigidity}
 对任意有限素数集 \(S,T\subset\mathbb P\)，有
 \[
