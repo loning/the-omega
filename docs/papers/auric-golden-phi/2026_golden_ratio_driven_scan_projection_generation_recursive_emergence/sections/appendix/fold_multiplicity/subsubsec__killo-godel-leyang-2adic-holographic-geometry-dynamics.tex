@@ -27,6 +27,69 @@ X(\mathbf a):=\sum_{t\ge 1}a_t B^{t-1}v,\qquad
 K_{\mathcal E}:=\{X(\mathbf a):\ \mathbf a\in A^\NN\}\subset T_v.
 \]
 
+\begin{theorem}[\texorpdfstring{$2^L$}{2^L}-进全息地址的精确柱分离]\label{thm:killo-2adic-holographic-exact-cylinder-separation}
+进一步假设 \(v\) 为 \(T\) 中的原始向量，即
+\[
+v\notin BT.
+\]
+对任意 \(\mathbf a=(a_t)_{t\ge 1},\mathbf b=(b_t)_{t\ge 1}\in A^\NN\)，若其首次分歧位置为
+\[
+j:=\min\{t\ge 1:\ a_t\neq b_t\},
+\]
+则有
+\[
+X(\mathbf a)-X(\mathbf b)\in B^{j-1}T\setminus B^jT.
+\]
+等价地，对任意 \(n\ge 1\)，成立
+\[
+X(\mathbf a)\equiv X(\mathbf b)\pmod{B^nT}
+\quad\Longleftrightarrow\quad
+\mathrm{pref}_n(\mathbf a)=\mathrm{pref}_n(\mathbf b),
+\]
+其中 \(\mathrm{pref}_n\) 表示长度 \(n\) 前缀。
+\end{theorem}
+\begin{proof}
+由 \(j\) 的定义，
+\[
+X(\mathbf a)-X(\mathbf b)
+=
+\sum_{t\ge j}(a_t-b_t)B^{t-1}v
+=
+B^{j-1}uv,
+\]
+其中
+\[
+u:=(a_j-b_j)+\sum_{t>j}(a_t-b_t)B^{t-j}\in \ZZ_2.
+\]
+由于 \(A\subset\{0,1,\dots,M\}\)、\(M<B\)，且 \(a_j\neq b_j\)，故
+\[
+u\equiv a_j-b_j\not\equiv 0\pmod B.
+\]
+因此 \(u\in\ZZ_2^\times\) 为单位元，从而 \(X(\mathbf a)-X(\mathbf b)\in B^{j-1}T\)。
+若 \(X(\mathbf a)-X(\mathbf b)\in B^jT\)，则
+\[
+B^{j-1}uv\in B^jT=B^{j-1}(BT).
+\]
+由于 \(T\) 无挠，乘以 \(B^{j-1}\) 的映射在 \(T\) 上单射，故 \(uv\in BT\)。
+再由 \(u\) 为单位元，乘以 \(u^{-1}\) 得 \(v\in BT\)，与假设矛盾。
+故
+\[
+X(\mathbf a)-X(\mathbf b)\notin B^jT.
+\]
+
+若 \(\mathrm{pref}_n(\mathbf a)=\mathrm{pref}_n(\mathbf b)\)，则
+\[
+X(\mathbf a)-X(\mathbf b)=\sum_{t>n}(a_t-b_t)B^{t-1}v\in B^nT,
+\]
+故右端推出左端。
+反之，若 \(X(\mathbf a)\equiv X(\mathbf b)\pmod{B^nT}\) 而前 \(n\) 位并不全同，则其首次分歧位置 \(j\le n\)，这与上面已证
+\[
+X(\mathbf a)-X(\mathbf b)\in B^{j-1}T\setminus B^jT
+\]
+矛盾。
+故左端亦推出右端。
+\end{proof}
+
 \begin{theorem}[全息像集在 \texorpdfstring{$T_v$}{Tv} 上的强分离自相似结构与精确维数]\label{thm:killo-2adic-holographic-attractor-dimension}
 对每个 \(a\in A\) 定义仿射压缩
 \[
@@ -123,6 +186,59 @@ s=\frac{\log q}{L\log 2}.
 =\ZZ_2,
 \]
 即 \(K_{\mathcal E}=T_v\)，从而 \(\lambda_v(K_{\mathcal E})=1\)。证毕。
+\end{proof}
+
+\begin{corollary}[原始地址线在环境 \texorpdfstring{$T$}{T} 中的精确维数与零测性]\label{cor:killo-2adic-holographic-ambient-dimension-zero}
+在定理 \ref{thm:killo-2adic-holographic-exact-cylinder-separation} 的原始向量假设下，\(q=\card{A}=\card{\mathcal E}\)，并且把 \(K_{\mathcal E}\) 视为环境空间 \(T\cong \ZZ_2^2\) 的子集时，仍有
+\[
+\dim_H(K_{\mathcal E})=\dim_M(K_{\mathcal E})=\frac{\log q}{L\log 2}=\frac{\log \card{\mathcal E}}{\log B}.
+\]
+此外，由 \(A\subset\{0,1,\dots,M\}\) 与 \(B>M\) 可知 \(q\le B\)，故
+\[
+\dim_H(K_{\mathcal E})\le 1<2=\dim_H(T).
+\]
+因此 \(K_{\mathcal E}\) 在 \(T\) 的 Haar 测度下必为零测集。
+\end{corollary}
+\begin{proof}
+由编码单射性，\(\card{A}=\card{\mathcal E}\)。
+将 \(v\) 唯一写成
+\[
+v=2^r u,
+\]
+其中 \(r\ge 0\)，且 \(u\in T\setminus 2T\) 为 \(\ZZ_2\)-模意义下的原始向量。
+于是可取 \(w\in T\) 使
+\[
+T=\ZZ_2u\oplus \ZZ_2w.
+\]
+在该基下定义环境超度量
+\[
+d_T(x_1u+y_1w,\ x_2u+y_2w):=\max\{|x_1-x_2|_2,\ |y_1-y_2|_2\}.
+\]
+则 \(d_T\) 与 \(T\) 的标准 \(2\)-进拓扑相容。
+而对任意 \(a,b\in \ZZ_2\)，有
+\[
+d_T(av,bv)=d_T(2^rau,2^rbu)=2^{-r}|a-b|_2.
+\]
+因此 \(d_T|_{T_v}\) 与 \(d_v\) 只差一个常数因子 \(2^{-r}\)，从而二者双 Lipschitz 等价。
+因此 \(K_{\mathcal E}\subset T_v\subset T\) 的 Hausdorff 维数与 Minkowski 维数，在 \(T_v\) 内与在 \(T\) 内计算时一致。
+由定理 \ref{thm:killo-2adic-holographic-attractor-dimension}，得到
+\[
+\dim_H(K_{\mathcal E})=\dim_M(K_{\mathcal E})=\frac{\log q}{L\log 2}.
+\]
+
+再由 \(A\subset\{0,1,\dots,M\}\) 与 \(B>M\)，得
+\[
+q=\card{A}\le M+1\le B.
+\]
+故
+\[
+\frac{\log q}{\log B}\le 1.
+\]
+另一方面，\(T\cong \ZZ_2^2\) 在上述乘积超度量下的 Hausdorff 维数为 \(2\)，于是
+\[
+\dim_H(K_{\mathcal E})\le 1<2=\dim_H(T).
+\]
+由标准维数判别，\(K_{\mathcal E}\) 在 \(T\) 的 Haar 测度下为零测集。证毕。
 \end{proof}
 
 \begin{proposition}[前缀分辨率与 \texorpdfstring{$B^nT_v$}{B\^{}nTv}-陪集的严格分类]\label{prop:killo-2adic-holographic-prefix-classification}
