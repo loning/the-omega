@@ -45,6 +45,94 @@ v' & \exists\,e:v\to v'\ \text{s.t. }\ell_m(e)=a,\\
 为证 $H_m^{\mathrm{amb}}$ 无环，反设存在一个有向环完全落在 $\mathcal{S}_m^{\mathrm{amb}}$ 中。由于 $\mathcal{S}_m^{\mathrm{det}}$ 按定义是从初始状态 $V_m$ 可达的状态集合，该环上任取一状态必可由某条从 $V_m$ 出发的有限标记路径到达。随后沿该环循环可生成任意长的、始终停留在非单点态中的标记路径；这与“任意长度-$m$ 路径终点必落入单点态”矛盾。故 $H_m^{\mathrm{amb}}$ 不含有向环，为 DAG，从而也不承载周期轨道，结论 (1) 随之成立。证毕。
 \end{proof}
 
+\begin{theorem}[歧义壳的 \texorpdfstring{$\zeta$}{zeta} 因子平凡性与单点态骨架封口]\label{thm:Ym-ambiguity-shell-zeta-factor-trivial}
+设 \(m\ge 3\)。
+沿用定义 \ref{def:Phi_m-right-resolving} 与定理 \ref{thm:Ym-ambiguity-shell-dag} 的记号。
+记
+\[
+\mathcal S_m^{\mathrm{ess}}
+:=
+\bigl\{\{v\}:v\in V_m\bigr\}\cap \mathcal S_m^{\mathrm{det}}
+\]
+为 \(H_m^{\mathrm{det}}\) 中全部单点态所成的状态集，并令 \(H_m^{\mathrm{ess}}\) 表示其诱导子图。
+再分别记
+\[
+A_m^{\mathrm{det}},\qquad A_m^{\mathrm{ess}}
+\]
+为 \(H_m^{\mathrm{det}}\) 与 \(H_m^{\mathrm{ess}}\) 的按边条数计数的邻接矩阵。
+若按“先歧义态、后单点态”的顺序排列 \(\mathcal S_m^{\mathrm{det}}\)，则存在某个矩阵 \(R_m\) 使
+\[
+\boxed{\;
+A_m^{\mathrm{det}}
+=
+\begin{pmatrix}
+N_m & R_m\\
+0 & A_m^{\mathrm{ess}}
+\end{pmatrix},
+\qquad
+N_m^{\,m}=0.\;}
+\]
+因此
+\[
+\boxed{\;
+\det(I-zA_m^{\mathrm{det}})
+=
+\det(I-zA_m^{\mathrm{ess}}).\;}
+\]
+若进一步定义表示图层面的 edge-\(\zeta\) 函数
+\[
+\zeta_{H_m^{\mathrm{det}}}(z):=\frac{1}{\det(I-zA_m^{\mathrm{det}})},
+\qquad
+\zeta_{H_m^{\mathrm{ess}}}(z):=\frac{1}{\det(I-zA_m^{\mathrm{ess}})},
+\]
+则有
+\[
+\boxed{\;
+\zeta_{H_m^{\mathrm{det}}}(z)=\zeta_{H_m^{\mathrm{ess}}}(z).\;}
+\]
+换言之，歧义壳对表示图层面的 \(\zeta\)-函数贡献恒等因子 \(1\)。
+结合推论 \ref{cor:Phi_m-zeta-closed} 可知：\(Y_m\) 的全部周期谱由单点态骨架独自承载，并满足
+\[
+\zeta_{Y_m}(z)=\frac{1}{1-2z}.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:det-candidate-set-monotone}，单点态集合在前向读入下封闭，因此从单点态不可能返回歧义态。
+这正给出所示块上三角形状中的左下零块。
+
+接着证明 \(N_m^{\,m}=0\)。
+对任意允许的长度-\(m\) 输出块 \(a_0\cdots a_{m-1}\in\mathcal L_m(Y_m)\)，定理 \ref{thm:Phi_m-conjugacy-threshold} 的证明已经表明：该块对应唯一的长度-\((2m-1)\) lift 块，因而其终端顶点唯一确定。
+等价地，对任意可达候选集 \(S\subseteq V_m\)，沿递推
+\[
+S_{j+1}:=\delta_m(S_j,a_j),
+\qquad
+S_0:=S,
+\]
+在读入这 \(m\) 个输出符号后，所得 \(S_m\) 至多为单点。
+因此不可能存在完全停留在歧义态集合 \(\mathcal S_m^{\mathrm{amb}}\) 内的长度-\(m\) 路径。
+这正等价于 \(N_m^{\,m}=0\)。
+
+于是 \(N_m\) 为幂零矩阵，故
+\[
+\det(I-zN_m)=1.
+\]
+再由块上三角行列式分解，
+\[
+\det(I-zA_m^{\mathrm{det}})
+=
+\det(I-zN_m)\det(I-zA_m^{\mathrm{ess}})
+=
+\det(I-zA_m^{\mathrm{ess}}),
+\]
+从而得到所示 edge-\(\zeta\) 恒等式。
+
+最后，推论 \ref{cor:Phi_m-zeta-closed} 已给出 \(m\ge 3\) 时
+\(
+\zeta_{Y_m}(z)=1/(1-2z)
+\)；
+而定理 \ref{thm:Ym-ambiguity-shell-dag} 表明全部周期点都不可能永久驻留于歧义壳，故内禀周期谱完全由单点态骨架承载。证毕。
+\end{proof}
+
 \begin{corollary}[周期点刚性与内禀 \texorpdfstring{$\zeta_{Y_m}$}{zetaYm} 的退化]\label{cor:Ym-periodic-rigidity}
 当 $m\ge 3$ 时，对所有 $n\ge 1$ 有
 \[
