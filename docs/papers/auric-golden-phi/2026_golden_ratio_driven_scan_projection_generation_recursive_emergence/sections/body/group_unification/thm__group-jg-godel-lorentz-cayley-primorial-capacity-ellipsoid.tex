@@ -298,34 +298,104 @@ b(r)=r_{\mathrm{geo}}-r_{\mathrm{geo}}^{-1}
 取对数即得第二式；当 \(\Delta\to\infty\) 时 \(\log(1-e^{-4\Delta})=o(1)\)，从而得到所示渐近。证毕。
 \end{proof}
 
-\begin{proposition}[有限码本的最小总 Gödel 成本与 primorial 耦合]\label{prop:group-jg-min-total-godel-cost-primorial}
+\begin{theorem}[Gödel 可分解码本的 primorial 极小化与椭球--椭圆三重最优性]\label{prop:group-jg-min-total-godel-cost-primorial}
 令 \(X\) 为有限集，\(|X|=n\ge 1\)。
-考虑所有注入码本
+称注入
 \[
-\iota: X\hookrightarrow \NN_{\mathrm{sf},>1},
+\iota:X\hookrightarrow \NN_{\mathrm{sf},>1}
 \]
-其中 \(\NN_{\mathrm{sf},>1}\) 为大于 \(1\) 的平方自由正整数集合。
+为\emph{Gödel 可分解}，若其像满足两两互素条件
+\[
+\gcd(\iota(x),\iota(y))=1\qquad (x\neq y).
+\]
 定义总 Gödel 成本
 \[
-C(\iota):=\sum_{x\in X}\log \iota(x).
+C(\iota):=\sum_{x\in X}\log \iota(x)
+=\log\!\Bigl(\prod_{x\in X}\iota(x)\Bigr).
 \]
-则
-\[
-\min_{\iota} C(\iota)=\log(p_n\#),
-\]
-且极小码本可取为把 \(X\) 双射到 \(\{p_1,\dots,p_n\}\)（忽略排列）。
-\end{proposition}
+则成立：
+\begin{enumerate}
+  \item \textbf{总 Gödel 成本的极小性.}
+        在全体 Gödel 可分解码本中，
+        \[
+        \min_{\iota} C(\iota)=\log(p_n\#),
+        \]
+        且极小码本恰由 \(\iota(X)=\{p_1,\dots,p_n\}\)（忽略排列）给出。
+  \item \textbf{椭球体积乘积的极小性.}
+        取有限素数集 \(P_0\) 包含 \(\iota(X)\) 中出现的全部素因子，并令 \(D:=|P_0|\)。
+        对每个 \(x\in X\)，定义寄存器 \(r_x\in\NN^{(P_0)}\) 使 \(N(r_x)=\iota(x)\)。
+        则
+        \[
+        \prod_{x\in X}\mathrm{Vol}\bigl(\mathcal E_D(r_x)\bigr)
+        =
+        \mathrm{Vol}(B_D)^n\sqrt{\prod_{x\in X}\iota(x)},
+        \]
+        因而其极小化与 \(\prod_{x\in X}\iota(x)\) 的极小化等价，并由 \(\{p_1,\dots,p_n\}\) 同时达到。
+  \item \textbf{Joukowsky 椭圆面积乘积的极小性.}
+        在同一设定下，
+        \[
+        \prod_{x\in X}\mathrm{Area}\bigl(E_J(r_x)\bigr)
+        =
+        \pi^n\prod_{x\in X}\bigl(\iota(x)-\iota(x)^{-1}\bigr),
+        \]
+        且该乘积在 Gödel 可分解约束下同样由 \(\iota(X)=\{p_1,\dots,p_n\}\) 取得极小值。
+\end{enumerate}
+\end{theorem}
 
 \begin{proof}
-将 \(\{\iota(x):x\in X\}\) 递增排列为 \(q_{(1)}\le\cdots\le q_{(n)}\)。
-每个 \(q_{(i)}\) 至少含一个素因子，且平方自由与互异性迫使其最小可能选择为不同素数；
-由素数序性质得 \(q_{(i)}\ge p_i\)，故
+\textbf{(1)}
+对每个 \(x\in X\) 任选一个素因子 \(q_x\mid \iota(x)\)。
+由于 \(\iota\) 的像两两互素，\(\{q_x\}_{x\in X}\) 必为互异素数族。
+从而
 \[
-\prod_{x\in X}\iota(x)=\prod_{i=1}^n q_{(i)}\ge \prod_{i=1}^n p_i=p_n\#.
+\prod_{x\in X}\iota(x)\ \ge\ \prod_{x\in X}q_x.
 \]
-两边取对数即得下界。
-取 \(\iota(X)=\{p_1,\dots,p_n\}\) 达到该下界，故极小值为 \(\log(p_n\#)\)。证毕。
+将 \(\{q_x\}\) 递增排列为 \(q_{(1)}<\cdots<q_{(n)}\)。
+由素数序的极小性 \(q_{(i)}\ge p_i\) 得
+\[
+\prod_{x\in X}\iota(x)\ \ge\ \prod_{i=1}^{n}q_{(i)}
+\ \ge\ \prod_{i=1}^{n}p_i
+=p_n\#.
+\]
+两边取对数得到 \(C(\iota)\ge \log(p_n\#)\)。
+当 \(\iota(X)=\{p_1,\dots,p_n\}\) 时取等。
+若出现等号，则上式中每一步都必须取等，故 \(q_{(i)}=p_i\) 且 \(\iota(x)=q_x\) 对每个 \(x\) 成立，于是极小像集恰为 \(\{p_1,\dots,p_n\}\)。
+
+\textbf{(2)}
+由定理 \ref{thm:group-jg-godel-ellipsoid-volume}，
+\[
+\mathrm{Vol}\bigl(\mathcal E_D(r_x)\bigr)=\mathrm{Vol}(B_D)\sqrt{N(r_x)}
+=\mathrm{Vol}(B_D)\sqrt{\iota(x)}.
+\]
+对 \(x\in X\) 取乘积即得所示闭式。
+因此体积乘积的极小化与 \(\prod_x\iota(x)\) 的极小化等价，故由第 (1) 条得到同一极小码本。
+
+\textbf{(3)}
+由推论 \ref{cor:group-jg-ellipse-area-ellipsoid-gap}，
+\[
+\mathrm{Area}\bigl(E_J(r_x)\bigr)=\pi\bigl(\iota(x)-\iota(x)^{-1}\bigr).
+\]
+令 \(h(t):=t-t^{-1}\)（\(t>1\)），则 \(h'(t)=1+t^{-2}>0\)，故 \(h\) 严格递增。
+沿第 (1) 条的记号，对每个 \(x\) 有 \(\iota(x)\ge q_x\)，从而
+\[
+\prod_{x\in X}\bigl(\iota(x)-\iota(x)^{-1}\bigr)
+\ge
+\prod_{x\in X}\bigl(q_x-q_x^{-1}\bigr)
+\ge
+\prod_{i=1}^{n}\bigl(p_i-p_i^{-1}\bigr).
+\]
+故面积乘积的极小值同样由 \(\iota(X)=\{p_1,\dots,p_n\}\) 取得。证毕。
 \end{proof}
+
+\begin{remark}[互素约束的必要性]\label{rem:group-jg-min-total-godel-cost-coprime-necessity}
+primorial 极小化是 Gödel 可分解类的结构性结论，而不是全体平方自由注入类的结论。
+若只要求平方自由且互异，则可出现共享素因子的像集；例如当 \(n=4\) 时，
+\[
+\{2,3,5,6\}\subset \NN_{\mathrm{sf},>1}
+\]
+满足互异与平方自由，但其乘积 \(180\) 严格小于 \(p_4\#=210\)。
+因此“两两互素”正是乘法可分解语义所需的约束。
+\end{remark}
 
 \endinput
 
