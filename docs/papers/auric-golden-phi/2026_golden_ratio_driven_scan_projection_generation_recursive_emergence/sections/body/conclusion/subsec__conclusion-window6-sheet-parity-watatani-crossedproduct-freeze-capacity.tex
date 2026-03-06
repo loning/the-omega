@@ -1,5 +1,5 @@
 \subsection{window-\texorpdfstring{$6$}{6} 边界 sheet parity 的指数条件期望、crossed product 与冻结扇区读出}\label{subsec:conclusion-window6-sheet-parity-watatani-crossedproduct-freeze-capacity}
-本小节在 window-\(6\) 的边界二层覆盖、\(\ZZ_2^2\)-中心扇区分解与预言机容量框架下，给出一组可直接调用的终态命题：其核心是将 sheet parity 的块内代数实现、冻结相高阶矩读出与跨分辨率门控阈值统一到同一可审计接口。
+本小节在 window-\(6\) 的边界二层覆盖、\(\ZZ_2^2\)-中心扇区分解与预言机容量框架下，给出一组可直接调用的终态命题：其核心是将 sheet parity 的块内代数实现、冻结相高阶矩读出、相应的统计恢复率，以及跨分辨率门控阈值统一到同一可审计接口。
 
 \begin{theorem}[window-\(6\) 边界 sheet parity 条件期望的有限 Watatani 指数]\label{thm:conclusion-window6-sheet-conditional-expectation-index}
 令
@@ -223,6 +223,125 @@ W_{\alpha,\beta}(m,q)
 \pi_{m,a}(\{x:\chi(x)=\chi_m\})\ge \pi_{m,a}(A_m^{\max})\to 1
 \)。
 代回即得所述比值界与唯一极大化。证毕。
+\end{proof}
+
+\begin{theorem}[冻结相中边界 sheet parity 的双矩恢复与指数样本律]\label{thm:conclusion-window6-sheet-parity-sampling-law}
+在定理 \ref{thm:conclusion-signed-watatani-moments-read-chi} 与定理 \ref{thm:conclusion-chi-variational-sector-maximization} 的设定下，固定 \(a=q+1>a_{\mathrm c}\)，并记
+\[
+\chi_m=(\alpha,\beta)\in\{\pm1\}^2
+\]
+为冻结相中唯一极大扇区的符号指纹。令
+\[
+U(x):=\operatorname{sgn}(c_x)\in\{\pm1\},
+\qquad
+V(x):=\operatorname{sgn}(\iota_x)\in\{\pm1\},
+\qquad
+x\sim \pi_{m,a}.
+\]
+取独立样本 \(X_1,\dots,X_N\sim \pi_{m,a}\)，并定义经验均值
+\[
+\overline U_N:=\frac1N\sum_{j=1}^{N}U(X_j),
+\qquad
+\overline V_N:=\frac1N\sum_{j=1}^{N}V(X_j).
+\]
+约定 \(\operatorname{sgn}(0)=1\)，并定义估计器
+\[
+\widehat\alpha_N:=\operatorname{sgn}(\overline U_N),
+\qquad
+\widehat\beta_N:=\operatorname{sgn}(\overline V_N).
+\]
+则存在 \(m_0(a)\) 与常数 \(C_a>0\)，使得对所有 \(m\ge m_0(a)\)，若定义
+\[
+\varepsilon_m:=C_a\exp\!\bigl(-m\Delta(a)+o(m)\bigr)<1,
+\]
+则有错误界
+\[
+\PP\!\bigl((\widehat\alpha_N,\widehat\beta_N)\neq(\alpha,\beta)\bigr)
+\le
+4\exp\!\left(-\frac{N}{2}(1-\varepsilon_m)^2\right).
+\]
+特别地，当 \(m\) 充分大以致 \(\varepsilon_m\le \frac12\) 时，
+\[
+\PP\!\bigl((\widehat\alpha_N,\widehat\beta_N)\neq(\alpha,\beta)\bigr)
+\le 4e^{-N/8}.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-signed-watatani-moments-read-chi}，存在常数 \(C_a>0\) 使
+\[
+\bigl|\EE_{\pi_{m,a}}[U]-\alpha\bigr|
+=
+\bigl|R_{1,0,q}(m)-\alpha\bigr|
+\le
+\varepsilon_m,
+\]
+\[
+\bigl|\EE_{\pi_{m,a}}[V]-\beta\bigr|
+=
+\bigl|R_{0,1,q}(m)-\beta\bigr|
+\le
+\varepsilon_m.
+\]
+于是
+\[
+\alpha\,\EE_{\pi_{m,a}}[U]\ge 1-\varepsilon_m,
+\qquad
+\beta\,\EE_{\pi_{m,a}}[V]\ge 1-\varepsilon_m.
+\]
+
+定义
+\[
+Y_j:=\alpha\,U(X_j)\in\{\pm1\},
+\qquad
+Z_j:=\beta\,V(X_j)\in\{\pm1\}.
+\]
+则 \(\EE[Y_j]\ge 1-\varepsilon_m\)、\(\EE[Z_j]\ge 1-\varepsilon_m\)。又由 \(\operatorname{sgn}(0)=1\) 的约定，事件 \(\widehat\alpha_N\neq \alpha\) 蕴含
+\[
+\overline Y_N:=\frac1N\sum_{j=1}^{N}Y_j\le 0,
+\]
+同理 \(\widehat\beta_N\neq \beta\) 蕴含
+\[
+\overline Z_N:=\frac1N\sum_{j=1}^{N}Z_j\le 0.
+\]
+
+由 Hoeffding 不等式，
+\[
+\PP(\widehat\alpha_N\neq \alpha)
+\le
+\PP(\overline Y_N\le 0)
+\le
+\exp\!\left(-\frac{N}{2}(1-\varepsilon_m)^2\right),
+\]
+\[
+\PP(\widehat\beta_N\neq \beta)
+\le
+\PP(\overline Z_N\le 0)
+\le
+\exp\!\left(-\frac{N}{2}(1-\varepsilon_m)^2\right).
+\]
+对二者作并合界得到
+\[
+\PP\!\bigl((\widehat\alpha_N,\widehat\beta_N)\neq(\alpha,\beta)\bigr)
+\le
+2\exp\!\left(-\frac{N}{2}(1-\varepsilon_m)^2\right),
+\]
+从而特别有
+\[
+\PP\!\bigl((\widehat\alpha_N,\widehat\beta_N)\neq(\alpha,\beta)\bigr)
+\le
+4\exp\!\left(-\frac{N}{2}(1-\varepsilon_m)^2\right).
+\]
+当 \(\varepsilon_m\le \frac12\) 时，
+\(
+(1-\varepsilon_m)^2\ge \frac14
+\)，
+故
+\[
+\PP\!\bigl((\widehat\alpha_N,\widehat\beta_N)\neq(\alpha,\beta)\bigr)
+\le
+4e^{-N/8}.
+\]
+证毕。
 \end{proof}
 
 \begin{proposition}[边界 uplift 的最小外加寄存器阈值由预言机容量给出]\label{prop:conclusion-boundary-uplift-min-register-by-oracle-capacity}
