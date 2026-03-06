@@ -1,5 +1,5 @@
-\paragraph{局部化相位采样、dyadic 盲性与分层 prime-register 的极小性}
-以下条目把有限素数局部化数系的相位采样闭式、dyadic 读出的奇素失明、与有限生成离散交换群的严格不可混同性，以及分层 prime-register 外置在最坏情形下的锐最优性，压缩为同一条可直接调用的终端链条。
+\paragraph{局部化相位采样、solenoid 刚性与分层 prime-register 的极小性}
+以下条目把有限素数局部化数系的相位采样闭式、基本扩张的不分裂性、solenoid 端同态环与有限商/连通 Lie 商的刚性分类、dyadic 读出的奇素失明、与有限生成离散交换群的严格不可混同性，以及分层 prime-register 外置在最坏情形下的锐最优性，压缩为同一条可直接调用的终端链条。
 
 \begin{theorem}[局部化数系相位采样函数的闭式与素数剥离律]\label{thm:xi-localized-phase-sampling-closed-form}
 设 \(S\subset\mathbb P\) 为有限素数集，并记
@@ -99,6 +99,226 @@ p,& p\notin S.
 \end{cases}
 \]
 而对任意奇素 \(p\) 恒有 \(v_p(2^a)=0\)，故其是否属于 \(S\) 不会改变数值。证毕。
+\end{proof}
+
+\begin{theorem}[局部化数系基本短正合列的严格不分裂性]\label{thm:xi-localized-basic-extension-strictly-nonsplit}
+设 \(S\subset\mathbb P\) 为非空有限素数集，并记
+\[
+G_S:=\ZZ[S^{-1}].
+\]
+前述结果给出短正合列
+\[
+0\longrightarrow \ZZ\longrightarrow G_S\longrightarrow \bigoplus_{p\in S}\ZZ(p^\infty)\longrightarrow 0
+\]
+及其 Pontryagin 对偶
+\[
+0\longrightarrow \prod_{p\in S}\ZZ_p\longrightarrow \widehat{G_S}\longrightarrow \TT\longrightarrow 0.
+\]
+则这两条短正合列都不分裂。等价地，不存在群同态截面
+\[
+\bigoplus_{p\in S}\ZZ(p^\infty)\longrightarrow G_S,
+\]
+也不存在连续群同态截面
+\[
+\TT\longrightarrow \widehat{G_S}.
+\]
+\end{theorem}
+\begin{proof}
+若第一条短正合列分裂，则
+\[
+G_S\cong \ZZ\oplus \bigoplus_{p\in S}\ZZ(p^\infty).
+\]
+右端含有非零挠子群，而
+\[
+G_S=\ZZ[S^{-1}]\subset \QQ
+\]
+作为有理数加法群的子群无挠，矛盾。故离散侧不分裂。
+
+Pontryagin 对偶在局部紧交换群范畴中给出精确反变等价。若第二条短正合列分裂，则再对偶化便得到第一条离散短正合列分裂，与上一步矛盾。故紧侧亦不分裂。证毕。
+\end{proof}
+
+\begin{theorem}[局部化数系端同态环的完全分类与 solenoid 的直积不可分解性]\label{thm:xi-localized-endomorphism-ring-solenoid-indecomposable}
+沿用定理 \ref{thm:xi-localized-basic-extension-strictly-nonsplit} 的记号。则：
+\begin{enumerate}
+  \item 任意群同态 \(\phi:G_S\to G_S\) 都唯一地写成
+  \[
+  \phi(x)=qx
+  \qquad (x\in G_S)
+  \]
+  的形式，其中 \(q\in G_S\)。
+  \item 因而
+  \[
+  \operatorname{End}(G_S)\cong G_S
+  \]
+  作为交换环同构成立，其中加法为点态相加，乘法为复合。
+  \item \(\operatorname{End}(G_S)\) 的幂等元只有 \(0,1\)。等价地，
+  \[
+  \operatorname{End}_{\mathrm{cts}}(\widehat{G_S})
+  \cong
+  \operatorname{End}(G_S)^{\mathrm{op}}
+  \cong
+  G_S
+  \]
+  亦只含平凡幂等元；特别地，\(\widehat{G_S}\) 不存在非平凡连续幂等自同态，因而不能分解为两个非平凡紧交换群的直积。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+取任意 \(\phi\in \operatorname{End}(G_S)\)，记
+\[
+q:=\phi(1)\in G_S.
+\]
+对任意 \(x\in G_S\)，可写成
+\[
+x=\frac{a}{D},
+\qquad
+a\in \ZZ,
+\qquad
+D=\prod_{p\in S}p^{k_p}
+\]
+的形式。由 \(Dx=a\) 可得
+\[
+D\,\phi(x)=\phi(a)=aq.
+\]
+由于 \(G_S\subset \QQ\) 无挠，乘以 \(D\) 的映射单射，故
+\[
+\phi(x)=\frac{aq}{D}=qx.
+\]
+这证明了第 \(1\) 条；唯一性由在 \(x=1\) 处取值立即得到。反过来，任取 \(q\in G_S\)，映射 \(x\mapsto qx\) 因 \(G_S\) 为 \(\QQ\) 的子环而确为 \(G_S\) 的自同态。于是
+\[
+q\longmapsto m_q,\qquad m_q(x):=qx
+\]
+给出 \(\operatorname{End}(G_S)\) 与 \(G_S\) 之间的双射。
+
+该双射保持加法，且满足
+\[
+m_q\circ m_r=m_{qr},
+\]
+故第 \(2\) 条成立。
+
+由于 \(G_S=\ZZ[S^{-1}]\subset \QQ\) 是整环的子环，幂等方程
+\[
+e^2=e
+\]
+只可能有解 \(e=0\) 或 \(e=1\)。故 \(\operatorname{End}(G_S)\) 仅有平凡幂等元。Pontryagin 对偶把连续端同态环识别为离散端端同态环的反环；又因 \(G_S\) 交换，反环与自身一致，故 \(\operatorname{End}_{\mathrm{cts}}(\widehat{G_S})\) 同样只含平凡幂等元。
+
+若 \(\widehat{G_S}\cong K_1\times K_2\) 为两个非平凡紧交换群的直积，则合成
+\[
+\widehat{G_S}\xrightarrow{\ \mathrm{pr}_1\ }K_1
+\hookrightarrow
+K_1\times K_2\cong \widehat{G_S}
+\]
+给出一个既非零也非恒等的连续幂等自同态，矛盾。故 \(\widehat{G_S}\) 不能作非平凡直积分解。证毕。
+\end{proof}
+
+\begin{theorem}[有限商与有限相位层的完全分类]\label{thm:xi-localized-finite-quotient-phase-layer-classification}
+沿用定理 \ref{thm:xi-localized-basic-extension-strictly-nonsplit} 的记号。对任意正整数 \(n\)，定义
+\[
+n_{S^\perp}:=\frac{n}{\prod_{p\in S}p^{v_p(n)}},
+\]
+即从 \(n\) 中剥离全部 \(S\)-主因子后得到的 \(S\)-自由部分。则：
+\begin{enumerate}
+  \item 商群满足
+  \[
+  G_S/nG_S\cong \ZZ/n_{S^\perp}\ZZ.
+  \]
+  \item 因而 \(G_S\) 的全部有限商恰为循环群 \(\ZZ/d\ZZ\)，其中 \(d\) 的全部素因子都不属于 \(S\)。
+  \item 对偶地，\(\widehat{G_S}\) 的全部有限闭子群也恰为这些循环群。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+把 \(n\) 分解为
+\[
+n=n_S\,n_{S^\perp},
+\qquad
+n_S:=\prod_{p\in S}p^{v_p(n)}.
+\]
+对每个 \(p\in S\)，乘法映射 \(x\mapsto px\) 在 \(G_S=\ZZ[S^{-1}]\) 上是自同构，因为 \(x\mapsto x/p\) 仍取值于 \(G_S\)。故
+\[
+nG_S=n_{S^\perp}G_S.
+\]
+因此只需证明当 \(n\) 与 \(\prod_{p\in S}p\) 互素时，
+\[
+G_S/nG_S\cong \ZZ/n\ZZ.
+\]
+
+考虑自然映射
+\[
+\rho:\ZZ\longrightarrow G_S/nG_S.
+\]
+任取 \(x=a/b\in G_S\)，其中 \(a\in\ZZ\)，且 \(b\) 的全部素因子属于 \(S\)。由于 \(\gcd(b,n)=1\)，可取 \(c,k\in\ZZ\) 使
+\[
+bc=1+nk.
+\]
+于是
+\[
+x-ac
+=
+\frac{a}{b}-ac
+=
+\frac{a(1-bc)}{b}
+=
+-n\,\frac{ak}{b}\in nG_S,
+\]
+故 \(x\equiv ac\pmod{nG_S}\)。这说明 \(\rho\) 满射。
+
+再看核。若 \(m\in\ker\rho\)，则
+\[
+m=n\frac{a}{b}
+\]
+对某个 \(\frac{a}{b}\in G_S\) 成立，且 \(\gcd(b,n)=1\)。于是
+\[
+bm=na.
+\]
+由于 \(\gcd(b,n)=1\)，必有 \(b\mid a\)，从而 \(a/b\in \ZZ\)，进而 \(m\in n\ZZ\)。故
+\[
+\ker(\rho)=n\ZZ,
+\]
+于是
+\[
+G_S/nG_S\cong \ZZ/n\ZZ.
+\]
+把 \(n\) 替换回 \(n_{S^\perp}\) 即得第 \(1\) 条。
+
+若 \(F\) 为 \(G_S\) 的任一有限商，令 \(n\) 为 \(F\) 的指数，则满射 \(G_S\twoheadrightarrow F\) 经由 \(G_S/nG_S\) 因子化。由第 \(1\) 条，\(G_S/nG_S\) 为循环群，故 \(F\) 亦为循环群，且其阶的全部素因子都不属于 \(S\)。反之，若 \(d\) 的全部素因子都不属于 \(S\)，则 \(d=d_{S^\perp}\)，从而
+\[
+G_S/dG_S\cong \ZZ/d\ZZ.
+\]
+第 \(2\) 条得证。
+
+第 \(3\) 条由 Pontryagin 对偶把有限离散商与有限闭子群一一对应，并且有限循环群的对偶仍为同阶循环群，立即得到。证毕。
+\end{proof}
+
+\begin{theorem}[连通 Lie 商的圆周刚性]\label{thm:xi-localized-connected-lie-quotient-circle-rigidity}
+沿用定理 \ref{thm:xi-localized-basic-extension-strictly-nonsplit} 的记号。设 \(K\) 是 \(\widehat{G_S}\) 的连通紧 Lie 商。则必有
+\[
+K\cong \TT^r
+\qquad\text{且}\qquad
+r\le 1.
+\]
+特别地，任何非平凡连通紧 Lie 商都同构于 \(\TT\)。
+\end{theorem}
+\begin{proof}
+连通紧 Lie 交换群必同构于某个环面 \(\TT^r\)。设
+\[
+\pi:\widehat{G_S}\twoheadrightarrow K
+\]
+为满射，则对偶化得到单射
+\[
+\widehat K\hookrightarrow G_S.
+\]
+而
+\[
+\widehat K\cong \ZZ^r.
+\]
+由于 \(G_S=\ZZ[S^{-1}]\subset \QQ\)，有
+\[
+G_S\otimes_{\ZZ}\QQ\cong \QQ,
+\]
+故 \(G_S\) 的有理秩为 \(1\)。于是其任意自由阿贝尔子群的秩至多为 \(1\)，从而 \(r\le 1\)。若 \(K\) 非平凡，则 \(r\neq 0\)，故必有 \(r=1\)，即
+\[
+K\cong \TT.
+\]
+证毕。
 \end{proof}
 
 \begin{theorem}[非平凡局部化数系与有限生成离散交换群的相位采样不可混同]\label{thm:xi-localized-phase-sampling-not-finitely-generated}

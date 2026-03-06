@@ -1,0 +1,259 @@
+\paragraph{Stirling--Bernoulli 恢复、半维零块、自然扩张账本与共振整函数计数}
+折叠规范常数的 Bernoulli 层级、谱零点集合的约数稀疏上界、自然扩张的 prime-register 外置实现以及共振整函数的 Cartwright 结构，在现有命题链下还可继续压缩为下列五条直接后果。
+
+\begin{theorem}[折叠规范常数列逐阶内生恢复全部 Bernoulli 数]\label{thm:xi-foldbin-gauge-constant-recovers-all-bernoulli}
+沿用推论 \ref{cor:fold-bin-recover-2pi} 的规范常数列 \((C_m)_{m\ge 1}\)。对每个整数 \(r\ge 1\)，记
+\[
+\lambda_r:=\Bigl(\frac{\varphi}{2}\Bigr)^{2r-1},
+\qquad
+\gamma_r:=\frac{\varphi^{-1}+\varphi^{2r-3}}{r(2r-1)}.
+\]
+则对每个固定整数 \(R\ge 1\)，极限
+\[
+\boxed{\;
+B_{2R}
+=
+\gamma_R^{-1}
+\lim_{m\to\infty}
+\lambda_R^{-m}
+\left(
+\log C_m-\log(2\pi)-\sum_{r=1}^{R-1}\gamma_r B_{2r}\lambda_r^m
+\right)\;}
+\]
+存在；其中当 \(R=1\) 时，和式按空和解释。
+因此序列 \((\log C_m)_{m\ge 1}\) 通过逐阶消元唯一决定全部偶 Bernoulli 数。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:fold-bin-gauge-constant-stirling-bernoulli-hierarchy}，对任意固定 \(R\ge 1\) 有渐近展开
+\[
+\log C_m
+=
+\log(2\pi)+
+\sum_{r=1}^{R}\gamma_r B_{2r}\lambda_r^m
++O(\lambda_{R+1}^m).
+\]
+又因为
+\[
+\frac{\lambda_{R+1}}{\lambda_R}
+=
+\Bigl(\frac{\varphi}{2}\Bigr)^2<1,
+\qquad
+\gamma_R>0,
+\]
+故在已知 \(B_2,\dots,B_{2R-2}\) 时，减去前 \(R-1\) 阶项并乘以 \(\lambda_R^{-m}\)，得到
+\[
+\lambda_R^{-m}
+\left(
+\log C_m-\log(2\pi)-\sum_{r=1}^{R-1}\gamma_r B_{2r}\lambda_r^m
+\right)
+=
+\gamma_R B_{2R}+O\!\left(\frac{\lambda_{R+1}^m}{\lambda_R^m}\right).
+\]
+令 \(m\to\infty\) 即得极限存在且等于 \(\gamma_R B_{2R}\)，整理便得到所示公式。证毕。
+\end{proof}
+
+\begin{corollary}[单一规范常数列完整编码 \texorpdfstring{\(\pi\)}{pi} 与全部偶值 \texorpdfstring{\(\zeta(2R)\)}{zeta(2R)}]\label{cor:xi-foldbin-gauge-constant-recovers-pi-even-zeta}
+沿用定理 \ref{thm:xi-foldbin-gauge-constant-recovers-all-bernoulli} 的记号，则
+\[
+\boxed{\;
+\pi=\frac12\exp\!\Bigl(\lim_{m\to\infty}\log C_m\Bigr).\;}
+\]
+并且对每个整数 \(R\ge 1\)，有
+\[
+\boxed{\;
+\zeta(2R)
+=
+(-1)^{R-1}\frac{(2\pi)^{2R}}{2(2R)!}\,B_{2R},\;}
+\]
+其中 \(B_{2R}\) 由定理 \ref{thm:xi-foldbin-gauge-constant-recovers-all-bernoulli} 的极限公式唯一恢复。
+因此，规范常数列 \((C_m)\) 单独即编码了 \(\pi\) 与全部偶值 \(\zeta\)-谱。
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:fold-bin-recover-2pi}，
+\(
+\log C_m\to\log(2\pi)
+\)，
+故第一式立即成立。
+再由定理 \ref{thm:xi-foldbin-gauge-constant-recovers-all-bernoulli}，全部 \(B_{2R}\) 可由 \((C_m)\) 逐阶恢复；而定理 \ref{thm:fold-bin-gauge-constant-stirling-bernoulli-hierarchy} 已给出标准恒等式
+\[
+B_{2R}=(-1)^{R-1}\frac{2(2R)!}{(2\pi)^{2R}}\zeta(2R).
+\]
+移项即得第二式。证毕。
+\end{proof}
+
+\begin{theorem}[谱零点集合的半维指数律]\label{thm:xi-fold-zero-set-half-dimensional-exponent-law}
+沿用定理 \ref{thm:fold-zero-density-sparse} 与推论 \ref{cor:fold-zero-half-index-multiple6} 的记号，记
+\[
+\mathcal Z_m:=\{k\in \ZZ/(F_{m+2}\ZZ):\ \widehat d_m(k)=0\}.
+\]
+则沿同余子序列
+\[
+m+2\equiv 0\pmod 6
+\]
+有极限
+\[
+\boxed{\;
+\lim_{\substack{m\to\infty\\ m+2\equiv 0\ (6)}}
+\frac{1}{m}\log|\mathcal Z_m|
+=
+\frac12\log\varphi,\;}
+\]
+并且相对密度满足
+\[
+\boxed{\;
+\lim_{\substack{m\to\infty\\ m+2\equiv 0\ (6)}}
+\frac{1}{m}\log\frac{|\mathcal Z_m|}{F_{m+2}}
+=
+-\frac12\log\varphi.\;}
+\]
+换言之，\(|\mathcal Z_m|=\varphi^{m/2+o(m)}\)，而 \(|\mathcal Z_m|/F_{m+2}=\varphi^{-m/2+o(m)}\)。
+\end{theorem}
+\begin{proof}
+若 \(m+2\equiv 0\pmod 6\)，记
+\[
+d:=\frac{m+2}{2}.
+\]
+由推论 \ref{cor:fold-zero-half-index-multiple6}，
+\[
+|\mathcal Z_m|\ge F_d.
+\]
+另一方面，由定理 \ref{thm:fold-zero-density-sparse}，
+\[
+\frac{|\mathcal Z_m|}{F_{m+2}}
+\le
+\tau(m+2)\frac{F_{\lfloor (m+2)/2\rfloor}}{F_{m+2}}
+=
+\tau(m+2)\frac{F_d}{F_{m+2}},
+\]
+故
+\[
+|\mathcal Z_m|\le \tau(m+2)\,F_d.
+\]
+由于约数函数满足 \(\tau(n)=e^{o(n)}\)，而 Fibonacci 数满足 \(F_n=\varphi^{n+o(n)}\)，遂得
+\[
+F_d\le |\mathcal Z_m|\le e^{o(m)}F_d=\varphi^{m/2+o(m)}.
+\]
+两边取 \((1/m)\log\) 即得第一条极限。
+再由
+\[
+F_{m+2}=\varphi^{m+o(m)},
+\]
+从而
+\[
+\frac{|\mathcal Z_m|}{F_{m+2}}
+=
+\varphi^{-m/2+o(m)},
+\]
+第二条极限随即成立。证毕。
+\end{proof}
+
+\begin{theorem}[无界逆分支深度强制无限层 prime-register 外置]\label{thm:xi-natural-extension-infinite-prime-register-necessity}
+设 \(T:X\twoheadrightarrow X\) 为有限纤维满射，并假设其逆向分支深度无界，即对每个整数 \(N\ge 1\)，都存在长度 \(N\) 的前史片段
+\[
+x_{-N}\xrightarrow{\,T\,}x_{-N+1}\xrightarrow{\,T\,}\cdots\xrightarrow{\,T\,}x_{-1}\xrightarrow{\,T\,}x_0
+\]
+满足
+\[
+\#T^{-1}(x_{-j+1})\ge 2
+\qquad(1\le j\le N).
+\]
+则在定理 \ref{thm:xi-layered-prime-register-sharp-natural-extension} 的分层 prime-register 外置语义下，不存在任何仅使用有限个 prime slices 的精确单射实现能够把自然扩张
+\[
+X^{\leftarrow}
+:=
+\{(x_0,x_{-1},x_{-2},\dots):T(x_{-n})=x_{-n+1}\}
+\]
+共轭到某个有限层账本系统上。
+等价地，对全自然扩张的精确可逆外置，所需有效 prime-register 层数必为无穷。
+
+另一方面，定理 \ref{thm:killo-natural-extension-branch-register} 给出共轭
+\[
+X^{\leftarrow}\cong \widehat X\subseteq X\times\NN^\NN,
+\]
+故可数无穷层账本足以完成精确编码。
+\end{theorem}
+\begin{proof}
+反设存在某个有限整数 \(k\ge 1\)，使自然扩张在同一分层 prime-register 语义下可由仅含 \(k\) 个 prime slices 的账本精确单射外置。
+由于该外置与自然扩张共轭，其码字在像空间上具有精确逆映射；再与前史截断
+\[
+\pi_N:X^{\leftarrow}\to X^{N+1},
+\qquad
+\pi_N(x_0,x_{-1},x_{-2},\dots):=(x_0,x_{-1},\dots,x_{-N})
+\]
+复合，便知同一有限层账本可对任意固定深度 \(N\) 的前史片段作精确恢复。
+
+取 \(N:=k+1\)。
+由无界逆分支深度假设，存在一条长度 \(N\) 的前史片段，其前 \(N\) 层每层都至少出现一次二歧分支。
+于是上述有限层账本在该前史族上给出一个深度 \(N\) 的精确分层外置，而所用 prime slices 仍只有原来的 \(k\) 个。
+这与定理 \ref{thm:xi-layered-prime-register-sharp-natural-extension} 矛盾：在最坏情形下，深度 \(N\) 的精确分层外置至少需要 \(N\) 个有效 prime slices。
+
+故有限层 prime-register 外置不可能精确实现整个自然扩张。
+另一方面，定理 \ref{thm:killo-natural-extension-branch-register} 已把 \(X^{\leftarrow}\) 共轭到 \(X\times\NN^\NN\) 上的右移插入系统，说明可数无穷层账本足以给出精确实现。证毕。
+\end{proof}
+
+\begin{theorem}[共振整函数零点计数的线性主项]\label{thm:xi-fold-resonance-entire-zero-counting-linear}
+沿用定理 \ref{thm:fold-resonance-entire-lp} 的记号，定义
+\[
+\mathcal F_\varphi(z):=\prod_{n=2}^{\infty}\cos(\pi z\varphi^{-n}).
+\]
+则 \(\mathcal F_\varphi\) 属于 Laguerre--P\'olya 类，且全部零点均为实单零点：
+\[
+\mathcal Z(\mathcal F_\varphi)=\Bigl\{(k+\tfrac12)\varphi^n:\ k\in\ZZ,\ n\ge 2\Bigr\}.
+\]
+若记正零点计数函数
+\[
+N_+(R):=\#\{x\in(0,R]:\ \mathcal F_\varphi(x)=0\},
+\]
+则当 \(R\to\infty\) 时有
+\[
+\boxed{\;
+N_+(R)=R+O(\log R).\;}
+\]
+相应地，双侧零点计数满足
+\[
+\boxed{\;
+\#\bigl(\mathcal Z(\mathcal F_\varphi)\cap[-R,R]\bigr)=2R+O(\log R).\;}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:fold-resonance-entire-lp}，正零点恰为
+\[
+\Bigl\{(k+\tfrac12)\varphi^n:\ k\in\ZZ_{\ge 0},\ n\ge 2\Bigr\}.
+\]
+对每个固定的 \(n\ge 2\)，落在 \((0,R]\) 内的该层零点数为
+\[
+N_n(R)
+:=
+\#\Bigl\{k\in\ZZ_{\ge 0}:\ (k+\tfrac12)\varphi^n\le R\Bigr\}
+=
+\left\lfloor \frac{R}{\varphi^n}+\frac12\right\rfloor
+=
+\frac{R}{\varphi^n}+O(1).
+\]
+仅当 \(\varphi^n\le 2R\) 时该项才可能非零，故
+\[
+N_+(R)
+=
+\sum_{n=2}^{\lfloor \log_\varphi(2R)\rfloor}N_n(R)
+=
+R\sum_{n=2}^{\lfloor \log_\varphi(2R)\rfloor}\varphi^{-n}
++O(\log R).
+\]
+又因为
+\[
+\sum_{n=2}^{\infty}\varphi^{-n}=1,
+\]
+且有限截断尾和为 \(O(R^{-1})\)，遂得
+\[
+N_+(R)=R+O(\log R).
+\]
+最后，由零点集关于原点对称，立得
+\[
+\#\bigl(\mathcal Z(\mathcal F_\varphi)\cap[-R,R]\bigr)=2R+O(\log R).
+\]
+证毕。
+\end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part60-entropy-renyi-collision-window6}
+
+\endinput
