@@ -1,7 +1,7 @@
 % (User input window)
 
-\paragraph{跨接口终端结论：真实输入核的记忆可观测性、strictification 普适性与端点/熵率审计常数族}
-本段把真实输入核、strictification（完全正可见实现）与端点审计三条链条中的可复核常数与普适性质，
+\paragraph{跨接口终端结论：像空间塌缩、真实输入核分离与端点/有限域审计不变量}
+本段把像空间 \(Y_m\) 的共轭塌缩、真实输入核与无约束同步核的谱分离、strictification（完全正可见实现）、端点审计以及有限域影子等链条中的可复核常数与普适性质，
 压缩为可独立引用的结论条目；证明仅指向相应已完成的定理/命题/推论（或其可审计输出），不再重复推导细节。
 
 \begin{conclusion}[真实输入核的 Parry 记忆位严格解耦：\texorpdfstring{$(p_x,p_y)$}{(px,py)} 在最大熵下给出闭式边缘并严格独立]\label{con:xi-terminal-real-input-parry-memory-decoupling}
@@ -265,19 +265,225 @@ Chebyshev--Adams 恒等式与 \(\varepsilon=\chi_4\) 见命题 \ref{prop:endpoin
 见定理 \ref{thm:xi-finite-frontier-certificate}。证毕。
 \end{proof}
 
-\begin{conclusion}[输入合法性约束的几何化产生常数级谱跃迁：加法投影碰撞常数在真实核上显著下降]\label{con:xi-terminal-addition-collision-spectrum-constant-factor-drop}
-把“加法作为一次投影”的同像碰撞谱常数记为 \(r^{\mathrm{add}}_q\)（为相应 \(q\)-碰撞 moment-kernel 的 Perron 根；见附录 \ref{app:add-collision-spectrum}）。
-无约束输入（10 状态归一化核驱动）与真实输入约束（40 状态核编码 Zeckendorf 合法性）之间存在显著常数差异：
+\begin{conclusion}[像空间在 \texorpdfstring{$m\ge 3$}{m>=3} 时失去分辨率可辨识性：\texorpdfstring{$Y_m$}{Ym} 的共轭塌缩]\label{con:xi-terminal-image-space-resolution-nonidentifiability}
+沿定义 \ref{def:Y_m} 记
 \[
-r^{\mathrm{add}}_{2,\mathrm{sync}}\approx 8.7430515,\qquad
-r^{\mathrm{add}}_{2,\mathrm{real}}\approx 3.9985433,
-\qquad
-\frac{r^{\mathrm{add}}_{2,\mathrm{sync}}}{r^{\mathrm{add}}_{2,\mathrm{real}}}\approx 2.186559.
+Y_m:=\Phi_m\bigl(\{0,1\}^{\ZZ}\bigr).
 \]
-该“指数尺度的常数因子级下降”提供一个可直接报告的价值锚点：真实输入核不仅更贴近算术对象，而且在空间损失谱（以碰撞主尺度表征）上携带不可由无约束归一化器替代的独立信息。
+则对任意 \(m,n\ge 3\)，移位系统 \((Y_m,\sigma)\) 与 \((Y_n,\sigma)\) 拓扑共轭；更强地，它们都与二元全移位 \((\{0,1\}^{\ZZ},\sigma)\) 共轭。因而对每个 \(m\ge 3\) 与 \(k\ge 1\) 有
+\[
+h_{\mathrm{top}}(Y_m)=\log 2,\qquad
+\zeta_{Y_m}(z)=\frac{1}{1-2z},\qquad
+\#\mathrm{Fix}(\sigma^k|_{Y_m})=2^k.
+\]
+特别地，任何仅依赖 \(Y_m\) 的拓扑共轭不变量都不可能恢复分辨率 \(m\)；非平凡的 prime shadow 或 arithmetic shadow 必须来自核、势/权重、扭曲通道或附加约束，而不能由像空间 \(Y_m\) 单独承载。
 \end{conclusion}
 \begin{proof}[证明]
-见命题 \ref{prop:addition-collision-spectrum-sync10-vs-real40} 与表 \ref{tab:add-collision-spectrum-10-vs-40}。证毕。
+定理 \ref{thm:Phi_m-conjugacy-threshold} 已给出当 \(m\ge 3\) 时 \(\Phi_m\) 与二元全移位之间的拓扑共轭，推论 \ref{cor:Ym-conjugacy-all-mge3} 给出任意 \(Y_m,Y_n\) 之间的共轭。由推论 \ref{cor:Phi_m-zeta-closed}（等价地，推论 \ref{cor:Ym-periodic-rigidity}）可得固定点计数与内禀 Artin--Mazur \(\zeta\)-函数的闭式。拓扑共轭不变量在共轭下保持不变，而推论 \ref{cor:Phi_m-zeta-closed} 已明确非平凡 prime shadow 不来自折叠因子本身，故结论成立。证毕。
+\end{proof}
+
+\begin{conclusion}[Zeckendorf 合法性不是微扰：加法投影碰撞谱主指数发生严格指数级分离]\label{con:xi-terminal-addition-collision-spectrum-constant-factor-drop}
+把“加法作为一次投影”的 \(q\)-阶碰撞 Perron 根分别记为
+\[
+r_q^{\oplus,\mathrm{sync10}},\qquad
+r_q^{\oplus,\mathrm{real}},
+\]
+其中前者对应 \(10\) 状态归一化核与全移位输入，后者对应真实输入 \(40\) 状态核与 Zeckendorf 合法性约束。则对所有 \(q\ge 2\) 有严格不等式
+\[
+r_q^{\oplus,\mathrm{real}}<r_q^{\oplus,\mathrm{sync10}}.
+\]
+在 \(q=2\) 时，
+\[
+r_2^{\oplus,\mathrm{sync10}}\approx 8.7430515270,\qquad
+r_2^{\oplus,\mathrm{real}}\approx 3.9985433445,\qquad
+\frac{r_2^{\oplus,\mathrm{sync10}}}{r_2^{\oplus,\mathrm{real}}}\approx 2.186559.
+\]
+若 \(S_q^{\oplus,\mathrm{sync10}}(m)\) 与 \(S_q^{\oplus,\mathrm{real}}(m)\) 分别表示两种口径下的 \(q\)-阶碰撞矩，则
+\[
+S_q^{\oplus,\mathrm{sync10}}(m)=\Theta\!\bigl((r_q^{\oplus,\mathrm{sync10}})^m\bigr),\qquad
+S_q^{\oplus,\mathrm{real}}(m)=\Theta\!\bigl((r_q^{\oplus,\mathrm{real}})^m\bigr),
+\]
+并存在常数 \(c_q,C_q>0\) 使得对充分大的 \(m\) 有
+\[
+c_q\left(\frac{r_q^{\oplus,\mathrm{sync10}}}{r_q^{\oplus,\mathrm{real}}}\right)^m
+\le
+\frac{S_q^{\oplus,\mathrm{sync10}}(m)}{S_q^{\oplus,\mathrm{real}}(m)}
+\le
+C_q\left(\frac{r_q^{\oplus,\mathrm{sync10}}}{r_q^{\oplus,\mathrm{real}}}\right)^m.
+\]
+因此，把真实输入替换为全移位输入所造成的误差不是多项式级或次指数级，而是由 Perron 根比值控制的严格指数级形变。
+\end{conclusion}
+\begin{proof}[证明]
+对所有 \(q\ge 2\) 的严格不等式由定理 \ref{thm:addition-collision-perron-drop-real-vs-sync} 给出。附录 \ref{app:add-collision-spectrum} 已将两类 \(q\)-阶碰撞矩编译为有限非负核，并给出 Perron 主尺度表示 \(S_q^{\oplus}(m)=\Theta((r_q^{\oplus})^m)\)；故上述比值估计由标准 Perron--Frobenius 渐近立即得到。\(q=2\) 的显式数值由命题 \ref{prop:addition-collision-spectrum-sync10-vs-real40} 及表 \ref{tab:add-collision-spectrum-10-vs-40} 给出。证毕。
+\end{proof}
+
+\begin{conclusion}[像空间塌缩之后的核层刚性：真实输入 essential 核与二元全移位在流等价与 \texorpdfstring{$K$}{K}-理论上严格分离]\label{con:xi-terminal-kernel-flow-k-separation-from-fullshift}
+令 \(A=M_{\mathrm{ess}}\) 为真实输入 \(20\times 20\) essential 邻接矩阵。则
+\[
+\mathrm{BF}(A)\cong \ZZ^2\oplus \ZZ/2\ZZ,\qquad
+K_0(\mathcal O_A)\cong \ZZ^2\oplus \ZZ/2\ZZ,\qquad
+K_1(\mathcal O_A)\cong \ZZ^2.
+\]
+另一方面，对任意 \(m\ge 3\)，像空间 \(Y_m\) 仅为二元全移位的一个共轭模型。因而：
+\begin{enumerate}
+  \item \(A\) 不可能与二元全移位的任一 irreducible SFT 表示流等价；
+  \item \(\mathcal O_A\) 不可能与 \(\mathcal O_2\) 稳定同构；
+  \item 本文中出现的非平凡 prime-orbit、\(\zeta\) 或算子代数结构，不是 \(Y_m\) 的内禀像空间影子，而是核层级的独立刚性。
+\end{enumerate}
+\end{conclusion}
+\begin{proof}[证明]
+命题 \ref{prop:real-input-40-bf-ktheory} 已给出 \(A\) 的 Bowen--Franks 群与 Cuntz--Krieger \(K\)-群。对二元全移位的标准邻接矩阵 \([2]\)，有
+\[
+\mathrm{BF}([2])=\ZZ/(1-2)\ZZ=0,\qquad
+K_0(\mathcal O_2)=0,\qquad
+K_1(\mathcal O_2)=0.
+\]
+由于 Bowen--Franks 群在 irreducible SFT 的流等价下保持不变，而 Cuntz--Krieger \(K\)-群在稳定同构下保持不变，故前两条成立。再结合结论 \ref{con:xi-terminal-image-space-resolution-nonidentifiability} 中 \(Y_m\) 的全移位塌缩，第三条随之成立。证毕。
+\end{proof}
+
+\begin{conclusion}[高阶碰撞矩的模 \texorpdfstring{$2$}{2} 阴影在 \texorpdfstring{$q=9,\dots,17$}{q=9,...,17} 上完全有限自动机化]\label{con:xi-terminal-high-order-collision-mod2-automaticity}
+对共振窗 \(q=9,\dots,17\)，模 \(2\) 影子分解满足
+\[
+E^{a_q}(E+1)^{b_q}S_q\equiv 0\pmod 2,
+\]
+其中表 \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17} 给出
+\[
+b_q=
+\begin{cases}
+4, & q=9,10,\\
+6, & q=11,12,14,16,\\
+8, & q=13,15,\\
+10, & q=17.
+\end{cases}
+\]
+因此各序列 \(S_q(m)\bmod 2\) 的最终周期满足
+\[
+\mathrm{Per}_q\mid 4\quad(q=9,10),\qquad
+\mathrm{Per}_q\mid 8\quad(q=11,\dots,16),\qquad
+\mathrm{Per}_q\mid 16\quad(q=17).
+\]
+进一步，定义向量值序列
+\[
+\mathbf S(m):=\bigl(S_9(m),S_{10}(m),\dots,S_{17}(m)\bigr)\pmod 2.
+\]
+则存在 \(M_0\) 使得对所有 \(m\ge M_0\) 有
+\[
+\mathbf S(m+16)=\mathbf S(m).
+\]
+等价地，\(\mathbf S(m)\) 在最终阶段仅依赖于 \(m\) 的低 \(4\) 位二进制展开；因此整个高阶区间的模 \(2\) 阴影可由一个周期长度至多为 \(16\) 的有限自动机完全生成。
+\end{conclusion}
+\begin{proof}[证明]
+定理 \ref{thm:pom-resonance-mod2-finite-bit-automaticity} 给出：对每个 \(q\)，最终周期整除 \(2^{\lceil\log_2 b_q\rceil}\)。把表 \ref{tab:fold_collision_charpoly_mod2_shadow_q9_17} 中的 \(b_q\) 逐项代入，即得上述各区间的周期上界。向量序列 \(\mathbf S(m)\) 的最终周期于是整除
+\[
+\mathrm{lcm}(4,8,16)=16.
+\]
+故存在 \(M_0\) 使 \(\mathbf S(m+16)=\mathbf S(m)\) 对一切 \(m\ge M_0\) 成立；而“最终周期整除 \(16\)”与“最终仅依赖于 \(m\) 的低 \(4\) 位二进制展开”等价。证毕。
+\end{proof}
+
+\begin{conclusion}[零温端点的大偏差速率函数具有由 \texorpdfstring{$B_\infty$}{B∞} 控制的对数尖点]\label{con:xi-terminal-real-input-output-rate-log-cusp}
+沿用命题 \ref{prop:real-input-40-pressure-freezing} 的输出位势记号，并令
+\[
+P(\theta)=\frac{\theta}{2}+\log c+A e^{-\theta/2}+B e^{-\theta}+O(e^{-3\theta/2})
+\qquad (\theta\to+\infty),
+\]
+其中
+\[
+A:=\frac{d}{c}>0,
+\qquad
+c=\sqrt{\rho(B_\infty)}.
+\]
+定义未归一化 Legendre--Fenchel 对偶
+\[
+\widetilde I(s):=\sup_{\theta\in\RR}\bigl(s\theta-P(\theta)\bigr),
+\qquad 0\le s\le \frac12.
+\]
+当 \(s\uparrow \frac12\) 时，令
+\[
+\delta:=\frac12-s\downarrow 0.
+\]
+则有精确边界展开
+\[
+\widetilde I(s)
+=
+-\log c
++2\delta\log\delta
++2\Bigl(\log\frac{2}{A}-1\Bigr)\delta
++O(\delta^2).
+\]
+特别地，
+\[
+\widetilde I\!\left(\frac12\right)
+=-\log c
+=-\frac12\log\rho(B_\infty).
+\]
+若改用附录 \ref{app:real-input-40-zeta-u} 中的归一化速率函数
+\[
+I_e(s):=\sup_{\theta\in\RR}\bigl(s\theta-(P(\theta)-P(0))\bigr)
+=\widetilde I(s)+P(0),
+\]
+则同样有
+\[
+I_e(s)
+=
+P(0)-\log c
++2\delta\log\delta
++2\Bigl(\log\frac{2}{A}-1\Bigr)\delta
++O(\delta^2),
+\]
+从而
+\[
+I_e\!\left(\frac12\right)=P(0)-\log c=\log(\varphi^2/c).
+\]
+因此饱和端点 \(s=\frac12\) 不是解析边界点，而是首系数为 \(2\) 的对数尖点；其未归一化高度完全由零温地基矩阵 \(B_\infty\) 的 Perron 根控制。
+\end{conclusion}
+\begin{proof}[证明]
+由命题 \ref{prop:real-input-40-pressure-freezing}，当 \(\theta\to+\infty\) 时
+\[
+P'(\theta)=\frac12-\frac{A}{2}e^{-\theta/2}+O(e^{-\theta}),
+\qquad
+P''(\theta)=\frac{A}{4}e^{-\theta/2}+O(e^{-\theta})>0
+\]
+对充分大的 \(\theta\) 成立。因此当 \(s<\frac12\) 且充分接近 \(\frac12\) 时，极值点 \(\theta=\theta(s)\) 唯一，并由方程
+\[
+P'(\theta)=s
+\]
+确定。令 \(\delta=\frac12-s\)，则
+\[
+\delta=\frac{A}{2}e^{-\theta/2}+O(e^{-\theta}),
+\]
+从而反解得
+\[
+e^{-\theta/2}=\frac{2\delta}{A}+O(\delta^2),
+\qquad
+\theta=-2\log\delta+2\log\frac{A}{2}+O(\delta).
+\]
+将其代回
+\[
+\widetilde I(s)=s\theta-P(\theta)
+=-\delta\theta-\log c-Ae^{-\theta/2}+O(e^{-\theta}),
+\]
+得到
+\[
+\widetilde I(s)
+=
+-\log c
++2\delta\log\delta
++2\Bigl(\log\frac{2}{A}-1\Bigr)\delta
++O(\delta^2).
+\]
+令 \(\delta\downarrow 0\) 即得
+\(
+\widetilde I(\frac12)=-\log c
+\)。
+同一附录中命题 \ref{prop:real-input-40-pressure-freezing} 之后的零温缩放证书已识别 \(c=\sqrt{\rho(B_\infty)}\)，故
+\(
+\widetilde I(\frac12)=-\frac12\log\rho(B_\infty)
+\)。
+归一化速率函数 \(I_e\) 与 \(\widetilde I\) 仅相差常数 \(P(0)\)，故展开的一次非解析项与线性系数保持不变；端点值
+\(
+I_e(\frac12)=P(0)-\log c
+\)
+则与推论 \ref{cor:real-input-40-rate-endpoints} 一致。证毕。
 \end{proof}
 
 \begin{conclusion}[折叠输出的内生 Gibbs 规格与 Parry 基线几乎同熵：最大熵缺口降至微比特级且 KL 率等同于熵缺口]\label{con:xi-terminal-fold-output-gibbs-parry-microbit-gap}
