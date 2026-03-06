@@ -1,0 +1,233 @@
+\paragraph{escort 温度流的总变差压缩与 Fisher 几何}
+在末位充分化已经把 escort 温度族压缩到一维 Bernoulli 参数之后，不仅温度间 KL 退化为二态闭式，而且整个族在总变差与 Fisher 几何两种口径下都可完全显式化。
+
+\begin{theorem}[escort 族在总变差意义下塌缩为一比特 Gibbs 族]\label{thm:xi-foldbin-escort-tv-collapse-onebit-gibbs}
+对任意固定 \(q\ge 0\)，定义 escort 分布
+\[
+\pi_{m,q}(w):=\frac{(d_m^{\mathrm{bin}}(w))^q}{S_q^{\mathrm{bin}}(m)},
+\qquad
+w\in X_m.
+\]
+记末位函数 \(\ell(w):=w_m\in\{0,1\}\)，并定义仅依赖于末位的比较分布
+\[
+\widetilde\pi_{m,q}(w):=
+\frac{\varphi^{-q\ell(w)}}{F_{m+1}+\varphi^{-q}F_m}.
+\]
+则对每个固定 \(q\ge 0\)，有
+\[
+\|\pi_{m,q}-\widetilde\pi_{m,q}\|_{\mathrm{TV}}
+=
+O\!\bigl(q(\varphi/2)^m\bigr).
+\]
+因此，末位 \(\ell(w)\) 在总变差意义下成为 escort 族的渐近充分统计量。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:fold-bin-escort-lastbit} 的证明，
+\[
+(d_m^{\mathrm{bin}}(w))^q
+=
+\left(\frac{2}{\varphi}\right)^{qm}\varphi^{-q w_m}
+\Bigl(1+O\!\bigl(q(\varphi/2)^m\bigr)\Bigr)
+\qquad(w\in X_m),
+\]
+且误差在 \(w\) 上一致。与此同时，
+\[
+S_q^{\mathrm{bin}}(m)
+=
+\left(\frac{2}{\varphi}\right)^{qm}
+\bigl(F_{m+1}+\varphi^{-q}F_m\bigr)
+\Bigl(1+O\!\bigl(q(\varphi/2)^m\bigr)\Bigr).
+\]
+两式相除得
+\[
+\pi_{m,q}(w)=\widetilde\pi_{m,q}(w)\Bigl(1+O\!\bigl(q(\varphi/2)^m\bigr)\Bigr)
+\]
+在 \(w\in X_m\) 上一致成立。
+由于 \(\sum_{w\in X_m}\widetilde\pi_{m,q}(w)=1\)，于是
+\[
+\sum_{w\in X_m}\bigl|\pi_{m,q}(w)-\widetilde\pi_{m,q}(w)\bigr|
+=
+O\!\bigl(q(\varphi/2)^m\bigr),
+\]
+从而总变差界立即得到。证毕。
+\end{proof}
+
+\begin{theorem}[escort 参数在总变差上保持严格可辨识]\label{thm:xi-foldbin-escort-tv-identifiable-limit-distance}
+沿用定理 \ref{thm:xi-foldbin-escort-tv-collapse-onebit-gibbs} 的记号，并定义
+\[
+\theta_m(q):=\widetilde\pi_{m,q}\bigl(\{w\in X_m:\ w_m=1\}\bigr)
+=
+\frac{F_m\varphi^{-q}}{F_{m+1}+\varphi^{-q}F_m}.
+\]
+则
+\[
+\theta_m(q)\longrightarrow \theta(q):=\frac{1}{1+\varphi^{q+1}}.
+\]
+并且对任意固定 \(p,q\ge 0\)，有
+\[
+\|\pi_{m,q}-\pi_{m,p}\|_{\mathrm{TV}}
+=
+|\theta_m(q)-\theta_m(p)|
++O\!\bigl((1+p+q)(\varphi/2)^m\bigr),
+\]
+从而
+\[
+\lim_{m\to\infty}\|\pi_{m,q}-\pi_{m,p}\|_{\mathrm{TV}}
+=
+|\theta(q)-\theta(p)|.
+\]
+特别地，极限参数可由单一标量 \(\theta(q)\) 反演为
+\[
+q=\log_\varphi\!\left(\frac{1-\theta(q)}{\theta(q)}\right)-1.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-foldbin-escort-tv-collapse-onebit-gibbs}，
+\[
+\|\pi_{m,q}-\pi_{m,p}\|_{\mathrm{TV}}
+\le
+\|\pi_{m,q}-\widetilde\pi_{m,q}\|_{\mathrm{TV}}
++\|\widetilde\pi_{m,q}-\widetilde\pi_{m,p}\|_{\mathrm{TV}}
++\|\widetilde\pi_{m,p}-\pi_{m,p}\|_{\mathrm{TV}},
+\]
+并且交换 \(p,q\) 后同理可得反向估计，因此
+\[
+\|\pi_{m,q}-\pi_{m,p}\|_{\mathrm{TV}}
+=
+\|\widetilde\pi_{m,q}-\widetilde\pi_{m,p}\|_{\mathrm{TV}}
++O\!\bigl((1+p+q)(\varphi/2)^m\bigr).
+\]
+
+记
+\[
+A_0:=\{w\in X_m:\ w_m=0\},
+\qquad
+A_1:=\{w\in X_m:\ w_m=1\}.
+\]
+则 \(\widetilde\pi_{m,q}\) 在 \(A_0\) 与 \(A_1\) 上分别均匀，且两块总质量依次为
+\(
+1-\theta_m(q)
+\)
+与
+\(
+\theta_m(q)
+\)。
+由于两部分支撑不交，故
+\[
+\|\widetilde\pi_{m,q}-\widetilde\pi_{m,p}\|_{\mathrm{TV}}
+=
+|\theta_m(q)-\theta_m(p)|.
+\]
+再由 \(F_{m+1}/F_m\to\varphi\) 得
+\[
+\theta_m(q)=\frac{1}{F_{m+1}F_m^{-1}\varphi^q+1}\longrightarrow \frac{1}{1+\varphi^{q+1}}=\theta(q),
+\]
+从而得到极限公式。
+最后，由
+\[
+\theta(q)=\frac{1}{1+\varphi^{q+1}}
+\]
+直接解得
+\[
+\varphi^{q+1}=\frac{1-\theta(q)}{\theta(q)},
+\]
+即得反演式。证毕。
+\end{proof}
+
+\begin{theorem}[escort 曲线的 logistic Fisher 几何与有限长度 Bernoulli 弧]\label{thm:xi-foldbin-escort-logistic-fisher-geometry}
+沿用结论 \ref{con:xi-terminal-foldbin-escort-divergence-two-state-closure} 的记号，令
+\[
+\theta(q):=\frac{1}{1+\varphi^{q+1}}
+\qquad(q\ge 0).
+\]
+则 bin-fold escort 温度流在极限中塌缩为一维 logistic Bernoulli 指数族，其 Fisher 信息度量为
+\[
+I_\infty(q)
+:=
+\frac{\varphi^{q+1}(\log\varphi)^2}{(1+\varphi^{q+1})^2}.
+\]
+更精确地，对每个固定 \(q\ge 0\)（并令 \(h\to 0\) 时始终满足 \(q+h\ge 0\)）都有双极限公式
+\[
+\lim_{h\to 0}\ \lim_{m\to\infty}
+\frac{2}{h^2}\,
+D_{\mathrm{KL}}(\pi_{m,q+h}\Vert \pi_{m,q})
+=
+I_\infty(q).
+\]
+此外，escort 曲线 \(q\in[0,\infty)\) 的极限 Fisher 长度为有限值
+\[
+L_\infty
+:=
+\int_0^\infty \sqrt{I_\infty(q)}\,\dd q
+=
+\pi-2\arctan\sqrt{\varphi}.
+\]
+\end{theorem}
+\begin{proof}
+由结论 \ref{con:xi-terminal-foldbin-escort-divergence-two-state-closure}，
+对任意固定 \(q,p\ge 0\) 有
+\[
+\lim_{m\to\infty}D_{\mathrm{KL}}(\pi_{m,q}\Vert \pi_{m,p})
+=
+\theta(q)\log\frac{\theta(q)}{\theta(p)}
++(1-\theta(q))\log\frac{1-\theta(q)}{1-\theta(p)}.
+\]
+取 \(p=q\) 并把 \(q\) 替换为 \(q+h\)，得到内层极限恰为 Bernoulli 族的 KL 散度
+\[
+K(q,h)
+:=
+D_{\mathrm{KL}}\bigl(\mathrm{Bern}(\theta(q+h))\Vert \mathrm{Bern}(\theta(q))\bigr).
+\]
+
+对一维 Bernoulli 模型，以参数 \(q\) 为坐标的 Fisher 信息满足
+\[
+I_\infty(q)=\frac{(\theta'(q))^2}{\theta(q)(1-\theta(q))}.
+\]
+直接计算
+\[
+\theta'(q)
+=
+-\frac{\varphi^{q+1}\log\varphi}{(1+\varphi^{q+1})^2}
+=
+-\theta(q)(1-\theta(q))\log\varphi.
+\]
+故
+\[
+I_\infty(q)
+=
+\theta(q)(1-\theta(q))(\log\varphi)^2
+=
+\frac{\varphi^{q+1}(\log\varphi)^2}{(1+\varphi^{q+1})^2}.
+\]
+
+Bernoulli KL 在 \(h=0\) 处的二阶 Taylor 展开给出
+\[
+K(q,h)=\frac12 I_\infty(q)h^2+o(h^2),
+\]
+从而得到双极限公式。
+
+最后计算长度：
+\[
+L_\infty
+=
+\int_0^\infty
+(\log\varphi)\frac{\varphi^{(q+1)/2}}{1+\varphi^{q+1}}\,\dd q.
+\]
+置
+\[
+y=\varphi^{(q+1)/2},
+\qquad
+\dd q=\frac{2}{\log\varphi}\frac{\dd y}{y}.
+\]
+当 \(q=0\) 时 \(y=\sqrt\varphi\)；当 \(q\to\infty\) 时 \(y\to\infty\)。故
+\[
+L_\infty
+=
+2\int_{\sqrt\varphi}^{\infty}\frac{1}{1+y^2}\,\dd y
+=
+2\Bigl[\arctan y\Bigr]_{\sqrt\varphi}^{\infty}
+=
+\pi-2\arctan\sqrt\varphi.
+\]
+证毕。
+\end{proof}
