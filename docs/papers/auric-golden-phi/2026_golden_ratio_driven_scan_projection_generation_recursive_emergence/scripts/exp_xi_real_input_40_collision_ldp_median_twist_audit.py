@@ -10,7 +10,9 @@ collision pressure P_2(theta)=log rho(exp(theta)), namely:
   - the continuous Edgeworth median shift constant;
   - the prime-twist p^2 threshold constants c2, c4 and sample errors;
   - the mod-2 twisted trace decomposition into one real mode plus one complex
-    conjugate pair.
+    conjugate pair;
+  - the negative-frequency algebraic branch alpha_- attached to the mod-2
+    parity twist.
 
 Output:
   - artifacts/export/xi_real_input_40_collision_ldp_median_twist_audit.json
@@ -57,6 +59,12 @@ def _mp_str(x: mp.mpf | mp.mpc, nd: int = 18) -> str:
         sign = "+" if x.imag >= 0 else ""
         return f"{mp.nstr(x.real, nd)}{sign}{mp.nstr(x.imag, nd)}j"
     return mp.nstr(x, nd)
+
+
+def _alpha_from_rho(rho: mp.mpf) -> mp.mpf:
+    num = (rho**2 - 2 * rho - 1) * (rho - 1)
+    den = 2 * rho**3 - 5 * rho**2 + 4 * rho + 1
+    return num / den
 
 
 def _derive_theta_inverse_and_rate(
@@ -177,12 +185,38 @@ def _parity_trace_samples() -> Dict[str, object]:
     return {
         "charpoly": _sp_str(charpoly),
         "charpoly_factorized": str(factored),
-        "rho_minus": _mp_str(rho_minus),
+        "rho_minus": _mp_str(rho_minus, 24),
         "xi": _mp_str(xi_mp),
         "xi_abs": _mp_str(abs(xi_mp)),
         "theta": _mp_str(theta),
         "cos_theta": _mp_str(cos_theta),
         "trace_samples": [asdict(sample) for sample in trace_samples],
+    }
+
+
+def _mod2_negative_frequency_branch(rho_minus: mp.mpf) -> Dict[str, object]:
+    a = sp.Symbol("a")
+    cubic = sp.Poly(59 * a**3 - 59 * a**2 + 15 * a + 2, a)
+    roots = cubic.nroots(n=80, maxsteps=200)
+    real_roots = [root for root in roots if abs(sp.im(root)) < sp.Float("1e-40")]
+    if len(real_roots) != 1:
+        raise RuntimeError("Expected exactly one real root for the alpha_- cubic.")
+
+    alpha_minus = _alpha_from_rho(rho_minus)
+    alpha_cubic_root = mp.mpf(str(sp.re(real_roots[0]).evalf(70)))
+    residual = 59 * alpha_minus**3 - 59 * alpha_minus**2 + 15 * alpha_minus + 2
+    match_gap = abs(alpha_minus - alpha_cubic_root)
+
+    return {
+        "cubic": "59*a^3 - 59*a^2 + 15*a + 2",
+        "discriminant": str(sp.discriminant(cubic.as_expr(), a)),
+        "alpha_minus_from_rho": _mp_str(alpha_minus, 24),
+        "alpha_minus_from_cubic_root": _mp_str(alpha_cubic_root, 24),
+        "alpha_minus_match_gap": _mp_str(match_gap, 8),
+        "alpha_minus_residual": _mp_str(residual, 24),
+        "f_at_minus_tenth": str(sp.nsimplify(cubic.as_expr().subs(a, sp.Rational(-1, 10)))),
+        "f_at_zero": str(cubic.as_expr().subs(a, 0)),
+        "in_physical_interval": bool(0 <= alpha_minus <= mp.mpf("0.5")),
     }
 
 
@@ -239,6 +273,8 @@ def main() -> None:
             raise RuntimeError(f"Prime-twist asymptotic error too large at p={sample.p}.")
 
     parity_data = _parity_trace_samples()
+    rho_minus = mp.mpf(parity_data["rho_minus"])
+    negative_branch = _mod2_negative_frequency_branch(rho_minus)
 
     out: Dict[str, object] = {
         "meta": {
@@ -269,6 +305,7 @@ def main() -> None:
             "samples": [asdict(sample) for sample in prime_samples],
         },
         "mod2_parity_trace": parity_data,
+        "mod2_negative_frequency_branch": negative_branch,
     }
 
     out_path = Path(args.out_json)

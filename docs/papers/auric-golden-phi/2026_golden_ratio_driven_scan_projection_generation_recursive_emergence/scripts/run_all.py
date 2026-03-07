@@ -319,6 +319,30 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_jensen_comoving_prony_audit",
+            script="exp_xi_jensen_comoving_prony_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_jensen_comoving_prony_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_freezing_capacity_core_twist_audit",
+            script="exp_xi_freezing_capacity_core_twist_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_freezing_capacity_core_twist_audit.json",
+            ],
+        ),
+        Step(
+            name="xi_zg_branch_tower_field_separation_audit",
+            script="exp_xi_zg_branch_tower_field_separation_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_zg_branch_tower_field_separation_audit.json",
+            ],
+        ),
+        Step(
             name="pom_xi_s5_primitive_element_minpoly_certificate",
             script="exp_pom_xi_s5_primitive_element_minpoly_certificate.py",
             args=[],
