@@ -293,6 +293,85 @@ X_i^{(\sigma_2)}\le X_i^{(\sigma_1)}
 证毕。
 \end{proof}
 
+\begin{corollary}[ZG Dirichlet 级数在 \texorpdfstring{$s=1$}{s=1} 的简单极点留数等于自然密度]\label{cor:derived-zg-simple-pole-density-residue}
+记 \(\delta_{\mathrm{ZG}}\) 为定理 \ref{thm:xi-zg-abel-residue-log-density} 中 \(\mathrm{ZG}\) 的自然密度。则
+\[
+\lim_{\sigma\downarrow 1}(\sigma-1)\mathcal D_{\mathrm{ZG}}(\sigma)=\delta_{\mathrm{ZG}}.
+\]
+等价地，
+\[
+H_{\mathrm{ZG}}(1+)=\zeta(2)\,\delta_{\mathrm{ZG}}.
+\]
+因此，定理 \ref{thm:derived-zg-hardcore-factorization} 中的 hard-core 极限常数并非独立的新参数，而是自然密度在 Euler 因子归一化后的精确重写。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:xi-zg-abel-residue-log-density}，
+\[
+\lim_{\sigma\downarrow 1}(\sigma-1)\mathcal D_{\mathrm{ZG}}(\sigma)=\delta_{\mathrm{ZG}}.
+\]
+另一方面，定理 \ref{thm:derived-zg-hardcore-factorization} 已给出
+\[
+\mathcal D_{\mathrm{ZG}}(\sigma)\sim
+\frac{H_{\mathrm{ZG}}(1+)}{\zeta(2)}\cdot \frac{1}{\sigma-1}.
+\]
+比较两式的主导项即得
+\[
+\delta_{\mathrm{ZG}}=\frac{H_{\mathrm{ZG}}(1+)}{\zeta(2)},
+\]
+亦即 \(H_{\mathrm{ZG}}(1+)=\zeta(2)\delta_{\mathrm{ZG}}\)。证毕。
+\end{proof}
+
+\begin{theorem}[ZG Dirichlet 级数的标量 Euler 乘积不可约性]\label{thm:derived-zg-no-scalar-euler-product}
+不存在幂级数族
+\[
+F_i(T)\in 1+T\CC[[T]]
+\qquad (i\ge 1)
+\]
+使得
+\[
+\mathcal D_{\mathrm{ZG}}(s)=\prod_{i\ge 1}F_i(p_i^{-s})
+\]
+在 Dirichlet 系数逐项展开的意义下成立。换言之，\(\mathrm{ZG}\) 的 Euler 结构本质上是最近邻耦合的矩阵型结构，不能退化为彼此独立的标量局部因子乘积。
+\end{theorem}
+
+\begin{proof}
+反设存在这样的标量 Euler 分解，并记
+\[
+F_i(T)=1+\sum_{k\ge 1}c_{i,k}T^k.
+\]
+由于 \(\mathrm{ZG}\) 中不含任何平方因子 \(p_i^2\)，Dirichlet 级数里 \(p_i^{-2s}\) 的系数必须为 \(0\)。而该系数正是 \(c_{i,2}\)，故
+\[
+c_{i,2}=0.
+\]
+同理，对任意 \(k\ge 2\)，\(p_i^k\notin \mathrm{ZG}\) 都迫使
+\[
+c_{i,k}=0.
+\]
+因此每个局部因子都只能写成
+\[
+F_i(T)=1+c_{i,1}T.
+\]
+
+另一方面，单个素数 \(p_i\) 总属于 \(\mathrm{ZG}\)，因为只选取一个素数位不会违反相邻约束，故 \(\mathcal D_{\mathrm{ZG}}(s)\) 中 \(p_i^{-s}\) 的系数为 \(1\)。于是
+\[
+c_{i,1}=1,
+\qquad
+F_i(T)=1+T.
+\]
+从而
+\[
+\mathcal D_{\mathrm{ZG}}(s)=\prod_{i\ge 1}(1+p_i^{-s}).
+\]
+但该乘积中 \(p_i^{-s}p_{i+1}^{-s}\) 的系数等于 \(1\)，这意味着相邻素数积 \(p_ip_{i+1}\) 必以非零系数出现。另一方面，\(\mathrm{ZG}\) 的定义禁止相邻素数同时被选中，故
+\[
+p_ip_{i+1}\notin \mathrm{ZG},
+\]
+对应系数必须为 \(0\)，矛盾。
+
+故不存在任何这样的标量 Euler 因子分解。于是定理 \ref{thm:xi-zg-zeta-factorization} 中的矩阵 Euler 乘积所编码的最近邻约束是不可压缩的。证毕。
+\end{proof}
+
 \subsection{Lee--Yang 分支塔的 profinite 刚性与四元地址约束}
 
 \begin{theorem}[Lee--Yang 分支塔的 profinite 刚性与熵值定标]\label{thm:derived-leyang-profinite-rigidity}
@@ -354,6 +433,71 @@ E_{\min}[2^n]\cong (\ZZ/2^n\ZZ)^2.
 最后，\(\bigl(\{0,1\}^{2}\bigr)^{\NN}\) 上的地址移位是四符号满移位，其拓扑熵为 \(\log 4\)；有限个不交并不改变最大熵值，因此整体熵仍为 \(2\log 2\)。
 \end{proof}
 
+\begin{corollary}[Lee--Yang branch lamination 的 dyadic 维数恰为 \texorpdfstring{$2$}{2}]\label{cor:derived-leyang-dyadic-dimension-two}
+对每个 \(i\in\{0,\dots,4\}\)，记
+\[
+\mathfrak X_i:=\varprojlim_n \Pi_{i,n},
+\qquad
+\mathfrak X_{\mathrm{LY}}:=\varprojlim_n \mathcal R_n\cong \bigsqcup_{i=0}^{4}\mathfrak X_i.
+\]
+在每个逆极限空间上赋予标准 dyadic 圆柱超度量：若两点第一次在第 \(n\) 层被区分，则其距离定义为 \(2^{-n}\)。则对每个分支 sheet \(\mathfrak X_i\) 都有
+\[
+\dim_H(\mathfrak X_i)
+=
+\underline{\dim}_M(\mathfrak X_i)
+=
+\overline{\dim}_M(\mathfrak X_i)
+=
+2.
+\]
+整个有限不交并 \(\mathfrak X_{\mathrm{LY}}\) 亦满足
+\[
+\dim_H(\mathfrak X_{\mathrm{LY}})
+=
+\underline{\dim}_M(\mathfrak X_{\mathrm{LY}})
+=
+\overline{\dim}_M(\mathfrak X_{\mathrm{LY}})
+=
+2.
+\]
+因此，Lee--Yang 分支逆极限在 dyadic 尺度上是一族二维 \(2\)-进 sheet，而非一维 Cantor 型地址链。
+\end{corollary}
+
+\begin{proof}
+由定理 \ref{thm:derived-leyang-profinite-rigidity}，每个 \(\mathfrak X_i\) 都与 \(\ZZ_2^2\) 同构，并且第 \(n\) 层恰分解为
+\[
+|E_{\min}[2^n]|=4^n
+\]
+个互不相交的圆柱集合，每个圆柱直径都是 \(2^{-n}\)。故盒计数满足
+\[
+N_{\mathfrak X_i}(2^{-n})=4^n,
+\]
+从而
+\[
+\lim_{n\to\infty}\frac{\log N_{\mathfrak X_i}(2^{-n})}{-\log 2^{-n}}
+=
+\lim_{n\to\infty}\frac{\log 4^n}{n\log 2}
+=2.
+\]
+因此上下 Minkowski 维数都等于 \(2\)。
+
+再令 \(m_i\) 为 \(\mathfrak X_i\cong \ZZ_2^2\) 上的 Haar 概率测度。长度 \(n\) 的任一圆柱集合都满足
+\[
+m_i(C)=4^{-n}=(2^{-n})^2.
+\]
+于是对任意 \(x\in \mathfrak X_i\) 与任意 dyadic 半径 \(r=2^{-n}\) 都有
+\[
+m_i(B(x,r))=r^2.
+\]
+由质量分布原理得到 \(\dim_H(\mathfrak X_i)\ge 2\)。另一方面，\(\mathfrak X_i\) 可被 \(4^n\) 个直径 \(2^{-n}\) 的圆柱覆盖，故对任意 \(s>2\) 有
+\[
+\mathcal H^s_{2^{-n}}(\mathfrak X_i)\le 4^n(2^{-n})^s=2^{(2-s)n}\to 0,
+\]
+于是 \(\dim_H(\mathfrak X_i)\le 2\)。因此 \(\dim_H(\mathfrak X_i)=2\)。
+
+最后，有限个不交并的 Hausdorff 维数与上下 Minkowski 维数都等于各分量维数的上确界；由于五个分量的维数全为 \(2\)，整个 \(\mathfrak X_{\mathrm{LY}}\) 的三种维数也都等于 \(2\)。证毕。
+\end{proof}
+
 \begin{corollary}[Gödel--Lee--Yang 精确实现的四元刚性]\label{cor:derived-leyang-fourary-rigidity}
 固定一个分支族 \((\Pi_{i,n})_{n\ge 0}\)。设存在某个仿射实现
 \[
@@ -396,8 +540,10 @@ a=(a_{\mathrm{vis}},a_{\mathrm{res}},a_{\mathrm{mode}})
 \input{cont__derived_zg_evenzeta_carry_radius}
 \input{cont__derived_fiber_stieltjes_t5_rootcount}
 \input{cont__derived_oracle_capacity_binfold_pressure}
+\input{cont__derived_binfold_logpotential_stirling}
 \input{cont__derived_oracle_thermal_schur_capacity}
 \input{cont__derived_window6_gauge_zeta_freezing}
+\input{cont__derived_zero_chain_squarefree_gibbs}
 \input{cont__derived_exterior_smith_minsector_rootcloud}
 \input{cont__derived_fold_multiplicity_convex_envelope}
 \input{cont__derived_foldbin_homotopy_witten_phase}
