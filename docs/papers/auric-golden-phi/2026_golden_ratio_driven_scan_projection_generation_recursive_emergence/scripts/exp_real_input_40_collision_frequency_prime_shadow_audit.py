@@ -3,9 +3,14 @@
 """
 Audit two derived consequences of the pure-collision cubic:
 
-1. The RH-window collision-frequency endpoint alpha_R, obtained from the
+1. The positive real branch global coordinate data:
+      rho_0 = 1 + sqrt(2),
+      u'(rho),
+      alpha'(rho),
+   together with the endpoint values used in the monotonicity proof.
+2. The RH-window collision-frequency endpoint alpha_R, obtained from the
    critical quintic in u and the alpha-resultant quintic.
-2. The odd-prime partial product
+3. The odd-prime partial product
 
        P_odd^(<=P) = Π_{3<=p<=P prime} |rho(e^{2π i / p}) / phi^2|,
 
@@ -40,6 +45,15 @@ U_QUINTIC = "u^5 + 4*u^4 + 3*u^3 - 96*u^2 - 42*u - 14"
 class Payload:
     dps: int
     p_max: int
+    rho_0: str
+    uprime_formula: str
+    alphaprime_formula: str
+    u_at_rho0: str
+    alpha_at_rho0: str
+    q_at_rho0: str
+    p_at_rho0: str
+    pprime_at_rho0: str
+    alpha_limit_infty: str
     odd_prime_count: int
     u_R: str
     alpha_R_from_uR: str
@@ -60,6 +74,10 @@ def _fmt(x: mp.mpf | mp.mpc, nd: int = 18) -> str:
     if isinstance(x, mp.mpc):
         raise TypeError("Use real-valued formatter only.")
     return mp.nstr(x, nd)
+
+
+def _sp_str(expr: sp.Expr) -> str:
+    return str(sp.simplify(expr))
 
 
 def _odd_primes_up_to(n: int) -> List[int]:
@@ -229,6 +247,13 @@ def main() -> None:
     phi = (1 + mp.sqrt(5)) / 2
     lam = phi**2
 
+    rho = sp.Symbol("rho", positive=True)
+    rho0 = 1 + sp.sqrt(2)
+    u_expr = rho * (rho**2 - 2 * rho - 1) / (rho - 1)
+    alpha_expr = ((rho**2 - 2 * rho - 1) * (rho - 1)) / (2 * rho**3 - 5 * rho**2 + 4 * rho + 1)
+    q = 2 * rho**3 - 5 * rho**2 + 4 * rho + 1
+    p_poly = rho**4 + 4 * rho**3 - 10 * rho**2 + 4 * rho - 3
+
     u_R = _compute_u_R(dps)
     rho_R = _perron_root_positive_u(u_R)
     alpha_R_from_uR = _alpha_from_rho(rho_R)
@@ -272,6 +297,15 @@ def main() -> None:
     payload = Payload(
         dps=dps,
         p_max=p_max,
+        rho_0=_sp_str(rho0),
+        uprime_formula=_sp_str(sp.factor(sp.diff(u_expr, rho))),
+        alphaprime_formula=_sp_str(sp.factor(sp.diff(alpha_expr, rho))),
+        u_at_rho0=_sp_str(u_expr.subs(rho, rho0)),
+        alpha_at_rho0=_sp_str(alpha_expr.subs(rho, rho0)),
+        q_at_rho0=_sp_str(q.subs(rho, rho0)),
+        p_at_rho0=_sp_str(p_poly.subs(rho, rho0)),
+        pprime_at_rho0=_sp_str(sp.diff(p_poly, rho).subs(rho, rho0)),
+        alpha_limit_infty=_sp_str(sp.limit(alpha_expr, rho, sp.oo)),
         odd_prime_count=len(odd_primes),
         u_R=_fmt(u_R, 18),
         alpha_R_from_uR=_fmt(alpha_R_from_uR, 24),
