@@ -1,0 +1,228 @@
+\paragraph{末位充分化、均匀基线判别与零点几何对碰撞缺口的指数失明}
+由末位两层塌缩、均匀基线下的两原子似然比极限以及谱零点的半维稀疏律，可进一步抽出下列三条彼此衔接的终端后果：其一是末位统计量对稳定输出分布的渐近充分性；其二是相对稳定层均匀基线的一样本最优判别常数；其三是零点数量与碰撞缺口主尺度之间的严格分离。
+
+\begin{theorem}[末位统计量的渐近充分性]\label{thm:xi-fold-lastbit-asymptotic-sufficiency}
+设
+\[
+X_m:=\{w\in\{0,1\}^m:\ w_iw_{i+1}=0\ \ (1\le i<m)\},
+\qquad
+\mu_m(w):=\frac{d_m^{\mathrm{bin}}(w)}{2^m},
+\qquad
+\ell_m(w):=w_m\in\{0,1\},
+\]
+并将稳定层分成两块
+\[
+A_i:=\{w\in X_m:\ \ell_m(w)=i\}
+\qquad(i=0,1).
+\]
+定义 Markov 核
+\[
+K_m(i,\cdot):=\mathrm{Unif}(A_i),
+\]
+以及由末位统计量重构的块均匀近似
+\[
+\bar\mu_m:=K_m\circ (\ell_m)_\#\mu_m.
+\]
+则有
+\[
+\boxed{\;
+D_{\mathrm{TV}}(\mu_m,\bar\mu_m)
+=
+O\!\Bigl(\Bigl(\frac{\varphi}{2}\Bigr)^m\Bigr).\;}
+\]
+因此 \(\ell_m\) 在 Le Cam 意义下对 \(\mu_m\) 是渐近充分统计量。
+
+更具体地，对任意有界函数 \(f_m:X_m\to\RR\)，若满足
+\[
+\sum_{w\in A_i}f_m(w)=0
+\qquad(i=0,1),
+\]
+则
+\[
+\boxed{\;
+\bigl|\mathbb E_{\mu_m}[f_m]\bigr|
+\le
+2\|f_m\|_\infty\,
+O\!\Bigl(\Bigl(\frac{\varphi}{2}\Bigr)^m\Bigr).\;}
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:fold-bin-lastbit-sufficient-tv}，存在绝对常数 \(C>0\) 使
+\[
+D_{\mathrm{TV}}(\mu_m,\bar\mu_m)\le C\Bigl(\frac{\varphi}{2}\Bigr)^m.
+\]
+这正是第一式。又因为 \(\bar\mu_m=K_m\circ(\ell_m)_\#\mu_m\)，已构造出一条把末位统计量提升回稳定层的重构核，其误差在全变差意义下指数消失，故 \(\ell_m\) 对 \(\mu_m\) 在 Le Cam 意义下渐近充分。
+
+对第二条，只需注意 \(\bar\mu_m\) 在每个 \(A_i\) 上为均匀分布，故
+\[
+\mathbb E_{\bar\mu_m}[f_m]
+=
+\sum_{i=0}^{1}\bar\mu_m(A_i)\,\frac{1}{|A_i|}\sum_{w\in A_i}f_m(w)=0.
+\]
+于是
+\[
+\bigl|\mathbb E_{\mu_m}[f_m]\bigr|
+=
+\bigl|\mathbb E_{\mu_m}[f_m]-\mathbb E_{\bar\mu_m}[f_m]\bigr|
+\le
+2\|f_m\|_\infty D_{\mathrm{TV}}(\mu_m,\bar\mu_m).
+\]
+代入第一式即得所示估计。证毕。
+\end{proof}
+
+\begin{theorem}[与稳定层均匀分布的一样本最优判别常数]\label{thm:xi-fold-uniform-baseline-testing-constant}
+沿用 \(\mu_m(w)=d_m^{\mathrm{bin}}(w)/2^m\) 的记号。令
+\[
+u_m(w):=\frac{1}{|X_m|}
+\qquad (w\in X_m)
+\]
+为稳定层均匀分布，并记似然比
+\[
+R_m(w):=\frac{\mu_m(w)}{u_m(w)}.
+\]
+则在 \(u_m\) 下，\(R_m\) 依分布收敛到二点随机变量
+\[
+R=
+\begin{cases}
+\dfrac{\varphi^2}{\sqrt5},& \text{以概率 }\dfrac1\varphi,\\[8pt]
+\dfrac{\varphi}{\sqrt5},& \text{以概率 }\dfrac1{\varphi^2}.
+\end{cases}
+\]
+从而有精确极限
+\[
+\boxed{\;
+\lim_{m\to\infty}D_{\mathrm{TV}}(\mu_m,u_m)
+=
+1-\frac{2}{\sqrt5}.\;}
+\]
+特别地，在等先验的一样本假设检验
+\[
+H_0:u_m,
+\qquad
+H_1:\mu_m
+\]
+中，最优 Bayes 错误概率满足
+\[
+\boxed{\;
+\lim_{m\to\infty}P_e^\ast(\mu_m,u_m)
+=
+\frac1{\sqrt5}.\;}
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-foldbin-likelihood-ratio-two-atom-transfer}，
+\[
+R_m(W_m)\Rightarrow R,
+\qquad
+W_m\sim u_m,
+\]
+并且对充分大的 \(m\)，随机变量 \(R_m(W_m)\) 落在某个固定闭区间 \(I\subset(0,\infty)\) 中。故
+\[
+D_{\mathrm{TV}}(\mu_m,u_m)
+=
+\frac12\,\mathbb E_{u_m}|R_m-1|
+\longrightarrow
+\frac12\,\mathbb E|R-1|.
+\]
+直接计算得到
+\[
+\frac12\,\mathbb E|R-1|
+=
+\frac12\left[
+\frac1\varphi\Bigl(\frac{\varphi^2}{\sqrt5}-1\Bigr)
++
+\frac1{\varphi^2}\Bigl(1-\frac{\varphi}{\sqrt5}\Bigr)
+\right].
+\]
+这与定理 \ref{thm:xi-foldbin-pushforward-uniform-two-atom-ledger} 给出的全变差极限常数
+\[
+\frac12\left(\frac1{\sqrt5}-\varphi^{-3}\right)
+\]
+一致；再用恒等式 \(\varphi^{-3}=\sqrt5-2\)，即得
+\[
+\lim_{m\to\infty}D_{\mathrm{TV}}(\mu_m,u_m)=1-\frac{2}{\sqrt5}.
+\]
+
+最后，由 Helstrom 公式
+\[
+P_e^\ast(\mu_m,u_m)=\frac12\bigl(1-D_{\mathrm{TV}}(\mu_m,u_m)\bigr),
+\]
+令 \(m\to\infty\) 即得
+\[
+\lim_{m\to\infty}P_e^\ast(\mu_m,u_m)=\frac1{\sqrt5}.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[零点几何对碰撞缺口的指数失明]\label{thm:xi-fold-zero-geometry-collision-gap-blindness}
+沿用结论 \ref{con:xi-fold-collision-spectral-trace-parseval} 的记号，令
+\[
+M:=F_{m+2},
+\qquad
+\mathcal Z_m:=\{k\in \ZZ/(M\ZZ):\ \widehat d_m(k)=0\}.
+\]
+其中 \(C_\varphi>0\) 为定理 \ref{thm:fold-critical-resonance-constant} 的黄金共振常数。则碰撞缺口与零点密度满足严格分离：
+\[
+\boxed{\;
+M\Bigl(\mathsf{Col}_m-\frac1M\Bigr)
+\ge
+2C_\varphi^2+o(1),
+\qquad
+\frac{|\mathcal Z_m|}{M}
+\le
+\tau(m+2)\,O(\varphi^{-m/2}).\;}
+\]
+从而
+\[
+\boxed{\;
+\frac{\mathsf{Col}_m-\frac1M}{|\mathcal Z_m|/M^2}
+=
+\frac{M\bigl(\mathsf{Col}_m-\frac1M\bigr)}{|\mathcal Z_m|/M}
+\longrightarrow +\infty.\;}
+\]
+更显式地，
+\[
+\boxed{\;
+\frac{\mathsf{Col}_m-\frac1M}{|\mathcal Z_m|/M^2}
+\gtrsim
+\frac{2C_\varphi^2}{\tau(m+2)}\,\varphi^{m/2}.\;}
+\]
+\end{theorem}
+\begin{proof}
+由结论 \ref{con:xi-fold-chi2-constant-residual-energy}，
+\[
+M\Bigl(\mathsf{Col}_m-\frac1M\Bigr)\ge 2C_\varphi^2+o(1).
+\]
+另一方面，由定理 \ref{thm:fold-zero-density-sparse}，
+\[
+\frac{|\mathcal Z_m|}{M}
+\le
+\tau(m+2)\,\frac{F_{\lfloor (m+2)/2\rfloor}}{F_{m+2}}
+=
+\tau(m+2)\,O(\varphi^{-m/2}).
+\]
+将两式相除，即得
+\[
+\frac{M\bigl(\mathsf{Col}_m-\frac1M\bigr)}{|\mathcal Z_m|/M}
+\to +\infty.
+\]
+而
+\[
+\frac{M\bigl(\mathsf{Col}_m-\frac1M\bigr)}{|\mathcal Z_m|/M}
+=
+\frac{\mathsf{Col}_m-\frac1M}{|\mathcal Z_m|/M^2},
+\]
+故两种写法完全等价。
+
+最后，把上界
+\(
+|\mathcal Z_m|/M\le \tau(m+2)\,O(\varphi^{-m/2})
+\)
+写成倒数下界，再与
+\(
+M(\mathsf{Col}_m-1/M)\ge 2C_\varphi^2+o(1)
+\)
+合并，即得所示 \(\gtrsim\) 估计。证毕。
+\end{proof}
+
+\endinput
