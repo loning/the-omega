@@ -1,0 +1,152 @@
+\paragraph{连续容量的完备统计量与 window-\texorpdfstring{$6$}{6} 异常初始斜率}
+在前述有限矩刚性、Mellin--Stieltjes 反演与 window-\(6\) 的有限尺度闭式之后，还可把连续容量曲线、尾计数函数、纤维直方图与全矩谱收束为同一份完全可逆的数据。
+
+\begin{theorem}[连续容量曲线是纤维直方图与全矩谱的完备统计量]\label{thm:xi-capacity-tail-histogram-moment-complete-statistic}
+固定分辨率 \(m\)。记
+\[
+h_m(d):=\#\{x\in X_m:\ d_m(x)=d\}
+\qquad(d\in \ZZ_{\ge 1}),
+\]
+\[
+N_m(t):=\#\{x\in X_m:\ d_m(x)\ge t\},
+\qquad
+\mathcal C_m^{\mathrm{cont}}(T):=\sum_{x\in X_m}\min\bigl(d_m(x),T\bigr).
+\]
+则 \(\mathcal C_m^{\mathrm{cont}}\)、\(N_m\) 与 \(h_m\) 两两唯一决定。更具体地，
+\[
+\mathcal C_m^{\mathrm{cont}}(T)
+=
+\int_0^T N_m(t)\,\dd t
+=
+\sum_{d\ge 1}h_m(d)\min(d,T),
+\]
+并且
+\[
+\partial_T^+\mathcal C_m^{\mathrm{cont}}(t)=N_m(t)
+\qquad\text{对 Lebesgue--a.e.\ }t>0\text{ 成立},
+\]
+从而
+\[
+h_m(d)=N_m(d)-N_m(d+1)
+\qquad(d\ge 1),
+\]
+\[
+N_m(t)=\sum_{d\ge \lceil t\rceil}h_m(d)
+\qquad(t>0).
+\]
+此外，对任意 \(q>0\) 都有 Mellin--Stieltjes 公式
+\[
+S_q(m):=\sum_{x\in X_m}d_m(x)^q
+=
+q\int_0^\infty t^{q-1}N_m(t)\,\dd t.
+\]
+因此在固定 \(m\) 上，下列四类对象完全等价：
+\[
+\mathcal C_m^{\mathrm{cont}},
+\qquad
+N_m,
+\qquad
+h_m,
+\qquad
+\{S_q(m)\}_{q>0}.
+\]
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:fold-capacity-tail-equivalence}，
+\[
+\mathcal C_m^{\mathrm{cont}}(T)=\int_0^T N_m(t)\,\dd t.
+\]
+又因全部纤维大小 \(d_m(x)\) 都是正整数，\(N_m\) 是整数值右连续阶梯函数，其跳点恰为出现过的纤维尺寸。故
+\[
+\partial_T^+\mathcal C_m^{\mathrm{cont}}(t)=N_m(t)
+\qquad\text{对 a.e.\ }t>0\text{ 成立},
+\]
+并且由右连续性，\(N_m\) 由该 a.e.\ 导数唯一延拓回整个函数。
+
+若按纤维大小分层，则
+\[
+N_m(t)
+=
+\sum_{d\ge 1}\#\{x\in X_m:\ d_m(x)=d,\ d\ge t\}
+=
+\sum_{d\ge \lceil t\rceil}h_m(d),
+\]
+于是
+\[
+h_m(d)=N_m(d)-N_m(d+1).
+\]
+反向地，把同一分层代回容量定义即得
+\[
+\mathcal C_m^{\mathrm{cont}}(T)=\sum_{d\ge 1}h_m(d)\min(d,T).
+\]
+故 \(\mathcal C_m^{\mathrm{cont}}\)、\(N_m\) 与 \(h_m\) 彼此唯一决定。
+
+再由定理 \ref{thm:xi-time-part57b-capacity-moment-exact-mellin-stieltjes}，
+\[
+S_q(m)=q\int_0^\infty t^{q-1}N_m(t)\,\dd t
+\qquad(q>0),
+\]
+故任一对象 \(\mathcal C_m^{\mathrm{cont}}\)、\(N_m\)、\(h_m\) 都唯一决定全部正阶矩谱。
+
+最后说明矩谱反向决定直方图。设不同纤维大小为
+\[
+1\le \delta_{1,m}<\cdots<\delta_{s_m,m},
+\]
+其重数为 \(n_{j,m}\)。由于每个 \(\delta_{j,m}\ge 1\)，有
+\[
+\lim_{q\downarrow 0}S_q(m)
+=
+\sum_{j=1}^{s_m}n_{j,m}
+=
+|X_m|
+=
+S_0(m).
+\]
+因此从全谱 \(\{S_q(m)\}_{q>0}\) 可恢复 \(S_0(m)\)，而整数矩
+\[
+S_1(m),\dots,S_{2s_m-1}(m)
+\]
+本就包含在该全谱中。于是定理 \ref{thm:xi-fiber-spectrum-finite-moment-rigidity} 适用，并唯一恢复全部 \(\{(\delta_{j,m},n_{j,m})\}_{j=1}^{s_m}\)，从而唯一恢复 \(h_m\)。因此四类对象完全等价。证毕。
+\end{proof}
+
+\begin{theorem}[window-\texorpdfstring{$6$}{6} 异常签名维数等于容量曲线在 \texorpdfstring{$T=1$}{T=1} 的初始右导数]\label{thm:xi-window6-anomaly-rank-initial-capacity-right-derivative}
+沿用定理 \ref{thm:xi-foldbin-audited-even-center-collapse-abel-full-rank}、
+定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic}
+与命题 \ref{prop:xi-window6-complete-finite-scale-spectrum-closed-form} 的记号，则
+\[
+\dim_{\FF_2}\bigl(G_6^{\mathrm{bin}}\bigr)^{\mathrm{ab}}
+=
+N_6(1^+)
+=
+\partial_T^+\mathcal C_6^{\mathrm{cont}}(1)
+=
+21.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-foldbin-audited-even-center-collapse-abel-full-rank}，
+\[
+\bigl(G_6^{\mathrm{bin}}\bigr)^{\mathrm{ab}}\cong (\ZZ/2\ZZ)^{|X_6|},
+\]
+且 \(|X_6|=21\)，故
+\[
+\dim_{\FF_2}\bigl(G_6^{\mathrm{bin}}\bigr)^{\mathrm{ab}}=21.
+\]
+
+另一方面，命题 \ref{prop:xi-window6-complete-finite-scale-spectrum-closed-form} 已给出
+\[
+N_6(t)=21
+\qquad(0\le t\le 2).
+\]
+因此
+\[
+N_6(1^+)=21.
+\]
+再由定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic}，
+\[
+\partial_T^+\mathcal C_6^{\mathrm{cont}}(1)=N_6(1^+)=21.
+\]
+合并即得所述恒等式。证毕。
+\end{proof}
+
+\endinput

@@ -1,0 +1,348 @@
+\paragraph{自然扩张寄存器的逆极限规范性、Smith 局部亏损谱的自由化与 Euler 完备不变量}
+在有限深度 prime-slice 前缀压缩、Smith 离散曲率恢复与整数椭圆原子分解之外，附录 \(H\) 中的 branch-register 语义还可继续压缩为逆极限与完备不变量层的若干闭式结论。
+
+\begin{theorem}[自然扩张分支寄存器系统是有限深度截断的严格逆极限]\label{thm:xi-branch-register-strict-inverse-limit}
+沿用定理 \ref{thm:killo-natural-extension-branch-register} 的记号。对每个 \(k\ge 1\)，记
+\[
+X^{\leftarrow,k}
+:=
+\{(x_0,x_{-1},\dots,x_{-k})\in X^{k+1}:T(x_{-j})=x_{-j+1}\ \ (1\le j\le k)\},
+\]
+\[
+\mathcal C_k(x_0,x_{-1},\dots,x_{-k})
+:=
+\bigl(x_0,(\beta(x_{-1}),\dots,\beta(x_{-k}))\bigr),
+\]
+\[
+\widehat X_k^{\mathrm{br}}
+:=
+\mathcal C_k(X^{\leftarrow,k})
+\subset X\times \NN^k.
+\]
+定义截断投影
+\[
+\pi_{k+1,k}^{\mathrm{br}}:\widehat X_{k+1}^{\mathrm{br}}\to \widehat X_k^{\mathrm{br}},
+\qquad
+\pi_{k+1,k}^{\mathrm{br}}(x,a_1,\dots,a_{k+1})=(x,a_1,\dots,a_k),
+\]
+以及有限深度更新
+\[
+\widehat T_k^{\mathrm{br}}(x,a_1,\dots,a_k)
+:=
+\begin{cases}
+(T(x),\beta(x)),& k=1,\\
+(T(x),\beta(x),a_1,\dots,a_{k-1}),& k\ge 2.
+\end{cases}
+\]
+则 \((\widehat X_k^{\mathrm{br}},\pi_{k+1,k}^{\mathrm{br}})_{k\ge 1}\) 构成投影系统，并且存在规范同构
+\[
+\widehat X
+\cong
+\varprojlim_{k}\widehat X_k^{\mathrm{br}}
+\]
+把定理 \ref{thm:killo-natural-extension-branch-register} 中的 \(\widehat T\) 识别为
+\[
+\widehat T
+=
+\varprojlim_{k}\widehat T_k^{\mathrm{br}}.
+\]
+\end{theorem}
+\begin{proof}
+对每个 \(k\ge 1\)，定义截断映射
+\[
+\rho_k:\widehat X\to \widehat X_k^{\mathrm{br}},
+\qquad
+\rho_k(x,(a_1,a_2,\dots))=(x,a_1,\dots,a_k).
+\]
+由定理 \ref{thm:killo-natural-extension-branch-register}，\(\widehat X=\mathcal C(X^{\leftarrow})\)。若
+\[
+\mathcal C(x_0,x_{-1},x_{-2},\dots)=(x_0,(a_1,a_2,\dots)),
+\]
+则
+\[
+\rho_k(x_0,(a_1,a_2,\dots))
+=
+\mathcal C_k(x_0,x_{-1},\dots,x_{-k})\in \widehat X_k^{\mathrm{br}},
+\]
+故 \(\rho_k\) 良定义，且显然满足
+\[
+\pi_{k+1,k}^{\mathrm{br}}\circ \rho_{k+1}=\rho_k.
+\]
+于是得到自然映射
+\[
+\Theta:\widehat X\to \varprojlim_k \widehat X_k^{\mathrm{br}},
+\qquad
+\Theta(z):=(\rho_k(z))_{k\ge 1}.
+\]
+
+\(\Theta\) 的单射性来自前缀决定性：若 \(\Theta(z)=\Theta(z')\)，则二者全部有限前缀一致，从而其 \(\NN^\NN\) 坐标完全一致，故 \(z=z'\)。
+
+再证满射。任取相容族
+\[
+(\xi_k)_{k\ge 1}\in \varprojlim_k \widehat X_k^{\mathrm{br}},
+\qquad
+\xi_k=(x^{(k)},a_1^{(k)},\dots,a_k^{(k)}).
+\]
+由相容性
+\[
+\pi_{k+1,k}^{\mathrm{br}}(\xi_{k+1})=\xi_k
+\]
+立得 \(x^{(k)}\) 对 \(k\) 稳定，且对每个固定 \(j\ge 1\)，当 \(k\ge j\) 时 \(a_j^{(k)}\) 亦稳定。记其稳定值为
+\[
+x_0,\qquad a_j\in \NN\ \ (j\ge 1).
+\]
+于是得到一个候选点
+\[
+z:=(x_0,(a_1,a_2,\dots))\in X\times \NN^\NN.
+\]
+另一方面，对每个 \(k\)，由 \(\xi_k\in \widehat X_k^{\mathrm{br}}\) 可知存在唯一有限历史
+\[
+(x_0,x_{-1}^{(k)},\dots,x_{-k}^{(k)})\in X^{\leftarrow,k}
+\]
+满足
+\[
+\mathcal C_k(x_0,x_{-1}^{(k)},\dots,x_{-k}^{(k)})
+=
+(x_0,a_1,\dots,a_k).
+\]
+由 \(\mathcal C_k\) 的递推反演，长度 \(k+1\) 与长度 \(k\) 的历史在前 \(k\) 层必然一致；因此这些有限历史彼此兼容，定义出唯一无限前史
+\[
+(x_0,x_{-1},x_{-2},\dots)\in X^{\leftarrow}.
+\]
+按构造有
+\[
+\mathcal C(x_0,x_{-1},x_{-2},\dots)=z,
+\]
+故 \(z\in \widehat X\) 且 \(\Theta(z)=(\xi_k)_k\)。因此 \(\Theta\) 为双射。
+
+最后，对任意 \((x,(a_1,a_2,\dots))\in \widehat X\)，由定理 \ref{thm:killo-natural-extension-branch-register} 的右移插入公式，
+\[
+\widehat T(x,(a_1,a_2,\dots))=(T(x),(\beta(x),a_1,a_2,\dots)).
+\]
+截断到前 \(k\) 项便得到
+\[
+\rho_k\bigl(\widehat T(x,(a_1,a_2,\dots))\bigr)
+=
+\widehat T_k^{\mathrm{br}}(x,a_1,\dots,a_k).
+\]
+故 \(\Theta\) 将 \(\widehat T\) 识别为逆极限动力学 \(\varprojlim_k \widehat T_k^{\mathrm{br}}\)。证毕。
+\end{proof}
+
+\begin{theorem}[分支指标寄存器编码的规范共轭不变性]\label{thm:xi-branch-register-coding-conjugacy-invariance}
+仍沿用定理 \ref{thm:killo-natural-extension-branch-register} 的设定。若另取一组纤维单射
+\[
+\iota_y':T^{-1}(y)\hookrightarrow \NN,
+\qquad
+\beta'(x):=\iota'_{T(x)}(x),
+\]
+并由此得到编码
+\[
+\mathcal C':X^{\leftarrow}\to X\times\NN^\NN,
+\qquad
+\widehat X':=\mathcal C'(X^{\leftarrow}),
+\qquad
+\widehat T':=\mathcal C'\circ \sigma\circ (\mathcal C')^{-1},
+\]
+则存在规范双射
+\[
+\Gamma:\widehat X\to \widehat X'
+\]
+满足
+\[
+\Gamma\circ \widehat T=\widehat T'\circ \Gamma.
+\]
+更具体地，若
+\[
+\mathcal C^{-1}(x_0,(a_1,a_2,\dots))=(x_0,x_{-1},x_{-2},\dots),
+\]
+则
+\[
+\Gamma(x_0,(a_1,a_2,\dots))
+=
+\bigl(x_0,(\beta'(x_{-1}),\beta'(x_{-2}),\dots)\bigr).
+\]
+等价地，改变纤维枚举 \((\iota_y)_y\) 只在各条纤维内部实施局部字母重命名，而不改变自然扩张的动力学共轭类。
+\end{theorem}
+\begin{proof}
+定义
+\[
+\Gamma:=\mathcal C'\circ \mathcal C^{-1}:\widehat X\to \widehat X'.
+\]
+由于 \(\mathcal C,\mathcal C'\) 都是各自像空间上的双射，\(\Gamma\) 亦为双射。并且
+\[
+\Gamma\circ \widehat T
+=
+\mathcal C'\circ \mathcal C^{-1}\circ \mathcal C\circ \sigma\circ \mathcal C^{-1}
+=
+\mathcal C'\circ \sigma\circ \mathcal C^{-1}
+=
+\widehat T'\circ \mathcal C'\circ \mathcal C^{-1}
+=
+\widehat T'\circ \Gamma.
+\]
+这就得到所需共轭关系。
+
+显式公式只需把 \((x_0,(a_1,a_2,\dots))\) 先经 \(\mathcal C^{-1}\) 恢复为唯一前史
+\[
+(x_0,x_{-1},x_{-2},\dots)\in X^{\leftarrow},
+\]
+再送入 \(\mathcal C'\)。因此
+\[
+\Gamma(x_0,(a_1,a_2,\dots))
+=
+\mathcal C'(x_0,x_{-1},x_{-2},\dots)
+=
+\bigl(x_0,(\beta'(x_{-1}),\beta'(x_{-2}),\dots)\bigr).
+\]
+上述映射完全由两套编码 \(\mathcal C,\mathcal C'\) 决定，因而给出了所需的规范共轭。证毕。
+\end{proof}
+
+\begin{theorem}[\texorpdfstring{$p$}{p}-局部信息亏损剖面的自由交换幺半群结构]\label{thm:xi-smith-local-loss-profiles-free-commutative-monoid}
+固定素数 \(p\)。令 \(\mathfrak F_p\) 为所有由有限多重集 \(E\subset \ZZ_{>0}\) 诱导的函数
+\[
+f_E:\ZZ_{\ge 0}\to \ZZ_{\ge 0},
+\qquad
+f_E(k):=\sum_{e\in E}\min(k,e),
+\]
+组成的集合，其中 \(f_E(0)=0\)。赋予 \(\mathfrak F_p\) 逐点加法。对每个 \(t\ge 1\)，定义
+\[
+u_t(k):=\min(k,t)\qquad(k\ge 0).
+\]
+则 \((\mathfrak F_p,+)\) 是由 \(\{u_t\}_{t\ge 1}\) 自由生成的交换幺半群。更具体地，每个 \(f\in\mathfrak F_p\) 都唯一表示为
+\[
+f=\sum_{t\ge 1}m_tu_t,
+\qquad
+m_t\in \ZZ_{\ge 0},
+\]
+且仅有限多个 \(m_t\) 非零；其系数可由离散曲率唯一恢复：
+\[
+m_t=\Delta_f(t)-\Delta_f(t+1),
+\qquad
+\Delta_f(k):=f(k)-f(k-1).
+\]
+特别地，任意满行秩整数矩阵的 \(\,p\)-局部 Smith 信息亏损谱都属于 \(\mathfrak F_p\)。
+\end{theorem}
+\begin{proof}
+若 \(E,F\) 为有限多重集，则
+\[
+f_E+f_F=f_{E\sqcup F},
+\]
+其中 \(E\sqcup F\) 表示按重数计的并。因此 \(\mathfrak F_p\) 在逐点加法下确为交换幺半群。又由定义
+\[
+f_E=\sum_{t\ge 1}m_tu_t,
+\qquad
+m_t:=\#\{e\in E:\ e=t\},
+\]
+可知 \(\{u_t\}_{t\ge 1}\) 生成 \(\mathfrak F_p\)。
+
+唯一性可由前述 Smith 谱分类直接读出。事实上，定理 \ref{thm:xi-smith-padic-loss-spectrum-classification} 已说明，这类函数恰由非负、非增且最终为零的一阶差分所刻画；而推论 \ref{cor:xi-smith-second-discrete-curvature-recovery} 与定理 \ref{thm:xi-smith-loss-spectrum-discrete-curvature-complete-characterization} 给出
+\[
+\Delta_f(t)-\Delta_f(t+1)
+=
+2f(t)-f(t-1)-f(t+1),
+\]
+其值正是指数 \(t\) 的重数。故一旦
+\[
+f=\sum_{t\ge 1}m_tu_t=\sum_{t\ge 1}m_t'u_t,
+\]
+就必有
+\[
+m_t=\Delta_f(t)-\Delta_f(t+1)=m_t'
+\qquad(\forall\,t\ge 1).
+\]
+这就证明了自由性。最后，若 \(f=f_p\) 为某个满行秩整数矩阵的 \(\,p\)-局部信息亏损谱，则由定理 \ref{thm:killo-smith-loss-spectrum}
+\[
+f_p(k)=\sum_{i=1}^{m}\min(k,e_i(p)),
+\]
+故 \(f_p\in \mathfrak F_p\)。证毕。
+\end{proof}
+
+\begin{theorem}[局部 Euler 因子对 Smith 正规形的完备性]\label{thm:xi-smith-local-euler-complete-invariant}
+沿用定理 \ref{thm:xi-kernel-loss-divisibility-valuation-rational-euler} 的记号。对每个素数 \(p\)，把局部因子视为形式幂级数
+\[
+\Xi_{A,p}(T)
+:=
+\sum_{k\ge 0}p^{f_p(k)}T^k.
+\]
+则 \(\Xi_{A,p}(T)\) 唯一决定整个序列 \((f_p(k))_{k\ge 1}\)，从而唯一决定多重集 \(\{e_i(p)\}_{i=1}^{m}\)。因而全局 Dirichlet 级数
+\[
+\Xi_A(s)
+:=
+\sum_{b\ge 1}\frac{\#\ker(A_b)}{b^{\,n-m+s}}
+\]
+唯一决定 \(A\) 的全部 Smith 不变量。更一般地，若另一个满行秩整数矩阵
+\[
+B\in M_{m_B\times n_B}(\ZZ)
+\]
+满足
+\[
+\Xi_A=\Xi_B,
+\]
+则 \(A\) 与 \(B\) 具有相同的 Smith 正规形。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-kernel-loss-divisibility-valuation-rational-euler}，
+\[
+\Xi_{A,p}(T)=\sum_{k\ge 0}p^{f_p(k)}T^k.
+\]
+因此对每个 \(k\ge 1\)，其 \(T^k\) 项系数恰为 \(p^{f_p(k)}\)，从而
+\[
+f_p(k)=\log_p\!\bigl([T^k]\Xi_{A,p}(T)\bigr).
+\]
+局部亏损谱一旦给定，定理 \ref{thm:killo-smith-loss-spectrum} 与定理 \ref{thm:xi-smith-loss-spectrum-discrete-curvature-complete-characterization} 即可无损恢复多重集 \(\{e_i(p)\}_{i=1}^{m}\)。
+
+再看全局唯一性。若 \(\Xi_A=\Xi_B\) 作为 Dirichlet 级数相等，则对每个正整数 \(b\) 都有
+\[
+\frac{\#\ker(A_b)}{b^{\,n-m}}
+=
+\frac{\#\ker(B_b)}{b^{\,n_B-m_B}},
+\]
+亦即两者的归一化系数逐项相同。特别地，对任意素数幂 \(b=p^k\)，得到
+\[
+p^{f_{A,p}(k)}
+=
+\frac{\#\ker(A\bmod p^k)}{p^{k(n-m)}}
+=
+\frac{\#\ker(B\bmod p^k)}{p^{k(n_B-m_B)}}
+=
+p^{f_{B,p}(k)}.
+\]
+故
+\[
+f_{A,p}(k)=f_{B,p}(k)\qquad(\forall\,p,\ \forall\,k\ge 1).
+\]
+于是对每个素数 \(p\)，两矩阵的 \(\{e_i(p)\}\) 完全一致；逐素数合并便得全部 Smith 不变量一致，亦即 Smith 正规形相同。证毕。
+\end{proof}
+
+\begin{corollary}[自由原子结构在整数轴对齐椭圆半群中的几何实现]\label{cor:xi-free-atomic-structure-ellipse-realization}
+定理 \ref{thm:xi-smith-local-loss-profiles-free-commutative-monoid} 与定理 \ref{thm:xi-integer-ellipse-free-commutative-monoid} 表明，\(\,p\)-局部信息亏损谱幺半群与整数轴对齐椭圆半群都属于以可数原子集为基的自由交换幺半群：前者的原子为 \(\{u_t\}_{t\ge 1}\)，后者的原子为
+\[
+\mathcal A=\{E_{p,1},E_{1,p}:p\in\mathcal P\}.
+\]
+因此
+\[
+\operatorname{Aut}_{\mathrm{Mon}}(\mathsf E_{\NN},\odot)\cong \mathrm{Sym}(\mathcal A)
+\]
+可视为附录 \(H\) 中自由原子机制在显式几何对象类上的完全对称实现。
+\end{corollary}
+\begin{proof}
+定理 \ref{thm:xi-smith-local-loss-profiles-free-commutative-monoid} 给出 \(\mathfrak F_p\) 的自由原子分解，定理 \ref{thm:xi-integer-ellipse-free-commutative-monoid} 的第一条给出 \((\mathsf E_{\NN},\odot)\) 的自由原子分解，而其第三条正给出所述自同构群公式。证毕。
+\end{proof}
+
+\noindent
+由此，附录 \(H\) 中的结构链可进一步收束为
+\[
+\text{有限深度分支寄存器}
+\Longrightarrow
+\text{自然扩张的严格逆极限},
+\]
+\[
+\text{Smith 局部亏损谱}
+\Longrightarrow
+\text{自由原子分解}
+\Longrightarrow
+\text{Euler 完备不变量},
+\]
+而推论 \ref{cor:xi-free-atomic-structure-ellipse-realization} 则说明同一自由原子机制在整数轴对齐椭圆半群上获得了显式几何实现与全对称自同构群。
+
+\endinput

@@ -1,0 +1,117 @@
+\paragraph{dyadic multiplicity 的复杂度屏障与周期化 Fourier 的绝对连续性排斥}
+在局部化数系的连通 Lie 商刚性与 Zeckendorf--Gödel Dirichlet 级数的 \(s=1\) 密度--留数定理已经确立之后，还可沿 dyadic multiplicity 与 Fibonacci 共振两条链进一步抽取出下列两条后果。
+
+\begin{theorem}[固定元数 dyadic multiplicity 的 Presburger 谓词类属于 \texorpdfstring{$\mathbf P$}{P}]\label{thm:xi-fixed-arity-dyadic-multiplicity-presburger-in-p}
+固定整数 \(r\ge 1\)，并固定一个 Presburger 公式
+\[
+\Phi=\Phi\bigl(m;V_1,\epsilon_1,d_1;\dots;V_r,\epsilon_r,d_r\bigr).
+\]
+定义语言
+\[
+L_\Phi
+:=
+\left\{
+\bigl(m,w^{(1)},\dots,w^{(r)}\bigr):
+w^{(i)}\in X_m,\ 
+\Phi\!\bigl(m;V_m(w^{(1)}),w_m^{(1)},d_m^{\mathrm{bin}}(w^{(1)});\dots;V_m(w^{(r)}),w_m^{(r)},d_m^{\mathrm{bin}}(w^{(r)})\bigr)
+\right\}.
+\]
+则
+\[
+L_\Phi\in \mathbf P.
+\]
+特别地，若存在 many-one 归约
+\[
+\mathrm{SAT}\le_m^p L_\Phi,
+\]
+则必有
+\[
+\mathbf P=\mathbf{NP}.
+\]
+\end{theorem}
+\begin{proof}
+设输入为
+\[
+\bigl(m,w^{(1)},\dots,w^{(r)}\bigr).
+\]
+由于 \(r\) 固定，输入总长度与 \(m\) 同阶。先逐个 \(i=1,\dots,r\) 扫描字 \(w^{(i)}\)，在线性时间内检验其是否属于 \(X_m\)，并同时计算
+\[
+V_m\bigl(w^{(i)}\bigr),
+\qquad
+\epsilon_i:=w_m^{(i)}.
+\]
+再由命题 \ref{prop:fold-bin-digit-dp}（亦即结论 \ref{con:xi-terminal-foldbin-digit-dp-linear-time} 的算法核），可在 \(O(m)\) 时间内精确计算
+\[
+d_i:=d_m^{\mathrm{bin}}\bigl(w^{(i)}\bigr).
+\]
+因此全部参数
+\[
+m,\ V_i,\ \epsilon_i,\ d_i
+\qquad(1\le i\le r)
+\]
+都可在总时间 \(O(m)\) 内求得，并且其二进制长度均为 \(O(m)\)。
+
+由于 \(\Phi\) 是固定的 Presburger 公式，可对其预先执行一次量词消去，得到一个仅依赖于 \(\Phi\) 的等价量词自由公式；该公式是有限个线性等式、不等式与同余条件的布尔组合。于是，对上述 \(O(m)\)-比特整数代入求值可在多项式时间内完成。故 \(L_\Phi\) 可由多项式时间算法判定，即
+\[
+L_\Phi\in\mathbf P.
+\]
+
+最后，若 \(\mathrm{SAT}\le_m^p L_\Phi\)，则由 \(L_\Phi\in \mathbf P\) 立得 \(\mathrm{SAT}\in \mathbf P\)，从而
+\[
+\mathbf P=\mathbf{NP}.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[黄金参数二点 Bernoulli 卷积的 \texorpdfstring{$2$}{2}-周期化测度不具有任何 \texorpdfstring{$L^p$}{Lp} 密度]\label{thm:xi-bernoulli-two-periodization-no-lp-density}
+令
+\[
+q:=\varphi^{-1},
+\]
+并令 \(\mu_q^{(2)}\) 如定理 \ref{thm:fold-pisot-bernoulli-convolution-representation}。记
+\[
+\nu:=\bigl(\RR\to \mathbb T_2=\RR/(2\ZZ)\bigr)_\#\mu_q^{(2)}
+\]
+为其 \(2\)-周期化测度。则对任意
+\[
+1\le p\le \infty,
+\]
+\(\nu\) 都不可能具有 \(L^p(\mathbb T_2)\) 密度。
+\end{theorem}
+\begin{proof}
+反设存在某个 \(p\in[1,\infty]\) 与函数
+\[
+f\in L^p(\mathbb T_2)
+\]
+使得
+\[
+\dd \nu=f\,\dd x.
+\]
+由于 \(\mathbb T_2\) 的 Haar 测度有限，必有
+\[
+L^p(\mathbb T_2)\subseteq L^1(\mathbb T_2),
+\]
+故 \(f\in L^1(\mathbb T_2)\)。于是由 Riemann--Lebesgue 引理，
+\[
+\widehat \nu(u)\to 0
+\qquad(|u|\to\infty).
+\]
+
+另一方面，按定理 \ref{thm:fold-pisot-bernoulli-convolution-representation} 的 Fourier 采样表象，
+\[
+\widehat \nu(u)=\widehat{\mu_q^{(2)}}(\pi u),
+\qquad
+\bigl|\widehat \nu(u)\bigr|=C_\varphi(u).
+\]
+再由推论 \ref{cor:fold-resonance-ladder-fib-luc-limits}，
+\[
+C_\varphi(F_n)\to c_{\mathrm{Fib}}>0.
+\]
+因此
+\[
+\bigl|\widehat \nu(F_n)\bigr|=C_\varphi(F_n)\to c_{\mathrm{Fib}}>0,
+\]
+这与 \(\widehat \nu(u)\to 0\) 矛盾。故 \(\nu\) 不可能具有任何 \(L^p(\mathbb T_2)\) 密度。证毕。
+\end{proof}
+
+\endinput
