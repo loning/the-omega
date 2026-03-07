@@ -109,6 +109,89 @@ S_1(m),\dots,S_{2s_m-1}(m)
 本就包含在该全谱中。于是定理 \ref{thm:xi-fiber-spectrum-finite-moment-rigidity} 适用，并唯一恢复全部 \(\{(\delta_{j,m},n_{j,m})\}_{j=1}^{s_m}\)，从而唯一恢复 \(h_m\)。因此四类对象完全等价。证毕。
 \end{proof}
 
+\begin{corollary}[有限支持纤维谱的 Hankel--Vandermonde 显式重构公式]\label{cor:xi-fiber-spectrum-hankel-vandermonde-explicit-recovery}
+固定分辨率 \(m\)。设纤维多重度只取 \(R\) 个不同值
+\[
+1\le a_1<\cdots<a_R,
+\]
+并记其重数为
+\[
+n_j:=\#\{x\in X_m:\ d_m(x)=a_j\}
+\qquad(1\le j\le R).
+\]
+则对一切整数 \(q\ge 0\) 都有
+\[
+S_q(m)=\sum_{j=1}^{R}n_j a_j^q.
+\]
+若记消去多项式
+\[
+P_m(X):=\prod_{j=1}^{R}(X-a_j)
+=
+X^R+b_{R-1}X^{R-1}+\cdots+b_0,
+\]
+则系数向量 \((b_0,\dots,b_{R-1})\) 是 Hankel 线性系统
+\[
+\sum_{\ell=0}^{R-1}b_\ell\,S_{\ell+i}(m)=-S_{R+i}(m)
+\qquad(0\le i\le R-1)
+\]
+的唯一解。求得根 \(\{a_j\}_{j=1}^{R}\) 后，重数向量 \((n_1,\dots,n_R)\) 再由 Vandermonde 系统
+\[
+S_q(m)=\sum_{j=1}^{R}n_j a_j^q
+\qquad(0\le q\le R-1)
+\]
+唯一恢复。
+
+因此，仅凭
+\[
+S_0(m),S_1(m),\dots,S_{2R-1}(m)
+\]
+便已足以唯一决定完整纤维直方图。
+\end{corollary}
+\begin{proof}
+这正是定理 \ref{thm:xi-fiber-spectrum-finite-moment-rigidity} 的坐标化重写；其中
+\[
+R=s_m,\qquad a_j=\delta_{j,m},\qquad n_j=n_{j,m}.
+\]
+为便于直接调用，这里把相应线性系统写成显式形式。
+
+由 \(P_m(a_j)=0\) 对每个 \(1\le j\le R\) 成立，故对任意 \(i\ge 0\) 有
+\[
+0=\sum_{j=1}^{R}n_j a_j^i P_m(a_j)
+=
+\sum_{j=1}^{R}n_j a_j^i
+\Bigl(a_j^R+\sum_{\ell=0}^{R-1}b_\ell a_j^\ell\Bigr).
+\]
+按 \(S_q(m)=\sum_j n_j a_j^q\) 整理即得
+\[
+S_{R+i}(m)+\sum_{\ell=0}^{R-1}b_\ell S_{\ell+i}(m)=0
+\qquad(i\ge 0),
+\]
+特别地，对 \(0\le i\le R-1\) 就得到所示 Hankel 线性系统。
+
+现证其解唯一。记
+\[
+H_m:=\bigl(S_{r+s}(m)\bigr)_{0\le r,s\le R-1}.
+\]
+对任意向量 \(u=(u_0,\dots,u_{R-1})^{\mathsf T}\)，有
+\[
+u^{\mathsf T}H_m u
+=
+\sum_{j=1}^{R}n_j\Bigl(\sum_{\ell=0}^{R-1}u_\ell a_j^\ell\Bigr)^2.
+\]
+若 \(u^{\mathsf T}H_m u=0\)，则右端各项皆为零，于是多项式
+\[
+Q(X):=\sum_{\ell=0}^{R-1}u_\ell X^\ell
+\]
+在 \(R\) 个互异点 \(a_1,\dots,a_R\) 上全为零。由于 \(\deg Q\le R-1\)，只能 \(Q\equiv 0\)，故 \(u=0\)。因此 \(H_m\) 正定，特别可逆，所以上述 Hankel 系统有唯一解。
+
+得到 \(P_m\) 后，其根集即为全部不同纤维大小 \(\{a_j\}_{j=1}^{R}\)。再把这些根代回
+\[
+S_q(m)=\sum_{j=1}^{R}n_j a_j^q
+\qquad(0\le q\le R-1),
+\]
+便得到一个 Vandermonde 线性系统。由于 \(a_j\) 两两不同，其系数矩阵可逆，从而 \((n_1,\dots,n_R)\) 唯一确定。证毕。
+\end{proof}
+
 \begin{theorem}[连续容量曲线的分布二阶导数恰为纤维多重度经验测度]\label{thm:xi-capacity-second-distribution-derivative-fiber-empirical-measure}
 沿用定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic} 的记号，并定义纤维多重度经验测度
 \[
