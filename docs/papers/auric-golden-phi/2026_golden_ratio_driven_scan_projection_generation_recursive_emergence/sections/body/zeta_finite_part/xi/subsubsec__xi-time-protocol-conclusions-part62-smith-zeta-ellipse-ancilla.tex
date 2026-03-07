@@ -1,5 +1,5 @@
-\paragraph{Smith 谱分类、模核 \texorpdfstring{$\zeta$}{zeta} 主因子、整数椭圆原子分解与有限时域账本预算}
-前述有限秩账本障碍之后，Smith 信息亏损谱的局部分类、模核计数的 Dirichlet 全局化、整数轴对齐椭圆的原子结构，以及有限时域自然扩张的最小二进制外置预算还可继续压缩为下列结构性结论。
+\paragraph{Smith 谱分类、模核 \texorpdfstring{$\zeta$}{zeta} 主因子、整数椭圆原子分解与有限时域/单寄存器账本预算}
+前述有限秩账本障碍之后，Smith 信息亏损谱的局部分类、模核计数的 Dirichlet 全局化、整数轴对齐椭圆的原子结构，以及有限时域与单寄存器口径下自然扩张的极小二进制外置预算还可继续压缩为下列结构性结论。
 
 \begin{theorem}[\texorpdfstring{$p$}{p}-进信息亏损谱的完全分类]\label{thm:xi-smith-padic-loss-spectrum-classification}
 设 \(f:\ZZ_{\ge 0}\to \ZZ_{\ge 0}\) 满足 \(f(0)=0\)，并对 \(k\ge 1\) 定义前向差分
@@ -405,6 +405,80 @@ A_j:=
 给定 \(\Psi(x_0)\)，可由 \(x_N\) 与 \(h_{N-1}\) 先恢复唯一的 \(x_{N-1}\)，再由 \(x_{N-1}\) 与 \(h_{N-2}\) 恢复唯一的 \(x_{N-2}\)，如此逐层逆推，最终恢复唯一的 \(x_0\)。故 \(\Psi\) 单射。
 
 该构造在每个活跃层恰使用一位二进制字母，在每个非活跃层使用平凡单字母，因此总预算正好等于 \(|B_N|\)。证毕。
+\end{proof}
+
+\begin{proposition}[自然扩张单寄存器实现的最小字母表与二进长度]\label{prop:xi-natural-extension-single-register-minimal-alphabet}
+设 \(T:X\twoheadrightarrow X\) 为有限纤维满射，并记
+\[
+M:=\sup_{y\in X}\#T^{-1}(y)<\infty.
+\]
+考虑定理 \ref{thm:killo-natural-extension-branch-register} 中把自然扩张编码为右移插入系统的单寄存器模型：取有限字母表 \(\mathcal A\)，并对每个 \(y\in X\) 选取单射
+\[
+\iota_y:T^{-1}(y)\hookrightarrow \mathcal A,
+\qquad
+\beta(x):=\iota_{T(x)}(x).
+\]
+则下列两条等价：
+\begin{enumerate}
+  \item 对全部 \(y\in X\)，上述纤维编码可同时取到；
+  \item \(|\mathcal A|\ge M\)。
+\end{enumerate}
+因此，若记单个历史符号所需的最小二进制寄存器长度为
+\[
+L_{\min}(T),
+\]
+则有精确公式
+\[
+\boxed{\;
+L_{\min}(T)=\left\lceil \log_2 M \right\rceil.\;}
+\]
+并且该下界可达：取
+\[
+\mathcal A=\{0,1,\dots,M-1\}
+\]
+并在每条纤维上任选单射 \(\iota_y\)，即可得到与定理 \ref{thm:killo-natural-extension-branch-register} 同型的右移插入双射模型而不丢失任何前史信息。
+\end{proposition}
+\begin{proof}
+若存在某个 \(y\in X\) 使 \(\#T^{-1}(y)=M\)，而 \(|\mathcal A|<M\)，则不存在单射
+\[
+T^{-1}(y)\hookrightarrow \mathcal A.
+\]
+于是无法仅凭单一历史符号 \(\beta(x)\in\mathcal A\) 无歧义地区分该纤维内的全部前史分支。故必要条件为
+\[
+|\mathcal A|\ge M.
+\]
+
+反过来，若 \(|\mathcal A|\ge M\)，则对每个 \(y\in X\) 都可选取单射
+\[
+\iota_y:T^{-1}(y)\hookrightarrow \mathcal A.
+\]
+由此定义
+\[
+\beta(x):=\iota_{T(x)}(x)
+\]
+后，完全沿定理 \ref{thm:killo-natural-extension-branch-register} 的递推构造，即得编码
+\[
+C:X^{\leftarrow}\longrightarrow X\times \mathcal A^{\NN},
+\qquad
+C\bigl((x_0,x_{-1},x_{-2},\dots)\bigr)
+=
+\bigl(x_0,(\beta(x_{-1}),\beta(x_{-2}),\dots)\bigr),
+\]
+其为到像上的双射，并把自然扩张左移共轭为右移插入变换
+\[
+\widehat T(x,(a_1,a_2,\dots))=(T(x),(\beta(x),a_1,a_2,\dots)).
+\]
+故充分性也成立。
+
+于是最小可行字母表大小恰为 \(M\)。把 \(M\) 个字母固定编码为二进制串所需的最小位长正是
+\[
+\left\lceil \log_2 M \right\rceil,
+\]
+故
+\[
+L_{\min}(T)=\left\lceil \log_2 M \right\rceil.
+\]
+证毕。
 \end{proof}
 
 \input{subsubsec__xi-time-protocol-conclusions-part62a-zg-branch-tower-field-separation}
