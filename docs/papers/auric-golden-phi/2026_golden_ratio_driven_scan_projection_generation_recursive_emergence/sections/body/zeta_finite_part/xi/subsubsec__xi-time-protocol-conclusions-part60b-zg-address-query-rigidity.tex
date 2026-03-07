@@ -1,5 +1,5 @@
 \paragraph{Gödel--Zeckendorf 地址极限的黄金自仿射闭合、自然尺度维数与查询刚性}
-在地址前缀等距、Zeckendorf 有限截面递推与归一化复杂度界之间，还可抽出一组更紧的终端闭合：其一把“禁止相邻 \(1\)”直接压缩为一维 \(2^L\)-进地址线上的严格二分自仿射方程；其二把该极限集的自然尺度覆盖数、Hausdorff 维数与 Minkowski 内容写成 Fibonacci 常数的显式闭式；其三把折叠与稳定运算的可计算性提升为可精确审计的位查询刚性，并与真实输入 \(40\)-状态核的一阶 Edgeworth 指纹汇合为同一条可复核链。
+在地址前缀等距、Zeckendorf 有限截面递推与归一化复杂度界之间，还可抽出一组更紧的终端闭合：其一把“禁止相邻 \(1\)”直接压缩为一维 \(2^L\)-进地址线上的严格二分自仿射方程；其二把该极限集的自然尺度覆盖数、Hausdorff 维数与 Minkowski 内容写成 Fibonacci 常数的显式闭式；其三把折叠与稳定运算的可计算性提升为可精确审计的位查询刚性，并进一步把稳定算术层锁定为与自然数半环 PTIME 双向可解释的同一表示；最终它再与真实输入 \(40\)-状态核的一阶 Edgeworth 指纹汇合为同一条可复核链。
 
 \begin{theorem}[Gödel--Zeckendorf 地址极限的严格二分自仿射方程]\label{thm:xi-zg-address-binary-self-affine}
 取整数 \(L\ge 1\)，令
@@ -337,6 +337,58 @@ Q_{\det}(R_m^{\otimes})\ge m.
 Q_{\det}(L_m^{\otimes})=Q_{\det}(R_m^{\otimes})=m.
 \]
 证毕。
+\end{proof}
+
+\begin{theorem}[稳定算术层与自然数半环在 PTIME 内双向可解释]\label{thm:xi-stable-semiring-ptime-biinterpretability}
+沿用定义 \ref{def:stable-add}、\ref{def:stable-mul} 与命题
+\ref{prop:stable-arith-complexity} 的记号。则值映射
+\[
+\mathrm{Val}:X_\infty\longrightarrow \NN
+\]
+及其逆映射 \(Z:=\mathrm{Val}^{-1}\) 给出交换半环同构
+\[
+\boxed{\;
+\mathrm{Val}(c\oplus d)=\mathrm{Val}(c)+\mathrm{Val}(d),\qquad
+\mathrm{Val}(c\otimes d)=\mathrm{Val}(c)\,\mathrm{Val}(d).\;}
+\]
+更进一步，在有效分辨率 \(m\) 的输入口径下，两侧运算可在多项式时间内双向模拟：
+\begin{enumerate}
+  \item 从 \(c,d\in X_\infty\) 计算 \(c\oplus d\) 与 \(c\otimes d\)，在比特口径下分别需要
+  \[
+  O(m^2),\qquad O(M(m)+m^2)
+  \]
+  位运算，其中 \(M(m)\) 为 \(m\)-比特整数乘法成本；
+  \item 从 \(m\)-比特整数 \(N\) 计算 Zeckendorf 规范形 \(Z(N)\)，以及从 \(c\in X_\infty\) 计算 \(\mathrm{Val}(c)\)，都可在 \(O(m^2)\) 位运算内完成。
+\end{enumerate}
+因此
+\[
+\boxed{\;
+(X_\infty,\oplus,\otimes)\ \text{与}\ (\NN,+,\times)
+\ \text{在 semiring 意义下同构，并在 PTIME 内双向可解释。}\;}
+\]
+\end{theorem}
+\begin{proof}
+交换半环同构本身是定义性的：由定义 \ref{def:stable-add} 与 \ref{def:stable-mul}，
+\[
+c\oplus d=\mathrm{Val}^{-1}\!\bigl(\mathrm{Val}(c)+\mathrm{Val}(d)\bigr),
+\qquad
+c\otimes d=\mathrm{Val}^{-1}\!\bigl(\mathrm{Val}(c)\mathrm{Val}(d)\bigr),
+\]
+而 \(\mathrm{Val}\) 由 Zeckendorf 唯一性给出双射，因此半环同构正是定理 \ref{thm:mul-definitional} 的内容。
+
+算法复杂度则给出真正的计算内容。对第一条，命题 \ref{prop:stable-arith-complexity} 已经证明：在有效分辨率 \(m\) 的输入上，稳定加法与稳定乘法可按“值层运算 \(+\) Zeckendorf 规范化”实现，并分别满足
+\[
+O(m^2),\qquad O(M(m)+m^2)
+\]
+的比特复杂度。
+
+对第二条，若给定 \(m\)-比特整数 \(N\)，则其 Zeckendorf 规范形 \(Z(N)\) 可由附录复杂度界中的贪心规范化实现；命题 \ref{prop:fold-complexity} 对 Fibonacci 权重的分析表明，这一步需要 \(O(m^2)\) 位运算。反过来，若给定支撑包含于 \(\{1,\dots,m\}\) 的 \(c\in X_\infty\)，则
+\[
+\mathrm{Val}(c)=\sum_{k=1}^{m}c_kF_{k+1}
+\]
+只是 \(O(m)\) 项、每项位长 \(O(m)\) 的加权求和，因此同样可在 \(O(m^2)\) 位运算内完成。
+
+于是，自然数加乘可先经 \(Z\) 送入稳定地址层，再用 \(\oplus,\otimes\) 模拟并用 \(\mathrm{Val}\) 读回；稳定地址层运算也可先经 \(\mathrm{Val}\) 送回整数值层完成。两侧都具有多项式时间实现，故得到所述 PTIME 双向可解释性。证毕。
 \end{proof}
 
 \paragraph{真实输入 \texorpdfstring{$40$}{40}-状态核的一阶 Edgeworth 指纹闭合}

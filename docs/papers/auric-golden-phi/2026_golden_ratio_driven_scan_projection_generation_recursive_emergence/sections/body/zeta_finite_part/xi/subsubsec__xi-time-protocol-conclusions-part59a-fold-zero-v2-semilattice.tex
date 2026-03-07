@@ -135,3 +135,194 @@ S_h(M).
 \]
 故同层中较小的除数对应较小的余类，而整个层只需取整除极大元作并即可生成。证毕。
 \end{proof}
+
+\begin{theorem}[六倍窗零块的 dyadic 塔给出一列两两不交的 Fibonacci 余类块]\label{thm:xi-fold-zero-dyadic-tower-disjoint-fibonacci-cosets}
+沿用
+\[
+M:=F_{m+2},
+\qquad
+\mathcal Z_m:=\{k\in \ZZ/(M\ZZ):\ \widehat d_m(k)=0\}
+\]
+的记号。设
+\[
+m+2=3\cdot 2^r\cdot s,
+\qquad
+r\ge 1,
+\qquad
+s\in \NN.
+\]
+对每个 \(j=1,\dots,r\)，定义
+\[
+d_j:=\frac{m+2}{2^j},
+\qquad
+g_j:=F_{d_j}.
+\]
+则对所有 \(1\le j\le r\)，都有
+\[
+S_{g_j}(M)\subseteq \mathcal Z_m,
+\]
+并且这些余类块两两不交：
+\[
+S_{g_i}(M)\cap S_{g_j}(M)=\varnothing
+\qquad(i\neq j).
+\]
+因此
+\[
+\boxed{\;
+|\mathcal Z_m|
+\ge
+\sum_{j=1}^{r}F_{(m+2)/2^j}.\;}
+\]
+\end{theorem}
+\begin{proof}
+先证包含关系。对每个 \(j\)，由于 \(3\mid d_j\)，Lucas 数列模 \(2\) 的周期性给出
+\[
+2\mid L_{d_j}.
+\]
+更一般地，对所有 \(t=0,\dots,j-1\)，都有
+\[
+3\mid 2^t d_j,
+\]
+故
+\[
+2\mid L_{2^t d_j}.
+\]
+另一方面，反复使用倍角恒等式
+\[
+F_{2n}=F_nL_n
+\]
+可得
+\[
+F_{m+2}
+=
+F_{2^j d_j}
+=
+F_{d_j}\prod_{t=0}^{j-1}L_{2^t d_j}.
+\]
+由于上式乘积中的每个 Lucas 因子都为偶数，故
+\[
+F_{d_j}\mid \frac{F_{m+2}}{2}=\frac{M}{2}.
+\]
+于是由推论 \ref{cor:fold-zero-divisor-lb} 立即得到
+\[
+S_{g_j}(M)=S_{F_{d_j}}(M)\subseteq \mathcal Z_m,
+\qquad
+|S_{g_j}(M)|=F_{d_j}.
+\]
+
+再证两两不交。设 \(i<j\)。则
+\[
+d_i=2^{j-i}d_j,
+\qquad
+g_i=F_{2^{j-i}d_j},
+\qquad
+g_j=F_{d_j}.
+\]
+由 Fibonacci 最大公因子恒等式，
+\[
+\gcd(g_i,g_j)
+=
+\gcd(F_{d_i},F_{d_j})
+=
+F_{\gcd(d_i,d_j)}
+=
+F_{d_j}
+=
+g_j.
+\]
+若 \(S_{g_i}(M)\cap S_{g_j}(M)\neq\varnothing\)，则由引理 \ref{lem:fold-zero-coset-intersection} 必有
+\[
+2g_j\mid (g_i-g_j).
+\]
+但由前述倍角分解，
+\[
+g_i-g_j
+=
+F_{2^{j-i}d_j}-F_{d_j}
+=
+F_{d_j}\left(\prod_{t=0}^{j-i-1}L_{2^t d_j}-1\right).
+\]
+而每个 \(L_{2^t d_j}\) 都是偶数，所以括号中是“偶数减一”，必为奇数。故
+\[
+2F_{d_j}\nmid g_i-g_j,
+\]
+即
+\[
+2g_j\nmid (g_i-g_j),
+\]
+矛盾。于是
+\[
+S_{g_i}(M)\cap S_{g_j}(M)=\varnothing
+\qquad(i\neq j).
+\]
+
+最后，由这些两两不交的余类块都包含于 \(\mathcal Z_m\)，得到
+\[
+|\mathcal Z_m|
+\ge
+\sum_{j=1}^{r}|S_{g_j}(M)|
+=
+\sum_{j=1}^{r}F_{d_j}
+=
+\sum_{j=1}^{r}F_{(m+2)/2^j}.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[六倍窗零点集合半维指数律的尖锐性可由 dyadic 零块塔重导]\label{cor:xi-fold-zero-dyadic-tower-sharp-halfdim-exponent}
+沿同余子序列
+\[
+m+2\equiv 0\pmod 6,
+\]
+有
+\[
+\lim_{\substack{m\to\infty\\ m+2\equiv 0\ (6)}}
+\frac{1}{m}\log|\mathcal Z_m|
+=
+\frac12\log\varphi.
+\]
+等价地，
+\[
+|\mathcal Z_m|=\varphi^{m/2+o(m)}.
+\]
+因此定理 \ref{thm:xi-fold-zero-set-half-dimensional-exponent-law} 中的半维指数率上界在六倍窗上是尖锐的。
+\end{corollary}
+\begin{proof}
+当 \(m+2\equiv 0\pmod 6\) 时，可写
+\[
+m+2=3\cdot 2^r\cdot s
+\]
+且 \(r\ge 1\)。由定理 \ref{thm:xi-fold-zero-dyadic-tower-disjoint-fibonacci-cosets}，至少有
+\[
+|\mathcal Z_m|
+\ge
+F_{(m+2)/2}.
+\]
+另一方面，由定理 \ref{thm:fold-zero-density-sparse}，
+\[
+|\mathcal Z_m|
+\le
+\tau(m+2)\,F_{\lfloor (m+2)/2\rfloor}.
+\]
+再结合 Fibonacci 渐近
+\[
+F_n=\varphi^{n+o(n)}
+\]
+以及约数函数的次指数增长
+\[
+\tau(n)=e^{o(n)},
+\]
+便得
+\[
+\frac{1}{m}\log F_{(m+2)/2}
+\longrightarrow
+\frac12\log\varphi,
+\]
+且
+\[
+\frac{1}{m}\log\!\Bigl(\tau(m+2)F_{\lfloor (m+2)/2\rfloor}\Bigr)
+\longrightarrow
+\frac12\log\varphi.
+\]
+夹逼定理即得所示极限。证毕。
+\end{proof}

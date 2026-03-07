@@ -1,5 +1,5 @@
-\paragraph{连续容量的完备统计量与 window-\texorpdfstring{$6$}{6} 异常初始斜率}
-在前述有限矩刚性、Mellin--Stieltjes 反演与 window-\(6\) 的有限尺度闭式之后，还可把连续容量曲线、尾计数函数、纤维直方图与全矩谱收束为同一份完全可逆的数据。
+\paragraph{连续容量的完备统计量、分布导数与 window-\texorpdfstring{$6$}{6} 异常初始斜率}
+在前述有限矩刚性、Mellin--Stieltjes 反演与 window-\(6\) 的有限尺度闭式之后，还可把连续容量曲线、尾计数函数、纤维直方图、纤维经验测度与全矩谱收束为同一份完全可逆的数据。
 
 \begin{theorem}[连续容量曲线是纤维直方图与全矩谱的完备统计量]\label{thm:xi-capacity-tail-histogram-moment-complete-statistic}
 固定分辨率 \(m\)。记
@@ -107,6 +107,173 @@ S_0(m).
 S_1(m),\dots,S_{2s_m-1}(m)
 \]
 本就包含在该全谱中。于是定理 \ref{thm:xi-fiber-spectrum-finite-moment-rigidity} 适用，并唯一恢复全部 \(\{(\delta_{j,m},n_{j,m})\}_{j=1}^{s_m}\)，从而唯一恢复 \(h_m\)。因此四类对象完全等价。证毕。
+\end{proof}
+
+\begin{theorem}[连续容量曲线的分布二阶导数恰为纤维多重度经验测度]\label{thm:xi-capacity-second-distribution-derivative-fiber-empirical-measure}
+沿用定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic} 的记号，并定义纤维多重度经验测度
+\[
+\nu_m:=\sum_{x\in X_m}\delta_{d_m(x)}
+=
+\sum_{d\ge 1}h_m(d)\,\delta_d.
+\]
+则在 \((0,\infty)\) 上按分布成立精确恒等式
+\[
+\boxed{\;
+-D_T^2\mathcal C_m^{\mathrm{cont}}=\nu_m.\;}
+\]
+等价地，\(\mathcal C_m^{\mathrm{cont}}\) 的折点支撑恰为全部出现过的纤维大小，而对任意整数 \(d\ge 1\) 都有
+\[
+\boxed{\;
+h_m(d)
+=
+\nu_m(\{d\})
+=
+N_m(d)-N_m(d+0)
+=
+\partial_T^{-}\mathcal C_m^{\mathrm{cont}}(d)-\partial_T^{+}\mathcal C_m^{\mathrm{cont}}(d).\;}
+\]
+因此，连续容量曲线不仅决定尾函数与全矩谱，而且已经完整且无损地决定了纤维多重度多重集本身。
+\end{theorem}
+\begin{proof}
+在 \((0,\infty)\) 上，
+\[
+N_m(T)=\sum_{x\in X_m}\mathbf 1_{\{T\le d_m(x)\}}
+\]
+是右连续阶梯函数。对任意固定 \(d>0\)，分布导数满足
+\[
+D_T\mathbf 1_{\{T\le d\}}=-\delta_d.
+\]
+故在分布意义下
+\[
+D_TN_m
+=
+\sum_{x\in X_m}D_T\mathbf 1_{\{T\le d_m(x)\}}
+=
+-\sum_{x\in X_m}\delta_{d_m(x)}
+=
+-\nu_m.
+\]
+
+另一方面，由定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic}，
+\[
+\mathcal C_m^{\mathrm{cont}}(T)=\int_0^T N_m(t)\,\dd t,
+\]
+从而
+\[
+D_T\mathcal C_m^{\mathrm{cont}}=N_m,
+\qquad
+D_T^2\mathcal C_m^{\mathrm{cont}}=D_TN_m=-\nu_m
+\]
+按分布成立，即得第一式。
+
+又因 \(N_m\) 在 \(T=d\) 处的向下跳跃恰等于
+\[
+N_m(d)-N_m(d+0)=\#\{x\in X_m:\ d_m(x)=d\}=h_m(d),
+\]
+而 \(\mathcal C_m^{\mathrm{cont}}\) 在该点的左右导数分别为
+\[
+\partial_T^{-}\mathcal C_m^{\mathrm{cont}}(d)=N_m(d),
+\qquad
+\partial_T^{+}\mathcal C_m^{\mathrm{cont}}(d)=N_m(d+0),
+\]
+遂得第二式。证毕。
+\end{proof}
+
+\begin{theorem}[矩谱对尾函数与连续容量曲线具有严格的 Mellin 反演公式]\label{thm:xi-capacity-moment-mellin-inversion-tail-capacity}
+沿用定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic} 的记号。对复数 \(s\in\CC\) 定义
+\[
+S_s(m):=\sum_{x\in X_m}d_m(x)^s
+=
+\sum_{d\ge 1}h_m(d)\,d^s,
+\]
+其中 \(d^s:=e^{s\log d}\) 取实对数支。则当 \(\Re s>0\) 时有
+\[
+\boxed{\;
+\frac{S_s(m)}{s}
+=
+\int_0^\infty T^{s-1}N_m(T)\,\dd T.\;}
+\]
+因此，对任意 \(c>0\) 与任意不是纤维大小跳点的 \(T>0\)，有 Mellin 反演公式
+\[
+\boxed{\;
+N_m(T)
+=
+\frac{1}{2\pi i}
+\int_{c-i\infty}^{c+i\infty}
+\frac{S_s(m)}{s}\,T^{-s}\,\dd s.\;}
+\]
+进一步，对任意 \(c>1\) 与任意 \(T>0\)，有
+\[
+\boxed{\;
+2^m-\mathcal C_m^{\mathrm{cont}}(T)
+=
+\frac{1}{2\pi i}
+\int_{c-i\infty}^{c+i\infty}
+\frac{S_s(m)}{s(s-1)}\,T^{1-s}\,\dd s.\;}
+\]
+等价地，
+\[
+\boxed{\;
+\mathcal C_m^{\mathrm{cont}}(T)
+=
+2^m+
+\frac{1}{2\pi i}
+\int_{c-i\infty}^{c+i\infty}
+\frac{S_s(m)}{s(1-s)}\,T^{1-s}\,\dd s.\;}
+\]
+因此，全体矩谱 \(\{S_s(m)\}_{\Re s>0}\) 不仅与尾函数等价，而且可通过显式解析核无损反演出连续容量曲线。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic} 的 Mellin--Stieltjes 公式，对 \(\Re s>0\) 有
+\[
+S_s(m)=s\int_0^\infty T^{s-1}N_m(T)\,\dd T.
+\]
+这就得到第一式。由于 \(N_m\) 有界、右连续且紧支撑，标准 Mellin 反演定理适用，从而在 \(N_m\) 的连续点 \(T\) 上，
+\[
+N_m(T)
+=
+\frac{1}{2\pi i}
+\int_{c-i\infty}^{c+i\infty}
+\frac{S_s(m)}{s}\,T^{-s}\,\dd s
+\qquad(c>0).
+\]
+
+另一方面，由
+\[
+\sum_{x\in X_m}d_m(x)=2^m
+\]
+与定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic} 中的
+\[
+\mathcal C_m^{\mathrm{cont}}(T)=\int_0^T N_m(t)\,\dd t
+\]
+可得
+\[
+2^m-\mathcal C_m^{\mathrm{cont}}(T)=\int_T^\infty N_m(t)\,\dd t.
+\]
+将上式中的 \(N_m(t)\) 代入其 Mellin 反演公式，并在 \(c>1\) 时交换积分次序，得到
+\[
+\begin{aligned}
+2^m-\mathcal C_m^{\mathrm{cont}}(T)
+&=
+\frac{1}{2\pi i}
+\int_{c-i\infty}^{c+i\infty}
+\frac{S_s(m)}{s}
+\left(\int_T^\infty t^{-s}\,\dd t\right)\dd s\\
+&=
+\frac{1}{2\pi i}
+\int_{c-i\infty}^{c+i\infty}
+\frac{S_s(m)}{s(s-1)}\,T^{1-s}\,\dd s,
+\end{aligned}
+\]
+因为当 \(\Re s>1\) 时，
+\[
+\int_T^\infty t^{-s}\,\dd t=\frac{T^{1-s}}{s-1}.
+\]
+这便得到第三式；最后一式只需利用
+\[
+\frac{1}{s(1-s)}=-\frac{1}{s(s-1)}
+\]
+改写即可。证毕。
 \end{proof}
 
 \begin{theorem}[window-\texorpdfstring{$6$}{6} 异常签名维数等于容量曲线在 \texorpdfstring{$T=1$}{T=1} 的初始右导数]\label{thm:xi-window6-anomaly-rank-initial-capacity-right-derivative}

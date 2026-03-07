@@ -151,6 +151,88 @@ m_t=\Delta(t)-\Delta(t+1)=2f(t)-f(t-1)-f(t+1).
 将 \(m_t\) 解释为 \(E\) 中取值 \(t\) 的重数，即得全部结论。证毕。
 \end{proof}
 
+\begin{corollary}[Smith 核谱函数的离散凹性、平台截断与二阶差分反演]\label{cor:xi-smith-kernel-spectrum-discrete-concavity-plateau-inversion}
+设 \(A\in M_{m\times n}(\ZZ)\) 满足 \(\operatorname{rank}_{\QQ}(A)=m\)，其 Smith 不变量为
+\[
+d_1\mid d_2\mid\cdots\mid d_m.
+\]
+固定素数 \(p\)，并记
+\[
+K_p(k):=\#\ker(A_{p^k})
+\qquad(k\ge 1),
+\]
+\[
+f_p(k):=\log_p K_p(k)-k(n-m)
+\qquad(k\ge 1),
+\qquad
+f_p(0):=0.
+\]
+再记
+\[
+e_i(p):=v_p(d_i),
+\qquad
+E_p:=\max_{1\le i\le m}e_i(p),
+\qquad
+m_{p,\ell}:=\#\{i:\ e_i(p)=\ell\}
+\quad(\ell\ge 1).
+\]
+则成立：
+\begin{enumerate}
+  \item \(f_p\) 是单调不减的离散凹函数，即
+  \[
+  f_p(k+1)-f_p(k)\ge f_p(k+2)-f_p(k+1)
+  \qquad(k\ge 0);
+  \]
+  \item 当 \(k\ge E_p\) 时，\(f_p\) 进入平台：
+  \[
+  f_p(k)=\sum_{i=1}^{m}e_i(p);
+  \]
+  \item 对每个 \(\ell\ge 1\)，精确重数由二阶差分恢复：
+  \[
+  m_{p,\ell}
+  =
+  2f_p(\ell)-f_p(\ell-1)-f_p(\ell+1).
+  \]
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:killo-smith-loss-spectrum}，
+\[
+f_p(k)=\sum_{i=1}^{m}\min\bigl(k,e_i(p)\bigr)
+\qquad(k\ge 1),
+\]
+并且
+\[
+\Delta_p(k):=f_p(k)-f_p(k-1)=\#\{i:\ e_i(p)\ge k\}
+\qquad(k\ge 1).
+\]
+因此 \(\Delta_p(k)\) 关于 \(k\) 非负且单调不增，故 \(f_p\) 单调不减且离散凹，这证明了第 \(1\) 条。
+
+若 \(k\ge E_p\)，则 \(\min(k,e_i(p))=e_i(p)\) 对所有 \(i\) 都成立，故
+\[
+f_p(k)=\sum_{i=1}^{m}e_i(p),
+\]
+得到第 \(2\) 条。
+
+最后，由上式直接有
+\[
+m_{p,\ell}
+=
+\#\{i:\ e_i(p)\ge \ell\}-\#\{i:\ e_i(p)\ge \ell+1\}
+=
+\Delta_p(\ell)-\Delta_p(\ell+1),
+\]
+从而
+\[
+m_{p,\ell}
+=
+\bigl(f_p(\ell)-f_p(\ell-1)\bigr)-\bigl(f_p(\ell+1)-f_p(\ell)\bigr)
+=
+2f_p(\ell)-f_p(\ell-1)-f_p(\ell+1).
+\]
+证毕。
+\end{proof}
+
 \begin{theorem}[模数信息亏损是 divisibility 格上的精确 valuation，且具有有理 Euler 因子]\label{thm:xi-kernel-loss-divisibility-valuation-rational-euler}
 设 \(A\in M_{m\times n}(\ZZ)\) 满足 \(\operatorname{rank}_{\QQ}(A)=m\)，其 Smith 不变量为
 \[
@@ -232,6 +314,38 @@ p^{\sum_i\min(k,e_i(p))},
 \frac{p^{-E_p s+\sigma_p}}{1-p^{-s}},
 \]
 于是得到所示有理表达。证毕。
+\end{proof}
+
+\begin{corollary}[模核大小在整除格上满足精确乘法恒等式]\label{cor:xi-kernel-size-gcd-lcm-exact-multiplicativity}
+沿用定理 \ref{thm:xi-kernel-loss-divisibility-valuation-rational-euler} 的记号。对任意 \(b,c\ge 1\)，都有
+\[
+\#\ker(A_{\gcd(b,c)})\cdot \#\ker(A_{\operatorname{lcm}(b,c)})
+=
+\#\ker(A_b)\cdot \#\ker(A_c).
+\]
+等价地，模核大小函数在除去自由因子 \(b^{\,n-m}\) 之后，正是正整数整除格上的一个严格 valuation。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-kernel-loss-divisibility-valuation-rational-euler}，
+\[
+L_A(\operatorname{lcm}(b,c))+L_A(\gcd(b,c))=L_A(b)+L_A(c).
+\]
+再由定义
+\[
+L_A(t)=\log\#\ker(A_t)-(n-m)\log t
+\qquad(t\ge 1),
+\]
+以及恒等式
+\[
+\log\gcd(b,c)+\log\operatorname{lcm}(b,c)=\log b+\log c,
+\]
+可得
+\[
+\log\#\ker(A_{\gcd(b,c)})+\log\#\ker(A_{\operatorname{lcm}(b,c)})
+=
+\log\#\ker(A_b)+\log\#\ker(A_c).
+\]
+两边取指数即得所示精确乘法关系。证毕。
 \end{proof}
 
 \begin{theorem}[模核 Dirichlet 级数的 Euler--rational 形态与 Smith 完备性]\label{thm:xi-kernel-dirichlet-euler-rational-smith-completeness}
@@ -422,7 +536,49 @@ E_{a,b}\odot E_{c,d}:=E_{ac,bd}.
 证毕。
 \end{proof}
 
+\begin{corollary}[整数轴对齐椭圆半群不存在任何有限加法账本的忠实同态实现]\label{cor:xi-integer-ellipse-no-faithful-finite-additive-ledger}
+沿用定理 \ref{thm:xi-integer-ellipse-half-circle-dimension-gap} 的记号，并记
+\[
+\mathsf E_x:=\{E_{a,1}:a\in\NN_{>0}\}\subset \mathsf E_{\NN}.
+\]
+则不存在任何有限整数 \(k\) 与单射幺半群同态
+\[
+\Phi:(\mathsf E_{\NN},\odot)\hookrightarrow (\NN^k,+).
+\]
+另一方面，\(\mathsf E_{\NN}\) 作为可数集合仍可单射进入 \(\NN\)。因此，对整数轴对齐椭圆半群而言，结构层的忠实同态实现与实现层的可寻址集合压缩发生严格分离。
+\end{corollary}
+\begin{proof}
+映射
+\[
+\NN_{>0}\longrightarrow \mathsf E_x,\qquad
+a\longmapsto E_{a,1}
+\]
+满足
+\[
+E_{a,1}\odot E_{c,1}=E_{ac,1},
+\]
+故给出幺半群同构
+\[
+(\NN_{>0},\times)\cong (\mathsf E_x,\odot).
+\]
+若存在某个有限 \(k\) 与单射幺半群同态
+\[
+\Phi:(\mathsf E_{\NN},\odot)\hookrightarrow (\NN^k,+),
+\]
+则其限制
+\[
+\Phi|_{\mathsf E_x}:(\NN_{>0},\times)\hookrightarrow (\NN^k,+)
+\]
+仍为单射幺半群同态。这与定理 \ref{thm:killo-prime-freedom-non-finitizability} 矛盾，因为 \((\NN^k,+)\) 是有限生成、交换且可消去的幺半群。故这样的 \(\Phi\) 不存在。
+
+另一方面，\(\mathsf E_{\NN}\) 与 \(\NN_{>0}\times \NN_{>0}\) 等势，故是可数无限集，从而存在集合单射
+\[
+\mathsf E_{\NN}\hookrightarrow \NN.
+\]
+这就给出了所述的严格分离。证毕。
+\end{proof}
+
 \noindent
-上述五条结果把附录 \(H\) 的若干局部构造压缩为一条统一刚性链：有限深度 branch register 是 prime-slice 外置的前缀模型，prime-slice 的最小复杂度由活跃分支层精确锁定；进入模数投影后，全部信息亏损又被 Smith 曲率谱完全分类，并在 divisibility 格上形成精确 valuation；最终，这条素数寄存器刚性可以直接投射到整数椭圆半群这样的显式几何对象，迫使其在结构层上表现出无限的加法寄存器秩。
+上述这些结果把附录 \(H\) 的若干局部构造压缩为一条统一刚性链：有限深度 branch register 是 prime-slice 外置的前缀模型，prime-slice 的最小复杂度由活跃分支层精确锁定；进入模数投影后，全部信息亏损不仅被 Smith 曲率谱完全分类，而且在整除格上形成精确 valuation 与原始模核乘法恒等式；最终，这条素数寄存器刚性可以直接投射到整数椭圆半群这样的显式几何对象，迫使其在结构层上表现出无限的加法寄存器秩，而实现层仍停留在可数可寻址的最低非零复杂度。
 
 \endinput
