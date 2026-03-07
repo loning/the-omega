@@ -3420,6 +3420,7 @@ def build_steps() -> List[Step]:
             expected_outputs=[
                 "artifacts/export/fold_bulk_resonance_fibonacci_directional_limits.json",
                 "sections/generated/eq_fold_bulk_resonance_fibonacci_directional_limits_numeric.tex",
+                "sections/generated/eq_fold_bulk_resonance_fib_luc_log_lower_bound_numeric.tex",
             ],
         ),
         Step(

@@ -1,14 +1,17 @@
 \paragraph{冻结 escort 谱、全微态位率阈值与三重算术独立的乘法密度}
-以下条目把固定冻结相中的 escort Rényi 熵谱、全微态精确反演所需比特率的有限层闭式，以及分枝三次场、零温四次场与 RH 临界五次场之间的算术独立性，压缩为一组可直接调用的终端结论。
+以下条目把固定冻结相中的 escort Rényi 速率压力差公式、全微态精确反演所需比特率的有限层闭式，以及分枝三次场、零温四次场与 RH 临界五次场之间的算术独立性，压缩为一组可直接调用的终端结论。
 
-\begin{theorem}[冻结相中 escort Rényi 谱的正阶完全塌缩与 \texorpdfstring{$q=0$}{q=0} 跃迁]\label{thm:xi-fixed-freezing-escort-renyi-spectrum-collapse}
-沿用结论 \ref{con:xi-terminal-fixed-freezing-escort-oracle-sharp-threshold} 的记号。固定
+\begin{theorem}[escort Rényi 速率的压力差公式、双阈值塌缩与 \texorpdfstring{$q=0$}{q=0} 跃迁]\label{thm:xi-fixed-freezing-escort-renyi-spectrum-collapse}
+沿用结论 \ref{con:xi-terminal-fixed-freezing-escort-oracle-sharp-threshold} 的记号。记
 \[
 a_{\mathrm c}:=\frac{\log\varphi-g_*}{\alpha_*-\alpha_*^{(2)}}<\infty,
-\qquad
-a>a_{\mathrm c},
 \]
-并定义 escort 分布
+并记
+\[
+S_t(m):=\sum_{x\in X_m}d_m(x)^t
+\qquad (t>0).
+\]
+对任意固定 \(a>0\) 定义 escort 分布
 \[
 \pi_{m,a}(x):=\frac{d_m(x)^a}{S_a(m)},
 \qquad
@@ -16,6 +19,11 @@ A_m^{\max}:=\{x\in X_m:\ d_m(x)=M_m\},
 \qquad
 K_m:=|A_m^{\max}|.
 \]
+若极限
+\[
+P_t:=\lim_{m\to\infty}\frac1m\log S_t(m)
+\]
+存在，则称其为 \(t\)-阶压力。
 记 \(H_q\) 为以自然对数定义的 Rényi 熵族，其中
 \[
 H_q(\mu):=\frac{1}{1-q}\log\sum_x \mu(x)^q\quad(q\in(0,\infty)\setminus\{1\}),
@@ -29,15 +37,29 @@ H_0(\mu):=\log|\supp \mu|.
 \]
 则成立：
 \begin{enumerate}
-  \item 对任意 \(q\in[1,\infty]\)，有
+  \item 对任意 \(q\in(0,\infty)\setminus\{1\}\)，若 \(P_a\) 与 \(P_{aq}\) 存在，则
+  \[
+  \boxed{\;
+  \lim_{m\to\infty}\frac1m H_q(\pi_{m,a})
+  =
+  \frac{P_{aq}-qP_a}{1-q}.\;}
+  \]
+  \item 若进一步落在双阈值区
+  \[
+  a>a_{\mathrm c},
+  \qquad
+  aq>a_{\mathrm c},
+  \]
+  则对每个 \(q\in(0,\infty)\setminus\{1\}\) 都有
   \[
   \lim_{m\to\infty}\frac1m H_q(\pi_{m,a})=g_*.
   \]
-  \item 对任意 \(q\in(0,1)\) 且 \(aq>a_{\mathrm c}\)，同样有
+  当 \(q>1\) 时，第二个阈值由 \(aq>a>a_{\mathrm c}\) 自动成立。
+  \item 对 \(q\in\{1,\infty\}\)，若 \(a>a_{\mathrm c}\)，则同样有
   \[
   \lim_{m\to\infty}\frac1m H_q(\pi_{m,a})=g_*.
   \]
-  \item 若记
+  \item 若 \(a>a_{\mathrm c}\) 且记
   \[
   U_m^{\max}:=\mathrm{Unif}(A_m^{\max}),
   \]
@@ -64,7 +86,7 @@ H_0(\mu):=\log|\supp \mu|.
   \log\varphi.\;}
   \]
 \end{enumerate}
-因此，一切正阶 Rényi 熵率在冻结相中统一塌缩到 \(g_*\)；而当 \(\log\varphi>g_*\) 时，Rényi 熵率在 \(q=0\) 处发生真实跃迁，因而并不连续。
+因此，正阶 Rényi 速率先由压力差公式统一表示；一旦 \((a,aq)\) 同时越过冻结阈值，全部正阶 Rényi 熵率便共同塌缩到 \(g_*\)；而当 \(\log\varphi>g_*\) 时，Hartley 熵率仍停留在 \(\log\varphi\)，从而在 \(q=0\) 处发生真实跃迁。
 \end{theorem}
 \begin{proof}
 先取 \(q\in(0,\infty)\setminus\{1\}\)。由定义
@@ -79,7 +101,9 @@ H_q(\pi_{m,a})
 =
 \frac{1}{1-q}\Bigl(\log S_{aq}(m)-q\log S_a(m)\Bigr).
 \]
-若 \(q>1\)，则 \(aq>a>a_{\mathrm c}\)；若 \(0<q<1\)，额外假设即为 \(aq>a_{\mathrm c}\)。于是定理 \ref{thm:fold-pressure-freezing-threshold} 同时适用于指数 \(a\) 与 \(aq\)，从而
+若 \(P_a\) 与 \(P_{aq}\) 存在，两边同除以 \(m\) 并令 \(m\to\infty\)，便得到第一条。
+
+若进一步 \(a>a_{\mathrm c}\) 且 \(aq>a_{\mathrm c}\)，则定理 \ref{thm:fold-pressure-freezing-threshold} 同时适用于指数 \(a\) 与 \(aq\)，从而
 \[
 \frac1m\log S_a(m)\to a\alpha_*+g_*,
 \qquad
@@ -93,12 +117,13 @@ H_q(\pi_{m,a})
 =
 g_*.
 \]
-这便证明了全部有限正阶、且满足冻结条件的 Rényi 熵率塌缩。
+这便证明了第二条。
 \par
 对 \(q=\infty\)，推论 \ref{cor:fold-escort-minentropy-rate} 已给出
 \[
 \lim_{m\to\infty}\frac1m H_\infty(\pi_{m,a})=h_\infty(a)=g_*.
 \]
+这给出第三条中 \(q=\infty\) 的情形。
 \par
 再证 Shannon 情形 \(q=1\)。记
 \[
@@ -117,7 +142,7 @@ p_m:=\pi_{m,a}(A_m^{\max}).
 \[
 1-p_m\le \exp\!\bigl(-m\Delta(a)+o(m)\bigr),
 \]
-即得第三条。
+即得第四条中的总变差公式。
 \par
 若 \(p_m<1\)，记 \(\eta_m\) 为 \(\pi_{m,a}\) 在补集 \(X_m\setminus A_m^{\max}\) 上的条件分布；若 \(p_m=1\)，任取 \(\eta_m\) 即可。于是
 \[
@@ -153,6 +178,7 @@ H(\pi_{m,a})=\log K_m+o(m),
 \[
 \lim_{m\to\infty}\frac1m H(\pi_{m,a})=g_*.
 \]
+这便完成了第三条中 \(q=1\) 的情形。
 \par
 最后，由定义对一切 \(x\in X_m\) 都有 \(d_m(x)\ge 1\)，故 \(\pi_{m,a}(x)>0\) 在整个 \(X_m\) 上成立。因此
 \[
@@ -162,6 +188,7 @@ H_0(\pi_{m,a})=\log|\supp(\pi_{m,a})|=\log|X_m|=\log F_{m+2},
 \[
 \lim_{m\to\infty}\frac1m H_0(\pi_{m,a})=\log\varphi.
 \]
+这正是第五条。
 证毕。
 \end{proof}
 

@@ -1,0 +1,103 @@
+\paragraph{预言机容量的 layer-cake 对偶与纤维尾谱完备性}
+在 dyadic 预算下的预言机容量已经写成纤维多重度的截断和之后，还可把预算变量延拓为连续阈值，并将容量曲线、尾谱与 multiplicity 直方图之间的互译关系压缩为一条完全无损的 layer-cake 对偶。
+
+\begin{theorem}[预言机容量与纤维尾谱的 layer-cake 对偶及完备性]\label{thm:xi-oracle-capacity-layercake-tail-completeness}
+沿用定义 \ref{def:fold-capacity-tail} 与定理 \ref{thm:fold-oracle-capacity-closed-form} 的记号。对固定分辨率 \(m\)，继续记
+\[
+d_m(x)\qquad(x\in X_m)
+\]
+为折叠纤维多重度，并定义连续阈值容量
+\[
+\mathcal C_m^{\mathrm{cont}}(T)
+:=
+\sum_{x\in X_m}\min\bigl(d_m(x),T\bigr)
+\qquad(T\ge 0).
+\]
+则 dyadic 预言机容量正是其 dyadic 采样：
+\[
+C_m(B)=\mathcal C_m^{\mathrm{cont}}(2^B)
+\qquad(B\in\ZZ_{\ge 0}).
+\]
+若再记尾计数函数
+\[
+N_m(t):=\#\{x\in X_m:\ d_m(x)\ge t\}
+\qquad(t\ge 0),
+\]
+则对一切 \(T\ge 0\) 都有精确 layer-cake 恒等式
+\[
+\mathcal C_m^{\mathrm{cont}}(T)=\int_0^T N_m(t)\,\dd t.
+\]
+并且对每个整数 \(k\ge 1\)，成立差分恢复公式
+\[
+N_m(k)=\mathcal C_m^{\mathrm{cont}}(k)-\mathcal C_m^{\mathrm{cont}}(k-1).
+\]
+若定义 multiplicity 直方图
+\[
+\mathsf M_m(k):=\#\{x\in X_m:\ d_m(x)=k\}
+\qquad(k\ge 1),
+\]
+则
+\[
+\mathsf M_m(k)=N_m(k)-N_m(k+1).
+\]
+因此 \(\mathcal C_m^{\mathrm{cont}}\) 与 \(N_m\) 互相唯一决定，而 \(\mathsf M_m\) 可由二阶离散差分无损恢复。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:fold-oracle-capacity-closed-form}，
+\[
+C_m(B)=\sum_{x\in X_m}\min\bigl(d_m(x),2^B\bigr),
+\]
+故直接代入 \(T=2^B\) 即得
+\[
+C_m(B)=\mathcal C_m^{\mathrm{cont}}(2^B).
+\]
+
+对任意整数 \(d\ge 0\) 与任意 \(T\ge 0\)，都有单点恒等式
+\[
+\min(d,T)=\int_0^T \mathbf 1_{\{t\le d\}}\,\dd t.
+\]
+令 \(d=d_m(x)\) 并在 \(x\in X_m\) 上求和，交换有限求和与积分，便得到
+\[
+\begin{aligned}
+\mathcal C_m^{\mathrm{cont}}(T)
+&=
+\sum_{x\in X_m}\int_0^T \mathbf 1_{\{t\le d_m(x)\}}\,\dd t\\
+&=
+\int_0^T \sum_{x\in X_m}\mathbf 1_{\{d_m(x)\ge t\}}\,\dd t\\
+&=
+\int_0^T N_m(t)\,\dd t.
+\end{aligned}
+\]
+这正是容量曲线与尾谱之间的 layer-cake 对偶。
+
+再取整数 \(k\ge 1\)。由上式与逐项差分，
+\[
+\begin{aligned}
+\mathcal C_m^{\mathrm{cont}}(k)-\mathcal C_m^{\mathrm{cont}}(k-1)
+&=
+\sum_{x\in X_m}
+\Bigl(\min\bigl(d_m(x),k\bigr)-\min\bigl(d_m(x),k-1\bigr)\Bigr)\\
+&=
+\sum_{x\in X_m}\mathbf 1_{\{d_m(x)\ge k\}}\\
+&=
+N_m(k).
+\end{aligned}
+\]
+最后，
+\[
+\mathbf 1_{\{d_m(x)\ge k\}}-\mathbf 1_{\{d_m(x)\ge k+1\}}
+=
+\mathbf 1_{\{d_m(x)=k\}},
+\]
+故
+\[
+\mathsf M_m(k)
+=
+\sum_{x\in X_m}\mathbf 1_{\{d_m(x)=k\}}
+=
+N_m(k)-N_m(k+1).
+\]
+于是 \(\mathcal C_m^{\mathrm{cont}}\)、\(N_m\) 与 \(\mathsf M_m\) 的相互恢复全部完成。证毕。
+\end{proof}
+
+\endinput
