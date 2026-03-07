@@ -262,96 +262,93 @@ F_{m+2}=\prod_{i=1}^{s}p_i^{e_i}.
 有限交换环约化当且仅当不存在非零幂零元，故等价于每个 \(e_i=1\)，亦即 \(F_{m+2}\) 平方自由。又有限交换环为局部环当且仅当其 Chinese remainder 分解只有一个因子，故等价于 \(s=1\)，亦即 \(F_{m+2}\) 为素数幂。证毕。
 \end{proof}
 
-\input{subsubsec__xi-time-protocol-conclusions-part48a-fold-congruence-quotient-rigidity}
-\input{subsubsec__xi-time-protocol-conclusions-part48b-window6-residue-character-gap}
-
-\begin{theorem}[零温四态极限的 Artin--Mazur \texorpdfstring{$\zeta$}{zeta} 函数、周期点递推与 primitive 轨道主项]\label{thm:xi-zero-temperature-fourstate-artin-mazur-zeta-primitive-asymptotic}
-令 \(\Sigma_\infty\) 为由
+\begin{theorem}[Fold 商半环 Jacobson 根基的 Loewy 长度与分层商公式]\label{thm:xi-fold-congruence-semiring-jacobson-loewy-profile}
+沿用定理 \ref{thm:fold-congruence-mod-semirings} 的记号，并写
 \[
-B_\infty=
-\begin{pmatrix}
-0&1&1&0\\
-0&0&1&0\\
-0&0&3&1\\
-1&0&0&3
-\end{pmatrix}
-\]
-定义的四态一步 SFT，并记其 Perron 根为 \(\rho:=\rho(B_\infty)\)。
-再令
-\[
-a_n:=\#\operatorname{Fix}(\sigma^n|_{\Sigma_\infty})=\Tr(B_\infty^n),
+R_m:=\mathcal R_m\cong \ZZ/(F_{m+2}\ZZ),
 \qquad
-\pi_n:=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+F_{m+2}=\prod_{i=1}^{s}p_i^{e_i}.
 \]
-其中 \(\mu\) 为 Möbius 函数。则
-\[
-\zeta_\infty(z)
-:=
-\exp\!\left(\sum_{n\ge 1}\frac{a_n}{n}z^n\right)
-=
-\frac{1}{1-6z+9z^2-z^3-z^4}.
-\]
-此外，序列 \((a_n)_{n\ge 1}\) 满足四阶递推
-\[
-a_{n+4}=6a_{n+3}-9a_{n+2}+a_{n+1}+a_n
-\qquad(n\ge 1),
-\]
-其初值为
-\[
-a_1=6,\qquad a_2=18,\qquad a_3=57,\qquad a_4=190.
-\]
-并且
-\[
-\pi_n\sim \frac{\rho^n}{n},
-\qquad
-h_{\mathrm{top}}(\Sigma_\infty)=\log\rho.
-\]
-等价地，在推论 \ref{cor:real-input-40-ground-entropy} 所采用的原始系统步长上，零温地基每步熵密度为 \(\tfrac12\log\rho\)。
+记 \(J_m:=J(R_m)\) 为 Jacobson 根基。则有：
+\begin{enumerate}
+  \item 根基的显式描述为
+  \[
+  \boxed{\;
+  J_m=\left(\prod_{i=1}^{s}p_i\right)R_m.\;}
+  \]
+  \item 若记
+  \[
+  \ell_m:=\min\{t\ge 1:\ J_m^t=0\},
+  \]
+  则
+  \[
+  \boxed{\;
+  \ell_m=\max_{1\le i\le s}e_i.\;}
+  \]
+  \item 对每个整数 \(0\le t<\ell_m\)，有
+  \[
+  \boxed{\;
+  J_m^t/J_m^{t+1}\cong \prod_{i:\,e_i>t}\ZZ/p_i\ZZ,\qquad
+  \bigl|J_m^t/J_m^{t+1}\bigr|=\prod_{i:\,e_i>t}p_i,\;}
+  \]
+  其中约定 \(J_m^0:=R_m\)。
+\end{enumerate}
+因此，Fold 商半环的 Loewy 深度恰由 Fibonacci 模数中最大的素数幂指数决定。
 \end{theorem}
 \begin{proof}
-零温四态极限段已给出
+由定理 \ref{thm:fold-congruence-mod-semirings} 与 Chinese remainder 分解，
 \[
-\det(I-zB_\infty)=1-6z+9z^2-z^3-z^4.
+R_m\cong \prod_{i=1}^{s}\ZZ/(p_i^{e_i}\ZZ).
 \]
-对任意一步 SFT，Artin--Mazur \(\zeta\)-函数满足
+每个局部因子 \(\ZZ/(p_i^{e_i}\ZZ)\) 的 Jacobson 根基都是主理想
 \[
-\zeta(z)=\det(I-zB)^{-1},
-\qquad
-\#\operatorname{Fix}(\sigma^n)=\Tr(B^n),
+(p_i)/(p_i^{e_i}),
 \]
-故第一式立即成立。
-\par
-\(B_\infty\) 的特征多项式为
+故整体根基为
 \[
-\chi(\lambda)=\lambda^4-6\lambda^3+9\lambda^2-\lambda-1.
+J_m\cong \prod_{i=1}^{s}(p_i)/(p_i^{e_i}),
 \]
-由 Cayley--Hamilton 定理，
+这恰等价于
 \[
-B_\infty^{n+4}=6B_\infty^{n+3}-9B_\infty^{n+2}+B_\infty^{n+1}+B_\infty^{n}
-\qquad(n\ge 1),
+J_m=\left(\prod_{i=1}^{s}p_i\right)R_m.
 \]
-两侧取迹即得递推。
-初值由直接矩阵乘法给出
+
+对任意 \(t\ge 0\)，于是有
 \[
-\Tr(B_\infty)=6,\qquad
-\Tr(B_\infty^2)=18,\qquad
-\Tr(B_\infty^3)=57,\qquad
-\Tr(B_\infty^4)=190.
+J_m^t\cong \prod_{i=1}^{s}(p_i^t)/(p_i^{e_i}).
 \]
-\par
-由于 \(B_\infty\) 为 primitive 非负整数矩阵，Perron--Frobenius 定理给出
+其中第 \(i\) 个因子当且仅当 \(t\ge e_i\) 时为零。因此 \(J_m^t=0\) 当且仅当对所有 \(i\) 都有 \(t\ge e_i\)，故满足 \(J_m^t=0\) 的最小整数恰为
 \[
-a_n=\rho^n+O(\theta^n)
+\ell_m=\max_{1\le i\le s}e_i.
 \]
-对某个 \(\theta<\rho\) 成立。
-再由 Möbius 反演公式
+
+最后，对 \(0\le t<\ell_m\)，由上式得到
 \[
-\pi_n=\frac{1}{n}\sum_{d\mid n}\mu(d)\,a_{n/d},
+J_m^t/J_m^{t+1}
+\cong
+\prod_{i=1}^{s}
+\frac{(p_i^t)/(p_i^{e_i})}{(p_i^{t+1})/(p_i^{e_i})}.
 \]
-其中 \(d=1\) 给出主项 \(\rho^n/n\)，而其余因子至多贡献 \(O(\rho^{n/2}/n)\)，故 \(\pi_n\sim \rho^n/n\)。
-最后，边移位 \(\Sigma_\infty\) 的拓扑熵等于 \(\log\rho(B_\infty)\)；
-与推论 \ref{cor:real-input-40-ground-entropy} 比较，即得原始系统步长上的熵密度为 \(\tfrac12\log\rho\)。证毕。
+若 \(e_i\le t\)，则该因子为零；若 \(e_i>t\)，则
+\[
+\frac{(p_i^t)/(p_i^{e_i})}{(p_i^{t+1})/(p_i^{e_i})}
+\cong
+\ZZ/p_i\ZZ.
+\]
+故
+\[
+J_m^t/J_m^{t+1}\cong \prod_{i:\,e_i>t}\ZZ/p_i\ZZ,
+\]
+并取基数即得
+\[
+\bigl|J_m^t/J_m^{t+1}\bigr|=\prod_{i:\,e_i>t}p_i.
+\]
+证毕。
 \end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part48a-fold-congruence-quotient-rigidity}
+\input{subsubsec__xi-time-protocol-conclusions-part48b-window6-residue-character-gap}
+\input{subsubsec__xi-time-protocol-conclusions-part48c-zero-temp-parry-primitive-refinement}
 
 \begin{theorem}[fold-gauge 常数序列的非 \texorpdfstring{$C$}{C}-有限性与前两阶 \texorpdfstring{$\zeta(2r)$}{zeta(2r)} 重整化极限]\label{thm:xi-foldbin-gauge-constant-not-cfinite-first-two-zeta-limits}
 令

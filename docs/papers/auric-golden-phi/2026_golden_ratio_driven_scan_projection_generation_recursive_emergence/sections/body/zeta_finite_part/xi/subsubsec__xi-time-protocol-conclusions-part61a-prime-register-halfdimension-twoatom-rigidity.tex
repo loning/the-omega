@@ -1,15 +1,15 @@
 \paragraph{素数寄存器幂等锥、有限素窗口半圆维与二原子信息几何的闭合描述}
-在素数寄存器估值算术化、链上规范投影的布尔化、有限素数支撑乘法单子的半圆维分离以及 bin-fold 相对均匀基线的普适 \(f\)-散度塌缩已经建立之后，还可进一步抽取出下列五条直接后果。
+在素数寄存器估值算术化、链上规范投影的布尔化、有限素数支撑乘法单子的半圆维分离以及 bin-fold 相对均匀基线的普适 \(f\)-散度塌缩已经建立之后，还可进一步抽取出下列六条直接后果。
 
 \begin{theorem}[素数寄存器幂等锥的秩分层、生成多项式与 Dirichlet 闭式]\label{thm:xi-prime-register-idempotent-cone-rank-dirichlet}
 沿用定理 \ref{thm:killo-finite-semigroup-prime-valuation-arithmetization} 与定理 \ref{thm:xi-prime-register-idempotent-exact-count} 的记号，并记
 \[
-\mathcal S_n:=\left\{\prod_{i=0}^{n-1}q_i^{a_i}: a_i\in\{0,\dots,n-1\}\right\},
+S_n:=\left\{\prod_{i=0}^{n-1}q_i^{a_i}: a_i\in\{0,\dots,n-1\}\right\},
 \]
 \[
-E_n:=\operatorname{Idem}(\mathcal S_n),
+E_n:=\operatorname{Idem}(S_n),
 \qquad
-E_{n,k}:=\operatorname{Idem}_k(\mathcal S_n),
+E_{n,k}:=\operatorname{Idem}_k(S_n),
 \qquad
 \operatorname{rk}(N):=|\operatorname{Im}(f_N)|.
 \]
@@ -69,7 +69,7 @@ v_{q_i}(N)\in F\qquad (i\notin F).
 再对全部非空 \(F\) 求和，即得所示 Dirichlet 闭式。证毕。
 \end{proof}
 
-\begin{theorem}[单调幂等骨架的合成退化与指数稀疏性]\label{thm:xi-monotone-idempotent-skeleton-gcd-lcm-sparsity}
+\begin{theorem}[单调幂等骨架的 Boolean 交格与指数稀疏性]\label{thm:xi-monotone-idempotent-skeleton-gcd-lcm-sparsity}
 沿用定理 \ref{thm:killo-chain-interior-godel-gcd-lcm} 的记号，记
 \[
 \mathcal I_n:=\mathrm{Int}(C_n),
@@ -79,15 +79,17 @@ v_{q_i}(N)\in F\qquad (i\notin F).
 \]
 则对任意满足 \(0\in F\cap G\subseteq\{0,\dots,n-1\}\) 的子集 \(F,G\)，有
 \[
-I_F\circ I_G=I_{F\cap G}=I_G\circ I_F,
+I_F\wedge I_G=I_{F\cap G},
+\qquad
+I_F\vee I_G=I_{F\cup G},
 \]
 从而
 \[
-\kappa(I_F\circ I_G)=\gcd(\kappa(I_F),\kappa(I_G)),
+\kappa(I_F\wedge I_G)=\gcd(\kappa(I_F),\kappa(I_G)),
 \qquad
 \kappa(I_F\vee I_G)=\mathrm{lcm}(\kappa(I_F),\kappa(I_G)).
 \]
-特别地，\(\mathcal I_n\) 在函数合成下构成交换幂等半群，并经 \(\kappa\) 与平方自由整数上的 \(\gcd\)-半群同构。
+特别地，\(\mathcal I_n\) 在 meet 运算下构成交换幂等半群，并经 \(\kappa\) 与平方自由整数上的 \(\gcd\)-半群同构。
 
 此外，
 \[
@@ -104,35 +106,23 @@ I_F\circ I_G=I_{F\cap G}=I_G\circ I_F,
 因而只要 \(1\le k\le n-1\)，该比例便随 \(n-k\) 指数衰减。
 \end{theorem}
 \begin{proof}
-由定理 \ref{thm:killo-chain-interior-godel-gcd-lcm}，任意 \(I\in\mathcal I_n\) 都唯一写成
+由定理 \ref{thm:killo-chain-interior-godel-gcd-lcm}，\(\mathcal I_n\) 与
 \[
-I=I_F,
+\mathcal F_n:=\{F\subseteq[n]:0\in F\}
+\]
+通过 \(F\mapsto I_F\) 一一对应，且格运算严格对应于集合交并。因而
+\[
+I_F\wedge I_G=I_{F\cap G},
 \qquad
-F=\mathrm{Fix}(I),
-\qquad
-0\in F.
+I_F\vee I_G=I_{F\cup G}.
 \]
-对任意 \(i\in\{0,\dots,n-1\}\)，直接计算得
+再由同一定理的算术化公式，
 \[
-(I_F\circ I_G)(i)
-=
-I_F\!\bigl(\max(G\cap\{0,\dots,i\})\bigr)
-=
-\max\bigl(F\cap G\cap\{0,\dots,i\}\bigr)
-=
-I_{F\cap G}(i).
-\]
-由于交运算交换，故
-\[
-I_F\circ I_G=I_G\circ I_F=I_{F\cap G},
-\]
-从而 \(\mathcal I_n\) 在合成下为交换幂等半群。再由同一定理的算术化公式，
-\[
-\kappa(I_{F\cap G})=\gcd(\kappa(I_F),\kappa(I_G)),
+\kappa(I_F\wedge I_G)=\gcd(\kappa(I_F),\kappa(I_G)),
 \qquad
 \kappa(I_F\vee I_G)=\mathrm{lcm}(\kappa(I_F),\kappa(I_G)),
 \]
-即得第一部分。
+即得第一部分。特别地，meet 的交换律与幂等律使 \(\mathcal I_n\) 成为交换幂等半群。
 
 对计数部分，只需从 \(\{1,\dots,n-1\}\) 中选出 \(k-1\) 个元素并与强制出现的 \(0\) 合并为固定点集 \(F\)，故
 \[
@@ -306,7 +296,71 @@ G\equiv 0 \qquad \text{于 } \CC.
 于是 \(\nu=\nu_\varphi\)。证毕。
 \end{proof}
 
+\begin{proposition}[bin-fold 渐近 \texorpdfstring{$f$}{f}-散度塌缩为唯一二点实验]\label{prop:xi-foldbin-f-divergence-two-point-experiment}
+沿用命题 \ref{prop:fold-bin-f-divergence-collapse} 的记号。定义 \(\{0,1\}\) 上的两点实验
+\[
+Q_\infty:=\left(\frac1\varphi,\frac1{\varphi^2}\right),
+\qquad
+P_\infty:=\left(\frac{\varphi}{\sqrt5},\frac{1}{\varphi\sqrt5}\right).
+\]
+则对任意凸函数 \(f:(0,\infty)\to\RR\) 满足 \(f(1)=0\)，都有
+\[
+\boxed{\;
+\lim_{m\to\infty}D_f(\mu_m\Vert u_m)
+=
+D_f(P_\infty\Vert Q_\infty),\;}
+\]
+并且
+\[
+\boxed{\;
+D_f(\mu_m\Vert u_m)
+=
+D_f(P_\infty\Vert Q_\infty)
++O_f\bigl((\varphi/2)^m\bigr).\;}
+\]
+其中
+\[
+D_f(P_\infty\Vert Q_\infty)
+:=
+\frac1\varphi\,f\!\left(\frac{P_{\infty,0}}{Q_{\infty,0}}\right)
++\frac1{\varphi^2}\,f\!\left(\frac{P_{\infty,1}}{Q_{\infty,1}}\right).
+\]
+换言之，\((\mu_m,u_m)\) 的全部渐近 Csisz\'ar 几何完全塌缩到单一二点实验 \((P_\infty,Q_\infty)\)。
+\end{proposition}
+\begin{proof}
+直接计算得到
+\[
+\frac{P_{\infty,0}}{Q_{\infty,0}}
+=
+\frac{\varphi/\sqrt5}{1/\varphi}
+=
+\frac{\varphi^2}{\sqrt5},
+\qquad
+\frac{P_{\infty,1}}{Q_{\infty,1}}
+=
+\frac{1/(\varphi\sqrt5)}{1/\varphi^2}
+=
+\frac{\varphi}{\sqrt5}.
+\]
+因此
+\[
+D_f(P_\infty\Vert Q_\infty)
+=
+\frac1\varphi\,f\!\left(\frac{\varphi^2}{\sqrt5}\right)
++\frac1{\varphi^2}\,f\!\left(\frac{\varphi}{\sqrt5}\right).
+\]
+而命题 \ref{prop:fold-bin-f-divergence-collapse} 已给出
+\[
+D_f(\mu_m\Vert u_m)
+=
+\frac1\varphi\,f\!\left(\frac{\varphi^2}{\sqrt5}\right)
++\frac1{\varphi^2}\,f\!\left(\frac{\varphi}{\sqrt5}\right)
++O_f\bigl((\varphi/2)^m\bigr).
+\]
+将两式比较，即得极限恒等式与误差阶。证毕。
+\end{proof}
+
 \paragraph{素数寄存器骨架与二原子信息几何的双侧闭合}
-上述五条结果表明，素数寄存器侧的幂等结构已经可由秩分层、Dirichlet 级数与布尔骨架的指数稀疏性完全控制；与此同时，bin-fold 相对均匀基线的渐近信息几何则最终塌缩为由单一 \(\chi^2\) 常数编码的唯一二原子测度。两侧共同给出一条算术外置与信息塌缩相互对照的闭合描述。
+上述六条结果表明，素数寄存器侧的幂等结构已经可由秩分层、Dirichlet 级数与布尔骨架的指数稀疏性完全控制；与此同时，bin-fold 相对均匀基线的渐近信息几何则最终塌缩为由单一 \(\chi^2\) 常数编码的唯一二原子测度。两侧共同给出一条算术外置与信息塌缩相互对照的闭合描述。
 
 \endinput

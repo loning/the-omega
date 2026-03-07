@@ -63,7 +63,7 @@ L_\Phi\in\mathbf P.
 证毕。
 \end{proof}
 
-\begin{theorem}[黄金参数二点 Bernoulli 卷积的 \texorpdfstring{$2$}{2}-周期化测度不具有任何 \texorpdfstring{$L^p$}{Lp} 密度]\label{thm:xi-bernoulli-two-periodization-no-lp-density}
+\begin{theorem}[黄金参数二点 Bernoulli 卷积的周期化 Fourier 系数不属于任何有限 \texorpdfstring{$\ell^r$}{lr}，因而不具有任何 \texorpdfstring{$L^p$}{Lp} 密度]\label{thm:xi-bernoulli-two-periodization-no-lp-density}
 令
 \[
 q:=\varphi^{-1},
@@ -74,44 +74,61 @@ q:=\varphi^{-1},
 \]
 为其 \(2\)-周期化测度。则对任意
 \[
-1\le p\le \infty,
+1\le r<\infty,
+\]
+\[
+\widehat\nu\notin \ell^r(\ZZ).
+\]
+特别地，对任意
+\[
+1<p\le\infty,
 \]
 \(\nu\) 都不可能具有 \(L^p(\mathbb T_2)\) 密度。
 \end{theorem}
 \begin{proof}
-反设存在某个 \(p\in[1,\infty]\) 与函数
+由定理 \ref{thm:xi-pisot-bernoulli-fibonacci-direction-nonrajchman}，对任意非零整数初值对
 \[
-f\in L^p(\mathbb T_2)
+(u_0,u_1)\in\ZZ^2\setminus\{(0,0)\},
 \]
-使得
+若 \((u_n)_{n\ge 0}\) 满足 Fibonacci 递推
 \[
-\dd \nu=f\,\dd x.
+u_{n+2}=u_{n+1}+u_n,
 \]
-由于 \(\mathbb T_2\) 的 Haar 测度有限，必有
+则存在常数 \(c(u_0,u_1)>0\) 使
 \[
-L^p(\mathbb T_2)\subseteq L^1(\mathbb T_2),
-\]
-故 \(f\in L^1(\mathbb T_2)\)。于是由 Riemann--Lebesgue 引理，
-\[
-\widehat \nu(u)\to 0
-\qquad(|u|\to\infty).
-\]
-
-另一方面，按定理 \ref{thm:fold-pisot-bernoulli-convolution-representation} 的 Fourier 采样表象，
-\[
-\widehat \nu(u)=\widehat{\mu_q^{(2)}}(\pi u),
+\bigl|\widehat\nu(u_n)\bigr|
+=
+\bigl|\widehat{\mu_q^{(2)}}(\pi u_n)\bigr|
+\longrightarrow c(u_0,u_1),
 \qquad
-\bigl|\widehat \nu(u)\bigr|=C_\varphi(u).
+|u_n|\to\infty.
 \]
-再由推论 \ref{cor:fold-resonance-ladder-fib-luc-limits}，
+固定任意一组此类非零初值对，并记 \(c:=c(u_0,u_1)\)。则存在 \(N_0\) 使得对一切 \(n\ge N_0\)，都有
 \[
-C_\varphi(F_n)\to c_{\mathrm{Fib}}>0.
+\bigl|\widehat\nu(u_n)\bigr|\ge \frac{c}{2}.
 \]
-因此
+因此对任意 \(1\le r<\infty\)，
 \[
-\bigl|\widehat \nu(F_n)\bigr|=C_\varphi(F_n)\to c_{\mathrm{Fib}}>0,
+\sum_{u\in\ZZ}\bigl|\widehat\nu(u)\bigr|^r
+\ge
+\sum_{n\ge N_0}\bigl|\widehat\nu(u_n)\bigr|^r
+\ge
+\sum_{n\ge N_0}\left(\frac{c}{2}\right)^r
+=+\infty.
 \]
-这与 \(\widehat \nu(u)\to 0\) 矛盾。故 \(\nu\) 不可能具有任何 \(L^p(\mathbb T_2)\) 密度。证毕。
+故 \(\widehat\nu\notin \ell^r(\ZZ)\) 对所有有限 \(r\) 都成立。
+
+再反设 \(\nu\) 具有某个 \(L^p(\mathbb T_2)\) 密度。若 \(1<p\le 2\)，则 Hausdorff--Young 不等式给出
+\[
+\widehat\nu\in \ell^{p'}(\ZZ),
+\qquad
+\frac1p+\frac1{p'}=1,
+\]
+与上式矛盾。若 \(2<p\le\infty\)，则由于 \(\mathbb T_2\) 的 Haar 测度有限，有
+\[
+L^p(\mathbb T_2)\subseteq L^2(\mathbb T_2),
+\]
+从而 Plancherel 定理给出 \(\widehat\nu\in \ell^2(\ZZ)\)，同样矛盾。故 \(\nu\) 不可能具有任何 \(L^p(\mathbb T_2)\) 密度。证毕。
 \end{proof}
 
 \endinput
