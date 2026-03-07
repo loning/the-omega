@@ -1,5 +1,7 @@
 ---
+name: killo-golden
 description: 根据论文目录下的跟踪文档, 选取最容易实现的未实现任务, 进行科研论文编写工作
+disable-model-invocation: true
 ---
 
 ## Goal
