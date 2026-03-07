@@ -78,7 +78,7 @@ I'(\alpha_0)=\Theta(\alpha_0)=0,
 故展开从二次项开始。证毕。
 \end{proof}
 
-\begin{theorem}[输出位势局部 Cram\'er 函数的单侧偏斜与四阶局部几何]\label{thm:xi-output-potential-local-legendre-skew-steep}
+\begin{theorem}[输出位势大偏差率函数的局部非对称精确展开]\label{thm:xi-output-potential-local-legendre-skew-steep}
 沿用定理 \ref{thm:xi-output-potential-local-legendre-quadratic-field} 的记号，并记
 \[
 \mu:=\alpha_0=P'(0)=\frac{23}{20}-\frac{7\sqrt5}{20},
@@ -90,7 +90,7 @@ I'(\alpha_0)=\Theta(\alpha_0)=0,
 \qquad
 \kappa_4:=P^{(4)}(0)=\frac{1354428303}{100000}-\frac{605718497}{100000}\sqrt5>0.
 \]
-则局部速率函数在 \(\mu\) 邻域内满足四阶展开
+则当 \(\delta\to 0\) 时，局部速率函数满足严格展开
 \[
 \boxed{\;
 I(\mu+\delta)
@@ -106,63 +106,58 @@ I(\mu+\delta)
 -\frac{\kappa_3}{6\sigma^6}\approx 22.8681939098>0,\qquad
 \frac{3\kappa_3^2-\sigma^2\kappa_4}{24\sigma^{10}}\approx 72.7346495328>0.\;}
 \]
-等价地，
-\[
-I''(\mu)=\frac{1}{\sigma^2}>0,\qquad
-I^{(3)}(\mu)= -\frac{\kappa_3}{\sigma^6}>0,\qquad
-I^{(4)}(\mu)=\frac{3\kappa_3^2-\sigma^2\kappa_4}{\sigma^{10}}>0.
-\]
-因此，输出位势的局部 Cram\'er germ 既不是 Gaussian 对称型，也不是关于 \(\mu\) 的偶函数；其中心附近具有严格左偏的局部涨落方向与正的四阶陡峭性。
+数值上有
+\input{sections/generated/eq_real_input_40_output_potential_local_rate_series}
+因此，输出位势的局部大偏差并非关于 \(\mu\) 的对称高斯扰动，而具有严格的三次非对称校正与正的四次硬化；特别地，在中心邻域内右侧偏离的指数代价严格高于左侧偏离。
 \end{theorem}
 \begin{proof}
 由关系
 \[
 P'(\Theta(\alpha))=\alpha
 \]
-对 \(\alpha\) 反复求导，可得 Legendre 对偶的标准导数公式
+令 \(\alpha=\mu+\delta\)。由
 \[
-I''(\alpha)=\Theta'(\alpha)=\frac{1}{P''(\Theta(\alpha))},
+\Theta(\mu)=0
 \]
+与 \(P''(0)=\sigma^2>0\)，函数 \(P'\) 在 \(0\) 的邻域内解析可逆。把
 \[
-I^{(3)}(\alpha)
+P'(\theta)
 =
--\frac{P^{(3)}(\Theta(\alpha))}{P''(\Theta(\alpha))^3},
+\mu+\sigma^2\theta+\frac{\kappa_3}{2}\theta^2+\frac{\kappa_4}{6}\theta^3+O(\theta^4)
 \]
+按 \(\delta\) 反解，得到
 \[
-I^{(4)}(\alpha)
+\Theta(\mu+\delta)
 =
-\frac{3P^{(3)}(\Theta(\alpha))^2-P''(\Theta(\alpha))P^{(4)}(\Theta(\alpha))}
-{P''(\Theta(\alpha))^5}.
+\frac{\delta}{\sigma^2}
+-\frac{\kappa_3}{2\sigma^6}\delta^2
++\frac{3\kappa_3^2-\sigma^2\kappa_4}{6\sigma^{10}}\delta^3
++O(\delta^4).
 \]
-在 \(\alpha=\mu\) 时有 \(\Theta(\mu)=0\)，故上述三式立即退化为
-\[
-I''(\mu)=\frac{1}{\sigma^2},\qquad
-I^{(3)}(\mu)= -\frac{\kappa_3}{\sigma^6},\qquad
-I^{(4)}(\mu)=\frac{3\kappa_3^2-\sigma^2\kappa_4}{\sigma^{10}}.
-\]
-于是对 \(I\) 在 \(\mu\) 处作 Taylor 展开可得
+再由 Legendre 对偶的驻点表示，
 \[
 I(\mu+\delta)
 =
-\frac{I''(\mu)}{2}\delta^2+\frac{I^{(3)}(\mu)}{6}\delta^3+\frac{I^{(4)}(\mu)}{24}\delta^4+O(\delta^5),
+(\mu+\delta)\Theta(\mu+\delta)-\bigl(P(\Theta(\mu+\delta))-P(0)\bigr).
 \]
-这正是所示四阶 Cram\'er germ。
+再把
+\[
+P(\theta)
+=
+P(0)+\mu\theta+\frac{\sigma^2}{2}\theta^2+\frac{\kappa_3}{6}\theta^3+\frac{\kappa_4}{24}\theta^4+O(\theta^5)
+\]
+代入并整理各阶 \(\delta\) 项，便得到所示四阶展开。
 
-前两条的符号由 \(\sigma^2>0\) 与 \(\kappa_3<0\) 直接给出。对四阶项，代入同表的闭式后可化简为
+三次项系数的符号由 \(\kappa_3<0\) 直接给出。对四次项，代入闭式可化简为
 \[
 3\kappa_3^2-\sigma^2\kappa_4
 =
 \frac{5989334657578-2678511881499\sqrt5}{25000000}
->
-0.
+>0,
 \]
-因此 \(I^{(4)}(\mu)>0\)。两条数值近似由上述显式公式直接代入得到。
-
-最后，若 \(I\) 在 \(\mu\) 邻域内关于 \(\mu\) 反射对称，则其所有奇阶导数在 \(\mu\) 处都必须为零；这与
-\(
-I^{(3)}(\mu)>0
-\)
-矛盾。故 \(I\) 不是偶函数。由于原始累积量满足 \(\kappa_3<0\)，这等价于中心涨落的三阶偏斜方向为左偏；同时 \(I^{(4)}(\mu)>0\) 给出正的四阶局部陡峭性。证毕。
+故四次项系数亦严格为正。生成式
+\eqref{eq:real-input-40-output-potential-local-rate-series}
+中的数值系数由上述显式公式直接代入得到。证毕。
 \end{proof}
 
 \begin{corollary}[输出位势局部偏差的严格方向性不等式]\label{cor:xi-output-potential-local-legendre-one-sided-asymmetry}
@@ -174,7 +169,7 @@ I(\mu+\delta)-I(\mu-\delta)
 -\frac{\kappa_3}{3\sigma^6}\delta^3+O(\delta^5)
 >0.\;}
 \]
-因此在真实输入 \(40\) 状态核的输出位势下，同等幅度的右偏差比左偏差具有更高的指数代价；换言之，局部中尺度偏差呈现严格左偏斜。
+因此在真实输入 \(40\) 状态核的输出位势下，同等幅度的右偏差比左偏差具有更高的指数代价；换言之，局部中尺度偏差在速率函数层面呈现严格的右侧代价增强。
 \end{corollary}
 \begin{proof}
 由定理 \ref{thm:xi-output-potential-local-legendre-skew-steep} 的 Taylor 展开，偶次项在
@@ -189,6 +184,8 @@ I(\mu+\delta)-I(\mu-\delta)
 \]
 由于 \(\kappa_3<0\)，该主项严格为正，故对充分小的 \(\delta>0\) 差值必为正。证毕。
 \end{proof}
+
+\input{thm__xi-output-potential-zero-temp-square-root-critical-law}
 
 \begin{theorem}[激活分支的三阶接触刚性与唯一小根性]\label{thm:xi-output-potential-activated-branch-rigidity}
 沿用命题 \ref{prop:real-input-40-activated-branch-linear} 的记号，令
@@ -556,7 +553,7 @@ O(m^{-6}).
 \input{subsubsec__xi-time-protocol-conclusions-part50c-output-potential-mirror-relaxation}
 
 \paragraph{输出位势的闭合解析链}
-上述结果表明：饱和端点的能垒缺口、镜像 Perron 支诱导的次谱近简并与 \(\sqrt u\) 级弛豫时间、任意 \(\beta<1\) 统一次谱幂界在端点邻域的失效、局部 Legendre 几何的二次数域封闭、均值附近的非对称陡峭性、唯一小根的激活支结构，以及固定单位根模态的四阶展开、有界窗口内 \(j=1\) 的最终支配和四阶修正的二次量级收益，实际上都由同一条输出位势代数曲线统一控制。端点零温极限、中心极限定域、慢模近简并与单位根方向的 Dirichlet 扭曲并非彼此孤立的机制，而是同一解析对象在实轴、局部对偶几何与 cyclotomic 边界上的不同投影。
+上述结果表明：饱和端点的能垒缺口、零温端点的平方根临界律、镜像 Perron 支诱导的次谱近简并与 \(\sqrt u\) 级弛豫时间、任意 \(\beta<1\) 统一次谱幂界在端点邻域的失效、局部 Legendre 几何的二次数域封闭、均值附近的非对称陡峭性、唯一小根的激活支结构，以及固定单位根模态的四阶展开、有界窗口内 \(j=1\) 的最终支配和四阶修正的二次量级收益，实际上都由同一条输出位势代数曲线统一控制。端点零温极限、中心局部 Legendre 对偶几何、慢模近简并与单位根方向的 Dirichlet 扭曲并非彼此孤立的机制，而是同一解析对象在实轴、对偶坐标域与 cyclotomic 边界上的不同投影。
 
 更具体地说，局部累积量闭式
 \[

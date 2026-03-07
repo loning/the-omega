@@ -3015,6 +3015,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="real_input_40_output_potential_local_rate_series",
+            script="exp_real_input_40_output_potential_local_rate_series.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/real_input_40_output_potential_local_rate_series.json",
+                "sections/generated/eq_real_input_40_output_potential_local_rate_series.tex",
+            ],
+        ),
+        Step(
             name="real_input_40_output_potential_ldp_algebraic_param",
             script="exp_real_input_40_output_potential_ldp_algebraic_param.py",
             args=[],
