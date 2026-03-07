@@ -1,8 +1,8 @@
-\paragraph{共振闭包级数、Pisot--Bernoulli 卷积与实零梯的四项解析后果}
+\paragraph{共振闭包级数、Pisot--Bernoulli 卷积与实零梯的若干解析后果}
 在推论 \ref{cor:fold-resonance-ladder-fib-luc-limits} 的 Fibonacci/Lucas 方向极限、
 定理 \ref{thm:fold-pisot-bernoulli-convolution-representation} 的 Fourier 采样表象以及
 定理 \ref{thm:fold-resonance-entire-lp} 的 Laguerre--P\'olya 闭包已经建立之后，
-还可进一步抽出下列四条彼此兼容的结果。
+还可进一步抽出下列若干条彼此兼容的结果。
 
 \begin{theorem}[共振闭包级数的显式对数下界与 Fibonacci--Lucas 双子列强化]\label{thm:xi-resonance-closure-log-lower-bound-fib-luc}
 沿用定义 \ref{def:fold-critical-resonance-ladder} 的记号，并令
@@ -91,6 +91,132 @@ L_n=\varphi^n+(-\varphi^{-1})^n,
 \]
 代回并先令 \(N\to\infty\)，再令 \(\varepsilon\downarrow 0\)，便得到第一条盒装式。
 第二条仅由 \(\Sigma_\varphi(N)=1+2\sum_{u\le N}C_\varphi(u)^2\) 立即推出。证毕。
+\end{proof}
+
+\begin{theorem}[共振闭包常数序列在任意有限 \texorpdfstring{$\ell^p$}{lp} 上均不可和]\label{thm:xi-resonance-closure-no-finite-lp-summability}
+沿用定理 \ref{thm:xi-resonance-closure-log-lower-bound-fib-luc} 的记号。对任意
+\[
+0<p<\infty
+\]
+与任意
+\[
+0<\eta<c_{\mathrm{Fib}},
+\]
+定义阈值计数函数
+\[
+R_\eta(N):=\#\{1\le u\le N:\ C_\varphi(u)\ge \eta\}.
+\]
+则存在整数 \(n_0(\eta)\) 使得
+\[
+R_\eta(N)\ge \#\{n\ge n_0(\eta):\ F_n\le N\}
+=
+\frac{\log N}{\log\varphi}+O(1).
+\]
+因此
+\[
+\sum_{u=1}^{N}C_\varphi(u)^p
+\ge
+\eta^p\frac{\log N}{\log\varphi}+O(1),
+\]
+从而
+\[
+\bigl(C_\varphi(u)\bigr)_{u\in\ZZ}\notin \ell^p(\ZZ)
+\qquad
+(\forall\,0<p<\infty).
+\]
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:fold-resonance-ladder-fib-luc-limits}，
+\[
+C_\varphi(F_n)\longrightarrow c_{\mathrm{Fib}}>0.
+\]
+故对任意 \(0<\eta<c_{\mathrm{Fib}}\)，存在 \(n_0(\eta)\) 使得当 \(n\ge n_0(\eta)\) 时恒有
+\[
+C_\varphi(F_n)\ge \eta.
+\]
+于是对每个 \(N\) 都有
+\[
+R_\eta(N)\ge \#\{n\ge n_0(\eta):\ F_n\le N\}.
+\]
+再由 Binet 公式可知 \(F_n\asymp \varphi^n\)，从而
+\[
+\#\{n:\ F_n\le N\}
+=
+\frac{\log N}{\log\varphi}+O(1).
+\]
+这就得到阈值计数下界。
+
+随后由定义直接有
+\[
+\sum_{u=1}^{N}C_\varphi(u)^p
+\ge
+\sum_{\substack{1\le u\le N\\ C_\varphi(u)\ge \eta}}C_\varphi(u)^p
+\ge
+\eta^p R_\eta(N),
+\]
+代入上式即得
+\[
+\sum_{u=1}^{N}C_\varphi(u)^p
+\ge
+\eta^p\frac{\log N}{\log\varphi}+O(1).
+\]
+令 \(N\to\infty\)，可见正半轴上的 \(p\)-次幂和已经发散，因此双侧序列
+\[
+\bigl(C_\varphi(u)\bigr)_{u\in\ZZ}
+\]
+不属于任何有限 \(\ell^p(\ZZ)\)。证毕。
+\end{proof}
+
+\begin{theorem}[共振闭包常数不存在最终单调的一阶包络]\label{thm:xi-resonance-closure-no-eventually-monotone-envelope}
+沿用推论 \ref{cor:fold-resonance-ladder-no-decay-no-limit} 的记号。若
+\[
+r:\NN\to\RR
+\]
+是最终单调序列，则不可能成立
+\[
+C_\varphi(u)-r(u)\longrightarrow 0
+\qquad (u\to\infty).
+\]
+更强地，若 \(r(u)>0\) 对充分大的 \(u\) 成立，则也不可能有
+\[
+\frac{C_\varphi(u)}{r(u)}\longrightarrow 1
+\qquad (u\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+先证第一条。若存在最终单调的 \(r(u)\) 使
+\[
+C_\varphi(u)-r(u)\longrightarrow 0,
+\]
+则由于 \(0\le C_\varphi(u)\le 1\)，序列 \(r(u)\) 亦最终有界。最终单调且有界的实序列必收敛，设
+\[
+r(u)\longrightarrow \ell.
+\]
+于是
+\[
+C_\varphi(u)=r(u)+o(1)\longrightarrow \ell,
+\]
+这与推论 \ref{cor:fold-resonance-ladder-no-decay-no-limit} 所给出的“整数方向不存在单一极限”矛盾。故第一条不可能。
+
+再证第二条。若 \(r(u)>0\) 最终成立且
+\[
+\frac{C_\varphi(u)}{r(u)}\longrightarrow 1,
+\]
+则对充分大的 \(u\) 有
+\[
+\frac12\le \frac{C_\varphi(u)}{r(u)}\le \frac32.
+\]
+由于 \(0\le C_\varphi(u)\le 1\)，可得最终
+\[
+0<r(u)\le 2.
+\]
+因此 \(r(u)\) 仍是最终单调且最终有界的序列，故必收敛。另一方面，
+\[
+C_\varphi(u)-r(u)
+=
+r(u)\left(\frac{C_\varphi(u)}{r(u)}-1\right)\longrightarrow 0.
+\]
+这就回到了第一条已排除的情形，矛盾。证毕。
 \end{proof}
 
 \begin{theorem}[Pisot--Bernoulli 卷积的偶阶累积量闭式]\label{thm:xi-pisot-bernoulli-even-cumulants-closed}

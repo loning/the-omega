@@ -129,6 +129,77 @@ P_{\mathrm{acc}}(M,x)=
 最后，若存在误差 \(<\tfrac12-\varepsilon\) 的统一加性近似器，则由输出 \(\widehat P\) 可区分 \(0\) 与 \(\ge 1-\varepsilon\)，从而判定停机问题，矛盾。证毕。
 \end{proof}
 
+\begin{theorem}[可求和温度预算下 soft first-fit 的偏离几乎处处仅发生有限次]\label{thm:conclusion-soft-firstfit-summable-budget-finite-deviation}
+沿用定理 \ref{thm:pom-fractran-soft-firstfit-annealed-budget} 的记号。记
+\[
+N_\infty:=\sum_{t\ge 1}\mathbf 1_{E_t}\in\NN\cup\{\infty\}
+\]
+为 soft first-fit 轨道相对硬 first-fit 的总偏离次数。则：
+\begin{enumerate}
+\normalfont
+  \item 若
+  \[
+  \sum_{t\ge 1}u_t<\infty,
+  \]
+  则
+  \[
+  N_\infty<\infty
+  \qquad\text{a.s.};
+  \]
+  \item 更强地，总偏离次数满足
+  \[
+  \mathbb E[N_\infty]\le \sum_{t\ge 1}u_t,
+  \qquad
+  \Pr(N_\infty\ge r)\le \frac{1}{r}\sum_{t\ge 1}u_t
+  \qquad(r\ge 1);
+  \]
+  \item 对幂律退火 \(u_t=ct^{-p}\)（\(c>0,\ p>1\)），有
+  \[
+  \mathbb E[N_\infty]\le c\,\zeta(p),
+  \qquad
+  N_\infty<\infty\quad\text{a.s.}.
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-fractran-soft-firstfit-annealed-budget}，对每个 \(t\ge 1\) 都有
+\[
+\Pr(E_t)\le u_t.
+\]
+因此
+\[
+\sum_{t\ge 1}\Pr(E_t)\le \sum_{t\ge 1}u_t.
+\]
+若右端有限，则第一类 Borel--Cantelli 引理给出
+\[
+\Pr(E_t\ \mathrm{i.o.})=0,
+\]
+即仅有有限多个 \(E_t\) 发生，从而 \(N_\infty<\infty\) 几乎处处成立。
+
+再由 Tonelli 定理，
+\[
+\mathbb E[N_\infty]
+=
+\sum_{t\ge 1}\Pr(E_t)
+\le
+\sum_{t\ge 1}u_t,
+\]
+得到第二条第一式；随后由 Markov 不等式，
+\[
+\Pr(N_\infty\ge r)\le \frac{\mathbb E[N_\infty]}{r}
+\le
+\frac{1}{r}\sum_{t\ge 1}u_t
+\qquad (r\ge 1),
+\]
+得到第二条第二式。
+
+若 \(u_t=ct^{-p}\) 且 \(p>1\)，则
+\[
+\sum_{t\ge 1}u_t=c\sum_{t\ge 1}t^{-p}=c\,\zeta(p)<\infty.
+\]
+将其代入前两步即得第三条。证毕。
+\end{proof}
+
 \begin{conjecture}[最终周期调度是 soft 序门分布语义可判定性的锋面]\label{conj:conclusion-eventually-periodic-schedule-frontier}
 记 \(\mathsf{Sched}\) 为所有可计算调度 \(u:\NN\to(0,1)\) 的集合。
 对固定有限态骨架 \(\mathcal S\)，令 \((\mu_t^{u,\mathcal S})_{t\ge 0}\) 表示由 \((\mathcal S,u)\) 诱导的时间非齐次马尔可夫语义（例如每一步调用 soft 序门 \(\mathrm{PROJ}_{u_t}\)）。

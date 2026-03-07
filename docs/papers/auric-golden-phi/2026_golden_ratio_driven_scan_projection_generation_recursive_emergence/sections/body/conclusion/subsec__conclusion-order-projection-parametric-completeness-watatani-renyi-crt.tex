@@ -1,5 +1,5 @@
 \subsection{序投影参数边界、粗化指数律与空间化阈值}\label{subsec:conclusion-order-projection-parametric-completeness-watatani-renyi-crt}
-本小节在既有 \(P_{\le}\) 机制、prime-core first-fit 语义与折叠条件期望框架之上，给出一组关于参数有界化、图灵完备分界、Watatani 指标塔式关系及 CRT 空间化阈值的统一命题。
+本小节在既有 \(P_{\le}\) 机制、prime-core first-fit 语义与折叠条件期望框架之上，给出一组关于参数有界化、图灵完备分界、值层外延商的 Lawvere 理论识别、Watatani 指标塔式关系及 CRT 空间化阈值的统一命题。
 
 \begin{theorem}[有界序投影的有限态塌缩]\label{thm:conclusion-bounded-order-projection-finite-state-collapse}
 沿定义 \ref{def:pom-proj-order} 的序投影接口，固定常数 \(b\in\NN\)，定义有界序判定门
@@ -208,6 +208,58 @@ x\equiv x'\pmod{p_i}\quad(\forall i\le k),
 则 \(\ind[x<b]=1\) 而 \(\ind[x'<b]=0\)。
 任何“残数向量 + 有限状态后处理”制度对二者输出必相同，矛盾。
 故必须 \(P>2B\)。证毕。
+\end{proof}
+
+\begin{theorem}[值层外延商与 \texorpdfstring{$\NN$}{N}-多项式 Lawvere 理论的等价，以及 first-fit 的判定性崩塌]\label{thm:conclusion-val-lawvere-equivalence-firstfit-collapse}
+沿定义 \ref{def:pom-rewriting-val} 的值层词语言 \(\mathbf{W}_{\mathrm{val}}\)，以自然数 \(n\) 表示 \(n\) 个输入寄存器与 \(k\) 个输出寄存器的型别，并把“在所有稳定输入上的值层外延相等”记为 \(\equiv_{\mathrm{ext}}\)。令 \(\mathcal C_{\mathrm{val}}\) 为对象集为 \(\NN\)、态射集为
+\[
+\Hom_{\mathcal C_{\mathrm{val}}}(n,k)
+:=
+\mathbf{W}_{\mathrm{val}}(n,k)\big/\!\equiv_{\mathrm{ext}}
+\]
+的商范畴。则成立：
+\begin{enumerate}
+\normalfont
+  \item \(\mathcal C_{\mathrm{val}}\) 与交换半环 \((\NN,+,\times)\) 的 Lawvere 理论
+  \[
+  \mathbf{Poly}_{\NN},
+  \qquad
+  \Hom_{\mathbf{Poly}_{\NN}}(n,k)=\bigl(\NN[x_1,\dots,x_n]\bigr)^k,
+  \]
+  等价；
+  \item 该等价可由函子
+  \[
+  \mathfrak F:\mathcal C_{\mathrm{val}}\to \mathbf{Poly}_{\NN},
+  \qquad
+  [w]\longmapsto F_w,
+  \]
+  实现，其中 \(F_w\) 为定理 \ref{thm:pom-val-polynomial-semantics} 赋予 \(w\) 的值层多项式语义；并且 \(\mathfrak F\) 在每个 Hom 集上都是双射；
+  \item 若在 prime-register 纤维上加入 \(\mathrm{PROJ\_ORDER}(\text{first-fit})\) 与相应的 \(\mathrm{EVOLVE}(\text{fractran-update})\)，则所得扩张语言的外延等价不可判定；因此它不可能承认任何把词类有效送入某个可计算呈现、且 Hom 集相等性可判定的 Lawvere 理论的有效等价。特别地，它不再落在半环多项式型 Lawvere 理论的可判定边界之内。
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:pom-val-polynomial-semantics}，每个值层词 \(w\in\mathbf{W}_{\mathrm{val}}(n,k)\) 都对应一个逐坐标非负整系数多项式映射
+\[
+F_w\in\bigl(\NN[x_1,\dots,x_n]\bigr)^k.
+\]
+并且词的复合在值层语义下正对应多项式映射的复合，因此 \([w]\mapsto F_w\) 给出一个保持对象与复合的函子 \(\mathfrak F\)。
+
+定理 \ref{thm:pom-val-extensional-equivalence-decidable} 的证明已经说明：对任意两词 \(w_1,w_2\)，
+\[
+w_1\equiv_{\mathrm{ext}} w_2
+\iff
+F_{w_1}=F_{w_2}
+\quad\text{作为多项式映射}.
+\]
+故 \(\mathfrak F\) 在每个 Hom 集上单射。
+
+为证满射，只需说明任意
+\[
+(f_1,\dots,f_k)\in\bigl(\NN[x_1,\dots,x_n]\bigr)^k
+\]
+都可由某个值层词实现。变量投影由寄存器保留与 \(\mathrm{CLEAN}\) 的有限复合给出；常数由值层清理/常量赋值实现；加法与乘法则由 \(\mathrm{EVOLVE}(\mathrm{op})\) 中对值层半环闭包 \((+,\times)\) 的实现给出（见定理 \ref{thm:pom-val-polynomial-semantics} 的证明）。由于 \(\NN\)-系数多项式映射在有限次复制、加法、乘法与逐坐标拼接下闭合，故任意 \((f_1,\dots,f_k)\) 都可逐坐标编译为某个词。于是 \(\mathfrak F\) 满射，从而在每个 Hom 集上都是双射；对象同为有限幂 \(n\)，故得到 \(\mathcal C_{\mathrm{val}}\simeq \mathbf{Poly}_{\NN}\)。
+
+第三条由定理 \ref{thm:pom-firstfit-extensional-undecidable} 直接推出：一旦加入 \(\mathrm{PROJ\_ORDER}(\text{first-fit})\) 与 FRACTRAN 一步更新，外延等价判定不可判定。若仍存在某个可计算呈现 Lawvere 理论与该扩张语言之间的有效等价，并且该理论的 Hom 集相等性可判定，则可先把两个扩张词有效送入目标理论，再判定其像是否相等，从而得到外延等价的判定算法，矛盾。故不存在此类有效等价。证毕。
 \end{proof}
 
 \begin{conjecture}[非有限态片段的最小序投影判据]\label{conj:conclusion-minimal-non-finite-state-order-projection}

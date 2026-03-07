@@ -1,7 +1,7 @@
 \paragraph{冻结质量反演、容量矩的 Mellin--Stieltjes 精确式与 core 扭曲门槛}
 沿着固定冻结相中的 escort/pressure 链、连续容量曲线的 Mellin--Stieltjes 对偶，
-以及真实输入 \(40\) 状态核的原子--core 剥离链，还可进一步抽出下列五条互相咬合的接口。
-前三条把冻结质量、压力斜率与容量矩写成可逆账本；后两条则说明非平凡 twisted 平方根门槛完全由 core 因子承担。
+以及真实输入 \(40\) 状态核的原子--core 剥离链，还可进一步抽出下列七条互相咬合的接口。
+前五条把冻结质量、压力斜率、离散凸结构、整数阈值刚性与容量矩写成可逆账本；后两条则说明非平凡 twisted 平方根门槛完全由 core 因子承担。
 
 \begin{theorem}[冻结区中 escort 质量对最大纤维层的有限层指数集中]\label{thm:xi-time-part57b-escort-maxfiber-layer-concentration}
 沿用定理 \ref{thm:xi-terminal-fixed-freezing-tv-collapse} 与定理
@@ -130,6 +130,187 @@ a\alpha_*+g_*\le P_a\le a\alpha_*+\log\varphi
 若对所有 \(a\ge a_0\) 都有冻结等式 \(P_a=a\alpha_*+g_*\)，则直接移项即得
 \[
 g_*=P_a-a\alpha_*.
+\]
+证毕。
+\end{proof}
+
+\begin{theorem}[纤维压力谱的离散凸性与基态超额的单调下降]\label{thm:xi-time-part57b-pressure-spectrum-discrete-convexity-monotone-excess}
+沿用定理 \ref{thm:xi-time-part57b-pressure-spectrum-slope-intercept-recovery} 的记号。对每个整数 \(a\ge 1\)，记
+\[
+S_a(m):=\sum_{x\in X_m}d_m(x)^a,
+\qquad
+P_a:=\lim_{m\to\infty}\frac1m\log S_a(m),
+\]
+并定义基态超额
+\[
+E_a:=P_a-a\alpha_*.
+\]
+则成立：
+\begin{enumerate}
+  \item 对每个整数 \(a\ge 1\)，压力谱满足离散凸性
+  \[
+  \boxed{\;2P_{a+1}\le P_a+P_{a+2}.\;}
+  \]
+  \item 序列 \((E_a)_{a\ge 1}\) 单调不增，即
+  \[
+  \boxed{\;E_{a+1}\le E_a\qquad(a\ge 1).\;}
+  \]
+  \item 对每个整数 \(a\ge 1\)，都有
+  \[
+  \boxed{\;g_*\le E_a\le \log\varphi.\;}
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+对固定 \(m\)，记
+\[
+\mathbf d^{(m)}:=\bigl(d_m(x)\bigr)_{x\in X_m}.
+\]
+由幂和的对数凸性（等价于 Hölder 不等式），对每个整数 \(a\ge 1\) 有
+\[
+S_{a+1}(m)^2\le S_a(m)\,S_{a+2}(m).
+\]
+两边取对数、除以 \(m\)，再令 \(m\to\infty\)，便得到
+\[
+2P_{a+1}\le P_a+P_{a+2}.
+\]
+
+另一方面，由 \(d_m(x)\le M_m\) 对一切 \(x\in X_m\) 成立，
+\[
+S_{a+1}(m)=\sum_{x\in X_m}d_m(x)^{a+1}
+\le
+M_m\sum_{x\in X_m}d_m(x)^a
+=
+M_m\,S_a(m).
+\]
+故
+\[
+\frac1m\log S_{a+1}(m)-\frac{a+1}{m}\log M_m
+\le
+\frac1m\log S_a(m)-\frac{a}{m}\log M_m.
+\]
+令 \(m\to\infty\)，利用
+\[
+\lim_{m\to\infty}\frac1m\log M_m=\alpha_*,
+\]
+便得到
+\[
+E_{a+1}\le E_a.
+\]
+
+最后，由定理 \ref{thm:fold-pressure-groundstate-bounds}，
+\[
+a\alpha_*+g_*\le P_a\le a\alpha_*+\log\varphi.
+\]
+两边同时减去 \(a\alpha_*\)，即得
+\[
+g_*\le E_a\le \log\varphi.
+\]
+证毕。
+\end{proof}
+
+\begin{corollary}[冻结相整数起始点的单阈值刚性]\label{cor:xi-time-part57b-freezing-first-contact-threshold}
+若严格基态间隙 \(\alpha_*^{(2)}<\alpha_*\) 成立，并记
+\[
+a_{\mathrm c}:=\frac{\log\varphi-g_*}{\alpha_*-\alpha_*^{(2)}}<\infty,
+\qquad
+a_{\mathrm{fr}}:=\min\{a\in\ZZ_{\ge 1}:\ E_a=g_*\},
+\]
+则 \(a_{\mathrm{fr}}\) 存在，且满足
+\[
+\boxed{\;a_{\mathrm{fr}}\le \lfloor a_{\mathrm c}\rfloor+1.\;}
+\]
+并且对每个整数 \(a\ge a_{\mathrm{fr}}\)，都有
+\[
+\boxed{\;E_a=g_*.\;}
+\]
+换言之，冻结相的整数起始点是“第一次触底后永不抬升”的单阈值事件。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-pressure-freezing-threshold}，对每个实数 \(a>a_{\mathrm c}\) 都有
+\[
+P_a=a\alpha_*+g_*,
+\]
+故对整数
+\[
+a_0:=\lfloor a_{\mathrm c}\rfloor+1
+\]
+必有 \(a_0>a_{\mathrm c}\)，从而
+\[
+E_{a_0}=P_{a_0}-a_0\alpha_*=g_*.
+\]
+因此集合 \(\{a\in\ZZ_{\ge 1}:E_a=g_*\}\) 非空，\(a_{\mathrm{fr}}\) 良定义，且
+\[
+a_{\mathrm{fr}}\le a_0=\lfloor a_{\mathrm c}\rfloor+1.
+\]
+
+另一方面，由定理 \ref{thm:xi-time-part57b-pressure-spectrum-discrete-convexity-monotone-excess}，
+\[
+E_{a+1}\le E_a
+\qquad\text{且}\qquad
+E_a\ge g_*.
+\]
+于是，一旦某个整数 \(a_1\) 满足 \(E_{a_1}=g_*\)，便对所有 \(a\ge a_1\) 都只能有
+\[
+g_*\le E_a\le E_{a_1}=g_*,
+\]
+故
+\[
+E_a=g_*
+\qquad(a\ge a_1).
+\]
+取 \(a_1=a_{\mathrm{fr}}\) 即得结论。证毕。
+\end{proof}
+
+\begin{corollary}[冻结相整数矩阶尾部的精确仿射半群律]\label{cor:xi-time-part57b-pressure-affine-semigroup-law}
+沿用推论 \ref{cor:xi-time-part57b-freezing-first-contact-threshold} 的记号。若整数
+\[
+a,b>a_{\mathrm c},
+\]
+则有严格恒等式
+\[
+\boxed{\;P_a=a\alpha_*+g_*.\;}
+\]
+并且
+\[
+\boxed{\;P_{a+1}-P_a=\alpha_*.\;}
+\]
+以及
+\[
+\boxed{\;P_{a+b}=P_a+P_b-g_*.\;}
+\]
+换言之，一旦进入冻结相，整数矩阶上的压力谱尾部满足精确的仿射半群律。
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:fold-pressure-freezing-threshold}，对任意实数 \(t>a_{\mathrm c}\) 都有
+\[
+P_t=t\alpha_*+g_*.
+\]
+特别地，对任意整数 \(a,b>a_{\mathrm c}\)，立得
+\[
+P_a=a\alpha_*+g_*,
+\qquad
+P_b=b\alpha_*+g_*,
+\qquad
+P_{a+b}=(a+b)\alpha_*+g_*.
+\]
+于是
+\[
+P_{a+1}-P_a
+=
+\bigl((a+1)\alpha_*+g_*\bigr)-\bigl(a\alpha_*+g_*\bigr)
+=
+\alpha_*,
+\]
+并且
+\[
+P_{a+b}
+=
+(a+b)\alpha_*+g_*
+=
+\bigl(a\alpha_*+g_*\bigr)+\bigl(b\alpha_*+g_*\bigr)-g_*
+=
+P_a+P_b-g_*.
 \]
 证毕。
 \end{proof}
