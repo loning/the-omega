@@ -1,5 +1,5 @@
 \paragraph{无限秩可消去幺半群、局部化直和账本与态射矩阵的统一分类}
-在可消去幺半群的 Grothendieck 完成刚性、有限素数局部化数系的圆维--prime-ledger 分裂、以及单对象 \(\mathrm{Hom}\)-分类与自覆盖分类已经确立之后，还可把无限秩发散、有限直和的二轴账本与态射零图统一压缩为下列五条结构结论。
+在可消去幺半群的 Grothendieck 完成刚性、有限素数局部化数系的圆维--prime-ledger 分裂、以及单对象 \(\mathrm{Hom}\)-分类与自覆盖分类已经确立之后，还可把无限秩发散、有限直和的二轴账本与态射零图统一压缩为下列六条结构结论。
 
 \begin{theorem}[无限 Grothendieck 秩可消去幺半群的结构层半圆维发散与实现层极小性]\label{thm:xi-infinite-grothendieck-rank-halfdimension-divergence}
 设 \(M\) 为交换可消去幺半群，并满足定义 \ref{def:half-circle-dimension} 的嵌入/完备性口径。若 \(M\) 的底层集合可数，且其 Grothendieck 群完成满足
@@ -221,6 +221,72 @@ m_p(\mathbf S)=m_p(\mathbf T).
 证毕。
 \end{proof}
 
+\begin{theorem}[有限素数截断的局部化账本实现需要且仅需要 \texorpdfstring{$B$}{B} 条通道]\label{thm:xi-localized-directsum-prime-truncation-minimal-channels}
+记 \(p_1<p_2<\cdots\) 为递增素数序列。对 \(B\ge 1\)，定义有限素数截断幺半群
+\[
+M_B:=\langle p_1,\dots,p_B\rangle_{\times}\subset \NN^\times.
+\]
+则对任意有限素数集 \(S_1,\dots,S_r\)，成立精确等价
+\[
+\boxed{\;
+\exists\ \text{幺半群单射 }\ 
+M_B\hookrightarrow G_{S_1}\oplus\cdots\oplus G_{S_r}
+\iff
+r\ge B.\;}
+\]
+特别地，使前 \(B\) 个 prime-register 在有限局部化直和账本中得到严格同态实现所需的最小通道数恰为 \(B\)。
+\end{theorem}
+\begin{proof}
+指数向量映射
+\[
+p_1^{a_1}\cdots p_B^{a_B}\longmapsto (a_1,\dots,a_B)
+\]
+给出幺半群同构
+\[
+M_B\cong (\NN^B,+).
+\]
+因此只需讨论 \((\NN^B,+)\) 是否可单射进入给定的加法幺半群
+\(
+G_{S_1}\oplus\cdots\oplus G_{S_r}
+\)。
+
+先证充分性。若 \(r\ge B\)，则每个 \(G_{S_i}\) 都含有整数子群 \(\ZZ\subset G_{S_i}\)。故当 \(r=B\) 时可定义
+\[
+\Phi:\NN^B\longrightarrow G_{S_1}\oplus\cdots\oplus G_{S_B},
+\qquad
+(a_1,\dots,a_B)\longmapsto (a_1,\dots,a_B),
+\]
+这是显然的幺半群单射。若 \(r>B\)，再把右端嵌入到前 \(B\) 个坐标并在其余坐标填零即可。
+
+再证必要性。设存在幺半群单射
+\[
+\Psi:\NN^B\hookrightarrow G_{S_1}\oplus\cdots\oplus G_{S_r}.
+\]
+记 \(e_1,\dots,e_B\) 为 \(\NN^B\) 的标准生成元，并令
+\[
+v_i:=\Psi(e_i)\in G_{S_1}\oplus\cdots\oplus G_{S_r}\subset \QQ^r.
+\]
+若 \(r<B\)，则 \(v_1,\dots,v_B\) 在 \(\QQ^r\) 中必线性相关，故存在不全为零的整数 \(z_1,\dots,z_B\) 使
+\[
+\sum_{i=1}^B z_i v_i=0.
+\]
+把 \(z_i\) 写成正负部分之差
+\[
+z_i=m_i-n_i,
+\qquad
+m_i,n_i\in \NN,
+\]
+则
+\[
+\sum_{i=1}^B m_i v_i=\sum_{i=1}^B n_i v_i.
+\]
+于是由幺半群同态性得到
+\[
+\Psi(m_1,\dots,m_B)=\Psi(n_1,\dots,n_B).
+\]
+又因 \((z_i)\) 不全为零，故 \((m_i)\neq (n_i)\)，这与 \(\Psi\) 的单射性矛盾。故必有 \(r\ge B\)。证毕。
+\end{proof}
+
 \begin{theorem}[局部化直和对象族的 \texorpdfstring{$\mathrm{Hom}$}{Hom} 群稀疏矩阵分类]\label{thm:xi-localized-directsum-hom-sparse-matrix}
 设
 \[
@@ -322,6 +388,6 @@ S_i\subseteq S_k
 \end{proof}
 
 \noindent
-上述五条结果把附录中的局部命题收束为一条统一结构链：定理 \ref{thm:killo-prime-freedom-non-finitizability} 与定理 \ref{thm:xi-integer-ellipse-half-circle-dimension-gap} 可分别视为其中在 \(\NN_{\times}\) 与整数轴对齐椭圆半群上的两个显式原型。一方面，只要 Grothendieck 完成的自由秩发散，结构层同态半圆维便必然不可有限化，而可数实现仍停留在最小非零值 \(\frac12\)；另一方面，有限局部化直和对象则分裂为连通圆维轴 \(\#\mathbf S\) 与全不连通 prime-ledger 轴 \((m_p(\mathbf S))_{p\in\mathbb P}\)。这两条轴同时控制对象的可加不变量、严格消去律以及 \(\mathrm{Hom}\)/\(\mathrm{End}\) 的零--非零矩阵图，从而把有限素数局部化对象族组织成一个由素数支撑偏序驱动的加性结构体系。
+上述六条结果把附录中的局部命题收束为一条统一结构链：定理 \ref{thm:killo-prime-freedom-non-finitizability} 与定理 \ref{thm:xi-integer-ellipse-half-circle-dimension-gap} 可分别视为其中在 \(\NN_{\times}\) 与整数轴对齐椭圆半群上的两个显式原型。一方面，只要 Grothendieck 完成的自由秩发散，结构层同态半圆维便必然不可有限化，而可数实现仍停留在最小非零值 \(\frac12\)；另一方面，有限局部化直和对象则分裂为连通圆维轴 \(\#\mathbf S\) 与全不连通 prime-ledger 轴 \((m_p(\mathbf S))_{p\in\mathbb P}\)，并且前 \(B\) 个 prime-register 的有限截断恰需要 \(B\) 条局部化通道才能严格实现。这两条轴同时控制对象的可加不变量、严格消去律以及 \(\mathrm{Hom}\)/\(\mathrm{End}\) 的零--非零矩阵图，从而把有限素数局部化对象族组织成一个由素数支撑偏序驱动的加性结构体系。
 
 \endinput
