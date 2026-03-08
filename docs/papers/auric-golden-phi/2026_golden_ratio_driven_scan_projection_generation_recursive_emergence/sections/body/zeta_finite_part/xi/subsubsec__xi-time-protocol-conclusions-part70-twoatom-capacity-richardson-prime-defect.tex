@@ -1,5 +1,5 @@
 \paragraph{二原子经验谱、临界容量反演、Bernoulli 残差比与奇素数缺陷尾谱}
-在 bin-fold 的两态一致渐近、critical-scale 容量极限曲线、fold-gauge 常数的 Bernoulli 递归剥离以及输出位势的奇素数单位根扭曲四阶展开已经建立之后，还可继续抽取出下列六条后果。它们分别刻画稳定层均匀经验谱的严格两点弱极限、连续容量极限曲线的分布二阶导数、目标成功率下的最优辅助比特预算、由 \((\log C_m)\) 序列恢复 Bernoulli 塔时的 Richardson 残差比，以及奇素数模 RH 缺陷的可和性与其 \(\ell^\alpha\) 临界指数。
+在 bin-fold 的两态一致渐近、critical-scale 容量极限曲线、fold-gauge 常数的 Bernoulli 递归剥离以及输出位势的奇素数单位根扭曲四阶展开已经建立之后，还可继续抽取出下列七条后果。它们分别刻画稳定层均匀经验谱的严格两点弱极限、连续容量极限曲线的分布二阶导数、目标成功率下的最优辅助比特预算、由 \((\log C_m)\) 序列恢复 Bernoulli 塔时的 Richardson 残差比、奇素数模 RH 缺陷的可和性与其 \(\ell^\alpha\) 临界指数，以及最小非平凡 prime-twist 谱半径对 \(\lambda\) 的严格二次接近律与最终单调逼近。
 
 \begin{theorem}[bin-fold 纤维谱经自然缩放后的稳定层两点弱极限]\label{thm:xi-time-part70-binfold-uniform-empirical-two-point-law}
 定义尺度化多重度
@@ -370,8 +370,116 @@ s>1.
 即所求结论。证毕。
 \end{proof}
 
+\begin{theorem}[奇素数最小非平凡单位根扭曲的谱半径二次接近律与最终严格单调逼近]\label{thm:xi-time-part70-prime-twist-spectral-radius-quadratic-approach}
+沿用推论 \ref{cor:real-input-40-collision-twist-fourth} 的记号，并记
+\[
+\lambda:=\rho(1)=\varphi^2,
+\qquad
+\rho_p:=\rho\!\left(e^{2\pi i/p}\right)
+\qquad
+(p\ge 3\ \text{为奇素数}).
+\]
+则成立：
+\begin{enumerate}
+  \item 有精确二次接近律
+  \[
+  \boxed{\;
+  p^2\left(1-\frac{\rho_p}{\lambda}\right)
+  \longrightarrow
+  \frac{6\sqrt5-5}{250}\,(2\pi)^2.\;}
+  \]
+  \item 存在奇素数阈值 \(p_0\)，使得对任意奇素数 \(p<q\) 且 \(p,q\ge p_0\)，都有
+  \[
+  \boxed{\;
+  \rho_p<\rho_q<\lambda.\;}
+  \]
+\end{enumerate}
+换言之，最小非平凡 prime twist 的谱半径不仅以严格 \(p^{-2}\) 主项从下方逼近 \(\lambda\)，而且在充分大素数区间上按模数严格单调恢复。
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:real-input-40-collision-twist-fourth}，当 \(t\to 0\) 时有
+\[
+\log\frac{\rho(t)}{\lambda}
+=
+-A t^2+B t^4+O(t^6),
+\]
+其中
+\[
+A:=\frac{6\sqrt5-5}{250}>0,
+\qquad
+B:=\frac{7+24\sqrt5}{75000}.
+\]
+将其指数化，得到
+\[
+\frac{\rho(t)}{\lambda}
+=
+\exp\!\bigl(-A t^2+B t^4+O(t^6)\bigr)
+=
+1-A t^2+O(t^4).
+\]
+对 \(t=t_p:=2\pi/p\) 代入，即得
+\[
+1-\frac{\rho_p}{\lambda}
+=
+A\left(\frac{2\pi}{p}\right)^2+O(p^{-4}),
+\]
+从而
+\[
+p^2\left(1-\frac{\rho_p}{\lambda}\right)
+\longrightarrow
+A(2\pi)^2
+=
+\frac{6\sqrt5-5}{250}\,(2\pi)^2,
+\]
+这就证明了第一条。
+
+再令
+\[
+R(t):=\frac{\rho(t)}{\lambda}.
+\]
+由上式可得
+\[
+\log R(t)=-A t^2+B t^4+O(t^6).
+\]
+对其求导，得到
+\[
+\frac{R'(t)}{R(t)}
+=
+-2At+4Bt^3+O(t^5)
+=
+-2At\bigl(1+O(t^2)\bigr).
+\]
+因此存在 \(t_0>0\)，使得当 \(0<t\le t_0\) 时，
+\[
+\frac{R'(t)}{R(t)}<0.
+\]
+又因 \(R(t)>0\)，可知 \(R'(t)<0\)；故 \(R\) 在 \((0,t_0]\) 上严格递减。另一方面，由
+\[
+R(t)=1-A t^2+O(t^4)
+\]
+可知在同一小邻域内 \(R(t)<1\)。
+
+现取奇素数阈值 \(p_0\) 使得
+\[
+\frac{2\pi}{p_0}\le t_0.
+\]
+若 \(p<q\) 且 \(p,q\ge p_0\)，则
+\[
+t_p=\frac{2\pi}{p}>\frac{2\pi}{q}=t_q,
+\]
+而 \(R\) 在 \((0,t_0]\) 上严格递减，遂得
+\[
+R(t_p)<R(t_q)<1.
+\]
+两边同乘以 \(\lambda\)，即
+\[
+\rho_p<\rho_q<\lambda.
+\]
+第二条得证。证毕。
+\end{proof}
+
 \noindent
-上述六条结果表明，二原子塌缩并不只停留在 bin-fold 的输出实验或连续容量曲线上，而会同时外显为稳定层均匀经验谱的严格弱极限、目标成功率反演中的唯一分段阈值、\((\log C_m)\) 的奇次黄金幂残差比，以及奇素数单位根扭曲缺陷的可和尾谱。因而，\(\{\varphi^{-1},1\}\) 这两个黄金比例尺度既支配欠分辨容量几何，也支配 Bernoulli 递归剥离后的剩余模态；而在奇素数单位根扭曲方向上，坏模数的频率与缺陷的振幅则被严格分离为“余有限出现”与“总质量可和”两种不同层级。于是，稳定层二点律、资源阈值反演、Richardson 诊断与奇素数 RH 缺陷最终被压缩进同一条黄金尺度主线。
+上述七条结果表明，二原子塌缩并不只停留在 bin-fold 的输出实验或连续容量曲线上，而会同时外显为稳定层均匀经验谱的严格弱极限、目标成功率反演中的唯一分段阈值、\((\log C_m)\) 的奇次黄金幂残差比，以及奇素数单位根扭曲缺陷的可和尾谱与谱半径恢复律。因而，\(\{\varphi^{-1},1\}\) 这两个黄金比例尺度既支配欠分辨容量几何，也支配 Bernoulli 递归剥离后的剩余模态；而在奇素数单位根扭曲方向上，坏模数的频率与缺陷的振幅不仅被严格分离为“余有限出现”与“总质量可和”两种不同层级，而且最小非平凡扭曲的谱半径还会按严格 \(p^{-2}\) 主项最终单调地从下方逼近 \(\lambda\)。于是，稳定层二点律、资源阈值反演、Richardson 诊断与奇素数 RH 缺陷最终被压缩进同一条黄金尺度主线。
 
 \input{subsubsec__xi-time-protocol-conclusions-part70a-uniform-twostate-gauge-firstorder}
 
@@ -380,6 +488,8 @@ s>1.
 \input{subsubsec__xi-time-protocol-conclusions-part70ab-terminalbit-threshold-entropy-mellin-bridge}
 
 \input{subsubsec__xi-time-protocol-conclusions-part70b-double-kink-escort-tail-darkband-interface}
+
+\input{subsubsec__xi-time-protocol-conclusions-part70c-spectrum-z2-orbit-cancellation}
 
 \input{subsubsec__xi-time-protocol-conclusions-part70c-zeroorbit-helly-nerve-density-kl}
 

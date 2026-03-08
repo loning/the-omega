@@ -1,4 +1,4 @@
-为便于把前述凸压力链与长度同余类的 \(\zeta\)-接口对齐，下面把射影压力、periodic residue 生成函数以及 residue zeta 的 cyclotomic--Witt 分解整理为四条可直接调用的标准形式。
+为便于把前述凸压力链与长度同余类的 \(\zeta\)-接口对齐，下面把射影压力、periodic residue 生成函数以及 residue zeta 的 cyclotomic--Witt 分解整理为一组可直接调用的标准形式。
 
 \begin{theorem}[射影压力算子的 Perron 指数在实参数上对数凸]\label{thm:xi-time-part50dc-projective-pressure-perron-logconvex}
 沿用定义 \ref{def:pom-projective-transfer-operator} 的记号，并记
@@ -188,6 +188,77 @@ G_{r,m}(z)
 \deg_z\prod_{j=0}^{m-1}F(z,\omega_m^j)\le 8m,
 \]
 而加上原子分母 \(1-z^{2m}\) 后，完整分母次数至多为 \(10m\)。由有理生成函数与常系数线性递推的标准对应，便得到最后一条。证毕。
+\end{proof}
+
+\begin{corollary}[single atom 在 periodic residue 生成函数层形成显式 cyclotomic 壳]\label{cor:xi-time-part50dc-atomic-periodic-residue-cyclotomic-shell}
+沿用定理 \ref{thm:xi-time-part50dc-periodic-residue-rational-core-octic} 的记号，并定义原子 generating function
+\[
+G_{r,m}^{\mathrm{cycle}}(z):=G_{r,m}(z)-G_{r,m}^{\mathrm{core}}(z).
+\]
+令 \(\ell_r\in\{2,4,\dots,2m\}\) 为满足
+\[
+\ell_r\equiv 2r\pmod{2m}
+\]
+的唯一正代表。则有显式闭式
+\[
+\boxed{\;
+G_{r,m}^{\mathrm{cycle}}(z)=\frac{2z^{\ell_r}}{1-z^{2m}}.\;}
+\]
+特别地：
+\begin{enumerate}
+  \item \(G_{r,m}^{\mathrm{cycle}}(z)\) 的全部极点都是 simple cyclotomic poles，且恰位于
+  \[
+  \mu_{2m}:=\{\zeta\in\CC:\ \zeta^{2m}=1\};
+  \]
+  \item 原子 generating function \(G_{r,m}^{\mathrm{cycle}}(z)\) 的系数序列 \(\bigl([z^n]G_{r,m}^{\mathrm{cycle}}(z)\bigr)_{n\ge 1}\) 的最小周期恰为 \(2m\)。
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-time-part50dc-periodic-residue-rational-core-octic}，
+\[
+G_{r,m}^{\mathrm{cycle}}(z)
+=
+2\sum_{\substack{k\ge 1\\ k\equiv r\ (\mathrm{mod}\ m)}}z^{2k}.
+\]
+当 \(r\neq 0\) 时，满足 \(k\equiv r\pmod m\) 的正整数可唯一写成 \(k=r+qm\)（\(q\ge 0\)），于是
+\[
+G_{r,m}^{\mathrm{cycle}}(z)
+=
+2\sum_{q\ge 0}z^{2r+2qm}
+=
+\frac{2z^{2r}}{1-z^{2m}}.
+\]
+当 \(r=0\) 时，最小正解为 \(k=m\)，故
+\[
+G_{0,m}^{\mathrm{cycle}}(z)
+=
+2\sum_{q\ge 0}z^{2m+2qm}
+=
+\frac{2z^{2m}}{1-z^{2m}}.
+\]
+两种情形统一写成
+\[
+G_{r,m}^{\mathrm{cycle}}(z)=\frac{2z^{\ell_r}}{1-z^{2m}}.
+\]
+因此其全部极点恰为 \(1-z^{2m}\) 的零点，并且均为单极点。另一方面，系数序列恰是在模 \(2m\) 的唯一同余类 \(n\equiv \ell_r\pmod{2m}\) 上取值 \(2\)、其余位置取值 \(0\)，故其最小周期就是 \(2m\)。证毕。
+\end{proof}
+
+\begin{corollary}[full periodic residue 生成函数的奇点来源分裂为 core 谱与 cyclotomic 壳]\label{cor:xi-time-part50dc-full-periodic-residue-core-cyclotomic-splitting}
+沿用上述记号。对每个固定的剩余类 \(r\in\ZZ/m\ZZ\)，full periodic residue generating function 满足精确分解
+\[
+\boxed{\;
+G_{r,m}(z)
+=
+G_{r,m}^{\mathrm{core}}(z)+\frac{2z^{\ell_r}}{1-z^{2m}}.\;}
+\]
+因此，single atom 所能引入的新奇点只可能落在 \(\mu_{2m}\) 上，并且都为 simple cyclotomic poles；全部模长不等于 \(1\) 的奇点全部来自 \(G_{r,m}^{\mathrm{core}}(z)\)。特别地，一切仅由奇点模长决定的指数型量，例如 periodic residue counts 的 \(\limsup^{1/n}\) 与相应的平方根门槛失效，均完全由 core 谱控制。
+\end{corollary}
+\begin{proof}
+第一式只是定理 \ref{thm:xi-time-part50dc-periodic-residue-rational-core-octic} 与推论 \ref{cor:xi-time-part50dc-atomic-periodic-residue-cyclotomic-shell} 的直接合并。又
+\[
+\frac{2z^{\ell_r}}{1-z^{2m}}
+\]
+的全部极点都位于单位圆上的 \(\mu_{2m}\)，故 atom 部分不可能贡献任何模长不等于 \(1\) 的奇点。于是全部此类奇点都必须来自 \(G_{r,m}^{\mathrm{core}}(z)\)；若在个别单位根处发生可去抵消，也只会删除 \(\mu_{2m}\) 中的点，而不会在其外产生新的奇点。证毕。
 \end{proof}
 
 \begin{theorem}[长度同余类 residue zeta 的 cyclotomic--Witt 分解与原子梳齿骨架]\label{thm:xi-time-part50dc-residue-zeta-cyclotomic-witt}
