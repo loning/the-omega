@@ -185,3 +185,94 @@ v_{p_t}(E_T(s^\star))\ge m_{t,a_t^\star}\ge 1,
 \]
 上下界合并即得第 \(3\) 条。证毕。
 \end{proof}
+
+\begin{theorem}[可寻址 Gödel 外置的最坏相对冗余比无界发散]\label{thm:xi-addressable-godel-worstcase-redundancy-diverges}
+沿用定理 \ref{thm:xi-addressable-godel-product-lower-bound-classification} 的记号。对任意满足逐坐标可寻址性的编码
+\[
+E_T:\Sigma^T\hookrightarrow \NN_{\ge 1},
+\qquad
+|\Sigma|=q\ge 2,
+\]
+定义最坏对数复杂度与相对冗余比
+\[
+L_T(E_T):=\max_{s\in\Sigma^T}\log E_T(s),
+\qquad
+\mathscr R_T(E_T):=\frac{L_T(E_T)}{T\log q}.
+\]
+则存在仅依赖于 \(q\) 的常数 \(c_q>0\)，使得对一切 \(T\ge 1\) 都有
+\[
+\boxed{\;
+L_T(E_T)\ge c_q\,T\log T.\;}
+\]
+因而不存在任何可寻址编码族使
+\[
+L_T(E_T)=O(T).
+\]
+更进一步，
+\[
+\boxed{\;
+\mathscr R_T(E_T)\ge \frac{c_q}{\log q}\log T\longrightarrow +\infty.\;}
+\]
+也就是说，一旦要求每个坐标都能被单独 prime-address 解码，则最坏情形开销相对于原始信息量 \(T\log q\) 的膨胀因子必然无界增长。
+
+特别地，当 \(q=2\) 时，推论 \ref{cor:xi-addressable-godel-average-binary-optimality} 还给出精确最优值
+\[
+\inf_{E_T}L_T(E_T)=\sum_{t=1}^{T}\log p_t=\Theta(T\log T).
+\]
+因此，把链上规范投影通过
+\[
+\mathcal I_n\cong \{0,1\}^{\,n-1}
+\]
+识别为二元标签空间后，任何逐位可寻址的 Gödel 算术化都必须支付
+\[
+\Omega(n\log n)
+\]
+的最坏情形对数代价；再结合推论 \ref{cor:xi-chain-interior-canonical-arithmeticization-optimal-order}，这一阶数同时又是 sharp 的。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-addressable-godel-product-lower-bound-classification}，
+\[
+\frac{1}{q^T}\sum_{s\in\Sigma^T}\log E_T(s)
+\ge
+\frac{q-1}{2}\sum_{t=1}^{T}\log p_t.
+\]
+而平均值不超过最大值，故
+\[
+L_T(E_T)\ge \frac{q-1}{2}\sum_{t=1}^{T}\log p_t.
+\]
+由素数定理的标准推论，存在绝对常数 \(c>0\) 使
+\[
+\sum_{t=1}^{T}\log p_t\ge c\,T\log T
+\]
+对充分大的 \(T\) 成立；吸收有限个小 \(T\) 后可得对全部 \(T\ge1\) 都成立的常数
+\[
+c_q:=\frac{q-1}{2}c>0.
+\]
+于是
+\[
+L_T(E_T)\ge c_q\,T\log T,
+\]
+这立刻排除了 \(L_T(E_T)=O(T)\) 的可能性。
+
+再除以 \(T\log q\)，得到
+\[
+\mathscr R_T(E_T)\ge \frac{c_q}{\log q}\log T\to+\infty,
+\]
+即最坏相对冗余比无界发散。
+
+当 \(q=2\) 时，推论 \ref{cor:xi-addressable-godel-average-binary-optimality} 已给出
+\[
+\inf_{E_T}\max_{s\in\Sigma^T}\log E_T(s)=\sum_{t=1}^{T}\log p_t,
+\]
+故最优最坏复杂度恰为 \(\Theta(T\log T)\)。
+
+最后，对链上规范投影，由定理 \ref{thm:xi-chain-interior-boolean-flag-closed-form} 有
+\[
+|\mathcal I_n|=2^{n-1},
+\]
+并由固定点集识别得到
+\[
+\mathcal I_n\cong \{0,1\}^{\,n-1}.
+\]
+于是取 \(T=n-1\)、\(q=2\) 即知任何逐位可寻址的 Gödel 外置都满足最坏情形下界 \(\Omega(n\log n)\)；而推论 \ref{cor:xi-chain-interior-canonical-arithmeticization-optimal-order} 又给出 matching 的 \(O(n\log n)\) 上界，从而该阶数是 sharp 的。证毕。
+\end{proof}

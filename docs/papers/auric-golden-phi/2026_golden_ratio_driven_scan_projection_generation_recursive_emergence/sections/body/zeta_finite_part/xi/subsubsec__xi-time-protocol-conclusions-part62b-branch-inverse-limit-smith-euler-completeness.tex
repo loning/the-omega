@@ -1,5 +1,5 @@
 \paragraph{自然扩张寄存器的逆极限规范性、Smith 局部亏损谱的自由化与 Euler 完备不变量}
-在有限深度 prime-slice 前缀压缩、Smith 离散曲率恢复与整数椭圆原子分解之外，附录 \(H\) 中的 branch-register 语义还可继续压缩为逆极限与完备不变量层的若干闭式结论。
+在有限深度 prime-slice 前缀压缩、Smith 离散曲率恢复与整数椭圆原子分解之外，附录 \(H\) 中的 branch-register 语义还可继续压缩为逆极限、有限步过去的极小完备前缀、局部亏损谱的自由原子结构以及全模数核计数的 Smith 饱和阈值层的若干闭式结论。
 
 \begin{theorem}[自然扩张分支寄存器系统是有限深度截断的严格逆极限]\label{thm:xi-branch-register-strict-inverse-limit}
 沿用定理 \ref{thm:killo-natural-extension-branch-register} 的记号。对每个 \(k\ge 1\)，记
@@ -197,6 +197,115 @@ z:=(x_0,(a_1,a_2,\dots))\in X\times \NN^\NN.
 上述映射完全由两套编码 \(\mathcal C,\mathcal C'\) 决定，因而给出了所需的规范共轭。证毕。
 \end{proof}
 
+\begin{theorem}[有限纤维满射的 \texorpdfstring{$n$}{n}-步过去由首端点与前 \texorpdfstring{$n$}{n} 个分支指标完全且唯一决定]\label{thm:xi-branch-register-finite-past-minimal-complete-prefix}
+仍沿用定理 \ref{thm:killo-natural-extension-branch-register} 的设定。对每个 \(n\ge 1\)，记
+\[
+X^{\leftarrow,n}
+:=
+\{(x_0,x_{-1},\dots,x_{-n})\in X^{n+1}:T(x_{-j})=x_{-j+1}\ \ (1\le j\le n)\},
+\]
+\[
+\mathcal C_n(x_0,x_{-1},\dots,x_{-n})
+:=
+\bigl(x_0,\beta(x_{-1}),\dots,\beta(x_{-n})\bigr),
+\]
+\[
+\widehat X_n^{\mathrm{br}}
+:=
+\mathcal C_n(X^{\leftarrow,n})\subset X\times \NN^n.
+\]
+则 \(\mathcal C_n:X^{\leftarrow,n}\to \widehat X_n^{\mathrm{br}}\) 为双射。等价地，对任意 \(x\in X\)，映射
+\[
+T^{-n}(x)\longrightarrow \NN^n,
+\qquad
+y\longmapsto \bigl(\beta(T^{n-1}y),\beta(T^{n-2}y),\dots,\beta(y)\bigr)
+\]
+在其像上为双射。
+
+特别地，\((x_0,\beta(x_{-1}),\dots,\beta(x_{-n}))\) 构成 \(n\)-步过去的极小完备前缀统计量：若
+\[
+F:X^{\leftarrow,n}\to Y
+\]
+满足存在映射 \(G:\widehat X_n^{\mathrm{br}}\to Y\) 使
+\[
+F=G\circ \mathcal C_n,
+\]
+并且 \(F\) 在 \(X^{\leftarrow,n}\) 上单射，则 \(G\) 必在 \(\widehat X_n^{\mathrm{br}}\) 上单射。因而不存在任何严格弱于 \(\mathcal C_n\) 而仍能在全部 \(n\)-步前史上保持单射的信息压缩。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:killo-natural-extension-branch-register}，无限分支寄存器编码
+\[
+\mathcal C(x_0,x_{-1},x_{-2},\dots)=\bigl(x_0,(\beta(x_{-1}),\beta(x_{-2}),\dots)\bigr)
+\]
+可按递推公式唯一反演：
+\[
+x_{-1}=\iota_{x_0}^{-1}\!\bigl(\beta(x_{-1})\bigr),\qquad
+x_{-2}=\iota_{x_{-1}}^{-1}\!\bigl(\beta(x_{-2})\bigr),\qquad \dots
+\]
+故一旦给定
+\[
+\bigl(x_0,a_1,\dots,a_n\bigr)\in \widehat X_n^{\mathrm{br}},
+\]
+就可逐步唯一恢复
+\[
+x_{-1}=\iota_{x_0}^{-1}(a_1),\qquad
+x_{-2}=\iota_{x_{-1}}^{-1}(a_2),\qquad \dots,\qquad
+x_{-n}=\iota_{x_{-(n-1)}}^{-1}(a_n).
+\]
+因此 \(\mathcal C_n\) 在其像上可逆，从而为双射。
+
+对固定 \(x\in X\)，映射
+\[
+T^{-n}(x)\longrightarrow X^{\leftarrow,n},
+\qquad
+y\longmapsto \bigl(x,T^{n-1}y,T^{n-2}y,\dots,y\bigr)
+\]
+显然为双射；再与 \(\mathcal C_n\) 复合，便得到所示从 \(T^{-n}(x)\) 到 \(\NN^n\) 的像上双射。
+
+最后证明极小性。若 \(F=G\circ \mathcal C_n\) 且 \(F\) 单射，取任意
+\[
+u,v\in \widehat X_n^{\mathrm{br}}
+\]
+满足 \(G(u)=G(v)\)。由于 \(\mathcal C_n\) 对其像为双射，可取唯一
+\[
+z,z'\in X^{\leftarrow,n}
+\]
+使 \(\mathcal C_n(z)=u\)、\(\mathcal C_n(z')=v\)。于是
+\[
+F(z)=G(\mathcal C_n(z))=G(u)=G(v)=G(\mathcal C_n(z'))=F(z').
+\]
+由 \(F\) 的单射性得 \(z=z'\)，再由 \(\mathcal C_n\) 的单射性得 \(u=v\)。故 \(G\) 在 \(\widehat X_n^{\mathrm{br}}\) 上亦为单射，这正是所述极小完备性。证毕。
+\end{proof}
+
+\begin{corollary}[最坏情形下 \texorpdfstring{$n$}{n}-步过去的 prime-slice 可寻址维数恰等于深度]\label{cor:xi-branch-register-depth-primeslice-addressability}
+设 \(T:X\twoheadrightarrow X\) 为非单射有限纤维满射，并固定 \(n\ge 1\)。考虑所有单射分层乘法账本
+\[
+\Psi_n(y)=\bigl(T^n(y),H_n(y)\bigr),
+\qquad
+H_n(y)=\prod_{j=0}^{n-1}h_j(y),
+\]
+其中每个 \(h_j(y)\) 的全部素因子均限制在预先指定且两两不交的 prime slice \(\mathcal P_j\)。定义
+\[
+\operatorname{psupp}(\Psi_n):=\#\{\,0\le j\le n-1:\ h_j\not\equiv 1\,\}.
+\]
+则
+\[
+\inf_{\Psi_n\ \mathrm{injective}}\operatorname{psupp}(\Psi_n)=n.
+\]
+因此，自然扩张的深度不仅是分支寄存器前缀的最小完备长度，也正是最坏情形下不可压缩的 prime-slice 账本维数。
+\end{corollary}
+\begin{proof}
+对长度 \(n\) 的前史塔取
+\[
+X_0=X_1=\cdots=X_n=X,
+\qquad
+\pi_0=\pi_1=\cdots=\pi_{n-1}=T.
+\]
+由于 \(T\) 非单射，存在某个 \(y\in X\) 使 \(\#T^{-1}(y)\ge 2\)，故该塔的每一层都满足“存在真正分支点”的最坏情形假设。于是定理 \ref{thm:xi-layered-prime-register-sharp-natural-extension} 立即给出：任意单射分层 prime-register 外置都必须在全部 \(n\) 层上保留非平凡的 prime slice，而且存在恰好每层写入一枚有效素数的单射实现。故上式成立。
+
+再由定理 \ref{thm:xi-branch-register-finite-past-minimal-complete-prefix}，\(\mathcal C_n\) 已经给出 \(n\)-步过去的极小完备前缀统计量。因此同一深度 \(n\) 同时刻画了加性分支寄存器的最小完备长度与乘法 prime-slice 账本的最小可寻址维数。证毕。
+\end{proof}
+
 \begin{theorem}[\texorpdfstring{$p$}{p}-局部信息亏损剖面的自由交换幺半群结构]\label{thm:xi-smith-local-loss-profiles-free-commutative-monoid}
 固定素数 \(p\)。令 \(\mathfrak F_p\) 为所有由有限多重集 \(E\subset \ZZ_{>0}\) 诱导的函数
 \[
@@ -329,20 +438,162 @@ f_{A,p}(k)=f_{B,p}(k)\qquad(\forall\,p,\ \forall\,k\ge 1).
 定理 \ref{thm:xi-smith-local-loss-profiles-free-commutative-monoid} 给出 \(\mathfrak F_p\) 的自由原子分解，定理 \ref{thm:xi-integer-ellipse-free-commutative-monoid} 的第一条给出 \((\mathsf E_{\NN},\odot)\) 的自由原子分解，而其第三条正给出所述自同构群公式。证毕。
 \end{proof}
 
+\begin{corollary}[Smith 亏损谱的二阶差分、平台起点与总亏损统一恢复]\label{cor:xi-smith-loss-spectrum-plateau-start-total-loss}
+设 \(A\in M_{m\times n}(\ZZ)\) 满足 \(\operatorname{rank}_{\QQ}(A)=m\)。固定素数 \(p\)，并沿用定理 \ref{thm:killo-smith-loss-spectrum} 的记号：
+\[
+f_p(0):=0,\qquad
+\Delta_p(k):=f_p(k)-f_p(k-1)\quad(k\ge 1),
+\]
+\[
+e_i(p):=v_p(d_i),\qquad
+m_{p,j}:=\#\{i:\ e_i(p)=j\}\quad(j\ge 1).
+\]
+则对每个 \(j\ge 1\) 都有
+\[
+m_{p,j}
+=
+\Delta_p(j)-\Delta_p(j+1)
+=
+2f_p(j)-f_p(j-1)-f_p(j+1).
+\]
+再记
+\[
+E_p:=\max_i e_i(p).
+\]
+则
+\[
+E_p
+=
+\max\bigl(\{k\ge 1:\Delta_p(k)>0\}\cup\{0\}\bigr)
+=
+\min\{k\ge 0:\ f_p(k)=f_p(k+1)\},
+\]
+并且
+\[
+\sum_{i=1}^{m}e_i(p)=\lim_{k\to\infty}f_p(k).
+\]
+换言之，\(f_p\) 是一条最终常值的非减离散凹函数，而其二阶差分、平台起点与平台值已经分别精确编码了各个 \(\,p\)-进高度的重数、最大高度与总亏损。
+\end{corollary}
+\begin{proof}
+二阶差分公式与极限公式分别正是推论 \ref{cor:xi-smith-second-discrete-curvature-recovery} 与推论 \ref{cor:xi-smith-volume-recovered-from-padic-platform} 的内容。
+
+再由推论 \ref{cor:xi-smith-kernel-spectrum-discrete-concavity-plateau-inversion}，\(f_p\) 为非减离散凹函数，并在 \(k\ge E_p\) 后进入平台。另一方面，
+\[
+\Delta_p(k)=\#\{i:\ e_i(p)\ge k\}
+\]
+表明 \(\Delta_p(k)>0\) 当且仅当存在某个 \(i\) 满足 \(e_i(p)\ge k\)，亦即 \(k\le E_p\)。故
+\[
+E_p=\max\bigl(\{k\ge 1:\Delta_p(k)>0\}\cup\{0\}\bigr).
+\]
+又因为
+\[
+f_p(k+1)-f_p(k)=\Delta_p(k+1),
+\]
+故 \(f_p(k)=f_p(k+1)\) 当且仅当 \(\Delta_p(k+1)=0\)，其最早发生恰在 \(k=E_p\)。这就得到第二个恢复公式。证毕。
+\end{proof}
+
+\begin{theorem}[全模数核计数的严格 Smith 饱和平台]\label{thm:xi-smith-global-kernel-dmax-saturation-platform}
+设 \(A\in M_{m\times n}(\ZZ)\) 满足 \(\operatorname{rank}_{\QQ}(A)=m\)，其 Smith 不变量为
+\[
+d_1\mid d_2\mid\cdots\mid d_m.
+\]
+对每个 \(N\ge 1\)，记
+\[
+A_N:(\ZZ/N\ZZ)^n\to(\ZZ/N\ZZ)^m,
+\qquad
+K_A(N):=\#\ker(A_N).
+\]
+若记 \(e_i(p):=v_p(d_i)\)、\(f_p(k):=\sum_{i=1}^{m}\min(k,e_i(p))\)，并设
+\[
+N=\prod_p p^{\nu_p(N)},
+\qquad
+\Delta_A:=\prod_{i=1}^{m}d_i,
+\qquad
+d_{\max}:=d_m,
+\]
+则
+\[
+K_A(N)
+=
+N^{\,n-m}\prod_{i=1}^{m}\gcd(d_i,N)
+=
+N^{\,n-m}\prod_{p}p^{\,f_p(\nu_p(N))}.
+\]
+特别地，
+\[
+K_A(N)\le N^{\,n-m}\Delta_A,
+\]
+并且等号成立当且仅当
+\[
+d_{\max}\mid N.
+\]
+因而全模数核计数在整除格上存在一条严格的 Smith 饱和平台：
+\[
+K_A(N)=N^{\,n-m}\Delta_A
+\qquad(d_{\max}\mid N),
+\]
+并且 \(d_{\max}\) 正是使全部局部亏损同时饱和的最小阈值。
+\end{theorem}
+\begin{proof}
+由推论 \ref{cor:killo-kernel-size-general-modulus}，
+\[
+K_A(N)=N^{\,n-m}\prod_{i=1}^{m}\gcd(d_i,N).
+\]
+再把每个 \(\gcd(d_i,N)\) 按素数分解，便得
+\[
+\prod_{i=1}^{m}\gcd(d_i,N)
+=
+\prod_{p}p^{\sum_{i=1}^{m}\min(\nu_p(N),e_i(p))}
+=
+\prod_{p}p^{f_p(\nu_p(N))}.
+\]
+这证明了第一式。
+
+对每个 \(i\) 都有 \(\gcd(d_i,N)\le d_i\)，故
+\[
+K_A(N)\le N^{\,n-m}\prod_{i=1}^{m}d_i
+=
+N^{\,n-m}\Delta_A.
+\]
+并且取等当且仅当
+\[
+\gcd(d_i,N)=d_i
+\qquad(1\le i\le m),
+\]
+亦即当且仅当每个 \(d_i\mid N\)。由于
+\[
+d_1\mid d_2\mid\cdots\mid d_m,
+\]
+上述条件又等价于 \(d_m\mid N\)，即 \(d_{\max}\mid N\)。
+
+因此达到上界的模数恰为 \(d_{\max}\) 的倍数，故一旦模数吸收最大 Smith 不变量，全部局部亏损便同时饱和；反之若 \(d_{\max}\nmid N\)，则至少有一个因子 \(\gcd(d_i,N)\) 严格小于 \(d_i\)，从而上界不能取到。故 \(d_{\max}\) 正是所述最小饱和阈值。证毕。
+\end{proof}
+
 \noindent
 由此，附录 \(H\) 中的结构链可进一步收束为
 \[
 \text{有限深度分支寄存器}
 \Longrightarrow
+\text{\(n\)-步过去的极小完备前缀}
+\Longrightarrow
 \text{自然扩张的严格逆极限},
+\]
+\[
+\text{自然扩张深度}
+\Longleftrightarrow
+\text{最坏 prime-slice 账本维数},
 \]
 \[
 \text{Smith 局部亏损谱}
 \Longrightarrow
+\text{二阶曲率与平台起点恢复}
+\Longrightarrow
 \text{自由原子分解}
 \Longrightarrow
-\text{Euler 完备不变量},
+\text{Euler 完备不变量}
+\Longrightarrow
+\text{全模数饱和阈值},
 \]
-而推论 \ref{cor:xi-free-atomic-structure-ellipse-realization} 则说明同一自由原子机制在整数轴对齐椭圆半群上获得了显式几何实现与全对称自同构群。
+而推论 \ref{cor:xi-free-atomic-structure-ellipse-realization} 则说明同一自由原子机制在整数轴对齐椭圆半群上获得了显式几何实现与全对称自同构群；定理 \ref{thm:xi-smith-global-kernel-dmax-saturation-platform} 则进一步表明，这条局部到全局的链最终由单一最大 Smith 不变量锁定其整除阈值。
 
 \endinput
