@@ -194,6 +194,72 @@ S_n^{\mathrm{ab}}\cong \ZZ_2
 将定理 \ref{thm:conclusion-orientation-cartesian-kronecker} 中幂次按奇偶化简即可。证毕。
 \end{proof}
 
+\begin{theorem}[有限笛卡尔积的取向 torsor 仅由奇偶型决定]\label{thm:conclusion-orientation-finite-cartesian-parity-type}
+设 \(r\ge 2\)，\(S_1,\dots,S_r\) 为有限集合，并记
+\[
+d_i:=|S_i|
+\qquad
+(1\le i\le r).
+\]
+则存在自然同构
+\[
+\mathrm{Or}\!\Bigl(\prod_{i=1}^r S_i\Bigr)
+\cong
+\bigotimes_{i=1}^r
+\mathrm{Or}(S_i)^{\otimes \prod_{j\ne i}d_j}.
+\]
+特别地，\(\mathrm{Or}(\prod_{i=1}^r S_i)\) 仅依赖于 \((d_1,\dots,d_r)\) 的奇偶型，并满足精确分类
+\[
+\mathrm{Or}\!\Bigl(\prod_{i=1}^r S_i\Bigr)
+\cong
+\begin{cases}
+\ZZ_2,& \text{若至少有两项 }d_i\text{ 为偶数},\\[2mm]
+\mathrm{Or}(S_{i_0}),& \text{若恰有一项 }d_{i_0}\text{ 为偶数},\\[2mm]
+\bigotimes_{i=1}^r\mathrm{Or}(S_i),& \text{若全部 }d_i\text{ 为奇数}.
+\end{cases}
+\]
+\end{theorem}
+\begin{proof}
+对 \(r=2\) 时，第一式即为定理 \ref{thm:conclusion-orientation-cartesian-kronecker}。
+现对 \(r\) 作归纳，并设结论已对 \(r-1\) 个集合成立。
+记
+\[
+S':=\prod_{i=1}^{r-1}S_i.
+\]
+由定理 \ref{thm:conclusion-orientation-cartesian-kronecker}，
+\[
+\mathrm{Or}(S'\times S_r)
+\cong
+\mathrm{Or}(S')^{\otimes d_r}\otimes \mathrm{Or}(S_r)^{\otimes |S'|}.
+\]
+由归纳假设与 Picard 张量结构的结合律，
+\[
+\mathrm{Or}(S')^{\otimes d_r}
+\cong
+\bigotimes_{i=1}^{r-1}
+\mathrm{Or}(S_i)^{\otimes d_r\prod_{\substack{1\le j\le r-1\\ j\ne i}}d_j}
+=
+\bigotimes_{i=1}^{r-1}
+\mathrm{Or}(S_i)^{\otimes \prod_{j\ne i}d_j},
+\]
+而
+\[
+\mathrm{Or}(S_r)^{\otimes |S'|}
+=
+\mathrm{Or}(S_r)^{\otimes \prod_{j<r}d_j}
+=
+\mathrm{Or}(S_r)^{\otimes \prod_{j\ne r}d_j}.
+\]
+合并即得第一式。
+\par
+再由命题 \ref{prop:conclusion-z2torsor-square-parity-collapse}，\(P^{\otimes n}\) 只依赖于 \(n\bmod 2\)。
+故仅当 \(\prod_{j\ne i}d_j\) 为奇数时，第 \(i\) 个因子才保留。
+若至少有两项 \(d_i\) 为偶数，则对每个 \(i\) 都有 \(\prod_{j\ne i}d_j\) 为偶数，因而整体平凡；
+若恰有一项 \(d_{i_0}\) 为偶数，则仅 \(\prod_{j\ne i_0}d_j\) 为奇数；
+若全部 \(d_i\) 为奇数，则所有因子均保留。
+证毕。
+\end{proof}
+
 \begin{theorem}[wreath 结构下的符号加法与偶度屏蔽]\label{thm:conclusion-wreath-sign-additivity-even-shielding}
 令
 \[
@@ -296,6 +362,67 @@ t_m:=\#\{x\in X_m:\ d_m(x)=2\}.
 \)，得第 (2) 条。
 第 (3) 条由恒等映射构造直接成立。
 最后一句取 \(a=1\) 即得。证毕。
+\end{proof}
+
+\begin{theorem}[最小寄存器态下等变 \texorpdfstring{\(a\)}{a}-分裂机制的严格唯一性]\label{thm:conclusion-equivariant-a-splitting-rigidity}
+沿定理 \ref{thm:conclusion-equivariant-a-splitting-register-lower-bound} 的记号，定义标准机制
+\[
+R_{\mathrm{can}}:=\binom{\Delta}{a},
+\qquad
+A_{\mathrm{can}}
+:=
+\{(x,B)\in \Delta\times R_{\mathrm{can}}:\ x\in B\}.
+\]
+若 \((R,A)\) 为一 \(\mathfrak S_k\)-等变 \(a\)-分裂机制，且
+\[
+|R|=\binom{k}{a},
+\]
+则作为 \(\mathfrak S_k\)-等变分裂机制有同构
+\[
+(R,A)\cong (R_{\mathrm{can}},A_{\mathrm{can}}).
+\]
+此外，
+\[
+\operatorname{Aut}_{\mathfrak S_k}(R_{\mathrm{can}},A_{\mathrm{can}})=1.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:conclusion-equivariant-a-splitting-register-lower-bound}，\((R,A)\) 对应于一个 \(\mathfrak S_k\)-等变映射
+\[
+\varphi:R\to \binom{\Delta}{a},
+\qquad
+\varphi(r)=A_r.
+\]
+同一定理的证明已表明 \(\binom{\Delta}{a}\) 在 \(\mathfrak S_k\) 作用下传递，故 \(\varphi\) 的像必为全体 \(\binom{\Delta}{a}\)。
+由于
+\[
+|R|=\left|\binom{\Delta}{a}\right|=\binom{k}{a},
+\]
+\(\varphi\) 只能是双射，因而给出 \(\mathfrak S_k\)-集同构。
+又由定义，
+\[
+x\in A_r
+\quad\Longleftrightarrow\quad
+x\in \varphi(r),
+\]
+故 \(\varphi\) 同时保持分裂关系，从而得到
+\[
+(R,A)\cong (R_{\mathrm{can}},A_{\mathrm{can}}).
+\]
+\par
+再设 \(\psi\) 为 \((R_{\mathrm{can}},A_{\mathrm{can}})\) 的一个 \(\mathfrak S_k\)-等变自同构。
+由于 \(\psi\) 保持分裂关系，对每个 \(B\in \binom{\Delta}{a}\) 与 \(x\in \Delta\) 都有
+\[
+x\in B
+\quad\Longleftrightarrow\quad
+x\in \psi(B).
+\]
+这迫使 \(\psi(B)=B\) 对所有 \(B\) 成立，故 \(\psi=\mathrm{id}\)。
+因此
+\[
+\operatorname{Aut}_{\mathfrak S_k}(R_{\mathrm{can}},A_{\mathrm{can}})=1.
+\]
+证毕。
 \end{proof}
 
 \begin{theorem}[奇基数非平凡二值跳跃对超对称的结构强迫]\label{thm:conclusion-odd-cardinality-nontrivial-jump-forces-super-symmetry}
