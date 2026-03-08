@@ -139,49 +139,58 @@ d-2j
 \begin{theorem}[Lee--Yang 分支集的 Ihara \texorpdfstring{$\zeta$}{zeta} 函数闭式]\label{thm:derived-leyang-branchset-ihara-zeta}
 把 \(R(y_n)\) 视为有限无向图。则其 Ihara \(\zeta\) 函数满足
 \[
-\bigl(Z^{\mathrm{Ih}}_{R(y_n)}(u)\bigr)^{-1}
+Z^{\mathrm{Ih}}_{R(y_n)}(u)
 =
-(1-u^2)^{\,5((n-1)4^n+1)}
+\Biggl[
+(1-u^2)^{-(2n-2)2^{2n-1}}
 \prod_{j=0}^{2n}
-\Bigl(1-(2n-2j)u+(2n-1)u^2\Bigr)^{5\binom{2n}{j}}.
+\Bigl(1-(2n-2j)u+(2n-1)u^2\Bigr)^{-\binom{2n}{j}}
+\Biggr]^5.
 \]
 \end{theorem}
 
 \begin{proof}
-由定理 \ref{thm:derived-leyang-branchset-adjacency-spectrum-heat-trace}，\(R(y_n)\) 是五个 \(2n\)-维超立方体的无交并，因此是一个 \(2n\)-正则图，且
+由定理 \ref{thm:derived-leyang-branchset-adjacency-spectrum-heat-trace}，
 \[
-|V(R(y_n))|=5\cdot 2^{2n}=5\cdot 4^n,
-\qquad
-|E(R(y_n))|
-=
-5\cdot \frac{2n\cdot 2^{2n}}{2}
-=
-5n4^n.
+R(y_n)\cong \bigsqcup_{i=0}^{4}Q_{2n}.
 \]
-由于连通分量数为 \(5\)，故
-\[
-|E|-|V|+c
-=
-5n4^n-5\cdot 4^n+5
-=
-5((n-1)4^n+1).
-\]
+因此只需先计算单个 \(Q_{2n}\) 的 Ihara \(\zeta\) 函数，再取五次方。
 
-对 \(d\)-正则有限图，标准 Ihara--Bass 行列式公式给出 \cite{TerrasZetaGraphs,StarkTerras1996GraphCoverings}
+对 \(d\)-正则图 \(Q_d\)，标准 Ihara--Bass 行列式公式给出 \cite{TerrasZetaGraphs,StarkTerras1996GraphCoverings}
 \[
-Z_G^{\mathrm{Ih}}(u)^{-1}
+\bigl(Z^{\mathrm{Ih}}_{Q_d}(u)\bigr)^{-1}
 =
-(1-u^2)^{|E|-|V|+c}
-\prod_{\lambda\in\operatorname{Spec}(A_G)}
-\bigl(1-\lambda u+(d-1)u^2\bigr),
+(1-u^2)^{|E(Q_d)|-|V(Q_d)|}
+\det\!\bigl(I-uA_{Q_d}+(d-1)u^2I\bigr).
 \]
-其中谱按重数计算。把 \(G=R(y_n)\)、\(d=2n\) 以及定理 \ref{thm:derived-leyang-branchset-adjacency-spectrum-heat-trace} 的谱数据
+这里
 \[
-\lambda=2n-2j,
+|V(Q_d)|=2^d,
 \qquad
-\operatorname{mult}(\lambda)=5\binom{2n}{j}
+|E(Q_d)|=d\,2^{d-1},
 \]
-代入，即得所示闭式。证毕。
+并且由定理 \ref{thm:derived-leyang-branchset-adjacency-spectrum-heat-trace} 的同一超立方体谱分解，
+\[
+\operatorname{Spec}(A_{Q_d})
+=
+\bigl\{
+d-2j\ \text{with multiplicity }\binom{d}{j}
+:\ 0\le j\le d
+\bigr\}.
+\]
+故
+\[
+Z^{\mathrm{Ih}}_{Q_d}(u)
+=
+(1-u^2)^{-(d-2)2^{d-1}}
+\prod_{j=0}^{d}
+\Bigl(1-(d-2j)u+(d-1)u^2\Bigr)^{-\binom{d}{j}}.
+\]
+取 \(d=2n\) 即得单个 \(Q_{2n}\) 的闭式。再由 Ihara \(\zeta\) 对不交并取乘法，
+\[
+Z^{\mathrm{Ih}}_{R(y_n)}(u)=\bigl(Z^{\mathrm{Ih}}_{Q_{2n}}(u)\bigr)^5,
+\]
+从而得到所示公式。证毕。
 \end{proof}
 
 \subsection{Lee--Yang 振幅常数的六次全虚提升}

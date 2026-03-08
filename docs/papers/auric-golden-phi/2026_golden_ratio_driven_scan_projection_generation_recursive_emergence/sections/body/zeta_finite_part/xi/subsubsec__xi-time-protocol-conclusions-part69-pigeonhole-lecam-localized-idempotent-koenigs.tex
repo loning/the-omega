@@ -1,5 +1,5 @@
 \paragraph{低预算线性相、二点实验塌缩、局部化周期谱与形式线性化的闭合后果}
-在审计偶窗的最小退化 Fibonacci 律、末位两层塌缩、局部化 solenoid 的自覆盖分类、素数寄存器的幂等估值算术化以及 fold-gauge 缺陷的纯奇次重整化已经建立之后，还可把这些链条继续压缩为下列五条结果。它们分别刻画审计偶窗中的纯鸽巢线性相与结构盲区、bin-fold 输出实验的 Le Cam 二点塌缩、一般局部化有理乘法自同态的固定点与 Artin--Mazur \(\zeta\) 函数、素数寄存器幂等元的精确闭式计数，以及 fold-gauge 缺陷的形式 Koenigs 线性化。
+在审计偶窗的最小退化 Fibonacci 律、末位两层塌缩、局部化 solenoid 的自覆盖分类、素数寄存器的幂等估值算术化以及 fold-gauge 缺陷的纯奇次重整化已经建立之后，还可把这些链条继续压缩为下列六条结果。它们分别刻画审计偶窗中的纯鸽巢线性相与结构盲区、bin-fold 输出实验的 Le Cam 二点塌缩、一般局部化有理乘法自同态的固定点与 Artin--Mazur \(\zeta\) 函数、相应周期点几何的指数率、素数寄存器幂等元的精确闭式计数，以及 fold-gauge 缺陷的形式 Koenigs 线性化。
 
 \begin{theorem}[审计偶窗中的纯鸽巢线性相与结构盲区阈值]\label{thm:xi-time-part69-audited-even-pure-pigeonhole-linear-phase}
 对
@@ -232,7 +232,7 @@ r=\frac{a}{b}\in G_S,
 \[
 x\longmapsto rx\qquad (x\in G_S)
 \]
-的 Pontryagin 对偶连续自同态。若 \(|a|>|b|\)，则对每个 \(n\ge 1\)，都有
+的 Pontryagin 对偶连续自同态。若 \(|a|\neq |b|\)，则对每个 \(n\ge 1\)，都有
 \[
 \#\mathrm{Fix}(f_r^n)=|a^n-b^n|_{S^\perp},
 \]
@@ -281,7 +281,7 @@ r^n-1=\frac{a^n-b^n}{b^n}
 \[
 (r^n-1)G_S=(a^n-b^n)G_S.
 \]
-又因 \(|a|>|b|\)，故 \(a^n-b^n\neq 0\)。于是由定理 \ref{thm:xi-localized-quotient-exact-sfree-externalization}，
+又因 \(|a|\neq |b|\)，故 \(a^n-b^n\neq 0\)。于是由定理 \ref{thm:xi-localized-quotient-exact-sfree-externalization}，
 \[
 G_S/(a^n-b^n)G_S
 \cong
@@ -292,6 +292,87 @@ G_S/(a^n-b^n)G_S
 \#\mathrm{Fix}(f_r^n)=|a^n-b^n|_{S^\perp}.
 \]
 再将该固定点计数代入 Artin--Mazur \(\zeta\) 函数定义，即得所示级数公式。证毕。
+\end{proof}
+
+\begin{theorem}[局部化有理自覆盖的周期点指数率只由分子分母的最大模控制]\label{thm:xi-time-part69-localized-rational-endomorphism-growth-rate}
+沿用定理 \ref{thm:xi-time-part69-localized-rational-endomorphism-fixedpoints-zeta} 的记号，并进一步假设
+\[
+|a|\neq |b|.
+\]
+则有极限
+\[
+\lim_{n\to\infty}\frac{1}{n}\log \#\mathrm{Fix}(f_r^n)
+=
+\log\max\{|a|,|b|\}.
+\]
+换言之，局部化 solenoid 上有理自覆盖的周期点指数率不受 \(S\)-内素因子的影响，而仅由分子与分母模长中的较大者决定。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-time-part69-localized-rational-endomorphism-fixedpoints-zeta} 证明中的同一对偶化论证，对每个 \(n\ge 1\) 都有
+\[
+\mathrm{Fix}(f_r^n)\cong \widehat{G_S/(r^n-1)G_S}.
+\]
+又因 \(|a|\neq |b|\)，故 \(a^n-b^n\neq 0\)。并且
+\[
+r^n-1=\frac{a^n-b^n}{b^n},
+\]
+其中 \(b^n\in G_S^\times\) 为单位，于是
+\[
+(r^n-1)G_S=(a^n-b^n)G_S.
+\]
+再由定理 \ref{thm:xi-localized-quotient-exact-sfree-externalization}，
+\[
+\#\mathrm{Fix}(f_r^n)=|a^n-b^n|_{S^\perp}.
+\]
+因此只需比较 \(a^n-b^n\) 的 \(S\)-内与 \(S\)-外部分的增长。
+
+先固定 \(p\in S\)。若 \(p\mid ab\)，则由 \(\gcd(a,b)=1\) 可知 \(p\) 不能同时整除 \(a\) 与 \(b\)，从而对任意 \(n\ge 1\) 都有
+\[
+p\nmid (a^n-b^n).
+\]
+若 \(p\nmid ab\)，则 \(a/b\) 在 \((\ZZ/p\ZZ)^\times\) 中有定义。记其模 \(p\) 的乘法阶为 \(t_p\)。只有在 \(t_p\mid n\) 时，\(p\) 才可能整除 \(a^n-b^n\)；并且由标准 lifting-the-exponent 估计，存在仅依赖于 \(p,a,b\) 的常数 \(C_p\)，使得
+\[
+v_p(a^n-b^n)\le C_p+v_p(n)
+\qquad(n\ge 1).
+\]
+由于 \(S\) 有限，遂得
+\[
+\sum_{p\in S}v_p(a^n-b^n)\log p=O(\log n),
+\]
+因而
+\[
+\frac{1}{n}\sum_{p\in S}v_p(a^n-b^n)\log p\longrightarrow 0.
+\]
+
+另一方面，若 \(|a|>|b|\)，则
+\[
+|a^n-b^n|
+=
+|a|^n\Bigl|1-(b/a)^n\Bigr|
+=
+|a|^n(1+o(1)),
+\]
+故
+\[
+\frac{1}{n}\log |a^n-b^n|\longrightarrow \log|a|.
+\]
+若 \(|b|>|a|\)，同理得到极限为 \(\log|b|\)。
+
+最后，由
+\[
+\log |a^n-b^n|_{S^\perp}
+=
+\log |a^n-b^n|
+-\sum_{p\in S}v_p(a^n-b^n)\log p
+\]
+即知
+\[
+\frac{1}{n}\log |a^n-b^n|_{S^\perp}
+\longrightarrow
+\log\max\{|a|,|b|\}.
+\]
+再代回
+\(\#\mathrm{Fix}(f_r^n)=|a^n-b^n|_{S^\perp}\)，即得所示极限。证毕。
 \end{proof}
 
 \begin{theorem}[素数寄存器半群幂等元的精确计数律]\label{thm:xi-time-part69-prime-register-idempotent-count-law}
@@ -466,7 +547,7 @@ k_3=-\frac{a_2}{a_1^4}
 \end{proof}
 
 \noindent
-上述五条结果表明，审计偶窗的低预算容量、bin-fold 的完整统计实验、局部化 solenoid 的周期点几何、素数寄存器的有限幂等结构以及 fold-gauge 缺陷的形式重整化之间存在同一类低维闭合机制：在有限分辨率层面，它表现为纯鸽巢线性相与精确的幂等计数；在统计层面，它表现为末位二点实验对全模型的 Le Cam 塌缩；在局部化动力学层面，它表现为 \(S\)-外部因子对周期点计数的完全控制；而在形式动力学层面，它最终收束为 Koenigs 坐标下的严格乘法线性化。于是，有限预算盲区、二点统计极限、局部化周期谱与重整化正规形不再是彼此分离的技术现象，而被统一压缩为同一条可审计的降维主线。
+上述六条结果表明，审计偶窗的低预算容量、bin-fold 的完整统计实验、局部化 solenoid 的周期点几何、素数寄存器的有限幂等结构以及 fold-gauge 缺陷的形式重整化之间存在同一类低维闭合机制：在有限分辨率层面，它表现为纯鸽巢线性相与精确的幂等计数；在统计层面，它表现为末位二点实验对全模型的 Le Cam 塌缩；在局部化动力学层面，它既表现为 \(S\)-外部因子对周期点计数的完全控制，也表现为指数率仅由 \(\max\{|a|,|b|\}\) 锁定；而在形式动力学层面，它最终收束为 Koenigs 坐标下的严格乘法线性化。于是，有限预算盲区、二点统计极限、局部化周期谱与重整化正规形不再是彼此分离的技术现象，而被统一压缩为同一条可审计的降维主线。
 
 \input{subsubsec__xi-time-protocol-conclusions-part70-twoatom-capacity-richardson-prime-defect}
 
