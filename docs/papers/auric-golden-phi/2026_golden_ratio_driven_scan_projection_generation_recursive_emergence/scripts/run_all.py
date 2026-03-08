@@ -881,6 +881,15 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_escort_threelevel_crossover_audit",
+            script="exp_window6_escort_threelevel_crossover_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_escort_threelevel_crossover_audit.json",
+                "sections/generated/eq_window6_escort_threelevel_crossover_audit.tex",
+            ],
+        ),
+        Step(
             name="window6_fib_tail_psl2_orbit_decomposition_p23",
             script="exp_window6_fib_tail_psl2_orbit_decomposition_p23.py",
             args=[],
