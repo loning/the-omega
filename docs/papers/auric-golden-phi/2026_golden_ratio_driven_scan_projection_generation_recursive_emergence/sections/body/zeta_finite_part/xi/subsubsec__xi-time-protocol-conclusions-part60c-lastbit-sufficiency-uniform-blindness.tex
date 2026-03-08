@@ -456,61 +456,80 @@ M(\mathsf{Col}_m-1/M)\ge 2C_\varphi^2+o(1)
 合并，即得所示 \(\gtrsim\) 估计。证毕。
 \end{proof}
 
-\begin{corollary}[零点相对密度在近零邻域无法控制归一化碰撞尺度]\label{cor:xi-fold-zero-density-no-bounded-control-on-normalized-collision}
+\begin{theorem}[零点计数对碰撞缺口不存在消失模量]\label{cor:xi-fold-zero-density-no-bounded-control-on-normalized-collision}
 沿用定理 \ref{thm:xi-fold-zero-geometry-collision-gap-blindness} 的记号，并定义
 \[
-\delta_m:=\frac{|\mathcal Z_m|}{M},
+M_m:=F_{m+2},
 \qquad
-\Gamma_m:=M\,\mathsf{Col}_m.
+\delta_m:=\frac{|\mathcal Z_m|}{M_m},
+\qquad
+\Gamma_m:=M_m\!\left(\mathsf{Col}_m-\frac{1}{M_m}\right).
 \]
-则有
+则沿子列
 \[
-\delta_m\to 0,
-\qquad
-\Gamma_m\to+\infty.
+m\equiv 1\pmod 3
 \]
-因此
+有
 \[
 \boxed{\;
-\lim_{\varepsilon\downarrow0}\sup\{\Gamma_m:\ \delta_m\le \varepsilon\}=+\infty.\;}
-\]
-等价地，不存在任何在 \(0\) 的某个邻域内有界的函数 \(\Psi:[0,1]\to[0,\infty)\)，使得对所有充分大的 \(m\) 都有
-\[
-\Gamma_m\le \Psi(\delta_m).
-\]
-\end{corollary}
-\begin{proof}
-由定理 \ref{thm:xi-fold-zero-geometry-collision-gap-blindness} 已知 \(\delta_m\to 0\)。
-
-另一方面，对任意固定 \(U\in\NN\)，附录推论 \ref{cor:fold-collision-gap-resonance-ladder-U} 给出
-\[
-\liminf_{m\to\infty}\Gamma_m
-\ge
-1+2\sum_{u=1}^{U}C_\varphi(u)^2.
-\]
-而定理 \ref{thm:xi-resonance-closure-log-lower-bound-fib-luc} 说明右端随 \(U\to\infty\) 至少按 \(\log U\) 发散。故给定任意 \(A>0\)，可先取 \(U\) 充分大，使
-\[
-1+2\sum_{u=1}^{U}C_\varphi(u)^2>A,
-\]
-再由上述下极限不等式知当 \(m\) 充分大时必有 \(\Gamma_m>A\)。这证明 \(\Gamma_m\to+\infty\)。
-
-于是给定任意 \(\varepsilon>0\) 与任意 \(A>0\)，只要 \(m\) 足够大，便同时有
-\[
-\delta_m<\varepsilon,
+\delta_m\longrightarrow 0,
 \qquad
-\Gamma_m>A.
+\liminf_{\substack{m\to\infty\\ m\equiv 1\!\!\!\!\pmod 3}}
+\Gamma_m
+\ge
+\frac{2C_\varphi^2}{\varphi}>0.\;}
 \]
-从而
+从而不存在任何函数 \(\eta:[0,1]\to[0,\infty)\) 满足
 \[
-\sup\{\Gamma_m:\ \delta_m\le \varepsilon\}\ge A.
+\eta(t)\longrightarrow 0
+\qquad (t\to 0),
 \]
-由于 \(A\) 任意，即得盒装公式。
+并且对所有充分大的 \(m\equiv 1\pmod 3\) 都有
+\[
+\Gamma_m\le \eta(\delta_m).
+\]
+换言之，即使谱零点的相对密度趋于 \(0\)，它也不足以连续控制折叠碰撞的归一化缺口；非零频率振幅层仍是不可删除的数据层。
+\end{theorem}
+\begin{proof}
+当 \(m\equiv 1\pmod 3\) 时，\(m+2\equiv 0\pmod 3\)，故 Fibonacci 数 \(M_m=F_{m+2}\) 为偶数。于是由定理 \ref{thm:fold-zero-density-sparse}，
+\[
+\delta_m=\frac{|\mathcal Z_m|}{M_m}
+\le
+\tau(m+2)\,O(\varphi^{-m/2})
+\longrightarrow 0
+\qquad
+\bigl(m\to\infty,\ m\equiv 1\!\!\!\!\pmod 3\bigr).
+\]
 
-最后，若存在某个在 \(0\) 的邻域内有界的函数 \(\Psi\) 满足
-\(
-\Gamma_m\le \Psi(\delta_m)
-\)
-对充分大 \(m\) 成立，则沿 \(\delta_m\to0\) 可推出 \(\Gamma_m\) 最终有界，与 \(\Gamma_m\to+\infty\) 矛盾。证毕。
+另一方面，定理 \ref{thm:xi-fold-zero-geometry-collision-gap-blindness} 已给出更强的全序列下界
+\[
+\Gamma_m
+=
+M_m\!\left(\mathsf{Col}_m-\frac1{M_m}\right)
+\ge
+2C_\varphi^2+o(1).
+\]
+因此沿任意子列，特别是沿 \(m\equiv 1\pmod 3\)，都有
+\[
+\liminf_{\substack{m\to\infty\\ m\equiv 1\!\!\!\!\pmod 3}}\Gamma_m
+\ge
+2C_\varphi^2
+>
+\frac{2C_\varphi^2}{\varphi},
+\]
+从而所示盒装下界成立。
+
+若存在函数 \(\eta\) 满足 \(\eta(t)\to 0\) 且对所有充分大的 \(m\equiv 1\pmod 3\) 都有
+\[
+\Gamma_m\le \eta(\delta_m),
+\]
+则由 \(\delta_m\to 0\) 可得
+\[
+\eta(\delta_m)\longrightarrow 0
+\qquad
+\bigl(m\to\infty,\ m\equiv 1\!\!\!\!\pmod 3\bigr),
+\]
+从而 \(\Gamma_m\to 0\) 沿该子列成立，这与上式的严格正下极限矛盾。故这样的消失模量不存在。证毕。
 \end{proof}
 
 \endinput

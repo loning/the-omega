@@ -112,8 +112,24 @@ w\in X_m.
 因此，全部参数依赖只通过 \(T_m(w)=w_m\) 出现，故 escort 温度族在上述一致对数误差意义下确已塌缩为一维指数族。证毕。
 \end{proof}
 
-\begin{corollary}[escort 温度间最优判别的末位单比特退化]\label{cor:xi-time-part9ob-escort-np-lastbit-collapse}
-沿用定理 \ref{thm:xi-time-part9ob-escort-loglik-onebit-expfamily} 的记号。对任意固定 \(p,q\ge 0\)，令
+\begin{theorem}[Neyman--Pearson 判别的末位坍缩]\label{cor:xi-time-part9ob-escort-np-lastbit-collapse}
+沿用定理 \ref{thm:xi-time-part9ob-escort-loglik-onebit-expfamily} 的记号。对任意 \(0\le p<q\)，记
+\[
+\ell_m(w):=w_m,
+\qquad
+C_m(p,q):=
+\log\frac{F_{m+1}+\varphi^{-p}F_m}{F_{m+1}+\varphi^{-q}F_m}.
+\]
+则有统一似然比展开
+\[
+\log\frac{\pi_{m,q}(w)}{\pi_{m,p}(w)}
+=
+C_m(p,q)-(q-p)\log\varphi\cdot \ell_m(w)
++O(\varepsilon_m),
+\]
+其中误差对 \(w\in X_m\) 一致。因而在 \(m\to\infty\) 极限中，任何 Neyman--Pearson 最强检验都退化为对单个比特 \(\ell_m(w)\) 的阈值检验。
+
+再令
 \[
 \theta(s):=\frac{1}{1+\varphi^{s+1}}
 \qquad (s\ge 0).
@@ -136,8 +152,8 @@ w\in X_m.
 =
 \frac12\bigl(1-|\theta(q)-\theta(p)|\bigr).
 \]
-更具体地，若 \(q>p\)，则对充分大 \(m\) 而言，似然比 \(\pi_{m,q}/\pi_{m,p}\) 在 \(A_0\) 上严格大于在 \(A_1\) 上的取值；若 \(q<p\)，则情形相反。因而一切最优 Neyman--Pearson 判别都只依赖末位 \(w_m\)，其非平凡拒绝域由 \(A_0\) 与 \(A_1\) 两块生成。
-\end{corollary}
+更具体地，等先验 Bayes 最小错误率在极限中完全由二元参数差 \(|\theta(q)-\theta(p)|\) 支配。
+\end{theorem}
 \begin{proof}
 由定理 \ref{thm:xi-time-part9ob-escort-loglik-onebit-expfamily}，
 \[
@@ -175,13 +191,13 @@ P_e^\ast(P,Q)=\frac12\bigl(1-\|P-Q\|_{\mathrm{TV}}\bigr)
 \[
 \log\frac{\pi_{m,q}(w)}{\pi_{m,p}(w)}
 =
-A_m(q,p)-(q-p)w_m\log\varphi+O(\varepsilon_m).
+C_m(p,q)-(q-p)\log\varphi\cdot \ell_m(w)+O(\varepsilon_m).
 \]
 因此两块上的似然比差恰为
 \[
 (p-q)\log\varphi+O(\varepsilon_m).
 \]
-若 \(q>p\)，则该差对充分大 \(m\) 为正，故似然比在 \(A_0\) 上严格更大；若 \(q<p\)，则在 \(A_1\) 上严格更大。于是 Neyman--Pearson 最优检验不再需要读取整个 \(w\)，只需读取末位并在对应块上作决定。证毕。
+由于此处 \(q>p\)，上式对充分大 \(m\) 为正，故似然比在 \(A_0\) 上严格更大。于是 Neyman--Pearson 最优检验不再需要读取整个 \(w\)，只需读取末位并在对应块上作决定。证毕。
 \end{proof}
 
 \begin{theorem}[escort 温度流的双向局部 KL 曲率闭式]\label{thm:xi-time-part9ob-escort-two-sided-local-kl}
