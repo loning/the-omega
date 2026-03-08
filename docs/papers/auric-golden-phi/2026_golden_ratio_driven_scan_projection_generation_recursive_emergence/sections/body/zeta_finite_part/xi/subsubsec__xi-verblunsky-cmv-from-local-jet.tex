@@ -207,6 +207,71 @@ Toeplitz--PSD 失败意味着存在某个 \(N\ge 0\) 使 \(\mathbf{T}_N\not\succ
 对数凹性由 \(1-|\alpha_N|^2\le 1\) 立得。证毕。
 \end{proof}
 
+\begin{theorem}[Toeplitz 主子式的离散曲率公式与 Verblunsky 模长的完全恢复]\label{thm:xi-toeplitz-principal-minor-discrete-curvature-recovery}
+沿用定理 \ref{thm:xi-toeplitz-det-verblunsky} 的记号，并记
+\[
+\Delta_m:=\det\mathbf{T}_m\qquad(m\ge 0).
+\]
+在非退化口径 \(\Delta_m>0\)（\(m\ge 0\)）下，对每个 \(m\ge 1\) 都有严格恒等式
+\begin{equation}\label{eq:xi-toeplitz-principal-minor-discrete-curvature}
+\boxed{\;
+1-|\alpha_m|^2
+=
+\frac{\Delta_{m+1}\Delta_{m-1}}{\Delta_m^2}\; }.
+\end{equation}
+等价地，主子式序列的离散曲率可写为
+\[
+\mathcal K_m:=-\log\!\left(\frac{\Delta_{m+1}\Delta_{m-1}}{\Delta_m^2}\right)
+=-\log(1-|\alpha_m|^2)
+\qquad(m\ge 1).
+\]
+从而成立：
+\begin{enumerate}
+  \item 对每个 \(m\ge 1\)，都有
+  \[
+  \Delta_m^2\ge \Delta_{m-1}\Delta_{m+1},
+  \]
+  且严格不等式成立当且仅当 \(|\alpha_m|>0\)；
+  \item 全体模长序列 \((|\alpha_m|)_{m\ge 0}\) 仅由主子式序列 \((\Delta_m)_{m\ge 0}\) 唯一决定，其中
+  \[
+  1-|\alpha_0|^2=\frac{\Delta_1}{\Delta_0^2},
+  \qquad
+  1-|\alpha_m|^2=\frac{\Delta_{m+1}\Delta_{m-1}}{\Delta_m^2}\quad(m\ge 1);
+  \]
+  \item 反过来，在固定 \(\Delta_0=c_0\) 后，\((\Delta_m)_{m\ge 0}\) 可由 \((|\alpha_m|)_{m\ge 0}\) 递推唯一恢复，具体为
+  \[
+  \Delta_1=c_0^2(1-|\alpha_0|^2),
+  \qquad
+  \Delta_{m+1}=(1-|\alpha_m|^2)\frac{\Delta_m^2}{\Delta_{m-1}}
+  \quad(m\ge 1).
+  \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+式 \eqref{eq:xi-toeplitz-principal-minor-discrete-curvature} 正是推论
+\ref{cor:xi-toeplitz-principal-minor-logconcavity} 的比值恒等式。
+由于 \(\Delta_m>0\)，其右端属于 \((0,1]\)，故
+\[
+\Delta_m^2\ge \Delta_{m-1}\Delta_{m+1},
+\]
+且等号成立当且仅当 \(1-|\alpha_m|^2=1\)，亦即 \(|\alpha_m|=0\)。
+
+对 \(m=0\)，由 \eqref{eq:xi-toeplitz-det-product} 在 \(m=1\) 的情形得到
+\[
+\Delta_1=c_0^2(1-|\alpha_0|^2),
+\]
+故 \(|\alpha_0|\) 由 \((\Delta_0,\Delta_1)\) 唯一确定。
+对 \(m\ge 1\)，\eqref{eq:xi-toeplitz-principal-minor-discrete-curvature} 逐项给出 \(|\alpha_m|\)。
+于是 \((|\alpha_m|)_{m\ge 0}\) 完全由 \((\Delta_m)_{m\ge 0}\) 唯一决定。
+
+反向恢复则直接来自上述两条递推式：先由 \(\Delta_0=c_0\) 与 \(|\alpha_0|\) 得到 \(\Delta_1\)，再对 \(m\ge 1\) 依次使用
+\[
+\Delta_{m+1}=(1-|\alpha_m|^2)\frac{\Delta_m^2}{\Delta_{m-1}},
+\]
+即可唯一重建全部主子式。证毕。
+\end{proof}
+
 \begin{proposition}[反射谱的 \texorpdfstring{$\ell^2$}{l2} 能量与行列式离散曲率总量的等价]\label{prop:xi-toeplitz-curvature-energy-equivalence}
 沿用推论 \ref{cor:xi-toeplitz-principal-minor-logconcavity} 的记号，并假设 \(\mathbf{T}_N\succ 0\) 对所有 \(N\) 成立。
 令 \(\Delta_N:=\det\mathbf{T}_N>0\)，并定义离散曲率序列
@@ -309,6 +374,58 @@ H(p_N)\succeq 0,
 式 \eqref{eq:xi-toeplitz-schur-cohn-congruence} 可视为该预测多项式的 Schur--Cohn 形式与 Toeplitz 矩形式之间的同一二次型在两组自然基下的表示变换；相应的变换矩阵 \(R_N\) 可取为 Levinson--Durbin 递推产生的三角因子（参见 \cite{DymYoung1990SchurCohnMatrixPolynomials,Simon2005OPUC1} 对 Schur--Cohn 与 Schur 参数/预测多项式之间关系的综述）。
 惯性指标在合同变换下不变，从而失败见证可在 \(\mathbf{T}_N\) 与 \(H(p_N)\) 之间无损转移。证毕。
 \end{proof}
+
+\begin{theorem}[Toeplitz--PSD 最小失败级与 Schur--Cohn 根越界级的严格同一]\label{thm:xi-toeplitz-psd-minimal-failure-schur-cohn-root-escape}
+沿用定理 \ref{thm:xi-toeplitz-schur-cohn-lift} 的记号，并假设 Toeplitz--PSD 层级并非全阶成立。
+定义最小失败级
+\[
+N_\star:=\min\{N\ge 1:\ \mathbf{T}_N\nsucceq 0\}.
+\]
+则有严格等式
+\[
+\boxed{\;
+N_\star
+=
+\min\{N\ge 1:\ p_N\ \text{至少有一根落在 }\CC\setminus\overline{\mathbb D}\}\; }.
+\]
+更一般地，对每个 \(N\ge 0\) 都有
+\[
+\boxed{\;
+\mathbf{T}_N\succeq 0
+\quad\Longleftrightarrow\quad
+p_N\ \text{的全部根都落在 }\overline{\mathbb D}\; }.
+\]
+并且
+\[
+\boxed{\;
+\mathbf{T}_N\succ 0
+\quad\Longleftrightarrow\quad
+p_N\ \text{的全部根都落在 }\mathbb D\; }.
+\]
+\end{theorem}
+
+\begin{proof}
+由定理 \ref{thm:xi-toeplitz-schur-cohn-lift}，存在可逆矩阵 \(R_N\) 使
+\[
+R_N^\ast\mathbf{T}_N R_N=H(p_N),
+\]
+故 \(\mathbf{T}_N\) 与 \(H(p_N)\) 具有相同惯性指数。
+另一方面，Schur--Cohn 理论断言：\(H(p_N)\succeq 0\) 当且仅当 \(p_N\) 的全部根都落在闭单位圆 \(\overline{\mathbb D}\) 内，而 \(H(p_N)\succ 0\) 当且仅当全部根都落在开单位圆 \(\mathbb D\) 内。
+由此立即得到两条逐级等价式。
+
+若 Toeplitz--PSD 层级失败，则对每个 \(N<N_\star\) 都有 \(\mathbf{T}_N\succeq 0\)，从而 \(p_N\) 的全部根都落在 \(\overline{\mathbb D}\)；
+而在 \(N=N_\star\) 时，\(\mathbf{T}_{N_\star}\nsucceq 0\)，故 \(p_{N_\star}\) 至少有一根落在 \(\CC\setminus\overline{\mathbb D}\)。
+这正给出所述最小次数同一性。证毕。
+\end{proof}
+
+\begin{remark}[边界接触与严格正定失败]\label{rem:xi-toeplitz-strict-failure-boundary-contact}
+若把“失败级”改定义为
+\[
+\min\{N\ge 1:\ \mathbf{T}_N\not\succ 0\},
+\]
+则对应的最小次数刻画的正是 \(p_N\) 首次接触单位圆边界或越出闭单位圆的层级。
+因此，半正定失败控制“外逃”，而严格正定失败同时记录“边界接触或外逃”。
+\end{remark}
 
 \begin{proposition}[Toeplitz 正性在不变系数环上的区间化审计]\label{prop:xi-toeplitz-interval-audit-invariant-ring}
 在定理 \ref{thm:xi-toeplitz-schur-cohn-lift} 的设定下，可取可逆下三角矩阵 \(L_N\)（例如 Levinson--Durbin 递推产生的三角因子）使

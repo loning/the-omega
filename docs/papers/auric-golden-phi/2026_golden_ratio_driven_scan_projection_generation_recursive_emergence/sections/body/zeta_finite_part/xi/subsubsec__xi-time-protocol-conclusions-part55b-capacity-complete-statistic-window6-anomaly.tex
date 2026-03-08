@@ -109,6 +109,82 @@ S_1(m),\dots,S_{2s_m-1}(m)
 本就包含在该全谱中。于是定理 \ref{thm:xi-fiber-spectrum-finite-moment-rigidity} 适用，并唯一恢复全部 \(\{(\delta_{j,m},n_{j,m})\}_{j=1}^{s_m}\)，从而唯一恢复 \(h_m\)。因此四类对象完全等价。证毕。
 \end{proof}
 
+\begin{theorem}[连续容量曲线等于推前分布与均匀层测度的截断重叠泛函]\label{thm:xi-capacity-overlap-functional-l1-identity}
+沿用定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic} 的记号，并定义
+\[
+\mu_m(x):=\frac{d_m(x)}{2^m},
+\qquad
+u_m(x):=\frac{1}{|X_m|}
+\qquad (x\in X_m),
+\]
+\[
+\tau_m(T):=\frac{T|X_m|}{2^m}
+\qquad (T\ge 0),
+\]
+以及
+\[
+\|f\|_{\ell^1(X_m)}:=\sum_{x\in X_m}|f(x)|.
+\]
+则对任意 \(T\ge 0\) 都有严格恒等式
+\[
+\boxed{\;
+\frac{\mathcal C_m^{\mathrm{cont}}(T)}{2^m}
+=
+\sum_{x\in X_m}\min\bigl(\mu_m(x),\tau_m(T)u_m(x)\bigr)
+=
+\frac{1+\tau_m(T)-\|\mu_m-\tau_m(T)u_m\|_{\ell^1(X_m)}}{2}.\;}
+\]
+特别地，若对 bin-fold 写
+\[
+C_m^{\mathrm{bin}}(B):=\mathcal C_m^{\mathrm{cont}}(2^B),
+\qquad
+\mathrm{Succ}_m^{\mathrm{bin}}(B):=\frac{C_m^{\mathrm{bin}}(B)}{2^m},
+\]
+则对任意整数 \(B\ge 0\) 都有
+\[
+\boxed{\;
+\mathrm{Succ}_m^{\mathrm{bin}}(B)
+=
+\frac{1+\tau_m(2^B)-\|\mu_m-\tau_m(2^B)u_m\|_{\ell^1(X_m)}}{2}.\;}
+\]
+\end{theorem}
+\begin{proof}
+由连续容量曲线的定义，
+\[
+\frac{\mathcal C_m^{\mathrm{cont}}(T)}{2^m}
+=
+\sum_{x\in X_m}\min\!\left(\frac{d_m(x)}{2^m},\frac{T}{2^m}\right)
+=
+\sum_{x\in X_m}\min\bigl(\mu_m(x),\tau_m(T)u_m(x)\bigr),
+\]
+因为对每个 \(x\in X_m\) 都有
+\[
+\tau_m(T)u_m(x)=\frac{T|X_m|}{2^m}\cdot\frac{1}{|X_m|}=\frac{T}{2^m}.
+\]
+再对每个 \(x\) 应用标量恒等式
+\[
+\min(a,b)=\frac{a+b-|a-b|}{2}
+\qquad(a,b\ge 0),
+\]
+并利用
+\[
+\sum_{x\in X_m}\mu_m(x)=1,
+\qquad
+\sum_{x\in X_m}u_m(x)=1,
+\]
+便得到
+\[
+\sum_{x\in X_m}\min\bigl(\mu_m(x),\tau_m(T)u_m(x)\bigr)
+=
+\frac{1+\tau_m(T)-\|\mu_m-\tau_m(T)u_m\|_{\ell^1(X_m)}}{2}.
+\]
+这就证明了第一条恒等式。取 \(T=2^B\) 并用
+\(
+\mathrm{Succ}_m^{\mathrm{bin}}(B)=2^{-m}\mathcal C_m^{\mathrm{cont}}(2^B)
+\)
+即可得到 dyadic 预算下的成功率公式。证毕。
+\end{proof}
+
 \begin{corollary}[有限支持纤维谱的 Hankel--Vandermonde 显式重构公式]\label{cor:xi-fiber-spectrum-hankel-vandermonde-explicit-recovery}
 固定分辨率 \(m\)。设纤维多重度只取 \(R\) 个不同值
 \[
@@ -357,6 +433,98 @@ N_m(T)
 \frac{1}{s(1-s)}=-\frac{1}{s(s-1)}
 \]
 改写即可。证毕。
+\end{proof}
+
+\begin{theorem}[连续容量曲线与全阶矩谱之间的 Mellin--Barnes 完备互逆]\label{thm:xi-capacity-moment-mellin-barnes-complete-inversion}
+沿用定理 \ref{thm:xi-capacity-moment-mellin-inversion-tail-capacity} 的记号。由于 \(X_m\) 有限，
+\[
+S_s(m):=\sum_{x\in X_m}d_m(x)^s
+\]
+在整个复平面上全纯。对任意满足 \(0<\Re s<1\) 的复数 \(s\)，有
+\[
+\boxed{\;
+S_s(m)
+=
+s(1-s)\int_0^\infty T^{s-2}\mathcal C_m^{\mathrm{cont}}(T)\,\dd T.\;}
+\]
+反之，对任意 \(c\in(0,1)\) 与任意 \(T>0\)，都有 Mellin--Barnes 反演公式
+\[
+\boxed{\;
+\mathcal C_m^{\mathrm{cont}}(T)
+=
+\frac{1}{2\pi i}
+\int_{c-i\infty}^{c+i\infty}
+\frac{S_s(m)}{s(1-s)}\,T^{1-s}\,\dd s.\;}
+\]
+因此，固定尺度上的连续容量曲线与全阶矩谱在 Mellin--Barnes 变换下完备可逆。
+\end{theorem}
+\begin{proof}
+先说明积分收敛性。由
+\[
+\mathcal C_m^{\mathrm{cont}}(T)=\sum_{x\in X_m}\min\bigl(d_m(x),T\bigr),
+\]
+当 \(T\downarrow 0\) 时有
+\(
+\mathcal C_m^{\mathrm{cont}}(T)=|X_m|\,T
+\)，而当 \(T\ge \max_x d_m(x)\) 时有
+\(
+\mathcal C_m^{\mathrm{cont}}(T)=2^m
+\)。
+因此
+\(
+T^{s-2}\mathcal C_m^{\mathrm{cont}}(T)
+\)
+在 \(0\) 附近如 \(T^{s-1}\)，在 \(\infty\) 附近如 \(T^{s-2}\)，故当 \(0<\Re s<1\) 时绝对可积。
+
+再由定理 \ref{thm:xi-capacity-tail-histogram-moment-complete-statistic}，
+\[
+\mathcal C_m^{\mathrm{cont}}(T)=\int_0^T N_m(t)\,\dd t.
+\]
+于是对 \(0<\Re s<1\)，可用 Fubini 定理交换积分次序，得到
+\[
+\begin{aligned}
+\int_0^\infty T^{s-2}\mathcal C_m^{\mathrm{cont}}(T)\,\dd T
+&=
+\int_0^\infty T^{s-2}\int_0^T N_m(t)\,\dd t\,\dd T\\
+&=
+\int_0^\infty N_m(t)\left(\int_t^\infty T^{s-2}\,\dd T\right)\dd t\\
+&=
+\frac{1}{1-s}\int_0^\infty t^{s-1}N_m(t)\,\dd t.
+\end{aligned}
+\]
+而定理 \ref{thm:xi-capacity-moment-mellin-inversion-tail-capacity} 已给出
+\[
+\frac{S_s(m)}{s}
+=
+\int_0^\infty t^{s-1}N_m(t)\,\dd t
+\qquad(\Re s>0),
+\]
+故立得
+\[
+\int_0^\infty T^{s-2}\mathcal C_m^{\mathrm{cont}}(T)\,\dd T
+=
+\frac{S_s(m)}{s(1-s)},
+\]
+也即第一条公式。
+
+最后，对函数
+\(
+T\mapsto \mathcal C_m^{\mathrm{cont}}(T)
+\)
+应用标准 Mellin 反演。由于它连续、分段线性、在 \(0\) 附近至多线性增长且在无穷远处有界，其 Mellin 变换
+\[
+\int_0^\infty T^{s-2}\mathcal C_m^{\mathrm{cont}}(T)\,\dd T
+\]
+恰在条带 \(0<\Re s<1\) 上全纯并满足反演条件。因此对任意 \(c\in(0,1)\) 与任意 \(T>0\)，
+\[
+\mathcal C_m^{\mathrm{cont}}(T)
+=
+\frac{1}{2\pi i}
+\int_{c-i\infty}^{c+i\infty}
+\left(\int_0^\infty u^{s-2}\mathcal C_m^{\mathrm{cont}}(u)\,\dd u\right)
+T^{1-s}\,\dd s.
+\]
+再把第一条公式代回，即得所示 Mellin--Barnes 反演式。证毕。
 \end{proof}
 
 \begin{theorem}[window-\texorpdfstring{$6$}{6} 异常签名维数等于容量曲线在 \texorpdfstring{$T=1$}{T=1} 的初始右导数]\label{thm:xi-window6-anomaly-rank-initial-capacity-right-derivative}
