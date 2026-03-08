@@ -294,39 +294,60 @@ G_T:=\ZZ[T^{-1}],
 则有自然同构
 \[
 \boxed{\;
-\operatorname{Hom}(G_S,G_T)\cong
+\operatorname{Hom}_{\mathbf{Ab}}(G_S,G_T)\cong
 \begin{cases}
 G_T,& S\subseteq T,\\[1mm]
 0,& S\not\subseteq T,
 \end{cases}\;}
 \]
-并且当 \(S\subseteq T\) 时，该同构可由
+并且当 \(S\subseteq T\) 时，每个同态都唯一写成
 \[
-\Phi:\operatorname{Hom}(G_S,G_T)\longrightarrow G_T,
+\varphi_u:G_S\to G_T,
 \qquad
-\Phi(\varphi):=\varphi(1)
+\varphi_u(x):=ux,
+\qquad
+u\in G_T.
 \]
-给出。
+\(\operatorname{Hom}(G_S,G_T)\cong G_T\) 可由 \(\varphi_u\mapsto u=\varphi_u(1)\) 给出。
+此外有：
+\begin{enumerate}
+  \item \(\varphi_u\neq 0\) 当且仅当 \(u\neq 0\)；若 \(u\neq 0\)，则 \(\varphi_u\) 必为单射；
+  \item \(\varphi_u\) 为满射当且仅当 \(S=T\) 且 \(u\in G_T^\times\) 是局部化环 \(\ZZ[T^{-1}]\) 的单位。
+\end{enumerate}
 \end{theorem}
 \begin{proof}
 先设 \(S\subseteq T\)。
-任取 \(r\in G_T\)，定义
+任取 \(u\in G_T\)，定义
 \[
-\varphi_r:G_S\to G_T,
+\varphi_u:G_S\to G_T,
 \qquad
-\varphi_r(x):=rx.
+\varphi_u(x):=ux.
 \]
-由于 \(x\in G_S\) 的分母素数只来自 \(S\subseteq T\)，而 \(r\in G_T\) 的分母素数也只来自
-\(T\)，故乘积 \(rx\) 仍属于 \(G_T\)，从而 \(\varphi_r\) 为良定义的加法同态。
-并且 \(\Phi(\varphi_r)=r\)，所以 \(\Phi\) 满射。
+由于 \(x\in G_S\) 的分母素数只来自 \(S\subseteq T\)，而 \(u\in G_T\) 的分母素数也只来自
+\(T\)，故乘积 \(ux\) 仍属于 \(G_T\)，从而 \(\varphi_u\) 为良定义的加法同态。
 \par
-另一方面，若 \(\varphi\in\operatorname{Hom}(G_S,G_T)\) 满足 \(\varphi(1)=0\)，对任意
-\(x=a/b\in G_S\)（其中 \(a\in\ZZ\)，\(b\) 的全部素因子属于 \(S\)）有
+另一方面，任取 \(\varphi\in\operatorname{Hom}(G_S,G_T)\)，记 \(u:=\varphi(1)\)。
+对任意
 \[
-b\,\varphi(x)=\varphi(bx)=\varphi(a)=a\,\varphi(1)=0.
+x=\frac{a}{\prod_{p\in S}p^{k_p}}\in G_S
 \]
-而 \(G_T\subset\QQ\) 为无挠群，故 \(\varphi(x)=0\)。
-这说明 \(\Phi\) 单射，因而
+都有
+\[
+\left(\prod_{p\in S}p^{k_p}\right)\varphi(x)=\varphi(a)=au.
+\]
+另一方面，
+\[
+\left(\prod_{p\in S}p^{k_p}\right)(ux)=au.
+\]
+故
+\[
+\left(\prod_{p\in S}p^{k_p}\right)\bigl(\varphi(x)-ux\bigr)=0.
+\]
+由于 \(G_T\subset\QQ\) 无挠，遂有
+\[
+\varphi(x)=ux.
+\]
+故每个同态都唯一等于某个 \(\varphi_u\)，因而
 \(
 \operatorname{Hom}(G_S,G_T)\cong G_T
 \)。
@@ -362,7 +383,23 @@ b\,\varphi(x)=\varphi(a)=a\,r=0.
 \(
 \operatorname{Hom}(G_S,G_T)=0
 \)。
-证毕。
+\par
+现设 \(S\subseteq T\) 且 \(u\in G_T\)。
+显然 \(\varphi_u=0\) 当且仅当 \(u=0\)。
+若 \(u\neq 0\) 且 \(\varphi_u(x)=0\)，则 \(ux=0\)。
+由于 \(G_S\subset\QQ\) 且 \(\QQ\) 无挠，乘以非零有理数不可能消去非零元素，故 \(x=0\)。
+因此 \(\varphi_u\) 必为单射。
+\par
+最后判别满射性。
+若 \(S=T\)，则 \(\varphi_u\) 满射当且仅当 \(uG_S=G_S\)，这等价于主理想 \((u)\) 等于整环
+\(\ZZ[S^{-1}]\) 本身，亦即 \(u\in G_S^\times\)。
+反之若 \(S\subsetneq T\)，取 \(q\in T\setminus S\)。
+对任意 \(x\in G_S\)，由于 \(x\) 的分母中不含 \(q\)，故 \(ux\) 在 \(q\)-方向上的分母指数至多由
+\(u\) 的 \(q\)-分母指数给出一个固定上界。
+然而 \(G_T\) 中包含全部 \(q^{-N}\)（\(N\ge 1\)），其 \(q\)-分母指数无上界，故
+\(uG_S\neq G_T\)。
+于是 \(\varphi_u\) 不可能满射。
+综上即得全部结论。
 \end{proof}
 
 \begin{corollary}[有限素数局部化系统的序结构由 \texorpdfstring{$\operatorname{Hom}$}{Hom} 与对偶商映射完全刻画]\label{cor:xi-localized-integers-order-dual-quotient}
@@ -425,9 +462,56 @@ S=T.
 证毕。
 \end{proof}
 
+\begin{theorem}[有限素数局部化数系的张量乘法律]\label{thm:xi-localized-integers-tensor-union-law}
+沿用定理 \ref{thm:xi-localized-integers-hom-classification} 的记号。则有自然同构
+\[
+\boxed{\;
+G_S\otimes_{\ZZ}G_T\cong G_{S\cup T},
+\qquad
+\operatorname{Tor}_1^{\ZZ}(G_S,G_T)=0.\;}
+\]
+更一般地，对任意有限素数集族 \(S_1,\dots,S_r\subset\mathbb P\)，有
+\[
+\boxed{\;
+G_{S_1}\otimes_{\ZZ}\cdots\otimes_{\ZZ}G_{S_r}
+\cong
+G_{S_1\cup\cdots\cup S_r}.\;}
+\]
+因此，有限素数集 \(S\mapsto G_S\) 在对象层不仅携带由包含关系控制的偏序态射结构，而且其并集运算恰对应于局部化数系的张量乘法。
+\end{theorem}
+\begin{proof}
+记
+\[
+M_S:=\left\{\prod_{p\in S}p^{k_p}:k_p\in\NN\right\},
+\qquad
+M_T:=\left\{\prod_{p\in T}p^{\ell_p}:\ell_p\in\NN\right\}.
+\]
+则 \(G_S=M_S^{-1}\ZZ\)、\(G_T=M_T^{-1}\ZZ\)。
+局部化的标准张量公式给出
+\[
+M_S^{-1}\ZZ\otimes_{\ZZ}M_T^{-1}\ZZ
+\cong
+(M_SM_T)^{-1}\ZZ.
+\]
+而 \(M_SM_T\) 正是由 \(S\cup T\) 中素数生成的乘法集合，故
+\[
+G_S\otimes_{\ZZ}G_T\cong \ZZ[(S\cup T)^{-1}]=G_{S\cup T}.
+\]
+对 \(r\) 个因子的情形只需迭代应用同一公式即可。
+\par
+另一方面，局部化函子 \(M_S^{-1}(-)\) 对 \(\ZZ\)-模是精确的，故 \(G_S\) 为平坦
+\(\ZZ\)-模。于是对任意 \(\ZZ\)-模 \(N\) 都有
+\[
+\operatorname{Tor}_1^{\ZZ}(G_S,N)=0.
+\]
+取 \(N=G_T\) 即得所示消失结论。证毕。
+\end{proof}
+
 \input{subsubsec__xi-time-protocol-conclusions-part49a-prime-support-half-dimension-ledger}
 
 \input{subsubsec__xi-time-protocol-conclusions-part49b-prime-support-halfdimension-gap}
+
+\input{subsubsec__xi-time-protocol-conclusions-part49c-localization-solenoid-terminal-rigidity}
 
 \input{subsubsec__xi-time-protocol-conclusions-part50-projective-witt-rh-separation}
 

@@ -319,6 +319,14 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="xi_real_input_40_c_infty_quartic_audit",
+            script="exp_xi_real_input_40_c_infty_quartic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/xi_real_input_40_c_infty_quartic_audit.json",
+            ],
+        ),
+        Step(
             name="xi_jensen_comoving_prony_audit",
             script="exp_xi_jensen_comoving_prony_audit.py",
             args=[],
