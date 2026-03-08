@@ -414,17 +414,16 @@ Newton 不等式给出
 即得所示矩不等式。证毕。
 \end{proof}
 
-\begin{corollary}[共振整函数双侧零点计数的显式求和与线性密度]\label{cor:xi-resonance-entire-zero-count-explicit-linear-density}
+\begin{theorem}[共振整函数的精确零点计数与 Weyl 型主项]\label{cor:xi-resonance-entire-zero-count-explicit-linear-density}
 沿用定理 \ref{thm:fold-resonance-entire-lp} 的记号，并定义
 \[
 N_\varphi(R):=\#\{z\in \mathcal Z(\mathcal F_\varphi):\ |z|\le R\}.
 \]
-则对一切 \(R\ge \varphi^2/2\) 有精确公式
+则对每个 \(R>0\) 都有精确公式
 \[
 \boxed{\;
 N_\varphi(R)=
-\sum_{n=2}^{\lfloor \log_\varphi(2R)\rfloor}
-2\left\lfloor \frac{R}{\varphi^n}+\frac12\right\rfloor.\;}
+2\sum_{n\ge 2}\left\lfloor \frac{R}{\varphi^n}+\frac12\right\rfloor.\;}
 \]
 特别地，
 \[
@@ -433,24 +432,31 @@ N_\varphi(R)=2R+O(\log R)
 \qquad (R\to\infty).\;}
 \]
 因此 \(\mathcal F_\varphi\) 的零点收敛指数恰为 \(1\)。
-\end{corollary}
+\end{theorem}
 \begin{proof}
 由定理 \ref{thm:fold-resonance-entire-lp}，
 \[
 \mathcal Z(\mathcal F_\varphi)
 =
-\Bigl\{\pm\bigl(k+\tfrac12\bigr)\varphi^n:\ k\in\ZZ_{\ge 0},\ n\ge 2\Bigr\}.
+\Bigl\{\bigl(k+\tfrac12\bigr)\varphi^n:\ k\in\ZZ,\ n\ge 2\Bigr\}.
 \]
-对固定 \(n\ge 2\)，满足
+对固定 \(n\ge 2\)，第 \(n\) 层零点恰为
 \[
-\left(k+\frac12\right)\varphi^n\le R
+\Bigl\{\bigl(k+\tfrac12\bigr)\varphi^n:\ k\in\ZZ\Bigr\}.
 \]
-的非负整数 \(k\) 个数恰为
+其中满足
 \[
-\left\lfloor \frac{R}{\varphi^n}+\frac12\right\rfloor.
+\bigl|\bigl(k+\tfrac12\bigr)\varphi^n\bigr|\le R
 \]
-乘以 \(2\) 即得到该层对双侧计数的贡献。只有当 \(\varphi^n/2\le R\) 时该层非空，
-亦即 \(n\le \lfloor\log_\varphi(2R)\rfloor\)，故得到精确求和公式。
+等价于
+\[
+\left|k+\frac12\right|\le R\varphi^{-n}.
+\]
+满足该不等式的整数 \(k\) 个数恰为
+\[
+2\left\lfloor \frac{R}{\varphi^n}+\frac12\right\rfloor.
+\]
+于是对全部 \(n\ge 2\) 求和便得到所示精确公式；其中当 \(R\varphi^{-n}<\frac12\) 时，对应项自动为 \(0\)，故该无穷和实际上只有有限个非零项。
 
 再由
 \[
@@ -458,11 +464,15 @@ N_\varphi(R)=2R+O(\log R)
 =
 \frac{2R}{\varphi^n}+O(1)
 \]
-对 \(n\) 求和，可得
+对满足 \(R\varphi^{-n}\ge \frac12\) 的指标求和。记
+\[
+L(R):=\left\lfloor \log_\varphi(2R)\right\rfloor,
+\]
+则对充分大的 \(R\) 有
 \[
 N_\varphi(R)
 =
-2R\sum_{n=2}^{\lfloor \log_\varphi(2R)\rfloor}\varphi^{-n}
+2R\sum_{n=2}^{L(R)}\varphi^{-n}
 +O(\log R).
 \]
 而
@@ -480,3 +490,5 @@ N_\varphi(R)=2R+O(\log R).
 零点收敛指数为 \(1\) 因而立即成立；这也与推论
 \ref{cor:xi-fold-resonance-zero-density-exponent-one} 的结论一致。证毕。
 \end{proof}
+
+\input{subsubsec__xi-time-protocol-conclusions-part59ab-cartwright-periodized-nonsmoothing-logderivative}

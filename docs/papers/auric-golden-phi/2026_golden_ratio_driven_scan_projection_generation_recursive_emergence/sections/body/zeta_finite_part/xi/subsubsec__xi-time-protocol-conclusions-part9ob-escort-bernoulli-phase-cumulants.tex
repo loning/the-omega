@@ -50,12 +50,26 @@ O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right).
 因此，对每个固定 \(q\ge 0\)，\(\pi_{m,q}\) 以指数小误差退化为由末位读出 \(\ell\) 所控制的两块均匀混合，而该混合正是 \(\mathrm{Bernoulli}(\theta(q))\) 经提升核 \(L_m(b,\cdot)=u_{A_b}\) 的输出。故末位比特 \(\ell\) 在极限中成为充分统计量；再与前述 \(f\)-散度闭式合并，即得所述一维 Bernoulli 统计流形解释。证毕。
 \end{proof}
 
-\begin{corollary}[escort 温度射线的 Fisher--Rao 总弧长有限且完全显式]\label{cor:xi-time-part9ob-escort-fisher-total-length}
-沿用结论 \ref{con:xi-time-part9o-escort-fisher-rao-closed} 的记号，则极限 Fisher 信息与测地距离满足
+\begin{theorem}[escort 温度流形的 Fisher--Rao 完整几何]\label{thm:xi-time-part9ob-escort-fisher-total-length}
+沿用结论 \ref{con:xi-time-part9o-escort-fisher-rao-closed} 的记号。定义极限 Fisher 信息密度
 \[
-\mathcal I(q)
+\mathcal I_\infty(q)
+:=
+\lim_{p\to q}
+\frac{2\,D_{\mathrm{KL}}(\mathrm{Bernoulli}(\theta(q))\Vert \mathrm{Bernoulli}(\theta(p)))}{(q-p)^2}.
+\]
+则
+\[
+\boxed{\;
+\mathcal I_\infty(q)
 =
-(\log\varphi)^2\,\theta(q)\bigl(1-\theta(q)\bigr),
+(\log\varphi)^2\,\theta(q)\bigl(1-\theta(q)\bigr)
+=
+(\log\varphi)^2\frac{\varphi^{q+1}}{(1+\varphi^{q+1})^2}.\;}
+\]
+相应的 Fisher--Rao 度量可写成
+\[
+\mathrm ds^2=\mathcal I_\infty(q)\,\mathrm dq^2,
 \]
 \[
 d_{\mathrm{FR}}(q_1,q_2)
@@ -64,29 +78,93 @@ d_{\mathrm{FR}}(q_1,q_2)
 \arcsin\sqrt{\theta(q_2)}-\arcsin\sqrt{\theta(q_1)}
 \right|.
 \]
-进一步，整条温度射线 \(q\in[0,\infty)\) 的总 Fisher--Rao 弧长有限，并且
+进一步，整条温度射线 \(q\in[0,\infty)\) 的总信息长度有限，并且
 \[
 \mathcal L_{[0,\infty)}
 :=
-\int_0^\infty \sqrt{\mathcal I(q)}\,\mathrm dq
+\int_0^\infty \sqrt{\mathcal I_\infty(q)}\,\mathrm dq
+=
+2\arctan(\varphi^{-1/2})
 =
 2\arcsin(\varphi^{-1}).
 \]
-\end{corollary}
+\end{theorem}
 \begin{proof}
-前两式正是结论 \ref{con:xi-time-part9o-escort-fisher-rao-closed} 的内容。令其中 \(q_1=0\)、\(q_2\to\infty\)，再用
+由结论 \ref{con:xi-time-part9o-escort-fisher-rao-closed}，Bernoulli 极限模型的 Fisher--Rao 度量正由
 \[
-\theta(0)=\frac{1}{1+\varphi}=\varphi^{-2},
-\qquad
-\lim_{q\to\infty}\theta(q)=0,
+\frac{(\theta'(q))^2}{\theta(q)(1-\theta(q))}
 \]
-便得到
+给出，因此
+\[
+\mathcal I_\infty(q)
+=
+\frac{(\theta'(q))^2}{\theta(q)(1-\theta(q))}.
+\]
+再由
+\[
+\theta(q)=\frac{1}{1+\varphi^{q+1}}
+\]
+直接求导可得
+\[
+\theta'(q)
+=
+-(\log\varphi)\,\theta(q)\bigl(1-\theta(q)\bigr),
+\]
+故
+\[
+\mathcal I_\infty(q)
+=(\log\varphi)^2\,\theta(q)\bigl(1-\theta(q)\bigr)
+=(\log\varphi)^2\frac{\varphi^{q+1}}{(1+\varphi^{q+1})^2}.
+\]
+这就给出 Fisher 信息密度闭式。测地距离公式则与结论 \ref{con:xi-time-part9o-escort-fisher-rao-closed} 完全一致。
+
+对总长度，令
+\[
+a:=\varphi^{q+1},
+\qquad
+\mathrm dq=\frac{\mathrm da}{a\log\varphi}.
+\]
+于是
+\[
+\sqrt{\mathcal I_\infty(q)}
+=(\log\varphi)\frac{\sqrt a}{1+a},
+\]
+从而
 \[
 \mathcal L_{[0,\infty)}
 =
-2\arcsin\sqrt{\theta(0)}
+\int_0^\infty \sqrt{\mathcal I_\infty(q)}\,\mathrm dq
 =
-2\arcsin(\varphi^{-1}).
+\int_{\varphi}^{\infty}\frac{a^{-1/2}}{1+a}\,\mathrm da.
+\]
+再令 \(a=t^2\)，则 \(\mathrm da=2t\,\mathrm dt\)，故
+\[
+\mathcal L_{[0,\infty)}
+=
+2\int_{\sqrt\varphi}^{\infty}\frac{1}{1+t^2}\,\mathrm dt
+=
+\pi-2\arctan(\sqrt\varphi).
+\]
+由恒等式
+\[
+\arctan x+\arctan(x^{-1})=\frac{\pi}{2}
+\qquad (x>0)
+\]
+可得
+\[
+\pi-2\arctan(\sqrt\varphi)=2\arctan(\varphi^{-1/2}).
+\]
+另一方面，由
+\[
+\sin\!\bigl(2\arctan(\varphi^{-1/2})\bigr)
+=
+\frac{2\varphi^{-1/2}}{1+\varphi^{-1}}
+=
+\varphi^{-1},
+\]
+且 \(2\arctan(\varphi^{-1/2})\in(0,\pi/2)\)，故
+\[
+2\arctan(\varphi^{-1/2})=2\arcsin(\varphi^{-1}).
 \]
 证毕。
 \end{proof}
@@ -319,6 +397,98 @@ B_q\sim \mathrm{Bernoulli}(\theta(q)),
 -(\log\varphi)^3\,\theta(q)\bigl(1-\theta(q)\bigr)\bigl(1-2\theta(q)\bigr)<0.
 \]
 这便给出永久负偏斜性。证毕。
+\end{proof}
+
+\begin{theorem}[信息谱的二层量子化]\label{thm:xi-time-part9ob-escort-surprisal-two-level-quantization}
+对任意 \(q\ge 0\)，令
+\[
+W_m^{(q)}\sim \pi_{m,q},
+\qquad
+\ell_m(w):=w_m,
+\qquad
+I_m^{(q)}:=-\log \pi_{m,q}(W_m^{(q)}).
+\]
+并记
+\[
+c(q):=\log\!\left(\frac{\varphi+\varphi^{-q}}{\sqrt5}\right).
+\]
+则有概率展开
+\[
+I_m^{(q)}
+=
+m\log\varphi+c(q)+q\,\ell_m(W_m^{(q)})\log\varphi+o_{\mathbf P}(1).
+\]
+因此
+\[
+I_m^{(q)}-m\log\varphi-c(q)
+\Longrightarrow
+q\log\varphi\cdot B_q,
+\qquad
+B_q\sim \mathrm{Bernoulli}(\theta(q)).
+\]
+特别地，在原始分布 \(\mu_m=\pi_{m,1}\) 下，
+\[
+I_m^{(1)}-m\log\varphi
+\Longrightarrow
+\log\varphi\cdot B,
+\]
+\[
+\mathbf P(B=1)=\frac{1}{\varphi\sqrt5},
+\qquad
+\mathbf P(B=0)=\frac{\varphi}{\sqrt5}.
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:fold-bin-two-state-asymptotic} 与命题 \ref{prop:fold-bin-power-sum-asymptotic}，对 \(w\in X_m\) 一致有
+\[
+\pi_{m,q}(w)
+=
+\frac{\varphi^{-q\ell_m(w)}}{F_{m+1}+\varphi^{-q}F_m}
+\Bigl(1+O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right)\Bigr).
+\]
+取负对数得
+\[
+-\log \pi_{m,q}(w)
+=
+\log(F_{m+1}+\varphi^{-q}F_m)
++q\,\ell_m(w)\log\varphi
++O\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right),
+\]
+且误差在 \(w\) 上一致。另一方面，由 Binet 公式，
+\[
+F_{m+1}+\varphi^{-q}F_m
+=
+\frac{\varphi^m}{\sqrt5}\bigl(\varphi+\varphi^{-q}\bigr)+O(\varphi^{-m}),
+\]
+从而
+\[
+\log(F_{m+1}+\varphi^{-q}F_m)
+=
+m\log\varphi+c(q)+o(1).
+\]
+将两式合并并代入 \(w=W_m^{(q)}\)，即得
+\[
+I_m^{(q)}
+=
+m\log\varphi+c(q)+q\,\ell_m(W_m^{(q)})\log\varphi+o_{\mathbf P}(1).
+\]
+再由命题 \ref{prop:fold-bin-escort-lastbit}，
+\[
+\ell_m(W_m^{(q)})\Longrightarrow \mathrm{Bernoulli}(\theta(q)),
+\]
+故第二个极限立即成立。
+
+当 \(q=1\) 时，
+\[
+c(1)=\log\!\left(\frac{\varphi+\varphi^{-1}}{\sqrt5}\right)=0,
+\]
+且
+\[
+\theta(1)=\frac{1}{1+\varphi^2}=\frac{1}{\varphi\sqrt5},
+\qquad
+1-\theta(1)=\frac{\varphi}{\sqrt5}.
+\]
+于是得到最后两式。证毕。
 \end{proof}
 
 \endinput

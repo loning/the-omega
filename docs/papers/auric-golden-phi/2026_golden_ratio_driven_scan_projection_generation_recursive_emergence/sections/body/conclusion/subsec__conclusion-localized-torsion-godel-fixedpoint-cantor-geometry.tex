@@ -1,0 +1,332 @@
+\subsection{局部化 torsion 轮廓、规范仿射固定点与 \texorpdfstring{$2$}{2}-进 Cantor 闭包}\label{subsec:conclusion-localized-torsion-godel-fixedpoint-cantor-geometry}
+本小节把两条已在正文中分别定型的链进一步压缩为统一接口。
+其一是局部化数系 \(G_S=\ZZ[S^{-1}]\) 及其 Pontryagin 对偶 \(\widehat{G_S}\) 的倍映射 torsion 轮廓；其二是规范 Gödel 半直积在 \(T_2(E_{\min})\) 上的 \(B\)-进仿射固定点与单向量地址像的自相似几何。
+这两条链在结论层的共同特征是：有限核大小函数精确恢复素数账本，而规范 slice 的纯周期固定点在闭包中恰生成一条完全显式的 \(2\)-进 Cantor 子集。
+
+\begin{theorem}[局部化对偶群的 torsion 轮廓完全恢复素数账本]\label{thm:conclusion-localized-dual-torsion-profile-reconstructs-S}
+设 \(S\subset \mathbb P\) 为有限素数集，令
+\[
+G_S:=\ZZ[S^{-1}],
+\qquad
+\Sigma_S:=\widehat{G_S}.
+\]
+对任意整数 \(n\ge 1\)，写
+\[
+n=n_S\,n_{S^c},
+\qquad
+n_S:=\prod_{p\in S}p^{v_p(n)},
+\qquad
+n_{S^c}:=\prod_{p\notin S}p^{v_p(n)}.
+\]
+记 \([n]:\Sigma_S\to \Sigma_S\) 为乘法端同态。则有
+\[
+\boxed{\;
+[n]\ \text{总是满射},
+\qquad
+|\ker[n]|=n_{S^c}.\;}
+\]
+特别地，对任意素数 \(p\) 都有
+\[
+\boxed{\;
+p\in S\iff |\ker[p]|=1,
+\qquad
+p\notin S\iff |\ker[p]|=p.\;}
+\]
+因此，素数账本 \(S\) 可以仅由函数
+\[
+n\longmapsto |\ker[n]|
+\]
+在 \(\Sigma_S\) 上完全恢复。
+\end{theorem}
+\begin{proof}
+由于 \(G_S\subset \QQ\) 无挠，乘法 \(n:G_S\to G_S\) 总是单射；Pontryagin 对偶的反变等价遂给出 \([n]:\Sigma_S\to \Sigma_S\) 总是满射。
+
+再看核大小。把 \(n\) 分解为
+\[
+n=n_{S^c}\cdot n_S.
+\]
+其中 \(n_S\in \ZZ[S^{-1}]^\times\) 是单位，故
+\[
+nG_S=n_{S^c}G_S.
+\]
+由定理 \ref{thm:conclusion-localized-groups-aut-and-finite-kernels} 中关于局部化数系商群的核公式，
+\[
+G_S/nG_S
+=
+G_S/n_{S^c}G_S
+\cong
+\ZZ/n_{S^c}\ZZ.
+\]
+对偶化后
+\[
+\ker[n]\cong \widehat{G_S/nG_S}
+\cong
+\widehat{\ZZ/n_{S^c}\ZZ},
+\]
+故 \(|\ker[n]|=n_{S^c}\)。
+取 \(n=p\) 即得关于素数的判据。
+最后，由 \(p\in S\iff p_{S^c}=1\) 与 \(p\notin S\iff p_{S^c}=p\)，可从 \(p\mapsto |\ker[p]|\) 唯一恢复 \(S\)。证毕。
+\end{proof}
+
+\begin{corollary}[\texorpdfstring{$[B]$}{[B]} 动力学的周期点计数由 \texorpdfstring{$S$}{S}-外部分严格控制]\label{cor:conclusion-localized-dual-B-periodic-count-S-outside}
+沿用定理 \ref{thm:conclusion-localized-dual-torsion-profile-reconstructs-S} 的记号，固定整数 \(B\ge 2\)。
+则对每个 \(k\ge 1\)，\([B]\) 在 \(\Sigma_S\) 上的 \(k\)-步固定点个数满足
+\[
+\boxed{\;
+\#\operatorname{Fix}([B]^k)
+=
+(B^k-1)_{S^c}
+=
+\prod_{p\notin S}p^{v_p(B^k-1)}.\;}
+\]
+相应的 Artin--Mazur 型动力学 \(\zeta\)-函数可写为
+\[
+\boxed{\;
+\zeta_{S,B}(z)
+:=
+\exp\!\left(
+\sum_{k\ge 1}\frac{z^k}{k}\,
+\prod_{p\notin S}p^{v_p(B^k-1)}
+\right).\;}
+\]
+特别地，当 \(B=2^L\) 且 \(2\in S\) 时，全部固定点计数完全由奇素数对 \(2^{Lk}-1\) 的分解控制。
+\end{corollary}
+\begin{proof}
+由定义，
+\[
+\operatorname{Fix}([B]^k)=\ker([B]^k-\mathrm{id})=\ker([B^k-1]).
+\]
+将定理 \ref{thm:conclusion-localized-dual-torsion-profile-reconstructs-S} 应用于 \(n=B^k-1\) 即得
+\[
+\#\operatorname{Fix}([B]^k)=|(B^k-1)_{S^c}|=(B^k-1)_{S^c}.
+\]
+再代入 Artin--Mazur \(\zeta\)-函数定义即可。
+若 \(B=2^L\) 且 \(2\in S\)，则 \(2^{Lk}-1\) 为奇数，从而 \(2\) 不贡献任何额外因子；全部固定点计数只由 \(S\)-外奇素数的分解决定。证毕。
+\end{proof}
+
+\begin{theorem}[规范 slice 上每一层恰有 \texorpdfstring{$(M+1)^k$}{(M+1)^k} 个仿射固定点]\label{thm:conclusion-canonical-slice-exact-fixedpoint-count}
+设
+\[
+T:=T_2(E_{\min})\cong \ZZ_2^2,
+\qquad
+B:=2^L>M,
+\qquad
+v\in T\setminus\{0\},
+\]
+并采用规范 Gödel 半直积在 \(T\) 上的仿射表示
+\[
+\Psi(r,k)(x)=B^k x+\operatorname{ev}_B(r),
+\qquad
+\operatorname{ev}_B(r):=\sum_{t\ge 1}r(p_t)B^{t-1}v,
+\]
+其中
+\[
+H_{\mathrm{can}}
+:=
+\left\{
+(r,k)\in \NN^{(\mathbb P)}\times\NN:\ 
+\operatorname{supp}(r)\subseteq\{p_1,\dots,p_k\},\
+0\le r(p_t)\le M
+\right\}.
+\]
+对固定 \(k\ge 1\)，记
+\[
+H_{\mathrm{can}}(k):=\{(r,k)\in H_{\mathrm{can}}\}.
+\]
+则对任意 \((r,k)\in H_{\mathrm{can}}(k)\)，仿射映射 \(\Psi(r,k)\) 在 \(T\) 上有且仅有一个固定点，显式为
+\[
+\boxed{\;
+x_{r,k}
+=(1-B^k)^{-1}\operatorname{ev}_B(r)
+=\sum_{j\ge 0}B^{jk}\operatorname{ev}_B(r).\;}
+\]
+若写
+\[
+a_t:=r(p_t)\in\{0,\dots,M\}
+\qquad(1\le t\le k),
+\]
+则该固定点具有纯周期 \(B\)-进地址展开
+\[
+\boxed{\;
+x_{r,k}
+=
+\sum_{j\ge 0}\sum_{t=1}^{k}a_t\,B^{jk+t-1}v.\;}
+\]
+并且对固定 \(k\)，不同的 \(r\) 给出不同固定点，因此
+\[
+\boxed{\;
+\#\{x\in T:\ \exists\,(r,k)\in H_{\mathrm{can}}(k),\ \Psi(r,k)(x)=x\}
+=(M+1)^k.\;}
+\]
+\end{theorem}
+\begin{proof}
+固定 \((r,k)\in H_{\mathrm{can}}(k)\)。
+由于 \(B=2^L\) 为 \(2\)-进非单位，故 \(B^k\in 2\ZZ_2\)；于是
+\[
+1-B^k\in \ZZ_2^\times
+\]
+是奇单位。因为 \(T\cong \ZZ_2^2\) 是自由 \(\ZZ_2\)-模，乘以 \(1-B^k\) 在 \(T\) 上可逆，所以方程
+\[
+x=B^k x+\operatorname{ev}_B(r)
+\iff
+(1-B^k)x=\operatorname{ev}_B(r)
+\]
+有唯一解，即
+\[
+x_{r,k}=(1-B^k)^{-1}\operatorname{ev}_B(r).
+\]
+再由 \(|B^k|_2<1\)，几何级数在 \(\ZZ_2\) 中收敛，并给出
+\[
+(1-B^k)^{-1}=\sum_{j\ge 0}B^{jk}.
+\]
+代入
+\[
+\operatorname{ev}_B(r)=\sum_{t=1}^{k}a_t B^{t-1}v
+\]
+便得
+\[
+x_{r,k}
+=
+\left(\sum_{j\ge 0}B^{jk}\right)\left(\sum_{t=1}^{k}a_tB^{t-1}v\right)
+=
+\sum_{j\ge 0}\sum_{t=1}^{k}a_t\,B^{jk+t-1}v,
+\]
+即纯周期展开式。
+
+最后证明同层互异性。若 \(x_{r,k}=x_{s,k}\)，写
+\[
+b_t:=s(p_t)\in\{0,\dots,M\}
+\qquad(1\le t\le k),
+\]
+则有两条纯周期 \(B\)-进展开
+\[
+x_{r,k}
+=
+\sum_{j\ge 0}\sum_{t=1}^{k}a_t\,B^{jk+t-1}v,
+\qquad
+x_{s,k}
+=
+\sum_{j\ge 0}\sum_{t=1}^{k}b_t\,B^{jk+t-1}v.
+\]
+由于 \(T\cong \ZZ_2^2\) 对 \(\ZZ_2\) 无挠且 \(v\neq 0\)，标量映射
+\[
+\ZZ_2\longrightarrow T,
+\qquad
+a\longmapsto av
+\]
+是单射，故上述两式在 \(T\) 中相等蕴含对应的标量级数在 \(\ZZ_2\) 中相等。
+又全部 digits 都落在 \(\{0,\dots,M\}\subset [0,B-1]\) 内，故 \(B\)-进展开唯一性推出 \(a_t=b_t\) 对所有 \(t\) 成立，即 \(r=s\)。
+由于每个 \(a_t\) 有 \(M+1\) 种选择，固定层 \(k\) 上的固定点总数恰为 \((M+1)^k\)。证毕。
+\end{proof}
+
+\begin{theorem}[规范仿射固定点的闭包是一条 \texorpdfstring{$2$}{2}-进自相似 Cantor 子集]\label{thm:conclusion-canonical-fixedpoints-cantor-closure}
+沿用定理 \ref{thm:conclusion-canonical-slice-exact-fixedpoint-count} 的设定，定义规范固定点全集
+\[
+\operatorname{Fix}_{\mathrm{can}}
+:=
+\bigcup_{k\ge 1}
+\left\{
+x_{r,k}:\ (r,k)\in H_{\mathrm{can}}(k)
+\right\}\subset T
+\]
+以及数字自相似集
+\[
+\mathcal C_{B,M}(v)
+:=
+\left\{
+\sum_{n\ge 0}a_nB^n v:\ a_n\in\{0,\dots,M\}
+\right\}\subset T.
+\]
+则成立：
+\begin{enumerate}
+  \item 闭包完全一致：
+  \[
+  \boxed{\;
+  \overline{\operatorname{Fix}_{\mathrm{can}}}
+  =
+  \mathcal C_{B,M}(v).\;}
+  \]
+  \item 自相似分解：
+  \[
+  \boxed{\;
+  \mathcal C_{B,M}(v)
+  =
+  \bigsqcup_{a=0}^{M}\bigl(av+B\,\mathcal C_{B,M}(v)\bigr).\;}
+  \]
+  \item 若在地址线 \(T_v:=\ZZ_2 v\cong \ZZ_2\) 上取标准 \(2\)-进超度量，则其 Hausdorff 维数与上 Minkowski 维数都存在且相等，并满足
+  \[
+  \boxed{\;
+  \dim_{\mathrm H}\mathcal C_{B,M}(v)
+  =
+  \overline{\dim}_{\mathrm M}\mathcal C_{B,M}(v)
+  =
+  \frac{\log_2(M+1)}{L}.\;}
+  \]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+先证闭包等式。
+由定理 \ref{thm:conclusion-canonical-slice-exact-fixedpoint-count}，每个 \(x_{r,k}\) 都具有 digits 取自 \(\{0,\dots,M\}\) 的纯周期 \(B\)-进展开，故
+\[
+\operatorname{Fix}_{\mathrm{can}}\subseteq \mathcal C_{B,M}(v).
+\]
+反过来，任取
+\[
+x=\sum_{n\ge 0}a_nB^n v\in \mathcal C_{B,M}(v).
+\]
+对每个 \(k\ge 1\)，以首 \(k\) 个 digits 周期化，定义
+\[
+x^{(k)}:=
+\sum_{j\ge 0}\sum_{t=0}^{k-1}a_t\,B^{jk+t}v.
+\]
+则 \(x^{(k)}\in \operatorname{Fix}_{\mathrm{can}}\)，因为它正对应于长度 \(k\) 的 digit block \((a_0,\dots,a_{k-1})\) 的纯周期重复。又 \(x^{(k)}\) 与 \(x\) 的前 \(k\) 个 \(B\)-进 digits 相同，所以
+\[
+x^{(k)}\longrightarrow x
+\qquad
+\text{于 }T_v\cong \ZZ_2 \text{ 的 }2\text{-进拓扑中}.
+\]
+故 \(\mathcal C_{B,M}(v)\subseteq \overline{\operatorname{Fix}_{\mathrm{can}}}\)，从而得到第 \(1\) 条。
+
+第 \(2\) 条可由首位 digit 分解直接得到：任意 \(x\in \mathcal C_{B,M}(v)\) 唯一写成
+\[
+x=a_0v+B\sum_{n\ge 1}a_nB^{n-1}v,
+\qquad
+a_0\in\{0,\dots,M\},
+\]
+而括号中的第二项再次属于 \(\mathcal C_{B,M}(v)\)。
+于是
+\[
+\mathcal C_{B,M}(v)=\bigcup_{a=0}^{M}\bigl(av+B\,\mathcal C_{B,M}(v)\bigr).
+\]
+由于 \(0\le a\le M<B\)，不同首 digit 对应不同的 \(B T_v\)-陪集，故该并实际上两两不交。
+
+最后证明维数公式。
+令 \(D:=\{0,\dots,M\}\)。则
+\[
+\mathcal C_{B,M}(v)
+=
+\left\{
+\sum_{n\ge 0}d_nB^n v:\ d_n\in D
+\right\},
+\]
+正是结论 \ref{con:xi-time-part62b-rankone-hologram-selfsimilar-measure-dimension} 中单向量全息像集 \(\mathcal X_D\) 的特例。
+因此，该结论的第 \(1\) 条给出上面的互不相交自相似分解，而其第 \(3\) 条给出
+\[
+\dim_{\mathrm H}\mathcal C_{B,M}(v)
+=
+\dim_{\mathrm M}\mathcal C_{B,M}(v)
+=
+\frac{\log |D|}{\log B}.
+\]
+代入 \(|D|=M+1\) 与 \(B=2^L\) 即得
+\[
+\frac{\log(M+1)}{\log(2^L)}
+=
+\frac{\log_2(M+1)}{L}.
+\]
+证毕。
+\end{proof}
+
+上述四条结果把局部化对偶与规范仿射地址两条链在结论层精确接驳：\(\Sigma_S=\widehat{G_S}\) 上的倍映射核大小给出可完全恢复 \(S\) 的 torsion 轮廓，而 \(H_{\mathrm{can}}\) 在 \(T_2(E_{\min})\) 上的每一层规范固定点则由长度 \(k\) 的 digit block 完全参数化，并在闭包中生成一条维数为 \(\log_2(M+1)/L\) 的 \(2\)-进自相似 Cantor 线。由此，局部化素数账本、周期点动力学、纯周期地址与非阿基米德分形几何便被收束为同一组可直接调用的终端对象。
+
+\endinput
