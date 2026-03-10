@@ -1,5 +1,5 @@
 \subsection{bin-fold escort 族的 Blackwell 等价、圆弧几何与决策塌缩}\label{subsec:conclusion-binfold-escort-blackwell-geometry-risk}
-在定理 \ref{thm:conclusion-binfold-escort-full-fdiv-collapse} 已把 escort--escort 的全部 \(f\)-散度压缩为 Bernoulli 两点闭式、定理 \ref{thm:conclusion-escort-fisher-rao-geodesic-reparametrization} 已给出 Fisher--Rao 距离的完全显式表示、而定理 \ref{thm:conclusion-chi2-linear-recovers-phi} 已说明单个 \(\chi^2\)-型极限常数能够线性恢复黄金参数之后，还可把这条主线进一步提升到统计实验与决策理论层面。其核心事实是：末位读出并非仅提供一个渐近近似，而是以指数精度给出整个 escort 温度族的显式 Blackwell 代表。
+在定理 \ref{thm:conclusion-binfold-escort-full-fdiv-collapse} 已把 escort--escort 的全部 \(f\)-散度压缩为 Bernoulli 两点闭式、定理 \ref{thm:conclusion-escort-fisher-rao-geodesic-reparametrization} 已给出 Fisher--Rao 距离的完全显式表示、而定理 \ref{thm:conclusion-chi2-linear-recovers-phi} 已说明单个 \(\chi^2\)-型极限常数能够线性恢复黄金参数之后，还可把这条主线进一步提升到统计实验与决策理论层面。其核心事实是：末位读出并非仅提供一个渐近近似，而是以指数精度给出整个 escort 温度族的显式 Blackwell 代表；因此，全 \(f\)-散度、其总变差/\(\chi^2\) 截面、Fisher 曲率以及有界决策风险都塌缩到同一 Bernoulli 两点骨架。
 
 \begin{theorem}[末位读出核给出的显式渐近 Blackwell 等价]\label{thm:conclusion-binfold-escort-blackwell-equivalence}
 固定紧集 \(\Theta\subset[0,\infty)\)。对每个 \(m\ge 1\)，定义末位两扇区
@@ -207,8 +207,44 @@ d_{\mathrm{FR}}(q,p)
 即可得到所示另一种距离表示。证毕。
 \end{proof}
 
-\begin{proposition}[Csiszár 二态闭包与单个 \texorpdfstring{$\chi^2$}{chi2} 常数的黄金识别]\label{prop:conclusion-binfold-escort-csiszar-blackwell-phi}
-同一两态结构同时控制 escort 温度族内部的全部 Csiszár 几何与相对均匀基线下的黄金参数识别。更具体地：
+\begin{corollary}[escort 温度射线的 Fisher 有限直径]\label{cor:conclusion-binfold-escort-fisher-finite-diameter}
+沿用推论 \ref{cor:conclusion-binfold-escort-sqrt-circle-arc} 的记号。则无界温度射线 \([0,\infty)\) 在 Fisher--Rao 度量下具有有限总长度
+\[
+\operatorname{Len}_{\mathrm{FR}}([0,\infty))
+=
+\sup_{q\ge 0}d_{\mathrm{FR}}(0,q)
+=
+2\arctan\!\bigl(\varphi^{-1/2}\bigr)
+<\infty.
+\]
+更一般地，对任意 \(0\le p\le q<\infty\) 都有
+\[
+d_{\mathrm{FR}}(p,q)
+=
+2\left(
+\arctan\!\bigl(\varphi^{-(p+1)/2}\bigr)
+-\arctan\!\bigl(\varphi^{-(q+1)/2}\bigr)
+\right).
+\]
+\end{corollary}
+\begin{proof}
+由推论 \ref{cor:conclusion-binfold-escort-sqrt-circle-arc}，
+\[
+d_{\mathrm{FR}}(p,q)
+=
+2\bigl|\alpha(p)-\alpha(q)\bigr|,
+\qquad
+\alpha(s)=\arctan\!\bigl(\varphi^{-(s+1)/2}\bigr).
+\]
+当 \(0\le p\le q\) 时，\(\alpha\) 严格递减，故绝对值可去掉，得到第二式。再令 \(p=0\) 并令 \(q\to\infty\)，由 \(\alpha(q)\to 0\) 可知
+\[
+\sup_{q\ge 0}d_{\mathrm{FR}}(0,q)=2\alpha(0)=2\arctan\!\bigl(\varphi^{-1/2}\bigr).
+\]
+这正是 \([0,\infty)\) 的 Fisher--Rao 总长度。证毕。
+\end{proof}
+
+\begin{proposition}[Csiszár 二态闭包、总变差/\texorpdfstring{$\chi^2$}{chi2} 截面与黄金识别]\label{prop:conclusion-binfold-escort-csiszar-blackwell-phi}
+同一两态结构同时控制 escort 温度族内部的全部 Csiszár--Morimoto 几何、其总变差/\(\chi^2\) 截面，以及相对均匀基线下的黄金参数识别。更具体地：
 \begin{enumerate}
   \item 对任意连续凸函数 \(f:(0,\infty)\to\mathbb R\) 且 \(f(1)=0\)，以及任意 \(p,q\ge 0\)，定理 \ref{thm:conclusion-binfold-escort-full-fdiv-collapse} 给出
   \[
@@ -219,21 +255,69 @@ d_{\mathrm{FR}}(q,p)
   \bigl(1-\theta(p)\bigr)\,
   f\!\Bigl(\frac{1-\theta(q)}{1-\theta(p)}\Bigr).
   \]
-  \item 对相对均匀基线的二原子极限，定理 \ref{thm:conclusion-chi2-linear-recovers-phi} 在
+  \item 总变差极限满足
+  \[
+  \lim_{m\to\infty}\|\pi_{m,q}-\pi_{m,p}\|_{\mathrm{TV}}
+  =
+  |\theta(q)-\theta(p)|.
+  \]
+  \item 若记
   \[
   f_2(u):=(u-1)^2
   \]
-  处给出精确线性公式
+  并定义
+  \[
+  \chi^2(\mu\Vert\nu):=D_{f_2}(\mu\Vert\nu),
+  \]
+  则 Pearson \(\chi^2\) 极限满足
+  \[
+  \lim_{m\to\infty}\chi^2(\pi_{m,q}\Vert \pi_{m,p})
+  =
+  \frac{(\theta(q)-\theta(p))^2}{\theta(p)(1-\theta(p))}.
+  \]
+  \item 对相对均匀基线的二原子极限，定理 \ref{thm:conclusion-chi2-linear-recovers-phi} 在同一
+  \[
+  f_2(u):=(u-1)^2
+  \]
+  截面上给出精确线性公式
   \[
   D_\infty^{f_2}=\frac{2\varphi-3}{5},
   \qquad
   \varphi=\frac{5D_\infty^{f_2}+3}{2}.
   \]
 \end{enumerate}
-因此，末位两态塌缩不仅把 escort--escort 的全部 \(f\)-散度压缩到同一条 Bernoulli 圆弧上，而且还允许由单个 \(\chi^2\)-型极限标量对黄金参数作线性恢复。
+因此，末位两态塌缩不仅把 escort--escort 的全部 \(f\)-散度压缩到同一条 Bernoulli 圆弧上，而且还把 TV/\(\chi^2\) 等经典截面封闭到同一单参数阴影，并允许由相对均匀基线上的单个 \(\chi^2\)-型极限标量对黄金参数作线性恢复。
 \end{proposition}
 \begin{proof}
-第一条正是定理 \ref{thm:conclusion-binfold-escort-full-fdiv-collapse} 的结论。第二条正是定理 \ref{thm:conclusion-chi2-linear-recovers-phi} 的结论。二者共同依赖于 bin-fold 退化谱的两态极限，因此可在同一识别链中统一表述。证毕。
+第一条正是定理 \ref{thm:conclusion-binfold-escort-full-fdiv-collapse} 的结论。
+
+第二条在第一条中取
+\[
+f(u)=\frac{|u-1|}{2}
+\]
+即可，因为该 \(f\)-散度恰为总变差距离，而 Bernoulli 两点模型上的总变差正等于参数差的绝对值。
+
+第三条在第一条中取
+\[
+f_2(u)=(u-1)^2
+\]
+即可。此时
+\[
+\chi^2(\pi_{m,q}\Vert \pi_{m,p})
+\longrightarrow
+\bigl(1-\theta(p)\bigr)
+\left(\frac{\theta(p)-\theta(q)}{1-\theta(p)}\right)^2
++\theta(p)
+\left(\frac{\theta(q)-\theta(p)}{\theta(p)}\right)^2,
+\]
+化简便得
+\[
+\lim_{m\to\infty}\chi^2(\pi_{m,q}\Vert \pi_{m,p})
+=
+\frac{(\theta(q)-\theta(p))^2}{\theta(p)(1-\theta(p))}.
+\]
+
+第四条正是定理 \ref{thm:conclusion-chi2-linear-recovers-phi} 的结论。上述各式共同依赖于 bin-fold 退化谱的两态极限，因此可在同一识别链中统一表述。证毕。
 \end{proof}
 
 \begin{theorem}[有界决策问题的最优 Bayes 风险塌缩到 Bernoulli 极限]\label{thm:conclusion-binfold-escort-bayes-risk-collapse}
@@ -353,6 +437,6 @@ O_\Theta\!\left(\Bigl(\frac{\varphi}{2}\Bigr)^m\right).
 \end{proof}
 
 \noindent
-因此，这条二态链在结论层形成如下闭合结构：末位统计量首先以显式核实现整个 escort 族的渐近 Blackwell 等价；相应极限模型在平方根坐标下是一段可完全参数化的 Fisher--Rao 圆弧；全部 escort--escort 的 Csiszár 几何与相对均匀基线的 \(\chi^2\)-型黄金识别都由同一两态骨架承载；而在最终的决策论层面，任意有界损失下的最优 Bayes 风险也全部塌缩为同一 Bernoulli 实验的风险函数。由此，bin-fold escort 族的极限结构不再只是若干分散的闭式公式，而成为一个同时封闭于信息几何、散度理论与统计决策的单比特实验模型。
+因此，这条二态链在结论层形成如下闭合结构：末位统计量首先以显式核实现整个 escort 族的渐近 Blackwell 等价；相应极限模型在平方根坐标下是一段可完全参数化、且总长度恰为 \(2\arctan(\varphi^{-1/2})\) 的有限 Fisher--Rao 圆弧；全部 escort--escort 的 Csiszár 几何及其总变差/\(\chi^2\) 截面都由同一两态骨架承载，而相对均匀基线的 \(\chi^2\)-型黄金识别则由同一骨架的另一截面给出；在最终的决策论层面，任意有界损失下的最优 Bayes 风险也全部塌缩为同一 Bernoulli 实验的风险函数。由此，bin-fold escort 族的极限结构不再只是若干分散的闭式公式，而成为一个同时封闭于信息几何、散度理论与统计决策的单比特实验模型。
 
 \endinput
