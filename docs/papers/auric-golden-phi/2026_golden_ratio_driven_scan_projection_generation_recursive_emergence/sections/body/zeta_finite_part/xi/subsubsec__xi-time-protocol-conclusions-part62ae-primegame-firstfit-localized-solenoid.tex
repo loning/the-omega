@@ -1,0 +1,162 @@
+\paragraph{PRIMEGAME 的估值格点共轭、有限支撑分解与局部化 solenoid 宿主}
+在自然扩张的外置预算、prime-register 账本语义与局部化 solenoid 终对象已经确立之后，固定 PRIMEGAME 微码的算术动力学还可进一步压缩为一条有限活跃支撑链：整数状态、first-fit 控制与局部化紧化在同一估值坐标中严格闭合。
+沿用定义 \ref{def:pom-fractran}、命题 \ref{prop:pom-fractran-prime-translation} 与定理 \ref{thm:xi-time-part56-solenoid-terminal-prime-register-recovery} 的记号。固定一条十四指令 FRACTRAN 程序
+\[
+F=\left(\frac{a_1}{b_1},\dots,\frac{a_{14}}{b_{14}}\right),
+\]
+并称之为 PRIMEGAME。设其活跃素数集为
+\[
+S_*:=\{2,3,5,7,11,13,17,19,23,29\},
+\]
+且 PRIMEGAME 的全部分子与分母都只含 \(S_*\) 中的素因子。记
+\[
+\NN_{S_*}:=\left\{\prod_{p\in S_*}p^{x_p}:x_p\in \ZZ_{\ge 0}\right\},
+\qquad
+P_*:=\prod_{p\in S_*}p,
+\qquad
+G_{S_*}:=\ZZ[S_*^{-1}],
+\]
+并约定 \((\ZZ_{\ge 0})^{S_*}\) 与 \(\ZZ^{S_*}\) 上的偏序 \(x\ge y\) 总按逐坐标解释。
+
+\begin{theorem}[PRIMEGAME 的精确 prime-register 共轭]\label{thm:xi-time-part62ae-primegame-exact-prime-register-conjugacy}
+定义估值坐标
+\[
+\Psi_{S_*}:\NN_{S_*}\longrightarrow (\ZZ_{\ge 0})^{S_*},
+\qquad
+\Psi_{S_*}(n):=(v_p(n))_{p\in S_*}.
+\]
+对每个 \(1\le i\le 14\)，记
+\[
+\beta_i^{(*)}:=(v_p(b_i))_{p\in S_*}\in (\ZZ_{\ge 0})^{S_*},
+\qquad
+\delta_i^{(*)}:=(v_p(a_i)-v_p(b_i))_{p\in S_*}\in \ZZ^{S_*}.
+\]
+则 PRIMEGAME 的一步演化 \(T_F\) 在 \(\NN_{S_*}\) 上与估值格点上的分段平移
+\[
+\widetilde T_F(x):=x+\delta_{i(x)}^{(*)},
+\qquad
+i(x):=\min\{\,i:\ x\ge \beta_i^{(*)}\,\}
+\]
+严格共轭，即
+\[
+\Psi_{S_*}\circ T_F=\widetilde T_F\circ \Psi_{S_*}
+\]
+在 \(T_F\) 的定义域上恒成立。
+\end{theorem}
+\begin{proof}
+命题 \ref{prop:pom-fractran-prime-translation} 已在全素数寄存器纤维上给出同一结论；此处只需把坐标限制到活跃支撑 \(S_*\)。对任意 \(n\in \NN_{S_*}\) 与任意指令 \(a_i/b_i\)，有
+\[
+\frac{a_i}{b_i}\ \text{可用于}\ n
+\iff
+b_i\mid n
+\iff
+v_p(n)\ge v_p(b_i)\quad(\forall\, p\in S_*),
+\]
+因为 PRIMEGAME 的全部分母都只含 \(S_*\)-素因子。故在 \(\Psi_{S_*}\)-坐标中，可行性恰由
+\[
+\Psi_{S_*}(n)\ge \beta_i^{(*)}
+\]
+刻画。若第 \(i\) 条指令被 first-fit 规则选中，则
+\[
+T_F(n)=n\frac{a_i}{b_i},
+\]
+从而对每个 \(p\in S_*\) 都有
+\[
+v_p(T_F(n))=v_p(n)+v_p(a_i)-v_p(b_i).
+\]
+于是
+\[
+\Psi_{S_*}(T_F(n))
+=
+\Psi_{S_*}(n)+\delta_i^{(*)}.
+\]
+再由 first-fit 选择定义，所取索引正是
+\[
+i(\Psi_{S_*}(n))
+=
+\min\{\,i:\ \Psi_{S_*}(n)\ge \beta_i^{(*)}\,\}.
+\]
+故共轭关系成立。证毕。
+\end{proof}
+
+\begin{theorem}[PRIMEGAME 的活跃支撑分解]\label{thm:xi-time-part62ae-primegame-active-support-splitting}
+任取 \(n\in \ZZ_{>0}\)，则存在唯一分解
+\[
+n=u\,m,
+\qquad
+u\in \NN_{S_*},
+\qquad
+\gcd(m,P_*)=1.
+\]
+并且 PRIMEGAME 的一步演化满足：
+\begin{enumerate}
+  \item first-fit 选中的指令索引只由 \(u\) 决定，与 \(m\) 无关；
+  \item 若 \(T_F(u)\) 有定义，则
+  \[
+  T_F(n)=m\,T_F(u);
+  \]
+  若 \(T_F(u)\) 无定义，则 \(T_F(n)\) 亦无定义。
+\end{enumerate}
+特别地，从初值 \(n_0=2\) 出发的 PRIMEGAME 轨道完全落在 \(\NN_{S_*}\) 内。
+\end{theorem}
+\begin{proof}
+唯一分解来自整数的素因子分离：把 \(n\) 的 \(S_*\)-主部分并入 \(u\)，其余素因子并入 \(m\) 即得，而且此分解显然唯一。对任意指令 \(a_i/b_i\)，由于 \(\gcd(m,b_i)=1\) 且 \(b_i\) 的全部素因子都落在 \(S_*\)，有
+\[
+b_i\mid n
+\iff
+b_i\mid u.
+\]
+因此可行指令集合以及由此决定的 first-fit 索引只依赖于 \(u\)。若第 \(i\) 条指令适用于 \(u\)，则
+\[
+T_F(n)
+=
+n\frac{a_i}{b_i}
+=
+u\,m\frac{a_i}{b_i}
+=
+m\left(u\frac{a_i}{b_i}\right)
+=
+m\,T_F(u),
+\]
+其中最后一步利用了 PRIMEGAME 的全部分子也只含 \(S_*\)-素因子，故外部因子 \(m\) 完全惰性。若 \(u\) 上无可用指令，则 \(n\) 上也无可用指令。最后，由 \(2\in S_*\) 可知初值 \(n_0=2\) 对应 \(m=1\)；再由上式归纳即得整条轨道始终满足 \(m=1\)，从而完全落在 \(\NN_{S_*}\) 内。证毕。
+\end{proof}
+
+\begin{corollary}[PRIMEGAME 的有限阶段 solenoidal 宿主]\label{cor:xi-time-part62ae-primegame-finite-solenoidal-host}
+PRIMEGAME 的一步控制律以及一切仅依赖 \(S_*\)-估值坐标的轨道观测，都先天地因子化到 \(G_{S_*}=\ZZ[S_*^{-1}]\) 的局部化阶段。其自然紧化宿主为有限阶段 arithmetic solenoid
+\[
+\Sigma_{S_*}:=\widehat{G_{S_*}},
+\]
+并满足 Pontryagin 对偶短正合列
+\[
+0\longrightarrow \prod_{p\in S_*}\ZZ_p
+\longrightarrow \Sigma_{S_*}
+\longrightarrow \TT
+\longrightarrow 0.
+\]
+因此，对固定的 PRIMEGAME 微码而言，universal solenoid \(\widehat{\QQ}\) 并非操作层所必需；只有在把 PRIMEGAME 置入程序族、Mellin 读出或 \(\zeta\)-型完成时，才需要引入通用阶段。
+\end{corollary}
+\begin{proof}
+定理 \ref{thm:xi-time-part62ae-primegame-active-support-splitting} 表明，PRIMEGAME 的一步选择与更新完全由 \(S_*\)-支撑部分 \(u\in \NN_{S_*}\) 决定，而与外部因子 \(m\) 解耦。因此任何只读取 \(S_*\)-估值坐标的轨道观测，都可经由 \(\NN_{S_*}\subset G_{S_*}\) 因子化。
+另一方面，定理 \ref{thm:xi-time-part56-solenoid-terminal-prime-register-recovery} 与定理 \ref{thm:xi-localized-phase-sampling-closed-form} 已给出 \(G_{S_*}\) 的 Pontryagin 对偶紧化正是
+\[
+\Sigma_{S_*}=\widehat{G_{S_*}},
+\]
+并带有所示短正合列。故 PRIMEGAME 的自然紧化宿主已在有限局部化阶段闭合。证毕。
+\end{proof}
+
+\begin{corollary}[固定 FRACTRAN 微码的有限素数支撑刚性]\label{cor:xi-time-part62ae-fixed-fractran-finite-prime-support-rigidity}
+任意固定长度的 FRACTRAN 程序
+\[
+F=\left(\frac{a_1}{b_1},\dots,\frac{a_k}{b_k}\right)
+\]
+都只激活有限个 prime-register 轴，即
+\[
+S(F):=\bigcup_{i=1}^k\{\,p\in \mathbb P:\ v_p(a_i b_i)>0\,\}
+\]
+为有限集，并且其一步 first-fit 控制与更新完全由该有限活跃支撑决定。因而单个固定程序表不能仅凭微码自身实现真正的无限素数控制；若要出现 universal-solenoidal 现象，必须把无穷性置于程序族、观测族或 Mellin/\(\zeta\) 完成过程中。
+\end{corollary}
+\begin{proof}
+定理 \ref{thm:xi-time-part62ae-primegame-active-support-splitting} 的分解论证只用到了“程序表有限”与“全部分子分母的素因子支撑有限”这两点，因此对任意固定长度的 FRACTRAN 程序可逐字适用。把其中的 \(S_*\) 换成 \(S(F)\) 即得结论。证毕。
+\end{proof}
+
+因此，PRIMEGAME 在本文口径下可被精确识别为：哥德尔素数估值坐标给出状态空间，FRACTRAN 的 first-fit 规则给出微码执行，而有限局部化 solenoid 给出其紧化宿主。若继续推进谱侧分析，则自然对象将是 \(\Sigma_{S_*}\) 上的 transfer kernel、轨道 \(\zeta\) 与 Mellin 型读出。
