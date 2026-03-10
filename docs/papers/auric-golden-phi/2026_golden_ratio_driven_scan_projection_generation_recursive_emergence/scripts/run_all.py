@@ -898,6 +898,24 @@ def build_steps() -> List[Step]:
             ],
         ),
         Step(
+            name="window6_cyclic_escort_axis_audit",
+            script="exp_window6_cyclic_escort_axis_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_cyclic_escort_axis_audit.json",
+                "sections/generated/eq_window6_cyclic_escort_axis_audit.tex",
+            ],
+        ),
+        Step(
+            name="window6_multiplicity_bulk_defect_audit",
+            script="exp_window6_multiplicity_bulk_defect_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_multiplicity_bulk_defect_audit.json",
+                "sections/generated/eq_window6_multiplicity_bulk_defect_audit.tex",
+            ],
+        ),
+        Step(
             name="window6_fib_tail_psl2_orbit_decomposition_p23",
             script="exp_window6_fib_tail_psl2_orbit_decomposition_p23.py",
             args=[],
@@ -1194,6 +1212,15 @@ def build_steps() -> List[Step]:
                 "artifacts/export/fold_bin_gauge_m6_invariants.json",
                 "sections/generated/tab_fold_bin_gauge_m6_invariants.tex",
                 "sections/generated/tab_fold_bin_gauge_m6_fibers.tex",
+            ],
+        ),
+        Step(
+            name="window6_long_bloch_bielliptic_audit",
+            script="exp_window6_long_bloch_bielliptic_audit.py",
+            args=[],
+            expected_outputs=[
+                "artifacts/export/window6_long_bloch_bielliptic_audit.json",
+                "sections/generated/eq_window6_long_bloch_band_edges.tex",
             ],
         ),
         Step(
