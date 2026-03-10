@@ -113,7 +113,7 @@ Thus, the branch cubic arises as a resultant image of the ramification locus on~
 \begin{proof}
 From the proof of Theorem~\ref{thm:ramification-image}, the ramification condition $\dd y=0$ at a point with $16\lambda^3-9\lambda^2+1=0$ gives $\xi=(1-2\lambda-3\lambda^2)/(4\lambda)$.
 Substituting into $y=\lambda^2+\xi$ produces $4\lambda y=4\lambda^3-3\lambda^2-2\lambda+1$.
-The resultant of two cubics in $\lambda$ is a $3\times 3$ Sylvester determinant yielding a cubic in~$y$.
+The resultant of two cubics in $\lambda$ is represented by a $6\times 6$ Sylvester determinant and yields a cubic in~$y$.
 Direct computation gives~\eqref{eq:resultant-cubic}.
 \end{proof}
 
@@ -173,16 +173,273 @@ In short, this is the standard audit:
 Any transitive subgroup of \(S_4\) containing both cycle types is exactly \(S_4\).
 \end{remark}
 
-\begin{remark}[Resolvent cubic]\label{rmk:resolvent}
+\begin{proposition}[Resolvent cubic]\label{prop:resolvent-cubic}
 The \emph{resolvent cubic} of the quartic $\Pi(\lambda,y)$ is the cubic polynomial whose roots are $\lambda_i\lambda_j+\lambda_k\lambda_l$ for the three partitions $\{\{i,j\},\{k,l\}\}$ of $\{1,2,3,4\}$.
 For the present spectral polynomial $\Pi(\lambda,y)=\lambda^4+p\lambda^3+q\lambda^2+r\lambda+s$ with $p=-1$, $q=-(2y+1)$, $r=1$, $s=y(y+1)$, the standard formula $R(z)=z^3-qz^2+(pr-4s)z-(p^2 s-4qs+r^2)$ gives
 \[
 R(z,y)=z^3+(2y+1)z^2-(4y^2+4y+1)z-(8y^3+13y^2+5y+1).
 \]
-At $y=1$ the resolvent has roots $3,-3,-3$, corresponding to the three pairing sums of the spectral roots $\{2,1,-1,-1\}$.
-The Galois group of $R$ over $\QQ(y)$ is $S_3$ (since $\mathrm{Gal}(\Pi/\QQ(y))\cong S_4$ acts on the three roots of $R$ via the quotient $S_4/V_4\cong S_3$).
-The splitting field of $R$ corresponds to the $V_4$-quotient of the $S_4$-cover, and its discriminant coincides (up to squares) with the discriminant of $\Pi$.
-\end{remark}
+Its discriminant is
+\[
+\Disc_z R(z,y)=-y(y-1)c(y)=\Disc_\lambda\Pi(\lambda,y).
+\]
+In particular, the splitting field of \(R\) over \(\QQ(y)\) is the fixed field of \(V_4\) inside the \(S_4\)-Galois closure of \(\Pi\), and its generic Galois group is \(S_3\cong S_4/V_4\).
+\end{proposition}
+
+\begin{proof}
+The displayed cubic is the standard resolvent formula for a monic quartic.
+Substituting \(p=-1\), \(q=-(2y+1)\), \(r=1\), and \(s=y(y+1)\) yields the explicit polynomial \(R(z,y)\).
+Its discriminant is a direct symbolic computation:
+\[
+\Disc_z R(z,y)=-y(y-1)\bigl(256y^3+411y^2+165y+32\bigr).
+\]
+By Theorem~\ref{thm:disc-factor}, this equals \(\Disc_\lambda\Pi(\lambda,y)\).
+Since \(\mathrm{Gal}(\Pi/\QQ(y))\cong S_4\) by Proposition~\ref{prop:galois-s4}, the induced action on the three pairings of \(\{1,2,3,4\}\) identifies the Galois group of the resolvent splitting field with \(S_4/V_4\cong S_3\).
+\end{proof}
+
+\subsection{\texorpdfstring{Regular \(S_4\) closure, resolvent tower, and Prym geometry}{Regular S4 closure, resolvent tower, and Prym geometry}}
+
+Let \(X\) be the smooth projective curve whose function field is the Galois closure of \(\QQ(E)/\QQ(y)\).
+Then \(X\to\mathbb{P}^1_y\) is the regular closure of the degree-\(4\) map \(\varphi:E\to\mathbb{P}^1_y\).
+
+\begin{theorem}[Regular \(S_4\) closure]\label{thm:regular-closure}
+The map \(X\to\mathbb{P}^1_y\) is a regular \(S_4\)-cover of degree \(24\).
+Its branch values are
+\[
+\{\infty,0,1\}\cup\{c(y)=0\},
+\]
+with inertia generators of cycle type \((4)\) above \(y=\infty\) and of cycle type \((2)\) above each of the five finite branch values.
+Equivalently, the Hurwitz passport of the regular closure is
+\[
+\bigl((4),(2),(2),(2),(2),(2)\bigr).
+\]
+In particular,
+\[
+g(X)=16.
+\]
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:ramification-image}, the non-Galois degree-\(4\) cover \(\varphi:E\to\mathbb{P}^1_y\) has one totally ramified point of index \(4\) above \(y=\infty\) and five simple ramification points above the finite branch values \(0\), \(1\), and the three roots of \(c(y)\).
+Hence the corresponding local monodromy permutations in the degree-\(4\) fiber are a \(4\)-cycle at infinity and transpositions at the five finite branch values.
+Since Proposition~\ref{prop:galois-s4} identifies the generic Galois group with \(S_4\), the regular closure has degree \(|S_4|=24\).
+
+For a regular \(G\)-cover of \(\mathbb{P}^1\) with inertia orders \(e_1,\dots,e_r\), Hurwitz gives
+\[
+2g(X)-2=|G|\left(-2+\sum_{i=1}^r\left(1-\frac{1}{e_i}\right)\right).
+\]
+Here \(|G|=24\), \(r=6\), \(e_\infty=4\), and the other five inertia orders equal \(2\).
+Thus
+\[
+2g(X)-2
+=24\left(-2+\left(1-\frac14\right)+5\left(1-\frac12\right)\right)
+=24\cdot\frac54
+=30,
+\]
+so \(g(X)=16\).
+\end{proof}
+
+\begin{proposition}[Normal resolvent quotients]\label{prop:normal-quotients}
+Let
+\[
+X_A:=X/A_4,\qquad X_V:=X/V_4.
+\]
+Then:
+\begin{enumerate}
+\item[(i)] \(X_A\) has function field \(\QQ(y,\sqrt{\Delta(y)})\), where \(\Delta(y)=-y(y-1)c(y)\); equivalently,
+\[
+X_A:\quad w^2=-y(y-1)c(y),
+\]
+so \(g(X_A)=2\).
+\item[(ii)] \(X_V\) has function field \(\QQ(y,z,\sqrt{\Delta(y)})\) subject to \(R(z,y)=0\), where \(R\) is the resolvent cubic from Proposition~\ref{prop:resolvent-cubic}; the map \(X_V\to\mathbb{P}^1_y\) is a regular \(S_3\)-cover of degree \(6\).
+\item[(iii)] The natural map \(X_V\to X_A\) is a cyclic étale cover of degree \(3\). Consequently,
+\[
+g(X_V)=4.
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Since \(A_4\trianglelefteq S_4\) is the unique index-\(2\) normal subgroup, the quotient \(X_A=X/A_4\) is the unique quadratic subextension of the Galois closure.
+For a quartic, this quadratic subfield is generated by the square root of the discriminant, so
+\[
+\QQ(X_A)=\QQ\bigl(y,\sqrt{\Disc_\lambda\Pi(\lambda,y)}\bigr)=\QQ(y,\sqrt{\Delta(y)}).
+\]
+Because \(\Delta(y)=-y(y-1)c(y)\) is squarefree of degree \(5\), the hyperelliptic model \(w^2=\Delta(y)\) has genus \(2\).
+
+The quotient by \(V_4\) is the fixed field of the Klein four subgroup.
+By Proposition~\ref{prop:resolvent-cubic}, this is precisely the splitting field of the resolvent cubic over \(\QQ(y)\), so
+\[
+\QQ(X_V)=\QQ\bigl(y,z,\sqrt{\Delta(y)}\bigr),\qquad R(z,y)=0.
+\]
+Its Galois group over \(\QQ(y)\) is \(S_4/V_4\cong S_3\), hence \(X_V\to\mathbb{P}^1_y\) is a regular degree-\(6\) \(S_3\)-cover.
+
+Let \(I\subset S_4\) be an inertia group of \(X\to\mathbb{P}^1_y\).
+At a finite branch value, \(I\) is generated by a transposition, hence \(I\cap A_4=I\cap V_4=\{1\}\).
+At \(y=\infty\), \(I=\langle\sigma\rangle\cong C_4\) for a \(4\)-cycle \(\sigma\), and then
+\[
+I\cap A_4=\langle\sigma^2\rangle=I\cap V_4.
+\]
+Therefore the relative inertia in the quotient \(A_4/V_4\cong C_3\) is trivial at every branch point, so \(X_V\to X_A\) is unramified.
+Since \(\deg(X_V/X_A)=3\), Hurwitz gives
+\[
+2g(X_V)-2=3\bigl(2g(X_A)-2\bigr)=3\cdot 2,
+\]
+hence \(g(X_V)=4\).
+\end{proof}
+
+\begin{corollary}[Prym surface of the resolvent tower]\label{cor:resolvent-prym}
+Let
+\[
+P:=\Prym(X_V/X_A)\subset \Jac(X_V)
+\]
+be the connected kernel of the norm map \(\Jac(X_V)\to\Jac(X_A)\).
+Then \(P\) is an abelian surface, the deck group \(A_4/V_4\cong C_3\) induces an embedding
+\[
+\QQ(\zeta_3)\hookrightarrow \mathrm{End}^0(P),
+\]
+and there is a \(\QQ\)-isogeny
+\[
+\Jac(X_V)\sim_{\QQ}\Jac(X_A)\times P.
+\]
+\end{corollary}
+
+\begin{proof}
+Since \(X_V\to X_A\) is an étale degree-\(3\) cover and \(g(X_V)=4\), \(g(X_A)=2\), one has
+\[
+\dim P=g(X_V)-g(X_A)=2.
+\]
+Let \(\sigma\) generate the deck group \(C_3\).
+In the group algebra \(\QQ[C_3]\) one has the idempotents
+\[
+e_{\mathrm{tr}}=\frac{1+\sigma+\sigma^2}{3},\qquad
+e_{\mathrm{nt}}=\frac{2-\sigma-\sigma^2}{3}.
+\]
+The trace idempotent \(e_{\mathrm{tr}}\) cuts out \(\Jac(X_A)\), while the complementary idempotent \(e_{\mathrm{nt}}\) cuts out the connected norm kernel \(P\).
+Thus \(\Jac(X_V)\sim_{\QQ}\Jac(X_A)\times P\).
+Because \(\QQ[C_3]\cong\QQ\oplus\QQ(\zeta_3)\), the nontrivial factor acts faithfully on \(P\), yielding \(\QQ(\zeta_3)\subset\mathrm{End}^0(P)\).
+\end{proof}
+
+\begin{theorem}[Hodge decomposition of the regular closure]\label{thm:regular-closure-hodge}
+Let \(V_2\) denote the two-dimensional irreducible representation of \(S_4\), \(V_3\) the standard three-dimensional representation, and \(V_3^-:=V_3\otimes\mathrm{sgn}\).
+Then the \(S_4\)-module of holomorphic differentials on the genus-\(16\) regular closure \(X\) decomposes as
+\[
+H^0(X,\Omega_X^1)\cong \mathrm{sgn}^{\oplus 2}\oplus V_2\oplus V_3\oplus (V_3^-)^{\oplus 3}.
+\]
+Consequently there exist abelian subvarieties \(A_{V_3}\) and \(A_{V_3^-}\) of dimensions \(3\) and \(9\), respectively, such that
+\[
+\Jac(X)\sim_{\QQ}\Jac(X_A)\times P\times A_{V_3}\times A_{V_3^-}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+H^0(X,\Omega_X^1)\cong m_{\mathrm{sgn}}\cdot\mathrm{sgn}\oplus m_2\cdot V_2\oplus m_3\cdot V_3\oplus m_3^-\cdot V_3^-.
+\]
+There is no trivial summand because \(X/S_4\cong\mathbb{P}^1_y\), so
+\[
+H^0(X,\Omega_X^1)^{S_4}=H^0(\mathbb{P}^1,\Omega_{\mathbb{P}^1}^1)=0.
+\]
+For any subgroup \(H\subset S_4\), the \(H\)-invariant differentials descend to the quotient, hence
+\[
+\dim H^0(X,\Omega_X^1)^H=g(X/H).
+\]
+
+Take \(H=A_4\), \(V_4\), and a root stabilizer \(S_3\subset S_4\).
+By Proposition~\ref{prop:normal-quotients}, \(g(X/A_4)=2\) and \(g(X/V_4)=4\).
+By Galois-closure theory, the quotient by a root stabilizer recovers the original quartic cover \(E\to\mathbb{P}^1_y\), so \(X/S_3\cong E\) and \(g(X/S_3)=1\).
+Using the character averages for the nontrivial irreducibles of \(S_4\), one obtains the invariant dimensions
+\[
+\begin{array}{c|ccc}
+ & A_4 & V_4 & S_3\\ \hline
+\mathrm{sgn} & 1 & 1 & 0\\
+V_2 & 0 & 2 & 0\\
+V_3 & 0 & 0 & 1\\
+V_3^- & 0 & 0 & 0
+\end{array}
+\]
+and therefore the system
+\[
+m_{\mathrm{sgn}}=2,\qquad
+m_{\mathrm{sgn}}+2m_2=4,\qquad
+m_3=1.
+\]
+Since \(g(X)=16\) by Theorem~\ref{thm:regular-closure},
+\[
+16=\dim H^0(X,\Omega_X^1)=m_{\mathrm{sgn}}+2m_2+3m_3+3m_3^-,
+\]
+which yields
+\[
+m_{\mathrm{sgn}}=2,\qquad m_2=1,\qquad m_3=1,\qquad m_3^-=3.
+\]
+This proves the stated decomposition.
+
+The rational isotypic decomposition of \(\Jac(X)\) follows from the decomposition of \(H^0(X,\Omega_X^1)\).
+The \(\mathrm{sgn}\)-isotypic part has dimension \(2\) and identifies with \(\Jac(X_A)\), while the \(V_2\)-isotypic part has dimension \(2\) and identifies with the Prym surface \(P\) from Corollary~\ref{cor:resolvent-prym}.
+The remaining \(V_3\)- and \(V_3^-\)-isotypic factors have dimensions \(3\) and \(9\), respectively.
+\end{proof}
+
+\begin{corollary}[Elliptic realization of the \(V_3\)-factor]\label{cor:v3-elliptic-factor}
+Let \(H_1,\dots,H_4\subset S_4\) be the four point stabilizers in the natural action on \(\{1,2,3,4\}\).
+Then each quotient \(X/H_i\) is \(\QQ\)-isomorphic to the original elliptic curve \(E\).
+If \(\pi_i:X\to E\) denotes the corresponding quotient map and
+\[
+\Psi:=\bigl((\pi_1)_*,(\pi_2)_*,(\pi_3)_*,(\pi_4)_*\bigr):\Jac(X)\longrightarrow E^4,
+\]
+then \(\Psi\) factors through the kernel \(K:=\ker(\Sigma:E^4\to E)\) of the sum map, and \(\mathrm{Im}(\Psi)\) is an abelian threefold isogenous to \(E^3\).
+Its cotangent representation is the unique \(V_3\)-summand of \(H^0(X,\Omega_X^1)\).
+In particular,
+\[
+A_{V_3}\sim_{\QQ} E^3,
+\qquad
+\Jac(X)\sim_{\QQ}\Jac(X_A)\times P\times E^3\times A_{V_3^-}.
+\]
+\end{corollary}
+
+\begin{proof}
+Each subgroup \(H_i\cong S_3\) fixes one root \(\lambda_i\) of the quartic \(\Pi(\lambda,y)\).
+Hence
+\[
+\QQ(X)^{H_i}=\QQ(y,\lambda_i)\cong \QQ(y,\lambda)=\QQ(E),
+\]
+so \(X/H_i\cong E\).
+
+Let \(L_i:=\pi_i^*H^0(E,\Omega_E^1)\subset H^0(X,\Omega_X^1)\).
+Each \(L_i\) is one-dimensional and fixed by \(H_i\).
+By Theorem~\ref{thm:regular-closure-hodge}, the only nontrivial irreducible representation of \(S_4\) with \(H_i\)-invariants is \(V_3\), and it occurs with multiplicity one.
+Therefore the \(S_4\)-span
+\[
+W:=\langle L_1,L_2,L_3,L_4\rangle
+\]
+is precisely the unique \(V_3\)-summand of \(H^0(X,\Omega_X^1)\).
+
+The four lines \(L_i\) are permuted by \(S_4\) exactly as the four letters.
+Thus \(W\) is a quotient of the permutation representation
+\[
+\QQ^4\cong \mathbf{1}\oplus V_3.
+\]
+Since \(H^0(X,\Omega_X^1)\) contains no trivial representation, \(W\) contains no \(S_4\)-invariants.
+Hence \(W\cong V_3\), and for every \(\omega\in H^0(E,\Omega_E^1)\) one has
+\[
+\pi_1^*\omega+\pi_2^*\omega+\pi_3^*\omega+\pi_4^*\omega=0.
+\]
+
+Let \(\Sigma:E^4\to E\) be the sum map.
+On holomorphic differentials,
+\[
+(\Sigma\circ\Psi)^*(\omega)=\pi_1^*\omega+\pi_2^*\omega+\pi_3^*\omega+\pi_4^*\omega=0.
+\]
+Since \(\Sigma\circ\Psi\) is a homomorphism of abelian varieties, vanishing of its differential implies \(\Sigma\circ\Psi=0\).
+Therefore \(\Psi\) factors through \(K=\ker\Sigma\).
+Because \(E\) is elliptic, \(K\) is an abelian threefold isogenous to \(E^3\).
+
+The image of \(\Psi^*\) on differentials is exactly \(W\), so \(\dim \mathrm{Im}(\Psi)=\dim W=3\).
+Hence \(\mathrm{Im}(\Psi)\) is a three-dimensional abelian subvariety of \(K\), and therefore \(\mathrm{Im}(\Psi)\sim_{\QQ}K\sim_{\QQ}E^3\).
+The dual abelian variety \(\mathrm{Im}(\Psi)^\vee\) embeds in \(\Jac(X)\), and its cotangent space is again \(W\).
+By uniqueness of the \(V_3\)-isotypic factor in Theorem~\ref{thm:regular-closure-hodge}, this dual factor is \(A_{V_3}\).
+Thus \(A_{V_3}\sim_{\QQ}E^3\), and the Jacobian decomposition follows.
+\end{proof}
 
 \subsection{A divisor-theoretic constraint on fibers}
 
@@ -449,20 +706,26 @@ which coincides with the quadratic resolvent of the branch cubic (Proposition~\r
 Thus the Kronecker symbol identity $\bigl(\frac{-111}{p}\bigr)=\bigl(\frac{37}{p}\bigr)\bigl(\frac{-3}{p}\bigr)$ for $p\nmid 3\cdot 37$ expresses the branch cubic discriminant character as the unique $(-3)$-twist of the level-$37$ elliptic anchor.
 \end{remark}
 
-\begin{remark}[Open problem: ray class field characterization]\label{rem:ray-class-field}
+\begin{remark}[Conjectural ray class field description]\label{rem:ray-class-field}
 Let $L$ be the splitting field of $c(y)$ over $\QQ$, and $K_\Delta:=\QQ(\sqrt{-111})$ its quadratic resolvent subfield.
-Then $L/K_\Delta$ is a cyclic cubic extension, and $L$ is the ray class field of $K_\Delta$ with conductor
+Since \(\mathrm{Gal}(L/\QQ)\cong S_3\), the extension \(L/K_\Delta\) is cyclic of degree \(3\).
+It is natural to ask whether \(L\) is the ray class field of \(K_\Delta\) with conductor
 \[
 \mathfrak{f}=3^4\cdot 31
 \]
-(interpreted as an ideal of $K_\Delta$).
-The discriminant factorization $\Disc(c)=-111\cdot(3^4\cdot 31)^2$ provides the natural auditable interface between the base discriminant $-111$ and the conductor candidate via its square factor.
+(interpreted as an ideal of \(K_\Delta\)).
+We do not prove this here.
+The discriminant factorization
+\[
+\Disc(c)=-111\cdot(3^4\cdot 31)^2
+\]
+singles out \(3^4\cdot 31\) as the natural conductor candidate.
 \end{remark}
 
 \begin{remark}[Partial evidence and falsifiability path]\label{rmk:ray-class-evidence}
 \emph{Discriminant factorization.}
 The identity $\Disc(c)=-3^9\cdot 31^2\cdot 37=-111\cdot(3^4\cdot 31)^2$ expresses the polynomial discriminant as a product of the base discriminant $\Disc(K_\Delta)=-111$ and a perfect square $(3^4\cdot 31)^2$.
-This is the structural form required by the conductor--discriminant formula for a cyclic cubic extension $L/K_\Delta$ with conductor $\mathfrak{f}$: the square factor is the conductor candidate.
+This is the structural form predicted by the conductor--discriminant formula for a cyclic cubic extension \(L/K_\Delta\) with conductor \(\mathfrak{f}\): the square factor is the candidate conductor norm.
 
 \emph{Splitting consistency.}
 The Legendre symbol $\bigl(\frac{-111}{31}\bigr)\equiv 13^{15}\equiv -1\pmod{31}$, so $31$ is inert in $K_\Delta$.
@@ -577,7 +840,8 @@ The \emph{discriminant ridge curve} is the genus-$2$ hyperelliptic curve
 C_\Delta:\quad w^2=-y(y-1)\,c(y)
 \]
 over $\QQ$.
-Its function field $\QQ(y)(\sqrt{\Disc_\lambda(\Pi)})$ is the unique quadratic subfield of the $S_4$-Galois closure of $\QQ(E)/\QQ(y)$, corresponding to the normal subgroup $A_4\trianglelefteq S_4$ (Proposition~\ref{prop:galois-s4}).
+By Proposition~\ref{prop:normal-quotients}\,(i), this is precisely the normal quotient \(X_A=X/A_4\) of the regular \(S_4\)-closure.
+Its function field $\QQ(y)(\sqrt{\Disc_\lambda(\Pi)})$ is the unique quadratic subfield of the $S_4$-Galois closure of $\QQ(E)/\QQ(y)$, corresponding to the normal subgroup $A_4\trianglelefteq S_4$.
 The curve $C_\Delta$ has good reduction at all primes $p\nmid 2\cdot 3\cdot 31\cdot 37$.
 \end{definition}
 

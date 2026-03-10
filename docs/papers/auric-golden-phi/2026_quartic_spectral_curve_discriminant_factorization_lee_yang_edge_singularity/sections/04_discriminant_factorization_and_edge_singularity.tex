@@ -109,33 +109,85 @@ with \(r>0\), \(\theta\in(0,\pi)\), \(\gamma\in\RR\); hence \(|-r|=|r e^{\pm i\t
 \end{theorem}
 
 \begin{proof}
-Assume \(y\in(-1,0)\) admits the pattern above, with \(r>0\), \(u:=\cos\theta\in(-1,1)\), and \(\gamma\in\RR\).
-From Vieta:
+Write
 \[
-\gamma+r(2u-1)-1=0,\quad
-r^2(1-2u)+r\gamma(2u-1)+(2y+1)=0,\quad
--r^3+r^2\gamma(1-2u)+1=0,\quad
--r^3\gamma-y(y+1)=0.
+p(y):=p_{\mathrm{eq}}(y)=256 y^9+1219 y^8+2542 y^7+3090 y^6+2446 y^5+1315 y^4+478 y^3+112 y^2+16 y+1.
 \]
-Eliminating \((r,\gamma,u)\) from these equations yields the univariate eliminant \(\pm C\,p_{\mathrm{eq}}(y)c(y)^2\) with \(C\in\QQ^\times\), so a non-bifurcating negative-axis equimodular point must satisfy \(p_{\mathrm{eq}}(y)=0\) or \(c(y)=0\).
-By construction \(y=\yLY\) is the branch point from Proposition~\ref{prop:unique-real-root}; the non-bifurcating regime is therefore \(p_{\mathrm{eq}}(y)=0\).
-
-A certified Sturm-root count for \(p_{\mathrm{eq}}\) (Algorithm~4 in Appendix~\ref{app:pseudocode}, or directly via
-\texttt{scripts/branch\_root\_certificate.pl}) gives one real root total.
-Further, the rational sign check
-\[	
-p_{\mathrm{eq}}\!\left(-\frac{160092}{10^6}\right)<0,\qquad
-p_{\mathrm{eq}}\!\left(-\frac{160091}{10^6}\right)>0
-\]
-gives \(\yEQ\in(-160092/10^6,\,-160091/10^6)\).
-
-This elimination and the exact coprime check \(\operatorname{Res}_y(c(y),p_{\mathrm{eq}}(y))\neq0\) are recorded as explicit certificate steps in Appendix~\ref{app:pseudocode}.
-
-An independent resultant check gives
+A Sturm computation for \(p'(y)\) shows that \(p'\) has no real zero.
+Since \(p'(0)=16>0\), one has \(p'(y)>0\) for all \(y\in\RR\).
+Hence \(p\) is strictly increasing on \(\RR\).
+Because \(p(-1)=-1<0\) and \(p(0)=1>0\), it follows that \(p\) has a unique real root, necessarily in \((-1,0)\).
+The rational sign check
 \[
-\operatorname{Res}_y\!\left(c(y),p_{\mathrm{eq}}(y)\right)\neq 0,
+p\!\left(-\frac{160092}{10^6}\right)<0,\qquad
+p\!\left(-\frac{160091}{10^6}\right)>0
 \]
-so \(c(\yEQ)\neq 0\), proving \eqref{thm:yeq-a} and the first non-branch statement.
+therefore gives the stated enclosure for \(\yEQ\).
+
+To prove the spectral pattern at \(y=\yEQ\), consider the Vieta system attached to
+\[
+\Pi(\lambda,y)=(\lambda+r)(\lambda^2-2ru\,\lambda+r^2)(\lambda-\gamma),
+\]
+where \(r>0\), \(u=\cos\theta\), and \(\gamma\in\RR\).
+Comparing coefficients with \(\Pi(\lambda,y)=\lambda^4-\lambda^3-(2y+1)\lambda^2+\lambda+y(y+1)\) gives
+\[
+\begin{aligned}
+\gamma+r(2u-1)-1&=0,\\
+r^2(1-2u)+r\gamma(2u-1)+(2y+1)&=0,\\
+-r^3+r^2\gamma(1-2u)+1&=0,\\
+-r^3\gamma-y(y+1)&=0.
+\end{aligned}
+\]
+A lexicographic Gr\"obner basis elimination of this ideal with variable order
+\(\gamma>u>r>y\) contains the four polynomials
+\[
+464400\,\gamma-G(y),\qquad 464400\,u-U(y),\qquad 154800\,r-R(y),\qquad y(y-1)p(y),
+\]
+where
+\begin{align*}
+R(y)&=134486528y^{10}+483593422y^9+607285371y^8+164180370y^7\\
+&\quad-388277527y^6-529931405y^5-332584911y^4-117184519y^3\\
+&\quad-20570342y^2-1306587y+154800,\\[0.5ex]
+U(y)&=482308864y^{10}+1706564761y^9+2094645598y^8+502601835y^7\\
+&\quad-1402581401y^6-1833768815y^5-1113100493y^4-374387672y^3\\
+&\quad-59074271y^2-3208406y+464400,\\[0.5ex]
+G(y)&=268412672y^{10}+995577653y^9+1307666279y^8+418843905y^7\\
+&\quad-789459598y^6-1147638370y^5-737672314y^4-263726431y^3\\
+&\quad-47434933y^2-3640063y.
+\end{align*}
+Hence, for any real root \(y_0\) of \(p(y)\) with \(y_0\notin\{0,1\}\), the triple
+\[
+r_0=\frac{R(y_0)}{154800},\qquad
+u_0=\frac{U(y_0)}{464400},\qquad
+\gamma_0=\frac{G(y_0)}{464400}
+\]
+satisfies the Vieta system exactly.
+
+Evaluating these rational functions on the certified interval for \(\yEQ\) yields
+\[
+\begin{aligned}
+0.9567017&<r_0<0.9567033,\\
+0.94237518&<u_0<0.94237534,\\
+0.15355676&<\gamma_0<0.15355705.
+\end{aligned}
+\]
+Thus \(r_0>0\), \(u_0\in(0,1)\), and \(0<\gamma_0<r_0\).
+Let \(\theta_0:=\arccos(u_0)\in(0,\pi/2)\).
+Then
+\[
+\lambda^2-2r_0u_0\,\lambda+r_0^2
+=\bigl(\lambda-r_0e^{i\theta_0}\bigr)\bigl(\lambda-r_0e^{-i\theta_0}\bigr),
+\]
+so
+\[
+\Pi(\lambda,\yEQ)
+=(\lambda+r_0)\bigl(\lambda-r_0e^{i\theta_0}\bigr)\bigl(\lambda-r_0e^{-i\theta_0}\bigr)(\lambda-\gamma_0).
+\]
+This is the claimed spectral quadruple
+\(\{-r_0,r_0e^{\pm i\theta_0},\gamma_0\}\), and \(|\gamma_0|<r_0\) shows that \(\yEQ\) is non-bifurcating equimodular.
+
+Finally, Proposition~\ref{prop:unique-real-root} shows that the unique real root \(\yLY\) of \(c(y)\) lies in \((-1.13446,-1.13445)\), whereas \(\yEQ\in(-1,0)\).
+Therefore \(\yEQ\notin\{0,1\}\cup\{c(y)=0\}\), proving \eqref{thm:yeq-a}, and also \(\yEQ\neq\yLY\), proving \eqref{thm:yeq-b}.
 \end{proof}
 
 \begin{remark}[Arithmetic of the branch cubic]\label{rmk:branch-cubic-arithmetic}
@@ -160,7 +212,11 @@ Conversely, eliminating \(\lambda\) between \(16\lambda^3-9\lambda^2+1\) and the
 \[
 4\lambda y-(4\lambda^3-3\lambda^2-2\lambda+1)=0
 \]
-gives \(\Res_\lambda(c(y),4\lambda y-(4\lambda^3-3\lambda^2-2\lambda+1))=-64\,c(y)\), so the branch-point condition is satisfied.
+gives
+\[
+\Res_\lambda\!\bigl(16\lambda^3-9\lambda^2+1,\;4\lambda y-(4\lambda^3-3\lambda^2-2\lambda+1)\bigr)=-64\,c(y),
+\]
+so the branch-point condition is satisfied.
 \end{proof}
 \end{theorem}
 
@@ -176,6 +232,28 @@ with
 \end{equation}
 In particular, $\kappa_\star^2$ is a root of \(324u^3-540u^2+333u-74=0\) (see Section~\ref{app:elliptic}, Theorem~\ref{thm:puiseux-amplitude}), hence \(\kappa_\star^2>0\).
 \end{theorem}
+
+\begin{proof}
+Since \(y_0\notin\{0,1\}\) and \(c(y_0)=0\), the discriminant factorization
+\(\Disc_\lambda\Pi(\lambda,y)=-y(y-1)c(y)\) shows that \(y_0\) is a simple branch value:
+the factors \(y\), \(y-1\), and \(c(y)\) are pairwise coprime, and the cubic \(c\) has no repeated root because \(\Disc(c)\neq 0\) by Proposition~\ref{prop:unique-real-root}.
+Therefore Appendix~\ref{app:elliptic}, Theorem~\ref{thm:puiseux-amplitude}, applies directly and yields
+\[
+\lambda_{i_j}(y)=\lambda_\star+(-1)^j\kappa_\star\sqrt{y-y_0}+O(y-y_0),
+\qquad
+\kappa_\star^2=\frac{2(3\lambda_\star^2-1)}{3(\lambda_\star^2-1)}.
+\]
+The same theorem shows that \(\kappa_\star^2\) is a root of
+\[
+324u^3-540u^2+333u-74=0.
+\]
+For the unique real nontrivial branch point \(y_0=\yLY\), this cubic has one real root, and the sign check
+\[
+324\cdot 0^3-540\cdot 0^2+333\cdot 0-74<0,\qquad
+324\cdot 1^3-540\cdot 1^2+333\cdot 1-74>0
+\]
+places that root in \((0,1)\), hence \(\kappa_\star^2>0\).
+\end{proof}
 
 \subsection{Spectral-root collision at \texorpdfstring{$\yLY$}{y\_LY}}
 

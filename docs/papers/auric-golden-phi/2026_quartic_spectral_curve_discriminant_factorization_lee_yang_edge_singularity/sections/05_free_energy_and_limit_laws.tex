@@ -154,35 +154,42 @@ These are precisely the hypotheses of the quasi-powers theorem of Hwang~\cite{Hw
 
 \subsection{Large deviations and higher-order cumulants (supplement)}
 
-\begin{theorem}[Local LDP for \(H_m/m\)]\label{thm:local-ldp}
-Let \(H_m\) be as in the exponential family above, and let \(\Lambda(s)\) be as in Theorem~\ref{thm:lambda-mgf}.
-There exists an interval \((s_-,s_+)\) containing \(0\), with \(s_-<0<s_+\), on which \(\Lambda\) is finite, \(C^3\), and strictly convex.
-Then \(H_m/m\) satisfies a local large-deviation principle with speed \(m\) on
+\begin{proposition}[Local convexity and the formal rate function]\label{prop:local-rate-function}
+There exists an interval \((s_-,s_+)\) containing \(0\) on which \(\Lambda\) is real-analytic and strictly convex.
+Let
 \[
-\mathcal J:=\Lambda'((s_-,s_+))\subset\mathbb R,
+\mathcal J:=\Lambda'((s_-,s_+)).
 \]
-with rate function
+Then \(x(s):=\Lambda'(s)\) is a real-analytic bijection from \((s_-,s_+)\) onto \(\mathcal J\), and the local Legendre transform
 \[
-I(x)=\sup_{s\in\mathbb R}\{sx-\Lambda(s)\}.
+I(x):=\sup_{t\in(s_-,s_+)}\{tx-\Lambda(t)\},\qquad x\in\mathcal J,
 \]
-For \(s\in(s_-,s_+)\), writing \(y=e^s\) and
+is well defined, real-analytic, and strictly convex on \(\mathcal J\).
+For \(s\in(s_-,s_+)\), writing \(y=e^s\), one has
 \[
-x(s)=\Lambda'(s)=\frac{y\,\lambda_+'(y)}{\lambda_+(y)},
+x(s)=\frac{y\,\lambda_+'(y)}{\lambda_+(y)},
+\qquad
+I\!\bigl(x(s)\bigr)=x(s)\,s-\Lambda(s)=x(s)\log y-\log\lambda_+(y)+\log2,
 \]
-one has the parametric form
+and
 \[
-I\!\bigl(x(s)\bigr)=x(s)\,s-\Lambda(s)=x(s)\log y-\log\lambda_+(y)+\log2.
+I''\!\bigl(x(s)\bigr)=\frac{1}{\Lambda''(s)}>0.
 \]
-\[
-\liminf_{m\to\infty}\frac1m\log\Pr\!\left(\frac{H_m}{m}\in G\right)
-\ge -\inf_{x\in G\cap\mathcal J}I(x),
-\]
-\[
-\limsup_{m\to\infty}\frac1m\log\Pr\!\left(\frac{H_m}{m}\in F\right)
-\le -\inf_{x\in \overline F\cap\mathcal J}I(x),
-\]
-for every open \(G\subseteq\mathbb R\) and closed \(F\subseteq\mathbb R\).
-\end{theorem}
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{thm:lambda-mgf}, \(\Lambda(s)=\log\lambda_+(e^s)-\log2\) is analytic in a complex neighborhood of \(0\).
+From Theorem~\ref{thm:lln-clt}, \(\Lambda''(0)=67/972>0\).
+After shrinking to a sufficiently small real interval \((s_-,s_+)\), one has \(\Lambda''(s)>0\) throughout that interval, hence strict convexity.
+Therefore \(\Lambda'\) is strictly increasing and defines a real-analytic bijection onto \(\mathcal J\).
+The Legendre identities are then standard: for \(x=\Lambda'(s)\), the supremum is attained uniquely at \(t=s\), which gives the displayed formula for \(I\), and differentiating \(x=\Lambda'(s)\) yields \(I''(x(s))=1/\Lambda''(s)\).
+\end{proof}
+
+\begin{remark}[Large-deviation status]\label{thm:local-ldp}
+Proposition~\ref{prop:local-rate-function} identifies the natural local rate function selected by the analytically dominant branch.
+A full large-deviation principle for \(H_m/m\) is not claimed here: one would need additional global control of \(\Lambda(s)\) on the real axis, or a verified G\"artner--Ellis argument beyond the local dominant-sheet regime.
+In the present manuscript, \(I\) should therefore be read as the formal local Legendre rate function rather than as the conclusion of a proved LDP.
+\end{remark}
 
 \begin{remark}[Third-order cumulant]
 Under the same differentiability regime, the first three derivatives at \(s=0\) are
