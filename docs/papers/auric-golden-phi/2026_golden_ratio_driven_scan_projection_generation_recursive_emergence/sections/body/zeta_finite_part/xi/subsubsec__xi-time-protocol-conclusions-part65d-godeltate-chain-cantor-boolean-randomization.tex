@@ -239,6 +239,122 @@ I\longmapsto \mathrm{Fix}(I)
 遂得第 \(3\) 条。证毕。
 \end{proof}
 
+\begin{theorem}[链内算子区间与平方自由整除区间的精确算术同构]\label{thm:xi-time-part65d-chain-interior-interval-squarefree-divisor-isomorphism}
+沿用定理 \ref{thm:xi-time-part65d-chain-interior-boolean-arithmeticization} 的记号。对任意
+\[
+I\preceq J\in \mathcal I_n,
+\]
+定义
+\[
+m_{I,J}:=\frac{\kappa(J)}{\kappa(I)}.
+\]
+则 \(m_{I,J}\) 是平方自由整数，并且区间
+\[
+[I,J]:=\{K\in \mathcal I_n:\ I\preceq K\preceq J\}
+\]
+与整除格
+\[
+\{d\in\NN:\ d\mid m_{I,J}\}
+\]
+之间存在规范格同构
+\[
+\Phi_{I,J}:[I,J]\longrightarrow \{d\in\NN:\ d\mid m_{I,J}\},
+\qquad
+\Phi_{I,J}(K):=\frac{\kappa(K)}{\kappa(I)}.
+\]
+并且对任意 \(K_1,K_2\in [I,J]\)，有
+\[
+\Phi_{I,J}(K_1\wedge K_2)
+=
+\gcd\!\bigl(\Phi_{I,J}(K_1),\Phi_{I,J}(K_2)\bigr),
+\]
+\[
+\Phi_{I,J}(K_1\vee K_2)
+=
+\mathrm{lcm}\!\bigl(\Phi_{I,J}(K_1),\Phi_{I,J}(K_2)\bigr).
+\]
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:killo-chain-interior-godel-gcd-lcm}，
+\[
+I\longmapsto \mathrm{Fix}(I)
+\]
+把 \(\mathcal I_n\) 识别为满足 \(0\in F\subseteq\{0,\dots,n-1\}\) 的子集格，并把偏序送到包含关系。因而
+\[
+I\preceq K\preceq J
+\quad\Longleftrightarrow\quad
+\mathrm{Fix}(I)\subseteq \mathrm{Fix}(K)\subseteq \mathrm{Fix}(J).
+\]
+于是
+\[
+m_{I,J}
+=
+\frac{\kappa(J)}{\kappa(I)}
+=
+\prod_{i\in \mathrm{Fix}(J)\setminus \mathrm{Fix}(I)}q_i
+\]
+确为平方自由整数。
+
+对任意 \(K\in[I,J]\)，同样有
+\[
+\Phi_{I,J}(K)
+=
+\frac{\kappa(K)}{\kappa(I)}
+=
+\prod_{i\in \mathrm{Fix}(K)\setminus \mathrm{Fix}(I)}q_i.
+\]
+当 \(K\) 在区间 \([I,J]\) 内变化时，\(\mathrm{Fix}(K)\setminus \mathrm{Fix}(I)\) 恰遍历
+\(\mathrm{Fix}(J)\setminus \mathrm{Fix}(I)\) 的全部子集，故 \(\Phi_{I,J}(K)\) 恰遍历 \(m_{I,J}\) 的全部正因子。于是 \(\Phi_{I,J}\) 为双射。
+
+再由定理 \ref{thm:killo-chain-interior-godel-gcd-lcm}，
+\[
+\kappa(K_1\wedge K_2)=\gcd(\kappa(K_1),\kappa(K_2)),
+\qquad
+\kappa(K_1\vee K_2)=\mathrm{lcm}(\kappa(K_1),\kappa(K_2)).
+\]
+而 \(\Phi_{I,J}(K_\nu)\) 的素因子都来自 \(\mathrm{Fix}(J)\setminus \mathrm{Fix}(I)\)，故与 \(\kappa(I)\) 互素，从而
+\[
+\gcd(\kappa(K_1),\kappa(K_2))
+=
+\kappa(I)\,
+\gcd\!\bigl(\Phi_{I,J}(K_1),\Phi_{I,J}(K_2)\bigr),
+\]
+\[
+\mathrm{lcm}(\kappa(K_1),\kappa(K_2))
+=
+\kappa(I)\,
+\mathrm{lcm}\!\bigl(\Phi_{I,J}(K_1),\Phi_{I,J}(K_2)\bigr).
+\]
+两边同除以 \(\kappa(I)\) 即得所述运算相容性。证毕。
+\end{proof}
+
+\begin{corollary}[链内算子区间的 Möbius 函数与特征多项式的整数退化]\label{cor:xi-time-part65d-chain-interval-mobius-characteristic-arithmetic}
+沿用定理 \ref{thm:xi-time-part65d-chain-interior-interval-squarefree-divisor-isomorphism} 的记号。则对任意 \(I\preceq J\)，有
+\[
+\mu_{\mathcal I_n}(I,J)=\mu(m_{I,J}),
+\]
+其中右端 \(\mu\) 表示经典整数 Möbius 函数。若 \(\omega(m)\) 表示整数 \(m\) 的不同素因子个数，则区间 \([I,J]\) 的特征多项式满足
+\[
+\chi_{[I,J]}(t)=(t-1)^{\omega(m_{I,J})}.
+\]
+\end{corollary}
+\begin{proof}
+把
+\[
+m_{I,J}=\prod_{r=1}^{s}p_r
+\]
+写成互异素数乘积，则 \(\{d\in\NN:\ d\mid m_{I,J}\}\) 恰是秩为 \(s=\omega(m_{I,J})\) 的 Boolean 格。由定理
+\ref{thm:xi-time-part65d-chain-interior-interval-squarefree-divisor-isomorphism}，区间 \([I,J]\) 与该 Boolean 格同构，故其 Möbius 函数为
+\[
+(-1)^s=\mu(m_{I,J}),
+\]
+而特征多项式即
+\[
+(t-1)^s=(t-1)^{\omega(m_{I,J})}.
+\]
+证毕。
+\end{proof}
+
 \begin{theorem}[链内算子算术化的 Dirichlet 生成函数、矩母函数与 Hoeffding 型偏差界]\label{thm:xi-time-part65d-chain-interior-dirichlet-mgf-hoeffding}
 沿用定理 \ref{thm:xi-time-part65d-chain-interior-boolean-arithmeticization} 的记号，并在 \(\mathcal I_n\) 上取均匀分布。定义随机变量
 \[
