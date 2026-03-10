@@ -1,5 +1,5 @@
 \subsection{prime-slice 最优实现计数、多步分支极小字母表与 Smith 核谱原子化}\label{subsec:conclusion-primeslice-multistep-branch-smith-atomicity}
-沿用定理 \ref{thm:killo-layered-prime-slices-finite-depth}、定理 \ref{thm:xi-layered-primeslice-local-alphabet-fibermax}、定理 \ref{thm:killo-natural-extension-branch-register} 与定理 \ref{thm:killo-smith-loss-spectrum} 的记号。前述链条已经分别给出有限深度 prime-slice 外置的逐层可逆化、自然扩张的一阶分支寄存器实现，以及 Smith \(\,p\)-核谱的局部恢复与离散曲率公式。由此还可进一步抽出下列四条彼此闭合的结论：prime-slice 最优实现空间的精确计数、多步前史的极小单符号字母表律、\(p\)-核谱函数的离散凹完全分类，以及相应原子基 \(\min(k,\ell)\) 的自由交换幺半群结构。
+沿用定理 \ref{thm:killo-layered-prime-slices-finite-depth}、定理 \ref{thm:xi-layered-primeslice-local-alphabet-fibermax}、定理 \ref{thm:killo-natural-extension-branch-register} 与定理 \ref{thm:killo-smith-loss-spectrum} 的记号。前述链条已经分别给出有限深度 prime-slice 外置的逐层可逆化、自然扩张的一阶分支寄存器实现，以及 Smith \(\,p\)-核谱的局部恢复与离散曲率公式。由此还可进一步抽出下列五条彼此闭合的结论：prime-slice 最优实现空间的精确计数、多步前史的极小单符号字母表律、\(p\)-核谱函数的离散凹完全分类、相应原子基 \(\min(k,\ell)\) 的自由交换幺半群结构，以及有限深度精确 prime-slice 外置与有限秩加法账本之间的严格不相容性。
 
 \begin{theorem}[最优分层 prime-slice 外置的实现数具有 falling-factorial 乘积公式]\label{thm:conclusion-primeslice-optimal-implementations-falling-factorial}
 设
@@ -287,7 +287,54 @@ f_{A\oplus B,p}=f_{A,p}+f_{B,p}.
 直接读出：\(\Delta f(1)\) 统计全部原子数，平台起点是最大原子高度，而平台值是所有原子高度之和。证毕。
 \end{proof}
 
+\begin{theorem}[有限深度 prime-slice 精确外置与有限秩加法账本严格不相容]\label{thm:conclusion-primeslice-finite-depth-ledger-incompatibility}
+沿用定理 \ref{thm:killo-layered-prime-slices-finite-depth} 的可数集合塔
+\[
+X_0\xrightarrow{\pi_0}X_1\xrightarrow{\pi_1}\cdots\xrightarrow{\pi_{k-1}}X_k
+\]
+及其单射外置
+\[
+\Phi:X_0\longrightarrow X_k\times \ZZ_{>0}.
+\]
+取任意单射
+\[
+\iota:\NN_{\times}\hookrightarrow X_0
+\]
+与任意集合论单射
+\[
+J:X_k\times \ZZ_{>0}\hookrightarrow \ZZ,
+\]
+并定义
+\[
+e:=J\circ \Phi\circ \iota:\NN_{\times}\to \ZZ.
+\]
+则 \(e\) 为单射，并且不存在有限生成交换群 \(L\) 与映射
+\[
+s:\NN_{\times}\to L
+\]
+使得
+\[
+\Psi(n):=(e(n),s(n))
+\]
+成为单射幺半群同态
+\[
+\Psi:(\NN_{\times},\times)\hookrightarrow (\ZZ\oplus L,+).
+\]
+换言之，有限深度 prime-slice 外置可以严格精确，但任何试图把该精确外置进一步压缩为有限秩加法账本的方案都必然失败。
+\end{theorem}
+\begin{proof}
+由 \(\iota\)、\(\Phi\) 与 \(J\) 的单射性，复合映射
+\[
+e=J\circ \Phi\circ \iota
+\]
+本身是 \(\NN_{\times}\to\ZZ\) 的单射。若存在所述有限生成交换群 \(L\) 与映射 \(s\)，则
+\[
+\Psi(n)=(e(n),s(n))
+\]
+恰给出 \(e\) 的一个有限秩同态化账本。于是定理 \ref{thm:killo-godel-compression-not-finite-rank-homologizable} 直接排除这种可能性。故此类 \(\Psi\) 不存在。证毕。
+\end{proof}
+
 \noindent
-由此，分层 prime-slice 外置、自然扩张分支寄存器与 Smith 局部核谱在结论层完成了四重闭合：最优局部外置不但存在，而且其实现空间可被精确计数；\(\ell\)-步前史的最小单符号字母表不再需要逐层粗估，而被最大 \(\ell\)-步分支数严格锁定；\(p\)-核谱函数恰由离散凹且最终平坦的整数函数完全刻画，并在直和下以 \(\min(k,\ell)\) 为原子形成自由交换幺半群。因而局部资源的计数、复杂度、分类与原子化都已可完全显式化；真正的结构障碍不在这些局部可逆化机制本身，而在于试图把逐层、逐素数、逐高度的自由度压缩到统一且有限秩的全局审计平台时，有限秩账本障碍与外置压缩障碍才会集中显现。
+由此，分层 prime-slice 外置、自然扩张分支寄存器与 Smith 局部核谱在结论层完成了五重闭合：最优局部外置不但存在，而且其实现空间可被精确计数；\(\ell\)-步前史的最小单符号字母表不再需要逐层粗估，而被最大 \(\ell\)-步分支数严格锁定；\(p\)-核谱函数恰由离散凹且最终平坦的整数函数完全刻画，并在直和下以 \(\min(k,\ell)\) 为原子形成自由交换幺半群；同时，有限深度 prime-slice 外置虽然能够严格实现精确恢复，但任何试图把这种精确性同态压缩为有限秩加法账本的方案都会被素数自由度障碍立即排除。因而局部资源的计数、复杂度、分类、原子化与全局不可线性化之间，被统一压缩为同一条精确而不可退化的 prime-slice 结构链。
 
 \endinput

@@ -1,0 +1,181 @@
+\subsection{屏幕精确化的收缩拟阵结构与平方自由 RT 极小割的保序嵌套}\label{subsec:conclusion-screen-rt-laminar-matroid-completion}
+沿用 dyadic 边界全息中的屏幕核、边界行拟阵与 Gödel--Ryu--Takayanagi 切割原理的记号。前述链条已经把 exactization 代价编译为收缩拟阵上的最小基问题，并把平方自由权下的 RT 功能识别为离散最小割。由此还可进一步抽出如下两条后果：部分屏幕的加权精确化只依赖于其在可见秩拟阵中的独立核，而任意层状边界族都可选取与包含偏序相容的极小割系。
+
+\begin{theorem}[部分屏幕精确化的收缩拟阵独立核不变性]\label{thm:conclusion-screen-exactization-independent-kernel}
+沿用定理 \ref{thm:xi-time-part65a-weighted-exactization-matroid-top-gap} 的记号。令
+\[
+M_{m,n}:=\bigl(\overrightarrow{\mathcal F_m^{n-1}},r\bigr),
+\qquad
+\rho_{m,n}:=2^{mn}.
+\]
+给定部分屏幕
+\[
+S_0\subseteq \overrightarrow{\mathcal F_m^{n-1}},
+\]
+取 \(I_0\subseteq S_0\) 为任一极大独立子集，并给定非负权
+\[
+c:\overrightarrow{\mathcal F_m^{n-1}}\setminus S_0\to \RR_{\ge 0}.
+\]
+定义最小追加代价
+\[
+\kappa_c(S_0):=
+\min\Bigl\{
+\sum_{\vec f\in T}c(\vec f):
+\ T\subseteq \overrightarrow{\mathcal F_m^{n-1}}\setminus S_0,\
+\ker f_{S_0\cup T}=0
+\Bigr\}.
+\]
+则有
+\[
+\kappa_c(S_0)
+=
+\min\Bigl\{
+\sum_{\vec f\in B}c(\vec f):
+\ B\subseteq \overrightarrow{\mathcal F_m^{n-1}}\setminus S_0,\
+\ B\text{ 为 }M_{m,n}/I_0\text{ 的一组基}
+\Bigr\}.
+\]
+特别地，在无权情形 \(c\equiv 1\) 下，
+\[
+\min\Bigl\{
+|T|:
+\ T\subseteq \overrightarrow{\mathcal F_m^{n-1}}\setminus S_0,\
+\ \ker f_{S_0\cup T}=0
+\Bigr\}
+=
+\rho_{m,n}-r(S_0)
+=
+\delta(S_0).
+\]
+\end{theorem}
+\begin{proof}
+由于 \(I_0\subseteq S_0\) 是极大独立子集，故
+\[
+r(I_0)=r(S_0),
+\qquad
+S_0\subseteq \operatorname{cl}_{M_{m,n}}(I_0).
+\]
+于是对任意
+\[
+T\subseteq \overrightarrow{\mathcal F_m^{n-1}}\setminus S_0
+\]
+都有
+\[
+r(S_0\cup T)=r(I_0\cup T).
+\]
+因此
+\[
+\ker f_{S_0\cup T}=0
+\quad\Longleftrightarrow\quad
+r(S_0\cup T)=\rho_{m,n}
+\quad\Longleftrightarrow\quad
+r(I_0\cup T)=\rho_{m,n}.
+\]
+换言之，精确化 \(S_0\) 与精确化 \(I_0\) 的可行追加集完全一致。
+
+现在把权函数延拓为
+\[
+\widetilde c(\vec f):=
+\begin{cases}
+0, & \vec f\in S_0\setminus I_0,\\
+c(\vec f), & \vec f\notin S_0.
+\end{cases}
+\]
+对任意 \(\vec f\in S_0\setminus I_0\)，由 \(\vec f\in \operatorname{cl}(I_0)\) 得
+\[
+r(I_0\cup\{\vec f\})=r(I_0),
+\]
+故 \(\vec f\) 在收缩拟阵 \(M_{m,n}/I_0\) 中是 loop，从而不可能属于任何基。于是把定理 \ref{thm:xi-time-part65a-weighted-exactization-matroid-top-gap} 作用于屏幕 \(I_0\) 与权函数 \(\widetilde c\)，便得到
+\[
+\kappa_c(S_0)
+=
+\min\Bigl\{
+\sum_{\vec f\in B}\widetilde c(\vec f):
+\ B\text{ 为 }M_{m,n}/I_0\text{ 的一组基}
+\Bigr\},
+\]
+而所有此类基自动落在
+\[
+\overrightarrow{\mathcal F_m^{n-1}}\setminus S_0
+\]
+中，故上式即化为所述公式。
+
+当 \(c\equiv 1\) 时，所有基的基数都等于
+\[
+\rho_{m,n}-r(I_0)=\rho_{m,n}-r(S_0),
+\]
+再由定理 \ref{thm:spg-screen-rank-matroid-supermodularity} 中
+\[
+\delta(S_0)=\rho_{m,n}-r(S_0)
+\]
+即得无权情形的结论。证毕。
+\end{proof}
+
+\begin{theorem}[平方自由 RT 极小割对层状边界族的保序嵌套]\label{thm:conclusion-squarefree-rt-laminar-nesting}
+沿用定理 \ref{thm:spg-godel-rt-mincut-uniqueness-ssa} 的记号，并记
+\[
+f(S):=\sum_{e\in\delta(S)}\log q_e.
+\]
+若
+\[
+A\subseteq B\subseteq \partial V(\Gamma_m),
+\]
+且 \(S_A,S_B\) 分别实现 \(\mathsf S_{\mathrm{RT}}(A)\) 与 \(\mathsf S_{\mathrm{RT}}(B)\)，则
+\[
+S_A\cap S_B
+\]
+仍实现 \(\mathsf S_{\mathrm{RT}}(A)\)，而
+\[
+S_A\cup S_B
+\]
+仍实现 \(\mathsf S_{\mathrm{RT}}(B)\)。
+
+进一步，对任意层状边界族
+\[
+\mathcal L\subseteq 2^{\partial V(\Gamma_m)},
+\]
+都可递归选取一族极小解 \((S_A^\ast)_{A\in\mathcal L}\)，使得
+\[
+A\subseteq B
+\quad\Longrightarrow\quad
+S_A^\ast\subseteq S_B^\ast.
+\]
+并且由定理 \ref{thm:spg-godel-rt-mincut-uniqueness-ssa} 的割边集唯一性，所选极小解在割边支撑层面是规范的。
+\end{theorem}
+\begin{proof}
+由 \(A\subseteq B\) 可知
+\[
+(S_A\cap S_B)\cap \partial V(\Gamma_m)=A,
+\qquad
+(S_A\cup S_B)\cap \partial V(\Gamma_m)=B,
+\]
+故二者分别是对应极小割问题的可行解。另一方面，定理 \ref{thm:spg-godel-rt-mincut-uniqueness-ssa} 的证明已经给出 \(f\) 的次模性：
+\[
+f(S_A)+f(S_B)\ge f(S_A\cap S_B)+f(S_A\cup S_B).
+\]
+又由于 \(S_A,S_B\) 本身极小，
+\[
+f(S_A)\le f(S_A\cap S_B),
+\qquad
+f(S_B)\le f(S_A\cup S_B).
+\]
+比较两侧即知上式中的全部不等号都必须取等，于是
+\[
+f(S_A)=f(S_A\cap S_B)=\mathsf S_{\mathrm{RT}}(A),
+\]
+\[
+f(S_B)=f(S_A\cup S_B)=\mathsf S_{\mathrm{RT}}(B).
+\]
+故交与并仍分别是 \(A\) 与 \(B\) 的极小解。
+
+对层状边界族 \(\mathcal L\)，按包含偏序自上而下递归选择极小解：先对极大元任取极小解；若 \(A\) 的直接上覆元为 \(B\)，则把 \(A\) 的任一极小解替换为其与已选 \(S_B^\ast\) 的交。由上段结论，该替换仍为 \(A\) 的极小解，并自动满足
+\[
+S_A^\ast\subseteq S_B^\ast.
+\]
+沿偏序递归即得到所需的保序嵌套族。最后，割边支撑的规范性正是定理 \ref{thm:spg-godel-rt-mincut-uniqueness-ssa} 中平方自由极小割唯一性的直接推论。证毕。
+\end{proof}
+
+\noindent
+由此，dyadic 屏幕 exactization 与平方自由 RT 极小割在结论层获得了统一的结构压缩：前者说明加权补全面积只依赖于部分屏幕的独立核，而非依赖于其中的冗余观测；后者则说明在层状边界数据上，极小割可被选成与包含偏序相容的保序系统。于是，拟阵收缩、精确回放与 RT 型极小化不再是三条并列技术链，而是同一组可递归调用的屏幕--边界优化法则。
+
+\endinput
