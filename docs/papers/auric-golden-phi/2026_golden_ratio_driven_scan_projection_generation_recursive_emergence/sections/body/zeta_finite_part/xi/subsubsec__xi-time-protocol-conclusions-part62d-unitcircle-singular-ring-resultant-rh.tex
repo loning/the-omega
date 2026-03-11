@@ -162,66 +162,201 @@ r_\ast(n,d)
 证毕。
 \end{proof}
 
-\begin{theorem}[相移 Lissajous 的 Chebyshev 显式隐式方程]\label{thm:xi-time-part62d-lissajous-chebyshev-implicit-equation}
+\begin{theorem}[有理玫瑰族的单位圆反推与奇异环消元公式]\label{thm:xi-time-part62d-rational-rose-singular-ring-elimination}
+设 \(n,d\in\NN\) 互素，并考虑复平面参数曲线
+\[
+\gamma_{n,d}:\qquad
+z(\theta):=\cos\!\Bigl(\frac{n}{d}\theta\Bigr)e^{i\theta}.
+\]
+在复化平面上引入坐标 \((z,w)\in\CC^2\)，其中实切片对应 \(w=\bar z\)。记第一类 Chebyshev 多项式为 \(T_d\)。则 \(\gamma_{n,d}(\RR)\) 的 Zariski 闭包满足单一消元关系
+\[
+\boxed{\;
+z^{2n}+w^{2n}-2z^n w^n\,T_d(2zw-1)=0.\;}
+\]
+因此在实平面切片 \(z=x+iy\)、\(w=x-iy\) 上有等价方程
+\[
+\boxed{\;
+\Re\!\bigl((x+iy)^{2n}\bigr)
+=(x^2+y^2)^n\,T_d\!\bigl(2(x^2+y^2)-1\bigr).\;}
+\]
+特别地，单位圆参数所反推出的玫瑰奇异环在 \(\RR[x,y]\) 中被压缩为单一显式关系。
+
+进一步，若记
+\[
+F_{n,d}(z,w):=z^{2n}+w^{2n}-2z^n w^n\,T_d(2zw-1),
+\]
+则原点的切锥由其最低次齐次项
+\[
+F_{n,d}^{[2n]}(z,w)
+=
+z^{2n}+w^{2n}-2(-1)^d z^n w^n
+=
+\bigl(z^n-(-1)^d w^n\bigr)^2
+\]
+给出。于是原点的重数恰为 \(2n\)，且切锥分裂为
+\[
+z=\zeta\,w,
+\qquad
+\zeta^n=(-1)^d,
+\]
+这 \(n\) 条互异方向，各自以重数 \(2\) 出现。等价地，在实切片上其齐次主项可写成
+\[
+\Re(z^{2n})-(-1)^d(z\bar z)^n.
+\]
+\end{theorem}
+\begin{proof}
+取
+\[
+u:=e^{i\theta/d}.
+\]
+则有
+\[
+z=\frac12\bigl(u^{d+n}+u^{d-n}\bigr),
+\qquad
+w=\frac12\bigl(u^{-(d+n)}+u^{-(d-n)}\bigr).
+\]
+于是立刻得到
+\[
+\frac{z}{w}=u^{2d},
+\qquad
+4zw=(u^n+u^{-n})^2.
+\]
+若记
+\[
+U:=u^{2n},
+\]
+则
+\[
+U+U^{-1}=4zw-2.
+\]
+由 Chebyshev 恒等式
+\[
+U^d+U^{-d}
+=
+2T_d\!\Bigl(\frac{U+U^{-1}}{2}\Bigr)
+\]
+可知
+\[
+\Bigl(\frac{z}{w}\Bigr)^n+\Bigl(\frac{w}{z}\Bigr)^n
+=
+U^d+U^{-d}
+=
+2T_d(2zw-1).
+\]
+两边同乘 \(z^n w^n\)，便得到
+\[
+z^{2n}+w^{2n}-2z^n w^n\,T_d(2zw-1)=0.
+\]
+这就给出所示消元关系。
+
+在实切片上代入
+\[
+w=\bar z=x-iy,
+\qquad
+zw=x^2+y^2,
+\qquad
+z^{2n}+w^{2n}=2\Re(z^{2n}),
+\]
+即得
+\[
+\Re\!\bigl((x+iy)^{2n}\bigr)
+=(x^2+y^2)^n\,T_d\!\bigl(2(x^2+y^2)-1\bigr).
+\]
+
+最后，由
+\[
+T_d(-1)=(-1)^d
+\]
+且 \(2zw\) 具有次数 \(2\)，可知 \(F_{n,d}\) 在原点的最低次齐次项正是
+\[
+z^{2n}+w^{2n}-2(-1)^d z^n w^n
+=
+\bigl(z^n-(-1)^d w^n\bigr)^2.
+\]
+故原点重数为 \(2n\)，而切锥由满足 \(\zeta^n=(-1)^d\) 的 \(n\) 条互异方向 \(z=\zeta w\) 组成，并且每条方向都以重数 \(2\) 出现。证毕。
+\end{proof}
+
+\begin{theorem}[Lissajous 图形的单位圆干涉闭包与相位参数的代数化]\label{thm:xi-time-part62d-lissajous-chebyshev-implicit-equation}
 设 \(a,b\in\NN\)、\(\delta\in\RR\)，并定义相移 Lissajous 轨道
 \[
 x(t)=\cos(at+\delta),
 \qquad
 y(t)=\cos(bt).
 \]
-记第一、第二类 Chebyshev 多项式分别为 \(T_k,U_k\)。则该轨道满足显式代数方程
+记第一类 Chebyshev 多项式为 \(T_k\)。则该轨道满足单一代数约束
 \[
 \boxed{\;
-\bigl(T_b(x)-\cos(b\delta)\,T_a(y)\bigr)^2
+T_b(x)^2
+-2\cos(b\delta)\,T_b(x)\,T_a(y)
++T_a(y)^2
 =
-\sin^2(b\delta)\,(1-y^2)\,U_{a-1}(y)^2.\;}
+\sin^2(b\delta).\;}
 \]
-特别地，上式给出该相移 Lissajous 轨道在 \((x,y)\)-平面中的一个规范消元方程。
+特别地，当
+\[
+\cos(b\delta)=0
+\]
+时，上式退化为
+\[
+\boxed{\;
+T_b(x)^2+T_a(y)^2=1.\;}
+\]
+因此，相位参数 \(\delta\) 在坐标环中只通过 \(\cos(b\delta)\)（等价地 \(\sin^2(b\delta)\)）进入。
 \end{theorem}
 \begin{proof}
 令
 \[
-\theta:=bt,
+\alpha:=abt,
 \qquad
-y=\cos\theta.
+c:=\cos(b\delta),
+\qquad
+s:=\sin(b\delta).
 \]
 则
 \[
-T_a(y)=T_a(\cos\theta)=\cos(a\theta)=\cos(abt).
+T_a(y)=\cos(abt)=\cos\alpha.
 \]
 另一方面，由 \(x(t)=\cos(at+\delta)\)，有
 \[
 T_b(x)=T_b(\cos(at+\delta))
 =
-\cos\bigl(b(at+\delta)\bigr)
+\cos(\alpha+b\delta)
 =
-\cos(abt+b\delta).
+c\cos\alpha-s\sin\alpha
+=
+c\,T_a(y)-s\sin\alpha.
 \]
-应用余弦加法公式，
+因此
 \[
-T_b(x)
-=
-\cos(b\delta)\cos(abt)-\sin(b\delta)\sin(abt)
-=
-\cos(b\delta)\,T_a(y)-\sin(b\delta)\sin(a\theta).
+\bigl(T_b(x)-c\,T_a(y)\bigr)^2=s^2\sin^2\alpha.
 \]
-又由第二类 Chebyshev 恒等式，
+再由
 \[
-\sin(a\theta)=\sin\theta\,U_{a-1}(\cos\theta)
-=
-\sin\theta\,U_{a-1}(y).
+\sin^2\alpha=1-\cos^2\alpha=1-T_a(y)^2,
 \]
-两边移项后平方，得到
+得到
 \[
-\bigl(T_b(x)-\cos(b\delta)\,T_a(y)\bigr)^2
+\bigl(T_b(x)-c\,T_a(y)\bigr)^2
 =
-\sin^2(b\delta)\,\sin^2\theta\,U_{a-1}(y)^2.
+s^2\bigl(1-T_a(y)^2\bigr).
 \]
-再用
+展开并整理即得
 \[
-\sin^2\theta=1-\cos^2\theta=1-y^2
+T_b(x)^2-2c\,T_b(x)\,T_a(y)+T_a(y)^2=s^2,
 \]
-即得所示方程。证毕。
+也即
+\[
+T_b(x)^2
+-2\cos(b\delta)\,T_b(x)\,T_a(y)
++T_a(y)^2
+=
+\sin^2(b\delta).
+\]
+当 \(\cos(b\delta)=0\) 时，\(s^2=1\)，故立得
+\[
+T_b(x)^2+T_a(y)^2=1.
+\]
+证毕。
 \end{proof}
 
 \begin{proposition}[相移 Lissajous 复延拓的临界值由 Sylvester 结式完全刻画]\label{prop:xi-time-part62d-lissajous-branch-spectrum-resultant}
