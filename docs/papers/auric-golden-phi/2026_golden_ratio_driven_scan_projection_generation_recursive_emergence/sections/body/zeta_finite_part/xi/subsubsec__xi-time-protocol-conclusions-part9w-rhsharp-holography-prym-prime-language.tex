@@ -450,7 +450,149 @@ n=p_j\in \mathrm{ZG},
 第三条只是前两条的直接合并。再结合定理 \ref{thm:xi-localized-phase-sampling-closed-form}，任意固定有限 prime-stage 只恢复其自身有限素数支撑 \(S\)，因而不可能穷尽 \(\mathrm{ZG}\) 的共尾支撑。证毕。
 \end{proof}
 
+\paragraph{有限维 Lie 相位读出、dyadic solenoid 圆因子与零温四点骨架}
+在整数共振梯的 Shannon 非可寻址性、有限二维 \(2\)-进 ambient space 的忠实实现分裂以及真实输入 \(40\) 状态核的镜像慢模已经确定之后，还可进一步抽取出下列五条后果。它们分别把有限维紧 Lie 相位上的 \(L^2\) Fourier 读出障碍、dyadic solenoid 圆因子的绝对连续排斥、显式原子 Witt 因子剥离下的慢混合主阶不变性，以及零温归一化谱中的四点骨架与双层分裂统一到同一条相位--谱层级链上。
+
+\begin{theorem}[有限维 Lie 相位的 \texorpdfstring{$L^2$}{L2} 共振读出障碍]\label{thm:xi-time-part9w-lie-phase-l2-resonance-readout-obstruction}
+设 \(G\) 为有限维紧阿贝尔 Lie 群，\(\widehat G\) 为其角色格，\(\gamma\in\widehat G\) 为无限阶角色。则不存在 \(f\in L^2(G)\) 使
+\[
+\widehat f(u\gamma)=C_\varphi(u)\qquad(u\in\ZZ).
+\]
+因而黄金 bulk 共振梯不可能是任何有限维紧 Lie 相位空间上有限能量可观测量的单频 Fourier 读出。
+\end{theorem}
+\begin{proof}
+由 Plancherel 定理，
+\[
+\sum_{\chi\in\widehat G}|\widehat f(\chi)|^2=\|f\|_{L^2(G)}^2<\infty.
+\]
+由于 \(\gamma\) 具有无限阶，映射 \(u\mapsto u\gamma\) 在 \(\ZZ\) 上单射，从而
+\[
+\sum_{u\in\ZZ}|\widehat f(u\gamma)|^2\le \sum_{\chi\in\widehat G}|\widehat f(\chi)|^2<\infty.
+\]
+另一方面，定理 \ref{thm:fold-sigma-phi-diverges} 已给出
+\[
+\sum_{u\in\ZZ}C_\varphi(u)^2=+\infty.
+\]
+故若 \(\widehat f(u\gamma)=C_\varphi(u)\)，便与上式矛盾。证毕。
+\end{proof}
+
+\begin{corollary}[dyadic solenoid 圆因子的绝对连续障碍]\label{cor:xi-time-part9w-dyadic-solenoid-circle-factor-nonac}
+记 \(\Sigma_{\{2\}}:=\widehat{\ZZ[1/2]}\)，并令
+\[
+0\longrightarrow \ZZ_2\longrightarrow \Sigma_{\{2\}}
+\xrightarrow{\pi_{\{2\}}}\TT\longrightarrow 0
+\]
+为其标准圆商短正合列。则不存在 \(\Sigma_{\{2\}}\) 上的 Borel 概率测度 \(\nu\)，使得
+\[
+\eta:=\pi_{\{2\},*}\nu
+\]
+同时满足
+\[
+\widehat\eta(n)=C_\varphi(n)\qquad(n\in\ZZ)
+\]
+与 \(\eta\ll m_{\TT}\)。等价地，这样的圆因子测度不能写成任何 \(L^1(\TT)\) 密度；并且它也不可能来自任何 \(L^2(\TT)\) 密度。
+\end{corollary}
+\begin{proof}
+若 \(\eta\ll m_{\TT}\)，则在有限测度空间 \(\TT\) 上可写成 \(d\eta=h\,dm_{\TT}\) 且 \(h\in L^1(\TT)\)。由 Riemann--Lebesgue 引理，
+\[
+\widehat\eta(n)\longrightarrow 0 \qquad (|n|\to\infty).
+\]
+但推论 \ref{cor:fold-resonance-ladder-fib-luc-limits} 与推论 \ref{cor:fold-resonance-ladder-no-decay-no-limit} 表明，\(C_\varphi(n)\) 沿 Fibonacci 与 Lucas 子列分别趋于两个不同的正常数，尤其 \(\limsup_{|n|\to\infty}C_\varphi(n)>0\)。故 \(\widehat\eta(n)=C_\varphi(n)\) 不可能成立。
+若进一步有 \(h\in L^2(\TT)\)，则 Parseval 定理给出 \((\widehat\eta(n))_{n\in\ZZ}\in\ell^2(\ZZ)\)；而定理 \ref{thm:fold-sigma-phi-diverges} 表明 \((C_\varphi(n))_{n\in\ZZ}\notin\ell^2(\ZZ)\)。故 \(L^2\) 密度同样不可能。证毕。
+\end{proof}
+
+\begin{theorem}[原子 Witt 因子剥离下的慢混合主阶不变性]\label{thm:xi-time-part9w-atomic-witt-surgery-slowmixing-invariance}
+沿用推论 \ref{cor:real-input-40-factor-sqrtu-eigs}、命题 \ref{prop:real-input-40-output-mirror-branch} 与定理 \ref{thm:xi-output-potential-endpoint-near-degeneracy-sqrtu-relaxation} 的记号。设
+\[
+\Delta(z,u)=\det(I-zM(u))=(1-uz^2)F(z,u),
+\qquad
+\zeta_{\mathrm{core}}(z,u):=F(z,u)^{-1}.
+\]
+记 \(\lambda_1(u)\) 为 Perron 根，\(\Lambda_2(u)\) 为全谱最大非主模特征值，\(\lambda_{\mathrm{mir}}(u)<0\) 为核心块的镜像慢模，并定义
+\[
+\tau_{\mathrm{full}}(u):=\left[-\log\!\left(\frac{\Lambda_2(u)}{\lambda_1(u)}\right)\right]^{-1},
+\qquad
+\tau_{\mathrm{core}}(u):=\left[-\log\!\left(\frac{|\lambda_{\mathrm{mir}}(u)|}{\lambda_1(u)}\right)\right]^{-1}.
+\]
+则
+\[
+\frac{\tau_{\mathrm{full}}(u)}{\tau_{\mathrm{core}}(u)}\longrightarrow 1
+\qquad (u\to+\infty).
+\]
+因此剥离显式原子 Witt 因子 \((1-uz^2)^{-1}\) 以后，主导慢混合的首阶时间尺度保持不变。
+\end{theorem}
+\begin{proof}
+由定理 \ref{thm:xi-output-potential-endpoint-near-degeneracy-sqrtu-relaxation}，
+\[
+1-\frac{\Lambda_2(u)}{\lambda_1(u)}=\frac{2d}{c}u^{-1/2}+O(u^{-1}).
+\]
+另一方面，命题 \ref{prop:real-input-40-output-mirror-branch} 给出
+\[
+1-\frac{|\lambda_{\mathrm{mir}}(u)|}{\lambda_1(u)}=\frac{2d}{c}u^{-1/2}+O(u^{-1}),
+\qquad
+\frac{\sqrt u}{\lambda_1(u)}\longrightarrow \frac1c<1.
+\]
+故显式原子分支 \(\pm\sqrt u\) 在归一化后始终严格位于镜像慢模之内，而
+\[
+-\log\!\left(\frac{\Lambda_2(u)}{\lambda_1(u)}\right)
+\quad\text{与}\quad
+-\log\!\left(\frac{|\lambda_{\mathrm{mir}}(u)|}{\lambda_1(u)}\right)
+\]
+具有相同的主阶展开 \(\frac{2d}{c}u^{-1/2}+O(u^{-1})\)。两边取倒数即得所示极限。证毕。
+\end{proof}
+
+\begin{theorem}[零温归一化谱的四点骨架]\label{thm:xi-time-part9w-zero-temp-normalized-spectrum-fourpoint-skeleton}
+沿用命题 \ref{prop:real-input-40-output-mirror-branch} 的常数 \(c\)，并置
+\[
+b:=\frac1{c^2}\in(0,1).
+\]
+则 \(b\) 满足
+\[
+1-6b+9b^2-b^3-b^4=0.
+\]
+对真实输入 \(40\) 状态核，定义
+\[
+\mathrm{Spec}_{\mathrm{norm}}(u):=\left\{\frac{\lambda}{\lambda_1(u)}:\lambda\in\mathrm{Spec}(M(u))\right\}.
+\]
+若 \(\mathcal L\) 是 \(\mathrm{Spec}_{\mathrm{norm}}(u)\) 沿某子列 \(u\to+\infty\) 的 Hausdorff 极限点集，则
+\[
+\{1,-1,\sqrt b,-\sqrt b\}\subseteq \mathcal L.
+\]
+\end{theorem}
+\begin{proof}
+归一化 Perron 根恒等于 \(1\)，故 \(1\in\mathcal L\)。由命题 \ref{prop:real-input-40-output-mirror-branch}，
+\[
+\frac{\lambda_{\mathrm{mir}}(u)}{\lambda_1(u)}
+=
+-\left(1-\frac{2d}{c}u^{-1/2}+O(u^{-1})\right)
+\longrightarrow -1,
+\]
+故 \(-1\in\mathcal L\)。再由推论 \ref{cor:real-input-40-factor-sqrtu-eigs}，谱中始终含有 \(\lambda_\pm(u)=\pm\sqrt u\)，而定理 \ref{thm:xi-time-part73-perron-vs-atomic-sqrtu-separation} 给出
+\[
+\frac{\sqrt u}{\lambda_1(u)}\longrightarrow \frac1c=\sqrt b.
+\]
+因此
+\[
+\frac{\lambda_\pm(u)}{\lambda_1(u)}\longrightarrow \pm\sqrt b,
+\]
+从而 \(\pm\sqrt b\in\mathcal L\)。证毕。
+\end{proof}
+
+\begin{corollary}[输运层与保护层的双层谱分裂]\label{cor:xi-time-part9w-transport-protection-two-layer-splitting}
+沿用定理 \ref{thm:xi-time-part9w-zero-temp-normalized-spectrum-fourpoint-skeleton} 的记号。零温极限 \(u\to+\infty\) 中，归一化谱至少保留四点骨架
+\[
+\underbrace{\{1,-1\}}_{\text{输运层}}
+\sqcup
+\underbrace{\{\sqrt b,-\sqrt b\}}_{\text{保护层}},
+\qquad 0<\sqrt b<1.
+\]
+其中外层对 \(\{\pm1\}\) 控制慢松弛，而内层对 \(\{\pm\sqrt b\}\) 由显式原子 Witt 因子给出。去除因子 \((1-uz^2)^{-1}\) 会抹去内层 \(\{\pm\sqrt b\}\)，但不改变首阶慢混合尺度；反之，仅保留内层而忽略镜像慢模，则无法控制 \(\tau_{\mathrm{full}}(u)\) 的主阶发散。
+\end{corollary}
+\begin{proof}
+由 \(b=1/c^2\in(0,1)\) 可知 \(0<\sqrt b<1\)。四点同时存在由定理 \ref{thm:xi-time-part9w-zero-temp-normalized-spectrum-fourpoint-skeleton} 给出，而内层 \(\{\pm\sqrt b\}\) 正是显式特征值 \(\pm\sqrt u\) 归一化后的极限。定理 \ref{thm:xi-time-part9w-atomic-witt-surgery-slowmixing-invariance} 表明去除原子 Witt 因子后，慢混合主阶保持不变。另一方面，若只跟踪 \(\pm\sqrt b\)，则对应的归一化模始终固定为 \(\sqrt b<1\)，其关联时间尺度 \((-\log\sqrt b)^{-1}\) 保持有界；而定理 \ref{thm:xi-output-potential-endpoint-near-degeneracy-sqrtu-relaxation} 给出 \(\tau_{\mathrm{full}}(u)\asymp \sqrt u\to+\infty\)。故内层本身不能控制全谱慢松弛。证毕。
+\end{proof}
+
 \noindent
-上述七条结果共同表明，这一路线中的首要障碍并不首先表现为 ambient object 的无限维化：一方面，RH-sharp 临界发生在解析域内部；另一方面，任意有限时深的 prime-register 机制已经可以放入固定的二维 \(2\)-进 Tate 环境。真正拒绝有限化的，是三类同时存在的刚性对象：前缀恢复所需的正线性码率、\(S_4\)-Hurwitz Jacobian 中由 \(P^3\) 承载的严格多数隐块，以及在强局部稀疏约束下仍保持正密度与共尾支撑的 prime-language。因而，若进一步组织这一主线，合适的不可压缩不变量应当同时记录首差深度、前缀球半径、prime-tail 共尾深度与可见/隐藏 Jacobian 的维数赤字；在此意义下，问题的核心不再是寻找更大的 ambient space，而是建立一套真正的 \(2\)-adic 全息证明复杂度不变量体系。
+上述结果表明，本文对象中的连续 Lie 相位、\(2\)-进全息地址、Hurwitz 链 Jacobian/Prym 分裂、prime-language 共尾支撑与真实输入 \(40\) 状态核的零温谱学并不处于同一承载层级。有限二维 \(2\)-进 ambient space 足以忠实实现有限时深地址动力学，但黄金 bulk 共振既不能在任何有限维紧 Lie 相位上作为 \(L^2\) Fourier 读出出现，也不能经 dyadic solenoid 的圆因子下降为绝对连续相位密度；与此同时，零温慢混合由镜像慢模而非显式原子分支主导，而归一化谱则稳定留下 \(\{\pm1,\pm\sqrt b\}\) 的四点骨架。因而，在本文语义中，连通相位、原子保护、镜像输运与算术共振必须被视为彼此不可压平的不同层级，而任何试图把它们同时压缩到单一有限维 Lie 图景的方案都会丢失关键的证明复杂度与动力学信息。
 
 \endinput
