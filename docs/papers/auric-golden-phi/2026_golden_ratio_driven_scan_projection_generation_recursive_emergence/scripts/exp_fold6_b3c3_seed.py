@@ -404,7 +404,7 @@ def main() -> None:
     _write_tex_table(
         report.b3_dict,
         caption="A deterministic identification (dictionary) of $X_6^{\\mathrm{cyc}}$ with the $B_3$ root system (choice of normalization).",
-        label="tab:fold6_b3c3_root_dictionary_b3",
+        label="tab:fold6_b3c3_root_dictionary_B3",
         out_path=Path(args.tex_b3),
     )
     _write_tex_table(
