@@ -56,6 +56,99 @@ S_s(m)
 从而两者与纤维多重度多重集完全等价。证毕。
 \end{proof}
 
+\begin{theorem}[有限支撑纤维谱的截断矩完全可逆性]\label{thm:fold-fiber-truncated-moment-complete-inversion}
+固定分辨率 \(m\)，记
+\[
+M_m:=\max_{x\in X_m}d_m(x),
+\qquad
+h_m(d):=\#\{x\in X_m:\ d_m(x)=d\}
+\qquad(1\le d\le M_m),
+\]
+并把零阶矩约定为
+\[
+S_0(m):=|X_m|,
+\qquad
+S_q(m):=\sum_{x\in X_m}d_m(x)^q
+\qquad(q\ge 1).
+\]
+则向量
+\[
+\mathbf h_m:=(h_m(1),\dots,h_m(M_m))^{\mathsf T}
+\]
+已由有限截断矩
+\[
+\mathbf s_m:=(S_0(m),S_1(m),\dots,S_{M_m-1}(m))^{\mathsf T}
+\]
+唯一决定。更精确地，若定义 Vandermonde 型矩阵
+\[
+V_{M_m}:=(d^q)_{\substack{0\le q\le M_m-1\\ 1\le d\le M_m}},
+\]
+则
+\[
+\mathbf s_m=V_{M_m}\mathbf h_m,
+\qquad
+\det V_{M_m}=\prod_{1\le i<j\le M_m}(j-i)\neq 0.
+\]
+因而固定 \(m\) 时，连续容量曲线 \(\mathcal C_m^{\mathrm{cont}}\) 与全部正矩谱 \(\{S_q(m)\}_{q>0}\) 不仅互为充分统计量，而且事实上已经由有限个矩
+\[
+S_0(m),S_1(m),\dots,S_{M_m-1}(m)
+\]
+完全确定。
+
+特别地，在 window-\(6\) 的 bin-fold 审计中，已知纤维取值仅落在
+\[
+\{2,3,4\},
+\]
+故 \(M_6=4\) 且
+\[
+S_0(6),S_1(6),S_2(6),S_3(6)
+\]
+便足以唯一恢复完整直方图；对应解恰为
+\[
+h_6(1)=0,\qquad h_6(2)=8,\qquad h_6(3)=4,\qquad h_6(4)=9.
+\]
+\end{theorem}
+\begin{proof}
+按纤维大小分层，对每个整数 \(q\ge 0\) 都有
+\[
+S_q(m)=\sum_{x\in X_m}d_m(x)^q=\sum_{d=1}^{M_m}h_m(d)\,d^q.
+\]
+把 \(q=0,1,\dots,M_m-1\) 这些等式堆叠起来，正得
+\[
+\mathbf s_m=V_{M_m}\mathbf h_m.
+\]
+而
+\[
+\det V_{M_m}=\prod_{1\le i<j\le M_m}(j-i)\neq 0
+\]
+是标准 Vandermonde 行列式，故 \(V_{M_m}\) 可逆，从而 \(\mathbf h_m\) 被 \(\mathbf s_m\) 唯一决定。
+
+一旦 \(\{h_m(d)\}_{1\le d\le M_m}\) 已知，尾计数函数与连续容量曲线可显式恢复为
+\[
+N_m(t)=\sum_{d\ge t}h_m(d)
+\qquad(t\in\NN),
+\]
+以及
+\[
+\mathcal C_m^{\mathrm{cont}}(T)=\sum_{d=1}^{M_m}h_m(d)\min(d,T).
+\]
+故固定分辨率上的容量曲线已由上述有限截断矩完全决定。
+
+最后，在 \(m=6\) 时，由 bin-fold 的显式纤维直方图
+\(
+2:8,\ 3:4,\ 4:9
+\)
+可知 \(M_6=4\) 且 \(h_6(1)=0\)。因此前四个矩
+\(
+S_0(6),S_1(6),S_2(6),S_3(6)
+\)
+经可逆矩阵 \(V_4\) 唯一解出
+\(
+(0,8,4,9)^{\mathsf T}
+\)。
+证毕。
+\end{proof}
+
 \begin{theorem}[顶端仿射窗控制的有限层冻结估计]\label{thm:fold-top-affine-window-controls-finite-freezing}
 固定分辨率 \(m\)，并记
 \[
