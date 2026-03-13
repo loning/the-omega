@@ -353,6 +353,167 @@ u_{i-1}
 绝对收敛。又每个因子都落在 \((0,1]\) 内，故其极限严格正。第 \(3\) 条成立。证毕。
 \end{proof}
 
+\begin{theorem}[Zeckendorf--Gödel 自然密度常数的行比值 Riccati 压缩与 Euler 乘积表示]\label{thm:xi-time-part62dcb-zg-density-row-ratio-riccati-product}
+沿用命题 \ref{prop:xi-zg-prefix-recursion-monotone-tail-certificate} 的记号。对每个 \(n\ge 1\)，定义
+\[
+M_n:=
+\begin{pmatrix}
+\dfrac{p_n}{p_n+1} & \dfrac{p_n}{p_n+1}\\[1mm]
+\dfrac{1}{p_n+1} & 0
+\end{pmatrix},
+\]
+\[
+(x_n,y_n):=(1,1)\,M_1M_2\cdots M_n,
+\qquad
+r_n:=\frac{y_n}{x_n},
+\qquad
+r_0:=1.
+\]
+则有递推关系
+\[
+r_n=\frac{p_n}{p_n+r_{n-1}},
+\qquad
+x_n=x_{n-1}\frac{p_n+r_{n-1}}{p_n+1}.
+\]
+并且 \(ZG\) 的自然密度常数满足
+\[
+\delta_{\mathrm{ZG}}
+=
+\frac{1}{\zeta(2)}\lim_{n\to\infty}x_n
+=
+\frac{1}{\zeta(2)}
+\prod_{n=1}^{\infty}\frac{p_n+r_{n-1}}{p_n+1}.
+\]
+换言之，归一化前缀质量的 \(2\times 2\) 素数传递链可沿行比值坐标完全压缩为一条一维 Riccati--Euler 递推。
+\end{theorem}
+\begin{proof}
+由命题 \ref{prop:xi-zg-prefix-recursion-monotone-tail-certificate}，
+\[
+(a_0,b_0)=(1,0),
+\qquad
+u_n:=a_n+b_n,
+\]
+并且对 \(n\ge 1\) 有
+\[
+a_n=\frac{p_n}{p_n+1}(a_{n-1}+b_{n-1}),
+\qquad
+b_n=\frac{a_{n-1}}{p_n+1}.
+\]
+因此
+\[
+(u_n,a_n)
+=(u_{n-1},a_{n-1})
+\begin{pmatrix}
+\dfrac{p_n}{p_n+1} & \dfrac{p_n}{p_n+1}\\[1mm]
+\dfrac{1}{p_n+1} & 0
+\end{pmatrix}
+=(u_{n-1},a_{n-1})M_n.
+\]
+再由 \((u_0,a_0)=(1,1)\) 归纳可得
+\[
+(x_n,y_n)=(u_n,a_n)
+\qquad (n\ge 0).
+\]
+特别地，
+\[
+\delta_{\mathrm{ZG}}
+=
+\frac{1}{\zeta(2)}\lim_{n\to\infty}u_n
+=
+\frac{1}{\zeta(2)}\lim_{n\to\infty}x_n.
+\]
+
+另一方面，由矩阵乘法，
+\[
+x_n=\frac{p_nx_{n-1}+y_{n-1}}{p_n+1},
+\qquad
+y_n=\frac{p_nx_{n-1}}{p_n+1}.
+\]
+于是
+\[
+r_n
+=
+\frac{y_n}{x_n}
+=
+\frac{p_nx_{n-1}}{p_nx_{n-1}+y_{n-1}}
+=
+\frac{p_n}{p_n+r_{n-1}},
+\]
+\[
+x_n
+=
+x_{n-1}\frac{p_n+r_{n-1}}{p_n+1}.
+\]
+对后一式迭代，得到
+\[
+x_n=\prod_{j=1}^{n}\frac{p_j+r_{j-1}}{p_j+1}.
+\]
+最后令 \(n\to\infty\)，即得所示 Euler 乘积表示。证毕。
+\end{proof}
+
+\begin{corollary}[Zeckendorf--Gödel 密度乘积的二阶素数误差可和性与严格正性]\label{cor:xi-time-part62dcb-zg-density-second-order-summability}
+沿用定理 \ref{thm:xi-time-part62dcb-zg-density-row-ratio-riccati-product} 的记号。则对一切 \(n\ge 1\)，有
+\[
+0<1-r_n=\frac{r_{n-1}}{p_n+r_{n-1}}\le \frac{1}{p_n},
+\]
+并且对一切 \(n\ge 2\)，有
+\[
+0<
+1-\frac{p_n+r_{n-1}}{p_n+1}
+=
+\frac{1-r_{n-1}}{p_n+1}
+\le
+\frac{1}{p_{n-1}(p_n+1)}.
+\]
+因此
+\[
+\sum_{n\ge 2}\left|1-\frac{p_n+r_{n-1}}{p_n+1}\right|<\infty,
+\]
+故
+\[
+\prod_{n=1}^{\infty}\frac{p_n+r_{n-1}}{p_n+1}
+\]
+绝对收敛到一个严格正数；特别地，
+\[
+\delta_{\mathrm{ZG}}>0.
+\]
+\end{corollary}
+\begin{proof}
+由定理 \ref{thm:xi-time-part62dcb-zg-density-row-ratio-riccati-product} 的递推
+\[
+r_n=\frac{p_n}{p_n+r_{n-1}}
+\]
+直接得到
+\[
+1-r_n=\frac{r_{n-1}}{p_n+r_{n-1}},
+\]
+并由 \(0<r_{n-1}\le 1\) 推出
+\[
+0<1-r_n\le \frac{1}{p_n}.
+\]
+再由
+\[
+1-\frac{p_n+r_{n-1}}{p_n+1}
+=
+\frac{1-r_{n-1}}{p_n+1}
+\]
+以及上一步对 \(r_{n-1}\) 的估计
+\[
+1-r_{n-1}\le \frac{1}{p_{n-1}},
+\]
+便得第二组不等式。
+
+由于 \(p_n\ge n+1\)，故
+\[
+\sum_{n\ge 2}\frac{1}{p_{n-1}(p_n+1)}<\infty.
+\]
+于是无穷乘积的偏离 \(1\) 的量绝对可和，从而该乘积绝对收敛。又每个因子都位于 \((0,1]\) 内，故其极限严格为正。最后乘上 \(1/\zeta(2)>0\)，即得
+\[
+\delta_{\mathrm{ZG}}>0.
+\]
+证毕。
+\end{proof}
+
 \begin{theorem}[Zeckendorf--Gödel Dirichlet 链的 Riccati 纯量化与正留数简单极点]\label{thm:xi-time-part62dcb-zg-dirichlet-riccati-residue}
 沿用定理 \ref{thm:killo-zg-dirichlet-matrix-euler} 的递推记号。对正实参数 \(\sigma>1\)，记
 \[
