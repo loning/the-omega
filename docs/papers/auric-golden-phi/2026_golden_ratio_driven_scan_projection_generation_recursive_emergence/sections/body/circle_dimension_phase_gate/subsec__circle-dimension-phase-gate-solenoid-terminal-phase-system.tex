@@ -57,6 +57,115 @@ f:\Sigma\longrightarrow \Sigma_S
 唯一性同理由对偶化的反变等价给出。证毕。
 \end{proof}
 
+\begin{theorem}[\texorpdfstring{$S$}{S}-solenoid 的泛单轨道生成]\label{thm:cdim-s-solenoid-generic-monothetic}
+设 \(S\subset\mathbb P\) 为有限素数集，并记
+\[
+G_S:=\ZZ[S^{-1}],
+\qquad
+\Sigma_S:=\widehat{G_S}.
+\]
+则 \(\Sigma_S\) 是 monothetic：存在 \(x\in \Sigma_S\) 使
+\[
+\overline{\langle x\rangle}=\Sigma_S.
+\]
+更强地，拓扑生成元集合
+\[
+\operatorname{Gen}(\Sigma_S)
+:=
+\{x\in \Sigma_S:\ \overline{\langle x\rangle}=\Sigma_S\}
+\]
+是 \(\Sigma_S\) 中的稠密 \(G_\delta\) 集，并且具有 Haar 满测度。
+\end{theorem}
+\begin{proof}
+由于 \(G_S\) 可数离散，\(\Sigma_S\) 为紧可度量交换群。
+对每个非零 \(a\in G_S\)，定义角色
+\[
+\chi_a:\Sigma_S\to \TT,
+\qquad
+\chi_a(x):=x(a),
+\]
+并记
+\[
+K_a:=\ker \chi_a.
+\]
+由于子群 \(\langle a\rangle\le G_S\) 同构于 \(\ZZ\)，对短正合列
+\[
+0\longrightarrow \langle a\rangle
+\longrightarrow G_S
+\longrightarrow G_S/\langle a\rangle
+\longrightarrow 0
+\]
+作 Pontryagin 对偶，可得满射
+\[
+\Sigma_S\longrightarrow \widehat{\langle a\rangle}\cong \TT
+\]
+且其核正是 \(K_a\)。因此 \(K_a\) 是 proper closed subgroup，且
+\[
+\Sigma_S/K_a\cong \TT
+\]
+非离散，所以 \(K_a\) 不是开子群。
+
+若紧群中的闭子群 \(H\) 具有正 Haar 测度，则由 Steinhaus 引理，\(H\cdot H^{-1}=H\) 含单位元邻域，从而 \(H\) 必为开子群。故每个 \(K_a\) 都 Haar 零测。又闭子群若具有非空内点，则必为开子群，故每个 \(K_a\) 还都是 nowhere dense。
+记
+\[
+\mathcal N:=\bigcup_{0\neq a\in G_S}K_a.
+\]
+因为 \(G_S\) 可数，\(\mathcal N\) 是可数个闭零测稀疏集的并，所以
+\[
+\Sigma_S\setminus \mathcal N
+\]
+是稠密 \(G_\delta\) 且 Haar 满测。
+
+现取 \(x\in \Sigma_S\setminus \mathcal N\)，并记
+\[
+H_x:=\overline{\langle x\rangle}.
+\]
+若 \(a\in H_x^\perp\)，则角色 \(\chi_a\) 在 \(H_x\) 上恒等于 \(1\)，特别有 \(\chi_a(x)=1\)，故 \(x\in K_a\subset \mathcal N\)。由 \(x\notin \mathcal N\) 只能推出 \(a=0\)，因此
+\[
+H_x^\perp=\{0\}.
+\]
+再由湮没子对偶律 \(H_x=(H_x^\perp)^\perp\)，得到
+\[
+H_x=\Sigma_S.
+\]
+因此每个 \(x\in \Sigma_S\setminus \mathcal N\) 都是拓扑生成元，亦即
+\[
+\operatorname{Gen}(\Sigma_S)=\Sigma_S\setminus \mathcal N.
+\]
+结论成立。证毕。
+\end{proof}
+
+\begin{corollary}[单轨道致密生成与有限加法账本障碍的严格分界]\label{cor:cdim-solenoid-versus-finite-additive-linearization}
+设 \(S\subset\mathbb P\) 为有限素数集，记 \(\Sigma_S=\widehat{\ZZ[S^{-1}]}\)。
+则一方面，\(\Sigma_S\) 由稠密 \(G_\delta\) 且 Haar 满测的一族单点致密生成；另一方面，
+\[
+\NN_{\times}
+\]
+既不能单射同态嵌入任何有限维加法账本 \((\NN^k,+)\)，也不能借助有限生成交换群 \(L\) 完成任何 Gödel 式同态化账本
+\[
+\Phi:\NN_{\times}\to \ZZ\oplus L,
+\qquad
+\Phi(ab)=\Phi(a)+\Phi(b).
+\]
+更精确地，
+\[
+\cdim^{\mathrm{hom}}_{+}(\NN_{\times})=+\infty,
+\qquad
+\cdim^{\mathrm{impl}}(\NN_{\times})=\frac12.
+\]
+因此，局部化加法对象的紧对偶确可把全局相位运动压缩进单轨道致密生成的拓扑壳层，但这并不意味着乘法结构已被有限秩加法账本线性化；算术复杂性仍滞留在角色湮没与有限秩障碍之中。
+\end{corollary}
+\begin{proof}
+关于 \(\Sigma_S\) 的泛单轨道生成，正是定理 \ref{thm:cdim-s-solenoid-generic-monothetic} 的内容。
+另一方面，\(\NN_{\times}\) 不能嵌入任何有限维加法账本，见推论 \ref{cor:killo-no-finite-additive-register-linearization}；任意 Gödel 式压缩都不能由有限生成交换群同态化，见定理 \ref{thm:killo-godel-compression-not-finite-rank-homologizable}；而
+\[
+\cdim^{\mathrm{hom}}_{+}(\NN_{\times})=+\infty,
+\qquad
+\cdim^{\mathrm{impl}}(\NN_{\times})=\frac12
+\]
+则由命题 \ref{prop:killo-implementation-vs-structural-half-circle-dimension} 给出。合并这些结论即得所述严格分界。证毕。
+\end{proof}
+
 \begin{remark}[实现层编码与结构圆维的严格分离]\label{rem:cdim-solenoid-terminal-separation}
 定理 \ref{thm:cdim-s-solenoid-terminal-object} 将“可逆素集合 \(S\)”提升为一个实现无关的最小性断言：
 在固定 \(S\) 的约束下，任何满足该可逆性纪律的实现都只能通过唯一因子化映射落入同一个 \(\Sigma_S\)，从而“最小完备相位系统”在范畴意义下由终对象唯一确定。
@@ -457,4 +566,3 @@ k\ge d(F)=\pcdim(F).
 \end{remark}
 
 \endinput
-
