@@ -1,0 +1,2186 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amscd,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+\usepackage{enumitem}
+
+\numberwithin{equation}{section}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\Xfin}{X_\infty^{\mathrm{fin}}}
+\newcommand{\Xinf}{X_\infty}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Val}{Val}
+\DeclareMathOperator{\NF}{NF}
+\DeclareMathOperator{\Fold}{Fold}
+
+\title{Exact decoding thresholds for overlapping Zeckendorf-normalized windows}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For each $m\ge 1$, let $X_m$ be the set of length-$m$ binary words with no
+consecutive $1$'s, and let $\Fold_m:\{0,1\}^m\to X_m$ denote the
+Zeckendorf-normalization map induced by Fibonacci value.  We prove that
+$\Fold_m$ is the normal-form map of a finite terminating confluent rewrite
+system and that the family $(\Fold_m)_{m\ge 1}$ is compatible with restriction
+in the window length.  Sliding $\Fold_m$ along a bi-infinite binary sequence
+produces a language of overlapping normalized windows over the alphabet $X_m$.
+For $m\ge 3$ we show that every block of $m$ consecutive folded symbols admits
+a unique raw lift of length $2m-1$.  Consequently exact recovery from
+overlapping Zeckendorf-normalized windows occurs at a sharp threshold: the
+induced one-sided inverse has optimal memory $m-1$.  We then show that this
+same scale governs the natural finite-state complexity of the normalized
+language: over the alphabet $X_m$ the image shift is exactly $m$-step, its
+minimal synchronizing length is $m$, the ambiguity shell in the deterministic
+presentation has nilpotency index $m$, and the explicit suffix graph is already
+the minimal right-resolving presentation.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Key words and phrases.}
+Zeckendorf expansion, Fibonacci numeration, exact decoding, combinatorics on
+words, finite automata.
+
+\medskip
+\noindent\textbf{2020 Mathematics Subject Classification.}
+Primary 11A63; Secondary 11B39, 68Q45, 37B10.
+
+\section{Introduction}
+
+Zeckendorf expansion singles out a canonical Fibonacci representation of every
+positive integer.  The problem considered here is a finite-window version of
+that principle.  For each $m\ge 1$ we consider the binary window space
+\[
+\Omega_m:=\{0,1\}^m.
+\]
+Let
+\[
+X_m:=\{w\in\{0,1\}^m:\text{$w$ contains no subword }11\},
+\]
+and define
+\[
+\Fold_m(\omega):=\pi_m(Z(N(\omega))),
+\]
+where $N(\omega)$ is the Fibonacci value of $\omega$, $Z(N(\omega))$ is its
+Zeckendorf expansion, and $\pi_m$ records the first $m$ digits.  Thus
+$\Fold_m$ replaces an arbitrary binary window by its canonical admissible
+representative in Fibonacci numeration.
+
+The first task is local and finite.  Given a length-$m$ binary word, one may
+ask whether its admissible representative is controlled by a finite rewrite
+mechanism and whether these normalizations are coherent as the window length
+varies.  We show that $\Fold_m$ is the normal-form map of a finite terminating
+confluent rewrite system, so it is independent of reduction order; see
+Proposition~\ref{prop:rewrite-newman} and
+Corollary~\ref{cor:fold-order-independent}.  We then prove that the fold maps
+are compatible with restriction in the window length.  In particular, the
+finite admissible languages form an inverse system whose limit is the one-sided
+golden-mean shift; see Theorem~\ref{thm:inverse-limit-golden}.
+
+The second task is an exact decoding problem.  For each $m$, the
+sliding block code
+\[
+\Phi_m:\{0,1\}^{\ZZ}\to X_m^{\ZZ}
+\]
+has image $Y_m$, the language of overlapping normalized windows.  The decisive
+statement is that for every $m\ge 3$ each admissible block of $m$ consecutive
+folded symbols has a unique raw lift of length $2m-1$.  This yields a one-sided
+inverse with memory $m-1$ and shows that the original binary sequence is
+determined exactly by overlapping normalized windows; see
+Theorem~\ref{thm:Phi-m-conjugacy-threshold} and
+Corollary~\ref{cor:Phi-m-memory-threshold-exact}.
+
+The main point of the paper is that exact decoding does not collapse the local
+complexity of the folded language.  Over the natural alphabet $X_m$, the shift
+$Y_m$ is exactly $m$-step, the minimal synchronizing length of its explicit
+suffix graph $G_m$ is $m$, and the transient ambiguity shell in the
+determinized presentation has nilpotency index $m$; see
+Corollary~\ref{cor:uniform-synchronizing-length},
+Theorem~\ref{thm:Y-m-exact-SFT-order}, and
+Proposition~\ref{prop:ambiguity-shell-nilpotency}.  Thus exact invertibility
+does not trivialize the normalized language: although the overlap-decoding
+problem has a complete solution for $m\ge 3$, the native local scale of the
+presentation still grows linearly with $m$.  The same analysis identifies
+$G_m$ as the canonical minimal right-resolving presentation of the image shift.
+
+\subsection*{Related work}
+
+The arithmetic background begins with Zeckendorf's theorem
+\cite{Zeckendorf1972}.  Finite-state aspects of numeration systems were
+developed systematically by Frougny and collaborators
+\cite{Frougny1992NumbersAutomata,Frougny1999OnlineAddition,
+FrougnySolomyak1992}, while algorithmic forms of Zeckendorf arithmetic,
+including carry propagation and parallel normalization, were studied in
+\cite{AhlbachUsatineFrougnyPippenger2013}.  For broader numeration settings one
+may compare Ostrowski systems and their automata-theoretic realizations
+\cite{Berthe2001Ostrowski,HieronymiTerry2018OstrowskiAddition,
+BaranwalaSchaefferShallit2021OstrowskiAutomatic}.  Recent work has also
+connected Zeckendorf representations with sequence-level statistical and
+dynamical phenomena; see \cite{ManiboMiroRustTadeo2020ZeckendorfMixing}.
+
+These strands of literature address different questions: recognition of legal
+expansions, arithmetic operations in non-standard numeration systems,
+automaticity, or distributional behavior.  The present paper does not study
+addition, parallel arithmetic, or statistics.  Instead it fixes a window length
+$m$, normalizes every window locally, and asks when the original binary stream
+can be reconstructed from the resulting overlaps.
+
+The novelty of the paper lies in proving exact threshold statements for this
+local recovery problem.  Even in the Fibonacci case, the cited numeration
+literature does not determine the precise overlap length at which local
+Zeckendorf normalization becomes invertible, nor does it identify the matching
+finite-state thresholds forced by that invertibility.  The symbolic-dynamical
+language used later in the paper serves only to record these finite-state
+consequences in a compact form.  In particular, the main theorem below is not a
+repackaging of existing automata for legal expansions: it concerns recovery
+from overlapping \emph{locally normalized} windows and the exact threshold at
+which that recovery becomes possible.
+
+\begin{theorem}[Main theorem]
+\label{thm:intro-main}
+For every $m\ge 3$, the following statements hold.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every admissible block of $m$ consecutive folded symbols has a unique raw
+lift of length $2m-1$.
+\item Exact recovery from overlapping normalized windows is possible by a
+one-sided sliding block inverse with memory $m-1$, and no smaller memory
+suffices.
+\item The same parameter $m$ governs the native finite-state complexity of the
+normalized language: over the natural alphabet $X_m$, the image shift $Y_m$ is
+exactly $m$-step, the minimal synchronizing length of the explicit suffix graph
+$G_m$ is $m$, the ambiguity shell in the deterministic presentation has
+nilpotency index $m$, and $G_m$ is already the canonical minimal
+right-resolving presentation.  In other words, the decoding threshold and the
+presentation scale coincide exactly.
+\end{enumerate}
+\end{theorem}
+
+The significance of Theorem~\ref{thm:intro-main} is that the same integer $m$
+controls both sides of the problem.  It is the sharp overlap length at which
+local Zeckendorf normalization becomes invertible, and it is also the exact
+scale at which the normalized language exhibits its native finite-state
+complexity.  In particular, the paper does not merely construct another finite
+automaton for admissible Fibonacci words; it identifies a rigid decoding
+threshold and shows that the resulting automaton-theoretic presentation retains
+that threshold without collapse.  This coincidence of decoding and presentation
+scales is summarized again in
+Corollary~\ref{cor:local-complexity-scale-coincidence}.
+
+It is also important that these thresholds are not formal consequences of
+Zeckendorf uniqueness or of automata recognizing legal expansions.  Uniqueness
+concerns a single admissible expansion of one integer, whereas the present
+problem records only the truncated normalization of each length-$m$ window and
+then asks for recovery from the resulting overlaps.  The sharp memory bound
+$m-1$ therefore reflects a genuine boundary-obstruction phenomenon, not merely
+the existence of a canonical representation.
+
+Parts \textup{(i)}--\textup{(iii)} are proved in
+Theorem~\ref{thm:length-m-block-unique-lift},
+Corollary~\ref{cor:Phi-m-memory-threshold-exact},
+Theorem~\ref{thm:Y-m-exact-SFT-order},
+Corollary~\ref{cor:uniform-synchronizing-length}, and
+Proposition~\ref{prop:ambiguity-shell-nilpotency}, and
+Corollary~\ref{cor:G-m-fischer-cover}.
+
+The paper is organized as follows.  Sections~2 and~3 develop finite-window
+normalization and its rewrite description.  Section~4 proves compatibility in
+the window length, Section~5 studies overlapping normalized windows,
+Section~6 constructs the corresponding explicit finite-state presentation, and
+Section~7 proves the sharp decoding and finite-state thresholds announced
+above.
+
+\section{Finite-window normalization}
+
+This section fixes the finite languages and the finite-window normalization.
+The only numeration-theoretic input needed later is Zeckendorf uniqueness,
+which singles out the golden-mean language as the canonical target of the fold.
+
+\subsection{Admissible words}
+
+Throughout the paper the Fibonacci numbers are normalized by
+\[
+F_1=F_2=1,
+\qquad
+F_{k+2}=F_{k+1}+F_k
+\quad (k\ge 1).
+\]
+
+For $m\ge 1$ and $s\in\{0,1\}$ let
+\[
+X_m^{(s)}:=\{w=w_1\cdots w_m\in X_m:w_m=s\}.
+\]
+Thus $X_m^{(0)}$ and $X_m^{(1)}$ split admissible words by their last symbol.
+
+\begin{proposition}[Terminal recursion for admissible words]
+\label{prop:stable-syntax-terminal-recursion}
+For every $m\ge 1$, if
+\[
+v_m:=
+\begin{pmatrix}
+\lvert X_m^{(1)}\rvert\\[2pt]
+\lvert X_m^{(0)}\rvert
+\end{pmatrix},
+\]
+then
+\[
+v_{m+1}=N_\tau v_m,
+\qquad
+N_\tau=
+\begin{pmatrix}
+0&1\\[2pt]
+1&1
+\end{pmatrix}.
+\]
+\end{proposition}
+
+\begin{proof}
+If $w\in X_{m+1}$ ends in $1$, then its penultimate symbol must be $0$.
+Deleting the last symbol therefore gives a bijection
+\[
+X_{m+1}^{(1)}\longleftrightarrow X_m^{(0)},
+\]
+so $\lvert X_{m+1}^{(1)}\rvert=\lvert X_m^{(0)}\rvert$.
+
+If $w\in X_{m+1}$ ends in $0$, then deleting the last symbol gives an
+arbitrary word in $X_m$, and appending $0$ to a word in $X_m$ never creates
+the forbidden pattern $11$.  Hence
+\[
+\lvert X_{m+1}^{(0)}\rvert
+=
+\lvert X_m\rvert
+=
+\lvert X_m^{(0)}\rvert+\lvert X_m^{(1)}\rvert.
+\]
+Combining the two identities gives the displayed matrix recursion.
+\end{proof}
+
+\begin{corollary}[Fibonacci counting]
+\label{cor:stable-syntax-counting}
+For every $m\ge 1$ one has
+\[
+\lvert X_m\rvert=F_{m+2}.
+\]
+\end{corollary}
+
+\begin{proof}
+The recursion in Proposition~\ref{prop:stable-syntax-terminal-recursion} is
+the Fibonacci recursion with the initial vector
+\[
+v_1=
+\begin{pmatrix}
+1\\[2pt]
+1
+\end{pmatrix}.
+\]
+Therefore
+\[
+\lvert X_m\rvert
+=
+\lvert X_m^{(0)}\rvert+\lvert X_m^{(1)}\rvert
+=
+F_{m+2}.
+\qedhere
+\]
+\end{proof}
+
+\subsection{Fibonacci value and the fold}
+
+Let
+\[
+\Xfin
+:=
+\left\{
+c=(c_1,c_2,\ldots)\in\{0,1\}^{\NN}:
+\supp(c)\text{ finite and }c_kc_{k+1}=0\text{ for all }k
+\right\}.
+\]
+For $c\in\Xfin$ define
+\[
+\Val(c):=\sum_{k\ge 1} c_kF_{k+1}.
+\]
+Zeckendorf's theorem gives, for every $N\in\NN$, a unique $Z(N)\in \Xfin$
+satisfying $\Val(Z(N))=N$ \cite{Zeckendorf1972}.
+
+For a finite binary window $\omega=\omega_1\cdots\omega_m\in\Omega_m$ define
+its Fibonacci value by
+\[
+N(\omega):=\sum_{k=1}^m \omega_kF_{k+1}.
+\]
+Let
+\[
+\pi_m:\Xfin\to X_m,
+\qquad
+\pi_m(c_1,c_2,\ldots):=(c_1,\ldots,c_m),
+\]
+be the length-$m$ prefix projection.
+
+\begin{definition}[Finite-window fold]
+\label{def:fold-word}
+For $m\ge 1$ define
+\[
+\Fold_m:\Omega_m\to X_m,
+\qquad
+\Fold_m(\omega):=\pi_m(Z(N(\omega))).
+\]
+\end{definition}
+
+\begin{definition}[Visible value]
+\label{def:visible-value}
+For $x=x_1\cdots x_m\in X_m$ define
+\[
+V_m(x):=\sum_{k=1}^m x_kF_{k+1}.
+\]
+\end{definition}
+
+\begin{proposition}[Visible-value parametrization of $X_m$]
+\label{prop:visible-value-parametrization}
+For every $m\ge 1$, the map
+\[
+V_m:X_m\to \{0,1,\ldots,F_{m+2}-1\}
+\]
+is a bijection.
+\end{proposition}
+
+\begin{proof}
+If $x\in X_m$, then
+\[
+(x_1,\ldots,x_m,0,0,\ldots)\in \Xfin
+\]
+is already a Zeckendorf digit string, so by uniqueness it is the Zeckendorf
+representation of the integer $V_m(x)$.  In particular $V_m(x)<F_{m+2}$,
+because otherwise the Zeckendorf representation would have to use the weight
+$F_{m+2}$ or a larger one.
+
+Conversely, let $0\le r<F_{m+2}$.  The Zeckendorf representation $Z(r)$ cannot
+use the weight $F_{m+2}$ or any larger weight, so it has the form
+\[
+Z(r)=(x_1,\ldots,x_m,0,0,\ldots)
+\]
+for a unique $x\in X_m$.  Then $V_m(x)=r$.  Thus $V_m$ is bijective.
+\end{proof}
+
+\begin{corollary}[Unique overflow decomposition]
+\label{cor:visible-value-overflow}
+For every $m\ge 1$ and every $\omega\in\Omega_m$, there exists a unique
+$b(\omega)\in\{0,1\}$ such that
+\[
+N(\omega)=V_m(\Fold_m(\omega))+b(\omega)F_{m+2}.
+\]
+Equivalently, $\Fold_m(\omega)$ is the unique admissible word in $X_m$ whose
+visible value is congruent to $N(\omega)$ modulo $F_{m+2}$.
+\end{corollary}
+
+\begin{proof}
+Since
+\[
+0\le N(\omega)\le \sum_{k=1}^m F_{k+1}=F_{m+3}-2<2F_{m+2},
+\]
+there is a unique $b(\omega)\in\{0,1\}$ such that
+\[
+r:=N(\omega)-b(\omega)F_{m+2}
+\]
+lies in $\{0,1,\ldots,F_{m+2}-1\}$.  By
+Proposition~\ref{prop:visible-value-parametrization}, there is a unique
+$x\in X_m$ with $V_m(x)=r$.  The first $m$ digits of $Z(N(\omega))$ are
+precisely this $x$, so $x=\Fold_m(\omega)$.
+\end{proof}
+
+\section{A local rewrite description}
+
+We describe $\Fold_m$ by local rewriting on finitely supported configurations.
+This isolates the finite normalization mechanism before passing to inverse
+limits and sequence-level dynamics.
+
+\subsection{Value-preserving local rules}
+
+Let
+\[
+\mathcal D
+:=
+\left\{
+a=(a_1,a_2,\ldots):
+a_k\in\NN,\ \supp(a)\text{ finite}
+\right\},
+\]
+and define
+\[
+\Val(a):=\sum_{k\ge 1} a_kF_{k+1}.
+\]
+We write $e_k$ for the $k$th standard basis vector and
+\[
+\iota_m(\omega):=(\omega_1,\ldots,\omega_m,0,0,\ldots)\in\mathcal D
+\]
+for the natural embedding of a window into $\mathcal D$.
+
+The rewrite system acts on $\mathcal D$ through the following local rules:
+\begin{align}
+e_k+e_{k+1}&\longrightarrow e_{k+2} && (k\ge 1), \label{eq:rewrite-adjacent}\\
+2e_1&\longrightarrow e_2, \label{eq:rewrite-base1}\\
+2e_2&\longrightarrow e_1+e_3, \label{eq:rewrite-base2}\\
+2e_k&\longrightarrow e_{k-2}+e_{k+1} && (k\ge 3). \label{eq:rewrite-duplicate}
+\end{align}
+Each rule is local and preserves $\Val$ because it is exactly the Fibonacci
+identity
+\[
+F_{k+1}+F_{k+2}=F_{k+3},
+\qquad
+2F_2=F_3,
+\qquad
+2F_3=F_2+F_4,
+\qquad
+2F_{k+1}=F_{k-1}+F_{k+2}.
+\]
+
+\begin{lemma}[Fibonacci rigidity of value-preserving local weights]
+\label{lem:fold-local-weight-rigidity-fibonacci}
+Suppose a positive weight sequence $(w_k)_{k\ge 1}$ has the property that each
+rewrite rule \eqref{eq:rewrite-adjacent}--\eqref{eq:rewrite-duplicate}
+preserves the weighted sum
+\[
+\Val_w(a):=\sum_{k\ge 1} a_kw_k
+\qquad (a\in\mathcal D).
+\]
+Then
+\[
+w_{k+2}=w_{k+1}+w_k
+\qquad (k\ge 1).
+\]
+In particular, under the normalization $w_1=F_2=1$ and $w_2=F_3=2$, one has
+$w_k=F_{k+1}$ for all $k\ge 1$.
+\end{lemma}
+
+\begin{proof}
+Preservation of \eqref{eq:rewrite-adjacent} gives
+\[
+w_k+w_{k+1}=w_{k+2}
+\qquad (k\ge 1),
+\]
+which is exactly the Fibonacci recursion.  The remaining rules are then
+automatic consequences of that recursion:
+\[
+2w_1=w_2,\qquad 2w_2=w_1+w_3,\qquad 2w_k=w_{k-2}+w_{k+1}\ \ (k\ge 3).
+\]
+With the stated normalization, the recursion has the unique solution
+$w_k=F_{k+1}$.
+\end{proof}
+
+\begin{lemma}[Local weight rigidity]
+\label{lem:local-weight-rigidity}
+Let
+\[
+A(a):=\sum_{k\ge 1} a_k,
+\qquad
+B(a):=\sum_{k\ge 1} ka_k,
+\qquad
+C(a):=a_2,
+\]
+and order triples lexicographically.  Then every rewrite step
+$a\to a'$ generated by \eqref{eq:rewrite-adjacent}--\eqref{eq:rewrite-duplicate}
+strictly decreases
+\[
+\mu(a):=(A(a),B(a),C(a)).
+\]
+In particular the rewrite system is strongly terminating.
+\end{lemma}
+
+\begin{proof}
+Rules \eqref{eq:rewrite-adjacent} and \eqref{eq:rewrite-base1} reduce the total
+digit count $A$ by one.  Rule \eqref{eq:rewrite-duplicate} for $k\ge 3$
+preserves $A$ but changes $B$ by
+\[
+2k-\bigl((k-2)+(k+1)\bigr)=1,
+\]
+so $B$ decreases by one.  Rule \eqref{eq:rewrite-base2} preserves both $A$ and
+$B$ but decreases $C=a_2$ by two.  Hence every rewrite step strictly decreases
+$\mu(a)$.
+\end{proof}
+
+\subsection{Canonical normal forms}
+
+\begin{proposition}[Termination, local confluence, and normal forms]
+\label{prop:rewrite-newman}
+The rewrite system on $\mathcal D$ generated by
+\eqref{eq:rewrite-adjacent}--\eqref{eq:rewrite-duplicate} is strongly
+terminating and locally confluent.  Consequently, by Newman's lemma, it is
+confluent.  Every $a\in\mathcal D$ therefore has a unique normal form
+\[
+\NF(a)\in\Xfin
+\]
+satisfying
+\[
+\Val(\NF(a))=\Val(a).
+\]
+\end{proposition}
+
+\begin{proof}
+Strong termination is Lemma~\ref{lem:local-weight-rigidity}.  A configuration
+is irreducible exactly when every digit is in $\{0,1\}$ and no adjacent pair
+$11$ occurs; this is precisely the definition of $\Xfin$.
+
+Now suppose $a\to a_1$ and $a\to a_2$ are two one-step reductions.  Since each
+rewrite preserves $\Val$, any terminal reductions of $a_1$ and $a_2$ end in
+irreducible configurations with the same Fibonacci value.  By Zeckendorf
+uniqueness those terminal irreducible configurations coincide.  Hence the
+system is locally confluent.  Newman's lemma then yields global confluence and
+the existence of a unique normal form.
+\end{proof}
+
+\begin{corollary}[Order-independent implementation of the fold]
+\label{cor:fold-order-independent}
+For every $\omega\in\Omega_m$,
+\[
+\Fold_m(\omega)=\pi_m(\NF(\iota_m(\omega))),
+\]
+and the right-hand side is independent of the order in which rewrites are
+applied.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:rewrite-newman}, the normal form of $\iota_m(\omega)$
+is the unique admissible Fibonacci digit string with value $N(\omega)$, namely
+$Z(N(\omega))$.  Taking the first $m$ digits gives the claim.
+\end{proof}
+
+\begin{remark}[Two illustrative normalizations]
+\label{rem:two-fold-examples}
+The following two examples illustrate the order-independence of the rewriting
+and the appearance of the overflow bit.
+
+For $\omega=1110\in\Omega_4$ one may reduce
+\[
+\iota_4(\omega)=e_1+e_2+e_3\to 2e_3\to e_1+e_4,
+\]
+so $\NF(\iota_4(\omega))=\iota_4(1001)$ and
+\[
+\Fold_4(1110)=1001.
+\]
+If instead $\omega=1101\in\Omega_4$, then
+\[
+\iota_4(\omega)=e_1+e_2+e_4\to e_3+e_4\to e_5,
+\]
+hence
+\[
+\Fold_4(1101)=0000,
+\qquad
+N(1101)=F_6=F_{4+2}.
+\]
+This is the smallest example in which the visible word is zero while the whole
+value survives as the overflow bit from
+Corollary~\ref{cor:visible-value-overflow}.
+\end{remark}
+
+\begin{proposition}[Basic properties of $\Fold_m$]
+\label{prop:fold-basic}
+For every $m\ge 1$, the map $\Fold_m:\Omega_m\to X_m$ is well defined and
+satisfies:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Fold_m(\omega)\in X_m$ for every $\omega\in\Omega_m$;
+\item $\Fold_m(x)=x$ for every $x\in X_m$;
+\item $\Fold_m:\Omega_m\twoheadrightarrow X_m$ is surjective.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Property (i) is immediate from Definition~\ref{def:fold-word}.  For (ii), if
+$x\in X_m$ then $x$ is already an admissible Zeckendorf prefix, so
+$Z(N(x))=(x_1,\ldots,x_m,0,0,\ldots)$ and hence $\Fold_m(x)=x$.  Surjectivity
+follows from (ii): every $x\in X_m$ is a fixed point of $\Fold_m$.
+\end{proof}
+
+\section{Compatibility in the window length}
+
+We next consider the behaviour of the fold under changes of window size.  The
+results of this section show that admissible restriction and finite-window
+normalization fit into a compatible resolution system.
+
+\subsection{Restriction maps}
+
+\begin{definition}[Prefix restrictions]
+\label{def:prefix-restriction}
+For integers $n\ge m\ge 1$ define
+\[
+\pi_{n\to m}:X_n\to X_m,
+\qquad
+\pi_{n\to m}(x_1\cdots x_n):=x_1\cdots x_m.
+\]
+\end{definition}
+
+\begin{lemma}[Functoriality of admissible restrictions]
+\label{lem:pi-functorial}
+If $n\ge \ell\ge m\ge 1$, then
+\[
+\pi_{n\to m}=\pi_{\ell\to m}\circ \pi_{n\to \ell}.
+\]
+Moreover, for every $c\in \Xfin$ and every $n\ge m$,
+\[
+\pi_{n\to m}(\pi_n(c))=\pi_m(c).
+\]
+\end{lemma}
+
+\begin{proof}
+All maps involved are literal prefix truncations, so both identities are
+immediate.
+\end{proof}
+
+\begin{theorem}[Inverse-limit identification]
+\label{thm:inverse-limit-golden}
+Let
+\[
+\Xinf
+:=
+\{c=(c_1,c_2,\ldots)\in\{0,1\}^{\NN}:c_kc_{k+1}=0\text{ for all }k\ge 1\}.
+\]
+Then there is a natural bijection
+\[
+\Xinf\cong \varprojlim (X_m,\pi_{m+1\to m}).
+\]
+\end{theorem}
+
+\begin{proof}
+Given $c\in \Xinf$, its prefix family
+\[
+(\pi_m(c))_{m\ge 1}
+\]
+is compatible under the restriction maps, hence defines an element of the
+inverse limit.  Conversely, given a compatible family
+\[
+(x^{(m)})_{m\ge 1}\in \varprojlim (X_m,\pi_{m+1\to m}),
+\]
+define $c_k:=x_k^{(m)}$ for any $m\ge k$.  Compatibility ensures that this is
+independent of the choice of $m$.  Since every finite prefix $x^{(m)}$ avoids
+$11$, the resulting sequence $c$ lies in $\Xinf$.  The two constructions are
+inverse to one another.
+\end{proof}
+
+\begin{remark}
+The object in Theorem~\ref{thm:inverse-limit-golden} is one sided because the
+resolution tower is indexed by prefix length.  It should not be confused with
+the two-sided image shift $Y_m$ introduced later at the sequence level.
+\end{remark}
+
+\subsection{Compatibility with raw windows}
+
+If one truncates a raw window directly, folding does not in general commute
+with restriction.  Let
+\[
+r_{m+1\to m}:\Omega_{m+1}\to\Omega_m,
+\qquad
+r_{m+1\to m}(\omega_1\cdots\omega_{m+1})=\omega_1\cdots\omega_m.
+\]
+For $m=1$ and $\omega=11$ one has
+\[
+(\Fold_1\circ r_{2\to 1})(11)=\Fold_1(1)=1,
+\]
+whereas
+\[
+(\pi_{2\to 1}\circ \Fold_2)(11)=0,
+\]
+since $N(11)=F_2+F_3=F_4$ and hence $\Fold_2(11)=00$.
+
+The correct raw-level restriction is therefore the folded one.
+
+\begin{definition}[Fold-compatible raw restriction]
+\label{def:fold-compatible-restriction}
+For $m\ge 1$ define
+\[
+\widetilde r_{m+1\to m}:\Omega_{m+1}\to\Omega_m,
+\qquad
+\widetilde r_{m+1\to m}(\omega):=\pi_{m+1\to m}(\Fold_{m+1}(\omega)).
+\]
+\end{definition}
+
+\begin{proposition}[Commuting diagram for fold-compatible restriction]
+\label{prop:fold-omega-commute}
+For every $m\ge 1$ and every $\omega\in\Omega_{m+1}$,
+\[
+\Fold_m(\widetilde r_{m+1\to m}(\omega))
+=
+\pi_{m+1\to m}(\Fold_{m+1}(\omega)).
+\]
+Equivalently, the diagram
+\[
+\begin{CD}
+\Omega_{m+1} @>{\Fold_{m+1}}>> X_{m+1}\\
+@V{\widetilde r_{m+1\to m}}VV @VV{\pi_{m+1\to m}}V\\
+\Omega_m @>{\Fold_m}>> X_m
+\end{CD}
+\]
+commutes.
+\end{proposition}
+
+\begin{proof}
+By definition,
+\[
+\widetilde r_{m+1\to m}(\omega)=\pi_{m+1\to m}(\Fold_{m+1}(\omega))\in X_m.
+\]
+Applying Proposition~\ref{prop:fold-basic}(ii) to this admissible word gives
+\[
+\Fold_m(\widetilde r_{m+1\to m}(\omega))
+=
+\widetilde r_{m+1\to m}(\omega)
+=
+\pi_{m+1\to m}(\Fold_{m+1}(\omega)).
+\qedhere
+\]
+\end{proof}
+
+\section{Overlapping normalized windows}
+
+Once the finite-window maps are under control, one obtains a sequence-level
+code by sliding the window along a bi-infinite sequence.  This is where the
+construction enters the standard framework of factor maps between shift spaces.
+
+Let $\sigma$ denote the left shift on both $\{0,1\}^{\ZZ}$ and $X_m^{\ZZ}$.
+
+\begin{definition}[Sequence-level fold]
+\label{def:Phi-m}
+For $m\ge 1$ define
+\[
+\Phi_m:\{0,1\}^{\ZZ}\to X_m^{\ZZ},
+\qquad
+(\Phi_m(s))_t:=\Fold_m(s_t s_{t+1}\cdots s_{t+m-1}).
+\]
+\end{definition}
+
+\begin{proposition}[Finite radius]
+\label{prop:Phi-m-radius}
+The map $\Phi_m$ is a sliding block code with memory $0$ and anticipation
+$m-1$.
+\end{proposition}
+
+\begin{proof}
+By definition, the symbol $(\Phi_m(s))_t$ depends only on the coordinates
+$s_t,\ldots,s_{t+m-1}$.
+\end{proof}
+
+\begin{proposition}[Shift equivariance]
+\label{prop:Phi-m-equivariant}
+For every $m\ge 1$,
+\[
+\Phi_m\circ \sigma=\sigma\circ \Phi_m.
+\]
+\end{proposition}
+
+\begin{proof}
+Both sides evaluate $\Fold_m$ on the same translated length-$m$ window at each
+time $t$.
+\end{proof}
+
+\begin{proposition}[Factor property on subshifts]
+\label{prop:Phi-m-factor}
+Let $S\subset \{0,1\}^{\ZZ}$ be a subshift.  Then $\Phi_m|_S:S\to X_m^{\ZZ}$ is
+continuous, shift commuting, and onto its image
+\[
+Y_m(S):=\Phi_m(S).
+\]
+Moreover $Y_m(S)$ is a subshift of $X_m^{\ZZ}$, so
+\[
+\Phi_m|_S:S\twoheadrightarrow Y_m(S)
+\]
+is a factor map.
+\end{proposition}
+
+\begin{proof}
+Continuity follows from Proposition~\ref{prop:Phi-m-radius}, and
+shift-equivariance from Proposition~\ref{prop:Phi-m-equivariant}.  Since $S$ is
+compact and shift invariant, its image under the continuous equivariant map
+$\Phi_m$ is again compact and shift invariant.  By definition, the restriction
+is onto that image.
+\end{proof}
+
+\begin{definition}[The image shift]
+\label{def:Y-m}
+We write
+\[
+Y_m:=\Phi_m(\{0,1\}^{\ZZ})\subset X_m^{\ZZ}.
+\]
+\end{definition}
+
+\section{Finite-state structure of normalized windows}
+
+We now pass from the local fold to the language it induces on bi-infinite
+binary sequences.  The associated suffix graph is completely explicit and will
+be used throughout the remainder of the paper.
+
+\subsection{The graph \texorpdfstring{$G_m$}{Gm}}
+
+\begin{definition}[Suffix-state graph]
+\label{def:G-m}
+For $m\ge 1$, let
+\[
+V_m:=\{0,1\}^{m-1}.
+\]
+For each $v=v_1\cdots v_{m-1}\in V_m$ and each $b\in\{0,1\}$ define an edge
+\[
+e=(v,b):v\to v':=v_2\cdots v_{m-1}b,
+\]
+labeled by
+\[
+\ell_m(e):=\Fold_m(v_1\cdots v_{m-1}b)\in X_m.
+\]
+The resulting finite labeled graph is denoted
+\[
+G_m=(V_m,E_m,\ell_m).
+\]
+It has $\lvert V_m\rvert=2^{m-1}$ vertices and $\lvert E_m\rvert=2^m$ edges.
+\end{definition}
+
+\begin{theorem}[Suffix-graph presentation of the folded language]
+\label{thm:Phi-m-sofic-graph}
+Let $Z_m\subset E_m^{\ZZ}$ be the two-sided edge shift of $G_m$, and let
+\[
+\mathcal L_m:Z_m\to X_m^{\ZZ}
+\]
+be the edge-label map.  Then
+\[
+Y_m=\mathcal L_m(Z_m).
+\]
+In particular $G_m$ presents the folded language $Y_m$.
+\end{theorem}
+
+\begin{proof}
+Take any $s\in\{0,1\}^{\ZZ}$ and define
+\[
+v_t:=s_t\cdots s_{t+m-2}\in V_m,
+\qquad
+e_t:=(v_t,s_{t+m-1})\in E_m.
+\]
+The compatibility of successive windows implies that $(e_t)_{t\in\ZZ}$ is a
+bi-infinite path in $G_m$, and by construction
+\[
+(\mathcal L_m(e))_t
+=
+\ell_m(e_t)
+=
+\Fold_m(s_t\cdots s_{t+m-1})
+=
+(\Phi_m(s))_t.
+\]
+Hence $Y_m\subset \mathcal L_m(Z_m)$.
+
+Conversely, let $e=(e_t)_{t\in\ZZ}\in Z_m$.  Writing each edge as
+$e_t=(v_t,b_t)$, path compatibility says that $v_{t+1}$ is obtained from $v_t$
+by deleting its first symbol and appending $b_t$.  Therefore the family of
+suffixes $v_t$ and appended bits $b_t$ determines a unique binary sequence
+$s\in\{0,1\}^{\ZZ}$ such that
+\[
+s_t\cdots s_{t+m-1}=v_tb_t
+\]
+for all $t$.  Then
+\[
+(\Phi_m(s))_t
+=
+\Fold_m(v_tb_t)
+=
+\ell_m(e_t)
+=
+(\mathcal L_m(e))_t.
+\]
+Thus $\mathcal L_m(Z_m)\subset Y_m$, proving equality.
+\end{proof}
+
+\begin{corollary}[The image shift is sofic]
+\label{prop:Y-m-sofic}
+For every $m\ge 1$, the image shift $Y_m$ is a sofic shift.
+\end{corollary}
+
+\begin{proof}
+This is immediate from Theorem~\ref{thm:Phi-m-sofic-graph}, which gives an
+explicit finite labeled graph presenting $Y_m$.
+\end{proof}
+
+\subsection{Deterministic structure of the presentation}
+
+We begin with the one-step resolving properties of the graph $G_m$.
+
+\begin{proposition}[One-step distinguishability]
+\label{prop:one-step-right-resolving}
+For every $m\ge 2$ and every $v\in\{0,1\}^{m-1}$,
+\[
+\Fold_m(v0)\neq \Fold_m(v1).
+\]
+Consequently $G_m$ is right-resolving: the two outgoing edges from any fixed
+vertex carry distinct labels.
+\end{proposition}
+
+\begin{proof}
+Let $\omega_0:=v0$ and $\omega_1:=v1$.  Then
+\[
+N(\omega_1)-N(\omega_0)=F_{m+1}.
+\]
+If $\Fold_m(\omega_0)=\Fold_m(\omega_1)$, then
+Corollary~\ref{cor:visible-value-overflow} implies
+\[
+\begin{aligned}
+N(\omega_1)-N(\omega_0)
+&=
+\bigl(b(\omega_1)-b(\omega_0)\bigr)F_{m+2}\\
+&\in\{-F_{m+2},0,F_{m+2}\},
+\end{aligned}
+\]
+because the visible value $V_m(\Fold_m(\omega_i))$ would be the same for
+$i=0,1$ and only the overflow bit could differ.  This contradicts
+$F_{m+1}>0$ and $F_{m+1}\neq F_{m+2}$.  Hence the two labels are distinct.
+\end{proof}
+
+\begin{proposition}[One-step left-resolving property]
+\label{prop:one-step-left-resolving}
+For every $m\ge 2$ and every $v\in\{0,1\}^{m-1}$,
+\[
+\Fold_m(0v)\neq \Fold_m(1v).
+\]
+Consequently the two incoming edges to any fixed vertex of $G_m$ carry
+distinct labels.
+\end{proposition}
+
+\begin{proof}
+Let $\omega_0:=0v$ and $\omega_1:=1v$.  Then
+\[
+N(\omega_1)-N(\omega_0)=F_2=1.
+\]
+If $\Fold_m(\omega_0)=\Fold_m(\omega_1)$, then
+Corollary~\ref{cor:visible-value-overflow} implies
+\[
+N(\omega_1)-N(\omega_0)
+=
+\bigl(b(\omega_1)-b(\omega_0)\bigr)F_{m+2}
+\in\{-F_{m+2},0,F_{m+2}\},
+\]
+which is impossible because $F_{m+2}\ge 2$ for $m\ge 2$.  Hence the labels are
+distinct.  Applied to the two incoming edges of a fixed vertex
+$v=v_1\cdots v_{m-1}$, this says the edges labeled by the windows
+$0v_1\cdots v_{m-1}$ and $1v_1\cdots v_{m-1}$ are distinguished.
+\end{proof}
+
+\begin{corollary}[Entropy of the image shift]
+\label{cor:Phi-m-entropy}
+For every $m\ge 2$,
+\[
+h_{\mathrm{top}}(Y_m)=\log 2.
+\]
+\end{corollary}
+
+\begin{proof}
+Since $\Phi_m$ is a factor of the full two-shift,
+\[
+h_{\mathrm{top}}(Y_m)\le \log 2.
+\]
+On the other hand, every vertex of $G_m$ has exactly two outgoing edges, so the
+number of length-$n$ paths starting from any fixed vertex is $2^n$.  By
+Proposition~\ref{prop:one-step-right-resolving}, two such paths cannot have the
+same label sequence.  Hence $Y_m$ has at least $2^n$ allowed blocks of length
+$n$, so $h_{\mathrm{top}}(Y_m)\ge \log 2$.
+\end{proof}
+
+\subsection{Fibres and synchronizing blocks}
+
+For $m\ge 1$ and $0\le r\le \lfloor m/2\rfloor$ define
+\[
+z_{m,0}:=0^m,
+\qquad
+z_{m,r}:=0^{m-2r}11(01)^{r-1}
+\quad (1\le r\le \lfloor m/2\rfloor).
+\]
+
+\begin{proposition}[The zero fibre of $0^m$]
+\label{prop:zero-fiber-explicit}
+For every $m\ge 1$,
+\[
+\Fold_m^{-1}(0^m)=\{z_{m,r}:0\le r\le \lfloor m/2\rfloor\}.
+\]
+In particular,
+\[
+\bigl|\Fold_m^{-1}(0^m)\bigr|=\lfloor m/2\rfloor+1.
+\]
+\end{proposition}
+
+\begin{proof}
+By Corollary~\ref{cor:visible-value-overflow},
+\[
+\Fold_m(\omega)=0^m
+\quad\Longleftrightarrow\quad
+N(\omega)\in\{0,F_{m+2}\}.
+\]
+The case $N(\omega)=0$ forces $\omega=0^m$, so it remains to classify
+\[
+A_m:=\{\omega\in\Omega_m:N(\omega)=F_{m+2}\}.
+\]
+
+For $m=1$ the set $A_1$ is empty, since the only available values are $0$ and
+$F_2=1<F_3$.  Fix now $m\ge 2$ and let $\omega\in A_m$.  Then
+\[
+\sum_{k=1}^{m-1}\omega_kF_{k+1}\le \sum_{k=1}^{m-1}F_{k+1}=F_{m+2}-2<F_{m+2},
+\]
+so necessarily $\omega_m=1$.  If also $\omega_{m-1}=1$, then
+\[
+\sum_{k=1}^{m-2}\omega_kF_{k+1}
+=
+F_{m+2}-F_{m+1}-F_m
+=
+0,
+\]
+hence $\omega=0^{m-2}11$.  If instead $\omega_{m-1}=0$, write $\omega=u01$
+with $u\in\Omega_{m-2}$.  Then
+\[
+N(u)=F_{m+2}-F_{m+1}=F_m,
+\]
+so $u\in A_{m-2}$.  Therefore, for every $m\ge 2$,
+\[
+A_m=\{0^{m-2}11\}\cup\{u01:u\in A_{m-2}\}.
+\]
+
+Starting from $A_1=\varnothing$ and $A_2=\{11\}$ and unwinding this recursion
+gives
+\[
+A_m=\{z_{m,r}:1\le r\le \lfloor m/2\rfloor\}.
+\]
+Adding the zero word yields the stated formula for $\Fold_m^{-1}(0^m)$.  The
+cardinality follows immediately.
+\end{proof}
+
+\begin{definition}[Alternating extremal words]
+\label{def:alternating-extremal-words}
+For each $m\ge 1$, let $a_m,b_m\in X_m$ denote the unique alternating
+admissible words of length $m$ ending respectively in $0$ and $1$.  Thus
+\[
+a_1=0,
+\qquad
+b_1=1,
+\]
+and for $m\ge 2$,
+\[
+a_m=b_{m-1}0,
+\qquad
+b_m=a_{m-1}1.
+\]
+\end{definition}
+
+\begin{lemma}[Extremal values of the alternating words]
+\label{lem:alternating-extremal-values}
+For every $m\ge 1$ one has
+\[
+V_m(a_m)=F_{m+1}-1,
+\qquad
+V_m(b_m)=F_{m+2}-1.
+\]
+\end{lemma}
+
+\begin{proof}
+We argue by induction on $m$.  For $m=1$ the claim is
+\[
+V_1(a_1)=0=F_2-1,
+\qquad
+V_1(b_1)=1=F_3-1.
+\]
+
+Assume now that $m\ge 2$ and the claim is known for $m-1$.  Since $a_m=b_{m-1}0$,
+one has
+\[
+V_m(a_m)=V_{m-1}(b_{m-1})=F_{m+1}-1.
+\]
+Likewise, using $b_m=a_{m-1}1$,
+\[
+V_m(b_m)=V_{m-1}(a_{m-1})+F_{m+1}
+=(F_m-1)+F_{m+1}
+=F_{m+2}-1.
+\]
+\end{proof}
+
+\begin{proposition}[Singleton fibres of the alternating symbols]
+\label{prop:alternating-singleton-fibres}
+For every $m\ge 1$,
+\[
+\Fold_m^{-1}(a_m)=\{a_m\},
+\qquad
+\Fold_m^{-1}(b_m)=\{b_m\}.
+\]
+\end{proposition}
+
+\begin{proof}
+The case $m=1$ is immediate.  Fix $m\ge 2$.
+
+Suppose first that $\Fold_m(\omega)=a_m$.  By
+Lemma~\ref{lem:alternating-extremal-values} and
+Corollary~\ref{cor:visible-value-overflow},
+\[
+N(\omega)\in\{F_{m+1}-1,\;F_{m+1}+F_{m+2}-1\}.
+\]
+But
+\[
+F_{m+1}+F_{m+2}-1=F_{m+3}-1>F_{m+3}-2\ge N(\omega),
+\]
+so necessarily $N(\omega)=F_{m+1}-1$.  In particular $N(\omega)<F_{m+1}$, and
+therefore $\omega_m=0$.  Writing $\omega=u0$ with $u\in\Omega_{m-1}$, we get
+\[
+N(u)=F_{m+1}-1.
+\]
+By the induction hypothesis, $u=b_{m-1}$.  Hence $\omega=b_{m-1}0=a_m$.
+
+Now suppose that $\Fold_m(\omega)=b_m$.  Again by
+Lemma~\ref{lem:alternating-extremal-values} and
+Corollary~\ref{cor:visible-value-overflow},
+\[
+N(\omega)\in\{F_{m+2}-1,\;2F_{m+2}-1\}.
+\]
+Since
+\[
+2F_{m+2}-1
+>
+F_{m+2}+F_{m+1}-2
+=
+F_{m+3}-2
+\ge
+N(\omega),
+\]
+one must have $N(\omega)=F_{m+2}-1$.  The contribution of the first $m-1$
+digits is at most
+\[
+\sum_{k=1}^{m-1}F_{k+1}=F_{m+2}-2,
+\]
+so necessarily $\omega_m=1$.  Writing $\omega=u1$ with $u\in\Omega_{m-1}$, we
+obtain
+\[
+N(u)=F_{m+2}-1-F_{m+1}=F_m-1.
+\]
+By the induction hypothesis, $u=a_{m-1}$.  Therefore
+\[
+\omega=a_{m-1}1=b_m.
+\]
+\end{proof}
+
+\begin{theorem}[Single-symbol synchronization]
+\label{thm:alternating-single-symbol-synchronizing}
+For every $m\ge 1$, each of the symbols $a_m$ and $b_m$ labels exactly one edge
+of $G_m$.  Consequently both $a_m$ and $b_m$ are synchronizing words for the
+presentation $G_m$ of $Y_m$.
+\end{theorem}
+
+\begin{proof}
+An edge of $G_m$ is labeled by $x\in X_m$ precisely when its defining raw word
+lies in $\Fold_m^{-1}(x)$.  Proposition~\ref{prop:alternating-singleton-fibres}
+shows that $\Fold_m^{-1}(a_m)$ and $\Fold_m^{-1}(b_m)$ are singletons.  Hence
+each of $a_m$ and $b_m$ occurs on exactly one edge of $G_m$.  Any label carried
+by exactly one edge is synchronizing, since reading that label collapses the
+candidate vertex set to the terminal vertex of the unique edge.
+\end{proof}
+
+\begin{corollary}[The image language has synchronizing symbols]
+\label{cor:Y-m-synchronized}
+For every $m\ge 1$, the symbols $a_m$ and $b_m$ are synchronizing for the
+presentation $G_m$.  In particular, the image language $Y_m$ is synchronized.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:one-step-right-resolving}, the graph $G_m$ is a
+right-resolving presentation of $Y_m$.  By
+Theorem~\ref{thm:alternating-single-symbol-synchronizing}, that presentation
+admits a synchronizing symbol.  Hence $Y_m$ is synchronized; see
+\cite[Ch.~3]{LindMarcus1995} or \cite[Ch.~4]{Kitchens1998SymbolicDynamics}.
+\end{proof}
+
+\subsection{A lower bound for one-sided inversion}
+
+\begin{proposition}[A lower bound for one-sided inversion]
+\label{prop:one-sided-inverse-memory-lower-bound}
+Let $m\ge 3$, and define finite binary words
+\[
+u_m:=0^m10^{m-2},
+\qquad
+v_m:=0^{m-2}110^{m-1}
+\]
+of length $2m-1$.  Let $U_m,V_m\in\{0,1\}^{\ZZ}$ be their zero extensions on
+the coordinates $\{1,\ldots,2m-1\}$.  Also define
+\[
+e_{m,0}:=0^m,
+\qquad
+e_{m,j}:=0^{m-j}10^{j-1}
+\quad (1\le j\le m-1).
+\]
+Then
+\[
+(\Phi_m(U_m))_t=(\Phi_m(V_m))_t=e_{m,t-1}
+\qquad (1\le t\le m-1),
+\]
+while
+\[
+(\Phi_m(U_m))_m=010^{m-2}\neq 10^{m-1}=(\Phi_m(V_m))_m.
+\]
+Consequently, if
+\[
+\Psi:Y_m\to\{0,1\}^{\ZZ}
+\]
+is a sliding block code with memory $q$ and anticipation $0$ such that
+\[
+\Psi\circ\Phi_m=\mathrm{id}_{\{0,1\}^{\ZZ}},
+\]
+then necessarily $q\ge m-1$.
+\end{proposition}
+
+\begin{proof}
+For $U_m$, the $t$th raw window is $e_{m,t-1}\in X_m$ for every
+$1\le t\le m-1$, so
+\[
+(\Phi_m(U_m))_t=e_{m,t-1}
+\qquad (1\le t\le m-1).
+\]
+
+For $V_m$, the first raw window is $0^{m-2}11=z_{m,1}$, so
+Proposition~\ref{prop:zero-fiber-explicit} gives
+\[
+(\Phi_m(V_m))_1=0^m=e_{m,0}.
+\]
+For $2\le t\le m-1$, the $t$th raw window of $V_m$ is
+\[
+0^{m-t-1}110^{t-1}.
+\]
+A single application of the local rule \eqref{eq:rewrite-adjacent} transforms
+this word into $e_{m,t-1}=0^{m-t+1}10^{t-2}\in X_m$, so
+Corollary~\ref{cor:fold-order-independent} yields
+\[
+(\Phi_m(V_m))_t=e_{m,t-1}
+\qquad (2\le t\le m-1).
+\]
+Thus the first $m-1$ output symbols of $\Phi_m(U_m)$ and $\Phi_m(V_m)$ agree.
+
+At time $t=m$, the two raw windows are
+\[
+010^{m-2}
+\qquad\text{and}\qquad
+10^{m-1}.
+\]
+Both words already lie in $X_m$, and they are distinct, proving the displayed
+inequality at time $m$.
+
+Now suppose that $\Psi$ has memory $q$ and anticipation $0$ and satisfies
+$\Psi\circ\Phi_m=\mathrm{id}$.  Set
+\[
+\widetilde U_m:=\sigma^{m-1}U_m,
+\qquad
+\widetilde V_m:=\sigma^{m-1}V_m.
+\]
+Then
+\[
+(\widetilde U_m)_0=0,
+\qquad
+(\widetilde V_m)_0=1,
+\]
+because $u_m$ and $v_m$ first differ at their $(m-1)$st coordinate.  By
+Proposition~\ref{prop:Phi-m-equivariant}, the output sequences
+$\Phi_m(\widetilde U_m)$ and $\Phi_m(\widetilde V_m)$ agree on the coordinates
+$-(m-2),\ldots,0$.  If $q<m-1$, then the local rule defining $\Psi(\cdot)_0$
+reads only a block contained in those common coordinates, so
+\[
+\Psi(\Phi_m(\widetilde U_m))_0=\Psi(\Phi_m(\widetilde V_m))_0.
+\]
+Since $\Psi\circ\Phi_m=\mathrm{id}$, this would force
+$(\widetilde U_m)_0=(\widetilde V_m)_0$, a contradiction.  Therefore
+$q\ge m-1$.
+\end{proof}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{cccc}
+\toprule
+state $v$ & appended bit $b$ & label $\ell_3(v,b)$ & next state \\
+\midrule
+$00$ & $0$ & $000$ & $00$ \\
+$00$ & $1$ & $001$ & $01$ \\
+$01$ & $0$ & $010$ & $10$ \\
+$01$ & $1$ & $000$ & $11$ \\
+$10$ & $0$ & $100$ & $00$ \\
+$10$ & $1$ & $101$ & $01$ \\
+$11$ & $0$ & $001$ & $10$ \\
+$11$ & $1$ & $100$ & $11$ \\
+\bottomrule
+\end{tabular}
+\caption{The labeled graph $G_3$.}
+\label{tab:G3}
+\end{table}
+
+\begin{proposition}[Base case at length $3$]
+\label{prop:G3-base-case}
+Every block
+\[
+a_1a_2a_3\in\mathcal L_3(Y_3)
+\]
+has a unique raw lift
+\[
+\omega_1\cdots\omega_5\in\Omega_5
+\]
+satisfying
+\[
+\Fold_3(\omega_j\omega_{j+1}\omega_{j+2})=a_j
+\qquad (1\le j\le 3).
+\]
+Consequently there is a well-defined map
+\[
+\Theta_{3,3}:\mathcal L_3(Y_3)\to X_1=\{0,1\},
+\qquad
+\Theta_{3,3}(a_1a_2a_3):=\omega_3.
+\]
+\end{proposition}
+
+\begin{proof}
+Table~\ref{tab:G3} gives the complete labeled graph $G_3$.  A block
+$a_1a_2a_3\in\mathcal L_3(Y_3)$ is carried by some length-$3$ path in $G_3$.
+Since $G_3$ has four states and two outgoing edges from each state, there are
+\[
+4\cdot 2^3=32
+\]
+length-$3$ paths in total.  A direct inspection of the $32$ paths encoded by
+Table~\ref{tab:G3} shows that no two distinct length-$3$ paths carry the same
+label word.  Hence every admissible block $a_1a_2a_3$ determines a unique
+length-$3$ path in $G_3$.
+
+If the initial vertex of that path is $\omega_1\omega_2$ and its successive
+appended bits are $\omega_3,\omega_4,\omega_5$, then the path corresponds to
+the unique raw lift $\omega_1\cdots\omega_5$.  The central bit $\omega_3$ is
+therefore uniquely determined, and this defines $\Theta_{3,3}$.
+\end{proof}
+
+\section{Exact decoding and sharp finite-state thresholds}
+
+The remaining arithmetic question is whether overlapping normalized windows
+determine the underlying binary sequence.  For $m\ge 3$ the answer is
+affirmative.  Starting from the common overlaps of successive raw windows, we
+obtain the sharp decoding theorem together with the exact finite-state
+thresholds carried by the normalized language.
+
+\subsection{Overlap decoding}
+
+Here $\mathcal L_n(Y_m)$ denotes the set of length-$n$ blocks occurring in
+$Y_m$.
+
+\begin{lemma}[A signed Fibonacci gap shifts by one index]
+\label{lem:signed-fibonacci-gap-shift}
+Let $m\ge 2$ and let $d_1,\ldots,d_{m-1}\in\{-1,0,1\}$.  If
+\[
+\sum_{k=1}^{m-1} d_kF_{k+1}=F_m,
+\]
+then
+\[
+\sum_{k=1}^{m-1} d_kF_k=F_{m-1}.
+\]
+If instead
+\[
+\sum_{k=1}^{m-1} d_kF_{k+1}=-F_m,
+\]
+then
+\[
+\sum_{k=1}^{m-1} d_kF_k=-F_{m-1}.
+\]
+\end{lemma}
+
+\begin{proof}
+It is enough to prove the positive case, since the negative case follows by
+replacing each $d_k$ with $-d_k$.
+
+Let
+\[
+\varphi:=\frac{1+\sqrt5}{2},
+\qquad
+\psi:=\frac{1-\sqrt5}{2}.
+\]
+By Binet's formula,
+\[
+F_n=\frac{\varphi^n-\psi^n}{\sqrt5}
+\qquad (n\ge 1).
+\]
+Define
+\[
+P(z):=\sum_{k=1}^{m-1} d_kz^k.
+\]
+The hypothesis reads
+\[
+\frac{\varphi P(\varphi)-\psi P(\psi)}{\sqrt5}=F_m
+=
+\frac{\varphi^m-\psi^m}{\sqrt5},
+\]
+so
+\[
+C:=\varphi P(\varphi)-\varphi^m
+=
+\psi P(\psi)-\psi^m.
+\]
+The first expression is an algebraic integer in $\ZZ[\varphi]$, while the
+second is its Galois conjugate.  Since they are equal, $C$ is fixed by
+conjugation and therefore lies in $\mathbb{Q}$; hence $C$ is an ordinary
+integer.
+
+On the other hand,
+\[
+|C|
+\le
+\sum_{k=1}^{m-1} |\psi|^{k+1}+|\psi|^m
+<
+\sum_{j=2}^{\infty} |\psi|^j
+=
+1.
+\]
+Thus the integer $C$ satisfies $|C|<1$, so $C=0$.  Therefore
+\[
+\varphi P(\varphi)=\varphi^m,
+\qquad
+\psi P(\psi)=\psi^m,
+\]
+and hence
+\[
+P(\varphi)=\varphi^{m-1},
+\qquad
+P(\psi)=\psi^{m-1}.
+\]
+Applying Binet's formula again gives
+\[
+\sum_{k=1}^{m-1} d_kF_k
+=
+\frac{P(\varphi)-P(\psi)}{\sqrt5}
+=
+\frac{\varphi^{m-1}-\psi^{m-1}}{\sqrt5}
+=
+F_{m-1}.
+\]
+\end{proof}
+
+\begin{proposition}[Pairwise overlap reduction]
+\label{prop:pair-overlap-reduction}
+For every $m\ge 3$ there is a well-defined map
+\[
+\Theta_m:\mathcal L_2(Y_m)\to X_{m-1}
+\]
+with the following property.  If
+\[
+a=\Fold_m(pr),
+\qquad
+b=\Fold_m(rq)
+\]
+for some bits $p,q\in\{0,1\}$ and some overlap word
+$r=r_1\cdots r_{m-1}\in\Omega_{m-1}$, then
+\[
+\Theta_m(ab)=\Fold_{m-1}(r).
+\]
+\end{proposition}
+
+\begin{proof}
+Take two raw words
+\[
+prq,\qquad p'r'q'
+\]
+of length $m+1$ such that
+\[
+\Fold_m(pr)=\Fold_m(p'r'),
+\qquad
+\Fold_m(rq)=\Fold_m(r'q').
+\]
+Write
+\[
+\Delta:=N(r)-N(r').
+\]
+Since $r,r'\in\Omega_{m-1}$, one has
+\[
+|\Delta|\le \sum_{k=1}^{m-1}F_{k+1}=F_{m+2}-2<F_{m+2}.
+\]
+By Corollary~\ref{cor:visible-value-overflow}, equality of the second folded
+symbols implies
+\[
+\Delta+(q-q')F_{m+1}\in\{-F_{m+2},0,F_{m+2}\}.
+\]
+Because $q-q'\in\{-1,0,1\}$ and $F_{m+2}=F_{m+1}+F_m$, this forces
+\[
+\Delta\in\{0,\pm F_m,\pm F_{m+1}\}.
+\]
+
+We claim that the cases $\Delta=\pm F_m$ are impossible.  Suppose first that
+\[
+\Delta=F_m.
+\]
+Set
+\[
+d_k:=r_k-r_k'\in\{-1,0,1\}
+\qquad (1\le k\le m-1).
+\]
+Then
+\[
+\sum_{k=1}^{m-1} d_kF_{k+1}=F_m,
+\]
+so Lemma~\ref{lem:signed-fibonacci-gap-shift} gives
+\[
+\sum_{k=1}^{m-1} d_kF_k=F_{m-1}.
+\]
+Hence
+\[
+\begin{aligned}
+N(pr)-N(p'r')
+&=
+(p-p')+\sum_{k=1}^{m-1} d_kF_{k+2}\\
+&=
+(p-p')+\sum_{k=1}^{m-1} d_k(F_{k+1}+F_k)\\
+&=
+(p-p')+F_m+F_{m-1}\\
+&=
+(p-p')+F_{m+1}.
+\end{aligned}
+\]
+This lies in
+\[
+\{F_{m+1}-1,F_{m+1},F_{m+1}+1\},
+\]
+which is disjoint from $\{-F_{m+2},0,F_{m+2}\}$ because
+$F_{m+2}=F_{m+1}+F_m>F_{m+1}+1$.  By
+Corollary~\ref{cor:visible-value-overflow}, the first folded symbols cannot be
+equal, a contradiction.  The case $\Delta=-F_m$ is identical after changing
+signs.
+
+Therefore
+\[
+\Delta\in\{0,\pm F_{m+1}\}.
+\]
+By Corollary~\ref{cor:visible-value-overflow} at length $m-1$, this is exactly
+the condition
+\[
+\Fold_{m-1}(r)=\Fold_{m-1}(r').
+\]
+Thus the folded overlap depends only on the pair of output symbols, and the map
+$\Theta_m$ is well defined.
+\end{proof}
+
+\begin{remark}
+The restriction $m\ge 3$ is essential.  For $m=2$, both raw words $00$ and
+$11$ fold to $00$, so the pair $(00,00)\in\mathcal L_2(Y_2)$ does not
+determine the overlapping bit.
+\end{remark}
+
+\begin{definition}[Recursive overlap decoders]
+\label{def:recursive-overlap-decoder}
+For integers $m\ge 3$ and $1\le n\le m$, define
+\[
+\Theta_{m,n}:\mathcal L_n(Y_m)\to X_{m-n+1}
+\]
+as follows.  For $n=1$, set
+\[
+\Theta_{m,1}(a_1):=a_1.
+\]
+For $(m,n)=(3,2)$, set
+\[
+\Theta_{3,2}(a_1a_2):=\Theta_3(a_1a_2).
+\]
+For $(m,n)=(3,3)$, let $\omega_1\cdots\omega_5$ be the unique raw lift from
+Proposition~\ref{prop:G3-base-case} and define
+\[
+\Theta_{3,3}(a_1a_2a_3):=\omega_3.
+\]
+For $m\ge 4$ and $2\le n\le m$, define
+\[
+\Theta_{m,n}(a_1\cdots a_n)
+:=
+\Theta_{m-1,n-1}\bigl(
+\Theta_m(a_1a_2)\,
+\Theta_m(a_2a_3)\cdots
+\Theta_m(a_{n-1}a_n)
+\bigr).
+\]
+\end{definition}
+
+\begin{proposition}[Common-overlap decoding]
+\label{prop:common-overlap-decoder}
+Let $m\ge 3$ and $1\le n\le m$.  Suppose
+\[
+\omega=\omega_1\cdots\omega_{m+n-1}\in\Omega_{m+n-1},
+\qquad
+a_j:=\Fold_m(\omega_j\cdots\omega_{j+m-1})
+\quad (1\le j\le n).
+\]
+Then
+\[
+\Theta_{m,n}(a_1\cdots a_n)
+=
+\Fold_{m-n+1}(\omega_n\cdots\omega_m).
+\]
+Thus $\Theta_{m,n}$ recovers the fold of the common overlap of the $n$
+consecutive raw windows.
+\end{proposition}
+
+\begin{proof}
+We argue by induction on $m$.
+
+If $m=3$, there are three cases.  For $n=1$, the claim is the definition of
+$\Theta_{3,1}$.  For $n=2$, it is exactly
+Proposition~\ref{prop:pair-overlap-reduction}.  For $n=3$,
+Proposition~\ref{prop:G3-base-case} gives a unique raw lift
+\[
+\omega_1\cdots\omega_5
+\]
+of $a_1a_2a_3$, and by definition
+\[
+\Theta_{3,3}(a_1a_2a_3)=\omega_3.
+\]
+Since $X_1=\{0,1\}$ and $\Fold_1$ fixes admissible words by
+Proposition~\ref{prop:fold-basic}\textup{(ii)}, this is
+\[
+\Fold_1(\omega_3).
+\]
+Thus the statement holds for $m=3$.
+
+Now assume $m\ge 4$ and that the proposition is known at level $m-1$ for every
+admissible block length.  The case $n=1$ is again the definition.  Assume
+$n\ge 2$.  By Proposition~\ref{prop:pair-overlap-reduction}, for each
+$1\le j\le n-1$ one has
+\[
+\Theta_m(a_ja_{j+1})
+=
+\Fold_{m-1}(\omega_{j+1}\cdots\omega_{j+m-1}).
+\]
+These are precisely the $(m-1)$-folds of the $n-1$ consecutive length-$(m-1)$
+windows cut from the raw block
+\[
+\omega_2\cdots\omega_{m+n-2}.
+\]
+Applying the induction hypothesis at level $m-1$ to the $n-1$ folded
+length-$(m-1)$ windows yields
+\[
+\Theta_{m,n}(a_1\cdots a_n)
+=
+\Theta_{m-1,n-1}\bigl(
+\Theta_m(a_1a_2)\cdots\Theta_m(a_{n-1}a_n)
+\bigr)
+=
+\Fold_{m-n+1}(\omega_n\cdots\omega_m),
+\]
+as claimed.
+\end{proof}
+
+\begin{theorem}[Unique lift of a length-$m$ output block]
+\label{thm:length-m-block-unique-lift}
+Let $m\ge 3$.  Every block
+\[
+a_1\cdots a_m\in\mathcal L_m(Y_m)
+\]
+has a unique raw lift
+\[
+\omega_1\cdots\omega_{2m-1}\in\Omega_{2m-1}
+\]
+satisfying
+\[
+\Fold_m(\omega_j\cdots\omega_{j+m-1})=a_j
+\qquad (1\le j\le m).
+\]
+\end{theorem}
+
+\begin{proof}
+Existence is immediate from the definition of $\mathcal L_m(Y_m)$.
+
+For uniqueness, suppose
+\[
+\omega_1\cdots\omega_{2m-1}
+\]
+is any lift of the given output block.  For $1\le k\le m$ define
+\[
+L_k:=\Theta_{m,m-k+1}(a_1\cdots a_{m-k+1}),
+\qquad
+R_k:=\Theta_{m,m-k+1}(a_k\cdots a_m).
+\]
+By Proposition~\ref{prop:common-overlap-decoder},
+\[
+L_k=\Fold_k(\omega_{m-k+1}\cdots\omega_m),
+\qquad
+R_k=\Fold_k(\omega_m\cdots\omega_{m+k-1}).
+\]
+
+For $k=1$ this gives
+\[
+L_1=R_1=\omega_m\in\{0,1\},
+\]
+so the central bit is determined.
+
+Now fix $2\le k\le m$ and assume inductively that the central blocks
+\[
+\omega_{m-k+2}\cdots\omega_m,
+\qquad
+\omega_m\cdots\omega_{m+k-2}
+\]
+have already been determined.  The word $L_k$ is the fold of the raw $k$-block
+\[
+\omega_{m-k+1}\omega_{m-k+2}\cdots\omega_m,
+\]
+whose suffix of length $k-1$ is known.  By
+Proposition~\ref{prop:one-step-left-resolving}, applied with $k$ in place of
+$m$, the two possible prepended bits $0$ and $1$ produce distinct folds.
+Therefore $L_k$ determines the new left bit $\omega_{m-k+1}$ uniquely.
+
+Similarly, $R_k$ is the fold of
+\[
+\omega_m\cdots\omega_{m+k-2}\omega_{m+k-1},
+\]
+whose prefix of length $k-1$ is known.  By
+Proposition~\ref{prop:one-step-right-resolving}, again with $k$ in place of
+$m$, the appended bit is uniquely determined by $R_k$.  Hence $\omega_{m+k-1}$
+is fixed as well.
+
+Proceeding outward from $k=1$ to $k=m$ reconstructs all bits
+\[
+\omega_1,\ldots,\omega_{2m-1}
+\]
+uniquely.
+\end{proof}
+
+\begin{corollary}[Uniform synchronizing length]
+\label{cor:uniform-synchronizing-length}
+Let $m\ge 3$.  Every block in $\mathcal L_m(Y_m)$ is synchronizing for the
+presentation $G_m$.  Moreover the block
+\[
+e_{m,0}e_{m,1}\cdots e_{m,m-2}
+\]
+of length $m-1$ is not synchronizing.  Consequently the minimal synchronizing
+length of $G_m$ is exactly $m$.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:length-m-block-unique-lift}, every block in
+$\mathcal L_m(Y_m)$ is carried by exactly one length-$m$ path in $G_m$, hence
+is synchronizing.
+
+For the second claim, Proposition~\ref{prop:one-sided-inverse-memory-lower-bound}
+constructs two sequences $U_m$ and $V_m$ whose first $m-1$ output symbols are
+\[
+e_{m,0}e_{m,1}\cdots e_{m,m-2}
+\]
+and coincide there.  The corresponding length-$(m-1)$ paths in $G_m$ end at the
+suffix vertices
+\[
+010^{m-3}
+\qquad\text{and}\qquad
+10^{m-2},
+\]
+which are distinct.  Thus the block admits at least two lifts with different
+terminal vertices, so it is not synchronizing.  The distinct $m$th output
+symbols constructed in Proposition~\ref{prop:one-sided-inverse-memory-lower-bound}
+show in particular that these two lifts do not merge after one further step.
+\end{proof}
+
+\begin{theorem}[Exact finite-type order over the folded alphabet]
+\label{thm:Y-m-exact-SFT-order}
+For every $m\ge 3$, the shift $Y_m$ is an $m$-step shift of finite type over
+the alphabet $X_m$, and it is not an $(m-1)$-step shift of finite type.
+\end{theorem}
+
+\begin{proof}
+Let
+\[
+y=(y_t)_{t\in\ZZ}\in X_m^{\ZZ}
+\]
+be such that every length-$(m+1)$ block of $y$ lies in
+$\mathcal L_{m+1}(Y_m)$.  For each $t\in\ZZ$, the length-$m$ block
+\[
+b_t:=y_{t-m+1}\cdots y_t
+\]
+belongs to $\mathcal L_m(Y_m)$ and is therefore synchronizing by
+Corollary~\ref{cor:uniform-synchronizing-length}.  Let $v_t$ denote the unique
+terminal vertex of a path in $G_m$ labeled by $b_t$.
+
+Now fix $t$.  Since
+\[
+y_{t-m+1}\cdots y_ty_{t+1}\in\mathcal L_{m+1}(Y_m),
+\]
+there exists a path in $G_m$ carrying this length-$(m+1)$ block.  Its prefix
+of length $m$ is labeled by $b_t$, so by uniqueness its terminal vertex is
+$v_t$.  Its suffix of length $m$ is labeled by
+\[
+b_{t+1}=y_{t-m+2}\cdots y_{t+1},
+\]
+so by the same uniqueness statement its terminal vertex is $v_{t+1}$.  Hence
+the last edge of that path is an edge
+\[
+v_t\xrightarrow{\,y_{t+1}\,}v_{t+1}.
+\]
+Thus the vertices $(v_t)_{t\in\ZZ}$ form a bi-infinite path in $G_m$ labeled by
+$y$, and therefore $y\in Y_m$.  This proves that $Y_m$ is $m$-step.
+
+To show that $Y_m$ is not $(m-1)$-step, let
+\[
+b:=e_{m,0}e_{m,1}\cdots e_{m,m-2}\in\mathcal L_{m-1}(Y_m).
+\]
+By Corollary~\ref{cor:uniform-synchronizing-length}, the block $b$ is not
+synchronizing, so reading $b$ in $G_m$ can end at at least two distinct
+vertices.  By Proposition~\ref{prop:one-sided-inverse-memory-lower-bound}, the
+length-$m$ block
+\[
+bc=b\,010^{m-2}
+\]
+belongs to $\mathcal L_m(Y_m)$.  By
+Theorem~\ref{thm:length-m-block-unique-lift}, this length-$m$ block is carried
+by exactly one path in $G_m$.  Consequently, among the terminal vertices
+reached by reading $b$, exactly one admits an outgoing edge labeled
+$010^{m-2}$.  Since $b$ is not synchronizing, at least one other terminal
+vertex reached by $b$ does not admit that label.
+
+Every finite path in $G_m$ occurs in some bi-infinite labeled path because the
+underlying graph is the binary de Bruijn graph on words of length $m-1$ and is
+therefore strongly connected.  Hence there exist two occurrences of the same
+length-$(m-1)$ block $b$ in points of $Y_m$ such that one occurrence may be
+followed by $010^{m-2}$ and another may not.  Thus the admissible next symbol
+after $b$ depends on more than the last $m-1$ output symbols, so $Y_m$ is not
+an $(m-1)$-step shift of finite type.
+\end{proof}
+
+\begin{theorem}[Exact recovery from overlaps]
+\label{thm:Phi-m-conjugacy-threshold}
+For every $m\ge 3$, the sliding block code
+\[
+\Phi_m:\{0,1\}^{\ZZ}\to Y_m
+\]
+admits an exact one-sided inverse from overlapping normalized windows.  More
+precisely, the map
+\[
+\Psi_m:Y_m\to\{0,1\}^{\ZZ},
+\qquad
+(\Psi_m(y))_t:=\Theta_{m,m}(y_{t-m+1}\cdots y_t),
+\]
+is a sliding block code with memory $m-1$ and anticipation $0$, and
+\[
+\Psi_m\circ\Phi_m=\mathrm{id}_{\{0,1\}^{\ZZ}},
+\qquad
+\Phi_m\circ\Psi_m=\mathrm{id}_{Y_m}.
+\]
+Equivalently, $\Phi_m$ is a topological conjugacy between the full binary
+shift and the image shift $Y_m$.
+\end{theorem}
+
+\begin{proof}
+By definition, $(\Psi_m(y))_t$ depends only on the block
+$y_{t-m+1}\cdots y_t$, so $\Psi_m$ has memory $m-1$ and anticipation $0$.
+
+Let $s\in\{0,1\}^{\ZZ}$ and set $y:=\Phi_m(s)$.  For each $t\in\ZZ$, applying
+Proposition~\ref{prop:common-overlap-decoder} with $n=m$ to the raw block
+\[
+s_{t-m+1}\cdots s_{t+m-1}
+\]
+gives
+\[
+\Theta_{m,m}(y_{t-m+1}\cdots y_t)=\Fold_1(s_t).
+\]
+Since $s_t\in X_1=\{0,1\}$, Proposition~\ref{prop:fold-basic}\textup{(ii)}
+gives $\Fold_1(s_t)=s_t$.  Hence
+\[
+\Theta_{m,m}(y_{t-m+1}\cdots y_t)=s_t.
+\]
+Hence
+\[
+\Psi_m(\Phi_m(s))=s,
+\]
+so $\Psi_m\circ\Phi_m=\mathrm{id}$.
+
+Now let $y\in Y_m$.  By definition of $Y_m$ there exists
+$s\in\{0,1\}^{\ZZ}$ with $\Phi_m(s)=y$.  Applying the first identity to this
+$s$ gives
+\[
+\Psi_m(y)=\Psi_m(\Phi_m(s))=s,
+\]
+and therefore
+\[
+\Phi_m(\Psi_m(y))=\Phi_m(s)=y.
+\]
+Thus $\Phi_m$ and $\Psi_m$ are mutual inverses.
+\end{proof}
+
+\begin{corollary}[The one-sided memory threshold is exact]
+\label{cor:Phi-m-memory-threshold-exact}
+Let $m\ge 3$.  Among all sliding block codes
+\[
+\Psi:Y_m\to\{0,1\}^{\ZZ}
+\]
+with anticipation $0$ and
+\[
+\Psi\circ\Phi_m=\mathrm{id}_{\{0,1\}^{\ZZ}},
+\]
+the smallest possible memory is exactly $m-1$.
+\end{corollary}
+
+\begin{proof}
+The inverse $\Psi_m$ from Theorem~\ref{thm:Phi-m-conjugacy-threshold} has
+memory $m-1$, while
+Proposition~\ref{prop:one-sided-inverse-memory-lower-bound} shows that no
+one-sided left inverse can use smaller memory.
+\end{proof}
+
+\begin{corollary}[A consequence for entropy and periodic data]
+\label{cor:Y-m-conjugacy-collapse}
+For every $m,n\ge 3$, the shifts $Y_m$ and $Y_n$ are topologically conjugate.
+In particular, for every $m\ge 3$,
+\[
+h_{\mathrm{top}}(Y_m)=\log 2,
+\qquad
+\#\mathrm{Fix}(\sigma^n|_{Y_m})=2^n
+\quad (n\ge 1),
+\qquad
+\zeta_{Y_m}(z)=\frac{1}{1-2z}.
+\]
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:Phi-m-conjugacy-threshold}, every $Y_m$ with $m\ge 3$ is
+conjugate to the full two-shift.  The conjugacy
+\[
+Y_m\xrightarrow{\ \Psi_m\ }\{0,1\}^{\ZZ}\xrightarrow{\ \Phi_n\ }Y_n
+\]
+gives the first claim, and the entropy, fixed-point counts, and zeta function
+are the corresponding invariants of the full two-shift.
+\end{proof}
+
+\subsection{The canonical deterministic presentation}
+
+We now return to the subset construction.  The exact decoding theorem shows
+that the determinized presentation has a finite transient ambiguity shell and
+that its essential core is already visible in the explicit graph $G_m$.
+
+\begin{definition}[Deterministic candidate-set presentation]
+\label{def:Phi-m-right-resolving}
+For a nonempty subset $S\subset V_m$ and a label $a\in X_m$, define
+\[
+\delta_m(S,a):=
+\{v'\in V_m:\exists\, e:v\to v' \text{ with } v\in S \text{ and } \ell_m(e)=a\}.
+\]
+Starting from the state $V_m$, take all reachable nonempty subsets of $V_m$ and
+add labeled edges
+\[
+S\xrightarrow{a}\delta_m(S,a)
+\]
+whenever $\delta_m(S,a)\neq \varnothing$.  The resulting finite labeled graph
+is denoted $H_m^{\mathrm{det}}$.
+\end{definition}
+
+\begin{proposition}[Deterministic right-resolving presentation]
+\label{prop:Phi-m-right-resolving}
+The graph $H_m^{\mathrm{det}}$ is right-resolving and presents the same labeled
+language as $G_m$.  Consequently its edge shift has label image $Y_m$.
+\end{proposition}
+
+\begin{proof}
+By construction, for a fixed state $S$ and label $a$, there is at most one
+outgoing edge with label $a$, so $H_m^{\mathrm{det}}$ is right-resolving.  The
+subset construction preserves the accepted labeled language of a finite
+automaton, hence $H_m^{\mathrm{det}}$ and $G_m$ present the same set of finite
+label words.  Their bi-infinite label shifts therefore coincide, and by
+Theorem~\ref{thm:Phi-m-sofic-graph} this common image is $Y_m$.
+\end{proof}
+
+\begin{proposition}[The singleton core]
+\label{prop:deterministic-singleton-core}
+Let $m\ge 3$.  Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item every state of $H_m^{\mathrm{det}}$ reached after at least $m$ input
+symbols is a singleton;
+\item the reachable singleton states are exactly the sets $\{v\}$ with
+$v\in V_m$;
+\item the labeled subgraph induced by the singleton states is canonically
+labeled-isomorphic to $G_m$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Take any block
+\[
+a_1\cdots a_m\in\mathcal L_m(Y_m).
+\]
+By Theorem~\ref{thm:length-m-block-unique-lift}, this block has a unique raw
+lift, hence a unique length-$m$ path in $G_m$ carrying that label word.  Its
+terminal vertex is therefore uniquely determined by the block.  Consequently,
+every reachable state after reading $m$ symbols is a singleton.  Since
+singletons are forward closed under the subset construction, every state reached
+after at least $m$ symbols is again a singleton.  This proves
+\textup{(i)}.
+
+For \textup{(ii)}, it remains to show that every singleton $\{v\}$ with
+$v\in V_m$ is reachable.  By
+Theorem~\ref{thm:alternating-single-symbol-synchronizing}, the symbol $b_m$
+sends the full candidate set to a singleton.  The
+underlying directed graph of $G_m$ is the binary de Bruijn graph on words of
+length $m-1$, so it is strongly connected.  Thus for every $v\in V_m$ there
+exists a path in $G_m$ from that singleton state to $v$, and reading its label
+from the singleton yields $\{v\}$.
+
+Finally, \textup{(iii)} is immediate from the definitions: for singleton states,
+\[
+\delta_m(\{v\},a)=\{v'\}
+\]
+if and only if $G_m$ has an edge $v\to v'$ labeled $a$.  Hence the singleton
+subgraph is exactly a relabeling of $G_m$.
+\end{proof}
+
+\begin{proposition}[The ambiguity shell is transient]
+\label{prop:deterministic-ambiguity-transient}
+Let $m\ge 3$.  Every non-singleton state of $H_m^{\mathrm{det}}$ is transient.
+Equivalently, the subgraph induced by the non-singleton states is acyclic.
+\end{proposition}
+
+\begin{proof}
+Suppose there were a directed cycle consisting entirely of non-singleton states.
+Since every state of $H_m^{\mathrm{det}}$ is reachable from the initial state
+$V_m$, one could first reach that cycle and then traverse it often enough to
+obtain a path of length at least $m$ ending at a non-singleton state.  This
+contradicts Proposition~\ref{prop:deterministic-singleton-core}\textup{(i)}.
+Hence no such cycle exists, and every non-singleton state is transient.
+\end{proof}
+
+\begin{proposition}[Exact nilpotency of the ambiguity shell]
+\label{prop:ambiguity-shell-nilpotency}
+Let $m\ge 3$.  Order the states of $H_m^{\mathrm{det}}$ by placing the
+non-singleton states first and the singleton core last.  Then the adjacency
+matrix of $H_m^{\mathrm{det}}$ has the form
+\[
+A(H_m^{\mathrm{det}})
+=
+\begin{pmatrix}
+N_m & R_m\\
+0 & A(G_m)
+\end{pmatrix}
+\]
+for some matrix $R_m$, and
+\[
+N_m^m=0,
+\qquad
+N_m^{m-1}\neq 0.
+\]
+Consequently
+\[
+\det(I-zA(H_m^{\mathrm{det}}))=\det(I-zA(G_m)).
+\]
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:deterministic-singleton-core}\textup{(iii)}, the
+singleton states induce a labeled copy of $G_m$.  Since singleton states are
+forward closed, there are no edges from the singleton core back into the
+non-singleton shell, so the adjacency matrix has the displayed block upper
+triangular form.
+
+By Proposition~\ref{prop:deterministic-singleton-core}\textup{(i)}, every path
+of length $m$ in $H_m^{\mathrm{det}}$ ends in a singleton.  Hence there is no
+path of length $m$ contained entirely in the non-singleton shell, which is
+equivalent to $N_m^m=0$.
+
+By Corollary~\ref{cor:uniform-synchronizing-length}, there exists a
+non-synchronizing block of length $m-1$.  Reading that block from the initial
+state $V_m$ yields a path of length $m-1$ ending at a non-singleton state.
+Because singleton states are forward closed, every intermediate state on that
+path is also non-singleton.  Therefore the shell contains a path of length
+$m-1$, so $N_m^{m-1}\neq 0$.
+
+Finally,
+\[
+\det(I-zA(H_m^{\mathrm{det}}))
+=
+\det(I-zN_m)\det(I-zA(G_m)).
+\]
+Since $N_m$ is nilpotent, $\det(I-zN_m)=1$, and the determinant identity
+follows.
+\end{proof}
+
+\begin{proposition}[The explicit graph is follower separated]
+\label{prop:G-m-follower-separated}
+Let $m\ge 3$.  Distinct vertices of $G_m$ have distinct follower sets.
+\end{proposition}
+
+\begin{proof}
+Let
+\[
+b_m=u_1\cdots u_m
+\]
+be the alternating symbol from
+Definition~\ref{def:alternating-extremal-words}.  For each vertex
+\[
+v=v_1\cdots v_{m-1}\in V_m,
+\]
+consider the length-$m$ path obtained by appending the fixed bit word
+$u_1\cdots u_m$.  Let
+\[
+\Lambda(v)\in\mathcal L_m(Y_m)
+\]
+denote its label word.
+
+We claim that $\Lambda(v)$ is carried by exactly one path in $G_m$, namely the
+one that starts at $v$ and appends $u_1,\ldots,u_m$.  Indeed, the last symbol
+of $\Lambda(v)$ is $b_m$, and by
+Theorem~\ref{thm:alternating-single-symbol-synchronizing}, the symbol $b_m$ is
+carried by a unique edge.  Thus the final edge of any path carrying
+$\Lambda(v)$ is fixed.  Since $G_m$ is one-step left-resolving by
+Proposition~\ref{prop:one-step-left-resolving}, the penultimate label then
+determines the penultimate edge uniquely; iterating this backward reconstruction
+shows that the whole path carrying $\Lambda(v)$ is unique.
+
+In particular, its initial vertex is uniquely determined by $\Lambda(v)$.
+Hence if $v\neq w$, the word $\Lambda(v)$ belongs to the follower set of $v$
+but not to that of $w$.  Therefore distinct vertices have distinct follower
+sets.
+\end{proof}
+
+\begin{corollary}[The graph $G_m$ is the canonical minimal right-resolving presentation]
+\label{cor:G-m-fischer-cover}
+For every $m\ge 3$, the canonical minimal right-resolving presentation of
+$Y_m$ is labeled-isomorphic to $G_m$.  Equivalently, $G_m$ is the right
+Fischer cover of $Y_m$.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:Phi-m-conjugacy-threshold}, the shift $Y_m$ is irreducible
+(indeed conjugate to the full two-shift).  Proposition~\ref{prop:Phi-m-right-resolving}
+gives a deterministic right-resolving presentation of $Y_m$.  By
+Proposition~\ref{prop:deterministic-ambiguity-transient}, the only essential
+component of that presentation is the singleton core from
+Proposition~\ref{prop:deterministic-singleton-core}, which is labeled-isomorphic
+to $G_m$.  Proposition~\ref{prop:G-m-follower-separated} shows that this core is
+already follower separated.  The standard construction of the canonical
+minimal right-resolving presentation, equivalently of the right Fischer cover,
+as the follower-separated essential component of a deterministic
+right-resolving presentation therefore leaves $G_m$ unchanged; see
+\cite[Chs.~3--4]{LindMarcus1995} and \cite[Ch.~4]{Kitchens1998SymbolicDynamics}.
+\end{proof}
+
+\begin{corollary}[Coincidence of decoding and presentation scales]
+\label{cor:local-complexity-scale-coincidence}
+For every $m\ge 3$, the following quantities are exact and all equal to the
+same scale:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item the finite-type order of $Y_m$ over the alphabet $X_m$ is $m$;
+\item the minimal synchronizing length of the presentation $G_m$ is $m$;
+\item the nilpotency index of the ambiguity-shell matrix $N_m$ is $m$;
+\item the minimal memory of a one-sided sliding-block inverse of $\Phi_m$ is
+$m-1$.
+\end{enumerate}
+In particular, although the shifts $Y_m$ with $m\ge 3$ are all conjugate to the
+full two-shift, their natural presentations over the folded alphabets $X_m$
+retain a rigid linear local-complexity scale.
+\end{corollary}
+
+\begin{proof}
+Part \textup{(i)} is Theorem~\ref{thm:Y-m-exact-SFT-order},
+part \textup{(ii)} is Corollary~\ref{cor:uniform-synchronizing-length},
+part \textup{(iii)} is Proposition~\ref{prop:ambiguity-shell-nilpotency}, and
+part \textup{(iv)} is Corollary~\ref{cor:Phi-m-memory-threshold-exact}.
+\end{proof}
+
+\section*{Competing interests}
+
+The author(s) declare none.
+
+\bibliographystyle{plain}
+\bibliography{../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references}
+
+\end{document}

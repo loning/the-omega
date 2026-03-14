@@ -1,0 +1,2041 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\numberwithin{equation}{section}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\TT}{\mathbb{T}}
+\newcommand{\Fold}{\mathrm{Fold}}
+\newcommand{\leb}{\mathrm{Leb}}
+\newcommand{\pref}{\mathrm{pref}}
+\DeclareMathOperator{\TV}{TV}
+\DeclareMathOperator{\KL}{KL}
+\DeclareMathOperator{\supp}{supp}
+
+\title{Folded Histograms of Irrational Rotations: Finite-Sample Control and a Low-Complexity Barrier to the Parry Measure}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Finite windows of an irrational rotation generate binary words, and the
+canonical fold studied here sends these words to the golden-mean shift by
+Fibonacci weighting followed by Zeckendorf normalization. We use this explicit
+model to study a broader question: how should a low-complexity dynamical source
+be compared with an ambient maximal-entropy equilibrium measure after a
+deterministic coarse-graining? The paper has two aims. The first is
+finite-sample control: star discrepancy bounds the empirical microstate law and
+its folded pushforward in total variation, with a universal \(2m\) coefficient
+and the sharp \(m+1\) coefficient in the canonical Sturmian slice
+\(\beta=\alpha\); for metallic means \(\alpha_A=[0;A,A,\dots]\), the golden
+branch \(A=1\) uniquely minimizes the leading discrepancy constant. The second
+aim is structural comparison with the Parry measure. In the canonical Sturmian
+slice the fold is transparent on the realized language, so the Parry mismatch is
+not created by folding: it comes from comparing an \(m+1\)-state Sturmian law
+with the \(F_{m+2}\)-state maximal-entropy equilibrium on the ambient
+golden-mean shift. The endpoint collapse of Parry cylinders then yields an exact
+formula for \(\KL(\nu\|\pi_m)\) for every law \(\nu\) on \(X_m\), explicit
+support-constrained minima for total variation and relative entropy, and an
+exact complexity-divergence law. Consequently, any family on \(X_m\) with
+support exponent \(\alpha\) stays at asymptotic Parry cost at least
+\(h_{\mathrm{top}}(X)-\alpha\); in particular every subexponential family,
+including folded Sturmian histograms, remains at extensive distance
+\(\log\varphi\) per symbol from \(\pi_m\). For bounded-type slopes this sharpens
+to \(\KL(\pi_m^{\mathrm{fold}}\|\pi_m)=m\log\varphi-\log m+O_\alpha(1)\). At the
+microstate level, the canonical fold also yields an exact information-projection
+decomposition into a hidden fiber residual and an observable macro divergence.
+Numerical experiments corroborate the deterministic bounds and show directly
+that comparison with the Parry baseline deteriorates with \(m\) even when the
+finite-sample discrepancy certificate is already tiny. Thus the paper uses one
+fully explicit rotation model to exhibit a broader equilibrium-barrier
+principle, with the canonical fold contributing exact relabeling on realized
+support and a computable off-support degeneracy ledger.
+\end{abstract}
+
+\section{Introduction}
+
+Finite words cut from irrational rotations lie at the intersection of symbolic
+dynamics, discrepancy theory, and ergodic sampling. They also provide a clean
+test case for a broader question: after a deterministic coarse-graining, how
+should one compare a low-complexity dynamical source with the ambient
+maximal-entropy equilibrium of the symbolic state space in which it now lives?
+This paper studies that question in one explicit model. Starting from a
+length-$m$ binary rotation word, we apply a canonical fold map defined by
+Fibonacci weighting followed by Zeckendorf normalization, thereby producing an
+admissible word in the golden-mean shift.
+
+There are two distinct problems. The first is a finite-sample one: given \(N\)
+windows along a single orbit, how close is the empirical folded histogram to
+its deterministic limit law? The second is a reference-measure problem: how
+should that folded law be compared with the Parry measure, the natural
+maximal-entropy equilibrium on the golden-mean shift? In the canonical
+Sturmian slice \(\beta=\alpha\), the folded law is supported on only \(m+1\)
+words while the ambient shift contains \(F_{m+2}\) admissible words, so a
+large deviation from the Parry baseline need not be a sampling artifact.
+
+The main message is that, in this canonical slice, the Parry mismatch is not
+created by folding. On the realized Sturmian language, the fold is transparent:
+it acts only as an arithmetic relabeling, without merging distinct realized
+factors. The extensive gap to the Parry equilibrium comes instead from low
+Sturmian complexity against an ambient maximal-entropy reference. Thus the
+paper separates two effects that are often conflated in numerical practice:
+finite-sample fluctuation, which discrepancy can control, and structural
+mismatch, which persists even as the sampling certificate becomes tiny.
+
+The first contribution is deterministic finite-sample control. Star discrepancy
+bounds the empirical microstate law and its folded pushforward in total
+variation, and the Sturmian slice sharpens the universal \(2m\) coefficient to
+\(m+1\). A smallest-cylinder estimate and data processing then yield explicit
+relative-entropy certificates. Within the metallic-mean family
+\(\alpha_A=[0;A,A,\dots]\), the golden branch \(A=1\) uniquely minimizes the
+leading discrepancy constant.
+
+The second contribution is a sharp comparison with the Parry baseline. Because
+Parry cylinder weights on the golden-mean language collapse to the endpoints of
+a word, one obtains an exact formula for \(\KL(\nu\|\pi_m)\) for every law
+\(\nu\) on \(X_m\). This turns the Parry comparison into an exact support
+optimization problem and yields an explicit complexity-divergence law. In the
+form most relevant to the present paper, if \((\nu_m)\) is any sequence of laws
+on \(X_m\) with effective support exponent at most \(\alpha\), then
+\[
+\liminf_{m\to\infty}\frac{1}{m}\KL(\nu_m\|\pi_m)
+\ge
+h_{\mathrm{top}}(X)-\alpha.
+\]
+Thus every subexponential family on \(X_m\), folded or not, stays at positive
+entropy density from the Parry equilibrium. The folded Sturmian laws realize
+the extremal case \(\alpha=0\), so their extensive \(\log\varphi\) penalty is a
+structural consequence of low complexity rather than a defect of the canonical
+normalization rule.
+
+The third contribution is model-specific but conceptually useful. The canonical
+fold localizes its incompatibility with prefix truncation at a single explicit
+boundary event, explaining why cross-resolution residuals can remain visible
+even when orbit discrepancy is already small. On realized Sturmian support, the
+fold preserves all label-invariant entropies and divergences because it is a
+support bijection. At the microstate level, it also induces a natural
+fiber-uniform model family, and relative entropy splits exactly into a hidden
+within-fiber residual and the observable divergence of the folded law. This
+identifies what information is lost by passing from microstates to folded
+histograms without altering the Parry-comparison conclusions.
+
+The ingredients entering these statements are classical in isolation. Sturmian
+codings, factor complexity, and factor frequencies go back to
+\cite{MorseHedlund1940,Slater1950DistributionIntegers,Slater1967GapsSteps} and
+fit naturally into the substitution and symbolic-dynamical viewpoints
+\cite{LindMarcus1995,QueffelecSubstitution,Fogg2002}. The Parry measure and the
+thermodynamic formalism of shifts of finite type are standard
+\cite{LindMarcus1995,WaltersErgodicTheory,ParryPollicott1990Zeta}. Fibonacci
+numeration and its finite-state normalization mechanisms are likewise classical
+\cite{Zeckendorf1972,Frougny1991FibonacciFiniteAutomata,Frougny1992NumbersAutomata},
+with more recent work on dynamical properties of Zeckendorf-type codings in
+\cite{ManiboMiroRustTadeo2020ZeckendorfMixing}. What seems specific here is the
+way these structures lock together: endpoint collapse converts the Parry
+comparison into an exact information-theoretic identity, and the low-complexity
+support of the folded rotation law then forces a sharp equilibrium barrier.
+
+We deliberately focus on one explicit model rather than a general theory of
+fold maps. The gain is that every term in the barrier can be computed sharply,
+and the numerical section can compare the finite-sample certificate with the
+direct Parry mismatch on the same data. The limitation is equally clear: the
+exact KL identity depends on the endpoint collapse of the golden-mean Parry
+cylinders, and we do not claim an equally sharp closed formula for arbitrary
+shifts of finite type or non-canonical folds. Background on discrepancy and
+quantitative Kronecker sampling may be found in
+\cite{KuipersNiederreiter1974,Goda2024QuasiUniformKronecker}; for empirical
+divergence bounds we use
+\cite{WeissmanEtAl2003L1Empirical,SasonVerdu2016fDivergence,
+DemboZeitouni2010LargeDeviations}. The remaining sections develop the model,
+the deterministic estimates, the Parry comparison, and the numerical
+illustrations in this order.
+
+\section{Model and Target Measures}
+
+\subsection{Rotations, Windows, and the Folded Observable}
+
+Let $\alpha\in(0,1)$ be irrational, let $\beta\in(0,1)$, and let
+$x_0\in\TT:=\mathbb{R}/\mathbb{Z}$.  Define the Kronecker orbit
+\[
+x_t:=x_0+t\alpha \pmod 1,\qquad t\ge 0,
+\]
+and the binary readout
+\[
+s_t:=\mathbf{1}_{[0,\beta)}(x_t)\in\{0,1\}.
+\]
+For a fixed resolution $m\ge 1$, let
+\[
+\Omega_m:=\{0,1\}^m,\qquad
+X_m:=\{u=(u_1,\dots,u_m)\in\{0,1\}^m:\ u_i u_{i+1}=0\text{ for }1\le i<m\}.
+\]
+
+\begin{definition}[Canonical fold]\label{def:canonical-fold}
+Let \(F_1=F_2=1\) and \(F_{k+2}=F_{k+1}+F_k\). For
+\(\omega=\omega_1\cdots\omega_m\in\Omega_m\), define its Fibonacci value by
+\[
+N(\omega):=\sum_{k=1}^m \omega_k F_{k+1}.
+\]
+By Zeckendorf's theorem \cite{Zeckendorf1972}, there is a unique sequence
+\(Z(N(\omega))=(c_1,c_2,\dots)\in\{0,1\}^{\mathbb{N}}\) such that
+\[
+N(\omega)=\sum_{k\ge 1} c_k F_{k+1},
+\qquad
+c_kc_{k+1}=0\ \text{ for all }k\ge 1.
+\]
+Let
+\[
+\pref_m(c_1,c_2,\dots):=(c_1,\dots,c_m)\in X_m.
+\]
+The canonical fold at resolution \(m\) is
+\[
+\Fold_m(\omega):=\pref_m(Z(N(\omega)))\in X_m.
+\]
+\end{definition}
+
+\begin{proposition}[Basic properties of the canonical fold]\label{prop:canonical-fold-basic}
+For every \(m\ge 1\), the map \(\Fold_m:\Omega_m\to X_m\) is well defined,
+surjective, and satisfies \(\Fold_m|_{X_m}=\mathrm{id}\). Moreover,
+\(\Fold_m\) admits an order-independent local implementation by
+value-preserving Zeckendorf rewrites.
+\end{proposition}
+
+\begin{proof}
+Well-definedness is immediate from Definition~\ref{def:canonical-fold}. If
+\(\omega\in X_m\), then \(\omega\) is already a legal Zeckendorf prefix, so the
+uniqueness of the Zeckendorf expansion gives \(\Fold_m(\omega)=\omega\). Hence
+\(\Fold_m\) fixes \(X_m\) pointwise, and surjectivity follows by taking
+\(\omega=x\in X_m\) for any \(x\in X_m\). The order-independent local
+implementation is recorded in Appendix~\ref{app:canonical-fold}.
+\end{proof}
+
+\begin{proposition}[Residue characterization of the canonical fold]\label{prop:fold-residue-characterization}
+For every \(m\ge 1\) and \(\omega\in\Omega_m\), write
+\[
+N(\omega)=qF_{m+2}+r,
+\qquad q\in\{0,1\},
+\qquad 0\le r<F_{m+2}.
+\]
+Then
+\[
+\Fold_m(\omega)=\pref_m(Z(r)).
+\]
+Equivalently, for \(x\in X_m\),
+\[
+\Fold_m(\omega)=x
+\iff
+N(\omega)\equiv N(x)\pmod{F_{m+2}}.
+\]
+\end{proposition}
+
+\begin{proof}
+Since
+\[
+N(\omega)\le \sum_{k=1}^m F_{k+1}=F_{m+3}-2<F_{m+2}+F_{m+2},
+\]
+the quotient \(q\) is either \(0\) or \(1\). If \(q=0\), then \(r=N(\omega)\)
+and the claim is immediate.
+
+Assume \(q=1\). Then
+\[
+0\le r=N(\omega)-F_{m+2}\le F_{m+1}-2<F_{m+1},
+\]
+so the Zeckendorf expansion \(Z(r)\) has no nonzero digit in position \(m\) or
+beyond. Hence appending a \(1\) in position \(m+1\) produces another legal
+Zeckendorf digit string, namely the expansion of \(N(\omega)=F_{m+2}+r\). Its
+first \(m\) digits are therefore exactly those of \(Z(r)\), which proves the
+first statement.
+
+If \(x\in X_m\), then
+\[
+N(x)\le \sum_{j=0}^{\lfloor (m-1)/2\rfloor}F_{m-2j+1}<F_{m+2},
+\]
+so \(x=\pref_m(Z(N(x)))\). Applying the first statement with
+\(r\equiv N(\omega)\pmod{F_{m+2}}\) yields
+\[
+\Fold_m(\omega)=x
+\iff
+\pref_m(Z(r))=\pref_m(Z(N(x)))
+\iff
+r=N(x),
+\]
+which is equivalent to the congruence condition.
+\end{proof}
+
+\begin{definition}[Microstates and folded histograms]
+For $t\ge 0$, the length-$m$ microstate is
+\[
+\omega_m(t):=s_t s_{t+1}\cdots s_{t+m-1}\in\Omega_m.
+\]
+The folded output is
+\[
+y_m(t):=\Fold_m(\omega_m(t))\in X_m.
+\]
+For a sample length $N$, define the empirical microstate law and folded
+histogram by
+\[
+\hat\mu_{m,N}(u):=\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{\{\omega_m(t)=u\}},
+\qquad u\in\Omega_m,
+\]
+\[
+\hat\pi_{m,N}(v):=\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{\{y_m(t)=v\}},
+\qquad v\in X_m.
+\]
+\end{definition}
+
+\begin{remark}[Scope]\label{rem:scope-fold-assumptions}
+We fix the canonical fold throughout the paper. Sections~3 and~4 use only that
+\(\Fold_m\) is deterministic. The specific Zeckendorf structure enters in the
+cross-resolution boundary law of
+Theorem~\ref{prop:multiscale-residual-by-boundary}, in the numerical examples,
+and in the appendix implementation. The sharp \(m+1\) complexity statements in
+Section~5 use the Sturmian slice \(\beta=\alpha\), while
+Theorem~\ref{thm:parry-kl-identity} is a statement about the Parry reference
+family on \(X_m\) and is independent of the fold once a law on \(X_m\) has
+been specified. This separation is deliberate: Sections~3 and~4 isolate the
+finite-sample and coarse-graining interfaces of the model, whereas Section~5 is
+the dynamical core in which the ambient equilibrium structure of the
+golden-mean shift is combined with the low-complexity support created by the
+folded rotation coding.
+The paper does not compare alternative Zeckendorf-based folds: the residue
+characterization of Proposition~\ref{prop:fold-residue-characterization} and
+the rigidity theorem on realized Sturmian support are specific to the canonical
+normalization, and no analogous transparency statement is claimed here for
+non-canonical procedures.
+\end{remark}
+
+Because irrational rotations are uniquely ergodic, the empirical microstate
+law converges to a deterministic target law induced by Lebesgue measure.
+
+\begin{definition}[Target laws]
+Let $\mu_m$ be the length-$m$ microstate distribution induced by Lebesgue
+measure on $\TT$:
+\[
+\mu_m(u):=\leb\{x\in\TT:\omega_m(x;0)=u\},\qquad u\in\Omega_m.
+\]
+Its folded pushforward is
+\[
+\pi_m^{\mathrm{fold}}:=(\Fold_m)_*\mu_m\in\Delta(X_m).
+\]
+\end{definition}
+
+\begin{remark}[Spaces, maps, and laws]\label{rem:model-spaces-maps}
+The basic objects of the paper may be summarized by
+\[
+\begin{array}{ccc}
+\Omega_m & \xrightarrow{\Fold_m} & X_m\\[0.3em]
+\mu_m \downarrow\phantom{(\Fold_m)_*} &  & \phantom{(\Fold_m)_*}\downarrow \pi_m^{\mathrm{fold}}\\[0.3em]
+\hat\mu_{m,N} & \xrightarrow{(\Fold_m)_*} & \hat\pi_{m,N}
+\end{array}
+\qquad
+\begin{array}{ccc}
+\Omega_{m+1} & \xrightarrow{\Fold_{m+1}} & X_{m+1}\\[0.3em]
+\pref_m \downarrow &  & \downarrow \rho_{m+1\to m}\\[0.3em]
+\Omega_m & \xrightarrow{\Fold_m} & X_m.
+\end{array}
+\]
+The left diagram separates microstate space \(\Omega_m\) from folded space
+\(X_m\). The right diagram records the truncation interface whose failure to
+commute is measured in Section~3.2 by the projective residual.
+\end{remark}
+
+\subsection{The Parry Measure}
+
+As a reference measure on \(X_m\) we use the Parry measure of the golden-mean
+shift. Let
+\[
+A=\begin{pmatrix}1&1\\1&0\end{pmatrix},\qquad
+\varphi=\frac{1+\sqrt5}{2}.
+\]
+The associated two-state Parry chain has transition matrix
+\[
+P=\begin{pmatrix}\varphi^{-1} & \varphi^{-2}\\ 1&0\end{pmatrix},
+\]
+and stationary distribution
+\[
+\pi(1)=\frac{1}{\varphi^2+1},\qquad
+\pi(0)=1-\pi(1).
+\]
+For $u=u_1\cdots u_m\in X_m$, define the length-$m$ Parry cylinder law
+\[
+\pi_m(u):=\pi(u_1)\prod_{j=1}^{m-1}P_{u_j u_{j+1}}.
+\]
+We emphasize that \(\pi_m\) is used as a reference measure only. We do not
+assume that \(\pi_m^{\mathrm{fold}}=\pi_m\) for irrational rotations.
+Since \(|X_m|=F_{m+2}\), the ambient shift has topological entropy
+\[
+h_{\mathrm{top}}(X)=\lim_{m\to\infty}\frac1m\log |X_m|=\log\varphi,
+\]
+and the Parry measure is its unique measure of maximal entropy
+\cite{LindMarcus1995,WaltersErgodicTheory}.
+
+\begin{proposition}[Endpoint collapse of Parry cylinders]\label{prop:parry-endpoint-collapse}
+For every legal word \(u=u_1\cdots u_m\in X_m\),
+\[
+\pi_m(u)
+=
+\pi(0)\varphi^{-m+\mathbf{1}_{\{u_1=0\}}-\mathbf{1}_{\{u_m=1\}}}.
+\]
+Equivalently,
+\[
+\pi_m(u)=
+\begin{cases}
+\pi(0)\varphi^{-(m-1)}, & (u_1,u_m)=(0,0),\\
+\pi(0)\varphi^{-m}, & (u_1,u_m)\in\{(0,1),(1,0)\},\\
+\pi(0)\varphi^{-(m+1)}, & (u_1,u_m)=(1,1).
+\end{cases}
+\]
+In particular, the Parry cylinder weight depends only on the endpoints of the
+word.
+\end{proposition}
+
+\begin{proof}
+Let \(r_0:=\varphi\) and \(r_1:=1\). For every legal transition
+\((i,j)\in\{(0,0),(0,1),(1,0)\}\), one has
+\[
+P_{ij}=\frac{r_j}{\varphi r_i}.
+\]
+Hence for a legal word \(u=u_1\cdots u_m\),
+\[
+\prod_{j=1}^{m-1}P_{u_j u_{j+1}}
+=
+\varphi^{-(m-1)}\frac{r_{u_m}}{r_{u_1}}.
+\]
+Multiplying by \(\pi(u_1)\) and using \(\pi(1)=\pi(0)\varphi^{-2}\) gives the
+three cases above.
+\end{proof}
+
+\subsection{Discrepancy of the Rotation Orbit}
+
+Our only quantitative input is the one-dimensional star discrepancy of the
+rotation orbit:
+\[
+D_N^*(\alpha;x_0)
+:=
+\sup_{0\le a\le 1}
+\left|
+\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{[0,a)}(x_t)-a
+\right|.
+\]
+This quantity is effective because length-$m$ rotation words are determined by a
+finite partition of the circle into interval atoms.
+
+\begin{theorem}[Bounds for Sturmian cylinder lengths]\label{thm:spg-sturmian-cylinder-measure-continued-fraction-sandwich}
+Let $\alpha=[0;a_1,a_2,\dots]$ and let $p_n/q_n$ be its convergents.  If
+$q_n\le t<q_{n+1}$, then every length-$t$ Sturmian cylinder $C(w)$ satisfies
+\[
+\frac{1}{q_{n+1}+q_n}
+\;<\;
+\leb(C(w))
+\;<\;
+\frac{1}{q_n}+\frac{1}{q_{n+1}}
+\;<\;
+\frac{2}{q_n}.
+\]
+Equivalently,
+\[
+\log\!\Bigl(\frac{q_n}{2}\Bigr)
+\;<\;
+-\log\leb(C(w))
+\;<\;
+\log(q_{n+1}+q_n).
+\]
+If $\alpha$ has bounded partial quotients, then
+$-\log\leb(C(w))=\log t+O(1)$ uniformly in $w$.
+\end{theorem}
+
+\begin{proof}
+The endpoints of length-$t$ cylinders are among the orbit points
+$\{-k\alpha:0\le k\le t\}$, so cylinder lengths are the adjacent gaps in this
+finite rotation set.  Standard continued-fraction gap estimates and the
+three-gap theorem give
+\[
+\min_{1\le k\le t}\|k\alpha\|
+=
+\|q_n\alpha\|
+\in
+\left(\frac{1}{q_{n+1}+q_n},\frac{1}{q_{n+1}}\right),
+\]
+while the largest gap is at most
+$\|q_{n-1}\alpha\|+\|q_n\alpha\|<q_n^{-1}+q_{n+1}^{-1}$; see
+\cite{Slater1950DistributionIntegers,Slater1967GapsSteps}.  Taking negative
+logarithms yields the second display.
+\end{proof}
+
+\section{Total Variation Bounds}
+
+\subsection{Discrepancy Bounds}
+
+The first step is to observe that discrepancy controls the empirical mass of
+each relevant cylinder atom and hence the total variation distance of both the
+microstate and folded laws.
+
+\begin{theorem}[Discrepancy control of microstate and folded laws]\label{thm:tv-certificate-hist}
+In the rotation model above, for every $m,N\ge 1$,
+\[
+\TV(\hat\mu_{m,N},\mu_m)\le 2m\,D_N^*(\alpha;x_0).
+\]
+Consequently,
+\[
+\TV(\hat\pi_{m,N},\pi_m^{\mathrm{fold}})
+\le
+2m\,D_N^*(\alpha;x_0).
+\]
+If \(\beta=\alpha\), then the sharper bounds
+\[
+\TV(\hat\mu_{m,N},\mu_m)\le (m+1)D_N^*(\alpha;x_0),
+\qquad
+\TV(\hat\pi_{m,N},\pi_m^{\mathrm{fold}})\le (m+1)D_N^*(\alpha;x_0)
+\]
+also hold.
+\end{theorem}
+
+\begin{proof}
+For fixed $m$, the length-$m$ rotation words are constant on the interval atoms
+of the partition of \(\TT\) cut out by the points
+\[
+0,\ \beta,\ -\alpha,\ \beta-\alpha,\ \dots,\ -(m-1)\alpha,\ \beta-(m-1)\alpha
+\pmod 1.
+\]
+There are at most \(2m\) such endpoints and therefore at most \(2m\) interval
+atoms. For any interval \(I=[a,b)\subset\TT\),
+\[
+\left|
+\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_I(x_t)-\leb(I)
+\right|
+\le
+\left|
+\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{[0,b)}(x_t)-b
+\right|
+{}+
+\left|
+\frac{1}{N}\sum_{t=0}^{N-1}\mathbf{1}_{[0,a)}(x_t)-a
+\right|
+\le 2D_N^*(\alpha;x_0).
+\]
+Taking half the sum of the atomwise errors gives
+\(\TV(\hat\mu_{m,N},\mu_m)\le 2mD_N^*(\alpha;x_0)\).
+
+If \(\beta=\alpha\), the coding is Sturmian and the number of distinct
+length-\(m\) factors is exactly \(m+1\)
+\cite{MorseHedlund1940,LindMarcus1995}. Summing over the \(m+1\) nonempty
+cylinder atoms yields the sharper constant. The folded estimates follow because
+deterministic pushforward cannot increase total variation.
+\end{proof}
+
+\begin{remark}[Interpretation]
+Once \(D_N^*(\alpha;x_0)\) is controlled, either arithmetically or numerically,
+the same estimate immediately bounds the folded histogram. No additional
+probabilistic approximation is needed.
+\end{remark}
+
+\begin{corollary}[Optimal leading constant within the metallic-mean family]
+\label{cor:metallic-mean-golden-unique-optimal-tv-constant}
+For $A\ge 1$, let
+\[
+\alpha_A=[0;A,A,\dots],\qquad
+\lambda_A:=\frac{A+\sqrt{A^2+4}}{2},\qquad
+\kappa(A):=\frac{A}{\log\lambda_A}.
+\]
+Then there is a constant $C(A)<\infty$ such that for every $N\ge 2$ and every
+$x_0\in\TT$,
+\[
+D_N^*(\alpha_A;x_0)\le \frac{\kappa(A)\log N+C(A)}{N}.
+\]
+Consequently, for every fixed resolution $m\ge 1$,
+\[
+\TV(\hat\pi_{m,N},\pi_m^{\mathrm{fold}})
+\le
+2m\frac{\kappa(A)\log N+C(A)}{N}.
+\]
+If \(\beta=\alpha_A\), this sharpens to
+\[
+\TV(\hat\pi_{m,N},\pi_m^{\mathrm{fold}})
+\le
+(m+1)\frac{\kappa(A)\log N+C(A)}{N}.
+\]
+Moreover, $\kappa(A)$ is strictly increasing on $[1,\infty)$, so the golden
+branch $A=1$ uniquely minimizes the leading $(\log N)/N$ coefficient among
+metallic means.
+\end{corollary}
+
+\begin{proof}
+Let $p_n/q_n$ be the convergents of $\alpha_A$.  The standard discrepancy bound
+\cite{KuipersNiederreiter1974} gives
+\[
+D_N^*(\alpha_A;x_0)\le \frac{3+nA}{N}
+\qquad \text{whenever } q_n\le N<q_{n+1}.
+\]
+Since $q_{n+1}=Aq_n+q_{n-1}$ and $\lambda_A$ is the Perron root of
+$x^2-Ax-1=0$, one has $q_n\ge \lambda_A^{n-1}$ for $n\ge 1$, hence
+$n\le 1+\log N/\log\lambda_A$.  Substituting yields the discrepancy estimate
+with $C(A)=3+A$.  The TV bound follows from
+Theorem~\ref{thm:tv-certificate-hist}.  The monotonicity of
+$\kappa(A)=A/\log\lambda_A$ on $[1,\infty)$ is elementary, so its minimum is
+attained uniquely at $A=1$.
+\end{proof}
+
+\subsection{Cross-Resolution Residuals}
+
+Let $r_{m+1\to m}:\Omega_{m+1}\to\Omega_m$ denote prefix truncation,
+$r_{m+1\to m}(u_1\cdots u_{m+1})=u_1\cdots u_m$, and let
+$\rho_{m+1\to m}:X_{m+1}\to X_m$ be the analogous truncation on folded words.
+This residual is not a second reference metric competing with the Parry
+comparison. Rather, it isolates a specifically dynamical effect of the canonical
+fold: finite-resolution aliasing across adjacent window lengths.
+Define the projective residual
+\[
+E_{m,N}
+:=
+\TV\!\left(\hat\pi_{m,N},(\rho_{m+1\to m})_*\hat\pi_{m+1,N}\right).
+\]
+
+\begin{theorem}[Boundary law for the canonical fold]\label{prop:multiscale-residual-by-boundary}
+For the canonical fold of Definition~\ref{def:canonical-fold}, let
+\[
+f_m(\omega):=\Fold_m(r_{m+1\to m}(\omega)),
+\qquad
+g_m(\omega):=\rho_{m+1\to m}(\Fold_{m+1}(\omega)),
+\]
+and define the boundary event set
+\[
+\mathcal{B}_{m+1}:=\{\omega\in\Omega_{m+1}: f_m(\omega)\neq g_m(\omega)\}.
+\]
+Then
+\[
+E_{m,N}\le \hat\mu_{m+1,N}(\mathcal{B}_{m+1}).
+\]
+Moreover, if \(\omega=u_1\cdots u_{m+1}\) and \(v:=u_1\cdots u_m\), then
+\[
+\omega\in\mathcal{B}_{m+1}
+\iff
+u_{m+1}=1\ \text{and}\ N(v)\ge F_{m+1}.
+\]
+\end{theorem}
+
+\begin{proof}
+Both $\hat\pi_{m,N}$ and $(\rho_{m+1\to m})_*\hat\pi_{m+1,N}$ are pushforwards
+of $\hat\mu_{m+1,N}$, respectively by $f_m$ and $g_m$.  Therefore
+\[
+\TV((f_m)_*\nu,(g_m)_*\nu)\le \nu(f_m\neq g_m)
+\]
+for any probability measure $\nu$, and the first claim follows with
+$\nu=\hat\mu_{m+1,N}$.
+
+For the second claim, write \(N:=N(v)\). Since
+\[
+0\le N\le \sum_{k=1}^m F_{k+1}=F_{m+3}-2,
+\]
+the Zeckendorf expansion of \(N\) has the form
+\[
+Z(N)=(c_1,\dots,c_{m+1},0,0,\dots).
+\]
+If \(u_{m+1}=0\), then \(N(\omega)=N\), so \(f_m(\omega)=g_m(\omega)\).
+
+Assume next that \(u_{m+1}=1\), so \(N(\omega)=N+F_{m+2}\). If \(N<F_{m+1}\),
+then \(c_m=c_{m+1}=0\), hence
+\[
+Z(N+F_{m+2})=(c_1,\dots,c_m,1,0,0,\dots)
+\]
+is already a legal Zeckendorf expansion. Therefore
+\[
+g_m(\omega)=\rho_{m+1\to m}(\Fold_{m+1}(\omega))=(c_1,\dots,c_m)=f_m(\omega),
+\]
+so \(\omega\notin\mathcal{B}_{m+1}\).
+
+Conversely, suppose \(u_{m+1}=1\) and \(\omega\notin\mathcal{B}_{m+1}\). Write
+\[
+Z(N+F_{m+2})=(d_1,\dots,d_{m+2},0,0,\dots).
+\]
+Since the first \(m\) digits agree, one has \(d_j=c_j\) for \(1\le j\le m\).
+Subtracting the two Zeckendorf expansions gives
+\[
+F_{m+2}
+=
+(d_{m+1}-c_{m+1})F_{m+2}+d_{m+2}F_{m+3}.
+\]
+Because \(F_{m+3}>F_{m+2}\), necessarily \(d_{m+2}=0\) and
+\(d_{m+1}-c_{m+1}=1\). Hence \(c_{m+1}=0\) and \(d_{m+1}=1\). Since
+\((d_1,\dots,d_{m+2})\) is a legal Zeckendorf digit string and \(d_m=c_m\), one
+must also have \(c_m=d_m=0\). Thus \(Z(N)\) has no nonzero digit in positions
+\(m\) or \(m+1\), which is equivalent to \(N<F_{m+1}\).
+
+We have proved
+\[
+\omega\notin\mathcal{B}_{m+1}
+\iff
+u_{m+1}=0\ \text{or}\ \bigl(u_{m+1}=1\ \text{and}\ N(v)<F_{m+1}\bigr),
+\]
+which is exactly the stated characterization.
+\end{proof}
+
+\begin{proposition}[Residuals relative to the Parry measure]\label{prop:multiscale-residual-parry-bound}
+Let $\pi_m$ be the Parry measure on $X_m$.  Since the Parry family is
+projectively consistent,
+\[
+\pi_m=(\rho_{m+1\to m})_*\pi_{m+1},
+\]
+one has
+\[
+E_{m,N}
+\le
+\TV(\hat\pi_{m,N},\pi_m)+\TV(\hat\pi_{m+1,N},\pi_{m+1}).
+\]
+\end{proposition}
+
+\begin{proof}
+Apply the triangle inequality around the pair
+$(\pi_m,(\rho_{m+1\to m})_*\pi_{m+1})$.
+\end{proof}
+
+\section{Relative-Entropy Bounds}
+
+\subsection{From Total Variation to Relative Entropy}
+
+To pass from total variation to relative entropy one needs a lower bound on the
+smallest atom of the target distribution.
+
+\begin{lemma}[Relative entropy from total variation under strict positivity]\label{lem:kl-from-tv-qmin}
+Let $p,q$ be probability measures on a finite set $S$, assume $p\ll q$, and
+suppose that $q$ is strictly positive on $S$. Let
+\[
+q_{\min}:=\min_{s\in S}q(s)>0.
+\]
+Then
+\[
+\KL(p\|q)
+\le
+\log\!\left(1+\frac{\|p-q\|_1^2}{q_{\min}}\right)
+\le
+\frac{1}{q_{\min}}\|p-q\|_1^2
+=
+\frac{4}{q_{\min}}\TV(p,q)^2.
+\]
+\end{lemma}
+
+\begin{proof}
+The standard inequality \(\KL\le \log(1+\chi^2)\) gives
+\[
+\KL(p\|q)\le \log\bigl(1+\chi^2(p,q)\bigr),
+\qquad
+\chi^2(p,q):=\sum_{s\in S}\frac{(p(s)-q(s))^2}{q(s)}.
+\]
+Since \(q(s)\ge q_{\min}\) for every \(s\in S\),
+\[
+\chi^2(p,q)
+\le
+\frac{1}{q_{\min}}\sum_{s\in S}(p(s)-q(s))^2
+\le
+\frac{1}{q_{\min}}\|p-q\|_1^2.
+\]
+The second inequality uses \(\log(1+u)\le u\). See
+\cite{SasonVerdu2016fDivergence}.
+\end{proof}
+
+\subsection{Lower Bounds on the Smallest Rotation Atom}
+
+\begin{definition}[Diophantine lower bound]
+For a badly approximable irrational $\alpha$, let $c(\alpha)>0$ be a constant
+such that
+\[
+\|k\alpha\|\ge \frac{c(\alpha)}{k}\qquad (k\ge 1),
+\]
+where $\|x\|:=\min_{n\in\mathbb{Z}}|x-n|$.
+\end{definition}
+
+\begin{proposition}[Lower bound on the smallest microstate atom]\label{prop:qmin-lowerbound-markov}
+Assume $\beta=\alpha$ and let
+\[
+q_{\min}(m):=\min\{\mu_m(u):\mu_m(u)>0\}.
+\]
+Then
+\[
+q_{\min}(m)\ge \min_{1\le k\le m}\|k\alpha\|\ge \frac{c(\alpha)}{m}.
+\]
+For the golden slope $\alpha=\varphi^{-1}$ one may take
+$c(\alpha)=1/\sqrt5$, hence
+\[
+q_{\min}(m)\ge \frac{1}{\sqrt5\,m}.
+\]
+\end{proposition}
+
+\begin{proof}
+When $\beta=\alpha$, the partition endpoints for length-$m$ microstates reduce
+to the set $\{-k\alpha:0\le k\le m\}$.  Thus the positive atoms of $\mu_m$ are
+exactly the adjacent gaps determined by these points, and the smallest one is
+at least $\min_{1\le k\le m}\|k\alpha\|$.  The badly approximable lower bound
+then yields $c(\alpha)/m$.  For $\varphi^{-1}$ the optimal Markov constant is
+$1/\sqrt5$.
+\end{proof}
+
+\subsection{Microstate and Folded Relative-Entropy Bounds}
+
+\begin{corollary}[Microstate relative-entropy bound]\label{cor:rotation-microstate-kl-certificate}
+Assume $\beta=\alpha$ and $\alpha$ is badly approximable.  Then
+\[
+\KL(\hat\mu_{m,N}\|\mu_m)
+\le
+\frac{4}{q_{\min}(m)}\TV(\hat\mu_{m,N},\mu_m)^2
+\le
+\frac{4(m+1)^2}{q_{\min}(m)}D_N^*(\alpha;x_0)^2.
+\]
+For $\alpha=\varphi^{-1}$ this becomes
+\[
+\KL(\hat\mu_{m,N}\|\mu_m)
+\le
+4\sqrt5\,m(m+1)^2 D_N^*(\alpha;x_0)^2.
+\]
+\end{corollary}
+
+\begin{proof}
+Let \(S_m:=\supp(\mu_m)\). In the Sturmian slice \(\beta=\alpha\), every
+observed length-\(m\) word belongs to the Sturmian language, hence
+\(\hat\mu_{m,N}\) and \(\mu_m\) may both be viewed as probability measures on
+\(S_m\). On this set, \(\mu_m\) is strictly positive and
+\[
+\min_{u\in S_m}\mu_m(u)=q_{\min}(m).
+\]
+The claim therefore follows from Theorem~\ref{thm:tv-certificate-hist},
+Lemma~\ref{lem:kl-from-tv-qmin}, and
+Proposition~\ref{prop:qmin-lowerbound-markov}.
+\end{proof}
+
+\begin{lemma}[KL monotonicity under pushforward]\label{lem:kl-monotone-pushforward}
+Let $F:S\to T$ be a map between finite sets and let $p,q$ be probability
+measures on $S$ with $p\ll q$.  Then
+\[
+\KL(F_*p\|F_*q)\le \KL(p\|q).
+\]
+\end{lemma}
+
+\begin{proof}
+This is the data-processing inequality for relative entropy under deterministic
+coarse graining.
+\end{proof}
+
+\begin{corollary}[Folded relative-entropy bound]\label{cor:rotation-folded-kl-certificate}
+Under the assumptions of
+Corollary~\ref{cor:rotation-microstate-kl-certificate},
+\[
+\KL(\hat\pi_{m,N}\|\pi_m^{\mathrm{fold}})
+\le
+\KL(\hat\mu_{m,N}\|\mu_m)
+\le
+\frac{4(m+1)^2}{q_{\min}(m)}D_N^*(\alpha;x_0)^2.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Lemma~\ref{lem:kl-monotone-pushforward} with $F=\Fold_m$.
+\end{proof}
+
+\subsection{Sturmian Rigidity on Realized Support}
+
+In the canonical Sturmian slice, the fold does not merge the words that are
+actually realized by the rotation. The reason is arithmetic: along the
+Sturmian cylinder partition, the Fibonacci values of the factors remain
+distinct modulo \(F_{m+2}\).
+
+\begin{theorem}[Sturmian no-collision rigidity]\label{thm:sturmian-no-collision-rigidity}
+Assume \(\beta=\alpha\), and define
+\[
+S_m(\alpha):=\supp(\mu_m)\subset\Omega_m,
+\qquad
+Y_m:=\Fold_m(S_m(\alpha))\subset X_m.
+\]
+Then the restriction
+\[
+\Fold_m\!\upharpoonright_{S_m(\alpha)}:S_m(\alpha)\to Y_m
+\]
+is a bijection.
+
+More precisely, let
+\[
+\Xi_m:=\{(1-j)\alpha \bmod 1:\ 0\le j\le m\}\subset\TT,
+\]
+let \(I_0,\dots,I_m\) be the open atoms of \(\TT\setminus \Xi_m\) in
+counterclockwise order, and choose \(x_\ell\in I_\ell\). Writing
+\[
+u^{(\ell)}:=\omega_m(x_\ell;0)\in S_m(\alpha),
+\qquad
+V_\ell:=N(u^{(\ell)}),
+\]
+the cyclic jump multiset
+\[
+\Delta_\ell:=V_{\ell+1}-V_\ell
+\qquad (\ell\!\!\!\!\pmod{m+1})
+\]
+consists of exactly one positive jump \(+F_{m+1}\) and the \(m\) negative
+jumps
+\[
+-1,\ -F_1,\ -F_2,\ \dots,\ -F_{m-1},
+\]
+counted with multiplicity. After a cyclic relabeling that starts immediately to
+the right of the unique positive jump, the values \(V_\ell\) form a strictly
+decreasing integer chain. In particular, the residues \(V_\ell\bmod F_{m+2}\)
+are pairwise distinct.
+\end{theorem}
+
+\begin{proof}
+The proof has two steps: compute the Fibonacci jump produced by crossing each
+Sturmian boundary atom, and then observe that after the unique positive jump
+the remaining cycle is a strictly decreasing chain whose total drop is smaller
+than \(F_{m+2}\), so residue collisions cannot occur.
+
+For \(0\le k\le m-1\), the \(k\)-th symbol of \(\omega_m(x;0)\) is
+\[
+\mathbf{1}_{[0,\alpha)}(x+k\alpha),
+\]
+so its discontinuities occur at the two points \(-k\alpha\) and
+\(\alpha-k\alpha=(1-k)\alpha\) on \(\TT\). The union of all such discontinuity
+points is exactly \(\Xi_m\). Hence \(\omega_m(x;0)\) is constant on each atom
+\(I_\ell\), and \(S_m(\alpha)=\{u^{(\ell)}:0\le \ell\le m\}\).
+
+Fix a boundary point \(\xi_j:=(1-j)\alpha\in\Xi_m\).
+If \(1\le j\le m-1\), then crossing \(\xi_j\) from left to right changes the
+symbols in positions \(j-1\) and \(j\) from \(01\) to \(10\), while all other
+positions stay fixed. Therefore the Fibonacci value jump is
+\[
+F_{j+1}-F_{j+2}=-F_j.
+\]
+At \(\xi_0=\alpha\), only the first symbol changes, from \(1\) to \(0\), so
+the jump is \(-F_1=-1\). At \(\xi_m=(1-m)\alpha\), only the last symbol
+changes, from \(0\) to \(1\), so the jump is \(+F_{m+1}\). This proves the
+stated jump multiset.
+
+Now start with the atom immediately to the right of \(\xi_m\). Along the
+remaining cycle, every subsequent jump is negative, so the corresponding values
+form a strictly decreasing integer chain. Since
+\[
+1+\sum_{j=1}^{m-1}F_j=F_{m+1},
+\]
+the total drop before the cycle closes is exactly \(F_{m+1}<F_{m+2}\). Hence
+no two values in this chain can be congruent modulo \(F_{m+2}\).
+Proposition~\ref{prop:fold-residue-characterization} shows that
+\(\Fold_m\) is constant on residue classes modulo \(F_{m+2}\), so its
+restriction to \(S_m(\alpha)\) is injective. Bijectivity onto \(Y_m\) is then
+tautological.
+\end{proof}
+
+\begin{corollary}[Exact relabeling on the realized Sturmian language]\label{cor:sturmian-exact-relabeling}
+Assume \(\beta=\alpha\), and let
+\[
+B_m:=\Fold_m\!\upharpoonright_{S_m(\alpha)}:S_m(\alpha)\to Y_m.
+\]
+Then \(B_m\) is a bijection, and for every \(N\ge 1\),
+\[
+\pi_m^{\mathrm{fold}}=(B_m)_*\mu_m,
+\qquad
+\hat\pi_{m,N}=(B_m)_*\hat\mu_{m,N}.
+\]
+Consequently,
+\[
+\TV(\hat\pi_{m,N},\pi_m^{\mathrm{fold}})
+=
+\TV(\hat\mu_{m,N},\mu_m),
+\]
+\[
+\KL(\hat\pi_{m,N}\|\pi_m^{\mathrm{fold}})
+=
+\KL(\hat\mu_{m,N}\|\mu_m),
+\]
+and, writing \(H_q\) for the Renyi entropy of order \(q\), for every
+\(q\in[0,\infty]\),
+\[
+H_q(\hat\pi_{m,N})=H_q(\hat\mu_{m,N}),
+\qquad
+H_q(\pi_m^{\mathrm{fold}})=H_q(\mu_m).
+\]
+\end{corollary}
+
+\begin{proof}
+The pushforward identities follow from Theorem~\ref{thm:sturmian-no-collision-rigidity}.
+Since \(B_m\) is a bijection between the realized supports, total variation,
+relative entropy, and all Renyi entropies are invariant under the relabeling
+\(B_m\).
+\end{proof}
+
+\begin{corollary}[Pure degeneracy ledger on the Sturmian slice]\label{cor:sturmian-pure-degeneracy-ledger}
+Assume \(\beta=\alpha\), and let \(\mu_m^e:=Q_m\pi_m^{\mathrm{fold}}\). Then
+\[
+\KL(\mu_m\|\mu_m^e)
+=
+\mathbb{E}_{\pi_m^{\mathrm{fold}}}\bigl[\log d_m(Y)\bigr].
+\]
+Likewise, for every \(N\ge 1\), if \(\hat\mu_{m,N}^e:=Q_m\hat\pi_{m,N}\), then
+\[
+\KL(\hat\mu_{m,N}\|\hat\mu_{m,N}^e)
+=
+\mathbb{E}_{\hat\pi_{m,N}}\bigl[\log d_m(Y)\bigr].
+\]
+\end{corollary}
+
+\begin{proof}
+Corollary~\ref{cor:sturmian-exact-relabeling} gives
+\[
+H(\mu_m)=H(\pi_m^{\mathrm{fold}}),
+\qquad
+H(\hat\mu_{m,N})=H(\hat\pi_{m,N}).
+\]
+Applying Proposition~\ref{prop:fold-entropy-ledger} to \(\mu_m\) and
+\(\hat\mu_{m,N}\) yields the two identities.
+\end{proof}
+
+\subsection{Fiber-Uniform Lift Geometry}
+
+This subsection records a complementary microstate interpretation of the folded
+observable. It is not needed for the support-barrier results of Section~5, but
+it identifies which part of the mismatch survives after the data are compressed
+to folded histograms. The canonical fold therefore induces a natural quotient
+geometry on the microstate simplex, and the corresponding lift family is the
+correct microstate-level model class for any comparison that keeps only the
+folded observable.
+
+\begin{definition}[Fiber multiplicity and uniform lift]\label{def:fiber-uniform-lift}
+For \(x\in X_m\), define the fiber multiplicity
+\[
+d_m(x):=\bigl|\Fold_m^{-1}(x)\bigr|.
+\]
+For \(\eta\in\Delta(X_m)\), define its fiber-uniform lift
+\[
+(Q_m\eta)(a):=\frac{\eta(\Fold_m(a))}{d_m(\Fold_m(a))},
+\qquad a\in\Omega_m.
+\]
+Then \((\Fold_m)_*(Q_m\eta)=\eta\). For \(\mu\in\Delta(\Omega_m)\), let
+\[
+\pi:=(\Fold_m)_*\mu\in\Delta(X_m),
+\qquad
+\mu^e:=Q_m\pi.
+\]
+\end{definition}
+
+\begin{proposition}[Exact entropy ledger for the fold quotient]\label{prop:fold-entropy-ledger}
+For every \(\mu\in\Delta(\Omega_m)\), with \(\pi=(\Fold_m)_*\mu\) and
+\(\mu^e=Q_m\pi\),
+\[
+H(\mu)
+=
+H(\pi)+\sum_{x\in X_m}\pi(x)\log d_m(x)-\KL(\mu\|\mu^e).
+\]
+Equivalently,
+\[
+H(\mu)-H(\pi)
+=
+\mathbb{E}_{\pi}[\log d_m(X)]-\KL(\mu\|\mu^e).
+\]
+\end{proposition}
+
+\begin{proof}
+Write \(x_a:=\Fold_m(a)\). By Definition~\ref{def:fiber-uniform-lift},
+\[
+\mu^e(a)=\frac{\pi(x_a)}{d_m(x_a)}.
+\]
+Hence
+\[
+\begin{aligned}
+\KL(\mu\|\mu^e)
+&=
+\sum_{a\in\Omega_m}\mu(a)\log\frac{\mu(a)}{\mu^e(a)}\\
+&=
+-H(\mu)-\sum_{a\in\Omega_m}\mu(a)\log\pi(x_a)
++\sum_{a\in\Omega_m}\mu(a)\log d_m(x_a).
+\end{aligned}
+\]
+Since \(\sum_{a:\,x_a=x}\mu(a)=\pi(x)\), the two sums become
+\[
+\sum_{a\in\Omega_m}\mu(a)\log\pi(x_a)=\sum_{x\in X_m}\pi(x)\log\pi(x)=-H(\pi)
+\]
+and
+\[
+\sum_{a\in\Omega_m}\mu(a)\log d_m(x_a)
+=
+\sum_{x\in X_m}\pi(x)\log d_m(x).
+\]
+Rearranging gives the claim.
+\end{proof}
+
+\begin{proposition}[KL isometry of fiber-uniform lifts]\label{prop:fold-fiber-lift-kl-isometry}
+For every \(\pi,\eta\in\Delta(X_m)\),
+\[
+\KL(Q_m\pi\|Q_m\eta)=\KL(\pi\|\eta).
+\]
+\end{proposition}
+
+\begin{proof}
+Again write \(x_a:=\Fold_m(a)\). Then
+\[
+\frac{(Q_m\pi)(a)}{(Q_m\eta)(a)}
+=
+\frac{\pi(x_a)}{\eta(x_a)},
+\]
+so
+\[
+\begin{aligned}
+\KL(Q_m\pi\|Q_m\eta)
+&=
+\sum_{a\in\Omega_m}\frac{\pi(x_a)}{d_m(x_a)}
+\log\frac{\pi(x_a)}{\eta(x_a)}\\
+&=
+\sum_{x\in X_m}
+\left(\sum_{a:\,x_a=x}\frac{\pi(x)}{d_m(x)}\right)
+\log\frac{\pi(x)}{\eta(x)}
+=
+\KL(\pi\|\eta).
+\end{aligned}
+\]
+\end{proof}
+
+\begin{theorem}[Pythagorean decomposition for the canonical fold]\label{thm:fold-kl-pythagoras}
+Let \(\mu\in\Delta(\Omega_m)\), let \(\pi=(\Fold_m)_*\mu\), and let
+\(\mu^e=Q_m\pi\). Then for every \(\eta\in\Delta(X_m)\),
+\[
+\KL(\mu\|Q_m\eta)
+=
+\KL(\mu\|\mu^e)+\KL(\pi\|\eta).
+\]
+Consequently, \(\mu^e\) is the unique I-projection of \(\mu\) onto the
+fiber-uniform model family
+\[
+\mathcal E_m:=\{Q_m\eta:\eta\in\Delta(X_m)\}\subset\Delta(\Omega_m),
+\]
+and
+\[
+\inf_{\eta\in\Delta(X_m)}\KL(\mu\|Q_m\eta)=\KL(\mu\|\mu^e).
+\]
+\end{theorem}
+
+\begin{proof}
+Let \(x_a:=\Fold_m(a)\). Since
+\[
+\mu^e(a)=\frac{\pi(x_a)}{d_m(x_a)},
+\qquad
+(Q_m\eta)(a)=\frac{\eta(x_a)}{d_m(x_a)},
+\]
+one has
+\[
+\log\frac{\mu^e(a)}{(Q_m\eta)(a)}=\log\frac{\pi(x_a)}{\eta(x_a)}.
+\]
+Therefore
+\[
+\begin{aligned}
+\KL(\mu\|Q_m\eta)-\KL(\mu\|\mu^e)
+&=
+\sum_{a\in\Omega_m}\mu(a)\log\frac{\mu^e(a)}{(Q_m\eta)(a)}\\
+&=
+\sum_{a\in\Omega_m}\mu(a)\log\frac{\pi(x_a)}{\eta(x_a)}\\
+&=
+\sum_{x\in X_m}
+\left(\sum_{a:\,x_a=x}\mu(a)\right)\log\frac{\pi(x)}{\eta(x)}
+=
+\KL(\pi\|\eta).
+\end{aligned}
+\]
+This proves the decomposition. Since \(\KL(\pi\|\eta)\ge 0\), with equality if
+and only if \(\eta=\pi\), the minimizer is unique and equals \(\mu^e=Q_m\pi\).
+\end{proof}
+
+\begin{remark}[Relation to classical information projection]\label{rem:fold-kl-pythagoras-classical}
+Theorem~\ref{thm:fold-kl-pythagoras} is the finite-state specialization of the
+classical Pythagorean identity for I-projections onto model families determined
+by a sufficient statistic \cite{Csiszar1975IdivergenceGeometry}. In the present
+paper the sufficient statistic is the folded observable \(\Fold_m\), and the
+fiber-uniform family \(\mathcal E_m\) is exactly the family of laws that are
+uniform within each fiber of this coarse-graining.
+\end{remark}
+
+\section{Comparison with the Parry Measure}
+
+The Parry measure is the unique maximal-entropy equilibrium state of the
+ambient golden-mean shift, whose topological entropy is
+\(h_{\mathrm{top}}(X)=\log\varphi\). The point of this section is therefore not
+merely to compare two probability measures on \(X_m\), but to quantify how far
+folded rotation laws sit from ambient equilibrium when their effective support
+is much smaller than the full shift language. This section is intentionally
+model-specific: the exact identities below rely on endpoint collapse for the
+golden-mean Parry cylinders, and no comparable closed formula is claimed here
+for arbitrary shifts of finite type or non-canonical folds. Within this explicit
+setting, the bounded-type case sharpens the extensive Parry gap to the
+second-order asymptotic \(m\log\varphi-\log m+O_\alpha(1)\).
+
+\begin{corollary}[Decomposition relative to the Parry measure]\label{cor:tv-decomposition-parry}
+For every $m,N\ge 1$,
+\[
+\TV(\hat\pi_{m,N},\pi_m)
+\le
+2m\,D_N^*(\alpha;x_0)+\TV(\pi_m^{\mathrm{fold}},\pi_m).
+\]
+If \(\beta=\alpha\), one may replace \(2m\) by \(m+1\).
+\end{corollary}
+
+\begin{proof}
+Theorem~\ref{thm:tv-certificate-hist} gives
+$\TV(\hat\pi_{m,N},\pi_m^{\mathrm{fold}})\le 2mD_N^*(\alpha;x_0)$, and the
+triangle inequality completes the proof.
+\end{proof}
+
+\begin{theorem}[Exact divergence identity relative to the Parry measure]\label{thm:parry-kl-identity}
+Let \(\nu\) be a probability measure on \(X_m\), and define the endpoint masses
+\[
+\eta_{ij}(\nu):=\nu\bigl(\{u\in X_m:u_1=i,\ u_m=j\}\bigr),
+\qquad i,j\in\{0,1\}.
+\]
+If, with the convention \(0\log 0:=0\),
+\[
+H(\nu):=-\sum_{u\in X_m}\nu(u)\log \nu(u)
+\]
+denotes the Shannon entropy of \(\nu\), then
+\[
+\KL(\nu\|\pi_m)
+=
+m\log\varphi-H(\nu)-\log\pi(0)
+{}+(\eta_{11}(\nu)-\eta_{00}(\nu))\log\varphi.
+\]
+Consequently,
+\[
+m\log\varphi-H(\nu)-\log\pi(0)-\log\varphi
+\le
+\KL(\nu\|\pi_m)
+\le
+m\log\varphi-H(\nu)-\log\pi(0)+\log\varphi.
+\]
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:parry-endpoint-collapse},
+\[
+\log \pi_m(u)
+=
+\log\pi(0)-m\log\varphi
+{}+\bigl(\mathbf{1}_{\{u_1=0\}}-\mathbf{1}_{\{u_m=1\}}\bigr)\log\varphi.
+\]
+Therefore
+\[
+\begin{aligned}
+\KL(\nu\|\pi_m)
+&=
+\sum_{u\in X_m}\nu(u)\log\frac{\nu(u)}{\pi_m(u)}\\
+&=
+-H(\nu)-\sum_{u\in X_m}\nu(u)\log\pi_m(u)\\
+&=
+m\log\varphi-H(\nu)-\log\pi(0)
+{}+\bigl(\eta_{11}(\nu)-\eta_{00}(\nu)\bigr)\log\varphi.
+\end{aligned}
+\]
+Since \(\eta_{11}(\nu)-\eta_{00}(\nu)\in[-1,1]\), the two-sided bound follows.
+\end{proof}
+
+\begin{remark}[Specificity of the endpoint collapse]\label{rem:endpoint-collapse-specificity}
+Theorem~\ref{thm:parry-kl-identity} depends essentially on
+Proposition~\ref{prop:parry-endpoint-collapse}. For a general shift of finite
+type, Parry cylinder weights are controlled by boundary states in an edge
+presentation but need not collapse to a scalar endpoint statistic of the kind
+available here. Accordingly, we do not claim an equally sharp closed formula
+outside collapse geometries of this type; the exact identity is part of what
+makes the golden-mean setting unusually rigid.
+\end{remark}
+
+\begin{corollary}[No fold-entropy loss on the Sturmian slice]\label{cor:no-fold-entropy-loss}
+Assume \(\beta=\alpha\). Then
+\[
+\KL(\pi_m^{\mathrm{fold}}\|\pi_m)
+=
+m\log\varphi-H(\mu_m)-\log\pi(0)
+{}+\bigl(\eta_{11}(\pi_m^{\mathrm{fold}})
+-\eta_{00}(\pi_m^{\mathrm{fold}})\bigr)\log\varphi.
+\]
+Likewise, for every \(N\ge 1\),
+\[
+\KL(\hat\pi_{m,N}\|\pi_m)
+=
+m\log\varphi-H(\hat\mu_{m,N})-\log\pi(0)
+{}+\bigl(\eta_{11}(\hat\pi_{m,N})
+-\eta_{00}(\hat\pi_{m,N})\bigr)\log\varphi.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:parry-kl-identity} with
+\(\nu=\pi_m^{\mathrm{fold}}\) and \(\nu=\hat\pi_{m,N}\), and use
+Corollary~\ref{cor:sturmian-exact-relabeling} to replace
+\(H(\pi_m^{\mathrm{fold}})\) by \(H(\mu_m)\) and
+\(H(\hat\pi_{m,N})\) by \(H(\hat\mu_{m,N})\).
+\end{proof}
+
+\begin{lemma}[Endpoint class counts]\label{lem:endpoint-class-counts}
+Extend the Fibonacci sequence by \(F_0:=0\), \(F_1:=1\), and
+\(F_{n+2}=F_{n+1}+F_n\). For \(m\ge 2\), let
+\[
+X_m^{ij}:=\{u\in X_m:u_1=i,\ u_m=j\},
+\qquad i,j\in\{0,1\}.
+\]
+Then
+\[
+|X_m^{00}|=F_m,\qquad
+|X_m^{01}|=|X_m^{10}|=F_{m-1},\qquad
+|X_m^{11}|=F_{m-2}.
+\]
+\end{lemma}
+
+\begin{proof}
+The admissible length-\(m\) words in \(X_m\) are the paths of length \(m-1\) in
+the golden-mean graph with adjacency matrix
+\[
+A=\begin{pmatrix}1&1\\1&0\end{pmatrix}.
+\]
+For the standard Fibonacci extension above,
+\[
+A^n=
+\begin{pmatrix}
+F_{n+1} & F_n\\
+F_n & F_{n-1}
+\end{pmatrix}
+\qquad (n\ge 1).
+\]
+Hence the number of admissible words of length \(m\) with endpoints \((i,j)\) is
+\((A^{m-1})_{ij}\), which gives the displayed formulas.
+\end{proof}
+
+\begin{theorem}[Sharp support barrier against the Parry measure]\label{thm:parry-support-barrier}
+Let \(m\ge 2\) and \(1\le k\le F_{m+2}\). Define
+\[
+M_m(k):=\max\{\pi_m(S):S\subset X_m,\ |S|\le k\}.
+\]
+Then
+\[
+M_m(k)=
+\begin{cases}
+k\,\pi(0)\varphi^{-(m-1)},
+& 1\le k\le F_m,\\[0.4em]
+F_m\pi(0)\varphi^{-(m-1)}+(k-F_m)\pi(0)\varphi^{-m},
+& F_m<k\le F_m+2F_{m-1},\\[0.4em]
+1-(F_{m+2}-k)\pi(0)\varphi^{-(m+1)},
+& F_m+2F_{m-1}<k\le F_{m+2}.
+\end{cases}
+\]
+Moreover,
+\[
+\inf_{\substack{\nu\in\Delta(X_m)\\ |\supp(\nu)|\le k}}\KL(\nu\|\pi_m)
+=
+-\log M_m(k),
+\]
+and
+\[
+\inf_{\substack{\nu\in\Delta(X_m)\\ |\supp(\nu)|\le k}}\TV(\nu,\pi_m)
+=
+1-M_m(k).
+\]
+Each infimum is attained by conditioning \(\pi_m\) on a maximizing set
+\(S\subset X_m\); equivalently, one takes all words from the heaviest endpoint
+classes until the budget \(k\) is exhausted.
+\end{theorem}
+
+\begin{proof}
+The argument has three layers. One first orders individual Parry cylinder
+weights by endpoint class, then maximizes the mass of a \(k\)-point set by a
+greedy filling of these endpoint classes, and finally observes that
+conditioning the Parry law on an optimal set attains both the KL and TV
+infima.
+
+By Proposition~\ref{prop:parry-endpoint-collapse}, every word in \(X_m^{00}\) has
+Parry weight \(\pi(0)\varphi^{-(m-1)}\), every word in \(X_m^{01}\cup X_m^{10}\)
+has weight \(\pi(0)\varphi^{-m}\), and every word in \(X_m^{11}\) has weight
+\(\pi(0)\varphi^{-(m+1)}\). These three values are strictly ordered. Together
+with Lemma~\ref{lem:endpoint-class-counts}, this implies that the largest
+possible Parry mass of a \(k\)-point subset is obtained greedily by exhausting
+the endpoint classes in the order
+\[
+X_m^{00},\qquad X_m^{01}\cup X_m^{10},\qquad X_m^{11},
+\]
+which gives the formula for \(M_m(k)\).
+
+Now let \(S\subset X_m\) and let \(\nu\) be supported on \(S\). Writing
+\(\pi_m^S:=\pi_m(\cdot\mid S)\), one has
+\[
+\KL(\nu\|\pi_m)
+=
+\KL(\nu\|\pi_m^S)-\log \pi_m(S)
+\ge
+-\log \pi_m(S),
+\]
+with equality if and only if \(\nu=\pi_m^S\). Therefore
+\[
+\inf_{\substack{\nu\in\Delta(X_m)\\ |\supp(\nu)|\le k}}\KL(\nu\|\pi_m)
+=
+-\log\max_{\substack{S\subset X_m\\ |S|\le k}}\pi_m(S)
+=
+-\log M_m(k).
+\]
+
+For total variation, if \(\nu\) is supported on \(S\), then
+\[
+\TV(\nu,\pi_m)
+\ge
+\pi_m(S^c)
+=
+1-\pi_m(S).
+\]
+Equality holds for \(\nu=\pi_m^S\), since then
+\[
+\TV(\pi_m^S,\pi_m)
+=
+\frac12\sum_{u\in X_m}\bigl|\pi_m^S(u)-\pi_m(u)\bigr|
+=
+1-\pi_m(S).
+\]
+Taking the best support set \(S\) gives the total-variation formula.
+\end{proof}
+
+\begin{corollary}[Exact complexity-divergence law]\label{cor:exact-complexity-divergence-law}
+Let \(m\ge 2\) and \(1\le k\le F_m\). Then
+\[
+\inf_{\substack{\nu\in\Delta(X_m)\\ |\supp(\nu)|\le k}}\KL(\nu\|\pi_m)
+=
+(m-1)\log\varphi-\log\pi(0)-\log k,
+\]
+and
+\[
+\inf_{\substack{\nu\in\Delta(X_m)\\ |\supp(\nu)|\le k}}\TV(\nu,\pi_m)
+=
+1-k\pi(0)\varphi^{-(m-1)}.
+\]
+The KL minimizers are exactly the uniform laws on \(k\)-point subsets of
+\(X_m^{00}\), while the TV minimizers are the conditioned Parry laws on such
+subsets.
+
+Consequently, if \(k_m\le F_m\) and
+\[
+\lim_{m\to\infty}\frac{1}{m}\log k_m=\alpha\in[0,\log\varphi],
+\]
+then
+\[
+\lim_{m\to\infty}
+\inf_{\substack{\nu\in\Delta(X_m)\\ |\supp(\nu)|\le k_m}}
+\frac{1}{m}\KL(\nu\|\pi_m)
+=
+\log\varphi-\alpha
+=
+h_{\mathrm{top}}(X)-\alpha.
+\]
+In particular, every subexponential support budget still incurs the full rate
+\(\log\varphi\), and cancelling the Parry penalty requires support growth of
+order \(\varphi^m\).
+\end{corollary}
+
+\begin{proof}
+The first branch of Theorem~\ref{thm:parry-support-barrier} gives the displayed
+formulas. The description of the minimizers follows because all words in
+\(X_m^{00}\) carry the same Parry weight \(\pi(0)\varphi^{-(m-1)}\). The limit
+statement is obtained by dividing the KL formula by \(m\) and letting
+\(m\to\infty\).
+\end{proof}
+
+\begin{corollary}[Equilibrium barrier from effective complexity]\label{cor:equilibrium-barrier-effective-complexity}
+Let \((\nu_m)_{m\ge 1}\) be any family with \(\nu_m\in\Delta(X_m)\). Assume
+that for some \(\alpha\in[0,\log\varphi)\),
+\[
+\limsup_{m\to\infty}\frac{1}{m}\log |\supp(\nu_m)|\le \alpha.
+\]
+Then
+\[
+\liminf_{m\to\infty}\frac{1}{m}\KL(\nu_m\|\pi_m)\ge h_{\mathrm{top}}(X)-\alpha.
+\]
+In particular, every family with subexponential effective complexity satisfies
+\[
+\liminf_{m\to\infty}\frac{1}{m}\KL(\nu_m\|\pi_m)\ge h_{\mathrm{top}}(X),
+\]
+so low-complexity folded laws remain at positive entropy density from the
+ambient maximal-entropy equilibrium.
+\end{corollary}
+
+\begin{proof}
+Choose any \(\varepsilon\in(0,\log\varphi-\alpha)\). By hypothesis,
+\[
+|\supp(\nu_m)|\le \exp((\alpha+\varepsilon)m)
+\]
+for all sufficiently large \(m\). Since \(F_m=\varphi^m/\sqrt5+o(\varphi^m)\),
+one has \(|\supp(\nu_m)|\le F_m\) for all sufficiently large \(m\). Applying
+Corollary~\ref{cor:exact-complexity-divergence-law} with
+\(k_m:=|\supp(\nu_m)|\) yields
+\[
+\frac{1}{m}\KL(\nu_m\|\pi_m)
+\ge
+\log\varphi-\frac{1}{m}\log k_m-\frac{\log\pi(0)}{m}.
+\]
+Taking \(\liminf\) gives
+\[
+\liminf_{m\to\infty}\frac{1}{m}\KL(\nu_m\|\pi_m)
+\ge
+h_{\mathrm{top}}(X)-(\alpha+\varepsilon).
+\]
+Since \(\varepsilon>0\) is arbitrary, the first claim follows. The
+subexponential case is \(\alpha=0\).
+\end{proof}
+
+\begin{remark}[What the support barrier says about alternative folds]
+\label{rem:alternative-folds-support-barrier}
+Corollary~\ref{cor:equilibrium-barrier-effective-complexity} is stated only in
+terms of laws on \(X_m\); it does not depend on how those laws were produced.
+Accordingly, changing the local normalization rule cannot by itself erase the
+Parry mismatch if the resulting folded family still has subexponential support.
+To beat the extensive rate \(h_{\mathrm{top}}(X)\), one must change the
+effective support exponent, not merely the labels inside a fixed low-complexity
+model class.
+\end{remark}
+
+\begin{proposition}[Bounded-type Sturmian entropy]\label{prop:bounded-type-sturmian-entropy}
+Assume \(\beta=\alpha\), and suppose that \(\alpha\) has bounded partial
+quotients, equivalently that \(\alpha\) is badly approximable in dimension one
+\cite{Cassels1957,Schmidt1969BadlyApproximableSystems}. Then there exist
+constants \(c_\alpha,C_\alpha>0\) such that for
+every \(m\ge 1\) and every \(u\in S_m(\alpha)\),
+\[
+\frac{c_\alpha}{m}\le \mu_m(u)\le \frac{C_\alpha}{m}.
+\]
+Consequently,
+\[
+H(\mu_m)=\log m+O_\alpha(1).
+\]
+\end{proposition}
+
+\begin{proof}
+Let \(p_n/q_n\) be the convergents of \(\alpha\), and choose \(n\) so that
+\(q_n\le m<q_{n+1}\). By
+Theorem~\ref{thm:spg-sturmian-cylinder-measure-continued-fraction-sandwich},
+every length-\(m\) Sturmian cylinder satisfies
+\[
+\frac{1}{q_{n+1}+q_n}<\mu_m(u)<\frac{2}{q_n}.
+\]
+If the partial quotients of \(\alpha\) are bounded by \(A\), then
+\(q_{n+1}\le (A+1)q_n\), and since \(q_n\le m<q_{n+1}\), one has
+\[
+\frac{1}{(A+2)m}\le \mu_m(u)\le \frac{2(A+1)}{m}.
+\]
+This proves the uniform \(m^{-1}\) bounds.
+
+Because \(|S_m(\alpha)|=m+1\), the lower bound gives
+\[
+H(\mu_m)\le \log(m+1)=\log m+O(1),
+\]
+while the upper bound \(\mu_m(u)\le C_\alpha/m\) implies
+\[
+H(\mu_m)
+=
+\sum_{u\in S_m(\alpha)}\mu_m(u)\log\frac1{\mu_m(u)}
+\ge
+\log m-\log C_\alpha.
+\]
+Combining the two estimates yields \(H(\mu_m)=\log m+O_\alpha(1)\).
+\end{proof}
+
+\begin{proposition}[Explicit bounded-type KL window]\label{prop:explicit-bounded-type-kl-window}
+Assume \(\beta=\alpha\), and suppose that the partial quotients of \(\alpha\)
+are bounded by \(A\). Then for every \(m\ge 1\),
+\[
+\log m-\log(2(A+1))
+\le
+H(\mu_m)
+\le
+\log(m+1).
+\]
+Consequently,
+\[
+m\log\varphi-\log(m+1)-\log\pi(0)-\log\varphi
+\le
+\KL(\pi_m^{\mathrm{fold}}\|\pi_m)
+\]
+\[
+\le
+m\log\varphi-\log m+\log(2(A+1))-\log\pi(0)+\log\varphi.
+\]
+In particular,
+\[
+\KL(\pi_m^{\mathrm{fold}}\|\pi_m)
+-
+\bigl(m\log\varphi-\log m\bigr)
+\]
+remains bounded by explicit constants depending only on \(A\) and \(\pi(0)\).
+\end{proposition}
+
+\begin{proof}
+The proof of Proposition~\ref{prop:bounded-type-sturmian-entropy} already gives
+the explicit entropy bounds
+\[
+\frac{1}{(A+2)m}\le \mu_m(u)\le \frac{2(A+1)}{m}
+\qquad (u\in S_m(\alpha)).
+\]
+Because \(|S_m(\alpha)|=m+1\), the upper entropy bound is
+\[
+H(\mu_m)\le \log(m+1),
+\]
+while the pointwise upper mass bound yields
+\[
+H(\mu_m)
+=
+\sum_{u\in S_m(\alpha)}\mu_m(u)\log\frac1{\mu_m(u)}
+\ge
+\log m-\log(2(A+1)).
+\]
+Corollary~\ref{cor:no-fold-entropy-loss} gives
+\[
+\KL(\pi_m^{\mathrm{fold}}\|\pi_m)
+=
+m\log\varphi-H(\mu_m)-\log\pi(0)
++(\eta_{11}(\pi_m^{\mathrm{fold}})-\eta_{00}(\pi_m^{\mathrm{fold}}))\log\varphi.
+\]
+Since \(\eta_{11}-\eta_{00}\in[-1,1]\), combining the entropy bounds with the
+endpoint correction gives the displayed KL window.
+\end{proof}
+
+\begin{corollary}[Sharp second-order asymptotics on bounded-type slopes]\label{cor:sharp-second-order-bounded-type}
+Assume \(\beta=\alpha\), and suppose that \(\alpha\) has bounded partial
+quotients. Then
+\[
+\KL(\pi_m^{\mathrm{fold}}\|\pi_m)
+=
+m\log\varphi-\log m+O_\alpha(1).
+\]
+\end{corollary}
+
+\begin{proof}
+This is immediate from Proposition~\ref{prop:explicit-bounded-type-kl-window}.
+\end{proof}
+
+\begin{corollary}[Microstate decomposition relative to the Parry lift]\label{cor:microstate-parry-lift-decomposition}
+Let \(\mu\in\Delta(\Omega_m)\), let \(\pi=(\Fold_m)_*\mu\), and let
+\(\mu^e=Q_m\pi\). Then
+\[
+\KL(\mu\|Q_m\pi_m)
+=
+\KL(\mu\|\mu^e)+\KL(\pi\|\pi_m).
+\]
+If \(|\supp(\pi)|\le k\), then
+\[
+\KL(\mu\|Q_m\pi_m)
+\ge
+\KL(\mu\|\mu^e)-\log M_m(k).
+\]
+In particular, assume \(\beta=\alpha\) and \(m\ge 6\). Then
+\[
+\KL(\mu_m\|Q_m\pi_m)
+=
+\mathbb E_{\pi_m^{\mathrm{fold}}}\big[\log d_m(Y)\big]
++\KL(\pi_m^{\mathrm{fold}}\|\pi_m),
+\]
+\[
+\KL(\mu_m\|Q_m\pi_m)
+\ge
+\mathbb E_{\pi_m^{\mathrm{fold}}}\big[\log d_m(Y)\big]
++(m-1)\log\varphi-\log\pi(0)-\log(m+1),
+\]
+and for every \(N\ge 1\),
+\[
+\KL(\hat\mu_{m,N}\|Q_m\pi_m)
+=
+\mathbb E_{\hat\pi_{m,N}}\big[\log d_m(Y)\big]
++\KL(\hat\pi_{m,N}\|\pi_m),
+\]
+\[
+\KL(\hat\mu_{m,N}\|Q_m\pi_m)
+\ge
+\mathbb E_{\hat\pi_{m,N}}\big[\log d_m(Y)\big]
++(m-1)\log\varphi-\log\pi(0)-\log(m+1).
+\]
+\end{corollary}
+
+\begin{proof}
+The first identity is Theorem~\ref{thm:fold-kl-pythagoras} with \(\eta=\pi_m\).
+If \(|\supp(\pi)|\le k\), then
+Theorem~\ref{thm:parry-support-barrier} gives
+\(\KL(\pi\|\pi_m)\ge -\log M_m(k)\), which yields the second inequality.
+
+Under \(\beta=\alpha\), Corollary~\ref{cor:sturmian-pure-degeneracy-ledger}
+identifies \(\KL(\mu_m\|\mu_m^e)\) and \(\KL(\hat\mu_{m,N}\|\hat\mu_{m,N}^e)\)
+with the corresponding degeneracy averages. The folded laws
+\(\pi_m^{\mathrm{fold}}\) and \(\hat\pi_{m,N}\) are supported on at most \(m+1\)
+words, and for \(m\ge 6\), one has \(m+1\le F_m\). Hence
+Corollary~\ref{cor:exact-complexity-divergence-law} applies with \(k=m+1\),
+yielding the lower bounds.
+\end{proof}
+
+\begin{corollary}[Universal extensive divergence in the Sturmian slice]\label{cor:parry-extensive-rate-sturmian}
+Assume \(\beta=\alpha\). Then for every \(m\ge 1\),
+\[
+|\supp(\pi_m^{\mathrm{fold}})|\le m+1,
+\]
+and for every \(N\ge 1\),
+\[
+|\supp(\hat\pi_{m,N})|\le m+1.
+\]
+Consequently,
+\[
+\KL(\pi_m^{\mathrm{fold}}\|\pi_m)=m\log\varphi+O(\log m),
+\qquad
+\KL(\hat\pi_{m,N}\|\pi_m)=m\log\varphi+O(\log m),
+\]
+where the \(O(\log m)\) terms are deterministic and uniform in \(N\) and
+\(x_0\). In particular, along every sampling schedule \(N=N(m)\),
+\[
+\lim_{m\to\infty}\frac{1}{m}\KL(\pi_m^{\mathrm{fold}}\|\pi_m)
+=
+\lim_{m\to\infty}\frac{1}{m}\KL(\hat\pi_{m,N(m)}\|\pi_m)
+=
+\log\varphi.
+\]
+\end{corollary}
+
+\begin{proof}
+Under \(\beta=\alpha\), the length-\(m\) rotation language is Sturmian and
+therefore has exactly \(m+1\) factors
+\cite{MorseHedlund1940,LindMarcus1995}. Deterministic folding cannot enlarge
+support, so both displayed support bounds follow. Hence
+\[
+H(\pi_m^{\mathrm{fold}})\le \log(m+1),
+\qquad
+H(\hat\pi_{m,N})\le \log(m+1).
+\]
+Applying Theorem~\ref{thm:parry-kl-identity} to
+\(\nu=\pi_m^{\mathrm{fold}}\) and \(\nu=\hat\pi_{m,N}\), and using the bounded
+endpoint correction, gives the \(m\log\varphi+O(\log m)\) estimates. Division
+by \(m\) yields the limit.
+\end{proof}
+
+\begin{corollary}[Optimal support obstruction for folded Sturmian laws]\label{cor:folded-optimal-support-obstruction}
+Assume \(\beta=\alpha\) and \(m\ge 6\). Then
+\[
+\KL(\pi_m^{\mathrm{fold}}\|\pi_m)
+\ge
+(m-1)\log\varphi-\log\pi(0)-\log(m+1),
+\]
+and for every \(N\ge 1\),
+\[
+\KL(\hat\pi_{m,N}\|\pi_m)
+\ge
+(m-1)\log\varphi-\log\pi(0)-\log(m+1).
+\]
+Likewise,
+\[
+\TV(\pi_m^{\mathrm{fold}},\pi_m)
+\ge
+1-(m+1)\pi(0)\varphi^{-(m-1)},
+\]
+and for every \(N\ge 1\),
+\[
+\TV(\hat\pi_{m,N},\pi_m)
+\ge
+1-(m+1)\pi(0)\varphi^{-(m-1)}.
+\]
+Thus the mismatch to the Parry baseline is not merely large; it lies above the
+sharp variational floor for every \((m+1)\)-state law on \(X_m\).
+\end{corollary}
+
+\begin{proof}
+In the Sturmian slice, both \(\pi_m^{\mathrm{fold}}\) and \(\hat\pi_{m,N}\) are
+supported on at most \(m+1\) words. For \(m\ge 6\), one has \(m+1\le F_m\), so
+Corollary~\ref{cor:exact-complexity-divergence-law} applies with \(k=m+1\).
+\end{proof}
+
+\section{Numerical Illustrations}
+
+The numerical section is deliberately brief and corroborative rather than
+exploratory. Its purpose is not to survey a large parameter space, but to check
+the scale of the deterministic estimates and to make the separation between
+sampling error and structural mismatch visible in a few representative parameter
+slices drawn from the ranges in
+Table~\ref{tab:parameter-grid}.
+
+\subsection{Setup}
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.25\linewidth} >{\raggedright\arraybackslash}p{0.63\linewidth}}
+\toprule
+Experiment family & Parameter grid \\
+\midrule
+Rotation sweep &
+$m\in\{6,8,10,12,14,16,18\}$,
+$N\in\{10^4,3\times 10^4,10^5,3\times 10^5\}$,
+$\beta\in\{0.2,0.3,0.5,0.6180339887\}$,
+$x_0\in\{0.123,0.271,0.731\}$ \\
+Rotation families &
+golden, metallic means $A\in\{2,3,5\}$, and large first partial quotient
+families $[0;B,1,1,\dots]$ with $B\in\{10,30,100\}$ \\
+IID block baselines &
+$m\in\{6,8,10,12,14,16,18\}$,
+$N\in\{2000,5000,10^4,3\times 10^4,10^5\}$,
+seeds $\{1,2,3,4,5\}$, confidence level $95\%$ \\
+\bottomrule
+\end{tabular}
+\caption{Parameter ranges used in the numerical examples.}
+\label{tab:parameter-grid}
+\end{table}
+
+The reported tables are extracted from this fixed audit grid rather than from
+isolated hand-picked samples. For the rotation experiments, the same orbit
+sample is used to compute the empirical microstate law, the folded histogram,
+the discrepancy certificate, and the cross-resolution residual. The overlines
+in Tables~\ref{tab:rotation_multiscale_residual_summary} and
+\ref{tab:rotation-folded-kl-certificate} denote averages over the sampled orbit
+phases listed in Table~\ref{tab:parameter-grid}. The large value
+\(N=3\times 10^5\) in the residual table is intentional: it drives the
+discrepancy certificate into the \(10^{-5}\) regime, so the remaining signal is
+forced to come from the boundary event of
+Theorem~\ref{prop:multiscale-residual-by-boundary} rather than from sampling
+noise alone.
+
+\subsection{Folded Relative-Entropy Bounds}
+
+\input{generated/tab_rotation_folded_kl_certificate_en}
+
+Table~\ref{tab:rotation-folded-kl-certificate} is reported for the golden slope
+with the canonical window \(\beta=\alpha\). Across the parameter range shown
+here, the observed folded relative entropy remains well below the explicit
+upper bound. The constants are conservative, but the observed dependence on
+\((m,N)\) follows the predicted scale. The same canonical slice is also the
+regime in which Corollary~\ref{cor:parry-extensive-rate-sturmian} predicts a
+very different behavior relative to the Parry baseline: increasing the sample
+size improves agreement with \(\pi_m^{\mathrm{fold}}\), but it does not remove
+the structural gap to \(\pi_m\).
+
+\subsection{Residuals and Structural Mismatch}
+
+\input{generated/tab_rotation_multiscale_residual_summary_en}
+
+Table~\ref{tab:rotation_multiscale_residual_summary} makes the separation
+between finite-sample and structural effects concrete. At
+\(N=3\times 10^5\), the mean star discrepancy in the reported golden slice is
+already of order \(10^{-5}\), whereas the projective residual remains of order
+\(10^{-1}\). For the resonant family \([0;100,1,1,\dots]\), the residual is
+larger still. This is exactly the phenomenon captured by
+Theorem~\ref{prop:multiscale-residual-by-boundary}: small orbit discrepancy
+does not force small cross-resolution residual, because the residual is driven
+by the frequency with which a final \(1\) is appended to prefixes whose
+Fibonacci value has already crossed the threshold \(F_{m+1}\).
+
+The table is intended as a compressed visualization of that boundary law. The
+boundary event itself is binary and sparse, so plotting raw event traces would
+add little at SIADS scale; the residual summary is the observable obtained after
+folding and truncation, and it is precisely this quantity that the theorem
+identifies.
+
+\subsection{Direct Comparison with the Parry Baseline}
+
+\input{generated/tab_rotation_parry_gap_summary_en}
+
+Table~\ref{tab:rotation-parry-gap-summary} is the direct numerical counterpart
+to the support-barrier theory of Section~5. At the fixed large sample size
+\(N=3\times 10^5\), the golden discrepancy upper bound is already only
+\(9.33\times 10^{-5}\), yet the total-variation and relative-entropy gaps to
+the Parry measure grow rapidly with \(m\) across both bounded-type and
+resonant families. In particular, for the golden branch the total variation
+distance rises from \(0.506\) at \(m=6\) to \(0.995\) at \(m=18\). This is the
+regime predicted by Corollary~\ref{cor:tv-decomposition-parry},
+Corollary~\ref{cor:parry-extensive-rate-sturmian}, and
+Corollary~\ref{cor:folded-optimal-support-obstruction}: once \(m\) grows, the
+dominant contribution is structural mismatch rather than sampling error.
+
+The comparison across families is also useful conceptually. The metallic and
+resonant examples differ in constants, but they exhibit the same qualitative
+obstruction: after folding into \(X_m\), low effective complexity prevents
+convergence to the maximal-entropy baseline. This is why the paper does not try
+to benchmark many alternative local normalization rules numerically. By
+Remark~\ref{rem:alternative-folds-support-barrier}, any alternative fold that
+still produces a subexponential-support family on \(X_m\) must retain a
+positive Parry entropy density.
+
+\subsection{IID Baselines}
+
+\input{generated/tab_iid_sources_fold_vs_parry_ci_en}
+
+The IID comparison is useful because it displays the decomposition in
+Corollary~\ref{cor:tv-decomposition-parry} in two opposite regimes. When the
+data-generating law is matched to the reference baseline, the discrepancy term
+controls the observed error. For the folded rotation data, by contrast, the
+structural term persists and eventually dominates.
+No systematic benchmark against alternative folds is included here. The purpose
+of the numerical section is to corroborate the canonical theory developed in
+Sections~2--5, and the support-barrier results already show what any such
+benchmark could and could not change: a different fold may alter constants or
+the effective support exponent, but it cannot erase the Parry penalty while
+remaining inside the same low-complexity regime.
+
+\section{Discussion}
+
+The paper isolates a single mechanism behind the Parry mismatch in folded
+histograms of irrational rotations. In the canonical Sturmian slice
+\(\beta=\alpha\), Parry divergence is not created by folding: once
+finite-sample error has been controlled by discrepancy, the remaining gap comes
+from low-complexity Sturmian geometry against the ambient maximal-entropy
+equilibrium. Both the folded limit law and every empirical folded histogram
+therefore remain at the universal KL rate \(\log\varphi\) per symbol from the
+Parry baseline, so a large Parry discrepancy is a structural signal of the
+model rather than evidence of insufficient sampling.
+
+At the same time, the canonical Fibonacci fold is transparent on the realized
+Sturmian language. In the slice \(\beta=\alpha\), it does not collapse distinct
+realized factors; it merely relabels them by distinct residues modulo
+\(F_{m+2}\). The Parry divergence therefore comes from Sturmian arithmetic
+geometry itself, not from an additional entropy loss created by folding.
+
+The variational picture is now equally rigid. The Parry endpoint collapse makes
+it possible to solve exactly the best low-complexity approximation problem:
+under a support budget \(k\), the optimal law is obtained by conditioning the
+Parry measure on the \(k\) heaviest admissible words, and the resulting KL and
+TV costs are explicit. The complexity exponent therefore trades against the
+Parry divergence rate with slope one: a support growth
+\(\exp(\alpha m+o(m))\) lowers the unavoidable KL rate precisely to
+\(\log\varphi-\alpha\). In particular, the folded Sturmian laws do not merely
+have too little support to look Parry; they already sit above the exact
+complexity-constrained optimum for any \((m+1)\)-state model.
+
+At the same time, the canonical fold admits an exact quotient information
+geometry on the microstate simplex. The fiber-uniform lift family is a canonical
+I-projection family associated with the fold, and the relative entropy to the lifted Parry baseline
+splits orthogonally into two terms: a hidden within-fiber residual and the
+observable Parry divergence of the folded law. This identifies precisely which
+part of the mismatch is visible at the histogram level and which part remains
+confined to unresolved microstructure. This viewpoint is complementary to the
+main support-barrier results: it does not replace the Parry comparison, but
+explains how much of that comparison is already determined once one passes to
+the folded observable. In this sense, Theorem~\ref{thm:fold-kl-pythagoras}
+should be read as a canonical coarse-graining identity in the classical
+information-projection sense of \cite{Csiszar1975IdivergenceGeometry}, with the
+folded observable acting as the sufficient statistic.
+
+For bounded-type slopes, the same rigidity sharpens the asymptotics of the
+Parry mismatch. Because the fold preserves the entropy of the realized
+Sturmian law exactly, the second term is governed by cylinder geometry alone:
+\(\KL(\pi_m^{\mathrm{fold}}\|\pi_m)=m\log\varphi-\log m+O_\alpha(1)\). Thus both
+the leading equilibrium barrier and its logarithmic correction are already
+encoded in the Sturmian cylinders before any off-support fiber structure is
+taken into account.
+
+Within the metallic-mean family, the golden slope plays a double role. It
+minimizes the leading deterministic discrepancy constant, yet the same constant
+\(\varphi\) also fixes the unavoidable divergence rate from the Parry baseline.
+More generally, the paper isolates a complexity-versus-equilibrium principle:
+once a folded model on the golden-mean language has effective support exponent
+strictly below \(\log\varphi\), its KL distance from the ambient equilibrium
+remains extensive. In that sense, the present irrational-rotation model should
+be read as a fully computable realization of a broader low-complexity barrier:
+what is special here is not merely that the folded Sturmian laws are far from
+Parry, but that the gap can be decomposed exactly into finite-sample error,
+structural support deficit, and fiber-level degeneracy.
+
+The same perspective clarifies the status of alternative folds. The canonical
+normalization is important because it admits exact residue formulas,
+transparency on realized Sturmian support, and the boundary law for
+cross-resolution residuals. But the extensive Parry penalty is less fragile
+than those model-specific identities. Any alternative coarse-graining that
+still outputs a subexponential-support family on \(X_m\) faces the same
+equilibrium obstruction. What a different fold could change is the support
+exponent, the constants, or the availability of exact formulas; what it cannot
+do is restore proximity to the Parry equilibrium without leaving the
+low-complexity regime.
+
+The main limitation is therefore precise rather than diffuse. The exact KL
+identity relies on endpoint collapse of the golden-mean Parry cylinders, and no
+general extension to arbitrary shifts of finite type is claimed. The natural
+next question is to determine which other low-complexity codings admit an
+analogous collapse mechanism or, failing that, whether one can still prove a
+quantitative equilibrium barrier with weaker but robust constants. That is the
+point at which the explicit theory developed here would have to give way to a
+more general coarse-graining framework.
+
+\appendix
+
+\section{Canonical Fold as Local Zeckendorf Normalization}\label{app:canonical-fold}
+
+This appendix records a local implementation of the canonical fold used in
+Definition~\ref{def:canonical-fold}. It is included only to make the model
+object completely explicit and reproducible.
+
+Let \(\mathcal{D}\) be the set of finitely supported digit configurations
+\[
+a=(a_1,a_2,\dots),\qquad a_k\in\mathbb{N},
+\]
+and define the Fibonacci value
+\[
+\mathrm{Val}(a):=\sum_{k\ge 1} a_k F_{k+1}.
+\]
+Embed \(\omega=\omega_1\cdots \omega_m\in\Omega_m\) as
+\[
+\iota_m(\omega):=(\omega_1,\dots,\omega_m,0,0,\dots)\in\mathcal{D}.
+\]
+Consider the following value-preserving local rewrites:
+\[
+e_k+e_{k+1}\to e_{k+2},
+\qquad
+2e_1\to e_2,
+\qquad
+2e_2\to e_1+e_3,
+\qquad
+2e_k\to e_{k-2}+e_{k+1}\ \ (k\ge 3),
+\]
+where \(e_k\) is the \(k\)-th unit vector in \(\mathcal{D}\).
+
+\begin{proposition}[Order-independent local normalization]\label{prop:canonical-fold-rewrite}
+Starting from \(\iota_m(\omega)\), every maximal rewrite sequence terminates at
+the same normal form \(\mathrm{NF}(\iota_m(\omega))\in\{0,1\}^{\mathbb{N}}\)
+with no adjacent \(1\)'s. This normal form is the Zeckendorf expansion
+\(Z(N(\omega))\). Consequently,
+\[
+\Fold_m(\omega)=\pref_m\bigl(\mathrm{NF}(\iota_m(\omega))\bigr)
+\]
+is independent of rewrite order.
+\end{proposition}
+
+\begin{proof}
+Each rewrite preserves \(\mathrm{Val}\) because it encodes one of the Fibonacci
+identities
+\[
+F_{k+1}+F_{k+2}=F_{k+3},
+\qquad
+2F_2=F_3,
+\qquad
+2F_3=F_2+F_4,
+\qquad
+2F_{k+1}=F_{k-1}+F_{k+2}\ \ (k\ge 3).
+\]
+Termination follows from a lexicographic descent argument. Let
+\[
+A(a):=\sum_{k\ge 1} a_k,
+\qquad
+B(a):=\sum_{k\ge 1} k\,a_k,
+\qquad
+C(a):=a_2.
+\]
+The rules \(e_k+e_{k+1}\to e_{k+2}\) and \(2e_1\to e_2\) decrease \(A\); the
+rules \(2e_k\to e_{k-2}+e_{k+1}\) for \(k\ge 3\) preserve \(A\) and decrease
+\(B\); and the rule \(2e_2\to e_1+e_3\) preserves \(A\) and \(B\) but decreases
+\(C\). Hence \((A,B,C)\) decreases lexicographically at each step, so rewriting
+must terminate.
+
+A normal form has no adjacent \(1\)'s and no digit \(\ge 2\), hence is a
+Zeckendorf representation. Since every rewrite preserves \(\mathrm{Val}\) and
+Zeckendorf representation is unique \cite{Zeckendorf1972}, all terminating
+branches have the same normal form. The final formula for \(\Fold_m\) is then
+just the definition of the canonical fold through prefix truncation.
+\end{proof}
+
+\bibliographystyle{siam}
+\bibliography{../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references,../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references_fibonacci,../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references_internal_2025}
+
+\end{document}

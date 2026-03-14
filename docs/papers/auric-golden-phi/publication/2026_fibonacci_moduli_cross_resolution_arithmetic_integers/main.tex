@@ -1,0 +1,816 @@
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\numberwithin{equation}{section}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{theoremA}{Theorem A}
+\newtheorem*{theoremB}{Theorem B}
+\newtheorem*{theoremC}{Theorem C}
+
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\DeclareMathOperator{\lcmop}{lcm}
+\DeclareMathOperator{\Val}{Val}
+\DeclareMathOperator{\im}{Im}
+
+\title{First-appearance spectra and prime-power ladders for the Fibonacci modulus chain}
+% Fill in author names, affiliations, corresponding-author e-mail addresses,
+% and ORCID iDs before submission.
+% Example:
+% \author{First Author\\Department, University, City, Country\\
+% \texttt{first.author@example.edu}\\ORCID: 0000-0000-0000-0000
+% \and
+% Second Author\\Department, University, City, Country\\
+% \texttt{second.author@example.edu}\\ORCID: 0000-0000-0000-0000}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study first-appearance phenomena for cyclic quotients along the Fibonacci
+modulus chain $\ZZ/(F_{m+2}\ZZ)$ and its canonical realization on admissible
+Zeckendorf words. We prove that a quotient onto $\ZZ/(q\ZZ)$ occurs at depth
+$m$ if and only if $q\mid F_{m+2}$; equivalently, the least supporting depth is
+$\alpha(q)-2$, where $\alpha(q)$ is the rank of apparition of $q$ in the
+Fibonacci sequence. This gives the minimal common depth for any finite family
+of moduli and an explicit formula for the fibers of the joint quotient map. We
+next show that the numbers of cyclic, prime, and prime-power quotients born for
+the first time at index $n$ are given by M\"obius transforms of $\tau(F_n)$,
+$\omega(F_n)$, and $\Omega(F_n)$. Using Lengyel's valuation theorem, we compute
+$\alpha(p^r)$ exactly and obtain rigid $p$-primary ladders. In particular, for
+odd primes $p\neq 5$, the primitive $p$-layer already supports a quotient
+modulo $p^2$ if and only if $p$ is a Wall--Sun--Sun prime. Finally,
+reconstruction from proper quotient data exhibits a sharp dichotomy: levels
+whose modulus has at least two distinct prime divisors are recovered from two
+proper shadows, whereas prime-power levels require all prime-power factors of
+$F_{m+2}$.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Keywords.} Fibonacci numbers, rank of apparition, M\"obius
+inversion, Wall--Sun--Sun primes, Chinese remainder theorem.
+
+\smallskip
+\noindent\textbf{Mathematics Subject Classification (2020).}
+11B39, 11A07, 11A25.
+
+\section{Introduction and main results}
+
+Let $\alpha(q)$ denote the rank of apparition of an integer $q\ge 2$ in the
+Fibonacci sequence, that is, the least index $n$ for which $q\mid F_n$. The
+starting point of the paper is the following first-appearance problem.
+For which integers $q$ does the cyclic ring $\ZZ/(q\ZZ)$ occur naturally along
+the Fibonacci modulus chain
+\[
+\ZZ/(F_3\ZZ),\ \ZZ/(F_4\ZZ),\ \ZZ/(F_5\ZZ),\ \dots,
+\]
+and at which index does it appear for the first time? We also ask for exact
+counts of the quotients born at each index, for the structure of the
+$p$-primary part of the hierarchy, and for the amount of quotient data needed
+to reconstruct one level from proper residue information.
+
+The chain above has a convenient model in Zeckendorf numeration. For each
+$m\ge 1$, let
+\[
+X_m:=\{(w_1,\dots,w_m)\in\{0,1\}^m:\ w_iw_{i+1}=0\text{ for }1\le i<m\},
+\]
+the set of admissible Fibonacci words of length $m$. The finite value map
+\[
+V_m(w_1,\dots,w_m):=\sum_{k=1}^m w_kF_{k+1}
+\]
+identifies $X_m$ with $\{0,1,\dots,F_{m+2}-1\}$ by the finite-range form of
+Zeckendorf's theorem. Pulling back addition and multiplication modulo
+$F_{m+2}$ therefore equips $X_m$ with a finite commutative ring structure
+canonically isomorphic to $\ZZ/(F_{m+2}\ZZ)$. The role of Zeckendorf words in
+what follows is therefore structural rather than foundational: they provide a
+uniform realization of the arithmetic questions on the Fibonacci modulus chain.
+
+Classical apparition theory already supplies the basic divisibility input.
+Wall and Vinson show that $q\mid F_n$ is controlled exactly by $\alpha(q)$
+\cite{Wall1960FibonacciModm,Vinson1963RankApparition}. Primitive divisor
+theorems explain when a genuinely new prime first appears
+\cite{Yabuta2001PrimitiveDivisorFibonacci,BiluHanrotVoutier2001PrimitiveDivisorsLucas},
+while Lengyel's valuation formula determines the $p$-adic depth of Fibonacci
+divisibility \cite{Lengyel1995OrderFibonacciLucas}. Taken together, these
+ingredients lead to a hierarchy theory with exact
+first-appearance spectra for cyclic and prime-power quotients, a precise
+$p$-primary ladder law, and a Wall--Sun--Sun criterion expressed at the
+primitive layer itself. This is distinct from the algorithmic literature on
+Zeckendorf addition and normalization
+\cite{Frougny1988LinearNumerationOrderTwo,Frougny1992NumbersAutomata,Frougny1999OnlineAddition,
+AhlbachUsatineFrougnyPippenger2013,LabbeLepsova2023FibonacciTwosComplement},
+where the main questions concern implementation and normalization rather than
+first occurrence and fixed-depth reconstruction.
+
+\subsection*{Arithmetic form of the main theorems}
+
+The core results may be read without the language of admissible words.
+
+\begin{theoremA}
+For $n\ge 2$, define
+\[
+A(n)=\#\{q\ge 2:\alpha(q)=n\},
+\quad
+A_{\mathrm{pr}}(n)=\#\{p\text{ prime}:\alpha(p)=n\},
+\]
+\[
+A_{\mathrm{pp}}(n)=\#\{p^r:r\ge 1,\ p\text{ prime},\ \alpha(p^r)=n\}.
+\]
+Then
+\[
+A(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\tau(F_d),\qquad
+A_{\mathrm{pr}}(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\omega(F_d),
+\]
+\[
+A_{\mathrm{pp}}(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\Omega(F_d).
+\]
+In particular, the exceptional indices $6$ and $12$ are prime-field empty but
+not prime-power empty.
+\end{theoremA}
+
+\begin{theoremB}
+For every prime $p$ and $r\ge 1$, the rank of apparition of $p^r$ is explicit.
+One has $\alpha(5^r)=5^r$ and
+\[
+\alpha(2^r)=3\cdot 2^{\max(1,r-2)}\qquad (r\ge 2).
+\]
+If $p\neq 2,5$ and $e_p=\nu_p(F_{\alpha(p)})$, then
+\[
+\alpha(p^r)=\alpha(p)\,p^{\max(0,r-e_p)}.
+\]
+Hence, once $r\ge e_p$, the sequence $\alpha(p^r)$ grows by a factor of $p$ at
+each step.
+\end{theoremB}
+
+\begin{theoremC}
+Let $p\neq 2,5$ be prime. The following are equivalent:
+\[
+\alpha(p^2)=\alpha(p),\qquad \nu_p(F_{\alpha(p)})\ge 2,
+\qquad p\text{ is a Wall--Sun--Sun prime}.
+\]
+Equivalently, the primitive $p$-layer is already locally thickened by a
+quotient modulo $p^2$.
+\end{theoremC}
+
+Our first result is a complete classification of cyclic quotients at fixed
+depth. Theorem~\ref{thm:quotient-observable-threshold} shows that there is a
+unit-preserving quotient
+\[
+X_m\twoheadrightarrow \ZZ/(q\ZZ)
+\]
+if and only if $q\mid F_{m+2}$. If $\alpha(q)$ denotes the rank of apparition
+of $q$, then the smallest supporting depth is $m_{\min}(q)=\alpha(q)-2$.
+Theorems~\ref{thm:finite-signature-unified-resolution-minimal}
+and~\ref{thm:finite-signature-joint-readout-image-fiber} extend this to finite
+families of moduli.
+
+The next step is to count the quotients that are born for the first time at a
+given index. Theorem~\ref{thm:birth-spectrum-mobius} expresses the cyclic,
+prime, and prime-power birth spectra as M\"obius transforms of $\tau(F_n)$,
+$\omega(F_n)$, and $\Omega(F_n)$. In particular, the exceptional indices $6$
+and $12$ are not empty layers: they carry no new prime fields, but they do
+carry new prime-power quotients. Combined with the primitive divisor theorem,
+this also shows that every resolution except $m=4$ and $m=10$ carries a prime
+field quotient that first appears there; see
+Theorem~\ref{thm:primitive-field-quotients}.
+
+The local $p$-primary structure is described by
+Theorem~\ref{thm:prime-power-apparition-ladders}. Using Lengyel's valuation
+theorem, we determine $\alpha(p^r)$ for every prime power. For odd primes
+$p\neq 5$, if $e_p=\nu_p(F_{\alpha(p)})$, then the primitive $p$-birth layer
+already contains
+\[
+\ZZ/(p\ZZ),\ \ZZ/(p^2\ZZ),\ \dots,\ \ZZ/(p^{e_p}\ZZ),
+\]
+and thereafter the birth depths scale geometrically by a factor of $p$.
+Corollary~\ref{cor:wss-thickening-criterion} interprets the Wall--Sun--Sun
+condition as the presence of a quotient modulo $p^2$ already on the primitive
+$p$-layer.
+
+The final part of the paper concerns simultaneous quotient maps and exact
+reconstruction. Theorems~\ref{thm:proper-shadow-compressibility}
+and~\ref{thm:prime-power-shadow-complexity} show that CRT-split levels are
+recovered from two proper quotient shadows, whereas prime-power levels require
+all prime-power factors of $F_{m+2}$.
+
+The paper is organized as follows. Section~2 fixes the ring structure on
+$X_m$ and recalls the Fibonacci divisibility facts used later. Section~3
+contains the exact threshold theorem and the M\"obius formulas for the birth
+spectra. Section~4 treats prime-power ladders and the Wall--Sun--Sun criterion.
+Section~5 studies finite signatures, reconstruction, and shadow complexity.
+Appendix~A records a short table of initial birth data and ladder values.
+
+\section{Preliminaries on Fibonacci divisibility and finite quotient rings}
+
+For each $m\ge 1$, we continue to write
+\[
+X_m=\{(w_1,\dots,w_m)\in\{0,1\}^m:\ w_iw_{i+1}=0\text{ for }1\le i<m\}
+\]
+and
+\[
+V_m(w_1,\dots,w_m)=\sum_{k=1}^m w_kF_{k+1}.
+\]
+
+\begin{lemma}
+\label{lem:zeckendorf-range-bijection}
+For every $m\ge 1$, the map $V_m$ is a bijection from $X_m$ onto
+$\{0,1,\dots,F_{m+2}-1\}$.
+\end{lemma}
+
+\begin{proof}
+This is the finite-range form of Zeckendorf's theorem \cite{Zeckendorf1972}.
+Every integer $N<F_{m+2}$ has a unique Zeckendorf expansion whose largest
+nonzero digit occurs at a position at most $m$, and this expansion is exactly a
+word in $X_m$.
+\end{proof}
+
+\begin{definition}
+\label{def:finite-resolution-arithmetic}
+For $w,v\in X_m$, define
+\[
+w\boxplus_m v:=w_m\bigl((V_m(w)+V_m(v))\bmod F_{m+2}\bigr),
+\]
+\[
+w\boxtimes_m v:=w_m\bigl((V_m(w)V_m(v))\bmod F_{m+2}\bigr),
+\]
+where $w_m(N)$ denotes the unique word in $X_m$ with value
+$N\in\{0,1,\dots,F_{m+2}-1\}$.
+\end{definition}
+
+\begin{proposition}
+\label{thm:finite-resolution-mod}
+For every $m\ge 1$, the value map gives a ring isomorphism
+\[
+V_m:(X_m,\boxplus_m,\boxtimes_m)\longrightarrow \ZZ/(F_{m+2}\ZZ).
+\]
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:zeckendorf-range-bijection}, $V_m$ is a bijection between
+$X_m$ and a complete residue system modulo $F_{m+2}$. By construction,
+\[
+V_m(w\boxplus_m v)\equiv V_m(w)+V_m(v)\pmod{F_{m+2}}
+\]
+and
+\[
+V_m(w\boxtimes_m v)\equiv V_m(w)V_m(v)\pmod{F_{m+2}}.
+\]
+Thus $V_m$ is a bijective ring homomorphism.
+\end{proof}
+
+\begin{corollary}
+\label{cor:phase-trichotomy}
+Let $N:=F_{m+2}$.
+\begin{enumerate}[label=(\arabic*)]
+\item If $N$ is prime, then $X_m$ is a field.
+\item If $N$ is a prime power of exponent at least $2$, then $X_m$ is a local
+ring.
+\item If $N$ has at least two distinct prime factors, then $X_m$ splits as a
+nontrivial product of residue rings by the Chinese remainder theorem.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+This is immediate from Proposition~\ref{thm:finite-resolution-mod} and the
+corresponding structure theory of $\ZZ/(N\ZZ)$.
+\end{proof}
+
+\begin{definition}
+\label{def:rank-of-apparition}
+For an integer $q\ge 2$, the \emph{rank of apparition} $\alpha(q)$ is the least
+positive integer $n$ such that $q\mid F_n$.
+\end{definition}
+
+\begin{proposition}
+\label{prop:rank-of-apparition-basic}
+Let $q\ge 2$ and $n\ge 1$.
+\begin{enumerate}[label=(\arabic*)]
+\item One has $q\mid F_n$ if and only if $\alpha(q)\mid n$.
+\item For any finite family $q_1,\dots,q_s\ge 2$,
+\[
+\alpha(\lcmop(q_1,\dots,q_s))=\lcmop(\alpha(q_1),\dots,\alpha(q_s)).
+\]
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part (1) is classical; see Wall \cite{Wall1960FibonacciModm} and Vinson
+\cite{Vinson1963RankApparition}. For part (2), write $Q=\lcmop(q_1,\dots,q_s)$.
+Then for every $n\ge 1$,
+\[
+Q\mid F_n
+\iff
+q_i\mid F_n\ \text{for all }i
+\iff
+\alpha(q_i)\mid n\ \text{for all }i
+\iff
+\lcmop(\alpha(q_1),\dots,\alpha(q_s))\mid n.
+\]
+Applying the minimality characterization in part (1) gives the formula.
+\end{proof}
+
+\section{Exact quotient thresholds and birth spectra}
+
+\begin{theorem}
+\label{thm:quotient-observable-threshold}
+Let $m\ge 1$ and $q\ge 2$. The following are equivalent.
+\begin{enumerate}[label=(\arabic*)]
+\item There exists a unit-preserving quotient
+\[
+X_m\twoheadrightarrow \ZZ/(q\ZZ).
+\]
+\item $q\mid F_{m+2}$.
+\item $\alpha(q)\mid (m+2)$.
+\end{enumerate}
+When these conditions hold, the quotient is unique. In particular,
+\[
+m_{\min}(q)=\alpha(q)-2.
+\]
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{thm:finite-resolution-mod}, giving a unit-preserving
+quotient on $X_m$ is equivalent to giving a unit-preserving surjective ring
+homomorphism
+\[
+\widetilde{\pi}:\ZZ/(F_{m+2}\ZZ)\twoheadrightarrow \ZZ/(q\ZZ).
+\]
+Such a map, if it exists, is necessarily the reduction map
+$\overline{t}\mapsto [t]_q$, and it is well defined and surjective exactly when
+$q\mid F_{m+2}$. This proves (1) $\Leftrightarrow$ (2). The equivalence of
+(2) and (3) is Proposition~\ref{prop:rank-of-apparition-basic}(1) with
+$n=m+2$. The minimality statement is the case $n=\alpha(q)$.
+\end{proof}
+
+\begin{definition}
+\label{def:birth-spectra}
+For each $n\ge 2$, define
+\[
+A(n):=\#\{q\ge 2:\ \alpha(q)=n\},
+\]
+\[
+A_{\mathrm{pr}}(n):=\#\{p\text{ prime}:\ \alpha(p)=n\},
+\]
+\[
+A_{\mathrm{pp}}(n):=\#\{p^r:\ p\text{ prime},\ r\ge 1,\ \alpha(p^r)=n\}.
+\]
+\end{definition}
+
+\begin{theorem}
+\label{thm:birth-spectrum-mobius}
+For every $n\ge 2$,
+\[
+A(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\tau(F_d),
+\]
+\[
+A_{\mathrm{pr}}(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\omega(F_d),
+\]
+\[
+A_{\mathrm{pp}}(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\Omega(F_d).
+\]
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:rank-of-apparition-basic}(1), a nontrivial divisor
+$q$ of $F_n$ satisfies $\alpha(q)\mid n$. Hence the nontrivial divisors of
+$F_n$ are partitioned by their first-appearance index, and
+\[
+\tau(F_n)-1=\sum_{\substack{d\mid n\\ d\ge 2}} A(d).
+\]
+Since $n\ge 2$, one has
+$\sum_{d\mid n}\mu(n/d)=0$, so the constant term $1$ disappears under M\"obius
+inversion and
+\[
+A(n)=\sum_{d\mid n}\mu\!\left(\frac{n}{d}\right)\tau(F_d).
+\]
+
+The same argument with prime divisors instead of all divisors gives
+\[
+\omega(F_n)=\sum_{d\mid n} A_{\mathrm{pr}}(d),
+\]
+and with prime-power divisors gives
+\[
+\Omega(F_n)=\sum_{d\mid n} A_{\mathrm{pp}}(d).
+\]
+Applying M\"obius inversion to these two identities yields the remaining
+formulas.
+\end{proof}
+
+\begin{corollary}
+\label{cor:birth-spectrum-exceptional}
+The exceptional indices $6$ and $12$ satisfy
+\[
+A_{\mathrm{pr}}(6)=A_{\mathrm{pr}}(12)=0,
+\qquad
+A_{\mathrm{pp}}(6)=A_{\mathrm{pp}}(12)=2.
+\]
+\end{corollary}
+
+\begin{proof}
+Since $F_6=8$, the only prime divisor is $2$, and $\alpha(2)=3$, so no new
+prime field is born at $6$. On the other hand, $\alpha(4)=\alpha(8)=6$, hence
+$A_{\mathrm{pp}}(6)=2$.
+
+Likewise $F_{12}=144=2^4\cdot 3^2$. Its prime divisors are $2$ and $3$, with
+$\alpha(2)=3$ and $\alpha(3)=4$, so $A_{\mathrm{pr}}(12)=0$. The new prime
+powers are $9$ and $16$, because $\alpha(9)=12$ and $\alpha(16)=12$, whereas
+$\alpha(4)=\alpha(8)=6$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:primitive-field-quotients}
+For every $n\ge 3$ with $n\notin\{6,12\}$, there exists a prime $p_n$ such
+that $\alpha(p_n)=n$. Equivalently, for every $m\ge 1$ with $m\notin\{4,10\}$,
+the ring $X_m$ admits a quotient onto a prime field that does not factor
+through any smaller depth.
+\end{theorem}
+
+\begin{proof}
+For $n=3,4,5$ one may take $p_3=2$, $p_4=3$, and $p_5=5$. For $n\ge 7$ with
+$n\neq 12$, the primitive divisor theorem for Fibonacci numbers
+\cite{Yabuta2001PrimitiveDivisorFibonacci,BiluHanrotVoutier2001PrimitiveDivisorsLucas}
+gives a prime $p_n$ dividing $F_n$ but no earlier Fibonacci number $F_d$ with
+$1\le d<n$. By definition of rank of apparition, $\alpha(p_n)$ is the least
+index at which $p_n$ appears. Since $\alpha(p_n)\mid n$ and $p_n$ divides no
+earlier $F_d$, necessarily $\alpha(p_n)=n$.
+
+The equivalent statement for resolutions follows from
+Theorem~\ref{thm:quotient-observable-threshold}: $X_{n-2}$ admits a quotient
+onto $\ZZ/(p_n\ZZ)$, and any factorization through $X_k$ with $k<n-2$ would
+force $p_n\mid F_{k+2}$, hence $\alpha(p_n)\le k+2<n$, a contradiction.
+\end{proof}
+
+\section{Prime-power ladders and the Wall--Sun--Sun criterion}
+
+\begin{theorem}
+\label{thm:prime-power-apparition-ladders}
+Let $p$ be prime and $r\ge 1$.
+\begin{enumerate}[label=(\arabic*)]
+\item For $p=5$,
+\[
+\alpha(5^r)=5^r.
+\]
+\item One has
+\[
+\alpha(2)=3,
+\qquad
+\alpha(2^r)=3\cdot 2^{\max(1,r-2)}\quad (r\ge 2).
+\]
+\item If $p\neq 2,5$ and $e_p:=\nu_p(F_{\alpha(p)})$, then
+\[
+\alpha(p^r)=\alpha(p)\,p^{\max(0,r-e_p)}.
+\]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For $p\neq 2,5$, Lengyel's valuation formula \cite{Lengyel1995OrderFibonacciLucas}
+states that
+\[
+\nu_p(F_n)=
+\begin{cases}
+\nu_p(n)+\nu_p(F_{\alpha(p)}), & \alpha(p)\mid n,\\
+0, & \alpha(p)\nmid n.
+\end{cases}
+\]
+Since $\alpha(p)\mid p\pm 1$, one has $p\nmid \alpha(p)$. Writing
+$n=\alpha(p)u$, the condition $p^r\mid F_n$ is equivalent to
+\[
+\nu_p(u)+e_p\ge r.
+\]
+The least such $u$ is $p^{\max(0,r-e_p)}$, which proves part (3).
+
+The case $p=5$ follows from the explicit valuation formula
+$\nu_5(F_n)=\nu_5(n)$, so the least $n$ with $5^r\mid F_n$ is $5^r$. For
+$p=2$, the classical valuation formula gives the stated values
+\cite{Lengyel1995OrderFibonacciLucas}.
+\end{proof}
+
+\begin{corollary}
+\label{cor:prime-power-geometric-recursion}
+Let $p\neq 2,5$ be prime and write $e_p=\nu_p(F_{\alpha(p)})$. If $r\ge e_p$,
+then
+\[
+\alpha(p^{r+1})=p\,\alpha(p^r).
+\]
+Equivalently,
+\[
+m_{\min}(p^{r+1})+2=p\bigl(m_{\min}(p^r)+2\bigr).
+\]
+\end{corollary}
+
+\begin{proof}
+This is immediate from Theorem~\ref{thm:prime-power-apparition-ladders}(3).
+\end{proof}
+
+\begin{corollary}
+\label{cor:wss-thickening-criterion}
+Let $p\neq 2,5$ be prime. The following are equivalent.
+\begin{enumerate}[label=(\roman*)]
+\item $\alpha(p^2)=\alpha(p)$.
+\item The primitive $p$-birth layer already carries a quotient
+\[
+X_{\alpha(p)-2}\twoheadrightarrow \ZZ/(p^2\ZZ).
+\]
+\item $\nu_p(F_{\alpha(p)})\ge 2$.
+\item $p$ is a Wall--Sun--Sun prime.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:prime-power-apparition-ladders}(3),
+\[
+\alpha(p^2)=\alpha(p)
+\iff
+\nu_p(F_{\alpha(p)})\ge 2.
+\]
+The equivalence of (i) and (ii) is exactly
+Theorem~\ref{thm:quotient-observable-threshold}. For $p\neq 2,5$, the
+Wall--Sun--Sun condition is equivalent to $\nu_p(F_{\alpha(p)})\ge 2$; see
+Sun and Sun \cite{SunSun1992FibonacciFLT}.
+\end{proof}
+
+\section{Finite signatures, reconstruction, and shadow complexity}
+
+\begin{definition}
+\label{def:joint-readout}
+Let $S=\{q_1,\dots,q_s\}$ be a finite family of integers at least $2$, and let
+$m\ge 1$ satisfy $q_i\mid F_{m+2}$ for all $i$. The \emph{joint readout} at
+depth $m$ is
+\[
+\rho_{m;S}:X_m\longrightarrow \prod_{i=1}^s \ZZ/(q_i\ZZ),
+\qquad
+x\longmapsto \bigl([V_m(x)]_{q_1},\dots,[V_m(x)]_{q_s}\bigr).
+\]
+\end{definition}
+
+\begin{theorem}
+\label{thm:finite-signature-unified-resolution-minimal}
+Let $S=\{q_1,\dots,q_s\}$ and write $Q=\lcmop(q_1,\dots,q_s)$. The least depth at
+which all moduli in $S$ occur simultaneously is
+\[
+L(S)=\alpha(Q)-2.
+\]
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:quotient-observable-threshold}, all $q_i$ occur at depth
+$m$ if and only if $\alpha(q_i)\mid m+2$ for all $i$. By
+Proposition~\ref{prop:rank-of-apparition-basic}(2), this is equivalent to
+$\alpha(Q)\mid m+2$. The minimal such $m$ is therefore $\alpha(Q)-2$.
+\end{proof}
+
+\begin{theorem}
+\label{thm:finite-signature-joint-readout-image-fiber}
+Let $m\ge 1$, let $S=\{q_1,\dots,q_s\}$ with $q_i\mid F_{m+2}$ for all $i$, and
+write
+\[
+M:=F_{m+2},
+\qquad
+Q:=\lcmop(q_1,\dots,q_s).
+\]
+Then:
+\begin{enumerate}[label=(\arabic*)]
+\item the image of $\rho_{m;S}$ is the compatibility locus
+\[
+\left\{(a_1,\dots,a_s)\in\prod_i \ZZ/(q_i\ZZ):
+a_i\equiv a_j\pmod{\gcd(q_i,q_j)}\text{ for all }i,j\right\};
+\]
+\item the image has cardinality $Q$;
+\item every fiber has cardinality $M/Q$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Under Proposition~\ref{thm:finite-resolution-mod}, the map $\rho_{m;S}$
+identifies with
+\[
+\ZZ/(M\ZZ)\longrightarrow \prod_{i=1}^s \ZZ/(q_i\ZZ),
+\qquad
+\overline{t}\longmapsto ([t]_{q_1},\dots,[t]_{q_s}).
+\]
+Its image is the usual compatibility locus from the noncoprime Chinese
+remainder theorem, proving (1). Two residue classes $\overline{t}$ and
+$\overline{u}$ have the same image if and only if $q_i\mid (t-u)$ for every
+$i$, equivalently $Q\mid (t-u)$. Thus the kernel has size $M/Q$, which proves
+(3). Since the domain has size $M$, the image has size $Q$.
+\end{proof}
+
+\begin{corollary}
+\label{cor:joint-readout-pairwise-coprime}
+If $q_1,\dots,q_s$ are pairwise coprime, then $\rho_{m;S}$ is surjective and
+every fiber has cardinality
+\[
+\frac{F_{m+2}}{q_1\cdots q_s}.
+\]
+\end{corollary}
+
+\begin{proof}
+If the $q_i$ are pairwise coprime, then $Q=q_1\cdots q_s$ and the compatibility
+conditions in Theorem~\ref{thm:finite-signature-joint-readout-image-fiber}(1)
+are vacuous.
+\end{proof}
+
+\begin{definition}
+\label{def:proper-shadow-complexity}
+A \emph{proper shadow family} at depth $m$ is a finite family of proper
+divisors $q_1,\dots,q_s$ of $F_{m+2}$. Define $\sigma(m)$ to be the least $s$
+for which the corresponding joint readout is injective. If no such family
+exists, set $\sigma(m)=\infty$.
+\end{definition}
+
+\begin{theorem}
+\label{thm:proper-shadow-compressibility}
+Let
+\[
+F_{m+2}=\prod_{i=1}^r p_i^{a_i}.
+\]
+Then:
+\begin{enumerate}[label=(\arabic*)]
+\item a proper shadow family $\{q_1,\dots,q_s\}$ is injective if and only if
+$\lcmop(q_1,\dots,q_s)=F_{m+2}$;
+\item $\sigma(m)=\infty$ if $r=1$;
+\item $\sigma(m)=2$ if $r\ge 2$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (1) follows from
+Theorem~\ref{thm:finite-signature-joint-readout-image-fiber}(3): the joint
+readout is injective exactly when its fiber size is $1$, that is, when the
+least common multiple of the moduli equals $F_{m+2}$.
+
+If $r=1$, then $F_{m+2}$ is a prime power and every proper divisor misses the
+full exponent, so the least common multiple of proper divisors is always still
+proper. By part (1), no proper shadow family is injective.
+
+If $r\ge 2$, no single proper divisor can be injective. On the other hand,
+\[
+q:=\frac{F_{m+2}}{p_1^{a_1}},
+\qquad
+q':=\frac{F_{m+2}}{p_2^{a_2}}
+\]
+are proper divisors with $\lcmop(q,q')=F_{m+2}$, so part (1) gives
+$\sigma(m)=2$.
+\end{proof}
+
+\begin{definition}
+\label{def:prime-power-shadow-complexity}
+A proper shadow family at depth $m$ is \emph{prime-power} if every modulus is a
+proper prime-power divisor of $F_{m+2}$. Define $\sigma_{\mathrm{pp}}(m)$ to be
+the least size of an injective prime-power shadow family. If no such family
+exists, set $\sigma_{\mathrm{pp}}(m)=\infty$.
+\end{definition}
+
+\begin{theorem}
+\label{thm:prime-power-shadow-complexity}
+Write
+\[
+F_{m+2}=\prod_{i=1}^r p_i^{a_i}.
+\]
+Then
+\[
+\sigma_{\mathrm{pp}}(m)=
+\begin{cases}
+\infty, & r=1,\\
+r, & r\ge 2.
+\end{cases}
+\]
+In particular, whenever $X_m$ is CRT-split,
+\[
+\sigma_{\mathrm{pp}}(m)=\omega(F_{m+2}).
+\]
+\end{theorem}
+
+\begin{proof}
+Assume first that an injective prime-power shadow family exists. By
+Theorem~\ref{thm:proper-shadow-compressibility}(1), its least common multiple
+must equal $F_{m+2}$. Since every allowed modulus is a prime power divisor of
+$F_{m+2}$, the family must contain the full factor $p_i^{a_i}$ for each $i$.
+Thus every injective prime-power family has size at least $r$.
+
+If $r=1$, the only prime power carrying the full exponent is $F_{m+2}$ itself,
+which is not proper, so no such family exists. If $r\ge 2$, the family
+$\{p_1^{a_1},\dots,p_r^{a_r}\}$ consists of proper divisors and has least
+common multiple $F_{m+2}$, hence it is injective by
+Theorem~\ref{thm:proper-shadow-compressibility}(1).
+\end{proof}
+
+\begin{corollary}
+\label{cor:prime-power-shadow-divisor-lower-bound}
+Let $n:=m+2$. Then
+\[
+\sigma_{\mathrm{pp}}(m)\ge \tau(n)-4.
+\]
+In particular, prime-power shadow complexity is unbounded along the Fibonacci
+modulus chain.
+\end{corollary}
+
+\begin{proof}
+If $\sigma_{\mathrm{pp}}(m)=\infty$, there is nothing to prove. Otherwise, by
+Theorem~\ref{thm:prime-power-shadow-complexity},
+$\sigma_{\mathrm{pp}}(m)=\omega(F_n)$. For each divisor
+$d\mid n$ with $d\notin\{1,2,6,12\}$, Theorem
+~\ref{thm:primitive-field-quotients} gives a prime $p_d$ with $\alpha(p_d)=d$.
+Since $d\mid n$, Proposition~\ref{prop:rank-of-apparition-basic}(1) implies
+$p_d\mid F_n$. Distinct divisors $d$ give distinct primes $p_d$, because the
+rank of apparition of a prime is unique. Hence
+$\omega(F_n)\ge \tau(n)-4$.
+\end{proof}
+
+\appendix
+
+\section{First-birth tables}
+
+The tables below are included only as arithmetic summaries of the main
+theorems. They are direct consequences of
+Theorems~\ref{thm:birth-spectrum-mobius}
+and~\ref{thm:prime-power-apparition-ladders}; no additional computation enters
+the proofs.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $F_n$ & $A(n)$ & $A_{\mathrm{pr}}(n)$ & $A_{\mathrm{pp}}(n)$ \\
+\midrule
+$2$  & $1$   & $0$  & $0$ & $0$ \\
+$3$  & $2$   & $1$  & $1$ & $1$ \\
+$4$  & $3$   & $1$  & $1$ & $1$ \\
+$5$  & $5$   & $1$  & $1$ & $1$ \\
+$6$  & $8$   & $2$  & $0$ & $2$ \\
+$7$  & $13$  & $1$  & $1$ & $1$ \\
+$8$  & $21$  & $2$  & $1$ & $1$ \\
+$9$  & $34$  & $2$  & $1$ & $1$ \\
+$10$ & $55$  & $2$  & $1$ & $1$ \\
+$11$ & $89$  & $1$  & $1$ & $1$ \\
+$12$ & $144$ & $10$ & $0$ & $2$ \\
+\bottomrule
+\end{tabular}
+\caption{Initial values of the first-birth spectra. The exceptional indices $6$
+and $12$ are prime-field empty but not prime-power empty.}
+\label{tab:birth-spectra-small}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{rrrrr}
+\toprule
+$p$ & $\alpha(p)$ & $\nu_p(F_{\alpha(p)})$ & $\alpha(p^2)$ & $\alpha(p^3)$ \\
+\midrule
+$2$  & $3$  & $1$ & $6$   & $6$ \\
+$3$  & $4$  & $1$ & $12$  & $36$ \\
+$5$  & $5$  & $1$ & $25$  & $125$ \\
+$7$  & $8$  & $1$ & $56$  & $392$ \\
+$11$ & $10$ & $1$ & $110$ & $1210$ \\
+$13$ & $7$  & $1$ & $91$  & $1183$ \\
+$17$ & $9$  & $1$ & $153$ & $2601$ \\
+\bottomrule
+\end{tabular}
+\caption{Initial prime-power ladder data. For the odd primes listed here one
+has $\nu_p(F_{\alpha(p)})=1$, so the ladder begins with a single primitive
+field layer before geometric growth.}
+\label{tab:prime-power-ladders-small}
+\end{table}
+
+\section*{Declarations}
+
+% Add any submission-specific Springer statements that apply here, including
+% funding, author contributions, code availability, and, if needed, the
+% required LLM disclosure when use exceeded copy editing.
+
+\noindent\textbf{Funding.} No specific funding was received for this work.
+
+\smallskip
+
+\noindent\textbf{Conflict of interest.} The authors declare that they have no
+conflict of interest.
+
+\smallskip
+\noindent\textbf{Data availability.} Data sharing not applicable to this
+article as no datasets were generated or analyzed during the current study.
+
+\bibliographystyle{unsrt}
+\bibliography{../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references,../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references_fibonacci,../../2026_golden_ratio_driven_scan_projection_generation_recursive_emergence/references_algebra}
+
+\end{document}
