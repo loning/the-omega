@@ -1,365 +1,479 @@
 \subsection{Zeckendorf 值与稳定地址的数值化}\label{subsec:emergent-arithmetic-zeckendorf-value-address}
 
-对 $w=w_1\cdots w_m\in X_m$，定义其 Zeckendorf 值
+前节把值类写成了寄存器正规形与外置账本。本节回到稳定地址本身，说明 \(X_m\) 不只是合法数字串的集合，而且在有限分辨率上本身携带一个由 Zeckendorf 值回拉而来的规范算术结构。进一步，这些有限分辨率结构可以在可比较尺度上拼接为一个 Fibonacci-adic 逆极限环，从而给出跨尺度的统一值空间。
+
+对任意
 \[
-V_m(w)=\sum_{k=1}^m w_k F_{k+1}.
+w=w_1\cdots w_m\in X_m,
 \]
-当 $0\le N\le F_{m+2}-1$ 时，$N$ 的 Zeckendorf 数字 $Z(N)=(c_1,c_2,\dots)$ 在第 $m+1$ 位之后全为 $0$（引理 \ref{lem:zeckendorf-range-bijection}），故令
+定义其 Zeckendorf 值为
 \[
-w(N):=\pi_m(Z(N))=(c_1,\dots,c_m)\in X_m,
+V_m(w):=\sum_{k=1}^{m} w_k F_{k+1}.
 \]
-则
+
+当
 \[
-N=V_m\bigl(w(N)\bigr).
+0\le N\le F_{m+2}-1
 \]
-因此 $X_m$ 在该范围上可作为自然数的规范地址表示。
+时，\(N\) 的 Zeckendorf 规范形在第 \(m+1\) 位之后全为 \(0\)。于是记
+\[
+w_m(N):=\pi_m(Z(N))\in X_m,
+\]
+便有
+\[
+N=V_m\bigl(w_m(N)\bigr).
+\]
+因此，在这一数值范围内，\(X_m\) 可被视为自然数的一个规范地址空间；本节的任务，就是把这种“地址--值”对应提升为真正的代数结构。
+
+此外，若第 \ref{subsec:observer-indexed-forcing} 节意义下的某个对象层地址 \(a\) 在分辨率 \(m\) 上已有非 \(\mathsf{NULL}\) 读出
+\[
+\mathrm{Read}_{\mathrm{US},p}(a)\in X_m,
+\]
+则其数值化就是
+\[
+\nu_{m,p}(a):=V_m\bigl(\mathrm{Read}_{\mathrm{US},p}(a)\bigr).
+\]
+也就是说，本节讨论的数值化，只作用于已经通过对象化、协议允许性与局部截面检验的稳定读出。
 
 \subsubsection{有限分辨率算术与模结构}
-为把“有限分辨率读出”转化为一个闭合的代数对象，我们将 $X_m$ 上的运算定义为对值的模化回拉。
 
 \begin{definition}[有限分辨率算术]
-对任意 $w,v\in X_m$，定义
+对任意 \(w,v\in X_m\)，定义
 \[
-w\boxplus_m v:=w\Bigl((V_m(w)+V_m(v))\bmod F_{m+2}\Bigr),
-\qquad
-w\boxtimes_m v:=w\Bigl((V_m(w)\cdot V_m(v))\bmod F_{m+2}\Bigr),
+w\boxplus_m v
+:=
+w_m\!\bigl((V_m(w)+V_m(v))\bmod F_{m+2}\bigr),
 \]
-并记 $0_m:=w(0)$，$1_m:=w(1)$。
+\[
+w\boxtimes_m v
+:=
+w_m\!\bigl((V_m(w)V_m(v))\bmod F_{m+2}\bigr).
+\]
+并记
+\[
+0_m:=w_m(0),\qquad 1_m:=w_m(1).
+\]
 \end{definition}
 
-\begin{theorem}[有限分辨率算术的模结构]
-\label{thm:finite-resolution-mod}
-映射 $V_m:X_m\to\ZZ/(F_{m+2}\ZZ)$ 给出半环同构
+\begin{theorem}[有限分辨率算术的模结构]\label{thm:finite-resolution-mod}
+映射
 \[
-(X_m,\boxplus_m,\boxtimes_m)\cong\bigl(\ZZ/(F_{m+2}\ZZ),+,\times\bigr).
+V_m:X_m\longrightarrow \ZZ/(F_{m+2}\ZZ)
 \]
-特别地，$X_m$ 上的有限分辨率算术由“值模化 + 规范代表回拉”唯一确定。
+给出一个半环同构
+\[
+(X_m,\boxplus_m,\boxtimes_m)\cong
+\bigl(\ZZ/(F_{m+2}\ZZ),+,\times\bigr).
+\]
+
+特别地，\(X_m\) 上的有限分辨率算术由“值模化 + 规范地址回拉”唯一确定。
 \end{theorem}
 
 \textbf{证明：}
-由引理 \ref{lem:zeckendorf-range-bijection} 与上文 $w(N)$ 的定义，$V_m$ 将 $X_m$ 双射到 $\{0,1,\dots,F_{m+2}-1\}$，从而可视为到 $\ZZ/(F_{m+2}\ZZ)$ 的双射。定义中的 $\boxplus_m,\boxtimes_m$ 直接保证
+由引理 \ref{lem:zeckendorf-range-bijection}，\(V_m\) 把 \(X_m\) 双射到
+\[
+\{0,1,\dots,F_{m+2}-1\},
+\]
+从而可视为到 \(\ZZ/(F_{m+2}\ZZ)\) 的双射。又按定义，
 \[
 V_m(w\boxplus_m v)\equiv V_m(w)+V_m(v)\pmod{F_{m+2}},
-\qquad
-V_m(w\boxtimes_m v)\equiv V_m(w)\,V_m(v)\pmod{F_{m+2}},
 \]
-故 $V_m$ 为半环同构。唯一性来自双射性：任何使 $V_m$ 成为半环同态的运算，必与上述回拉定义一致。证毕。
+\[
+V_m(w\boxtimes_m v)\equiv V_m(w)V_m(v)\pmod{F_{m+2}}.
+\]
+故 \(V_m\) 保持两种运算，并因其双射性而成为半环同构。唯一性来自双射回拉：凡使 \(V_m\) 成为半环同态的运算，都必与上述定义一致。证毕。
 
 \begin{corollary}[域相（field phase）：Fibonacci-prime 分辨率上的统一算术]\label{cor:field-phase-fib-prime}
-设 $m\ge 1$，记 $M:=F_{m+2}$。若 $M$ 为素数 $p$，则
+设 \(m\ge 1\)，记
 \[
-(X_m,\boxplus_m,\boxtimes_m)\ \cong\ \mathbb{F}_p
+M:=F_{m+2}.
 \]
-为有限域；其非零元形成循环群
+若 \(M\) 为素数 \(p\)，则
 \[
-(X_m\setminus\{0_m\},\boxtimes_m)\ \cong\ \mathbb{F}_p^\times\ \cong\ C_{p-1}.
+(X_m,\boxplus_m,\boxtimes_m)\cong \mathbf F_p.
+\]
+于是
+\[
+(X_m\setminus\{0_m\},\boxtimes_m)\cong \mathbf F_p^\times\cong C_{p-1}.
 \]
 \end{corollary}
 \begin{proof}
-由定理 \ref{thm:finite-resolution-mod} 得 $(X_m,\boxplus_m,\boxtimes_m)\cong \ZZ/(p\ZZ)\cong \mathbb{F}_p$；并且 \(\mathbb{F}_p^\times\) 为循环群。
+由定理 \ref{thm:finite-resolution-mod}，
+\[
+(X_m,\boxplus_m,\boxtimes_m)\cong \ZZ/(p\ZZ)\cong \mathbf F_p.
+\]
+其非零元乘法群为有限域乘法群，故为循环群。证毕。
 \end{proof}
 
-\begin{corollary}[CRT 分裂（symmetry factorization）：合成模数的规范直积分解]\label{cor:crt-factorization}
-设 $m\ge 1$，记 $M:=F_{m+2}$，其素因子分解为
+\begin{corollary}[CRT 分裂]\label{cor:crt-factorization}
+设
 \[
-M=\prod_{i=1}^{r} p_i^{k_i}\qquad(p_i\ \text{两两不同}).
+F_{m+2}=\prod_{i=1}^{r} p_i^{e_i}
 \]
-则有（环）同构
+为其素因子分解，则
 \[
-\ZZ/(M\ZZ)\ \cong\ \prod_{i=1}^{r}\ZZ/(p_i^{k_i}\ZZ),
+(X_m,\boxplus_m,\boxtimes_m)
+\cong
+\prod_{i=1}^{r}\ZZ/(p_i^{e_i}\ZZ)
 \]
-从而 $(X_m,\boxplus_m,\boxtimes_m)$ 同构于上述直积环；其单位群亦满足
-\[
-(\ZZ/(M\ZZ))^\times\ \cong\ \prod_{i=1}^{r}(\ZZ/(p_i^{k_i}\ZZ))^\times.
-\]
-特别地，当 $r\ge 2$ 时，$\ZZ/(M\ZZ)$ 含有非平凡幂等元，因而在环意义下存在规范的多因子分裂。
+作为有限交换半环同构。
 \end{corollary}
 \begin{proof}
-结论均为标准中国剩余定理及其直接推论：环同构给出直积分解；单位群分解由逐分量可逆性刻画；存在非平凡幂等元当且仅当出现至少两个互素因子。
+由定理 \ref{thm:finite-resolution-mod}，
+\[
+(X_m,\boxplus_m,\boxtimes_m)\cong \ZZ/(F_{m+2}\ZZ),
+\]
+再由中国剩余定理得到所述直积分解。证毕。
 \end{proof}
 
 \begin{proposition}[2/3/5 三轴并存的最小模深度]\label{prop:crt-235-min-depth}
-记 \(M:=F_{m+2}\)。
-则如下条件等价：
+记 \(M:=F_{m+2}\)。则如下条件等价：
 \begin{enumerate}
   \item \(2,3,5\mid M\)（亦即 \(30\mid M\)）；
   \item \(3,4,5\mid (m+2)\)；
   \item \(60\mid (m+2)\)。
 \end{enumerate}
 因此在有限分辨率算术同构
-\((X_m,\boxplus_m,\boxtimes_m)\cong \ZZ/(F_{m+2}\ZZ)\)
-（定理 \ref{thm:finite-resolution-mod}）下，
-若要求同一模环内同时容纳 \(\bmod 2,\bmod 3,\bmod 5\) 三条基本同余轴的 CRT 并存读出，
-则最小分辨率强制为
 \[
-\boxed{\ m_{\min}=58\qquad(m_{\min}+2=60)\ }.
+(X_m,\boxplus_m,\boxtimes_m)\cong \ZZ/(F_{m+2}\ZZ)
+\]
+下，若要求同一模环内同时容纳 \(\bmod 2,\bmod 3,\bmod 5\) 三条基本同余轴的 CRT 并存读出，则最小分辨率强制为
+\[
+\boxed{\,m_{\min}=58\qquad(m_{\min}+2=60)\, }.
 \]
 \end{proposition}
 \begin{proof}
-注意到 \(2=F_3\)、\(3=F_4\)、\(5=F_5\)。
-由 Fibonacci 最大公因子恒等式
-\(\gcd(F_a,F_b)=F_{\gcd(a,b)}\)，对任意 \(n\) 有
+注意到
 \[
-F_d\mid F_n\quad\Longleftrightarrow\quad \gcd(F_d,F_n)=F_d
-\quad\Longleftrightarrow\quad
+2=F_3,\qquad 3=F_4,\qquad 5=F_5.
+\]
+由 Fibonacci 最大公因子恒等式
+\[
+\gcd(F_a,F_b)=F_{\gcd(a,b)},
+\]
+对任意 \(n\) 有
+\[
+F_d\mid F_n
+\Longleftrightarrow
+\gcd(F_d,F_n)=F_d
+\Longleftrightarrow
 F_{\gcd(d,n)}=F_d
-\quad\Longleftrightarrow\quad
+\Longleftrightarrow
 d\mid n.
 \]
-取 \(d=3,4,5\) 且 \(n=m+2\) 即得：
+取 \(d=3,4,5\) 且 \(n=m+2\) 即得
 \[
 2\mid F_{m+2}\Longleftrightarrow 3\mid(m+2),\qquad
 3\mid F_{m+2}\Longleftrightarrow 4\mid(m+2),\qquad
 5\mid F_{m+2}\Longleftrightarrow 5\mid(m+2).
 \]
-于是 \(30\mid F_{m+2}\) 当且仅当 \(3,4,5\mid(m+2)\)，这又当且仅当 \(60\mid(m+2)\)。
-最小解为 \(m+2=60\)，即 \(m_{\min}=58\)。
+于是 \(30\mid F_{m+2}\) 当且仅当 \(3,4,5\mid(m+2)\)，这又当且仅当 \(60\mid(m+2)\)。最小解为 \(m+2=60\)，即 \(m_{\min}=58\)。证毕。
 \end{proof}
 
-\begin{remark}[\texorpdfstring{$m=58$}{m=58} 的三轴 CRT 模数与素因子丰富性]\label{rem:crt-235-m58-factorization}
-由命题 \ref{prop:crt-235-min-depth}，最小三轴并存窗对应模数为
+\begin{definition}[稳定地址的数值化]
+对任意整数 \(n\in \ZZ\)，定义其在分辨率 \(m\) 上的稳定地址为
 \[
-F_{60}=1548008755920
-=2^4\cdot 3^2\cdot 5\cdot 11\cdot 31\cdot 41\cdot 61\cdot 2521,
+\operatorname{Addr}_m(n):=w_m(n\bmod F_{m+2}).
 \]
-从而除 \((2,3,5)\) 外自然携带更多素因子分量；
-在 CRT 分裂口径（推论 \ref{cor:crt-factorization}）下，这些额外素因子对应一组可审计的附加同余轴。
-\end{remark}
+若某对象层地址 \(a\) 在状态 \(p\) 上的合法读出为 \(x=\mathrm{Read}_{\mathrm{US},p}(a)\in X_m\)，则称
+\[
+V_m(x)
+\]
+为该地址在分辨率 \(m\) 上的对象层数值。
+\end{definition}
 
-\begin{remark}[统一/破缺的“硬”判据：field / local / CRT-split]\label{rem:ring-phase-trichotomy}
-由定理 \ref{thm:finite-resolution-mod}，分辨率 $m$ 上的“可逆内部对称”自然定位在单位群
+\begin{proposition}[数值化的自然性]
+对任意 \(m\ge 1\) 与任意整数 \(n,n'\in \ZZ\)，有
 \[
-(X_m^\times,\boxtimes_m)\ \cong\ (\ZZ/(M\ZZ))^\times,\qquad M=F_{m+2},
+\operatorname{Addr}_m(n+n')
+=
+\operatorname{Addr}_m(n)\boxplus_m \operatorname{Addr}_m(n'),
 \]
-其中 $X_m^\times$ 表示 $(X_m,\boxplus_m,\boxtimes_m)$ 的单位群：
 \[
-X_m^\times:=\{w\in X_m:\ \exists\,w^{-1}\in X_m\ \text{s.t.}\ w\boxtimes_m w^{-1}=1_m\}.
+\operatorname{Addr}_m(nn')
+=
+\operatorname{Addr}_m(n)\boxtimes_m \operatorname{Addr}_m(n').
 \]
-因此“统一/破缺”的最硬组织层首先是模环的结构事实，而非先验选取某个连续李群：
-\begin{itemize}
-  \item \textbf{field（最强统一）}：$M$ 为素数，算术为域（推论 \ref{cor:field-phase-fib-prime}）；
-  \item \textbf{local（单素数但非域）}：$M=p^k$ 为素幂，环不可 CRT 分裂但非域（存在非平凡主理想链）；
-  \item \textbf{CRT-split（多因子破缺模板）}：$M$ 含至少两个不同素因子时，环/单位群具有规范直积分裂（推论 \ref{cor:crt-factorization}）。
-\end{itemize}
-\end{remark}
+\end{proposition}
+\begin{proof}
+由定义，
+\[
+V_m(\operatorname{Addr}_m(n))
+\equiv n \pmod{F_{m+2}}.
+\]
+于是
+\[
+V_m\bigl(\operatorname{Addr}_m(n)\boxplus_m \operatorname{Addr}_m(n')\bigr)
+\equiv n+n' \pmod{F_{m+2}},
+\]
+\[
+V_m\bigl(\operatorname{Addr}_m(n)\boxtimes_m \operatorname{Addr}_m(n')\bigr)
+\equiv nn' \pmod{F_{m+2}}.
+\]
+再由 \(V_m\) 的双射性可知回拉地址唯一，故结论成立。证毕。
+\end{proof}
 
-\subsubsection{跨分辨率半环同态、最小统一分辨率与联合读出退化度数}\label{subsubsec:finite-resolution-morphisms-and-joint-readout}
-本小节把定理 \ref{thm:finite-resolution-mod} 的单窗模结构提升为一个跨分辨率的同态范畴：对象为 \(\mathsf X_m:=(X_m,\boxplus_m,\boxtimes_m)\)，态射为保持 \(0,1\) 的半环同态。
-该提升的核心是：由于 \(\mathsf X_m\cong \ZZ/(F_{m+2}\ZZ)\) 为环对象，任何保持单位元的同态被模数整除关系强制为“唯一降模”；从而多窗联合读出对应于标准同余纤维积，其像与纤维度数均具有闭式。
+\subsubsection{可完成的跨尺度统一：Fibonacci-adic 逆极限环}\label{subsubsec:fib-adic-inverse-limit}
+
+上节说明，对每个固定的 \(m\)，\(X_m\) 都与
+\[
+\ZZ/(F_{m+2}\ZZ)
+\]
+同构。然而若要把不同分辨率统一到同一对象中，就必须处理跨尺度兼容性。这里要注意一个关键细节：并不是任意 \(m<n\) 都能自然地产生一个环同态
+\[
+\ZZ/(F_{n+2}\ZZ)\to \ZZ/(F_{m+2}\ZZ).
+\]
+要使模约化与环结构兼容，必须要求
+\[
+F_{m+2}\mid F_{n+2}.
+\]
+而 Fibonacci 数满足整除律
+\[
+F_a\mid F_b \quad\Longleftrightarrow\quad a\mid b.
+\]
+因此，跨尺度统一的正确索引方式，不是线性顺序 \(m\le n\)，而是整除偏序 \((m+2)\mid (n+2)\)。
 
 \begin{lemma}[Fibonacci 整除的充要条件]\label{lem:fib-divisibility-iff}
-对任意整数 \(a,b\ge 1\)，成立等价性
+对任意整数 \(a,b\ge 1\)，成立
 \[
 F_a\mid F_b\quad\Longleftrightarrow\quad a\mid b.
 \]
 \end{lemma}
 \begin{proof}
-由 Fibonacci 最大公因子恒等式 \(\gcd(F_a,F_b)=F_{\gcd(a,b)}\)（已在命题 \ref{prop:crt-235-min-depth} 的证明中使用），有
+由 Fibonacci 最大公因子恒等式
+\[
+\gcd(F_a,F_b)=F_{\gcd(a,b)}
+\]
+立即得到
 \[
 F_a\mid F_b
-\quad\Longleftrightarrow\quad
+\Longleftrightarrow
 \gcd(F_a,F_b)=F_a
-\quad\Longleftrightarrow\quad
+\Longleftrightarrow
 F_{\gcd(a,b)}=F_a
-\quad\Longleftrightarrow\quad
+\Longleftrightarrow
 \gcd(a,b)=a
-\quad\Longleftrightarrow\quad
+\Longleftrightarrow
 a\mid b.
+\qedhere
 \]
 \end{proof}
 
 \begin{theorem}[跨分辨率半环同态的整除刚性与唯一性]\label{thm:finite-resolution-morphism-divisibility-rigidity}
-设 \(m,n\ge 1\)，并记 \(\mathsf X_k:=(X_k,\boxplus_k,\boxtimes_k)\)。
-则存在保持 \(0,1\) 的半环同态
+设 \(d,e\ge 2\)。则存在保持 \(0,1\) 的半环同态
 \[
-\Phi:\mathsf X_n\longrightarrow \mathsf X_m,
-\qquad
-\Phi(0_n)=0_m,\ \Phi(1_n)=1_m
+\operatorname{res}_{e,d}:X_{e-2}\longrightarrow X_{d-2}
 \]
 当且仅当
 \[
-F_{m+2}\mid F_{n+2}\quad\Longleftrightarrow\quad (m+2)\mid(n+2).
+d\mid e
+\qquad\Longleftrightarrow\qquad
+F_d\mid F_e.
 \]
-在该条件成立时，此同态唯一，且由值模同构显式给出：
-\begin{equation}\label{eq:finite-resolution-morphism-explicit}
-\boxed{\;
-\Phi(x)=w\!\Bigl(V_n(x)\bmod F_{m+2}\Bigr)
-=V_m^{-1}\!\Bigl(V_n(x)\bmod F_{m+2}\Bigr)\qquad(x\in X_n).\;}
-\end{equation}
+在该条件成立时，此同态唯一，并由显式公式
+\[
+\operatorname{res}_{e,d}(u)
+:=
+w_{d-2}\!\bigl(V_{e-2}(u)\bmod F_d\bigr)
+\]
+给出。
+
+并且在 \(V\)-值映射下有交换图
+\[
+V_{d-2}\circ \operatorname{res}_{e,d}
+=
+\rho_{e,d}\circ V_{e-2},
+\]
+其中
+\[
+\rho_{e,d}:\ZZ/(F_e\ZZ)\to \ZZ/(F_d\ZZ),\qquad [x]_{F_e}\mapsto [x]_{F_d}
+\]
+是自然模约化。若 \(d\mid e\mid f\)，则
+\[
+\rho_{f,d}=\rho_{e,d}\circ \rho_{f,e},
+\qquad
+\operatorname{res}_{f,d}
+=
+\operatorname{res}_{e,d}\circ \operatorname{res}_{f,e}.
+\]
 \end{theorem}
 \begin{proof}
-由定理 \ref{thm:finite-resolution-mod}，\(V_k\)（\(k=m,n\)）给出半环同构
-\(
-\mathsf X_k\cong \ZZ/(F_{k+2}\ZZ)
-\)。
-因此 \(\Phi\) 等价于一个保持单位元的环同态
+由定理 \ref{thm:finite-resolution-mod}，\(V_{k-2}\)（\(k=d,e\)）给出半环同构
 \[
-\widetilde\Phi:\ZZ/(F_{n+2}\ZZ)\longrightarrow \ZZ/(F_{m+2}\ZZ),
-\qquad \widetilde\Phi(\overline 1)=\overline 1.
+X_{k-2}\cong \ZZ/(F_k\ZZ).
 \]
-任取 \(\overline t\in \ZZ/(F_{n+2}\ZZ)\)，由 \(\overline t=t\cdot \overline 1\) 得
-\(
-\widetilde\Phi(\overline t)=t\cdot \widetilde\Phi(\overline 1)=\overline t
-\)（在 \(\ZZ/(F_{m+2}\ZZ)\) 中取类）。
-因此良定性等价于 \(\overline{F_{n+2}}=0\) 在 \(\ZZ/(F_{m+2}\ZZ)\) 中成立，即 \(F_{m+2}\mid F_{n+2}\)。
-由引理 \ref{lem:fib-divisibility-iff} 得到 \((m+2)\mid(n+2)\) 的等价性。
-在整除成立时，\(\widetilde\Phi\) 只能是自然降模映射，故唯一；再由 \(V_m^{-1}\circ \widetilde\Phi\circ V_n\) 回拉到 \(X\)-语言，即得 \eqref{eq:finite-resolution-morphism-explicit}。证毕。
+因此 \(\operatorname{res}_{e,d}\) 的存在等价于一个保持 \(0,1\) 的环同态
+\[
+\widetilde\rho:\ZZ/(F_e\ZZ)\to \ZZ/(F_d\ZZ).
+\]
+这样的同态一旦存在，必由 \([1]_{F_e}\mapsto [1]_{F_d}\) 唯一决定，故只能是自然降模映射；它良定义当且仅当 \(F_d\mid F_e\)。由引理 \ref{lem:fib-divisibility-iff}，这又等价于 \(d\mid e\)。显式公式由 \(V\)-同构回拉即可得到。
+
+交换关系只是
+\[
+V_{d-2}\bigl(\operatorname{res}_{e,d}(u)\bigr)
+=
+V_{e-2}(u)\bmod F_d
+\]
+的改写。复合兼容性同样由模约化的传递性给出。证毕。
 \end{proof}
 
 \begin{corollary}[有限分辨率算术的内部自同构刚性]\label{cor:finite-resolution-automorphism-rigidity}
 对任意 \(m\ge 1\)，保持 \(0,1\) 的半环自同构必为恒等：
 \[
-\operatorname{Aut}_{\mathrm{Semiring}}(\mathsf X_m)=\{\mathrm{id}\}.
+\operatorname{Aut}_{\mathrm{Semiring}}(X_m,\boxplus_m,\boxtimes_m)=\{\mathrm{id}\}.
 \]
 \end{corollary}
 \begin{proof}
-取定理 \ref{thm:finite-resolution-morphism-divisibility-rigidity} 中 \(n=m\)。
-此时同态存在且唯一，故自同构只能是恒等。证毕。
+在定理 \ref{thm:finite-resolution-morphism-divisibility-rigidity} 中取 \(d=e=m+2\)。此时存在的半环同态唯一，而恒等映射显然满足条件，故自同构只能是恒等。证毕。
 \end{proof}
 
-\begin{definition}[有限签名的最小统一分辨率]\label{def:finite-signature-min-unified-resolution}
-令 \(S\subset\NN_{\ge 1}\) 为有限集合。
-定义
+\begin{definition}[Fibonacci-adic 逆极限环]\label{def:fib-adic-ring}
+记
 \[
-\boxed{\;
-L(S):=\operatorname{lcm}\{\,m+2:\ m\in S\,\}-2\; }.
+\mathcal I:=\{2,3,4,\dots\},
 \]
+并以整除关系为偏序。定义
+\[
+\widehat{\ZZ}_F
+:=
+\varprojlim_{d\in\mathcal I}\ZZ/(F_d\ZZ),
+\]
+即
+\[
+\widehat{\ZZ}_F
+=
+\left\{
+(x_d)_{d\ge 2}:
+x_d\in \ZZ/(F_d\ZZ),\
+\rho_{e,d}(x_e)=x_d\ \text{whenever } d\mid e
+\right\}.
+\]
+按坐标逐点加法与乘法，\(\widehat{\ZZ}_F\) 构成一个交换拓扑环。称其为 Fibonacci-adic 逆极限环。
 \end{definition}
 
-\begin{theorem}[统一分辨率的存在性、唯一性与最小性]\label{thm:finite-signature-unified-resolution-minimal}
-令 \(S\subset\NN_{\ge 1}\) 有限，并令 \(L=L(S)\)。
-则对每个 \(m\in S\)，存在唯一保持 \(0,1\) 的半环满同态
-\[
-\rho_{S\to m}:\mathsf X_{L}\twoheadrightarrow \mathsf X_m.
-\]
-并且 \(L\) 为最小的统一分辨率：若 \(k\ge 1\) 满足对所有 \(m\in S\) 都存在保持 \(0,1\) 的半环满同态 \(\mathsf X_k\twoheadrightarrow \mathsf X_m\)，则必有 \(k\ge L\)。
-\end{theorem}
-\begin{proof}
-由定理 \ref{thm:finite-resolution-morphism-divisibility-rigidity}，\(\mathsf X_{L}\to \mathsf X_m\) 存在当且仅当 \(F_{m+2}\mid F_{L+2}\)，而由引理 \ref{lem:fib-divisibility-iff} 这等价于 \((m+2)\mid(L+2)\)。
-由定义 \ref{def:finite-signature-min-unified-resolution}，\(L+2\) 是 \(\{m+2:m\in S\}\) 的最小公倍数，故对每个 \(m\in S\) 成立 \((m+2)\mid(L+2)\)，从而 \(\rho_{S\to m}\) 存在且由唯一性给出唯一确定；又因对应的降模映射为满射，故为满同态。
-
-若 \(\mathsf X_k\twoheadrightarrow \mathsf X_m\) 对所有 \(m\in S\) 成立，则对每个 \(m\in S\) 有 \((m+2)\mid(k+2)\)。
-故 \(\operatorname{lcm}\{m+2:m\in S\}\mid (k+2)\)，即 \((L+2)\mid(k+2)\)，从而 \(k\ge L\)。证毕。
-\end{proof}
-
-\begin{theorem}[多分辨率联合读出的像与退化度数]\label{thm:finite-signature-joint-readout-image-fiber}
-取有限集合 \(S=\{m_1,\dots,m_s\}\subset\NN_{\ge 1}\)，令 \(L=L(S)\) 并记
-\[
-M:=F_{L+2},\qquad A_i:=F_{m_i+2}\ (1\le i\le s),\qquad A:=\operatorname{lcm}(A_1,\dots,A_s).
-\]
-考虑联合读出同态
-\[
-\rho_S:\mathsf X_{L}\longrightarrow \prod_{i=1}^s \mathsf X_{m_i},
-\qquad
-\rho_S(x):=\bigl(\rho_{S\to m_1}(x),\dots,\rho_{S\to m_s}(x)\bigr).
-\]
-则成立：
+\begin{proposition}[Fibonacci-adic 逆极限环的基本性质]\label{prop:fib-adic-basic}
+设 \(\widehat{\ZZ}_F\) 如定义 \ref{def:fib-adic-ring}。则：
 \begin{enumerate}
-  \item \textbf{像的结构：}\(\operatorname{Im}(\rho_S)\) 作为半环同构于 \(\ZZ/(A\ZZ)\)。
-  \item \textbf{像的判别：}\(\operatorname{Im}(\rho_S)\) 恰为满足一致性同余的 \(s\)-元组 \((x_i)\in\prod_i X_{m_i}\)：
+  \item \(\widehat{\ZZ}_F\) 是有限环的逆极限，因此在逆极限拓扑下是紧致、全不连通的交换拓扑环；
+  \item 对每个 \(d\ge 2\)，存在自然满射环同态
   \[
-  V_{m_i}(x_i)\equiv V_{m_j}(x_j)\pmod{\gcd(A_i,A_j)}\qquad(\forall\,i,j).
+  \pi_d:\widehat{\ZZ}_F\twoheadrightarrow \ZZ/(F_d\ZZ),
+  \qquad
+  (x_c)_{c\ge 2}\mapsto x_d;
   \]
-  \item \textbf{纤维度数（退化度数）：}\(\rho_S\) 的每一条纤维基数相同，并且
+  \item 整数嵌入
   \[
-  \#\rho_S^{-1}\bigl((x_i)\bigr)=\frac{M}{A}\qquad\bigl((x_i)\in\operatorname{Im}(\rho_S)\bigr).
+  \iota:\ZZ\hookrightarrow \widehat{\ZZ}_F,
+  \qquad
+  n\mapsto (n\bmod F_d)_{d\ge 2}
   \]
-\end{enumerate}
-\end{theorem}
-\begin{proof}
-在 \(V\)-坐标下，\(\mathsf X_L\cong \ZZ/(M\ZZ)\) 且 \(\mathsf X_{m_i}\cong \ZZ/(A_i\ZZ)\)。
-并且 \(\rho_{S\to m_i}\) 等价于标准降模映射 \(\ZZ/(M\ZZ)\to \ZZ/(A_i\ZZ)\)。
-因此 \(\rho_S\) 等价于同态
-\[
-\ZZ/(M\ZZ)\longrightarrow \prod_{i=1}^s\ZZ/(A_i\ZZ),\qquad
-\overline r\longmapsto (\overline r\bmod A_i)_i.
-\]
-其核为同时被所有 \(A_i\) 整除的类，即被 \(A=\mathrm{lcm}(A_i)\) 整除的类；故核大小为 \(M/A\)。
-从而像大小为 \(A\)，且 \(\operatorname{Im}(\rho_S)\cong \ZZ/(A\ZZ)\)，并且每条纤维基数恒为 \(M/A\)。
-像在直积中的一致性刻画是非互素中国剩余定理的标准形式：一组同余系统可解当且仅当各分量在两两最大公因子模下相容。
-最后通过 \(V\)-同构搬回 \(X\)-语言即得。证毕。
-\end{proof}
-
-\begin{corollary}[标准模型签名的统一尺度与不可观测退化度数]\label{cor:finite-signature-sm-unified-scale-degeneracy}
-取分辨率签名 \(S=\{4,6,8\}\)。
-则最小统一分辨率为 \(L(S)=118\)，并且
-\[
-\#X_{118}=F_{120}=5358359254990966640871840.
-\]
-由于 \(\#X_4=F_6=8\)、\(\#X_6=F_8=21\)、\(\#X_8=F_{10}=55\) 两两互素，故
-\[
-A=\operatorname{lcm}(8,21,55)=9240,
-\qquad
-\#\operatorname{Im}(\rho_S)=9240,
-\qquad
-\#\rho_S^{-1}(x_4,x_6,x_8)=\frac{F_{120}}{9240}=579909010280407645116.
-\]
-\end{corollary}
-\begin{proof}
-由定义 \ref{def:finite-signature-min-unified-resolution}，
-\(
-L(S)+2=\mathrm{lcm}(6,8,10)=120
-\)，故 \(L(S)=118\)，并有 \(\#X_{118}=F_{120}\)。
-其余各式由定理 \ref{thm:finite-signature-joint-readout-image-fiber} 代入 \(A_1=8,A_2=21,A_3=55\) 得到；
-互素性保证联合读出像在直积中为全像，且纤维度数为 \(F_{120}/9240\)。证毕。
-\end{proof}
-
-\subsubsection{可完成的跨尺度统一：Fibonacci-adic 逆极限环}\label{subsubsec:fib-adic-inverse-limit}
-一般地，分辨率 $m$ 的模数为 $M_m:=F_{m+2}$，但序列 $(M_m)_{m\ge 1}$ 并不形成整除链；
-因此若想把“跨尺度兼容”严格化为一个逆极限对象，必须选取一个使模数成整除链的分辨率子塔。
-
-\begin{lemma}[Fibonacci 整除链]\label{lem:fib-divisibility-chain}
-若 $a\mid b$，则 $F_a\mid F_b$。
-\end{lemma}
-\begin{proof}
-这是 Fibonacci 数列的标准性质。由恒等式
-\(
-\gcd(F_a,F_b)=F_{\gcd(a,b)}
-\)
-立即得到：若 $a\mid b$，则 $\gcd(a,b)=a$，从而 $\gcd(F_a,F_b)=F_a$，即 $F_a\mid F_b$。
-\end{proof}
-
-\begin{definition}[二幂子塔与 Fibonacci-adic 统一电荷环]\label{def:fib-adic-ring}
-令
-\[
-n_k:=2^k,\qquad m_k:=n_k-2,\qquad M_k:=F_{n_k}=F_{m_k+2}\qquad(k\ge 2).
-\]
-由引理 \ref{lem:fib-divisibility-chain}，$M_k\mid M_{k+1}$，因此存在自然满射环同态
-\[
-\rho_{k+1\to k}:\ZZ/(M_{k+1}\ZZ)\twoheadrightarrow \ZZ/(M_k\ZZ),
-\qquad [x]_{M_{k+1}}\mapsto [x]_{M_k}.
-\]
-定义逆极限环
-\[
-\boxed{\;
-\ZZ_{\mathrm{Fib},2}:=\varprojlim_{k\to\infty}\ZZ/(F_{2^k}\ZZ)
-\;}.
-\]
-\end{definition}
-
-\begin{proposition}[逆极限环的基本性质：有限商与紧致单位群]\label{prop:fib-adic-basic}
-设 $\ZZ_{\mathrm{Fib},2}$ 如定义 \ref{def:fib-adic-ring}。
-则：
-\begin{enumerate}
-  \item \textbf{（profinite 完备性）}$\ZZ_{\mathrm{Fib},2}$ 是有限环的逆极限，因此在逆极限拓扑下是紧致、全不连通的交换拓扑环（profinite ring）。
-  \item \textbf{（有限分辨率作为有限商）}对每个 $k$，存在自然满射环同态
+  为单射，且其像在 \(\widehat{\ZZ}_F\) 中稠密；
+  \item 对每个 \(d\ge 2\)，有
   \[
-  \pi_k:\ZZ_{\mathrm{Fib},2}\twoheadrightarrow \ZZ/(F_{2^k}\ZZ),
+  \widehat{\ZZ}_F/\ker(\pi_d)\cong \ZZ/(F_d\ZZ);
   \]
-  并且这些投影满足相容性 $\rho_{k+1\to k}\circ \pi_{k+1}=\pi_k$。
-  \item \textbf{（单位群的紧致化）}其单位群 $\ZZ_{\mathrm{Fib},2}^\times$ 是紧致拓扑群，且自然同构于有限单位群的逆极限
+  \item 其单位群是紧致拓扑群，并自然同构于有限单位群的逆极限
   \[
-  \ZZ_{\mathrm{Fib},2}^\times\ \cong\ \varprojlim_k \bigl(\ZZ/(F_{2^k}\ZZ)\bigr)^\times.
+  \widehat{\ZZ}_F^\times\cong
+  \varprojlim_{d\in\mathcal I}\bigl(\ZZ/(F_d\ZZ)\bigr)^\times.
   \]
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(1) 与 (2) 为逆极限的标准泛性质：有限离散环的乘积紧致，逆极限为其中闭子集，故紧致；环结构按分量继承且连续。
-(3) 单位群是逆系统中“逐层可逆”的极限：元素在逆极限中可逆当且仅当其在每一层投影均可逆；因此单位群与单位群的逆极限自然同构，并继承紧致性。
+\((1)\) 与 \((2)\) 是有限离散环逆极限的标准性质。
+
+对 \((3)\)，若 \(\iota(m)=\iota(n)\)，则对一切 \(d\ge 2\) 都有
+\[
+m\equiv n\pmod{F_d}.
+\]
+若 \(m\neq n\)，取 \(d\) 足够大使 \(F_d>|m-n|\)，便得矛盾，故 \(\iota\) 为单射。逆极限拓扑的基本开集由有限多个坐标条件确定；由偏序的有向性，可取这些坐标的一个公共倍数 \(e\)，并在模 \(F_e\) 上选择一个代表整数 \(n\)。则 \(\iota(n)\) 落入该基本开集中，故整数像稠密。
+
+对 \((4)\)，这是第一同构定理。
+
+对 \((5)\)，一个逆极限元素可逆当且仅当其每一层投影均可逆，因此单位群恰为逐层单位群的逆极限；紧致性由 \((1)\) 继承。证毕。
 \end{proof}
 
-\begin{remark}[与 \texorpdfstring{$X_\infty\cong\varprojlim X_m$}{X∞≅lim X_m} 的关系]\label{rem:fib-adic-vs-syntax}
-注意：定理 \ref{thm:inverse-limit-golden} 的 $X_\infty\cong\varprojlim X_m$ 是\emph{语法/稳定类型}集合在截断 restriction 下的逆极限；
-而本小节的 $\ZZ_{\mathrm{Fib},2}$ 是\emph{分辨率算术模结构}在整除子塔上的逆极限。
-二者分别对应“可见前缀的一致性”与“跨尺度电荷算术的完备化”，属于同一折叠框架下的两条互补极限轴。
+\begin{definition}[逆极限地址空间]
+定义
+\[
+\widehat X_F
+:=
+\varprojlim_{d\in\mathcal I} X_{d-2},
+\]
+即
+\[
+\widehat X_F
+=
+\left\{
+(u_d)_{d\ge 2}:
+u_d\in X_{d-2},\
+\operatorname{res}_{e,d}(u_e)=u_d\ \text{whenever } d\mid e
+\right\}.
+\]
+其元素可理解为“在所有可比较分辨率上相互一致的稳定地址族”。借由各层
+\[
+(X_{d-2},\boxplus_{d-2},\boxtimes_{d-2})\cong \ZZ/(F_d\ZZ),
+\]
+\(\widehat X_F\) 继承逐点交换环结构。
+\end{definition}
+
+\begin{theorem}[地址逆极限与 Fibonacci-adic 环的同构]
+定义
+\[
+V_\infty:\widehat X_F\longrightarrow \widehat{\ZZ}_F,
+\qquad
+V_\infty\bigl((u_d)_{d\ge 2}\bigr)
+:=
+\bigl([V_{d-2}(u_d)]_{F_d}\bigr)_{d\ge 2}.
+\]
+则 \(V_\infty\) 是一个交换拓扑环同构。
+\end{theorem}
+\begin{proof}
+对每个 \(d\ge 2\)，\(V_{d-2}:X_{d-2}\to \ZZ/(F_d\ZZ)\) 是双射；定理 \ref{thm:finite-resolution-morphism-divisibility-rigidity} 又说明它们与过渡映射相容。故由逆极限的泛性质，得到唯一诱导映射
+\[
+V_\infty:\varprojlim_{d} X_{d-2}\longrightarrow \varprojlim_d \ZZ/(F_d\ZZ).
+\]
+它逐坐标双射，因此自身亦为双射。地址侧的加法与乘法由各层 \((X_{d-2},\boxplus_{d-2},\boxtimes_{d-2})\) 的逐点运算定义，值侧则是逐坐标环运算，故 \(V_\infty\) 还是环同构。拓扑相容性同样由坐标定义直接得到。证毕。
+\end{proof}
+
+\begin{remark}[为何不能直接按 \(m=1,2,3,\dots\) 取逆极限]
+若试图直接按自然顺序使用投影
+\[
+\ZZ/(F_{n+2}\ZZ)\to \ZZ/(F_{m+2}\ZZ)
+\qquad (m<n),
+\]
+则当 \(F_{m+2}\nmid F_{n+2}\) 时，该映射并不良定义，更不可能成为环同态。故真正的跨尺度统一必须沿 Fibonacci 模数的整除结构进行；本节的完成对象因此不是单链式 \(p\)-adic 完成，而是由 Fibonacci 模数族生成的一个有向 profinite 完成。
+\end{remark}
+
+\begin{proposition}[稳定地址族的完成性解释]
+一个族
+\[
+(u_d)_{d\ge 2},\qquad u_d\in X_{d-2},
+\]
+定义了一个 Fibonacci-adic 稳定地址，当且仅当对任意 \(d\mid e\) 都有
+\[
+\operatorname{res}_{e,d}(u_e)=u_d.
+\]
+等价地，跨尺度的“同一对象”不是靠外加认同给出的，而是靠所有可比较分辨率之间的代数兼容性给出的。
+\end{proposition}
+\begin{proof}
+这正是逆极限 \(\widehat X_F\) 的定义。证毕。
+\end{proof}
+
+\begin{remark}
+本节完成了从“合法数字串”到“可计算数值对象”的提升，并给出两个层次的统一。
+
+第一，在固定分辨率 \(m\) 上，\(X_m\) 通过 Zeckendorf 值映射与
+\[
+\ZZ/(F_{m+2}\ZZ)
+\]
+同构，因此本身携带一个有限分辨率算术；稳定地址不只是表示，而是有限模算术的规范代表。
+
+第二，在跨尺度层面，只有当尺度满足整除兼容时，有限分辨率结构才能被真正拼接为逆系统。由此得到的
+\[
+\widehat{\ZZ}_F
+=
+\varprojlim_{d\ge 2}\ZZ/(F_d\ZZ)
+\]
+与地址逆极限 \(\widehat X_F\) 同构，给出一个真正的 Fibonacci-adic 完成环。每个有限分辨率读出都是该完成环的有限商，而整数则稠密嵌入其中。
 \end{remark}
