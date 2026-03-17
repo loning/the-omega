@@ -1,52 +1,104 @@
 \subsection{显式算法与复杂度界}\label{subsec:zeckendorf-algorithms-complexity}
 
-本小节把“可计算、可终止”的表述提升为\textbf{显式算法}与\textbf{复杂度界}。为保持依赖最小，算法采用最短闭环：\textbf{值层运算}（整数加法/乘法）+\textbf{Zeckendorf 规范化}（贪心）。
+本节把前文“可计算、可终止”的结构性结论提升为显式算法、复杂度界与在线实现。为保持依赖最小，所有算法都采用同一条最短闭环：值层运算（整数加法/乘法）加上 Zeckendorf 规范化（贪心折叠）。这一口径与前文的对象层语义完全一致：先在值层完成运算，再经唯一规范形选择落回稳定地址层。与此同时，本节也说明：虽然这种实现在线可做、单趟可做，但若要求用固定半径的同步局部更新在有限步内完成归一化，则不可避免地受到线性传播下界的限制。
 
 \subsubsection{Zeckendorf 规范化：从整数到合法数字}
 
-给定 $N\in\NN$，目标是计算其唯一 Zeckendorf 数字 $Z(N)=(c_1,c_2,\dots)$（仅有限个 $1$ 且无相邻 $1$）使得 $N=\sum_{k\ge 1}c_kF_{k+1}$。
+给定 \(N\in \NN\)，目标是计算其唯一 Zeckendorf 数字
+\[
+Z(N)=(c_1,c_2,\dots),
+\]
+其中仅有限个 \(c_k\neq 0\)，每个 \(c_k\in\{0,1\}\)，且不存在相邻的 \(11\)，并满足
+\[
+N=\sum_{k\ge 1} c_kF_{k+1}.
+\]
 
 \begin{itemize}
-  \item \textbf{输入：}整数 $N$。
-  \item \textbf{输出：}Zeckendorf 合法数字序列 $Z(N)$。
+  \item \textbf{输入：}整数 \(N\)。
+  \item \textbf{输出：}Zeckendorf 合法数字序列 \(Z(N)\)。
 \end{itemize}
 
 \textbf{算法（贪心 + 跳邻位）：}
 \begin{enumerate}
-  \item 预生成 Fibonacci 权重 $F_{2},F_{3},\dots,F_{M+1}$，其中 $M$ 足够大使得 $F_{M+1}\le N<F_{M+2}$；
-  \item 从 $k=M$ 递减到 $1$：若 $F_{k+1}\le N$，则置 $c_k:=1$、令 $N\leftarrow N-F_{k+1}$，并跳过相邻位（将 $k\leftarrow k-1$ 再继续递减）；否则置 $c_k:=0$；
-  \item 输出 $c=(c_1,c_2,\dots,c_M)$（其后全为 $0$）。
+  \item 预生成 Fibonacci 权重 \(F_2,F_3,\dots,F_{M+1}\)，其中 \(M\) 足够大，使
+  \[
+  F_{M+1}\le N<F_{M+2}.
+  \]
+  \item 从 \(k=M\) 递减到 \(1\)。若 \(F_{k+1}\le N\)，则置 \(c_k:=1\)，并令
+  \[
+  N\leftarrow N-F_{k+1};
+  \]
+  随后跳过相邻位，再继续递减。若 \(F_{k+1}>N\)，则置 \(c_k:=0\)。
+  \item 输出
+  \[
+  c=(c_1,c_2,\dots,c_M),
+  \]
+  并视其后各位均为 \(0\)。
 \end{enumerate}
 
-该算法的正确性与唯一性由 Zeckendorf 定理给出（\cite{Zeckendorf1972}；本稿中见附录 C）。
+该算法的正确性与唯一性正是 Zeckendorf 定理的算法化形式（\cite{Zeckendorf1972}；本稿中见附录 C）：贪心法总能选出最大可用 Fibonacci 权重，而跳过相邻位保证结果始终处于合法语法中。最终得到的序列既同值，又是唯一的合法表示。特别地，当 \(N=0\) 时，输出全零地址 \(0_X=(0,0,\dots)\)。
 
 \subsubsection{稳定加法与稳定乘法：两步实现}
 
-对输入 $c,d\in X_\infty$（仅有限个 $1$），令其有效分辨率为
+设
+\[
+c,d\in X_\infty
+\]
+为两个仅有限支撑的稳定地址。记其值为
+\[
+\mathrm{Val}(c),\qquad \mathrm{Val}(d).
+\]
+则稳定算术的最短实现可写成两步。对输入 \(c,d\in X_\infty\)（仅有限个 \(1\)），令其有效分辨率为
 \[
 m:=\max\{k:\ c_k=1\text{ 或 }d_k=1\}.
 \]
 则
 \begin{itemize}
-  \item \textbf{稳定加法} $c\oplus d$：计算 $N=\mathrm{Val}(c)+\mathrm{Val}(d)$，再输出 $Z(N)$；
-  \item \textbf{稳定乘法} $c\otimes d$：计算 $N=\mathrm{Val}(c)\mathrm{Val}(d)$，再输出 $Z(N)$。
+  \item \textbf{稳定加法：}先在值层计算
+  \[
+  N=\mathrm{Val}(c)+\mathrm{Val}(d),
+  \]
+  再输出
+  \[
+  c\oplus d=Z(N).
+  \]
+  \item \textbf{稳定乘法：}先在值层计算
+  \[
+  N=\mathrm{Val}(c)\mathrm{Val}(d),
+  \]
+  再输出
+  \[
+  c\otimes d=Z(N).
+  \]
 \end{itemize}
-这正是附录 E 的“值层运算 + 规范形”的最短闭环实现。
+因此，稳定加法与稳定乘法的算法核心都不是在数字串上直接做局部操作，而是：
+\begin{enumerate}
+  \item 用值映射把地址送到整数层；
+  \item 在整数层完成普通运算；
+  \item 用 Zeckendorf 规范化返回唯一稳定地址。
+\end{enumerate}
+这正是前文“值层运算 + 规范横截面”的最短闭环实现。
 
 \subsubsection{复杂度（按分辨率 \texorpdfstring{$m$}{m} 与按比特两种口径）}
 
-为了避免模型争议，本文在附录 E$'$ 中同时给出两种等价口径的复杂度界：分辨率口径（把 $m$ 视为输入长度）与比特口径（把整数按二进制长度计成本）。结论可概括如下（详证见附录 E$'$ 中的命题 \ref{prop:fold-complexity} 与 \ref{prop:stable-arith-complexity}）：
+为了避免模型依赖争议，这里同时给出两种等价口径：第一，分辨率口径，把最高非零位的尺度 \(m\) 视为输入长度；第二，比特口径，把相应整数的二进制位长视为成本尺度。由于
+\[
+F_{m+1}\asymp \varphi^m,
+\]
+故整数值的比特长度与 \(m\) 同阶，即为 \(\Theta(m)\)。结论可概括如下（详证见附录 E$'$ 中的命题 \ref{prop:fold-complexity} 与 \ref{prop:stable-arith-complexity}）：
 
 \begin{itemize}
-  \item \textbf{折叠/规范化：}对长度 $m$ 的输入，Zeckendorf 规范化在分辨率口径为 $O(m)$ 步；在比特口径为 $O(m^2)$ 比特运算。
-  \item \textbf{稳定加法：}分辨率口径 $O(m)$；比特口径 $O(m^2)$。
-  \item \textbf{稳定乘法：}分辨率口径为“值层乘法成本 + $O(m)$”；比特口径为 $O(M(m)+m^2)$，其中 $M(m)$ 为 $\\Theta(m)$ 比特整数乘法成本（学校乘法为 $O(m^2)$）。
+  \item \textbf{Zeckendorf 规范化：}对长度 \(m\) 的输入，贪心规范化在分辨率口径下为 \(O(m)\) 步；在比特口径下为 \(O(m^2)\) 比特运算。
+  \item \textbf{稳定加法：}分辨率口径为 \(O(m)\)；比特口径为 \(O(m^2)\)。
+  \item \textbf{稳定乘法：}分辨率口径为 \(O(M(m)+m)\)，其中 \(M(m)\) 是 \(\Theta(m)\)-比特整数乘法成本；比特口径为 \(O(M(m)+m^2)\)。若采用学校乘法，则 \(M(m)=O(m^2)\)，从而稳定乘法整体仍为二次量级。
 \end{itemize}
 
 \input{para__zeckendorf-parallel-propagation-lower-bound}
 
+这一定理说明：延迟 \(3\) 的单趟在线实现是一种串行机制；但若换成固定半径的同步并行局部更新，则“进位/折叠传播”有不可压缩的线性下界。
+
 \subsubsection{单趟在线延迟 \texorpdfstring{$3$}{3}：统一转导器}\label{subsec:online-delay}
-存在\textbf{单趟在线}转导器（延迟 3）直接实现归一化；其同步部分可用“余量守恒”给出（\cite{Frougny1999OnlineAddition}）。
+除了“值层运算 + 规范化”的最短闭环之外，Zeckendorf 归一化还存在一个完全在线的实现：它一次只读入一个字母，不回看历史，只保留一个固定大小的延迟窗口。其同步部分可用“余量守恒”给出（\cite{Frougny1999OnlineAddition}）。
 
 令 $\varphi=(1+\sqrt5)/2$，定义余量
 \[
@@ -296,3 +348,8 @@ F_{Q,b}(z)=u^\top(I-zB_{Q,b})^{-1}v\;}
 \)，
 并且分母由 \(\det(I-zB)\) 给出，极点与递推结构随之得到。证毕。
 \end{proof}
+
+\paragraph{本节结论}
+本节把第 \(7\) 章的“值保持归一化”落实到了算法层与复杂度层。第一，Zeckendorf 规范化可由贪心算法在线性时间完成。第二，稳定加法与稳定乘法都可化为“值层运算 + 规范化”的两步闭环。第三，虽然在线单趟延迟 \(3\) 可以实现归一化，但任何固定半径的同步局部并行方案都必须付出线性传播时间。第四，在线转导器不仅给出实现，还给出精确的统计指纹：平稳分布、输入--输出耦合、反持续性、熵率与 primitive 轨道谱。第五，时间侧的 trace--iterate 与空间侧的 Euler 乘积严格交换。第六，大类线性约束计数问题都可被编译为有限矩阵 resolvent，因此自动具有有理生成函数、线性递推与谱极点结构。
+
+这样，第 \(7\) 章就在四个层面闭合起来：对象层的可断言性、值层的规范算术、谱层的 primitive/压力结构，以及算法层的显式实现与复杂度界。
